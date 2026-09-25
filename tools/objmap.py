@@ -272,10 +272,12 @@ def main():
             print(f"warn: section {sec.name} has several bases {[hex(b) for b in bases]}")
         base = max(bases, key=bases.get)
         lo_, hi_ = None, None
+        dropped_ranges = []
         for s in sym_by_sec[idx]:
             if s["st_info"]["bind"] == "STB_WEAK":
                 if resolved.get(s.name) != base + s["st_value"]:
                     print(f"  weak data {s.name} dropped (at {resolved.get(s.name, 0):08x})")
+                    dropped_ranges.append((s["st_value"], s["st_value"] + s["st_size"]))
                     continue
             else:
                 note(s.name, base + s["st_value"])
@@ -292,7 +294,7 @@ def main():
         for off, t, si, add in relocs[idx]:
             sym = syms[si]
             name = sym.name if sym["st_info"]["type"] != "STT_SECTION" else "$sec:" + secs[sym["st_shndx"]].name
-            if t == ADDR32:
+            if t == ADDR32 and not any(a <= off < b for a, b in dropped_ranges):
                 v = rw(base + off)
                 if v:
                     note(name, v - add)
@@ -380,6 +382,12 @@ def main():
 
     if not apply:
         return
+    seen_addr = {}
+    for name, addr, cur, inf in list(changes):
+        if cur is not None and addr in seen_addr:
+            print(f"!! two names for {addr:08x}: {seen_addr[addr]} / {name}; skipping {name}")
+            changes.remove((name, addr, cur, inf))
+        seen_addr.setdefault(addr, name)
     for name, addr, cur, inf in changes:
         bind = inf.get("bind")
         scope = {"STB_GLOBAL": "global", "STB_LOCAL": "local", "STB_WEAK": "weak"}.get(bind, "global")
@@ -389,7 +397,7 @@ def main():
             i = names[cur]
             rest = ss[i][3]
             rest = re.sub(r"scope:\S+", f"scope:{scope}", rest) if "scope:" in rest else rest + f" scope:{scope}"
-            if inf.get("defined") and inf.get("size"):
+            if inf.get("defined") and inf.get("size") and name not in dropped and not (inf.get("bind") == "STB_WEAK" and inf.get("type") == "STT_OBJECT" and not any(a <= addr < b for a, b in placed.values())):
                 rest = re.sub(r"size:0x[0-9A-Fa-f]+", f"size:0x{inf['size']:X}", rest)
             ss[i][0] = name
             ss[i][3] = rest
