@@ -117,6 +117,12 @@ JSystem/JUtility/JUTPalette.cpp:
 	.text       start:0x8008EB34 end:0x8008EC50
 	.rodata     start:0x8045EDB0 end:0x8045EDE0
 
+JSystem/JUtility/JUTResFont.cpp:
+	.text       start:0x80090DF0 end:0x8009209C
+	.rodata     start:0x8045EDE0 end:0x8045EEE0
+	.data       start:0x804994C0 end:0x80499510
+	.sdata2     start:0x8053B910 end:0x8053B928
+
 JSystem/JUtility/JUTResource.cpp:
 	.text       start:0x8009209C end:0x80092270
 
