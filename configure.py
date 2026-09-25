@@ -278,6 +278,8 @@ cflags_jsystem = [
     "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
 ]
 
+# JAudio/Utility + JAudio/Task flags (jau-task unit)
+cflags_jau = [*cflags_jsystem, "-DMATCHING=1"]
 # Extra flags for JAudio/Task (DSP driver), as in the mkdd decomp
 cflags_jaudio_task = ["-O4,s", "-inline noauto", "-use_lmw_stmw off", "-func_align 32"]
 
@@ -373,18 +375,24 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
-    JSystemLib(
-        "jau-task",
-        [
+    {
+        # JAudio/Utility + JAudio/Task (jau-task); -DMATCHING=1 enables the
+        # donor's explicit static memPool_ definitions (JASFakeMatch*.h)
+        "lib": "jau-task",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jau,
+        "progress_category": "jsys",
+        "objects": [
             # JAudio/Task: DSP driver, built with mkdd's per-file flags
             Object(Matching, "JSystem/JAudio/Task/dspproc.c", extra_cflags=cflags_jaudio_task),
             Object(Matching, "JSystem/JAudio/Task/dsptask.c", extra_cflags=cflags_jaudio_task),
             Object(Matching, "JSystem/JAudio/Task/osdsp.c", extra_cflags=cflags_jaudio_task),
             Object(Matching, "JSystem/JAudio/Task/osdsp_task.c", extra_cflags=cflags_jaudio_task),
             # JAudio/Utility
+            Object(Matching, "JSystem/JAudio/Utility/JAUInitializer.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUStreamFileTable.cpp"),
         ],
-    ),
+    },
 ]
 
 
