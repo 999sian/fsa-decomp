@@ -28,7 +28,7 @@ git -C "$repo" worktree add -f "$wt" -b tmp/atu-integrate "$base" >/dev/null || 
 mkdir -p "$wt/orig/G4SE01/sys"; cp "$repo/orig/G4SE01/sys/main.dol" "$wt/orig/G4SE01/sys/" || exit 1
 
 python3 - "$repo" "$wt" "$base" "$fork" $branches <<'PY'
-import subprocess, sys
+import re, subprocess, sys
 repo, wt, base, fork = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
 # each branch may carry its own fork point as `branch=fork` (needed when a *content* branch has
 # advanced since it was last integrated, so its diff would otherwise repeat what is already in base)
@@ -49,6 +49,18 @@ for b, fork_b in specs:
     removed = sum(1 for l in diff.splitlines() if l.startswith("-") and not l.startswith("---"))
     if not added and not removed:
         print("  %-14s no change (fork %s)" % (b, fork_b[:7])); continue
+    if removed:
+        # which functions does this branch (re)define? drop the base's stale copies of them
+        names = set()
+        for l in added:
+            m = re.match(r"^\s*(?:extern\s+\"C\"\s+)?[A-Za-z_][\w:<>,\s\*&]*?\b([A-Za-z_]\w*(?:::\w+)?)\s*\(", l)
+            if m and "{" in l:
+                names.add(m.group(1))
+        for n in sorted(names):
+            pat = re.compile(r"^[^\n]*\b" + re.escape(n) + r"\s*\([^;{]*\)[^;\n]*\{[\s\S]*?^\}\n", re.M)
+            out, k = pat.subn("", out)
+            if k:
+                print("     dropped %d stale definition(s) of %s from the base" % (k, n))
     total += len(added)
     out += "\n/* ==== integrated from %s ==== */\n" % b + "\n".join(added) + "\n"
     print("  %-14s +%d lines, -%d lines%s" % (b, len(added), removed,
