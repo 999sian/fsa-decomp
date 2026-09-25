@@ -65,6 +65,11 @@ JSystem/JAudio/System/JASSimpleWaveBank.cpp:
 	.text       start:0x80030BD0 end:0x80030EF8
 	.data       start:0x80491A88 end:0x80491AD0
 
+JSystem/JAudio/System/JASWaveArcLoader.cpp:
+	.text       start:0x80030EF8 end:0x8003143C
+	.data       start:0x80491AD0 end:0x80491B38
+	.sbss       start:0x8053A360 end:0x8053A368
+
 JSystem/JAudio/System/JASRegisterParam.cpp:
 	.text       start:0x80033018 end:0x800332D0
 	.data       start:0x80491B70 end:0x80491BC0
