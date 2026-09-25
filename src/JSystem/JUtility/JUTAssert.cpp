@@ -11,12 +11,16 @@ namespace JUTAssertion
     {
         static u32 sMessageLife;
         static u32 sMessageOwner;
+#ifndef VERSION_G4SE01 // FSA's retail JUTAssert only keeps sVisible and the message buffers
         static bool mSynchro;
+#endif
         static char sMessageFileLine[64];
         static char sMessageString[256];
 
+#ifndef VERSION_G4SE01
         static u32 sDisplayTime = -1;
         static u32 sDevice = 3;
+#endif
         static bool sVisible = true;
     }
 

@@ -365,6 +365,7 @@ config.libs = [
     JSystemLib(
         "JUtility",
         [
+            Object(Matching, "JSystem/JUtility/JUTAssert.cpp"),
             Object(Matching, "JSystem/JUtility/JUTConsole.cpp"),
             Object(Matching, "JSystem/JUtility/JUTDirectFile.cpp"),
             Object(Matching, "JSystem/JUtility/JUTFont.cpp"),
