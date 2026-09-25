@@ -382,6 +382,7 @@ config.libs = [
         "progress_category": "jsys",
         "objects": [
             Object(Matching, "JSystem/JAudio/System/JASAiCtrl.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASAudioReseter.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
