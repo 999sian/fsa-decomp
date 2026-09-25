@@ -370,6 +370,13 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    # JSystem TUs not present in the mkdd decomp (JMessage, extra JGadget, ...)
+    JSystemLib(
+        "jextra",
+        [
+            Object(Matching, "JSystem/JGadget/binary.cpp"),
+        ],
+    ),
 ]
 
 
