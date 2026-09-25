@@ -391,7 +391,8 @@ config.libs = [
             Object(NonMatching, "JSystem/JAudio/System/JASTrack.cpp", extra_cflags=["-DMATCHING=1"]),
             Object(Matching, "JSystem/JAudio/System/JASTrackPort.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASWaveBank.cpp"),
+            # JASWaveBank.cpp (only JASWaveBank::isLoading) is dead-stripped in FSA:
+            # it has no code or data in main.dol.
             Object(Matching, "JSystem/JAudio/System/JASWSParser.cpp"),
         ],
     ),
