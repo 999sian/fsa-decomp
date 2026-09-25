@@ -363,6 +363,7 @@ config.libs = [
     JSystemLib(
         "JUtility",
         [
+            Object(Matching, "JSystem/JUtility/JUTConsole.cpp"),
             Object(Matching, "JSystem/JUtility/JUTFont.cpp"),
             Object(Matching, "JSystem/JUtility/JUTGraphFifo.cpp"),
             Object(Matching, "JSystem/JUtility/JUTNameTab.cpp"),
