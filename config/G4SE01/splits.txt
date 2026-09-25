@@ -23,6 +23,15 @@ JSystem/JKernel/JKRDisposer.cpp:
 	.text       start:0x8007E6F4 end:0x8007E7E0
 	.data       start:0x80498D50 end:0x80498D5C
 
+JSystem/JKernel/JKRDvdRipper.cpp:
+	.text       start:0x80080774 end:0x80081454
+	.ctors      start:0x8045BDBC end:0x8045BDC0
+	.rodata     start:0x8045E2A0 end:0x8045E2FC
+	.bss        start:0x804BA020 end:0x804BA044
+	.sdata      start:0x80539D70 end:0x80539D78
+	.sbss       start:0x8053A848 end:0x8053A884
+	.sdata2     start:0x8053B700 end:0x8053B704
+
 JSystem/JKernel/JKRFileLoader.cpp:
 	.text       start:0x80083120 end:0x8008353C
 	.ctors      start:0x8045BDC0 end:0x8045BDC4
