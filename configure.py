@@ -374,6 +374,8 @@ config.libs = [
     JSystemLib(
         "jextra",
         [
+            Object(Matching, "JSystem/JMessage/resource.cpp"),
+            Object(Matching, "JSystem/JMessage/data.cpp"),
             Object(Matching, "JSystem/JGadget/binary.cpp"),
         ],
     ),

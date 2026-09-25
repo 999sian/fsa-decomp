@@ -206,6 +206,11 @@ public:
       --mIt;
       return *this;
     }
+    iterator operator++(int) {
+      const iterator old(*this);
+      ++*this;
+      return old;
+    }
 
     T* operator->() const { return TLinkList::Element_toValue(mIt.operator->()); }
     T& operator*() const {
@@ -294,6 +299,33 @@ public:
     return (const T*)((const char*)p + O);
   }
 };
+
+// TLinkList_factory: adapted from the Pikmin 2 decompilation (used by JMessage)
+template <typename T, int O>
+class TLinkList_factory : public TLinkList<T, O> {
+public:
+  inline virtual ~TLinkList_factory() = 0;
+  virtual T* Do_create() = 0;
+  virtual void Do_destroy(T*) = 0;
+
+  void Clear_destroy() {
+    while (!this->empty()) {
+      T* item = &this->front();
+      this->Remove(item);
+      Do_destroy(item);
+    }
+  }
+
+  typename TLinkList<T, O>::iterator Erase_destroy(T* p) {
+    typename TLinkList<T, O>::iterator it(this->Erase(p));
+    Do_destroy(p);
+    return it;
+  }
+};
+
+template <typename T, int O>
+TLinkList_factory<T, O>::~TLinkList_factory() {}
+
 }
 
 #endif
