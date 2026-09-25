@@ -353,6 +353,7 @@ config.libs = [
     JSystemLib(
         "JUtility",
         [
+            Object(Matching, "JSystem/JUtility/JUTFont.cpp"),
         ],
     ),
 ]
