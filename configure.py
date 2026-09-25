@@ -359,6 +359,7 @@ config.libs = [
         "JSupport",
         [
             Object(Matching, "JSystem/JSupport/JSUFileStream.cpp"),
+            Object(Matching, "JSystem/JSupport/JSUList.cpp"),
             Object(Matching, "JSystem/JSupport/JSUMemoryStream.cpp"),
         ],
     ),
