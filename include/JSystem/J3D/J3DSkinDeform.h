@@ -5,7 +5,6 @@
 #include "JSystem/J3D/J3DCluster.h"
 
 struct J3DAnmCluster;
-class J3DClusterVertex;
 
 enum J3DSkinDeformFlags {
     J3DSKIN_Unk1 = 0x1,
@@ -51,14 +50,17 @@ struct J3DDeformer {
     void deform_VtxNrmF32(J3DVertexBuffer*, J3DCluster*, J3DClusterKey*, f32*);
     void normalizeWeight(int, f32*);
 
+    bool checkFlag(u32 flag) { return mFlags & flag; }
+    void normalize(f32* vec) { PSVECNormalize((Vec*)vec, (Vec*)vec); }
+
     J3DDeformData* mDeformData; // _00
     J3DAnmCluster* mAnmCluster; // _04
-    int _08;                    // _08
-    int _0C;                    // _0C
+    f32* mWeightList;           // _08
+    f32* mDeformedNrm;          // _0C
     u32 mFlags;                 // _10
 };
 
-/*struct J3DSkinDeform {
+struct J3DSkinDeform {
     J3DSkinDeform();
 
     virtual void deform(J3DVertexBuffer*, J3DMtxBuffer*); // _08
@@ -66,16 +68,16 @@ struct J3DDeformer {
 
     void deform(J3DModel* model);
 
-    void setFlag(u32 flag) { mFlags.typeView |= flag; }
-    void resetFlag(u32 flag) { mFlags.typeView &= ~flag; }
-    bool checkFlag(u32 flag) const { return mFlags.typeView & flag; }
+    void setFlag(u32 flag) { mFlags |= flag; }
+    void resetFlag(u32 flag) { mFlags &= ~flag; }
+    bool checkFlag(u32 flag) const { return mFlags & flag; }
 
     // _00 VTBL
-    void* mPosData;      // _04
-    //BitFlag<u32> _08;    // _08 // bitfield of some sort
-    unknown _0C;         // _0C
-    unknown _10;         // _10
-    BitFlag<u32> mFlags; // _14
-};*/
+    void* mPosData; // _04
+    u32 _08;        // _08
+    u32 _0C;        // _0C
+    u32 _10;        // _10
+    u32 mFlags;     // _14
+};
 
 #endif

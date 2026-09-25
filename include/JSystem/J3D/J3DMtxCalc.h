@@ -22,10 +22,7 @@ struct J3DMtxCalc {
     virtual void init(const Vec&, const Mtx&) = 0;                   // _24
     virtual void calc()                       = 0;                   // _28
 
-    static void setMtxBuffer(J3DMtxBuffer* buffer)
-    {
-        mMtxBuffer = buffer;
-    }
+    static void setMtxBuffer(J3DMtxBuffer* buffer); // defined in J3DJointTree.cpp
 
     static J3DMtxBuffer* getMtxBuffer() { return mMtxBuffer; }
     static J3DJoint* getJoint() { return mJoint; }

@@ -14,6 +14,7 @@ struct J3DFrameCtrl
     virtual ~J3DFrameCtrl() {} // _08 (weak)
 
     void init(s16);
+    int checkPass(f32);
     void update();
 
     void init(int rate) { init((s16)rate); }

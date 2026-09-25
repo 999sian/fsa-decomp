@@ -359,6 +359,18 @@ config.libs = [
             Object(NonMatching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
         ],
     },
+    # jas-sinit: first .text TU (shared per-TU JASPoolAllocObject __sinit pools).
+    # MATCHING enables the JASFakeMatch*.h memPool_ definitions; retail has
+    # extab entries for this TU, so it was built with C++ exceptions on.
+    {
+        "lib": "JAudio_PoolSinit",
+        "mw_version": "GC/2.6",
+        "cflags": [*cflags_jsystem, "-DMATCHING=1", "-Cpp_exceptions on"],
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/JASPoolSinit.cpp"),
+        ],
+    },
     JSystemLib(
         "JKernel",
         [
@@ -914,6 +926,47 @@ config.libs = [
             Object(NonMatching, "game/tu_80455930.cpp"),
         ],
     },
+    JSystemLib(
+        "j3d-loader",
+        [
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelLoader.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelLoaderCalcSize.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DJointFactory.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DShapeFactory.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelSaver.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "J3DGraphAnimator",
+        [
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DAnimation.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DCluster.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJoint.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJointTree.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DMaterialAnm.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DMaterialAttach.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DModel.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DModelData.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DMtxBuffer.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DShapeTable.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "j2d-b",
+        [
+            Object(Matching, "JSystem/J2DGraph/J2DPicture.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DPictureEx.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPrint.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DScreen.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTevs.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTextBox.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTextBoxEx.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DWindow.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DWindowEx.cpp"),
+        ],
+    ),
 ]
 
 
