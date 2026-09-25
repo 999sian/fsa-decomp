@@ -109,6 +109,16 @@ JSystem/JUtility/JUTVideo.cpp:
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
 
+JSystem/J2DGraph/J2DOrthoGraph.cpp:
+	.text       start:0x80093768 end:0x80093E64
+	.data       start:0x80499520 end:0x80499548
+	.sdata2     start:0x8053B990 end:0x8053B998
+
+JSystem/J2DGraph/J2DGrafContext.cpp:
+	.text       start:0x80093E64 end:0x800948E0
+	.data       start:0x80499548 end:0x80499570
+	.sdata2     start:0x8053B998 end:0x8053B9B0
+
 JSystem/J2DGraph/J2DAnmLoader.cpp:
 	.text       start:0x800A4994 end:0x800A655C
 	.data       start:0x80499AE8 end:0x80499B6C
