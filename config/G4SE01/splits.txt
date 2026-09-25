@@ -195,3 +195,254 @@ JSystem/JUtility/JUTVideo.cpp:
 	.text       start:0x80092A98 end:0x8009304C
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
+
+game/tu_801F6058.cpp:
+	extab       start:0x80008F04 end:0x80008F2C
+	extabindex  start:0x80016660 end:0x8001669C
+	.text       start:0x801F6058 end:0x801F68E0
+
+game/tu_801F68E0.cpp:
+	extab       start:0x80008F2C end:0x80008FCC
+	extabindex  start:0x8001669C end:0x8001678C
+	.text       start:0x801F68E0 end:0x801F9484
+	.ctors      start:0x8045C0E0 end:0x8045C0E4
+
+game/tu_801F9484.cpp:
+	extab       start:0x80008FCC end:0x80009BE8
+	extabindex  start:0x8001678C end:0x80017560
+	.text       start:0x801F9484 end:0x80204638
+	.ctors      start:0x8045C0E4 end:0x8045C0E8
+
+game/tzok.cpp:
+	extab       start:0x80009C10 end:0x80009CA4
+	extabindex  start:0x8001759C end:0x8001765C
+	.text       start:0x80204D44 end:0x80206B30
+	.ctors      start:0x8045C0EC end:0x8045C0F0
+
+game/tu_80207548.cpp:
+	extab       start:0x80009CDC end:0x80009D20
+	extabindex  start:0x800176B0 end:0x800176F8
+	.text       start:0x80207548 end:0x80207D84
+	.ctors      start:0x8045C0F4 end:0x8045C0F8
+
+game/slmn.cpp:
+	extab       start:0x80009D20 end:0x80009D88
+	extabindex  start:0x800176F8 end:0x80017794
+	.text       start:0x80207D84 end:0x80208E5C
+	.ctors      start:0x8045C0F8 end:0x8045C0FC
+
+game/fobr.cpp:
+	extab       start:0x80009E30 end:0x80009E98
+	extabindex  start:0x80017890 end:0x8001792C
+	.text       start:0x8020B354 end:0x8020C0A8
+	.ctors      start:0x8045C104 end:0x8045C108
+
+game/zasl.cpp:
+	extab       start:0x80009E98 end:0x80009EE8
+	extabindex  start:0x8001792C end:0x800179A4
+	.text       start:0x8020C0A8 end:0x8020CCA8
+	.ctors      start:0x8045C108 end:0x8045C10C
+
+game/tu_8020D58C.cpp:
+	extab       start:0x80009F18 end:0x80009F40
+	extabindex  start:0x800179EC end:0x80017A28
+	.text       start:0x8020D58C end:0x8020DB74
+	.ctors      start:0x8045C110 end:0x8045C114
+
+game/flor.cpp:
+	extab       start:0x80009F40 end:0x80009FB0
+	extabindex  start:0x80017A28 end:0x80017AD0
+	.text       start:0x8020DB74 end:0x8020F798
+	.ctors      start:0x8045C114 end:0x8045C118
+
+game/ibbm.cpp:
+	extab       start:0x80009FD0 end:0x8000A010
+	extabindex  start:0x80017B00 end:0x80017B60
+	.text       start:0x8020FE50 end:0x80210630
+	.ctors      start:0x8045C11C end:0x8045C120
+
+game/rusa.cpp:
+	extab       start:0x8000A050 end:0x8000A0B8
+	extabindex  start:0x80017BC0 end:0x80017C5C
+	.text       start:0x80210D90 end:0x80212AC0
+	.ctors      start:0x8045C124 end:0x8045C128
+
+game/tu_80212AC0.cpp:
+	extab       start:0x8000A0B8 end:0x8000A0C8
+	extabindex  start:0x80017C5C end:0x80017C74
+	.text       start:0x80212AC0 end:0x80212E3C
+	.ctors      start:0x8045C128 end:0x8045C12C
+
+game/arij.cpp:
+	extab       start:0x8000A0C8 end:0x8000A128
+	extabindex  start:0x80017C74 end:0x80017D04
+	.text       start:0x80212E3C end:0x80213E00
+	.ctors      start:0x8045C12C end:0x8045C130
+
+game/slef.cpp:
+	extab       start:0x8000A128 end:0x8000A150
+	extabindex  start:0x80017D04 end:0x80017D40
+	.text       start:0x80213E00 end:0x80214244
+	.ctors      start:0x8045C130 end:0x8045C134
+
+game/tu_80214244.cpp:
+	extab       start:0x8000A150 end:0x8000A160
+	extabindex  start:0x80017D40 end:0x80017D58
+	.text       start:0x80214244 end:0x802144F0
+	.ctors      start:0x8045C134 end:0x8045C138
+
+game/tu_802144F0.cpp:
+	extab       start:0x8000A160 end:0x8000A1C0
+	extabindex  start:0x80017D58 end:0x80017DE8
+	.text       start:0x802144F0 end:0x802153A8
+	.ctors      start:0x8045C138 end:0x8045C13C
+
+game/tu_802153A8.cpp:
+	extab       start:0x8000A1C0 end:0x8000A1D0
+	extabindex  start:0x80017DE8 end:0x80017E00
+	.text       start:0x802153A8 end:0x802157B8
+	.ctors      start:0x8045C13C end:0x8045C140
+
+game/tu_802157B8.cpp:
+	extab       start:0x8000A1D0 end:0x8000A1D8
+	extabindex  start:0x80017E00 end:0x80017E0C
+	.text       start:0x802157B8 end:0x80215A94
+	.ctors      start:0x8045C140 end:0x8045C144
+
+game/tu_80215A94.cpp:
+	extab       start:0x8000A1D8 end:0x8000A258
+	extabindex  start:0x80017E0C end:0x80017ECC
+	.text       start:0x80215A94 end:0x8021693C
+	.ctors      start:0x8045C144 end:0x8045C148
+
+game/tu_802188B0.cpp:
+	extab       start:0x8000A308 end:0x8000A328
+	extabindex  start:0x80017FD4 end:0x80018004
+	.text       start:0x802188B0 end:0x80218CF4
+	.ctors      start:0x8045C158 end:0x8045C15C
+
+game/kepo.cpp:
+	extab       start:0x8000A328 end:0x8000A38C
+	extabindex  start:0x80018004 end:0x8001807C
+	.text       start:0x80218CF4 end:0x8021A570
+	.ctors      start:0x8045C15C end:0x8045C160
+
+game/tu_8021A570.cpp:
+	extab       start:0x8000A38C end:0x8000A3A4
+	extabindex  start:0x8001807C end:0x800180A0
+	.text       start:0x8021A570 end:0x8021AF28
+	.ctors      start:0x8045C160 end:0x8045C164
+
+game/tu_8021B904.cpp:
+	extab       start:0x8000A3E4 end:0x8000A3FC
+	extabindex  start:0x80018100 end:0x80018124
+	.text       start:0x8021B904 end:0x8021BCBC
+	.ctors      start:0x8045C168 end:0x8045C16C
+
+game/tu_8021BFA8.cpp:
+	extab       start:0x8000A404 end:0x8000A40C
+	extabindex  start:0x80018130 end:0x8001813C
+	.text       start:0x8021BFA8 end:0x8021C2B4
+	.ctors      start:0x8045C170 end:0x8045C174
+
+game/tu_8021CDE4.cpp:
+	extab       start:0x8000A434 end:0x8000A444
+	extabindex  start:0x80018178 end:0x80018190
+	.text       start:0x8021CDE4 end:0x8021D26C
+	.ctors      start:0x8045C17C end:0x8045C180
+
+game/ezge.cpp:
+	extab       start:0x8000A444 end:0x8000A46C
+	extabindex  start:0x80018190 end:0x800181CC
+	.text       start:0x8021D26C end:0x8021D734
+	.ctors      start:0x8045C180 end:0x8045C184
+
+game/navi.cpp:
+	extab       start:0x8000A46C end:0x8000A4DC
+	extabindex  start:0x800181CC end:0x80018274
+	.text       start:0x8021D734 end:0x8021F064
+	.ctors      start:0x8045C184 end:0x8045C188
+
+game/tu_8021F064.cpp:
+	extab       start:0x8000A4DC end:0x8000A4F4
+	extabindex  start:0x80018274 end:0x80018298
+	.text       start:0x8021F064 end:0x8021F4B0
+	.ctors      start:0x8045C188 end:0x8045C18C
+
+game/fbal.cpp:
+	extab       start:0x8000A52C end:0x8000A55C
+	extabindex  start:0x800182EC end:0x80018334
+	.text       start:0x802201D8 end:0x802205E0
+	.ctors      start:0x8045C194 end:0x8045C198
+
+game/znlj.cpp:
+	extab       start:0x8000A55C end:0x8000A5B0
+	extabindex  start:0x80018334 end:0x80018394
+	.text       start:0x802205E0 end:0x80220F54
+	.ctors      start:0x8045C198 end:0x8045C19C
+
+game/tu_80220F54.cpp:
+	extab       start:0x8000A5B0 end:0x8000A628
+	extabindex  start:0x80018394 end:0x80018448
+	.text       start:0x80220F54 end:0x80221B44
+	.ctors      start:0x8045C19C end:0x8045C1A0
+
+game/tu_80221B44.cpp:
+	extab       start:0x8000A628 end:0x8000A660
+	extabindex  start:0x80018448 end:0x8001849C
+	.text       start:0x80221B44 end:0x802223FC
+	.ctors      start:0x8045C1A0 end:0x8045C1A4
+
+game/zsla.cpp:
+	extab       start:0x8000A660 end:0x8000A6A0
+	extabindex  start:0x8001849C end:0x800184FC
+	.text       start:0x802223FC end:0x80222CC4
+	.ctors      start:0x8045C1A4 end:0x8045C1A8
+
+game/tu_80222CC4.cpp:
+	extab       start:0x8000A6A0 end:0x8000A6D8
+	extabindex  start:0x800184FC end:0x80018550
+	.text       start:0x80222CC4 end:0x802233A4
+	.ctors      start:0x8045C1A8 end:0x8045C1AC
+
+game/tu_802233A4.cpp:
+	extab       start:0x8000A6D8 end:0x8000A730
+	extabindex  start:0x80018550 end:0x800185D4
+	.text       start:0x802233A4 end:0x802242F4
+	.ctors      start:0x8045C1AC end:0x8045C1B0
+
+game/tu_8022461C.cpp:
+	extab       start:0x8000A740 end:0x8000A7F8
+	extabindex  start:0x800185EC end:0x80018700
+	.text       start:0x8022461C end:0x80226FC8
+	.ctors      start:0x8045C1B4 end:0x8045C1B8
+
+game/tu_80234E30.cpp:
+	extab       start:0x8000AD10 end:0x8000B280
+	extabindex  start:0x80018EA4 end:0x800196B4
+	.text       start:0x80234E30 end:0x8023FBF0
+	.ctors      start:0x8045C1C0 end:0x8045C1C4
+
+game/tu_8023FBF0.cpp:
+	extab       start:0x8000B280 end:0x8000B7CC
+	extabindex  start:0x800196B4 end:0x80019D74
+	.text       start:0x8023FBF0 end:0x80255F4C
+	.ctors      start:0x8045C1C4 end:0x8045C1C8
+
+game/tu_802684A4.cpp:
+	extab       start:0x8000BAC4 end:0x8000BB6C
+	extabindex  start:0x8001A1E8 end:0x8001A2E4
+	.text       start:0x802684A4 end:0x8026FC20
+	.ctors      start:0x8045C1D8 end:0x8045C1DC
+
+game/tu_8026FC20.cpp:
+	extab       start:0x8000BB6C end:0x8000BDEC
+	extabindex  start:0x8001A2E4 end:0x8001A6A4
+	.text       start:0x8026FC20 end:0x8027E5BC
+	.ctors      start:0x8045C1DC end:0x8045C1E0
+
+game/swt4.cpp:
+	extab       start:0x8000C4F4 end:0x8000C50C
+	extabindex  start:0x8001B118 end:0x8001B13C
+	.text       start:0x802A964C end:0x802AA364
+	.ctors      start:0x8045C22C end:0x8045C230
