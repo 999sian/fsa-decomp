@@ -278,6 +278,14 @@ cflags_jsystem = [
     "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
 ]
 
+# JAudio/Interface (JAI) flags: JSystem flags plus MATCHING, which enables the
+# JASFakeMatch*.h headers that emit the per-TU JASPoolAllocObject memPool_
+# instances (and their __sinit guards) exactly as the retail objects have them.
+cflags_jai = [
+    *cflags_jsystem,
+    "-DMATCHING=1",
+]
+
 config.linker_version = "GC/1.3.2"
 
 
@@ -370,6 +378,30 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    {
+        "lib": "JAudio_Interface",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jai,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/Interface/JAIAudience.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISe.cpp"),
+            Object(NonMatching, "JSystem/JAudio/Interface/JAISeMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeq.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeqDataMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeqMgr.cpp"),
+            Object(NonMatching, "JSystem/JAudio/Interface/JAISound.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundChild.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundHandles.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundInfo.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundParams.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundStarter.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStream.cpp"),
+            Object(NonMatching, "JSystem/JAudio/Interface/JAIStreamDataMgr.cpp"),
+            Object(NonMatching, "JSystem/JAudio/Interface/JAIStreamMgr.cpp"),
+            Object(NonMatching, "JSystem/JAudio/Interface/JAIAudible.cpp"),
+        ],
+    },
 ]
 
 
