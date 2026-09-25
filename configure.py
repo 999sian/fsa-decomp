@@ -386,6 +386,9 @@ config.libs = [
         "objects": [
             Object(Matching, "JSystem/J3D/GraphBase/J3DGD.cpp"),
             Object(Matching, "JSystem/J3D/GraphBase/J3DTransform.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DSys.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DDrawBuffer.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DShapeDraw.cpp"),
         ],
     },
 ]

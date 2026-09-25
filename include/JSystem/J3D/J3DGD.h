@@ -8,9 +8,34 @@
 
 #include "types.h"
 
+// GX command/register names used by the J3D sources (as spelled in the
+// Pikmin 2 decomp's GX headers), mapped onto this repo's SDK headers.
 #ifndef GX_WRITE_U16
 #define GX_WRITE_U16(v) (GXWGFifo.u16 = v)
 #endif
+#ifndef GX_CP_LOAD_REG
+#define GX_CP_LOAD_REG(addr, data)     \
+	GXWGFifo.s8  = GX_LOAD_CP_REG; \
+	GXWGFifo.s8  = (addr);         \
+	GXWGFifo.s32 = (data);
+#endif
+#define GX_CMD_LOAD_CP_REG      GX_LOAD_CP_REG
+#define GX_CMD_LOAD_XF_REG      GX_LOAD_XF_REG
+#define GX_CMD_LOAD_INDX_A      GX_LOAD_INDX_A
+#define GX_CMD_LOAD_INDX_B      GX_LOAD_INDX_B
+#define GX_FIFO_CMD_LOAD_BP_REG GX_LOAD_BP_REG
+#define GX_FIFO_CMD_LOAD_CP_REG GX_LOAD_CP_REG
+#define GX_FIFO_CMD_LOAD_XF_REG GX_LOAD_XF_REG
+#define GX_XF_REG_AMBIENT0      0x100A
+#define GX_XF_REG_MATERIAL0     0x100C
+#define GX_XF_REG_COLOR0CNTRL   0x100E
+#define GX_TEXMTX_NULL          0
+#define GX_MAXTEVSTAGE          GX_MAX_TEVSTAGE
+#define GX_IND_MAX_TEX_STAGE_ID GX_MAX_INDTEXSTAGE
+#define GX_IND_TEX_STAGE_0      GX_INDTEXSTAGE0
+#define GX_IND_TEX_STAGE_1      GX_INDTEXSTAGE1
+#define GX_IND_TEX_STAGE_2      GX_INDTEXSTAGE2
+#define GX_IND_TEX_STAGE_3      GX_INDTEXSTAGE3
 
 void J3DGDSetGenMode(u8, u8, u8, u8, GXCullMode);
 void J3DGDSetGenMode_3Param(u8, u8, u8);

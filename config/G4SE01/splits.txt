@@ -109,14 +109,32 @@ JSystem/JUtility/JUTVideo.cpp:
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
 
+JSystem/J3D/GraphBase/J3DSys.cpp:
+	.text       start:0x800BA544 end:0x800BB618
+	.ctors      start:0x8045BDDC end:0x8045BDE0
+	.rodata     start:0x804632A8 end:0x804633E8
+	.data       start:0x8049A380 end:0x8049A3D8
+	.sdata      start:0x80539DB8 end:0x80539DC0
+	.sdata2     start:0x8053BB70 end:0x8053BB80
+
 JSystem/J3D/GraphBase/J3DTransform.cpp:
 	.text       start:0x800BB7E8 end:0x800BC19C
 	.rodata     start:0x804633E8 end:0x80463450
 	.sdata      start:0x80539DC0 end:0x80539DC8
 	.sdata2     start:0x8053BB80 end:0x8053BB90
 
+JSystem/J3D/GraphBase/J3DDrawBuffer.cpp:
+	.text       start:0x800C1DB8 end:0x800C2710
+	.ctors      start:0x8045BDE0 end:0x8045BDE4
+	.data       start:0x8049A7F8 end:0x8049A8B8
+	.sdata2     start:0x8053BBE8 end:0x8053BBF8
+
 JSystem/J3D/GraphBase/J3DGD.cpp:
 	.text       start:0x800D06F0 end:0x800D3470
 	.data       start:0x8049AE70 end:0x8049AF18
 	.sdata      start:0x80539DC8 end:0x80539E10
 	.sdata2     start:0x8053BC88 end:0x8053BCC8
+
+JSystem/J3D/GraphBase/J3DShapeDraw.cpp:
+	.text       start:0x800E3950 end:0x800E39DC
+	.data       start:0x8049BDF8 end:0x8049BE04
