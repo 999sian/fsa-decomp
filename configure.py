@@ -420,13 +420,13 @@ config.libs = [
             Object(Matching, "dolphin/os/OSLink.c"),
             Object(Matching, "dolphin/os/OSMessage.c"),
             Object(Matching, "dolphin/os/OSMemory.c"),
-            Object(NonMatching, "dolphin/os/OSMutex.c"),
+            Object(Matching, "dolphin/os/OSMutex.c"),
             Object(NonMatching, "dolphin/os/OSReboot.c"),
             Object(NonMatching, "dolphin/os/OSReset.c"),
             Object(NonMatching, "dolphin/os/OSResetSW.c"),
             Object(Matching, "dolphin/os/OSRtc.c"),
             Object(Matching, "dolphin/os/OSSync.c"),
-            Object(NonMatching, "dolphin/os/OSThread.c"),
+            Object(Matching, "dolphin/os/OSThread.c"),
             Object(Matching, "dolphin/os/OSTime.c"),
             Object(Matching, "dolphin/os/__start.c"),
             Object(Matching, "dolphin/os/__ppc_eabi_init.cpp"),
@@ -502,8 +502,8 @@ config.libs = [
             Object(Matching, "dolphin/card/CARDOpen.c"),
             Object(Matching, "dolphin/card/CARDCreate.c"),
             Object(Matching, "dolphin/card/CARDRead.c"),
-            Object(NonMatching, "dolphin/card/CARDWrite.c"),
-            Object(NonMatching, "dolphin/card/CARDStat.c"),
+            Object(Matching, "dolphin/card/CARDWrite.c"),
+            Object(Matching, "dolphin/card/CARDStat.c"),
             Object(Matching, "dolphin/card/CARDNet.c"),
         ],
     ),
@@ -624,8 +624,8 @@ config.libs = [
             Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ldexp.c"),
             Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_modf.c"),
             Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_sin.c"),
-            Object(NonMatching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_asin.c"),
-            Object(NonMatching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_atan2.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_asin.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_atan2.c"),
             Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/e_sqrt.c"),
             Object(Matching, "MSL_C/PPC_EABI/math_ppc.c"),
             Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_sqrt.c"),
@@ -634,7 +634,7 @@ config.libs = [
     DolphinLib(
         "amcstubs",
         [
-            Object(NonMatching, "dolphin/amcstubs/AmcExi2Stubs.c"),
+            Object(Matching, "dolphin/amcstubs/AmcExi2Stubs.c"),
         ],
     ),
     DolphinLib(
@@ -646,7 +646,7 @@ config.libs = [
     DolphinLib(
         "OdemuExi2",
         [
-            Object(NonMatching, "dolphin/OdemuExi2/DebuggerDriver.c"),
+            Object(Matching, "dolphin/OdemuExi2/DebuggerDriver.c"),
         ],
     ),
     DolphinLib(
