@@ -374,6 +374,7 @@ config.libs = [
         "j2d-b",
         [
             Object(Matching, "JSystem/J2DGraph/J2DPicture.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPrint.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DTevs.cpp"),
         ],
     ),
