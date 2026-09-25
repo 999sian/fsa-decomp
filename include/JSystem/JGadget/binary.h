@@ -48,6 +48,22 @@ struct TParse_header_block {
     }
 };
 
+template <typename T>
+struct TParseValue_raw_ {
+    typedef T ParseType;
+    static T parse(const void* data) { return (T) * (T*)data; }
+};
+
+template <typename T>
+struct TParseValue_endian_big_ : public TParseValue_raw_<T> {
+    static T parse(const void* data) { return TParseValue_raw_<T>::parse(data); }
+};
+
+template <class Parser>
+struct TParseValue : public Parser {
+    static typename Parser::ParseType parse(const void* data) { return Parser::parse(data); }
+};
+
 extern const void* parseVariableUInt_16_32_following(const void*, u32*, u32*, TEBit*);
 
 } // namespace binary
