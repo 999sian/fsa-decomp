@@ -1,3 +1,5 @@
+#include "Game/SinitPoolChain.h"
+
 #include "Game/actors/BOTS.h"
 
 /* Definitions must stay in this order: the retail object emits the
