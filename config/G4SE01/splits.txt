@@ -88,6 +88,12 @@ JSystem/JAudio/Utility/JAUSectionHeap.cpp:
 	.bss        start:0x804B4C98 end:0x804B4CC8
 	.sdata      start:0x80539BE8 end:0x80539BF0
 
+JSystem/JAudio/Utility/JAUSoundObject.cpp:
+	.text       start:0x8003EE34 end:0x8003F610
+	.ctors      start:0x8045BDA4 end:0x8045BDA8
+	.data       start:0x804955B8 end:0x804955E0
+	.bss        start:0x804B4CC8 end:0x804B4CF8
+
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
 	.data       start:0x80498C00 end:0x80498C10
