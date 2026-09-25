@@ -34,6 +34,16 @@ JSystem/JAudio/Task/osdsp_task.c:
 	.bss        start:0x804B4A80 end:0x804B4A90
 	.sbss       start:0x8053A3B0 end:0x8053A3C0
 
+JSystem/JAudio/Utility/JAUAudioArcInterpreter.cpp:
+	.text       start:0x8003A50C end:0x8003AA08
+	.data       start:0x804953C0 end:0x80495408
+
+JSystem/JAudio/Utility/JAUAudioArcLoader.cpp:
+	.text       start:0x8003AA08 end:0x8003AE9C
+	.ctors      start:0x8045BD84 end:0x8045BD88
+	.data       start:0x80495408 end:0x80495450
+	.bss        start:0x804B4A90 end:0x804B4AC0
+
 JSystem/JAudio/Utility/JAUInitializer.cpp:
 	.text       start:0x8003B400 end:0x8003B85C
 	.ctors      start:0x8045BD90 end:0x8045BD94
