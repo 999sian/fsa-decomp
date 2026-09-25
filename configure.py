@@ -340,6 +340,7 @@ config.libs = [
     JSystemLib(
         "JKernel",
         [
+            Object(Matching, "JSystem/JKernel/JKRAram.cpp"),
             Object(Matching, "JSystem/JKernel/JKRAramBlock.cpp"),
             Object(Matching, "JSystem/JKernel/JKRAramHeap.cpp"),
             Object(Matching, "JSystem/JKernel/JKRArchivePri.cpp"),
