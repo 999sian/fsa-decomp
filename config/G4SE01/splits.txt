@@ -100,6 +100,13 @@ JSystem/JKernel/JKRDvdRipper.cpp:
 	.sbss       start:0x8053A848 end:0x8053A888
 	.sdata2     start:0x8053B700 end:0x8053B708
 
+JSystem/JKernel/JKRExpHeap.cpp:
+	.text       start:0x80081454 end:0x80082F44
+	.rodata     start:0x8045E300 end:0x8045E678
+	.data       start:0x80498DD8 end:0x80498E38
+	.sbss       start:0x8053A888 end:0x8053A8A0
+	.sdata2     start:0x8053B708 end:0x8053B738
+
 JSystem/JKernel/JKRFileLoader.cpp:
 	.text       start:0x80083120 end:0x8008353C
 	.ctors      start:0x8045BDC0 end:0x8045BDC4
