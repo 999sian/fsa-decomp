@@ -417,6 +417,32 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/Interface/JAIAudible.cpp"),
         ],
     },
+    JSystemLib(
+        "jas-b",
+        [
+            Object(NonMatching, "JSystem/JAudio/System/JASHeapCtrl.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstRand.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstSense.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASLfo.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASOscillator.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASProbe.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASRegisterParam.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASReport.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASResArcLoader.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSeqCtrl.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASSeqParser.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASSeqReader.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSimpleWaveBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSoundParams.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASTaskThread.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASTrack.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASTrackPort.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
+            # JASWaveBank.cpp (only JASWaveBank::isLoading) is dead-stripped in FSA:
+            # it has no code or data in main.dol.
+            Object(Matching, "JSystem/JAudio/System/JASWSParser.cpp"),
+        ],
+    ),
 ]
 
 
