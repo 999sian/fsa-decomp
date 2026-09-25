@@ -164,7 +164,7 @@ def main():
     placement = None
     pre = funcs[:ai]
     import itertools
-    for ndrop in range(len(pre) + 1):
+    for ndrop in range(min(len(pre), 3) + 1):
         for drop in itertools.combinations(range(len(pre)), ndrop):
             keep = [i not in drop for i in range(len(pre))]
             start = anchor_addr - sum(s["st_size"] for s, k in zip(pre, keep) if k)
