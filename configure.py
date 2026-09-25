@@ -388,6 +388,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDriverIF.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDSPChannel.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
         ],
     },
