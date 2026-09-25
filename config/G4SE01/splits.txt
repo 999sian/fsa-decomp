@@ -109,6 +109,12 @@ JSystem/JUtility/JUTVideo.cpp:
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
 
+JSystem/J3D/GraphBase/J3DTransform.cpp:
+	.text       start:0x800BB7E8 end:0x800BC19C
+	.rodata     start:0x804633E8 end:0x80463450
+	.sdata      start:0x80539DC0 end:0x80539DC8
+	.sdata2     start:0x8053BB80 end:0x8053BB90
+
 JSystem/J3D/GraphBase/J3DGD.cpp:
 	.text       start:0x800D06F0 end:0x800D3470
 	.data       start:0x8049AE70 end:0x8049AF18

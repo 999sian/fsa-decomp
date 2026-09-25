@@ -385,6 +385,7 @@ config.libs = [
         "progress_category": "jsys",
         "objects": [
             Object(Matching, "JSystem/J3D/GraphBase/J3DGD.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DTransform.cpp"),
         ],
     },
 ]
