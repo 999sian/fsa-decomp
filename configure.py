@@ -378,6 +378,7 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTGraphFifo.cpp"),
             Object(Matching, "JSystem/JUtility/JUTNameTab.cpp"),
             Object(Matching, "JSystem/JUtility/JUTPalette.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTProcBar.cpp"),
             Object(Matching, "JSystem/JUtility/JUTResFont.cpp"),
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),
             Object(Matching, "JSystem/JUtility/JUTTexture.cpp"),

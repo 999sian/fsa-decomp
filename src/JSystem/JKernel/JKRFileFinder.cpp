@@ -2,6 +2,10 @@
 #include "JSystem/JKernel/JKRFileFinder.h"
 #include "JSystem/JKernel/JKRArchive.h"
 
+#ifdef VERSION_G4SE01
+JKRFileFinder::~JKRFileFinder() {}
+#endif
+
 JKRArcFinder::JKRArcFinder(JKRArchive * archive, long startindex, long entries) : JKRFileFinder() {
     mArchive = archive;
 
