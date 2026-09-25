@@ -384,10 +384,10 @@ config.libs = [
             Object(Matching, "JSystem/JParticle/JPAKeyBlock.cpp"),
             Object(NonMatching, "JSystem/JParticle/JPAMath.cpp"),
             Object(NonMatching, "JSystem/JParticle/JPAParticle.cpp"),
-            Object(NonMatching, "JSystem/JParticle/JPAResource.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResource.cpp"),
             Object(NonMatching, "JSystem/JParticle/JPAResourceLoader.cpp"),
-            Object(NonMatching, "JSystem/JParticle/JPAResourceManager.cpp"),
-            Object(NonMatching, "JSystem/JParticle/JPATexture.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResourceManager.cpp"),
+            Object(Matching, "JSystem/JParticle/JPATexture.cpp"),
         ],
     ),
 ]
