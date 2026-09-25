@@ -1219,10 +1219,12 @@ static void* __StringWrite(void* pCtrl, const char* pBuffer, size_t char_num)
  * @note Address: N/A
  * @note Size: 0xE8
  */
+#if 0
 void printf(const char* format, ...)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
@@ -1230,7 +1232,18 @@ void printf(const char* format, ...)
  */
 int fprintf(FILE* file, const char* format, ...)
 {
-	// UNUSED FUNCTION
+	int ret;
+	va_list args;
+
+	if (fwide(file, -1) >= 0) {
+		return -1;
+	}
+
+	__begin_critical_region(stdin_access);
+	va_start(args, format);
+	ret = __pformatter(&__FileWrite, (void*)file, format, args);
+	__end_critical_region(stdin_access);
+	return ret;
 }
 
 /**
@@ -1255,10 +1268,12 @@ int vprintf(const char* pFormat, va_list arg)
  * @note Address: N/A
  * @note Size: 0x8C
  */
+#if 0
 void vfprintf(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800C7664
@@ -1285,10 +1300,12 @@ int vsnprintf(char* s, size_t n, const char* format, va_list arg)
  * @note Address: 0x800C75EC
  * @note Size: 0x78
  */
+#if 0
 int vsprintf(char* s, const char* format, va_list arg)
 {
 	return vsnprintf(s, 0xFFFFFFFF, format, arg);
 }
+#endif
 
 /**
  * @note Address: 0x800C7518

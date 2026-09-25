@@ -602,7 +602,7 @@ config.libs = [
             Object(Matching, "MSL_C/MSL_Common/mem.c"),
             Object(Matching, "MSL_C/MSL_Common/mem_funcs.c"),
             Object(Matching, "MSL_C/MSL_Common/misc_io.c"),
-            Object(NonMatching, "MSL_C/MSL_Common/printf.c", extra_cflags=["-str pool"]),
+            Object(Matching, "MSL_C/MSL_Common/printf.c", extra_cflags=["-str pool"]),
             Object(Matching, "MSL_C/MSL_Common/float.c"),
             Object(NonMatching, "MSL_C/MSL_Common/scanf.c"),
             Object(Matching, "MSL_C/MSL_Common/string.c"),
