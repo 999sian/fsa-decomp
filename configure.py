@@ -386,7 +386,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASSeqParser.cpp", extra_cflags=["-DMATCHING=1"]),
             Object(Matching, "JSystem/JAudio/System/JASSeqReader.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASSimpleWaveBank.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASSoundParams.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSoundParams.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASTaskThread.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASTrack.cpp", extra_cflags=["-DMATCHING=1"]),
             Object(Matching, "JSystem/JAudio/System/JASTrackPort.cpp"),
