@@ -17,51 +17,6 @@ s32 __ptmf_test(PTMF* ptmf);
 void __ptmf_scall(...);
 
 /**
- * @note Address: N/A
- * @note Size: 0x24
- */
-void __ptmf_cast(void)
-{
-	// UNUSED FUNCTION
-}
-
-/**
- * @note Address: N/A
- * @note Size: 0x28
- */
-void __ptmf_scall4(void)
-{
-	// UNUSED FUNCTION
-}
-
-/**
- * @note Address: N/A
- * @note Size: 0x34
- */
-void __ptmf_call4(void)
-{
-	// UNUSED FUNCTION
-}
-
-/**
- * @note Address: N/A
- * @note Size: 0x34
- */
-void __ptmf_call(void)
-{
-	// UNUSED FUNCTION
-}
-
-/**
- * @note Address: N/A
- * @note Size: 0x3C
- */
-void __ptmf_cmpr(void)
-{
-	// UNUSED FUNCTION
-}
-
-/**
  * @note Address: 0x800C1AF4
  * @note Size: 0x30
  */
@@ -98,6 +53,24 @@ ASM void __ptmf_scall(...)
 		cmpwi   r11, 0
 		blt-    cr0, loc_0x20
 		lwzx    r12, r3, r12
+		lwzx    r12, r12, r11
+	loc_0x20:
+		mtctr   r12
+		bctr
+#endif // clang-format on
+}
+
+ASM void __ptmf_scall4(...)
+{
+#ifdef __MWERKS__ // clang-format off
+	nofralloc
+		lwz     r0, PTMF.this_delta(r12)
+		lwz     r11, PTMF.v_offset(r12)
+		lwz     r12, PTMF.f_data(r12)
+		add     r4, r4, r0
+		cmpwi   r11, 0
+		blt-    cr0, loc_0x20
+		lwzx    r12, r4, r12
 		lwzx    r12, r12, r11
 	loc_0x20:
 		mtctr   r12
