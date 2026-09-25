@@ -370,6 +370,13 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    # jmisc: J3DU + JMath + JGadget + JFramework
+    JSystemLib(
+        "jmisc",
+        [
+            Object(Matching, "JSystem/JFramework/JFWSystem.cpp"),
+        ],
+    ),
 ]
 
 
