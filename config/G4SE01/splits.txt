@@ -18,6 +18,23 @@ JSystem/JAudio/System/JASLfo.cpp:
 	.ctors      start:0x8045BD50 end:0x8045BD54
 	.sdata2     start:0x8053B138 end:0x8053B150
 
+JSystem/JAudio/System/JASOscillator.cpp:
+	.text       start:0x8002D78C end:0x8002DC74
+	.rodata     start:0x8045D098 end:0x8045D1A8
+	.data       start:0x80491970 end:0x80491980
+	.sdata2     start:0x8053B150 end:0x8053B178
+
+JSystem/JAudio/System/JASInstRand.cpp:
+	.text       start:0x80030828 end:0x80030960
+	.data       start:0x80491A68 end:0x80491A78
+	.sbss       start:0x8053A358 end:0x8053A360
+	.sdata2     start:0x8053B1C0 end:0x8053B1D0
+
+JSystem/JAudio/System/JASInstSense.cpp:
+	.text       start:0x800309B8 end:0x80030B78
+	.data       start:0x80491A78 end:0x80491A88
+	.sdata2     start:0x8053B1D0 end:0x8053B1F0
+
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
 	.data       start:0x80498C00 end:0x80498C10

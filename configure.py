@@ -374,10 +374,10 @@ config.libs = [
         "jas-b",
         [
             Object(NonMatching, "JSystem/JAudio/System/JASHeapCtrl.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASInstRand.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASInstSense.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstRand.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstSense.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASLfo.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASOscillator.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASOscillator.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASProbe.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASRegisterParam.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASReport.cpp"),
