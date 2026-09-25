@@ -2,10 +2,26 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 
+extern "C" {
+extern u8 lbl_804C92D0[];
+extern s8 lbl_8053AC28;
+}
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* base, s32 id);
 extern "C" void fn_801D8400(void* target);
 extern "C" void fn_801F0E34(void* target, s32 soundId, s32 flag);
+
+extern "C" void* fn_801DAC6C(void)
+{
+    if (lbl_8053AC28 == 0) {
+        *(s32*)(lbl_804C92D0 + 0x0) = -1;
+        *(s32*)(lbl_804C92D0 + 0x4) = -1;
+        *(s32*)(lbl_804C92D0 + 0x80) = 0;
+        *(s16*)(lbl_804C92D0 + 0x84) = 0;
+        lbl_8053AC28 = 1;
+    }
+    return lbl_804C92D0;
+}
 
 extern "C" void fn_801DAD88(void* record) {
     s32 id = *(s32*)record;

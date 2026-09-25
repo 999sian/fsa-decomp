@@ -5,6 +5,8 @@
 extern "C" void fn_801D9C58(void* this_, s32 newState);
 extern "C" {
 }
+extern f32 lbl_8053F1CC;
+extern "C" void fn_801CE694(void* this_);
 extern "C" void fn_801CE2BC(void* this_);
 extern "C" void fn_801E61C4(void* this_);
 struct ActorSlot37 {
@@ -45,6 +47,8 @@ struct ActorSlot37 {
     virtual void v34();
     virtual void slot37();
 };
+extern void* lbl_8053AF80;
+extern "C" s32 fn_80458F9C(void* mgr, s32 handle);
 
 extern "C" void fn_801D8400(void* this_) {
     s32 state = *(s32*)((char*)this_ + 0x248);
@@ -55,6 +59,14 @@ extern "C" void fn_801D8400(void* this_) {
 
 extern "C" void fn_801D84E0(void)
 {
+}
+
+extern "C" void fn_801D8980(void* this_) {
+    if (*(f32*)((char*)this_ + 0x10) > *(f32*)((char*)this_ + 0x2d0)) {
+        *(f32*)((char*)this_ + 0x10) = *(f32*)((char*)this_ + 0x2d0);
+        *(f32*)((char*)this_ + 0x40) = lbl_8053F1CC;
+    }
+    fn_801CE694(this_);
 }
 
 extern "C" void fn_801D89BC(void* this_) {
@@ -72,4 +84,8 @@ extern "C" void fn_801D89BC(void* this_) {
         *(u16*)((char*)this_ + 0x336) = timer - 1;
     }
     fn_801E61C4(this_);
+}
+
+extern "C" s32 fn_801DA0FC(void) {
+    return fn_80458F9C(lbl_8053AF80, 0x3c);
 }

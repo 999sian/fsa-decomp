@@ -202,6 +202,12 @@ game/zld3_801B0A00.cpp:
 	.text       start:0x801B0A00 end:0x801B27DC
 	.ctors      start:0x8045BFF4 end:0x8045BFF8
 
+game/tu_801B27DC.cpp:
+	extab       start:0x80007BC4 end:0x80007BF4
+	extabindex  start:0x80014B24 end:0x80014B6C
+	.text       start:0x801B27DC end:0x801B3F60
+	.ctors      start:0x8045BFF8 end:0x8045BFFC
+
 game/zdco_801B3F60.cpp:
 	extab       start:0x80007BF4 end:0x80007C0C
 	extabindex  start:0x80014B6C end:0x80014B90
@@ -405,6 +411,12 @@ game/fsob_801E801C.cpp:
 	extabindex  start:0x8001615C end:0x800161F8
 	.text       start:0x801E801C end:0x801E9AFC
 	.ctors      start:0x8045C0C0 end:0x8045C0C4
+
+game/hrmn_801EBC84.cpp:
+	extab       start:0x80008C98 end:0x80008CFC
+	extabindex  start:0x800162DC end:0x80016354
+	.text       start:0x801EBC84 end:0x801ED3DC
+	.ctors      start:0x8045C0D0 end:0x8045C0D4
 
 game/tu_801ED3DC.cpp:
 	extab       start:0x80008CFC end:0x80008D24

@@ -401,6 +401,7 @@ config.libs = [
         "progress_category": "game",
         "objects": [
             Object(NonMatching, "game/zld3_801B0A00.cpp"),
+            Object(NonMatching, "game/tu_801B27DC.cpp"),
             Object(NonMatching, "game/zdco_801B3F60.cpp"),
             Object(NonMatching, "game/tlwp_801B4D0C.cpp"),
             Object(NonMatching, "game/safu_801B6634.cpp"),
@@ -435,6 +436,7 @@ config.libs = [
             Object(NonMatching, "game/ipot_801E6D48.cpp"),
             Object(NonMatching, "game/fspo_801E7BF4.cpp"),
             Object(NonMatching, "game/fsob_801E801C.cpp"),
+            Object(NonMatching, "game/hrmn_801EBC84.cpp"),
             Object(NonMatching, "game/tu_801ED3DC.cpp"),
         ],
     },

@@ -8,6 +8,7 @@ extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804A39DC[];
 extern "C" {
 }
+extern void* lbl_8053AB10[2];
 
 extern "C" void fn_801B6C50(void) {}
 
@@ -28,4 +29,10 @@ extern "C" void* fn_801B7324(void* this_, short how) {
         }
     }
     return this_;
+}
+
+extern "C" u8 fn_801B7550(void) {
+	void* p1 = lbl_8053AB10[0];
+	void* p2 = *(void**)((char*)p1 + 0x2c);
+	return *(u8*)((char*)p2 + 0xc);
 }

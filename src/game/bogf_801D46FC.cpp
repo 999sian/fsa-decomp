@@ -13,6 +13,8 @@ extern void* lbl_8049CC34[];
 extern "C" {
 }
 extern "C" void fn_801D1C18(void* subObj);
+extern void* lbl_8053AF80;
+extern "C" s32 fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_801D7874(void* slot);
 extern "C" void fn_8021BD18(void* subObj, s32 arg);
 extern "C" void fn_801D789C(void* child);
@@ -78,6 +80,10 @@ call:
     fn_801D1C18((char*)this_ + 0x270);
 skip:
     return;
+}
+
+extern "C" s32 fn_801D652C(void) {
+    return fn_80458F9C(lbl_8053AF80, 0x3c);
 }
 
 extern "C" void* dtor_801D69FC(void* this_, s16 freeFlag) {

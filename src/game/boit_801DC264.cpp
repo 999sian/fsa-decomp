@@ -4,6 +4,8 @@
 
 extern "C" {
 }
+extern f32 lbl_8053F344;
+extern f32 lbl_8053EFB8;
 extern "C" void fn_801CE2BC(void* this_);
 struct ActorSlot37 {
     virtual void v0();
@@ -69,6 +71,20 @@ extern "C" u8 fn_801DC264(void* thisPtr)
         }
     }
     return result;
+}
+
+extern "C" void fn_801DC758(void* thisPtr)
+{
+    f32 zero = lbl_8053F344;
+    *(f32*)((char*)thisPtr + 0x3c) = zero;
+    *(f32*)((char*)thisPtr + 0x44) = zero;
+    if (*(s32*)((char*)thisPtr + 0x248) == 2) {
+        f32 kick = __fabsf(lbl_8053EFB8);
+        f32 vy = *(f32*)((char*)thisPtr + 0x40);
+        *(f32*)((char*)thisPtr + 0x40) = vy + kick;
+    } else {
+        *(f32*)((char*)thisPtr + 0x40) = zero;
+    }
 }
 
 extern "C" void fn_801DC790(void* this_) {
