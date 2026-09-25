@@ -378,7 +378,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASInstSense.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASLfo.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASOscillator.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASProbe.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASProbe.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASRegisterParam.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASReport.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASResArcLoader.cpp"),

@@ -19,6 +19,10 @@ JSystem/JAudio/System/JASHeapCtrl.cpp:
 	.bss        start:0x804B24B0 end:0x804B2500
 	.sbss       start:0x8053A2C0 end:0x8053A2D0
 
+JSystem/JAudio/System/JASProbe.cpp:
+	.text       start:0x80028DA8 end:0x80028F54
+	.sdata2     start:0x8053B068 end:0x8053B080
+
 JSystem/JAudio/System/JASReport.cpp:
 	.text       start:0x80028F54 end:0x80029050
 	.bss        start:0x804B2500 end:0x804B2518
