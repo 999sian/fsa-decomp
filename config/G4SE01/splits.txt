@@ -137,6 +137,12 @@ JSystem/J2DGraph/J2DWindow.cpp:
 	.data       start:0x80499948 end:0x80499A18
 	.sdata2     start:0x8053BA68 end:0x8053BA88
 
+JSystem/J2DGraph/J2DWindowEx.cpp:
+	.text       start:0x800A1EAC end:0x800A4994
+	.rodata     start:0x80463088 end:0x80463178
+	.data       start:0x80499A18 end:0x80499AE8
+	.sdata2     start:0x8053BA88 end:0x8053BAA8
+
 JSystem/J2DGraph/J2DTevs.cpp:
 	.text       start:0x800B5CCC end:0x800B6158
 	.rodata     start:0x804631F0 end:0x80463270

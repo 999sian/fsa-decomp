@@ -380,6 +380,7 @@ config.libs = [
             Object(Matching, "JSystem/J2DGraph/J2DTextBox.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DTextBoxEx.cpp"),
             Object(NonMatching, "JSystem/J2DGraph/J2DWindow.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DWindowEx.cpp"),
         ],
     ),
 ]
