@@ -392,7 +392,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASTrackPort.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASWaveBank.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASWSParser.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASWSParser.cpp"),
         ],
     ),
 ]
