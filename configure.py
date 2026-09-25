@@ -343,6 +343,17 @@ config.libs = [
             Object(Matching, "JSystem/JKernel/JKRDisposer.cpp"),
         ],
     ),
+    JSystemLib(
+        "JSupport",
+        [
+            Object(Matching, "JSystem/JSupport/JSUMemoryStream.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "JUtility",
+        [
+        ],
+    ),
 ]
 
 

@@ -142,31 +142,31 @@ def main():
     # try each possible start such that walking reaches anchor at anchor_addr
     placement = None
     pre = funcs[:ai]
-    for mask_bits in range(1 << sum(1 for s in pre if s["st_info"]["bind"] == "STB_WEAK")):
-        # choose which preceding weak funcs are retained
-        keep, bit = [], 0
-        for s in pre:
-            if s["st_info"]["bind"] == "STB_WEAK":
-                keep.append(bool(mask_bits >> bit & 1))
-                bit += 1
-            else:
-                keep.append(True)
-        start = anchor_addr - sum(s["st_size"] for s, k in zip(pre, keep) if k)
-        cur, pl, ok = start, {}, True
-        for s, k in zip(pre, keep):
-            if k:
-                if not matches(s, cur):
-                    ok = False
-                    break
-                pl[s.name] = cur
-                cur += s["st_size"]
-        if ok:
-            placement = (start, pl)
+    import itertools
+    for ndrop in range(len(pre) + 1):
+        for drop in itertools.combinations(range(len(pre)), ndrop):
+            keep = [i not in drop for i in range(len(pre))]
+            start = anchor_addr - sum(s["st_size"] for s, k in zip(pre, keep) if k)
+            cur, pl, ok = start, {}, True
+            for s, k in zip(pre, keep):
+                if k:
+                    if not matches(s, cur):
+                        ok = False
+                        break
+                    pl[s.name] = cur
+                    cur += s["st_size"]
+            if ok:
+                placement = (start, pl)
+                break
+        if placement:
+            for i in range(len(pre)):
+                if not keep[i]:
+                    print(f"WARN: preceding {pre[i].name} dropped")
             break
     assert placement, "cannot place preceding functions"
     start, fplace = placement
+    dropped = [p.name for p in pre if p.name not in fplace]
     cur = anchor_addr
-    dropped = []
     for s in funcs[ai:]:
         if matches(s, cur):
             fplace[s.name] = cur
@@ -174,7 +174,8 @@ def main():
         elif s["st_info"]["bind"] == "STB_WEAK":
             dropped.append(s.name)
         else:
-            sys.exit(f"mismatch at {s.name} (expected {cur:08x})")
+            print(f"WARN: non-weak {s.name} not found at {cur:08x}; assuming dead-stripped")
+            dropped.append(s.name)
     text_range = (start, cur)
     func_off = {s.name: s["st_value"] for s in funcs}
 
@@ -232,18 +233,60 @@ def main():
         bases = defaultdict(int)
         for s in sym_by_sec[idx]:
             if s.name in resolved:
-                bases[resolved[s.name] - s["st_value"]] += 1
+                bases[resolved[s.name] - s["st_value"]] += 0.01 if s["st_info"]["bind"] == "STB_WEAK" else 1
+        if sec.name == ".ctors":
+            for s in syms:
+                if s.name.startswith("__sinit_") and s.name in resolved:
+                    for a in range(0x8045BD00, 0x8045C640, 4):
+                        if rw(a) == resolved[s.name]:
+                            bases[a] += 100
         if "$sec:" + sec.name in resolved:
             bases[resolved["$sec:" + sec.name]] += 100
         if not bases:
-            print(f"warn: section {sec.name} not placed (unreferenced)")
-            continue
+            # unreferenced: search retail data for the section bytes (relocs masked)
+            data = sec.data() if sec["sh_type"] != "SHT_NOBITS" else None
+            relo = {o for o, *_ in relocs[idx]}
+            hits = []
+            if data and len(data) >= 8:
+                for o, ad, sz in zip(offs, addrs, sizes):
+                    if not sz or ad < 0x80400000:
+                        continue
+                    blob = d[o : o + sz]
+                    for st in range(0, sz - len(data) + 1, 4):
+                        ok = True
+                        for k in range(0, len(data), 4):
+                            if k in relo:
+                                continue
+                            if blob[st + k : st + k + 4] != data[k : k + 4]:
+                                ok = False
+                                break
+                        if ok:
+                            hits.append(ad + st)
+            if len(hits) == 1:
+                bases[hits[0]] = 1
+                print(f"  {sec.name} placed by content search at {hits[0]:08x}")
+            else:
+                print(f"warn: section {sec.name} not placed (unreferenced, {len(hits)} content hits)")
+                continue
         if len(bases) > 1:
             print(f"warn: section {sec.name} has several bases {[hex(b) for b in bases]}")
         base = max(bases, key=bases.get)
-        placed[idx] = (base, base + sec["sh_size"])
+        lo_, hi_ = None, None
         for s in sym_by_sec[idx]:
-            note(s.name, base + s["st_value"])
+            if s["st_info"]["bind"] == "STB_WEAK":
+                if resolved.get(s.name) != base + s["st_value"]:
+                    print(f"  weak data {s.name} dropped (at {resolved.get(s.name, 0):08x})")
+                    continue
+            else:
+                note(s.name, base + s["st_value"])
+            a0 = base + s["st_value"]
+            lo_ = a0 if lo_ is None else min(lo_, a0)
+            hi_ = a0 + s["st_size"] if hi_ is None else max(hi_, a0 + s["st_size"])
+        if lo_ is None or not sym_by_sec[idx]:
+            lo_, hi_ = base, base + sec["sh_size"]
+        if (lo_, hi_) != (base, base + sec["sh_size"]):
+            print(f"  NOTE {sec.name}: retained range {lo_:08x}-{hi_:08x} differs from full section")
+        placed[idx] = (lo_, hi_)
         # data relocs (vtables etc.)
         for off, t, si, add in relocs[idx]:
             sym = syms[si]
@@ -252,6 +295,43 @@ def main():
                 v = rw(base + off)
                 if v:
                     note(name, v - add)
+    # relocs inside dropped weak data objects, at their retail location
+    for idx, sec in secs.items():
+        for s in sym_by_sec.get(idx, []):
+            if s["st_info"]["bind"] != "STB_WEAK" or s["st_info"]["type"] != "STT_OBJECT" or s.name not in resolved:
+                continue
+            ra = resolved[s.name]
+            for off, t, si, add in relocs[idx]:
+                if t == ADDR32 and s["st_value"] <= off < s["st_value"] + s["st_size"]:
+                    v = rw(ra + off - s["st_value"])
+                    sym = syms[si]
+                    if v and sym["st_info"]["type"] != "STT_SECTION":
+                        note(sym.name, v - add)
+    # dropped weak dtors: read slot 2 of the class vtable
+    for s in funcs:
+        m = re.match(r"^__dt__(.+)Fv$", s.name)
+        if s.name in dropped and s.name not in resolved and m and "__vt__" + m.group(1) in resolved:
+            note(s.name, rw(resolved["__vt__" + m.group(1)] + 8))
+    # remaining dropped weak functions: unique masked search over .text
+    import numpy as np
+    ti = max(range(7), key=lambda i: sizes[i])
+    TB = addrs[ti]
+    TW = np.frombuffer(d[offs[ti] : offs[ti] + sizes[ti]], dtype=">u4").astype(np.uint32)
+    for s in funcs:
+        if s.name in resolved or s.name not in dropped:
+            continue
+        o, n = s["st_value"], s["st_size"] // 4
+        ws = [struct.unpack(">I", text[o + 4 * k : o + 4 * k + 4])[0] for k in range(n)]
+        ms = [mask(w, rel_at.get(o + 4 * k) or rel_at.get(o + 4 * k + 2)) for k, w in enumerate(ws)]
+        hit = np.ones(len(TW) - n, dtype=bool)
+        for k in range(n):
+            hit &= (TW[k : len(TW) - n + k] & ms[k]) == (ws[k] & ms[k])
+        cands = np.nonzero(hit)[0]
+        # must start right after a blr / at function boundary: accept if unique
+        if len(cands) == 1:
+            note(s.name, TB + 4 * int(cands[0]))
+        else:
+            print(f"WARN: dropped {s.name} has {len(cands)} candidates in .text: {[hex(TB + 4 * int(c)) for c in cands[:6]]}")
     if conflicts:
         print("CONFLICTS:")
         for c in conflicts:
@@ -289,7 +369,7 @@ def main():
         inf = info.get(name, {})
         cands = [i for i in by_addr.get(addr, []) if "type:label" not in ss[i][3]]
         cur = ss[cands[0]][0] if cands else None
-        if name in names and ss[names[name]][2] != addr:
+        if inf.get("bind") != "STB_LOCAL" and name in names and ss[names[name]][2] != addr:
             print(f"!! {name} already in symbols.txt at {ss[names[name]][2]:08x}, now {addr:08x}")
             continue
         if cur == name:
@@ -302,8 +382,8 @@ def main():
     for name, addr, cur, inf in changes:
         bind = inf.get("bind")
         scope = {"STB_GLOBAL": "global", "STB_LOCAL": "local", "STB_WEAK": "weak"}.get(bind, "global")
-        if not inf.get("defined") and name in dropped:
-            scope = "weak"
+        if scope == "weak" and addr > text_range[0] and not (text_range[0] <= addr < text_range[1]) and not any(a <= addr < b for a, b in placed.values()):
+            scope = "global"  # retail copy lives in a later object; keep it strong
         if cur is not None:
             i = names[cur]
             rest = ss[i][3]
