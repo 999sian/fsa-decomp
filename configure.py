@@ -326,6 +326,7 @@ cflags_game = [
     "-fp_contract on",
     "-multibyte",
     "-i include",
+    "-i libs/PowerPC_EABI_Support/include",
     f"-i build/{config.version}/include",
     f"-DBUILD_VERSION={version_num}",
     f"-DVERSION_{config.version}",
