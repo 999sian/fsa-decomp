@@ -14,7 +14,7 @@ static u32 __GXCurrentBP; // unused and removed
  * @note Address: N/A
  * @note Size: 0x50
  */
-void GXOverflowHandler()
+static inline void GXOverflowHandler()
 {
 	__GXOverflowCount += 1;
 	__GXWriteFifoIntEnable(0, 1);
@@ -27,7 +27,7 @@ void GXOverflowHandler()
  * @note Address: N/A
  * @note Size: 0x44
  */
-void GXUnderflowHandler()
+static inline void GXUnderflowHandler()
 {
 	OSResumeThread(__GXCurrentThread);
 	GXOverflowSuspendInProgress = FALSE;
@@ -39,7 +39,7 @@ void GXUnderflowHandler()
  * @note Address: N/A
  * @note Size: 0x80
  */
-void GXBreakPointHandler(OSContext* context)
+static inline void GXBreakPointHandler(OSContext* context)
 {
 	OSContext bpContext;
 	GX_SET_REG(gx->cpEnable, 0, 26, 26);
@@ -214,7 +214,6 @@ void GXSetGPFifo(GXFifoObj* fifo)
  */
 void GXSaveCPUFifo(GXFifoObj* fifo)
 {
-	GXFlush();
 	__GXSaveCPUFifoAux(fifo);
 }
 
@@ -226,16 +225,16 @@ void __GXSaveCPUFifoAux(GXFifoObj* fifo)
 {
 	GXFifoObjPriv* pFifo = (GXFifoObjPriv*)fifo;
 	int interrupts       = OSDisableInterrupts();
-	pFifo->base          = OSPhysicalToCached(GX_GET_PI_REG(3));
-	pFifo->end           = OSPhysicalToCached(GX_GET_PI_REG(4));
-	pFifo->writePtr      = OSPhysicalToCached(GX_GET_PI_REG(5) & ~0x4000000);
+	GXFlush();
+	pFifo->base     = OSPhysicalToCached(GX_GET_PI_REG(3));
+	pFifo->end      = OSPhysicalToCached(GX_GET_PI_REG(4));
+	pFifo->writePtr = OSPhysicalToCached(GX_GET_PI_REG(5) & ~0x4000000);
 	if (CPGPLinked != 0) {
 		u32 reg           = GX_GET_CP_REG(29) << 16;
 		u32 reg2          = GX_GET_CP_REG(28) | reg;
-		pFifo->readPtr    = (void*)(reg2 + -0x80000000);
+		pFifo->readPtr    = OSPhysicalToCached(reg2);
 		reg               = GX_GET_CP_REG(25) << 16;
 		pFifo->rwDistance = (((u32)GX_GET_CP_REG(24) | reg));
-
 	} else {
 		pFifo->rwDistance = (u32)pFifo->writePtr - (u32)pFifo->readPtr;
 		if (pFifo->rwDistance < 0) {
@@ -249,10 +248,12 @@ void __GXSaveCPUFifoAux(GXFifoObj* fifo)
  * @note Address: N/A
  * @note Size: 0x30
  */
+#if 0
 void GXSaveGPFifo(GXFifoObj* fifo)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800E3FB8
@@ -272,47 +273,57 @@ void GXGetGPStatus(GXBool* overhi, GXBool* underlow, GXBool* readIdle, GXBool* c
  * @note Address: N/A
  * @note Size: 0x114
  */
+#if 0
 void GXGetFifoStatus(GXFifoObj* obj, GXBool* isOverHi, GXBool* isUnderLo, u32* fifoCount, GXBool* isCpuWrite, GXBool* isGPRead,
                      GXBool* isFifoWrap)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x98
  */
+#if 0
 void GXGetFifoPtrs(GXFifoObj* obj, void** readPtr, void** writePtr)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x8
  */
+#if 0
 void* GXGetFifoBase(GXFifoObj* obj)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x8
  */
+#if 0
 u32 GXGetFifoSize(GXFifoObj* obj)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x14
  */
+#if 0
 void GXGetFifoLimits(GXFifoObj* obj, u32* hi, u32* lo)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800E4008
@@ -331,19 +342,23 @@ GXBreakPtCallback GXSetBreakPtCallback(GXBreakPtCallback cb)
  * @note Address: N/A
  * @note Size: 0x8C
  */
+#if 0
 void GXEnableBreakPt(void* breakPtr)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x54
  */
+#if 0
 void GXDisableBreakPt(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800E404C
@@ -421,10 +436,12 @@ void __GXWriteFifoIntReset(u32 p1, u32 p2)
  * @note Address: N/A
  * @note Size: 0x30
  */
+#if 0
 void __GXInsaneWatermark(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800E4174
@@ -487,18 +504,25 @@ void __GXCleanGPFifo(void)
  * @note Address: N/A
  * @note Size: 0x4C
  */
-void GXSetCurrentGXThread(void)
+OSThread* GXSetCurrentGXThread(void)
 {
-	// UNUSED FUNCTION
+	BOOL enabled;
+	OSThread* prev;
+
+	enabled           = OSDisableInterrupts();
+	prev              = __GXCurrentThread;
+	__GXCurrentThread = OSGetCurrentThread();
+	OSRestoreInterrupts(enabled);
+	return prev;
 }
 
 /**
  * @note Address: N/A
  * @note Size: 0x8
  */
-void GXGetCurrentGXThread(void)
+OSThread* GXGetCurrentGXThread(void)
 {
-	// UNUSED FUNCTION
+	return __GXCurrentThread;
 }
 
 /**
@@ -523,34 +547,42 @@ GXFifoObj* GXGetGPFifo(void)
  * @note Address: N/A
  * @note Size: 0x8
  */
+#if 0
 void GXGetOverflowCount(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x10
  */
+#if 0
 void GXResetOverflowCount(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x108
  */
+#if 0
 void GXRedirectWriteGatherPipe(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x1A0
  */
+#if 0
 void GXRestoreWriteGatherPipe(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
