@@ -606,7 +606,7 @@ config.libs = [
             Object(Matching, "MSL_C/MSL_Common/float.c"),
             Object(NonMatching, "MSL_C/MSL_Common/scanf.c"),
             Object(Matching, "MSL_C/MSL_Common/string.c"),
-            Object(NonMatching, "MSL_C/MSL_Common/strtoul.c"),
+            Object(Matching, "MSL_C/MSL_Common/strtoul.c"),
             Object(Matching, "MSL_C/MSL_Common/wchar_io.c"),
             Object(Matching, "MSL_C/PPC_EABI/uart_console_io_gcn.c"),
             Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/e_asin.c"),

@@ -155,6 +155,7 @@ u32 __strtoul(int base, int max_width, int (*ReadProc)(void*, int, int), void* R
 	return value;
 }
 
+#if 0
 /**
  * @note Address: 0x800CBAD4
  * @note Size: 0x40C
@@ -291,6 +292,8 @@ u64 __strtoull(int base, int max_width, int (*ReadProc)(void*, int, int), void* 
 	return value;
 }
 
+#endif
+
 /**
  * @brief STRing TO Unsigned Long. Converts any numbers (of base `base`) at start of input string `str` to u32 and returns.
  * Any remaining string part goes in `end`.
@@ -327,10 +330,12 @@ u32 strtoul(const char* str, char** end, int base)
  * @note Address: N/A
  * @note Size: 0xB4
  */
+#if 0
 void strtoull(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @brief STRing TO Long. Converts any numbers (of base `base`) at start of input string `str` to s32 and returns.
@@ -369,25 +374,31 @@ s32 strtol(const char* str, char** end, int base)
  * @note Address: N/A
  * @note Size: 0x124
  */
+#if 0
 void strtoll(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0xC0
  */
+#if 0
 int atoi(const char* str)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0xC0
  */
+#if 0
 void atol(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
