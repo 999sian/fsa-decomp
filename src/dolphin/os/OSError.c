@@ -7,7 +7,7 @@
 // All enable
 #define FPSCR_ENABLE 0xF8
 
-OSErrorHandler __OSErrorTable[OS_ERROR_MAX];
+OSErrorHandler __OSErrorTable[17];
 u32 __OSFpscrEnableBits = FPSCR_ENABLE;
 
 /**
