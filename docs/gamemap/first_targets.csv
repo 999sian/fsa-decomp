@@ -1,0 +1,31 @@
+kind,name,start,end,size,n_funcs,notes
+actor TU,BOTS,800FEDD0,800FF060,290,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=27
+actor TU,TJIJ,80372EA8,80373138,290,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=27
+actor TU,GFBS,8012679C,80126A4C,2B0,3,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=35
+actor TU,DWAP,8010307C,80103348,2CC,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=42
+actor TU,STGN,802F4820,802F4AEC,2CC,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=42
+actor TU,BGWC,802BA048,802BA334,2EC,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=50
+actor TU,URAC,802E07C8,802E0AB4,2EC,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=50
+actor TU,ELNK,8035E8CC,8035E9A0,D4,2,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=53
+actor TU,TMI2,80376850,80376B4C,2FC,4,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=54
+actor TU,TLK2,803B8970,803B8C74,304,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=56
+actor TU,LCLS,802E8DFC,802E910C,310,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=59
+actor TU,SEN2,802E7634,802E794C,318,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=61
+actor TU,GLBS,802E910C,802E9428,31C,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=62
+actor TU,ICOB,8012F8AC,8012FBCC,320,4,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=63
+actor TU,PLAS,802AC58C,802AC8AC,320,5,whole actor TU: dtor + trivial virtuals (+ shared JAS-pool __sinit). Body instrs=63
+function,fn_80028974,80028974,8002898C,18,1,"JASGenericMemPool::JASGenericMemPool() (JAudio2; MKDD source) - unlocks the identical 137-instr __sinit found in ~480 game TUs [n_instr=6, callers=572]"
+function,fn_80200CD4,80200CD4,80200D10,3C,1,"OKAM ctor: calls Actor ctor 801F5AE0, stores vtable 804A3448. Template for ~300 identical actor ctors in factory TU 801F9484-80204638 [n_instr=15, callers=1]"
+function,fn_801F4704,801F4704,801F4708,4,1,"Actor base vtable slot 16 (empty virtual) [n_instr=1, callers=0]"
+function,fn_801F4710,801F4710,801F471C,C,1,"Actor base vtable slot 13 (3-instr virtual) [n_instr=3, callers=0]"
+function,fn_801F577C,801F577C,801F5790,14,1,"Actor base vtable slot 5 (5 instrs) [n_instr=5, callers=0]"
+function,fn_801F71A4,801F71A4,801F71E8,44,1,"approach/chase float helper (cLib_chaseF-like), 92 callers [n_instr=17, callers=92]"
+function,fn_8023E724,8023E724,8023E7B0,8C,1,"player-manager getter: players[i]->+0xCAC, r13-0x6F30 singleton, 323 callers [n_instr=35, callers=323]"
+function,fn_8023DE58,8023DE58,8023DEDC,84,1,"player-manager accessor, 225 callers [n_instr=33, callers=225]"
+function,fn_8023F264,8023F264,8023F2BC,58,1,"player-manager accessor, 114 callers [n_instr=22, callers=114]"
+function,fn_80402E08,80402E08,80402E70,68,1,"2D element set-position helper (calls vfunc +0x10), 117 callers [n_instr=26, callers=117]"
+function,fn_804030C4,804030C4,80403104,40,1,"archive resource getter (type 4CC, name) e.g. ('TIMG',""kk_rival_01.bti""), 60 callers [n_instr=16, callers=60]"
+function,fn_804032E8,804032E8,80403328,40,1,"resource getter sibling of 804030C4, 36 callers [n_instr=16, callers=36]"
+function,fn_8013B490,8013B490,8013B4C0,30,1,"Game/render-manager small method, 65 callers [n_instr=12, callers=65]"
+function,fn_80138A30,80138A30,80138AB0,80,1,"Game (r13-0x70C8) method, 80 callers [n_instr=32, callers=80]"
+function,fn_8030C210,8030C210,8030C2A8,98,1,"AABB/area point test (BG/map manager), 89 callers [n_instr=38, callers=89]"

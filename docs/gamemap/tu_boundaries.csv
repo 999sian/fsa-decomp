@@ -1,0 +1,573 @@
+start,end,size,n_funcs,subsystem,tu_guess,actor_ids,evidence,sample_strings
+80003100,80003458,358,8,SDK/Runtime,__start.c (init),,named __start/__init_*,
+80003458,8000540C,1FB4,4,TRK,__exception.s (gTRKInterruptVectorTable),,symbol gTRKInterruptVectorTable..End,
+8000540C,80005600,1F4,3,Runtime,__mem.c + _rom_copy_info/_bss_init_info,,memset/memcpy/__fill_mem,
+80021840,800276F0,5EB0,145,JAudio2/JAI (Interface),JAIAudience..JAIAudible,,"MKDD order; ""cannot new Se"" @80023750 (JAISeMgr), ""It cost %d steps"" @8002585C (JAISound); 13 __sinit",
+800276F0,80039B80,12490,464,JAudio2/JAS (System),JASCalc..JASTrack/JASTrackPort,,"""SFR-UPDATE/MONO-MIX/UPDATE-DAC"" @80029A94-8002A958 (JASAiCtrl); ""/AudioRes/Waves/"" @80030EF8 (JASWaveArcLoader); ""JASTrack dump"" @80034CAC (JASSeqParser)",
+80039B80,8003A500,980,32,JAudio2/Task (C),dspproc.c dsptask.c osdsp.c osdsp_task.c,,"32-byte padded C fns; ""Already inited prior DSP task"" @8003A0A0",
+8003A500,8003F610,5110,141,JAudio2/JAU (Utility),JAUAudioArcLoader..JAUSoundObject,,bitset<> asserts @8003DDA4.. (JAUSectionHeap); 11 __sinit,
+8003F610,8003F724,114,22,SDK/base,PPCArch.c,,named,
+8003F724,8003F810,EC,5,SDK/db,db.c,,named,
+8003F810,80046804,6FF4,164,SDK/os,OS*.c,,"OSInit refs ""<< Dolphin SDK - OS""",
+80046804,80046898,94,3,Runtime,__ppc_eabi_init (__init_user/_ExitProcess),,named,
+80046898,80047258,9C0,23,SDK/mtx,mtx.c vec.c mtx44.c (paired-single),,"ps-heavy, no names",
+80047258,8004B7DC,4584,90,SDK/dvd,dvdlow.c dvdfs.c dvd.c dvdqueue.c dvderror.c fstload.c,,"""dvdfs.c""/""dvd.c"" strings; DVD version string",
+8004B7DC,8004D4A0,1CC4,23,SDK/vi,vi.c,,VI version string ref @8004BD78,
+8004D4A0,8004F8C0,2420,36,SDK/pad,Pad.c Padclamp.c,,PAD version ref @8004E5D4,
+8004F8C0,8004FF48,688,11,SDK/ai,ai.c,,AI version ref @8004F908,
+8004FF48,80051AE8,1BA0,10,SDK/ar,ar.c arq.c,,AR/ARQ version refs,
+80051AE8,80052200,718,12,SDK/dsp,dsp.c dsp_debug.c dsp_task.c,,DSP version ref @80051D40,
+80052200,80058ABC,68BC,88,SDK/card,CARD*.c,,CARD version ref @80053128,
+80058ABC,80060B88,80CC,169,SDK/gx,GX*.c,,GXInit @80058ABC,
+80060B88,80066DE0,6258,163,TRK_MINNOW_DOLPHIN,MetroTRK,,named TRK*/udp_cc/ddh_cc/gdev_cc/MWTRACE,
+80066DE0,80067AF4,D14,29,Runtime (PowerPC_EABI_Support),"__va_arg, global_destructor_chain, runtime.c, __init_cpp_exceptions",,named,
+80067AF4,80070608,8B14,94,MSL_C,alloc/ansi_files/printf/string/math...,,GCN_Mem_Alloc.c string @80067AF4; exit/fwrite/printf named,
+80070608,80071204,BFC,20,SDK/amcstubs+odenotstub+OdemuExi2,"AmcExi2Stubs.c, odenotstub.c, DebuggerDriver.c",,AMC_IsStub/Hu_IsStub,
+80071204,80073C20,2A1C,32,SDK/exi,EXIBios.c EXIUart.c,,EXI version ref @80072E5C,
+80073C20,80075580,1960,25,SDK/si,SIBios.c SISamplingRate.c,,SI version ref @800744B8,
+80075580,80077124,1BA4,34,SDK/gba,GBA.c GBAGetProcessStatus.c GBAJoyBoot.c GBARead.c GBAWrite.c GBAXfer.c GBAKey.c,,"""GBAKey.c"", ""// Coded by Kawasedo""",
+80077124,800790A8,1F84,91,JSystem/JMessage (+JGadget?),resource/data/control/processor,,"4CC MESG/MGCL @800773AC, DAT1/STR1 @80077538",
+800790A8,80086E2C,DD84,285,JSystem/JKernel,JKRAram..JKRThread,,JKR*.cpp strings; objdiff-matched MKDD JKRCompArchive/JKRDisposer/JKRDvd*/JKRFileLoader,
+80086E2C,8008770C,8E0,13,JSystem/JSupport,JSUList JSUInputStream JSUMemoryStream JSUFileStream,,"matched JSUMemoryStream @8008735C, JSUFileStream @800874D0",
+8008770C,80093600,BEF4,189,JSystem/JUtility,JUTDirectPrint..JUTVideo/JUTXfb/JUTFader,,"JUTException strings @8008A324-8008C608, JUTFont/JUTNameTab/JUTPalette/JUTResFont/JUTResource/JUTTexture/JUTVideo matched",
+80093600,800AF584,1BF84,690,JSystem/J2DGraph,J2DPane J2DScreen J2DPicture J2DTextBox J2DWindow J2DPrint J2DAnmLoader J2DMaterial J2DMatBlock,,"4CC PIC1/TBX1/PAC3 @800971F8-8009E6DC, PAF1/TPT1/VAF1/VCF1 @800A5ACC (J2DAnmLoader), TV16..TVB1 @800AE16C (J2DMaterialFactory)",
+800AF584,800E3F1C,34998,355,JSystem/J3D (GraphBase/Animator/Loader),J3DSys..J3DModelLoader..J3DMaterialFactory,,"DRT1/DRW1/EVP1/SHP1/TEX1/VTX1 @800CC2E8 (J3DModelLoader) & @800E2B80 (CalcSize), PAF1.. @800CF3E8 (J3DAnmLoader), PEFG/TV16/TGB4/PEED @800DD148-800DF454 (J3DMaterialFactory)",
+800E3F1C,800E413C,220,1,JSystem/JMath,JMath.cpp (ps),,paired-single,
+800E413C,800E6540,2404,30,JSystem/JFramework,JFWSystem.cpp JFWDisplay.cpp,,"calls OSInit/DVDInit; ""GP hang due to XF stall bug"" @800E633C (JFWDisplay)",
+800E6540,800F37A8,D268,19,JSystem/JParticle,JPA*.cpp,,ps-heavy; BSP1/ESP1/ETX1/SSA1/SSP1/TDB1 @800F3398 (JPAResourceLoader),
+800F37A8,800F3C10,468,1,unknown (JSystem tail or first game TU),?,,JUTTexture users + __sinit 800F39EC registering JAudio-typed statics,
+800F3C10,800F46C0,AB0,5,game,actor NZMI,NZMI,game start (first actor NZMI dtor); ends with __sinit 800F449C,enemy_gc_sob.bin
+800F46C0,800F4C70,5B0,4,game,actor IWAG,IWAG,after __sinit 800F449C,
+800F4C70,800F6820,1BB0,8,game,actor OIWA,OIWA,actor boundary IWAG|OIWA; ends with __sinit 800F65FC,enemy_gc_sob.bin || enemy_both_sob.bin
+800F6820,800F7FCC,17AC,6,game,actor LPLK,LPLK,after __sinit 800F65FC; ends with __sinit 800F7DA8,enemy_both2_sob.bin || enemy_gc_sob.bin
+800F7FCC,800FD438,546C,31,game,actor WRTC/BWRT,WRTC BWRT,after __sinit 800F7DA8; ends with __sinit 800FD214,enemy_both_sob.bin || ÿÎÿÄÿØÿ° || <ÿöÿºÿØ || =LﾌﾍBﾈ
+800FD438,800FE8C0,1488,21,game,actor RAIL,RAIL,after __sinit 800FD214; ends with __sinit 800FE69C,RailBase.cpp || RailBase: Buffsize Error\n
+800FE8C0,800FEDD0,510,3,game,,,after __sinit 800FE69C; ends with __sinit 800FEBAC,
+800FEDD0,800FF060,290,5,game,actor BOTS,BOTS,after __sinit 800FEBAC; ends with __sinit 800FEE3C,
+800FF060,8010089C,183C,6,game,actor GSYA,GSYA,after __sinit 800FEE3C; ends with __sinit 80100678,enemy_both2_sob.bin || enemy_gc_sob.bin
+8010089C,80102278,19DC,8,game,actor MGYA,MGYA,after __sinit 80100678; ends with __sinit 80102054,enemy_gc_sob.bin
+80102278,8010307C,E04,5,game,actor ANHO,ANHO,after __sinit 80102054; ends with __sinit 80102E58,enemy_gc_sob.bin
+8010307C,80103348,2CC,5,game,actor DWAP,DWAP,after __sinit 80102E58; ends with __sinit 80103124,
+80103348,801042D0,F88,6,game,actor TWEV,TWEV,after __sinit 80103124; ends with __sinit 801040AC,gareki.bti || kowareyuka_a.bti || kowareyuka_b.bti || kowareyuka_c.bti
+801042D0,80104C3C,96C,5,game,actor SIBT,SIBT,after __sinit 801040AC; ends with __sinit 80104A18,ÿÿÿüÿÿÿý || ÿÿÿþÿÿÿÿ || ÿÿÿÿÿÿÿúÀ  || bg_tenkuu.bti
+80104C3C,80105368,72C,6,game,actor LOSW,LOSW,after __sinit 80104A18; ends with __sinit 80105144,
+80105368,80105DD4,A6C,7,game,actor CLOD,CLOD,after __sinit 80105144,
+80105DD4,80106040,26C,2,game,actor ARSH/ZNSH,ARSH ZNSH,actor boundary CLOD|ARSH/ZNSH (no sdata2-consistent point; forced at B.lo); ends with __sinit 80105E1C,
+80106040,80106ADC,A9C,6,game,actor WLFT,WLFT,after __sinit 80105E1C; ends with __sinit 801068B8,black.bti
+80106ADC,80107360,884,7,game,actor WIND,WIND,after __sinit 801068B8; ends with __sinit 8010713C,
+80107360,80108414,10B4,8,game,actor CNON,CNON,after __sinit 8010713C; ends with __sinit 801081F0,?LﾌﾍC0
+80108414,80108A6C,658,6,game,actor DEAL,DEAL,after __sinit 801081F0; ends with __sinit 80108848,
+80108A6C,80109534,AC8,6,game,actor SHTM,SHTM,after __sinit 80108848; ends with __sinit 80109310,[enemy_both2_sob.bin
+80109534,8010B284,1D50,9,game,actor ZLDA,ZLDA,after __sinit 80109310; ends with __sinit 8010B060,+enemy_both2_sob.bin
+8010B284,8010C294,1010,8,game,actor ICCL,ICCL,after __sinit 8010B060; ends with __sinit 8010C070,
+8010C294,8010DA6C,17D8,7,game,actor SHBL,SHBL,after __sinit 8010C070; ends with __sinit 8010D848,?ｳ33ﾁ  || enemy_gc_sob.bin || o?ﾌﾌﾍA
+8010DA6C,8010DF44,4D8,6,game,actor DBMS,DBMS,after __sinit 8010D848; ends with __sinit 8010DD20,enemy_both2_sob.bin
+8010DF44,8010E2D4,390,9,game,,,after __sinit 8010DD20; ends with __sinit 8010E0B0,
+8010E2D4,801123C8,40F4,21,game,actor DMZL,DMZL,after __sinit 8010E0B0; ends with __sinit 801121A4,enemy_gc_sob.bin || enemy_both2_sob.bin || >LﾌﾍC0
+801123C8,80113788,13C0,13,game,actor DMMD,DMMD,after __sinit 801121A4; ends with __sinit 80113564,8enemy_gc_sob.bin
+80113788,801158B8,2130,13,game,,,after __sinit 80113564; ends with __sinit 80115694,enemy_both2_sob.bin || enemy_gc_sob.bin
+801158B8,80116E8C,15D4,14,game,actor DMGF,DMGF,after __sinit 80115694; ends with __sinit 80116C68,kk_black.bti
+80116E8C,80118384,14F8,11,game,actor DMSW,DMSW,after __sinit 80116C68; ends with __sinit 80118160,x=LﾌﾍB || Þÿÿÿýÿÿÿÿ || enemy_gc_sob.bin
+80118384,8011A0F8,1D74,25,game,,,after __sinit 80118160; ends with __sinit 80119ED4,
+8011A0F8,8011A4BC,3C4,5,game,,,after __sinit 80119ED4; ends with __sinit 8011A298,
+8011A4BC,8011B390,ED4,10,game,actor DMGL,DMGL,after __sinit 8011A298; ends with __sinit 8011B16C,
+8011B390,8011CEC8,1B38,11,game,actor DMLK,DMLK,after __sinit 8011B16C; ends with __sinit 8011CCA4,player_sob.bin
+8011CEC8,8011DA20,B58,10,game,actor DMGA,DMGA,after __sinit 8011CCA4; ends with __sinit 8011D7FC,
+8011DA20,8011E96C,F4C,6,game,actor ICWL,ICWL,after __sinit 8011D7FC; ends with __sinit 8011E748,enemy_gc_sob.bin || enemy_both2_sob.bin || NULLWIZRRUPYSLR1FAGNFARYKEY0GOLDHART
+8011E96C,8011EEEC,580,4,game,actor RNSW,RNSW,after __sinit 8011E748; ends with __sinit 8011ECC8,
+8011EEEC,8011FFB8,10CC,8,game,actor BARI,BARI,after __sinit 8011ECC8; ends with __sinit 8011FD94,
+8011FFB8,801213EC,1434,23,game,actor EZZR,EZZR,after __sinit 8011FD94; ends with __sinit 801211C8,
+801213EC,80124AD8,36EC,59,game,,,after __sinit 801211C8; ends with __sinit 801248B4,?ﾌﾌﾍC0 || =ﾌﾌﾍｽﾌﾌﾍ>Lﾌﾍﾀ  || PEACOKTAAMOSBZBROKTMDGTLHINOSLR1TKTASLR2KETHFLMETKYUTRAPMOZOPoonSKULSLR3POPOSBALSLR4FIREFBALROPENZMIOIWAPAMESTALMIRAWIZRZORAZOSHBMTYPUKURIVRGDMNFAGNTNDRWNWNFLYOLTZRBEEENULL
+80124AD8,80125B58,1080,19,game,actor OPGL,OPGL,after __sinit 801248B4; ends with __sinit 80125934,
+80125B58,8012679C,C44,7,game,actor OPGA,OPGA,after __sinit 80125934; ends with __sinit 80126578,enemy_both2_sob.bin
+8012679C,80126A4C,2B0,3,game,actor GFBS,GFBS,after __sinit 80126578; ends with __sinit 80126828,
+80126A4C,80127E20,13D4,8,game,actor FZRA,FZRA,after __sinit 80126828; ends with __sinit 80127BFC,
+80127E20,801286C0,8A0,14,game,,,after __sinit 80127BFC; ends with __sinit 8012849C,
+801286C0,801291A0,AE0,10,game,actor DMNR,DMNR,after __sinit 8012849C; ends with __sinit 80128F7C,pkk_black.bti
+801291A0,80129B0C,96C,6,game,actor CRGN,CRGN,after __sinit 80128F7C; ends with __sinit 801298E8,
+80129B0C,8012A5EC,AE0,5,game,actor RNBW,RNBW,after __sinit 801298E8; ends with __sinit 8012A3C8,
+8012A5EC,8012CF5C,2970,18,game,actor DMTW,DMTW,after __sinit 8012A3C8; ends with __sinit 8012CBE4,enemy_gc_sob.bin
+8012CF5C,8012DAC0,B64,5,game,actor BTBZ,BTBZ,after __sinit 8012CBE4; ends with __sinit 8012D89C,
+8012DAC0,8012DF70,4B0,4,game,actor RBPN,RBPN,after __sinit 8012D89C; ends with __sinit 8012DD4C,
+8012DF70,8012EA00,A90,6,game,actor SMWL,SMWL,after __sinit 8012DD4C; ends with __sinit 8012E7DC,
+8012EA00,8012F008,608,4,game,actor FDWP,FDWP,after __sinit 8012E7DC; ends with __sinit 8012EDE4,
+8012F008,8012F3E4,3DC,6,game,actor IFCK,IFCK,after __sinit 8012EDE4; ends with __sinit 8012F1C0,
+8012F3E4,8012F8AC,4C8,6,game,,,after __sinit 8012F1C0; ends with __sinit 8012F688,
+8012F8AC,8012FBCC,320,4,game,actor ICOB,ICOB,after __sinit 8012F688; ends with __sinit 8012F9A8,
+8012FBCC,8012FF9C,3D0,4,game,actor OGST,OGST,after __sinit 8012F9A8; ends with __sinit 8012FD78,
+8012FF9C,80130310,374,6,game,,,after __sinit 8012FD78; ends with __sinit 801300EC,
+80130310,80130FAC,C9C,7,game,actor MRMT,MRMT,after __sinit 801300EC; ends with __sinit 80130D88,=LﾌﾍAﾀ
+80130FAC,80131D98,DEC,7,game,actor WPCN,WPCN,after __sinit 80130D88; ends with __sinit 80131B74,ｾLﾌﾍBｴ
+80131D98,801321DC,444,8,game,,,after __sinit 80131B74; ends with __sinit 80131FB8,
+801321DC,8013394C,1770,11,game,actor SPFR,SPFR,after __sinit 80131FB8; ends with __sinit 80133728,enemy_gc_sob.bin || FQPFQdFQÌ
+8013394C,801344C0,B74,7,game,actor CRNV,CRNV,after __sinit 80133728; ends with __sinit 8013429C,ﾜenemy_both2_sob.bin
+801344C0,80134C04,744,2,game,,,after __sinit 8013429C; ends with __sinit 801349E0,
+80134C04,80139BE8,4FE4,36,game,,,after __sinit 801349E0; ends with __sinit 801399C4,0boss010.arc || Game　連続空き容量　%fK 残り空き容量　%fK\n || /GC4Sword/Boss/ || /GC4Sword_usa/Boss/
+80139BE8,8013AAD4,EEC,12,game,,,after __sinit 801399C4; ends with __sinit 8013A8B0,Expヒープ%fKの確保失敗　連続空き容量　%fK 残り空き容量　%fK\n || 領域確保成功\n
+8013AAD4,8013C5C8,1AF4,29,game,,,after __sinit 8013A8B0; ends with __sinit 8013C3A4,kk_black.bti
+8013C5C8,8013F9A8,33E0,27,game,,,after __sinit 8013C3A4; ends with __sinit 8013F758,jen_blue_tsume.bti || particle.jpc || AK_kagerouSwap00
+8013F9A8,80140E24,147C,5,game,actor OKTA,OKTA,after __sinit 8013F758; ends with __sinit 80140C00,enemy_gc_sob.bin
+80140E24,80142624,1800,5,game,actor AMOS,AMOS,after __sinit 80140C00; ends with __sinit 80142400,enemy_gc_sob.bin || enemy_both2_sob.bin
+80142624,80143874,1250,5,game,actor POOH,POOH,after __sinit 80142400; ends with __sinit 80143650,enemy_gc_sob.bin
+80143874,80144134,8C0,5,game,actor PEAC,PEAC,after __sinit 80143650; ends with __sinit 80143F10,enemy_gc_sob.bin
+80144134,8014529C,1168,5,game,actor BZBR,BZBR,after __sinit 80143F10; ends with __sinit 80145078,enemy_gc_sob.bin
+8014529C,80145F60,CC4,5,game,actor DBRK,DBRK,after __sinit 80145078; ends with __sinit 80145D3C,SWBMTHCLGRASNULLenemy_gc_sob.bin
+80145F60,80146BC8,C68,7,game,actor HART,HART,after __sinit 80145D3C; ends with __sinit 801469A4,enemy_both2_sob.bin
+80146BC8,80147B50,F88,6,game,actor OKTM,OKTM,after __sinit 801469A4; ends with __sinit 8014792C,enemy_gc_sob.bin || enemy_both2_sob.bin
+80147B50,8014AD2C,31DC,8,game,actor DGTL,DGTL,after __sinit 8014792C; ends with __sinit 8014AB08,enemy_both2_sob.bin || ÿÿÿÿÿÿÿÿ
+8014AD2C,8014DCD4,2FA8,11,game,actor HBMB,HBMB,after __sinit 8014AB08; ends with __sinit 8014DAB0,enemy_both2_sob.bin
+8014DCD4,8014FD5C,2088,6,game,actor HINO,HINO,after __sinit 8014DAB0; ends with __sinit 8014FB38,enemy_gc_sob.bin
+8014FD5C,801549B0,4C54,46,game,actor SLR1,SLR1,after __sinit 8014FB38; ends with __sinit 8015478C,enemy_both_sob.bin || SWBMFIREBLZEHBMBFLMETHCLGRASSSTNSTONROCKRCK2BORDTUBOKEY0YASISMRINULLenemy_both2_sob.bin || ?333Dz
+801549B0,801555D8,C28,6,game,actor TKTA,TKTA,after __sinit 8015478C; ends with __sinit 801553B4,enemy_gc_sob.bin
+801555D8,80158624,304C,9,game,,,after __sinit 801553B4; ends with __sinit 80158400,enemy_gc_sob.bin || enemy_both_sob.bin || ｾLﾌﾍｿ333
+80158624,801597B8,1194,10,game,,,after __sinit 80158400; ends with __sinit 80159594,ggggÿÿÿÿ@ || circle.bti
+801597B8,8015B98C,21D4,9,game,actor IMUP,IMUP,after __sinit 80159594; ends with __sinit 8015B768,enemy_gc_sob.bin || 詁nemy_both2_sob.bin
+8015B98C,8015C828,E9C,5,game,actor BOYO,BOYO,after __sinit 8015B768; ends with __sinit 8015C604,enemy_gc_sob.bin
+8015C828,8015DE10,15E8,6,game,actor KETH,KETH,after __sinit 8015C604; ends with __sinit 8015DBEC,enemy_both2_sob.bin
+8015DE10,8015F454,1644,7,game,actor FLME,FLME,after __sinit 8015DBEC; ends with __sinit 8015F230,?333ﾂ 
+8015F454,80160650,11FC,8,game,,,after __sinit 8015F230; ends with __sinit 8016042C,circle.bti || circle2.bti
+80160650,801618D0,1280,6,game,actor EZRY,EZRY,after __sinit 8016042C; ends with __sinit 801616AC,enemy_both2_sob.bin
+801618D0,801643C4,2AF4,8,game,actor BPOH,BPOH,after __sinit 801616AC; ends with __sinit 801641A0,ÿÿÿÿÿÿÿÿÿÿÿÿÿdÿÿÿÿÿÿÿd || ÿ22ÈdÿÈdÿd || ÿobake_sirokuro.bti || obake_ci.bti
+801643C4,8016545C,1098,6,game,actor TRAP,TRAP,after __sinit 801641A0; ends with __sinit 80165238,TOMIIPOTIBBMBMSTNULLenemy_both2_sob.bin || enemy_gc_sob.bin
+8016545C,80166BD0,1774,6,game,actor ARRW,ARRW,after __sinit 80165238; ends with __sinit 801669AC,enemy_both2_sob.bin || ｿ333A  || TOMIIPOTIBBMBMSTNULL
+80166BD0,80167938,D68,6,game,actor MOZO,MOZO,after __sinit 801669AC; ends with __sinit 80167714,enemy_gc_sob.bin
+80167938,801688AC,F74,5,game,actor Poon,Poon,after __sinit 80167714; ends with __sinit 80168688,enemy_gc_sob.bin
+801688AC,8016A2B4,1A08,7,game,actor BOME,BOME,after __sinit 80168688; ends with __sinit 8016A090,enemy_both2_sob.bin
+8016A2B4,80170008,5D54,39,game,,,after __sinit 8016A090; ends with __sinit 8016FDE4,/¯ÏÏÿÏççÿ || w_kumo.bmd || yougan.bmd || yougan.btk
+80170008,80172170,2168,6,game,,,after __sinit 8016FDE4; ends with __sinit 80171F4C,enemy_gc_sob.bin
+80172170,80172894,724,5,game,actor POPO,POPO,after __sinit 80171F4C; ends with __sinit 80172670,enemy_gc_sob.bin
+80172894,80175684,2DF0,12,game,actor SLR4,SLR4,after __sinit 80172670; ends with __sinit 80175460,enemy_gc_sob.bin || ?333ｿ333Aﾀ
+80175684,801769D8,1354,5,game,actor STAL,STAL,after __sinit 80175460; ends with __sinit 801767B4,enemy_both2_sob.bin
+801769D8,80179150,2778,11,game,actor WIZR,WIZR,after __sinit 801767B4; ends with __sinit 80178F2C,WIZRFIREBLZEDDGOFLMETHCLNULLenemy_gc_sob.bin
+80179150,8017A44C,12FC,5,game,actor SHLT,SHLT,after __sinit 80178F2C; ends with __sinit 8017A228,enemy_gc_sob.bin
+8017A44C,8017B140,CF4,6,game,actor SWBM,SWBM,after __sinit 8017A228; ends with __sinit 8017AF1C,TOMIBMSTIPOTIBBMNULLenemy_both2_sob.bin
+8017B140,8017C01C,EDC,6,game,actor PUKU,PUKU,after __sinit 8017AF1C; ends with __sinit 8017BDF8,enemy_both2_sob.bin || =ﾌﾌﾍ?fffｿfff>ﾌﾌﾍｾﾌﾌﾍ>劔咤ﾀ || ?ﾙ劒ｿﾙ劒>Lﾌﾍﾁﾀ
+8017C01C,8017EF40,2F24,21,game,,,after __sinit 8017BDF8; ends with __sinit 8017ED1C,?LﾌﾍBH
+8017EF40,80182914,39D4,14,game,actor GROK,GROK,after __sinit 8017ED1C; ends with __sinit 801826F0,geki_ana.bti || enemy_gc_sob.bin || <ÿÿÿÿÿÿÿÿ || gb_ch_obj_tr_sch0.szs
+80182914,80183544,C30,8,game,actor RDVR,RDVR,after __sinit 801826F0; ends with __sinit 80183320,enemy_gc_sob.bin
+80183544,80184040,AFC,7,game,actor GDMN,GDMN,after __sinit 80183320; ends with __sinit 80183E1C,enemy_gc_sob.bin
+80184040,80184D64,D24,6,game,actor FAGN,FAGN,after __sinit 80183E1C; ends with __sinit 80184B40,enemy_gc_sob.bin
+80184D64,80187144,23E0,5,game,actor WNWN,WNWN,after __sinit 80184B40; ends with __sinit 80186F20,enemy_gc_sob.bin || =ﾌﾌﾍC0
+80187144,8018A8D8,3794,24,game,actor FGN2,FGN2,after __sinit 80186F20; ends with __sinit 8018A6B4,?LﾌﾍB  || ~ÿÿÿÿÿÿÿÿ || ?fffCH
+8018A8D8,8018EB94,42BC,17,game,actor BPH2,BPH2,after __sinit 8018A6B4; ends with __sinit 8018E970,boss_p_rantan.bti || enemy_both2_sob.bin
+8018EB94,801902C0,172C,6,game,actor DGT2,DGT2,after __sinit 8018E970; ends with __sinit 8019009C,enemy_gc_sob.bin || >ÌÌÍAð
+801902C0,80192038,1D78,13,game,,,after __sinit 8019009C; ends with __sinit 80191E14,rock6_smp.bin || suisyo_%d.bmd || suisyo_%d.btk || suisyo_%d.brk
+80192038,80197070,5038,19,game,actor GNON,GNON,after __sinit 80191E14; ends with __sinit 80196E14,boss_butag_yari_mawashi_01.bti || =Lﾌﾍﾁ  || ?fffﾂh
+80197070,8019D12C,60BC,23,game,,,after __sinit 80196E14; ends with __sinit 8019CF08,enemy_both2_sob.bin || enemy_gc_sob.bin || =LﾌﾍAﾀ
+8019D12C,8019E37C,1250,7,game,actor ALCE,ALCE,after __sinit 8019CF08; ends with __sinit 8019E13C,
+8019E37C,801A0710,2394,11,game,actor SYKY,SYKY,after __sinit 8019E13C; ends with __sinit 801A04EC,enemy_both2_sob.bin || enemy_gc_sob.bin || ?LﾌﾍBH
+801A0710,801A35AC,2E9C,10,game,actor TENN,TENN,after __sinit 801A04EC; ends with __sinit 801A3388,enemy_gc_sob.bin || -ðSLR1
+801A35AC,801A3C50,6A4,5,game,actor ENBZ,ENBZ,after __sinit 801A3388; ends with __sinit 801A3A2C,
+801A3C50,801A6690,2A40,13,game,,,after __sinit 801A3A2C; ends with __sinit 801A646C,
+801A6690,801A8194,1B04,7,game,actor RYYA,RYYA,after __sinit 801A646C; ends with __sinit 801A7F70,enemy_gc_sob.bin
+801A8194,801A908C,EF8,5,game,actor HBB2,HBB2,after __sinit 801A7F70; ends with __sinit 801A8E68,enemy_both2_sob.bin
+801A908C,801AAC8C,1C00,10,game,actor TTAT,TTAT,after __sinit 801A8E68; ends with __sinit 801AAA68,
+801AAC8C,801AC8EC,1C60,8,game,actor GNMA,GNMA,after __sinit 801AAA68; ends with __sinit 801AC6C8,
+801AC8EC,801AE9C4,20D8,9,game,actor DDGO,DDGO,after __sinit 801AC6C8; ends with __sinit 801AE7A0,笄OKTAPEACSTAL || ?333ｿ333BH
+801AE9C4,801AFB38,1174,8,game,actor OKAM,OKAM,after __sinit 801AE7A0; ends with __sinit 801AF914,?333ｿ333BH
+801AFB38,801B0A00,EC8,6,game,actor EGOL,EGOL,after __sinit 801AF914; ends with __sinit 801B07DC,
+801B0A00,801B27DC,1DDC,7,game,actor ZLD3,ZLD3,after __sinit 801B07DC; ends with __sinit 801B25B8,enemy_both2_sob.bin || =LﾌﾍE諭 || =ÌÌÍCú || ?333C0
+801B27DC,801B3F60,1784,6,game,,,after __sinit 801B25B8; ends with __sinit 801B3D3C,enemy_both2_sob.bin
+801B3F60,801B4D0C,DAC,5,game,actor ZDCO,ZDCO,after __sinit 801B3D3C; ends with __sinit 801B4AE8,=Lﾌﾍﾁ 
+801B4D0C,801B6634,1928,8,game,actor TLWP,TLWP,after __sinit 801B4AE8; ends with __sinit 801B6410,enemy_gc_sob.bin || enemy_both2_sob.bin
+801B6634,801B6C50,61C,5,game,actor SAFU,SAFU,after __sinit 801B6410; ends with __sinit 801B6A2C,enemy_both2_sob.bin
+801B6C50,801B7784,B34,6,game,actor GEWP,GEWP,after __sinit 801B6A2C; ends with __sinit 801B7560,
+801B7784,801B80C0,93C,8,game,actor ROPE,ROPE,after __sinit 801B7560; ends with __sinit 801B7E9C,
+801B80C0,801B9730,1670,16,game,actor PAME,PAME,after __sinit 801B7E9C; ends with __sinit 801B950C,
+801B9730,801BA65C,F2C,10,game,actor MIRA,MIRA,after __sinit 801B950C; ends with __sinit 801BA438,
+801BA65C,801BB618,FBC,14,game,actor ZNRA,ZNRA,after __sinit 801BA438; ends with __sinit 801BB3F4,
+801BB618,801BD108,1AF0,13,game,actor FALL,FALL,after __sinit 801BB3F4; ends with __sinit 801BCEE4,
+801BD108,801BD8C0,7B8,5,game,actor EZMR,EZMR,after __sinit 801BCEE4; ends with __sinit 801BD69C,
+801BD8C0,801BDE5C,59C,7,game,actor EZOB,EZOB,after __sinit 801BD69C; ends with __sinit 801BDC38,
+801BDE5C,801BEDBC,F60,13,game,actor BMST,BMST,after __sinit 801BDC38; ends with __sinit 801BEB98,enemy_gc_sob.bin
+801BEDBC,801BF810,A54,8,game,actor LNBM,LNBM,after __sinit 801BEB98; ends with __sinit 801BF5EC,
+801BF810,801C0D70,1560,14,game,actor TNDR,TNDR,after __sinit 801BF5EC; ends with __sinit 801C0B4C,
+801C0D70,801C1768,9F8,14,game,,,after __sinit 801C0B4C; ends with __sinit 801C1544,
+801C1768,801C26D8,F70,8,game,actor SLGE,SLGE,after __sinit 801C1544; ends with __sinit 801C24B4,jen_8_3_tsume.bti || jen_8_3.bti
+801C26D8,801C5B08,3430,25,game,actor SLK2,SLK2,after __sinit 801C24B4; ends with __sinit 801C58E4,
+801C5B08,801C6A4C,F44,5,game,,,after __sinit 801C58E4; ends with __sinit 801C6828,
+801C6A4C,801C71BC,770,4,game,,,after __sinit 801C6828; ends with __sinit 801C6F98,
+801C71BC,801C9AF8,293C,15,game,,,after __sinit 801C6F98; ends with __sinit 801C98D4,
+801C9AF8,801CB270,1778,9,game,,,after __sinit 801C98D4; ends with __sinit 801CB04C,FLMENULL
+801CB270,801CDC8C,2A1C,51,game,,,after __sinit 801CB04C; ends with __sinit 801CDA68,
+801CDC8C,801D11FC,3570,57,game,,,after __sinit 801CDA68; ends with __sinit 801D0FD8,
+801D11FC,801D1C18,A1C,5,game,,,after __sinit 801D0FD8; ends with __sinit 801D19F4,
+801D1C18,801D2918,D00,12,game,,,after __sinit 801D19F4; ends with __sinit 801D26F4,
+801D2918,801D2C60,348,3,game,,,after __sinit 801D26F4; ends with __sinit 801D2A3C,
+801D2C60,801D3320,6C0,7,game,,,after __sinit 801D2A3C; ends with __sinit 801D30FC,
+801D3320,801D3CBC,99C,2,game,,,after __sinit 801D30FC; ends with __sinit 801D3A98,
+801D3CBC,801D46FC,A40,4,game,,,after __sinit 801D3A98; ends with __sinit 801D44D8,player_sob.bin
+801D46FC,801D6CEC,25F0,20,game,actor BOGF,BOGF,after __sinit 801D44D8; ends with __sinit 801D6AC8,ｽﾌﾌﾍBｴ || Aÿ33=ÌÌÍC0
+801D6CEC,801D7AFC,E10,15,game,,,after __sinit 801D6AC8; ends with __sinit 801D78D8,
+801D7AFC,801D8400,904,7,game,actor BGBL,BGBL,after __sinit 801D78D8; ends with __sinit 801D81DC,
+801D8400,801DA7C0,23C0,18,game,,,after __sinit 801D81DC; ends with __sinit 801DA59C,
+801DA7C0,801DAC6C,4AC,9,game,,,after __sinit 801DA59C; ends with __sinit 801DAA48,
+801DAC6C,801DB18C,520,12,game,,,after __sinit 801DAA48; ends with __sinit 801DAF68,
+801DB18C,801DC264,10D8,13,game,actor ICHL,ICHL,after __sinit 801DAF68; ends with __sinit 801DC040,
+801DC264,801DCC98,A34,12,game,actor BOIT,BOIT,after __sinit 801DC040; ends with __sinit 801DCA74,
+801DCC98,801DD1AC,514,5,game,actor BOIB,BOIB,after __sinit 801DCA74; ends with __sinit 801DCF88,
+801DD1AC,801DE714,1568,7,game,,,after __sinit 801DCF88; ends with __sinit 801DE4F0,
+801DE714,801E2540,3E2C,23,game,actor THNK,THNK,after __sinit 801DE4F0; ends with __sinit 801E231C,o>LÌÍCú
+801E2540,801E31C0,C80,8,game,,,after __sinit 801E231C; ends with __sinit 801E2F9C,
+801E31C0,801E3618,458,6,game,actor TINB,TINB,after __sinit 801E2F9C; ends with __sinit 801E33F4,
+801E3618,801E4A18,1400,11,game,,,after __sinit 801E33F4; ends with __sinit 801E47F4,
+801E4A18,801E4D54,33C,4,game,,,after __sinit 801E47F4; ends with __sinit 801E4B30,
+801E4D54,801E5FC8,1274,6,game,,,after __sinit 801E4B30; ends with __sinit 801E5DA4,
+801E5FC8,801E667C,6B4,8,game,,,after __sinit 801E5DA4; ends with __sinit 801E6458,
+801E667C,801E6D48,6CC,5,game,,,after __sinit 801E6458; ends with __sinit 801E6B24,
+801E6D48,801E7BF4,EAC,13,game,actor IPOT,IPOT,after __sinit 801E6B24; ends with __sinit 801E79D0,
+801E7BF4,801E801C,428,5,game,actor FSPO,FSPO,after __sinit 801E79D0; ends with __sinit 801E7DF8,
+801E801C,801E9AFC,1AE0,15,game,actor FSOB,FSOB,after __sinit 801E7DF8; ends with __sinit 801E98D8,
+801E9AFC,801EAB0C,1010,14,game,,,after __sinit 801E98D8; ends with __sinit 801EA8E8,FIREBLZEBMTYNULL
+801EAB0C,801EB00C,500,5,game,,,after __sinit 801EA8E8; ends with __sinit 801EADE8,
+801EB00C,801EBC84,C78,9,game,,,after __sinit 801EADE8; ends with __sinit 801EBA60,
+801EBC84,801ED3DC,1758,10,game,actor HRMN,HRMN,after __sinit 801EBA60; ends with __sinit 801ED1B8,enemy_gc_sob.bin || ikage_sob.bin
+801ED3DC,801EDBA4,7C8,12,game,,,after __sinit 801ED1B8; ends with __sinit 801ED980,
+801EDBA4,801EE24C,6A8,4,game,,,after __sinit 801ED980; ends with __sinit 801EE028,enemy_both_sob.bin
+801EE24C,801F6058,7E0C,75,game,,,after __sinit 801EE028; ends with __sinit 801F5E34,SWBMFIREBLZEHBMBFLMETHCLGRASSSTNSTONROCKRCK2BORDTUBOKEY0YASISMRINULL || enemy_both2_sob.bin || kage_sob.bin || ?fffC0
+801F6058,801F68E0,888,12,game,,,after __sinit 801F5E34,EnemyParam.csv
+801F68E0,801F9484,2BA4,36,game,,,duplicate sdata2 constant; ends with __sinit 801F9260,
+801F9484,80204638,B1B4,322,game,,,after __sinit 801F9260; ends with __sinit 80204414,.v4.w
+80204638,80204D44,70C,8,game,,,after __sinit 80204414; ends with __sinit 80204B20,
+80204D44,80206B30,1DEC,18,game,actor TZOK,TZOK,after __sinit 80204B20; ends with __sinit 8020690C,
+80206B30,80207548,A18,8,game,,,after __sinit 8020690C; ends with __sinit 80207324,
+80207548,80207D84,83C,9,game,,,after __sinit 80207324; ends with __sinit 80207B60,
+80207D84,80208E5C,10D8,14,game,actor SLMN,SLMN,after __sinit 80207B60; ends with __sinit 80208C38,=ﾌﾌﾍC0
+80208E5C,80209C14,DB8,10,game,actor BPMN,BPMN,after __sinit 80208C38; ends with __sinit 802099F0,?劔堊劔咤ﾀ
+80209C14,8020B354,1740,18,game,actor FOSL,FOSL,after __sinit 802099F0; ends with __sinit 8020B130,
+8020B354,8020C0A8,D54,17,game,actor FOBR,FOBR,after __sinit 8020B130; ends with __sinit 8020BE84, ³T ½
+8020C0A8,8020CCA8,C00,10,game,actor ZASL,ZASL,after __sinit 8020BE84; ends with __sinit 8020CA84,
+8020CCA8,8020D58C,8E4,6,game,,,after __sinit 8020CA84; ends with __sinit 8020D368,enemy_both2_sob.bin
+8020D58C,8020DB74,5E8,9,game,,,after __sinit 8020D368; ends with __sinit 8020D950,
+8020DB74,8020F798,1C24,14,game,actor FLOR,FLOR,after __sinit 8020D950; ends with __sinit 8020F574,
+8020F798,8020FE50,6B8,4,game,,,after __sinit 8020F574; ends with __sinit 8020FC2C,kage_sob.bin || enemy_both_sob.bin
+8020FE50,80210630,7E0,8,game,actor IBBM,IBBM,after __sinit 8020FC2C; ends with __sinit 8021040C,
+80210630,80210D90,760,10,game,,,after __sinit 8021040C; ends with __sinit 80210B6C,
+80210D90,80212AC0,1D30,15,game,actor RUSA,RUSA,after __sinit 80210B6C; ends with __sinit 8021289C,
+80212AC0,80212E3C,37C,5,game,,,after __sinit 8021289C; ends with __sinit 80212C18,
+80212E3C,80213E00,FC4,13,game,actor ARIJ,ARIJ,after __sinit 80212C18; ends with __sinit 80213BDC,
+80213E00,80214244,444,7,game,actor SLEF,SLEF,after __sinit 80213BDC; ends with __sinit 80214020,
+80214244,802144F0,2AC,5,game,,,after __sinit 80214020; ends with __sinit 802142CC,
+802144F0,802153A8,EB8,14,game,,,after __sinit 802142CC; ends with __sinit 80215184,
+802153A8,802157B8,410,4,game,,,after __sinit 80215184; ends with __sinit 80215594,
+802157B8,80215A94,2DC,3,game,,,after __sinit 80215594; ends with __sinit 80215870,
+80215A94,8021693C,EA8,21,game,,,after __sinit 80215870; ends with __sinit 80216718,
+8021693C,80217374,A38,4,game,,,after __sinit 80216718; ends with __sinit 80217150,
+80217374,8021775C,3E8,3,game,,,after __sinit 80217150; ends with __sinit 80217538,
+8021775C,8021827C,B20,14,game,,,after __sinit 80217538; ends with __sinit 80218044,
+8021827C,802188B0,634,4,game,,,after __sinit 80218044; ends with __sinit 8021868C,
+802188B0,80218CF4,444,4,game,,,after __sinit 8021868C; ends with __sinit 80218AD0,
+80218CF4,8021A570,187C,13,game,actor KEPO,KEPO,after __sinit 80218AD0; ends with __sinit 8021A34C,=ﾌﾌﾍAｰﾌﾍB0ffA || ûçenemy_gc_sob.bin
+8021A570,8021AF28,9B8,4,game,,,after __sinit 8021A34C; ends with __sinit 8021AD04,?fffC0
+8021AF28,8021B904,9DC,8,game,,,after __sinit 8021AD04; ends with __sinit 8021B6E0,
+8021B904,8021BCBC,3B8,3,game,,,after __sinit 8021B6E0; ends with __sinit 8021BA98,
+8021BCBC,8021BFA8,2EC,3,game,,,after __sinit 8021BA98; ends with __sinit 8021BD84,
+8021BFA8,8021C2B4,30C,5,game,,,after __sinit 8021BD84; ends with __sinit 8021C090,
+8021C2B4,8021C848,594,4,game,,,after __sinit 8021C090; ends with __sinit 8021C624,
+8021C848,8021CDE4,59C,6,game,,,after __sinit 8021C624; ends with __sinit 8021CBC0,
+8021CDE4,8021D26C,488,4,game,,,after __sinit 8021CBC0; ends with __sinit 8021D048,
+8021D26C,8021D734,4C8,5,game,actor EZGE,EZGE,after __sinit 8021D048; ends with __sinit 8021D510,
+8021D734,8021F064,1930,15,game,actor NAVI,NAVI,after __sinit 8021D510; ends with __sinit 8021EE40,îenemy_both2_sob.bin || =LﾌﾍCｯ || xi<P_s
+8021F064,8021F4B0,44C,7,game,,,after __sinit 8021EE40; ends with __sinit 8021F28C,
+8021F4B0,8021FDB8,908,7,game,,,after __sinit 8021F28C; ends with __sinit 8021FB94,
+8021FDB8,802201D8,420,2,game,,,after __sinit 8021FB94; ends with __sinit 8021FFB4,
+802201D8,802205E0,408,6,game,actor FBAL,FBAL,after __sinit 8021FFB4; ends with __sinit 802203BC,
+802205E0,80220F54,974,8,game,actor ZNLJ,ZNLJ,after __sinit 802203BC; ends with __sinit 80220D30,
+80220F54,80221B44,BF0,16,game,,,after __sinit 80220D30; ends with __sinit 80221920,
+80221B44,802223FC,8B8,7,game,,,after __sinit 80221920; ends with __sinit 802221D8,
+802223FC,80222CC4,8C8,8,game,actor ZSLA,ZSLA,after __sinit 802221D8; ends with __sinit 80222AA0,
+80222CC4,802233A4,6E0,7,game,,,after __sinit 80222AA0; ends with __sinit 80223180,
+802233A4,802242F4,F50,11,game,,,after __sinit 80223180; ends with __sinit 802240D0,
+802242F4,8022461C,328,2,game,,,after __sinit 802240D0; ends with __sinit 802243F8,
+8022461C,80226FC8,29AC,23,game,,,after __sinit 802243F8; ends with __sinit 80226DA4,泡RRWFIREHBMBBOMESTONGRASTUBOYASIHNRYESRYPCDMSWBMSBALNULLHNRYESRYNULLHBMBBOMESTONGRASTUBOYASIRUPYHNRYESRYSBALNULL
+80226FC8,8022979C,27D4,9,game,actor WARP,WARP,after __sinit 80226DA4; ends with __sinit 80229578,ｿfffｿ詛fｿfff || 劒ｾ劔嘖and2_smp.bin
+8022979C,8022AD64,15C8,5,game,actor PEFF,PEFF,after __sinit 80229578; ends with __sinit 8022AB40,enemy_both2_sob.bin
+8022AD64,80234E30,A0CC,177,game,,,after __sinit 8022AB40,
+80234E30,8023FBF0,ADC0,196,game,,,duplicate sdata2 constant; ends with __sinit 8023F9B8,
+8023FBF0,80255F4C,1635C,254,game,,,after __sinit 8023F9B8; ends with __sinit 80255D28,
+80255F4C,80256C74,D28,7,game,actor LIFT,LIFT,after __sinit 80255D28; ends with __sinit 80256A50,
+80256C74,8025EB18,7EA4,63,game,,,after __sinit 80256A50; ends with __sinit 8025E8F4,1AOûç
+8025EB18,80264998,5E80,59,game,,,after __sinit 8025E8F4; ends with __sinit 80264774,
+80264998,802684A4,3B0C,26,game,,,after __sinit 80264774; ends with __sinit 80268280,enemy_gc_sob.bin || player_sob.bin || enemy_both2_sob.bin
+802684A4,8026FC20,777C,25,game,,,after __sinit 80268280; ends with __sinit 8026F9FC,
+8026FC20,8027E5BC,E99C,120,game,,,after __sinit 8026F9FC; ends with __sinit 8027E398,ｿ333?333 || ?333ｿ333 || ｿ333ｿ333
+8027E5BC,80285E58,789C,73,game,,,after __sinit 8027E398; ends with __sinit 80285C34,
+80285E58,80289648,37F0,8,game,,,after __sinit 80285C34; ends with __sinit 80289424,
+80289648,8028A33C,CF4,5,game,actor LIF2,LIF2,after __sinit 80289424; ends with __sinit 8028A118,
+8028A33C,8028AB7C,840,5,game,actor PESW,PESW,after __sinit 8028A118; ends with __sinit 8028A958,enemy_both2_sob.bin
+8028AB7C,8028C068,14EC,7,game,actor CIRC,CIRC,after __sinit 8028A958; ends with __sinit 8028BE44,HNRYESRYNULLenemy_gc_sob.bin
+8028C068,8028DD78,1D10,10,game,actor BLCK,BLCK,after __sinit 8028BE44; ends with __sinit 8028DB54,enemy_both_sob.bin
+8028DD78,8028FBA0,1E28,6,game,actor RASN,RASN,after __sinit 8028DB54; ends with __sinit 8028F97C,
+8028FBA0,802957CC,5C2C,53,game,,,after __sinit 8028F97C; ends with __sinit 802955A8,
+802957CC,8029B75C,5F90,20,game,actor HOUS,HOUS,after __sinit 802955A8; ends with __sinit 8029B538,room_smp.bin || room1_smp.bin || house3_smp.bin || house31_smp.bin
+8029B75C,8029BD18,5BC,5,game,actor PSSW,PSSW,after __sinit 8029B538; ends with __sinit 8029BAF4,
+8029BD18,8029C584,86C,6,game,actor BRBL,BRBL,after __sinit 8029BAF4; ends with __sinit 8029C360,enemy_gc_sob.bin || A~ffAx
+8029C584,8029D430,EAC,5,game,actor FORM,FORM,after __sinit 8029C360; ends with __sinit 8029D20C,@enemy_both_sob.bin
+8029D430,8029D898,468,7,game,actor THCL,THCL,after __sinit 8029D20C; ends with __sinit 8029D674,
+8029D898,802A40B8,6820,33,game,,,after __sinit 8029D674; ends with __sinit 802A3E94,bg_anim_b_sch.bin || bg_anim_sch.bin
+802A40B8,802A4654,59C,5,game,actor BHRT,BHRT,after __sinit 802A3E94; ends with __sinit 802A4430,enemy_both2_sob.bin
+802A4654,802A6A4C,23F8,6,game,actor GOAL,GOAL,after __sinit 802A4430; ends with __sinit 802A6828,Pÿÿÿ°ÿÿÿèÿÿÿè || ÿÿÿàÿÿÿà || enemy_gc_sob.bin || ｽﾌﾌﾍAﾘ
+802A6A4C,802A7D3C,12F0,7,game,actor SWTH,SWTH,after __sinit 802A6828; ends with __sinit 802A7B18,AMOSBRBLBLCKBCK2SMRI || =ÌÌÍÀà
+802A7D3C,802A8220,4E4,5,game,actor EXPL,EXPL,after __sinit 802A7B18; ends with __sinit 802A7FFC,
+802A8220,802A964C,142C,5,game,actor RYRN,RYRN,after __sinit 802A7FFC; ends with __sinit 802A9428,
+802A964C,802AA364,D18,5,game,actor SWT4,SWT4,after __sinit 802A9428; ends with __sinit 802AA140,
+802AA364,802AABFC,898,5,game,actor SHTR,SHTR,after __sinit 802AA140; ends with __sinit 802AA9D8,bg_tenso_sch.bin
+802AABFC,802AB1D4,5D8,5,game,actor THRN,THRN,after __sinit 802AA9D8; ends with __sinit 802AAFB0,bg_tenso_sch.bin
+802AB1D4,802ABC74,AA0,5,game,actor PONT,PONT,after __sinit 802AAFB0; ends with __sinit 802ABA50,
+802ABC74,802AC03C,3C8,5,game,actor SKIL,SKIL,after __sinit 802ABA50; ends with __sinit 802ABE18,
+802AC03C,802AC58C,550,6,game,actor ITMS,ITMS,after __sinit 802ABE18; ends with __sinit 802AC368,
+802AC58C,802AC8AC,320,5,game,actor PLAS,PLAS,after __sinit 802AC368; ends with __sinit 802AC688,
+802AC8AC,802ACEA4,5F8,9,game,,,after __sinit 802AC688; ends with __sinit 802ACC80,kk_black.bti
+802ACEA4,802AF32C,2488,5,game,actor TFLR,TFLR,after __sinit 802ACC80; ends with __sinit 802AF108,otosiana_bg_s.bti || floor_smp.bin || mastersword_left_smp.bin || house_left_smp.bin
+802AF32C,802AFA10,6E4,5,game,actor KMRI,KMRI,after __sinit 802AF108; ends with __sinit 802AF7EC,enemy_both2_sob.bin
+802AFA10,802B055C,B4C,5,game,actor YAJI,YAJI,after __sinit 802AF7EC; ends with __sinit 802B0338,enemy_both_sob.bin
+802B055C,802B0CD8,77C,5,game,actor SPOT,SPOT,after __sinit 802B0338; ends with __sinit 802B0AB4,
+802B0CD8,802B1558,880,5,game,actor TRCH,TRCH,after __sinit 802B0AB4; ends with __sinit 802B1334,
+802B1558,802B214C,BF4,13,game,,,after __sinit 802B1334; ends with __sinit 802B1F28,
+802B214C,802B334C,1200,7,game,actor SKUL,SKUL,after __sinit 802B1F28; ends with __sinit 802B3128,enemy_both2_sob.bin
+802B334C,802B3674,328,5,game,actor SLSD,SLSD,after __sinit 802B3128; ends with __sinit 802B3450,
+802B3674,802B61C8,2B54,13,game,actor SWEV,SWEV,after __sinit 802B3450; ends with __sinit 802B5FA4,
+802B61C8,802B6A70,8A8,6,game,actor SSTN,SSTN,after __sinit 802B5FA4; ends with __sinit 802B684C,enemy_both2_sob.bin || =ﾌﾌﾍﾂ 
+802B6A70,802B7890,E20,6,game,actor WOOD,WOOD,after __sinit 802B684C; ends with __sinit 802B766C,wood_yasi.bti || wood_yuki.bti || wood_omote.bti || wood_ura.bti
+802B7890,802B7C78,3E8,5,game,actor SWOR,SWOR,after __sinit 802B766C; ends with __sinit 802B7A54,
+802B7C78,802B8F7C,1304,9,game,actor CRTH,CRTH,after __sinit 802B7A54; ends with __sinit 802B8D58,enemy_gc_sob.bin
+802B8F7C,802B9CAC,D30,5,game,actor SWEL,SWEL,after __sinit 802B8D58; ends with __sinit 802B9A88,
+802B9CAC,802BA048,39C,5,game,actor DOSN,DOSN,after __sinit 802B9A88; ends with __sinit 802B9E24,
+802BA048,802BA334,2EC,5,game,actor BGWC,BGWC,after __sinit 802B9E24; ends with __sinit 802BA110,
+802BA334,802BA558,224,1,game,,,after __sinit 802BA110; ends with __sinit 802BA334,
+802BA558,802BC83C,22E4,14,game,actor FIRE,FIRE,after __sinit 802BA334; ends with __sinit 802BC618,TOMIIPOTWDRYICEBNULL || ?333ｿﾀ || ｿ333ﾀ
+802BC83C,802BD8C0,1084,7,game,actor BLZE,BLZE,after __sinit 802BC618; ends with __sinit 802BD69C,enemy_both2_sob.bin || Dz8RA
+802BD8C0,802BE39C,ADC,6,game,actor ZNSW,ZNSW,after __sinit 802BD69C; ends with __sinit 802BE178,
+802BE39C,802BE8F8,55C,5,game,actor WTSW,WTSW,after __sinit 802BE178; ends with __sinit 802BE6D4,
+802BE8F8,802BF03C,744,5,game,actor LWSW,LWSW,after __sinit 802BE6D4; ends with __sinit 802BEE18,
+802BF03C,802BF410,3D4,5,game,actor CKSW,CKSW,after __sinit 802BEE18; ends with __sinit 802BF1EC,
+802BF410,802BFB7C,76C,5,game,actor SWNP,SWNP,after __sinit 802BF1EC; ends with __sinit 802BF958,
+802BFB7C,802C1614,1A98,9,game,actor LSTI,LSTI,after __sinit 802BF958; ends with __sinit 802C13F0,Jenemy_both2_sob.bin
+802C1614,802C5950,433C,22,game,actor KEY0,KEY0,after __sinit 802C13F0; ends with __sinit 802C572C,enemy_both2_sob.bin || >劔埓LﾌﾍｿLﾌﾍ? || =LﾌﾍｽLﾌﾍ
+802C5950,802C8500,2BB0,7,game,actor DOOR,DOOR,after __sinit 802C572C; ends with __sinit 802C82DC,
+802C8500,802C94F4,FF4,9,game,actor PNPC,PNPC,after __sinit 802C82DC; ends with __sinit 802C92D0,
+802C94F4,802C9944,450,5,game,actor FOCS,FOCS,after __sinit 802C92D0; ends with __sinit 802C9720,
+802C9944,802CA284,940,5,game,actor BLDF,BLDF,after __sinit 802C9720; ends with __sinit 802CA060,black.bti
+802CA284,802CB1C4,F40,5,game,actor RANK,RANK,after __sinit 802CA060; ends with __sinit 802CAFA0,kk_noItem_01.bti || kk_noMagic_01.bti || >ÌÌÍAà
+802CB1C4,802CC1C4,1000,6,game,actor ONOF,ONOF,after __sinit 802CAFA0; ends with __sinit 802CBFA0,
+802CC1C4,802CCEB0,CEC,5,game,actor RDBL,RDBL,after __sinit 802CBFA0; ends with __sinit 802CCC8C,bg_tenso_sch.bin
+802CCEB0,802CDD3C,E8C,5,game,actor FLYK,FLYK,after __sinit 802CCC8C; ends with __sinit 802CDB18,
+802CDD3C,802CEB60,E24,5,game,actor BTIN,BTIN,after __sinit 802CDB18; ends with __sinit 802CE93C,d_iriguti_a.bti || en_8_3_koware.bti || rouya_a.bti || tent_a.bti
+802CEB60,802CFDCC,126C,10,game,actor FGAS,FGAS,after __sinit 802CE93C; ends with __sinit 802CFBA8,enemy_both2_sob.bin
+802CFDCC,802D0B24,D58,5,game,actor GENE,GENE,after __sinit 802CFBA8; ends with __sinit 802D0900,enemy_gc_sob.bin
+802D0B24,802D14DC,9B8,8,game,actor STON,STON,after __sinit 802D0900; ends with __sinit 802D12B8,enemy_both2_sob.bin
+802D14DC,802D2AA4,15C8,8,game,actor TUBO,TUBO,after __sinit 802D12B8; ends with __sinit 802D2880,enemy_both2_sob.bin
+802D2AA4,802D3184,6E0,7,game,actor ROCK,ROCK,after __sinit 802D2880; ends with __sinit 802D2F60,enemy_both2_sob.bin
+802D3184,802D39B8,834,8,game,actor BORD,BORD,after __sinit 802D2F60; ends with __sinit 802D3794,enemy_both2_sob.bin
+802D39B8,802DF458,BAA0,109,game,,,after __sinit 802D3794; ends with __sinit 802DF234,map500_ctrl.csv || map500.csv || bg_tenso_sch.bin || d_map%s_%d%d_mmm_2_%d.szs
+802DF458,802DFCE8,890,8,game,actor YASI,YASI,after __sinit 802DF234; ends with __sinit 802DFAC4,enemy_both2_sob.bin
+802DFCE8,802E038C,6A4,5,game,actor FGVE,FGVE,after __sinit 802DFAC4; ends with __sinit 802E0168,稙nemy_gc_sob.bin
+802E038C,802E07C8,43C,5,game,actor VWMD,VWMD,after __sinit 802E0168; ends with __sinit 802E05A4,
+802E07C8,802E0AB4,2EC,5,game,actor URAC,URAC,after __sinit 802E05A4; ends with __sinit 802E0890,
+802E0AB4,802E1B40,108C,5,game,actor PRTC,PRTC,after __sinit 802E0890; ends with __sinit 802E191C,
+802E1B40,802E2074,534,5,game,actor OFFS,OFFS,after __sinit 802E191C; ends with __sinit 802E1E50,
+802E2074,802E2990,91C,5,game,,,after __sinit 802E1E50; ends with __sinit 802E276C,>d_enemy_map%s_%d%d.bin
+802E2990,802E40A8,1718,6,game,actor GNL2,GNL2,after __sinit 802E276C; ends with __sinit 802E3E84,enemy_gc_sob.bin || shikimono.bti
+802E40A8,802E43E0,338,5,game,actor SENP,SENP,after __sinit 802E3E84; ends with __sinit 802E41BC,
+802E43E0,802E4C74,894,6,game,actor SEV2,SEV2,after __sinit 802E41BC; ends with __sinit 802E4A50,
+802E4C74,802E5C44,FD0,8,game,actor BLZ2,BLZ2,after __sinit 802E4A50; ends with __sinit 802E5A20,
+802E5C44,802E694C,D08,5,game,actor BGMN,BGMN,after __sinit 802E5A20; ends with __sinit 802E6728,
+802E694C,802E6EC4,578,5,game,actor ZOOM,ZOOM,after __sinit 802E6728; ends with __sinit 802E6CA0,
+802E6EC4,802E72A4,3E0,5,game,,,after __sinit 802E6CA0; ends with __sinit 802E7080,
+802E72A4,802E7634,390,5,game,actor WAVE,WAVE,after __sinit 802E7080; ends with __sinit 802E7410,
+802E7634,802E794C,318,5,game,actor SEN2,SEN2,after __sinit 802E7410; ends with __sinit 802E7728,.v4.w
+802E794C,802E7DB4,468,5,game,actor PNP2,PNP2,after __sinit 802E7728; ends with __sinit 802E7B90,
+802E7DB4,802E8DFC,1048,7,game,actor MJGR,MJGR,after __sinit 802E7B90; ends with __sinit 802E8BD8,
+802E8DFC,802E910C,310,5,game,actor LCLS,LCLS,after __sinit 802E8BD8; ends with __sinit 802E8EE8,
+802E910C,802E9428,31C,5,game,actor GLBS,GLBS,after __sinit 802E8EE8; ends with __sinit 802E9204,
+802E9428,802EB21C,1DF4,8,game,actor ENDM,ENDM,after __sinit 802E9204; ends with __sinit 802EAD78,
+802EB21C,802EC1D4,FB8,7,game,actor TKRA,TKRA,after __sinit 802EAD78; ends with __sinit 802EBFB0,
+802EC1D4,802EC73C,568,5,game,actor GEN3,GEN3,after __sinit 802EBFB0; ends with __sinit 802EC518,STALKETHSLR1SLR1DDGOGOMADDRKBZBRSLR2PAMELPLKMIRASLR4RIVRGDMNMOZOPEACROPENZMIOKTAFAGNSLR3HBMBBMTYBMTYHINOSLR1SLR1SLR2SLR4PoonWIZRZASLSLR3SLR1ZORASLR1WIZRPAMEPAMEPAMEPAMEPAMEHARTDDGOKETH
+802EC73C,802ECAD4,398,5,game,actor ZOMO,ZOMO,after __sinit 802EC518; ends with __sinit 802EC8B0,
+802ECAD4,802ED140,66C,5,game,actor SDSM,SDSM,after __sinit 802EC8B0; ends with __sinit 802ECF1C,
+802ED140,802ED538,3F8,6,game,actor STPN,STPN,after __sinit 802ECF1C; ends with __sinit 802ED314,
+802ED538,802EEC50,1718,10,game,actor GNEF,GNEF,after __sinit 802ED314; ends with __sinit 802EEA2C,jen_blue.bti
+802EEC50,802EF0A0,450,5,game,actor CHSW,CHSW,after __sinit 802EEA2C; ends with __sinit 802EEE7C,
+802EF0A0,802EF448,3A8,5,game,actor AGBW,AGBW,after __sinit 802EEE7C; ends with __sinit 802EF224,
+802EF448,802EF76C,324,5,game,actor ELSK,ELSK,after __sinit 802EF224; ends with __sinit 802EF548,
+802EF76C,802F032C,BC0,6,game,actor FOEV,FOEV,after __sinit 802EF548; ends with __sinit 802F0108,
+802F032C,802F184C,1520,5,game,actor SWDL,SWDL,after __sinit 802F0108; ends with __sinit 802F1628,
+802F184C,802F3B74,2328,5,game,actor TFL2,TFL2,after __sinit 802F1628; ends with __sinit 802F3950,otosiana_bg_s.bti || floor_smp.bin || mastersword_left_smp.bin || house_left_smp.bin
+802F3B74,802F3F7C,408,6,game,actor DMYK,DMYK,after __sinit 802F3950; ends with __sinit 802F3D58,
+802F3F7C,802F43C0,444,5,game,actor TBGN,TBGN,after __sinit 802F3D58; ends with __sinit 802F419C,
+802F43C0,802F4820,460,5,game,actor TBO2,TBO2,after __sinit 802F419C; ends with __sinit 802F45FC,enemy_both2_sob.bin
+802F4820,802F4AEC,2CC,5,game,actor STGN,STGN,after __sinit 802F45FC; ends with __sinit 802F48C8,
+802F4AEC,802F5040,554,5,game,actor GSCK,GSCK,after __sinit 802F48C8; ends with __sinit 802F4E1C,
+802F5040,803006E8,B6A8,46,game,,,after __sinit 802F4E1C; ends with __sinit 803004C4,circle.bti || ｾﾌﾌﾍ>ﾌﾌﾍ || ?333B  || filter%d.bti
+803006E8,80301CD0,15E8,7,game,,,after __sinit 803004C4; ends with __sinit 80301AAC,client_thread.bin
+80301CD0,803099FC,7D2C,35,game,,,after __sinit 80301AAC; ends with __sinit 8030979C,player_sob.bin || enemy_both2_sob.bin || enemy_both_sob.bin || bg_%s_sch.szs
+803099FC,8030AE84,1488,27,game,,,after __sinit 8030979C; ends with __sinit 8030AC60,
+8030AE84,8030C058,11D4,12,game,,,after __sinit 8030AC60; ends with __sinit 8030BE34,
+8030C058,8030E9A0,2948,22,game,,,after __sinit 8030BE34; ends with __sinit 8030E77C,
+8030E9A0,8030FD60,13C0,8,game,actor SMRI,SMRI,after __sinit 8030E77C; ends with __sinit 8030FB3C,enemy_both2_sob.bin
+8030FD60,80310DE8,1088,7,game,actor GMBL,GMBL,after __sinit 8030FB3C; ends with __sinit 80310BC4,enemy_both_sob.bin
+80310DE8,8031179C,9B4,8,game,actor GMTB,GMTB,after __sinit 80310BC4; ends with __sinit 80311578,Zenemy_gc_sob.bin || enemy_both2_sob.bin
+8031179C,80312668,ECC,6,game,actor SPTG,SPTG,after __sinit 80311578; ends with __sinit 80312444,enemy_both2_sob.bin
+80312668,80313C20,15B8,6,game,actor JWLK,JWLK,after __sinit 80312444; ends with __sinit 803139FC,テnemy_gc_sob.bin || >ﾌﾌﾍB 
+80313C20,80316E34,3214,17,game,actor TWTG,TWTG,after __sinit 803139FC; ends with __sinit 80316ABC,enemy_both2_sob.bin || ÿÿÿÿ1Xd || ÿÿÿÿ1FÜ || ÿÿÿÿ1Bä
+80316E34,803172DC,4A8,6,game,,,after __sinit 80316ABC; ends with __sinit 803170B8,
+803172DC,80317EB8,BDC,6,game,actor FTGL,FTGL,after __sinit 803170B8; ends with __sinit 80317C94,
+80317EB8,8031A210,2358,15,game,actor SNPC,SNPC,after __sinit 80317C94; ends with __sinit 80319EF8,enemy_both_sob.bin || enemy_both2_sob.bin || enemy_gc_sob.bin
+8031A210,8031C050,1E40,5,game,actor HNRY,HNRY,after __sinit 80319EF8; ends with __sinit 8031BE2C,Benemy_both2_sob.bin || =ﾌﾌﾍA  || ?LﾌﾍｿLﾌﾍBH
+8031C050,8031E144,20F4,6,game,actor ESRY,ESRY,after __sinit 8031BE2C; ends with __sinit 8031DF20,Benemy_both2_sob.bin || =ﾌﾌﾍEﾈ
+8031E144,8031EF4C,E08,6,game,actor WDRY,WDRY,after __sinit 8031DF20; ends with __sinit 8031ED28,enemy_gc_sob.bin || FIREBLZEDDGONULLenemy_both2_sob.bin
+8031EF4C,8031FD60,E14,5,game,actor BPRY,BPRY,after __sinit 8031ED28; ends with __sinit 8031FB3C,enemy_both_sob.bin
+8031FD60,80320374,614,4,game,actor OCFR,OCFR,after __sinit 8031FB3C; ends with __sinit 80320150,
+80320374,803239A0,362C,13,game,actor CRTL,CRTL,after __sinit 80320150; ends with __sinit 8032377C,enemy_both2_sob.bin || ½ÌÌÍA
+803239A0,8032500C,166C,6,game,actor PCDM,PCDM,after __sinit 8032377C; ends with __sinit 80324DE8,FLMEBLZ2NULLenemy_both2_sob.bin
+8032500C,80326A90,1A84,9,game,actor BMTY,BMTY,after __sinit 80324DE8; ends with __sinit 8032686C,enemy_both2_sob.bin
+80326A90,803276C4,C34,6,game,actor INFR,INFR,after __sinit 8032686C; ends with __sinit 803274A0,enemy_both2_sob.bin
+803276C4,803287F0,112C,5,game,actor OSIN,OSIN,after __sinit 803274A0; ends with __sinit 803285CC,enemy_both2_sob.bin
+803287F0,80328D6C,57C,5,game,actor SBTN,SBTN,after __sinit 803285CC; ends with __sinit 80328B48,enemy_gc_sob.bin
+80328D6C,80329468,6FC,5,game,actor DSIN,DSIN,after __sinit 80328B48; ends with __sinit 80329244,enemy_both2_sob.bin
+80329468,8032AB80,1718,6,game,actor GNLD,GNLD,after __sinit 80329244; ends with __sinit 8032A95C,enemy_both2_sob.bin
+8032AB80,8032DF94,3414,14,game,actor RUPY,RUPY,after __sinit 8032A95C; ends with __sinit 8032DD70,ｺenemy_both2_sob.bin || enemy_gc_sob.bin || TOMINULL
+8032DF94,8032F148,11B4,6,game,actor RY02,RY02,after __sinit 8032DD70; ends with __sinit 8032EF24,enemy_both2_sob.bin
+8032F148,80333958,4810,16,game,actor NIWA,NIWA,after __sinit 8032EF24; ends with __sinit 80333734,enemy_both2_sob.bin || ?ｹ劔劔劒Aﾀ
+80333958,80334318,9C0,6,game,actor BALL,BALL,after __sinit 80333734; ends with __sinit 803340F4,kage_sob.bin || enemy_both_sob.bin || ﾀｳ33@ｳ33ﾀ333@333?ｬﾌﾍｿｬﾌﾍ
+80334318,80335688,1370,4,game,actor SBAL,SBAL,after __sinit 803340F4,kage_sob.bin || enemy_both_sob.bin
+80335688,80335A7C,3F4,3,game,,,duplicate sdata2 constant; ends with __sinit 80335858,
+80335A7C,80336040,5C4,4,game,actor TKYU,TKYU,after __sinit 80335858; ends with __sinit 80335E1C,
+80336040,803372D0,1290,7,game,actor TSNO,TSNO,after __sinit 80335E1C; ends with __sinit 803370AC,
+803372D0,80337650,380,5,game,actor TKRM,TKRM,after __sinit 803370AC; ends with __sinit 8033742C,enemy_both2_sob.bin
+80337650,80338AE0,1490,7,game,actor JPEN,JPEN,after __sinit 8033742C; ends with __sinit 803388BC,$enemy_both2_sob.bin || enemy_gc_sob.bin
+80338AE0,803397C0,CE0,5,game,actor WPPR,WPPR,after __sinit 803388BC; ends with __sinit 8033959C,
+803397C0,8033C080,28C0,8,game,actor FLYO,FLYO,after __sinit 8033959C; ends with __sinit 8033BE5C,floor1_smp.bin || enemy_both2_sob.bin || wood_ura.bti || wood_yasi.bti
+8033C080,8033C584,504,5,game,actor WPPA,WPPA,after __sinit 8033BE5C; ends with __sinit 8033C360,
+8033C584,8033CCE4,760,5,game,actor RVFR,RVFR,after __sinit 8033C360; ends with __sinit 8033CAC0,enemy_both2_sob.bin
+8033CCE4,8033E638,1954,8,game,actor STBL,STBL,after __sinit 8033CAC0; ends with __sinit 8033E414,enemy_gc_sob.bin || enemy_both2_sob.bin || kazari_piramid.bti || >LﾌﾍAP
+8033E638,8033F448,E10,5,game,actor LITS,LITS,after __sinit 8033E414; ends with __sinit 8033F224,enemy_gc_sob.bin
+8033F448,8033F9A0,558,5,game,,,after __sinit 8033F224; ends with __sinit 8033F77C,
+8033F9A0,80340EC8,1528,14,game,actor LTZR,LTZR,after __sinit 8033F77C; ends with __sinit 80340CA4,enemy_gc_sob.bin || =LﾌﾍA 
+80340EC8,80341CB0,DE8,5,game,actor BBSL,BBSL,after __sinit 80340CA4; ends with __sinit 80341A8C,player_sob.bin
+80341CB0,80343A70,1DC0,8,game,actor BBMB,BBMB,after __sinit 80341A8C; ends with __sinit 8034384C,bomb_big_a.bti || bomb_big.bti
+80343A70,8034543C,19CC,6,game,actor BEEE,BEEE,after __sinit 8034384C; ends with __sinit 80345218,enemy_both2_sob.bin
+8034543C,80346E24,19E8,7,game,actor FISH,FISH,after __sinit 80345218; ends with __sinit 80346C00,enemy_gc_sob.bin
+80346E24,80347E90,106C,6,game,actor NNJN,NNJN,after __sinit 80346C00; ends with __sinit 80347C6C,enemy_both2_sob.bin
+80347E90,803481B8,328,5,game,actor SZSC,SZSC,after __sinit 80347C6C; ends with __sinit 80347F94,
+803481B8,803489A4,7EC,5,game,actor SPBG,SPBG,after __sinit 80347F94; ends with __sinit 80348780,
+803489A4,80349914,F70,5,game,actor FOBE,FOBE,after __sinit 80348780; ends with __sinit 803496F0,enemy_gc_sob.bin
+80349914,8034A6B0,D9C,6,game,actor BEMN,BEMN,after __sinit 803496F0; ends with __sinit 8034A48C,
+8034A6B0,8034AA40,390,5,game,actor HTMK,HTMK,after __sinit 8034A48C; ends with __sinit 8034A81C,enemy_both2_sob.bin
+8034AA40,8034C950,1F10,8,game,actor NWOK,NWOK,after __sinit 8034A81C; ends with __sinit 8034C72C,enemy_both2_sob.bin || enemy_gc_sob.bin
+8034C950,8034DFF0,16A0,8,game,actor RCK2,RCK2,after __sinit 8034C72C; ends with __sinit 8034DDCC,enemy_both2_sob.bin
+8034DFF0,8034EDDC,DEC,6,game,actor YNSW,YNSW,after __sinit 8034DDCC; ends with __sinit 8034EBB8,enemy_both_sob.bin
+8034EDDC,80351EC4,30E8,14,game,actor OBLF,OBLF,after __sinit 8034EBB8; ends with __sinit 80351B84,enemy_both_sob.bin
+80351EC4,803524C8,604,5,game,actor TOOI,TOOI,after __sinit 80351B84; ends with __sinit 803522A4,
+803524C8,8035280C,344,5,game,actor SVGT,SVGT,after __sinit 803522A4; ends with __sinit 803525E8,
+8035280C,803536C4,EB8,5,game,actor TUTM,TUTM,after __sinit 803525E8; ends with __sinit 803534A0,>ÌÌÍAð
+803536C4,80353E70,7AC,5,game,,,after __sinit 803534A0; ends with __sinit 80353C4C,enemy_both2_sob.bin
+80353E70,80354A44,BD4,5,game,actor TUGF,TUGF,after __sinit 80353C4C; ends with __sinit 80354820,enemy_gc_sob.bin || >ﾌﾌﾍBp
+80354A44,80354D64,320,5,game,actor RSNP,RSNP,after __sinit 80354820; ends with __sinit 80354B40,
+80354D64,803567AC,1A48,9,game,actor MRTA,MRTA,after __sinit 80354B40; ends with __sinit 80356588,enemy_gc_sob.bin || yy_1_1maruta1.bti || yy_1_1maruta2.bti
+803567AC,803578D8,112C,6,game,actor JPE2,JPE2,after __sinit 80356588; ends with __sinit 803576B4,0enemy_both_sob.bin || enemy_gc_sob.bin
+803578D8,80357DE8,510,5,game,actor RINS,RINS,after __sinit 803576B4; ends with __sinit 80357BC4,
+80357DE8,80358460,678,5,game,actor MRTC,MRTC,after __sinit 80357BC4; ends with __sinit 8035823C,
+80358460,8035B5F0,3190,13,game,actor SSLF,SSLF,after __sinit 8035823C; ends with __sinit 8035B348,otosiana_bg_s.bti
+8035B5F0,8035C4BC,ECC,14,game,actor ENPC,ENPC,after __sinit 8035B348,
+8035C4BC,8035C940,484,2,game,,,duplicate sdata2 constant; ends with __sinit 8035C650,ÿÿÿÿ5¾  || ÿÿÿÿ5¾
+8035C940,8035DED8,1598,14,game,actor EMIK,EMIK,after __sinit 8035C650; ends with __sinit 8035DBB4,Ｆnemy_gc_sob.bin || =ﾌﾌﾍDﾟﾀ || enemy_both_sob.bin || enemy_both2_sob.bin
+8035DED8,8035E8CC,9F4,11,game,actor EZLD,EZLD,after __sinit 8035DBB4; ends with __sinit 8035E60C,enemy_gc_sob.bin || enemy_both2_sob.bin || ÿÿÿÿ5ât || ÿÿÿÿ5â8
+8035E8CC,8035F360,A94,13,game,actor ELNK,ELNK,after __sinit 8035E60C; ends with __sinit 8035F070,ÿÿÿÿ5êH
+8035F360,80362634,32D4,16,game,actor EOWL,EOWL,after __sinit 8035F070; ends with __sinit 80362374,enemy_gc_sob.bin || enemy_both2_sob.bin || ÿÿÿÿ6 || ÿÿÿÿ5ÿp
+80362634,8036766C,5038,28,game,actor EETC,EETC,after __sinit 80362374; ends with __sinit 80366E60,enemy_gc_sob.bin || enemy_both_sob.bin || fune.bti || enemy_both2_sob.bin
+8036766C,80368198,B2C,6,game,actor DNAV,DNAV,after __sinit 80366E60; ends with __sinit 80367F74,enemy_both2_sob.bin || ?ｳ33A  || ?LÌÍAð
+80368198,8036CB5C,49C4,19,game,actor DCR2,DCR2,after __sinit 80367F74; ends with __sinit 8036C8FC,kk_black.bti || enemy_gc_sob.bin || enemy_both2_sob.bin
+8036CB5C,8036D7F8,C9C,6,game,actor PSW2,PSW2,after __sinit 8036C8FC; ends with __sinit 8036D5D4,enemy_both2_sob.bin
+8036D7F8,8036DD6C,574,6,game,actor LFGN,LFGN,after __sinit 8036D5D4; ends with __sinit 8036DB48,
+8036DD6C,8036E544,7D8,5,game,actor LEAF,LEAF,after __sinit 8036DB48; ends with __sinit 8036E320,
+8036E544,8036FB60,161C,6,game,actor ELK2,ELK2,after __sinit 8036E320; ends with __sinit 8036F93C,ｾｳ33C@
+8036FB60,80372EA8,3348,25,game,,,after __sinit 8036F93C; ends with __sinit 80372B00,úenemy_both2_sob.bin || enemy_both_sob.bin
+80372EA8,80373138,290,5,game,actor TJIJ,TJIJ,after __sinit 80372B00; ends with __sinit 80372F14,
+80373138,80373BD8,AA0,6,game,actor PSWB,PSWB,after __sinit 80372F14; ends with __sinit 803739B4,
+80373BD8,80374788,BB0,6,game,actor PSWK,PSWK,after __sinit 803739B4; ends with __sinit 80374564,enemy_gc_sob.bin
+80374788,80375970,11E8,6,game,actor BCK2,BCK2,after __sinit 80374564; ends with __sinit 8037574C,enemy_both_sob.bin
+80375970,80376394,A24,6,game,actor MEDM,MEDM,after __sinit 8037574C; ends with __sinit 80376170,
+80376394,80376850,4BC,4,game,actor SSMI,SSMI,after __sinit 80376170; ends with __sinit 8037662C,
+80376850,80376B4C,2FC,4,game,actor TMI2,TMI2,after __sinit 8037662C; ends with __sinit 80376928,
+80376B4C,80376FA0,454,4,game,actor PTMI,PTMI,after __sinit 80376928; ends with __sinit 80376D7C,
+80376FA0,80377E20,E80,5,game,,,after __sinit 80376D7C; ends with __sinit 80377BFC,yy_1_1_iwa1.bti || yy_1_1_iwa2.bti || A>ffB0ffA33A~ffA8 || @Oó33333B
+80377E20,80378294,474,4,game,actor ENDR,ENDR,after __sinit 80377BFC; ends with __sinit 80378070,
+80378294,80379078,DE4,8,game,actor ICEB,ICEB,after __sinit 80378070; ends with __sinit 80378E54,yukikabe.bti
+80379078,80379870,7F8,5,game,actor PSS2,PSS2,after __sinit 80378E54; ends with __sinit 8037964C,
+80379870,80379F84,714,5,game,actor WPWL,WPWL,after __sinit 8037964C; ends with __sinit 80379D60,
+80379F84,8037ACC4,D40,14,game,,,after __sinit 80379D60; ends with __sinit 8037AAA0,
+8037ACC4,8037B374,6B0,16,game,,,after __sinit 8037AAA0; ends with __sinit 8037B150,
+8037B374,8037D784,2410,22,game,actor JIJI,JIJI,after __sinit 8037B150; ends with __sinit 8037CE5C,	enemy_gc_sob.bin || enemy_both2_sob.bin || enemy_both_sob.bin || ÿÿÿÿ7µü
+8037D784,8037DF68,7E4,6,game,actor MTBO,MTBO,after __sinit 8037CE5C; ends with __sinit 8037DD44,enemy_both2_sob.bin
+8037DF68,8037E54C,5E4,2,game,,,after __sinit 8037DD44,
+8037E54C,8038DE74,F928,52,game,,,duplicate sdata2 constant; ends with __sinit 8038DC38,?DìOC³ || rock_24_20_4i_e.bfn || gc_four_swords_text_e.bmg
+8038DE74,8038F9F4,1B80,6,game,actor BERY,BERY,after __sinit 8038DC38; ends with __sinit 8038F7D0,0enemy_both2_sob.bin
+8038F9F4,8039003C,648,5,game,actor KNBN,KNBN,after __sinit 8038F7D0; ends with __sinit 8038FE18,
+8039003C,80390818,7DC,8,game,,,after __sinit 8038FE18; ends with __sinit 803905F4,gb_ch_obj_base_sch.szs || gb_ch_obj_tr_schE.szs || cu_cl_obj_base_scl.szs || player_sch.szs
+80390818,80391CE4,14CC,17,game,,,after __sinit 803905F4; ends with __sinit 80391AC0,gc_four_swords_text_e.bmg || gc_four_swords_text_ek.bmg
+80391CE4,80394134,2450,9,game,actor SCRE,SCRE,after __sinit 80391AC0; ends with __sinit 80393F10,
+80394134,803944C8,394,5,game,actor TALK,TALK,after __sinit 80393F10; ends with __sinit 803942A4,
+803944C8,803A3484,EFBC,83,game,,,after __sinit 803942A4; ends with __sinit 803A3260,劒AffgA0 || P1b02 || P1b01 || P1n02
+803A3484,803A60E4,2C60,7,game,,,after __sinit 803A3260; ends with __sinit 803A5EC0,w_kumo.bmd || gb_ch_obj_base_sch.szs || gb_ch_obj_tr_schE.szs || cu_cl_obj_base_scl.szs
+803A60E4,803A85E4,2500,9,game,,,after __sinit 803A5EC0; ends with __sinit 803A83C0,option.blo || kk_kettei_01.bti || kk_modoru_01.bti
+803A85E4,803A8DFC,818,7,game,,,after __sinit 803A83C0; ends with __sinit 803A8BD8,gb_ch_obj_base_sch.szs || gb_ch_obj_tr_schE.szs || cu_cl_obj_base_scl.szs || player_sch.szs
+803A8DFC,803B7DCC,EFD0,47,game,,,after __sinit 803A8BD8; ends with __sinit 803B7BA8,player_sob.bin || Tmmt01 || Tmmt02 || Pmmw01
+803B7DCC,803B8970,BA4,7,game,,,after __sinit 803B7BA8; ends with __sinit 803B874C,rock_24_20_4i_e.bfn || kk_black.bti
+803B8970,803B8C74,304,5,game,actor TLK2,TLK2,after __sinit 803B874C; ends with __sinit 803B8A50,
+803B8C74,803B9940,CCC,13,game,,,after __sinit 803B8A50; ends with __sinit 803B961C,
+803B9940,803BACF8,13B8,16,game,,,after __sinit 803B961C; ends with __sinit 803BAAB0,gc4sword
+803BACF8,803BC6F0,19F8,6,game,,,after __sinit 803BAAB0; ends with __sinit 803BC4C8,Four Swords Adventures || %d/%d Save Data || kk_diskbanner_01.bti || kk_ipl_icon_01.bti
+803BC6F0,803D2C34,16544,65,game,,,after __sinit 803BC4C8; ends with __sinit 803D24E4,Tf1lv || Tf2lv || Tf3lv || Tf1fir
+803D2C34,803D6434,3800,32,game,,,after __sinit 803D24E4; ends with __sinit 803D5F1C,Psl01 || Psl02 || Psl03 || Psl04
+803D6434,803D7098,C64,12,game,actor BFIN,BFIN,after __sinit 803D5F1C; ends with __sinit 803D6DC0,
+803D7098,803D9944,28AC,10,game,,,after __sinit 803D6DC0; ends with __sinit 803D9720,P1kak01 || P1kak02 || P1kak03 || P1kak04
+803D9944,803DA6B4,D70,5,game,actor TNGL,TNGL,after __sinit 803D9720; ends with __sinit 803DA490,
+803DA6B4,803DAC3C,588,4,game,,,after __sinit 803DA490; ends with __sinit 803DAA18,pressstart.blo
+803DAC3C,803E1668,6A2C,23,game,,,after __sinit 803DAA18; ends with __sinit 803E1224,Pmov01 || Pexbk02 || Pexbk01 || Pexb07
+803E1668,803F0A54,F3EC,43,game,,,after __sinit 803E1224; ends with __sinit 803F01F4,Pmadb05 || Pmadb04 || Pmadb03 || Pmadb02
+803F0A54,803FF2C4,E870,38,game,,,after __sinit 803F01F4; ends with __sinit 803FEB94,Pmbab05 || Pmbab04 || Pmbab03 || Pmbab02
+803FF2C4,80400DC4,1B00,6,game,,,after __sinit 803FEB94; ends with __sinit 80400BA0,/GC4Sword_usa/logo.arc || ZelPac_NIN_logo.blo || progressive_choice.bti || progressive_inter.bti
+80400DC4,80401848,A84,4,game,,,after __sinit 80400BA0; ends with __sinit 80401604,MESGbmg1 || Reading the Game Disc... || The Disc Cover is open.\nPlease close the Disc Cover\nto continue playing. || Please insert a Game Disc for\nThe Legend of Zelda:\nFour Swords Adventures.
+80401848,804023D0,B88,14,game,,,after __sinit 80401604; ends with __sinit 8040217C,
+804023D0,80403414,1044,26,game,,,after __sinit 8040217C,
+80403414,80403D84,970,9,game,,,duplicate sdata2 constant; ends with __sinit 80403B48,
+80403D84,80414F6C,111E8,56,game,,,after __sinit 80403B48; ends with __sinit 804149E0,enemy_both2_sob.bin || enemy_gc_sob.bin || ?player_sob.bin || Pwarea01Pwarea02Pwarea03Pwarea04Pwarea05Pwarea06Pwarea07Pwarea08Ppoint01Ppoint02Ppoint03Ppoint04Ppoint05Ppoint06Ppoint07Ppoint08Ppoint09Ppoint10Ppoint11Ppoint12Ppoint13Ppoint14Ppoint15Ppoint16Ppoint17Ppoint18Ppoint19Ppoint20Ppoint21Ppoint22Ppoint23Ppoint24Ppoint25Ppoint26Ppoint27Ppoint28Ppoint29Ppoint30Ppoint31Ppoint32Ppoint33Ppoint34Ppoint35Ppoint36Ppoint37Ppoint38Ppoint39Ppoint40Ppoint41Ppoint42Ppoint43Ppoint44Ppoint45Ppoint46Ppoint47Ppoint48Ppoint49Ppoint50Ppoint51Ppoint52Ppoint53Ppoint54Ppoint55Ppoint56Ppoint57Ppoint58Ppoint59Ppoint60Ppoint61Ppoint62Ppoint63Ppoint64
+80414F6C,80418B64,3BF8,10,game,,,after __sinit 804149E0; ends with __sinit 804188EC,Ndata06 || Ndata07 || Ndata08 || Ndata09
+80418B64,8042165C,8AF8,23,game,,,after __sinit 804188EC; ends with __sinit 80421438,kk_heart_01.bti || Ptk01 || Ptk02 || Ptim01
+8042165C,80427D2C,66D0,19,game,,,after __sinit 80421438; ends with __sinit 80427B08,kk_heart_01.bti || Ptk01 || Ptk02 || Ptim01
+80427D2C,8042E964,6C38,168,game,,,after __sinit 80427B08; ends with __sinit 8042E788,
+8042E964,80432638,3CD4,31,game,,,after __sinit 8042E788; ends with __sinit 80432414,gc_four_swords_text_e.bmg ||  Force Gem ||  baddies ||  systems
+80432638,80434370,1D38,7,game,,,after __sinit 80432414; ends with __sinit 8043414C,Ptk01 || Ptk02 || Ptim01 || Ptim01kk_rupyNum_00.bti
+80434370,80437C10,38A0,11,game,,,after __sinit 8043414C; ends with __sinit 804379B0,rule.blo || rule_bat.blo || kk_kettei_01.bti || kk_modoru_01.bti
+80437C10,80438540,930,5,game,actor GBAO,GBAO,after __sinit 804379B0; ends with __sinit 8043831C,
+80438540,80438C68,728,5,game,actor LIMT,LIMT,after __sinit 8043831C; ends with __sinit 80438A44,
+80438C68,8043A0E8,1480,8,game,,,after __sinit 80438A44; ends with __sinit 80439EC4,",gameover.blo || gameover.bck || kk_black.bti"
+8043A0E8,80440BF4,6B0C,38,game,,,after __sinit 80439EC4; ends with __sinit 8044094C,kk_mainRank_01.bti || main_message_window.blo || dungeon_floor.blo || op_zelda.blo
+80440BF4,80441318,724,9,game,,,after __sinit 8044094C; ends with __sinit 804410F4,Pba04 || Pba03 || Pba02 || Pba01
+80441318,80441A1C,704,9,game,,,after __sinit 804410F4; ends with __sinit 804417A4,
+80441A1C,80442810,DF4,6,game,,,after __sinit 804417A4; ends with __sinit 804425EC,gba_connect_error_window.blo
+80442810,80442C64,454,4,game,,,after __sinit 804425EC; ends with __sinit 80442A40,/GC4Sword_usa/AudioRes/JaiInit.baa || /GC4Sword_usa/AudioRes/Seqs/JaiSeqs.arc || audio data load end!!\n || auido init end!!\n
+80442C64,804432DC,678,4,game,actor DTLK,DTLK,after __sinit 80442A40; ends with __sinit 804430B8,
+804432DC,80443B0C,830,10,game,,,after __sinit 804430B8; ends with __sinit 80443894,map_ed.blo
+80443B0C,804455E0,1AD4,11,game,,,after __sinit 80443894; ends with __sinit 80445338,gc_four_swords_text_e.bmg || map_yagura_window.blo || ÿÿÿÿDEà
+804455E0,804465B8,FD8,6,game,,,after __sinit 80445338; ends with __sinit 80446394,P11st01 || P11st02 || Pp1i01 || Pp1i02
+804465B8,80447618,1060,6,game,,,after __sinit 80446394; ends with __sinit 804473F4,Pp1i01 || Pp1i02 || Pp1ib01 || Pp1ib02
+80447618,80447FAC,994,6,game,,,after __sinit 804473F4; ends with __sinit 80447D88,Pp1i01 || Pp1i02 || Pp1ib01 || Pp1ib02
+80447FAC,80448940,994,6,game,,,after __sinit 80447D88; ends with __sinit 8044871C,Pp1i01 || Pp1i02 || Pp1ib01 || Pp1ib02
+80448940,8044998C,104C,6,game,,,after __sinit 8044871C; ends with __sinit 80449768,Pp1i01 || Pp1i02 || Pp1ib01 || Pp1ib02
+8044998C,8044A828,E9C,6,game,,,after __sinit 80449768; ends with __sinit 8044A604,Pfi01 || Pfik01 || Pfk01 || Pfk02
+8044A828,8044B80C,FE4,6,game,,,after __sinit 8044A604; ends with __sinit 8044B5E8,Pfi01 || Pfik01 || Pfk01 || Pfk02
+8044B80C,8044C028,81C,6,game,,,after __sinit 8044B5E8; ends with __sinit 8044BE04,c/GC4Sword_usa/staff/staff%d.arc || staffroll_p%d.blo
+8044C028,8044C7F0,7C8,6,game,,,after __sinit 8044BE04; ends with __sinit 8044C5CC,op_prologue.blo || op_prologue_m.blo
+8044C7F0,80453AF8,7308,19,game,,,after __sinit 8044C5CC; ends with __sinit 804538D4,Pcntn01 || Psc01 || Psg01 || Wcntn01
+80453AF8,8045560C,1B14,7,game,,,after __sinit 804538D4; ends with __sinit 804553E8,Pcntn01 || Psc01 || Psg01kk_pCselect_01.bti || pause.blo
+8045560C,80455930,324,4,game,,,after __sinit 804553E8,
+80455930,80455CA4,374,3,game,,,duplicate sdata2 constant; ends with __sinit 80455A80,
+80455CA4,80457C08,1F64,11,game,,,after __sinit 80455A80; ends with __sinit 804579E4,=ﾌﾌﾍA 
+80457C08,80457DFC,1F4,2,game,,,after __sinit 804579E4; ends with __sinit 80457C10,
+80457DFC,8045A338,253C,31,game,,,after __sinit 80457C10; ends with __sinit 8045A114,
+8045A338,8045B010,CD8,16,game,,,after __sinit 8045A114; ends with __sinit 8045ADEC,
+8045B010,8045B6F0,6E0,8,game,,,after __sinit 8045ADEC; ends with __sinit 8045B4CC,
+8045B6F0,8045BA84,394,2,game,,,after __sinit 8045B4CC; ends with __sinit 8045B6F8,
+8045BA84,8045BCE4,260,2,game,,,after __sinit 8045B6F8; ends with __sinit 8045BAC0,
