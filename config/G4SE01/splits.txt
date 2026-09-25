@@ -120,6 +120,11 @@ JSystem/J2DGraph/J2DPrint.cpp:
 	.sbss       start:0x8053A9A0 end:0x8053A9B0
 	.sdata2     start:0x8053BA00 end:0x8053BA28
 
+JSystem/J2DGraph/J2DTextBox.cpp:
+	.text       start:0x8009DFA0 end:0x8009F5BC
+	.data       start:0x80499888 end:0x80499948
+	.sdata2     start:0x8053BA48 end:0x8053BA68
+
 JSystem/J2DGraph/J2DTevs.cpp:
 	.text       start:0x800B5CCC end:0x800B6158
 	.rodata     start:0x804631F0 end:0x80463270
