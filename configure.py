@@ -29,7 +29,9 @@ from tools.project import (
 # Game versions
 DEFAULT_VERSION = 0
 VERSIONS = [
-    "G4SE01",  # 0
+    "G4SE01",  # 0 USA
+    "G4SJ01",  # 1 Japan
+    "G4SP01",  # 2 Europe (PAL)
 ]
 
 parser = argparse.ArgumentParser()
