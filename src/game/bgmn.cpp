@@ -1,0 +1,27 @@
+// TU 0x802e5c44-0x802e694c (actor BGMN).
+// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+#include "game/esd/types.h"
+
+// ---- Bgmn_dtor_802E5C44.cpp ----
+extern "C" void dtor_801F593C(void* this_, int how);
+extern "C" void dtor_80084580(void* this_);
+extern void* lbl_804A9DA0[];
+
+extern "C" void* fn_802E5C44(void* this_, short how) {
+    if (this_) {
+        *(void**)this_ = lbl_804A9DA0;
+        dtor_801F593C(this_, 0);
+        if (how > 0) {
+            dtor_80084580(this_);
+        }
+    }
+    return this_;
+}
+
+// ---- Bgmn_EmptyHook.cpp ----
+// Bgmn_EmptyHook - BGMN: empty no-op override (0x4, leaf, no extab needed)
+extern "C" {
+
+void Bgmn_EmptyHook(void) {}
+
+}
