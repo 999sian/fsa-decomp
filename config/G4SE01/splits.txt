@@ -403,13 +403,13 @@ TRK_MINNOW_DOLPHIN/mem_TRK.c:
 	.text       start:0x800635E8 end:0x800636A0
 
 TRK_MINNOW_DOLPHIN/targimpl.c:
-	.text       start:0x800636A0 end:0x80065230
+	.text       start:0x800636A0 end:0x8006522C
 	.rodata     start:0x8045D928 end:0x8045D9C0
 	.data       start:0x804979F0 end:0x80497A20
 	.bss        start:0x804B8098 end:0x804B8618
 
 TRK_MINNOW_DOLPHIN/targsupp.s: comment:0
-	.text       start:0x80065230 end:0x80065250
+	.text       start:0x80065230 end:0x80065250 align:16
 
 TRK_MINNOW_DOLPHIN/mpc_7xx_603e.c:
 	.text       start:0x80065250 end:0x800655C0
