@@ -376,7 +376,7 @@ config.libs = [
             Object(NonMatching, "JSystem/JParticle/JPABaseShape.cpp"),
             Object(Matching, "JSystem/JParticle/JPAChildShape.cpp"),
             Object(Matching, "JSystem/JParticle/JPADynamicsBlock.cpp"),
-            Object(NonMatching, "JSystem/JParticle/JPAEmitter.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAEmitter.cpp"),
             Object(Matching, "JSystem/JParticle/JPAEmitterManager.cpp"),
             Object(Matching, "JSystem/JParticle/JPAExTexShape.cpp"),
             Object(Matching, "JSystem/JParticle/JPAExtraShape.cpp"),
