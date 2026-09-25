@@ -15527,8 +15527,8 @@ makeHierarchy__12J3DJointTreeFP8J3DJointPPC17J3DModelHierarchyP16J3DMaterialTabl
 findImportantMtxIndex__12J3DJointTreeFv = .text:0x800E36AC; // type:function size:0x174 scope:global
 calc__12J3DJointTreeFP12J3DMtxBufferRC3VecRA3_A4_Cf = .text:0x800E3820; // type:function size:0x70 scope:global
 setMtxBuffer__10J3DMtxCalcFP12J3DMtxBuffer = .text:0x800E3890; // type:function size:0x8 scope:global
-fn_800E3898 = .text:0x800E3898; // type:function size:0x88
-fn_800E3920 = .text:0x800E3920; // type:function size:0x30
+deform__13J3DSkinDeformFP8J3DModel = .text:0x800E3898; // type:function size:0x88 scope:global
+calc__15J3DVtxColorCalcFP8J3DModel = .text:0x800E3920; // type:function size:0x30 scope:global
 fn_800E3950 = .text:0x800E3950; // type:function size:0x18
 fn_800E3968 = .text:0x800E3968; // type:function size:0x2C
 fn_800E3994 = .text:0x800E3994; // type:function size:0x48
