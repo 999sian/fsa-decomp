@@ -278,6 +278,9 @@ cflags_jsystem = [
     "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
 ]
 
+# Extra flags for JAudio/Task (DSP driver), as in the mkdd decomp
+cflags_jaudio_task = ["-O4,s", "-inline noauto", "-use_lmw_stmw off", "-func_align 32"]
+
 config.linker_version = "GC/1.3.2"
 
 
@@ -368,6 +371,16 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),
             Object(Matching, "JSystem/JUtility/JUTTexture.cpp"),
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "jau-task",
+        [
+            # JAudio/Task: DSP driver, built with mkdd's per-file flags
+            Object(Matching, "JSystem/JAudio/Task/dspproc.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/dsptask.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/osdsp.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/osdsp_task.c", extra_cflags=cflags_jaudio_task),
         ],
     ),
 ]
