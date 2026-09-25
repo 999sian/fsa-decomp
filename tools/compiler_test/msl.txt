@@ -1,0 +1,16 @@
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/alloc.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/ansi_files.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/buffer_io.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/ctype.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/direct_io.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/file_io.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/mbstring.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/mem.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/mem_funcs.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/misc_io.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/printf.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/scanf.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/string.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/strtoul.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/float.c
+libs/PowerPC_EABI_Support/src/MSL_C/MSL_Common/wchar_io.c

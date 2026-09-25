@@ -1,0 +1,6 @@
+libs/PowerPC_EABI_Support/src/Runtime/__mem.c
+libs/PowerPC_EABI_Support/src/Runtime/__va_arg.c
+libs/PowerPC_EABI_Support/src/Runtime/global_destructor_chain.c
+libs/PowerPC_EABI_Support/src/Runtime/ptmf.c
+libs/PowerPC_EABI_Support/src/Runtime/runtime.c
+libs/PowerPC_EABI_Support/src/Runtime/GCN_mem_alloc.c
