@@ -12,6 +12,6 @@ FSA's JSystem was built with MWCC GC/2.6 at -O4,p; these files are used
 unmodified unless noted in git history.
 
 SDK/MSL/Runtime/MetroTRK sources (src/dolphin, src/MSL_C, src/Runtime.PPCEABI.H, src/TRK_MINNOW_DOLPHIN) and include/sdk: Pikmin 2 decomp, https://github.com/projectPiki/pikmin2
-SDK function identification (reference objects only): Mario Kart: Double Dash!! decomp, https://github.com/doldecomp/mkdd
-SDK function identification (reference objects only): Dolphin SDK 2004 decomp, https://github.com/doldecomp/dolsdk2004
+SDK function identification and MSL signal.c: Mario Kart: Double Dash!! decomp, https://github.com/doldecomp/mkdd
+SDK function identification and ported functions (GXDraw, GXAttr getters, GXTransform, GXFifo, vec): Dolphin SDK 2004 decomp, https://github.com/doldecomp/dolsdk2004
 GBA library identification (reference objects only): The Wind Waker decomp, https://github.com/zeldaret/tww
