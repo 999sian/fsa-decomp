@@ -35,6 +35,10 @@ JSystem/JAudio/System/JASInstSense.cpp:
 	.data       start:0x80491A78 end:0x80491A88
 	.sdata2     start:0x8053B1D0 end:0x8053B1F0
 
+JSystem/JAudio/System/JASSimpleWaveBank.cpp:
+	.text       start:0x80030BD0 end:0x80030EF8
+	.data       start:0x80491A88 end:0x80491AD0
+
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
 	.data       start:0x80498C00 end:0x80498C10
