@@ -30,20 +30,25 @@ mkdir -p "$wt/orig/G4SE01/sys"; cp "$repo/orig/G4SE01/sys/main.dol" "$wt/orig/G4
 python3 - "$repo" "$wt" "$base" "$fork" $branches <<'PY'
 import subprocess, sys
 repo, wt, base, fork = sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4]
-branches = sys.argv[5:]
+# each branch may carry its own fork point as `branch=fork` (needed when a *content* branch has
+# advanced since it was last integrated, so its diff would otherwise repeat what is already in base)
+specs = []
+for a in sys.argv[5:]:
+    b, _, f = a.partition("=")
+    specs.append((b, f or fork))
 path = "src/Game/Actor.cpp"
 out = subprocess.run(["git", "-C", repo, "show", "%s:%s" % (base, path)],
                      capture_output=True, text=True, check=True).stdout
 if not out.endswith("\n"):
     out += "\n"
 total = 0
-for b in branches:
-    diff = subprocess.run(["git", "-C", repo, "diff", "%s..%s" % (fork, b), "--", path],
+for b, fork_b in specs:
+    diff = subprocess.run(["git", "-C", repo, "diff", "%s..%s" % (fork_b, b), "--", path],
                           capture_output=True, text=True).stdout
     added = [l[1:] for l in diff.splitlines() if l.startswith("+") and not l.startswith("+++")]
     removed = sum(1 for l in diff.splitlines() if l.startswith("-") and not l.startswith("---"))
     if not added and not removed:
-        print("  %-14s no change" % b); continue
+        print("  %-14s no change (fork %s)" % (b, fork_b[:7])); continue
     total += len(added)
     out += "\n/* ==== integrated from %s ==== */\n" % b + "\n".join(added) + "\n"
     print("  %-14s +%d lines, -%d lines%s" % (b, len(added), removed,
