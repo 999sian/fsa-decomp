@@ -370,6 +370,31 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    JSystemLib(
+        "jas-b",
+        [
+            Object(NonMatching, "JSystem/JAudio/System/JASHeapCtrl.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASInstRand.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASInstSense.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASLfo.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASOscillator.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASProbe.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASRegisterParam.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASReport.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASResArcLoader.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASSeqCtrl.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASSeqParser.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASSeqReader.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASSimpleWaveBank.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASSoundParams.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASTaskThread.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASTrack.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASTrackPort.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASWaveBank.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASWSParser.cpp"),
+        ],
+    ),
 ]
 
 
