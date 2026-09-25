@@ -390,13 +390,17 @@ config.libs = [
             Object(Matching, "JSystem/JKernel/JKRDvdRipper.cpp"),
             Object(Matching, "JSystem/JKernel/JKRExpHeap.cpp"),
             Object(Matching, "JSystem/JKernel/JKRFileLoader.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRHeap.cpp"),
             Object(Matching, "JSystem/JKernel/JKRMemArchive.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRSolidHeap.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRThread.cpp"),
         ],
     ),
     JSystemLib(
         "JSupport",
         [
             Object(Matching, "JSystem/JSupport/JSUFileStream.cpp"),
+            Object(Matching, "JSystem/JSupport/JSUInputStream.cpp"),
             Object(Matching, "JSystem/JSupport/JSUList.cpp"),
             Object(Matching, "JSystem/JSupport/JSUMemoryStream.cpp"),
         ],
@@ -406,6 +410,7 @@ config.libs = [
         [
             Object(Matching, "JSystem/JUtility/JUTAssert.cpp"),
             Object(Matching, "JSystem/JUtility/JUTConsole.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTDbPrint.cpp"),
             Object(Matching, "JSystem/JUtility/JUTDirectFile.cpp"),
             Object(Matching, "JSystem/JUtility/JUTDirectPrint.cpp"),
             Object(Matching, "JSystem/JUtility/JUTFont.cpp"),
@@ -417,6 +422,7 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),
             Object(Matching, "JSystem/JUtility/JUTTexture.cpp"),
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTXfb.cpp"),
         ],
     ),
     {

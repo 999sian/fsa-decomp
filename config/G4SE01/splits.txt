@@ -514,11 +514,35 @@ JSystem/JKernel/JKRFileLoader.cpp:
 	.sbss       start:0x8053A8A0 end:0x8053A8A8
 	.sdata2     start:0x8053B738 end:0x8053B740
 
+JSystem/JKernel/JKRHeap.cpp:
+	.text       start:0x8008353C end:0x800845F0
+	.rodata     start:0x8045E678 end:0x8045E688
+	.data       start:0x80498E98 end:0x80498EF8
+	.sdata      start:0x80539D80 end:0x80539D88
+	.sbss       start:0x8053A8A8 end:0x8053A8D8
+	.sdata2     start:0x8053B740 end:0x8053B750
+
 JSystem/JKernel/JKRMemArchive.cpp:
 	.text       start:0x800845F0 end:0x80084BAC
 	.rodata     start:0x8045E688 end:0x8045E6B0
 	.data       start:0x80498EF8 end:0x80498F48
 	.sdata2     start:0x8053B750 end:0x8053B758
+
+JSystem/JKernel/JKRSolidHeap.cpp:
+	.text       start:0x80084BAC end:0x80085474
+	.rodata     start:0x8045E6B0 end:0x8045E820
+	.data       start:0x80498F48 end:0x80498FA8
+	.sdata2     start:0x8053B758 end:0x8053B770
+
+JSystem/JKernel/JKRThread.cpp:
+	.text       start:0x80085474 end:0x80085A10
+	.ctors      start:0x8045BDC4 end:0x8045BDC8
+	.data       start:0x80498FA8 end:0x80498FB8
+	.bss        start:0x804BA058 end:0x804BA070
+
+JSystem/JSupport/JSUInputStream.cpp:
+	.text       start:0x80086A9C end:0x80086E2C
+	.data       start:0x80499024 end:0x80499068
 
 JSystem/JSupport/JSUList.cpp:
 	.text       start:0x80086E2C end:0x80087348
@@ -552,6 +576,11 @@ JSystem/JUtility/JUTConsole.cpp:
 	.data       start:0x804990B8 end:0x804990C8
 	.sbss       start:0x8053A8E0 end:0x8053A8F0
 	.sdata2     start:0x8053B7A0 end:0x8053B7D8
+
+JSystem/JUtility/JUTDbPrint.cpp:
+	.text       start:0x800891B8 end:0x80089510
+	.sbss       start:0x8053A8F0 end:0x8053A8F8
+	.sdata2     start:0x8053B7D8 end:0x8053B7E8
 
 JSystem/JUtility/JUTDirectFile.cpp:
 	.text       start:0x80089510 end:0x800898B0
@@ -602,6 +631,10 @@ JSystem/JUtility/JUTVideo.cpp:
 	.text       start:0x80092A98 end:0x8009304C
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
+
+JSystem/JUtility/JUTXfb.cpp:
+	.text       start:0x8009304C end:0x80093280
+	.sbss       start:0x8053A998 end:0x8053A9A0
 
 JSystem/JMath/JMath.cpp:
 	.text       start:0x80093280 end:0x80093338
