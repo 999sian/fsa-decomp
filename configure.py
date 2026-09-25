@@ -581,6 +581,18 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
         ],
     },
+    # jmisc: J3DU + JMath + JGadget + JFramework
+    JSystemLib(
+        "jmisc",
+        [
+            Object(Matching, "JSystem/JFramework/JFWDisplay.cpp"),
+            Object(Matching, "JSystem/JFramework/JFWSystem.cpp"),
+            Object(Matching, "JSystem/JMath/JMath.cpp"),
+            Object(Matching, "JSystem/JMath/random.cpp"),
+            Object(Matching, "JSystem/JMath/JMATrigonometric.cpp"),
+            Object(Matching, "JSystem/JGadget/linklist.cpp"),
+        ],
+    ),
 ]
 
 

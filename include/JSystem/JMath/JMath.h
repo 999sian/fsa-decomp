@@ -305,6 +305,9 @@ inline f32 JMAFastSqrt(register f32 x)
 
 void JMAEulerToQuat(s16, s16, s16, Quaternion *);
 void JMAQuatLerp(const Quaternion *, const Quaternion *, f32, Quaternion *);
+f32 JMALagrangeInterpolation(int, f32 *, f32 *, f32);
+f32 JMAFastVECMag(const Vec *);
+void JMAFastVECNormalize(const Vec *, Vec *);
 void JMAVECScaleAdd(const Vec *, const Vec *, Vec *, f32);
 void JMAVECLerp(const Vec *, const Vec *, Vec *, f32);
 void JMAMTXApplyScale(const Mtx, Mtx, f32, f32, f32);

@@ -527,6 +527,9 @@ JSystem/JSupport/JSUFileStream.cpp:
 JSystem/JGadget/binary.cpp:
 	.text       start:0x80087714 end:0x80087868
 
+JSystem/JGadget/linklist.cpp:
+	.text       start:0x80087868 end:0x80087AB4
+
 JSystem/JGadget/std-vector.cpp:
 	.text       start:0x80087AB4 end:0x80087ABC
 
@@ -592,6 +595,18 @@ JSystem/JUtility/JUTVideo.cpp:
 	.text       start:0x80092A98 end:0x8009304C
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
+
+JSystem/JMath/JMath.cpp:
+	.text       start:0x80093280 end:0x80093338
+	.sdata2     start:0x8053B940 end:0x8053B948
+
+JSystem/JMath/random.cpp:
+	.text       start:0x80093338 end:0x80093340
+
+JSystem/JMath/JMATrigonometric.cpp:
+	.text       start:0x80093340 end:0x80093768
+	.ctors      start:0x8045BDD0 end:0x8045BDD4
+	.sdata2     start:0x8053B948 end:0x8053B990
 
 JSystem/J2DGraph/J2DOrthoGraph.cpp:
 	.text       start:0x80093768 end:0x80093E64
@@ -709,9 +724,24 @@ JSystem/J3D/GraphBase/J3DShapeDraw.cpp:
 JSystem/J3D/GraphBase/J3DStruct.cpp:
 	.text       start:0x800E4870 end:0x800E49E0
 
+JSystem/JFramework/JFWSystem.cpp:
+	.text       start:0x800E49E0 end:0x800E4D30
+	.sdata      start:0x80539E30 end:0x80539E60
+	.sbss       start:0x8053AA28 end:0x8053AA48
+	.sdata2     start:0x8053BCF0 end:0x8053BD00
+
+JSystem/JFramework/JFWDisplay.cpp:
+	.text       start:0x800E4D30 end:0x800E6594
+	.ctors      start:0x8045BDEC end:0x8045BDF0
+	.rodata     start:0x80463588 end:0x80463660
+	.data       start:0x8049BE20 end:0x8049BEC0
+	.bss        start:0x804BA5C8 end:0x804BA5F8
+	.sbss       start:0x8053AA48 end:0x8053AA70
+	.sdata2     start:0x8053BD00 end:0x8053BD28
+
 JSystem/JParticle/JPABaseShape.cpp:
 	.text       start:0x800E6594 end:0x800EA400
-	.data       start:0x8049BEC0 end:0x8049C068
+	.data       start:0x8049BEC0 end:0x8049C068 align:32
 	.sdata      start:0x80539E60 end:0x80539E68
 	.sdata2     start:0x8053BD28 end:0x8053BD60
 
