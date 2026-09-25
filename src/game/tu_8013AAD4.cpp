@@ -1,0 +1,237 @@
+// tu_8013AAD4: .text 0x8013AAD4-0x8013C5C8
+// Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
+#include "types.h"
+
+// ---- from Game/fn_8013B3CC.cpp
+
+// Family of thin forwarding methods on the camera/cutscene-cue-manager
+// class (lbl_8053AB10's class): each reads a sub-object pointer off
+// `this` and forwards to a method on it, discarding/passing through the
+// result untouched.
+extern "C" s32 fn_8030DD20(void* subObj);
+extern "C" s32 fn_8030DD68(void* subObj);
+extern "C" s32 fn_8030DD8C(void* subObj);
+
+// fn_8013B3CC(this) - forwards to fn_8030DD20(this->0x24), the same 3rd
+// sub-object fn_8013AC90 reads off the singleton.
+extern "C" s32 fn_8013B3CC(void* this_) {
+    return fn_8030DD20(*(void**)((char*)this_ + 0x24));
+}
+
+// fn_8013B3F0(this) - sibling of fn_8013B3CC: forwards to fn_8030DD68
+// instead of fn_8030DD20, same this->0x24 sub-object.
+extern "C" s32 fn_8013B3F0(void* this_) {
+    return fn_8030DD68(*(void**)((char*)this_ + 0x24));
+}
+
+// fn_8013B414(this) - sibling of fn_8013B3CC/3F0: forwards to
+// fn_8030DD8C, same this->0x24 sub-object.
+extern "C" s32 fn_8013B414(void* this_) {
+    return fn_8030DD8C(*(void**)((char*)this_ + 0x24));
+}
+
+// ---- from Game/fn_8013B438.cpp
+
+extern "C" s32 fn_8030DFE8(void* subObj, void* matrix);
+
+// fn_8013B438(this) - forwards to fn_8030DFE8(this->0x24, NULL) - same
+// callee fn_8013AC90 uses with a live matrix pointer; NULL here likely
+// means "reset to identity/no override".
+extern "C" s32 fn_8013B438(void* this_) {
+    return fn_8030DFE8(*(void**)((char*)this_ + 0x24), 0);
+}
+
+// ---- from Game/SubObjectForward_8013B460.cpp
+
+// See [[reference_fsa_virtual_dispatch_codegen_trick]] for why these call
+// through a real `virtual` member rather than a manual cast.
+struct ActorSlot5 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void slot5();
+};
+
+// fn_8013B460(this) - forwards to this->0x14's OWN vtable slot 0x14 (a 4th
+// polymorphic sub-object, distinct from the 0x8/0xc/0x24 ones seen so far).
+extern "C" void fn_8013B460(void* this_) {
+    ActorSlot5* sub = *(ActorSlot5**)((char*)this_ + 0x14);
+    sub->slot5();
+}
+
+// fn_8013B490(this) - sibling of fn_8013B460: same vtable-slot-0x14 forward,
+// but on this->0x10 (a 5th polymorphic sub-object).
+extern "C" void fn_8013B490(void* this_) {
+    ActorSlot5* sub = *(ActorSlot5**)((char*)this_ + 0x10);
+    sub->slot5();
+}
+
+// ---- from Game/fn_8013B4C0.cpp
+
+extern "C" s32 fn_8013D5B0(void* subObj);
+extern "C" void fn_802FF548(void* subObj);
+
+// fn_8013B4C0(this) - calls fn_8013D5B0(this->0x28) (a 6th sub-object,
+// forward-referenced) then fn_802FF548(this->0x20) (a 7th sub-object,
+// external).
+extern "C" void fn_8013B4C0(void* this_) {
+    fn_8013D5B0(*(void**)((char*)this_ + 0x28));
+    fn_802FF548(*(void**)((char*)this_ + 0x20));
+}
+
+// ---- from Game/fn_8013B4F8.cpp
+
+extern "C" s32 fn_8013D5D4(void* subObj);
+extern "C" void fn_800C1EA4(void* subObj);
+
+// fn_8013B4F8(this) - an "update all tracked sub-objects" style method:
+// calls fn_8013D5D4(this->0x28) (sibling of fn_8013B4C0's fn_8013D5B0
+// call) then fn_800C1EA4 on BOTH this->0x8 AND this->0xc - the same
+// camera-pair fn_8013AB2C registers. Confirms this->0x8/0xc get
+// touched by more than one method here, consistent with a per-frame
+// refresh/update.
+extern "C" void fn_8013B4F8(void* this_) {
+    fn_8013D5D4(*(void**)((char*)this_ + 0x28));
+    fn_800C1EA4(*(void**)((char*)this_ + 0x8));
+    fn_800C1EA4(*(void**)((char*)this_ + 0xc));
+}
+
+// ---- from Game/fn_8013BAF4.cpp
+
+extern "C" s32 fn_8013DB2C(void* subObj);
+
+// fn_8013BAF4(this) - another thin forwarder to the this->0x28
+// sub-object family: fn_8013DB2C(this->0x28).
+extern "C" s32 fn_8013BAF4(void* this_) {
+    return fn_8013DB2C(*(void**)((char*)this_ + 0x28));
+}
+
+// ---- from Game/fn_8013BB18.cpp
+
+extern "C" void fn_802FF3F0(void* subObj);
+extern "C" void fn_8030E150(void* subObj);
+extern "C" void fn_80158E88(void* subObj);
+
+// fn_8013BB18(this) - gated on the SAME this->0x39 instance flag
+// fn_8013B71C uses: if 0 (cutscene/transition NOT active), calls
+// fn_802FF3F0(this->0x20) (sibling of fn_802FF0EC/802FF3B0/802FF2D8)
+// and fn_8030E150(this->0x24) (sibling of the fog/color object's
+// fn_8030DFE8/DD20/DD68/DD8C/DFE8 family). Always calls
+// fn_80158E88(this->0x2c).
+extern "C" void fn_8013BB18(void* this_) {
+    u8 flag = *(u8*)((char*)this_ + 0x39);
+    if (flag == 0) {
+        fn_802FF3F0(*(void**)((char*)this_ + 0x20));
+        fn_8030E150(*(void**)((char*)this_ + 0x24));
+    }
+    fn_80158E88(*(void**)((char*)this_ + 0x2c));
+}
+
+// ---- from Game/fn_8013BB64.cpp
+
+extern char lbl_80536C50[];
+
+extern "C" s32 fn_8030DFE8(void* subObj, void* matrix);
+extern "C" void PSMTXCopy(void* src, void* dst);
+
+// fn_8013BB64(this) - resets the fog/color object (this->0x24) via
+// fn_8030DFE8(obj,NULL), refreshes lbl_80536C50->0x48/0x4c from this
+// instance's own camera pair (this->0x8/0xc - the same fields
+// fn_8013AC54 mirrors from the singleton itself, confirming
+// lbl_80536C50 tracks WHICHEVER instance last ran this refresh), then
+// copies a Mtx from this->0x24+4 (skipping a leading 4-byte field,
+// likely a vtable ptr) into lbl_80536C50 via PSMTXCopy.
+extern "C" void fn_8013BB64(void* this_) {
+    fn_8030DFE8(*(void**)((char*)this_ + 0x24), 0);
+    *(s32*)(lbl_80536C50 + 0x48) = *(s32*)((char*)this_ + 0x8);
+    *(s32*)(lbl_80536C50 + 0x4c) = *(s32*)((char*)this_ + 0xc);
+    PSMTXCopy(*(char**)((char*)this_ + 0x24) + 0x4, lbl_80536C50);
+}
+
+// ---- from Game/fn_8013BBBC.cpp
+
+extern "C" s32 fn_8013DC1C(void* subObj);
+
+// fn_8013BBBC(this) - another thin forwarder to the this->0x28 family:
+// fn_8013DC1C(this->0x28).
+extern "C" s32 fn_8013BBBC(void* this_) {
+    return fn_8013DC1C(*(void**)((char*)this_ + 0x28));
+}
+
+// ---- from Game/fn_8013BE04.cpp
+
+extern "C" void fn_802FF798(void* subObj);
+extern "C" void fn_8030E5BC(void* subObj);
+extern "C" void fn_8013DDEC(void* subObj);
+extern "C" void fn_8015945C(void* subObj);
+extern "C" void fn_801601E0(void* subObj);
+
+// fn_8013BE04(this) - a reset() method: calls a "reset" sibling on 5
+// sub-objects (this->0x20 -> fn_802FF798, ->0x24 -> fn_8030E5BC, ->0x28
+// -> fn_8013DDEC, ->0x2c -> fn_8015945C, ->0x30 -> fn_801601E0 - each a
+// further sibling of that sub-object's already-seen method family),
+// then clears both this->0x39 (the transition-active flag) and
+// this->0x38 (the frame-counter fn_8013BBE0 checks against 0xff).
+extern "C" void fn_8013BE04(void* this_) {
+    fn_802FF798(*(void**)((char*)this_ + 0x20));
+    fn_8030E5BC(*(void**)((char*)this_ + 0x24));
+    fn_8013DDEC(*(void**)((char*)this_ + 0x28));
+    fn_8015945C(*(void**)((char*)this_ + 0x2c));
+    fn_801601E0(*(void**)((char*)this_ + 0x30));
+    *(u8*)((char*)this_ + 0x39) = 0;
+    *(u8*)((char*)this_ + 0x38) = 0;
+}
+
+// ---- from Game/CutsceneManagerCue_dtor_8013BE60.cpp
+
+// fn_8013BE60(this, freeFlag) - the camera/cutscene-cue-manager
+// class's real destructor. Rebinds the vtable to lbl_8049F108, then
+// destructs 9 embedded polymorphic sub-objects in reverse-of-
+// construction order via own vtable slot 0 (byte offset 0x8) with a
+// "free=1" flag: this->0x1c/0x30/0x2c/0x28/0x24/0x20, then this->0x34
+// via a direct (non-virtual) call to dtor_80092364, then
+// this->0x18/0x14/0x10. Reads this->0x4 and calls fn_8008383C on it.
+// Finally, if freeFlag > 0, calls the base class destructor
+// dtor_80084580. See
+// [[reference_fsa_virtual_dispatch_codegen_trick]] for why the sub-
+// object releases go through a real `virtual` member rather than a
+// manual cast.
+extern "C" void dtor_80092364(void* p, s32 flag);
+extern "C" void fn_8008383C(void* p);
+extern "C" void dtor_80084580(void* this_);
+extern void* lbl_8049F108[];
+
+struct Slot0 {
+    virtual void slot0(s32 arg);
+};
+
+extern "C" void* fn_8013BE60(void* this_, s16 flag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_8049F108;
+        void* p;
+        p = *(void**)((char*)this_ + 0x1c);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        p = *(void**)((char*)this_ + 0x30);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        p = *(void**)((char*)this_ + 0x2c);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        p = *(void**)((char*)this_ + 0x28);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        p = *(void**)((char*)this_ + 0x24);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        p = *(void**)((char*)this_ + 0x20);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        dtor_80092364(*(void**)((char*)this_ + 0x34), 1);
+        p = *(void**)((char*)this_ + 0x18);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        p = *(void**)((char*)this_ + 0x14);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        p = *(void**)((char*)this_ + 0x10);
+        if (p != 0) { ((Slot0*)p)->slot0(1); }
+        fn_8008383C(*(void**)((char*)this_ + 0x4));
+        if (flag > 0) {
+            dtor_80084580(this_);
+        }
+    }
+    return this_;
+}

@@ -1,0 +1,20 @@
+// BZBR_80144134: .text 0x80144134-0x8014529C (actor BZBR)
+// Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
+#include "types.h"
+
+// ---- from Game/fn_80144134_dtor.cpp
+
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void dtor_80084580(void* this_);
+extern void* lbl_8049F444[];
+
+extern "C" void* fn_80144134(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_8049F444;
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            dtor_80084580(this_);
+        }
+    }
+    return this_;
+}
