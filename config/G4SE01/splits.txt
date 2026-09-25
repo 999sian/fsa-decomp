@@ -13,6 +13,10 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:16
 
+JSystem/JKernel/JKRAramBlock.cpp:
+	.text       start:0x8007AC2C end:0x8007AEB0
+	.data       start:0x80498C00 end:0x80498C10
+
 JSystem/JKernel/JKRCompArchive.cpp:
 	.text       start:0x8007D2B8 end:0x8007E034
 	.rodata     start:0x8045E1C0 end:0x8045E1FC
