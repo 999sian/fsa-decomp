@@ -34,6 +34,10 @@ JSystem/JAudio/Task/osdsp_task.c:
 	.bss        start:0x804B4A80 end:0x804B4A90
 	.sbss       start:0x8053A3B0 end:0x8053A3C0
 
+JSystem/JAudio/Utility/JAUStreamFileTable.cpp:
+	.text       start:0x8003C794 end:0x8003C8D8
+	.data       start:0x804954C8 end:0x804954D8
+
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
 	.data       start:0x80498C00 end:0x80498C10

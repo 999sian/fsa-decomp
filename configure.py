@@ -381,6 +381,8 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/Task/dsptask.c", extra_cflags=cflags_jaudio_task),
             Object(Matching, "JSystem/JAudio/Task/osdsp.c", extra_cflags=cflags_jaudio_task),
             Object(Matching, "JSystem/JAudio/Task/osdsp_task.c", extra_cflags=cflags_jaudio_task),
+            # JAudio/Utility
+            Object(Matching, "JSystem/JAudio/Utility/JAUStreamFileTable.cpp"),
         ],
     ),
 ]
