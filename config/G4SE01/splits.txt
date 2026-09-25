@@ -133,6 +133,11 @@ JSystem/J2DGraph/J2DMaterial.cpp:
 	.data       start:0x8049A090 end:0x8049A0A8
 	.sdata2     start:0x8053BAB0 end:0x8053BAC0
 
+JSystem/J2DGraph/J2DMaterialFactory.cpp:
+	.text       start:0x800B014C end:0x800B1954
+	.sdata2     start:0x8053BAC0 end:0x8053BAC8
+	.sbss2      start:0x80543F00 end:0x80543F08
+
 JSystem/J2DGraph/J2DAnimation.cpp:
 	.text       start:0x800B79A4 end:0x800BA544
 	.data       start:0x8049A2B8 end:0x8049A378

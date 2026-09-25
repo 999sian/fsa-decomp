@@ -206,7 +206,15 @@ struct J2DTevSwapModeTableInfo {
     u8 mA; // _03
 };
 
+// FSA: the J2D TUs that construct J2DTevStage (J2DMatBlock, J2DMaterialFactory, J2DBloSaver)
+// see this as non-const (the retail code re-reads it after each store), while J2DTevs.cpp
+// defines it const in .sdata2 (pikmin2 hit the same thing). Those TUs define
+// J2D_NONCONST_TEV_SWAP_MODE before including J2D headers.
+#ifdef J2D_NONCONST_TEV_SWAP_MODE
+extern J2DTevSwapModeInfo j2dDefaultTevSwapMode;
+#else
 extern const J2DTevSwapModeInfo j2dDefaultTevSwapMode;
+#endif
 extern const J2DTevSwapModeTableInfo j2dDefaultTevSwapModeTable;
 extern const u8 j2dDefaultTevSwapTable;
 
