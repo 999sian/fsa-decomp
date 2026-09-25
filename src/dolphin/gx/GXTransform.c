@@ -4,9 +4,31 @@
  * @note Address: N/A
  * @note Size: 0x174
  */
-void GXProject(f32 x, f32 y, f32 z, Mtx viewMtx, f32* projMtx, f32* viewport, f32* screenX, f32* screenY, f32* screenZ)
+void GXProject(f32 x, f32 y, f32 z, Mtx mtx, f32* pm, f32* vp, f32* sx, f32* sy, f32* sz)
 {
-	// UNUSED FUNCTION
+	Vec peye;
+	f32 xc;
+	f32 yc;
+	f32 zc;
+	f32 wc;
+
+	peye.x = mtx[0][3] + ((mtx[0][2] * z) + ((mtx[0][0] * x) + (mtx[0][1] * y)));
+	peye.y = mtx[1][3] + ((mtx[1][2] * z) + ((mtx[1][0] * x) + (mtx[1][1] * y)));
+	peye.z = mtx[2][3] + ((mtx[2][2] * z) + ((mtx[2][0] * x) + (mtx[2][1] * y)));
+	if (pm[0] == 0.0f) {
+		xc = (peye.x * pm[1]) + (peye.z * pm[2]);
+		yc = (peye.y * pm[3]) + (peye.z * pm[4]);
+		zc = pm[6] + (peye.z * pm[5]);
+		wc = 1.0f / -peye.z;
+	} else {
+		xc = pm[2] + (peye.x * pm[1]);
+		yc = pm[4] + (peye.y * pm[3]);
+		zc = pm[6] + (peye.z * pm[5]);
+		wc = 1.0f;
+	}
+	*sx = (vp[2] / 2.0f) + (vp[0] + (wc * (xc * vp[2] / 2.0f)));
+	*sy = (vp[3] / 2.0f) + (vp[1] + (wc * (-yc * vp[3] / 2.0f)));
+	*sz = vp[5] + (wc * (zc * (vp[5] - vp[4])));
 }
 
 /**
@@ -354,9 +376,30 @@ void GXGetViewportv(f32* viewport)
  * @note Address: N/A
  * @note Size: 0x6C
  */
-void GXSetZScaleOffset(void)
+void GXSetZScaleOffset(f32 scale, f32 offset)
 {
-	// UNUSED FUNCTION
+	f32 sz;
+	f32 oz;
+	f32 zmin;
+	f32 zmax;
+
+	oz          = offset * 16777215.0f;
+	gx->zOffset = oz;
+
+	sz         = (scale * 16777215.0f) + 1.0f;
+	gx->zScale = sz;
+
+	zmin = gx->vpNearz * sz;
+	zmax = gx->vpFarz * sz;
+	sz   = zmax - zmin;
+	oz   = oz + zmax;
+
+	GX_XF_LOAD_REG_HDR(GX_XF_REG_SCALEZ);
+	GX_WRITE_F32(sz);
+	GX_XF_LOAD_REG_HDR(GX_XF_REG_OFFSETZ);
+	GX_WRITE_F32(oz);
+
+	gx->bpSentNot = GX_TRUE;
 }
 
 /**
