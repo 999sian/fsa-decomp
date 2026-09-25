@@ -71,6 +71,17 @@ def main():
                    for w in vtable(dol, va)[2:]):
                 cands.add(va)
 
+    # Provenance: a vtable is *actor-derived* when a factory constructor that calls
+    # Actor::Actor() writes it (docs/gamemap/actor_ctors.csv). The rest of the scan is
+    # a heuristic: {0,0} + 19 game-code slots, which also matches non-actor game
+    # classes (the 19-override rows) and actors whose ctor we did not recognise.
+    ctor_of = {}
+    ctors_csv = os.path.join(root, "docs/gamemap/actor_ctors.csv")
+    if os.path.exists(ctors_csv):
+        for r in csv.DictReader(open(ctors_csv)):
+            if r.get("vtable") and r.get("calls_Actor_ctor") == "yes":
+                ctor_of.setdefault(r["vtable"], r["ctor"])
+
     rows = []
     for va in sorted(cands):
         vt = vtable(dol, va)
@@ -85,6 +96,8 @@ def main():
             "overrides": len(ov),
             "override_slots": " ".join("dtor" if i == 0 else "v%02d" % i for i in ov),
             "override_names": " ".join(names.get(vt[2 + i], "fn_%08X" % vt[2 + i]) for i in ov),
+            "ctor": ctor_of.get("0x%08X" % va, ""),
+            "provenance": "factory_ctor" if "0x%08X" % va in ctor_of else "heuristic_scan",
         })
     out = os.path.join(root, "docs/gamemap/actor_vtables.csv")
     with open(out, "w", newline="") as fh:
@@ -95,7 +108,9 @@ def main():
     anchors = {0x8049C7F0: 4, 0x804AA7A8: 4}
     bad = [("%08X" % a, r["overrides"]) for a, want in anchors.items()
            for r in rows if r["vtable"] == "0x%08X" % a and r["overrides"] != want]
-    print("wrote %s: %d vtables" % (out, len(rows)))
+    prov = sum(1 for r in rows if r["provenance"] == "factory_ctor")
+    print("wrote %s: %d vtables (%d actor-derived via a factory ctor, %d heuristic-only)"
+          % (out, len(rows), prov, len(rows) - prov))
     print("anchor check BOTS/STGN (want 4 overrides each):", "FAIL " + str(bad) if bad else "PASS")
 
 
