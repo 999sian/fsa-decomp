@@ -10,3 +10,8 @@ Universal. Many thanks to its contributors.
 
 FSA's JSystem was built with MWCC GC/2.6 at -O4,p; these files are used
 unmodified unless noted in git history.
+
+Some game-code function bodies may be adapted from the EverydaySimpleDev
+FSA-Decomp project (https://github.com/EverydaySimpleDev/FSA-Decomp, CC0,
+reused with the author's permission). Only functions that re-verify under our
+own compiler and flags are used; see docs/esd/.
