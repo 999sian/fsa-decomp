@@ -461,7 +461,7 @@ TRK_MINNOW_DOLPHIN/CircleBuffer.c:
 
 TRK_MINNOW_DOLPHIN/gdev/main.c:
 	.text       start:0x800669EC end:0x80066D38
-	.rodata     start:0x8045DBB8 end:0x8045DCA8
+	.rodata     start:0x8045DBB8 end:0x8045DC98
 	.bss        start:0x804B8E58 end:0x804B9378
 	.sbss       start:0x8053A710 end:0x8053A718
 
@@ -486,6 +486,7 @@ Runtime.PPCEABI.H/NMWException.cp:
 
 Runtime.PPCEABI.H/ptmf.c:
 	.text       start:0x800672B4 end:0x80067334
+	.rodata     start:0x8045DC98 end:0x8045DCA8
 
 Runtime.PPCEABI.H/runtime.c:
 	.text       start:0x80067334 end:0x80067A10
