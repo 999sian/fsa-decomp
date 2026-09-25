@@ -18,3 +18,5 @@ extern "C" void* fn_800F659C(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

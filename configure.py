@@ -969,6 +969,9 @@ config.libs = [
             "-common off",
             "-RTTI on",
             "-inline auto",
+            "-DMATCHING=1",
+            "-Cpp_exceptions on",
+            "-i libs/PowerPC_EABI_Support/include",
         ],
         "progress_category": "game",
         "objects": [

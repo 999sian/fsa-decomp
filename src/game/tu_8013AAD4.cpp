@@ -235,3 +235,5 @@ extern "C" void* fn_8013BE60(void* this_, s16 flag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

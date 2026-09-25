@@ -47,3 +47,5 @@ extern "C" s32 fn_800EC188(void* subObj);
 extern "C" s32 fn_8013D5B0(void* this_) {
     return fn_800EC188(*(void**)((char*)this_ + 0xc));
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

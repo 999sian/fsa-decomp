@@ -48,3 +48,5 @@ fn_801087F4_actor::fn_801087F4_actor() : Actor() {
     *(s32*)(p + 0x234) = -1;
     fn_801D267C(p + 0x238);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

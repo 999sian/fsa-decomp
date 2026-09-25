@@ -68,3 +68,5 @@ void fn_800FDE38(void* ringArray)
 }
 
 } // extern "C"
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

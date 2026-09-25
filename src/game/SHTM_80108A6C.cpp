@@ -50,3 +50,5 @@ fn_801092B0_actor::fn_801092B0_actor() : Actor() {
     *(s32*)(p + 0x270) = -1;
     *(s32*)(p + 0x274) = 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

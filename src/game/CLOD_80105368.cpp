@@ -43,3 +43,5 @@ extern "C" void* dtor_80105D80(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

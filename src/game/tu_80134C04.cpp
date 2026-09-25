@@ -107,3 +107,5 @@ void fn_80134FC4(void* thisPtr, u8 val)
 }
 
 } // extern "C"
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
