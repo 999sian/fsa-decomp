@@ -142,6 +142,10 @@ JSystem/JKernel/JKRThread.cpp:
 	.data       start:0x80498FA8 end:0x80498FB8
 	.bss        start:0x804BA058 end:0x804BA070
 
+JSystem/JSupport/JSUInputStream.cpp:
+	.text       start:0x80086A9C end:0x80086E2C
+	.data       start:0x80499024 end:0x80499068
+
 JSystem/JSupport/JSUList.cpp:
 	.text       start:0x80086E2C end:0x80087348
 
