@@ -109,6 +109,9 @@ JSystem/JUtility/JUTVideo.cpp:
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
 
+JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp:
+	.text       start:0x800CC088 end:0x800CC094
+
 JSystem/J3D/GraphLoader/J3DModelLoader.cpp:
 	.text       start:0x800CC094 end:0x800CE264
 	.data       start:0x8049AC88 end:0x8049AE10
@@ -118,6 +121,9 @@ JSystem/J3D/GraphLoader/J3DJointFactory.cpp:
 
 JSystem/J3D/GraphLoader/J3DShapeFactory.cpp:
 	.text       start:0x800CE43C end:0x800CECCC
+
+JSystem/J3D/GraphLoader/J3DModelSaver.cpp:
+	.text       start:0x800D06E8 end:0x800D06F0
 
 JSystem/J3D/GraphLoader/J3DModelLoaderCalcSize.cpp:
 	.text       start:0x800E2B40 end:0x800E34CC
