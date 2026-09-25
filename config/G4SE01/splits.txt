@@ -54,6 +54,11 @@ JSystem/JKernel/JKRCompArchive.cpp:
 	.data       start:0x80498CB0 end:0x80498D00
 	.sdata2     start:0x8053B6E8 end:0x8053B6F0
 
+JSystem/JKernel/JKRDecomp.cpp:
+	.text       start:0x8007E034 end:0x8007E6F4
+	.data       start:0x80498D00 end:0x80498D50
+	.sbss       start:0x8053A7F8 end:0x8053A800
+
 JSystem/JKernel/JKRDisposer.cpp:
 	.text       start:0x8007E6F4 end:0x8007E7E0
 	.data       start:0x80498D50 end:0x80498D60

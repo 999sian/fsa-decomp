@@ -347,6 +347,7 @@ config.libs = [
             Object(Matching, "JSystem/JKernel/JKRArchivePri.cpp"),
             Object(Matching, "JSystem/JKernel/JKRArchivePub.cpp"),
             Object(Matching, "JSystem/JKernel/JKRCompArchive.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRDecomp.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDisposer.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDvdAramRipper.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDvdArchive.cpp"),
