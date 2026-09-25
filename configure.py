@@ -359,6 +359,18 @@ config.libs = [
             Object(NonMatching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
         ],
     },
+    # jas-sinit: first .text TU (shared per-TU JASPoolAllocObject __sinit pools).
+    # MATCHING enables the JASFakeMatch*.h memPool_ definitions; retail has
+    # extab entries for this TU, so it was built with C++ exceptions on.
+    {
+        "lib": "JAudio_PoolSinit",
+        "mw_version": "GC/2.6",
+        "cflags": [*cflags_jsystem, "-DMATCHING=1", "-Cpp_exceptions on"],
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/JASPoolSinit.cpp"),
+        ],
+    },
     JSystemLib(
         "JKernel",
         [
