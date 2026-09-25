@@ -49,7 +49,7 @@ struct J3DMtxBuffer : public J3DMtxBufferParent {
     u32* getCurrentViewNoPtr() { return &mCurrentViewNumber; }
     u8* getScaleFlagArray() const { return mScaleFlags; }
     u8 getScaleFlag(u16 idx) const { return mScaleFlags[idx]; }
-    Mtx &getAnmMtx(int i) { return mWorldMatrices[i]; }
+    MtxPtr getAnmMtx(int i) const { return mWorldMatrices[i]; }
     Mtx &getWeightAnmMtx(int i) { return mWeightEnvelopeMatrices[i]; }
     Mtx** getDrawMtxPtrPtr() const { return mDrawMatrices[1]; }
     Mtx* getDrawMtxPtr() const { return mDrawMatrices[1][mCurrentViewNumber]; }

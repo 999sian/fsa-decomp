@@ -375,6 +375,7 @@ config.libs = [
         [
             Object(Matching, "JSystem/J3D/GraphAnimator/J3DAnimation.cpp"),
             Object(Matching, "JSystem/J3D/GraphAnimator/J3DCluster.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJoint.cpp"),
             Object(Matching, "JSystem/J3D/GraphAnimator/J3DJointTree.cpp"),
             Object(Matching, "JSystem/J3D/GraphAnimator/J3DMaterialAnm.cpp"),
             Object(Matching, "JSystem/J3D/GraphAnimator/J3DModelData.cpp"),

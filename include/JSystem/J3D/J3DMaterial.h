@@ -133,7 +133,7 @@ struct J3DMaterial
     void setTevKColor(u32 i, const J3DGXColor *i_color) { mTevBlock->setTevKColor(i, i_color); }
     void setMaterialAnm(J3DMaterialAnm *i_anm) { mAnm = i_anm; }
 
-    bool isDrawModeOpaTexEdge() { return (mDrawMode & 3); }
+    bool isDrawModeOpaTexEdge() { return (mDrawMode & 3) == 0; }
     bool isDrawModeXlu() { return mDrawMode & 4; }
     u32 getMaterialID() const { return mMaterialID; }
     u16 getIndex() { return mIndex; }

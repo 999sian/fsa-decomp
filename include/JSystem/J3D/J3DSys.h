@@ -39,6 +39,7 @@ struct J3DSys
     J3DDrawBuffer *getDrawBuffer(int idx) { return mDrawBuffer[idx]; }
 
     J3DModel *getModel() { return _38; }
+    void setMatPacket(J3DMatPacket *pPacket) { mMatPacket = pPacket; }
 
     static void setCurrentMtx(const Mtx m) { PSMTXCopy(m, mCurrentMtx); }
 
@@ -69,8 +70,8 @@ struct J3DSys
     Vec *_118;
 
     static Mtx mCurrentMtx;
-    static JGeometry::TVec3f mCurrentS;
-    static JGeometry::TVec3f mParentS;
+    static Vec mCurrentS;
+    static Vec mParentS;
     static u16 sTexCoordScaleTable[8][4];
 };
 

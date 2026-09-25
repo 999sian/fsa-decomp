@@ -62,6 +62,7 @@ struct J3DDrawBuffer
     void setNonSort() { mSortType = J3DSORT_NonSort; }
     void setZSort() { mSortType = J3DSORT_Z; }
     void setDrawMode(u32 mode) { mDrawMode = mode; }
+    void setZMtx(MtxPtr mtx) { mZMtx = (Mtx*)mtx; }
 
     static sortFunc sortFuncTable[6];
     static drawFunc drawFuncTable[2];

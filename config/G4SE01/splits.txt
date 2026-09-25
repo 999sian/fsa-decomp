@@ -122,6 +122,12 @@ JSystem/J3D/GraphAnimator/J3DCluster.cpp:
 	.text       start:0x800C7954 end:0x800C85B8
 	.sdata2     start:0x8053BC38 end:0x8053BC68
 
+JSystem/J3D/GraphAnimator/J3DJoint.cpp:
+	.text       start:0x800C85B8 end:0x800C8F54
+	.rodata     start:0x80463558 end:0x80463588
+	.sbss       start:0x8053A9E8 end:0x8053A9F8
+	.sdata2     start:0x8053BC68 end:0x8053BC70
+
 JSystem/J3D/GraphAnimator/J3DModelData.cpp:
 	.text       start:0x800DF700 end:0x800DF9DC
 	.data       start:0x8049BA98 end:0x8049BAB0

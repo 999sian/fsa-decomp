@@ -94,6 +94,7 @@ struct J3DDrawPacket : public J3DPacket {
     void lock() { onFlag(J3DDP_IsLocked); }
     void unlock() { offFlag(J3DDP_IsLocked); }
     J3DTexMtxObj* getTexMtxObj() { return mTexMtxObj; }
+    bool isLocked() const { return checkFlag(J3DDP_IsLocked); }
 
     // _00     = VTBL
     // _00-_10 = J3DPacket
@@ -127,6 +128,7 @@ struct J3DMatPacket : public J3DDrawPacket {
     void setShapePacket(J3DShapePacket* packet) { mShapePacket = packet; }
     void setInitShapePacket(J3DShapePacket* packet) { mInitShapePacket = packet; }
     bool isChanged() const { return mDiffFlag & J3DMP_IsChanged; }
+    void setMaterialAnmID(J3DMaterialAnm* materialAnm) { mMaterialAnm = materialAnm; }
 
     // _00     = VTBL
     // _00-_28 = J3DDrawPacket
