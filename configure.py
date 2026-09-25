@@ -394,6 +394,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/Utility/JAUBankTable.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUClusterSound.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUInitializer.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSectionHeap.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUSeqCollection.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUSeqDataBlockMgr.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUSoundMgr.cpp"),
