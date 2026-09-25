@@ -13,6 +13,7 @@ Prints the proposed symbol renames and the split ranges. With --apply, edits
 config/G4SE01/symbols.txt (renaming/adding symbols) and, with --unit, appends
 the split to config/G4SE01/splits.txt.
 """
+import os
 import re
 import struct
 import sys
@@ -21,7 +22,7 @@ from collections import defaultdict
 from elftools.elf.elffile import ELFFile
 from elftools.elf.relocation import RelocationSection
 
-ROOT = "/home/sian/Documents/FSA Decomp"
+ROOT = os.environ.get("FSA_ROOT") or os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DOL = f"{ROOT}/orig/G4SE01/sys/main.dol"
 SYMS = f"{ROOT}/config/G4SE01/symbols.txt"
 SPLITS = f"{ROOT}/config/G4SE01/splits.txt"
