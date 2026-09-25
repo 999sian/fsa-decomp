@@ -397,9 +397,9 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/Interface/JAISoundParams.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISoundStarter.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAIStream.cpp"),
-            Object(NonMatching, "JSystem/JAudio/Interface/JAIStreamDataMgr.cpp"),
-            Object(NonMatching, "JSystem/JAudio/Interface/JAIStreamMgr.cpp"),
-            Object(NonMatching, "JSystem/JAudio/Interface/JAIAudible.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStreamDataMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStreamMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIAudible.cpp"),
         ],
     },
 ]

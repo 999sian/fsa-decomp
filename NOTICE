@@ -10,3 +10,6 @@ Universal. Many thanks to its contributors.
 
 FSA's JSystem was built with MWCC GC/2.6 at -O4,p; these files are used
 unmodified unless noted in git history.
+
+JAIStreamMgr::stop() in src/JSystem/JAudio/Interface/JAIStreamMgr.cpp follows the
+Twilight Princess decompilation (https://github.com/zeldaret/tp).
