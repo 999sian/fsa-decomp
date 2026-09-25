@@ -1,0 +1,12 @@
+Third-party source
+==================
+
+The JSystem sources under src/JSystem/ and the headers under include/JSystem/,
+include/dolphin/, include/std/, include/types.h, include/macros.h,
+include/mathHelper.h and libs/PowerPC_EABI_Support/include/ were imported
+from the Mario Kart: Double Dash!! decompilation project
+(https://github.com/doldecomp/mkdd), which is released under CC0 1.0
+Universal. Many thanks to its contributors.
+
+FSA's JSystem was built with MWCC GC/2.6 at -O4,p; these files are used
+unmodified unless noted in git history.
