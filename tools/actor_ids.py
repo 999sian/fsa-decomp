@@ -28,6 +28,7 @@ import os
 import re
 import struct
 import sys
+from collections import Counter
 
 FACTORY_FN = 0x801F9484
 FACTORY_SIZE = 0x61AC
@@ -99,8 +100,19 @@ def resolve(node, ins, at, ctors, depth=0):
     return ""
 
 
-def main():
-    root = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else ".")
+# The five actors whose id/ctor/vtable are established independently of this tool
+# (their units are matched and their ctors came from objdiff work, not from here).
+ANCHORS = {
+    "BOTS": ("0x802020F0", "0x8049C7F0"),
+    "STGN": ("0x801FF7BC", "0x804AA7A8"),
+    "DWAP": ("0x80200310", "0x8049C9E8"),
+    "GFBS": ("0x80201630", "0x8049E3A8"),
+    "TJIJ": ("0x801FFC48", "0x804AE508"),
+}
+
+
+def extract(root):
+    """-> (rows, id_reg, unresolved_count)"""
     ctors = {}
     with open(os.path.join(root, "docs/gamemap/actor_ctors.csv")) as fh:
         for r in csv.DictReader(fh):
@@ -110,44 +122,35 @@ def main():
     ins = decode(dol, FACTORY_FN, FACTORY_SIZE)
     at = {i[0]: k for k, i in enumerate(ins)}
 
-    # constant tracking with invalidation: reg -> value (None = unknown)
-    const = {}
-    compares = []  # (addr, index, cmp_reg, value)
+    const, compares = {}, []
     for i, (addr, op, xo, rd, ra, rb, simm, tgt, link, lk) in enumerate(ins):
-        if op == 15:                      # addis / lis
+        if op == 15:
             const[rd] = (simm << 16) & 0xFFFFFFFF if ra == 0 else None
-        elif op == 14:                    # addi
+        elif op == 14:
             const[rd] = ((0 if ra == 0 else const.get(ra)) + simm) & 0xFFFFFFFF \
                 if ra == 0 or const.get(ra) is not None else None
-        elif op == 24:                    # ori
+        elif op == 24:
             const[rd] = (const[ra] | (simm & 0xFFFF)) if const.get(ra) is not None else None
         elif op == 31:
-            if xo == 0 and const.get(rb) is not None:      # cmpw crfD, rA, rB
-                compares.append((addr, i, ra, const[rb]))
-            elif xo == 32 and const.get(rb) is not None:   # cmplw
+            if xo in (0, 32) and const.get(rb) is not None:
                 compares.append((addr, i, ra, const[rb]))
             else:
-                const[rd] = None                           # any other X-form write
-        elif op in (10, 11):              # cmpwi / cmplwi: the id's low half alone
+                const[rd] = None
+        elif op in (10, 11):
             pass
         elif op in LOADS or op in (18, 19, 36, 37, 38, 39, 30, 12, 13):
             if op not in (18, 19):
                 const[rd] = None
 
-    # the id register is the one compared against many distinct 4CC constants
-    from collections import Counter
     cnt = Counter(r for (_a, _i, r, v) in compares if fourcc(v))
     if not cnt:
-        print("no id comparisons found")
-        return
+        return [], None, 0
     id_reg, _ = cnt.most_common(1)[0]
 
     rows, unresolved = [], 0
     for addr, idx, reg, val in compares:
-        if reg != id_reg:
-            continue
         cc = fourcc(val)
-        if not cc:
+        if reg != id_reg or not cc:
             continue
         node = None
         for j in range(idx + 1, min(idx + 6, len(ins))):
@@ -161,21 +164,39 @@ def main():
         rows.append({"id": "0x%08X" % val, "fourcc": cc, "cmp_addr": "0x%08X" % addr,
                      "node": "0x%08X" % node if node else "", "ctor": ctor,
                      "vtable": c.get("vtable", ""), "overrides": c.get("override_slots", "")})
+    return rows, id_reg, unresolved
 
+
+def selftest(root):
+    rows, id_reg, _ = extract(root)
+    by_cc = {}
+    for r in rows:
+        by_cc.setdefault(r["fourcc"], r)
+    ok = True
+    for cc, (ctor, vt) in ANCHORS.items():
+        r = by_cc.get(cc)
+        good = r is not None and r["ctor"] == ctor and r["vtable"] == vt
+        ok = ok and good
+        print("%s %-5s -> ctor %s vtable %s (want %s / %s)"
+              % ("PASS" if good else "FAIL", cc, r["ctor"] if r else "-", r["vtable"] if r else "-",
+                 ctor, vt))
+    print("id register r%s, %d ids, %d resolved" % (id_reg, len(rows),
+                                                    sum(1 for r in rows if r["ctor"])))
+    return ok
+
+
+def main():
+    root = os.path.abspath(sys.argv[1] if len(sys.argv) > 1 else ".")
+    if "--selftest" in sys.argv:
+        raise SystemExit(0 if selftest(root) else 1)
+    rows, id_reg, unresolved = extract(root)
     out = os.path.join(root, "docs/gamemap/actor_ids.csv")
     with open(out, "w", newline="") as fh:
         w = csv.DictWriter(fh, fieldnames=list(rows[0].keys()), lineterminator="\n")
         w.writeheader()
         w.writerows(rows)
-
-    by_cc = {}
-    for r in rows:
-        by_cc.setdefault(r["fourcc"], r)
-    print("wrote %s: %d ids for the id register r%d, %d resolved to a known ctor, %d unresolved"
+    print("wrote %s: %d ids for the id register r%s, %d resolved to a known ctor, %d unresolved"
           % (out, len(rows), id_reg, len(rows) - unresolved, unresolved))
-    for cc in ("BOTS", "STGN", "DWAP", "GFBS", "TJIJ"):
-        r = by_cc.get(cc)
-        print("  anchor %-5s -> %s" % (cc, (r["ctor"], r["vtable"]) if r else "MISSING"))
 
 
 if __name__ == "__main__":
