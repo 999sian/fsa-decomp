@@ -41,3 +41,7 @@ compile_commands.json
 
 #  Code local state
 .claude/
+
+# Reference manuals (download from files.decomp.dev)
+docs/reference/*.pdf
+docs/reference/*.txt
