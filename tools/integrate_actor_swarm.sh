@@ -59,15 +59,32 @@ out = out.replace('extern "C" void fn_8013CC50(u32 a, void* b, u32 c, void* d, u
 for code in ("0x6d", "0x6a", "0x6b", "0x6c"):
     out = out.replace("fn_8013CC50(a->field_04, &v, %s, p, 0, 0, 0, 1, lbl_8053F774);" % code,
                       "fn_8013CC50(a->field_04, &v, lbl_8053F774, %s, (u32)p, 0, 0, 0, 1);" % code)
-# declarations of the same symbol must be identical: drop exact duplicates beyond the first
-seen, lines = set(), []
+# Every agent declares the helpers it needs, so the same function can arrive declared
+# two different ways - C++ forbids overloading an `extern "C"` name, and the compile
+# failure that follows is opaque. Dedupe identical declarations and REPORT differing
+# ones with both spellings, so the fix is obvious.
+decl_re = re.compile(r"^\s*(?:extern\s+\"C\"\s+)?[A-Za-z_][\w:]*[\w\s\*&]*?(\w+)\s*\(([^;{]*)\)\s*;\s*$")
+seen, keep, conflicts = {}, [], {}
 for l in out.splitlines():
-    if l.strip() == CANON:
-        if CANON in seen:
-            continue
-        seen.add(CANON)
-    lines.append(l)
-out = "\n".join(lines) + "\n"
+    m = decl_re.match(l)
+    if not m:
+        keep.append(l); continue
+    name = m.group(1)
+    # normalise whitespace so cosmetic differences are not reported
+    norm = re.sub(r"\s+", " ", l.strip())
+    if name in seen:
+        if seen[name] != norm:
+            conflicts.setdefault(name, {seen[name]}).add(norm)
+        continue
+    seen[name] = norm
+    keep.append(l)
+out = "\n".join(keep) + "\n"
+if conflicts:
+    print("  DECLARATION CONFLICTS (kept the first spelling; review these!):")
+    for name, spellings in conflicts.items():
+        print("    %s:" % name)
+        for sp in spellings:
+            print("      %s" % sp)
 open(wt + "/" + path, "w").write(out)
 print("  merged %d added lines; fn_8013CC50 reconciled to one prototype" % total)
 PY
