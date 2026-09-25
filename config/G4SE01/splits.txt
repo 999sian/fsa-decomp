@@ -13,6 +13,27 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:16
 
+JSystem/JAudio/System/JASCallback.cpp:
+	.text       start:0x80027EC4 end:0x800280E8
+
+JSystem/JAudio/System/JASCmdStack.cpp:
+	.text       start:0x800280E8 end:0x800282C0
+	.ctors      start:0x8045BD38 end:0x8045BD3C
+	.bss        start:0x804B2498 end:0x804B24B0
+
+JSystem/JAudio/System/JASDvdThread.cpp:
+	.text       start:0x800282C0 end:0x80028374
+	.sbss       start:0x8053A2B8 end:0x8053A2C0
+
+JSystem/JAudio/System/JASAiCtrl.cpp:
+	.text       start:0x800298C8 end:0x8002A504
+	.rodata     start:0x8045CAD0 end:0x8045CB28
+	.data       start:0x804918A8 end:0x804918D0
+	.bss        start:0x804B2518 end:0x804B2524
+	.sdata      start:0x80539BC0 end:0x80539BD0
+	.sbss       start:0x8053A2E0 end:0x8053A318
+	.sdata2     start:0x8053B080 end:0x8053B0B0
+
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
 	.data       start:0x80498C00 end:0x80498C10

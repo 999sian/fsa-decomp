@@ -370,6 +370,15 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    JSystemLib(
+        "jas-a",
+        [
+            Object(Matching, "JSystem/JAudio/System/JASAiCtrl.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
+        ],
+    ),
 ]
 
 
