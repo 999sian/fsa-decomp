@@ -141,5 +141,10 @@ JSystem/J3D/GraphAnimator/J3DJointTree.cpp:
 JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp:
 	.text       start:0x800E3898 end:0x800E3950
 
+JSystem/J3D/GraphAnimator/J3DMtxBuffer.cpp:
+	.text       start:0x800E39DC end:0x800E4778
+	.sdata      start:0x80539E20 end:0x80539E30
+	.sdata2     start:0x8053BCE8 end:0x8053BCF0
+
 JSystem/J3D/GraphAnimator/J3DShapeTable.cpp:
 	.text       start:0x800E4778 end:0x800E4870

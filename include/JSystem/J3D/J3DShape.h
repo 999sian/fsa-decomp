@@ -75,6 +75,7 @@ struct J3DShape
     void setTexMtxLoadType(u32 type) { mFlags = type | (mFlags & 0xFFFF0FFF); }
     bool getNBTFlag() const { return mMode; }
     u32 getBumpMtxOffset() const { return mBumpMtxOffset; }
+    void setBumpMtxOffset(u32 offset) { mBumpMtxOffset = offset; }
 
     J3DMaterial *getMaterial() const { return mMaterial; }
     u16 getIndex() const { return mId; }
