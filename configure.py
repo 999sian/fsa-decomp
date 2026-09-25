@@ -383,7 +383,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASReport.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASResArcLoader.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASSeqCtrl.cpp", extra_cflags=["-DMATCHING=1"]),
-            Object(NonMatching, "JSystem/JAudio/System/JASSeqParser.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASSeqParser.cpp", extra_cflags=["-DMATCHING=1"]),
             Object(Matching, "JSystem/JAudio/System/JASSeqReader.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASSimpleWaveBank.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASSoundParams.cpp"),
