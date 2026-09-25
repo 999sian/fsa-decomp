@@ -395,6 +395,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASDriverIF.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDSPChannel.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDSPInterface.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDrumSet.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
         ],
     },

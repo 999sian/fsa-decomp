@@ -67,6 +67,19 @@ protected:
     int mType;
 };
 
+// FSA keeps an instrument's effects in a singly linked list of these nodes
+struct JASInstEffectLink
+{
+    JASInstEffectLink(JASInstEffect *effect)
+    {
+        mNext = NULL;
+        mEffect = effect;
+    }
+
+    JASInstEffectLink *mNext; // 00
+    JASInstEffect *mEffect;   // 04
+};
+
 class JASBasicInst : public JASInst
 {
 public:
