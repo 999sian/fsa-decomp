@@ -620,6 +620,20 @@ config.libs = [
             Object(Matching, "JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp"),
         ],
     ),
+    JSystemLib(
+        "j2d-b",
+        [
+            Object(Matching, "JSystem/J2DGraph/J2DPicture.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DPictureEx.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPrint.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DScreen.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTevs.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTextBox.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTextBoxEx.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DWindow.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DWindowEx.cpp"),
+        ],
+    ),
 ]
 
 
