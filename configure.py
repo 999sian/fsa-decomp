@@ -377,6 +377,7 @@ config.libs = [
             Object(Matching, "JSystem/J2DGraph/J2DAnmLoader.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DGrafContext.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DManage.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DMaterial.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DOrthoGraph.cpp"),
         ],
     ),
