@@ -58,9 +58,21 @@ JSystem/JAudio/Utility/JAUInitializer.cpp:
 	.bss        start:0x804B4B40 end:0x804B4B98
 	.sdata2     start:0x8053B2A8 end:0x8053B2B0
 
+JSystem/JAudio/Utility/JAUSeqCollection.cpp:
+	.text       start:0x8003B85C end:0x8003BA20
+	.data       start:0x804954A0 end:0x804954B8
+
+JSystem/JAudio/Utility/JAUSeqDataBlockMgr.cpp:
+	.text       start:0x8003BA20 end:0x8003BF64
+
 JSystem/JAudio/Utility/JAUSoundMgr.cpp:
 	.text       start:0x8003BF64 end:0x8003C150
 	.data       start:0x804954B8 end:0x804954C8
+
+JSystem/JAudio/Utility/JAUSoundTable.cpp:
+	.text       start:0x8003C30C end:0x8003C794
+	.ctors      start:0x8045BD98 end:0x8045BD9C
+	.bss        start:0x804B4BE0 end:0x804B4C28
 
 JSystem/JAudio/Utility/JAUStreamFileTable.cpp:
 	.text       start:0x8003C794 end:0x8003C8D8
