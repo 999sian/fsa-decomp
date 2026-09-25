@@ -184,6 +184,7 @@ struct J3DShapeTable {
 	void sortVcdVatCmd();
 
 	J3DShape* getItem(u16 index) const { return mItems[index]; } // called getShapeNodePointer in TP
+	J3DShape* getShapeNodePointer(u16 index) const { return mItems[index]; }
 	u16 getShapeNum() const { return mCount; }
 
 	// VTBL _00
