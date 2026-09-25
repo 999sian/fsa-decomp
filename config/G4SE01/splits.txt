@@ -111,3 +111,6 @@ JSystem/JUtility/JUTVideo.cpp:
 
 JSystem/J3D/GraphLoader/J3DShapeFactory.cpp:
 	.text       start:0x800CE43C end:0x800CECCC
+
+JSystem/J3D/GraphLoader/J3DModelLoaderCalcSize.cpp:
+	.text       start:0x800E2B40 end:0x800E34CC
