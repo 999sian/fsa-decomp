@@ -10,3 +10,7 @@ Universal. Many thanks to its contributors.
 
 FSA's JSystem was built with MWCC GC/2.6 at -O4,p; these files are used
 unmodified unless noted in git history.
+
+src/JSystem/J3D/GraphAnimator/ is based on the Pikmin 2 decompilation project
+(https://github.com/projectPiki/pikmin2), adapted to the mkdd headers. Many
+thanks to its contributors.
