@@ -383,7 +383,7 @@ config.libs = [
             Object(Matching, "JSystem/JParticle/JPAFieldBlock.cpp"),
             Object(Matching, "JSystem/JParticle/JPAKeyBlock.cpp"),
             Object(Matching, "JSystem/JParticle/JPAMath.cpp"),
-            Object(NonMatching, "JSystem/JParticle/JPAParticle.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAParticle.cpp"),
             Object(Matching, "JSystem/JParticle/JPAResource.cpp"),
             Object(Matching, "JSystem/JParticle/JPAResourceLoader.cpp"),
             Object(Matching, "JSystem/JParticle/JPAResourceManager.cpp"),
