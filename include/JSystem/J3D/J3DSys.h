@@ -35,25 +35,33 @@ struct J3DSys
     void setDrawModeOpaTexEdge() { mDrawMode = 3; }
     void setDrawModeXlu() { mDrawMode = 4; }
     void setViewMtx(const Mtx mtx) { PSMTXCopy(mtx, mViewMtx); }
-    Mtx &getViewMtx() { return mViewMtx; }
+    Mtx* getViewMtx() { return &mViewMtx; }
     J3DDrawBuffer *getDrawBuffer(int idx) { return mDrawBuffer[idx]; }
 
-    J3DModel *getModel() { return _38; }
+    J3DModel *getModel() { return mModel; }
+    void setModel(J3DModel* pModel) { mModel = pModel; }
+    void setShapePacket(J3DShapePacket* pPacket) { mShapePacket = pPacket; }
+    J3DMatPacket* getMatPacket() { return mMatPacket; }
+    void setTexture(J3DTexture* pTex) { mTexture = pTex; }
+    J3DTexture* getTexture() { return mTexture; }
+    void onFlag(u32 flag) { mFlags |= flag; }
+    void offFlag(u32 flag) { mFlags &= ~flag; }
+    bool checkFlag(u32 flag) { return mFlags & flag; }
     void setMatPacket(J3DMatPacket *pPacket) { mMatPacket = pPacket; }
 
     static void setCurrentMtx(const Mtx m) { PSMTXCopy(m, mCurrentMtx); }
 
     Mtx mViewMtx;                  // _000
     J3DMtxCalc *mMtxCalc;          // _030
-    u32 _34;                       // _034 /* bitfield */
-    J3DModel *_38;                 // _038
+    u32 mFlags;                    // _034
+    J3DModel *mModel;              // _038
     J3DMatPacket *mMatPacket;      // _03C
     J3DShapePacket *mShapePacket;  // _040
     u32 _44;                       // _044
     J3DDrawBuffer *mDrawBuffer[2]; // _048
     int mDrawMode;                 // _050, TODO: enum/defines
     u32 _54;                       // _054
-    J3DTexture *_58;               // _058
+    J3DTexture *mTexture;          // _058
     u8 _5C[4];                     // _05C
     u32 _60;                       // _060
     u8 _64[0xA0];                  // _064

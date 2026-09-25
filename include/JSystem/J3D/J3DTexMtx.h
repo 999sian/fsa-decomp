@@ -57,10 +57,7 @@ class J3DTexMtx
 {
 public:
     J3DTexMtx() { mTexMtxInfo = j3dDefaultTexMtxInfo; }
-    J3DTexMtx(const J3DTexMtxInfo &info)
-    {
-        mTexMtxInfo = info;
-    }
+    J3DTexMtx(const J3DTexMtxInfo &info);
     ~J3DTexMtx() {}
     /*void load(u32 i) const
     {
@@ -77,14 +74,12 @@ public:
     J3DTexMtxInfo &getTexMtxInfo() { return mTexMtxInfo; }
     Mtx &getMtx() { return mMtx; }
     void setEffectMtx(Mtx effectMtx) { mTexMtxInfo.setEffectMtx(effectMtx); }
-    Mtx &getViewMtx() { return mViewMtx; }
     //void setViewMtx(const Mtx viewMtx) { MTXCopy(viewMtx, mViewMtx); }
 
 private:
     /* 0x00 */ J3DTexMtxInfo mTexMtxInfo;
     /* 0x64 */ Mtx mMtx;
-    /* 0x94 */ Mtx mViewMtx;
-}; // Size: 0xc4
+}; // Size: 0x94 (FSA: no mViewMtx)
 
 namespace J3DDifferedTexMtx {
 void loadExecute(const f32 (*)[4]);

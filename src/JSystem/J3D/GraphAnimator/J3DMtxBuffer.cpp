@@ -491,7 +491,7 @@ void J3DMtxBuffer::calcDrawMtx(u32 p1, const Vec& vec, const Mtx& mtx)
 {
 	switch (p1) {
 	case 0: {
-		Mtx* viewMtx = &j3dSys.getViewMtx();
+		Mtx* viewMtx = j3dSys.getViewMtx();
 		u32 mtxNum   = mJointTree->getDrawFullWgtMtxNum();
 		for (u16 i = 0; i < mtxNum; i++) {
 			PSMTXConcat(*viewMtx, *(Mtx*)getAnmMtx(mJointTree->getDrawMtxIndex(i)), *getDrawMtx(i));
@@ -516,7 +516,7 @@ void J3DMtxBuffer::calcDrawMtx(u32 p1, const Vec& vec, const Mtx& mtx)
 
 	case 2: {
 		Mtx baseMtx;
-		J3DCalcViewBaseMtx(j3dSys.getViewMtx(), vec, mtx, baseMtx);
+		J3DCalcViewBaseMtx(*j3dSys.getViewMtx(), vec, mtx, baseMtx);
 		u32 mtxNum = mJointTree->getDrawFullWgtMtxNum();
 		for (u16 i = 0; i < mtxNum; i++) {
 			PSMTXConcat(baseMtx, *(Mtx*)getAnmMtx(mJointTree->getDrawMtxIndex(i)), *getDrawMtx(i));

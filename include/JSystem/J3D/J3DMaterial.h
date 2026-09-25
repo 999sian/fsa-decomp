@@ -135,7 +135,7 @@ struct J3DMaterial
 
     bool isDrawModeOpaTexEdge() { return (mDrawMode & 3) == 0; }
     bool isDrawModeXlu() { return mDrawMode & 4; }
-    u32 getMaterialID() const { return mMaterialID; }
+    u32 getMaterialID() const { return mDiffFlag; }
     u16 getIndex() { return mIndex; }
     J3DTexMtx *getTexMtx(u32 p1) { return mTexGenBlock->getTexMtx(p1); }
 
@@ -147,7 +147,7 @@ struct J3DMaterial
     u16 mIndex;                         // _14
     u32 mInvalid;                     // _18
     u8 _1C[4];                         // _1C
-    u32 mMaterialID;                 // _20
+    u32 mDiffFlag;                   // _20
     J3DColorBlock *mColorBlock;         // _24
     J3DTexGenBlock *mTexGenBlock;     // _28
     J3DTevBlock *mTevBlock;             // _2C
@@ -210,45 +210,68 @@ struct J3DPatchedMaterial : public J3DMaterial
 /**
  * @size{0x20}
  */
-struct J3DMaterialTable
-{
-    J3DMaterialTable();
+struct J3DMaterialTable {
+	J3DMaterialTable();
 
-    virtual ~J3DMaterialTable(); // _08
+	virtual ~J3DMaterialTable(); // _08
 
-    void clear();
+	void clear();
 
-    J3DErrType allocTexMtxAnimator(J3DAnmTextureSRTKey *, J3DTexMtxAnm **);
-    void entryTexMtxAnimator(J3DAnmTextureSRTKey *);
-    void removeTexMtxAnimator(J3DAnmTextureSRTKey *);
+	J3DErrType allocMatColorAnimator(J3DAnmColor*, J3DMatColorAnm**);
+	J3DErrType allocTexNoAnimator(J3DAnmTexPattern*, J3DTexNoAnm**);
 
-    J3DErrType allocTevRegAnimator(J3DAnmTevRegKey *, J3DTevColorAnm **, J3DTevKColorAnm **);
-    J3DErrType entryTevRegAnimator(J3DAnmTevRegKey *);
-    void removeTevRegAnimator(J3DAnmTevRegKey *);
+	J3DErrType allocTexMtxAnimator(J3DAnmTextureSRTKey*, J3DTexMtxAnm**);
+	J3DErrType entryTexMtxAnimator(J3DAnmTextureSRTKey*);
+	bool removeTexMtxAnimator(J3DAnmTextureSRTKey*);
 
-    J3DErrType entryMatColorAnimator(J3DAnmColor *);
-    void removeMatColorAnimator(J3DAnmColor *);
+	void initTexMtxAnms(J3DAnmTextureSRTKey* key, J3DTexMtxAnm** anms, u16 count)
+	{
+		for (u16 i = 0; i < count; i++) {
+			(*anms)[i].mIndex = i;
+			(*anms)[i].mAnm   = key;
+		}
+	}
 
-    J3DErrType entryTexNoAnimator(J3DAnmTexPattern *);
-    void removeTexNoAnimator(J3DAnmTexPattern *);
+	J3DErrType allocTevRegAnimator(J3DAnmTevRegKey*, J3DTevColorAnm**, J3DTevKColorAnm**);
+	J3DErrType entryTevRegAnimator(J3DAnmTevRegKey*);
+	bool removeTevRegAnimator(J3DAnmTevRegKey*);
 
-    J3DMaterial *getMaterialNodePointer(u16 idx) const { return mMaterials[idx]; }
-    J3DTexture *getTexture() const { return mTextures; }
-    JUTNameTab *getTextureName() const { return mTextureNames; }
-    JUTNameTab *getMaterialName() const { return mMaterialNames; }
-    u16 getMaterialNum() const { return mMaterialNum; }
-    u16 getMaterialInitNum() const { return mMaterialInitNum; }
-    bool isLocked() const { return _1C == 1; }
+	void initTevColorAnms(J3DAnmTevRegKey* key, J3DTevColorAnm** anms, u16 count)
+	{
+		for (u16 i = 0; i < count; i++) {
+			(*anms)[i].mIndex = i;
+			(*anms)[i].mAnm   = key;
+		}
+	}
 
-    // VTBL _00
-    u16 mMaterialNum;               // _04
-    u16 mMaterialInitNum;           // _06
-    J3DMaterial **mMaterials;       // _08
-    JUTNameTab *mMaterialNames;       // _0C
-    J3DMaterial *mUniqueMaterials; // _10
-    J3DTexture *mTextures;           // _14
-    JUTNameTab *mTextureNames;       // _18
-    u16 _1C;                       // _1C
+	void initTevKColorAnms(J3DAnmTevRegKey* key, J3DTevKColorAnm** anms, u16 count)
+	{
+		for (u16 i = 0; i < count; i++) {
+			(*anms)[i].mIndex = i;
+			(*anms)[i].mAnm   = key;
+		}
+	}
+
+	J3DErrType entryMatColorAnimator(J3DAnmColor*);
+
+	J3DMaterial* getMaterialNodePointer(u16 idx) const { return mMaterials[idx]; }
+	J3DTexture* getTexture() const { return mTextures; }
+	JUTNameTab* getTextureName() const { return mTextureNames; }
+	JUTNameTab* getMaterialName() const { return mMaterialNames; }
+	u16 getMaterialNum() const { return mMaterialNum; }
+	u16 getMaterialInitNum() const { return mUniqueMaterialNum; }
+	bool isLocked() const { return _1C == 1; }
+	void setTexture(J3DTexture* tex) { mTextures = tex; }
+
+	// VTBL _00
+	u16 mMaterialNum;              // _04
+	u16 mUniqueMaterialNum;        // _06
+	J3DMaterial** mMaterials;      // _08
+	JUTNameTab* mMaterialNames;    // _0C
+	J3DMaterial* mUniqueMaterials; // _10
+	J3DTexture* mTextures;         // _14
+	JUTNameTab* mTextureNames;     // _18
+	u16 _1C;                       // _1C
 };
 #pragma pop
 #endif

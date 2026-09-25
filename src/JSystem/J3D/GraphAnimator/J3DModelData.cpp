@@ -36,7 +36,7 @@ J3DModelData::J3DModelData()
  */
 void J3DModelData::indexToPtr()
 {
-	j3dSys._58           = getMaterialTable().getTexture();
+	j3dSys.mTexture = getMaterialTable().getTexture();
 	static int sInterruptFlag = OSDisableInterrupts();
 	OSDisableScheduler();
 
@@ -62,8 +62,8 @@ void J3DModelData::indexToPtr()
 void J3DModelData::syncJ3DSysFlags() const
 {
 	if (mModelLoaderFlags & J3DMLF_UsePostTexMtx) {
-		j3dSys._34 |= 0x40000000;
+		j3dSys.mFlags |= 0x40000000;
 	} else {
-		j3dSys._34 &= ~0x40000000;
+		j3dSys.mFlags &= ~0x40000000;
 	}
 }
