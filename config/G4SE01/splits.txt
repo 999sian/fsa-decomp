@@ -13,6 +13,13 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:16
 
+JSystem/JAudio/JASPoolSinit.cpp:
+	extab       start:0x80005600 end:0x80005650
+	extabindex  start:0x80011860 end:0x800118D8
+	.text       start:0x80021840 end:0x80021D60
+	.ctors      start:0x8045BD04 end:0x8045BD08
+	.bss        start:0x804B2140 end:0x804B21AC
+
 JSystem/JKernel/JKRAram.cpp:
 	.text       start:0x800790A8 end:0x80079EFC
 	.ctors      start:0x8045BDA8 end:0x8045BDAC
