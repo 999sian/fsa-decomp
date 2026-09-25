@@ -13,6 +13,11 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:16
 
+JSystem/JAudio/System/JASReport.cpp:
+	.text       start:0x80028F54 end:0x80029050
+	.bss        start:0x804B2500 end:0x804B2518
+	.sbss       start:0x8053A2D0 end:0x8053A2E0
+
 JSystem/JAudio/System/JASLfo.cpp:
 	.text       start:0x8002D604 end:0x8002D78C
 	.ctors      start:0x8045BD50 end:0x8045BD54
@@ -38,6 +43,16 @@ JSystem/JAudio/System/JASInstSense.cpp:
 JSystem/JAudio/System/JASSimpleWaveBank.cpp:
 	.text       start:0x80030BD0 end:0x80030EF8
 	.data       start:0x80491A88 end:0x80491AD0
+
+JSystem/JAudio/System/JASRegisterParam.cpp:
+	.text       start:0x80033018 end:0x800332D0
+	.data       start:0x80491B70 end:0x80491BC0
+
+JSystem/JAudio/System/JASSeqReader.cpp:
+	.text       start:0x80035F4C end:0x80036188
+
+JSystem/JAudio/System/JASTrackPort.cpp:
+	.text       start:0x80039964 end:0x80039A84
 
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
