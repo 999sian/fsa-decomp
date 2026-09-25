@@ -734,11 +734,24 @@ struct J3DTextureSRTInfo {
 
 // hate this but whatever's in here can't have constructors bc of J3DTransform
 struct J3DTransformInfo {
-    inline J3DTransformInfo& operator=(const J3DTransformInfo& b)
+    // paired-single copy, as in JSystem's J3DTransform.h
+    inline J3DTransformInfo& operator=(register const J3DTransformInfo& b)
     {
-        mScale       = b.mScale;
-        mRotation    = b.mRotation;
-        mTranslation = b.mTranslation;
+        register const J3DTransformInfo& src = b;
+        register J3DTransformInfo& dst = *this;
+        register f32 xy;
+        __asm {
+            psq_l xy, J3DTransformInfo.mScale(src), 0, 0
+            psq_st xy, J3DTransformInfo.mScale(dst), 0, 0
+        }
+        mScale.z = b.mScale.z;
+        *(u32*)&mRotation = *(u32*)&b.mRotation;
+        mRotation.z = b.mRotation.z;
+        __asm {
+            psq_l xy, J3DTransformInfo.mTranslation(src), 0, 0
+            psq_st xy, J3DTransformInfo.mTranslation(dst), 0, 0
+        }
+        mTranslation.z = b.mTranslation.z;
         return *this;
     }
 
