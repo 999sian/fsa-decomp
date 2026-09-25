@@ -288,7 +288,9 @@ def main():
             lo_, hi_ = base, base + sec["sh_size"]
         if (lo_, hi_) != (base, base + sec["sh_size"]):
             print(f"  NOTE {sec.name}: retained range {lo_:08x}-{hi_:08x} differs from full section")
-        hi_ = (hi_ + 3) & ~3
+        # extend end to the next known symbol (dtk gap symbols must stay in the split)
+        nxt = min((e[2] for e in load_syms() if e[0] and e[2] >= hi_), default=hi_)
+        hi_ = nxt if nxt - hi_ < 32 else (hi_ + 3) & ~3
         placed[idx] = (lo_, hi_)
         # data relocs (vtables etc.)
         for off, t, si, add in relocs[idx]:
@@ -367,7 +369,7 @@ def main():
     names = {e[0]: i for i, e in enumerate(ss) if e[0]}
     changes = []
     for name, addr in sorted(resolved.items(), key=lambda x: x[1]):
-        if name.startswith("$sec:"):
+        if name.startswith("$sec:") or name.startswith("..."):
             continue
         inf = info.get(name, {})
         cands = [i for i in by_addr.get(addr, []) if "type:label" not in ss[i][3]]
