@@ -22,7 +22,23 @@ struct J3DVertexBuffer {
         mVtxColor[1]  = prev;
     }
 
+    void swapVtxPosArrayPointer()
+    {
+        void* old  = mVtxPos[0];
+        mVtxPos[0] = mVtxPos[1];
+        mVtxPos[1] = old;
+    }
+
+    void swapVtxNrmArrayPointer()
+    {
+        void* old   = mVtxNorm[0];
+        mVtxNorm[0] = mVtxNorm[1];
+        mVtxNorm[1] = old;
+    }
+
     GXColor* getVtxColArrayPointer(int idx) { return mVtxColor[idx]; }
+    void* getVtxPosArrayPointer(int idx) { return mVtxPos[idx]; }
+    void* getVtxNrmArrayPointer(int idx) { return mVtxNorm[idx]; }
 
     J3DVertexData* getVertexData() const { return mVtxData; }
 

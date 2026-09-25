@@ -5,7 +5,6 @@
 #include "JSystem/J3D/J3DCluster.h"
 
 struct J3DAnmCluster;
-class J3DClusterVertex;
 
 enum J3DSkinDeformFlags {
     J3DSKIN_Unk1 = 0x1,
@@ -51,10 +50,13 @@ struct J3DDeformer {
     void deform_VtxNrmF32(J3DVertexBuffer*, J3DCluster*, J3DClusterKey*, f32*);
     void normalizeWeight(int, f32*);
 
+    bool checkFlag(u32 flag) { return mFlags & flag; }
+    void normalize(f32* vec) { PSVECNormalize((Vec*)vec, (Vec*)vec); }
+
     J3DDeformData* mDeformData; // _00
     J3DAnmCluster* mAnmCluster; // _04
-    int _08;                    // _08
-    int _0C;                    // _0C
+    f32* mWeightList;           // _08
+    f32* mDeformedNrm;          // _0C
     u32 mFlags;                 // _10
 };
 

@@ -29,6 +29,8 @@ struct J3DVertexData {
     void setVtxPosType(GXCompType type) { mVtxPosType = type; }
     void setVtxNrmFrac(u8 frac) { mVtxNrmFrac = frac; }
     void setVtxNrmType(GXCompType type) { mVtxNrmType = type; }
+    GXCompType getVtxPosType() const { return mVtxPosType; }
+    GXCompType getVtxNrmType() const { return mVtxNrmType; }
 
     u32 mVtxNum;                       // _00
     u32 mNormNum;                      // _04
