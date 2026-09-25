@@ -373,6 +373,7 @@ config.libs = [
     JSystemLib(
         "J3DGraphAnimator",
         [
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJointTree.cpp"),
             Object(Matching, "JSystem/J3D/GraphAnimator/J3DShapeTable.cpp"),
         ],
     ),
