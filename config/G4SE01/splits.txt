@@ -77,6 +77,10 @@ JSystem/JAudio/System/JASBasicBank.cpp:
 	.data       start:0x80491980 end:0x804919A8
 	.bss        start:0x804B2850 end:0x804B2860
 
+JSystem/JAudio/System/JASBasicWaveBank.cpp:
+	.text       start:0x8002E90C end:0x8002F274
+	.data       start:0x804919D0 end:0x80491A40
+
 JSystem/JAudio/System/JASBank.cpp:
 	.text       start:0x80031484 end:0x8003189C
 	.ctors      start:0x8045BD6C end:0x8045BD70
