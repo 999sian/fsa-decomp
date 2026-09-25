@@ -27,3 +27,7 @@ Parts of src/JSystem/JParticle/ (JPAResourceManager swapTexture/getResUserWork) 
 The J3D/GraphBase sources under src/JSystem/J3D/GraphBase/ and the matching
 J3D headers under include/JSystem/J3D/ are adapted from the Pikmin 2
 decompilation project (https://github.com/projectPiki/pikmin2), with thanks.
+
+Some J3D loader sources (src/JSystem/J3D/GraphLoader/) and J3D header
+additions are adapted from the Pikmin 2 decompilation project
+(https://github.com/projectPiki/pikmin2).

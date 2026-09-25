@@ -593,6 +593,17 @@ config.libs = [
             Object(Matching, "JSystem/JGadget/linklist.cpp"),
         ],
     ),
+    JSystemLib(
+        "j3d-loader",
+        [
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelLoader.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelLoaderCalcSize.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DJointFactory.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DShapeFactory.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelSaver.cpp"),
+        ],
+    ),
 ]
 
 
