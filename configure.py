@@ -698,11 +698,11 @@ config.libs = [
         "gba",
         [
             Object(Matching, "dolphin/gba/GBA.c"),
-            Object(NonMatching, "dolphin/gba/GBAJoyBoot.c"),
+            Object(Matching, "dolphin/gba/GBAJoyBoot.c"),
             Object(Matching, "dolphin/gba/GBARead.c"),
             Object(Matching, "dolphin/gba/GBAWrite.c"),
             Object(Matching, "dolphin/gba/GBAXfer.c"),
-            Object(NonMatching, "dolphin/gba/GBAKey.c"),
+            Object(Matching, "dolphin/gba/GBAKey.c"),
         ],
     ),
     # jas-sinit: first .text TU (shared per-TU JASPoolAllocObject __sinit pools).

@@ -49,3 +49,4 @@ SDK/MSL/Runtime/MetroTRK sources (src/dolphin, src/MSL_C, src/Runtime.PPCEABI.H,
 SDK function identification and MSL signal.c: Mario Kart: Double Dash!! decomp, https://github.com/doldecomp/mkdd
 SDK function identification and ported functions (GXDraw, GXAttr getters, GXTransform, GXFifo, vec): Dolphin SDK 2004 decomp, https://github.com/doldecomp/dolsdk2004
 GBA library identification and GBAJoyBoot starting point: The Wind Waker decomp, https://github.com/zeldaret/tww
+GBAJoyBoot.c/GBAGetProcessStatus bodies and GBAKey.c starting point: Animal Crossing decomp (CC0), https://github.com/ACreTeam/ac-decomp
