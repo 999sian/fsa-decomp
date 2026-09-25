@@ -120,6 +120,12 @@ JSystem/J2DGraph/J2DPrint.cpp:
 	.sbss       start:0x8053A9A0 end:0x8053A9B0
 	.sdata2     start:0x8053BA00 end:0x8053BA28
 
+JSystem/J2DGraph/J2DScreen.cpp:
+	.text       start:0x8009C4EC end:0x8009DFA0
+	.data       start:0x804997E8 end:0x80499888
+	.sbss       start:0x8053A9B0 end:0x8053A9B8
+	.sdata2     start:0x8053BA28 end:0x8053BA48
+
 JSystem/J2DGraph/J2DTextBox.cpp:
 	.text       start:0x8009DFA0 end:0x8009F5BC
 	.data       start:0x80499888 end:0x80499948
