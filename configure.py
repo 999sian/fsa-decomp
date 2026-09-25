@@ -585,7 +585,7 @@ config.libs = [
         "GC/2.6",
         [*cflags_sdk_runtime, "-inline deferred"],
         [
-            Object(NonMatching, "MSL_C/PPC_EABI/abort_exit.c"),
+            Object(Matching, "MSL_C/PPC_EABI/abort_exit.c"),
             Object(Matching, "MSL_C/MSL_Common/alloc.c"),
             Object(Matching, "MSL_C/MSL_Common/errno.c"),
             Object(Matching, "MSL_C/MSL_Common/ansi_files.c"),

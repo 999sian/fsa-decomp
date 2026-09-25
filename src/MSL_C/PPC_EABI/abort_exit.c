@@ -16,28 +16,45 @@ static void (*__atexit_funcs[64])(void);
  * @note Address: N/A
  * @note Size: 0x9C
  */
+int raise(int sig);
+
 void abort(void)
 {
-	// UNUSED FUNCTION
+	raise(1);
+	__aborting = 1;
+	__begin_critical_region(atexit_funcs_access);
+	while (__atexit_curr_func > 0)
+		__atexit_funcs[--__atexit_curr_func]();
+	__end_critical_region(atexit_funcs_access);
+	__kill_critical_regions();
+	if (__console_exit != NULL) {
+		__console_exit();
+		__console_exit = NULL;
+	}
+	_ExitProcess();
 }
 
 /**
  * @note Address: N/A
  * @note Size: 0x4C
  */
+#if 0
 void atexit(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x6C
  */
+#if 0
 void __atexit(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800C2460
@@ -79,7 +96,9 @@ void exit(int status)
  * @note Address: N/A
  * @note Size: 0x8C
  */
+#if 0
 void __exit(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
