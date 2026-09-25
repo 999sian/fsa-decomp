@@ -29,7 +29,9 @@ from tools.project import (
 # Game versions
 DEFAULT_VERSION = 0
 VERSIONS = [
-    "G4SE01",  # 0
+    "G4SE01",  # 0 USA
+    "G4SJ01",  # 1 Japan
+    "G4SP01",  # 2 Europe (PAL)
 ]
 
 parser = argparse.ArgumentParser()
@@ -278,6 +280,23 @@ cflags_jsystem = [
     "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
 ]
 
+# JAudio/Interface (JAI) flags: JSystem flags plus MATCHING, which enables the
+# JASFakeMatch*.h headers that emit the per-TU JASPoolAllocObject memPool_
+# instances (and their __sinit guards) exactly as the retail objects have them.
+cflags_jai = [
+    *cflags_jsystem,
+    "-DMATCHING=1",
+]
+# JAudio/Utility + JAudio/Task flags (jau-task unit)
+cflags_jau = [*cflags_jsystem, "-DMATCHING=1"]
+# Extra flags for JAudio/Task (DSP driver), as in the mkdd decomp
+cflags_jaudio_task = ["-O4,s", "-inline noauto", "-use_lmw_stmw off", "-func_align 32"]
+# J3D/GraphBase flags: JSystem flags + retail volatile GXWGFifo (see dolphin/gx/GXVert.h)
+cflags_j3d_base = [
+    *cflags_jsystem,
+    "-DGX_WGPIPE_VOLATILE",
+]
+
 config.linker_version = "GC/1.3.2"
 
 
@@ -323,6 +342,9 @@ Equivalent = config.non_matching  # Object should be linked when configured with
 def MatchingFor(*versions):
     return config.version in versions
 
+
+# JAudio/System flags (jas-a unit)
+cflags_jas_a = [*cflags_jsystem, "-DMATCHING=1"]
 
 config.warn_missing_config = True
 config.warn_missing_source = False
@@ -383,6 +405,192 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),
             Object(Matching, "JSystem/JUtility/JUTTexture.cpp"),
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
+        ],
+    ),
+    {
+        "lib": "JAudio_Interface",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jai,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/Interface/JAIAudience.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISe.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeq.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeqDataMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeqMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISound.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundChild.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundHandles.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundInfo.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundParams.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundStarter.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStream.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStreamDataMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStreamMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIAudible.cpp"),
+        ],
+    },
+    JSystemLib(
+        "jas-b",
+        [
+            Object(NonMatching, "JSystem/JAudio/System/JASHeapCtrl.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstRand.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstSense.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASLfo.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASOscillator.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASProbe.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASRegisterParam.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASReport.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASResArcLoader.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSeqCtrl.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASSeqParser.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASSeqReader.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSimpleWaveBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSoundParams.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASTaskThread.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASTrack.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASTrackPort.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
+            # JASWaveBank.cpp (only JASWaveBank::isLoading) is dead-stripped in FSA:
+            # it has no code or data in main.dol.
+            Object(Matching, "JSystem/JAudio/System/JASWSParser.cpp"),
+        ],
+    ),
+    # JSystem TUs not present in the mkdd decomp (JMessage, extra JGadget, ...)
+    JSystemLib(
+        "jextra",
+        [
+            Object(Matching, "JSystem/JMessage/resource.cpp"),
+            Object(Matching, "JSystem/JMessage/data.cpp"),
+            Object(Matching, "JSystem/JMessage/processor.cpp"),
+            Object(Matching, "JSystem/JMessage/control.cpp"),
+            Object(Matching, "JSystem/JGadget/binary.cpp"),
+            Object(Matching, "JSystem/JGadget/std-vector.cpp"),
+        ],
+    ),
+    {
+        # JAudio/Utility + JAudio/Task (jau-task); -DMATCHING=1 enables the
+        # donor's explicit static memPool_ definitions (JASFakeMatch*.h)
+        "lib": "jau-task",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jau,
+        "progress_category": "jsys",
+        "objects": [
+            # JAudio/Task: DSP driver, built with mkdd's per-file flags
+            Object(Matching, "JSystem/JAudio/Task/dspproc.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/dsptask.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/osdsp.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/osdsp_task.c", extra_cflags=cflags_jaudio_task),
+            # JAudio/Utility
+            Object(Matching, "JSystem/JAudio/Utility/JAUAudioArcInterpreter.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUAudioArcLoader.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUBankTable.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUClusterSound.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUInitializer.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSectionHeap.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSeqCollection.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSeqDataBlockMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSoundMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSoundObject.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSoundTable.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUStreamFileTable.cpp"),
+        ],
+    },
+    JSystemLib(
+        "JParticle",
+        [
+            Object(NonMatching, "JSystem/JParticle/JPABaseShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAChildShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPADynamicsBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAEmitter.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAEmitterManager.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAExTexShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAExtraShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAFieldBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAKeyBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAMath.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAParticle.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResource.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResourceLoader.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResourceManager.cpp"),
+            Object(Matching, "JSystem/JParticle/JPATexture.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "j2d-a",
+        [
+            Object(Matching, "JSystem/J2DGraph/J2DAnimation.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DAnmLoader.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DBloSaver.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DGrafContext.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DManage.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DMatBlock.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DMaterial.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DMaterialFactory.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DOrthoGraph.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPane.cpp"),
+        ],
+    ),
+    {
+        # J3D/GraphBase (source from the Pikmin 2 decomp; mkdd has none).
+        # J3D needs the retail (volatile) GX write-gather pipe declaration.
+        "lib": "j3d-base",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_j3d_base,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/J3D/GraphBase/J3DGD.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DTransform.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DSys.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DDrawBuffer.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DShapeDraw.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DVertex.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DPacket.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphBase/J3DShape.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DMaterial.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphBase/J3DTevs.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DShapeMtx.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DStruct.cpp"),
+        ],
+    },
+    {
+        # JAudio/System (jas-a); -DMATCHING=1 enables the donor's explicit
+        # JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_ definitions
+        "lib": "jas-a",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jas_a,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/System/JASAiCtrl.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASAramStream.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASAudioReseter.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASAudioThread.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASBasicBank.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASBasicInst.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASBasicWaveBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCalc.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASChannel.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDriverIF.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDSPChannel.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDSPInterface.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDrumSet.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
+        ],
+    },
+    # jmisc: J3DU + JMath + JGadget + JFramework
+    JSystemLib(
+        "jmisc",
+        [
+            Object(Matching, "JSystem/JFramework/JFWDisplay.cpp"),
+            Object(Matching, "JSystem/JFramework/JFWSystem.cpp"),
+            Object(Matching, "JSystem/JMath/JMath.cpp"),
+            Object(Matching, "JSystem/JMath/random.cpp"),
+            Object(Matching, "JSystem/JMath/JMATrigonometric.cpp"),
+            Object(Matching, "JSystem/JGadget/linklist.cpp"),
         ],
     ),
     # Game code slice e0 (0x800F37A8-0x8015C828): function bodies from

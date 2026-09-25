@@ -1,5 +1,5 @@
 Third-party source
-==================
+===========
 
 The JSystem sources under src/JSystem/ and the headers under include/JSystem/,
 include/dolphin/, include/std/, include/types.h, include/macros.h,
@@ -10,6 +10,23 @@ Universal. Many thanks to its contributors.
 
 FSA's JSystem was built with MWCC GC/2.6 at -O4,p; these files are used
 unmodified unless noted in git history.
+
+JAIStreamMgr::stop(), JAISeMgr::stop(u32) and the JAISoundParams pitch property
+in src/JSystem/JAudio/Interface/ follow the Twilight Princess decompilation
+(https://github.com/zeldaret/tp).
+
+Some JSystem sources and headers not present in mkdd (JMessage, extra JGadget
+TUs) were adapted from the Pikmin 2 decompilation project
+(https://github.com/projectPiki/pikmin2). Many thanks to its contributors.
+The JGadget::binary::TParseValue templates and parts of the JMessage processor
+(its tag parsing and the FSA-era TProcessor layout) follow the Wind Waker
+(https://github.com/zeldaret/tww) and Twilight Princess
+(https://github.com/zeldaret/tp) decompilations, with thanks.
+
+Parts of src/JSystem/JParticle/ (JPAResourceManager swapTexture/getResUserWork) are based on the Twilight Princess decompilation (https://github.com/zeldaret/tp).
+The J3D/GraphBase sources under src/JSystem/J3D/GraphBase/ and the matching
+J3D headers under include/JSystem/J3D/ are adapted from the Pikmin 2
+decompilation project (https://github.com/projectPiki/pikmin2), with thanks.
 
 Some game-code function bodies may be adapted from the EverydaySimpleDev
 FSA-Decomp project (https://github.com/EverydaySimpleDev/FSA-Decomp, CC0,

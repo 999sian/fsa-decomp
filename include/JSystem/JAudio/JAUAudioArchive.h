@@ -17,6 +17,7 @@ public:
     virtual void readBSTN(const void *, u32) = 0;
     virtual void readBMS(u32, const void *, u32) = 0;
     virtual void readBMS_fromArchive(u32) = 0;
+    virtual void newVoiceBank(u32, u32) = 0;
     virtual void newDynamicSeqBlock(u32) = 0;
     virtual void readBSFT(const void *) = 0;
     virtual void readMaxSeCategory(int, int, int) = 0;
@@ -54,6 +55,7 @@ public:
     virtual void readBSTN(const void *, u32);
     virtual void readBMS(u32, const void *, u32);
     virtual void readBMS_fromArchive(u32);
+    virtual void newVoiceBank(u32, u32);
     virtual void newDynamicSeqBlock(u32);
     virtual void readBSFT(const void *);
     virtual void readMaxSeCategory(int, int, int);
@@ -79,6 +81,7 @@ public:
     virtual void readBSTN(const void *, u32);
     virtual void readBMS(u32, const void *, u32);
     virtual void readBMS_fromArchive(u32);
+    virtual void newVoiceBank(u32, u32);
     virtual void newDynamicSeqBlock(u32);
     virtual void readBSFT(const void *);
     virtual void readMaxSeCategory(int, int, int);

@@ -4,6 +4,7 @@
 #include <dolphin/mtx.h>
 //#include "Matrixf.h"
 #include "types.h"
+#include "JSystem/J3D/J3DTransform.h"
 
 struct J3DJointTree;
 struct J3DModelData;
@@ -21,8 +22,9 @@ struct J3DMtxBufferParent {
     Mtx** mDrawMatrices[2];       // _14
     Mtx33** mNormMatrices[2];     // _1C
     Mtx33*** mBumpMatrices[2];    // _24
-    u32 mModelType;               // _2C
+    u32 mViewCount;               // _2C
     u32 mCurrentViewNumber;       // _30
+    Mtx* mUserAnmMtx;             // _34
 };
 
 struct J3DMtxBuffer : public J3DMtxBufferParent {
@@ -49,7 +51,7 @@ struct J3DMtxBuffer : public J3DMtxBufferParent {
     u32* getCurrentViewNoPtr() { return &mCurrentViewNumber; }
     u8* getScaleFlagArray() const { return mScaleFlags; }
     u8 getScaleFlag(u16 idx) const { return mScaleFlags[idx]; }
-    Mtx &getAnmMtx(int i) { return mWorldMatrices[i]; }
+    MtxPtr getAnmMtx(int i) const { return mWorldMatrices[i]; }
     Mtx &getWeightAnmMtx(int i) { return mWeightEnvelopeMatrices[i]; }
     Mtx** getDrawMtxPtrPtr() const { return mDrawMatrices[1]; }
     Mtx* getDrawMtxPtr() const { return mDrawMatrices[1][mCurrentViewNumber]; }
@@ -58,6 +60,8 @@ struct J3DMtxBuffer : public J3DMtxBufferParent {
     Mtx33* getNrmMtxPtr() const { return mNormMatrices[1][mCurrentViewNumber]; }
     Mtx33* getNrmMtx(u16 idx) const { return &mNormMatrices[1][mCurrentViewNumber][idx]; }
     Mtx33*** getBumpMtxPtrPtr() const { return mBumpMatrices[1]; }
+    u8 getEnvScaleFlag(int idx) const { return mEnvelopeScaleFlags[idx]; }
+    void setNrmMtx(int idx, MtxPtr mtx) { J3DPSMtx33CopyFrom34(mtx, mNormMatrices[1][mCurrentViewNumber][idx]); }
     Mtx33* getBumpMtxPtr(int idx) const { return mBumpMatrices[1][idx][mCurrentViewNumber]; }
 
     void swapDrawMtx()
@@ -74,11 +78,15 @@ struct J3DMtxBuffer : public J3DMtxBufferParent {
         mNormMatrices[1][mCurrentViewNumber] = tmp;
     }
 
+    static Mtx sNoUseDrawMtx;
+    static Mtx33 sNoUseNrmMtx;
     static Mtx* sNoUseDrawMtxPtr;
     static Mtx33* sNoUseNrmMtxPtr;
 
-    // _00-_30 = J3DMtxBufferParent;
-    // _34     = VTBL
+    // _00-_34 = J3DMtxBufferParent;
+    // _38     = VTBL
 };
+
+void J3DCalcViewBaseMtx(Mtx view, const Vec& scale, const Mtx& base, Mtx dst);
 
 #endif

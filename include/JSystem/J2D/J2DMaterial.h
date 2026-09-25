@@ -49,12 +49,17 @@ struct J2DMaterial {
     };
 
     J2DMaterial();
-    J2DMaterial(u32);
+    J2DMaterial(u32); // not present in FSA
 
     virtual ~J2DMaterial(); // _08
 
     void animation();
-    void makeAnmPointer();
+    void makeAnmPointer()
+    {
+        if (!mAnmPtr) {
+            mAnmPtr = new J2DMaterialAnmPointer;
+        }
+    }
     void setAnimation(J2DAnmColor*);
     void setAnimation(J2DAnmTevRegKey*);
     void setAnimation(J2DAnmTextureSRTKey*);

@@ -1,0 +1,59 @@
+#ifndef JMESSAGE_CONTROL_H
+#define JMESSAGE_CONTROL_H
+
+#include "types.h"
+#include "JSystem/JMessage/processor.h"
+
+// Adapted from the Pikmin 2 decompilation (projectPiki/pikmin2).
+
+namespace JMessage {
+
+struct TControl {
+    TControl();
+
+    virtual ~TControl(); // _08
+
+    void reset();
+    bool update();
+    void render();
+    bool setMessageCode(u16, u16);
+    bool setMessageCode_inSequence_(const TProcessor*, u16, u16);
+
+    bool isReady_update_() const { return mMessageBegin && mBaseProcSeq; }
+    bool isReady_render_() const { return _20 && mBaseProcRender; }
+
+    TProcessor* getProcessor() const {
+        return mBaseProcSeq ? (TProcessor*)mBaseProcSeq : (TProcessor*)mBaseProcRender;
+    }
+
+    bool setMessageCode_inReset_(TProcessor* proc, u16 groupID, u16 index) {
+        if (!setMessageCode_inSequence_(proc, groupID, index)) {
+            return false;
+        }
+
+        if (isReady_update_()) {
+            mBaseProcSeq->setBegin_messageEntryText(mResourceCache, mEntry, mMessageBegin);
+        }
+
+        return true;
+    }
+
+    const char* getMessageText_begin() const { return mMessageBegin; }
+    void* getMessageEntry() const { return mEntry; }
+
+    // _00 = VTBL
+    TSequenceProcessor* mBaseProcSeq;     // _04
+    TRenderingProcessor* mBaseProcRender; // _08
+    u16 mMessageCode;                     // _0C
+    u16 mMessageIndex;                    // _0E
+    const TResource* mResourceCache;      // _10
+    void* mEntry;                         // _14
+    const char* mMessageBegin;            // _18
+    const char* mCurrentText;             // _1C
+    const char* _20;                      // _20
+    TProcessor::TStack mRenderStack;      // _24
+};
+
+} // namespace JMessage
+
+#endif
