@@ -174,7 +174,7 @@ struct J3DModel
     bool isCpuSkinningOn() const { return (mFlags & J3DMODEL_SkinPosCpu) && (mFlags & J3DMODEL_SkinNrmCpu); }
 
     u32 getDiffFlag() const { return mDiffFlag; }
-    Mtx &getAnmMtx(int i) { return mMtxBuffer->getAnmMtx(i); }
+    MtxPtr getAnmMtx(int i) { return mMtxBuffer->getAnmMtx(i); }
     Mtx &getWeightAnmMtx(int i) { return mMtxBuffer->getWeightAnmMtx(i); }
     Mtx &getBaseTRMtx() { return mPosMtx; }
     void setBaseTRMtx(Mtx m) { PSMTXCopy(m, mPosMtx); }

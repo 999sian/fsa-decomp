@@ -160,6 +160,13 @@ JSystem/J3D/GraphBase/J3DGD.cpp:
 	.sdata      start:0x80539DC8 end:0x80539E10
 	.sdata2     start:0x8053BC88 end:0x8053BCC8
 
+JSystem/J3D/GraphBase/J3DShapeMtx.cpp:
+	.text       start:0x800E1318 end:0x800E2B40
+	.ctors      start:0x8045BDE8 end:0x8045BDEC
+	.data       start:0x8049BAC0 end:0x8049BD98
+	.sbss       start:0x8053AA08 end:0x8053AA28
+	.sdata2     start:0x8053BCD8 end:0x8053BCE0
+
 JSystem/J3D/GraphBase/J3DShapeDraw.cpp:
 	.text       start:0x800E3950 end:0x800E39DC
 	.data       start:0x8049BDF8 end:0x8049BE04
