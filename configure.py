@@ -374,6 +374,7 @@ config.libs = [
         "j2d-a",
         [
             Object(Matching, "JSystem/J2DGraph/J2DAnimation.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DAnmLoader.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DManage.cpp"),
         ],
     ),
