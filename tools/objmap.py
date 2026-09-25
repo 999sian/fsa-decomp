@@ -98,7 +98,8 @@ def mask(w, rtype):
 def main():
     args = sys.argv[1:]
     apply = "--apply" in args
-    args = [a for a in args if a != "--apply"]
+    fuzzy = "--fuzzy" in args
+    args = [a for a in args if a not in ("--apply", "--fuzzy")]
     unit = None
     if "--unit" in args:
         i = args.index("--unit")
@@ -137,6 +138,25 @@ def main():
                 return False
         return True
 
+    retail_size = {}
+    for e in load_syms():
+        if e[0] and e[1] == ".text":
+            m_ = re.search(r"size:0x([0-9A-Fa-f]+)", e[3])
+            if m_:
+                retail_size[e[2]] = int(m_.group(1), 16)
+
+    def score(fs, addr):
+        o, n = fs["st_value"], fs["st_size"]
+        n = min(n, retail_size.get(addr, n))
+        good = 0
+        for k in range(0, n, 4):
+            w = struct.unpack(">I", text[o + k : o + k + 4])[0]
+            m = mask(w, rel_at.get(o + k) or rel_at.get(o + k + 2))
+            r = rw(addr + k)
+            good += r is not None and (r & m) == (w & m)
+        return good / max(1, n // 4)
+
+    fuzzy_funcs = set()
     ai = [i for i, s in enumerate(funcs) if s.name == anchor_name]
     assert ai, "anchor not in obj"
     ai = ai[0]
@@ -172,6 +192,11 @@ def main():
         if matches(s, cur):
             fplace[s.name] = cur
             cur += s["st_size"]
+        elif fuzzy and cur in retail_size and score(s, cur) >= 0.5:
+            print(f"FUZZY: {s.name} at {cur:08x} score {score(s, cur):.2f} size obj 0x{s['st_size']:X} retail 0x{retail_size[cur]:X}")
+            fplace[s.name] = cur
+            fuzzy_funcs.add(s.name)
+            cur += retail_size[cur]
         elif s["st_info"]["bind"] == "STB_WEAK":
             dropped.append(s.name)
         else:
@@ -194,7 +219,7 @@ def main():
     hilo = defaultdict(lambda: [None, None])
     for off, t, si, add in relocs[text_idx]:
         fn = max((s for s in funcs if s["st_value"] <= off), key=lambda s: s["st_value"])
-        if fn.name not in fplace:
+        if fn.name not in fplace or fn.name in fuzzy_funcs:
             continue
         ra = fplace[fn.name] + (off - fn["st_value"])
         sym = syms[si]
@@ -400,7 +425,7 @@ def main():
             i = names[cur]
             rest = ss[i][3]
             rest = re.sub(r"scope:\S+", f"scope:{scope}", rest) if "scope:" in rest else rest + f" scope:{scope}"
-            if inf.get("defined") and inf.get("size") and name not in dropped and not (inf.get("bind") == "STB_WEAK" and inf.get("type") == "STT_OBJECT" and not any(a <= addr < b for a, b in placed.values())):
+            if inf.get("defined") and inf.get("size") and name not in dropped and name not in fuzzy_funcs and not (inf.get("bind") == "STB_WEAK" and inf.get("type") == "STT_OBJECT" and not any(a <= addr < b for a, b in placed.values())):
                 rest = re.sub(r"size:0x[0-9A-Fa-f]+", f"size:0x{inf['size']:X}", rest)
             ss[i][0] = name
             ss[i][3] = rest

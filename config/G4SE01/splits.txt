@@ -23,6 +23,10 @@ JSystem/JKernel/JKRAramHeap.cpp:
 	.data       start:0x80498C10 end:0x80498C20
 	.bss        start:0x804B9FC8 end:0x804B9FD8
 
+JSystem/JKernel/JKRArchivePri.cpp:
+	.text       start:0x8007BC7C end:0x8007C8F0
+	.sbss       start:0x8053A7F0 end:0x8053A7F8
+
 JSystem/JKernel/JKRCompArchive.cpp:
 	.text       start:0x8007D2B8 end:0x8007E034
 	.rodata     start:0x8045E1C0 end:0x8045E200
