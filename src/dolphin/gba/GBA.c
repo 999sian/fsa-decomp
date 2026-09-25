@@ -1,10 +1,8 @@
 #include "Dolphin/gba.h"
 
-char* __GBAVersion                           = "<< Dolphin SDK - GBA\trelease build: Dec  3 2003 18:41:55 (0x2301) >>";
-static OSResetFunctionInfo ResetFunctionInfo = { OnReset, 0x7E };
+static OSResetFunctionInfo ResetFunctionInfo = { OnReset, 0x7F };
 static GBASecParam SecParams[4] ATTRIBUTE_ALIGN(32);
 GBAControl __GBA[4];
-static BOOL Initialized;
 BOOL __GBAReset;
 
 /**
@@ -33,29 +31,25 @@ void GBAInit(void)
 	GBAControl* gba;
 	s32 chan;
 
-	if (Initialized == FALSE) {
-		Initialized = TRUE;
-		OSRegisterVersion(__GBAVersion);
-		for (chan = 0; chan < 4; ++chan) {
-			gba        = &__GBA[chan];
-			gba->delay = OSMicrosecondsToTicks(60);
-			OSInitThreadQueue(&gba->threadQueue);
-			gba->param = &SecParams[chan];
-		}
-		OSInitAlarm();
-
-		DSPInit();
-
-		__GBAReset = FALSE;
-		OSRegisterResetFunction(&ResetFunctionInfo);
+	for (chan = 0; chan < 4; ++chan) {
+		gba        = &__GBA[chan];
+		gba->delay = OSMicrosecondsToTicks(60);
+		OSInitThreadQueue(&gba->threadQueue);
+		gba->param = &SecParams[chan];
 	}
+	OSInitAlarm();
+
+	DSPInit();
+
+	__GBAReset = FALSE;
+	OSRegisterResetFunction(&ResetFunctionInfo);
 }
 
 /**
  * @note Address: N/A
  * @note Size: 0x64
  */
-int GBAGetStatusAsync(s32 chan, u8* statusPtr)
+int GBAGetStatusAsync(s32 chan, u8* statusPtr, GBASyncCallback callback)
 {
 	GBAControl* gba = &__GBA[chan];
 	if (gba->callback) {
@@ -64,7 +58,7 @@ int GBAGetStatusAsync(s32 chan, u8* statusPtr)
 
 	gba->output[0] = 0;
 	gba->status    = statusPtr;
-	gba->callback  = __GBASyncCallback;
+	gba->callback  = callback;
 	return __GBATransfer(chan, 1, 3, ShortCommandProc);
 }
 
@@ -74,7 +68,7 @@ int GBAGetStatusAsync(s32 chan, u8* statusPtr)
  */
 int GBAGetStatus(s32 chan, u8* statusPtr)
 {
-	int status = GBAGetStatusAsync(chan, statusPtr);
+	int status = GBAGetStatusAsync(chan, statusPtr, __GBASyncCallback);
 	return (status != 0) ? status : __GBASync(chan);
 }
 
@@ -82,7 +76,7 @@ int GBAGetStatus(s32 chan, u8* statusPtr)
  * @note Address: N/A
  * @note Size: 0x64
  */
-int GBAResetAsync(s32 chan, u8* statusPtr)
+int GBAResetAsync(s32 chan, u8* statusPtr, GBASyncCallback callback)
 {
 	GBAControl* gba = &__GBA[chan];
 	if (gba->callback) {
@@ -91,7 +85,7 @@ int GBAResetAsync(s32 chan, u8* statusPtr)
 
 	gba->output[0] = 0xFF;
 	gba->status    = statusPtr;
-	gba->callback  = __GBASyncCallback;
+	gba->callback  = callback;
 	return __GBATransfer(chan, 1, 3, ShortCommandProc);
 }
 
@@ -101,7 +95,7 @@ int GBAResetAsync(s32 chan, u8* statusPtr)
  */
 int GBAReset(s32 chan, u8* statusPtr)
 {
-	int status = GBAResetAsync(chan, statusPtr);
+	int status = GBAResetAsync(chan, statusPtr, __GBASyncCallback);
 	return (status != 0) ? status : __GBASync(chan);
 }
 

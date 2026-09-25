@@ -673,7 +673,7 @@ config.libs = [
     DolphinLib(
         "gba",
         [
-            Object(NonMatching, "dolphin/gba/GBA.c"),
+            Object(Matching, "dolphin/gba/GBA.c"),
             Object(NonMatching, "dolphin/gba/GBAJoyBoot.c"),
             Object(Matching, "dolphin/gba/GBARead.c"),
             Object(Matching, "dolphin/gba/GBAWrite.c"),
