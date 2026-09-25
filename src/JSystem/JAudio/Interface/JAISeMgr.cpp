@@ -282,6 +282,14 @@ void JAISeMgr::stop()
     }
 }
 
+void JAISeMgr::stop(u32 fadeCount)
+{
+    for (int i = 0; i < 16; i++)
+    {
+        mCategoryMgrs[i].stop(fadeCount);
+    }
+}
+
 void JAISeMgr::stopAudibleSoundsSync()
 {
     stopAudibleSounds();

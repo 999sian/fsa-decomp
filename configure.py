@@ -386,7 +386,7 @@ config.libs = [
         "objects": [
             Object(Matching, "JSystem/JAudio/Interface/JAIAudience.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISe.cpp"),
-            Object(NonMatching, "JSystem/JAudio/Interface/JAISeMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeMgr.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISeq.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISeqDataMgr.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISeqMgr.cpp"),
