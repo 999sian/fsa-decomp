@@ -159,3 +159,6 @@ JSystem/J3D/GraphBase/J3DGD.cpp:
 JSystem/J3D/GraphBase/J3DShapeDraw.cpp:
 	.text       start:0x800E3950 end:0x800E39DC
 	.data       start:0x8049BDF8 end:0x8049BE04
+
+JSystem/J3D/GraphBase/J3DStruct.cpp:
+	.text       start:0x800E4870 end:0x800E49E0

@@ -393,6 +393,7 @@ config.libs = [
             Object(Matching, "JSystem/J3D/GraphBase/J3DPacket.cpp"),
             Object(NonMatching, "JSystem/J3D/GraphBase/J3DShape.cpp"),
             Object(NonMatching, "JSystem/J3D/GraphBase/J3DTevs.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DStruct.cpp"),
         ],
     },
 ]

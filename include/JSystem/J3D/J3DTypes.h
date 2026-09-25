@@ -526,9 +526,7 @@ struct J3DLightObj {
 struct J3DTevOrderInfo {
 	inline J3DTevOrderInfo& operator=(const J3DTevOrderInfo& other)
 	{
-		mTexCoordID = other.mTexCoordID;
-		mTexMapID   = other.mTexMapID;
-		mChannelID  = other.mChannelID;
+		*(u32*)this = *(u32*)&other;
 		return *this;
 	}
 
@@ -717,12 +715,7 @@ struct J3DTevStage {
 };
 
 struct J3DTexCoordInfo {
-	void operator=(J3DTexCoordInfo const& other)
-	{
-		mTexGenType = other.mTexGenType;
-		mTexGenSrc  = other.mTexGenSrc;
-		mTexGenMtx  = other.mTexGenMtx;
-	}
+	void operator=(J3DTexCoordInfo const& other) { *(u32*)this = *(u32*)&other; }
 
 	u8 getTexGenType() { return mTexGenType; }
 	u8 getTexGenSrc() { return mTexGenSrc; }
@@ -772,6 +765,25 @@ struct J3DTexCoord : public J3DTexCoordInfo {
 extern u8 j3dTexCoordTable[7623];
 
 struct J3DTextureSRTInfo {
+	inline void operator=(J3DTextureSRTInfo const& other)
+	{
+		register const f32* src = &other.mScaleX;
+		register f32* dst       = &mScaleX;
+		register f32 xy;
+		asm {
+			psq_l xy, 0(src), 0, 0
+			psq_st xy, 0(dst), 0, 0
+		}
+		// the rotation is copied together with its padding
+		*(u32*)&mRotation = *(u32*)&other.mRotation;
+		src               = &other.mTranslationX;
+		dst               = &mTranslationX;
+		asm {
+			psq_l xy, 0(src), 0, 0
+			psq_st xy, 0(dst), 0, 0
+		}
+	}
+
 	f32 mScaleX;       // _00
 	f32 mScaleY;       // _04
 	s16 mRotation;     // _08
@@ -797,11 +809,7 @@ struct J3DTransformInfo {
 extern const J3DTransformInfo j3dDefaultTransformInfo;
 
 struct J3DNBTScaleInfo {
-	inline void operator=(const J3DNBTScaleInfo& other)
-	{
-		mHasScale = other.mHasScale;
-		mScale    = other.mScale;
-	}
+	J3DNBTScaleInfo& operator=(const J3DNBTScaleInfo& other); // J3DStruct.cpp
 
 	u8 mHasScale; // _00
 	Vec mScale;   // _04
