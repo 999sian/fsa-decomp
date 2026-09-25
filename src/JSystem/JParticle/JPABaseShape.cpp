@@ -1043,10 +1043,12 @@ void JPADrawLine(JPAEmitterWorkData *work, JPABaseParticle *particle)
     GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
 
     GXBegin(GX_LINES, GX_VTXFMT1, 2);
+    f32 zero = 0.0f;
+    f32 one  = 1.0f;
     GXPosition3f32(position1.x, position1.y, position1.z);
-    GXTexCoord2f32(0.0f, 0.0f);
+    GXTexCoord2f32(zero, zero);
     GXPosition3f32(position2.x, position2.y, position2.z);
-    GXTexCoord2f32(0.0f, 1.0f);
+    GXTexCoord2f32(zero, one);
     GXEnd();
 
     GXSetVtxDesc(GX_VA_POS, GX_INDEX8);
