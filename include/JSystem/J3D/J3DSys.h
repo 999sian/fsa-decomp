@@ -69,7 +69,7 @@ struct J3DSys
     Vec *_118;
 
     static Mtx mCurrentMtx;
-    static JGeometry::TVec3f mCurrentS;
+    static Vec mCurrentS;
     static JGeometry::TVec3f mParentS;
     static u16 sTexCoordScaleTable[8][4];
 };

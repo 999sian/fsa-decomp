@@ -5,6 +5,13 @@
 #include "JSystem/J3D/J3DTypes.h"
 #include "types.h"
 
+struct J3DIndTexCoordScaleInfo {
+    u8 mScaleS; // _00
+    u8 mScaleT; // _01
+    u8 _02;     // _02, padding?
+    u8 _03;     // _03, padding?
+};
+
 struct J3DIndTexCoordScale {
     J3DIndTexCoordScale();
     ~J3DIndTexCoordScale() { }

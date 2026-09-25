@@ -29,7 +29,7 @@ struct J3DTexture : _UnknownJ3DTextureParent {
     }
     void loadGX(u16, GXTexMapID) const;
 
-    virtual ~J3DTexture(); // _08 (weak)
+    virtual ~J3DTexture() {} // _08 (weak)
 
     u16 getNum() const { return mNum; }
     ResTIMG* getResTIMG(u16 entry) const { return &mRes[entry]; }
