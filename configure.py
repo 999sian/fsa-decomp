@@ -278,6 +278,12 @@ cflags_jsystem = [
     "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
 ]
 
+# J3D/GraphBase flags: JSystem flags + retail volatile GXWGFifo (see dolphin/gx/GXVert.h)
+cflags_j3d_base = [
+    *cflags_jsystem,
+    "-DGX_WGPIPE_VOLATILE",
+]
+
 config.linker_version = "GC/1.3.2"
 
 
@@ -370,6 +376,17 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    {
+        # J3D/GraphBase (source from the Pikmin 2 decomp; mkdd has none).
+        # J3D needs the retail (volatile) GX write-gather pipe declaration.
+        "lib": "j3d-base",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_j3d_base,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/J3D/GraphBase/J3DGD.cpp"),
+        ],
+    },
 ]
 
 
