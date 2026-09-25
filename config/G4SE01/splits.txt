@@ -146,6 +146,11 @@ JSystem/JUtility/JUTConsole.cpp:
 	.sbss       start:0x8053A8E0 end:0x8053A8F0
 	.sdata2     start:0x8053B7A0 end:0x8053B7D8
 
+JSystem/JUtility/JUTDbPrint.cpp:
+	.text       start:0x800891B8 end:0x80089510
+	.sbss       start:0x8053A8F0 end:0x8053A8F8
+	.sdata2     start:0x8053B7D8 end:0x8053B7E8
+
 JSystem/JUtility/JUTDirectFile.cpp:
 	.text       start:0x80089510 end:0x800898B0
 
