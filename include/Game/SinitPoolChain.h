@@ -14,12 +14,28 @@
  * differences are the DestructorChain array address, its node offsets and the
  * `bl` displacements.
  *
- * Include this header in a TU that must emit that `__sinit`. The nine objects
- * are shared: the pool (`.bss` 0x804B21AC + 0x10*i), its guard (`.sbss`
- * 0x8053A2AC + i) and its deleting destructor (`.text` 0x80021D0C - 0x54*i) are
- * weak symbols whose storage belongs to the audio units, so this header
- * contributes no storage of its own - only the nine `memPool_` definitions that
- * make the compiler synthesise the `__sinit`.
+ * Include this header in a TU that must emit that `__sinit`. Nine `memPool_`
+ * definitions are what makes the compiler synthesise the function; two things
+ * follow that a caller must know:
+ *
+ *  - The nine pools (`.bss` 0x804B21AC + 0x10*i), guards (`.sbss` 0x8053A2AC + i)
+ *    and deleting destructors (`.text` 0x80021D0C - 0x54*i) are SHARED: this
+ *    object emits them as weak/common definitions which the linker coalesces
+ *    with the strong definitions the audio units already provide, so they add no
+ *    storage. Each object additionally REFERENCES the nine destructors; those
+ *    references only resolve because `config/G4SE01/symbols.txt` gives the retail
+ *    dtors at 0x80021D0C… the exact mangled names this header's types produce.
+ *  - The TU also gets its OWN DestructorChain array: nine 0xC-byte nodes, 0x6C
+ *    bytes of `.bss`, which the `__sinit` prologue addresses via `r31`. That
+ *    storage is per-unit and must be owned by the unit's `splits.txt` block at
+ *    the address the retail `__sinit` loads (read the `lis`/`addi` pair). If it
+ *    is left unclaimed, the link grows `.bss` by 0x70 and every later section
+ *    shifts, so `ninja` stops printing `main.dol: OK`.
+ *
+ * Do not include a `JSystem/JAudio/JASFakeMatch*.h` in the same TU: those files
+ * carry some of the same explicit specialisations, and a second definition of an
+ * explicit specialisation is a hard redefinition error, not an interchangeable
+ * interface.
  *
  * `JASMemPool<T>::~JASMemPool()` must stay DECLARED-ONLY (see JASHeapCtrl.h).
  * With an inline body MWCC emits nine weak dtor copies per TU, each with its own
@@ -33,8 +49,9 @@
  * Slots 3, 4 and 5 are the three remaining 268-byte candidates and are NOT
  * settled - slot 4's retail size (64) matches none of them, so at least one of
  * those retail classes differs from the imported one. The identity only decides
- * the NAME of the pool/dtor symbols, never the emitted bytes; `wf/jas-sinit`
- * owns the authoritative answer.
+ * the NAME of the pool/dtor symbol, never the emitted bytes, so a correction is
+ * name-only; `wf/jas-sinit` owns the authoritative answer. Whatever it returns,
+ * the header and the `symbols.txt` renames must change together.
  */
 
 class JASChannel;
