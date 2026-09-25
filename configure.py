@@ -378,6 +378,7 @@ config.libs = [
             Object(Matching, "JSystem/JMath/JMath.cpp"),
             Object(Matching, "JSystem/JMath/random.cpp"),
             Object(Matching, "JSystem/JMath/JMATrigonometric.cpp"),
+            Object(Matching, "JSystem/JGadget/linklist.cpp"),
         ],
     ),
 ]
