@@ -135,3 +135,9 @@ JSystem/J2DGraph/J2DTevs.cpp:
 	.text       start:0x800B5CCC end:0x800B6158
 	.rodata     start:0x804631F0 end:0x80463270
 	.sdata2     start:0x8053BAE0 end:0x8053BB28
+
+JSystem/J2DGraph/J2DTextBoxEx.cpp:
+	.text       start:0x800B6158 end:0x800B79A4
+	.rodata     start:0x80463270 end:0x804632A8
+	.data       start:0x8049A1F8 end:0x8049A2B8
+	.sdata2     start:0x8053BB28 end:0x8053BB48

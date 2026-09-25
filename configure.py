@@ -378,6 +378,7 @@ config.libs = [
             Object(Matching, "JSystem/J2DGraph/J2DScreen.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DTevs.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DTextBox.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTextBoxEx.cpp"),
         ],
     ),
 ]
