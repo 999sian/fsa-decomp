@@ -324,6 +324,9 @@ def MatchingFor(*versions):
     return config.version in versions
 
 
+# JAudio/System flags (jas-a unit)
+cflags_jas_a = [*cflags_jsystem, "-DMATCHING=1"]
+
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [
@@ -370,15 +373,20 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
-    JSystemLib(
-        "jas-a",
-        [
+    {
+        # JAudio/System (jas-a); -DMATCHING=1 enables the donor's explicit
+        # JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_ definitions
+        "lib": "jas-a",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jas_a,
+        "progress_category": "jsys",
+        "objects": [
             Object(Matching, "JSystem/JAudio/System/JASAiCtrl.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
         ],
-    ),
+    },
 ]
 
 
