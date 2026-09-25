@@ -374,6 +374,7 @@ config.libs = [
     JSystemLib(
         "jmisc",
         [
+            Object(Matching, "JSystem/JFramework/JFWDisplay.cpp"),
             Object(Matching, "JSystem/JFramework/JFWSystem.cpp"),
             Object(Matching, "JSystem/JMath/JMath.cpp"),
             Object(Matching, "JSystem/JMath/random.cpp"),
