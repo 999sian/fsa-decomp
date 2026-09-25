@@ -124,6 +124,12 @@ JSystem/J2DGraph/J2DAnmLoader.cpp:
 	.data       start:0x80499AE8 end:0x80499B6C
 	.sdata2     start:0x8053BAA8 end:0x8053BAB0
 
+JSystem/J2DGraph/J2DBloSaver.cpp:
+	.text       start:0x800A655C end:0x800A68D4
+	.ctors      start:0x8045BDD8 end:0x8045BDDC
+	.bss        start:0x804BA4B0 end:0x804BA4C0
+	.sbss       start:0x8053A9B8 end:0x8053A9C0
+
 JSystem/J2DGraph/J2DManage.cpp:
 	.text       start:0x800A68D4 end:0x800A6B98
 	.bss        start:0x804BA4C0 end:0x804BA5C8
