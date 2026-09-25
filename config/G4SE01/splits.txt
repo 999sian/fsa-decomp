@@ -140,6 +140,11 @@ JSystem/J2DGraph/J2DManage.cpp:
 	.text       start:0x800A68D4 end:0x800A6B98
 	.bss        start:0x804BA4C0 end:0x804BA5C8
 
+JSystem/J2DGraph/J2DMatBlock.cpp:
+	.text       start:0x800A6B98 end:0x800AEF1C
+	.rodata     start:0x80463178 end:0x80463188
+	.data       start:0x80499B70 end:0x8049A058
+
 JSystem/J2DGraph/J2DMaterial.cpp:
 	.text       start:0x800AEF1C end:0x800B014C
 	.data       start:0x8049A090 end:0x8049A0A8

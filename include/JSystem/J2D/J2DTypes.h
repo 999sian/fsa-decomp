@@ -126,7 +126,11 @@ struct J2DColorChanInfo {
 };
 
 inline u8 J2DCalcColorChanID(u8 id) { return id; }
+#ifdef J2D_NONCONST_DEFAULTS // see the comment above j2dDefaultTevSwapMode
+extern J2DColorChanInfo j2dDefaultColorChanInfo;
+#else
 extern const J2DColorChanInfo j2dDefaultColorChanInfo;
+#endif
 
 /**
  * @size{0x2}
@@ -206,19 +210,23 @@ struct J2DTevSwapModeTableInfo {
     u8 mA; // _03
 };
 
-// FSA: the J2D TUs that construct J2DTevStage (J2DMatBlock, J2DMaterialFactory, J2DBloSaver)
-// see this as non-const (the retail code re-reads it after each store), while J2DTevs.cpp
-// defines it const in .sdata2 (pikmin2 hit the same thing). Those TUs define
-// J2D_NONCONST_TEV_SWAP_MODE before including J2D headers.
-#ifdef J2D_NONCONST_TEV_SWAP_MODE
+// FSA: J2DMatBlock, J2DMaterialFactory and J2DBloSaver see some of the j2dDefault* tables as
+// non-const (the retail code re-reads them after every store, as if they could alias), while
+// J2DTevs.cpp defines them const in .sdata2 (pikmin2 hit the same thing with
+// j2dDefaultTevSwapMode). Those TUs define J2D_NONCONST_DEFAULTS before including J2D headers.
+#ifdef J2D_NONCONST_DEFAULTS
 extern J2DTevSwapModeInfo j2dDefaultTevSwapMode;
 #else
 extern const J2DTevSwapModeInfo j2dDefaultTevSwapMode;
 #endif
+#ifdef J2D_NONCONST_DEFAULTS
+extern J2DTevSwapModeTableInfo j2dDefaultTevSwapModeTable;
+#else
 extern const J2DTevSwapModeTableInfo j2dDefaultTevSwapModeTable;
+#endif
 extern const u8 j2dDefaultTevSwapTable;
 
-inline u8 J2DCalcTevSwapTable(u8 r, u8 g, u8 b, u8 a) { return ((r&0xff) << 6) + ((g&0xff) << 4) + ((b&0xff) << 2) + a; }
+inline u8 J2DCalcTevSwapTable(const u8 r, const u8 g, const u8 b, const u8 a) { return (r << 6) + (g << 4) + (b << 2) + a; }
 
 struct J2DTevSwapModeTable {
     J2DTevSwapModeTable() { _00 = j2dDefaultTevSwapTable; }

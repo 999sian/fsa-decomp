@@ -1,4 +1,4 @@
-#define J2D_NONCONST_TEV_SWAP_MODE // see J2DTypes.h
+#define J2D_NONCONST_DEFAULTS // see J2DTypes.h
 #include "JSystem/J2D/J2DMaterialFactory.h"
 #include "JSystem/JSupport.h"
 #include "JSystem/JUtility/JUTResource.h"
