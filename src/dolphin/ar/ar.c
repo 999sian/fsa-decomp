@@ -2,7 +2,7 @@
 #include "Dolphin/os.h"
 #include "Dolphin/hw_regs.h"
 
-char* __ARVersion = "<< Dolphin SDK - AR\trelease build: Nov 26 2003 05:19:42 (0x2301) >>";
+char* __ARVersion = "<< Dolphin SDK - AR\trelease build: Apr 17 2003 12:33:55 (0x2301) >>";
 
 static ARCallback __AR_Callback;
 static u32 __AR_Size;

@@ -22,7 +22,7 @@ extern u8 __ArenaLo[];
 extern u32 __DVDLongFileNameFlag;
 extern u32 __PADSpec;
 // OS version
-char* __OSVersion = "<< Dolphin SDK - OS\trelease build: Nov 26 2003 05:18:37 (0x2301) >>";
+char* __OSVersion = "<< Dolphin SDK - OS\trelease build: Jul 23 2003 11:27:16 (0x2301) >>";
 
 // main workhorse functions
 void ClearArena();
@@ -368,7 +368,7 @@ void OSInit(void)
 
 		// begin OS reporting
 		OSReport("\nDolphin OS\n");
-		OSReport("Kernel built : %s %s\n", "Nov 26 2003", "05:18:37");
+		OSReport("Kernel built : %s %s\n", "Jul 23 2003", "11:27:16");
 		OSReport("Console Type : ");
 
 		// this is a function in the same file, but it doesn't seem to match

@@ -1,6 +1,6 @@
 #include "Dolphin/ar.h"
 
-const char* __ARQVersion = "<< Dolphin SDK - ARQ\trelease build: Nov 26 2003 05:19:43 (0x2301) >>";
+const char* __ARQVersion = "<< Dolphin SDK - ARQ\trelease build: Apr 17 2003 12:33:56 (0x2301) >>";
 
 static ARQRequest* __ARQRequestQueueHi;
 static ARQRequest* __ARQRequestTailHi;
