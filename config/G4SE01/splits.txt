@@ -112,3 +112,8 @@ JSystem/JUtility/JUTVideo.cpp:
 JSystem/J2DGraph/J2DManage.cpp:
 	.text       start:0x800A68D4 end:0x800A6B98
 	.bss        start:0x804BA4C0 end:0x804BA5C8
+
+JSystem/J2DGraph/J2DAnimation.cpp:
+	.text       start:0x800B79A4 end:0x800BA544
+	.data       start:0x8049A2B8 end:0x8049A378
+	.sdata2     start:0x8053BB48 end:0x8053BB70

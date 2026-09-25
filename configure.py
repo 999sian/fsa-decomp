@@ -373,6 +373,7 @@ config.libs = [
     JSystemLib(
         "j2d-a",
         [
+            Object(Matching, "JSystem/J2DGraph/J2DAnimation.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DManage.cpp"),
         ],
     ),
