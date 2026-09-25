@@ -361,6 +361,7 @@ config.libs = [
         "JUtility",
         [
             Object(Matching, "JSystem/JUtility/JUTFont.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTGraphFifo.cpp"),
             Object(Matching, "JSystem/JUtility/JUTNameTab.cpp"),
             Object(Matching, "JSystem/JUtility/JUTPalette.cpp"),
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),

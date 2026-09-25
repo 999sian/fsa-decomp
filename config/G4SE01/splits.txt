@@ -76,6 +76,11 @@ JSystem/JUtility/JUTFont.cpp:
 	.text       start:0x8008CC40 end:0x8008CF54
 	.data       start:0x80499428 end:0x8049946C
 
+JSystem/JUtility/JUTGraphFifo.cpp:
+	.text       start:0x8008E7A4 end:0x8008E93C
+	.data       start:0x804994A0 end:0x804994B0
+	.sbss       start:0x8053A958 end:0x8053A968
+
 JSystem/JUtility/JUTNameTab.cpp:
 	.text       start:0x8008E93C end:0x8008EB34
 	.data       start:0x804994B0 end:0x804994BC
