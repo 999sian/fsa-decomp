@@ -69,6 +69,12 @@ JSystem/JAudio/System/JASRegisterParam.cpp:
 	.text       start:0x80033018 end:0x800332D0
 	.data       start:0x80491B70 end:0x80491BC0
 
+JSystem/JAudio/System/JASSeqCtrl.cpp:
+	.text       start:0x800332D0 end:0x80033778
+	.ctors      start:0x8045BD74 end:0x8045BD78
+	.bss        start:0x804B28E8 end:0x804B2918
+	.sbss       start:0x8053A380 end:0x8053A388
+
 JSystem/JAudio/System/JASSeqReader.cpp:
 	.text       start:0x80035F4C end:0x80036188
 
