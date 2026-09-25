@@ -61,16 +61,18 @@ void GXFlush(void)
  * @note Address: N/A
  * @note Size: 0x34
  */
+#if 0
 void GXResetWriteGatherPipe(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x7C
  */
-static void __GXAbortWait(u32 clocks)
+static inline void __GXAbortWait(u32 clocks)
 {
 	OSTime time0, time1;
 	time0 = OSGetTime();
@@ -84,7 +86,7 @@ static void __GXAbortWait(u32 clocks)
  * @note Address: N/A
  * @note Size: 0xC4
  */
-static void __GXAbortWaitPECopyDone(void)
+static inline void __GXAbortWaitPECopyDone(void)
 {
 	u32 peCnt0, peCnt1;
 
@@ -127,6 +129,7 @@ void GXAbortFrame(void)
  * @note Address: 0x800E53A4
  * @note Size: 0xB4
  */
+#if 0
 void GXSetDrawSync(u16 token)
 {
 	u32 reg;
@@ -143,15 +146,18 @@ void GXSetDrawSync(u16 token)
 	OSRestoreInterrupts(interrupts);
 	gx->bpSentNot = GX_FALSE;
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0xC
  */
+#if 0
 void GXReadDrawSync(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800E5458
@@ -175,6 +181,7 @@ void GXSetDrawDone(void)
  * @note Address: 0x800E54F0
  * @note Size: 0x4C
  */
+#if 0
 void GXWaitDrawDone(void)
 {
 	BOOL interrupts;
@@ -185,6 +192,7 @@ void GXWaitDrawDone(void)
 
 	OSRestoreInterrupts(interrupts);
 }
+#endif
 
 /**
  * @note Address: 0x800E553C
@@ -192,8 +200,14 @@ void GXWaitDrawDone(void)
  */
 void GXDrawDone(void)
 {
+	BOOL interrupts;
 	GXSetDrawDone();
-	GXWaitDrawDone();
+	interrupts = OSDisableInterrupts();
+	while (!DrawDone) {
+		OSSleepThread(&FinishQueue);
+	}
+
+	OSRestoreInterrupts(interrupts);
 }
 
 /**
@@ -210,10 +224,12 @@ void GXPixModeSync(void)
  * @note Address: N/A
  * @note Size: 0x24
  */
+#if 0
 void GXTexModeSync(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800E55E0
@@ -324,35 +340,46 @@ void GXPokeZMode(GXBool doCompare, GXCompare func, GXBool doUpdate)
  */
 void GXPeekARGB(u16 x, u16 y, u32* color)
 {
-	// UNUSED FUNCTION
+	u32 addr = (u32)OSPhysicalToUncached(0x08000000);
+
+	GX_SET_REG(addr, x, 20, 29);
+	GX_SET_REG(addr, y, 10, 19);
+	GX_SET_REG(addr, 0, 8, 9);
+	*color = *(u32*)addr;
 }
 
 /**
  * @note Address: N/A
  * @note Size: 0x20
  */
+#if 0
 void GXPokeARGB(u16 x, u16 y, u32 color)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x24
  */
+#if 0
 void GXPeekZ(u16 x, u16 y, u32* z)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x20
  */
+#if 0
 void GXPokeZ(u16 x, u16 y, u32 z)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800E5704
@@ -465,16 +492,20 @@ void __GXPEInit(void)
  * @note Address: N/A
  * @note Size: 0x134
  */
+#if 0
 u32 GXCompressZ16(u32 z24, GXZFmt16 zFormat)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x11C
  */
+#if 0
 u32 GXDecompressZ16(u32 z16, GXZFmt16 zFormat)
 {
 	// UNUSED FUNCTION
 }
+#endif
