@@ -28,6 +28,9 @@ JSystem/JAudio/System/JASReport.cpp:
 	.bss        start:0x804B2500 end:0x804B2518
 	.sbss       start:0x8053A2D0 end:0x8053A2E0
 
+JSystem/JAudio/System/JASResArcLoader.cpp:
+	.text       start:0x80029050 end:0x8002917C
+
 JSystem/JAudio/System/JASLfo.cpp:
 	.text       start:0x8002D604 end:0x8002D78C
 	.ctors      start:0x8045BD50 end:0x8045BD54

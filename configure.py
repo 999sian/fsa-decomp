@@ -381,7 +381,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASProbe.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASRegisterParam.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASReport.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASResArcLoader.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASResArcLoader.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASSeqCtrl.cpp"),
             Object(NonMatching, "JSystem/JAudio/System/JASSeqParser.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASSeqReader.cpp"),
