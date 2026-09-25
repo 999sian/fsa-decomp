@@ -62,23 +62,36 @@ def decode(dol, addr, size):
 
 
 def classify(dol, addr, size):
-    """-> (vtable_addr or None, calls_actor_ctor)"""
+    """-> (vtable_addr or None, calls_actor_ctor)
+
+    The vtable is the LAST .data address the constructor stores into offset 0 of the
+    new object. Two earlier versions were wrong: taking the first .data address formed
+    (not necessarily stored), and taking the first store - a constructor typically
+    assigns its BASE vtable first and its own second (EMIK: 0x804A5958 then
+    0x804AD5B8), so only the second one is live. Both defects were caught by
+    cross-checking against  independently built docs/gamemap/actors.csv.
+    """
     ins = decode(dol, addr, size)
     calls = any(t == ACTOR_CTOR for *_x, t in ins if t)
     hi = {}
     vt = None
     for i, (a, op, rd, ra, rb, simm, tgt) in enumerate(ins):
+        val = None
         if op == 15 and ra == 0:  # lis
             hi[rd] = simm << 16
         elif op == 14 and ra in hi:  # addi rD, rA, imm
             val = (hi[ra] + simm) & 0xFFFFFFFF
-            if 0x80480000 <= val < 0x804B0000 and vt is None:
-                vt = val
             hi[rd] = val
         elif op == 24 and ra in hi:  # ori rD, rA, imm  (second half of an address)
             val = hi[ra] | (simm & 0xFFFF)
-            if 0x80480000 <= val < 0x804B0000 and vt is None:
-                vt = val
+            hi[rd] = val
+        # is this address stored into offset 0 within the next few instructions?
+        if val is not None and 0x80480000 <= val < 0x804B0000:
+            for j in range(i + 1, min(i + 5, len(ins))):
+                a2, op2, rd2, ra2, rb2, simm2, _t = ins[j]
+                if op2 == 36 and simm2 == 0 and rd2 == rd:  # stw rD, 0x0(rA)
+                    vt = val
+                    break
     return vt, calls
 
 
