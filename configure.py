@@ -387,6 +387,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASAudioThread.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASBank.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASBasicBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCalc.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASDriverIF.cpp"),

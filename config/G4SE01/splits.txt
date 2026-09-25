@@ -13,6 +13,11 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:16
 
+JSystem/JAudio/System/JASCalc.cpp:
+	.text       start:0x80027770 end:0x80027EC4
+	.rodata     start:0x8045C6B8 end:0x8045CAD0
+	.sdata2     start:0x8053B038 end:0x8053B068
+
 JSystem/JAudio/System/JASCallback.cpp:
 	.text       start:0x80027EC4 end:0x800280E8
 
