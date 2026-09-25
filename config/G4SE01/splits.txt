@@ -158,3 +158,9 @@ JSystem/JUtility/JUTVideo.cpp:
 	.text       start:0x80092A98 end:0x8009304C
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
+
+Game/actors/BOTS.cpp:
+	extab       start:0x80005898 end:0x800058A0
+	extabindex  start:0x80011C14 end:0x80011C20
+	.text       start:0x800FEDD0 end:0x800FEE3C
+	.data       start:0x8049C7F0 end:0x8049C844

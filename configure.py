@@ -303,6 +303,51 @@ def JSystemLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
     }
 
 
+# Game code flags (FSA game engine, Metrowerks GC/2.6).
+# -Cpp_exceptions on: retail actor TUs DO carry extab/extabindex (BOTS dtor has
+# @etb_80005898 / @eti_80011C14); with `off` MWCC emits none. `.text`/`.data`
+# are byte-identical either way.
+cflags_game = [
+    "-nodefaults",
+    "-proc gekko",
+    "-align powerpc",
+    "-enum int",
+    "-fp hardware",
+    "-Cpp_exceptions on",
+    "-O4,p",
+    "-inline auto",
+    '-pragma "cats off"',
+    '-pragma "warn_notinlined off"',
+    "-use_lmw_stmw on",
+    "-common on",
+    "-maxerrors 1",
+    "-nosyspath",
+    "-RTTI off",
+    "-fp_contract on",
+    "-multibyte",
+    "-i include",
+    f"-i build/{config.version}/include",
+    f"-DBUILD_VERSION={version_num}",
+    f"-DVERSION_{config.version}",
+    "-lang=c++",
+    "-fp fmadd",
+    "-char signed",
+    "-rostr",
+    "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
+]
+
+
+# Helper function for game (FSA engine) libraries
+def GameLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
+    return {
+        "lib": lib_name,
+        "mw_version": "GC/2.6",
+        "cflags": cflags_game,
+        "progress_category": "game",
+        "objects": objects,
+    }
+
+
 # Helper function for REL script objects
 def Rel(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
     return {
@@ -377,6 +422,12 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),
             Object(Matching, "JSystem/JUtility/JUTTexture.cpp"),
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
+        ],
+    ),
+    GameLib(
+        "Game",
+        [
+            Object(Matching, "Game/actors/BOTS.cpp"),
         ],
     ),
 ]
