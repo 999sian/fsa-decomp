@@ -36,6 +36,23 @@ for spec in $branches; do
   if [ "$f" = "$spec" ]; then f="$fork"; fi
   if git -C "$repo" diff "$f..$b" -- "$path" > /tmp/atu-patch.diff 2>/dev/null && [ -s /tmp/atu-patch.diff ]; then
     added=$(grep -c '^+' /tmp/atu-patch.diff || true)
+    # The swarm convention is "append your block at the end of the file", so most deltas are
+    # pure EOF appends. Their 3 context lines are whatever happened to be last at fork time,
+    # which the content base has since replaced, so a 3-way apply conflicts over nothing.
+    # Detect that case and append at the true end of file instead.
+    hunks=$(grep -c '^@@' /tmp/atu-patch.diff || true)
+    removed=$(grep -c '^-[^-]' /tmp/atu-patch.diff || true)
+    if [ "$hunks" = "1" ] && [ "$removed" = "0" ]; then
+      flines=$(git -C "$repo" show "$f:$path" | wc -l)
+      pre=$(grep -m1 '^@@' /tmp/atu-patch.diff | sed 's/^@@ -\([0-9]*\),\([0-9]*\).*/\1 \2/')
+      pre_start=${pre% *}; pre_len=${pre#* }
+      if [ $((pre_start + pre_len - 1)) -ge "$flines" ]; then
+        grep '^+' /tmp/atu-patch.diff | grep -v '^+++' | sed 's/^+//' >> "$wt/$path"
+        echo "  appended $added line(s) from $b at EOF (pure append, context stale in the base)"
+        git -C "$wt" add -- "$path"
+        continue
+      fi
+    fi
     git -C "$wt" apply -3 --whitespace=nowarn /tmp/atu-patch.diff 2>/tmp/atu-apply.err
     rc=$?
     if [ $rc -eq 0 ]; then
@@ -57,44 +74,41 @@ for spec in $branches; do
   python3 - "$wt/$path" <<'PYEOF'
 import re, sys
 path = sys.argv[1]
-s = open(path).read()
-if "<<<<<<<" in s:
-    s = re.sub(r"<<<<<<< [^\n]*\n(.*?)=======\n(.*?)>>>>>>> [^\n]*\n",
-               lambda m: m.group(1) + m.group(2), s, flags=re.S)
-    open(path, "w").write(s)
-    print("     markers union-resolved (disjoint function sets, both sides kept)")
+lines = open(path).read().splitlines(True)
+if any(l.startswith(("<<<<<<<", ">>>>>>>")) or l.rstrip("\n") == "=======" for l in lines):
+    # Drop the marker lines and keep both sides (the agents' function sets are disjoint, so
+    # the union is what we want). Pairing the markers with a regex is not robust: a conflict
+    # can nest inside another one's resolution and leave a stray `>>>>>>>` behind.
+    kept = [l for l in lines
+            if not l.startswith(("<<<<<<<", ">>>>>>>")) and l.rstrip("\n") != "======="]
+    open(path, "w").write("".join(kept))
+    print("     markers stripped, both sides kept (union)")
 PYEOF
   git -C "$wt" add -- "$path"
 done
 
-python3 - "$wt/$path" <<'PY'
-import re, sys
-path = sys.argv[1]
-s = open(path).read()
-decl = re.compile(r'^(?:extern\s+"C"\s+)?[A-Za-z_][\w:]*[\w\s\*&]*?(\w+)\s*\([^;{]*\)\s*;\s*$')
-kept, problems = {}, 0
-for line in s.splitlines(True):
-    m = decl.match(line)
-    if not m:
-        continue
-    name, norm = m.group(1), re.sub(r"\s+", " ", line.strip())
-    if name in kept:
-        if kept[name] != norm:
-            problems += 1
-            print("  DECLARATION DISAGREEMENT for %s:" % name)
-            print("    first: %s" % kept[name])
-            print("    other: %s" % norm)
-    else:
-        kept[name] = norm
-print("  declarations: %d names, %d disagreement(s)" % (len(kept), problems))
-PY
+# two blocks can spell the same external differently, which MWCC rejects outright
+python3 "$(dirname "$0")/reconcile_decls.py" "$wt/$path" || true
 
 cd "$wt" || exit 1
 python3 configure.py >/dev/null 2>&1
-ninja -j8 >/tmp/atu-integrate.log 2>&1
+# Repair loop: two blocks can spell the same external differently and MWCC refuses outright
+# ("illegal function overloading"). The compiler names the offending declaration, so target
+# exactly that name and rebuild rather than guessing which spelling is the odd one out.
+for attempt in 1 2 3; do
+  ninja -j8 >/tmp/atu-integrate.log 2>&1
+  grep -q 'build/G4SE01/main.dol: OK' /tmp/atu-integrate.log && break
+  bad=$(grep -B3 'illegal function overloading' /tmp/atu-integrate.log | grep -oE '[A-Za-z_][A-Za-z0-9_]*\(' | tail -1 | tr -d '(')
+  if [ -n "$bad" ] && [ "$attempt" -lt 3 ]; then
+    echo "  MWCC rejects a second spelling of $bad; keeping one and rebuilding"
+    python3 "$(dirname "$0")/reconcile_decls.py" "$wt/$path" --only "$bad" || true
+    continue
+  fi
+  break
+done
 if ! grep -q 'build/G4SE01/main.dol: OK' /tmp/atu-integrate.log; then
   echo "--- BUILD/GATE FAILED:"
-  grep -A3 -iE "error|FAILED" /tmp/atu-integrate.log | head -12
+  grep -E '^#|Error|FAILED' /tmp/atu-integrate.log | grep -v '^build/tools' | head -10
   exit 1
 fi
 echo "--- link OK (build/G4SE01/main.dol byte-identical to retail)"
