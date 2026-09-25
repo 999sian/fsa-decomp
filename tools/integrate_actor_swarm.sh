@@ -87,8 +87,13 @@ PYEOF
   git -C "$wt" add -- "$path"
 done
 
+# a later block's declaration can land after an earlier block's use, which C++ rejects as an
+# undefined identifier - merge every declaration block above all definitions first
+python3 "$(dirname "$0")/hoist_declarations.py" "$wt/$path" || true
 # two blocks can spell the same external differently, which MWCC rejects outright
 python3 "$(dirname "$0")/reconcile_decls.py" "$wt/$path" || true
+# spellings that only conflict once the blocks share a file, but are codegen-neutral to fix
+python3 "$(dirname "$0")/integration_fixes.py" "$wt/$path" || true
 
 cd "$wt" || exit 1
 python3 configure.py >/dev/null 2>&1

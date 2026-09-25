@@ -98,6 +98,16 @@ def main():
         if len(spellings) < 2:
             continue
         keep_idx = hits[-1][0] if keep == "last" else hits[0][0]
+        # A non-void declaration is strictly more permissive: a caller may ignore a result,
+        # but cannot cast one out of a void function. When the spellings disagree about the
+        # return type, keep the non-void one - otherwise a block that casts the result stops
+        # compiling ("illegal explicit conversion from 'void' to 'unsigned char *'").
+        if keep == "first":
+            nonvoid = [i for i, norm in hits if not re.search(r'\bvoid\s*$', norm.split(name)[0].strip())]
+            if len(nonvoid) == len(hits) or not nonvoid:
+                pass
+            else:
+                keep_idx = nonvoid[0]
         kept = next(norm for i, norm in hits if i == keep_idx)
         for i, norm in hits:
             if i != keep_idx:
@@ -121,7 +131,31 @@ def main():
                 drop.add(i)
                 print("    dropped %s" % norm)
 
-    if not drop:
+    # A global kept as an array cannot be used bare: `32.0f * lbl_X` is a type error once the
+    # declaration is `f32 lbl_X[]`. `X[0]` generates the same address materialisation as `X`,
+    # so rewriting the scalar use is codegen-neutral while the declaration stays in the form
+    # the @ha/@l sites need. Never touch asm blocks or relocation expressions.
+    arrays = {name for name, hits in by_var.items()
+              if any(a for _i, a, _n in hits)
+              and next(n for i, _a, n in hits if i == next((i for i, a, _n in hits if a), hits[0][0]))}
+    rewrites = 0
+    if arrays and not only:
+        out = []
+        for idx, line in enumerate(lines):
+            if idx in drop or "__asm" in line or "@ha" in line or "@l" in line or "@sda21" in line:
+                out.append(line)
+                continue
+            new = line
+            for name in arrays:
+                new = re.sub(r'(?<![\w.>&])' + re.escape(name) + r'(?!\s*\[)(?![\w])', name + "[0]", new)
+            if new != line:
+                rewrites += 1
+                print("  rewrote scalar use of an array global: %s" % line.strip()[:90])
+            out.append(new)
+        if rewrites:
+            lines = out
+
+    if not drop and not rewrites:
         print("  declarations: no conflicts")
         return 0
     open(path, "w").write("".join(l for i, l in enumerate(lines) if i not in drop))
