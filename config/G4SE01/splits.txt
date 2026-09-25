@@ -143,6 +143,12 @@ JSystem/J2DGraph/J2DWindowEx.cpp:
 	.data       start:0x80499A18 end:0x80499AE8
 	.sdata2     start:0x8053BA88 end:0x8053BAA8
 
+JSystem/J2DGraph/J2DPictureEx.cpp:
+	.text       start:0x800B1954 end:0x800B5CCC
+	.rodata     start:0x80463188 end:0x804631F0
+	.data       start:0x8049A0A8 end:0x8049A1F8
+	.sdata2     start:0x8053BAC8 end:0x8053BAE0
+
 JSystem/J2DGraph/J2DTevs.cpp:
 	.text       start:0x800B5CCC end:0x800B6158
 	.rodata     start:0x804631F0 end:0x80463270
