@@ -200,6 +200,7 @@ cflags_base = [
     "-fp hardware",
     "-Cpp_exceptions off",
     "-O4,p",
+    "-opt nodeadstore",
     "-inline auto",
     '-pragma "cats off"',
     '-pragma "warn_notinlined off"',
