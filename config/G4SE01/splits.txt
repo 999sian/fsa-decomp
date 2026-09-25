@@ -202,6 +202,18 @@ JSystem/JAudio/System/JASTrack.cpp:
 JSystem/JAudio/System/JASTrackPort.cpp:
 	.text       start:0x80039964 end:0x80039A84
 
+JSystem/JMessage/resource.cpp:
+	.text       start:0x80077134 end:0x80077844
+	.data       start:0x80498998 end:0x80498A10
+
+JSystem/JMessage/processor.cpp:
+	.text       start:0x80077844 end:0x80078B20
+	.data       start:0x80498A10 end:0x80498B10
+
+JSystem/JMessage/control.cpp:
+	.text       start:0x80078B20 end:0x80079034
+	.data       start:0x80498B10 end:0x80498B20
+
 JSystem/JKernel/JKRAram.cpp:
 	.text       start:0x800790A8 end:0x80079EFC
 	.ctors      start:0x8045BDA8 end:0x8045BDAC
@@ -322,6 +334,12 @@ JSystem/JSupport/JSUFileStream.cpp:
 	.text       start:0x800874D0 end:0x80087714
 	.data       start:0x80499090 end:0x804990B8
 
+JSystem/JGadget/binary.cpp:
+	.text       start:0x80087714 end:0x80087868
+
+JSystem/JGadget/std-vector.cpp:
+	.text       start:0x80087AB4 end:0x80087ABC
+
 JSystem/JUtility/JUTAssert.cpp:
 	.text       start:0x80087ABC end:0x80087DC0
 	.bss        start:0x804BA070 end:0x804BA1B0
@@ -384,3 +402,6 @@ JSystem/JUtility/JUTVideo.cpp:
 	.text       start:0x80092A98 end:0x8009304C
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
+
+JSystem/JMessage/data.cpp:
+	.sdata2     start:0x8053B6B8 end:0x8053B6C0

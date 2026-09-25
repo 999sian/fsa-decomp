@@ -443,6 +443,18 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASWSParser.cpp"),
         ],
     ),
+    # JSystem TUs not present in the mkdd decomp (JMessage, extra JGadget, ...)
+    JSystemLib(
+        "jextra",
+        [
+            Object(Matching, "JSystem/JMessage/resource.cpp"),
+            Object(Matching, "JSystem/JMessage/data.cpp"),
+            Object(Matching, "JSystem/JMessage/processor.cpp"),
+            Object(Matching, "JSystem/JMessage/control.cpp"),
+            Object(Matching, "JSystem/JGadget/binary.cpp"),
+            Object(Matching, "JSystem/JGadget/std-vector.cpp"),
+        ],
+    ),
 ]
 
 

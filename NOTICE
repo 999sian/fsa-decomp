@@ -1,5 +1,5 @@
 Third-party source
-==================
+===========
 
 The JSystem sources under src/JSystem/ and the headers under include/JSystem/,
 include/dolphin/, include/std/, include/types.h, include/macros.h,
@@ -14,3 +14,11 @@ unmodified unless noted in git history.
 JAIStreamMgr::stop(), JAISeMgr::stop(u32) and the JAISoundParams pitch property
 in src/JSystem/JAudio/Interface/ follow the Twilight Princess decompilation
 (https://github.com/zeldaret/tp).
+
+Some JSystem sources and headers not present in mkdd (JMessage, extra JGadget
+TUs) were adapted from the Pikmin 2 decompilation project
+(https://github.com/projectPiki/pikmin2). Many thanks to its contributors.
+The JGadget::binary::TParseValue templates and parts of the JMessage processor
+(its tag parsing and the FSA-era TProcessor layout) follow the Wind Waker
+(https://github.com/zeldaret/tww) and Twilight Princess
+(https://github.com/zeldaret/tp) decompilations, with thanks.
