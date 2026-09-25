@@ -128,6 +128,12 @@ JSystem/JKernel/JKRSolidHeap.cpp:
 	.data       start:0x80498F48 end:0x80498FA8
 	.sdata2     start:0x8053B758 end:0x8053B770
 
+JSystem/JKernel/JKRThread.cpp:
+	.text       start:0x80085474 end:0x80085A10
+	.ctors      start:0x8045BDC4 end:0x8045BDC8
+	.data       start:0x80498FA8 end:0x80498FB8
+	.bss        start:0x804BA058 end:0x804BA070
+
 JSystem/JSupport/JSUList.cpp:
 	.text       start:0x80086E2C end:0x80087348
 
