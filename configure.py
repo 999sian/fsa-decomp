@@ -391,6 +391,8 @@ config.libs = [
             # JAudio/Utility
             Object(Matching, "JSystem/JAudio/Utility/JAUAudioArcInterpreter.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUAudioArcLoader.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUBankTable.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUClusterSound.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUInitializer.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUSoundMgr.cpp"),
             Object(Matching, "JSystem/JAudio/Utility/JAUStreamFileTable.cpp"),
