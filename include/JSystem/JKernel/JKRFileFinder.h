@@ -23,7 +23,11 @@ public:
     {
     }
 
+#ifdef VERSION_G4SE01
+    virtual ~JKRFileFinder(); // _08 (out-of-line in FSA's JKRFileFinder.cpp)
+#else
     virtual ~JKRFileFinder() {} // _08 (weak)
+#endif
     virtual bool findNextFile() = 0; // _0C
 
     bool isAvailable() const {
