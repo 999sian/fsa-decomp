@@ -18,15 +18,18 @@
  * @note Address: N/A
  * @note Size: 0x34
  */
+#if 0
 void C_VECAdd(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800EAEB4
  * @note Size: 0x24
  */
+#if 0
 ASM void PSVECAdd(const register Vec* vec1, const register Vec* vec2, register Vec* ret)
 {
 #ifdef __MWERKS__ // clang-format off
@@ -42,20 +45,24 @@ ASM void PSVECAdd(const register Vec* vec1, const register Vec* vec2, register V
 	blr
 #endif // clang-format on
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x34
  */
+#if 0
 void C_VECSubtract(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800EAED8
  * @note Size: 0x24
  */
+#if 0
 ASM void PSVECSubtract(const register Vec* vec1, const register Vec* vec2, register Vec* ret)
 {
 #ifdef __MWERKS__ // clang-format off
@@ -71,33 +78,40 @@ ASM void PSVECSubtract(const register Vec* vec1, const register Vec* vec2, regis
 	blr
 #endif // clang-format on
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x28
  */
+#if 0
 void C_VECScale(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x1C
  */
+#if 0
 void PSVECScale(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0xC8
  */
+#if 0
 void C_VECNormalize(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800EAEFC
@@ -135,28 +149,34 @@ void PSVECNormalize(const register Vec* vec1, register Vec* ret)
  * @note Address: N/A
  * @note Size: 0x24
  */
+#if 0
 void C_VECSquareMag(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x18
  */
+#if 0
 void PSVECSquareMag(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x94
  */
+#if 0
 void C_VECMag(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800EAF40
@@ -199,28 +219,42 @@ f32 PSVECMag(const register Vec* v)
  * @note Address: N/A
  * @note Size: 0x30
  */
+#if 0
 void C_VECDotProduct(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x20
  */
-void PSVECDotProduct(void)
+ASM f32 PSVECDotProduct(const register Vec* a, const register Vec* b)
 {
-	// UNUSED FUNCTION
+#ifdef __MWERKS__ // clang-format off
+	nofralloc
+	psq_l f2, Vec.y(a), 0, 0
+	psq_l f3, Vec.y(b), 0, 0
+	ps_mul f2, f2, f3
+	psq_l f5, Vec.x(a), 0, 0
+	psq_l f4, Vec.x(b), 0, 0
+	ps_madd f3, f5, f4, f2
+	ps_sum0 f1, f3, f2, f2
+	blr
+#endif // clang-format on
 }
 
 /**
  * @note Address: N/A
  * @note Size: 0x4C
  */
+#if 0
 void C_VECCrossProduct(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: 0x800EAF84
@@ -252,52 +286,114 @@ ASM void PSVECCrossProduct(const register Vec* vec1, const register Vec* vec2, r
  * @note Address: N/A
  * @note Size: 0xD8
  */
+#if 0
 void C_VECHalfAngle(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0xD4
  */
-void C_VECReflect(void)
+void C_VECReflect(const Vec* src, const Vec* normal, Vec* dst)
 {
-	// UNUSED FUNCTION
+	f32 cosA;
+	Vec uI;
+	Vec uN;
+
+	uI.x = -src->x;
+	uI.y = -src->y;
+	uI.z = -src->z;
+
+	PSVECNormalize(&uI, &uI);
+	PSVECNormalize(normal, &uN);
+
+	cosA   = PSVECDotProduct(&uI, &uN);
+	dst->x = (2.0f * uN.x * cosA) - uI.x;
+	dst->y = (2.0f * uN.y * cosA) - uI.y;
+	dst->z = (2.0f * uN.z * cosA) - uI.z;
+	PSVECNormalize(dst, dst);
 }
 
 /**
  * @note Address: N/A
  * @note Size: 0x3C
  */
+#if 0
 void C_VECSquareDistance(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x28
  */
+#if 0
 void PSVECSquareDistance(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0xAC
  */
+#if 0
 void C_VECDistance(void)
 {
 	// UNUSED FUNCTION
 }
+#endif
 
 /**
  * @note Address: N/A
  * @note Size: 0x54
  */
-void PSVECDistance(void)
+f32 PSVECDistance(const register Vec* a, const register Vec* b)
 {
-	// UNUSED FUNCTION
+	register f32 v0yz, v1yz, v0xy, v1xy, dyz, dxy;
+	register f32 sqdist, rdist;
+	register f32 nwork0, nwork1;
+	register f32 c_half, c_three, c_zero;
+
+#ifdef __MWERKS__ // clang-format off
+	asm {
+		psq_l v0yz, 0x4(a), 0, 0
+		psq_l v1yz, 0x4(b), 0, 0
+		ps_sub dyz, v0yz, v1yz
+		psq_l v0xy, 0x0(a), 0, 0
+		psq_l v1xy, 0x0(b), 0, 0
+		ps_mul dyz, dyz, dyz
+		ps_sub dxy, v0xy, v1xy
+	}
+
+	c_half = 0.5f;
+
+	asm {
+		ps_madd sqdist, dxy, dxy, dyz
+		fsubs c_zero, c_half, c_half
+		ps_sum0 sqdist, sqdist, dyz, dyz
+		fcmpu cr0, c_zero, sqdist
+		beq L_00000CBC
+	}
+
+	c_three = 3.0f;
+
+	asm {
+		frsqrte rdist, sqdist
+		fmuls nwork0, rdist, rdist
+		fmuls nwork1, rdist, c_half
+		fnmsubs nwork0, nwork0, sqdist, c_three
+		fmuls rdist, nwork0, nwork1
+		fmuls sqdist, sqdist, rdist
+	L_00000CBC:
+	}
+#endif // clang-format on
+
+	return sqdist;
 }
