@@ -370,6 +370,12 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    JSystemLib(
+        "j3d-loader",
+        [
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DShapeFactory.cpp"),
+        ],
+    ),
 ]
 
 
