@@ -109,6 +109,10 @@ JSystem/JUtility/JUTVideo.cpp:
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
 
+JSystem/J3D/GraphAnimator/J3DMaterialAnm.cpp:
+	.text       start:0x800C73EC end:0x800C7954
+	.data       start:0x8049AA18 end:0x8049AA38
+
 JSystem/J3D/GraphAnimator/J3DJointTree.cpp:
 	.text       start:0x800E34CC end:0x800E3898
 	.data       start:0x8049BD98 end:0x8049BDF8
