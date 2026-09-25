@@ -22,3 +22,5 @@ The JGadget::binary::TParseValue templates and parts of the JMessage processor
 (its tag parsing and the FSA-era TProcessor layout) follow the Wind Waker
 (https://github.com/zeldaret/tww) and Twilight Princess
 (https://github.com/zeldaret/tp) decompilations, with thanks.
+
+Parts of src/JSystem/JParticle/ (JPAResourceManager swapTexture/getResUserWork) are based on the Twilight Princess decompilation (https://github.com/zeldaret/tp).

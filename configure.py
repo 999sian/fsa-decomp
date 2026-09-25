@@ -489,6 +489,26 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/Utility/JAUStreamFileTable.cpp"),
         ],
     },
+    JSystemLib(
+        "JParticle",
+        [
+            Object(NonMatching, "JSystem/JParticle/JPABaseShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAChildShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPADynamicsBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAEmitter.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAEmitterManager.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAExTexShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAExtraShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAFieldBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAKeyBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAMath.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAParticle.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResource.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResourceLoader.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResourceManager.cpp"),
+            Object(Matching, "JSystem/JParticle/JPATexture.cpp"),
+        ],
+    ),
 ]
 
 
