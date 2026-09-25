@@ -269,6 +269,13 @@ def main():
         if "$sec:" + sec.name in resolved:
             bases[resolved["$sec:" + sec.name]] += 100
         if not bases:
+            ex = load_syms()
+            exn = {e[0]: e[2] for e in ex if e[0]}
+            for s in sym_by_sec[idx]:
+                if s["st_info"]["bind"] == "STB_GLOBAL" and s.name in exn:
+                    bases[exn[s.name] - s["st_value"]] += 1
+                    print(f"  {sec.name} placed via existing symbol {s.name}")
+        if not bases:
             # unreferenced: search retail data for the section bytes (relocs masked)
             data = sec.data() if sec["sh_type"] != "SHT_NOBITS" else None
             relo = {o for o, *_ in relocs[idx]}

@@ -44,6 +44,10 @@ JSystem/JKernel/JKRArchivePri.cpp:
 	.text       start:0x8007BC7C end:0x8007C8F0
 	.sbss       start:0x8053A7F0 end:0x8053A7F8
 
+JSystem/JKernel/JKRArchivePub.cpp:
+	.text       start:0x8007C8F0 end:0x8007D2B8
+	.data       start:0x80498C60 end:0x80498CB0
+
 JSystem/JKernel/JKRCompArchive.cpp:
 	.text       start:0x8007D2B8 end:0x8007E034
 	.rodata     start:0x8045E1C0 end:0x8045E200
