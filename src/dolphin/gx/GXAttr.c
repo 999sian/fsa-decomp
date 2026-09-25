@@ -1,11 +1,13 @@
 #include "Dolphin/gx.h"
 #include "Dolphin/GX/GXHardware.h"
 
+#define GET_REG_FIELD(reg, size, shift) ((int)((reg) >> (shift)) & ((1 << (size)) - 1))
+
 /**
  * @note Address: N/A
  * @note Size: 0x8C
  */
-static void __GXXfVtxSpecs(void)
+static inline void __GXXfVtxSpecs(void)
 {
 	u32 normCount, colorCount, texCount;
 
@@ -30,7 +32,7 @@ static void __GXXfVtxSpecs(void)
  * @note Size: 0x26C
  */
 
-void GXSetVtxDesc(GXAttr attr, GXAttrType type)
+static inline void SETVCDATTR(GXAttr attr, GXAttrType type)
 {
 	switch (attr) {
 	case GX_VA_PNMTXIDX:
@@ -112,6 +114,11 @@ void GXSetVtxDesc(GXAttr attr, GXAttrType type)
 		GX_SET_REG(gx->vcdHi, type, GX_CP_VCD_HI_TEX7COORD_ST, GX_CP_VCD_HI_TEX7COORD_END);
 		break;
 	}
+}
+
+void GXSetVtxDesc(GXAttr attr, GXAttrType type)
+{
+	SETVCDATTR(attr, type);
 
 	if (gx->hasNrms || gx->hasBiNrms) {
 		GX_SET_REG(gx->vcdLo, gx->nrmType, GX_CP_VCD_LO_NRM_ST, GX_CP_VCD_LO_NRM_END);
@@ -126,10 +133,21 @@ void GXSetVtxDesc(GXAttr attr, GXAttrType type)
  * @note Address: N/A
  * @note Size: 0x288
  */
-void GXSetVtxDescv(GXVtxDescList* list)
-{
-	// UNUSED FUNCTION
+void GXSetVtxDescv(GXVtxDescList* attrPtr) {
+
+    while (attrPtr->mAttr != GX_VA_NULL) {
+        SETVCDATTR(attrPtr->mAttr, attrPtr->mType);
+        attrPtr++;
+    }
+
+    if (gx->hasNrms || gx->hasBiNrms) {
+        GX_SET_REG(gx->vcdLo, gx->nrmType, GX_CP_VCD_LO_NRM_ST, GX_CP_VCD_LO_NRM_END);
+    } else {
+        GX_SET_REG(gx->vcdLo, GX_NONE, GX_CP_VCD_LO_NRM_ST, GX_CP_VCD_LO_NRM_END);
+    }
+    gx->dirtyState |= GX_DIRTY_VCD;
 }
+
 
 /**
  * @note Address: 0x800E44F0
@@ -201,19 +219,57 @@ void __GXCalculateVLim(void)
  * @note Address: N/A
  * @note Size: 0x1B4
  */
-void GXGetVtxDesc(GXAttr attr, GXAttrType* type)
-{
-	// UNUSED FUNCTION
+void GXGetVtxDesc(GXAttr attr, GXAttrType* type) {
+    u32 cpType;
+
+    switch (attr) {
+    case GX_VA_PNMTXIDX:   cpType = GET_REG_FIELD(gx->vcdLo, 1, 0); break;
+    case GX_VA_TEX0MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 1); break;
+    case GX_VA_TEX1MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 2); break;
+    case GX_VA_TEX2MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 3); break;
+    case GX_VA_TEX3MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 4); break;
+    case GX_VA_TEX4MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 5); break;
+    case GX_VA_TEX5MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 6); break;
+    case GX_VA_TEX6MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 7); break;
+    case GX_VA_TEX7MTXIDX: cpType = GET_REG_FIELD(gx->vcdLo, 1, 8); break;
+    case GX_VA_POS:        cpType = GET_REG_FIELD(gx->vcdLo, 2, 9); break;
+    case GX_VA_NRM:        cpType = gx->hasNrms ? GET_REG_FIELD(gx->vcdLo, 2, 11) : 0; break;
+    case GX_VA_NBT:        cpType = gx->hasBiNrms ? GET_REG_FIELD(gx->vcdLo, 2, 11) : 0; break;
+    case GX_VA_CLR0:       cpType = GET_REG_FIELD(gx->vcdLo, 2, 13); break;
+    case GX_VA_CLR1:       cpType = GET_REG_FIELD(gx->vcdLo, 2, 15); break;
+    case GX_VA_TEX0:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 0);  break;
+    case GX_VA_TEX1:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 2);  break;
+    case GX_VA_TEX2:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 4);  break;
+    case GX_VA_TEX3:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 6);  break;
+    case GX_VA_TEX4:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 8);  break;
+    case GX_VA_TEX5:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 10); break;
+    case GX_VA_TEX6:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 12); break;
+    case GX_VA_TEX7:       cpType = GET_REG_FIELD(gx->vcdHi, 2, 14); break;
+    default: cpType = 0; break;
+    }
+    *type = cpType;
 }
+
 
 /**
  * @note Address: N/A
  * @note Size: 0x90
  */
-void GXGetVtxDescv(GXVtxDescList* list)
-{
-	// UNUSED FUNCTION
+void GXGetVtxDescv(GXVtxDescList* vcd) {
+    GXAttr attr;
+
+    for (attr = GX_VA_PNMTXIDX; attr <= GX_VA_TEX7; attr++) {
+        vcd[attr].mAttr = attr;
+        GXGetVtxDesc(attr, &vcd[attr].mType);
+    }
+
+    vcd[attr].mAttr = GX_VA_NBT;
+    GXGetVtxDesc(GX_VA_NBT, &vcd[attr].mType);
+
+    attr++;
+    vcd[attr].mAttr = GX_VA_NULL;
 }
+
 
 /**
  * @note Address: 0x800E46D0
@@ -360,19 +416,124 @@ void __GXSetVAT(void)
  * @note Address: N/A
  * @note Size: 0x280
  */
-void GXGetVtxAttrFmt(void)
-{
-	// UNUSED FUNCTION
+static inline u8 GetFracForNrm(GXCompType type) {
+    u8 frac;
+
+    switch (type) {
+    case GX_S8:
+        frac = 6;
+        break;
+    case GX_S16:
+        frac = 14;
+        break;
+    default:
+    case GX_U16:
+        frac = 0;
+        break;
+    }
+
+    return frac;
 }
+
+void GXGetVtxAttrFmt(GXVtxFmt fmt, GXAttr attr, GXCompCnt* cnt, GXCompType* type, u8* frac) {
+    u32* va;
+    u32* vb;
+    u32* vc;
+
+    va = &gx->vatA[fmt];
+    vb = &gx->vatB[fmt];
+    vc = &gx->vatC[fmt];
+
+    switch (attr) {
+    case GX_VA_POS:
+        *cnt  = GET_REG_FIELD(*va, 1, 0);
+        *type = GET_REG_FIELD(*va, 3, 1);
+        *frac = (u8)(*va >> 4) & 0x1F;  // GET_REG_FIELD(*va, 5, 4)
+        return;
+    case GX_VA_NRM:
+    case GX_VA_NBT:
+        *cnt = GET_REG_FIELD(*va, 1, 9);
+        if (*cnt == GX_TEX_ST && (u8)(*va >> 0x1F) != 0) {
+            *cnt = GX_NRM_NBT3;
+        }
+        *type = GET_REG_FIELD(*va, 3, 10);
+        *frac = GetFracForNrm(*type);
+        return;
+    case GX_VA_CLR0:
+        *cnt  = GET_REG_FIELD(*va, 1, 13);
+        *type = GET_REG_FIELD(*va, 3, 14);
+        *frac = 0;
+        return;
+    case GX_VA_CLR1:
+        *cnt  = GET_REG_FIELD(*va, 1, 17);
+        *type = GET_REG_FIELD(*va, 3, 18);
+        *frac = 0;
+        return;
+    case GX_VA_TEX0:
+        *cnt  = GET_REG_FIELD(*va, 1, 21);
+        *type = GET_REG_FIELD(*va, 3, 22);
+        *frac = (u8)(*va >> 0x19) & 0x1F;
+        return;
+    case GX_VA_TEX1:
+        *cnt  = GET_REG_FIELD(*vb, 1, 0);
+        *type = GET_REG_FIELD(*vb, 3, 1);
+        *frac = (u8)(*vb >> 4) & 0x1F;
+        return;
+    case GX_VA_TEX2:
+        *cnt  = GET_REG_FIELD(*vb, 1, 9);
+        *type = GET_REG_FIELD(*vb, 3, 10);
+        *frac = (u8)(*vb >> 0xD) & 0x1F;
+        return;
+    case GX_VA_TEX3:
+        *cnt  = GET_REG_FIELD(*vb, 1, 18);
+        *type = GET_REG_FIELD(*vb, 3, 19);
+        *frac = (u8)(*vb >> 0x16) & 0x1F;
+        return;
+    case GX_VA_TEX4:
+        *cnt  = GET_REG_FIELD(*vb, 1, 27);
+        *type = GET_REG_FIELD(*vb, 3, 28);
+        *frac = GET_REG_FIELD(*vc, 5, 0);
+        return;
+    case GX_VA_TEX5:
+        *cnt = GET_REG_FIELD(*vc, 1, 5);
+        *type = GET_REG_FIELD(*vc, 3, 6);
+        *frac = (u8)(*vc >> 9) & 0x1F;
+        return;
+    case GX_VA_TEX6:
+        *cnt = GET_REG_FIELD(*vc, 1, 14);
+        *type = GET_REG_FIELD(*vc, 3, 15);
+        *frac = (u8)(*vc >> 0x12) & 0x1F;
+        return;
+    case GX_VA_TEX7:
+        *cnt  = GET_REG_FIELD(*vc, 1, 23);
+        *type = GET_REG_FIELD(*vc, 3, 24);
+        *frac = (int)(*vc >> 0x1B);
+        return;
+    default:
+        *cnt = GX_TEX_ST;
+        *type = GX_RGB565;
+        *frac = 0;
+        return;
+    }
+}
+
 
 /**
  * @note Address: N/A
  * @note Size: 0x74
  */
-void GXGetVtxAttrFmtv(GXVtxFmt format, GXVtxAttrFmtList* list)
-{
-	// UNUSED FUNCTION
+void GXGetVtxAttrFmtv(GXVtxFmt fmt, GXVtxAttrFmtList* vat) {
+    GXAttr attr;
+
+    for (attr = GX_VA_POS; attr <= GX_VA_TEX7; attr++) {
+        vat->mAttr = attr;
+        GXGetVtxAttrFmt(fmt, attr, &vat->mCount, &vat->mType, &vat->mFrac);
+        vat++;
+    }
+
+    vat->mAttr = GX_VA_NULL;
 }
+
 
 /**
  * @note Address: 0x800E4C80

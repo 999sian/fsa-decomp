@@ -512,7 +512,7 @@ config.libs = [
         [
             Object(Matching, "dolphin/gx/GXInit.c"),
             Object(Matching, "dolphin/gx/GXFifo.c"),
-            Object(NonMatching, "dolphin/gx/GXAttr.c"),
+            Object(Matching, "dolphin/gx/GXAttr.c"),
             Object(Matching, "dolphin/gx/GXMisc.c"),
             Object(Matching, "dolphin/gx/GXGeometry.c"),
             Object(Matching, "dolphin/gx/GXFrameBuf.c"),
