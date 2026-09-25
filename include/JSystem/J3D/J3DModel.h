@@ -29,6 +29,15 @@ struct J3DModel;
 
 typedef void (*J3DCalcCallBack)(J3DModel *, u32 timing);
 
+struct J3DUnkCalc1 {
+    virtual void calc(J3DModel *model);
+};
+
+struct J3DUnkCalc2 {
+    virtual void unk();
+    virtual void calc(J3DModelData *modelData);
+};
+
 struct J3DModelHierarchy
 {
     u16 _00;
@@ -164,6 +173,7 @@ struct J3DModel
     void calcBBoardMtx();
     void prepareShapePackets();
     void setDeformData(J3DDeformData *, u32);
+    void calcAnmMtx();
 
     inline J3DModelData *getModelData() { return mModelData; }
 
@@ -211,8 +221,8 @@ struct J3DModel
     J3DDeformData *mDeformData;     // _C8
     J3DSkinDeform *mSkinDeform;     // _CC
     J3DVtxColorCalc *mVtxColorCalc; // _D0
-    u32 _D4;                        // _D4
-    void *_D8;                      // _D8
+    J3DUnkCalc1 *mUnkCalc1;         // _D4
+    J3DUnkCalc2 *mUnkCalc2;         // _D8
 };
 
 #pragma pop

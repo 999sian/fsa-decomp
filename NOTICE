@@ -31,3 +31,13 @@ decompilation project (https://github.com/projectPiki/pikmin2), with thanks.
 Some J3D loader sources (src/JSystem/J3D/GraphLoader/) and J3D header
 additions are adapted from the Pikmin 2 decompilation project
 (https://github.com/projectPiki/pikmin2).
+
+src/JSystem/J3D/GraphAnimator/ is based on the Pikmin 2 decompilation project
+(https://github.com/projectPiki/pikmin2), adapted to the mkdd headers. Many
+thanks to its contributors.
+
+Parts of src/JSystem/J3D/GraphAnimator/ (J3DDeformer::deform_VtxPosF32/
+deform_VtxNrmF32, J3DFrameCtrl::checkPass, J3DAnmTransformFullWithLerp and the
+J3DAnm* constructors) and the J3DCluster/J3DClusterKey/J3DClusterVertex layouts
+are based on the Twilight Princess decompilation
+(https://github.com/zeldaret/tp), with thanks.

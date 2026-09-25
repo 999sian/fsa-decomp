@@ -604,6 +604,22 @@ config.libs = [
             Object(Matching, "JSystem/J3D/GraphLoader/J3DModelSaver.cpp"),
         ],
     ),
+    JSystemLib(
+        "J3DGraphAnimator",
+        [
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DAnimation.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DCluster.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJoint.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJointTree.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DMaterialAnm.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DMaterialAttach.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DModel.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DModelData.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DMtxBuffer.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DShapeTable.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp"),
+        ],
+    ),
 ]
 
 

@@ -32,7 +32,7 @@ struct J3DJoint {
     u8 getMtxType() const { return (u8)mKind >> 4; }
     void setMtxType(u8 type) { mKind = (mKind & ~0xF0) | (type << 4); }
     void resetMtxType() { mKind &= 0x0F; }
-    u16 getJntNo() const { return mJointIdx; }
+    const u16 getJntNo() const { return mJointIdx; }
     f32 getRadius() const { return mRadius; }
     J3DJoint* getYounger() { return mParent; }
     J3DJoint* getChild() { return mChild; }
