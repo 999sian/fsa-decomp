@@ -34,6 +34,8 @@ typedef struct {
 #define set_char_map(map, ch) map[(u8)ch >> 3] |= (1 << (ch & 7))
 #define tst_char_map(map, ch) (map[(u8)ch >> 3] & (1 << (ch & 7)))
 
+#if 0
+
 /**
  * @note Address: 0x800CA0C0
  * @note Size: 0x548
@@ -596,6 +598,8 @@ void __FileRead(void)
 	// UNUSED FUNCTION
 }
 
+#endif
+
 /**
  * @note Address: 0x800C9684
  * @note Size: 0x90
@@ -632,6 +636,8 @@ int __StringRead(void* pPtr, int ch, int act)
 
 	return 0;
 }
+
+#if 0
 
 /**
  * @note Address: N/A
@@ -708,3 +714,5 @@ int sscanf(const char* s, const char* pFormat, ...)
 	va_start(args, pFormat);
 	return vsscanf(s, pFormat, args);
 }
+
+#endif
