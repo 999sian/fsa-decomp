@@ -375,6 +375,9 @@ config.libs = [
         "jmisc",
         [
             Object(Matching, "JSystem/JFramework/JFWSystem.cpp"),
+            Object(Matching, "JSystem/JMath/JMath.cpp"),
+            Object(Matching, "JSystem/JMath/random.cpp"),
+            Object(Matching, "JSystem/JMath/JMATrigonometric.cpp"),
         ],
     ),
 ]

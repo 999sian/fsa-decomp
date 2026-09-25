@@ -109,6 +109,18 @@ JSystem/JUtility/JUTVideo.cpp:
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
 
+JSystem/JMath/JMath.cpp:
+	.text       start:0x80093280 end:0x80093338
+	.sdata2     start:0x8053B940 end:0x8053B948
+
+JSystem/JMath/random.cpp:
+	.text       start:0x80093338 end:0x80093340
+
+JSystem/JMath/JMATrigonometric.cpp:
+	.text       start:0x80093340 end:0x80093768
+	.ctors      start:0x8045BDD0 end:0x8045BDD4
+	.sdata2     start:0x8053B948 end:0x8053B990
+
 JSystem/JFramework/JFWSystem.cpp:
 	.text       start:0x800E49E0 end:0x800E4D30
 	.sdata      start:0x80539E30 end:0x80539E60
