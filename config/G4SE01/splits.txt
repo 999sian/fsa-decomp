@@ -33,6 +33,13 @@ JSystem/JKernel/JKRAramHeap.cpp:
 	.data       start:0x80498C10 end:0x80498C20
 	.bss        start:0x804B9FC8 end:0x804B9FD8
 
+JSystem/JKernel/JKRAramPiece.cpp:
+	.text       start:0x8007B248 end:0x8007B694
+	.ctors      start:0x8045BDB0 end:0x8045BDB4
+	.rodata     start:0x8045E120 end:0x8045E190
+	.bss        start:0x804B9FD8 end:0x804B9FE8
+	.sdata2     start:0x8053B6D8 end:0x8053B6E0
+
 JSystem/JKernel/JKRAramStream.cpp:
 	.text       start:0x8007B694 end:0x8007BC30
 	.rodata     start:0x8045E190 end:0x8045E1C0
