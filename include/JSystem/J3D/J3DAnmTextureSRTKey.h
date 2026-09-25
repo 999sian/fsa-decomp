@@ -11,29 +11,7 @@
  * @size{0x7C}
  */
 struct J3DAnmTextureSRTKey : public J3DAnmBase {
-    inline J3DAnmTextureSRTKey()
-        : _30()
-        , _64()
-    {
-        _0C                = 0;
-        _1A                = 0;
-        _18                = 0;
-        _16                = 0;
-        mUpdateMaterialNum = 0;
-        _10                = nullptr;
-        _24                = nullptr;
-        _1C                = nullptr;
-        _20                = nullptr;
-        _48                = 0;
-        _46                = 0;
-        _44                = 0;
-        _4A                = 0;
-        _58                = nullptr;
-        _54                = nullptr;
-        _4C                = nullptr;
-        _50                = nullptr;
-        mTexMtxCalcType    = 0;
-    }
+    J3DAnmTextureSRTKey();
 
     virtual ~J3DAnmTextureSRTKey() { } // _08 (weak)
     virtual J3DAnmKind getKind() const // _0C (weak)
@@ -42,6 +20,7 @@ struct J3DAnmTextureSRTKey : public J3DAnmBase {
     }
 
     void calcTransform(f32, unsigned short, struct J3DTextureSRTInfo*) const;
+    void searchUpdateMaterialID(struct J3DMaterialTable*);
     void searchUpdateMaterialID(struct J3DModelData*);
 
     void getTransform(u16 param_0, J3DTextureSRTInfo* pSRTInfo) const { calcTransform(getFrame(), param_0, pSRTInfo); }
