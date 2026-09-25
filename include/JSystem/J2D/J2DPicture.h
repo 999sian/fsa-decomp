@@ -38,6 +38,7 @@ struct J2DPicture : public J2DPane {
     J2DPicture(const char*);
     J2DPicture(JUTTexture* texture);
     J2DPicture(u64 id, const JGeometry::TBox2f& bounds);
+    J2DPicture(u64 id, const JGeometry::TBox2f& bounds, const ResTIMG* img, const ResTLUT* lut);
 
     virtual ~J2DPicture();                                                                                               // _08
     virtual u16 getTypeID() const { return J2DPaneType_Picture; };                                                          // _0C (weak)
