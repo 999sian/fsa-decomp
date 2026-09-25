@@ -119,3 +119,11 @@ BOOL __GBATransfer(s32 chan, u32 outputBytes, u32 inputBytes, GBAProcHandler gba
 	OSRestoreInterrupts(interruptsTemp);
 	return FALSE;
 }
+
+OSTime __GBASetDelay(s32 chan, OSTime delay)
+{
+	GBAControl* gba = &__GBA[chan];
+	OSTime oldDelay = gba->delay;
+	gba->delay      = delay;
+	return oldDelay;
+}

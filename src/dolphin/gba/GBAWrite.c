@@ -16,7 +16,7 @@ void WriteProc(s32 chan)
  * @note Address: N/A
  * @note Size: 0x94
  */
-int GBWriteAsync(s32 chan, u8* ptr, u8* statusPtr)
+int GBAWriteAsync(s32 chan, u8* ptr, u8* statusPtr, GBASyncCallback callback)
 {
 	GBAControl* gba = &__GBA[chan];
 	if (gba->callback) {
@@ -26,7 +26,7 @@ int GBWriteAsync(s32 chan, u8* ptr, u8* statusPtr)
 	memcpy(&gba->output[1], ptr, 4);
 	gba->ptr      = ptr;
 	gba->status   = statusPtr;
-	gba->callback = __GBASyncCallback;
+	gba->callback = callback;
 	return __GBATransfer(chan, 5, 1, WriteProc);
 }
 
@@ -37,6 +37,6 @@ int GBWriteAsync(s32 chan, u8* ptr, u8* statusPtr)
 int GBAWrite(s32 chan, u8* ptr, u8* statusPtr)
 {
 	int _unused; // for stack size, probably commented out code
-	int status = GBWriteAsync(chan, ptr, statusPtr);
+	int status = GBAWriteAsync(chan, ptr, statusPtr, __GBASyncCallback);
 	return (status != 0) ? status : __GBASync(chan);
 }

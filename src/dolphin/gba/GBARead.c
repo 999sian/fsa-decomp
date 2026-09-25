@@ -17,7 +17,7 @@ void ReadProc(s32 chan)
  * @note Address: N/A
  * @note Size: 0x6C
  */
-int GBAReadAsync(s32 chan, u8* ptr, u8* statusPtr)
+int GBAReadAsync(s32 chan, u8* ptr, u8* statusPtr, GBASyncCallback callback)
 {
 	GBAControl* gba = &__GBA[chan];
 	if (gba->callback) {
@@ -26,7 +26,7 @@ int GBAReadAsync(s32 chan, u8* ptr, u8* statusPtr)
 	gba->output[0] = 0x14;
 	gba->ptr       = ptr;
 	gba->status    = statusPtr;
-	gba->callback  = __GBASyncCallback;
+	gba->callback  = callback;
 	return __GBATransfer(chan, 1, 5, ReadProc);
 }
 
@@ -37,6 +37,6 @@ int GBAReadAsync(s32 chan, u8* ptr, u8* statusPtr)
 int GBARead(s32 chan, u8* ptr, u8* statusPtr)
 {
 	int _unused; // for stack size, probably commented out code
-	int status = GBAReadAsync(chan, ptr, statusPtr);
+	int status = GBAReadAsync(chan, ptr, statusPtr, __GBASyncCallback);
 	return (status != 0) ? status : __GBASync(chan);
 }
