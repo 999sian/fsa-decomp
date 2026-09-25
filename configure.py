@@ -357,6 +357,7 @@ config.libs = [
             Object(Matching, "JSystem/JKernel/JKRExpHeap.cpp"),
             Object(Matching, "JSystem/JKernel/JKRFileLoader.cpp"),
             Object(Matching, "JSystem/JKernel/JKRMemArchive.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRSolidHeap.cpp"),
         ],
     ),
     JSystemLib(
