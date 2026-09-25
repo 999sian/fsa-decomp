@@ -389,6 +389,7 @@ config.libs = [
             Object(Matching, "JSystem/J3D/GraphBase/J3DSys.cpp"),
             Object(Matching, "JSystem/J3D/GraphBase/J3DDrawBuffer.cpp"),
             Object(Matching, "JSystem/J3D/GraphBase/J3DShapeDraw.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DVertex.cpp"),
         ],
     },
 ]
