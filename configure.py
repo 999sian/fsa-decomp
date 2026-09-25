@@ -370,6 +370,26 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    JSystemLib(
+        "JParticle",
+        [
+            Object(NonMatching, "JSystem/JParticle/JPABaseShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAChildShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPADynamicsBlock.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAEmitter.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAEmitterManager.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAExTexShape.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAExtraShape.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAFieldBlock.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAKeyBlock.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAMath.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAParticle.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAResource.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAResourceLoader.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPAResourceManager.cpp"),
+            Object(NonMatching, "JSystem/JParticle/JPATexture.cpp"),
+        ],
+    ),
 ]
 
 

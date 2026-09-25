@@ -108,3 +108,12 @@ JSystem/JUtility/JUTVideo.cpp:
 	.text       start:0x80092A98 end:0x8009304C
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
+
+JSystem/JParticle/JPAChildShape.cpp:
+	.text       start:0x800EA400 end:0x800EA58C
+	.sdata2     start:0x8053BD60 end:0x8053BD68
+
+JSystem/JParticle/JPADynamicsBlock.cpp:
+	.text       start:0x800EA58C end:0x800EB208
+	.data       start:0x8049C068 end:0x8049C088
+	.sdata2     start:0x8053BD68 end:0x8053BD90
