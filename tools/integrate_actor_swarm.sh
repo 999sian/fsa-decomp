@@ -109,6 +109,16 @@ for attempt in 1 2 3; do
     python3 "$(dirname "$0")/reconcile_decls.py" "$wt/$path" --only "$bad" || true
     continue
   fi
+  # Incompatible signatures for one external: the call site and the declaration disagree
+  # ("function call 'f(void*,int,...,Vec*,...)' does not match 'f(void*,unsigned long,
+  # ...,float*,...)"). Nothing about the types can be decided from the text, so cycle which
+  # spelling survives and let the compiler decide - the call sites are the constraint.
+  bad=$(grep -B1 'does not match' /tmp/atu-integrate.log | grep -oE '[A-Za-z_][A-Za-z0-9_]*\(' | tail -1 | tr -d '(')
+  if [ -n "$bad" ]; then
+    echo "  $bad: call site and declaration disagree; keeping the other spelling"
+    python3 "$(dirname "$0")/reconcile_decls.py" "$wt/$path" --only "$bad" --keep last || true
+    continue
+  fi
   break
 done
 if ! grep -q 'build/G4SE01/main.dol: OK' /tmp/atu-integrate.log; then
