@@ -108,3 +108,8 @@ JSystem/JUtility/JUTVideo.cpp:
 	.text       start:0x80092A98 end:0x8009304C
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
+
+JSystem/J2DGraph/J2DTevs.cpp:
+	.text       start:0x800B5CCC end:0x800B6158
+	.rodata     start:0x804631F0 end:0x80463270
+	.sdata2     start:0x8053BAE0 end:0x8053BB28

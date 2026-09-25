@@ -370,6 +370,12 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
         ],
     ),
+    JSystemLib(
+        "j2d-b",
+        [
+            Object(Matching, "JSystem/J2DGraph/J2DTevs.cpp"),
+        ],
+    ),
 ]
 
 
