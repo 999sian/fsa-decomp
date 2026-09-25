@@ -341,6 +341,7 @@ config.libs = [
         "JKernel",
         [
             Object(Matching, "JSystem/JKernel/JKRDisposer.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRFileLoader.cpp"),
         ],
     ),
     JSystemLib(
