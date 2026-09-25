@@ -98,6 +98,9 @@ JSystem/JSupport/JSUFileStream.cpp:
 JSystem/JGadget/binary.cpp:
 	.text       start:0x80087714 end:0x80087868
 
+JSystem/JGadget/std-vector.cpp:
+	.text       start:0x80087AB4 end:0x80087ABC
+
 JSystem/JUtility/JUTFont.cpp:
 	.text       start:0x8008CC40 end:0x8008CF54
 	.data       start:0x80499428 end:0x80499470

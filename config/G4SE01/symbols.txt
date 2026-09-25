@@ -13282,7 +13282,7 @@ Insert__Q27JGadget13TNodeLinkListFQ37JGadget13TNodeLinkList8iteratorPQ27JGadget1
 Erase__Q27JGadget13TNodeLinkListFPQ27JGadget13TLinkListNode = .text:0x8008797C; // type:function size:0x24 scope:global
 fn_800879A0 = .text:0x800879A0; // type:function size:0x2C
 fn_800879CC = .text:0x800879CC; // type:function size:0xE8
-fn_80087AB4 = .text:0x80087AB4; // type:function size:0x8
+extend_default__Q27JGadget6vectorFUlUlUl = .text:0x80087AB4; // type:function size:0x8 scope:global
 fn_80087ABC = .text:0x80087ABC; // type:function size:0x4
 fn_80087AC0 = .text:0x80087AC0; // type:function size:0xEC
 fn_80087BAC = .text:0x80087BAC; // type:function size:0x214

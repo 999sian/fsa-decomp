@@ -379,6 +379,7 @@ config.libs = [
             Object(Matching, "JSystem/JMessage/processor.cpp"),
             Object(Matching, "JSystem/JMessage/control.cpp"),
             Object(Matching, "JSystem/JGadget/binary.cpp"),
+            Object(Matching, "JSystem/JGadget/std-vector.cpp"),
         ],
     ),
 ]
