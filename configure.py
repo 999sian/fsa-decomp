@@ -604,7 +604,7 @@ config.libs = [
             Object(Matching, "MSL_C/MSL_Common/misc_io.c"),
             Object(Matching, "MSL_C/MSL_Common/printf.c", extra_cflags=["-str pool"]),
             Object(Matching, "MSL_C/MSL_Common/float.c"),
-            Object(NonMatching, "MSL_C/MSL_Common/qsort.c"),
+            Object(Matching, "MSL_C/MSL_Common/qsort.c"),
             Object(Matching, "MSL_C/MSL_Common/scanf.c"),
             Object(Matching, "MSL_C/MSL_Common/signal.c"),
             Object(Matching, "MSL_C/MSL_Common/string.c"),
