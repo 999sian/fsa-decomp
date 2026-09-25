@@ -383,6 +383,7 @@ config.libs = [
         "objects": [
             Object(Matching, "JSystem/JAudio/System/JASAiCtrl.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASAudioReseter.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASBank.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASBasicBank.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),

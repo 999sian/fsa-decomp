@@ -51,6 +51,13 @@ JSystem/JAudio/System/JASBasicBank.cpp:
 	.data       start:0x80491980 end:0x804919A8
 	.bss        start:0x804B2850 end:0x804B2860
 
+JSystem/JAudio/System/JASBank.cpp:
+	.text       start:0x80031484 end:0x8003189C
+	.ctors      start:0x8045BD6C end:0x8045BD70
+	.rodata     start:0x8045D1A8 end:0x8045D1D0
+	.bss        start:0x804B28C8 end:0x804B28D8
+	.sdata2     start:0x8053B1F0 end:0x8053B200
+
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
 	.data       start:0x80498C00 end:0x80498C10
