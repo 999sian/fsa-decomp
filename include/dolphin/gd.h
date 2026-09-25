@@ -83,6 +83,20 @@ extern "C"
         __GDWrite(((u8 *)&data)[3]);
     }
 
+    // check if data we're about to add will take us outside data region
+    static inline void GDOverflowCheck(u32 len)
+    {
+        if (__GDCurrentDL->pDisplayListData + len > __GDCurrentDL->end)
+        {
+            GDOverflowed();
+        }
+    }
+
+    static inline u8 *GDGetCurrPointer() { return __GDCurrentDL->pDisplayListData; }
+    static inline s32 GDGetCurrOffset() { return __GDCurrentDL->pDisplayListData - __GDCurrentDL->begin; }
+    static inline void GDSetCurrOffset(s32 offs) { __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + offs; }
+    static inline void GDAdvCurrOffset(s32 distance) { __GDCurrentDL->pDisplayListData += distance; }
+
     ////////////////////////////////////////////
 
 #ifdef __cplusplus

@@ -291,6 +291,11 @@ cflags_jai = [
 cflags_jau = [*cflags_jsystem, "-DMATCHING=1"]
 # Extra flags for JAudio/Task (DSP driver), as in the mkdd decomp
 cflags_jaudio_task = ["-O4,s", "-inline noauto", "-use_lmw_stmw off", "-func_align 32"]
+# J3D/GraphBase flags: JSystem flags + retail volatile GXWGFifo (see dolphin/gx/GXVert.h)
+cflags_j3d_base = [
+    *cflags_jsystem,
+    "-DGX_WGPIPE_VOLATILE",
+]
 
 config.linker_version = "GC/1.3.2"
 
@@ -524,6 +529,28 @@ config.libs = [
             Object(Matching, "JSystem/J2DGraph/J2DPane.cpp"),
         ],
     ),
+    {
+        # J3D/GraphBase (source from the Pikmin 2 decomp; mkdd has none).
+        # J3D needs the retail (volatile) GX write-gather pipe declaration.
+        "lib": "j3d-base",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_j3d_base,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/J3D/GraphBase/J3DGD.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DTransform.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DSys.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DDrawBuffer.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DShapeDraw.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DVertex.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DPacket.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphBase/J3DShape.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DMaterial.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphBase/J3DTevs.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DShapeMtx.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DStruct.cpp"),
+        ],
+    },
 ]
 
 
