@@ -39,9 +39,10 @@
  *
  * `JASMemPool<T>::~JASMemPool()` must stay DECLARED-ONLY (see JASHeapCtrl.h).
  * With an inline body MWCC emits nine weak dtor copies per TU, each with its own
- * extab entry, and the unit can never reach 100 %: retail actor units carry
- * exactly three extabindex entries (their dtor, one virtual, the `__sinit`), and
- * the nine dtors are defined once, in the audio code.
+ * extab entry, and the unit can never reach 100 %: retail carries an entry only
+ * for the actor's own functions that need exception metadata plus the `__sinit`
+ * (2 entries for BOTS and TJIJ, 3 for GFBS, DWAP and STGN - never 9 + the actor's
+ * own), and the nine dtors are defined once, in the audio code.
  *
  * The nine `T`, from the `sizeof(T)` immediates at the `JASPoolAllocObject<T>`
  * allocation sites (80, 592, 268, 64, -, 712, 100, 948, 832 for slots 1..9):
