@@ -116,6 +116,14 @@ JSystem/JKernel/JKRFileLoader.cpp:
 	.sbss       start:0x8053A8A0 end:0x8053A8A8
 	.sdata2     start:0x8053B738 end:0x8053B740
 
+JSystem/JKernel/JKRHeap.cpp:
+	.text       start:0x8008353C end:0x800845F0
+	.rodata     start:0x8045E678 end:0x8045E688
+	.data       start:0x80498E98 end:0x80498EF8
+	.sdata      start:0x80539D80 end:0x80539D88
+	.sbss       start:0x8053A8A8 end:0x8053A8D8
+	.sdata2     start:0x8053B740 end:0x8053B750
+
 JSystem/JKernel/JKRMemArchive.cpp:
 	.text       start:0x800845F0 end:0x80084BAC
 	.rodata     start:0x8045E688 end:0x8045E6B0
