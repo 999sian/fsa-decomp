@@ -509,6 +509,21 @@ config.libs = [
             Object(Matching, "JSystem/JParticle/JPATexture.cpp"),
         ],
     ),
+    JSystemLib(
+        "j2d-a",
+        [
+            Object(Matching, "JSystem/J2DGraph/J2DAnimation.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DAnmLoader.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DBloSaver.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DGrafContext.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DManage.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DMatBlock.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DMaterial.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DMaterialFactory.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DOrthoGraph.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPane.cpp"),
+        ],
+    ),
 ]
 
 

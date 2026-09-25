@@ -487,6 +487,57 @@ JSystem/JUtility/JUTVideo.cpp:
 	.data       start:0x80499510 end:0x80499520
 	.sbss       start:0x8053A980 end:0x8053A998
 
+JSystem/J2DGraph/J2DOrthoGraph.cpp:
+	.text       start:0x80093768 end:0x80093E64
+	.data       start:0x80499520 end:0x80499548
+	.sdata2     start:0x8053B990 end:0x8053B998
+
+JSystem/J2DGraph/J2DGrafContext.cpp:
+	.text       start:0x80093E64 end:0x800948E0
+	.data       start:0x80499548 end:0x80499570
+	.sdata2     start:0x8053B998 end:0x8053B9B0
+
+JSystem/J2DGraph/J2DPane.cpp:
+	.text       start:0x800948E0 end:0x80097064
+	.ctors      start:0x8045BDD4 end:0x8045BDD8
+	.data       start:0x80499570 end:0x80499628
+	.sdata2     start:0x8053B9B0 end:0x8053B9D8
+
+JSystem/J2DGraph/J2DAnmLoader.cpp:
+	.text       start:0x800A4994 end:0x800A655C
+	.data       start:0x80499AE8 end:0x80499B6C
+	.sdata2     start:0x8053BAA8 end:0x8053BAB0
+
+JSystem/J2DGraph/J2DBloSaver.cpp:
+	.text       start:0x800A655C end:0x800A68D4
+	.ctors      start:0x8045BDD8 end:0x8045BDDC
+	.bss        start:0x804BA4B0 end:0x804BA4C0
+	.sbss       start:0x8053A9B8 end:0x8053A9C0
+
+JSystem/J2DGraph/J2DManage.cpp:
+	.text       start:0x800A68D4 end:0x800A6B98
+	.bss        start:0x804BA4C0 end:0x804BA5C8
+
+JSystem/J2DGraph/J2DMatBlock.cpp:
+	.text       start:0x800A6B98 end:0x800AEF1C
+	.rodata     start:0x80463178 end:0x80463188
+	.data       start:0x80499B70 end:0x8049A058
+
+JSystem/J2DGraph/J2DMaterial.cpp:
+	.text       start:0x800AEF1C end:0x800B014C
+	.data       start:0x8049A090 end:0x8049A0A8
+	.sdata2     start:0x8053BAB0 end:0x8053BAC0
+
+JSystem/J2DGraph/J2DMaterialFactory.cpp:
+	.text       start:0x800B014C end:0x800B1954
+	.sdata2     start:0x8053BAC0 end:0x8053BAC8
+	.sbss2      start:0x80543F00 end:0x80543F08
+
+JSystem/J2DGraph/J2DAnimation.cpp:
+	.text       start:0x800B79A4 end:0x800BA544
+	.data       start:0x8049A2B8 end:0x8049A378
+	.sdata2     start:0x8053BB48 end:0x8053BB70
+
 JSystem/JParticle/JPABaseShape.cpp:
 	.text       start:0x800E6594 end:0x800EA400
 	.data       start:0x8049BEC0 end:0x8049C068

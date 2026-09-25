@@ -51,7 +51,7 @@ struct J2DIndTexMtxInfo {
                 mMtx[i][j] = other.mMtx[i][j];
             }
         }
-        mScale = other.mScale;
+        mScale = *(s8*)&other.mScale; // FSA: forces the load after the matrix copy (as in pikmin2)
         return *this;
     }
 };
