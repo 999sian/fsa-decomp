@@ -20,7 +20,7 @@ class JASVoiceBank : public JASBank
 {
 public:
     virtual ~JASVoiceBank();
-    virtual JASInst *getInst(u32) const;
+    virtual bool getInstParam(int, int, int, JASInstParam *) const;
     virtual u32 getType() const;
 };
 

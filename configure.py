@@ -343,6 +343,9 @@ def MatchingFor(*versions):
     return config.version in versions
 
 
+# JAudio/System flags (jas-a unit)
+cflags_jas_a = [*cflags_jsystem, "-DMATCHING=1"]
+
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [
@@ -549,6 +552,33 @@ config.libs = [
             Object(NonMatching, "JSystem/J3D/GraphBase/J3DTevs.cpp"),
             Object(Matching, "JSystem/J3D/GraphBase/J3DShapeMtx.cpp"),
             Object(Matching, "JSystem/J3D/GraphBase/J3DStruct.cpp"),
+        ],
+    },
+    {
+        # JAudio/System (jas-a); -DMATCHING=1 enables the donor's explicit
+        # JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_ definitions
+        "lib": "jas-a",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jas_a,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/System/JASAiCtrl.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASAramStream.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASAudioReseter.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASAudioThread.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASBasicBank.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASBasicInst.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASBasicWaveBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCalc.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASChannel.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDriverIF.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDSPChannel.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDSPInterface.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDrumSet.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
         ],
     },
 ]

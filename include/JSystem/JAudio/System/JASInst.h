@@ -67,11 +67,23 @@ protected:
     int mType;
 };
 
+// FSA keeps an instrument's effects in a singly linked list of these nodes
+struct JASInstEffectLink
+{
+    JASInstEffectLink(JASInstEffect *effect)
+    {
+        mNext = NULL;
+        mEffect = effect;
+    }
+
+    JASInstEffectLink *mNext; // 00
+    JASInstEffect *mEffect;   // 04
+};
+
 class JASBasicInst : public JASInst
 {
 public:
     static const int OSC_MAX = 2;
-    static const int EFFECT_MAX = 4;
 
     class TKeymap
     {
@@ -81,10 +93,10 @@ public:
             mVeloRegionCount = 0;
             mVelomap = NULL;
         }
-        ~TKeymap();                                        // 0x800975f4
-        void setVeloRegionCount(u32 count, JKRHeap *heap); // 0x80097648
-        JASVelo *getVeloRegion(int index);                 // 0x800976f0
-        JASVelo *getVeloRegion(int index) const;           // 0x80097784
+        ~TKeymap();
+        void setVeloRegionCount(u32 count, JKRHeap *heap);
+        JASVelo *getVeloRegion(int index);
+        JASVelo *getVeloRegion(int index) const;
 
         void setHighKey(int high) {
             mHighKey = high;
@@ -95,32 +107,26 @@ public:
         JASVelo *mVelomap;    // 8
     };
 
-    // Global
-    JASBasicInst();                                             // 0x80096ffc
-    virtual ~JASBasicInst();                                    // 0x800970b8
-    virtual bool getParam(int, int, JASInstParam *param) const; // 0x80097184
-    void setKeyRegionCount(u32, JKRHeap *heap);                 // 0x800972dc
-    void setEffect(int index, JASInstEffect *effect);           // 0x800973c8
-    void setOsc(int index, JASOscillator::Data *oscData);       // 0x80097494
-    TKeymap *getKeyRegion(int index);                           // 0x80097560
+    JASBasicInst();
+    virtual ~JASBasicInst();
+    virtual bool getParam(int, int, JASInstParam *param) const;
+    void setKeyRegionCount(u32, JKRHeap *heap);
+    void appendEffect(JASInstEffectLink *link);
+    void setOsc(int index, JASOscillator::Data *oscData);
+    TKeymap *getKeyRegion(int index);
 
     virtual u32 getType() const { return 'BSIC'; }
 
     void setVolume(f32 vol) { mVolume = vol; }
     void setPitch(f32 pitch) { mPitch = pitch; }
 
-    // Inline/Unused
-    void searchKeymap(int) const;
-    void getEffect(int);
-    void getOsc(int);
-    TKeymap *getKeyRegion(int) const;
 private:
     f32 mVolume;                        // 04
     f32 mPitch;                         // 08
     JASOscillator::Data *mOsc[OSC_MAX]; // 0C
-    JASInstEffect *mEffect[EFFECT_MAX]; // 14
-    TKeymap *mKeymap;                   // 24
-    u32 mKeyRegionCount;                // 28
+    JASInstEffectLink *mEffectList;     // 14
+    u32 mKeyRegionCount;                // 18
+    TKeymap *mKeymap;                   // 1C
 };
 
 class JASInstRand : public JASInstEffect
