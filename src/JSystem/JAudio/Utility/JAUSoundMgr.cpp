@@ -3,6 +3,8 @@
 #include "JSystem/JAudio/Interface/JAISound.h"
 #include "JSystem/JUtility/JUTAssert.h"
 
+#include "JSystem/JAudio/JASFakeMatch5.h"
+
 JAUSoundMgr::JAUSoundMgr() : JAISoundStarter(true), mSeMgr(true), mSeqMgr(true), mStreamMgr(true) {}
 
 bool JAUSoundMgr::startSound(JAISoundID soundID, JAISoundHandle *handlePtr, const JGeometry::TVec3f *pos) {
@@ -31,4 +33,10 @@ void JAUSoundMgr::mixOut() {
     mSeMgr.mixOut();
     mSeqMgr.mixOut();
     mStreamMgr.mixOut();
+}
+
+void JAUSoundMgr::stop() {
+    mSeMgr.stop();
+    mSeqMgr.stop();
+    mStreamMgr.stop();
 }
