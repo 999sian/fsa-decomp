@@ -286,6 +286,7 @@ def main():
             lo_, hi_ = base, base + sec["sh_size"]
         if (lo_, hi_) != (base, base + sec["sh_size"]):
             print(f"  NOTE {sec.name}: retained range {lo_:08x}-{hi_:08x} differs from full section")
+        hi_ = (hi_ + 3) & ~3
         placed[idx] = (lo_, hi_)
         # data relocs (vtables etc.)
         for off, t, si, add in relocs[idx]:
