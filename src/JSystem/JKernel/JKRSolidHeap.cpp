@@ -142,7 +142,9 @@ void *JKRSolidHeap::allocFromTail(u32 size, int alignment)
 
 void JKRSolidHeap::do_free(void *ptr)
 {
-
+#ifdef VERSION_G4SE01
+    JUTWarningConsole_f("free: cannot free memory block (%08x)\n", ptr);
+#endif
 }
 
 void JKRSolidHeap::do_freeAll(void)
@@ -194,6 +196,7 @@ int JKRSolidHeap::do_getSize(void *ptr)
     return -1;
 }
 
+#ifndef VERSION_G4SE01
 void JKRSolidHeap::recordState(u32 cnt)
 {
     lock();
@@ -238,6 +241,8 @@ void JKRSolidHeap::restoreState(u32 cnt)
     }
     unlock();
 }
+
+#endif
 
 bool JKRSolidHeap::check()
 {
