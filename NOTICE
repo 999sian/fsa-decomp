@@ -14,3 +14,7 @@ unmodified unless noted in git history.
 Some JSystem sources and headers not present in mkdd (JMessage, extra JGadget
 TUs) were adapted from the Pikmin 2 decompilation project
 (https://github.com/projectPiki/pikmin2). Many thanks to its contributors.
+The JGadget::binary::TParseValue templates and parts of the JMessage processor
+(its tag parsing and the FSA-era TProcessor layout) follow the Wind Waker
+(https://github.com/zeldaret/tww) and Twilight Princess
+(https://github.com/zeldaret/tp) decompilations, with thanks.
