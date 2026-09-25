@@ -390,7 +390,7 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/Interface/JAISeq.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISeqDataMgr.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISeqMgr.cpp"),
-            Object(NonMatching, "JSystem/JAudio/Interface/JAISound.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISound.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISoundChild.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISoundHandles.cpp"),
             Object(Matching, "JSystem/JAudio/Interface/JAISoundInfo.cpp"),
