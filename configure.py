@@ -386,6 +386,7 @@ config.libs = [
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),
             Object(Matching, "JSystem/JUtility/JUTTexture.cpp"),
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTXfb.cpp"),
         ],
     ),
 ]
