@@ -247,6 +247,37 @@ cflags_rel = [
     "-sdata2 0",
 ]
 
+# JSystem flags (from mkdd decomp's cflags_jsystem, but -O4,p)
+cflags_jsystem = [
+    "-nodefaults",
+    "-proc gekko",
+    "-align powerpc",
+    "-enum int",
+    "-fp hardware",
+    "-Cpp_exceptions off",
+    "-O4,p",
+    "-inline auto",
+    '-pragma "cats off"',
+    '-pragma "warn_notinlined off"',
+    "-use_lmw_stmw on",
+    "-common on",
+    "-maxerrors 1",
+    "-nosyspath",
+    "-RTTI off",
+    "-fp_contract on",
+    "-multibyte",
+    "-i include",
+    "-i libs/PowerPC_EABI_Support/include",
+    f"-i build/{config.version}/include",
+    f"-DBUILD_VERSION={version_num}",
+    f"-DVERSION_{config.version}",
+    "-lang=c++",
+    "-fp fmadd",
+    "-char signed",
+    "-rostr",
+    "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
+]
+
 config.linker_version = "GC/1.3.2"
 
 
@@ -257,6 +288,17 @@ def DolphinLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
         "mw_version": "GC/1.2.5n",
         "cflags": cflags_base,
         "progress_category": "sdk",
+        "objects": objects,
+    }
+
+
+# Helper function for JSystem libraries (source imported from the mkdd decomp)
+def JSystemLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
+    return {
+        "lib": lib_name,
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jsystem,
+        "progress_category": "jsys",
         "objects": objects,
     }
 
@@ -295,6 +337,12 @@ config.libs = [
             Object(NonMatching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
         ],
     },
+    JSystemLib(
+        "JKernel",
+        [
+            Object(Matching, "JSystem/JKernel/JKRDisposer.cpp"),
+        ],
+    ),
 ]
 
 
@@ -321,6 +369,7 @@ def link_order_callback(module_id: int, objects: List[str]) -> List[str]:
 config.progress_categories = [
     ProgressCategory("game", "Game Code"),
     ProgressCategory("sdk", "SDK Code"),
+    ProgressCategory("jsys", "JSystem Code"),
 ]
 config.progress_each_module = args.verbose
 # Optional extra arguments to `objdiff-cli report generate`
