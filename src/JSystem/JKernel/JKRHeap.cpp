@@ -176,6 +176,9 @@ int JKRHeap::resize(void *memoryBlock, u32 newSize)
     JUT_WARNING_F(!mInitFlag, "resize block %x into %x in heap %x", memoryBlock, newSize, this);
     return do_resize(memoryBlock, newSize);
 }
+#ifdef VERSION_G4SE01
+s32 JKRHeap::getSize(void *ptr) { return do_getSize(ptr); }
+#endif
 s32 JKRHeap::getFreeSize() { return do_getFreeSize(); }
 u32 JKRHeap::getTotalFreeSize() { return do_getTotalFreeSize(); }
 
@@ -432,7 +435,9 @@ JKRHeap::TState::~TState()
         }
         else
         {
+#ifndef VERSION_G4SE01
             state_dumpDifference(*this, state);
+#endif
 
             if (isVerbose())
             {
@@ -463,6 +468,7 @@ bool JKRHeap::state_compare(const JKRHeap::TState &r1, const JKRHeap::TState &r2
     return (r1.getCheckCode() == r2.getCheckCode());
 }
 
+#ifndef VERSION_G4SE01 // absent from FSA
 // fabricated, but probably matches(except for line numbers)
 void JKRHeap::state_dumpDifference(const JKRHeap::TState &r1, const JKRHeap::TState &r2)
 {
@@ -471,6 +477,8 @@ void JKRHeap::state_dumpDifference(const JKRHeap::TState &r1, const JKRHeap::TSt
     JUT_LOG_F("id         : 0x%08x / 0x%08x", r1.getId(), r2.getId());
     JUT_LOG_F("used size  : %10u / %10u", r1.getUsedSize(), r2.getUsedSize());
 }
+
+#endif
 
 void JKRHeap::state_dump(const TState &state) const
 {
