@@ -381,6 +381,7 @@ config.libs = [
             Object(Matching, "JSystem/J2DGraph/J2DMaterial.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DMaterialFactory.cpp"),
             Object(Matching, "JSystem/J2DGraph/J2DOrthoGraph.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPane.cpp"),
         ],
     ),
 ]

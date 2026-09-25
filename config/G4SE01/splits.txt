@@ -119,6 +119,12 @@ JSystem/J2DGraph/J2DGrafContext.cpp:
 	.data       start:0x80499548 end:0x80499570
 	.sdata2     start:0x8053B998 end:0x8053B9B0
 
+JSystem/J2DGraph/J2DPane.cpp:
+	.text       start:0x800948E0 end:0x80097064
+	.ctors      start:0x8045BDD4 end:0x8045BDD8
+	.data       start:0x80499570 end:0x80499628
+	.sdata2     start:0x8053B9B0 end:0x8053B9D8
+
 JSystem/J2DGraph/J2DAnmLoader.cpp:
 	.text       start:0x800A4994 end:0x800A655C
 	.data       start:0x80499AE8 end:0x80499B6C
