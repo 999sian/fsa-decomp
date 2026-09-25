@@ -45,6 +45,12 @@ JSystem/JAudio/System/JASDriverIF.cpp:
 	.bss        start:0x804B2550 end:0x804B2850
 	.sdata      start:0x80539BD0 end:0x80539BD8
 
+JSystem/JAudio/System/JASBasicBank.cpp:
+	.text       start:0x8002E218 end:0x8002E428
+	.ctors      start:0x8045BD54 end:0x8045BD58
+	.data       start:0x80491980 end:0x804919A8
+	.bss        start:0x804B2850 end:0x804B2860
+
 JSystem/JKernel/JKRAramBlock.cpp:
 	.text       start:0x8007AC2C end:0x8007AEB0
 	.data       start:0x80498C00 end:0x80498C10
