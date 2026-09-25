@@ -346,6 +346,7 @@ config.libs = [
     JSystemLib(
         "JSupport",
         [
+            Object(Matching, "JSystem/JSupport/JSUFileStream.cpp"),
             Object(Matching, "JSystem/JSupport/JSUMemoryStream.cpp"),
         ],
     ),
