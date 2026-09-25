@@ -181,7 +181,6 @@ void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu)
 		while (!__OSSyncSram()) {
 			;
 		}
-		resetCode = 0;
 	}
 
 	OSDisableInterrupts();
@@ -216,8 +215,15 @@ void OSResetSystem(int reset, u32 resetCode, BOOL forceMenu)
 u32 OSGetResetCode()
 {
 	if (*(u8*)OSPhysicalToCached(0x30E2) != 0) {
-		return *(u32*)OSPhysicalToCached(0x30F0) | 0x80000000;
+		return 0x80000000;
 	}
 
 	return ((__PIRegs[PI_RESETCODE] & ~7) >> 3);
+}
+
+u32 OSSetBootDol(u32 dolOffset)
+{
+	u32 oldDol  = bootThisDol;
+	bootThisDol = dolOffset;
+	return oldDol;
 }

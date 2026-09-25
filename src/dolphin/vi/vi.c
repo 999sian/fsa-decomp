@@ -955,7 +955,7 @@ void VISetNextFrameBuffer(void* fb)
  */
 void* VIGetNextFrameBuffer()
 {
-	// UNUSED FUNCTION
+	return (void*)NextBufAddr;
 }
 
 /**
