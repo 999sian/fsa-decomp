@@ -1,8 +1,4 @@
 // DBMS_8010DA6C: .text 0x8010DA6C-0x8010DF44 (actor DBMS)
-// NOTE: all code 100% but NOT linkable as Matching: retail extab for the ctor
-// (0x8010DCDC) carries an EH cleanup action calling the Actor dtor (0x801F593C),
-// so ctor/dtor must be real C++ (Dbms : Actor, member at 0x230). Needs the
-// __ct__5ActorFv/__dt__5ActorFv symbol names ( Actor TU) to land first.
 // Function bodies partly adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
@@ -105,11 +101,19 @@ extern "C" void fn_8010DC4C(u8* this_) {
     fn_801D1F14(this_ + 0x230, lbl_8053C50C);
 }
 
-extern "C" void* fn_8010DCDC(void* this_) {
-    __ct__5ActorFv(this_);
-    *(void**)this_ = lbl_8049D0E8;
-    fn_801D267C((char*)this_ + 0x230);
-    return this_;
+struct Actor {
+    Actor();
+    ~Actor();
+};
+
+class Dbms : public Actor {
+public:
+    Dbms();
+};
+
+Dbms::Dbms() : Actor() {
+    *(void**)this = lbl_8049D0E8;
+    fn_801D267C((char*)this + 0x230);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

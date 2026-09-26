@@ -1815,6 +1815,7 @@ Game/DEAL_80108414.cpp:
 	extabindex  start:0x80011F50 end:0x80011F98
 	.text       start:0x80108414 end:0x80108A6C
 	.ctors      start:0x8045BE3C end:0x8045BE40
+	.bss        start:0x804BB8F8 end:0x804BB964
 
 Game/SHTM_80108A6C.cpp:
 	extab       start:0x80005B50 end:0x80005B94
@@ -1833,6 +1834,7 @@ Game/DBMS_8010DA6C.cpp:
 	extabindex  start:0x80012100 end:0x80012148
 	.text       start:0x8010DA6C end:0x8010DF44
 	.ctors      start:0x8045BE50 end:0x8045BE54
+	.bss        start:0x804BBDF8 end:0x804BBE64
 
 Game/tu_8010DF44.cpp:
 	extab       start:0x80005CD4 end:0x80005D04
