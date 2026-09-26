@@ -5,7 +5,7 @@
 extern "C" void fn_801D9C58(void* this_, s32 newState);
 extern "C" {
 }
-extern f32 lbl_8053F1CC;
+extern const f32 lbl_8053F1CC;
 extern "C" void fn_801CE694(void* this_);
 extern "C" void fn_801CE2BC(void* this_);
 extern "C" void fn_801E61C4(void* this_);
@@ -88,6 +88,139 @@ extern "C" void fn_801D89BC(void* this_) {
 
 extern "C" s32 fn_801DA0FC(void) {
     return fn_80458F9C(lbl_8053AF80, 0x3c);
+}
+
+#include "JSystem/JGeometry/Vec.h"
+extern char* lbl_8053AB10;
+extern const f32 lbl_8053F1D0;
+extern const f32 lbl_8053F1D4;
+extern const f32 lbl_8053F1D8;
+extern const f32 lbl_8053F1DC;
+extern const f32 lbl_8053F1E0;
+extern "C" void fn_801CDD58(void* this_);
+extern "C" void fn_8030C210(void* obj, void* pos);
+extern "C" void* fn_801D0F40(void* this_);
+extern "C" void fn_801DAA24(void* p);
+extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void __ct__Q29JGeometry8TVec2_f_Fv();
+extern "C" void fn_801EE434(void* handle);
+extern "C" s32* fn_801DAC6C();
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D7440(void* game, s32 a);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern void* lbl_804A4C58[];
+extern void* lbl_804A4808[];
+extern void* lbl_8049CC34[];
+
+struct Slot11 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual u8 slot9(f32 a, f32 b, f32 c);
+};
+
+extern "C" void fn_801D8430(char* p) {
+    if (((Slot11*)p)->slot9(lbl_8053F1CC, lbl_8053F1D0, lbl_8053F1D4)) {
+        char* cam = *(char**)(lbl_8053AB10 + 0x24);
+        if (*(u8*)(cam + 0x840) == 0) {
+            *(u8*)(cam + 0x840) = 1;
+            *(f32*)(cam + 0x844) = *(f32*)(cam + 0x84c) = *(f32*)(p + 0xc);
+            *(f32*)(cam + 0x848) = *(f32*)(cam + 0x850) = *(f32*)(p + 0x10);
+            *(f32*)(cam + 0x854) = lbl_8053F1D8;
+            *(f32*)(cam + 0x1d4) = lbl_8053F1DC;
+            *(f32*)(cam + 0x1d8) = lbl_8053F1DC;
+        }
+        *(u8*)(*(char**)(lbl_8053AB10 + 0x20) + 0x216) = 1;
+    } else {
+        fn_801CDD58(p);
+    }
+}
+
+extern "C" void fn_801D84E4(char* p) {
+    switch (*(s32*)(p + 0x248)) {
+    case 0:
+        break;
+    case 1:
+    case 2:
+    case 3: {
+        char* a = *(char**)(lbl_8053AB10 + 0x30);
+        if (*(u8*)(a + 0x284) == 0) {
+            *(u8*)(a + 0x284) = 1;
+            *(f32*)(a + 0x28c) = lbl_8053F1E0;
+        }
+        char* cam = *(char**)(lbl_8053AB10 + 0x24);
+        if (*(u8*)(cam + 0x7f5) == 0) {
+            *(u8*)(cam + 0x7f4) = 1;
+            *(s32*)(cam + 0x7f8) = 4;
+            *(f32*)(cam + 0x7fc) = *(f32*)(p + 0xc);
+            *(f32*)(cam + 0x800) = *(f32*)(p + 0x10);
+            *(f32*)(cam + 0x804) = *(f32*)(p + 0x14);
+            *(u8*)(cam + 0x7f6) = 0;
+        }
+        break;
+    }
+    default: {
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), p + 0xc);
+        char* cam = *(char**)(lbl_8053AB10 + 0x24);
+        if (*(u8*)(cam + 0x179) == 0) {
+            *(u8*)(cam + 0x178) = 1;
+        }
+        break;
+    }
+    }
+}
+
+extern "C" void* fn_801DA438(char* p, s16 freeFlag) {
+    if (p != 0) {
+        *(void**)p = lbl_804A4C58;
+        for (s32 i = 0; i < 4; i++) {
+            fn_801EE434(*(void**)(p + 0x2c0 + i * 4));
+            *(void**)(p + 0x2c0 + i * 4) = 0;
+        }
+        s32* h = fn_801DAC6C();
+        *h = -1;
+        fn_802D7440(fn_802D6A9C(), 1);
+        if (p != 0) {
+            *(void**)p = lbl_804A4808;
+            if (p + 0x270 != 0) {
+                if (p + 0x294 != 0) {
+                    *(void**)(p + 0x294) = lbl_8049CC34;
+                }
+            }
+            __dt__5ActorFv(p, 0);
+        }
+        if (freeFlag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
+extern "C" void* fn_801DA504(char* p) {
+    fn_801D0F40(p);
+    *(void**)p = lbl_804A4C58;
+    fn_801DAA24(p + 0x2a8);
+    *(f32*)(p + 0x2d0) = lbl_8053F1CC;
+    __construct_array(p + 0x2d4, (void*)__ct__Q29JGeometry8TVec2_f_Fv, 0, 8, 0xc);
+    *(u8*)(p + 0x334) = 0;
+    *(u16*)(p + 0x336) = 0;
+    *(u16*)(p + 0x338) = 0;
+    *(u16*)(p + 0x33a) = 0;
+    *(u16*)(p + 0x33c) = 0;
+    *(u8*)(p + 0x33e) = 0;
+    *(u8*)(p + 0x33f) = 0;
+    *(s32*)(p + 0x2c0) = 0;
+    *(s32*)(p + 0x2c4) = 0;
+    *(s32*)(p + 0x2c8) = 0;
+    *(s32*)(p + 0x2cc) = 0;
+    return p;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
