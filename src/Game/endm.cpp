@@ -45,6 +45,76 @@ extern "C" u8 fn_802E948C(char* p, f32 target, s32 frames) {
     return 1;
 }
 
+extern "C" void* fn_802D6A9C(void);
+// fn_802E9884 - ENDM: screen-edge check of the scroll position.
+extern "C" void fn_802D9CB0(void* rec);
+extern "C" u8 fn_802E9884(char* p, f32* pos) {
+    s32 ym = (s32)pos[1] % 384;
+    s32 xm = (s32)pos[0] % 512;
+    ym -= 30;
+    if (*(u8*)(p + 0x297) == 0) {
+        u8 d = **(u8**)(p + 0x290);
+        if (d == 0xff) {
+            *(s32*)(p + 0x23c) = 7;
+            return 0;
+        }
+        switch (d) {
+        case 0:
+            if (ym - ((s32)*(f32*)(p + 0x270) * 3 / 4) / 2 < 0x10) {
+                return 1;
+            }
+            break;
+        case 1:
+            if (ym + ((s32)*(f32*)(p + 0x270) * 3 / 4) / 2 > 0x170) {
+                return 1;
+            }
+            break;
+        case 2:
+            if (xm - (s32)*(f32*)(p + 0x270) / 2 < 0x10) {
+                return 1;
+            }
+            break;
+        case 3:
+            if (xm + (s32)*(f32*)(p + 0x270) / 2 > 0x1f0) {
+                return 1;
+            }
+            break;
+        }
+    } else {
+        s32 v;
+        switch (*(u8*)(p + 0x28d)) {
+        case 0:
+            v = ym + ((s32)*(f32*)(p + 0x270) * 3 / 4) / 2;
+            if (v < 0x170 && v > 0x160) {
+                *(u8*)(p + 0x297) = 0;
+            }
+            break;
+        case 1:
+            v = ym - ((s32)*(f32*)(p + 0x270) * 3 / 4) / 2;
+            if (v > 0x20 && v < 0x30) {
+                *(u8*)(p + 0x297) = 0;
+            }
+            break;
+        case 2:
+            v = xm + (s32)*(f32*)(p + 0x270) / 2;
+            if (v < 0x1f0 && v > 0x1e0) {
+                *(u8*)(p + 0x297) = 0;
+            }
+            break;
+        case 3:
+            v = xm - (s32)*(f32*)(p + 0x270) / 2;
+            if (v > 0x10 && v < 0x20) {
+                *(u8*)(p + 0x297) = 0;
+            }
+            break;
+        }
+        if (*(u8*)(p + 0x297) == 0) {
+            fn_802D9CB0(fn_802D6A9C());
+        }
+    }
+    return 0;
+}
+
 // fn_802EACC8 - ENDM: setParams().
 extern "C" void* fn_802D6A9C(void);
 extern const f32 lbl_80541318;
