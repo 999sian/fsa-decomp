@@ -39,8 +39,8 @@ compile_commands.json
 *.rvz
 *.zip
 
-#  Code local state
-.claude/
+# Local state
+JASPoolSinit.d
 
 # Reference manuals (download from files.decomp.dev)
 docs/reference/*.pdf
