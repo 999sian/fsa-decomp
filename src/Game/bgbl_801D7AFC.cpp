@@ -1,6 +1,7 @@
 // Game TU 801D7AFC-801D8400 (BGBL). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 
 extern "C" bool fn_801CD2F8(s32 id);
@@ -20,6 +21,63 @@ extern void* lbl_804A4BB0[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern "C" void* fn_801D0F40(void* this_);
+
+extern "C" u8* fn_802D6A9C(void);
+extern "C" u8 fn_801F2B7C(void* this_, u32 a, s32 b, u32 c);
+extern "C" u8 fn_801F2740(void* this_, s32 a);
+extern "C" f32* fn_8023E724(s32 player);
+extern "C" void fn_80238548(s32 player, u32 a, f32* vec, s32 mode);
+extern "C" void fn_801D1C18(void*);
+extern "C" void fn_8013CB44(void* h, JGeometry::TVec3<f32>* pos, u32 a, u32 b, u32 c);
+
+extern "C" void fn_801D7BA0(u8* this_) {
+    s32 i;
+    s32 mode;
+    if (((JGeometry::TVec3<f32>*)(this_ + 0x3C))->isZero()) {
+        fn_801F2B7C(this_, *(u32*)(this_ + 0x114), -1, 1);
+        return;
+    }
+    s32 idx = *(s32*)(this_ + 0x4);
+    u8* mgr = fn_802D6A9C();
+    f32* r;
+    if (idx < 8) {
+        r = (f32*)(mgr + 0xcc);
+    } else {
+        r = (f32*)(mgr + 0xdc);
+    }
+    bool inside = ItemBase_inArea(r, (f32*)(this_ + 0xc));
+    if (!inside) {
+        this_[0x11c] = 0;
+        return;
+    }
+    mode = 1;
+    if (!fn_801CD2F8(*(s32*)(this_ + 4))) {
+        mode = 3;
+    }
+    u8 mask = fn_801F2740(this_, -1);
+    if (mask) {
+        for (i = 0; i < 4; i++) {
+            if (mask & (1 << i)) {
+                f32 v[2];
+                f32 z = fn_8023E724(i)[2];
+                f32 dy = fn_8023E724(i)[1] - z - *(f32*)(this_ + 0x40);
+                v[0] = fn_8023E724(i)[0] - *(f32*)(this_ + 0x3C);
+                v[1] = dy;
+                fn_80238548(i, *(u32*)(this_ + 0x114), v, mode);
+            }
+        }
+    }
+    if (mask) {
+        this_[0x11c] = 0;
+        return;
+    }
+    if (fn_801CD2F8(*(s32*)(this_ + 4))) {
+        fn_801D1C18(this_ + 0x270);
+    }
+    ((JGeometry::TVec3<f32>*)(this_ + 0xc))->add(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
+    fn_8013CB44(*(void**)(this_ + 0x2a8), (JGeometry::TVec3<f32>*)(this_ + 0xc), 1, 2, 1);
+    fn_8013CB44(*(void**)(this_ + 0x2ac), (JGeometry::TVec3<f32>*)(this_ + 0xc), 1, 2, 1);
+}
 
 struct BGBL_Part {
     u8 pad0[0x98];
