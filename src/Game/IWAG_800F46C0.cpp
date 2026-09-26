@@ -95,7 +95,8 @@ extern "C" void fn_800F4724(u8* this_) {
             pos.z = *(f32*)(this_ + 0x14);
             pos.z += 200.0f;
             pos.x += 0x28 - (s32)(20.0f * lbl_8053AAF8->rnd.get());
-            pos.y += 0x14 - (s32)(10.0f * lbl_8053AAF8->rnd.get());
+            IWAG_Game* g = lbl_8053AAF8;
+            pos.y += 0x14 - (s32)(10.0f * g->rnd.get());
             Actor_CreateByID(fn_801F856C(), 'OIWA', *(s32*)(this_ + 4), &pos, 5, -1, -1);
             *(s32*)(this_ + 0x234) = (s32)(150.0f * lbl_8053AAF8->rnd.get()) + 0x50;
             break;

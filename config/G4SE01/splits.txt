@@ -1696,6 +1696,8 @@ Game/NZMI_800F3C10.cpp:
 	extabindex  start:0x80011920 end:0x8001195C
 	.text       start:0x800F3C10 end:0x800F46C0
 	.ctors      start:0x8045BDF4 end:0x8045BDF8
+	.bss        start:0x804BA6F8 end:0x804BA764
+	.sdata2     start:0x8053BE58 end:0x8053BE88
 
 Game/IWAG_800F46C0.cpp:
 	extab       start:0x800056C8 end:0x800056E0
@@ -2055,6 +2057,7 @@ Game/fgn2.cpp:
 	extabindex  start:0x800143C8 end:0x80014440
 	.text       start:0x80187144 end:0x8018A8D8
 	.ctors      start:0x8045BFAC end:0x8045BFB0
+	.bss        start:0x804C17A8 end:0x804C1824
 	.sdata2     start:0x8053DFE0 end:0x8053E0C8
 
 Game/bph2.cpp:
@@ -2062,6 +2065,7 @@ Game/bph2.cpp:
 	extabindex  start:0x80014440 end:0x800144DC
 	.text       start:0x8018A8D8 end:0x8018EB94
 	.ctors      start:0x8045BFB0 end:0x8045BFB4
+	.bss        start:0x804C18B8 end:0x804C1930
 	.sdata2     start:0x8053E0C8 end:0x8053E1C8
 
 Game/dgt2.cpp:
@@ -2102,6 +2106,7 @@ Game/tu_801a3c50.cpp:
 	extabindex  start:0x800147F4 end:0x80014890
 	.text       start:0x801A3C50 end:0x801A6690
 	.ctors      start:0x8045BFD4 end:0x8045BFD8
+	.bss        start:0x804C6640 end:0x804C66DC
 	.sdata2     start:0x8053E5C8 end:0x8053E628
 
 Game/ryya.cpp:

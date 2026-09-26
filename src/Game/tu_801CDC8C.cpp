@@ -95,10 +95,9 @@ extern "C" void fn_801CE594(u8* this_) {
     if (*(s32*)(this_ + 0xd8) > 0 && *(s32*)(this_ + 0xf8) == 2) {
         return;
     }
-    *(f32*)(this_ + 0x44) += lbl_8053EFD4;
-    f32 lim = lbl_8053EFD8;
-    if (*(f32*)(this_ + 0x44) < lim) {
-        *(f32*)(this_ + 0x44) = lim;
+    *(f32*)(this_ + 0x44) += -0.2f;
+    if (*(f32*)(this_ + 0x44) < -4.0f) {
+        *(f32*)(this_ + 0x44) = -4.0f;
     }
 }
 
@@ -124,7 +123,8 @@ extern "C" int fn_801CECEC(void) { return 0; }
 
 #pragma fp_contract off
 extern "C" s32 fn_801CF0F4(u8* this_) {
-    return ClassifyBamAngleToQuadrant((s32)(lbl_8053EFEC * JMAAtan2Radian(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40))));
+    f32 a = JMAAtan2Radian(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
+    return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
 }
 
 extern "C" s16 fn_801D0280(u8* this_, s32 idx) {

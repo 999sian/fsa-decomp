@@ -61,8 +61,10 @@ extern "C" void fn_80172530(char* this_) {
     *(f32*)(this_ + 0x40) = 0.0f;
     *(f32*)(this_ + 0x44) = 0.0f;
     *(u32*)(this_ + 0xb0) = 0x11101;
-    *(s32*)(this_ + 0x240) = (s32)(1.99f * lbl_8053AAF8->rnd.get_ufloat_1());
-    *(s32*)(this_ + 0x238) = (s32)(10.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 10;
+    PopoGame* g = lbl_8053AAF8;
+    *(s32*)(this_ + 0x240) = (s32)(1.99f * g->rnd.get_ufloat_1());
+    PopoGame* g2 = lbl_8053AAF8;
+    *(s32*)(this_ + 0x238) = (s32)(10.0f * g2->rnd.get_ufloat_1()) + 10;
     if (*(u32*)(this_ + 0x90) == 1) {
         *(u32*)(this_ + 0xb0) = 0;
     }

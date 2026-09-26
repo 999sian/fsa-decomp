@@ -57,7 +57,7 @@ extern "C" void fn_801B6694(u8* this_) {
     rec.b1d = 1;
     rec.b20 = 0;
     rec.b2d = 1;
-    fn_801F06F0(this_, lbl_80469120, 0xe6, &rec, 0, lbl_8053EA9C, lbl_8053EA9C);
+    fn_801F06F0(this_, lbl_80469120, 0xe6, &rec, 0, 1.0f, 1.0f);
     fn_803075AC(*(void**)(this_ + 0x198), *(u32*)(this_ + 0x4), this_ + 0xc, 0xe6, 0, 2, -1, 0, 0, 1);
 }
 

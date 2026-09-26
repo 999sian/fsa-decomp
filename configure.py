@@ -1021,7 +1021,7 @@ config.libs = [
         ],
         "progress_category": "game",
         "objects": [
-            Object(NonMatching, "Game/NZMI_800F3C10.cpp"),
+            Object(Matching, "Game/NZMI_800F3C10.cpp"),
             Object(NonMatching, "Game/IWAG_800F46C0.cpp"),
             Object(NonMatching, "Game/OIWA_800F4C70.cpp"),
             Object(NonMatching, "Game/LPLK_800F6820.cpp"),

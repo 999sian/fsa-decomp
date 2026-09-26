@@ -50,8 +50,7 @@ extern void** lbl_8053AB10;
 
 static inline void flmeLight(char* this_, f32 r) {
     u32 id = *(u32*)(this_ + 0x4);
-    FlmeColor c(0, 0, 0, 0x80);
-    fn_80158B5C(lbl_8053AB10[0xb], id, this_ + 0xc, c, r);
+    fn_80158B5C(lbl_8053AB10[0xb], id, this_ + 0xc, FlmeColor(0, 0, 0, 0x80), r);
 }
 
 // FLME light source

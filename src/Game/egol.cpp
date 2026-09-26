@@ -44,7 +44,8 @@ extern "C" void fn_801B0654(char* this_) {
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x244) = 0;
     *(s32*)(this_ + 0x250) = *(s32*)(this_ + 0x98) + 0x10;
-    *(s32*)(this_ + 0x23c) = (s32)(60.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x3c;
+    EgolGame* g = lbl_8053AAF8;
+    *(s32*)(this_ + 0x23c) = (s32)(60.0f * g->rnd.get_ufloat_1()) + 0x3c;
     *(s32*)(this_ + 0x230) = 0;
 }
 

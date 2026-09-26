@@ -122,10 +122,11 @@ extern void* lbl_804A3334[];
 extern "C" void* fn_801ACC14(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A3334;
+        s32 h;
         for (int i = 0; i < 2; i++) {
             fn_801EE434(((Handles_ddgo*)this_)->h[i]);
         }
-        s32 h = *(s32*)(this_ + 0x260);
+        h = *(s32*)(this_ + 0x260);
         if (h >= 0) {
             char* c = fn_801F666C(fn_801F856C(), h);
             if (c != 0) {

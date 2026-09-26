@@ -105,13 +105,13 @@ extern "C" BOOL fn_801CCC78(void* p) {
 }
 
 extern "C" void fn_801CCCC4(f32* v) {
-    v[0] = lbl_8053EF98 + (f32)((s32)v[0] & ~0xf);
-    v[1] = lbl_8053EF98 + (f32)((s32)v[1] & ~0xf);
+    v[0] = lbl_8053EF98 + (f32)(u32)((s32)v[0] & ~0xf);
+    v[1] = lbl_8053EF98 + (f32)(u32)((s32)v[1] & ~0xf);
 }
 
 extern "C" void fn_801CCD34(const f32* src, f32* dst) {
-    dst[0] = lbl_8053EF98 + (f32)((s32)src[0] & ~0xf);
-    dst[1] = lbl_8053EF98 + (f32)((s32)src[1] & ~0xf);
+    dst[0] = lbl_8053EF98 + (f32)(u32)((s32)src[0] & ~0xf);
+    dst[1] = lbl_8053EF98 + (f32)(u32)((s32)src[1] & ~0xf);
 }
 
 extern "C" void fn_801CCF34(void* p) {
@@ -263,28 +263,29 @@ extern "C" s32 fn_801CD970(s16* value, s16 target, s16 step) {
 
 extern "C" BOOL fn_801CD9F0(f32* value, f32 target, f32 step) {
     f32 d = target - *value;
-    if (step < lbl_8053EF7C) {
+    if (step < 0.0f) {
         step = -step;
     }
-    if (d > lbl_8053EF7C) {
+    if (d > 0.0f) {
         d -= step;
-        if (d > lbl_8053EF7C) {
+        if (d > 0.0f) {
             *value = target - d;
         } else {
             *value = target;
         }
     } else {
         d += step;
-        if (d < lbl_8053EF7C) {
+        if (d < 0.0f) {
             *value = target - d;
         } else {
             *value = target;
         }
     }
+    BOOL r = TRUE;
     if (*value == target) {
-        return FALSE;
+        r = FALSE;
     }
-    return TRUE;
+    return r;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

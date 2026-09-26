@@ -72,6 +72,7 @@ struct Handles_fgn2 { u8 pad[0x2f4]; void* a[4]; void* b[4]; void* c; };
 extern "C" void* fn_80189F74(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A1A98;
+        s32 h;
         for (int i = 0; i < 4; i++) {
             fn_801EE434(((Handles_fgn2*)this_)->a[i]);
             fn_801EE434(((Handles_fgn2*)this_)->b[i]);
@@ -82,7 +83,7 @@ extern "C" void* fn_80189F74(char* this_, s16 freeFlag) {
             fn_8022ADCC();
         }
         if (*(u32*)(this_ + 0x90) == 10) {
-            s32 h = *(s32*)(this_ + 0x274);
+            h = *(s32*)(this_ + 0x274);
             if (h >= 0) {
                 char* c = fn_801F666C(fn_801F856C(), h);
                 if (c != 0) {
@@ -98,5 +99,7 @@ extern "C" void* fn_80189F74(char* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+static u8 lbl_804C17A8[0x10];
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

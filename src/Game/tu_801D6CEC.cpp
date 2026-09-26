@@ -56,12 +56,11 @@ extern "C" void fn_801D6D08(u8* this_) {
 }
 
 extern "C" void fn_801D7830(f32* v) {
-    v[2] *= lbl_8053F190;
-    v[3] *= lbl_8053F190;
-    v[4] += lbl_8053F194;
-    f32 lim = lbl_8053F198;
-    if (v[4] < lim) {
-        v[4] = lim;
+    v[2] *= 0.97f;
+    v[3] *= 0.97f;
+    v[4] += -0.2f;
+    if (v[4] < -4.0f) {
+        v[4] = -4.0f;
     }
 }
 

@@ -3,7 +3,7 @@
 #include "types.h"
 
 extern s8 lbl_8053AC10[8];
-extern u16 lbl_804C7E70[0xb0];
+static u16 lbl_804C7E70[0x30];
 extern f32 lbl_8053ED90;
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, s32 idx);
