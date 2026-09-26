@@ -44,4 +44,58 @@ extern "C" void fn_8039394C(void* this_) {
     }
 }
 
+// ---- fn_803939E0: update
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" s32 fn_8023BC38(s32);
+extern "C" void fn_80393514(void* this_);
+extern const f32 lbl_805431A8;
+extern const f32 lbl_805431AC;
+extern const f32 lbl_805431B0;
+extern const f32 lbl_805431C4;
+
+struct SCRE {
+    u8 pad00[0xc];
+    JGeometry::TVec3f mPos; // 0x0c
+    u8 pad18[0x3c - 0x18];
+    JGeometry::TVec3f mVel; // 0x3c
+    u8 pad48[0x11c - 0x48];
+    u8 m11C;
+    u8 pad11D[0x230 - 0x11d];
+    s32 m230;
+    s32 mMode; // 0x234
+    s32 mPlayer; // 0x238
+};
+
+extern "C" void fn_803939E0(SCRE* this_) {
+    s32 mode = this_->mMode;
+    if (mode == 0 || mode == 4) {
+        fn_80393514(this_);
+    } else if (mode == 1) {
+        if (this_->m230 >= 0x50) {
+            s32 d = 0x5a - this_->m230;
+            this_->mVel.y = lbl_805431AC * (lbl_805431B0 - (f32)(d * d / 100));
+            this_->mPos.add(this_->mVel);
+        }
+        if (this_->m230-- == 0) {
+            this_->m11C = 0;
+        }
+    } else if (mode == 2) {
+        this_->mVel.x = lbl_805431A8 * JMASinShort((this_->m230 % 60) << 10);
+        this_->mPos.add(this_->mVel);
+        if (this_->m230-- == 0) {
+            this_->m11C = 0;
+        }
+    } else if (mode == 3 || mode == 5 || mode == 6 || mode == 7) {
+        f32 y, z;
+        z = fn_8023E724(this_->mPlayer)->z;
+        y = fn_8023E724(this_->mPlayer)->y - lbl_805431C4;
+        this_->mPos.set(fn_8023E724(this_->mPlayer)->x, y, z);
+        if (!fn_80230188(this_->mPlayer) && fn_8023BC38(this_->mPlayer) <= 0) {
+            this_->m11C = 0;
+        }
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
