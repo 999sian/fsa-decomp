@@ -1,10 +1,17 @@
 // TU 0x80234e30-0x8023fbf0: player-manager wrappers (player index -> player object).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct Player;
 struct PlayerMgr {
     u8 pad0[4];
     Player* players[4];
+    JGeometry::TVec3<f32> pos[4];
+    int a44[4];
+    int a54[4];
+    u8 a64[4];
+    int a68;
+    u8 a6c[8];
 };
 
 extern "C" PlayerMgr* lbl_8053AC90;
@@ -1143,6 +1150,15 @@ int fn_8023EA28(int idx) {
     return 0;
 }
 
+u8 fn_8025F484(Player*);
+u8 fn_8023EAC4(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_8022E438(idx, i) && fn_8025F484(lbl_8053AC90->players[i])) return 1;
+    }
+    return 0;
+}
+
 int fn_8023EBB8(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_8025F500(lbl_8053AC90->players[idx]);
@@ -1190,8 +1206,28 @@ int fn_8023EFEC(int idx) {
     return 0;
 }
 
+void fn_80252F80(Player*);
+void fn_8023F1D4(int idx, const JGeometry::TVec3<f32>& v, int a, int b, u8 c) {
+    fn_80252F80(lbl_8053AC90->players[idx]);
+    lbl_8053AC90->pos[idx] = v;
+    lbl_8053AC90->a44[idx] = a;
+    lbl_8053AC90->a54[idx] = b;
+    lbl_8053AC90->a64[idx] = c;
+}
+
 u8 fn_8023F264(int idx) {
     return isPlayerEnabled(idx);
+}
+
+void fn_80264998(Player*);
+void fn_8023F2BC() {
+    int i;
+    for (i = 3; i >= 0; i--) {
+        if (!(*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) fn_80264998(getPlayer(i));
+    }
+    for (i = 3; i >= 0; i--) {
+        if (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i)) fn_80264998(getPlayer(i));
+    }
 }
 
 void fn_8023F6C4() {
@@ -1200,6 +1236,18 @@ void fn_8023F6C4() {
 
 u8 Player_GetCapabilityFlag(Player* p) {
     return *(u8*)((char*)p + 0xcac);
+}
+
+void fn_802544B0(Player*);
+void fn_8023F728() {
+    for (int i = 0; i < 4; i++) fn_802544B0(getPlayer(i));
+}
+
+void fn_80254744(Player*);
+extern int lbl_8053A190;
+void fn_8023F78C() {
+    for (int i = 0; i < 4; i++) fn_80254744(getPlayer(i));
+    lbl_8053A190 = -1;
 }
 
 BOOL fn_8023F98C(GameState* g, int i) {
