@@ -44,10 +44,6 @@ extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
 extern "C" s32 fn_801F2DB4(void* actor, u32 a, u32 b, u32 c);
 extern "C" s32 fn_801D22A0(void* obj, s32 a, s32 b);
 extern "C" void fn_801CE4BC(void* this_);
-extern const f32 lbl_8053EB20;
-extern const f32 lbl_8053EB24;
-extern const f32 lbl_8053EB34;
-extern const f32 lbl_8053EB50;
 extern s32 lbl_8053A100;
 
 static inline u8 pameIsActive(s32 st) {
@@ -87,7 +83,7 @@ extern "C" s32 fn_801B87DC(u8* this_) {
 }
 
 extern "C" void fn_801B88A4(u8* this_) {
-    if (__fabsf(*(f32*)(this_ + 0x44)) >= lbl_8053EB34) {
+    if (__fabsf(*(f32*)(this_ + 0x44)) >= 0.5f) {
         if (*(u32*)(this_ + 0x230) & 0x2000) {
             fn_801F0E34(this_, 0x50014, 0);
         } else {
@@ -106,7 +102,7 @@ extern "C" void fn_801B8908(u8* this_) {
         } else {
             ok = 1;
         }
-        if (ok && *(f32*)(this_ + 0x14) <= lbl_8053EB20) {
+        if (ok && *(f32*)(this_ + 0x14) <= 0.0f) {
             switch (*(s32*)(this_ + 0x248)) {
             case 0:
                 fn_801B91A8(this_, 1);
@@ -128,9 +124,9 @@ extern "C" void fn_801B8C08(u8* this_) {
         on = 1;
     }
     fn_801D22A0(this_ + 0x270, on, 2);
-    f32 v = lbl_8053EB24;
+    f32 v = 1.0f;
     if (*(s32*)(this_ + 0x248) == 3) {
-        v = lbl_8053EB50;
+        v = 2.0f;
     }
     *(f32*)(this_ + 0x2a0) = v;
     fn_801CE4BC(this_);
@@ -144,22 +140,19 @@ extern "C" void fn_801F31C4(void* this_, void* out);
 extern "C" void fn_802397B4(void* in, u32 a, u32 b);
 extern "C" u8 fn_801F2B7C(void* this_, u32 a, s32 b, u32 c);
 extern "C" void fn_80236074(s32 player, s32 amount, s32 c);
-extern const f32 lbl_8053EB28;
-extern const f32 lbl_8053EB2C;
 
 static inline void pameDropRupees(u8* this_) {
     s32 id;
-    f32 neg = -lbl_8053EB28;
     for (s32 i = 0; i < 2; i++) {
         id = fn_801F8544(fn_801F856C(), 'RUPY', *(u32*)(this_ + 4), this_ + 0xc, 2);
         if (id >= 0) {
             u8* r = (u8*)fn_801F666C(fn_801F856C(), id);
             if (r != 0) {
-                f32 x = lbl_8053EB28;
+                f32 x = 1.5f;
                 if (i != 0) {
-                    x = neg;
+                    x = -x;
                 }
-                *(JGeometry::TVec3<f32>*)(r + 0x3c) = JGeometry::TVec3<f32>(x, lbl_8053EB20, lbl_8053EB2C);
+                *(JGeometry::TVec3<f32>*)(r + 0x3c) = JGeometry::TVec3<f32>(x, 0.0f, 4.5f);
             }
         }
     }
@@ -178,8 +171,8 @@ extern "C" void fn_801B82E8(u8* this_) {
 
 extern "C" u8 fn_801B83F4(u8* this_) {
     u8 hit = 0;
-    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053EB20 &&
-        *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053EB20) {
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > 0.0f &&
+        *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > 0.0f) {
         u8 held = 0;
         switch (*(s32*)(this_ + 0x248)) {
         case 1:
@@ -243,7 +236,7 @@ extern "C" void fn_801B8150(u8* this_) {
     if (*(u32*)(this_ + 0x230) & 0x4000) {
         r.ids[8] = *(s32*)(this_ + 0x2a8) + 2;
     }
-    fn_801F06F0(this_, lbl_80469198, *(u32*)(this_ + 0x280) + 0xbd, &r, lbl_8053EB24, lbl_8053EB24, 0);
+    fn_801F06F0(this_, lbl_80469198, *(u32*)(this_ + 0x280) + 0xbd, &r, 1.0f, 1.0f, 0);
 }
 
 extern "C" void fn_801D0ED0(void* this_);
@@ -251,8 +244,6 @@ extern "C" s32 fn_801CD664(s32 n);
 extern "C" void fn_801D2608(void* obj, void* tbl, u32 n);
 extern "C" void fn_801D22DC(void* obj, s32 a, s32 b, s32 c);
 extern "C" void fn_801D1D60(void* obj);
-extern const f32 lbl_8053EB5C;
-extern const f32 lbl_8053EB68;
 extern u8 lbl_8053A120[8];
 
 extern "C" void fn_801B9378(u8* this_) {
@@ -266,7 +257,7 @@ extern "C" void fn_801B9378(u8* this_) {
         }
     }
     if (*(u32*)(this_ + 0x230) & 0x2000) {
-        f32 sc = lbl_8053EB68;
+        f32 sc = 1.4f;
         *(f32*)(this_ + 0x54) = sc;
         *(f32*)(this_ + 0x58) = sc;
         *(f32*)(this_ + 0x5c) = sc;
@@ -286,8 +277,8 @@ extern "C" void fn_801B9378(u8* this_) {
     *(s32*)(this_ + 0x248) = 0;
     *(s32*)(this_ + 0x24c) = 0;
     *(s32*)(this_ + 0x250) = fn_801CD664(0x10) + 0x1e;
-    *(f32*)(this_ + 0x254) = lbl_8053EB5C;
-    *(f32*)(this_ + 0x258) = lbl_8053EB5C;
+    *(f32*)(this_ + 0x254) = 0.35f;
+    *(f32*)(this_ + 0x258) = 0.35f;
     fn_801D2608(this_ + 0x270, lbl_8053A120, 2);
     fn_801D22DC(this_ + 0x270, 0, 2, 0);
     fn_801D1D60(this_ + 0x270);
@@ -299,17 +290,13 @@ extern "C" void fn_801CEBD0(void* this_);
 extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
 extern "C" s32 fn_801F2FAC(void* this_);
 extern "C" f32* fn_8023E724(s32 idx);
-extern const f32 lbl_8053EB30;
-extern const f32 lbl_8053EB38;
-extern const f32 lbl_8053EB60;
-extern const f32 lbl_8053EB64;
 extern int __float_epsilon[];
 
 extern "C" void fn_801B91A8(u8* this_, s32 mode) {
     switch (mode) {
     case 0:
         *(s32*)(this_ + 0x250) = fn_801CD664(0x10) + 0x1e;
-        *(f32*)(this_ + 0x258) = lbl_8053EB5C;
+        *(f32*)(this_ + 0x258) = 0.35f;
         if (*(s32*)(this_ + 0x248) != 4) {
             *(s32*)(this_ + 0x98) = fn_801CF6B8(this_);
         }
@@ -331,28 +318,28 @@ extern "C" void fn_801B91A8(u8* this_, s32 mode) {
         }
         *(s32*)(this_ + 0x250) = -1;
         *(s32*)(this_ + 0x98) = fn_801CD354(*(s32*)(this_ + 0x98));
-        *(f32*)(this_ + 0x258) = lbl_8053EB60;
-        *(f32*)(this_ + 0x254) = lbl_8053EB60;
+        *(f32*)(this_ + 0x258) = 0.6f;
+        *(f32*)(this_ + 0x254) = 0.6f;
         if (*(u32*)(this_ + 0x230) & 0x2000) {
-            *(f32*)(this_ + 0x44) = lbl_8053EB50;
+            *(f32*)(this_ + 0x44) = 2.0f;
         } else {
-            *(f32*)(this_ + 0x44) = lbl_8053EB38;
+            *(f32*)(this_ + 0x44) = 3.0f;
         }
         break;
     case 2:
         *(s32*)(this_ + 0x250) = fn_801CD664(0x65) + 0x190;
-        *(f32*)(this_ + 0x258) = lbl_8053EB20;
+        *(f32*)(this_ + 0x258) = 0.0f;
         break;
     case 3:
         *(s32*)(this_ + 0x250) = fn_801CD664(0xb) + 0x1e;
-        *(f32*)(this_ + 0x258) = lbl_8053EB20;
+        *(f32*)(this_ + 0x258) = 0.0f;
         break;
     case 5:
         *(s32*)(this_ + 0x250) = fn_801CD664(1) + 0x21c;
         *(s32*)(this_ + 0x98) = fn_801CD354(*(s32*)(this_ + 0x98));
-        *(f32*)(this_ + 0x258) = lbl_8053EB64;
-        *(f32*)(this_ + 0x254) = lbl_8053EB64;
-        *(f32*)(this_ + 0x44) = lbl_8053EB50;
+        *(f32*)(this_ + 0x258) = 2.5f;
+        *(f32*)(this_ + 0x254) = 2.5f;
+        *(f32*)(this_ + 0x44) = 2.0f;
         break;
     }
     *(s32*)(this_ + 0x24c) = 0;
@@ -401,6 +388,43 @@ extern "C" s32 fn_801B8518(u8* this_) {
         result = fn_801F2FAC(this_);
     }
     return result;
+}
+
+extern "C" void fn_801CE4E8(void* this_);
+extern const f32 lbl_8053EFB8;
+
+static inline void pameApproach(f32* v, f32 target, s32 n) {
+    if ((f32)n < *(f32*)__float_epsilon) {
+        *v = target;
+    } else {
+        *v += (1.0f / (f32)n) * (target - *v);
+    }
+}
+
+extern "C" void fn_801B89DC(u8* this_) {
+    if (*(s32*)(this_ + 0x248) == 5) {
+        *(f32*)(this_ + 0x44) += lbl_8053EFB8;
+        s32 n = *(s32*)(this_ + 0x250) - *(s32*)(this_ + 0x24c);
+        if (n > 0 && n < 30) {
+            pameApproach((f32*)(this_ + 0x3c), 0.0f, n);
+            pameApproach((f32*)(this_ + 0x40), 0.0f, n);
+        } else {
+            JGeometry::TVec3<f32> v(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40), 0.0f);
+            if (v.squared() < 3.24f) {
+                if (v.isZero()) {
+                    *(f32*)(this_ + 0x3c) = 0.0f;
+                    *(f32*)(this_ + 0x40) = 1.8f;
+                } else {
+                    v.normalize();
+                    v.scale(1.8f);
+                    *(f32*)(this_ + 0x3c) = v.x;
+                    *(f32*)(this_ + 0x40) = v.y;
+                }
+            }
+        }
+    } else {
+        fn_801CE4E8(this_);
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
