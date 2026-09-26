@@ -278,6 +278,101 @@ struct Menu_Slide {
 #define PANE(off) (p->panes[((off) - 0x70) / 4])
 #define PY(off) (p->ys[((off) - 0x3f4) / 4])
 
+struct Menu_Score {
+    u8 pad0[0x158];
+    J2DPane* rects[4];          // 0x158
+    u8 pad168[0x1a8 - 0x168];
+    EffHandle* effs[4];         // 0x1a8
+    u8 pad1b8[0x320 - 0x1b8];
+    s32 disp[4];                // 0x320
+    u8 pad330[0x3c0 - 0x330];
+    s32 state[4];               // 0x3c0
+    u8 pad3d0[0x438 - 0x3d0];
+    s32 doneCount;              // 0x438
+    u8 pad43c[0x454 - 0x43c];
+    s32 count;                  // 0x454
+    u8 pad458[0x4ac - 0x458];
+    u8 ids[4];                  // 0x4ac
+    u8 pad4b0[0x4c1 - 0x4b0];
+    u8 m4c1;
+    u8 pad4c2[0x4c8 - 0x4c2];
+    u8 m4c8;
+};
+
+struct GameInfo {
+    u8 pad0[0x150];
+    s32 score[4];
+};
+
+extern "C" void fn_803AC6FC(Menu_Score* p) {
+    s32 done = 0;
+    s32 best = -999999;
+    s32 n = 0;
+    s32 i;
+    for (i = 0; i < p->count; i++) {
+        if (p->disp[i] < ((GameInfo*)lbl_80529DEC)->score[i]) {
+            if (p->effs[i] == 0) {
+                FVec3 v(p->rects[i]->mGlobalBounds.i.x + p->rects[i]->mBounds.getWidth() / 2, 0.0f, 0.0f);
+                p->effs[i] = (EffHandle*)fn_8013CC50(0, &v, 0x3dd, 0, 0, 0, 0, 1, 1.0f);
+            }
+            p->disp[i] += 2;
+            if (p->disp[i] >= ((GameInfo*)lbl_80529DEC)->score[i]) {
+                EffHandle* h = p->effs[i];
+                if (h != 0) {
+                    h->flags |= 1;
+                    h->m24 = 1;
+                    p->effs[i] = 0;
+                }
+                p->disp[i] = ((GameInfo*)lbl_80529DEC)->score[i];
+                done++;
+            }
+        } else if (p->disp[i] > ((GameInfo*)lbl_80529DEC)->score[i]) {
+            p->disp[i] -= 2;
+            if (p->disp[i] <= ((GameInfo*)lbl_80529DEC)->score[i]) {
+                p->disp[i] = ((GameInfo*)lbl_80529DEC)->score[i];
+                done++;
+            }
+        } else {
+            done++;
+        }
+    }
+    if (done >= p->count) {
+        for (s32 j = 0; j < p->count; j++) {
+            s32 t = ((GameInfo*)lbl_80529DEC)->score[j];
+            if (best < t) {
+                p->m4c8 = 0;
+                best = t;
+                p->ids[p->m4c8] = j;
+            } else if (best == t) {
+                p->m4c8++;
+                p->ids[p->m4c8] = j;
+            }
+        }
+        for (i = 0; i < p->count; i++) {
+            if (p->m4c8 != 0xff && i == p->ids[n]) {
+                p->state[i] = 0x3e;
+                if (p->m4c8 > n) {
+                    n++;
+                }
+            }
+        }
+        if (p->m4c8 != 0xff) {
+            fn_80458880(lbl_8053AF80, 0xf, -1);
+            fn_80458880(lbl_8053AF80, 0x2a, -1);
+        } else {
+            fn_80458880(lbl_8053AF80, 0x2d, -1);
+        }
+        p->doneCount = 0;
+        p->m4c1 = 0x1e;
+    } else {
+        if (done != p->doneCount) {
+            p->doneCount = done;
+            fn_80458880(lbl_8053AF80, 0x10, -1);
+        }
+        fn_80458880(lbl_8053AF80, 0xe, -1);
+    }
+}
+
 extern "C" void fn_803AD220(Menu_Slide* p) {
     p->timer--;
     if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
