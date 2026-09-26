@@ -146,4 +146,172 @@ extern "C" void* fn_801BCCF0(char* this_) {
     return this_;
 }
 
+struct FallDrawKey {
+    s32 a, b;
+    FallDrawKey() { a = -1; b = -1; }
+};
+
+struct FallDrawParam {
+    u8 map[16];      // 0x00
+    FallDrawKey key; // 0x10
+    s32 c;           // 0x18
+    u8 palette;      // 0x1c
+    u8 color;        // 0x1d
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;       // 0x28
+    u8 f2c, f2d, f2e;
+    s32 g;           // 0x30
+    s32 h;           // 0x34
+    s32 i;           // 0x38
+
+    FallDrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, FallDrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern const char lbl_804693C4[];
+extern const f32 lbl_8053EC00;
+extern const f32 lbl_8053EC04;
+extern const f32 lbl_8053EC10;
+
+static inline f32 fallClamp(f32 v, f32 lo, f32 hi) {
+    if (v > hi) {
+        return hi;
+    }
+    if (v < lo) {
+        return lo;
+    }
+    return v;
+}
+
+extern "C" void fn_801BB618(char* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 9:
+        return;
+    }
+    FallDrawParam param;
+    u8 alpha;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 9:
+        alpha = 0;
+        break;
+    case 7:
+    case 8:
+        alpha = 0xff;
+        break;
+    default: {
+        f32 t = (*(f32*)(this_ + 0x14) - lbl_8053EC00) * lbl_8053EC04;
+        f32 hi = lbl_8053EC08;
+        if (t > hi) {
+            t = hi;
+        } else if (t < lbl_8053EC0C) {
+            t = lbl_8053EC0C;
+        }
+        alpha = lbl_8053EC10 * t;
+        break;
+    }
+    }
+    ((u8*)&param.key.a)[3] = alpha;
+    fn_801F02BC(this_, lbl_804693C4, *(s32*)(this_ + 0x280) + 0x8a, &param, 0x407, 0, 0, lbl_8053EC08, lbl_8053EC08);
+}
+
+struct FallRoute {
+    s32 kind;   // 0x0
+    s32 dir[3]; // 0x4
+    s32 f10;
+    s32 f14;
+    s32 f18;
+    s32 f1c;
+    s32 f20;
+    s32 f24;
+};
+
+extern "C" void fn_801BCD70(FallRoute* r, u32 flags) {
+    r->kind = (flags >> 5) & 7;
+    switch (r->kind) {
+    case 0:
+        r->dir[0] = 3;
+        r->dir[1] = 0;
+        r->dir[2] = 2;
+        break;
+    case 1:
+        r->dir[0] = 3;
+        r->dir[1] = 1;
+        r->dir[2] = 2;
+        break;
+    case 2:
+        r->dir[0] = 1;
+        r->dir[1] = 3;
+        r->dir[2] = 0;
+        break;
+    case 3:
+        r->dir[0] = 1;
+        r->dir[1] = 2;
+        r->dir[2] = 0;
+        break;
+    case 4:
+        r->dir[0] = 2;
+        r->dir[1] = 0;
+        r->dir[2] = 3;
+        break;
+    case 5:
+        r->dir[0] = 2;
+        r->dir[1] = 1;
+        r->dir[2] = 3;
+        break;
+    case 6:
+        r->dir[0] = 0;
+        r->dir[1] = 3;
+        r->dir[2] = 1;
+        break;
+    case 7:
+        r->dir[0] = 0;
+        r->dir[1] = 2;
+        r->dir[2] = 1;
+        break;
+    }
+    switch (r->kind) {
+    case 0:
+    case 1:
+    case 4:
+    case 5:
+        r->f14 = 0x1e0;
+        break;
+    default:
+        r->f14 = 0xf0;
+        break;
+    }
+    r->f18 = 0x28;
+    r->f10 = 0x28;
+    r->f1c = 0;
+    r->f20 = r->dir[r->f1c];
+    r->f24 = 0;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
