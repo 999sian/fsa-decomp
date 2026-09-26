@@ -1,6 +1,7 @@
 // Game TU 801BB618-801BD108 (FALL). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -419,7 +420,7 @@ struct FallSound {
 extern "C" FallSound* fn_801F1184(void* this_);
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
-extern "C" void fn_801BC554(char* this_, s32 state);
+
 extern "C" f32* fn_8023E724(s32 id);
 extern "C" void fn_8023DFF4(s32 id, void* v);
 extern "C" s32 fn_80236228(s32 id);
@@ -443,6 +444,8 @@ struct FallVec {
     f32 x, y, z;
     FallVec(f32 x_, f32 y_, f32 z_) { x = x_; y = y_; z = z_; }
 };
+
+extern "C" void fn_801BC554(char* this_, s32 state);
 
 extern "C" void fn_801BC244(char* this_) {
     switch (*(s32*)(this_ + 0x248)) {
@@ -617,6 +620,195 @@ extern "C" void fn_801BC554(char* this_, s32 state) {
         *(u32*)(this_ + 0xb0) = 0x40004;
     } else {
         *(u32*)(this_ + 0xb0) = 0x41101;
+    }
+}
+
+extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 owner, void* pos, u32 param, s32 a, s32 b);
+extern "C" u8 fn_801D21F0(void* p);
+extern "C" u8 fn_801CD2F8(s32 room);
+extern "C" u8 fn_801CD1D0(s32 id);
+extern "C" u8 fn_801F2740(void* this_, s32 a);
+extern "C" u8 fn_8022DE10(s32 id, s32 a);
+extern "C" void fn_802316C8(s32 id, s32 room, JGeometry::TVec3<f32> pos);
+extern const f32 lbl_8053EC28;
+extern const f32 lbl_8053EC2C;
+extern const f32 lbl_8053EC34;
+extern const f32 lbl_8053EC38;
+extern const f32 lbl_8053EC40;
+extern const f32 lbl_8053EC50;
+extern const f32 lbl_8053EC54;
+
+static inline u8 fallLost(char* this_) {
+    u8 r = !fn_801D08B4(this_, *(s32*)(this_ + 0x2b8), this_ + 0x24, lbl_8053EC2C);
+    return r;
+}
+
+static inline u8 fallTryGrab(char* this_) {
+    u8 grabbed = FALSE;
+    s32 st = *(s32*)(this_ + 0x248);
+    if ((st == 10 || (st == 3 && *(s32*)(this_ + 0x280) == 1)) && *(s32*)(this_ + 0x2b8) >= 0 &&
+        !fn_8022DCD8(*(s32*)(this_ + 0x2b8)) &&
+        (fn_801CD2F8(*(s32*)(this_ + 0x4)) || !fn_801CD2F8(*(s32*)(this_ + 0x2ac)) || !fn_801CD1D0(*(s32*)(this_ + 0x2b8)))) {
+        *(f32*)(this_ + 0x60) = lbl_8053EC34;
+        *(f32*)(this_ + 0x64) = lbl_8053EC38;
+        *(f32*)(this_ + 0x68) = lbl_8053EC3C;
+        *(f32*)(this_ + 0x6c) = lbl_8053EC40;
+        if (fn_801F2740(this_, -1) & (1 << *(s32*)(this_ + 0x2b8))) {
+            grabbed = TRUE;
+        }
+        fallSetBoxHold(this_);
+    }
+    return grabbed;
+}
+
+static inline void fallRelease(char* this_) {
+    if (!fn_8022DD74(*(s32*)(this_ + 0x2b8))) {
+        *(u32*)(this_ + 0x230) |= 0x8000;
+        *(s32*)(this_ + 0x2c4) = *(s32*)(this_ + 0x2b8);
+    }
+}
+
+extern "C" void fn_801BBA0C(char* this_) {
+    fn_801BC244(this_);
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250) && !(*(u32*)(this_ + 0x230) & 0x2000)) {
+            s32 p = fn_801D05F8(this_, this_ + 0x24, lbl_8053EC28);
+            if (p >= 0) {
+                *(s32*)(this_ + 0x2b8) = p;
+                fn_801BC554(this_, 1);
+            }
+        }
+        break;
+    case 1:
+        if (*(s32*)(this_ + 0x24c) >= 0x3c && fallLost(this_)) {
+            fn_801BC554(this_, 5);
+        } else if (*(f32*)(this_ + 0x14) <= lbl_8053EC28) {
+            fn_801BC554(this_, 2);
+        } else if (*(s32*)(this_ + 0x24c) >= 0x10) {
+            switch (*(s32*)(this_ + 0x278)) {
+            case 0: {
+                u8 a = fallAlpha(this_);
+                if (a >= 150 && a <= 200) {
+                    fn_801D22DC(this_ + 0x270, 3, 0, 0);
+                }
+                break;
+            }
+            case 3:
+                if (fn_801D21F0(this_ + 0x270)) {
+                    fn_801D22DC(this_ + 0x270, 0, 0, 0);
+                }
+                break;
+            }
+        }
+        break;
+    case 2:
+        if (fallLost(this_)) {
+            fn_801BC554(this_, 5);
+        } else if (*(f32*)(this_ + 0x14) <= lbl_8053EC30) {
+            *(f32*)(this_ + 0x14) = lbl_8053EC30;
+            fn_801BC554(this_, 3);
+        } else if (*(s32*)(this_ + 0x278) == 3 && fn_801D21F0(this_ + 0x270)) {
+            fn_801D22DC(this_ + 0x270, 0, 0, 0);
+        }
+        break;
+    case 3:
+        if (fallTryGrab(this_)) {
+            if (fn_8022DE10(*(s32*)(this_ + 0x2b8), 0)) {
+                fn_801BC554(this_, 4);
+            } else if (*(s32*)(this_ + 0x24c) > 1 && fn_801D21F0(this_ + 0x270)) {
+                fn_801BC554(this_, 5);
+            }
+        } else if (*(s32*)(this_ + 0x24c) > 1 && fn_801D21F0(this_ + 0x270)) {
+            fn_801BC554(this_, 5);
+        }
+        break;
+    case 4:
+        if (*(f32*)(this_ + 0x14) >= lbl_8053EC50) {
+            if (*(s32*)(this_ + 0x2ac) != *(s32*)(this_ + 0x4)) {
+                fn_801BC554(this_, 7);
+            } else {
+                *(f32*)(this_ + 0x14) = lbl_8053EC50;
+                fn_801BC554(this_, 6);
+            }
+        }
+        break;
+    case 5: {
+        s32 p = fn_801D05F8(this_, this_ + 0x24, lbl_8053EC28);
+        if (*(s32*)(this_ + 0x24c) >= 100 && !(*(u32*)(this_ + 0x230) & 0x2000) && p >= 0) {
+            *(s32*)(this_ + 0x2b8) = p;
+            fn_801BC554(this_, 1);
+        } else if (*(f32*)(this_ + 0x14) >= lbl_8053EC00) {
+            if (*(s32*)(this_ + 0x2a8) == 0) {
+                fn_801BC554(this_, 0);
+            } else {
+                fn_801BC554(this_, 9);
+            }
+        }
+        break;
+    }
+    case 6:
+        if (__fabsf(*(f32*)(this_ + 0x2b0) - *(f32*)(this_ + 0xc)) < lbl_8053EC54 &&
+            __fabsf(*(f32*)(this_ + 0x2b4) - *(f32*)(this_ + 0x10)) < lbl_8053EC54) {
+            fallRelease(this_);
+            fn_801BC554(this_, 5);
+        }
+        break;
+    case 7:
+        if (*(f32*)(this_ + 0x14) >= lbl_8053EC00) {
+            *(f32*)(this_ + 0x14) = lbl_8053EC00;
+            *(s32*)(this_ + 0x4) = *(s32*)(this_ + 0x2ac);
+            *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x2b0);
+            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x2b4);
+            JGeometry::TVec3<f32> v(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14) - lbl_8053EC30);
+            fn_802316C8(*(s32*)(this_ + 0x2b8), *(s32*)(this_ + 0x2ac), v);
+            fn_801BC554(this_, 8);
+        }
+        break;
+    case 8:
+        if (*(f32*)(this_ + 0x14) <= lbl_8053EC50) {
+            *(f32*)(this_ + 0x14) = lbl_8053EC50;
+            fallRelease(this_);
+            fn_801BC554(this_, 5);
+        }
+        break;
+    case 9:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(s32*)(this_ + 0x4), this_ + 0xc, 3, -1, -1);
+            fn_801BC554(this_, 10);
+        }
+        break;
+    case 10: {
+        u8 done = FALSE;
+        if (*(s32*)(this_ + 0x2e4) > 2) {
+            done = TRUE;
+        } else {
+            (*(s32*)(this_ + 0x2ec))++;
+            if (*(s32*)(this_ + 0x2ec) >= ((s32*)(this_ + 0x2d8))[*(s32*)(this_ + 0x2e4)]) {
+                (*(s32*)(this_ + 0x2e4))++;
+                if (*(s32*)(this_ + 0x2e4) > 2) {
+                    done = TRUE;
+                } else {
+                    *(s32*)(this_ + 0x2e8) = ((s32*)(this_ + 0x2cc))[*(s32*)(this_ + 0x2e4)];
+                    *(s32*)(this_ + 0x2ec) = 0;
+                }
+            }
+        }
+        if (done) {
+            Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(s32*)(this_ + 0x4), this_ + 0xc, 3, -1, -1);
+            fn_801BC554(this_, 9);
+        } else {
+            *(s32*)(this_ + 0x98) = *(s32*)(this_ + 0x2e8);
+            *(s32*)(this_ + 0x2b8) = fn_801D05F8(this_, this_ + 0xc, lbl_8053EC28);
+            if (*(s32*)(this_ + 0x2b8) >= 0 && fallTryGrab(this_) && fn_8022DE10(*(s32*)(this_ + 0x2b8), 0)) {
+                *(s32*)(this_ + 0x98) = 2;
+                fn_801BC554(this_, 4);
+            }
+        }
+        break;
+    }
     }
 }
 
