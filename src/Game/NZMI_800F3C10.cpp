@@ -1,4 +1,6 @@
 // NZMI_800F3C10: .text 0x800F3C10-0x800F46C0 (actor NZMI)
+// NOTE: all functions match except fn_800F3E08, which differs only in stack
+// slot assignment of the rand/seek temporaries (0x10-0x18).
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
@@ -93,8 +95,6 @@ extern "C" void fn_800F3C70(u8* this_) {
                 &param, 0, 1.0f, 1.0f);
 }
 
-// ---- fn_800F43D0: init
-
 struct NZMI_Random {
     u32 seed;
     f32 get() {
@@ -106,6 +106,149 @@ struct NZMI_Random {
 };
 struct NZMI_Game { u8 pad[0xb4]; NZMI_Random rnd; };
 extern NZMI_Game* lbl_8053AAF8;
+static inline s32 NZMI_rand(f32 r) { return r * lbl_8053AAF8->rnd.get(); }
+
+// ---- fn_800F3E08: update (wander / chase the nearest player / flee)
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" u8 fn_801F2B7C(void* this_, u32 a, s32 b, u32 c);
+extern "C" u8 v17__5ActorFv(void* this_, s32 room, void* pos);
+extern "C" void fn_801EEC98(void* this_, void* room, s16* a, s32* dir, f32* dist, s32* player, s32 b, s32 c);
+extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
+extern f32 lbl_8049C3E0[4][2];
+
+class NZMI_Actor {
+public:
+    virtual void vf08(); virtual void vf0C(); virtual void vf10(); virtual void vf14();
+    virtual void vf18(); virtual void vf1C(); virtual void vf20();
+    virtual void vf24();
+};
+
+static inline void NZMI_move(u8* this_) {
+    *(f32*)(this_ + 0xC) += lbl_8049C3E0[lbl_80539E68[*(u8*)(this_ + 0x235)]][0];
+    *(f32*)(this_ + 0x10) += lbl_8049C3E0[lbl_80539E68[*(u8*)(this_ + 0x235)]][1];
+}
+
+static inline void NZMI_restartWander(u8* this_) {
+    *(s32*)(this_ + 0x244) = NZMI_rand(50.0f) + 0x32;
+    *(s32*)(this_ + 0x230) = 1;
+    *(s32*)(this_ + 0x23C) = 0;
+}
+
+static inline bool NZMI_seek(u8* this_) {
+    s16 a = 0;
+    f32 dist = 0.0f;
+    s32 dir = 0;
+    s32 player = 0;
+    fn_801EEC98(this_, *(void**)(this_ + 0x198), &a, &dir, &dist, &player, 0, 0);
+    if (player != -1 && dist < 120.0f) {
+        *(s32*)(this_ + 0x230) = 2;
+        *(s32*)(this_ + 0x23C) = 0;
+        for (u8 i = 0; i < 4; i++) {
+            if (dir == lbl_80539E68[i]) {
+                *(u8*)(this_ + 0x235) = i;
+                break;
+            }
+        }
+        return true;
+    }
+    return false;
+}
+
+static inline void NZMI_face(u8* this_) {
+    s16 a = 0;
+    f32 dist = 0.0f;
+    s32 dir = 0;
+    s32 player = 0;
+    fn_801EEC98(this_, *(void**)(this_ + 0x198), &a, &dir, &dist, &player, 0, 0);
+    if (player != -1 && dist < 120.0f) {
+        for (u8 i = 0; i < 4; i++) {
+            if (dir == lbl_80539E68[i]) {
+                *(u8*)(this_ + 0x235) = i;
+                break;
+            }
+        }
+    }
+}
+
+extern "C" void fn_800F3E08(u8* this_) {
+    if (fn_801F3D94(this_, 1) != 0 || fn_801F305C(this_)) {
+        fn_801F2618(this_, 0, 0);
+        return;
+    }
+    *(s32*)(this_ + 0x238) += 1;
+    if (*(s32*)(this_ + 0x238) == 4) {
+        *(s32*)(this_ + 0x240) += 1;
+        if (*(s32*)(this_ + 0x240) == 2) {
+            *(s32*)(this_ + 0x240) = 0;
+        }
+        *(s32*)(this_ + 0x238) = 0;
+    }
+    bool hit;
+    if (*(u32*)(this_ + 0x90) != 0) {
+        hit = fn_801F2B7C(this_, *(u32*)(this_ + 0x114), -1, 4);
+    } else {
+        hit = fn_801F2B7C(this_, *(u32*)(this_ + 0x114), -1, 1);
+    }
+    u8 wall = fn_801F2618(this_, 0, 0);
+    if (wall && v17__5ActorFv(this_, *(s32*)(this_ + 4), this_ + 0xC) == 1) {
+        ((NZMI_Actor*)this_)->vf24();
+        return;
+    }
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+    case 3: {
+        *(u8*)(this_ + 0x234) = 0;
+        if (wall) {
+            *(u8*)(this_ + 0x235) += 1;
+        }
+        *(u8*)(this_ + 0x235) &= 3;
+        if (*(u32*)(this_ + 0x90) != 0 && *(s32*)(this_ + 0x230) == 0) {
+            if (NZMI_seek(this_)) {
+                return;
+            }
+        }
+        NZMI_move(this_);
+        *(s32*)(this_ + 0x23C) += 1;
+        if (*(s32*)(this_ + 0x23C) == *(s32*)(this_ + 0x244)) {
+            NZMI_restartWander(this_);
+        }
+        break;
+    }
+    case 1:
+        *(u8*)(this_ + 0x234) = 1;
+        *(s32*)(this_ + 0x23C) += 1;
+        if (*(s32*)(this_ + 0x23C) == *(s32*)(this_ + 0x244)) {
+            *(s32*)(this_ + 0x244) = NZMI_rand(80.0f) + 10;
+            *(u8*)(this_ + 0x235) = NZMI_rand(4.0f);
+            *(s32*)(this_ + 0x230) = 0;
+            fn_801F0E34(this_, 0x400A6, 0);
+            *(s32*)(this_ + 0x23C) = 0;
+        }
+        break;
+    case 2: {
+        *(u8*)(this_ + 0x235) &= 3;
+        NZMI_move(this_);
+        if ((*(s32*)(this_ + 0x23C) & 0x1111) == 0) {
+            NZMI_face(this_);
+        }
+        if (hit == true) {
+            *(s32*)(this_ + 0x244) = 100;
+            *(s32*)(this_ + 0x230) = 3;
+            *(s32*)(this_ + 0x23C) = 0;
+        } else {
+            *(s32*)(this_ + 0x23C) += 1;
+            if (*(s32*)(this_ + 0x23C) == 100 || wall) {
+                NZMI_restartWander(this_);
+            }
+        }
+        break;
+    }
+    }
+}
+
+// ---- fn_800F43D0: init
 
 extern "C" void fn_800F43D0(u8* this_) {
     *(f32*)(this_ + 0x60) = -8.0f;
@@ -123,7 +266,7 @@ extern "C" void fn_800F43D0(u8* this_) {
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23C) = 0;
     *(u8*)(this_ + 0x234) = 0;
-    *(s32*)(this_ + 0x244) = (s32)(50.0f * lbl_8053AAF8->rnd.get()) + 0x32;
+    *(s32*)(this_ + 0x244) = NZMI_rand(50.0f) + 0x32;
     *(u32*)(this_ + 0x90) &= 1;
 }
 
