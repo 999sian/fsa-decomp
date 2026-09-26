@@ -292,4 +292,84 @@ extern "C" void fn_801D8A30(char* p) {
     fn_801DE12C(p);
 }
 
+extern "C" s32 fn_801CD664(s32 n);
+
+struct T84List {
+    T84List() : n(0) {}
+    void add(s32 x) {
+        v[n] = x;
+        n++;
+    }
+    s32 v[11];
+    s32 n;
+};
+
+static inline void t84PickTarget(char* p) {
+    if (*(u8*)(p + 0x33f) == 3) {
+        s32 l[12];
+        s32 n = 0;
+        l[n++] = 1;
+        l[n++] = 2;
+        l[n++] = 5;
+        l[n++] = 6;
+        l[n++] = 9;
+        l[n++] = 10;
+        if (n > 0) {
+            *(u8*)(p + 0x334) = l[fn_801CD664(n)];
+        } else {
+            *(u8*)(p + 0x334) = 0;
+        }
+    } else {
+        *(u8*)(p + 0x334) = fn_801CD664(0xc);
+    }
+    *(u16*)(p + 0x338) = fn_801CD664(0x3d) + 0x3c;
+}
+
+extern "C" void fn_801D85B0(char* p) {
+    switch (*(s32*)(p + 0x248)) {
+    case 0xb:
+    case 0xc:
+    case 0xd:
+    case 0xe:
+        if (*(s32*)(p + 0x248) == 0xc) {
+            t84PickTarget(p);
+            bool left = false;
+            f32 x = *(f32*)(p + 0xc);
+            f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
+            if (x < tx || (x == tx && (*(u32*)(p + 0x230) & 0x2000))) {
+                left = true;
+            }
+            if (left) {
+                *(u32*)(p + 0x230) &= ~0x2000;
+            } else {
+                *(u32*)(p + 0x230) |= 0x2000;
+            }
+        } else {
+            t84PickTarget(p);
+            bool turn = false;
+            bool left = false;
+            f32 x = *(f32*)(p + 0xc);
+            f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
+            if (x < tx || (x == tx && (*(u32*)(p + 0x230) & 0x2000))) {
+                left = true;
+            }
+            if (left) {
+                if (!(*(u32*)(p + 0x230) & 0x2000)) {
+                    turn = true;
+                }
+            } else {
+                if (*(u32*)(p + 0x230) & 0x2000) {
+                    turn = true;
+                }
+            }
+            if (turn) {
+                fn_801D9C58(p, 0xc);
+            } else {
+                fn_801D9C58(p, 0xb);
+            }
+        }
+        break;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
