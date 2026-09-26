@@ -62,6 +62,10 @@ void fn_80268B3C(char*);
 void fn_802685D4(char*);
 char* fn_802D6A9C(void);
 bool fn_802413F0(char*);
+u8 fn_802412CC(char*);
+u8 fn_802411D8(char*);
+s32 fn_80247BD4(char*);
+extern const f32 lbl_8046BB48[][3];
 void fn_8024E46C(char*);
 void fn_8024E3D8(char*);
 void fn_8024E344(char*);
@@ -126,6 +130,16 @@ inline bool isDying(char* p) {
     return r;
 }
 
+inline bool isDead(char* p) {
+    bool r;
+    if (U8(p, 0xd2d) != 0 || S32(p, 0x1244) == 0x34 || S32(p, 0x1240) == 0x34) {
+        r = true;
+    } else {
+        r = false;
+    }
+    return r;
+}
+
 struct Vec3 {
     f32 x, y, z;
     void set(f32 ax, f32 ay, f32 az) {
@@ -154,6 +168,18 @@ inline BOOL inRect(const JGeometry::TVec2<f32>& pt, f32 x0, f32 y0, f32 x1, f32 
 struct PlayerAreas2 {
     u8 pad0[0xef0];
     s32 mId[0x50];
+};
+
+struct PlayerPos {
+    u8 pad0[0x8];
+    JGeometry::TVec3<f32> pos;
+};
+
+struct PlayerOfs {
+    u8 pad0[0x8];
+    JGeometry::TVec3<f32> pos;
+    u8 pad14[0x12a4 - 0x14];
+    JGeometry::TVec3<f32> ofs;
 };
 
 struct PlayerAreas {
@@ -343,6 +369,51 @@ extern "C" s32 fn_80270A8C(void* playerObj) {
 }
 
 extern "C" {
+BOOL fn_80270ABC(char* p) {
+    if (U8(p, 0xce8) == 1) {
+        return 1;
+    }
+    if (U8(p, 0xcee) == 1) {
+        return 1;
+    }
+    if (U8(p, 0x1216) != 0) {
+        return 1;
+    }
+    if (U8(p, 0x1215) != 0) {
+        return 1;
+    }
+    if (U8(p, 0xcf0) == 1) {
+        return 1;
+    }
+    if (fn_802412CC(p) == 1) {
+        return 1;
+    }
+    if (fn_802411D8(p) == 1) {
+        return 1;
+    }
+    if (isDying(p)) {
+        return 1;
+    }
+    if (isDead(p)) {
+        return 1;
+    }
+    if (Player_IsLinked(p) && fn_802486A0(p) == 5) {
+        return 1;
+    }
+    if (S32(p, 0x1240) == 1) {
+        return 1;
+    }
+    if (S32(p, 0x1240) == 0x19 || S32(p, 0x1244) == 0x19) {
+        return 1;
+    }
+    if (fn_80247BD4(p) > 0) {
+        return 1;
+    }
+    if (S32(p, 0x468) > 0) {
+        return 1;
+    }
+    return S32(p, 0x464) > 0;
+}
 BOOL fn_80270C88(char* p) {
     if (fn_80241200(p)) {
         return 1;
@@ -1021,6 +1092,40 @@ inline s32 comboFreeSlot(char* p) {
         return 3;
     }
     return 4;
+}
+void fn_8027D320(char* p) {
+    U8(p, 0x458) = 0;
+    U8(p, 0x460) = 1;
+    U8(p, 0x436) = 1;
+    F32(p, 0x344) = 0.0f;
+    F32(p, 0x348) = 0.0f;
+    F32(p, 0x34c) = -4.0f;
+    char* base = (char*)PTR(p, 0x3b4);
+    if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0 && F32(p, 0x10) < 0.5f) {
+        F32(p, 0x10) = 0.5f;
+    }
+    fn_8024F0E8(p, 0x10001);
+    fn_8024F0E8(p, 0x20001);
+    fn_8024F0E8(p, 0x2000e);
+    PlayerOfs* po = (PlayerOfs*)p;
+    const f32* o = lbl_8046BB48[S32(p, 0x3dc)];
+    po->ofs.x = o[0];
+    po->ofs.y = o[1];
+    po->ofs.z = o[2];
+    po->ofs += po->pos;
+    if (PTR(p, 0x1274) == NULL) {
+        PTR(p, 0x1274) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0xcb, 0, -1, 0, p + 0x1278, 1, 1.0f);
+        if (PTR(p, 0x1274) != NULL) {
+            ((EmitterObj*)PTR(p, 0x1274))->mF4 |= 0x40;
+        }
+    }
+    if (PTR(p, 0x128c) == NULL) {
+        PTR(p, 0x128c) = fn_8013CC50(PTR(p, 0x3b4), p + 0x12a4, 0xcc, 0, -1, 0, p + 0x1290, 1, 1.0f);
+        if (PTR(p, 0x128c) != NULL) {
+            ((EmitterObj*)PTR(p, 0x128c))->mF4 |= 0x40;
+        }
+    }
+    S32(p, 0x12c0) = Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 8, -1, -1);
 }
 void fn_8027D4F4(char* p) {
     if (comboFreeSlot(p) >= 4) {
