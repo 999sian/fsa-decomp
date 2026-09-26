@@ -1222,7 +1222,7 @@ config.libs = [
             Object(Matching, "Game/tu_80222CC4.cpp"),
             Object(NonMatching, "Game/tu_802233A4.cpp"),
             Object(NonMatching, "Game/tu_8022461C.cpp"),
-            Object(NonMatching, "Game/tu_80234E30.cpp"),
+            Object(NonMatching, "Game/tu_80234E30.cpp", extra_cflags=["-RTTI off"]),
             Object(NonMatching, "Game/tu_8023FBF0.cpp"),
             Object(NonMatching, "Game/tu_802684A4.cpp"),
             Object(NonMatching, "Game/tu_8026FC20.cpp"),

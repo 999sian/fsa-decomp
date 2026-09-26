@@ -1,20 +1,48 @@
 // TU 0x80234e30-0x8023fbf0: player-manager wrappers (player index -> player object).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
-struct Player;
+struct Player {
+    Player(int idx);
+    virtual ~Player();
+    u8 pad4[0x13BC - 4];
+};
 struct PlayerMgr {
-    u8 pad0[4];
+    PlayerMgr();
+    virtual ~PlayerMgr();
     Player* players[4];
+    JGeometry::TVec3<f32> pos[4];
+    int a44[4];
+    int a54[4];
+    u8 a64[4];
+    int a68;
+    u8 a6c[8];
 };
 
 extern "C" PlayerMgr* lbl_8053AC90;
+extern "C" const f32 lbl_80540008;
+extern "C" char* fn_802D6A9C();
+extern "C" u8 fn_8023F264(int idx);
+extern "C" u8 Player_GetCapabilityFlag(Player* p);
+extern "C" int fn_80247B9C(Player*);
+extern "C" int fn_80247BD4(Player*);
+struct GameState;
+extern "C" BOOL fn_8023F98C(GameState* g, int i);
+extern "C" GameState* fn_8023F9B0();
+extern "C" u8 fn_8018A614(int idx);
+extern "C" void fn_80270360(Player*, int);
+extern "C" void fn_8045815C(void*, int);
+extern "C" void* lbl_8053AF80;
+// Retail addresses this off the TU .bss anchor in __sinit (as a static would), yet
+// auto_fn_8022CFE8/auto_fn_802316C8 reference it cross-TU, so the unit cannot link while static.
+static JGeometry::TVec3<f32> lbl_804CF460(lbl_80540008, lbl_80540008, lbl_80540008);
 
 static inline u8 isPlayerEnabled(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (idx < 0) return 0;
     if (idx >= 4) return 0;
+    if (lbl_8053AC90->players[idx] == NULL) return 0;
     Player* p = lbl_8053AC90->players[idx];
-    if (p == NULL) return 0;
     return *(u8*)((char*)p + 0xcac);
 }
 static inline Player* getPlayer(int idx) {
@@ -28,12 +56,12 @@ void fn_80270DDC(Player*, int, int);
 u8 fn_8024157C(Player*, int);
 int Player_GetLinkedHandleOrInvalid(Player*);
 void fn_80254660(Player*);
-extern u8 lbl_804CF460[];
-struct GameState;
 extern GameState* lbl_8053AAF8;
 }
 
 extern "C" {
+int fn_8024FF6C(Player*);
+void fn_80252F80(Player*, const JGeometry::TVec3<f32>&, int, int, u8);
 int Fairy_GetSubField_0x290(Player*);
 int Fairy_GetSubField_0x294(Player*);
 int Player_CheckField_0xc9c(Player*);
@@ -111,7 +139,7 @@ int fn_802729F0(Player*, int);
 int fn_80272C20(Player*, int, int, int);
 int fn_80272DCC(Player*, int, int, int);
 int fn_80272E98(Player*, int, int);
-int fn_802730D8(Player*, int, int, int);
+int fn_802730D8(Player*, int, int, int, f32);
 u8 fn_80256C74(Player*, int, int);
 u8 fn_80256DCC(Player*, int, int, int);
 u8 fn_80256F44(Player*, int, int, int);
@@ -148,6 +176,104 @@ void fn_80270318(Player*, int);
 void fn_802708D0(Player*);
 void fn_802708E8(Player*);
 void fn_80270F00(Player*, int);
+
+static inline int getFairy294(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return Fairy_GetSubField_0x294(lbl_8053AC90->players[idx]);
+}
+static inline int getFairy290(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return Fairy_GetSubField_0x290(lbl_8053AC90->players[idx]);
+}
+
+extern "C" u8 Player_GetField_0x454(Player*);
+extern "C" u8 Player_GetField_0xce8(Player*);
+extern "C" u8 fn_80240670(Player*);
+extern "C" u8 Player_IsLinked(Player*);
+extern "C" int Player_GetLinkTargetIndex(Player*);
+extern "C" f32* fn_8024E018(Player*);
+static inline u8 pGet454(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_GetField_0x454(lbl_8053AC90->players[i]);
+}
+static inline u8 pGetCE8(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_GetField_0xce8(lbl_8053AC90->players[i]);
+}
+static inline int pGetA04(int i) {
+    if (lbl_8053AC90 == NULL) return 1;
+    if (!isPlayerEnabled(i)) return 1;
+    return fn_80270A04(lbl_8053AC90->players[i]);
+}
+static inline u8 pGet670(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 1;
+    return fn_80240670(lbl_8053AC90->players[i]);
+}
+static inline u8 pIsLinked(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int pLinkTarget(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isPlayerEnabled(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+static inline int get3B4(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
+}
+static inline f32* getPosPtr(int idx) {
+    if (lbl_8053AC90 == NULL) return (f32*)&lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return (f32*)&lbl_804CF460;
+    return (f32*)((char*)lbl_8053AC90->players[idx] + 0x8);
+}
+static inline JGeometry::TVec3<f32>* getOffsPtr(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return &lbl_804CF460;
+    return (JGeometry::TVec3<f32>*)fn_8024E018(lbl_8053AC90->players[idx]);
+}
+static inline int getGroupId(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return fn_8024FF6C(lbl_8053AC90->players[idx]);
+}
+
+extern "C" u8 fn_8022F514(int idx);
+extern "C" int fn_8022F3DC(int idx);
+static inline u8 isEnabled2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (i < 0) return 0;
+    if (i >= 4) return 0;
+    if (lbl_8053AC90->players[i] == NULL) return 0;
+    return Player_GetCapabilityFlag(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isEnabled2(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget2(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isEnabled2(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked3(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!fn_8023F264(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget3(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!fn_8023F264(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
 
 int fn_80234E30(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
@@ -278,6 +404,42 @@ int fn_80235ACC(int idx) {
     return 0;
 }
 
+// Self-recursive link-chain walker, inlined three levels deep by MWCC (see fn_8023BEA8).
+// Inline twin of fn_8023F98C.
+static inline BOOL activeBit(GameState* g, int i) {
+    return (*(u8*)((char*)g + 0x82) & (u8)(1 << i)) != 0;
+}
+void fn_80235B68(int idx, int a) {
+    if (lbl_8053AC90 == NULL) return;
+    if (!isPlayerEnabled(idx)) return;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << idx)) {
+        fn_80270360(lbl_8053AC90->players[idx], a);
+    } else if (pIsLinked(idx)) {
+        idx = pLinkTarget(idx);
+        if (lbl_8053AC90 == NULL) return;
+        if (!isPlayerEnabled(idx)) return;
+        if (activeBit(fn_8023F9B0(), idx)) {
+            fn_80270360(lbl_8053AC90->players[idx], a);
+        } else if (isLinked2(idx)) {
+            idx = linkTarget3(idx);
+            if (lbl_8053AC90 == NULL) return;
+            if (!isEnabled2(idx)) return;
+            if ((u8)fn_8023F98C(fn_8023F9B0(), idx)) {
+                fn_80270360(lbl_8053AC90->players[idx], a);
+            } else if (isLinked3(idx)) {
+                idx = fn_8022F3DC(idx);
+                if (lbl_8053AC90 == NULL) return;
+                if (!fn_8023F264(idx)) return;
+                if (fn_8018A614(idx)) {
+                    fn_80270360(lbl_8053AC90->players[idx], a);
+                } else if (fn_8022F514(idx)) {
+                    fn_80235B68(fn_8022F3DC(idx), a);
+                }
+            }
+        }
+    }
+}
+
 void fn_80235FE8(int idx) {
     if (lbl_8053AC90 == NULL) return;
     if (isPlayerEnabled(idx)) fn_8024E500(lbl_8053AC90->players[idx]);
@@ -359,6 +521,16 @@ void fn_80236804(int idx, int a1) {
     if (isPlayerEnabled(idx)) fn_80270F00(lbl_8053AC90->players[idx], a1);
 }
 
+u8 fn_80236890() {
+    if (lbl_8053AC90 == NULL) return 1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
+            if (!(u8)fn_80270A04(lbl_8053AC90->players[i])) return 0;
+        }
+    }
+    return 1;
+}
+
 int fn_8023697C(int idx) {
     if (lbl_8053AC90 == NULL) return -1;
     if (isPlayerEnabled(idx)) return fn_8024322C(lbl_8053AC90->players[idx]);
@@ -411,6 +583,21 @@ int fn_80236E3C(int idx) {
     return 1;
 }
 
+u8 fn_80241514(Player*, int);
+u8 fn_80236ED8(int idx, int a1) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f)) {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && fn_8022E438(idx, i)) {
+                if (!fn_80241514(lbl_8053AC90->players[i], a1)) return 0;
+            }
+        }
+        return 1;
+    }
+    return fn_80241514(lbl_8053AC90->players[idx], a1);
+}
+
 int fn_80237060(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80241544(lbl_8053AC90->players[idx]);
@@ -432,6 +619,17 @@ int fn_8023725C(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_802415CC(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+u8 fn_80241618(Player*, int, int);
+u8 fn_802372F8(int idx, int a1, int a2) {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_8022E438(idx, i)) {
+            if (!fn_80241618(lbl_8053AC90->players[i], a1, a2)) return 0;
+        }
+    }
+    return 1;
 }
 
 int fn_802373EC(int idx) {
@@ -498,6 +696,66 @@ int fn_802379E4(int idx, int a1) {
     return 0;
 }
 
+extern "C" int fn_802486A0(Player*);
+extern "C" u8 fn_80240AD4(Player*);
+extern "C" u8 fn_80240AF0(Player*);
+extern "C" u8 GetBusyLocked(Player*);
+extern "C" u8 fn_80251BFC(Player*, int);
+extern "C" void fn_80248B9C(Player*);
+extern "C" u8 lbl_80529DEC[];
+static inline int p86A0(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802486A0(lbl_8053AC90->players[i]);
+}
+static inline u8 p0AD4(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80240AD4(lbl_8053AC90->players[i]);
+}
+static inline int pF448(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_8025F448(lbl_8053AC90->players[i]);
+}
+static inline u8 p0AF0(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80240AF0(lbl_8053AC90->players[i]);
+}
+static inline u8 pBusy(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return GetBusyLocked(lbl_8053AC90->players[i]);
+}
+u8 fn_80237A80(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (p86A0(idx) == 4 && pGet670(idx)) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (!pIsLinked(i) && p0AD4(i)) return 0;
+    }
+    if ((u8)pF448(idx)) return 0;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) && *(int*)(lbl_80529DEC + 0x118) == 0 && *(int*)(lbl_80529DEC + 0x11c) == 0) {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && !p0AF0(i)) {
+                if (pBusy(i)) return 0;
+                if (!fn_80251BFC(lbl_8053AC90->players[i], 0x38)) return 0;
+            }
+        }
+        for (int j = 0; j < 4; j++) fn_80248B9C(lbl_8053AC90->players[j]);
+    } else {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && !p0AF0(i) && fn_8022E438(idx, i)) {
+                if (!fn_80251BFC(lbl_8053AC90->players[i], 0x38)) return 0;
+            }
+        }
+        for (int j = 0; j < 4; j++) {
+            if (isPlayerEnabled(j) && !p0AF0(j) && fn_8022E438(idx, j)) fn_80248B9C(lbl_8053AC90->players[j]);
+        }
+    }
+    return 1;
+}
+
 void fn_802381B8(int idx) {
     if (lbl_8053AC90 == NULL) return;
     if (isPlayerEnabled(idx)) fn_80248DB8(lbl_8053AC90->players[idx]);
@@ -508,9 +766,106 @@ void fn_80238244(int idx) {
     if (isPlayerEnabled(idx)) fn_80248DCC(lbl_8053AC90->players[idx]);
 }
 
+void fn_80248E94(Player*, int);
+void fn_802382D0(int idx, int a1) {
+    if (lbl_8053AC90 == NULL) return;
+    if (!isPlayerEnabled(idx)) return;
+    if (!(*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << idx))) return;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (idx == i || fn_8022E438(idx, i))) {
+            fn_80248E94(lbl_8053AC90->players[i], a1);
+        }
+    }
+}
+
+void* fn_80238430(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x324;
+    return &lbl_804CF460;
+}
+
 void fn_802384BC(int idx) {
     if (lbl_8053AC90 == NULL) return;
     if (isPlayerEnabled(idx)) fn_8024051C(lbl_8053AC90->players[idx]);
+}
+
+u8 fn_80250030(Player*, int);
+static inline int countGroup(int id) {
+    int last = -1;
+    int n = 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && id == getGroupId(i)) {
+            if (last != -1 && last != *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc)) return 0;
+            n++;
+            last = *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return n;
+}
+u8 fn_8024FFC8(Player*, int);
+typedef JGeometry::TVec2<f32> PVec2;
+u8 fn_802710C8(Player*, int, int, void*, int);
+void fn_80248FF0(Player*);
+u8 fn_80238548(int idx, int a1, const PVec2* dst, int a3) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    BOOL found = 0;
+    for (int i = 0; i < 4; i++) {
+        if (fn_8022E438(i, idx)) {
+            PVec2 t, d;
+            PVec2* p0 = (PVec2*)getPosPtr(idx);
+            PVec2* pd = &d;
+            pd->set(*dst);
+            f32 dx = pd->x -= p0->x;
+            f32 dy = pd->y -= p0->y;
+            PVec2* p1 = (PVec2*)getPosPtr(i);
+            t.set(*p1);
+            t.x += dx;
+            t.y += dy;
+            if (fn_802710C8(lbl_8053AC90->players[i], idx, a1, &t, a3)) {
+                fn_80248FF0(lbl_8053AC90->players[i]);
+                if (i == idx) found = 1;
+            }
+        }
+    }
+    for (int j = 0; j < 4; j++) {
+        if (pIsLinked(j)) fn_80270D34(lbl_8053AC90->players[j], a1);
+    }
+    return found;
+}
+
+int fn_8023885C(int id) {
+    if (countGroup(id) <= 0) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_8024FFC8(lbl_8053AC90->players[i], id)) {
+            return *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return -1;
+}
+
+int fn_80238A68(int id) {
+    int last = -1;
+    int n = 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && id == getGroupId(i)) {
+            if (last != -1 && last != *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc)) return 0;
+            n++;
+            last = *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return n;
+}
+
+int fn_80239108(int);
+int fn_80238BC4(int a1) {
+    if (fn_80239108(a1) <= 0) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_80250030(lbl_8053AC90->players[i], a1)) {
+            return *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return -1;
 }
 
 int fn_80238CB4(int idx) {
@@ -519,18 +874,102 @@ int fn_80238CB4(int idx) {
     return -1;
 }
 
+void fn_8024FF9C(Player*, int);
+void fn_80238D50(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i)) fn_8024FF9C(lbl_8053AC90->players[i], a1);
+    }
+}
+
+void fn_8024FFB4(Player*, int);
+void fn_80238E08(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_80250030(lbl_8053AC90->players[i], a1)) {
+            fn_8024FFB4(lbl_8053AC90->players[i], a1);
+        }
+    }
+}
+
 int fn_80238EDC(int idx) {
     if (lbl_8053AC90 == NULL) return -1;
     if (isPlayerEnabled(idx)) return fn_8024FF54(lbl_8053AC90->players[idx]);
     return -1;
 }
 
+int fn_80238F78(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && a1 == fn_8024FF6C(lbl_8053AC90->players[i])) return i;
+    }
+    return -1;
+}
+
+int fn_80239040(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && a1 == fn_8024FF84(lbl_8053AC90->players[i])) return i;
+    }
+    return -1;
+}
+
+u8 fn_802728AC(Player*, int, int, int);
+u8 fn_80250090(Player*);
+u8 fn_80250D30(Player*);
+static inline int pA9F0(int i, int a) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802729F0(lbl_8053AC90->players[i], a);
+}
+static inline u8 p0090(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80250090(lbl_8053AC90->players[i]);
+}
+static inline u8 p0D30(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80250D30(lbl_8053AC90->players[i]);
+}
+static inline int p13C8(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802413C8(lbl_8053AC90->players[i]);
+}
+int fn_80239108(int a1) {
+    int last = -1;
+    int n = 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && ((u8)pA9F0(i, a1) || p0090(i)) && p0D30(i) && !(u8)p13C8(i)
+            && !(getPosPtr(i)[2] > lbl_80540008)) {
+            if (last != -1 && last != *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc)) return 0;
+            n++;
+            last = *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return n;
+}
+
+int fn_80239470(int a1, int a2, int a3) {
+    if (lbl_8053AC90 == NULL) return 0;
+    int r = -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_802728AC(lbl_8053AC90->players[i], a1, a2, a3) && r < 0) r = i;
+    }
+    return r;
+}
+
 int fn_80239558(int a1, int a2, int a3) {
-    if (lbl_8053AC90 == NULL) return -1;
+    if (lbl_8053AC90 == NULL) return 0;
     for (int i = 0; i < 4; i++) {
         if (isPlayerEnabled(i) && fn_80272768(lbl_8053AC90->players[i], a1, a2, a3)) return i;
     }
     return -1;
+}
+
+u8 fn_80239638(int a1) {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)fn_802729F0(lbl_8053AC90->players[i], a1)) return 1;
+    }
+    return 0;
 }
 
 int fn_80239718(int idx, int a1) {
@@ -539,16 +978,38 @@ int fn_80239718(int idx, int a1) {
     return 0;
 }
 
+void fn_802397B4(int a1, int a2, int a3) {
+    if (lbl_8053AC90 == NULL) return;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i)) fn_80272C20(lbl_8053AC90->players[i], a1, a2, a3);
+    }
+}
+
 int fn_80239878(int idx, int a1, int a2, int a3) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80272C20(lbl_8053AC90->players[idx], a1, a2, a3);
     return 0;
 }
 
+void fn_80239914(int a1, int a2, int a3) {
+    if (lbl_8053AC90 == NULL) return;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i)) fn_80272DCC(lbl_8053AC90->players[i], a1, a2, a3);
+    }
+}
+
 int fn_802399D8(int idx, int a1, int a2, int a3) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80272DCC(lbl_8053AC90->players[idx], a1, a2, a3);
     return 0;
+}
+
+int fn_80239A74(int a1, int a2, int a3, int a4, int a5) {
+    if (lbl_8053AC90 == NULL) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)fn_80272224(lbl_8053AC90->players[i], a1, a2, a3, a4, a5)) return i;
+    }
+    return -1;
 }
 
 int fn_80239B64(int idx, int a1, int a2, int a3, int a4, int a5) {
@@ -569,6 +1030,41 @@ int fn_80239C9C(int idx, int a1, int a2) {
     return 0;
 }
 
+static inline int checkA(int idx) {
+    if (lbl_8053AC90 == NULL) return 1;
+    if (!isPlayerEnabled(idx)) return 1;
+    return fn_80270A58(lbl_8053AC90->players[idx]);
+}
+static inline int checkB(int idx) {
+    if (lbl_8053AC90 == NULL) return 1;
+    if (!isPlayerEnabled(idx)) return 1;
+    return fn_80270A8C(lbl_8053AC90->players[idx]);
+}
+u8 fn_80239D38() {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
+            if ((u8)checkA(i)) return 0;
+            if (!(u8)checkB(i)) return 0;
+        }
+    }
+    return 1;
+}
+
+bool fn_80239F10() {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f)) return 0;
+    int n = 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
+            if (pGet454(i)) return 0;
+            if (pGetCE8(i)) return 0;
+            if (!(u8)pGetA04(i)) n++;
+        }
+    }
+    return n <= 1;
+}
+
 int fn_8023A1A4(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_8026FC20(lbl_8053AC90->players[idx]);
@@ -586,10 +1082,25 @@ int fn_8023A240() {
     return -1;
 }
 
+u8 fn_8023A30C() {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)Player_HasAnyStatusFlagSet(lbl_8053AC90->players[i])) return 1;
+    }
+    return 0;
+}
+
 int fn_8023A3DC(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return Player_CheckField_0xc9c(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+void* Player_GetModeSubPtr_0xb9a(Player*);
+void* fn_8023A478(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return Player_GetModeSubPtr_0xb9a(lbl_8053AC90->players[idx]);
+    return &lbl_804CF460;
 }
 
 int fn_8023A51C(int idx) {
@@ -602,6 +1113,11 @@ int fn_8023A5B8(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return Player_GetField_0xb9b(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+void fn_8023A654(int idx) {
+    if (lbl_8053AC90 == NULL) return;
+    if (isPlayerEnabled(idx)) *(u8*)((char*)lbl_8053AC90->players[idx] + 0xb9f) = 1;
 }
 
 int fn_8023A6CC(int a1, int a2) {
@@ -664,6 +1180,34 @@ int fn_8023AC74(int a1, int a2, int a3) {
     return -1;
 }
 
+u8 fn_802575B8(Player*, int, int, int);
+int fn_8023AD54(int a1, int a2, int a3) {
+    int r = -1;
+    if (lbl_8053AC90 == NULL) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_802575B8(lbl_8053AC90->players[i], a1, a2, a3)) r = i;
+    }
+    return r;
+}
+
+u8 fn_802576CC(Player*, int, int, int);
+int fn_8023AE34(int a1, int a2, int a3) {
+    int r = -1;
+    if (lbl_8053AC90 == NULL) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_802576CC(lbl_8053AC90->players[i], a1, a2, a3)) r = i;
+    }
+    return r;
+}
+
+int fn_8023AF14(int a1, int a2, int a3, f32 f) {
+    if (lbl_8053AC90 == NULL) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)fn_802730D8(lbl_8053AC90->players[i], a1, a2, a3, f)) return i;
+    }
+    return -1;
+}
+
 int fn_8023B004(int a1, int a2) {
     if (lbl_8053AC90 == NULL) return -1;
     for (int i = 0; i < 4; i++) {
@@ -672,9 +1216,9 @@ int fn_8023B004(int a1, int a2) {
     return -1;
 }
 
-int fn_8023B0F4(int idx, int a1, int a2, int a3) {
+int fn_8023B0F4(int idx, int a1, int a2, int a3, f32 f) {
     if (lbl_8053AC90 == NULL) return 0;
-    if (isPlayerEnabled(idx)) return fn_802730D8(lbl_8053AC90->players[idx], a1, a2, a3);
+    if (isPlayerEnabled(idx)) return fn_802730D8(lbl_8053AC90->players[idx], a1, a2, a3, f);
     return 0;
 }
 
@@ -690,10 +1234,46 @@ int fn_8023B22C(int idx) {
     return -1;
 }
 
+int fn_8023B2B0(int idx) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isPlayerEnabled(idx)) return -1;
+    char* p = (char*)lbl_8053AC90->players[idx];
+    int k = *(int*)(p + 0xb7c);
+    if (k < 0 || k >= 3) return -1;
+    return ((int*)(p + 0xb00))[k];
+}
+
+int fn_8023B358(int idx) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isPlayerEnabled(idx)) return -1;
+    char* p = (char*)lbl_8053AC90->players[idx];
+    int k = *(int*)(p + 0xb80);
+    if (k < 0 || k >= 3) return -1;
+    return ((int*)(p + 0xb0c))[k];
+}
+
+u8 fn_8023B400(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(idx)) return *(u8*)((char*)lbl_8053AC90->players[idx] + 0xb78);
+    return 0;
+}
+
 int fn_8023B484(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_802577E0(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+int fn_8023B520(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (*(u8*)((char*)lbl_8053AC90->players[idx] + 0xb9b) != 0) return 0x10;
+    return 8;
+}
+
+int fn_8023B5B4(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    return isPlayerEnabled(idx) ? 4 : 0;
 }
 
 int fn_8023B630(int idx) {
@@ -776,6 +1356,70 @@ int fn_8023BE0C(int idx) {
     return 0;
 }
 
+int fn_80247C0C(Player*);
+// The retail body is a self-recursive "follow the link chain" helper that
+// MWCC inlined three levels deep; the deeper levels call the out-of-line
+// copies (Player_GetCapabilityFlag, fn_8023F264, fn_8022F514/fn_8022F3DC).
+// Written out here level by level.
+int fn_80247B9C(Player*);
+int fn_8023BEA8(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (pIsLinked(idx)) {
+        idx = pLinkTarget(idx);
+        if (lbl_8053AC90 == NULL) return 0;
+        if (!isPlayerEnabled(idx)) return 0;
+        if (isLinked2(idx)) {
+            idx = linkTarget2(idx);
+            if (lbl_8053AC90 == NULL) return 0;
+            if (!isEnabled2(idx)) return 0;
+            if (isLinked3(idx)) {
+                idx = linkTarget3(idx);
+                if (lbl_8053AC90 == NULL) return 0;
+                if (!fn_8023F264(idx)) return 0;
+                if (fn_8022F514(idx)) return fn_8023BEA8(fn_8022F3DC(idx));
+                return fn_80247B9C(lbl_8053AC90->players[idx]);
+            }
+            return fn_80247B9C(lbl_8053AC90->players[idx]);
+        }
+        return fn_80247B9C(lbl_8053AC90->players[idx]);
+    }
+    return fn_80247B9C(lbl_8053AC90->players[idx]);
+}
+
+int fn_8023C36C(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (pIsLinked(idx)) {
+        idx = pLinkTarget(idx);
+        if (lbl_8053AC90 == NULL) return 0;
+        if (!isPlayerEnabled(idx)) return 0;
+        if (isLinked2(idx)) {
+            idx = linkTarget2(idx);
+            if (lbl_8053AC90 == NULL) return 0;
+            if (!isEnabled2(idx)) return 0;
+            if (isLinked3(idx)) {
+                idx = linkTarget3(idx);
+                if (lbl_8053AC90 == NULL) return 0;
+                if (!fn_8023F264(idx)) return 0;
+                if (fn_8022F514(idx)) return fn_8023C36C(fn_8022F3DC(idx));
+                return fn_80247BD4(lbl_8053AC90->players[idx]);
+            }
+            return fn_80247BD4(lbl_8053AC90->players[idx]);
+        }
+        return fn_80247BD4(lbl_8053AC90->players[idx]);
+    }
+    return fn_80247BD4(lbl_8053AC90->players[idx]);
+}
+
+int fn_8023C830(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (pGet670(idx)) return 0;
+    if (pIsLinked(idx)) return fn_80247C0C(lbl_8053AC90->players[pLinkTarget(idx)]);
+    return fn_80247C0C(lbl_8053AC90->players[idx]);
+}
+
 int fn_8023CA88(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_8024EE14(lbl_8053AC90->players[idx]);
@@ -816,6 +1460,71 @@ int fn_8023CE10(int idx) {
     return 0;
 }
 
+u16 fn_8023CEAC(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0xe0;
+    if (!isPlayerEnabled(view)) return 0xe0;
+    int k = get3B4(idx);
+    char* room = fn_802D6A9C();
+    f32* base;
+    if (k < 8) base = (f32*)(room + 0xcc);
+    else base = (f32*)(room + 0xdc);
+    int d = (int)(getPosPtr(idx)[1] - getPosPtr(idx)[2] - base[1]) - getFairy294(view);
+    if (d >= -0x30 && d < 0xd0) return d;
+    return 0xe0;
+}
+
+u16 fn_8023D21C(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (!isPlayerEnabled(view)) return 0;
+    int k = get3B4(idx);
+    char* room = fn_802D6A9C();
+    f32* base;
+    if (k < 8) base = (f32*)(room + 0xcc);
+    else base = (f32*)(room + 0xdc);
+    f32* pos = getPosPtr(idx);
+    int d = (int)(pos[0] - base[0]) - getFairy290(view);
+    if (d >= -0x40 && d < 0x140) return d;
+    return 0x180;
+}
+
+u16 fn_8023D4F8(const JGeometry::TVec3<f32>& pos, int idx) {
+    if (lbl_8053AC90 == NULL) return 0xe0;
+    if (!isPlayerEnabled(idx)) return 0xe0;
+    int d = (int)(pos.y - pos.z) - getFairy294(idx);
+    if (d >= -0x20 && d < 0xe0) return d;
+    return 0xe0;
+}
+
+u16 fn_8023D644(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0xe0;
+    if (!isPlayerEnabled(idx)) return 0xe0;
+    if (!isPlayerEnabled(view)) return 0xe0;
+    return fn_8023D4F8(*(JGeometry::TVec3<f32>*)getPosPtr(idx) + *getOffsPtr(idx), view);
+}
+
+u16 fn_8023D9B0(const JGeometry::TVec3<f32>& pos, int idx) {
+    if (lbl_8053AC90 == NULL) return 0x180;
+    if (!isPlayerEnabled(idx)) return 0x180;
+    int d = (int)pos.x - getFairy290(idx);
+    if (d >= -0x40 && d < 0x140) return d;
+    return 0x180;
+}
+
+u16 fn_8023DAF4(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0x180;
+    if (!isPlayerEnabled(idx)) return 0x180;
+    if (!isPlayerEnabled(view)) return 0x180;
+    return fn_8023D9B0(*(JGeometry::TVec3<f32>*)getPosPtr(idx) + *getOffsPtr(idx), view);
+}
+
+int fn_8023DE58(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(idx)) return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
+    return 0;
+}
+
 void fn_8023DEDC(int idx, int a1) {
     if (lbl_8053AC90 == NULL) return;
     if (isPlayerEnabled(idx)) fn_80252BD0(lbl_8053AC90->players[idx], a1);
@@ -842,10 +1551,88 @@ int fn_8023E10C(int idx) {
     return 0;
 }
 
+int fn_8023E190(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(idx)) return *(int*)((char*)lbl_8053AC90->players[idx] + 0xce0);
+    return 0;
+}
+
+void* fn_8023E214(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcd4;
+    return &lbl_804CF460;
+}
+
+void* fn_8023E2A0(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcc8;
+    return &lbl_804CF460;
+}
+
 void* fn_8023E32C(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcb0;
-    return lbl_804CF460;
+    return &lbl_804CF460;
+}
+
+void* fn_8024C378(Player*);
+void* fn_8023E3B8(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return fn_8024C378(lbl_8053AC90->players[idx]);
+    return &lbl_804CF460;
+}
+
+struct PlayerB { u8 pad[0x284]; u8 a284[8]; };
+u8 fn_8023E45C(int idx, int j) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(idx)) {
+        PlayerB* p = (PlayerB*)lbl_8053AC90->players[idx];
+        return p->a284[j];
+    }
+    return 0;
+}
+
+void* fn_8023E4E4(int idx, int j) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x38 + j * 0xc;
+    return &lbl_804CF460;
+}
+
+void* fn_8023E578(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x14;
+    return &lbl_804CF460;
+}
+
+void* fn_8023E604(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x2c4;
+    return &lbl_804CF460;
+}
+
+void fn_8023E690(int idx, const f32* v) {
+    if (lbl_8053AC90 == NULL) return;
+    if (isPlayerEnabled(idx)) {
+        f32 z = v[2];
+        f32 y = v[1];
+        f32 x = v[0];
+        f32* p = (f32*)lbl_8053AC90->players[idx];
+        p[2] = x; p[3] = y; p[4] = z;
+        p[11] = x; p[12] = y; p[13] = z;
+    }
+}
+
+void* fn_8023E724(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x8;
+    return &lbl_804CF460;
+}
+
+void* fn_8024145C(Player*);
+void* fn_8023E7B0(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (isPlayerEnabled(idx)) return fn_8024145C(lbl_8053AC90->players[idx]);
+    return &lbl_804CF460;
 }
 
 int fn_8023E854(int idx) {
@@ -869,6 +1656,15 @@ int fn_8023E98C(int idx) {
 int fn_8023EA28(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_8025F448(lbl_8053AC90->players[idx]);
+    return 0;
+}
+
+u8 fn_8025F484(Player*);
+u8 fn_8023EAC4(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_8022E438(idx, i) && fn_8025F484(lbl_8053AC90->players[i])) return 1;
+    }
     return 0;
 }
 
@@ -919,17 +1715,118 @@ int fn_8023EFEC(int idx) {
     return 0;
 }
 
+struct GameRng { u8 pad[0xb4]; u32 seed; };
+extern const f32 lbl_8054001C;
+extern const f32 lbl_8054002C;
+void fn_8023F088() {
+    if (lbl_8053AC90 == NULL) return;
+    for (int i = 0; i < 4; i++) {
+        GameRng* g = (GameRng*)lbl_8053AAF8;
+        g->seed = g->seed * 0x19660d + 0x3c6ef35f;
+        union { f32 f; u32 s; } u;
+        u.s = (g->seed >> 9) | 0x3f800000;
+        int r = (int)(lbl_8054002C * (u.f - lbl_8054001C));
+        if (r >= 4) r = 3;
+        JGeometry::TVec3<f32> tmp = lbl_8053AC90->pos[i];
+        lbl_8053AC90->pos[i] = lbl_8053AC90->pos[r];
+        lbl_8053AC90->pos[r] = tmp;
+    }
+    for (int j = 0; j < 4; j++) {
+        fn_80252F80(lbl_8053AC90->players[j], lbl_8053AC90->pos[j], lbl_8053AC90->a44[j], lbl_8053AC90->a54[j], lbl_8053AC90->a64[j]);
+    }
+}
+
+void fn_8023F1D4(int idx, const JGeometry::TVec3<f32>& v, int a, int b, u8 c) {
+    fn_80252F80(lbl_8053AC90->players[idx], v, a, b, c);
+    lbl_8053AC90->pos[idx] = v;
+    lbl_8053AC90->a44[idx] = a;
+    lbl_8053AC90->a54[idx] = b;
+    lbl_8053AC90->a64[idx] = c;
+}
+
 u8 fn_8023F264(int idx) {
     return isPlayerEnabled(idx);
+}
+
+void fn_80264998(Player*);
+void fn_8023F2BC() {
+    int i;
+    for (i = 3; i >= 0; i--) {
+        if (!(*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) fn_80264998(getPlayer(i));
+    }
+    for (i = 3; i >= 0; i--) {
+        if (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i)) fn_80264998(getPlayer(i));
+    }
+}
+
+void fn_80253E6C(Player*);
+void fn_80252FC0(Player*);
+void EmptyHook_80252FBC(Player*);
+extern "C" void fn_80232A0C();
+extern "C" void fn_80231DE4();
+extern "C" void fn_80457DFC(void*, int);
+static inline void updateFloorFlag() {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && !pGet670(i) && get3B4(i) < 8) {
+            fn_80457DFC(lbl_8053AF80, 0);
+            return;
+        }
+    }
+    fn_80457DFC(lbl_8053AF80, 1);
+}
+void fn_8023F390() {
+    for (int i = 0; i < 4; i++) fn_80253E6C(getPlayer(i));
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x94) == 1) return;
+    for (int i = 0; i < 4; i++) fn_80252FC0(getPlayer(i));
+    for (int i = 0; i < 4; i++) {
+        *((u8*)getPlayer(i) + 0x434) = 0;
+        *((u8*)getPlayer(i) + 0x435) = 0;
+    }
+    fn_80232A0C();
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f)) fn_80231DE4();
+    for (int i = 0; i < 4; i++) EmptyHook_80252FBC(getPlayer(i));
+    if (lbl_8053AC90 == NULL) return;
+    updateFloorFlag();
 }
 
 void fn_8023F6C4() {
     for (int i = 0; i < 4; i++) fn_80254660(getPlayer(i));
 }
 
+void fn_802544B0(Player*);
+void fn_8023F728() {
+    for (int i = 0; i < 4; i++) fn_802544B0(getPlayer(i));
+}
+
+void fn_80254744(Player*);
+extern int lbl_8053A190;
+void fn_8023F78C() {
+    for (int i = 0; i < 4; i++) fn_80254744(getPlayer(i));
+    lbl_8053A190 = -1;
+}
+
+
+PlayerMgr::~PlayerMgr() {
+    fn_8045815C(lbl_8053AF80, 0);
+    for (int i = 0; i < 4; i++) {
+        if (players[i]) delete players[i];
+    }
+    lbl_8053AC90 = NULL;
+}
+
+PlayerMgr::PlayerMgr() {
+    lbl_8053AC90 = this;
+    for (int i = 0; i < 4; i++) players[i] = new Player(i);
+    a68 = 0;
+    a6c[0] = 0; a6c[1] = 0; a6c[2] = 0; a6c[3] = 0;
+    a6c[4] = 0; a6c[5] = 0; a6c[6] = 0; a6c[7] = 0;
+    fn_8045815C(lbl_8053AF80, 0);
+}
+
 u8 Player_GetCapabilityFlag(Player* p) {
     return *(u8*)((char*)p + 0xcac);
 }
+
 
 BOOL fn_8023F98C(GameState* g, int i) {
     return (*(u8*)((char*)g + 0x82) & (u8)(1 << i)) != 0;
