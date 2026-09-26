@@ -3020,6 +3020,8 @@ Game/tu_802AC58C.cpp:
 	extabindex  start:0x8001B220 end:0x8001B244
 	.text       start:0x802AC58C end:0x802AC8AC
 	.ctors      start:0x8045C244 end:0x8045C248
+	.rodata     start:0x8046C890 end:0x8046C8A0
+	.bss        start:0x804D1568 end:0x804D1668
 
 Game/tu_802AC8AC.cpp:
 	extab       start:0x8000C5BC end:0x8000C5F4
