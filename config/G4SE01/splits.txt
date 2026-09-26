@@ -3217,6 +3217,7 @@ Game/tu_802C94F4.cpp:
 	extabindex  start:0x8001B9E8 end:0x8001BA0C
 	.text       start:0x802C94F4 end:0x802C9944
 	.ctors      start:0x8045C2BC end:0x8045C2C0
+	.bss        start:0x804D3368 end:0x804D3468
 
 Game/tu_802C9944.cpp:
 	extab       start:0x8000CB0C end:0x8000CB34

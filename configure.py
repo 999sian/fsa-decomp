@@ -1326,7 +1326,7 @@ config.libs = [
             Object(NonMatching, "Game/key0.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/door.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/tu_802C8500.cpp"),
-            Object(NonMatching, "Game/tu_802C94F4.cpp"),
+            Object(Matching, "Game/tu_802C94F4.cpp"),
             Object(NonMatching, "Game/tu_802C9944.cpp"),
             Object(NonMatching, "Game/tu_802CA284.cpp"),
             Object(NonMatching, "Game/onof.cpp", extra_cflags=["-common on"]),
