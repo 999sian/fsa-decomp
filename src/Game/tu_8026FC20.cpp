@@ -62,6 +62,11 @@ void fn_80268B3C(char*);
 void fn_802685D4(char*);
 char* fn_802D6A9C(void);
 bool fn_802413F0(char*);
+void fn_8024E46C(char*);
+void fn_8024E3D8(char*);
+void fn_8024E344(char*);
+u8 Player_GetField_0xce8(char*);
+void fn_8024B298(char*, s32, f32*);
 u8 fn_80274238(char*, const JGeometry::TBox2<f32>*, s32, f32*, s32);
 s32 fn_8024FF84(char*);
 s32 fn_8024FF6C(char*);
@@ -519,6 +524,47 @@ BOOL fn_80272B4C(PlayerAreas* pa, const f32* pt) {
     }
     return 0;
 }
+BOOL fn_80272C20(char* p, const f32* box, s32 a, s32 b) {
+    if (GetBusyLocked(p)) {
+        return 0;
+    }
+    if (Player_GetField_0xce8(p)) {
+        return 0;
+    }
+    if (U8(p, 0xcee) == 1) {
+        return 0;
+    }
+    f32 x0 = box[0];
+    f32 y0 = box[1];
+    f32 x1 = box[2];
+    f32 y1 = box[3];
+    x0 -= 2.5f;
+    y0 -= 2.5f;
+    x1 += 2.5f;
+    y1 += 2.5f;
+    for (s32 i = 0; i < 8; i++) {
+        JGeometry::TVec2<f32> pt;
+        fn_8024B298(p, i, &pt.x);
+        if (!(u8)inRect(pt, x0, y0, x1, y1)) {
+            goto add;
+        }
+    }
+    return 0;
+add:
+    PlayerAreas* pa = (PlayerAreas*)p;
+    for (int j = 0; j < 0x50; j++) {
+        if (pa->mId[j] < 0) {
+            pa->mId[j] = b;
+            pa->mOwner[j] = a;
+            pa->mBox[j][0] = box[0];
+            pa->mBox[j][1] = box[1];
+            pa->mBox[j][2] = box[2];
+            pa->mBox[j][3] = box[3];
+            return 1;
+        }
+    }
+    return 0;
+}
 BOOL fn_80272DCC(char* p, const f32* box, s32 a, s32 b) {
     if (GetBusyLocked(p)) {
         return 0;
@@ -777,6 +823,30 @@ void fn_8027966C(char* p) {
     fn_8024F0E8(p, 0x10004);
     F32(p, 0x358) = 0.0f;
 }
+void fn_802796B8(char* p) {
+    if (fn_802486A0(p) == 4) {
+        s32 v = fn_80248778(p);
+        s32 w = fn_80240888(p);
+        if (w == v) {
+            goto award;
+        }
+    }
+    if (fn_802486A0(p) != 4 && !Player_IsLinked(p)) {
+    award:
+        s32 t = S32(p, 0x11e4);
+        if (t == 4 || t == 7) {
+            fn_8024E46C(p);
+        } else if (t == 5 || t == 8) {
+            fn_8024E3D8(p);
+        } else if (t == 6 || t == 9) {
+            fn_8024E344(p);
+        }
+    }
+    killEmitter(p, 0x132c);
+    killEmitter(p, 0x135c);
+    killEmitter(p, 0x136c);
+    killEmitter(p, 0x1370);
+}
 void fn_80279F94(char* p) {
     DELETE_JPA(p, 0x1308);
     S32(p, 0x464) = 0x3c;
@@ -846,6 +916,40 @@ void fn_8027AA10(char* p) {
     DELETE_JPA(p, 0x1374);
     DELETE_JPA(p, 0x1378);
     U16(p, 0x11c0) = 0;
+}
+void fn_8027C4FC(char* p) {
+    S32(p, 0xbf4) = 2;
+    U8(p, 0x458) = 1;
+    U8(p, 0xcae) = 0;
+    U8(p, 0xcaf) = 0;
+    if (U8(p, 0xcad) == 0) {
+        U8(p, 0xcad) = 1;
+        U8(p, 0x403) = 0;
+    }
+    F32(p, 0x344) = 0.0f;
+    F32(p, 0x348) = 0.0f;
+    F32(p, 0x34c) = 0.0f;
+    if (U8(p, 0x403) < 0x30) {
+        if (PTR(p, 0x12b0) == NULL) {
+            PTR(p, 0x12b0) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x26f, 0, 1, 0, 0, 1, 1.0f);
+        }
+    } else if (PTR(p, 0x12b4) == NULL) {
+        if (fn_80241544(p) == 2) {
+            if (S32(p, 0x3dc) == 0 || S32(p, 0x3dc) == 1) {
+                PTR(p, 0x12b4) = fn_8013CC50(PTR(p, 0x3b4), p + 0x12a4, 0x271, 0, -1, 0, 0, 1, 1.0f);
+            } else {
+                PTR(p, 0x12b4) = fn_8013CC50(PTR(p, 0x3b4), p + 0x12a4, 0x273, 0, -1, 0, 0, 1, 1.0f);
+            }
+        } else {
+            if (S32(p, 0x3dc) == 0 || S32(p, 0x3dc) == 1) {
+                PTR(p, 0x12b4) = fn_8013CC50(PTR(p, 0x3b4), p + 0x12a4, 0x270, 0, -1, 0, 0, 1, 1.0f);
+            } else {
+                PTR(p, 0x12b4) = fn_8013CC50(PTR(p, 0x3b4), p + 0x12a4, 0x272, 0, -1, 0, 0, 1, 1.0f);
+            }
+        }
+    }
+    U8(p, 0x404) = 0;
+    S32(p, 0x40c) = 0;
 }
 void fn_8027C6B8(char* p) { U8(p, 0x436) = 0; }
 void fn_8027CAA8(char* p) {
