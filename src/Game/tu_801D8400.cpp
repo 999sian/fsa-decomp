@@ -223,4 +223,73 @@ extern "C" void* fn_801DA504(char* p) {
     return p;
 }
 
+extern "C" s32 fn_801DA96C(void* p);
+extern "C" void fn_801DA7C0(void* p);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
+extern "C" void fn_801DE12C(void* this_);
+extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
+extern const f32 lbl_8053F1F0;
+extern f32 lbl_8053EFB8;
+
+extern "C" void fn_801D882C(char* p) {
+    switch (*(s32*)(p + 0x248)) {
+    case 0xb:
+    case 0xc:
+    case 0xd:
+    case 0xe: {
+        JGeometry::TVec2<f32>* tgt = (JGeometry::TVec2<f32>*)(p + 0x2d4) + *(u8*)(p + 0x334);
+        JGeometry::TVec2<f32> dir(tgt->x - *(f32*)(p + 0xc), tgt->y - *(f32*)(p + 0x10));
+        dir.normalize();
+        dir.scale(*(f32*)(p + 0x254));
+        fn_801F71A4((f32*)(p + 0x3c), dir.x, lbl_8053F1F0, lbl_8053F1D8);
+        fn_801F71A4((f32*)(p + 0x40), dir.y, lbl_8053F1F0, lbl_8053F1D8);
+        break;
+    }
+    default:
+        *(f32*)(p + 0x3c) = lbl_8053F1CC;
+        switch (*(s32*)(p + 0x248)) {
+        case 8:
+        case 0x10:
+        {
+            f32 kick = __fabsf(lbl_8053EFB8);
+            f32 vy = *(f32*)(p + 0x40);
+            *(f32*)(p + 0x40) = vy + kick;
+        }
+            break;
+        default:
+            *(f32*)(p + 0x40) = lbl_8053F1CC;
+            break;
+        }
+        break;
+    }
+    *(f32*)(p + 0x44) = lbl_8053F1CC;
+}
+
+extern "C" void fn_801D8A30(char* p) {
+    bool snd = false;
+    s32 prev = fn_801DA96C(p + 0x2a8);
+    fn_801DA7C0(p + 0x2a8);
+    switch (*(s32*)(p + 0x2a8)) {
+    case 8:
+        if (prev != 0x1e && fn_801DA96C(p + 0x2a8) == 0x1e) {
+            snd = true;
+        }
+        break;
+    case 0xe:
+        if (prev != 0x2c && fn_801DA96C(p + 0x2a8) == 0x2c) {
+            snd = true;
+        }
+        break;
+    case 0xf:
+        if (prev != 0x2f && fn_801DA96C(p + 0x2a8) == 0x2f) {
+            snd = true;
+        }
+        break;
+    }
+    if (snd) {
+        fn_801F0E34(p, 0x40058, 0);
+    }
+    fn_801DE12C(p);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
