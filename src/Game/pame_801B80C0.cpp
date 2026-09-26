@@ -246,4 +246,51 @@ extern "C" void fn_801B8150(u8* this_) {
     fn_801F06F0(this_, lbl_80469198, *(u32*)(this_ + 0x280) + 0xbd, &r, lbl_8053EB24, lbl_8053EB24, 0);
 }
 
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" void fn_801D2608(void* obj, void* tbl, u32 n);
+extern "C" void fn_801D22DC(void* obj, s32 a, s32 b, s32 c);
+extern "C" void fn_801D1D60(void* obj);
+extern const f32 lbl_8053EB5C;
+extern const f32 lbl_8053EB68;
+extern u8 lbl_8053A120[8];
+
+extern "C" void fn_801B9378(u8* this_) {
+    fn_801D0ED0(this_);
+    if (*(u32*)(this_ + 0x90) & 1) {
+        *(u32*)(this_ + 0x230) |= 0x2000;
+        u32 p = (*(u32*)(this_ + 0x90) >> 1) & 7;
+        if (p >= 1 && p <= 4) {
+            *(u32*)(this_ + 0x230) |= 0x4000;
+            *(s32*)(this_ + 0x2a8) = p - 1;
+        }
+    }
+    if (*(u32*)(this_ + 0x230) & 0x2000) {
+        f32 sc = lbl_8053EB68;
+        *(f32*)(this_ + 0x54) = sc;
+        *(f32*)(this_ + 0x58) = sc;
+        *(f32*)(this_ + 0x5c) = sc;
+        *(f32*)(this_ + 0x60) *= sc;
+        *(f32*)(this_ + 0x64) *= sc;
+        *(f32*)(this_ + 0x68) *= sc;
+        *(f32*)(this_ + 0x6c) *= sc;
+        *(f32*)(this_ + 0x80) = *(f32*)(this_ + 0x60);
+        *(f32*)(this_ + 0x84) = *(f32*)(this_ + 0x64);
+        *(f32*)(this_ + 0x88) = *(f32*)(this_ + 0x68);
+        *(f32*)(this_ + 0x8c) = *(f32*)(this_ + 0x6c);
+    } else {
+        *(s32*)(this_ + 0x108) = 1;
+    }
+    *(s32*)(this_ + 0x244) = *(s32*)(this_ + 0x108);
+    *(u32*)(this_ + 0xb0) = 0x4130b;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = fn_801CD664(0x10) + 0x1e;
+    *(f32*)(this_ + 0x254) = lbl_8053EB5C;
+    *(f32*)(this_ + 0x258) = lbl_8053EB5C;
+    fn_801D2608(this_ + 0x270, lbl_8053A120, 2);
+    fn_801D22DC(this_ + 0x270, 0, 2, 0);
+    fn_801D1D60(this_ + 0x270);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
