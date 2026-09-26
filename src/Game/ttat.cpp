@@ -92,5 +92,56 @@ extern "C" void fn_801AA8F4(void* this_) {
     }
 }
 
+extern "C" void fn_801A96B4(void* this_);
+extern "C" void fn_801A9CF4(void* this_);
+struct TtatTimers { u8 pad[0x234]; s32 t[3]; };
+
+// TTAT update (vtable slot 3)
+extern "C" void fn_801A961C(char* this_) {
+    switch (*(s32*)(this_ + 0x258)) {
+    case 0:
+    case 5:
+        fn_801A96B4(this_);
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+        fn_801A9CF4(this_);
+        break;
+    }
+    for (int i = 0; i < 3; i++) {
+        if (((TtatTimers*)this_)->t[i] > 0) {
+            ((TtatTimers*)this_)->t[i]--;
+        }
+    }
+}
+
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+extern "C" void fn_80138B7C(void* game);
+extern void* lbl_804A2FB0[];
+extern char* lbl_8053AAF8;
+extern s32 lbl_8053ABD0;
+
+// TTAT destructor
+extern "C" void* fn_801AA464(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A2FB0;
+        fn_801EE434(*(void**)(this_ + 0x2b8));
+        if (*(s32*)(this_ + 0x258) == 0 && *(s32*)(lbl_8053AAF8 + 0x4c) != 9) {
+            fn_80138B7C(lbl_8053AAF8);
+        }
+        if (*(s32*)(this_ + 0x258) == 5) {
+            lbl_8053ABD0--;
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

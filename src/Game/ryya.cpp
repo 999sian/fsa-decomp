@@ -87,5 +87,35 @@ extern "C" void fn_801A7C48(void* thisObj) {
 	}
 }
 
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_8022B1C8(void);
+extern "C" void fn_80138B7C(void* game);
+extern "C" void fn_80458508(void* snd, s32 a);
+extern void* lbl_804A2E30[];
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AF80;
+
+// RYYA destructor
+extern "C" void* fn_801A7B98(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A2E30;
+        s32 kind = *(s32*)(this_ + 0x260);
+        if (kind == 0 || kind == 1) {
+            s32 state = *(s32*)(this_ + 0x230);
+            if (state == 4 || (state == 5 && (fn_8022B1C8(), true))) {
+                if (*(s32*)(lbl_8053AAF8 + 0x4c) != 9) {
+                    fn_80138B7C(lbl_8053AAF8);
+                }
+                fn_80458508(lbl_8053AF80, 0);
+            }
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

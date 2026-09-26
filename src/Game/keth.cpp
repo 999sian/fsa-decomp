@@ -34,5 +34,4 @@ extern "C" s32 fn_8015C888(void* this_, void* arg1, void* targetPos) {
     return fn_802265DC(targetPos, arg1, 0);
 }
 
-
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

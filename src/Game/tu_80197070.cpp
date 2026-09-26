@@ -59,5 +59,86 @@ void fn_8019CEF8(void* thisPtr, u32 a, f32 b, u32 c) {
 
 }
 
+// Small (inline-style) accessors.
+extern char* lbl_8053AAF8;
+extern "C" void fn_8013670C(void* game, void* a);
+struct SaveSlot8050 { u8 pad[0x28]; u32 flags; u8 pad2[0xc8 - 0x2c]; };
+struct Save8050 { u8 pad[0x10]; s32 cur; };
+extern Save8050 lbl_8050EC80;
+
+extern "C" void fn_8019CD9C(void* a) { fn_8013670C(lbl_8053AAF8, a); }
+extern "C" void fn_8019CDC4(s32 a) {
+    char* g = lbl_8053AAF8;
+    *(u8*)(g + 0x85) = 1;
+    *(s32*)(g + 0x74) = 0;
+    *(s32*)(g + 0x78) = 0;
+    *(s32*)(g + 0x54) = a;
+}
+extern "C" void fn_8019CDE4(s32 a, s32 b) {
+    if (a < 0 || a > 7) return;
+    if (b < 0 || b > 3) return;
+    ((SaveSlot8050*)((u8*)&lbl_8050EC80 + lbl_8050EC80.cur * 0xc8))->flags |= 1 << (b + a * 4);
+}
+extern "C" BOOL fn_8019CE40(s32 a, s32 b) {
+    if (a < 0 || a > 7) return FALSE;
+    if (b < 0 || b > 3) return FALSE;
+    Save8050* t = &lbl_8050EC80;
+    return (((SaveSlot8050*)((u8*)t + t->cur * 0xc8))->flags & (1 << (b + a * 4))) != 0;
+}
+extern "C" void fn_8019CECC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
+
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* mgr, s32 a);
+extern u8 lbl_8053AB98;
+extern u8 lbl_8053ABA8;
+
+struct Handles_tu_80197070 { u8 pad[0x304]; void* h[13]; };
+// TU_80197070 destructor
+extern void* lbl_804A2944[];
+extern "C" void* fn_8019C7EC(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A2944;
+        for (int i = 0; i < 13; i++) {
+            fn_801EE434(((Handles_tu_80197070*)this_)->h[i]);
+        }
+        if (*(s32*)(this_ + 0x90) == 0) {
+            fn_802D7440(fn_802D6A9C(), 1);
+            lbl_8053AB98 = 0;
+            lbl_8053ABA8 = 0;
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+struct Vec_8019 { f32 x, y, z; };
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" void fn_80230498(s32 i, Vec_8019* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
+struct Pos_8019 { u32 vt; s32 id; u8 pad[0x2a4 - 8]; Vec_8019 p[4]; };
+
+extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
+    for (int i = 0; i < 4; i++) {
+        if (fn_8023F264(i)) {
+            s32 id = this_->id;
+            if (id == fn_8023DE58(i)) {
+                Vec_8019 pos;
+                pos.x = this_->p[i].x;
+                pos.y = this_->p[i].y;
+                pos.z = this_->p[i].z;
+                if (flag == 0) {
+                    pos.y = 32.0f + *(f32*)((char*)this_ + 0x10);
+                }
+                fn_80230498(i, &pos, 0x3f, 0xff, -0x80, -0x80, 1);
+            }
+        }
+    }
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

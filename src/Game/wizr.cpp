@@ -61,5 +61,17 @@ extern "C" void* fn_80178DD0(void* this_, s16 freeFlag) {
     return this_;
 }
 
+// Small (inline-style) accessors.
+extern "C" void fn_80178EB8(char* this_, const f32* src) {
+    f32* dst = (f32*)(this_ + 0xa4);
+    dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2];
+}
+extern "C" void fn_80178ED4(s16* v, s16 x, s16 y, s16 z) { v[0] = x; v[1] = y; v[2] = z; }
+extern "C" void fn_80178EE4(char* this_, const f32* src) {
+    f32* dst = (f32*)(this_ + 0x18);
+    dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2];
+}
+extern "C" void fn_80178F00(f32* v, f32 x, f32 y, f32 z) { v[0] = x; v[1] = y; v[2] = z; }
+extern "C" void fn_80178F10(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

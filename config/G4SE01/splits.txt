@@ -1946,6 +1946,7 @@ Game/flme.cpp:
 	extabindex  start:0x80013B88 end:0x80013BDC
 	.text       start:0x8015DE10 end:0x8015F454
 	.ctors      start:0x8045BF4C end:0x8045BF50
+	.sdata2     start:0x8053D590 end:0x8053D628
 
 Game/ezry.cpp:
 	extab       start:0x80007064 end:0x8000708C
@@ -1953,17 +1954,49 @@ Game/ezry.cpp:
 	.text       start:0x80160650 end:0x801618D0
 	.ctors      start:0x8045BF54 end:0x8045BF58
 
+Game/trap.cpp:
+	extab       start:0x8000710C end:0x8000713C
+	extabindex  start:0x80013CC0 end:0x80013D08
+	.text       start:0x801643C4 end:0x8016545C
+	.ctors      start:0x8045BF5C end:0x8045BF60
+	.sdata2     start:0x8053D778 end:0x8053D7C0
+
 Game/arrw.cpp:
 	extab       start:0x8000713C end:0x8000716C
 	extabindex  start:0x80013D08 end:0x80013D50
 	.text       start:0x8016545C end:0x80166BD0
 	.ctors      start:0x8045BF60 end:0x8045BF64
+	.sdata2     start:0x8053D7C0 end:0x8053D7F8
+
+Game/mozo.cpp:
+	extab       start:0x8000716C end:0x8000718C
+	extabindex  start:0x80013D50 end:0x80013D80
+	.text       start:0x80166BD0 end:0x80167938
+	.ctors      start:0x8045BF64 end:0x8045BF68
+	.sdata2     start:0x8053D7F8 end:0x8053D840
+
+Game/poon.cpp:
+	extab       start:0x8000718C end:0x800071AC
+	extabindex  start:0x80013D80 end:0x80013DB0
+	.text       start:0x80167938 end:0x801688AC
+	.ctors      start:0x8045BF68 end:0x8045BF6C
+	.sdata2     start:0x8053D840 end:0x8053D8A8
+
+Game/popo.cpp:
+	extab       start:0x800073D4 end:0x800073FC
+	extabindex  start:0x80013FE4 end:0x80014020
+	.text       start:0x80172170 end:0x80172894
+	.ctors      start:0x8045BF78 end:0x8045BF7C
+	.rodata     start:0x804667F0 end:0x80466808
+	.sdata2     start:0x8053DA90 end:0x8053DAB8
 
 Game/stal.cpp:
 	extab       start:0x8000745C end:0x80007484
 	extabindex  start:0x800140B0 end:0x800140EC
 	.text       start:0x80175684 end:0x801769D8
 	.ctors      start:0x8045BF80 end:0x8045BF84
+	.rodata     start:0x80466820 end:0x80466838
+	.sdata2     start:0x8053DB50 end:0x8053DBB0
 
 Game/wizr.cpp:
 	extab       start:0x80007484 end:0x800074B4
@@ -1971,23 +2004,43 @@ Game/wizr.cpp:
 	.text       start:0x801769D8 end:0x80179150
 	.ctors      start:0x8045BF84 end:0x8045BF88
 
+Game/swbm.cpp:
+	extab       start:0x800074DC end:0x8000750C
+	extabindex  start:0x80014170 end:0x800141B8
+	.text       start:0x8017A44C end:0x8017B140
+	.ctors      start:0x8045BF8C end:0x8045BF90
+	.sdata2     start:0x8053DC78 end:0x8053DCA0
+
+Game/puku.cpp:
+	extab       start:0x8000750C end:0x8000753C
+	extabindex  start:0x800141B8 end:0x80014200
+	.text       start:0x8017B140 end:0x8017C01C
+	.ctors      start:0x8045BF90 end:0x8045BF94
+	.sdata2     start:0x8053DCA0 end:0x8053DD20
+
 Game/rdvr.cpp:
 	extab       start:0x800075B4 end:0x800075E4
 	extabindex  start:0x800142B4 end:0x800142FC
 	.text       start:0x80182914 end:0x80183544
 	.ctors      start:0x8045BF9C end:0x8045BFA0
+	.rodata     start:0x80466E90 end:0x80466EA8
+	.sdata2     start:0x8053DEC8 end:0x8053DEE0
 
 Game/gdmn.cpp:
 	extab       start:0x800075E4 end:0x80007614
 	extabindex  start:0x800142FC end:0x80014344
 	.text       start:0x80183544 end:0x80184040
 	.ctors      start:0x8045BFA0 end:0x8045BFA4
+	.rodata     start:0x80466EA8 end:0x80466EC0
+	.sdata2     start:0x8053DEE0 end:0x8053DF00
 
 Game/fagn.cpp:
 	extab       start:0x80007614 end:0x80007644
 	extabindex  start:0x80014344 end:0x8001438C
 	.text       start:0x80184040 end:0x80184D64
 	.ctors      start:0x8045BFA4 end:0x8045BFA8
+	.rodata     start:0x80466EC0 end:0x80466ED8
+	.sdata2     start:0x8053DF00 end:0x8053DF40
 
 Game/wnwn.cpp:
 	extab       start:0x80007644 end:0x8000766C
@@ -2000,12 +2053,14 @@ Game/fgn2.cpp:
 	extabindex  start:0x800143C8 end:0x80014440
 	.text       start:0x80187144 end:0x8018A8D8
 	.ctors      start:0x8045BFAC end:0x8045BFB0
+	.sdata2     start:0x8053DFE0 end:0x8053E0C8
 
 Game/bph2.cpp:
 	extab       start:0x800076BC end:0x80007724
 	extabindex  start:0x80014440 end:0x800144DC
 	.text       start:0x8018A8D8 end:0x8018EB94
 	.ctors      start:0x8045BFB0 end:0x8045BFB4
+	.sdata2     start:0x8053E0C8 end:0x8053E1C8
 
 Game/dgt2.cpp:
 	extab       start:0x80007724 end:0x8000774C
@@ -2018,12 +2073,14 @@ Game/gnon.cpp:
 	extabindex  start:0x80014560 end:0x800145F0
 	.text       start:0x80192038 end:0x80197070
 	.ctors      start:0x8045BFBC end:0x8045BFC0
+	.sdata2     start:0x8053E278 end:0x8053E370
 
 Game/tu_80197070.cpp:
 	extab       start:0x8000784C end:0x800078AC
 	extabindex  start:0x800145F0 end:0x80014680
 	.text       start:0x80197070 end:0x8019D12C
 	.ctors      start:0x8045BFC0 end:0x8045BFC4
+	.sdata2     start:0x8053E370 end:0x8053E440
 
 Game/tenn.cpp:
 	extab       start:0x8000793C end:0x8000798C
@@ -2036,12 +2093,14 @@ Game/enbz.cpp:
 	extabindex  start:0x800147D0 end:0x800147F4
 	.text       start:0x801A35AC end:0x801A3C50
 	.ctors      start:0x8045BFD0 end:0x8045BFD4
+	.sdata2     start:0x8053E5B0 end:0x8053E5C8
 
 Game/tu_801a3c50.cpp:
 	extab       start:0x800079A4 end:0x80007A0C
 	extabindex  start:0x800147F4 end:0x80014890
 	.text       start:0x801A3C50 end:0x801A6690
 	.ctors      start:0x8045BFD4 end:0x8045BFD8
+	.sdata2     start:0x8053E5C8 end:0x8053E628
 
 Game/ryya.cpp:
 	extab       start:0x80007A0C end:0x80007A3C
@@ -2054,12 +2113,20 @@ Game/hbb2.cpp:
 	extabindex  start:0x800148D8 end:0x80014908
 	.text       start:0x801A8194 end:0x801A908C
 	.ctors      start:0x8045BFDC end:0x8045BFE0
+	.sdata2     start:0x8053E690 end:0x8053E6E0
 
 Game/ttat.cpp:
 	extab       start:0x80007A5C end:0x80007AAC
 	extabindex  start:0x80014908 end:0x80014980
 	.text       start:0x801A908C end:0x801AAC8C
 	.ctors      start:0x8045BFE0 end:0x8045BFE4
+
+Game/gnma.cpp:
+	extab       start:0x80007AAC end:0x80007AEC
+	extabindex  start:0x80014980 end:0x800149E0
+	.text       start:0x801AAC8C end:0x801AC8EC
+	.ctors      start:0x8045BFE4 end:0x8045BFE8
+	.sdata2     start:0x8053E740 end:0x8053E7D0
 
 Game/ddgo.cpp:
 	extab       start:0x80007AEC end:0x80007B34
@@ -2072,12 +2139,14 @@ Game/okam.cpp:
 	extabindex  start:0x80014A4C end:0x80014AA0
 	.text       start:0x801AE9C4 end:0x801AFB38
 	.ctors      start:0x8045BFEC end:0x8045BFF0
+	.sdata2     start:0x8053E838 end:0x8053E888
 
 Game/egol.cpp:
 	extab       start:0x80007B6C end:0x80007B94
 	extabindex  start:0x80014AA0 end:0x80014ADC
 	.text       start:0x801AFB38 end:0x801B0A00
 	.ctors      start:0x8045BFF0 end:0x8045BFF4
+	.sdata2     start:0x8053E888 end:0x8053E8E0
 
 Game/zld3_801B0A00.cpp:
 	extab       start:0x80007B94 end:0x80007BC4

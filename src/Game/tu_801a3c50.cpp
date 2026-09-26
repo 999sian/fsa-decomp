@@ -60,5 +60,4 @@ extern "C" s32 fn_801A6108(void* this_, void* a4, void* a5) {
     return fn_801A5400(target, a4, a5);
 }
 
-
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -24,5 +24,19 @@ extern "C" void* fn_8018FB24(void* this_, s16 freeFlag) {
     return this_;
 }
 
+struct Dgt2Child { u8 pad[0x24]; s32 dead; u8 pad2[0xf4 - 0x28]; u32 flags; };
+struct Dgt2Links { u8 pad[0x3c0]; Dgt2Child* child[3]; };
+
+// Release the three linked child actors.
+extern "C" void fn_8018FAB4(Dgt2Links* this_) {
+    for (int i = 0; i < 3; i++) {
+        Dgt2Child* c = this_->child[i];
+        if (c != 0) {
+            c->flags |= 1;
+            c->dead = 1;
+            this_->child[i] = 0;
+        }
+    }
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
