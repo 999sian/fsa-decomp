@@ -1715,6 +1715,26 @@ extern "C" u8 fn_8042B148() {
 }
 
 #pragma dont_inline on
+extern u32 lbl_8053AE70;
+extern "C" void fn_8042DA10() {
+    u32 p = (lbl_8053AE70 + 0x1f) & ~0x1f;
+    lbl_8052AAB8[0] = p;
+    lbl_8052AAB8[1] = p + 0x80;
+    lbl_8052AAB8[2] = p + 0x100;
+    lbl_8052AAB8[3] = p + 0x180;
+    lbl_8052AAB8[4] = p + 0x200;
+    lbl_8052AAB8[5] = p + 0x280;
+}
+
+struct BitReader { u8* p; s32 w4; u8 b8; u8 b9; };
+extern "C" void fn_8042DC88(BitReader* r, u8* p) {
+    r->p = p;
+    r->w4 = 2;
+    r->b8 = (*r->p >> 4) & 7;
+    r->b9 = *r->p & 0xf;
+    r->p++;
+}
+
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
 #pragma dont_inline off
 
@@ -1856,6 +1876,12 @@ extern "C" void fn_8042E70C(u32 a) { fn_8042B084((ReadThreadObj*)lbl_8053AE7C, (
 
 #pragma dont_inline on
 extern "C" u32 fn_8042E734() { return fn_8042B054((ReadThreadObj*)lbl_8053AE7C); }
+#pragma dont_inline off
+
+#pragma dont_inline on
+extern "C" void* fn_8042E780(void* o);
+extern u8 lbl_80529DEC[];
+extern "C" void* fn_8042E758() { return fn_8042E780(lbl_80529DEC); }
 #pragma dont_inline off
 
 #pragma dont_inline on
