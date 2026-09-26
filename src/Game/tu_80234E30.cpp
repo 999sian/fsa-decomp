@@ -781,6 +781,37 @@ u8 fn_80239D38() {
     return 1;
 }
 
+u8 Player_GetField_0x454(Player*);
+u8 Player_GetField_0xce8(Player*);
+static inline u8 pGet454(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_GetField_0x454(lbl_8053AC90->players[i]);
+}
+static inline u8 pGetCE8(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_GetField_0xce8(lbl_8053AC90->players[i]);
+}
+static inline int pGetA04(int i) {
+    if (lbl_8053AC90 == NULL) return 1;
+    if (!isPlayerEnabled(i)) return 1;
+    return fn_80270A04(lbl_8053AC90->players[i]);
+}
+bool fn_80239F10() {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f)) return 0;
+    int n = 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
+            if (pGet454(i)) return 0;
+            if (pGetCE8(i)) return 0;
+            if (!(u8)pGetA04(i)) n++;
+        }
+    }
+    return n <= 1;
+}
+
 int fn_8023A1A4(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_8026FC20(lbl_8053AC90->players[idx]);
@@ -1070,6 +1101,33 @@ int fn_8023BE0C(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_8023FF88(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+u8 fn_80240670(Player*);
+u8 Player_IsLinked(Player*);
+int Player_GetLinkTargetIndex(Player*);
+int fn_80247C0C(Player*);
+static inline u8 pGet670(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 1;
+    return fn_80240670(lbl_8053AC90->players[i]);
+}
+static inline u8 pIsLinked(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int pLinkTarget(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isPlayerEnabled(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+int fn_8023C830(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (pGet670(idx)) return 0;
+    if (pIsLinked(idx)) return fn_80247C0C(lbl_8053AC90->players[pLinkTarget(idx)]);
+    return fn_80247C0C(lbl_8053AC90->players[idx]);
 }
 
 int fn_8023CA88(int idx) {
