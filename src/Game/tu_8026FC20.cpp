@@ -717,6 +717,52 @@ add:
     }
     return 0;
 }
+inline f32* roomOffset(s32 room) {
+    char* r = fn_802D6A9C();
+    return room < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
+}
+u8 fn_80245938(char*);
+u8 fn_8025F2CC(char*);
+u8 fn_80251BFC(char*, s32);
+bool fn_80272E98(char* p, const JGeometry::TBox2<f32>* box, s32 room) {
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (F32(p, 0x10) > 0.0f) {
+        return 0;
+    }
+    if (!fn_80245938(p)) {
+        return 0;
+    }
+    if (!fn_8025F2CC(p)) {
+        return 0;
+    }
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (!fn_80251BFC(p, 0x11)) {
+        return 0;
+    }
+    JGeometry::TBox2<f32> b(*box);
+    f32* o = roomOffset(room);
+    JGeometry::TVec2<f32> n;
+    n.x = -o[0];
+    n.y = -o[1];
+    b.addPos(n);
+    JGeometry::TBox2<f32> m(*(JGeometry::TBox2<f32>*)(p + 0x4d0));
+    f32* o2 = roomOffset(S32(p, 0x3b4));
+    JGeometry::TVec2<f32> n2;
+    n2.x = -o2[0];
+    n2.y = -o2[1];
+    m.addPos(n2);
+    m.i.setMax(b.i);
+    m.f.setMin(b.f);
+    bool r = 0;
+    if (m.f.x >= m.i.x && m.f.y >= m.i.y) {
+        r = 1;
+    }
+    return r;
+}
 u8 Player_GetField_0x454(char*);
 bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) {
     if (room != S32(p, 0x3b4)) {
@@ -822,10 +868,6 @@ bool fn_80273D44(void* a, void* b, void* c, void* d) {
         return 1;
     }
     return fn_80256F44(a, b, c, d) != 0;
-}
-inline f32* roomOffset(s32 room) {
-    char* r = fn_802D6A9C();
-    return room < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
 }
 u8 fn_80273E7C(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out, s32 arg) {
     if (!fn_802413F0(p)) {
