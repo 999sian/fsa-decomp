@@ -46,6 +46,7 @@ extern GameState* lbl_8053AAF8;
 }
 
 extern "C" {
+void fn_80252F80(Player*, const JGeometry::TVec3<f32>&, int, int, u8);
 int Fairy_GetSubField_0x290(Player*);
 int Fairy_GetSubField_0x294(Player*);
 int Player_CheckField_0xc9c(Player*);
@@ -652,6 +653,13 @@ int fn_80239878(int idx, int a1, int a2, int a3) {
     return 0;
 }
 
+void fn_80239914(int a1, int a2, int a3) {
+    if (lbl_8053AC90 == NULL) return;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i)) fn_80272DCC(lbl_8053AC90->players[i], a1, a2, a3);
+    }
+}
+
 int fn_802399D8(int idx, int a1, int a2, int a3) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80272DCC(lbl_8053AC90->players[idx], a1, a2, a3);
@@ -1015,6 +1023,32 @@ int fn_8023CE10(int idx) {
     return 0;
 }
 
+static inline int getFairy294(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return Fairy_GetSubField_0x294(lbl_8053AC90->players[idx]);
+}
+u16 fn_8023D4F8(const f32* pos, int idx) {
+    if (lbl_8053AC90 == NULL) return 0xe0;
+    if (!isPlayerEnabled(idx)) return 0xe0;
+    int d = (int)(pos[1] - pos[2]) - getFairy294(idx);
+    if (d >= -0x20 && d < 0xe0) return d;
+    return 0xe0;
+}
+
+static inline int getFairy290(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return Fairy_GetSubField_0x290(lbl_8053AC90->players[idx]);
+}
+u16 fn_8023D9B0(const f32* pos, int idx) {
+    if (lbl_8053AC90 == NULL) return 0x180;
+    if (!isPlayerEnabled(idx)) return 0x180;
+    int d = (int)pos[0] - getFairy290(idx);
+    if (d >= -0x40 && d < 0x140) return d;
+    return 0x180;
+}
+
 int fn_8023DE58(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
@@ -1211,9 +1245,29 @@ int fn_8023EFEC(int idx) {
     return 0;
 }
 
-void fn_80252F80(Player*);
+struct GameRng { u8 pad[0xb4]; u32 seed; };
+extern const f32 lbl_8054001C;
+extern const f32 lbl_8054002C;
+void fn_8023F088() {
+    if (lbl_8053AC90 == NULL) return;
+    for (int i = 0; i < 4; i++) {
+        GameRng* g = (GameRng*)lbl_8053AAF8;
+        g->seed = g->seed * 0x19660d + 0x3c6ef35f;
+        union { f32 f; u32 s; } u;
+        u.s = (g->seed >> 9) | 0x3f800000;
+        int r = (int)(lbl_8054002C * (u.f - lbl_8054001C));
+        if (r >= 4) r = 3;
+        JGeometry::TVec3<f32> tmp = lbl_8053AC90->pos[i];
+        lbl_8053AC90->pos[i] = lbl_8053AC90->pos[r];
+        lbl_8053AC90->pos[r] = tmp;
+    }
+    for (int j = 0; j < 4; j++) {
+        fn_80252F80(lbl_8053AC90->players[j], lbl_8053AC90->pos[j], lbl_8053AC90->a44[j], lbl_8053AC90->a54[j], lbl_8053AC90->a64[j]);
+    }
+}
+
 void fn_8023F1D4(int idx, const JGeometry::TVec3<f32>& v, int a, int b, u8 c) {
-    fn_80252F80(lbl_8053AC90->players[idx]);
+    fn_80252F80(lbl_8053AC90->players[idx], v, a, b, c);
     lbl_8053AC90->pos[idx] = v;
     lbl_8053AC90->a44[idx] = a;
     lbl_8053AC90->a54[idx] = b;
