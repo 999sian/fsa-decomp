@@ -94,6 +94,91 @@ extern "C" void* fn_802EE630(void* this_, short how) {
     return this_;
 }
 
+// ---- fn_802ED834: draw
+#include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
+extern u8* lbl_8053AB10;
+extern "C" void fn_802F745C(void*, void*, void*, DrawRec*);
+
+extern "C" void fn_802ED834(u8* this_) {
+    if (*(void**)(this_ + 0x2cc) != 0) {
+        DrawRec rec;
+        rec.b1c = 0;
+        *(s8*)&rec.b1d = -3;
+        rec.b24 = 1;
+        rec.b23 = 1;
+        rec.b21 = 1;
+        s32 id = *(s32*)(this_ + 4);
+        void* res = *(void**)(this_ + 0x2cc);
+        if (id < 8) {
+            fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, &rec);
+        }
+    }
+}
+
+// ---- fn_802EE704: link to WARP / SLR4 actors
+class GnefActor {
+public:
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual void v34();
+    virtual void v38();
+    virtual s32 v3C();
+    u8 pad04[0x08];
+    JGeometry::TVec3f mPos; // 0x0c
+    u8 pad18[0x1a0 - 0x18];
+    u32 mName; // 0x1a0
+};
+struct GnefActorMgr {
+    u8 pad00[8];
+    GnefActor* mActors[0x400]; // 0x08
+    s32 mCount; // 0x1008
+};
+extern "C" GnefActorMgr* fn_801F856C(void);
+extern f32 lbl_80541404;
+extern "C" void fn_802EEA24(u8 v);
+
+struct GnefObj {
+    u8 pad00[0xc];
+    f32 x, y;
+    u8 pad14[0x25c - 0x14];
+    s32 m25C;
+    s32 m260[2];
+};
+extern "C" void fn_802EE704(GnefObj* this_) {
+    s32 count = fn_801F856C()->mCount;
+    for (s32 i = 0; i < count; i++) {
+        GnefActor* a = fn_801F856C()->mActors[i];
+        if (a != 0 && a->mName == 'WARP' && this_->m25C == a->v3C()) {
+            JGeometry::TVec3f pos = a->mPos;
+            pos.x = this_->x;
+            pos.y = lbl_80541404 + this_->y;
+            a->mPos = pos;
+        }
+    }
+    s32 n = 0;
+    for (s32 j = 0; j < count; j++) {
+        GnefActor* a = fn_801F856C()->mActors[j];
+        if (a != 0 && a->mName == 'SLR4') {
+            this_->m260[n] = j;
+            n++;
+            fn_802EEA24(1);
+            if (n >= 2) {
+                break;
+            }
+        }
+    }
+}
+
 // fn_802EEA24 - GNEF: set global flag byte.
 extern u8 lbl_8053AB60;
 extern "C" void fn_802EEA24(u8 v) { lbl_8053AB60 = v; }
