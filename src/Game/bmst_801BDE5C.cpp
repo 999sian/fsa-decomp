@@ -206,4 +206,36 @@ extern "C" void fn_801BEA08(char* this_) {
     }
 }
 
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 fourCC, u32 owner, void* pos, u32 param, s32 p6, s32 p7);
+
+#pragma dont_inline on
+extern "C" void fn_801BE86C(char* this_) {
+    s16 a = *(s16*)(this_ + 0x2a8);
+    f32 c = JMASCos(a);
+    JGeometry::TVec3<f32> pos(10.0f * JMASSin(a) + *(f32*)(this_ + 0xc),
+                              -15.0f + (6.0f * c + *(f32*)(this_ + 0x10)),
+                              *(f32*)(this_ + 0x14));
+    s32 id = Actor_CreateByID(fn_801F856C(), 'LNBM', *(u32*)(this_ + 4), &pos, *(u32*)(this_ + 0x198), -1, -1);
+    if (id >= 0) {
+        char* actor = (char*)fn_801F666C(fn_801F856C(), id);
+        if (actor != 0) {
+            BOOL flag = FALSE;
+            if (pos.y >= -15.0f + *(f32*)(this_ + 0x10)) {
+                flag = TRUE;
+            }
+            *(s16*)(actor + 0x94) = flag;
+            s16 b = *(s16*)(this_ + 0x2a8);
+            f32 dc = 6.0f * JMASCos(b);
+            JGeometry::TVec2<f32> dir(10.0f * JMASSin(b), dc);
+            dir.normalize();
+            dir.scale(10.5f);
+            JGeometry::TVec3<f32> vel(dir.x, dir.y, 0.0f);
+            *(JGeometry::TVec3<f32>*)(actor + 0x3c) = vel;
+        }
+    }
+}
+#pragma dont_inline reset
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
