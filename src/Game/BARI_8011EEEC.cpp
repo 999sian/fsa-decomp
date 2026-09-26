@@ -171,6 +171,89 @@ struct BariVt {
     virtual u8 v11();
 };
 
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" u8 fn_801F2DB4(void* this_, u32 a, u32 b, s32 c);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" void fn_80239914(void* box, u32 a, u32 b);
+extern "C" void fn_80230FD0(s32 player, s32 id);
+
+static inline bool isEnded(BariEmitter* e) {
+    bool ret = false;
+    if ((e->mFlags & 8) && *(s32*)((char*)e + 0xd0) + *(s32*)((char*)e + 0xdc) == 0) {
+        ret = true;
+    }
+    return ret;
+}
+
+extern "C" void fn_8011F850(Bari* p) {
+    v03__5ActorFv(p);
+    f32 box[4];
+    box[0] = *(f32*)((char*)p + 0x80);
+    box[1] = *(f32*)((char*)p + 0x84);
+    box[2] = *(f32*)((char*)p + 0x88);
+    box[3] = *(f32*)((char*)p + 0x8c);
+    box[0] += p->mPos.x;
+    box[1] += p->mPos.y;
+    box[2] += p->mPos.x;
+    box[3] += p->mPos.y;
+    switch (*(s32*)((char*)p + 0x230)) {
+    case 0: {
+        fn_801F0E34(p, 0x50010, 0);
+        if (((BariVt*)p)->v11()) {
+            if (p->m240) {
+                fn_8011F5C0(p, 1);
+            } else {
+                fn_8011F5C0(p, 3);
+            }
+            break;
+        }
+        if (fn_801F2DB4(p, 'NULL', 'NULL', 0)) {
+            *(u32*)((char*)p + 0xd8) = 0;
+        }
+        u8 hit = fn_801F2B7C(p, *(s32*)((char*)p + 0x114), -1, 10);
+        if (!hit) {
+            fn_80239914(box, p->m4, *(u32*)((char*)p + 0x198));
+        } else {
+            for (s32 i = 0; i < 4; i++) {
+                if (hit & (1 << i)) {
+                    fn_80230FD0(i, 0x20042);
+                }
+            }
+        }
+        break;
+    }
+    case 1:
+        if (!p->m241) {
+            fn_8011F5C0(p, 2);
+        } else {
+            p->m23c++;
+            if (p->m23c >= 55) {
+            p->m23c = 0;
+            fn_8011F5C0(p, 2);
+            }
+        }
+        break;
+    case 2:
+        if (!((BariVt*)p)->v11()) {
+            fn_8011F5C0(p, 0);
+        }
+        break;
+    case 3:
+        if (p->m241) {
+            p->m23c++;
+            if (p->m23c == 55) {
+                fn_801F0E34(p, 0x50011, 0);
+                fn_8011F5C0(p, 4);
+            }
+        } else if (isEnded(p->mEmitters[0])) {
+            fn_8011F5C0(p, 4);
+        }
+        break;
+    case 4:
+        break;
+    }
+}
+
 extern "C" void fn_8011FAF0(char* p) {
     v01__5ActorFv(p);
     if ((*(u32*)(p + 0x90) & 1) == 1) {
