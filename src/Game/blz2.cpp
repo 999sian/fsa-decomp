@@ -105,7 +105,7 @@ struct Blz2Globals {
     void* m2c;
 };
 extern Blz2Globals* lbl_8053AB10;
-extern "C" void fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void* fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_80158B5C(void* mgr, s32 room, void* pos, Blz2Color color, f32 size);
 
 extern "C" void fn_802E4E6C(u8* self) {
@@ -176,6 +176,49 @@ extern "C" void fn_802E4D60(Blz2Obj* self) {
             self->mC[i] = NULL;
         }
     }
+}
+
+
+extern "C" void fn_802E57E0(u8* self) {
+    Blz2Obj* obj = (Blz2Obj*)self;
+    *(s32*)(self + 0x2f4) = ((*(u32*)(self + 0x90) >> 22) & 0x1f) + 1;
+    *(s32*)(self + 0x2f8) = ((*(u32*)(self + 0x90) >> 17) & 0x1f) + 1;
+    *(s32*)(self + 0x2fc) = *(u32*)(self + 0x90) & 0xf;
+    *(s32*)(self + 0x300) = (*(u32*)(self + 0x90) >> 4) & 1;
+    *(s32*)(self + 0x308) = (*(u32*)(self + 0x90) >> 12) & 0x1f;
+    for (s32 i = 0; i < 16; i++) {
+        obj->mA[i] = NULL;
+        obj->mB[i] = NULL;
+        obj->mC[i] = NULL;
+    }
+    if (*(s32*)(self + 0x300) == 0) {
+        JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(self + 0xc));
+        s32 n = 0;
+        for (s32 i = 0; i < *(s32*)(self + 0x2f4); i++) {
+            for (s32 j = 0; j < *(s32*)(self + 0x2f8); j++) {
+                fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x34c, 0, 0, 0, 0, 1);
+                fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x34d, 0, 0, 0, 0, 1);
+                obj->mC[n++] = (Blz2Child*)fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x54d, 1, 0, 0, 0, 1);
+                pos.y += 16.0f;
+            }
+            pos.y = *(f32*)(self + 0x10);
+            pos.x += 16.0f;
+        }
+        *(s32*)(self + 0x2f0) = 2;
+        *(u16*)(self + 0x94) = 1;
+    } else {
+        *(s32*)(self + 0x2f0) = 0;
+        *(u16*)(self + 0x94) = 0;
+    }
+    *(f32*)(self + 0x60) = -8.0f;
+    *(f32*)(self + 0x64) = -8.0f;
+    *(f32*)(self + 0x68) = 8.0f;
+    *(f32*)(self + 0x6c) = 8.0f;
+    *(f32*)(self + 0x80) = -7.0f;
+    *(f32*)(self + 0x84) = -7.0f;
+    *(f32*)(self + 0x88) = 7.0f;
+    *(f32*)(self + 0x8c) = 7.0f;
+    *(s32*)(self + 0x114) = 1;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
