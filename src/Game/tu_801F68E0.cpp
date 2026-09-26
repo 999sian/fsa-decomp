@@ -588,4 +588,123 @@ extern "C" s32 fn_801F732C(ActorPool* pool, s32 param, f32* center, f32* pos, s3
     return id;
 }
 
+struct PoolLock {
+    u8 pad0[0x31];
+    u8 m31;
+};
+
+struct PoolHolder2 {
+    u8 pad0[4];
+    struct {
+        u8 pad0[8];
+        u8* m8;
+    }* m4;
+};
+
+struct PoolSlots {
+    u8 pad0[8];
+    ActorSlot2* mActors[0x400];
+    s32 mCount;
+    void* mLocks[0x400];
+};
+
+extern "C" void fn_801F8E4C(u8* pool) {
+    PoolSlots* p = (PoolSlots*)pool;
+    u32 off;
+    u32 i = 0;
+    for (off = i; i < 0x400; i++, off += 4) {
+        PoolSlots* s = (PoolSlots*)(pool + off);
+        if (s->mActors[0] != 0) {
+            fn_80456120(s->mLocks[0]);
+            if (s->mActors[0] != 0) {
+                s->mActors[0]->destroy(1);
+            }
+            s->mActors[0] = 0;
+            if ((s32)(i + 1) == p->mCount) {
+                s32 j;
+                for (j = p->mCount - 2; j >= 0; j--) {
+                    if (p->mActors[j] != 0) {
+                        break;
+                    }
+                }
+                p->mCount = j + 1;
+            }
+        }
+    }
+    fn_80456120(*(void**)(pool + 0x200c));
+    (*(PoolLock**)(pool + 0x200c))->m31 = 1;
+    *(s32*)(pool + 0x2010) = 0;
+    *(s32*)(pool + 0x2014) = -1;
+    *(s32*)(pool + 0x1008) = -1;
+    ((PoolHolder2*)lbl_8053AAF8)->m4->m8[0x305c] = 0;
+    *(s32*)(pool + 0x2018) = 0;
+    pool[0x3041] = 0;
+}
+
+#include "JSystem/JKernel/JKRHeap.h"
+
+struct PoolLockBase {
+    u8 pad0[8];
+    virtual void l0();
+    virtual void l1();
+    virtual void l2();
+    virtual void l3();
+    virtual void l4();
+    virtual void l5();
+    virtual void l6();
+    virtual void l7();
+    virtual void l8();
+    virtual void l9();
+    virtual void release(s32 flag);
+};
+
+typedef JKRHeap PoolHeap;
+
+struct ActorPoolFull {
+    virtual ~ActorPoolFull();
+    PoolHeap* mHeap;
+    ActorSlot2* mActors[0x400];
+    s32 mCount;
+    PoolLockBase* mLocks[0x400];
+    PoolLockBase* mLock;
+    u8 pad2010[0x304c - 0x2010];
+    void* mBuf0;
+    void* mBuf1;
+    void* mBuf2;
+    void* mBuf3;
+};
+
+extern void* lbl_804A5800[];
+
+extern "C" ActorPoolFull* fn_801F8F6C(ActorPoolFull* self, s16 freeFlag) {
+    if (self != NULL) {
+        *(void***)self = lbl_804A5800;
+        if (self->mLock != NULL) {
+            self->mLock->release(1);
+        }
+        for (s32 i = 0x3ff; i >= 0; i--) {
+            if (self->mLocks[i] != NULL) {
+                self->mLocks[i]->release(1);
+            }
+        }
+        for (s32 i = 0x3ff; i >= 0; i--) {
+            if (self->mActors[i] != NULL) {
+                if (self->mActors[i] != NULL) {
+                    self->mActors[i]->destroy(1);
+                }
+                self->mActors[i] = NULL;
+            }
+        }
+        delete[] (u8*)self->mBuf0;
+        delete[] (u8*)self->mBuf1;
+        delete[] (u8*)self->mBuf2;
+        delete[] (u8*)self->mBuf3;
+        self->mHeap->destroy();
+        if (freeFlag > 0) {
+            ::operator delete(self);
+        }
+    }
+    return self;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
