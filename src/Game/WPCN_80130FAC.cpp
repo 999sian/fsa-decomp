@@ -158,4 +158,103 @@ extern "C" void fn_8013123C(char* p) {
     fn_801F02BC(p, lbl_8046513C, *(char**)(p + 0x240) + 0x14c, &param, 0x407, 1, 0, lbl_8053CCA8, lbl_8053CCA8);
 }
 
+#include "JSystem/JGeometry/Vec.h"
+typedef JGeometry::TVec3<f32> WpcnVec;
+extern const f32 lbl_8053CCDC;
+extern const f32 lbl_8053CCB4;
+extern const f32 lbl_8053CCE0;
+extern const f32 lbl_8053CCCC;
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AD70;
+extern char* lbl_8053AB10;
+extern "C" void fn_80230FD0(s32 player, u32 id);
+extern "C" void fn_80134DE4(void* game, s32 a, s32 b);
+extern "C" void fn_8037AE00(void* p);
+extern "C" void fn_8037AE30(void* p);
+extern "C" WpcnVec* fn_8023E32C(s32 i);
+extern "C" WpcnVec* fn_8023E724(s32 i);
+extern "C" u8 fn_80230360(s32 i);
+extern "C" void fn_80230498(s32 i, const WpcnVec& pos, s32 id, s32 a, s32 b, s32 c, s32 d);
+extern "C" u16 fn_8023CBC0(s32 i);
+extern "C" void fn_802F601C(void* mgr, WpcnVec* pos, s32 a, s32 b, f32 c, f32 d);
+extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230534(s32 i);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D9FF4(void* mgr, s32 a, s32 b);
+extern "C" void fn_80136798(void* game, s32 a, s32 b);
+extern "C" void fn_8023077C(void);
+
+static inline bool wpcnAllActive() {
+    for (s32 i = 0; i < 4; i++) {
+        if (!fn_80230360(i)) {
+            return false;
+        }
+    }
+    return true;
+}
+
+extern "C" void fn_80130FAC(char* p, s32 state) {
+    s32 i;
+    *(s32*)(p + 0x268) = state;
+    switch (*(s32*)(p + 0x268)) {
+    case 1:
+        fn_80230FD0(*(s32*)(p + 0x26c), 0x20035);
+        break;
+    case 2:
+        *(f32*)(p + 0x27c) = lbl_8053CCDC;
+        fn_80230FD0(0, 0x20036);
+        fn_80134DE4(lbl_8053AAF8, 1, 0);
+        fn_8037AE00(lbl_8053AD70);
+        break;
+    case 3:
+        *(WpcnVec*)(p + 0x290) = *fn_8023E32C(0);
+        {
+            s32 j;
+            for (j = 0; j < 4; j++) {
+                if (!fn_80230360(j)) {
+                    goto skip;
+                }
+            }
+            *(s32*)(p + 0x278) = 0;
+        skip:
+            for (j = 0; j < 4; j++) {
+                fn_80230498(j, *(WpcnVec*)(p + 0x290), 0xb0, 0, -0x80, -0x80, 1);
+            }
+        }
+        break;
+    case 4:
+        for (i = 0; i < 4; i++) {
+            s32 id = fn_8023CBC0(i);
+            fn_80230498(i, *fn_8023E724(i), id, 0xff, -0x80, -0x80, 1);
+        }
+        for (i = 0; i < 4; i++) {
+            fn_80230FD0(i, 0x10003);
+        }
+        *(f32*)(p + 0x27c) = lbl_8053CCB4;
+        fn_802F601C(*(void**)(lbl_8053AB10 + 0x20), (WpcnVec*)(p + 0x290), 1, 0, lbl_8053CCA8, lbl_8053CCE0);
+        fn_8013CC50(0, p + 0x290, lbl_8053CCA8, 0x17d, 1, 0, 0, 0, 1);
+        break;
+    case 6:
+        fn_80230534(0);
+        fn_802D9FF4(fn_802D6A9C(), *(s32*)(p + 0x270), *(s32*)(p + 0x274));
+        fn_80136798(lbl_8053AAF8, 0xd, 0);
+        fn_8037AE30(lbl_8053AD70);
+        break;
+    case 7:
+        fn_8023077C();
+        *(s32*)(p + 0x278) = 0;
+        for (i = 0; i < 4; i++) {
+            WpcnVec pos(*fn_8023E724(i));
+            pos.z = lbl_8053CCCC;
+            fn_80230498(i, pos, 0xb0, 0xff, -0x80, -0x80, 1);
+        }
+        *(f32*)(p + 0x27c) = lbl_8053CCA0;
+        break;
+    case 8:
+        fn_80230534(0);
+        *(u8*)(p + 0x11c) = 0;
+        break;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
