@@ -1,6 +1,4 @@
 // DEAL_80108414: .text 0x80108414-0x80108A6C (actor DEAL)
-// NOTE: code 100%; kept NonMatching until the Actor ctor/dtor carry their
-// C++ names (__ct__5ActorFv/__dt__5ActorFv) in symbols.txt ( Actor TU).
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
@@ -27,29 +25,6 @@ extern "C" void* fn_80108414(void* this_, s16 freeFlag) {
         }
     }
     return this_;
-}
-
-// ---- from Game/fn_801087F4_ctor.cpp
-
-struct Actor {
-    Actor();
-    ~Actor();
-};
-
-extern "C" void fn_801D267C(void*);
-extern void* lbl_8049CD48[];
-
-class fn_801087F4_actor : public Actor {
-public:
-    fn_801087F4_actor();
-};
-
-fn_801087F4_actor::fn_801087F4_actor() : Actor() {
-    *(void**)this = lbl_8049CD48;
-    char* p = (char*)this;
-    *(s32*)(p + 0x230) = 0;
-    *(s32*)(p + 0x234) = -1;
-    fn_801D267C(p + 0x238);
 }
 
 // ---- fn_80108494 / fn_80108568 / fn_80108764
@@ -181,6 +156,29 @@ extern "C" void fn_80108764(u8* this_) {
     fn_801D2608(this_ + 0x238, lbl_80539ED8, 1);
     fn_801D22DC(this_ + 0x238, 0, 2, 0);
     fn_801D1F14(this_ + 0x238, lbl_8053C324);
+}
+
+// ---- from Game/fn_801087F4_ctor.cpp
+
+struct Actor {
+    Actor();
+    ~Actor();
+};
+
+extern "C" void fn_801D267C(void*);
+extern void* lbl_8049CD48[];
+
+class fn_801087F4_actor : public Actor {
+public:
+    fn_801087F4_actor();
+};
+
+fn_801087F4_actor::fn_801087F4_actor() : Actor() {
+    *(void**)this = lbl_8049CD48;
+    char* p = (char*)this;
+    *(s32*)(p + 0x230) = 0;
+    *(s32*)(p + 0x234) = -1;
+    fn_801D267C(p + 0x238);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

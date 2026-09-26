@@ -1038,7 +1038,7 @@ config.libs = [
             Object(NonMatching, "Game/WLFT_80106040.cpp"),
             Object(NonMatching, "Game/WIND_80106ADC.cpp"),
             Object(NonMatching, "Game/CNON_80107360.cpp"),
-            Object(NonMatching, "Game/DEAL_80108414.cpp"),
+            Object(Matching, "Game/DEAL_80108414.cpp"),
             Object(NonMatching, "Game/SHTM_80108A6C.cpp"),
             Object(NonMatching, "Game/ICCL_8010B284.cpp"),
             Object(NonMatching, "Game/DBMS_8010DA6C.cpp"),
