@@ -10,7 +10,6 @@ extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049DEE8[];
 
 extern "C" void v01__5ActorFv(void* this_);
-extern "C" void fn_8011F5C0(void* this_, s32 state);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern "C" void __dl__FPv(void* p);
@@ -19,19 +18,34 @@ struct BariEmitter {
     u8 pad[0xa4];
     JGeometry::TVec3<f32> mGlobalTrs;
     void setGlobalTranslation(const JGeometry::TVec3<f32>& v) { mGlobalTrs.set(v); }
+    u8 padb0[0xf4 - 0xb0];
+    u32 mFlags;
+    void setStatus(u32 f) { mFlags |= f; }
+    void clearStatus(u32 f) { mFlags &= ~f; }
 };
+
+static inline void stopEmitter(BariEmitter* e) {
+    if (e != 0) {
+        e->setStatus(1);
+        *(s32*)((char*)e + 0x24) = 1;
+    }
+}
 
 extern "C" BariEmitter* fn_8013CC50(u32 id, void* pos, s32 type, s32 p4, s32 p5, u32 p6, u32 p7, u32 p8, f32 f);
 extern "C" void fn_8013CAA4(BariEmitter* e, f32 angle);
 
 struct Bari {
-    u8 pad0[0x4];
+    void* vtbl;
     u32 m4;
     u8 pad8[0x4];
     JGeometry::TVec3<f32> mPos; // 0xc
     u8 pad18[0x234 - 0x18];
     s32 m234;
-    u8 pad238[0x244 - 0x238];
+    s32 m238;
+    s32 m23c;
+    u8 m240;
+    u8 m241;
+    u8 pad242[2];
     BariEmitter* mEmitters[3]; // 0x244
     BariEmitter* m250;
     BariEmitter* m254;
@@ -71,6 +85,74 @@ extern "C" void fn_8011F314(Bari* p) {
         b.x += 64.0f;
         p->m254->setGlobalTranslation(b);
         break;
+    }
+}
+
+extern "C" void fn_8011EEEC(Bari* p);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D8050(void* cfg, s32 id, s32 a, s32 b);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
+extern "C" void fn_801F0D20(void* this_, s32 a);
+extern "C" void detach__5ActorFv(void* this_);
+
+extern "C" void fn_8011F5C0(Bari* p, s32 state) {
+    *(s32*)((char*)p + 0x230) = state;
+    switch (state) {
+    case 0:
+        *(u32*)((char*)p + 0xb0) = 0xa040304;
+        if (p->m240) {
+            p->mEmitters[0]->clearStatus(4);
+            p->mEmitters[1]->clearStatus(4);
+            p->mEmitters[2]->clearStatus(4);
+            p->m250->clearStatus(4);
+            p->m254->clearStatus(4);
+            s32 id = p->m238;
+            if (id > 0) {
+                fn_802D8050(fn_802D6A9C(), id, 0, 0xff);
+            }
+        }
+        break;
+    case 1:
+        fn_8011EEEC(p);
+        p->mEmitters[0]->setStatus(4);
+        p->mEmitters[1]->setStatus(4);
+        p->mEmitters[2]->setStatus(4);
+        p->m250->setStatus(4);
+        p->m254->setStatus(4);
+        p->m23c = 0;
+        break;
+    case 2: {
+        fn_801F0E34(p, 0x50011, 0);
+        *(u32*)((char*)p + 0xb0) = 0;
+        s32 id = p->m238;
+        if (id > 0) {
+            fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
+        }
+        break;
+    }
+    case 3:
+        if (!p->m241) {
+            fn_801F0E34(p, 0x50011, 0);
+        }
+        p->m23c = 0;
+        fn_8011EEEC(p);
+        for (s32 i = 0; i < 3; i++) {
+            stopEmitter(p->mEmitters[i]);
+        }
+        stopEmitter(p->m250);
+        stopEmitter(p->m254);
+        break;
+    case 4: {
+        s32 id = p->m238;
+        if (id > 0) {
+            fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
+        }
+        if (!p->m241) {
+            fn_801F0D20(p, 3);
+        }
+        detach__5ActorFv(p);
+        break;
+    }
     }
 }
 
@@ -137,7 +219,7 @@ extern "C" void fn_8011FAF0(char* p) {
     *(u32*)(p + 0xb0) = 0xa040304;
     fn_8011F314((Bari*)p);
     if (((BariVt*)p)->v11()) {
-        fn_8011F5C0(p, 1);
+        fn_8011F5C0((Bari*)p, 1);
     }
 }
 
