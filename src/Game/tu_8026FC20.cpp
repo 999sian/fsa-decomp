@@ -844,7 +844,7 @@ inline bool areaTail(char* p, const f32* box, f32 h) {
     }
     return r;
 }
-bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) {
+inline bool areaCheck(char* p, const f32* box, s32 room, u8 force, f32 h) {
     if (room != S32(p, 0x3b4)) {
         return 0;
     }
@@ -856,6 +856,52 @@ bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) {
     }
     return areaTail(p, box, h);
 }
+inline BOOL areaTailB(char* p, const f32* box, f32 h) {
+    char* base = (char*)PTR(p, 0x3b4);
+    if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) == 0 && F32(p, 0x10) > h) {
+        return 0;
+    }
+    if (U8(p, 0xcee) != 0) {
+        return 0;
+    }
+    if (U8(p, 0x1216) != 0) {
+        return 0;
+    }
+    if (U8(p, 0x1215) != 0) {
+        return 0;
+    }
+    if (U8(p, 0xcf0) != 0) {
+        return 0;
+    }
+    if (S32(p, 0x1238) > 0) {
+        return 0;
+    }
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    JGeometry::TBox2<f32> b(*(JGeometry::TBox2<f32>*)(p + 0x4c0));
+    const JGeometry::TBox2<f32>* o = (const JGeometry::TBox2<f32>*)box;
+    b.i.setMax(o->i);
+    b.f.setMin(o->f);
+    BOOL r = 0;
+    if (b.f.x >= b.i.x && b.f.y >= b.i.y) {
+        r = 1;
+    }
+    return r;
+}
+inline BOOL areaCheckB(char* p, const f32* box, s32 room, u8 force, f32 h) {
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (!force && isDying(p)) {
+        return 0;
+    }
+    if (Player_GetField_0x454(p)) {
+        return 0;
+    }
+    return areaTailB(p, box, h);
+}
+bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) { return areaCheck(p, box, room, force, h); }
 bool fn_802732C4(char* p, const f32* box, s32 room) {
     if ((u8)isBusy(p)) {
         return 0;
@@ -936,6 +982,43 @@ bool fn_80273D44(void* a, void* b, void* c, void* d) {
         return 1;
     }
     return fn_80256F44(a, b, c, d) != 0;
+}
+inline u8 hitCheck8(char* p, const f32* box, s32 room) {
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (isDying(p)) {
+        return 0;
+    }
+    if (Player_GetField_0x454(p)) {
+        return 0;
+    }
+    return areaTail(p, box, 8.0f);
+}
+u8 fn_80273FB8(char* p, const JGeometry::TBox2<f32>* bx, s32 room, f32* out) {
+    const f32* box = (const f32*)bx;
+    U8(p, 0x492) = 0;
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    BOOL r = 0;
+    if (fn_80247BD4(p) > 0) {
+        r = areaCheckB(p, box, room, 0, 8.0f);
+        if ((u8)r == 1) {
+            out[0] = F32(p, 0x8);
+            out[1] = F32(p, 0xc);
+        }
+        U8(p, 0x492) = 1;
+    }
+    if ((u8)r == 1) {
+        f32* o = roomOffset(room);
+        out[0] += o[0];
+        out[1] += o[1];
+    }
+    return (u8)r;
 }
 u8 fn_80273E7C(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out, s32 arg) {
     if (!fn_802413F0(p)) {
