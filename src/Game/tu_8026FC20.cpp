@@ -353,6 +353,39 @@ void fn_80270318(char* p) {
 }
 s32 fn_80270350(char* p) { return S32(p, 0xc64); }
 s32 fn_80270358(char* p) { return S32(p, 0xc50); }
+void fn_80270360(char* p, s32 id) {
+    if (S32(p, 0xc50) < 9999999) {
+        S32(p, 0xc50) += 1;
+    }
+    char* a = (char*)fn_801F666C(fn_801F856C(), id);
+    if (a == NULL) {
+        return;
+    }
+    s32 kind;
+    switch (S32(a, 0x1a0)) {
+    case 'OKTA': kind = 0; break;
+    case 'AMOS': kind = 1; break;
+    case 'POOH': kind = 2; break;
+    case 'BZBR': kind = 3; break;
+    case 'DDRK': kind = 4; break;
+    case 'DGTL': kind = 5; break;
+    case 'HINO': kind = 6; break;
+    case 'SLR1': kind = 7; break;
+    case 'TKTA': kind = 8; break;
+    case 'SLR2': kind = 7; break;
+    case 'KETH': kind = 9; break;
+    case 'BPOH': kind = 10; break;
+    case 'MOZO': kind = 11; break;
+    case 'Poon': kind = 12; break;
+    default: kind = 13; break;
+    }
+    if (kind < 13) {
+        s32* c = (s32*)(p + kind * 4);
+        if (c[0xc1c / 4] < 9999999) {
+            c[0xc1c / 4] += 1;
+        }
+    }
+}
 void fn_802708D0(char* p) {
     U8(p, 0xd2d) = 1;
     S32(p, 0xd30) = 0;
