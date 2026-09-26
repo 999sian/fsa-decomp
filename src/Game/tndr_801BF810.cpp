@@ -155,4 +155,55 @@ extern "C" s32 fn_801BFA50(char* this_) {
     return r;
 }
 
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" void fn_801D2608(void* obj, void* tbl, s32 n);
+extern "C" void fn_801D22DC(void* obj, s32 a, s32 b, s32 c);
+extern u8 lbl_8053A128[8];
+extern const f32 lbl_8053ED80;
+extern const f32 lbl_8053ED84;
+extern const f32 lbl_8053ED88;
+extern const f32 lbl_8053ED8C;
+extern const f32 lbl_8053ED58;
+
+extern "C" void fn_801C097C(char* this_) {
+    fn_801D0ED0(this_);
+    *(u8*)(this_ + 0x2b4) = ((u8)*(u32*)(this_ + 0x90) > 4) ? (u8)*(u32*)(this_ + 0x90) : 4;
+    if (*(u32*)(this_ + 0x90) >> 31) {
+        *(u32*)(this_ + 0x230) |= 0x4000;
+    }
+    *(f32*)(this_ + 0x80) = lbl_8053ED30;
+    *(f32*)(this_ + 0x84) = lbl_8053ED30;
+    *(f32*)(this_ + 0x88) = lbl_8053ED80;
+    *(f32*)(this_ + 0x8c) = lbl_8053ED80;
+    *(f32*)(this_ + 0x60) = lbl_8053ED84;
+    *(f32*)(this_ + 0x64) = lbl_8053ED88;
+    *(f32*)(this_ + 0x68) = lbl_8053ED8C;
+    *(f32*)(this_ + 0x6c) = lbl_8053ED58;
+    if (*(u32*)(this_ + 0x230) & 0x4000) {
+        *(f32*)(this_ + 0x70) = lbl_8053ED30;
+        *(f32*)(this_ + 0x74) = lbl_8053ED30;
+        *(f32*)(this_ + 0x78) = lbl_8053ED80;
+        *(f32*)(this_ + 0x7c) = lbl_8053ED80;
+        *(u32*)(this_ + 0xb0) = 0;
+    } else {
+        *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+        *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+        *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+        *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+        *(u32*)(this_ + 0xb0) = 0x50202;
+    }
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x20;
+    *(u8*)(this_ + 0x194) = 1;
+    *(f32*)(this_ + 0x14) = lbl_8053ED30;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = fn_801CD664(0x37) + 6;
+    *(f32*)(this_ + 0x254) = lbl_8053ED34;
+    *(f32*)(this_ + 0x258) = lbl_8053ED34;
+    fn_801D2608(this_ + 0x270, lbl_8053A128, 2);
+    fn_801D22DC(this_ + 0x270, 0, 0, 0);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
