@@ -93,7 +93,6 @@ extern "C" int fn_801BA88C(void* this_, void* a, void* b) {
     return fn_801F15BC(this_, a, b);
 }
 
-extern "C" void fn_801BB1A8(void) {}
 
 template <typename T>
 inline T znraClamp(T v, T lo, T hi) {
@@ -271,6 +270,96 @@ extern "C" void fn_801BA8F8(ZNRA* this_) {
         znraSetBox(p, -12.0f, 12.0f);
         break;
     }
+}
+
+struct ZnraCell {
+    ZnraCell() {}
+    s32 x, y;
+};
+extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, s32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
+extern "C" void fn_801D22A0(void* obj, u32 a, u32 b);
+
+extern "C" void fn_801BACE8(ZNRA* this_, s32 state) {
+    u8* p = (u8*)this_;
+    switch (state) {
+    case 0:
+        this_->m250 = fn_801CD664(0x79) + 0x3c;
+        *(f32*)(p + 0x54) = 0.0f;
+        *(f32*)(p + 0x58) = 0.0f;
+        *(f32*)(p + 0x5c) = 0.0f;
+        break;
+    case 1:
+        this_->m250 = fn_801CD664(0x79) + 0x3c;
+        fn_801D22DC(p + 0x270, 0, 2, 0);
+        if (*(u32*)(p + 0x1a0) == 'ZORA') {
+            JGeometry::TVec3<f32> pos;
+            s32 i, j;
+            u32 n = *(u32*)(p + 0x90);
+            JGeometry::TVec3<f32> dst(*(JGeometry::TVec3<f32>*)(p + 0x24));
+            if (n != 0) {
+                s32 cnt = 0;
+                ZnraCell cells[0x3c1];
+                for (i = -n; i <= (s32)n; i++) {
+                    f32 dx = 16.0f * i;
+                    for (j = -n; j <= (s32)n; j++) {
+                        pos.x = *(f32*)(p + 0x24);
+                        pos.y = *(f32*)(p + 0x28);
+                        pos.z = *(f32*)(p + 0x2c);
+                        pos.x = pos.x + dx;
+                        pos.y = 16.0f * j + pos.y;
+                        if ((u16)((u32(*)(void*, u32))fn_8022461C)(&pos, *(u32*)(p + 4)) == 13) {
+                            cells[cnt].x = i;
+                            cells[cnt].y = j;
+                            cnt++;
+                        }
+                    }
+                }
+                if (cnt > 0) {
+                    s32 k = fn_801CD664(cnt);
+                    dst.x = 16.0f * cells[k].x + dst.x;
+                    dst.y = 16.0f * cells[k].y + dst.y;
+                }
+            }
+            *(JGeometry::TVec3<f32>*)(p + 0xc) = dst;
+            *(JGeometry::TVec3<f32>*)(p + 0x18) = dst;
+        }
+        *(f32*)(p + 0x54) = 0.0f;
+        *(f32*)(p + 0x58) = 0.0f;
+        *(f32*)(p + 0x5c) = 0.0f;
+        *(void**)(p + 0x2a8) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x555, -1, 0, 0, 0, 1, 1.0f);
+        break;
+    case 2:
+        this_->m250 = (u32)-1;
+        fn_801D22DC(p + 0x270, 1, 0, 0);
+        fn_801EE434(*(void**)(p + 0x2a8));
+        *(void**)(p + 0x2a8) = 0;
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x15b, 0, 1, 0, 0, 1, 1.0f);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x15c, -1, 0, 0, 0, 1, 1.0f);
+        fn_801F0E34(this_, 0x40050, 0);
+        break;
+    case 3:
+        znraSetBox(p, -12.0f, 12.0f);
+        this_->m230 &= ~0x100;
+        this_->m250 = fn_801CD664(0x29) + 0x28;
+        fn_801D22A0(p + 0x270, 2, 2);
+        break;
+    case 4:
+        this_->m250 = (u32)-1;
+        fn_801D22DC(p + 0x270, 3, 0, 0);
+        break;
+    case 5:
+        this_->v39();
+        znraSetBox(p, 1.0f, -1.0f);
+        this_->m230 |= 0x100;
+        this_->m250 = (u32)-1;
+        fn_801D22DC(p + 0x270, 4, 0, 0);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x15b, 0, 1, 0, 0, 1, 1.0f);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, 0x15c, -1, 0, 0, 0, 1, 1.0f);
+        fn_801F0E34(this_, 0x50032, 0);
+        break;
+    }
+    this_->m24C = 0;
+    *(s32*)(p + 0x248) = state;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
