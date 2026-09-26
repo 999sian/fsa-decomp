@@ -1047,6 +1047,12 @@ void* fn_8023E214(int idx) {
     return lbl_804CF460;
 }
 
+void* fn_8023E2A0(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcc8;
+    return lbl_804CF460;
+}
+
 void* fn_8023E32C(int idx) {
     if (lbl_8053AC90 == NULL) return lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcb0;
@@ -1057,6 +1063,59 @@ void* fn_8024C378(Player*);
 void* fn_8023E3B8(int idx) {
     if (lbl_8053AC90 == NULL) return lbl_804CF460;
     if (isPlayerEnabled(idx)) return fn_8024C378(lbl_8053AC90->players[idx]);
+    return lbl_804CF460;
+}
+
+struct PlayerB { u8 pad[0x284]; u8 a284[8]; };
+u8 fn_8023E45C(int idx, int j) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(idx)) {
+        PlayerB* p = (PlayerB*)lbl_8053AC90->players[idx];
+        return p->a284[j];
+    }
+    return 0;
+}
+
+void* fn_8023E4E4(int idx, int j) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x38 + j * 0xc;
+    return lbl_804CF460;
+}
+
+void* fn_8023E578(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x14;
+    return lbl_804CF460;
+}
+
+void* fn_8023E604(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x2c4;
+    return lbl_804CF460;
+}
+
+void fn_8023E690(int idx, const f32* v) {
+    if (lbl_8053AC90 == NULL) return;
+    if (isPlayerEnabled(idx)) {
+        f32 z = v[2];
+        f32 y = v[1];
+        f32 x = v[0];
+        f32* p = (f32*)lbl_8053AC90->players[idx];
+        p[2] = x; p[3] = y; p[4] = z;
+        p[11] = x; p[12] = y; p[13] = z;
+    }
+}
+
+void* fn_8023E724(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x8;
+    return lbl_804CF460;
+}
+
+void* fn_8024145C(Player*);
+void* fn_8023E7B0(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return fn_8024145C(lbl_8053AC90->players[idx]);
     return lbl_804CF460;
 }
 
