@@ -2979,9 +2979,14 @@ game/tu_80442810.cpp:
 	.ctors      start:0x8045C5D0 end:0x8045C5D4
 
 game/tu_80455930.cpp:
-	extab       start:0x800115D4 end:0x800115F4
-	extabindex  start:0x80021568 end:0x80021580
-	.text       start:0x80455930 end:0x80455CA4
+	extab       start:0x800115BC end:0x800115F4
+	extabindex  start:0x80021544 end:0x80021580
+	.text       start:0x8045560C end:0x80455CA4
 	.ctors      start:0x8045C60C end:0x8045C610
+	.rodata     start:0x804914A8 end:0x80491590
+	.data       start:0x804B1DF0 end:0x804B1E28
+	.bss        start:0x8052D900 end:0x8052D96C
+	.sdata2     start:0x80543E60 end:0x80543E68
+
 Runtime.PPCEABI.H/__mem.c:
 	.init       start:0x8000540C end:0x80005544
