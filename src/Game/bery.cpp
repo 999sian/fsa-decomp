@@ -68,7 +68,9 @@ struct Bery {
 };
 
 struct BeryFull {
-    u8 pad0[0xc];
+    u8 pad0[0x4];
+    s32 mRoom;                    // 0x04
+    u8 pad8[0x4];
     JGeometry::TVec3<f32> mPos;   // 0x0C
     u8 pad18[0x3c - 0x18];
     JGeometry::TVec3<f32> mVel;   // 0x3C
@@ -76,7 +78,9 @@ struct BeryFull {
     f32 m60, m64, m68, m6C;       // 0x60
     u8 pad70[0x90 - 0x70];
     u32 mParam;                   // 0x90
-    u8 pad94[0x230 - 0x94];
+    u8 pad94[0x198 - 0x94];
+    void* m198;                   // 0x198
+    u8 pad19C[0x230 - 0x19c];
     s32 mState;         // 0x230
     s32 mPlayer;        // 0x234
     s32 m238;
@@ -284,6 +288,87 @@ extern "C" void fn_8038DE74(Bery* this_) {
         } else {
             this_->mKind = 0;
         }
+    }
+}
+
+struct BeryDrawParam {
+    BeryDrawParam() : m40(-1), m44(-1) {
+        for (u8 i = 0; i < 16; i++) {
+            mIdx[i] = i;
+        }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
+        mMtx = NULL;
+        m4C = 0;
+        m4D = 0;
+        m4E = 0;
+        m4F = 1;
+        m50 = 1;
+        m51 = 0;
+        m52 = 0;
+        m53 = 0;
+        m54 = 0;
+        m55 = 0;
+        m56 = 1;
+        m58 = 3;
+        m5C = 1;
+        m5D = 0;
+        m5E = 0;
+        m60 = -1;
+        m64 = 0;
+        m68 = 2;
+    }
+    u8 mIdx[16];
+    s32 m40;
+    s32 m44;
+    f32 (*mMtx)[4];
+    u8 m4C, m4D, m4E, m4F, m50, m51, m52, m53, m54, m55, m56;
+    s32 m58;
+    u8 m5C, m5D, m5E;
+    s32 m60;
+    s32 m64;
+    s32 m68;
+};
+
+
+struct BeryTables {
+    s32 mNormal[11];
+    s32 mAlt[11];
+};
+extern const BeryTables lbl_80475600;
+extern const char lbl_80475658[];
+extern const f32 lbl_80543100;
+extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, BeryDrawParam* prm, s32 mode, f32 sx, f32 sy);
+extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 p5, s32 p6, s32 p7, s32 p8, s32 p9, s32 p10);
+
+extern "C" void fn_8038E0A0(BeryFull* this_) {
+    if (this_->m248 != 1 && (this_->m240 & 2) && this_->mParam != 3) {
+        fn_801F06F0(this_, lbl_80475658, this_->m244 + 0x61, NULL, 7, lbl_80543100, lbl_80543100);
+        fn_803075AC(this_->m198, this_->mRoom, &this_->mPos, this_->m244 + 0x61, 0, 2, -1, 0, 0, 0);
+    }
+    s32 state = this_->mState;
+    if ((state == 8 || state == 10 || state == 11 || state == 12) && this_->m26C == 0 && this_->mParam == 3) {
+        BeryDrawParam prm;
+        s32 mode = 7;
+        prm.reset();
+        JGeometry::TVec3<f32> pos = this_->mPos;
+        s32 id = lbl_80475600.mNormal[this_->mKind - 1];
+        prm.m4D = 0;
+        prm.m4C = 0;
+        this_->mPos = this_->mStart;
+        if (this_->mState == 10 || this_->mState == 11 || this_->mState == 12) {
+            id = lbl_80475600.mAlt[this_->mKind - 1];
+        }
+        if (this_->mState == 11 || this_->mState == 12) {
+            mode = -1;
+            prm.m4D = 1;
+            prm.m4C = 1;
+        }
+        fn_801F06F0(this_, lbl_80475658, id, &prm, mode, lbl_80543100, lbl_80543100);
+        fn_803075AC(this_->m198, this_->mRoom, &this_->mPos, id, 0, 2, -1, 1, 0, 0);
+        this_->mPos = pos;
     }
 }
 
