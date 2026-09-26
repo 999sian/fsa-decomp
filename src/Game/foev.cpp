@@ -42,7 +42,7 @@ void Ltev_EmptyHook(void) {}
 
 // ---- Ltev_dtor_802EFB9C.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804AA4F0[];
 
 extern "C" void* fn_802EFB9C(void* this_, short how) {
@@ -50,7 +50,7 @@ extern "C" void* fn_802EFB9C(void* this_, short how) {
         *(void**)this_ = lbl_804AA4F0;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            __dl__FPv(this_);
         }
     }
     return this_;
@@ -80,20 +80,25 @@ public:
     virtual u8 isVisible();
 };
 
+struct FoevRGBA { u8 r, g, b, a; };
+
 struct Foev {
     u8 pad0[0x90];
     u32 m90;
     u8 pad94[0x230 - 0x94];
     s32 state;
-    u8 pad234[0x240 - 0x234];
+    f32 m234;
+    f32 m238;
+    f32 m23c;
     s32 m240;
     s32 m244;
-    u8 pad248[4];
+    FoevRGBA col;
     s32 r, g, b, a;
     s32 tr, tg, tb;
     s32 level;
     s32 target;
     s32 dr, dg, db;
+    s32 m27c;
 
     void apply() {
         fn_80128C58(level);
@@ -168,6 +173,7 @@ extern "C" void fn_802EF80C(Foev* f) {
     }
 }
 
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
@@ -184,3 +190,126 @@ extern "C" void fn_802EF80C(Foev* f) {
 #define NULL 0
 #define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Vec.h"
+
+class FoevV {
+public:
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void setup(s32 r, s32 g, s32 b, s32 a, s32 lv, s32 mode);
+};
+
+struct FoevPos { f32 x, y, z; };
+
+extern "C" u8 fn_802DEBA0(void* p);
+extern "C" void fn_8018330C(FoevRGBA* out);
+extern "C" u8 fn_801B7550(void);
+extern char* lbl_8053AB10;
+extern const f32 lbl_80541430;
+
+extern "C" void fn_802EFBFC(Foev* f) {
+    if (!fn_802DEBA0(f)) {
+        f->m244 = f->m90 & 0xff;
+    } else {
+        f->m244 = -1;
+    }
+    f->m240 = (f->m90 >> 22) & 0x1f;
+    f->state = 0;
+    FoevRGBA c;
+    fn_8018330C(&c);
+    f->col = c;
+    f->r = *(u32*)&f->col >> 24;
+    f->g = (*(u32*)&f->col >> 16) & 0xff;
+    f->b = (*(u32*)&f->col >> 8) & 0xff;
+    f->a = *(u32*)&f->col & 0xff;
+    f->level = fn_801B7550();
+    char* cam = *(char**)(lbl_8053AB10 + 0x24);
+    f->m234 = -*(f32*)(cam + 0x10);
+    f->m238 = -*(f32*)(cam + 0x20);
+    f->m23c = lbl_80541430;
+    switch ((u32)f->m244) {
+    case 0:
+        ((FoevV*)f)->setup(0xd2, 0xc8, 0xaa, 0x0, 0xa, 4);
+        break;
+    case 1:
+        ((FoevV*)f)->setup(0x96, 0xc8, 0xff, 0x0, 0xa, 4);
+        break;
+    case 2:
+        ((FoevV*)f)->setup(0xff, 0xc8, 0xa0, 0x0, 0x82, 0);
+        break;
+    case 3:
+        ((FoevV*)f)->setup(0xff, 0xc8, 0xa0, 0x0, 0xa, 4);
+        break;
+    case 4:
+        ((FoevV*)f)->setup(0xff, 0xc8, 0xa0, 0x0, 0xc8, 4);
+        break;
+    case 5:
+        ((FoevV*)f)->setup(0xff, 0xc8, 0xa0, 0x0, 0xc8, 0);
+        break;
+    case 6:
+        ((FoevV*)f)->setup(0xc8, 0xd2, 0xff, 0x0, 0xa, 4);
+        break;
+    case 7:
+        ((FoevV*)f)->setup(0xc8, 0xd2, 0xff, 0x0, 0xc8, 4);
+        break;
+    case 8:
+        ((FoevV*)f)->setup(0xc8, 0xd2, 0xff, 0x0, 0xc8, 0);
+        break;
+    case 9:
+        ((FoevV*)f)->setup(0x96, 0xc8, 0xff, 0x0, 0xa, 4);
+        break;
+    case 10:
+        ((FoevV*)f)->setup(0x96, 0xc8, 0xff, 0x0, 0x82, 4);
+        break;
+    case 11:
+        ((FoevV*)f)->setup(0x96, 0xc8, 0xff, 0x0, 0x82, 0);
+        break;
+    case 12:
+        ((FoevV*)f)->setup(0xd2, 0xff, 0xff, 0x19, 0xdc, 4);
+        break;
+    case 13:
+        ((FoevV*)f)->setup(0xff, 0x80, 0xff, 0x0, 0xa, 4);
+        break;
+    case 14:
+        ((FoevV*)f)->setup(0xff, 0x80, 0xff, 0x0, 0xc8, 4);
+        break;
+    case 15:
+        ((FoevV*)f)->setup(0xff, 0x80, 0xff, 0x0, 0x82, 0);
+        f->state = 4;
+        break;
+    case 16:
+        ((FoevV*)f)->setup(0xff, 0xc8, 0xa0, 0x0, 0xa, 4);
+        f->target = 200;
+        f->state = 5;
+        break;
+    case 17:
+        ((FoevV*)f)->setup(0xff, 0xff, 0xff, 0x0, 0x80, 4);
+        break;
+    default:
+        f->state = 4;
+        break;
+    }
+    f->apply();
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)((char*)f + 0xc));
+    ((FoevVis*)f)->v03();
+    *(JGeometry::TVec3<f32>*)((char*)f + 0xc) = pos;
+    *((u8*)f + 0x11f) = 1;
+}
+
