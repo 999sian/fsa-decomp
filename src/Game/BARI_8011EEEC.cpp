@@ -51,6 +51,108 @@ struct Bari {
     BariEmitter* m254;
 };
 
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D8050(void* cfg, s32 id, s32 a, s32 b);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
+extern "C" void fn_801F0D20(void* this_, s32 a);
+extern "C" void detach__5ActorFv(void* this_);
+
+struct BVec {
+    f32 x, y, z;
+    BVec(f32 x_, f32 y_, f32 z_) { x = x_; y = y_; z = z_; }
+};
+
+static inline BariEmitter* createRow(Bari* p, s32 i) {
+    return fn_8013CC50(p->m4, &BVec(p->mPos.x, 16.0f * (i - 1) + p->mPos.y, 0.0f), 0x125, 0, 0, 0, 0, 1, 1.0f);
+}
+
+static inline BariEmitter* createA(Bari* p, s32 id) {
+    BVec* pos;
+    switch (p->m234) {
+    case 1:
+        pos = &BVec(p->mPos.x, 32.0f + p->mPos.y, p->mPos.z);
+        break;
+    default:
+        pos = &BVec(p->mPos.x - 32.0f, p->mPos.y, p->mPos.z);
+        break;
+    }
+    return fn_8013CC50(p->m4, pos, id, 0, 0, 0, 0, 1, 1.0f);
+}
+
+static inline BariEmitter* createB(Bari* p, s32 id) {
+    BVec* pos;
+    switch (p->m234) {
+    case 1:
+        pos = &BVec(p->mPos.x, p->mPos.y - 32.0f, p->mPos.z);
+        break;
+    default:
+        pos = &BVec(32.0f + p->mPos.x, p->mPos.y, p->mPos.z);
+        break;
+    }
+    return fn_8013CC50(p->m4, pos, id, 0, 0, 0, 0, 1, 1.0f);
+}
+
+struct BariVt {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual u8 v11();
+};
+
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" u8 fn_801F2DB4(void* this_, u32 a, u32 b, s32 c);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" void fn_80239914(void* box, u32 a, u32 b);
+extern "C" void fn_80230FD0(s32 player, s32 id);
+
+static inline bool isEnded(BariEmitter* e) {
+    bool ret = false;
+    if ((e->mFlags & 8) && *(s32*)((char*)e + 0xd0) + *(s32*)((char*)e + 0xdc) == 0) {
+        ret = true;
+    }
+    return ret;
+}
+
+extern "C" void fn_8011EEEC(Bari* p);
+extern "C" void fn_8011F314(Bari* p);
+extern "C" void fn_8011F5C0(Bari* p, s32 state);
+
+extern "C" void fn_8011EEEC(Bari* p) {
+    switch (p->m234) {
+    case 1: {
+        BariEmitter* e1 = createA(p, 0xca);
+        BariEmitter* e2 = createB(p, 0xca);
+        if (e1 != 0) {
+            fn_8013CAA4(e1, 1.5707964f);
+        }
+        if (e2 != 0) {
+            fn_8013CAA4(e2, 1.5707964f);
+        }
+        break;
+    }
+    default:
+        if (p->m241) {
+            for (s32 i = 0; i < 3; i++) {
+                createRow(p, i);
+            }
+            createA(p, 0x126);
+            createB(p, 0x126);
+        } else {
+            createA(p, 0xca);
+            createB(p, 0xca);
+        }
+        break;
+    }
+}
+
 extern "C" void fn_8011F314(Bari* p) {
     s32 i;
     for (i = 0; i < 3; i++) {
@@ -87,13 +189,6 @@ extern "C" void fn_8011F314(Bari* p) {
         break;
     }
 }
-
-extern "C" void fn_8011EEEC(Bari* p);
-extern "C" void* fn_802D6A9C();
-extern "C" void fn_802D8050(void* cfg, s32 id, s32 a, s32 b);
-extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
-extern "C" void fn_801F0D20(void* this_, s32 a);
-extern "C" void detach__5ActorFv(void* this_);
 
 extern "C" void fn_8011F5C0(Bari* p, s32 state) {
     *(s32*)((char*)p + 0x230) = state;
@@ -154,35 +249,6 @@ extern "C" void fn_8011F5C0(Bari* p, s32 state) {
         break;
     }
     }
-}
-
-struct BariVt {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual void v5();
-    virtual void v6();
-    virtual void v7();
-    virtual void v8();
-    virtual void v9();
-    virtual void v10();
-    virtual u8 v11();
-};
-
-extern "C" void v03__5ActorFv(void* this_);
-extern "C" u8 fn_801F2DB4(void* this_, u32 a, u32 b, s32 c);
-extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
-extern "C" void fn_80239914(void* box, u32 a, u32 b);
-extern "C" void fn_80230FD0(s32 player, s32 id);
-
-static inline bool isEnded(BariEmitter* e) {
-    bool ret = false;
-    if ((e->mFlags & 8) && *(s32*)((char*)e + 0xd0) + *(s32*)((char*)e + 0xdc) == 0) {
-        ret = true;
-    }
-    return ret;
 }
 
 extern "C" void fn_8011F850(Bari* p) {
