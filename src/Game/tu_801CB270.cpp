@@ -288,4 +288,78 @@ extern "C" BOOL fn_801CD9F0(f32* value, f32 target, f32 step) {
     return r;
 }
 
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_8013CB44(void* h, void* pos, u32 a, u32 b, u32 c);
+extern "C" void* fn_8013C824();
+class JPABaseEmitter;
+class JPAEmitterManager {
+public:
+    void forceDeleteEmitter(JPABaseEmitter*);
+};
+extern const f32 lbl_8053EF80;
+extern const f32 lbl_8053EF8C;
+extern const f32 lbl_8053EFA4;
+extern const f32 lbl_8053EFA8;
+extern const f32 lbl_8053EFAC;
+extern const f32 lbl_8053EFB0;
+
+static inline u8 emitterDone(u8* q) {
+    u8 dead = 0;
+    if ((*(u32*)(q + 0xf4) & 8) && *(s32*)(q + 0xd0) + *(s32*)(q + 0xdc) == 0) {
+        dead = 1;
+    }
+    return dead;
+}
+
+extern "C" void fn_801CB71C(JPABaseEmitter** pe, void* pos, u32 a, u32 b) {
+    JPABaseEmitter* e = *pe;
+    if (e == 0) {
+        return;
+    }
+    if (emitterDone((u8*)e)) {
+        JPAEmitterManager* mgr = *(JPAEmitterManager**)((char*)fn_8013C824() + 0xc);
+        mgr->forceDeleteEmitter(*pe);
+        *pe = 0;
+        return;
+    }
+    fn_8013CB44(e, pos, a, b, 1);
+}
+
+extern "C" void fn_801CD0D0(const f32* src, f32* dst) {
+    u8* a = fn_802D6A9C();
+    u8* b = fn_802D6A9C();
+    f32 dx = src[0] - *(f32*)(b + 0xdc);
+    f32 dy = src[1] - *(f32*)(b + 0xe0);
+    f32 x = *(f32*)(a + 0xcc) + dx;
+    f32 y = *(f32*)(a + 0xd0) + dy;
+    f32 z = src[2];
+    dst[0] = x;
+    dst[1] = y;
+    dst[2] = z;
+}
+
+extern "C" void fn_801CD150(const f32* src, f32* dst) {
+    u8* a = fn_802D6A9C();
+    u8* b = fn_802D6A9C();
+    f32 dx = src[0] - *(f32*)(a + 0xcc);
+    f32 dy = src[1] - *(f32*)(a + 0xd0);
+    f32 x = *(f32*)(b + 0xdc) + dx;
+    f32 y = *(f32*)(b + 0xe0) + dy;
+    f32 z = src[2];
+    dst[0] = x;
+    dst[1] = y;
+    dst[2] = z;
+}
+
+extern "C" f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t) {
+    f32 ht = lbl_8053EF8C * t;
+    f32 t2 = t * t;
+    f32 t3 = t2 * t;
+    f32 b1 = lbl_8053EF60 + (lbl_8053EFAC * t3 - lbl_8053EFB0 * t2);
+    f32 b0 = (lbl_8053EFA8 * t3 + t2) - ht;
+    f32 b2 = ht + (lbl_8053EFA4 * t3 + lbl_8053EF80 * t2);
+    f32 b3 = lbl_8053EF8C * t3 - lbl_8053EF8C * t2;
+    return p3 * b3 + (p2 * b2 + (p0 * b0 + p1 * b1));
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
