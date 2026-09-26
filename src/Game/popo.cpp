@@ -35,6 +35,10 @@ extern "C" u8 fn_801F2618(void* this_, void* out, s32 a);
 extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 
+// Direct sin/cos table reads (the retail code does not use the JMath inline
+// member functions here; calling them changes the function emission order).
+static inline f32 popoSin(s16 v) { return JMath::sincosTable_.mTable[(u16)v >> 5].first; }
+static inline f32 popoCos(s16 v) { return JMath::sincosTable_.mTable[(u16)v >> 5].second; }
 // POPO update (vtable slot 3)
 extern "C" void fn_80172210(char* this_) {
     if (*(u32*)(this_ + 0x90) == 1) {
@@ -71,9 +75,9 @@ extern "C" void fn_80172210(char* this_) {
         *(s32*)(this_ + 0x240) = *(s32*)(this_ + 0x240) & 1;
         if (*(s32*)(this_ + 0x240) == 0) {
             PopoGame* g1 = lbl_8053AAF8;
-            *(f32*)(this_ + 0x250) = 0.5f * JMASSin((s16)(s32)(65536.0f * g1->rnd.get_ufloat_1()));
+            *(f32*)(this_ + 0x250) = 0.5f * popoSin((s16)(s32)(65536.0f * g1->rnd.get_ufloat_1()));
             PopoGame* g2 = lbl_8053AAF8;
-            *(f32*)(this_ + 0x254) = 0.5f * JMASCos((s16)(s32)(65536.0f * g2->rnd.get_ufloat_1()));
+            *(f32*)(this_ + 0x254) = 0.5f * popoCos((s16)(s32)(65536.0f * g2->rnd.get_ufloat_1()));
         } else {
             *(f32*)(this_ + 0x250) = 0.0f;
             *(f32*)(this_ + 0x254) = 0.0f;
