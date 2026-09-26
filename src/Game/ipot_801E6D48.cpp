@@ -1,6 +1,7 @@
 // Game TU 801E6D48-801E7BF4 (IPOT). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void* fn_80210AB4(void* this_);
@@ -47,7 +48,7 @@ extern "C" f32 fn_80210B34(void* p);
 extern "C" f32 fn_80210AF8(void* p);
 extern "C" void fn_801EA108(void* mgr, f32* pos, s32 a, f32 r);
 extern "C" u8 fn_80210A6C(void* this_);
-extern "C" void fn_801E728C(void* this_, s32 a);
+extern "C" void fn_801E728C(char* p, s32 type);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void* cfg, s32 id, s32 a, s32 b);
 extern "C" void detach__5ActorFv(void* this_);
@@ -163,6 +164,117 @@ extern "C" s32 fn_801E6FAC(char* p) {
         }
     }
     return 0;
+}
+
+struct IpotRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct IpotGame { u8 pad[0xb4]; IpotRandom rnd; };
+extern IpotGame* lbl_8053AAF8;
+
+struct RupyDrop {
+    u32 param;
+    s32 count;
+};
+extern const RupyDrop lbl_80469C40[4];
+
+extern "C" void fn_80210A30(void* this_, void* box);
+extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" void fn_801F3128(void* this_, JGeometry::TVec2<f32>* out);
+extern "C" u16 fn_80226998(JGeometry::TVec2<f32>* pos, s32 room);
+extern "C" u8 fn_801EE3C0(u16 tile);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 owner, void* pos, u32 param, s32 a, s32 b);
+extern "C" s32 fn_801F8544(void* mgr, u32 id, s32 owner, void* pos, u32 param);
+extern "C" void fn_802D79E8(void* cfg, s32 id, s32 a, f32 x, f32 y);
+extern "C" void fn_80134DE4(void* game, s32 a, s32 b);
+extern "C" u32 fn_8013CC50(u32 id, void* pos, s32 type, s32 p4, u32 p5, u32 p6, u32 p7, u32 p8, f32 f);
+
+extern "C" void fn_801E728C(char* p, s32 type) {
+    switch (type) {
+    case 1:
+        if ((*(u32*)(p + 0x230) & 0x4000) && !(*(u32*)(p + 0x230) & 0x10000)) {
+            Actor_CreateByID(fn_801F856C(), 'IBBM', *(s32*)(p + 0x4), p + 0xc, *(u32*)(p + 0x90),
+                             *(s32*)(p + 0x16c), -1);
+            p[0x11c] = 0;
+            break;
+        }
+        {
+            f32 x0 = *(f32*)(p + 0x60);
+            f32 y0 = *(f32*)(p + 0x64);
+            f32 x1 = *(f32*)(p + 0x68);
+            f32 y1 = *(f32*)(p + 0x6c);
+            fn_80210A30(p, p + 0x60);
+            *(f32*)(p + 0x60) *= 1.5f;
+            *(f32*)(p + 0x64) *= 1.5f;
+            *(f32*)(p + 0x68) *= 1.5f;
+            *(f32*)(p + 0x6c) *= 1.5f;
+            fn_801F2B7C(p, 4, -1, 0x16);
+            JGeometry::TVec2<f32> pos;
+            JGeometry::TVec2<f32> center;
+            fn_801F3128(p, &center);
+            pos.y = center.y - 16.0f;
+            for (s32 i = 0; i < 3; i++) {
+                pos.x = center.x - 16.0f;
+                for (s32 j = 0; j < 3; j++) {
+                    if (fn_801EE3C0(fn_80226998(&pos, *(s32*)(p + 0x4)))) {
+                        JGeometry::TVec3<f32> spawn(pos.x, pos.y, 0.0f);
+                        Actor_CreateByID(fn_801F856C(), 'BLZE', *(s32*)(p + 0x4), &spawn, 0xf, -1, -1);
+                    }
+                    pos.x += 16.0f;
+                }
+                pos.y += 16.0f;
+            }
+            *(f32*)(p + 0x60) = x0;
+            *(f32*)(p + 0x64) = y0;
+            *(f32*)(p + 0x68) = x1;
+            *(f32*)(p + 0x6c) = y1;
+        }
+        fn_802D79E8(fn_802D6A9C(), *(s32*)(p + 0x4), 0, 8.0f, 0.0f);
+        fn_80134DE4(lbl_8053AAF8, 2, 0);
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x59, 0, 0, 0, 0, 1, 2.0f);
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x5a, 0, 0, 0, 0, 1, 2.0f);
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x5b, 0, 0, 0, 0, 1, 2.0f);
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x5c, 0, 0, 0, 0, 1, 1.0f);
+        if (*(u32*)(p + 0x230) & 0x2000) {
+            fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x262, 0, 0, 0, 0, 1, 1.0f);
+            for (s32 i = 0; i < 4; i++) {
+                s32 n = lbl_80469C40[i].count;
+                for (s32 j = 0; j < n; j++) {
+                    s32 idx = fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(p + 0x4), p + 0xc, lbl_80469C40[i].param);
+                    if (idx >= 0) {
+                        char* rupy = fn_801F666C(fn_801F856C(), idx);
+                        if (rupy != 0) {
+                            JGeometry::TVec3<f32> vel(0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
+                                                      0.6f * (2.0f * lbl_8053AAF8->rnd.get_ufloat_1() - 1.0f),
+                                                      6.0f * lbl_8053AAF8->rnd.get_ufloat_1() + 6.0f);
+                            *(JGeometry::TVec3<f32>*)(rupy + 0x3c) = vel;
+                        }
+                    }
+                }
+            }
+        } else {
+            fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, 0x261, 0, 0, 0, 0, 1, 1.0f);
+        }
+        {
+            s32 id = *(s32*)(p + 0x2b4);
+            if (id != 0) {
+                fn_802D8050(fn_802D6A9C(), id, 1, 0xff);
+            }
+        }
+        fn_801F0E34(p, 0x30001, 0);
+        detach__5ActorFv(p);
+        break;
+    case 2:
+        break;
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x248) = type;
 }
 
 extern "C" void fn_801E722C(char* p) {
