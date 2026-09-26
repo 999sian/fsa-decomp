@@ -2569,6 +2569,7 @@ game/fgve.cpp:
 	.text       start:0x802DFCE8 end:0x802E038C
 	.ctors      start:0x8045C2F8 end:0x8045C2FC
 	.bss        start:0x804D4268 end:0x804D42D4
+	.sdata2     start:0x80541188 end:0x805411A8
 
 game/vwmd.cpp:
 	extab       start:0x8000CEAC end:0x8000CECC
