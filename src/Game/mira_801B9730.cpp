@@ -58,11 +58,21 @@ extern "C" void fn_801B9960(void* this_) {
 }
 
 struct MiraRGB { u8 r, g, b, a; };
+struct MiraEmitter {
+    u8 pad[0xb8];
+    u8 r, g, b;
+    void setColor(const MiraRGB& c) {
+        r = c.r;
+        g = c.g;
+        b = c.b;
+    }
+};
 extern "C" void v07__5ActorFv(void* this_);
+extern "C" void fn_801B9DD4(char* p, s32 state);
 extern "C" void* fn_8013CC50(u32 id, f32* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
-extern "C" void fn_801B9DD4(void* this_, s32 state);
 
-extern f32 lbl_8053EB70;
+
+extern const f32 lbl_8053EB70;
 extern char* lbl_8053AB10;
 
 extern "C" void fn_801B99C0(void* this_) {
@@ -77,7 +87,7 @@ extern "C" void fn_801B99C0(void* this_) {
             e[0xba] = c.b;
         }
     } else {
-        fn_801B9DD4(this_, 3);
+        fn_801B9DD4((char*)this_, 3);
     }
 }
 
@@ -143,6 +153,167 @@ extern const f32 lbl_8053EB80;
 extern const f32 lbl_8053EB84;
 extern const f32 lbl_8053EB88;
 
+
+struct MiraRandom {
+    u32 seed;
+    u32 get() {
+        seed = 0x19660d * seed + 0x3c6ef35f;
+        return seed;
+    }
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        out.s = (get() >> 9) | 0x3f800000;
+        return out.f - lbl_8053EB70;
+    }
+};
+
+extern "C" void fn_801D22A0(void* obj, u32 a, u32 b);
+extern "C" void fn_801F0E34(void* target, s32 soundId, s32 flag);
+extern char* lbl_8053AAF8;
+extern const f32 lbl_8053EB8C;
+extern const f32 lbl_8053EB90;
+
+static inline s32 mira_rndPick(s32 a, s32 b) {
+    if (((MiraRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EB8C) {
+        return a;
+    }
+    return b;
+}
+
+extern "C" void fn_801B9DD4(char* p, s32 state) {
+    *(u32*)(p + 0x230) &= ~0x8000;
+    switch (state) {
+    case 0:
+        if (*(s32*)(p + 0x248) != 0) {
+            *(u32*)(p + 0x230) |= 0x8000;
+            *(f32*)(p + 0x258) = lbl_8053EB7C;
+        }
+        *(s32*)(p + 0x250) = fn_801CD664(0x3d) + 0x3c;
+        fn_801D22A0(p + 0x270, *(u32*)(p + 0x98), 2);
+        break;
+    case 1:
+        *(f32*)(p + 0x254) = lbl_8053EB7C;
+        *(f32*)(p + 0x258) = lbl_8053EB7C;
+        fn_801D22DC(p + 0x270, *(u32*)(p + 0x98) + 4, 0, 0);
+        break;
+    case 2: {
+        *(f32*)(p + 0x254) = lbl_8053EB7C;
+        *(f32*)(p + 0x258) = lbl_8053EB7C;
+        s32 dir = 0;
+        s32 cur = *(s32*)(p + 0x98);
+        switch (*(u32*)(p + 0x278)) {
+        case 0: case 4: case 12: case 14:
+            dir = 0;
+            break;
+        case 1: case 5: case 13: case 15:
+            dir = 1;
+            break;
+        case 2: case 6: case 8: case 10:
+            dir = 2;
+            break;
+        case 3: case 7: case 9: case 11:
+            dir = 3;
+            break;
+        }
+        s32 anim = 8;
+        switch (dir) {
+        case 0:
+            switch (cur) {
+            case 2:
+                break;
+            case 3:
+                anim = 9;
+                break;
+            default:
+                anim = mira_rndPick(8, 9);
+                break;
+            }
+            break;
+        case 1:
+            switch (cur) {
+            case 2:
+                anim = 10;
+                break;
+            case 3:
+                anim = 11;
+                break;
+            default:
+                anim = mira_rndPick(10, 11);
+                break;
+            }
+            break;
+        case 2:
+            switch (cur) {
+            case 0:
+                anim = 12;
+                break;
+            case 1:
+                anim = 13;
+                break;
+            default:
+                anim = mira_rndPick(12, 13);
+                break;
+            }
+            break;
+        case 3:
+            switch (cur) {
+            case 0:
+                anim = 14;
+                break;
+            case 1:
+                anim = 15;
+                break;
+            default:
+                anim = mira_rndPick(14, 15);
+                break;
+            }
+            break;
+        }
+        fn_801D22DC(p + 0x270, anim, 0, 0);
+        break;
+    }
+    case 3: {
+        *(f32*)(p + 0x254) = lbl_8053EB7C;
+        *(f32*)(p + 0x258) = lbl_8053EB7C;
+        *(f32*)(p + 0x3c) = lbl_8053EB7C;
+        *(f32*)(p + 0x40) = lbl_8053EB7C;
+        *(f32*)(p + 0x44) = lbl_8053EB7C;
+        *(f32*)(p + 0x60) = lbl_8053EB70;
+        *(f32*)(p + 0x64) = lbl_8053EB70;
+        *(f32*)(p + 0x68) = lbl_8053EB90;
+        *(f32*)(p + 0x6c) = lbl_8053EB90;
+        *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+        *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+        *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+        *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+        *(f32*)(p + 0x80) = lbl_8053EB70;
+        *(f32*)(p + 0x84) = lbl_8053EB70;
+        *(f32*)(p + 0x88) = lbl_8053EB90;
+        *(f32*)(p + 0x8c) = lbl_8053EB90;
+        *(u32*)(p + 0xb0) = 0;
+        *(u32*)(p + 0x230) |= 0x300;
+        *(u32*)(p + 0x108) = 1;
+        MiraRGB c = *(MiraRGB*)(*(char**)(lbl_8053AB10 + 0x2c) + 4);
+        char* e[3];
+        fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x329, 0, 0, 0, 0, 1, lbl_8053EB70);
+        e[0] = (char*)fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x32a, 0, 0, 0, 0, 1, lbl_8053EB70);
+        e[1] = (char*)fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x41b, 0, 0, 0, 0, 1, lbl_8053EB70);
+        e[2] = (char*)fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x41c, 0, 0, 0, 0, 1, lbl_8053EB70);
+        fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x54f, 0, 0, 0, 0, 1, lbl_8053EB70);
+        for (int i = 0; i < 3; i++) {
+            if (e[i] != 0) {
+                ((MiraEmitter*)e[i])->setColor(c);
+            }
+        }
+        fn_801F0E34(p, 0x5007e, 0);
+        fn_801F0E34(p, 0x40003, 0);
+        *(u8*)(p + 0x11d) = 0;
+        break;
+    }
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x248) = state;
+}
 static inline bool mira_chk(char* p, u32 f) { return *(s32*)(p + 0x230) & f; }
 static inline void mira_off(char* p, u32 f) { ((ItemBase*)p)->m230 &= ~f; }
 
