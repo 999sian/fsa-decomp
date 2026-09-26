@@ -8,6 +8,18 @@
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
+struct MsgRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct MsgGame { u8 pad[0xb4]; MsgRandom rnd; };
+extern MsgGame* lbl_8053AAF8;
+
 extern "C" void __dl__FPv(void* p);
 
 struct VObj_803A8DFC {
@@ -815,6 +827,145 @@ extern "C" void fn_803ADC0C(Menu_Slide* p) {
     }
 }
 
+struct Menu_Coin {
+    u8 pad0[0x174];
+    MsgSinkObj2* sinks[4];      // 0x174
+    u8 pad184[0x380 - 0x184];
+    s32 disp[4];                // 0x380
+    u8 pad390[0x3c0 - 0x390];
+    s32 state[4];               // 0x3c0
+    u8 pad3d0[0x438 - 0x3d0];
+    s32 doneCount;              // 0x438
+    u8 pad43c[0x440 - 0x43c];
+    s32 timer;                  // 0x440
+    u8 pad444[0x448 - 0x444];
+    s32 phase;                  // 0x448
+    u8 pad44c[0x450 - 0x44c];
+    s32 cur;                    // 0x450
+    s32 count;                  // 0x454
+    u8 pad458[0x4ac - 0x458];
+    u8 ids[4];                  // 0x4ac
+    u8 pad4b0[0x4c1 - 0x4b0];
+    u8 m4c1;
+    u8 m4c2;
+    u8 m4c3;
+    u8 m4c4;
+    u8 m4c5;
+    u8 m4c6;
+    u8 m4c7;
+    u8 m4c8;
+};
+
+struct GameCoins {
+    u8 pad0[0x170];
+    s32 coins[4];               // 0x170
+};
+
+extern s32 lbl_804AF948[];
+extern s32 lbl_804AF910[];
+extern "C" s32 fn_80138A30(void* game);
+extern "C" void* fn_80403414(s32 idx);
+extern "C" s32 fn_80403070(void* p);
+
+extern "C" void fn_803ADE9C(Menu_Coin* p) {
+    s32 done = 0;
+    p->timer--;
+    if (p->timer == 0x78) {
+        s32 goal[4];
+        p->m4c8 = 0xff;
+        p->phase = 0;
+        p->m4c3 = 0;
+        p->m4c5 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            goal[i] = ((GameCoins*)lbl_80529DEC)->coins[i] * 100;
+        }
+        for (s32 i = 0; i < p->count; i++) {
+            if (p->disp[i] < goal[i]) {
+                p->disp[i] += 100;
+                if (p->m4c8 == 0xff) {
+                    p->m4c8 = 0;
+                } else {
+                    p->m4c8++;
+                }
+                p->ids[p->m4c8] = i;
+                u32 msg = 0x10004;
+                p->sinks[i]->send(&msg);
+            } else {
+                p->disp[i] = goal[i];
+                done++;
+            }
+        }
+        if (done >= p->count) {
+            p->doneCount++;
+            p->timer = 1;
+        } else {
+            fn_80458880(lbl_8053AF80, 0x22, -1);
+        }
+    } else if (p->timer == 0) {
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        if (p->doneCount != 0) {
+            p->m4c8 = 0xff;
+            p->doneCount = 0;
+            p->timer = 0x96;
+            u8 any = 0;
+            for (s32 i = 0; i < fn_80138A30(lbl_8053AAF8); i++) {
+                if (fn_80403070(fn_80403414(i)) > 0) {
+                    any = 1;
+                }
+            }
+            if (any) {
+                p->m4c1 = 0x14;
+            } else if (p->cur < 2) {
+                p->m4c1 = 0x16;
+            } else {
+                p->m4c1 = 0x1c;
+            }
+            u8 zero = 1;
+            for (s32 i = 0; i < p->count; i++) {
+                if (p->disp[i] != 0) {
+                    zero = 0;
+                    break;
+                }
+            }
+            if (zero) {
+                fn_80458880(lbl_8053AF80, 0x2a, -1);
+            }
+        } else {
+            p->timer = 0x96;
+            fn_80458880(lbl_8053AF80, 0x2d, -1);
+        }
+    }
+    if (p->m4c8 != 0xff) {
+        if (p->phase == 0) {
+            p->m4c5++;
+            if (p->m4c5 <= 10) {
+                for (s32 i = 0; i < p->m4c8 + 1; i++) {
+                    p->state[p->ids[i]] = 0xaf;
+                }
+            } else {
+                p->phase = 1;
+                p->m4c5 = 0;
+            }
+        } else if (p->phase == 1) {
+            s32 lim = lbl_804AF948[p->m4c3];
+            if (lim != -1) {
+                if (p->m4c5 >= lim) {
+                    p->m4c3++;
+                }
+                p->m4c5++;
+            }
+            for (s32 i = 0; i < p->m4c8 + 1; i++) {
+                p->state[p->ids[i]] = lbl_804AF910[p->m4c3] + 0xbd;
+            }
+            if (lbl_804AF948[p->m4c3] == -1) {
+                p->phase = 2;
+            }
+        }
+    }
+}
+
 extern "C" void fn_803AE308(Menu_Slide* p) {
     p->timer--;
     if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
@@ -1235,17 +1386,6 @@ extern "C" void fn_803AF604(void* this_) {
     }
 }
 
-struct MsgRandom {
-    u32 seed;
-    f32 get_ufloat_1() {
-        union { f32 f; u32 s; } out;
-        seed = seed * 0x19660d + 0x3c6ef35f;
-        out.s = (seed >> 9) | 0x3f800000;
-        return out.f - 1.0f;
-    }
-};
-struct MsgGame { u8 pad[0xb4]; MsgRandom rnd; };
-extern MsgGame* lbl_8053AAF8;
 
 extern "C" void fn_803AF79C(Menu_Slide* p) {
     p->timer--;
