@@ -1192,6 +1192,83 @@ void fn_80274728(char* p) {
     }
     fn_802765C0(p);
 }
+void fn_80274988(char* p) {
+    U8(p, 0x3fa)++;
+    S16(p, 0x11c0) = 0;
+    if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4))) {
+        if (U8(p, 0x3fa) < 3) {
+            U8(p, 0x3fb) = 9;
+            S16(p, 0x11c0) = -0x6000;
+        } else if (U8(p, 0x3fa) < 7) {
+            U8(p, 0x3fb) = 8;
+            S16(p, 0x11c0) = -0x7000;
+        } else if (U8(p, 0x3fa) < 8) {
+            U8(p, 0x3fb) = 9;
+            S16(p, 0x11c0) = -0x6000;
+        } else if (U8(p, 0x3fa) < 9) {
+            U8(p, 0x3fb) = 10;
+            S16(p, 0x11c0) = -0x4000;
+        } else if (U8(p, 0x3fa) < 10) {
+            U8(p, 0x3fb) = 0;
+            S16(p, 0x11c0) = -0x2000;
+        } else if (U8(p, 0x3fa) < 0x1f) {
+            U8(p, 0x3fb) = ((U8(p, 0x3fa) - 10) / 3 + 1) & 7;
+            S16(p, 0x11c0) = (U8(p, 0x3fa) - 10) * 0xaaa;
+        } else if (U8(p, 0x3fa) < 0x22) {
+            U8(p, 0x3fb) = 11;
+            S16(p, 0x11c0) = (U8(p, 0x3fa) - 10) * 0xaaa;
+        } else {
+            U8(p, 0x3fb) = 11;
+            fn_802A20F0(lbl_8053AC98, p + 0x8, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+            fn_80251AEC(p, 0);
+        }
+    } else {
+        if (U8(p, 0x3fa) < 3) {
+            U8(p, 0x3fb) = 9;
+            S16(p, 0x11c0) = -0x6000;
+        } else if (U8(p, 0x3fa) < 7) {
+            U8(p, 0x3fb) = 8;
+            S16(p, 0x11c0) = -0x7000;
+        } else if (U8(p, 0x3fa) < 8) {
+            U8(p, 0x3fb) = 9;
+            S16(p, 0x11c0) = -0x6000;
+        } else if (U8(p, 0x3fa) < 9) {
+            U8(p, 0x3fb) = 10;
+            S16(p, 0x11c0) = -0x4000;
+        } else if (U8(p, 0x3fa) < 10) {
+            U8(p, 0x3fb) = 0;
+            S16(p, 0x11c0) = -0x2000;
+        } else if (U8(p, 0x3fa) < 0x18) {
+            U8(p, 0x3fb) = ((U8(p, 0x3fa) - 10) / 2 + 1) & 7;
+            S16(p, 0x11c0) = (U8(p, 0x3fa) - 10) * 0x1000;
+        } else if (U8(p, 0x3fa) < 0x1a) {
+            U8(p, 0x3fb) = 11;
+            S16(p, 0x11c0) = (U8(p, 0x3fa) - 10) * 0x1000;
+        } else {
+            U8(p, 0x3fb) = 11;
+            fn_802A20F0(lbl_8053AC98, p + 0x8, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+            fn_80251AEC(p, 0);
+        }
+    }
+    switch (S32(p, 0x3dc)) {
+    case 0:
+        break;
+    case 1:
+        S16(p, 0x11c0) += 0x8000;
+        break;
+    case 2:
+        S16(p, 0x11c0) += 0x4000;
+        break;
+    case 3:
+        S16(p, 0x11c0) -= 0x4000;
+        break;
+    }
+    char* base = (char*)PTR(p, 0x3b4);
+    if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
+        S16(p, 0x11c0) = -S16(p, 0x11c0);
+    }
+    fn_802765C0(p);
+}
 void fn_80276538(char* p) {
     setAround((JGeometry::TBox2<f32>*)(p + 0x4c0), *(JGeometry::TVec2<f32>*)(p + 0x8), 7.0f);
     JGeometry::TBox2<f32>* b = (JGeometry::TBox2<f32>*)(p + 0x4d0);
