@@ -1,6 +1,8 @@
 // Game TU 801D6CEC-801D7AFC (unnamed). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 extern "C" void fn_801E4AB0(void* obj, s32 a, s32 b, f32 c);
 extern const f32 lbl_8053F154;
 extern const f32 lbl_8053F190;
@@ -232,13 +234,6 @@ struct Tu6CECUtil {
 };
 static inline f32 tu6cec_invSqrt(f32 x) { return Tu6CECUtil::inv_sqrt(x); }
 
-static inline void tu6cec_invSqrtRef(f32& x) {
-    if (x <= lbl_8053F150) {
-        return;
-    }
-    f32 y = __frsqrte(x);
-    x = lbl_8053F160 * y * (lbl_8053F164 - x * (y * y));
-}
 
 struct Tu6CECVec2 {
     f32 x, y;
@@ -279,6 +274,54 @@ extern "C" void fn_801D6D38(char* p, Tu6CECVec2* in) {
     y *= lbl_8053F168;
     fn_801E4AB0(p, 0x3c, 0x2000, x);
     fn_801E4AB0(p + 0x14, 0x3c, 0x2000, y);
+}
+
+extern "C" f32* fn_8023E724(s32 idx);
+extern "C" s32 fn_801CD664(s32 n);
+extern const f32 lbl_8053F174;
+extern const f32 lbl_8053F188;
+
+struct Tu6CECVel { f32 x, y, z; };
+
+extern "C" void fn_801D70BC(Tu6CECGroup* g, Tu6CECVec p, s32 player) {
+    tu6cec_set(g->pos, p.x, lbl_8053F16C + p.y, p.z);
+    if (fn_801CD2F8(g->m40)) {
+        g->pos[1] = lbl_8053F170 + p.y;
+    }
+    s32 id = g->ids[0];
+    if (id < 0) {
+        return;
+    }
+    char* a = (char*)fn_801F666C(fn_801F856C(), id);
+    if (a == 0) {
+        return;
+    }
+    f32 vx, vy;
+    if (player >= 0 && player < 4) {
+        f32 dx, dy;
+        dy = fn_8023E724(player)[1] - *(f32*)(a + 0x10);
+        dx = fn_8023E724(player)[0] - *(f32*)(a + 0xc);
+        f32 sq = dx * dx + dy * dy;
+        if (sq <= lbl_8053F158 * *(f32*)__float_epsilon) {
+            dx = lbl_8053F174;
+            dy = lbl_8053F150;
+        } else if (!(sq <= lbl_8053F158 * *(f32*)__float_epsilon)) {
+            f32 inv = tu6cec_invSqrt(sq);
+            dx *= inv;
+            dy *= inv;
+        }
+        s16 ang = -(s16)(fn_801CD664(0xe39) - 0x71c);
+        f32 sn = JMASSin(ang);
+        f32 cs = JMASCos(ang);
+        vy = dx * sn + dy * cs;
+        vx = dx * cs - dy * sn;
+    } else {
+        s16 ang = fn_801CD664(0x10000);
+        vx = JMASSin(ang);
+        vy = JMASCos(ang);
+    }
+    *(JGeometry::TVec3<f32>*)(a + 0x3c) = JGeometry::TVec3<f32>(vx * lbl_8053F188, vy * lbl_8053F188, lbl_8053F150);
+    g->m44 = 4;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
