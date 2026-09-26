@@ -2,6 +2,7 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JMath/JMath.h"
 extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, u32 a, s32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
 extern "C" u32 fn_8022461C(void* p);
@@ -105,6 +106,26 @@ extern "C" void* fn_801BF5A8(void* this_) {
     *(void**)this_ = lbl_804A4188;
     *(s32*)((char*)this_ + 0x2a8) = 0;
     return this_;
+}
+
+extern "C" void fn_8013CB44(void* h, void* pos, u32 a, u32 b, u32 c);
+extern "C" void fn_8013CAA4(void* h, f32 angle);
+extern const f32 lbl_8053ED04;
+extern const f32 lbl_8053ED08;
+extern const f32 lbl_8053ED0C;
+
+extern "C" void fn_801BF380(u8* this_) {
+    *(void**)(this_ + 0x2a8) = fn_8013CC50(*(u32*)(this_ + 0x4), this_ + 0xc, 0x1b, 0, *(u16*)(this_ + 0x94), 0, 0, 1, lbl_8053ED00);
+    if (*(void**)(this_ + 0x2a8) != 0) {
+        u32 n = 1;
+        if (*(s32*)(this_ + 0x24c) < 2) {
+            n = *(u16*)(this_ + 0x94);
+        }
+        fn_8013CB44(*(void**)(this_ + 0x2a8), this_ + 0xc, 0, n, 1);
+        f32 r = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
+        s16 ang = r * lbl_8053ED04;
+        fn_8013CAA4(*(void**)(this_ + 0x2a8), lbl_8053ED08 * (lbl_8053ED0C * ang));
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

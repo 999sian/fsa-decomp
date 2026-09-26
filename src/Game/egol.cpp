@@ -86,4 +86,66 @@ extern "C" void fn_801B0710(char* this_) {
     *(s32*)(this_ + 0x230) = 0;
 }
 
+struct EgolResMgr {
+    virtual void v00(); virtual void v01(); virtual void v02();
+    virtual void v03();
+    virtual void* getRes(u32 type, const char* name);
+};
+extern "C" void fn_801EFD34(void* this_, void* res, void* data, s32 mode, f32 a, f32 b, f32 c);
+extern const char* lbl_804A34F8[];
+extern const f32 lbl_8053E888;
+extern const f32 lbl_8053E88C;
+extern const f32 lbl_8053E890;
+extern const f32 lbl_8053E894;
+
+extern "C" void fn_801AFB98(char* this_) {
+    u8 buf[0x40];
+    f32 mtx[3][4];
+
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = -1;
+
+    for (u8 i = 0; i < 16; i++) {
+        buf[i] = i;
+    }
+
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = 0;
+    *(s32*)(buf + 0x18) = 0;
+    buf[0x1c] = 0;
+    buf[0x1d] = 0;
+    buf[0x1e] = 0;
+    buf[0x1f] = 1;
+    buf[0x20] = 1;
+    buf[0x21] = 0;
+    buf[0x22] = 0;
+    buf[0x23] = 0;
+    buf[0x24] = 0;
+    buf[0x25] = 0;
+    buf[0x26] = 1;
+    *(s32*)(buf + 0x28) = 3;
+    buf[0x2c] = 1;
+    buf[0x2d] = 0;
+    buf[0x2e] = 0;
+    *(s32*)(buf + 0x30) = -1;
+    *(s32*)(buf + 0x34) = 0;
+    *(s32*)(buf + 0x38) = 2;
+
+    mtx[0][0] = (*(s32*)(this_ + 0x98) == 0) ? lbl_8053E88C : lbl_8053E888;
+    mtx[0][1] = lbl_8053E890;
+    mtx[0][2] = lbl_8053E890;
+    mtx[1][0] = lbl_8053E890;
+    mtx[1][1] = lbl_8053E888;
+    mtx[1][2] = lbl_8053E890;
+    mtx[2][0] = lbl_8053E890;
+    mtx[2][1] = lbl_8053E890;
+    mtx[2][2] = lbl_8053E888;
+    mtx[0][3] = lbl_8053E890;
+    mtx[1][3] = lbl_8053E890;
+    mtx[2][3] = lbl_8053E890;
+    *(void**)(buf + 0x18) = mtx;
+    void* res = ((EgolResMgr*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->getRes('TIMG', lbl_804A34F8[*(s32*)(this_ + 0x250)]);
+    fn_801EFD34(this_, res, buf, 3, lbl_8053E890, lbl_8053E894, lbl_8053E890);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
