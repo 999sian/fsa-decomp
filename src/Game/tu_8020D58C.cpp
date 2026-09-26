@@ -119,8 +119,13 @@ extern "C" void fn_8020D7D0(HitRectList* l, s32 actorId) {
 }
 
 // NONMATCHING: retail keeps box.i.x in f3 and reloads the other fields.
-extern "C" void fn_8020D8C0(HitRectList* l, const HitBox& box, s32 kind, s32 actorId) {
-    l->add(box, kind, actorId);
+extern "C" void fn_8020D8C0(HitRectList* l, const HitBox& b, s32 kind, s32 actorId) {
+    if (l->count < 80 && b.getWidth() > 0.0f && b.getHeight() > 0.0f) {
+        l->rects[l->count].box.set(b);
+        l->rects[l->count].kind = kind;
+        l->rects[l->count].actorId = actorId;
+        l->count++;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
