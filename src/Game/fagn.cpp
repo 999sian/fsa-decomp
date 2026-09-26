@@ -67,7 +67,8 @@ extern "C" void fn_80184A50(char* this_) {
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23c) = 0;
-    *(s32*)(this_ + 0x98) = (s32)(3.99f * lbl_8053AAF8->rnd.get_ufloat_1());
+    FagnGame* g = lbl_8053AAF8;
+    *(s32*)(this_ + 0x98) = (s32)(3.99f * g->rnd.get_ufloat_1());
     *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x98) * 4;
     *(f32*)(this_ + 0x260) = 0.0f;
     *(f32*)(this_ + 0x25c) = 0.0f;

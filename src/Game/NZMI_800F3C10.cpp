@@ -107,6 +107,7 @@ struct NZMI_Random {
 struct NZMI_Game { u8 pad[0xb4]; NZMI_Random rnd; };
 extern NZMI_Game* lbl_8053AAF8;
 static inline s32 NZMI_rand(f32 r) { return r * lbl_8053AAF8->rnd.get(); }
+static inline f32 NZMI_randf(f32 r) { return r * lbl_8053AAF8->rnd.get(); }
 
 // ---- fn_800F3E08: update (wander / chase the nearest player / flee)
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
@@ -131,7 +132,7 @@ static inline void NZMI_move(u8* this_) {
 }
 
 static inline void NZMI_restartWander(u8* this_) {
-    *(s32*)(this_ + 0x244) = NZMI_rand(50.0f) + 0x32;
+    *(s32*)(this_ + 0x244) = (s32)(50.0f * lbl_8053AAF8->rnd.get()) + 0x32;
     *(s32*)(this_ + 0x230) = 1;
     *(s32*)(this_ + 0x23C) = 0;
 }
@@ -221,7 +222,7 @@ extern "C" void fn_800F3E08(u8* this_) {
         *(s32*)(this_ + 0x23C) += 1;
         if (*(s32*)(this_ + 0x23C) == *(s32*)(this_ + 0x244)) {
             *(s32*)(this_ + 0x244) = NZMI_rand(80.0f) + 10;
-            *(u8*)(this_ + 0x235) = NZMI_rand(4.0f);
+            *(u8*)(this_ + 0x235) = NZMI_randf(4.0f);
             *(s32*)(this_ + 0x230) = 0;
             fn_801F0E34(this_, 0x400A6, 0);
             *(s32*)(this_ + 0x23C) = 0;

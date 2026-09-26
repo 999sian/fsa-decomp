@@ -51,6 +51,7 @@ extern "C" void fn_801B7814(u8* this_) {
     fn_801F06F0(this_, lbl_80469168, *(s32*)(this_ + 0x280) + 0xb5, 0, 0, 1.0f, 1.0f);
 }
 
+static inline f32 rope_lerp(f32 a, f32 b, f32 t) { return t * (b - a) + a; }
 extern "C" void fn_801B7854(u8* this_) {
     fn_801D2264(this_ + 0x270, *(s32*)(this_ + 0x98), 2);
     f32 t = *(f32*)(this_ + 0x254) - 0.4f;
@@ -60,7 +61,7 @@ extern "C" void fn_801B7854(u8* this_) {
     } else if (t < 0.0f) {
         t = 0.0f;
     }
-    *(f32*)(this_ + 0x2a0) = t * 2.0f + 1.0f;
+    *(f32*)(this_ + 0x2a0) = rope_lerp(1.0f, 3.0f, t);
     fn_801CE4BC(this_);
 }
 
