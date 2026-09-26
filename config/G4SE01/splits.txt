@@ -2988,6 +2988,7 @@ game/limt.cpp:
 	.text       start:0x80438540 end:0x80438C68
 	.ctors      start:0x8045C5B8 end:0x8045C5BC
 	.bss        start:0x8052C3D8 end:0x8052C444
+	.sdata2     start:0x80543C20 end:0x80543C40
 
 game/tu_80442810.cpp:
 	extab       start:0x800111D4 end:0x800111F4
