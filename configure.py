@@ -1219,7 +1219,7 @@ config.libs = [
             Object(NonMatching, "Game/tu_80220F54.cpp"),
             Object(NonMatching, "Game/tu_80221B44.cpp"),
             Object(NonMatching, "Game/zsla.cpp"),
-            Object(NonMatching, "Game/tu_80222CC4.cpp"),
+            Object(Matching, "Game/tu_80222CC4.cpp"),
             Object(NonMatching, "Game/tu_802233A4.cpp"),
             Object(NonMatching, "Game/tu_8022461C.cpp"),
             Object(NonMatching, "Game/tu_80234E30.cpp"),
