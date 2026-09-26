@@ -22,3 +22,5 @@ extern "C" void* fn_803DA260(void* this_, short how) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

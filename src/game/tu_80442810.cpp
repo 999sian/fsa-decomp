@@ -46,3 +46,5 @@ extern "C" void* fn_804429B4(void* this_) {
 
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
