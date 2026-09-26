@@ -49,6 +49,25 @@ extern "C" s32 Yasi_CanBeActiveHere(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
 
+// fn_802DFA80 - YASI: setParams (draw/collision extents).
+extern const f32 lbl_80541174;
+extern const f32 lbl_80541178;
+extern const f32 lbl_8054117C;
+extern const f32 lbl_80541180;
+
+extern "C" void fn_802DFA80(char* p) {
+    *(f32*)(p + 0x60) = lbl_80541174;
+    *(f32*)(p + 0x64) = lbl_80541174;
+    *(f32*)(p + 0x68) = lbl_80541178;
+    *(f32*)(p + 0x6c) = lbl_80541178;
+    *(f32*)(p + 0x80) = lbl_8054117C;
+    *(f32*)(p + 0x84) = lbl_8054117C;
+    *(f32*)(p + 0x88) = lbl_80541180;
+    *(f32*)(p + 0x8c) = lbl_80541180;
+    *(s32*)(p + 0x230) = 0;
+    *(u8*)(p + 0x234) = 0xff;
+}
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT

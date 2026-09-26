@@ -33,6 +33,8 @@ struct AnimEffectRec {
     u8 timer;                    // 0x9
     s32 player;                  // 0xc
     JGeometry::TVec3<f32> pos;   // 0x10
+
+    ~AnimEffectRec();
 };
 extern const s32 lbl_804715A8[4];
 extern AnimFrame* lbl_804AADB8[4];
@@ -96,10 +98,8 @@ extern "C" s32 fn_80316E74(AnimEffectRec* r, s32 arg) {
     return ret;
 }
 
-struct AnimEffectOwner {
-    ~AnimEffectOwner();
-};
-AnimEffectOwner::~AnimEffectOwner() {}
+// Deleting destructor (TWTG deletes its record at +0x278 with this).
+AnimEffectRec::~AnimEffectRec() {}
 
 // ---- ResetResourceHandleRecord.cpp ----
 // Small POD-record reset used by JIJI/TWTG/FTGL after a resource handle lookup.
