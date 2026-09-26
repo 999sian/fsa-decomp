@@ -1,6 +1,8 @@
 // TU 0x80329468-0x8032ab80 (actor GNLD).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 // ---- Gold_dtor_8032A8E0.cpp ----
 extern "C" void fn_801EE434(void* handle);
@@ -179,6 +181,56 @@ extern "C" void fn_80329468(char* this_) {
         if (*(s32*)(this_ + 4) < 8) {
             void* res = (*(GnldResMgr**)(lbl_8053AAF8 + 0xa4))->vf18(0x534f4220, lbl_80471930);
             fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, 0x2a, lbl_80541D18, lbl_80541D18, &param);
+        }
+    }
+}
+
+struct GnldRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - lbl_80541D18;
+    }
+};
+
+extern "C" void* fn_801F856C(void);
+extern "C" char* fn_801F666C(void* mgr, s32 id);
+extern "C" s32 fn_801F8544(void* mgr, u32 type, s32 room, void* pos, u32 param);
+extern const f32 lbl_80541D20;
+extern const f32 lbl_80541D3C;
+extern const f32 lbl_80541D44;
+extern const f64 lbl_80541D68;
+extern const f32 lbl_80541D70;
+extern const f32 lbl_80541D74;
+extern const f32 lbl_80541D78;
+
+#define GNLD_RND (((GnldRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1())
+
+extern "C" void fn_8032A4FC(s32 id, s32 ang, u8 mode) {
+    char* a; u32 param; f32 r; char* b;
+    a = fn_801F666C(fn_801F856C(), id);
+    if (a != 0) {
+        JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(a + 0xc);
+        r = GNLD_RND;
+        pos.x += lbl_80541D14;
+        pos.y += lbl_80541D44;
+        pos.z = lbl_80541D10;
+        param = lbl_80541D68 * r;
+        id = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(a + 0x4), &pos, param);
+        if (id >= 0) {
+            b = fn_801F666C(fn_801F856C(), id);
+            if (b != 0) {
+                if (mode) {
+                    ang += (s32)(lbl_80541D70 - lbl_80541D74 * GNLD_RND);
+                    JGeometry::TVec3<f32> v(lbl_80541D20 * JMASSin(ang), lbl_80541D20 * JMASCos(ang), lbl_80541D3C * GNLD_RND + lbl_80541D3C);
+                    *(JGeometry::TVec3<f32>*)(b + 0x3c) = v;
+                } else {
+                    JGeometry::TVec3<f32> v(lbl_80541D20 - lbl_80541D78 * GNLD_RND, lbl_80541D20 - lbl_80541D78 * GNLD_RND, lbl_80541D3C * GNLD_RND + lbl_80541D3C);
+                    *(JGeometry::TVec3<f32>*)(b + 0x3c) = v;
+                }
+            }
         }
     }
 }
