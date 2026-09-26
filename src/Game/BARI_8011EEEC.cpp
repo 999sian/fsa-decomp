@@ -6,7 +6,7 @@
 // ---- from Game/Bari_ctor_8011FD28.cpp
 
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
+extern "C" void* __ct__5ActorFv(void* this_);
 extern void* lbl_8049DEE8[];
 
 extern "C" void v01__5ActorFv(void* this_);
@@ -392,7 +392,7 @@ extern "C" void* fn_8011FC84(char* p, s16 flag) {
 }
 
 extern "C" void* fn_8011FD28(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_8049DEE8;
     *(s32*)((char*)this_ + 0x230) = 0;
     *(s32*)((char*)this_ + 0x234) = 0;
