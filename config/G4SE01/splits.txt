@@ -1696,6 +1696,7 @@ Game/tu_800F39EC.cpp:
 	extabindex  start:0x80011914 end:0x80011920
 	.text       start:0x800F39EC end:0x800F3C10
 	.ctors      start:0x8045BDF0 end:0x8045BDF4
+	.bss        start:0x804BA5F8 end:0x804BA664
 
 Game/NZMI_800F3C10.cpp:
 	extab       start:0x800056A0 end:0x800056C8
