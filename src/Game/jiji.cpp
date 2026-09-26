@@ -195,4 +195,27 @@ extern "C" void fn_8037B7EC(JijiWork* w) {
     w->m238 = 0;
 }
 
+#include "Game/AnimEffectRec.h"
+extern "C" void fn_801EE434(void* h);
+extern "C" void __dt__13AnimEffectRecFv(void* p, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
+extern "C" void __dl__FPv(void* p);
+
+extern "C" void* fn_8037CD78(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804AEED0;
+        if (*(AnimEffectRec**)((char*)this_ + 0x274) != 0) {
+            __dt__13AnimEffectRecFv(*(AnimEffectRec**)((char*)this_ + 0x274), 1);
+        }
+        if (*(void**)((char*)this_ + 0x278) != 0) {
+            fn_801EE434(*(void**)((char*)this_ + 0x278));
+        }
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
