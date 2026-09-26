@@ -1,9 +1,9 @@
 #!/bin/bash
-# Integrate a swarm round of Actor-TU work into one branch, then verify it.
+# Integrate a batch of parallel Actor-TU branches into one branch, then verify it.
 #
 # Usage: tools/integrate_actor_swarm.sh <content-base> <default-fork> <branch>[=<fork>]...
 #   content-base : the branch whose src/Game/Actor.cpp we extend (e.g. atu-integrated)
-#   default-fork : the commit the swarm branches forked from (e.g. bdf810d)
+#   default-fork : the commit the workstream branches forked from
 #   branch=fork  : optional per-branch fork point - use it when a branch was integrated
 #                  earlier and has advanced since, otherwise its diff repeats what is
 #                  already in the content base.
@@ -15,7 +15,7 @@
 #
 # Then it builds, runs the DOL gate and prints the verified total.
 set -u
-repo="/home/sian/Documents/FSA Decomp"
+repo="$(cd "$(dirname "$0")/.." && pwd)"
 wt=/tmp/atu-integrate
 base="${1:?content base branch}"; fork="${2:?default fork point}"; shift 2
 branches="$*"
@@ -36,7 +36,7 @@ for spec in $branches; do
   if [ "$f" = "$spec" ]; then f="$fork"; fi
   if git -C "$repo" diff "$f..$b" -- "$path" > /tmp/atu-patch.diff 2>/dev/null && [ -s /tmp/atu-patch.diff ]; then
     added=$(grep -c '^+' /tmp/atu-patch.diff || true)
-    # The swarm convention is "append your block at the end of the file", so most deltas are
+    # The convention is "append your block at the end of the file", so most deltas are
     # pure EOF appends. Their 3 context lines are whatever happened to be last at fork time,
     # which the content base has since replaced, so a 3-way apply conflicts over nothing.
     # Detect that case and append at the true end of file instead.
@@ -76,7 +76,7 @@ import re, sys
 path = sys.argv[1]
 lines = open(path).read().splitlines(True)
 if any(l.startswith(("<<<<<<<", ">>>>>>>")) or l.rstrip("\n") == "=======" for l in lines):
-    # Drop the marker lines and keep both sides (the agents' function sets are disjoint, so
+    # Drop the marker lines and keep both sides (the workstreams' function sets are disjoint, so
     # the union is what we want). Pairing the markers with a regex is not robust: a conflict
     # can nest inside another one's resolution and leave a stray `>>>>>>>` behind.
     kept = [l for l in lines
@@ -128,7 +128,7 @@ if ! grep -q 'build/G4SE01/main.dol: OK' /tmp/atu-integrate.log; then
 fi
 echo "--- link OK (build/G4SE01/main.dol byte-identical to retail)"
 git -C "$wt" add -A src/Game/Actor.cpp
-git -C "$wt" -c user.name=swarm -c user.email=swarm@local commit -q -m "Actor TU: integrate swarm round ($(date +%H:%M))"
+git -C "$wt" -c user.name=999sian -c user.email=siantohillmartin@gmail.com commit -q -m "Actor TU: integrate parallel batch ($(date +%H:%M))"
 round_commit=$(git -C "$wt" rev-parse HEAD)
 git -C "$repo" branch -f "$base" "$round_commit" >/dev/null 2>&1 && echo "--- committed to $base ($round_commit)"
 od=/home/sian/Documents/FSA-worktrees/actor-base/build/tools/objdiff-cli

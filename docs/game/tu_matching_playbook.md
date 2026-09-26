@@ -1,27 +1,27 @@
-# Playbook: matching a game TU with a swarm of agents
+# Playbook: matching a game TU in parallel workstreams
 
 Written from the Actor base TU run (`0x801EE24C-0x801F6058`, 75 functions, 32,268 bytes), where ten
-agents worked in parallel and the rounds were integrated and verified. Everything here is either a
+workstreams ran in parallel and the rounds were integrated and verified. Everything here is either a
 measured result or a trap that cost a round; the numbers are from that run.
 
 ## The problem the contract solves
 
-All the functions of one retail TU live in **one file**, so N agents cannot simply edit it. The pattern
+All the functions of one retail TU live in **one file**, so N workers cannot simply edit it. The pattern
 that works:
 
-1. **One worktree per agent**, all forked from the same verified commit: `git worktree add -f
-   <dir> -b /<tag> <base-commit>`, plus the gitignored `orig/G4SE01/sys/main.dol` (a fresh worktree
+1. **One worktree per workstream**, all forked from the same verified commit: `git worktree add -f
+   <dir> -b <tag> <base-commit>`, plus the gitignored `orig/G4SE01/sys/main.dol` (a fresh worktree
    cannot build without it, and `ninja` re-runs `configure` so you cannot dodge it).
-2. **Disjoint function sets** - no two agents touch the same function.
-3. **Append-only edits**: each agent adds its own block (its `extern "C"` declarations + definitions) at
+2. **Disjoint function sets** - no two workstreams touch the same function.
+3. **Append-only edits**: each workstream adds its own block (its `extern "C"` declarations + definitions) at
    the **end** of the `.cpp` and edits nothing else. No reformatting, no reordering, no touching
    `configure.py` / `splits.txt` / `symbols.txt` / the header.
-4. **One owner per shared config.** Only the parent edits `configure.py` and the unit's split/symbols.
-5. Each agent commits on its own branch and never rebases, merges or pushes.
+4. **One owner per shared config.** Only the integrator edits `configure.py` and the unit's split/symbols.
+5. Each workstream commits on its own branch and never rebases, merges or pushes.
 
 ## Integration: apply each branch's delta as a patch
 
-`tools/integrate_actor_swarm.sh <content-base> <default-fork> <branch>[=<fork>]...` applies each
+`tools/integrate_actor_branches.sh <content-base> <default-fork> <branch>[=<fork>]...` applies each
 branch's delta onto the content base with **`git apply -3`** (a patch whose merge base is that branch's
 own fork point) and then builds, gates, commits the round and advances the content base ref.
 
@@ -41,7 +41,7 @@ Three failure modes shaped this, all found by running it rather than reading it:
   round must be diffed from where it was integrated, or its delta repeats and you get duplicate
   definitions.
 
-**Declaration conflicts** are then reconciled by `tools/reconcile_decls.py`: agents declare the helpers
+**Declaration conflicts** are then reconciled by `tools/reconcile_decls.py`: workstreams declare the helpers
 they call and the same helper can arrive spelled two ways, which C++ forbids for an `extern "C"` name.
 The tool only considers real declarations (column-0 `extern "C" ...;` or lines inside an
 `extern "C" { ... }` block), so it cannot delete a call statement; it reports nested blocks as an error
@@ -69,7 +69,7 @@ relocations, and it means:
    declaration block) above the definitions, then emit only the definitions sorted by `symbols.txt`
    address - a naive line-level pass dropped blank lines and moved declarations that sat inside
    definition chunks, producing an uncompilable file.
-3. **A flag that lifts one function can sink another.** An agent measured that `-opt nodeadstore`
+3. **A flag that lifts one function can sink another.** A workstream measured that `-opt nodeadstore`
    lifted `fn_801EE24C` from 95.47 % to byte-identical. Applied to the shared `cflags_game` on the
    integrated tree it does exactly that - and drops `v07__5ActorFv`, which is *Matching*, from 100 % to
    98.86 %: 372 bytes gained, 892 lost, 4,968 instead of 5,488. The flag is per TU, so it cannot be
@@ -115,7 +115,7 @@ function=0x801fd894 format=decompiler`). Use it for **questions about meaning an
   instructions to learn "this walks a linked list";
 * strings and vtables (`search_strings`, the vtable at `lbl_…`) to identify an actor or a manager.
 
-Do **not** use it to resolve a matching residue. Every residue this swarm has hit is a *codegen* fact -
+Do **not** use it to resolve a matching residue. Every residue this run has hit is a *codegen* fact -
 which register holds a parameter, where MWCC puts a callee-saved save, whether a struct copy streams or
 loads into a register block - and the decompiler has no view of MWCC's allocator or scheduler. The
 ground truth for those is the retail instruction stream (`objdiff-cli diff --format json`, or

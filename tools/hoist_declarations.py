@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Hoist every `extern "C"` declaration above all function definitions in a swarm-built TU.
+"""Hoist every `extern "C"` declaration above all function definitions in a multi-branch TU.
 
-Each agent's block starts with the declarations it needs, and blocks are appended, so a later
+Each workstream's block starts with the declarations it needs, and blocks are appended, so a later
 block's declaration can end up *after* an earlier block's use - which C++ rejects as an
 undefined identifier. Merging the declaration blocks into one at the top fixes that, removes
 the ordering hazard for good, and is what the unit needs at the flip anyway (declarations are
@@ -16,7 +16,7 @@ import re
 import sys
 
 SINGLE = re.compile(r'^extern\s+"C"\s+[^;{]*;\s*$')
-# a top-level type definition: agents put `struct X { ... };` before the functions that use it,
+# a top-level type definition: workstreams put `struct X { ... };` before the functions that use it,
 # and a hoisted declaration that mentions X must not land above it
 TYPE = re.compile(r'^(struct|union|class|enum)\s+(\w+)')
 

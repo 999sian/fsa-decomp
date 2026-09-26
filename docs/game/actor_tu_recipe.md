@@ -107,7 +107,6 @@ rm -f build/G4SE01/ok && ninja -j8        # must print build/G4SE01/main.dol: OK
   `@171`, which cannot pair with dtk's auto symbol; the bytes are identical.
   **NOTE-2** without the mask, `__sinit` reads 99.708 % because dtk reconstructs the
   eight `addi r5, r31, k` node offsets as relocations with addends.
-  Details: `docs/audit/OMP_BRANCH_AUDIT.md`.
 
 ## 6. Worked examples (all linked `main.dol: OK`)
 

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Mechanical fixes applied to a swarm-built TU before compiling.
+"""Mechanical fixes applied to a multi-branch TU before compiling.
 
-Each agent writes its own block and each block is right on its own branch; a few
+Each workstream writes its own block and each block is right on its own branch; a few
 spellings only conflict once the blocks share a file. These fixes are codegen-neutral by
 construction, so they are safe to apply to the union.
 

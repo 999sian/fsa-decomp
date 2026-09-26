@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Reconcile conflicting `extern "C"` declarations in a swarm-built TU.
+"""Reconcile conflicting `extern "C"` declarations in a multi-branch TU.
 
-Each agent's block declares the externals it calls, so two blocks can spell the same
+Each workstream's block declares the externals it calls, so two blocks can spell the same
 function with different parameter lists. MWCC rejects that ("illegal function
 overloading"), so before building we keep one spelling per name and drop the others.
 
