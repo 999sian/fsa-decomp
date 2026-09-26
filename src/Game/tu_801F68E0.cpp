@@ -189,7 +189,9 @@ extern "C" s32 fn_801F7A6C(ActorPool* pool) {
 
 extern "C" s32 fn_801F7AB8(ActorPool* pool, u32 type, s32 exceptId) {
     s32 n = 0;
-    for (s32 i = 0; i < pool->mCount; i++) {
+    s32 i;
+    s32 cnt;
+    for (i = 0, cnt = pool->mCount; i < cnt; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && type == pool->mActors[i]->mType &&
             exceptId != pool->mActors[i]->mId)
         {
@@ -279,8 +281,10 @@ extern "C" BOOL fn_801F84C4(LinkPool* pool, LinkActor* actor) {
 }
 
 extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* count, s32 max) {
+    s32 i;
+    s32 n;
     *count = 0;
-    for (s32 i = 0; i < pool->mCount; i++) {
+    for (i = 0, n = pool->mCount; i < n; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->mType == 'RAIL' &&
             key == ((pool->mActors[i]->m90 >> 8) & 0xff))
         {
@@ -408,21 +412,17 @@ extern "C" s32 fn_801F7274(ActorPool* pool, s32 param, PoolActor** out, s32 exce
 
 struct Rect4 { f32 x0, y0, x1, y1; };
 
-static inline u8 rectContains(Rect4* rect, f32 x, f32 y) {
-    u8 inside = false;
-    if (x >= rect->x0 && y >= rect->y0 && x < rect->x1 && y < rect->y1) {
-        inside = true;
-    }
-    return inside;
+static inline u8 rectContains(Rect4* rect, f32* p) {
+    return p[0] >= rect->x0 && p[1] >= rect->y0 && p[0] < rect->x1 && p[1] < rect->y1;
 }
 
 extern "C" u8 fn_801F75B4(ActorPool* pool, s32 param, f32* rect) {
-    u8 result = 1;
+    s32 result = 1;
     for (s32 i = 0; i < pool->mCount; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive == 1 && param == pool->mActors[i]->mParam &&
             pool->mActors[i]->m1a8 == 1)
         {
-            if (rectContains((Rect4*)rect, pool->mActors[i]->mX, pool->mActors[i]->mY) == 1) {
+            if (rectContains((Rect4*)rect, &pool->mActors[i]->mX) == 1) {
                 result = 0;
                 break;
             }
@@ -465,10 +465,9 @@ extern "C" void fn_801F7E88(ActorPool* pool) {
     s32 count = pool->mCount;
     for (s32 i = 0; i < count; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive) {
-            if (pool->mActors[i]->mParam == 0 && pool->mActors[i]->m194 == 0) {
-                continue;
-            }
-            if (!rectContains((Rect4*)(cfg + 0xcc), pool->mActors[i]->mX, pool->mActors[i]->mY)) {
+            if (pool->mActors[i]->mParam != 0 ||
+                (pool->mActors[i]->m194 != 0 && !rectContains((Rect4*)(cfg + 0xcc), &pool->mActors[i]->mX)))
+            {
                 pool->mActors[i]->mActive = 0;
             }
         }
