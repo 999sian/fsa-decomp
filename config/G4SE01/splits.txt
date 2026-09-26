@@ -3850,6 +3850,7 @@ Game/tu_8033F448.cpp:
 	.text       start:0x8033F448 end:0x8033F9A0
 	.ctors      start:0x8045C438 end:0x8045C43C
 	.bss        start:0x80509EF8 end:0x80509FF8
+	.sdata2     start:0x80542258 end:0x80542268
 
 Game/ltzr.cpp:
 	extab       start:0x8000DF3C end:0x8000DF8C
