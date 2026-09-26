@@ -41,6 +41,7 @@ static inline bool inModeBm(s32 m) {
     return r;
 }
 static inline bool isM12(s32 m) { return m == 12; }
+static inline bool isNot12() { return lbl_8053AAF8->mode != 12; }
 static inline bool evModeA(s32 m) { return m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11; }
 static inline bool evModeB(s32 m) { return m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11 || m == 12; }
 static inline bool evMode(u8 b, s32 m) {
@@ -88,24 +89,25 @@ extern "C" void fn_8013BBE0(u8* this_) {
     JGeometry::TBox2f box((f32)vp[0], (f32)vp[1], (f32)vp[2], (f32)vp[3]);
     (*(J2DGrafContext**)(this_ + 0x14))->place(box);
     (*(J2DGrafContext**)(this_ + 0x14))->scissor(box);
-    if (lbl_8053AAF8->b7f && isM12(lbl_8053AAF8->mode)) {
+    if (!lbl_8053AAF8->b7f || !isNot12()) {
         this_[0x39] = 0;
-    } else if (!evMode(lbl_8053AAF8->b7f, lbl_8053AAF8->mode)) {
-        this_[0x39] = 1;
-    } else {
-        s32 m = lbl_8053AAF8->mode;
-            u8 r = 0;
-            if (this_[0x38] >= 0xff) {
-                bool ok = true;
-                if (m != 11 && !fn_80239D38()) {
-                    ok = false;
-                }
-                if (ok) {
-                    r = 1;
-                }
-            }
-            this_[0x39] = r;
+        return;
     }
+        if (!isEventMode()) {
+            this_[0x39] = 1;
+        } else {
+        u8 r = 0;
+        if (this_[0x38] >= 0xff) {
+            bool ok = true;
+            if (lbl_8053AAF8->mode != 11 && !fn_80239D38()) {
+                ok = false;
+            }
+            if (ok) {
+                r = 1;
+            }
+        }
+        this_[0x39] = r;
+        }
 }
 
 
