@@ -54,6 +54,8 @@ void fn_80207AB8(void) {}
 
 void fn_80207ABC(void) {}
 
+struct V3_80207548 { f32 x, y, z; };
+
 struct Entry_80207548 {
     s32 m00;
     u8 m04;
@@ -62,6 +64,15 @@ struct Entry_80207548 {
     f32 m10[3];
     s32 m1C;
     u8 m20;
+    void set(s32 a, s32 b, const f32* pos, s32 c) {
+        m04 = 1;
+        m08 = a;
+        m0C = b;
+        m10[0] = pos[0];
+        m10[1] = pos[1];
+        m10[2] = pos[2];
+        m1C = c;
+    }
 };
 
 Entry_80207548* fn_80207B2C(Entry_80207548* e) {
@@ -90,6 +101,73 @@ extern "C" void* fn_80207AC0(char* p) {
     *(u32*)(p + 0x2ac) = 0;
     __construct_array(p + 0x2b0, (void*)fn_80207B2C, 0, 0x24, 4);
     return p;
+}
+
+extern "C" s32 fn_80138A30(void* mgr);
+extern "C" s32 fn_801CD664(s32 n);
+extern char* lbl_8053AAF8;
+extern const u8 lbl_8053F8C8[4];
+
+struct Layout_80207548 {
+    u8 pad[0x2b0];
+    Entry_80207548 entries[4];
+};
+
+extern "C" void fn_80207830(char* p, u16 idx, s32 a, s32 b, f32* pos, s32 c) {
+    Layout_80207548* o = (Layout_80207548*)p;
+    if (o->entries[idx].m04 != 0) {
+        return;
+    }
+    o->entries[idx].set(a, b, pos, c);
+    bool allSet = true;
+    bool noneSet = true;
+    for (int i = 0; i < 4; i++) {
+        if (i != idx) {
+            if (o->entries[i].m04 != 0) {
+                allSet = false;
+            } else {
+                noneSet = false;
+            }
+        }
+    }
+    if (allSet) {
+        *(u8*)(p + 0x2aa) = lbl_8053F8C8[fn_80138A30(lbl_8053AAF8) - 1];
+    } else if (noneSet && *(u8*)(p + 0x2aa) != 0) {
+        s32 n = 1;
+        *(u8*)(p + 0x2a8) = 1;
+        switch (fn_80138A30(lbl_8053AAF8)) {
+        case 3:
+            n = 2;
+            break;
+        case 4:
+            n = 3;
+            break;
+        }
+        s32 pool[4];
+        pool[0] = 0;
+        pool[1] = 1;
+        pool[2] = 2;
+        pool[3] = 3;
+        s32 remaining = 4;
+        for (int i = 0; i < n; i++) {
+            s32 v = pool[fn_801CD664(remaining)];
+            *(u8*)(p + 0x2a9) |= 1 << v;
+            bool found = false;
+            for (int j = 0; j < remaining; j++) {
+                if (!found) {
+                    if (v == pool[j]) {
+                        found = true;
+                    }
+                } else {
+                    pool[j - 1] = pool[j];
+                }
+            }
+            if (found) {
+                remaining--;
+            }
+        }
+        ((Obj_80207548*)p)->v40();
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
