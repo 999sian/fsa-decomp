@@ -507,4 +507,91 @@ extern "C" void fn_801D4C70(u8* this_) {
     fn_801F71A4((f32*)(this_ + 0x40), vel.y, lbl_8053F100, lbl_8053F0D8);
 }
 
+
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_8030C210(void* cam, JGeometry::TVec3<f32>* pos);
+extern u8* lbl_8053AB10;
+extern const f32 lbl_8053F0CC;
+extern const f32 lbl_8053F0D4;
+extern const f32 lbl_8053F0DC;
+
+extern "C" void fn_801D47DC(u8* this_) {
+    s32 room = *(s32*)(this_ + 0x4);
+    u8* g = fn_802D6A9C();
+    f32* rect;
+    if (room < 8) {
+        rect = (f32*)(g + 0xcc);
+    } else {
+        rect = (f32*)(g + 0xdc);
+    }
+    JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14), lbl_8053F0C8);
+    f32 lim = lbl_8053F0CC + rect[1];
+    pos.y = __fsel(lim - pos.y, lim, pos.y);
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 0x17:
+        break;
+    case 1: {
+        JGeometry::TVec3<f32> c0(lbl_8053F0D0 + rect[0], lbl_8053F0D0 + rect[1], lbl_8053F0C8);
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c0);
+        JGeometry::TVec3<f32> c1(rect[2] - lbl_8053F0D0, lbl_8053F0D0 + rect[1], lbl_8053F0C8);
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c1);
+        JGeometry::TVec3<f32> c2(lbl_8053F0D0 + rect[0], rect[3] - lbl_8053F0D0, lbl_8053F0C8);
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c2);
+        JGeometry::TVec3<f32> c3(rect[2] - lbl_8053F0D0, rect[3] - lbl_8053F0D0, lbl_8053F0C8);
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &c3);
+        break;
+    }
+    case 2:
+    case 3: {
+        u8* p = *(u8**)(lbl_8053AB10 + 0x30);
+        if (p[0x284] == 0) {
+            p[0x284] = 1;
+            *(f32*)(p + 0x28c) = lbl_8053F0D4;
+        }
+        u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
+        if (cam[0x7f5] == 0) {
+            cam[0x7f4] = 1;
+            *(s32*)(cam + 0x7f8) = 4;
+            *(JGeometry::TVec3<f32>*)(cam + 0x7fc) = pos;
+            cam[0x7f6] = 0;
+        }
+        break;
+    }
+    case 0x19: {
+        u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
+        if (cam[0x840] == 0) {
+            cam[0x840] = 1;
+            *(f32*)(cam + 0x84c) = pos.x;
+            *(f32*)(cam + 0x844) = pos.x;
+            *(f32*)(cam + 0x850) = pos.y;
+            *(f32*)(cam + 0x848) = pos.y;
+            *(f32*)(cam + 0x854) = lbl_8053F0D8;
+            *(f32*)(cam + 0x1d4) = lbl_8053F0DC;
+            *(f32*)(cam + 0x1d8) = lbl_8053F0DC;
+        }
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x216] = 1;
+        break;
+    }
+    case 0x1a: {
+        u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
+        if (cam[0x7f5] == 0) {
+            cam[0x7f4] = 1;
+            *(s32*)(cam + 0x7f8) = -1;
+            cam[0x7f6] = 0;
+        }
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x216] = 1;
+        break;
+    }
+    default: {
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &pos);
+        u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
+        if (cam[0x179] == 0) {
+            cam[0x178] = 1;
+        }
+        break;
+    }
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
