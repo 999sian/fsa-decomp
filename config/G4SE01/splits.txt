@@ -3813,6 +3813,8 @@ Game/tu_8033C080.cpp:
 	extabindex  start:0x8001D620 end:0x8001D650
 	.text       start:0x8033C080 end:0x8033C584
 	.ctors      start:0x8045C428 end:0x8045C42C
+	.bss        start:0x80509AF8 end:0x80509BF8
+	.sdata2     start:0x80542160 end:0x80542178
 
 Game/tu_8033C584.cpp:
 	extab       start:0x8000DE9C end:0x8000DEC4
