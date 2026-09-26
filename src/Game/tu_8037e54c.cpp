@@ -15,18 +15,87 @@
 // through a real `virtual` member rather than a manual cast.
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804AF070[];
+struct InfEntry {
+    u32 offset;
+    u16 id;
+    u16 pad;
+};
+struct Inf1 {
+    u32 magic;
+    u32 size;
+    u16 count;
+    u16 entSize;
+    u8 pad[4];
+    InfEntry entries[1];
+};
+struct MsgData {
+    u8 pad[0x20];
+    Inf1 inf;
+};
+
+struct DrawObj {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void v24();
+    virtual void v25();
+    virtual void v26();
+    virtual void v27();
+    virtual void v28();
+    virtual void v29();
+    virtual void v30();
+    virtual void v31();
+    virtual void v32();
+    virtual void v33();
+    virtual void v34();
+    virtual void draw(f32 x, f32 y);
+};
+
 struct Mgr {
-    u8 pad0[0x4c];
+    u8 pad0[0x4];
+    DrawObj* p4;    // 0x04
+    MsgData* p8;    // 0x08 message data
+    u8 padc[0x4c - 0xc];
     s32 w4c[4];     // 0x4c
     f32 f5c;        // 0x5c
     f32 f60;
     f32 f64;
     f32 f68;
-    u8 pad6c[0xe6 - 0x6c];
+    u8 pad6c[0x70 - 0x6c];
+    f32 f70;
+    f32 f74;
+    u8 pad78[0xe4 - 0x78];
+    u8 be4;         // 0xe4
+    u8 pade5;
     u8 be6;         // 0xe6
     u8 pade7;
     u8 be8;         // 0xe8
-    u8 pade9[0x114 - 0xe9];
+    u8 pade9[0xf0 - 0xe9];
+    u16 hf0[4];     // 0xf0
+    s32 wf8;        // 0xf8
+    s32 wfc[4];     // 0xfc
+    u8 pad10c[0x114 - 0x10c];
     void* sub[4];   // 0x114
 };
 extern Mgr* lbl_8053AD78;
@@ -194,6 +263,62 @@ extern "C" void* fn_8038DBF0(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8038A984(s32 a, s32 b, s32 c, u32 id, s32 e, s32 f);
+extern "C" void fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, s32 f) {
+    u32 i;
+    Inf1* inf = &lbl_8053AD78->p8->inf;
+    for (i = 0; i < inf->count; i++) {
+        if (inf->entries[i].id == id) {
+            id = i;
+            break;
+        }
+    }
+    if (i >= inf->count) {
+        id = 0x12b;
+    }
+    fn_8038A984(a, b, c, id, e, f);
+}
+
+extern "C" void fn_80391678(void* p);
+extern "C" void fn_80390E68(void* p);
+extern "C" void fn_8038D454() {
+    for (s32 i = 0; i < 4; i++) {
+        fn_80391678(lbl_8053AD78->sub[i]);
+    }
+}
+
+static inline bool testBit(u8 bits, s32 n) {
+    return (bits & (u8)(1 << n)) != 0;
+}
+
+extern "C" void fn_8038D4A8() {
+    for (s32 i = 0; i < 4; i++) {
+        Mgr* m = lbl_8053AD78;
+        s32 v = m->wfc[i];
+        if (v != -1 && testBit(lbl_8053AAF8->b82, v) == true) {
+            fn_80390E68(m->sub[v]);
+        }
+    }
+    if (lbl_8053AD78->be4) {
+        lbl_8053AD78->p4->draw(lbl_8053AD78->f70, lbl_8053AD78->f74);
+    }
+}
+
+extern "C" void fn_8038D870() {
+    for (s32 i = 0; i < 4; i++) {
+        fn_80391678(lbl_8053AD78->sub[i]);
+        *(MsgData**)((u8*)lbl_8053AD78->sub[i] + 4) = lbl_8053AD78->p8;
+        lbl_8053AD78->wfc[i] = -1;
+        lbl_8053AD78->hf0[i] = 0;
+    }
+    lbl_8053AD78->wf8 = 0;
+    lbl_8053AD78->be4 = 0;
+}
+
+extern "C" u16 fn_803846A4(s32 i) {
+    return lbl_8053AD78->p8->inf.entries[i].id;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
