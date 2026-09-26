@@ -865,6 +865,44 @@ s32 fn_80248970(char* p) {
     }
     return c;
 }
+extern "C" void fn_802265FC(JGeometry::TVec2<f32>*, s32);
+extern "C" u32 fn_80226998(JGeometry::TVec2<f32>*, s32);
+inline bool inRoomBox(const f32* r, const JGeometry::TVec2<f32>& v) {
+    bool in = 0;
+    f32 x = v.x;
+    f32 y;
+    if (x >= r[0] && (y = v.y) >= r[1] && x < r[2] && y < r[3]) {
+        in = 1;
+    }
+    return in;
+}
+bool fn_80248A24(char* p) {
+    bool edge = 0;
+    JGeometry::TVec2<f32> v;
+    v.x = F32(p, 0x8);
+    v.y = F32(p, 0xc);
+    while (true) {
+        v.y += 8.0f;
+        if (!inRoomBox(roomOffset(S32(p, 0x3b4)), v)) {
+            v.y = roomOffset(S32(p, 0x3b4))[3] - 24.0f;
+            edge = 1;
+            break;
+        }
+        fn_802265FC(&v, S32(p, 0x3b4));
+        if ((u16)fn_80226998(&v, S32(p, 0x3b4)) == 0x231) {
+            break;
+        }
+    }
+    v.y += 24.0f;
+    if (fn_8026E5F8(p, &v)) {
+        U8(p, 0x43f) = 1;
+        if (edge == 1) {
+            U8(p, 0x440) = 1;
+        }
+        return 1;
+    }
+    return 0;
+}
 void fn_80248DAC(char* p) { U8(p, 0x121e) = 0; }
 void fn_80248DB8(char* p) {
     U8(p, 0x1217) = 0;
