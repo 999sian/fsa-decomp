@@ -765,6 +765,51 @@ bool fn_80272E98(char* p, const JGeometry::TBox2<f32>* box, s32 room) {
     }
     return r;
 }
+s32 fn_80241864(char*);
+bool fn_802724E0(char* p, const JGeometry::TBox2<f32>* box, s32 room) {
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4) && (S32(p, 0x3b4) >= 8 || room != 8)) {
+        return 0;
+    }
+    if (F32(p, 0x10) > 0.0f) {
+        return 0;
+    }
+    bool ok;
+    if (isDying(p)) {
+        ok = 0;
+        if (fn_80241864(p) <= 0 && U8(p, 0xcfc) != 0) {
+            ok = 1;
+        }
+        if (ok) {
+            goto hit;
+        }
+    }
+    if (!fn_80251BFC(p, 0x19)) {
+        return 0;
+    }
+hit:
+    JGeometry::TBox2<f32> b(*box);
+    f32* o = roomOffset(room);
+    JGeometry::TVec2<f32> n;
+    n.x = -o[0];
+    n.y = -o[1];
+    b.addPos(n);
+    JGeometry::TBox2<f32> m(*(JGeometry::TBox2<f32>*)(p + 0x4d0));
+    f32* o2 = roomOffset(S32(p, 0x3b4));
+    JGeometry::TVec2<f32> n2;
+    n2.x = -o2[0];
+    n2.y = -o2[1];
+    m.addPos(n2);
+    m.i.setMax(b.i);
+    m.f.setMin(b.f);
+    bool r = 0;
+    if (m.f.x >= m.i.x && m.f.y >= m.i.y) {
+        r = 1;
+    }
+    return r;
+}
 u8 Player_GetField_0x454(char*);
 inline bool areaTail(char* p, const f32* box, f32 h) {
     char* base = (char*)PTR(p, 0x3b4);
