@@ -58,4 +58,52 @@ extern "C" void fn_80183544(char* this_) {
     fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x254) + 0x155, 1.0f, 1.0f, 0, -1);
 }
 
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_8018330C(u32* out);
+
+// GDMN init (vtable slot 1)
+extern "C" void fn_80183CF8(char* this_) {
+    *(f32*)(this_ + 0x60) = -8.0f;
+    *(f32*)(this_ + 0x64) = -8.0f;
+    *(f32*)(this_ + 0x68) = 8.0f;
+    *(f32*)(this_ + 0x6c) = 8.0f;
+    *(f32*)(this_ + 0x80) = -8.0f;
+    *(f32*)(this_ + 0x84) = -8.0f;
+    *(f32*)(this_ + 0x88) = 8.0f;
+    *(f32*)(this_ + 0x8c) = 8.0f;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(u8*)(this_ + 0x238) = 0;
+    *(u8*)(this_ + 0x239) = 0;
+    *(u8*)(this_ + 0x23a) = 0;
+    if (*((u8*)fn_802D6A9C() + 0x131f2) == 1) {
+        u8 c[4];
+        fn_8018330C((u32*)c);
+        *(u8*)(this_ + 0x234) = c[0];
+        *(u8*)(this_ + 0x235) = c[1];
+        *(u8*)(this_ + 0x236) = c[2];
+        *(u8*)(this_ + 0x237) = c[3];
+        *(u8*)(this_ + 0x238) = *(u32*)(this_ + 0x234) >> 24;
+        *(u8*)(this_ + 0x239) = *(u32*)(this_ + 0x234) >> 16;
+        *(u8*)(this_ + 0x23a) = *(u32*)(this_ + 0x234) >> 8;
+    }
+    *(u32*)(this_ + 0x25c) = (*(u32*)(this_ + 0x90) >> 8) & 1;
+    *(u8*)(this_ + 0x195) = 1;
+    *(s32*)(this_ + 0x254) = 2;
+    *(f32*)(this_ + 0x26c) = 0.0f;
+    *(f32*)(this_ + 0x268) = 0.0f;
+    *(f32*)(this_ + 0x264) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x3c) = 0.0f;
+    *(s32*)(this_ + 0x258) = 0;
+    *(s16*)(this_ + 0x260) = 0;
+    *(s32*)(this_ + 0x270) = 0;
+    *(s32*)(this_ + 0x230) = 0;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
