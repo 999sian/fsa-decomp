@@ -75,6 +75,18 @@ Current progress is automatically tracked against compiler-verified metadata fro
    ```text
    build/G4SE01/main.dol: OK
    ```
+### Multi-Version Builds
+
+All three retail releases can be configured and built locally:
+
+- **USA (`G4SE01`)**: `python3 configure.py --version G4SE01 && ninja` (default)
+- **Japan (`G4SJ01`)**: `python3 configure.py --version G4SJ01 && ninja`
+- **Europe (`G4SP01`)**: `python3 configure.py --version G4SP01 && ninja`
+
+Each version expects its retail game disc in `orig/<VERSION>/` (e.g. `orig/G4SJ01/` or `orig/G4SP01/`).
+All versions build to verified byte-identical retail executables (`build/<VERSION>/main.dol: OK`).
+
+*Cross-version function correspondence and mapping analysis are documented in [`docs/versions/README.md`](docs/versions/README.md).*
 
 ---
 

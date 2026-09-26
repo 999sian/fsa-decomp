@@ -16,10 +16,21 @@ from typing import Any, Dict, List, Optional, Tuple
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
-def load_config_objects() -> Dict[str, Dict[str, int]]:
-    """Parse configure.py to count completed vs total objects per category."""
+def load_config_objects(version: str = "G4SE01") -> Dict[str, Dict[str, int]]:
+    """Parse configure.py to count completed vs total objects per category for the specified version."""
+    cats: Dict[str, Dict[str, int]] = {
+        "all": {"matching": 0, "total": 0},
+        "game": {"matching": 0, "total": 0},
+        "sdk": {"matching": 0, "total": 0},
+        "jsys": {"matching": 0, "total": 0},
+    }
+
+    if version != "G4SE01":
+        # Other releases (G4SJ01, G4SP01) are currently assembly-split baselines without C++ source splits
+        return cats
+
     saved_argv = sys.argv
-    sys.argv = ["configure.py"]
+    sys.argv = ["configure.py", "--version", version]
     try:
         sys.path.insert(0, str(ROOT))
         import configure
@@ -27,9 +38,6 @@ def load_config_objects() -> Dict[str, Dict[str, int]]:
     finally:
         sys.argv = saved_argv
 
-    cats: Dict[str, Dict[str, int]] = {
-        "all": {"matching": 0, "total": 0},
-    }
     for lib in config.libs:
         cat_id = lib.get("progress_category", "game")
         if cat_id not in cats:
@@ -117,6 +125,7 @@ def format_markdown(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]])
     total_funcs = int(m.get("total_functions", 0))
 
     all_objs = obj_counts.get("all", {"matching": 0, "total": 0})
+    files_pct = (all_objs["matching"] / all_objs["total"] * 100.0) if all_objs.get("total", 0) > 0 else 0.0
 
     lines = [
         f"## 🗡️ The Legend of Zelda: Four Swords Adventures — Decompilation Progress",
@@ -128,7 +137,7 @@ def format_markdown(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]])
         f"| **Matched Code** | `{make_progress_bar(matched_code_pct)}` | **{matched_code_pct:.2f}%** | {matched_code:,} / {total_code:,} bytes |",
         f"| **Fuzzy Code** | `{make_progress_bar(fuzzy_code_pct)}` | **{fuzzy_code_pct:.2f}%** | *(includes near-matches)* |",
         f"| **Matched Functions** | `{make_progress_bar(matched_funcs_pct)}` | **{matched_funcs_pct:.2f}%** | {matched_funcs:,} / {total_funcs:,} functions |",
-        f"| **Configured Matching Files** | `{make_progress_bar(all_objs['matching'] / all_objs['total'] * 100 if all_objs['total'] else 0)}` | **{all_objs['matching'] / all_objs['total'] * 100:.2f}%** | {all_objs['matching']} / {all_objs['total']} files |",
+        f"| **Configured Matching Files** | `{make_progress_bar(files_pct)}` | **{files_pct:.2f}%** | {all_objs['matching']} / {all_objs['total']} files |",
         "",
         "### Progress by Category",
         "",
@@ -141,14 +150,13 @@ def format_markdown(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]])
         cid = cat.get("id", "")
         cm = cat.get("measures", {})
 
-        c_pct = float(cm.get("matched_code_percent", 0.0))
-        c_matched = int(cm.get("matched_code", 0))
-        c_total = int(cm.get("total_code", 0))
+        c_matched = int(cm.get("matched_code", 0) or 0)
+        c_total = int(cm.get("total_code", 0) or 0)
+        c_pct = float(cm.get("matched_code_percent", 0.0) or 0.0) if c_total > 0 else 0.0
 
-        f_pct = float(cm.get("matched_functions_percent", 0.0))
-        f_matched = int(cm.get("matched_functions", 0))
-        f_total = int(cm.get("total_functions", 0))
-
+        f_matched = int(cm.get("matched_functions", 0) or 0)
+        f_total = int(cm.get("total_functions", 0) or 0)
+        f_pct = float(cm.get("matched_functions_percent", 0.0) or 0.0) if f_total > 0 else 0.0
         objs = obj_counts.get(cid, {"matching": 0, "total": 0})
         bar = f"`{make_progress_bar(c_pct, 10)}`"
 
@@ -190,9 +198,9 @@ def format_console(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]]) 
         name = cat.get("name", "")
         cid = cat.get("id", "")
         cm = cat.get("measures", {})
-        c_pct = float(cm.get("matched_code_percent", 0.0))
-        c_matched = int(cm.get("matched_code", 0))
-        c_total = int(cm.get("total_code", 0))
+        c_matched = int(cm.get("matched_code", 0) or 0)
+        c_total = int(cm.get("total_code", 0) or 0)
+        c_pct = float(cm.get("matched_code_percent", 0.0) or 0.0) if c_total > 0 else 0.0
         f_matched = int(cm.get("matched_functions", 0))
         f_total = int(cm.get("total_functions", 0))
         objs = obj_counts.get(cid, {"matching": 0, "total": 0})
@@ -265,12 +273,12 @@ def update_readme(readme_path: pathlib.Path, data: Dict[str, Any], obj_counts: D
         name = cat.get("name", "")
         cid = cat.get("id", "")
         cm = cat.get("measures", {})
-        c_pct = float(cm.get("matched_code_percent", 0.0))
-        c_matched = int(cm.get("matched_code", 0))
-        c_total = int(cm.get("total_code", 0))
-        f_pct = float(cm.get("matched_functions_percent", 0.0))
-        f_matched = int(cm.get("matched_functions", 0))
-        f_total = int(cm.get("total_functions", 0))
+        c_matched = int(cm.get("matched_code", 0) or 0)
+        c_total = int(cm.get("total_code", 0) or 0)
+        c_pct = float(cm.get("matched_code_percent", 0.0) or 0.0) if c_total > 0 else 0.0
+        f_matched = int(cm.get("matched_functions", 0) or 0)
+        f_total = int(cm.get("total_functions", 0) or 0)
+        f_pct = float(cm.get("matched_functions_percent", 0.0) or 0.0) if f_total > 0 else 0.0
         objs = obj_counts.get(cid, {"matching": 0, "total": 0})
         table_lines.append(
             f"| **{name}** | **{c_pct:.2f}%** ({c_matched:,} / {c_total:,} B) | **{f_pct:.2f}%** ({f_matched:,} / {f_total:,} fns) | **{objs['matching']} / {objs['total']}** | `{make_progress_bar(c_pct, 15)}` |"
@@ -344,12 +352,13 @@ def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, in
     sdk_objs = obj_counts.get("sdk", {})
     jsys_objs = obj_counts.get("jsys", {})
 
+    version = data.get("version", "G4SE01")
     for cat_name, counts in obj_counts.items():
-        assert counts.get("total", 0) > 0, f"Category {cat_name} has 0 total objects"
+        if version == "G4SE01":
+            assert counts.get("total", 0) > 0, f"Category {cat_name} has 0 total objects"
         assert 0 <= counts.get("matching", 0) <= counts.get("total", 0), (
             f"Category {cat_name} matching {counts.get('matching')} not in [0, {counts.get('total')}]"
         )
-
     expected_sum_total = game_objs.get("total", 0) + sdk_objs.get("total", 0) + jsys_objs.get("total", 0)
     assert all_objs.get("total") == expected_sum_total, (
         f"All total {all_objs.get('total')} != sum of categories {expected_sum_total}"
@@ -359,10 +368,11 @@ def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, in
         f"All matching {all_objs.get('matching')} != sum of categories {expected_sum_matching}"
     )
 
-    # 4. Sanity floor bounds (ensures progress didn't regress or fail to parse)
-    assert code_pct >= 25.0, f"Code progress sanity floor failed: {code_pct:.2f}% < 25.0%"
-    assert funcs_pct >= 50.0, f"Functions progress sanity floor failed: {funcs_pct:.2f}% < 50.0%"
-    assert all_objs.get("matching", 0) >= 400, f"Matching objects sanity floor failed: {all_objs.get('matching')} < 400"
+    # 4. Sanity floor bounds for primary target G4SE01
+    if version == "G4SE01":
+        assert code_pct >= 25.0, f"Code progress sanity floor failed: {code_pct:.2f}% < 25.0%"
+        assert funcs_pct >= 50.0, f"Functions progress sanity floor failed: {funcs_pct:.2f}% < 50.0%"
+        assert all_objs.get("matching", 0) >= 400, f"Matching objects sanity floor failed: {all_objs.get('matching')} < 400"
 
     print(f"Code progress: {code_pct:.2f}% ({matched_code:,} / {total_code:,} bytes)")
     print(f"Function progress: {funcs_pct:.2f}% ({matched_funcs:,} / {total_funcs:,} funcs)")
@@ -383,7 +393,7 @@ def main():
     args = parser.parse_args()
 
     data, source = load_progress_data(args.version)
-    obj_counts = load_config_objects()
+    obj_counts = load_config_objects(args.version)
 
     if args.test:
         success = run_regression_test(data, obj_counts, source)
