@@ -70,7 +70,9 @@ extern "C" void __dt__19JPAParticleCallBackFv(void* this_, s16 flag);
 extern "C" void __dl__FPv(void* p);
 extern "C" void* fn_801F856C(void);
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
-extern "C" void fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8* fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" f32 fn_802F5E9C(void*, const f32*);
+extern char* lbl_8053AB10;
 class JPABaseEmitter;
 class JPAEmitterManager {
 public:
@@ -170,6 +172,33 @@ void fn_802146A4(u8* this_) {
     }
     fn_8013CC50(lbl_8053FBA4, cbOwner(o), cbPos(o), 0x416, 0, f - 1, 0, 0, 1);
     fn_8013CC50(lbl_8053FBA4, cbOwner(*(u8**)(this_ + 0x34)), cbPos(*(u8**)(this_ + 0x34)), 0x417, 0, f, 0, 0, 1);
+}
+
+void fn_80214E50(u8* this_) {
+    if (*(u8**)(this_ + 0) == 0) {
+        JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(*(u8**)(this_ + 0x34) + 0xc));
+        pos.y += -24.0f;
+        s32 hi = 0;
+        s32 lo = 1;
+        if (pos.z > 0.0f) {
+            hi = lo;
+            lo = 0;
+        }
+        f32 off = (hi << 10) + (lo << 7);
+        f32 x = pos.x;
+        f32 y = pos.y + off;
+        f32 z = pos.z + off;
+        f32 d = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), &pos.x) - pos.z;
+        *(f32*)(this_ + 0x8) = x;
+        *(f32*)(this_ + 0xc) = y;
+        z += d;
+        *(f32*)(this_ + 0x10) = z;
+        *(u8**)(this_ + 0) = fn_8013CC50(lbl_8053FBA4, *(u32*)(*(u8**)(this_ + 0x34) + 4), &pos, 0x33b, 0, 1, 0, (s32)(this_ + 4), 1);
+        u8* e = *(u8**)(this_ + 0);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 0x40;
+        }
+    }
 }
 
 void* dtor_80214F9C(u8* this_, s16 flag) {
