@@ -2,6 +2,70 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
+#include "JSystem/JUtility/JUTVideo.h"
+#include "JSystem/J3D/J3DSys.h"
+#include "JSystem/J3D/J3DDrawBuffer.h"
+#include "JSystem/JGeometry.h"
+
+extern "C" void GXSetColorUpdate(u8);
+extern "C" void GXSetAlphaUpdate(u8);
+
+extern void* lbl_8053AB10;
+extern _GXRenderModeObj lbl_8049F090;
+extern _GXRenderModeObj lbl_8049F0CC;
+
+extern "C" void fn_8013AAD4() {
+    JUTVideo::getManager()->setRenderMode(&lbl_8049F090);
+}
+
+extern "C" void fn_8013AB00() {
+    JUTVideo::getManager()->setRenderMode(&lbl_8049F0CC);
+}
+
+extern "C" void fn_8013AB2C() {
+    J3DDrawBuffer* opa = *(J3DDrawBuffer**)((char*)lbl_8053AB10 + 0x8);
+    J3DDrawBuffer* xlu = *(J3DDrawBuffer**)((char*)lbl_8053AB10 + 0xc);
+    j3dSys.drawInit();
+    j3dSys.reinitGX();
+    GXSetColorUpdate(1);
+    GXSetAlphaUpdate(0);
+    j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk3;
+    opa->draw();
+    j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk4;
+    xlu->draw();
+    opa->frameInit();
+    xlu->frameInit();
+}
+
+struct CamViewBase {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    f32 _pad[5];
+    Vec mPos;
+    Mtx mMtx;
+};
+
+extern "C" void fn_8013ABCC(CamViewBase* this_, Vec* pos, Mtx mtx) {
+    this_->mPos.x = pos->x;
+    this_->mPos.y = pos->y;
+    this_->mPos.z = pos->z;
+    PSMTXCopy(mtx, this_->mMtx);
+    this_->v2();
+    this_->v1();
+    this_->v5();
+}
+
+extern "C" void fn_8013AC54(Mtx mtx) {
+    char* mgr = (char*)lbl_8053AB10;
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0x8), 0);
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0xc), 1);
+    j3dSys.setViewMtx(mtx);
+}
+
 // ---- from Game/fn_8013B3CC.cpp
 
 // Family of thin forwarding methods on the camera/cutscene-cue-manager
@@ -132,7 +196,7 @@ extern "C" void fn_8013BB18(void* this_) {
 extern char lbl_80536C50[];
 
 extern "C" s32 fn_8030DFE8(void* subObj, void* matrix);
-extern "C" void PSMTXCopy(void* src, void* dst);
+// PSMTXCopy from dolphin/mtx.h
 
 // fn_8013BB64(this) - resets the fog/color object (this->0x24) via
 // fn_8030DFE8(obj,NULL), refreshes lbl_80536C50->0x48/0x4c from this
@@ -143,9 +207,9 @@ extern "C" void PSMTXCopy(void* src, void* dst);
 // likely a vtable ptr) into lbl_80536C50 via PSMTXCopy.
 extern "C" void fn_8013BB64(void* this_) {
     fn_8030DFE8(*(void**)((char*)this_ + 0x24), 0);
-    *(s32*)(lbl_80536C50 + 0x48) = *(s32*)((char*)this_ + 0x8);
-    *(s32*)(lbl_80536C50 + 0x4c) = *(s32*)((char*)this_ + 0xc);
-    PSMTXCopy(*(char**)((char*)this_ + 0x24) + 0x4, lbl_80536C50);
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)((char*)this_ + 0x8), 0);
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)((char*)this_ + 0xc), 1);
+    j3dSys.setViewMtx(*(Mtx*)(*(char**)((char*)this_ + 0x24) + 0x4));
 }
 
 // ---- from Game/fn_8013BBBC.cpp
@@ -236,6 +300,10 @@ extern "C" void* fn_8013BE60(void* this_, s16 flag) {
         }
     }
     return this_;
+}
+
+extern "C" void* fn_8013C394() {
+    return *(char**)((char*)lbl_8053AB10 + 0x24) + 0x144;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
