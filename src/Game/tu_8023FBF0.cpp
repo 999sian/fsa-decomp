@@ -1189,6 +1189,30 @@ void fn_80252F80(char* p, const JGeometry::TVec3<f32>& pos, s32 a, s32 b, u8 c) 
     U8(p, 0xd04) = c;
 }
 void EmptyHook_80252FBC(void) {}
+void fn_80254660(char* p) {
+    S32(p, 0xc10) = S32(fn_802D6A9C(), 0x48);
+    S32(p, 0xc14) = S32(fn_802D6A9C(), 0x4c);
+    S32(p, 0xc18) = 1;
+    U8(p, 0xb7a) = 0;
+    U8(p, 0xb7b) = 0;
+    if (U8(lbl_8053AAF8, 0x7f) != 0) {
+        if (S32(p, 0xd60) >= 0) {
+            S32(p, 0xbf8) = 0x10;
+        } else {
+            S32(p, 0xbf8) = fn_8040305C(fn_804033D4(S32(p, 0x4))) * 4;
+        }
+    } else {
+        S32(p, 0xbf8) = fn_8040305C(fn_804033D4(S32(p, 0x4))) * 4;
+    }
+    if (U8(lbl_8053AAF8, 0x7f) != 0) {
+        F32(p, 0xb90) = 0.0f;
+    } else {
+        F32(p, 0xb90) = 85.333336f;
+    }
+    S32(p, 0xc08) = 0x180;
+    S32(p, 0xc0c) = 0x180;
+    S32(p, 0xbfc) = S32(p, 0xbf8) - 4;
+}
 } // extern "C"
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
