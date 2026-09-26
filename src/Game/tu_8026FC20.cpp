@@ -143,6 +143,14 @@ inline BOOL inBox2(const f32* box, f32 x, f32 y) {
     return in;
 }
 
+inline BOOL inRect(const JGeometry::TVec2<f32>& pt, f32 x0, f32 y0, f32 x1, f32 y1) {
+    BOOL in = 0;
+    if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+        in = 1;
+    }
+    return in;
+}
+
 struct PlayerAreas2 {
     u8 pad0[0xef0];
     s32 mId[0x50];
@@ -823,16 +831,16 @@ void fn_8027966C(char* p) {
     fn_8024F0E8(p, 0x10004);
     F32(p, 0x358) = 0.0f;
 }
-void fn_802796B8(char* p) {
-    if (fn_802486A0(p) == 4) {
-        s32 v = fn_80248778(p);
-        s32 w = fn_80240888(p);
-        if (w == v) {
-            goto award;
-        }
+inline bool sameCount(char* p) {
+    s32 v = fn_80248778(p);
+    s32 w = fn_80240888(p);
+    if (w == v) {
+        return true;
     }
-    if (fn_802486A0(p) != 4 && !Player_IsLinked(p)) {
-    award:
+    return false;
+}
+void fn_802796B8(char* p) {
+    if ((fn_802486A0(p) == 4 && sameCount(p)) || (fn_802486A0(p) != 4 && !Player_IsLinked(p))) {
         s32 t = S32(p, 0x11e4);
         if (t == 4 || t == 7) {
             fn_8024E46C(p);
