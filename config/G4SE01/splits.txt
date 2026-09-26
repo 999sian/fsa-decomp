@@ -3275,7 +3275,9 @@ Game/bfin.cpp:
 	extabindex  start:0x8001F8F4 end:0x8001F960
 	.text       start:0x803D6434 end:0x803D7098
 	.ctors      start:0x8045C568 end:0x8045C56C
+	.data       start:0x804B02D8 end:0x804B0380
 	.bss        start:0x80528068 end:0x805280D4
+	.sdata2     start:0x80543520 end:0x80543530
 
 Game/tngl.cpp:
 	extab       start:0x8000FB44 end:0x8000FB6C
