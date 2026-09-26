@@ -11,6 +11,57 @@ extern "C" void GXSetColorUpdate(u8);
 extern "C" void GXSetAlphaUpdate(u8);
 
 extern void* lbl_8053AB10;
+
+struct AADGameState {
+    u8 pad0[0x4c];
+    s32 mode;       // 0x4c
+    u8 pad50[0x7f - 0x50];
+    u8 b7f;         // 0x7f
+};
+extern AADGameState* lbl_8053AAF8;
+
+static inline bool inModeA(AADGameState* g) {
+    bool r = false;
+    s32 m = g->mode;
+    if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11) {
+        r = true;
+    }
+    return r;
+}
+static inline bool inModeB(AADGameState* g) {
+    bool r = false;
+    s32 m = g->mode;
+    if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11 || m == 12) {
+        r = true;
+    }
+    return r;
+}
+static inline bool isEventMode() {
+    AADGameState* g = lbl_8053AAF8;
+    if (g->b7f) {
+        return inModeA(g) != 0;
+    } else {
+        return inModeB(g) != 0;
+    }
+}
+
+extern "C" void fn_802FF0EC(void* p);
+extern "C" s32 fn_8013D5D4(void* subObj);
+
+extern "C" void fn_8013B538(void* this_) {
+    if (isEventMode()) {
+        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
+    }
+}
+
+extern "C" void fn_8013B618(void* this_) {
+    if (isEventMode()) {
+        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
+        fn_8013D5D4(*(void**)((char*)this_ + 0x28));
+    }
+    (*(J3DDrawBuffer**)((char*)this_ + 0x8))->frameInit();
+    (*(J3DDrawBuffer**)((char*)this_ + 0xc))->frameInit();
+}
 extern _GXRenderModeObj lbl_8049F090;
 extern _GXRenderModeObj lbl_8049F0CC;
 
