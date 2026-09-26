@@ -2,6 +2,9 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 
+#include "JSystem/JGeometry/Vec.h"
+typedef JGeometry::TVec3<f32> Vec3f;
+
 // ---- Slmn_ctor_80208BE0.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void* fn_80207AC0(void* this_);
@@ -17,6 +20,445 @@ extern "C" void* fn_80208BE0(void* this_) {
     *(s16*)((char*)this_ + 0x348) = 0;
     *(u8*)((char*)this_ + 0x34a) = 0;
     return this_;
+}
+
+extern "C" void __dt__5ActorFv(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern void* lbl_804A5B28[];
+extern void* lbl_804A4808[];
+extern void* lbl_8049CC34[];
+
+extern "C" void* fn_80207D84(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        char* p = (char*)this_;
+        *(void**)p = lbl_804A5BD8;
+        if (this_ != 0) {
+            *(void**)p = lbl_804A5B28;
+            if (this_ != 0) {
+                *(void**)p = lbl_804A4808;
+                if (p + 0x270 != 0) {
+                    if (p + 0x294 != 0) {
+                        *(void**)(p + 0x294) = lbl_8049CC34;
+                    }
+                }
+                __dt__5ActorFv(this_, 0);
+            }
+        }
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+extern "C" void fn_80208244(char* this_, s32 state);
+extern "C" void fn_80208520(char* this_, f32* out, f32* step);
+
+extern "C" void fn_80207E24(char* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 4:
+        fn_80208244(this_, 2);
+        break;
+    }
+}
+
+extern "C" BOOL fn_80207E58(char* this_) {
+    BOOL r = FALSE;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 3:
+        if (*(u8*)(this_ + 0x34a) >= 10) {
+            fn_80208244(this_, 6);
+            r = TRUE;
+        } else {
+            fn_80208244(this_, 2);
+        }
+        break;
+    case 6:
+        r = TRUE;
+        break;
+    }
+    return r;
+}
+
+extern "C" void fn_80207ECC(char* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+        fn_80208244(this_, 3);
+        break;
+    }
+}
+
+extern const f32 lbl_8053F8E0;
+
+extern "C" void fn_80207F00(char* this_) {
+    f32 z = lbl_8053F8E0;
+    *(f32*)(this_ + 0x3c) = z;
+    *(f32*)(this_ + 0x40) = z;
+    *(f32*)(this_ + 0x44) = z;
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+extern "C" void fn_80209CA4(void* obj, s32 a, s32 b, void* c, s32 d);
+extern "C" void fn_80209D44(void* obj);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u16 fn_80226850(void* pos, s32 room);
+
+struct SlmnPart {
+    s32 id;       // 0x2b0
+    u8 inactive;  // 0x2b4
+    u8 pad5[3];
+    s32 a;        // 0x2b8
+    s32 b;        // 0x2bc
+    u8 c[0xc];    // 0x2c0
+    s32 d;        // 0x2cc
+    u8 dead;      // 0x2d0
+    u8 pad21[3];
+};
+
+struct Slmn {
+    u8 pad0[0xc];
+    f32 pos[3]; // 0xc
+    u8 pad18[0x248 - 0x18];
+    s32 state; // 0x248
+    u8 pad24c[0x2b0 - 0x24c];
+    SlmnPart parts[4]; // 0x2b0
+};
+
+extern "C" void fn_80208834(char* this_) {
+    if (*(s32*)(this_ + 0x248) != 7) {
+        fn_80208244(this_, 7);
+    }
+    for (s32 i = 0; i < 4; i++) {
+        void* a = fn_801F666C(fn_801F856C(), ((Slmn*)this_)->parts[i].id);
+        if (a != 0) {
+            fn_80209CA4(a, ((Slmn*)this_)->parts[i].a, ((Slmn*)this_)->parts[i].b, ((Slmn*)this_)->parts[i].c, ((Slmn*)this_)->parts[i].d);
+        }
+    }
+}
+
+extern "C" void fn_802088B4(char* this_) {
+    if (*(s32*)(this_ + 0x248) != 5) {
+        fn_80208244(this_, 5);
+    }
+    for (s32 i = 0; i < 4; i++) {
+        void* a = fn_801F666C(fn_801F856C(), ((Slmn*)this_)->parts[i].id);
+        if (a != 0) {
+            fn_80209D44(a);
+        }
+    }
+}
+
+extern "C" void fn_80208924(char* this_) {
+    *(u16*)(this_ + 0x346) = fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4));
+    *(u16*)(this_ + 0x348) = fn_80226850(this_ + 0xc, *(s32*)(this_ + 0x4));
+}
+
+extern "C" s32 fn_801CD664(s32 range);
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" void fn_801F3604(void* this_);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 owner, void* pos, u32 param, s32 a, s32 b);
+extern const f32 lbl_8053F8E4;
+extern const f32 lbl_8053F8E8;
+extern const f32 lbl_8053F8F8;
+extern const f32 lbl_8053F910;
+
+static inline void slmnSpawn(char* this_) {
+    Vec3f pos; f32 dy; f32 dx; Vec3f* at; s32 param; s32 i;
+    fn_801F3604(this_);
+    pos = *(Vec3f*)(this_ + 0xc);
+    dy = dx = lbl_8053F8E0;
+    switch (*(s32*)(this_ + 0x2ac)) {
+    case 0:
+        pos.x -= lbl_8053F8E8;
+        dx = lbl_8053F8E4;
+        break;
+    case 1:
+        pos.y -= lbl_8053F8E8;
+        dy = lbl_8053F8E4;
+        break;
+    }
+    for (i = 0; i < 4; i++) {
+        param = *(s32*)(this_ + 0x198);
+        if (*(s32*)(this_ + 0x340) == 3) {
+            at = (Vec3f*)(this_ + 0xc);
+        } else {
+            at = &pos;
+        }
+        ((Slmn*)this_)->parts[i].id = Actor_CreateByID(fn_801F856C(), 0x464f534c, *(s32*)(this_ + 0x4), at, param, -1, -1);
+        char* a = (char*)fn_801F666C(fn_801F856C(), ((Slmn*)this_)->parts[i].id);
+        if (a != 0) {
+            *(s16*)(a + 0x94) = i;
+            if (*(s32*)(this_ + 0x340) == 3) {
+                *(Vec3f*)(a + 0x24) = pos;
+            }
+        }
+        pos.x += dx;
+        pos.y += dy;
+    }
+}
+
+extern "C" void fn_8020896C(char* this_) {
+    fn_801D0ED0(this_);
+    *(s32*)(this_ + 0x2ac) = *(u32*)(this_ + 0x90) & 3;
+    if (*(s32*)(this_ + 0x2ac) >= 2 || *(s32*)(this_ + 0x2ac) < 0) {
+        *(s32*)(this_ + 0x2ac) = fn_801CD664(2);
+    }
+    s32 kind = (*(u32*)(this_ + 0x90) >> 4) & 3;
+    if (kind > 3) {
+        kind = 3;
+    } else if (kind < 0) {
+        kind = 0;
+    }
+    *(s32*)(this_ + 0x340) = kind;
+    *(u8*)(this_ + 0x344) = *(u32*)(this_ + 0x90) >> 8;
+    f32 hi = lbl_8053F910;
+    f32 lo = lbl_8053F8F8;
+    *(f32*)(this_ + 0x60) = lo;
+    *(f32*)(this_ + 0x64) = lo;
+    *(f32*)(this_ + 0x68) = hi;
+    *(f32*)(this_ + 0x6c) = hi;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = lo;
+    *(f32*)(this_ + 0x84) = lo;
+    *(f32*)(this_ + 0x88) = hi;
+    *(f32*)(this_ + 0x8c) = hi;
+    *(s32*)(this_ + 0xb0) = 0;
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x380;
+    *(s32*)(this_ + 0x108) = 1000;
+    *(s32*)(this_ + 0x244) = *(s32*)(this_ + 0x108);
+    if (*(s32*)(this_ + 0x340) == 0) {
+        *(s32*)(this_ + 0x248) = 2;
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
+        slmnSpawn(this_);
+    } else {
+        *(s32*)(this_ + 0x248) = 0;
+        *(s32*)(this_ + 0x250) = -1;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(f32*)(this_ + 0x254) = lbl_8053F8E0;
+    *(f32*)(this_ + 0x258) = lbl_8053F8E0;
+}
+
+extern "C" void fn_80207A60(void* this_);
+extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
+extern "C" u8 fn_801D0B44(void* this_, s32 player);
+extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
+
+extern "C" void fn_80207F14(char* this_) {
+    fn_80207A60(this_);
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+        break;
+    case 3:
+        break;
+    case 0: {
+        u8 go; f32 r; s32 j; s32 bit; s32 i;
+        go = FALSE;
+        r = lbl_8053F8E4 * *(u8*)(this_ + 0x344);
+        switch (*(s32*)(this_ + 0x340)) {
+        case 0:
+            go = TRUE;
+            break;
+        case 1:
+            for (j = 0; j < 4; j++) {
+                if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
+                    go = TRUE;
+                    break;
+                }
+            }
+            break;
+        case 2:
+            for (i = 0; i < 4; i++) {
+                bit = 1 << i;
+                if (*(u8*)(this_ + 0x345) & bit) {
+                    if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
+                        go = TRUE;
+                        break;
+                    }
+                } else if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
+                    *(u8*)(this_ + 0x345) |= bit;
+                }
+            }
+            break;
+        case 3:
+            if (*(u16*)(this_ + 0x346) != fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4)) ||
+                *(u16*)(this_ + 0x348) != fn_80226850(this_ + 0xc, *(s32*)(this_ + 0x4))) {
+                go = TRUE;
+            }
+            break;
+        }
+        if (go) {
+            slmnSpawn(this_);
+            fn_80208244(this_, 1);
+        }
+        break;
+    }
+    case 2:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            if (!(*(u32*)(this_ + 0x230) & 0x2000) && *(u8*)(this_ + 0x34a) >= 5) {
+                fn_80208244(this_, 4);
+            } else {
+                fn_80208244(this_, 3);
+            }
+        }
+        break;
+    }
+}
+
+struct SlmnRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - lbl_8053F8F8;
+    }
+};
+struct SlmnGame { u8 pad[0xb4]; SlmnRandom rnd; };
+extern SlmnGame* lbl_8053AAF8;
+extern const f32 lbl_8053F8FC;
+extern const f32 lbl_8053F908;
+extern const f32 lbl_8053F90C;
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
+extern "C" s32 fn_801D0020(void* this_, void* pos, s32 player, u8 flag);
+extern "C" s32 fn_801CD354(void);
+extern "C" void fn_80209D20(void* obj, s32 dir, u8 n);
+extern "C" void fn_80209CF4(void* obj, f32* pos);
+
+static inline BOOL slmnPartAlive(SlmnPart* part) {
+    return !part->inactive && !part->dead;
+}
+
+static inline void slmnCenter(Slmn* this_, f32* out) {
+    f32 sy; f32 sx; s32 id; s32 n; s32 i; char* a;
+    n = 0;
+    sy = sx = lbl_8053F8E0;
+    for (i = 0; i < 4; i++) {
+        if (!this_->parts[i].inactive && !this_->parts[i].dead) {
+            id = this_->parts[i].id;
+            if (id >= 0) {
+                a = (char*)fn_801F666C(fn_801F856C(), id);
+                if (a != 0) {
+                    n++;
+                    sx += *(f32*)(a + 0xc);
+                    sy += *(f32*)(a + 0x10);
+                }
+            }
+        }
+    }
+    if (n > 0) {
+        f32 inv = lbl_8053F8F8 / n;
+        out[0] = sx * inv;
+        out[1] = sy * inv;
+    } else {
+        out[0] = this_->pos[0];
+        out[1] = this_->pos[1];
+    }
+}
+
+static inline s32 slmnPickDir(char* this_, f32* pos) {
+    s32 player = fn_801D05F8(this_, pos, lbl_8053F8E0);
+    if (player < 0) {
+        return fn_801CD664(4);
+    }
+    u8 flag = FALSE;
+    if (lbl_8053AAF8->rnd.get_ufloat_1() < lbl_8053F8FC) {
+        flag = TRUE;
+    }
+    return fn_801D0020(this_, pos, player, flag);
+}
+
+extern "C" void fn_80208520(char* this_, f32* out, f32* step) {
+    if (*(s32*)(this_ + 0x2ac) == 0) {
+        step[0] = lbl_8053F8E0;
+        step[1] = lbl_8053F8E4;
+    } else {
+        step[0] = lbl_8053F8E4;
+        step[1] = lbl_8053F8E0;
+    }
+    f32 c[2];
+    slmnCenter((Slmn*)this_, c);
+    f32 pos[3];
+    slmnCenter((Slmn*)this_, pos);
+    slmnPickDir(this_, pos);
+    s32 d = fn_801CD354();
+    f32 ox, oy;
+    oy = ox = lbl_8053F8E0;
+    switch (d) {
+    case 0:
+        ox += lbl_8053F908;
+        break;
+    case 1:
+        ox -= lbl_8053F908;
+        break;
+    case 2:
+        oy += lbl_8053F908;
+        break;
+    case 3:
+        oy -= lbl_8053F908;
+        break;
+    }
+    f32 x = (c[0] + ox) - lbl_8053F90C * step[0];
+    f32 y = (c[1] + oy) - lbl_8053F90C * step[1];
+    out[0] = x;
+    out[1] = y;
+}
+
+extern "C" void fn_80208244(char* this_, s32 state) {
+    f32 at[2];
+    f32 step[2];
+    f32 pos[2];
+    s32 i;
+    switch (state) {
+    case 1:
+        break;
+    case 2:
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
+        break;
+    case 3: {
+        slmnCenter((Slmn*)this_, pos);
+        s32 dir = slmnPickDir(this_, pos);
+        u8 n = fn_801CD664(3) + 1;
+        *(u8*)(this_ + 0x34a) += n;
+        for (i = 0; i < 4; i++) {
+            SlmnPart* part = (SlmnPart*)(this_ + 0x2b0) + i;
+            if (!part->inactive && !part->dead) {
+                void* a = fn_801F666C(fn_801F856C(), part->id);
+                if (a != 0) {
+                    fn_80209D20(a, dir, n);
+                }
+            }
+        }
+        break;
+    }
+    case 4: {
+        fn_80208520(this_, at, step);
+        for (i = 0; i < 4; i++) {
+            SlmnPart* part = (SlmnPart*)(this_ + 0x2b0) + i;
+            if (!part->inactive && !part->dead) {
+                void* a = fn_801F666C(fn_801F856C(), part->id);
+                if (a != 0) {
+                    fn_80209CF4(a, at);
+                }
+            }
+            at[0] += step[0];
+            at[1] += step[1];
+        }
+        *(u32*)(this_ + 0x230) |= 0x2000;
+        break;
+    }
+    case 5:
+    case 6:
+    case 7:
+        break;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = state;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

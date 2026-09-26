@@ -80,4 +80,92 @@ extern "C" void* fn_801BD640(void* this_) {
     return this_;
 }
 
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" void fn_801D0E58(void* this_);
+extern "C" u16 fn_801F6874(s32 dir);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 owner, void* pos, u32 param, s32 a, s32 b);
+extern const f32 lbl_8053EC80;
+extern const f32 lbl_8053EC84;
+
+static inline s32 ezmrCreate(s32 room, void* pos, u32 flag) {
+    return Actor_CreateByID(fn_801F856C(), 0x46424f42, room, pos, flag, -1, -1);
+}
+
+extern "C" void fn_801BD348(u8* this_) {
+    fn_801D0ED0(this_);
+    if (!((*(u32*)(this_ + 0x90) >> 17) & 1)) {
+        fn_801D0E58(this_);
+    }
+    *(u8*)(this_ + 0x2ec) = (*(u32*)(this_ + 0x90) >> 31) ^ 1;
+    *(s32*)(this_ + 0x2f0) = (*(u32*)(this_ + 0x90) >> 26) & 0x1f;
+    s32 speed = (*(u32*)(this_ + 0x90) >> 24) & 3;
+    if (speed > 2) {
+        speed = 2;
+    } else if (speed < 0) {
+        speed = 0;
+    }
+    *(s32*)(this_ + 0x2f4) = ((*(u32*)(this_ + 0x90) >> 20) & 0xf) + 1;
+    s32 dir = (*(u32*)(this_ + 0x90) >> 8) & 0xff;
+    u32 cw = (*(u32*)(this_ + 0x90) >> 16) & 1;
+    if (dir > 3) {
+        dir = 3;
+    } else if (dir < 0) {
+        dir = 0;
+    }
+    s32 n = *(u32*)(this_ + 0x90) & 0xff;
+    if (n > 16) {
+        n = 16;
+    } else if (n < 1) {
+        n = 1;
+    }
+    *(s32*)(this_ + 0x2a8) = n;
+    *(s16*)(this_ + 0x2fa) = fn_801F6874(dir);
+    switch (speed) {
+    case 0:
+        *(s16*)(this_ + 0x2f8) = 0x80;
+        break;
+    case 1:
+        *(s16*)(this_ + 0x2f8) = 0x100;
+        break;
+    default:
+        *(s16*)(this_ + 0x2f8) = 0x40;
+        break;
+    }
+    if (cw == 0) {
+        *(s16*)(this_ + 0x2f8) = -*(s16*)(this_ + 0x2f8);
+    }
+    f32 hi = lbl_8053EC84;
+    f32 lo = lbl_8053EC80;
+    *(f32*)(this_ + 0x60) = lo;
+    *(f32*)(this_ + 0x64) = lo;
+    *(f32*)(this_ + 0x68) = hi;
+    *(f32*)(this_ + 0x6c) = hi;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = lo;
+    *(f32*)(this_ + 0x84) = lo;
+    *(f32*)(this_ + 0x88) = hi;
+    *(f32*)(this_ + 0x8c) = hi;
+    *(u32*)(this_ + 0xb0) = 0;
+    *(s32*)(this_ + 0x98) = 2;
+    if (ezmrGetSpeed(this_) < 0) {
+        *(s16*)(this_ + 0x2fc) = *(s16*)(this_ + 0x2fa) - 0x4000;
+    } else {
+        *(s16*)(this_ + 0x2fc) = *(s16*)(this_ + 0x2fa) + 0x4000;
+    }
+    f32 dx = JMASSin(*(s16*)(this_ + 0x2fa)) * lbl_8053EC70;
+    f32 dy = JMASCos(*(s16*)(this_ + 0x2fa)) * lbl_8053EC70;
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+    pos.x += (f32)*(s32*)(this_ + 0x2f4) * dx;
+    pos.y += (f32)*(s32*)(this_ + 0x2f4) * dy;
+    for (s32 i = 0; i < *(s32*)(this_ + 0x2a8); i++) {
+        *(s32*)(this_ + i * 4 + 0x2ac) = ezmrCreate(*(s32*)(this_ + 0x4), &pos, *(u8*)(this_ + 0x2ec) == 0);
+        fn_801BD8C0(fn_801F666C(fn_801F856C(), *(s32*)(this_ + i * 4 + 0x2ac)), pos, *(s16*)(this_ + 0x2fc));
+        pos.x += dx;
+        pos.y += dy;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
