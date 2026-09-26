@@ -112,6 +112,35 @@ struct T34Mgr {
     u8 m254;
 };
 
+struct T34SaveSlot { u8 pad[0x10]; s32 cur; u8 pad1[0x28 - 0x14]; u32 flags; u8 pad2[0xc8 - 0x2c]; };
+extern T34SaveSlot lbl_8050EC80[];
+inline T34SaveSlot* t34CurSlot() { return &lbl_8050EC80[lbl_8050EC80[0].cur]; }
+inline BOOL t34IsSet(s32 a, s32 b) {
+    if (a < 0 || a > 7) return FALSE;
+    if (b < 0 || b > 3) return FALSE;
+    return (1 << (b + a * 4)) & t34CurSlot()->flags ? TRUE : FALSE;
+}
+
+extern "C" void fn_80403514(T34Mgr* p) {
+    p->m118 = 0;
+    p->m11C = 0;
+    for (s32 a = 0; a < 8; a++) {
+        for (s32 b = 0; b < 4; b++) {
+            if (!t34IsSet(a, b)) {
+                p->m118 = a;
+                p->m11C = b;
+                if ((p->m118 == 0 && p->m11C == 2) || (p->m118 == 1 && p->m11C == 2) ||
+                    (p->m118 == 2 && p->m11C == 2) || (p->m118 == 3 && p->m11C == 2) ||
+                    (p->m118 == 4 && p->m11C == 2) || (p->m118 == 5 && p->m11C == 2) ||
+                    (p->m118 == 6 && p->m11C == 2) || (p->m118 == 7 && p->m11C == 1)) {
+                    p->m11C++;
+                }
+                return;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80403680(T34Mgr* p) {
     for (int i = 0; i < 4; i++) {
         p->m68[i] = 0;
