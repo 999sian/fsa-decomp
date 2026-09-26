@@ -2719,6 +2719,7 @@ game/chsw.cpp:
 	extabindex  start:0x8001C4A4 end:0x8001C4D4
 	.text       start:0x802EEC50 end:0x802EF0A0
 	.ctors      start:0x8045C360 end:0x8045C364
+	.bss        start:0x804D5EB8 end:0x804D5F24
 
 game/agbw.cpp:
 	extab       start:0x8000D27C end:0x8000D29C

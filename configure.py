@@ -1179,6 +1179,8 @@ config.libs = [
             "-str reuse,pool,readonly",
             "-gccinc",
             "-common off",
+            "-DMATCHING=1",
+            "-i libs/PowerPC_EABI_Support/include",
         ],
         "progress_category": "game",
         "objects": [
@@ -1213,7 +1215,7 @@ config.libs = [
             Object(NonMatching, "game/sdsm.cpp"),
             Object(NonMatching, "game/stpn.cpp"),
             Object(NonMatching, "game/gnef.cpp"),
-            Object(NonMatching, "game/chsw.cpp"),
+            Object(Matching, "game/chsw.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "game/agbw.cpp"),
             Object(NonMatching, "game/elsk.cpp"),
             Object(NonMatching, "game/foev.cpp"),
