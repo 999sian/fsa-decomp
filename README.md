@@ -106,6 +106,8 @@ This decompilation stands on the shoulders of the wider GameCube and Zelda rever
   GBA joybus communications (`GBAKey.c`, `GBAGetProcessStatus`).
 - **[EverydaySimpleDev / FSA-Decomp](https://github.com/EverydaySimpleDev/FSA-Decomp)**:
   Initial actor research and game code exploration (reused under CC0 with permission).
+- **[Zelda-FSA-Modding](https://github.com/Venomalia/Zelda-FSA-Modding)** (Venomalia et al.):
+  Pioneering reverse engineering research on Four Swords Adventures, including `main.dol` string dumps, disc formats, file layouts, and `framework.dol` documentation.
 - **[decomp-toolkit (dtk)](https://github.com/encounter/decomp-toolkit)** & **[dtk-template](https://github.com/encounter/dtk-template)**:
   Build generator, DOL analysis, slicing tools, and CI framework by encounter.
 - **[wibo](https://github.com/decompals/wibo)**:

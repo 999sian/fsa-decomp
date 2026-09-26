@@ -54,3 +54,4 @@ SDK function identification and MSL signal.c: Mario Kart: Double Dash!! decomp, 
 SDK function identification and ported functions (GXDraw, GXAttr getters, GXTransform, GXFifo, vec): Dolphin SDK 2004 decomp, https://github.com/doldecomp/dolsdk2004
 GBA library identification and GBAJoyBoot starting point: The Wind Waker decomp, https://github.com/zeldaret/tww
 GBAJoyBoot.c/GBAGetProcessStatus bodies and GBAKey.c starting point: Animal Crossing decomp (CC0), https://github.com/ACreTeam/ac-decomp
+Game format research, main.dol/framework.dol reverse engineering dumps, and disc layout documentation: Venomalia (Zelda-FSA-Modding, https://github.com/Venomalia/Zelda-FSA-Modding)
