@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 80184D64-80187144 (WNWN). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern const f32 lbl_8053DF40;
 extern const f32 lbl_8053DF44;
@@ -104,6 +105,79 @@ extern "C" void fn_80186D24(char* this_) {
     *(s32*)(this_ + 0x118) = 4;
     *(u32*)(this_ + 0xb0) = 0x0a040004;
     *(s32*)(this_ + 0x230) = 0;
+}
+
+struct WnwnDrawKey {
+    s32 a, b;
+    WnwnDrawKey() { a = -1; b = -1; }
+};
+
+struct WnwnDrawParam {
+    u8 map[16];      // 0x00
+    WnwnDrawKey key; // 0x10
+    s32 c;           // 0x18
+    u8 palette;      // 0x1c
+    s8 color;        // 0x1d
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;       // 0x28
+    u8 f2c, f2d, f2e;
+    s32 g;           // 0x30
+    s32 h;           // 0x34
+    s32 i;           // 0x38
+
+    WnwnDrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+
+extern "C" void fn_801F06F0(void* actor, const char* tbl, s32 idx, WnwnDrawParam* param, s32 p5, f32 a, f32 b);
+extern const char lbl_80466ED8[];
+
+extern "C" void fn_80184DC4(char* this_) {
+    Wnwn* w = (Wnwn*)this_;
+    WnwnDrawParam param;
+    s32 i = 0;
+    JGeometry::TVec3<f32> save = *(JGeometry::TVec3<f32>*)&w->pos;
+    if (*(s32*)(this_ + 0x260) >= 0) {
+        i = 1;
+    }
+    for (; i < 9; i++) {
+        w->pos.x = w->trail[i].x;
+        w->pos.y = w->trail[i].y;
+        w->pos.z = w->trail[i].z;
+        param.f20 = 0;
+        param.color = -1;
+        fn_801F06F0(this_, lbl_80466ED8, 0x13b, &param, 7, 1.0f, 1.0f);
+    }
+    w->pos.x = save.x;
+    w->pos.y = save.y;
+    w->pos.z = save.z;
+    param.f20 = 0;
+    param.color = 0;
+    fn_801F06F0(this_, lbl_80466ED8, *(s32*)(this_ + 0x264) + 0x134, &param, 0, lbl_8053DF40, lbl_8053DF40);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
