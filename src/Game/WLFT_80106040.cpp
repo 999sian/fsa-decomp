@@ -1,6 +1,7 @@
 // WLFT_80106040: .text 0x80106040-0x80106ADC (actor WLFT)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- from Game/fn_80106040_dtor.cpp
 
@@ -132,6 +133,78 @@ WLFT::WLFT() : Actor(), m230((*(void**)this = lbl_8049CC40, (void*)0)), m234(0) 
     m29C = 0;
     m2A0 = 0;
     m2A4 = 0;
+}
+
+// ---- fn_8010645C: update (lift rises once all players stand on it)
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" s32 fn_8023DE58(s32 player);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
+extern "C" void fn_8022DF48(s32 player);
+extern "C" void fn_8023DF68(s32 player, JGeometry::TVec3<f32>* v);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D9FF4(void* mgr, s32 a, s32 b);
+extern "C" void fn_80136798(void* game, s32 a, s32 b);
+
+static inline bool wlftOnLift(u8* this_, s32 i) {
+    s32 room = *(s32*)(this_ + 4);
+    if (room != fn_8023DE58(i)) {
+        return false;
+    }
+    JGeometry::TVec3<f32> p(*fn_8023E724(i));
+    f32 cx = 8.0f + *(f32*)(this_ + 0xc);
+    f32 cy = 8.0f + *(f32*)(this_ + 0x10);
+    f32 x0 = *(f32*)(this_ + 0x60) + cx;
+    f32 y0 = *(f32*)(this_ + 0x64) + cy;
+    f32 x1 = *(f32*)(this_ + 0x68) + cx;
+    f32 y1 = *(f32*)(this_ + 0x6c) + cy;
+    u8 in = 0;
+    if (p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1) {
+        in = 1;
+    }
+    if (in) {
+        return true;
+    }
+    return false;
+}
+
+extern "C" void fn_8010645C(u8* this_) {
+    v03__5ActorFv(this_);
+    switch (*(s32*)(this_ + 0x290)) {
+    case 0: {
+        for (s32 i = 0; i < 4; i++) {
+            if (!wlftOnLift(this_, i)) {
+                return;
+            }
+        }
+        *(s32*)(this_ + 0x290) = 1;
+        *(JGeometry::TVec3<f32>*)(this_ + 0x274) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+        break;
+    }
+    case 1: {
+        *(s32*)(this_ + 0x2a4) = *(s32*)(this_ + 0x2a4) + 1;
+        JGeometry::TVec3<f32> v;
+        v.set(0.0f, -0.1f, 0.0f);
+        *(JGeometry::TVec3<f32>*)(this_ + 0xc) += v;
+        *(f32*)(this_ + 0x280) *= 0.999f;
+        *(f32*)(this_ + 0x284) *= 0.999f;
+        for (s32 i = 0; i < 4; i++) {
+            fn_8022DF48(i);
+            fn_8023DF68(i, &v);
+        }
+        if (*(s32*)(this_ + 0x2a4) >= 120) {
+            *(s32*)(this_ + 0x290) = 2;
+            *(s32*)(this_ + 0x2a4) = 0;
+        }
+        break;
+    }
+    case 2:
+        fn_802D9FF4(fn_802D6A9C(), *(s32*)(this_ + 0x29c), *(s32*)(this_ + 0x2a0));
+        fn_80136798(lbl_8053AAF8, 13, 0);
+        *(s32*)(this_ + 0x290) = 3;
+        break;
+    case 3:
+        break;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
