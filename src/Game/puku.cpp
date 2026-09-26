@@ -1,6 +1,7 @@
 // PUKU actor. TU 8017B140-8017C01C.
 // Functions: dtor, draw (slot 6, TODO), update (slot 3, TODO), tile check, init (slot 1).
 #include "types.h"
+#include "Game/ItemBase.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -29,6 +30,49 @@ extern "C" void* fn_8017B140(char* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+struct PukuResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* get(u32 type, const char* name);
+};
+struct PukuGameRes { u8 pad[0xa4]; PukuResMgr* res; };
+extern "C" void fn_802F86CC(void* layer, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
+extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern u8* lbl_8053AB10;
+extern const char lbl_804668A8[];
+
+// PUKU draw (vtable slot 6)
+extern "C" void fn_8017B1A0(char* this_) {
+    DrawRec rec;
+    f32 mtx[3][4];
+    s32 scaled = 0;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    if (*(s32*)(this_ + 0x258) == 1) {
+        scaled = 1;
+        mtx[0][0] = 2.0f;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = 2.0f;
+        mtx[1][2] = 0.0f;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = 2.0f;
+        rec.w18 = mtx;
+    }
+    s32 id = *(s32*)(this_ + 0x250) + 0x143;
+    if (*(s32*)(this_ + 4) < 8) {
+        void* res = ((PukuGameRes*)lbl_8053AAF8)->res->get('SOB ', lbl_804668A8);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, 1.0f, 1.0f, &rec);
+    }
+    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
+                *(s32*)(this_ + 0x250) + 0x143, scaled != 0, 2, -1, 0, 0, 0);
 }
 
 // PUKU: can it move onto the tile at pos? (tile types 0x3b, 0, 2, 3 block)
