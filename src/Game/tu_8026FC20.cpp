@@ -57,7 +57,7 @@ s32 fn_802486A0(char*);
 s32 fn_80248778(char*);
 s32 fn_80240888(char*);
 BOOL fn_80270ABC(char*);
-void fn_80251AEC(char*, s32);
+u8 fn_80251AEC(char*, s32);
 void fn_8024F0E8(char*, s32);
 void fn_80268B3C(char*);
 void fn_802685D4(char*);
@@ -1572,6 +1572,95 @@ void fn_80279CFC(char* p) {
     } else {
         fn_8024F0E8(p, 0x10004);
     }
+}
+extern const Vec2f lbl_8046BCA8[];
+u8 fn_8023EA28(s32);
+u8 fn_802DEBF8(void);
+u8 fn_802466B4(char*);
+u8 fn_80243234(char*);
+struct PlayerCombo {
+    u8 pad0[0x117c];
+    s32 mTimerA[4];
+    s32 mTimerB[4];
+    u8 mDir[4][4];
+};
+inline bool comboAllSet(char* p) {
+    PlayerCombo* c = (PlayerCombo*)p;
+    for (int i = 0; i < 4; i++) {
+        if (!(c->mTimerA[i] > 0)) {
+            return false;
+        }
+    }
+    return true;
+}
+inline s32 comboDirCount(char* p) {
+    PlayerCombo* c = (PlayerCombo*)p;
+    for (int i = 0; i < 4; i++) {
+        if (!(c->mTimerB[i] > 0)) {
+            return i;
+        }
+        bool any = 0;
+        for (int j = 0; j < 4; j++) {
+            if (c->mDir[i][j] == 1) {
+                any = 1;
+            }
+        }
+        if (!any) {
+            return i;
+        }
+    }
+    return 4;
+}
+BOOL fn_80275D9C(char* p) {
+    if (S32(p, 0xc9c) > 0) {
+        return 0;
+    }
+    if (Player_IsLinked(p) && fn_802486A0(p) == 5) {
+        return 0;
+    }
+    if (Player_IsLinked(p) && fn_8023EA28(Player_GetLinkTargetIndex(p)) && fn_802486A0(p) != 4) {
+        return 0;
+    }
+    if (fn_802DEBF8()) {
+        return 0;
+    }
+    if (fn_80241544(p) <= 0) {
+        return 0;
+    }
+    if (fn_802466B4(p)) {
+        if (comboAllSet(p)) {
+            if (fn_80251AEC(p, 9)) {
+                S32(p, 0x11ac) = 2;
+                return 1;
+            }
+        } else {
+            if (comboDirCount(p) >= 3) {
+                if (fn_80251AEC(p, 9)) {
+                    S32(p, 0x11ac) = 3;
+                    return 1;
+                }
+            } else if (S32(p, 0x11d4) > 0) {
+                if (fn_80251AEC(p, 9)) {
+                    S32(p, 0x11ac) = 4;
+                    return 1;
+                }
+            } else if (U8(PTR(p, 0xbf0), 0xb4) != 0) {
+                if (fn_80243234(p)) {
+                    if (fn_80251AEC(p, 7)) {
+                        F32(p, 0x344) = lbl_8046BCA8[S32(p, 0x3dc)].x;
+                        F32(p, 0x348) = lbl_8046BCA8[S32(p, 0x3dc)].y;
+                        F32(p, 0x34c) = -4.0f;
+                        return 1;
+                    }
+                } else if (fn_80251AEC(p, 5)) {
+                    return 1;
+                }
+            } else if (fn_80251AEC(p, 4)) {
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 void fn_802356B8(s32);
 u8 fn_8022E438(s32, s32);
