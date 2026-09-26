@@ -20,6 +20,8 @@ struct PlayerMgr {
 };
 
 extern "C" PlayerMgr* lbl_8053AC90;
+extern "C" const f32 lbl_80540008;
+static JGeometry::TVec3<f32> lbl_804CF460(lbl_80540008, lbl_80540008, lbl_80540008);
 
 static inline u8 isPlayerEnabled(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
@@ -40,7 +42,6 @@ void fn_80270DDC(Player*, int, int);
 u8 fn_8024157C(Player*, int);
 int Player_GetLinkedHandleOrInvalid(Player*);
 void fn_80254660(Player*);
-extern u8 lbl_804CF460[];
 struct GameState;
 extern GameState* lbl_8053AAF8;
 }
@@ -582,9 +583,9 @@ void fn_802382D0(int idx, int a1) {
 }
 
 void* fn_80238430(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x324;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void fn_802384BC(int idx) {
@@ -856,9 +857,9 @@ int fn_8023A3DC(int idx) {
 
 void* Player_GetModeSubPtr_0xb9a(Player*);
 void* fn_8023A478(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return Player_GetModeSubPtr_0xb9a(lbl_8053AC90->players[idx]);
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 int fn_8023A51C(int idx) {
@@ -1188,8 +1189,8 @@ static inline int get3B4(int idx) {
     return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
 }
 static inline f32* getPosPtr(int idx) {
-    if (lbl_8053AC90 == NULL) return (f32*)lbl_804CF460;
-    if (!isPlayerEnabled(idx)) return (f32*)lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return (f32*)&lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return (f32*)&lbl_804CF460;
     return (f32*)((char*)lbl_8053AC90->players[idx] + 0x8);
 }
 u16 fn_8023D21C(int idx, int view) {
@@ -1217,8 +1218,8 @@ u16 fn_8023D4F8(const JGeometry::TVec3<f32>& pos, int idx) {
 
 f32* fn_8024E018(Player*);
 static inline JGeometry::TVec3<f32>* getOffsPtr(int idx) {
-    if (lbl_8053AC90 == NULL) return (JGeometry::TVec3<f32>*)lbl_804CF460;
-    if (!isPlayerEnabled(idx)) return (JGeometry::TVec3<f32>*)lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return &lbl_804CF460;
     return (JGeometry::TVec3<f32>*)fn_8024E018(lbl_8053AC90->players[idx]);
 }
 u16 fn_8023D644(int idx, int view) {
@@ -1282,28 +1283,28 @@ int fn_8023E190(int idx) {
 }
 
 void* fn_8023E214(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcd4;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void* fn_8023E2A0(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcc8;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void* fn_8023E32C(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcb0;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void* fn_8024C378(Player*);
 void* fn_8023E3B8(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return fn_8024C378(lbl_8053AC90->players[idx]);
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 struct PlayerB { u8 pad[0x284]; u8 a284[8]; };
@@ -1317,21 +1318,21 @@ u8 fn_8023E45C(int idx, int j) {
 }
 
 void* fn_8023E4E4(int idx, int j) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x38 + j * 0xc;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void* fn_8023E578(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x14;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void* fn_8023E604(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x2c4;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void fn_8023E690(int idx, const f32* v) {
@@ -1347,16 +1348,16 @@ void fn_8023E690(int idx, const f32* v) {
 }
 
 void* fn_8023E724(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x8;
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 void* fn_8024145C(Player*);
 void* fn_8023E7B0(int idx) {
-    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
     if (isPlayerEnabled(idx)) return fn_8024145C(lbl_8053AC90->players[idx]);
-    return lbl_804CF460;
+    return &lbl_804CF460;
 }
 
 int fn_8023E854(int idx) {
