@@ -652,7 +652,6 @@ void fn_802384BC(int idx) {
     if (isPlayerEnabled(idx)) fn_8024051C(lbl_8053AC90->players[idx]);
 }
 
-int fn_80239108(int);
 u8 fn_80250030(Player*, int);
 static inline int countGroup(int id) {
     int last = -1;
@@ -720,6 +719,7 @@ int fn_80238A68(int id) {
     return n;
 }
 
+int fn_80239108(int);
 int fn_80238BC4(int a1) {
     if (fn_80239108(a1) <= 0) return -1;
     for (int i = 0; i < 4; i++) {
@@ -773,6 +773,42 @@ int fn_80239040(int a1) {
 }
 
 u8 fn_802728AC(Player*, int, int, int);
+u8 fn_80250090(Player*);
+u8 fn_80250D30(Player*);
+static inline int pA9F0(int i, int a) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802729F0(lbl_8053AC90->players[i], a);
+}
+static inline u8 p0090(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80250090(lbl_8053AC90->players[i]);
+}
+static inline u8 p0D30(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80250D30(lbl_8053AC90->players[i]);
+}
+static inline int p13C8(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802413C8(lbl_8053AC90->players[i]);
+}
+int fn_80239108(int a1) {
+    int last = -1;
+    int n = 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && ((u8)pA9F0(i, a1) || p0090(i)) && p0D30(i) && !(u8)p13C8(i)
+            && !(getPosPtr(i)[2] > lbl_80540008)) {
+            if (last != -1 && last != *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc)) return 0;
+            n++;
+            last = *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return n;
+}
+
 int fn_80239470(int a1, int a2, int a3) {
     if (lbl_8053AC90 == NULL) return 0;
     int r = -1;
