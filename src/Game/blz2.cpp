@@ -1,6 +1,7 @@
 // TU 0x802e4c74-0x802e5c44 (actor BLZ2).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // NONMATCHING (91%): retail computes x before y; this computes y first.
 // fn_802E4C74 - BLZ2: true if any of the four probe points around pos lies
@@ -93,6 +94,36 @@ extern "C" void* fn_802E5724(void* this_, short how) {
         }
     }
     return this_;
+}
+
+struct Blz2Color {
+    Blz2Color(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
+    u8 r, g, b, a;
+};
+struct Blz2Globals {
+    u8 pad0[0x2c];
+    void* m2c;
+};
+extern Blz2Globals* lbl_8053AB10;
+extern "C" void fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80158B5C(void* mgr, s32 room, void* pos, Blz2Color color, f32 size);
+
+extern "C" void fn_802E4E6C(u8* self) {
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(self + 0xc));
+    if (*(s32*)(self + 0x2f0) >= 1) {
+        for (s32 j = 0; j < *(s32*)(self + 0x2f4); j++) {
+            for (s32 k = 0; k < *(s32*)(self + 0x2f8); k++) {
+                fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x34c, 0, 0, 0, 0, 1);
+                fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x34d, 0, 0, 0, 0, 1);
+                fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x54d, 1, 0, 0, 0, 1);
+                Blz2Color c(0, 0, 0, 0x80);
+                fn_80158B5C(lbl_8053AB10->m2c, *(s32*)(self + 4), &pos, c, 32.0f);
+                pos.y += 16.0f;
+            }
+            pos.y = *(f32*)(self + 0x10);
+            pos.x += 16.0f;
+        }
+    }
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
