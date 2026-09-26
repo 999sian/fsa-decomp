@@ -247,4 +247,64 @@ extern "C" void fn_80210E90(char* p, const JGeometry::TVec3f* v, JGeometry::TVec
     out->scale((f32)__fsel(f - m, m, f));
 }
 
+extern "C" u8 fn_802D800C(void* cr, s32 id);
+extern "C" s32 fn_801D05F8(char* p, void* pos, f32 r);
+
+static inline void Rusa_Finish(char* p) {
+    switch (*(s32*)(p + 0x248)) {
+    case 1: {
+        s32 id = *(s32*)(p + 0x388);
+        if (id >= 0) {
+            char* a = fn_801F666C(fn_801F856C(), id);
+            if (a != 0) {
+                fn_80212ECC(a);
+            }
+        }
+        s32 sw = *(s32*)(p + 0x2b8);
+        if (sw != 0) {
+            fn_802D8050(fn_802D6A9C(), sw, 1, 0xff);
+        }
+        break;
+    }
+    case 6: {
+        s32 sw = *(s32*)(p + 0x2b8);
+        if (sw != 0) {
+            fn_802D8050(fn_802D6A9C(), sw, 0, 0xff);
+        }
+        break;
+    }
+    }
+    s32 id = *(s32*)(p + 0x388);
+    if (id >= 0) {
+        char* a = fn_801F666C(fn_801F856C(), id);
+        if (a != 0) {
+            *(u32*)(a + 0x230) |= 0x4000;
+        }
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x248) = 6;
+}
+
+extern "C" void fn_80211C94(char* p) {
+    switch (*(s32*)(p + 0x248)) {
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        if (*(s32*)(p + 0x2ac) == 3) {
+            s32 sw = *(s32*)(p + 0x2b0);
+            if (sw != 0 && !fn_802D800C(fn_802D6A9C(), sw)) {
+                Rusa_Finish(p);
+                break;
+            }
+        }
+        if (*(s32*)(p + 0x2ac) == 4) {
+            if (fn_801D05F8(p, p + 0xc, *(f32*)(p + 0x3a0)) < 0) {
+                Rusa_Finish(p);
+            }
+        }
+        break;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
