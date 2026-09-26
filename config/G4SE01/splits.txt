@@ -2091,6 +2091,13 @@ game/ttat.cpp:
 	.text       start:0x801A908C end:0x801AAC8C
 	.ctors      start:0x8045BFE0 end:0x8045BFE4
 
+game/gnma.cpp:
+	extab       start:0x80007AAC end:0x80007AEC
+	extabindex  start:0x80014980 end:0x800149E0
+	.text       start:0x801AAC8C end:0x801AC8EC
+	.ctors      start:0x8045BFE4 end:0x8045BFE8
+	.sdata2     start:0x8053E740 end:0x8053E7D0
+
 game/ddgo.cpp:
 	extab       start:0x80007AEC end:0x80007B34
 	extabindex  start:0x800149E0 end:0x80014A4C

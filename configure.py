@@ -1027,6 +1027,7 @@ config.libs = [
         ],
         "progress_category": "game",
         "objects": [
+            Object(NonMatching, "game/gnma.cpp"),
             Object(NonMatching, "game/trap.cpp"),
             Object(NonMatching, "game/mozo.cpp"),
             Object(NonMatching, "game/puku.cpp"),
