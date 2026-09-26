@@ -2,9 +2,14 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
-struct Player;
+struct Player {
+    Player(int idx);
+    virtual ~Player();
+    u8 pad4[0x13BC - 4];
+};
 struct PlayerMgr {
-    u8 pad0[4];
+    PlayerMgr();
+    virtual ~PlayerMgr();
     Player* players[4];
     JGeometry::TVec3<f32> pos[4];
     int a44[4];
@@ -1234,10 +1239,6 @@ void fn_8023F6C4() {
     for (int i = 0; i < 4; i++) fn_80254660(getPlayer(i));
 }
 
-u8 Player_GetCapabilityFlag(Player* p) {
-    return *(u8*)((char*)p + 0xcac);
-}
-
 void fn_802544B0(Player*);
 void fn_8023F728() {
     for (int i = 0; i < 4; i++) fn_802544B0(getPlayer(i));
@@ -1249,6 +1250,31 @@ void fn_8023F78C() {
     for (int i = 0; i < 4; i++) fn_80254744(getPlayer(i));
     lbl_8053A190 = -1;
 }
+
+extern "C" void fn_8045815C(void*, int);
+extern "C" void* lbl_8053AF80;
+
+PlayerMgr::~PlayerMgr() {
+    fn_8045815C(lbl_8053AF80, 0);
+    for (int i = 0; i < 4; i++) {
+        if (players[i]) delete players[i];
+    }
+    lbl_8053AC90 = NULL;
+}
+
+PlayerMgr::PlayerMgr() {
+    lbl_8053AC90 = this;
+    for (int i = 0; i < 4; i++) players[i] = new Player(i);
+    a68 = 0;
+    a6c[0] = 0; a6c[1] = 0; a6c[2] = 0; a6c[3] = 0;
+    a6c[4] = 0; a6c[5] = 0; a6c[6] = 0; a6c[7] = 0;
+    fn_8045815C(lbl_8053AF80, 0);
+}
+
+u8 Player_GetCapabilityFlag(Player* p) {
+    return *(u8*)((char*)p + 0xcac);
+}
+
 
 BOOL fn_8023F98C(GameState* g, int i) {
     return (*(u8*)((char*)g + 0x82) & (u8)(1 << i)) != 0;
