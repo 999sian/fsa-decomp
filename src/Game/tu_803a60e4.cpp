@@ -2,6 +2,8 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/JFramework/JFWDisplay.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 // ---- from src/Game/Dtor_lbl804AF860_803A7708.cpp ----
 // fn_803A7708 - actor@lbl_804AF860's destructor. Calls getTotalFreeSize__7JKRHeapFv on
@@ -17,7 +19,7 @@ extern "C" void getTotalFreeSize__7JKRHeapFv(void* p);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804AF860[];
 extern u8 lbl_80529DEC[];
-extern s32 lbl_8053AD90;
+extern char* lbl_8053AD90;
 
 struct Slot0 {
     virtual void slot0(s32 arg);
@@ -53,6 +55,38 @@ extern "C" void* fn_803A7708(void* this_, s16 flag) {
         if (p != 0) { ((Slot0*)p)->slot0(1); }
         *(void**)((char*)this_ + 0x30) = 0;
         lbl_8053AD90 = 0;
+        if (flag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+extern "C" s32 fn_803A65EC() {
+    if (lbl_8053AD90 != 0) {
+        return *(s32*)(lbl_8053AD90 + 0x80);
+    }
+    return 5;
+}
+
+extern "C" void fn_8013B490(void* obj);
+extern "C" void fn_80440EE8(void* obj);
+struct Game8053AB10 { u8 pad[0x10]; J2DGrafContext* graf; };
+extern Game8053AB10* lbl_8053AB10;
+extern void* lbl_8053AED8;
+
+extern "C" void fn_803A71F0(char* p) {
+    JFWDisplay::getManager()->setClearColor(JUtility::TColor(0, 0, 0, 0));
+    fn_8013B490(lbl_8053AB10);
+    (*(J2DScreen**)(p + 0x4))->draw(0.0f, 0.0f, lbl_8053AB10->graf);
+    fn_80440EE8(lbl_8053AED8);
+}
+
+extern void* lbl_804AF86C[];
+
+extern "C" void* fn_803A8378(void* this_, s16 flag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804AF86C;
         if (flag > 0) {
             __dl__FPv(this_);
         }
