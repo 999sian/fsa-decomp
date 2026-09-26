@@ -82,6 +82,71 @@ extern void* lbl_8053AF80;
 extern void* lbl_8053AD30;
 extern "C" u32 fn_80309C4C(void* p, s32 a, s32 b);
 
+struct MsgSinkObj2 {
+    u32 m0;
+    u32 m4;
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void send(void* msg);
+};
+
+struct FVec3 {
+    FVec3() {}
+    FVec3(f32 ax, f32 ay, f32 az) { x = ax; y = ay; z = az; }
+    f32 x, y, z;
+};
+
+struct Menu_Join {
+    u8 pad0[0x174];
+    MsgSinkObj2* sinks[4];      // 0x174
+    u8 pad184[0x244 - 0x184];
+    FVec3 pos;                  // 0x244
+    u8 pad250[0x2f0 - 0x250];
+    FVec3 icons[4];             // 0x2f0
+    u8 pad320[0x3c0 - 0x320];
+    s32 state[4];               // 0x3c0
+    u8 pad3d0[0x4ac - 0x3d0];
+    u8 ids[4];                  // 0x4ac
+    u8 pad4b0[0x4c1 - 0x4b0];
+    u8 m4c1;
+    u8 m4c2;
+    u8 m4c3;
+    u8 m4c4;
+    u8 m4c5;
+    u8 m4c6;
+    u8 m4c7;
+    u8 m4c8;
+};
+
+extern s32 lbl_804AF888[];
+extern s32 lbl_804AF8CC[];
+extern "C" void* fn_8013CC50(u32 id, FVec3* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
+
+static inline BOOL updateJoin(Menu_Join* p) {
+    for (s32 i = 0; i < p->m4c8 + 1; i++) {
+        s32 v = lbl_804AF888[p->m4c4];
+        if (v == -1) {
+            p->state[i] = 0x3e;
+        } else {
+            p->state[p->ids[i]] = v + 0xdb;
+        }
+    }
+    if (lbl_804AF8CC[p->m4c4] == -1) {
+        for (s32 k = 0; k < p->m4c8 + 1; k++) {
+            FVec3 a(7.0f + p->icons[p->ids[k]].x, p->icons[p->ids[k]].y - 27.0f, p->icons[p->ids[k]].z);
+            fn_8013CC50(0, &a, 0xcb, 1, 0, 0, 0, 1, 1.0f);
+            FVec3 b(7.0f + p->icons[p->ids[k]].x, p->icons[p->ids[k]].y - 27.0f, p->icons[p->ids[k]].z);
+            fn_8013CC50(0, &b, 0xcc, 1, 0, 0, 0, 1, 1.0f);
+            p->pos = p->icons[p->ids[k]];
+            u32 msg = 0x2000e;
+            p->sinks[p->ids[k]]->send(&msg);
+        }
+        return TRUE;
+    }
+    return FALSE;
+}
+
 struct Menu_Slide {
     u8 pad0[0x70];
     J2DPane* panes[0xd];        // 0x70
@@ -225,6 +290,27 @@ extern "C" void fn_803AE308(Menu_Slide* p) {
     }
 }
 
+extern "C" void fn_803AE598(Menu_Join* p) {
+    BOOL done = FALSE;
+    if (p->m4c8 != 0xff) {
+        s32 lim = lbl_804AF8CC[p->m4c4];
+        if (lim != -1) {
+            if (p->m4c6 >= lim) {
+                p->m4c4++;
+            }
+            p->m4c6++;
+        }
+        if (updateJoin(p)) {
+            done = TRUE;
+        }
+    }
+    if (p->m4c8 == 0xff || done) {
+        p->m4c8 = 0xff;
+        p->m4c1 = 0x12;
+    }
+}
+
+
 extern "C" void fn_803AEC78(Menu_Slide* p) {
     p->timer--;
     if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
@@ -314,6 +400,27 @@ extern "C" void fn_803AF604(void* this_) {
         *(u8*)(t + 0x4c1) = 0xd;
     }
 }
+
+extern "C" void fn_803AFA78(Menu_Join* p) {
+    BOOL done = FALSE;
+    if (p->m4c8 != 0xff) {
+        s32 lim = lbl_804AF8CC[p->m4c4];
+        if (lim != -1) {
+            if (p->m4c6 >= lim) {
+                p->m4c4++;
+            }
+            p->m4c6++;
+        }
+        if (updateJoin(p)) {
+            done = TRUE;
+        }
+    }
+    if (p->m4c8 == 0xff || done) {
+        p->m4c8 = 0xff;
+        p->m4c1 = 0xf;
+    }
+}
+
 
 extern "C" void fn_803B0158(Menu_Slide* p) {
     p->timer--;
