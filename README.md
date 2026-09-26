@@ -90,7 +90,11 @@ This project supports interactive diffing via [encounter/objdiff](https://github
 
 ## Credits & Attributions
 
-This decompilation stands on the shoulders of the wider GameCube and Zelda reverse engineering community. We gratefully acknowledge code, structure, and research imported or adapted from the following donor projects:
+This decompilation stands on the shoulders of the wider GameCube and Zelda reverse engineering community.
+
+### Donor Projects (Imported Source Code)
+
+We gratefully acknowledge source code, structures, and headers adapted from the following donor projects:
 
 - **[Mario Kart: Double Dash!! Decompilation](https://github.com/doldecomp/mkdd)** (`doldecomp/mkdd`):
   Base JSystem framework sources (`JKernel`, `JSupport`, `JUtility`), headers, and MSL C runtime.
@@ -106,11 +110,14 @@ This decompilation stands on the shoulders of the wider GameCube and Zelda rever
   GBA joybus communications (`GBAKey.c`, `GBAGetProcessStatus`).
 - **[EverydaySimpleDev / FSA-Decomp](https://github.com/EverydaySimpleDev/FSA-Decomp)**:
   Initial actor research and game code exploration (reused under CC0 with permission).
+
+*Canonical file-level attributions for all imported source code are tracked in [`NOTICE`](NOTICE).*
+
+### Community Research & Tooling
+
 - **[Zelda-FSA-Modding](https://github.com/Venomalia/Zelda-FSA-Modding)** (Venomalia et al.):
-  Pioneering reverse engineering research on Four Swords Adventures, including `main.dol` string dumps, disc formats, file layouts, and `framework.dol` documentation.
+  Pioneering reverse engineering research on Four Swords Adventures, including `main.dol` string dumps, disc formats, file layouts, and `framework.dol` documentation (see [`docs/community_notes.md`](docs/community_notes.md)).
 - **[decomp-toolkit (dtk)](https://github.com/encounter/decomp-toolkit)** & **[dtk-template](https://github.com/encounter/dtk-template)**:
   Build generator, DOL analysis, slicing tools, and CI framework by encounter.
 - **[wibo](https://github.com/decompals/wibo)**:
   Lightweight Win32 wrapper for running Metrowerks compilers seamlessly on Linux.
-
-*All donor contributions are tracked with individual entries in [`NOTICE`](NOTICE).*
