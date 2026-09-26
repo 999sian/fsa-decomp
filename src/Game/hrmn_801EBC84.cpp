@@ -151,4 +151,120 @@ extern "C" void* fn_801ED144(char* p) {
     return p;
 }
 
+extern "C" u8* fn_802D6A9C(void);
+extern "C" s32 fn_80215E48(void* p, s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" f32* fn_8023E724(s32 i);
+extern "C" f32* fn_8023E578(s32 i);
+extern "C" void fn_801F0D20(void* p, s32 id);
+extern "C" s32 fn_80215E98(void* p);
+extern "C" void fn_80215FB8(void* p, s32 i, s32 k, f32 v);
+extern "C" void fn_80215D8C(void* p, s32 i);
+extern "C" u8 fn_80215C6C(void* p, s32 i);
+extern "C" u8 fn_8021606C(void* p);
+extern "C" void fn_801ECB08(char* p, s32 state);
+extern int __float_max[];
+extern const f32 lbl_8053F6C8;
+extern const f32 lbl_8053F6CC;
+extern const f32 lbl_8053F6D0;
+
+struct HrmnQueue {
+    s32 m0;
+    bool isEmpty(s32 i) { bool r = fn_80215E48(this, i) >= 0; return r; }
+    bool isFull() { return fn_80215E98(this) == m0; }
+};
+
+static inline f32 hrmn_clamp(f32 t) {
+    if (t > lbl_8053F6B8) {
+        t = lbl_8053F6B8;
+    } else if (t < lbl_8053F6C0) {
+        t = lbl_8053F6C0;
+    }
+    return t;
+}
+
+extern "C" void fn_801EC7B8(char* p) {
+    u8 flags[4];
+    f32 vals[4];
+    flags[0] = 0;
+    vals[0] = lbl_8053F6B8;
+    flags[1] = 0;
+    vals[1] = lbl_8053F6B8;
+    flags[2] = 0;
+    vals[2] = lbl_8053F6B8;
+    flags[3] = 0;
+    vals[3] = lbl_8053F6B8;
+    s32 id = *(s32*)(p + 0x4);
+    u8* fbase = flags;
+    f32* vbase = vals;
+    s32 count = 0;
+    u8* cfg = fn_802D6A9C();
+    f32* r;
+    if (id < 8) {
+        r = (f32*)(cfg + 0xcc);
+    } else {
+        r = (f32*)(cfg + 0xdc);
+    }
+    u8* fp = fbase;
+    f32* vp = vbase;
+    f32 xLim = lbl_8053F6C8 + r[0];
+    f32 yLim = lbl_8053F6CC * (r[1] + r[3]);
+    for (s32 i = 0; i < *(s32*)(p + 0x2a8); i++, fp++, vp++) {
+        if (!((HrmnQueue*)(p + 0x2b8))->isEmpty(i)) {
+            s32 myId = *(s32*)(p + 0x4);
+            if (fn_8023DE58(i) == myId && fn_8023E724(i)[1] > yLim && fn_8023E724(i)[0] < xLim) {
+                *fp = 1;
+                f32 px = fn_8023E724(i)[0];
+                f32 d = lbl_8053F6D0 * (px - fn_8023E578(i)[0]);
+                f32 t = lbl_8053F6B8;
+                f32 x = px - d;
+                while (x < xLim) {
+                    t -= lbl_8053F6D0;
+                    x -= d;
+                    if (t <= lbl_8053F6C0) {
+                        break;
+                    }
+                }
+                *vp = hrmn_clamp(t);
+                count++;
+            }
+        }
+    }
+    if (count > 0) {
+        fn_801F0D20(p, 0x3a);
+        s32 k = fn_80215E98((HrmnQueue*)(p + 0x2b8));
+        while (count > 0) {
+            f32 best = *(f32*)__float_max;
+            s32 bi = -1;
+            u8* f = fbase;
+            f32* v = vbase;
+            for (s32 j = 0; j < *(s32*)(p + 0x2a8); j++, f++, v++) {
+                if (*f && *v <= best) {
+                    bi = j;
+                    best = *v;
+                }
+            }
+            fn_80215FB8((HrmnQueue*)(p + 0x2b8), bi, k, vals[bi]);
+            fn_80215D8C((HrmnQueue*)(p + 0x2b8), bi);
+            if (k == 0 && fn_80215C6C((HrmnQueue*)(p + 0x2b8), bi)) {
+                *(u32*)(p + 0x230) |= 0x2000;
+            }
+            count--;
+            flags[bi] = 0;
+            k++;
+        }
+    }
+    if (((HrmnQueue*)(p + 0x2b8))->isFull()) {
+        fn_801ECB08(p, 0xb);
+    } else if (fn_8021606C((HrmnQueue*)(p + 0x2b8))) {
+        for (s32 i = 0; i < *(s32*)(p + 0x2a8); i++) {
+            if (!((HrmnQueue*)(p + 0x2b8))->isEmpty(i)) {
+                fn_80215D8C((HrmnQueue*)(p + 0x2b8), i);
+            }
+        }
+        fn_801F0D20(p, 0x3b);
+        fn_801ECB08(p, 0xb);
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
