@@ -80,7 +80,7 @@ extern "C" void fn_80238548(s32 i, s32 room, IchlVec2* pos, s32 flag);
 struct IchlSinCos {
     f32 s, c;
 };
-namespace JMath { extern IchlSinCos sincosTable_[]; }
+#include "JSystem/JMath/JMath.h"
 static inline void ichlScale(IchlVec2* v, f32 s) {
     v->x *= s;
     v->y *= s;
@@ -162,8 +162,8 @@ extern "C" void fn_801DB3F0(char* p) {
         f32 r = *(f32*)(p + 0x2d4);
         f32 bx = *(f32*)(p + 0x2bc);
         f32 by = *(f32*)(p + 0x2c0);
-        f32 sx = JMath::sincosTable_[(u16)ang >> 5].s * r;
-        f32 sy = JMath::sincosTable_[(u16)ang >> 5].c * r;
+        f32 sx = JMath::sincosTable_.mTable[(u16)ang >> 5].first * r;
+        f32 sy = JMath::sincosTable_.mTable[(u16)ang >> 5].second * r;
         ichlSet((IchlVec3*)(p + 0x3c), (bx + sx) - *(f32*)(p + 0xc), (by + sy) - *(f32*)(p + 0x10), lbl_8053F2E4);
     }
 }
@@ -218,7 +218,7 @@ extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
 extern "C" void fn_801D0F40(void* this_);
 extern "C" void fn_801CD950(f32* v, f32 target, f32 step);
 extern "C" void fn_801CD930(s16* v, s32 target, s32 step);
-extern "C" void fn_801DB6C8(void* this_);
+extern "C" void fn_801DB6C8(char* p);
 
 extern "C" void fn_801DB950(char* p, s32 state);
 
@@ -332,8 +332,8 @@ extern "C" void fn_801DBCEC(char* p) {
         ichlSet2((IchlVec2*)(p + 0x2b4), lbl_8053F2E4, lbl_8053F334 * n);
         s16 a = -ang;
         f32 x = *(f32*)(p + 0x2b4);
-        *(f32*)(p + 0x2b4) = x * JMath::sincosTable_[(u16)a >> 5].c - *(f32*)(p + 0x2b8) * JMath::sincosTable_[(u16)a >> 5].s;
-        *(f32*)(p + 0x2b8) = x * JMath::sincosTable_[(u16)a >> 5].s + *(f32*)(p + 0x2b8) * JMath::sincosTable_[(u16)a >> 5].c;
+        *(f32*)(p + 0x2b4) = x * JMath::sincosTable_.mTable[(u16)a >> 5].second - *(f32*)(p + 0x2b8) * JMath::sincosTable_.mTable[(u16)a >> 5].first;
+        *(f32*)(p + 0x2b8) = x * JMath::sincosTable_.mTable[(u16)a >> 5].first + *(f32*)(p + 0x2b8) * JMath::sincosTable_.mTable[(u16)a >> 5].second;
     }
     *(s32*)(p + 0x248) = 0;
     *(s32*)(p + 0x24c) = 0;
@@ -351,6 +351,65 @@ extern "C" void fn_801DBCEC(char* p) {
     *(s32*)(p + 0x2e4) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_8053F2E0, 0x258, 1, 0, 0, 0, 1);
     if (*(s32*)(p + 0x16c) == -1) {
         fn_801DAF14(fn_801DAC6C(), *(s32*)(p + 0x198));
+    }
+}
+
+#include "JSystem/JGeometry/Vec.h"
+typedef JGeometry::TVec2<f32> IchlV2;
+extern "C" u8 fn_801DACAC(void* singleton, IchlV2* out);
+extern const f32 lbl_8053F300;
+
+static inline void ichlSub(IchlV2& out, const IchlV2& a, const IchlV2& b) {
+    out.x = a.x - b.x;
+    out.y = a.y - b.y;
+}
+
+extern "C" void fn_801DB6C8(char* p) {
+    IchlV2 t;
+    if (*(s32*)(p + 0x16c) == -1) {
+        IchlV2 tmp;
+        if (fn_801DACAC(fn_801DAC6C(), &tmp)) {
+            *(f32*)(p + 0x2c4) = tmp.x;
+            *(f32*)(p + 0x2c8) = tmp.y;
+            *(f32*)(p + 0x2c4) += *(f32*)(p + 0x2cc);
+            *(f32*)(p + 0x2c8) += *(f32*)(p + 0x2d0);
+        }
+    }
+    if (*(s32*)(p + 0x2a8) == -1) {
+        t.x = *(f32*)(p + 0x2c4) + *(f32*)(p + 0x2b4);
+        t.y = *(f32*)(p + 0x2c8) + *(f32*)(p + 0x2b8);
+    } else {
+        IchlV2 rec = *(IchlV2*)(p + *(s32*)(p + 0x2a8) * 0xc + 0x1ac);
+        IchlV2 d;
+        d.x = *(f32*)(p + 0x2bc) - rec.x;
+        d.y = *(f32*)(p + 0x2c0) - rec.y;
+        if (d.squared() <= JGeometry::TUtilf::epsilon()) {
+            d.x = lbl_8053F2E4;
+            d.y = lbl_8053F300;
+        } else {
+            d.normalize();
+        }
+        d.scale(*(f32*)(p + 0x2d4));
+        t.x = rec.x + d.x + *(f32*)(p + 0x2b4);
+        t.y = rec.y + d.y + *(f32*)(p + 0x2b8);
+    }
+    IchlV2 m;
+    ichlSub(m, t, *(IchlV2*)(p + 0x2bc));
+    if (!(m.squared() <= JGeometry::TUtilf::epsilon())) {
+        f32 mx = *(f32*)(p + 0x2e0);
+        f32 len = m.length();
+        if (len < mx) {
+            mx = len;
+        }
+        m.normalize();
+        m.scale(mx);
+        *(f32*)(p + 0x2bc) += m.x;
+        *(f32*)(p + 0x2c0) += m.y;
+    }
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        *(s16*)(p + 0x2dc) -= *(s16*)(p + 0x2de);
+    } else {
+        *(s16*)(p + 0x2dc) += *(s16*)(p + 0x2de);
     }
 }
 
