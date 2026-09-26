@@ -147,6 +147,16 @@ static inline s32 resolvePlayer(s32 p) {
 }
 
 
+extern "C" u8 fn_80390818(void* p);
+extern "C" bool fn_8037E4BC() {
+    for (s32 i = 0; i < 4; i++) {
+        if ((lbl_8053AAF8->b82 & (u8)(1 << i)) && fn_80390818(lbl_8053AD78->sub[i]) == 1) {
+            return true;
+        }
+    }
+    return false;
+}
+
 extern "C" s32 fn_8037E54C(s32 p) {
     if (p >= 0 && p < 4) {
         s32 i = resolvePlayer(p);
@@ -295,10 +305,9 @@ static inline bool testBit(u8 bits, s32 n) {
 
 extern "C" void fn_8038D4A8() {
     for (s32 i = 0; i < 4; i++) {
-        Mgr* m = lbl_8053AD78;
-        s32 v = m->wfc[i];
+        s32 v = lbl_8053AD78->wfc[i];
         if (v != -1 && testBit(lbl_8053AAF8->b82, v) == true) {
-            fn_80390E68(m->sub[v]);
+            fn_80390E68(lbl_8053AD78->sub[v]);
         }
     }
     if (lbl_8053AD78->be4) {
