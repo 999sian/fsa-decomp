@@ -2,8 +2,8 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 extern "C" void* fn_8022F3DC(void* p);
-extern "C" void fn_80236228(void* p);
-extern "C" u32 fn_80226998(void* p);
+extern "C" s32 fn_80236228(void* p);
+extern "C" u32 fn_80226998(void* p, s32 layer);
 extern "C" s32 fn_80138A30(void* p);
 extern "C" u8 fn_80230188(s32 idx);
 extern "C" void* fn_801F856C(void);
@@ -93,9 +93,9 @@ extern "C" s32 fn_801CC9B0(void* thisObj) {
 	return result;
 }
 
-extern "C" BOOL fn_801CCC78(void* p) {
+extern "C" BOOL fn_801CCC78(void* p, s32 layer) {
     BOOL result = FALSE;
-    switch ((u16)fn_80226998(p)) {
+    switch ((u16)fn_80226998(p, layer)) {
     case 0x40: case 0x41: case 0x42: case 0x43: case 0x44:
     case 0x45: case 0x46: case 0x47: case 0x48: case 0x49:
         result = TRUE;
@@ -414,6 +414,69 @@ extern "C" s32 fn_801CC29C(const f32* a, const f32* b, f32* out) {
         result = 1;
     }
     return result;
+}
+
+extern "C" u8 fn_8023F264(s32 idx);
+extern "C" u32 fn_802265FC(void* p, s32 layer);
+extern const f32 lbl_8053EFA0;
+
+extern "C" s32 fn_801CCB1C(const f32* pos, s32 layer) {
+    s32 result = 0;
+    f32 v[2];
+    f32 y = pos[1] - pos[2];
+    v[0] = pos[0];
+    v[1] = y;
+    u8* mgr = fn_802D6A9C() + 0x10000;
+    if (mgr[layer + 0x31df] != 0) {
+        if ((u16)fn_802265FC(v, layer) == 2) {
+            f32 w[2];
+            w[0] = v[0];
+            w[1] = lbl_8053EFA0 + v[1];
+            if ((u16)fn_802265FC(w, layer) == 2) {
+                result = 1;
+            }
+        }
+    }
+    return result;
+}
+
+extern "C" s32 fn_801CCBD0(const f32* pos, s32 layer) {
+    s32 result = 0;
+    f32 v[2];
+    v[0] = pos[0];
+    v[1] = pos[1];
+    for (s32 i = 0; i < 2; i++) {
+        switch ((u16)fn_80226998(v, layer)) {
+        case 0x19c:
+        case 0x19d:
+            result = 1;
+            break;
+        }
+        v[1] -= lbl_8053EFA0;
+    }
+    return result;
+}
+
+extern "C" s32 fn_801CCDA4(void) {
+    s32 best = -1;
+    s32 second = 0x7fffffff;
+    s32 min = second;
+    s32 n = fn_80138A30(lbl_8053AAF8);
+    for (s32 i = 0; i < n; i++) {
+        if (fn_8023F264(i)) {
+            s32 v = fn_80236228((void*)i);
+            if (v < min) {
+                min = v;
+                best = i;
+            } else if (v == min) {
+                second = min;
+            }
+        }
+    }
+    if (second == min) {
+        best = -1;
+    }
+    return best;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
