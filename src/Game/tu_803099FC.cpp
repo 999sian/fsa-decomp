@@ -70,8 +70,7 @@ extern "C" u32 fn_80309A00(PadState* s, s32 i) {
     if (i == -999) {
         return 0;
     }
-    // NONMATCHING (86.8%): retail uses an orc/srwi unsigned-compare idiom.
-    return s->fb4[i] < 1;
+    return (u32)s->fb4[i] >= 1;
 }
 
 extern "C" u8 fn_80309A38(PadState* s, s32 i) {
