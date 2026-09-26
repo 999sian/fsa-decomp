@@ -366,4 +366,65 @@ extern "C" void fn_801D63D0(u8* this_) {
     }
 }
 
+
+extern const f32 lbl_8053F0D0;
+extern const f32 lbl_8053F120;
+extern const f32 lbl_8053F124;
+extern const f32 lbl_8053F128;
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 range);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
+
+static inline void bogfAim(u8* this_, JGeometry::TVec2<f32>* dst, f32 tx, f32 ty) {
+    if (dst != NULL) {
+        JGeometry::TVec2<f32> d(tx - *(f32*)(this_ + 0xc), ty - *(f32*)(this_ + 0x10));
+        if (d.squared() <= lbl_8053F0D0 * FLT_EPSILON) {
+            d.set(lbl_8053F0D8, lbl_8053F0C8);
+        }
+        f32 sq = d.squared();
+        if (!(sq <= lbl_8053F0D0 * FLT_EPSILON)) {
+            d.scale(JGeometry::TUtilf::inv_sqrt(sq));
+        }
+        dst->x = *(f32*)(this_ + 0xc);
+        d.scale(lbl_8053F128);
+        dst->y = *(f32*)(this_ + 0x10);
+        dst->add(d);
+    }
+}
+
+extern "C" void fn_801D5B70(u8* this_) {
+    if (*(s32*)(this_ + 0x24c) < *(s32*)(this_ + 0x250)) {
+        return;
+    }
+    if (fn_801CD2F8(*(s32*)(this_ + 0x4))) {
+        if (this_[0x5d0] == 0) {
+            fn_801D5D84(this_, 0x15);
+        } else {
+            if (lbl_8053AAF8->rnd.get_ufloat_1() < lbl_8053F120) {
+                bool found = false;
+                s32 player = fn_801D05F8(this_, this_ + 0xc, lbl_8053F124);
+                if (player >= 0) {
+                    JGeometry::TVec3<f32>* target = fn_8023E724(player);
+                    f32 tx = target->x;
+                    f32 ty = target->y;
+                    found = true;
+                    bogfAim(this_, (JGeometry::TVec2<f32>*)(this_ + 0x5c4), tx, ty);
+                }
+                if (found) {
+                    fn_801D5D84(this_, 0x11);
+                    return;
+                }
+            }
+            fn_801D5D84(this_, 0xf);
+        }
+    } else if (this_[0x5d0] == 0) {
+        if (*(s32*)(this_ + 0x108) <= 0xc) {
+            fn_801D5D84(this_, 0xc);
+        } else {
+            fn_801D5D84(this_, 0x17);
+        }
+    } else {
+        fn_801D5D84(this_, 0xc);
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
