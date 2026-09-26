@@ -192,4 +192,109 @@ extern "C" void fn_8016545C(char* p) {
     }
 }
 
+extern "C" u8* fn_8020D58C();
+extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, u32 id, const char* ext);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u16 fn_80226850(void* pos, s32 room);
+extern "C" char* fn_802D6A9C();
+extern const char lbl_804662E8[];
+
+static inline BOOL arrwTick(char* p) {
+    if (*(u8*)(p + 0x238) == 0) {
+        (*(s32*)(p + 0x240))++;
+        if (*(s32*)(p + 0x240) > 0x14) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
+extern "C" BOOL fn_8016636C(char* p, s32 room, void* pos) {
+    u32 id = *(u32*)(p + 0x198);
+    u8* mgr = fn_8020D58C();
+    if (fn_8020D6AC(mgr + 4 + mgr[1] * 0x784, room, pos, id, lbl_804662E8) == 1) {
+        return TRUE;
+    }
+    s32 kind = fn_8022461C(pos, room);
+    s32 attr = fn_80226850(pos, room);
+    if ((u32)(kind - 0x10) <= 7 || (attr >= 0x140 && attr <= 0x15f)) {
+        *(s32*)(p + 0x23c) = 0;
+        *(u8*)(p + 0x238) = 1;
+        return FALSE;
+    }
+    if ((*(u16*)(p + 0x94) == 0 || *(u16*)(p + 0x94) == 4) && attr >= 0x40 && attr <= 0x9a) {
+        return FALSE;
+    }
+    if ((u32)(attr - 0x230) <= 1 || attr == 0x234) {
+        *(u8*)(p + 0x238) = 0;
+        return FALSE;
+    }
+    if (kind != 0 && kind != 4 && kind != 5 && kind != 6 && kind != 7 && kind != 2 && kind != 3 &&
+        kind != 0x50 && kind != 0xe && kind != 0xc && kind != 0x27 && kind != 0x28 && kind != 0x29 &&
+        kind != 0x2a && kind != 0x2b && kind != 0x2c && kind != 0x2d && kind != 0x2e && kind != 0x2f &&
+        kind != 0x20 && kind != 0xd && kind != 0x39 && kind != 0x3a && kind != 0x3b && kind != 0x4c &&
+        kind != 0x4d && kind != 0x4e && kind != 0x4f && kind != 0x24) {
+        if ((u32)(kind - 7) <= 1 || kind == 0xa) {
+            if (*(s32*)(p + 0x98) == 1) {
+                return FALSE;
+            }
+            return arrwTick(p);
+        }
+        if (kind == 6 || kind == 9 || kind == 0xb) {
+            if (*(s32*)(p + 0x98) == 0) {
+                return FALSE;
+            }
+            return arrwTick(p);
+        }
+        if (kind == 4) {
+            if (*(s32*)(p + 0x98) == 2) {
+                return FALSE;
+            }
+            return arrwTick(p);
+        }
+        if (kind == 5) {
+            if (*(s32*)(p + 0x98) == 3) {
+                return FALSE;
+            }
+            return arrwTick(p);
+        }
+        if (fn_80226850(pos, room) == 0x3a || fn_80226850(pos, room) == 0x3d) {
+            *(u8*)(p + 0x238) = 0;
+            return FALSE;
+        }
+        if (attr == 0x14) {
+            *(u8*)(p + 0x238) = 0;
+            return FALSE;
+        }
+        if (kind == 0x25) {
+            if (*(u8*)(p + 0x238) == 0 && *(u8*)(fn_802D6A9C() + 0x171) == 0) {
+                return TRUE;
+            }
+            *(u8*)(p + 0x238) = 0;
+            return FALSE;
+        }
+        if (kind == 0x26) {
+            if (*(u8*)(p + 0x238) == 0 && *(u8*)(fn_802D6A9C() + 0x171) == 1) {
+                return TRUE;
+            }
+            *(u8*)(p + 0x238) = 0;
+            return FALSE;
+        }
+        if (*(u8*)(p + 0x238) == 0 && (kind != 0x22 || *(u8*)(fn_802D6A9C() + 0x170) == 1)) {
+            return TRUE;
+        }
+        if (*(u8*)(p + 0x238) == 1) {
+            return FALSE;
+        }
+    }
+    if (*(u8*)(p + 0x238) == 1) {
+        (*(s32*)(p + 0x23c))++;
+        if (*(s32*)(p + 0x23c) > 0xb) {
+            *(s32*)(p + 0x23c) = 0;
+            *(u8*)(p + 0x238) = 0;
+        }
+    }
+    return FALSE;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
