@@ -17,9 +17,9 @@ The goal of this project is to produce readable, idiomatic C/C++ source code tha
 
 | ID | Region | Disc SHA-1 | `main.dol` SHA-1 | Status |
 | :--- | :--- | :--- | :--- | :--- |
-| **G4SE01** | USA (Rev 0) | `4bd926835dfbeaae72d01abe5fb581b527154a30` | `d86b3d9f785566e34264035e140ef3daf3cc19f0` | **Primary Target** (29.74% code matched) |
-| **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | **Supported** (Retail match verified) |
-| **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | **Supported** (Retail match verified) |
+| **G4SE01** | USA (Rev 0) | `4bd926835dfbeaae72d01abe5fb581b527154a30` | `d86b3d9f785566e34264035e140ef3daf3cc19f0` | **Primary Target** (C++ decompilation) |
+| **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | **Assembly baseline verified** (source mapping in progress) |
+| **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | **Assembly baseline verified** (source mapping in progress) |
 ---
 
 ## Progress Tracker
@@ -76,17 +76,16 @@ Current progress is automatically tracked against compiler-verified metadata fro
    ```
 ### Multi-Version Builds
 
-All three retail releases can be configured and built locally:
+All three retail releases configure and build cleanly to verified retail executables:
 
-- **USA (`G4SE01`)**: `python3 configure.py --version G4SE01 && ninja` (default)
-- **Japan (`G4SJ01`)**: `python3 configure.py --version G4SJ01 && ninja`
-- **Europe (`G4SP01`)**: `python3 configure.py --version G4SP01 && ninja`
+- **USA (`G4SE01`)**: `python3 configure.py --version G4SE01 && ninja` (default, links compiled C++ source files)
+- **Japan (`G4SJ01`)**: `python3 configure.py --version G4SJ01 && ninja` (links assembly baseline slices)
+- **Europe (`G4SP01`)**: `python3 configure.py --version G4SP01 && ninja` (links assembly baseline slices)
 
 Each version expects its retail game disc in `orig/<VERSION>/` (e.g. `orig/G4SJ01/` or `orig/G4SP01/`).
-All versions build to verified byte-identical retail executables (`build/<VERSION>/main.dol: OK`).
+All versions link to byte-identical retail executables (`build/<VERSION>/main.dol: OK`).
 
-*Cross-version function correspondence and mapping analysis are documented in [`docs/versions/README.md`](docs/versions/README.md).*
-
+*Cross-version function correspondence and source split propagation are actively developed by the `versions` workflow (see [`docs/versions/README.md`](docs/versions/README.md)).*
 ---
 
 ## Diffing with objdiff
