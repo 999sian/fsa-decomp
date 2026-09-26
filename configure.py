@@ -1018,10 +1018,12 @@ config.libs = [
             *cflags_base,
             "-use_lmw_stmw on",
             "-str reuse,pool,readonly",
-            "-common off",
+            "-common on",
             "-RTTI on",
             "-char signed",
             "-Cpp_exceptions on",
+            "-DMATCHING=1",
+            "-i libs/PowerPC_EABI_Support/include",
         ],
         "progress_category": "game",
         "objects": [

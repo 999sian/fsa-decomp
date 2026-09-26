@@ -59,3 +59,4 @@ void fn_8019CEF8(void* thisPtr, u32 a, f32 b, u32 c) {
 
 }
 
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

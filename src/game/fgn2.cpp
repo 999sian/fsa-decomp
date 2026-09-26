@@ -17,3 +17,4 @@ extern "C" void* fn_8018A6AC(void) {
 	return lbl_8053AF80[0];
 }
 
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -46,3 +46,4 @@ void fn_801615EC(void* thisPtr) {
 
 }
 
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
