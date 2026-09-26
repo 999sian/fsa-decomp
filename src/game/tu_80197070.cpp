@@ -59,4 +59,32 @@ void fn_8019CEF8(void* thisPtr, u32 a, f32 b, u32 c) {
 
 }
 
+// Small (inline-style) accessors.
+extern char* lbl_8053AAF8;
+extern "C" void fn_8013670C(void* game, void* a);
+struct SaveSlot8050 { u8 pad[0x28]; u32 flags; u8 pad2[0xc8 - 0x2c]; };
+struct Save8050 { u8 pad[0x10]; s32 cur; };
+extern Save8050 lbl_8050EC80;
+
+extern "C" void fn_8019CD9C(void* a) { fn_8013670C(lbl_8053AAF8, a); }
+extern "C" void fn_8019CDC4(s32 a) {
+    char* g = lbl_8053AAF8;
+    *(u8*)(g + 0x85) = 1;
+    *(s32*)(g + 0x74) = 0;
+    *(s32*)(g + 0x78) = 0;
+    *(s32*)(g + 0x54) = a;
+}
+extern "C" void fn_8019CDE4(s32 a, s32 b) {
+    if (a < 0 || a > 7) return;
+    if (b < 0 || b > 3) return;
+    ((SaveSlot8050*)((u8*)&lbl_8050EC80 + lbl_8050EC80.cur * 0xc8))->flags |= 1 << (b + a * 4);
+}
+extern "C" BOOL fn_8019CE40(s32 a, s32 b) {
+    if (a < 0 || a > 7) return FALSE;
+    if (b < 0 || b > 3) return FALSE;
+    Save8050* t = &lbl_8050EC80;
+    return (((SaveSlot8050*)((u8*)t + t->cur * 0xc8))->flags & (1 << (b + a * 4))) != 0;
+}
+extern "C" void fn_8019CECC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -24,3 +24,22 @@ void fn_80196E00(void) {
 
 }
 
+
+// Small (inline-style) accessors.
+extern void* lbl_8053AAF8;
+extern "C" void fn_80134DE4(void* game, void* a, void* b);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D79E8(void* mgr, void* a, void* b, f32 x, f32 y);
+
+struct GnonVec { f32 x, y, z; };
+extern "C" void fn_80196CF4(char* this_, const GnonVec* v) {
+    *(GnonVec*)(this_ + 0x98) = *v;
+    *(f32*)(this_ + 0xb0) = v->x;
+    *(f32*)(this_ + 0xb4) = v->y;
+}
+extern "C" void fn_80196D18(char* this_, f32 x, f32 y) { *(f32*)(this_ + 0xb0) = x; *(f32*)(this_ + 0xb4) = y; }
+extern "C" void fn_80196D24(f32* v, f32 x, f32 y) { v[0] = x; v[1] = y; }
+extern "C" void fn_80196D30(void* a, void* b) { fn_80134DE4(lbl_8053AAF8, a, b); }
+extern "C" void fn_80196D60(f32* v, f32 x, f32 y, f32 z) { v[0] = x; v[1] = y; v[2] = z; }
+extern "C" void fn_80196D70(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
+extern "C" void fn_80196D8C(void* a, void* b, f32 x, f32 y) { fn_802D79E8(fn_802D6A9C(), a, b, x, y); }
