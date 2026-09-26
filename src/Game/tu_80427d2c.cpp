@@ -117,4 +117,85 @@ extern "C" void fn_804283B0(void* this_) {
     free__7JKRHeapFPvP7JKRHeap(this_, 0);
 }
 
+
+// ---- small leaf accessors and manager forwarders (0x8042E1E4-) ----
+extern void* lbl_8053AE7C;
+extern void* lbl_8053AE80;
+extern void* lbl_8053AE84;
+extern "C" void fn_80428524(void*, u32);
+extern "C" void fn_8042E204(u32 a) { fn_80428524(lbl_8053AE7C, a); }
+extern "C" void fn_8042852C(void*);
+extern "C" void fn_8042E22C() { fn_8042852C(lbl_8053AE7C); }
+extern "C" void fn_804285F4(void*, u32);
+extern "C" void fn_8042E250(u32 a) { fn_804285F4(lbl_8053AE7C, a); }
+extern "C" void fn_8042855C(void*);
+extern "C" void fn_8042E278() { fn_8042855C(lbl_8053AE7C); }
+extern "C" void fn_8042858C(void*, u32);
+extern "C" void fn_8042E29C(u32 a) { fn_8042858C(lbl_8053AE7C, a); }
+extern "C" void fn_8042ACCC(void*, u32);
+extern "C" void fn_8042E2C4(u32 a) { fn_8042ACCC(lbl_8053AE80, a); }
+extern "C" void fn_8042AD10(void*, u32);
+extern "C" void fn_8042E2EC(u32 a) { fn_8042AD10(lbl_8053AE80, a); }
+extern "C" void fn_8042A708(void*, u32);
+extern "C" void fn_8042E314(u32 a) { fn_8042A708(lbl_8053AE84, a); }
+extern "C" void fn_8042A74C(void*, u32);
+extern "C" void fn_8042E33C(u32 a) { fn_8042A74C(lbl_8053AE84, a); }
+extern "C" void fn_8042A3E4(void*);
+extern "C" void fn_8042E364() { fn_8042A3E4(lbl_8053AE84); }
+extern "C" void fn_8042A818(void*);
+extern "C" void fn_8042E388() { fn_8042A818(lbl_8053AE80); }
+extern "C" void fn_8042AF60(void*);
+extern "C" void fn_8042E3AC() { fn_8042AF60(lbl_8053AE7C); }
+extern "C" void fn_8042AFA4(void*);
+extern "C" void fn_8042E3D0() { fn_8042AFA4(lbl_8053AE7C); }
+extern "C" void fn_8042A428(void*);
+extern "C" void fn_8042E3F4() { fn_8042A428(lbl_8053AE84); }
+extern "C" void fn_8042A85C(void*);
+extern "C" void fn_8042E418() { fn_8042A85C(lbl_8053AE80); }
+extern "C" void fn_8042ADDC(void*, u32);
+extern "C" void fn_8042E43C(u32 a) { fn_8042ADDC(lbl_8053AE7C, a); }
+extern "C" void fn_8042B02C(void*, u32);
+extern "C" void fn_8042E4C4(u32 a) { fn_8042B02C(lbl_8053AE7C, a); }
+extern "C" void fn_8042A5E0(void*, u32);
+extern "C" void fn_8042E4EC(u32 a) { fn_8042A5E0(lbl_8053AE84, a); }
+extern "C" void fn_8042A534(void*, u32);
+extern "C" void fn_8042E514(u32 a) { fn_8042A534(lbl_8053AE84, a); }
+extern "C" void fn_8042A608(void*, u32);
+extern "C" void fn_8042E53C(u32 a) { fn_8042A608(lbl_8053AE84, a); }
+extern "C" void fn_8042AFD4(void*, u32);
+extern "C" void fn_8042E564(u32 a) { fn_8042AFD4(lbl_8053AE7C, a); }
+extern "C" void fn_8042B0AC(void*);
+extern "C" void fn_8042E58C() { fn_8042B0AC(lbl_8053AE7C); }
+extern "C" void fn_8042A6DC(void*, u32);
+extern "C" void fn_8042E5B0(u32 a) { fn_8042A6DC(lbl_8053AE84, a); }
+extern "C" void fn_8042A778(void*);
+extern "C" void fn_8042E5D8() { fn_8042A778(lbl_8053AE84); }
+extern "C" void fn_8042AAA8(void*, u32);
+extern "C" void fn_8042E5FC(u32 a) { fn_8042AAA8(lbl_8053AE80, a); }
+extern "C" void fn_8042A970(void*, u32);
+extern "C" void fn_8042E624(u32 a) { fn_8042A970(lbl_8053AE80, a); }
+extern "C" void fn_8042AB70(void*, u32);
+extern "C" void fn_8042E64C(u32 a) { fn_8042AB70(lbl_8053AE80, a); }
+extern "C" void fn_8042AFFC(void*);
+extern "C" void fn_8042E674() { fn_8042AFFC(lbl_8053AE7C); }
+extern "C" void fn_8042ACA0(void*, u32);
+extern "C" void fn_8042E698(u32 a) { fn_8042ACA0(lbl_8053AE80, a); }
+extern "C" void fn_8042AD3C(void*);
+extern "C" void fn_8042E6C0() { fn_8042AD3C(lbl_8053AE80); }
+extern "C" void fn_8042AE74(void*, u32);
+extern "C" void fn_8042E6E4(u32 a) { fn_8042AE74(lbl_8053AE7C, a); }
+extern "C" void fn_8042B084(void*, u32);
+extern "C" void fn_8042E70C(u32 a) { fn_8042B084(lbl_8053AE7C, a); }
+extern "C" void fn_8042B054(void*);
+extern "C" void fn_8042E734() { fn_8042B054(lbl_8053AE7C); }
+
+struct Obj8042E1E4 { u8 pad[0x1c]; u16 m1C; u8 pad2[2]; u32 m20; };
+extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
+extern void* sManager__10JFWDisplay;
+extern "C" void* fn_8042E1F4() { return sManager__10JFWDisplay; }
+extern "C" u16 fn_8042E1FC(Obj8042E1E4* o) { return o->m1C; }
+extern "C" void fn_80428524(void* o, u32 v) { *(u32*)((char*)o + 4) = v; }
+extern "C" void fn_80429DE0() {}
+extern "C" void* fn_8042E780(void* o) { return *(void**)((char*)o + 8); }
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
