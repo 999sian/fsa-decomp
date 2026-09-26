@@ -387,7 +387,7 @@ static LoaderQueue sLoaderQueue;
 
 extern "C" void* fn_80402054(void* param);
 
-static inline void loaderRemove(LoaderQueue* q, LoaderNode*& node) {
+static inline void loaderRemove(LoaderQueue* q, LoaderNode* node) {
     OSLockMutex(&q->mMutex);
     LoaderNode* prev = NULL;
     LoaderNode* cur = q->mHead;
@@ -419,12 +419,13 @@ extern "C" void fn_80401FEC(OSPriority prio, void* heap, void* heap2) {
 }
 
 extern "C" void* fn_80402054(void* param) {
-    LoaderNode* node;
+    LoaderNode* volatile node;
     LoaderQueue* q = (LoaderQueue*)param;
     JKRThread(OSGetCurrentThread(), 0);
     while (OSReceiveMessage(&q->mQueue, NULL, OS_MESSAGE_BLOCK)) {
-        while ((node = q->mHead) != NULL) {
-            loaderRemove(q, node);
+        LoaderNode* n;
+        while ((n = node = q->mHead) != NULL) {
+            loaderRemove(q, n);
             OSSendMessage(&q->mQueue, NULL, OS_MESSAGE_NOBLOCK);
             node->execute();
         }
