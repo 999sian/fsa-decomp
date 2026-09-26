@@ -21,6 +21,7 @@ struct PlayerMgr {
 
 extern "C" PlayerMgr* lbl_8053AC90;
 extern "C" const f32 lbl_80540008;
+extern "C" char* fn_802D6A9C();
 extern "C" void fn_8045815C(void*, int);
 extern "C" void* lbl_8053AF80;
 static JGeometry::TVec3<f32> lbl_804CF460(lbl_80540008, lbl_80540008, lbl_80540008);
@@ -1267,7 +1268,20 @@ int fn_8023CE10(int idx) {
     return 0;
 }
 
-extern "C" char* fn_802D6A9C();
+u16 fn_8023CEAC(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0xe0;
+    if (!isPlayerEnabled(view)) return 0xe0;
+    int k = get3B4(idx);
+    char* room = fn_802D6A9C();
+    f32* base;
+    if (k < 8) base = (f32*)(room + 0xcc);
+    else base = (f32*)(room + 0xdc);
+    int d = (int)(getPosPtr(idx)[1] - getPosPtr(idx)[2] - base[1]) - getFairy294(view);
+    if (d >= -0x30 && d < 0xd0) return d;
+    return 0xe0;
+}
+
 u16 fn_8023D21C(int idx, int view) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
