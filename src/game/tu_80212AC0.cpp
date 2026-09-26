@@ -1,6 +1,45 @@
 // TU 0x80212ac0-0x80212e3c.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry.h"
+
+struct RusaRegistry {
+	RusaRegistry() { mCount = 0; }
+	s32 mIds[32];
+	s32 mCount;
+};
+
+extern "C" {
+void* fn_801F856C();
+void* fn_801F666C(void* mgr, s32 id);
+bool fn_80211000(void* actor, JGeometry::TVec3<f32>* pos);
+void fn_80210E90(void* actor, JGeometry::TVec3<f32>* pos, JGeometry::TVec3<f32>* out);
+
+RusaRegistry* fn_80212AC0() {
+	static RusaRegistry sInstance;
+	return &sInstance;
+}
+
+// NonMatching: only the prologue scheduling differs (retail copies i from found's zero).
+void fn_80212AF0(RusaRegistry* reg, JGeometry::TVec3<f32>* pos) {
+	s32 n = reg->mCount;
+	s32 i = 0;
+	void* found = NULL;
+	void* actor;
+	for (s32* ids = reg->mIds; i < n; ids++, i++) {
+		actor = fn_801F666C(fn_801F856C(), *ids);
+		if (actor != NULL && fn_80211000(actor, pos)) {
+			found = actor;
+			break;
+		}
+	}
+	if (found != NULL) {
+		JGeometry::TVec3<f32> d;
+		fn_80210E90(found, pos, &d);
+		*pos += d;
+	}
+}
+}
 
 // ---- RusaRegistry_Unregister_80212BA0.cpp ----
 // RusaRegistry_Unregister/RusaRegistry_Unregister - UNREGISTER for the "active
