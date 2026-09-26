@@ -426,6 +426,103 @@ extern "C" void fn_803AD220(Menu_Slide* p) {
 
 #define MOVE_TO(off, yoff, extra) { f32 x = PANE(off)->getBounds()->i.x; PANE(off)->move(x, PY(yoff) extra); }
 
+struct Menu_Hits {
+    u8 pad0[0x3a0];
+    s32 disp[4];                // 0x3a0
+    u8 pad3b0[0x10];
+    s32 state[4];               // 0x3c0
+    u8 pad3d0[0x438 - 0x3d0];
+    s32 doneCount;              // 0x438
+    u8 pad43c[0x440 - 0x43c];
+    s32 timer;                  // 0x440
+    u8 pad444[0x454 - 0x444];
+    s32 count;                  // 0x454
+    u8 pad458[0x4ac - 0x458];
+    u8 ids[4];                  // 0x4ac
+    u8 pad4b0[0x4b8 - 0x4b0];
+    u8 hits[4];                 // 0x4b8
+};
+
+struct Menu_HitsF {
+    u8 pad0[0x4c1];
+    u8 m4c1;
+    u8 pad4c2[0x4c8 - 0x4c2];
+    u8 m4c8;
+    u8 pad4c9[0x4db - 0x4c9];
+    u8 m4db;
+};
+
+extern "C" void fn_803AD4B0(Menu_Hits* p) {
+    Menu_HitsF* f = (Menu_HitsF*)p;
+    s32 done = 0;
+    s32 n = 0;
+    s32 best = 0;
+    u8 cnt[4];
+    s32 pen[4];
+    for (s32 i = 0; i < p->count; i++) {
+        cnt[i] = 0;
+    }
+    for (s32 i = 0; i < p->count; i++) {
+        cnt[p->hits[i]]++;
+    }
+    for (s32 i = 0; i < p->count; i++) {
+        if (cnt[i] == 3) {
+            pen[i] = -500;
+        } else if (cnt[i] == 2) {
+            pen[i] = -300;
+        } else if (cnt[i] == 1) {
+            pen[i] = -100;
+        } else {
+            pen[i] = 0;
+        }
+    }
+    for (s32 i = 0; i < p->count; i++) {
+        if (p->disp[i] > pen[i]) {
+            p->disp[i] -= 2;
+        }
+        if (p->disp[i] <= pen[i]) {
+            p->disp[i] = pen[i];
+            done++;
+        }
+    }
+    if (done >= p->count) {
+        for (s32 j = 0; j < p->count; j++) {
+            if (best > pen[j]) {
+                f->m4c8 = 0;
+                best = pen[j];
+                p->ids[f->m4c8] = j;
+            } else if (best < 0 && best == pen[j]) {
+                f->m4c8++;
+                p->ids[f->m4c8] = j;
+            }
+        }
+        for (s32 i = 0; i < p->count; i++) {
+            if (f->m4c8 != 0xff && i == p->ids[n]) {
+                p->state[i] = 0x3e;
+                f->m4db |= (u8)(1 << i);
+                if (f->m4c8 > n) {
+                    n++;
+                }
+            }
+        }
+        if (f->m4c8 != 0xff) {
+            fn_80458880(lbl_8053AF80, 0xf, -1);
+            fn_80458880(lbl_8053AF80, 0x2a, -1);
+        } else {
+            fn_80458880(lbl_8053AF80, 0x2d, -1);
+        }
+        p->doneCount = 0;
+        p->timer = 0x96;
+        f->m4c1 = 0x18;
+    } else {
+        if (done != p->doneCount) {
+            p->doneCount = done;
+            fn_80458880(lbl_8053AF80, 0x10, -1);
+        }
+        fn_80458880(lbl_8053AF80, 0xe, -1);
+    }
+}
+
 extern "C" void fn_803AD894(Menu_Slide* p) {
     p->timer--;
     if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
@@ -596,7 +693,8 @@ struct Menu_Rank {
     s32 disp[4];                // 0x360
     u8 pad370[0x390 - 0x370];
     s32 src390[4];              // 0x390
-    u8 pad3a0[0x3c0 - 0x3a0];
+    s32 disp3a0[4];             // 0x3a0
+    u8 pad3b0[0x3c0 - 0x3b0];
     s32 state[4];               // 0x3c0
     u8 pad3d0[0x438 - 0x3d0];
     s32 doneCount;              // 0x438
