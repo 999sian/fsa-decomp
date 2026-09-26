@@ -122,6 +122,53 @@ extern "C" void fn_801E773C(void* this_) {
     *(s32*)((char*)this_ + 0x2ac) = fn_801EA6D8(entryPtr, variant, id);
 }
 
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" void fn_80210990(void* this_, s32 type, void* box);
+extern "C" s16 fn_801F6874(s32 type);
+
+extern "C" void fn_801E77A0(char* p) {
+    fn_801D0ED0(p);
+    *(u32*)(p + 0x98) = *(u32*)(p + 0x90) & 3;
+    *(u32*)(p + 0x2b4) = (*(u32*)(p + 0x90) >> 2) & 0x1f;
+    u32 params = *(u32*)(p + 0x90);
+    if ((params >> 21) & 1) {
+        *(u32*)(p + 0x230) |= 0x8000;
+    } else if ((params >> 23) & 1) {
+        *(u32*)(p + 0x230) |= 0x2000;
+    } else if ((params >> 22) & 1) {
+        *(u32*)(p + 0x230) |= 0x4000;
+    }
+    f32 one = 1.0f;
+    f32 neg = -1.0f;
+    *(f32*)(p + 0x80) = one;
+    *(f32*)(p + 0x84) = one;
+    *(f32*)(p + 0x88) = neg;
+    *(f32*)(p + 0x8c) = neg;
+    if (*(u32*)(p + 0x230) & 0x8000) {
+        *(f32*)(p + 0x60) = one;
+        *(f32*)(p + 0x64) = one;
+        *(f32*)(p + 0x68) = neg;
+        *(f32*)(p + 0x6c) = neg;
+        *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+        *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+        *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+        *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+        *(u32*)(p + 0xb0) = 0;
+    } else {
+        fn_80210990(p, *(s32*)(p + 0x98), p + 0x60);
+        *(u32*)(p + 0xb0) = 0x40004;
+    }
+    *(u32*)(p + 0x230) |= 0x380;
+    *(s32*)(p + 0x108) = 1000;
+    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
+    *(s16*)(p + 0x2b0) = fn_801F6874(*(s32*)(p + 0x98));
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = -1;
+    *(f32*)(p + 0x254) = 0.0f;
+    *(f32*)(p + 0x258) = 0.0f;
+}
+
 extern "C" void* fn_801E78F0(void* this_) {
     fn_80210AB4(this_);
     *(void**)this_ = lbl_804A5418;
