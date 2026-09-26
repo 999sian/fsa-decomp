@@ -9,7 +9,7 @@ extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern "C" void fn_801F06F0(void* this_, void* table, u32 id, void* data, f32 f1, f32 f2, s32 mode);
 extern void* lbl_80469400[];
-extern "C" f32 lbl_8053ED30;
+extern "C" const f32 lbl_8053ED30;
 
 extern "C" void* fn_801BF810(void* this_, s16 freeFlag) {
     if (this_ != 0) {
@@ -71,6 +71,88 @@ extern "C" void fn_801BF8A0(void* this_) {
     }
 
     fn_801F06F0(this_, lbl_80469400, *(u32*)((char*)this_ + 0x280) + 0x16e, buf, lbl_8053ED30, lbl_8053ED30, 7);
+}
+
+extern "C" s32 fn_801F2FAC(void* this_);
+extern "C" const f32 lbl_8053ED34;
+
+extern "C" s32 fn_801BF9EC(char* this_) {
+    s32 r = 0;
+    if (!(*(u32*)(this_ + 0x230) & 0x4000) &&
+        *(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053ED34 &&
+        *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053ED34) {
+        r = fn_801F2FAC(this_);
+    }
+    return r;
+}
+
+extern "C" void fn_801CE4BC(void* this_);
+extern "C" const f32 lbl_8053ED3C;
+
+extern "C" void fn_801BFCB8(char* this_) {
+    f32 f = lbl_8053ED30;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+    case 3:
+    case 4:
+        f = lbl_8053ED3C;
+        break;
+    }
+    *(f32*)(this_ + 0x2a0) = f;
+    fn_801CE4BC(this_);
+}
+
+extern "C" f32* fn_8023E724(s32 id);
+
+extern "C" void fn_801BFC4C(char* this_) {
+    *(f32*)(this_ + 0x2b8) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2bc) = *(f32*)(this_ + 0x10);
+    if (*(s32*)(this_ + 0x2a8) >= 0) {
+        f32* v = fn_8023E724(*(s32*)(this_ + 0x2a8));
+        *(f32*)(this_ + 0x2c0) = v[0];
+        *(f32*)(this_ + 0x2c4) = v[1];
+    } else {
+        *(f32*)(this_ + 0x2c0) = *(f32*)(this_ + 0x24);
+        *(f32*)(this_ + 0x2c4) = *(f32*)(this_ + 0x28);
+    }
+}
+
+extern "C" void* fn_801D0F40(void* this_);
+
+extern "C" void* fn_801C0AD8(char* this_) {
+    fn_801D0F40(this_);
+    *(void**)this_ = lbl_804A4230;
+    *(s32*)(this_ + 0x2a8) = -1;
+    *(f32*)(this_ + 0x2ac) = lbl_8053ED34;
+    *(s16*)(this_ + 0x2b0) = 0;
+    *(s16*)(this_ + 0x2b2) = 0;
+    *(u8*)(this_ + 0x2b4) = 0;
+    *(f32*)(this_ + 0x2b8) = lbl_8053ED34;
+    *(f32*)(this_ + 0x2bc) = lbl_8053ED34;
+    *(f32*)(this_ + 0x2c0) = lbl_8053ED34;
+    *(f32*)(this_ + 0x2c4) = lbl_8053ED34;
+    *(f32*)(this_ + 0x2c8) = lbl_8053ED34;
+    *(f32*)(this_ + 0x2cc) = lbl_8053ED34;
+    return this_;
+}
+
+struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
+extern "C" TndrG* fn_802D6A9C(void);
+extern "C" s32 fn_801CEA60(void* this_);
+extern "C" s32 fn_801CE9F8(void* this_);
+extern "C" const f32 lbl_8053ED38;
+
+extern "C" s32 fn_801BFA50(char* this_) {
+    s32 r = 0;
+    if (!(*(u32*)(this_ + 0x230) & 0x4000)) {
+        s32 id = *(s32*)(this_ + 0x4);
+        u8* g = fn_802D6A9C()->arr; if (g[id] == 0 && *(f32*)(this_ + 0x14) > lbl_8053ED38) {
+            r = fn_801CEA60(this_);
+        } else {
+            r = fn_801CE9F8(this_);
+        }
+    }
+    return r;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
