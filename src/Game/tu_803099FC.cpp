@@ -59,7 +59,12 @@ static inline s32 padSlot(s32 i) {
     return -999;
 }
 
-extern "C" void fn_803099FC(void) {}
+// Element type of the two static arrays built by tu_80301CD0's __sinit.
+struct Elem28_80301CD0 {
+    Elem28_80301CD0();
+    u8 pad[0x28];
+};
+Elem28_80301CD0::Elem28_80301CD0() {}
 
 extern "C" u32 fn_80309A00(PadState* s, s32 i) {
     if (i == -999) {
