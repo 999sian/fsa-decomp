@@ -27,15 +27,15 @@ void v05__5ActorFv();
 void v07__5ActorFv();
 void v08__5ActorFv();
 void v09__5ActorFv();
-void v10__5ActorFv();
+void v10__5ActorFUlUl();
 void v11__5ActorFv();
 void v12__5ActorFv();
 void v13__5ActorFv();
 void v14__5ActorFv();
 void v15__5ActorFv();
 void v16__5ActorFv();
-void v17__5ActorFv();
-void v18__5ActorFv();
+void v17__5ActorFiPf();
+void v18__5ActorFiPf();
 void* fn_80210314(void* this_, s16 freeFlag);
 void fn_802101C0(void* this_);
 void fn_8020FE50(void* this_);
@@ -56,15 +56,15 @@ void* lbl_804A6100[] = {
     (void*)v07__5ActorFv,
     (void*)v08__5ActorFv,
     (void*)v09__5ActorFv,
-    (void*)v10__5ActorFv,
+    (void*)v10__5ActorFUlUl,
     (void*)v11__5ActorFv,
     (void*)v12__5ActorFv,
     (void*)v13__5ActorFv,
     (void*)v14__5ActorFv,
     (void*)v15__5ActorFv,
     (void*)v16__5ActorFv,
-    (void*)v17__5ActorFv,
-    (void*)v18__5ActorFv,
+    (void*)v17__5ActorFiPf,
+    (void*)v18__5ActorFiPf,
     (void*)fn_801D0ECC,
     (void*)fn_801CECEC,
     (void*)fn_80210898,

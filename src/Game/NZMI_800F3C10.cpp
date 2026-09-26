@@ -112,7 +112,7 @@ extern "C" s32 fn_801F3D94(void* this_, s32 a);
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" u8 fn_801F2B7C(void* this_, u32 a, s32 b, u32 c);
-extern "C" u8 v17__5ActorFv(void* this_, s32 room, void* pos);
+extern "C" u8 v17__5ActorFiPf(void* this_, s32 room, void* pos);
 extern "C" void fn_801EEC98(void* this_, void* room, s16* a, s32* dir, f32* dist, s32* player, s32 b, s32 c);
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
 extern f32 lbl_8049C3E0[4][2];
@@ -191,7 +191,7 @@ extern "C" void fn_800F3E08(u8* this_) {
         hit = fn_801F2B7C(this_, *(u32*)(this_ + 0x114), -1, 1);
     }
     u8 wall = fn_801F2618(this_, 0, 0);
-    if (wall && v17__5ActorFv(this_, *(s32*)(this_ + 4), this_ + 0xC) == 1) {
+    if (wall && v17__5ActorFiPf(this_, *(s32*)(this_ + 4), this_ + 0xC) == 1) {
         ((NZMI_Actor*)this_)->vf24();
         return;
     }

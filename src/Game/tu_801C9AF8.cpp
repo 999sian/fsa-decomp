@@ -9,19 +9,19 @@ extern "C" bool fn_801CAED4(void* thisObj, s32 value) {
 	return v != 4 && v != value;
 }
 
-extern "C" u8 v17__5ActorFv(void* this_, s32 room, const f32* pos);
+extern "C" u8 v17__5ActorFiPf(void* this_, s32 room, const f32* pos);
 extern const f32 lbl_8053EF38;
 
 static inline u8 tuCheckAt(void* this_, s32 room, const f32* pos, f32 y, f32 x) {
     f32 z = pos[2];
     JGeometry::TVec3f v(x, y, z);
-    return v17__5ActorFv(this_, room, &v.x);
+    return v17__5ActorFiPf(this_, room, &v.x);
 }
 
 // near-match (98%): float register assignment differs
 extern "C" BOOL fn_801CAEF4(void* this_, const f32* pos, s32 room) {
     BOOL r = FALSE;
-    if (v17__5ActorFv(this_, room, pos)
+    if (v17__5ActorFiPf(this_, room, pos)
         || tuCheckAt(this_, room, pos, pos[1] - lbl_8053EF38, pos[0] - lbl_8053EF38)
         || tuCheckAt(this_, room, pos, pos[1] - lbl_8053EF38, lbl_8053EF38 + pos[0])
         || tuCheckAt(this_, room, pos, lbl_8053EF38 + pos[1], pos[0] - lbl_8053EF38)

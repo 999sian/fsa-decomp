@@ -49,15 +49,15 @@ public:
     /* slot 7  */ virtual void v07();    /* 0x801F4F28 */
     /* slot 8  */ virtual void v08();    /* 0x801F4E0C */
     /* slot 9  */ virtual void v09();    /* 0x801F4850 */
-    /* slot 10 */ virtual void v10();    /* 0x801F47CC */
-    /* slot 11 */ virtual void v11();    /* 0x801F4760 */
+    /* slot 10 */ virtual void v10(u32 a, u32 b); /* 0x801F47CC */
+    /* slot 11 */ virtual u32 v11();     /* 0x801F4760 */
     /* slot 12 */ virtual void v12();    /* 0x801F471C */
-    /* slot 13 */ virtual void v13();    /* 0x801F4710 */
+    /* slot 13 */ virtual int v13();     /* 0x801F4710 */
     /* slot 14 */ virtual void v14();    /* 0x801F470C */
     /* slot 15 */ virtual void v15();    /* 0x801F4708 */
     /* slot 16 */ virtual void v16();    /* 0x801F4704 */
-    /* slot 17 */ virtual void v17();    /* 0x801F15BC */
-    /* slot 18 */ virtual void v18();    /* 0x801F165C */
+    /* slot 17 */ virtual int v17(int a, f32* b); /* 0x801F15BC */
+    /* slot 18 */ virtual int v18(int a, f32* b); /* 0x801F165C */
 
     /* 0x801F3668 - not virtual.  Clears field_11C and detaches the actor from
      * the area manager: if field_16C != -1 calls fn_802D7704(manager, field_16C,
