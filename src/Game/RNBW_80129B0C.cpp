@@ -22,4 +22,32 @@ extern "C" void* fn_8012A364(void* this_) {
     return this_;
 }
 
+extern "C" void fn_801EE434(void* handle);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
+extern "C" void __dl__FPv(void* p);
+
+extern "C" void fn_801EE434(void* handle);
+struct RnbwActor {
+    u8 pad[0x23c];
+    void* mHandles[5];
+    void release(int i) { fn_801EE434(mHandles[i]); mHandles[i] = 0; }
+};
+
+inline void releaseHandle(void*& h) { fn_801EE434(h); h = 0; }
+
+extern "C" void* fn_8012A2E0(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_8049E610;
+        for (s32 i = 0; i < 5; i++) {
+            fn_801EE434(((RnbwActor*)this_)->mHandles[i]);
+            ((RnbwActor*)this_)->mHandles[i] = 0;
+        }
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
