@@ -2,6 +2,7 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Box.h"
+#include "std/math.h"
 
 // ---- EmptyHook_802E7DB4.cpp ----
 // EmptyHook_802E7DB4 - actor @lbl_804A9FB0: empty no-op override (0x4, leaf, no extab needed)
@@ -16,7 +17,7 @@ extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801F78F4(void* mgr, u32 id, s32 start);
 extern "C" char* fn_801F666C(void* mgr, s32 id);
 extern "C" void* fn_801EE434(void* handle);
-extern "C" void fn_8013CC50(u32 room, JGeometry::TVec3<f32>* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" void* fn_8013CC50(u32 room, JGeometry::TVec3<f32>* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801F0E34(void* p, u32 se, s32 b);
 extern "C" void fn_802C5284(char* p);
 extern "C" void fn_801F34DC(char* p);
@@ -86,6 +87,79 @@ extern "C" u8 fn_802E7DB8(char* p) {
     *(u8*)(key + 0x11c) = 0;
     fn_801F34DC(p);
     return 1;
+}
+
+// ---- fn_802E80A0: point sparkle effects at the nearest opened key block ----
+extern "C" void fn_8013CB44(void* h, JGeometry::TVec3<f32>* pos, s32 a, s32 b, s32 c);
+extern "C" JGeometry::TVec3<f32>* fn_8023E7B0(s32 holder);
+extern const f32 lbl_80541288;
+
+extern "C" void fn_802E80A0(char* p) {
+    s32 id;
+    s32 best;
+    s32 bestDist;
+    best = -1;
+    bestDist = -1;
+    id = -1;
+    JGeometry::TVec3<f32> pos;
+    while (true) {
+        id = fn_801F78F4(fn_801F856C(), 'KEY0', id);
+        if (id < 0) {
+            break;
+        }
+        char* key = fn_801F666C(fn_801F856C(), id);
+        if (key == 0 || *(s32*)(key + 0x280) != 6 || *(s32*)(key + 0x240) == 0) {
+            continue;
+        }
+        pos = *(JGeometry::TVec3<f32>*)(key + 0xc);
+        f32 dx = pos.x - *(f32*)(p + 0xc);
+        f32 dy = pos.y - *(f32*)(p + 0x10);
+        s32 d = std::sqrtf(dx * dx + dy * dy);
+        if (d > 0x40) {
+            d = 0x40;
+        }
+        if (bestDist < 0) {
+            bestDist = d;
+            best = id;
+        } else if (d < bestDist) {
+            bestDist = d;
+            best = id;
+        }
+    }
+    if (best < 0) {
+        return;
+    }
+    char* key = fn_801F666C(fn_801F856C(), best);
+    s32 alpha = (0x40 - bestDist) * 4;
+    pos = *(JGeometry::TVec3<f32>*)(key + 0xc);
+    if (*(void**)(p + 0x238) == 0) {
+        *(void**)(p + 0x238) = fn_8013CC50(*(u32*)(p + 0x4), &pos, 0x314, 0, 2, 0, 0, 1, lbl_8054126C);
+    }
+    if (*(void**)(p + 0x23c) == 0) {
+        *(void**)(p + 0x23c) = fn_8013CC50(*(u32*)(p + 0x4), (JGeometry::TVec3<f32>*)(p + 0xc), 0x312, 0, 0, 0, 0, 1, lbl_8054126C);
+    }
+    if (*(void**)(p + 0x240) == 0) {
+        *(void**)(p + 0x240) = fn_8013CC50(*(u32*)(p + 0x4), (JGeometry::TVec3<f32>*)(p + 0xc), 0x313, 0, 0, 0, 0, 1, lbl_8054126C);
+    }
+    if (*(void**)(p + 0x238) != 0) {
+        if (*(u8*)(key + 0xc4) != 0) {
+            JGeometry::TVec3<f32>* hp = fn_8023E7B0(*(s32*)(key + 0xc8));
+            pos.x = hp->x;
+            pos.y = hp->y;
+            pos.z = hp->z;
+            fn_8013CB44(*(void**)(p + 0x238), &pos, -1, 3, 1);
+        } else {
+            pos.z += lbl_80541288;
+            fn_8013CB44(*(void**)(p + 0x238), &pos, 0, 0, 1);
+        }
+        *(u8*)(*(char**)(p + 0x238) + 0xbb) = alpha;
+    }
+    if (*(void**)(p + 0x23c) != 0) {
+        *(u8*)(*(char**)(p + 0x23c) + 0xbb) = alpha;
+    }
+    if (*(void**)(p + 0x240) != 0) {
+        *(u8*)(*(char**)(p + 0x240) + 0xbb) = alpha;
+    }
 }
 
 // ---- fn_802E8A64_dtor.cpp ----
