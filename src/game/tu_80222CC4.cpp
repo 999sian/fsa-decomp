@@ -43,7 +43,9 @@ extern "C" void fn_80222D28(void* this_) {
 extern "C" void* SpatialRegistry_GetBase();
 extern "C" void* fn_801F666C(void* base, s32 id);
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A6C38[];
 extern void* lbl_804A6A00[];
 extern void* lbl_804A4808[];
@@ -92,3 +94,5 @@ extern "C" void* fn_8022313C(void* this_) {
     *(s32*)(p + 0x2b8) = -1;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

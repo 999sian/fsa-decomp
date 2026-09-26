@@ -43,3 +43,5 @@ extern "C" void fn_801ED80C(void* thisPtr) {
 extern "C" void fn_801ED968(void* thisPtr) { *(u16*)thisPtr = 0xb4; }
 
 extern "C" void fn_801ED974(void* thisPtr) { *(u16*)thisPtr = 0x0; }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -11,7 +11,9 @@ void Sev2_EmptyHook(void) {}
 
 // ---- Sev2_dtor_802E47C4.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9CD0[];
 
 struct NonPolyBase {
@@ -139,3 +141,5 @@ extern "C" void Sev2_Part4of5(void* this_) {
     };
     ((ActorSlot5*)this_)->update();
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

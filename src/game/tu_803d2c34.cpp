@@ -61,3 +61,5 @@ extern "C" void* fn_803D5710(void* this_, s16 how) {
 	}
 	return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

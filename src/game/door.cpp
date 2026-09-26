@@ -4,7 +4,9 @@
 
 // ---- fn_802C5950_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A8D88[];
 
 extern "C" void* fn_802C5950(void* this_, s16 freeFlag) {
@@ -38,3 +40,5 @@ extern "C" void Actor_SetVec3_0x0(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x4) = y;
 	*(f32*)((char*)thisObj + 0x8) = z;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -46,3 +46,5 @@ extern "C" void fn_801D789C(void* child) {
     *(s32*)((char*)child + 0x8) = 0;
     fn_8021BD18((char*)child + 0xc, 2);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -15,3 +15,5 @@ extern "C" void* fn_80218A8C(void* this_) {
     *(u16*)((char*)this_ + 0x4) = (u16)(r + 0x3c);
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -27,3 +27,5 @@ s32 fn_8021D020(void* thisObj) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -51,3 +51,5 @@ Ftgl::Ftgl() : Actor() {
     ResourceHandle* h = new ResourceHandle();
     *(ResourceHandle**)((char*)this + 0x24c) = h;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

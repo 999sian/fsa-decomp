@@ -38,3 +38,5 @@ extern "C" void fn_8020D690(void* this_) {
     *(u32*)(t + 0x4) = 0;
     *(u32*)(t + 0x788) = 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

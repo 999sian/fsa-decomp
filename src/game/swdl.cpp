@@ -13,7 +13,9 @@ void Swdl_EmptyHook(void) {}
 // ---- Swdl_dtor_802F14B4.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804AA590[];
 
 struct NonPolyBase {
@@ -108,3 +110,5 @@ extern "C" void Swdl_SetParams(void* this_) {
     *(s32*)(p + 0x270) = 2;
     *(WaveController**)(p + 0x230) = new WaveController(0, 0, 8);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

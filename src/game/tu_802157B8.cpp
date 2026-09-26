@@ -14,3 +14,5 @@ void Slk2_ResetBlock0x0(void* thisPtr) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

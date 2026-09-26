@@ -4,7 +4,9 @@
 
 // ---- fn_802E6EC4_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9E50[];
 
 extern "C" void* fn_802E6EC4(void* this_, s16 freeFlag) {
@@ -16,6 +18,20 @@ extern "C" void* fn_802E6EC4(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+// ---- fn_802E6F24 ----
+extern "C" void fn_803075AC(u32 callerID, u32 ownerID, void* posPtr, s32 effectRef,
+                             s32 unused, s32 mode, s32 targetPlayerIdx, s32 kind,
+                             s32 stackArg9, s32 stackArg10);
+
+extern "C" void fn_802E6F24(char* p) {
+    s32 f = 0;
+    if (*(s32*)(p + 0x234) != 0) {
+        f = 1;
+    }
+    fn_803075AC(*(u32*)(p + 0x198), *(u32*)(p + 0x4), p + 0xc, *(s32*)(p + 0x238) + 0x26d,
+                f != 0, 2, -1, 1, 0, 0);
 }
 
 // ---- stub_802e6f94.cpp ----
@@ -73,3 +89,5 @@ extern "C" void fn_802E7038(void* thisObj) {
 		*(s32*)((char*)thisObj + 0x240) = 2;
 	}
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

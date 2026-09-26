@@ -32,3 +32,5 @@ extern "C" void* fn_80216238(char* this_) {
     Hrmn_ActivateSlotA(this_ + 0x18);
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

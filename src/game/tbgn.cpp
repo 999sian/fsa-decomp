@@ -4,7 +4,9 @@
 
 // ---- Tbgn_dtor_802F3F7C.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804AA6F8[];
 
 extern "C" void* fn_802F3F7C(void* this_, short how) {
@@ -27,3 +29,5 @@ void Tbgn_EmptyHook1(void) {}
 void Tbgn_EmptyHook2(void) {}
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

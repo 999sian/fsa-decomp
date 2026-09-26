@@ -31,3 +31,5 @@ void Hrmn_InitSlotStateType0xc(void* thisPtr) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

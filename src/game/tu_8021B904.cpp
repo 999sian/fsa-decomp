@@ -18,3 +18,5 @@ extern "C" void fn_8021BA30(void* this_, u16 tag) {
     *(s32*)((char*)this_ + 0xc) = fn_801CD664(0x15) + 0xa;
     *(u16*)((char*)this_ + 0x10) = tag;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

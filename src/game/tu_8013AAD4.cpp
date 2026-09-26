@@ -198,7 +198,9 @@ extern "C" void fn_8013BE04(void* this_) {
 // manual cast.
 extern "C" void dtor_80092364(void* p, s32 flag);
 extern "C" void fn_8008383C(void* p);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_8049F108[];
 
 struct Slot0 {
@@ -235,3 +237,5 @@ extern "C" void* fn_8013BE60(void* this_, s16 flag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

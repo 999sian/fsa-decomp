@@ -4,7 +4,9 @@
 
 // ---- fn_802E40A8_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9C78[];
 
 extern "C" void* fn_802E40A8(void* this_, s16 freeFlag) {
@@ -27,6 +29,19 @@ void Senp_EmptyHook(void) {}
 
 }
 
+// ---- fn_802E410C ----
+extern "C" void* fn_801F1184(void* this_);
+extern "C" void fn_804561D8(void* obj, u32* id, u8 a, s32 b, u8 c);
+extern const u32 lbl_8046F0B8[4];
+extern const u8 lbl_805411F8[8];
+
+extern "C" void fn_802E410C(void* this_) {
+    char* p = (char*)this_;
+    void* obj = fn_801F1184(this_);
+    u32 id = lbl_8046F0B8[*(s32*)(p + 0x234)];
+    fn_804561D8(obj, &id, lbl_805411F8[*(s32*)(p + 0x238)], 0, *(u8*)(p + 0x23c));
+}
+
 // ---- SpawnParamBits_802E416C.cpp ----
 // SENP cluster, part 4/4. setParams-like - extracts 3 bitfields from
 // the spawn parameter (this->0x90) into this->0x234/0x238/0x23c, then
@@ -47,3 +62,5 @@ extern "C" void fn_802E416C(void* this_) {
     *(u8*)((char*)this_ + 0x23c) = (*(u32*)((char*)this_ + 0x90) >> 23) & 0x1;
     ((ActorSlot5*)this_)->slot5();
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

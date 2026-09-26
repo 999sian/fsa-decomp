@@ -10,9 +10,30 @@ void Wave_EmptyHook(void) {}
 
 }
 
+// ---- fn_802E72A8 ----
+struct WaveSinkBase { void* pad0; void* pad1; };
+struct WaveSink : WaveSinkBase {
+    virtual void s0();
+    virtual void s1();
+    virtual void s2();
+    virtual void Send(u32* msg);
+};
+
+extern "C" void fn_802E72A8(char* p) {
+    u32 m0 = 0x3003c;
+    (*(WaveSink**)(p + 0x230))->Send(&m0);
+    if (*(s32*)(p + 0x234) == 0) {
+        *(s32*)(p + 0x234) = 0x3c;
+        u32 m1 = 0x3003d;
+        (*(WaveSink**)(p + 0x230))->Send(&m1);
+    }
+}
+
 // ---- Wave_dtor_802E732C.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9EA8[];
 
 struct NonPolyBase {
@@ -88,3 +109,5 @@ extern "C" void Wave_SetParams(void* this_) {
     *(s32*)(p + 0x234) = 0x3c;
     *(WaveController**)(p + 0x230) = new WaveController(0, 0, 8);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -5,7 +5,9 @@
 // ---- from Game/dtor_8013C5C8.cpp
 
 extern "C" void fn_800EB208(void* this_, s32 flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_8049F140[];
 
 extern "C" void* dtor_8013C5C8(void* this_, s16 freeFlag) {
@@ -22,7 +24,9 @@ extern "C" void* dtor_8013C5C8(void* this_, s16 freeFlag) {
 // ---- from Game/fn_8013C86C_dtor.cpp
 
 extern "C" void fn_800EB208(void* this_, s32 flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_8049F15C[];
 
 extern "C" void* fn_8013C86C(void* this_, s16 freeFlag) {
@@ -47,3 +51,5 @@ extern "C" s32 fn_800EC188(void* subObj);
 extern "C" s32 fn_8013D5B0(void* this_) {
     return fn_800EC188(*(void**)((char*)this_ + 0xc));
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -13,3 +13,5 @@ extern "C" {
 u8 Player_GetCapabilityFlag(void* thisPtr) { return *(u8*)((char*)thisPtr + 0xcac); }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

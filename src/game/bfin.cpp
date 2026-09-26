@@ -39,3 +39,5 @@ extern "C" void fn_803D6D74(void* thisObj) {
 	*(u8*)(p + 0x11f) = 1;
 	*(s32*)(lbl_80529DEC + 0x1a8) = -1;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

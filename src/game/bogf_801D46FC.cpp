@@ -111,3 +111,5 @@ extern "C" void* fn_801D6A88(void* slot) {
     fn_801D789C(slot);
     return slot;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

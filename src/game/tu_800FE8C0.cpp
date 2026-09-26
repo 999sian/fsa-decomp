@@ -18,3 +18,5 @@ extern "C" void fn_800FEB78(void* this_, s32 opcode) {
     *(u8*)((char*)this_ + 0xc) = 0;
     fn_800FE8C0(this_);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

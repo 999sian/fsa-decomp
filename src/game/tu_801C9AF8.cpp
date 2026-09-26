@@ -7,3 +7,5 @@ extern "C" bool fn_801CAED4(void* thisObj, s32 value) {
 	s32 v = *(s32*)((char*)thisObj + 0x560);
 	return v != 4 && v != value;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

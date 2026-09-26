@@ -11,3 +11,5 @@ void Stpn_EmptyHook1(void) {}
 void Stpn_EmptyHook2(void) {}
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

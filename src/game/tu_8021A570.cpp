@@ -16,3 +16,5 @@ void InitDefaultRecord(void* thisPtr) {
 	*(u8*)(p + 0xd) = 0;
 }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

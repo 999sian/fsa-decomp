@@ -59,3 +59,5 @@ void RusaRegistry_Register(void* registryPtr, s32 id) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

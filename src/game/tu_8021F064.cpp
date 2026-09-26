@@ -22,3 +22,5 @@ void GrowableArray_Reset(void* thisObj) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

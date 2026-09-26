@@ -16,7 +16,9 @@ void Prtc_EmptyHook(void) {}
 // ---- Prtc_dtor_802E1064.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9AC8[];
 
 struct NonPolyBase {
@@ -70,3 +72,5 @@ extern "C" void* Prtc_dtor(void* this_, short how) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

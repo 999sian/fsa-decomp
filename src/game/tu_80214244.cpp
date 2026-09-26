@@ -29,3 +29,5 @@ void Slk2_ResetFlags7(void* thisPtr) {
 	*(u8*)(p + 0xc9) = 0;
 }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

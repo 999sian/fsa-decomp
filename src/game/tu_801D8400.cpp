@@ -89,3 +89,5 @@ extern "C" void fn_801D89BC(void* this_) {
 extern "C" s32 fn_801DA0FC(void) {
     return fn_80458F9C(lbl_8053AF80, 0x3c);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

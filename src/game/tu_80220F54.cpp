@@ -21,3 +21,5 @@ extern "C" void fn_8022149C(void* this_, s32 param);
 extern "C" void fn_80221160(void* this_) {
     fn_8022149C(this_, 0);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

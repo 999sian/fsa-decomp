@@ -11,3 +11,5 @@ void fn_8018E964(void* thisPtr, f32 a, f32 b) { *(f32*)((char*)thisPtr + 0x0) = 
 
 }
 
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

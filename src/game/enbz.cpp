@@ -27,3 +27,5 @@ void fn_801A360C(void) {}
 
 }
 
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -24,3 +24,5 @@ void fn_80196E00(void) {
 
 }
 
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

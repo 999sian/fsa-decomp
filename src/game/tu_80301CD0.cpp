@@ -44,3 +44,5 @@ extern "C" s32 fn_803074A4(s32 a, s32 b) {
 		}
 	}
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

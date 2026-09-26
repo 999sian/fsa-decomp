@@ -39,3 +39,5 @@ Jiji::Jiji() : Actor() {
     ResourceHandle* h = new ResourceHandle();
     *(ResourceHandle**)((char*)this + 0x274) = h;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

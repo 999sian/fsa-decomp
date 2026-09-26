@@ -4,7 +4,9 @@
 
 // ---- Gen3_dtor_802EC1D4.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804AA1D0[];
 
 extern "C" void* fn_802EC1D4(void* this_, short how) {
@@ -55,3 +57,5 @@ void Gen3_SetParams(void* thisPtr) {
 	*(u32*)(p + 0x230) = 0;
 }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

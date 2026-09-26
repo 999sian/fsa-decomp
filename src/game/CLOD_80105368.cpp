@@ -5,7 +5,9 @@
 // ---- from Game/fn_80105368_dtor.cpp
 
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_8049CBE0[];
 extern void* lbl_8049CC34[];
 
@@ -28,7 +30,9 @@ extern "C" void* fn_80105368(void* this_, s16 freeFlag) {
 
 // ---- from Game/dtor_80105D80.cpp
 
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_8049CC34[];
 
 extern "C" void* dtor_80105D80(void* this_, s16 freeFlag) {

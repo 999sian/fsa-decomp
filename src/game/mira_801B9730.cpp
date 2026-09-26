@@ -11,3 +11,5 @@ extern "C" void* fn_801BA3FC(void* this_) {
     *(void**)this_ = lbl_804A3BF8;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

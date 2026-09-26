@@ -39,3 +39,5 @@ void fn_8039427C(void* thisPtr) {
 	*(u8*)(p + 0x11e) = 1;
 }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

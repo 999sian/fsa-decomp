@@ -93,3 +93,5 @@ extern "C" void fn_801F857C(void* actorPoolBase) {
 
     fn_80456120(*(void**)((u8*)actorPoolBase + 0x200c));
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

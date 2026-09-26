@@ -38,3 +38,5 @@ Twtg::Twtg() : Actor() {
     ResourceHandle* h = new ResourceHandle();
     *(ResourceHandle**)((char*)this + 0x278) = h;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

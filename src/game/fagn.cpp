@@ -33,3 +33,5 @@ extern "C" void fn_80184A14(void* this_) {
     fn_801F5790(this_);
 }
 
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

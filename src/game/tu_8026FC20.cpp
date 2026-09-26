@@ -76,3 +76,5 @@ extern "C" s32 fn_80270A8C(void* playerObj) {
 	}
 	return 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -4,7 +4,9 @@
 
 // ---- Zoom_dtor_802E694C.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9DF8[];
 
 extern "C" void* fn_802E694C(void* this_, short how) {
@@ -25,3 +27,5 @@ extern "C" {
 void Zoom_EmptyHook(void) {}
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

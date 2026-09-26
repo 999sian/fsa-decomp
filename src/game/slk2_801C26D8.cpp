@@ -20,3 +20,5 @@ extern "C" int fn_801C5340(void) { return 0; }
 extern "C" bool fn_801C53C4(void* thisObj) {
 	return ((*(u32*)((char*)thisObj + 0x230) & 0x40000) != 0 && *(u8*)((char*)thisObj + 0x55c) <= 20) ? true : false;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

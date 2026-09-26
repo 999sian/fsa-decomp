@@ -15,3 +15,5 @@ extern "C" void* fn_8020CA34(void* this_) {
     *(s16*)((char*)this_ + 0x2ae) = 0;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

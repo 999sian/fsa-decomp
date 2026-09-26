@@ -26,3 +26,5 @@ extern "C" {
 void fn_8038FA54(void) {}
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

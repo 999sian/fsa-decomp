@@ -1010,6 +1010,7 @@ game/ARSH_80105DD4.cpp:
 	extabindex  start:0x80011E48 end:0x80011E60
 	.text       start:0x80105DD4 end:0x80106040
 	.ctors      start:0x8045BE2C end:0x8045BE30
+	.bss        start:0x804BB4F8 end:0x804BB564
 
 game/WLFT_80106040.cpp:
 	extab       start:0x80005A34 end:0x80005A64
@@ -1621,6 +1622,7 @@ game/tu_802153A8.cpp:
 	extabindex  start:0x80017DE8 end:0x80017E00
 	.text       start:0x802153A8 end:0x802157B8
 	.ctors      start:0x8045C13C end:0x8045C140
+	.bss        start:0x804CD338 end:0x804CD3A4
 
 game/tu_802157B8.cpp:
 	extab       start:0x8000A1D0 end:0x8000A1D8
@@ -1813,6 +1815,7 @@ game/urac.cpp:
 	extabindex  start:0x8001BFAC end:0x8001BFDC
 	.text       start:0x802E07C8 end:0x802E0AB4
 	.ctors      start:0x8045C300 end:0x8045C304
+	.bss        start:0x804D4468 end:0x804D44D4
 
 game/prtc.cpp:
 	extab       start:0x8000CEEC end:0x8000CF1C
@@ -1825,6 +1828,7 @@ game/offs.cpp:
 	extabindex  start:0x8001C00C end:0x8001C03C
 	.text       start:0x802E1B40 end:0x802E2074
 	.ctors      start:0x8045C308 end:0x8045C30C
+	.bss        start:0x804D4668 end:0x804D46D4
 
 game/tu_802E2074.cpp:
 	extab       start:0x8000CF3C end:0x8000CF5C
@@ -1843,6 +1847,7 @@ game/senp.cpp:
 	extabindex  start:0x8001C0A8 end:0x8001C0D8
 	.text       start:0x802E40A8 end:0x802E43E0
 	.ctors      start:0x8045C314 end:0x8045C318
+	.bss        start:0x804D4AA8 end:0x804D4B14
 
 game/sev2.cpp:
 	extab       start:0x8000CFA4 end:0x8000CFD4
@@ -1873,18 +1878,21 @@ game/tu_802E6EC4.cpp:
 	extabindex  start:0x8001C1BC end:0x8001C1E0
 	.text       start:0x802E6EC4 end:0x802E72A4
 	.ctors      start:0x8045C328 end:0x8045C32C
+	.bss        start:0x804D4FA8 end:0x804D5014
 
 game/wave.cpp:
 	extab       start:0x8000D064 end:0x8000D094
 	extabindex  start:0x8001C1E0 end:0x8001C210
 	.text       start:0x802E72A4 end:0x802E7634
 	.ctors      start:0x8045C32C end:0x8045C330
+	.bss        start:0x804D50A8 end:0x804D5114
 
 game/sen2.cpp:
 	extab       start:0x8000D094 end:0x8000D0AC
 	extabindex  start:0x8001C210 end:0x8001C234
 	.text       start:0x802E7634 end:0x802E794C
 	.ctors      start:0x8045C330 end:0x8045C334
+	.bss        start:0x804D51A8 end:0x804D5214
 
 game/pnp2.cpp:
 	extab       start:0x8000D0AC end:0x8000D0CC
@@ -1903,12 +1911,14 @@ game/lcls.cpp:
 	extabindex  start:0x8001C2AC end:0x8001C2DC
 	.text       start:0x802E8DFC end:0x802E910C
 	.ctors      start:0x8045C33C end:0x8045C340
+	.bss        start:0x804D54A8 end:0x804D5514
 
 game/glbs.cpp:
 	extab       start:0x8000D11C end:0x8000D13C
 	extabindex  start:0x8001C2DC end:0x8001C30C
 	.text       start:0x802E910C end:0x802E9428
 	.ctors      start:0x8045C340 end:0x8045C344
+	.bss        start:0x804D55A8 end:0x804D5614
 
 game/endm.cpp:
 	extab       start:0x8000D13C end:0x8000D174
@@ -1957,6 +1967,7 @@ game/chsw.cpp:
 	extabindex  start:0x8001C4A4 end:0x8001C4D4
 	.text       start:0x802EEC50 end:0x802EF0A0
 	.ctors      start:0x8045C360 end:0x8045C364
+	.bss        start:0x804D5EB8 end:0x804D5F24
 
 game/agbw.cpp:
 	extab       start:0x8000D27C end:0x8000D29C
@@ -1969,6 +1980,7 @@ game/elsk.cpp:
 	extabindex  start:0x8001C504 end:0x8001C528
 	.text       start:0x802EF448 end:0x802EF76C
 	.ctors      start:0x8045C368 end:0x8045C36C
+	.bss        start:0x804D60B8 end:0x804D6124
 
 game/foev.cpp:
 	extab       start:0x8000D2B4 end:0x8000D2D4

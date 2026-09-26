@@ -5,7 +5,9 @@
 // ---- from Game/fn_800FD438_dtor.cpp
 
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_8049C770[];
 
 extern "C" void* fn_800FD438(void* this_, s16 freeFlag) {
@@ -68,3 +70,5 @@ void fn_800FDE38(void* ringArray)
 }
 
 } // extern "C"
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -87,3 +87,5 @@ extern "C" void fn_801A7C48(void* thisObj) {
 	}
 }
 
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

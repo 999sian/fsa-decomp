@@ -8,3 +8,5 @@
 extern "C" void fn_80455A74(void* thisObj) {
 	*(s32*)((char*)thisObj + 0xc) = -1;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

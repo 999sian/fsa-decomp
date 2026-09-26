@@ -36,3 +36,5 @@ extern "C" u8 fn_801B7550(void) {
 	void* p2 = *(void**)((char*)p1 + 0x2c);
 	return *(u8*)((char*)p2 + 0xc);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

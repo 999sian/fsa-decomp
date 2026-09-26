@@ -20,3 +20,5 @@ Dbms::Dbms() : Actor() {
     *(void**)this = lbl_8049D0E8;
     fn_801D267C((char*)this + 0x230);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

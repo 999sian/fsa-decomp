@@ -116,3 +116,5 @@ extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, int flag);
 extern "C" void fn_804283B0(void* this_) {
     free__7JKRHeapFPvP7JKRHeap(this_, 0);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

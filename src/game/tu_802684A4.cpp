@@ -11,3 +11,5 @@ void SetField_0x98(void* thisPtr) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

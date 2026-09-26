@@ -93,3 +93,5 @@ extern "C" void fn_8039A510(void* thisObj) {
 	base[base[0x281] + 0x202] = base[0x22c];
 	base[base[0x281] + 0x257] = 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

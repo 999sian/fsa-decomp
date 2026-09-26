@@ -94,3 +94,5 @@ void ResetFlagBlock3c_Zero(void* thisPtr) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

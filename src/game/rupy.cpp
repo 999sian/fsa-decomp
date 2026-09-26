@@ -4,7 +4,9 @@
 
 // ---- fn_8032AB80_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804AB6D8[];
 
 extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
@@ -51,3 +53,5 @@ extern "C" void fn_8032D660(void* this_) {
         }
     }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

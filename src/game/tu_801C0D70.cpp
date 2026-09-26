@@ -64,3 +64,5 @@ extern "C" s32 fn_801C11F0(char* this_) {
     }
     return result;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

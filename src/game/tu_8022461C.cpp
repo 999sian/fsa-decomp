@@ -12,3 +12,5 @@ extern "C" s32 fn_802260DC(void* this_);
 extern "C" s32 fn_802265DC(void* this_) {
     return fn_802260DC(this_);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

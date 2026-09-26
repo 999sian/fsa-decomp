@@ -4,7 +4,9 @@
 
 // ---- Pnp2_dtor_802E7634.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9F00[];
 
 extern "C" void* fn_802E7634(void* this_, short how) {
@@ -26,6 +28,23 @@ void Pnp2_EmptyHook(void) {}
 
 }
 
+// ---- fn_802E7698 ----
+extern "C" void fn_801F0D20(void* this_, u32 arg);
+extern const u32 lbl_80541250[2];
+
+extern "C" void fn_802E7698(void* this_) {
+    char* p = (char*)this_;
+    s32 timer = *(s32*)(p + 0x238);
+    if (timer == 0) {
+        if (*(s32*)(p + 0x230) == 0) {
+            fn_801F0D20(this_, lbl_80541250[*(s32*)(p + 0x234)]);
+        }
+        *(u8*)(p + 0x11c) = 0;
+    } else {
+        *(s32*)(p + 0x238) = timer - 1;
+    }
+}
+
 // ---- Pnp2_SetParams.cpp ----
 #include "game/esd/Actor.h"
 
@@ -41,3 +60,5 @@ void Pnp2_SetParams(void* thisPtr) {
 	*(u32*)(p + 0x238) = (v3 >> 8) & 0xFFF;
 }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

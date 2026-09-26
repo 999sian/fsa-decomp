@@ -39,3 +39,5 @@ extern "C" void* fn_801E33B8(void* this_) {
     *(void**)this_ = lbl_804A5370;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

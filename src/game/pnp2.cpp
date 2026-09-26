@@ -4,7 +4,9 @@
 
 // ---- Mjgr_dtor_802E794C.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9F58[];
 
 extern "C" void* fn_802E794C(void* this_, short how) {
@@ -56,3 +58,5 @@ extern "C" void fn_802E7B04(void* this_) {
     }
     ((ActorSlot5*)this_)->slot5();
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

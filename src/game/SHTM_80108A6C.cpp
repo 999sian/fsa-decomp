@@ -5,7 +5,9 @@
 // ---- from Game/fn_80108A6C_dtor.cpp
 
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_8049CDC0[];
 extern void* lbl_8049CC34[];
 
@@ -50,3 +52,5 @@ fn_801092B0_actor::fn_801092B0_actor() : Actor() {
     *(s32*)(p + 0x270) = -1;
     *(s32*)(p + 0x274) = 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

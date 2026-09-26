@@ -48,3 +48,5 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
 #pragma fp_contract reset
 
 extern "C" void fn_801D0ECC(void) {}
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

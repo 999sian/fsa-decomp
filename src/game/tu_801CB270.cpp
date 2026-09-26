@@ -167,3 +167,5 @@ extern "C" s32 fn_801CD970(s16* value, s16 target, s16 step) {
 	}
 	return result;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

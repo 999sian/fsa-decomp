@@ -13,3 +13,5 @@ void ResetResourceHandleRecord(void* thisPtr) {
 	*(u8*)(p + 0x9) = 0;
 }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

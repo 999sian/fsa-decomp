@@ -4,7 +4,9 @@
 
 // ---- fn_802DF458_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804A9968[];
 
 extern "C" void* fn_802DF458(void* this_, s16 freeFlag) {
@@ -48,3 +50,5 @@ extern "C" s32 fn_801F132C(void* this_, u32 param2, u32 param3, void* statePtr);
 extern "C" s32 Yasi_CanBeActiveHere(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

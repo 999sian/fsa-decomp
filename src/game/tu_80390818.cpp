@@ -61,3 +61,5 @@ extern "C" void* fn_80391A1C(void* this_, s32 param2) {
     *(s32*)(p + 0x1c) = 1;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

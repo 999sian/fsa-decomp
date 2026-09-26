@@ -4,7 +4,9 @@
 
 // ---- Lcls_dtor_802E8DFC.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804AA008[];
 
 extern "C" void* fn_802E8DFC(void* this_, short how) {
@@ -73,3 +75,5 @@ struct ActorSlot5 {
 extern "C" void fn_802E8EBC(void* this_) {
     ((ActorSlot5*)this_)->slot5();
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

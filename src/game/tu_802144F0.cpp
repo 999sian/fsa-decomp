@@ -64,3 +64,5 @@ void Slk2_InitVtablePairRecord(void* thisPtr) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

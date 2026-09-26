@@ -66,3 +66,5 @@ u8 fn_803B8C90(void) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

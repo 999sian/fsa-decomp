@@ -21,3 +21,5 @@ extern "C" s32 fn_801D22A0(void* this_, s32 seqIndex, s32 mode) {
     }
     return result;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

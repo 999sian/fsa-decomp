@@ -5,7 +5,9 @@
 // ---- Gold_dtor_8032A8E0.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804AB660[];
 
 // GOLD cluster, part 5/6. Destructor - culls 3 handles (this+0x24c/0x250/
@@ -24,3 +26,5 @@ extern "C" void* Gold_dtor(void* this_, short how) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

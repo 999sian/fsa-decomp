@@ -39,3 +39,5 @@ s32 AnimTable_IsField0xe0LessThan3(void* table, s32 slot) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

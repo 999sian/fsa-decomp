@@ -44,3 +44,5 @@ extern "C" void fn_801DADD0(void* record) {
         }
     }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

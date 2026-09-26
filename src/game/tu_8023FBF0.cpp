@@ -335,3 +335,5 @@ extern "C" {
 void EmptyHook_80252FBC(void) {}
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

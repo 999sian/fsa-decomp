@@ -49,3 +49,5 @@ fn_801070B4_actor::fn_801070B4_actor() : Actor() {
     *(s32*)(p + 0x244) = 0;
     *(WaveController**)(p + 0x244) = new WaveController(0, 0, 8);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

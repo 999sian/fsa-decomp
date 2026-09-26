@@ -33,3 +33,5 @@ extern "C" void* fn_801E97B4(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

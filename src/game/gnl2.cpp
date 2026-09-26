@@ -10,3 +10,5 @@ extern "C" {
 void Gol2_SetField_0x2f4(void* thisPtr, u8 val) { *(u8*)((char*)thisPtr + 0x2f4) = val; }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

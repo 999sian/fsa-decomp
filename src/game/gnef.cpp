@@ -38,7 +38,9 @@ u8 Gnef_QueryCueState(void* thisObj, f32 value) {
 // ---- Gnef_dtor_802EE630.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
 extern void* lbl_804AA350[];
 
 extern "C" void* fn_802EE630(void* this_, short how) {
@@ -79,3 +81,5 @@ extern "C" void* fn_802EE630(void* this_, short how) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
