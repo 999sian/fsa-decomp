@@ -1944,6 +1944,7 @@ Game/keth.cpp:
 	extabindex  start:0x80013B40 end:0x80013B88
 	.text       start:0x8015C828 end:0x8015DE10
 	.ctors      start:0x8045BF48 end:0x8045BF4C
+	.sdata2     start:0x8053D520 end:0x8053D590
 
 Game/flme.cpp:
 	extab       start:0x80006FFC end:0x80007034
