@@ -2,6 +2,26 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "game/esd/types.h"
 
+// fn_802CB1C4 - ONOF: draw a shadow/marker while in state 1 or 2.
+// NONMATCHING (79.8%): retail shares the zero register (r7) between the
+// colour bytes and the flag argument.
+struct OnofColor {
+    u8 r, g, b, a;
+    OnofColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
+};
+extern const f32 lbl_80540DA8;
+extern char* lbl_8053AB10;
+struct OnofShadowMgr {
+    void draw(u32 room, void* pos, OnofColor color, s32 flag, f32 scale);
+};
+extern "C" void fn_802CB1C4(char* p) {
+    s32 st = *(s32*)(p + 0x238);
+    if (st == 2 || st == 1) {
+        OnofColor c(0, 0, 0, 0x80);
+        (*(OnofShadowMgr**)(lbl_8053AB10 + 0x2c))->draw(*(u32*)(p + 0x4), p + 0xc, c, 0, lbl_80540DA8);
+    }
+}
+
 // ---- fn_802CBA78_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int flag);

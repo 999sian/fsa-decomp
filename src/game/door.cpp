@@ -18,6 +18,12 @@ extern "C" void* fn_802C5950(void* this_, s16 freeFlag) {
     return this_;
 }
 
+// fn_802C59B0 - DOOR: add a 2D offset to this->0x258.
+extern "C" void fn_802C59B0(char* p, const f32* d) {
+    *(f32*)(p + 0x258) += d[0];
+    *(f32*)(p + 0x25c) += d[1];
+}
+
 // ---- oscluster_802c59d4.cpp ----
 extern "C" {
 

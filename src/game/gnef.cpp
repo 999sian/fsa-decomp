@@ -35,6 +35,20 @@ u8 Gnef_QueryCueState(void* thisObj, f32 value) {
 
 }
 
+// fn_802ED7F0 - GNEF: latch a target value once the state reaches 11.
+
+extern "C" u8 fn_802ED7F0(char* p, f32 v) {
+    if (*(s32*)(p + 0x24c) < 11) {
+        return 0;
+    }
+    if (*(u8*)(p + 0x274) != 0) {
+        *(f32*)(p + 0x270) = v;
+    } else if (lbl_80541400 == v) {
+        *(u8*)(p + 0x274) = 1;
+    }
+    return *(u8*)(p + 0x274);
+}
+
 // ---- Gnef_dtor_802EE630.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int how);
@@ -79,6 +93,10 @@ extern "C" void* fn_802EE630(void* this_, short how) {
     }
     return this_;
 }
+
+// fn_802EEA24 - GNEF: set global flag byte.
+extern u8 lbl_8053AB60;
+extern "C" void fn_802EEA24(u8 v) { lbl_8053AB60 = v; }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.

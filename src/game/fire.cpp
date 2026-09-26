@@ -2,6 +2,11 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "game/esd/types.h"
 
+// FIRE: small accessors.
+extern "C" s32 fn_802BA9F0(char* p) { return *(s32*)(p + 0x260); }
+extern "C" s32 fn_802BA9F8(char* p) { return *(s32*)(p + 0x264); }
+extern "C" void fn_802BAA00(char* p) { *(u8*)(p + 0x11c) = 0; }
+
 // ---- fn_802BBDFC_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);

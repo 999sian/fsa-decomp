@@ -26,6 +26,25 @@ void Endm_EmptyHook(void) {}
 
 }
 
+// fn_802E948C - ENDM: start a move towards target over n frames; returns 0
+// (int->float constant 0x805412F0 is compiler-generated: the TU must own its
+// .sdata2 before it can link.)
+// when already there.
+extern "C" u8 fn_802E948C(char* p, f32 target, s32 frames) {
+    f32 cur = *(f32*)(p + 0x270);
+    if (cur == target) {
+        return 0;
+    }
+    f32 step = __fabsf(cur - target) / (f32)frames;
+    if (cur < target) {
+        *(f32*)(p + 0x278) = step;
+    } else {
+        *(f32*)(p + 0x278) = -step;
+    }
+    *(f32*)(p + 0x274) = target;
+    return 1;
+}
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT

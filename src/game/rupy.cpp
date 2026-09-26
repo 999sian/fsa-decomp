@@ -18,6 +18,21 @@ extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
     return this_;
 }
 
+// RUPY: small helpers.
+extern const f32 lbl_80541D88;
+extern "C" void fn_8032D534(char* p) {
+    *(f32*)(p + 0x44) = lbl_80541D88;
+    *(f32*)(p + 0x40) = lbl_80541D88;
+    *(f32*)(p + 0x3c) = lbl_80541D88;
+    if (*(s32*)(p + 0x24c) < 800) {
+        *(s32*)(p + 0x24c) = 800;
+    }
+    *(s32*)(p + 0x230) = 1;
+}
+
+extern const u32 lbl_804719D8[];
+extern "C" u32 fn_8032D564(void* p, s32 i) { return lbl_804719D8[i]; }
+
 // ---- FlagClear_8032D660.cpp ----
 // fn_8032D660(this) - RUPY's (Rupee) vtable slot override. Gated on
 // this->0x94 (a halfword) being exactly 0x19 or 0x1a - likely a
