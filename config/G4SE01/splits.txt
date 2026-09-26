@@ -2562,6 +2562,8 @@ Game/tu_8021A570.cpp:
 	extabindex  start:0x8001807C end:0x800180A0
 	.text       start:0x8021A570 end:0x8021AF28
 	.ctors      start:0x8045C160 end:0x8045C164
+	.bss        start:0x804CDC40 end:0x804CDCAC
+	.sdata2     start:0x8053FCB0 end:0x8053FCC8
 
 Game/tu_8021B904.cpp:
 	extab       start:0x8000A3E4 end:0x8000A3FC
