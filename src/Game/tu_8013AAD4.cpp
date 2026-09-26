@@ -2,6 +2,305 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
+#include <dolphin/gx.h>
+#include "JSystem/JUtility/JUTVideo.h"
+#include "JSystem/J3D/J3DSys.h"
+#include "JSystem/J3D/J3DDrawBuffer.h"
+#include "JSystem/JGeometry.h"
+#include "JSystem/J2D/J2DGrafContext.h"
+
+
+extern void* lbl_8053AB10;
+
+struct AADGameState {
+    u8 pad0[0x4c];
+    s32 mode;       // 0x4c
+    u8 pad50[0x7f - 0x50];
+    u8 b7f;         // 0x7f
+};
+extern AADGameState* lbl_8053AAF8;
+
+static inline bool inModeA(AADGameState* g) {
+    return g->mode == 7 || g->mode == 8 || g->mode == 9 || g->mode == 22 || g->mode == 10 || g->mode == 11;
+}
+static inline bool inModeB(AADGameState* g) {
+    return g->mode == 7 || g->mode == 8 || g->mode == 9 || g->mode == 22 || g->mode == 10 || g->mode == 11 || g->mode == 12;
+}
+static inline bool inModeAm(s32 m) {
+    bool r = false;
+    if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11) {
+        r = true;
+    }
+    return r;
+}
+static inline bool inModeBm(s32 m) {
+    bool r = false;
+    if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11 || m == 12) {
+        r = true;
+    }
+    return r;
+}
+static inline bool isM12(s32 m) { return m == 12; }
+static inline bool isNot12() { return lbl_8053AAF8->mode != 12; }
+static inline bool evModeA(s32 m) { return m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11; }
+static inline bool evModeB(s32 m) { return m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11 || m == 12; }
+static inline bool evMode(u8 b, s32 m) {
+    if (b) {
+        return evModeA(m) != 0;
+    } else {
+        return evModeB(m) != 0;
+    }
+}
+static inline bool isMode12() {
+    AADGameState* g = lbl_8053AAF8;
+    return g->b7f && g->mode == 12;
+}
+static inline bool isEventMode() {
+    AADGameState* g = lbl_8053AAF8;
+    if (g->b7f) {
+        return inModeA(g) != 0;
+    } else {
+        return inModeB(g) != 0;
+    }
+}
+
+extern "C" void fn_802FF0EC(void* p);
+extern "C" s32 fn_8013D5D4(void* subObj);
+
+
+extern "C" void fn_8030E154(void* p);
+extern "C" void fn_802FF568(void* p);
+extern "C" void fn_8013DC44(void* p);
+extern "C" void fn_80159330(void* p);
+extern "C" void fn_8016005C(void* p);
+extern "C" u32* fn_8013C394();
+extern "C" u8 fn_80239D38();
+
+extern "C" void fn_8013BBE0(u8* this_) {
+    if (lbl_8053AAF8->mode == 9) {
+        return;
+    }
+    fn_8030E154(*(void**)(this_ + 0x24));
+    fn_802FF568(*(void**)(this_ + 0x20));
+    fn_8013DC44(*(void**)(this_ + 0x28));
+    fn_80159330(*(void**)(this_ + 0x2c));
+    fn_8016005C(*(void**)(this_ + 0x30));
+    u32* vp = fn_8013C394();
+    JGeometry::TBox2f box((f32)vp[0], (f32)vp[1], (f32)vp[2], (f32)vp[3]);
+    (*(J2DGrafContext**)(this_ + 0x14))->place(box);
+    (*(J2DGrafContext**)(this_ + 0x14))->scissor(box);
+    if (!lbl_8053AAF8->b7f || !isNot12()) {
+        this_[0x39] = 0;
+        return;
+    }
+        if (!isEventMode()) {
+            this_[0x39] = 1;
+        } else {
+        u8 r = 0;
+        if (this_[0x38] >= 0xff) {
+            bool ok = true;
+            if (lbl_8053AAF8->mode != 11 && !fn_80239D38()) {
+                ok = false;
+            }
+            if (ok) {
+                r = 1;
+            }
+        }
+        this_[0x39] = r;
+        }
+}
+
+
+extern "C" s32 fn_8030DFE8(void* subObj, void* matrix);
+extern "C" void fn_802FF3B0(void* p);
+extern "C" void fn_802FF2D8(void* p);
+extern "C" void fn_8013DA10(void* p);
+extern "C" void fn_80158F70(void* p);
+extern "C" void fn_8013D908(void* p);
+extern "C" void __sinit_tu_8013C5C8_cpp_8013D6E4(void* p);
+extern "C" void fn_8015F9C0(void* p);
+
+static inline bool isDrawMode(u8* this_) {
+    return this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6;
+}
+
+extern "C" void fn_8013B71C(u8* this_) {
+    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
+        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
+        j3dSys.drawInit();
+        j3dSys.reinitGX();
+        GXSetColorUpdate(GX_TRUE);
+        GXSetAlphaUpdate(GX_FALSE);
+        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk3;
+        (*(J3DDrawBuffer**)(this_ + 0x8))->draw();
+        j3dSys.reinitGX();
+        if (isEventMode() && lbl_8053AAF8->mode != 12) {
+            fn_802FF3B0(*(void**)(this_ + 0x20));
+        }
+        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
+        j3dSys.drawInit();
+        j3dSys.reinitGX();
+        GXSetColorUpdate(GX_TRUE);
+        GXSetAlphaUpdate(GX_FALSE);
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_NOOP);
+        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk4;
+        (*(J3DDrawBuffer**)(this_ + 0xc))->draw();
+        j3dSys.reinitGX();
+        if (isEventMode() && lbl_8053AAF8->mode != 12) {
+            fn_802FF2D8(*(void**)(this_ + 0x20));
+        }
+        fn_8013DA10(*(void**)(this_ + 0x28));
+        j3dSys.drawInit();
+        fn_80158F70(*(void**)(this_ + 0x2c));
+    }
+    fn_8013D908(*(void**)(this_ + 0x28));
+    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
+        __sinit_tu_8013C5C8_cpp_8013D6E4(*(void**)(this_ + 0x28));
+        if (isEventMode() || lbl_8053AAF8->mode == 12) {
+            fn_8015F9C0(*(void**)(this_ + 0x30));
+        }
+    }
+}
+
+extern "C" void fn_8013B538(void* this_) {
+    if (isEventMode()) {
+        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
+    }
+}
+
+extern "C" void fn_8013B618(void* this_) {
+    if (isEventMode()) {
+        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
+        fn_8013D5D4(*(void**)((char*)this_ + 0x28));
+    }
+    (*(J3DDrawBuffer**)((char*)this_ + 0x8))->frameInit();
+    (*(J3DDrawBuffer**)((char*)this_ + 0xc))->frameInit();
+}
+extern _GXRenderModeObj lbl_8049F090;
+extern _GXRenderModeObj lbl_8049F0CC;
+
+extern "C" void fn_8013AAD4() {
+    JUTVideo::getManager()->setRenderMode(&lbl_8049F090);
+}
+
+extern "C" void fn_8013AB00() {
+    JUTVideo::getManager()->setRenderMode(&lbl_8049F0CC);
+}
+
+extern "C" void fn_8013AB2C() {
+    J3DDrawBuffer* opa = *(J3DDrawBuffer**)((char*)lbl_8053AB10 + 0x8);
+    J3DDrawBuffer* xlu = *(J3DDrawBuffer**)((char*)lbl_8053AB10 + 0xc);
+    j3dSys.drawInit();
+    j3dSys.reinitGX();
+    GXSetColorUpdate(1);
+    GXSetAlphaUpdate(0);
+    j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk3;
+    opa->draw();
+    j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk4;
+    xlu->draw();
+    opa->frameInit();
+    xlu->frameInit();
+}
+
+struct CamViewBase {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    f32 _pad[5];
+    Vec mPos;
+    Mtx mMtx;
+};
+
+extern "C" void fn_8013ABCC(CamViewBase* this_, Vec* pos, Mtx mtx) {
+    this_->mPos.x = pos->x;
+    this_->mPos.y = pos->y;
+    this_->mPos.z = pos->z;
+    PSMTXCopy(mtx, this_->mMtx);
+    this_->v2();
+    this_->v1();
+    this_->v5();
+}
+
+extern "C" void fn_8013AC54(Mtx mtx) {
+    char* mgr = (char*)lbl_8053AB10;
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0x8), 0);
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0xc), 1);
+    j3dSys.setViewMtx(mtx);
+}
+
+extern "C" void fn_8013B004(f32* rect, GXColor* color) {
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_F32, 0);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, GX_LIGHT_NULL, GX_DF_NONE, GX_AF_NONE);
+    GXSetNumChans(1);
+    GXSetNumTexGens(0);
+    GXSetTevColor(GX_TEVREG0, *color);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR_NULL);
+    GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_A0);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetNumTevStages(1);
+    GXSetNumIndStages(0);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
+    GXSetColorUpdate(GX_TRUE);
+    GXSetAlphaUpdate(GX_FALSE);
+    GXSetCullMode(GX_CULL_NONE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    f32 x1 = rect[2];
+    f32 x0 = rect[0];
+    f32 y0 = rect[1];
+    GXPosition2f32(x0, y0);
+    f32 y1 = rect[3];
+    GXPosition2f32(x1, y0);
+    GXPosition2f32(x1, y1);
+    GXPosition2f32(x0, y1);
+    GXEnd();
+}
+
+extern GXColor lbl_8053CDD8;
+extern GXColor lbl_80543F20;
+
+extern "C" void fn_8013B1E8() {
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, GX_LIGHT_NULL, GX_DF_NONE, GX_AF_NONE);
+    GXSetNumChans(1);
+    GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
+    GXSetNumTexGens(1);
+    GXSetTevColor(GX_TEVREG0, lbl_8053CDD8);
+    GXSetTevColor(GX_TEVREG1, lbl_80543F20);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
+    GXSetTevColorIn(GX_TEVSTAGE0, (GXTevColorArg)0xf, (GXTevColorArg)8, (GXTevColorArg)2, (GXTevColorArg)4);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, (GXTevAlphaArg)7, (GXTevAlphaArg)4, (GXTevAlphaArg)1, (GXTevAlphaArg)2);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetNumTevStages(1);
+    GXSetNumIndStages(0);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+    GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
+    GXSetColorUpdate(GX_TRUE);
+    GXSetAlphaUpdate(GX_FALSE);
+    GXSetCullMode(GX_CULL_NONE);
+    GXSetClipMode(GX_CLIP_DISABLE);
+}
+
 // ---- from Game/fn_8013B3CC.cpp
 
 // Family of thin forwarding methods on the camera/cutscene-cue-manager
@@ -132,7 +431,7 @@ extern "C" void fn_8013BB18(void* this_) {
 extern char lbl_80536C50[];
 
 extern "C" s32 fn_8030DFE8(void* subObj, void* matrix);
-extern "C" void PSMTXCopy(void* src, void* dst);
+// PSMTXCopy from dolphin/mtx.h
 
 // fn_8013BB64(this) - resets the fog/color object (this->0x24) via
 // fn_8030DFE8(obj,NULL), refreshes lbl_80536C50->0x48/0x4c from this
@@ -143,9 +442,9 @@ extern "C" void PSMTXCopy(void* src, void* dst);
 // likely a vtable ptr) into lbl_80536C50 via PSMTXCopy.
 extern "C" void fn_8013BB64(void* this_) {
     fn_8030DFE8(*(void**)((char*)this_ + 0x24), 0);
-    *(s32*)(lbl_80536C50 + 0x48) = *(s32*)((char*)this_ + 0x8);
-    *(s32*)(lbl_80536C50 + 0x4c) = *(s32*)((char*)this_ + 0xc);
-    PSMTXCopy(*(char**)((char*)this_ + 0x24) + 0x4, lbl_80536C50);
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)((char*)this_ + 0x8), 0);
+    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)((char*)this_ + 0xc), 1);
+    j3dSys.setViewMtx(*(Mtx*)(*(char**)((char*)this_ + 0x24) + 0x4));
 }
 
 // ---- from Game/fn_8013BBBC.cpp
@@ -236,6 +535,10 @@ extern "C" void* fn_8013BE60(void* this_, s16 flag) {
         }
     }
     return this_;
+}
+
+extern "C" u32* fn_8013C394() {
+    return (u32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x144);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
