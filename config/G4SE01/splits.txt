@@ -2691,6 +2691,7 @@ Game/tu_8023FBF0.cpp:
 	extabindex  start:0x800196B4 end:0x80019D74
 	.text       start:0x8023FBF0 end:0x80255F4C
 	.ctors      start:0x8045C1C4 end:0x8045C1C8
+	.sdata2     start:0x80540030 end:0x805400A0
 
 Game/tu_802684A4.cpp:
 	extab       start:0x8000BAC4 end:0x8000BB6C
@@ -2703,6 +2704,7 @@ Game/tu_8026FC20.cpp:
 	extabindex  start:0x8001A2E4 end:0x8001A6A4
 	.text       start:0x8026FC20 end:0x8027E5BC
 	.ctors      start:0x8045C1DC end:0x8045C1E0
+	.sdata2     start:0x80540288 end:0x80540348
 
 Game/swt4.cpp:
 	extab       start:0x8000C4F4 end:0x8000C50C

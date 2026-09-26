@@ -2,6 +2,7 @@
 // A few small bodies originally from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define U16(p, o) (*(u16*)((char*)(p) + (o)))
@@ -264,7 +265,9 @@ BOOL fn_80270C88(char* p) {
         return 1;
     }
     if (fn_802486A0(p) == 4) {
-        if (fn_80248778(p) != fn_80240888(p)) {
+        s32 v = fn_80248778(p);
+        s32 w = fn_80240888(p);
+        if (w != v) {
             return 1;
         }
     }
@@ -317,14 +320,16 @@ s32 fn_802721A8(char* p) {
     return S32(p, 0xbf4);
 }
 void fn_8027221C(char* p, s32 v) { S32(p, 0xbf4) = v; }
-inline BOOL inBox(const f32* box, const JGeometry::TVec2<f32>& pt) {
+inline BOOL inBox(const f32* box, const f32* pt) {
     BOOL in = 0;
-    if (pt.x >= box[0] && pt.y >= box[1] && pt.x < box[2] && pt.y < box[3]) {
+    f32 x = pt[0];
+    f32 y;
+    if (x >= box[0] && (y = pt[1]) >= box[1] && x < box[2] && y < box[3]) {
         in = 1;
     }
     return in;
 }
-BOOL fn_80272B4C(PlayerAreas* pa, const JGeometry::TVec2<f32>& pt) {
+BOOL fn_80272B4C(PlayerAreas* pa, const f32* pt) {
     for (int i = 0; i < 0x50; i++) {
         if (pa->mId[i] >= 0 && fn_802413F0((char*)pa) && pa->mOwner[i] == S32(pa, 0x3b4)) {
             if ((u8)inBox(pa->mBox[i], pt)) {
@@ -355,22 +360,14 @@ BOOL fn_80272DCC(char* p, const f32* box, s32 a, s32 b) {
 }
 
 extern "C" {
-inline void setBoxAround(char* p, f32 r, f32 x, f32 y) {
-    F32(p, 0x4c0) = x - r;
-    F32(p, 0x4c4) = y - r;
-    F32(p, 0x4c8) = r + x;
-    F32(p, 0x4cc) = r + y;
+inline void setAround(JGeometry::TBox2<f32>* b, const JGeometry::TVec2<f32>& c, f32 r) {
+    b->set(c.x - r, c.y - r, r + c.x, r + c.y);
 }
 void fn_80276538(char* p) {
-    setBoxAround(p, 7.0f, F32(p, 0x8), F32(p, 0xc));
-    F32(p, 0x4d0) = -15.0f;
-    F32(p, 0x4d4) = -15.0f;
-    F32(p, 0x4d8) = 15.0f;
-    F32(p, 0x4dc) = 15.0f;
-    F32(p, 0x4d0) += F32(p, 0x8);
-    F32(p, 0x4d4) += F32(p, 0xc);
-    F32(p, 0x4d8) += F32(p, 0x8);
-    F32(p, 0x4dc) += F32(p, 0xc);
+    setAround((JGeometry::TBox2<f32>*)(p + 0x4c0), *(JGeometry::TVec2<f32>*)(p + 0x8), 7.0f);
+    JGeometry::TBox2<f32>* b = (JGeometry::TBox2<f32>*)(p + 0x4d0);
+    b->set(-15.0f, -15.0f, 15.0f, 15.0f);
+    b->addPos(*(JGeometry::TVec2<f32>*)(p + 0x8));
 }
 void fn_80277100(void) {}
 void fn_80277104(char* p) {
