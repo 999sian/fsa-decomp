@@ -109,6 +109,85 @@ void Twtg::update() {
     (this->*lbl_804AACDC[*(s32*)(p + 0x230)])();
 }
 
+// fn_803167F4 - TWTG: setParams().
+extern const f32 lbl_80541898;
+extern const f32 lbl_8054189C;
+extern const f32 lbl_805418A0;
+extern const f32 lbl_805418A4;
+extern const f32 lbl_805418A8;
+extern const f32 lbl_805418AC;
+extern const f32 lbl_805418B0;
+extern const f32 lbl_805418B4;
+extern const s32 lbl_804714F8[];
+extern const s32 lbl_804714D8[];
+extern u8 lbl_8050EC80[];
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7844(void* rec, s32 a, s32 b);
+
+static inline u8 twtgHasItem(s32 k) {
+    u8* g = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+    s32 r = (u8)(1 << k) & g[0x7a];
+    return r != 0;
+}
+
+extern "C" void fn_803167F4(char* p) {
+    *(u32*)(p + 0x230) = *(u32*)(p + 0x90) & 3;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x240) = 0;
+    *(u32*)(p + 0x23c) = (*(u32*)(p + 0x90) >> 4) & 7;
+    if (*(s32*)(p + 0x230) == 0) {
+        *(f32*)(p + 0x60) = lbl_80541898;
+        *(f32*)(p + 0x64) = lbl_80541898;
+        *(f32*)(p + 0x68) = lbl_8054189C;
+        *(f32*)(p + 0x6c) = lbl_8054189C;
+        *(f32*)(p + 0x258) = lbl_805418A0;
+        *(f32*)(p + 0x25c) = lbl_805418A4;
+        *(f32*)(p + 0x260) = lbl_805418A8;
+        *(f32*)(p + 0x264) = lbl_805418AC;
+        for (s32 i = 0; i < 4; i++) {
+            fn_802D7844(fn_802D6A9C(), 0, i);
+        }
+    } else if (*(s32*)(p + 0x230) == 3) {
+        *(f32*)(p + 0x60) = lbl_805418B0;
+        *(f32*)(p + 0x64) = lbl_805418B0;
+        *(f32*)(p + 0x68) = lbl_805418B4;
+        *(f32*)(p + 0x6c) = lbl_805418B4;
+        *(f32*)(p + 0x258) = lbl_805418B0;
+        *(f32*)(p + 0x25c) = lbl_805418B0;
+        *(f32*)(p + 0x260) = lbl_805418B4;
+        *(f32*)(p + 0x264) = lbl_805418B4;
+    } else {
+        *(s32*)(p + 0x230) = lbl_804714F8[*(s32*)(p + 0x23c)];
+        *(f32*)(p + 0x60) = lbl_80541898;
+        *(f32*)(p + 0x64) = lbl_80541898;
+        *(f32*)(p + 0x68) = lbl_8054189C;
+        *(f32*)(p + 0x6c) = lbl_8054189C;
+        *(f32*)(p + 0x258) = lbl_805418A0;
+        *(f32*)(p + 0x25c) = lbl_805418A0;
+        *(f32*)(p + 0x260) = lbl_805418A8;
+        *(f32*)(p + 0x264) = lbl_805418A8;
+    }
+    s32 k = *(s32*)(p + 0x23c);
+    // NONMATCHING (99.1%): retail tests the bool with srwi. (no cmplwi).
+    if (twtgHasItem(k) == 1) {
+        *(s32*)(p + 0x268) = lbl_804714D8[k];
+    } else {
+        *(s32*)(p + 0x268) = 0x473;
+    }
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 1;
+    *(s32*)(p + 0x24c) = 2;
+    *(s32*)(p + 0x250) = 3;
+    *(s32*)(p + 0x254) = -1;
+    *(s32*)(p + 0x238) = 0;
+    *(u8*)(p + 0x26c) = 0;
+    *(s32*)(p + 0x270) = 2;
+    *(s32*)(p + 0x274) = 0;
+    s32 room = *(s32*)(p + 0x4);
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
+    fn_80316E50(*(AnimEffectRec**)(p + 0x278), room, pos);
+}
+
 // fn_803169E0 - TWTG: destructor.
 extern "C" void dtor_801F593C(void* this_, int how);
 extern "C" void* fn_803169E0(char* p, s16 how) {
