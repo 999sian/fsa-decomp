@@ -2,8 +2,7 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
 
-// NONMATCHING (43%): MWCC hoists pos->x/y/z into f30/f31 here; retail
-// reloads them every iteration.
+// NONMATCHING (91%): retail computes x before y; this computes y first.
 // fn_802E4C74 - BLZ2: true if any of the four probe points around pos lies
 // on a blocking tile.
 struct Blz2Vec {
@@ -13,12 +12,15 @@ struct Blz2Vec {
 };
 extern const f32 lbl_8046F148[4];
 extern const f32 lbl_8046F188[4];
-extern "C" u16 fn_80226850(Blz2Vec* pos, u32 room);
+extern "C" u32 fn_80226850(Blz2Vec* pos, u32 room);
 extern "C" u8 fn_801EE3C0(u16 tile);
-extern "C" u8 fn_802E4C74(char* p, const Blz2Vec* pos) {
+extern "C" u8 fn_802E4C74(char* p, Blz2Vec* pos) {
     u8 hit = 0;
     for (s32 i = 0; i < 4; i++) {
-        Blz2Vec q(pos->x + lbl_8046F148[i], pos->y + lbl_8046F188[i], pos->z);
+        Blz2Vec q;
+        q.x = pos->x + lbl_8046F148[i];
+        q.y = pos->y + lbl_8046F188[i];
+        q.z = pos->z;
         if (fn_801EE3C0(fn_80226850(&q, *(u32*)(p + 0x4))) == 1) {
             hit = 1;
             break;
@@ -108,4 +110,41 @@ extern "C" void* fn_802E5724(void* this_, short how) {
 #undef NULL
 #define NULL 0
 #define unknown jsys_unknown
+struct Blz2Child {
+    u8 pad0[0x24];
+    s32 m24;
+    u8 pad28[0xf4 - 0x28];
+    u32 mFlags;
+};
+
+struct Blz2Obj {
+    u8 pad0[0x230];
+    Blz2Child* mA[16];
+    Blz2Child* mB[16];
+    Blz2Child* mC[16];
+};
+
+extern "C" void fn_802E4D60(Blz2Obj* self) {
+    for (s32 i = 0; i < 16; i++) {
+        if (self->mA[i] != NULL) {
+            Blz2Child* a = self->mA[i];
+            a->mFlags |= 1;
+            a->m24 = 1;
+            self->mA[i] = NULL;
+        }
+        if (self->mB[i] != NULL) {
+            Blz2Child* b = self->mB[i];
+            b->mFlags |= 1;
+            b->m24 = 1;
+            self->mB[i] = NULL;
+        }
+        if (self->mC[i] != NULL) {
+            Blz2Child* c = self->mC[i];
+            c->mFlags |= 1;
+            c->m24 = 1;
+            self->mC[i] = NULL;
+        }
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
