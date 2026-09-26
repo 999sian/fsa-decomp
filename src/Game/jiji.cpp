@@ -42,6 +42,7 @@ Jiji::Jiji() : Actor() {
 
 // ---- JIJI small state helpers (0x8037B374-0x8037B7EC) ----
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 struct JijiRandom {
     u32 seed;
@@ -280,6 +281,284 @@ extern "C" void fn_8037B7F8(u8* this_) {
                     *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
                     0, 2, -1, 0, 0, 0);
     }
+}
+
+struct JijiAnimEntry { u16 a, b; };
+extern "C" void fn_801EE558(void* this_, JGeometry::TVec3<f32>* dir, f32* dist, s32 p);
+
+extern "C" void fn_8037C788(u8* this_) {
+    f32 dist;
+    JGeometry::TVec3<f32> dir;
+    *(s32*)(this_ + 0x230) = 0;
+    *(u32*)(this_ + 0x250) = (*(u32*)(this_ + 0x90) & 0xfff) + 0x12b;
+    *(u32*)(this_ + 0x254) = (*(u32*)(this_ + 0x90) >> 24) & 1;
+    *(u32*)(this_ + 0x258) = (*(u32*)(this_ + 0x90) >> 16) & 0xff;
+    *(u8*)(this_ + 0x271) = (*(u32*)(this_ + 0x90) >> 25) & 1;
+    *(u32*)(this_ + 0x268) = (*(u32*)(this_ + 0x90) >> 12) & 3;
+    *(u8*)(this_ + 0x272) = 1;
+    *(s32*)(this_ + 0x26c) = 0;
+    *(u8*)(this_ + 0x270) = 0;
+    if (*(u8*)(this_ + 0x271) == 1) {
+        *(s32*)(this_ + 0x230) = 2;
+    }
+    if (*(s32*)(this_ + 0x258) > 54) {
+        *(s32*)(this_ + 0x258) = 0;
+    }
+    s32 k = *(s32*)(this_ + 0x258);
+    if (k == 6 || k == 11 || k == 16 || k == 25) {
+        *(f32*)(this_ + 0x60) = -16.0f;
+        *(f32*)(this_ + 0x64) = -16.0f;
+        *(f32*)(this_ + 0x68) = 16.0f;
+        *(f32*)(this_ + 0x6c) = 8.0f;
+    } else {
+        *(f32*)(this_ + 0x60) = -8.0f;
+        *(f32*)(this_ + 0x64) = -8.0f;
+        *(f32*)(this_ + 0x68) = 8.0f;
+        *(f32*)(this_ + 0x6c) = 8.0f;
+    }
+    *(f32*)(this_ + 0x3c) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    if (*(u8*)(this_ + 0x271) == 1) {
+        *(f32*)(this_ + 0x44) = 4.0f;
+    }
+    *(s32*)(this_ + 0x108) = 1;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x248) = 2;
+    *(s32*)(this_ + 0x24c) = 0;
+    if (*(s32*)(this_ + 0x24c) != 0) {
+        *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x24c) - 1;
+    } else {
+        *(s32*)(this_ + 0x24c) = 20;
+        fn_801EE558(this_, &dir, &dist, 0);
+        if (dist < 100.0f) {
+            u16 ang = 10430.378f * JMAAtan2Radian(-dir.x, -dir.y);
+            if (ang < 0x2000 || ang >= 0xe000) {
+                *(s32*)(this_ + 0x248) = 3;
+            } else if (ang >= 0x2000 && ang < 0x6000) {
+                *(s32*)(this_ + 0x248) = 1;
+            } else if (ang >= 0x6000 && ang <= 0xa000) {
+                *(s32*)(this_ + 0x248) = 2;
+            } else {
+                *(s32*)(this_ + 0x248) = 0;
+            }
+        } else {
+            *(s32*)(this_ + 0x248) = 2;
+        }
+    }
+    *(s32*)(this_ + 0x244) = -1;
+    *(u32*)(this_ + 0x25c) = ((const JijiAnimEntry*)&lbl_804753C0)[*(s32*)(this_ + 0x258)].a;
+    *(u32*)(this_ + 0x260) = ((const JijiAnimEntry*)&lbl_804753C0)[*(s32*)(this_ + 0x258)].b;
+    *(u8*)(this_ + 0x273) = 0;
+    switch (*(u32*)(this_ + 0x258)) {
+    case 1:
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 2:
+        *(s32*)(this_ + 0x23c) = 3;
+        *(s32*)(this_ + 0x234) = 3;
+        *(s32*)(this_ + 0x264) = 6;
+        break;
+    case 3:
+    case 22:
+        *(s32*)(this_ + 0x23c) = 15;
+        *(s32*)(this_ + 0x234) = 15;
+        *(s32*)(this_ + 0x264) = 4;
+        break;
+    case 4:
+    case 23:
+        *(s32*)(this_ + 0x234) = 10;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 3;
+        break;
+    case 5:
+    case 24:
+        *(s32*)(this_ + 0x23c) = 20;
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x264) = 4;
+        break;
+    case 6:
+    case 25:
+        *(s32*)(this_ + 0x234) = 12;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 5;
+        break;
+    case 7:
+        *(s32*)(this_ + 0x23c) = 6;
+        *(s32*)(this_ + 0x234) = 6;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 8:
+        *(s32*)(this_ + 0x234) = 15;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 9:
+        *(s32*)(this_ + 0x23c) = 10;
+        *(s32*)(this_ + 0x234) = 10;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 10:
+        *(s32*)(this_ + 0x234) = 10;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 3;
+        break;
+    case 11:
+        *(s32*)(this_ + 0x23c) = 20;
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x264) = 7;
+        break;
+    case 12:
+        *(s32*)(this_ + 0x234) = 7;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 3;
+        break;
+    case 13:
+        *(s32*)(this_ + 0x234) = 12;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 8;
+        break;
+    case 14:
+        *(s32*)(this_ + 0x234) = 0;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 6;
+        break;
+    case 15:
+        *(s32*)(this_ + 0x234) = 7;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 3;
+        break;
+    case 16:
+        *(s32*)(this_ + 0x23c) = 15;
+        *(s32*)(this_ + 0x234) = 15;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 17:
+        *(s32*)(this_ + 0x23c) = 15;
+        *(s32*)(this_ + 0x234) = 15;
+        *(s32*)(this_ + 0x264) = 1;
+        break;
+    case 18:
+        *(s32*)(this_ + 0x23c) = 15;
+        *(s32*)(this_ + 0x234) = 15;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 19:
+        *(s32*)(this_ + 0x23c) = 15;
+        *(s32*)(this_ + 0x234) = 15;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 20:
+        *(s32*)(this_ + 0x23c) = 15;
+        *(s32*)(this_ + 0x234) = 15;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 21:
+        *(s32*)(this_ + 0x234) = 0;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 26:
+        *(s32*)(this_ + 0x234) = 55;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 27:
+        *(s32*)(this_ + 0x234) = 40;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 28:
+        *(s32*)(this_ + 0x234) = 90;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 2;
+        break;
+    case 29:
+    case 30:
+        *(s32*)(this_ + 0x23c) = 20;
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x264) = 2;
+        break;
+    case 31:
+        *(s32*)(this_ + 0x23c) = 20;
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x264) = 2;
+        break;
+    case 32:
+    case 33:
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 2;
+        break;
+    case 34:
+        *(s32*)(this_ + 0x264) = 2;
+        *(s32*)(this_ + 0x234) = 60;
+        *(s32*)(this_ + 0x23c) = 0;
+        break;
+    case 35:
+        *(s32*)(this_ + 0x234) = 0;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x264) = 9;
+        break;
+    case 36:
+    case 37:
+    case 38:
+    case 39:
+    case 40:
+    case 41:
+        *(s32*)(this_ + 0x23c) = 0;
+        *(s32*)(this_ + 0x234) = 0;
+        *(s32*)(this_ + 0x264) = 10;
+        break;
+    case 42:
+        *(s32*)(this_ + 0x23c) = 40;
+        *(s32*)(this_ + 0x234) = 40;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 43:
+        *(s32*)(this_ + 0x23c) = 18;
+        *(s32*)(this_ + 0x234) = 18;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 44:
+    case 45:
+    case 46:
+    case 47:
+        *(s32*)(this_ + 0x23c) = 16;
+        *(s32*)(this_ + 0x234) = 16;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 48:
+        *(s32*)(this_ + 0x23c) = 10;
+        *(s32*)(this_ + 0x234) = 10;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 49:
+        *(s32*)(this_ + 0x23c) = 20;
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    case 50:
+    case 51:
+    case 52:
+    case 53:
+        *(s32*)(this_ + 0x23c) = 16;
+        *(s32*)(this_ + 0x234) = 16;
+        *(s32*)(this_ + 0x264) = 2;
+        break;
+    default:
+        *(s32*)(this_ + 0x23c) = 20;
+        *(s32*)(this_ + 0x234) = 20;
+        *(s32*)(this_ + 0x264) = 0;
+        break;
+    }
+    if (*(AnimEffectRec**)(this_ + 0x274) != 0) {
+        fn_80316E50(*(AnimEffectRec**)(this_ + 0x274), *(s32*)(this_ + 4), JGeometry::TVec3<f32>(*(JGeometry::TVec3<f32>*)(this_ + 0xc)));
+    }
+    *(s32*)(this_ + 0x278) = 0;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
