@@ -26,6 +26,11 @@ extern "C" u8 fn_8023F264(int idx);
 extern "C" u8 Player_GetCapabilityFlag(Player* p);
 extern "C" int fn_80247B9C(Player*);
 extern "C" int fn_80247BD4(Player*);
+struct GameState;
+extern "C" BOOL fn_8023F98C(GameState* g, int i);
+extern "C" GameState* fn_8023F9B0();
+extern "C" u8 fn_8018A614(int idx);
+extern "C" void fn_80270360(Player*, int);
 extern "C" void fn_8045815C(void*, int);
 extern "C" void* lbl_8053AF80;
 static JGeometry::TVec3<f32> lbl_804CF460(lbl_80540008, lbl_80540008, lbl_80540008);
@@ -49,7 +54,6 @@ void fn_80270DDC(Player*, int, int);
 u8 fn_8024157C(Player*, int);
 int Player_GetLinkedHandleOrInvalid(Player*);
 void fn_80254660(Player*);
-struct GameState;
 extern GameState* lbl_8053AAF8;
 }
 
@@ -239,6 +243,36 @@ static inline int getGroupId(int idx) {
     return fn_8024FF6C(lbl_8053AC90->players[idx]);
 }
 
+extern "C" u8 fn_8022F514(int idx);
+extern "C" int fn_8022F3DC(int idx);
+static inline u8 isEnabled2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (i < 0) return 0;
+    if (i >= 4) return 0;
+    if (lbl_8053AC90->players[i] == NULL) return 0;
+    return Player_GetCapabilityFlag(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isEnabled2(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget2(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isEnabled2(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked3(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!fn_8023F264(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget3(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!fn_8023F264(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+
 int fn_80234E30(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80240D64(lbl_8053AC90->players[idx]);
@@ -366,6 +400,42 @@ int fn_80235ACC(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80270358(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+// Self-recursive link-chain walker, inlined three levels deep by MWCC (see fn_8023BEA8).
+// Inline twin of fn_8023F98C.
+static inline BOOL activeBit(GameState* g, int i) {
+    return (*(u8*)((char*)g + 0x82) & (u8)(1 << i)) != 0;
+}
+void fn_80235B68(int idx, int a) {
+    if (lbl_8053AC90 == NULL) return;
+    if (!isPlayerEnabled(idx)) return;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << idx)) {
+        fn_80270360(lbl_8053AC90->players[idx], a);
+    } else if (pIsLinked(idx)) {
+        idx = pLinkTarget(idx);
+        if (lbl_8053AC90 == NULL) return;
+        if (!isPlayerEnabled(idx)) return;
+        if (activeBit(fn_8023F9B0(), idx)) {
+            fn_80270360(lbl_8053AC90->players[idx], a);
+        } else if (isLinked2(idx)) {
+            idx = linkTarget3(idx);
+            if (lbl_8053AC90 == NULL) return;
+            if (!isEnabled2(idx)) return;
+            if ((u8)fn_8023F98C(fn_8023F9B0(), idx)) {
+                fn_80270360(lbl_8053AC90->players[idx], a);
+            } else if (isLinked3(idx)) {
+                idx = fn_8022F3DC(idx);
+                if (lbl_8053AC90 == NULL) return;
+                if (!fn_8023F264(idx)) return;
+                if (fn_8018A614(idx)) {
+                    fn_80270360(lbl_8053AC90->players[idx], a);
+                } else if (fn_8022F514(idx)) {
+                    fn_80235B68(fn_8022F3DC(idx), a);
+                }
+            }
+        }
+    }
 }
 
 void fn_80235FE8(int idx) {
@@ -1228,36 +1298,7 @@ int fn_80247C0C(Player*);
 // MWCC inlined three levels deep; the deeper levels call the out-of-line
 // copies (Player_GetCapabilityFlag, fn_8023F264, fn_8022F514/fn_8022F3DC).
 // Written out here level by level.
-extern "C" u8 fn_8022F514(int idx);
-extern "C" int fn_8022F3DC(int idx);
 int fn_80247B9C(Player*);
-static inline u8 isEnabled2(int i) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (i < 0) return 0;
-    if (i >= 4) return 0;
-    if (lbl_8053AC90->players[i] == NULL) return 0;
-    return Player_GetCapabilityFlag(lbl_8053AC90->players[i]);
-}
-static inline u8 isLinked2(int i) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isEnabled2(i)) return 0;
-    return Player_IsLinked(lbl_8053AC90->players[i]);
-}
-static inline int linkTarget2(int i) {
-    if (lbl_8053AC90 == NULL) return -1;
-    if (!isEnabled2(i)) return -1;
-    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
-}
-static inline u8 isLinked3(int i) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!fn_8023F264(i)) return 0;
-    return Player_IsLinked(lbl_8053AC90->players[i]);
-}
-static inline int linkTarget3(int i) {
-    if (lbl_8053AC90 == NULL) return -1;
-    if (!fn_8023F264(i)) return -1;
-    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
-}
 int fn_8023BEA8(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
