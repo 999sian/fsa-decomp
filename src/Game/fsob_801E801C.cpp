@@ -8,7 +8,112 @@ extern "C" void fn_801EE434(void* handle);
 extern void* lbl_804A5568[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
-extern "C" {
+extern "C" void* fn_801E9AFC();
+extern "C" void fn_801EA108(void* mgr, void* pos, s32 a, f32 r);
+extern "C" void fn_8030C210(void* mgr, void* pos);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" s32 fn_801E9B58(void* this_);
+extern "C" void* fn_8013C824();
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+extern "C" void* fn_8013CC50(u32 id, void* pos, s32 type, s32 p4, s32 p5, u32 p6, u32 p7, u32 p8, f32 f);
+extern "C" void fn_801D0ED0(void* this_);
+struct Fsob8B10 { u8 pad[0x24]; void* m24; };
+extern Fsob8B10* lbl_8053AB10;
+
+extern "C" void fn_801E801C(char* p) {
+    static f32 radius = -256.0f;
+    if (*(s32*)(p + 0x248) == 0) {
+        fn_801EA108(fn_801E9AFC(), p + 0xc, *(s16*)(p + 0x3bc), radius);
+    }
+}
+
+struct FsobVec2 {
+    f32 x, y;
+};
+
+extern "C" void fn_801E8EB4(char* p, u8 idx, s32 unused, FsobVec2* v) {
+    f32 x = v->x;
+    f32 y = v->y;
+    *(u32*)(p + 0x2a8) |= 1 << idx;
+    ((FsobVec2*)(p + 0x2b0))[idx].x = x;
+    ((FsobVec2*)(p + 0x2b0))[idx].y = y;
+}
+
+extern "C" void fn_801E8EE8(char* p) {
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        fn_8030C210(lbl_8053AB10->m24, p + 0xc);
+    }
+}
+
+extern "C" u8 fn_801E8F20(char* p) {
+    u8 ret = 0;
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        f32 x0 = *(f32*)(p + 0x60);
+        f32 y0 = *(f32*)(p + 0x64);
+        f32 x1 = *(f32*)(p + 0x68);
+        f32 y1 = *(f32*)(p + 0x6c);
+        *(f32*)(p + 0x60) = -8.0f;
+        *(f32*)(p + 0x64) = -8.0f;
+        *(f32*)(p + 0x68) = 8.0f;
+        *(f32*)(p + 0x6c) = 8.0f;
+        ret = fn_801F2B7C(p, 0, -1, 0x16);
+        *(f32*)(p + 0x60) = x0;
+        *(f32*)(p + 0x64) = y0;
+        *(f32*)(p + 0x68) = x1;
+        *(f32*)(p + 0x6c) = y1;
+    }
+    return ret;
+}
+
+extern "C" s32 fn_801E8FE8(char* p) {
+    if (*(s32*)(p + 0x248) == 0 && *(f32*)(p + 0x68) - *(f32*)(p + 0x60) > 0.0f &&
+        *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > 0.0f && fn_801E9B58(p) >= 0) {
+        *(u32*)(p + 0x230) |= 0x2000;
+        if (*(void**)(p + 0x3c0) != 0) {
+            void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x3c0));
+        }
+        *(void**)(p + 0x3c0) = fn_8013CC50(*(u32*)(p + 0x4), p + 0xc, 0x260, 0, -2, 0, 0, 1, 1.0f);
+        *(s32*)(p + 0x24c) = 0;
+        *(s32*)(p + 0x248) = 1;
+    }
+    return 0;
+}
+
+struct FsobBox {
+    f32 x0, y0, x1, y1;
+};
+static inline void setBox(FsobBox* b, f32 r) {
+    b->x0 = -r;
+    b->y0 = -r;
+    b->x1 = r;
+    b->y1 = r;
+}
+
+extern "C" void fn_801E96F8(char* p) {
+    fn_801D0ED0(p);
+    *(u8*)(p + 0x2ac) = *(u32*)(p + 0x90);
+    f32 r = 6.0f;
+    *(f32*)(p + 0x64) = *(f32*)(p + 0x60) = -r;
+    *(f32*)(p + 0x6c) = *(f32*)(p + 0x68) = r;
+    *(f32*)(p + 0x70) = 1.0f;
+    *(f32*)(p + 0x74) = 1.0f;
+    *(f32*)(p + 0x78) = -1.0f;
+    *(f32*)(p + 0x7c) = -1.0f;
+    *(f32*)(p + 0x80) = 1.0f;
+    *(f32*)(p + 0x84) = 1.0f;
+    *(f32*)(p + 0x88) = -1.0f;
+    *(f32*)(p + 0x8c) = -1.0f;
+    *(u32*)(p + 0xb0) = 0;
+    *(u32*)(p + 0x98) = 2;
+    *(u32*)(p + 0x230) |= 0x280;
+    *(s32*)(p + 0x108) = 1000;
+    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = -1;
+    *(f32*)(p + 0x254) = 0.0f;
+    *(f32*)(p + 0x258) = 0.0f;
 }
 
 extern "C" int fn_801E90BC(void) { return 0; }
