@@ -150,10 +150,15 @@ extern "C" void fn_801AF05C(char* this_) {
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23c) = 0;
-    if (fn_80138A30(lbl_8053AAF8) <= 1 && (s32)((*(u32*)(this_ + 0x90) >> 8) & 0xf) > 2) {
-        s32 i = 0;
-        u32 arg = lbl_804A33C4[i];
-        u32 id = lbl_804A33B8[i];
+    if (fn_80138A30(lbl_8053AAF8) <= 1) {
+        s32 i = (*(u32*)(this_ + 0x90) >> 8) & 0xf;
+        if (i > 2) {
+            i = 0;
+        }
+        u32 id;
+        u32 arg;
+        arg = lbl_804A33C4[i];
+        id = lbl_804A33B8[i];
         if (Actor_CreateByID(fn_801F856C(), id, *(u32*)(this_ + 4), this_ + 0xc, arg, -1, -1) >= 0) {
             *(u8*)(this_ + 0x11c) = 0;
         }

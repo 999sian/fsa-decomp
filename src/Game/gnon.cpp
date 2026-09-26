@@ -98,10 +98,10 @@ extern "C" void fn_80192BD8(char* this_) {
     case 0x2d:
         if (*(s32*)(this_ + 0x234) == 0) {
             *(u8*)(this_ + 0x11c) = 0;
-            fn_801F2B7C(this_, -100, -1, 1);
         }
         break;
     }
+    fn_801F2B7C(this_, -100, -1, 1);
     for (int i = 0; i < 10; i++) {
         if (((GnonTimers*)this_)->t[i] > 0) {
             ((GnonTimers*)this_)->t[i]--;
