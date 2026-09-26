@@ -11,7 +11,7 @@ extern "C" void fn_8021835C(void* this_);
 extern "C" s32 fn_801CCF7C(void);
 extern "C" void* fn_801F856C();
 extern "C" void fn_801F7AB8(void* base, s32 a, s32 b);
-extern "C" void* GetRoomConfigRecord(void);
+extern "C" void* fn_802D6A9C(void);
 extern f32 lbl_8053F4A4;
 
 extern "C" void fn_801DE714(void* this_) {
@@ -68,7 +68,7 @@ extern "C" void fn_801E2004(void* this_) {
     void* base = fn_801F856C();
     fn_801F7AB8(base, *(s32*)(p + 0x1a0), *(s32*)(p + 0x198));
     s32 kind = *(s32*)(p + 0x4);
-    char* record = (char*)GetRoomConfigRecord();
+    char* record = (char*)fn_802D6A9C();
     char* field = (kind < 8) ? (record + 0xcc) : (record + 0xdc);
     *(f32*)(p + 0xc) = *(f32*)field - lbl_8053F4A4;
     f32 v1 = *(f32*)(p + 0x10);

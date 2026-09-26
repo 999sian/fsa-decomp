@@ -26,10 +26,10 @@ void Lcls_EmptyHook(void) {}
 }
 
 // ---- RoomBitfieldNotify_802E8E60.cpp ----
-extern "C" void* GetRoomConfigRecord(void);
+extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D7F40(void*, u32);
 
-// fn_802E8E60 - LCLS: setParams. Calls GetRoomConfigRecord then
+// fn_802E8E60 - LCLS: setParams. Calls fn_802D6A9C then
 // fn_802D7F40 with a bitfield extracted from this->0x90; if the query
 // returns true, notifies via own virtual slot 12 (byte offset 0x30)
 // with args (0xff, 1). See
@@ -50,7 +50,7 @@ struct ActorSlot12 {
 };
 
 extern "C" void fn_802E8E60(void* this_) {
-    void* configRecord = GetRoomConfigRecord();
+    void* configRecord = fn_802D6A9C();
     u32 field = (*(u32*)((char*)this_ + 0x90) >> 22) & 0x1F;
     if ((u8)fn_802D7F40(configRecord, field) != 0) {
         ((ActorSlot12*)this_)->slot12(0xff, 1);
