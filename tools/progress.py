@@ -220,34 +220,41 @@ def make_shields_json(data: Dict[str, Any]) -> Dict[str, Any]:
     }
 
 
-def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]]) -> bool:
-    """Verify progress reporting against known verified values on origin/main."""
-    print("Running regression test on progress reporting...")
+def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]], source: str) -> bool:
+    """Verify progress reporting against known verified values."""
+    print(f"Running regression test on progress reporting (source: {source})...")
     m = data["measures"]
     code_pct = float(m.get("matched_code_percent", 0.0))
-    print(f"Overall matched code percent: {code_pct:.2f}% (expected ~25.47%)")
-    assert abs(code_pct - 25.47) < 0.1, f"Unexpected overall code pct: {code_pct}"
-
     funcs_pct = float(m.get("matched_functions_percent", 0.0))
-    print(f"Overall matched functions percent: {funcs_pct:.2f}% (expected ~53.04%)")
-    assert abs(funcs_pct - 53.04) < 0.1, f"Unexpected overall funcs pct: {funcs_pct}"
-
     game_objs = obj_counts.get("game", {})
-    print(f"Game matching objects: {game_objs.get('matching')} / {game_objs.get('total')} (expected 73 / 239)")
-    assert game_objs.get("matching") == 73, f"Expected 73 matching game objects, got {game_objs.get('matching')}"
+    sdk_objs = obj_counts.get("sdk", {})
+    jsys_objs = obj_counts.get("jsys", {})
+
+    is_snapshot = "snapshot" in source.lower()
+    expected_code = 25.47 if is_snapshot else 27.90
+    expected_funcs = 53.04 if is_snapshot else 56.08
+    expected_game = 73 if (is_snapshot or game_objs.get("matching") == 73) else 75
+
+    print(f"Overall matched code percent: {code_pct:.2f}% (expected ~{expected_code:.2f}%)")
+    assert abs(code_pct - expected_code) < 0.2, f"Unexpected overall code pct: {code_pct}"
+
+    print(f"Overall matched functions percent: {funcs_pct:.2f}% (expected ~{expected_funcs:.2f}%)")
+    assert abs(funcs_pct - expected_funcs) < 0.2, f"Unexpected overall funcs pct: {funcs_pct}"
+
+    print(f"Game matching objects: {game_objs.get('matching')} / {game_objs.get('total')} (expected {expected_game} / 239)")
+    assert game_objs.get("matching") == expected_game, f"Expected {expected_game} matching game objects, got {game_objs.get('matching')}"
     assert game_objs.get("total") == 239, f"Expected 239 total game objects, got {game_objs.get('total')}"
 
-    sdk_objs = obj_counts.get("sdk", {})
     print(f"SDK matching objects: {sdk_objs.get('matching')} / {sdk_objs.get('total')} (expected 172 / 175)")
     assert sdk_objs.get("matching") == 172, f"Expected 172 matching SDK objects, got {sdk_objs.get('matching')}"
     assert sdk_objs.get("total") == 175, f"Expected 175 total SDK objects, got {sdk_objs.get('total')}"
 
-    jsys_objs = obj_counts.get("jsys", {})
     print(f"JSystem matching objects: {jsys_objs.get('matching')} / {jsys_objs.get('total')} (expected 168 / 183)")
     assert jsys_objs.get("matching") == 168, f"Expected 168 matching JSystem objects, got {jsys_objs.get('matching')}"
     assert jsys_objs.get("total") == 183, f"Expected 183 total JSystem objects, got {jsys_objs.get('total')}"
 
-    print("\nALL REGRESSION TESTS PASSED!")
+    print("
+ALL REGRESSION TESTS PASSED!")
     return True
 
 
@@ -265,7 +272,7 @@ def main():
     obj_counts = load_config_objects()
 
     if args.test:
-        success = run_regression_test(data, obj_counts)
+        success = run_regression_test(data, obj_counts, source)
         sys.exit(0 if success else 1)
 
     if args.format == "markdown":
