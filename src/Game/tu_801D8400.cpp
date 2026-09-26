@@ -372,4 +372,105 @@ extern "C" void fn_801D85B0(char* p) {
     }
 }
 
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" void fn_801CCCC4(JGeometry::TVec2<f32>* v);
+extern "C" void fn_801DA9E8(void* p, s32 a, s32 b);
+extern "C" void fn_801E63D8(void* this_);
+extern "C" void fn_801DAF44(s32* mgr, u32 id);
+extern const f32 lbl_8053F1E4;
+extern const f32 lbl_8053F1E8;
+extern const f32 lbl_8053F1F4;
+extern const f32 lbl_8053F1F8;
+extern const f32 lbl_8053F228;
+extern const f32 lbl_8053F22C;
+extern const f32 lbl_8053F230;
+
+struct T84Slot19 {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual u8 v17(u32 room, JGeometry::TVec3<f32>* pos);
+};
+
+inline void t84Row(char* p, s32 n, f32 x, f32 y) {
+    for (s32 j = 0; j < 4; j++) {
+        ((JGeometry::TVec2<f32>*)(p + 0x2d4))[n + j].set(x, y);
+        x += lbl_8053F1F4;
+    }
+}
+struct T84 { u8 pad[0x2d4]; JGeometry::TVec2<f32> mTbl[12]; };
+
+extern "C" void fn_801DA124(char* p) {
+    fn_801D0ED0(p);
+    *(f32*)(p + 0x60) = lbl_8053F1D8;
+    *(f32*)(p + 0x64) = lbl_8053F1D8;
+    *(f32*)(p + 0x68) = lbl_8053F1DC;
+    *(f32*)(p + 0x6c) = lbl_8053F1DC;
+    *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+    *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+    *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+    *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+    *(f32*)(p + 0x80) = lbl_8053F1D8;
+    *(f32*)(p + 0x84) = lbl_8053F1D8;
+    *(f32*)(p + 0x88) = lbl_8053F1DC;
+    *(f32*)(p + 0x8c) = lbl_8053F1DC;
+    *(s32*)(p + 0xb0) = 0x40004;
+    *(s32*)(p + 0x98) = 2;
+    *(u32*)(p + 0x230) |= 0x2a0;
+    *(s32*)(p + 0x108) = 0x8c;
+    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
+    *(s32*)(p + 0x114) = 0;
+    *(u8*)(p + 0x196) = 1;
+    s32 room = *(s32*)(p + 4);
+    char* game = (char*)fn_802D6A9C();
+    char* area;
+    if (room < 8) {
+        area = game + 0xcc;
+    } else {
+        area = game + 0xdc;
+    }
+    JGeometry::TVec2<f32> v(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+    while (v.y < *(f32*)(area + 0xc)) {
+        JGeometry::TVec3<f32> pos(v.x, v.y, lbl_8053F1CC);
+        if (((T84Slot19*)p)->v17(*(u32*)(p + 4), &pos)) {
+            fn_801CCCC4(&v);
+            v.y += lbl_8053F228;
+            break;
+        }
+        v.y += lbl_8053F1F8;
+    }
+    *(f32*)(p + 0x2d0) = v.y;
+    f32 x0 = *(f32*)(p + 0x24) - lbl_8053F22C;
+    f32 y = lbl_8053F1E4 + *(f32*)(p + 0x28);
+    f32 dy = lbl_8053F1E8 * ((*(f32*)(p + 0x2d0) - lbl_8053F230) - y);
+    t84Row(p, 0, x0, y);
+    y += dy;
+    t84Row(p, 4, x0, y);
+    y += dy;
+    t84Row(p, 8, x0, y);
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = -1;
+    *(f32*)(p + 0x254) = lbl_8053F1CC;
+    *(f32*)(p + 0x258) = lbl_8053F1CC;
+    fn_801DA9E8(p + 0x2a8, 0, 2);
+    fn_801E63D8(p);
+    fn_801DAF44(fn_801DAC6C(), *(u32*)(p + 0x198));
+    fn_802D7440(fn_802D6A9C(), 0);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
