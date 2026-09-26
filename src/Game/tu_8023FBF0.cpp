@@ -5,6 +5,7 @@
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define U16(p, o) (*(u16*)((char*)(p) + (o)))
+#define S16(p, o) (*(s16*)((char*)(p) + (o)))
 #define S32(p, o) (*(s32*)((char*)(p) + (o)))
 #define F32(p, o) (*(f32*)((char*)(p) + (o)))
 #define PTR(p, o) (*(void**)((char*)(p) + (o)))
@@ -833,6 +834,77 @@ void fn_80248604(char* p) {
         return;
     }
     resetTrail(p);
+}
+inline s32 countSharing2(char* p) {
+    s32 me;
+    s32 c;
+    s32 i;
+    s32 linked;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getMode2(char* p) {
+    if (countSharing2(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline s32 linkRank2(char* p) {
+    s32 l;
+    s32 c;
+    s32 i;
+    if (S32(p, 0xd60) < 0) {
+        return 0;
+    }
+    c = 0;
+    for (i = 0; i < S32(p, 0x4); i++) {
+        l = S32(p, 0xd60);
+        if (l == fn_8022F3DC(i)) {
+            c++;
+        }
+    }
+    return c + 1;
+}
+BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
+    if (S32(p, 0x1240) != 0) {
+        return 0;
+    }
+    if (anim == 0xe8 && getMode2(p) == 4) {
+        s32 v = linkIdx(p);
+        if (v != linkRank2(p)) {
+            S16(p, 0x450) = 0x1c5;
+            goto done;
+        }
+    }
+    if (anim >= 0) {
+        S16(p, 0x450) = anim;
+    }
+done:
+    U8(p, 0xca2) = flag;
+    U8(p, 0x456) = 1;
+    return 1;
 }
 s32 fn_802486A0(char* p) {
     if (countSharing(p) <= 1) {
