@@ -2365,6 +2365,8 @@ game/slef.cpp:
 	extabindex  start:0x80017D04 end:0x80017D40
 	.text       start:0x80213E00 end:0x80214244
 	.ctors      start:0x8045C130 end:0x8045C134
+	.bss        start:0x804CD038 end:0x804CD0A4
+	.sdata2     start:0x8053FB80 end:0x8053FB90
 
 game/tu_80214244.cpp:
 	extab       start:0x8000A150 end:0x8000A160
