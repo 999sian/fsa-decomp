@@ -100,6 +100,71 @@ extern "C" void fn_801E6F80(void* this_) {
     }
 }
 
+extern "C" void fn_801E9C00(s32 a, f32* out);
+extern "C" s32 fn_801E9B58(void* this_);
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F82CC(void* mgr, void* actor, u8 a, f32 r);
+extern "C" char* fn_801F666C(void* mgr, s32 id);
+extern "C" s32 fn_802BA9F8(char* actor, u32 id);
+extern "C" void fn_801CB538(s32 a, void* pos, s32 b, s32 c);
+extern "C" u8 fn_801EAC54(void* p, s32 id);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 a);
+
+extern "C" s32 fn_801E6FAC(char* p) {
+    s32 id;
+    s32 hit = -1;
+    if (*(s32*)(p + 0x248) == 0 && *(s32*)(p + 0x2ac) == -1) {
+        f32 x0 = *(f32*)(p + 0x60);
+        f32 y0 = *(f32*)(p + 0x64);
+        f32 x1 = *(f32*)(p + 0x68);
+        f32 y1 = *(f32*)(p + 0x6c);
+        f32 cx = fn_80210B34(*(void**)(p + 0x98));
+        f32 cy = fn_80210AF8(*(void**)(p + 0x98));
+        f32 r = 6.0f;
+        *(f32*)(p + 0x60) = cx - r;
+        *(f32*)(p + 0x64) = cy - r;
+        *(f32*)(p + 0x68) = cx + r;
+        *(f32*)(p + 0x6c) = cy + r;
+        f32 off[2];
+        fn_801E9C00(*(s16*)(p + 0x2b0), off);
+        *(f32*)(p + 0x60) += off[0];
+        *(f32*)(p + 0x64) += off[1];
+        *(f32*)(p + 0x68) += off[0];
+        *(f32*)(p + 0x6c) += off[1];
+        hit = fn_801E9B58(p);
+        if (hit >= 0) {
+            fn_801E728C(p, 1);
+        }
+        *(f32*)(p + 0x60) = x0;
+        *(f32*)(p + 0x64) = y0;
+        *(f32*)(p + 0x68) = x1;
+        *(f32*)(p + 0x6c) = y1;
+    }
+    if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > 0.0f && *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > 0.0f) {
+        id = fn_801F82CC(fn_801F856C(), p, *(u8*)(p + 0x195), 32.0f);
+        if (id >= 0 && id != *(s32*)(p + 0x198) && id != hit) {
+            char* other = fn_801F666C(fn_801F856C(), id);
+            if (other != 0) {
+                if (*(u32*)(other + 0x1a0) == 'FIRE' && fn_802BA9F8(other, *(u32*)(other + 0x1a0)) == 1) {
+                    if (*(s32*)(p + 0x248) == 0) {
+                        fn_801E728C(p, 2);
+                    }
+                } else if (*(u32*)(other + 0x1a0) == 'SWBM') {
+                    fn_801CB538(*(s32*)(p + 0x4), other + 0xc, 0, 0);
+                } else if (fn_801EAC54(p + 0x1dc, *(s32*)(other + 0x198))) {
+                    switch (*(u32*)(other + 0x1a0)) {
+                    case 'FIRE':
+                        fn_801F0E34(p, 0x3002e, 0);
+                        break;
+                    }
+                }
+                other[0x164] = 1;
+            }
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_801E722C(char* p) {
     switch (*(s32*)(p + 0x248)) {
     case 1:
