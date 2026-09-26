@@ -1,6 +1,7 @@
 // Game TU 801B9730-801BA65C (MIRA). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "Game/ItemBase.h"
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -34,6 +35,98 @@ extern "C" void* fn_801BA3FC(void* this_) {
     fn_801D0F40(this_);
     *(void**)this_ = lbl_804A3BF8;
     return this_;
+}
+
+extern "C" void fn_801CE2BC(void* this_, void* arg);
+extern "C" void fn_801CE32C(void* this_);
+
+static inline bool mira_canAct(char* p) {
+    return *(s32*)(p + 0x248) == 3 ||
+           (*(s32*)(p + 0x108) > 0 && ((*(u32*)(p + 0x230) & 7) == 0 || *(s32*)(p + 0xfc) != 5));
+}
+
+extern "C" void fn_801B9900(void* this_, void* arg) {
+    if (mira_canAct((char*)this_)) {
+        fn_801CE2BC(this_, arg);
+    }
+}
+
+extern "C" void fn_801B9960(void* this_) {
+    if (mira_canAct((char*)this_)) {
+        fn_801CE32C(this_);
+    }
+}
+
+struct MiraRGB { u8 r, g, b, a; };
+extern "C" void v07__5ActorFv(void* this_);
+extern "C" void* fn_8013CC50(u32 id, f32* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
+extern "C" void fn_801B9DD4(void* this_, s32 state);
+extern f32 lbl_8053EB70;
+extern char* lbl_8053AB10;
+
+extern "C" void fn_801B99C0(void* this_) {
+    char* p = (char*)this_;
+    if (*(u32*)(p + 0x230) & 0x4000) {
+        v07__5ActorFv(this_);
+        char* e = (char*)fn_8013CC50(*(u32*)(p + 0x4), (f32*)(p + 0xc), 0x32b, 1, 1, 0, 0, 1, lbl_8053EB70);
+        if (e != 0) {
+            MiraRGB c = *(MiraRGB*)(*(char**)(lbl_8053AB10 + 0x2c) + 4);
+            e[0xb8] = c.r;
+            e[0xb9] = c.g;
+            e[0xba] = c.b;
+        }
+    } else {
+        fn_801B9DD4(this_, 3);
+    }
+}
+
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" void fn_801D2608(void* obj, void* tbl, u32 n);
+extern "C" void fn_801D22DC(void* obj, u32 a, u32 b, u32 c);
+extern "C" void fn_801D1D60(void* obj);
+extern u8 lbl_804A3BB8[];
+extern const f32 lbl_8053EB7C;
+extern const f32 lbl_8053EB94;
+extern const f32 lbl_8053EB98;
+extern const f32 lbl_8053EB9C;
+extern const f32 lbl_8053EBA0;
+extern const f32 lbl_8053EBA4;
+
+extern "C" void fn_801BA320(void* this_) {
+    char* p = (char*)this_;
+    fn_801D0ED0(this_);
+    if (*(u32*)(p + 0x90) == 1) {
+        *(u32*)(p + 0x230) |= 0x4000;
+    }
+    *(f32*)(p + 0x60) = lbl_8053EB94;
+    *(f32*)(p + 0x64) = lbl_8053EB98;
+    *(f32*)(p + 0x68) = lbl_8053EB9C;
+    *(f32*)(p + 0x6c) = lbl_8053EB9C;
+    *(f32*)(p + 0x80) = lbl_8053EBA0;
+    *(f32*)(p + 0x84) = lbl_8053EBA0;
+    *(f32*)(p + 0x88) = lbl_8053EBA4;
+    *(f32*)(p + 0x8c) = lbl_8053EBA4;
+    *(u32*)(p + 0x230) |= 0x80;
+    *(u32*)(p + 0x248) = 0;
+    *(u32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = fn_801CD664(0x3d) + 0x3c;
+    *(f32*)(p + 0x254) = lbl_8053EB7C;
+    *(f32*)(p + 0x258) = lbl_8053EB7C;
+    fn_801D2608(p + 0x270, lbl_804A3BB8, 0x10);
+    fn_801D22DC(p + 0x270, *(u32*)(p + 0x98), 2, 0);
+    fn_801D1D60(p + 0x270);
+}
+
+extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern u8 lbl_80469300[];
+
+extern "C" void fn_801B97C0(char* this_) {
+    DrawRec rec;
+    if (*(u32*)(this_ + 0x230) & 0x4000) {
+        rec.ids[3] = 6;
+    }
+    fn_801F06F0(this_, lbl_80469300, *(s32*)(this_ + 0x280) + 0xc1, &rec, 7, lbl_8053EB70, lbl_8053EB70);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
