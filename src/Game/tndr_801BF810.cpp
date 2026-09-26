@@ -2,6 +2,7 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 #include "float.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -148,7 +149,7 @@ extern "C" s32 fn_801BFA50(char* this_) {
     s32 r = 0;
     if (!(*(u32*)(this_ + 0x230) & 0x4000)) {
         s32 id = *(s32*)(this_ + 0x4);
-        u8* g = fn_802D6A9C()->arr; if (g[id] == 0 && *(f32*)(this_ + 0x14) > lbl_8053ED38) {
+        TndrG* g = fn_802D6A9C(); if (g->arr[id] == 0 && *(f32*)(this_ + 0x14) > lbl_8053ED38) {
             r = fn_801CEA60(this_);
         } else {
             r = fn_801CE9F8(this_);
@@ -347,6 +348,50 @@ extern "C" void fn_801BFD08(char* this_) {
     default:
         break;
     }
+}
+
+extern "C" void fn_801F317C(void* this_, void* out);
+extern "C" s32 fn_8023AC74(void* a, u32 id, void* out);
+extern "C" s32 fn_8023AD54(void* a, u32 id, void* out);
+extern "C" u8 fn_801CC538(s32 id, void* a, void* pos, s32* out);
+extern "C" void fn_801CC640(s32 id, s32* a, void* pos);
+extern "C" s32 fn_801F37AC(void* this_, s32 kind, void* pos, s32 a, s32 b, s32 id);
+
+extern "C" s32 fn_801BFAD0(char* this_) {
+    if ((*(u32*)(this_ + 0x230) & 0x4000) ||
+        *(f32*)(this_ + 0x78) - *(f32*)(this_ + 0x70) <= lbl_8053ED34 ||
+        *(f32*)(this_ + 0x7c) - *(f32*)(this_ + 0x74) <= lbl_8053ED34) {
+        return 0;
+    }
+    s32 n8 = -1;
+    Vec v54;
+    JGeometry::TVec3<f32> v48;
+    u8 buf38[16];
+    u8 buf0c[8];
+    s32 id;
+    u8 hit = 0;
+    v48.x = lbl_8053ED34;
+    v48.y = lbl_8053ED34;
+    v48.z = lbl_8053ED34;
+    fn_801F317C(this_, buf38);
+    id = fn_8023AC74(buf38, *(u32*)(this_ + 0x4), buf0c);
+    if (id >= 0) {
+        hit = fn_801CC538(id, buf0c, &v54, &n8);
+    } else {
+        id = fn_8023AD54(buf38, *(u32*)(this_ + 0x4), buf0c);
+        if (id >= 0) {
+            fn_801CC640(id, &n8, &v48);
+        }
+    }
+    s32 r = 0;
+    if (id >= 0) {
+        JGeometry::TVec3<f32> dir(*(JGeometry::TVec3<f32>*)(this_ + 0xc) - v48);
+        if (hit) {
+            dir.set(v54.x, v54.y, v54.z);
+        }
+        r = fn_801F37AC(this_, 4, &dir, 0, 0, id);
+    }
+    return r;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
