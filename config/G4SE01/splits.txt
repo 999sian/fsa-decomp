@@ -2855,6 +2855,20 @@ game/rsnp.cpp:
 	.bss        start:0x8050B4F8 end:0x8050B564
 	.sdata2     start:0x80542788 end:0x80542790
 
+game/rins.cpp:
+	extab       start:0x8000E374 end:0x8000E394
+	extabindex  start:0x8001DD94 end:0x8001DDC4
+	.text       start:0x803578D8 end:0x80357DE8
+	.ctors      start:0x8045C498 end:0x8045C49C
+	.bss        start:0x8050B7F8 end:0x8050B864
+
+game/lfgn.cpp:
+	extab       start:0x8000E7B4 end:0x8000E7D4
+	extabindex  start:0x8001E3A0 end:0x8001E3D0
+	.text       start:0x8036D7F8 end:0x8036DD6C
+	.ctors      start:0x8045C4C8 end:0x8045C4CC
+	.bss        start:0x8050C500 end:0x8050C56C
+
 game/ssmi.cpp:
 	extab       start:0x8000E9AC end:0x8000E9CC
 	extabindex  start:0x8001E694 end:0x8001E6C4
@@ -3071,6 +3085,13 @@ game/tu_80455930.cpp:
 	.data       start:0x804B1DF0 end:0x804B1E28
 	.bss        start:0x8052D900 end:0x8052D96C
 	.sdata2     start:0x80543E60 end:0x80543E68
+
+game/tu_8045ba84.cpp:
+	extab       start:0x80011844 end:0x80011854
+	extabindex  start:0x800217FC end:0x80021814
+	.text       start:0x8045BA84 end:0x8045BCE4
+	.ctors      start:0x8045C628 end:0x8045C62C
+	.bss        start:0x8052E088 end:0x8052E0F4
 
 Runtime.PPCEABI.H/__mem.c:
 	.init       start:0x8000540C end:0x80005544
