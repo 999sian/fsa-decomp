@@ -22,6 +22,10 @@ struct PlayerMgr {
 extern "C" PlayerMgr* lbl_8053AC90;
 extern "C" const f32 lbl_80540008;
 extern "C" char* fn_802D6A9C();
+extern "C" u8 fn_8023F264(int idx);
+extern "C" u8 Player_GetCapabilityFlag(Player* p);
+extern "C" int fn_80247B9C(Player*);
+extern "C" int fn_80247BD4(Player*);
 extern "C" void fn_8045815C(void*, int);
 extern "C" void* lbl_8053AF80;
 static JGeometry::TVec3<f32> lbl_804CF460(lbl_80540008, lbl_80540008, lbl_80540008);
@@ -1220,6 +1224,90 @@ int fn_8023BE0C(int idx) {
 }
 
 int fn_80247C0C(Player*);
+// The retail body is a self-recursive "follow the link chain" helper that
+// MWCC inlined three levels deep; the deeper levels call the out-of-line
+// copies (Player_GetCapabilityFlag, fn_8023F264, fn_8022F514/fn_8022F3DC).
+// Written out here level by level.
+extern "C" u8 fn_8022F514(int idx);
+extern "C" int fn_8022F3DC(int idx);
+int fn_80247B9C(Player*);
+static inline u8 isEnabled2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (i < 0) return 0;
+    if (i >= 4) return 0;
+    if (lbl_8053AC90->players[i] == NULL) return 0;
+    return Player_GetCapabilityFlag(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isEnabled2(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget2(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isEnabled2(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked3(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!fn_8023F264(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget3(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!fn_8023F264(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+int fn_8023BEA8(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (pIsLinked(idx)) {
+        idx = pLinkTarget(idx);
+        if (lbl_8053AC90 == NULL) return 0;
+        if (!isPlayerEnabled(idx)) return 0;
+        if (isLinked2(idx)) {
+            idx = linkTarget2(idx);
+            if (lbl_8053AC90 == NULL) return 0;
+            if (!isEnabled2(idx)) return 0;
+            if (isLinked3(idx)) {
+                idx = linkTarget3(idx);
+                if (lbl_8053AC90 == NULL) return 0;
+                if (!fn_8023F264(idx)) return 0;
+                if (fn_8022F514(idx)) return fn_8023BEA8(fn_8022F3DC(idx));
+                return fn_80247B9C(lbl_8053AC90->players[idx]);
+            }
+            return fn_80247B9C(lbl_8053AC90->players[idx]);
+        }
+        return fn_80247B9C(lbl_8053AC90->players[idx]);
+    }
+    return fn_80247B9C(lbl_8053AC90->players[idx]);
+}
+
+int fn_8023C36C(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (pIsLinked(idx)) {
+        idx = pLinkTarget(idx);
+        if (lbl_8053AC90 == NULL) return 0;
+        if (!isPlayerEnabled(idx)) return 0;
+        if (isLinked2(idx)) {
+            idx = linkTarget2(idx);
+            if (lbl_8053AC90 == NULL) return 0;
+            if (!isEnabled2(idx)) return 0;
+            if (isLinked3(idx)) {
+                idx = linkTarget3(idx);
+                if (lbl_8053AC90 == NULL) return 0;
+                if (!fn_8023F264(idx)) return 0;
+                if (fn_8022F514(idx)) return fn_8023C36C(fn_8022F3DC(idx));
+                return fn_80247BD4(lbl_8053AC90->players[idx]);
+            }
+            return fn_80247BD4(lbl_8053AC90->players[idx]);
+        }
+        return fn_80247BD4(lbl_8053AC90->players[idx]);
+    }
+    return fn_80247BD4(lbl_8053AC90->players[idx]);
+}
+
 int fn_8023C830(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
