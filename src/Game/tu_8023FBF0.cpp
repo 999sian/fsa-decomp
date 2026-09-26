@@ -1676,7 +1676,8 @@ void fn_80252F80(char* p, const JGeometry::TVec3<f32>& pos, s32 a, s32 b, u8 c) 
     U8(p, 0xd04) = c;
 }
 void EmptyHook_80252FBC(void) {}
-void fn_80254660(char* p) {
+struct PlayerKills { u8 pad[0xc1c]; s32 m[13]; };
+inline void initItemState(char* p) {
     S32(p, 0xc10) = S32(fn_802D6A9C(), 0x48);
     S32(p, 0xc14) = S32(fn_802D6A9C(), 0x4c);
     S32(p, 0xc18) = 1;
@@ -1700,6 +1701,34 @@ void fn_80254660(char* p) {
     S32(p, 0xc0c) = 0x180;
     S32(p, 0xbfc) = S32(p, 0xbf8) - 4;
 }
+void fn_802544B0(char* p) {
+    initItemState(p);
+    if (U8(lbl_8053AAF8, 0x7f) != 0) {
+        if (S32(p, 0xd60) >= 0) {
+            S32(p, 0xc04) = 0;
+        } else {
+            S32(p, 0xc04) = 0;
+        }
+    } else {
+        S32(p, 0xc04) = 0;
+    }
+    for (int i = 0; i < 13; i++) {
+        ((PlayerKills*)p)->m[i] = 0;
+    }
+    S32(p, 0xc50) = 0;
+    S32(p, 0xc54) = 0;
+    S32(p, 0xc58) = 0;
+    S32(p, 0xc5c) = 0;
+    S32(p, 0xc60) = 0;
+    S32(p, 0xc64) = 0;
+    S32(p, 0xc68) = 0;
+    S32(p, 0xc6c) = 0;
+    S32(p, 0xc70) = 0;
+    S32(p, 0xc74) = 0;
+    S32(p, 0xc78) = 0;
+    S32(p, 0xc7c) = 0;
+}
+void fn_80254660(char* p) { initItemState(p); }
 } // extern "C"
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
