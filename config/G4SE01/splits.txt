@@ -2492,6 +2492,8 @@ Game/tu_80212AC0.cpp:
 	extabindex  start:0x80017C5C end:0x80017C74
 	.text       start:0x80212AC0 end:0x80212E3C
 	.ctors      start:0x8045C128 end:0x8045C12C
+	.bss        start:0x804CCDB8 end:0x804CCEA8
+	.sbss       start:0x8053AC70 end:0x8053AC78
 
 Game/arij.cpp:
 	extab       start:0x8000A0C8 end:0x8000A128
