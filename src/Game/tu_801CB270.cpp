@@ -362,4 +362,58 @@ extern "C" f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t) {
     return p3 * b3 + (p2 * b2 + (p0 * b0 + p1 * b1));
 }
 
+extern "C" void fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+
+struct EffOwner {
+    void fn_801CB4A4(void* pos, s32 c, s32 d);
+    void fn_801CB538(void* pos, s32 c, s32 d);
+    void fn_801CB5CC(void* pos, s32 c, s32 d);
+    void fn_801CB688(void* pos, s32 c, s32 d);
+};
+
+extern "C" s16 fn_801CB7CC(s16 angle) {
+    u16 x = angle;
+    if (x <= 0x4000) {
+        u16 t = 0x4000 - x;
+        return t + 0x4000;
+    }
+    if (x >= 0x4000 && x <= 0x8000) {
+        u16 t = x - 0x4000;
+        return 0x4000 - t;
+    }
+    if (x >= 0x8000 && x <= 0xc000) {
+        u16 t = 0xc000 - x;
+        return t + 0xc000;
+    }
+    u16 t = x - 0xc000;
+    return 0xc000 - t;
+}
+
+extern "C" s32 fn_801CC29C(const f32* a, const f32* b, f32* out) {
+    s32 result = 0;
+    out[0] = lbl_8053EF7C;
+    out[1] = lbl_8053EF7C;
+    f32 d = a[0] - b[0];
+    if (d > lbl_8053EF7C) {
+        out[0] += d;
+        result = 1;
+    }
+    d = b[2] - a[2];
+    if (d > lbl_8053EF7C) {
+        out[0] -= d;
+        result = 1;
+    }
+    d = a[1] - b[1];
+    if (d > lbl_8053EF7C) {
+        out[1] += d;
+        result = 1;
+    }
+    d = b[3] - a[3];
+    if (d > lbl_8053EF7C) {
+        out[1] -= d;
+        result = 1;
+    }
+    return result;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
