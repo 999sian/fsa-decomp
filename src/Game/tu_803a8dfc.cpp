@@ -214,7 +214,9 @@ struct Menu_Join {
     FVec3 icons[4];             // 0x2f0
     u8 pad320[0x3c0 - 0x320];
     s32 state[4];               // 0x3c0
-    u8 pad3d0[0x4ac - 0x3d0];
+    u8 pad3d0[0x440 - 0x3d0];
+    s32 timer;                  // 0x440
+    u8 pad444[0x4ac - 0x444];
     u8 ids[4];                  // 0x4ac
     u8 pad4b0[0x4c1 - 0x4b0];
     u8 m4c1;
@@ -550,6 +552,33 @@ extern "C" void fn_803AEC78(Menu_Slide* p) {
         if (p->timer == 0x80) {
             { f32 x = PANE(0x90)->getBounds()->i.x; PANE(0x90)->move(x, PY(0x3fc)); }
             fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
+
+extern "C" void fn_803AEF08(Menu_Join* p) {
+    BOOL done = FALSE;
+    if (p->m4c8 != 0xff) {
+        s32 lim = lbl_804AF8CC[p->m4c4];
+        if (lim != -1) {
+            if (p->m4c6 >= lim) {
+                p->m4c4++;
+            }
+            p->m4c6++;
+        }
+        if (updateJoin(p)) {
+            done = TRUE;
+        }
+        if (done) {
+            p->m4c8 = 0xff;
+            p->m4c1 = 0xf;
+        }
+    } else {
+        p->timer--;
+        if (p->timer == 0) {
+            fn_80458880(lbl_8053AF80, 0x2d, -1);
+            p->timer = 0x96;
+            p->m4c1 = 0xf;
         }
     }
 }
