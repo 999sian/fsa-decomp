@@ -87,6 +87,37 @@ inline bool changeState(char* p, s32 st, u8 flag) {
     return true;
 }
 
+extern "C" bool fn_8022F514(s32);
+extern "C" s32 fn_8022F3DC(s32);
+
+inline s32 countSharing(char* p) {
+    s32 linked;
+    s32 c;
+    s32 i;
+    s32 me;
+    c = 0;
+    me = S32(p, 0x4);
+    for (i = 0; i < 4; i++) {
+        if (i == me) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -104,6 +135,7 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+s32 fn_8022CAF8(s32);
 bool fn_8025F500(char*);
 void* fn_801F856C(void);
 s32 fn_801F78F4(void*, u32, s32);
@@ -573,6 +605,16 @@ void fn_80248604(char* p) {
         return;
     }
     resetTrail(p);
+}
+s32 fn_802486A0(char* p) {
+    if (countSharing(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
 }
 s32 fn_80248778(char* p) {
     s32 n;
