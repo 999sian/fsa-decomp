@@ -1,6 +1,7 @@
 // TU 0x8020db74-0x8020f798 (actor FLOR).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- fn_8020F474_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
@@ -335,6 +336,89 @@ extern "C" u8 fn_8020E030(char* this_) {
     }
     }
     return r;
+}
+
+struct FlorResMgr {
+    virtual void v00(); virtual void v01(); virtual void v02();
+    virtual void v03();
+    virtual void* getRes(u32 type, const char* name);
+};
+extern char* lbl_8053AAF8;
+extern char lbl_8046A430[];
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, void* data, f32 a, f32 b);
+
+extern "C" void fn_8020DB74(char* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 1:
+    case 10:
+        break;
+    default: {
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
+    if (*(s32*)(this_ + 0x248) == 4 && *(s32*)(this_ + 0x24c) >= 60) {
+        if (*(s32*)(this_ + 0x24c) % 4 < 2) {
+            pos.x += lbl_8053FA28;
+        } else {
+            pos.x -= lbl_8053FA28;
+        }
+    }
+    u8 buf[0x3c];
+    f32 mtx[3][4];
+
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = -1;
+
+    for (u8 i = 0; i < 16; i++) {
+        buf[i] = i;
+    }
+
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = 0;
+    *(s32*)(buf + 0x18) = 0;
+    buf[0x1c] = 0;
+    buf[0x1d] = 0;
+    buf[0x1e] = 0;
+    buf[0x1f] = 1;
+    buf[0x20] = 1;
+    buf[0x21] = 0;
+    buf[0x22] = 0;
+    buf[0x23] = 0;
+    buf[0x24] = 0;
+    buf[0x25] = 0;
+    buf[0x26] = 1;
+    *(s32*)(buf + 0x28) = 3;
+    buf[0x2c] = 1;
+    buf[0x2d] = 0;
+    buf[0x2e] = 0;
+    *(s32*)(buf + 0x30) = -1;
+    *(s32*)(buf + 0x34) = 0;
+    *(s32*)(buf + 0x38) = 2;
+    buf[0x1c] = 0;
+    buf[0x1d] = 0;
+
+    if (*(u32*)(this_ + 0x230) & 0x8000) {
+        mtx[0][3] = lbl_8053FA2C;
+        mtx[1][3] = lbl_8053FA2C;
+        mtx[2][3] = lbl_8053FA2C;
+        mtx[0][0] = lbl_8053FA30;
+        mtx[0][1] = lbl_8053FA2C;
+        mtx[0][2] = lbl_8053FA2C;
+        mtx[1][0] = lbl_8053FA2C;
+        mtx[1][1] = lbl_8053FA28;
+        mtx[1][2] = lbl_8053FA2C;
+        mtx[2][0] = lbl_8053FA2C;
+        mtx[2][1] = lbl_8053FA2C;
+        mtx[2][2] = lbl_8053FA28;
+        *(void**)(buf + 0x18) = mtx;
+    }
+    s32 id = *(s32*)(this_ + 0x280) + 0x321;
+    if (*(s32*)(this_ + 0x4) < 8) {
+        void* res = ((FlorResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046A430);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, res, id, buf, lbl_8053FA28, lbl_8053FA28);
+    }
+    break;
+    }
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
