@@ -13,8 +13,8 @@ static inline u8 isPlayerEnabled(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (idx < 0) return 0;
     if (idx >= 4) return 0;
+    if (lbl_8053AC90->players[idx] == NULL) return 0;
     Player* p = lbl_8053AC90->players[idx];
-    if (p == NULL) return 0;
     return *(u8*)((char*)p + 0xcac);
 }
 static inline Player* getPlayer(int idx) {
@@ -526,7 +526,7 @@ int fn_80238EDC(int idx) {
 }
 
 int fn_80239558(int a1, int a2, int a3) {
-    if (lbl_8053AC90 == NULL) return -1;
+    if (lbl_8053AC90 == NULL) return 0;
     for (int i = 0; i < 4; i++) {
         if (isPlayerEnabled(i) && fn_80272768(lbl_8053AC90->players[i], a1, a2, a3)) return i;
     }
