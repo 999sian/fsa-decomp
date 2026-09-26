@@ -21,6 +21,8 @@ struct PlayerMgr {
 
 extern "C" PlayerMgr* lbl_8053AC90;
 extern "C" const f32 lbl_80540008;
+extern "C" void fn_8045815C(void*, int);
+extern "C" void* lbl_8053AF80;
 static JGeometry::TVec3<f32> lbl_804CF460(lbl_80540008, lbl_80540008, lbl_80540008);
 
 static inline u8 isPlayerEnabled(int idx) {
@@ -1484,6 +1486,36 @@ void fn_8023F2BC() {
     }
 }
 
+void fn_80253E6C(Player*);
+void fn_80252FC0(Player*);
+void EmptyHook_80252FBC(Player*);
+extern "C" void fn_80232A0C();
+extern "C" void fn_80231DE4();
+extern "C" void fn_80457DFC(void*, int);
+static inline void updateFloorFlag() {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && !pGet670(i) && get3B4(i) < 8) {
+            fn_80457DFC(lbl_8053AF80, 0);
+            return;
+        }
+    }
+    fn_80457DFC(lbl_8053AF80, 1);
+}
+void fn_8023F390() {
+    for (int i = 0; i < 4; i++) fn_80253E6C(getPlayer(i));
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x94) == 1) return;
+    for (int i = 0; i < 4; i++) fn_80252FC0(getPlayer(i));
+    for (int i = 0; i < 4; i++) {
+        *((u8*)getPlayer(i) + 0x434) = 0;
+        *((u8*)getPlayer(i) + 0x435) = 0;
+    }
+    fn_80232A0C();
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f)) fn_80231DE4();
+    for (int i = 0; i < 4; i++) EmptyHook_80252FBC(getPlayer(i));
+    if (lbl_8053AC90 == NULL) return;
+    updateFloorFlag();
+}
+
 void fn_8023F6C4() {
     for (int i = 0; i < 4; i++) fn_80254660(getPlayer(i));
 }
@@ -1500,8 +1532,6 @@ void fn_8023F78C() {
     lbl_8053A190 = -1;
 }
 
-extern "C" void fn_8045815C(void*, int);
-extern "C" void* lbl_8053AF80;
 
 PlayerMgr::~PlayerMgr() {
     fn_8045815C(lbl_8053AF80, 0);
