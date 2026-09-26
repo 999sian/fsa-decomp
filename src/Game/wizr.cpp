@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801769D8-80179150 (WIZR). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "Game/ItemBase.h"
 
 // from src/Game/fn_80178D24.cpp
 extern "C" void* fn_801F856C();
@@ -73,5 +74,28 @@ extern "C" void fn_80178EE4(char* this_, const f32* src) {
 }
 extern "C" void fn_80178F00(f32* v, f32 x, f32 y, f32 z) { v[0] = x; v[1] = y; v[2] = z; }
 extern "C" void fn_80178F10(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
+
+extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern u8 lbl_80466854[];
+extern const f32 lbl_8053DBB0;
+
+extern "C" void fn_801769D8(char* p) {
+    u16 kind = *(u16*)(p + 0x94);
+    if (kind == 0x14 || (u16)(kind - 0x15) <= 2 || kind == 0x1e || kind == 0x1f) {
+        return;
+    }
+    if (*(s32*)(p + 0x230) != 1 && *(s32*)(p + 0x230) != 0) {
+        DrawRec rec;
+        kind = *(u16*)(p + 0x94);
+        if (kind == 10 || kind == 11) {
+            return;
+        }
+        ((u8*)&rec.w10)[3] = (s32)*(f32*)(p + 0x2d0);
+        if (*(u8*)(p + 0x234) == 1) {
+            rec.w30 = 0x11;
+        }
+        fn_801F06F0(p, lbl_80466854, *(s32*)(p + 0x260) + 0xe9, &rec, 0, lbl_8053DBB0, lbl_8053DBB0);
+    }
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
