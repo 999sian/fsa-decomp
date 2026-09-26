@@ -2861,6 +2861,7 @@ game/rins.cpp:
 	.text       start:0x803578D8 end:0x80357DE8
 	.ctors      start:0x8045C498 end:0x8045C49C
 	.bss        start:0x8050B7F8 end:0x8050B864
+	.sdata2     start:0x80542820 end:0x80542848
 
 game/lfgn.cpp:
 	extab       start:0x8000E7B4 end:0x8000E7D4
@@ -2868,6 +2869,7 @@ game/lfgn.cpp:
 	.text       start:0x8036D7F8 end:0x8036DD6C
 	.ctors      start:0x8045C4C8 end:0x8045C4CC
 	.bss        start:0x8050C500 end:0x8050C56C
+	.sdata2     start:0x80542D10 end:0x80542D38
 
 game/ssmi.cpp:
 	extab       start:0x8000E9AC end:0x8000E9CC
