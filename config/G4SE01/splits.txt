@@ -2099,6 +2099,7 @@ Game/enbz.cpp:
 	extabindex  start:0x800147D0 end:0x800147F4
 	.text       start:0x801A35AC end:0x801A3C50
 	.ctors      start:0x8045BFD0 end:0x8045BFD4
+	.bss        start:0x804C6540 end:0x804C65AC
 	.sdata2     start:0x8053E5B0 end:0x8053E5C8
 
 Game/tu_801a3c50.cpp:
