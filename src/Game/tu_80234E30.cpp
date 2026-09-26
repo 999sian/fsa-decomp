@@ -46,6 +46,7 @@ extern GameState* lbl_8053AAF8;
 }
 
 extern "C" {
+int fn_8024FF6C(Player*);
 void fn_80252F80(Player*, const JGeometry::TVec3<f32>&, int, int, u8);
 int Fairy_GetSubField_0x290(Player*);
 int Fairy_GetSubField_0x294(Player*);
@@ -434,6 +435,21 @@ int fn_80236E3C(int idx) {
     return 1;
 }
 
+u8 fn_80241514(Player*, int);
+u8 fn_80236ED8(int idx, int a1) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f)) {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && fn_8022E438(idx, i)) {
+                if (!fn_80241514(lbl_8053AC90->players[i], a1)) return 0;
+            }
+        }
+        return 1;
+    }
+    return fn_80241514(lbl_8053AC90->players[idx], a1);
+}
+
 int fn_80237060(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80241544(lbl_8053AC90->players[idx]);
@@ -542,6 +558,18 @@ void fn_80238244(int idx) {
     if (isPlayerEnabled(idx)) fn_80248DCC(lbl_8053AC90->players[idx]);
 }
 
+void fn_80248E94(Player*, int);
+void fn_802382D0(int idx, int a1) {
+    if (lbl_8053AC90 == NULL) return;
+    if (!isPlayerEnabled(idx)) return;
+    if (!(*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << idx))) return;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (idx == i || fn_8022E438(idx, i))) {
+            fn_80248E94(lbl_8053AC90->players[i], a1);
+        }
+    }
+}
+
 void* fn_80238430(int idx) {
     if (lbl_8053AC90 == NULL) return lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x324;
@@ -555,6 +583,24 @@ void fn_802384BC(int idx) {
 
 int fn_80239108(int);
 u8 fn_80250030(Player*, int);
+static inline int getGroupId(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return fn_8024FF6C(lbl_8053AC90->players[idx]);
+}
+int fn_80238A68(int id) {
+    int last = -1;
+    int n = 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && id == getGroupId(i)) {
+            if (last != -1 && last != *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc)) return 0;
+            n++;
+            last = *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return n;
+}
+
 int fn_80238BC4(int a1) {
     if (fn_80239108(a1) <= 0) return -1;
     for (int i = 0; i < 4; i++) {
@@ -593,7 +639,6 @@ int fn_80238EDC(int idx) {
     return -1;
 }
 
-int fn_8024FF6C(Player*);
 int fn_80238F78(int a1) {
     for (int i = 0; i < 4; i++) {
         if (isPlayerEnabled(i) && a1 == fn_8024FF6C(lbl_8053AC90->players[i])) return i;
