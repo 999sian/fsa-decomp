@@ -1,6 +1,7 @@
 // TRAP actor. TU 801643C4-8016545C.
 // Functions: dtor, move check (TODO), draw (slot 6, TODO), update (slot 3, TODO), init (slot 1).
 #include "types.h"
+#include "Game/ItemBase.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -15,7 +16,15 @@ struct TrapRandom {
         return out.f - 1.0f;
     }
 };
-struct TrapGame { u8 pad[0xb4]; TrapRandom rnd; };
+class TrapResMgr {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void* vf18(u32 type, const char* name);
+};
+struct TrapGame { u8 pad[0xa4]; TrapResMgr* res; u8 padA8[0xb4 - 0xa8]; TrapRandom rnd; };
 extern TrapGame* lbl_8053AAF8;
 
 // TRAP destructor
@@ -64,6 +73,30 @@ extern "C" u8 fn_80164424(char* this_, s32 room, void* pos) {
         *(s32*)(this_ + 0x24C) = *(s32*)(this_ + 0x24C) - 1;
     }
     return 0;
+}
+
+extern u8* lbl_8053AB10;
+extern const char lbl_804662BC[];
+extern const char lbl_804662D0[];
+extern "C" void fn_802F86CC(void* p, void* pos, void* res, s32 id, DrawRec* rec, f32 a, f32 b);
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+
+// TRAP draw (vtable slot 6)
+extern "C" void fn_80164640(char* this_) {
+    DrawRec rec;
+    s32 flag = 0;
+    if (*(s32*)(this_ + 0x254) != 0) {
+        flag = 1;
+    }
+    if (*(s32*)(this_ + 0x258) == 0) {
+        if (*(s32*)(this_ + 4) < 8) {
+            void* res = lbl_8053AAF8->res->vf18('SOB ', lbl_804662BC);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xC, res, 0x154, &rec, 1.0f, 1.0f);
+        }
+        fn_801F02BC(this_, lbl_804662BC, 0x154, &rec, 0, flag, 0, 1.0f, 1.0f);
+    } else {
+        fn_801F02BC(this_, lbl_804662D0, *(s32*)(this_ + 0x260) + 0x17A, &rec, 0, flag, 0, 1.0f, 1.0f);
+    }
 }
 
 // TRAP init (vtable slot 1)
