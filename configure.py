@@ -1616,6 +1616,7 @@ config.libs = [
             Object(Matching, "Game/actors/GFBS.cpp"),
             Object(Matching, "Game/actors/STGN.cpp"),
             Object(Matching, "Game/actors/TJIJ.cpp"),
+            Object(NonMatching, "Game/Actor.cpp"),
         ],
     ),
 ]

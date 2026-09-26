@@ -2429,6 +2429,12 @@ Game/tu_801ED3DC.cpp:
 	.ctors      start:0x8045C0D4 end:0x8045C0D8
 	.bss        start:0x804CA8D8 end:0x804CA944
 
+Game/Actor.cpp:
+	extab       start:0x80008D44 end:0x80008F04
+	extabindex  start:0x800163C0 end:0x80016660
+	.text       start:0x801EE24C end:0x801F6058
+	.ctors      start:0x8045C0DC end:0x8045C0E0
+
 Game/tu_801F6058.cpp:
 	extab       start:0x80008F04 end:0x80008F2C
 	extabindex  start:0x80016660 end:0x8001669C
