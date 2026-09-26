@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 80182914-80183544 (RDVR). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // from src/Game/fn_80183100_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -82,6 +83,245 @@ extern void** lbl_8053AB10;
 extern "C" void fn_8018330C(u32* out);
 
 extern "C" void* fn_802D6A9C(void);
+
+
+// ---- fn_8018299C: RDVR update
+#include "JSystem/JMath/JMath.h"
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
+extern "C" void fn_801F2618(void* this_, s32, s32);
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" void fn_801F71A4(f32* v, f32 target, f32 a, f32 b);
+extern "C" void fn_801EEC98(void* this_, void*, u16*, s32, f32*, s32*, s32, s32);
+extern "C" void fn_801F2B7C(void* this_, s32, s32, s32);
+extern "C" void fn_801F714C(u16* a, u16 target, s32 b, s32 step);
+extern "C" u8* fn_8013CC50(s32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
+
+class RDVR {
+public:
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual u8 v34();
+    s32 m04;
+    u8 pad08[4];
+    JGeometry::TVec3f mPos; // 0x0c
+    u8 pad18[0x3c - 0x18];
+    JGeometry::TVec3f mVel; // 0x3c
+    u8 pad48[0xb0 - 0x48];
+    u32 mB0;
+    u8 padB4[4];
+    s32 mB8;
+    u8 padBC[0x198 - 0xbc];
+    void* m198;
+    u8 pad19C[0x230 - 0x19c];
+    u32 mState;  // 0x230
+    u8 m234[4];
+    u8 m238, m239, m23A;
+    u8 pad23B;
+    s32 m23C;
+    s32 m240;
+    s32 m244;
+    s32 m248;
+    u8 pad24C[8];
+    s32 m254;
+    s32 m258;
+    s32 m25C;
+    s32 m260;
+    u16 m264;
+    f32 m268;
+    f32 m26C;
+    f32 m270;
+    u8* mChild; // 0x274
+
+    void syncColor() {
+        u8 c = m23A;
+        u8 b = m239;
+        u8* ch = mChild;
+        ch[0xb8] = m238;
+        ch[0xb9] = b;
+        ch[0xba] = c;
+    }
+    void syncChild() {
+        u8* p = mChild;
+        if (p != 0) {
+            *(f32*)(p + 0xa4) = mPos.x;
+            *(f32*)(p + 0xa8) = mPos.y;
+            *(f32*)(p + 0xac) = mPos.z;
+            if (*((u8*)fn_802D6A9C() + 0x131f2) == 1) {
+                u8 c = m23A;
+                u8 b = m239;
+                u8* ch = mChild;
+                ch[0xb8] = m238;
+                ch[0xb9] = b;
+                ch[0xba] = c;
+            }
+        }
+    }
+    u8* spawn(s32 id) {
+        u8* e = fn_8013CC50(m04, &mPos, id, 0, 1, 0, 0, 1, 1.0f);
+        if (*((u8*)fn_802D6A9C() + 0x131f2) == 1) {
+            u8 c = m23A;
+            u8 b = m239;
+            e[0xb8] = m238;
+            e[0xb9] = b;
+            e[0xba] = c;
+        }
+        return e;
+    }
+    void stop() {
+        m270 = 0.0f;
+        m26C = 0.0f;
+        m268 = 0.0f;
+        mVel.z = 0.0f;
+        mVel.y = 0.0f;
+        mVel.x = 0.0f;
+    }
+};
+
+extern "C" void fn_8018299C(RDVR* this_) {
+    u16 angle = 0;
+    f32 f = 0.0f;
+    s32 hit = -1;
+    if (fn_801F3D94(this_, 1)) {
+        this_->syncChild();
+        fn_801F2618(this_, 0, 0);
+        return;
+    }
+    if (this_->m258 != 0 && fn_801F305C(this_)) {
+        this_->syncChild();
+        fn_801F2618(this_, 0, 0);
+        return;
+    }
+    fn_801F71A4(&this_->mVel.x, this_->m268, 0.3f, 1.0f);
+    fn_801F71A4(&this_->mVel.y, this_->m26C, 0.3f, 1.0f);
+    this_->mPos.add(this_->mVel);
+    fn_80212AF0(fn_80212AC0(), &this_->mPos);
+    fn_801EEC98(this_, this_->m198, &angle, 0, &f, &hit, 0, 0);
+    if (this_->m258 != 0) {
+        fn_801F2B7C(this_, -100, -1, 1);
+    }
+    fn_801F2618(this_, 0, 0);
+    switch (this_->mState) {
+    case 0:
+        if (this_->m260 == 1) {
+            if (this_->v34()) {
+                this_->mState = 2;
+            }
+            break;
+        }
+        this_->m240 = 100;
+        this_->mState = 1;
+    case 1:
+        this_->m268 = 0.5f * JMASinShort(angle);
+        this_->m26C = 0.5f * JMACosShort(angle);
+        if (this_->m240 != 0) {
+            break;
+        }
+        this_->mState = 2;
+    case 2:
+        this_->mB8 = 1;
+        if (this_->mChild == 0) {
+            this_->spawn(0x1da);
+            this_->mChild = fn_8013CC50(this_->m04, &this_->mPos, 0x1db, 0, 1, 0, 0, 1, 1.0f);
+            if (*((u8*)fn_802D6A9C() + 0x131f2) == 1) {
+                this_->syncColor();
+            }
+        }
+        this_->stop();
+        this_->m23C = 6;
+        this_->m248 = 0;
+        this_->m254 = 0;
+        this_->mState = 3;
+    case 3:
+        if (this_->m23C == 0) {
+            this_->m254++;
+            this_->m23C = 6;
+            if (this_->m254 > 5) {
+                this_->mState = 4;
+            }
+        }
+        this_->syncChild();
+        break;
+    case 4:
+        this_->mB0 = 0x11101;
+        this_->m240 = 200;
+        this_->m254 = 6;
+        this_->m23C = 8;
+        this_->m248 = 0;
+        this_->m258 = 1;
+        this_->mState = 5;
+    case 5: {
+        this_->syncChild();
+        f32 speed;
+        s32 step;
+        if (this_->m25C == 1) {
+            speed = 1.0f;
+            step = 0x300;
+        } else {
+            speed = 0.5f;
+            step = 0x100;
+        }
+        fn_801F714C(&this_->m264, angle, 1, step);
+        this_->m268 = speed * JMASinShort(this_->m264);
+        this_->m26C = speed * JMACosShort(this_->m264);
+        if (this_->m23C == 0) {
+            this_->m254++;
+            if (this_->m254 > 7) {
+                this_->m254 = 6;
+            }
+            this_->m23C = 8;
+        }
+        if (this_->m240 != 0) {
+            break;
+        }
+        this_->mState = 6;
+    }
+    case 6:
+        this_->syncChild();
+        this_->mB0 = 0x1000;
+        this_->stop();
+        this_->m258 = 0;
+        this_->m23C = 4;
+        this_->m248 = 0;
+        this_->m254 = 6;
+        this_->mState = 7;
+    case 7:
+        this_->syncChild();
+        if (this_->m23C == 0) {
+            this_->m254--;
+            this_->m23C = 6;
+            if (this_->m254 <= 0) {
+                if (this_->mChild != 0) {
+                    this_->spawn(0x1da);
+                    u8* c = this_->mChild;
+                    *(u32*)(c + 0xf4) |= 1;
+                    *(s32*)(c + 0x24) = 1;
+                    this_->mChild = 0;
+                }
+                this_->m23C = 3;
+                this_->mState = 0;
+            }
+        }
+        break;
+    }
+    if (this_->m23C > 0) {
+        this_->m23C--;
+    }
+    if (this_->m240 > 0) {
+        this_->m240--;
+    }
+    if (this_->m244 > 0) {
+        this_->m244--;
+    }
+}
 
 // RDVR init (vtable slot 1)
 extern "C" void fn_801831E0(char* this_) {
