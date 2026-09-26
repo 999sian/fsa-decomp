@@ -1929,6 +1929,7 @@ game/arrw.cpp:
 	extabindex  start:0x80013D08 end:0x80013D50
 	.text       start:0x8016545C end:0x80166BD0
 	.ctors      start:0x8045BF60 end:0x8045BF64
+	.sdata2     start:0x8053D7C0 end:0x8053D7F8
 
 game/stal.cpp:
 	extab       start:0x8000745C end:0x80007484
@@ -2039,6 +2040,7 @@ game/hbb2.cpp:
 	extabindex  start:0x800148D8 end:0x80014908
 	.text       start:0x801A8194 end:0x801A908C
 	.ctors      start:0x8045BFDC end:0x8045BFE0
+	.sdata2     start:0x8053E690 end:0x8053E6E0
 
 game/ttat.cpp:
 	extab       start:0x80007A5C end:0x80007AAC

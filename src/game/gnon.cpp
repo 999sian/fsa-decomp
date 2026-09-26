@@ -82,3 +82,29 @@ extern "C" void* fn_80196834(char* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+extern "C" void fn_8013CC50(u32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
+extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+struct GnonTimers { u8 pad[0x234]; s32 t[10]; };
+
+extern "C" void fn_80192BD8(char* this_) {
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0x2c:
+        *(s32*)(this_ + 0x234) = 0x32;
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x359, 0, 0, 0, 0, 1, 1.0f);
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x35a, 0, 0, 0, 0, 1, 1.0f);
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x35b, 0, 0, 0, 0, 1, 1.0f);
+        *(s32*)(this_ + 0x230) = 0x2d;
+    case 0x2d:
+        if (*(s32*)(this_ + 0x234) == 0) {
+            *(u8*)(this_ + 0x11c) = 0;
+            fn_801F2B7C(this_, -100, -1, 1);
+        }
+        break;
+    }
+    for (int i = 0; i < 10; i++) {
+        if (((GnonTimers*)this_)->t[i] > 0) {
+            ((GnonTimers*)this_)->t[i]--;
+        }
+    }
+}
