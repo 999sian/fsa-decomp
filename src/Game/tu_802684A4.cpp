@@ -74,6 +74,38 @@ void SetField_0x98(void* thisPtr) {
 
 }
 
+
+extern JGeometry::TVec3<f32> lbl_8046BA88[];
+extern Vec2f lbl_8046BA68[];
+extern "C" s32 fn_80248778(void*);
+
+extern "C" u8* fn_802D6A9C();
+
+struct Obj8026942C {
+    void* vtbl;
+    u8* player;
+};
+
+extern "C" void fn_8026942C(Obj8026942C* o, s32 idx, JGeometry::TVec3<f32>* out) {
+    out->x = lbl_8046BA88[idx].x;
+    out->y = lbl_8046BA88[idx].y;
+    out->z = lbl_8046BA88[idx].z;
+    out->add(*(JGeometry::TVec3<f32>*)(o->player + 8));
+}
+
+extern "C" void fn_8026947C(Obj8026942C* o, JGeometry::TVec3<f32>* out) {
+    *out = *(JGeometry::TVec3<f32>*)(o->player + 8);
+    if (fn_802486A0(o->player) == 2) {
+        out->x += lbl_8046BA68[fn_80248778(o->player)].x;
+        s32 room = *(s32*)(o->player + 0x3b4);
+        if (*(u8*)((u32)fn_802D6A9C() + 0x131df + room)) {
+            out->y -= lbl_8046BA68[fn_80248778(o->player)].y;
+        } else {
+            out->y += lbl_8046BA68[fn_80248778(o->player)].y;
+        }
+    }
+}
+
 extern "C" u8 fn_8026E5F8(u8* p, Vec2f* pos) {
     if (!p[0xd64]) {
         if (fn_80251AEC(p, 0x38)) {
