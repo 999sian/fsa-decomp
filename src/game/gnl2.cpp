@@ -20,6 +20,7 @@ void Gol2_SetField_0x2f4(void* thisPtr, u8 val) { *(u8*)((char*)thisPtr + 0x2f4)
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL

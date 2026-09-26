@@ -48,6 +48,7 @@ extern "C" void Actor_SetVec3_0x0(void* thisObj, f32 x, f32 y, f32 z) {
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL

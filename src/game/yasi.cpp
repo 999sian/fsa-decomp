@@ -58,6 +58,7 @@ extern "C" s32 Yasi_CanBeActiveHere(void* this_, u32 param2, u32 param3) {
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL

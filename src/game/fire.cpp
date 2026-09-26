@@ -37,6 +37,7 @@ extern "C" void* fn_802BBDFC(void* this_, s16 freeFlag) {
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL

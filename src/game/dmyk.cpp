@@ -4,7 +4,6 @@
 
 // ---- Dmyk_dtor_802F3B74.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AA6A0[];
 
 extern "C" void* fn_802F3B74(void* this_, short how) {
@@ -12,7 +11,7 @@ extern "C" void* fn_802F3B74(void* this_, short how) {
         *(void**)this_ = lbl_804AA6A0;
         dtor_801F593C(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -53,14 +52,14 @@ extern "C" void fn_802F3BD8(void* this_) {
 }
 
 // ---- fn_802F3C24.cpp ----
-extern "C" void* SpatialRegistry_GetBase();
+extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* base, s32 id);
 
 extern "C" void fn_802F3C24(void* this_) {
     char* p = (char*)this_;
     s32 id = *(s32*)(p + 0x23c);
     if (id >= 0) {
-        void* base = SpatialRegistry_GetBase();
+        void* base = fn_801F856C();
         void* found = fn_801F666C(base, id);
         if (found != 0) {
             *(u8*)((char*)found + 0x11c) = 0;
@@ -73,10 +72,25 @@ extern "C" void fn_802F3C24(void* this_) {
 // fn_802F3C8C - DMYK: setParams(). Unpacks the spawn params; when the two
 // nibbles match, spawns a "PEFF" effect actor and registers it with
 // fn_8038BD08 together with a copy of the actor position.
-struct DmykVec { f32 x, y, z; };
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#ifndef unknown
+#define unknown jsys_unknown
+#endif
+#include "JSystem/JGeometry/Vec.h"
 extern "C" void* fn_801F856C();
 extern "C" s32 fn_801F9484(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
-extern "C" void fn_8038BD08(s32 a, s32 b, u32 owner, DmykVec* pos, s32 kind);
+extern "C" void fn_8038BD08(s32 a, s32 b, u32 owner, JGeometry::TVec3<f32>* pos, s32 kind);
 
 extern "C" void fn_802F3C8C(void* this_) {
     char* p = (char*)this_;
@@ -88,10 +102,9 @@ extern "C" void fn_802F3C8C(void* this_) {
     if (a == *(s32*)(p + 0x238)) {
         *(s32*)(p + 0x23c) = fn_801F9484(fn_801F856C(), 0x50454646, *(u32*)(p + 0x4), p + 0xc,
                                          (a & 3) | 0x24, -1, -1);
-        // NONMATCHING: retail copies the position with psq_l/psq_st + lfs/stfs
-        // (JGeometry::TVec3<f32> inline-asm copy); plain struct copy uses GPRs.
-        DmykVec pos = *(DmykVec*)(p + 0xc);
-        fn_8038BD08(*(s32*)(p + 0x238), *(s32*)(p + 0x230), *(u32*)(p + 0x4), &pos, 0x21);
+        u32 owner = *(u32*)(p + 0x4);
+        JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
+        fn_8038BD08(*(s32*)(p + 0x238), *(s32*)(p + 0x230), owner, &pos, 0x21);
     } else {
         *(u8*)(p + 0x11c) = 0;
     }
@@ -106,9 +119,12 @@ extern "C" void fn_802F3C8C(void* this_) {
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL
 #define NULL 0
+#ifndef unknown
 #define unknown jsys_unknown
+#endif
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

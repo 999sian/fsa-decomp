@@ -69,6 +69,7 @@ extern "C" void* fn_802ECD0C(void* this_, short how) {
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL

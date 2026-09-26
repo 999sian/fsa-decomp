@@ -27,6 +27,7 @@ extern "C" void* fn_802F43C0(void* this_, short how) {
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL

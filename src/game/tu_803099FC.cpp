@@ -49,6 +49,7 @@ s32 AnimTable_IsField0xe0LessThan3(void* table, s32 slot) {
 #undef ATTRIBUTE_ALIGN
 #undef IS_ALIGNED
 #undef IS_NOT_ALIGNED
+#undef MACROS_H
 #undef MAX
 #undef MIN
 #undef NULL
