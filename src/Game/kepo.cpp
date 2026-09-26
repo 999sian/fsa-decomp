@@ -72,4 +72,119 @@ extern "C" void* fn_8021A234(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void* fn_801D0F40(void* self);
+extern "C" void InitDefaultRecord(void* rec);
+extern void* lbl_804A6550[];
+
+extern "C" void* fn_8021A2D0(u8* self) {
+    fn_801D0F40(self);
+    *(void***)self = lbl_804A6550;
+    *(s32*)(self + 0x2a8) = 0;
+    *(f32*)(self + 0x2ac) = 1.5f;
+    *(s32*)(self + 0x2b0) = 0;
+    *(s32*)(self + 0x2b4) = 0;
+    *(s32*)(self + 0x2b8) = -1;
+    *(f32*)(self + 0x2bc) = 0.0f;
+    *(f32*)(self + 0x2c0) = 0.0f;
+    *(s32*)(self + 0x2c4) = 0;
+    InitDefaultRecord(self + 0x2c8);
+    *(f32*)(self + 0x2d8) = 0.0f;
+    return self;
+}
+
+struct J3DFrameCtrl {
+    BOOL checkPass(f32 frame);
+};
+
+extern "C" void fn_801F0E34(void* self, u32 id, s32 c);
+extern "C" void fn_801CE4BC(void* self);
+extern "C" void fn_8021B668(void* self);
+
+extern "C" void fn_8021917C(u8* self) {
+    if (*(s32*)(self + 0x278) == 1) {
+        if (((J3DFrameCtrl*)(self + 0x294))->checkPass(0.1f) || ((J3DFrameCtrl*)(self + 0x294))->checkPass(22.1f) ||
+            ((J3DFrameCtrl*)(self + 0x294))->checkPass(44.1f))
+        {
+            fn_801F0E34(self, 0x4006b, 0);
+        }
+    }
+    s32 prev = *(s32*)(self + 0x280);
+    fn_801CE4BC(self);
+    s32 state = *(s32*)(self + 0x278);
+    s32 cur = *(s32*)(self + 0x280);
+    if (state == 1 && prev != 5 && cur == 5) {
+        fn_8021B668(self);
+    }
+}
+
+struct KepoVec2 { f32 x, y; };
+extern "C" void fn_801D01A0(void* self, f32 speed, void* dir, KepoVec2* out);
+
+extern "C" void fn_80218F90(u8* self) {
+    KepoVec2 v;
+    *(f32*)(self + 0x3c) = 0.0f;
+    *(f32*)(self + 0x40) = 0.0f;
+    *(f32*)(self + 0x44) = 0.0f;
+    switch (*(s32*)(self + 0x248)) {
+    case 4:
+        fn_801D01A0(self, *(f32*)(self + 0x254), self + 0x24, &v);
+        *(f32*)(self + 0x3c) = v.x;
+        *(f32*)(self + 0x40) = v.y;
+        break;
+    case 5:
+        *(f32*)(self + 0x44) = -0.5f;
+        break;
+    case 0xb:
+        if (*(s32*)(self + 0x280) >= 0xf || *(s32*)(self + 0x280) < 0xb) {
+            *(f32*)(self + 0x44) = 0.8f;
+        }
+        break;
+    case 0xc:
+        fn_801D01A0(self, *(f32*)(self + 0x254), self + 0x2bc, &v);
+        *(f32*)(self + 0x3c) = v.x;
+        *(f32*)(self + 0x40) = v.y;
+        break;
+    }
+}
+
+struct KepoGlobals {
+    u8 pad0[0x2c];
+    u8* m2c;
+};
+extern KepoGlobals* lbl_8053AB10;
+extern void* lbl_8053AAF8;
+extern "C" BOOL fn_801CD950(f32* v, f32 target, f32 step);
+extern "C" s32 fn_80138A30(void* game);
+extern "C" void fn_80230BF4(s32 player, s32 a);
+extern "C" void* fn_8023E724(s32 player);
+extern "C" void fn_80230498(s32 player, void* obj, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801CE0A4(void* self, void* arg);
+extern "C" void fn_8021B548(void* self);
+
+static inline u32 kepoFlag(u8* self) {
+    return *(u32*)(self + 0x230) & 0x10000;
+}
+
+extern "C" void fn_8021906C(u8* self, void* arg) {
+    if (kepoFlag(self) && kepoFlag(self)) {
+        switch (*(s32*)(self + 0x248)) {
+        case 0:
+        case 1:
+            break;
+        default:
+            if (255.0f != *(f32*)(self + 0x2d8) && !fn_801CD950((f32*)(self + 0x2d8), 255.0f, 1.0f)) {
+                s32 n = fn_80138A30(lbl_8053AAF8);
+                for (s32 i = 0; i < n; i++) {
+                    fn_80230BF4(i, 1);
+                    fn_80230498(i, fn_8023E724(i), 0x3d, 0xff, -0x80, -0x80, 1);
+                }
+            }
+            break;
+        }
+        lbl_8053AB10->m2c[0xc] = (s32)*(f32*)(self + 0x2d8);
+    }
+    fn_801CE0A4(self, arg);
+    fn_8021B548(self);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
