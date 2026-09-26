@@ -77,4 +77,32 @@ extern "C" void fn_8020E268(char* this_) {
     }
 }
 
+extern "C" u8 fn_801F2DB4(void* this_, u32 a, u32 b, u32 c);
+extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
+extern "C" void fn_8020ED5C(void* this_, s32 st);
+
+extern "C" u8 fn_8020DF4C(char* this_) {
+    u8 r = 0;
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053FA2C &&
+        *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053FA2C) {
+        r = fn_801F2DB4(this_, *(u32*)(this_ + 0x1a0), 'NULL', 0);
+        if (r) {
+            fn_801F0E34(this_, 0x5007d, 0);
+            u8 ok = 0;
+            switch (*(s32*)(this_ + 0x248)) {
+            case 3:
+            case 5:
+            case 6:
+            case 8:
+                ok = 1;
+                break;
+            }
+            if (ok) {
+                fn_8020ED5C(this_, 4);
+            }
+        }
+    }
+    return r;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
