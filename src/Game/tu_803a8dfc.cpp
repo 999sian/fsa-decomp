@@ -260,7 +260,9 @@ static inline BOOL updateJoin(Menu_Join* p) {
 struct Menu_Slide {
     u8 pad0[0x70];
     J2DPane* panes[0xd];        // 0x70
-    u8 padA4[0x3c0 - 0xa4];
+    u8 padA4[0x320 - 0xa4];
+    s32 disp[4];                // 0x320
+    u8 pad330[0x3c0 - 0x330];
     s32 state[4];               // 0x3c0
     u8 pad3d0[0x3f4 - 0x3d0];
     f32 ys[8];                  // 0x3f4
@@ -630,6 +632,56 @@ extern "C" void fn_803AF604(void* this_) {
         fn_803B35F8(this_, flagArg);
         *(s32*)(t + 0x440) = 0x96;
         *(u8*)(t + 0x4c1) = 0xd;
+    }
+}
+
+struct MsgRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct MsgGame { u8 pad[0xb4]; MsgRandom rnd; };
+extern MsgGame* lbl_8053AAF8;
+
+extern "C" void fn_803AF79C(Menu_Slide* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            PANE(0x8c)->hide();
+            { f32 x = PANE(0x8c)->getBounds()->i.x; PANE(0x8c)->move(x, PY(0x3f8)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        s32 sum = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            sum += p->disp[i];
+        }
+        // NONMATCHING: r7/r8 swap (game pointer vs. state loop cursor)
+        p->timer = 0x96 + sum % 9 + (s32)(100.0f * lbl_8053AAF8->rnd.get_ufloat_1());
+        p->m4c4 = 0;
+        p->m4c6 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        p->m4c1 = 0xc;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        { f32 x = PANE(0x8c)->getBounds()->i.x; PANE(0x8c)->move(x, PY(0x3f8) + off); }
+        if (p->timer == 0x8a) {
+            PANE(0x8c)->hide();
+        }
+    } else if (t >= 0x80) {
+        if (t == 0x80) {
+            { f32 x = PANE(0x8c)->getBounds()->i.x; PANE(0x8c)->move(x, PY(0x3f8)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
     }
 }
 
