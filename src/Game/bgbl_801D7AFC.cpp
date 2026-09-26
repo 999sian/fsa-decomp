@@ -1,6 +1,17 @@
 // Game TU 801D7AFC-801D8400 (BGBL). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+
+extern "C" bool fn_801CD2F8(s32 id);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+
+extern "C" void fn_801D7AFC(u8* this_) {
+    if (((JGeometry::TVec3<f32>*)(this_ + 0x54))->isZero() == false && fn_801CD2F8(*(s32*)(this_ + 4))) {
+        fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xC,
+                    *(s32*)(this_ + 0x280) + 0x1C7, 0, 2, -1, 1, 0, 0);
+    }
+}
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -9,6 +20,41 @@ extern void* lbl_804A4BB0[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern "C" void* fn_801D0F40(void* this_);
+
+struct BGBL_Part {
+    u8 pad0[0x98];
+    f32 m98, m9C, mA0;
+    u8 padA4[0xB0 - 0xA4];
+    f32 mB0, mB4;
+};
+
+static inline void BGBL_syncPart(u8* this_, BGBL_Part* part) {
+    if (part != 0) {
+        part->m98 = *(f32*)(this_ + 0x54);
+        part->m9C = *(f32*)(this_ + 0x58);
+        part->mA0 = *(f32*)(this_ + 0x5C);
+        f32 y = *(f32*)(this_ + 0x58);
+        f32 x = *(f32*)(this_ + 0x54);
+        part->mB0 = x;
+        part->mB4 = y;
+    }
+}
+
+extern "C" void fn_801D7DB4(u8* this_, f32 s) {
+    *(f32*)(this_ + 0x54) = s;
+    *(f32*)(this_ + 0x58) = s;
+    *(f32*)(this_ + 0x5C) = s;
+    *(f32*)(this_ + 0x60) = -3.0f * s;
+    *(f32*)(this_ + 0x64) = -3.0f * s;
+    *(f32*)(this_ + 0x68) = 3.0f * s;
+    *(f32*)(this_ + 0x6C) = 3.0f * s;
+    *(f32*)(this_ + 0x70) = -6.0f * s;
+    *(f32*)(this_ + 0x74) = -6.0f * s;
+    *(f32*)(this_ + 0x78) = 6.0f * s;
+    *(f32*)(this_ + 0x7C) = 6.0f * s;
+    BGBL_syncPart(this_, *(BGBL_Part**)(this_ + 0x2A8));
+    BGBL_syncPart(this_, *(BGBL_Part**)(this_ + 0x2AC));
+}
 
 extern "C" void* fn_801D80F0(void* this_, s16 freeFlag) {
     if (this_ != 0) {
