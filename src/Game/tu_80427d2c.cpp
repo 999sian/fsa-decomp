@@ -69,23 +69,14 @@ extern void* lbl_8053AE80;
 extern void* lbl_8053AE84;
 extern "C" void* fn_8042ACCC(void*, u32);
 extern "C" void fn_8042AD10(void*, u32);
-extern "C" void* fn_8042A708(void*, u32);
-extern "C" void fn_8042A74C(void*, u32);
-extern "C" void fn_8042A3E4(void*);
 extern "C" void fn_8042A818(void*);
 extern "C" void fn_8042AF60(void*);
 extern "C" void fn_8042AFA4(void*);
-extern "C" void fn_8042A428(void*);
 extern "C" void fn_8042A85C(void*);
 extern "C" void fn_8042ADDC(void*, u32);
 extern "C" void fn_8042B02C(void*, u32);
-extern "C" void fn_8042A5E0(void*, u32);
-extern "C" void fn_8042A534(void*, u32);
-extern "C" void fn_8042A608(void*, u32);
 extern "C" void fn_8042AFD4(void*, u32);
-extern "C" void fn_8042B0AC(void*);
-extern "C" void fn_8042A6DC(void*, u32);
-extern "C" void fn_8042A778(void*);
+extern "C" u32 fn_8042B0AC(void*);
 extern "C" void fn_8042AAA8(void*, u32);
 extern "C" void fn_8042A970(void*, u32);
 extern "C" void fn_8042AB70(void*, u32);
@@ -135,7 +126,8 @@ struct THPPlayerState {
     u8 onMemory;
     u8 padB1[3];
     u8* movieData;
-    u8 padB8[0xc0 - 0xb8];
+    u32 initOffset;
+    s32 initReadSize;
     u32 initReadFrame;
     u8 padC4[0xc8 - 0xc4];
     s64 retraceCount;
@@ -146,7 +138,7 @@ struct THPPlayerState {
     f32 targetVolume;
     f32 deltaVolume;
     s32 rampCount;
-    u8 padEC[0xf0 - 0xec];
+    u32 curAudioTrack;
     s32 mF0;
     s32 mF4;
     THPTextureSet* dispTextureSet;
@@ -180,6 +172,42 @@ extern void* lbl_8053AE90;
 extern void* lbl_804B15C0[];
 
 struct RenderModeHolder { u8 pad[4]; u16 fbWidth; u16 efbHeight; };
+
+extern u32 lbl_8053AEB0;
+extern "C" u8 fn_80428AC8(s32, s32);
+extern "C" void* fn_8042E758();
+extern "C" void* alloc__7JKRHeapFUli(void*, u32, int);
+
+extern "C" u32 AIGetDSPSampleRate(void);
+extern u8 lbl_8053AE88;
+
+extern "C" u32 VIGetNextField(void);
+extern "C" u32 VIGetTvFormat(void);
+extern OSMessage lbl_8053AE8C;
+
+extern "C" void DCInvalidateRange(void*, u32);
+extern "C" void DCStoreRange(void*, u32);
+extern "C" void LCEnable(void);
+extern "C" void LCDisable(void);
+extern "C" u8 fn_8042B148();
+extern s32 lbl_8053AEA0;
+extern u32 lbl_8053AE94;
+extern u32 lbl_8053AE98;
+extern u32 lbl_8053AE9C;
+extern char lbl_80543ABC[];
+
+extern u16 lbl_804B14C0[];
+
+struct AudioThreadObj {
+    void* vtbl;
+    s32 created;
+    OSThread thread;
+    u8 stack[0x64000];
+    OSMessageQueue freeQueue;
+    OSMessageQueue decodedQueue;
+    OSMessage freeMessages[3];
+    OSMessage decodedMessages[3];
+};
 
 extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 fn_80427D60();
@@ -242,6 +270,18 @@ extern "C" void fn_80429DF4(s16 x, s16 y, s16 z);
 extern "C" void fn_80429E08(GXRenderModeObj* rmode);
 extern "C" void fn_8042A2A4(GXTexCoordID dst, GXTexGenType func, GXTexGenSrc src, u32 mtx);
 extern "C" void fn_8042A2CC();
+extern "C" void fn_8042A3E4(AudioThreadObj* t);
+extern "C" void fn_8042A428(AudioThreadObj* t);
+extern "C" u8 fn_8042A458(AudioThreadObj* t, s32 priority, void* param);
+extern "C" void fn_8042A534(AudioThreadObj* t, u8* bufPtr);
+extern "C" void fn_8042A5E0(AudioThreadObj* t, u32);
+extern "C" void fn_8042A608(AudioThreadObj* t, THPReadBuffer* readBuffer);
+extern "C" void fn_8042A6DC(AudioThreadObj* t, OSMessage msg);
+extern "C" void* fn_8042A708(AudioThreadObj* t, s32 flag);
+extern "C" void fn_8042A74C(AudioThreadObj* t, OSMessage msg);
+extern "C" u32 fn_8042A778(AudioThreadObj* t);
+extern "C" AudioThreadObj* fn_8042A7AC(AudioThreadObj* t, s16 flag);
+extern "C" void fn_8042A7FC(AudioThreadObj* t);
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v);
 extern "C" void* fn_8042E1F4();
 extern "C" u16 fn_8042E1FC(Obj8042E1E4* o);
@@ -264,11 +304,11 @@ extern "C" void fn_8042E43C(u32 a);
 extern "C" void fn_8042E4C4(u32 a);
 extern "C" void fn_8042E4EC(u32 a);
 extern "C" void fn_8042E514(u32 a);
-extern "C" void fn_8042E53C(u32 a);
+extern "C" void fn_8042E53C(THPReadBuffer* a);
 extern "C" void fn_8042E564(u32 a);
-extern "C" void fn_8042E58C();
+extern "C" u32 fn_8042E58C();
 extern "C" void fn_8042E5B0(u32 a);
-extern "C" void fn_8042E5D8();
+extern "C" u32 fn_8042E5D8();
 extern "C" void fn_8042E5FC(u32 a);
 extern "C" void fn_8042E624(u32 a);
 extern "C" void fn_8042E64C(u32 a);
@@ -279,31 +319,8 @@ extern "C" void fn_8042E6E4(u32 a);
 extern "C" void fn_8042E70C(u32 a);
 extern "C" void fn_8042E734();
 extern "C" void* fn_8042E780(void* o);
-
-extern u32 lbl_8053AEB0;
-extern "C" u8 fn_80428AC8(s32, s32);
-extern "C" void* fn_8042E758();
-extern "C" void* alloc__7JKRHeapFUli(void*, u32, int);
-
-extern "C" u32 AIGetDSPSampleRate(void);
-extern u8 lbl_8053AE88;
-
-extern "C" u32 VIGetNextField(void);
-extern "C" u32 VIGetTvFormat(void);
-extern OSMessage lbl_8053AE8C;
-
-extern "C" void DCInvalidateRange(void*, u32);
-extern "C" void DCStoreRange(void*, u32);
-extern "C" void LCEnable(void);
-extern "C" void LCDisable(void);
-extern "C" u8 fn_8042B148();
-extern s32 lbl_8053AEA0;
-extern u32 lbl_8053AE94;
-extern u32 lbl_8053AE98;
-extern u32 lbl_8053AE9C;
-extern char lbl_80543ABC[];
-
-extern u16 lbl_804B14C0[];
+extern void* lbl_804B15DC[];
+extern "C" s32 fn_8042DD54(s16*, u8*, s32);
 
 extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e) {
     if (lbl_8053AEBD) {
@@ -1229,6 +1246,131 @@ extern "C" void fn_8042A2CC() {
     GXSetTevSwapModeTable((GXTevSwapSel)3, (GXTevColorChan)2, (GXTevColorChan)2, (GXTevColorChan)2, (GXTevColorChan)3);
 }
 
+extern "C" void fn_8042A3E4(AudioThreadObj* t) {
+    if (t->created) {
+        OSCancelThread(&t->thread);
+        t->created = 0;
+    }
+}
+
+extern "C" void fn_8042A428(AudioThreadObj* t) {
+    if (t->created) {
+        OSResumeThread(&t->thread);
+    }
+}
+
+extern "C" u8 fn_8042A458(AudioThreadObj* t, s32 priority, void* param) {
+    if (param) {
+        if (!OSCreateThread(&t->thread, (void* (*)(void*))fn_8042E514, param, t->stack + sizeof(t->stack), sizeof(t->stack), priority, 1)) {
+            return 0;
+        }
+    } else {
+        if (!OSCreateThread(&t->thread, (void* (*)(void*))fn_8042E4EC, 0, t->stack + sizeof(t->stack), sizeof(t->stack), priority, 1)) {
+            return 0;
+        }
+    }
+    OSInitMessageQueue(&t->freeQueue, t->freeMessages, 3);
+    OSInitMessageQueue(&t->decodedQueue, t->decodedMessages, 3);
+    t->created = 1;
+    return 1;
+}
+
+extern "C" void fn_8042A534(AudioThreadObj* t, u8* bufPtr) {
+    THPReadBuffer readBuffer;
+    s32 tmp;
+    s32 readSize;
+    s32 i;
+    readBuffer.ptr = bufPtr;
+    readSize = lbl_8052AAD0.initReadSize;
+    i = 0;
+    while (true) {
+        readBuffer.frameNumber = i;
+        fn_8042E53C(&readBuffer);
+        if ((i + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+            if (lbl_8052AAD0.playFlag & 1) {
+                readSize = *(s32*)readBuffer.ptr;
+                readBuffer.ptr = lbl_8052AAD0.movieData;
+            } else {
+                OSSuspendThread(&t->thread);
+            }
+        } else {
+            tmp = *(s32*)readBuffer.ptr;
+            readBuffer.ptr += readSize;
+            readSize = tmp;
+        }
+        i++;
+    }
+}
+
+extern "C" void fn_8042A5E0(AudioThreadObj* t, u32) {
+    u32 readBuffer;
+    while (true) {
+        readBuffer = fn_8042E58C();
+        fn_8042E53C((THPReadBuffer*)readBuffer);
+        fn_8042E564(readBuffer);
+    }
+}
+
+extern "C" void fn_8042A608(AudioThreadObj* t, THPReadBuffer* readBuffer) {
+    THPAudioBuffer* audioBuffer;
+    u32 i;
+    u32* compSizePtr;
+    u8* ptr;
+    compSizePtr = (u32*)(readBuffer->ptr + 8);
+    ptr = readBuffer->ptr + lbl_8052AAD0.compInfo.numComponents * 4 + 8;
+    audioBuffer = (THPAudioBuffer*)fn_8042E5D8();
+    for (i = 0; i < lbl_8052AAD0.compInfo.numComponents; i++) {
+        switch (lbl_8052AAD0.compInfo.frameComp[i]) {
+        case 1:
+            audioBuffer->validSample = fn_8042DD54(audioBuffer->buffer, ptr + *compSizePtr * lbl_8052AAD0.curAudioTrack, 0);
+            audioBuffer->curPtr = audioBuffer->buffer;
+            fn_8042E5B0((u32)audioBuffer);
+            return;
+        }
+        ptr += *compSizePtr;
+        compSizePtr++;
+    }
+}
+
+extern "C" void fn_8042A6DC(AudioThreadObj* t, OSMessage msg) {
+    OSSendMessage(&t->decodedQueue, msg, 1);
+}
+
+extern "C" void* fn_8042A708(AudioThreadObj* t, s32 flag) {
+    OSMessage msg;
+    if (OSReceiveMessage(&t->decodedQueue, &msg, flag) == 1) {
+        return msg;
+    }
+    return 0;
+}
+
+extern "C" void fn_8042A74C(AudioThreadObj* t, OSMessage msg) {
+    OSSendMessage(&t->freeQueue, msg, 0);
+}
+
+extern "C" u32 fn_8042A778(AudioThreadObj* t) {
+    OSMessage msg;
+    OSReceiveMessage(&t->freeQueue, &msg, 1);
+    return (u32)msg;
+}
+
+extern "C" AudioThreadObj* fn_8042A7AC(AudioThreadObj* t, s16 flag) {
+    if (t) {
+        t->vtbl = lbl_804B15DC;
+        lbl_8053AE84 = 0;
+        if (flag > 0) {
+            __dl__FPv(t);
+        }
+    }
+    return t;
+}
+
+extern "C" void fn_8042A7FC(AudioThreadObj* t) {
+    t->vtbl = lbl_804B15DC;
+    lbl_8053AE84 = t;
+    t->created = 0;
+}
+
 #pragma dont_inline on
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
 #pragma dont_inline off
@@ -1270,15 +1412,15 @@ extern "C" void fn_8042E2EC(u32 a) { fn_8042AD10(lbl_8053AE80, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void* fn_8042E314(u32 a) { return fn_8042A708(lbl_8053AE84, a); }
+extern "C" void* fn_8042E314(u32 a) { return fn_8042A708((AudioThreadObj*)lbl_8053AE84, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E33C(u32 a) { fn_8042A74C(lbl_8053AE84, a); }
+extern "C" void fn_8042E33C(u32 a) { fn_8042A74C((AudioThreadObj*)lbl_8053AE84, (OSMessage)a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E364() { fn_8042A3E4(lbl_8053AE84); }
+extern "C" void fn_8042E364() { fn_8042A3E4((AudioThreadObj*)lbl_8053AE84); }
 #pragma dont_inline off
 
 #pragma dont_inline on
@@ -1294,7 +1436,7 @@ extern "C" void fn_8042E3D0() { fn_8042AFA4(lbl_8053AE7C); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E3F4() { fn_8042A428(lbl_8053AE84); }
+extern "C" void fn_8042E3F4() { fn_8042A428((AudioThreadObj*)lbl_8053AE84); }
 #pragma dont_inline off
 
 #pragma dont_inline on
@@ -1310,15 +1452,15 @@ extern "C" void fn_8042E4C4(u32 a) { fn_8042B02C(lbl_8053AE7C, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E4EC(u32 a) { fn_8042A5E0(lbl_8053AE84, a); }
+extern "C" void fn_8042E4EC(u32 a) { fn_8042A5E0((AudioThreadObj*)lbl_8053AE84, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E514(u32 a) { fn_8042A534(lbl_8053AE84, a); }
+extern "C" void fn_8042E514(u32 a) { fn_8042A534((AudioThreadObj*)lbl_8053AE84, (u8*)a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E53C(u32 a) { fn_8042A608(lbl_8053AE84, a); }
+extern "C" void fn_8042E53C(THPReadBuffer* a) { fn_8042A608((AudioThreadObj*)lbl_8053AE84, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
@@ -1326,15 +1468,15 @@ extern "C" void fn_8042E564(u32 a) { fn_8042AFD4(lbl_8053AE7C, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E58C() { fn_8042B0AC(lbl_8053AE7C); }
+extern "C" u32 fn_8042E58C() { return fn_8042B0AC(lbl_8053AE7C); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E5B0(u32 a) { fn_8042A6DC(lbl_8053AE84, a); }
+extern "C" void fn_8042E5B0(u32 a) { fn_8042A6DC((AudioThreadObj*)lbl_8053AE84, (OSMessage)a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E5D8() { fn_8042A778(lbl_8053AE84); }
+extern "C" u32 fn_8042E5D8() { return fn_8042A778((AudioThreadObj*)lbl_8053AE84); }
 #pragma dont_inline off
 
 #pragma dont_inline on
