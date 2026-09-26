@@ -1,20 +1,2999 @@
 // TU 0x801f9484-0x80204638.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // Actor base (0x801F5AE0 ctor, 0x801F593C dtor); full layout lives on the  Actor branch.
 struct Actor {
     Actor();
     ~Actor();
+    u8 _base[0x230];
 };
+
+extern "C" void* fn_80105BEC(void*);
+extern "C" void* fn_80108168(void*);
+extern "C" void* fn_8010AFC4(void*);
+extern "C" void* fn_8010C00C(void*);
+extern "C" void* fn_8010D7A0(void*);
+extern "C" void* fn_80112070(void*);
+extern "C" void* fn_801134DC(void*);
+extern "C" void* fn_80115590(void*);
+extern "C" void* fn_80116BE8(void*);
+extern "C" void* fn_801180D0(void*);
+extern "C" void* fn_8011A248(void*);
+extern "C" void* fn_8011B0DC(void*);
+extern "C" void* fn_8011CC2C(void*);
+extern "C" void* fn_8011E6E0(void*);
+extern "C" void* fn_8011FD28(void*);
+extern "C" void* fn_80121164(void*);
+extern "C" void* fn_801258D8(void*);
+extern "C" void* fn_80127B48(void*);
+extern "C" void* fn_8012A364(void*);
+extern "C" void* fn_8012D848(void*);
+extern "C" void* fn_8012E780(void*);
+extern "C" void* fn_8012F178(void*);
+extern "C" void* fn_80131AF0(void*);
+extern "C" void* fn_801336B4(void*);
+extern "C" void* fn_801B7DE0(void*);
+extern "C" void* fn_801B94C8(void*);
+extern "C" void* fn_801BA3FC(void*);
+extern "C" void* fn_801BB3B0(void*);
+extern "C" void* fn_801BCCF0(void*);
+extern "C" void* fn_801BD640(void*);
+extern "C" void* fn_801BDBF0(void*);
+extern "C" void* fn_801BEB44(void*);
+extern "C" void* fn_801BF5A8(void*);
+extern "C" void* fn_801C0AD8(void*);
+extern "C" void* fn_801C2414(void*);
+extern "C" void* fn_801C573C(void*);
+extern "C" void* fn_801D686C(void*);
+extern "C" void* fn_801D8194(void*);
+extern "C" void* fn_801DA504(void*);
+extern "C" void* fn_801DBFB0(void*);
+extern "C" void* fn_801DCA30(void*);
+extern "C" void* fn_801DCF40(void*);
+extern "C" void* fn_801E22A4(void*);
+extern "C" void* fn_801E33B8(void*);
+extern "C" void* fn_801E78F0(void*);
+extern "C" void* fn_801E7DBC(void*);
+extern "C" void* fn_801E9850(void*);
+extern "C" void* fn_801ED144(void*);
+extern "C" void* fn_801FFD1C(void*);
+extern "C" void* fn_80200060(void*);
+extern "C" void* fn_80200764(void*);
+extern "C" void* fn_802014C8(void*);
+extern "C" void* fn_80201B3C(void*);
+extern "C" void* fn_80201BF0(void*);
+extern "C" void* fn_80202444(void*);
+extern "C" void* fn_80203BF0(void*);
+extern "C" void* fn_80206810(void*);
+extern "C" void* fn_80208BE0(void*);
+extern "C" void* fn_802095C4(void*);
+extern "C" void* fn_8020B0B8(void*);
+extern "C" void* fn_8020BE40(void*);
+extern "C" void* fn_8020CA34(void*);
+extern "C" void* fn_8020F510(void*);
+extern "C" void* fn_802103C0(void*);
+extern "C" void* fn_80212800(void*);
+extern "C" void* fn_80213BA0(void*);
+extern "C" void* fn_80213FE4(void*);
+extern "C" void* fn_8021A2D0(void*);
+extern "C" void* fn_8021D4CC(void*);
+extern "C" void* fn_8021EDC0(void*);
+extern "C" void* fn_80220378(void*);
+extern "C" void* fn_80222190(void*);
+extern "C" void* fn_80222A58(void*);
+extern "C" void* fn_8022313C(void*);
+extern "C" void* fn_80224084(void*);
+extern "C" void* fn_80340C60(void*);
+extern "C" void* fn_8036C750(void*);
+
+struct GSCK : public Actor {
+    GSCK();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct MRTC : public Actor {
+    MRTC();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct STGN : public Actor {
+    STGN();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct RINS : public Actor {
+    RINS();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct WPWL : public Actor {
+    WPWL();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct PSS2 : public Actor {
+    PSS2();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct TBO2 : public Actor {
+    TBO2();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct TBGN : public Actor {
+    TBGN();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct ICEB : public Actor {
+    ICEB();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct DMYK : public Actor {
+    DMYK();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct JPE2 : public Actor {
+    JPE2();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct ENDR : public Actor {
+    ENDR();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct TFL2 : public Actor {
+    TFL2();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct LOSW : public Actor {
+    LOSW();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct PSWK : public Actor {
+    PSWK();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct SIBT : public Actor {
+    SIBT();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct PSWB : public Actor {
+    PSWB();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+class GEWP : public Actor {
+public:
+    GEWP();
+    u8 _pad[0x2a4 - sizeof(Actor)];
+};
+struct SNPC : public Actor {
+    SNPC();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct TJIJ : public Actor {
+    TJIJ();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct Actor_21 {
+    Actor_21();
+    ~Actor_21();
+    u8 _base[0x230];
+};
+class MRTA : public Actor_21 {
+public:
+    MRTA();
+    u8 _pad[0x2e4 - sizeof(Actor_21)];
+};
+struct SWDL : public Actor {
+    SWDL();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct Actor_25 {
+    Actor_25();
+    ~Actor_25();
+    u8 _base[0x230];
+};
+class fn_801FFD58_actor : public Actor_25 {
+public:
+    fn_801FFD58_actor();
+    u8 _pad[0x3c0 - sizeof(Actor_25)];
+};
+struct ELK2 : public Actor {
+    ELK2();
+    u8 _pad[0x2b8 - sizeof(Actor)];
+};
+struct PTMI : public Actor {
+    PTMI();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct MRMT : public Actor {
+    MRMT();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct FOEV : public Actor {
+    FOEV();
+    u8 _pad[0x27c - sizeof(Actor)];
+};
+struct RSNP : public Actor {
+    RSNP();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct OGST : public Actor {
+    OGST();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct ICOB : public Actor {
+    ICOB();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct ELSK : public Actor {
+    ELSK();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct TUTM : public Actor {
+    TUTM();
+    u8 _pad[0x294 - sizeof(Actor)];
+};
+struct Actor_36 {
+    Actor_36();
+    ~Actor_36();
+    u8 _base[0x230];
+};
+class TUGF : public Actor_36 {
+public:
+    TUGF();
+    u8 _pad[0x2fc - sizeof(Actor_36)];
+};
+struct LEAF : public Actor {
+    LEAF();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct LFGN : public Actor {
+    LFGN();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct THCL : public Actor {
+    THCL();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct AGBW : public Actor {
+    AGBW();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct SVGT : public Actor {
+    SVGT();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct TMI2 : public Actor {
+    TMI2();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct SAFU : public Actor {
+    SAFU();
+    u8 _pad[0x270 - sizeof(Actor)];
+};
+struct FDWP : public Actor {
+    FDWP();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct TWEV : public Actor {
+    TWEV();
+    u8 _pad[0x2b4 - sizeof(Actor)];
+};
+struct DWAP : public Actor {
+    DWAP();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct TOOI : public Actor {
+    TOOI();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct CHSW : public Actor {
+    CHSW();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct Actor_49 {
+    Actor_49();
+    ~Actor_49();
+    u8 _base[0x230];
+};
+class TLWP : public Actor_49 {
+public:
+    TLWP();
+    u8 _pad[0x2f0 - sizeof(Actor_49)];
+};
+struct JWLK : public Actor {
+    JWLK();
+    u8 _pad[0x290 - sizeof(Actor)];
+};
+struct RBPN : public Actor {
+    RBPN();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct PSW2 : public Actor {
+    PSW2();
+    u8 _pad[0x264 - sizeof(Actor)];
+};
+struct Actor_53 {
+    Actor_53();
+    ~Actor_53();
+    u8 _base[0x230];
+};
+class GNEF : public Actor_53 {
+public:
+    GNEF();
+    u8 _pad[0x2d0 - sizeof(Actor_53)];
+};
+struct STPN : public Actor {
+    STPN();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct SSMI : public Actor {
+    SSMI();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct MEDM : public Actor {
+    MEDM();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct SDSM : public Actor {
+    SDSM();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct BCK2 : public Actor {
+    BCK2();
+    u8 _pad[0x24c - sizeof(Actor)];
+};
+struct SPTG : public Actor {
+    SPTG();
+    u8 _pad[0x25c - sizeof(Actor)];
+};
+struct DNAV : public Actor {
+    DNAV();
+    u8 _pad[0x278 - sizeof(Actor)];
+};
+struct ZOMO : public Actor {
+    ZOMO();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct ZDCO : public Actor {
+    ZDCO();
+    u8 _pad[0x278 - sizeof(Actor)];
+};
+struct Actor_65 {
+    Actor_65();
+    ~Actor_65();
+    u8 _base[0x230];
+};
+class ZLD3 : public Actor_65 {
+public:
+    ZLD3();
+    u8 _pad[0x2c0 - sizeof(Actor_65)];
+};
+struct OBLF : public Actor {
+    OBLF();
+    u8 _pad[0x2a0 - sizeof(Actor)];
+};
+struct GEN3 : public Actor {
+    GEN3();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct EGOL : public Actor {
+    EGOL();
+    u8 _pad[0x268 - sizeof(Actor)];
+};
+struct Actor_69 {
+    Actor_69();
+    ~Actor_69();
+    u8 _base[0x230];
+};
+class YNSW : public Actor_69 {
+public:
+    YNSW();
+    u8 _pad[0x284 - sizeof(Actor_69)];
+};
+struct GMTB : public Actor {
+    GMTB();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct GMBL : public Actor {
+    GMBL();
+    u8 _pad[0x28c - sizeof(Actor)];
+};
+struct Actor_72 {
+    Actor_72();
+    ~Actor_72();
+    u8 _base[0x230];
+};
+class EETC : public Actor_72 {
+public:
+    EETC();
+    u8 _pad[0x31c - sizeof(Actor_72)];
+};
+struct Actor_73 {
+    Actor_73();
+    ~Actor_73();
+    u8 _base[0x230];
+};
+class RCK2 : public Actor_73 {
+public:
+    RCK2();
+    u8 _pad[0x38c - sizeof(Actor_73)];
+};
+struct Actor_75 {
+    Actor_75();
+    ~Actor_75();
+    u8 _base[0x230];
+};
+class EOWL : public Actor_75 {
+public:
+    EOWL();
+    u8 _pad[0x2bc - sizeof(Actor_75)];
+};
+struct Actor_76 {
+    Actor_76();
+    ~Actor_76();
+    u8 _base[0x230];
+};
+class DMTW : public Actor_76 {
+public:
+    DMTW();
+    u8 _pad[0x408 - sizeof(Actor_76)];
+};
+struct SMRI : public Actor {
+    SMRI();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct ELNK : public Actor {
+    ELNK();
+    u8 _pad[0x270 - sizeof(Actor)];
+};
+struct DTLK : public Actor {
+    DTLK();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct TKRA : public Actor {
+    TKRA();
+    u8 _pad[0x268 - sizeof(Actor)];
+};
+struct OKAM : public Actor {
+    OKAM();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct Actor_83 {
+    Actor_83();
+    ~Actor_83();
+    u8 _base[0x230];
+};
+class TTAT : public Actor_83 {
+public:
+    TTAT();
+    u8 _pad[0x2bc - sizeof(Actor_83)];
+};
+struct GNMA : public Actor {
+    GNMA();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct DDGO : public Actor {
+    DDGO();
+    u8 _pad[0x2a4 - sizeof(Actor)];
+};
+struct ENDM : public Actor {
+    ENDM();
+    u8 _pad[0x29c - sizeof(Actor)];
+};
+struct LCLS : public Actor {
+    LCLS();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct GLBS : public Actor {
+    GLBS();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct EMIK : public Actor {
+    EMIK();
+    u8 _pad[0x27c - sizeof(Actor)];
+};
+struct EZLD : public Actor {
+    EZLD();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct ENPC : public Actor {
+    ENPC();
+    u8 _pad[0x2a4 - sizeof(Actor)];
+};
+struct Actor_92 {
+    Actor_92();
+    ~Actor_92();
+    u8 _base[0x230];
+};
+class HBB2 : public Actor_92 {
+public:
+    HBB2();
+    u8 _pad[0x474 - sizeof(Actor_92)];
+};
+struct Actor_93 {
+    Actor_93();
+    ~Actor_93();
+    u8 _base[0x230];
+};
+class NWOK : public Actor_93 {
+public:
+    NWOK();
+    u8 _pad[0x2c4 - sizeof(Actor_93)];
+};
+struct RYYA : public Actor {
+    RYYA();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct MJGR : public Actor {
+    MJGR();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct HTMK : public Actor {
+    HTMK();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct ENBZ : public Actor {
+    ENBZ();
+    u8 _pad[0x298 - sizeof(Actor)];
+};
+struct PNP2 : public Actor {
+    PNP2();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct SSLF : public Actor {
+    SSLF();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct BEMN : public Actor {
+    BEMN();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct FOBE : public Actor {
+    FOBE();
+    u8 _pad[0x2a4 - sizeof(Actor)];
+};
+struct SEN2 : public Actor {
+    SEN2();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct CRGN : public Actor {
+    CRGN();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct TENN : public Actor {
+    TENN();
+    u8 _pad[0x354 - sizeof(Actor)];
+};
+struct WAVE : public Actor {
+    WAVE();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct FORM : public Actor {
+    FORM();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct SPBG : public Actor {
+    SPBG();
+    u8 _pad[0x24c - sizeof(Actor)];
+};
+struct SZSC : public Actor {
+    SZSC();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct NNJN : public Actor {
+    NNJN();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct SYKY : public Actor {
+    SYKY();
+    u8 _pad[0x2b0 - sizeof(Actor)];
+};
+struct ANHO : public Actor {
+    ANHO();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct FISH : public Actor {
+    FISH();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct ALCE : public Actor {
+    ALCE();
+    u8 _pad[0x268 - sizeof(Actor)];
+};
+struct ZOOM : public Actor {
+    ZOOM();
+    u8 _pad[0x24c - sizeof(Actor)];
+};
+struct BGMN : public Actor {
+    BGMN();
+    u8 _pad[0x260 - sizeof(Actor)];
+};
+struct MGYA : public Actor {
+    MGYA();
+    u8 _pad[0x294 - sizeof(Actor)];
+};
+struct GFBS : public Actor {
+    GFBS();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct BLZ2 : public Actor {
+    BLZ2();
+    u8 _pad[0x30c - sizeof(Actor)];
+};
+struct SEV2 : public Actor {
+    SEV2();
+    u8 _pad[0x28c - sizeof(Actor)];
+};
+struct RNSW : public Actor {
+    RNSW();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct SENP : public Actor {
+    SENP();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct GSYA : public Actor {
+    GSYA();
+    u8 _pad[0x2ac - sizeof(Actor)];
+};
+struct BRBL : public Actor {
+    BRBL();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct LIMT : public Actor {
+    LIMT();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct Actor_126 {
+    Actor_126();
+    ~Actor_126();
+    u8 _base[0x230];
+};
+class GNL2 : public Actor_126 {
+public:
+    GNL2();
+    u8 _pad[0x2f8 - sizeof(Actor_126)];
+};
+struct Actor_127 {
+    Actor_127();
+    ~Actor_127();
+    u8 _base[0x230];
+};
+class BEEE : public Actor_127 {
+public:
+    BEEE();
+    u8 _pad[0x3a0 - sizeof(Actor_127)];
+};
+struct PSSW : public Actor {
+    PSSW();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct Actor_129 {
+    Actor_129();
+    ~Actor_129();
+    u8 _base[0x230];
+};
+class HOUS : public Actor_129 {
+public:
+    HOUS();
+    u8 _pad[0x3f8 - sizeof(Actor_129)];
+};
+struct Actor_130 {
+    Actor_130();
+    ~Actor_130();
+    u8 _base[0x230];
+};
+class fn_80201A14_actor : public Actor_130 {
+public:
+    fn_80201A14_actor();
+    u8 _pad[0x338 - sizeof(Actor_130)];
+};
+struct GNON : public Actor {
+    GNON();
+    u8 _pad[0x33c - sizeof(Actor)];
+};
+struct BBMB : public Actor {
+    BBMB();
+    u8 _pad[0x26c - sizeof(Actor)];
+};
+struct BBSL : public Actor {
+    BBSL();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct GBAO : public Actor {
+    GBAO();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct OFFS : public Actor {
+    OFFS();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct LITS : public Actor {
+    LITS();
+    u8 _pad[0x264 - sizeof(Actor)];
+};
+struct STBL : public Actor {
+    STBL();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct Actor_140 {
+    Actor_140();
+    ~Actor_140();
+    u8 _base[0x230];
+};
+class DGT2 : public Actor_140 {
+public:
+    DGT2();
+    u8 _pad[0x3cc - sizeof(Actor_140)];
+};
+struct RVFR : public Actor {
+    RVFR();
+    u8 _pad[0x25c - sizeof(Actor)];
+};
+struct WPPA : public Actor {
+    WPPA();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct FLYO : public Actor {
+    FLYO();
+    u8 _pad[0x28c - sizeof(Actor)];
+};
+struct Actor_144 {
+    Actor_144();
+    ~Actor_144();
+    u8 _base[0x230];
+};
+class BPH2 : public Actor_144 {
+public:
+    BPH2();
+    u8 _pad[0x334 - sizeof(Actor_144)];
+};
+struct PRTC : public Actor {
+    PRTC();
+    u8 _pad[0x264 - sizeof(Actor)];
+};
+struct Actor_146 {
+    Actor_146();
+    ~Actor_146();
+    u8 _base[0x230];
+};
+class RASN : public Actor_146 {
+public:
+    RASN();
+    u8 _pad[0x26c - sizeof(Actor_146)];
+};
+struct FGN2 : public Actor {
+    FGN2();
+    u8 _pad[0x318 - sizeof(Actor)];
+};
+struct WPPR : public Actor {
+    WPPR();
+    u8 _pad[0x27c - sizeof(Actor)];
+};
+struct JPEN : public Actor {
+    JPEN();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct Actor_150 {
+    Actor_150();
+    ~Actor_150();
+    u8 _base[0x230];
+};
+class WNWN : public Actor_150 {
+public:
+    WNWN();
+    u8 _pad[0x390 - sizeof(Actor_150)];
+};
+struct URAC : public Actor {
+    URAC();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+struct VWMD : public Actor {
+    VWMD();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct TKRM : public Actor {
+    TKRM();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct BOTS : public Actor {
+    BOTS();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct TSNO : public Actor {
+    TSNO();
+    u8 _pad[0x2c0 - sizeof(Actor)];
+};
+struct FGVE : public Actor {
+    FGVE();
+    u8 _pad[0x24c - sizeof(Actor)];
+};
+struct YASI : public Actor {
+    YASI();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct BTIN : public Actor {
+    BTIN();
+    u8 _pad[0x25c - sizeof(Actor)];
+};
+struct FAGN : public Actor {
+    FAGN();
+    u8 _pad[0x264 - sizeof(Actor)];
+};
+struct GDMN : public Actor {
+    GDMN();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct RDVR : public Actor {
+    RDVR();
+    u8 _pad[0x278 - sizeof(Actor)];
+};
+struct DSIN : public Actor {
+    DSIN();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct Actor_163 {
+    Actor_163();
+    ~Actor_163();
+    u8 _base[0x230];
+};
+class GROK : public Actor_163 {
+public:
+    GROK();
+    u8 _pad[0x320 - sizeof(Actor_163)];
+};
+struct SBTN : public Actor {
+    SBTN();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct CIRC : public Actor {
+    CIRC();
+    u8 _pad[0x27c - sizeof(Actor)];
+};
+struct FLYK : public Actor {
+    FLYK();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct PESW : public Actor {
+    PESW();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct Actor_169 {
+    Actor_169();
+    ~Actor_169();
+    u8 _base[0x230];
+};
+class OSIN : public Actor_169 {
+public:
+    OSIN();
+    u8 _pad[0x29c - sizeof(Actor_169)];
+};
+struct PUKU : public Actor {
+    PUKU();
+    u8 _pad[0x27c - sizeof(Actor)];
+};
+struct SWBM : public Actor {
+    SWBM();
+    u8 _pad[0x260 - sizeof(Actor)];
+};
+struct INFR : public Actor {
+    INFR();
+    u8 _pad[0x26c - sizeof(Actor)];
+};
+class Fn801D30B8Base {
+public:
+    Fn801D30B8Base();
+    ~Fn801D30B8Base();
+private:
+    unsigned char pad[0x2b0];
+};
+class ARSH : public Fn801D30B8Base {
+public:
+    ARSH();
+    u8 _pad[0x2ac - sizeof(Fn801D30B8Base)];
+};
+struct BMTY : public Actor {
+    BMTY();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct PCDM : public Actor {
+    PCDM();
+    u8 _pad[0x27c - sizeof(Actor)];
+};
+struct CRTL : public Actor {
+    CRTL();
+    u8 _pad[0x2cc - sizeof(Actor)];
+};
+struct RDBL : public Actor {
+    RDBL();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct ONOF : public Actor {
+    ONOF();
+    u8 _pad[0x25c - sizeof(Actor)];
+};
+struct OCFR : public Actor {
+    OCFR();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct BPRY : public Actor {
+    BPRY();
+    u8 _pad[0x270 - sizeof(Actor)];
+};
+struct LIF2 : public Actor {
+    LIF2();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct WDRY : public Actor {
+    WDRY();
+    u8 _pad[0x26c - sizeof(Actor)];
+};
+struct ESRY : public Actor {
+    ESRY();
+    u8 _pad[0x2a0 - sizeof(Actor)];
+};
+struct SHLT : public Actor {
+    SHLT();
+    u8 _pad[0x37c - sizeof(Actor)];
+};
+struct RANK : public Actor {
+    RANK();
+    u8 _pad[0x29c - sizeof(Actor)];
+};
+struct HNRY : public Actor {
+    HNRY();
+    u8 _pad[0x2bc - sizeof(Actor)];
+};
+struct BLDF : public Actor {
+    BLDF();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct FOCS : public Actor {
+    FOCS();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct PNPC : public Actor {
+    PNPC();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct RAIL : public Actor {
+    RAIL();
+    u8 _pad[0x230 - sizeof(Actor)];
+};
+class Fn801D30B8Base_191 {
+public:
+    Fn801D30B8Base_191();
+    ~Fn801D30B8Base_191();
+private:
+    unsigned char pad[0x2b0];
+};
+class ZNSH : public Fn801D30B8Base_191 {
+public:
+    ZNSH();
+    u8 _pad[0x2ac - sizeof(Fn801D30B8Base_191)];
+};
+struct DOOR : public Actor {
+    DOOR();
+    u8 _pad[0x27c - sizeof(Actor)];
+};
+struct KEY0 : public Actor {
+    KEY0();
+    u8 _pad[0x2b8 - sizeof(Actor)];
+};
+struct LSTI : public Actor {
+    LSTI();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct WIZR : public Actor {
+    WIZR();
+    u8 _pad[0x30c - sizeof(Actor)];
+};
+struct SWNP : public Actor {
+    SWNP();
+    u8 _pad[0x268 - sizeof(Actor)];
+};
+struct CKSW : public Actor {
+    CKSW();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct Actor_198 {
+    Actor_198();
+    ~Actor_198();
+    u8 _base[0x230];
+};
+class TNGL : public Actor_198 {
+public:
+    TNGL();
+    u8 _pad[0x2a0 - sizeof(Actor_198)];
+};
+struct STAL : public Actor {
+    STAL();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct WRTC : public Actor {
+    WRTC();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct LWSW : public Actor {
+    LWSW();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct BWRT : public Actor {
+    BWRT();
+    u8 _pad[0x2b8 - sizeof(Actor)];
+};
+struct BFIN : public Actor {
+    BFIN();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct WTSW : public Actor {
+    WTSW();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct ZNSW : public Actor {
+    ZNSW();
+    u8 _pad[0x260 - sizeof(Actor)];
+};
+struct LPLK : public Actor {
+    LPLK();
+    u8 _pad[0x268 - sizeof(Actor)];
+};
+struct IWAG : public Actor {
+    IWAG();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct OIWA : public Actor {
+    OIWA();
+    u8 _pad[0x260 - sizeof(Actor)];
+};
+struct NZMI : public Actor {
+    NZMI();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct BLZE : public Actor {
+    BLZE();
+    u8 _pad[0x2a0 - sizeof(Actor)];
+};
+struct FIRE : public Actor {
+    FIRE();
+    u8 _pad[0x294 - sizeof(Actor)];
+};
+struct NIWA : public Actor {
+    NIWA();
+    u8 _pad[0x304 - sizeof(Actor)];
+};
+struct BGWC : public Actor {
+    BGWC();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct DOSN : public Actor {
+    DOSN();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct TLK2 : public Actor {
+    TLK2();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct SLR4 : public Actor {
+    SLR4();
+    u8 _pad[0x2d0 - sizeof(Actor)];
+};
+struct SBAL : public Actor {
+    SBAL();
+    u8 _pad[0x270 - sizeof(Actor)];
+};
+struct SWEL : public Actor {
+    SWEL();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct LIFT : public Actor {
+    LIFT();
+    u8 _pad[0x240 - sizeof(Actor)];
+};
+struct RY02 : public Actor {
+    RY02();
+    u8 _pad[0x288 - sizeof(Actor)];
+};
+struct CRTH : public Actor {
+    CRTH();
+    u8 _pad[0x2b0 - sizeof(Actor)];
+};
+struct SWOR : public Actor {
+    SWOR();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct POPO : public Actor {
+    POPO();
+    u8 _pad[0x25c - sizeof(Actor)];
+};
+struct WOOD : public Actor {
+    WOOD();
+    u8 _pad[0x24c - sizeof(Actor)];
+};
+struct Actor_225 {
+    Actor_225();
+    ~Actor_225();
+    u8 _base[0x230];
+};
+class fn_802032AC_actor : public Actor_225 {
+public:
+    fn_802032AC_actor();
+    u8 _pad[0x338 - sizeof(Actor_225)];
+};
+struct PEFF : public Actor {
+    PEFF();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct SLSD : public Actor {
+    SLSD();
+    u8 _pad[0x234 - sizeof(Actor)];
+};
+struct SSTN : public Actor {
+    SSTN();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct SKUL : public Actor {
+    SKUL();
+    u8 _pad[0x280 - sizeof(Actor)];
+};
+struct TALK : public Actor {
+    TALK();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct TRCH : public Actor {
+    TRCH();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct SCRE : public Actor {
+    SCRE();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct SPOT : public Actor {
+    SPOT();
+    u8 _pad[0x25c - sizeof(Actor)];
+};
+struct YAJI : public Actor {
+    YAJI();
+    u8 _pad[0x260 - sizeof(Actor)];
+};
+struct Actor_235 {
+    Actor_235();
+    ~Actor_235();
+    u8 _base[0x230];
+};
+class BOME : public Actor_235 {
+public:
+    BOME();
+    u8 _pad[0x380 - sizeof(Actor_235)];
+};
+struct KMRI : public Actor {
+    KMRI();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct TFLR : public Actor {
+    TFLR();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct KNBN : public Actor {
+    KNBN();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct PLAS : public Actor {
+    PLAS();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct ITMS : public Actor {
+    ITMS();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct Poon : public Actor {
+    Poon();
+    u8 _pad[0x284 - sizeof(Actor)];
+};
+struct SKIL : public Actor {
+    SKIL();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct MOZO : public Actor {
+    MOZO();
+    u8 _pad[0x270 - sizeof(Actor)];
+};
+struct BERY : public Actor {
+    BERY();
+    u8 _pad[0x2a8 - sizeof(Actor)];
+};
+struct PONT : public Actor {
+    PONT();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct ARRW : public Actor {
+    ARRW();
+    u8 _pad[0x280 - sizeof(Actor)];
+};
+struct TRAP : public Actor {
+    TRAP();
+    u8 _pad[0x280 - sizeof(Actor)];
+};
+struct THRN : public Actor {
+    THRN();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct SWEV : public Actor {
+    SWEV();
+    u8 _pad[0x33c - sizeof(Actor)];
+};
+struct BALL : public Actor {
+    BALL();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct Actor_252 {
+    Actor_252();
+    ~Actor_252();
+    u8 _base[0x230];
+};
+class BPOH : public Actor_252 {
+public:
+    BPOH();
+    u8 _pad[0x300 - sizeof(Actor_252)];
+};
+struct SHTR : public Actor {
+    SHTR();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct EZRY : public Actor {
+    EZRY();
+    u8 _pad[0x298 - sizeof(Actor)];
+};
+struct SWT4 : public Actor {
+    SWT4();
+    u8 _pad[0x254 - sizeof(Actor)];
+};
+struct RYRN : public Actor {
+    RYRN();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct MTBO : public Actor {
+    MTBO();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct TKYU : public Actor {
+    TKYU();
+    u8 _pad[0x24c - sizeof(Actor)];
+};
+struct FLME : public Actor {
+    FLME();
+    u8 _pad[0x274 - sizeof(Actor)];
+};
+struct KETH : public Actor {
+    KETH();
+    u8 _pad[0x28c - sizeof(Actor)];
+};
+struct BOYO : public Actor {
+    BOYO();
+    u8 _pad[0x278 - sizeof(Actor)];
+};
+struct IMUP : public Actor {
+    IMUP();
+    u8 _pad[0x2b4 - sizeof(Actor)];
+};
+struct TKTA : public Actor {
+    TKTA();
+    u8 _pad[0x264 - sizeof(Actor)];
+};
+struct EXPL : public Actor {
+    EXPL();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct SLR1 : public Actor {
+    SLR1();
+    u8 _pad[0x2c8 - sizeof(Actor)];
+};
+struct SWTH : public Actor {
+    SWTH();
+    u8 _pad[0x268 - sizeof(Actor)];
+};
+struct HBMB : public Actor {
+    HBMB();
+    u8 _pad[0x29c - sizeof(Actor)];
+};
+struct HINO : public Actor {
+    HINO();
+    u8 _pad[0x288 - sizeof(Actor)];
+};
+struct Actor_270 {
+    Actor_270();
+    ~Actor_270();
+    u8 _base[0x230];
+};
+class GOAL : public Actor_270 {
+public:
+    GOAL();
+    u8 _pad[0x320 - sizeof(Actor_270)];
+};
+struct BHRT : public Actor {
+    BHRT();
+    u8 _pad[0x23c - sizeof(Actor)];
+};
+struct Actor_272 {
+    Actor_272();
+    ~Actor_272();
+    u8 _base[0x230];
+};
+class DGTL : public Actor_272 {
+public:
+    DGTL();
+    u8 _pad[0x7c8 - sizeof(Actor_272)];
+};
+struct OKTM : public Actor {
+    OKTM();
+    u8 _pad[0x260 - sizeof(Actor)];
+};
+struct HART : public Actor {
+    HART();
+    u8 _pad[0x244 - sizeof(Actor)];
+};
+struct GNLD : public Actor {
+    GNLD();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct DBRK : public Actor {
+    DBRK();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct BZBR : public Actor {
+    BZBR();
+    u8 _pad[0x264 - sizeof(Actor)];
+};
+struct BLCK : public Actor {
+    BLCK();
+    u8 _pad[0x250 - sizeof(Actor)];
+};
+struct PEAC : public Actor {
+    PEAC();
+    u8 _pad[0x24c - sizeof(Actor)];
+};
+struct TUBO : public Actor {
+    TUBO();
+    u8 _pad[0x258 - sizeof(Actor)];
+};
+struct ROCK : public Actor {
+    ROCK();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct WARP : public Actor {
+    WARP();
+    u8 _pad[0x28c - sizeof(Actor)];
+};
+struct BORD : public Actor {
+    BORD();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct STON : public Actor {
+    STON();
+    u8 _pad[0x238 - sizeof(Actor)];
+};
+struct GENE : public Actor {
+    GENE();
+    u8 _pad[0x678 - sizeof(Actor)];
+};
+struct FGAS : public Actor {
+    FGAS();
+    u8 _pad[0x248 - sizeof(Actor)];
+};
+struct POOH : public Actor {
+    POOH();
+    u8 _pad[0x278 - sizeof(Actor)];
+};
+struct AMOS : public Actor {
+    AMOS();
+    u8 _pad[0x32c - sizeof(Actor)];
+};
+struct OKTA : public Actor {
+    OKTA();
+    u8 _pad[0x288 - sizeof(Actor)];
+};
+struct RUPY : public Actor {
+    RUPY();
+    u8 _pad[0x2a8 - sizeof(Actor)];
+};
+struct Jiji {
+    Jiji();
+    u8 _pad[0x27c];
+};
+struct WLFT {
+    WLFT();
+    u8 _pad[0x2a8];
+};
+struct fn_801070B4_actor {
+    fn_801070B4_actor();
+    u8 _pad[0x248];
+};
+struct fn_801087F4_actor {
+    fn_801087F4_actor();
+    u8 _pad[0x270];
+};
+struct fn_801092B0_actor {
+    fn_801092B0_actor();
+    u8 _pad[0x284];
+};
+struct Dbms {
+    Dbms();
+    u8 _pad[0x268];
+};
+struct DMGA {
+    DMGA();
+    u8 _pad[0x2ac];
+};
+struct OPGA {
+    OPGA();
+    u8 _pad[0x2b4];
+};
+struct DMNR {
+    DMNR();
+    u8 _pad[0x240];
+};
+struct Twtg {
+    Twtg();
+    u8 _pad[0x27c];
+};
+struct Ftgl {
+    Ftgl();
+    u8 _pad[0x274];
+};
+struct CRNV {
+    CRNV();
+    u8 _pad[0x280];
+};
+struct Znlj {
+    Znlj();
+    u8 _pad[0x2c4];
+};
+// ---- Actor factory ----
+class JKRHeap;
+void* operator new(unsigned long size, JKRHeap* heap, int align);
+
+struct Quad { u32 w[4]; };
+struct Vec4f { f32 x, y, z, w; };
+
+// Virtual view of an actor (only slot 1 is called here).
+struct ActorVt {
+    virtual void v00();
+    virtual void v01();
+};
+
+// Per-slot helper at ActorMgr+0x100C (0x80457840 attaches a position to it).
+struct ActorSlotLink;
+
+struct ActorMgr {
+    /* 0x0000 */ u32 field_0;
+    /* 0x0004 */ JKRHeap* heap;
+    /* 0x0008 */ Actor* actors[0x400];
+    /* 0x1008 */ s32 maxUsed;
+    /* 0x100C */ ActorSlotLink* links[0x400];
+    /* 0x200C */ u32 field_200C;
+    /* 0x2010 */ s32 serial;
+    /* 0x2014 */ s32 lastIndex;
+};
+
+extern "C" void fn_801FF630(Actor* a, Vec4f* v);
+extern "C" Vec4f* fn_801FF654(Actor* a);
+extern "C" Vec4f* fn_801FF65C(Actor* a);
+extern "C" void fn_801FF664(Actor* a, s32 v);
+extern "C" void fn_801FF66C(Actor* a, u32 v);
+extern "C" u32 fn_801FF674(void);
+extern "C" void fn_801FF698(Actor* a, s32 v);
+extern "C" void fn_801FF6A0(Actor* a, s32 v);
+extern "C" void fn_801FF6A8(Actor* a, s32 v);
+extern "C" void fn_801FF6B0(Actor* a, s32 v);
+extern "C" void fn_801FF6B8(Actor* a, u8 v);
+extern "C" void fn_801FF6C0(Actor* a, s32 v);
+extern "C" void fn_801FF6C8(Actor* a, s32 v);
+extern "C" void fn_801FF6D0(Actor* a, u32 v);
+extern "C" void fn_801FF6D8(Actor* a, s32 v);
+extern "C" void fn_801FF6E0(Actor* a, s32 v);
+extern "C" void fn_801FF6E8(Actor* a, s32 v);
+extern "C" void fn_801FF6F0(Actor* a, Vec* v);
+extern "C" void fn_801FF704(Actor* a, Vec* v);
+extern "C" void fn_801FF720(Actor* a, s32 v);
+extern "C" void fn_801FF728(Actor* a, s32 v);
+extern "C" Vec* fn_801FF730(Actor* a);
+extern "C" void fn_801FF738(ActorSlotLink* l);
+extern "C" void fn_80457840(ActorSlotLink* l, Vec* pos);
+extern "C" void fn_8018A588(Actor* a, s32 v);
+extern "C" s32 fn_801F620C(ActorMgr* mgr, s32 id, u32 tag);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u32 fn_802D39FC(void* room);
+extern const f32 lbl_8053F830;
+
+extern "C" s32 Actor_CreateByID(ActorMgr* mgr, s32 id, s32 owner, Vec* pos, u32 param, s32 a7, s32 a8) {
+    s32 result = -1;
+    for (s32 i = 0; i < 0x400; i++) {
+        if (mgr->actors[i] != 0) {
+            continue;
+        }
+        switch (id) {
+        case 'RUPY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RUPY;
+            break;
+        case 'OKTA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OKTA;
+            break;
+        case 'AMOS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) AMOS;
+            break;
+        case 'POOH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) POOH;
+            break;
+        case 'GRAS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FGAS;
+            break;
+        case 'GENE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GENE;
+            break;
+        case 'STON':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) STON;
+            break;
+        case 'BORD':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BORD;
+            break;
+        case 'WARP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WARP;
+            break;
+        case 'ROCK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ROCK;
+            break;
+        case 'TUBO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TUBO;
+            break;
+        case 'PEAC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PEAC;
+            break;
+        case 'BLCK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BLCK;
+            break;
+        case 'BZBR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BZBR;
+            break;
+        case 'DDRK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DBRK;
+            break;
+        case 'GOLD':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GNLD;
+            break;
+        case 'HART':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) HART;
+            break;
+        case 'OKTM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OKTM;
+            break;
+        case 'DGTL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DGTL;
+            break;
+        case 'BHRT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BHRT;
+            break;
+        case 'GOAL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GOAL;
+            break;
+        case 'HINO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) HINO;
+            break;
+        case 'HBMB':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) HBMB;
+            break;
+        case 'SWTH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWTH;
+            break;
+        case 'SLR1':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SLR1;
+            break;
+        case 'EXPL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) EXPL;
+            break;
+        case 'TKTA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TKTA;
+            break;
+        case 'SLR2':
+            {
+                void* p = operator new(0x2c4, mgr->heap, 0);
+                if (p) p = fn_80203BF0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'IMUP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) IMUP;
+            break;
+        case 'BOYO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BOYO;
+            break;
+        case 'KETH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) KETH;
+            break;
+        case 'FLME':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FLME;
+            break;
+        case 'JIJI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) Jiji;
+            break;
+        case 'TKYU':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TKYU;
+            break;
+        case 'MTBO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MTBO;
+            break;
+        case 'RYRN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RYRN;
+            break;
+        case 'SWT4':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWT4;
+            break;
+        case 'FARY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) EZRY;
+            break;
+        case 'SHTR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SHTR;
+            break;
+        case 'BPOH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BPOH;
+            break;
+        case 'BALL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BALL;
+            break;
+        case 'SWEV':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWEV;
+            break;
+        case 'THRN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) THRN;
+            break;
+        case 'TRAP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TRAP;
+            break;
+        case 'ARRW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ARRW;
+            break;
+        case 'PONT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PONT;
+            break;
+        case 'BFRY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BERY;
+            break;
+        case 'MOZO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MOZO;
+            break;
+        case 'SKIL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SKIL;
+            break;
+        case 'Poon':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) Poon;
+            break;
+        case 'ITMS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ITMS;
+            break;
+        case 'PLAS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PLAS;
+            break;
+        case 'KNBN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) KNBN;
+            break;
+        case 'TFLR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TFLR;
+            break;
+        case 'KMRI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) KMRI;
+            break;
+        case 'BOME':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BOME;
+            break;
+        case 'YAJI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) YAJI;
+            break;
+        case 'SPOT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SPOT;
+            break;
+        case 'SCRE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SCRE;
+            break;
+        case 'TRCH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TRCH;
+            break;
+        case 'TALK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TALK;
+            break;
+        case 'SKUL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SKUL;
+            break;
+        case 'SSTN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SSTN;
+            break;
+        case 'SLSD':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SLSD;
+            break;
+        case 'PEFF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PEFF;
+            break;
+        case 'SLR3':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_802032AC_actor;
+            break;
+        case 'WOOD':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WOOD;
+            break;
+        case 'POPO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) POPO;
+            break;
+        case 'SWOR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWOR;
+            break;
+        case 'DETH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) CRTH;
+            break;
+        case 'RY02':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RY02;
+            break;
+        case 'LIFT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LIFT;
+            break;
+        case 'SWEL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWEL;
+            break;
+        case 'SBAL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SBAL;
+            break;
+        case 'SLR4':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SLR4;
+            break;
+        case 'TLK2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TLK2;
+            break;
+        case 'DOSN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DOSN;
+            break;
+        case 'BGWC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BGWC;
+            break;
+        case 'NIWA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) NIWA;
+            break;
+        case 'FIRE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FIRE;
+            break;
+        case 'BLZE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BLZE;
+            break;
+        case 'NZMI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) NZMI;
+            break;
+        case 'ROPE':
+            {
+                void* p = operator new(0x2a8, mgr->heap, 0);
+                if (p) p = fn_801B7DE0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'OIWA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OIWA;
+            break;
+        case 'IWAG':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) IWAG;
+            break;
+        case 'LPLK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LPLK;
+            break;
+        case 'PAME':
+            {
+                void* p = operator new(0x2ac, mgr->heap, 0);
+                if (p) p = fn_801B94C8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ZNSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ZNSW;
+            break;
+        case 'WTSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WTSW;
+            break;
+        case 'BFIN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BFIN;
+            break;
+        case 'BWRT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BWRT;
+            break;
+        case 'LWSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LWSW;
+            break;
+        case 'WRTC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WRTC;
+            break;
+        case 'STAL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) STAL;
+            break;
+        case 'TNGL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TNGL;
+            break;
+        case 'CKSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) CKSW;
+            break;
+        case 'MIRA':
+            {
+                void* p = operator new(0x2a8, mgr->heap, 0);
+                if (p) p = fn_801BA3FC(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'SWNP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWNP;
+            break;
+        case 'WIZR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WIZR;
+            break;
+        case 'LSTI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LSTI;
+            break;
+        case 'KEY0':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) KEY0;
+            break;
+        case 'DOOR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DOOR;
+            break;
+        case 'ZORA':
+            {
+                void* p = operator new(0x2ac, mgr->heap, 0);
+                if (p) p = fn_801BB3B0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ZOSH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ZNSH;
+            break;
+        case 'BOGF':
+            {
+                void* p = operator new(0x618, mgr->heap, 0);
+                if (p) p = fn_801D686C(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'RAIL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RAIL;
+            break;
+        case 'FALL':
+            {
+                void* p = operator new(0x2f0, mgr->heap, 0);
+                if (p) p = fn_801BCCF0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'PNPC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PNPC;
+            break;
+        case 'FOCS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FOCS;
+            break;
+        case 'BLDF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BLDF;
+            break;
+        case 'HNRY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) HNRY;
+            break;
+        case 'RANK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RANK;
+            break;
+        case 'SHLT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SHLT;
+            break;
+        case 'ESRY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ESRY;
+            break;
+        case 'TZOK':
+            {
+                void* p = operator new(0x388, mgr->heap, 0);
+                if (p) p = fn_80206810(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'WDRY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WDRY;
+            break;
+        case 'LIF2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LIF2;
+            break;
+        case 'BRRY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BPRY;
+            break;
+        case 'FBMR':
+            {
+                void* p = operator new(0x300, mgr->heap, 0);
+                if (p) p = fn_801BD640(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FBOB':
+            {
+                void* p = operator new(0x2b0, mgr->heap, 0);
+                if (p) p = fn_801BDBF0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'TINK':
+            {
+                void* p = operator new(0x2d4, mgr->heap, 0);
+                if (p) p = fn_801E22A4(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'TINB':
+            {
+                void* p = operator new(0x2a8, mgr->heap, 0);
+                if (p) p = fn_801E33B8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'OCFR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OCFR;
+            break;
+        case 'ONOF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ONOF;
+            break;
+        case 'RDBL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RDBL;
+            break;
+        case 'CRTL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) CRTL;
+            break;
+        case 'PCDM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PCDM;
+            break;
+        case 'BOIC':
+            {
+                void* p = operator new(0x340, mgr->heap, 0);
+                if (p) p = fn_801DA504(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BMTY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BMTY;
+            break;
+        case 'RUSA':
+            {
+                void* p = operator new(0x3b4, mgr->heap, 0);
+                if (p) p = fn_80212800(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ARIJ':
+            {
+                void* p = operator new(0x2a8, mgr->heap, 0);
+                if (p) p = fn_80213BA0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ARSH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ARSH;
+            break;
+        case 'INFR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) INFR;
+            break;
+        case 'CLOD':
+            {
+                void* p = operator new(0x3ac, mgr->heap, 0);
+                if (p) p = fn_80105BEC(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'SWBM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWBM;
+            break;
+        case 'PUKU':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PUKU;
+            break;
+        case 'OSIN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OSIN;
+            break;
+        case 'BMST':
+            {
+                void* p = operator new(0x2b8, mgr->heap, 0);
+                if (p) p = fn_801BEB44(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'LNBM':
+            {
+                void* p = operator new(0x2ac, mgr->heap, 0);
+                if (p) p = fn_801BF5A8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'WLFT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WLFT;
+            break;
+        case 'PLSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PESW;
+            break;
+        case 'FGAN':
+            {
+                void* p = operator new(0x2e0, mgr->heap, 0);
+                if (p) p = fn_80202444(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'SLK2':
+            {
+                void* p = operator new(0x5b4, mgr->heap, 0);
+                if (p) p = fn_801C573C(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'WIND':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_801070B4_actor;
+            break;
+        case 'FLYK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FLYK;
+            break;
+        case 'CNON':
+            {
+                void* p = operator new(0x294, mgr->heap, 0);
+                if (p) p = fn_80108168(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DEAL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_801087F4_actor;
+            break;
+        case 'SITM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_801092B0_actor;
+            break;
+        case 'CIRC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) CIRC;
+            break;
+        case 'SBTN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SBTN;
+            break;
+        case 'GROK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GROK;
+            break;
+        case 'DSIN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DSIN;
+            break;
+        case 'RIVR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RDVR;
+            break;
+        case 'GDMN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GDMN;
+            break;
+        case 'FAGN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FAGN;
+            break;
+        case 'ZLDA':
+            {
+                void* p = operator new(0x374, mgr->heap, 0);
+                if (p) p = fn_8010AFC4(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ICCL':
+            {
+                void* p = operator new(0x280, mgr->heap, 0);
+                if (p) p = fn_8010C00C(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'SNBL':
+            {
+                void* p = operator new(0x380, mgr->heap, 0);
+                if (p) p = fn_8010D7A0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DBMS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) Dbms;
+            break;
+        case 'BTIN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BTIN;
+            break;
+        case 'YASI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) YASI;
+            break;
+        case 'GRVE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FGVE;
+            break;
+        case 'TSNO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TSNO;
+            break;
+        case 'BOTS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BOTS;
+            break;
+        case 'TNDR':
+            {
+                void* p = operator new(0x2d0, mgr->heap, 0);
+                if (p) p = fn_801C0AD8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'TKRM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TKRM;
+            break;
+        case 'VWMD':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) VWMD;
+            break;
+        case 'URAC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) URAC;
+            break;
+        case 'WNWN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WNWN;
+            break;
+        case 'SLGE':
+            {
+                void* p = operator new(0x438, mgr->heap, 0);
+                if (p) p = fn_801C2414(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'JPEN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) JPEN;
+            break;
+        case 'WPPR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WPPR;
+            break;
+        case 'FGN2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FGN2;
+            break;
+        case 'RASN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RASN;
+            break;
+        case 'PRTC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PRTC;
+            break;
+        case 'DMZL':
+            {
+                void* p = operator new(0x388, mgr->heap, 0);
+                if (p) p = fn_80112070(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DMMD':
+            {
+                void* p = operator new(0x2a4, mgr->heap, 0);
+                if (p) p = fn_801134DC(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DMCR':
+            {
+                void* p = operator new(0x2f0, mgr->heap, 0);
+                if (p) p = fn_80115590(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DMGF':
+            {
+                void* p = operator new(0x330, mgr->heap, 0);
+                if (p) p = fn_80116BE8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DMSW':
+            {
+                void* p = operator new(0x2ac, mgr->heap, 0);
+                if (p) p = fn_801180D0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BPH2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BPH2;
+            break;
+        case 'DMCT':
+            {
+                void* p = operator new(0x23c, mgr->heap, 0);
+                if (p) p = fn_8011A248(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FLYO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FLYO;
+            break;
+        case 'WPPA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WPPA;
+            break;
+        case 'RVFR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RVFR;
+            break;
+        case 'DGT2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DGT2;
+            break;
+        case 'DMGL':
+            {
+                void* p = operator new(0x294, mgr->heap, 0);
+                if (p) p = fn_8011B0DC(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DMLK':
+            {
+                void* p = operator new(0x290, mgr->heap, 0);
+                if (p) p = fn_8011CC2C(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BGBL':
+            {
+                void* p = operator new(0x2b0, mgr->heap, 0);
+                if (p) p = fn_801D8194(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DMGA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DMGA;
+            break;
+        case 'STBL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) STBL;
+            break;
+        case 'LOTS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LITS;
+            break;
+        case 'ICHL':
+            {
+                void* p = operator new(0x2e8, mgr->heap, 0);
+                if (p) p = fn_801DBFB0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ICWL':
+            {
+                void* p = operator new(0x280, mgr->heap, 0);
+                if (p) p = fn_8011E6E0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BLZD':
+            {
+                void* p = operator new(0x240, mgr->heap, 0);
+                if (p) p = fn_80201BF0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BOIT':
+            {
+                void* p = operator new(0x2ac, mgr->heap, 0);
+                if (p) p = fn_801DCA30(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'LTZR':
+            {
+                void* p = operator new(0x2bc, mgr->heap, 0);
+                if (p) p = fn_80340C60(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'OFFS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OFFS;
+            break;
+        case 'GBAO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GBAO;
+            break;
+        case 'BOIB':
+            {
+                void* p = operator new(0x2b0, mgr->heap, 0);
+                if (p) p = fn_801DCF40(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'GEN2':
+            {
+                void* p = operator new(0x250, mgr->heap, 0);
+                if (p) p = fn_80201B3C(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BBSL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BBSL;
+            break;
+        case 'BBMB':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BBMB;
+            break;
+        case 'GNON':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GNON;
+            break;
+        case 'ZLD2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_80201A14_actor;
+            break;
+        case 'HOUS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) HOUS;
+            break;
+        case 'PSSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PSSW;
+            break;
+        case 'BEEE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BEEE;
+            break;
+        case 'GOL2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GNL2;
+            break;
+        case 'NAVI':
+            {
+                void* p = operator new(0x2d8, mgr->heap, 0);
+                if (p) p = fn_8021EDC0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'KEPO':
+            {
+                void* p = operator new(0x2dc, mgr->heap, 0);
+                if (p) p = fn_8021A2D0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'LIMT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LIMT;
+            break;
+        case 'BRBL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BRBL;
+            break;
+        case 'IPOT':
+            {
+                void* p = operator new(0x2b8, mgr->heap, 0);
+                if (p) p = fn_801E78F0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FSPO':
+            {
+                void* p = operator new(0x2a8, mgr->heap, 0);
+                if (p) p = fn_801E7DBC(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FSOB':
+            {
+                void* p = operator new(0x3c4, mgr->heap, 0);
+                if (p) p = fn_801E9850(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'HAYA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GSYA;
+            break;
+        case 'SENP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SENP;
+            break;
+        case 'RNSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RNSW;
+            break;
+        case 'SEV2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SEV2;
+            break;
+        case 'BARI':
+            {
+                void* p = operator new(0x258, mgr->heap, 0);
+                if (p) p = fn_8011FD28(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BLZ2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BLZ2;
+            break;
+        case 'FAZR':
+            {
+                void* p = operator new(0x3d4, mgr->heap, 0);
+                if (p) p = fn_80121164(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'OPGL':
+            {
+                void* p = operator new(0x3d4, mgr->heap, 0);
+                if (p) p = fn_801258D8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'OPGA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OPGA;
+            break;
+        case 'GFBS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GFBS;
+            break;
+        case 'MGYA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MGYA;
+            break;
+        case 'FZRA':
+            {
+                void* p = operator new(0x384, mgr->heap, 0);
+                if (p) p = fn_80127B48(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BGMN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BGMN;
+            break;
+        case 'ZOOM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ZOOM;
+            break;
+        case 'ALCE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ALCE;
+            break;
+        case 'FISH':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FISH;
+            break;
+        case 'DMGE':
+            {
+                void* p = operator new(0x244, mgr->heap, 0);
+                if (p) p = fn_802014C8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ANHO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ANHO;
+            break;
+        case 'SYKY':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SYKY;
+            break;
+        case 'NNJN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) NNJN;
+            break;
+        case 'SZSC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SZSC;
+            break;
+        case 'DMNR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DMNR;
+            break;
+        case 'SPBG':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SPBG;
+            break;
+        case 'FORM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FORM;
+            break;
+        case 'HRMN':
+            {
+                void* p = operator new(0x35c, mgr->heap, 0);
+                if (p) p = fn_801ED144(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'WAVE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WAVE;
+            break;
+        case 'TENN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TENN;
+            break;
+        case 'CRGN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) CRGN;
+            break;
+        case 'SEN2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SEN2;
+            break;
+        case 'RNBW':
+            {
+                void* p = operator new(0x250, mgr->heap, 0);
+                if (p) p = fn_8012A364(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FOBE':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FOBE;
+            break;
+        case 'BEMN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BEMN;
+            break;
+        case 'FOSL':
+            {
+                void* p = operator new(0x2d0, mgr->heap, 0);
+                if (p) p = fn_8020B0B8(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'SLMN':
+            {
+                void* p = operator new(0x34c, mgr->heap, 0);
+                if (p) p = fn_80208BE0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FOBR':
+            {
+                void* p = operator new(0x2ac, mgr->heap, 0);
+                if (p) p = fn_8020BE40(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BRMN':
+            {
+                void* p = operator new(0x370, mgr->heap, 0);
+                if (p) p = fn_802095C4(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'SSLF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SSLF;
+            break;
+        case 'PNP2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PNP2;
+            break;
+        case 'ENBZ':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ENBZ;
+            break;
+        case 'HTMK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) HTMK;
+            break;
+        case 'MJGR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MJGR;
+            break;
+        case 'SAYA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RYYA;
+            break;
+        case 'NWOK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) NWOK;
+            break;
+        case 'HBB2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) HBB2;
+            break;
+        case 'ENPC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ENPC;
+            break;
+        case 'EZLD':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) EZLD;
+            break;
+        case 'EMIK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) EMIK;
+            break;
+        case 'GLBS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GLBS;
+            break;
+        case 'LCLS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LCLS;
+            break;
+        case 'ENDM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ENDM;
+            break;
+        case 'DDGO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DDGO;
+            break;
+        case 'GOMA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GNMA;
+            break;
+        case 'TTAT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TTAT;
+            break;
+        case 'OKAM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OKAM;
+            break;
+        case 'TKRA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TKRA;
+            break;
+        case 'DTLK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DTLK;
+            break;
+        case 'ELNK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ELNK;
+            break;
+        case 'SMRI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SMRI;
+            break;
+        case 'ZASL':
+            {
+                void* p = operator new(0x2b0, mgr->heap, 0);
+                if (p) p = fn_8020CA34(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'DMTW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DMTW;
+            break;
+        case 'EOWL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) EOWL;
+            break;
+        case 'RCK2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RCK2;
+            break;
+        case 'EETC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) EETC;
+            break;
+        case 'TWTG':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) Twtg;
+            break;
+        case 'GMBL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GMBL;
+            break;
+        case 'GMTB':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GMTB;
+            break;
+        case 'FLOR':
+            {
+                void* p = operator new(0x2c4, mgr->heap, 0);
+                if (p) p = fn_8020F510(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'YNSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) YNSW;
+            break;
+        case 'EGOL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) EGOL;
+            break;
+        case 'GEN3':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GEN3;
+            break;
+        case 'OBLF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OBLF;
+            break;
+        case 'ZLD3':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ZLD3;
+            break;
+        case 'ZLD4':
+            {
+                void* p = operator new(0x344, mgr->heap, 0);
+                if (p) p = fn_80200764(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ZDCO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ZDCO;
+            break;
+        case 'IBBM':
+            {
+                void* p = operator new(0x2b8, mgr->heap, 0);
+                if (p) p = fn_802103C0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ZOMO':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ZOMO;
+            break;
+        case 'DNAV':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DNAV;
+            break;
+        case 'DCR2':
+            {
+                void* p = operator new(0x414, mgr->heap, 0);
+                if (p) p = fn_8036C750(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'SVTG':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SPTG;
+            break;
+        case 'BTBZ':
+            {
+                void* p = operator new(0x240, mgr->heap, 0);
+                if (p) p = fn_8012D848(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'BCK2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) BCK2;
+            break;
+        case 'SDSM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SDSM;
+            break;
+        case 'SLEF':
+            {
+                void* p = operator new(0x2a8, mgr->heap, 0);
+                if (p) p = fn_80213FE4(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'MEDM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MEDM;
+            break;
+        case 'TOMI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SSMI;
+            break;
+        case 'STPN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) STPN;
+            break;
+        case 'GNEF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GNEF;
+            break;
+        case 'PSW2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PSW2;
+            break;
+        case 'RBPN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RBPN;
+            break;
+        case 'JWLK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) JWLK;
+            break;
+        case 'TLWP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TLWP;
+            break;
+        case 'CHSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) CHSW;
+            break;
+        case 'TOOI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TOOI;
+            break;
+        case 'DWAP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DWAP;
+            break;
+        case 'TWEV':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TWEV;
+            break;
+        case 'SNWL':
+            {
+                void* p = operator new(0x248, mgr->heap, 0);
+                if (p) p = fn_8012E780(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FDWP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FDWP;
+            break;
+        case 'SAFU':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SAFU;
+            break;
+        case 'TMI2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TMI2;
+            break;
+        case 'SVGT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SVGT;
+            break;
+        case 'AGBW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) AGBW;
+            break;
+        case 'THCL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) THCL;
+            break;
+        case 'LFGN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LFGN;
+            break;
+        case 'LEAF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LEAF;
+            break;
+        case 'TUGF':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TUGF;
+            break;
+        case 'TUTL':
+            {
+                void* p = operator new(0x26c, mgr->heap, 0);
+                if (p) p = fn_80200060(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'TUTM':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TUTM;
+            break;
+        case 'EMSK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ELSK;
+            break;
+        case 'IFCK':
+            {
+                void* p = operator new(0x238, mgr->heap, 0);
+                if (p) p = fn_8012F178(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ICOB':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ICOB;
+            break;
+        case 'OGST':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) OGST;
+            break;
+        case 'RSNP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RSNP;
+            break;
+        case 'LTEV':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FOEV;
+            break;
+        case 'MRMT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MRMT;
+            break;
+        case 'FBGE':
+            {
+                void* p = operator new(0x2ac, mgr->heap, 0);
+                if (p) p = fn_8021D4CC(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FBAL':
+            {
+                void* p = operator new(0x2b0, mgr->heap, 0);
+                if (p) p = fn_80220378(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'PTMI':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PTMI;
+            break;
+        case 'ELK2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ELK2;
+            break;
+        case 'FGAL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_801FFD58_actor;
+            break;
+        case 'RCK3':
+            {
+                void* p = operator new(0x268, mgr->heap, 0);
+                if (p) p = fn_801FFD1C(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'FTGL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) Ftgl;
+            break;
+        case 'SWDL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SWDL;
+            break;
+        case 'WPCN':
+            {
+                void* p = operator new(0x29c, mgr->heap, 0);
+                if (p) p = fn_80131AF0(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'MRTA':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MRTA;
+            break;
+        case 'TJIJ':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TJIJ;
+            break;
+        case 'SNPC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SNPC;
+            break;
+        case 'GLWP':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GEWP;
+            break;
+        case 'SPFR':
+            {
+                void* p = operator new(0x28c, mgr->heap, 0);
+                if (p) p = fn_801336B4(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'PSWB':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PSWB;
+            break;
+        case 'SIBT':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SIBT;
+            break;
+        case 'PSWK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PSWK;
+            break;
+        case 'LOSW':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) LOSW;
+            break;
+        case 'TFL2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TFL2;
+            break;
+        case 'ENDR':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ENDR;
+            break;
+        case 'JPE2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) JPE2;
+            break;
+        case 'DMYK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) DMYK;
+            break;
+        case 'ICEB':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ICEB;
+            break;
+        case 'TBGN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TBGN;
+            break;
+        case 'TBO2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) TBO2;
+            break;
+        case 'CRNV':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) CRNV;
+            break;
+        case 'ZSLJ':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) Znlj;
+            break;
+        case 'ZSLH':
+            {
+                void* p = operator new(0x2d4, mgr->heap, 0);
+                if (p) p = fn_80222190(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ZSLA':
+            {
+                void* p = operator new(0x2c0, mgr->heap, 0);
+                if (p) p = fn_80222A58(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ZSLF':
+            {
+                void* p = operator new(0x2bc, mgr->heap, 0);
+                if (p) p = fn_8022313C(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'ZSLD':
+            {
+                void* p = operator new(0x2c4, mgr->heap, 0);
+                if (p) p = fn_80224084(p);
+                mgr->actors[i] = (Actor*)p;
+            }
+            break;
+        case 'PSS2':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) PSS2;
+            break;
+        case 'WPWL':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) WPWL;
+            break;
+        case 'RINS':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) RINS;
+            break;
+        case 'STGN':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) STGN;
+            break;
+        case 'MRTC':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) MRTC;
+            break;
+        case 'GSCK':
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) GSCK;
+            break;
+        case 'DMCS':
+        case 'FGAM':
+        case 'ZSLE':
+        case 'ZSLG':
+            break;
+        }
+        if (mgr->actors[i] == 0) {
+            return -1;
+        }
+        fn_801FF738(mgr->links[i]);
+        fn_80457840(mgr->links[i], fn_801FF730(mgr->actors[i]));
+        fn_801FF728(mgr->actors[i], mgr->serial);
+        fn_801FF720(mgr->actors[i], i);
+        fn_801FF704(mgr->actors[i], pos);
+        fn_801FF6F0(mgr->actors[i], pos);
+        fn_801FF6E8(mgr->actors[i], id);
+        fn_801FF6E0(mgr->actors[i], owner);
+        fn_801FF6D8(mgr->actors[i], owner);
+        fn_801FF6D0(mgr->actors[i], param);
+        fn_8018A588(mgr->actors[i], fn_801F620C(mgr, id, 'life'));
+        fn_801FF6C8(mgr->actors[i], fn_801F620C(mgr, id, 'atcp'));
+        fn_801FF6C0(mgr->actors[i], fn_801F620C(mgr, id, 'atcn'));
+        fn_801FF6B8(mgr->actors[i], fn_801F620C(mgr, id, 'dstr') != 0);
+        fn_801FF6B0(mgr->actors[i], fn_801F620C(mgr, id, 'dasu'));
+        fn_801FF6A8(mgr->actors[i], fn_801F620C(mgr, id, 'efsz'));
+        fn_801FF6A0(mgr->actors[i], fn_801F620C(mgr, id, 'voic'));
+        fn_801FF698(mgr->actors[i], a7);
+        fn_801FF66C(mgr->actors[i], fn_801FF674());
+        fn_801FF664(mgr->actors[i], a8);
+        mgr->lastIndex = i;
+        result = mgr->serial;
+        mgr->serial = result + 1;
+        if (mgr->maxUsed < i + 1) {
+            mgr->maxUsed = i + 1;
+        }
+        ((ActorVt*)mgr->actors[i])->v01();
+        if (fn_801FF65C(mgr->actors[i])->x == lbl_8053F830 && fn_801FF65C(mgr->actors[i])->y == lbl_8053F830 &&
+            fn_801FF65C(mgr->actors[i])->z == lbl_8053F830 && fn_801FF65C(mgr->actors[i])->w == lbl_8053F830) {
+            fn_801FF630(mgr->actors[i], fn_801FF654(mgr->actors[i]));
+        }
+        break;
+    }
+    return result;
+}
+
+extern "C" void fn_801FF630(Actor* a, Vec4f* v) { *(Quad*)((u8*)a + 0x70) = *(Quad*)v; }
+extern "C" Vec4f* fn_801FF654(Actor* a) { return (Vec4f*)((u8*)a + 0x60); }
+extern "C" Vec4f* fn_801FF65C(Actor* a) { return (Vec4f*)((u8*)a + 0x70); }
+extern "C" void fn_801FF664(Actor* a, s32 v) { *(s32*)((u8*)a + 0x110) = v; }
+extern "C" void fn_801FF66C(Actor* a, u32 v) { *(u32*)((u8*)a + 0x170) = v; }
+extern "C" u32 fn_801FF674(void) { return fn_802D39FC(fn_802D6A9C()); }
+extern "C" void fn_801FF698(Actor* a, s32 v) { *(s32*)((u8*)a + 0x16C) = v; }
+extern "C" void fn_801FF6A0(Actor* a, s32 v) { *(s32*)((u8*)a + 0x190) = v; }
+extern "C" void fn_801FF6A8(Actor* a, s32 v) { *(s32*)((u8*)a + 0xC0) = v; }
+extern "C" void fn_801FF6B0(Actor* a, s32 v) { *(s32*)((u8*)a + 0x18C) = v; }
+extern "C" void fn_801FF6B8(Actor* a, u8 v) { *(u8*)((u8*)a + 0x1A8) = v; }
+extern "C" void fn_801FF6C0(Actor* a, s32 v) { *(s32*)((u8*)a + 0x118) = v; }
+extern "C" void fn_801FF6C8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x114) = v; }
+extern "C" void fn_801FF6D0(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
+extern "C" void fn_801FF6D8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x8) = v; }
+extern "C" void fn_801FF6E0(Actor* a, s32 v) { *(s32*)((u8*)a + 0x4) = v; }
+extern "C" void fn_801FF6E8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x1A0) = v; }
+extern "C" void fn_801FF6F0(Actor* a, Vec* v) { JGeometry::setTVec3f(&v->x, (f32*)((u8*)a + 0x24)); }
+extern "C" void fn_801FF704(Actor* a, Vec* v) {
+    JGeometry::setTVec3f(&v->x, (f32*)((u8*)a + 0xC));
+    JGeometry::setTVec3f(&v->x, (f32*)((u8*)a + 0x18));
+}
+extern "C" void fn_801FF720(Actor* a, s32 v) { *(s32*)((u8*)a + 0x19C) = v; }
+extern "C" void fn_801FF728(Actor* a, s32 v) { *(s32*)((u8*)a + 0x198) = v; }
+extern "C" Vec* fn_801FF730(Actor* a) { return (Vec*)((u8*)a + 0xC); }
+extern "C" void fn_801FF738(ActorSlotLink* l) { *((u8*)l + 0x31) = 1; }
 
 // ---- Gsck_ctor_801FF744.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA800[];
 
-struct GSCK : public Actor {
-    GSCK();
-};
 
 GSCK::GSCK() {
     *(void**)this = lbl_804AA800;
@@ -24,9 +3003,6 @@ GSCK::GSCK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD278[];
 
-struct MRTC : public Actor {
-    MRTC();
-};
 
 MRTC::MRTC() {
     *(void**)this = lbl_804AD278;
@@ -36,9 +3012,6 @@ MRTC::MRTC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA7A8[];
 
-struct STGN : public Actor {
-    STGN();
-};
 
 STGN::STGN() {
     *(void**)this = lbl_804AA7A8;
@@ -48,9 +3021,6 @@ STGN::STGN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD220[];
 
-struct RINS : public Actor {
-    RINS();
-};
 
 RINS::RINS() {
     *(void**)this = lbl_804AD220;
@@ -60,9 +3030,6 @@ RINS::RINS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE948[];
 
-struct WPWL : public Actor {
-    WPWL();
-};
 
 WPWL::WPWL() {
     *(void**)this = lbl_804AE948;
@@ -72,9 +3039,6 @@ WPWL::WPWL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE8F4[];
 
-struct PSS2 : public Actor {
-    PSS2();
-};
 
 PSS2::PSS2() {
     *(void**)this = lbl_804AE8F4;
@@ -84,9 +3048,6 @@ PSS2::PSS2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA750[];
 
-struct TBO2 : public Actor {
-    TBO2();
-};
 
 TBO2::TBO2() {
     *(void**)this = lbl_804AA750;
@@ -96,9 +3057,6 @@ TBO2::TBO2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA6F8[];
 
-struct TBGN : public Actor {
-    TBGN();
-};
 
 TBGN::TBGN() {
     *(void**)this = lbl_804AA6F8;
@@ -108,9 +3066,6 @@ TBGN::TBGN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE888[];
 
-struct ICEB : public Actor {
-    ICEB();
-};
 
 ICEB::ICEB() {
     *(void**)this = lbl_804AE888;
@@ -120,9 +3075,6 @@ ICEB::ICEB() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA6A0[];
 
-struct DMYK : public Actor {
-    DMYK();
-};
 
 DMYK::DMYK() {
     *(void**)this = lbl_804AA6A0;
@@ -132,9 +3084,6 @@ DMYK::DMYK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD1C8[];
 
-struct JPE2 : public Actor {
-    JPE2();
-};
 
 JPE2::JPE2() {
     *(void**)this = lbl_804AD1C8;
@@ -144,9 +3093,6 @@ JPE2::JPE2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE830[];
 
-struct ENDR : public Actor {
-    ENDR();
-};
 
 ENDR::ENDR() {
     *(void**)this = lbl_804AE830;
@@ -156,9 +3102,6 @@ ENDR::ENDR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA628[];
 
-struct TFL2 : public Actor {
-    TFL2();
-};
 
 TFL2::TFL2() {
     *(void**)this = lbl_804AA628;
@@ -169,9 +3112,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CB58[];
 
-struct LOSW : public Actor {
-    LOSW();
-};
 
 LOSW::LOSW() {
     *(void**)this = lbl_8049CB58;
@@ -182,9 +3122,6 @@ LOSW::LOSW() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE5C8[];
 
-struct PSWK : public Actor {
-    PSWK();
-};
 
 PSWK::PSWK() {
     *(void**)this = lbl_804AE5C8;
@@ -194,9 +3131,6 @@ PSWK::PSWK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CB04[];
 
-struct SIBT : public Actor {
-    SIBT();
-};
 
 SIBT::SIBT() {
     *(void**)this = lbl_8049CB04;
@@ -206,9 +3140,6 @@ SIBT::SIBT() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE574[];
 
-struct PSWB : public Actor {
-    PSWB();
-};
 
 PSWB::PSWB() {
     *(void**)this = lbl_804AE574;
@@ -220,10 +3151,6 @@ PSWB::PSWB() {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A39DC[];
 
-class GEWP : public Actor {
-public:
-    GEWP();
-};
 
 GEWP::GEWP() : Actor() {
     *(void**)this = lbl_804A39DC;
@@ -234,9 +3161,6 @@ GEWP::GEWP() : Actor() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAFB8[];
 
-struct SNPC : public Actor {
-    SNPC();
-};
 
 SNPC::SNPC() {
     *(void**)this = lbl_804AAFB8;
@@ -246,28 +3170,17 @@ SNPC::SNPC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE508[];
 
-struct TJIJ : public Actor {
-    TJIJ();
-};
 
 TJIJ::TJIJ() {
     *(void**)this = lbl_804AE508;
 }
 
 // ---- Mrta_ctor_801FFC84.cpp ----
-struct Actor_21 {
-    Actor_21();
-    ~Actor_21();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_801FFCDC(void);
 extern void* lbl_804ACD70[];
 
-class MRTA : public Actor_21 {
-public:
-    MRTA();
-};
 
 MRTA::MRTA() : Actor_21() {
     *(void**)this = lbl_804ACD70;
@@ -282,9 +3195,6 @@ extern "C" void fn_801FFCDC(void) {}
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA590[];
 
-struct SWDL : public Actor {
-    SWDL();
-};
 
 SWDL::SWDL() {
     *(void**)this = lbl_804AA590;
@@ -301,19 +3211,11 @@ extern "C" void* fn_801FFD1C(void* this_) {
 }
 
 // ---- fn_801FFD58_ctor.cpp ----
-struct Actor_25 {
-    Actor_25();
-    ~Actor_25();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AE4B0[];
 
-class fn_801FFD58_actor : public Actor_25 {
-public:
-    fn_801FFD58_actor();
-};
 
 fn_801FFD58_actor::fn_801FFD58_actor() : Actor_25() {
     *(void**)this = lbl_804AE4B0;
@@ -327,9 +3229,6 @@ fn_801FFD58_actor::fn_801FFD58_actor() : Actor_25() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE338[];
 
-struct ELK2 : public Actor {
-    ELK2();
-};
 
 ELK2::ELK2() {
     *(void**)this = lbl_804AE338;
@@ -339,9 +3238,6 @@ ELK2::ELK2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE780[];
 
-struct PTMI : public Actor {
-    PTMI();
-};
 
 PTMI::PTMI() {
     *(void**)this = lbl_804AE780;
@@ -352,9 +3248,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049EA88[];
 
-struct MRMT : public Actor {
-    MRMT();
-};
 
 MRMT::MRMT() {
     *(void**)this = lbl_8049EA88;
@@ -373,9 +3266,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA4F0[];
 
-struct FOEV : public Actor {
-    FOEV();
-};
 
 FOEV::FOEV() {
     *(void**)this = lbl_804AA4F0;
@@ -386,9 +3276,6 @@ FOEV::FOEV() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACD18[];
 
-struct RSNP : public Actor {
-    RSNP();
-};
 
 RSNP::RSNP() {
     *(void**)this = lbl_804ACD18;
@@ -399,9 +3286,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049EA00[];
 
-struct OGST : public Actor {
-    OGST();
-};
 
 OGST::OGST() {
     *(void**)this = lbl_8049EA00;
@@ -413,9 +3297,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E9A8[];
 
-struct ICOB : public Actor {
-    ICOB();
-};
 
 ICOB::ICOB() {
     *(void**)this = lbl_8049E9A8;
@@ -426,9 +3307,6 @@ ICOB::ICOB() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA498[];
 
-struct ELSK : public Actor {
-    ELSK();
-};
 
 ELSK::ELSK() {
     *(void**)this = lbl_804AA498;
@@ -438,9 +3316,6 @@ ELSK::ELSK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACBF0[];
 
-struct TUTM : public Actor {
-    TUTM();
-};
 
 TUTM::TUTM() {
     *(void**)this = lbl_804ACBF0;
@@ -457,18 +3332,10 @@ extern "C" void* fn_80200060(void* this_) {
 }
 
 // ---- Tugf_ctor_8020009C.cpp ----
-struct Actor_36 {
-    Actor_36();
-    ~Actor_36();
-};
 
 extern "C" void fn_801EB950(void*);
 extern void* lbl_804ACCC0[];
 
-class TUGF : public Actor_36 {
-public:
-    TUGF();
-};
 
 TUGF::TUGF() : Actor_36() {
     *(void**)this = lbl_804ACCC0;
@@ -479,9 +3346,6 @@ TUGF::TUGF() : Actor_36() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE2E0[];
 
-struct LEAF : public Actor {
-    LEAF();
-};
 
 LEAF::LEAF() {
     *(void**)this = lbl_804AE2E0;
@@ -491,9 +3355,6 @@ LEAF::LEAF() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE288[];
 
-struct LFGN : public Actor {
-    LFGN();
-};
 
 LFGN::LFGN() {
     *(void**)this = lbl_804AE288;
@@ -503,9 +3364,6 @@ LFGN::LFGN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7C40[];
 
-struct THCL : public Actor {
-    THCL();
-};
 
 THCL::THCL() {
     *(void**)this = lbl_804A7C40;
@@ -515,9 +3373,6 @@ THCL::THCL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA440[];
 
-struct AGBW : public Actor {
-    AGBW();
-};
 
 AGBW::AGBW() {
     *(void**)this = lbl_804AA440;
@@ -527,9 +3382,6 @@ AGBW::AGBW() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACB98[];
 
-struct SVGT : public Actor {
-    SVGT();
-};
 
 SVGT::SVGT() {
     *(void**)this = lbl_804ACB98;
@@ -539,9 +3391,6 @@ SVGT::SVGT() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE728[];
 
-struct TMI2 : public Actor {
-    TMI2();
-};
 
 TMI2::TMI2() {
     *(void**)this = lbl_804AE728;
@@ -551,9 +3400,6 @@ TMI2::TMI2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3948[];
 
-struct SAFU : public Actor {
-    SAFU();
-};
 
 SAFU::SAFU() {
     *(void**)this = lbl_804A3948;
@@ -564,9 +3410,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E8F8[];
 
-struct FDWP : public Actor {
-    FDWP();
-};
 
 FDWP::FDWP() {
     *(void**)this = lbl_8049E8F8;
@@ -580,9 +3423,6 @@ FDWP::FDWP() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CA40[];
 
-struct TWEV : public Actor {
-    TWEV();
-};
 
 TWEV::TWEV() {
     *(void**)this = lbl_8049CA40;
@@ -592,9 +3432,6 @@ TWEV::TWEV() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C9E8[];
 
-struct DWAP : public Actor {
-    DWAP();
-};
 
 DWAP::DWAP() {
     *(void**)this = lbl_8049C9E8;
@@ -604,9 +3441,6 @@ DWAP::DWAP() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACB40[];
 
-struct TOOI : public Actor {
-    TOOI();
-};
 
 TOOI::TOOI() {
     *(void**)this = lbl_804ACB40;
@@ -616,28 +3450,17 @@ TOOI::TOOI() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA3E8[];
 
-struct CHSW : public Actor {
-    CHSW();
-};
 
 CHSW::CHSW() {
     *(void**)this = lbl_804AA3E8;
 }
 
 // ---- Tlwp_ctor_802003C4.cpp ----
-struct Actor_49 {
-    Actor_49();
-    ~Actor_49();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A38D4[];
 
-class TLWP : public Actor_49 {
-public:
-    TLWP();
-};
 
 TLWP::TLWP() : Actor_49() {
     *(void**)this = lbl_804A38D4;
@@ -648,9 +3471,6 @@ TLWP::TLWP() : Actor_49() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AABA8[];
 
-struct JWLK : public Actor {
-    JWLK();
-};
 
 JWLK::JWLK() {
     *(void**)this = lbl_804AABA8;
@@ -661,9 +3481,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E848[];
 
-struct RBPN : public Actor {
-    RBPN();
-};
 
 RBPN::RBPN() {
     *(void**)this = lbl_8049E848;
@@ -679,28 +3496,17 @@ RBPN::RBPN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE230[];
 
-struct PSW2 : public Actor {
-    PSW2();
-};
 
 PSW2::PSW2() {
     *(void**)this = lbl_804AE230;
 }
 
 // ---- Gnef_ctor_802004EC.cpp ----
-struct Actor_53 {
-    Actor_53();
-    ~Actor_53();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_80200544(void);
 extern void* lbl_804AA350[];
 
-class GNEF : public Actor_53 {
-public:
-    GNEF();
-};
 
 GNEF::GNEF() : Actor_53() {
     *(void**)this = lbl_804AA350;
@@ -715,9 +3521,6 @@ extern "C" void fn_80200544(void) {}
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA2D8[];
 
-struct STPN : public Actor {
-    STPN();
-};
 
 STPN::STPN() {
     *(void**)this = lbl_804AA2D8;
@@ -727,9 +3530,6 @@ STPN::STPN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE6D0[];
 
-struct SSMI : public Actor {
-    SSMI();
-};
 
 SSMI::SSMI() {
     *(void**)this = lbl_804AE6D0;
@@ -739,9 +3539,6 @@ SSMI::SSMI() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE678[];
 
-struct MEDM : public Actor {
-    MEDM();
-};
 
 MEDM::MEDM() {
     *(void**)this = lbl_804AE678;
@@ -751,9 +3548,6 @@ MEDM::MEDM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA280[];
 
-struct SDSM : public Actor {
-    SDSM();
-};
 
 SDSM::SDSM() {
     *(void**)this = lbl_804AA280;
@@ -763,9 +3557,6 @@ SDSM::SDSM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE620[];
 
-struct BCK2 : public Actor {
-    BCK2();
-};
 
 BCK2::BCK2() {
     *(void**)this = lbl_804AE620;
@@ -775,9 +3566,6 @@ BCK2::BCK2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAB40[];
 
-struct SPTG : public Actor {
-    SPTG();
-};
 
 SPTG::SPTG() {
     *(void**)this = lbl_804AAB40;
@@ -787,9 +3575,6 @@ SPTG::SPTG() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ADFE8[];
 
-struct DNAV : public Actor {
-    DNAV();
-};
 
 DNAV::DNAV() {
     *(void**)this = lbl_804ADFE8;
@@ -799,9 +3584,6 @@ DNAV::DNAV() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA228[];
 
-struct ZOMO : public Actor {
-    ZOMO();
-};
 
 ZOMO::ZOMO() {
     *(void**)this = lbl_804AA228;
@@ -811,9 +3593,6 @@ ZOMO::ZOMO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A375C[];
 
-struct ZDCO : public Actor {
-    ZDCO();
-};
 
 ZDCO::ZDCO() {
     *(void**)this = lbl_804A375C;
@@ -830,19 +3609,11 @@ extern "C" void* fn_80200764(void* this_) {
 }
 
 // ---- Zld3_ctor_802007A0.cpp ----
-struct Actor_65 {
-    Actor_65();
-    ~Actor_65();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A35AC[];
 
-class ZLD3 : public Actor_65 {
-public:
-    ZLD3();
-};
 
 ZLD3::ZLD3() : Actor_65() {
     *(void**)this = lbl_804A35AC;
@@ -853,9 +3624,6 @@ ZLD3::ZLD3() : Actor_65() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACA00[];
 
-struct OBLF : public Actor {
-    OBLF();
-};
 
 OBLF::OBLF() {
     *(void**)this = lbl_804ACA00;
@@ -865,9 +3633,6 @@ OBLF::OBLF() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA1D0[];
 
-struct GEN3 : public Actor {
-    GEN3();
-};
 
 GEN3::GEN3() {
     *(void**)this = lbl_804AA1D0;
@@ -877,28 +3642,17 @@ GEN3::GEN3() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3548[];
 
-struct EGOL : public Actor {
-    EGOL();
-};
 
 EGOL::EGOL() {
     *(void**)this = lbl_804A3548;
 }
 
 // ---- Ynsw_ctor_802008AC.cpp ----
-struct Actor_69 {
-    Actor_69();
-    ~Actor_69();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AC9A8[];
 
-class YNSW : public Actor_69 {
-public:
-    YNSW();
-};
 
 YNSW::YNSW() : Actor_69() {
     *(void**)this = lbl_804AC9A8;
@@ -909,9 +3663,6 @@ YNSW::YNSW() : Actor_69() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAAE8[];
 
-struct GMTB : public Actor {
-    GMTB();
-};
 
 GMTB::GMTB() {
     *(void**)this = lbl_804AAAE8;
@@ -921,28 +3672,17 @@ GMTB::GMTB() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAA70[];
 
-struct GMBL : public Actor {
-    GMBL();
-};
 
 GMBL::GMBL() {
     *(void**)this = lbl_804AAA70;
 }
 
 // ---- Eetc_ctor_8020097C.cpp ----
-struct Actor_72 {
-    Actor_72();
-    ~Actor_72();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804ADF28[];
 
-class EETC : public Actor_72 {
-public:
-    EETC();
-};
 
 EETC::EETC() : Actor_72() {
     *(void**)this = lbl_804ADF28;
@@ -952,20 +3692,12 @@ EETC::EETC() : Actor_72() {
 }
 
 // ---- Rck2_ctor_80200A0C.cpp ----
-struct Actor_73 {
-    Actor_73();
-    ~Actor_73();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 void fn_80200A84(void);
 void fn_80200A80(void);
 extern void* lbl_804AC950[];
 
-class RCK2 : public Actor_73 {
-public:
-    RCK2();
-};
 
 RCK2::RCK2() : Actor_73() {
     *(void**)this = lbl_804AC950;
@@ -983,18 +3715,10 @@ void fn_80200A84(void) {}
 }
 
 // ---- Eowl_ctor_80200A88.cpp ----
-struct Actor_75 {
-    Actor_75();
-    ~Actor_75();
-};
 
 extern "C" void InitDefaultRecord(void*);
 extern void* lbl_804ADAC8[];
 
-class EOWL : public Actor_75 {
-public:
-    EOWL();
-};
 
 EOWL::EOWL() : Actor_75() {
     *(void**)this = lbl_804ADAC8;
@@ -1002,19 +3726,11 @@ EOWL::EOWL() : Actor_75() {
 }
 
 // ---- Dmtw_ctor_80200ACC.cpp ----
-struct Actor_76 {
-    Actor_76();
-    ~Actor_76();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_8049E770[];
 
-class DMTW : public Actor_76 {
-public:
-    DMTW();
-};
 
 DMTW::DMTW() : Actor_76() {
     *(void**)this = lbl_8049E770;
@@ -1028,9 +3744,6 @@ DMTW::DMTW() : Actor_76() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA9F0[];
 
-struct SMRI : public Actor {
-    SMRI();
-};
 
 SMRI::SMRI() {
     *(void**)this = lbl_804AA9F0;
@@ -1052,9 +3765,6 @@ extern "C" void* Actor_ctor(void* this_);
 extern "C" void* lbl_804A5958[];
 extern "C" void* lbl_804AD858[];
 
-struct ELNK : public Actor {
-    ELNK();
-};
 
 ELNK::ELNK() {
     *(void**)this = lbl_804A5958;
@@ -1083,9 +3793,6 @@ extern "C" void* fn_80200BFC(void* this_, s16 freeFlag) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B1A48[];
 
-struct DTLK : public Actor {
-    DTLK();
-};
 
 DTLK::DTLK() {
     *(void**)this = lbl_804B1A48;
@@ -1095,9 +3802,6 @@ DTLK::DTLK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA178[];
 
-struct TKRA : public Actor {
-    TKRA();
-};
 
 TKRA::TKRA() {
     *(void**)this = lbl_804AA178;
@@ -1107,28 +3811,17 @@ TKRA::TKRA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3448[];
 
-struct OKAM : public Actor {
-    OKAM();
-};
 
 OKAM::OKAM() {
     *(void**)this = lbl_804A3448;
 }
 
 // ---- Ttat_ctor_80200D10.cpp ----
-struct Actor_83 {
-    Actor_83();
-    ~Actor_83();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A2FB0[];
 
-class TTAT : public Actor_83 {
-public:
-    TTAT();
-};
 
 TTAT::TTAT() : Actor_83() {
     *(void**)this = lbl_804A2FB0;
@@ -1139,9 +3832,6 @@ TTAT::TTAT() : Actor_83() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A307C[];
 
-struct GNMA : public Actor {
-    GNMA();
-};
 
 GNMA::GNMA() {
     *(void**)this = lbl_804A307C;
@@ -1151,9 +3841,6 @@ GNMA::GNMA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3334[];
 
-struct DDGO : public Actor {
-    DDGO();
-};
 
 DDGO::DDGO() {
     *(void**)this = lbl_804A3334;
@@ -1163,9 +3850,6 @@ DDGO::DDGO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA0FC[];
 
-struct ENDM : public Actor {
-    ENDM();
-};
 
 ENDM::ENDM() {
     *(void**)this = lbl_804AA0FC;
@@ -1175,9 +3859,6 @@ ENDM::ENDM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA008[];
 
-struct LCLS : public Actor {
-    LCLS();
-};
 
 LCLS::LCLS() {
     *(void**)this = lbl_804AA008;
@@ -1187,9 +3868,6 @@ LCLS::LCLS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA060[];
 
-struct GLBS : public Actor {
-    GLBS();
-};
 
 GLBS::GLBS() {
     *(void**)this = lbl_804AA060;
@@ -1200,9 +3878,6 @@ extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A5958[];
 extern void* lbl_804AD5B8[];
 
-struct EMIK : public Actor {
-    EMIK();
-};
 
 EMIK::EMIK() {
     *(void**)this = lbl_804A5958;
@@ -1214,9 +3889,6 @@ extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A5958[];
 extern void* lbl_804AD6F0[];
 
-struct EZLD : public Actor {
-    EZLD();
-};
 
 EZLD::EZLD() {
     *(void**)this = lbl_804A5958;
@@ -1227,28 +3899,17 @@ EZLD::EZLD() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD48C[];
 
-struct ENPC : public Actor {
-    ENPC();
-};
 
 ENPC::ENPC() {
     *(void**)this = lbl_804AD48C;
 }
 
 // ---- Hbb2_ctor_80200F60.cpp ----
-struct Actor_92 {
-    Actor_92();
-    ~Actor_92();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A2EC0[];
 
-class HBB2 : public Actor_92 {
-public:
-    HBB2();
-};
 
 HBB2::HBB2() : Actor_92() {
     *(void**)this = lbl_804A2EC0;
@@ -1256,19 +3917,11 @@ HBB2::HBB2() : Actor_92() {
 }
 
 // ---- Nwok_ctor_80200FB8.cpp ----
-struct Actor_93 {
-    Actor_93();
-    ~Actor_93();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AC8C0[];
 
-class NWOK : public Actor_93 {
-public:
-    NWOK();
-};
 
 NWOK::NWOK() : Actor_93() {
     *(void**)this = lbl_804AC8C0;
@@ -1279,9 +3932,6 @@ NWOK::NWOK() : Actor_93() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2E30[];
 
-struct RYYA : public Actor {
-    RYYA();
-};
 
 RYYA::RYYA() {
     *(void**)this = lbl_804A2E30;
@@ -1291,9 +3941,6 @@ RYYA::RYYA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9FB0[];
 
-struct MJGR : public Actor {
-    MJGR();
-};
 
 MJGR::MJGR() {
     *(void**)this = lbl_804A9FB0;
@@ -1303,9 +3950,6 @@ MJGR::MJGR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC868[];
 
-struct HTMK : public Actor {
-    HTMK();
-};
 
 HTMK::HTMK() {
     *(void**)this = lbl_804AC868;
@@ -1315,9 +3959,6 @@ HTMK::HTMK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2CB0[];
 
-struct ENBZ : public Actor {
-    ENBZ();
-};
 
 ENBZ::ENBZ() {
     *(void**)this = lbl_804A2CB0;
@@ -1327,9 +3968,6 @@ ENBZ::ENBZ() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9F58[];
 
-struct PNP2 : public Actor {
-    PNP2();
-};
 
 PNP2::PNP2() {
     *(void**)this = lbl_804A9F58;
@@ -1339,9 +3977,6 @@ PNP2::PNP2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD348[];
 
-struct SSLF : public Actor {
-    SSLF();
-};
 
 SSLF::SSLF() {
     *(void**)this = lbl_804AD348;
@@ -1351,9 +3986,6 @@ SSLF::SSLF() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC810[];
 
-struct BEMN : public Actor {
-    BEMN();
-};
 
 BEMN::BEMN() {
     *(void**)this = lbl_804AC810;
@@ -1363,9 +3995,6 @@ BEMN::BEMN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC7B8[];
 
-struct FOBE : public Actor {
-    FOBE();
-};
 
 FOBE::FOBE() {
     *(void**)this = lbl_804AC7B8;
@@ -1375,9 +4004,6 @@ FOBE::FOBE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9F00[];
 
-struct SEN2 : public Actor {
-    SEN2();
-};
 
 SEN2::SEN2() {
     *(void**)this = lbl_804A9F00;
@@ -1388,9 +4014,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E5B8[];
 
-struct CRGN : public Actor {
-    CRGN();
-};
 
 CRGN::CRGN() {
     *(void**)this = lbl_8049E5B8;
@@ -1407,9 +4030,6 @@ CRGN::CRGN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2BF4[];
 
-struct TENN : public Actor {
-    TENN();
-};
 
 TENN::TENN() {
     *(void**)this = lbl_804A2BF4;
@@ -1419,9 +4039,6 @@ TENN::TENN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9EA8[];
 
-struct WAVE : public Actor {
-    WAVE();
-};
 
 WAVE::WAVE() {
     *(void**)this = lbl_804A9EA8;
@@ -1431,9 +4048,6 @@ WAVE::WAVE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7BE8[];
 
-struct FORM : public Actor {
-    FORM();
-};
 
 FORM::FORM() {
     *(void**)this = lbl_804A7BE8;
@@ -1443,9 +4057,6 @@ FORM::FORM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC760[];
 
-struct SPBG : public Actor {
-    SPBG();
-};
 
 SPBG::SPBG() {
     *(void**)this = lbl_804AC760;
@@ -1455,9 +4066,6 @@ SPBG::SPBG() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC708[];
 
-struct SZSC : public Actor {
-    SZSC();
-};
 
 SZSC::SZSC() {
     *(void**)this = lbl_804AC708;
@@ -1467,9 +4075,6 @@ SZSC::SZSC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC6B0[];
 
-struct NNJN : public Actor {
-    NNJN();
-};
 
 NNJN::NNJN() {
     *(void**)this = lbl_804AC6B0;
@@ -1479,9 +4084,6 @@ NNJN::NNJN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2B18[];
 
-struct SYKY : public Actor {
-    SYKY();
-};
 
 SYKY::SYKY() {
     *(void**)this = lbl_804A2B18;
@@ -1491,9 +4093,6 @@ SYKY::SYKY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C970[];
 
-struct ANHO : public Actor {
-    ANHO();
-};
 
 ANHO::ANHO() {
     *(void**)this = lbl_8049C970;
@@ -1513,9 +4112,6 @@ extern "C" void* fn_802014C8(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC658[];
 
-struct FISH : public Actor {
-    FISH();
-};
 
 FISH::FISH() {
     *(void**)this = lbl_804AC658;
@@ -1525,9 +4121,6 @@ FISH::FISH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2AB0[];
 
-struct ALCE : public Actor {
-    ALCE();
-};
 
 ALCE::ALCE() {
     *(void**)this = lbl_804A2AB0;
@@ -1537,9 +4130,6 @@ ALCE::ALCE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9DF8[];
 
-struct ZOOM : public Actor {
-    ZOOM();
-};
 
 ZOOM::ZOOM() {
     *(void**)this = lbl_804A9DF8;
@@ -1549,9 +4139,6 @@ ZOOM::ZOOM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9DA0[];
 
-struct BGMN : public Actor {
-    BGMN();
-};
 
 BGMN::BGMN() {
     *(void**)this = lbl_804A9DA0;
@@ -1561,9 +4148,6 @@ BGMN::BGMN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C8EC[];
 
-struct MGYA : public Actor {
-    MGYA();
-};
 
 MGYA::MGYA() {
     *(void**)this = lbl_8049C8EC;
@@ -1573,9 +4157,6 @@ MGYA::MGYA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E3A8[];
 
-struct GFBS : public Actor {
-    GFBS();
-};
 
 GFBS::GFBS() {
     *(void**)this = lbl_8049E3A8;
@@ -1585,9 +4166,6 @@ GFBS::GFBS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9D28[];
 
-struct BLZ2 : public Actor {
-    BLZ2();
-};
 
 BLZ2::BLZ2() {
     *(void**)this = lbl_804A9D28;
@@ -1597,9 +4175,6 @@ BLZ2::BLZ2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9CD0[];
 
-struct SEV2 : public Actor {
-    SEV2();
-};
 
 SEV2::SEV2() {
     *(void**)this = lbl_804A9CD0;
@@ -1610,9 +4185,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049DE90[];
 
-struct RNSW : public Actor {
-    RNSW();
-};
 
 RNSW::RNSW() {
     *(void**)this = lbl_8049DE90;
@@ -1627,9 +4199,6 @@ RNSW::RNSW() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9C78[];
 
-struct SENP : public Actor {
-    SENP();
-};
 
 SENP::SENP() {
     *(void**)this = lbl_804A9C78;
@@ -1639,9 +4208,6 @@ SENP::SENP() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C858[];
 
-struct GSYA : public Actor {
-    GSYA();
-};
 
 GSYA::GSYA() {
     *(void**)this = lbl_8049C858;
@@ -1651,9 +4217,6 @@ GSYA::GSYA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7B90[];
 
-struct BRBL : public Actor {
-    BRBL();
-};
 
 BRBL::BRBL() {
     *(void**)this = lbl_804A7B90;
@@ -1663,28 +4226,17 @@ BRBL::BRBL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B174C[];
 
-struct LIMT : public Actor {
-    LIMT();
-};
 
 LIMT::LIMT() {
     *(void**)this = lbl_804B174C;
 }
 
 // ---- Gol2_ctor_80201898.cpp ----
-struct Actor_126 {
-    Actor_126();
-    ~Actor_126();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A9C20[];
 
-class GNL2 : public Actor_126 {
-public:
-    GNL2();
-};
 
 GNL2::GNL2() : Actor_126() {
     *(void**)this = lbl_804A9C20;
@@ -1692,19 +4244,11 @@ GNL2::GNL2() : Actor_126() {
 }
 
 // ---- Beee_ctor_802018F0.cpp ----
-struct Actor_127 {
-    Actor_127();
-    ~Actor_127();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AC600[];
 
-class BEEE : public Actor_127 {
-public:
-    BEEE();
-};
 
 BEEE::BEEE() : Actor_127() {
     *(void**)this = lbl_804AC600;
@@ -1717,28 +4261,17 @@ BEEE::BEEE() : Actor_127() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7B38[];
 
-struct PSSW : public Actor {
-    PSSW();
-};
 
 PSSW::PSSW() {
     *(void**)this = lbl_804A7B38;
 }
 
 // ---- Hous_ctor_802019BC.cpp ----
-struct Actor_129 {
-    Actor_129();
-    ~Actor_129();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_801546E4(void*);
 extern void* lbl_804A7AE0[];
 
-class HOUS : public Actor_129 {
-public:
-    HOUS();
-};
 
 HOUS::HOUS() : Actor_129() {
     *(void**)this = lbl_804A7AE0;
@@ -1746,19 +4279,11 @@ HOUS::HOUS() : Actor_129() {
 }
 
 // ---- fn_80201A14_ctor.cpp ----
-struct Actor_130 {
-    Actor_130();
-    ~Actor_130();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A2944[];
 
-class fn_80201A14_actor : public Actor_130 {
-public:
-    fn_80201A14_actor();
-};
 
 fn_80201A14_actor::fn_80201A14_actor() : Actor_130() {
     *(void**)this = lbl_804A2944;
@@ -1770,9 +4295,6 @@ fn_80201A14_actor::fn_80201A14_actor() : Actor_130() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A25F0[];
 
-struct GNON : public Actor {
-    GNON();
-};
 
 GNON::GNON() {
     *(void**)this = lbl_804A25F0;
@@ -1782,9 +4304,6 @@ GNON::GNON() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC588[];
 
-struct BBMB : public Actor {
-    BBMB();
-};
 
 BBMB::BBMB() {
     *(void**)this = lbl_804AC588;
@@ -1794,9 +4313,6 @@ BBMB::BBMB() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC4D0[];
 
-struct BBSL : public Actor {
-    BBSL();
-};
 
 BBSL::BBSL() {
     *(void**)this = lbl_804AC4D0;
@@ -1816,9 +4332,6 @@ extern "C" void* fn_80201B3C(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B16E0[];
 
-struct GBAO : public Actor {
-    GBAO();
-};
 
 GBAO::GBAO() {
     *(void**)this = lbl_804B16E0;
@@ -1828,9 +4341,6 @@ GBAO::GBAO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9B70[];
 
-struct OFFS : public Actor {
-    OFFS();
-};
 
 OFFS::OFFS() {
     *(void**)this = lbl_804A9B70;
@@ -1850,9 +4360,6 @@ extern "C" void* fn_80201BF0(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC330[];
 
-struct LITS : public Actor {
-    LITS();
-};
 
 LITS::LITS() {
     *(void**)this = lbl_804AC330;
@@ -1862,28 +4369,17 @@ LITS::LITS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC2D8[];
 
-struct STBL : public Actor {
-    STBL();
-};
 
 STBL::STBL() {
     *(void**)this = lbl_804AC2D8;
 }
 
 // ---- Dgt2_ctor_80201D00.cpp ----
-struct Actor_140 {
-    Actor_140();
-    ~Actor_140();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A1FA0[];
 
-class DGT2 : public Actor_140 {
-public:
-    DGT2();
-};
 
 DGT2::DGT2() : Actor_140() {
     *(void**)this = lbl_804A1FA0;
@@ -1895,9 +4391,6 @@ DGT2::DGT2() : Actor_140() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC250[];
 
-struct RVFR : public Actor {
-    RVFR();
-};
 
 RVFR::RVFR() {
     *(void**)this = lbl_804AC250;
@@ -1907,9 +4400,6 @@ RVFR::RVFR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC1F8[];
 
-struct WPPA : public Actor {
-    WPPA();
-};
 
 WPPA::WPPA() {
     *(void**)this = lbl_804AC1F8;
@@ -1919,28 +4409,17 @@ WPPA::WPPA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC100[];
 
-struct FLYO : public Actor {
-    FLYO();
-};
 
 FLYO::FLYO() {
     *(void**)this = lbl_804AC100;
 }
 
 // ---- Bph2_ctor_80201E28.cpp ----
-struct Actor_144 {
-    Actor_144();
-    ~Actor_144();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A1E50[];
 
-class BPH2 : public Actor_144 {
-public:
-    BPH2();
-};
 
 BPH2::BPH2() : Actor_144() {
     *(void**)this = lbl_804A1E50;
@@ -1951,28 +4430,17 @@ BPH2::BPH2() : Actor_144() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9AC8[];
 
-struct PRTC : public Actor {
-    PRTC();
-};
 
 PRTC::PRTC() {
     *(void**)this = lbl_804A9AC8;
 }
 
 // ---- Rasn_ctor_80201EBC.cpp ----
-struct Actor_146 {
-    Actor_146();
-    ~Actor_146();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A7A68[];
 
-class RASN : public Actor_146 {
-public:
-    RASN();
-};
 
 RASN::RASN() : Actor_146() {
     *(void**)this = lbl_804A7A68;
@@ -1983,9 +4451,6 @@ RASN::RASN() : Actor_146() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1A98[];
 
-struct FGN2 : public Actor {
-    FGN2();
-};
 
 FGN2::FGN2() {
     *(void**)this = lbl_804A1A98;
@@ -1995,9 +4460,6 @@ FGN2::FGN2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC0A8[];
 
-struct WPPR : public Actor {
-    WPPR();
-};
 
 WPPR::WPPR() {
     *(void**)this = lbl_804AC0A8;
@@ -2007,28 +4469,17 @@ WPPR::WPPR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC010[];
 
-struct JPEN : public Actor {
-    JPEN();
-};
 
 JPEN::JPEN() {
     *(void**)this = lbl_804AC010;
 }
 
 // ---- Wnwn_ctor_80201FC8.cpp ----
-struct Actor_150 {
-    Actor_150();
-    ~Actor_150();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A18E0[];
 
-class WNWN : public Actor_150 {
-public:
-    WNWN();
-};
 
 WNWN::WNWN() : Actor_150() {
     *(void**)this = lbl_804A18E0;
@@ -2040,9 +4491,6 @@ WNWN::WNWN() : Actor_150() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9A70[];
 
-struct URAC : public Actor {
-    URAC();
-};
 
 URAC::URAC() {
     *(void**)this = lbl_804A9A70;
@@ -2052,9 +4500,6 @@ URAC::URAC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9A18[];
 
-struct VWMD : public Actor {
-    VWMD();
-};
 
 VWMD::VWMD() {
     *(void**)this = lbl_804A9A18;
@@ -2064,9 +4509,6 @@ VWMD::VWMD() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABAE8[];
 
-struct TKRM : public Actor {
-    TKRM();
-};
 
 TKRM::TKRM() {
     *(void**)this = lbl_804ABAE8;
@@ -2076,9 +4518,6 @@ TKRM::TKRM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C7F0[];
 
-struct BOTS : public Actor {
-    BOTS();
-};
 
 BOTS::BOTS() {
     *(void**)this = lbl_8049C7F0;
@@ -2088,9 +4527,6 @@ BOTS::BOTS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABA90[];
 
-struct TSNO : public Actor {
-    TSNO();
-};
 
 TSNO::TSNO() {
     *(void**)this = lbl_804ABA90;
@@ -2100,9 +4536,6 @@ TSNO::TSNO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A99C0[];
 
-struct FGVE : public Actor {
-    FGVE();
-};
 
 FGVE::FGVE() {
     *(void**)this = lbl_804A99C0;
@@ -2112,9 +4545,6 @@ FGVE::FGVE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9968[];
 
-struct YASI : public Actor {
-    YASI();
-};
 
 YASI::YASI() {
     *(void**)this = lbl_804A9968;
@@ -2124,9 +4554,6 @@ YASI::YASI() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A927C[];
 
-struct BTIN : public Actor {
-    BTIN();
-};
 
 BTIN::BTIN() {
     *(void**)this = lbl_804A927C;
@@ -2136,9 +4563,6 @@ BTIN::BTIN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1888[];
 
-struct FAGN : public Actor {
-    FAGN();
-};
 
 FAGN::FAGN() {
     *(void**)this = lbl_804A1888;
@@ -2148,9 +4572,6 @@ FAGN::FAGN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1790[];
 
-struct GDMN : public Actor {
-    GDMN();
-};
 
 GDMN::GDMN() {
     char* p = (char*)this;
@@ -2162,9 +4583,6 @@ GDMN::GDMN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1718[];
 
-struct RDVR : public Actor {
-    RDVR();
-};
 
 RDVR::RDVR() {
     char* p = (char*)this;
@@ -2176,28 +4594,17 @@ RDVR::RDVR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB5D8[];
 
-struct DSIN : public Actor {
-    DSIN();
-};
 
 DSIN::DSIN() {
     *(void**)this = lbl_804AB5D8;
 }
 
 // ---- Grok_ctor_8020231C.cpp ----
-struct Actor_163 {
-    Actor_163();
-    ~Actor_163();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A1630[];
 
-class GROK : public Actor_163 {
-public:
-    GROK();
-};
 
 GROK::GROK() : Actor_163() {
     *(void**)this = lbl_804A1630;
@@ -2209,9 +4616,6 @@ GROK::GROK() : Actor_163() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB580[];
 
-struct SBTN : public Actor {
-    SBTN();
-};
 
 SBTN::SBTN() {
     *(void**)this = lbl_804AB580;
@@ -2221,9 +4625,6 @@ SBTN::SBTN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7960[];
 
-struct CIRC : public Actor {
-    CIRC();
-};
 
 CIRC::CIRC() {
     *(void**)this = lbl_804A7960;
@@ -2233,9 +4634,6 @@ CIRC::CIRC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9078[];
 
-struct FLYK : public Actor {
-    FLYK();
-};
 
 FLYK::FLYK() {
     *(void**)this = lbl_804A9078;
@@ -2255,28 +4653,17 @@ extern "C" void* fn_80202444(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7908[];
 
-struct PESW : public Actor {
-    PESW();
-};
 
 PESW::PESW() {
     *(void**)this = lbl_804A7908;
 }
 
 // ---- Osin_ctor_802024BC.cpp ----
-struct Actor_169 {
-    Actor_169();
-    ~Actor_169();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AB528[];
 
-class OSIN : public Actor_169 {
-public:
-    OSIN();
-};
 
 OSIN::OSIN() : Actor_169() {
     *(void**)this = lbl_804AB528;
@@ -2287,9 +4674,6 @@ OSIN::OSIN() : Actor_169() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A11B8[];
 
-struct PUKU : public Actor {
-    PUKU();
-};
 
 PUKU::PUKU() {
     *(void**)this = lbl_804A11B8;
@@ -2299,9 +4683,6 @@ PUKU::PUKU() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1160[];
 
-struct SWBM : public Actor {
-    SWBM();
-};
 
 SWBM::SWBM() {
     *(void**)this = lbl_804A1160;
@@ -2311,9 +4692,6 @@ SWBM::SWBM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB4C0[];
 
-struct INFR : public Actor {
-    INFR();
-};
 
 INFR::INFR() {
     *(void**)this = lbl_804AB4C0;
@@ -2327,18 +4705,7 @@ extern void* lbl_804A48B0[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 
-class Fn801D30B8Base {
-public:
-    Fn801D30B8Base();
-    ~Fn801D30B8Base();
-private:
-    unsigned char pad[0x2b0];
-};
 
-class ARSH : public Fn801D30B8Base {
-public:
-    ARSH();
-};
 
 ARSH::ARSH() {
     *(void**)this = lbl_804A58B4;
@@ -2360,9 +4727,6 @@ ARSH::ARSH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB464[];
 
-struct BMTY : public Actor {
-    BMTY();
-};
 
 BMTY::BMTY() {
     *(void**)this = lbl_804AB464;
@@ -2372,9 +4736,6 @@ BMTY::BMTY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB3A8[];
 
-struct PCDM : public Actor {
-    PCDM();
-};
 
 PCDM::PCDM() {
     *(void**)this = lbl_804AB3A8;
@@ -2384,9 +4745,6 @@ PCDM::PCDM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB308[];
 
-struct CRTL : public Actor {
-    CRTL();
-};
 
 CRTL::CRTL() {
     *(void**)this = lbl_804AB308;
@@ -2396,9 +4754,6 @@ CRTL::CRTL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9020[];
 
-struct RDBL : public Actor {
-    RDBL();
-};
 
 RDBL::RDBL() {
     *(void**)this = lbl_804A9020;
@@ -2408,9 +4763,6 @@ RDBL::RDBL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8FC8[];
 
-struct ONOF : public Actor {
-    ONOF();
-};
 
 ONOF::ONOF() {
     *(void**)this = lbl_804A8FC8;
@@ -2420,9 +4772,6 @@ ONOF::ONOF() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB2B0[];
 
-struct OCFR : public Actor {
-    OCFR();
-};
 
 OCFR::OCFR() {
     *(void**)this = lbl_804AB2B0;
@@ -2432,9 +4781,6 @@ OCFR::OCFR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB258[];
 
-struct BPRY : public Actor {
-    BPRY();
-};
 
 BPRY::BPRY() {
     *(void**)this = lbl_804AB258;
@@ -2444,9 +4790,6 @@ BPRY::BPRY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A78B0[];
 
-struct LIF2 : public Actor {
-    LIF2();
-};
 
 LIF2::LIF2() {
     *(void**)this = lbl_804A78B0;
@@ -2456,9 +4799,6 @@ LIF2::LIF2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB1F0[];
 
-struct WDRY : public Actor {
-    WDRY();
-};
 
 WDRY::WDRY() {
     *(void**)this = lbl_804AB1F0;
@@ -2468,9 +4808,6 @@ WDRY::WDRY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB170[];
 
-struct ESRY : public Actor {
-    ESRY();
-};
 
 ESRY::ESRY() {
     *(void**)this = lbl_804AB170;
@@ -2480,9 +4817,6 @@ ESRY::ESRY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0FF8[];
 
-struct SHLT : public Actor {
-    SHLT();
-};
 
 SHLT::SHLT() {
     *(void**)this = lbl_804A0FF8;
@@ -2492,9 +4826,6 @@ SHLT::SHLT() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8F74[];
 
-struct RANK : public Actor {
-    RANK();
-};
 
 RANK::RANK() {
     *(void**)this = lbl_804A8F74;
@@ -2504,9 +4835,6 @@ RANK::RANK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB098[];
 
-struct HNRY : public Actor {
-    HNRY();
-};
 
 HNRY::HNRY() {
     *(void**)this = lbl_804AB098;
@@ -2516,9 +4844,6 @@ HNRY::HNRY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8EF8[];
 
-struct BLDF : public Actor {
-    BLDF();
-};
 
 BLDF::BLDF() {
     *(void**)this = lbl_804A8EF8;
@@ -2528,9 +4853,6 @@ BLDF::BLDF() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8EA0[];
 
-struct FOCS : public Actor {
-    FOCS();
-};
 
 FOCS::FOCS() {
     *(void**)this = lbl_804A8EA0;
@@ -2540,9 +4862,6 @@ FOCS::FOCS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8E40[];
 
-struct PNPC : public Actor {
-    PNPC();
-};
 
 PNPC::PNPC() {
     *(void**)this = lbl_804A8E40;
@@ -2552,9 +4871,6 @@ PNPC::PNPC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C770[];
 
-struct RAIL : public Actor {
-    RAIL();
-};
 
 RAIL::RAIL() {
     *(void**)this = lbl_8049C770;
@@ -2568,18 +4884,7 @@ extern void* lbl_804A48B0[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 
-class Fn801D30B8Base_191 {
-public:
-    Fn801D30B8Base_191();
-    ~Fn801D30B8Base_191();
-private:
-    unsigned char pad[0x2b0];
-};
 
-class ZNSH : public Fn801D30B8Base_191 {
-public:
-    ZNSH();
-};
 
 ZNSH::ZNSH() {
     *(void**)this = lbl_804A5810;
@@ -2601,9 +4906,6 @@ ZNSH::ZNSH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8D88[];
 
-struct DOOR : public Actor {
-    DOOR();
-};
 
 DOOR::DOOR() {
     *(void**)this = lbl_804A8D88;
@@ -2613,9 +4915,6 @@ DOOR::DOOR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8CD8[];
 
-struct KEY0 : public Actor {
-    KEY0();
-};
 
 KEY0::KEY0() {
     *(void**)this = lbl_804A8CD8;
@@ -2625,9 +4924,6 @@ KEY0::KEY0() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8C80[];
 
-struct LSTI : public Actor {
-    LSTI();
-};
 
 LSTI::LSTI() {
     *(void**)this = lbl_804A8C80;
@@ -2637,9 +4933,6 @@ LSTI::LSTI() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0EDC[];
 
-struct WIZR : public Actor {
-    WIZR();
-};
 
 WIZR::WIZR() {
     *(void**)this = lbl_804A0EDC;
@@ -2649,9 +4942,6 @@ WIZR::WIZR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8C28[];
 
-struct SWNP : public Actor {
-    SWNP();
-};
 
 SWNP::SWNP() {
     *(void**)this = lbl_804A8C28;
@@ -2661,28 +4951,17 @@ SWNP::SWNP() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8BD0[];
 
-struct CKSW : public Actor {
-    CKSW();
-};
 
 CKSW::CKSW() {
     *(void**)this = lbl_804A8BD0;
 }
 
 // ---- Tngl_ctor_80202C34.cpp ----
-struct Actor_198 {
-    Actor_198();
-    ~Actor_198();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804B0478[];
 
-class TNGL : public Actor_198 {
-public:
-    TNGL();
-};
 
 TNGL::TNGL() : Actor_198() {
     *(void**)this = lbl_804B0478;
@@ -2693,9 +4972,6 @@ TNGL::TNGL() : Actor_198() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0CD8[];
 
-struct STAL : public Actor {
-    STAL();
-};
 
 STAL::STAL() {
     *(void**)this = lbl_804A0CD8;
@@ -2705,9 +4981,6 @@ STAL::STAL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C678[];
 
-struct WRTC : public Actor {
-    WRTC();
-};
 
 WRTC::WRTC() {
     *(void**)this = lbl_8049C678;
@@ -2717,9 +4990,6 @@ WRTC::WRTC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8B78[];
 
-struct LWSW : public Actor {
-    LWSW();
-};
 
 LWSW::LWSW() {
     *(void**)this = lbl_804A8B78;
@@ -2730,9 +5000,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C718[];
 
-struct BWRT : public Actor {
-    BWRT();
-};
 
 BWRT::BWRT() {
     *(void**)this = lbl_8049C718;
@@ -2743,9 +5010,6 @@ BWRT::BWRT() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B0380[];
 
-struct BFIN : public Actor {
-    BFIN();
-};
 
 BFIN::BFIN() {
     *(void**)this = lbl_804B0380;
@@ -2755,9 +5019,6 @@ BFIN::BFIN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8B20[];
 
-struct WTSW : public Actor {
-    WTSW();
-};
 
 WTSW::WTSW() {
     *(void**)this = lbl_804A8B20;
@@ -2767,9 +5028,6 @@ WTSW::WTSW() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8AC8[];
 
-struct ZNSW : public Actor {
-    ZNSW();
-};
 
 ZNSW::ZNSW() {
     *(void**)this = lbl_804A8AC8;
@@ -2779,9 +5037,6 @@ ZNSW::ZNSW() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C578[];
 
-struct LPLK : public Actor {
-    LPLK();
-};
 
 LPLK::LPLK() {
     *(void**)this = lbl_8049C578;
@@ -2791,9 +5046,6 @@ LPLK::LPLK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C46C[];
 
-struct IWAG : public Actor {
-    IWAG();
-};
 
 IWAG::IWAG() {
     *(void**)this = lbl_8049C46C;
@@ -2803,9 +5055,6 @@ IWAG::IWAG() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C4C0[];
 
-struct OIWA : public Actor {
-    OIWA();
-};
 
 OIWA::OIWA() {
     *(void**)this = lbl_8049C4C0;
@@ -2815,9 +5064,6 @@ OIWA::OIWA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C400[];
 
-struct NZMI : public Actor {
-    NZMI();
-};
 
 NZMI::NZMI() {
     *(void**)this = lbl_8049C400;
@@ -2827,9 +5073,6 @@ NZMI::NZMI() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8A50[];
 
-struct BLZE : public Actor {
-    BLZE();
-};
 
 BLZE::BLZE() {
     *(void**)this = lbl_804A8A50;
@@ -2839,9 +5082,6 @@ BLZE::BLZE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A89F0[];
 
-struct FIRE : public Actor {
-    FIRE();
-};
 
 FIRE::FIRE() {
     *(void**)this = lbl_804A89F0;
@@ -2851,9 +5091,6 @@ FIRE::FIRE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB8C0[];
 
-struct NIWA : public Actor {
-    NIWA();
-};
 
 NIWA::NIWA() {
     *(void**)this = lbl_804AB8C0;
@@ -2863,9 +5100,6 @@ NIWA::NIWA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8998[];
 
-struct BGWC : public Actor {
-    BGWC();
-};
 
 BGWC::BGWC() {
     *(void**)this = lbl_804A8998;
@@ -2875,9 +5109,6 @@ BGWC::BGWC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8940[];
 
-struct DOSN : public Actor {
-    DOSN();
-};
 
 DOSN::DOSN() {
     *(void**)this = lbl_804A8940;
@@ -2887,9 +5118,6 @@ DOSN::DOSN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AFAD8[];
 
-struct TLK2 : public Actor {
-    TLK2();
-};
 
 TLK2::TLK2() {
     *(void**)this = lbl_804AFAD8;
@@ -2899,9 +5127,6 @@ TLK2::TLK2() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0B90[];
 
-struct SLR4 : public Actor {
-    SLR4();
-};
 
 SLR4::SLR4() {
     *(void**)this = lbl_804A0B90;
@@ -2911,9 +5136,6 @@ SLR4::SLR4() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB9C0[];
 
-struct SBAL : public Actor {
-    SBAL();
-};
 
 SBAL::SBAL() {
     *(void**)this = lbl_804AB9C0;
@@ -2923,9 +5145,6 @@ SBAL::SBAL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A88E8[];
 
-struct SWEL : public Actor {
-    SWEL();
-};
 
 SWEL::SWEL() {
     *(void**)this = lbl_804A88E8;
@@ -2935,9 +5154,6 @@ SWEL::SWEL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6F6C[];
 
-struct LIFT : public Actor {
-    LIFT();
-};
 
 LIFT::LIFT() {
     *(void**)this = lbl_804A6F6C;
@@ -2947,9 +5163,6 @@ LIFT::LIFT() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB850[];
 
-struct RY02 : public Actor {
-    RY02();
-};
 
 RY02::RY02() {
     *(void**)this = lbl_804AB850;
@@ -2959,9 +5172,6 @@ RY02::RY02() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A886C[];
 
-struct CRTH : public Actor {
-    CRTH();
-};
 
 CRTH::CRTH() {
     *(void**)this = lbl_804A886C;
@@ -2971,9 +5181,6 @@ CRTH::CRTH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8800[];
 
-struct SWOR : public Actor {
-    SWOR();
-};
 
 SWOR::SWOR() {
     *(void**)this = lbl_804A8800;
@@ -2983,9 +5190,6 @@ SWOR::SWOR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0868[];
 
-struct POPO : public Actor {
-    POPO();
-};
 
 POPO::POPO() {
     *(void**)this = lbl_804A0868;
@@ -2995,28 +5199,17 @@ POPO::POPO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A87A8[];
 
-struct WOOD : public Actor {
-    WOOD();
-};
 
 WOOD::WOOD() {
     *(void**)this = lbl_804A87A8;
 }
 
 // ---- fn_802032AC_ctor.cpp ----
-struct Actor_225 {
-    Actor_225();
-    ~Actor_225();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A0810[];
 
-class fn_802032AC_actor : public Actor_225 {
-public:
-    fn_802032AC_actor();
-};
 
 fn_802032AC_actor::fn_802032AC_actor() : Actor_225() {
     *(void**)this = lbl_804A0810;
@@ -3027,9 +5220,6 @@ fn_802032AC_actor::fn_802032AC_actor() : Actor_225() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6E20[];
 
-struct PEFF : public Actor {
-    PEFF();
-};
 
 PEFF::PEFF() {
     *(void**)this = lbl_804A6E20;
@@ -3039,9 +5229,6 @@ PEFF::PEFF() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A85E0[];
 
-struct SLSD : public Actor {
-    SLSD();
-};
 
 SLSD::SLSD() {
     *(void**)this = lbl_804A85E0;
@@ -3051,9 +5238,6 @@ SLSD::SLSD() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8750[];
 
-struct SSTN : public Actor {
-    SSTN();
-};
 
 SSTN::SSTN() {
     *(void**)this = lbl_804A8750;
@@ -3063,9 +5247,6 @@ SSTN::SSTN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8588[];
 
-struct SKUL : public Actor {
-    SKUL();
-};
 
 SKUL::SKUL() {
     *(void**)this = lbl_804A8588;
@@ -3075,9 +5256,6 @@ SKUL::SKUL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF548[];
 
-struct TALK : public Actor {
-    TALK();
-};
 
 TALK::TALK() {
     *(void**)this = lbl_804AF548;
@@ -3087,9 +5265,6 @@ TALK::TALK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8520[];
 
-struct TRCH : public Actor {
-    TRCH();
-};
 
 TRCH::TRCH() {
     *(void**)this = lbl_804A8520;
@@ -3099,9 +5274,6 @@ TRCH::TRCH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF4C0[];
 
-struct SCRE : public Actor {
-    SCRE();
-};
 
 SCRE::SCRE() {
     *(void**)this = lbl_804AF4C0;
@@ -3111,9 +5283,6 @@ SCRE::SCRE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A84C8[];
 
-struct SPOT : public Actor {
-    SPOT();
-};
 
 SPOT::SPOT() {
     *(void**)this = lbl_804A84C8;
@@ -3123,28 +5292,17 @@ SPOT::SPOT() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8470[];
 
-struct YAJI : public Actor {
-    YAJI();
-};
 
 YAJI::YAJI() {
     *(void**)this = lbl_804A8470;
 }
 
 // ---- Bome_ctor_80203520.cpp ----
-struct Actor_235 {
-    Actor_235();
-    ~Actor_235();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_80203594(void);
 extern void* lbl_804A0738[];
 
-class BOME : public Actor_235 {
-public:
-    BOME();
-};
 
 BOME::BOME() : Actor_235() {
     *(void**)this = lbl_804A0738;
@@ -3160,9 +5318,6 @@ extern "C" void fn_80203594(void) {}
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8418[];
 
-struct KMRI : public Actor {
-    KMRI();
-};
 
 KMRI::KMRI() {
     *(void**)this = lbl_804A8418;
@@ -3172,9 +5327,6 @@ KMRI::KMRI() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A83A0[];
 
-struct TFLR : public Actor {
-    TFLR();
-};
 
 TFLR::TFLR() {
     *(void**)this = lbl_804A83A0;
@@ -3184,9 +5336,6 @@ TFLR::TFLR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF428[];
 
-struct KNBN : public Actor {
-    KNBN();
-};
 
 KNBN::KNBN() {
     *(void**)this = lbl_804AF428;
@@ -3196,9 +5345,6 @@ KNBN::KNBN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8338[];
 
-struct PLAS : public Actor {
-    PLAS();
-};
 
 PLAS::PLAS() {
     *(void**)this = lbl_804A8338;
@@ -3208,9 +5354,6 @@ PLAS::PLAS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A82A8[];
 
-struct ITMS : public Actor {
-    ITMS();
-};
 
 ITMS::ITMS() {
     *(void**)this = lbl_804A82A8;
@@ -3220,9 +5363,6 @@ ITMS::ITMS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A06C0[];
 
-struct Poon : public Actor {
-    Poon();
-};
 
 Poon::Poon() {
     *(void**)this = lbl_804A06C0;
@@ -3232,9 +5372,6 @@ Poon::Poon() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8250[];
 
-struct SKIL : public Actor {
-    SKIL();
-};
 
 SKIL::SKIL() {
     *(void**)this = lbl_804A8250;
@@ -3244,9 +5381,6 @@ SKIL::SKIL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0668[];
 
-struct MOZO : public Actor {
-    MOZO();
-};
 
 MOZO::MOZO() {
     *(void**)this = lbl_804A0668;
@@ -3256,9 +5390,6 @@ MOZO::MOZO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF338[];
 
-struct BERY : public Actor {
-    BERY();
-};
 
 BERY::BERY() {
     *(void**)this = lbl_804AF338;
@@ -3268,9 +5399,6 @@ BERY::BERY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A81C8[];
 
-struct PONT : public Actor {
-    PONT();
-};
 
 PONT::PONT() {
     *(void**)this = lbl_804A81C8;
@@ -3280,9 +5408,6 @@ PONT::PONT() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A05E0[];
 
-struct ARRW : public Actor {
-    ARRW();
-};
 
 ARRW::ARRW() {
     *(void**)this = lbl_804A05E0;
@@ -3292,9 +5417,6 @@ ARRW::ARRW() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A04D8[];
 
-struct TRAP : public Actor {
-    TRAP();
-};
 
 TRAP::TRAP() {
     *(void**)this = lbl_804A04D8;
@@ -3304,9 +5426,6 @@ TRAP::TRAP() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8170[];
 
-struct THRN : public Actor {
-    THRN();
-};
 
 THRN::THRN() {
     *(void**)this = lbl_804A8170;
@@ -3317,9 +5436,6 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8638[];
 
-struct SWEV : public Actor {
-    SWEV();
-};
 
 SWEV::SWEV() {
     *(void**)this = lbl_804A8638;
@@ -3330,29 +5446,18 @@ SWEV::SWEV() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB968[];
 
-struct BALL : public Actor {
-    BALL();
-};
 
 BALL::BALL() {
     *(void**)this = lbl_804AB968;
 }
 
 // ---- Bpoh_ctor_80203924.cpp ----
-struct Actor_252 {
-    Actor_252();
-    ~Actor_252();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern "C" void fn_8009711C(void*);
 extern void* lbl_804A0440[];
 
-class BPOH : public Actor_252 {
-public:
-    BPOH();
-};
 
 BPOH::BPOH() : Actor_252() {
     *(void**)this = lbl_804A0440;
@@ -3364,9 +5469,6 @@ BPOH::BPOH() : Actor_252() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8118[];
 
-struct SHTR : public Actor {
-    SHTR();
-};
 
 SHTR::SHTR() {
     *(void**)this = lbl_804A8118;
@@ -3376,9 +5478,6 @@ SHTR::SHTR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A03B8[];
 
-struct EZRY : public Actor {
-    EZRY();
-};
 
 EZRY::EZRY() {
     *(void**)this = lbl_804A03B8;
@@ -3388,9 +5487,6 @@ EZRY::EZRY() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A80A0[];
 
-struct SWT4 : public Actor {
-    SWT4();
-};
 
 SWT4::SWT4() {
     *(void**)this = lbl_804A80A0;
@@ -3400,9 +5496,6 @@ SWT4::SWT4() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8010[];
 
-struct RYRN : public Actor {
-    RYRN();
-};
 
 RYRN::RYRN() {
     *(void**)this = lbl_804A8010;
@@ -3412,9 +5505,6 @@ RYRN::RYRN() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF018[];
 
-struct MTBO : public Actor {
-    MTBO();
-};
 
 MTBO::MTBO() {
     *(void**)this = lbl_804AF018;
@@ -3424,9 +5514,6 @@ MTBO::MTBO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABA38[];
 
-struct TKYU : public Actor {
-    TKYU();
-};
 
 TKYU::TKYU() {
     *(void**)this = lbl_804ABA38;
@@ -3436,9 +5523,6 @@ TKYU::TKYU() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0330[];
 
-struct FLME : public Actor {
-    FLME();
-};
 
 FLME::FLME() {
     *(void**)this = lbl_804A0330;
@@ -3448,9 +5532,6 @@ FLME::FLME() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A02B8[];
 
-struct KETH : public Actor {
-    KETH();
-};
 
 KETH::KETH() {
     *(void**)this = lbl_804A02B8;
@@ -3460,9 +5541,6 @@ KETH::KETH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0260[];
 
-struct BOYO : public Actor {
-    BOYO();
-};
 
 BOYO::BOYO() {
     *(void**)this = lbl_804A0260;
@@ -3472,9 +5550,6 @@ BOYO::BOYO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A01D0[];
 
-struct IMUP : public Actor {
-    IMUP();
-};
 
 IMUP::IMUP() {
     *(void**)this = lbl_804A01D0;
@@ -3494,9 +5569,6 @@ extern "C" void* fn_80203BF0(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049FD50[];
 
-struct TKTA : public Actor {
-    TKTA();
-};
 
 TKTA::TKTA() {
     *(void**)this = lbl_8049FD50;
@@ -3506,9 +5578,6 @@ TKTA::TKTA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7FB8[];
 
-struct EXPL : public Actor {
-    EXPL();
-};
 
 EXPL::EXPL() {
     *(void**)this = lbl_804A7FB8;
@@ -3518,9 +5587,6 @@ EXPL::EXPL() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049FCA0[];
 
-struct SLR1 : public Actor {
-    SLR1();
-};
 
 SLR1::SLR1() {
     *(void**)this = lbl_8049FCA0;
@@ -3530,9 +5596,6 @@ SLR1::SLR1() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7F38[];
 
-struct SWTH : public Actor {
-    SWTH();
-};
 
 SWTH::SWTH() {
     *(void**)this = lbl_804A7F38;
@@ -3542,9 +5605,6 @@ SWTH::SWTH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F784[];
 
-struct HBMB : public Actor {
-    HBMB();
-};
 
 HBMB::HBMB() {
     *(void**)this = lbl_8049F784;
@@ -3554,28 +5614,17 @@ HBMB::HBMB() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F9B4[];
 
-struct HINO : public Actor {
-    HINO();
-};
 
 HINO::HINO() {
     *(void**)this = lbl_8049F9B4;
 }
 
 // ---- Goal_ctor_80203D94.cpp ----
-struct Actor_270 {
-    Actor_270();
-    ~Actor_270();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A7EB0[];
 
-class GOAL : public Actor_270 {
-public:
-    GOAL();
-};
 
 GOAL::GOAL() : Actor_270() {
     *(void**)this = lbl_804A7EB0;
@@ -3586,28 +5635,17 @@ GOAL::GOAL() : Actor_270() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7E58[];
 
-struct BHRT : public Actor {
-    BHRT();
-};
 
 BHRT::BHRT() {
     *(void**)this = lbl_804A7E58;
 }
 
 // ---- Dgtl_ctor_80203E28.cpp ----
-struct Actor_272 {
-    Actor_272();
-    ~Actor_272();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_8049F6C8[];
 
-class DGTL : public Actor_272 {
-public:
-    DGTL();
-};
 
 DGTL::DGTL() : Actor_272() {
     *(void**)this = lbl_8049F6C8;
@@ -3619,9 +5657,6 @@ DGTL::DGTL() : Actor_272() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F5D8[];
 
-struct OKTM : public Actor {
-    OKTM();
-};
 
 OKTM::OKTM() {
     *(void**)this = lbl_8049F5D8;
@@ -3631,9 +5666,6 @@ OKTM::OKTM() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F4F0[];
 
-struct HART : public Actor {
-    HART();
-};
 
 HART::HART() {
     *(void**)this = lbl_8049F4F0;
@@ -3643,9 +5675,6 @@ HART::HART() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB660[];
 
-struct GNLD : public Actor {
-    GNLD();
-};
 
 GNLD::GNLD() {
     *(void**)this = lbl_804AB660;
@@ -3655,9 +5684,6 @@ GNLD::GNLD() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F498[];
 
-struct DBRK : public Actor {
-    DBRK();
-};
 
 DBRK::DBRK() {
     *(void**)this = lbl_8049F498;
@@ -3667,9 +5693,6 @@ DBRK::DBRK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F444[];
 
-struct BZBR : public Actor {
-    BZBR();
-};
 
 BZBR::BZBR() {
     *(void**)this = lbl_8049F444;
@@ -3679,9 +5702,6 @@ BZBR::BZBR() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7A10[];
 
-struct BLCK : public Actor {
-    BLCK();
-};
 
 BLCK::BLCK() {
     *(void**)this = lbl_804A7A10;
@@ -3691,9 +5711,6 @@ BLCK::BLCK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F3B0[];
 
-struct PEAC : public Actor {
-    PEAC();
-};
 
 PEAC::PEAC() {
     *(void**)this = lbl_8049F3B0;
@@ -3703,9 +5720,6 @@ PEAC::PEAC() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9428[];
 
-struct TUBO : public Actor {
-    TUBO();
-};
 
 TUBO::TUBO() {
     *(void**)this = lbl_804A9428;
@@ -3715,9 +5729,6 @@ TUBO::TUBO() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9480[];
 
-struct ROCK : public Actor {
-    ROCK();
-};
 
 ROCK::ROCK() {
     *(void**)this = lbl_804A9480;
@@ -3727,9 +5738,6 @@ ROCK::ROCK() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6DC8[];
 
-struct WARP : public Actor {
-    WARP();
-};
 
 WARP::WARP() {
     *(void**)this = lbl_804A6DC8;
@@ -3739,9 +5747,6 @@ WARP::WARP() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A94D8[];
 
-struct BORD : public Actor {
-    BORD();
-};
 
 BORD::BORD() {
     *(void**)this = lbl_804A94D8;
@@ -3751,9 +5756,6 @@ BORD::BORD() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A93D0[];
 
-struct STON : public Actor {
-    STON();
-};
 
 STON::STON() {
     *(void**)this = lbl_804A93D0;
@@ -3763,9 +5765,6 @@ STON::STON() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9328[];
 
-struct GENE : public Actor {
-    GENE();
-};
 
 GENE::GENE() {
     *(void**)this = lbl_804A9328;
@@ -3775,9 +5774,6 @@ GENE::GENE() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A92D0[];
 
-struct FGAS : public Actor {
-    FGAS();
-};
 
 FGAS::FGAS() {
     *(void**)this = lbl_804A92D0;
@@ -3787,9 +5783,6 @@ FGAS::FGAS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F330[];
 
-struct POOH : public Actor {
-    POOH();
-};
 
 POOH::POOH() {
     *(void**)this = lbl_8049F330;
@@ -3799,9 +5792,6 @@ POOH::POOH() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F260[];
 
-struct AMOS : public Actor {
-    AMOS();
-};
 
 AMOS::AMOS() {
     *(void**)this = lbl_8049F260;
@@ -3811,9 +5801,6 @@ AMOS::AMOS() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F208[];
 
-struct OKTA : public Actor {
-    OKTA();
-};
 
 OKTA::OKTA() {
     *(void**)this = lbl_8049F208;
@@ -3823,9 +5810,6 @@ OKTA::OKTA() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB6D8[];
 
-struct RUPY : public Actor {
-    RUPY();
-};
 
 RUPY::RUPY() {
     *(void**)this = lbl_804AB6D8;
