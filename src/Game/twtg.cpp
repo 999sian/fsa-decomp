@@ -560,6 +560,112 @@ extern "C" void fn_803146DC(char* p) {
     }
 }
 
+extern "C" s32 fn_80236228(s32 i);
+extern "C" void fn_80458F04(void* mgr, u32 id);
+extern "C" void fn_8038911C(s32 slot);
+extern "C" void fn_80384C58(s32 slot, void* room);
+extern "C" void fn_803B8C74(u8 v);
+extern void* lbl_8053AF80;
+extern u8 lbl_80529DEC[];
+
+struct TwtgOrd { u8 pad[0x244]; s32 order[4]; };
+extern "C" void fn_80315864(char* p) {
+    TwtgBox b;
+    b.min.x = *(f32*)(p + 0x258);
+    b.min.y = *(f32*)(p + 0x25c);
+    b.max.x = *(f32*)(p + 0x260);
+    b.max.y = *(f32*)(p + 0x264);
+    b.min.x += *(f32*)(p + 0xc);
+    b.min.y += *(f32*)(p + 0x10);
+    b.max.x += *(f32*)(p + 0xc);
+    b.max.y += *(f32*)(p + 0x10);
+    fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+    if (*(s32*)(p + 0x234) == 0) {
+        switch (*(s32*)(p + 0x238)) {
+        case 0:
+            if (twtgAsk(p, 0x486)) {
+                for (s32 k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
+                    TwtgOrd* o = (TwtgOrd*)p;
+                    for (s32 j = 0; j < k; j++) {
+                        s32 nv = fn_80236228(o->order[1]);
+                        if (fn_80236228(o->order[0]) < nv) {
+                            s32 t = o->order[0];
+                            o->order[0] = o->order[1];
+                            o->order[1] = t;
+                        }
+                        o = (TwtgOrd*)((char*)o + 4);
+                    }
+                }
+            }
+            break;
+        case 1:
+        case 2:
+        case 3:
+        case 4: {
+            s32 i;
+            s32 v;
+            s32 rank;
+            s32 id;
+            id = *(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244);
+            v = fn_80236228(id);
+            rank = 0;
+            for (i = rank; i < 4; i++) {
+                if (i != id && (*(u8*)(lbl_8053AAF8 + 0x82) & (u8)(1 << i)) && v < fn_80236228(i)) {
+                    rank++;
+                }
+            }
+            fn_803894BC(*(s32*)(p + 0x254), rank + 1);
+            fn_8038938C(*(s32*)(p + 0x254), fn_80236228(*(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244)));
+            if (rank != 0) {
+                twtgAsk(p, *(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244) + 0x48b);
+            } else if (twtgAsk(p, *(s32*)(p + (4 - *(s32*)(p + 0x238)) * 4 + 0x244) + 0x48f)) {
+                fn_80458F04(lbl_8053AF80, 0x1000027);
+            }
+            break;
+        }
+        case 5:
+        default: {
+            s32 n = fn_80138A30(lbl_8053AAF8);
+            s32 sum = 0;
+            for (s32 i = 0; i < n; i++) {
+                sum += fn_80236228(i);
+            }
+            fn_80389254(*(s32*)(p + 0x254), sum);
+            s32 q = sum / 999;
+            if (q != 0) {
+                u8 c = lbl_80529DEC[0x24f];
+                for (s32 i = 0; i < q; i++) {
+                    c = c < 99 ? (u8)(c + 1) : (u8)99;
+                }
+                lbl_80529DEC[0x24f] = c;
+                fn_8038911C(*(s32*)(p + 0x254));
+                twtgAsk(p, 0x493);
+            } else {
+                twtgAsk(p, 0x495);
+            }
+            break;
+        }
+        }
+    } else if (*(s32*)(p + 0x234) == 1) {
+        fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        if (fn_803865B8(*(s32*)(p + 0x254))) {
+            if (*(s32*)(p + 0x238) < 5) {
+                if (*(s32*)(p + 0x238) == 0) {
+                    *(s32*)(p + 0x238) = 5 - fn_80138A30(lbl_8053AAF8);
+                } else {
+                    (*(s32*)(p + 0x238))++;
+                }
+                *(s32*)(p + 0x234) = 0;
+            } else {
+                fn_80384C58(*(s32*)(p + 0x254), *(void**)(p + 0x198));
+                fn_803B8C74(lbl_80529DEC[0x24f]);
+                fn_8013665C(lbl_8053AAF8, 10, 2);
+                *(s32*)(p + 0x234) = 2;
+            }
+        }
+    }
+}
+
 // fn_803167F4 - TWTG: setParams().
 extern const f32 lbl_80541898;
 extern const f32 lbl_8054189C;
