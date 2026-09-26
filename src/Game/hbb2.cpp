@@ -2,6 +2,9 @@
 // TU 801A8194-801A908C (HBB2). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "std/math.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 // from src/Game/fn_801A8194_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -154,6 +157,179 @@ extern "C" void fn_801A81F4(char* this_) {
     h->pos.x = sx;
     h->pos.y = sy;
     h->pos.z = sz;
+}
+
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802DCD0C(void* mgr);
+extern "C" void fn_801EEC98(void* self, s32 room, u16* ang, s32* dir, f32* dist, s32* player, s32 b, s32 c);
+extern "C" Hbb2Vec* fn_8023E724(s32 idx);
+extern "C" u8 fn_801F2B7C(void* self, s32 a, s32 holder, s32 b);
+extern "C" void fn_801F71A4(f32* v, f32 target, f32 rate, f32 step);
+extern "C" s32 fn_801F3D94(void* self, s32 a);
+extern "C" s32 fn_801F285C(void* self, s32 a, s32 b, s32 c, s32 idx);
+extern "C" s32 fn_80138A30(void* game);
+extern "C" s32 fn_8022CAF8(s32 player);
+extern "C" u8 fn_801F2FAC(void* self);
+extern "C" void fn_801F0E34(void* self, u32 se, s32 b);
+extern "C" void* fn_801F856C(void);
+extern "C" void fn_801F8544(void* mgr, u32 tag, s32 room, Hbb2Vec* pos, s32 flags);
+extern void* lbl_8053AAF8;
+
+struct Hbb2VT2 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void kill();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual u8 check();
+};
+
+// HBB2 update.
+extern "C" void fn_801A8554(char* this_) {
+    Hbb2* h = (Hbb2*)this_;
+    s32 i;
+    s32 player = -1;
+    if (*(s32*)(this_ + 0x258) == 0 && (*(u32*)(this_ + 0x90) >> 27) != 0) {
+        if (!((Hbb2VT2*)this_)->check()) {
+            return;
+        }
+        *(s32*)(this_ + 0x258) = 1;
+    }
+    if (fn_802DCD0C(fn_802D6A9C())) {
+        if (*(s32*)(this_ + 0x25c) == 1) {
+            *(u8*)(this_ + 0x11c) = 0;
+            return;
+        }
+    } else {
+        *(s32*)(this_ + 0x25c) = 1;
+    }
+    fn_801EEC98(this_, *(s32*)(this_ + 0x198), 0, 0, 0, &player, 0, 1);
+    if (*(s32*)(this_ + 0x230) == 1 && *(s32*)(this_ + 0x238) == 0) {
+        *(JGeometry::TVec3f*)&h->trail[0] = *(JGeometry::TVec3f*)&h->pos;
+        for (i = 39; i > 0; i--) {
+            h->trail[i].x = h->trail[i - 1].x;
+            h->trail[i].y = h->trail[i - 1].y;
+            h->trail[i].z = h->trail[i - 1].z;
+        }
+        *(s32*)(this_ + 0x238) = 3;
+    }
+    if (*(s32*)(this_ + 0x264) > 0) {
+        f32 sx = h->pos.x;
+        f32 sy = h->pos.y;
+        f32 sz = h->pos.z;
+        *(f32*)(this_ + 0x60) = -2.0f;
+        *(f32*)(this_ + 0x64) = -2.0f;
+        *(f32*)(this_ + 0x68) = 2.0f;
+        *(f32*)(this_ + 0x6c) = 2.0f;
+        for (i = 39; i > 0; i--) {
+            if (player >= 0) {
+                f32 dx = fn_8023E724(player)->x - h->trail[i].x;
+                f32 dy = fn_8023E724(player)->y - (h->trail[i].y - h->trail[i].z);
+                Hbb2Vec* pp = fn_8023E724(player);
+                h->prev2.x = pp->x;
+                h->prev2.y = pp->y;
+                h->prev2.z = pp->z;
+                if (std::sqrtf(dx * dx + dy * dy) < 16.0f) {
+                    f32 ty = h->trail[i].y;
+                    h->pos.x = h->trail[i].x;
+                    h->pos.y = ty;
+                    h->pos.z = 0.0f;
+                    fn_801F2B7C(this_, *(s32*)(this_ + 0x114), -1, 5);
+                }
+            }
+        }
+        *(f32*)(this_ + 0x60) = -10.0f;
+        *(f32*)(this_ + 0x64) = -10.0f;
+        *(f32*)(this_ + 0x68) = 10.0f;
+        *(f32*)(this_ + 0x6c) = 10.0f;
+        h->pos.x = sx;
+        h->pos.y = sy;
+        h->pos.z = sz;
+    }
+    if (*(s32*)(this_ + 0x230) == 2) {
+        fn_801F71A4((f32*)(this_ + 0x274), 0.0f, 0.3f, 5.0f);
+    }
+    if (fn_801F3D94(this_, 0) != 0) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x264) > 0) {
+        for (i = 0; i < 4; i++) {
+            s32 pl = fn_801F285C(this_, 0, 0, 1, i);
+            if (pl >= 0
+                && (fn_80138A30(lbl_8053AAF8) > 1 || fn_8022CAF8(pl) == 1 || fn_8022CAF8(pl) == 0)
+                && fn_801F2FAC(this_)) {
+                *(s32*)(this_ + 0x264) -= 10000 - *(s32*)(this_ + 0x108);
+                if (*(s32*)(this_ + 0x264) <= 0) {
+                    fn_801F0E34(this_, 0x40003, 0);
+                    *(s32*)(this_ + 0x264) = 0;
+                    *(s32*)(this_ + 0x230) = 2;
+                } else {
+                    fn_801F0E34(this_, 0x40002, 0);
+                    *(s32*)(this_ + 0x230) = 0;
+                }
+                return;
+            }
+        }
+    }
+    if (*(s32*)(this_ + 0x264) > 0 && *(s32*)(this_ + 0x230) != 0) {
+        fn_801F71A4(&h->pos.x, h->prev.x, 1.0f, *(f32*)(this_ + 0x278));
+        fn_801F71A4(&h->pos.y, h->prev.y, 1.0f, *(f32*)(this_ + 0x278));
+        fn_801F71A4((f32*)(this_ + 0x278), 10.0f, 0.3f, 1.0f);
+    }
+    fn_801F71A4(&h->pos.z, h->prev.z, 0.3f, 1.0f);
+    h->prev.z = 16.0f;
+    fn_801F2B7C(this_, -100, -1, 1);
+    fn_801F0E34(this_, 0x400ec, 0);
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+        fn_801F0E34(this_, 0x4000f, 0);
+        fn_801F0E34(this_, 0x400a9, 0);
+        if (player >= 0) {
+            fn_801EEC98(this_, *(s32*)(this_ + 0x198), (u16*)(this_ + 0x268), 0, 0, 0, player, 2);
+            *(u16*)(this_ + 0x268) += 0x8000;
+        }
+        *(s32*)(this_ + 0x230) = 1;
+        // fallthrough
+    case 1:
+        if (player >= 0) {
+            h->prev.x = *(f32*)(this_ + 0x270) * JMASSin(*(u16*)(this_ + 0x268)) + fn_8023E724(player)->x;
+            f32 py = fn_8023E724(player)->y;
+            h->prev.y = *(f32*)(this_ + 0x270) * JMASCos(*(u16*)(this_ + 0x268)) + py;
+        } else {
+            h->prev.x = *(f32*)(this_ + 0x270) * JMASSin(*(u16*)(this_ + 0x268)) + h->prev2.x;
+            h->prev.y = *(f32*)(this_ + 0x270) * JMASCos(*(u16*)(this_ + 0x268)) + h->prev2.y;
+        }
+        h->prev.y += 16.0f;
+        *(u16*)(this_ + 0x268) += 0x200;
+        if (*(s32*)(this_ + 0x234) <= 0) {
+            (*(s32*)(this_ + 0x260))++;
+            if (*(s32*)(this_ + 0x260) > 2) {
+                *(s32*)(this_ + 0x260) = 0;
+            }
+            *(s32*)(this_ + 0x234) = 6;
+        }
+        break;
+    case 2:
+        if (*(f32*)(this_ + 0x274) < 1.0f) {
+            for (i = 0; i < 40; i++) {
+                fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(this_ + 0x4), &h->trail[i], 0);
+            }
+            ((Hbb2VT2*)this_)->kill();
+        }
+        break;
+    }
+    for (i = 0; i < 3; i++) {
+        s32* t = (s32*)(this_ + i * 4);
+        if (t[0x234 / 4] > 0) {
+            t[0x234 / 4]--;
+        }
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
