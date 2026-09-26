@@ -1,6 +1,9 @@
 // Game TU 801BDE5C-801BEDBC (BMST). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void* fn_801D0F40(void* this_);
@@ -91,5 +94,116 @@ extern "C" void fn_801BE284(char* this_) {
 }
 
 extern "C" void fn_801BE2CC(void) {}
+
+typedef JGeometry::TBox2<f32> BmstRect;
+extern "C" void fn_801CE2BC(void* this_);
+inline void bmstBox(BmstRect* b, char* this_) {
+    JGeometry::TVec2<f32>& p = *(JGeometry::TVec2<f32>*)(this_ + 0xc);
+    f32 r = 8.0f;
+    b->set(p.x - r, p.y - r, p.x + r, p.y + r);
+}
+extern "C" void fn_80239914(BmstRect* box, u32 room, u32 id);
+extern "C" u8* fn_8020D58C(void);
+extern "C" void fn_8020D8C0(void* mgr, BmstRect* box, u32 room, u32 id);
+
+extern "C" void fn_801BE2D0(char* this_) {
+    fn_801CE2BC(this_);
+    if (*(u16*)(this_ + 0x2aa) != 0) {
+        *(u16*)(this_ + 0x2aa) = *(u16*)(this_ + 0x2aa) - 1;
+    }
+    BmstRect box2;
+    BmstRect box;
+    bmstBox(&box, this_);
+    fn_80239914(&box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
+    if (*(u16*)(this_ + 0x2aa) == 0) {
+        bmstBox(&box2, this_);
+        u32 id = *(u32*)(this_ + 0x198);
+        u32 room = *(u32*)(this_ + 4);
+        u8* m = fn_8020D58C();
+        fn_8020D8C0(m + m[0] * 0x784 + 4, &box2, room, id);
+    }
+}
+
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" void fn_801BE86C(char* this_);
+
+extern "C" void fn_801BE6C4(char* this_, s32 state) {
+    switch (state) {
+    case 0:
+        *(s32*)(this_ + 0x250) = fn_801CD664(1) + 90;
+        break;
+    case 2: {
+        s16 a = *(s16*)(this_ + 0x2a8);
+        f32 c = JMASCos(a);
+        JGeometry::TVec3<f32> pos(10.0f * JMASSin(a) + *(f32*)(this_ + 0xc),
+                                  -15.0f + (6.0f * c + *(f32*)(this_ + 0x10)),
+                                  *(f32*)(this_ + 0x14));
+        BOOL flag = FALSE;
+        if (pos.y >= -15.0f + *(f32*)(this_ + 0x10)) {
+            flag = 1;
+        }
+        fn_8013CC50(*(u32*)(this_ + 4), &pos, 0x1c, 0, flag, 0, 0, 1, 1.0f);
+        fn_8013CC50(*(u32*)(this_ + 4), &pos, 0x1d, 0, flag, 0, 0, 1, 1.0f);
+        fn_801F0E34(this_, 0x30062, 0);
+        *(u16*)(this_ + 0x2aa) = 60;
+        break;
+    }
+    case 3:
+        *(s32*)(this_ + 0x250) = fn_801CD664(1) + 90;
+        fn_801BE86C(this_);
+        fn_801F0E34(this_, 0x30063, 0);
+        break;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = state;
+    if (*(u16*)(this_ + 0x2aa) != 0) {
+        *(u32*)(this_ + 0xb0) = 0x40002;
+    } else {
+        *(u32*)(this_ + 0xb0) = 0x40004;
+    }
+}
+
+extern "C" void fn_801D0ED0(void* this_);
+
+extern "C" void fn_801BEA08(char* this_) {
+    fn_801D0ED0(this_);
+    u8 n = *(u32*)(this_ + 0x90);
+    if (n > 15) {
+        n = 15;
+    } else if (n < 1) {
+        n = 1;
+    }
+    *(u8*)(this_ + 0x2ac) = n;
+    *(u32*)(this_ + 0x2b0) = (*(u32*)(this_ + 0x90) >> 22) & 0x1f;
+    *(u32*)(this_ + 0x2b4) = *(u32*)(this_ + 0x90) >> 27;
+    if (*(s32*)(this_ + 0x2b0) != 0) {
+        *(u32*)(this_ + 0x230) |= 0x2000;
+    }
+    *(f32*)(this_ + 0x60) = -8.0f;
+    *(f32*)(this_ + 0x64) = -16.0f;
+    *(f32*)(this_ + 0x68) = 8.0f;
+    *(f32*)(this_ + 0x6c) = 8.0f;
+    *(f32*)(this_ + 0x70) = -8.0f;
+    *(f32*)(this_ + 0x74) = -20.0f;
+    *(f32*)(this_ + 0x78) = 8.0f;
+    *(f32*)(this_ + 0x7c) = 8.0f;
+    *(f32*)(this_ + 0x80) = 1.0f;
+    *(f32*)(this_ + 0x84) = 1.0f;
+    *(f32*)(this_ + 0x88) = -1.0f;
+    *(f32*)(this_ + 0x8c) = -1.0f;
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x180;
+    *(s16*)(this_ + 0x2a8) = fn_801CD664(0x10000);
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = fn_801CD664(1) + 90;
+    *(f32*)(this_ + 0x254) = 0.0f;
+    *(f32*)(this_ + 0x258) = 0.0f;
+    if (*(u16*)(this_ + 0x2aa) != 0) {
+        *(u32*)(this_ + 0xb0) = 0x40002;
+    } else {
+        *(u32*)(this_ + 0xb0) = 0x40004;
+    }
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
