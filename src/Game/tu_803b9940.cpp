@@ -3,6 +3,63 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 
+extern "C" s32 fn_8004377C(void* mutex);
+extern "C" void OSUnlockMutex(void* mutex);
+
+extern "C" u32 fn_803B9940(char* this_, s32 arg) {
+    u32 r;
+    if (fn_8004377C(this_ + 0x1fd4) != 0) {
+    switch (*(u32*)(this_ + 0x1fd0)) {
+    case 1:
+        r = 2;
+        break;
+    case 2:
+        r = 1;
+        break;
+    case 3:
+        r = 3;
+        break;
+    case 4:
+        r = 4;
+        break;
+    case 5:
+        r = 5;
+        break;
+    case 0:
+        r = 0;
+        break;
+    case 6:
+        r = 7;
+        break;
+    case 7:
+        r = 6;
+        break;
+    case 8:
+        r = 0xb;
+        break;
+    case 9:
+        r = 0xc;
+        break;
+    case 10:
+        r = 9;
+        break;
+    case 11:
+        r = 0xa;
+        break;
+    case 12:
+        r = 8;
+        break;
+    case 13:
+        r = 0xe;
+        break;
+    }
+    OSUnlockMutex(this_ + 0x1fd4);
+    return r;
+    }
+    return 0xe;
+}
+
+
 // ---- from src/Game/fn_803B9A24.cpp ----
 extern "C" s32 fn_8004377C(void* mutex);
 extern "C" void OSUnlockMutex(void* mutex);
@@ -273,4 +330,26 @@ extern "C" s32 fn_803BAA64(void) {
     __dt__9JKRThreadFv(buf, -1);
     fn_803B9F40(lbl_8051C1A0);
     return 0;
+}
+
+extern "C" void CARDInit(void);
+extern "C" void OSInitMutex(void* mutex);
+extern "C" void OSInitCond(void* cond);
+extern "C" s32 OSGetThreadPriority(void* thread);
+extern "C" int OSCreateThread(void* thread, s32 (*func)(void), void* param, void* stack, u32 stackSize, s32 prio, u16 attr);
+extern "C" s32 OSResumeThread(void* thread);
+extern u8 lbl_80510E60[0x1000];
+extern u8 lbl_80511E60[0x320];
+
+extern "C" void fn_803BA980(char* this_) {
+    CARDInit();
+    *(u8*)(this_ + 0x1ff4) = 0;
+    *(u32*)(this_ + 0x1fcc) = 0;
+    *(u32*)(this_ + 0x1fd0) = 0;
+    *(u8*)(this_ + 0x1ff5) = 2;
+    OSInitMutex(this_ + 0x1fd4);
+    OSInitCond(this_ + 0x1fec);
+    OSCreateThread(lbl_80511E60, fn_803BAA64, 0, lbl_80510E60 + sizeof(lbl_80510E60), sizeof(lbl_80510E60),
+                   OSGetThreadPriority(OSGetCurrentThread()) + 1, 1);
+    OSResumeThread(lbl_80511E60);
 }

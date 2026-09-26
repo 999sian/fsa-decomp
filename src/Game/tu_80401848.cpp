@@ -4,6 +4,8 @@
 // __sinit; both need this TU's .bss (lbl_80528980 thread+stack, lbl_80529CA0
 // queue) defined here, since retail addresses them off one section base.
 #include "types.h"
+#include "dolphin/os.h"
+#include "JSystem/JKernel/JKRThread.h"
 
 // ---- from src/Game/fn_80401848_dtor.cpp ----
 extern "C" void __dl__FPv(void* this_);
@@ -73,9 +75,6 @@ extern "C" BOOL fn_804018F0(char* this_) {
 // ---- from src/Game/EffectQueueEnqueueSmall_804019A8.cpp ----
 extern "C" s32 DVDConvertPathToEntrynum(void* arg1);
 extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(s32 size, s32 align, void* heap);
-extern "C" void OSLockMutex(void* mutex);
-extern "C" void OSUnlockMutex(void* mutex);
-extern "C" void OSSendMessage(void* queue, void* msg, s32 flags);
 
 extern void* lbl_8053ADF0;
 extern void* lbl_804B0FD0[];
@@ -105,7 +104,7 @@ extern "C" void* fn_804019A8(void* p1, u8 p2, void* p3) {
             *(s32*)(node + 0x10) = result;
             void* mutex = lbl_80529CA0 + 0x24;
             *(void**)(node + 0x1c) = p3;
-            OSLockMutex(mutex);
+            OSLockMutex((OSMutex*)mutex);
 
             *(s32*)(node + 0x0) = 0;
             void* tail = *(void**)(lbl_80529CA0 + 0x40);
@@ -117,8 +116,8 @@ extern "C" void* fn_804019A8(void* p1, u8 p2, void* p3) {
                 *(void**)(lbl_80529CA0 + 0x40) = node;
             }
 
-            OSUnlockMutex(mutex);
-            OSSendMessage(lbl_80529CA0, 0, 0);
+            OSUnlockMutex((OSMutex*)mutex);
+            OSSendMessage((OSMessageQueue*)lbl_80529CA0, 0, 0);
         }
     }
     return node;
@@ -158,9 +157,6 @@ extern "C" u8 fn_80401AC8(char* this_) {
 // ---- from src/Game/EffectQueueEnqueue_80401BA4.cpp ----
 extern "C" s32 DVDConvertPathToEntrynum(void* arg1);
 extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(s32 size, s32 align, void* heap);
-extern "C" void OSLockMutex(void* mutex);
-extern "C" void OSUnlockMutex(void* mutex);
-extern "C" void OSSendMessage(void* queue, void* msg, s32 flags);
 
 extern void* lbl_8053ADF0;
 extern void* lbl_804B0FD0[];
@@ -193,7 +189,7 @@ extern "C" void* fn_80401BA4(void* p1, void* p2, u8 p3, void* p4) {
             *(s32*)(node + 0x10) = result;
             void* mutex = lbl_80529CA0 + 0x24;
             *(void**)(node + 0x18) = p4;
-            OSLockMutex(mutex);
+            OSLockMutex((OSMutex*)mutex);
 
             *(s32*)(node + 0x0) = 0;
             void* tail = *(void**)(lbl_80529CA0 + 0x40);
@@ -205,8 +201,8 @@ extern "C" void* fn_80401BA4(void* p1, void* p2, u8 p3, void* p4) {
                 *(void**)(lbl_80529CA0 + 0x40) = node;
             }
 
-            OSUnlockMutex(mutex);
-            OSSendMessage(lbl_80529CA0, 0, 0);
+            OSUnlockMutex((OSMutex*)mutex);
+            OSSendMessage((OSMessageQueue*)lbl_80529CA0, 0, 0);
         }
     }
     return node;
@@ -270,9 +266,6 @@ extern "C" BOOL fn_80401D20(char* this_) {
 // ---- from src/Game/EffectQueueEnqueue2_80401E10.cpp ----
 extern "C" s32 DVDConvertPathToEntrynum(void* arg1);
 extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(s32 size, s32 align, void* heap);
-extern "C" void OSLockMutex(void* mutex);
-extern "C" void OSUnlockMutex(void* mutex);
-extern "C" void OSSendMessage(void* queue, void* msg, s32 flags);
 
 extern void* lbl_8053ADF0;
 extern void* lbl_804B0FD0[];
@@ -305,7 +298,7 @@ extern "C" void* fn_80401E10(void* p1, u8 p2, void* p3) {
             *(s32*)(node + 0x10) = result;
             void* mutex = lbl_80529CA0 + 0x24;
             *(void**)(node + 0x18) = p3;
-            OSLockMutex(mutex);
+            OSLockMutex((OSMutex*)mutex);
 
             *(s32*)(node + 0x0) = 0;
             void* tail = *(void**)(lbl_80529CA0 + 0x40);
@@ -317,8 +310,8 @@ extern "C" void* fn_80401E10(void* p1, u8 p2, void* p3) {
                 *(void**)(lbl_80529CA0 + 0x40) = node;
             }
 
-            OSUnlockMutex(mutex);
-            OSSendMessage(lbl_80529CA0, 0, 0);
+            OSUnlockMutex((OSMutex*)mutex);
+            OSSendMessage((OSMessageQueue*)lbl_80529CA0, 0, 0);
         }
     }
     return node;
@@ -365,3 +358,79 @@ extern "C" void* fn_80401FA0(void* this_, s16 arg) {
     return this_;
 }
 
+// ---- loader thread ----
+struct LoaderNode {
+    LoaderNode* mNext;
+    u32 m4;
+    virtual ~LoaderNode();
+    virtual void execute();
+};
+
+
+struct LoaderQueue {
+    LoaderQueue() {
+        OSInitMessageQueue(&mQueue, &mMsg, 1);
+        OSInitMutex(&mMutex);
+        mHead = NULL;
+        mTail = NULL;
+    }
+    OSMessageQueue mQueue;
+    OSMessage mMsg;
+    OSMutex mMutex;
+    LoaderNode* mHead;
+    LoaderNode* mTail;
+};
+
+static OSThread sLoaderThread;
+static u8 sLoaderStack[0x1000] __attribute__((aligned(32)));
+static LoaderQueue sLoaderQueue;
+
+extern "C" void* fn_80402054(void* param);
+
+static inline void loaderRemove(LoaderQueue* q, LoaderNode* node) {
+    OSLockMutex(&q->mMutex);
+    LoaderNode* prev = NULL;
+    LoaderNode* cur = q->mHead;
+    while (cur != NULL) {
+        if (cur == node) {
+            if (prev != NULL) {
+                prev->mNext = cur->mNext;
+                if (q->mTail == cur) {
+                    q->mTail = prev;
+                }
+            } else if (q->mHead == q->mTail) {
+                q->mHead = NULL;
+                q->mTail = NULL;
+            } else {
+                q->mHead = cur->mNext;
+            }
+        }
+        prev = cur;
+        cur = cur->mNext;
+    }
+    OSUnlockMutex(&q->mMutex);
+}
+
+extern "C" void fn_80401FEC(OSPriority prio, void* heap, void* heap2) {
+    lbl_8053ADF4 = heap2;
+    lbl_8053ADF0 = heap;
+    OSCreateThread(&sLoaderThread, fn_80402054, &sLoaderQueue, sLoaderStack + sizeof(sLoaderStack), sizeof(sLoaderStack), prio, 1);
+    OSResumeThread(&sLoaderThread);
+}
+
+extern "C" void* fn_80402054(void* param) {
+    LoaderNode* volatile node;
+    LoaderQueue* q = (LoaderQueue*)param;
+    JKRThread(OSGetCurrentThread(), 0);
+    while (OSReceiveMessage(&q->mQueue, NULL, OS_MESSAGE_BLOCK)) {
+        LoaderNode* n;
+        while ((n = node = q->mHead) != NULL) {
+            loaderRemove(q, n);
+            OSSendMessage(&q->mQueue, NULL, OS_MESSAGE_NOBLOCK);
+            node->execute();
+        }
+    }
+    return NULL;
+}
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
