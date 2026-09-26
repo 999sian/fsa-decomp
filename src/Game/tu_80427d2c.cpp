@@ -67,22 +67,13 @@ extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, int flag);
 extern void* lbl_8053AE7C;
 extern void* lbl_8053AE80;
 extern void* lbl_8053AE84;
-extern "C" void* fn_8042ACCC(void*, u32);
-extern "C" void fn_8042AD10(void*, u32);
-extern "C" void fn_8042A818(void*);
 extern "C" void fn_8042AF60(void*);
 extern "C" void fn_8042AFA4(void*);
-extern "C" void fn_8042A85C(void*);
 extern "C" void fn_8042ADDC(void*, u32);
 extern "C" void fn_8042B02C(void*, u32);
 extern "C" void fn_8042AFD4(void*, u32);
 extern "C" u32 fn_8042B0AC(void*);
-extern "C" void fn_8042AAA8(void*, u32);
-extern "C" void fn_8042A970(void*, u32);
-extern "C" void fn_8042AB70(void*, u32);
-extern "C" void fn_8042AFFC(void*);
-extern "C" void fn_8042ACA0(void*, u32);
-extern "C" void fn_8042AD3C(void*);
+extern "C" u32 fn_8042AFFC(void*);
 extern "C" void fn_8042AE74(void*, u32);
 extern "C" void fn_8042B084(void*, u32);
 extern "C" void fn_8042B054(void*);
@@ -209,6 +200,22 @@ struct AudioThreadObj {
     OSMessage decodedMessages[3];
 };
 
+extern void* lbl_804B15DC[];
+extern "C" s32 fn_8042DD54(s16*, u8*, s32);
+
+struct VideoThreadObj {
+    void* vtbl;
+    s32 created;
+    OSThread thread;
+    u8 stack[0x64000];
+    OSMessageQueue freeQueue;
+    OSMessageQueue decodedQueue;
+    OSMessage freeMessages[3];
+    OSMessage decodedMessages[3];
+    s32 first;
+    u8 pad[4];
+};
+
 extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 fn_80427D60();
 extern "C" s32 fn_80427D94();
@@ -282,6 +289,18 @@ extern "C" void fn_8042A74C(AudioThreadObj* t, OSMessage msg);
 extern "C" u32 fn_8042A778(AudioThreadObj* t);
 extern "C" AudioThreadObj* fn_8042A7AC(AudioThreadObj* t, s16 flag);
 extern "C" void fn_8042A7FC(AudioThreadObj* t);
+extern "C" void fn_8042A818(VideoThreadObj* t);
+extern "C" void fn_8042A85C(VideoThreadObj* t);
+extern "C" u8 fn_8042A88C(VideoThreadObj* t, s32 priority, void* param);
+extern "C" void fn_8042A970(VideoThreadObj* t, u8* bufPtr);
+extern "C" void fn_8042AAA8(VideoThreadObj* t, u32);
+extern "C" void fn_8042AB70(VideoThreadObj* t, THPReadBuffer* readBuffer);
+extern "C" void fn_8042ACA0(VideoThreadObj* t, OSMessage msg);
+extern "C" void* fn_8042ACCC(VideoThreadObj* t, s32 flag);
+extern "C" void fn_8042AD10(VideoThreadObj* t, OSMessage msg);
+extern "C" u32 fn_8042AD3C(VideoThreadObj* t);
+extern "C" VideoThreadObj* fn_8042AD70(VideoThreadObj* t, s16 flag);
+extern "C" void fn_8042ADC0(VideoThreadObj* t);
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v);
 extern "C" void* fn_8042E1F4();
 extern "C" u16 fn_8042E1FC(Obj8042E1E4* o);
@@ -301,7 +320,7 @@ extern "C" void fn_8042E3D0();
 extern "C" void fn_8042E3F4();
 extern "C" void fn_8042E418();
 extern "C" void fn_8042E43C(u32 a);
-extern "C" void fn_8042E4C4(u32 a);
+extern "C" void fn_8042E4C4(THPReadBuffer* a);
 extern "C" void fn_8042E4EC(u32 a);
 extern "C" void fn_8042E514(u32 a);
 extern "C" void fn_8042E53C(THPReadBuffer* a);
@@ -311,16 +330,17 @@ extern "C" void fn_8042E5B0(u32 a);
 extern "C" u32 fn_8042E5D8();
 extern "C" void fn_8042E5FC(u32 a);
 extern "C" void fn_8042E624(u32 a);
-extern "C" void fn_8042E64C(u32 a);
-extern "C" void fn_8042E674();
+extern "C" void fn_8042E64C(THPReadBuffer* a);
+extern "C" u32 fn_8042E674();
 extern "C" void fn_8042E698(u32 a);
-extern "C" void fn_8042E6C0();
+extern "C" u32 fn_8042E6C0();
 extern "C" void fn_8042E6E4(u32 a);
 extern "C" void fn_8042E70C(u32 a);
 extern "C" void fn_8042E734();
 extern "C" void* fn_8042E780(void* o);
-extern void* lbl_804B15DC[];
-extern "C" s32 fn_8042DD54(s16*, u8*, s32);
+
+extern void* lbl_804B15E8[];
+extern "C" s32 fn_8042DA54(u8*, u8*, u8*, u8*, void*);
 
 extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e) {
     if (lbl_8053AEBD) {
@@ -717,9 +737,11 @@ extern "C" void fn_80428A88() {
     }
 }
 
+#pragma dont_inline on
 extern "C" void fn_80428C38(u8 v) {
     OSSendMessage(&lbl_8052ACE0, (OSMessage)v, 1);
 }
+#pragma dont_inline off
 
 extern "C" s32 fn_80428C6C() {
     OSMessage msg;
@@ -842,7 +864,7 @@ extern "C" void fn_80429120() {
     s32 i;
     if (!lbl_8052AAD0.onMemory) {
         for (i = 0; i < 10; i++) {
-            fn_8042E4C4((u32)&lbl_8052AAD0.readBuffer[i]);
+            fn_8042E4C4(&lbl_8052AAD0.readBuffer[i]);
         }
     }
     for (i = 0; i < 3; i++) {
@@ -1371,6 +1393,184 @@ extern "C" void fn_8042A7FC(AudioThreadObj* t) {
     t->created = 0;
 }
 
+extern "C" void fn_8042A818(VideoThreadObj* t) {
+    if (t->created) {
+        OSCancelThread(&t->thread);
+        t->created = 0;
+    }
+}
+
+extern "C" void fn_8042A85C(VideoThreadObj* t) {
+    if (t->created) {
+        OSResumeThread(&t->thread);
+    }
+}
+
+extern "C" u8 fn_8042A88C(VideoThreadObj* t, s32 priority, void* param) {
+    if (param) {
+        if (!OSCreateThread(&t->thread, (void* (*)(void*))fn_8042E624, param, t->stack + sizeof(t->stack), sizeof(t->stack), priority, 1)) {
+            return 0;
+        }
+    } else {
+        if (!OSCreateThread(&t->thread, (void* (*)(void*))fn_8042E5FC, 0, t->stack + sizeof(t->stack), sizeof(t->stack), priority, 1)) {
+            return 0;
+        }
+    }
+    OSInitMessageQueue(&t->freeQueue, t->freeMessages, 3);
+    OSInitMessageQueue(&t->decodedQueue, t->decodedMessages, 3);
+    t->created = 1;
+    t->first = 1;
+    return 1;
+}
+
+extern "C" void fn_8042A970(VideoThreadObj* t, u8* bufPtr) {
+    THPReadBuffer readBuffer;
+    s32 tmp;
+    s32 readSize;
+    u32 frame;
+    BOOL old;
+    readBuffer.ptr = bufPtr;
+    readSize = lbl_8052AAD0.initReadSize;
+    frame = 0;
+    while (true) {
+        if (lbl_8052AAD0.audioExist) {
+            while (lbl_8052AAD0.mD8 < 0) {
+                old = OSDisableInterrupts();
+                lbl_8052AAD0.mD8++;
+                OSRestoreInterrupts(old);
+                if ((frame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+                    if (lbl_8052AAD0.playFlag & 1) {
+                        readSize = *(s32*)readBuffer.ptr;
+                        readBuffer.ptr = lbl_8052AAD0.movieData;
+                    } else {
+                        break;
+                    }
+                } else {
+                    tmp = *(s32*)readBuffer.ptr;
+                    readBuffer.ptr += readSize;
+                    readSize = tmp;
+                }
+                frame++;
+            }
+        }
+        readBuffer.frameNumber = frame;
+        fn_8042E64C(&readBuffer);
+        if ((frame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+            if (lbl_8052AAD0.playFlag & 1) {
+                readSize = *(s32*)readBuffer.ptr;
+                readBuffer.ptr = lbl_8052AAD0.movieData;
+            } else {
+                OSSuspendThread(&t->thread);
+            }
+        } else {
+            tmp = *(s32*)readBuffer.ptr;
+            readBuffer.ptr += readSize;
+            readSize = tmp;
+        }
+        frame++;
+    }
+}
+
+extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
+    THPReadBuffer* readBuffer;
+    BOOL old;
+    while (true) {
+        if (lbl_8052AAD0.audioExist) {
+            while (lbl_8052AAD0.mD8 < 0) {
+                readBuffer = (THPReadBuffer*)fn_8042E674();
+                if ((readBuffer->frameNumber + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
+                    !(lbl_8052AAD0.playFlag & 1)) {
+                    fn_8042E64C(readBuffer);
+                }
+                fn_8042E4C4(readBuffer);
+                old = OSDisableInterrupts();
+                lbl_8052AAD0.mD8++;
+                OSRestoreInterrupts(old);
+            }
+        }
+        if (lbl_8052AAD0.audioExist) {
+            readBuffer = (THPReadBuffer*)fn_8042E674();
+        } else {
+            readBuffer = (THPReadBuffer*)fn_8042E58C();
+        }
+        fn_8042E64C(readBuffer);
+        fn_8042E4C4(readBuffer);
+    }
+}
+
+extern "C" void fn_8042AB70(VideoThreadObj* t, THPReadBuffer* readBuffer) {
+    THPTextureSet* textureSet;
+    u32 i;
+    u32* compSizePtr;
+    u8* ptr;
+    BOOL old;
+    compSizePtr = (u32*)(readBuffer->ptr + 8);
+    ptr = readBuffer->ptr + lbl_8052AAD0.compInfo.numComponents * 4 + 8;
+    textureSet = (THPTextureSet*)fn_8042E6C0();
+    for (i = 0; i < lbl_8052AAD0.compInfo.numComponents; i++) {
+        switch (lbl_8052AAD0.compInfo.frameComp[i]) {
+        case 0:
+            if ((lbl_8052AAD0.videoError = fn_8042DA54(ptr, textureSet->ytexture, textureSet->utexture, textureSet->vtexture, lbl_8052AAD0.mBufEnd)) != 0) {
+                if (t->first) {
+                    fn_80428C38(0);
+                    t->first = 0;
+                }
+                OSSuspendThread(&t->thread);
+            }
+            textureSet->frameNumber = readBuffer->frameNumber;
+            fn_8042E698((u32)textureSet);
+            old = OSDisableInterrupts();
+            lbl_8052AAD0.mD8++;
+            OSRestoreInterrupts(old);
+        }
+        ptr += *compSizePtr;
+        compSizePtr++;
+    }
+    if (t->first) {
+        fn_80428C38(1);
+        t->first = 0;
+    }
+}
+
+extern "C" void fn_8042ACA0(VideoThreadObj* t, OSMessage msg) {
+    OSSendMessage(&t->decodedQueue, msg, 1);
+}
+
+extern "C" void* fn_8042ACCC(VideoThreadObj* t, s32 flag) {
+    OSMessage msg;
+    if (OSReceiveMessage(&t->decodedQueue, &msg, flag) == 1) {
+        return msg;
+    }
+    return 0;
+}
+
+extern "C" void fn_8042AD10(VideoThreadObj* t, OSMessage msg) {
+    OSSendMessage(&t->freeQueue, msg, 0);
+}
+
+extern "C" u32 fn_8042AD3C(VideoThreadObj* t) {
+    OSMessage msg;
+    OSReceiveMessage(&t->freeQueue, &msg, 1);
+    return (u32)msg;
+}
+
+extern "C" VideoThreadObj* fn_8042AD70(VideoThreadObj* t, s16 flag) {
+    if (t) {
+        t->vtbl = lbl_804B15E8;
+        lbl_8053AE80 = 0;
+        if (flag > 0) {
+            __dl__FPv(t);
+        }
+    }
+    return t;
+}
+
+extern "C" void fn_8042ADC0(VideoThreadObj* t) {
+    t->vtbl = lbl_804B15E8;
+    lbl_8053AE80 = t;
+    t->created = 0;
+}
+
 #pragma dont_inline on
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
 #pragma dont_inline off
@@ -1404,11 +1604,11 @@ extern "C" u8 fn_8042E29C(u32 a) { return fn_8042858C(lbl_8053AE7C, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void* fn_8042E2C4(u32 a) { return fn_8042ACCC(lbl_8053AE80, a); }
+extern "C" void* fn_8042E2C4(u32 a) { return fn_8042ACCC((VideoThreadObj*)lbl_8053AE80, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E2EC(u32 a) { fn_8042AD10(lbl_8053AE80, a); }
+extern "C" void fn_8042E2EC(u32 a) { fn_8042AD10((VideoThreadObj*)lbl_8053AE80, (OSMessage)a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
@@ -1424,7 +1624,7 @@ extern "C" void fn_8042E364() { fn_8042A3E4((AudioThreadObj*)lbl_8053AE84); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E388() { fn_8042A818(lbl_8053AE80); }
+extern "C" void fn_8042E388() { fn_8042A818((VideoThreadObj*)lbl_8053AE80); }
 #pragma dont_inline off
 
 #pragma dont_inline on
@@ -1440,7 +1640,7 @@ extern "C" void fn_8042E3F4() { fn_8042A428((AudioThreadObj*)lbl_8053AE84); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E418() { fn_8042A85C(lbl_8053AE80); }
+extern "C" void fn_8042E418() { fn_8042A85C((VideoThreadObj*)lbl_8053AE80); }
 #pragma dont_inline off
 
 #pragma dont_inline on
@@ -1448,7 +1648,7 @@ extern "C" void fn_8042E43C(u32 a) { fn_8042ADDC(lbl_8053AE7C, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E4C4(u32 a) { fn_8042B02C(lbl_8053AE7C, a); }
+extern "C" void fn_8042E4C4(THPReadBuffer* a) { fn_8042B02C(lbl_8053AE7C, (u32)a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
@@ -1480,27 +1680,27 @@ extern "C" u32 fn_8042E5D8() { return fn_8042A778((AudioThreadObj*)lbl_8053AE84)
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E5FC(u32 a) { fn_8042AAA8(lbl_8053AE80, a); }
+extern "C" void fn_8042E5FC(u32 a) { fn_8042AAA8((VideoThreadObj*)lbl_8053AE80, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E624(u32 a) { fn_8042A970(lbl_8053AE80, a); }
+extern "C" void fn_8042E624(u32 a) { fn_8042A970((VideoThreadObj*)lbl_8053AE80, (u8*)a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E64C(u32 a) { fn_8042AB70(lbl_8053AE80, a); }
+extern "C" void fn_8042E64C(THPReadBuffer* a) { fn_8042AB70((VideoThreadObj*)lbl_8053AE80, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E674() { fn_8042AFFC(lbl_8053AE7C); }
+extern "C" u32 fn_8042E674() { return fn_8042AFFC(lbl_8053AE7C); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E698(u32 a) { fn_8042ACA0(lbl_8053AE80, a); }
+extern "C" void fn_8042E698(u32 a) { fn_8042ACA0((VideoThreadObj*)lbl_8053AE80, (OSMessage)a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E6C0() { fn_8042AD3C(lbl_8053AE80); }
+extern "C" u32 fn_8042E6C0() { return fn_8042AD3C((VideoThreadObj*)lbl_8053AE80); }
 #pragma dont_inline off
 
 #pragma dont_inline on
