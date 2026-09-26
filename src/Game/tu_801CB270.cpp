@@ -479,4 +479,80 @@ extern "C" s32 fn_801CCDA4(void) {
     return best;
 }
 
+extern "C" s32 fn_8023B2B0(s32 player);
+extern "C" void* fn_801F666C(void* base, s32 id);
+extern "C" void detach__5ActorFv(void* actor);
+extern "C" f32* fn_8023E724(s32 idx);
+extern "C" u8 fn_80236B50(s32 idx);
+extern "C" u8 fn_8022DCD8(s32 idx);
+extern "C" u8 fn_80234C5C(s32 idx);
+extern "C" u8 fn_8023EA28(s32 idx);
+extern "C" u8 fn_8022D534(s32 idx);
+extern "C" u8 fn_802349EC(s32 idx);
+extern "C" s32 fn_8022CAF8(s32 idx);
+extern "C" u8 fn_8022F478(s32 idx);
+extern int __float_max[];
+
+extern "C" s32 fn_801CC820(s32 player, f32* outPos) {
+    s32 id;
+    s32 result = 0;
+    if (outPos != 0) {
+        outPos[0] = lbl_8053EF7C;
+        outPos[1] = lbl_8053EF7C;
+        outPos[2] = lbl_8053EF7C;
+    }
+    id = fn_8023B2B0(player);
+    if (id >= 0) {
+        u8* a = (u8*)fn_801F666C(fn_801F856C(), id);
+        if (a != 0 && a[0x11c] != 0 && *(u32*)(a + 0x1a0) == 'ARRW' && *(s32*)(a + 0x108) > 0) {
+            result = 1;
+            if (outPos != 0) {
+                outPos[0] = *(f32*)(a + 0x3c);
+                outPos[1] = *(f32*)(a + 0x40);
+                outPos[2] = *(f32*)(a + 0x44);
+            }
+            detach__5ActorFv(a);
+        }
+    }
+    return result;
+}
+
+static inline f32 sq(f32 x) { return x * x; }
+
+extern "C" s32 fn_801CCE3C(const f32* pos, s32 group) {
+    s32 bestIdx = -1;
+    f32 best = *(f32*)__float_max;
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_8023F264(i) && group == fn_8023DE58(i) && !fn_8022F514((void*)i)) {
+            f32 dy = fn_8023E724(i)[1] - pos[1];
+            f32 dx = fn_8023E724(i)[0] - pos[0];
+            f32 d = sq(dx) + sq(dy);
+            if (d < best) {
+                best = d;
+                bestIdx = i;
+            }
+        }
+    }
+    return bestIdx;
+}
+
+extern "C" s32 fn_801CCFE4(s32 i) {
+    s32 result = 0;
+    if (fn_8023F264(i) && !fn_80236B50(i) && !fn_8022DCD8(i) && !fn_80234C5C(i) && !fn_8023EA28(i)
+        && !fn_80230188(i) && !fn_8022D534(i) && !fn_802349EC(i)) {
+        switch (fn_8022CAF8(i)) {
+        case 4:
+        case 5:
+            if (!fn_8022F478(i)) {
+                result = 1;
+            }
+            break;
+        default:
+            result = 1;
+            break;
+        }
+    }
+    return result;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
