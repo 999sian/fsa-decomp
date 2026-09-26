@@ -34,6 +34,14 @@ void fn_8025FEDC(char*);
 void fn_8025F698(char*, s32);
 void fn_8024EFF8(char*, s32);
 void fn_802382D0(s32, s32);
+s32 fn_802376D8(s32);
+void fn_8027EB04(char*);
+bool fn_80274238(void*, void*, void*, void*);
+bool fn_802576CC(void*, void*, void*, void*);
+bool fn_802575B8(void*, void*, void*, void*);
+bool fn_802574CC(void*, void*, void*, void*);
+bool fn_802570BC(void*, void*, void*, void*);
+u8 fn_80256F44(void*, void*, void*, void*);
 s32 fn_80241864(char*);
 s32 fn_80241544(char*);
 bool fn_80241200(char*);
@@ -87,6 +95,16 @@ inline void stopEmitter(char* p, s32 off) {
 inline void resetC74(char* p) {
     S32(p, 0xc74) = 0;
     ((s16*)(lbl_80529DEC + 0x1f4))[S32(p, 0x4)] = 0;
+}
+
+inline bool isDying(char* p) {
+    bool r;
+    if (S32(p, 0x1244) == 0x33 || S32(p, 0x1240) == 0x33 || S32(p, 0x1240) == 0x34) {
+        r = true;
+    } else {
+        r = false;
+    }
+    return r;
 }
 
 struct Vec3 {
@@ -187,7 +205,7 @@ extern "C" bool Player_HasAnyStatusFlagSet(void* player) {
 
 
 extern "C" {
-void fn_8027023C(char* p) {
+inline void clearCombo(char* p) {
     S32(p, 0x117c) = 0;
     S32(p, 0x1180) = 0;
     S32(p, 0x1184) = 0;
@@ -203,6 +221,7 @@ void fn_8027023C(char* p) {
         U8(p, 0x11a8 + i) = 0;
     }
 }
+void fn_8027023C(char* p) { clearCombo(p); }
 void fn_802702A4(char* p) {
     if (S32(p, 0xc7c) < 99999999) {
         S32(p, 0xc7c)++;
@@ -240,13 +259,7 @@ void fn_802708E8(char* p) {
     DELETE_JPA(p, 0x1308);
 }
 void fn_80270948(char* p, const JGeometry::TVec3<f32>* pos) {
-    BOOL r;
-    if (S32(p, 0x1244) == 0x33 || S32(p, 0x1240) == 0x33 || S32(p, 0x1240) == 0x34) {
-        r = 1;
-    } else {
-        r = 0;
-    }
-    if ((u8)r) {
+    if (isDying(p)) {
         if (U8(p, 0xd2c) != 1) {
             if (pos == NULL) {
                 *(JGeometry::TVec3<f32>*)(p + 0xd10) = *(JGeometry::TVec3<f32>*)(p + 0x8);
@@ -325,6 +338,31 @@ void fn_80270D34(char* p, s32 n) {
         resetC74(p);
     }
 }
+void fn_80270DDC(char* p, s32 n, u8 flag) {
+    if (U8(p, 0xd35) != 0) {
+        return;
+    }
+    if (U8(lbl_8053AAF8, 0x7f) == 0 && (U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4)))) {
+        if (S32(p, 0xbfc) <= 0 || isDying(p)) {
+            return;
+        }
+    }
+    s32 old = S32(p, 0xbfc);
+    S32(p, 0xbfc) = old + 1;
+    if (S32(p, 0xbfc) == old) {
+        for (;;) {}
+    }
+    S32(p, 0xbfc) = old;
+    if (Player_IsLinked(p)) {
+        S32(p, 0xbfc) = fn_802376D8(Player_GetLinkTargetIndex(p));
+    } else {
+        S32(p, 0xbfc) += n;
+    }
+    if (S32(p, 0xbfc) > S32(p, 0xbf8)) {
+        S32(p, 0xbfc) = S32(p, 0xbf8);
+    }
+    U8(p, 0xd35) = flag;
+}
 void fn_80271038(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xf); }
 void fn_80271068(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xe); }
 void fn_80271098(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xd); }
@@ -392,6 +430,24 @@ BOOL fn_80272DCC(char* p, const f32* box, s32 a, s32 b) {
 extern "C" {
 inline void setAround(JGeometry::TBox2<f32>* b, const JGeometry::TVec2<f32>& c, f32 r) {
     b->set(c.x - r, c.y - r, r + c.x, r + c.y);
+}
+bool fn_80273C30(void* a, void* b, void* c, void* d) {
+    if (fn_80274238(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802576CC(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802575B8(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802574CC(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802570BC(a, b, c, d)) {
+        return 1;
+    }
+    return fn_80256F44(a, b, c, d) != 0;
 }
 void fn_80276538(char* p) {
     setAround((JGeometry::TBox2<f32>*)(p + 0x4c0), *(JGeometry::TVec2<f32>*)(p + 0x8), 7.0f);
@@ -585,6 +641,22 @@ void fn_8027B5F0(char* p) {
     S32(p, 0x11ac) = 0;
     DELETE_JPA(p, 0x12bc);
 }
+void fn_8027A908(char* p) {
+    S32(p, 0xbf4) = 8;
+    U8(p, 0x458) = 0;
+    U8(p, 0xbb9) = 0;
+    U8(p, 0xbba) = 0;
+    F32(p, 0xbbc) = 3.0f;
+    F32(p, 0x10) = 0.0f;
+    fn_8027EB04(p);
+    clearCombo(p);
+    if (U8(p, 0x490) == 1) {
+        fn_8024F0E8(p, 0x40075);
+        fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x503, 1, 1, 0, 0, 1, 1.0f);
+    } else {
+        U8(p, 0x3fd) = 1;
+    }
+}
 void fn_8027AA10(char* p) {
     DELETE_JPA(p, 0x12b8);
     DELETE_JPA(p, 0x12bc);
@@ -636,6 +708,35 @@ void fn_8027CBB0(char* p) {
         }
         S32(p, 0x12c0) = -1;
     }
+}
+}
+
+extern "C" {
+inline s32 comboFreeSlot(char* p) {
+    if (S32(p, 0x118c) <= 0) {
+        return 0;
+    }
+    if (S32(p, 0x1190) <= 0) {
+        return 1;
+    }
+    if (S32(p, 0x1194) <= 0) {
+        return 2;
+    }
+    if (S32(p, 0x1198) <= 0) {
+        return 3;
+    }
+    return 4;
+}
+void fn_8027D4F4(char* p) {
+    if (comboFreeSlot(p) >= 4) {
+        clearCombo(p);
+    }
+    if (S32(p, 0x45c) == 0 || S32(p, 0x45c) == 1 || S32(p, 0x45c) == 2) {
+        S32(p, 0x11cc) = 0x14;
+        S32(p, 0x11d0) = S32(p, 0x3dc);
+        return;
+    }
+    S32(p, 0x11cc) = 0;
 }
 }
 
