@@ -1,3 +1,4 @@
+#pragma optimization_level 3
 // TU 0x80390818-0x80391ce4.
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
@@ -18,7 +19,9 @@ struct Tu80390818_Sub {
     u32 m150;
     u8 pad154[0x174 - 0x154];
     s32 m174;
-    u8 pad178[0x19E - 0x178];
+    u8 pad178[0x180 - 0x178];
+    s32 m180[4];
+    u8 pad190[0x19E - 0x190];
     u8 m19E;
     u8 m19F;
     u8 pad1A0[0x3AF - 0x1A0];
@@ -82,6 +85,68 @@ extern "C" u8 fn_80390894(Tu80390818* t, s32 i) {
         return t->m48->m3B2[i];
     }
     return 0;
+}
+
+struct Tu80390818_Game {
+    u8 pad0[0x4C];
+    s32 mode;
+    u8 pad50[0x7F - 0x50];
+    u8 b7F;
+};
+extern Tu80390818_Game* lbl_8053AAF8;
+
+static inline bool Tu80390818_inModeA(Tu80390818_Game* g) {
+    bool r = false;
+    if (g->mode == 7 || g->mode == 8 || g->mode == 9 || g->mode == 0x16 || g->mode == 10 || g->mode == 11) {
+        r = true;
+    }
+    return r;
+}
+static inline bool Tu80390818_inModeB(Tu80390818_Game* g) {
+    bool r = false;
+    if (g->mode == 7 || g->mode == 8 || g->mode == 9 || g->mode == 0x16 || g->mode == 10 || g->mode == 11 || g->mode == 12) {
+        r = true;
+    }
+    return r;
+}
+static inline bool Tu80390818_isShared() {
+    Tu80390818_Game* g = lbl_8053AAF8;
+    if (g->b7F) {
+        return Tu80390818_inModeA(g) != 0;
+    } else {
+        return Tu80390818_inModeB(g) != 0;
+    }
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" u8* fn_801F666C(void* mgr, s32 id);
+extern "C" u8 fn_802EB27C(u8* actor);
+
+extern "C" s32 fn_803908D0(Tu80390818* t) {
+    s32 id;
+    for (s32 i = 0; i < 4; i++) {
+        id = t->m48->m180[i];
+        if (id >= 0) {
+            if (Tu80390818_isShared() == true) {
+                u8* a = fn_801F666C(fn_801F856C(), id);
+                if (a != 0 && *(u32*)(a + 0x1A0) == 'TKRA' && !fn_802EB27C(a)) {
+                    return 0;
+                }
+            }
+            t->m48->m180[i] = -1;
+        }
+        id = t->m4C->m180[i];
+        if (id >= 0) {
+            if (Tu80390818_isShared() == true) {
+                u8* a = fn_801F666C(fn_801F856C(), id);
+                if (a != 0 && *(u32*)(a + 0x1A0) == 'TKRA' && !fn_802EB27C(a)) {
+                    return 0;
+                }
+            }
+            t->m4C->m180[i] = -1;
+        }
+    }
+    return 1;
 }
 
 extern "C" void fn_80390B64(Tu80390818* t) {
