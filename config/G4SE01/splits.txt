@@ -1960,6 +1960,20 @@ game/wizr.cpp:
 	.text       start:0x801769D8 end:0x80179150
 	.ctors      start:0x8045BF84 end:0x8045BF88
 
+game/swbm.cpp:
+	extab       start:0x800074DC end:0x8000750C
+	extabindex  start:0x80014170 end:0x800141B8
+	.text       start:0x8017A44C end:0x8017B140
+	.ctors      start:0x8045BF8C end:0x8045BF90
+	.sdata2     start:0x8053DC78 end:0x8053DCA0
+
+game/puku.cpp:
+	extab       start:0x8000750C end:0x8000753C
+	extabindex  start:0x800141B8 end:0x80014200
+	.text       start:0x8017B140 end:0x8017C01C
+	.ctors      start:0x8045BF90 end:0x8045BF94
+	.sdata2     start:0x8053DCA0 end:0x8053DD20
+
 game/rdvr.cpp:
 	extab       start:0x800075B4 end:0x800075E4
 	extabindex  start:0x800142B4 end:0x800142FC
