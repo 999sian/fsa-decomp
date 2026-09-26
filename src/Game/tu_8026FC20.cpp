@@ -1286,6 +1286,55 @@ void fn_8027BA2C(char* p) {
         PTR(p, 0x12bc) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x26a, 0, 1, 0, NULL, 1, 1.0f);
     }
 }
+inline void setOfs30c(char* p, f32 x, f32 y) {
+    PlayerOfs* po = (PlayerOfs*)p;
+    JGeometry::TVec3<f32>* v = (JGeometry::TVec3<f32>*)(p + 0x30c);
+    v->x = x;
+    v->y = y;
+    v->z = 0.0f;
+    *v += po->pos;
+}
+#define setBox(p, off, a, b, c, d_) { PlayerOfs* po_ = (PlayerOfs*)(p); ((JGeometry::TBox2<f32>*)((p) + (off)))->set(a, b, c, d_); }
+inline void faceLeft(char* p, s32 d) {
+    setBox(p, 0x4b0, po_->pos.x - 32.0f, po_->pos.y - 8.0f, po_->pos.x - 16.0f, 8.0f + po_->pos.y);
+    setBox(p, 0x4a0, po_->pos.x - 16.0f, po_->pos.y - 8.0f, 4.0f + po_->pos.x, 8.0f + po_->pos.y);
+    setOfs30c(p, -16.0f, 0.0f);
+    S32(p, 0x3f0) = d;
+}
+inline void faceRight(char* p, s32 d) {
+    setBox(p, 0x4b0, 16.0f + po_->pos.x, po_->pos.y - 8.0f, 32.0f + po_->pos.x, 8.0f + po_->pos.y);
+    setBox(p, 0x4a0, po_->pos.x - 4.0f, po_->pos.y - 8.0f, 16.0f + po_->pos.x, 8.0f + po_->pos.y);
+    setOfs30c(p, 16.0f, 0.0f);
+    S32(p, 0x3f0) = d;
+}
+inline void faceUp(char* p, s32 d) {
+    setBox(p, 0x4b0, po_->pos.x - 8.0f, po_->pos.y - 32.0f, 8.0f + po_->pos.x, po_->pos.y - 16.0f);
+    setBox(p, 0x4a0, po_->pos.x - 8.0f, po_->pos.y - 16.0f, 8.0f + po_->pos.x, 4.0f + po_->pos.y);
+    setOfs30c(p, 0.0f, -16.0f);
+    S32(p, 0x3f0) = d;
+}
+inline void faceDown(char* p, s32 d) {
+    setBox(p, 0x4b0, po_->pos.x - 8.0f, 16.0f + po_->pos.y, 8.0f + po_->pos.x, 32.0f + po_->pos.y);
+    setBox(p, 0x4a0, po_->pos.x - 8.0f, po_->pos.y - 4.0f, 8.0f + po_->pos.x, 16.0f + po_->pos.y);
+    setOfs30c(p, 0.0f, 16.0f);
+    S32(p, 0x3f0) = d;
+}
+void fn_80276BB8(char* p) {
+    switch (S32(p, 0x3dc)) {
+    case 0: faceLeft(p, 1); break;
+    case 1: faceRight(p, 0); break;
+    case 2: faceUp(p, 3); break;
+    case 3: faceDown(p, 2); break;
+    }
+}
+void fn_80276E5C(char* p) {
+    switch (S32(p, 0x3dc)) {
+    case 0: faceRight(p, 0); break;
+    case 1: faceLeft(p, 1); break;
+    case 2: faceDown(p, 2); break;
+    case 3: faceUp(p, 3); break;
+    }
+}
 void fn_802356B8(s32);
 u8 fn_8022E438(s32, s32);
 void fn_8027BC90(char* p) {
