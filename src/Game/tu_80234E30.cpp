@@ -33,6 +33,8 @@ extern "C" u8 fn_8018A614(int idx);
 extern "C" void fn_80270360(Player*, int);
 extern "C" void fn_8045815C(void*, int);
 extern "C" void* lbl_8053AF80;
+// Retail addresses this off the TU .bss anchor in __sinit (as a static would), yet
+// auto_fn_8022CFE8/auto_fn_802316C8 reference it cross-TU, so the unit cannot link while static.
 static JGeometry::TVec3<f32> lbl_804CF460(lbl_80540008, lbl_80540008, lbl_80540008);
 
 static inline u8 isPlayerEnabled(int idx) {
@@ -810,15 +812,16 @@ u8 fn_80238548(int idx, int a1, const PVec2* dst, int a3) {
     BOOL found = 0;
     for (int i = 0; i < 4; i++) {
         if (fn_8022E438(i, idx)) {
-            // NONMATCHING: retail keeps d in a stack slot (stores it twice) and uses a 0x40 frame.
-            PVec2 d, t;
+            PVec2 t, d;
             PVec2* p0 = (PVec2*)getPosPtr(idx);
-            d.set(*dst);
-            d.x -= p0->x;
-            d.y -= p0->y;
+            PVec2* pd = &d;
+            pd->set(*dst);
+            f32 dx = pd->x -= p0->x;
+            f32 dy = pd->y -= p0->y;
             PVec2* p1 = (PVec2*)getPosPtr(i);
             t.set(*p1);
-            t.add(d);
+            t.x += dx;
+            t.y += dy;
             if (fn_802710C8(lbl_8053AC90->players[i], idx, a1, &t, a3)) {
                 fn_80248FF0(lbl_8053AC90->players[i]);
                 if (i == idx) found = 1;
