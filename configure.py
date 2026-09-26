@@ -1215,7 +1215,7 @@ config.libs = [
             Object(NonMatching, "Game/navi.cpp"),
             Object(NonMatching, "Game/tu_8021F064.cpp"),
             Object(Matching, "Game/fbal.cpp"),
-            Object(NonMatching, "Game/znlj.cpp"),
+            Object(Matching, "Game/znlj.cpp"),
             Object(NonMatching, "Game/tu_80220F54.cpp"),
             Object(Matching, "Game/tu_80221B44.cpp"),
             Object(NonMatching, "Game/zsla.cpp"),

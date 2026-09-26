@@ -2626,6 +2626,10 @@ Game/znlj.cpp:
 	extabindex  start:0x80018334 end:0x80018394
 	.text       start:0x802205E0 end:0x80220F54
 	.ctors      start:0x8045C198 end:0x8045C19C
+	.data       start:0x804A68D0 end:0x804A6990
+	.bss        start:0x804CEA60 end:0x804CEACC
+	.sbss       start:0x8053AC80 end:0x8053AC90
+	.sdata2     start:0x8053FE18 end:0x8053FE48
 
 Game/tu_80220F54.cpp:
 	extab       start:0x8000A5B0 end:0x8000A628
