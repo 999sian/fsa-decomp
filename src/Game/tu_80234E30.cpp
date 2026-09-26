@@ -694,6 +694,66 @@ int fn_802379E4(int idx, int a1) {
     return 0;
 }
 
+extern "C" int fn_802486A0(Player*);
+extern "C" u8 fn_80240AD4(Player*);
+extern "C" u8 fn_80240AF0(Player*);
+extern "C" u8 GetBusyLocked(Player*);
+extern "C" u8 fn_80251BFC(Player*, int);
+extern "C" void fn_80248B9C(Player*);
+extern "C" u8 lbl_80529DEC[];
+static inline int p86A0(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_802486A0(lbl_8053AC90->players[i]);
+}
+static inline u8 p0AD4(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80240AD4(lbl_8053AC90->players[i]);
+}
+static inline int pF448(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_8025F448(lbl_8053AC90->players[i]);
+}
+static inline u8 p0AF0(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return fn_80240AF0(lbl_8053AC90->players[i]);
+}
+static inline u8 pBusy(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return GetBusyLocked(lbl_8053AC90->players[i]);
+}
+u8 fn_80237A80(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (p86A0(idx) == 4 && pGet670(idx)) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (!pIsLinked(i) && p0AD4(i)) return 0;
+    }
+    if ((u8)pF448(idx)) return 0;
+    if (*(u8*)((char*)lbl_8053AAF8 + 0x7f) && *(int*)(lbl_80529DEC + 0x118) == 0 && *(int*)(lbl_80529DEC + 0x11c) == 0) {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && !p0AF0(i)) {
+                if (pBusy(i)) return 0;
+                if (!fn_80251BFC(lbl_8053AC90->players[i], 0x38)) return 0;
+            }
+        }
+        for (int j = 0; j < 4; j++) fn_80248B9C(lbl_8053AC90->players[j]);
+    } else {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && !p0AF0(i) && fn_8022E438(idx, i)) {
+                if (!fn_80251BFC(lbl_8053AC90->players[i], 0x38)) return 0;
+            }
+        }
+        for (int j = 0; j < 4; j++) {
+            if (isPlayerEnabled(j) && !p0AF0(j) && fn_8022E438(idx, j)) fn_80248B9C(lbl_8053AC90->players[j]);
+        }
+    }
+    return 1;
+}
+
 void fn_802381B8(int idx) {
     if (lbl_8053AC90 == NULL) return;
     if (isPlayerEnabled(idx)) fn_80248DB8(lbl_8053AC90->players[idx]);
