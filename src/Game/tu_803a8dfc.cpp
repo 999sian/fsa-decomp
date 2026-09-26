@@ -3,6 +3,80 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 
+class J2DGrafContext;
+class J2DScreen {
+public:
+    void draw(f32 x, f32 y, const J2DGrafContext* ctx);
+};
+
+struct VObj_803A8DFC {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void setAlpha(u8 a);
+};
+
+extern "C" s32 fn_8037EFB4(s32 idx);
+extern "C" void fn_8013B490(void* p);
+extern void* lbl_8053AB10;
+// .sdata2 constants of this TU (0.0f, 800.0f, 640.0f); referenced by label until
+// the whole TU's literal pool can be emitted in order.
+extern const f32 lbl_805433C8;
+extern const f32 lbl_805433D8;
+extern const f32 lbl_805433DC;
+
+// Maps another player's index to a compact slot excluding `self`.
+extern "C" s32 fn_803A8DFC(void* this_, s32 self) {
+    s32 r = 0;
+    switch (self) {
+    case 0:
+        switch (fn_8037EFB4(self)) {
+        case 0: r = 1; break;
+        case 1: r = 2; break;
+        case 2: r = 3; break;
+        }
+        break;
+    case 1:
+        switch (fn_8037EFB4(self)) {
+        case 0: r = 0; break;
+        case 1: r = 2; break;
+        case 2: r = 3; break;
+        }
+        break;
+    case 2:
+        switch (fn_8037EFB4(self)) {
+        case 0: r = 0; break;
+        case 1: r = 1; break;
+        case 2: r = 3; break;
+        }
+        break;
+    case 3:
+        switch (fn_8037EFB4(self)) {
+        case 0: r = 0; break;
+        case 1: r = 1; break;
+        case 2: r = 2; break;
+        }
+        break;
+    }
+    return r;
+}
+
+extern "C" void fn_803A97A0(void* this_) {
+    char* p = (char*)this_;
+    fn_8013B490(lbl_8053AB10);
+    if (*(u8*)(p + 0x4c0) >= 2) {
+        (*(VObj_803A8DFC**)(p + 0x16c))->setAlpha(0xff - *(u8*)(p + 0x4c2));
+    } else {
+        (*(VObj_803A8DFC**)(p + 0x16c))->setAlpha(0);
+    }
+    (*(J2DScreen**)(p + 0x1c))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
+}
+
+
 // ---- from src/Game/CountdownBlink_803AF604.cpp ----
 extern "C" void fn_80458880(void* p1, s32 p2, s32 p3);
 extern "C" void fn_803B35F8(void* this_, u8 flag);
@@ -71,6 +145,92 @@ void fn_803B7B90(void* thisPtr) {
 	p[3] = -1;
 }
 
+}
+
+struct VPane_803B31AC {
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void setAlpha(u8 a);
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual void v34();
+    virtual void v38();
+    virtual void v3C();
+    virtual void v40();
+    virtual void v44();
+    virtual void v48();
+    virtual void v4C();
+    virtual void v50();
+    virtual void v54();
+    virtual void v58();
+    virtual void v5C();
+    virtual void v60();
+    virtual void v64();
+    virtual void v68();
+    virtual void v6C();
+    virtual void v70();
+    virtual void v74();
+    virtual void v78();
+    virtual void v7C();
+    virtual void v80();
+    virtual void v84();
+    virtual void v88();
+    virtual void v8C();
+    virtual void v90();
+    virtual void v94();
+    virtual void v98();
+    virtual void v9C();
+    virtual void vA0();
+    virtual void vA4();
+    virtual void vA8();
+    virtual void vAC();
+    virtual void vB0();
+    virtual void vB4();
+    virtual void vB8();
+    virtual void vBC();
+    virtual void vC0();
+    virtual void vC4();
+    virtual void vC8();
+    virtual void vCC();
+    virtual void vD0();
+    virtual void vD4();
+    virtual void vD8();
+    virtual void vDC();
+    virtual void vE0();
+    virtual void vE4();
+    virtual void vE8();
+    virtual void drawRect(s32 a, s32 b, s32 c, f32 x, f32 y, f32 w, f32 h);
+};
+
+extern u8 lbl_80529DEC[];
+
+extern "C" void fn_803B31AC(void* this_) {
+    char* p = (char*)this_;
+    s32 mode = *(s32*)(lbl_80529DEC + 0x118);
+    if (mode == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    if (mode == 1 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    if (mode == 2 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    if (mode == 3 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    if (mode == 4 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    if (mode == 5 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    if (mode == 6 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    if (mode == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1) return;
+    if (mode == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 3) return;
+    if (mode == 10 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
+    // NONMATCHING: retail compares with cmplwi + bne/b (5 diff lines).
+    switch (*(u8*)(lbl_80529DEC + 0x237)) {
+    case 8:
+        return;
+    }
+    fn_8013B490(lbl_8053AB10);
+    (*(VPane_803B31AC**)(p + 0x170))->setAlpha(*(u8*)(p + 0x4c2));
+    (*(VPane_803B31AC**)(p + 0x170))->drawRect(0, 0, 0, lbl_805433C8, lbl_805433C8, lbl_805433D8, lbl_805433DC);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
