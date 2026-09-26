@@ -2,6 +2,7 @@
 // TU 8015C828-8015DE10 (KETH). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
 
 // from src/Game/fn_8015C828_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -46,6 +47,78 @@ struct KethRandom {
 };
 struct KethGame { u8 pad[0xb4]; KethRandom rnd; };
 extern KethGame* lbl_8053AAF8;
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 a, f32 sx, f32 sy);
+extern "C" void fn_801F02BC(void* actor, const char* res, u32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 sx, f32 sy);
+extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern const char lbl_804660F8[];
+
+struct KethVT {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual u8 isVisible();
+};
+
+static inline f32 ksin(f32 x) { return sin(x); }
+static inline f32 kcos(f32 x) { return cos(x); }
+static inline void kethRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
+    f32 sx = ksin(ax);
+    f32 sy = ksin(ay);
+    f32 sz = ksin(az);
+    f32 cx = kcos(ax);
+    f32 cy = kcos(ay);
+    f32 cz = kcos(az);
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sx * sy * cz - cx * sz);
+    m[1][1] = s * (sx * sy * sz + cx * cz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cx * cz * sy + sx * sz);
+    m[1][2] = s * (cx * sz * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
+}
+
+// KETH draw (vtable slot 6)
+extern "C" void fn_8015C8B0(char* this_) {
+    if ((*(u32*)(this_ + 0x90) >> 27) && !((KethVT*)this_)->isVisible()) {
+        return;
+    }
+    DrawRec rec;
+    f32 mtx[3][4];
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    if (*(s32*)(this_ + 0x264) == 1) {
+        return;
+    }
+    rec.w30 = *(s32*)(this_ + 0x150);
+    kethRotMtx(mtx, 0.0f, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, 0.0f, 1.0f);
+    rec.w18 = mtx;
+    s32 big = 0;
+    if (*(s32*)(this_ + 0x260) != 0) {
+        big = 1;
+    }
+    if (*(s32*)(this_ + 0x4) == 8 && *(s32*)(this_ + 0x260) != 0) {
+        kethRotMtx(mtx, 0.0f, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, 0.0f, 2.0f);
+        rec.w18 = mtx;
+        fn_801F06F0(this_, lbl_804660F8, *(s32*)(this_ + 0x258) + 0x155, &rec, -1, 1.0f, 1.0f);
+        fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, 0x176, 0, 2, -1, 0, 0, 0);
+    } else {
+        fn_801F02BC(this_, lbl_804660F8, *(s32*)(this_ + 0x258) + 0x155, &rec, -1, big, 0, 1.0f, 1.0f);
+    }
+}
 
 // KETH init (vtable slot 1)
 extern "C" void fn_8015D844(char* this_) {
