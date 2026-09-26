@@ -1148,7 +1148,7 @@ config.libs = [
             Object(NonMatching, "game/kepo.cpp"),
             Object(NonMatching, "game/tu_8021A570.cpp"),
             Object(NonMatching, "game/tu_8021B904.cpp"),
-            Object(NonMatching, "game/tu_8021BFA8.cpp"),
+            Object(Matching, "game/tu_8021BFA8.cpp"),
             Object(NonMatching, "game/tu_8021CDE4.cpp"),
             Object(NonMatching, "game/ezge.cpp"),
             Object(NonMatching, "game/navi.cpp"),
