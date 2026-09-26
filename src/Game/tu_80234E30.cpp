@@ -177,6 +177,63 @@ static inline int getFairy290(int idx) {
     return Fairy_GetSubField_0x290(lbl_8053AC90->players[idx]);
 }
 
+extern "C" u8 Player_GetField_0x454(Player*);
+extern "C" u8 Player_GetField_0xce8(Player*);
+extern "C" u8 fn_80240670(Player*);
+extern "C" u8 Player_IsLinked(Player*);
+extern "C" int Player_GetLinkTargetIndex(Player*);
+extern "C" f32* fn_8024E018(Player*);
+static inline u8 pGet454(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_GetField_0x454(lbl_8053AC90->players[i]);
+}
+static inline u8 pGetCE8(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_GetField_0xce8(lbl_8053AC90->players[i]);
+}
+static inline int pGetA04(int i) {
+    if (lbl_8053AC90 == NULL) return 1;
+    if (!isPlayerEnabled(i)) return 1;
+    return fn_80270A04(lbl_8053AC90->players[i]);
+}
+static inline u8 pGet670(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 1;
+    return fn_80240670(lbl_8053AC90->players[i]);
+}
+static inline u8 pIsLinked(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int pLinkTarget(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isPlayerEnabled(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+static inline int get3B4(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
+}
+static inline f32* getPosPtr(int idx) {
+    if (lbl_8053AC90 == NULL) return (f32*)&lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return (f32*)&lbl_804CF460;
+    return (f32*)((char*)lbl_8053AC90->players[idx] + 0x8);
+}
+static inline JGeometry::TVec3<f32>* getOffsPtr(int idx) {
+    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return &lbl_804CF460;
+    return (JGeometry::TVec3<f32>*)fn_8024E018(lbl_8053AC90->players[idx]);
+}
+static inline int getGroupId(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return fn_8024FF6C(lbl_8053AC90->players[idx]);
+}
+
 int fn_80234E30(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80240D64(lbl_8053AC90->players[idx]);
@@ -597,11 +654,6 @@ void fn_802384BC(int idx) {
 
 int fn_80239108(int);
 u8 fn_80250030(Player*, int);
-static inline int getGroupId(int idx) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isPlayerEnabled(idx)) return 0;
-    return fn_8024FF6C(lbl_8053AC90->players[idx]);
-}
 static inline int countGroup(int id) {
     int last = -1;
     int n = 0;
@@ -615,6 +667,36 @@ static inline int countGroup(int id) {
     return n;
 }
 u8 fn_8024FFC8(Player*, int);
+typedef JGeometry::TVec2<f32> PVec2;
+u8 fn_802710C8(Player*, int, int, void*, int);
+void fn_80248FF0(Player*);
+u8 fn_80238548(int idx, int a1, const PVec2* dst, int a3) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    BOOL found = 0;
+    for (int i = 0; i < 4; i++) {
+        if (fn_8022E438(i, idx)) {
+            // NONMATCHING: retail keeps d in a stack slot (stores it twice) and uses a 0x40 frame.
+            PVec2 d, t;
+            PVec2* p0 = (PVec2*)getPosPtr(idx);
+            d.set(*dst);
+            d.x -= p0->x;
+            d.y -= p0->y;
+            PVec2* p1 = (PVec2*)getPosPtr(i);
+            t.set(*p1);
+            t.add(d);
+            if (fn_802710C8(lbl_8053AC90->players[i], idx, a1, &t, a3)) {
+                fn_80248FF0(lbl_8053AC90->players[i]);
+                if (i == idx) found = 1;
+            }
+        }
+    }
+    for (int j = 0; j < 4; j++) {
+        if (pIsLinked(j)) fn_80270D34(lbl_8053AC90->players[j], a1);
+    }
+    return found;
+}
+
 int fn_8023885C(int id) {
     if (countGroup(id) <= 0) return -1;
     for (int i = 0; i < 4; i++) {
@@ -795,23 +877,6 @@ u8 fn_80239D38() {
     return 1;
 }
 
-u8 Player_GetField_0x454(Player*);
-u8 Player_GetField_0xce8(Player*);
-static inline u8 pGet454(int i) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isPlayerEnabled(i)) return 0;
-    return Player_GetField_0x454(lbl_8053AC90->players[i]);
-}
-static inline u8 pGetCE8(int i) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isPlayerEnabled(i)) return 0;
-    return Player_GetField_0xce8(lbl_8053AC90->players[i]);
-}
-static inline int pGetA04(int i) {
-    if (lbl_8053AC90 == NULL) return 1;
-    if (!isPlayerEnabled(i)) return 1;
-    return fn_80270A04(lbl_8053AC90->players[i]);
-}
 bool fn_80239F10() {
     if (lbl_8053AC90 == NULL) return 0;
     if (*(u8*)((char*)lbl_8053AAF8 + 0x7f)) return 0;
@@ -1117,25 +1182,7 @@ int fn_8023BE0C(int idx) {
     return 0;
 }
 
-u8 fn_80240670(Player*);
-u8 Player_IsLinked(Player*);
-int Player_GetLinkTargetIndex(Player*);
 int fn_80247C0C(Player*);
-static inline u8 pGet670(int i) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isPlayerEnabled(i)) return 1;
-    return fn_80240670(lbl_8053AC90->players[i]);
-}
-static inline u8 pIsLinked(int i) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isPlayerEnabled(i)) return 0;
-    return Player_IsLinked(lbl_8053AC90->players[i]);
-}
-static inline int pLinkTarget(int i) {
-    if (lbl_8053AC90 == NULL) return -1;
-    if (!isPlayerEnabled(i)) return -1;
-    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
-}
 int fn_8023C830(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
@@ -1185,16 +1232,6 @@ int fn_8023CE10(int idx) {
 }
 
 extern "C" char* fn_802D6A9C();
-static inline int get3B4(int idx) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isPlayerEnabled(idx)) return 0;
-    return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
-}
-static inline f32* getPosPtr(int idx) {
-    if (lbl_8053AC90 == NULL) return (f32*)&lbl_804CF460;
-    if (!isPlayerEnabled(idx)) return (f32*)&lbl_804CF460;
-    return (f32*)((char*)lbl_8053AC90->players[idx] + 0x8);
-}
 u16 fn_8023D21C(int idx, int view) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
@@ -1218,12 +1255,6 @@ u16 fn_8023D4F8(const JGeometry::TVec3<f32>& pos, int idx) {
     return 0xe0;
 }
 
-f32* fn_8024E018(Player*);
-static inline JGeometry::TVec3<f32>* getOffsPtr(int idx) {
-    if (lbl_8053AC90 == NULL) return &lbl_804CF460;
-    if (!isPlayerEnabled(idx)) return &lbl_804CF460;
-    return (JGeometry::TVec3<f32>*)fn_8024E018(lbl_8053AC90->players[idx]);
-}
 u16 fn_8023D644(int idx, int view) {
     if (lbl_8053AC90 == NULL) return 0xe0;
     if (!isPlayerEnabled(idx)) return 0xe0;
