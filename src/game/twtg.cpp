@@ -51,6 +51,41 @@ public:
     void update();
 };
 
+extern "C" void fn_80315C80(void) {}
+
+// fn_8031662C - TWTG: draw(). Picks the frame from the animated effect
+// record while it runs (playing its sound on mode changes), else from the
+// idle table, then draws the model and its effect.
+extern const s32 lbl_80471518[];
+extern const char lbl_80471528[];
+extern const f32 lbl_80541888;
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
+extern "C" void fn_803075AC(u32 callerID, u32 ownerID, void* posPtr, s32 effectRef, s32 flag,
+                            s32 mode, s32 targetPlayerIdx, s32 kind, s32 stackArg9, s32 stackArg10);
+
+extern "C" void fn_8031662C(char* p) {
+    s32 frame;
+    if (*(s32*)(p + 0x230) == 3) {
+        return;
+    }
+    if (*(s32*)(p + 0x234) == 1 && *(s32*)(p + 0x254) >= 0) {
+        s32 snd = fn_80316E74(*(AnimEffectRec**)(p + 0x278), *(s32*)(p + 0x254));
+        if (fn_80316E34(*(AnimEffectRec**)(p + 0x278)) >= 0) {
+            frame = fn_80316E34(*(AnimEffectRec**)(p + 0x278));
+            if ((u32)snd != 0xFFFFFFFF) {
+                fn_801F0E34(p, snd, 0);
+            }
+        } else {
+            frame = lbl_80471518[*(s32*)(p + 0x270)];
+        }
+    } else {
+        frame = lbl_80471518[*(s32*)(p + 0x270)];
+    }
+    fn_801F06F0(p, lbl_80471528, frame + 0xc0, 0, 7, lbl_80541888, lbl_80541888);
+    fn_803075AC(*(u32*)(p + 0x198), *(u32*)(p + 0x4), p + 0xc, frame + 0xc0, 0, 2, -1, 0, 0, 0);
+}
+
 struct TwtgPt { f32 x, y; };
 struct TwtgBox { TwtgPt min, max; };
 extern "C" void fn_80239914(TwtgBox* box, u32 room, u32 id);
