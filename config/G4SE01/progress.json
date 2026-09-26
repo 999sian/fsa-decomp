@@ -1,0 +1,89 @@
+{
+  "version": "G4SE01",
+  "measures": {
+    "fuzzy_match_percent": 31.747852,
+    "total_code": 4442032,
+    "matched_code": 1239208,
+    "matched_code_percent": 27.897322,
+    "total_data": 1065956,
+    "matched_data": 97228,
+    "matched_data_percent": 9.1212015,
+    "total_functions": 11558,
+    "matched_functions": 6482,
+    "matched_functions_percent": 56.082367,
+    "complete_code": 763296,
+    "complete_code_percent": 17.183487,
+    "complete_data": 108904,
+    "complete_data_percent": 10.216557,
+    "total_units": 3790,
+    "complete_units": 415
+  },
+  "categories": [
+    {
+      "name": "Game Code",
+      "id": "game",
+      "measures": {
+        "fuzzy_match_percent": 41.055695,
+        "total_code": 1604120,
+        "matched_code": 501788,
+        "matched_code_percent": 31.2812,
+        "total_data": 271648,
+        "matched_data": 14844,
+        "matched_data_percent": 5.4644246,
+        "total_functions": 3518,
+        "matched_functions": 2508,
+        "matched_functions_percent": 71.290504,
+        "complete_code": 136360,
+        "complete_code_percent": 8.500611,
+        "complete_data": 14844,
+        "complete_data_percent": 5.4644246,
+        "total_units": 239,
+        "complete_units": 75
+      }
+    },
+    {
+      "name": "SDK Code",
+      "id": "sdk",
+      "measures": {
+        "fuzzy_match_percent": 96.633415,
+        "total_code": 237392,
+        "matched_code": 229256,
+        "matched_code_percent": 96.572754,
+        "total_data": 40036,
+        "matched_data": 36792,
+        "matched_data_percent": 91.89729,
+        "total_functions": 1066,
+        "matched_functions": 1064,
+        "matched_functions_percent": 99.812386,
+        "complete_code": 229372,
+        "complete_code_percent": 96.62162,
+        "complete_data": 40036,
+        "complete_data_percent": 100.0,
+        "total_units": 174,
+        "complete_units": 172
+      }
+    },
+    {
+      "name": "JSystem Code",
+      "id": "jsys",
+      "measures": {
+        "fuzzy_match_percent": 99.90795,
+        "total_code": 522584,
+        "matched_code": 508164,
+        "matched_code_percent": 97.24063,
+        "total_data": 49416,
+        "matched_data": 45592,
+        "matched_data_percent": 92.26161,
+        "total_functions": 2934,
+        "matched_functions": 2910,
+        "matched_functions_percent": 99.182,
+        "complete_code": 397564,
+        "complete_code_percent": 76.07658,
+        "complete_data": 49024,
+        "complete_data_percent": 99.20673,
+        "total_units": 183,
+        "complete_units": 168
+      }
+    }
+  ]
+}
