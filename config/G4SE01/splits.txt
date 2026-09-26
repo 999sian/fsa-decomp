@@ -2434,6 +2434,7 @@ Game/tu_801F9484.cpp:
 	extabindex  start:0x8001678C end:0x80017560
 	.text       start:0x801F9484 end:0x80204638
 	.ctors      start:0x8045C0E4 end:0x8045C0E8
+	.bss        start:0x804CACE0 end:0x804CAD4C
 
 Game/tzok.cpp:
 	extab       start:0x80009C10 end:0x80009CA4

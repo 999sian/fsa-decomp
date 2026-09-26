@@ -40,7 +40,7 @@ extern "C" void fn_8010DF98(u8* this_) {
 
 extern void* lbl_8049D140[];
 
-extern "C" void* dtor_8010E004(void* this_, s16 freeFlag) {
+extern "C" void* __dt__13Base_8010E074Fv(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_8049D140;
         fn_80118798(fn_8011921C(), this_);

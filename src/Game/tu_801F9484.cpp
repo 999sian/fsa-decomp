@@ -2,14 +2,23 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JUtility/TColor.h"
 
 // Actor base (0x801F5AE0 ctor, 0x801F593C dtor); full layout lives on the  Actor branch.
 struct ActorBox;
 struct Actor {
     Actor();
-    ~Actor();
+    virtual ~Actor();
     void setBox70(const ActorBox& box);                 /* 0x801FF630 */
     void setPos(const JGeometry::TVec3<f32>& pos);      /* 0x801FF704 */
+    u8 _base[0x22c];
+};
+
+extern "C" void __ct__5ActorFv(void* p);
+// Actor subclasses whose ctor needs neither a vtable-before-members store nor an
+// Actor-dtor EH action: the vtable is stored by hand, so no C++ polymorphism.
+struct ActorNV {
+    ActorNV() { __ct__5ActorFv(this); }
     u8 _base[0x230];
 };
 
@@ -91,678 +100,778 @@ extern "C" void* fn_80224084(void*);
 extern "C" void* fn_80340C60(void*);
 extern "C" void* fn_8036C750(void*);
 
-struct GSCK : public Actor {
+struct GSCK : public ActorNV {
     GSCK();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct MRTC : public Actor {
+struct MRTC : public ActorNV {
     MRTC();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct STGN : public Actor {
+struct STGN : public ActorNV {
     STGN();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct RINS : public Actor {
+struct RINS : public ActorNV {
     RINS();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct WPWL : public Actor {
+struct WPWL : public ActorNV {
     WPWL();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct PSS2 : public Actor {
+struct PSS2 : public ActorNV {
     PSS2();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct TBO2 : public Actor {
+struct TBO2 : public ActorNV {
     TBO2();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct TBGN : public Actor {
+struct TBGN : public ActorNV {
     TBGN();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct ICEB : public Actor {
+struct ICEB : public ActorNV {
     ICEB();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct DMYK : public Actor {
+struct DMYK : public ActorNV {
     DMYK();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct JPE2 : public Actor {
+struct JPE2 : public ActorNV {
     JPE2();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct ENDR : public Actor {
+struct ENDR : public ActorNV {
     ENDR();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct TFL2 : public Actor {
+struct TFL2 : public ActorNV {
     TFL2();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct LOSW : public Actor {
+struct LOSW : public ActorNV {
     LOSW();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct PSWK : public Actor {
+struct PSWK : public ActorNV {
     PSWK();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct SIBT : public Actor {
+struct SIBT : public ActorNV {
     SIBT();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct PSWB : public Actor {
+struct PSWB : public ActorNV {
     PSWB();
     u8 _pad[0x258 - sizeof(Actor)];
 };
 class GEWP : public Actor {
 public:
     GEWP();
-    u8 _pad[0x2a4 - sizeof(Actor)];
+    virtual ~GEWP();
+    u8 _pad0[0x264 - 0x230];
+    JGeometry::TVec3<f32> m264[4];
+    u8 _pad1[0x2a4 - 0x294];
 };
-struct SNPC : public Actor {
+struct SNPC : public ActorNV {
     SNPC();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct TJIJ : public Actor {
+struct TJIJ : public ActorNV {
     TJIJ();
     u8 _pad[0x230 - sizeof(Actor)];
 };
 class MRTA : public Actor {
 public:
+    struct Elem {
+        Elem() {}
+        u8 _data[0x14];
+    };
     MRTA();
-    u8 _pad[0x2e4 - sizeof(Actor)];
+    virtual ~MRTA();
+    u8 _pad0[0x268 - 0x230];
+    Elem m268[4];
+    u8 _pad1[0x2e4 - 0x2b8];
 };
-struct SWDL : public Actor {
+struct SWDL : public ActorNV {
     SWDL();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-class fn_801FFD58_actor : public Actor {
+class FGAL : public Actor {
 public:
-    fn_801FFD58_actor();
-    u8 _pad[0x3c0 - sizeof(Actor)];
+    FGAL();
+    virtual ~FGAL();
+    u8 _pad0[0x264 - 0x230];
+    JGeometry::TVec3<f32> m264[4];
+    JGeometry::TVec3<f32> m294[4];
+    JGeometry::TVec3<f32> m2C4[4];
+    JGeometry::TVec3<f32> m2F4[4];
+    u8 _pad1[0x3c0 - 0x324];
 };
-struct ELK2 : public Actor {
+struct ELK2 : public ActorNV {
     ELK2();
     u8 _pad[0x2b8 - sizeof(Actor)];
 };
-struct PTMI : public Actor {
+struct PTMI : public ActorNV {
     PTMI();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct MRMT : public Actor {
+struct MRMT : public ActorNV {
     MRMT();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct FOEV : public Actor {
+struct FOEV : public ActorNV {
     FOEV();
     u8 _pad[0x27c - sizeof(Actor)];
 };
-struct RSNP : public Actor {
+struct RSNP : public ActorNV {
     RSNP();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct OGST : public Actor {
+struct OGST : public ActorNV {
     OGST();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct ICOB : public Actor {
+struct ICOB : public ActorNV {
     ICOB();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct ELSK : public Actor {
+struct ELSK : public ActorNV {
     ELSK();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct TUTM : public Actor {
+struct TUTM : public ActorNV {
     TUTM();
     u8 _pad[0x294 - sizeof(Actor)];
 };
 class TUGF : public Actor {
 public:
     TUGF();
-    u8 _pad[0x2fc - sizeof(Actor)];
+    virtual ~TUGF();
+    u8 _pad0[0x2fc - 0x230];
 };
-struct LEAF : public Actor {
+struct LEAF : public ActorNV {
     LEAF();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct LFGN : public Actor {
+struct LFGN : public ActorNV {
     LFGN();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct THCL : public Actor {
+struct THCL : public ActorNV {
     THCL();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct AGBW : public Actor {
+struct AGBW : public ActorNV {
     AGBW();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct SVGT : public Actor {
+struct SVGT : public ActorNV {
     SVGT();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct TMI2 : public Actor {
+struct TMI2 : public ActorNV {
     TMI2();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct SAFU : public Actor {
+struct SAFU : public ActorNV {
     SAFU();
     u8 _pad[0x270 - sizeof(Actor)];
 };
-struct FDWP : public Actor {
+struct FDWP : public ActorNV {
     FDWP();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct TWEV : public Actor {
+struct TWEV : public ActorNV {
     TWEV();
     u8 _pad[0x2b4 - sizeof(Actor)];
 };
-struct DWAP : public Actor {
+struct DWAP : public ActorNV {
     DWAP();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct TOOI : public Actor {
+struct TOOI : public ActorNV {
     TOOI();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct CHSW : public Actor {
+struct CHSW : public ActorNV {
     CHSW();
     u8 _pad[0x244 - sizeof(Actor)];
 };
 class TLWP : public Actor {
 public:
     TLWP();
-    u8 _pad[0x2f0 - sizeof(Actor)];
+    virtual ~TLWP();
+    u8 _pad0[0x264 - 0x230];
+    JGeometry::TVec3<f32> m264[4];
+    u8 _pad1[0x2f0 - 0x294];
 };
-struct JWLK : public Actor {
+struct JWLK : public ActorNV {
     JWLK();
     u8 _pad[0x290 - sizeof(Actor)];
 };
-struct RBPN : public Actor {
+struct RBPN : public ActorNV {
     RBPN();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct PSW2 : public Actor {
+struct PSW2 : public ActorNV {
     PSW2();
     u8 _pad[0x264 - sizeof(Actor)];
 };
 class GNEF : public Actor {
 public:
+    struct Elem {
+        Elem() {}
+        u8 _data[0x14];
+    };
     GNEF();
-    u8 _pad[0x2d0 - sizeof(Actor)];
+    virtual ~GNEF();
+    u8 _pad0[0x27c - 0x230];
+    Elem m27C[4];
+    u8 _pad1[0x2d0 - 0x2cc];
 };
-struct STPN : public Actor {
+struct STPN : public ActorNV {
     STPN();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct SSMI : public Actor {
+struct SSMI : public ActorNV {
     SSMI();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct MEDM : public Actor {
+struct MEDM : public ActorNV {
     MEDM();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct SDSM : public Actor {
+struct SDSM : public ActorNV {
     SDSM();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct BCK2 : public Actor {
+struct BCK2 : public ActorNV {
     BCK2();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-struct SPTG : public Actor {
+struct SPTG : public ActorNV {
     SPTG();
     u8 _pad[0x25c - sizeof(Actor)];
 };
-struct DNAV : public Actor {
+struct DNAV : public ActorNV {
     DNAV();
     u8 _pad[0x278 - sizeof(Actor)];
 };
-struct ZOMO : public Actor {
+struct ZOMO : public ActorNV {
     ZOMO();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct ZDCO : public Actor {
+struct ZDCO : public ActorNV {
     ZDCO();
     u8 _pad[0x278 - sizeof(Actor)];
 };
 class ZLD3 : public Actor {
 public:
     ZLD3();
-    u8 _pad[0x2c0 - sizeof(Actor)];
+    virtual ~ZLD3();
+    u8 _pad0[0x288 - 0x230];
+    JGeometry::TVec3<f32> m288[4];
+    u8 _pad1[0x2c0 - 0x2b8];
 };
-struct OBLF : public Actor {
+struct OBLF : public ActorNV {
     OBLF();
     u8 _pad[0x2a0 - sizeof(Actor)];
 };
-struct GEN3 : public Actor {
+struct GEN3 : public ActorNV {
     GEN3();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct EGOL : public Actor {
+struct EGOL : public ActorNV {
     EGOL();
     u8 _pad[0x268 - sizeof(Actor)];
 };
 class YNSW : public Actor {
 public:
     YNSW();
-    u8 _pad[0x284 - sizeof(Actor)];
+    virtual ~YNSW();
+    u8 _pad0[0x254 - 0x230];
+    JGeometry::TVec3<f32> m254[4];
 };
-struct GMTB : public Actor {
+struct GMTB : public ActorNV {
     GMTB();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct GMBL : public Actor {
+struct GMBL : public ActorNV {
     GMBL();
     u8 _pad[0x28c - sizeof(Actor)];
 };
 class EETC : public Actor {
 public:
     EETC();
-    u8 _pad[0x31c - sizeof(Actor)];
+    virtual ~EETC();
+    u8 _pad0[0x27c - 0x230];
+    JGeometry::TVec3<f32> m27C[3];
+    JGeometry::TVec3<f32> m2A0[3];
+    JGeometry::TVec3<f32> m2C4[3];
+    u8 _pad1[0x31c - 0x2e8];
 };
 class RCK2 : public Actor {
 public:
+    struct Elem18 {
+        Elem18() {}
+        u8 _data[0x18];
+    };
+    struct Elem14 {
+        Elem14() {}
+        u8 _data[0x14];
+    };
     RCK2();
-    u8 _pad[0x38c - sizeof(Actor)];
+    virtual ~RCK2();
+    u8 _pad0[0x260 - 0x230];
+    Elem18 m260[8];
+    Elem14 m320[4];
+    u8 _pad1[0x38c - 0x370];
 };
 class EOWL : public Actor {
 public:
     EOWL();
-    u8 _pad[0x2bc - sizeof(Actor)];
+    virtual ~EOWL();
+    u8 _pad0[0x2bc - 0x230];
 };
 class DMTW : public Actor {
 public:
     DMTW();
-    u8 _pad[0x408 - sizeof(Actor)];
+    virtual ~DMTW();
+    u8 _pad0[0x25c - 0x230];
+    JGeometry::TVec3<f32> m25C[6];
+    u8 _pad1[0x2c8 - 0x2a4];
+    JGeometry::TVec3<f32> m2C8[4];
+    JGeometry::TVec3<f32> m2F8[4];
+    u8 _pad2[0x3b8 - 0x328];
+    JGeometry::TVec3<f32> m3B8[4];
+    u8 _pad3[0x408 - 0x3e8];
 };
-struct SMRI : public Actor {
+struct SMRI : public ActorNV {
     SMRI();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct ELNK : public Actor {
+struct ELNK : public ActorNV {
     ELNK();
     u8 _pad[0x270 - sizeof(Actor)];
 };
-struct DTLK : public Actor {
+struct DTLK : public ActorNV {
     DTLK();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct TKRA : public Actor {
+struct TKRA : public ActorNV {
     TKRA();
     u8 _pad[0x268 - sizeof(Actor)];
 };
-struct OKAM : public Actor {
+struct OKAM : public ActorNV {
     OKAM();
     u8 _pad[0x284 - sizeof(Actor)];
 };
 class TTAT : public Actor {
 public:
     TTAT();
-    u8 _pad[0x2bc - sizeof(Actor)];
+    virtual ~TTAT();
+    u8 _pad0[0x280 - 0x230];
+    JGeometry::TVec3<f32> m280[4];
+    u8 _pad1[0x2bc - 0x2b0];
 };
-struct GNMA : public Actor {
+struct GNMA : public ActorNV {
     GNMA();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct DDGO : public Actor {
+struct DDGO : public ActorNV {
     DDGO();
     u8 _pad[0x2a4 - sizeof(Actor)];
 };
-struct ENDM : public Actor {
+struct ENDM : public ActorNV {
     ENDM();
     u8 _pad[0x29c - sizeof(Actor)];
 };
-struct LCLS : public Actor {
+struct LCLS : public ActorNV {
     LCLS();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct GLBS : public Actor {
+struct GLBS : public ActorNV {
     GLBS();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct EMIK : public Actor {
+struct EMIK : public ActorNV {
     EMIK();
     u8 _pad[0x27c - sizeof(Actor)];
 };
-struct EZLD : public Actor {
+struct EZLD : public ActorNV {
     EZLD();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct ENPC : public Actor {
+struct ENPC : public ActorNV {
     ENPC();
     u8 _pad[0x2a4 - sizeof(Actor)];
 };
 class HBB2 : public Actor {
 public:
     HBB2();
-    u8 _pad[0x474 - sizeof(Actor)];
+    virtual ~HBB2();
+    u8 _pad0[0x294 - 0x230];
+    JGeometry::TVec3<f32> m294[40];
 };
 class NWOK : public Actor {
 public:
     NWOK();
-    u8 _pad[0x2c4 - sizeof(Actor)];
+    virtual ~NWOK();
+    u8 _pad0[0x290 - 0x230];
+    JGeometry::TVec3<f32> m290[4];
+    u8 _pad1[0x2c4 - 0x2c0];
 };
-struct RYYA : public Actor {
+struct RYYA : public ActorNV {
     RYYA();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct MJGR : public Actor {
+struct MJGR : public ActorNV {
     MJGR();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct HTMK : public Actor {
+struct HTMK : public ActorNV {
     HTMK();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct ENBZ : public Actor {
+struct ENBZ : public ActorNV {
     ENBZ();
     u8 _pad[0x298 - sizeof(Actor)];
 };
-struct PNP2 : public Actor {
+struct PNP2 : public ActorNV {
     PNP2();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct SSLF : public Actor {
+struct SSLF : public ActorNV {
     SSLF();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct BEMN : public Actor {
+struct BEMN : public ActorNV {
     BEMN();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct FOBE : public Actor {
+struct FOBE : public ActorNV {
     FOBE();
     u8 _pad[0x2a4 - sizeof(Actor)];
 };
-struct SEN2 : public Actor {
+struct SEN2 : public ActorNV {
     SEN2();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct CRGN : public Actor {
+struct CRGN : public ActorNV {
     CRGN();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct TENN : public Actor {
+struct TENN : public ActorNV {
     TENN();
     u8 _pad[0x354 - sizeof(Actor)];
 };
-struct WAVE : public Actor {
+struct WAVE : public ActorNV {
     WAVE();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct FORM : public Actor {
+struct FORM : public ActorNV {
     FORM();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct SPBG : public Actor {
+struct SPBG : public ActorNV {
     SPBG();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-struct SZSC : public Actor {
+struct SZSC : public ActorNV {
     SZSC();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct NNJN : public Actor {
+struct NNJN : public ActorNV {
     NNJN();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct SYKY : public Actor {
+struct SYKY : public ActorNV {
     SYKY();
     u8 _pad[0x2b0 - sizeof(Actor)];
 };
-struct ANHO : public Actor {
+struct ANHO : public ActorNV {
     ANHO();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct FISH : public Actor {
+struct FISH : public ActorNV {
     FISH();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct ALCE : public Actor {
+struct ALCE : public ActorNV {
     ALCE();
     u8 _pad[0x268 - sizeof(Actor)];
 };
-struct ZOOM : public Actor {
+struct ZOOM : public ActorNV {
     ZOOM();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-struct BGMN : public Actor {
+struct BGMN : public ActorNV {
     BGMN();
     u8 _pad[0x260 - sizeof(Actor)];
 };
-struct MGYA : public Actor {
+struct MGYA : public ActorNV {
     MGYA();
     u8 _pad[0x294 - sizeof(Actor)];
 };
-struct GFBS : public Actor {
+struct GFBS : public ActorNV {
     GFBS();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct BLZ2 : public Actor {
+struct BLZ2 : public ActorNV {
     BLZ2();
     u8 _pad[0x30c - sizeof(Actor)];
 };
-struct SEV2 : public Actor {
+struct SEV2 : public ActorNV {
     SEV2();
     u8 _pad[0x28c - sizeof(Actor)];
 };
-struct RNSW : public Actor {
+struct RNSW : public ActorNV {
     RNSW();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct SENP : public Actor {
+struct SENP : public ActorNV {
     SENP();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct GSYA : public Actor {
+struct GSYA : public ActorNV {
     GSYA();
     u8 _pad[0x2ac - sizeof(Actor)];
 };
-struct BRBL : public Actor {
+struct BRBL : public ActorNV {
     BRBL();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct LIMT : public Actor {
+struct LIMT : public ActorNV {
     LIMT();
     u8 _pad[0x274 - sizeof(Actor)];
 };
 class GNL2 : public Actor {
 public:
     GNL2();
-    u8 _pad[0x2f8 - sizeof(Actor)];
+    virtual ~GNL2();
+    u8 _pad0[0x258 - 0x230];
+    JGeometry::TVec3<f32> m258[4];
+    u8 _pad1[0x2f8 - 0x288];
 };
 class BEEE : public Actor {
 public:
     BEEE();
-    u8 _pad[0x3a0 - sizeof(Actor)];
+    virtual ~BEEE();
+    u8 _pad0[0x2a4 - 0x230];
+    JGeometry::TVec3<f32> m2A4[7];
+    JGeometry::TVec3<f32> m2F8[7];
+    JGeometry::TVec3<f32> m34C[7];
 };
-struct PSSW : public Actor {
+struct PSSW : public ActorNV {
     PSSW();
     u8 _pad[0x230 - sizeof(Actor)];
 };
 class HOUS : public Actor {
 public:
     HOUS();
-    u8 _pad[0x3f8 - sizeof(Actor)];
+    virtual ~HOUS();
+    u8 _pad0[0x2dc - 0x230];
+    JGeometry::TVec2<f32> m2DC[4];
+    u8 _pad1[0x3f8 - 0x2fc];
 };
-class fn_80201A14_actor : public Actor {
+class ZLD2 : public Actor {
 public:
-    fn_80201A14_actor();
-    u8 _pad[0x338 - sizeof(Actor)];
+    ZLD2();
+    virtual ~ZLD2();
+    u8 _pad0[0x2a4 - 0x230];
+    JGeometry::TVec3<f32> m2A4[4];
+    JGeometry::TVec3<f32> m2D4[4];
+    u8 _pad1[0x338 - 0x304];
 };
-struct GNON : public Actor {
+struct GNON : public ActorNV {
     GNON();
     u8 _pad[0x33c - sizeof(Actor)];
 };
-struct BBMB : public Actor {
+struct BBMB : public ActorNV {
     BBMB();
     u8 _pad[0x26c - sizeof(Actor)];
 };
-struct BBSL : public Actor {
+struct BBSL : public ActorNV {
     BBSL();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct GBAO : public Actor {
+struct GBAO : public ActorNV {
     GBAO();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct OFFS : public Actor {
+struct OFFS : public ActorNV {
     OFFS();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct LITS : public Actor {
+struct LITS : public ActorNV {
     LITS();
     u8 _pad[0x264 - sizeof(Actor)];
 };
-struct STBL : public Actor {
+struct STBL : public ActorNV {
     STBL();
     u8 _pad[0x274 - sizeof(Actor)];
 };
 class DGT2 : public Actor {
 public:
     DGT2();
-    u8 _pad[0x3cc - sizeof(Actor)];
+    virtual ~DGT2();
+    u8 _pad0[0x288 - 0x230];
+    JGeometry::TVec3<f32> m288[6];
+    JGeometry::TVec3<f32> m2D0[20];
+    u8 _pad1[0x3cc - 0x3c0];
 };
-struct RVFR : public Actor {
+struct RVFR : public ActorNV {
     RVFR();
     u8 _pad[0x25c - sizeof(Actor)];
 };
-struct WPPA : public Actor {
+struct WPPA : public ActorNV {
     WPPA();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct FLYO : public Actor {
+struct FLYO : public ActorNV {
     FLYO();
     u8 _pad[0x28c - sizeof(Actor)];
 };
 class BPH2 : public Actor {
 public:
     BPH2();
-    u8 _pad[0x334 - sizeof(Actor)];
+    virtual ~BPH2();
+    u8 _pad0[0x2f8 - 0x230];
+    JGeometry::TVec3<f32> m2F8[4];
+    u8 _pad1[0x334 - 0x328];
 };
-struct PRTC : public Actor {
+struct PRTC : public ActorNV {
     PRTC();
     u8 _pad[0x264 - sizeof(Actor)];
 };
 class RASN : public Actor {
 public:
     RASN();
-    u8 _pad[0x26c - sizeof(Actor)];
+    virtual ~RASN();
+    u8 _pad0[0x238 - 0x230];
+    JGeometry::TVec3<f32> m238[4];
+    u8 _pad1[0x26c - 0x268];
 };
-struct FGN2 : public Actor {
+struct FGN2 : public ActorNV {
     FGN2();
     u8 _pad[0x318 - sizeof(Actor)];
 };
-struct WPPR : public Actor {
+struct WPPR : public ActorNV {
     WPPR();
     u8 _pad[0x27c - sizeof(Actor)];
 };
-struct JPEN : public Actor {
+struct JPEN : public ActorNV {
     JPEN();
     u8 _pad[0x284 - sizeof(Actor)];
 };
 class WNWN : public Actor {
 public:
     WNWN();
-    u8 _pad[0x390 - sizeof(Actor)];
+    virtual ~WNWN();
+    u8 _pad0[0x294 - 0x230];
+    JGeometry::TVec3<f32> m294[10];
+    JGeometry::TVec3<f32> m30C[10];
+    u8 _pad1[0x390 - 0x384];
 };
-struct URAC : public Actor {
+struct URAC : public ActorNV {
     URAC();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct VWMD : public Actor {
+struct VWMD : public ActorNV {
     VWMD();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct TKRM : public Actor {
+struct TKRM : public ActorNV {
     TKRM();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct BOTS : public Actor {
+struct BOTS : public ActorNV {
     BOTS();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct TSNO : public Actor {
+struct TSNO : public ActorNV {
     TSNO();
     u8 _pad[0x2c0 - sizeof(Actor)];
 };
-struct FGVE : public Actor {
+struct FGVE : public ActorNV {
     FGVE();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-struct YASI : public Actor {
+struct YASI : public ActorNV {
     YASI();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct BTIN : public Actor {
+struct BTIN : public ActorNV {
     BTIN();
     u8 _pad[0x25c - sizeof(Actor)];
 };
-struct FAGN : public Actor {
+struct FAGN : public ActorNV {
     FAGN();
     u8 _pad[0x264 - sizeof(Actor)];
 };
-struct GDMN : public Actor {
+struct GDMN : public ActorNV {
     GDMN();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct RDVR : public Actor {
+struct RDVR : public ActorNV {
     RDVR();
     u8 _pad[0x278 - sizeof(Actor)];
 };
-struct DSIN : public Actor {
+struct DSIN : public ActorNV {
     DSIN();
     u8 _pad[0x248 - sizeof(Actor)];
 };
 class GROK : public Actor {
 public:
     GROK();
-    u8 _pad[0x320 - sizeof(Actor)];
+    virtual ~GROK();
+    u8 _pad0[0x294 - 0x230];
+    JGeometry::TVec3<f32> m294[4];
+    JGeometry::TVec3<f32> m2C4[4];
+    u8 _pad1[0x320 - 0x2f4];
 };
-struct SBTN : public Actor {
+struct SBTN : public ActorNV {
     SBTN();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct CIRC : public Actor {
+struct CIRC : public ActorNV {
     CIRC();
     u8 _pad[0x27c - sizeof(Actor)];
 };
-struct FLYK : public Actor {
+struct FLYK : public ActorNV {
     FLYK();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct PESW : public Actor {
+struct PESW : public ActorNV {
     PESW();
     u8 _pad[0x250 - sizeof(Actor)];
 };
 class OSIN : public Actor {
 public:
     OSIN();
-    u8 _pad[0x29c - sizeof(Actor)];
+    virtual ~OSIN();
+    u8 _pad0[0x26c - 0x230];
+    JGeometry::TVec3<f32> m26C[4];
 };
-struct PUKU : public Actor {
+struct PUKU : public ActorNV {
     PUKU();
     u8 _pad[0x27c - sizeof(Actor)];
 };
-struct SWBM : public Actor {
+struct SWBM : public ActorNV {
     SWBM();
     u8 _pad[0x260 - sizeof(Actor)];
 };
-struct INFR : public Actor {
+struct INFR : public ActorNV {
     INFR();
     u8 _pad[0x26c - sizeof(Actor)];
 };
 extern "C" void* fn_801D30B8(void* this_);
 // ItemBase-derived intermediate base (ctor fn_801D30B8, out-of-line dtor
-// dtor_801D2C60 in tu_801D2C60; needs a C++ name before this TU can link).
+// 0x801D2C60 in tu_801D2C60).
 class Fn801D30B8Base {
 public:
     Fn801D30B8Base() { fn_801D30B8(this); }
@@ -774,478 +883,495 @@ class ARSH : public Fn801D30B8Base {
 public:
     ARSH();
 };
-struct BMTY : public Actor {
+struct BMTY : public ActorNV {
     BMTY();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct PCDM : public Actor {
+struct PCDM : public ActorNV {
     PCDM();
     u8 _pad[0x27c - sizeof(Actor)];
 };
-struct CRTL : public Actor {
+struct CRTL : public ActorNV {
     CRTL();
     u8 _pad[0x2cc - sizeof(Actor)];
 };
-struct RDBL : public Actor {
+struct RDBL : public ActorNV {
     RDBL();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct ONOF : public Actor {
+struct ONOF : public ActorNV {
     ONOF();
     u8 _pad[0x25c - sizeof(Actor)];
 };
-struct OCFR : public Actor {
+struct OCFR : public ActorNV {
     OCFR();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct BPRY : public Actor {
+struct BPRY : public ActorNV {
     BPRY();
     u8 _pad[0x270 - sizeof(Actor)];
 };
-struct LIF2 : public Actor {
+struct LIF2 : public ActorNV {
     LIF2();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct WDRY : public Actor {
+struct WDRY : public ActorNV {
     WDRY();
     u8 _pad[0x26c - sizeof(Actor)];
 };
-struct ESRY : public Actor {
+struct ESRY : public ActorNV {
     ESRY();
     u8 _pad[0x2a0 - sizeof(Actor)];
 };
-struct SHLT : public Actor {
+struct SHLT : public ActorNV {
     SHLT();
     u8 _pad[0x37c - sizeof(Actor)];
 };
-struct RANK : public Actor {
+struct RANK : public ActorNV {
     RANK();
     u8 _pad[0x29c - sizeof(Actor)];
 };
-struct HNRY : public Actor {
+struct HNRY : public ActorNV {
     HNRY();
     u8 _pad[0x2bc - sizeof(Actor)];
 };
-struct BLDF : public Actor {
+struct BLDF : public ActorNV {
     BLDF();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct FOCS : public Actor {
+struct FOCS : public ActorNV {
     FOCS();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct PNPC : public Actor {
+struct PNPC : public ActorNV {
     PNPC();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct RAIL : public Actor {
+struct RAIL : public ActorNV {
     RAIL();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-// ItemBase-derived intermediate base (ctor fn_801D30B8, out-of-line dtor
-// dtor_801D2C60 in tu_801D2C60; needs a C++ name before this TU can link).
-class Fn801D30B8Base_191 {
-public:
-    Fn801D30B8Base_191() { fn_801D30B8(this); }
-    ~Fn801D30B8Base_191();
-private:
-    unsigned char pad[0x2ac];
-};
-class ZNSH : public Fn801D30B8Base_191 {
+class ZNSH : public Fn801D30B8Base {
 public:
     ZNSH();
 };
-struct DOOR : public Actor {
+struct DOOR : public ActorNV {
     DOOR();
     u8 _pad[0x27c - sizeof(Actor)];
 };
-struct KEY0 : public Actor {
+struct KEY0 : public ActorNV {
     KEY0();
     u8 _pad[0x2b8 - sizeof(Actor)];
 };
-struct LSTI : public Actor {
+struct LSTI : public ActorNV {
     LSTI();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct WIZR : public Actor {
+struct WIZR : public ActorNV {
     WIZR();
     u8 _pad[0x30c - sizeof(Actor)];
 };
-struct SWNP : public Actor {
+struct SWNP : public ActorNV {
     SWNP();
     u8 _pad[0x268 - sizeof(Actor)];
 };
-struct CKSW : public Actor {
+struct CKSW : public ActorNV {
     CKSW();
     u8 _pad[0x238 - sizeof(Actor)];
 };
 class TNGL : public Actor {
 public:
     TNGL();
-    u8 _pad[0x2a0 - sizeof(Actor)];
+    virtual ~TNGL();
+    u8 _pad0[0x260 - 0x230];
+    JGeometry::TVec3<f32> m260[4];
+    u8 _pad1[0x2a0 - 0x290];
 };
-struct STAL : public Actor {
+struct STAL : public ActorNV {
     STAL();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct WRTC : public Actor {
+struct WRTC : public ActorNV {
     WRTC();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct LWSW : public Actor {
+struct LWSW : public ActorNV {
     LWSW();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct BWRT : public Actor {
+struct BWRT : public ActorNV {
     BWRT();
     u8 _pad[0x2b8 - sizeof(Actor)];
 };
-struct BFIN : public Actor {
+struct BFIN : public ActorNV {
     BFIN();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct WTSW : public Actor {
+struct WTSW : public ActorNV {
     WTSW();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct ZNSW : public Actor {
+struct ZNSW : public ActorNV {
     ZNSW();
     u8 _pad[0x260 - sizeof(Actor)];
 };
-struct LPLK : public Actor {
+struct LPLK : public ActorNV {
     LPLK();
     u8 _pad[0x268 - sizeof(Actor)];
 };
-struct IWAG : public Actor {
+struct IWAG : public ActorNV {
     IWAG();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct OIWA : public Actor {
+struct OIWA : public ActorNV {
     OIWA();
     u8 _pad[0x260 - sizeof(Actor)];
 };
-struct NZMI : public Actor {
+struct NZMI : public ActorNV {
     NZMI();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct BLZE : public Actor {
+struct BLZE : public ActorNV {
     BLZE();
     u8 _pad[0x2a0 - sizeof(Actor)];
 };
-struct FIRE : public Actor {
+struct FIRE : public ActorNV {
     FIRE();
     u8 _pad[0x294 - sizeof(Actor)];
 };
-struct NIWA : public Actor {
+struct NIWA : public ActorNV {
     NIWA();
     u8 _pad[0x304 - sizeof(Actor)];
 };
-struct BGWC : public Actor {
+struct BGWC : public ActorNV {
     BGWC();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct DOSN : public Actor {
+struct DOSN : public ActorNV {
     DOSN();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct TLK2 : public Actor {
+struct TLK2 : public ActorNV {
     TLK2();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct SLR4 : public Actor {
+struct SLR4 : public ActorNV {
     SLR4();
     u8 _pad[0x2d0 - sizeof(Actor)];
 };
-struct SBAL : public Actor {
+struct SBAL : public ActorNV {
     SBAL();
     u8 _pad[0x270 - sizeof(Actor)];
 };
-struct SWEL : public Actor {
+struct SWEL : public ActorNV {
     SWEL();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct LIFT : public Actor {
+struct LIFT : public ActorNV {
     LIFT();
     u8 _pad[0x240 - sizeof(Actor)];
 };
-struct RY02 : public Actor {
+struct RY02 : public ActorNV {
     RY02();
     u8 _pad[0x288 - sizeof(Actor)];
 };
-struct CRTH : public Actor {
+struct CRTH : public ActorNV {
     CRTH();
     u8 _pad[0x2b0 - sizeof(Actor)];
 };
-struct SWOR : public Actor {
+struct SWOR : public ActorNV {
     SWOR();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct POPO : public Actor {
+struct POPO : public ActorNV {
     POPO();
     u8 _pad[0x25c - sizeof(Actor)];
 };
-struct WOOD : public Actor {
+struct WOOD : public ActorNV {
     WOOD();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-class fn_802032AC_actor : public Actor {
+class SLR3 : public Actor {
 public:
-    fn_802032AC_actor();
-    u8 _pad[0x338 - sizeof(Actor)];
+    SLR3();
+    virtual ~SLR3();
+    u8 _pad0[0x29c - 0x230];
+    JGeometry::TVec3<f32> m29C[10];
+    u8 _pad1[0x338 - 0x314];
 };
-struct PEFF : public Actor {
+struct PEFF : public ActorNV {
     PEFF();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct SLSD : public Actor {
+struct SLSD : public ActorNV {
     SLSD();
     u8 _pad[0x234 - sizeof(Actor)];
 };
-struct SSTN : public Actor {
+struct SSTN : public ActorNV {
     SSTN();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct SKUL : public Actor {
+struct SKUL : public ActorNV {
     SKUL();
     u8 _pad[0x280 - sizeof(Actor)];
 };
-struct TALK : public Actor {
+struct TALK : public ActorNV {
     TALK();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct TRCH : public Actor {
+struct TRCH : public ActorNV {
     TRCH();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct SCRE : public Actor {
+struct SCRE : public ActorNV {
     SCRE();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct SPOT : public Actor {
+struct SPOT : public ActorNV {
     SPOT();
     u8 _pad[0x25c - sizeof(Actor)];
 };
-struct YAJI : public Actor {
+struct YAJI : public ActorNV {
     YAJI();
     u8 _pad[0x260 - sizeof(Actor)];
 };
 class BOME : public Actor {
 public:
+    struct Elem {
+        Elem() {}
+        u8 _data[0x18];
+    };
     BOME();
-    u8 _pad[0x380 - sizeof(Actor)];
+    virtual ~BOME();
+    u8 _pad0[0x274 - 0x230];
+    Elem m274[5];
+    Elem m2EC[5];
+    u8 _pad1[0x380 - 0x364];
 };
-struct KMRI : public Actor {
+struct KMRI : public ActorNV {
     KMRI();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct TFLR : public Actor {
+struct TFLR : public ActorNV {
     TFLR();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct KNBN : public Actor {
+struct KNBN : public ActorNV {
     KNBN();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct PLAS : public Actor {
+struct PLAS : public ActorNV {
     PLAS();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct ITMS : public Actor {
+struct ITMS : public ActorNV {
     ITMS();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct Poon : public Actor {
+struct Poon : public ActorNV {
     Poon();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct SKIL : public Actor {
+struct SKIL : public ActorNV {
     SKIL();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct MOZO : public Actor {
+struct MOZO : public ActorNV {
     MOZO();
     u8 _pad[0x270 - sizeof(Actor)];
 };
-struct BERY : public Actor {
+struct BERY : public ActorNV {
     BERY();
     u8 _pad[0x2a8 - sizeof(Actor)];
 };
-struct PONT : public Actor {
+struct PONT : public ActorNV {
     PONT();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct ARRW : public Actor {
+struct ARRW : public ActorNV {
     ARRW();
     u8 _pad[0x280 - sizeof(Actor)];
 };
-struct TRAP : public Actor {
+struct TRAP : public ActorNV {
     TRAP();
     u8 _pad[0x280 - sizeof(Actor)];
 };
-struct THRN : public Actor {
+struct THRN : public ActorNV {
     THRN();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct SWEV : public Actor {
+struct SWEV : public ActorNV {
     SWEV();
     u8 _pad[0x33c - sizeof(Actor)];
 };
-struct BALL : public Actor {
+struct BALL : public ActorNV {
     BALL();
     u8 _pad[0x248 - sizeof(Actor)];
 };
 class BPOH : public Actor {
 public:
     BPOH();
-    u8 _pad[0x300 - sizeof(Actor)];
+    virtual ~BPOH();
+    u8 _pad0[0x2b8 - 0x230];
+    JGeometry::TVec3<f32> m2B8[4];
+    u8 _pad1[0x2f4 - 0x2e8];
+    JUtility::TColor m2F4[3];
 };
-struct SHTR : public Actor {
+struct SHTR : public ActorNV {
     SHTR();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct EZRY : public Actor {
+struct EZRY : public ActorNV {
     EZRY();
     u8 _pad[0x298 - sizeof(Actor)];
 };
-struct SWT4 : public Actor {
+struct SWT4 : public ActorNV {
     SWT4();
     u8 _pad[0x254 - sizeof(Actor)];
 };
-struct RYRN : public Actor {
+struct RYRN : public ActorNV {
     RYRN();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct MTBO : public Actor {
+struct MTBO : public ActorNV {
     MTBO();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct TKYU : public Actor {
+struct TKYU : public ActorNV {
     TKYU();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-struct FLME : public Actor {
+struct FLME : public ActorNV {
     FLME();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct KETH : public Actor {
+struct KETH : public ActorNV {
     KETH();
     u8 _pad[0x28c - sizeof(Actor)];
 };
-struct BOYO : public Actor {
+struct BOYO : public ActorNV {
     BOYO();
     u8 _pad[0x278 - sizeof(Actor)];
 };
-struct IMUP : public Actor {
+struct IMUP : public ActorNV {
     IMUP();
     u8 _pad[0x2b4 - sizeof(Actor)];
 };
-struct TKTA : public Actor {
+struct TKTA : public ActorNV {
     TKTA();
     u8 _pad[0x264 - sizeof(Actor)];
 };
-struct EXPL : public Actor {
+struct EXPL : public ActorNV {
     EXPL();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct SLR1 : public Actor {
+struct SLR1 : public ActorNV {
     SLR1();
     u8 _pad[0x2c8 - sizeof(Actor)];
 };
-struct SWTH : public Actor {
+struct SWTH : public ActorNV {
     SWTH();
     u8 _pad[0x268 - sizeof(Actor)];
 };
-struct HBMB : public Actor {
+struct HBMB : public ActorNV {
     HBMB();
     u8 _pad[0x29c - sizeof(Actor)];
 };
-struct HINO : public Actor {
+struct HINO : public ActorNV {
     HINO();
     u8 _pad[0x288 - sizeof(Actor)];
 };
 class GOAL : public Actor {
 public:
     GOAL();
-    u8 _pad[0x320 - sizeof(Actor)];
+    virtual ~GOAL();
+    u8 _pad0[0x264 - 0x230];
+    JGeometry::TVec3<f32> m264[4];
+    u8 _pad1[0x320 - 0x294];
 };
-struct BHRT : public Actor {
+struct BHRT : public ActorNV {
     BHRT();
     u8 _pad[0x23c - sizeof(Actor)];
 };
 class DGTL : public Actor {
 public:
     DGTL();
-    u8 _pad[0x7c8 - sizeof(Actor)];
+    virtual ~DGTL();
+    u8 _pad0[0x2c0 - 0x230];
+    JGeometry::TVec3<f32> m2C0[10];
+    u8 _pad1[0x3d8 - 0x338];
+    JGeometry::TVec3<f32> m3D8[80];
+    u8 _pad2[0x7c8 - 0x798];
 };
-struct OKTM : public Actor {
+struct OKTM : public ActorNV {
     OKTM();
     u8 _pad[0x260 - sizeof(Actor)];
 };
-struct HART : public Actor {
+struct HART : public ActorNV {
     HART();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct GNLD : public Actor {
+struct GNLD : public ActorNV {
     GNLD();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct DBRK : public Actor {
+struct DBRK : public ActorNV {
     DBRK();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct BZBR : public Actor {
+struct BZBR : public ActorNV {
     BZBR();
     u8 _pad[0x264 - sizeof(Actor)];
 };
-struct BLCK : public Actor {
+struct BLCK : public ActorNV {
     BLCK();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct PEAC : public Actor {
+struct PEAC : public ActorNV {
     PEAC();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-struct TUBO : public Actor {
+struct TUBO : public ActorNV {
     TUBO();
     u8 _pad[0x258 - sizeof(Actor)];
 };
-struct ROCK : public Actor {
+struct ROCK : public ActorNV {
     ROCK();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct WARP : public Actor {
+struct WARP : public ActorNV {
     WARP();
     u8 _pad[0x28c - sizeof(Actor)];
 };
-struct BORD : public Actor {
+struct BORD : public ActorNV {
     BORD();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct STON : public Actor {
+struct STON : public ActorNV {
     STON();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct GENE : public Actor {
+struct GENE : public ActorNV {
     GENE();
     u8 _pad[0x678 - sizeof(Actor)];
 };
-struct FGAS : public Actor {
+struct FGAS : public ActorNV {
     FGAS();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct POOH : public Actor {
+struct POOH : public ActorNV {
     POOH();
     u8 _pad[0x278 - sizeof(Actor)];
 };
-struct AMOS : public Actor {
+struct AMOS : public ActorNV {
     AMOS();
     u8 _pad[0x32c - sizeof(Actor)];
 };
-struct OKTA : public Actor {
+struct OKTA : public ActorNV {
     OKTA();
     u8 _pad[0x288 - sizeof(Actor)];
 };
-struct RUPY : public Actor {
+struct RUPY : public ActorNV {
     RUPY();
     u8 _pad[0x2a8 - sizeof(Actor)];
 };
@@ -1271,16 +1397,16 @@ struct fn_801092B0_actor {
 };
 extern "C" void fn_801D267C(void* p);
 extern "C" void fn_8010E074(void* p);
-extern "C" void dtor_80105D80(void* p, s16 f);
-extern "C" void dtor_8010E004(void* p, s16 f);
 extern "C" void __ct__5ActorFv(void* p);
 extern "C" void __dt__5ActorFv(void* p, int f);
 extern const f32 lbl_8053F830;
+extern void* lbl_8049E500[];
+extern void* lbl_8049DD68[];
 
-// Sub-object (ctor fn_801D267C, dtor dtor_80105D80; holds a J3DFrameCtrl at +0x24).
+// Sub-object (ctor fn_801D267C, dtor 0x80105D80; holds a J3DFrameCtrl at +0x24).
 struct AnimSub {
     AnimSub() { fn_801D267C(this); }
-    ~AnimSub() { dtor_80105D80(this, -1); }
+    ~AnimSub(); /* 0x80105D80 */
     u8 pad[0x38];
 };
 struct AnimSubRaw {
@@ -1304,7 +1430,7 @@ struct ActorBNoDtor {
 // Actor subclass ctor 0x8010E074 (vtable lbl_8049D140, dtor 0x8010E004).
 struct Base_8010E074 {
     Base_8010E074() { fn_8010E074(this); }
-    ~Base_8010E074() { dtor_8010E004(this, -1); }
+    ~Base_8010E074(); /* 0x8010E004 */
     u8 pad[0x230];
 };
 
@@ -1316,13 +1442,14 @@ struct DMGA : Base_8010E074 {
     u8 m240[0x34];
     AnimSubRaw m274;
 };
-struct OPGA : ActorBNoDtor {
+struct OPGA : Actor {
     OPGA();
+    virtual ~OPGA();
     u8 m230, m231;
     u32 m234, m238;
     s32 m23C, m240;
-    AnimSubRaw m244;
-    AnimSubRaw m27C;
+    AnimSub m244;
+    AnimSub m27C;
 };
 struct DMNR : Base_8010E074 {
     DMNR();
@@ -1342,12 +1469,13 @@ struct Ftgl {
     Ftgl();
     u8 _pad[0x274];
 };
-struct CRNV : ActorB {
+struct CRNV : Actor {
     CRNV();
+    virtual ~CRNV();
     u32 m230, m234;
     s32 m238;
     f32 m23C;
-    AnimSubRaw m240;
+    AnimSubNoDtor m240;
     u32 m278, m27C;
 };
 struct Znlj {
@@ -1623,7 +1751,7 @@ extern "C" s32 Actor_CreateByID(ActorMgr* mgr, s32 id, s32 owner, Vec* pos, u32 
             mgr->actors[i] = (Actor*)new (mgr->heap, 0) PEFF;
             break;
         case 'SLR3':
-            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_802032AC_actor;
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) SLR3;
             break;
         case 'WOOD':
             mgr->actors[i] = (Actor*)new (mgr->heap, 0) WOOD;
@@ -2204,7 +2332,7 @@ extern "C" s32 Actor_CreateByID(ActorMgr* mgr, s32 id, s32 owner, Vec* pos, u32 
             mgr->actors[i] = (Actor*)new (mgr->heap, 0) GNON;
             break;
         case 'ZLD2':
-            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_80201A14_actor;
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) ZLD2;
             break;
         case 'HOUS':
             mgr->actors[i] = (Actor*)new (mgr->heap, 0) HOUS;
@@ -2706,7 +2834,7 @@ extern "C" s32 Actor_CreateByID(ActorMgr* mgr, s32 id, s32 owner, Vec* pos, u32 
             mgr->actors[i] = (Actor*)new (mgr->heap, 0) ELK2;
             break;
         case 'FGAL':
-            mgr->actors[i] = (Actor*)new (mgr->heap, 0) fn_801FFD58_actor;
+            mgr->actors[i] = (Actor*)new (mgr->heap, 0) FGAL;
             break;
         case 'RCK3':
             {
@@ -2965,6 +3093,10 @@ PSS2::PSS2() {
     *(void**)this = lbl_804AE8F4;
 }
 
+CRNV::CRNV() : m230(0), m234(0), m238(-1), m23C(lbl_8053F830), m278(0), m27C(0) {
+}
+
+
 // ---- Tbo2_ctor_801FF918.cpp ----
 extern void* lbl_804AA750[];
 
@@ -3057,14 +3189,9 @@ PSWB::PSWB() {
 
 // ---- Glwp_ctor_801FFBB4.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A39DC[];
 
 
 GEWP::GEWP() : Actor() {
-    *(void**)this = lbl_804A39DC;
-    __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Snpc_ctor_801FFC0C.cpp ----
@@ -3085,19 +3212,10 @@ TJIJ::TJIJ() {
 
 // ---- Mrta_ctor_801FFC84.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_801FFCDC(void);
-extern void* lbl_804ACD70[];
 
 
 MRTA::MRTA() : Actor() {
-    *(void**)this = lbl_804ACD70;
-    __construct_array((char*)this + 0x268, (void*)fn_801FFCDC, 0, 0x14, 4);
 }
-
-// ---- stub_801ffcdc.cpp ----
-// Empty virtual-hook stub (see Game/ActorDefaultHooks.cpp).
-extern "C" void fn_801FFCDC(void) {}
 
 // ---- Swdl_ctor_801FFCE0.cpp ----
 extern void* lbl_804AA590[];
@@ -3118,17 +3236,9 @@ extern "C" void* fn_801FFD1C(void* this_) {
 
 // ---- fn_801FFD58_ctor.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804AE4B0[];
 
 
-fn_801FFD58_actor::fn_801FFD58_actor() : Actor() {
-    *(void**)this = lbl_804AE4B0;
-    __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x2c4, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x2f4, (void*)fn_8003B2CC, 0, 0xc, 4);
+FGAL::FGAL() : Actor() {
 }
 
 // ---- Elk2_ctor_801FFE04.cpp ----
@@ -3230,11 +3340,9 @@ extern "C" void* fn_80200060(void* this_) {
 // ---- Tugf_ctor_8020009C.cpp ----
 
 extern "C" void fn_801EB950(void*);
-extern void* lbl_804ACCC0[];
 
 
 TUGF::TUGF() : Actor() {
-    *(void**)this = lbl_804ACCC0;
     fn_801EB950((char*)this + 0x230);
 }
 
@@ -3341,14 +3449,9 @@ CHSW::CHSW() {
 
 // ---- Tlwp_ctor_802003C4.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A38D4[];
 
 
 TLWP::TLWP() : Actor() {
-    *(void**)this = lbl_804A38D4;
-    __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Jwlk_ctor_8020041C.cpp ----
@@ -3384,19 +3487,10 @@ PSW2::PSW2() {
 
 // ---- Gnef_ctor_802004EC.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_80200544(void);
-extern void* lbl_804AA350[];
 
 
 GNEF::GNEF() : Actor() {
-    *(void**)this = lbl_804AA350;
-    __construct_array((char*)this + 0x27c, (void*)fn_80200544, 0, 0x14, 4);
 }
-
-// ---- stub_80200544.cpp ----
-// Empty virtual-hook stub (see Game/ActorDefaultHooks.cpp).
-extern "C" void fn_80200544(void) {}
 
 // ---- Stpn_ctor_80200548.cpp ----
 extern void* lbl_804AA2D8[];
@@ -3481,14 +3575,9 @@ extern "C" void* fn_80200764(void* this_) {
 
 // ---- Zld3_ctor_802007A0.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A35AC[];
 
 
 ZLD3::ZLD3() : Actor() {
-    *(void**)this = lbl_804A35AC;
-    __construct_array((char*)this + 0x288, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Oblf_ctor_802007F8.cpp ----
@@ -3517,14 +3606,9 @@ EGOL::EGOL() {
 
 // ---- Ynsw_ctor_802008AC.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804AC9A8[];
 
 
 YNSW::YNSW() : Actor() {
-    *(void**)this = lbl_804AC9A8;
-    __construct_array((char*)this + 0x254, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Gmtb_ctor_80200904.cpp ----
@@ -3545,65 +3629,32 @@ GMBL::GMBL() {
 
 // ---- Eetc_ctor_8020097C.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804ADF28[];
 
 
 EETC::EETC() : Actor() {
-    *(void**)this = lbl_804ADF28;
-    __construct_array((char*)this + 0x27c, (void*)fn_8003B2CC, 0, 0xc, 3);
-    __construct_array((char*)this + 0x2a0, (void*)fn_8003B2CC, 0, 0xc, 3);
-    __construct_array((char*)this + 0x2c4, (void*)fn_8003B2CC, 0, 0xc, 3);
 }
 
 // ---- Rck2_ctor_80200A0C.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-void fn_80200A84(void);
-void fn_80200A80(void);
-extern void* lbl_804AC950[];
 
 
 RCK2::RCK2() : Actor() {
-    *(void**)this = lbl_804AC950;
-    __construct_array((char*)this + 0x260, (void*)fn_80200A84, 0, 0x18, 8);
-    __construct_array((char*)this + 0x320, (void*)fn_80200A80, 0, 0x14, 4);
-}
-
-// ---- stub_80200a80.cpp ----
-// Empty virtual-hook stubs (see Game/ActorDefaultHooks.cpp).
-extern "C" {
-
-void fn_80200A80(void) {}
-void fn_80200A84(void) {}
-
 }
 
 // ---- Eowl_ctor_80200A88.cpp ----
 
 extern "C" void InitDefaultRecord(void*);
-extern void* lbl_804ADAC8[];
 
 
 EOWL::EOWL() : Actor() {
-    *(void**)this = lbl_804ADAC8;
     InitDefaultRecord((char*)this + 0x2a0);
 }
 
 // ---- Dmtw_ctor_80200ACC.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_8049E770[];
 
 
 DMTW::DMTW() : Actor() {
-    *(void**)this = lbl_8049E770;
-    __construct_array((char*)this + 0x25c, (void*)fn_8003B2CC, 0, 0xc, 6);
-    __construct_array((char*)this + 0x2c8, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x2f8, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x3b8, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Smri_ctor_80200B78.cpp ----
@@ -3679,14 +3730,9 @@ OKAM::OKAM() {
 
 // ---- Ttat_ctor_80200D10.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A2FB0[];
 
 
 TTAT::TTAT() : Actor() {
-    *(void**)this = lbl_804A2FB0;
-    __construct_array((char*)this + 0x280, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Goma_ctor_80200D68.cpp ----
@@ -3759,26 +3805,16 @@ ENPC::ENPC() {
 
 // ---- Hbb2_ctor_80200F60.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A2EC0[];
 
 
 HBB2::HBB2() : Actor() {
-    *(void**)this = lbl_804A2EC0;
-    __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 0x28);
 }
 
 // ---- Nwok_ctor_80200FB8.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804AC8C0[];
 
 
 NWOK::NWOK() : Actor() {
-    *(void**)this = lbl_804AC8C0;
-    __construct_array((char*)this + 0x290, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Saya_ctor_80201010.cpp ----
@@ -3901,6 +3937,15 @@ SPBG::SPBG() {
     *(void**)this = lbl_804AC760;
 }
 
+DMNR::DMNR() {
+    *(void**)this = lbl_8049E500;
+    m230 = 0;
+    m234 = lbl_8053F830;
+    m238 = lbl_8053F830;
+    m23C = 0;
+}
+
+
 // ---- Szsc_ctor_802013D8.cpp ----
 extern void* lbl_804AC708[];
 
@@ -3990,6 +4035,10 @@ GFBS::GFBS() {
     *(void**)this = __vt__4GFBS;
 }
 
+OPGA::OPGA() : m230(0), m231(0), m234(0), m238(0), m23C(-1), m240(-1) {
+}
+
+
 // ---- Blz2_ctor_802016D8.cpp ----
 extern void* lbl_804A9D28[];
 
@@ -4054,28 +4103,16 @@ LIMT::LIMT() {
 
 // ---- Gol2_ctor_80201898.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A9C20[];
 
 
 GNL2::GNL2() : Actor() {
-    *(void**)this = lbl_804A9C20;
-    __construct_array((char*)this + 0x258, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Beee_ctor_802018F0.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804AC600[];
 
 
 BEEE::BEEE() : Actor() {
-    *(void**)this = lbl_804AC600;
-    __construct_array((char*)this + 0x2a4, (void*)fn_8003B2CC, 0, 0xc, 7);
-    __construct_array((char*)this + 0x2f8, (void*)fn_8003B2CC, 0, 0xc, 7);
-    __construct_array((char*)this + 0x34c, (void*)fn_8003B2CC, 0, 0xc, 7);
 }
 
 // ---- Pssw_ctor_80201980.cpp ----
@@ -4088,27 +4125,16 @@ PSSW::PSSW() {
 
 // ---- Hous_ctor_802019BC.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_801546E4(void*);
-extern void* lbl_804A7AE0[];
 
 
 HOUS::HOUS() : Actor() {
-    *(void**)this = lbl_804A7AE0;
-    __construct_array((char*)this + 0x2dc, (void*)fn_801546E4, 0, 0x8, 4);
 }
 
 // ---- fn_80201A14_ctor.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A2944[];
 
 
-fn_80201A14_actor::fn_80201A14_actor() : Actor() {
-    *(void**)this = lbl_804A2944;
-    __construct_array((char*)this + 0x2a4, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x2d4, (void*)fn_8003B2CC, 0, 0xc, 4);
+ZLD2::ZLD2() : Actor() {
 }
 
 // ---- Gnon_ctor_80201A88.cpp ----
@@ -4185,17 +4211,21 @@ STBL::STBL() {
     *(void**)this = lbl_804AC2D8;
 }
 
+DMGA::DMGA() {
+    *(void**)this = lbl_8049DD68;
+    m230 = 0;
+    m234 = 0;
+    m238 = lbl_8053F830;
+    m23C = lbl_8053F830;
+    fn_801D267C(&m274);
+}
+
+
 // ---- Dgt2_ctor_80201D00.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A1FA0[];
 
 
 DGT2::DGT2() : Actor() {
-    *(void**)this = lbl_804A1FA0;
-    __construct_array((char*)this + 0x288, (void*)fn_8003B2CC, 0, 0xc, 6);
-    __construct_array((char*)this + 0x2d0, (void*)fn_8003B2CC, 0, 0xc, 0x14);
 }
 
 // ---- Rvfr_ctor_80201D74.cpp ----
@@ -4224,14 +4254,9 @@ FLYO::FLYO() {
 
 // ---- Bph2_ctor_80201E28.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A1E50[];
 
 
 BPH2::BPH2() : Actor() {
-    *(void**)this = lbl_804A1E50;
-    __construct_array((char*)this + 0x2f8, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Prtc_ctor_80201E80.cpp ----
@@ -4244,14 +4269,9 @@ PRTC::PRTC() {
 
 // ---- Rasn_ctor_80201EBC.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A7A68[];
 
 
 RASN::RASN() : Actor() {
-    *(void**)this = lbl_804A7A68;
-    __construct_array((char*)this + 0x238, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Fgn2_ctor_80201F14.cpp ----
@@ -4280,15 +4300,9 @@ JPEN::JPEN() {
 
 // ---- Wnwn_ctor_80201FC8.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A18E0[];
 
 
 WNWN::WNWN() : Actor() {
-    *(void**)this = lbl_804A18E0;
-    __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 0xa);
-    __construct_array((char*)this + 0x30c, (void*)fn_8003B2CC, 0, 0xc, 0xa);
 }
 
 // ---- Urac_ctor_8020203C.cpp ----
@@ -4393,15 +4407,9 @@ DSIN::DSIN() {
 
 // ---- Grok_ctor_8020231C.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A1630[];
 
 
 GROK::GROK() : Actor() {
-    *(void**)this = lbl_804A1630;
-    __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x2c4, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Sbtn_ctor_80202390.cpp ----
@@ -4447,14 +4455,9 @@ PESW::PESW() {
 
 // ---- Osin_ctor_802024BC.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804AB528[];
 
 
 OSIN::OSIN() : Actor() {
-    *(void**)this = lbl_804AB528;
-    __construct_array((char*)this + 0x26c, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Puku_ctor_80202514.cpp ----
@@ -4719,14 +4722,9 @@ CKSW::CKSW() {
 
 // ---- Tngl_ctor_80202C34.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804B0478[];
 
 
 TNGL::TNGL() : Actor() {
-    *(void**)this = lbl_804B0478;
-    __construct_array((char*)this + 0x260, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Stal_ctor_80202C8C.cpp ----
@@ -4941,14 +4939,9 @@ WOOD::WOOD() {
 
 // ---- fn_802032AC_ctor.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A0810[];
 
 
-fn_802032AC_actor::fn_802032AC_actor() : Actor() {
-    *(void**)this = lbl_804A0810;
-    __construct_array((char*)this + 0x29c, (void*)fn_8003B2CC, 0, 0xc, 0xa);
+SLR3::SLR3() : Actor() {
 }
 
 // ---- Peff_ctor_80203304.cpp ----
@@ -5025,20 +5018,10 @@ YAJI::YAJI() {
 
 // ---- Bome_ctor_80203520.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_80203594(void);
-extern void* lbl_804A0738[];
 
 
 BOME::BOME() : Actor() {
-    *(void**)this = lbl_804A0738;
-    __construct_array((char*)this + 0x274, (void*)fn_80203594, 0, 0x18, 5);
-    __construct_array((char*)this + 0x2ec, (void*)fn_80203594, 0, 0x18, 5);
 }
-
-// ---- stub_80203594.cpp ----
-// Empty virtual-hook stub (see Game/ActorDefaultHooks.cpp).
-extern "C" void fn_80203594(void) {}
 
 // ---- Kmri_ctor_80203598.cpp ----
 extern void* lbl_804A8418[];
@@ -5164,16 +5147,9 @@ BALL::BALL() {
 
 // ---- Bpoh_ctor_80203924.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern "C" void fn_8009711C(void*); // weak JUtility::TColor::TColor()
-extern void* lbl_804A0440[];
 
 
 BPOH::BPOH() : Actor() {
-    *(void**)this = lbl_804A0440;
-    __construct_array((char*)this + 0x2b8, (void*)fn_8003B2CC, 0, 0xc, 4);
-    __construct_array((char*)this + 0x2f4, (void*)fn_8009711C, 0, 0x4, 3);
 }
 
 // ---- Shtr_ctor_80203998.cpp ----
@@ -5315,14 +5291,9 @@ HINO::HINO() {
 
 // ---- Goal_ctor_80203D94.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_804A7EB0[];
 
 
 GOAL::GOAL() : Actor() {
-    *(void**)this = lbl_804A7EB0;
-    __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Bhrt_ctor_80203DEC.cpp ----
@@ -5335,15 +5306,9 @@ BHRT::BHRT() {
 
 // ---- Dgtl_ctor_80203E28.cpp ----
 
-// (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
-extern void* lbl_8049F6C8[];
 
 
 DGTL::DGTL() : Actor() {
-    *(void**)this = lbl_8049F6C8;
-    __construct_array((char*)this + 0x2c0, (void*)fn_8003B2CC, 0, 0xc, 0xa);
-    __construct_array((char*)this + 0x3d8, (void*)fn_8003B2CC, 0, 0xc, 0x50);
 }
 
 // ---- Oktm_ctor_80203E9C.cpp ----
@@ -5491,51 +5456,7 @@ RUPY::RUPY() {
 }
 
 
-// ---- CRNV / DMNR / OPGA / DMGA ctors, ARSH / ZNSH deleting dtors ----
-extern void* lbl_8049ED30[];
-extern void* lbl_8049E500[];
-extern void* lbl_8049E350[];
-extern void* lbl_8049DD68[];
-
-CRNV::CRNV() {
-    *(void**)this = lbl_8049ED30;
-    m230 = 0;
-    m234 = 0;
-    m238 = -1;
-    m23C = lbl_8053F830;
-    fn_801D267C(&m240);
-    m278 = 0;
-    m27C = 0;
-}
-
-DMNR::DMNR() {
-    *(void**)this = lbl_8049E500;
-    m230 = 0;
-    m234 = lbl_8053F830;
-    m238 = lbl_8053F830;
-    m23C = 0;
-}
-
-OPGA::OPGA() {
-    *(void**)this = lbl_8049E350;
-    m230 = 0;
-    m231 = 0;
-    m234 = 0;
-    m238 = 0;
-    m23C = -1;
-    m240 = -1;
-    fn_801D267C(&m244);
-    fn_801D267C(&m27C);
-}
-
-DMGA::DMGA() {
-    *(void**)this = lbl_8049DD68;
-    m230 = 0;
-    m234 = 0;
-    m238 = lbl_8053F830;
-    m23C = lbl_8053F830;
-    fn_801D267C(&m274);
-}
+// ---- ARSH / ZNSH deleting dtors ----
 
 // ZNSH / ARSH deleting dtors (inlined ItemBase-style dtor chain).
 void operator delete(void* p);

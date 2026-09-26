@@ -79,11 +79,11 @@ extern "C" void fn_8019CDE4(s32 a, s32 b) {
     if (b < 0 || b > 3) return;
     ((SaveSlot8050*)((u8*)&lbl_8050EC80 + lbl_8050EC80.cur * 0xc8))->flags |= 1 << (b + a * 4);
 }
+inline SaveSlot8050* curSlot8050() { return (SaveSlot8050*)((u8*)&lbl_8050EC80 + lbl_8050EC80.cur * 0xc8); }
 extern "C" BOOL fn_8019CE40(s32 a, s32 b) {
     if (a < 0 || a > 7) return FALSE;
     if (b < 0 || b > 3) return FALSE;
-    Save8050* t = &lbl_8050EC80;
-    return (((SaveSlot8050*)((u8*)t + t->cur * 0xc8))->flags & (1 << (b + a * 4))) != 0;
+    return (1 << (b + a * 4)) & curSlot8050()->flags ? TRUE : FALSE;
 }
 extern "C" void fn_8019CECC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
@@ -139,6 +139,7 @@ extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
             }
         }
     }
+
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

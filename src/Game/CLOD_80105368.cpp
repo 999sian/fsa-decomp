@@ -35,7 +35,7 @@ extern "C" void* fn_80105368(void* this_, s16 freeFlag) {
 #endif
 extern void* lbl_8049CC34[];
 
-extern "C" void* dtor_80105D80(void* this_, s16 freeFlag) {
+extern "C" void* __dt__7AnimSubFv(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
         if (p + 0x24 != 0) {
