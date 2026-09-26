@@ -986,7 +986,7 @@ config.libs = [
             Object(NonMatching, "game/MGYA_8010089C.cpp"),
             Object(NonMatching, "game/ANHO_80102278.cpp"),
             Object(NonMatching, "game/TWEV_80103348.cpp"),
-            Object(NonMatching, "game/LOSW_80104C3C.cpp"),
+            Object(Matching, "game/LOSW_80104C3C.cpp"),
             Object(NonMatching, "game/CLOD_80105368.cpp"),
             Object(Matching, "game/ARSH_80105DD4.cpp"),
             Object(NonMatching, "game/WLFT_80106040.cpp"),

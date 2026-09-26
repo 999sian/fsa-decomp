@@ -5,7 +5,7 @@
 // ---- from Game/fn_80104C3C_dtor.cpp
 
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
+void operator delete(void* p);
 extern void* lbl_8049CB58[];
 
 extern "C" void* fn_80104C3C(void* this_, s16 freeFlag) {
@@ -13,7 +13,7 @@ extern "C" void* fn_80104C3C(void* this_, s16 freeFlag) {
         *(void**)this_ = lbl_8049CB58;
         dtor_801F593C(this_, 0);
         if (freeFlag > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -40,7 +40,7 @@ void fn_80104C9C(void)
 // straight to the tail (already resolved). Otherwise dispatches on
 // this->0x240 (0-3, the "consensus mode"): modes 0/1/2 all loop over
 // LOSW's own 4 group indices (this->0x230-family, stride 4) calling
-// GetRoomConfigRecord then fn_802D800C(groupIndex) and counting matches
+// fn_802D6A9C then fn_802D800C(groupIndex) and counting matches
 // (mode 0 ALSO counts a group as a "match" if its own index field is 0,
 // i.e. an unused slot trivially satisfies the unanimous check): mode 0 =
 // ALL 4 flags must be set (unanimous), mode 1 = AT LEAST ONE flag set
@@ -53,11 +53,11 @@ void fn_80104C9C(void)
 // this->0x24e=1 (resolved). If NOT reached: a virtual call through
 // this->vtable[slot 12] (arg 0xff, 0), resets this->0x24c/0x24d, and if
 // this->0x24f was set, clears it, this->0x24a, and calls fn_80230534.
-extern "C" void* GetRoomConfigRecord(void);
+extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void*, u32);
 extern "C" void fn_801F0D20(char* this_, u32 code);
-extern "C" u8 fn_80104EB0(void* this_);
 extern "C" void fn_80230534(s32 a);
+extern "C" u8 fn_80104EB0(void* this_);
 
 struct LoswVtable {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -101,7 +101,7 @@ checkMode3:
     goto mode2Body;
 mode0Body:
     for (s32 i = 0; i < 4; i++) {
-        void* config = GetRoomConfigRecord();
+        void* config = fn_802D6A9C();
         u32 groupIdx = *(u32*)(t + 0x230 + i * 4);
         if (fn_802D800C(config, groupIdx) || *(s32*)(t + 0x230 + i * 4) == 0) {
             matchCount++;
@@ -113,7 +113,7 @@ mode0Body:
     goto dispatchDone;
 mode1Body:
     for (s32 i = 0; i < 4; i++) {
-        void* config = GetRoomConfigRecord();
+        void* config = fn_802D6A9C();
         u32 groupIdx = *(u32*)(t + 0x230 + i * 4);
         if (fn_802D800C(config, groupIdx)) {
             matchCount++;
@@ -125,7 +125,7 @@ mode1Body:
     goto dispatchDone;
 mode2Body:
     for (s32 i = 0; i < 4; i++) {
-        void* config = GetRoomConfigRecord();
+        void* config = fn_802D6A9C();
         u32 groupIdx = *(u32*)(t + 0x230 + i * 4);
         if (fn_802D800C(config, groupIdx)) {
             matchCount++;
@@ -154,6 +154,104 @@ dispatchDone:;
             *(u8*)(t + 0x24f) = 0;
             *(u16*)(t + 0x24a) = 0;
             fn_80230534(0);
+        }
+    }
+}
+
+// ---- fn_80104EB0 / fn_80105068
+extern "C" u8 fn_8023077C(void);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" void fn_8030C210(void* p, void* q);
+extern "C" void fn_80230498(s32 i, void* p, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230FD0(s32 i, s32 a);
+extern u8* lbl_8053AB10;
+
+extern "C" u8 fn_80104EB0(void* this_) {
+    u8* t = (u8*)this_;
+    s32 i;
+    if ((*(u32*)(t + 0x90) & 0x40) == 0) {
+        return 1;
+    }
+    switch (*(u8*)(t + 0x24F)) {
+    case 0:
+        if (fn_8023077C()) {
+            (*(u8*)(t + 0x24F))++;
+            *(u16*)(t + 0x248) = 30;
+        }
+        break;
+    case 1:
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i)) {
+                fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(i));
+            }
+        }
+        (*(u16*)(t + 0x248))--;
+        if (*(u16*)(t + 0x248) == 0) {
+            (*(u16*)(t + 0x24A))++;
+            for (i = 0; i < 4; i++) {
+                if (fn_8023F264(i)) {
+                    fn_80230498(i, fn_8023E724(i), *(u16*)(t + 0x24A) + 0xDB, 0xFF, -0x80, -0x80, 1);
+                    if (*(u16*)(t + 0x24A) == 1) {
+                        fn_80230FD0(i, 0x10001);
+                    }
+                }
+            }
+            *(u16*)(t + 0x248) = 2;
+            if (*(u16*)(t + 0x24A) == 13) {
+                (*(u8*)(t + 0x24F))++;
+                *(u16*)(t + 0x248) = 50;
+            }
+        }
+        break;
+    case 2:
+        (*(u16*)(t + 0x248))--;
+        if (*(u16*)(t + 0x248) == 0) {
+            *(u8*)(t + 0x24F) = 0;
+            *(u16*)(t + 0x24A) = 0;
+            fn_80230534(0);
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
+
+class LOSW_Actor {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void vf18();
+    virtual void vf1C();
+    virtual void vf20();
+    virtual void vf24();
+    virtual void vf28();
+    virtual void vf2C();
+    virtual void vf30();
+    virtual u8 vf34();
+};
+
+static const s32 sLoswShifts[4] = {22, 17, 12, 7};
+
+extern "C" void fn_80105068(void* this_) {
+    u8* t = (u8*)this_;
+    const s32* sh = sLoswShifts;
+    *(u32*)(t + 0x230) = (*(u32*)(t + 0x90) >> sh[0]) & 0x1F;
+    *(u32*)(t + 0x234) = (*(u32*)(t + 0x90) >> sh[1]) & 0x1F;
+    *(u32*)(t + 0x238) = (*(u32*)(t + 0x90) >> sh[2]) & 0x1F;
+    *(u32*)(t + 0x23C) = (*(u32*)(t + 0x90) >> sh[3]) & 0x1F;
+    *(u32*)(t + 0x240) = *(u32*)(t + 0x90) & 0xF;
+    *(s32*)(t + 0x244) = *(u32*)(t + 0x90) & 0x10;
+    *(u8*)(t + 0x24C) = 0;
+    *(u8*)(t + 0x24D) = 0;
+    *(u8*)(t + 0x24F) = 0;
+    *(u16*)(t + 0x24A) = 0;
+    *(u16*)(t + 0x248) = 0;
+    if (*(s32*)(t + 0x244) != 0) {
+        if (((LOSW_Actor*)this_)->vf34()) {
+            *(u8*)(t + 0x24E) = 1;
         }
     }
 }

@@ -1761,6 +1761,8 @@ game/LOSW_80104C3C.cpp:
 	extabindex  start:0x80011DB8 end:0x80011DF4
 	.text       start:0x80104C3C end:0x80105368
 	.ctors      start:0x8045BE28 end:0x8045BE2C
+	.rodata     start:0x80463EE0 end:0x80463EF0
+	.bss        start:0x804BB3F8 end:0x804BB464
 
 game/CLOD_80105368.cpp:
 	extab       start:0x800059D8 end:0x80005A24
