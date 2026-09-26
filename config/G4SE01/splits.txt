@@ -3253,6 +3253,7 @@ Game/tu_80403414.cpp:
 	extabindex  start:0x80020038 end:0x8002005C
 	.text       start:0x80403414 end:0x80403D84
 	.ctors      start:0x8045C590 end:0x8045C594
+	.sdata2     start:0x80543878 end:0x80543880
 
 Game/tu_80403d84.cpp:
 	extab       start:0x80010284 end:0x80010484
