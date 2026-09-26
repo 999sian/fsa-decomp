@@ -139,6 +139,29 @@ void fn_802144F0(u8* this_) {
     fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), &pos, 0x3cf, 0, 0, 0, 0, 1);
 }
 
+void fn_80214578(u8* this_) {
+    u8* o = *(u8**)(this_ + 0x34);
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(o + 0xc));
+    switch (*(s32*)(o + 0x98)) {
+    case 0:
+        pos.x -= 24.0f;
+        break;
+    case 1:
+        pos.x += 24.0f;
+        break;
+    case 2:
+        pos.x += 2.0f;
+        pos.y -= 26.0f;
+        break;
+    case 3:
+        pos.x -= 4.0f;
+        pos.y += 18.0f;
+        break;
+    }
+    fn_8013CC50(lbl_8053FBA4, *(u32*)(*(u8**)(this_ + 0x34) + 4), &pos, 0xcb, 0, 1, 0, 0, 1);
+    fn_8013CC50(lbl_8053FBA4, *(u32*)(*(u8**)(this_ + 0x34) + 4), &pos, 0xcc, 0, 1, 0, 0, 1);
+}
+
 void fn_802146A4(u8* this_) {
     u8* o = *(u8**)(this_ + 0x34);
     s32 f = 0;
