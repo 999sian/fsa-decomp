@@ -72,6 +72,114 @@ extern "C" void fn_803A97A0(void* this_) {
     (*(J2DScreen**)(p + 0x1c))->draw(lbl_805433C8, lbl_805433C8, *(const J2DGrafContext**)((char*)lbl_8053AB10 + 0x10));
 }
 
+extern u8 lbl_80529DEC[];
+extern void* lbl_8053AD68;
+extern "C" void fn_80128C58(u8 a);
+extern "C" void fn_8013A884(void* color);
+extern "C" void fn_803AA8F8(void* this_);
+extern "C" void fn_803AA1F8(void* this_);
+extern "C" void fn_803A9AB8(void* this_);
+
+struct AnmFrame {
+    u8 pad0[6];
+    s16 maxFrame;
+    f32 frame;
+};
+
+struct EffHandle {
+    u8 pad0[0x24];
+    s32 m24;
+    u8 pad28[0xf4 - 0x28];
+    u32 flags;
+};
+
+struct Menu_Main {
+    u8 pad0[4];
+    J2DScreen* screens[8];      // 0x04
+    AnmFrame* anms[8];          // 0x24
+    u8 pad44[0x1b8 - 0x44];
+    EffHandle* handles[4];      // 0x1b8
+    u8 pad1c8[0x440 - 0x1c8];
+    s32 timer;                  // 0x440
+    u8 pad444[0x44c - 0x444];
+    s32 frame;                  // 0x44c
+    s32 cur;                    // 0x450
+    u8 pad454[0x4c0 - 0x454];
+    u8 mode;                    // 0x4c0
+    u8 m4c1;
+    u8 alpha;                   // 0x4c2
+};
+
+extern "C" void fn_803A9830(Menu_Main* p) {
+    switch (p->mode) {
+    case 0:
+        p->timer--;
+        if (p->timer == 0) {
+            p->mode = 1;
+        }
+        break;
+    case 1:
+        p->alpha += 2;
+        if (p->alpha >= 0xfe) {
+            p->alpha = 0xff;
+            p->mode = 2;
+            p->m4c1 = 1;
+            *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235c) = 0;
+            *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235d) = 0;
+            *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235e) = 0;
+            *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235f) = 0;
+            fn_80128C58(0xff);
+            u32 color = 0xffffff00;
+            fn_8013A884(&color);
+        }
+        break;
+    case 2:
+        fn_803AA8F8(p);
+        break;
+    case 3:
+        fn_803AA1F8(p);
+        break;
+    case 4:
+        fn_803A9AB8(p);
+        break;
+    case 6:
+        if (p->alpha >= 0xf5) {
+            p->alpha = 0xff;
+            if (lbl_80529DEC[0x24d] == 1) {
+                p->mode = 5;
+                for (s32 i = 0; i < 4; i++) {
+                    EffHandle* h = p->handles[i];
+                    if (h != 0) {
+                        h->flags |= 1;
+                        h->m24 = 1;
+                        p->handles[i] = 0;
+                    }
+                }
+            } else {
+                p->mode = 9;
+            }
+        } else {
+            p->alpha += 10;
+        }
+        break;
+    case 5:
+        if (p->alpha <= 10) {
+            p->alpha = 0;
+            *(u8*)((u8*)lbl_8053AD68 + 0x1d) = 1;
+        } else {
+            p->alpha -= 10;
+        }
+        break;
+    }
+    p->frame++;
+    if (p->frame >= p->anms[p->cur]->maxFrame) {
+        p->frame = 0;
+    }
+    p->anms[p->cur]->frame = p->frame;
+    p->screens[p->cur]->animation();
+}
+
+
 
 // ---- from src/Game/CountdownBlink_803AF604.cpp ----
 extern "C" void fn_80458880(void* p1, s32 p2, s32 p3);
