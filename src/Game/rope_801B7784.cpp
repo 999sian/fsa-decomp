@@ -65,6 +65,138 @@ extern "C" void fn_801B7854(u8* this_) {
     fn_801CE4BC(this_);
 }
 
+struct ROPE_Random {
+    u32 seed;
+    f32 get() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct ROPE_Game { u8 pad[0xb4]; ROPE_Random rnd; };
+extern ROPE_Game* lbl_8053AAF8;
+extern int __float_max[];
+extern "C" u8 fn_801D0B44(void* actor, s32 idx);
+extern "C" f32* fn_8023E724(s32 idx);
+extern "C" f32 fn_801D0DA0(void* actor, s32 idx, void* pos);
+extern "C" u8 fn_801CFD68(void* actor, s32 dir, f32 d);
+extern "C" s32 fn_801CF720(void* actor, s32 dir);
+extern "C" s32 fn_801CF6B8(void* actor);
+
+static inline void rope_startMove(u8* this_) {
+    *(s32*)(this_ + 0x250) = fn_801CD664(0x29) + 0x3c;
+    *(f32*)(this_ + 0x258) = 0.4f;
+    if (*(s32*)(this_ + 0x248) != 2) {
+        *(s32*)(this_ + 0x98) = fn_801CF6B8(this_);
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = 1;
+}
+
+static inline void rope_startWait(u8* this_) {
+    *(s32*)(this_ + 0x250) = fn_801CD664(0x3d) + 0x28;
+    *(f32*)(this_ + 0x258) = 0.0f;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+}
+
+extern "C" void fn_801B78DC(u8* this_, u8 blocked) {
+    s32 i;
+    s32 dir;
+    int found;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 1:
+        found = 0;
+        if (*(s32*)(this_ + 0x24c) >= 0x1e) {
+            dir = 0;
+            f32 best = *(f32*)__float_max;
+            for (i = 0; i < 4; i++) {
+                if (!fn_801D0B44(this_, i)) {
+                    continue;
+                }
+                f32 dx = __fabsf(*(f32*)(this_ + 0xc) - fn_8023E724(i)[0]);
+                f32 dy = __fabsf(*(f32*)(this_ + 0x10) - fn_8023E724(i)[1]);
+                if (dx <= 10.0f) {
+                    f32 d = fn_801D0DA0(this_, i, this_ + 0xc);
+                    if (100.0f < d && d < 14400.0f && d < best) {
+                        if (*(f32*)(this_ + 0x10) < fn_8023E724(i)[1]) {
+                            if (!fn_801CFD68(this_, 2, dy)) {
+                                best = d;
+                                dir = 2;
+                                found = 1;
+                            }
+                        } else {
+                            if (!fn_801CFD68(this_, 3, dy)) {
+                                best = d;
+                                dir = 3;
+                                found = 1;
+                            }
+                        }
+                    }
+                } else if (dy <= 10.0f) {
+                    f32 d = fn_801D0DA0(this_, i, this_ + 0xc);
+                    if (100.0f < d && d < 14400.0f && d < best) {
+                        if (*(f32*)(this_ + 0xc) < fn_8023E724(i)[0]) {
+                            if (!fn_801CFD68(this_, 0, dx)) {
+                                best = d;
+                                dir = 0;
+                                found = 1;
+                            }
+                        } else {
+                            if (!fn_801CFD68(this_, 1, dx)) {
+                                best = d;
+                                dir = 1;
+                                found = 1;
+                            }
+                        }
+                    }
+                }
+            }
+            if ((u8)found) {
+                *(s32*)(this_ + 0x250) = fn_801CD664(0x29) + 0x3c;
+                *(f32*)(this_ + 0x258) = 1.5f;
+                *(s32*)(this_ + 0x24c) = 0;
+                *(s32*)(this_ + 0x248) = 2;
+                *(s32*)(this_ + 0x98) = dir;
+            }
+        }
+        break;
+    }
+
+    s32 state = *(s32*)(this_ + 0x248);
+    switch (state) {
+    case 0:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            rope_startMove(this_);
+        }
+        break;
+    case 1:
+    case 2:
+        if (blocked) {
+            *(s32*)(this_ + 0x98) = fn_801CF720(this_, *(s32*)(this_ + 0x98));
+            *(s32*)(this_ + 0x250) += 10;
+        } else if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            if (state == 1) {
+                if (lbl_8053AAF8->rnd.get() < 0.35f) {
+                    rope_startWait(this_);
+                } else {
+                    rope_startMove(this_);
+                }
+            } else {
+                rope_startMove(this_);
+            }
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x24c) > 1 && *(f32*)(this_ + 0x14) <= 0.0f) {
+            rope_startWait(this_);
+        }
+        break;
+    }
+}
+
 extern "C" void fn_801B7D34(u8* this_) {
     fn_801D0ED0(this_);
     if (*(f32*)(this_ + 0x14) > 0.001f) {
