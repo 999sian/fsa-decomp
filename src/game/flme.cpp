@@ -24,4 +24,21 @@ extern "C" void* fn_8015F19C(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_8015EA2C(void* this_);
+extern "C" void fn_8015DF7C(void* this_);
+
+struct FlmeTimers { u8 pad[0x234]; s32 t[3]; };
+// FLME update (vtable slot 3)
+extern "C" void fn_8015DEFC(char* this_) {
+    fn_8015EA2C(this_);
+    if (*(s32*)(this_ + 0x230) != 5) {
+        fn_8015DF7C(this_);
+    }
+    for (int i = 0; i < 3; i++) {
+        if (((FlmeTimers*)this_)->t[i] > 0) {
+            ((FlmeTimers*)this_)->t[i]--;
+        }
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

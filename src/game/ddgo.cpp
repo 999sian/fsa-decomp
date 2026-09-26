@@ -95,4 +95,18 @@ extern "C" void fn_801AE5AC(void* this_) {
     }
 }
 
+extern "C" void fn_801AC930(void* this_);
+
+// DDGO update (vtable slot 3)
+extern "C" void fn_801AC8EC(char* this_) {
+    switch (*(s32*)(this_ + 0x234)) {
+    case 0:
+    case 2:
+        fn_801AC930(this_);
+        break;
+    case 1:
+        break;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
