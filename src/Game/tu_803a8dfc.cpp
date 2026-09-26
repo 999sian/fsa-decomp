@@ -1770,7 +1770,9 @@ struct TagPair {
 struct Menu_Intro {
     u8 pad0[0x10];
     J2DScreen* screens[4];      // 0x10
-    u8 pad20[0x424 - 0x20];
+    u8 pad20[0x41c - 0x20];
+    f32 y41c;                   // 0x41c
+    f32 y420;                   // 0x420
     f32 y424;                   // 0x424
     u8 pad428[0x440 - 0x428];
     s32 timer;                  // 0x440
@@ -1783,13 +1785,81 @@ struct Menu_Intro {
     u8 ready[4];                // 0x4bc
     u8 pad4c0;
     u8 m4c1;
-    u8 pad4c2[0x4d9 - 0x4c2];
+    u8 m4c2;
+    u8 pad4c3[0x4c9 - 0x4c3];
+    u8 alphaTitle[13];          // 0x4c9
+    u8 alpha3[3];               // 0x4d6
     u8 alpha[2];                // 0x4d9
+};
+
+struct IntroTags {
+    u64 title[13];
+    u64 p3[4][3];
+    u64 p2[4][2];
 };
 
 extern TagPair lbl_804762D0[];
 extern u8 lbl_8050DB0C[];
 extern "C" u8 fn_80389BF0(s32 idx, s32 id);
+
+extern IntroTags lbl_80476208;
+
+// NONMATCHING (97.5%): register allocation of the timing locals.
+extern "C" void fn_803B03E8(Menu_Intro* p) {
+    IntroTags* tbl = &lbl_80476208;
+    s32 t0 = *(s16*)(lbl_8050DB0C + 0x260);
+    s32 t1 = *(s16*)(lbl_8050DB0C + 0x262);
+    s32 start = *(s16*)(lbl_8050DB0C + 0x264);
+    s32 dur = *(s16*)(lbl_8050DB0C + 0x266);
+    s32 gap = *(s16*)(lbl_8050DB0C + 0x268);
+    s32 total = start + dur + gap * (p->count - 1);
+    if (total < t0 + t1) {
+        total = t0 + t1;
+    }
+    p->timer++;
+    if (p->timer > t0 && p->timer <= t0 + t1) {
+        s32 d = p->timer - t0;
+        f32 x = p->screens[p->cur]->search('Pmmwk02')->getBounds()->i.x;
+        f32 y = 200.0f * ((f32)(d * d) / (f32)(t1 * t1));
+        p->screens[p->cur]->search('Pmmwk02')->move(x, p->y41c - y);
+        if (p->cur < 2) {
+            for (s32 k = 0; k < 13; k++) {
+                p->screens[p->cur]->search(tbl->title[k])->setAlpha((u8)(p->alphaTitle[k] * (1.0f - (f32)d / (f32)t1)));
+            }
+        }
+    }
+    if (p->timer > start && p->timer <= start + dur + gap * (p->count - 1)) {
+        s32 off = 0;
+        u64 (*r3)[3] = tbl->p3;
+        u64 (*r2)[2] = tbl->p2;
+        for (s32 i = 0; i < p->count; i++, r3++, r2++) {
+            if (p->timer >= start + off) {
+                s32 d = p->timer - (start + off);
+                f32 y = 200.0f * ((f32)(d * d) / (f32)(dur * dur));
+                f32 x = p->screens[p->cur]->search((*r3)[2])->getBounds()->i.x;
+                p->screens[p->cur]->search((*r3)[2])->move(x, p->y420 + y);
+                x = p->screens[p->cur]->search((*r2)[1])->getBounds()->i.x;
+                p->screens[p->cur]->search((*r2)[1])->move(x, p->y424 + y);
+                if (p->cur < 2) {
+                    for (s32 k = 0; k < 3; k++) {
+                        p->screens[p->cur]->search((*r3)[k])->setAlpha((u8)(p->alpha3[k] * (1.0f - (f32)d / (f32)dur)));
+                    }
+                }
+                if (p->cur < 2) {
+                    for (s32 k = 0; k < 2; k++) {
+                        p->screens[p->cur]->search((*r2)[k])->setAlpha((u8)(p->alpha[k] * (1.0f - (f32)d / (f32)dur)));
+                    }
+                }
+            }
+            off += gap;
+        }
+    }
+    if (total <= p->timer) {
+        p->m4c2 = 0;
+        p->timer = 0x96;
+        p->m4c1 = 8;
+    }
+}
 
 // NONMATCHING (99.5%): register allocation in the slide loops.
 extern "C" void fn_803B0FD4(Menu_Intro* p) {
