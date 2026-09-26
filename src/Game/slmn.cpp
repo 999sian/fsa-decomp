@@ -2,6 +2,9 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 
+#include "JSystem/JGeometry/Vec.h"
+typedef JGeometry::TVec3<f32> Vec3f;
+
 // ---- Slmn_ctor_80208BE0.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void* fn_80207AC0(void* this_);
@@ -102,12 +105,14 @@ extern "C" u16 fn_80226850(void* pos, s32 room);
 
 struct SlmnPart {
     s32 id;       // 0x2b0
-    u8 pad4[4];
+    u8 inactive;  // 0x2b4
+    u8 pad5[3];
     s32 a;        // 0x2b8
     s32 b;        // 0x2bc
     u8 c[0xc];    // 0x2c0
     s32 d;        // 0x2cc
-    u8 pad20[4];
+    u8 dead;      // 0x2d0
+    u8 pad21[3];
 };
 
 struct Slmn {
@@ -144,6 +149,96 @@ extern "C" void fn_802088B4(char* this_) {
 extern "C" void fn_80208924(char* this_) {
     *(u16*)(this_ + 0x346) = fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4));
     *(u16*)(this_ + 0x348) = fn_80226850(this_ + 0xc, *(s32*)(this_ + 0x4));
+}
+
+extern "C" s32 fn_801CD664(s32 range);
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" void fn_801F3604(void* this_);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 owner, void* pos, u32 param, s32 a, s32 b);
+extern const f32 lbl_8053F8E4;
+extern const f32 lbl_8053F8E8;
+extern const f32 lbl_8053F8F8;
+extern const f32 lbl_8053F910;
+
+static inline void slmnSpawn(char* this_) {
+    Vec3f pos; f32 dy; f32 dx; Vec3f* at; s32 param; s32 i;
+    fn_801F3604(this_);
+    pos = *(Vec3f*)(this_ + 0xc);
+    dy = dx = lbl_8053F8E0;
+    switch (*(s32*)(this_ + 0x2ac)) {
+    case 0:
+        pos.x -= lbl_8053F8E8;
+        dx = lbl_8053F8E4;
+        break;
+    case 1:
+        pos.y -= lbl_8053F8E8;
+        dy = lbl_8053F8E4;
+        break;
+    }
+    for (i = 0; i < 4; i++) {
+        param = *(s32*)(this_ + 0x198);
+        if (*(s32*)(this_ + 0x340) == 3) {
+            at = (Vec3f*)(this_ + 0xc);
+        } else {
+            at = &pos;
+        }
+        ((Slmn*)this_)->parts[i].id = Actor_CreateByID(fn_801F856C(), 0x464f534c, *(s32*)(this_ + 0x4), at, param, -1, -1);
+        char* a = (char*)fn_801F666C(fn_801F856C(), ((Slmn*)this_)->parts[i].id);
+        if (a != 0) {
+            *(s16*)(a + 0x94) = i;
+            if (*(s32*)(this_ + 0x340) == 3) {
+                *(Vec3f*)(a + 0x24) = pos;
+            }
+        }
+        pos.x += dx;
+        pos.y += dy;
+    }
+}
+
+extern "C" void fn_8020896C(char* this_) {
+    fn_801D0ED0(this_);
+    *(s32*)(this_ + 0x2ac) = *(u32*)(this_ + 0x90) & 3;
+    if (*(s32*)(this_ + 0x2ac) >= 2 || *(s32*)(this_ + 0x2ac) < 0) {
+        *(s32*)(this_ + 0x2ac) = fn_801CD664(2);
+    }
+    s32 kind = (*(u32*)(this_ + 0x90) >> 4) & 3;
+    if (kind > 3) {
+        kind = 3;
+    } else if (kind < 0) {
+        kind = 0;
+    }
+    *(s32*)(this_ + 0x340) = kind;
+    *(u8*)(this_ + 0x344) = *(u32*)(this_ + 0x90) >> 8;
+    f32 hi = lbl_8053F910;
+    f32 lo = lbl_8053F8F8;
+    *(f32*)(this_ + 0x60) = lo;
+    *(f32*)(this_ + 0x64) = lo;
+    *(f32*)(this_ + 0x68) = hi;
+    *(f32*)(this_ + 0x6c) = hi;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = lo;
+    *(f32*)(this_ + 0x84) = lo;
+    *(f32*)(this_ + 0x88) = hi;
+    *(f32*)(this_ + 0x8c) = hi;
+    *(s32*)(this_ + 0xb0) = 0;
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x380;
+    *(s32*)(this_ + 0x108) = 1000;
+    *(s32*)(this_ + 0x244) = *(s32*)(this_ + 0x108);
+    if (*(s32*)(this_ + 0x340) == 0) {
+        *(s32*)(this_ + 0x248) = 2;
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
+        slmnSpawn(this_);
+    } else {
+        *(s32*)(this_ + 0x248) = 0;
+        *(s32*)(this_ + 0x250) = -1;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(f32*)(this_ + 0x254) = lbl_8053F8E0;
+    *(f32*)(this_ + 0x258) = lbl_8053F8E0;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
