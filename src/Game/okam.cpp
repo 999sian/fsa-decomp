@@ -191,4 +191,68 @@ extern "C" void fn_801AF05C(char* this_) {
     *(s32*)(this_ + 0x230) = 0;
 }
 
+struct OkamDrawParam {
+    OkamDrawParam() : m40(-1), m44(-1) {
+        for (u8 i = 0; i < 16; i++) {
+            mIdx[i] = i;
+        }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
+        mMtx = NULL;
+        m4C = 0;
+        m4D = 0;
+        m4E = 0;
+        m4F = 1;
+        m50 = 1;
+        m51 = 0;
+        m52 = 0;
+        m53 = 0;
+        m54 = 0;
+        m55 = 0;
+        m56 = 1;
+        m58 = 3;
+        m5C = 1;
+        m5D = 0;
+        m5E = 0;
+        m60 = -1;
+        m64 = 0;
+        m68 = 2;
+    }
+    u8 mIdx[16];
+    s32 m40;
+    s32 m44;
+    f32 (*mMtx)[4];
+    u8 m4C, m4D, m4E, m4F, m50, m51, m52, m53, m54, m55, m56;
+    s32 m58;
+    u8 m5C, m5D, m5E;
+    s32 m60;
+    s32 m64;
+    s32 m68;
+};
+
+struct OkamResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* getRes(u32 type, const char* name);
+};
+
+struct OkamGame {
+    u8 pad0[0xa4];
+    OkamResMgr* mRes;
+};
+
+extern const char* lbl_804A33D0[];
+extern "C" void fn_801EFD34(void* self, void* tex, f32 sx, f32 sy, f32 z, OkamDrawParam* prm, s32 a);
+
+extern "C" void fn_801AEA24(u8* self) {
+    OkamDrawParam prm;
+    prm.reset();
+    void* tex = ((OkamGame*)lbl_8053AAF8)->mRes->getRes('TIMG', lbl_804A33D0[*(s32*)(self + 0x24c)]);
+    fn_801EFD34(self, tex, *(f32*)(self + 0x26c), *(f32*)(self + 0x270), 0.0f, &prm, -1);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
