@@ -396,4 +396,184 @@ extern "C" void fn_80211EB0(char* p) {
     }
 }
 
+extern const f32 lbl_8053FB10;
+extern const f32 lbl_8053FB24;
+extern const f32 lbl_8053FB28;
+extern const f32 lbl_8053FB2C;
+extern const f32 lbl_8053FB30;
+extern const f32 lbl_8053FB34;
+extern const f32 lbl_8053FB38;
+extern const f32 lbl_8053FB3C;
+extern const f32 lbl_8053FB40;
+extern const f32 lbl_8053FB44;
+extern "C" void fn_801D0ED0(char* p);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 room, void* pos, s32 param, s32 a, s32 b);
+extern "C" void fn_80212F5C(char* a);
+extern "C" void* fn_80212AC0(void);
+extern "C" void RusaRegistry_Register(void* registry, s32 id);
+
+static inline s32 rusaClamp(s32 v, s32 hi) {
+    if (v > hi) {
+        return hi;
+    }
+    if (v < 0) {
+        return 0;
+    }
+    return v;
+}
+
+// near-match (99.8%): float regs in the radius clamp differ
+extern "C" void fn_80212288(char* p) {
+    fn_801D0ED0(p);
+    *(s32*)(p + 0x2a8) = rusaClamp(*(u32*)(p + 0x90) & 7, 2);
+    switch (*(s32*)(p + 0x2a8)) {
+    case 0:
+        *(f32*)(p + 0x390) = lbl_8053FB14;
+        *(f32*)(p + 0x394) = lbl_8053FB04;
+        break;
+    case 1:
+        *(f32*)(p + 0x390) = lbl_8053FB10;
+        *(f32*)(p + 0x394) = lbl_8053FB24;
+        break;
+    case 2:
+        *(f32*)(p + 0x390) = lbl_8053FB28;
+        *(f32*)(p + 0x394) = lbl_8053FB2C;
+        break;
+    }
+    if ((*(u32*)(p + 0x90) >> 3) & 1) {
+        *(u32*)(p + 0x230) |= 0x4000;
+    }
+    if ((*(u32*)(p + 0x90) >> 4) & 1) {
+        *(u32*)(p + 0x230) |= 0x2000;
+    }
+    *(u8*)(p + 0x2bc) = (*(u32*)(p + 0x90) >> 5) & 7;
+    *(s32*)(p + 0x2ac) = rusaClamp((*(u32*)(p + 0x90) >> 8) & 0xf, 4);
+    switch ((*(u32*)(p + 0x90) >> 12) & 3) {
+    case 0:
+        *(f32*)(p + 0x3a4) = lbl_8053FB30;
+        *(f32*)(p + 0x3a8) = lbl_8053FB34;
+        break;
+    case 1:
+        *(f32*)(p + 0x3a4) = lbl_8053FB38;
+        *(f32*)(p + 0x3a8) = lbl_8053FB3C;
+        break;
+    default:
+        *(f32*)(p + 0x3a4) = lbl_8053FB10;
+        *(f32*)(p + 0x3a8) = lbl_8053FB14;
+        break;
+    }
+    if ((*(u32*)(p + 0x90) >> 25) & 1) {
+        *(u32*)(p + 0x230) |= 0x10000;
+    }
+    if ((*(u32*)(p + 0x90) >> 26) & 1) {
+        *(u32*)(p + 0x230) |= 0x8000;
+    }
+    *(s32*)(p + 0x2b8) = (*(u32*)(p + 0x90) >> 15) & 0x1f;
+    *(s32*)(p + 0x2b4) = (*(u32*)(p + 0x90) >> 20) & 0x1f;
+    *(s32*)(p + 0x2b0) = *(u32*)(p + 0x90) >> 27;
+    *(f32*)(p + 0x60) = lbl_8053FB14;
+    *(f32*)(p + 0x64) = lbl_8053FB14;
+    *(f32*)(p + 0x68) = lbl_8053FB40;
+    *(f32*)(p + 0x6c) = lbl_8053FB40;
+    *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+    *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+    *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+    *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+    *(f32*)(p + 0x80) = lbl_8053FB14;
+    *(f32*)(p + 0x84) = lbl_8053FB14;
+    *(f32*)(p + 0x88) = lbl_8053FB40;
+    *(f32*)(p + 0x8c) = lbl_8053FB40;
+    *(s32*)(p + 0xb0) = 0;
+    *(s32*)(p + 0x98) = 2;
+    *(u32*)(p + 0x230) |= 0x380;
+    *(s32*)(p + 0x108) = 1000;
+    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
+    *(u8*)(p + 0x194) = 1;
+    if (*(s32*)(p + 0x2ac) == 0) {
+        if (*(u32*)(p + 0x230) & 0x4000) {
+            *(s32*)(p + 0x248) = 5;
+            f32 s = *(f32*)(p + 0x394);
+            *(f32*)(p + 0x54) = s;
+            *(f32*)(p + 0x58) = s;
+            *(f32*)(p + 0x5c) = s;
+        } else {
+            *(s32*)(p + 0x248) = 3;
+            f32 s = *(f32*)(p + 0x390);
+            *(f32*)(p + 0x54) = s;
+            *(f32*)(p + 0x58) = s;
+            *(f32*)(p + 0x5c) = s;
+        }
+        s32 sw = *(s32*)(p + 0x2b8);
+        if (sw != 0) {
+            fn_802D8050(fn_802D6A9C(), sw, 1, 0xff);
+        }
+        *(f32*)(p + 0x398) = lbl_8053FB14;
+    } else {
+        *(s32*)(p + 0x248) = 0;
+        *(f32*)(p + 0x54) = 0.0f;
+        *(f32*)(p + 0x58) = 0.0f;
+        *(f32*)(p + 0x5c) = 0.0f;
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = -1;
+    *(f32*)(p + 0x254) = 0.0f;
+    *(f32*)(p + 0x258) = 0.0f;
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        *(s32*)(p + 0x388) = Actor_CreateByID(fn_801F856C(), 'ARIJ', *(s32*)(p + 0x4), p + 0xc, *(s32*)(p + 0x198), -1, -1);
+        char* a = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x388));
+        if (a != 0) {
+            switch (*(s32*)(p + 0x2ac)) {
+            case 0: {
+                s32 id = *(s32*)(p + 0x388);
+                if (id >= 0) {
+                    char* b = fn_801F666C(fn_801F856C(), id);
+                    if (b != 0) {
+                        fn_80212ECC(b);
+                    }
+                }
+                break;
+            }
+            case 3:
+                fn_80212F5C(a);
+                break;
+            }
+        }
+    }
+    if (*(s32*)(p + 0x2ac) == 4) {
+        if (*(u32*)(p + 0x230) & 0x4000) {
+            *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x394);
+        } else {
+            *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x390);
+        }
+        *(f32*)(p + 0x39c) -= lbl_8053FB00;
+        f32 mn = lbl_8053FB44;
+        if (*(f32*)(p + 0x39c) < mn) {
+            *(f32*)(p + 0x39c) = mn;
+        }
+        *(f32*)(p + 0x3a0) = lbl_8053FB00 * *(f32*)(p + 0x394) + lbl_8053FB00;
+    } else {
+        *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x394);
+        *(f32*)(p + 0x3a0) = 0.0f;
+    }
+    RusaRegistry_Register(fn_80212AC0(), *(s32*)(p + 0x198));
+    if (Rusa_IsActive(p)) {
+        f32 a, b, c;
+        c = *(f32*)(p + 0x3a8);
+        b = *(f32*)(p + 0x398);
+        a = *(f32*)(p + 0x54);
+        char* m = fn_801902C0();
+        s32 n = *(s32*)(m + 0x4a8);
+        if (n < 10) {
+            f32* e = (f32*)(m + n * 0x24 + 0x340);
+            e[0] = *(f32*)(p + 0xc);
+            e[1] = *(f32*)(p + 0x10);
+            e[2] = *(f32*)(p + 0x14);
+            e[3] = a;
+            e[4] = b;
+            e[5] = c;
+            *(s32*)(m + 0x4a8) = *(s32*)(m + 0x4a8) + 1;
+        }
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
