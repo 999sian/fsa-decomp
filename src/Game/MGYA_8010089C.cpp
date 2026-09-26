@@ -22,6 +22,11 @@ extern "C" void* fn_8010089C(void* this_, s16 freeFlag) {
 }
 
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
+extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern const char lbl_80463BA0[];
+extern u8* lbl_8053AF18;
+extern const f32 lbl_8053C154;
 extern const f32 lbl_8053C140;
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
 extern "C" void fn_8030C210(void*, void*);
@@ -87,7 +92,7 @@ public:
     s32 m234;
     s32 m238;
     s32 m23C;
-    s32 m240;
+    u32 m240;
     u8 m244;
     u8 m245;
     u8 m246;
@@ -216,6 +221,36 @@ extern "C" void fn_80100A90(MGYA* this_) {
         }
     }
     fn_8013CC50(this_->m04, &this_->mPos, 0x1da, 0, 1, 0, 0, 1, lbl_8053C140);
+}
+
+extern "C" void fn_80101B48(MGYA* this_) {
+    if (this_->m90 & 0x10000) {
+        DrawRec rec;
+        if (this_->m244 == 1) {
+            rec.ids[0xb] = 6;
+        } else if (this_->m244 != 0 && this_->m244 <= 5) {
+            rec.ids[0xb] = this_->m244;
+        }
+        if (this_->m240 != 0) {
+            fn_801F06F0(this_, lbl_80463BA0, this_->m246 + 0x155, &rec, -1, lbl_8053C140, lbl_8053C140);
+        }
+    } else {
+        this_->mPos.y = this_->m24C.y + this_->m258;
+        fn_801F06F0(this_, lbl_80463BA0, this_->m247 * 2 + this_->m246 + 0x311, 0, 0, lbl_8053C140, lbl_8053C140);
+        s32 st = this_->m230;
+        if (st == 5 || (u32)(st - 6) <= 1 || st == 8) {
+            s32 t = this_->m23C;
+            s32 m = t / 60;
+            lbl_8053AF18[0x30] = m;
+            lbl_8053AF18[0x31] = (t - m * 60) / lbl_8053C154;
+            s32 i;
+            lbl_8053AF18[0x32] |= 0x10;
+            for (i = 0; i < this_->m244; i++) {
+                lbl_8053AF18[0x32] |= (u8)(1 << i);
+                lbl_8053AF18[0x2c + i] = this_->m260[i];
+            }
+        }
+    }
 }
 
 extern "C" void fn_80101DF0(MGYA* this_) {
