@@ -1,0 +1,38 @@
+// Game TU 801BB618-801BD108 (FALL). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
+// Only functions that re-verify byte-exact are included; the rest remain asm.
+#include "types.h"
+
+extern "C" void __dt__5ActorFv(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_8022DD74(s32 id);
+extern void* lbl_804A3E44[];
+extern void* lbl_804A4808[];
+extern void* lbl_8049CC34[];
+
+extern "C" void* fn_801BCC40(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        char* p = (char*)this_;
+        *(void**)p = lbl_804A3E44;
+        if (*(u32*)(p + 0x230) & 0x8000) {
+            s32 id = *(s32*)(p + 0x2c4);
+            if (id >= 0) {
+                fn_8022DD74(id);
+            }
+        }
+        if (this_ != 0) {
+            *(void**)p = lbl_804A4808;
+            if (p + 0x270 != 0) {
+                if (p + 0x294 != 0) {
+                    *(void**)(p + 0x294) = lbl_8049CC34;
+                }
+            }
+            __dt__5ActorFv(this_, 0);
+        }
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

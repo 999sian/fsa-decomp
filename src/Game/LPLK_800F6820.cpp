@@ -1,0 +1,32 @@
+// LPLK_800F6820: .text 0x800F6820-0x800F7FCC (actor LPLK)
+// Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
+#include "types.h"
+
+// ---- from Game/fn_800F7C4C_dtor.cpp
+
+extern "C" void __dt__5ActorFv(void* this_, int flag);
+#ifndef dtor_80084580
+#define dtor_80084580(p) (::operator delete(p))
+#endif
+extern "C" s32 fn_8022DCD8(s32 player);
+extern "C" void fn_8022DD74(s32 player);
+extern void* lbl_8049C578[];
+
+extern "C" void* fn_800F7C4C(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_8049C578;
+        char* p = (char*)this_;
+        s32 player = *(s32*)(p + 0x238);
+        if ((u8)fn_8022DCD8(player) != 0) {
+            player = *(s32*)(p + 0x238);
+            fn_8022DD74(player);
+        }
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            dtor_80084580(this_);
+        }
+    }
+    return this_;
+}
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
