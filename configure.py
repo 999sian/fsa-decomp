@@ -1153,7 +1153,7 @@ config.libs = [
             Object(NonMatching, "game/ezge.cpp"),
             Object(NonMatching, "game/navi.cpp"),
             Object(NonMatching, "game/tu_8021F064.cpp"),
-            Object(NonMatching, "game/fbal.cpp"),
+            Object(Matching, "game/fbal.cpp"),
             Object(NonMatching, "game/znlj.cpp"),
             Object(NonMatching, "game/tu_80220F54.cpp"),
             Object(NonMatching, "game/tu_80221B44.cpp"),

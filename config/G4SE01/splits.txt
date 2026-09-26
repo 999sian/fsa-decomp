@@ -2464,6 +2464,8 @@ game/fbal.cpp:
 	extabindex  start:0x800182EC end:0x80018334
 	.text       start:0x802201D8 end:0x802205E0
 	.ctors      start:0x8045C194 end:0x8045C198
+	.bss        start:0x804CE960 end:0x804CE9CC
+	.sdata2     start:0x8053FE10 end:0x8053FE18
 
 game/znlj.cpp:
 	extab       start:0x8000A55C end:0x8000A5B0
