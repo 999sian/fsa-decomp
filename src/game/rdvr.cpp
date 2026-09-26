@@ -58,5 +58,29 @@ void fn_801831A8(void* thisPtr) {
 	*(u32*)(p + 0x230) = 4;
 }
 }
+extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, f32 sx, f32 sy, s32 a, s32 b);
+
+// RDVR draw (vtable slot 6)
+extern "C" void fn_80182914(char* this_) {
+    s32 flag = -1;
+    s32 state = *(s32*)(this_ + 0x230);
+    s32 frame = *(s32*)(this_ + 0x254);
+    if ((state == 0 || state == 1) && *(s32*)(this_ + 0x23c) == 0) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x258) != 0) {
+        flag = 0;
+    }
+    if (*(s32*)(this_ + 0x25c) == 1 && frame >= 3) {
+        frame += 5;
+    }
+    fn_801F06F0(this_, "enemy_gc_sob.bin", frame + 0x158, 1.0f, 1.0f, 0, flag);
+}
+
+extern void** lbl_8053AB10;
+
+extern "C" void fn_8018330C(u32* out) {
+    *out = ((u32*)lbl_8053AB10[0xb])[1];
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

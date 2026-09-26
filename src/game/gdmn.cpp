@@ -48,5 +48,14 @@ void fn_80183CC0(void* thisPtr) {
 	*(u32*)(p + 0x230) = 4;
 }
 }
+extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, f32 sx, f32 sy, s32 a, s32 b);
+
+// GDMN draw (vtable slot 6)
+extern "C" void fn_80183544(char* this_) {
+    s32 s = *(s32*)(this_ + 0x230);
+    if (s == 0) return;
+    if (s == 1) return;
+    fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x254) + 0x155, 1.0f, 1.0f, 0, -1);
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

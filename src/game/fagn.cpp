@@ -32,5 +32,11 @@ extern "C" void fn_80184A14(void* this_) {
     fn_80212AF0(registry, (char*)this_ + 0xc);
     fn_801F5790(this_);
 }
+extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, f32 sx, f32 sy, s32 a, s32 b);
+
+// FAGN draw (vtable slot 6)
+extern "C" void fn_801840A0(char* this_) {
+    fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x24c) + 0x145, 1.0f, 1.0f, 0, 7);
+}
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

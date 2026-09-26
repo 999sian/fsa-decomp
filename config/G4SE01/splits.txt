@@ -1946,18 +1946,24 @@ game/rdvr.cpp:
 	extabindex  start:0x800142B4 end:0x800142FC
 	.text       start:0x80182914 end:0x80183544
 	.ctors      start:0x8045BF9C end:0x8045BFA0
+	.rodata     start:0x80466E90 end:0x80466EA8
+	.sdata2     start:0x8053DEC8 end:0x8053DEE0
 
 game/gdmn.cpp:
 	extab       start:0x800075E4 end:0x80007614
 	extabindex  start:0x800142FC end:0x80014344
 	.text       start:0x80183544 end:0x80184040
 	.ctors      start:0x8045BFA0 end:0x8045BFA4
+	.rodata     start:0x80466EA8 end:0x80466EC0
+	.sdata2     start:0x8053DEE0 end:0x8053DF00
 
 game/fagn.cpp:
 	extab       start:0x80007614 end:0x80007644
 	extabindex  start:0x80014344 end:0x8001438C
 	.text       start:0x80184040 end:0x80184D64
 	.ctors      start:0x8045BFA4 end:0x8045BFA8
+	.rodata     start:0x80466EC0 end:0x80466ED8
+	.sdata2     start:0x8053DF00 end:0x8053DF40
 
 game/wnwn.cpp:
 	extab       start:0x80007644 end:0x8000766C
