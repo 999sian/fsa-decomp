@@ -2632,6 +2632,9 @@ Game/tu_80221B44.cpp:
 	extabindex  start:0x80018448 end:0x8001849C
 	.text       start:0x80221B44 end:0x802223FC
 	.ctors      start:0x8045C1A0 end:0x8045C1A4
+	.data       start:0x804A6AA8 end:0x804A6B70
+	.bss        start:0x804CEC60 end:0x804CECCC
+	.sdata2     start:0x8053FEA0 end:0x8053FEC0
 
 Game/zsla.cpp:
 	extab       start:0x8000A660 end:0x8000A6A0
