@@ -108,6 +108,58 @@ extern "C" void fn_8013BBE0(u8* this_) {
     }
 }
 
+
+extern "C" s32 fn_8030DFE8(void* subObj, void* matrix);
+extern "C" void fn_802FF3B0(void* p);
+extern "C" void fn_802FF2D8(void* p);
+extern "C" void fn_8013DA10(void* p);
+extern "C" void fn_80158F70(void* p);
+extern "C" void fn_8013D908(void* p);
+extern "C" void __sinit_tu_8013C5C8_cpp_8013D6E4(void* p);
+extern "C" void fn_8015F9C0(void* p);
+
+static inline bool isDrawMode(u8* this_) {
+    return this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6;
+}
+
+extern "C" void fn_8013B71C(u8* this_) {
+    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
+        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
+        j3dSys.drawInit();
+        j3dSys.reinitGX();
+        GXSetColorUpdate(GX_TRUE);
+        GXSetAlphaUpdate(GX_FALSE);
+        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk3;
+        (*(J3DDrawBuffer**)(this_ + 0x8))->draw();
+        j3dSys.reinitGX();
+        if (isEventMode() && lbl_8053AAF8->mode != 12) {
+            fn_802FF3B0(*(void**)(this_ + 0x20));
+        }
+        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
+        j3dSys.drawInit();
+        j3dSys.reinitGX();
+        GXSetColorUpdate(GX_TRUE);
+        GXSetAlphaUpdate(GX_FALSE);
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_NOOP);
+        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk4;
+        (*(J3DDrawBuffer**)(this_ + 0xc))->draw();
+        j3dSys.reinitGX();
+        if (isEventMode() && lbl_8053AAF8->mode != 12) {
+            fn_802FF2D8(*(void**)(this_ + 0x20));
+        }
+        fn_8013DA10(*(void**)(this_ + 0x28));
+        j3dSys.drawInit();
+        fn_80158F70(*(void**)(this_ + 0x2c));
+    }
+    fn_8013D908(*(void**)(this_ + 0x28));
+    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
+        __sinit_tu_8013C5C8_cpp_8013D6E4(*(void**)(this_ + 0x28));
+        if (isEventMode() || lbl_8053AAF8->mode == 12) {
+            fn_8015F9C0(*(void**)(this_ + 0x30));
+        }
+    }
+}
+
 extern "C" void fn_8013B538(void* this_) {
     if (isEventMode()) {
         fn_802FF0EC(*(void**)((char*)this_ + 0x20));
