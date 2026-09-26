@@ -2645,6 +2645,7 @@ game/zoom.cpp:
 	.text       start:0x802E694C end:0x802E6EC4
 	.ctors      start:0x8045C324 end:0x8045C328
 	.bss        start:0x804D4EA8 end:0x804D4F14
+	.sdata2     start:0x80541238 end:0x80541250
 
 game/tu_802E6EC4.cpp:
 	extab       start:0x8000D04C end:0x8000D064
