@@ -2407,6 +2407,8 @@ game/tu_802188B0.cpp:
 	extabindex  start:0x80017FD4 end:0x80018004
 	.text       start:0x802188B0 end:0x80218CF4
 	.ctors      start:0x8045C158 end:0x8045C15C
+	.bss        start:0x804CDA40 end:0x804CDAAC
+	.sdata2     start:0x8053FC48 end:0x8053FC58
 
 game/kepo.cpp:
 	extab       start:0x8000A328 end:0x8000A38C

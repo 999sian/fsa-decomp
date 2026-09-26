@@ -1144,7 +1144,7 @@ config.libs = [
             Object(Matching, "game/tu_802153A8.cpp"),
             Object(Matching, "game/tu_802157B8.cpp"),
             Object(NonMatching, "game/tu_80215A94.cpp"),
-            Object(NonMatching, "game/tu_802188B0.cpp"),
+            Object(Matching, "game/tu_802188B0.cpp"),
             Object(NonMatching, "game/kepo.cpp"),
             Object(NonMatching, "game/tu_8021A570.cpp"),
             Object(Matching, "game/tu_8021B904.cpp"),
