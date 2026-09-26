@@ -395,6 +395,8 @@ extern "C" void fn_8030AC4C(PadState* s) {
     lbl_8053AD30 = s;
 }
 
+static u8 lbl_805076E8[0x10];
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
