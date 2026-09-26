@@ -13,6 +13,11 @@ extern "C" void* fn_801F856C();
 extern "C" void fn_801F7AB8(void* base, s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
 extern f32 lbl_8053F4A4;
+extern f32 lbl_8053F480;
+extern void* lbl_804A51E4[];
+extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801CE4BC(void* this_);
+extern "C" void fn_801D0F40(void* this_);
 
 extern "C" void fn_801DE714(void* this_) {
     s32 state = *(s32*)((char*)this_ + 0x248);
@@ -47,6 +52,24 @@ extern "C" void fn_801DE9C0(void* this_) {
     fn_8021835C(this_);
 }
 
+extern "C" void fn_801DE9F4(void* this_) {
+    char* p = (char*)this_;
+    if (*(u16*)(p + 0x2ce) != 0) {
+        *(u16*)(p + 0x2ce) = *(u16*)(p + 0x2ce) - 1;
+    }
+    if (*(u16*)(p + 0x2ce) == 0) {
+        if (*(s32*)(p + 0x248) == 7) {
+            switch (*(s32*)(p + 0x278)) {
+            case 0xf:
+            case 0x10:
+                fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 2, 0);
+                return;
+            }
+        }
+        fn_801CE4BC(this_);
+    }
+}
+
 extern "C" bool fn_801E1D7C(void* thisObj) {
 	s32 v = *(s32*)((char*)thisObj + 0x248);
 	return v < 0xd && v >= 0xb;
@@ -57,6 +80,35 @@ extern "C" bool fn_801E1D9C(void* thisObj) {
 	bool result = false;
 	if (v == 2) { result = true; }
 	return result;
+}
+
+static inline u8 thnk_isIdleSub(void* this_) {
+    u8 r = 0;
+    switch (*(s32*)((char*)this_ + 0x278)) {
+    case 0: case 1: case 2:
+    case 0xd: case 0xe: case 0xf: case 0x10:
+        r = 1;
+    }
+    return r;
+}
+
+extern "C" u8 fn_801E1CF8(void* this_) {
+    char* p = (char*)this_;
+    u8 r = 0;
+    switch (*(s32*)(p + 0x248)) {
+    case 0:
+    case 0xf: case 0x10: case 0x11: case 0x12:
+        break;
+    default:
+        if (!(*(u32*)(p + 0x230) & 0x80000) && *(u16*)(p + 0x2cc) == 0 && thnk_isIdleSub(this_)) {
+            r = 1;
+        }
+    }
+    return r;
+}
+
+extern "C" u8 fn_801E1DB4(void* this_) {
+    return thnk_isIdleSub(this_);
 }
 
 extern "C" s32 fn_801E1DE8(void* this_) {
@@ -75,6 +127,25 @@ extern "C" void fn_801E2004(void* this_) {
     f32 v0 = *(f32*)(p + 0xc);
     *(f32*)(p + 0x2c4) = v0;
     *(f32*)(p + 0x2c8) = v1;
+}
+
+extern "C" void* fn_801E22A4(void* this_) {
+    char* p = (char*)this_;
+    fn_801D0F40(this_);
+    *(void**)p = lbl_804A51E4;
+    *(s32*)(p + 0x2a8) = -1;
+    *(s32*)(p + 0x2ac) = -1;
+    *(s32*)(p + 0x2b0) = -1;
+    *(s32*)(p + 0x2b4) = -1;
+    *(s32*)(p + 0x2b8) = -1;
+    *(s32*)(p + 0x2bc) = -1;
+    *(s32*)(p + 0x2c0) = 0;
+    *(f32*)(p + 0x2c4) = 0.0f;
+    *(f32*)(p + 0x2c8) = 0.0f;
+    *(u16*)(p + 0x2cc) = 0;
+    *(u16*)(p + 0x2ce) = 0;
+    *(s32*)(p + 0x2d0) = -1;
+    return this_;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
