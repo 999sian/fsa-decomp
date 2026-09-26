@@ -98,4 +98,100 @@ extern "C" void fn_803939E0(SCRE* this_) {
     }
 }
 
+// ---- fn_80393BF4: init
+struct SCRE_Save { u8 pad[0x1f4]; u16 arr[4]; };
+extern SCRE_Save lbl_80529DEC;
+extern u8* lbl_8053AAF8;
+extern "C" u8 fn_802DE814(void);
+extern "C" void fn_801F0D20(void* this_, s32 id);
+extern const f32 lbl_805431BC;
+extern const f32 lbl_805431C0;
+extern const f32 lbl_805431C8;
+extern const f32 lbl_805431CC;
+
+struct SCRE2 {
+    u8 pad00[0xc];
+    JGeometry::TVec3f mPos; // 0x0c
+    u8 pad18[0x3c - 0x18];
+    JGeometry::TVec3f mVel; // 0x3c
+    u8 pad48[0x90 - 0x48];
+    u32 m90;
+    u8 pad94[0x11c - 0x94];
+    u8 m11C;
+    u8 pad11D[0x230 - 0x11d];
+    s32 m230;
+    s32 mMode;   // 0x234
+    s32 mPlayer; // 0x238
+    s32 m23C;
+    s32 m240;
+    s32 m244;
+    f32 m248;
+    f32 m24C;
+
+    void snapToPlayer() {
+        f32 z, y;
+        z = fn_8023E724(mPlayer)->z;
+        y = fn_8023E724(mPlayer)->y - lbl_805431C4;
+        mPos.set(fn_8023E724(mPlayer)->x, y, z);
+    }
+    void snapToPlayer2() {
+        f32 z = fn_8023E724(mPlayer)->z;
+        f32 y = fn_8023E724(mPlayer)->y - lbl_805431C4;
+        mPos.x = fn_8023E724(mPlayer)->x;
+        mPos.y = y;
+        mPos.z = z;
+    }
+};
+
+extern "C" void fn_80393BF4(SCRE2* this_) {
+    this_->m23C = this_->m90 & 0xffff;
+    this_->mPlayer = (this_->m90 >> 16) & 0xff;
+    this_->mMode = this_->m90 >> 24;
+    this_->m248 = this_->mPos.x - fn_8023E724(this_->mPlayer)->x;
+    this_->m24C = this_->mPos.y - fn_8023E724(this_->mPlayer)->y - lbl_805431C8;
+    u16* tbl = lbl_80529DEC.arr;
+    this_->m240 = this_->m23C;
+    this_->m244 = tbl[this_->mPlayer];
+    s32 mode = this_->mMode;
+    if (mode == 0 || mode == 4) {
+        if (lbl_8053AAF8[0x7f] == 0 || fn_802DE814()) {
+            this_->m11C = 0;
+        }
+        if (this_->m23C == 0) {
+            this_->m11C = 0;
+        } else if (this_->m23C >= 100) {
+            this_->m23C = 100;
+        }
+        if (this_->mMode == 0) {
+            this_->mVel.set(lbl_805431BC, lbl_805431CC, lbl_805431BC);
+        } else {
+            this_->mVel.set(lbl_805431BC, lbl_805431BC, lbl_805431BC);
+        }
+        this_->m230 = 0x5a;
+        tbl[this_->mPlayer] = this_->m240;
+    } else if (mode == 1) {
+        this_->mVel.set(lbl_805431BC, lbl_805431C0, lbl_805431BC);
+        this_->m230 = 0x5a;
+        fn_801F0D20(this_, 0x41);
+    } else if (mode == 2) {
+        if (this_->m23C >= 12) {
+            this_->m11C = 0;
+        }
+        this_->mVel.set(lbl_805431BC, lbl_805431CC, lbl_805431BC);
+        this_->m230 = 0x5a;
+    } else if (mode == 3) {
+        this_->m230 = 0x257;
+        this_->snapToPlayer2();
+    } else if (mode == 5) {
+        this_->m230 = 0x1a3;
+        this_->snapToPlayer();
+    } else if (mode == 6) {
+        this_->m230 = 0x12b;
+        this_->snapToPlayer();
+    } else if (mode == 7) {
+        this_->m230 = 0xb3;
+        this_->snapToPlayer();
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
