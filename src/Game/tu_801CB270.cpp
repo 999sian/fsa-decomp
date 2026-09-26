@@ -1,6 +1,7 @@
 // Game TU 801CB270-801CDC8C (unnamed). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/ResTIMG.h"
 #include "JSystem/JGeometry.h"
 extern "C" void* fn_8022F3DC(void* p);
 extern "C" s32 fn_80236228(void* p);
@@ -692,4 +693,34 @@ extern "C" s32 fn_801CD580(s32 exclude) {
     }
     return list[fn_801CD664(n)];
 }
+struct CB270ResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* get(u32 type, const char* name);
+};
+extern const f32 lbl_8053EF58;
+extern const f32 lbl_8053EF5C;
+
+extern "C" f32 fn_801CB270(const char* name, GXTexObj* tex, GXTlutObj* tlut) {
+    ResTIMG* img = (ResTIMG*)(*(CB270ResMgr**)(lbl_8053AAF8 + 0xa4))->get('TIMG', name);
+    u32 mip = img->mIsMIPmapEnabled != 0;
+    void* data = (u8*)img + (img->mImageDataOffset != 0 ? img->mImageDataOffset : 0x20);
+    if (img->mPaletteFormat != 0) {
+        GXInitTexObjCI(tex, data, img->mSizeX, img->mSizeY, (GXCITexFmt)img->mTextureFormat,
+                       (GXTexWrapMode)img->mWrapS, (GXTexWrapMode)img->mWrapT, mip, 0);
+        if (tlut != 0) {
+            GXInitTlutObj(tlut, (u8*)img + img->mPaletteOffset, (GXTlutFmt)img->mLutFormat, (u16)img->mPaletteEntryCount);
+        }
+    } else {
+        GXInitTexObj(tex, data, img->mSizeX, img->mSizeY, (GXTexFmt)img->mTextureFormat,
+                     (GXTexWrapMode)img->mWrapS, (GXTexWrapMode)img->mWrapT, mip);
+    }
+    GXInitTexObjLOD(tex, (GXTexFilter)img->mMinFilterType, (GXTexFilter)img->mMagFilterType,
+                    lbl_8053EF58 * img->mMinLOD, lbl_8053EF58 * img->mMaxLOD, lbl_8053EF5C * img->mLODBias,
+                    (GXBool)img->mIsBiasClamp, (GXBool)img->mDoEdgeLOD, (GXAnisotropy)img->mIsMaxAnisotropy);
+    return (f32)img->mSizeY * (lbl_8053EF60 / (f32)img->mSizeX);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
