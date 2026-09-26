@@ -213,7 +213,7 @@ extern "C" void* fn_801DBEF4(void* this_, s16 freeFlag) {
 extern const f32 lbl_8053F33C;
 extern const f32 lbl_8053F2F4;
 extern const f32 lbl_8053F2F8;
-extern "C" void fn_801DB9CC(void* this_);
+extern "C" void fn_801DB9CC(char* p);
 extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
 extern "C" void fn_801D0F40(void* this_);
 extern "C" void fn_801CD950(f32* v, f32 target, f32 step);
@@ -412,5 +412,94 @@ extern "C" void fn_801DB6C8(char* p) {
         *(s16*)(p + 0x2dc) += *(s16*)(p + 0x2de);
     }
 }
+
+extern const f32 lbl_8053F308;
+extern const f32 lbl_8053F30C;
+extern const f32 lbl_8053F310;
+extern const f32 lbl_8053F314;
+extern const f32 lbl_8053F318;
+extern const f32 lbl_8053F31C;
+
+#pragma fp_contract off
+static inline f32 ichlSq(const IchlV2& v) {
+    return v.x * v.x + v.y * v.y;
+}
+static inline f32 ichlLen(const IchlV2& v) {
+    return JGeometry::TUtilf::sqrt(ichlSq(v));
+}
+static inline bool ichlIsZero(const IchlV2& v) {
+    bool r = ichlSq(v) <= JGeometry::TUtilf::epsilon();
+    return r;
+}
+
+extern "C" void fn_801DB9CC(char* p) {
+    if (fn_801CD664(2) == 0) {
+        *(u32*)(p + 0x230) &= ~0x2000;
+    } else {
+        *(u32*)(p + 0x230) |= 0x2000;
+    }
+    *(f32*)(p + 0x2d8) = fn_801CD664(0x1f) + 0x1e;
+    *(s16*)(p + 0x2de) = 0;
+    *(s16*)(p + 0x2dc) = fn_801CD664(0x10000);
+    if (*(s32*)(p + 0x16c) == -1) {
+        IchlV2 v = *(IchlV2*)(p + 0x2b4);
+        bool z = ichlIsZero(v);
+        if (!z) {
+            f32 rx, ry;
+            if (v.x < lbl_8053F2E4) {
+                *(u32*)(p + 0x230) |= 0x2000;
+                f32 c = JMath::sincosTable_.mTable[0x600].second;
+                f32 sn = JMath::sincosTable_.mTable[0x600].first;
+                ry = v.x * sn + v.y * c;
+                rx = v.x * c - v.y * sn;
+            } else {
+                *(u32*)(p + 0x230) &= ~0x2000;
+                f32 c = JMath::sincosTable_.mTable[0x200].second;
+                f32 sn = JMath::sincosTable_.mTable[0x200].first;
+                ry = v.x * sn + v.y * c;
+                rx = v.x * c - v.y * sn;
+            }
+            if (fn_801CD664(2) == 0) {
+                *(u32*)(p + 0x230) ^= 0x2000;
+                rx = -rx;
+                ry = -ry;
+            }
+            *(s16*)(p + 0x2dc) = JMAAtan2Radian(rx, ry) * lbl_8053F308;
+            *(s16*)(p + 0x2de) = lbl_8053F30C * (lbl_8053F310 * ichlLen(*(IchlV2*)(p + 0x2b4)));
+        }
+    }
+    s16 ang = *(s16*)(p + 0x2dc);
+    f32 r = *(f32*)(p + 0x2d4);
+    *(f32*)(p + 0x2bc) = *(f32*)(p + 0xc);
+    *(f32*)(p + 0x2c0) = *(f32*)(p + 0x10);
+    *(f32*)(p + 0x2bc) += -JMath::sincosTable_.mTable[(u16)ang >> 5].first * r;
+    *(f32*)(p + 0x2c0) += -JMath::sincosTable_.mTable[(u16)ang >> 5].second * r;
+    *(f32*)(p + 0x2c4) = *(f32*)(p + 0x2bc);
+    *(f32*)(p + 0x2c8) = *(f32*)(p + 0x2c0);
+    if (*(s32*)(p + 0x16c) == -1) {
+        IchlV2 tmp;
+        if (fn_801DACAC(fn_801DAC6C(), &tmp)) {
+            *(f32*)(p + 0x2cc) = *(f32*)(p + 0x2c4);
+            *(f32*)(p + 0x2d0) = *(f32*)(p + 0x2c8);
+            *(f32*)(p + 0x2cc) -= tmp.x;
+            *(f32*)(p + 0x2d0) -= tmp.y;
+        }
+    }
+    switch (fn_801CD664(3)) {
+    case 0:
+        *(f32*)(p + 0x2b0) = lbl_8053F314;
+        break;
+    case 1:
+        *(f32*)(p + 0x2b0) = lbl_8053F318;
+        break;
+    case 2:
+        *(f32*)(p + 0x2b0) = lbl_8053F31C;
+        break;
+    default:
+        *(f32*)(p + 0x2b0) = lbl_8053F2E4;
+        break;
+    }
+}
+#pragma fp_contract on
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
