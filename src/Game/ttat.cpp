@@ -144,4 +144,76 @@ extern "C" void* fn_801AA464(char* this_, s16 freeFlag) {
     return this_;
 }
 
+#include "Game/ItemBase.h"
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_801EFD34(void* this_, void* res, void* rec, f32 a, f32 b, f32 c, s32 d);
+extern const f32 lbl_8053E6E0;
+extern const f32 lbl_8053E6E4;
+extern const f32 lbl_8053E6E8;
+extern char* lbl_804A2F2C[];
+
+struct TtatResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* get(u32 type, const char* name);
+};
+
+static inline void ttatRotScale(f32 m[3][4], f32 rx, const f32* pang, f32 rz, const f32* ps) {
+    f32 ry = *pang / lbl_8053E6E4;
+    f32 sz, sy, sx, cz, cy, cx;
+    sx = sin(rx);
+    sy = sin(ry);
+    sz = sin(rz);
+    cx = cos(rx);
+    cy = cos(ry);
+    cz = cos(rz);
+    f32 cxcz = cx * cz;
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    f32 s = *ps;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
+
+extern "C" void fn_801A90D4(void* this_) {
+    u8* t = (u8*)this_;
+    DrawRec r;
+    f32 m[3][4];
+    m[0][3] = lbl_8053E6E0;
+    m[1][3] = lbl_8053E6E0;
+    m[2][3] = lbl_8053E6E0;
+    r.b1d = 1;
+    ttatRotScale(m, lbl_8053E6E0, (f32*)(t + 0x2b4), lbl_8053E6E0, &lbl_8053E6E8);
+    r.w18 = m;
+    void* res = (*(TtatResMgr**)(lbl_8053AAF8 + 0xa4))->get('TIMG', lbl_804A2F2C[0x20]);
+    fn_801EFD34(this_, res, &r, lbl_8053E6E0, lbl_8053E6E0, lbl_8053E6E0, -1);
+}
+
+extern "C" void fn_801A9374(void* this_) {
+    u8* t = (u8*)this_;
+    DrawRec r;
+    f32 m[3][4];
+    m[0][3] = lbl_8053E6E0;
+    m[1][3] = lbl_8053E6E0;
+    m[2][3] = lbl_8053E6E0;
+    r.b1d = 2;
+    ttatRotScale(m, lbl_8053E6E0, (f32*)(t + 0x2b4), lbl_8053E6E0, &lbl_8053E6E8);
+    r.w18 = m;
+    void* res = (*(TtatResMgr**)(lbl_8053AAF8 + 0xa4))->get('TIMG', lbl_804A2F2C[*(s32*)(t + 0x24c)]);
+    fn_801EFD34(this_, res, &r, lbl_8053E6E0, lbl_8053E6E0, lbl_8053E6E0, -1);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
