@@ -365,12 +365,27 @@ extern "C" f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t) {
 
 extern "C" void fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
-struct EffOwner {
-    void fn_801CB4A4(void* pos, s32 c, s32 d);
-    void fn_801CB538(void* pos, s32 c, s32 d);
-    void fn_801CB5CC(void* pos, s32 c, s32 d);
-    void fn_801CB688(void* pos, s32 c, s32 d);
-};
+extern "C" void fn_801CB4A4(void* actor, void* pos, s32 c, s32 d) {
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x473, c, d + 1, 0, 0, 1);
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x474, c, d + 1, 0, 0, 1);
+}
+
+extern "C" void fn_801CB538(void* actor, void* pos, s32 c, s32 d) {
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x117, c, d + 1, 0, 0, 1);
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x118, c, d + 1, 0, 0, 1);
+}
+
+extern "C" void fn_801CB5CC(void* actor, void* pos, s32 c, s32 d) {
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0xff, c, d + 1, 0, 0, 1);
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x100, c, d + 1, 0, 0, 1);
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x101, c, d + 1, 0, 0, 1);
+}
+
+extern "C" void fn_801CB688(void* actor, void* pos, s32 c, s32 d) {
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x24a, c, d + 1, 0, 0, 1);
+    fn_8013CC50(lbl_8053EF60, (u32)actor, pos, 0x24b, c, d + 1, 0, 0, 1);
+}
+
 
 extern "C" s16 fn_801CB7CC(s16 angle) {
     u16 x = angle;
