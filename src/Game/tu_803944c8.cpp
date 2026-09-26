@@ -3,6 +3,8 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include <string.h>
+#include <stdio.h>
 
 // String scratch buffers (snprintf/strcat targets).
 static char lbl_8050E518[0x10];
@@ -62,6 +64,84 @@ extern "C" void fn_803944EC(MsgWindow* w, f32 s) {
     setTBFontSize((J2DTextBox*)w->screen->search('Tm02'), fs);
     ((J2DTextBox*)w->screen->search('Tm02'))->setLineSpace(w->lineSpace * s);
     w->m14->setScale(s, w->fontW);
+}
+
+struct MsgColor {
+    u8 r, g, b, a;
+};
+
+struct MsgDraw {
+    u8 pad0[8];
+    void* control;              // 0x08
+    u8 padC[0x10 - 0xc];
+    u8* m10;                    // 0x10
+    u8 pad14[0x2c - 0x14];
+    J2DScreen* screen;          // 0x2c
+    u8 pad30[0x9c - 0x30];
+    f32 y9c;                    // 0x9c
+    u8 padA0[0xd8 - 0xa0];
+    f32 xd8;                    // 0xd8
+    u8 paddc[0xe0 - 0xdc];
+    f32 xe0;                    // 0xe0
+    f32 ye4;                    // 0xe4
+    u8 pade8[0x154 - 0xe8];
+    u32 col1;                   // 0x154
+    u32 col2;                   // 0x158
+    u8 pad15c[0x164 - 0x15c];
+    s32 m164;                   // 0x164
+    u8 pad168[0x170 - 0x168];
+    s32 len;                    // 0x170
+    u8 pad174[0x1aa - 0x174];
+    u8 hidden;                  // 0x1aa
+    char text1[0x100];          // 0x1ab
+    char text2[0x100];          // 0x2ab
+    char suffix[5];             // 0x3ab
+    u8 dirty;                   // 0x3b0
+};
+
+extern "C" void render__Q28JMessage8TControlFv(void* p);
+extern "C" void fn_8013B490(void* p);
+extern void* lbl_8053AB10;
+extern u8 lbl_8050DB0C[];
+
+// NONMATCHING (98.4%): float operand order and the clamp temp register.
+extern "C" void fn_80394690(MsgDraw* w) {
+    if (w->dirty) {
+        render__Q28JMessage8TControlFv(w->control);
+        w->dirty = 0;
+    }
+    f32 off = 60.0f + 0.5f * ((3.0f - (f32)w->m164) * ((J2DTextBox*)w->screen->search('Tm01'))->mLineSpacing);
+    if (w->hidden == 0) {
+        char buf1[0x100];
+        char buf2[0x100];
+        char tmp[0x20];
+        strcpy(buf1, w->text1);
+        strcpy(buf2, w->text2);
+        if (strlen(w->suffix) != 0) {
+            s32 cur = *(s32*)(w->m10 + 0x4c);
+            s32 max = *(s16*)(lbl_8050DB0C + 0x4c);
+            buf1[w->len] = 0;
+            buf2[w->len] = 0;
+            s32 c2 = cur;
+            if (cur > max) {
+                c2 = 0;
+            }
+            cur = c2;
+            u8 alpha = (u8)(255.0f * (f32)(max - cur) / (f32)max);
+            snprintf(tmp, 0x1e, "\x1b" "CC[%08x]\x1b" "GM[0]", (w->col1 & 0xffffff00) | alpha);
+            strcat(buf1, tmp);
+            strcat(buf1, w->suffix);
+            snprintf(tmp, 0x1e, "\x1b" "CC[%08x]\x1b" "GM[0]", (w->col2 & 0xffffff00) | alpha);
+            strcat(buf2, tmp);
+            strcat(buf2, w->suffix);
+        }
+        strcpy(((J2DTextBox*)w->screen->search('Tm01'))->getStringPtr(), buf1);
+        strcpy(((J2DTextBox*)w->screen->search('Tm02'))->getStringPtr(), buf2);
+        ((J2DTextBox*)w->screen->search('Tm01'))->move(w->xd8, *(f32*)(lbl_8050DB0C + 0x3c) + (w->y9c + off));
+        ((J2DTextBox*)w->screen->search('Tm02'))->move(w->xd8 + w->xe0, w->ye4 + (*(f32*)(lbl_8050DB0C + 0x3c) + (w->y9c + off)));
+        fn_8013B490(lbl_8053AB10);
+        w->screen->draw(0.0f, 0.0f, *(const J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
+    }
 }
 
 // ---- from src/Game/fn_80396F94.cpp ----
