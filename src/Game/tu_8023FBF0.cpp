@@ -66,6 +66,27 @@ struct PlayerTrail {
     u8 onGround[0x31];
 };
 
+extern "C" bool fn_80251BFC(char*, s32);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void*, s32);
+
+inline char* getActor(s32 id) { return (char*)fn_801F666C(fn_801F856C(), id); }
+
+inline bool changeState(char* p, s32 st, u8 flag) {
+    if (!fn_80251BFC(p, st)) {
+        return false;
+    }
+    S32(p, 0x1244) = st;
+    U8(p, 0x124c) = 1;
+    if (flag) {
+        U8(p, 0x124d) = 1;
+    }
+    if (S32(p, 0xd60) < 0 && U8(p, 0xcfe) == 1 && S32(p, 0x1244) != 0) {
+        U8(p, 0xcfe) = 0;
+    }
+    return true;
+}
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -83,6 +104,13 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+bool fn_8025F500(char*);
+void* fn_801F856C(void);
+s32 fn_801F78F4(void*, u32, s32);
+void fn_802C1778(void*);
+void fn_802C1674(void*);
+f32* fn_8023E724(s32);
+void fn_802362C4(s32);
 bool fn_80236B50(s32);
 bool fn_80251BFC(char*, s32);
 void fn_80272160(char*, s32, void*, s32);
@@ -441,6 +469,36 @@ void fn_80241E28(char* p, s32 a, const JGeometry::TVec3<f32>& v) {
     fn_8030B110(PTR(p, 0xbec), a, v);
 }
 char* fn_802422C4(char* p) { return (char*)PTR(p, 0xbf0) + 0x14; }
+void fn_80242560(char* p) {
+    if (fn_8025F500(p) && S32(p, 0xd6c) == 'KEY0') {
+        void* a = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+        if (a != NULL) {
+            fn_802C1778(a);
+        }
+    }
+    s32 id = -1;
+    for (;;) {
+        id = fn_801F78F4(fn_801F856C(), 'KEY0', id);
+        if (id < 0) {
+            break;
+        }
+        void* a = getActor(id);
+        if (a != NULL) {
+            fn_802C1674(a);
+            fn_802C1778(a);
+        }
+    }
+    S32(p, 0x3b0) = 3;
+}
+BOOL fn_80242624(char* p, const JGeometry::TVec3<f32>& v) {
+    if (changeState(p, 0x4d, 1)) {
+        F32(p, 0x374) = v.x;
+        F32(p, 0x378) = v.y;
+        F32(p, 0x37c) = v.z;
+        return 1;
+    }
+    return 0;
+}
 s32 fn_802426E0(char* p, s32 v) {
     if (S32(p, 0xd8c) != v) {
         return 0;
@@ -564,6 +622,19 @@ void fn_80248DB8(char* p) {
     S32(p, 0x1218) = 3;
 }
 void fn_80248DCC(char* p) { S32(p, 0x1238) = 0xb4; }
+void fn_80248DD8(char* p) {
+    U8(p, 0x1214) = 1;
+    if (S32(p, 0xd60) >= 0) {
+        U8(p, 0x1215) = 1;
+        f32* v = fn_8023E724(S32(p, 0xd60));
+        F32(p, 0x8) = v[0];
+        F32(p, 0xc) = v[1];
+        F32(p, 0x10) = v[2];
+        changeState(p, 3, 0);
+    }
+    S32(p, 0x1224) = 0;
+    U8(p, 0x1217) = 0;
+}
 void fn_80248FF0(char* p) {
     void* base = fn_801F856C();
     char* found = (char*)fn_801F666C(base, S32(p, 0x1230));
@@ -662,6 +733,26 @@ s32 fn_8024D98C(char* p) {
     U8(p, 0x455) = 1;
     return 1;
 }
+BOOL fn_8024D99C(char* p, const JGeometry::TVec3<f32>& v, u8 f) {
+    *(JGeometry::TVec3<f32>*)(p + 0x32c) = v;
+    U16(p, 0x452)++;
+    if (U16(p, 0x452) >= 0x18) {
+        U16(p, 0x452) = 0;
+    }
+    if (S32(p, 0x3dc) == 0) {
+        U16(p, 0x450) = 0;
+    } else if (S32(p, 0x3dc) == 1) {
+        U16(p, 0x450) = 8;
+    } else if (S32(p, 0x3dc) == 2) {
+        U16(p, 0x450) = 0x10;
+    } else {
+        U16(p, 0x450) = 0x18;
+    }
+    U16(p, 0x450) += (u8)(U16(p, 0x452) / 3);
+    U8(p, 0xca2) = f;
+    fn_8024B2E0(p);
+    return 1;
+}
 char* fn_8024E018(char* p) { return p + 0x2b8; }
 void fn_8024E020(char* p, const f32* v) {
     F32(p, 0x2b8) = v[0];
@@ -719,6 +810,41 @@ void fn_8024ECCC(char* p, s32 n) {
         S32(p, 0xc04) = 9999;
     } else if (S32(p, 0xc04) < -5000) {
         S32(p, 0xc04) = -5000;
+    }
+    if (n == 1) {
+        fn_802702C4(p);
+    }
+}
+void fn_8024ED4C(char* p, s32 n) {
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        fn_802362C4(linked);
+        return;
+    }
+    s32 old = S32(p, 0xc04);
+    if (old > 9999) {
+        for (;;) {}
+    }
+    S32(p, 0xc04) = old + 1;
+    if (S32(p, 0xc04) == old) {
+        for (;;) {}
+    }
+    S32(p, 0xc04) = old;
+    if (n >= 0) {
+        S32(p, 0xc04) += n;
+        if (S32(p, 0xc04) > 9999) {
+            S32(p, 0xc04) = 9999;
+        }
+    } else {
+        s32 cur = S32(p, 0xc04);
+        if (cur < 0) {
+            return;
+        }
+        if (cur + n >= 0) {
+            S32(p, 0xc04) = cur + n;
+        } else {
+            S32(p, 0xc04) = 0;
+        }
     }
     if (n == 1) {
         fn_802702C4(p);
