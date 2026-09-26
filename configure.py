@@ -1285,7 +1285,7 @@ config.libs = [
             Object(NonMatching, "Game/swdl.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/tfl2.cpp", extra_cflags=["-common on"]),
             Object(Matching, "Game/dmyk.cpp", extra_cflags=["-common on"]),
-            Object(NonMatching, "Game/tbgn.cpp", extra_cflags=["-common on"]),
+            Object(Matching, "Game/tbgn.cpp", extra_cflags=["-common on"]),
             Object(Matching, "Game/tbo2.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/gsck.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/tu_80301CD0.cpp"),

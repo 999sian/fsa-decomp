@@ -4,7 +4,7 @@
 
 // ---- Tbgn_dtor_802F3F7C.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+void operator delete(void* p);
 extern void* lbl_804AA6F8[];
 
 extern "C" void* fn_802F3F7C(void* this_, short how) {
@@ -12,7 +12,7 @@ extern "C" void* fn_802F3F7C(void* this_, short how) {
         *(void**)this_ = lbl_804AA6F8;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -42,13 +42,12 @@ extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, s32 owner, void* posPtr,
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D76A8(void* rec, u32 id);
 
-// NONMATCHING (98.8%): retail allocates sw=r31, this=r30, tile=r29.
 extern "C" void fn_802F3FE4(char* p) {
-    u32 sw = *(u32*)(p + 0x90);
     u32 tile;
     s32 y, x;
     s32 r, room, y2, x2;
     TbgnVec pos;
+    u32 sw = *(u32*)(p + 0x90);
     *(s32*)(p + 0x230) = 0;
     for (y = 0; y < 32; y++) {
         for (x = 0; x < 32; x++) {
