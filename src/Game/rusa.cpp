@@ -43,7 +43,6 @@ extern const f32 lbl_8053FAFC;
 extern const f32 lbl_8053FB00;
 extern const f32 lbl_8053FB14;
 extern void* lbl_804A6270[];
-extern "C" void fn_802110A8(char* p);
 extern "C" void fn_801D0F40(char* p);
 extern "C" void fn_800FE3EC(char* a, u8 b, JGeometry::TVec3f pos, void* c);
 
@@ -63,6 +62,7 @@ extern "C" BOOL fn_80211000(char* p, const f32* v) {
     return r;
 }
 
+extern "C" void fn_802110A8(char* p);
 extern "C" void fn_80211078(char* p) {
     f32 z = lbl_8053FAF8;
     *(f32*)(p + 0x3c) = z;
@@ -304,6 +304,81 @@ extern "C" void fn_80211C94(char* p) {
             }
         }
         break;
+    }
+}
+
+extern const f32 lbl_8053FB08;
+extern "C" void fn_800FDEA0(char* a, JGeometry::TVec3f pos, f32 s, void* vel, s32 b, s32 c, s32 d);
+extern "C" u8 fn_801D0B44(char* p, s32 i);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32 idx);
+extern "C" void fn_801D00B4(char* p, s32 id, JGeometry::TVec2<f32>* out, f32 s);
+
+static inline u8 Rusa_Contains(char* p, const JGeometry::TVec3f* v) {
+    u8 r = 0;
+    if (v->z <= lbl_8053FAF8 && *(s32*)(p + 0x248) != 0) {
+        f32 rad = lbl_8053FAFC * (lbl_8053FB00 * *(f32*)(p + 0x54));
+        f32 dx = v->x - *(f32*)(p + 0xc);
+        f32 dy = v->y - *(f32*)(p + 0x10);
+        f32 dx2 = dx * dx;
+        f32 dy2 = dy * dy;
+        f32 r2 = rad * rad;
+        if (dx2 + dy2 <= r2) {
+            r = 1;
+        }
+    }
+    return r;
+}
+
+// near-match (99%): loop counter init is li instead of mr
+extern "C" void fn_802110A8(char* p) {
+    if (!(*(u32*)(p + 0x230) & 0x8000) || *(s32*)(p + 0x248) == 0) {
+        return;
+    }
+    if (*(u8*)(p + 0x2bc) != 0) {
+        fn_800FDEA0(p + 0x2c0, *(JGeometry::TVec3f*)(p + 0xc), lbl_8053FB14, p + 0x3c, 0, 0, 0x200);
+    } else {
+        s32 i = 0;
+        u8 found = i;
+        for (i = found; i < 4; i++) {
+            if (fn_801D0B44(p, i) && Rusa_Contains(p, fn_8023E724(i))) {
+                found = 1;
+                break;
+            }
+        }
+        if (found) {
+            *(s32*)(p + 0x3ac) = -1;
+            *(u8*)(p + 0x3b0) = 0;
+            return;
+        }
+        if (*(u8*)(p + 0x3b0) != 0) {
+            (*(u8*)(p + 0x3b0))--;
+        }
+        s32 id = fn_801D05F8(p, p + 0xc, lbl_8053FAF8);
+        s32 cur = *(s32*)(p + 0x3ac);
+        if (id != cur) {
+            if (id < 0) {
+                *(s32*)(p + 0x3ac) = -1;
+                *(u8*)(p + 0x3b0) = 0;
+            } else if (cur < 0) {
+                *(s32*)(p + 0x3ac) = id;
+                *(u8*)(p + 0x3b0) = 0x2d;
+            } else if (*(u8*)(p + 0x3b0) == 0) {
+                *(s32*)(p + 0x3ac) = id;
+                *(u8*)(p + 0x3b0) = 0x2d;
+            }
+        }
+        if (*(s32*)(p + 0x3ac) >= 0) {
+            JGeometry::TVec2<f32> v;
+            fn_801D00B4(p, *(s32*)(p + 0x3ac), &v, lbl_8053FB14);
+            *(f32*)(p + 0x3c) = v.x;
+            *(f32*)(p + 0x40) = v.y;
+        }
+    }
+    if (*(s32*)(p + 0x38c) >= 0 && ((JGeometry::TVec3f*)(p + 0x3c))->isZero() == false) {
+        char* a = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x38c));
+        if (a != 0) {
+            *(JGeometry::TVec3f*)(a + 0xc) = *(JGeometry::TVec3f*)(a + 0xc) + *(JGeometry::TVec3f*)(p + 0x3c);
+        }
     }
 }
 
