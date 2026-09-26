@@ -424,6 +424,69 @@ extern "C" void fn_803AD220(Menu_Slide* p) {
     }
 }
 
+#define MOVE_TO(off, yoff, extra) { f32 x = PANE(off)->getBounds()->i.x; PANE(off)->move(x, PY(yoff) extra); }
+
+extern "C" void fn_803AD894(Menu_Slide* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            if (PANE(0x94)->isVisible()) {
+                PANE(0x94)->hide();
+                MOVE_TO(0x94, 0x400, );
+            }
+            if (PANE(0xa0)->isVisible()) {
+                PANE(0xa0)->hide();
+                MOVE_TO(0xa0, 0x410, );
+            }
+            PANE(0x9c)->show();
+            MOVE_TO(0x9c, 0x404, );
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c4 = 0;
+        p->m4c6 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        p->m4c1 = 0x17;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        if (PANE(0x94)->isVisible()) {
+            MOVE_TO(0x94, 0x400, + off);
+        }
+        if (PANE(0xa0)->isVisible()) {
+            MOVE_TO(0xa0, 0x410, + off);
+        }
+        if (p->timer == 0x8a) {
+            if (PANE(0x94)->isVisible()) {
+                PANE(0x94)->hide();
+            }
+            if (PANE(0xa0)->isVisible()) {
+                PANE(0xa0)->hide();
+            }
+            PANE(0x9c)->show();
+            MOVE_TO(0x9c, 0x404, + off);
+        }
+    } else if (t >= 0x80) {
+        f32 x = PANE(0x9c)->getBounds()->i.x;
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        PANE(0x9c)->move(x, PY(0x404) + off);
+        if (p->timer == 0x80) {
+            if (PANE(0x94)->isVisible()) {
+                MOVE_TO(0x94, 0x400, );
+            }
+            if (PANE(0xa0)->isVisible()) {
+                MOVE_TO(0xa0, 0x410, );
+            }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
+
 extern "C" void fn_803ADC0C(Menu_Slide* p) {
     p->timer--;
     if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
