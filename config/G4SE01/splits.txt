@@ -2893,6 +2893,7 @@ Game/tu_801E4A18.cpp:
 	.text       start:0x801E4A18 end:0x801E4D54
 	.ctors      start:0x8045C0A8 end:0x8045C0AC
 	.bss        start:0x804C9C58 end:0x804C9CC4
+	.sdata2     start:0x8053F568 end:0x8053F578
 
 Game/tu_801E4D54.cpp:
 	extab       start:0x80008A60 end:0x80008A80
