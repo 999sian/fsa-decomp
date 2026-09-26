@@ -32,7 +32,7 @@ void fn_801A360C(void) {}
 struct EnbzRandom {
     u32 seed;
     u32 get() {
-        seed = seed * 0x19660d + 0x3c6ef35f;
+        seed = 0x19660d * seed + 0x3c6ef35f;
         return seed;
     }
     f32 get_ufloat_1() {
@@ -105,7 +105,8 @@ extern "C" void fn_801A3610(ENBZ* this_) {
                         pos.x = pos.x + 16.0f * i;
                     }
                     pos.x += 8.0f - 16.0f * lbl_8053AAF8->rnd.get_ufloat_1();
-                    pos.y += 8.0f - 16.0f * lbl_8053AAF8->rnd.get_ufloat_1();
+                    EnbzGame* g = lbl_8053AAF8;
+                    pos.y += 8.0f - 16.0f * g->rnd.get_ufloat_1();
                     this_->handles[i] = Actor_CreateByID(fn_801F856C(), id, this_->m_4, &pos, arg, -1, -1);
                     if (this_->handles[i] != 0) {
                         Actor_CreateByID(fn_801F856C(), 'HBMB', this_->m_4, &pos, 0xb, -1, -1);
