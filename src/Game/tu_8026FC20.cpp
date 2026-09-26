@@ -42,6 +42,9 @@ bool fn_802575B8(void*, void*, void*, void*);
 bool fn_802574CC(void*, void*, void*, void*);
 bool fn_802570BC(void*, void*, void*, void*);
 u8 fn_80256F44(void*, void*, void*, void*);
+bool fn_802573E0(void*, void*, void*, void*);
+u8 fn_802738F0(char*, JGeometry::TBox2<f32>*, f32*, s32, s32);
+bool fn_80273FB8(char*, const JGeometry::TBox2<f32>*, s32, f32*);
 s32 fn_80241864(char*);
 s32 fn_80241544(char*);
 bool fn_80241200(char*);
@@ -53,7 +56,7 @@ void fn_80251AEC(char*, s32);
 void fn_8024F0E8(char*, s32);
 void fn_80268B3C(char*);
 void fn_802685D4(char*);
-s32 fn_802D6A9C(void);
+char* fn_802D6A9C(void);
 bool fn_802413F0(char*);
 bool GetBusyLocked(char*);
 void fn_802A20F0(void*, void*, s32, void*, s32, s32);
@@ -338,6 +341,31 @@ void fn_80270D34(char* p, s32 n) {
         resetC74(p);
     }
 }
+inline void addLife(char* p, s32 n, u8 flag) {
+    if (U8(p, 0xd35) != 0) {
+        return;
+    }
+    if (U8(lbl_8053AAF8, 0x7f) == 0 && (U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4)))) {
+        if (S32(p, 0xbfc) <= 0 || isDying(p)) {
+            return;
+        }
+    }
+    s32 old = S32(p, 0xbfc);
+    S32(p, 0xbfc) = old + 1;
+    if (S32(p, 0xbfc) == old) {
+        for (;;) {}
+    }
+    S32(p, 0xbfc) = old;
+    if (Player_IsLinked(p)) {
+        S32(p, 0xbfc) = fn_802376D8(Player_GetLinkTargetIndex(p));
+    } else {
+        S32(p, 0xbfc) += n;
+    }
+    if (S32(p, 0xbfc) > S32(p, 0xbf8)) {
+        S32(p, 0xbfc) = S32(p, 0xbf8);
+    }
+    U8(p, 0xd35) = flag;
+}
 void fn_80270DDC(char* p, s32 n, u8 flag) {
     if (U8(p, 0xd35) != 0) {
         return;
@@ -362,6 +390,13 @@ void fn_80270DDC(char* p, s32 n, u8 flag) {
         S32(p, 0xbfc) = S32(p, 0xbf8);
     }
     U8(p, 0xd35) = flag;
+}
+void fn_80270F00(char* p, s32 n) {
+    S32(p, 0xbf8) += n;
+    if (S32(p, 0xbf8) > 0x20) {
+        S32(p, 0xbf8) = 0x20;
+    }
+    addLife(p, S32(p, 0xbf8), 0);
 }
 void fn_80271038(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xf); }
 void fn_80271068(char* p, s32 a) { fn_80238548(S32(p, 0x4), 0, a, 0xe); }
@@ -448,6 +483,52 @@ bool fn_80273C30(void* a, void* b, void* c, void* d) {
         return 1;
     }
     return fn_80256F44(a, b, c, d) != 0;
+}
+bool fn_80273D44(void* a, void* b, void* c, void* d) {
+    if (fn_80274238(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802576CC(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802575B8(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802574CC(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802573E0(a, b, c, d)) {
+        return 1;
+    }
+    if (fn_802570BC(a, b, c, d)) {
+        return 1;
+    }
+    return fn_80256F44(a, b, c, d) != 0;
+}
+inline f32* roomOffset(s32 room) {
+    char* r = fn_802D6A9C();
+    return room < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
+}
+u8 fn_80273E7C(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out, s32 arg) {
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    JGeometry::TBox2<f32> b(*box);
+    f32* o = roomOffset(room);
+    JGeometry::TVec2<f32> n;
+    n.x = -o[0];
+    n.y = -o[1];
+    b.addPos(n);
+    u8 r = fn_802738F0(p, &b, out, arg, 0);
+    if (r == 1) {
+        f32* o2 = roomOffset(room);
+        out[0] += o2[0];
+        out[1] += o2[1];
+    }
+    return (u8)r;
 }
 void fn_80276538(char* p) {
     setAround((JGeometry::TBox2<f32>*)(p + 0x4c0), *(JGeometry::TVec2<f32>*)(p + 0x8), 7.0f);
@@ -669,7 +750,7 @@ void fn_8027CAA8(char* p) {
     U8(p, 0x458) = 0;
     U8(p, 0x436) = 1;
     char* base = (char*)PTR(p, 0x3b4);
-    if (*(u8*)(fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
+    if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
         F32(p, 0x348) = 0.0f;
     }
     S32(p, 0xbf4) = 8;
