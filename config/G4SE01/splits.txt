@@ -1931,6 +1931,14 @@ game/arrw.cpp:
 	.ctors      start:0x8045BF60 end:0x8045BF64
 	.sdata2     start:0x8053D7C0 end:0x8053D7F8
 
+game/popo.cpp:
+	extab       start:0x800073D4 end:0x800073FC
+	extabindex  start:0x80013FE4 end:0x80014020
+	.text       start:0x80172170 end:0x80172894
+	.ctors      start:0x8045BF78 end:0x8045BF7C
+	.rodata     start:0x804667F0 end:0x80466808
+	.sdata2     start:0x8053DA90 end:0x8053DAB8
+
 game/stal.cpp:
 	extab       start:0x8000745C end:0x80007484
 	extabindex  start:0x800140B0 end:0x800140EC
