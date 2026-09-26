@@ -7,21 +7,33 @@
 extern u8* lbl_8053AEF8;
 extern void* lbl_8053AF80;
 extern void* lbl_8053AED0;
-extern const f32 lbl_8053F6F4;
-extern const f32 lbl_8053F710;
 extern "C" void fn_80458880(void* obj, u32 id, s32 a);
 extern "C" void fn_8043CB24(void* obj, f32 x, f32 y, f32 scale, s32 digit, u32 alpha, u32 a, u32 b, u32 c);
 
 struct Rec10 {
     u8 m0;
-    u32 m4;
+    s32 m4;
     u8 m8;
     u8 m9;
+
+    void calc() {
+        if (m0 == 0) {
+            u8 min = m4 / 60;
+            m8 = min > 119 ? 119 : min;
+            f32 f = (1.0f / 60.0f) * (f32)((m4 - (m4 / 60) * 60) * 100);
+            s32 c = f + (f > 0.0f ? 0.5f : -0.5f);
+            m9 = (u8)c > 99 ? 99 : c;
+        }
+    }
+    void setMax() {
+        m0 = 1;
+        m4 = 7200;
+        m8 = 119;
+        m9 = 99;
+    }
 };
 
-extern "C" void fn_801ED3DC(Rec10* rec, s32 idx, s32 lvl) {
-    u8 a = rec->m8;
-    u8 b = rec->m9;
+static inline void setRecord(s32 idx, u8 b, u8 a, s32 lvl) {
     lbl_8053AEF8[0x44] |= (u8)(1 << idx);
     lbl_8053AEF8[idx + 0x3c] = a;
     lbl_8053AEF8[idx + 0x38] = b;
@@ -31,8 +43,53 @@ extern "C" void fn_801ED3DC(Rec10* rec, s32 idx, s32 lvl) {
     }
 }
 
-extern "C" {
+extern "C" void fn_801ED3DC(Rec10* rec, s32 idx, s32 lvl) {
+    setRecord(idx, rec->m9, rec->m8, lvl);
 }
+
+extern "C" void fn_801ED458(Rec10* r, u8 flag) {
+    if (r->m0 == 0) {
+        r->m4++;
+        if (r->m4 >= 7200) {
+            r->setMax();
+        } else {
+            if (r->m0 == 0) {
+                r->calc();
+                if (r->m9 % 10 != 9) {
+                    r->m9 += flag % 2;
+                }
+            }
+        }
+    }
+}
+
+extern "C" void fn_801ED5C8(f32 rate, Rec10* r) {
+    if (rate != 1.0f) {
+        bool inc = true;
+        r->m4--;
+        r->calc();
+        if (rate > 1.0f) {
+            rate = 1.0f;
+        } else if (rate < 0.0f) {
+            rate = 0.0f;
+        }
+        f32 f = (1.0f / 60.0f) * (100.0f * rate);
+        r->m9 += (s32)(f + (f > 0.0f ? 0.5f : -0.5f));
+        if (r->m9 > 99) {
+            r->m9 -= 100;
+            r->m8++;
+            if (r->m8 > 119) {
+                r->setMax();
+                inc = false;
+            }
+        }
+        if (inc) {
+            r->m4++;
+        }
+    }
+    r->m0 = 1;
+}
+
 
 extern "C" void fn_801ED798(void* thisPtr) {
 	char* p = (char*)thisPtr;
@@ -73,10 +130,11 @@ extern "C" void fn_801ED828(const u16& timer) {
     if (timer != 0) {
         for (s32 i = 0; i < 3; i++) {
             if (i * 60 + 30 <= timer && timer <= (i + 1) * 60) {
-                GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
-                f32 y = lbl_8053F6F4 * (s32)rm->efbHeight;
-                f32 x = lbl_8053F6F4 * (s32)rm->fbWidth;
-                fn_8043CB24(lbl_8053AED0, x, y, lbl_8053F710, i, 0xff, 0, 1, 0);
+                u16 w, h;
+                JUTVideo::getManager()->getBounds(w, h);
+                f32 y = (s32)h * 0.5f;
+                f32 x = (s32)w * 0.5f;
+                fn_8043CB24(lbl_8053AED0, x, y, 3.0f, i + 1, 0xff, 0, 1, 0);
                 return;
             }
         }
