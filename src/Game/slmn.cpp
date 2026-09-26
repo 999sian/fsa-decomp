@@ -52,6 +52,7 @@ extern "C" void* fn_80207D84(void* this_, s16 freeFlag) {
 }
 
 extern "C" void fn_80208244(char* this_, s32 state);
+extern "C" void fn_80208520(char* this_, f32* out, f32* step);
 
 extern "C" void fn_80207E24(char* this_) {
     switch (*(s32*)(this_ + 0x248)) {
@@ -116,7 +117,9 @@ struct SlmnPart {
 };
 
 struct Slmn {
-    u8 pad0[0x248];
+    u8 pad0[0xc];
+    f32 pos[3]; // 0xc
+    u8 pad18[0x248 - 0x18];
     s32 state; // 0x248
     u8 pad24c[0x2b0 - 0x24c];
     SlmnPart parts[4]; // 0x2b0
@@ -305,6 +308,157 @@ extern "C" void fn_80207F14(char* this_) {
         }
         break;
     }
+}
+
+struct SlmnRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - lbl_8053F8F8;
+    }
+};
+struct SlmnGame { u8 pad[0xb4]; SlmnRandom rnd; };
+extern SlmnGame* lbl_8053AAF8;
+extern const f32 lbl_8053F8FC;
+extern const f32 lbl_8053F908;
+extern const f32 lbl_8053F90C;
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
+extern "C" s32 fn_801D0020(void* this_, void* pos, s32 player, u8 flag);
+extern "C" s32 fn_801CD354(void);
+extern "C" void fn_80209D20(void* obj, s32 dir, u8 n);
+extern "C" void fn_80209CF4(void* obj, f32* pos);
+
+static inline BOOL slmnPartAlive(SlmnPart* part) {
+    return !part->inactive && !part->dead;
+}
+
+static inline void slmnCenter(Slmn* this_, f32* out) {
+    f32 sy; f32 sx; s32 id; s32 n; s32 i; char* a;
+    n = 0;
+    sy = sx = lbl_8053F8E0;
+    for (i = 0; i < 4; i++) {
+        if (!this_->parts[i].inactive && !this_->parts[i].dead) {
+            id = this_->parts[i].id;
+            if (id >= 0) {
+                a = (char*)fn_801F666C(fn_801F856C(), id);
+                if (a != 0) {
+                    n++;
+                    sx += *(f32*)(a + 0xc);
+                    sy += *(f32*)(a + 0x10);
+                }
+            }
+        }
+    }
+    if (n > 0) {
+        f32 inv = lbl_8053F8F8 / n;
+        out[0] = sx * inv;
+        out[1] = sy * inv;
+    } else {
+        out[0] = this_->pos[0];
+        out[1] = this_->pos[1];
+    }
+}
+
+static inline s32 slmnPickDir(char* this_, f32* pos) {
+    s32 player = fn_801D05F8(this_, pos, lbl_8053F8E0);
+    if (player < 0) {
+        return fn_801CD664(4);
+    }
+    u8 flag = FALSE;
+    if (lbl_8053AAF8->rnd.get_ufloat_1() < lbl_8053F8FC) {
+        flag = TRUE;
+    }
+    return fn_801D0020(this_, pos, player, flag);
+}
+
+extern "C" void fn_80208520(char* this_, f32* out, f32* step) {
+    if (*(s32*)(this_ + 0x2ac) == 0) {
+        step[0] = lbl_8053F8E0;
+        step[1] = lbl_8053F8E4;
+    } else {
+        step[0] = lbl_8053F8E4;
+        step[1] = lbl_8053F8E0;
+    }
+    f32 c[2];
+    slmnCenter((Slmn*)this_, c);
+    f32 pos[3];
+    slmnCenter((Slmn*)this_, pos);
+    slmnPickDir(this_, pos);
+    s32 d = fn_801CD354();
+    f32 ox, oy;
+    oy = ox = lbl_8053F8E0;
+    switch (d) {
+    case 0:
+        ox += lbl_8053F908;
+        break;
+    case 1:
+        ox -= lbl_8053F908;
+        break;
+    case 2:
+        oy += lbl_8053F908;
+        break;
+    case 3:
+        oy -= lbl_8053F908;
+        break;
+    }
+    f32 x = (c[0] + ox) - lbl_8053F90C * step[0];
+    f32 y = (c[1] + oy) - lbl_8053F90C * step[1];
+    out[0] = x;
+    out[1] = y;
+}
+
+extern "C" void fn_80208244(char* this_, s32 state) {
+    f32 at[2];
+    f32 step[2];
+    f32 pos[2];
+    s32 i;
+    switch (state) {
+    case 1:
+        break;
+    case 2:
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
+        break;
+    case 3: {
+        slmnCenter((Slmn*)this_, pos);
+        s32 dir = slmnPickDir(this_, pos);
+        u8 n = fn_801CD664(3) + 1;
+        *(u8*)(this_ + 0x34a) += n;
+        for (i = 0; i < 4; i++) {
+            SlmnPart* part = (SlmnPart*)(this_ + 0x2b0) + i;
+            if (!part->inactive && !part->dead) {
+                void* a = fn_801F666C(fn_801F856C(), part->id);
+                if (a != 0) {
+                    fn_80209D20(a, dir, n);
+                }
+            }
+        }
+        break;
+    }
+    case 4: {
+        fn_80208520(this_, at, step);
+        for (i = 0; i < 4; i++) {
+            SlmnPart* part = (SlmnPart*)(this_ + 0x2b0) + i;
+            if (!part->inactive && !part->dead) {
+                void* a = fn_801F666C(fn_801F856C(), part->id);
+                if (a != 0) {
+                    fn_80209CF4(a, at);
+                }
+            }
+            at[0] += step[0];
+            at[1] += step[1];
+        }
+        *(u32*)(this_ + 0x230) |= 0x2000;
+        break;
+    }
+    case 5:
+    case 6:
+    case 7:
+        break;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = state;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
