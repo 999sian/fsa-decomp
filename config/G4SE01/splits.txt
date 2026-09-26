@@ -1828,6 +1828,7 @@ game/tu_8011A0F8.cpp:
 	extabindex  start:0x8001258C end:0x800125C8
 	.text       start:0x8011A0F8 end:0x8011A4BC
 	.ctors      start:0x8045BE70 end:0x8045BE74
+	.bss        start:0x804BC660 end:0x804BC6CC
 
 game/BARI_8011EEEC.cpp:
 	extab       start:0x800061D8 end:0x80006218

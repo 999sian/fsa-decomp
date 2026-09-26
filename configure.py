@@ -997,7 +997,7 @@ config.libs = [
             Object(NonMatching, "game/ICCL_8010B284.cpp"),
             Object(NonMatching, "game/DBMS_8010DA6C.cpp"),
             Object(Matching, "game/tu_8010DF44.cpp"),
-            Object(NonMatching, "game/tu_8011A0F8.cpp"),
+            Object(Matching, "game/tu_8011A0F8.cpp"),
             Object(NonMatching, "game/BARI_8011EEEC.cpp"),
             Object(NonMatching, "game/RNBW_80129B0C.cpp"),
             Object(NonMatching, "game/BTBZ_8012CF5C.cpp"),
