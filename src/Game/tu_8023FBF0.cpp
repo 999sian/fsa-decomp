@@ -118,6 +118,21 @@ inline s32 countSharing(char* p) {
     return c;
 }
 
+extern "C" char* fn_802D6A9C(void);
+
+inline f32* roomOffset(s32 room) {
+    char* r = fn_802D6A9C();
+    return room < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
+}
+
+inline void setOff(JGeometry::TVec3<f32>* v, const JGeometry::TVec3<f32>* src, f32 dx, f32 dy) {
+    v->x = src->x;
+    v->y = src->y;
+    v->z = src->z;
+    v->x += dx;
+    v->y += dy;
+}
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -135,6 +150,9 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+char* fn_802D6A9C(void);
+s32 Actor_CreateByID(void* mgr, u32 id, void* owner, void* pos, u32 param, s32 a, s32 b);
+void fn_8024D134(char*);
 s32 fn_8022CAF8(s32);
 bool fn_8025F500(char*);
 void* fn_801F856C(void);
@@ -738,6 +756,22 @@ s32 fn_8024BB94(char* p) {
 }
 u8 Player_GetField_0xce8(char* p) { return U8(p, 0xce8); }
 BOOL fn_8024C35C(char* p) { return S32(p, 0x3b4) >= 8 ? 1 : 0; }
+JGeometry::TVec3<f32>* fn_8024C378(char* p) {
+    if (S32(p, 0x3b4) == 8) {
+        char* r = fn_802D6A9C();
+        f32 x = F32(r, 0xcc);
+        f32 y = F32(r, 0xd0);
+        f32* o = roomOffset(S32(p, 0x3b4));
+        JGeometry::TVec3<f32>* v = (JGeometry::TVec3<f32>*)(p + 0x1268);
+        v->x = F32(p, 0x8);
+        v->y = F32(p, 0xc);
+        v->z = F32(p, 0x10);
+        v->x += x - o[0];
+        v->y += y - o[1];
+        return v;
+    }
+    return (JGeometry::TVec3<f32>*)(p + 0x8);
+}
 BOOL fn_8024C448(char* p) { return ((u32)S32(p, 0xd40) >> 31) ^ 1; }
 u8 fn_8024C458(char* p) { return U8(p, 0xd4c); }
 s32 fn_8024C460(char* p, s32 v) {
@@ -751,6 +785,21 @@ s32 fn_8024C460(char* p, s32 v) {
         S32(p, 0xd74) = 3;
     }
     S32(p, 0xd50) = 0x14;
+    return 1;
+}
+BOOL fn_8024C4C4(char* p, s32 id) {
+    if (U8(p, 0xd4c) == 1) {
+        return 0;
+    }
+    U8(p, 0xd4c) = 1;
+    S32(p, 0xd44) = id;
+    U8(p, 0xd4d) = 1;
+    char* a = getActor(id);
+    if (a == NULL || F32(a, 0xc) < F32(p, 0x8)) {
+        Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x18, -1, -1);
+    } else {
+        Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x1c, -1, -1);
+    }
     return 1;
 }
 BOOL fn_8024CA0C(char* p, s32 v) { return S32(p, 0xd44) == v ? 1 : 0; }
@@ -770,6 +819,25 @@ void fn_8024CA20(char* p) {
     }
     S32(p, 0xd40) = S32(p, 0xd3c);
     S32(p, 0xd3c) = -1;
+}
+BOOL fn_8024D058(char* p, u8 on) {
+    if (on) {
+        U8(p, 0x454) = 0;
+        if (U8(p, 0x1216) == 0) {
+            if (U8(p, 0x454) != 0) {
+                fn_8024B2E0(p);
+            } else {
+                resetTrail(p);
+            }
+        }
+    } else {
+        fn_8024B2E0(p);
+        U8(p, 0x454) = 0;
+    }
+    S32(p, 0xd74) = 10;
+    S32(p, 0x11f0) = 10;
+    fn_8024D134(p);
+    return 1;
 }
 s32 fn_8024D98C(char* p) {
     U8(p, 0x455) = 1;
@@ -793,6 +861,28 @@ BOOL fn_8024D99C(char* p, const JGeometry::TVec3<f32>& v, u8 f) {
     U16(p, 0x450) += (u8)(U16(p, 0x452) / 3);
     U8(p, 0xca2) = f;
     fn_8024B2E0(p);
+    return 1;
+}
+BOOL fn_8024DC00(char* p, const JGeometry::TVec3<f32>& v, s32 frame, u8 a, u8 b, u8 c, u8 check) {
+    *(JGeometry::TVec3<f32>*)(p + 0x32c) = v;
+    if (frame >= 0) {
+        U16(p, 0x450) = frame;
+    }
+    U8(p, 0xca2) = a;
+    U8(p, 0xca3) = b;
+    U8(p, 0xca4) = c;
+    if (check == 1) {
+        JGeometry::TVec3<f32> d;
+        JGeometry::TVec3<f32> t(*(JGeometry::TVec3<f32>*)(p + 0x8));
+        t -= v;
+        d = t;
+        if (PSVECMag((Vec*)&d) >= 0.1f) {
+            fn_8024B2E0(p);
+        }
+    }
+    if (frame != 0xc3) {
+        U8(p, 0xcfe) = 0;
+    }
     return 1;
 }
 char* fn_8024E018(char* p) { return p + 0x2b8; }
