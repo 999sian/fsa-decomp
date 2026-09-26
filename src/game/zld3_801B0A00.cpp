@@ -6,7 +6,7 @@ extern "C" s32 lbl_804A35A0[3];
 extern "C" void fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int how);
 extern "C" void __dl__FPv(void* this_);
-extern "C" void* fn_802D6A9C(void);
+extern "C" void* GetRoomConfigRecord(void);
 extern "C" void fn_802D7440(void* unused, u8 flag);
 extern void* lbl_804A35AC[];
 
@@ -90,7 +90,7 @@ extern "C" void* fn_801B22F4(void* this_, short how) {
             i++;
             p += 4;
         } while (i < 2);
-        fn_802D7440(fn_802D6A9C(), 1);
+        fn_802D7440(GetRoomConfigRecord(), 1);
         dtor_801F593C(this_, 0);
         if (how > 0) {
             __dl__FPv(this_);

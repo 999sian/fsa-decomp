@@ -26,14 +26,14 @@ void Glbs_EmptyHook(void) {}
 }
 
 // ---- RoomBitfieldWriteback_802E9170.cpp ----
-extern "C" void* fn_802D6A9C(void);
+extern "C" void* GetRoomConfigRecord(void);
 extern "C" u8 fn_802D800C(void*, u32);
 extern "C" void fn_802D7F84(void*, u32, u32);
 
-// fn_802E9170 - GLBS: setParams. Calls fn_802D6A9C then
+// fn_802E9170 - GLBS: setParams. Calls GetRoomConfigRecord then
 // fn_802D800C with a bitfield extracted from this->0x90; if the query
 // returns true, reads a value via own virtual slot 15 (byte offset
-// 0x3c) and writes it back to the room config via fn_802D6A9C
+// 0x3c) and writes it back to the room config via GetRoomConfigRecord
 // + fn_802D7F84(value, 1). See
 // [[reference_fsa_virtual_dispatch_codegen_trick]] for why this calls
 // through a real `virtual` member rather than a manual cast.
@@ -55,11 +55,11 @@ struct ActorSlot15 {
 };
 
 extern "C" void fn_802E9170(void* this_) {
-    void* configRecord = fn_802D6A9C();
+    void* configRecord = GetRoomConfigRecord();
     u32 field = (*(u32*)((char*)this_ + 0x90) >> 22) & 0x1F;
     if ((u8)fn_802D800C(configRecord, field) != 0) {
         u32 val = ((ActorSlot15*)this_)->slot15();
-        void* configRecord2 = fn_802D6A9C();
+        void* configRecord2 = GetRoomConfigRecord();
         fn_802D7F84(configRecord2, val, 1);
     }
 }

@@ -28,15 +28,15 @@ void fn_802E0828(void) {}
 
 // ---- Urac_Part3of4_802E082C.cpp ----
 // URAC cluster, part 3/4. Uses the per-room config family
-// fn_802D6A9C/fn_802D77BC.
+// GetRoomConfigRecord/fn_802D77BC.
 
 
 
-extern "C" void* fn_802D6A9C(void);
+extern "C" void* GetRoomConfigRecord(void);
 extern "C" void fn_802D77BC(void* record, u32 field4, u32 flag);
 
 extern "C" void fn_802E082C(void* this_) {
-    fn_802D77BC(fn_802D6A9C(), *(u32*)((char*)this_ + 0x4), 1);
+    fn_802D77BC(GetRoomConfigRecord(), *(u32*)((char*)this_ + 0x4), 1);
 }
 
 // ---- VtableForward_802E0864.cpp ----

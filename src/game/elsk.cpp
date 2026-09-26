@@ -26,6 +26,27 @@ void Emsk_EmptyHook(void) {}
 
 }
 
+// fn_802EF4AC - update(): counts down this->0x234; on expiry notifies the
+// room config (fn_802D9FF4) with the pair selected by this->0x230 and plays
+// sound 0xf through the global sound object.
+struct ElskPair { u32 a; u32 b; };
+extern const ElskPair lbl_8046F610[3];
+extern "C" void* GetRoomConfigRecord(void);
+extern "C" void fn_802D9FF4(void* rec, u32 a, u32 b);
+extern "C" void fn_80136798(void* obj, int id, int arg);
+extern void* lbl_8053AAF8[2];
+
+extern "C" void fn_802EF4AC(void* this_) {
+    *(s32*)((char*)this_ + 0x234) = *(s32*)((char*)this_ + 0x234) - 1;
+    if (*(s32*)((char*)this_ + 0x234) == 0) {
+        // NONMATCHING (99.2%): retail swaps r30/r31 (offset vs value).
+        s32 i = *(s32*)((char*)this_ + 0x230);
+        u32 a = lbl_8046F610[i].a;
+        fn_802D9FF4(GetRoomConfigRecord(), a, lbl_8046F610[i].b);
+        fn_80136798(lbl_8053AAF8[0], 0xf, 0);
+    }
+}
+
 // ---- Emsk_SetParams.cpp ----
 #include "game/esd/Actor.h"
 
