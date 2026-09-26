@@ -4,9 +4,12 @@
 #include "JSystem/JGeometry/Vec.h"
 
 // Actor base (0x801F5AE0 ctor, 0x801F593C dtor); full layout lives on the  Actor branch.
+struct ActorBox;
 struct Actor {
     Actor();
     ~Actor();
+    void setBox70(const ActorBox& box);                 /* 0x801FF630 */
+    void setPos(const JGeometry::TVec3<f32>& pos);      /* 0x801FF704 */
     u8 _base[0x230];
 };
 
@@ -169,29 +172,19 @@ struct TJIJ : public Actor {
     TJIJ();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct Actor_21 {
-    Actor_21();
-    ~Actor_21();
-    u8 _base[0x230];
-};
-class MRTA : public Actor_21 {
+class MRTA : public Actor {
 public:
     MRTA();
-    u8 _pad[0x2e4 - sizeof(Actor_21)];
+    u8 _pad[0x2e4 - sizeof(Actor)];
 };
 struct SWDL : public Actor {
     SWDL();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct Actor_25 {
-    Actor_25();
-    ~Actor_25();
-    u8 _base[0x230];
-};
-class fn_801FFD58_actor : public Actor_25 {
+class fn_801FFD58_actor : public Actor {
 public:
     fn_801FFD58_actor();
-    u8 _pad[0x3c0 - sizeof(Actor_25)];
+    u8 _pad[0x3c0 - sizeof(Actor)];
 };
 struct ELK2 : public Actor {
     ELK2();
@@ -229,15 +222,10 @@ struct TUTM : public Actor {
     TUTM();
     u8 _pad[0x294 - sizeof(Actor)];
 };
-struct Actor_36 {
-    Actor_36();
-    ~Actor_36();
-    u8 _base[0x230];
-};
-class TUGF : public Actor_36 {
+class TUGF : public Actor {
 public:
     TUGF();
-    u8 _pad[0x2fc - sizeof(Actor_36)];
+    u8 _pad[0x2fc - sizeof(Actor)];
 };
 struct LEAF : public Actor {
     LEAF();
@@ -287,15 +275,10 @@ struct CHSW : public Actor {
     CHSW();
     u8 _pad[0x244 - sizeof(Actor)];
 };
-struct Actor_49 {
-    Actor_49();
-    ~Actor_49();
-    u8 _base[0x230];
-};
-class TLWP : public Actor_49 {
+class TLWP : public Actor {
 public:
     TLWP();
-    u8 _pad[0x2f0 - sizeof(Actor_49)];
+    u8 _pad[0x2f0 - sizeof(Actor)];
 };
 struct JWLK : public Actor {
     JWLK();
@@ -309,15 +292,10 @@ struct PSW2 : public Actor {
     PSW2();
     u8 _pad[0x264 - sizeof(Actor)];
 };
-struct Actor_53 {
-    Actor_53();
-    ~Actor_53();
-    u8 _base[0x230];
-};
-class GNEF : public Actor_53 {
+class GNEF : public Actor {
 public:
     GNEF();
-    u8 _pad[0x2d0 - sizeof(Actor_53)];
+    u8 _pad[0x2d0 - sizeof(Actor)];
 };
 struct STPN : public Actor {
     STPN();
@@ -355,15 +333,10 @@ struct ZDCO : public Actor {
     ZDCO();
     u8 _pad[0x278 - sizeof(Actor)];
 };
-struct Actor_65 {
-    Actor_65();
-    ~Actor_65();
-    u8 _base[0x230];
-};
-class ZLD3 : public Actor_65 {
+class ZLD3 : public Actor {
 public:
     ZLD3();
-    u8 _pad[0x2c0 - sizeof(Actor_65)];
+    u8 _pad[0x2c0 - sizeof(Actor)];
 };
 struct OBLF : public Actor {
     OBLF();
@@ -377,15 +350,10 @@ struct EGOL : public Actor {
     EGOL();
     u8 _pad[0x268 - sizeof(Actor)];
 };
-struct Actor_69 {
-    Actor_69();
-    ~Actor_69();
-    u8 _base[0x230];
-};
-class YNSW : public Actor_69 {
+class YNSW : public Actor {
 public:
     YNSW();
-    u8 _pad[0x284 - sizeof(Actor_69)];
+    u8 _pad[0x284 - sizeof(Actor)];
 };
 struct GMTB : public Actor {
     GMTB();
@@ -395,45 +363,25 @@ struct GMBL : public Actor {
     GMBL();
     u8 _pad[0x28c - sizeof(Actor)];
 };
-struct Actor_72 {
-    Actor_72();
-    ~Actor_72();
-    u8 _base[0x230];
-};
-class EETC : public Actor_72 {
+class EETC : public Actor {
 public:
     EETC();
-    u8 _pad[0x31c - sizeof(Actor_72)];
+    u8 _pad[0x31c - sizeof(Actor)];
 };
-struct Actor_73 {
-    Actor_73();
-    ~Actor_73();
-    u8 _base[0x230];
-};
-class RCK2 : public Actor_73 {
+class RCK2 : public Actor {
 public:
     RCK2();
-    u8 _pad[0x38c - sizeof(Actor_73)];
+    u8 _pad[0x38c - sizeof(Actor)];
 };
-struct Actor_75 {
-    Actor_75();
-    ~Actor_75();
-    u8 _base[0x230];
-};
-class EOWL : public Actor_75 {
+class EOWL : public Actor {
 public:
     EOWL();
-    u8 _pad[0x2bc - sizeof(Actor_75)];
+    u8 _pad[0x2bc - sizeof(Actor)];
 };
-struct Actor_76 {
-    Actor_76();
-    ~Actor_76();
-    u8 _base[0x230];
-};
-class DMTW : public Actor_76 {
+class DMTW : public Actor {
 public:
     DMTW();
-    u8 _pad[0x408 - sizeof(Actor_76)];
+    u8 _pad[0x408 - sizeof(Actor)];
 };
 struct SMRI : public Actor {
     SMRI();
@@ -455,15 +403,10 @@ struct OKAM : public Actor {
     OKAM();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct Actor_83 {
-    Actor_83();
-    ~Actor_83();
-    u8 _base[0x230];
-};
-class TTAT : public Actor_83 {
+class TTAT : public Actor {
 public:
     TTAT();
-    u8 _pad[0x2bc - sizeof(Actor_83)];
+    u8 _pad[0x2bc - sizeof(Actor)];
 };
 struct GNMA : public Actor {
     GNMA();
@@ -497,25 +440,15 @@ struct ENPC : public Actor {
     ENPC();
     u8 _pad[0x2a4 - sizeof(Actor)];
 };
-struct Actor_92 {
-    Actor_92();
-    ~Actor_92();
-    u8 _base[0x230];
-};
-class HBB2 : public Actor_92 {
+class HBB2 : public Actor {
 public:
     HBB2();
-    u8 _pad[0x474 - sizeof(Actor_92)];
+    u8 _pad[0x474 - sizeof(Actor)];
 };
-struct Actor_93 {
-    Actor_93();
-    ~Actor_93();
-    u8 _base[0x230];
-};
-class NWOK : public Actor_93 {
+class NWOK : public Actor {
 public:
     NWOK();
-    u8 _pad[0x2c4 - sizeof(Actor_93)];
+    u8 _pad[0x2c4 - sizeof(Actor)];
 };
 struct RYYA : public Actor {
     RYYA();
@@ -641,49 +574,29 @@ struct LIMT : public Actor {
     LIMT();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct Actor_126 {
-    Actor_126();
-    ~Actor_126();
-    u8 _base[0x230];
-};
-class GNL2 : public Actor_126 {
+class GNL2 : public Actor {
 public:
     GNL2();
-    u8 _pad[0x2f8 - sizeof(Actor_126)];
+    u8 _pad[0x2f8 - sizeof(Actor)];
 };
-struct Actor_127 {
-    Actor_127();
-    ~Actor_127();
-    u8 _base[0x230];
-};
-class BEEE : public Actor_127 {
+class BEEE : public Actor {
 public:
     BEEE();
-    u8 _pad[0x3a0 - sizeof(Actor_127)];
+    u8 _pad[0x3a0 - sizeof(Actor)];
 };
 struct PSSW : public Actor {
     PSSW();
     u8 _pad[0x230 - sizeof(Actor)];
 };
-struct Actor_129 {
-    Actor_129();
-    ~Actor_129();
-    u8 _base[0x230];
-};
-class HOUS : public Actor_129 {
+class HOUS : public Actor {
 public:
     HOUS();
-    u8 _pad[0x3f8 - sizeof(Actor_129)];
+    u8 _pad[0x3f8 - sizeof(Actor)];
 };
-struct Actor_130 {
-    Actor_130();
-    ~Actor_130();
-    u8 _base[0x230];
-};
-class fn_80201A14_actor : public Actor_130 {
+class fn_80201A14_actor : public Actor {
 public:
     fn_80201A14_actor();
-    u8 _pad[0x338 - sizeof(Actor_130)];
+    u8 _pad[0x338 - sizeof(Actor)];
 };
 struct GNON : public Actor {
     GNON();
@@ -713,15 +626,10 @@ struct STBL : public Actor {
     STBL();
     u8 _pad[0x274 - sizeof(Actor)];
 };
-struct Actor_140 {
-    Actor_140();
-    ~Actor_140();
-    u8 _base[0x230];
-};
-class DGT2 : public Actor_140 {
+class DGT2 : public Actor {
 public:
     DGT2();
-    u8 _pad[0x3cc - sizeof(Actor_140)];
+    u8 _pad[0x3cc - sizeof(Actor)];
 };
 struct RVFR : public Actor {
     RVFR();
@@ -735,29 +643,19 @@ struct FLYO : public Actor {
     FLYO();
     u8 _pad[0x28c - sizeof(Actor)];
 };
-struct Actor_144 {
-    Actor_144();
-    ~Actor_144();
-    u8 _base[0x230];
-};
-class BPH2 : public Actor_144 {
+class BPH2 : public Actor {
 public:
     BPH2();
-    u8 _pad[0x334 - sizeof(Actor_144)];
+    u8 _pad[0x334 - sizeof(Actor)];
 };
 struct PRTC : public Actor {
     PRTC();
     u8 _pad[0x264 - sizeof(Actor)];
 };
-struct Actor_146 {
-    Actor_146();
-    ~Actor_146();
-    u8 _base[0x230];
-};
-class RASN : public Actor_146 {
+class RASN : public Actor {
 public:
     RASN();
-    u8 _pad[0x26c - sizeof(Actor_146)];
+    u8 _pad[0x26c - sizeof(Actor)];
 };
 struct FGN2 : public Actor {
     FGN2();
@@ -771,15 +669,10 @@ struct JPEN : public Actor {
     JPEN();
     u8 _pad[0x284 - sizeof(Actor)];
 };
-struct Actor_150 {
-    Actor_150();
-    ~Actor_150();
-    u8 _base[0x230];
-};
-class WNWN : public Actor_150 {
+class WNWN : public Actor {
 public:
     WNWN();
-    u8 _pad[0x390 - sizeof(Actor_150)];
+    u8 _pad[0x390 - sizeof(Actor)];
 };
 struct URAC : public Actor {
     URAC();
@@ -829,15 +722,10 @@ struct DSIN : public Actor {
     DSIN();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct Actor_163 {
-    Actor_163();
-    ~Actor_163();
-    u8 _base[0x230];
-};
-class GROK : public Actor_163 {
+class GROK : public Actor {
 public:
     GROK();
-    u8 _pad[0x320 - sizeof(Actor_163)];
+    u8 _pad[0x320 - sizeof(Actor)];
 };
 struct SBTN : public Actor {
     SBTN();
@@ -855,15 +743,10 @@ struct PESW : public Actor {
     PESW();
     u8 _pad[0x250 - sizeof(Actor)];
 };
-struct Actor_169 {
-    Actor_169();
-    ~Actor_169();
-    u8 _base[0x230];
-};
-class OSIN : public Actor_169 {
+class OSIN : public Actor {
 public:
     OSIN();
-    u8 _pad[0x29c - sizeof(Actor_169)];
+    u8 _pad[0x29c - sizeof(Actor)];
 };
 struct PUKU : public Actor {
     PUKU();
@@ -877,17 +760,19 @@ struct INFR : public Actor {
     INFR();
     u8 _pad[0x26c - sizeof(Actor)];
 };
+extern "C" void* fn_801D30B8(void* this_);
+// ItemBase-derived intermediate base (ctor fn_801D30B8, out-of-line dtor
+// dtor_801D2C60 in tu_801D2C60; needs a C++ name before this TU can link).
 class Fn801D30B8Base {
 public:
-    Fn801D30B8Base();
+    Fn801D30B8Base() { fn_801D30B8(this); }
     ~Fn801D30B8Base();
 private:
-    unsigned char pad[0x2b0];
+    unsigned char pad[0x2ac];
 };
 class ARSH : public Fn801D30B8Base {
 public:
     ARSH();
-    u8 _pad[0x2ac - sizeof(Fn801D30B8Base)];
 };
 struct BMTY : public Actor {
     BMTY();
@@ -957,17 +842,18 @@ struct RAIL : public Actor {
     RAIL();
     u8 _pad[0x230 - sizeof(Actor)];
 };
+// ItemBase-derived intermediate base (ctor fn_801D30B8, out-of-line dtor
+// dtor_801D2C60 in tu_801D2C60; needs a C++ name before this TU can link).
 class Fn801D30B8Base_191 {
 public:
-    Fn801D30B8Base_191();
+    Fn801D30B8Base_191() { fn_801D30B8(this); }
     ~Fn801D30B8Base_191();
 private:
-    unsigned char pad[0x2b0];
+    unsigned char pad[0x2ac];
 };
 class ZNSH : public Fn801D30B8Base_191 {
 public:
     ZNSH();
-    u8 _pad[0x2ac - sizeof(Fn801D30B8Base_191)];
 };
 struct DOOR : public Actor {
     DOOR();
@@ -993,15 +879,10 @@ struct CKSW : public Actor {
     CKSW();
     u8 _pad[0x238 - sizeof(Actor)];
 };
-struct Actor_198 {
-    Actor_198();
-    ~Actor_198();
-    u8 _base[0x230];
-};
-class TNGL : public Actor_198 {
+class TNGL : public Actor {
 public:
     TNGL();
-    u8 _pad[0x2a0 - sizeof(Actor_198)];
+    u8 _pad[0x2a0 - sizeof(Actor)];
 };
 struct STAL : public Actor {
     STAL();
@@ -1107,15 +988,10 @@ struct WOOD : public Actor {
     WOOD();
     u8 _pad[0x24c - sizeof(Actor)];
 };
-struct Actor_225 {
-    Actor_225();
-    ~Actor_225();
-    u8 _base[0x230];
-};
-class fn_802032AC_actor : public Actor_225 {
+class fn_802032AC_actor : public Actor {
 public:
     fn_802032AC_actor();
-    u8 _pad[0x338 - sizeof(Actor_225)];
+    u8 _pad[0x338 - sizeof(Actor)];
 };
 struct PEFF : public Actor {
     PEFF();
@@ -1153,15 +1029,10 @@ struct YAJI : public Actor {
     YAJI();
     u8 _pad[0x260 - sizeof(Actor)];
 };
-struct Actor_235 {
-    Actor_235();
-    ~Actor_235();
-    u8 _base[0x230];
-};
-class BOME : public Actor_235 {
+class BOME : public Actor {
 public:
     BOME();
-    u8 _pad[0x380 - sizeof(Actor_235)];
+    u8 _pad[0x380 - sizeof(Actor)];
 };
 struct KMRI : public Actor {
     KMRI();
@@ -1223,15 +1094,10 @@ struct BALL : public Actor {
     BALL();
     u8 _pad[0x248 - sizeof(Actor)];
 };
-struct Actor_252 {
-    Actor_252();
-    ~Actor_252();
-    u8 _base[0x230];
-};
-class BPOH : public Actor_252 {
+class BPOH : public Actor {
 public:
     BPOH();
-    u8 _pad[0x300 - sizeof(Actor_252)];
+    u8 _pad[0x300 - sizeof(Actor)];
 };
 struct SHTR : public Actor {
     SHTR();
@@ -1297,29 +1163,19 @@ struct HINO : public Actor {
     HINO();
     u8 _pad[0x288 - sizeof(Actor)];
 };
-struct Actor_270 {
-    Actor_270();
-    ~Actor_270();
-    u8 _base[0x230];
-};
-class GOAL : public Actor_270 {
+class GOAL : public Actor {
 public:
     GOAL();
-    u8 _pad[0x320 - sizeof(Actor_270)];
+    u8 _pad[0x320 - sizeof(Actor)];
 };
 struct BHRT : public Actor {
     BHRT();
     u8 _pad[0x23c - sizeof(Actor)];
 };
-struct Actor_272 {
-    Actor_272();
-    ~Actor_272();
-    u8 _base[0x230];
-};
-class DGTL : public Actor_272 {
+class DGTL : public Actor {
 public:
     DGTL();
-    u8 _pad[0x7c8 - sizeof(Actor_272)];
+    u8 _pad[0x7c8 - sizeof(Actor)];
 };
 struct OKTM : public Actor {
     OKTM();
@@ -1413,21 +1269,70 @@ struct fn_801092B0_actor {
     fn_801092B0_actor();
     u8 _pad[0x284];
 };
+extern "C" void fn_801D267C(void* p);
+extern "C" void fn_8010E074(void* p);
+extern "C" void dtor_80105D80(void* p, s16 f);
+extern "C" void dtor_8010E004(void* p, s16 f);
+extern "C" void __ct__5ActorFv(void* p);
+extern "C" void __dt__5ActorFv(void* p, int f);
+extern const f32 lbl_8053F830;
+
+// Sub-object (ctor fn_801D267C, dtor dtor_80105D80; holds a J3DFrameCtrl at +0x24).
+struct AnimSub {
+    AnimSub() { fn_801D267C(this); }
+    ~AnimSub() { dtor_80105D80(this, -1); }
+    u8 pad[0x38];
+};
+struct AnimSubRaw {
+    u8 pad[0x38];
+};
+// Same sub-object, viewed without a dtor.
+struct AnimSubNoDtor {
+    AnimSubNoDtor() { fn_801D267C(this); }
+    u8 pad[0x38];
+};
+// Plain Actor base (0x801F5AE0 ctor / 0x801F593C dtor).
+struct ActorB {
+    ActorB() { __ct__5ActorFv(this); }
+    ~ActorB() { __dt__5ActorFv(this, 0); }
+    u8 pad[0x230];
+};
+struct ActorBNoDtor {
+    ActorBNoDtor() { __ct__5ActorFv(this); }
+    u8 pad[0x230];
+};
+// Actor subclass ctor 0x8010E074 (vtable lbl_8049D140, dtor 0x8010E004).
+struct Base_8010E074 {
+    Base_8010E074() { fn_8010E074(this); }
+    ~Base_8010E074() { dtor_8010E004(this, -1); }
+    u8 pad[0x230];
+};
+
+struct DMGA : Base_8010E074 {
+    DMGA();
+    u8 m230;
+    u32 m234;
+    f32 m238, m23C;
+    u8 m240[0x34];
+    AnimSubRaw m274;
+};
+struct OPGA : ActorBNoDtor {
+    OPGA();
+    u8 m230, m231;
+    u32 m234, m238;
+    s32 m23C, m240;
+    AnimSubRaw m244;
+    AnimSubRaw m27C;
+};
+struct DMNR : Base_8010E074 {
+    DMNR();
+    u32 m230;
+    f32 m234, m238;
+    u32 m23C;
+};
 struct Dbms {
     Dbms();
     u8 _pad[0x268];
-};
-struct DMGA {
-    DMGA();
-    u8 _pad[0x2ac];
-};
-struct OPGA {
-    OPGA();
-    u8 _pad[0x2b4];
-};
-struct DMNR {
-    DMNR();
-    u8 _pad[0x240];
 };
 struct Twtg {
     Twtg();
@@ -1437,9 +1342,13 @@ struct Ftgl {
     Ftgl();
     u8 _pad[0x274];
 };
-struct CRNV {
+struct CRNV : ActorB {
     CRNV();
-    u8 _pad[0x280];
+    u32 m230, m234;
+    s32 m238;
+    f32 m23C;
+    AnimSubRaw m240;
+    u32 m278, m27C;
 };
 struct Znlj {
     Znlj();
@@ -1449,7 +1358,14 @@ struct Znlj {
 class JKRHeap;
 void* operator new(unsigned long size, JKRHeap* heap, int align);
 
-struct Quad { u32 w[4]; };
+struct QuadHalf {
+    QuadHalf() {}
+    f32 x, y;
+};
+struct Quad {
+    Quad() {}
+    QuadHalf a, b;
+};
 struct Vec4f { f32 x, y, z, w; };
 
 // Virtual view of an actor (only slot 1 is called here).
@@ -1472,7 +1388,6 @@ struct ActorMgr {
     /* 0x2014 */ s32 lastIndex;
 };
 
-extern "C" void fn_801FF630(Actor* a, Vec4f* v);
 extern "C" Vec4f* fn_801FF654(Actor* a);
 extern "C" Vec4f* fn_801FF65C(Actor* a);
 extern "C" void fn_801FF664(Actor* a, s32 v);
@@ -1490,7 +1405,6 @@ extern "C" void fn_801FF6D8(Actor* a, s32 v);
 extern "C" void fn_801FF6E0(Actor* a, s32 v);
 extern "C" void fn_801FF6E8(Actor* a, s32 v);
 extern "C" void fn_801FF6F0(Actor* a, Vec* v);
-extern "C" void fn_801FF704(Actor* a, Vec* v);
 extern "C" void fn_801FF720(Actor* a, s32 v);
 extern "C" void fn_801FF728(Actor* a, s32 v);
 extern "C" Vec* fn_801FF730(Actor* a);
@@ -2931,7 +2845,7 @@ extern "C" s32 Actor_CreateByID(ActorMgr* mgr, s32 id, s32 owner, Vec* pos, u32 
         fn_80457840(mgr->links[i], fn_801FF730(mgr->actors[i]));
         fn_801FF728(mgr->actors[i], mgr->serial);
         fn_801FF720(mgr->actors[i], i);
-        fn_801FF704(mgr->actors[i], pos);
+        mgr->actors[i]->setPos(*(JGeometry::TVec3<f32>*)pos);
         fn_801FF6F0(mgr->actors[i], pos);
         fn_801FF6E8(mgr->actors[i], id);
         fn_801FF6E0(mgr->actors[i], owner);
@@ -2956,14 +2870,22 @@ extern "C" s32 Actor_CreateByID(ActorMgr* mgr, s32 id, s32 owner, Vec* pos, u32 
         ((ActorVt*)mgr->actors[i])->v01();
         if (fn_801FF65C(mgr->actors[i])->x == lbl_8053F830 && fn_801FF65C(mgr->actors[i])->y == lbl_8053F830 &&
             fn_801FF65C(mgr->actors[i])->z == lbl_8053F830 && fn_801FF65C(mgr->actors[i])->w == lbl_8053F830) {
-            fn_801FF630(mgr->actors[i], fn_801FF654(mgr->actors[i]));
+            mgr->actors[i]->setBox70(*(ActorBox*)fn_801FF654(mgr->actors[i]));
         }
         break;
     }
     return result;
 }
 
-extern "C" void fn_801FF630(Actor* a, Vec4f* v) { *(Quad*)((u8*)a + 0x70) = *(Quad*)v; }
+// Actor+0x60 / +0x70: two 4-float boxes (copied as two float pairs).
+struct ActorBox {
+    Quad q;
+};
+struct ActorBoxView {
+    u8 pad[0x70];
+    ActorBox m70;
+};
+void Actor::setBox70(const ActorBox& box) { ((ActorBoxView*)this)->m70 = box; }
 extern "C" Vec4f* fn_801FF654(Actor* a) { return (Vec4f*)((u8*)a + 0x60); }
 extern "C" Vec4f* fn_801FF65C(Actor* a) { return (Vec4f*)((u8*)a + 0x70); }
 extern "C" void fn_801FF664(Actor* a, s32 v) { *(s32*)((u8*)a + 0x110) = v; }
@@ -2981,9 +2903,14 @@ extern "C" void fn_801FF6D8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x8) = v; }
 extern "C" void fn_801FF6E0(Actor* a, s32 v) { *(s32*)((u8*)a + 0x4) = v; }
 extern "C" void fn_801FF6E8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x1A0) = v; }
 extern "C" void fn_801FF6F0(Actor* a, Vec* v) { JGeometry::setTVec3f(&v->x, (f32*)((u8*)a + 0x24)); }
-extern "C" void fn_801FF704(Actor* a, Vec* v) {
-    JGeometry::setTVec3f(&v->x, (f32*)((u8*)a + 0xC));
-    JGeometry::setTVec3f(&v->x, (f32*)((u8*)a + 0x18));
+struct ActorPosView {
+    u8 pad[0xC];
+    JGeometry::TVec3<f32> pos;
+    JGeometry::TVec3<f32> oldPos;
+};
+void Actor::setPos(const JGeometry::TVec3<f32>& v) {
+    ((ActorPosView*)this)->pos = v;
+    ((ActorPosView*)this)->oldPos = v;
 }
 extern "C" void fn_801FF720(Actor* a, s32 v) { *(s32*)((u8*)a + 0x19C) = v; }
 extern "C" void fn_801FF728(Actor* a, s32 v) { *(s32*)((u8*)a + 0x198) = v; }
@@ -2991,7 +2918,6 @@ extern "C" Vec* fn_801FF730(Actor* a) { return (Vec*)((u8*)a + 0xC); }
 extern "C" void fn_801FF738(ActorSlotLink* l) { *((u8*)l + 0x31) = 1; }
 
 // ---- Gsck_ctor_801FF744.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA800[];
 
 
@@ -3000,7 +2926,6 @@ GSCK::GSCK() {
 }
 
 // ---- Mrtc_ctor_801FF780.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD278[];
 
 
@@ -3009,16 +2934,14 @@ MRTC::MRTC() {
 }
 
 // ---- Stgn_ctor_801FF7BC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
-extern void* lbl_804AA7A8[];
+extern void* __vt__4STGN[];
 
 
 STGN::STGN() {
-    *(void**)this = lbl_804AA7A8;
+    *(void**)this = __vt__4STGN;
 }
 
 // ---- Rins_ctor_801FF7F8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD220[];
 
 
@@ -3027,7 +2950,6 @@ RINS::RINS() {
 }
 
 // ---- Wpwl_ctor_801FF834.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE948[];
 
 
@@ -3036,7 +2958,6 @@ WPWL::WPWL() {
 }
 
 // ---- Pss2_ctor_801FF870.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE8F4[];
 
 
@@ -3045,7 +2966,6 @@ PSS2::PSS2() {
 }
 
 // ---- Tbo2_ctor_801FF918.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA750[];
 
 
@@ -3054,7 +2974,6 @@ TBO2::TBO2() {
 }
 
 // ---- Tbgn_ctor_801FF954.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA6F8[];
 
 
@@ -3063,7 +2982,6 @@ TBGN::TBGN() {
 }
 
 // ---- Iceb_ctor_801FF990.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE888[];
 
 
@@ -3072,7 +2990,6 @@ ICEB::ICEB() {
 }
 
 // ---- Dmyk_ctor_801FF9CC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA6A0[];
 
 
@@ -3081,7 +2998,6 @@ DMYK::DMYK() {
 }
 
 // ---- Jpe2_ctor_801FFA08.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD1C8[];
 
 
@@ -3090,7 +3006,6 @@ JPE2::JPE2() {
 }
 
 // ---- Endr_ctor_801FFA44.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE830[];
 
 
@@ -3099,7 +3014,6 @@ ENDR::ENDR() {
 }
 
 // ---- Tfl2_ctor_801FFA80.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA628[];
 
 
@@ -3109,7 +3023,6 @@ TFL2::TFL2() {
 
 // ---- Losw_ctor_801FFABC.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CB58[];
 
 
@@ -3119,7 +3032,6 @@ LOSW::LOSW() {
 }
 
 // ---- Pswk_ctor_801FFB00.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE5C8[];
 
 
@@ -3128,7 +3040,6 @@ PSWK::PSWK() {
 }
 
 // ---- Sibt_ctor_801FFB3C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CB04[];
 
 
@@ -3137,7 +3048,6 @@ SIBT::SIBT() {
 }
 
 // ---- Pswb_ctor_801FFB78.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE574[];
 
 
@@ -3148,7 +3058,7 @@ PSWB::PSWB() {
 // ---- Glwp_ctor_801FFBB4.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A39DC[];
 
 
@@ -3158,7 +3068,6 @@ GEWP::GEWP() : Actor() {
 }
 
 // ---- Snpc_ctor_801FFC0C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAFB8[];
 
 
@@ -3167,12 +3076,11 @@ SNPC::SNPC() {
 }
 
 // ---- Tjij_ctor_801FFC48.cpp ----
-extern "C" void* Actor_ctor(void* this_);
-extern void* lbl_804AE508[];
+extern void* __vt__4TJIJ[];
 
 
 TJIJ::TJIJ() {
-    *(void**)this = lbl_804AE508;
+    *(void**)this = __vt__4TJIJ;
 }
 
 // ---- Mrta_ctor_801FFC84.cpp ----
@@ -3182,7 +3090,7 @@ extern "C" void fn_801FFCDC(void);
 extern void* lbl_804ACD70[];
 
 
-MRTA::MRTA() : Actor_21() {
+MRTA::MRTA() : Actor() {
     *(void**)this = lbl_804ACD70;
     __construct_array((char*)this + 0x268, (void*)fn_801FFCDC, 0, 0x14, 4);
 }
@@ -3192,7 +3100,6 @@ MRTA::MRTA() : Actor_21() {
 extern "C" void fn_801FFCDC(void) {}
 
 // ---- Swdl_ctor_801FFCE0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA590[];
 
 
@@ -3201,11 +3108,10 @@ SWDL::SWDL() {
 }
 
 // ---- fn_801FFD1C_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE7D8[];
 
 extern "C" void* fn_801FFD1C(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804AE7D8;
     return this_;
 }
@@ -3213,11 +3119,11 @@ extern "C" void* fn_801FFD1C(void* this_) {
 // ---- fn_801FFD58_ctor.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804AE4B0[];
 
 
-fn_801FFD58_actor::fn_801FFD58_actor() : Actor_25() {
+fn_801FFD58_actor::fn_801FFD58_actor() : Actor() {
     *(void**)this = lbl_804AE4B0;
     __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
     __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 4);
@@ -3226,7 +3132,6 @@ fn_801FFD58_actor::fn_801FFD58_actor() : Actor_25() {
 }
 
 // ---- Elk2_ctor_801FFE04.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE338[];
 
 
@@ -3235,7 +3140,6 @@ ELK2::ELK2() {
 }
 
 // ---- Ptmi_ctor_801FFE40.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE780[];
 
 
@@ -3245,7 +3149,6 @@ PTMI::PTMI() {
 
 // ---- Mrmt_ctor_801FFE7C.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049EA88[];
 
 
@@ -3263,7 +3166,6 @@ MRMT::MRMT() {
 
 // ---- Ltev_ctor_801FFEE0.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA4F0[];
 
 
@@ -3273,7 +3175,6 @@ FOEV::FOEV() {
 }
 
 // ---- Rsnp_ctor_801FFF24.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACD18[];
 
 
@@ -3283,7 +3184,6 @@ RSNP::RSNP() {
 
 // ---- Ogst_ctor_801FFF60.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049EA00[];
 
 
@@ -3294,7 +3194,6 @@ OGST::OGST() {
 
 // ---- Icob_ctor_801FFFA4.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E9A8[];
 
 
@@ -3304,7 +3203,6 @@ ICOB::ICOB() {
 }
 
 // ---- Emsk_ctor_801FFFE8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA498[];
 
 
@@ -3313,7 +3211,6 @@ ELSK::ELSK() {
 }
 
 // ---- Tutm_ctor_80200024.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACBF0[];
 
 
@@ -3322,11 +3219,10 @@ TUTM::TUTM() {
 }
 
 // ---- fn_80200060_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACC68[];
 
 extern "C" void* fn_80200060(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804ACC68;
     return this_;
 }
@@ -3337,13 +3233,12 @@ extern "C" void fn_801EB950(void*);
 extern void* lbl_804ACCC0[];
 
 
-TUGF::TUGF() : Actor_36() {
+TUGF::TUGF() : Actor() {
     *(void**)this = lbl_804ACCC0;
     fn_801EB950((char*)this + 0x230);
 }
 
 // ---- Leaf_ctor_802000E0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE2E0[];
 
 
@@ -3352,7 +3247,6 @@ LEAF::LEAF() {
 }
 
 // ---- Lfgn_ctor_8020011C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE288[];
 
 
@@ -3361,7 +3255,6 @@ LFGN::LFGN() {
 }
 
 // ---- Thcl_ctor_80200158.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7C40[];
 
 
@@ -3370,7 +3263,6 @@ THCL::THCL() {
 }
 
 // ---- Agbw_ctor_80200194.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA440[];
 
 
@@ -3379,7 +3271,6 @@ AGBW::AGBW() {
 }
 
 // ---- Svgt_ctor_802001D0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACB98[];
 
 
@@ -3388,7 +3279,6 @@ SVGT::SVGT() {
 }
 
 // ---- Tmi2_ctor_8020020C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE728[];
 
 
@@ -3397,7 +3287,6 @@ TMI2::TMI2() {
 }
 
 // ---- Safu_ctor_80200248.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3948[];
 
 
@@ -3407,7 +3296,6 @@ SAFU::SAFU() {
 
 // ---- Fdwp_ctor_80200284.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E8F8[];
 
 
@@ -3420,7 +3308,6 @@ FDWP::FDWP() {
 }
 
 // ---- Twev_ctor_802002D4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CA40[];
 
 
@@ -3429,16 +3316,14 @@ TWEV::TWEV() {
 }
 
 // ---- Dwap_ctor_80200310.cpp ----
-extern "C" void* Actor_ctor(void* this_);
-extern void* lbl_8049C9E8[];
+extern void* __vt__4DWAP[];
 
 
 DWAP::DWAP() {
-    *(void**)this = lbl_8049C9E8;
+    *(void**)this = __vt__4DWAP;
 }
 
 // ---- Tooi_ctor_8020034C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACB40[];
 
 
@@ -3447,7 +3332,6 @@ TOOI::TOOI() {
 }
 
 // ---- Chsw_ctor_80200388.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA3E8[];
 
 
@@ -3458,17 +3342,16 @@ CHSW::CHSW() {
 // ---- Tlwp_ctor_802003C4.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A38D4[];
 
 
-TLWP::TLWP() : Actor_49() {
+TLWP::TLWP() : Actor() {
     *(void**)this = lbl_804A38D4;
     __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Jwlk_ctor_8020041C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AABA8[];
 
 
@@ -3478,7 +3361,6 @@ JWLK::JWLK() {
 
 // ---- Rbpn_ctor_80200458.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E848[];
 
 
@@ -3493,7 +3375,6 @@ RBPN::RBPN() {
 }
 
 // ---- Psw2_ctor_802004B0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE230[];
 
 
@@ -3508,7 +3389,7 @@ extern "C" void fn_80200544(void);
 extern void* lbl_804AA350[];
 
 
-GNEF::GNEF() : Actor_53() {
+GNEF::GNEF() : Actor() {
     *(void**)this = lbl_804AA350;
     __construct_array((char*)this + 0x27c, (void*)fn_80200544, 0, 0x14, 4);
 }
@@ -3518,7 +3399,6 @@ GNEF::GNEF() : Actor_53() {
 extern "C" void fn_80200544(void) {}
 
 // ---- Stpn_ctor_80200548.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA2D8[];
 
 
@@ -3527,7 +3407,6 @@ STPN::STPN() {
 }
 
 // ---- Tomi_ctor_80200584.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE6D0[];
 
 
@@ -3536,7 +3415,6 @@ SSMI::SSMI() {
 }
 
 // ---- Medm_ctor_802005C0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE678[];
 
 
@@ -3545,7 +3423,6 @@ MEDM::MEDM() {
 }
 
 // ---- Sdsm_ctor_802005FC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA280[];
 
 
@@ -3554,7 +3431,6 @@ SDSM::SDSM() {
 }
 
 // ---- Bck2_ctor_80200638.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE620[];
 
 
@@ -3563,7 +3439,6 @@ BCK2::BCK2() {
 }
 
 // ---- Svtg_ctor_80200674.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAB40[];
 
 
@@ -3572,7 +3447,6 @@ SPTG::SPTG() {
 }
 
 // ---- Dnav_ctor_802006B0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ADFE8[];
 
 
@@ -3581,7 +3455,6 @@ DNAV::DNAV() {
 }
 
 // ---- Zomo_ctor_802006EC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA228[];
 
 
@@ -3590,7 +3463,6 @@ ZOMO::ZOMO() {
 }
 
 // ---- Zdco_ctor_80200728.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A375C[];
 
 
@@ -3599,11 +3471,10 @@ ZDCO::ZDCO() {
 }
 
 // ---- fn_80200764_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3698[];
 
 extern "C" void* fn_80200764(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804A3698;
     return this_;
 }
@@ -3611,17 +3482,16 @@ extern "C" void* fn_80200764(void* this_) {
 // ---- Zld3_ctor_802007A0.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A35AC[];
 
 
-ZLD3::ZLD3() : Actor_65() {
+ZLD3::ZLD3() : Actor() {
     *(void**)this = lbl_804A35AC;
     __construct_array((char*)this + 0x288, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Oblf_ctor_802007F8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACA00[];
 
 
@@ -3630,7 +3500,6 @@ OBLF::OBLF() {
 }
 
 // ---- Gen3_ctor_80200834.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA1D0[];
 
 
@@ -3639,7 +3508,6 @@ GEN3::GEN3() {
 }
 
 // ---- Egol_ctor_80200870.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3548[];
 
 
@@ -3650,17 +3518,16 @@ EGOL::EGOL() {
 // ---- Ynsw_ctor_802008AC.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804AC9A8[];
 
 
-YNSW::YNSW() : Actor_69() {
+YNSW::YNSW() : Actor() {
     *(void**)this = lbl_804AC9A8;
     __construct_array((char*)this + 0x254, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Gmtb_ctor_80200904.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAAE8[];
 
 
@@ -3669,7 +3536,6 @@ GMTB::GMTB() {
 }
 
 // ---- Gmbl_ctor_80200940.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAA70[];
 
 
@@ -3680,11 +3546,11 @@ GMBL::GMBL() {
 // ---- Eetc_ctor_8020097C.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804ADF28[];
 
 
-EETC::EETC() : Actor_72() {
+EETC::EETC() : Actor() {
     *(void**)this = lbl_804ADF28;
     __construct_array((char*)this + 0x27c, (void*)fn_8003B2CC, 0, 0xc, 3);
     __construct_array((char*)this + 0x2a0, (void*)fn_8003B2CC, 0, 0xc, 3);
@@ -3699,7 +3565,7 @@ void fn_80200A80(void);
 extern void* lbl_804AC950[];
 
 
-RCK2::RCK2() : Actor_73() {
+RCK2::RCK2() : Actor() {
     *(void**)this = lbl_804AC950;
     __construct_array((char*)this + 0x260, (void*)fn_80200A84, 0, 0x18, 8);
     __construct_array((char*)this + 0x320, (void*)fn_80200A80, 0, 0x14, 4);
@@ -3720,7 +3586,7 @@ extern "C" void InitDefaultRecord(void*);
 extern void* lbl_804ADAC8[];
 
 
-EOWL::EOWL() : Actor_75() {
+EOWL::EOWL() : Actor() {
     *(void**)this = lbl_804ADAC8;
     InitDefaultRecord((char*)this + 0x2a0);
 }
@@ -3728,11 +3594,11 @@ EOWL::EOWL() : Actor_75() {
 // ---- Dmtw_ctor_80200ACC.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_8049E770[];
 
 
-DMTW::DMTW() : Actor_76() {
+DMTW::DMTW() : Actor() {
     *(void**)this = lbl_8049E770;
     __construct_array((char*)this + 0x25c, (void*)fn_8003B2CC, 0, 0xc, 6);
     __construct_array((char*)this + 0x2c8, (void*)fn_8003B2CC, 0, 0xc, 4);
@@ -3741,7 +3607,6 @@ DMTW::DMTW() : Actor_76() {
 }
 
 // ---- Smri_ctor_80200B78.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA9F0[];
 
 
@@ -3761,7 +3626,6 @@ SMRI::SMRI() {
 // base class. Identified via the Actor_CreateByID dispatcher sweep (see
 // reference_fsa_full_dispatch_sweep.md).
 
-extern "C" void* Actor_ctor(void* this_);
 extern "C" void* lbl_804A5958[];
 extern "C" void* lbl_804AD858[];
 
@@ -3790,7 +3654,6 @@ extern "C" void* fn_80200BFC(void* this_, s16 freeFlag) {
 }
 
 // ---- Dtlk_ctor_80200C5C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B1A48[];
 
 
@@ -3799,7 +3662,6 @@ DTLK::DTLK() {
 }
 
 // ---- Tkra_ctor_80200C98.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA178[];
 
 
@@ -3808,7 +3670,6 @@ TKRA::TKRA() {
 }
 
 // ---- Okam_ctor_80200CD4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3448[];
 
 
@@ -3819,17 +3680,16 @@ OKAM::OKAM() {
 // ---- Ttat_ctor_80200D10.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A2FB0[];
 
 
-TTAT::TTAT() : Actor_83() {
+TTAT::TTAT() : Actor() {
     *(void**)this = lbl_804A2FB0;
     __construct_array((char*)this + 0x280, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Goma_ctor_80200D68.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A307C[];
 
 
@@ -3838,7 +3698,6 @@ GNMA::GNMA() {
 }
 
 // ---- Ddgo_ctor_80200DA4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3334[];
 
 
@@ -3847,7 +3706,6 @@ DDGO::DDGO() {
 }
 
 // ---- Endm_ctor_80200DE0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA0FC[];
 
 
@@ -3856,7 +3714,6 @@ ENDM::ENDM() {
 }
 
 // ---- Lcls_ctor_80200E1C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA008[];
 
 
@@ -3865,7 +3722,6 @@ LCLS::LCLS() {
 }
 
 // ---- Glbs_ctor_80200E58.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA060[];
 
 
@@ -3874,7 +3730,6 @@ GLBS::GLBS() {
 }
 
 // ---- Emik_ctor_80200E94.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A5958[];
 extern void* lbl_804AD5B8[];
 
@@ -3885,7 +3740,6 @@ EMIK::EMIK() {
 }
 
 // ---- Ezld_ctor_80200EDC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A5958[];
 extern void* lbl_804AD6F0[];
 
@@ -3896,7 +3750,6 @@ EZLD::EZLD() {
 }
 
 // ---- Enpc_ctor_80200F24.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD48C[];
 
 
@@ -3907,11 +3760,11 @@ ENPC::ENPC() {
 // ---- Hbb2_ctor_80200F60.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A2EC0[];
 
 
-HBB2::HBB2() : Actor_92() {
+HBB2::HBB2() : Actor() {
     *(void**)this = lbl_804A2EC0;
     __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 0x28);
 }
@@ -3919,17 +3772,16 @@ HBB2::HBB2() : Actor_92() {
 // ---- Nwok_ctor_80200FB8.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804AC8C0[];
 
 
-NWOK::NWOK() : Actor_93() {
+NWOK::NWOK() : Actor() {
     *(void**)this = lbl_804AC8C0;
     __construct_array((char*)this + 0x290, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Saya_ctor_80201010.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2E30[];
 
 
@@ -3938,7 +3790,6 @@ RYYA::RYYA() {
 }
 
 // ---- Mjgr_ctor_8020104C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9FB0[];
 
 
@@ -3947,7 +3798,6 @@ MJGR::MJGR() {
 }
 
 // ---- Htmk_ctor_80201088.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC868[];
 
 
@@ -3956,7 +3806,6 @@ HTMK::HTMK() {
 }
 
 // ---- Enbz_ctor_802010C4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2CB0[];
 
 
@@ -3965,7 +3814,6 @@ ENBZ::ENBZ() {
 }
 
 // ---- Pnp2_ctor_80201100.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9F58[];
 
 
@@ -3974,7 +3822,6 @@ PNP2::PNP2() {
 }
 
 // ---- Sslf_ctor_8020113C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD348[];
 
 
@@ -3983,7 +3830,6 @@ SSLF::SSLF() {
 }
 
 // ---- Bemn_ctor_80201178.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC810[];
 
 
@@ -3992,7 +3838,6 @@ BEMN::BEMN() {
 }
 
 // ---- Fobe_ctor_802011B4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC7B8[];
 
 
@@ -4001,7 +3846,6 @@ FOBE::FOBE() {
 }
 
 // ---- Sen2_ctor_802011F0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9F00[];
 
 
@@ -4011,7 +3855,6 @@ SEN2::SEN2() {
 
 // ---- Crgn_ctor_8020122C.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E5B8[];
 
 
@@ -4027,7 +3870,6 @@ CRGN::CRGN() {
 }
 
 // ---- Tenn_ctor_80201294.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2BF4[];
 
 
@@ -4036,7 +3878,6 @@ TENN::TENN() {
 }
 
 // ---- Wave_ctor_802012D0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9EA8[];
 
 
@@ -4045,7 +3886,6 @@ WAVE::WAVE() {
 }
 
 // ---- Form_ctor_8020130C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7BE8[];
 
 
@@ -4054,7 +3894,6 @@ FORM::FORM() {
 }
 
 // ---- Spbg_ctor_80201348.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC760[];
 
 
@@ -4063,7 +3902,6 @@ SPBG::SPBG() {
 }
 
 // ---- Szsc_ctor_802013D8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC708[];
 
 
@@ -4072,7 +3910,6 @@ SZSC::SZSC() {
 }
 
 // ---- Nnjn_ctor_80201414.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC6B0[];
 
 
@@ -4081,7 +3918,6 @@ NNJN::NNJN() {
 }
 
 // ---- Syky_ctor_80201450.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2B18[];
 
 
@@ -4090,7 +3926,6 @@ SYKY::SYKY() {
 }
 
 // ---- Anho_ctor_8020148C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C970[];
 
 
@@ -4099,17 +3934,15 @@ ANHO::ANHO() {
 }
 
 // ---- fn_802014C8_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9E50[];
 
 extern "C" void* fn_802014C8(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804A9E50;
     return this_;
 }
 
 // ---- Fish_ctor_80201504.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC658[];
 
 
@@ -4118,7 +3951,6 @@ FISH::FISH() {
 }
 
 // ---- Alce_ctor_80201540.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2AB0[];
 
 
@@ -4127,7 +3959,6 @@ ALCE::ALCE() {
 }
 
 // ---- Zoom_ctor_8020157C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9DF8[];
 
 
@@ -4136,7 +3967,6 @@ ZOOM::ZOOM() {
 }
 
 // ---- Bgmn_ctor_802015B8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9DA0[];
 
 
@@ -4145,7 +3975,6 @@ BGMN::BGMN() {
 }
 
 // ---- Mgya_ctor_802015F4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C8EC[];
 
 
@@ -4154,16 +3983,14 @@ MGYA::MGYA() {
 }
 
 // ---- Gfbs_ctor_80201630.cpp ----
-extern "C" void* Actor_ctor(void* this_);
-extern void* lbl_8049E3A8[];
+extern void* __vt__4GFBS[];
 
 
 GFBS::GFBS() {
-    *(void**)this = lbl_8049E3A8;
+    *(void**)this = __vt__4GFBS;
 }
 
 // ---- Blz2_ctor_802016D8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9D28[];
 
 
@@ -4172,7 +3999,6 @@ BLZ2::BLZ2() {
 }
 
 // ---- Sev2_ctor_80201714.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9CD0[];
 
 
@@ -4182,7 +4008,6 @@ SEV2::SEV2() {
 
 // ---- Rnsw_ctor_80201750.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049DE90[];
 
 
@@ -4196,7 +4021,6 @@ RNSW::RNSW() {
 }
 
 // ---- Senp_ctor_802017A8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9C78[];
 
 
@@ -4205,7 +4029,6 @@ SENP::SENP() {
 }
 
 // ---- Haya_ctor_802017E4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C858[];
 
 
@@ -4214,7 +4037,6 @@ GSYA::GSYA() {
 }
 
 // ---- Brbl_ctor_80201820.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7B90[];
 
 
@@ -4223,7 +4045,6 @@ BRBL::BRBL() {
 }
 
 // ---- Limt_ctor_8020185C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B174C[];
 
 
@@ -4234,11 +4055,11 @@ LIMT::LIMT() {
 // ---- Gol2_ctor_80201898.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A9C20[];
 
 
-GNL2::GNL2() : Actor_126() {
+GNL2::GNL2() : Actor() {
     *(void**)this = lbl_804A9C20;
     __construct_array((char*)this + 0x258, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -4246,11 +4067,11 @@ GNL2::GNL2() : Actor_126() {
 // ---- Beee_ctor_802018F0.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804AC600[];
 
 
-BEEE::BEEE() : Actor_127() {
+BEEE::BEEE() : Actor() {
     *(void**)this = lbl_804AC600;
     __construct_array((char*)this + 0x2a4, (void*)fn_8003B2CC, 0, 0xc, 7);
     __construct_array((char*)this + 0x2f8, (void*)fn_8003B2CC, 0, 0xc, 7);
@@ -4258,7 +4079,6 @@ BEEE::BEEE() : Actor_127() {
 }
 
 // ---- Pssw_ctor_80201980.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7B38[];
 
 
@@ -4273,7 +4093,7 @@ extern "C" void fn_801546E4(void*);
 extern void* lbl_804A7AE0[];
 
 
-HOUS::HOUS() : Actor_129() {
+HOUS::HOUS() : Actor() {
     *(void**)this = lbl_804A7AE0;
     __construct_array((char*)this + 0x2dc, (void*)fn_801546E4, 0, 0x8, 4);
 }
@@ -4281,18 +4101,17 @@ HOUS::HOUS() : Actor_129() {
 // ---- fn_80201A14_ctor.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A2944[];
 
 
-fn_80201A14_actor::fn_80201A14_actor() : Actor_130() {
+fn_80201A14_actor::fn_80201A14_actor() : Actor() {
     *(void**)this = lbl_804A2944;
     __construct_array((char*)this + 0x2a4, (void*)fn_8003B2CC, 0, 0xc, 4);
     __construct_array((char*)this + 0x2d4, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Gnon_ctor_80201A88.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A25F0[];
 
 
@@ -4301,7 +4120,6 @@ GNON::GNON() {
 }
 
 // ---- Bbmb_ctor_80201AC4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC588[];
 
 
@@ -4310,7 +4128,6 @@ BBMB::BBMB() {
 }
 
 // ---- Bbsl_ctor_80201B00.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC4D0[];
 
 
@@ -4319,17 +4136,15 @@ BBSL::BBSL() {
 }
 
 // ---- fn_80201B3C_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9BC8[];
 
 extern "C" void* fn_80201B3C(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804A9BC8;
     return this_;
 }
 
 // ---- Gbao_ctor_80201B78.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B16E0[];
 
 
@@ -4338,7 +4153,6 @@ GBAO::GBAO() {
 }
 
 // ---- Offs_ctor_80201BB4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9B70[];
 
 
@@ -4347,17 +4161,15 @@ OFFS::OFFS() {
 }
 
 // ---- fn_80201BF0_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC388[];
 
 extern "C" void* fn_80201BF0(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804AC388;
     return this_;
 }
 
 // ---- Lots_ctor_80201C2C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC330[];
 
 
@@ -4366,7 +4178,6 @@ LITS::LITS() {
 }
 
 // ---- Stbl_ctor_80201C68.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC2D8[];
 
 
@@ -4377,18 +4188,17 @@ STBL::STBL() {
 // ---- Dgt2_ctor_80201D00.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A1FA0[];
 
 
-DGT2::DGT2() : Actor_140() {
+DGT2::DGT2() : Actor() {
     *(void**)this = lbl_804A1FA0;
     __construct_array((char*)this + 0x288, (void*)fn_8003B2CC, 0, 0xc, 6);
     __construct_array((char*)this + 0x2d0, (void*)fn_8003B2CC, 0, 0xc, 0x14);
 }
 
 // ---- Rvfr_ctor_80201D74.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC250[];
 
 
@@ -4397,7 +4207,6 @@ RVFR::RVFR() {
 }
 
 // ---- Wppa_ctor_80201DB0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC1F8[];
 
 
@@ -4406,7 +4215,6 @@ WPPA::WPPA() {
 }
 
 // ---- Flyo_ctor_80201DEC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC100[];
 
 
@@ -4417,17 +4225,16 @@ FLYO::FLYO() {
 // ---- Bph2_ctor_80201E28.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A1E50[];
 
 
-BPH2::BPH2() : Actor_144() {
+BPH2::BPH2() : Actor() {
     *(void**)this = lbl_804A1E50;
     __construct_array((char*)this + 0x2f8, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Prtc_ctor_80201E80.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9AC8[];
 
 
@@ -4438,17 +4245,16 @@ PRTC::PRTC() {
 // ---- Rasn_ctor_80201EBC.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A7A68[];
 
 
-RASN::RASN() : Actor_146() {
+RASN::RASN() : Actor() {
     *(void**)this = lbl_804A7A68;
     __construct_array((char*)this + 0x238, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Fgn2_ctor_80201F14.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1A98[];
 
 
@@ -4457,7 +4263,6 @@ FGN2::FGN2() {
 }
 
 // ---- Wppr_ctor_80201F50.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC0A8[];
 
 
@@ -4466,7 +4271,6 @@ WPPR::WPPR() {
 }
 
 // ---- Jpen_ctor_80201F8C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC010[];
 
 
@@ -4477,18 +4281,17 @@ JPEN::JPEN() {
 // ---- Wnwn_ctor_80201FC8.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A18E0[];
 
 
-WNWN::WNWN() : Actor_150() {
+WNWN::WNWN() : Actor() {
     *(void**)this = lbl_804A18E0;
     __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 0xa);
     __construct_array((char*)this + 0x30c, (void*)fn_8003B2CC, 0, 0xc, 0xa);
 }
 
 // ---- Urac_ctor_8020203C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9A70[];
 
 
@@ -4497,7 +4300,6 @@ URAC::URAC() {
 }
 
 // ---- Vwmd_ctor_80202078.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9A18[];
 
 
@@ -4506,7 +4308,6 @@ VWMD::VWMD() {
 }
 
 // ---- Tkrm_ctor_802020B4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABAE8[];
 
 
@@ -4515,16 +4316,14 @@ TKRM::TKRM() {
 }
 
 // ---- Bots_ctor_802020F0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
-extern void* lbl_8049C7F0[];
+extern void* __vt__4BOTS[];
 
 
 BOTS::BOTS() {
-    *(void**)this = lbl_8049C7F0;
+    *(void**)this = __vt__4BOTS;
 }
 
 // ---- Tsno_ctor_8020212C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABA90[];
 
 
@@ -4533,7 +4332,6 @@ TSNO::TSNO() {
 }
 
 // ---- Grve_ctor_80202168.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A99C0[];
 
 
@@ -4542,7 +4340,6 @@ FGVE::FGVE() {
 }
 
 // ---- Yasi_ctor_802021A4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9968[];
 
 
@@ -4551,7 +4348,6 @@ YASI::YASI() {
 }
 
 // ---- Btin_ctor_802021E0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A927C[];
 
 
@@ -4560,7 +4356,6 @@ BTIN::BTIN() {
 }
 
 // ---- fn_8020221C_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1888[];
 
 
@@ -4569,7 +4364,6 @@ FAGN::FAGN() {
 }
 
 // ---- fn_80202258_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1790[];
 
 
@@ -4580,7 +4374,6 @@ GDMN::GDMN() {
 }
 
 // ---- fn_8020229C_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1718[];
 
 
@@ -4591,7 +4384,6 @@ RDVR::RDVR() {
 }
 
 // ---- Dsin_ctor_802022E0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB5D8[];
 
 
@@ -4602,18 +4394,17 @@ DSIN::DSIN() {
 // ---- Grok_ctor_8020231C.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A1630[];
 
 
-GROK::GROK() : Actor_163() {
+GROK::GROK() : Actor() {
     *(void**)this = lbl_804A1630;
     __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 4);
     __construct_array((char*)this + 0x2c4, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Sbtn_ctor_80202390.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB580[];
 
 
@@ -4622,7 +4413,6 @@ SBTN::SBTN() {
 }
 
 // ---- Circ_ctor_802023CC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7960[];
 
 
@@ -4631,7 +4421,6 @@ CIRC::CIRC() {
 }
 
 // ---- Flyk_ctor_80202408.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9078[];
 
 
@@ -4640,17 +4429,15 @@ FLYK::FLYK() {
 }
 
 // ---- fn_80202444_ctor.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1318[];
 
 extern "C" void* fn_80202444(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804A1318;
     return this_;
 }
 
 // ---- Plsw_ctor_80202480.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7908[];
 
 
@@ -4661,17 +4448,16 @@ PESW::PESW() {
 // ---- Osin_ctor_802024BC.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804AB528[];
 
 
-OSIN::OSIN() : Actor_169() {
+OSIN::OSIN() : Actor() {
     *(void**)this = lbl_804AB528;
     __construct_array((char*)this + 0x26c, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Puku_ctor_80202514.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A11B8[];
 
 
@@ -4680,7 +4466,6 @@ PUKU::PUKU() {
 }
 
 // ---- Swbm_ctor_80202550.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1160[];
 
 
@@ -4689,7 +4474,6 @@ SWBM::SWBM() {
 }
 
 // ---- Infr_ctor_8020258C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB4C0[];
 
 
@@ -4724,7 +4508,6 @@ ARSH::ARSH() {
 }
 
 // ---- Bmty_ctor_8020264C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB464[];
 
 
@@ -4733,7 +4516,6 @@ BMTY::BMTY() {
 }
 
 // ---- Pcdm_ctor_80202688.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB3A8[];
 
 
@@ -4742,7 +4524,6 @@ PCDM::PCDM() {
 }
 
 // ---- Crtl_ctor_802026C4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB308[];
 
 
@@ -4751,7 +4532,6 @@ CRTL::CRTL() {
 }
 
 // ---- Rdbl_ctor_80202700.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9020[];
 
 
@@ -4760,7 +4540,6 @@ RDBL::RDBL() {
 }
 
 // ---- Onof_ctor_8020273C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8FC8[];
 
 
@@ -4769,7 +4548,6 @@ ONOF::ONOF() {
 }
 
 // ---- Ocfr_ctor_80202778.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB2B0[];
 
 
@@ -4778,7 +4556,6 @@ OCFR::OCFR() {
 }
 
 // ---- Brry_ctor_802027B4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB258[];
 
 
@@ -4787,7 +4564,6 @@ BPRY::BPRY() {
 }
 
 // ---- Lif2_ctor_802027F0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A78B0[];
 
 
@@ -4796,7 +4572,6 @@ LIF2::LIF2() {
 }
 
 // ---- Wdry_ctor_8020282C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB1F0[];
 
 
@@ -4805,7 +4580,6 @@ WDRY::WDRY() {
 }
 
 // ---- Esry_ctor_80202868.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB170[];
 
 
@@ -4814,7 +4588,6 @@ ESRY::ESRY() {
 }
 
 // ---- Shlt_ctor_802028A4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0FF8[];
 
 
@@ -4823,7 +4596,6 @@ SHLT::SHLT() {
 }
 
 // ---- Rank_ctor_802028E0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8F74[];
 
 
@@ -4832,7 +4604,6 @@ RANK::RANK() {
 }
 
 // ---- Hnry_ctor_8020291C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB098[];
 
 
@@ -4841,7 +4612,6 @@ HNRY::HNRY() {
 }
 
 // ---- Bldf_ctor_80202958.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8EF8[];
 
 
@@ -4850,7 +4620,6 @@ BLDF::BLDF() {
 }
 
 // ---- Focs_ctor_80202994.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8EA0[];
 
 
@@ -4859,7 +4628,6 @@ FOCS::FOCS() {
 }
 
 // ---- Pnpc_ctor_802029D0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8E40[];
 
 
@@ -4868,7 +4636,6 @@ PNPC::PNPC() {
 }
 
 // ---- Rail_ctor_80202A0C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C770[];
 
 
@@ -4903,7 +4670,6 @@ ZNSH::ZNSH() {
 }
 
 // ---- Door_ctor_80202ACC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8D88[];
 
 
@@ -4912,7 +4678,6 @@ DOOR::DOOR() {
 }
 
 // ---- Key0_ctor_80202B08.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8CD8[];
 
 
@@ -4921,7 +4686,6 @@ KEY0::KEY0() {
 }
 
 // ---- Lsti_ctor_80202B44.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8C80[];
 
 
@@ -4930,7 +4694,6 @@ LSTI::LSTI() {
 }
 
 // ---- Wizr_ctor_80202B80.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0EDC[];
 
 
@@ -4939,7 +4702,6 @@ WIZR::WIZR() {
 }
 
 // ---- Swnp_ctor_80202BBC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8C28[];
 
 
@@ -4948,7 +4710,6 @@ SWNP::SWNP() {
 }
 
 // ---- Cksw_ctor_80202BF8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8BD0[];
 
 
@@ -4959,17 +4720,16 @@ CKSW::CKSW() {
 // ---- Tngl_ctor_80202C34.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804B0478[];
 
 
-TNGL::TNGL() : Actor_198() {
+TNGL::TNGL() : Actor() {
     *(void**)this = lbl_804B0478;
     __construct_array((char*)this + 0x260, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Stal_ctor_80202C8C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0CD8[];
 
 
@@ -4978,7 +4738,6 @@ STAL::STAL() {
 }
 
 // ---- Wrtc_ctor_80202CC8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C678[];
 
 
@@ -4987,7 +4746,6 @@ WRTC::WRTC() {
 }
 
 // ---- Lwsw_ctor_80202D04.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8B78[];
 
 
@@ -4997,7 +4755,6 @@ LWSW::LWSW() {
 
 // ---- Bwrt_ctor_80202D40.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C718[];
 
 
@@ -5007,7 +4764,6 @@ BWRT::BWRT() {
 }
 
 // ---- Bfin_ctor_80202D84.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B0380[];
 
 
@@ -5016,7 +4772,6 @@ BFIN::BFIN() {
 }
 
 // ---- Wtsw_ctor_80202DC0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8B20[];
 
 
@@ -5025,7 +4780,6 @@ WTSW::WTSW() {
 }
 
 // ---- Znsw_ctor_80202DFC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8AC8[];
 
 
@@ -5034,7 +4788,6 @@ ZNSW::ZNSW() {
 }
 
 // ---- Lplk_ctor_80202E38.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C578[];
 
 
@@ -5043,7 +4796,6 @@ LPLK::LPLK() {
 }
 
 // ---- Iwag_ctor_80202E74.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C46C[];
 
 
@@ -5052,7 +4804,6 @@ IWAG::IWAG() {
 }
 
 // ---- Oiwa_ctor_80202EB0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C4C0[];
 
 
@@ -5061,7 +4812,6 @@ OIWA::OIWA() {
 }
 
 // ---- Nzmi_ctor_80202EEC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C400[];
 
 
@@ -5070,7 +4820,6 @@ NZMI::NZMI() {
 }
 
 // ---- Blze_ctor_80202F28.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8A50[];
 
 
@@ -5079,7 +4828,6 @@ BLZE::BLZE() {
 }
 
 // ---- Fire_ctor_80202F64.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A89F0[];
 
 
@@ -5088,7 +4836,6 @@ FIRE::FIRE() {
 }
 
 // ---- Niwa_ctor_80202FA0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB8C0[];
 
 
@@ -5097,7 +4844,6 @@ NIWA::NIWA() {
 }
 
 // ---- Bgwc_ctor_80202FDC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8998[];
 
 
@@ -5106,7 +4852,6 @@ BGWC::BGWC() {
 }
 
 // ---- Dosn_ctor_80203018.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8940[];
 
 
@@ -5115,7 +4860,6 @@ DOSN::DOSN() {
 }
 
 // ---- Tlk2_ctor_80203054.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AFAD8[];
 
 
@@ -5124,7 +4868,6 @@ TLK2::TLK2() {
 }
 
 // ---- Slr4_ctor_80203090.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0B90[];
 
 
@@ -5133,7 +4876,6 @@ SLR4::SLR4() {
 }
 
 // ---- Sbal_ctor_802030CC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB9C0[];
 
 
@@ -5142,7 +4884,6 @@ SBAL::SBAL() {
 }
 
 // ---- Swel_ctor_80203108.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A88E8[];
 
 
@@ -5151,7 +4892,6 @@ SWEL::SWEL() {
 }
 
 // ---- Lift_ctor_80203144.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6F6C[];
 
 
@@ -5160,7 +4900,6 @@ LIFT::LIFT() {
 }
 
 // ---- Ry02_ctor_80203180.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB850[];
 
 
@@ -5169,7 +4908,6 @@ RY02::RY02() {
 }
 
 // ---- Deth_ctor_802031BC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A886C[];
 
 
@@ -5178,7 +4916,6 @@ CRTH::CRTH() {
 }
 
 // ---- Swor_ctor_802031F8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8800[];
 
 
@@ -5187,7 +4924,6 @@ SWOR::SWOR() {
 }
 
 // ---- Popo_ctor_80203234.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0868[];
 
 
@@ -5196,7 +4932,6 @@ POPO::POPO() {
 }
 
 // ---- Wood_ctor_80203270.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A87A8[];
 
 
@@ -5207,17 +4942,16 @@ WOOD::WOOD() {
 // ---- fn_802032AC_ctor.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A0810[];
 
 
-fn_802032AC_actor::fn_802032AC_actor() : Actor_225() {
+fn_802032AC_actor::fn_802032AC_actor() : Actor() {
     *(void**)this = lbl_804A0810;
     __construct_array((char*)this + 0x29c, (void*)fn_8003B2CC, 0, 0xc, 0xa);
 }
 
 // ---- Peff_ctor_80203304.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6E20[];
 
 
@@ -5226,7 +4960,6 @@ PEFF::PEFF() {
 }
 
 // ---- Slsd_ctor_80203340.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A85E0[];
 
 
@@ -5235,7 +4968,6 @@ SLSD::SLSD() {
 }
 
 // ---- Sstn_ctor_8020337C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8750[];
 
 
@@ -5244,7 +4976,6 @@ SSTN::SSTN() {
 }
 
 // ---- Skul_ctor_802033B8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8588[];
 
 
@@ -5253,7 +4984,6 @@ SKUL::SKUL() {
 }
 
 // ---- Talk_ctor_802033F4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF548[];
 
 
@@ -5262,7 +4992,6 @@ TALK::TALK() {
 }
 
 // ---- Trch_ctor_80203430.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8520[];
 
 
@@ -5271,7 +5000,6 @@ TRCH::TRCH() {
 }
 
 // ---- Scre_ctor_8020346C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF4C0[];
 
 
@@ -5280,7 +5008,6 @@ SCRE::SCRE() {
 }
 
 // ---- Spot_ctor_802034A8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A84C8[];
 
 
@@ -5289,7 +5016,6 @@ SPOT::SPOT() {
 }
 
 // ---- Yaji_ctor_802034E4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8470[];
 
 
@@ -5304,7 +5030,7 @@ extern "C" void fn_80203594(void);
 extern void* lbl_804A0738[];
 
 
-BOME::BOME() : Actor_235() {
+BOME::BOME() : Actor() {
     *(void**)this = lbl_804A0738;
     __construct_array((char*)this + 0x274, (void*)fn_80203594, 0, 0x18, 5);
     __construct_array((char*)this + 0x2ec, (void*)fn_80203594, 0, 0x18, 5);
@@ -5315,7 +5041,6 @@ BOME::BOME() : Actor_235() {
 extern "C" void fn_80203594(void) {}
 
 // ---- Kmri_ctor_80203598.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8418[];
 
 
@@ -5324,7 +5049,6 @@ KMRI::KMRI() {
 }
 
 // ---- Tflr_ctor_802035D4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A83A0[];
 
 
@@ -5333,7 +5057,6 @@ TFLR::TFLR() {
 }
 
 // ---- Knbn_ctor_80203610.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF428[];
 
 
@@ -5342,7 +5065,6 @@ KNBN::KNBN() {
 }
 
 // ---- Plas_ctor_8020364C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8338[];
 
 
@@ -5351,7 +5073,6 @@ PLAS::PLAS() {
 }
 
 // ---- Itms_ctor_80203688.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A82A8[];
 
 
@@ -5360,7 +5081,6 @@ ITMS::ITMS() {
 }
 
 // ---- Poon_ctor_802036C4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A06C0[];
 
 
@@ -5369,7 +5089,6 @@ Poon::Poon() {
 }
 
 // ---- Skil_ctor_80203700.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8250[];
 
 
@@ -5378,7 +5097,6 @@ SKIL::SKIL() {
 }
 
 // ---- Mozo_ctor_8020373C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0668[];
 
 
@@ -5387,7 +5105,6 @@ MOZO::MOZO() {
 }
 
 // ---- Bfry_ctor_80203778.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF338[];
 
 
@@ -5396,7 +5113,6 @@ BERY::BERY() {
 }
 
 // ---- Pont_ctor_802037B4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A81C8[];
 
 
@@ -5405,7 +5121,6 @@ PONT::PONT() {
 }
 
 // ---- Arrw_ctor_802037F0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A05E0[];
 
 
@@ -5414,7 +5129,6 @@ ARRW::ARRW() {
 }
 
 // ---- Trap_ctor_8020382C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A04D8[];
 
 
@@ -5423,7 +5137,6 @@ TRAP::TRAP() {
 }
 
 // ---- Thrn_ctor_80203868.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8170[];
 
 
@@ -5433,7 +5146,6 @@ THRN::THRN() {
 
 // ---- Swev_ctor_802038A4.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8638[];
 
 
@@ -5443,7 +5155,6 @@ SWEV::SWEV() {
 }
 
 // ---- Ball_ctor_802038E8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB968[];
 
 
@@ -5454,19 +5165,18 @@ BALL::BALL() {
 // ---- Bpoh_ctor_80203924.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
-extern "C" void fn_8009711C(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
+extern "C" void fn_8009711C(void*); // weak JUtility::TColor::TColor()
 extern void* lbl_804A0440[];
 
 
-BPOH::BPOH() : Actor_252() {
+BPOH::BPOH() : Actor() {
     *(void**)this = lbl_804A0440;
     __construct_array((char*)this + 0x2b8, (void*)fn_8003B2CC, 0, 0xc, 4);
     __construct_array((char*)this + 0x2f4, (void*)fn_8009711C, 0, 0x4, 3);
 }
 
 // ---- Shtr_ctor_80203998.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8118[];
 
 
@@ -5475,7 +5185,6 @@ SHTR::SHTR() {
 }
 
 // ---- Fary_ctor_802039D4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A03B8[];
 
 
@@ -5484,7 +5193,6 @@ EZRY::EZRY() {
 }
 
 // ---- Swt4_ctor_80203A10.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A80A0[];
 
 
@@ -5493,7 +5201,6 @@ SWT4::SWT4() {
 }
 
 // ---- Ryrn_ctor_80203A4C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8010[];
 
 
@@ -5502,7 +5209,6 @@ RYRN::RYRN() {
 }
 
 // ---- Mtbo_ctor_80203A88.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF018[];
 
 
@@ -5511,7 +5217,6 @@ MTBO::MTBO() {
 }
 
 // ---- Tkyu_ctor_80203AC4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABA38[];
 
 
@@ -5520,7 +5225,6 @@ TKYU::TKYU() {
 }
 
 // ---- Flme_ctor_80203B00.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0330[];
 
 
@@ -5529,7 +5233,6 @@ FLME::FLME() {
 }
 
 // ---- Keth_ctor_80203B3C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A02B8[];
 
 
@@ -5538,7 +5241,6 @@ KETH::KETH() {
 }
 
 // ---- Boyo_ctor_80203B78.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0260[];
 
 
@@ -5547,7 +5249,6 @@ BOYO::BOYO() {
 }
 
 // ---- Imup_ctor_80203BB4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A01D0[];
 
 
@@ -5556,17 +5257,15 @@ IMUP::IMUP() {
 }
 
 // ---- Slr2_ctor_80203BF0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A00C8[];
 
 extern "C" void* fn_80203BF0(void* this_) {
-    Actor_ctor(this_);
+    __ct__5ActorFv(this_);
     *(void**)this_ = lbl_804A00C8;
     return this_;
 }
 
 // ---- Tkta_ctor_80203C2C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049FD50[];
 
 
@@ -5575,7 +5274,6 @@ TKTA::TKTA() {
 }
 
 // ---- Expl_ctor_80203C68.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7FB8[];
 
 
@@ -5584,7 +5282,6 @@ EXPL::EXPL() {
 }
 
 // ---- Slr1_ctor_80203CA4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049FCA0[];
 
 
@@ -5593,7 +5290,6 @@ SLR1::SLR1() {
 }
 
 // ---- Swth_ctor_80203CE0.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7F38[];
 
 
@@ -5602,7 +5298,6 @@ SWTH::SWTH() {
 }
 
 // ---- Hbmb_ctor_80203D1C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F784[];
 
 
@@ -5611,7 +5306,6 @@ HBMB::HBMB() {
 }
 
 // ---- Hino_ctor_80203D58.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F9B4[];
 
 
@@ -5622,17 +5316,16 @@ HINO::HINO() {
 // ---- Goal_ctor_80203D94.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_804A7EB0[];
 
 
-GOAL::GOAL() : Actor_270() {
+GOAL::GOAL() : Actor() {
     *(void**)this = lbl_804A7EB0;
     __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
 
 // ---- Bhrt_ctor_80203DEC.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7E58[];
 
 
@@ -5643,18 +5336,17 @@ BHRT::BHRT() {
 // ---- Dgtl_ctor_80203E28.cpp ----
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
-extern "C" void fn_8003B2CC(void*);
+extern "C" void fn_8003B2CC(void*); // weak JGeometry::TVec3<f32>::TVec3()
 extern void* lbl_8049F6C8[];
 
 
-DGTL::DGTL() : Actor_272() {
+DGTL::DGTL() : Actor() {
     *(void**)this = lbl_8049F6C8;
     __construct_array((char*)this + 0x2c0, (void*)fn_8003B2CC, 0, 0xc, 0xa);
     __construct_array((char*)this + 0x3d8, (void*)fn_8003B2CC, 0, 0xc, 0x50);
 }
 
 // ---- Oktm_ctor_80203E9C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F5D8[];
 
 
@@ -5663,7 +5355,6 @@ OKTM::OKTM() {
 }
 
 // ---- Hart_ctor_80203ED8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F4F0[];
 
 
@@ -5672,7 +5363,6 @@ HART::HART() {
 }
 
 // ---- Gold_ctor_80203F14.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB660[];
 
 
@@ -5681,7 +5371,6 @@ GNLD::GNLD() {
 }
 
 // ---- Ddrk_ctor_80203F50.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F498[];
 
 
@@ -5690,7 +5379,6 @@ DBRK::DBRK() {
 }
 
 // ---- Bzbr_ctor_80203F8C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F444[];
 
 
@@ -5699,7 +5387,6 @@ BZBR::BZBR() {
 }
 
 // ---- Blck_ctor_80203FC8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7A10[];
 
 
@@ -5708,7 +5395,6 @@ BLCK::BLCK() {
 }
 
 // ---- Peac_ctor_80204004.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F3B0[];
 
 
@@ -5717,7 +5403,6 @@ PEAC::PEAC() {
 }
 
 // ---- Tubo_ctor_80204040.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9428[];
 
 
@@ -5726,7 +5411,6 @@ TUBO::TUBO() {
 }
 
 // ---- Rock_ctor_8020407C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9480[];
 
 
@@ -5735,7 +5419,6 @@ ROCK::ROCK() {
 }
 
 // ---- Warp_ctor_802040B8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6DC8[];
 
 
@@ -5744,7 +5427,6 @@ WARP::WARP() {
 }
 
 // ---- Bord_ctor_802040F4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A94D8[];
 
 
@@ -5753,7 +5435,6 @@ BORD::BORD() {
 }
 
 // ---- Ston_ctor_80204130.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A93D0[];
 
 
@@ -5762,7 +5443,6 @@ STON::STON() {
 }
 
 // ---- Gene_ctor_8020416C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9328[];
 
 
@@ -5771,7 +5451,6 @@ GENE::GENE() {
 }
 
 // ---- Gras_ctor_802041A8.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A92D0[];
 
 
@@ -5780,7 +5459,6 @@ FGAS::FGAS() {
 }
 
 // ---- Pooh_ctor_802041E4.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F330[];
 
 
@@ -5789,7 +5467,6 @@ POOH::POOH() {
 }
 
 // ---- Amos_ctor_80204220.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F260[];
 
 
@@ -5798,7 +5475,6 @@ AMOS::AMOS() {
 }
 
 // ---- Okta_ctor_8020425C.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F208[];
 
 
@@ -5807,12 +5483,106 @@ OKTA::OKTA() {
 }
 
 // ---- Rupy_ctor_80204298.cpp ----
-extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB6D8[];
 
 
 RUPY::RUPY() {
     *(void**)this = lbl_804AB6D8;
+}
+
+
+// ---- CRNV / DMNR / OPGA / DMGA ctors, ARSH / ZNSH deleting dtors ----
+extern void* lbl_8049ED30[];
+extern void* lbl_8049E500[];
+extern void* lbl_8049E350[];
+extern void* lbl_8049DD68[];
+
+CRNV::CRNV() {
+    *(void**)this = lbl_8049ED30;
+    m230 = 0;
+    m234 = 0;
+    m238 = -1;
+    m23C = lbl_8053F830;
+    fn_801D267C(&m240);
+    m278 = 0;
+    m27C = 0;
+}
+
+DMNR::DMNR() {
+    *(void**)this = lbl_8049E500;
+    m230 = 0;
+    m234 = lbl_8053F830;
+    m238 = lbl_8053F830;
+    m23C = 0;
+}
+
+OPGA::OPGA() {
+    *(void**)this = lbl_8049E350;
+    m230 = 0;
+    m231 = 0;
+    m234 = 0;
+    m238 = 0;
+    m23C = -1;
+    m240 = -1;
+    fn_801D267C(&m244);
+    fn_801D267C(&m27C);
+}
+
+DMGA::DMGA() {
+    *(void**)this = lbl_8049DD68;
+    m230 = 0;
+    m234 = 0;
+    m238 = lbl_8053F830;
+    m23C = lbl_8053F830;
+    fn_801D267C(&m274);
+}
+
+// ZNSH / ARSH deleting dtors (inlined ItemBase-style dtor chain).
+void operator delete(void* p);
+extern "C" void* fn_802042D4(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        char* p = (char*)this_;
+        *(void**)p = lbl_804A5810;
+        if (this_ != 0) {
+            *(void**)p = lbl_804A48B0;
+            if (this_ != 0) {
+                *(void**)p = lbl_804A4808;
+                if (p + 0x270 != 0) {
+                    if (p + 0x294 != 0) {
+                        *(void**)(p + 0x294) = lbl_8049CC34;
+                    }
+                }
+                __dt__5ActorFv(this_, 0);
+            }
+        }
+        if (freeFlag > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
+}
+
+extern "C" void* fn_80204374(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        char* p = (char*)this_;
+        *(void**)p = lbl_804A58B4;
+        if (this_ != 0) {
+            *(void**)p = lbl_804A48B0;
+            if (this_ != 0) {
+                *(void**)p = lbl_804A4808;
+                if (p + 0x270 != 0) {
+                    if (p + 0x294 != 0) {
+                        *(void**)(p + 0x294) = lbl_8049CC34;
+                    }
+                }
+                __dt__5ActorFv(this_, 0);
+            }
+        }
+        if (freeFlag > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
