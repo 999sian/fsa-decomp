@@ -3154,10 +3154,14 @@ Game/jiji.cpp:
 	.ctors      start:0x8045C514 end:0x8045C518
 
 Game/tu_8037e54c.cpp:
-	extab       start:0x8000EC78 end:0x8000EE28
-	extabindex  start:0x8001EA00 end:0x8001EC40
-	.text       start:0x8037E54C end:0x8038DE74
+	extab       start:0x8000EC68 end:0x8000EE28
+	extabindex  start:0x8001E9E8 end:0x8001EC40
+	.text       start:0x8037DF68 end:0x8038DE74
 	.ctors      start:0x8045C51C end:0x8045C520
+	.rodata     start:0x804755A0 end:0x804755E0
+	.data       start:0x804AF070 end:0x804AF338
+	.bss        start:0x8050DB00 end:0x8050DF18
+	.sdata2     start:0x805430B8 end:0x80543100
 
 Game/bery.cpp:
 	extab       start:0x8000EE28 end:0x8000EE58
