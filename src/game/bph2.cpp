@@ -43,4 +43,30 @@ extern "C" void fn_8018A8D8(ActorVt_bph2* this_) {
     this_->setShadow(2, 0.0f, 16.0f);
 }
 
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+extern "C" void fn_802D7440(void* mgr, s32 a);
+extern "C" void fn_8022ADCC(void);
+extern void* lbl_804A1E50[];
+
+// BPH2 destructor
+extern "C" void* fn_8018D9D4(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A1E50;
+        fn_801EE434(*(void**)(this_ + 0x328));
+        fn_801EE434(*(void**)(this_ + 0x32c));
+        fn_801EE434(*(void**)(this_ + 0x330));
+        if (*(s32*)(this_ + 0x26c) == 0) {
+            fn_802D7440(fn_802D6A9C(), 1);
+            fn_8022ADCC();
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
