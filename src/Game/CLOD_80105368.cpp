@@ -1,6 +1,26 @@
 // CLOD_80105368: .text 0x80105368-0x80105DD4 (actor CLOD)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+
+extern "C" void v06__5ActorFv(void* this_);
+extern "C" void fn_802F745C(void* mgr, JGeometry::TVec3f* pos, s32 id, void* out);
+extern char* lbl_8053AB10;
+extern const f32 lbl_8053C23C;
+
+extern "C" void fn_80105654(char* p) {
+    v06__5ActorFv(p);
+    p[0x325] = -1;
+    s32 idx = *(s32*)(p + 0x390);
+    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+    if (*(s32*)(p + 0x36c) == 2) {
+        pos.y -= lbl_8053C23C;
+    }
+    s32 id = ((s32*)(p + 0x2f8))[idx];
+    if (*(s32*)(p + 0x4) < 8) {
+        fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, id, p + 0x308);
+    }
+}
 
 // ---- from Game/fn_80105368_dtor.cpp
 
