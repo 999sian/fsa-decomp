@@ -4,6 +4,7 @@
 #include "types.h"
 
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/J2D/J2DPicture.h"
 #include "JSystem/JKernel/JKRHeap.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
@@ -269,24 +270,141 @@ struct Menu_Slide {
     u8 pad330[0x3c0 - 0x330];
     s32 state[4];               // 0x3c0
     u8 pad3d0[0x3f4 - 0x3d0];
-    f32 ys[8];                  // 0x3f4
-    u8 pad414[0x440 - 0x414];
+    f32 ys[10];                 // 0x3f4
+    u8 pad41c[0x440 - 0x41c];
     s32 timer;                  // 0x440
     u8 pad444[0x450 - 0x444];
     s32 cur;                    // 0x450
     s32 count;                  // 0x454
-    u8 pad458[0x4c1 - 0x458];
+    u8 pad458[0x4ac - 0x458];
+    u8 ids[4];                  // 0x4ac
+    u8 pad4b0[0x4c1 - 0x4b0];
     u8 m4c1;
     u8 m4c2;
     u8 m4c3;
     u8 m4c4;
     u8 m4c5;
     u8 m4c6;
+    u8 m4c7;
+    u8 m4c8;
 };
 
 #define PANE(off) (p->panes[((off) - 0x70) / 4])
 #define PY(off) (p->ys[((off) - 0x3f4) / 4])
 #define MOVE_TO(off, yoff, extra) { f32 x = PANE(off)->getBounds()->i.x; PANE(off)->move(x, PY(yoff) extra); }
+
+struct GameResult {
+    u8 pad0[0x118];
+    s32 mode;                   // 0x118
+    s32 sub;                    // 0x11c
+    u8 pad120[0x130 - 0x120];
+    s32 wins[4];                // 0x130
+    u8 pad140[0x1fc - 0x140];
+    u8 winner[8][3];            // 0x1fc
+    u8 pad214[0x243 - 0x214];
+    u8 winMask;                 // 0x243
+};
+
+extern const char* lbl_804AF980[];
+extern "C" void* fn_80403104(u32 type, const char* name);
+
+// NONMATCHING (99%): winner-table index add order / mode register.
+extern "C" void fn_803ABCEC(Menu_Slide* p) {
+    p->timer--;
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c3 = 0;
+        p->m4c4 = 0;
+        p->m4c5 = 0;
+        p->m4c6 = 0;
+        s32 n = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            if (p->m4c8 != 0xff) {
+                if (i == p->ids[n]) {
+                    p->state[i] = 0x3e;
+                    if (p->m4c8 > n) {
+                        n++;
+                    }
+                } else {
+                    p->state[i] = 0xbd;
+                }
+            } else {
+                p->state[i] = 0xbd;
+            }
+        }
+        s32 mode = ((GameResult*)lbl_80529DEC)->mode;
+        s32 sub = ((GameResult*)lbl_80529DEC)->sub;
+        s32 k = sub;
+        switch (mode) {
+        case 0:
+        case 1:
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            if (sub == 3) {
+                k = 2;
+            }
+            break;
+        case 7:
+            if (sub == 2) {
+                k = 1;
+            }
+            if (k == 3) {
+                k = 2;
+            }
+            break;
+        }
+        if (p->m4c8 == 0) {
+            ((GameResult*)lbl_80529DEC)->wins[p->ids[0]]++;
+            ((GameResult*)lbl_80529DEC)->winMask = 0;
+            ((GameResult*)lbl_80529DEC)->winMask = 1 << p->ids[0];
+            if (((GameResult*)lbl_80529DEC)->mode >= 0 && ((GameResult*)lbl_80529DEC)->mode < 8 && k >= 0 && k < 3) {
+                ((GameResult*)lbl_80529DEC)->winner[((GameResult*)lbl_80529DEC)->mode][k] = p->ids[0];
+            }
+            if (p->m4c8 != 0xff) {
+                fn_80458880(lbl_8053AF80, 0x11, -1);
+            }
+        } else {
+            if (mode >= 0 && mode < 8 && sub >= 0 && sub < 3) {
+                ((GameResult*)lbl_80529DEC)->winner[mode][sub] = 0xff;
+            }
+            fn_80458880(lbl_8053AF80, 0x2b, -1);
+        }
+        fn_80458880(lbl_8053AF80, 0x2c, -1);
+        p->m4c1 = 0x21;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        MOVE_TO(0x70, 0x3f4, + off);
+        if (p->timer == 0x8a) {
+            PANE(0x70)->hide();
+            if (p->m4c8 == 0) {
+                ResTIMG* img = (ResTIMG*)fn_80403104('TIMG', lbl_804AF980[p->ids[0]]);
+                ((J2DPicture*)PANE(0x7c))->changeTexture(img, 0);
+                ((J2DPicture*)PANE(0x80))->changeTexture(img, 0);
+                PANE(0x78)->show();
+                MOVE_TO(0x78, 0x414, + off);
+                PANE(0x7c)->show();
+                PANE(0x80)->show();
+            } else {
+                PANE(0x74)->show();
+                MOVE_TO(0x74, 0x418, + off);
+            }
+        }
+    } else if (t >= 0x80) {
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        if (p->m4c8 == 0) {
+            MOVE_TO(0x78, 0x414, + off);
+        } else {
+            MOVE_TO(0x74, 0x418, + off);
+        }
+        if (p->timer == 0x80) {
+            MOVE_TO(0x70, 0x3f4, );
+        }
+    }
+}
 
 struct Menu_Score {
     u8 pad0[0x158];
