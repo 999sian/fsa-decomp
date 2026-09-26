@@ -1086,7 +1086,7 @@ config.libs = [
             Object(NonMatching, "Game/ezry.cpp"),
             Object(NonMatching, "Game/arrw.cpp"),
             Object(NonMatching, "Game/poon.cpp"),
-            Object(NonMatching, "Game/popo.cpp"),
+            Object(Matching, "Game/popo.cpp"),
             Object(NonMatching, "Game/stal.cpp"),
             Object(NonMatching, "Game/wizr.cpp"),
             Object(NonMatching, "Game/rdvr.cpp"),

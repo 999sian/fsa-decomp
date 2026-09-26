@@ -1993,6 +1993,7 @@ Game/popo.cpp:
 	.text       start:0x80172170 end:0x80172894
 	.ctors      start:0x8045BF78 end:0x8045BF7C
 	.rodata     start:0x804667F0 end:0x80466808
+	.bss        start:0x804C0AA0 end:0x804C0B0C
 	.sdata2     start:0x8053DA90 end:0x8053DAB8
 
 Game/stal.cpp:
