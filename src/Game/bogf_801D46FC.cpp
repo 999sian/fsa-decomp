@@ -56,7 +56,7 @@ extern "C" void fn_801D47D8(void)
 {
 }
 
-extern "C" void fn_801D4C70(void* this_);
+extern "C" void fn_801D4C70(u8* this_);
 extern "C" void fn_801E4D74(void* this_);
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" void fn_801D5D84(void* this_, s32 state);
@@ -425,6 +425,86 @@ extern "C" void fn_801D5B70(u8* this_) {
     } else {
         fn_801D5D84(this_, 0xc);
     }
+}
+
+
+extern const f32 lbl_8053F0F4;
+extern const f32 lbl_8053F0F8;
+extern const f32 lbl_8053F100;
+extern "C" void fn_801D01A0(void* this_, void* target, JGeometry::TVec2<f32>* out, f32 speed);
+extern "C" void fn_801F71A4(f32* p, f32 target, f32 a, f32 b);
+
+extern "C" void fn_801D4C70(u8* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 0x11:
+        *(f32*)(this_ + 0x3c) = lbl_8053F0C8;
+        *(f32*)(this_ + 0x40) = lbl_8053F0C8;
+        return;
+    case 0x15: {
+        JGeometry::TVec2<f32> v;
+        fn_801D01A0(this_, this_ + 0x5ec, &v, lbl_8053F0F4);
+        *(f32*)(this_ + 0x3c) = v.x;
+        *(f32*)(this_ + 0x40) = v.y;
+        return;
+    }
+    case 0x16: {
+        JGeometry::TVec2<f32> v;
+        fn_801D01A0(this_, this_ + 0x5f4, &v, lbl_8053F0F8);
+        *(f32*)(this_ + 0x3c) = v.x;
+        *(f32*)(this_ + 0x40) = v.y;
+        return;
+    }
+    }
+    if (this_[0x5d1] != 0) {
+        s16 ang = *(s16*)(this_ + 0x5d2);
+        JGeometry::TVec2<f32> v(lbl_8053F0E4 * JMASSin(ang), lbl_8053F0E4 * JMASCos(ang));
+        *(f32*)(this_ + 0x3c) = v.x;
+        *(f32*)(this_ + 0x40) = v.y;
+        return;
+    }
+    JGeometry::TVec2<f32> vel(lbl_8053F0C8, lbl_8053F0C8);
+    bool move = true;
+    f32 tx, ty;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        move = false;
+        break;
+    case 0x12:
+    case 0x13:
+    case 0x14:
+        tx = *(f32*)(this_ + 0x5c4);
+        ty = *(f32*)(this_ + 0x5c8);
+        break;
+    default:
+        if (*(s32*)(this_ + 0x5b0) >= 0) {
+            JGeometry::TVec3<f32>* p = fn_8023E724(*(s32*)(this_ + 0x5b0));
+            tx = p->x;
+            ty = p->y;
+        } else {
+            tx = *(f32*)(this_ + 0x5bc);
+            ty = *(f32*)(this_ + 0x5c0);
+        }
+        break;
+    }
+    if (move) {
+        vel.set(tx - *(f32*)(this_ + 0xc), ty - *(f32*)(this_ + 0x10));
+        vel.normalize();
+        if (*(s32*)(this_ + 0x248) == 0x12) {
+            vel.scale(lbl_8053F0E0);
+        } else {
+            vel.scale(*(f32*)(this_ + 0x254));
+        }
+    }
+    fn_801F71A4((f32*)(this_ + 0x3c), vel.x, lbl_8053F100, lbl_8053F0D8);
+    fn_801F71A4((f32*)(this_ + 0x40), vel.y, lbl_8053F100, lbl_8053F0D8);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
