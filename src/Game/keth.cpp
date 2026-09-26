@@ -1,6 +1,8 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 8015C828-8015DE10 (KETH). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
 
 // from src/Game/fn_8015C828_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -32,6 +34,166 @@ extern "C" s32 fn_802265DC(void* targetPos, void* arg1, s32 zero);
 // grounded actors check.
 extern "C" s32 fn_8015C888(void* this_, void* arg1, void* targetPos) {
     return fn_802265DC(targetPos, arg1, 0);
+}
+
+struct KethRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct KethGame { u8 pad[0xb4]; KethRandom rnd; };
+extern KethGame* lbl_8053AAF8;
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 a, f32 sx, f32 sy);
+extern "C" void fn_801F02BC(void* actor, const char* res, u32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 sx, f32 sy);
+extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern const char lbl_804660F8[];
+
+struct KethVT {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual u8 isVisible();
+};
+
+static inline f32 ksin(f32 x) { return sin(x); }
+static inline f32 kcos(f32 x) { return cos(x); }
+static inline void kethRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
+    f32 sx = ksin(ax);
+    f32 sy = ksin(ay);
+    f32 sz = ksin(az);
+    f32 cx = kcos(ax);
+    f32 cy = kcos(ay);
+    f32 cz = kcos(az);
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sx * sy * cz - cx * sz);
+    m[1][1] = s * (sx * sy * sz + cx * cz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cx * cz * sy + sx * sz);
+    m[1][2] = s * (cx * sz * sy - sx * cz);
+    m[2][2] = s * (cx * cy);
+}
+
+// KETH draw (vtable slot 6)
+extern "C" void fn_8015C8B0(char* this_) {
+    if ((*(u32*)(this_ + 0x90) >> 27) && !((KethVT*)this_)->isVisible()) {
+        return;
+    }
+    DrawRec rec;
+    f32 mtx[3][4];
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    if (*(s32*)(this_ + 0x264) == 1) {
+        return;
+    }
+    rec.w30 = *(s32*)(this_ + 0x150);
+    kethRotMtx(mtx, 0.0f, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, 0.0f, 1.0f);
+    rec.w18 = mtx;
+    s32 big = 0;
+    if (*(s32*)(this_ + 0x260) != 0) {
+        big = 1;
+    }
+    if (*(s32*)(this_ + 0x4) == 8 && *(s32*)(this_ + 0x260) != 0) {
+        kethRotMtx(mtx, 0.0f, (f32)*(u16*)(this_ + 0x25c) / -10430.228f, 0.0f, 2.0f);
+        rec.w18 = mtx;
+        fn_801F06F0(this_, lbl_804660F8, *(s32*)(this_ + 0x258) + 0x155, &rec, -1, 1.0f, 1.0f);
+        fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, 0x176, 0, 2, -1, 0, 0, 0);
+    } else {
+        fn_801F02BC(this_, lbl_804660F8, *(s32*)(this_ + 0x258) + 0x155, &rec, -1, big, 0, 1.0f, 1.0f);
+    }
+}
+
+// KETH init (vtable slot 1)
+extern "C" void fn_8015D844(char* this_) {
+    *(f32*)(this_ + 0x60) = -8.0f;
+    *(f32*)(this_ + 0x64) = -8.0f;
+    *(f32*)(this_ + 0x68) = 8.0f;
+    *(f32*)(this_ + 0x6c) = 8.0f;
+    *(f32*)(this_ + 0x80) = 0.0f;
+    *(f32*)(this_ + 0x84) = 0.0f;
+    *(f32*)(this_ + 0x88) = 0.0f;
+    *(f32*)(this_ + 0x8c) = 0.0f;
+    *(u32*)(this_ + 0x260) = (*(u32*)(this_ + 0x90) >> 4) & 1;
+    if (*(s32*)(this_ + 0x260) != 0) {
+        *(f32*)(this_ + 0x60) = -12.0f;
+        *(f32*)(this_ + 0x64) = -12.0f;
+        *(f32*)(this_ + 0x68) = 12.0f;
+        *(f32*)(this_ + 0x6c) = 12.0f;
+        *(s32*)(this_ + 0xc0) = 2;
+    }
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = 0;
+    *(s32*)(this_ + 0x254) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(u16*)(this_ + 0x25c) = 0;
+    *(u8*)(this_ + 0x25e) = 0;
+    if (*(u32*)(this_ + 0x90) & 0x100) {
+        *(u8*)(this_ + 0x25e) = 1;
+        *(u16*)(this_ + 0x25c) = 0x8000;
+    }
+    *(u32*)(this_ + 0x264) = *(u32*)(this_ + 0x90) & 0xf;
+    if (*(s32*)(this_ + 0x264) == 3) {
+        *(s32*)(this_ + 0x24c) = (s32)(1.99f * lbl_8053AAF8->rnd.get_ufloat_1());
+        if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5f) {
+            *(s32*)(this_ + 0x254) = -((s32)(512.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x200);
+        } else {
+            *(s32*)(this_ + 0x254) = (s32)(512.0f * lbl_8053AAF8->rnd.get_ufloat_1()) + 0x200;
+        }
+    }
+    if (*(s32*)(this_ + 0x264) == 2) {
+        KethGame* g = lbl_8053AAF8;
+        *(f32*)(this_ + 0xc) += (f32)((s32)(9.0f * g->rnd.get_ufloat_1()) - 4);
+        KethGame* g2 = lbl_8053AAF8;
+        *(f32*)(this_ + 0x10) += (f32)((s32)(9.0f * g2->rnd.get_ufloat_1()) - 4);
+        *(JGeometry::TVec3<f32>*)(this_ + 0x24) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+    }
+    *(f32*)(this_ + 0x26c) = 0.0f;
+    *(f32*)(this_ + 0x270) = 0.0f;
+    *(u32*)(this_ + 0xb0) = 0x31201;
+    *(f32*)(this_ + 0x274) = 0.0f;
+    *(f32*)(this_ + 0x278) = 0.0f;
+    *(f32*)(this_ + 0x27c) = 0.0f;
+    *(f32*)(this_ + 0x3c) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    *(s32*)(this_ + 0x258) = 2;
+    *(u16*)(this_ + 0x268) = 0;
+    *(u16*)(this_ + 0x26a) = 0xffff;
+    *(f32*)(this_ + 0x14) = 1.0f;
+    if (*(u32*)(this_ + 0x90) >> 27) {
+        *(u32*)(this_ + 0xb0) = 0;
+    }
+    if (*(s32*)(this_ + 0x264) == 4) {
+        *(f32*)(this_ + 0x14) = 0.0f;
+        *(s32*)(this_ + 0x230) = 3;
+    } else {
+        *(s32*)(this_ + 0x230) = 0;
+    }
+    *(f32*)(this_ + 0x280) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x284) = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x288) = *(f32*)(this_ + 0x14);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

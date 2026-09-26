@@ -1944,6 +1944,7 @@ Game/keth.cpp:
 	extabindex  start:0x80013B40 end:0x80013B88
 	.text       start:0x8015C828 end:0x8015DE10
 	.ctors      start:0x8045BF48 end:0x8045BF4C
+	.sdata2     start:0x8053D520 end:0x8053D590
 
 Game/flme.cpp:
 	extab       start:0x80006FFC end:0x80007034
@@ -3275,7 +3276,9 @@ Game/bfin.cpp:
 	extabindex  start:0x8001F8F4 end:0x8001F960
 	.text       start:0x803D6434 end:0x803D7098
 	.ctors      start:0x8045C568 end:0x8045C56C
+	.data       start:0x804B02D8 end:0x804B0380
 	.bss        start:0x80528068 end:0x805280D4
+	.sdata2     start:0x80543520 end:0x80543530
 
 Game/tngl.cpp:
 	extab       start:0x8000FB44 end:0x8000FB6C
@@ -3290,6 +3293,7 @@ Game/tu_803ff2c4.cpp:
 	.text       start:0x803FF2C4 end:0x80400DC4
 	.ctors      start:0x8045C584 end:0x8045C588
 	.bss        start:0x80528768 end:0x805287D4
+	.sdata2     start:0x805437D8 end:0x80543830
 
 Game/tu_80401848.cpp:
 	extab       start:0x8001014C end:0x800101BC
