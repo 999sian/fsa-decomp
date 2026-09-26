@@ -179,13 +179,93 @@ extern "C" void fn_802EE704(GnefObj* this_) {
     }
 }
 
+// ---- fn_802ED538: pull players toward the fan
+#include "JSystem/JMath/JMath.h"
+extern "C" u8 fn_8023F264(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u8 fn_80236B50(s32);
+extern "C" u8 fn_8023EA28(s32);
+extern "C" u8 fn_80230188(s32);
+extern "C" u8 fn_8022D534(s32);
+extern "C" u8 fn_802300EC(s32);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" void fn_80230AD4(s32);
+extern "C" void fn_8022CA6C(s32, s32, s32);
+extern "C" u8 fn_8022D75C(s32);
+extern "C" void fn_802303FC(s32, void*, s32);
+extern "C" void fn_80230224(s32, s32);
+extern const f32 lbl_80541408;
+extern const f32 lbl_8054140C;
+extern const f32 lbl_80541410;
+extern const f32 lbl_80541414;
+extern const f32 lbl_80541418;
+
+
+static inline f32 gnefSqrt(f32 x) {
+    if (x > lbl_80541400) {
+        f64 y = __frsqrte(x);
+        f32 t = y * x;
+        return (lbl_80541408 - t * y) * t * lbl_8054140C;
+    }
+    return x;
+}
+
+struct GnefPull {
+    u8 pad[0x27c];
+    JGeometry::TVec3f pos; // 0x27c
+    f32 dist;              // 0x288
+    s16 angle;             // 0x28c
+    u8 active;             // 0x28e
+};
+
+extern "C" u8 fn_802ED538(u8* this_) {
+    u8 result = 1;
+    GnefPull* pull = (GnefPull*)this_;
+    for (s32 i = 0; i < 4; i++, pull = (GnefPull*)((u8*)pull + 0x14)) {
+        if (fn_8023F264(i) && fn_8023DE58(i) == *(s32*)(this_ + 4) && !fn_80236B50(i)
+            && !fn_8023EA28(i) && !fn_80230188(i) && !fn_8022D534(i) && !pull->active
+            && fn_802300EC(i))
+        {
+            JGeometry::TVec3f* pp = fn_8023E724(i);
+            f32 px = pp->x;
+            f32 py = pp->y;
+            if (lbl_80541400 == pp->z) {
+                f32 dx = *(f32*)(this_ + 0xc) - px;
+                f32 dy = (lbl_80541404 + *(f32*)(this_ + 0x10)) - py;
+                pull->pos = *fn_8023E724(i);
+                pull->dist = gnefSqrt(dx * dx + dy * dy);
+                pull->angle = lbl_80541410 * JMAAtan2Radian(-dx, -dy);
+                pull->active = 1;
+                fn_80230AD4(i);
+                fn_8022CA6C(i, 5, 0);
+            }
+        }
+        if (pull->active && fn_80230188(i) && !fn_8022D75C(i)) {
+            if (pull->dist > lbl_80541414) {
+                pull->dist -= lbl_80541414;
+            } else {
+                pull->dist = lbl_80541400;
+            }
+            pull->pos.x = pull->dist * JMASinShort(pull->angle) + *(f32*)(this_ + 0xc);
+            pull->pos.y = pull->dist * JMACosShort(pull->angle) + (lbl_80541404 + *(f32*)(this_ + 0x10));
+            fn_802303FC(i, &pull->pos, 0xff);
+            if (pull->dist < lbl_80541418) {
+                fn_80230224(i, 0);
+            }
+        }
+        if (fn_8023DE58(i) == *(s32*)(this_ + 4)) {
+            result = 0;
+        }
+    }
+    return result;
+}
+
 // ---- fn_802EE830: init
 struct GnefSlot {
     f32 a, b, c, d;
     u16 e;
     u8 f;
 };
-extern const f32 lbl_80541418;
 extern void* lbl_804AA330[];
 extern "C" void* fn_804032E8(u32 type, void* name);
 extern "C" s32 fn_8013CC50(s32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
