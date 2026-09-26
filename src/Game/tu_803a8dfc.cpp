@@ -147,6 +147,87 @@ void fn_803B7B90(void* thisPtr) {
 
 }
 
+struct MsgSink {
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void send(void* msg);
+};
+struct MsgSinkHolder {
+    u32 m0;
+    u32 m4;
+    MsgSink* sink() { return (MsgSink*)this; }
+};
+struct MsgSinkObj : MsgSinkHolder {
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void send(void* msg);
+};
+
+extern void* lbl_8053AD30;
+extern "C" s32 fn_8030AAF4(s32 a);
+extern "C" u32 fn_80309D24(void* p, s32 a, s32 b);
+extern "C" void fn_8015F8FC(void* p, s32 a, void* b, s32 c);
+
+struct PFlag {
+    u8 v;
+};
+
+struct Menu_803B2FB0 {
+    u8 pad0[0x174];
+    MsgSinkObj* sinks[4];       // 0x174
+    u8 pad184[0x2f0 - 0x184];
+    u8 icons[4][0xc];           // 0x2f0
+    u8 pad320[0x3c0 - 0x320];
+    s32 state[4];               // 0x3c0
+    u8 pad3d0[0x454 - 0x3d0];
+    s32 count;                  // 0x454
+    u8 pad458[0x4b0 - 0x458];
+    PFlag flags[4];             // 0x4b0
+    u8 order[4];                // 0x4b4
+};
+
+extern "C" void fn_803B2FB0(Menu_803B2FB0* p) {
+    s32 i;
+    for (i = 0; i < p->count; i++) {
+        if (fn_80309D24(lbl_8053AD30, fn_8030AAF4(i), 0x40) != 0) {
+            if (!((p->flags[i].v >> 1) & 1)) {
+                u8 cnt = 0;
+                for (s32 k = 0; k < p->count; k++) {
+                    if (p->order[k] != 0xff) {
+                        cnt++;
+                    }
+                }
+                p->order[cnt] = i;
+                fn_80458880(lbl_8053AF80, 0x1e, -1);
+                p->flags[i].v |= 2;
+                if (p->state[i] == 0xe7) {
+                    u32 msg = 0x10008;
+                    p->sinks[i]->send(&msg);
+                }
+            }
+        } else if ((p->flags[i].v >> 1) & 1) {
+            for (s32 j = 0; j < p->count; j++) {
+                if (p->order[j] == (u8)i) {
+                    if (j < p->count - 1) {
+                        for (s32 k = j; k < p->count - 1; k++) {
+                            p->order[k] = p->order[k + 1];
+                        }
+                    }
+                    p->order[p->count - 1] = 0xff;
+                }
+            }
+            p->flags[i].v &= ~2;
+        }
+    }
+    for (s32 k = 0; k < p->count; k++) {
+        if (p->order[k] != 0xff) {
+            fn_8015F8FC(*(void**)((u8*)lbl_8053AB10 + 0x30), 0, p->icons[p->order[k]], 5);
+        }
+    }
+}
+
 struct VPane_803B31AC {
     virtual void v08();
     virtual void v0C();
