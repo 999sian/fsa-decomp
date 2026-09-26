@@ -110,4 +110,75 @@ extern "C" void fn_802E2998(u8* this_) {
     }
 }
 
+struct Gnl2Layout {
+    f32 x[6][4];
+    f32 y[6][4];
+    f32 dx[6][4];
+    f32 dy[6][4];
+    u16 eff[6][4];
+};
+extern const Gnl2Layout lbl_8046EA10;
+extern "C" s32 fn_80138A30(void* game);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D800C(void* mgr, s32 id);
+extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, s32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
+
+extern "C" void fn_802E3B2C(u8* this_) {
+    const Gnl2Layout* t = &lbl_8046EA10;
+    *(u32*)(this_ + 0x238) = *(u32*)(this_ + 0x90) & 0x1f;
+    *(u32*)(this_ + 0x240) = (*(u32*)(this_ + 0x90) >> 22) & 0x1f;
+    *(u32*)(this_ + 0x244) = (*(u32*)(this_ + 0x90) >> 7) & 1;
+    *(s32*)(this_ + 0x23c) = fn_80138A30(lbl_8053AAF8);
+    for (s32 k = 0; k < 4; k++) {
+        *(void**)(this_ + 0x2c8 + k * 4) = 0;
+        *(void**)(this_ + 0x2d8 + k * 4) = 0;
+    }
+    *(void**)(this_ + 0x2e8) = 0;
+    *(void**)(this_ + 0x2ec) = 0;
+    *(u8*)(this_ + 0x2f4) = 0xff;
+    if (!fn_802D800C(fn_802D6A9C(), *(s32*)(this_ + 0x240))) {
+        const f32 (*xs)[4] = t->x;
+        const f32 (*ys)[4] = t->y;
+        for (s32 i = 0; i < 4; i++) {
+            f32* p = (f32*)(this_ + 0x258 + i * 0xc);
+            p[0] = *(f32*)(this_ + 0xc) + xs[*(s32*)(this_ + 0x238)][i];
+            p[1] = *(f32*)(this_ + 0x10) + ys[*(s32*)(this_ + 0x238)][i];
+            p[2] = 0.0f;
+            *(s32*)(this_ + 0x298 + i * 4) = 0;
+            *(s32*)(this_ + 0x2a8 + i * 4) = 0;
+            *(s32*)(this_ + 0x288 + i * 4) = 1;
+            *(void**)(this_ + 0x2c8 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), p, 0x10a, 0, 0, 0, 0, 1, 1.0f);
+        }
+        if (*(s32*)(this_ + 0x238) != 5) {
+            const u16 (*effs)[4] = t->eff;
+            for (s32 i = 0; i < 4; i++) {
+                *(u16*)(this_ + 0x2b8 + i * 2) = effs[*(s32*)(this_ + 0x238)][i];
+                u16 eff = effs[*(s32*)(this_ + 0x238)][i];
+                if (eff != 0) {
+                    f32* p = (f32*)(this_ + 0x258 + i * 0xc);
+                    JGeometry::TVec3<f32> pos(p[0] + t->dx[*(s32*)(this_ + 0x238)][i],
+                                              p[1] + t->dy[*(s32*)(this_ + 0x238)][i], p[2]);
+                    *(void**)(this_ + 0x2d8 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), &pos, eff, 1, 1, 0, 0, 1, 1.0f);
+                }
+            }
+        }
+        *(s32*)(this_ + 0x230) = 0;
+        *(s32*)(this_ + 0x234) = 0;
+        *(JGeometry::TVec3<f32>*)(this_ + 0x24c) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+    } else {
+        *(JGeometry::TVec3<f32>*)(this_ + 0x24c) = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+        *(s32*)(this_ + 0x230) = 5;
+    }
+    if (*(s32*)(this_ + 0x238) == 5) {
+        JGeometry::TVec3<f32> a(80.0f + *(f32*)(this_ + 0xc), 48.0f + *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
+        *(void**)(this_ + 0x2e8) = fn_8013CC50(*(u32*)(this_ + 4), &a, 0xc6, 0, 0, 0, 0, 1, 1.0f);
+        JGeometry::TVec3<f32> b(80.0f + *(f32*)(this_ + 0xc), 48.0f + *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
+        *(void**)(this_ + 0x2ec) = fn_8013CC50(*(u32*)(this_ + 4), &b, 0xc7, 0, 0, 0, 0, 1, 1.0f);
+    }
+    *(s32*)(this_ + 0x248) = 0;
+    if (*(s32*)(this_ + 0x238) != 5) {
+        fn_80457E54(lbl_8053AF80, 1);
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
