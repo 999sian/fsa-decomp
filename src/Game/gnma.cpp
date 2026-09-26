@@ -2,6 +2,7 @@
 // Functions: draw (TODO), update (slot 3), state handlers (TODO), hit reaction
 // (TODO), dtor, init (TODO).
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -55,6 +56,40 @@ extern "C" void* fn_801AC324(char* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" s32 fn_801F6874(u16 angle);
+extern const f32 lbl_8053E744;
+extern const f32 lbl_8053E7B0;
+
+extern "C" void fn_801AC1F4(char* p) {
+    if (*(s32*)(p + 0x25c) == *(s32*)(p + 0x108)) {
+        return;
+    }
+    if (*(s32*)(p + 0x258) > 0) {
+        (*(s32*)(p + 0x258))--;
+    }
+    if (*(s32*)(p + 0x258) <= 0) {
+        *(u32*)(p + 0xb0) = 0;
+    }
+    *(s32*)(p + 0x25c) = *(s32*)(p + 0x108);
+    s32 mode = *(s32*)(p + 0x254);
+    if (mode == 1 || mode == 3) {
+        *(f32*)(p + 0x26c) = lbl_8053E744;
+        *(f32*)(p + 0x268) = lbl_8053E744;
+        *(f32*)(p + 0x264) = lbl_8053E744;
+        *(f32*)(p + 0x44) = lbl_8053E744;
+        *(f32*)(p + 0x40) = lbl_8053E744;
+        *(f32*)(p + 0x3c) = lbl_8053E744;
+        *(u32*)(p + 0xb0) = 0x0a040004;
+        *(s32*)(p + 0x248) = 1;
+        *(s32*)(p + 0x230) = 12;
+    } else {
+        u16 ang = (u16)*(u32*)(p + 0x98) + 0x8000;
+        *(f32*)(p + 0x3c) = lbl_8053E7B0 * JMASSin(fn_801F6874(ang));
+        *(f32*)(p + 0x40) = lbl_8053E7B0 * JMASCos(fn_801F6874(ang));
+        *(s32*)(p + 0x230) = 5;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
