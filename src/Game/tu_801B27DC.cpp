@@ -31,7 +31,7 @@ extern const char lbl_804690E0[];
 
 extern "C" void fn_801B2998(u8* this_) {
     s32 f = *(s32*)(this_ + 0x308);
-    if (f != 0 && (f & 2)) {
+    if (f == 0 || (f & 2)) {
         fn_801F06F0(this_, lbl_804690E0, *(s32*)(this_ + 0x320) + 0x9B, 0, 7, 1.0f, 1.0f);
     }
 }
@@ -39,8 +39,63 @@ extern "C" void fn_801B2998(u8* this_) {
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804A3698[];
+
 extern u8 lbl_8053ABE8;
+extern s32 lbl_8053ABEC;
 extern u8 lbl_8053ABF0;
+extern void* lbl_8053AED0;
+extern "C" void* fn_801F856C(void);
+extern "C" u8* fn_801F666C(void* mgr, s32 id);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, s32 owner, void* pos, u32 param, s32 a, s32 b);
+extern "C" void fn_8022ADE4(void);
+extern "C" void fn_8043A450(void* p, s32 a, s32 b);
+
+extern "C" void fn_801B3B7C(u8* this_) {
+    lbl_8053ABF0 = 0;
+    *(f32*)(this_ + 0x80) = -4.0f;
+    *(f32*)(this_ + 0x84) = -8.0f;
+    *(f32*)(this_ + 0x88) = 4.0f;
+    *(f32*)(this_ + 0x8C) = 8.0f;
+    *(s32*)(this_ + 0x30C) = 0;
+    *(s32*)(this_ + 0x310) = 0;
+    *(s32*)(this_ + 0x314) = 0;
+    *(s32*)(this_ + 0x318) = 0;
+    *(s32*)(this_ + 0x31C) = 0;
+    *(s32*)(this_ + 0x300) = 0;
+    *(s32*)(this_ + 0x304) = 0;
+    *(s32*)(this_ + 0x308) = 0;
+    *(s32*)(this_ + 0x330) = *(u32*)(this_ + 0x90) & 7;
+    *(s32*)(this_ + 0x328) = 5;
+    *(s32*)(this_ + 0x324) = Actor_CreateByID(fn_801F856C(), 'LIMT', *(s32*)(this_ + 4), this_ + 0xC, 0, -1, -1);
+    *(u8*)(this_ + 0x11E) = 1;
+    fn_8022ADE4();
+    s32 id = *(s32*)(this_ + 0x324);
+    if (id >= 0) {
+        u8* a = fn_801F666C(fn_801F856C(), id);
+        if (a != 0) {
+            s32 v = *(s32*)(this_ + 0x328);
+            *(s32*)(a + 0x250) = *(s32*)(this_ + 0x198);
+            *(f32*)(a + 0x254) = -28.0f;
+            *(s32*)(a + 0x24C) = v;
+        }
+    }
+    fn_8043A450(lbl_8053AED0, 6, 3);
+    *(s32*)(this_ + 0x320) = 1;
+    *(f32*)(this_ + 0x33C) = 0.0f;
+    *(f32*)(this_ + 0x338) = 0.0f;
+    *(f32*)(this_ + 0x334) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x3C) = 0.0f;
+    *(f32*)(this_ + 0x340) = *(f32*)(this_ + 0x10);
+    lbl_8053ABEC = 0;
+    *(u8*)(this_ + 0x2FC) = 0;
+    *(u8*)(this_ + 0x32D) = 0;
+    *(u8*)(this_ + 0x32C) = 0;
+    *(u8*)(this_ + 0x1A8) = 0;
+    lbl_8053ABE8 = 0;
+    *(s32*)(this_ + 0x2F8) = 0;
+}
 
 extern "C" void* fn_801B3CD0(void* this_, s16 freeFlag) {
     if (this_ != 0) {
