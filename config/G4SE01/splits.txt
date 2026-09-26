@@ -1772,6 +1772,7 @@ game/ARSH_80105DD4.cpp:
 	extabindex  start:0x80011E48 end:0x80011E60
 	.text       start:0x80105DD4 end:0x80106040
 	.ctors      start:0x8045BE2C end:0x8045BE30
+	.bss        start:0x804BB4F8 end:0x804BB564
 
 game/WLFT_80106040.cpp:
 	extab       start:0x80005A34 end:0x80005A64
@@ -1820,6 +1821,7 @@ game/tu_8010DF44.cpp:
 	extabindex  start:0x80012148 end:0x80012190
 	.text       start:0x8010DF44 end:0x8010E2D4
 	.ctors      start:0x8045BE54 end:0x8045BE58
+	.bss        start:0x804BBEF8 end:0x804BBF64
 
 game/tu_8011A0F8.cpp:
 	extab       start:0x80006070 end:0x80006098
