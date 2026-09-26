@@ -1150,7 +1150,7 @@ config.libs = [
             Object(Matching, "game/tu_8021B904.cpp"),
             Object(Matching, "game/tu_8021BFA8.cpp"),
             Object(NonMatching, "game/tu_8021CDE4.cpp"),
-            Object(NonMatching, "game/ezge.cpp"),
+            Object(Matching, "game/ezge.cpp"),
             Object(NonMatching, "game/navi.cpp"),
             Object(NonMatching, "game/tu_8021F064.cpp"),
             Object(Matching, "game/fbal.cpp"),
