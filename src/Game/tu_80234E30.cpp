@@ -163,6 +163,17 @@ void fn_802708D0(Player*);
 void fn_802708E8(Player*);
 void fn_80270F00(Player*, int);
 
+static inline int getFairy294(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return Fairy_GetSubField_0x294(lbl_8053AC90->players[idx]);
+}
+static inline int getFairy290(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    return Fairy_GetSubField_0x290(lbl_8053AC90->players[idx]);
+}
+
 int fn_80234E30(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80240D64(lbl_8053AC90->players[idx]);
@@ -1170,30 +1181,66 @@ int fn_8023CE10(int idx) {
     return 0;
 }
 
-static inline int getFairy294(int idx) {
+extern "C" char* fn_802D6A9C();
+static inline int get3B4(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
-    return Fairy_GetSubField_0x294(lbl_8053AC90->players[idx]);
+    return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
 }
-u16 fn_8023D4F8(const f32* pos, int idx) {
+static inline f32* getPosPtr(int idx) {
+    if (lbl_8053AC90 == NULL) return (f32*)lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return (f32*)lbl_804CF460;
+    return (f32*)((char*)lbl_8053AC90->players[idx] + 0x8);
+}
+u16 fn_8023D21C(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (!isPlayerEnabled(view)) return 0;
+    int k = get3B4(idx);
+    char* room = fn_802D6A9C();
+    f32* base;
+    if (k < 8) base = (f32*)(room + 0xcc);
+    else base = (f32*)(room + 0xdc);
+    f32* pos = getPosPtr(idx);
+    int d = (int)(pos[0] - base[0]) - getFairy290(view);
+    if (d >= -0x40 && d < 0x140) return d;
+    return 0x180;
+}
+
+u16 fn_8023D4F8(const JGeometry::TVec3<f32>& pos, int idx) {
     if (lbl_8053AC90 == NULL) return 0xe0;
     if (!isPlayerEnabled(idx)) return 0xe0;
-    int d = (int)(pos[1] - pos[2]) - getFairy294(idx);
+    int d = (int)(pos.y - pos.z) - getFairy294(idx);
     if (d >= -0x20 && d < 0xe0) return d;
     return 0xe0;
 }
 
-static inline int getFairy290(int idx) {
-    if (lbl_8053AC90 == NULL) return 0;
-    if (!isPlayerEnabled(idx)) return 0;
-    return Fairy_GetSubField_0x290(lbl_8053AC90->players[idx]);
+f32* fn_8024E018(Player*);
+static inline JGeometry::TVec3<f32>* getOffsPtr(int idx) {
+    if (lbl_8053AC90 == NULL) return (JGeometry::TVec3<f32>*)lbl_804CF460;
+    if (!isPlayerEnabled(idx)) return (JGeometry::TVec3<f32>*)lbl_804CF460;
+    return (JGeometry::TVec3<f32>*)fn_8024E018(lbl_8053AC90->players[idx]);
 }
-u16 fn_8023D9B0(const f32* pos, int idx) {
+u16 fn_8023D644(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0xe0;
+    if (!isPlayerEnabled(idx)) return 0xe0;
+    if (!isPlayerEnabled(view)) return 0xe0;
+    return fn_8023D4F8(*(JGeometry::TVec3<f32>*)getPosPtr(idx) + *getOffsPtr(idx), view);
+}
+
+u16 fn_8023D9B0(const JGeometry::TVec3<f32>& pos, int idx) {
     if (lbl_8053AC90 == NULL) return 0x180;
     if (!isPlayerEnabled(idx)) return 0x180;
-    int d = (int)pos[0] - getFairy290(idx);
+    int d = (int)pos.x - getFairy290(idx);
     if (d >= -0x40 && d < 0x140) return d;
     return 0x180;
+}
+
+u16 fn_8023DAF4(int idx, int view) {
+    if (lbl_8053AC90 == NULL) return 0x180;
+    if (!isPlayerEnabled(idx)) return 0x180;
+    if (!isPlayerEnabled(view)) return 0x180;
+    return fn_8023D9B0(*(JGeometry::TVec3<f32>*)getPosPtr(idx) + *getOffsPtr(idx), view);
 }
 
 int fn_8023DE58(int idx) {
