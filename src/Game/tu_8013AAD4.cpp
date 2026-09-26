@@ -2,13 +2,12 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
+#include <dolphin/gx.h>
 #include "JSystem/JUtility/JUTVideo.h"
 #include "JSystem/J3D/J3DSys.h"
 #include "JSystem/J3D/J3DDrawBuffer.h"
 #include "JSystem/JGeometry.h"
 
-extern "C" void GXSetColorUpdate(u8);
-extern "C" void GXSetAlphaUpdate(u8);
 
 extern void* lbl_8053AB10;
 
@@ -115,6 +114,76 @@ extern "C" void fn_8013AC54(Mtx mtx) {
     j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0x8), 0);
     j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0xc), 1);
     j3dSys.setViewMtx(mtx);
+}
+
+extern "C" void fn_8013B004(f32* rect, GXColor* color) {
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XY, GX_F32, 0);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, GX_LIGHT_NULL, GX_DF_NONE, GX_AF_NONE);
+    GXSetNumChans(1);
+    GXSetNumTexGens(0);
+    GXSetTevColor(GX_TEVREG0, *color);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD_NULL, GX_TEXMAP_NULL, GX_COLOR_NULL);
+    GXSetTevColorIn(GX_TEVSTAGE0, GX_CC_ZERO, GX_CC_ZERO, GX_CC_ZERO, GX_CC_C0);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, GX_CA_ZERO, GX_CA_ZERO, GX_CA_ZERO, GX_CA_A0);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetNumTevStages(1);
+    GXSetNumIndStages(0);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
+    GXSetColorUpdate(GX_TRUE);
+    GXSetAlphaUpdate(GX_FALSE);
+    GXSetCullMode(GX_CULL_NONE);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    f32 x1 = rect[2];
+    f32 x0 = rect[0];
+    f32 y0 = rect[1];
+    GXPosition2f32(x0, y0);
+    f32 y1 = rect[3];
+    GXPosition2f32(x1, y0);
+    GXPosition2f32(x1, y1);
+    GXPosition2f32(x0, y1);
+    GXEnd();
+}
+
+extern GXColor lbl_8053CDD8;
+extern GXColor lbl_80543F20;
+
+extern "C" void fn_8013B1E8() {
+    GXClearVtxDesc();
+    GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+    GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+    GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+    GXSetChanCtrl(GX_COLOR0A0, GX_FALSE, GX_SRC_REG, GX_SRC_REG, GX_LIGHT_NULL, GX_DF_NONE, GX_AF_NONE);
+    GXSetNumChans(1);
+    GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
+    GXSetNumTexGens(1);
+    GXSetTevColor(GX_TEVREG0, lbl_8053CDD8);
+    GXSetTevColor(GX_TEVREG1, lbl_80543F20);
+    GXSetTevOrder(GX_TEVSTAGE0, GX_TEXCOORD0, GX_TEXMAP0, GX_COLOR_NULL);
+    GXSetTevColorIn(GX_TEVSTAGE0, (GXTevColorArg)0xf, (GXTevColorArg)8, (GXTevColorArg)2, (GXTevColorArg)4);
+    GXSetTevAlphaIn(GX_TEVSTAGE0, (GXTevAlphaArg)7, (GXTevAlphaArg)4, (GXTevAlphaArg)1, (GXTevAlphaArg)2);
+    GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevAlphaOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+    GXSetTevSwapMode(GX_TEVSTAGE0, GX_TEV_SWAP0, GX_TEV_SWAP0);
+    GXSetTevDirect(GX_TEVSTAGE0);
+    GXSetNumTevStages(1);
+    GXSetNumIndStages(0);
+    GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+    GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
+    GXSetZCompLoc(GX_FALSE);
+    GXSetAlphaCompare(GX_GREATER, 0, GX_AOP_AND, GX_ALWAYS, 0);
+    GXSetColorUpdate(GX_TRUE);
+    GXSetAlphaUpdate(GX_FALSE);
+    GXSetCullMode(GX_CULL_NONE);
+    GXSetClipMode(GX_CLIP_DISABLE);
 }
 
 // ---- from Game/fn_8013B3CC.cpp
