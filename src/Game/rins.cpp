@@ -37,19 +37,26 @@ static inline bool rinsIsStill(char* a) {
     return false;
 }
 
-// NOTE: ~91% - r30/r31 swap for this/id and box-center FP scheduling differ.
+// NONMATCHING (data only): code is 100%, but MWCC emits this function's
+// .sdata2 literals after fn_80357B14's (the TBox2 copy / TUtil::sqrt inlines
+// defer it); retail has them first.
 extern "C" void fn_8035793C(void* thisPtr) {
+    s32 id;
     char* p = (char*)thisPtr;
-    s32 id = fn_801F2718(p, 'MRTA');
+    id = fn_801F2718(p, 'MRTA');
     if (id >= 0) {
         char* a = fn_801F666C(fn_801F856C(), id);
         if (a != NULL) {
             if (rinsIsStill(a) == true) {
                 JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(a + 0x60);
                 box.addPos(*(JGeometry::TVec2<f32>*)(a + 0xc));
-                f32 dx = *(f32*)(p + 0xc) - (0.5f * (box.i.x - box.f.x) + box.f.x);
-                f32 dy = *(f32*)(p + 0x10) - (0.5f * (box.i.y - box.f.y) + box.f.y);
-                if (JGeometry::TUtil<f32>::sqrt(dx * dx + dy * dy) < 4.0f) {
+                f32 cx = 0.5f * (box.i.x - box.f.x) + box.f.x;
+                f32 cy = 0.5f * (box.i.y - box.f.y) + box.f.y;
+                f32 dx = *(f32*)(p + 0xc) - cx;
+                f32 dy = *(f32*)(p + 0x10) - cy;
+                f32 dx2 = dx * dx;
+                f32 dy2 = dy * dy;
+                if (JGeometry::TUtil<f32>::sqrt(dx2 + dy2) < 4.0f) {
                     if (!((RinsActorV*)p)->s11()) {
                         ((RinsActorV*)p)->s10(0xff, 1);
                     }
