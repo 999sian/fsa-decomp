@@ -255,4 +255,94 @@ extern "C" u8 fn_801C9EB8(char* p) {
     return r;
 }
 
+extern const f32 lbl_8053EF34;
+extern "C" u8 fn_8021693C(void* box, u8 mask);
+extern "C" void fn_802379E4(s32 idx, void* pos);
+extern "C" u8 fn_801F2740(void* p, s32 a);
+extern "C" void fn_801F3128(void* p, JGeometry::TVec2<f32>* out);
+extern "C" u8 fn_801F329C(void* p, s32 idx);
+extern "C" void fn_801CD0D0(JGeometry::TVec3f* in, JGeometry::TVec2<f32>* out);
+extern "C" void fn_80238548(s32 idx, s32 a, JGeometry::TVec2<f32>* pos, s32 b);
+
+static inline JGeometry::TVec2<f32> tuProject(const JGeometry::TVec2<f32>& pos) {
+    JGeometry::TVec3f v(pos.x, pos.y, lbl_8053EF20);
+    JGeometry::TVec2<f32> t;
+    fn_801CD0D0(&v, &t);
+    return t;
+}
+
+// near-match (~96%): stack slot order and loop register allocation differ
+extern "C" u8 fn_801CA274(char* p) {
+    u8 r = 0;
+    if (*(s32*)(p + 0x564) != 3) {
+        u8 mask = (*(s32*)(p + 0x560) == 4) ? (u8)0xf : (u8)(1 << *(s32*)(p + 0x560));
+        if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
+            && *(f32*)(p + 0x538) - *(f32*)(p + 0x530) > lbl_8053EF20) {
+            u8 hit = fn_8021693C(p + 0x528, mask);
+            if (hit) {
+                u8 done = 0;
+                for (s32 i = 0; i < 4; i++) {
+                    s32 bit = 1 << i;
+                    if (hit & bit) {
+                        fn_802379E4(i, p + 0xc);
+                        if (!done) {
+                            done = 1;
+                            JGeometry::TVec2<f32> d;
+                            d.y = *(f32*)(p + 0x10) - fn_8023E724(i)->y;
+                            d.x = *(f32*)(p + 0xc) - fn_8023E724(i)->x;
+                            d.normalize();
+                            d.scale(lbl_8053EF34);
+                            *(f32*)(p + 0x3c) = d.x;
+                            *(f32*)(p + 0x40) = d.y;
+                            fn_801C3B7C(p, 0x20);
+                            *(u32*)(p + 0x230) |= 0x80000;
+                        }
+                        mask &= ~bit;
+                    }
+                }
+            }
+            f32 s0 = *(f32*)(p + 0x60);
+            f32 s1 = *(f32*)(p + 0x64);
+            f32 s2 = *(f32*)(p + 0x68);
+            f32 s3 = *(f32*)(p + 0x6c);
+            *(f32*)(p + 0x60) = *(f32*)(p + 0x52c);
+            *(f32*)(p + 0x64) = *(f32*)(p + 0x530);
+            *(f32*)(p + 0x68) = *(f32*)(p + 0x534);
+            *(f32*)(p + 0x6c) = *(f32*)(p + 0x538);
+            u8 res;
+            if (mask == 0) {
+                res = 0;
+            } else {
+                res = fn_801F2740(p, -1);
+                if (res) {
+                    JGeometry::TVec2<f32> pos;
+                    fn_801F3128(p, &pos);
+                    for (s32 i = 0; i < 4; i++) {
+                        s32 bit = 1 << i;
+                        if (res & bit) {
+                            if (mask & bit) {
+                                JGeometry::TVec2<f32> out;
+                                if (fn_801F329C(p, i)) {
+                                    out = tuProject(pos);
+                                } else {
+                                    out.set(pos);
+                                }
+                                fn_80238548(i, *(s32*)(p + 0x114), &out, 2);
+                            } else {
+                                res &= ~bit;
+                            }
+                        }
+                    }
+                }
+            }
+            *(f32*)(p + 0x60) = s0;
+            *(f32*)(p + 0x64) = s1;
+            *(f32*)(p + 0x68) = s2;
+            *(f32*)(p + 0x6c) = s3;
+            r = res;
+        }
+    }
+    return r;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
