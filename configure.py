@@ -1309,7 +1309,7 @@ config.libs = [
             Object(NonMatching, "Game/tu_802B3674.cpp"),
             Object(NonMatching, "Game/tu_802B61C8.cpp"),
             Object(NonMatching, "Game/tu_802B6A70.cpp"),
-            Object(NonMatching, "Game/tu_802B7890.cpp"),
+            Object(Matching, "Game/tu_802B7890.cpp"),
             Object(NonMatching, "Game/tu_802B7C78.cpp"),
             Object(NonMatching, "Game/tu_802B8F7C.cpp"),
             Object(NonMatching, "Game/tu_802B9CAC.cpp"),
