@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
 
 // ---- from src/Game/Table_GetSelfIndexedBit87.cpp ----
 // fn_804149C0(void) - same lbl_8050EC80 global table as
@@ -144,6 +145,67 @@ void fn_8041499C(u8* dst, const u8* src) {
 	dst[3] = src[3];
 }
 
+}
+
+
+extern "C" u8 fn_80404270(void*, s32);
+extern "C" void fn_804446F0(void*, s32);
+extern "C" void fn_80458880(void*, s32, s32);
+extern void* lbl_8053AF80;
+extern u8 lbl_8050DB0C[];
+
+struct SoundIf {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void play(u32* id);
+};
+struct SoundHolder {
+    u8 pad[8];
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void play(u32* id);
+};
+
+extern "C" void fn_8040E298(u8* self) {
+    (*(s16*)(self + 0x42c))++;
+    if (*(s16*)(self + 0x42c) > 60) {
+        if (self[0x664]) {
+            self[0x664] = 2;
+            *(s32*)(self + 0x350) = 6;
+        } else if (fn_80404270(self, *(s32*)(self + 0x340))) {
+            self[0x658] = 1;
+            *(s32*)(self + 0x350) = 0x10;
+            if (self[0x65d] == 1) {
+                for (int i = 0; i < 15; i++) {
+                    (*(Obj240**)(self + 0x278 + i * 4))->f26 = 0;
+                    self[0x65d] = 0;
+                }
+            }
+            fn_804446F0(*(void**)(self + 4), 0);
+            fn_80458880(lbl_8053AF80, 0x56, -1);
+        } else {
+            *(s32*)(self + 0x350) = 0x15;
+        }
+    }
+}
+
+extern "C" void fn_8040F16C(u8* self) {
+    *(s16*)(self + 0x434) += 0x200;
+    *(s16*)(self + 0x436) += 0x400;
+    *(f32*)(self + 0x3a0) = 15.0f * JMASinShort(*(s16*)(self + 0x434));
+    *(f32*)(self + 0x3a4) = 5.0f * JMASinShort(*(s16*)(self + 0x436));
+    if (*(s32*)(self + 0x358) < 90) {
+        *(f32*)(self + 0x3a4) += -250.0f + 250.0f * (*(s32*)(self + 0x358) / 90.0f) * (*(s32*)(self + 0x358) / 90.0f);
+    } else {
+        u32 id = 0x400e3;
+        (*(SoundHolder**)(self + 0x2c8))->play(&id);
+        if (*(s32*)(self + 0x358) >= *(s16*)(lbl_8050DB0C + 0x2ca) + 90) {
+            *(s32*)(self + 0x358) = 0;
+            *(s32*)(self + 0x350) = 0x15;
+        }
+    }
 }
 
 struct J2DGrafContext;
