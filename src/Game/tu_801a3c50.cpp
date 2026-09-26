@@ -2,6 +2,7 @@
 // TU 801A3C50-801A6690 (unknown). Remaining functions are not yet decompiled.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "std/math.h"
 
 class SayaActor {
 public:
@@ -134,6 +135,93 @@ extern "C" s32 fn_801A4F5C(void* this_, void* a4, void* a5) {
 }
 #pragma dont_inline reset
 
+struct SayaRandom {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct SayaGame { u8 pad[0xb4]; SayaRandom rnd; };
+extern SayaGame* lbl_8053AAF8;
+extern "C" u8 fn_8023F264(s32 player);
+extern "C" s32 fn_8023DE58(s32 player);
+extern "C" u8 fn_8023A51C(s32 player);
+extern "C" s32 fn_8023725C(s32 player);
+extern "C" f32* fn_8023A478(s32 player);
+extern "C" void fn_801F3780(void* this_, s32 a);
+
+extern "C" s32 fn_801A4FB4(u8* this_) {
+    s32 room;
+    s32 i;
+    s32 mode = (*(u32*)(this_ + 0xB0) >> 12) & 0xF;
+    if (mode == 0) {
+        return 0;
+    }
+    if (*(u8*)(this_ + 0xD4) == 0) {
+        f32 range = 0.0f;
+        for (i = 0; i < 4; i++) {
+            if (!fn_8023F264(i)) {
+                continue;
+            }
+            room = *(s32*)(this_ + 4);
+            if (room == fn_8023DE58(i) && fn_8023A51C(i) && *(f32*)(this_ + 0x14) == 0.0f) {
+                if (fn_8023725C(i) == 1) {
+                    range = 50.0f;
+                } else if (fn_8023725C(i) == 2) {
+                    range = 777.0f;
+                }
+                if (range > 0.0f) {
+                    f32 dx = fn_8023A478(i)[0] - *(f32*)(this_ + 0xC);
+                    f32 dy = fn_8023A478(i)[1] - *(f32*)(this_ + 0x10);
+                    f32 d = std::sqrtf(dx * dx + dy * dy);
+                    if (d < range || range == 777.0f) {
+                        *(u8*)(this_ + 0xD4) = 1;
+                        if (i >= 0) {
+                            lbl_8053A100 = i;
+                        }
+                        ((SayaActor*)this_)->v44();
+                    }
+                }
+            }
+        }
+    }
+    f32 vz = 0.0f;
+    if (*(u8*)(this_ + 0xD4) == 1) {
+        switch (mode) {
+        case 1:
+            vz = 5.0f + (1.0f - 2.0f * lbl_8053AAF8->rnd.get_ufloat_1());
+            break;
+        case 2:
+            vz = 2.0f + (1.0f - 2.0f * lbl_8053AAF8->rnd.get_ufloat_1());
+            break;
+        case 3:
+            if (*(s32*)(this_ + 0x108) - 10 <= 0) {
+                *(s32*)(this_ + 0x108) = 0;
+            }
+            *(u8*)(this_ + 0xD4) = 0;
+            break;
+        }
+        *(JGeometry::TVec3<f32>*)(this_ + 0x3C) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), vz);
+        *(u8*)(this_ + 0xD4) = 2;
+    }
+    if (*(u8*)(this_ + 0xD4) == 2) {
+        *(JGeometry::TVec3<f32>*)(this_ + 0xC) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14) + *(f32*)(this_ + 0x44));
+        *(JGeometry::TVec3<f32>*)(this_ + 0x3C) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), *(f32*)(this_ + 0x44) - 0.5f);
+        if (*(f32*)(this_ + 0x14) <= 0.0f) {
+            *(JGeometry::TVec3<f32>*)(this_ + 0x3C) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), 0.0f);
+            *(JGeometry::TVec3<f32>*)(this_ + 0xC) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10), 0.0f);
+            *(u8*)(this_ + 0xD4) = 0;
+            if ((s32)((*(u32*)(this_ + 0xB0) >> 16) & 0xFF) == 1) {
+                fn_801F3780(this_, 0x12C);
+            }
+        }
+    }
+    return *(u8*)(this_ + 0xD4);
+}
+
 // from src/Game/Saya_ForceState4_801A6108.cpp
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
@@ -153,7 +241,6 @@ static u8 lbl_804C6640[0x30];
 extern "C" f32 fn_801EE4F0(void);
 extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" u8 fn_802242F4(void* this_);
-extern "C" s32 fn_801A4FB4(void* this_);
 extern "C" u8 fn_801F305C(void* this_);
 extern "C" void fn_801F2618(void* this_, s32 a, s32 b);
 
