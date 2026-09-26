@@ -1924,12 +1924,26 @@ game/ezry.cpp:
 	.text       start:0x80160650 end:0x801618D0
 	.ctors      start:0x8045BF54 end:0x8045BF58
 
+game/trap.cpp:
+	extab       start:0x8000710C end:0x8000713C
+	extabindex  start:0x80013CC0 end:0x80013D08
+	.text       start:0x801643C4 end:0x8016545C
+	.ctors      start:0x8045BF5C end:0x8045BF60
+	.sdata2     start:0x8053D778 end:0x8053D7C0
+
 game/arrw.cpp:
 	extab       start:0x8000713C end:0x8000716C
 	extabindex  start:0x80013D08 end:0x80013D50
 	.text       start:0x8016545C end:0x80166BD0
 	.ctors      start:0x8045BF60 end:0x8045BF64
 	.sdata2     start:0x8053D7C0 end:0x8053D7F8
+
+game/mozo.cpp:
+	extab       start:0x8000716C end:0x8000718C
+	extabindex  start:0x80013D50 end:0x80013D80
+	.text       start:0x80166BD0 end:0x80167938
+	.ctors      start:0x8045BF64 end:0x8045BF68
+	.sdata2     start:0x8053D7F8 end:0x8053D840
 
 game/poon.cpp:
 	extab       start:0x8000718C end:0x800071AC
