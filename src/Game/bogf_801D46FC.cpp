@@ -184,6 +184,78 @@ extern "C" void* fn_801D6A88(void* slot) {
     return slot;
 }
 
+extern "C" void* fn_801D0F40(void* this_);
+extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void fn_80218020(void* p);
+extern "C" void fn_801EB950(void* p);
+extern "C" void fn_801D77B4(void* p);
+extern "C" void fn_801E4B0C(void* p);
+extern "C" void fn_801E6AB8(void* p);
+
+struct BogfA { u8 b[0x18]; };
+struct BogfB { u8 b[0x14]; };
+struct BogfBody {
+    u8 pad[0x2a8];
+    BogfA mA[4];
+    BogfB mB[16];
+    void initA(int i) { fn_801D789C(&mA[i]); }
+    void initB(int i) { fn_801D7874(&mB[i]); }
+};
+
+extern "C" u8* fn_801D686C(u8* this_) {
+    fn_801D0F40(this_);
+    *(void**)this_ = lbl_804A4958;
+    __construct_array(this_ + 0x2a8, (void*)fn_801D6A88, NULL, 0x18, 4);
+    __construct_array(this_ + 0x308, (void*)fn_801D6A58, NULL, 0x14, 0x10);
+    fn_80218020(this_ + 0x448);
+    fn_801EB950(this_ + 0x464);
+    fn_801D77B4(this_ + 0x4c4);
+    fn_801E4B0C(this_ + 0x52c);
+    fn_801E4B0C(this_ + 0x540);
+    fn_801E4B0C(this_ + 0x554);
+    fn_801E6AB8(this_ + 0x568);
+    *(s32*)(this_ + 0x5b0) = -1;
+    *(s32*)(this_ + 0x5b4) = 0;
+    *(s32*)(this_ + 0x5b8) = 0;
+    *(f32*)(this_ + 0x5bc) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x5c0) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x5c4) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x5c8) = lbl_8053F0C8;
+    this_[0x5cc] = 0;
+    this_[0x5cd] = 0;
+    this_[0x5ce] = 0;
+    this_[0x5cf] = 0;
+    this_[0x5d0] = 0;
+    this_[0x5d1] = 0;
+    *(s16*)(this_ + 0x5d2) = 0;
+    *(s16*)(this_ + 0x5d4) = 0;
+    *(s32*)(this_ + 0x5d8) = 0;
+    *(s32*)(this_ + 0x5dc) = 0;
+    *(f32*)(this_ + 0x5e0) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x5e4) = lbl_8053F0C8;
+    this_[0x5e8] = 0;
+    this_[0x5e9] = 0;
+    *(f32*)(this_ + 0x5ec) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x5f0) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x5f4) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x5f8) = lbl_8053F0C8;
+    *(s32*)(this_ + 0x5fc) = 0;
+    *(f32*)(this_ + 0x600) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x604) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x608) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x60c) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x610) = lbl_8053F0C8;
+    *(f32*)(this_ + 0x614) = lbl_8053F0C8;
+    for (s32 i = 0; i < 4; i++) {
+        fn_801D789C(this_ + 0x2a8 + i * 0x18);
+    }
+    for (s32 i = 0; i < 16; i++) {
+        fn_801D7874(this_ + 0x308 + i * 0x14);
+    }
+    *(u8**)(this_ + 0x460) = this_;
+    return this_;
+}
+
 extern const f32 lbl_8053F0D8;
 extern const f32 lbl_8053F0FC;
 extern const f32 lbl_8053F134;
