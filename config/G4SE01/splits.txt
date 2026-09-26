@@ -2826,6 +2826,7 @@ game/tu_803099FC.cpp:
 	extabindex  start:0x8001C9F0 end:0x8001CA38
 	.text       start:0x803099FC end:0x8030AE84
 	.ctors      start:0x8045C398 end:0x8045C39C
+	.sdata2     start:0x80541670 end:0x80541688
 
 game/twtg.cpp:
 	extab       start:0x8000D81C end:0x8000D8C0

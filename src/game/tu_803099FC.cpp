@@ -2,6 +2,23 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "game/esd/types.h"
 
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#ifndef unknown
+#define unknown jsys_unknown
+#endif
+#include "JSystem/JGeometry/Util.h"
+
 // ---- Pad/controller state for the four players (singleton lbl_8053AD30) ----
 // Slot indices 0..3 map to themselves; anything else is the "no player"
 // sentinel -999 (fn_8030AAF4, inlined everywhere).
@@ -11,7 +28,7 @@ struct PadState {
     u32 f14[4];       // 0x14
     u32 f24[4];       // 0x24
     u32 f34[4];       // 0x34
-    u8 pad44[0x40];   // 0x44
+    s32 rep[4][4];    // 0x44: key-repeat timers [bit][player]
     u32 f84[4];       // 0x84
     u32 f94[4];       // 0x94
     u32 fa4[4];       // 0xa4
@@ -124,32 +141,58 @@ extern "C" u32 fn_80309D6C(PadState* s, s32 i, u32 mask) {
     return s->f24[i] & mask;
 }
 
-extern const f32 lbl_80541670;
-extern const f32 lbl_80541674;
-extern const f32 lbl_80541678;
-extern const f32 lbl_8054167C;
 
 // Stick axes from the digital direction bits (hold[i] bits 0..3).
+static inline f32 padAxisY(PadState* s, s32 i) {
+    if (i == -999) {
+        return 0.0f;
+    }
+    f32 v = ((i == -999) ? 0 : (s->hold[i] & 4)) ? -1.0f : 0.0f;
+    v += ((i == -999) ? 0 : (s->hold[i] & 8)) ? 1.0f : 0.0f;
+    if ((i == -999) ? 0 : (s->hold[i] & 3)) {
+        v *= 0.70710677f;
+    }
+    return v;
+}
+
+static inline f32 padAxisX(PadState* s, s32 i) {
+    if (i == -999) {
+        return 0.0f;
+    }
+    f32 v = ((i == -999) ? 0 : (s->hold[i] & 1)) ? -1.0f : 0.0f;
+    v += ((i == -999) ? 0 : (s->hold[i] & 2)) ? 1.0f : 0.0f;
+    if ((i == -999) ? 0 : (s->hold[i] & 0xc)) {
+        v *= 0.70710677f;
+    }
+    return v;
+}
+
+extern "C" f32 fn_80309D90(PadState* s, s32 i) {
+    f32 x = padAxisY(s, i);
+    f32 y = padAxisX(s, i);
+    return JGeometry::TUtil<f32>::sqrt(y * y + x * x);
+}
+
 extern "C" f32 fn_80309F20(PadState* s, s32 i) {
     if (i == -999) {
-        return lbl_80541670;
+        return 0.0f;
     }
-    f32 v = ((i == -999) ? 0 : (s->hold[i] & 4)) ? lbl_80541674 : lbl_80541670;
-    v += ((i == -999) ? 0 : (s->hold[i] & 8)) ? lbl_80541678 : lbl_80541670;
+    f32 v = ((i == -999) ? 0 : (s->hold[i] & 4)) ? -1.0f : 0.0f;
+    v += ((i == -999) ? 0 : (s->hold[i] & 8)) ? 1.0f : 0.0f;
     if ((i == -999) ? 0 : (s->hold[i] & 3)) {
-        v *= lbl_8054167C;
+        v *= 0.70710677f;
     }
     return v;
 }
 
 extern "C" f32 fn_80309FCC(PadState* s, s32 i) {
     if (i == -999) {
-        return lbl_80541670;
+        return 0.0f;
     }
-    f32 v = ((i == -999) ? 0 : (s->hold[i] & 1)) ? lbl_80541674 : lbl_80541670;
-    v += ((i == -999) ? 0 : (s->hold[i] & 2)) ? lbl_80541678 : lbl_80541670;
+    f32 v = ((i == -999) ? 0 : (s->hold[i] & 1)) ? -1.0f : 0.0f;
+    v += ((i == -999) ? 0 : (s->hold[i] & 2)) ? 1.0f : 0.0f;
     if ((i == -999) ? 0 : (s->hold[i] & 0xc)) {
-        v *= lbl_8054167C;
+        v *= 0.70710677f;
     }
     return v;
 }
@@ -173,6 +216,35 @@ extern "C" u8 fn_8030A258(PadState* s, s32 i) {
         return 0;
     }
     return lbl_8053ACE4[i];
+}
+
+// Per-frame update: edge detection and key repeat (20 frames, then 10).
+extern "C" void fn_8030A078(PadState* s) {
+    for (s32 i = 0; i < 4; i++) {
+        s->f24[i] = s->hold[i] & (s->hold[i] ^ s->f14[i]);
+        s->fa4[i] = s->f14[i] & (s->hold[i] ^ s->f14[i]);
+        s->f34[i] = 0;
+#define PAD_REPEAT(BIT, IDX)                          \
+        if (s->hold[i] & BIT) {                       \
+            if (s->f24[i] & BIT) {                    \
+                s->f34[i] |= BIT;                     \
+                s->rep[IDX][i] = 20;                  \
+            } else {                                  \
+                s->rep[IDX][i]--;                     \
+                if (s->rep[IDX][i] <= 0) {            \
+                s->f34[i] |= BIT;                     \
+                s->rep[IDX][i] = 10;                  \
+                }                                     \
+            }                                         \
+        } else {                                      \
+            s->rep[IDX][i] = 0;                       \
+        }
+        PAD_REPEAT(1, 0)
+        PAD_REPEAT(2, 1)
+        PAD_REPEAT(4, 2)
+        PAD_REPEAT(8, 3)
+#undef PAD_REPEAT
+    }
 }
 
 // ---- AnimTable_IsField0xdcLessThan3_8030A2E4.cpp ----
