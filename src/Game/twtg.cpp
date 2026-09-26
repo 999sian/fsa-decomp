@@ -248,6 +248,81 @@ static inline u8 twtgAsk(char* p, s32 msg) {
     return 0;
 }
 
+struct TwtgRandom {
+    u32 seed;
+    f32 get() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - lbl_80541888;
+    }
+};
+
+extern "C" void fn_803142E4(char* p) {
+    TwtgBox b;
+    JGeometry::TVec3f v;
+    f32 dist;
+    twtgUpdateDir(p, v, dist);
+    b.min.x = *(f32*)(p + 0x258);
+    b.min.y = *(f32*)(p + 0x25c);
+    b.max.x = *(f32*)(p + 0x260);
+    b.max.y = *(f32*)(p + 0x264);
+    b.min.x += *(f32*)(p + 0xc);
+    b.min.y += *(f32*)(p + 0x10);
+    b.max.x += *(f32*)(p + 0xc);
+    b.max.y += *(f32*)(p + 0x10);
+    s32 slot;
+    if (*(s32*)(p + 0x234) == 0) {
+        switch (*(s32*)(p + 0x238)) {
+        case 0:
+            fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
+            slot = fn_8022FD8C(*(void**)(p + 0x198));
+            if (slot >= 0 && fn_802300EC()) {
+                void* room = *(void**)(p + 0x198);
+                s32 player = *(s32*)(p + 4);
+                if (fn_8038AD24(slot, 0x4ce, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {
+                    *(s32*)(p + 0x254) = slot;
+                    *(s32*)(p + 0x268) = 0x4ce;
+                    *(s32*)(p + 0x234) = 1;
+                }
+            }
+            break;
+        case 1:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4cf);
+            break;
+        case 2: {
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            s32 n = fn_80138A30(lbl_8053AAF8);
+            s32 i = (s32)(n * ((TwtgRandom*)(lbl_8053AAF8 + 0xb4))->get()) & 3;
+            fn_803894BC(*(s32*)(p + 0x254), i + 1);
+            if (twtgAsk(p, 0x4da)) {
+                fn_8043D874(lbl_8053AED0, i, 300, 0);
+            }
+            break;
+        }
+        default:
+            *(s32*)(p + 0x230) = 4;
+            *(s32*)(p + 0x238) = 5;
+            *(s32*)(p + 0x254) = 0;
+            *(s32*)(p + 0x234) = 0;
+            break;
+        }
+    } else if (*(s32*)(p + 0x234) == 1) {
+        fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        if (fn_803865B8(*(s32*)(p + 0x254))) {
+            if (*(s32*)(p + 0x238) < 2) {
+                (*(s32*)(p + 0x238))++;
+                *(s32*)(p + 0x234) = 0;
+            } else {
+                *(s32*)(p + 0x230) = 4;
+                *(s32*)(p + 0x238) = 0;
+                *(s32*)(p + 0x234) = 0;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80315080(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
