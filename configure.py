@@ -1208,7 +1208,7 @@ config.libs = [
             Object(NonMatching, "Game/SLGE_801C1768.cpp"),
             Object(NonMatching, "Game/slk2_801C26D8.cpp"),
             Object(NonMatching, "Game/tu_801C5B08.cpp"),
-            Object(NonMatching, "Game/tu_801C6A4C.cpp"),
+            Object(Matching, "Game/tu_801C6A4C.cpp"),
             Object(NonMatching, "Game/tu_801C71BC.cpp"),
             Object(NonMatching, "Game/tu_801C9AF8.cpp"),
             Object(NonMatching, "Game/tu_801CB270.cpp"),

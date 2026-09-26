@@ -2727,6 +2727,7 @@ Game/tu_801C6A4C.cpp:
 	.text       start:0x801C6A4C end:0x801C71BC
 	.ctors      start:0x8045C044 end:0x8045C048
 	.bss        start:0x804C82D0 end:0x804C833C
+	.sdata2     start:0x8053EEB0 end:0x8053EEC8
 
 Game/tu_801C71BC.cpp:
 	extab       start:0x80008168 end:0x800081E0
