@@ -69,18 +69,16 @@ extern "C" void fn_801ED80C(void* thisPtr) {
 	*(u8*)(p + 0x9) = 0;
 }
 
-extern "C" void fn_801ED828(u16* timer) {
-    if (*timer != 0) {
-        s32 lim = 30;
+extern "C" void fn_801ED828(const u16& timer) {
+    if (timer != 0) {
         for (s32 i = 0; i < 3; i++) {
-            if (lim <= *timer && *timer <= (i + 1) * 60) {
+            if (i * 60 + 30 <= timer && timer <= (i + 1) * 60) {
                 GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
                 f32 y = lbl_8053F6F4 * (s32)rm->efbHeight;
                 f32 x = lbl_8053F6F4 * (s32)rm->fbWidth;
                 fn_8043CB24(lbl_8053AED0, x, y, lbl_8053F710, i, 0xff, 0, 1, 0);
                 return;
             }
-            lim += 60;
         }
     }
 }

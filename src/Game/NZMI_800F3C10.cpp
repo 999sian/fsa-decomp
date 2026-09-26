@@ -1,6 +1,4 @@
 // NZMI_800F3C10: .text 0x800F3C10-0x800F46C0 (actor NZMI)
-// NOTE: all functions match except fn_800F3E08, which differs only in stack
-// slot assignment of the rand/seek temporaries (0x10-0x18).
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
@@ -107,7 +105,7 @@ struct NZMI_Random {
 struct NZMI_Game { u8 pad[0xb4]; NZMI_Random rnd; };
 extern NZMI_Game* lbl_8053AAF8;
 static inline s32 NZMI_rand(f32 r) { return r * lbl_8053AAF8->rnd.get(); }
-static inline f32 NZMI_randf(f32 r) { return r * lbl_8053AAF8->rnd.get(); }
+static inline f32 NZMI_randg(NZMI_Game* g, f32 r) { return r * g->rnd.get(); }
 
 // ---- fn_800F3E08: update (wander / chase the nearest player / flee)
 extern "C" s32 fn_801F3D94(void* this_, s32 a);
@@ -222,7 +220,7 @@ extern "C" void fn_800F3E08(u8* this_) {
         *(s32*)(this_ + 0x23C) += 1;
         if (*(s32*)(this_ + 0x23C) == *(s32*)(this_ + 0x244)) {
             *(s32*)(this_ + 0x244) = NZMI_rand(80.0f) + 10;
-            *(u8*)(this_ + 0x235) = NZMI_randf(4.0f);
+            *(u8*)(this_ + 0x235) = NZMI_randg(lbl_8053AAF8, 4.0f);
             *(s32*)(this_ + 0x230) = 0;
             fn_801F0E34(this_, 0x400A6, 0);
             *(s32*)(this_ + 0x23C) = 0;

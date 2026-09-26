@@ -1696,6 +1696,8 @@ Game/NZMI_800F3C10.cpp:
 	extabindex  start:0x80011920 end:0x8001195C
 	.text       start:0x800F3C10 end:0x800F46C0
 	.ctors      start:0x8045BDF4 end:0x8045BDF8
+	.bss        start:0x804BA6F8 end:0x804BA764
+	.sdata2     start:0x8053BE58 end:0x8053BE88
 
 Game/IWAG_800F46C0.cpp:
 	extab       start:0x800056C8 end:0x800056E0
