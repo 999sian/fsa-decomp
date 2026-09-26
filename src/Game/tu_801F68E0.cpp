@@ -1,6 +1,7 @@
 // TU 0x801f68e0-0x801f9484.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "float.h"
 
 // ---- stub_801f714c.cpp ----
 // fn_801F714C(shortPtr, target, divisor, maxStep) - integer/angle "ease
@@ -92,6 +93,264 @@ extern "C" void fn_801F857C(void* actorPoolBase) {
     }
 
     fn_80456120(*(void**)((u8*)actorPoolBase + 0x200c));
+}
+
+// ---- actor pool helpers
+
+struct PoolActor {
+    u8 pad0[4];
+    s32 mParam;
+    u8 pad8[4];
+    f32 mX;
+    f32 mY;
+    f32 mZ;
+    u8 pad18[0x90 - 0x18];
+    u32 m90;
+    u8 pad94[0x11c - 0x94];
+    u8 mActive;
+    u8 pad11d[0x198 - 0x11d];
+    s32 mId;
+    u8 pad19c[4];
+    u32 mType;
+    u8 pad1a4[4];
+    u8 m1a8;
+};
+
+struct LinkActor {
+    u8 pad0[0x15c];
+    LinkActor* mPrev;
+    LinkActor* mNext;
+    u8 pad164;
+    u8 mLinked;
+};
+
+struct LinkPool {
+    u8 pad0[0x2018];
+    LinkActor* mHead;
+};
+
+struct ActorPool {
+    u8 pad0[8];
+    PoolActor* mActors[0x400];
+    s32 mCount;
+};
+
+struct PoolHolder {
+    u8 pad0[4];
+    struct {
+        u8 pad0[8];
+        void* m8;
+    }* m4;
+};
+
+extern PoolHolder* lbl_8053AAF8;
+
+extern "C" void* fn_801F856C(void) {
+    return lbl_8053AAF8->m4->m8;
+}
+
+extern "C" void fn_801F71A4(f32* value, f32 target, f32 rate, f32 maxStep) {
+    if (*value == target) {
+        return;
+    }
+    f32 step = rate * (target - *value);
+    if (step > maxStep) {
+        step = maxStep;
+    } else if (step < -maxStep) {
+        step = -maxStep;
+    }
+    *value += step;
+}
+
+extern "C" s32 fn_801F7A08(ActorPool* pool, u32 type) {
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && type == pool->mActors[i]->mType) {
+            return pool->mActors[i]->mId;
+        }
+    }
+    return -1;
+}
+
+extern "C" s32 fn_801F7A6C(ActorPool* pool) {
+    s32 n = 0;
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->m1a8) {
+            n++;
+        }
+    }
+    return n;
+}
+
+extern "C" s32 fn_801F7AB8(ActorPool* pool, u32 type, s32 exceptId) {
+    s32 n = 0;
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && type == pool->mActors[i]->mType &&
+            exceptId != pool->mActors[i]->mId)
+        {
+            pool->mActors[i]->mActive = 0;
+            n++;
+        }
+    }
+    return n;
+}
+
+extern "C" s32 fn_801F7818(ActorPool* pool, u32 type, s32 param, PoolActor** out, s32 exceptId) {
+    s32 n = 0;
+    s32 count = pool->mCount;
+    for (s32 i = 0; i < count; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
+            type == pool->mActors[i]->mType && exceptId != pool->mActors[i]->mId)
+        {
+            *out++ = pool->mActors[i];
+            n++;
+        }
+    }
+    return n;
+}
+
+extern "C" s32 fn_801F7884(ActorPool* pool, u32 type, s32 param) {
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
+            type == pool->mActors[i]->mType)
+        {
+            return pool->mActors[i]->mId;
+        }
+    }
+    return -1;
+}
+
+extern "C" BOOL fn_801F8448(LinkPool* pool, LinkActor* actor) {
+    bool removed = false;
+    if (actor->mPrev != NULL) {
+        actor->mPrev->mNext = actor->mNext;
+        if (actor->mNext != NULL) {
+            actor->mNext->mPrev = actor->mPrev;
+        }
+        removed = true;
+    } else if (actor == pool->mHead) {
+        pool->mHead = actor->mNext;
+        if (pool->mHead != NULL) {
+            pool->mHead->mPrev = NULL;
+        }
+        removed = true;
+    }
+    if (removed) {
+        actor->mPrev = NULL;
+        actor->mNext = NULL;
+    }
+    return removed;
+}
+
+extern "C" BOOL fn_801F84C4(LinkPool* pool, LinkActor* actor) {
+    bool added = false;
+    if (pool->mHead != NULL) {
+        LinkActor* p = pool->mHead;
+        while (true) {
+            LinkActor* next = p->mNext;
+            if (p == actor) {
+                actor->mLinked = 1;
+                break;
+            }
+            if (next == NULL) {
+                break;
+            }
+            p = next;
+        }
+        if (p != actor) {
+            p->mNext = actor;
+            added = true;
+            actor->mPrev = p;
+            actor->mLinked = 1;
+        }
+    } else {
+        pool->mHead = actor;
+        added = true;
+        actor->mPrev = NULL;
+        actor->mNext = NULL;
+        actor->mLinked = 1;
+    }
+    return added;
+}
+
+extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* count, s32 max) {
+    *count = 0;
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->mType == 'RAIL' &&
+            key == ((pool->mActors[i]->m90 >> 8) & 0xff))
+        {
+            out[*count] = pool->mActors[i];
+            (*count)++;
+            if (*count == max) {
+                return FALSE;
+            }
+        }
+    }
+    return TRUE;
+}
+
+extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
+    s32 id = -1;
+    f32 best = 1000000.0f;
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->m1a8 == 1) {
+            f32 dx = pos[0] - pool->mActors[i]->mX;
+            f32 dy = pos[1] - pool->mActors[i]->mY;
+            f32 dx2 = dx * dx;
+            f32 dy2 = dy * dy;
+            f32 d = dx2 + dy2;
+            if (d < best) {
+                id = pool->mActors[i]->mId;
+                best = d;
+            }
+        }
+    }
+    if (outDist != NULL) {
+        *outDist = best;
+    }
+    return id;
+}
+
+extern "C" s32 fn_801F778C(ActorPool* pool, u32 type, f32* pos, f32* outDist) {
+    s32 id = -1;
+    f32 best = 1000000.0f;
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && type == pool->mActors[i]->mType) {
+            f32 dx = pos[0] - pool->mActors[i]->mX;
+            f32 dy = pos[1] - pool->mActors[i]->mY;
+            f32 dx2 = dx * dx;
+            f32 dy2 = dy * dy;
+            f32 d = dx2 + dy2;
+            if (d < best) {
+                id = pool->mActors[i]->mId;
+                best = d;
+            }
+        }
+    }
+    if (outDist != NULL) {
+        *outDist = best;
+    }
+    return id;
+}
+
+extern "C" s32 fn_801F76F0(ActorPool* pool, u32 type, s32 param, f32* pos, s32 exceptId) {
+    f32 best = FLT_MAX;
+    s32 id = -1;
+    for (s32 i = 0; i < pool->mCount; i++) {
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && type == pool->mActors[i]->mType &&
+            param == pool->mActors[i]->mParam && exceptId != pool->mActors[i]->mId)
+        {
+            f32 dy = pool->mActors[i]->mY - pos[1];
+            f32 dx = pool->mActors[i]->mX - pos[0];
+            f32 dy2 = dy * dy;
+            f32 dx2 = dx * dx;
+            f32 d = dx2 + dy2;
+            if (d < best) {
+                best = d;
+                id = pool->mActors[i]->mId;
+            }
+        }
+    }
+    return id;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
