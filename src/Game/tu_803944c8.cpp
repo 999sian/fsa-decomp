@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 // String scratch buffers (snprintf/strcat targets).
 static char lbl_8050E518[0x10];
@@ -16,6 +17,51 @@ extern "C" void fn_803944C8(void* this_, s32 a, u8 b, u8 c) {
     *(s32*)((char*)lbl_8053AD78 + 0x48) = a;
     *(u8*)((char*)lbl_8053AD78 + 0xea) = b;
     *(u8*)((char*)lbl_8053AD78 + 0xeb) = c;
+}
+
+static inline void setTBFontSize(J2DTextBox* tb, J2DTextBox::TFontSize size) {
+    f32 x = size.x;
+    f32 y = size.y;
+    tb->mFontSize.x = x > 0.0f ? x : 0.0f;
+    tb->mFontSize.y = y > 0.0f ? y : 0.0f;
+}
+
+struct MsgPrint {
+    u8 pad0[0x7c];
+    f32 m7c;
+    f32 m80;
+    u8 pad84[0x2c8 - 0x84];
+    f32 m2c8;
+    void setScale(f32 s, f32 w) {
+        m2c8 = s;
+        m7c = s;
+        m80 = w;
+    }
+};
+
+struct MsgWindow {
+    u8 pad0[0x14];
+    MsgPrint* m14;
+    u8 pad18[0x20 - 0x18];
+    J2DScreen* screen;          // 0x20
+    u8 pad24[0x60 - 0x24];
+    f32 fontW;                  // 0x60
+    f32 fontH;                  // 0x64
+    u8 pad68[0xb0 - 0x68];
+    f32 lineSpace;              // 0xb0
+    f32 scale;                  // 0xb4
+};
+
+extern "C" void fn_803944EC(MsgWindow* w, f32 s) {
+    w->scale = s;
+    J2DTextBox::TFontSize fs;
+    fs.x = w->fontW * s;
+    fs.y = w->fontH * s;
+    setTBFontSize((J2DTextBox*)w->screen->search('Tm01'), fs);
+    ((J2DTextBox*)w->screen->search('Tm01'))->setLineSpace(w->lineSpace * s);
+    setTBFontSize((J2DTextBox*)w->screen->search('Tm02'), fs);
+    ((J2DTextBox*)w->screen->search('Tm02'))->setLineSpace(w->lineSpace * s);
+    w->m14->setScale(s, w->fontW);
 }
 
 // ---- from src/Game/fn_80396F94.cpp ----
