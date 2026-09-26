@@ -1,6 +1,7 @@
 // TU 0x80214244-0x802144f0.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry.h"
 
 // ---- GetCurrentSlotPtr.cpp ----
 // Both operate on a 0xc8-byte-stride array embedded at this+0, selected by a current-index byte at this->0x190.
@@ -13,6 +14,12 @@ void* GetCurrentSlotPtr(void* thisPtr) {
 void SetCurrentSlotIndex(void* thisPtr, u8 idx) {
 	*(u8*)((char*)thisPtr + 0x190) = idx;
 }
+
+void fn_800FE3EC(void* slot, u32 a, JGeometry::TVec3<f32> v, u32 b);
+void fn_8021425C(void* thisPtr, u8 idx, u32 a, JGeometry::TVec3<f32> v, u32 b) {
+	fn_800FE3EC((char*)thisPtr + (idx * 0xc8), a, v, b);
+}
+
 }
 
 // ---- Slk2_ResetFlags7.cpp ----
