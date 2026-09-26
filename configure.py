@@ -1099,7 +1099,7 @@ config.libs = [
             Object(NonMatching, "Game/gnon.cpp"),
             Object(NonMatching, "Game/tu_80197070.cpp"),
             Object(NonMatching, "Game/tenn.cpp"),
-            Object(NonMatching, "Game/enbz.cpp"),
+            Object(Matching, "Game/enbz.cpp"),
             Object(NonMatching, "Game/tu_801a3c50.cpp"),
             Object(NonMatching, "Game/ryya.cpp"),
             Object(NonMatching, "Game/hbb2.cpp"),

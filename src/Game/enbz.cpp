@@ -150,6 +150,12 @@ extern "C" void fn_801A3610(ENBZ* this_) {
 end:;
 }
 
+static inline void enbzClear(s32* h) {
+    for (int i = 0; i < 15; i++) {
+        h[i] = -1;
+    }
+}
+
 extern "C" void fn_801A3944(ENBZ* this_) {
     this_->m_28c = 0;
     this_->m_290 = 0;
@@ -173,9 +179,7 @@ extern "C" void fn_801A3944(ENBZ* this_) {
     if (this_->count == 0) {
         this_->count = 3;
     }
-    for (int i = 0; i < 15; i++) {
-        this_->handles[i] = -1;
-    }
+    enbzClear(this_->handles);
     this_->state = 0;
 }
 
