@@ -16,9 +16,9 @@ struct StateInfo_8021CDE4 {
 };
 
 extern "C" {
-extern StateInfo_8021CDE4 lbl_8046A748[];
+extern const StateInfo_8021CDE4 lbl_8046A748[];
 u8 fn_801CD2F8(u32 id);
-void fn_801CD150(void* src, void* dst);
+void fn_801CD150(const Vec_8021CDE4& src, void* dst);
 void fn_801CD0D0(void* src, void* dst);
 void fn_801C3B7C(void* actor, s32 anim);
 void fn_8021425C(void* slots, u8 idx, u32 a, const JGeometry::TVec3<f32>& v, u32 b);
@@ -27,6 +27,10 @@ void* GetCurrentSlotPtr(void* slots);
 Vec_8021CDE4 fn_800FE294(void* slot, s32 alpha);
 
 // NonMatching: only the stack slots of the two Vec temporaries are swapped.
+inline void SetTarget_8021CDE4(char* p) {
+    fn_801CD150(Vec_8021CDE4(*(f32*)(p + 0x570), 24.0f + *(f32*)(p + 0x574), 0.0f), p + 0x580);
+}
+
 void fn_8021CDE4(void* this_, s32 state) {
     char* p = (char*)this_;
     *(s32*)(p + 0x108) = *(s32*)(p + 0x244);
@@ -35,10 +39,10 @@ void fn_8021CDE4(void* this_, s32 state) {
     case 1: {
         if (fn_801CD2F8(*(u32*)(p + 0x4))) {
             *(s32*)(p + 0x58c) = 2;
-            fn_801CD150(&Vec_8021CDE4(*(f32*)(p + 0x570), 24.0f + *(f32*)(p + 0x574), 0.0f), p + 0x580);
+            SetTarget_8021CDE4(p);
         } else {
             *(s32*)(p + 0x58c) = 0;
-            fn_801CD150(p + 0xc, p + 0x580);
+            fn_801CD150(*(Vec_8021CDE4*)(p + 0xc), p + 0x580);
         }
         *(s32*)(p + 0x57c) = 8;
         *(u32*)(p + 0x56c) = *(u32*)(p + 0x4);
