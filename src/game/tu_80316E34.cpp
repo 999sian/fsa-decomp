@@ -22,20 +22,8 @@
 #endif
 #include "JSystem/JGeometry/Vec.h"
 
-struct AnimFrame {
-    u16 frame;
-    s16 duration; // -1: hold, -2: loop
-};
-struct AnimEffectRec {
-    s32 frame;                   // 0x0
-    s32 mode;                    // 0x4
-    u8 index;                    // 0x8
-    u8 timer;                    // 0x9
-    s32 player;                  // 0xc
-    JGeometry::TVec3<f32> pos;   // 0x10
+#include "game/AnimEffectRec.h"
 
-    ~AnimEffectRec();
-};
 extern const s32 lbl_804715A8[4];
 extern AnimFrame* lbl_804AADB8[4];
 extern f32 lbl_805418B8;
