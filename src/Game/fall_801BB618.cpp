@@ -498,4 +498,126 @@ extern "C" void fn_801BC244(char* this_) {
     }
 }
 
+extern "C" f32* fn_8023E604(s32 id);
+extern "C" void fn_801D22A0(void* p, s32 a, s32 b);
+extern const f32 lbl_8053EC44;
+extern const f32 lbl_8053EC48;
+extern const f32 lbl_8053EC4C;
+extern const f32 lbl_8053EC6C;
+
+static inline void fallSetBoxIdle(char* this_) {
+    f32 lo = lbl_8053EC08;
+    f32 hi = lbl_8053EC68;
+    *(f32*)(this_ + 0x60) = lo;
+    *(f32*)(this_ + 0x64) = lo;
+    *(f32*)(this_ + 0x68) = hi;
+    *(f32*)(this_ + 0x6c) = hi;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+}
+
+static inline void fallSetPos(char* this_, f32 x, f32 y, f32 z) {
+    *(f32*)(this_ + 0xc) = x;
+    *(f32*)(this_ + 0x10) = y;
+    *(f32*)(this_ + 0x14) = z;
+}
+
+static inline void fallSetBoxHold(char* this_) {
+    *(f32*)(this_ + 0x60) = lbl_8053EC44;
+    *(f32*)(this_ + 0x64) = lbl_8053EC48;
+    *(f32*)(this_ + 0x68) = lbl_8053EC4C;
+    *(f32*)(this_ + 0x6c) = lbl_8053EC3C;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+}
+
+extern "C" void fn_801BC554(char* this_, s32 state) {
+    switch (state) {
+    case 0:
+        *(u32*)(this_ + 0x230) &= ~0x2000;
+        *(s32*)(this_ + 0x2b8) = -1;
+        *(s32*)(this_ + 0x2bc) = 0;
+        fallSetBoxIdle(this_);
+        *(s32*)(this_ + 0x98) = 2;
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
+        fallSetPos(this_, *(f32*)(this_ + 0x24), *(f32*)(this_ + 0x28), lbl_8053EC00);
+        *(s32*)(this_ + 0x4) = *(s32*)(this_ + 0x8);
+        break;
+    case 1:
+        *(s32*)(this_ + 0x2bc) = 0;
+        fallSetBoxHold(this_);
+        fn_801D22DC(this_ + 0x270, 0, 0, 0);
+        if (*(s32*)(this_ + 0x248) != 5) {
+            fallSetPos(this_, *(f32*)(this_ + 0x24), *(f32*)(this_ + 0x28), lbl_8053EC00);
+            *(s32*)(this_ + 0x4) = *(s32*)(this_ + 0x8);
+        }
+        break;
+    case 3:
+        *(s32*)(this_ + 0x2bc) = 0;
+        fallSetBoxHold(this_);
+        fn_801D22DC(this_ + 0x270, 2, 0, 0);
+        break;
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+        *(u32*)(this_ + 0x230) |= 0x2000;
+        *(s32*)(this_ + 0x2bc) = 0;
+        fallSetBoxHold(this_);
+        fn_801D22DC(this_ + 0x270, 1, 0, 0);
+        if (state == 4 && (*(u32*)(this_ + 0x230) & 0x4000)) {
+            f32* p = fn_8023E604(*(s32*)(this_ + 0x2b8));
+            *(f32*)(this_ + 0x2b0) = p[0];
+            *(f32*)(this_ + 0x2b4) = p[1];
+        }
+        break;
+    case 5:
+        *(s32*)(this_ + 0x2b8) = -1;
+        *(s32*)(this_ + 0x2bc) = 0;
+        fallSetBoxHold(this_);
+        fn_801D22DC(this_ + 0x270, 0, 0, 0);
+        break;
+    case 9:
+        *(u32*)(this_ + 0x230) &= ~0x2000;
+        *(s32*)(this_ + 0x2b8) = -1;
+        *(s32*)(this_ + 0x2bc) = 0;
+        fallSetBoxIdle(this_);
+        *(s32*)(this_ + 0x98) = 2;
+        *(s32*)(this_ + 0x250) = fn_801CD664(0xb5) + 0xb4;
+        *(f32*)(this_ + 0x254) = lbl_8053EC0C;
+        *(f32*)(this_ + 0x258) = lbl_8053EC0C;
+        *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x24);
+        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28);
+        *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x2c);
+        *(s32*)(this_ + 0x4) = *(s32*)(this_ + 0x8);
+        break;
+    case 10:
+        *(u32*)(this_ + 0x230) &= ~0x2000;
+        *(s32*)(this_ + 0x2b8) = -1;
+        *(s32*)(this_ + 0x2bc) = 0;
+        fallSetBoxHold(this_);
+        *(f32*)(this_ + 0x254) = lbl_8053EC6C;
+        *(f32*)(this_ + 0x258) = lbl_8053EC6C;
+        *(s32*)(this_ + 0x2e4) = 0;
+        *(s32*)(this_ + 0x2e8) = ((FallRoute*)(this_ + 0x2c8))->dir[*(s32*)(this_ + 0x2e4)];
+        *(s32*)(this_ + 0x2ec) = 0;
+        fn_801D22A0(this_ + 0x270, 4, 2);
+        break;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = state;
+    if (!fallIsFalling(this_)) {
+        *(s32*)(this_ + 0x2c0) = 0;
+    }
+    if (fallIsMoving(this_)) {
+        *(u32*)(this_ + 0xb0) = 0x40004;
+    } else {
+        *(u32*)(this_ + 0xb0) = 0x41101;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
