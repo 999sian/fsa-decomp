@@ -2,6 +2,68 @@
 // Functions: draw (slot 6, TODO), update (slot 3, TODO), init (slot 1),
 // child release, dtor.
 #include "types.h"
+#include "Game/ItemBase.h"
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, void* rec, f32 sx, f32 sy, s32 mode);
+extern "C" void fn_802F86CC(void* map, void* pos, void* res, s32 idx, void* rec, f32 sx, f32 sy);
+extern u8* lbl_8053AAF8;
+extern const f32 lbl_8053D7F8;
+extern char* lbl_8053AB10;
+
+struct MozoResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* get(u32 type, const char* name);
+};
+
+static inline void mozoRotScale(f32 m[3][4], f32 rx, const f32* pry, f32 rz, const f32* ps) {
+    m[0][3] = lbl_8053D7F8;
+    m[1][3] = lbl_8053D7F8;
+    m[2][3] = lbl_8053D7F8;
+    f32 ry = *pry;
+    f32 s = *ps;
+    f32 sx = sin(rx);
+    f32 sy = sin(ry);
+    f32 sz = sin(rz);
+    f32 cx = cos(rx);
+    f32 cy = cos(ry);
+    f32 cz = cos(rz);
+    f32 cxcz = cx * cz;
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
+
+// MOZO draw (vtable slot 6)
+extern "C" void fn_80166BD0(u8* this_) {
+    if (*(s32*)(this_ + 0x230) == 3) {
+        DrawRec r;
+        f32 m[3][4];
+        mozoRotScale(m, lbl_8053D7F8, (f32*)(this_ + 0x25c), lbl_8053D7F8, (f32*)(this_ + 0x258));
+        r.w18 = m;
+        s32 idx = *(s32*)(this_ + 0x250) + 0x9d;
+        if (*(s32*)(this_ + 4) < 8) {
+            void* res = (*(MozoResMgr**)(lbl_8053AAF8 + 0xa4))->get('SOB ', "enemy_gc_sob.bin");
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, idx, &r, 1.0f, 1.0f);
+        }
+    } else {
+        fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x250) + 0x9d, 0, 1.0f, 1.0f, 0);
+    }
+}
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
