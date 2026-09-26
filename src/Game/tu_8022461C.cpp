@@ -261,3 +261,35 @@ extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
     }
     return FALSE;
 }
+
+struct Tu8022G {
+    u8 pad0[4];
+    s32 f4;
+    s32 f8;
+    u8 padC[0x8];
+    s32 f14;
+    s32 f18;
+};
+extern const u16 lbl_8046CB88[0x400];
+extern char* lbl_8053AAF8;
+extern const f32 lbl_8053FF50;
+
+#define TG() ((Tu8022G*)fn_802D6A9C())
+extern "C" u16 fn_8022461C(f32* pos, u32 room) {
+    u16 kind = lbl_8046CB88[tileAt(pos, room)];
+    if (fn_802D6A9C()[room + 0x131df] != 0) {
+        if (kind == 0) {
+            return 2;
+        } else if (kind == 0x61) {
+            return 0;
+        }
+    } else if (kind == 0xe && lbl_8053AAF8[0x7f] != 0) {
+        if ((TG()->f4 == 7 && TG()->f8 == 2) ||
+            (TG()->f4 == 7 && TG()->f8 == 3 &&
+             *((u8*)TG()->f14 + (s32)TG() + TG()->f18 * 10 + 0x60) == 0x10 &&
+             pos[1] > lbl_8053FF50)) {
+            return 0x51;
+        }
+    }
+    return kind;
+}
