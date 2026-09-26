@@ -141,7 +141,9 @@ static OSMessageQueue lbl_8052AD00;
 static OSMessage lbl_8052AD20[8];
 static s16 lbl_8052AD40[2][0x460] __attribute__((aligned(32)));
 static u32 lbl_8052BEC0[3];
-static u32 lbl_8052BECC[0x43];
+static u32 lbl_8052BECC[4];
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
+static u8 lbl_8052BF48[0x90];
 
 extern u8 lbl_8053AEBD;
 extern u8 lbl_8053AEBC;
@@ -155,7 +157,9 @@ extern void* lbl_804B15C0[];
 struct RenderModeHolder { u8 pad[4]; u16 fbWidth; u16 efbHeight; };
 
 extern u32 lbl_8053AEB0;
-extern "C" u8 fn_80428AC8(s32, s32);
+extern "C" u8 fn_80428AC8(s32, s32, s32);
+extern "C" u8 fn_8042E464(s32 prio, void* param);
+extern "C" u8 fn_8042E494(s32 prio, void* param);
 extern "C" void* fn_8042E758();
 extern "C" void* alloc__7JKRHeapFUli(void*, u32, int);
 
@@ -588,7 +592,7 @@ extern "C" u8 fn_80428448() {
         r = 0;
     }
     lbl_8053AEB0 = r;
-    if (!fn_80428AC8(0, 0)) {
+    if (!fn_80428AC8(0, 0, 0)) {
         return 0;
     }
     return 1;
@@ -757,6 +761,55 @@ extern "C" void fn_80428A88() {
 }
 
 #pragma dont_inline on
+extern "C" u8 fn_80428AC8(s32 frameNum, s32 playFlag, s32 audioTrack) {
+    if (lbl_8052AAD0.open && lbl_8052AAD0.state == 0) {
+        if (frameNum > 0) {
+            if (lbl_8052AAD0.header.offsetDataOffsets == 0) {
+                return 0;
+            }
+            if (lbl_8052AAD0.header.numFrames > (u32)frameNum) {
+                u32* tbl = (u32*)lbl_8052ACA0;
+                u32 a = *tbl++;
+                u32 b = *tbl;
+                lbl_8052AAD0.initReadFrame = frameNum;
+                lbl_8052AAD0.initOffset = a + lbl_8052AAD0.header.movieDataOffsets;
+                lbl_8052AAD0.initReadSize = b - a;
+            } else {
+                return 0;
+            }
+        } else {
+            lbl_8052AAD0.initOffset = lbl_8052AAD0.header.movieDataOffsets;
+            lbl_8052AAD0.initReadSize = lbl_8052AAD0.header.firstFrameSize;
+            lbl_8052AAD0.initReadFrame = frameNum;
+        }
+        if (lbl_8052AAD0.audioExist) {
+            if (audioTrack < 0 || (u32)audioTrack >= *(u32*)(lbl_8052AAD0.audioInfo + 0xc)) {
+                return 0;
+            }
+            lbl_8052AAD0.curAudioTrack = audioTrack;
+        }
+        lbl_8052AAD0.playFlag = playFlag & 1;
+        lbl_8052AAD0.mD8 = 0;
+        if (!lbl_8052AAD0.onMemory) {
+            fn_8042E494(0x14, NULL);
+            if (lbl_8052AAD0.audioExist) {
+                fn_8042E464(0xc, NULL);
+            }
+            fn_8042E43C(8);
+        }
+        fn_80429120();
+        fn_8042E418();
+        if (lbl_8052AAD0.audioExist) {
+            fn_8042E3F4();
+        }
+        if (!lbl_8052AAD0.onMemory) {
+            fn_8042E3D0();
+        }
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" void fn_80428C38(u8 v) {
     OSSendMessage(&lbl_8052ACE0, (OSMessage)v, 1);
 }
@@ -1714,8 +1767,47 @@ extern "C" u8 fn_8042B148() {
     return 1;
 }
 
-#pragma dont_inline on
 extern u8* lbl_8053AE74;
+
+// ---- THP decoder (SDK THPDec.c, functions laid out in reverse) ----
+typedef f32 THPQuantTab[64];
+struct THPHuffmanTab {
+    u8 quick[32];
+    u8 increment[32];
+    u8* Vij;
+    s32 maxCode[18];
+    s32 valPtr[18];
+    u8 Vij1;
+    u8 pad[11];
+};
+struct THPComponent {
+    u8 quantizationTableSelector;
+    u8 DCTableSelector;
+    u8 ACTableSelector;
+    s16 predDC;
+};
+struct THPFileInfo {
+    THPQuantTab quantTabs[3];
+    THPHuffmanTab huffmanTabs[4];
+    THPComponent components[3];
+    u16 xPixelSize;
+    u16 yPixelSize;
+    u16 MCUsPerRow;
+    u16 decompressedY;
+    u8* file;
+    u32 currByte;
+    u32 cnt;
+    u8 validHuffmanTabs;
+    u8 RST;
+    u16 nMCU;
+    u16 currMCU;
+    u8* dLC[3];
+};
+#define __THPInfo ((THPFileInfo*)lbl_8053AE74)
+#define __THPHuffmanBits lbl_8053AE38
+extern u8* lbl_8053AE38;
+
+#pragma dont_inline on
 extern "C" void fn_8042CF9C() {
     lbl_8053AE74[0x6a9] = 1;
     *(u8**)(lbl_8053AE74 + 0x69c) += 2;
@@ -1726,6 +1818,25 @@ extern "C" void fn_8042CF9C() {
 
 extern u8* lbl_8053AE3C;
 extern u16* lbl_8053AE40;
+extern "C" void fn_8042CFF0(u8 tabIndex) {
+    s32 p, l;
+    THPHuffmanTab* h;
+
+    p = 0;
+    h = &__THPInfo->huffmanTabs[tabIndex];
+    for (l = 1; l <= 16; l++) {
+        if (__THPHuffmanBits[l - 1]) {
+            h->valPtr[l] = p - lbl_8053AE40[p];
+            p += __THPHuffmanBits[l - 1];
+            h->maxCode[l] = lbl_8053AE40[p - 1];
+        } else {
+            h->maxCode[l] = -1;
+            h->valPtr[l] = -1;
+        }
+    }
+    h->maxCode[17] = 0xfffffL;
+}
+
 extern "C" void fn_8042D0E0() {
     u8 len;
     u16 i;
@@ -1742,7 +1853,167 @@ extern "C" void fn_8042D0E0() {
     }
 }
 
+extern "C" void fn_8042D144() {
+    s32 p, l, i;
+    p = 0;
+    for (l = 1; l <= 16; l++) {
+        i = (s32)__THPHuffmanBits[l - 1];
+        while (i--) {
+            lbl_8053AE3C[p++] = (u8)l;
+        }
+    }
+    lbl_8053AE3C[p] = 0;
+}
+
+extern "C" void fn_8042CFF0(u8 tabIndex);
+extern "C" void fn_8042D0E0();
+extern "C" void fn_8042D144();
 extern u32 lbl_8053AE70;
+
+extern "C" u8 fn_8042D20C() {
+    u8 t_class, id, i, tab_index;
+    u16 length, num_Vij;
+
+    lbl_8053AE3C = (u8*)lbl_8053AE70;
+    lbl_8053AE40 = (u16*)(lbl_8053AE70 + 256 + 1);
+    length = (u16)((__THPInfo->file)[0] << 8 | (__THPInfo->file)[1]);
+    __THPInfo->file += 2;
+    length -= 2;
+
+    for (;;) {
+        i = (*(__THPInfo->file)++);
+        id = (u8)(i & 15);
+        t_class = (u8)(i >> 4);
+        __THPHuffmanBits = __THPInfo->file;
+        tab_index = (u8)((id << 1) + t_class);
+        num_Vij = 0;
+
+        for (i = 0; i < 16; i++) {
+            num_Vij += (*(__THPInfo->file)++);
+        }
+
+        __THPInfo->huffmanTabs[tab_index].Vij = __THPInfo->file;
+        __THPInfo->file += num_Vij;
+        fn_8042D144();
+        fn_8042D0E0();
+        fn_8042CFF0(tab_index);
+        __THPInfo->validHuffmanTabs |= 1 << tab_index;
+        length -= 17 + num_Vij;
+
+        if (length == 0) {
+            break;
+        }
+    }
+    return 0;
+}
+
+static const u8 __THPJpegNaturalOrder[80] = {
+    0,  1,  8,  16, 9,  2,  3,  10, 17, 24, 32, 25, 18, 11, 4,  5,  12, 19, 26, 33, 40, 48, 41, 34, 27, 20, 13,
+    6,  7,  14, 21, 28, 35, 42, 49, 56, 57, 50, 43, 36, 29, 22, 15, 23, 30, 37, 44, 51, 58, 59, 52, 45, 38, 31,
+    39, 46, 53, 60, 61, 54, 47, 55, 62, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63, 63 };
+
+static const f64 __THPAANScaleFactor[8] = {
+    1.0f, 1.387039845f, 1.306562965f, 1.175875602f, 1.0f, 0.785694958f, 0.541196100f, 0.275899379f,
+};
+
+extern "C" u8 fn_8042D3E4() {
+    u16 length, id, i, row, col;
+    f32 q_temp[64];
+
+    length = (u16)((__THPInfo->file)[0] << 8 | (__THPInfo->file)[1]);
+    __THPInfo->file += 2;
+    length -= 2;
+
+    for (;;) {
+        id = (*(__THPInfo->file)++);
+
+        for (i = 0; i < 64; i++) {
+            q_temp[__THPJpegNaturalOrder[i]] = (f32)(*(__THPInfo->file)++);
+        }
+
+        i = 0;
+        for (row = 0; row < 8; row++) {
+            for (col = 0; col < 8; col++) {
+                __THPInfo->quantTabs[id][i] = (f32)((f64)q_temp[i] * __THPAANScaleFactor[row] * __THPAANScaleFactor[col]);
+                i++;
+            }
+        }
+
+        length -= 65;
+        if (!length) {
+            break;
+        }
+    }
+    return 0;
+}
+
+extern "C" u8 fn_8042D7B8() {
+    u8 i, utmp8;
+    __THPInfo->file += 2;
+
+    utmp8 = (*(__THPInfo->file)++);
+
+    if (utmp8 != 3) {
+        return 12;
+    }
+
+    for (i = 0; i < 3; i++) {
+        utmp8 = (*(__THPInfo->file)++);
+
+        utmp8 = (*(__THPInfo->file)++);
+        __THPInfo->components[i].DCTableSelector = (u8)(utmp8 >> 4);
+        __THPInfo->components[i].ACTableSelector = (u8)(utmp8 & 15);
+
+        if ((__THPInfo->validHuffmanTabs & (1 << ((utmp8 >> 4)))) == 0) {
+            return 15;
+        }
+
+        if ((__THPInfo->validHuffmanTabs & (1 << ((utmp8 & 15) + 1))) == 0) {
+            return 15;
+        }
+    }
+
+    __THPInfo->file += 3;
+    __THPInfo->MCUsPerRow = (u16)((__THPInfo->xPixelSize + 15) / 16);
+    __THPInfo->components[0].predDC = 0;
+    __THPInfo->components[1].predDC = 0;
+    __THPInfo->components[2].predDC = 0;
+    return 0;
+}
+
+extern "C" u8 fn_8042D8D4() {
+    u8 i, utmp8;
+
+    __THPInfo->file += 2;
+
+    utmp8 = (*(__THPInfo->file)++);
+
+    if (utmp8 != 8) {
+        return 10;
+    }
+
+    __THPInfo->yPixelSize = (u16)((__THPInfo->file)[0] << 8 | (__THPInfo->file)[1]);
+    __THPInfo->file += 2;
+    __THPInfo->xPixelSize = (u16)((__THPInfo->file)[0] << 8 | (__THPInfo->file)[1]);
+    __THPInfo->file += 2;
+
+    utmp8 = (*(__THPInfo->file)++);
+    if (utmp8 != 3) {
+        return 12;
+    }
+
+    for (i = 0; i < 3; i++) {
+        utmp8 = (*(__THPInfo->file)++);
+        utmp8 = (*(__THPInfo->file)++);
+        if ((i == 0 && utmp8 != 0x22) || (i > 0 && utmp8 != 0x11)) {
+            return 19;
+        }
+
+        __THPInfo->components[i].quantizationTableSelector = (*(__THPInfo->file)++);
+    }
+    return 0;
+}
+
 extern "C" void fn_8042DA10() {
     u32 p = (lbl_8053AE70 + 0x1f) & ~0x1f;
     lbl_8052AAB8[0] = p;
@@ -1856,6 +2127,14 @@ extern "C" void fn_8042E43C(u32 a) { fn_8042ADDC((ReadThreadObj*)lbl_8053AE7C, a
 #pragma dont_inline off
 
 #pragma dont_inline on
+extern "C" u8 fn_8042E464(s32 prio, void* param) { return fn_8042A458((AudioThreadObj*)lbl_8053AE84, prio, param); }
+#pragma dont_inline off
+
+#pragma dont_inline on
+extern "C" u8 fn_8042E494(s32 prio, void* param) { return fn_8042A88C((VideoThreadObj*)lbl_8053AE80, prio, param); }
+#pragma dont_inline off
+
+#pragma dont_inline on
 extern "C" void fn_8042E4C4(THPReadBuffer* a) { fn_8042B02C((ReadThreadObj*)lbl_8053AE7C, (OSMessage)a); }
 #pragma dont_inline off
 
@@ -1933,4 +2212,4 @@ extern "C" void* fn_8042E758() { return fn_8042E780(lbl_80529DEC); }
 extern "C" void* fn_8042E780(void* o) { return *(void**)((char*)o + 8); }
 #pragma dont_inline off
 
-#include "JSystem/JAudio/JASFakeMatchFSA.h"
+#pragma dont_inline on

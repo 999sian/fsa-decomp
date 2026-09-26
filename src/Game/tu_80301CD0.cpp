@@ -14,15 +14,22 @@ extern u8 lbl_8053ACEC[4];
 extern u8 lbl_8053ACF0[4];
 struct Elem28_80301CD0 {
     Elem28_80301CD0();
-    u8 pad[0x28];
+    s32 f0;
+    s32 f4;
+    u8 pad8[4];
+    s32 fc;
+    u8 pad10[0x24 - 0x10];
+    u8 f24;
+    u8 f25;
+    u8 pad26[2];
 };
 // This TU's .bss (0x804DBC18-0x805076E8), in retail order.
 static u8 lbl_804DBC18[0x20000];
 static u8 lbl_804FBC18[0x8E00];
 static s32 lbl_80504A18[4];
 static s32 lbl_80504A28[4];
-static Elem28_80301CD0 lbl_80504A38[0x40];
-static Elem28_80301CD0 lbl_80505438[0xA0];
+static Elem28_80301CD0 lbl_80504A38[4][16];
+static Elem28_80301CD0 lbl_80505438[4][40];
 static u32 lbl_80506D38[4];
 static u8 lbl_80506D48[0x40];
 static u8 lbl_80506D88[0x10];
@@ -34,6 +41,22 @@ static u8 lbl_80506DD8[0x10];
 static u8 lbl_80506DE8[0x1A0];
 static u8 lbl_80506F88[0x260];
 static u8 lbl_805071E8[0x400];
+
+struct MsgEntry_80301CD0 {
+    char text[0x100];
+    s32 f100;
+    s32 f104;
+    s32 f108;
+    s32 f10c;
+    s32 f110;
+    s32 f114;
+    u8 f118;
+    u8 f119;
+    u8 f11a;
+    u8 pad11b;
+};
+
+extern u8 lbl_8053AD20[4];
 
 extern "C" u8 fn_80301CD0(void* p) {
     s32 i = fn_8022F340();
@@ -57,6 +80,37 @@ static inline u8 tu80301_changed(s32 i) {
         return 0;
     }
     return 1;
+}
+
+extern "C" void fn_8030361C() {
+    for (s32 i = 0; i < 4; i++) {
+        MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A18[i]];
+        while (e != &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A28[i]]) {
+            if (e->f118 == 1 && e->f104 == 0) {
+                u32 c = e->f114;
+                if (c == 0x600C000 || c == 0x600E000 || c == 0x6000000 || c == 0x5000001 || c == 0x6017000) {
+                    e->f118 = 0;
+                    e->f119 = 0;
+                    e->f104 = 0;
+                    e->text[0] = 0;
+                    if (e->f108 == lbl_80504A18[i]) {
+                        do {
+                            lbl_80504A18[i]++;
+                            if (lbl_80504A18[i] >= 0x20) {
+                                lbl_80504A18[i] = 0;
+                            }
+                        } while (lbl_80504A18[i] != lbl_80504A28[i] && ((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A18[i]].f118 == 0);
+                    }
+                }
+            }
+            if (e->f108 < 0x1f) {
+                e++;
+            } else {
+                e = (MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380);
+            }
+        }
+        lbl_8053AD20[i] = 0;
+    }
 }
 
 extern "C" u8 fn_80303750(void* p) {
@@ -87,6 +141,105 @@ extern "C" u8 fn_8030381C(void* p) {
 }
 
 // ---- stub_803074a4.cpp ----
+extern "C" void* fn_802D6A9C();
+extern "C" char* fn_802D8128(void*, s32);
+extern "C" char* fn_802D8228(void*, s32);
+extern "C" s32 fn_80403284(const char*);
+extern "C" char* strcpy(char*, const char*);
+
+static inline void tu80301_pushMsg(s32 i, char* str, s32 id, s32 color) {
+    MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A28[i]];
+    e->f104 = 0;
+    e->f100 = (fn_80403284(str) + 3) / 4;
+    e->f114 = color;
+    e->f119 = 0;
+    e->f11a = 1;
+    e->f110 = id;
+    e->f118 = 1;
+    e->f10c = 0;
+    strcpy(e->text, str);
+    lbl_80504A28[i]++;
+    if (lbl_80504A28[i] >= 0x20) {
+        lbl_80504A28[i] = 0;
+    }
+}
+
+extern "C" u8 fn_803049F0(void* p, s32 id) {
+    s32 i = fn_8022F340();
+    char* str = fn_802D8128(fn_802D6A9C(), id);
+    if (str == NULL) {
+        return 0;
+    }
+    if (!fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
+        return 0;
+    }
+    tu80301_pushMsg(i, str, id, 0x600C000);
+    return 1;
+}
+
+extern "C" u8 fn_80304B00(void* p, s32 id) {
+    s32 i = fn_8022F340();
+    char* str = fn_802D8228(fn_802D6A9C(), id);
+    if (str == NULL) {
+        return 0;
+    }
+    if (!fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
+        return 0;
+    }
+    tu80301_pushMsg(i, str, id, 0x600E000);
+    return 1;
+}
+
+
+struct TextMgr_80301CD0 {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0c();
+    virtual char* convert(u32 tag, const char* src);
+    virtual void v1c();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2c();
+    virtual s32 measure(const char* s);
+};
+struct Game_80301CD0 {
+    u8 pad0[0xa4];
+    TextMgr_80301CD0* text;
+};
+extern Game_80301CD0* lbl_8053AAF8;
+
+extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id) {
+    if (str == NULL) {
+        return 0;
+    }
+    if (!fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
+        return 0;
+    }
+    MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A28[i]];
+    e->f104 = 0;
+    s32 len;
+    if (color == 0x600C000 || color == 0x600E000) {
+        len = fn_80403284(str);
+    } else {
+        len = lbl_8053AAF8->text->measure(lbl_8053AAF8->text->convert('????', str));
+    }
+    e->f100 = (len + 3) / 4;
+    e->f114 = color;
+    e->f119 = 0;
+    e->f11a = b;
+    e->f110 = id;
+    e->f118 = 1;
+    e->f10c = 0;
+    strcpy(e->text, str);
+    lbl_80504A28[i]++;
+    if (lbl_80504A28[i] >= 0x20) {
+        lbl_80504A28[i] = 0;
+    }
+    return 1;
+}
+
 // fn_803074A4(a, b) - a range-dispatch classifier: returns a small
 // integer code (-1, 0, 1, 2, 3, or 4) based on which named range `b`
 // falls in, with the applicable range set selected by `a`.
@@ -147,6 +300,42 @@ extern "C" s32 fn_80307AC8(u32 caller, s32 room, void* pos, s32 id, s32 on, s32 
 }
 
 extern void* lbl_804AA8B8[];
+extern "C" void fn_80308D0C() {
+    for (s32 i = 0; i < 4; i++) {
+        for (int j = 0; j < 16; j++) {
+            lbl_80504A38[i][j].f24 = 0;
+            lbl_80504A38[i][j].f25 = 0;
+            lbl_80504A38[i][j].f0 = 0;
+            lbl_80504A38[i][j].f4 = -1;
+        }
+        for (int j = 0; j < 40; j++) {
+            lbl_80505438[i][j].f24 = 0;
+            lbl_80505438[i][j].f25 = 0;
+            lbl_80505438[i][j].f0 = 0;
+            lbl_80505438[i][j].f4 = -1;
+            lbl_80505438[i][j].fc = -1;
+        }
+    }
+}
+
+extern "C" void fn_80308E90() {
+    for (s32 i = 0; i < 4; i++) {
+        for (int j = 0; j < 16; j++) {
+            lbl_80504A38[i][j].f24 = 0;
+            lbl_80504A38[i][j].f25 = 0;
+            lbl_80504A38[i][j].f0 = 0;
+            lbl_80504A38[i][j].f4 = -1;
+        }
+        for (int j = 0; j < 40; j++) {
+            lbl_80505438[i][j].f24 = 0;
+            lbl_80505438[i][j].f25 = 0;
+            lbl_80505438[i][j].f0 = 0;
+            lbl_80505438[i][j].f4 = -1;
+            lbl_80505438[i][j].fc = -1;
+        }
+    }
+}
+
 extern "C" void* fn_80309014(void* p, s16 how) {
     if (p != 0) {
         *(void**)p = lbl_804AA8B8;
@@ -172,4 +361,5 @@ extern "C" void* fn_80309014(void* p, s16 how) {
 #undef NULL
 #define NULL 0
 #define unknown jsys_unknown
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

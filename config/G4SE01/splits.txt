@@ -3265,6 +3265,8 @@ Game/tu_803d2c34.cpp:
 	extabindex  start:0x8001F780 end:0x8001F8F4
 	.text       start:0x803D2C34 end:0x803D6434
 	.ctors      start:0x8045C564 end:0x8045C568
+	.data       start:0x804B0048 end:0x804B0288
+	.bss        start:0x80527F68 end:0x80527FD4
 
 Game/bfin.cpp:
 	extab       start:0x8000FA6C end:0x8000FAB4
@@ -3311,18 +3313,20 @@ Game/tu_80414f6c.cpp:
 	extabindex  start:0x8002029C end:0x80020308
 	.text       start:0x80414F6C end:0x80418B64
 	.ctors      start:0x8045C598 end:0x8045C59C
+	.data       start:0x804B1330 end:0x804B1378
 	.bss        start:0x8052A240 end:0x8052A2AC
 
 Game/tu_80427d2c.cpp:
-	extab       start:0x800106EC end:0x80010B54
-	extabindex  start:0x80020500 end:0x80020B54
-	.text       start:0x80427D2C end:0x8042E964
+	extab       start:0x800106EC end:0x80010B9C
+	extabindex  start:0x80020500 end:0x80020BC0
+	.text       start:0x80427D2C end:0x8042EB14
 	.ctors      start:0x8045C5A4 end:0x8045C5A8
+	.bss        start:0x8052A540 end:0x8052BFD8
 
 Game/tu_8042e964.cpp:
-	extab       start:0x80010B54 end:0x80010C74
-	extabindex  start:0x80020B54 end:0x80020CB0
-	.text       start:0x8042E964 end:0x80432638
+	extab       start:0x80010B9C end:0x80010C74
+	extabindex  start:0x80020BC0 end:0x80020CB0
+	.text       start:0x8042EB14 end:0x80432638
 	.ctors      start:0x8045C5A8 end:0x8045C5AC
 	.bss        start:0x8052BFD8 end:0x8052C044
 
