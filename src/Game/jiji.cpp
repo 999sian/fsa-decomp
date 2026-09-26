@@ -218,4 +218,68 @@ extern "C" void* fn_8037CD78(void* this_, s16 freeFlag) {
     return this_;
 }
 
+#include "Game/ItemBase.h"
+struct JijiTable {
+    u8 pad0[0xd8];
+    s32 frames[11][4];
+    char res0[0x14];
+    char res1[0x14];
+    char res2[0x18];
+};
+extern const JijiTable lbl_804753C0;
+static inline s32 jijiFrame(const s32 (*fr)[4], u8* p) { return fr[*(s32*)(p + 0x264)][*(s32*)(p + 0x248)]; }
+#define JIJI_FRAME(t, p) (*(s32*)((p) + 0x238) + ((const s32(*)[4])((const u8*)(t) + 0xd8))[*(s32*)((p) + 0x264)][*(s32*)((p) + 0x248)])
+extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_801F0E34(void* actor, u32 msg, s32 arg);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
+
+extern "C" void fn_8037B7F8(u8* this_) {
+    const JijiTable* t = &lbl_804753C0;
+    if (*(s32*)(this_ + 0x230) == 5 && *(AnimEffectRec**)(this_ + 0x274) != 0) {
+        u32 snd = fn_80316E74(*(AnimEffectRec**)(this_ + 0x274), *(s32*)(this_ + 0x244));
+        if (snd != 0xffffffff) {
+            fn_801F0E34(this_, snd, 0);
+        }
+    }
+    if (*(s32*)(this_ + 0x230) == 4) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x258) == 0x15) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x258) == 0x11 && *(s32*)(this_ + 0x230) == 2) {
+        fn_801F06F0(this_, t->res0, 0x2b1, 0, 7, 1.0f, 1.0f);
+    } else if (*(s32*)(this_ + 0x258) == 0x12 || *(s32*)(this_ + 0x258) == 0x13 || *(s32*)(this_ + 0x258) == 0x14) {
+        DrawRec rec;
+        ((u8*)&rec.w10)[3] = *(u8*)(this_ + 0x270);
+        fn_801F06F0(this_, t->res0,
+                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    &rec, 7, 1.0f, 1.0f);
+    } else if (*(s32*)(this_ + 0x258) == 0x23 && *(AnimEffectRec**)(this_ + 0x274) != 0 &&
+               fn_80316E34(*(AnimEffectRec**)(this_ + 0x274)) >= 0) {
+        fn_801F06F0(this_, t->res1, *(s32*)(this_ + 0x25c) + fn_80316E34(*(AnimEffectRec**)(this_ + 0x274)), 0, 7, 1.0f, 1.0f);
+        fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
+                    *(s32*)(this_ + 0x25c) + fn_80316E34(*(AnimEffectRec**)(this_ + 0x274)), 0, 2, -1, 0, 0, 0);
+    } else if (*(s32*)(this_ + 0x260) == 0) {
+        fn_801F06F0(this_, t->res0,
+                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    0, -1, 1.0f, 1.0f);
+    } else if (*(s32*)(this_ + 0x260) == 1) {
+        fn_801F06F0(this_, t->res2,
+                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    0, 7, 1.0f, 1.0f);
+        fn_80307AC8(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
+                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    0, 0, -1);
+    } else {
+        fn_801F06F0(this_, t->res1,
+                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    0, 7, 1.0f, 1.0f);
+        fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
+                    *(s32*)(this_ + 0x25c) + JIJI_FRAME(t, this_),
+                    0, 2, -1, 0, 0, 0);
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
