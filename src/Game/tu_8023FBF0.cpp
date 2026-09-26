@@ -156,6 +156,16 @@ inline bool inOtherRoom(char* p) {
     return r;
 }
 
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+
+#define DELETE_JPA(p, off) \
+    if (PTR(p, off) != NULL) { \
+        void* mgr = PTR((char*)fn_8013C824(), 0xc); \
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, PTR(p, off)); \
+        PTR(p, off) = NULL; \
+    }
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -173,6 +183,9 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+bool fn_80270C88(char*);
+void fn_80248004(char*, s32, s32);
+bool fn_80236890(void);
 bool fn_802D7804(char*, s32, s32);
 void fn_8028FBA0(char*);
 f32* fn_80238430(s32);
@@ -870,6 +883,28 @@ bool fn_8024AFF8(char* p) {
     }
     return 0;
 }
+bool fn_8024B108(char* p, s32 a) {
+    if (fn_80270C88(p)) {
+        return 0;
+    }
+    if (changeState(p, 0x49, 1)) {
+        S32(p, 0x1178) = a;
+        char* act = getActor(S32(p, 0x1230));
+        if (act != NULL) {
+            U8(act, 0x11c) = 0;
+            S32(p, 0x1230) = -1;
+        } else if (U8(p, 0x121f) == 1) {
+            U8(p, 0x121f) = 0;
+            if (S32(p, 0x11f0) < 5) {
+                S32(p, 0x11f0) = 5;
+            }
+        }
+        fn_80248004(p, 4, 0);
+        DELETE_JPA(p, 0x1388);
+        return 1;
+    }
+    return 0;
+}
 BOOL fn_8024B24C(char* p) {
     char* sub = (char*)PTR(p, 0xbf0);
     BOOL r = 0;
@@ -1306,7 +1341,48 @@ bool fn_80251AEC(char* p, s32 st) {
     }
     return 1;
 }
+bool fn_80251BFC(char* p, s32 st) {
+    if (U8(p, 0x124d) == 1) {
+        return 0;
+    }
+    if (U8(p, 0x124c) == 1 && S32(p, 0x1244) != 0 && !(S32(p, 0x1244) == 2 || S32(p, 0x1244) == 3)) {
+        return 0;
+    }
+    if (U8(p, 0x124c) == 1 && S32(p, 0x1244) == 2 && (st == 0 || st == 3)) {
+        return 0;
+    }
+    s32 next = S32(p, 0x1244);
+    if (next == 1 && st != 0) {
+        return 0;
+    }
+    if (U8(p, 0xcee) == 1) {
+        return 0;
+    }
+    if (S32(p, 0xd60) >= 0 && U8(p, 0xce8) == 0 && U8(p, 0x1214) != 0 && st != 3) {
+        return 0;
+    }
+    if (U8(p, 0x1215) != 0 && st != 3) {
+        return 0;
+    }
+    if (S32(p, 0x1240) == st) {
+        return 0;
+    }
+    if (next == st) {
+        return 0;
+    }
+    if (U8(lbl_8053AAF8, 0x7e) != 0 && fn_80236890()) {
+        return 0;
+    }
+    return 1;
+}
 void fn_80252BAC(char* p, const JGeometry::TVec3<f32>& v) { V3(p, 0x2e8) += v; }
+void fn_80252BD0(PlayerTrail* t, const JGeometry::TVec3<f32>& v) {
+    V3(t, 0x2dc) += v;
+    U8(t, 0x435) = 1;
+    for (int i = 0; i < 0x31; i++) {
+        t->pos[i] += V3(t, 0x2dc);
+    }
+}
 void fn_80252F14(char* p, const JGeometry::TVec3<f32>& v) {
     V3(p, 0x2d0) += v;
     U8(p, 0x434) = 1;
