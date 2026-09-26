@@ -183,7 +183,7 @@ extern "C" void fn_803A9830(Menu_Main* p) {
 
 // ---- from src/Game/CountdownBlink_803AF604.cpp ----
 extern "C" void fn_80458880(void* p1, s32 p2, s32 p3);
-extern "C" void fn_803B35F8(void* this_, u8 flag);
+extern "C" void fn_803B35F8(void* this_, u32 flag);
 
 extern void* lbl_8053AF80;
 
@@ -925,6 +925,84 @@ extern "C" void fn_803B31AC(void* this_) {
     fn_8013B490(lbl_8053AB10);
     (*(VPane_803B31AC**)(p + 0x170))->setAlpha(*(u8*)(p + 0x4c2));
     (*(VPane_803B31AC**)(p + 0x170))->drawRect(0, 0, 0, lbl_805433C8, lbl_805433C8, lbl_805433D8, lbl_805433DC);
+}
+
+extern "C" void fn_803B3358(void* this_, u32 kind) {
+    switch (kind) {
+    case 0:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 1:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 2:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 3:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 4:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 5:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 6:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 7:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    }
+}
+
+extern "C" void fn_803B35F8(void* this_, u32 kind) {
+    switch (kind) {
+    case 0:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 1:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 2:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 3:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 4:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 5:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 6:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 7:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    case 8:
+        for (s32 i = 0; i < *(s32*)((u8*)this_ + 0x454); i++) {
+        }
+        break;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
