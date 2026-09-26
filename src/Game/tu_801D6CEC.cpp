@@ -80,4 +80,138 @@ extern "C" void fn_801D789C(void* child) {
     fn_8021BD18((char*)child + 0xc, 2);
 }
 
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* base, s32 id);
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern "C" u8 fn_801CD2F8(s32 id);
+extern "C" void __dl__FPv(void* p);
+extern const f32 lbl_8053F16C;
+extern const f32 lbl_8053F170;
+
+struct Tu6CECVec { f32 x, y, z; };
+static inline void tu6cec_set(f32* d, f32 x, f32 y, f32 z) { d[0] = x; d[1] = y; d[2] = z; }
+
+static inline void tu6cec_kill(s32 id) {
+    if (id >= 0) {
+        char* a = (char*)fn_801F666C(fn_801F856C(), id);
+        if (a != 0) {
+            a[0x11c] = 0;
+        }
+    }
+}
+
+struct Tu6CECIds {
+    Tu6CECIds() {
+        for (int i = 0; i < 16; i++) {
+            ids[i] = -1;
+        }
+    }
+    s32 ids[16];
+};
+
+struct Tu6CECGroup : Tu6CECIds {
+    void init() {
+        ids[0] = -1;
+        f32 c = lbl_8053F150;
+        ids[1] = -1;
+        ids[2] = -1;
+        ids[3] = -1;
+        ids[4] = -1;
+        ids[5] = -1;
+        ids[6] = -1;
+        ids[7] = -1;
+        ids[8] = -1;
+        ids[9] = -1;
+        ids[10] = -1;
+        ids[11] = -1;
+        ids[12] = -1;
+        ids[13] = -1;
+        ids[14] = -1;
+        ids[15] = -1;
+        m40 = 0;
+        m44 = 0;
+        pos[0] = c;
+        pos[1] = c;
+        pos[2] = c;
+        m54 = 0;
+        m56 = 0;
+        m58 = 0;
+        m5c = c;
+        m60 = c;
+        m64 = 0;
+    }
+    Tu6CECGroup();
+    void init3() {
+        for (int i = 0; i < 16; i++) {
+            ids[i] = -1;
+        }
+        m40 = 0;
+        m44 = 0;
+        pos[0] = lbl_8053F150;
+        pos[1] = lbl_8053F150;
+        pos[2] = lbl_8053F150;
+        m54 = 0;
+        m56 = 0;
+        m58 = 0;
+        m5c = lbl_8053F150;
+        m60 = lbl_8053F150;
+        m64 = 0;
+    }
+    ~Tu6CECGroup();
+    void release() { s32* p = ids; for (int i = 0; i < 16; i++) { tu6cec_kill(*p); p++; } }
+    /* 0x40 */ s32 m40;
+    /* 0x44 */ s32 m44;
+    /* 0x48 */ f32 pos[3];
+    /* 0x54 */ s16 m54;
+    /* 0x56 */ s16 m56;
+    /* 0x58 */ s8 m58;
+    /* 0x5c */ f32 m5c;
+    /* 0x60 */ f32 m60;
+    /* 0x64 */ s32 m64;
+};
+
+extern "C" void fn_801D74E0(Tu6CECGroup* g, Tu6CECVec p, s32 kind) {
+    g->init3();
+    g->m40 = kind;
+    tu6cec_set(g->pos, p.x, lbl_8053F16C + p.y, p.z);
+    if (fn_801CD2F8(g->m40)) {
+        g->pos[1] = lbl_8053F170 + p.y;
+    }
+    s32 n;
+    if (fn_801CD2F8(g->m40)) {
+        g->m44 = 1;
+        n = 1;
+    } else {
+        g->m44 = 2;
+        n = 16;
+    }
+    for (int i = 0; i < n; i++) {
+        g->ids[i] = Actor_CreateByID(fn_801F856C(), 'BGBL', g->m40, g->pos, 0, -1, -1);
+    }
+}
+
+extern "C" void fn_801D7638(Tu6CECGroup* g) {
+    for (int i = 0; i < 16; i++) {
+        tu6cec_kill(g->ids[i]);
+    }
+}
+
+Tu6CECGroup::~Tu6CECGroup() {
+    release();
+}
+
+Tu6CECGroup::Tu6CECGroup() {
+    m40 = 0;
+    m44 = 0;
+    pos[0] = lbl_8053F150;
+    pos[1] = lbl_8053F150;
+    pos[2] = lbl_8053F150;
+    m54 = 0;
+    m56 = 0;
+    m58 = 0;
+    m5c = lbl_8053F150;
+    m60 = lbl_8053F150;
+    m64 = 0;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
