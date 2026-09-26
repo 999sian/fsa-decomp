@@ -181,6 +181,48 @@ inline s32 getMode(char* p) {
 
 inline u8 btn(char* p, s32 i) { return (*(u8**)(p + 0xbf0))[i + 0x48]; }
 
+extern "C" char* lbl_8053AED0;
+extern "C" s32 fn_802373EC(s32);
+extern "C" s32 fn_8023725C(s32);
+
+inline BOOL setItem(char* p, s32 a, s32 b) {
+    S32(p, 0xc10) = a;
+    if (S32(p, 0xc10) == 0) {
+        S32(p, 0xc14) = 0;
+    } else if (S32(p, 0xc10) != 0) {
+        if (b < 2 || S32(p, 0xc10) != 2) {
+            S32(p, 0xc14) = b;
+            U8(lbl_8053AED0, 0x255) |= (u8)(1 << S32(p, 0x4));
+        }
+    }
+    if (S32(p, 0xc10) != 0) {
+        U8(lbl_8053AED0, 0x255) |= (u8)(1 << S32(p, 0x4));
+        if (U8(lbl_8053AAF8, 0x7f) == 0 && S32(p, 0x464) < 0x3c) {
+            S32(p, 0x464) = 0x3c;
+        }
+    }
+    return 1;
+}
+
+inline s32 getItem(char* p) {
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_802373EC(linked);
+    }
+    return S32(p, 0xc10);
+}
+
+inline s32 getItemLevel(char* p) {
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8023725C(linked);
+    }
+    if (S32(p, 0xc10) == 0) {
+        return 0;
+    }
+    return S32(p, 0xc14);
+}
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -548,24 +590,7 @@ s32 fn_802415CC(char* p) {
 FWD(802416C4, 802373EC, 0xc10)
 FWD(80241794, 802375B0, 0xc08)
 FWD(802417CC, 80237810, 0xbf8)
-BOOL fn_80241618(char* p, s32 a, s32 b) {
-    S32(p, 0xc10) = a;
-    if (S32(p, 0xc10) == 0) {
-        S32(p, 0xc14) = 0;
-    } else if (S32(p, 0xc10) != 0) {
-        if (b < 2 || S32(p, 0xc10) != 2) {
-            S32(p, 0xc14) = b;
-            U8(lbl_8053AED0, 0x255) |= (u8)(1 << S32(p, 0x4));
-        }
-    }
-    if (S32(p, 0xc10) != 0) {
-        U8(lbl_8053AED0, 0x255) |= (u8)(1 << S32(p, 0x4));
-        if (U8(lbl_8053AAF8, 0x7f) == 0 && S32(p, 0x464) < 0x3c) {
-            S32(p, 0x464) = 0x3c;
-        }
-    }
-    return 1;
-}
+BOOL fn_80241618(char* p, s32 a, s32 b) { return setItem(p, a, b); }
 void fn_802416FC(char* p, s32 n) {
     s32 linked = S32(p, 0xd60);
     if (linked >= 0) {
@@ -1173,6 +1198,15 @@ void fn_8024E46C(char* p) {
         fn_8024E694(p, (s32)(5.0f * gameRnd()) + 5, 0);
     } else {
         fn_8024E694(p, 5, 0);
+    }
+}
+void fn_8024E500(char* p) {
+    if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && getItem(p) != 0) {
+        s32 idx = S32(p, 0x4);
+        s32 item = getItem(p);
+        s32 lvl = getItemLevel(p);
+        Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | ((lvl << 22) | (idx << 17)), -1, -1);
+        setItem(p, 0, 1);
     }
 }
 void fn_8024ECCC(char* p, s32 n) {
