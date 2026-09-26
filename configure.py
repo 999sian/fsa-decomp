@@ -1238,7 +1238,7 @@ config.libs = [
             Object(NonMatching, "Game/zsla.cpp"),
             Object(Matching, "Game/tu_80222CC4.cpp"),
             Object(NonMatching, "Game/tu_802233A4.cpp"),
-            Object(NonMatching, "Game/tu_802242F4.cpp"),
+            Object(Matching, "Game/tu_802242F4.cpp"),
             Object(NonMatching, "Game/tu_8022461C.cpp"),
             Object(NonMatching, "Game/tu_80226FC8.cpp"),
             Object(NonMatching, "Game/tu_8022979C.cpp"),
