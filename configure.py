@@ -1289,7 +1289,7 @@ config.libs = [
             Object(Matching, "Game/tbo2.cpp", extra_cflags=["-common on"]),
             Object(Matching, "Game/gsck.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/tu_80301CD0.cpp"),
-            Object(NonMatching, "Game/tu_803099FC.cpp", extra_cflags=["-common on"]),
+            Object(Matching, "Game/tu_803099FC.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/twtg.cpp", extra_cflags=["-common on"]),
             Object(Matching, "Game/tu_80316E34.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/ftgl.cpp", extra_cflags=["-common on"]),
