@@ -89,7 +89,7 @@ inline bool changeState(char* p, s32 st, u8 flag) {
 extern "C" bool fn_8022F514(s32);
 extern "C" s32 fn_8022F3DC(s32);
 
-inline s32 countSharing(char* p) {
+inline s32 countSharing(const char* p) {
     s32 linked;
     s32 c;
     s32 i;
@@ -98,6 +98,32 @@ inline s32 countSharing(char* p) {
     me = S32(p, 0x4);
     for (i = 0; i < 4; i++) {
         if (i == me) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+
+inline s32 countSharingH(const char* p) {
+    s32 i;
+    s32 c;
+    s32 linked;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
             if ((linked = S32(p, 0xd60)) >= 0) {
@@ -171,6 +197,16 @@ extern "C" s32 fn_8022CAF8(s32);
 
 inline s32 getMode(char* p) {
     if (countSharing(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline s32 getModeH(const char* p) {
+    if (countSharingH(p) <= 1) {
         return 5;
     }
     s32 linked = S32(p, 0xd60);
@@ -304,8 +340,8 @@ s32 fn_80236228(s32);
 s32 fn_80237488(s32);
 s32 fn_8023BEA8(s32);
 s32 fn_8023C36C(s32);
-void fn_8030B110(void*, s32, JGeometry::TVec3<f32>);
-s32 fn_8022E438(s32);
+u8 fn_8030B110(void*, s32, JGeometry::TVec3<f32>);
+u8 fn_8022E438(s32, s32);
 s32 fn_8030AAF4(s32);
 s32 fn_8030A308(void*, s32);
 s32 fn_8030A3B0(void*, s32);
@@ -390,6 +426,42 @@ inline s32 countSharing2(char* p) {
         }
     }
     return c;
+}
+inline s32 countSharing3(char* p) {
+    s32 me;
+    s32 linked;
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getMode3(char* p) {
+    if (countSharing3(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
 }
 inline s32 getMode2(char* p) {
     if (countSharing2(p) <= 1) {
@@ -505,7 +577,7 @@ s32 fn_80240628(char* p) {
     return S32(p, 0x4);
 }
 u32 Player_GetLinkTargetIndex(char* p) { return S32(p, 0xd60); }
-s32 fn_8024064C(char* p) { return fn_8022EA0C(S32(p, 0x4)); }
+s32 fn_8024064C(const char* p) { return fn_8022EA0C(*(const s32*)(p + 4)); }
 inline s32 linkRank(char* p) {
     s32 n;
     s32 linked = S32(p, 0xd60);
@@ -554,6 +626,25 @@ u8 GetField_0xcfe(char* p) { return U8(p, 0xcfe); }
 void IncrementField_0x1224(char* p) { S32(p, 0x1224) += 1; }
 FWD(80240888, 80234004, 0x1224)
 u8 fn_802408C0(char* p) { return U8(p, 0x1217); }
+void fn_802408C8(char* p, s32 a, const JGeometry::TVec3<f32>& v) {
+    if (S32(p, 0xd60) >= 0) {
+        return;
+    }
+    if (fn_8030B110(PTR(p, 0xbec), a, v) && !fn_80270A8C(p) && U8(p, 0xce8) == 0) {
+        fn_80248004(p, 5, 0);
+        if (getMode3(p) == 5) {
+            PlayerTrail* t = (PlayerTrail*)p;
+            for (int i = 0; i < 0x31; i++) {
+                t->pos[i].x = v.x;
+                t->pos[i].y = v.y;
+                t->pos[i].z = v.z;
+                t->pos[i].z = 0.0f;
+                t->onGround[i] = 0;
+            }
+            U8(p, 0x1216) = 1;
+        }
+    }
+}
 u8 fn_80233EDC(s32);
 bool fn_80240B84(char* p) {
     if ((u8)isLinkOwner(p)) {
@@ -773,6 +864,21 @@ s32 fn_80241920(char* p) {
     u32 mask = ((u32)val >> 31) - 1;
     return val & mask;
 }
+u8 fn_802349EC(s32);
+u8 fn_80241964(char* p) {
+    if (countSharing3(p) <= 1) {
+        return 1;
+    }
+    if (getMode2(p) == 4) {
+        return 1;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        if (i != S32(p, 0x4) && fn_8022E438(S32(p, 0x4), i) && !fn_802349EC(i)) {
+            return 0;
+        }
+    }
+    return 1;
+}
 void fn_80241B44(char* p, f32* out) {
     if (S32(p, 0x3b4) < 8) {
         char* r = (char*)PTR(lbl_8053AB10, 0x24);
@@ -832,6 +938,19 @@ s32 fn_802426E0(char* p, s32 v) {
     U8(p, 0xd90) = 1;
     return 1;
 }
+BOOL fn_80242704(char* p, s32 v) {
+    if ((u8)isLinkOwner(p)) {
+        return 0;
+    }
+    if (fn_8025F448(p)) {
+        return 0;
+    }
+    if (changeState(p, 0x4c, 1)) {
+        S32(p, 0xd8c) = v;
+        return 1;
+    }
+    return 0;
+}
 void fn_80242BC0(char* p) {
     if (U8(p, 0x454) != 0) {
         return;
@@ -871,7 +990,7 @@ void fn_80242CB0(char* p) {
         U8(p, 0x43e) = 0;
     }
 }
-s32 fn_80243194(char* p) { return fn_8022E438(S32(p, 0x4)); }
+u8 fn_80243194(char* p, s32 i) { return fn_8022E438(S32(p, 0x4), i); }
 BOOL fn_802431B8(char* p) {
     for (int i = 0; i < 4; i++) {
         if (fn_8023697C(i) >= 0 && ((u8(*)(s32, s32))fn_8022E438)(fn_8023697C(i), S32(p, 0x4))) {
@@ -881,6 +1000,115 @@ BOOL fn_802431B8(char* p) {
     return 0;
 }
 s32 fn_8024322C(char* p) { return S32(p, 0xd08); }
+u32 fn_80309A78(void*, s32, u32);
+u32 fn_80309A54(void*, s32, u32);
+u8 fn_8022B244(void);
+u32 fn_80309D24(void*, s32, u32);
+u32 fn_80309D6C(void*, s32, u32);
+f32 fn_80309D90(void*, s32);
+f32 fn_80309F20(void*, s32);
+f32 fn_80309FCC(void*, s32);
+inline bool padActive(char* p) {
+    bool ok;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getMode2(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+#define PADF(fn, mask) fn(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask)
+BOOL fn_80244FFC(char* p) {
+    if (!padActive(p)) {
+        return 0;
+    }
+    if (PADF(fn_80309D24, 0x100)) {
+        return 1;
+    }
+    return PADF(fn_80309D24, 0x20) != 0;
+}
+BOOL fn_80245238(char* p) {
+    if (!padActive(p)) {
+        return 0;
+    }
+    if (PADF(fn_80309D6C, 0x100)) {
+        return 1;
+    }
+    if (PADF(fn_80309D6C, 0x20)) {
+        return 1;
+    }
+    s32 room = S32(p, 0x3b4);
+    if (U8(fn_802D6A9C(), room + 0x131df) != 0 && PADF(fn_80309D6C, 0x200)) {
+        return 1;
+    }
+    return 0;
+}
+#define PAD_GATED(addr, fn, mask) \
+    BOOL fn_##addr(char* p) { \
+        if (!padActive(p)) { \
+            return 0; \
+        } \
+        if (U8(p, 0x456) != 0) { \
+            return 0; \
+        } \
+        if (S32(p, 0x11f0) > 0) { \
+            return 0; \
+        } \
+        return PADF(fn, mask) != 0; \
+    }
+#define PAD_GATED2(addr, fn, mask) \
+    BOOL fn_##addr(char* p) { \
+        if (!padActive(p)) { \
+            return 0; \
+        } \
+        if (fn_8022B244()) { \
+            return 0; \
+        } \
+        if (U8(p, 0x456) != 0) { \
+            return 0; \
+        } \
+        if (S32(p, 0x11f0) > 0) { \
+            return 0; \
+        } \
+        return PADF(fn, mask) != 0; \
+    }
+PAD_GATED(802454C0, fn_80309A54, 0x20)
+PAD_GATED(802456FC, fn_80309D24, 0x20)
+PAD_GATED(80245938, fn_80309D6C, 0x20)
+PAD_GATED(80245B74, fn_80309A78, 0x100)
+PAD_GATED(80245DB0, fn_80309D6C, 0x100)
+PAD_GATED(80245FEC, fn_80309D24, 0x100)
+PAD_GATED(80246228, fn_80309D6C, 0x100)
+PAD_GATED2(80246464, fn_80309D24, 0x200)
+PAD_GATED2(802466B4, fn_80309D6C, 0x200)
+#define PAD_BTN(addr, fn) \
+    u32 fn_##addr(char* p, u32 mask) { \
+        return !padActive(p) ? 0 : fn(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask); \
+    }
+#define PAD_AXIS(addr, fn) \
+    f32 fn_##addr(char* p) { \
+        return !padActive(p) ? 0.0f : fn(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); \
+    }
+PAD_BTN(80246904, fn_80309A78)
+PAD_BTN(80246B10, fn_80309D24)
+PAD_BTN(80246D1C, fn_80309D6C)
+PAD_AXIS(80246F28, fn_80309D90)
+PAD_AXIS(8024712C, fn_80309F20)
+PAD_AXIS(80247330, fn_80309FCC)
 s32 fn_80247534(char* p) { return fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); }
 s32 fn_80247564(char* p) { return fn_8030A3B0(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); }
 s32 fn_80247594(char* p, s32 amount) {
@@ -958,7 +1186,7 @@ done:
     U8(p, 0x456) = 1;
     return 1;
 }
-s32 fn_802486A0(char* p) {
+s32 fn_802486A0(const char* p) {
     if (countSharing(p) <= 1) {
         return 5;
     }
@@ -968,13 +1196,13 @@ s32 fn_802486A0(char* p) {
     }
     return S32(p, 0x120c);
 }
-s32 fn_80248778(char* p) {
+s32 fn_80248778(const char* p) {
     s32 n;
-    s32 linked = S32(p, 0xd60);
+    s32 linked = *(const s32*)(p + 0xd60);
     if (linked < 0) {
         return 0;
     }
-    n = S32(p, 0x4);
+    n = *(const s32*)(p + 0x4);
     s32 c = 0;
     for (int i = 0; i < n; i++) {
         if (linked == fn_8022F3DC(i)) {
@@ -983,21 +1211,19 @@ s32 fn_80248778(char* p) {
     }
     return c + 1;
 }
-s32 fn_802487FC(char* p) {
-    if (getMode(p) == 4) {
+s32 fn_802487FC(const char* p) {
+    if (getModeH(p) == 4) {
         return 1;
     }
-    return countSharing(p);
+    return countSharingH(p);
 }
-s32 fn_80248970(char* p) {
-    s32 me;
+s32 fn_80248970(const char* p) {
     s32 c;
     s32 i;
     s32 linked;
-    me = S32(p, 0x4);
     c = 0;
     for (i = 0; i < 4; i++) {
-        if (i == me) {
+        if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
             if ((linked = S32(p, 0xd60)) >= 0) {
@@ -1016,7 +1242,7 @@ s32 fn_80248970(char* p) {
     }
     return c;
 }
-extern "C" void fn_802265FC(JGeometry::TVec2<f32>*, s32);
+extern "C" u32 fn_802265FC(JGeometry::TVec2<f32>*, s32);
 extern "C" u32 fn_80226998(JGeometry::TVec2<f32>*, s32);
 inline bool inRoomBox(const f32* r, const JGeometry::TVec2<f32>& v) {
     bool in = 0;
@@ -1050,6 +1276,39 @@ bool fn_80248A24(char* p) {
         if (edge == 1) {
             U8(p, 0x440) = 1;
         }
+        return 1;
+    }
+    return 0;
+}
+bool fn_80248B9C(char* p) {
+    bool edge = 0;
+    JGeometry::TVec2<f32> v;
+    v.x = F32(p, 0x8);
+    v.y = F32(p, 0xc);
+    do {
+        v.y += 8.0f;
+        if (!inRoomBox(roomOffset(S32(p, 0x3b4)), v)) {
+            return 0;
+        }
+    } while ((u16)fn_802265FC(&v, S32(p, 0x3b4)) != 0x3e);
+    while (true) {
+        v.y += 8.0f;
+        if (!inRoomBox(roomOffset(S32(p, 0x3b4)), v)) {
+            v.y = roomOffset(S32(p, 0x3b4))[3] - 24.0f;
+            edge = 1;
+            break;
+        }
+        if ((u16)fn_80226998(&v, S32(p, 0x3b4)) == 0x231) {
+            break;
+        }
+    }
+    v.y += 24.0f;
+    if (fn_8026E5F8(p, &v)) {
+        U8(p, 0x43f) = 1;
+        if (edge == 1) {
+            U8(p, 0x440) = 1;
+        }
+        F32(p, 0x444) = 0.0f;
         return 1;
     }
     return 0;
@@ -1216,6 +1475,39 @@ s32 fn_8024BB94(char* p) {
     }
     return 0;
 }
+u8 fn_8023A51C(s32);
+s32 fn_8023DE58(s32);
+JGeometry::TVec3<f32>* fn_8023A478(s32);
+inline s32 getRoom(char* p) { return S32(p, 0x3b4); }
+void fn_8024BBB8(char* p) {
+    if (fn_80270C88(p)) {
+        return;
+    }
+    if (S32(p, 0x1240) == 0x3f || S32(p, 0x1240) == 0xc) {
+        return;
+    }
+    if (U8(p, 0xb9a) == 0 && U8(p, 0xcf0) == 0 && S32(p, 0x1240) != 0x3c && S32(p, 0x1244) != 0x3c) {
+        for (s32 i = 0; i < 4; i++) {
+            if (!fn_8022E438(S32(p, 0x4), i) && fn_8023A51C(i) && getRoom(p) == fn_8023DE58(i)) {
+                f32 range = 50.0f;
+                if (fn_8022B244()) {
+                    range = 80.0f;
+                } else if (fn_8023725C(i) >= 2) {
+                    range *= 2.0f;
+                }
+                JGeometry::TVec3<f32> e;
+                JGeometry::TVec3<f32> d(*fn_8023A478(i));
+                d -= V3(p, 0x8);
+                e = d;
+                if (JGeometry::TUtil<f32>::sqrt(e.x * e.x + e.y * e.y) < range) {
+                    changeState(p, 0x3f, 1);
+                    break;
+                }
+            }
+        }
+    }
+    U8(p, 0xb9d) = 0;
+}
 u8 Player_GetField_0xce8(char* p) { return U8(p, 0xce8); }
 BOOL fn_8024C35C(char* p) { return S32(p, 0x3b4) >= 8 ? 1 : 0; }
 JGeometry::TVec3<f32>* fn_8024C378(char* p) {
@@ -1263,6 +1555,18 @@ BOOL fn_8024C4C4(char* p, s32 id) {
         Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x1c, -1, -1);
     }
     return 1;
+}
+BOOL fn_8024C828(char* p, s32 a) {
+    if ((u8)isLinkOwner(p)) {
+        return 0;
+    }
+    if (U8(p, 0x1216) == 1) {
+        return 0;
+    }
+    if (U8(p, 0xd4c) == 1) {
+        return 0;
+    }
+    return S32(p, 0xd44) == a ? 1 : 0;
 }
 BOOL fn_8024CA0C(char* p, s32 v) { return S32(p, 0xd44) == v ? 1 : 0; }
 void fn_8024CA20(char* p) {
@@ -1706,6 +2010,23 @@ void fn_80252BD0(PlayerTrail* t, const JGeometry::TVec3<f32>& v) {
         t->pos[i] += V3(t, 0x2dc);
     }
 }
+// Same body as fn_8024B9E8; inlined twice here.
+inline void shiftTrail(PlayerTrail* t) {
+    if (U8(t, 0x1216) != 0) {
+        return;
+    }
+    for (int i = 0x30; i > 0; i--) {
+        t->pos[i] = t->pos[i - 1];
+        t->onGround[i] = t->onGround[i - 1];
+    }
+    t->pos[0] = *(JGeometry::TVec3<f32>*)&t->x;
+    t->onGround[0] = U8(PTR(t, 0xbf0), 0xb4);
+}
+void fn_80252CF0(PlayerTrail* t, const JGeometry::TVec3<f32>& v) {
+    V3(t, 0x2dc) += v;
+    shiftTrail(t);
+    shiftTrail(t);
+}
 void fn_80252F14(char* p, const JGeometry::TVec3<f32>& v) {
     V3(p, 0x2d0) += v;
     U8(p, 0x434) = 1;
@@ -1781,6 +2102,19 @@ void fn_802544B0(char* p) {
     S32(p, 0xc7c) = 0;
 }
 void fn_80254660(char* p) { initItemState(p); }
+extern u8 lbl_804B20F8[];
+void fn_8045787C(char*, s32);
+char* fn_80255AC0(char* p, s16 del) {
+    if (p) {
+        PTR(p, 0x8) = lbl_804B20F8;
+        PTR(p, 0x18) = lbl_804B20F8 + 0x24;
+        fn_8045787C(p, 0);
+        if (del > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
 } // extern "C"
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
