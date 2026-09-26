@@ -12,6 +12,10 @@
 
 #pragma auto_inline off
 
+struct Vec2f {
+    f32 x, y;
+};
+
 extern "C" {
 extern u8 lbl_80529DEC[];
 extern void* lbl_8053AC98;
@@ -36,7 +40,7 @@ void fn_8024EFF8(char*, s32);
 void fn_802382D0(s32, s32);
 s32 fn_802376D8(s32);
 void fn_8027EB04(char*);
-bool fn_80274238(void*, void*, void*, void*);
+
 bool fn_802576CC(void*, void*, void*, void*);
 bool fn_802575B8(void*, void*, void*, void*);
 bool fn_802574CC(void*, void*, void*, void*);
@@ -44,7 +48,7 @@ bool fn_802570BC(void*, void*, void*, void*);
 u8 fn_80256F44(void*, void*, void*, void*);
 bool fn_802573E0(void*, void*, void*, void*);
 u8 fn_802738F0(char*, JGeometry::TBox2<f32>*, f32*, s32, s32);
-bool fn_80273FB8(char*, const JGeometry::TBox2<f32>*, s32, f32*);
+u8 fn_80273FB8(char*, const JGeometry::TBox2<f32>*, s32, f32*);
 s32 fn_80241864(char*);
 s32 fn_80241544(char*);
 bool fn_80241200(char*);
@@ -58,6 +62,13 @@ void fn_80268B3C(char*);
 void fn_802685D4(char*);
 char* fn_802D6A9C(void);
 bool fn_802413F0(char*);
+u8 fn_80274238(char*, const JGeometry::TBox2<f32>*, s32, f32*, s32);
+s32 fn_8024FF84(char*);
+s32 fn_8024FF6C(char*);
+bool fn_80250D30(char*);
+bool fn_8024FEFC(char*);
+extern const Vec2f lbl_8046BD68[];
+extern const Vec2f lbl_8046BD48[];
 bool GetBusyLocked(char*);
 void fn_802A20F0(void*, void*, s32, void*, s32, s32);
 }
@@ -117,6 +128,19 @@ struct Vec3 {
         y = ay;
         z = az;
     }
+};
+
+inline BOOL inBox2(const f32* box, f32 x, f32 y) {
+    BOOL in = 0;
+    if (x >= box[0] && y >= box[1] && x < box[2] && y < box[3]) {
+        in = 1;
+    }
+    return in;
+}
+
+struct PlayerAreas2 {
+    u8 pad0[0xef0];
+    s32 mId[0x50];
 };
 
 struct PlayerAreas {
@@ -432,6 +456,59 @@ inline BOOL inBox(const f32* box, const f32* pt) {
     }
     return in;
 }
+bool fn_80272768(char* p, const f32* box, s32 room, s32 id) {
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (fn_8024FF84(p) >= 0 && id != fn_8024FF84(p)) {
+        return 0;
+    }
+    if (!fn_80250D30(p)) {
+        return 0;
+    }
+    BOOL in = inBox2(box, F32(p, 0x8) + lbl_8046BD68[S32(p, 0x3dc)].x, F32(p, 0xc) + lbl_8046BD68[S32(p, 0x3dc)].y);
+    if (!(u8)in) {
+        return 0;
+    }
+    if (S32(p, 0xd94) < 0) {
+        S32(p, 0xd94) = id;
+    }
+    return 1;
+}
+bool fn_802728AC(char* p, const f32* box, s32 room, s32 id) {
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (fn_8024FF6C(p) >= 0 && id != fn_8024FF6C(p)) {
+        return 0;
+    }
+    if (!fn_8024FEFC(p)) {
+        return 0;
+    }
+    BOOL in = inBox2(box, F32(p, 0x8) + lbl_8046BD48[S32(p, 0x3dc)].x, F32(p, 0xc) + lbl_8046BD48[S32(p, 0x3dc)].y);
+    if (!(u8)in) {
+        return 0;
+    }
+    if (S32(p, 0xda4) < 0) {
+        S32(p, 0xda4) = id;
+    }
+    return 1;
+}
+bool fn_802729F0(char* p, s32 id) {
+    for (int i = 0; i < 0x50; i++) {
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+    }
+    return 0;
+}
 BOOL fn_80272B4C(PlayerAreas* pa, const f32* pt) {
     for (int i = 0; i < 0x50; i++) {
         if (pa->mId[i] >= 0 && fn_802413F0((char*)pa) && pa->mOwner[i] == S32(pa, 0x3b4)) {
@@ -467,7 +544,7 @@ inline void setAround(JGeometry::TBox2<f32>* b, const JGeometry::TVec2<f32>& c, 
     b->set(c.x - r, c.y - r, r + c.x, r + c.y);
 }
 bool fn_80273C30(void* a, void* b, void* c, void* d) {
-    if (fn_80274238(a, b, c, d)) {
+    if (((bool (*)(void*, void*, void*, void*))fn_80274238)(a, b, c, d)) {
         return 1;
     }
     if (fn_802576CC(a, b, c, d)) {
@@ -485,7 +562,7 @@ bool fn_80273C30(void* a, void* b, void* c, void* d) {
     return fn_80256F44(a, b, c, d) != 0;
 }
 bool fn_80273D44(void* a, void* b, void* c, void* d) {
-    if (fn_80274238(a, b, c, d)) {
+    if (((bool (*)(void*, void*, void*, void*))fn_80274238)(a, b, c, d)) {
         return 1;
     }
     if (fn_802576CC(a, b, c, d)) {
@@ -527,6 +604,31 @@ u8 fn_80273E7C(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out, s3
         f32* o2 = roomOffset(room);
         out[0] += o2[0];
         out[1] += o2[1];
+    }
+    return (u8)r;
+}
+u8 fn_80274238(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out, s32 arg) {
+    U8(p, 0x492) = 0;
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    JGeometry::TBox2<f32> b(*box);
+    f32* o = roomOffset(room);
+    JGeometry::TVec2<f32> n;
+    n.x = -o[0];
+    n.y = -o[1];
+    b.addPos(n);
+    u8 r = fn_802738F0(p, &b, out, arg, 1);
+    if (r == 1) {
+        f32* o2 = roomOffset(room);
+        out[0] += o2[0];
+        out[1] += o2[1];
+    }
+    if (!(u8)r) {
+        r = fn_80273FB8(p, box, room, out);
     }
     return (u8)r;
 }
