@@ -104,6 +104,7 @@ extern "C" void fn_8010BEB8(char* p) {
     }
 }
 
+#pragma auto_inline off
 extern "C" bool fn_8010B284(char* p) {
     JGeometry::TVec3<f32> pl;
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
@@ -132,6 +133,7 @@ extern "C" bool fn_8010B284(char* p) {
     }
     return false;
 }
+#pragma auto_inline reset
 
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
 extern "C" char* fn_8013C824();
@@ -266,6 +268,157 @@ extern "C" void fn_8010B648(char* p) {
     if (((JGeometry::TVec3<f32>*)(p + 0x54))->isZero()) {
         *(u8*)(p + 0x11d) = 1;
     }
+}
+
+#include "JSystem/JGeometry/Box.h"
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_8023AA18(JGeometry::TBox2<f32>* box, s32 room, JGeometry::TVec2<f32>* out);
+extern "C" s32 fn_8023AE34(JGeometry::TBox2<f32>* box, s32 room, JGeometry::TVec2<f32>* out);
+extern "C" s32 fn_8023AC74(JGeometry::TBox2<f32>* box, s32 room, JGeometry::TVec2<f32>* out);
+extern "C" s32 fn_8023AD54(JGeometry::TBox2<f32>* box, s32 room, JGeometry::TVec2<f32>* out);
+extern "C" s32 fn_8023AB94(JGeometry::TBox2<f32>* box, s32 room, JGeometry::TVec2<f32>* out);
+extern "C" void fn_801CC820(s32 player, s32 a);
+extern "C" void fn_801CC538(s32 player, JGeometry::TVec2<f32>* v, JGeometry::TVec3<f32>* out, s32 a);
+extern "C" void fn_801CC640(s32 player, s32 a, s32 b);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" u8 fn_801F2618(void* this_, void* out, s32 a);
+extern "C" void fn_802A381C(void* mgr, JGeometry::TVec3<f32>* pos, s32 room, s32 id);
+extern "C" u8 fn_801D21F0(void* anim);
+extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
+extern "C" void fn_801D1C18(void* anim);
+extern void* lbl_8053AC98;
+extern const f32 lbl_8053C450;
+extern const f32 lbl_8053C454;
+extern const f32 lbl_8053C458;
+extern const f32 lbl_8053C484;
+
+struct IcclVT2 {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual u8 v11();
+    virtual void v12();
+    virtual s32 v13();
+};
+
+static inline bool icclHitPlayer(char* p) {
+    JGeometry::TVec2<f32> dir(lbl_8053C470, lbl_8053C470);
+    JGeometry::TVec2<f32> off(*(f32*)(p + 0xc), *(f32*)(p + 0x10) - *(f32*)(p + 0x14));
+    JGeometry::TBox2<f32> box(*(JGeometry::TVec2<f32>*)(p + 0x70), *(JGeometry::TVec2<f32>*)(p + 0x78));
+    box.addPos(off);
+    s32 pl;
+    if (fn_8023AA18(&box, *(s32*)(p + 4), &dir) >= 0) {
+        return true;
+    }
+    pl = fn_8023AE34(&box, *(s32*)(p + 4), &dir);
+    if (pl >= 0) {
+        fn_801CC820(pl, 0);
+        return true;
+    }
+    pl = fn_8023AC74(&box, *(s32*)(p + 4), &dir);
+    if (pl >= 0) {
+        JGeometry::TVec3<f32> out;
+        fn_801CC538(pl, &dir, &out, 0);
+        return true;
+    }
+    pl = fn_8023AD54(&box, *(s32*)(p + 4), &dir);
+    if (pl >= 0) {
+        fn_801CC640(pl, 0, 0);
+        return true;
+    }
+    return false;
+}
+
+static inline bool icclTouchPlayer(char* p) {
+    JGeometry::TVec2<f32> dir;
+    JGeometry::TBox2<f32> box(*(JGeometry::TVec2<f32>*)(p + 0x60), *(JGeometry::TVec2<f32>*)(p + 0x68));
+    box.i.x += *(f32*)(p + 0xc);
+    box.i.y += *(f32*)(p + 0x10);
+    box.f.x += *(f32*)(p + 0xc);
+    box.f.y += *(f32*)(p + 0x10);
+    u8 r = fn_8023AB94(&box, *(s32*)(p + 4), &dir) >= 0;
+    return r;
+}
+
+extern "C" void fn_8010B8B0(char* p) {
+    v03__5ActorFv(p);
+    switch (*(s32*)(p + 0x230)) {
+    case 0:
+        if (fn_8010B284(p)) {
+            fn_8010B40C(p, 1);
+        } else if (fn_801F285C(p, 0, 0, 1, -1) >= 0) {
+            fn_8010B40C(p, 1);
+        } else if (icclHitPlayer(p)) {
+            fn_8010B40C(p, 1);
+        } else if (icclTouchPlayer(p)) {
+            fn_8010B40C(p, 2);
+        }
+        break;
+    case 1: {
+        *(f32*)(p + 0x23c) = *(f32*)(p + 0x23c) + lbl_8053C450;
+        f32 t = *(f32*)(p + 0x23c);
+        *(f32*)(p + 0x10) = lbl_8053C454 * (lbl_8053C458 * (t * t)) + *(f32*)(p + 0x28);
+        u8 buf[0xc];
+        if (fn_801F2B7C(p, *(s32*)(p + 0x114), -1, 0x18)) {
+            fn_8010B40C(p, 3);
+        } else if (fn_801F2618(p, buf, 0)) {
+            JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
+            pos.y = pos.y + lbl_8053C460;
+            u16 attr = fn_80226850(&pos, *(s32*)(p + 4));
+            if (attr >= 0x3f0 || (attr >= 0x250 && attr <= 0x26f) || attr == 0x3ed) {
+                fn_802A381C(lbl_8053AC98, &pos, *(s32*)(p + 4), 0x34);
+            }
+            fn_8010B40C(p, 3);
+        } else if ((*(s32*)(p + 0x234))++, *(s32*)(p + 0x234) >= 0x1e) {
+            if (fn_801F285C(p, 0, 0, 1, -1) >= 0) {
+                fn_8010B40C(p, 3);
+            } else if (icclHitPlayer(p)) {
+                fn_8010B40C(p, 3);
+            } else if (icclTouchPlayer(p)) {
+                fn_8010B40C(p, 2);
+            }
+        }
+        break;
+    }
+    case 2:
+        fn_8010B40C(p, 4);
+        break;
+    case 3:
+        if (fn_801D21F0(p + 0x244)) {
+            fn_8010B40C(p, 4);
+        }
+        break;
+    case 4:
+        (*(s32*)(p + 0x238))++;
+        if (*(s32*)(p + 0x238) > 300) {
+            fn_8010B40C(p, 5);
+        }
+        break;
+    case 5:
+        if (((IcclVT2*)p)->v13() <= 0 || ((IcclVT2*)p)->v11()) {
+            *(u8*)(p + 0x11d) = 1;
+            fn_801CD950((f32*)(p + 0x240), lbl_8053C478, lbl_8053C484);
+            *(f32*)(p + 0x10) = *(f32*)(p + 0x28) - lbl_8053C47C * (lbl_8053C478 - *(f32*)(p + 0x240));
+            if (*(f32*)(p + 0x240) >= lbl_8053C478) {
+                fn_8010B40C(p, 0);
+            }
+        }
+        break;
+    }
+    f32 sc = *(f32*)(p + 0x240);
+    *(f32*)(p + 0x54) = sc;
+    *(f32*)(p + 0x58) = sc;
+    *(f32*)(p + 0x5c) = sc;
+    fn_801D1C18(p + 0x244);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
