@@ -229,11 +229,22 @@ struct Menu_Join {
     FVec3 pos;                  // 0x244
     u8 pad250[0x2f0 - 0x250];
     FVec3 icons[4];             // 0x2f0
-    u8 pad320[0x3c0 - 0x320];
+    s32 a320[4];                // 0x320
+    s32 a330[4];
+    s32 a340[4];
+    s32 a350[4];
+    s32 a360[4];
+    s32 a370[4];
+    s32 a380[4];
+    s32 a390[4];
+    s32 a3a0[4];
+    s32 a3b0[4];
     s32 state[4];               // 0x3c0
     u8 pad3d0[0x440 - 0x3d0];
     s32 timer;                  // 0x440
-    u8 pad444[0x4ac - 0x444];
+    u8 pad444[0x454 - 0x444];
+    s32 count;                  // 0x454
+    u8 pad458[0x4ac - 0x458];
     u8 ids[4];                  // 0x4ac
     u8 pad4b0[0x4c1 - 0x4b0];
     u8 m4c1;
@@ -272,6 +283,44 @@ static inline BOOL updateJoin(Menu_Join* p) {
         return TRUE;
     }
     return FALSE;
+}
+
+// NONMATCHING (99.9%): r5/r6 swap in the ranking loop.
+extern "C" void fn_803AC154(Menu_Join* p) {
+    BOOL done = FALSE;
+    if (p->m4c8 != 0xff) {
+        s32 lim = lbl_804AF8CC[p->m4c4];
+        if (lim != -1) {
+            if (p->m4c6 >= lim) {
+                p->m4c4++;
+            }
+            p->m4c6++;
+        }
+        if (updateJoin(p)) {
+            done = TRUE;
+        }
+    }
+    if (p->m4c8 == 0xff || done) {
+        s32 best = 0;
+        s32 tot[4];
+        p->m4c8 = 0xff;
+        for (s32 i = 0; i < p->count; i++) {
+            tot[i] = p->a320[i] + p->a340[i] + p->a350[i] + p->a360[i] + p->a370[i] - p->a380[i] + p->a3a0[i] + p->a3b0[i];
+        }
+        for (s32 j = 0; j < p->count; j++) {
+            s32 t = tot[j];
+            if (best < t) {
+                p->m4c8 = 0;
+                best = t;
+                p->ids[p->m4c8] = j;
+            } else if (best > 0 && best == t) {
+                p->m4c8++;
+                p->ids[p->m4c8] = j;
+            }
+        }
+        p->timer = 0x96;
+        p->m4c1 = 0x1f;
+    }
 }
 
 struct Menu_Slide {
