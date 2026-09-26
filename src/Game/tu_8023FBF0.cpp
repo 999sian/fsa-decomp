@@ -166,6 +166,21 @@ extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*,
         PTR(p, off) = NULL; \
     }
 
+extern "C" s32 fn_8022CAF8(s32);
+
+inline s32 getMode(char* p) {
+    if (countSharing(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+
+inline u8 btn(char* p, s32 i) { return (*(u8**)(p + 0xbf0))[i + 0x48]; }
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -183,6 +198,9 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+bool fn_8022AF5C(void);
+bool fn_8023EFEC(s32);
+bool fn_8023EA28(s32);
 bool fn_80270C88(char*);
 void fn_80248004(char*, s32, s32);
 bool fn_80236890(void);
@@ -789,6 +807,12 @@ s32 fn_80248778(char* p) {
     }
     return c + 1;
 }
+s32 fn_802487FC(char* p) {
+    if (getMode(p) == 4) {
+        return 1;
+    }
+    return countSharing(p);
+}
 s32 fn_80248970(char* p) {
     s32 me;
     s32 c;
@@ -834,6 +858,29 @@ void fn_80248DD8(char* p) {
     }
     S32(p, 0x1224) = 0;
     U8(p, 0x1217) = 0;
+}
+void fn_80248E94(char* p, u8 on) {
+    if (on != 1 && U8(p, 0x121e) != 1 && S32(p, 0xbac) <= 0 && (on != 0 || !fn_8022AF5C())) {
+        if (on == 1) {
+            for (s32 i = 0; i < 4; i++) {
+                if (((u8(*)(s32, s32))fn_8022E438)(S32(p, 0x4), i) && fn_8023EFEC(i)) {
+                    return;
+                }
+            }
+        }
+        for (s32 i = 0; i < 4; i++) {
+            if (((u8(*)(s32, s32))fn_8022E438)(S32(p, 0x4), i) && fn_8023EA28(i)) {
+                return;
+            }
+        }
+        U8(p, 0x1214) = on;
+        if (U8(p, 0x1214) == 0) {
+            U8(p, 0x1215) = 0;
+        } else {
+            changeState(p, 3, 0);
+        }
+        U8(p, 0x1217) = 0;
+    }
 }
 void fn_80248FF0(char* p) {
     void* base = fn_801F856C();
@@ -1317,7 +1364,22 @@ BOOL fn_8025190C(char* p, u8 v) {
     if (v == 1 && U8(s, 0x4f) == 1) return 1;
     return 0;
 }
-u8 fn_8025196C(char* p, s32 i) { return (*(u8**)(p + 0xbf0))[i + 0x48]; }
+u8 fn_8025196C(char* p, s32 i) { return btn(p, i); }
+bool fn_8025197C(char* p, u8 all) {
+    char* s = (char*)PTR(p, 0xbf0);
+    for (s32 i = 0; i < 8; i++) {
+        if (!all && i >= 4) {
+            return 0;
+        }
+        if (U8(s, 0xb4) == 1 && (i == 2 || i == 4 || i == 5)) {
+            continue;
+        }
+        if (U8(s, 0x48 + i) == 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
 bool fn_80251AEC(char* p, s32 st) {
     if (!fn_80251BFC(p, st)) {
         return 0;
