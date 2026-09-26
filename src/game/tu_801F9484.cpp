@@ -2,134 +2,166 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 
+// Actor base (0x801F5AE0 ctor, 0x801F593C dtor); full layout lives on the  Actor branch.
+struct Actor {
+    Actor();
+    ~Actor();
+};
+
 // ---- Gsck_ctor_801FF744.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA800[];
 
-extern "C" void* fn_801FF744(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA800;
-    return this_;
+struct GSCK : public Actor {
+    GSCK();
+};
+
+GSCK::GSCK() {
+    *(void**)this = lbl_804AA800;
 }
 
 // ---- Mrtc_ctor_801FF780.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD278[];
 
-extern "C" void* fn_801FF780(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AD278;
-    return this_;
+struct MRTC : public Actor {
+    MRTC();
+};
+
+MRTC::MRTC() {
+    *(void**)this = lbl_804AD278;
 }
 
 // ---- Stgn_ctor_801FF7BC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA7A8[];
 
-extern "C" void* fn_801FF7BC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA7A8;
-    return this_;
+struct STGN : public Actor {
+    STGN();
+};
+
+STGN::STGN() {
+    *(void**)this = lbl_804AA7A8;
 }
 
 // ---- Rins_ctor_801FF7F8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD220[];
 
-extern "C" void* fn_801FF7F8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AD220;
-    return this_;
+struct RINS : public Actor {
+    RINS();
+};
+
+RINS::RINS() {
+    *(void**)this = lbl_804AD220;
 }
 
 // ---- Wpwl_ctor_801FF834.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE948[];
 
-extern "C" void* fn_801FF834(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE948;
-    return this_;
+struct WPWL : public Actor {
+    WPWL();
+};
+
+WPWL::WPWL() {
+    *(void**)this = lbl_804AE948;
 }
 
 // ---- Pss2_ctor_801FF870.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE8F4[];
 
-extern "C" void* fn_801FF870(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE8F4;
-    return this_;
+struct PSS2 : public Actor {
+    PSS2();
+};
+
+PSS2::PSS2() {
+    *(void**)this = lbl_804AE8F4;
 }
 
 // ---- Tbo2_ctor_801FF918.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA750[];
 
-extern "C" void* fn_801FF918(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA750;
-    return this_;
+struct TBO2 : public Actor {
+    TBO2();
+};
+
+TBO2::TBO2() {
+    *(void**)this = lbl_804AA750;
 }
 
 // ---- Tbgn_ctor_801FF954.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA6F8[];
 
-extern "C" void* fn_801FF954(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA6F8;
-    return this_;
+struct TBGN : public Actor {
+    TBGN();
+};
+
+TBGN::TBGN() {
+    *(void**)this = lbl_804AA6F8;
 }
 
 // ---- Iceb_ctor_801FF990.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE888[];
 
-extern "C" void* fn_801FF990(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE888;
-    return this_;
+struct ICEB : public Actor {
+    ICEB();
+};
+
+ICEB::ICEB() {
+    *(void**)this = lbl_804AE888;
 }
 
 // ---- Dmyk_ctor_801FF9CC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA6A0[];
 
-extern "C" void* fn_801FF9CC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA6A0;
-    return this_;
+struct DMYK : public Actor {
+    DMYK();
+};
+
+DMYK::DMYK() {
+    *(void**)this = lbl_804AA6A0;
 }
 
 // ---- Jpe2_ctor_801FFA08.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD1C8[];
 
-extern "C" void* fn_801FFA08(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AD1C8;
-    return this_;
+struct JPE2 : public Actor {
+    JPE2();
+};
+
+JPE2::JPE2() {
+    *(void**)this = lbl_804AD1C8;
 }
 
 // ---- Endr_ctor_801FFA44.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE830[];
 
-extern "C" void* fn_801FFA44(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE830;
-    return this_;
+struct ENDR : public Actor {
+    ENDR();
+};
+
+ENDR::ENDR() {
+    *(void**)this = lbl_804AE830;
 }
 
 // ---- Tfl2_ctor_801FFA80.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA628[];
 
-extern "C" void* fn_801FFA80(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA628;
-    return this_;
+struct TFL2 : public Actor {
+    TFL2();
+};
+
+TFL2::TFL2() {
+    *(void**)this = lbl_804AA628;
 }
 
 // ---- Losw_ctor_801FFABC.cpp ----
@@ -137,59 +169,63 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CB58[];
 
-extern "C" void* fn_801FFABC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049CB58;
-    *(u8*)((char*)this_ + 0x24e) = 0;
-    return this_;
+struct LOSW : public Actor {
+    LOSW();
+};
+
+LOSW::LOSW() {
+    *(void**)this = lbl_8049CB58;
+    *(u8*)((char*)this + 0x24e) = 0;
 }
 
 // ---- Pswk_ctor_801FFB00.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE5C8[];
 
-extern "C" void* fn_801FFB00(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE5C8;
-    return this_;
+struct PSWK : public Actor {
+    PSWK();
+};
+
+PSWK::PSWK() {
+    *(void**)this = lbl_804AE5C8;
 }
 
 // ---- Sibt_ctor_801FFB3C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CB04[];
 
-extern "C" void* fn_801FFB3C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049CB04;
-    return this_;
+struct SIBT : public Actor {
+    SIBT();
+};
+
+SIBT::SIBT() {
+    *(void**)this = lbl_8049CB04;
 }
 
 // ---- Pswb_ctor_801FFB78.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE574[];
 
-extern "C" void* fn_801FFB78(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE574;
-    return this_;
+struct PSWB : public Actor {
+    PSWB();
+};
+
+PSWB::PSWB() {
+    *(void**)this = lbl_804AE574;
 }
 
 // ---- Glwp_ctor_801FFBB4.cpp ----
-struct Actor {
-    Actor();
-    ~Actor();
-};
 
 // (dup) extern "C" void __construct_array(void* arr, void* ctor, s32 unused, u32 elemSize, u32 count);
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A39DC[];
 
-class Glwp : public Actor {
+class GEWP : public Actor {
 public:
-    Glwp();
+    GEWP();
 };
 
-Glwp::Glwp() : Actor() {
+GEWP::GEWP() : Actor() {
     *(void**)this = lbl_804A39DC;
     __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -198,20 +234,24 @@ Glwp::Glwp() : Actor() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAFB8[];
 
-extern "C" void* fn_801FFC0C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AAFB8;
-    return this_;
+struct SNPC : public Actor {
+    SNPC();
+};
+
+SNPC::SNPC() {
+    *(void**)this = lbl_804AAFB8;
 }
 
 // ---- Tjij_ctor_801FFC48.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE508[];
 
-extern "C" void* fn_801FFC48(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE508;
-    return this_;
+struct TJIJ : public Actor {
+    TJIJ();
+};
+
+TJIJ::TJIJ() {
+    *(void**)this = lbl_804AE508;
 }
 
 // ---- Mrta_ctor_801FFC84.cpp ----
@@ -224,12 +264,12 @@ struct Actor_21 {
 extern "C" void fn_801FFCDC(void);
 extern void* lbl_804ACD70[];
 
-class Mrta : public Actor_21 {
+class MRTA : public Actor_21 {
 public:
-    Mrta();
+    MRTA();
 };
 
-Mrta::Mrta() : Actor_21() {
+MRTA::MRTA() : Actor_21() {
     *(void**)this = lbl_804ACD70;
     __construct_array((char*)this + 0x268, (void*)fn_801FFCDC, 0, 0x14, 4);
 }
@@ -242,10 +282,12 @@ extern "C" void fn_801FFCDC(void) {}
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA590[];
 
-extern "C" void* fn_801FFCE0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA590;
-    return this_;
+struct SWDL : public Actor {
+    SWDL();
+};
+
+SWDL::SWDL() {
+    *(void**)this = lbl_804AA590;
 }
 
 // ---- fn_801FFD1C_ctor.cpp ----
@@ -285,20 +327,24 @@ fn_801FFD58_actor::fn_801FFD58_actor() : Actor_25() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE338[];
 
-extern "C" void* fn_801FFE04(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE338;
-    return this_;
+struct ELK2 : public Actor {
+    ELK2();
+};
+
+ELK2::ELK2() {
+    *(void**)this = lbl_804AE338;
 }
 
 // ---- Ptmi_ctor_801FFE40.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE780[];
 
-extern "C" void* fn_801FFE40(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE780;
-    return this_;
+struct PTMI : public Actor {
+    PTMI();
+};
+
+PTMI::PTMI() {
+    *(void**)this = lbl_804AE780;
 }
 
 // ---- Mrmt_ctor_801FFE7C.cpp ----
@@ -306,18 +352,20 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049EA88[];
 
-extern "C" void* fn_801FFE7C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049EA88;
-    *(s32*)((char*)this_ + 0x230) = 0;
-    *(s32*)((char*)this_ + 0x234) = -1;
-    *(s32*)((char*)this_ + 0x238) = -1;
-    *(s32*)((char*)this_ + 0x23c) = -1;
-    *(s32*)((char*)this_ + 0x240) = -1;
-    *(s32*)((char*)this_ + 0x244) = 0;
-    *(s32*)((char*)this_ + 0x248) = 0;
-    *(s32*)((char*)this_ + 0x24c) = 0;
-    return this_;
+struct MRMT : public Actor {
+    MRMT();
+};
+
+MRMT::MRMT() {
+    *(void**)this = lbl_8049EA88;
+    *(s32*)((char*)this + 0x230) = 0;
+    *(s32*)((char*)this + 0x234) = -1;
+    *(s32*)((char*)this + 0x238) = -1;
+    *(s32*)((char*)this + 0x23c) = -1;
+    *(s32*)((char*)this + 0x240) = -1;
+    *(s32*)((char*)this + 0x244) = 0;
+    *(s32*)((char*)this + 0x248) = 0;
+    *(s32*)((char*)this + 0x24c) = 0;
 }
 
 // ---- Ltev_ctor_801FFEE0.cpp ----
@@ -325,21 +373,25 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA4F0[];
 
-extern "C" void* fn_801FFEE0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA4F0;
-    *(s32*)((char*)this_ + 0x248) = -1;
-    return this_;
+struct FOEV : public Actor {
+    FOEV();
+};
+
+FOEV::FOEV() {
+    *(void**)this = lbl_804AA4F0;
+    *(s32*)((char*)this + 0x248) = -1;
 }
 
 // ---- Rsnp_ctor_801FFF24.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACD18[];
 
-extern "C" void* fn_801FFF24(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ACD18;
-    return this_;
+struct RSNP : public Actor {
+    RSNP();
+};
+
+RSNP::RSNP() {
+    *(void**)this = lbl_804ACD18;
 }
 
 // ---- Ogst_ctor_801FFF60.cpp ----
@@ -347,11 +399,13 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049EA00[];
 
-extern "C" void* fn_801FFF60(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049EA00;
-    *(s32*)((char*)this_ + 0x230) = 0;
-    return this_;
+struct OGST : public Actor {
+    OGST();
+};
+
+OGST::OGST() {
+    *(void**)this = lbl_8049EA00;
+    *(s32*)((char*)this + 0x230) = 0;
 }
 
 // ---- Icob_ctor_801FFFA4.cpp ----
@@ -359,31 +413,37 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E9A8[];
 
-extern "C" void* fn_801FFFA4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049E9A8;
-    *(s32*)((char*)this_ + 0x230) = 0;
-    return this_;
+struct ICOB : public Actor {
+    ICOB();
+};
+
+ICOB::ICOB() {
+    *(void**)this = lbl_8049E9A8;
+    *(s32*)((char*)this + 0x230) = 0;
 }
 
 // ---- Emsk_ctor_801FFFE8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA498[];
 
-extern "C" void* fn_801FFFE8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA498;
-    return this_;
+struct ELSK : public Actor {
+    ELSK();
+};
+
+ELSK::ELSK() {
+    *(void**)this = lbl_804AA498;
 }
 
 // ---- Tutm_ctor_80200024.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACBF0[];
 
-extern "C" void* fn_80200024(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ACBF0;
-    return this_;
+struct TUTM : public Actor {
+    TUTM();
+};
+
+TUTM::TUTM() {
+    *(void**)this = lbl_804ACBF0;
 }
 
 // ---- fn_80200060_ctor.cpp ----
@@ -405,12 +465,12 @@ struct Actor_36 {
 extern "C" void fn_801EB950(void*);
 extern void* lbl_804ACCC0[];
 
-class Tugf : public Actor_36 {
+class TUGF : public Actor_36 {
 public:
-    Tugf();
+    TUGF();
 };
 
-Tugf::Tugf() : Actor_36() {
+TUGF::TUGF() : Actor_36() {
     *(void**)this = lbl_804ACCC0;
     fn_801EB950((char*)this + 0x230);
 }
@@ -419,70 +479,84 @@ Tugf::Tugf() : Actor_36() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE2E0[];
 
-extern "C" void* fn_802000E0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE2E0;
-    return this_;
+struct LEAF : public Actor {
+    LEAF();
+};
+
+LEAF::LEAF() {
+    *(void**)this = lbl_804AE2E0;
 }
 
 // ---- Lfgn_ctor_8020011C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE288[];
 
-extern "C" void* fn_8020011C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE288;
-    return this_;
+struct LFGN : public Actor {
+    LFGN();
+};
+
+LFGN::LFGN() {
+    *(void**)this = lbl_804AE288;
 }
 
 // ---- Thcl_ctor_80200158.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7C40[];
 
-extern "C" void* fn_80200158(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7C40;
-    return this_;
+struct THCL : public Actor {
+    THCL();
+};
+
+THCL::THCL() {
+    *(void**)this = lbl_804A7C40;
 }
 
 // ---- Agbw_ctor_80200194.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA440[];
 
-extern "C" void* fn_80200194(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA440;
-    return this_;
+struct AGBW : public Actor {
+    AGBW();
+};
+
+AGBW::AGBW() {
+    *(void**)this = lbl_804AA440;
 }
 
 // ---- Svgt_ctor_802001D0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACB98[];
 
-extern "C" void* fn_802001D0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ACB98;
-    return this_;
+struct SVGT : public Actor {
+    SVGT();
+};
+
+SVGT::SVGT() {
+    *(void**)this = lbl_804ACB98;
 }
 
 // ---- Tmi2_ctor_8020020C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE728[];
 
-extern "C" void* fn_8020020C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE728;
-    return this_;
+struct TMI2 : public Actor {
+    TMI2();
+};
+
+TMI2::TMI2() {
+    *(void**)this = lbl_804AE728;
 }
 
 // ---- Safu_ctor_80200248.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3948[];
 
-extern "C" void* fn_80200248(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A3948;
-    return this_;
+struct SAFU : public Actor {
+    SAFU();
+};
+
+SAFU::SAFU() {
+    *(void**)this = lbl_804A3948;
 }
 
 // ---- Fdwp_ctor_80200284.cpp ----
@@ -490,54 +564,64 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E8F8[];
 
-extern "C" void* fn_80200284(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049E8F8;
-    *(s32*)((char*)this_ + 0x230) = 0;
-    *(s32*)((char*)this_ + 0x234) = 0;
-    *(s32*)((char*)this_ + 0x238) = 0;
-    *(s32*)((char*)this_ + 0x23c) = 0;
-    return this_;
+struct FDWP : public Actor {
+    FDWP();
+};
+
+FDWP::FDWP() {
+    *(void**)this = lbl_8049E8F8;
+    *(s32*)((char*)this + 0x230) = 0;
+    *(s32*)((char*)this + 0x234) = 0;
+    *(s32*)((char*)this + 0x238) = 0;
+    *(s32*)((char*)this + 0x23c) = 0;
 }
 
 // ---- Twev_ctor_802002D4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049CA40[];
 
-extern "C" void* fn_802002D4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049CA40;
-    return this_;
+struct TWEV : public Actor {
+    TWEV();
+};
+
+TWEV::TWEV() {
+    *(void**)this = lbl_8049CA40;
 }
 
 // ---- Dwap_ctor_80200310.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C9E8[];
 
-extern "C" void* fn_80200310(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C9E8;
-    return this_;
+struct DWAP : public Actor {
+    DWAP();
+};
+
+DWAP::DWAP() {
+    *(void**)this = lbl_8049C9E8;
 }
 
 // ---- Tooi_ctor_8020034C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACB40[];
 
-extern "C" void* fn_8020034C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ACB40;
-    return this_;
+struct TOOI : public Actor {
+    TOOI();
+};
+
+TOOI::TOOI() {
+    *(void**)this = lbl_804ACB40;
 }
 
 // ---- Chsw_ctor_80200388.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA3E8[];
 
-extern "C" void* fn_80200388(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA3E8;
-    return this_;
+struct CHSW : public Actor {
+    CHSW();
+};
+
+CHSW::CHSW() {
+    *(void**)this = lbl_804AA3E8;
 }
 
 // ---- Tlwp_ctor_802003C4.cpp ----
@@ -550,12 +634,12 @@ struct Actor_49 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A38D4[];
 
-class Tlwp : public Actor_49 {
+class TLWP : public Actor_49 {
 public:
-    Tlwp();
+    TLWP();
 };
 
-Tlwp::Tlwp() : Actor_49() {
+TLWP::TLWP() : Actor_49() {
     *(void**)this = lbl_804A38D4;
     __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -564,10 +648,12 @@ Tlwp::Tlwp() : Actor_49() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AABA8[];
 
-extern "C" void* fn_8020041C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AABA8;
-    return this_;
+struct JWLK : public Actor {
+    JWLK();
+};
+
+JWLK::JWLK() {
+    *(void**)this = lbl_804AABA8;
 }
 
 // ---- Rbpn_ctor_80200458.cpp ----
@@ -575,26 +661,30 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E848[];
 
-extern "C" void* fn_80200458(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049E848;
-    *(s32*)((char*)this_ + 0x230) = 0;
-    *(s32*)((char*)this_ + 0x234) = 0;
-    *(s32*)((char*)this_ + 0x238) = 0;
-    *(s32*)((char*)this_ + 0x23c) = 0;
-    *(s32*)((char*)this_ + 0x240) = 0;
-    *(s32*)((char*)this_ + 0x244) = 0;
-    return this_;
+struct RBPN : public Actor {
+    RBPN();
+};
+
+RBPN::RBPN() {
+    *(void**)this = lbl_8049E848;
+    *(s32*)((char*)this + 0x230) = 0;
+    *(s32*)((char*)this + 0x234) = 0;
+    *(s32*)((char*)this + 0x238) = 0;
+    *(s32*)((char*)this + 0x23c) = 0;
+    *(s32*)((char*)this + 0x240) = 0;
+    *(s32*)((char*)this + 0x244) = 0;
 }
 
 // ---- Psw2_ctor_802004B0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE230[];
 
-extern "C" void* fn_802004B0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE230;
-    return this_;
+struct PSW2 : public Actor {
+    PSW2();
+};
+
+PSW2::PSW2() {
+    *(void**)this = lbl_804AE230;
 }
 
 // ---- Gnef_ctor_802004EC.cpp ----
@@ -607,12 +697,12 @@ struct Actor_53 {
 extern "C" void fn_80200544(void);
 extern void* lbl_804AA350[];
 
-class Gnef : public Actor_53 {
+class GNEF : public Actor_53 {
 public:
-    Gnef();
+    GNEF();
 };
 
-Gnef::Gnef() : Actor_53() {
+GNEF::GNEF() : Actor_53() {
     *(void**)this = lbl_804AA350;
     __construct_array((char*)this + 0x27c, (void*)fn_80200544, 0, 0x14, 4);
 }
@@ -625,90 +715,108 @@ extern "C" void fn_80200544(void) {}
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA2D8[];
 
-extern "C" void* fn_80200548(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA2D8;
-    return this_;
+struct STPN : public Actor {
+    STPN();
+};
+
+STPN::STPN() {
+    *(void**)this = lbl_804AA2D8;
 }
 
 // ---- Tomi_ctor_80200584.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE6D0[];
 
-extern "C" void* fn_80200584(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE6D0;
-    return this_;
+struct SSMI : public Actor {
+    SSMI();
+};
+
+SSMI::SSMI() {
+    *(void**)this = lbl_804AE6D0;
 }
 
 // ---- Medm_ctor_802005C0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE678[];
 
-extern "C" void* fn_802005C0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE678;
-    return this_;
+struct MEDM : public Actor {
+    MEDM();
+};
+
+MEDM::MEDM() {
+    *(void**)this = lbl_804AE678;
 }
 
 // ---- Sdsm_ctor_802005FC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA280[];
 
-extern "C" void* fn_802005FC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA280;
-    return this_;
+struct SDSM : public Actor {
+    SDSM();
+};
+
+SDSM::SDSM() {
+    *(void**)this = lbl_804AA280;
 }
 
 // ---- Bck2_ctor_80200638.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AE620[];
 
-extern "C" void* fn_80200638(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AE620;
-    return this_;
+struct BCK2 : public Actor {
+    BCK2();
+};
+
+BCK2::BCK2() {
+    *(void**)this = lbl_804AE620;
 }
 
 // ---- Svtg_ctor_80200674.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAB40[];
 
-extern "C" void* fn_80200674(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AAB40;
-    return this_;
+struct SPTG : public Actor {
+    SPTG();
+};
+
+SPTG::SPTG() {
+    *(void**)this = lbl_804AAB40;
 }
 
 // ---- Dnav_ctor_802006B0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ADFE8[];
 
-extern "C" void* fn_802006B0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ADFE8;
-    return this_;
+struct DNAV : public Actor {
+    DNAV();
+};
+
+DNAV::DNAV() {
+    *(void**)this = lbl_804ADFE8;
 }
 
 // ---- Zomo_ctor_802006EC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA228[];
 
-extern "C" void* fn_802006EC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA228;
-    return this_;
+struct ZOMO : public Actor {
+    ZOMO();
+};
+
+ZOMO::ZOMO() {
+    *(void**)this = lbl_804AA228;
 }
 
 // ---- Zdco_ctor_80200728.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A375C[];
 
-extern "C" void* fn_80200728(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A375C;
-    return this_;
+struct ZDCO : public Actor {
+    ZDCO();
+};
+
+ZDCO::ZDCO() {
+    *(void**)this = lbl_804A375C;
 }
 
 // ---- fn_80200764_ctor.cpp ----
@@ -731,12 +839,12 @@ struct Actor_65 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A35AC[];
 
-class Zld3 : public Actor_65 {
+class ZLD3 : public Actor_65 {
 public:
-    Zld3();
+    ZLD3();
 };
 
-Zld3::Zld3() : Actor_65() {
+ZLD3::ZLD3() : Actor_65() {
     *(void**)this = lbl_804A35AC;
     __construct_array((char*)this + 0x288, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -745,30 +853,36 @@ Zld3::Zld3() : Actor_65() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ACA00[];
 
-extern "C" void* fn_802007F8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ACA00;
-    return this_;
+struct OBLF : public Actor {
+    OBLF();
+};
+
+OBLF::OBLF() {
+    *(void**)this = lbl_804ACA00;
 }
 
 // ---- Gen3_ctor_80200834.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA1D0[];
 
-extern "C" void* fn_80200834(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA1D0;
-    return this_;
+struct GEN3 : public Actor {
+    GEN3();
+};
+
+GEN3::GEN3() {
+    *(void**)this = lbl_804AA1D0;
 }
 
 // ---- Egol_ctor_80200870.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3548[];
 
-extern "C" void* fn_80200870(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A3548;
-    return this_;
+struct EGOL : public Actor {
+    EGOL();
+};
+
+EGOL::EGOL() {
+    *(void**)this = lbl_804A3548;
 }
 
 // ---- Ynsw_ctor_802008AC.cpp ----
@@ -781,12 +895,12 @@ struct Actor_69 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AC9A8[];
 
-class Ynsw : public Actor_69 {
+class YNSW : public Actor_69 {
 public:
-    Ynsw();
+    YNSW();
 };
 
-Ynsw::Ynsw() : Actor_69() {
+YNSW::YNSW() : Actor_69() {
     *(void**)this = lbl_804AC9A8;
     __construct_array((char*)this + 0x254, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -795,20 +909,24 @@ Ynsw::Ynsw() : Actor_69() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAAE8[];
 
-extern "C" void* fn_80200904(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AAAE8;
-    return this_;
+struct GMTB : public Actor {
+    GMTB();
+};
+
+GMTB::GMTB() {
+    *(void**)this = lbl_804AAAE8;
 }
 
 // ---- Gmbl_ctor_80200940.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AAA70[];
 
-extern "C" void* fn_80200940(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AAA70;
-    return this_;
+struct GMBL : public Actor {
+    GMBL();
+};
+
+GMBL::GMBL() {
+    *(void**)this = lbl_804AAA70;
 }
 
 // ---- Eetc_ctor_8020097C.cpp ----
@@ -821,12 +939,12 @@ struct Actor_72 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804ADF28[];
 
-class Eetc : public Actor_72 {
+class EETC : public Actor_72 {
 public:
-    Eetc();
+    EETC();
 };
 
-Eetc::Eetc() : Actor_72() {
+EETC::EETC() : Actor_72() {
     *(void**)this = lbl_804ADF28;
     __construct_array((char*)this + 0x27c, (void*)fn_8003B2CC, 0, 0xc, 3);
     __construct_array((char*)this + 0x2a0, (void*)fn_8003B2CC, 0, 0xc, 3);
@@ -844,12 +962,12 @@ void fn_80200A84(void);
 void fn_80200A80(void);
 extern void* lbl_804AC950[];
 
-class Rck2 : public Actor_73 {
+class RCK2 : public Actor_73 {
 public:
-    Rck2();
+    RCK2();
 };
 
-Rck2::Rck2() : Actor_73() {
+RCK2::RCK2() : Actor_73() {
     *(void**)this = lbl_804AC950;
     __construct_array((char*)this + 0x260, (void*)fn_80200A84, 0, 0x18, 8);
     __construct_array((char*)this + 0x320, (void*)fn_80200A80, 0, 0x14, 4);
@@ -873,12 +991,12 @@ struct Actor_75 {
 extern "C" void InitDefaultRecord(void*);
 extern void* lbl_804ADAC8[];
 
-class Eowl : public Actor_75 {
+class EOWL : public Actor_75 {
 public:
-    Eowl();
+    EOWL();
 };
 
-Eowl::Eowl() : Actor_75() {
+EOWL::EOWL() : Actor_75() {
     *(void**)this = lbl_804ADAC8;
     InitDefaultRecord((char*)this + 0x2a0);
 }
@@ -893,12 +1011,12 @@ struct Actor_76 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_8049E770[];
 
-class Dmtw : public Actor_76 {
+class DMTW : public Actor_76 {
 public:
-    Dmtw();
+    DMTW();
 };
 
-Dmtw::Dmtw() : Actor_76() {
+DMTW::DMTW() : Actor_76() {
     *(void**)this = lbl_8049E770;
     __construct_array((char*)this + 0x25c, (void*)fn_8003B2CC, 0, 0xc, 6);
     __construct_array((char*)this + 0x2c8, (void*)fn_8003B2CC, 0, 0xc, 4);
@@ -910,13 +1028,15 @@ Dmtw::Dmtw() : Actor_76() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA9F0[];
 
-extern "C" void* fn_80200B78(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA9F0;
-    return this_;
+struct SMRI : public Actor {
+    SMRI();
+};
+
+SMRI::SMRI() {
+    *(void**)this = lbl_804AA9F0;
 }
 
-// ---- Elnk_ctor_80200BB4.cpp ----
+// ---- ELNK_ctor_80200BB4.cpp ----
 // fn_80200BB4 - "ELNK" real constructor. Base Actor ctor
 // (Actor_ctor) + a DOUBLE vtable install: lbl_804A5958 is
 // installed first then immediately overwritten by
@@ -932,11 +1052,13 @@ extern "C" void* Actor_ctor(void* this_);
 extern "C" void* lbl_804A5958[];
 extern "C" void* lbl_804AD858[];
 
-extern "C" void* Elnk_ctor(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A5958;
-    *(void**)this_ = lbl_804AD858;
-    return this_;
+struct ELNK : public Actor {
+    ELNK();
+};
+
+ELNK::ELNK() {
+    *(void**)this = lbl_804A5958;
+    *(void**)this = lbl_804AD858;
 }
 
 // ---- fn_80200BFC_dtor.cpp ----
@@ -959,30 +1081,36 @@ extern "C" void* fn_80200BFC(void* this_, s16 freeFlag) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B1A48[];
 
-extern "C" void* fn_80200C5C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804B1A48;
-    return this_;
+struct DTLK : public Actor {
+    DTLK();
+};
+
+DTLK::DTLK() {
+    *(void**)this = lbl_804B1A48;
 }
 
 // ---- Tkra_ctor_80200C98.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA178[];
 
-extern "C" void* fn_80200C98(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA178;
-    return this_;
+struct TKRA : public Actor {
+    TKRA();
+};
+
+TKRA::TKRA() {
+    *(void**)this = lbl_804AA178;
 }
 
 // ---- Okam_ctor_80200CD4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3448[];
 
-extern "C" void* fn_80200CD4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A3448;
-    return this_;
+struct OKAM : public Actor {
+    OKAM();
+};
+
+OKAM::OKAM() {
+    *(void**)this = lbl_804A3448;
 }
 
 // ---- Ttat_ctor_80200D10.cpp ----
@@ -995,12 +1123,12 @@ struct Actor_83 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A2FB0[];
 
-class Ttat : public Actor_83 {
+class TTAT : public Actor_83 {
 public:
-    Ttat();
+    TTAT();
 };
 
-Ttat::Ttat() : Actor_83() {
+TTAT::TTAT() : Actor_83() {
     *(void**)this = lbl_804A2FB0;
     __construct_array((char*)this + 0x280, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -1009,50 +1137,60 @@ Ttat::Ttat() : Actor_83() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A307C[];
 
-extern "C" void* fn_80200D68(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A307C;
-    return this_;
+struct GNMA : public Actor {
+    GNMA();
+};
+
+GNMA::GNMA() {
+    *(void**)this = lbl_804A307C;
 }
 
 // ---- Ddgo_ctor_80200DA4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A3334[];
 
-extern "C" void* fn_80200DA4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A3334;
-    return this_;
+struct DDGO : public Actor {
+    DDGO();
+};
+
+DDGO::DDGO() {
+    *(void**)this = lbl_804A3334;
 }
 
 // ---- Endm_ctor_80200DE0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA0FC[];
 
-extern "C" void* fn_80200DE0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA0FC;
-    return this_;
+struct ENDM : public Actor {
+    ENDM();
+};
+
+ENDM::ENDM() {
+    *(void**)this = lbl_804AA0FC;
 }
 
 // ---- Lcls_ctor_80200E1C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA008[];
 
-extern "C" void* fn_80200E1C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA008;
-    return this_;
+struct LCLS : public Actor {
+    LCLS();
+};
+
+LCLS::LCLS() {
+    *(void**)this = lbl_804AA008;
 }
 
 // ---- Glbs_ctor_80200E58.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AA060[];
 
-extern "C" void* fn_80200E58(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AA060;
-    return this_;
+struct GLBS : public Actor {
+    GLBS();
+};
+
+GLBS::GLBS() {
+    *(void**)this = lbl_804AA060;
 }
 
 // ---- Emik_ctor_80200E94.cpp ----
@@ -1060,11 +1198,13 @@ extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A5958[];
 extern void* lbl_804AD5B8[];
 
-extern "C" void* fn_80200E94(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A5958;
-    *(void**)this_ = lbl_804AD5B8;
-    return this_;
+struct EMIK : public Actor {
+    EMIK();
+};
+
+EMIK::EMIK() {
+    *(void**)this = lbl_804A5958;
+    *(void**)this = lbl_804AD5B8;
 }
 
 // ---- Ezld_ctor_80200EDC.cpp ----
@@ -1072,21 +1212,25 @@ extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A5958[];
 extern void* lbl_804AD6F0[];
 
-extern "C" void* fn_80200EDC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A5958;
-    *(void**)this_ = lbl_804AD6F0;
-    return this_;
+struct EZLD : public Actor {
+    EZLD();
+};
+
+EZLD::EZLD() {
+    *(void**)this = lbl_804A5958;
+    *(void**)this = lbl_804AD6F0;
 }
 
 // ---- Enpc_ctor_80200F24.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD48C[];
 
-extern "C" void* fn_80200F24(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AD48C;
-    return this_;
+struct ENPC : public Actor {
+    ENPC();
+};
+
+ENPC::ENPC() {
+    *(void**)this = lbl_804AD48C;
 }
 
 // ---- Hbb2_ctor_80200F60.cpp ----
@@ -1099,12 +1243,12 @@ struct Actor_92 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A2EC0[];
 
-class Hbb2 : public Actor_92 {
+class HBB2 : public Actor_92 {
 public:
-    Hbb2();
+    HBB2();
 };
 
-Hbb2::Hbb2() : Actor_92() {
+HBB2::HBB2() : Actor_92() {
     *(void**)this = lbl_804A2EC0;
     __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 0x28);
 }
@@ -1119,12 +1263,12 @@ struct Actor_93 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AC8C0[];
 
-class Nwok : public Actor_93 {
+class NWOK : public Actor_93 {
 public:
-    Nwok();
+    NWOK();
 };
 
-Nwok::Nwok() : Actor_93() {
+NWOK::NWOK() : Actor_93() {
     *(void**)this = lbl_804AC8C0;
     __construct_array((char*)this + 0x290, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -1133,90 +1277,108 @@ Nwok::Nwok() : Actor_93() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2E30[];
 
-extern "C" void* fn_80201010(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A2E30;
-    return this_;
+struct RYYA : public Actor {
+    RYYA();
+};
+
+RYYA::RYYA() {
+    *(void**)this = lbl_804A2E30;
 }
 
 // ---- Mjgr_ctor_8020104C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9FB0[];
 
-extern "C" void* fn_8020104C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9FB0;
-    return this_;
+struct MJGR : public Actor {
+    MJGR();
+};
+
+MJGR::MJGR() {
+    *(void**)this = lbl_804A9FB0;
 }
 
 // ---- Htmk_ctor_80201088.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC868[];
 
-extern "C" void* fn_80201088(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC868;
-    return this_;
+struct HTMK : public Actor {
+    HTMK();
+};
+
+HTMK::HTMK() {
+    *(void**)this = lbl_804AC868;
 }
 
 // ---- Enbz_ctor_802010C4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2CB0[];
 
-extern "C" void* fn_802010C4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A2CB0;
-    return this_;
+struct ENBZ : public Actor {
+    ENBZ();
+};
+
+ENBZ::ENBZ() {
+    *(void**)this = lbl_804A2CB0;
 }
 
 // ---- Pnp2_ctor_80201100.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9F58[];
 
-extern "C" void* fn_80201100(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9F58;
-    return this_;
+struct PNP2 : public Actor {
+    PNP2();
+};
+
+PNP2::PNP2() {
+    *(void**)this = lbl_804A9F58;
 }
 
 // ---- Sslf_ctor_8020113C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AD348[];
 
-extern "C" void* fn_8020113C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AD348;
-    return this_;
+struct SSLF : public Actor {
+    SSLF();
+};
+
+SSLF::SSLF() {
+    *(void**)this = lbl_804AD348;
 }
 
 // ---- Bemn_ctor_80201178.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC810[];
 
-extern "C" void* fn_80201178(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC810;
-    return this_;
+struct BEMN : public Actor {
+    BEMN();
+};
+
+BEMN::BEMN() {
+    *(void**)this = lbl_804AC810;
 }
 
 // ---- Fobe_ctor_802011B4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC7B8[];
 
-extern "C" void* fn_802011B4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC7B8;
-    return this_;
+struct FOBE : public Actor {
+    FOBE();
+};
+
+FOBE::FOBE() {
+    *(void**)this = lbl_804AC7B8;
 }
 
 // ---- Sen2_ctor_802011F0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9F00[];
 
-extern "C" void* fn_802011F0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9F00;
-    return this_;
+struct SEN2 : public Actor {
+    SEN2();
+};
+
+SEN2::SEN2() {
+    *(void**)this = lbl_804A9F00;
 }
 
 // ---- Crgn_ctor_8020122C.cpp ----
@@ -1224,97 +1386,115 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E5B8[];
 
-extern "C" void* fn_8020122C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049E5B8;
-    *(s32*)((char*)this_ + 0x230) = 1;
-    *(s32*)((char*)this_ + 0x234) = 4;
-    *(s32*)((char*)this_ + 0x238) = 0;
-    *(s32*)((char*)this_ + 0x23c) = -1;
-    *(s32*)((char*)this_ + 0x240) = 0;
-    *(s32*)((char*)this_ + 0x244) = 0;
-    *(s32*)((char*)this_ + 0x280) = 0;
-    return this_;
+struct CRGN : public Actor {
+    CRGN();
+};
+
+CRGN::CRGN() {
+    *(void**)this = lbl_8049E5B8;
+    *(s32*)((char*)this + 0x230) = 1;
+    *(s32*)((char*)this + 0x234) = 4;
+    *(s32*)((char*)this + 0x238) = 0;
+    *(s32*)((char*)this + 0x23c) = -1;
+    *(s32*)((char*)this + 0x240) = 0;
+    *(s32*)((char*)this + 0x244) = 0;
+    *(s32*)((char*)this + 0x280) = 0;
 }
 
 // ---- Tenn_ctor_80201294.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2BF4[];
 
-extern "C" void* fn_80201294(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A2BF4;
-    return this_;
+struct TENN : public Actor {
+    TENN();
+};
+
+TENN::TENN() {
+    *(void**)this = lbl_804A2BF4;
 }
 
 // ---- Wave_ctor_802012D0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9EA8[];
 
-extern "C" void* fn_802012D0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9EA8;
-    return this_;
+struct WAVE : public Actor {
+    WAVE();
+};
+
+WAVE::WAVE() {
+    *(void**)this = lbl_804A9EA8;
 }
 
 // ---- Form_ctor_8020130C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7BE8[];
 
-extern "C" void* fn_8020130C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7BE8;
-    return this_;
+struct FORM : public Actor {
+    FORM();
+};
+
+FORM::FORM() {
+    *(void**)this = lbl_804A7BE8;
 }
 
 // ---- Spbg_ctor_80201348.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC760[];
 
-extern "C" void* fn_80201348(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC760;
-    return this_;
+struct SPBG : public Actor {
+    SPBG();
+};
+
+SPBG::SPBG() {
+    *(void**)this = lbl_804AC760;
 }
 
 // ---- Szsc_ctor_802013D8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC708[];
 
-extern "C" void* fn_802013D8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC708;
-    return this_;
+struct SZSC : public Actor {
+    SZSC();
+};
+
+SZSC::SZSC() {
+    *(void**)this = lbl_804AC708;
 }
 
 // ---- Nnjn_ctor_80201414.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC6B0[];
 
-extern "C" void* fn_80201414(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC6B0;
-    return this_;
+struct NNJN : public Actor {
+    NNJN();
+};
+
+NNJN::NNJN() {
+    *(void**)this = lbl_804AC6B0;
 }
 
 // ---- Syky_ctor_80201450.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2B18[];
 
-extern "C" void* fn_80201450(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A2B18;
-    return this_;
+struct SYKY : public Actor {
+    SYKY();
+};
+
+SYKY::SYKY() {
+    *(void**)this = lbl_804A2B18;
 }
 
 // ---- Anho_ctor_8020148C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C970[];
 
-extern "C" void* fn_8020148C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C970;
-    return this_;
+struct ANHO : public Actor {
+    ANHO();
+};
+
+ANHO::ANHO() {
+    *(void**)this = lbl_8049C970;
 }
 
 // ---- fn_802014C8_ctor.cpp ----
@@ -1331,80 +1511,96 @@ extern "C" void* fn_802014C8(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC658[];
 
-extern "C" void* fn_80201504(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC658;
-    return this_;
+struct FISH : public Actor {
+    FISH();
+};
+
+FISH::FISH() {
+    *(void**)this = lbl_804AC658;
 }
 
 // ---- Alce_ctor_80201540.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A2AB0[];
 
-extern "C" void* fn_80201540(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A2AB0;
-    return this_;
+struct ALCE : public Actor {
+    ALCE();
+};
+
+ALCE::ALCE() {
+    *(void**)this = lbl_804A2AB0;
 }
 
 // ---- Zoom_ctor_8020157C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9DF8[];
 
-extern "C" void* fn_8020157C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9DF8;
-    return this_;
+struct ZOOM : public Actor {
+    ZOOM();
+};
+
+ZOOM::ZOOM() {
+    *(void**)this = lbl_804A9DF8;
 }
 
 // ---- Bgmn_ctor_802015B8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9DA0[];
 
-extern "C" void* fn_802015B8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9DA0;
-    return this_;
+struct BGMN : public Actor {
+    BGMN();
+};
+
+BGMN::BGMN() {
+    *(void**)this = lbl_804A9DA0;
 }
 
 // ---- Mgya_ctor_802015F4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C8EC[];
 
-extern "C" void* fn_802015F4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C8EC;
-    return this_;
+struct MGYA : public Actor {
+    MGYA();
+};
+
+MGYA::MGYA() {
+    *(void**)this = lbl_8049C8EC;
 }
 
 // ---- Gfbs_ctor_80201630.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049E3A8[];
 
-extern "C" void* fn_80201630(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049E3A8;
-    return this_;
+struct GFBS : public Actor {
+    GFBS();
+};
+
+GFBS::GFBS() {
+    *(void**)this = lbl_8049E3A8;
 }
 
 // ---- Blz2_ctor_802016D8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9D28[];
 
-extern "C" void* fn_802016D8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9D28;
-    return this_;
+struct BLZ2 : public Actor {
+    BLZ2();
+};
+
+BLZ2::BLZ2() {
+    *(void**)this = lbl_804A9D28;
 }
 
 // ---- Sev2_ctor_80201714.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9CD0[];
 
-extern "C" void* fn_80201714(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9CD0;
-    return this_;
+struct SEV2 : public Actor {
+    SEV2();
+};
+
+SEV2::SEV2() {
+    *(void**)this = lbl_804A9CD0;
 }
 
 // ---- Rnsw_ctor_80201750.cpp ----
@@ -1412,55 +1608,65 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049DE90[];
 
-extern "C" void* fn_80201750(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049DE90;
-    *(s32*)((char*)this_ + 0x230) = 1;
-    *(s32*)((char*)this_ + 0x234) = 0;
-    *(s32*)((char*)this_ + 0x238) = 0;
-    *(s32*)((char*)this_ + 0x23c) = 0;
-    *(s32*)((char*)this_ + 0x240) = 0;
-    return this_;
+struct RNSW : public Actor {
+    RNSW();
+};
+
+RNSW::RNSW() {
+    *(void**)this = lbl_8049DE90;
+    *(s32*)((char*)this + 0x230) = 1;
+    *(s32*)((char*)this + 0x234) = 0;
+    *(s32*)((char*)this + 0x238) = 0;
+    *(s32*)((char*)this + 0x23c) = 0;
+    *(s32*)((char*)this + 0x240) = 0;
 }
 
 // ---- Senp_ctor_802017A8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9C78[];
 
-extern "C" void* fn_802017A8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9C78;
-    return this_;
+struct SENP : public Actor {
+    SENP();
+};
+
+SENP::SENP() {
+    *(void**)this = lbl_804A9C78;
 }
 
 // ---- Haya_ctor_802017E4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C858[];
 
-extern "C" void* fn_802017E4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C858;
-    return this_;
+struct GSYA : public Actor {
+    GSYA();
+};
+
+GSYA::GSYA() {
+    *(void**)this = lbl_8049C858;
 }
 
 // ---- Brbl_ctor_80201820.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7B90[];
 
-extern "C" void* fn_80201820(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7B90;
-    return this_;
+struct BRBL : public Actor {
+    BRBL();
+};
+
+BRBL::BRBL() {
+    *(void**)this = lbl_804A7B90;
 }
 
 // ---- Limt_ctor_8020185C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B174C[];
 
-extern "C" void* fn_8020185C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804B174C;
-    return this_;
+struct LIMT : public Actor {
+    LIMT();
+};
+
+LIMT::LIMT() {
+    *(void**)this = lbl_804B174C;
 }
 
 // ---- Gol2_ctor_80201898.cpp ----
@@ -1473,12 +1679,12 @@ struct Actor_126 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A9C20[];
 
-class Gol2 : public Actor_126 {
+class GNL2 : public Actor_126 {
 public:
-    Gol2();
+    GNL2();
 };
 
-Gol2::Gol2() : Actor_126() {
+GNL2::GNL2() : Actor_126() {
     *(void**)this = lbl_804A9C20;
     __construct_array((char*)this + 0x258, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -1493,12 +1699,12 @@ struct Actor_127 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AC600[];
 
-class Beee : public Actor_127 {
+class BEEE : public Actor_127 {
 public:
-    Beee();
+    BEEE();
 };
 
-Beee::Beee() : Actor_127() {
+BEEE::BEEE() : Actor_127() {
     *(void**)this = lbl_804AC600;
     __construct_array((char*)this + 0x2a4, (void*)fn_8003B2CC, 0, 0xc, 7);
     __construct_array((char*)this + 0x2f8, (void*)fn_8003B2CC, 0, 0xc, 7);
@@ -1509,10 +1715,12 @@ Beee::Beee() : Actor_127() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7B38[];
 
-extern "C" void* fn_80201980(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7B38;
-    return this_;
+struct PSSW : public Actor {
+    PSSW();
+};
+
+PSSW::PSSW() {
+    *(void**)this = lbl_804A7B38;
 }
 
 // ---- Hous_ctor_802019BC.cpp ----
@@ -1525,12 +1733,12 @@ struct Actor_129 {
 extern "C" void fn_801546E4(void*);
 extern void* lbl_804A7AE0[];
 
-class Hous : public Actor_129 {
+class HOUS : public Actor_129 {
 public:
-    Hous();
+    HOUS();
 };
 
-Hous::Hous() : Actor_129() {
+HOUS::HOUS() : Actor_129() {
     *(void**)this = lbl_804A7AE0;
     __construct_array((char*)this + 0x2dc, (void*)fn_801546E4, 0, 0x8, 4);
 }
@@ -1560,30 +1768,36 @@ fn_80201A14_actor::fn_80201A14_actor() : Actor_130() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A25F0[];
 
-extern "C" void* fn_80201A88(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A25F0;
-    return this_;
+struct GNON : public Actor {
+    GNON();
+};
+
+GNON::GNON() {
+    *(void**)this = lbl_804A25F0;
 }
 
 // ---- Bbmb_ctor_80201AC4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC588[];
 
-extern "C" void* fn_80201AC4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC588;
-    return this_;
+struct BBMB : public Actor {
+    BBMB();
+};
+
+BBMB::BBMB() {
+    *(void**)this = lbl_804AC588;
 }
 
 // ---- Bbsl_ctor_80201B00.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC4D0[];
 
-extern "C" void* fn_80201B00(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC4D0;
-    return this_;
+struct BBSL : public Actor {
+    BBSL();
+};
+
+BBSL::BBSL() {
+    *(void**)this = lbl_804AC4D0;
 }
 
 // ---- fn_80201B3C_ctor.cpp ----
@@ -1600,20 +1814,24 @@ extern "C" void* fn_80201B3C(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B16E0[];
 
-extern "C" void* fn_80201B78(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804B16E0;
-    return this_;
+struct GBAO : public Actor {
+    GBAO();
+};
+
+GBAO::GBAO() {
+    *(void**)this = lbl_804B16E0;
 }
 
 // ---- Offs_ctor_80201BB4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9B70[];
 
-extern "C" void* fn_80201BB4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9B70;
-    return this_;
+struct OFFS : public Actor {
+    OFFS();
+};
+
+OFFS::OFFS() {
+    *(void**)this = lbl_804A9B70;
 }
 
 // ---- fn_80201BF0_ctor.cpp ----
@@ -1630,20 +1848,24 @@ extern "C" void* fn_80201BF0(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC330[];
 
-extern "C" void* fn_80201C2C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC330;
-    return this_;
+struct LITS : public Actor {
+    LITS();
+};
+
+LITS::LITS() {
+    *(void**)this = lbl_804AC330;
 }
 
 // ---- Stbl_ctor_80201C68.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC2D8[];
 
-extern "C" void* fn_80201C68(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC2D8;
-    return this_;
+struct STBL : public Actor {
+    STBL();
+};
+
+STBL::STBL() {
+    *(void**)this = lbl_804AC2D8;
 }
 
 // ---- Dgt2_ctor_80201D00.cpp ----
@@ -1656,12 +1878,12 @@ struct Actor_140 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A1FA0[];
 
-class Dgt2 : public Actor_140 {
+class DGT2 : public Actor_140 {
 public:
-    Dgt2();
+    DGT2();
 };
 
-Dgt2::Dgt2() : Actor_140() {
+DGT2::DGT2() : Actor_140() {
     *(void**)this = lbl_804A1FA0;
     __construct_array((char*)this + 0x288, (void*)fn_8003B2CC, 0, 0xc, 6);
     __construct_array((char*)this + 0x2d0, (void*)fn_8003B2CC, 0, 0xc, 0x14);
@@ -1671,30 +1893,36 @@ Dgt2::Dgt2() : Actor_140() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC250[];
 
-extern "C" void* fn_80201D74(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC250;
-    return this_;
+struct RVFR : public Actor {
+    RVFR();
+};
+
+RVFR::RVFR() {
+    *(void**)this = lbl_804AC250;
 }
 
 // ---- Wppa_ctor_80201DB0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC1F8[];
 
-extern "C" void* fn_80201DB0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC1F8;
-    return this_;
+struct WPPA : public Actor {
+    WPPA();
+};
+
+WPPA::WPPA() {
+    *(void**)this = lbl_804AC1F8;
 }
 
 // ---- Flyo_ctor_80201DEC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC100[];
 
-extern "C" void* fn_80201DEC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC100;
-    return this_;
+struct FLYO : public Actor {
+    FLYO();
+};
+
+FLYO::FLYO() {
+    *(void**)this = lbl_804AC100;
 }
 
 // ---- Bph2_ctor_80201E28.cpp ----
@@ -1707,12 +1935,12 @@ struct Actor_144 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A1E50[];
 
-class Bph2 : public Actor_144 {
+class BPH2 : public Actor_144 {
 public:
-    Bph2();
+    BPH2();
 };
 
-Bph2::Bph2() : Actor_144() {
+BPH2::BPH2() : Actor_144() {
     *(void**)this = lbl_804A1E50;
     __construct_array((char*)this + 0x2f8, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -1721,10 +1949,12 @@ Bph2::Bph2() : Actor_144() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9AC8[];
 
-extern "C" void* fn_80201E80(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9AC8;
-    return this_;
+struct PRTC : public Actor {
+    PRTC();
+};
+
+PRTC::PRTC() {
+    *(void**)this = lbl_804A9AC8;
 }
 
 // ---- Rasn_ctor_80201EBC.cpp ----
@@ -1737,12 +1967,12 @@ struct Actor_146 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A7A68[];
 
-class Rasn : public Actor_146 {
+class RASN : public Actor_146 {
 public:
-    Rasn();
+    RASN();
 };
 
-Rasn::Rasn() : Actor_146() {
+RASN::RASN() : Actor_146() {
     *(void**)this = lbl_804A7A68;
     __construct_array((char*)this + 0x238, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -1751,30 +1981,36 @@ Rasn::Rasn() : Actor_146() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1A98[];
 
-extern "C" void* fn_80201F14(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A1A98;
-    return this_;
+struct FGN2 : public Actor {
+    FGN2();
+};
+
+FGN2::FGN2() {
+    *(void**)this = lbl_804A1A98;
 }
 
 // ---- Wppr_ctor_80201F50.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC0A8[];
 
-extern "C" void* fn_80201F50(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC0A8;
-    return this_;
+struct WPPR : public Actor {
+    WPPR();
+};
+
+WPPR::WPPR() {
+    *(void**)this = lbl_804AC0A8;
 }
 
 // ---- Jpen_ctor_80201F8C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AC010[];
 
-extern "C" void* fn_80201F8C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AC010;
-    return this_;
+struct JPEN : public Actor {
+    JPEN();
+};
+
+JPEN::JPEN() {
+    *(void**)this = lbl_804AC010;
 }
 
 // ---- Wnwn_ctor_80201FC8.cpp ----
@@ -1787,12 +2023,12 @@ struct Actor_150 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A18E0[];
 
-class Wnwn : public Actor_150 {
+class WNWN : public Actor_150 {
 public:
-    Wnwn();
+    WNWN();
 };
 
-Wnwn::Wnwn() : Actor_150() {
+WNWN::WNWN() : Actor_150() {
     *(void**)this = lbl_804A18E0;
     __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 0xa);
     __construct_array((char*)this + 0x30c, (void*)fn_8003B2CC, 0, 0xc, 0xa);
@@ -1802,124 +2038,148 @@ Wnwn::Wnwn() : Actor_150() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9A70[];
 
-extern "C" void* fn_8020203C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9A70;
-    return this_;
+struct URAC : public Actor {
+    URAC();
+};
+
+URAC::URAC() {
+    *(void**)this = lbl_804A9A70;
 }
 
 // ---- Vwmd_ctor_80202078.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9A18[];
 
-extern "C" void* fn_80202078(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9A18;
-    return this_;
+struct VWMD : public Actor {
+    VWMD();
+};
+
+VWMD::VWMD() {
+    *(void**)this = lbl_804A9A18;
 }
 
 // ---- Tkrm_ctor_802020B4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABAE8[];
 
-extern "C" void* fn_802020B4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ABAE8;
-    return this_;
+struct TKRM : public Actor {
+    TKRM();
+};
+
+TKRM::TKRM() {
+    *(void**)this = lbl_804ABAE8;
 }
 
 // ---- Bots_ctor_802020F0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C7F0[];
 
-extern "C" void* fn_802020F0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C7F0;
-    return this_;
+struct BOTS : public Actor {
+    BOTS();
+};
+
+BOTS::BOTS() {
+    *(void**)this = lbl_8049C7F0;
 }
 
 // ---- Tsno_ctor_8020212C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABA90[];
 
-extern "C" void* fn_8020212C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ABA90;
-    return this_;
+struct TSNO : public Actor {
+    TSNO();
+};
+
+TSNO::TSNO() {
+    *(void**)this = lbl_804ABA90;
 }
 
 // ---- Grve_ctor_80202168.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A99C0[];
 
-extern "C" void* fn_80202168(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A99C0;
-    return this_;
+struct FGVE : public Actor {
+    FGVE();
+};
+
+FGVE::FGVE() {
+    *(void**)this = lbl_804A99C0;
 }
 
 // ---- Yasi_ctor_802021A4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9968[];
 
-extern "C" void* fn_802021A4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9968;
-    return this_;
+struct YASI : public Actor {
+    YASI();
+};
+
+YASI::YASI() {
+    *(void**)this = lbl_804A9968;
 }
 
 // ---- Btin_ctor_802021E0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A927C[];
 
-extern "C" void* fn_802021E0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A927C;
-    return this_;
+struct BTIN : public Actor {
+    BTIN();
+};
+
+BTIN::BTIN() {
+    *(void**)this = lbl_804A927C;
 }
 
 // ---- fn_8020221C_ctor.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1888[];
 
-extern "C" void* fn_8020221C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A1888;
-    return this_;
+struct FAGN : public Actor {
+    FAGN();
+};
+
+FAGN::FAGN() {
+    *(void**)this = lbl_804A1888;
 }
 
 // ---- fn_80202258_ctor.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1790[];
 
-extern "C" void* fn_80202258(void* this_) {
-    Actor_ctor(this_);
-    char* p = (char*)this_;
+struct GDMN : public Actor {
+    GDMN();
+};
+
+GDMN::GDMN() {
+    char* p = (char*)this;
     *(void**)p = lbl_804A1790;
     *(s32*)(p + 0x234) = -1;
-    return this_;
 }
 
 // ---- fn_8020229C_ctor.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1718[];
 
-extern "C" void* fn_8020229C(void* this_) {
-    Actor_ctor(this_);
-    char* p = (char*)this_;
+struct RDVR : public Actor {
+    RDVR();
+};
+
+RDVR::RDVR() {
+    char* p = (char*)this;
     *(void**)p = lbl_804A1718;
     *(s32*)(p + 0x234) = -1;
-    return this_;
 }
 
 // ---- Dsin_ctor_802022E0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB5D8[];
 
-extern "C" void* fn_802022E0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB5D8;
-    return this_;
+struct DSIN : public Actor {
+    DSIN();
+};
+
+DSIN::DSIN() {
+    *(void**)this = lbl_804AB5D8;
 }
 
 // ---- Grok_ctor_8020231C.cpp ----
@@ -1932,12 +2192,12 @@ struct Actor_163 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A1630[];
 
-class Grok : public Actor_163 {
+class GROK : public Actor_163 {
 public:
-    Grok();
+    GROK();
 };
 
-Grok::Grok() : Actor_163() {
+GROK::GROK() : Actor_163() {
     *(void**)this = lbl_804A1630;
     __construct_array((char*)this + 0x294, (void*)fn_8003B2CC, 0, 0xc, 4);
     __construct_array((char*)this + 0x2c4, (void*)fn_8003B2CC, 0, 0xc, 4);
@@ -1947,30 +2207,36 @@ Grok::Grok() : Actor_163() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB580[];
 
-extern "C" void* fn_80202390(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB580;
-    return this_;
+struct SBTN : public Actor {
+    SBTN();
+};
+
+SBTN::SBTN() {
+    *(void**)this = lbl_804AB580;
 }
 
 // ---- Circ_ctor_802023CC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7960[];
 
-extern "C" void* fn_802023CC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7960;
-    return this_;
+struct CIRC : public Actor {
+    CIRC();
+};
+
+CIRC::CIRC() {
+    *(void**)this = lbl_804A7960;
 }
 
 // ---- Flyk_ctor_80202408.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9078[];
 
-extern "C" void* fn_80202408(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9078;
-    return this_;
+struct FLYK : public Actor {
+    FLYK();
+};
+
+FLYK::FLYK() {
+    *(void**)this = lbl_804A9078;
 }
 
 // ---- fn_80202444_ctor.cpp ----
@@ -1987,10 +2253,12 @@ extern "C" void* fn_80202444(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7908[];
 
-extern "C" void* fn_80202480(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7908;
-    return this_;
+struct PESW : public Actor {
+    PESW();
+};
+
+PESW::PESW() {
+    *(void**)this = lbl_804A7908;
 }
 
 // ---- Osin_ctor_802024BC.cpp ----
@@ -2003,12 +2271,12 @@ struct Actor_169 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804AB528[];
 
-class Osin : public Actor_169 {
+class OSIN : public Actor_169 {
 public:
-    Osin();
+    OSIN();
 };
 
-Osin::Osin() : Actor_169() {
+OSIN::OSIN() : Actor_169() {
     *(void**)this = lbl_804AB528;
     __construct_array((char*)this + 0x26c, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -2017,30 +2285,36 @@ Osin::Osin() : Actor_169() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A11B8[];
 
-extern "C" void* fn_80202514(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A11B8;
-    return this_;
+struct PUKU : public Actor {
+    PUKU();
+};
+
+PUKU::PUKU() {
+    *(void**)this = lbl_804A11B8;
 }
 
 // ---- Swbm_ctor_80202550.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A1160[];
 
-extern "C" void* fn_80202550(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A1160;
-    return this_;
+struct SWBM : public Actor {
+    SWBM();
+};
+
+SWBM::SWBM() {
+    *(void**)this = lbl_804A1160;
 }
 
 // ---- Infr_ctor_8020258C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB4C0[];
 
-extern "C" void* fn_8020258C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB4C0;
-    return this_;
+struct INFR : public Actor {
+    INFR();
+};
+
+INFR::INFR() {
+    *(void**)this = lbl_804AB4C0;
 }
 
 // ---- Arsh_ctor_802025C8.cpp ----
@@ -2059,12 +2333,12 @@ private:
     unsigned char pad[0x2b0];
 };
 
-class Arsh : public Fn801D30B8Base {
+class ARSH : public Fn801D30B8Base {
 public:
-    Arsh();
+    ARSH();
 };
 
-Arsh::Arsh() {
+ARSH::ARSH() {
     *(void**)this = lbl_804A58B4;
 
     unsigned char localTemp[0x2b0];
@@ -2084,170 +2358,204 @@ Arsh::Arsh() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB464[];
 
-extern "C" void* fn_8020264C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB464;
-    return this_;
+struct BMTY : public Actor {
+    BMTY();
+};
+
+BMTY::BMTY() {
+    *(void**)this = lbl_804AB464;
 }
 
 // ---- Pcdm_ctor_80202688.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB3A8[];
 
-extern "C" void* fn_80202688(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB3A8;
-    return this_;
+struct PCDM : public Actor {
+    PCDM();
+};
+
+PCDM::PCDM() {
+    *(void**)this = lbl_804AB3A8;
 }
 
 // ---- Crtl_ctor_802026C4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB308[];
 
-extern "C" void* fn_802026C4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB308;
-    return this_;
+struct CRTL : public Actor {
+    CRTL();
+};
+
+CRTL::CRTL() {
+    *(void**)this = lbl_804AB308;
 }
 
 // ---- Rdbl_ctor_80202700.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9020[];
 
-extern "C" void* fn_80202700(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9020;
-    return this_;
+struct RDBL : public Actor {
+    RDBL();
+};
+
+RDBL::RDBL() {
+    *(void**)this = lbl_804A9020;
 }
 
 // ---- Onof_ctor_8020273C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8FC8[];
 
-extern "C" void* fn_8020273C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8FC8;
-    return this_;
+struct ONOF : public Actor {
+    ONOF();
+};
+
+ONOF::ONOF() {
+    *(void**)this = lbl_804A8FC8;
 }
 
 // ---- Ocfr_ctor_80202778.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB2B0[];
 
-extern "C" void* fn_80202778(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB2B0;
-    return this_;
+struct OCFR : public Actor {
+    OCFR();
+};
+
+OCFR::OCFR() {
+    *(void**)this = lbl_804AB2B0;
 }
 
 // ---- Brry_ctor_802027B4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB258[];
 
-extern "C" void* fn_802027B4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB258;
-    return this_;
+struct BPRY : public Actor {
+    BPRY();
+};
+
+BPRY::BPRY() {
+    *(void**)this = lbl_804AB258;
 }
 
 // ---- Lif2_ctor_802027F0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A78B0[];
 
-extern "C" void* fn_802027F0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A78B0;
-    return this_;
+struct LIF2 : public Actor {
+    LIF2();
+};
+
+LIF2::LIF2() {
+    *(void**)this = lbl_804A78B0;
 }
 
 // ---- Wdry_ctor_8020282C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB1F0[];
 
-extern "C" void* fn_8020282C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB1F0;
-    return this_;
+struct WDRY : public Actor {
+    WDRY();
+};
+
+WDRY::WDRY() {
+    *(void**)this = lbl_804AB1F0;
 }
 
 // ---- Esry_ctor_80202868.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB170[];
 
-extern "C" void* fn_80202868(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB170;
-    return this_;
+struct ESRY : public Actor {
+    ESRY();
+};
+
+ESRY::ESRY() {
+    *(void**)this = lbl_804AB170;
 }
 
 // ---- Shlt_ctor_802028A4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0FF8[];
 
-extern "C" void* fn_802028A4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0FF8;
-    return this_;
+struct SHLT : public Actor {
+    SHLT();
+};
+
+SHLT::SHLT() {
+    *(void**)this = lbl_804A0FF8;
 }
 
 // ---- Rank_ctor_802028E0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8F74[];
 
-extern "C" void* fn_802028E0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8F74;
-    return this_;
+struct RANK : public Actor {
+    RANK();
+};
+
+RANK::RANK() {
+    *(void**)this = lbl_804A8F74;
 }
 
 // ---- Hnry_ctor_8020291C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB098[];
 
-extern "C" void* fn_8020291C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB098;
-    return this_;
+struct HNRY : public Actor {
+    HNRY();
+};
+
+HNRY::HNRY() {
+    *(void**)this = lbl_804AB098;
 }
 
 // ---- Bldf_ctor_80202958.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8EF8[];
 
-extern "C" void* fn_80202958(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8EF8;
-    return this_;
+struct BLDF : public Actor {
+    BLDF();
+};
+
+BLDF::BLDF() {
+    *(void**)this = lbl_804A8EF8;
 }
 
 // ---- Focs_ctor_80202994.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8EA0[];
 
-extern "C" void* fn_80202994(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8EA0;
-    return this_;
+struct FOCS : public Actor {
+    FOCS();
+};
+
+FOCS::FOCS() {
+    *(void**)this = lbl_804A8EA0;
 }
 
 // ---- Pnpc_ctor_802029D0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8E40[];
 
-extern "C" void* fn_802029D0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8E40;
-    return this_;
+struct PNPC : public Actor {
+    PNPC();
+};
+
+PNPC::PNPC() {
+    *(void**)this = lbl_804A8E40;
 }
 
 // ---- Rail_ctor_80202A0C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C770[];
 
-extern "C" void* fn_80202A0C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C770;
-    return this_;
+struct RAIL : public Actor {
+    RAIL();
+};
+
+RAIL::RAIL() {
+    *(void**)this = lbl_8049C770;
 }
 
 // ---- Zosh_ctor_80202A48.cpp ----
@@ -2266,12 +2574,12 @@ private:
     unsigned char pad[0x2b0];
 };
 
-class Zosh : public Fn801D30B8Base_191 {
+class ZNSH : public Fn801D30B8Base_191 {
 public:
-    Zosh();
+    ZNSH();
 };
 
-Zosh::Zosh() {
+ZNSH::ZNSH() {
     *(void**)this = lbl_804A5810;
 
     unsigned char localTemp[0x2b0];
@@ -2291,60 +2599,72 @@ Zosh::Zosh() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8D88[];
 
-extern "C" void* fn_80202ACC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8D88;
-    return this_;
+struct DOOR : public Actor {
+    DOOR();
+};
+
+DOOR::DOOR() {
+    *(void**)this = lbl_804A8D88;
 }
 
 // ---- Key0_ctor_80202B08.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8CD8[];
 
-extern "C" void* fn_80202B08(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8CD8;
-    return this_;
+struct KEY0 : public Actor {
+    KEY0();
+};
+
+KEY0::KEY0() {
+    *(void**)this = lbl_804A8CD8;
 }
 
 // ---- Lsti_ctor_80202B44.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8C80[];
 
-extern "C" void* fn_80202B44(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8C80;
-    return this_;
+struct LSTI : public Actor {
+    LSTI();
+};
+
+LSTI::LSTI() {
+    *(void**)this = lbl_804A8C80;
 }
 
 // ---- Wizr_ctor_80202B80.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0EDC[];
 
-extern "C" void* fn_80202B80(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0EDC;
-    return this_;
+struct WIZR : public Actor {
+    WIZR();
+};
+
+WIZR::WIZR() {
+    *(void**)this = lbl_804A0EDC;
 }
 
 // ---- Swnp_ctor_80202BBC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8C28[];
 
-extern "C" void* fn_80202BBC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8C28;
-    return this_;
+struct SWNP : public Actor {
+    SWNP();
+};
+
+SWNP::SWNP() {
+    *(void**)this = lbl_804A8C28;
 }
 
 // ---- Cksw_ctor_80202BF8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8BD0[];
 
-extern "C" void* fn_80202BF8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8BD0;
-    return this_;
+struct CKSW : public Actor {
+    CKSW();
+};
+
+CKSW::CKSW() {
+    *(void**)this = lbl_804A8BD0;
 }
 
 // ---- Tngl_ctor_80202C34.cpp ----
@@ -2357,12 +2677,12 @@ struct Actor_198 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804B0478[];
 
-class Tngl : public Actor_198 {
+class TNGL : public Actor_198 {
 public:
-    Tngl();
+    TNGL();
 };
 
-Tngl::Tngl() : Actor_198() {
+TNGL::TNGL() : Actor_198() {
     *(void**)this = lbl_804B0478;
     __construct_array((char*)this + 0x260, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -2371,30 +2691,36 @@ Tngl::Tngl() : Actor_198() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0CD8[];
 
-extern "C" void* fn_80202C8C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0CD8;
-    return this_;
+struct STAL : public Actor {
+    STAL();
+};
+
+STAL::STAL() {
+    *(void**)this = lbl_804A0CD8;
 }
 
 // ---- Wrtc_ctor_80202CC8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C678[];
 
-extern "C" void* fn_80202CC8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C678;
-    return this_;
+struct WRTC : public Actor {
+    WRTC();
+};
+
+WRTC::WRTC() {
+    *(void**)this = lbl_8049C678;
 }
 
 // ---- Lwsw_ctor_80202D04.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8B78[];
 
-extern "C" void* fn_80202D04(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8B78;
-    return this_;
+struct LWSW : public Actor {
+    LWSW();
+};
+
+LWSW::LWSW() {
+    *(void**)this = lbl_804A8B78;
 }
 
 // ---- Bwrt_ctor_80202D40.cpp ----
@@ -2402,231 +2728,277 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C718[];
 
-extern "C" void* fn_80202D40(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C718;
-    *(u8*)((char*)this_ + 0x29c) = 0;
-    return this_;
+struct BWRT : public Actor {
+    BWRT();
+};
+
+BWRT::BWRT() {
+    *(void**)this = lbl_8049C718;
+    *(u8*)((char*)this + 0x29c) = 0;
 }
 
 // ---- Bfin_ctor_80202D84.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804B0380[];
 
-extern "C" void* fn_80202D84(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804B0380;
-    return this_;
+struct BFIN : public Actor {
+    BFIN();
+};
+
+BFIN::BFIN() {
+    *(void**)this = lbl_804B0380;
 }
 
 // ---- Wtsw_ctor_80202DC0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8B20[];
 
-extern "C" void* fn_80202DC0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8B20;
-    return this_;
+struct WTSW : public Actor {
+    WTSW();
+};
+
+WTSW::WTSW() {
+    *(void**)this = lbl_804A8B20;
 }
 
 // ---- Znsw_ctor_80202DFC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8AC8[];
 
-extern "C" void* fn_80202DFC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8AC8;
-    return this_;
+struct ZNSW : public Actor {
+    ZNSW();
+};
+
+ZNSW::ZNSW() {
+    *(void**)this = lbl_804A8AC8;
 }
 
 // ---- Lplk_ctor_80202E38.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C578[];
 
-extern "C" void* fn_80202E38(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C578;
-    return this_;
+struct LPLK : public Actor {
+    LPLK();
+};
+
+LPLK::LPLK() {
+    *(void**)this = lbl_8049C578;
 }
 
 // ---- Iwag_ctor_80202E74.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C46C[];
 
-extern "C" void* fn_80202E74(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C46C;
-    return this_;
+struct IWAG : public Actor {
+    IWAG();
+};
+
+IWAG::IWAG() {
+    *(void**)this = lbl_8049C46C;
 }
 
 // ---- Oiwa_ctor_80202EB0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C4C0[];
 
-extern "C" void* fn_80202EB0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C4C0;
-    return this_;
+struct OIWA : public Actor {
+    OIWA();
+};
+
+OIWA::OIWA() {
+    *(void**)this = lbl_8049C4C0;
 }
 
 // ---- Nzmi_ctor_80202EEC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049C400[];
 
-extern "C" void* fn_80202EEC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049C400;
-    return this_;
+struct NZMI : public Actor {
+    NZMI();
+};
+
+NZMI::NZMI() {
+    *(void**)this = lbl_8049C400;
 }
 
 // ---- Blze_ctor_80202F28.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8A50[];
 
-extern "C" void* fn_80202F28(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8A50;
-    return this_;
+struct BLZE : public Actor {
+    BLZE();
+};
+
+BLZE::BLZE() {
+    *(void**)this = lbl_804A8A50;
 }
 
 // ---- Fire_ctor_80202F64.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A89F0[];
 
-extern "C" void* fn_80202F64(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A89F0;
-    return this_;
+struct FIRE : public Actor {
+    FIRE();
+};
+
+FIRE::FIRE() {
+    *(void**)this = lbl_804A89F0;
 }
 
 // ---- Niwa_ctor_80202FA0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB8C0[];
 
-extern "C" void* fn_80202FA0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB8C0;
-    return this_;
+struct NIWA : public Actor {
+    NIWA();
+};
+
+NIWA::NIWA() {
+    *(void**)this = lbl_804AB8C0;
 }
 
 // ---- Bgwc_ctor_80202FDC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8998[];
 
-extern "C" void* fn_80202FDC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8998;
-    return this_;
+struct BGWC : public Actor {
+    BGWC();
+};
+
+BGWC::BGWC() {
+    *(void**)this = lbl_804A8998;
 }
 
 // ---- Dosn_ctor_80203018.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8940[];
 
-extern "C" void* fn_80203018(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8940;
-    return this_;
+struct DOSN : public Actor {
+    DOSN();
+};
+
+DOSN::DOSN() {
+    *(void**)this = lbl_804A8940;
 }
 
 // ---- Tlk2_ctor_80203054.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AFAD8[];
 
-extern "C" void* fn_80203054(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AFAD8;
-    return this_;
+struct TLK2 : public Actor {
+    TLK2();
+};
+
+TLK2::TLK2() {
+    *(void**)this = lbl_804AFAD8;
 }
 
 // ---- Slr4_ctor_80203090.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0B90[];
 
-extern "C" void* fn_80203090(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0B90;
-    return this_;
+struct SLR4 : public Actor {
+    SLR4();
+};
+
+SLR4::SLR4() {
+    *(void**)this = lbl_804A0B90;
 }
 
 // ---- Sbal_ctor_802030CC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB9C0[];
 
-extern "C" void* fn_802030CC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB9C0;
-    return this_;
+struct SBAL : public Actor {
+    SBAL();
+};
+
+SBAL::SBAL() {
+    *(void**)this = lbl_804AB9C0;
 }
 
 // ---- Swel_ctor_80203108.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A88E8[];
 
-extern "C" void* fn_80203108(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A88E8;
-    return this_;
+struct SWEL : public Actor {
+    SWEL();
+};
+
+SWEL::SWEL() {
+    *(void**)this = lbl_804A88E8;
 }
 
 // ---- Lift_ctor_80203144.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6F6C[];
 
-extern "C" void* fn_80203144(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A6F6C;
-    return this_;
+struct LIFT : public Actor {
+    LIFT();
+};
+
+LIFT::LIFT() {
+    *(void**)this = lbl_804A6F6C;
 }
 
 // ---- Ry02_ctor_80203180.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB850[];
 
-extern "C" void* fn_80203180(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB850;
-    return this_;
+struct RY02 : public Actor {
+    RY02();
+};
+
+RY02::RY02() {
+    *(void**)this = lbl_804AB850;
 }
 
 // ---- Deth_ctor_802031BC.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A886C[];
 
-extern "C" void* fn_802031BC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A886C;
-    return this_;
+struct CRTH : public Actor {
+    CRTH();
+};
+
+CRTH::CRTH() {
+    *(void**)this = lbl_804A886C;
 }
 
 // ---- Swor_ctor_802031F8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8800[];
 
-extern "C" void* fn_802031F8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8800;
-    return this_;
+struct SWOR : public Actor {
+    SWOR();
+};
+
+SWOR::SWOR() {
+    *(void**)this = lbl_804A8800;
 }
 
 // ---- Popo_ctor_80203234.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0868[];
 
-extern "C" void* fn_80203234(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0868;
-    return this_;
+struct POPO : public Actor {
+    POPO();
+};
+
+POPO::POPO() {
+    *(void**)this = lbl_804A0868;
 }
 
 // ---- Wood_ctor_80203270.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A87A8[];
 
-extern "C" void* fn_80203270(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A87A8;
-    return this_;
+struct WOOD : public Actor {
+    WOOD();
+};
+
+WOOD::WOOD() {
+    *(void**)this = lbl_804A87A8;
 }
 
 // ---- fn_802032AC_ctor.cpp ----
@@ -2653,90 +3025,108 @@ fn_802032AC_actor::fn_802032AC_actor() : Actor_225() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6E20[];
 
-extern "C" void* fn_80203304(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A6E20;
-    return this_;
+struct PEFF : public Actor {
+    PEFF();
+};
+
+PEFF::PEFF() {
+    *(void**)this = lbl_804A6E20;
 }
 
 // ---- Slsd_ctor_80203340.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A85E0[];
 
-extern "C" void* fn_80203340(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A85E0;
-    return this_;
+struct SLSD : public Actor {
+    SLSD();
+};
+
+SLSD::SLSD() {
+    *(void**)this = lbl_804A85E0;
 }
 
 // ---- Sstn_ctor_8020337C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8750[];
 
-extern "C" void* fn_8020337C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8750;
-    return this_;
+struct SSTN : public Actor {
+    SSTN();
+};
+
+SSTN::SSTN() {
+    *(void**)this = lbl_804A8750;
 }
 
 // ---- Skul_ctor_802033B8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8588[];
 
-extern "C" void* fn_802033B8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8588;
-    return this_;
+struct SKUL : public Actor {
+    SKUL();
+};
+
+SKUL::SKUL() {
+    *(void**)this = lbl_804A8588;
 }
 
 // ---- Talk_ctor_802033F4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF548[];
 
-extern "C" void* fn_802033F4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AF548;
-    return this_;
+struct TALK : public Actor {
+    TALK();
+};
+
+TALK::TALK() {
+    *(void**)this = lbl_804AF548;
 }
 
 // ---- Trch_ctor_80203430.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8520[];
 
-extern "C" void* fn_80203430(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8520;
-    return this_;
+struct TRCH : public Actor {
+    TRCH();
+};
+
+TRCH::TRCH() {
+    *(void**)this = lbl_804A8520;
 }
 
 // ---- Scre_ctor_8020346C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF4C0[];
 
-extern "C" void* fn_8020346C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AF4C0;
-    return this_;
+struct SCRE : public Actor {
+    SCRE();
+};
+
+SCRE::SCRE() {
+    *(void**)this = lbl_804AF4C0;
 }
 
 // ---- Spot_ctor_802034A8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A84C8[];
 
-extern "C" void* fn_802034A8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A84C8;
-    return this_;
+struct SPOT : public Actor {
+    SPOT();
+};
+
+SPOT::SPOT() {
+    *(void**)this = lbl_804A84C8;
 }
 
 // ---- Yaji_ctor_802034E4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8470[];
 
-extern "C" void* fn_802034E4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8470;
-    return this_;
+struct YAJI : public Actor {
+    YAJI();
+};
+
+YAJI::YAJI() {
+    *(void**)this = lbl_804A8470;
 }
 
 // ---- Bome_ctor_80203520.cpp ----
@@ -2749,12 +3139,12 @@ struct Actor_235 {
 extern "C" void fn_80203594(void);
 extern void* lbl_804A0738[];
 
-class Bome : public Actor_235 {
+class BOME : public Actor_235 {
 public:
-    Bome();
+    BOME();
 };
 
-Bome::Bome() : Actor_235() {
+BOME::BOME() : Actor_235() {
     *(void**)this = lbl_804A0738;
     __construct_array((char*)this + 0x274, (void*)fn_80203594, 0, 0x18, 5);
     __construct_array((char*)this + 0x2ec, (void*)fn_80203594, 0, 0x18, 5);
@@ -2768,130 +3158,156 @@ extern "C" void fn_80203594(void) {}
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8418[];
 
-extern "C" void* fn_80203598(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8418;
-    return this_;
+struct KMRI : public Actor {
+    KMRI();
+};
+
+KMRI::KMRI() {
+    *(void**)this = lbl_804A8418;
 }
 
 // ---- Tflr_ctor_802035D4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A83A0[];
 
-extern "C" void* fn_802035D4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A83A0;
-    return this_;
+struct TFLR : public Actor {
+    TFLR();
+};
+
+TFLR::TFLR() {
+    *(void**)this = lbl_804A83A0;
 }
 
 // ---- Knbn_ctor_80203610.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF428[];
 
-extern "C" void* fn_80203610(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AF428;
-    return this_;
+struct KNBN : public Actor {
+    KNBN();
+};
+
+KNBN::KNBN() {
+    *(void**)this = lbl_804AF428;
 }
 
 // ---- Plas_ctor_8020364C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8338[];
 
-extern "C" void* fn_8020364C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8338;
-    return this_;
+struct PLAS : public Actor {
+    PLAS();
+};
+
+PLAS::PLAS() {
+    *(void**)this = lbl_804A8338;
 }
 
 // ---- Itms_ctor_80203688.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A82A8[];
 
-extern "C" void* fn_80203688(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A82A8;
-    return this_;
+struct ITMS : public Actor {
+    ITMS();
+};
+
+ITMS::ITMS() {
+    *(void**)this = lbl_804A82A8;
 }
 
 // ---- Poon_ctor_802036C4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A06C0[];
 
-extern "C" void* fn_802036C4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A06C0;
-    return this_;
+struct Poon : public Actor {
+    Poon();
+};
+
+Poon::Poon() {
+    *(void**)this = lbl_804A06C0;
 }
 
 // ---- Skil_ctor_80203700.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8250[];
 
-extern "C" void* fn_80203700(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8250;
-    return this_;
+struct SKIL : public Actor {
+    SKIL();
+};
+
+SKIL::SKIL() {
+    *(void**)this = lbl_804A8250;
 }
 
 // ---- Mozo_ctor_8020373C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0668[];
 
-extern "C" void* fn_8020373C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0668;
-    return this_;
+struct MOZO : public Actor {
+    MOZO();
+};
+
+MOZO::MOZO() {
+    *(void**)this = lbl_804A0668;
 }
 
 // ---- Bfry_ctor_80203778.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF338[];
 
-extern "C" void* fn_80203778(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AF338;
-    return this_;
+struct BERY : public Actor {
+    BERY();
+};
+
+BERY::BERY() {
+    *(void**)this = lbl_804AF338;
 }
 
 // ---- Pont_ctor_802037B4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A81C8[];
 
-extern "C" void* fn_802037B4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A81C8;
-    return this_;
+struct PONT : public Actor {
+    PONT();
+};
+
+PONT::PONT() {
+    *(void**)this = lbl_804A81C8;
 }
 
 // ---- Arrw_ctor_802037F0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A05E0[];
 
-extern "C" void* fn_802037F0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A05E0;
-    return this_;
+struct ARRW : public Actor {
+    ARRW();
+};
+
+ARRW::ARRW() {
+    *(void**)this = lbl_804A05E0;
 }
 
 // ---- Trap_ctor_8020382C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A04D8[];
 
-extern "C" void* fn_8020382C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A04D8;
-    return this_;
+struct TRAP : public Actor {
+    TRAP();
+};
+
+TRAP::TRAP() {
+    *(void**)this = lbl_804A04D8;
 }
 
 // ---- Thrn_ctor_80203868.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8170[];
 
-extern "C" void* fn_80203868(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8170;
-    return this_;
+struct THRN : public Actor {
+    THRN();
+};
+
+THRN::THRN() {
+    *(void**)this = lbl_804A8170;
 }
 
 // ---- Swev_ctor_802038A4.cpp ----
@@ -2899,21 +3315,25 @@ extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8638[];
 
-extern "C" void* fn_802038A4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8638;
-    *(s32*)((char*)this_ + 0x2dc) = -1;
-    return this_;
+struct SWEV : public Actor {
+    SWEV();
+};
+
+SWEV::SWEV() {
+    *(void**)this = lbl_804A8638;
+    *(s32*)((char*)this + 0x2dc) = -1;
 }
 
 // ---- Ball_ctor_802038E8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB968[];
 
-extern "C" void* fn_802038E8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB968;
-    return this_;
+struct BALL : public Actor {
+    BALL();
+};
+
+BALL::BALL() {
+    *(void**)this = lbl_804AB968;
 }
 
 // ---- Bpoh_ctor_80203924.cpp ----
@@ -2927,12 +3347,12 @@ extern "C" void fn_8003B2CC(void*);
 extern "C" void fn_8009711C(void*);
 extern void* lbl_804A0440[];
 
-class Bpoh : public Actor_252 {
+class BPOH : public Actor_252 {
 public:
-    Bpoh();
+    BPOH();
 };
 
-Bpoh::Bpoh() : Actor_252() {
+BPOH::BPOH() : Actor_252() {
     *(void**)this = lbl_804A0440;
     __construct_array((char*)this + 0x2b8, (void*)fn_8003B2CC, 0, 0xc, 4);
     __construct_array((char*)this + 0x2f4, (void*)fn_8009711C, 0, 0x4, 3);
@@ -2942,100 +3362,120 @@ Bpoh::Bpoh() : Actor_252() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8118[];
 
-extern "C" void* fn_80203998(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8118;
-    return this_;
+struct SHTR : public Actor {
+    SHTR();
+};
+
+SHTR::SHTR() {
+    *(void**)this = lbl_804A8118;
 }
 
 // ---- Fary_ctor_802039D4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A03B8[];
 
-extern "C" void* fn_802039D4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A03B8;
-    return this_;
+struct EZRY : public Actor {
+    EZRY();
+};
+
+EZRY::EZRY() {
+    *(void**)this = lbl_804A03B8;
 }
 
 // ---- Swt4_ctor_80203A10.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A80A0[];
 
-extern "C" void* fn_80203A10(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A80A0;
-    return this_;
+struct SWT4 : public Actor {
+    SWT4();
+};
+
+SWT4::SWT4() {
+    *(void**)this = lbl_804A80A0;
 }
 
 // ---- Ryrn_ctor_80203A4C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A8010[];
 
-extern "C" void* fn_80203A4C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A8010;
-    return this_;
+struct RYRN : public Actor {
+    RYRN();
+};
+
+RYRN::RYRN() {
+    *(void**)this = lbl_804A8010;
 }
 
 // ---- Mtbo_ctor_80203A88.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AF018[];
 
-extern "C" void* fn_80203A88(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AF018;
-    return this_;
+struct MTBO : public Actor {
+    MTBO();
+};
+
+MTBO::MTBO() {
+    *(void**)this = lbl_804AF018;
 }
 
 // ---- Tkyu_ctor_80203AC4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804ABA38[];
 
-extern "C" void* fn_80203AC4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804ABA38;
-    return this_;
+struct TKYU : public Actor {
+    TKYU();
+};
+
+TKYU::TKYU() {
+    *(void**)this = lbl_804ABA38;
 }
 
 // ---- Flme_ctor_80203B00.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0330[];
 
-extern "C" void* fn_80203B00(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0330;
-    return this_;
+struct FLME : public Actor {
+    FLME();
+};
+
+FLME::FLME() {
+    *(void**)this = lbl_804A0330;
 }
 
 // ---- Keth_ctor_80203B3C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A02B8[];
 
-extern "C" void* fn_80203B3C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A02B8;
-    return this_;
+struct KETH : public Actor {
+    KETH();
+};
+
+KETH::KETH() {
+    *(void**)this = lbl_804A02B8;
 }
 
 // ---- Boyo_ctor_80203B78.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A0260[];
 
-extern "C" void* fn_80203B78(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A0260;
-    return this_;
+struct BOYO : public Actor {
+    BOYO();
+};
+
+BOYO::BOYO() {
+    *(void**)this = lbl_804A0260;
 }
 
 // ---- Imup_ctor_80203BB4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A01D0[];
 
-extern "C" void* fn_80203BB4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A01D0;
-    return this_;
+struct IMUP : public Actor {
+    IMUP();
+};
+
+IMUP::IMUP() {
+    *(void**)this = lbl_804A01D0;
 }
 
 // ---- Slr2_ctor_80203BF0.cpp ----
@@ -3052,60 +3492,72 @@ extern "C" void* fn_80203BF0(void* this_) {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049FD50[];
 
-extern "C" void* fn_80203C2C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049FD50;
-    return this_;
+struct TKTA : public Actor {
+    TKTA();
+};
+
+TKTA::TKTA() {
+    *(void**)this = lbl_8049FD50;
 }
 
 // ---- Expl_ctor_80203C68.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7FB8[];
 
-extern "C" void* fn_80203C68(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7FB8;
-    return this_;
+struct EXPL : public Actor {
+    EXPL();
+};
+
+EXPL::EXPL() {
+    *(void**)this = lbl_804A7FB8;
 }
 
 // ---- Slr1_ctor_80203CA4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049FCA0[];
 
-extern "C" void* fn_80203CA4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049FCA0;
-    return this_;
+struct SLR1 : public Actor {
+    SLR1();
+};
+
+SLR1::SLR1() {
+    *(void**)this = lbl_8049FCA0;
 }
 
 // ---- Swth_ctor_80203CE0.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7F38[];
 
-extern "C" void* fn_80203CE0(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7F38;
-    return this_;
+struct SWTH : public Actor {
+    SWTH();
+};
+
+SWTH::SWTH() {
+    *(void**)this = lbl_804A7F38;
 }
 
 // ---- Hbmb_ctor_80203D1C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F784[];
 
-extern "C" void* fn_80203D1C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F784;
-    return this_;
+struct HBMB : public Actor {
+    HBMB();
+};
+
+HBMB::HBMB() {
+    *(void**)this = lbl_8049F784;
 }
 
 // ---- Hino_ctor_80203D58.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F9B4[];
 
-extern "C" void* fn_80203D58(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F9B4;
-    return this_;
+struct HINO : public Actor {
+    HINO();
+};
+
+HINO::HINO() {
+    *(void**)this = lbl_8049F9B4;
 }
 
 // ---- Goal_ctor_80203D94.cpp ----
@@ -3118,12 +3570,12 @@ struct Actor_270 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_804A7EB0[];
 
-class Goal : public Actor_270 {
+class GOAL : public Actor_270 {
 public:
-    Goal();
+    GOAL();
 };
 
-Goal::Goal() : Actor_270() {
+GOAL::GOAL() : Actor_270() {
     *(void**)this = lbl_804A7EB0;
     __construct_array((char*)this + 0x264, (void*)fn_8003B2CC, 0, 0xc, 4);
 }
@@ -3132,10 +3584,12 @@ Goal::Goal() : Actor_270() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7E58[];
 
-extern "C" void* fn_80203DEC(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7E58;
-    return this_;
+struct BHRT : public Actor {
+    BHRT();
+};
+
+BHRT::BHRT() {
+    *(void**)this = lbl_804A7E58;
 }
 
 // ---- Dgtl_ctor_80203E28.cpp ----
@@ -3148,12 +3602,12 @@ struct Actor_272 {
 extern "C" void fn_8003B2CC(void*);
 extern void* lbl_8049F6C8[];
 
-class Dgtl : public Actor_272 {
+class DGTL : public Actor_272 {
 public:
-    Dgtl();
+    DGTL();
 };
 
-Dgtl::Dgtl() : Actor_272() {
+DGTL::DGTL() : Actor_272() {
     *(void**)this = lbl_8049F6C8;
     __construct_array((char*)this + 0x2c0, (void*)fn_8003B2CC, 0, 0xc, 0xa);
     __construct_array((char*)this + 0x3d8, (void*)fn_8003B2CC, 0, 0xc, 0x50);
@@ -3163,180 +3617,216 @@ Dgtl::Dgtl() : Actor_272() {
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F5D8[];
 
-extern "C" void* fn_80203E9C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F5D8;
-    return this_;
+struct OKTM : public Actor {
+    OKTM();
+};
+
+OKTM::OKTM() {
+    *(void**)this = lbl_8049F5D8;
 }
 
 // ---- Hart_ctor_80203ED8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F4F0[];
 
-extern "C" void* fn_80203ED8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F4F0;
-    return this_;
+struct HART : public Actor {
+    HART();
+};
+
+HART::HART() {
+    *(void**)this = lbl_8049F4F0;
 }
 
 // ---- Gold_ctor_80203F14.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB660[];
 
-extern "C" void* fn_80203F14(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB660;
-    return this_;
+struct GNLD : public Actor {
+    GNLD();
+};
+
+GNLD::GNLD() {
+    *(void**)this = lbl_804AB660;
 }
 
 // ---- Ddrk_ctor_80203F50.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F498[];
 
-extern "C" void* fn_80203F50(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F498;
-    return this_;
+struct DBRK : public Actor {
+    DBRK();
+};
+
+DBRK::DBRK() {
+    *(void**)this = lbl_8049F498;
 }
 
 // ---- Bzbr_ctor_80203F8C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F444[];
 
-extern "C" void* fn_80203F8C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F444;
-    return this_;
+struct BZBR : public Actor {
+    BZBR();
+};
+
+BZBR::BZBR() {
+    *(void**)this = lbl_8049F444;
 }
 
 // ---- Blck_ctor_80203FC8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A7A10[];
 
-extern "C" void* fn_80203FC8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A7A10;
-    return this_;
+struct BLCK : public Actor {
+    BLCK();
+};
+
+BLCK::BLCK() {
+    *(void**)this = lbl_804A7A10;
 }
 
 // ---- Peac_ctor_80204004.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F3B0[];
 
-extern "C" void* fn_80204004(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F3B0;
-    return this_;
+struct PEAC : public Actor {
+    PEAC();
+};
+
+PEAC::PEAC() {
+    *(void**)this = lbl_8049F3B0;
 }
 
 // ---- Tubo_ctor_80204040.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9428[];
 
-extern "C" void* fn_80204040(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9428;
-    return this_;
+struct TUBO : public Actor {
+    TUBO();
+};
+
+TUBO::TUBO() {
+    *(void**)this = lbl_804A9428;
 }
 
 // ---- Rock_ctor_8020407C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9480[];
 
-extern "C" void* fn_8020407C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9480;
-    return this_;
+struct ROCK : public Actor {
+    ROCK();
+};
+
+ROCK::ROCK() {
+    *(void**)this = lbl_804A9480;
 }
 
 // ---- Warp_ctor_802040B8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A6DC8[];
 
-extern "C" void* fn_802040B8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A6DC8;
-    return this_;
+struct WARP : public Actor {
+    WARP();
+};
+
+WARP::WARP() {
+    *(void**)this = lbl_804A6DC8;
 }
 
 // ---- Bord_ctor_802040F4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A94D8[];
 
-extern "C" void* fn_802040F4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A94D8;
-    return this_;
+struct BORD : public Actor {
+    BORD();
+};
+
+BORD::BORD() {
+    *(void**)this = lbl_804A94D8;
 }
 
 // ---- Ston_ctor_80204130.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A93D0[];
 
-extern "C" void* fn_80204130(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A93D0;
-    return this_;
+struct STON : public Actor {
+    STON();
+};
+
+STON::STON() {
+    *(void**)this = lbl_804A93D0;
 }
 
 // ---- Gene_ctor_8020416C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A9328[];
 
-extern "C" void* fn_8020416C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A9328;
-    return this_;
+struct GENE : public Actor {
+    GENE();
+};
+
+GENE::GENE() {
+    *(void**)this = lbl_804A9328;
 }
 
 // ---- Gras_ctor_802041A8.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804A92D0[];
 
-extern "C" void* fn_802041A8(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804A92D0;
-    return this_;
+struct FGAS : public Actor {
+    FGAS();
+};
+
+FGAS::FGAS() {
+    *(void**)this = lbl_804A92D0;
 }
 
 // ---- Pooh_ctor_802041E4.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F330[];
 
-extern "C" void* fn_802041E4(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F330;
-    return this_;
+struct POOH : public Actor {
+    POOH();
+};
+
+POOH::POOH() {
+    *(void**)this = lbl_8049F330;
 }
 
 // ---- Amos_ctor_80204220.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F260[];
 
-extern "C" void* fn_80204220(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F260;
-    return this_;
+struct AMOS : public Actor {
+    AMOS();
+};
+
+AMOS::AMOS() {
+    *(void**)this = lbl_8049F260;
 }
 
 // ---- Okta_ctor_8020425C.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_8049F208[];
 
-extern "C" void* fn_8020425C(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_8049F208;
-    return this_;
+struct OKTA : public Actor {
+    OKTA();
+};
+
+OKTA::OKTA() {
+    *(void**)this = lbl_8049F208;
 }
 
 // ---- Rupy_ctor_80204298.cpp ----
 extern "C" void* Actor_ctor(void* this_);
 extern void* lbl_804AB6D8[];
 
-extern "C" void* fn_80204298(void* this_) {
-    Actor_ctor(this_);
-    *(void**)this_ = lbl_804AB6D8;
-    return this_;
+struct RUPY : public Actor {
+    RUPY();
+};
+
+RUPY::RUPY() {
+    *(void**)this = lbl_804AB6D8;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
