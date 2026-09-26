@@ -214,4 +214,71 @@ Tu6CECGroup::Tu6CECGroup() {
     m64 = 0;
 }
 
+extern int __float_epsilon[];
+extern const f32 lbl_8053F158;
+extern const f32 lbl_8053F15C;
+extern const f32 lbl_8053F160;
+extern const f32 lbl_8053F164;
+extern const f32 lbl_8053F168;
+
+struct Tu6CECUtil {
+    static f32 inv_sqrt(f32 x) {
+        if (x <= lbl_8053F150)
+            return x;
+        f32 y = __frsqrte(x);
+        y = lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
+        return y;
+    }
+};
+static inline f32 tu6cec_invSqrt(f32 x) { return Tu6CECUtil::inv_sqrt(x); }
+
+static inline void tu6cec_invSqrtRef(f32& x) {
+    if (x <= lbl_8053F150) {
+        return;
+    }
+    f32 y = __frsqrte(x);
+    x = lbl_8053F160 * y * (lbl_8053F164 - x * (y * y));
+}
+
+struct Tu6CECVec2 {
+    f32 x, y;
+    void normalize() {
+        f32 sq = x * x + y * y;
+        if (sq <= lbl_8053F158 * *(f32*)__float_epsilon) {
+            return;
+        }
+        f32 inv = tu6cec_invSqrt(sq);
+        x *= inv;
+        y *= inv;
+    }
+    void normalizeOr(f32 dx, f32 dy) {
+        f32 sq = x * x + y * y;
+        if (sq <= lbl_8053F158 * *(f32*)__float_epsilon) {
+            x = dx;
+            y = dy;
+        } else {
+            normalize();
+        }
+    }
+};
+
+static inline void tu6cec_scale(f32& x, f32& y, f32 s) { x *= s; y *= s; }
+extern "C" void fn_801D6D38(char* p, Tu6CECVec2* in) {
+    f32 y = in->y;
+    f32 x = in->x;
+    f32 sq = x * x + y * y;
+    if (sq <= lbl_8053F158 * *(f32*)__float_epsilon) {
+        x = lbl_8053F150;
+        y = lbl_8053F15C;
+    } else if (!(sq <= lbl_8053F158 * *(f32*)__float_epsilon)) {
+        f32 inv = tu6cec_invSqrt(sq);
+        x *= inv;
+        y *= inv;
+    }
+    x *= lbl_8053F168;
+    y *= lbl_8053F168;
+    fn_801E4AB0(p, 0x3c, 0x2000, x);
+    fn_801E4AB0(p + 0x14, 0x3c, 0x2000, y);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
