@@ -150,4 +150,100 @@ extern "C" s32 fn_801A6108(void* this_, void* a4, void* a5) {
 
 static u8 lbl_804C6640[0x30];
 
+extern "C" f32 fn_801EE4F0(void);
+extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" u8 fn_802242F4(void* this_);
+extern "C" s32 fn_801A4FB4(void* this_);
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" void fn_801F2618(void* this_, s32 a, s32 b);
+
+struct SayaOfs;
+struct SayaBox {
+    inline void add(const SayaOfs& o);
+    f32 x0, y0, x1, y1;
+};
+struct SayaOfs {
+    SayaOfs(f32 ax, f32 ay) { x = ax; y = ay; }
+    f32 x, y;
+};
+inline void SayaBox::add(const SayaOfs& o) {
+    x0 += o.x;
+    y0 += o.y;
+    x1 += o.x;
+    y1 += o.y;
+}
+
+// SAYA update
+extern "C" s32 fn_801A6160(u8* this_) {
+    s32 cnt;
+    s32 res = 0;
+    SayaBox box;
+    box.x0 = ((SayaBox*)(this_ + 0x70))->x0;
+    box.y0 = ((SayaBox*)(this_ + 0x70))->y0;
+    box.x1 = ((SayaBox*)(this_ + 0x70))->x1;
+    box.y1 = ((SayaBox*)(this_ + 0x70))->y1;
+    SayaOfs ofs(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+    cnt = *(s32*)(this_ + 0xA8);
+    if (cnt != 0) {
+        if (cnt == 0x1E) {
+            f32 sc = fn_801EE4F0();
+            if (sc < 1.0f) {
+                sc = 1.0f;
+            }
+            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xC, 0x17C, 0, 1, 0, 0, 1, sc);
+        }
+        if (cnt - 1 <= 0) {
+            ((SayaActor*)this_)->v24();
+        }
+        *(s32*)(this_ + 0xA8) = cnt - 1;
+        return 1;
+    }
+    if (*(s32*)(this_ + 0x108) > 0 && fn_802242F4(this_)) {
+        return 1;
+    }
+    if (*(u32*)(this_ + 0xB0) == 0 || *(s32*)(this_ + 0x108) <= 0) {
+        return 0;
+    }
+    lbl_8053A100 = -1;
+    box.add(ofs);
+    s32 r;
+    if ((r = fn_801A5400(this_, &box, &ofs)) != 0) {
+        res = 3;
+    } else if ((r = fn_801A4D74(this_, &box, &ofs)) != 0) {
+        res = 3;
+    } else if ((r = fn_801A4754(this_, &box, &ofs)) != 0) {
+        res = 1;
+    } else if ((r = fn_801A41D8(this_, &box, &ofs)) == 0x32) {
+        res = 1;
+    }
+    if (r == 0xFF) {
+        return 0;
+    }
+    if (res <= 1 && fn_801A4FB4(this_)) {
+        res = 2;
+    }
+    s32 a4 = *(s32*)(this_ + 0xA4);
+    if (a4 != 0) {
+        if (*(f32*)(this_ + 0x14) > 0.0f) {
+            *(JGeometry::TVec3<f32>*)(this_ + 0x3C) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0x3C), *(f32*)(this_ + 0x40), 0.0f);
+            *(JGeometry::TVec3<f32>*)(this_ + 0xC) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14) - 1.0f);
+        } else {
+            *(JGeometry::TVec3<f32>*)(this_ + 0xC) = JGeometry::TVec3<f32>(*(f32*)(this_ + 0xC), *(f32*)(this_ + 0x10), 0.0f);
+        }
+        *(s32*)(this_ + 0xA4) = a4 - 1;
+        res = 1;
+        if (fn_801F305C(this_)) {
+            if (*(s32*)(this_ + 0xBC) == 3) {
+                *(JGeometry::TVec3<f32>*)(this_ + 0x3C) = JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f);
+            }
+            res = 2;
+            fn_801F2618(this_, 0, 0);
+        }
+    }
+    if (res > 1) {
+        *(s32*)(this_ + 0xA4) = 0;
+    }
+    return res;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
