@@ -72,12 +72,9 @@ extern "C" void fn_804385A0(void* thisPtr) {
 	LimtDrawParam prm;
 	f32 mtx[3][4];
 	prm.reset();
-	switch (*(s32*)(p + 0x24c)) {
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4: {
+	s32 kind = *(s32*)(p + 0x24c);
+	if (kind > 4 || kind < 0) return; {
+	{
 		mtx[0][3] = 0.0f;
 		mtx[1][3] = 0.0f;
 		mtx[2][3] = 0.0f;
@@ -99,7 +96,6 @@ extern "C" void fn_804385A0(void* thisPtr) {
 		if (*(s32*)(p + 0x4) < 8) {
 			fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, tex, &prm);
 		}
-		break;
 	}
 	}
 }

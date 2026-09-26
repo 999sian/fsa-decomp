@@ -1316,7 +1316,7 @@ config.libs = [
         "progress_category": "game",
         "objects": [
             Object(NonMatching, "Game/ltzr.cpp"),
-            Object(NonMatching, "Game/lfgn.cpp"),
+            Object(Matching, "Game/lfgn.cpp"),
             Object(NonMatching, "Game/rins.cpp"),
             Object(Matching, "Game/tu_8045ba84.cpp"),
             Object(Matching, "Game/ssmi.cpp"),
@@ -1351,7 +1351,7 @@ config.libs = [
             Object(NonMatching, "Game/tu_80414f6c.cpp"),
             Object(NonMatching, "Game/tu_80427d2c.cpp"),
             Object(NonMatching, "Game/tu_8042e964.cpp"),
-            Object(NonMatching, "Game/limt.cpp"),
+            Object(Matching, "Game/limt.cpp"),
             Object(Matching, "Game/tu_80442810.cpp"),
             Object(Matching, "Game/tu_80455930.cpp"),
         ],
