@@ -2766,6 +2766,7 @@ Game/tu_801D2918.cpp:
 	.text       start:0x801D2918 end:0x801D2C60
 	.ctors      start:0x8045C060 end:0x8045C064
 	.bss        start:0x804C89D0 end:0x804C8A3C
+	.sdata2     start:0x8053F050 end:0x8053F068
 
 Game/tu_801D2C60.cpp:
 	extab       start:0x80008548 end:0x80008580
