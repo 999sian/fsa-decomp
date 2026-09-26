@@ -133,6 +133,15 @@ inline void setOff(JGeometry::TVec3<f32>* v, const JGeometry::TVec3<f32>* src, f
     v->y += dy;
 }
 
+inline bool isIdleState(char* p) {
+    return S32(p, 0x1240) == 0x0 || S32(p, 0x1240) == 0x2 || S32(p, 0x1240) == 0x3 || S32(p, 0x1240) == 0x4 ||
+           S32(p, 0x1240) == 0x8 || S32(p, 0x1240) == 0x4a || S32(p, 0x1240) == 0x4b;
+}
+
+inline bool isBusyState(char* p) {
+    return S32(p, 0x1240) == 1 || (U16(p, 0x3c4) >= 0x1bf && U16(p, 0x3c4) < 0x1c6);
+}
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -150,6 +159,12 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+void fn_8028FBA0(char*);
+f32* fn_80238430(s32);
+bool fn_8026E5F8(char*, JGeometry::TVec2<f32>*);
+void fn_80458880(void*, u32, s32);
+s32 fn_8040305C(void*);
+void* fn_804033D4(s32);
 char* fn_802D6A9C(void);
 s32 Actor_CreateByID(void* mgr, u32 id, void* owner, void* pos, u32 param, s32 a, s32 b);
 void fn_8024D134(char*);
@@ -352,20 +367,14 @@ BOOL fn_802412A4(char* p) { STATE_OR2(p, 0x1240, 0x4a, 0x4b); }
 u8 fn_802412C4(char* p) { return U8(p, 0x458); }
 u8 fn_802412CC(char* p) { return U8(p, 0x460); }
 void fn_802412D4(char* p) { U8(p, 0xcaf) = 1; }
-BOOL fn_802412E0(char* p) {
-    BOOL r = 0;
-    if (S32(p, 0x1240) == 0xd || S32(p, 0x1240) == 0xe || S32(p, 0x1240) == 0x11 || S32(p, 0x1240) == 0x12 || S32(p, 0x1240) == 0x1a || S32(p, 0x1240) == 0x3c || S32(p, 0x1240) == 0x3b || S32(p, 0x1240) == 0x3a || S32(p, 0x1240) == 0x47) r = 1;
-    return r;
+bool fn_802412E0(char* p) {
+    return S32(p, 0x1240) == 0xd || S32(p, 0x1240) == 0xe || S32(p, 0x1240) == 0x11 || S32(p, 0x1240) == 0x12 || S32(p, 0x1240) == 0x1a || S32(p, 0x1240) == 0x3c || S32(p, 0x1240) == 0x3b || S32(p, 0x1240) == 0x3a || S32(p, 0x1240) == 0x47;
 }
-BOOL fn_80241338(char* p) {
-    BOOL r = 0;
-    if (S32(p, 0x1240) == 0x4 || S32(p, 0x1240) == 0x8 || S32(p, 0x1240) == 0x39 || S32(p, 0x1240) == 0x44 || S32(p, 0x1240) == 0x45 || S32(p, 0x1240) == 0x3d || S32(p, 0x1240) == 0x37) r = 1;
-    return r;
+bool fn_80241338(char* p) {
+    return S32(p, 0x1240) == 0x4 || S32(p, 0x1240) == 0x8 || S32(p, 0x1240) == 0x39 || S32(p, 0x1240) == 0x44 || S32(p, 0x1240) == 0x45 || S32(p, 0x1240) == 0x3d || S32(p, 0x1240) == 0x37;
 }
-BOOL fn_80241380(char* p) {
-    BOOL r = 0;
-    if (S32(p, 0x1240) == 0x0 || S32(p, 0x1240) == 0x2 || S32(p, 0x1240) == 0x3 || S32(p, 0x1240) == 0x4 || S32(p, 0x1240) == 0x8 || S32(p, 0x1240) == 0x4a || S32(p, 0x1240) == 0x4b) r = 1;
-    return r;
+bool fn_80241380(char* p) {
+    return S32(p, 0x1240) == 0x0 || S32(p, 0x1240) == 0x2 || S32(p, 0x1240) == 0x3 || S32(p, 0x1240) == 0x4 || S32(p, 0x1240) == 0x8 || S32(p, 0x1240) == 0x4a || S32(p, 0x1240) == 0x4b;
 }
 BOOL fn_802413C8(char* p) { STATE_OR2(p, 0x1240, 0x8, 0x37); }
 u8 Player_GetField_0x454(char* p) { return U8(p, 0x454); }
@@ -555,6 +564,45 @@ s32 fn_802426E0(char* p, s32 v) {
     }
     U8(p, 0xd90) = 1;
     return 1;
+}
+void fn_80242BC0(char* p) {
+    if (U8(p, 0x454) != 0) {
+        return;
+    }
+    if (S32(p, 0xbd8) > 0) {
+        S32(p, 0xbd8)--;
+        if (S32(p, 0xbd8) > 0 && S32(p, 0xbd8) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
+            fn_803037D4(S32(p, 0x4), 2);
+        }
+    }
+    if (S32(p, 0xd60) < 0 && U8(p, 0xbdc) != 0 && S32(p, 0xbd8) <= 0 && S32(p, 0x3b4) >= 8) {
+        fn_8028FBA0(p);
+    }
+    if (S32(p, 0x3b4) < 8 && S32(p, 0xbd8) > 0) {
+        S32(p, 0xbd8) = 0;
+    }
+}
+void fn_80242CB0(char* p) {
+    if (U8(p, 0x43e) != 1) {
+        return;
+    }
+    if (!isIdleState(p) && S32(p, 0x1240) != 0x12) {
+        return;
+    }
+    if (isBusyState(p)) {
+        return;
+    }
+    if (S32(p, 0xd60) < 0) {
+        U8(p, 0x43e) = 0;
+        return;
+    }
+    f32* v = fn_80238430(S32(p, 0xd60));
+    JGeometry::TVec2<f32> pos;
+    pos.x = v[0];
+    pos.y = v[1];
+    if (fn_8026E5F8(p, &pos)) {
+        U8(p, 0x43e) = 0;
+    }
 }
 s32 fn_80243194(char* p) { return fn_8022E438(S32(p, 0x4)); }
 BOOL fn_802431B8(char* p) {
@@ -996,6 +1044,27 @@ s32 fn_8024EFA0(char* p, u8 v) {
         return 1;
     }
     return 0;
+}
+void fn_8024EFF8(char* p, u32 se) {
+    if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))) && fn_8030381C(S32(p, 0x4))) {
+        if (se == 4) {
+            fn_803037D4(S32(p, 0x4), 4);
+            return;
+        }
+        if (se == 9) {
+            fn_803037D4(S32(p, 0x4), 5);
+            return;
+        }
+        if (se == 5) {
+            fn_803037D4(S32(p, 0x4), 6);
+            return;
+        }
+    }
+    if (S32(p, 0x3b4) >= 8 && fn_8030381C(S32(p, 0x4)) && se == 3) {
+        fn_803037D4(S32(p, 0x4), 0xf);
+        return;
+    }
+    fn_80458880(lbl_8053AF80, se, (s8)S32(p, 0x4));
 }
 void fn_8024F54C(char* p, s32 id) {
     if (S32(p, 0x3b4) >= 8 && fn_8030381C(playerIdx(p)) && id == 0x1000002) {
