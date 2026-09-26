@@ -1786,6 +1786,7 @@ Game/SIBT_801042D0.cpp:
 	extabindex  start:0x80011D7C end:0x80011DB8
 	.text       start:0x801042D0 end:0x80104C3C
 	.ctors      start:0x8045BE24 end:0x8045BE28
+	.bss        start:0x804BB2F8 end:0x804BB364
 
 Game/LOSW_80104C3C.cpp:
 	extab       start:0x800059B0 end:0x800059D8
@@ -1843,6 +1844,7 @@ Game/ZLDA_80109534.cpp:
 	extabindex  start:0x80011FE0 end:0x8001204C
 	.text       start:0x80109534 end:0x8010B284
 	.ctors      start:0x8045BE44 end:0x8045BE48
+	.bss        start:0x804BBAF8 end:0x804BBB64
 
 Game/ICCL_8010B284.cpp:
 	extab       start:0x80005BF0 end:0x80005C44
@@ -1855,6 +1857,7 @@ Game/SHBL_8010C294.cpp:
 	extabindex  start:0x800120AC end:0x80012100
 	.text       start:0x8010C294 end:0x8010DA6C
 	.ctors      start:0x8045BE4C end:0x8045BE50
+	.bss        start:0x804BBCF8 end:0x804BBD64
 
 Game/DBMS_8010DA6C.cpp:
 	extab       start:0x80005C90 end:0x80005CD4
@@ -1875,30 +1878,35 @@ Game/DMZL_8010E2D4.cpp:
 	extabindex  start:0x80012190 end:0x80012274
 	.text       start:0x8010E2D4 end:0x801123C8
 	.ctors      start:0x8045BE58 end:0x8045BE5C
+	.bss        start:0x804BBFF8 end:0x804BC064
 
 Game/DMMD_801123C8.cpp:
 	extab       start:0x80005DC4 end:0x80005E28
 	extabindex  start:0x80012274 end:0x800122EC
 	.text       start:0x801123C8 end:0x80113788
 	.ctors      start:0x8045BE5C end:0x8045BE60
+	.bss        start:0x804BC0F8 end:0x804BC164
 
 Game/tu_80113788.cpp:
 	extab       start:0x80005E28 end:0x80005EA8
 	extabindex  start:0x800122EC end:0x80012370
 	.text       start:0x80113788 end:0x801158B8
 	.ctors      start:0x8045BE60 end:0x8045BE64
+	.bss        start:0x804BC1F8 end:0x804BC264
 
 Game/DMGF_801158B8.cpp:
 	extab       start:0x80005EA8 end:0x80005F44
 	extabindex  start:0x80012370 end:0x80012400
 	.text       start:0x801158B8 end:0x80116E8C
 	.ctors      start:0x8045BE64 end:0x8045BE68
+	.bss        start:0x804BC2F8 end:0x804BC364
 
 Game/DMSW_80116E8C.cpp:
 	extab       start:0x80005F44 end:0x80005FA0
 	extabindex  start:0x80012400 end:0x8001246C
 	.text       start:0x80116E8C end:0x80118384
 	.ctors      start:0x8045BE68 end:0x8045BE6C
+	.bss        start:0x804BC3F8 end:0x804BC464
 
 Game/tu_80118384.cpp:
 	extab       start:0x80005FA0 end:0x80006070
@@ -1918,30 +1926,35 @@ Game/DMGL_8011A4BC.cpp:
 	extabindex  start:0x800125C8 end:0x80012628
 	.text       start:0x8011A4BC end:0x8011B390
 	.ctors      start:0x8045BE74 end:0x8045BE78
+	.bss        start:0x804BC760 end:0x804BC7CC
 
 Game/DMLK_8011B390.cpp:
 	extab       start:0x800060EC end:0x80006134
 	extabindex  start:0x80012628 end:0x80012694
 	.text       start:0x8011B390 end:0x8011CEC8
 	.ctors      start:0x8045BE78 end:0x8045BE7C
+	.bss        start:0x804BC860 end:0x804BC8CC
 
 Game/DMGA_8011CEC8.cpp:
 	extab       start:0x80006134 end:0x80006174
 	extabindex  start:0x80012694 end:0x800126F4
 	.text       start:0x8011CEC8 end:0x8011DA20
 	.ctors      start:0x8045BE7C end:0x8045BE80
+	.bss        start:0x804BC960 end:0x804BC9CC
 
 Game/ICWL_8011DA20.cpp:
 	extab       start:0x80006174 end:0x800061B8
 	extabindex  start:0x800126F4 end:0x8001273C
 	.text       start:0x8011DA20 end:0x8011E96C
 	.ctors      start:0x8045BE80 end:0x8045BE84
+	.bss        start:0x804BCA60 end:0x804BCACC
 
 Game/RNSW_8011E96C.cpp:
 	extab       start:0x800061B8 end:0x800061D8
 	extabindex  start:0x8001273C end:0x8001276C
 	.text       start:0x8011E96C end:0x8011EEEC
 	.ctors      start:0x8045BE84 end:0x8045BE88
+	.bss        start:0x804BCB60 end:0x804BCBCC
 
 Game/BARI_8011EEEC.cpp:
 	extab       start:0x800061D8 end:0x80006218
@@ -1954,24 +1967,28 @@ Game/EZZR_8011FFB8.cpp:
 	extabindex  start:0x800127CC end:0x8001288C
 	.text       start:0x8011FFB8 end:0x801213EC
 	.ctors      start:0x8045BE8C end:0x8045BE90
+	.bss        start:0x804BCD60 end:0x804BCDCC
 
 Game/tu_801213EC.cpp:
 	extab       start:0x80006298 end:0x800063F0
 	extabindex  start:0x8001288C end:0x80012A54
 	.text       start:0x801213EC end:0x80124AD8
 	.ctors      start:0x8045BE90 end:0x8045BE94
+	.bss        start:0x804BCE60 end:0x804BCECC
 
 Game/OPGL_80124AD8.cpp:
 	extab       start:0x800063F0 end:0x80006470
 	extabindex  start:0x80012A54 end:0x80012B14
 	.text       start:0x80124AD8 end:0x80125B58
 	.ctors      start:0x8045BE94 end:0x8045BE98
+	.bss        start:0x804BCF60 end:0x804BCFCC
 
 Game/OPGA_80125B58.cpp:
 	extab       start:0x80006470 end:0x800064A8
 	extabindex  start:0x80012B14 end:0x80012B68
 	.text       start:0x80125B58 end:0x8012679C
 	.ctors      start:0x8045BE98 end:0x8045BE9C
+	.bss        start:0x804BD060 end:0x804BD0CC
 
 Game/actors/GFBS.cpp:
 	extab       start:0x800064A8 end:0x800064C0
@@ -1986,6 +2003,7 @@ Game/FZRA_80126A4C.cpp:
 	extabindex  start:0x80012B8C end:0x80012BE0
 	.text       start:0x80126A4C end:0x80127E20
 	.ctors      start:0x8045BEA0 end:0x8045BEA4
+	.bss        start:0x804BD260 end:0x804BD2CC
 
 Game/tu_80127E20.cpp:
 	extab       start:0x8000650C end:0x8000656C
@@ -1998,12 +2016,14 @@ Game/DMNR_801286C0.cpp:
 	extabindex  start:0x80012C70 end:0x80012CC4
 	.text       start:0x801286C0 end:0x801291A0
 	.ctors      start:0x8045BEA8 end:0x8045BEAC
+	.bss        start:0x804BD490 end:0x804BD4FC
 
 Game/CRGN_801291A0.cpp:
 	extab       start:0x800065A4 end:0x800065CC
 	extabindex  start:0x80012CC4 end:0x80012D00
 	.text       start:0x801291A0 end:0x80129B0C
 	.ctors      start:0x8045BEAC end:0x8045BEB0
+	.bss        start:0x804BD590 end:0x804BD5FC
 
 Game/RNBW_80129B0C.cpp:
 	extab       start:0x800065CC end:0x800065F4
@@ -2028,18 +2048,21 @@ Game/RBPN_8012DAC0.cpp:
 	extabindex  start:0x80012E44 end:0x80012E68
 	.text       start:0x8012DAC0 end:0x8012DF70
 	.ctors      start:0x8045BEBC end:0x8045BEC0
+	.bss        start:0x804BD9F0 end:0x804BDA5C
 
 Game/SMWL_8012DF70.cpp:
 	extab       start:0x800066BC end:0x800066EC
 	extabindex  start:0x80012E68 end:0x80012EB0
 	.text       start:0x8012DF70 end:0x8012EA00
 	.ctors      start:0x8045BEC0 end:0x8045BEC4
+	.bss        start:0x804BDAF0 end:0x804BDB5C
 
 Game/FDWP_8012EA00.cpp:
 	extab       start:0x800066EC end:0x8000670C
 	extabindex  start:0x80012EB0 end:0x80012EE0
 	.text       start:0x8012EA00 end:0x8012F008
 	.ctors      start:0x8045BEC4 end:0x8045BEC8
+	.bss        start:0x804BDBF0 end:0x804BDC5C
 
 Game/IFCK_8012F008.cpp:
 	extab       start:0x8000670C end:0x80006734
@@ -2059,12 +2082,14 @@ Game/ICOB_8012F8AC.cpp:
 	extabindex  start:0x80012F4C end:0x80012F7C
 	.text       start:0x8012F8AC end:0x8012FBCC
 	.ctors      start:0x8045BED0 end:0x8045BED4
+	.bss        start:0x804BE000 end:0x804BE06C
 
 Game/OGST_8012FBCC.cpp:
 	extab       start:0x80006774 end:0x80006794
 	extabindex  start:0x80012F7C end:0x80012FAC
 	.text       start:0x8012FBCC end:0x8012FF9C
 	.ctors      start:0x8045BED4 end:0x8045BED8
+	.bss        start:0x804BE100 end:0x804BE16C
 
 Game/tu_8012FF9C.cpp:
 	extab       start:0x80006794 end:0x800067B4
@@ -2077,6 +2102,7 @@ Game/MRMT_80130310.cpp:
 	extabindex  start:0x80012FDC end:0x80013030
 	.text       start:0x80130310 end:0x80130FAC
 	.ctors      start:0x8045BEDC end:0x8045BEE0
+	.bss        start:0x804BE308 end:0x804BE374
 
 Game/WPCN_80130FAC.cpp:
 	extab       start:0x800067EC end:0x80006838
@@ -2095,6 +2121,7 @@ Game/SPFR_801321DC.cpp:
 	extabindex  start:0x800130C0 end:0x8001312C
 	.text       start:0x801321DC end:0x8013394C
 	.ctors      start:0x8045BEE8 end:0x8045BEEC
+	.bss        start:0x804BE620 end:0x804BE68C
 
 Game/CRNV_8013394C.cpp:
 	extab       start:0x800068BC end:0x800068F4
@@ -2107,6 +2134,7 @@ Game/tu_801344C0.cpp:
 	extabindex  start:0x80013180 end:0x80013198
 	.text       start:0x801344C0 end:0x80134C04
 	.ctors      start:0x8045BEF0 end:0x8045BEF4
+	.bss        start:0x804BE838 end:0x804BE8A4
 
 Game/tu_80134C04.cpp:
 	extab       start:0x8000695C end:0x80006A2C
@@ -2119,6 +2147,7 @@ Game/tu_80139BE8.cpp:
 	extabindex  start:0x800132D0 end:0x80013354
 	.text       start:0x80139BE8 end:0x8013AAD4
 	.ctors      start:0x8045BEF8 end:0x8045BEFC
+	.bss        start:0x804BEA38 end:0x804BEAA4
 
 Game/tu_8013AAD4.cpp:
 	extab       start:0x80006A84 end:0x80006B64
@@ -2143,18 +2172,21 @@ Game/AMOS_80140E24.cpp:
 	extabindex  start:0x80013600 end:0x80013630
 	.text       start:0x80140E24 end:0x80142624
 	.ctors      start:0x8045BF08 end:0x8045BF0C
+	.bss        start:0x804BEE50 end:0x804BEEBC
 
 Game/POOH_80142624.cpp:
 	extab       start:0x80006C6C end:0x80006C94
 	extabindex  start:0x80013630 end:0x8001366C
 	.text       start:0x80142624 end:0x80143874
 	.ctors      start:0x8045BF0C end:0x8045BF10
+	.bss        start:0x804BEF50 end:0x804BEFBC
 
 Game/PEAC_80143874.cpp:
 	extab       start:0x80006C94 end:0x80006CBC
 	extabindex  start:0x8001366C end:0x800136A8
 	.text       start:0x80143874 end:0x80144134
 	.ctors      start:0x8045BF10 end:0x8045BF14
+	.bss        start:0x804BF050 end:0x804BF0BC
 
 Game/BZBR_80144134.cpp:
 	extab       start:0x80006CBC end:0x80006CE4
@@ -2173,30 +2205,35 @@ Game/HART_80145F60.cpp:
 	extabindex  start:0x80013720 end:0x80013768
 	.text       start:0x80145F60 end:0x80146BC8
 	.ctors      start:0x8045BF1C end:0x8045BF20
+	.bss        start:0x804BF350 end:0x804BF3BC
 
 Game/OKTM_80146BC8.cpp:
 	extab       start:0x80006D3C end:0x80006D64
 	extabindex  start:0x80013768 end:0x800137A4
 	.text       start:0x80146BC8 end:0x80147B50
 	.ctors      start:0x8045BF20 end:0x8045BF24
+	.bss        start:0x804BF450 end:0x804BF4BC
 
 Game/DGTL_80147B50.cpp:
 	extab       start:0x80006D64 end:0x80006DA4
 	extabindex  start:0x800137A4 end:0x80013804
 	.text       start:0x80147B50 end:0x8014AD2C
 	.ctors      start:0x8045BF24 end:0x8045BF28
+	.bss        start:0x804BF550 end:0x804BF5BC
 
 Game/HBMB_8014AD2C.cpp:
 	extab       start:0x80006DA4 end:0x80006DFC
 	extabindex  start:0x80013804 end:0x80013888
 	.text       start:0x8014AD2C end:0x8014DCD4
 	.ctors      start:0x8045BF28 end:0x8045BF2C
+	.bss        start:0x804BF650 end:0x804BF6BC
 
 Game/HINO_8014DCD4.cpp:
 	extab       start:0x80006DFC end:0x80006E2C
 	extabindex  start:0x80013888 end:0x800138D0
 	.text       start:0x8014DCD4 end:0x8014FD5C
 	.ctors      start:0x8045BF2C end:0x8045BF30
+	.bss        start:0x804BF750 end:0x804BF7BC
 
 Game/SLR1_8014FD5C.cpp:
 	extab       start:0x80006E2C end:0x80006EBC
@@ -2215,6 +2252,7 @@ Game/tu_801555D8.cpp:
 	extabindex  start:0x800139F0 end:0x80013A44
 	.text       start:0x801555D8 end:0x80158624
 	.ctors      start:0x8045BF38 end:0x8045BF3C
+	.bss        start:0x804BFA60 end:0x804BFACC
 
 Game/tu_80158624.cpp:
 	extab       start:0x80006F24 end:0x80006F64
@@ -2227,6 +2265,7 @@ Game/IMUP_801597B8.cpp:
 	extabindex  start:0x80013AA4 end:0x80013B04
 	.text       start:0x801597B8 end:0x8015B98C
 	.ctors      start:0x8045BF40 end:0x8045BF44
+	.bss        start:0x804BFCA0 end:0x804BFD0C
 
 Game/BOYO_8015B98C.cpp:
 	extab       start:0x80006FA4 end:0x80006FCC
@@ -2252,6 +2291,7 @@ Game/tu_8015F454.cpp:
 	extabindex  start:0x80013BDC end:0x80013C24
 	.text       start:0x8015F454 end:0x80160650
 	.ctors      start:0x8045BF50 end:0x8045BF54
+	.bss        start:0x804C00A0 end:0x804C010C
 
 Game/ezry.cpp:
 	extab       start:0x80007064 end:0x8000708C
@@ -2264,6 +2304,7 @@ Game/BPOH_801618D0.cpp:
 	extabindex  start:0x80013C60 end:0x80013CC0
 	.text       start:0x801618D0 end:0x801643C4
 	.ctors      start:0x8045BF58 end:0x8045BF5C
+	.bss        start:0x804C02A0 end:0x804C030C
 
 Game/trap.cpp:
 	extab       start:0x8000710C end:0x8000713C
@@ -2298,18 +2339,21 @@ Game/BOME_801688AC.cpp:
 	extabindex  start:0x80013DB0 end:0x80013E04
 	.text       start:0x801688AC end:0x8016A2B4
 	.ctors      start:0x8045BF6C end:0x8045BF70
+	.bss        start:0x804C07A0 end:0x804C080C
 
 Game/tu_8016A2B4.cpp:
 	extab       start:0x800071E4 end:0x800073A4
 	extabindex  start:0x80013E04 end:0x80013F9C
 	.text       start:0x8016A2B4 end:0x80170008
 	.ctors      start:0x8045BF70 end:0x8045BF74
+	.bss        start:0x804C08A0 end:0x804C090C
 
 Game/tu_80170008.cpp:
 	extab       start:0x800073A4 end:0x800073D4
 	extabindex  start:0x80013F9C end:0x80013FE4
 	.text       start:0x80170008 end:0x80172170
 	.ctors      start:0x8045BF74 end:0x8045BF78
+	.bss        start:0x804C09A0 end:0x804C0A0C
 
 Game/popo.cpp:
 	extab       start:0x800073D4 end:0x800073FC
@@ -2324,6 +2368,7 @@ Game/SLR4_80172894.cpp:
 	extabindex  start:0x80014020 end:0x800140B0
 	.text       start:0x80172894 end:0x80175684
 	.ctors      start:0x8045BF7C end:0x8045BF80
+	.bss        start:0x804C0BA0 end:0x804C0C0C
 
 Game/stal.cpp:
 	extab       start:0x8000745C end:0x80007484
@@ -2364,12 +2409,14 @@ Game/tu_8017C01C.cpp:
 	extabindex  start:0x80014200 end:0x80014254
 	.text       start:0x8017C01C end:0x8017EF40
 	.ctors      start:0x8045BF94 end:0x8045BF98
+	.bss        start:0x804C11A8 end:0x804C1214
 
 Game/GROK_8017EF40.cpp:
 	extab       start:0x80007574 end:0x800075B4
 	extabindex  start:0x80014254 end:0x800142B4
 	.text       start:0x8017EF40 end:0x80182914
 	.ctors      start:0x8045BF98 end:0x8045BF9C
+	.bss        start:0x804C12A8 end:0x804C1314
 
 Game/rdvr.cpp:
 	extab       start:0x800075B4 end:0x800075E4
@@ -2428,6 +2475,7 @@ Game/tu_801902C0.cpp:
 	extabindex  start:0x80014518 end:0x80014560
 	.text       start:0x801902C0 end:0x80192038
 	.ctors      start:0x8045BFB8 end:0x8045BFBC
+	.bss        start:0x804C1AC0 end:0x804C1B2C
 
 Game/gnon.cpp:
 	extab       start:0x8000779C end:0x8000784C
@@ -2647,6 +2695,7 @@ Game/SLGE_801C1768.cpp:
 	extabindex  start:0x80015178 end:0x800151D8
 	.text       start:0x801C1768 end:0x801C26D8
 	.ctors      start:0x8045C038 end:0x8045C03C
+	.bss        start:0x804C7FD0 end:0x804C803C
 
 Game/slk2_801C26D8.cpp:
 	extab       start:0x80008050 end:0x80008120
@@ -2660,18 +2709,21 @@ Game/tu_801C5B08.cpp:
 	extabindex  start:0x800152D4 end:0x80015310
 	.text       start:0x801C5B08 end:0x801C6A4C
 	.ctors      start:0x8045C040 end:0x8045C044
+	.bss        start:0x804C81D0 end:0x804C823C
 
 Game/tu_801C6A4C.cpp:
 	extab       start:0x80008148 end:0x80008168
 	extabindex  start:0x80015310 end:0x80015340
 	.text       start:0x801C6A4C end:0x801C71BC
 	.ctors      start:0x8045C044 end:0x8045C048
+	.bss        start:0x804C82D0 end:0x804C833C
 
 Game/tu_801C71BC.cpp:
 	extab       start:0x80008168 end:0x800081E0
 	extabindex  start:0x80015340 end:0x800153F4
 	.text       start:0x801C71BC end:0x801C9AF8
 	.ctors      start:0x8045C048 end:0x8045C04C
+	.bss        start:0x804C83D0 end:0x804C843C
 
 Game/tu_801C9AF8.cpp:
 	extab       start:0x800081E0 end:0x80008220
@@ -2699,6 +2751,7 @@ Game/tu_801D11FC.cpp:
 	extabindex  start:0x80015808 end:0x80015844
 	.text       start:0x801D11FC end:0x801D1C18
 	.ctors      start:0x8045C058 end:0x8045C05C
+	.bss        start:0x804C87D0 end:0x804C883C
 
 Game/tu_801D1C18.cpp:
 	extab       start:0x800084E8 end:0x80008540
@@ -2712,6 +2765,7 @@ Game/tu_801D2918.cpp:
 	extabindex  start:0x800158C8 end:0x800158D4
 	.text       start:0x801D2918 end:0x801D2C60
 	.ctors      start:0x8045C060 end:0x8045C064
+	.bss        start:0x804C89D0 end:0x804C8A3C
 
 Game/tu_801D2C60.cpp:
 	extab       start:0x80008548 end:0x80008580
@@ -2725,12 +2779,14 @@ Game/tu_801D3320.cpp:
 	extabindex  start:0x80015928 end:0x80015940
 	.text       start:0x801D3320 end:0x801D3CBC
 	.ctors      start:0x8045C068 end:0x8045C06C
+	.bss        start:0x804C8BD0 end:0x804C8C3C
 
 Game/tu_801D3CBC.cpp:
 	extab       start:0x80008590 end:0x800085B0
 	extabindex  start:0x80015940 end:0x80015970
 	.text       start:0x801D3CBC end:0x801D46FC
 	.ctors      start:0x8045C06C end:0x8045C070
+	.bss        start:0x804C8CD0 end:0x804C8D3C
 
 Game/bogf_801D46FC.cpp:
 	extab       start:0x800085B0 end:0x800086AC
@@ -2765,6 +2821,7 @@ Game/tu_801DA7C0.cpp:
 	extabindex  start:0x80015BE0 end:0x80015BEC
 	.text       start:0x801DA7C0 end:0x801DAC6C
 	.ctors      start:0x8045C080 end:0x8045C084
+	.bss        start:0x804C91D0 end:0x804C923C
 
 Game/tu_801DAC6C.cpp:
 	extab       start:0x800087D0 end:0x80008800
@@ -2800,6 +2857,7 @@ Game/tu_801DD1AC.cpp:
 	extabindex  start:0x80015D78 end:0x80015DC0
 	.text       start:0x801DD1AC end:0x801DE714
 	.ctors      start:0x8045C094 end:0x8045C098
+	.bss        start:0x804C9758 end:0x804C97C4
 
 Game/thnk_801DE714.cpp:
 	extab       start:0x80008908 end:0x800089A0
@@ -2813,6 +2871,7 @@ Game/tu_801E2540.cpp:
 	extabindex  start:0x80015EA4 end:0x80015F04
 	.text       start:0x801E2540 end:0x801E31C0
 	.ctors      start:0x8045C09C end:0x8045C0A0
+	.bss        start:0x804C9958 end:0x804C99C4
 
 Game/tinb_801E31C0.cpp:
 	extab       start:0x800089E0 end:0x80008A08
@@ -2826,30 +2885,35 @@ Game/tu_801E3618.cpp:
 	extabindex  start:0x80015F40 end:0x80015FAC
 	.text       start:0x801E3618 end:0x801E4A18
 	.ctors      start:0x8045C0A4 end:0x8045C0A8
+	.bss        start:0x804C9B58 end:0x804C9BC4
 
 Game/tu_801E4A18.cpp:
 	extab       start:0x80008A50 end:0x80008A60
 	extabindex  start:0x80015FAC end:0x80015FC4
 	.text       start:0x801E4A18 end:0x801E4D54
 	.ctors      start:0x8045C0A8 end:0x8045C0AC
+	.bss        start:0x804C9C58 end:0x804C9CC4
 
 Game/tu_801E4D54.cpp:
 	extab       start:0x80008A60 end:0x80008A80
 	extabindex  start:0x80015FC4 end:0x80015FF4
 	.text       start:0x801E4D54 end:0x801E5FC8
 	.ctors      start:0x8045C0AC end:0x8045C0B0
+	.bss        start:0x804C9D58 end:0x804C9DC4
 
 Game/tu_801E5FC8.cpp:
 	extab       start:0x80008A80 end:0x80008AC0
 	extabindex  start:0x80015FF4 end:0x80016054
 	.text       start:0x801E5FC8 end:0x801E667C
 	.ctors      start:0x8045C0B0 end:0x8045C0B4
+	.bss        start:0x804C9E58 end:0x804C9EC4
 
 Game/tu_801E667C.cpp:
 	extab       start:0x80008AC0 end:0x80008AFC
 	extabindex  start:0x80016054 end:0x80016090
 	.text       start:0x801E667C end:0x801E6D48
 	.ctors      start:0x8045C0B4 end:0x8045C0B8
+	.bss        start:0x804C9F58 end:0x804C9FC4
 
 Game/ipot_801E6D48.cpp:
 	extab       start:0x80008AFC end:0x80008B64
@@ -2883,12 +2947,14 @@ Game/tu_801EAB0C.cpp:
 	extabindex  start:0x80016270 end:0x8001627C
 	.text       start:0x801EAB0C end:0x801EB00C
 	.ctors      start:0x8045C0C8 end:0x8045C0CC
+	.bss        start:0x804CA5D8 end:0x804CA644
 
 Game/tu_801EB00C.cpp:
 	extab       start:0x80008C58 end:0x80008C98
 	extabindex  start:0x8001627C end:0x800162DC
 	.text       start:0x801EB00C end:0x801EBC84
 	.ctors      start:0x8045C0CC end:0x8045C0D0
+	.bss        start:0x804CA6D8 end:0x804CA744
 
 Game/hrmn_801EBC84.cpp:
 	extab       start:0x80008C98 end:0x80008CFC
