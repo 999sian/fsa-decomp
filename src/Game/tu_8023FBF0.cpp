@@ -55,9 +55,7 @@ inline s32 playerIdx(char* p) {
     return S32(p, 0x4);
 }
 
-struct TrailPos {
-    f32 x, y, z;
-};
+typedef JGeometry::TVec3<f32> TrailPos;
 struct PlayerTrail {
     u8 pad0[0x8];
     f32 x, y, z;
@@ -142,6 +140,22 @@ inline bool isBusyState(char* p) {
     return S32(p, 0x1240) == 1 || (U16(p, 0x3c4) >= 0x1bf && U16(p, 0x3c4) < 0x1c6);
 }
 
+inline bool isShrinking(char* p) {
+    bool r = false;
+    if (S32(p, 0x1240) == 0x49 || S32(p, 0x1244) == 0x49) {
+        r = true;
+    }
+    return r;
+}
+
+inline bool inOtherRoom(char* p) {
+    bool r = false;
+    if (U8(p, 0xce8) != 0 && S32(p, 0x3b4) != 8) {
+        r = true;
+    }
+    return r;
+}
+
 inline void resetTrail(char* p) {
     PlayerTrail* t = (PlayerTrail*)p;
     for (int i = 0; i < 0x31; i++) {
@@ -159,6 +173,7 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+bool fn_802D7804(char*, s32, s32);
 void fn_8028FBA0(char*);
 f32* fn_80238430(s32);
 bool fn_8026E5F8(char*, JGeometry::TVec2<f32>*);
@@ -276,6 +291,44 @@ void fn_8023FF90(char* p, const f32* v) {
     F32(p, 0xc98) = v[2];
 }
 BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
+inline s32 cnt2(char* p) {
+    s32 linked;
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+void fn_8024051C(char* p) {
+    s32 mode;
+    if (cnt2(p) <= 1) {
+        mode = 5;
+    } else if (S32(p, 0xd60) >= 0) {
+        mode = fn_8022CAF8(S32(p, 0xd60));
+    } else {
+        mode = S32(p, 0x120c);
+    }
+    if (mode != 4 && U8(p, 0x1215) == 0) {
+        U8(p, 0x43e) = 1;
+    }
+}
 s32 fn_80240628(char* p) {
     s32 linked = S32(p, 0xd60);
     if (linked >= 0) {
@@ -334,6 +387,32 @@ BOOL fn_80240D64(char* p) {
 }
 BOOL fn_80240D8C(char* p) { STATE_OR2(p, 0x1244, 0x38, 0x13); }
 BOOL fn_80240DAC(char* p) { STATE_OR2(p, 0x1240, 0x38, 0x13); }
+bool fn_80240DCC(char* p) {
+    bool r = true;
+    if (!isShrinking(p)) {
+        bool a = false;
+        bool b = false;
+        if (inOtherRoom(p)) {
+            if (!fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 1)) {
+                b = true;
+            }
+        }
+        if (b) {
+            bool c = true;
+            s32 room = S32(p, 0xce4);
+            if (room != 8 && !fn_802D7804(fn_802D6A9C(), room, 1)) {
+                c = false;
+            }
+            if (c) {
+                a = true;
+            }
+        }
+        if (!a) {
+            r = false;
+        }
+    }
+    return r;
+}
 BOOL fn_80240ED4(char* p) { STATE_OR2(p, 0x1240, 0x1e, 0x32); }
 BOOL fn_80240EF4(char* p) { STATE_OR2(p, 0x1240, 0x42, 0x43); }
 BOOL fn_80240F14(char* p) { return S32(p, 0x1240) == 0x41 ? 1 : 0; }
@@ -764,6 +843,33 @@ void ClearBusyLocked(char* p) {
     S32(p, 0x11f0) = 5;
 }
 void SetBusyLocked(char* p) { U8(p, 0x121f) = 1; }
+bool fn_8024AFF8(char* p) {
+    if (U8(p, 0xce8) == 1) {
+        return 0;
+    }
+    if (S32(p, 0x1240) == 0x49) {
+        U8(p, 0x124d) = 0;
+        if (!fn_80251BFC(p, 0)) {
+            return 0;
+        }
+        if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && S32(p, 0xd60) < 0) {
+            S32(p, 0x1244) = 1;
+        } else if (U8(p, 0x434) != 0) {
+            if (S32(p, 0x1240) == 2) {
+                return 0;
+            }
+            S32(p, 0x1244) = 2;
+        } else {
+            S32(p, 0x1244) = 0;
+        }
+        U8(p, 0x124c) = 1;
+        if (S32(p, 0xd60) < 0 && U8(p, 0xcfe) == 1 && S32(p, 0x1244) != 0) {
+            U8(p, 0xcfe) = 0;
+        }
+        return 1;
+    }
+    return 0;
+}
 BOOL fn_8024B24C(char* p) {
     char* sub = (char*)PTR(p, 0xbf0);
     BOOL r = 0;
@@ -775,6 +881,17 @@ BOOL fn_8024B24C(char* p) {
 void fn_8024B274(char* p, s32 v) { SetField_0x98(PTR(p, 0xbf0), v); }
 void fn_8024B298(char* p, s32 idx, void* out) { fn_8026942C(PTR(p, 0xbf0), idx, out); }
 s32 fn_8024B2BC(char* p) { return fn_8026947C(PTR(p, 0xbf0)); }
+void fn_8024B9E8(PlayerTrail* t) {
+    if (U8(t, 0x1216) != 0) {
+        return;
+    }
+    for (int i = 0x30; i > 0; i--) {
+        t->pos[i] = t->pos[i - 1];
+        t->onGround[i] = t->onGround[i - 1];
+    }
+    t->pos[0] = *(JGeometry::TVec3<f32>*)&t->x;
+    t->onGround[0] = U8(PTR(t, 0xbf0), 0xb4);
+}
 void fn_8024BAEC(char* p) {
     if (U8(p, 0x1216) != 0) {
         return;
@@ -1166,6 +1283,29 @@ BOOL fn_8025190C(char* p, u8 v) {
     return 0;
 }
 u8 fn_8025196C(char* p, s32 i) { return (*(u8**)(p + 0xbf0))[i + 0x48]; }
+bool fn_80251AEC(char* p, s32 st) {
+    if (!fn_80251BFC(p, st)) {
+        return 0;
+    }
+    if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && S32(p, 0xd60) < 0 && st == 0) {
+        S32(p, 0x1244) = 1;
+    } else if (U8(p, 0x434) != 0 && st == 0) {
+        if (S32(p, 0x1240) == 2) {
+            return 0;
+        }
+        S32(p, 0x1244) = 2;
+    } else {
+        S32(p, 0x1244) = st;
+    }
+    U8(p, 0x124c) = 1;
+    if (st != 0 && st != 2 && st != 3) {
+        U8(p, 0x124d) = 1;
+    }
+    if (S32(p, 0xd60) < 0 && U8(p, 0xcfe) == 1 && S32(p, 0x1244) != 0) {
+        U8(p, 0xcfe) = 0;
+    }
+    return 1;
+}
 void fn_80252BAC(char* p, const JGeometry::TVec3<f32>& v) { V3(p, 0x2e8) += v; }
 void fn_80252F14(char* p, const JGeometry::TVec3<f32>& v) {
     V3(p, 0x2d0) += v;
