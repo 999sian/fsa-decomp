@@ -59,14 +59,18 @@ static inline s32 padSlot(s32 i) {
     return -999;
 }
 
-extern "C" void fn_803099FC(void) {}
+// Element type of the two static arrays built by tu_80301CD0's __sinit.
+struct Elem28_80301CD0 {
+    Elem28_80301CD0();
+    u8 pad[0x28];
+};
+Elem28_80301CD0::Elem28_80301CD0() {}
 
 extern "C" u32 fn_80309A00(PadState* s, s32 i) {
     if (i == -999) {
         return 0;
     }
-    // NONMATCHING (86.8%): retail uses an orc/srwi unsigned-compare idiom.
-    return s->fb4[i] < 1;
+    return (u32)s->fb4[i] >= 1;
 }
 
 extern "C" u8 fn_80309A38(PadState* s, s32 i) {
@@ -389,6 +393,8 @@ extern "C" void fn_8030AC4C(PadState* s) {
     s->vtbl = lbl_804AA8C8;
     lbl_8053AD30 = s;
 }
+
+static u8 lbl_805076E8[0x10];
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.

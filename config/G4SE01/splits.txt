@@ -2786,6 +2786,7 @@ Game/tu_802E2074.cpp:
 	extabindex  start:0x8001C03C end:0x8001C06C
 	.text       start:0x802E2074 end:0x802E2990
 	.ctors      start:0x8045C30C end:0x8045C310
+	.bss        start:0x804D4768 end:0x804D4914
 
 Game/gnl2.cpp:
 	extab       start:0x8000CF5C end:0x8000CF84
@@ -3010,12 +3011,14 @@ Game/tu_80301CD0.cpp:
 	extabindex  start:0x8001C894 end:0x8001C9F0
 	.text       start:0x80301CD0 end:0x803099FC
 	.ctors      start:0x8045C394 end:0x8045C398
+	.bss        start:0x804DBC18 end:0x805076E8
 
 Game/tu_803099FC.cpp:
 	extab       start:0x8000D614 end:0x8000D644
 	extabindex  start:0x8001C9F0 end:0x8001CA38
 	.text       start:0x803099FC end:0x8030AE84
 	.ctors      start:0x8045C398 end:0x8045C39C
+	.bss        start:0x805076E8 end:0x80507764
 	.sdata2     start:0x80541670 end:0x80541688
 
 Game/twtg.cpp:

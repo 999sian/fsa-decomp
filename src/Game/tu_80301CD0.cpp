@@ -12,9 +12,28 @@ extern u8 lbl_8053ACE0[4];
 extern u8 lbl_8053ACE8[4];
 extern u8 lbl_8053ACEC[4];
 extern u8 lbl_8053ACF0[4];
-extern s32 lbl_80504A18[4];
-extern s32 lbl_80504A28[4];
-extern u32 lbl_80506D38[4];
+struct Elem28_80301CD0 {
+    Elem28_80301CD0();
+    u8 pad[0x28];
+};
+// This TU's .bss (0x804DBC18-0x805076E8), in retail order.
+static u8 lbl_804DBC18[0x20000];
+static u8 lbl_804FBC18[0x8E00];
+static s32 lbl_80504A18[4];
+static s32 lbl_80504A28[4];
+static Elem28_80301CD0 lbl_80504A38[0x40];
+static Elem28_80301CD0 lbl_80505438[0xA0];
+static u32 lbl_80506D38[4];
+static u8 lbl_80506D48[0x40];
+static u8 lbl_80506D88[0x10];
+static u8 lbl_80506D98[0x10];
+static u8 lbl_80506DA8[0x10];
+static u8 lbl_80506DB8[0x10];
+static u8 lbl_80506DC8[0x10];
+static u8 lbl_80506DD8[0x10];
+static u8 lbl_80506DE8[0x1A0];
+static u8 lbl_80506F88[0x260];
+static u8 lbl_805071E8[0x400];
 
 extern "C" u8 fn_80301CD0(void* p) {
     s32 i = fn_8022F340();
@@ -138,3 +157,19 @@ extern "C" void* fn_80309014(void* p, s16 how) {
     return p;
 }
 
+
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md).
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
