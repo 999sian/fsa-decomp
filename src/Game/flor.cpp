@@ -246,4 +246,95 @@ extern "C" u8 fn_8020DDFC(char* this_) {
     return r;
 }
 
+extern "C" void fn_801F317C(void* this_, void* out);
+extern "C" s32 fn_8023AE34(void* a, u32 id, void* out);
+extern "C" s32 fn_8023AA18(void* a, u32 id, void* out);
+extern "C" s32 fn_8023AC74(void* a, u32 id, void* out);
+extern "C" s32 fn_8023AD54(void* a, u32 id, void* out);
+extern "C" u8 fn_801CC820(s32 id, void* pos);
+extern "C" u8 fn_801CC538(s32 id, void* a, void* pos, s32* out);
+extern "C" void fn_801CC640(s32 id, s32* a, void* pos);
+extern "C" void* fn_801F856C(void);
+extern "C" char* fn_801F666C(void* base, s32 id);
+extern "C" u8 fn_801EAC54(void* list, u32 v);
+
+extern "C" u8 fn_8020E030(char* this_) {
+    if (*(f32*)(this_ + 0x78) - *(f32*)(this_ + 0x70) <= lbl_8053FA2C ||
+        *(f32*)(this_ + 0x7c) - *(f32*)(this_ + 0x74) <= lbl_8053FA2C) {
+        return 0;
+    }
+    s32 n = -1;
+    f32 pos[2];
+    f32 buf24[3];
+    f32 v[3];
+    u8 bufC[16];
+    s32 id;
+    u8 hit = 0;
+    u8 wall = 0;
+    v[0] = lbl_8053FA2C;
+    v[1] = lbl_8053FA2C;
+    v[2] = lbl_8053FA2C;
+    fn_801F317C(this_, bufC);
+    id = fn_8023AE34(bufC, *(u32*)(this_ + 0x4), pos);
+    if (id >= 0) {
+        hit = fn_801CC820(id, v);
+    } else {
+        id = fn_8023AA18(bufC, *(u32*)(this_ + 0x4), pos);
+        if (id >= 0) {
+            wall = 1;
+        } else {
+            id = fn_8023AC74(bufC, *(u32*)(this_ + 0x4), pos);
+            if (id >= 0) {
+                fn_801CC538(id, pos, buf24, &n);
+            } else {
+                id = fn_8023AD54(bufC, *(u32*)(this_ + 0x4), pos);
+                if (id >= 0) {
+                    fn_801CC640(id, &n, v);
+                }
+            }
+        }
+    }
+    u8 r = 0;
+    if (id >= 0) {
+    if (hit) {
+        r = 1;
+    } else if (wall) {
+        if (fn_801EAC20(this_ + 0x1dc, id)) {
+            r = 1;
+        }
+    } else {
+        id = n;
+        if (id >= 0) {
+            char* a = fn_801F666C(fn_801F856C(), id);
+            if (a != 0 && fn_801EAC54(this_ + 0x1dc, *(u32*)(a + 0x198))) {
+                r = 1;
+            }
+        }
+    }
+    if (r) {
+        f32 p3[3];
+        p3[0] = pos[0];
+        p3[1] = pos[1];
+        p3[2] = lbl_8053FA2C;
+        fn_801CB538(*(u32*)(this_ + 0x4), p3, 0, 0);
+    }
+    if (r) {
+    fn_801F0E34(this_, 0x5007d, 0);
+    u8 ok = 0;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 3:
+    case 5:
+    case 6:
+    case 8:
+        ok = 1;
+        break;
+    }
+    if (ok) {
+        fn_8020ED5C(this_, 4);
+    }
+    }
+    }
+    return r;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
