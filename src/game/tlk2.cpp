@@ -29,4 +29,17 @@ void fn_803B89D4(void) {}
 
 }
 
+// ---- fn_803B89D8: TLK2 setup ----
+#include "JSystem/JUtility/TColor.h"
+extern "C" void fn_8037F2FC(u32 a, u32 b, u8 c, JUtility::TColor color, f32 x, f32 y, f32 z, f32 w);
+
+extern "C" void fn_803B89D8(void* thisPtr) {
+	char* p = (char*)thisPtr;
+	*(u32*)(p + 0x234) = *(u32*)(p + 0x90) & 0xFFFF;
+	*(u8*)(p + 0x23c) = *(u32*)(p + 0x90) >> 28;
+	*(u32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 16) & 0xFFF;
+	fn_8037F2FC(*(u32*)(p + 0x234), *(u32*)(p + 0x238), *(u8*)(p + 0x23c), JUtility::TColor(0xFF0000FF),
+	            *(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14), *(f32*)(p + 0x14));
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

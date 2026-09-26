@@ -2848,6 +2848,7 @@ game/knbn.cpp:
 	.text       start:0x8038F9F4 end:0x8039003C
 	.ctors      start:0x8045C524 end:0x8045C528
 	.bss        start:0x8050E018 end:0x8050E084
+	.sdata2     start:0x80543158 end:0x80543168
 
 game/tu_80390818.cpp:
 	extab       start:0x8000EED8 end:0x8000EF38

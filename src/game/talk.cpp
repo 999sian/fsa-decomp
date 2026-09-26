@@ -27,6 +27,44 @@ void fn_80394194(void) {}
 
 }
 
+
+// ---- fn_80394198: TALK update ----
+#include "JSystem/JGeometry/Vec.h"
+extern "C" u8 fn_8038AD24(u32 a, u32 b, u32 c, u32 d, JGeometry::TVec3<f32>* pos, u32 flags);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802DCD0C(void* mgr);
+extern "C" u8 fn_80384C58(u32 a, u32 b);
+
+extern "C" void fn_80394198(void* thisPtr) {
+	char* p = (char*)thisPtr;
+	u32 flags = *(u32*)(p + 0x90);
+	u32 hi = flags >> 28;
+	u32 lo = flags & 0x0FFFFFFF;
+	switch (*(s32*)(p + 0x230)) {
+	case 0: {
+		u32 id = *(u32*)(p + 0x4);
+		JGeometry::TVec3<f32> pos(*(Vec*)(p + 0xc));
+		if (fn_8038AD24(hi, lo, *(u32*)(p + 0x234), id, &pos, 0x1004)) {
+			*(s32*)(p + 0x230) = 1;
+		} else {
+			*(u8*)(p + 0x11c) = 0;
+		}
+		break;
+	}
+	case 1:
+		*(s16*)(p + 0x238) = *(s16*)(p + 0x238) - 1;
+		if (*(s16*)(p + 0x238) > 0) {
+			if (!fn_802DCD0C(fn_802D6A9C())) {
+				break;
+			}
+		}
+		if (fn_80384C58(hi, *(u32*)(p + 0x234))) {
+			*(u8*)(p + 0x11c) = 0;
+		}
+		break;
+	}
+}
+
 // ---- from src/Game/Talk_SetParams.cpp ----
 // TALK: setParams.
 extern "C" {
