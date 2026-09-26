@@ -684,6 +684,49 @@ add:
     }
     return 0;
 }
+u8 Player_GetField_0x454(char*);
+bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) {
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (!force && isDying(p)) {
+        return 0;
+    }
+    if (Player_GetField_0x454(p)) {
+        return 0;
+    }
+    char* base = (char*)PTR(p, 0x3b4);
+    if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) == 0 && F32(p, 0x10) > h) {
+        return 0;
+    }
+    if (U8(p, 0xcee) != 0) {
+        return 0;
+    }
+    if (U8(p, 0x1216) != 0) {
+        return 0;
+    }
+    if (U8(p, 0x1215) != 0) {
+        return 0;
+    }
+    if (U8(p, 0xcf0) != 0) {
+        return 0;
+    }
+    if (S32(p, 0x1238) > 0) {
+        return 0;
+    }
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    JGeometry::TBox2<f32> b(*(JGeometry::TBox2<f32>*)(p + 0x4c0));
+    const JGeometry::TBox2<f32>* o = (const JGeometry::TBox2<f32>*)box;
+    b.i.setMax(o->i);
+    b.f.setMin(o->f);
+    bool r = 0;
+    if (b.f.x >= b.i.x && b.f.y >= b.i.y) {
+        r = 1;
+    }
+    return r;
+}
 BOOL fn_80272DCC(char* p, const f32* box, s32 a, s32 b) {
     if (GetBusyLocked(p)) {
         return 0;
