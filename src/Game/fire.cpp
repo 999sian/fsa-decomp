@@ -48,6 +48,27 @@ extern "C" void fn_802BAB80(char* p) {
 }
 
 // ---- fn_802BBDFC_dtor.cpp ----
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+
+extern "C" void fn_802BABEC(char* p, void* pos, u8 flag) {
+    if (flag == 0) {
+        if (*(s32*)(p + 0x264) == 0 || *(s32*)(p + 0x264) == 1 || *(s32*)(p + 0x264) == 5) {
+            s32 n = *(s32*)(p + 0x260);
+            if (n < 0) {
+                Actor_CreateByID(fn_801F856C(), 'BLZE', *(u32*)(p + 0x4), pos,
+                                 (*(s32*)(p + 0x98) << 4) | 0xf, -1, -1);
+            } else {
+                Actor_CreateByID(fn_801F856C(), 'BLZE', *(u32*)(p + 0x4), pos,
+                                 (*(s32*)(p + 0x98) << 4) | n, -1, *(s32*)(p + 0x110));
+            }
+        }
+    } else {
+        Actor_CreateByID(fn_801F856C(), 'BLZE', *(u32*)(p + 0x4), pos,
+                         (*(s32*)(p + 0x98) << 4) | 0x18f, -1, -1);
+    }
+}
+
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
 extern "C" void fn_801EE434(void* handle);
