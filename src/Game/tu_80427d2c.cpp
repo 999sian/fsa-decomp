@@ -5,83 +5,11 @@
 #include <dolphin/os.h>
 #include <dolphin/vi.h>
 #include <string.h>
-
+#include <dolphin/dvd.h>
+#include "JSystem/JAudio/System/JASDriver.h"
 
 struct Obj8042E1E4 { u8 pad[0x1c]; u16 m1C; u8 pad2[2]; u32 m20; };
 
-
-
-
-extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e);
-extern "C" s32 fn_80427D60();
-extern "C" s32 fn_80427D94();
-extern "C" s32 fn_80427DB4(void* a, s32 b);
-extern "C" s32 fn_80427DD4(s32, s32 a, s32 b, s32 c, s32 d);
-extern "C" s32 fn_80427E08();
-extern "C" s32 fn_80427E28();
-extern "C" s32 fn_80427E58(void* this_, s32 idx);
-extern "C" void* fn_80427F34(s32 i);
-extern "C" void* fn_80427F60(void* this_, s16 flag);
-extern "C" void* fn_80428030(void* this_);
-extern "C" void fn_804280C0(f32 v);
-extern "C" s32 fn_80428134();
-extern "C" void fn_804281FC(s32 a, s32 b, s32 c, s32 d);
-extern "C" s32 fn_8042828C(void* p);
-extern "C" void* fn_80428294(void);
-extern "C" s32 fn_8042829C();
-extern "C" void fn_804283B0(void* this_);
-extern "C" void fn_804283D4();
-extern "C" u8 fn_8042840C();
-extern "C" u8 fn_80428448();
-extern "C" void fn_80428524(void* o, u32 v);
-extern "C" u8 fn_8042852C(void* p);
-extern "C" void fn_8042855C(void* p);
-extern "C" u8 fn_8042858C(void* p, u32 prio);
-extern "C" void* fn_804285F4(void*, u32);
-extern "C" u8 fn_80428630();
-extern "C" bool fn_804286A0(s32 a, s32 b, s32 c, s32 d);
-extern "C" s32 fn_804287DC();
-extern "C" u32 fn_804287EC();
-extern "C" s32 fn_80428810(void* dst);
-extern "C" s32 fn_80428858(void* dst);
-extern "C" void fn_80429DE0();
-extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v);
-extern "C" void* fn_8042E1F4();
-extern "C" u16 fn_8042E1FC(Obj8042E1E4* o);
-extern "C" void fn_8042E204(u32 a);
-extern "C" u8 fn_8042E22C();
-extern "C" void fn_8042E250(u32 a);
-extern "C" void fn_8042E278();
-extern "C" u8 fn_8042E29C(u32 a);
-extern "C" void fn_8042E2C4(u32 a);
-extern "C" void fn_8042E2EC(u32 a);
-extern "C" void fn_8042E314(u32 a);
-extern "C" void fn_8042E33C(u32 a);
-extern "C" void fn_8042E364();
-extern "C" void fn_8042E388();
-extern "C" void fn_8042E3AC();
-extern "C" void fn_8042E3D0();
-extern "C" void fn_8042E3F4();
-extern "C" void fn_8042E418();
-extern "C" void fn_8042E43C(u32 a);
-extern "C" void fn_8042E4C4(u32 a);
-extern "C" void fn_8042E4EC(u32 a);
-extern "C" void fn_8042E514(u32 a);
-extern "C" void fn_8042E53C(u32 a);
-extern "C" void fn_8042E564(u32 a);
-extern "C" void fn_8042E58C();
-extern "C" void fn_8042E5B0(u32 a);
-extern "C" void fn_8042E5D8();
-extern "C" void fn_8042E5FC(u32 a);
-extern "C" void fn_8042E624(u32 a);
-extern "C" void fn_8042E64C(u32 a);
-extern "C" void fn_8042E674();
-extern "C" void fn_8042E698(u32 a);
-extern "C" void fn_8042E6C0();
-extern "C" void fn_8042E6E4(u32 a);
-extern "C" void fn_8042E70C(u32 a);
-extern "C" void fn_8042E734();
-extern "C" void* fn_8042E780(void* o);
 // ---- from src/Game/Dtor_lbl804B15D0_80427F60.cpp ----
 // fn_80427F60 - lbl_804B15D0: destructor. Reinstalls the base vtable,
 // calls own virtual slot 0 (byte offset 0x8) on this->0x4/0x8/0xc if
@@ -95,7 +23,6 @@ extern void* lbl_804B15D0[];
 struct Slot0 {
     virtual void slot0(s32 arg);
 };
-
 
 // ---- from src/Game/fn_80428030_ctor.cpp ----
 class SubObj_8042B12C {
@@ -121,33 +48,24 @@ private:
 
 extern void* lbl_804B15D0[];
 
-
 // ---- from src/Game/fn_804281FC.cpp ----
 // fn_804281FC + fn_8042828C + fn_80428294 - 3 helpers bundled.
 // fn_804281FC(a,b,c,d): if fn_804286A0(a,b,c,d) succeeds, forwards a
 // chained lookup (fn_8042828C(fn_80428294())) plus 4 offset-adjusted
 // args to fn_804288A0, then calls fn_80428A88().
-extern "C" void fn_804288A0(s32 x, s32 a, s32 b, s32 c, s32 d);
-extern "C" void fn_80428A88(void);
 
 extern void* sManager__8JUTVideo;
 extern s32 lbl_8053AEA4;
 extern s32 lbl_8053AEA8;
-extern u32 lbl_8052BEC0[];
-
-
-
 
 // ---- from src/Game/fn_804283B0.cpp ----
 extern "C" void free__7JKRHeapFPvP7JKRHeap(void* this_, int flag);
-
-
 
 // ---- small leaf accessors and manager forwarders (0x8042E1E4-) ----
 extern void* lbl_8053AE7C;
 extern void* lbl_8053AE80;
 extern void* lbl_8053AE84;
-extern "C" void fn_8042ACCC(void*, u32);
+extern "C" void* fn_8042ACCC(void*, u32);
 extern "C" void fn_8042AD10(void*, u32);
 extern "C" void fn_8042A708(void*, u32);
 extern "C" void fn_8042A74C(void*, u32);
@@ -178,27 +96,78 @@ extern "C" void fn_8042B054(void*);
 
 extern void* sManager__10JFWDisplay;
 
-
 // ---- THP movie player core (0x80427D2C-) ----
+struct THPTextureSet { u8* ytexture; u8* utexture; u8* vtexture; u32 frameNumber; };
+struct THPReadBuffer { u8* ptr; s32 frameNumber; s32 isValid; };
+struct THPAudioBuffer { s16* buffer; s16* curPtr; u32 validSample; };
+struct THPHeader {
+    char magic[4];
+    u32 version;
+    u32 bufSize;
+    u32 audioMaxSamples;
+    f32 frameRate;
+    u32 numFrames;
+    u32 firstFrameSize;
+    u32 movieDataSize;
+    u32 compInfoDataOffsets;
+    u32 offsetDataOffsets;
+    u32 movieDataOffsets;
+    u32 finalFrameDataOffsets;
+};
+struct THPFrameCompInfo { u32 numComponents; u8 frameComp[16]; };
 struct THPPlayerState {
-    u8 pad0[0x50];
-    u32 m50;
-    u8 pad54[0x80 - 0x54];
-    u8 videoInfo[0xc];
+    DVDFileInfo fileInfo;
+    THPHeader header;
+    THPFrameCompInfo compInfo;
+    u32 videoInfo[3];
     u8 audioInfo[0x10];
-    u8 pad9C[0xa0 - 0x9c];
+    u8* mBufEnd;
     u8 open;
     u8 state;
     u8 internalState;
-    u8 padA3[0xc0 - 0xa3];
+    u8 playFlag;
+    u8 audioExist;
+    u8 padA5[3];
+    s32 dvdError;
+    s32 videoError;
+    u8 onMemory;
+    u8 padB1[3];
+    u8* movieData;
+    u8 padB8[0xc0 - 0xb8];
     u32 initReadFrame;
-    u8 padC4[0xf0 - 0xc4];
-    u32 mF0;
-    u32 mF4;
-    struct { u8 pad[0xc]; u32 frameNumber; }* dispTextureSet;
+    u8 padC4[0xc8 - 0xc4];
+    s64 retraceCount;
+    s32 prevCount;
+    s32 curCount;
+    s32 mD8;
+    f32 curVolume;
+    f32 targetVolume;
+    f32 deltaVolume;
+    s32 rampCount;
+    u8 padEC[0xf0 - 0xec];
+    s32 mF0;
+    s32 mF4;
+    THPTextureSet* dispTextureSet;
     u32 mFC;
+    THPReadBuffer readBuffer[10];
+    THPTextureSet textureSet[3];
+    THPAudioBuffer audioBuffer[3];
 };
-extern THPPlayerState lbl_8052AAD0;
+// .bss of this TU (0x8052A540-0x8052BFD8)
+static u8 lbl_8052A540[0x460];
+static u8 lbl_8052A9A0[0x100];
+static u32 lbl_8052AAA0[3];
+static u32 lbl_8052AAAC[3];
+static u32 lbl_8052AAB8[6];
+static THPPlayerState lbl_8052AAD0;
+static u8 lbl_8052ACA0[0x40] __attribute__((aligned(32)));
+static OSMessageQueue lbl_8052ACE0;
+static OSMessageQueue lbl_8052AD00;
+static OSMessage lbl_8052AD20[8];
+static s16 lbl_8052AD40[2][0x460] __attribute__((aligned(32)));
+static u32 lbl_8052BEC0[3];
+static u32 lbl_8052BECC[0x43];
+
 extern u8 lbl_8053AEBD;
 extern u8 lbl_8053AEBC;
 extern u16 lbl_8053AEBE;
@@ -207,255 +176,127 @@ extern void* lbl_8053AEB4;
 extern void* lbl_8053AEAC;
 extern void* lbl_8053AE90;
 extern void* lbl_804B15C0[];
-extern "C" void fn_80428978();
-extern "C" void fn_80429400();
-extern "C" void fn_80429748();
-extern "C" u8 fn_80429454(void*, s32);
-extern "C" s32 fn_80428C6C();
-extern "C" void fn_80428A28();
-extern "C" void fn_80428CBC();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 struct RenderModeHolder { u8 pad[4]; u16 fbWidth; u16 efbHeight; };
-extern u32 lbl_8052BECC[];
+
+extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_80427D60();
+extern "C" s32 fn_80427D94();
+extern "C" s32 fn_80427DB4(void* a, s32 b);
+extern "C" s32 fn_80427DD4(s32, s32 a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_80427E08();
+extern "C" s32 fn_80427E28();
+extern "C" s32 fn_80427E58(void* this_, s32 idx);
+extern "C" void* fn_80427F34(s32 i);
+extern "C" void* fn_80427F60(void* this_, s16 flag);
+extern "C" void* fn_80428030(void* this_);
+extern "C" void fn_804280C0(f32 v);
+extern "C" s32 fn_80428134();
+extern "C" void fn_804281FC(s32 a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_8042828C(void* p);
+extern "C" void* fn_80428294(void);
+extern "C" s32 fn_8042829C();
+extern "C" void fn_804283B0(void* this_);
+extern "C" void fn_804283D4();
+extern "C" u8 fn_8042840C();
+extern "C" u8 fn_80428448();
+extern "C" void fn_80428524(void* o, u32 v);
+extern "C" u8 fn_8042852C(void* p);
+extern "C" void fn_8042855C(void* p);
+extern "C" u8 fn_8042858C(void* p, u32 prio);
+extern "C" void* fn_804285F4(void*, u32);
+extern "C" u8 fn_80428630();
+extern "C" bool fn_804286A0(s32 a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_804286B4(s32 vol, s32 time);
+extern "C" s32 fn_804287DC();
+extern "C" u32 fn_804287EC();
+extern "C" s32 fn_80428810(void* dst);
+extern "C" s32 fn_80428858(void* dst);
+extern "C" s32 fn_804288A0(void* rmode, s32 x, s32 y, s32 w, s32 h);
+extern "C" void fn_80428978();
+extern "C" s32 fn_80428A28();
+extern "C" void fn_80428A88();
+extern "C" void fn_80428C38(u8 v);
+extern "C" s32 fn_80428C6C();
+extern "C" void fn_80428CBC(u32 retraceCount);
+extern "C" u8 fn_80428F74();
+extern "C" u8 fn_804290B4();
+extern "C" void fn_80429120();
+extern "C" s32 fn_804291F0(u8* buffer);
+extern "C" s32 fn_80429400();
+extern "C" u8 fn_80429454(void* fileName, u8 onMemory);
+extern "C" void fn_80429748();
+extern "C" u8 fn_80429784(s32 audioSystem);
+extern "C" void* fn_80429850();
+extern "C" void fn_80429894(THPTextureSet* buffer);
+extern "C" void fn_804298C4();
+extern "C" void fn_804298EC();
+extern "C" s16* fn_80429918(s32 sample);
+extern "C" void fn_80429DE0();
+extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v);
+extern "C" void* fn_8042E1F4();
+extern "C" u16 fn_8042E1FC(Obj8042E1E4* o);
+extern "C" void fn_8042E204(u32 a);
+extern "C" u8 fn_8042E22C();
+extern "C" void fn_8042E250(u32 a);
+extern "C" void fn_8042E278();
+extern "C" u8 fn_8042E29C(u32 a);
+extern "C" void* fn_8042E2C4(u32 a);
+extern "C" void fn_8042E2EC(u32 a);
+extern "C" void fn_8042E314(u32 a);
+extern "C" void fn_8042E33C(u32 a);
+extern "C" void fn_8042E364();
+extern "C" void fn_8042E388();
+extern "C" void fn_8042E3AC();
+extern "C" void fn_8042E3D0();
+extern "C" void fn_8042E3F4();
+extern "C" void fn_8042E418();
+extern "C" void fn_8042E43C(u32 a);
+extern "C" void fn_8042E4C4(u32 a);
+extern "C" void fn_8042E4EC(u32 a);
+extern "C" void fn_8042E514(u32 a);
+extern "C" void fn_8042E53C(u32 a);
+extern "C" void fn_8042E564(u32 a);
+extern "C" void fn_8042E58C();
+extern "C" void fn_8042E5B0(u32 a);
+extern "C" void fn_8042E5D8();
+extern "C" void fn_8042E5FC(u32 a);
+extern "C" void fn_8042E624(u32 a);
+extern "C" void fn_8042E64C(u32 a);
+extern "C" void fn_8042E674();
+extern "C" void fn_8042E698(u32 a);
+extern "C" void fn_8042E6C0();
+extern "C" void fn_8042E6E4(u32 a);
+extern "C" void fn_8042E70C(u32 a);
+extern "C" void fn_8042E734();
+extern "C" void* fn_8042E780(void* o);
 extern u32 lbl_8053AEB0;
-extern "C" void fn_804291F0(void*);
 extern "C" u8 fn_80428AC8(s32, s32);
-extern "C" void fn_804286B4(s32, s32);
-extern "C" void fn_80429784(s32);
 extern "C" void* fn_8042E758();
 extern "C" void* alloc__7JKRHeapFUli(void*, u32, int);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+extern "C" u32 AIGetDSPSampleRate(void);
+extern "C" void GXDrawDone(void);
+extern "C" void fn_80429E08(void*);
+extern "C" void fn_80429BE4(u8*, u8*, u8*, s16, s16, s16, s16, s16, s16);
+extern "C" void fn_8042A2CC();
+extern u8 lbl_8053AE88;
+
+extern "C" u32 VIGetNextField(void);
+extern "C" u32 VIGetTvFormat(void);
+extern OSMessage lbl_8053AE8C;
+
+extern "C" void DCInvalidateRange(void*, u32);
+extern "C" void DCStoreRange(void*, u32);
+extern "C" void LCEnable(void);
+extern "C" void LCDisable(void);
+extern "C" u8 fn_8042B148();
+extern "C" void fn_804299C0(s16*, s32, s32);
+extern s32 lbl_8053AEA0;
+extern u32 lbl_8053AE94;
+extern u32 lbl_8053AE98;
+extern u32 lbl_8053AE9C;
+extern char lbl_80543ABC[];
 
 extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e) {
     if (lbl_8053AEBD) {
@@ -576,7 +417,7 @@ extern "C" s32 fn_80428134() {
     }
     u32 frame;
     if (lbl_8052AAD0.open && lbl_8052AAD0.dispTextureSet) {
-        frame = (lbl_8052AAD0.dispTextureSet->frameNumber + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.m50;
+        frame = (lbl_8052AAD0.dispTextureSet->frameNumber + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames;
     } else {
         return -1;
     }
@@ -593,7 +434,7 @@ extern "C" s32 fn_80428134() {
 
 extern "C" void fn_804281FC(s32 a, s32 b, s32 c, s32 d) {
     if (fn_804286A0(a, b, c, d)) {
-        fn_804288A0(fn_8042828C(fn_80428294()), lbl_8053AEA4 + a, lbl_8053AEA8 + b, lbl_8052BEC0[0] + c, lbl_8052BEC0[1] + d);
+        fn_804288A0((void*)fn_8042828C(fn_80428294()), lbl_8053AEA4 + a, lbl_8053AEA8 + b, lbl_8052BEC0[0] + c, lbl_8052BEC0[1] + d);
         fn_80428A88();
     }
 }
@@ -676,7 +517,7 @@ extern "C" u8 fn_80428448() {
     fn_80428810(lbl_8052BECC);
     lbl_8053AEA4 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->fbWidth - lbl_8052BEC0[0]) >> 1;
     lbl_8053AEA8 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->efbHeight - lbl_8052BEC0[1]) >> 1;
-    fn_804291F0(lbl_8053AEAC);
+    fn_804291F0((u8*)lbl_8053AEAC);
     u32 r;
     if (lbl_8052BECC[3] != 1) {
         r = OSGetTick() % lbl_8052BECC[3];
@@ -734,11 +575,47 @@ extern "C" bool fn_804286A0(s32 a, s32 b, s32 c, s32 d) {
     return lbl_8053AEB8 == 2;
 }
 
+extern "C" s32 fn_804286B4(s32 vol, s32 time) {
+    s32 samplePerMs;
+    BOOL old;
+    if (lbl_8052AAD0.open && lbl_8052AAD0.audioExist) {
+        if (AIGetDSPSampleRate() == 0) {
+            samplePerMs = 32;
+        } else {
+            samplePerMs = 48;
+        }
+        if (vol > 127) {
+            vol = 127;
+        }
+        if (vol < 0) {
+            vol = 0;
+        }
+        if (time > 60000) {
+            time = 60000;
+        }
+        if (time < 0) {
+            time = 0;
+        }
+        old = OSDisableInterrupts();
+        lbl_8052AAD0.targetVolume = vol;
+        if (time) {
+            lbl_8052AAD0.rampCount = samplePerMs * time;
+            lbl_8052AAD0.deltaVolume = (lbl_8052AAD0.targetVolume - lbl_8052AAD0.curVolume) / lbl_8052AAD0.rampCount;
+        } else {
+            lbl_8052AAD0.rampCount = 0;
+            lbl_8052AAD0.curVolume = lbl_8052AAD0.targetVolume;
+        }
+        OSRestoreInterrupts(old);
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" s32 fn_804287DC() { return lbl_8052AAD0.state; }
 
 extern "C" u32 fn_804287EC() {
     if (lbl_8052AAD0.open) {
-        return lbl_8052AAD0.m50;
+        return lbl_8052AAD0.header.numFrames;
     }
     return 0;
 }
@@ -757,6 +634,385 @@ extern "C" s32 fn_80428858(void* dst) {
         return 1;
     }
     return 0;
+}
+
+extern "C" s32 fn_804288A0(void* rmode, s32 x, s32 y, s32 w, s32 h) {
+    if (lbl_8052AAD0.open && lbl_8052AAD0.state && lbl_8052AAD0.dispTextureSet) {
+        fn_80429E08(rmode);
+        fn_80429BE4(lbl_8052AAD0.dispTextureSet->ytexture, lbl_8052AAD0.dispTextureSet->utexture,
+                    lbl_8052AAD0.dispTextureSet->vtexture, x, y, lbl_8052AAD0.videoInfo[0], lbl_8052AAD0.videoInfo[1],
+                    w, h);
+        fn_8042A2CC();
+        return (lbl_8052AAD0.dispTextureSet->frameNumber + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames;
+    }
+    return -1;
+}
+
+extern "C" void fn_80428978() {
+    if (lbl_8052AAD0.open && lbl_8052AAD0.state) {
+        lbl_8052AAD0.state = lbl_8052AAD0.internalState = 0;
+        VISetPostRetraceCallback((VIRetraceCallback)lbl_8053AE90);
+        if (!lbl_8052AAD0.onMemory) {
+            DVDCancel(&lbl_8052AAD0.fileInfo.cb);
+            fn_8042E3AC();
+        }
+        fn_8042E388();
+        if (lbl_8052AAD0.audioExist) {
+            fn_8042E364();
+            fn_804298C4();
+        }
+        while (fn_80429850()) {
+        }
+        lbl_8052AAD0.curVolume = lbl_8052AAD0.targetVolume;
+        lbl_8052AAD0.rampCount = 0;
+    }
+}
+
+extern "C" s32 fn_80428A28() {
+    if (lbl_8052AAD0.open && (lbl_8052AAD0.state == 1 || lbl_8052AAD0.state == 4)) {
+        lbl_8052AAD0.state = 2;
+        lbl_8052AAD0.prevCount = 0;
+        lbl_8052AAD0.curCount = 0;
+        lbl_8052AAD0.retraceCount = -1;
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" void fn_80428A88() {
+    void* p;
+    GXDrawDone();
+    if (lbl_8053AE88) {
+        while (true) {
+            p = fn_80429850();
+            if (!p) {
+                break;
+            }
+            fn_8042E2EC((u32)p);
+        }
+    }
+}
+
+extern "C" void fn_80428C38(u8 v) {
+    OSSendMessage(&lbl_8052ACE0, (OSMessage)v, 1);
+}
+
+extern "C" s32 fn_80428C6C() {
+    OSMessage msg;
+    if (OSReceiveMessage(&lbl_8052ACE0, &msg, 0) == 1) {
+        return (s32)msg != 0;
+    }
+    return -1;
+}
+
+extern "C" void fn_80428CBC(u32 retraceCount) {
+    THPTextureSet* textureSet;
+    if (lbl_8053AE90) {
+        ((VIRetraceCallback)lbl_8053AE90)(retraceCount);
+    }
+    textureSet = (THPTextureSet*)0xFFFFFFFF;
+    if (lbl_8052AAD0.open && lbl_8052AAD0.state == 2) {
+        if (lbl_8052AAD0.dvdError || lbl_8052AAD0.videoError) {
+            lbl_8052AAD0.state = lbl_8052AAD0.internalState = 5;
+            return;
+        }
+        lbl_8052AAD0.retraceCount++;
+        if (lbl_8052AAD0.retraceCount == 0) {
+            if (fn_804290B4()) {
+                if (lbl_8052AAD0.audioExist) {
+                    if (lbl_8052AAD0.mF0 - lbl_8052AAD0.mF4 <= 1) {
+                        textureSet = (THPTextureSet*)fn_8042E2C4(0);
+                        lbl_8052AAD0.mF0++;
+                        lbl_8052AAD0.mD8--;
+                    } else {
+                        lbl_8052AAD0.internalState = 2;
+                    }
+                } else {
+                    textureSet = (THPTextureSet*)fn_8042E2C4(0);
+                }
+            } else {
+                lbl_8052AAD0.retraceCount = -1;
+            }
+        } else {
+            if (lbl_8052AAD0.retraceCount == 1) {
+                lbl_8052AAD0.internalState = 2;
+            }
+            if (fn_80428F74()) {
+                if (lbl_8052AAD0.audioExist) {
+                    if (lbl_8052AAD0.mF0 - lbl_8052AAD0.mF4 <= 1) {
+                        textureSet = (THPTextureSet*)fn_8042E2C4(0);
+                        lbl_8052AAD0.mF0++;
+                        lbl_8052AAD0.mD8--;
+                    }
+                } else {
+                    textureSet = (THPTextureSet*)fn_8042E2C4(0);
+                }
+            }
+        }
+        if (textureSet && textureSet != (THPTextureSet*)0xFFFFFFFF) {
+            if (lbl_8052AAD0.dispTextureSet) {
+                fn_80429894(lbl_8052AAD0.dispTextureSet);
+            }
+            lbl_8052AAD0.dispTextureSet = textureSet;
+        }
+        if (!(lbl_8052AAD0.playFlag & 1)) {
+            if (lbl_8052AAD0.audioExist) {
+                if (lbl_8052AAD0.mF4 + lbl_8052AAD0.initReadFrame == lbl_8052AAD0.header.numFrames && lbl_8052AAD0.mFC == 0) {
+                    lbl_8052AAD0.state = lbl_8052AAD0.internalState = 3;
+                }
+            } else {
+                u32 frame;
+                if (lbl_8052AAD0.dispTextureSet) {
+                    frame = lbl_8052AAD0.dispTextureSet->frameNumber + lbl_8052AAD0.initReadFrame;
+                } else {
+                    frame = lbl_8052AAD0.initReadFrame - 1;
+                }
+                if (frame == lbl_8052AAD0.header.numFrames - 1 && textureSet == 0) {
+                    lbl_8052AAD0.state = lbl_8052AAD0.internalState = 3;
+                }
+            }
+        }
+    }
+}
+
+extern "C" u8 fn_80428F74() {
+    if (lbl_8052AAD0.videoInfo[2] & 1) {
+        if (VIGetNextField() == 0) {
+            return 1;
+        }
+    } else if (lbl_8052AAD0.videoInfo[2] & 2) {
+        if (VIGetNextField() == 1) {
+            return 1;
+        }
+    } else {
+        s32 frameRate = lbl_8052AAD0.header.frameRate * 100.0f;
+        if (VIGetTvFormat() == 1) {
+            lbl_8052AAD0.curCount = (lbl_8052AAD0.retraceCount * frameRate) / 5000;
+        } else {
+            lbl_8052AAD0.curCount = (lbl_8052AAD0.retraceCount * frameRate) / 5994;
+        }
+        if (lbl_8052AAD0.prevCount != lbl_8052AAD0.curCount) {
+            lbl_8052AAD0.prevCount = lbl_8052AAD0.curCount;
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" u8 fn_804290B4() {
+    if (lbl_8052AAD0.videoInfo[2] & 1) {
+        if (VIGetNextField() == 0) {
+            return 1;
+        }
+    } else if (lbl_8052AAD0.videoInfo[2] & 2) {
+        if (VIGetNextField() == 1) {
+            return 1;
+        }
+    } else {
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" void fn_80429120() {
+    s32 i;
+    if (!lbl_8052AAD0.onMemory) {
+        for (i = 0; i < 10; i++) {
+            fn_8042E4C4((u32)&lbl_8052AAD0.readBuffer[i]);
+        }
+    }
+    for (i = 0; i < 3; i++) {
+        fn_8042E2EC((u32)&lbl_8052AAD0.textureSet[i]);
+    }
+    if (lbl_8052AAD0.audioExist) {
+        for (i = 0; i < 3; i++) {
+            fn_8042E33C((u32)&lbl_8052AAD0.audioBuffer[i]);
+        }
+    }
+    OSInitMessageQueue(&lbl_8052ACE0, &lbl_8053AE8C, 1);
+}
+
+extern "C" s32 fn_804291F0(u8* buffer) {
+    u32 i;
+    u8* ptr;
+    u32 ysize;
+    u32 uvsize;
+    if (lbl_8052AAD0.open && lbl_8052AAD0.state == 0) {
+        if (lbl_8052AAD0.onMemory) {
+            lbl_8052AAD0.movieData = buffer;
+            ptr = buffer + lbl_8052AAD0.header.movieDataSize;
+        } else {
+            ptr = buffer;
+            for (i = 0; i < 10; i++) {
+                lbl_8052AAD0.readBuffer[i].ptr = ptr;
+                ptr += OSRoundUp32B(lbl_8052AAD0.header.bufSize);
+            }
+        }
+        ysize = OSRoundUp32B(lbl_8052AAD0.videoInfo[0] * lbl_8052AAD0.videoInfo[1]);
+        uvsize = OSRoundUp32B(lbl_8052AAD0.videoInfo[0] * lbl_8052AAD0.videoInfo[1] / 4);
+        for (i = 0; i < 3; i++) {
+            lbl_8052AAD0.textureSet[i].ytexture = ptr;
+            DCInvalidateRange(ptr, ysize);
+            ptr += ysize;
+            lbl_8052AAD0.textureSet[i].utexture = ptr;
+            DCInvalidateRange(ptr, uvsize);
+            ptr += uvsize;
+            lbl_8052AAD0.textureSet[i].vtexture = ptr;
+            DCInvalidateRange(ptr, uvsize);
+            ptr += uvsize;
+        }
+        if (lbl_8052AAD0.audioExist) {
+            for (i = 0; i < 3; i++) {
+                lbl_8052AAD0.audioBuffer[i].buffer = (s16*)ptr;
+                lbl_8052AAD0.audioBuffer[i].curPtr = (s16*)ptr;
+                lbl_8052AAD0.audioBuffer[i].validSample = 0;
+                ptr += OSRoundUp32B(lbl_8052AAD0.header.audioMaxSamples * 4);
+            }
+        }
+        lbl_8052AAD0.mBufEnd = ptr;
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" s32 fn_80429400() {
+    if (lbl_8052AAD0.open && lbl_8052AAD0.state == 0) {
+        lbl_8052AAD0.open = 0;
+        DVDClose(&lbl_8052AAD0.fileInfo);
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" u8 fn_80429454(void* fileName, u8 onMemory) {
+    s32 offset;
+    s32 i;
+    if (!lbl_8053AE88) {
+        return 0;
+    }
+    if (lbl_8052AAD0.open) {
+        return 0;
+    }
+    memset(&lbl_8052AAD0.videoInfo, 0, sizeof(lbl_8052AAD0.videoInfo));
+    memset(&lbl_8052AAD0.audioInfo, 0, sizeof(lbl_8052AAD0.audioInfo));
+    if (!DVDOpen((char*)fileName, &lbl_8052AAD0.fileInfo)) {
+        return 0;
+    }
+    if (DVDReadPrio(&lbl_8052AAD0.fileInfo, lbl_8052ACA0, 0x40, 0, 2) < 0) {
+        DVDClose(&lbl_8052AAD0.fileInfo);
+        return 0;
+    }
+    memcpy(&lbl_8052AAD0.header, lbl_8052ACA0, sizeof(THPHeader));
+    if (strcmp(lbl_8052AAD0.header.magic, "THP") != 0) {
+        DVDClose(&lbl_8052AAD0.fileInfo);
+        return 0;
+    }
+    if (lbl_8052AAD0.header.version != 0x11000) {
+        DVDClose(&lbl_8052AAD0.fileInfo);
+        return 0;
+    }
+    offset = lbl_8052AAD0.header.compInfoDataOffsets;
+    if (DVDReadPrio(&lbl_8052AAD0.fileInfo, lbl_8052ACA0, 0x20, offset, 2) < 0) {
+        DVDClose(&lbl_8052AAD0.fileInfo);
+        return 0;
+    }
+    memcpy(&lbl_8052AAD0.compInfo, lbl_8052ACA0, sizeof(THPFrameCompInfo));
+    offset += sizeof(THPFrameCompInfo);
+    lbl_8052AAD0.audioExist = 0;
+    for (i = 0; i < lbl_8052AAD0.compInfo.numComponents; i++) {
+        switch (lbl_8052AAD0.compInfo.frameComp[i]) {
+        case 0:
+            if (DVDReadPrio(&lbl_8052AAD0.fileInfo, lbl_8052ACA0, 0x20, offset, 2) < 0) {
+                DVDClose(&lbl_8052AAD0.fileInfo);
+                return 0;
+            }
+            memcpy(&lbl_8052AAD0.videoInfo, lbl_8052ACA0, sizeof(lbl_8052AAD0.videoInfo));
+            offset += sizeof(lbl_8052AAD0.videoInfo);
+            break;
+        case 1:
+            if (DVDReadPrio(&lbl_8052AAD0.fileInfo, lbl_8052ACA0, 0x20, offset, 2) < 0) {
+                DVDClose(&lbl_8052AAD0.fileInfo);
+                return 0;
+            }
+            memcpy(&lbl_8052AAD0.audioInfo, lbl_8052ACA0, sizeof(lbl_8052AAD0.audioInfo));
+            lbl_8052AAD0.audioExist = 1;
+            offset += sizeof(lbl_8052AAD0.audioInfo);
+            break;
+        default:
+            return 0;
+        }
+    }
+    lbl_8052AAD0.state = lbl_8052AAD0.internalState = 0;
+    lbl_8052AAD0.playFlag = 0;
+    lbl_8052AAD0.onMemory = onMemory;
+    lbl_8052AAD0.open = 1;
+    lbl_8052AAD0.curVolume = 127.0f;
+    lbl_8052AAD0.targetVolume = lbl_8052AAD0.curVolume;
+    lbl_8052AAD0.rampCount = 0;
+    return 1;
+}
+
+extern "C" void fn_80429748() {
+    LCDisable();
+    fn_804298C4();
+    lbl_8053AE88 = 0;
+    lbl_8052AAD0.dvdError = 0;
+    lbl_8052AAD0.videoError = 0;
+}
+
+extern "C" u8 fn_80429784(s32 audioSystem) {
+    BOOL old;
+    memset(&lbl_8052AAD0, 0, sizeof(THPPlayerState));
+    LCEnable();
+    OSInitMessageQueue(&lbl_8052AD00, lbl_8052AD20, 3);
+    if (!fn_8042B148()) {
+        return 0;
+    }
+    old = OSDisableInterrupts();
+    lbl_8053AEA0 = audioSystem;
+    lbl_8053AE94 = 0;
+    lbl_8053AE98 = 0;
+    lbl_8053AE9C = 0;
+    fn_804298EC();
+    OSRestoreInterrupts(old);
+    if (lbl_8053AEA0 == 0) {
+        memset(lbl_8052AD40, 0, sizeof(lbl_8052AD40));
+        DCStoreRange(lbl_8052AD40, sizeof(lbl_8052AD40));
+    }
+    lbl_8053AE88 = 1;
+    return 1;
+}
+
+extern "C" void* fn_80429850() {
+    OSMessage msg;
+    if (OSReceiveMessage(&lbl_8052AD00, &msg, 0) == 1) {
+        return msg;
+    }
+    return 0;
+}
+
+extern "C" void fn_80429894(THPTextureSet* buffer) {
+    OSSendMessage(&lbl_8052AD00, buffer, 0);
+}
+
+extern "C" void fn_804298C4() {
+    JASDriver::registerMixCallback(0, MixMode_Mono);
+}
+
+extern "C" void fn_804298EC() {
+    JASDriver::registerMixCallback(fn_80429918, MixMode_InterLeave);
+}
+
+extern "C" s16* fn_80429918(s32 sample) {
+    BOOL old;
+    if (!lbl_8052AAD0.open || lbl_8052AAD0.internalState != 2 || !lbl_8052AAD0.audioExist) {
+        return 0;
+    }
+    old = OSEnableInterrupts();
+    lbl_8053AE94 ^= 1;
+    fn_804299C0(lbl_8052AD40[lbl_8053AE94], 0, sample);
+    OSRestoreInterrupts(old);
+    return lbl_8052AD40[lbl_8053AE94];
 }
 
 extern "C" void fn_80429DE0() {}
@@ -794,7 +1050,7 @@ extern "C" u8 fn_8042E29C(u32 a) { return fn_8042858C(lbl_8053AE7C, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E2C4(u32 a) { fn_8042ACCC(lbl_8053AE80, a); }
+extern "C" void* fn_8042E2C4(u32 a) { return fn_8042ACCC(lbl_8053AE80, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
