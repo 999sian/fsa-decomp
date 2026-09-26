@@ -1691,5 +1691,13 @@ JSystem/JParticle/JPATexture.cpp:
 	.text       start:0x800F3920 end:0x800F39EC
 	.data       start:0x8049C3A8 end:0x8049C3B8
 
+Game/actors/BOTS.cpp:
+	extab       start:0x80005898 end:0x800058A8
+	extabindex  start:0x80011C14 end:0x80011C2C
+	.text       start:0x800FEDD0 end:0x800FF060
+	.ctors      start:0x8045BE0C end:0x8045BE10
+	.data       start:0x8049C7F0 end:0x8049C844
+	.bss        start:0x804BACF8 end:0x804BAD64
+
 Runtime.PPCEABI.H/__mem.c:
 	.init       start:0x8000540C end:0x80005544
