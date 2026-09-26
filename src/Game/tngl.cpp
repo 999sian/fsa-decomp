@@ -95,15 +95,21 @@ extern "C" void fn_803DA2F4(u8* this_) {
         s32 p = fn_8022EA0C(0);
         if (p >= 0) {
             fn_8023DE58(p);
-            *(JGeometry::TVec3<f32>*)(this_ + 0xC) = *fn_8023E724(p);
-            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + 16.0f;
+            JGeometry::TVec3<f32>* v = fn_8023E724(p);
+            *(f32*)(this_ + 0xC) = v->x;
+            *(f32*)(this_ + 0x10) = v->y;
+            *(f32*)(this_ + 0x14) = v->z;
+            *(f32*)(this_ + 0x10) += 16.0f;
             *(s32*)(this_ + 4) = fn_8023DE58(p);
         }
     }
     u8* q = this_;
     for (s32 i = 0; i < 4; i++) {
-        *(JGeometry::TVec3<f32>*)(q + 0x260) = *fn_8023E724(i);
-        *(f32*)(q + 0x264) = *(f32*)(q + 0x264) + 16.0f;
+        JGeometry::TVec3<f32>* v = fn_8023E724(i);
+        *(f32*)(q + 0x260) = v->x;
+        *(f32*)(q + 0x264) = v->y;
+        *(f32*)(q + 0x268) = v->z;
+        *(f32*)(q + 0x264) += 16.0f;
         q += 0xC;
     }
     *(f32*)(this_ + 0x254) = *(f32*)(this_ + 0xC);
