@@ -1,6 +1,6 @@
 // TU 0x802153a8-0x802157b8.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- CosmeticPhaseCycle_802153A8.cpp ----
 extern "C" u8 fn_801CD580(u8 val);

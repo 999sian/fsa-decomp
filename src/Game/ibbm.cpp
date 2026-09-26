@@ -1,6 +1,6 @@
 // TU 0x8020fe50-0x80210630 (actor IBBM).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80210314_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);

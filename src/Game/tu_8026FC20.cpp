@@ -1,6 +1,6 @@
 // TU 0x8026fc20-0x8027e5bc.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- Player_GetLinkedHandleOrInvalid.cpp ----
 // The player-object "special-state" cluster: accessors/mutators on a

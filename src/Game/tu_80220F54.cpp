@@ -1,6 +1,6 @@
 // TU 0x80220f54-0x80221b44.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- stub_80221158.cpp ----
 // fn_80221158 - universal shared-actor-default hook: unconditionally

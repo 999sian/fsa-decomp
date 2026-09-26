@@ -1,6 +1,6 @@
 // TU 0x8022461c-0x80226fc8.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_802265DC.cpp ----
 // fn_802265DC - trivial thin wrapper: tail-calls not-yet-seen fn_802260DC

@@ -1,6 +1,6 @@
 // TU 0x8021d734-0x8021f064 (actor NAVI).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_8021ED04_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);

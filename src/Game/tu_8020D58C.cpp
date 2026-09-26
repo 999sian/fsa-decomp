@@ -1,6 +1,6 @@
 // TU 0x8020d58c-0x8020db74.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_8020D60C.cpp ----
 // fn_8020D60C(this) - ctor: constructs an 80-element, 24-byte-per-

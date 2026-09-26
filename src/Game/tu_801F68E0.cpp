@@ -1,6 +1,6 @@
 // TU 0x801f68e0-0x801f9484.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- stub_801f714c.cpp ----
 // fn_801F714C(shortPtr, target, divisor, maxStep) - integer/angle "ease

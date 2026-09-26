@@ -1,6 +1,6 @@
 // TU 0x80210d90-0x80212ac0 (actor RUSA).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80212760_dtor.cpp ----
 extern "C" void* RusaRegistry_GetOrInit();

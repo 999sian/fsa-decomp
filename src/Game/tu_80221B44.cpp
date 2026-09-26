@@ -1,6 +1,6 @@
 // TU 0x80221b44-0x802223fc.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80221B44_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);

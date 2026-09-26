@@ -1,6 +1,6 @@
 // TU 0x8020c0a8-0x8020cca8 (actor ZASL).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- Zasl_ctor_8020CA34.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);

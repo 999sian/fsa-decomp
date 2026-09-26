@@ -1,6 +1,6 @@
 // TU 0x80218cf4-0x8021a570 (actor KEPO).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- ReturnZero_80218F80.cpp ----
 // NEW ACTOR (vtable lbl_804A6550). Two trivial vtable-slot stubs, both return 0.

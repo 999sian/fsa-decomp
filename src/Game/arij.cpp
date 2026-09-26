@@ -1,6 +1,6 @@
 // TU 0x80212e3c-0x80213e00 (actor ARIJ).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80212E3C_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);

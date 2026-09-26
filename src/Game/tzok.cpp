@@ -1,6 +1,6 @@
 // TU 0x80204d44-0x80206b30 (actor TZOK).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_802064E0.cpp ----
 extern "C" void* fn_802D6A9C(void);

@@ -1,6 +1,6 @@
 // TU 0x80222cc4-0x802233a4.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80222CC4.cpp ----
 extern "C" void fn_80221184(void* this_);

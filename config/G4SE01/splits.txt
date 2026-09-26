@@ -2395,12 +2395,15 @@ Game/slef.cpp:
 	extabindex  start:0x80017D04 end:0x80017D40
 	.text       start:0x80213E00 end:0x80214244
 	.ctors      start:0x8045C130 end:0x8045C134
+	.bss        start:0x804CD038 end:0x804CD0A4
+	.sdata2     start:0x8053FB80 end:0x8053FB90
 
 Game/tu_80214244.cpp:
 	extab       start:0x8000A150 end:0x8000A160
 	extabindex  start:0x80017D40 end:0x80017D58
 	.text       start:0x80214244 end:0x802144F0
 	.ctors      start:0x8045C134 end:0x8045C138
+	.bss        start:0x804CD138 end:0x804CD1A4
 
 Game/tu_802144F0.cpp:
 	extab       start:0x8000A160 end:0x8000A1C0
@@ -2420,6 +2423,8 @@ Game/tu_802157B8.cpp:
 	extabindex  start:0x80017E00 end:0x80017E0C
 	.text       start:0x802157B8 end:0x80215A94
 	.ctors      start:0x8045C140 end:0x8045C144
+	.data       start:0x804A64C0 end:0x804A64E0
+	.bss        start:0x804CD438 end:0x804CD4A4
 
 Game/tu_80215A94.cpp:
 	extab       start:0x8000A1D8 end:0x8000A258
@@ -2432,6 +2437,8 @@ Game/tu_802188B0.cpp:
 	extabindex  start:0x80017FD4 end:0x80018004
 	.text       start:0x802188B0 end:0x80218CF4
 	.ctors      start:0x8045C158 end:0x8045C15C
+	.bss        start:0x804CDA40 end:0x804CDAAC
+	.sdata2     start:0x8053FC48 end:0x8053FC58
 
 Game/kepo.cpp:
 	extab       start:0x8000A328 end:0x8000A38C
@@ -2450,24 +2457,30 @@ Game/tu_8021B904.cpp:
 	extabindex  start:0x80018100 end:0x80018124
 	.text       start:0x8021B904 end:0x8021BCBC
 	.ctors      start:0x8045C168 end:0x8045C16C
+	.bss        start:0x804CDE40 end:0x804CDEAC
 
 Game/tu_8021BFA8.cpp:
 	extab       start:0x8000A404 end:0x8000A40C
 	extabindex  start:0x80018130 end:0x8001813C
 	.text       start:0x8021BFA8 end:0x8021C2B4
 	.ctors      start:0x8045C170 end:0x8045C174
+	.bss        start:0x804CE040 end:0x804CE0AC
+	.sdata2     start:0x8053FCE0 end:0x8053FCF8
 
 Game/tu_8021CDE4.cpp:
 	extab       start:0x8000A434 end:0x8000A444
 	extabindex  start:0x80018178 end:0x80018190
 	.text       start:0x8021CDE4 end:0x8021D26C
 	.ctors      start:0x8045C17C end:0x8045C180
+	.sdata2     start:0x8053FD30 end:0x8053FD38
 
 Game/ezge.cpp:
 	extab       start:0x8000A444 end:0x8000A46C
 	extabindex  start:0x80018190 end:0x800181CC
 	.text       start:0x8021D26C end:0x8021D734
 	.ctors      start:0x8045C180 end:0x8045C184
+	.bss        start:0x804CE440 end:0x804CE4AC
+	.sdata2     start:0x8053FD38 end:0x8053FD50
 
 Game/navi.cpp:
 	extab       start:0x8000A46C end:0x8000A4DC
@@ -2486,6 +2499,8 @@ Game/fbal.cpp:
 	extabindex  start:0x800182EC end:0x80018334
 	.text       start:0x802201D8 end:0x802205E0
 	.ctors      start:0x8045C194 end:0x8045C198
+	.bss        start:0x804CE960 end:0x804CE9CC
+	.sdata2     start:0x8053FE10 end:0x8053FE18
 
 Game/znlj.cpp:
 	extab       start:0x8000A55C end:0x8000A5B0

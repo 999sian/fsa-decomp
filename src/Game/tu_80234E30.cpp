@@ -1,6 +1,6 @@
 // TU 0x80234e30-0x8023fbf0.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- Player_GetCapabilityFlag.cpp ----
 // Player_GetCapabilityFlag - the same master-enable-flag read as Player_GetCapabilityFlagByIndex

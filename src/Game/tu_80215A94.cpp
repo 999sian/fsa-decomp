@@ -1,6 +1,6 @@
 // TU 0x80215a94-0x8021693c.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80216238.cpp ----
 extern "C" void* Hrmn_InitSlotStateType3(void* obj);

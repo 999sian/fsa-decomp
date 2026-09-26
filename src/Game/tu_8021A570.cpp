@@ -1,6 +1,6 @@
 // TU 0x8021a570-0x8021af28.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "Game/esd/types.h"
+#include "types.h"
 
 // ---- InitDefaultRecord.cpp ----
 // Small POD-record zero-initializer. Used by KEPO and EOWL as a plain default-init record.
