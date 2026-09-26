@@ -1,6 +1,6 @@
 // TU 0x8021d734-0x8021f064 (actor NAVI).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_8021ED04_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
@@ -37,3 +37,5 @@ extern "C" void* fn_8021ED04(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

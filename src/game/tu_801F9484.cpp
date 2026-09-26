@@ -1,6 +1,6 @@
 // TU 0x801f9484-0x80204638.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- Gsck_ctor_801FF744.cpp ----
 extern "C" void* Actor_ctor(void* this_);
@@ -3338,3 +3338,5 @@ extern "C" void* fn_80204298(void* this_) {
     *(void**)this_ = lbl_804AB6D8;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

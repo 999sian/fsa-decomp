@@ -1,6 +1,6 @@
 // TU 0x8026fc20-0x8027e5bc.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- Player_GetLinkedHandleOrInvalid.cpp ----
 // The player-object "special-state" cluster: accessors/mutators on a
@@ -76,3 +76,5 @@ extern "C" s32 fn_80270A8C(void* playerObj) {
 	}
 	return 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

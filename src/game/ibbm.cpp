@@ -1,6 +1,6 @@
 // TU 0x8020fe50-0x80210630 (actor IBBM).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80210314_dtor.cpp ----
 extern "C" void* fn_801EE434(void* handle);
@@ -48,3 +48,5 @@ extern "C" void* fn_802103C0(void* this_) {
     *(s32*)((char*)this_ + 0x2b4) = 0;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

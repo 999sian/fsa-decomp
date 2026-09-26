@@ -1,6 +1,6 @@
 // TU 0x80212ac0-0x80212e3c.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- RusaRegistry_Unregister_80212BA0.cpp ----
 // RusaRegistry_Unregister/RusaRegistry_Unregister - UNREGISTER for the "active
@@ -59,3 +59,5 @@ void RusaRegistry_Register(void* registryPtr, s32 id) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

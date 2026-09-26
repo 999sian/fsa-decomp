@@ -1,6 +1,6 @@
 // TU 0x8021cde4-0x8021d26c.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- stub_8021cff8.cpp ----
 // fn_8021CFF8(this) - boolean gate: this->0x564==3 AND this->0x59e==0.
@@ -27,3 +27,5 @@ s32 fn_8021D020(void* thisObj) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

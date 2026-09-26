@@ -1,6 +1,6 @@
 // TU 0x802205e0-0x80220f54 (actor ZNLJ).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_802205E0_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
@@ -59,3 +59,5 @@ extern "C" void* dtor_80220CA0(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

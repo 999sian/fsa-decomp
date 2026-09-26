@@ -1,6 +1,6 @@
 // TU 0x80207d84-0x80208e5c (actor SLMN).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- Slmn_ctor_80208BE0.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
@@ -18,3 +18,5 @@ extern "C" void* fn_80208BE0(void* this_) {
     *(u8*)((char*)this_ + 0x34a) = 0;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -1,6 +1,6 @@
 // TU 0x8020d58c-0x8020db74.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_8020D60C.cpp ----
 // fn_8020D60C(this) - ctor: constructs an 80-element, 24-byte-per-
@@ -38,3 +38,5 @@ extern "C" void fn_8020D690(void* this_) {
     *(u32*)(t + 0x4) = 0;
     *(u32*)(t + 0x788) = 0;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

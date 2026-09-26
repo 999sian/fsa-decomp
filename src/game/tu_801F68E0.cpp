@@ -1,6 +1,6 @@
 // TU 0x801f68e0-0x801f9484.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- stub_801f714c.cpp ----
 // fn_801F714C(shortPtr, target, divisor, maxStep) - integer/angle "ease
@@ -93,3 +93,5 @@ extern "C" void fn_801F857C(void* actorPoolBase) {
 
     fn_80456120(*(void**)((u8*)actorPoolBase + 0x200c));
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

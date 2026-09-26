@@ -1,6 +1,6 @@
 // TU 0x80212e3c-0x80213e00 (actor ARIJ).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80212E3C_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
@@ -116,3 +116,5 @@ extern "C" void* fn_80213BA0(void* this_) {
     *(void**)this_ = lbl_804A6340;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

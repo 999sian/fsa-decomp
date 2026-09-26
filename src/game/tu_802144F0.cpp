@@ -1,6 +1,6 @@
 // TU 0x802144f0-0x802153a8.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80214900.cpp ----
 extern "C" void* SpatialRegistry_GetBase();
@@ -64,3 +64,5 @@ void Slk2_InitVtablePairRecord(void* thisPtr) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

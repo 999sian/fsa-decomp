@@ -1,6 +1,6 @@
 // TU 0x802188b0-0x80218cf4.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80218A8C.cpp ----
 extern "C" s32 fn_801CD664(s32 range);
@@ -15,3 +15,5 @@ extern "C" void* fn_80218A8C(void* this_) {
     *(u16*)((char*)this_ + 0x4) = (u16)(r + 0x3c);
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

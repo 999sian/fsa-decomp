@@ -1,6 +1,6 @@
 // TU 0x80210d90-0x80212ac0 (actor RUSA).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_80212760_dtor.cpp ----
 extern "C" void* RusaRegistry_GetOrInit();
@@ -32,3 +32,5 @@ extern "C" void* fn_80212760(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

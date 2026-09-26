@@ -1,6 +1,6 @@
 // TU 0x80204d44-0x80206b30 (actor TZOK).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_802064E0.cpp ----
 extern "C" void* GetRoomConfigRecord(void);
@@ -56,3 +56,5 @@ extern "C" void* fn_80206758(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

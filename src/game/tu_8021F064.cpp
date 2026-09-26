@@ -1,6 +1,6 @@
 // TU 0x8021f064-0x8021f4b0.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- GrowableArray_PushBack_8021F25C.cpp ----
 // GrowableArray_PushBack - push-back: appends the incoming word to a growable
@@ -22,3 +22,5 @@ void GrowableArray_Reset(void* thisObj) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

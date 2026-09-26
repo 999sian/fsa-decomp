@@ -2383,6 +2383,7 @@ game/tu_802153A8.cpp:
 	extabindex  start:0x80017DE8 end:0x80017E00
 	.text       start:0x802153A8 end:0x802157B8
 	.ctors      start:0x8045C13C end:0x8045C140
+	.bss        start:0x804CD338 end:0x804CD3A4
 
 game/tu_802157B8.cpp:
 	extab       start:0x8000A1D0 end:0x8000A1D8
@@ -2983,5 +2984,6 @@ game/tu_80455930.cpp:
 	extabindex  start:0x80021568 end:0x80021580
 	.text       start:0x80455930 end:0x80455CA4
 	.ctors      start:0x8045C60C end:0x8045C610
+
 Runtime.PPCEABI.H/__mem.c:
 	.init       start:0x8000540C end:0x80005544

@@ -1,6 +1,6 @@
 // TU 0x80220f54-0x80221b44.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- stub_80221158.cpp ----
 // fn_80221158 - universal shared-actor-default hook: unconditionally
@@ -21,3 +21,5 @@ extern "C" void fn_8022149C(void* this_, s32 param);
 extern "C" void fn_80221160(void* this_) {
     fn_8022149C(this_, 0);
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

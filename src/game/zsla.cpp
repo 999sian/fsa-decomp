@@ -1,6 +1,6 @@
 // TU 0x802223fc-0x80222cc4 (actor ZSLA).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_802223FC_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
@@ -68,3 +68,5 @@ extern "C" void* fn_80222A58(void* this_) {
     *(s32*)((char*)this_ + 0x2bc) = 0;
     return this_;
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -1,6 +1,6 @@
 // TU 0x80214244-0x802144f0.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- GetCurrentSlotPtr.cpp ----
 // Both operate on a 0xc8-byte-stride array embedded at this+0, selected by a current-index byte at this->0x190.
@@ -29,3 +29,5 @@ void Slk2_ResetFlags7(void* thisPtr) {
 	*(u8*)(p + 0xc9) = 0;
 }
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

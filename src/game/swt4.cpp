@@ -1,6 +1,6 @@
 // TU 0x802a964c-0x802aa364 (actor SWT4).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- fn_802A964C_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
@@ -28,3 +28,5 @@ extern "C" {
 void Swt4_Draw(void) {}
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

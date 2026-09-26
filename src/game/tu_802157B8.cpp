@@ -1,6 +1,6 @@
 // TU 0x802157b8-0x80215a94.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- Slk2_ResetBlock0x0.cpp ----
 // Slk2_ResetBlock0x0(this): trivial single zero at +0x0 - the RESET/init half
@@ -14,3 +14,5 @@ void Slk2_ResetBlock0x0(void* thisPtr) {
 }
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

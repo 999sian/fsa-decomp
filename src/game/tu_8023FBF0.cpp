@@ -1,6 +1,6 @@
 // TU 0x8023fbf0-0x80255f4c.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
-#include "game/esd/types.h"
+#include "types.h"
 
 // ---- Player_GetLinkTargetIndex.cpp ----
 // Player_GetLinkTargetIndex - raw accessor for the "linked player index" field
@@ -335,3 +335,5 @@ extern "C" {
 void EmptyHook_80252FBC(void) {}
 
 }
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
