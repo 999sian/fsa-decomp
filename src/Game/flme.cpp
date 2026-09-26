@@ -70,4 +70,132 @@ extern "C" void fn_8015DE10(char* this_) {
     }
 }
 
+extern const f32 lbl_8053D5EC;
+extern const f32 lbl_8053D59C;
+extern const f32 lbl_8053D5A0;
+extern const f32 lbl_8053D5F0;
+extern const f32 lbl_8053D5F4;
+extern const f32 lbl_8053D618;
+extern const f32 lbl_8053D61C;
+extern const f32 lbl_8053D620;
+extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+
+extern "C" void fn_8015EDF4(char* p) {
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x264) = 0;
+    *(s32*)(p + 0x268) = 0;
+    *(s32*)(p + 0x26c) = 0;
+    *(s32*)(p + 0x270) = 0;
+    *(s32*)(p + 0x254) = 0;
+    *(f32*)(p + 0x3c) = lbl_8053D5EC;
+    *(f32*)(p + 0x40) = lbl_8053D5EC;
+    *(f32*)(p + 0x44) = lbl_8053D5EC;
+    *(s32*)(p + 0x118) = 4;
+    *(s32*)(p + 0x258) = (*(u32*)(p + 0x90) >> 18) & 3;
+    *(s32*)(p + 0x25c) = (*(u32*)(p + 0x90) >> 20) & 1;
+    if ((*(u32*)(p + 0x90) & 0xff00) == 0) {
+        *(u16*)(p + 0x94) = *(u32*)(p + 0x90) & 0xff;
+        *(s32*)(p + 0x98) = (*(u32*)(p + 0x90) >> 16) & 3;
+        if (*(u16*)(p + 0x94) == 4 || *(u16*)(p + 0x94) == 5) {
+            *(s32*)(p + 0x98) = 3;
+        } else {
+            *(s32*)(p + 0x114) = 4;
+        }
+        *(f32*)(p + 0x260) = lbl_8053D5EC;
+        if (*(u16*)(p + 0x94) >= 9) {
+            *(u16*)(p + 0x94) = 0;
+        }
+        switch (*(u16*)(p + 0x94)) {
+        case 4:
+        case 5:
+            if (*(u16*)(p + 0x94) == 5) {
+                *(f32*)(p + 0x260) = lbl_8053D59C;
+            } else {
+                *(f32*)(p + 0x260) = lbl_8053D5A0;
+            }
+            *(s32*)(p + 0x270) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, *(f32*)(p + 0x260), 0x3e, 0, -1, 0, 0, 1);
+            *(s32*)(p + 0x264) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, *(f32*)(p + 0x260), 0x3b, 0, -1, 0, 0, 1);
+            *(s32*)(p + 0x268) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, *(f32*)(p + 0x260), 0x3c, 1, 1, 0, 0, 1);
+            *(s32*)(p + 0x26c) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, *(f32*)(p + 0x260), 0x3d, 1, 1, 0, 0, 1);
+            *(s32*)(p + 0x240) = 1;
+            *(s32*)(p + 0x234) = 8;
+            *(s32*)(p + 0x230) = 0;
+            break;
+        case 0:
+        case 6:
+            *(f32*)(p + 0x260) = lbl_8053D59C;
+            *(s32*)(p + 0x240) = 1;
+            *(s32*)(p + 0x234) = 8;
+            *(s32*)(p + 0x230) = 0;
+            break;
+        case 1:
+            *(s32*)(p + 0x230) = 1;
+            break;
+        case 2:
+            *(s32*)(p + 0x230) = 2;
+            break;
+        case 3:
+            *(s32*)(p + 0x230) = 3;
+            break;
+        }
+        switch (*(s32*)(p + 0x98)) {
+        case 0:
+            *(f32*)(p + 0x3c) = lbl_8053D5F4;
+            *(f32*)(p + 0x40) = lbl_8053D5F0;
+            *(f32*)(p + 0x44) = lbl_8053D5EC;
+            break;
+        case 1:
+            *(f32*)(p + 0x3c) = lbl_8053D618;
+            *(f32*)(p + 0x40) = lbl_8053D5F0;
+            *(f32*)(p + 0x44) = lbl_8053D5EC;
+            break;
+        case 2:
+            *(f32*)(p + 0x3c) = lbl_8053D5EC;
+            *(f32*)(p + 0x40) = lbl_8053D5F4;
+            *(f32*)(p + 0x44) = lbl_8053D5EC;
+            break;
+        case 3:
+            *(f32*)(p + 0x3c) = lbl_8053D5EC;
+            *(f32*)(p + 0x40) = lbl_8053D618;
+            *(f32*)(p + 0x44) = lbl_8053D5EC;
+            break;
+        }
+    } else {
+        *(f32*)(p + 0x60) = lbl_8053D61C;
+        *(f32*)(p + 0x64) = lbl_8053D61C;
+        *(f32*)(p + 0x68) = lbl_8053D620;
+        *(f32*)(p + 0x6c) = lbl_8053D620;
+        *(u16*)(p + 0x94) = (*(u32*)(p + 0x90) >> 8) & 0xff;
+        if (*(u16*)(p + 0x94) >= 9) {
+            *(u16*)(p + 0x94) = 1;
+        }
+        *(s32*)(p + 0x254) = 1;
+        switch (*(u16*)(p + 0x94)) {
+        case 1:
+            *(s32*)(p + 0x230) = 6;
+            break;
+        case 2:
+            *(s32*)(p + 0x230) = 7;
+            break;
+        case 3:
+            *(s32*)(p + 0x230) = 8;
+            break;
+        }
+    }
+    *(s32*)(p + 0x250) = 0;
+    fn_8015EA2C(p);
+    if (*(s32*)(p + 0x240) == 0) {
+        *(f32*)(p + 0x260) = lbl_8053D5EC;
+    }
+    if (*(s32*)(p + 0x230) != 5 && *(s32*)(p + 0x230) != 4) {
+        fn_8015DF7C(p);
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
