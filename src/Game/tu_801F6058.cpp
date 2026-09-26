@@ -206,3 +206,127 @@ extern "C" void fn_801F6068(Rank* this_) {
 		}
 	}
 }
+
+struct TblResMgr {
+	virtual void v0();
+	virtual void v1();
+	virtual void v2();
+	virtual void v3();
+	virtual char* get(u32 type, const char* name);
+	virtual void v5();
+	virtual void v6();
+	virtual void v7();
+	virtual void v8();
+	virtual void v9();
+	virtual s32 getSize(void* res);
+};
+
+struct Tbl {
+	u8 pad0[0x3044];
+	s32 cols; // 0x3044
+	s32 rows; // 0x3048
+	u32* rowKeys; // 0x304c
+	char** rowNames; // 0x3050
+	u32* colKeys; // 0x3054
+	s32* table; // 0x3058
+};
+
+class JKRHeap;
+void* operator new[](unsigned long size, JKRHeap* heap, int align);
+extern const char lbl_8046A048[];
+
+#define TBL_RES (*(TblResMgr**)((char*)lbl_8053AAF8 + 0xa4))
+#define READ4(p) ((u32)(u8)(p)[0] << 24 | (u32)(u8)(p)[1] << 16 | (u32)(u8)(p)[2] << 8 | (u32)(u8)(p)[3])
+
+extern "C" void fn_801F62AC(Tbl* this_, JKRHeap* heap) {
+	char* buf = TBL_RES->get(0x454e4d20, lbl_8046A048);
+	s32 size = TBL_RES->getSize(TBL_RES->get(0x454e4d20, lbl_8046A048));
+
+	this_->cols = 0;
+	for (char* p = buf;; p++) {
+		if (*p == ',') {
+			this_->cols++;
+		} else if (*p == '\n') {
+			break;
+		}
+	}
+	this_->cols--;
+
+	this_->rows = 0;
+	{
+		char* p = buf;
+		for (s32 i = 0; i <= size; i++) {
+			if (*p == '\n') {
+				this_->rows++;
+			}
+			p++;
+		}
+	}
+	this_->rows--;
+
+	this_->rowKeys = new (heap, 0) u32[(this_->rows + 31) & ~31];
+	this_->rowNames = new (heap, 0) char*[(this_->rows + 31) & ~31];
+	this_->colKeys = new (heap, 0) u32[(this_->cols + 31) & ~31];
+	this_->table = new (heap, 0) s32[(this_->rows * this_->cols + 31) & ~31];
+
+	{
+		s32 start = 0;
+		s32 col = 0;
+		char* p = buf;
+		for (s32 i = 0;; i++, p++) {
+			char c = *p;
+			if (c == ',' || c == '\n') {
+				if (col > 1) {
+					this_->colKeys[col - 2] = READ4(buf + start);
+				}
+				if (c != ',') {
+					break;
+				}
+				col++;
+				start = i + 1;
+			}
+		}
+	}
+
+	{
+		s32 start;
+		s32 i;
+		s32 field;
+		s32 row;
+		char* p;
+		start = 0;
+		field = 0;
+		row = 0;
+		p = buf;
+		for (i = 0; i <= size; i++, p++) {
+			char c = *p;
+			if (c == ',' || c == '\n' || c == 0) {
+				if (row > 0 && (c != 0 || field >= 2)) {
+					if (field == 0) {
+						this_->rowKeys[row - 1] = READ4(buf + start);
+					} else if (field == 1) {
+						this_->rowNames[row - 1] = buf + start;
+						*p = 0;
+					} else {
+						s32 v = 0;
+						for (s32 k = start; k < i; k++) {
+							if (buf[k] >= '0' && buf[k] <= '9') {
+								v = v * 10;
+								v += buf[k] - '0';
+							}
+						}
+						this_->table[(row - 1) * this_->cols + field - 2] = v;
+					}
+				}
+				if (c == ',' || c == 0) {
+					field++;
+					start = i + 1;
+				} else if (c == '\n') {
+					start = i + 1;
+					field = 0;
+					row++;
+				}
+			}
+		}
+	}
+}
