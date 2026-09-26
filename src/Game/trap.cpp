@@ -30,6 +30,42 @@ extern "C" void* fn_801643C4(char* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" u8* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, u32 id, const void* ext);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u8* fn_802D6A9C(void);
+extern const char lbl_804662A8[];
+
+// TRAP move check: can the trap move onto pos?
+extern "C" u8 fn_80164424(char* this_, s32 room, void* pos) {
+    u32 id = *(u32*)(this_ + 0x198);
+    u8* mgr = fn_8020D58C();
+    if (fn_8020D6AC(mgr + 4 + mgr[1] * 0x784, room, pos, id, lbl_804662A8) == 1) {
+        return 1;
+    }
+    if (*(s32*)(this_ + 0x24C) == 0) {
+        s32 kind = fn_8022461C(pos, room);
+        if (kind != 0 && kind != 4 && kind != 5 && kind != 6 && kind != 7 && kind != 2 && kind != 3 && kind != 0x50 && kind != 0xE && kind != 0xC && kind != 0x27 && kind != 0x28 && kind != 0x29 && kind != 0x2A && kind != 0x2B && kind != 0x2C && kind != 0x2D && kind != 0x2E && kind != 0x2F && kind != 0x20 && kind != 0xD && kind != 0x39 && kind != 0x3A && kind != 0x3B && kind != 0x4C && kind != 0x4D && kind != 0x4E && kind != 0x4F && kind != 0x24) {
+            if ((u32)(kind - 0x10) <= 2 || kind == 0x13) {
+                *(s32*)(this_ + 0x24C) = 0x78;
+                return 0;
+            }
+            if (kind == 0x25) {
+                return fn_802D6A9C()[0x171] == 0;
+            }
+            if (kind == 0x26) {
+                return fn_802D6A9C()[0x171] == 1;
+            }
+            if (kind != 0x22 || fn_802D6A9C()[0x170] == 1) {
+                return 1;
+            }
+        }
+    } else {
+        *(s32*)(this_ + 0x24C) = *(s32*)(this_ + 0x24C) - 1;
+    }
+    return 0;
+}
+
 // TRAP init (vtable slot 1)
 extern "C" void fn_801650AC(char* this_) {
     *(f32*)(this_ + 0x60) = -6.0f;
