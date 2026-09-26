@@ -78,4 +78,18 @@ Entry_80207548* fn_80207B2C(Entry_80207548* e) {
 }
 }
 
+extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void* fn_801D0F40(void* this_);
+
+extern "C" void* fn_80207AC0(char* p) {
+    fn_801D0F40(p);
+    *(void**)p = lbl_804A5B28;
+    *(u8*)(p + 0x2a8) = 0;
+    *(u8*)(p + 0x2a9) = 0;
+    *(u8*)(p + 0x2aa) = 0;
+    *(u32*)(p + 0x2ac) = 0;
+    __construct_array(p + 0x2b0, (void*)fn_80207B2C, 0, 0x24, 4);
+    return p;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
