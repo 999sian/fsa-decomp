@@ -2823,6 +2823,69 @@ game/ltzr.cpp:
 	.ctors      start:0x8045C43C end:0x8045C440
 	.bss        start:0x80509FF8 end:0x8050A064
 
+game/szsc.cpp:
+	extab       start:0x8000E08C end:0x8000E0A4
+	extabindex  start:0x8001D938 end:0x8001D95C
+	.text       start:0x80347E90 end:0x803481B8
+	.ctors      start:0x8045C454 end:0x8045C458
+	.bss        start:0x8050A5F8 end:0x8050A664
+
+game/htmk.cpp:
+	extab       start:0x8000E104 end:0x8000E124
+	extabindex  start:0x8001D9EC end:0x8001DA1C
+	.text       start:0x8034A6B0 end:0x8034AA40
+	.ctors      start:0x8045C464 end:0x8045C468
+	.rodata     start:0x804720D0 end:0x804720E4
+	.bss        start:0x8050A9F8 end:0x8050AA64
+	.sdata2     start:0x80542508 end:0x80542510
+
+game/svgt.cpp:
+	extab       start:0x8000E25C end:0x8000E274
+	extabindex  start:0x8001DBF0 end:0x8001DC14
+	.text       start:0x803524C8 end:0x8035280C
+	.ctors      start:0x8045C47C end:0x8045C480
+	.bss        start:0x8050B0F8 end:0x8050B164
+	.sdata2     start:0x805426A0 end:0x805426A8
+
+game/rsnp.cpp:
+	extab       start:0x8000E2E4 end:0x8000E304
+	extabindex  start:0x8001DCBC end:0x8001DCEC
+	.text       start:0x80354A44 end:0x80354D64
+	.ctors      start:0x8045C48C end:0x8045C490
+	.bss        start:0x8050B4F8 end:0x8050B564
+	.sdata2     start:0x80542788 end:0x80542790
+
+game/ssmi.cpp:
+	extab       start:0x8000E9AC end:0x8000E9CC
+	extabindex  start:0x8001E694 end:0x8001E6C4
+	.text       start:0x80376394 end:0x80376850
+	.ctors      start:0x8045C4EC end:0x8045C4F0
+	.bss        start:0x8050CF00 end:0x8050CF6C
+	.sdata2     start:0x80542F40 end:0x80542F60
+
+game/tmi2.cpp:
+	extab       start:0x8000E9CC end:0x8000E9E4
+	extabindex  start:0x8001E6C4 end:0x8001E6E8
+	.text       start:0x80376850 end:0x80376B4C
+	.ctors      start:0x8045C4F0 end:0x8045C4F4
+	.bss        start:0x8050D000 end:0x8050D06C
+
+game/ptmi.cpp:
+	extab       start:0x8000E9E4 end:0x8000EA04
+	extabindex  start:0x8001E6E8 end:0x8001E718
+	.text       start:0x80376B4C end:0x80376FA0
+	.ctors      start:0x8045C4F4 end:0x8045C4F8
+	.bss        start:0x8050D100 end:0x8050D16C
+	.sdata2     start:0x80542F60 end:0x80542F78
+
+game/endr.cpp:
+	extab       start:0x8000EA2C end:0x8000EA4C
+	extabindex  start:0x8001E754 end:0x8001E784
+	.text       start:0x80377E20 end:0x80378294
+	.ctors      start:0x8045C4FC end:0x8045C500
+	.bss        start:0x8050D300 end:0x8050D36C
+	.sdata2     start:0x80542FC0 end:0x80542FD0
+
 game/jiji.cpp:
 	extab       start:0x8000EBEC end:0x8000EC48
 	extabindex  start:0x8001E964 end:0x8001E9B8
