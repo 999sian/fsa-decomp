@@ -43,6 +43,35 @@ extern "C" void* fn_802E8A64(void* this_, s16 freeFlag) {
     return this_;
 }
 
+// fn_802E8B18 - MJGR: setParams().
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D75BC(void* rec, u32 id);
+extern "C" void fn_802E8B18(char* p) {
+    *(u32*)(p + 0x248) = *(u32*)(p + 0x90) & 7;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x264) = 0;
+    *(s32*)(p + 0x254) = 0;
+    *(s32*)(p + 0x268) = 0;
+    *(s32*)(p + 0x258) = 0;
+    *(s32*)(p + 0x26c) = 0;
+    *(s32*)(p + 0x25c) = 0;
+    *(s32*)(p + 0x270) = 0;
+    *(s32*)(p + 0x260) = 0;
+    *(s32*)(p + 0x230) = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x240) = 0;
+    if (!fn_802D75BC(fn_802D6A9C(), *(u32*)(p + 0x16c))) {
+        *(s32*)(p + 0x244) = 0;
+    } else if (*(s32*)(p + 0x248) == 0 || *(s32*)(p + 0x248) == 3) {
+        *(s32*)(p + 0x244) = 1;
+        *(s32*)(p + 0x24c) = 20;
+    } else {
+        *(u8*)(p + 0x11c) = 0;
+    }
+}
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
