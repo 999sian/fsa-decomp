@@ -48,6 +48,60 @@ static inline void SafeDestroy(void* obj) {
 	}
 }
 
+// fn_803FF2C4 - releases the 7 sub-objects at 0x18-0x30.
+extern "C" void fn_803FF2C4(void* this_) {
+	char* p = (char*)this_;
+	{
+		void* obj = *(void**)(p + 0x18);
+		if (obj != 0) {
+			SafeDestroy(obj);
+			*(void**)(p + 0x18) = 0;
+		}
+	}
+	{
+		void* obj = *(void**)(p + 0x1c);
+		if (obj != 0) {
+			SafeDestroy(obj);
+			*(void**)(p + 0x1c) = 0;
+		}
+	}
+	{
+		void* obj = *(void**)(p + 0x20);
+		if (obj != 0) {
+			SafeDestroy(obj);
+			*(void**)(p + 0x20) = 0;
+		}
+	}
+	{
+		void* obj = *(void**)(p + 0x24);
+		if (obj != 0) {
+			SafeDestroy(obj);
+			*(void**)(p + 0x24) = 0;
+		}
+	}
+	{
+		void* obj = *(void**)(p + 0x28);
+		if (obj != 0) {
+			SafeDestroy(obj);
+			*(void**)(p + 0x28) = 0;
+		}
+	}
+	{
+		void* obj = *(void**)(p + 0x2c);
+		if (obj != 0) {
+			SafeDestroy(obj);
+			*(void**)(p + 0x2c) = 0;
+		}
+	}
+	{
+		void* obj = *(void**)(p + 0x30);
+		if (obj != 0) {
+			SafeDestroy(obj);
+			*(void**)(p + 0x30) = 0;
+		}
+	}
+}
+
 // fn_804007C4 - actor@lbl_804B0F50: destructor (0x208). Unconditionally
 // dispatches through a global manager sub-object first
 // (lbl_80529DEC->0x18's own vtable, slot1() at offset 0xc, no arg - the
@@ -127,6 +181,101 @@ extern "C" void* fn_804007C4(void* this_, s16 how) {
 		}
 	}
 	return this_;
+}
+
+
+struct _GXRenderModeObj;
+class J2DPrint {
+public:
+	static void* setBuffer(u32 size);
+};
+class JUTVideo {
+public:
+	void setRenderMode(const _GXRenderModeObj* mode);
+	static JUTVideo* sManager;
+};
+extern "C" u32 OSGetResetCode();
+extern "C" u32 VIGetDTVStatus();
+extern "C" void OSSetProgressiveMode(u32 on);
+extern "C" u8 lbl_8048C17C[];
+extern "C" void fn_802B1EFC(void* p);
+extern "C" void fn_804429B4(void* p);
+extern "C" void fn_802B1EB0(void* p);
+extern "C" void fn_802B1DE8(void* p);
+extern "C" void* fn_80401E10(void* a, s32 b, u32 c);
+extern "C" void fn_80139994();
+extern u8 lbl_80479C34[];
+extern void* lbl_8053ACA8;
+extern void* lbl_8053AAF0;
+extern void (*lbl_8053A93C)();
+extern s32 lbl_8053A940;
+extern u8 lbl_8053A951;
+
+struct SubA {
+	SubA() { fn_802B1EFC(this); }
+	u8 pad[8];
+};
+struct SubB {
+	SubB() { fn_804429B4(this); }
+	u8 pad[8];
+};
+
+// fn_804009CC - constructor of the game object at lbl_804B0F50.
+extern "C" void* fn_804009CC(void* this_) {
+	*(void**)this_ = lbl_804B0F50;
+	u8* p = (u8*)this_;
+	lbl_8053AAF0 = p;
+	u8* cfg = lbl_80529DEC;
+	if (cfg[0x223] == 1) {
+		p[0x7a] = 1;
+		cfg[0x223] = 0;
+	} else {
+		p[0x7a] = 0;
+	}
+	if (lbl_80529DEC[0x224] == 1) {
+		if (lbl_80529DEC[0x225] != 1) {
+			p[0x7a] = 1;
+		}
+		lbl_80529DEC[0x224] = 0;
+	}
+	J2DPrint::setBuffer(0x400);
+	if (OSGetResetCode() == 0 || p[0x7a] != 0) {
+		if (VIGetDTVStatus() == 0) {
+			OSSetProgressiveMode(0);
+			JUTVideo::sManager->setRenderMode((_GXRenderModeObj*)lbl_8048C17C);
+		} else {
+			JUTVideo::sManager->setRenderMode((_GXRenderModeObj*)lbl_8048C17C);
+		}
+	}
+	p[0x60] = 0;
+	*(s16*)(p + 0x6e) = 0;
+	*(f32*)(p + 0x64) = 0.0f;
+	p[0x76] = 0;
+	*(s16*)(p + 0x70) = 0;
+	*(s16*)(p + 0x72) = 0;
+	*(f32*)(p + 0x68) = 0.0f;
+	*(s16*)(p + 0x74) = 0x30;
+	p[0x79] = 0;
+	p[0x78] = 0;
+	*(s32*)(p + 0x4) = 0;
+	*(s32*)(p + 0x8) = 0;
+	*(s32*)(p + 0x10) = 0;
+	*(SubA**)(p + 0xc) = new SubA;
+	*(SubB**)(p + 0x14) = new SubB;
+	*(void**)(p + 0x18) = 0;
+	*(void**)(p + 0x1c) = 0;
+	*(void**)(p + 0x20) = 0;
+	*(void**)(p + 0x24) = 0;
+	*(void**)(p + 0x28) = 0;
+	*(void**)(p + 0x2c) = 0;
+	*(void**)(p + 0x30) = 0;
+	fn_802B1EB0(*(void**)(p + 0xc));
+	*(void**)(p + 0x44) = fn_80401E10(lbl_80479C34, 0, *(u32*)(lbl_80529DEC + 8));
+	fn_802B1DE8(lbl_8053ACA8);
+	lbl_8053A951 = 0;
+	lbl_8053A93C = fn_80139994;
+	lbl_8053A940 = 0;
+	return p;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
