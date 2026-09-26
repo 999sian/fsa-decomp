@@ -3122,6 +3122,7 @@ Game/tu_802BA048.cpp:
 	extabindex  start:0x8001B61C end:0x8001B640
 	.text       start:0x802BA048 end:0x802BA334
 	.ctors      start:0x8045C288 end:0x8045C28C
+	.bss        start:0x804D2668 end:0x804D2768
 
 Game/tu_802BA334.cpp:
 	extab       start:0x8000C884 end:0x8000C88C

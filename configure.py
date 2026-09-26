@@ -1313,7 +1313,7 @@ config.libs = [
             Object(NonMatching, "Game/tu_802B7C78.cpp"),
             Object(NonMatching, "Game/tu_802B8F7C.cpp"),
             Object(NonMatching, "Game/tu_802B9CAC.cpp"),
-            Object(NonMatching, "Game/tu_802BA048.cpp"),
+            Object(Matching, "Game/tu_802BA048.cpp"),
             Object(NonMatching, "Game/tu_802BA334.cpp"),
             Object(NonMatching, "Game/fire.cpp", extra_cflags=["-common on"]),
             Object(NonMatching, "Game/tu_802BC83C.cpp"),
