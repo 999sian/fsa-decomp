@@ -241,3 +241,235 @@ u8 fn_804149C0(void) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+
+struct Pane408 {
+	virtual void v08(); virtual void v0c();
+	virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1c();
+	virtual void v20();
+	virtual void setAlpha(int a); // 0x24
+};
+struct Screen408 {
+	virtual void v08(); virtual void v0c();
+	virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1c();
+	virtual void v20(); virtual void v24(); virtual void v28(); virtual void v2c();
+	virtual void v30(); virtual void v34(); virtual void v38();
+	virtual Pane408* search(u64 tag); // 0x3c
+};
+extern u64 lbl_8048C5D0[];
+
+extern "C" void fn_80408F38(u8* self, f32 scale) {
+	for (int i = 0; i < 9; i++) {
+		Pane408* p = (*(Screen408**)(self + 0x14))->search(lbl_8048C5D0[i]);
+		f32 a = self[0x642 + i];
+		p->setAlpha((int)(a * scale));
+	}
+}
+
+extern "C" void fn_8037AA34();
+extern "C" u8 fn_8037AA28();
+
+extern "C" void fn_80409330(u8* self) {
+	fn_8037AA34();
+	if (fn_8037AA28() == 0x1a) {
+		if (!self[0x65d]) {
+			for (int i = 0; i < 15; i++) {
+				(*(Obj240**)(self + 0x278 + i * 4))->f26 = 0;
+				self[0x65d] = 1;
+			}
+		}
+		*(s32*)(self + 0x350) = 0xf;
+	} else if (fn_8037AA28() == 0x19) {
+		*(s32*)(self + 0x668) = 1;
+	}
+	if (self[0x663]) {
+		*(s16*)(self + 0x434) += 0x200;
+		*(s16*)(self + 0x436) += 0x400;
+		*(f32*)(self + 0x3a0) = 15.0f * JMASinShort(*(s16*)(self + 0x434));
+		*(f32*)(self + 0x3a4) = 5.0f * JMASinShort(*(s16*)(self + 0x436));
+	}
+}
+
+struct J2DTextBox {
+	char* getStringPtr() const;
+};
+extern "C" char* strcpy(char*, const char*);
+extern "C" void fn_803837A4(char* buf, s32 v, f32 a, f32 b, s32, s32);
+extern "C" void fn_80402E08(void* part, f32 a, f32 b);
+
+extern "C" void fn_80403F50(u8* self) {
+	if (self[0x65a]) {
+		for (int i = 0; i < 12; i++) {
+			(*(Obj240**)(self + 0x240 + i * 4))->f22 = 0;
+		}
+		fn_803837A4((char*)(self + 0x5dc), *(s32*)(self + 0x390), *(f32*)(*(u8**)(self + 0x270) + 0x18), 1.0f, 0, 0);
+		for (int i = 0; i < 2; i++) {
+			strcpy((*(J2DTextBox**)(*(u8**)(self + 0x270 + i * 4) + 4))->getStringPtr(), (char*)(self + 0x5dc));
+		}
+		for (int i = 0; i < 12; i++) {
+			fn_80402E08(*(void**)(self + 0x240 + i * 4), 0.0f, 100.0f);
+		}
+		self[0x659] = 1;
+	}
+}
+
+struct JPAList { u8 pad[4]; s32 num; u8 pad8[4]; s32 getNum() const { return num; } };
+struct JPABaseEmitter {
+	u8 pad[0xcc];
+	JPAList alive;  // 0xcc
+	JPAList child;  // 0xd8
+	u8 pade4[0xf4 - 0xe4];
+	u32 flags;
+	u32 checkStatus(u32 f) const { return flags & f; }
+	s32 getParticleNumber() const { return alive.getNum() + child.getNum(); }
+	bool isEnd() const { return checkStatus(8) && !getParticleNumber(); }
+};
+struct JPAEmitterManager {
+	void forceDeleteEmitter(JPABaseEmitter*);
+};
+extern "C" void* fn_8013C824();
+
+static inline bool emitterDone(JPABaseEmitter* e) {
+	bool r = false;
+	if (e->isEnd()) r = true;
+	return r;
+}
+
+static inline void killEmitter(JPABaseEmitter** e) {
+	(*(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc))->forceDeleteEmitter(*e);
+	*e = 0;
+}
+
+struct E720 {
+	u8 pad[0x2c8];
+	SoundHolder* sound;
+	u8 pad2cc[0x2ec - 0x2cc];
+	JPABaseEmitter* emitters[3];
+	u8 pad2f8[0x350 - 0x2f8];
+	s32 state;
+	u8 pad354[0x35c - 0x354];
+	s32 timer;
+	u8 pad360[0x664 - 0x360];
+	u8 f664;
+};
+
+extern "C" void fn_8040E720(E720* self) {
+	int n = 0;
+	self->timer++;
+	if (self->timer > 10) {
+		if (self->timer == 0x16) {
+			u32 id = 0x30039;
+			self->sound->play(&id);
+		}
+		for (int i = 0; i < 3; i++) {
+			if (self->emitters[i]) {
+				if (self->emitters[i]->isEnd()) {
+					(*(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc))->forceDeleteEmitter(self->emitters[i]);
+					self->emitters[i] = 0;
+					n++;
+				}
+			} else {
+				n++;
+			}
+		}
+		if (n == 3) {
+			self->timer = 0;
+			self->f664 = 0;
+			self->state = 8;
+		}
+	}
+}
+
+extern "C" void fn_80411A94(u8* self, f32 scale) {
+	(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * scale));
+	(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * scale));
+	(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * (scale = 1.0f - scale)));
+	(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * scale));
+}
+
+struct Tbl8048C1F8 {
+	u8 pad[0x694];
+	s32 vals[12][3];      // 0x694
+	u8 pad724[0x744 - 0x724];
+	u8 next[8][2];        // 0x744
+	u8 prev[8][2];        // 0x754
+};
+extern Tbl8048C1F8 lbl_8048C1F8;
+
+struct T5B10 {
+	u8 pad[0x120];
+	Obj240* p120;
+	Obj240* p124;
+	u8 pad128[0x340 - 0x128];
+	s32 f340;
+	u8 pad344[0x348 - 0x344];
+	s32 f348;
+	s32 f34c;
+	u8 pad350[0x38c - 0x350];
+	u32 f38c;
+	u8 pad390[0x65e - 0x390];
+	u8 f65e;
+};
+
+extern "C" void fn_80405B10(T5B10* self, s32 key) {
+	Tbl8048C1F8* t = &lbl_8048C1F8;
+	int n = 0;
+	for (int j = 0; j < 4; j++) {
+		if (self->f38c & (1 << (self->f340 * 4 + j))) n++;
+	}
+	if (n == 1) return;
+	if (self->f34c < n - 1 && key == ((u8*)t->next)[self->f340 * 2 + self->f34c]) {
+		self->f34c++;
+		self->f348 = ((s32*)t->vals)[self->f340 * 3 + self->f34c];
+		if (self->f65e == 1) {
+			self->p120->f22 = 0;
+			self->p120->f26 = 0;
+			self->p124->f26 = 0;
+			self->f65e = 0;
+		}
+		fn_80458880(lbl_8053AF80, 0x26, -1);
+	}
+	if (self->f34c > 0 && key == ((u8*)t->prev + self->f340 * 2)[self->f34c - 1]) {
+		self->f34c--;
+		self->f348 = ((s32*)t->vals)[self->f340 * 3 + self->f34c];
+		if (self->f65e == 1) {
+			self->p120->f22 = 0;
+			self->p120->f26 = 0;
+			self->p124->f26 = 0;
+			self->f65e = 0;
+		}
+		fn_80458880(lbl_8053AF80, 0x26, -1);
+	}
+}
+
+static inline bool checkRowBit(u32 idx, int p, int j) {
+	if (p < 0 || p > 7) return false;
+	if (j < 0 || j > 3) return false;
+	return (*(u32*)((u8*)&lbl_8050EC80[idx] + 0x28) & (1 << (p * 4 + j))) != 0;
+}
+
+extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out) {
+	int n = 0;
+	int lim;
+	u32 idx = lbl_8050EC80[0].selfIndex;
+	for (int j = 0; j < 4; j++) {
+		if (checkRowBit(idx, p, j)) n++;
+	}
+	if (p == 7) {
+		if (n <= 1) n--;
+		lim = 1;
+		if (*(s32*)(self + 0x388) != -1 && (*(s32*)(self + 0x350) == 6 || self[0x664] == 1)) {
+			if (*(s32*)(self + 0x388) == 0) *out = 2;
+			else if (*(s32*)(self + 0x388) == 1) *out = 3;
+		}
+	} else {
+		if (n <= 2) n--;
+		lim = 2;
+		if (*(s32*)(self + 0x388) != -1 && (*(s32*)(self + 0x350) == 6 || self[0x664] == 1)) {
+			if (*(s32*)(self + 0x388) == 0) *out = 1;
+			else if (*(s32*)(self + 0x388) == 1) *out = 3;
+		}
+	}
+	if (a == lim) return FALSE;
+	if (a > n || a == *out) return TRUE;
+	return FALSE;
+}
