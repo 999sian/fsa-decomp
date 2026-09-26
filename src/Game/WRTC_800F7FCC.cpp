@@ -139,4 +139,54 @@ extern "C" void* fn_800FD1B4(void* this_, s16 freeFlag) {
     return this_;
 }
 
+struct ActorVT10 {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(s32 a, f32 x, f32 y);
+};
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* mgr, s32 a);
+extern "C" u16 fn_8022461C(void*);
+extern "C" s32 fn_802265DC(void*, void*, s32);
+extern "C" void fn_802F601C(void*, void*, s32, s32, f32, f32);
+extern char* lbl_8053AB10;
+
+extern "C" void fn_800FAAE0(char* this_) {
+    fn_802D7440(fn_802D6A9C(), 0);
+    fn_801F0E34(this_, 0x40006, 0);
+    this_[0x2ad] = 2;
+    ((ActorVT10*)this_)->v8(0, 0.0f, 1.0f);
+}
+
+extern "C" s32 fn_800FAB50(void* this_, void* a, void* b) {
+    s32 t = fn_8022461C(b);
+    if (t == 3 || t == 0xe || t == 2) {
+        return 0;
+    }
+    return fn_802265DC(b, a, 0);
+}
+
+struct WRTCEff { f32 x, y, z; u8 m0C, m0D; u8 pad[2]; f32 m10; u16 m14; u8 m16; };
+
+extern "C" void fn_800F8210(WRTCEff* e, s32 n, const f32* pos, u8 kind) {
+    e->x = pos[0];
+    e->y = pos[1];
+    e->z = pos[2];
+    e->m0C = 1;
+    e->m10 = 0.0f;
+    e->m14 = 0;
+    e->m16 = 0;
+    e->m0D = kind;
+    f32 s;
+    switch (e->m0D) {
+    case 0: s = 1.0f; break;
+    case 1: s = 2.0f; break;
+    case 2: s = 3.0f; break;
+    default: s = 1.0f; break;
+    }
+    if (n < 8) {
+        fn_802F601C(*(void**)(lbl_8053AB10 + 0x20), e, 2, 0, s, 4.0f);
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

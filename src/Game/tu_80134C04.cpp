@@ -258,4 +258,194 @@ extern "C" s32 fn_8013997C(s32 i) { return (*(u8*)(lbl_8053AAF8 + 0x83) >> (i * 
 
 extern "C" void fn_80139994(s32 a, s32 b) { fn_802B1610(lbl_8053ACA8, a, b); }
 
+extern "C" void fn_8008C308(s32);
+extern "C" void fn_8008B8B4(void*, u32*, s32);
+extern char* lbl_8053A900;
+extern u16 lbl_804655FC[];
+extern void* lbl_8053AD70;
+extern "C" void fn_8037ADA4(void*);
+extern "C" void fn_80458880(void*, s32, s32);
+extern "C" void fn_804593D4(void*);
+extern "C" void fn_8008DF30(s16, s32);
+extern "C" void fn_8008E2B8(void*, s16);
+extern "C" u8 fn_8037F1E4(s32);
+
+extern "C" void fn_80134C04(void) {
+    s32 i = 0;
+    fn_8008C308(0xc8);
+    struct Pad { u8 p[0x84]; s32 a, b; };
+    Pad* pad = (Pad*)lbl_8053A900;
+    pad->a = -1;
+    pad->b = -1;
+    while (lbl_804655FC[i] != 0) {
+        u32 key;
+        fn_8008C308(0x64);
+        fn_8008B8B4(lbl_8053A900, &key, 0);
+        if (key != 0) {
+            if (key == lbl_804655FC[i]) {
+                i++;
+            } else {
+                i = 0;
+            }
+        }
+    }
+    pad = (Pad*)lbl_8053A900;
+    pad->a = 0;
+    pad->b = -1;
+}
+
+extern "C" void fn_80134D20(char* this_, u8 flag) {
+    *(s32*)(this_ + 0x4c) = 9;
+    fn_8037ADA4(lbl_8053AD70);
+    *((u8*)lbl_8053AD70 + 0xc) = 1;
+    fn_80458880(*(void**)(this_ + 0xa0), 1, -1);
+    if (flag) {
+        fn_804593D4(*(void**)(this_ + 0xa0));
+    }
+    char* drive = (char*)fn_8008E328(0);
+    *(s32*)(this_ + 0x10c) = 0;
+    *(s32*)(this_ + 0x108) = 0;
+    fn_8008DF30(*(s16*)(drive + 0x7c), 0);
+    fn_8008E2B8(drive + 0x68, *(s16*)(drive + 0x7c));
+}
+
+extern "C" void fn_80136500(u8* this_) {
+    char* g = lbl_8053AAF8;
+    u8 paused = *(u8*)(g + 0x94);
+    if (*(u8*)(g + 0x96) != 0) {
+        paused = 1;
+    }
+    if (*(u8*)(g + 0x7e) == 0 && fn_8037F1E4(0)) {
+        paused = 1;
+    }
+    if (this_[0xfe] == 1 && !paused) {
+        this_[0xfc]++;
+        if (this_[0xfc] >= 0x3c) {
+            this_[0xfc] = 0;
+            (*(s32*)(this_ + 0xf8))++;
+        }
+    }
+}
+
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802DCD0C(void*);
+extern "C" u8 fn_802DEBF8(void*);
+extern "C" void* fn_80309C4C(void*, s32, s32);
+extern "C" u8 fn_8037AD34(void*);
+extern "C" u8 fn_8037ACC4(void*);
+extern "C" u8 fn_8037ADD8(void*);
+
+extern "C" void fn_80136364(char* this_) {
+    if (*(u8*)(this_ + 0xfe) != 1) return;
+    if (fn_802DCD0C(fn_802D6A9C())) return;
+    if (*(s32*)(lbl_8053AAF8 + 0x4c) == 0xb) return;
+    if (fn_80309C4C(lbl_8053AD30, 0x1000, -1) == 0) return;
+    if (fn_8037AD34(lbl_8053AD70)) return;
+    if (fn_8037ACC4(lbl_8053AD70)) return;
+    if (*(u8*)(lbl_8053AAF8 + 0x85) == 1) {
+        if (*(s32*)(this_ + 0x54) == 7) {
+            fn_801365E8(this_, *(s32*)(this_ + 0x74), *(s32*)(this_ + 0x78), 0);
+        } else {
+            fn_80136798(this_, *(s32*)(this_ + 0x54), 0);
+        }
+    } else if (!fn_802DEBF8(lbl_8053AAF8) && fn_8037ADD8(lbl_8053AD70)) {
+        fn_80134D20(this_, 1);
+    }
+}
+
+extern u32 lbl_804652F0[];
+extern "C" void fn_80458F04(void*, u32);
+extern "C" void fn_80458FF0(void*, u32, s32, u8);
+
+extern "C" void fn_80138B7C(char* this_) {
+    s32 cnt = *(s32*)((char*)fn_802D6A9C() + 0x1328c);
+    s32 st = *(s32*)((char*)fn_802D6A9C() + 0x34);
+    if (st == 0x11) return;
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+        if (st == 0x14 || st == 0x1e) {
+            fn_80458F04(*(void**)(this_ + 0xa0), lbl_804652F0[st]);
+        } else {
+            fn_80458FF0(*(void**)(this_ + 0xa0), lbl_804652F0[st], 0, cnt);
+            char* m = (char*)fn_802D6A9C();
+            *(s32*)(m + 0x1328c) = cnt + 1;
+        }
+    } else if (st != 0x19) {
+        if (*(u8*)(this_ + 0x86) == 0) {
+            fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000004, 0, 0);
+        } else {
+            fn_80458FF0(*(void**)(this_ + 0xa0), 0x100000d, 0, 0);
+        }
+    } else {
+        fn_80458FF0(*(void**)(this_ + 0xa0), 0x1000019, 0, 0);
+    }
+}
+
+class J2DTextBox {
+public:
+    char* getStringPtr() const;
+};
+extern "C" char* strcpy(char*, const char*);
+extern "C" void fn_8013BE04(void*);
+extern "C" void fn_802ACB58(void*);
+extern "C" void fn_80119DD0(void);
+extern "C" void fn_80119D48(void);
+extern "C" void fn_8011921C(void);
+extern "C" void fn_801190E4(void);
+extern "C" f32 fn_803832BC(char*, s32, s32, s32, s32);
+
+struct BootCfgB { u8 pad[0x21a]; u8 m21A, m21B; u8 pad2[0x249 - 0x21c]; u8 m249; };
+
+inline f32 randF_80138C9C() {
+    u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*seed >> 9) | 0x3f800000;
+    return *(f32*)&bits - 1.0f;
+}
+
+extern "C" void fn_80138C9C(char* this_) {
+    *(u8*)(*(char**)(this_ + 0xa0) + 5) = 4;
+    fn_8013BE04(lbl_8053AB10);
+    fn_802ACB58(*(void**)(this_ + 0x10));
+    fn_80119DD0();
+    fn_80119D48();
+    fn_8011921C();
+    fn_801190E4();
+    BootCfgB* cfg = (BootCfgB*)lbl_80529DEC;
+    *(s32*)(this_ + 0x5c) = 0;
+    this_[0x94] = 0;
+    this_[0x96] = 0;
+    *(s32*)(this_ + 0x10c) = 0;
+    *(s32*)(this_ + 0x108) = 0;
+    *(s32*)(this_ + 0x58) = 0;
+    if (cfg->m21A != 0xa7) {
+        cfg->m21A = 0xa7;
+        *(s32*)(this_ + 0x4c) = 1;
+    } else {
+        if (cfg->m21B != 0xa5) {
+            cfg->m249 = 1;
+            fn_80136798(this_, 2, 0);
+        } else {
+            fn_80136798(this_, 1, 0);
+        }
+        cfg->m21B = 0;
+    }
+    *(s32*)(this_ + 0x60) = 0;
+    *(s32*)(this_ + 0x64) = 0;
+    *(s32*)(this_ + 0x68) = 0;
+    *(u32*)(this_ + 0xb4) = 0x12D5DA0;
+    *(s32*)(this_ + 0x70) = 0;
+    this_[0x80] = 0;
+    this_[0x81] = 0;
+    this_[0x7e] = 1;
+    this_[0x7f] = 1;
+    this_[0x82] = 0;
+    this_[0x83] = 0;
+    this_[0xff] = 0;
+    *(f32*)(this_ + 0xf0) = 0.0f;
+    this_[0x86] = (s32)(2.0f * randF_80138C9C()) & 1;
+    *(f32*)(this_ + 0xf4) = fn_803832BC(this_ + 0xc8, 0x42, 0, 0, 0);
+    strcpy((*(J2DTextBox**)(this_ + 0xc4))->getStringPtr(), this_ + 0xc8);
+    strcpy((*(J2DTextBox**)(this_ + 0xc0))->getStringPtr(), this_ + 0xc8);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
