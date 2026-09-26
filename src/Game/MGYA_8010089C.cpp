@@ -22,6 +22,7 @@ extern "C" void* fn_8010089C(void* this_, s16 freeFlag) {
 }
 
 #include "JSystem/JGeometry/Vec.h"
+extern const f32 lbl_8053C140;
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
 extern "C" void fn_8030C210(void*, void*);
 extern "C" void detach__5ActorFv(void* this_);
@@ -31,9 +32,23 @@ extern "C" u8 fn_8022F514(s32);
 extern "C" s32 fn_8022F3DC(s32);
 extern "C" void fn_80238548(s32, s32, void*, s32);
 extern "C" void* fn_80138A30(void*);
-extern void* lbl_8053AAF8;
+struct MGYA_Random {
+    u32 seed;
+    f32 get() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - lbl_8053C140;
+    }
+};
+struct MGYA_Game { u8 pad[0xb4]; MGYA_Random rnd; };
+extern MGYA_Game* lbl_8053AAF8;
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void*, s32);
+extern const f32 lbl_8053C148;
+extern const f32 lbl_8053C14C;
+extern const f32 lbl_8053C150;
 extern u8* lbl_8053AB10;
-extern const f32 lbl_8053C140;
 extern const f32 lbl_8053C144;
 extern const f32 lbl_8053C190;
 extern const f32 lbl_8053C194;
@@ -60,7 +75,8 @@ public:
     JGeometry::TVec3f mPos; // 0x0c
     u8 pad18[0x60 - 0x18];
     f32 m60, m64, m68, m6C;
-    u8 pad70[0x90 - 0x70];
+    f32 m70, m74, m78, m7C;
+    u8 pad80[0x90 - 0x80];
     u32 m90;
     u8 pad94[0xb0 - 0x94];
     s32 mB0;
@@ -70,7 +86,7 @@ public:
     s32 m230;
     s32 m234;
     s32 m238;
-    u8 pad23C[4];
+    s32 m23C;
     s32 m240;
     u8 m244;
     u8 m245;
@@ -88,7 +104,6 @@ public:
 };
 
 extern "C" void fn_80100D28(MGYA* this_);
-extern "C" void fn_80100A90(MGYA* this_);
 
 extern "C" void fn_801008FC(MGYA* this_) {
     s32 pl = this_->m10C;
@@ -122,6 +137,85 @@ extern "C" void fn_801008FC(MGYA* this_) {
         m->m260[pl] += a;
         m->m268[pl] += b;
     }
+}
+
+extern "C" void fn_80100A90(MGYA* this_) {
+    this_->m290 = (MGYA*)fn_801F666C(fn_801F856C(), this_->m90 & 0xffff);
+    this_->m60 = lbl_8053C148;
+    this_->m64 = lbl_8053C148;
+    this_->m68 = lbl_8053C14C;
+    this_->m6C = lbl_8053C14C;
+    this_->m70 = lbl_8053C148;
+    this_->m74 = lbl_8053C148;
+    this_->m78 = lbl_8053C14C;
+    this_->m7C = lbl_8053C14C;
+    this_->m234 = 0;
+    this_->m246 = 0;
+    this_->m245 = 0;
+    this_->m240 = 0;
+    s32 r = lbl_8053C150 * lbl_8053AAF8->rnd.get();
+    int n = (u8)(u32)fn_80138A30(lbl_8053AAF8);
+    if (this_->m290->m23C > 0x2d0) {
+        if (r < 10) {
+            this_->m244 = 1;
+        } else if (n >= 1 && r < 15) {
+            this_->m244 = 2;
+        } else if (n >= 2 && r < 20) {
+            this_->m244 = 3;
+        } else if (n >= 3 && r < 25) {
+            this_->m244 = 4;
+        } else if (n == 4 && r < 30) {
+            this_->m244 = 5;
+        } else {
+            this_->m244 = 0;
+        }
+    } else {
+        s32 t3;
+        s32 t1;
+        s32 t2;
+        s32 t4;
+        s32 base;
+        base = 0;
+        t4 = 0;
+        t2 = 0;
+        t1 = 0;
+        switch (n) {
+        case 1:
+            t1 = 0x5a;
+            base = 10;
+            break;
+        case 2:
+            t1 = 0x2d;
+            t2 = 0x2d;
+            base = 10;
+            break;
+        case 3:
+            t1 = 0x1e;
+            t2 = 0x1e;
+            t3 = 0x1e;
+            base = 10;
+            break;
+        case 4:
+            t1 = 0x16;
+            t2 = 0x16;
+            t3 = 0x16;
+            t4 = 0x16;
+            base = 12;
+            break;
+        }
+        if (r < base) {
+            this_->m244 = 1;
+        } else if (r < (t1 = base + t1)) {
+            this_->m244 = 2;
+        } else if (r < (t1 = t2 + t1)) {
+            this_->m244 = 3;
+        } else if (r < (t1 = t3 + t1)) {
+            this_->m244 = 4;
+        } else if (r < t4 + t1) {
+            this_->m244 = 5;
+        }
+    }
+    fn_8013CC50(this_->m04, &this_->mPos, 0x1da, 0, 1, 0, 0, 1, lbl_8053C140);
 }
 
 extern "C" void fn_80101DF0(MGYA* this_) {
