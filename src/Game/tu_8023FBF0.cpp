@@ -365,6 +365,100 @@ void fn_8023FF90(char* p, const f32* v) {
     F32(p, 0xc98) = v[2];
 }
 BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
+inline s32 countSharing2(char* p) {
+    s32 me;
+    s32 c;
+    s32 i;
+    s32 linked;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getMode2(char* p) {
+    if (countSharing2(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline s32 linkRank2(char* p) {
+    s32 l;
+    s32 c;
+    s32 i;
+    if (S32(p, 0xd60) < 0) {
+        return 0;
+    }
+    c = 0;
+    for (i = 0; i < S32(p, 0x4); i++) {
+        l = S32(p, 0xd60);
+        if (l == fn_8022F3DC(i)) {
+            c++;
+        }
+    }
+    return c + 1;
+}
+inline s32 linkIdx(char* p) { return S32(p, 0xd60) >= 0 ? fn_80234004(S32(p, 0xd60)) : S32(p, 0x1224); }
+inline BOOL isLinkOwner(char* p) {
+    u8 bit = 1 << S32(p, 0x4);
+    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
+        return 1;
+    }
+    if (getMode2(p) == 4) {
+        s32 v = linkIdx(p);
+        return v != linkRank2(p);
+    }
+    return ((u32)S32(p, 0xd60) >> 31) ^ 1;
+}
+s32 fn_80236630(s32);
+s32 fn_802366CC(s32);
+s32 fn_80236768(s32);
+s32 fn_8023FFC4(char* p) {
+    if ((u8)isLinkOwner(p)) {
+        return fn_80236630(fn_8022EA0C(S32(p, 0x4)));
+    }
+    if (U8(p, 0xbe8)) {
+        return S32(p, 0xbe4);
+    }
+    return 0;
+}
+s32 fn_8024018C(char* p) {
+    if ((u8)isLinkOwner(p)) {
+        return fn_802366CC(fn_8022EA0C(S32(p, 0x4)));
+    }
+    if (U8(p, 0x42c)) {
+        return S32(p, 0xbe0);
+    }
+    return 0;
+}
+s32 fn_80240354(char* p) {
+    if ((u8)isLinkOwner(p)) {
+        return fn_80236768(fn_8022EA0C(S32(p, 0x4)));
+    }
+    if (U8(p, 0xbdc)) {
+        return S32(p, 0xbd8);
+    }
+    return 0;
+}
 inline s32 cnt2(char* p) {
     s32 linked;
     s32 c;
@@ -412,7 +506,6 @@ s32 fn_80240628(char* p) {
 }
 u32 Player_GetLinkTargetIndex(char* p) { return S32(p, 0xd60); }
 s32 fn_8024064C(char* p) { return fn_8022EA0C(S32(p, 0x4)); }
-inline s32 linkIdx(char* p) { return S32(p, 0xd60) >= 0 ? fn_80234004(S32(p, 0xd60)) : S32(p, 0x1224); }
 inline s32 linkRank(char* p) {
     s32 n;
     s32 linked = S32(p, 0xd60);
@@ -834,58 +927,6 @@ void fn_80248604(char* p) {
         return;
     }
     resetTrail(p);
-}
-inline s32 countSharing2(char* p) {
-    s32 me;
-    s32 c;
-    s32 i;
-    s32 linked;
-    c = 0;
-    for (i = 0; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            if ((linked = S32(p, 0xd60)) >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    return c;
-}
-inline s32 getMode2(char* p) {
-    if (countSharing2(p) <= 1) {
-        return 5;
-    }
-    s32 linked = S32(p, 0xd60);
-    if (linked >= 0) {
-        return fn_8022CAF8(linked);
-    }
-    return S32(p, 0x120c);
-}
-inline s32 linkRank2(char* p) {
-    s32 l;
-    s32 c;
-    s32 i;
-    if (S32(p, 0xd60) < 0) {
-        return 0;
-    }
-    c = 0;
-    for (i = 0; i < S32(p, 0x4); i++) {
-        l = S32(p, 0xd60);
-        if (l == fn_8022F3DC(i)) {
-            c++;
-        }
-    }
-    return c + 1;
 }
 BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
     if (S32(p, 0x1240) != 0) {
