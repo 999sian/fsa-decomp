@@ -1934,6 +1934,8 @@ game/stal.cpp:
 	extabindex  start:0x800140B0 end:0x800140EC
 	.text       start:0x80175684 end:0x801769D8
 	.ctors      start:0x8045BF80 end:0x8045BF84
+	.rodata     start:0x80466820 end:0x80466838
+	.sdata2     start:0x8053DB50 end:0x8053DBB0
 
 game/wizr.cpp:
 	extab       start:0x80007484 end:0x800074B4
