@@ -3,6 +3,9 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/JMessage/resource.h"
+#include "JSystem/JMessage/processor.h"
+#include "JSystem/JUtility/JUTFont.h"
 #include <string.h>
 #include <stdio.h>
 
@@ -144,6 +147,147 @@ extern "C" void fn_80394690(MsgDraw* w) {
     }
 }
 
+// ---- fn_80395480: cursor/icon "pop" animation ----
+extern "C" const f32 lbl_80475DA0[5];
+extern "C" const f32 lbl_80475DB4[5];
+struct MsgPop {
+    u8 pad0[0x108];
+    f32 x;                    // 0x108
+    f32 y;                    // 0x10c
+    f32 w;                    // 0x110
+    f32 h;                    // 0x114
+    u8 pad118[0x194 - 0x118];
+    s16 timer;                // 0x194
+    u8 pad196[0x1a4 - 0x196];
+    u8 alpha;                 // 0x1a4
+};
+
+// NONMATCHING (99.9%): add operand order for the cumulative durations.
+extern "C" void fn_80395480(MsgPop* self, J2DPane* pane) {
+    s16* dur = (s16*)(lbl_8050DB0C + 0x286);
+    s32 t0 = dur[0];
+    s32 t1 = dur[0] + dur[1];
+    s32 t2 = dur[0] + dur[1] + dur[2];
+    s32 t3 = dur[0] + dur[1] + dur[2] + dur[3];
+    s32 t4 = dur[0] + dur[1] + dur[2] + dur[3] + dur[4];
+    self->timer++;
+    if (pane->getAlpha() < self->alpha) {
+        if (self->timer == 10) {
+            self->timer = 0;
+            pane->setAlpha(self->alpha);
+        } else {
+            pane->setAlpha(self->alpha * (self->timer / 10.0f));
+        }
+    } else {
+        f32 sy;
+        f32 sx;
+        if (self->timer <= t0) {
+            sy = sx = 1.0f;
+        } else if (self->timer <= t1) {
+            f32 d = self->timer - t0;
+            f32 e = t1 - t0;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475DA0[1] - lbl_80475DA0[0]) + lbl_80475DA0[0];
+            sy = r * (lbl_80475DB4[1] - lbl_80475DB4[0]) + lbl_80475DB4[0];
+        } else if (self->timer <= t2) {
+            f32 d = self->timer - t1;
+            f32 e = t2 - t1;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475DA0[2] - lbl_80475DA0[1]) + lbl_80475DA0[1];
+            sy = r * (lbl_80475DB4[2] - lbl_80475DB4[1]) + lbl_80475DB4[1];
+        } else if (self->timer <= t3) {
+            f32 d = self->timer - t2;
+            f32 e = t3 - t2;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475DA0[3] - lbl_80475DA0[2]) + lbl_80475DA0[2];
+            sy = r * (lbl_80475DB4[3] - lbl_80475DB4[2]) + lbl_80475DB4[2];
+        } else if (self->timer <= t4) {
+            f32 d = self->timer - t3;
+            f32 e = t4 - t3;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475DA0[4] - lbl_80475DA0[3]) + lbl_80475DA0[3];
+            sy = r * (lbl_80475DB4[4] - lbl_80475DB4[3]) + lbl_80475DB4[3];
+        } else {
+            sy = sx = 1.0f;
+            self->timer = 0;
+        }
+        f32 w = sx * self->w;
+        f32 h = sy * self->h;
+        pane->resize(w, h);
+        pane->move((self->x + self->w / 2) - w / 2, (self->y + self->h) - h);
+    }
+}
+
+extern "C" const f32 lbl_80475D78[5];
+extern "C" const f32 lbl_80475D8C[5];
+struct MsgPop2 {
+    u8 pad0[0xf8];
+    f32 x;                    // 0xf8
+    f32 y;                    // 0xfc
+    f32 w;                    // 0x100
+    f32 h;                    // 0x104
+    u8 pad108[0x194 - 0x108];
+    s16 timer;                // 0x194
+    u8 pad196[0x1a3 - 0x196];
+    u8 alpha;                 // 0x1a3
+};
+
+// NONMATCHING (99.9%): add operand order for the cumulative durations.
+extern "C" void fn_80395834(MsgPop2* self, J2DPane* pane) {
+    s16* dur = (s16*)(lbl_8050DB0C + 0x286);
+    s32 t0 = dur[0];
+    s32 t1 = dur[0] + dur[1];
+    s32 t2 = dur[0] + dur[1] + dur[2];
+    s32 t3 = dur[0] + dur[1] + dur[2] + dur[3];
+    s32 t4 = dur[0] + dur[1] + dur[2] + dur[3] + dur[4];
+    self->timer++;
+    if (pane->getAlpha() < self->alpha) {
+        if (self->timer == 10) {
+            self->timer = 0;
+            pane->setAlpha(self->alpha);
+        } else {
+            pane->setAlpha(self->alpha * (self->timer / 10.0f));
+        }
+    } else {
+        f32 sy;
+        f32 sx;
+        if (self->timer <= t0) {
+            sy = sx = 1.0f;
+        } else if (self->timer <= t1) {
+            f32 d = self->timer - t0;
+            f32 e = t1 - t0;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475D78[1] - lbl_80475D78[0]) + lbl_80475D78[0];
+            sy = r * (lbl_80475D8C[1] - lbl_80475D8C[0]) + lbl_80475D8C[0];
+        } else if (self->timer <= t2) {
+            f32 d = self->timer - t1;
+            f32 e = t2 - t1;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475D78[2] - lbl_80475D78[1]) + lbl_80475D78[1];
+            sy = r * (lbl_80475D8C[2] - lbl_80475D8C[1]) + lbl_80475D8C[1];
+        } else if (self->timer <= t3) {
+            f32 d = self->timer - t2;
+            f32 e = t3 - t2;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475D78[3] - lbl_80475D78[2]) + lbl_80475D78[2];
+            sy = r * (lbl_80475D8C[3] - lbl_80475D8C[2]) + lbl_80475D8C[2];
+        } else if (self->timer <= t4) {
+            f32 d = self->timer - t3;
+            f32 e = t4 - t3;
+            f32 r = (d * d) / (e * e);
+            sx = r * (lbl_80475D78[4] - lbl_80475D78[3]) + lbl_80475D78[3];
+            sy = r * (lbl_80475D8C[4] - lbl_80475D8C[3]) + lbl_80475D8C[3];
+        } else {
+            sy = sx = 1.0f;
+            self->timer = 0;
+        }
+        f32 w = sx * self->w;
+        f32 h = sy * self->h;
+        pane->resize(w, h);
+        pane->move((self->x + self->w / 2) - w / 2, (self->y + self->h) - h);
+    }
+}
+
 // ---- from src/Game/fn_80396F94.cpp ----
 extern "C" void update__Q28JMessage8TControlFv(void* subObj);
 extern "C" void fn_80396884(void* this_);
@@ -236,6 +380,780 @@ extern "C" void* fn_803986A0(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+// ---- fn_8039D0DC: glyph-slot position setup ----
+struct MsgFontInfo { u8 pad0[0x28]; u16 flags; };
+struct MsgRubySlot { f32 x; f32 y; u8 tag; };
+struct MsgLayout {
+    u8 pad0[0x68];
+    MsgRubySlot* ruby[12];    // 0x68
+    u8 pad98[0xe8 - 0x98];
+    f32 baseE8;               // 0xe8
+    u8 padEC[0xf0 - 0xec];
+    f32 baseF0;               // 0xf0
+    u8 padF4[0x124 - 0xf4];
+    f32 slotX[3];             // 0x124
+    f32 slotY[3];             // 0x130
+    u8 pad13c[0x154 - 0x13c];
+    s32 m154;                 // 0x154
+    u8 pad158[0x15c - 0x158];
+    s32 m15c;                 // 0x15c
+    u8 pad160[0x164 - 0x160];
+    s32 lineCount;            // 0x164
+    u8 pad168[0x16c - 0x168];
+    s32 m16c;                 // 0x16c
+    s32 m170;                 // 0x170
+    u8 pad174[0x178 - 0x174];
+    s32 m178;                 // 0x178
+    s32 m17c;                 // 0x17c
+    u8 pad180[0x190 - 0x180];
+    s16 m190;                 // 0x190
+    s16 m192;                 // 0x192
+    u8 pad194[0x19e - 0x194];
+    u8 m19e;                  // 0x19e
+    u8 pad19f[0x1a1 - 0x19f];
+    u8 m1a1;                  // 0x1a1
+    u8 pad1a2[0x1aa - 0x1a2];
+    u8 m1aa;                  // 0x1aa
+    u8 pad1ab[0x3ab - 0x1ab];
+    u8 m3ab;                  // 0x3ab
+    u8 m3ac;                  // 0x3ac
+    u8 m3ad;                  // 0x3ad
+    u8 pad3ae[0x3b2 - 0x3ae];
+    u8 slotTag[6];            // 0x3b2
+    MsgFontInfo* font;        // 0x3b8
+};
+struct MsgProc {
+    u8 pad0[0x8];
+    const JMessage::TResource* res; // 0x08
+    u8 padC[0x38 - 0xc];
+    JMessage::TRenderingProcessor proc; // 0x38
+    s32 m70;                  // 0x70
+    u32 bits[2];              // 0x74
+    u8 pad7c[0x84 - 0x7c];
+    f32 posA[(0x12c - 0x84) / 4];  // 0x84
+    f32 posB[(0x1d4 - 0x12c) / 4]; // 0x12c
+    f32 slotOfs[(0x210 - 0x1d4) / 4]; // 0x1d4
+    s32 hours;                // 0x210
+    s32 secs;                 // 0x214
+    s32 m218;                 // 0x218
+    s32 m21c;                 // 0x21c
+    u8 pad220[0x222 - 0x220];
+    s16 m222;                 // 0x222
+    s16 m224;                 // 0x224
+    u8 slotLine[(0x23a - 0x226)];  // 0x226
+    s8 lineTab[(0x2bc - 0x23a)];   // 0x23a
+    s32 m2bc;                 // 0x2bc
+    char* str2c0;             // 0x2c0
+    char* str2c4;             // 0x2c4
+    u8 pad2c8[0x2cc - 0x2c8];
+    s32 cur;                  // 0x2cc
+    s32 m2d0;                 // 0x2d0
+    u8 slot;                  // 0x2d4
+    u8 rubySlot;              // 0x2d5
+    u8 m2d6;                  // 0x2d6
+    u8 pad2d7[0x2d8 - 0x2d7];
+    MsgLayout* layout;        // 0x2d8
+
+    void setTime(s32 t) {
+        s32 sec = (t / 60) % 60;
+        if (sec == 0) {
+            sec = 1;
+        }
+        hours = t / 3600;
+        secs = sec;
+    }
+    void setInfo(s16 c, s16 d, s32 a, s32 b) {
+        m222 = c;
+        m224 = d;
+        m218 = a;
+        m21c = b;
+    }
+    void setSlotPos(u8 i, s32 x) {
+        MsgLayout* l = layout;
+        s32 y = slotLine[i] - lineTab[l->m15c] - 1;
+        l->slotX[i] = (f32)x + slotOfs[i];
+        l->slotY[i] = (f32)y;
+    }
+    BOOL testBit(s32 n) {
+        if (n < 32) {
+            return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
+        } else if (n < 64) {
+            return (bits[1] & (s64)(1 << (n - 32))) ? TRUE : FALSE;
+        }
+        return FALSE;
+    }
+};
+
+// ---- counter-noun strings ----
+// The TU's .rodata (0x80475768..) is not split yet; this describes the part
+// of it holding the long counter nouns so the base+offset addressing matches.
+struct MsgRodata {
+    u8 pad0[0x788];
+    char forceGem[0xc];       // 0x788 " Force Gem"
+    char forceGems[0xc];      // 0x794 " Force Gems"
+    char baddies[0xc];        // 0x7a0
+    char systems[0xc];        // 0x7ac
+    char thieves[0xc];        // 0x7b8
+    char returns[0xc];        // 0x7c4
+    char forceFairy[0x10];    // 0x7d0
+    char forceFairies[0x10];  // 0x7e0
+};
+extern "C" const MsgRodata lbl_80475768;
+extern "C" const char lbl_80543244[7];  // " cocco"
+extern "C" const char lbl_8054324C[8];  // " coccos"
+extern "C" const char lbl_805432A8[7];  // " Cucco"
+extern "C" const char lbl_805432B0[8];  // " Cuccos"
+extern "C" const char lbl_80543254[7];  // " baddy"
+extern "C" const char lbl_8054325C[6];  // " time"
+extern "C" const char lbl_80543264[7];  // " times"
+extern "C" const char lbl_8054326C[8];  // " system"
+extern "C" const char lbl_80543274[7];  // " thief"
+extern "C" const char lbl_8054327C[6];  // " mole"
+extern "C" const char lbl_80543284[7];  // " moles"
+extern "C" const char lbl_8054328C[8];  // " return"
+
+static inline void msgAppendWord(MsgProc* p, const char* w, s32 n) {
+    strcat(p->str2c0, w);
+    strcat(p->str2c4, w);
+    p->m2d0 += n;
+}
+
+extern "C" void fn_8039C630(MsgProc* p, u8 kind, s32 count) {
+    const MsgRodata* r = &lbl_80475768;
+    switch (kind) {
+    case 1:
+        if (count == 1) {
+            msgAppendWord(p, r->forceGem, 10);
+        } else {
+            msgAppendWord(p, r->forceGems, 11);
+        }
+        break;
+    case 2:
+        if (count == 1) {
+            msgAppendWord(p, lbl_805432A8, 6);
+        } else {
+            msgAppendWord(p, lbl_805432B0, 6);
+        }
+        break;
+    case 3:
+        if (count == 1) {
+            msgAppendWord(p, lbl_80543254, 6);
+        } else {
+            msgAppendWord(p, r->baddies, 8);
+        }
+        break;
+    case 4:
+        if (count == 1) {
+            msgAppendWord(p, lbl_8054325C, 5);
+        } else {
+            msgAppendWord(p, lbl_80543264, 6);
+        }
+        break;
+    case 5:
+        if (count == 1) {
+            msgAppendWord(p, lbl_8054326C, 7);
+        } else {
+            msgAppendWord(p, r->systems, 8);
+        }
+        break;
+    case 6:
+        if (count == 1) {
+            msgAppendWord(p, lbl_80543274, 6);
+        } else {
+            msgAppendWord(p, r->thieves, 8);
+        }
+        break;
+    case 7:
+        if (count == 1) {
+            msgAppendWord(p, lbl_8054327C, 5);
+        } else {
+            msgAppendWord(p, lbl_80543284, 6);
+        }
+        break;
+    case 8:
+        if (count == 1) {
+            msgAppendWord(p, lbl_8054328C, 7);
+        } else {
+            msgAppendWord(p, r->returns, 8);
+        }
+        break;
+    case 9:
+        if (count == 1) {
+            msgAppendWord(p, r->forceFairy, 7);
+        } else {
+            msgAppendWord(p, r->forceFairies, 8);
+        }
+        break;
+    }
+}
+
+
+struct MsgMeasure {
+    u8 pad0[0x38];
+    JUTFont* font;            // 0x38
+    u8 pad3c[0x44 - 0x3c];
+    f32 scale;                // 0x44
+    f32 fontW;                // 0x48
+    f32 lineW[(0xf4 - 0x4c) / 4];  // 0x4c
+    f32 lineX[(0x1a0 - 0xf4) / 4]; // 0xf4
+    u8 pad1a0[0x201 - 0x1a0];
+    u8 line;                  // 0x201
+    u8 pad202[0x22d - 0x202];
+    u8 lineChars[0x10];       // 0x22d
+};
+
+extern "C" void fn_80398700(MsgMeasure* m, u8 kind, s32 count) {
+    const MsgRodata* r = &lbl_80475768;
+    f32 ratio = m->fontW / (f32)m->font->getCellWidth();
+    char buf[15];
+    char* s = buf;
+    buf[0] = 0;
+    buf[1] = 0;
+    buf[2] = 0;
+    buf[3] = 0;
+    buf[4] = 0;
+    buf[5] = 0;
+    buf[6] = 0;
+    buf[7] = 0;
+    buf[8] = 0;
+    buf[9] = 0;
+    buf[10] = 0;
+    buf[11] = 0;
+    buf[12] = 0;
+    buf[13] = 0;
+    buf[14] = 0;
+    switch (kind) {
+    case 1:
+        if (count == 1) {
+            strcat(s, r->forceGem);
+        } else {
+            strcat(s, r->forceGems);
+        }
+        break;
+    case 2:
+        if (count == 1) {
+            strcat(s, lbl_80543244);
+        } else {
+            strcat(s, lbl_8054324C);
+        }
+        break;
+    case 3:
+        if (count == 1) {
+            strcat(s, lbl_80543254);
+        } else {
+            strcat(s, r->baddies);
+        }
+        break;
+    case 4:
+        if (count == 1) {
+            strcat(s, lbl_8054325C);
+        } else {
+            strcat(s, lbl_80543264);
+        }
+        break;
+    case 5:
+        if (count == 1) {
+            strcat(s, lbl_8054326C);
+        } else {
+            strcat(s, r->systems);
+        }
+        break;
+    case 6:
+        if (count == 1) {
+            strcat(s, lbl_80543274);
+        } else {
+            strcat(s, r->thieves);
+        }
+        break;
+    case 7:
+        if (count == 1) {
+            strcat(s, lbl_8054327C);
+        } else {
+            strcat(s, lbl_80543284);
+        }
+        break;
+    case 8:
+        if (count == 1) {
+            strcat(s, lbl_8054328C);
+        } else {
+            strcat(s, r->returns);
+        }
+        break;
+    case 9:
+        if (count == 1) {
+            strcat(s, r->forceFairy);
+        } else {
+            strcat(s, r->forceFairies);
+        }
+        break;
+    }
+    int i = 0;
+    while (*s != 0) {
+        JUTFont::TWidth w;
+        m->font->getWidthEntry(*s, &w);
+        s++;
+        m->lineW[m->line] += ratio * (m->scale * (f32)(s32)w.w1);
+        m->lineX[m->line] += 3.0f;
+        m->lineChars[m->line]++;
+        if (++i >= 15) break;
+    }
+}
+
+// ---- ASCII -> font code table helpers ----
+struct MsgCharMap {
+    u16 ascii;
+    u16 code;
+};
+extern "C" const MsgCharMap lbl_80475830[];
+
+static inline u16 msgToWide(u16 c) {
+    for (int i = 0; lbl_80475830[i].ascii != 0xffff; i++) {
+        if (lbl_80475830[i].ascii == c) {
+            return lbl_80475830[i].code;
+        }
+    }
+    return 0x1420;
+}
+
+static inline void msgPutWide(MsgProc* p, int c) {
+    u16 w = msgToWide((u16)c);
+    p->str2c0[p->m2d0++] = w >> 8;
+    p->str2c0[p->m2d0++] = w;
+}
+
+extern "C" void fn_8039C258(MsgProc* p, s32 n) {
+    bool lead = false;
+    if (n < 0) {
+        n *= -1;
+        msgPutWide(p, '-');
+    }
+    s32 d = n / 10000;
+    n %= 10000;
+    if (d != 0) {
+        lead = true;
+        msgPutWide(p, d + '0');
+    }
+    d = n / 1000;
+    n %= 1000;
+    if (d != 0 || lead) {
+        lead = true;
+        msgPutWide(p, d + '0');
+    }
+    d = n / 100;
+    n %= 100;
+    if (d != 0 || lead) {
+        lead = true;
+        msgPutWide(p, d + '0');
+    }
+    d = n / 10;
+    n %= 10;
+    if (d != 0 || lead) {
+        msgPutWide(p, d + '0');
+    }
+    msgPutWide(p, n + '0');
+}
+
+static inline void msgAppendChar(MsgProc* p, char* buf) {
+    strcat(p->str2c0, buf);
+    strcat(p->str2c4, buf);
+    p->m2d0++;
+}
+
+// NONMATCHING (99%): cur/layout register swap in the bit test (same as fn_8039D0DC).
+extern "C" void fn_8039C9A0(MsgProc* p, s32 n) {
+    bool lead = false;
+    bool neg = false;
+    if (n < 0) {
+        n *= -1;
+        neg = true;
+    }
+    if (p->m2d6) {
+        if (!p->testBit(p->cur)) {
+            MsgLayout* l = p->layout;
+            if (l->m16c == 0 || !p->testBit(p->cur)) {
+                f32 base;
+                f32 pos;
+                if (!(l->font->flags & 0x40)) {
+                    base = l->baseE8;
+                    pos = p->posA[p->cur];
+                } else {
+                    base = l->baseF0;
+                    pos = p->posA[p->cur] + (p->posB[p->cur] - 3.0f);
+                }
+                s32 x = (base - pos) * 0.5f + 0.5f;
+                if (x > 0) {
+                    snprintf(lbl_8050E528, 0xf, "\x1b" "CR[%d]", x);
+                    strcat(p->str2c0, lbl_8050E528);
+                    strcat(p->str2c4, lbl_8050E528);
+                    p->m2d0 += strlen(lbl_8050E528);
+                }
+            }
+            p->m2d6 = 0;
+        }
+    }
+    char buf[3];
+    buf[2] = 0;
+    buf[1] = 0;
+    buf[0] = 0;
+    if (neg) {
+        buf[0] = '-';
+        msgAppendChar(p, buf);
+    }
+    s32 d = n / 10000;
+    n %= 10000;
+    if (d != 0) {
+        buf[0] = d + '0';
+        lead = true;
+        msgAppendChar(p, buf);
+    }
+    d = n / 1000;
+    n %= 1000;
+    if (d != 0 || lead) {
+        buf[0] = d + '0';
+        lead = true;
+        msgAppendChar(p, buf);
+    }
+    d = n / 100;
+    n %= 100;
+    if (d != 0 || lead) {
+        buf[0] = d + '0';
+        lead = true;
+        msgAppendChar(p, buf);
+    }
+    d = n / 10;
+    n %= 10;
+    if (d != 0 || lead) {
+        buf[0] = d + '0';
+        msgAppendChar(p, buf);
+    }
+    buf[0] = n + '0';
+    msgAppendChar(p, buf);
+}
+
+static inline void msgMeasureChar(MsgMeasure* m, int c, f32 ratio, f32 add) {
+    JUTFont::TWidth w;
+    m->font->getWidthEntry(c, &w);
+    m->lineW[m->line] += ratio * (m->scale * (f32)(s32)w.w1);
+    m->lineX[m->line] += add;
+    m->lineChars[m->line]++;
+}
+
+static inline void msgMeasureChar2(MsgMeasure* m, int c, f32 ratio, f32 add) {
+    JUTFont::TWidth w;
+    m->font->getWidthEntry(c, &w);
+    m->lineW[m->line] += 2.0f * (ratio * (m->scale * (f32)(s32)w.w1));
+    m->lineX[m->line] += add;
+    m->lineChars[m->line]++;
+}
+
+extern "C" void fn_80398EF4(MsgMeasure* m, s32 a, s32 b) {
+    f32 ratio = m->fontW / (f32)m->font->getCellWidth();
+    if (a > 99) {
+        a = 99;
+    }
+    s32 d = a / 10;
+    a -= d * 10;
+    if (d > 0) {
+        msgMeasureChar(m, d + '0', ratio, 3.0f);
+    }
+    msgMeasureChar(m, a + '0', ratio, 3.0f);
+    msgMeasureChar(m, '\'', ratio, 3.0f);
+    if (b > 99) {
+        b = 99;
+    }
+    msgMeasureChar(m, b / 10 + '0', ratio, 3.0f);
+    msgMeasureChar(m, b % 10 + '0', ratio, 3.0f);
+    msgMeasureChar2(m, '\'', ratio, 6.0f);
+}
+
+// NONMATCHING (96%): furigana row compare codegen (subic. vs cmplwi) and regalloc.
+extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
+    s32 x = 0;
+    if (!p->testBit(p->cur)) {
+        if (p->layout->m16c == 0 || !p->testBit(p->cur)) {
+            x = (0x1c - p->lineTab[p->cur + 0x2b]) / 2;
+        }
+    }
+    switch (p->slot) {
+    case 0:
+        p->str2c0[p->m2d0++] = -2;
+        p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10];
+        p->str2c0[p->m2d0++] = -2;
+        if (p->layout->m1a1 != 0) {
+            s32 top = p->lineTab[p->layout->m15c];
+            u32 line = p->slotLine[p->slot];
+            if (line - top - 1 == 0) {
+                p->str2c0[p->m2d0++] = line + 0x20 - top;
+                break;
+            }
+        }
+        {
+            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x1f - p->lineTab[p->layout->m15c];
+        }
+        break;
+    case 1:
+        p->str2c0[p->m2d0++] = -2;
+        p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10] + 0x40;
+        p->str2c0[p->m2d0++] = -2;
+        if (p->layout->m1a1 != 0) {
+            s32 top = p->lineTab[p->layout->m15c];
+            u32 line = p->slotLine[p->slot];
+            if (line - top - 1 == 0) {
+                p->str2c0[p->m2d0++] = line + 0x60 - top;
+                break;
+            }
+        }
+        {
+            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x5f - p->lineTab[p->layout->m15c];
+        }
+        break;
+    case 2:
+        p->str2c0[p->m2d0++] = -2;
+        p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10] + 0x80;
+        p->str2c0[p->m2d0++] = -2;
+        if (p->layout->m1a1 != 0) {
+            s32 top = p->lineTab[p->layout->m15c];
+            u32 line = p->slotLine[p->slot];
+            if (line - top - 1 == 0) {
+                p->str2c0[p->m2d0++] = line + 0xa0 - top;
+                break;
+            }
+        }
+        {
+            p->str2c0[p->m2d0++] = p->slotLine[p->slot] + 0x9f - p->lineTab[p->layout->m15c];
+        }
+        break;
+    }
+    p->layout->slotTag[p->slot] = tag;
+    p->slot++;
+}
+
+extern "C" void fn_8039934C(MsgMeasure* m, s32 a, s32 b) {
+    f32 ratio = m->fontW / (f32)m->font->getCellWidth();
+    if (a > 0) {
+        if (a > 99) {
+            a = 99;
+            b = 59;
+        }
+        s32 d = a / 10;
+        s32 e = a % 10;
+        if (d > 0) {
+            msgMeasureChar(m, d + '0', ratio, 3.0f);
+        }
+        msgMeasureChar(m, e + '0', ratio, 3.0f);
+        msgMeasureChar(m, '\'', ratio, 3.0f);
+    }
+    if (b > 59) {
+        b = 59;
+    }
+    s32 d = b / 10;
+    s32 e = b % 10;
+    if (d > 0 || a > 0) {
+        msgMeasureChar(m, d + '0', ratio, 3.0f);
+    }
+    msgMeasureChar(m, e + '0', ratio, 3.0f);
+    msgMeasureChar2(m, '\'', ratio, 6.0f);
+}
+
+extern "C" const char lbl_805432B8[3];
+
+// NONMATCHING (98%): FP register allocation in indent calc, r6/r7 swap.
+extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
+    if (p->cur > p->lineTab[p->layout->m15c]) {
+        strcat(p->str2c0, lbl_805432B8);
+        strcat(p->str2c4, lbl_805432B8);
+        p->m2d0 += 4;
+    } else {
+        p->rubySlot++;
+        return;
+    }
+    s32 x = 0;
+    if (!p->testBit(p->cur)) {
+        MsgLayout* l = p->layout;
+        if (l->m16c == 0 || !p->testBit(p->cur)) {
+            f32 base;
+            f32 pos;
+            if (!(l->font->flags & 0x40)) {
+                base = l->baseE8;
+                pos = p->posA[p->cur];
+            } else {
+                base = l->baseF0;
+                pos = p->posA[p->cur] + (p->posB[p->cur] - 3.0f);
+            }
+            x = (base - pos) * 0.5f + 0.5f;
+        }
+    }
+    MsgLayout* l = p->layout;
+    f32 fy = (f32)(p->slotLine[p->rubySlot + 3] - p->lineTab[l->m15c] - 1);
+    f32 fx = (f32)x + p->slotOfs[p->rubySlot + 3];
+    for (int i = 0; i < 12; i++) {
+        if (l->ruby[i]->tag == 0xff) {
+            l->ruby[i]->x = fx;
+            l->ruby[i]->y = fy;
+            l->ruby[i]->tag = tag;
+            break;
+        }
+    }
+    p->rubySlot++;
+}
+
+// NONMATCHING (97%): register coloring of cur/layout and slot index.
+extern "C" void fn_8039D0DC(MsgProc* p, u8 tag) {
+    s32 x = 0;
+    if (!p->testBit(p->cur)) {
+        MsgLayout* l = p->layout;
+        if (l->m16c == 0 || !p->testBit(p->cur)) {
+            f32 base;
+            f32 pos;
+            if (!(l->font->flags & 0x40)) {
+                base = l->baseE8;
+                pos = p->posA[p->cur];
+            } else {
+                base = l->baseF0;
+                pos = p->posA[p->cur] + (p->posB[p->cur] - 3.0f);
+            }
+            x = 0.5f * (base - pos) + 0.5f;
+        }
+    }
+    p->setSlotPos(p->slot, x);
+    p->layout->slotTag[p->slot] = tag;
+    p->slot++;
+}
+
+// ---- fn_80396FDC: message-system owner destructor ----
+struct MsgVObj {
+    virtual ~MsgVObj();
+};
+struct MsgPad8 { u8 pad[8]; };
+struct MsgVObj8 : MsgPad8 {
+    virtual void v08();
+    virtual void v0c();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1c();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2c();
+    virtual ~MsgVObj8();
+};
+extern void* lbl_804AF5A0[];
+struct MsgSystem {
+    void* vt;                          // 0x00
+    JMessage::TResourceContainer* res; // 0x04
+    MsgVObj* m08[4];                   // 0x08
+    u8 pad18[0x20 - 0x18];
+    MsgVObj* m20[4];                   // 0x20
+    MsgVObj* m30[11];                  // 0x30
+    MsgVObj* m5c;                      // 0x5c
+    u8 pad60[0x68 - 0x60];
+    void* buf[12];                     // 0x68
+    u8 pad98[0x3bc - 0x98];
+    MsgVObj8* m3bc;                    // 0x3bc
+};
+
+static inline void fn_clearRes(JMessage::TResourceContainer* r) {
+    while (!r->mContainer.empty()) {
+        JGadget::TLinkList<JMessage::TResource, 0>::iterator it = r->mContainer.begin();
+        r->mContainer.erase(JGadget::TNodeLinkList::iterator(it.mIt));
+        r->mContainer.Do_destroy(&*it);
+    }
+    r->mColor.reset();
+}
+extern "C" MsgSystem* fn_80396FDC(MsgSystem* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        this_->vt = lbl_804AF5A0;
+        for (int i = 0; i < 12; i++) {
+            delete this_->buf[i];
+            this_->buf[i] = 0;
+        }
+        delete this_->m3bc;
+        this_->m3bc = 0;
+        delete this_->m20[0];
+        this_->m20[0] = 0;
+        delete this_->m20[1];
+        this_->m20[1] = 0;
+        delete this_->m20[2];
+        this_->m20[2] = 0;
+        delete this_->m20[3];
+        this_->m20[3] = 0;
+        for (int i = 0; i < 11; i++) {
+            delete this_->m30[i];
+            this_->m30[i] = 0;
+        }
+        delete this_->m5c;
+        this_->m5c = 0;
+        fn_clearRes(this_->res);
+        delete this_->res;
+        this_->res = 0;
+        delete this_->m08[0];
+        this_->m08[0] = 0;
+        delete this_->m08[1];
+        this_->m08[1] = 0;
+        delete this_->m08[2];
+        this_->m08[2] = 0;
+        delete this_->m08[3];
+        this_->m08[3] = 0;
+        if (freeFlag > 0) {
+            delete this_;
+        }
+    }
+    return this_;
+}
+
+// NONMATCHING (99.9%): r3/r5 swap in the setInfo copy.
+extern "C" void fn_8039FB6C(MsgProc* p, const void* entry, const char* text) {
+    MsgLayout* l = p->layout;
+    l->m3ad = 0;
+    l->m3ac = 0;
+    l->m3ab = 0;
+    *p->str2c0 = 0;
+    *p->str2c4 = 0;
+    p->cur = 0;
+    p->m2d0 = 0;
+    p->slot = 0;
+    p->rubySlot = 0;
+    p->layout->slotTag[0] = 0;
+    p->layout->slotTag[1] = 0;
+    p->layout->slotTag[2] = 0;
+    p->layout->m154 = -1;
+    p->m2d6 = 1;
+    p->m70 = p->m2bc;
+    p->setInfo(p->layout->m190, p->layout->m192, p->layout->m178, p->layout->m17c);
+    s32 t = *(s32*)((char*)lbl_8053AD78 + 0x44);
+    p->setTime(t);
+    p->proc.setBegin_messageEntryText(p->res, entry, text);
+    p->proc.process(0);
+    p->layout->lineCount = p->lineTab[p->layout->m15c + 1] - p->lineTab[p->layout->m15c];
+    p->layout->m170 = 0;
+    if (p->lineTab[p->layout->m15c + 0x55] != 0) {
+        p->layout->m19e = 0;
+    }
+    l = p->layout;
+    if (l->m1aa == 0) {
+        l->ruby[0]->tag = 0xff;
+        l->ruby[1]->tag = 0xff;
+        l->ruby[2]->tag = 0xff;
+        l->ruby[3]->tag = 0xff;
+        l->ruby[4]->tag = 0xff;
+        l->ruby[5]->tag = 0xff;
+        l->ruby[6]->tag = 0xff;
+        l->ruby[7]->tag = 0xff;
+        l->ruby[8]->tag = 0xff;
+        l->ruby[9]->tag = 0xff;
+        l->ruby[10]->tag = 0xff;
+        l->ruby[11]->tag = 0xff;
+    } else {
+        p->str2c0[p->m2d0++] = -1;
+        p->str2c0[p->m2d0++] = -1;
+        if (p->layout->lineCount < 3) {
+            p->str2c0[p->m2d0++] = -1;
+            p->str2c0[p->m2d0++] = p->layout->lineCount + 0xc0;
+        }
+    }
 }
 
 extern "C" void fn_8039FB28(void* thisPtr) {
