@@ -2480,6 +2480,9 @@ Game/ibbm.cpp:
 	extabindex  start:0x80017B00 end:0x80017B60
 	.text       start:0x8020FE50 end:0x80210630
 	.ctors      start:0x8045C11C end:0x8045C120
+	.data       start:0x804A6100 end:0x804A61A8
+	.bss        start:0x804CCAB8 end:0x804CCB24
+	.sdata2     start:0x8053FAA0 end:0x8053FAB8
 
 Game/rusa.cpp:
 	extab       start:0x8000A050 end:0x8000A0B8
