@@ -272,7 +272,8 @@ struct Menu_Slide {
     f32 ys[8];                  // 0x3f4
     u8 pad414[0x440 - 0x414];
     s32 timer;                  // 0x440
-    u8 pad444[0x454 - 0x444];
+    u8 pad444[0x450 - 0x444];
+    s32 cur;                    // 0x450
     s32 count;                  // 0x454
     u8 pad458[0x4c1 - 0x458];
     u8 m4c1;
@@ -285,6 +286,7 @@ struct Menu_Slide {
 
 #define PANE(off) (p->panes[((off) - 0x70) / 4])
 #define PY(off) (p->ys[((off) - 0x3f4) / 4])
+#define MOVE_TO(off, yoff, extra) { f32 x = PANE(off)->getBounds()->i.x; PANE(off)->move(x, PY(yoff) extra); }
 
 struct Menu_Score {
     u8 pad0[0x158];
@@ -384,6 +386,79 @@ extern "C" void fn_803AC6FC(Menu_Score* p) {
     }
 }
 
+extern "C" void fn_803AC998(Menu_Slide* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            if (p->cur < 2) {
+                PANE(0x98)->hide();
+                MOVE_TO(0x98, 0x408, );
+            } else {
+                if (PANE(0x94)->isVisible()) {
+                    PANE(0x94)->hide();
+                    MOVE_TO(0x94, 0x400, );
+                }
+                if (PANE(0xa0)->isVisible()) {
+                    PANE(0xa0)->hide();
+                    MOVE_TO(0xa0, 0x410, );
+                }
+            }
+            PANE(0xa4)->show();
+            MOVE_TO(0xa4, 0x40c, );
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c1 = 0x1d;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        if (p->cur < 2) {
+            MOVE_TO(0x98, 0x408, + off);
+        } else {
+            if (PANE(0x94)->isVisible()) {
+                MOVE_TO(0x94, 0x400, + off);
+            }
+            if (PANE(0xa0)->isVisible()) {
+                MOVE_TO(0xa0, 0x410, + off);
+            }
+        }
+        if (p->timer == 0x8a) {
+            if (p->cur < 2) {
+                PANE(0x98)->hide();
+            } else {
+                if (PANE(0x94)->isVisible()) {
+                    PANE(0x94)->hide();
+                }
+                if (PANE(0xa0)->isVisible()) {
+                    PANE(0xa0)->hide();
+                }
+            }
+            PANE(0xa4)->show();
+            MOVE_TO(0xa4, 0x40c, + off);
+        }
+    } else if (t >= 0x80) {
+        f32 x = PANE(0xa4)->getBounds()->i.x;
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        PANE(0xa4)->move(x, PY(0x40c) + off);
+        if (p->timer == 0x80) {
+            if (p->cur < 2) {
+                MOVE_TO(0x98, 0x408, );
+            } else {
+                if (PANE(0x94)->isVisible()) {
+                    MOVE_TO(0x94, 0x400, );
+                }
+                if (PANE(0xa0)->isVisible()) {
+                    MOVE_TO(0xa0, 0x410, );
+                }
+            }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
+
 extern "C" void fn_803AD220(Menu_Slide* p) {
     p->timer--;
     if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
@@ -423,8 +498,6 @@ extern "C" void fn_803AD220(Menu_Slide* p) {
         }
     }
 }
-
-#define MOVE_TO(off, yoff, extra) { f32 x = PANE(off)->getBounds()->i.x; PANE(off)->move(x, PY(yoff) extra); }
 
 struct Menu_Hits {
     u8 pad0[0x3a0];
