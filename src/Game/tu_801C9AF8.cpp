@@ -138,4 +138,56 @@ extern "C" u8 fn_801C9AF8(char* p, s32 room, const JGeometry::TVec3f* in) {
     return r;
 }
 
+extern const u8 lbl_8053EFC0;
+extern const f32 lbl_8053EF24;
+extern const f32 lbl_8053EF28;
+extern "C" u8 fn_801F2618(void* p, void* a, u8 b);
+extern "C" void fn_801CE800(void* p);
+
+extern "C" u8 fn_801C9CB0(char* p) {
+    s32 room;
+    u8 flat;
+    u8 r = 0;
+    if (!(*(u32*)(p + 0x230) & 0x1000)
+        && *(f32*)(p + 0x88) - *(f32*)(p + 0x80) > lbl_8053EF20
+        && *(f32*)(p + 0x8c) - *(f32*)(p + 0x84) > lbl_8053EF20) {
+        JGeometry::TVec3f prev(*(JGeometry::TVec3f*)(p + 0x18));
+        JGeometry::TVec3f cur(*(JGeometry::TVec3f*)(p + 0xc));
+        room = *(s32*)(p + 0x4);
+        u8* cfg = (u8*)fn_802D6A9C() + 0x10000;
+        flat = cfg[room + 0x31df];
+        u8 adj = 0;
+        if (*(s32*)(p + 0x248) == 0x1c) {
+            bool above = !(*(f32*)(p + 0x14) <= lbl_8053EF20);
+            if (above && flat) {
+                adj = 1;
+                *(f32*)(p + 0x1c) = *(f32*)(p + 0x1c) - *(f32*)(p + 0x20);
+                *(f32*)(p + 0x20) = lbl_8053EF20;
+                *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+                *(f32*)(p + 0x14) = lbl_8053EF20;
+            }
+        }
+        u8 hit = fn_801F2618(p, p + 0x264, lbl_8053EFC0);
+        r = hit;
+        if (adj) {
+            ((JGeometry::TVec3f*)(p + 0x18))->set(prev.x, prev.y, prev.z);
+            if (!hit) {
+                ((JGeometry::TVec3f*)(p + 0xc))->set(cur.x, cur.y, cur.z);
+            } else {
+                *(f32*)(p + 0x14) = cur.z - (*(f32*)(p + 0x10) - (cur.y - cur.z));
+                *(f32*)(p + 0x10) = cur.y;
+                fn_801CE800(p);
+            }
+        } else if (hit && flat && !(*(u32*)(p + 0x230) & 0x8) && *(f32*)(p + 0x14) <= lbl_8053EF20) {
+            if (__fabs(*(f32*)(p + 0x268) - lbl_8053EF24) < lbl_8053EF28
+                && __fabs(*(f32*)(p + 0x10) - *(f32*)(p + 0x1c)) < lbl_8053EF28) {
+                *(f32*)(p + 0x14) = lbl_8053EF20;
+                *(f32*)(p + 0x44) = lbl_8053EF20;
+                *(u32*)(p + 0x230) |= 0x10;
+            }
+        }
+    }
+    return r;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
