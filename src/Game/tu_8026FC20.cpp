@@ -22,7 +22,18 @@ s32 fn_80237774(s32);
 void fn_80238548(s32, s32, s32, s32);
 void* fn_8013C824(void);
 void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
-void* fn_8013CC50(void* a, void* pos, s32 kind, s32 b, s32 c, s32 d, s32 e, s32 f, f32 scale);
+void* fn_8013CC50(void* a, void* pos, s32 kind, s32 b, s32 c, s32 d, void* e, s32 f, f32 scale);
+s32 Actor_CreateByID(void* mgr, u32 id, void* owner, void* pos, u32 param, s32 a, s32 b);
+void* fn_801F856C(void);
+void* fn_801F666C(void* mgr, s32 id);
+bool fn_8025F418(char*);
+void fn_80231194(s32);
+extern char* lbl_8053AAF8;
+bool fn_8025F448(void);
+void fn_8025FEDC(char*);
+void fn_8025F698(char*, s32);
+void fn_8024EFF8(char*, s32);
+void fn_802382D0(s32, s32);
 s32 fn_80241864(char*);
 s32 fn_80241544(char*);
 bool fn_80241200(char*);
@@ -56,6 +67,16 @@ inline void killEmitter(char* p, s32 off) {
     }
 }
 
+inline void stopEmitter(char* p, s32 off) {
+    if (PTR(p, off) != NULL) {
+        ((EmitterObj*)PTR(p, off))->mF4 &= ~0x40;
+        EmitterObj* e = (EmitterObj*)PTR(p, off);
+        e->mF4 |= 1;
+        e->m24 = 1;
+        PTR(p, off) = NULL;
+    }
+}
+
 #define DELETE_JPA(p, off) \
     if (PTR(p, off) != NULL) { \
         void* mgr = PTR((char*)fn_8013C824(), 0xc); \
@@ -67,6 +88,15 @@ inline void resetC74(char* p) {
     S32(p, 0xc74) = 0;
     ((s16*)(lbl_80529DEC + 0x1f4))[S32(p, 0x4)] = 0;
 }
+
+struct Vec3 {
+    f32 x, y, z;
+    void set(f32 ax, f32 ay, f32 az) {
+        x = ax;
+        y = ay;
+        z = az;
+    }
+};
 
 struct PlayerAreas {
     u8 pad0[0x5fc];
@@ -439,6 +469,68 @@ void fn_8027774C(char* p) {
     U8(p, 0xd35) = 0;
     U8(p, 0xc00) = 0;
 }
+void fn_80277E18(char* p) {
+    U8(p, 0x124d) = 1;
+    S32(p, 0xd30) = 0;
+    if (U8(p, 0xd35) == 0) {
+        if (fn_80241544(p) <= 1) {
+            fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x3ae, 1, 1, 0, 0, 1, 1.0f);
+        } else {
+            fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x3af, 1, 1, 0, 0, 1, 1.0f);
+        }
+    }
+}
+void fn_80277EBC(char* p) {
+    DELETE_JPA(p, 0x1308);
+    if (fn_8025F418(p)) {
+        fn_80231194(S32(p, 0xd70));
+    }
+    S32(p, 0x494) = 0;
+    U8(p, 0x498) = 0;
+    U8(p, 0xcfc) = 0;
+    S32(p, 0xd08) = -1;
+    S32(p, 0xd0c) = 0;
+    U8(p, 0xd34) = 0;
+    U8(p, 0x499) = 0;
+    U8(p, 0xba4) = 0;
+    s32 id = S32(p, 0x49c);
+    if (id >= 0) {
+        char* a = (char*)fn_801F666C(fn_801F856C(), id);
+        if (a != NULL) {
+            U8(a, 0x11c) = 0;
+        }
+        S32(p, 0x49c) = -1;
+    }
+    if (S32(p, 0x1244) != 0x34) {
+        U8(p, 0xd2d) = 0;
+        U8(p, 0xc00) = 0;
+    }
+}
+void fn_802790C0(char* p) {
+    if (fn_8025F448() && !fn_8025F418(p)) {
+        fn_8025FEDC(p);
+    }
+    fn_8025F698(p, 0);
+    if (S32(p, 0xc64) < 99999999) {
+        S32(p, 0xc64)++;
+    }
+    U8(p, 0x124d) = 1;
+    S32(p, 0x464) = 0;
+    S32(p, 0x494) = 0;
+    U8(p, 0x498) = 1;
+    U8(p, 0x458) = 0;
+    U8(p, 0xcfd) = 0;
+    S32(p, 0xd08) = -1;
+    S32(p, 0xd0c) = 0;
+    U8(p, 0xc00) = 1;
+    fn_8024F0E8(p, 0x10005);
+    fn_8024EFF8(p, 10);
+    if (!Player_IsLinked(p)) {
+        fn_802382D0(S32(p, 0x4), 0);
+    }
+    F32(p, 0x10) = 0.0f;
+    U8(p, 0xba4) = 0;
+}
 void fn_802791AC(void) {}
 void fn_8027966C(char* p) {
     S32(p, 0x464) = 0x3c;
@@ -449,6 +541,36 @@ void fn_8027966C(char* p) {
 void fn_80279F94(char* p) {
     DELETE_JPA(p, 0x1308);
     S32(p, 0x464) = 0x3c;
+}
+void fn_80279FE8(char* p) {
+    U8(p, 0x3fc)++;
+    if (U8(lbl_8053AAF8, 0x7f) != 0) {
+        if (U8(p, 0x3fc) >= 0x78) {
+            fn_80251AEC(p, 0);
+        }
+    } else {
+        if (U8(p, 0x3fc) >= 0x5a) {
+            fn_80251AEC(p, 0);
+        }
+    }
+    U8(p, 0x3fd) = (U8(p, 0x3fc) / 6) % 4;
+    fn_80268B3C(p);
+    if (PTR(p, 0x1308) != NULL) {
+        Vec3* v = (Vec3*)(p + 0x1320);
+        v->set(F32(p, 0x8), F32(p, 0xc), 16.0f + F32(p, 0x10));
+        Vec3* w = (Vec3*)(p + 0x1310);
+        w->x = v->x;
+        w->y = v->y;
+        w->z = v->z;
+    }
+}
+void fn_8027A0D4(char* p) {
+    U8(p, 0x458) = 0;
+    if (PTR(p, 0x1308) == NULL) {
+        PTR(p, 0x1308) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x565, 0, -1, 0, p + 0x130c, 1, 0.5f);
+    }
+    Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x10, -1, -1);
+    fn_8024F0E8(p, 0x2002a);
 }
 void fn_8027A178(char* p) {
     killEmitter(p, 0x1374);
@@ -462,6 +584,13 @@ void fn_8027B5F0(char* p) {
     U16(p, 0x11c0) = 0;
     S32(p, 0x11ac) = 0;
     DELETE_JPA(p, 0x12bc);
+}
+void fn_8027AA10(char* p) {
+    DELETE_JPA(p, 0x12b8);
+    DELETE_JPA(p, 0x12bc);
+    DELETE_JPA(p, 0x1374);
+    DELETE_JPA(p, 0x1378);
+    U16(p, 0x11c0) = 0;
 }
 void fn_8027C6B8(char* p) { U8(p, 0x436) = 0; }
 void fn_8027CAA8(char* p) {
@@ -492,6 +621,21 @@ void fn_8027CB44(char* p) {
 void fn_8027CB9C(char* p) {
     U8(p, 0x458) = 0;
     U8(p, 0x436) = 1;
+}
+void fn_8027CBB0(char* p) {
+    F32(p, 0x10) = 0.0f;
+    U8(p, 0x460) = 0;
+    U8(p, 0x436) = 0;
+    stopEmitter(p, 0x1274);
+    stopEmitter(p, 0x128c);
+    s32 id = S32(p, 0x12c0);
+    if (id >= 0) {
+        char* a = (char*)fn_801F666C(fn_801F856C(), id);
+        if (a != NULL) {
+            U8(a, 0x11c) = 0;
+        }
+        S32(p, 0x12c0) = -1;
+    }
 }
 }
 
