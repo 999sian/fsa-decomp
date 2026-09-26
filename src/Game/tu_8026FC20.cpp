@@ -6,6 +6,7 @@
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define U16(p, o) (*(u16*)((char*)(p) + (o)))
+#define S16(p, o) (*(s16*)((char*)(p) + (o)))
 #define S32(p, o) (*(s32*)((char*)(p) + (o)))
 #define F32(p, o) (*(f32*)((char*)(p) + (o)))
 #define PTR(p, o) (*(void**)((char*)(p) + (o)))
@@ -936,6 +937,68 @@ u8 fn_80274238(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out, s3
         r = fn_80273FB8(p, box, room, out);
     }
     return (u8)r;
+}
+u8 fn_8023434C(s32);
+void fn_802765C0(char*);
+inline bool isSolo(char* p) { return fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4)); }
+void fn_80274728(char* p) {
+    if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4))) {
+        U8(p, 0x3fa)++;
+    } else if (U8(p, 0x3fa) >= 0xe && U8(p, 0x3fa) < 0x25) {
+        U8(p, 0x3fa) += 2;
+        if (U8(p, 0x3fa) > 0x25) {
+            U8(p, 0x3fa) = 0x25;
+        }
+    } else {
+        U8(p, 0x3fa)++;
+    }
+    S16(p, 0x11c0) = 0;
+    if (U8(p, 0x3fa) < 6) {
+        U8(p, 0x3fb) = 8;
+    } else if (U8(p, 0x3fa) < 8) {
+        U8(p, 0x3fb) = 9;
+    } else if (U8(p, 0x3fa) < 9) {
+        U8(p, 0x3fb) = 10;
+    } else if (U8(p, 0x3fa) < 10) {
+        U8(p, 0x3fb) = 0;
+    } else if (U8(p, 0x3fa) < 0x1f) {
+        U8(p, 0x3fb) = ((U8(p, 0x3fa) - 10) / 3 + 1) & 7;
+        S16(p, 0x11c0) = (U8(p, 0x3fa) - 10) * 0xaaa;
+    } else if (U8(p, 0x3fa) < 0x21) {
+        U8(p, 0x3fb) = ((U8(p, 0x3fa) - 10) / 3 + 1) & 7;
+        S16(p, 0x11c0) = (U8(p, 0x3fa) - 10) * 0xaaa;
+    } else {
+        fn_802A20F0(lbl_8053AC98, p + 0x8, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+        S32(p, 0x11b0)++;
+        s32 lim;
+        if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4))) {
+            lim = 6;
+        } else {
+            lim = 12;
+        }
+        if (S32(p, 0x11b0) < lim) {
+            U8(p, 0x3fa) = 10;
+            U8(p, 0x3fb) = 0;
+        } else {
+            U8(p, 0x3fb) = 11;
+            fn_80251AEC(p, 0xc);
+        }
+        S16(p, 0x11c0) = 0;
+    }
+    switch (S32(p, 0x3dc)) {
+    case 0:
+        break;
+    case 1:
+        S16(p, 0x11c0) += 0x8000;
+        break;
+    case 2:
+        S16(p, 0x11c0) += 0x4000;
+        break;
+    case 3:
+        S16(p, 0x11c0) -= 0x4000;
+        break;
+    }
+    fn_802765C0(p);
 }
 void fn_80276538(char* p) {
     setAround((JGeometry::TBox2<f32>*)(p + 0x4c0), *(JGeometry::TVec2<f32>*)(p + 0x8), 7.0f);
