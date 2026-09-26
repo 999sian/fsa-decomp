@@ -39,7 +39,7 @@ extern "C" void fn_801D267C(void* anim);
 extern "C" void fn_801D2608(void* obj, void* tbl, s32 n);
 extern "C" void fn_801D22DC(void* obj, s32 a, s32 b, s32 c);
 extern "C" void fn_801D1F14(void* obj, f32 f);
-extern "C" void fn_8010B40C(void* this_, s32 state);
+extern "C" BOOL fn_8010B40C(char* this_, s32 state);
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
 extern "C" s32 fn_8023DE58(s32 player);
 extern "C" void fn_801CD150(JGeometry::TVec3<f32>* in, JGeometry::TVec3<f32>* out);
@@ -131,6 +131,141 @@ extern "C" bool fn_8010B284(char* p) {
         }
     }
     return false;
+}
+
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
+extern "C" char* fn_8013C824();
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* em);
+extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern const f32 lbl_8053C474;
+
+extern "C" BOOL fn_8010B40C(char* p, s32 state) {
+    switch (state) {
+    case 0:
+        break;
+    case 1:
+        *(f32*)(p + 0x23c) = lbl_8053C470;
+        fn_801F0E34(p, 0x3007c, 0);
+        break;
+    case 2:
+        if (*(void**)(p + 0x100) != NULL) {
+            void* mgr = *(void**)(fn_8013C824() + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x100));
+            *(void**)(p + 0x100) = NULL;
+        }
+        if (*(void**)(p + 0x104) != NULL) {
+            void* mgr = *(void**)(fn_8013C824() + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x104));
+            *(void**)(p + 0x104) = NULL;
+        }
+        if (*(s32*)(p + 4) == 0) {
+            fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053C474, 0x28d, 0, 0, 0, 0, 1);
+            *(void**)(p + 0x27c) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053C474, 0x28e, 0, 0, 0, 0, 1);
+        }
+        *(f32*)(p + 0x23c) = lbl_8053C470;
+        fn_801F0E34(p, 0x30061, 0);
+        break;
+    case 3:
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053C478, 0x28b, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 4), p + 0xc, lbl_8053C478, 0x28c, 0, 0, 0, 0, 1);
+        fn_801D22DC(p + 0x244, 1, 0, 0);
+        *(f32*)(p + 0x23c) = lbl_8053C470;
+        fn_801F0E34(p, 0x3007d, 0);
+        break;
+    case 4:
+        *(u8*)(p + 0x11d) = 0;
+        *(f32*)(p + 0x240) = lbl_8053C470;
+        fn_801D22DC(p + 0x244, 0, 2, 0);
+        *(f32*)(p + 0xc) = *(f32*)(p + 0x24);
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x28);
+        *(f32*)(p + 0x14) = *(f32*)(p + 0x2c);
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x28) - lbl_8053C47C;
+        break;
+    case 5:
+        *(s32*)(p + 0xd8) = 0;
+        *(s32*)(p + 0x238) = 0;
+        break;
+    }
+    fn_801D1F14(p + 0x244, lbl_8053C470);
+    *(s32*)(p + 0x230) = state;
+    *(s32*)(p + 0x234) = 0;
+    return TRUE;
+}
+
+struct IcclDrawParam {
+    IcclDrawParam() : m40(-1), m44(-1) {
+        for (u8 i = 0; i < 16; i++) {
+            mIdx[i] = i;
+        }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
+        mMtx = NULL;
+        m4C = 0;
+        m4D = 0;
+        m4E = 0;
+        m4F = 1;
+        m50 = 1;
+        m51 = 0;
+        m52 = 0;
+        m53 = 0;
+        m54 = 0;
+        m55 = 0;
+        m56 = 1;
+        m58 = 3;
+        m5C = 1;
+        m5D = 0;
+        m5E = 0;
+        m60 = -1;
+        m64 = 0;
+        m68 = 2;
+    }
+    u8 mIdx[16];
+    s32 m40;
+    s32 m44;
+    f32 (*mMtx)[4];
+    u8 m4C, m4D, m4E, m4F, m50, m51, m52, m53, m54, m55, m56;
+    s32 m58;
+    u8 m5C, m5D, m5E;
+    s32 m60;
+    s32 m64;
+    s32 m68;
+};
+extern "C" void v06__5ActorFv(void* this_);
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, IcclDrawParam* prm, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern const char lbl_804642F0[];
+
+extern "C" void fn_8010B648(char* p) {
+    v06__5ActorFv(p);
+    IcclDrawParam prm;
+    f32 mtx[3][4];
+    prm.reset();
+    if (*(s32*)(p + 0x230) == 5 && !((JGeometry::TVec3<f32>*)(p + 0x54))->isZero()) {
+        mtx[0][3] = lbl_8053C470;
+        mtx[1][3] = lbl_8053C470;
+        mtx[2][3] = lbl_8053C470;
+        f32 sx = *(f32*)(p + 0x54);
+        f32 sy = *(f32*)(p + 0x58);
+        f32 sz = *(f32*)(p + 0x5c);
+        mtx[0][0] = sx;
+        mtx[0][1] = lbl_8053C470;
+        mtx[0][2] = lbl_8053C470;
+        mtx[1][0] = lbl_8053C470;
+        mtx[1][1] = sy;
+        mtx[1][2] = lbl_8053C470;
+        mtx[2][0] = lbl_8053C470;
+        mtx[2][1] = lbl_8053C470;
+        mtx[2][2] = sz;
+        prm.mMtx = mtx;
+    }
+    if (((JGeometry::TVec3<f32>*)(p + 0x54))->isZero()) {
+        *(u8*)(p + 0x11d) = 0;
+    }
+    fn_801F02BC(p, lbl_804642F0, *(s32*)(p + 0x254) + 0x19c, &prm, 7, 0, 0, lbl_8053C478, lbl_8053C478);
+    if (((JGeometry::TVec3<f32>*)(p + 0x54))->isZero()) {
+        *(u8*)(p + 0x11d) = 1;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
