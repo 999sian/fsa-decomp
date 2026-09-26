@@ -2,7 +2,7 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 
-extern "C" void fn_801D9C58(void* this_, s32 newState);
+extern "C" void fn_801D9C58(char* this_, s32 newState);
 extern "C" {
 }
 extern const f32 lbl_8053F1CC;
@@ -53,7 +53,7 @@ extern "C" s32 fn_80458F9C(void* mgr, s32 handle);
 extern "C" void fn_801D8400(void* this_) {
     s32 state = *(s32*)((char*)this_ + 0x248);
     if (state < 8) {
-        fn_801D9C58(this_, 8);
+        fn_801D9C58((char*)this_, 8);
     }
 }
 
@@ -471,6 +471,151 @@ extern "C" void fn_801DA124(char* p) {
     fn_801E63D8(p);
     fn_801DAF44(fn_801DAC6C(), *(u32*)(p + 0x198));
     fn_802D7440(fn_802D6A9C(), 0);
+}
+
+extern "C" void fn_801DA994(void* p, s32 a, s32 b);
+extern "C" void fn_801E6394(void* this_);
+extern "C" void fn_801E631C(void* this_);
+extern "C" void fn_801DAE24(s32* mgr);
+extern const f32 lbl_8053F224;
+
+static inline void t84ResetTarget(char* p, f32 v) {
+    *(s32*)(p + 0x250) = -1;
+    *(f32*)(p + 0x258) = v;
+}
+
+extern "C" void fn_801D9C58(char* p, s32 state) {
+    *(u16*)(p + 0x336) = 0;
+    if (*(s32*)(p + 0x248) == 0x11) {
+        *(u32*)(p + 0x230) &= ~0x80;
+    }
+    switch (state) {
+    case 0:
+    case 1:
+        break;
+    case 2:
+        fn_801DA9E8(p + 0x2a8, 3, 0);
+        fn_801F0E34(p, 0x40052, 0);
+        break;
+    case 3:
+        fn_801DA9E8(p + 0x2a8, 4, 0);
+        fn_801F0E34(p, 0x4005d, 0);
+        break;
+    case 4:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA994(p + 0x2a8, 0, 2);
+        break;
+    case 5:
+        t84ResetTarget(p, lbl_8053F1CC);
+        switch (*(s32*)(p + 0x248)) {
+        case 6:
+        case 7:
+            fn_801DA9E8(p + 0x2a8, 2, 0);
+            break;
+        default:
+            fn_801DA9E8(p + 0x2a8, 1, 0);
+            break;
+        }
+        fn_801F0E34(p, 0x40052, 0);
+        break;
+    case 6:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 3, 0);
+        fn_801F0E34(p, 0x40052, 0);
+        break;
+    case 7:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 4, 0);
+        fn_801F0E34(p, 0x4005d, 0);
+        if (*(s32*)(p + 0x248) == 5) {
+            *(u32*)(p + 0x230) |= 0x4000;
+        } else {
+            *(u32*)(p + 0x230) &= ~0x4000;
+        }
+        break;
+    case 8:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 5, 0);
+        fn_801F0E34(p, 0x40056, 0);
+        fn_801E6394(p);
+        fn_801E631C(p);
+        break;
+    case 9:
+        *(u32*)(p + 0x230) &= ~0x280;
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 6, 0);
+        fn_801F0E34(p, 0x40057, 0);
+        fn_801E631C(p);
+        break;
+    case 10:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 7, 0);
+        break;
+    case 11:
+        t84ResetTarget(p, lbl_8053F224);
+        fn_801DA994(p + 0x2a8, 8, 2);
+        if (*(s32*)(p + 0x248) != 0xc) {
+            *(u16*)(p + 0x33c) = fn_801CD664(0xf1) + 0x78;
+        }
+        break;
+    case 12:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 9, 0);
+        break;
+    case 13:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 0xe, 0);
+        break;
+    case 14:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 0xf, 0);
+        break;
+    case 15:
+        *(u8*)(p + 0x33f) = 0;
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 0xa, 0);
+        break;
+    case 16:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 0xb, 0);
+        break;
+    case 17:
+        *(u32*)(p + 0x230) |= 0x80;
+        *(s32*)(p + 0x250) = -1;
+        *(u16*)(p + 0x336) = fn_801CD664(1) + 0xf0;
+        *(f32*)(p + 0x258) = lbl_8053F1CC;
+        fn_801DA994(p + 0x2a8, 0xc, 2);
+        fn_801F0E34(p, 0x40057, 0);
+        fn_801E631C(p);
+        break;
+    case 18:
+        t84ResetTarget(p, lbl_8053F1CC);
+        fn_801DA9E8(p + 0x2a8, 0xd, 0);
+        break;
+    case 19:
+        *(f32*)(p + 0x60) = lbl_8053F1D8;
+        *(f32*)(p + 0x64) = lbl_8053F1D8;
+        *(f32*)(p + 0x68) = lbl_8053F1DC;
+        *(f32*)(p + 0x6c) = lbl_8053F1DC;
+        *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+        *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+        *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+        *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+        *(f32*)(p + 0x258) = lbl_8053F1CC;
+        *(f32*)(p + 0x254) = lbl_8053F1CC;
+        *(f32*)(p + 0x3c) = lbl_8053F1CC;
+        *(f32*)(p + 0x40) = lbl_8053F1CC;
+        *(f32*)(p + 0x44) = lbl_8053F1CC;
+        *(s32*)(p + 0xd8) = 0x10;
+        *(s32*)(p + 0xdc) = 0x10;
+        fn_801F0E34(p, 0x4005a, 0);
+        break;
+    case 20:
+        fn_801DAE24(fn_801DAC6C());
+        break;
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x248) = state;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
