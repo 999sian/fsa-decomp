@@ -249,3 +249,15 @@ extern "C" void fn_80226CA8(s32 idx, s32 room, JGeometry::TVec3<f32>* out) {
     v.z = lbl_8053FF54;
     *out = v;
 }
+
+extern const u16 lbl_8046AAB0[12];
+
+extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
+    u16 tile = tileAt(pos, room);
+    for (s32 i = 0; i < 12; i++) {
+        if (tile == lbl_8046AAB0[i]) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}

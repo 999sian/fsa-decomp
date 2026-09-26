@@ -1,6 +1,7 @@
 // TKTA_801549B0: .text 0x801549B0-0x801555D8 (actor TKTA)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
 
 // ---- from Game/fn_801549B0_dtor.cpp
 
@@ -101,6 +102,93 @@ extern "C" void fn_80154A98(char* this_) {
             *(void**)(buf + 0x18) = mtx;
         }
         fn_801F06F0(this_, lbl_80465DE8, *(s32*)(this_ + 0x250) + (*(s32*)(this_ + 0x90) * 3 + 0x49), buf, lbl_8053D334, lbl_8053D334, 7);
+    }
+}
+
+struct TktaRandom {
+    u32 seed;
+    f32 get() {
+        union { f32 f; u32 s; } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - lbl_8053D334;
+    }
+};
+struct TktaGame { u8 pad[0xb4]; TktaRandom rnd; };
+extern TktaGame* lbl_8053AAF8;
+extern "C" void fn_801EEC98(void* this_, u32 a, u16* ang, s32* out, s32 b, s32 c, s32 d, s32 e);
+extern const f32 lbl_8053D33C;
+extern const f32 lbl_8053D348;
+extern const f32 lbl_8053D34C;
+extern const f32 lbl_8053D354;
+extern const f32 lbl_8053D35C;
+extern const f32 lbl_8053D360;
+extern const f32 lbl_8053D364;
+extern const f32 lbl_8053D368;
+extern const f32 lbl_8053D36C;
+extern const f32 lbl_8053D370;
+
+extern "C" void fn_8015512C(char* this_) {
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(u32*)(this_ + 0x90) &= 7;
+    if (!(*(u32*)(this_ + 0x90) & 1)) {
+        *(f32*)(this_ + 0x60) = lbl_8053D35C;
+        *(f32*)(this_ + 0x64) = lbl_8053D35C;
+        *(f32*)(this_ + 0x68) = lbl_8053D33C;
+        *(f32*)(this_ + 0x6c) = lbl_8053D33C;
+        *(f32*)(this_ + 0x80) = lbl_8053D360;
+        *(f32*)(this_ + 0x84) = lbl_8053D360;
+        *(f32*)(this_ + 0x88) = lbl_8053D354;
+        *(f32*)(this_ + 0x8c) = lbl_8053D354;
+        *(s32*)(this_ + 0x108) = 4;
+    } else {
+        *(f32*)(this_ + 0x54) = lbl_8053D364;
+        *(f32*)(this_ + 0x58) = lbl_8053D364;
+        *(f32*)(this_ + 0x5c) = lbl_8053D364;
+        *(f32*)(this_ + 0x60) = lbl_8053D360;
+        *(f32*)(this_ + 0x64) = lbl_8053D360;
+        *(f32*)(this_ + 0x68) = lbl_8053D354;
+        *(f32*)(this_ + 0x6c) = lbl_8053D354;
+        *(f32*)(this_ + 0x80) = lbl_8053D368;
+        *(f32*)(this_ + 0x84) = lbl_8053D368;
+        *(f32*)(this_ + 0x88) = lbl_8053D36C;
+        *(f32*)(this_ + 0x8c) = lbl_8053D36C;
+        *(s32*)(this_ + 0x108) = 8;
+    }
+    *(f32*)(this_ + 0x258) = lbl_8053D330;
+    *(f32*)(this_ + 0x25c) = lbl_8053D330;
+    *(f32*)(this_ + 0x260) = lbl_8053D330;
+    *(f32*)(this_ + 0x3c) = lbl_8053D330;
+    *(f32*)(this_ + 0x40) = lbl_8053D330;
+    *(f32*)(this_ + 0x44) = lbl_8053D330;
+    *(u16*)(this_ + 0x254) = 0xffffu;
+    if (*(u32*)(this_ + 0x90) == 4 || *(u32*)(this_ + 0x90) == 5) {
+        u16 ang;
+        s32 hit;
+        ang = (s32)(lbl_8053D348 * lbl_8053AAF8->rnd.get());
+        fn_801EEC98(this_, *(u32*)(this_ + 0x198), &ang, &hit, 0, 0, 0, 0);
+        if (hit >= 0) {
+            ang += 0x8000;
+        }
+        *(f32*)(this_ + 0x258) = lbl_8053D34C * JMath::sincosTable_.sinShort(ang);
+        *(f32*)(this_ + 0x25c) = lbl_8053D34C * JMath::sincosTable_.cosShort(ang);
+        *(f32*)(this_ + 0x44) = lbl_8053D33C;
+        *(s32*)(this_ + 0x238) = 0;
+        *(u32*)(this_ + 0x90) &= 1;
+        *(u32*)(this_ + 0xb0) = 0;
+        *(s32*)(this_ + 0x250) = 2;
+        *(s32*)(this_ + 0x230) = 1;
+    } else {
+        TktaGame* gm = lbl_8053AAF8;
+        *(s32*)(this_ + 0x238) = (s32)(lbl_8053D370 * gm->rnd.get()) + 20;
+        *(s32*)(this_ + 0x250) = 0;
+        *(u32*)(this_ + 0xb0) = 0x11101;
+        *(s32*)(this_ + 0x230) = 0;
     }
 }
 
