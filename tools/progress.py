@@ -247,8 +247,7 @@ def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, in
     assert jsys_objs.get("matching") == 168, f"Expected 168 matching JSystem objects, got {jsys_objs.get('matching')}"
     assert jsys_objs.get("total") == 183, f"Expected 183 total JSystem objects, got {jsys_objs.get('total')}"
 
-    print("
-ALL REGRESSION TESTS PASSED!")
+    print("\nALL REGRESSION TESTS PASSED!")
     return True
 
 
