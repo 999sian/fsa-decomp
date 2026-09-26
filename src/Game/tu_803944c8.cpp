@@ -9,6 +9,15 @@ static char lbl_8050E528[0x10];
 static char lbl_8050E538[0x10];
 static char lbl_8050E548[0x10];
 
+extern void* lbl_8053AD78;
+
+extern "C" void fn_803944C8(void* this_, s32 a, u8 b, u8 c) {
+    *(u8*)((char*)this_ + 0x3b1) = 1;
+    *(s32*)((char*)lbl_8053AD78 + 0x48) = a;
+    *(u8*)((char*)lbl_8053AD78 + 0xea) = b;
+    *(u8*)((char*)lbl_8053AD78 + 0xeb) = c;
+}
+
 // ---- from src/Game/fn_80396F94.cpp ----
 extern "C" void update__Q28JMessage8TControlFv(void* subObj);
 extern "C" void fn_80396884(void* this_);
@@ -22,6 +31,37 @@ extern "C" void fn_80396F94(void* this_) {
     fn_80396884(this_);
     fn_80395BE8(this_);
     *(u8*)((char*)this_ + 0x3b0) = 1;
+}
+
+extern "C" void __dt__Q28JMessage19TRenderingProcessorFv(void* this_, s32 flag);
+extern "C" void __dl__FPv(void* this_);
+extern void* lbl_804AF72C[];
+extern void* lbl_804AF6E4[];
+
+struct MsgRP38 {
+    void* vt;
+    u8 pad[0x34];
+    inline ~MsgRP38() {
+        vt = lbl_804AF6E4;
+        __dt__Q28JMessage19TRenderingProcessorFv(this, 0);
+    }
+};
+struct MsgRP {
+    void* vt;
+    u8 pad[0x34];
+    MsgRP38 m38;
+};
+
+extern "C" void* fn_803972A4(MsgRP* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        this_->vt = lbl_804AF72C;
+        this_->m38.~MsgRP38();
+        __dt__Q28JMessage19TRenderingProcessorFv(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
 }
 
 // ---- from src/Game/fn_80397328_dtor.cpp ----
@@ -72,6 +112,14 @@ extern "C" void* fn_803986A0(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_8039FB28(void* thisPtr) {
+    u8* p = (u8*)thisPtr;
+    if ((*(u8**)(p + 0x2d8))[0x1aa] != 0) {
+        (*(s8**)(p + 0x2c0))[(*(s32*)(p + 0x2d0))++] = -1;
+        (*(s8**)(p + 0x2c0))[(*(s32*)(p + 0x2d0))++] = -2;
+    }
+}
+
 // ---- from src/Game/ClearIndirectFlags_0x2c0_0x2c4.cpp ----
 // component C: 3 tiny vtable-slot/helper functions bundled.
 extern "C" {
@@ -87,6 +135,53 @@ void fn_8039FE6C(void) {}
 int fn_8039FE70(void) { return 1; }
 }
 
+struct MsgFont {
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void getWidthEntry(int c, void* out);
+    virtual int getHeight();
+};
+
+struct MsgWidth {
+    s8 a;
+    u8 w;
+    u8 pad[6];
+};
+
+extern "C" void fn_8039A350(void* thisObj, int c) {
+    u8* p = (u8*)thisObj;
+    if (c == 10) {
+        p[0x201]++;
+        p[0x22c]++;
+        ((f32*)(p + 0x4c))[p[0x201]] = 0.0f;
+        p[p[0x201] + 0x22d] = 0;
+        ((f32*)(p + 0xf4))[p[0x201]] = 0.0f;
+        p[0x1e8] = 0;
+        s8 cur = ((s8*)(p + 0x202))[p[0x281]];
+        if (cur != (s8)p[0x22c] && p[0x201] - cur >= 3) {
+            p[0x281]++;
+            p[p[0x281] + 0x202] = p[0x22c];
+            p[p[0x281] + 0x257] = 0;
+            p[0x1e8] = 1;
+        }
+    } else {
+        MsgFont* font = *(MsgFont**)(p + 0x38);
+        f32 scale = *(f32*)(p + 0x48) / font->getHeight();
+        MsgWidth w;
+        (*(MsgFont**)(p + 0x38))->getWidthEntry(c, &w);
+        ((f32*)(p + 0x4c))[p[0x201]] += scale * (*(f32*)(p + 0x44) * (int)w.w);
+        ((f32*)(p + 0xf4))[p[0x201]] += 3.0f;
+        p[p[0x201] + 0x22d]++;
+    }
+}
+
 // ---- from src/Game/stub_8039a510.cpp ----
 // fn_8039A510 - component B vtable slot: advances a byte counter
 // (this->0x281), then uses the counter as a byte offset from `this` to
@@ -100,6 +195,35 @@ extern "C" void fn_8039A510(void* thisObj) {
 	base[base[0x281] + 0x257] = 0;
 }
 
+
+extern f32 lbl_805431DC;
+
+extern "C" void fn_8039A540(void* thisObj) {
+    u8* p = (u8*)thisObj;
+    *(s32*)(p + 0x3c) = -1;
+    *(s32*)(p + 0x40) = -1;
+    p[0x201] = 0;
+    ((f32*)(p + 0x4c))[p[0x201]] = 0.0f;
+    ((f32*)(p + 0xf4))[p[0x201]] = 0.0f;
+    p[p[0x201] + 0x22d] = 0;
+    p[0x22c] = 0;
+    p[0x281] = 0;
+    p[0x282] = 0;
+    for (int i = 0; i < 3; i++) {
+        ((f32*)(p + 0x19c))[i] = 0.0f;
+        p[0x1ee + i] = 0;
+        p[0x1fe + i] = 0;
+    }
+    p[0x1fd] = 0;
+    for (int i = 3; i < 15; i++) {
+        ((f32*)(p + 0x19c))[i] = 0.0f;
+        p[0x1ee + i] = 0;
+    }
+    ((s8*)(p + 0x202))[p[0x281]] = -1;
+    p[p[0x281] + 0x257] = 0;
+    p[0x1e8] = 0;
+}
+
 // ---- small helpers near the end of the TU (0x803A2BC4-0x803A3258) ----
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7E5C(void* mgr, s32 a, s32 b);
@@ -111,6 +235,115 @@ extern void* lbl_8053AAF8;
 extern void* lbl_8053AED0;
 extern u8 lbl_8050EC80[];
 extern u8 lbl_80529DEC[];
+
+struct MsgCounter {
+    u8 pad0[0x4c];
+    s32 m4c;
+    s32 m50;
+    s32 m54;
+    s32 m58;
+    u8 m5c;
+    u8 m5d;
+    u8 pad5e[2];
+    u8* m60;
+};
+
+extern void* lbl_8053AF80;
+extern void* lbl_8053AD30;
+extern u8 lbl_8050DB0C[];
+extern "C" void fn_80458880(void* p, s32 a, s32 b);
+extern "C" u32 fn_80309C4C(void* p, s32 a, s32 b);
+extern "C" u32 fn_80309D6C(void* p, s32 a, s32 b);
+extern "C" s32 fn_8030AAF4(s32 a);
+extern "C" s32 fn_8037E7AC(s32 a);
+
+extern "C" void fn_803A28A8(MsgCounter* self, int c) {
+    if (self->m60[0x1aa] == 0) {
+        s8 hi = (u16)c >> 8;
+        if (c == 10) {
+            self->m54++;
+            if (self->m58 == 1) {
+                self->m58 = 2;
+            }
+        }
+        if (hi) {
+            self->m50++;
+        }
+        self->m50++;
+        if (self->m5d == 0) {
+            if (!(*(u16*)(*(u8**)(self->m60 + 0x3b8) + 0x28) & 0x40)) {
+                self->m4c = 1;
+            } else {
+                self->m4c = *(s16*)(lbl_8050DB0C + 0x4c);
+            }
+        }
+        fn_80458880(lbl_8053AF80, 8, -1);
+        if (self->m58 == 2 || self->m54 >= 3 || self->m50 >= 0xff) {
+            self->m4c = 99999;
+            self->m60[0x3ae] = 8;
+        }
+    } else {
+        if (c == 10) {
+            self->m54++;
+            if (self->m58 == 1) {
+                self->m58 = 2;
+            }
+        }
+        self->m50 += 2;
+        if (self->m58 == 2 || self->m54 >= 3 || self->m50 >= 0xff) {
+            self->m4c = 99999;
+            self->m60[0x3ae] = 3;
+        }
+    }
+}
+
+extern "C" int fn_803A2A2C(MsgCounter* self) {
+    u8* q = self->m60;
+    if (q[0x1aa] == 0) {
+        if (self->m4c == 0) {
+            return 1;
+        }
+        if (self->m4c == 99999) {
+            if (q[0x19f] != 0) {
+                self->m4c = 0;
+                self->m54 = 0;
+                self->m50 = 0;
+                self->m58 = 0;
+                self->m5d = 0;
+                (*(s32*)(self->m60 + 0x15c))++;
+                self->m60[0x19f] = 0;
+            }
+        } else {
+            self->m4c--;
+            if (self->m5c == 0) {
+                q = self->m60;
+                if (q[0x19e] != 0) {
+                    if (*(u16*)(*(u8**)(q + 0x3b8) + 0x28) & 0x100) {
+                        if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0 || self->m60[0x1a0] != 0 ||
+                            fn_8037E7AC(*(s32*)(self->m60 + 0x160)) != 0) {
+                            self->m5d = 1;
+                            self->m4c = 0;
+                        }
+                    } else {
+                        if (fn_80309D6C(lbl_8053AD30, fn_8030AAF4(*(s32*)(q + 0x160)), 0x100) != 0 ||
+                            self->m60[0x1a0] != 0 || fn_8037E7AC(*(s32*)(self->m60 + 0x160)) != 0) {
+                            self->m5d = 1;
+                            self->m4c = 0;
+                        }
+                    }
+                }
+            } else {
+                self->m5c = 0;
+            }
+        }
+    } else {
+        if (self->m4c == 0) {
+            return 1;
+        }
+        self->m4c--;
+    }
+    return 0;
+}
 
 extern "C" {
 void fn_803A2BC4(void* thisPtr) {
