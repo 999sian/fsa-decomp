@@ -2994,7 +2994,9 @@ game/tu_80442810.cpp:
 	extabindex  start:0x800210B8 end:0x800210E8
 	.text       start:0x80442810 end:0x80442C64
 	.ctors      start:0x8045C5D0 end:0x8045C5D4
+	.rodata     start:0x8048FB10 end:0x8048FB88
 	.bss        start:0x8052CA00 end:0x8052CA6C
+	.sbss       start:0x8053AEE8 end:0x8053AEF0
 
 game/tu_80455930.cpp:
 	extab       start:0x800115BC end:0x800115F4
