@@ -109,6 +109,9 @@ inline T znraClamp(T v, T lo, T hi) {
 class ZNRA : public ItemBase {
 public:
     virtual void v39();
+    virtual void v40();
+    virtual void v41();
+    virtual void v42();
 };
 
 extern "C" void fn_801BB1AC(ZNRA* this_) {
@@ -176,6 +179,98 @@ extern "C" void* fn_801BB3B0(void* this_) {
     *(void**)this_ = lbl_804A3D7C;
     *(s32*)((char*)this_ + 0x2a8) = 0;
     return this_;
+}
+
+class J3DFrameCtrl { public: int checkPass(f32); };
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
+extern "C" s32 fn_801CD950(f32* value, f32 target, f32 step);
+extern "C" u8 fn_801D217C(void* anim);
+extern "C" u8 fn_801D21F0(void* anim);
+extern "C" u8 fn_801CECF4(void* this_, u32 id, f32 a, f32 b);
+extern "C" void fn_801F0E34(void* actor, u32 msg, s32 arg);
+extern "C" void fn_801BACE8(ZNRA* this_, s32 state);
+
+static inline void znraSetBox(u8* p, f32 lo, f32 hi) {
+    *(f32*)(p + 0x60) = lo;
+    *(f32*)(p + 0x64) = lo;
+    *(f32*)(p + 0x68) = hi;
+    *(f32*)(p + 0x6c) = hi;
+    *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+    *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+    *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+    *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+}
+
+extern "C" void fn_801BA8F8(ZNRA* this_) {
+    u8* p = (u8*)this_;
+    switch (*(s32*)(p + 0x248)) {
+    case 0:
+        if (*(u32*)(p + 0x1a0) == 'LTZR') {
+            znraSetBox(p, -8.4f, 8.4f);
+        }
+        this_->v40();
+        if (this_->m24C >= (s32)this_->m250 && fn_801D05F8(this_, p + 0xc, 300.0f) >= 0) {
+            fn_801BACE8(this_, 1);
+        }
+        break;
+    case 1:
+        fn_801F0E34(this_, 0x4006f, 0);
+        if (*(u32*)(p + 0x1a0) == 'LTZR') {
+            znraSetBox(p, -8.4f, 8.4f);
+        }
+        this_->v40();
+        if (1.5f != *(f32*)(p + 0x54)) {
+            fn_801CD950((f32*)(p + 0x54), 1.5f, 0.05f);
+            *(f32*)(p + 0x58) = *(f32*)(p + 0x54);
+            *(f32*)(p + 0x5c) = *(f32*)(p + 0x54);
+        } else if (this_->m24C >= (s32)this_->m250 && fn_801D217C(p + 0x270)) {
+            fn_801BACE8(this_, 2);
+            this_->v42();
+        }
+        break;
+    case 2:
+        if (this_->m24C > 1 && fn_801D21F0(p + 0x270)) {
+            fn_801BACE8(this_, 3);
+        }
+        break;
+    case 3:
+        if (this_->m24C >= (s32)this_->m250 && fn_801D217C(p + 0x270)) {
+            fn_801BACE8(this_, 4);
+        }
+        break;
+    case 4:
+        if (this_->m24C > 1) {
+            if (*(u32*)(p + 0x1a0) == 'ZORA' &&
+                ((J3DFrameCtrl*)(p + 0x294))->checkPass(*(s32*)(p + 0x27c) - 2) &&
+                fn_801CECF4(this_, 'ZOSH', 1.5f, 300.0f)) {
+                fn_801F0E34(this_, 0x50030, 0);
+            }
+            if (fn_801D21F0(p + 0x270)) {
+                fn_801BACE8(this_, 5);
+            }
+        }
+        break;
+    case 5:
+        if (*(u32*)(p + 0x1a0) == 'LTZR') {
+            znraSetBox(p, -8.4f, 8.4f);
+        }
+        if (this_->m24C > 1 && fn_801D21F0(p + 0x270)) {
+            fn_801BACE8(this_, 0);
+        }
+        break;
+    }
+    this_->v41();
+    switch (*(s32*)(p + 0x248)) {
+    case 0:
+    case 1:
+    case 2:
+    case 5:
+        znraSetBox(p, 1.0f, -1.0f);
+        break;
+    default:
+        znraSetBox(p, -12.0f, 12.0f);
+        break;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
