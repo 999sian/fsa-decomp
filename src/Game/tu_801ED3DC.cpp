@@ -130,10 +130,8 @@ extern "C" void fn_801ED828(const u16& timer) {
     if (timer != 0) {
         for (s32 i = 0; i < 3; i++) {
             if (i * 60 + 30 <= timer && timer <= (i + 1) * 60) {
-                u16 w, h;
-                JUTVideo::getManager()->getBounds(w, h);
-                f32 y = (s32)h * 0.5f;
-                f32 x = (s32)w * 0.5f;
+f32 y = 0.5f * (s32)JUTVideo::getManager()->getEfbHeight();
+f32 x = 0.5f * (s32)JUTVideo::getManager()->getFbWidth();
                 fn_8043CB24(lbl_8053AED0, x, y, 3.0f, i + 1, 0xff, 0, 1, 0);
                 return;
             }
