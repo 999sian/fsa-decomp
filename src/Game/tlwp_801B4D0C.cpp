@@ -95,7 +95,7 @@ extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, TlwpDrawParam
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, TlwpDrawParam* param, s32 a, f32 s0, f32 s1);
 extern "C" void fn_801B4EC8(char* p);
 extern "C" void fn_801B56A0(void* this_);
-extern "C" void fn_801B5228(void* this_);
+extern "C" void fn_801B5228(char* p);
 
 extern "C" void fn_801B4D0C(char* p) {
     switch (*(s32*)(p + 0x250)) {
@@ -148,7 +148,14 @@ extern const f32 lbl_8053EA18;
 extern const f32 lbl_8053EA58;
 extern u8 lbl_8053ABF8;
 extern s32 lbl_8053A118;
-extern const u16 lbl_804A37E0[];
+struct TlwpData {
+    u16 ids[20];      // 0x00
+    u8 pad[0x88 - 0x28];
+    s32 model[3][4];  // 0x88
+    s32 timer[3][4];  // 0xb8
+    s32 kind[3];      // 0xe8
+};
+extern TlwpData lbl_804A37E0;
 extern "C" char* fn_802D6A9C(void);
 extern "C" s32 fn_8013CC50(s32 room, TlwpVec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
@@ -216,7 +223,7 @@ extern "C" void fn_801B6170(char* p) {
         v.x += lbl_8053EA8C;
         v.y += lbl_8053EA90;
         for (s32 i = 0; i < 20; i++) {
-            *(s32*)(p + i * 4 + 0x2a0) = fn_8013CC50(*(s32*)(p + 0x4), &v, lbl_8053EA10, lbl_804A37E0[i], 0, 0, 0, 0, 1);
+            *(s32*)(p + i * 4 + 0x2a0) = fn_8013CC50(*(s32*)(p + 0x4), &v, lbl_8053EA10, lbl_804A37E0.ids[i], 0, 0, 0, 0, 1);
         }
     }
     *(s32*)(p + 0x24c) = 0;
@@ -285,6 +292,108 @@ extern "C" void fn_801B4EC8(char* p) {
     tlwpRotMtx(m, lbl_8053EA18, (f32)*(u16*)(p + 0x260) / lbl_8053EA14, lbl_8053EA18, lbl_8053EA10);
     param.c = m;
     fn_801F06F0(p, lbl_8046910C, *(s32*)(p + 0x24c) + 0xc0, &param, 7, lbl_8053EA10, lbl_8053EA10);
+}
+
+#include <std/math.h>
+extern const f32 lbl_8053EA28;
+extern const f32 lbl_8053EA2C;
+extern const f32 lbl_8053EA30;
+extern const f32 lbl_8053EA34;
+extern const f32 lbl_8053EA38;
+extern const f32 lbl_8053EA5C;
+extern const f32 lbl_8053EA60;
+extern "C" void fn_801F71A4(f32* v, f32 target, f32 a, f32 b);
+extern "C" u8 fn_8023F264(s32 id);
+extern "C" s32 fn_8023DE58(s32 id);
+extern "C" TlwpVec* fn_8023E724(s32 id);
+extern "C" void fn_80230498(s32 player, TlwpVec* pos, s32 id, s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_801F0E34(void* target, u32 effectId, s32 flag);
+
+extern "C" void fn_801B5228(char* p) {
+    s32 room;
+    TlwpData* d = &lbl_804A37E0;
+    fn_801F71A4((f32*)(p + 0x14), *(f32*)(p + 0x258), lbl_8053EA28, *(f32*)(p + 0x25c));
+    switch (*(s32*)(p + 0x230)) {
+    case 8: {
+        *(s32*)(p + 0x98) = d->kind[*(s32*)(p + 0x250) - 1];
+        for (s32 i = 0; i < 4; i++) {
+            if (fn_8023F264(i)) {
+                room = *(s32*)(p + 0x4);
+                if (room == fn_8023DE58(i)) {
+                    *(TlwpVec*)(p + i * 0xc + 0x264) = *fn_8023E724(i);
+                    if (i == 0) {
+                        *(f32*)(p + i * 0xc + 0x268) += lbl_8053EA2C;
+                    }
+                }
+            }
+        }
+        *(f32*)(p + 0x25c) = lbl_8053EA30;
+        *(s32*)(p + 0x230) = 9;
+    }
+    case 9: {
+        TlwpVec* pos = fn_8023E724(0);
+        f32 x = pos->x;
+        f32 y = pos->y;
+        *(f32*)(p + 0x258) = lbl_8053EA34;
+        if (*(s32*)(p + 0x250) == 1) {
+            *(u16*)(p + 0x260) = 3000;
+            x -= lbl_8053EA38;
+            *(f32*)(p + 0x258) = lbl_8053EA3C;
+        }
+        if (*(s32*)(p + 0x250) == 3) {
+            *(u16*)(p + 0x260) = 0x10000 - 3000;
+            x += lbl_8053EA38;
+            *(f32*)(p + 0x258) = lbl_8053EA3C;
+        }
+        fn_801F71A4((f32*)(p + 0xc), x, lbl_8053EA28, *(f32*)(p + 0x25c));
+        *(f32*)(p + 0x10) = y;
+        f32 dz = fabs(*(f32*)(p + 0x14) - *(f32*)(p + 0x258));
+        f32 dx = fabs(*(f32*)(p + 0xc) - x);
+        if (std::sqrtf(dx * dx + dz * dz) < lbl_8053EA10) {
+            if (--lbl_8053A118 == 0) {
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_8023F264(i)) {
+                        room = *(s32*)(p + 0x4);
+                        if (room == fn_8023DE58(i)) {
+                            fn_80230498(i, (TlwpVec*)(p + i * 0xc + 0x264), 0x3e, 0xff, -0x80, -0x80, 1);
+                        }
+                    }
+                }
+                fn_801F0E34(p, 0x50052, 0);
+                *(s32*)(p + 0x230) = 10;
+            }
+        }
+        break;
+    }
+    case 10:
+        if (lbl_8053A118 <= 0) {
+            if (lbl_8053EA58 != *(f32*)(p + 0x258)) {
+                *(f32*)(p + 0x258) = lbl_8053EA58;
+                *(f32*)(p + 0x25c) = lbl_8053EA5C;
+            } else if (*(s32*)(p + 0x250) == 2) {
+                f32 z = *(f32*)(p + 0x14);
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_8023F264(i)) {
+                        room = *(s32*)(p + 0x4);
+                        if (room == fn_8023DE58(i)) {
+                        fn_801F71A4((f32*)(p + i * 0xc + 0x26c), z, lbl_8053EA28, *(f32*)(p + 0x25c));
+                        fn_80230498(i, (TlwpVec*)(p + i * 0xc + 0x264), 0xb0, 0xff, -0x80, -0x80, 1);
+                        }
+                    }
+                }
+                if ((f32)fabs(*(f32*)(p + 0x14) - *(f32*)(p + 0x258)) < lbl_8053EA60) {
+                    lbl_8053A118 = 0x309;
+                }
+            }
+        }
+        break;
+    }
+    if (*(s32*)(p + 0x234) == 0) {
+        *(s32*)(p + 0x24c) = d->model[*(s32*)(p + 0x98)][*(s32*)(p + 0x240)];
+        *(s32*)(p + 0x234) = d->timer[*(s32*)(p + 0x98)][*(s32*)(p + 0x240)];
+        (*(s32*)(p + 0x240))++;
+        *(s32*)(p + 0x240) &= 3;
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
