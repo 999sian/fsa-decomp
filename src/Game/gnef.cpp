@@ -12,7 +12,7 @@
 // constant, returning the latch value.
 extern "C" {
 
-extern f32 lbl_80541400;
+extern const f32 lbl_80541400;
 
 void Gnef_SetCueFlag(void* thisObj) {
 	*(u8*)((char*)thisObj + 0x275) = 0xff;
@@ -144,7 +144,7 @@ struct GnefActorMgr {
     s32 mCount; // 0x1008
 };
 extern "C" GnefActorMgr* fn_801F856C(void);
-extern f32 lbl_80541404;
+extern const f32 lbl_80541404;
 extern "C" void fn_802EEA24(u8 v);
 
 struct GnefObj {
@@ -177,6 +177,105 @@ extern "C" void fn_802EE704(GnefObj* this_) {
             }
         }
     }
+}
+
+// ---- fn_802EE830: init
+struct GnefSlot {
+    f32 a, b, c, d;
+    u16 e;
+    u8 f;
+};
+extern const f32 lbl_80541418;
+extern void* lbl_804AA330[];
+extern "C" void* fn_804032E8(u32 type, void* name);
+extern "C" s32 fn_8013CC50(s32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
+
+class GnefSelf {
+public:
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual u8 v34();
+    s32 m04;
+    u8 pad08[4];
+    f32 x, y, z; // 0x0c
+    u8 pad18[0x90 - 0x18];
+    u32 m90;
+    u8 pad94[0x11c - 0x94];
+    u8 m11C;
+    u8 pad11D[2];
+    u8 m11F;
+    u8 pad120[0x230 - 0x120];
+    s32 mHandles[7]; // 0x230
+    s32 m24C;
+    s32 m250;
+    s32 m254;
+    s32 m258;
+    s32 m25C;
+    s32 m260;
+    s32 m264;
+    f32 m268, m26C, m270;
+    u8 m274;
+    u8 m275;
+    u8 m276;
+    u8 m277;
+    u8 m278;
+    u8 m279;
+    u8 pad27A[2];
+    GnefSlot mSlots[4]; // 0x27c
+    void* m2CC;
+};
+
+extern "C" void fn_802EE830(GnefSelf* this_) {
+    this_->mHandles[0] = 0;
+    this_->mHandles[1] = 0;
+    this_->mHandles[2] = 0;
+    this_->mHandles[3] = 0;
+    this_->mHandles[4] = 0;
+    this_->mHandles[5] = 0;
+    this_->mHandles[6] = 0;
+    this_->x = (s32)this_->x / 16 * 16 + 8;
+    this_->m24C = 0;
+    this_->m254 = (this_->m90 >> 17) & 3;
+    this_->m250 = 0;
+    this_->m258 = (this_->m90 >> 12) & 0x1f;
+    this_->m25C = (this_->m90 >> 7) & 0x1f;
+    this_->m276 = 0;
+    this_->m277 = 0;
+    this_->m278 = 0;
+    this_->m268 = this_->x;
+    this_->m26C = this_->y;
+    this_->m270 = this_->z;
+    this_->m26C -= lbl_80541404;
+    this_->m260 = -1;
+    this_->m264 = -1;
+    this_->m275 = 0xff;
+    this_->m279 = 0;
+    if (this_->v34() == 1) {
+        this_->m11C = 0;
+        this_->m2CC = 0;
+        this_->m24C = 0x10;
+    } else {
+        this_->m2CC = fn_804032E8('TIMG', lbl_804AA330[this_->m254]);
+        this_->mHandles[0] = fn_8013CC50(this_->m04, &this_->x, 0x4e, 0, 0, 0, 0, 1, lbl_80541418);
+    }
+    for (int i = 0; i < 4; i++) {
+        this_->mSlots[i].a = lbl_80541400;
+        this_->mSlots[i].b = lbl_80541400;
+        this_->mSlots[i].c = lbl_80541400;
+        this_->mSlots[i].d = lbl_80541400;
+        this_->mSlots[i].e = 0;
+        this_->mSlots[i].f = 0;
+    }
+    this_->m11F = 1;
 }
 
 // fn_802EEA24 - GNEF: set global flag byte.
