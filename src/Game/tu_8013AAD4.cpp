@@ -7,6 +7,7 @@
 #include "JSystem/J3D/J3DSys.h"
 #include "JSystem/J3D/J3DDrawBuffer.h"
 #include "JSystem/JGeometry.h"
+#include "JSystem/J2D/J2DGrafContext.h"
 
 
 extern void* lbl_8053AB10;
@@ -20,20 +21,38 @@ struct AADGameState {
 extern AADGameState* lbl_8053AAF8;
 
 static inline bool inModeA(AADGameState* g) {
+    return g->mode == 7 || g->mode == 8 || g->mode == 9 || g->mode == 22 || g->mode == 10 || g->mode == 11;
+}
+static inline bool inModeB(AADGameState* g) {
+    return g->mode == 7 || g->mode == 8 || g->mode == 9 || g->mode == 22 || g->mode == 10 || g->mode == 11 || g->mode == 12;
+}
+static inline bool inModeAm(s32 m) {
     bool r = false;
-    s32 m = g->mode;
     if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11) {
         r = true;
     }
     return r;
 }
-static inline bool inModeB(AADGameState* g) {
+static inline bool inModeBm(s32 m) {
     bool r = false;
-    s32 m = g->mode;
     if (m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11 || m == 12) {
         r = true;
     }
     return r;
+}
+static inline bool isM12(s32 m) { return m == 12; }
+static inline bool evModeA(s32 m) { return m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11; }
+static inline bool evModeB(s32 m) { return m == 7 || m == 8 || m == 9 || m == 0x16 || m == 10 || m == 11 || m == 12; }
+static inline bool evMode(u8 b, s32 m) {
+    if (b) {
+        return evModeA(m) != 0;
+    } else {
+        return evModeB(m) != 0;
+    }
+}
+static inline bool isMode12() {
+    AADGameState* g = lbl_8053AAF8;
+    return g->b7f && g->mode == 12;
 }
 static inline bool isEventMode() {
     AADGameState* g = lbl_8053AAF8;
@@ -46,6 +65,48 @@ static inline bool isEventMode() {
 
 extern "C" void fn_802FF0EC(void* p);
 extern "C" s32 fn_8013D5D4(void* subObj);
+
+
+extern "C" void fn_8030E154(void* p);
+extern "C" void fn_802FF568(void* p);
+extern "C" void fn_8013DC44(void* p);
+extern "C" void fn_80159330(void* p);
+extern "C" void fn_8016005C(void* p);
+extern "C" u32* fn_8013C394();
+extern "C" u8 fn_80239D38();
+
+extern "C" void fn_8013BBE0(u8* this_) {
+    if (lbl_8053AAF8->mode == 9) {
+        return;
+    }
+    fn_8030E154(*(void**)(this_ + 0x24));
+    fn_802FF568(*(void**)(this_ + 0x20));
+    fn_8013DC44(*(void**)(this_ + 0x28));
+    fn_80159330(*(void**)(this_ + 0x2c));
+    fn_8016005C(*(void**)(this_ + 0x30));
+    u32* vp = fn_8013C394();
+    JGeometry::TBox2f box((f32)vp[0], (f32)vp[1], (f32)vp[2], (f32)vp[3]);
+    (*(J2DGrafContext**)(this_ + 0x14))->place(box);
+    (*(J2DGrafContext**)(this_ + 0x14))->scissor(box);
+    if (lbl_8053AAF8->b7f && isM12(lbl_8053AAF8->mode)) {
+        this_[0x39] = 0;
+    } else if (!evMode(lbl_8053AAF8->b7f, lbl_8053AAF8->mode)) {
+        this_[0x39] = 1;
+    } else {
+        s32 m = lbl_8053AAF8->mode;
+            u8 r = 0;
+            if (this_[0x38] >= 0xff) {
+                bool ok = true;
+                if (m != 11 && !fn_80239D38()) {
+                    ok = false;
+                }
+                if (ok) {
+                    r = 1;
+                }
+            }
+            this_[0x39] = r;
+    }
+}
 
 extern "C" void fn_8013B538(void* this_) {
     if (isEventMode()) {
@@ -422,8 +483,8 @@ extern "C" void* fn_8013BE60(void* this_, s16 flag) {
     return this_;
 }
 
-extern "C" void* fn_8013C394() {
-    return *(char**)((char*)lbl_8053AB10 + 0x24) + 0x144;
+extern "C" u32* fn_8013C394() {
+    return (u32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x144);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
