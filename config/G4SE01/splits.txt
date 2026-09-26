@@ -2063,6 +2063,7 @@ Game/FDWP_8012EA00.cpp:
 	.text       start:0x8012EA00 end:0x8012F008
 	.ctors      start:0x8045BEC4 end:0x8045BEC8
 	.bss        start:0x804BDBF0 end:0x804BDC5C
+	.sdata2     start:0x8053CC68 end:0x8053CC78
 
 Game/IFCK_8012F008.cpp:
 	extab       start:0x8000670C end:0x80006734
