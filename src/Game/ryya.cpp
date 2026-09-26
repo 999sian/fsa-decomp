@@ -119,4 +119,176 @@ extern "C" void* fn_801A7B98(char* this_, s16 freeFlag) {
     return this_;
 }
 
+struct RyyaDrawParam {
+    RyyaDrawParam() : m40(-1), m44(-1) {
+        for (u8 i = 0; i < 16; i++) {
+            mIdx[i] = i;
+        }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
+        mMtx = NULL;
+        m4C = 0;
+        m4D = 0;
+        m4E = 0;
+        m4F = 1;
+        m50 = 1;
+        m51 = 0;
+        m52 = 0;
+        m53 = 0;
+        m54 = 0;
+        m55 = 0;
+        m56 = 1;
+        m58 = 3;
+        m5C = 1;
+        m5D = 0;
+        m5E = 0;
+        m60 = -1;
+        m64 = 0;
+        m68 = 2;
+    }
+    u8 mIdx[16];
+    s32 m40;
+    s32 m44;
+    f32 (*mMtx)[4];
+    u8 m4C, m4D, m4E, m4F, m50, m51, m52, m53, m54, m55, m56;
+    s32 m58;
+    u8 m5C, m5D, m5E;
+    s32 m60;
+    s32 m64;
+    s32 m68;
+};
+extern "C" void fn_801F06F0(void* this_, const char* table, s32 id, RyyaDrawParam* prm, f32 f1, f32 f2, s32 mode);
+extern const char lbl_80468500[];
+extern const f32 lbl_8053E628;
+extern const f32 lbl_8053E62C;
+extern const f32 lbl_8053E630;
+struct RyyaTimer {
+    u8 pad[0x10];
+    u8 m10;
+    u8 m11;
+    u8 m12;
+    u8 m13;
+};
+extern RyyaTimer* lbl_8053AF20;
+
+inline void ryyaSetTime(s32 a, f32 b) {
+    lbl_8053AF20->m11 = a;
+    lbl_8053AF20->m12 = b;
+    lbl_8053AF20->m13 |= 2;
+}
+
+inline void ryyaSetTime2(s32 t) {
+    lbl_8053AF20->m11 = t / 60;
+    lbl_8053AF20->m12 = lbl_8053E62C * (t % 60) / lbl_8053E630;
+    lbl_8053AF20->m13 |= 2;
+}
+
+extern "C" void fn_801A6690(char* p) {
+    switch (*(s32*)(p + 0x260)) {
+    case 0:
+    case 1: {
+        RyyaDrawParam prm;
+        prm.reset();
+        if (*(s32*)(p + 0x250) != 1) {
+            fn_801F06F0(p, lbl_80468500, *(s32*)(p + 0x254) + 0x303, &prm, lbl_8053E628, lbl_8053E628, -1);
+        }
+        if (*(s32*)(p + 0x258) >= 0) {
+            lbl_8053AF20->m10 = *(s32*)(p + 0x25c);
+            lbl_8053AF20->m13 |= 1;
+            s32 t = *(s32*)(p + 0x258);
+            lbl_8053AF20->m11 = t / 60;
+            lbl_8053AF20->m12 = (s32)(lbl_8053E62C * (t - (t / 60) * 60) / lbl_8053E630);
+            lbl_8053AF20->m13 |= 2;
+        }
+        break;
+    }
+    }
+}
+
+extern "C" void detach__5ActorFv(void* this_);
+extern const f32 lbl_8053E654;
+extern const f32 lbl_8053E660;
+extern const f32 lbl_8053E664;
+extern const f32 lbl_8053E688;
+extern const f32 lbl_8053E68C;
+
+struct RyyaVT {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual u8 v11();
+};
+
+static inline void ryyaSetCycle(char* p, s32 st) {
+    if (*(s32*)(p + 0x250) != st) {
+        *(s32*)(p + 0x250) = st;
+        *(s32*)(p + 0x234) = 0;
+        *(s32*)(p + 0x240) = 0;
+    }
+}
+
+extern "C" void fn_801A7DD4(char* p) {
+    *(f32*)(p + 0x60) = lbl_8053E660;
+    *(f32*)(p + 0x64) = lbl_8053E660;
+    *(f32*)(p + 0x68) = lbl_8053E664;
+    *(f32*)(p + 0x6c) = lbl_8053E664;
+    *(f32*)(p + 0x70) = lbl_8053E688;
+    *(f32*)(p + 0x74) = lbl_8053E688;
+    *(f32*)(p + 0x78) = lbl_8053E68C;
+    *(f32*)(p + 0x7c) = lbl_8053E68C;
+    *(f32*)(p + 0x80) = lbl_8053E660;
+    *(f32*)(p + 0x84) = lbl_8053E660;
+    *(f32*)(p + 0x88) = lbl_8053E664;
+    *(f32*)(p + 0x8c) = lbl_8053E664;
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x254) = 2;
+    *(s32*)(p + 0x258) = -1;
+    *(s32*)(p + 0x25c) = 0;
+    *(s32*)(p + 0x26c) = -1;
+    *(s32*)(p + 0x270) = -1;
+    *(f32*)(p + 0x44) = lbl_8053E654;
+    *(f32*)(p + 0x40) = lbl_8053E654;
+    *(f32*)(p + 0x3c) = lbl_8053E654;
+    *(s32*)(p + 0x264) = -1;
+    *(s32*)(p + 0x268) = -1;
+    *(s32*)(p + 0x250) = 0;
+    ryyaSetCycle(p, 0);
+    *(s32*)(p + 0x260) = *(u32*)(p + 0x90) & 0xf;
+    if (((RyyaVT*)p)->v11()) {
+        detach__5ActorFv(p);
+        return;
+    }
+    switch (*(s32*)(p + 0x260)) {
+    case 1:
+        ryyaSetCycle(p, 1);
+        *(s32*)(p + 0x254) = *(s32*)(p + 0x240) + 0xc;
+    case 0:
+        if (((RyyaVT*)p)->v11()) {
+            *(s32*)(p + 0x230) = 10;
+        } else {
+            *(s32*)(p + 0x230) = 0;
+        }
+        break;
+    case 2:
+        *(s32*)(p + 0x230) = 0xd;
+        break;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
