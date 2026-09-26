@@ -1008,6 +1008,57 @@ extern "C" {
 inline void setAround(JGeometry::TBox2<f32>* b, const JGeometry::TVec2<f32>& c, f32 r) {
     b->set(c.x - r, c.y - r, r + c.x, r + c.y);
 }
+inline bool boxOverlap(const JGeometry::TBox2<f32>& a, const JGeometry::TBox2<f32>* o) {
+    JGeometry::TBox2<f32> b(a);
+    b.i.setMax(o->i);
+    b.f.setMin(o->f);
+    bool r = 0;
+    if (b.f.x >= b.i.x && b.f.y >= b.i.y) {
+        r = 1;
+    }
+    return r;
+}
+u8 fn_802738F0(char* p, JGeometry::TBox2<f32>* box, f32* out, s32 a, s32 b) {
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (GetBusyLocked(p)) {
+        return 0;
+    }
+    if (Player_GetField_0x454(p)) {
+        return 0;
+    }
+    if (U8(p, 0x458) == 1) {
+        JGeometry::TBox2<f32> body(*(JGeometry::TBox2<f32>*)(p + 0x4a0));
+        f32* o = roomOffset(S32(p, 0x3b4));
+        JGeometry::TVec2<f32> n;
+        n.x = -o[0];
+        n.y = -o[1];
+        body.addPos(n);
+        JGeometry::TBox2<f32> atk(*(JGeometry::TBox2<f32>*)(p + 0x4b0));
+        f32* o2 = roomOffset(S32(p, 0x3b4));
+        JGeometry::TVec2<f32> n2;
+        n2.x = -o2[0];
+        n2.y = -o2[1];
+        atk.addPos(n2);
+        if (boxOverlap(body, box)) {
+            out[0] = (atk.f.x + (atk.i.x + (body.i.x + body.f.x))) / 4.0f;
+            out[1] = (atk.f.y + (atk.i.y + (body.i.y + body.f.y))) / 4.0f;
+            return 1;
+        }
+        if ((u8)a && boxOverlap(atk, box)) {
+            if ((u8)b) {
+                out[0] = (atk.f.x + (atk.i.x + (body.i.x + body.f.x))) / 4.0f;
+                out[1] = (atk.f.y + (atk.i.y + (body.i.y + body.f.y))) / 4.0f;
+                return 1;
+            }
+            out[0] = 0.5f * (atk.i.x - atk.f.x) + atk.f.x;
+            out[1] = 0.5f * (atk.i.y - atk.f.y) + atk.f.y;
+            return 1;
+        }
+    }
+    return 0;
+}
 bool fn_80273C30(void* a, void* b, void* c, void* d) {
     if (((bool (*)(void*, void*, void*, void*))fn_80274238)(a, b, c, d)) {
         return 1;
