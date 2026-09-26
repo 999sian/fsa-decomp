@@ -53,3 +53,19 @@ extern "C" void fn_802EF1B4(void* this_) {
     *(u32*)((char*)this_ + 0x23c) = 0;
     ((ActorSlot5*)this_)->slot5();
 }
+
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

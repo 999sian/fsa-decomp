@@ -39,3 +39,19 @@ void Zomo_SetParams(void* thisPtr) {
 	*(s32*)(p + 0x230) = 0;
 }
 }
+
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

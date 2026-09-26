@@ -4,7 +4,6 @@
 
 // ---- Lcls_dtor_802E8DFC.cpp ----
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AA008[];
 
 extern "C" void* fn_802E8DFC(void* this_, short how) {
@@ -12,7 +11,7 @@ extern "C" void* fn_802E8DFC(void* this_, short how) {
         *(void**)this_ = lbl_804AA008;
         dtor_801F593C(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -27,10 +26,10 @@ void Lcls_EmptyHook(void) {}
 }
 
 // ---- RoomBitfieldNotify_802E8E60.cpp ----
-extern "C" void* GetRoomConfigRecord(void);
+extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D7F40(void*, u32);
 
-// fn_802E8E60 - LCLS: setParams. Calls GetRoomConfigRecord then
+// fn_802E8E60 - LCLS: setParams. Calls fn_802D6A9C then
 // fn_802D7F40 with a bitfield extracted from this->0x90; if the query
 // returns true, notifies via own virtual slot 12 (byte offset 0x30)
 // with args (0xff, 1). See
@@ -51,7 +50,7 @@ struct ActorSlot12 {
 };
 
 extern "C" void fn_802E8E60(void* this_) {
-    void* configRecord = GetRoomConfigRecord();
+    void* configRecord = fn_802D6A9C();
     u32 field = (*(u32*)((char*)this_ + 0x90) >> 22) & 0x1F;
     if ((u8)fn_802D7F40(configRecord, field) != 0) {
         ((ActorSlot12*)this_)->slot12(0xff, 1);
@@ -73,3 +72,19 @@ struct ActorSlot5 {
 extern "C" void fn_802E8EBC(void* this_) {
     ((ActorSlot5*)this_)->slot5();
 }
+
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
+#include "JSystem/JAudio/JASFakeMatchFSA.h"

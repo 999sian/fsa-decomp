@@ -48,3 +48,19 @@ extern "C" s32 fn_801F132C(void* this_, u32 param2, u32 param3, void* statePtr);
 extern "C" s32 Yasi_CanBeActiveHere(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
+
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
