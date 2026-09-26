@@ -82,16 +82,14 @@ extern void* lbl_8053AF80;
 extern void* lbl_8053AD30;
 extern "C" u32 fn_80309C4C(void* p, s32 a, s32 b);
 
-struct Menu_803AD220 {
-    u8 pad0[0x98];
-    J2DPane* pane98;
-    J2DPane* pane9C;
-    u8 padA0[0x3c0 - 0xa0];
+struct Menu_Slide {
+    u8 pad0[0x70];
+    J2DPane* panes[0xd];        // 0x70
+    u8 padA4[0x3c0 - 0xa4];
     s32 state[4];               // 0x3c0
-    u8 pad3d0[0x404 - 0x3d0];
-    f32 y404;
-    f32 y408;
-    u8 pad40c[0x440 - 0x40c];
+    u8 pad3d0[0x3f4 - 0x3d0];
+    f32 ys[8];                  // 0x3f4
+    u8 pad414[0x440 - 0x414];
     s32 timer;                  // 0x440
     u8 pad444[0x454 - 0x444];
     s32 count;                  // 0x454
@@ -104,14 +102,17 @@ struct Menu_803AD220 {
     u8 m4c6;
 };
 
-extern "C" void fn_803AD220(Menu_803AD220* p) {
+#define PANE(off) (p->panes[((off) - 0x70) / 4])
+#define PY(off) (p->ys[((off) - 0x3f4) / 4])
+
+extern "C" void fn_803AD220(Menu_Slide* p) {
     p->timer--;
     if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
         if (p->timer >= 0x3c) {
-            p->pane9C->hide();
-            { f32 x = p->pane9C->getBounds()->i.x; p->pane9C->move(x, p->y404); }
-            p->pane98->show();
-            { f32 x = p->pane98->getBounds()->i.x; p->pane98->move(x, p->y408); }
+            PANE(0x9c)->hide();
+            { f32 x = PANE(0x9c)->getBounds()->i.x; PANE(0x9c)->move(x, PY(0x404)); }
+            PANE(0x98)->show();
+            { f32 x = PANE(0x98)->getBounds()->i.x; PANE(0x98)->move(x, PY(0x408)); }
             fn_80458880(lbl_8053AF80, 0x2c, -1);
         }
         p->timer = 0;
@@ -127,18 +128,138 @@ extern "C" void fn_803AD220(Menu_803AD220* p) {
         p->m4c1 = 0x1a;
     } else if (t >= 0x8a) {
         f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
-        { f32 x = p->pane9C->getBounds()->i.x; p->pane9C->move(x, p->y404 + off); }
+        { f32 x = PANE(0x9c)->getBounds()->i.x; PANE(0x9c)->move(x, PY(0x404) + off); }
         if (p->timer == 0x8a) {
-            p->pane9C->hide();
-            p->pane98->show();
-            { f32 x = p->pane98->getBounds()->i.x; p->pane98->move(x, p->y408 + off); }
+            PANE(0x9c)->hide();
+            PANE(0x98)->show();
+            { f32 x = PANE(0x98)->getBounds()->i.x; PANE(0x98)->move(x, PY(0x408) + off); }
         }
     } else if (t >= 0x80) {
-        f32 x = p->pane98->getBounds()->i.x;
+        f32 x = PANE(0x98)->getBounds()->i.x;
         f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
-        p->pane98->move(x, p->y408 + off);
+        PANE(0x98)->move(x, PY(0x408) + off);
         if (p->timer == 0x80) {
-            { f32 x = p->pane9C->getBounds()->i.x; p->pane9C->move(x, p->y404); }
+            { f32 x = PANE(0x9c)->getBounds()->i.x; PANE(0x9c)->move(x, PY(0x404)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
+
+extern "C" void fn_803ADC0C(Menu_Slide* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            PANE(0x94)->hide();
+            PANE(0xa0)->show();
+            { f32 x = PANE(0x94)->getBounds()->i.x; PANE(0x94)->move(x, PY(0x400)); }
+            { f32 x = PANE(0xa0)->getBounds()->i.x; PANE(0xa0)->move(x, PY(0x410)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c4 = 0;
+        p->m4c6 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        p->m4c1 = 0x15;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        { f32 x = PANE(0x94)->getBounds()->i.x; PANE(0x94)->move(x, PY(0x400) + off); }
+        if (p->timer == 0x8a) {
+            PANE(0x94)->hide();
+            PANE(0xa0)->show();
+            { f32 x = PANE(0xa0)->getBounds()->i.x; PANE(0xa0)->move(x, PY(0x410) + off); }
+        }
+    } else if (t >= 0x80) {
+        f32 x = PANE(0xa0)->getBounds()->i.x;
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        PANE(0xa0)->move(x, PY(0x410) + off);
+        if (p->timer == 0x80) {
+            { f32 x = PANE(0xa0)->getBounds()->i.x; PANE(0xa0)->move(x, PY(0x410)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
+
+extern "C" void fn_803AE308(Menu_Slide* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            PANE(0x90)->hide();
+            { f32 x = PANE(0x90)->getBounds()->i.x; PANE(0x90)->move(x, PY(0x3fc)); }
+            PANE(0x94)->show();
+            { f32 x = PANE(0x94)->getBounds()->i.x; PANE(0x94)->move(x, PY(0x400)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c4 = 0;
+        p->m4c6 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        p->m4c1 = 0x13;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        { f32 x = PANE(0x90)->getBounds()->i.x; PANE(0x90)->move(x, PY(0x3fc) + off); }
+        if (p->timer == 0x8a) {
+            PANE(0x90)->hide();
+            PANE(0x94)->show();
+            { f32 x = PANE(0x94)->getBounds()->i.x; PANE(0x94)->move(x, PY(0x400) + off); }
+        }
+    } else if (t >= 0x80) {
+        f32 x = PANE(0x94)->getBounds()->i.x;
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        PANE(0x94)->move(x, PY(0x400) + off);
+        if (p->timer == 0x80) {
+            { f32 x = PANE(0x90)->getBounds()->i.x; PANE(0x90)->move(x, PY(0x3fc)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
+
+extern "C" void fn_803AEC78(Menu_Slide* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            PANE(0x8c)->hide();
+            PANE(0x90)->show();
+            { f32 x = PANE(0x8c)->getBounds()->i.x; PANE(0x8c)->move(x, PY(0x3f8)); }
+            { f32 x = PANE(0x90)->getBounds()->i.x; PANE(0x90)->move(x, PY(0x3fc)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c4 = 0;
+        p->m4c6 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        p->m4c1 = 0x10;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        { f32 x = PANE(0x8c)->getBounds()->i.x; PANE(0x8c)->move(x, PY(0x3f8) + off); }
+        if (p->timer == 0x8a) {
+            PANE(0x8c)->hide();
+            PANE(0x90)->show();
+            { f32 x = PANE(0x90)->getBounds()->i.x; PANE(0x90)->move(x, PY(0x3fc) + off); }
+        }
+    } else if (t >= 0x80) {
+        f32 x = PANE(0x90)->getBounds()->i.x;
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        PANE(0x90)->move(x, PY(0x3fc) + off);
+        if (p->timer == 0x80) {
+            { f32 x = PANE(0x90)->getBounds()->i.x; PANE(0x90)->move(x, PY(0x3fc)); }
             fn_80458880(lbl_8053AF80, 0x2c, -1);
         }
     }
@@ -193,6 +314,47 @@ extern "C" void fn_803AF604(void* this_) {
         *(u8*)(t + 0x4c1) = 0xd;
     }
 }
+
+extern "C" void fn_803B0158(Menu_Slide* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            PANE(0x70)->hide();
+            PANE(0x8c)->show();
+            { f32 x = PANE(0x70)->getBounds()->i.x; PANE(0x70)->move(x, PY(0x3f4)); }
+            { f32 x = PANE(0x8c)->getBounds()->i.x; PANE(0x8c)->move(x, PY(0x3f8)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c4 = 0;
+        p->m4c6 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        p->m4c1 = 9;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        { f32 x = PANE(0x70)->getBounds()->i.x; PANE(0x70)->move(x, PY(0x3f4) + off); }
+        if (p->timer == 0x8a) {
+            PANE(0x70)->hide();
+            PANE(0x8c)->show();
+            { f32 x = PANE(0x8c)->getBounds()->i.x; PANE(0x8c)->move(x, PY(0x3f8) + off); }
+        }
+    } else if (t >= 0x80) {
+        f32 x = PANE(0x8c)->getBounds()->i.x;
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        PANE(0x8c)->move(x, PY(0x3f8) + off);
+        if (p->timer == 0x80) {
+            { f32 x = PANE(0x70)->getBounds()->i.x; PANE(0x70)->move(x, PY(0x3f4)); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
+
 
 // ---- from src/Game/InvalidateFourFields.cpp ----
 // fn_803B7B90 - trailing tiny helper (0x18), closes out the whole actor cluster
