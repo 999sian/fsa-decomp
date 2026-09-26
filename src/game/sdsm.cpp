@@ -10,10 +10,92 @@ void Sdsm_EmptyHook(void) {}
 
 }
 
+// ---- SDSM shared declarations ----
+struct SdsmMsg { u32 id; };
+struct SdsmWaveBase { u8 pad[8]; };
+struct SdsmWave : SdsmWaveBase {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void send(SdsmMsg*);
+};
+class WaveController {
+public:
+    WaveController(s32 a, s32 b, s32 c);
+    ~WaveController();
+private:
+    unsigned char pad[0x5c];
+};
+extern const f32 lbl_805413F8;
+extern const f32 lbl_805413FC;
+extern char* lbl_8053AB10;
+extern char* lbl_8053AAF8;
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D9FF4(void* rec, u32 a, u32 b);
+extern "C" void fn_80136798(void* obj, int id, int arg);
+extern "C" void fn_8013CB44(void* handle, f32* pos, s32 a, s32 b, s32 c);
+extern "C" void* fn_8013CC50(s32 player, f32* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8 fn_8023077C();
+extern "C" u8 fn_80230534(s32 a);
+
+static inline void sdsmSetPos(char* p) {
+    char* cam = *(char**)(lbl_8053AB10 + 0x24);
+    *(f32*)(p + 0x244) = -*(f32*)(cam + 0x10);
+    *(f32*)(p + 0x248) = -*(f32*)(cam + 0x20);
+    *(f32*)(p + 0x24c) = lbl_805413F8;
+}
+
+static inline void sdsmSpawn(char* p, s32 a, s32 b, s32 c, s32 d) {
+    u32 f = *(u32*)(p + 0x23c);
+    if (f & 1) {
+        *(void**)(p + 0x234) = fn_8013CC50(*(s32*)(p + 0x4), (f32*)(p + 0x244), lbl_805413FC, a, 1, 1, 0, 0, 1);
+    } else if (f & 2) {
+        *(void**)(p + 0x234) = fn_8013CC50(*(s32*)(p + 0x4), (f32*)(p + 0x244), lbl_805413FC, b, 1, 1, 0, 0, 1);
+    } else if (f & 4) {
+        *(void**)(p + 0x234) = fn_8013CC50(*(s32*)(p + 0x4), (f32*)(p + 0x244), lbl_805413FC, c, 1, 1, 0, 0, 1);
+    } else {
+        *(void**)(p + 0x234) = fn_8013CC50(*(s32*)(p + 0x4), (f32*)(p + 0x244), lbl_805413FC, d, 1, 1, 0, 0, 1);
+    }
+}
+
+// fn_802ECAD8 - SDSM: update(). Keeps the effect at the camera position,
+// runs the end countdown, and swaps the effect once the room flag is set.
+extern "C" void fn_802ECAD8(char* p) {
+    sdsmSetPos(p);
+    fn_8013CB44(*(void**)(p + 0x234), (f32*)(p + 0x244), 1, 1, 1);
+    if (*(s32*)(p + 0x240) != 0) {
+        *(s32*)(p + 0x240) = *(s32*)(p + 0x240) - 1;
+        if (*(s32*)(p + 0x240) == 0) {
+            fn_80230534(0);
+            u32 params = *(u32*)(p + 0x90);
+            fn_802D9FF4(fn_802D6A9C(), (params >> 8) & 0xf, (params >> 12) & 0xf);
+            fn_80136798(lbl_8053AAF8, 0xd, 0);
+        }
+    } else {
+        if (*(s32*)(lbl_8053AAF8 + 0x4c) != 0xb) {
+            SdsmMsg m;
+            m.id = 0x50079;
+            (*(SdsmWave**)(p + 0x230))->send(&m);
+        }
+        if (*(s32*)(p + 0x250) == 0 && *((u8*)fn_802D6A9C() + 0xc9) != 0) {
+            *(s32*)(p + 0x250) = 1;
+            char* h = *(char**)(p + 0x234);
+            *(u32*)(h + 0xf4) |= 1;
+            *(s32*)(h + 0x24) = 1;
+            *(void**)(p + 0x234) = 0;
+            sdsmSpawn(p, 0x3e9, 0x3e8, 0x3e7, 0x3ea);
+            *(s32*)(p + 0x240) = 100;
+            fn_8023077C();
+            SdsmMsg m2;
+            m2.id = 0x400b9;
+            (*(SdsmWave**)(p + 0x230))->send(&m2);
+        }
+    }
+}
+
 // ---- Sdsm_dtor_802ECD0C.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void dtor_801F593C(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AA280[];
 
 struct NonPolyBase {
@@ -54,10 +136,21 @@ extern "C" void* fn_802ECD0C(void* this_, short how) {
         }
         dtor_801F593C(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
+}
+
+// fn_802ECDA4 - SDSM: setParams().
+extern "C" void fn_802ECDA4(char* p) {
+    *(u32*)(p + 0x23c) = *(u32*)(p + 0x90) & 0xF;
+    *(u32*)(p + 0x254) = (*(u32*)(p + 0x90) >> 4) & 0xF;
+    sdsmSetPos(p);
+    sdsmSpawn(p, 0x3e6, 0x3e5, 0x3e4, 0x3eb);
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x250) = 0;
+    *(WaveController**)(p + 0x230) = new WaveController(0, 0, 8);
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
