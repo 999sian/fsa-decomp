@@ -36,13 +36,15 @@ extern "C" void fn_802D9FF4(void* rec, u32 a, u32 b);
 extern "C" void fn_80136798(void* obj, int id, int arg);
 extern void* lbl_8053AAF8[2];
 
+static inline void elskNotify(u32 a, s32 i) {
+    fn_802D9FF4(fn_802D6A9C(), a, lbl_8046F610[i].b);
+}
+
 extern "C" void fn_802EF4AC(void* this_) {
     *(s32*)((char*)this_ + 0x234) = *(s32*)((char*)this_ + 0x234) - 1;
     if (*(s32*)((char*)this_ + 0x234) == 0) {
-        // NONMATCHING (99.2%): retail swaps r30/r31 (offset vs value).
         s32 i = *(s32*)((char*)this_ + 0x230);
-        u32 a = lbl_8046F610[i].a;
-        fn_802D9FF4(fn_802D6A9C(), a, lbl_8046F610[i].b);
+        elskNotify(lbl_8046F610[i].a, i);
         fn_80136798(lbl_8053AAF8[0], 0xf, 0);
     }
 }
