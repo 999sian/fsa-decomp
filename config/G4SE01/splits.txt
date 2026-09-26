@@ -2607,6 +2607,8 @@ Game/tu_80217374.cpp:
 	extabindex  start:0x80017EE4 end:0x80017F08
 	.text       start:0x80217374 end:0x8021775C
 	.ctors      start:0x8045C14C end:0x8045C150
+	.bss        start:0x804CD738 end:0x804CD838
+	.sdata2     start:0x8053FC28 end:0x8053FC38
 
 Game/tu_8021775C.cpp:
 	extab       start:0x8000A280 end:0x8000A2E8
