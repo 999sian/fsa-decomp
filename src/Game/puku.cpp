@@ -2,6 +2,9 @@
 // Functions: dtor, draw (slot 6, TODO), update (slot 3, TODO), tile check, init (slot 1).
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#include "std/math.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -73,6 +76,240 @@ extern "C" void fn_8017B1A0(char* this_) {
     }
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc,
                 *(s32*)(this_ + 0x250) + 0x143, scaled != 0, 2, -1, 0, 0, 0);
+}
+
+extern "C" void fn_801F71A4(f32* p, f32 target, f32 a, f32 b);
+extern "C" u8 fn_801F2618(void* this_, JGeometry::TVec3<f32>* out, s32 b);
+extern "C" u8 fn_801F2B7C(void* this_, u32 a, s32 b, s32 c);
+extern "C" u8 fn_801F6758(JGeometry::TVec3<f32>* pos, u32 room, f32 r);
+extern "C" void fn_801EEC98(void* this_, void* room, s16* a, s32* dir, f32* dist, s32* player, s32 b, s32 c);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
+
+struct Puku {
+    u8 pad0[4];
+    u32 room;
+    u8 pad8[0xc - 0x8];
+    JGeometry::TVec3<f32> pos;
+    u8 pad18[0x3c - 0x18];
+    JGeometry::TVec3<f32> vel;
+    u8 pad48[0x98 - 0x48];
+    s32 dir;
+    u8 pad9c[0x114 - 0x9c];
+    u32 x114;
+    u8 pad118[0x198 - 0x118];
+    void* x198;
+    u8 pad19c[0x230 - 0x19c];
+    s32 state;
+    s32 timers[4];
+    s32 anim;
+    u8 pad248[0x250 - 0x248];
+    s32 frame;
+    u8 pad254[0x258 - 0x254];
+    s32 big;
+    s16 phase;
+    u8 pad25e[2];
+    f32 range;
+    JGeometry::TVec3<f32> target;
+    JGeometry::TVec3<f32> home;
+};
+
+static inline void pukuStop(Puku* p) {
+    p->target.x = p->target.y = p->target.z = 0.0f;
+    p->vel.x = p->vel.y = p->vel.z = 0.0f;
+}
+
+// PUKU update (vtable slot 3)
+extern "C" void fn_8017B3B4(Puku* p) {
+    f32 dist = 0.0f;
+    s32 player = -1;
+    s32 dir;
+    u8 far = 0;
+    fn_801F71A4(&p->vel.x, p->target.x, 0.1f, 0.1f);
+    fn_801F71A4(&p->vel.y, p->target.y, 0.1f, 0.1f);
+    p->pos += p->vel;
+    JGeometry::TVec3<f32> push;
+    push.x = push.y = push.z = 0.0f;
+    u8 blocked = fn_801F2618(p, &push, 0);
+    if (p->big == 1 && push.y) {
+        blocked = 0;
+    }
+    if (fn_801F2B7C(p, p->x114, -1, 1) && p->big == 1 && p->state == 3) {
+        far = 1;
+    }
+    switch (p->state) {
+    case 0:
+        if (p->big == 1) {
+            switch (p->dir) {
+            case 0:
+                p->target.x = 0.9f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            case 1:
+                p->target.x = -0.9f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            }
+        } else {
+            switch (p->dir) {
+            case 0:
+                p->target.x = 0.4f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            case 1:
+                p->target.x = -0.4f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            }
+        }
+        p->state = 1;
+    case 1:
+        p->target.y = 0.3f * JMASinShort(p->phase);
+        if ((f32)__fabs(p->home.x - p->pos.x) > 96.0f + 16.0f * lbl_8053AAF8->rnd.get_ufloat_1()) {
+            far = 1;
+        }
+        p->phase += 300;
+        if (p->timers[1] == 0 || blocked) {
+            if (blocked || fn_801F6758(&p->pos, p->room, 16.0f) || far == 1) {
+                s32 old = p->dir;
+                p->dir = 0;
+                if (p->home.x < p->pos.x) {
+                    p->dir = 1;
+                }
+                if (old != p->dir) {
+                    pukuStop(p);
+                }
+                p->timers[1] = 20;
+                p->state = 0;
+            }
+        }
+        if (p->timers[2] == 0) {
+            fn_801EEC98(p, p->x198, 0, &dir, &dist, &player, 0, 0);
+            if (player >= 0 && p->dir == dir) {
+                if (p->big == 0) {
+                    if (dist < 96.0f && (f32)__fabs(fn_8023E724(player)->y - p->pos.y) < 32.0f) {
+                        p->state = 2;
+                    }
+                } else {
+                    if (dist < 128.0f && (f32)__fabs(fn_8023E724(player)->y - p->pos.y) < 32.0f) {
+                        p->state = 2;
+                    }
+                }
+            }
+        }
+        break;
+    case 2:
+        pukuStop(p);
+        if (p->big == 1) {
+            switch (p->dir) {
+            case 0:
+                p->target.x = 1.7f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            case 1:
+                p->target.x = -1.7f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            }
+        } else {
+            switch (p->dir) {
+            case 0:
+                p->target.x = 0.9f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            case 1:
+                p->target.x = -0.9f;
+                p->target.y = 0.0f;
+                p->target.z = 0.0f;
+                break;
+            }
+        }
+        p->timers[2] = 0;
+        p->timers[1] = 350;
+        p->state = 3;
+    case 3: {
+        p->target.y = 0.2f * JMASinShort(p->phase);
+        f32 r = 16.0f;
+        p->phase += 300;
+        if (p->big == 1) {
+            r = -24.0f;
+            blocked = far;
+        }
+        if (blocked || fn_801F6758(&p->pos, p->room, r) || p->timers[1] == 0) {
+            p->dir ^= 1;
+            pukuStop(p);
+            p->timers[2] = 160;
+            p->timers[1] = 20;
+            p->state = 0;
+        }
+        break;
+    }
+    case 4:
+        switch (p->dir) {
+        case 0:
+            p->target.x = 0.4f;
+            p->target.y = 0.0f;
+            p->target.z = 0.0f;
+            break;
+        case 1:
+            p->target.x = -0.4f;
+            p->target.y = 0.0f;
+            p->target.z = 0.0f;
+            break;
+        case 2:
+            p->target.x = 0.0f;
+            p->target.y = 0.4f;
+            p->target.z = 0.0f;
+            break;
+        case 3:
+            p->target.x = 0.0f;
+            p->target.y = -0.4f;
+            p->target.z = 0.0f;
+            break;
+        }
+        p->timers[1] = 10;
+        p->state = 5;
+        break;
+    case 5: {
+        f32 dx = p->home.x - p->pos.x;
+        f32 dy = p->home.y - p->pos.y;
+        if (p->timers[1] == 0) {
+            if (blocked || std::sqrtf(dx * dx + dy * dy) > p->range) {
+                p->dir ^= 1;
+                pukuStop(p);
+                p->state = 4;
+            }
+        }
+        break;
+    }
+    }
+    if (p->timers[0] == 0) {
+        p->timers[0] = 8;
+        if (p->state == 3) {
+            p->timers[0] = 4;
+        }
+        p->anim++;
+        p->anim &= 1;
+        p->frame = ((p->dir & 1) << 1) + p->anim;
+    }
+    if (p->timers[0] > 0) {
+        p->timers[0]--;
+    }
+    if (p->timers[1] > 0) {
+        p->timers[1]--;
+    }
+    if (p->timers[2] > 0) {
+        p->timers[2]--;
+    }
+    if (p->timers[3] > 0) {
+        p->timers[3]--;
+    }
 }
 
 // PUKU: can it move onto the tile at pos? (tile types 0x3b, 0, 2, 3 block)
