@@ -427,4 +427,169 @@ extern "C" void fn_801B89DC(u8* this_) {
     }
 }
 
+extern "C" u8 fn_8023AAF8(s32 player, f32* box, u32 owner, f32* out);
+extern "C" s32 fn_8023AA18(f32* box, u32 owner, f32* out);
+extern "C" s32 fn_801CF720(void* this_, s32 dir);
+extern "C" void fn_801CC350(void* in, void* vel);
+
+static inline u8 pameLanded(u8* this_, s32 st) {
+    u8 r = 0;
+    switch (st) {
+    case 1:
+    case 4:
+        if ((*(s32*)(this_ + 0x24c) > 1 && *(f32*)(this_ + 0x14) <= 0.0f && 0.0f == *(f32*)(this_ + 0x44)) || *(s32*)(this_ + 0x24c) >= 120) {
+            r = 1;
+        }
+        break;
+    }
+    return r;
+}
+
+static inline s32 pameFirstPlayer(u8 mask) {
+    s32 r = -1;
+    for (s32 i = 0; i < 4; i++) {
+        if (mask & (1 << i)) {
+            r = i;
+            break;
+        }
+    }
+    return r;
+}
+
+static inline f32 pameSq(f32 x) {
+    return x * x;
+}
+
+struct PameBox {
+    PameBox() {}
+    void set(f32 x0, f32 y0, f32 x1, f32 y1) {
+        v[0] = x0;
+        v[1] = y0;
+        v[2] = x1;
+        v[3] = y1;
+    }
+    f32 v[4];
+};
+
+extern "C" void fn_801B8C98(u8* this_, u8 hitWall) {
+    f32 pos[2];
+    JGeometry::TVec3<f32> n;
+    PameBox box;
+    s32 pl;
+    if (*(f32*)(this_ + 0x14) <= 0.0f) {
+        u8 near = 0;
+        pl = -1;
+        box.set(*(f32*)(this_ + 0xc) - 40.0f, *(f32*)(this_ + 0x10) - 40.0f,
+                40.0f + *(f32*)(this_ + 0xc), 40.0f + *(f32*)(this_ + 0x10));
+        if (*(u32*)(this_ + 0x230) & 0x4000) {
+            if (fn_8023AAF8(*(s32*)(this_ + 0x2a8), box.v, *(u32*)(this_ + 4), pos)) {
+                pl = *(s32*)(this_ + 0x2a8);
+            }
+        } else {
+            pl = fn_8023AA18(box.v, *(u32*)(this_ + 4), pos);
+        }
+        if (pl >= 0) {
+            f32 dx = pos[0] - *(f32*)(this_ + 0xc);
+            f32 dy = pos[1] - *(f32*)(this_ + 0x10);
+            if (pameSq(dx) + pameSq(dy) <= 1600.0f) {
+                near = 1;
+            }
+        }
+        if (near && *(f32*)(this_ + 0x14) <= 0.0f) {
+            switch (*(s32*)(this_ + 0x248)) {
+            case 0:
+                fn_801B91A8(this_, 1);
+                break;
+            case 2:
+            case 3:
+            case 5:
+                fn_801B91A8(this_, 4);
+                break;
+            }
+        }
+    }
+    s32 st2 = *(s32*)(this_ + 0x248);
+    switch (st2) {
+    case 0:
+        if (hitWall) {
+            *(s32*)(this_ + 0x98) = fn_801CF720(this_, *(s32*)(this_ + 0x98));
+            *(s32*)(this_ + 0x250) += 10;
+        } else if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801B91A8(this_, 0);
+        }
+        break;
+    case 1:
+        if (pameLanded(this_, st2)) {
+            *(f32*)(this_ + 0x44) = 0.0f;
+            *(f32*)(this_ + 0x14) = 0.0f;
+            fn_801B91A8(this_, 2);
+        }
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801B91A8(this_, 3);
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801B91A8(this_, 4);
+        }
+        break;
+    case 4:
+        if (pameLanded(this_, st2)) {
+            *(f32*)(this_ + 0x44) = 0.0f;
+            *(f32*)(this_ + 0x14) = 0.0f;
+            fn_801B91A8(this_, 0);
+        }
+        break;
+    case 5:
+        if (hitWall) {
+            fn_801CC350(this_ + 0x264, this_ + 0x3c);
+            fn_801F0E34(this_, 0x4003c, 0);
+        } else {
+            s32 hit = this_[0x240];
+            if (hit != 0) {
+            pl = pameFirstPlayer(hit);
+            f32 ny = *(f32*)(this_ + 0x10) - fn_8023E724(pl)[1];
+            n.set(*(f32*)(this_ + 0xc) - fn_8023E724(pl)[0], ny, 0.0f);
+            fn_801CC350(&n, this_ + 0x3c);
+            fn_801F0E34(this_, 0x4003c, 0);
+            }
+        }
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            *(f32*)(this_ + 0x44) = 0.0f;
+            *(f32*)(this_ + 0x14) = 0.0f;
+            *(f32*)(this_ + 0x254) = 0.0f;
+            fn_801B91A8(this_, 2);
+        }
+        break;
+    }
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+        *(u32*)(this_ + 0x230) |= 0x40;
+        break;
+    default:
+        *(u32*)(this_ + 0x230) &= ~0x40;
+        break;
+    }
+    u8 use = 1;
+    s32 st = *(s32*)(this_ + 0x248);
+    if (pameIsActive(st)) {
+        use = 0;
+        if (*(s32*)(this_ + 0x24c) < 10) {
+            switch (st) {
+            case 1:
+            case 5:
+                use = 1;
+                break;
+            }
+        }
+    }
+    if (use) {
+        *(u32*)(this_ + 0xb0) = 0x4130b;
+    } else {
+        *(u32*)(this_ + 0xb0) = 0x41101;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
