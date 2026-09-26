@@ -158,7 +158,80 @@ extern "C" void fn_801BE2D0(char* this_) {
     }
 }
 
+
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_801BE6C4(char* this_, s32 state);
+extern "C" u8 fn_802D800C(void* mgr, s32 id);
+extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
+
+extern "C" void fn_801BE3BC(char* this_) {
+    s32 id;
+    if ((*(u32*)(this_ + 0x230) & 0x2000) && (id = *(s32*)(this_ + 0x2b0)) != 0 &&
+        fn_802D800C(fn_802D6A9C(), id)) {
+        *(u32*)(this_ + 0x230) &= ~0x2000;
+        fn_801BE6C4(this_, 0);
+    }
+    if (!(*(u32*)(this_ + 0x230) & 0x2000) && (id = *(s32*)(this_ + 0x2b4)) != 0 &&
+        fn_802D800C(fn_802D6A9C(), id)) {
+        *(u32*)(this_ + 0x230) |= 0x2000;
+    }
+    u32 hidden = *(u32*)(this_ + 0x230) & 0x2000;
+    if (hidden) {
+        fn_801BE6C4(this_, 1);
+        return;
+    }
+    if (*(s32*)(this_ + 0x108) <= 0) {
+        return;
+    }
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801BE6C4(this_, 1);
+        }
+        break;
+    case 1:
+        if (!hidden) {
+            fn_801F0E34(this_, 0x400c1, 0);
+        }
+        *(s16*)(this_ + 0x2a8) += 0x100;
+        if (*(s32*)(this_ + 0x24c) >= 30) {
+            s16 a = *(s16*)(this_ + 0x2a8);
+            s16 base = JMAAtan2Radian(10.0f * JMASSin(a), 6.0f * JMASCos(a)) * 10430.378f;
+            s32 i;
+            s32 found = -1;
+            for (i = 0; i < 4; i++) {
+                if (fn_801D08B4(this_, i, this_ + 0xc, 16.0f * *(u8*)(this_ + 0x2ac))) {
+                    f32 dy = fn_8023E724(i)->y - (-15.0f + *(f32*)(this_ + 0x10));
+                    f32 dx = fn_8023E724(i)->x - *(f32*)(this_ + 0xc);
+                    s16 ang = JMAAtan2Radian(dx, dy) * 10430.378f;
+                    f32 diff = (s16)(base - ang);
+                    if (0.000030517578f * __fabsf(diff) <= 0.02f) {
+                        found = i;
+                        break;
+                    }
+                }
+            }
+            if (found >= 0) {
+                fn_801BE6C4(this_, 2);
+            }
+        }
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x24c) >= 15) {
+            fn_801BE6C4(this_, 3);
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            fn_801BE6C4(this_, 1);
+        }
+        break;
+    }
+}
+
 extern "C" s32 fn_801CD664(s32 n);
+extern "C" void fn_801BE6C4(char* this_, s32 state);
 extern "C" void fn_801BE86C(char* this_);
 
 extern "C" void fn_801BE6C4(char* this_, s32 state) {
