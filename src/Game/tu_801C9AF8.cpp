@@ -190,4 +190,69 @@ extern "C" u8 fn_801C9CB0(char* p) {
     return r;
 }
 
+extern "C" void fn_801F317C(void* p, void* box);
+extern "C" s32 fn_8023AE34(void* box, s32 room, void* info);
+extern "C" s32 fn_8023AA18(void* box, s32 room, void* info);
+extern "C" s32 fn_8023AC74(void* box, s32 room, void* info);
+extern "C" s32 fn_8023AD54(void* box, s32 room, void* info);
+extern "C" u8 fn_801CC820(s32 idx, JGeometry::TVec3f* off);
+extern "C" u8 fn_801CC538(s32 idx, void* info, JGeometry::TVec3f* out, s32* id);
+extern "C" void fn_801CC640(s32 idx, s32* id, JGeometry::TVec3f* off);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32 idx);
+
+struct TuBox { f32 v[4]; };
+
+extern "C" u8 fn_801C9EB8(char* p) {
+    if (*(f32*)(p + 0x78) - *(f32*)(p + 0x70) <= lbl_8053EF20
+        || *(f32*)(p + 0x7c) - *(f32*)(p + 0x74) <= lbl_8053EF20
+        || fn_801C53C4(p)) {
+        return 0;
+    }
+    s32 idx;
+    s32 id = -1;
+    u32 info[2];
+    JGeometry::TVec3f alt;
+    JGeometry::TVec3f off;
+    TuBox box;
+    off.set(lbl_8053EF20, lbl_8053EF20, lbl_8053EF20);
+    u8 useOff = 0;
+    u8 isB = 0;
+    u8 isC = 0;
+    fn_801F317C(p, &box);
+    idx = fn_8023AE34(&box, *(s32*)(p + 0x4), info);
+    if (idx >= 0) {
+        useOff = fn_801CC820(idx, &off);
+    } else if ((idx = fn_8023AA18(&box, *(s32*)(p + 0x4), info)) >= 0) {
+        isB = 1;
+    } else if ((idx = fn_8023AC74(&box, *(s32*)(p + 0x4), info)) >= 0) {
+        isC = fn_801CC538(idx, info, &alt, &id);
+    } else if ((idx = fn_8023AD54(&box, *(s32*)(p + 0x4), info)) >= 0) {
+        fn_801CC640(idx, &id, &off);
+    }
+    u8 r = 0;
+    if (idx >= 0) {
+        JGeometry::TVec3f d(*fn_8023E724(idx));
+        s32 mode = 0;
+        if (isB) {
+            mode = 4;
+        } else if (isC) {
+            d.set(alt);
+        } else {
+            d.set(*(JGeometry::TVec3f*)(p + 0xc) - off);
+            if (useOff) {
+                mode = 3;
+            }
+        }
+        r = fn_801F37AC(p, 0, &d, 0, mode, idx);
+        if (r) {
+            if (*(s32*)(p + 0x248) == 0x10) {
+                *(u32*)(p + 0x230) |= 0x800000;
+            } else {
+                fn_801C3B7C(p, 0x10);
+            }
+        }
+    }
+    return r;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
