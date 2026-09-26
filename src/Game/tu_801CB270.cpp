@@ -520,13 +520,13 @@ extern "C" s32 fn_801CC820(s32 player, f32* outPos) {
 static inline f32 sq(f32 x) { return x * x; }
 
 extern "C" s32 fn_801CCE3C(const f32* pos, s32 group) {
-    s32 bestIdx = -1;
+    f32 dy;
     f32 best = *(f32*)__float_max;
+    s32 bestIdx = -1;
     for (s32 i = 0; i < 4; i++) {
         if (fn_8023F264(i) && group == fn_8023DE58(i) && !fn_8022F514((void*)i)) {
-            f32 dy = fn_8023E724(i)[1] - pos[1];
-            f32 dx = fn_8023E724(i)[0] - pos[0];
-            f32 d = sq(dx) + sq(dy);
+            dy = fn_8023E724(i)[1] - pos[1];
+            f32 d = sq(fn_8023E724(i)[0] - pos[0]) + sq(dy);
             if (d < best) {
                 best = d;
                 bestIdx = i;
@@ -550,6 +550,68 @@ extern "C" s32 fn_801CCFE4(s32 i) {
         default:
             result = 1;
             break;
+        }
+    }
+    return result;
+}
+
+extern "C" s32 fn_8023B358(s32 player);
+
+extern "C" s32 fn_801CC640(s32 player, s32* outId, f32* outPos) {
+    s32 id;
+    s32 result = 0;
+    if (outId != 0) {
+        *outId = -1;
+    }
+    if (outPos != 0) {
+        outPos[0] = lbl_8053EF7C;
+        outPos[1] = lbl_8053EF7C;
+        outPos[2] = lbl_8053EF7C;
+    }
+    id = fn_8023B358(player);
+    if (id >= 0) {
+        u8* a = (u8*)fn_801F666C(fn_801F856C(), id);
+        if (a != 0 && a[0x11c] != 0 && *(u32*)(a + 0x1a0) == 'PCDM' && *(s32*)(a + 0x108) > 0) {
+            result = 1;
+            if (outId != 0) {
+                *outId = id;
+            }
+            if (outPos != 0) {
+                outPos[0] = *(f32*)(a + 0x3c);
+                outPos[1] = *(f32*)(a + 0x40);
+                outPos[2] = *(f32*)(a + 0x44);
+            }
+            *(s32*)(a + 0x108) = 0;
+        }
+    }
+    return result;
+}
+
+extern "C" s32 fn_801CC730(s32 player, s32* outId, f32* outPos) {
+    s32 id;
+    s32 result = 0;
+    if (outId != 0) {
+        *outId = -1;
+    }
+    if (outPos != 0) {
+        outPos[0] = lbl_8053EF7C;
+        outPos[1] = lbl_8053EF7C;
+        outPos[2] = lbl_8053EF7C;
+    }
+    id = fn_8023B2B0(player);
+    if (id >= 0) {
+        u8* a = (u8*)fn_801F666C(fn_801F856C(), id);
+        if (a != 0 && a[0x11c] != 0 && *(u32*)(a + 0x1a0) == 'ARRW' && *(s32*)(a + 0x108) > 0) {
+            result = 1;
+            if (outId != 0) {
+                *outId = id;
+            }
+            if (outPos != 0) {
+                outPos[0] = *(f32*)(a + 0x3c);
+                outPos[1] = *(f32*)(a + 0x40);
+                outPos[2] = *(f32*)(a + 0x44);
+            }
+            *(s32*)(a + 0x108) = 0;
         }
     }
     return result;
