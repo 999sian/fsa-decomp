@@ -646,4 +646,35 @@ extern "C" s32 fn_801CC538(s32 player, const f32* in, JGeometry::TVec3<f32>* out
     return result;
 }
 
+extern const f32 lbl_8053EF9C;
+
+extern "C" s32 fn_801CC9F8(const f32* pos, s32 layer) {
+    s32 result = 0;
+    u8* mgr = fn_802D6A9C() + 0x10000;
+    if (mgr[layer + 0x31df] != 0 && (u16)fn_802265FC((void*)pos, layer) == 0) {
+        if ((u16)fn_802265FC(&JGeometry::TVec2<f32>(lbl_8053EF9C + pos[0], pos[1]), layer) == 0) {
+            if ((u16)fn_802265FC(&JGeometry::TVec2<f32>(pos[0] - lbl_8053EF9C, pos[1]), layer) == 0) {
+                if ((u16)fn_802265FC(&JGeometry::TVec2<f32>(pos[0], lbl_8053EF9C + pos[1]), layer) == 0) {
+                    if ((u16)fn_802265FC(&JGeometry::TVec2<f32>(pos[0], pos[1] - lbl_8053EF9C), layer) == 0) {
+                        result = 1;
+                    }
+                }
+            }
+        }
+    }
+    return result;
+}
+
+extern "C" s32 fn_801CD580(s32 exclude) {
+    s32 list[3];
+    s32 n = 0;
+    s32* p = list;
+    for (s32 i = 0; i < 4; i++) {
+        if (i != exclude) {
+            *p++ = i;
+            n++;
+        }
+    }
+    return list[fn_801CD664(n)];
+}
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
