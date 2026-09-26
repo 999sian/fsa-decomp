@@ -1,66 +1,114 @@
-decomp-toolkit Project Template
-===============================
+# The Legend of Zelda: Four Swords Adventures
 
-If starting a new GameCube / Wii decompilation project, this repository can be used as a scaffold.
+[![Build Status](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml/badge.svg)](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml)
+[![Matched Code](https://img.shields.io/badge/Code-29.74%25-yellow.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Functions](https://img.shields.io/badge/Functions-59.06%25-green.svg)](https://github.com/999sian/fsa-decomp)
+[![Linked Objects](https://img.shields.io/badge/Linked_Files-444%20%2F%20889-blue.svg)](https://github.com/999sian/fsa-decomp)
 
-See [decomp-toolkit](https://github.com/encounter/decomp-toolkit) for background on the concept and more information on the tooling used.
+A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**.
 
-Documentation
--------------
+The goal of this project is to produce readable, idiomatic C/C++ source code that compiles with the original Metrowerks compiler and links to a `main.dol` binary that is **byte-for-byte identical** to the retail release.
 
-- [Dependencies](docs/dependencies.md)
-- [Getting Started](docs/getting_started.md)
-- [`symbols.txt`](docs/symbols.md)
-- [`splits.txt`](docs/splits.md)
-- [GitHub Actions](docs/github_actions.md)
+> **Note**: This repository contains **no copyrighted game assets or retail binaries**. An existing, legally acquired copy of the game is required to extract original files and build the target executable.
 
-General:
+---
 
-- [Common BSS](docs/common_bss.md)
-- [`.comment` section](docs/comment_section.md)
+## Target Releases
 
-References
---------
+| ID | Region | Disc SHA-1 | `main.dol` SHA-1 | Status |
+| :--- | :--- | :--- | :--- | :--- |
+| **G4SE01** | USA (Rev 0) | `4bd926835dfbeaae72d01abe5fb581b527154a30` | `d86b3d9f785566e34264035e140ef3daf3cc19f0` | **Primary Target** |
+| **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | Config in progress |
+| **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | Config in progress |
 
-- [Discord: GC/Wii Decompilation](https://discord.gg/hKx3FJJgrV) (Come to `#dtk` for help!)
-- [objdiff](https://github.com/encounter/objdiff) (Local diffing tool)
-- [decomp.me](https://decomp.me) (Collaborate on matches)
-- [decomp.dev](https://decomp.dev) (Decompilation progress hub and API)
-- [wibo](https://github.com/decompals/wibo) (Minimal Win32 wrapper for Linux)
-- [sjiswrap](https://github.com/encounter/sjiswrap) (UTF-8 to Shift JIS wrapper)
+---
 
-Nearly all active GC/Wii decompilation projects use this structure, and will be useful
-for reference. A list of active GC/Wii projects can be found on [decomp.dev](https://decomp.dev).
+## Progress Tracker
 
-Features
---------
+Current progress is automatically tracked against compiler-verified metadata from `main.dol`:
 
-- Few external dependencies: Just `python` for the generator and `ninja` for the build system. See [Dependencies](docs/dependencies.md).
-- Simple configuration: Everything lives in `config.yml`, `symbols.txt`, and `splits.txt`.
-- Multi-version support: Separate configurations for each game version, and a `configure.py --version` flag to switch between them.
-- Feature-rich analyzer: Many time-consuming tasks are automated, allowing you to focus on the decompilation itself. See [Analyzer features](https://github.com/encounter/decomp-toolkit#analyzer-features).
-- REL support: RELs each have their own `symbols.txt` and `splits.txt`, and will automatically be built and linked against the main binary.
-- No manual assembly: decomp-toolkit handles splitting the DOL into relocatable objects based on the configuration. No game assets are committed to the repository.
-- Progress calculation and integration with [decomp.dev](https://decomp.dev).
-- Integration with [objdiff](https://github.com/encounter/objdiff) for a diffing workflow.
-- CI workflow template for GitHub Actions.
+<!-- PROGRESS_START -->
+| Category | Matched Code | Matched Functions | Linked Files | Progress |
+| :--- | :--- | :--- | :--- | :--- |
+| **Overall** | **29.74%** (1,321,260 / 4,442,032 B) | **59.06%** (6,826 / 11,558 fns) | **444 / 889** | `████░░░░░░░░░░░` |
+| **Game Code** | **16.35%** (583,840 / 3,570,768 B) | **42.10%** (2,852 / 6,774 fns) | **104 / 531** | `██░░░░░░░░░░░░░` |
+| **SDK Code** | **96.57%** (229,256 / 237,392 B) | **99.81%** (1,064 / 1,066 fns) | **172 / 175** | `██████████████░` |
+| **JSystem Code** | **97.24%** (508,164 / 522,584 B) | **99.18%** (2,910 / 2,934 fns) | **168 / 183** | `███████████████` |
 
-Project structure
------------------
+*Fuzzy code matching stands at **34.50%** (includes near-matches).*
+<!-- PROGRESS_END -->
+---
 
-- `configure.py` - Project configuration and generator script.
-- `config/[GAMEID]` - Configuration files for each game version.
-- `config/[GAMEID]/build.sha1` - SHA-1 hashes for each built artifact, for final verification.
-- `build/` - Build artifacts generated by the the build process. Ignored by `.gitignore`.
-- `orig/[GAMEID]` - Original game files, extracted from the disc. Ignored by `.gitignore`.
-- `orig/[GAMEID]/.gitkeep` - Empty checked-in file to ensure the directory is created on clone.
-- `src/` - C/C++ source files.
-- `include/` - C/C++ header files.
-- `tools/` - Scripts shared between projects.
+## Building
 
-Temporary, delete when done:
+### Prerequisites
 
-- `config/GAMEID/config.example.yml` - Example configuration file and documentation.
-- `docs/` - Documentation for decomp-toolkit configuration.
-- `README.md` - This file, replace with your own. For a template, see [`README.example.md`](README.example.md).
-- `LICENSE` - This repository is licensed under the CC0 license. Replace with your own if desired.
+- **Python 3.10+**: Generator and configuration scripts
+- **Ninja**: Build execution system (`ninja-build` or via `pip install ninja`)
+- On Linux, [wibo](https://github.com/decompals/wibo) is automatically downloaded to run original Metrowerks 32-bit executables.
+
+### Quickstart
+
+1. **Clone the repository**:
+   ```sh
+   git clone https://github.com/999sian/fsa-decomp.git
+   cd fsa-decomp
+   ```
+
+2. **Provide your original game disc**:
+   Place an ISO, RVZ, or GCM of the USA retail release into `orig/G4SE01/`:
+   ```sh
+   mkdir -p orig/G4SE01
+   cp /path/to/FourSwordsAdventures.iso orig/G4SE01/
+   ```
+
+3. **Configure the project**:
+   ```sh
+   python3 configure.py
+   ```
+
+4. **Build and verify**:
+   ```sh
+   ninja
+   ```
+   A successful build will link the executable and conclude with:
+   ```text
+   build/G4SE01/main.dol: OK
+   ```
+
+---
+
+## Diffing with objdiff
+
+This project supports interactive diffing via [encounter/objdiff](https://github.com/encounter/objdiff):
+
+1. Download the latest release of `objdiff` from [GitHub Releases](https://github.com/encounter/objdiff/releases).
+2. Set the project directory in `objdiff` to the repository root. It will automatically load `objdiff.json`.
+3. Select an object from the sidebar to inspect matched and unmatched functions with real-time rebuild on file save.
+
+---
+
+## Credits & Attributions
+
+This decompilation stands on the shoulders of the wider GameCube and Zelda reverse engineering community. We gratefully acknowledge code, structure, and research imported or adapted from the following donor projects:
+
+- **[Mario Kart: Double Dash!! Decompilation](https://github.com/doldecomp/mkdd)** (`doldecomp/mkdd`):
+  Base JSystem framework sources (`JKernel`, `JSupport`, `JUtility`), headers, and MSL C runtime.
+- **[The Wind Waker Decompilation](https://github.com/zeldaret/tww)** (`zeldaret/tww`):
+  GBA subsystem (`GBAJoyBoot`), JMessage processor structures, and Zelda framework architecture.
+- **[Twilight Princess Decompilation](https://github.com/zeldaret/tp)** (`zeldaret/tp`):
+  JAudio2 interface definitions, JParticle layout, J2DGraph (`J2DWindow`, `J2DPicture`), and J3D animator components.
+- **[Pikmin 2 Decompilation](https://github.com/projectPiki/pikmin2)** (`projectPiki/pikmin2`):
+  J3D (`GraphBase`, `GraphLoader`, `GraphAnimator`), Dolphin SDK / MSL runtime implementations.
+- **[Dolphin SDK 2004](https://github.com/doldecomp/dolsdk2004)** (`doldecomp/dolsdk2004`):
+  SDK function identification and GX/vec implementations.
+- **[Animal Crossing Decompilation](https://github.com/ACreTeam/ac-decomp)** (`ACreTeam/ac-decomp`):
+  GBA joybus communications (`GBAKey.c`, `GBAGetProcessStatus`).
+- **[EverydaySimpleDev / FSA-Decomp](https://github.com/EverydaySimpleDev/FSA-Decomp)**:
+  Initial actor research and game code exploration (reused under CC0 with permission).
+- **[decomp-toolkit (dtk)](https://github.com/encounter/decomp-toolkit)** & **[dtk-template](https://github.com/encounter/dtk-template)**:
+  Build generator, DOL analysis, slicing tools, and CI framework by encounter.
+- **[wibo](https://github.com/decompals/wibo)**:
+  Lightweight Win32 wrapper for running Metrowerks compilers seamlessly on Linux.
+
+*All donor contributions are tracked with individual entries in [`NOTICE`](NOTICE).*

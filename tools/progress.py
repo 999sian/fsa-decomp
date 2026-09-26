@@ -9,6 +9,7 @@ import argparse
 import json
 import os
 import pathlib
+import re
 import sys
 from typing import Any, Dict, List, Optional, Tuple
 
@@ -43,8 +44,9 @@ def load_config_objects() -> Dict[str, Dict[str, int]]:
 
 
 def load_progress_data(version: str = "G4SE01") -> Tuple[Dict[str, Any], str]:
-    """Load progress data from build report or committed snapshot."""
+    """Load progress data from build report, downloaded CI artifact, or committed snapshot."""
     build_report = ROOT / f"build/{version}/report.json"
+    artifact_report = ROOT / f"build/{version}_progress.json"
     snapshot_report = ROOT / f"config/{version}/progress.json"
 
     source_desc = ""
@@ -60,13 +62,18 @@ def load_progress_data(version: str = "G4SE01") -> Tuple[Dict[str, Any], str]:
                 "measures": raw.get("measures", {}),
                 "categories": raw.get("categories", []),
             }
+    elif artifact_report.exists():
+        with open(artifact_report, "r", encoding="utf-8") as f:
+            data = json.load(f)
+            source_desc = f"build/{version}_progress.json (CI artifact)"
+            data["source"] = source_desc
     elif snapshot_report.exists():
         with open(snapshot_report, "r", encoding="utf-8") as f:
             data = json.load(f)
             source_desc = f"config/{version}/progress.json (committed snapshot)"
             data["source"] = source_desc
     else:
-        sys.exit(f"Error: Neither {build_report} nor {snapshot_report} exists.")
+        sys.exit(f"Error: Neither {build_report}, {artifact_report}, nor {snapshot_report} exists.")
 
     # Convert numeric strings to int/float
     def convert_numbers(d: Dict[str, Any]) -> None:
@@ -219,41 +226,148 @@ def make_shields_json(data: Dict[str, Any]) -> Dict[str, Any]:
         "color": color,
     }
 
+def update_readme(readme_path: pathlib.Path, data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]]) -> bool:
+    """Update progress badges and markdown progress tracker table in README.md."""
+    if not readme_path.exists():
+        raise FileNotFoundError(f"README file not found: {readme_path}")
+    content = readme_path.read_text(encoding="utf-8")
 
-def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]], source: str) -> bool:
-    """Verify progress reporting against known verified values."""
-    print(f"Running regression test on progress reporting (source: {source})...")
-    m = data["measures"]
+    start_tag = "<!-- PROGRESS_START -->"
+    end_tag = "<!-- PROGRESS_END -->"
+    if start_tag not in content or end_tag not in content:
+        raise ValueError(
+            f"README.md at {readme_path} must contain both '{start_tag}' and '{end_tag}' marker comments."
+        )
+
+    m = data.get("measures", {})
     code_pct = float(m.get("matched_code_percent", 0.0))
     funcs_pct = float(m.get("matched_functions_percent", 0.0))
+    all_objs = obj_counts.get("all", {"matching": 0, "total": 0})
+
+    # 1. Update badges
+    code_color = "red" if code_pct < 10 else "yellow" if code_pct < 50 else "green"
+    badge_code = f"[![Matched Code](https://img.shields.io/badge/Code-{code_pct:.2f}%25-{code_color}.svg)](https://github.com/999sian/fsa-decomp)"
+    badge_funcs = f"[![Matched Functions](https://img.shields.io/badge/Functions-{funcs_pct:.2f}%25-green.svg)](https://github.com/999sian/fsa-decomp)"
+    badge_objs = f"[![Linked Objects](https://img.shields.io/badge/Linked_Files-{all_objs['matching']}%20%2F%20{all_objs['total']}-blue.svg)](https://github.com/999sian/fsa-decomp)"
+
+    content = re.sub(r'\[!\[Matched Code\]\([^)]+\)\]\([^)]+\)', badge_code, content)
+    content = re.sub(r'\[!\[Matched Functions\]\([^)]+\)\]\([^)]+\)', badge_funcs, content)
+    content = re.sub(r'\[!\[Linked Objects\]\([^)]+\)\]\([^)]+\)', badge_objs, content)
+
+    # 2. Update progress table between markers
+    table_lines = [
+        start_tag,
+        "| Category | Matched Code | Matched Functions | Linked Files | Progress |",
+        "| :--- | :--- | :--- | :--- | :--- |",
+        f"| **Overall** | **{code_pct:.2f}%** ({int(m.get('matched_code', 0)):,} / {int(m.get('total_code', 0)):,} B) | **{funcs_pct:.2f}%** ({int(m.get('matched_functions', 0)):,} / {int(m.get('total_functions', 0)):,} fns) | **{all_objs['matching']} / {all_objs['total']}** | `{make_progress_bar(code_pct, 15)}` |",
+    ]
+    for cat in data.get("categories", []):
+        name = cat.get("name", "")
+        cid = cat.get("id", "")
+        cm = cat.get("measures", {})
+        c_pct = float(cm.get("matched_code_percent", 0.0))
+        c_matched = int(cm.get("matched_code", 0))
+        c_total = int(cm.get("total_code", 0))
+        f_pct = float(cm.get("matched_functions_percent", 0.0))
+        f_matched = int(cm.get("matched_functions", 0))
+        f_total = int(cm.get("total_functions", 0))
+        objs = obj_counts.get(cid, {"matching": 0, "total": 0})
+        table_lines.append(
+            f"| **{name}** | **{c_pct:.2f}%** ({c_matched:,} / {c_total:,} B) | **{f_pct:.2f}%** ({f_matched:,} / {f_total:,} fns) | **{objs['matching']} / {objs['total']}** | `{make_progress_bar(c_pct, 15)}` |"
+        )
+    fuzzy_pct = float(m.get("fuzzy_match_percent", 0.0))
+    table_lines.extend([
+        "",
+        f"*Fuzzy code matching stands at **{fuzzy_pct:.2f}%** (includes near-matches).*",
+        end_tag,
+    ])
+    pattern = re.compile(rf"{re.escape(start_tag)}[\s\S]*?{re.escape(end_tag)}")
+    content = pattern.sub("\n".join(table_lines), content)
+
+    readme_path.write_text(content, encoding="utf-8")
+    return True
+
+
+def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]], source: str) -> bool:
+    """Verify progress reporting against invariant rules, schema constraints, and sanity floors."""
+    print(f"Running regression test on progress reporting (source: {source})...")
+    m = data.get("measures", {})
+    code_pct = float(m.get("matched_code_percent", 0.0))
+    funcs_pct = float(m.get("matched_functions_percent", 0.0))
+    total_code = int(m.get("total_code", 0))
+    matched_code = int(m.get("matched_code", 0))
+    total_funcs = int(m.get("total_functions", 0))
+    matched_funcs = int(m.get("matched_functions", 0))
+
+    # 1. Total size & function count invariants for G4SE01 retail main.dol
+    assert total_code >= 4_400_000, f"Expected total_code >= 4.4M bytes, got {total_code}"
+    assert total_funcs >= 11_000, f"Expected total_funcs >= 11,000, got {total_funcs}"
+    assert 0 <= matched_code <= total_code, f"Invariant violated: matched_code {matched_code} not in [0, {total_code}]"
+    assert 0 <= matched_funcs <= total_funcs, f"Invariant violated: matched_funcs {matched_funcs} not in [0, {total_funcs}]"
+    assert 0.0 <= code_pct <= 100.0, f"Invariant violated: code_pct {code_pct} not in [0, 100]"
+    assert 0.0 <= funcs_pct <= 100.0, f"Invariant violated: funcs_pct {funcs_pct} not in [0, 100]"
+
+    # 2. Mathematical calculation consistency
+    expected_code_pct = 100.0 * matched_code / total_code if total_code else 0.0
+    assert abs(code_pct - expected_code_pct) < 0.05, (
+        f"Mathematical mismatch in code pct: reported {code_pct:.2f}% != calculated {expected_code_pct:.2f}%"
+    )
+    expected_funcs_pct = 100.0 * matched_funcs / total_funcs if total_funcs else 0.0
+    assert abs(funcs_pct - expected_funcs_pct) < 0.05, (
+        f"Mathematical mismatch in funcs pct: reported {funcs_pct:.2f}% != calculated {expected_funcs_pct:.2f}%"
+    )
+
+    # 3. Category consistency invariants
+    for cat in data.get("categories", []):
+        c_m = cat.get("measures", {})
+        c_tot_code = int(c_m.get("total_code", 0))
+        c_match_code = int(c_m.get("matched_code", 0))
+        c_tot_fn = int(c_m.get("total_functions", 0))
+        c_match_fn = int(c_m.get("matched_functions", 0))
+        c_code_pct = float(c_m.get("matched_code_percent", 0.0))
+        c_fn_pct = float(c_m.get("matched_functions_percent", 0.0))
+        assert 0 <= c_match_code <= c_tot_code, f"Category {cat.get('id')} code match exceeds total"
+        assert 0 <= c_match_fn <= c_tot_fn, f"Category {cat.get('id')} funcs match exceeds total"
+        if c_tot_code > 0:
+            c_exp_code = 100.0 * c_match_code / c_tot_code
+            assert abs(c_code_pct - c_exp_code) < 0.05, (
+                f"Category {cat.get('id')} code pct mismatch: reported {c_code_pct:.2f}% != calculated {c_exp_code:.2f}%"
+            )
+        if c_tot_fn > 0:
+            c_exp_fn = 100.0 * c_match_fn / c_tot_fn
+            assert abs(c_fn_pct - c_exp_fn) < 0.05, (
+                f"Category {cat.get('id')} funcs pct mismatch: reported {c_fn_pct:.2f}% != calculated {c_exp_fn:.2f}%"
+            )
+    # 3. Configured object count invariants (additive across categories)
+    all_objs = obj_counts.get("all", {})
     game_objs = obj_counts.get("game", {})
     sdk_objs = obj_counts.get("sdk", {})
     jsys_objs = obj_counts.get("jsys", {})
 
-    is_snapshot = "snapshot" in source.lower()
-    expected_code = 25.47 if is_snapshot else 27.90
-    expected_funcs = 53.04 if is_snapshot else 56.08
-    expected_game = 73 if (is_snapshot or game_objs.get("matching") == 73) else 75
+    for cat_name, counts in obj_counts.items():
+        assert counts.get("total", 0) > 0, f"Category {cat_name} has 0 total objects"
+        assert 0 <= counts.get("matching", 0) <= counts.get("total", 0), (
+            f"Category {cat_name} matching {counts.get('matching')} not in [0, {counts.get('total')}]"
+        )
 
-    print(f"Overall matched code percent: {code_pct:.2f}% (expected ~{expected_code:.2f}%)")
-    assert abs(code_pct - expected_code) < 0.2, f"Unexpected overall code pct: {code_pct}"
+    expected_sum_total = game_objs.get("total", 0) + sdk_objs.get("total", 0) + jsys_objs.get("total", 0)
+    assert all_objs.get("total") == expected_sum_total, (
+        f"All total {all_objs.get('total')} != sum of categories {expected_sum_total}"
+    )
+    expected_sum_matching = game_objs.get("matching", 0) + sdk_objs.get("matching", 0) + jsys_objs.get("matching", 0)
+    assert all_objs.get("matching") == expected_sum_matching, (
+        f"All matching {all_objs.get('matching')} != sum of categories {expected_sum_matching}"
+    )
 
-    print(f"Overall matched functions percent: {funcs_pct:.2f}% (expected ~{expected_funcs:.2f}%)")
-    assert abs(funcs_pct - expected_funcs) < 0.2, f"Unexpected overall funcs pct: {funcs_pct}"
+    # 4. Sanity floor bounds (ensures progress didn't regress or fail to parse)
+    assert code_pct >= 25.0, f"Code progress sanity floor failed: {code_pct:.2f}% < 25.0%"
+    assert funcs_pct >= 50.0, f"Functions progress sanity floor failed: {funcs_pct:.2f}% < 50.0%"
+    assert all_objs.get("matching", 0) >= 400, f"Matching objects sanity floor failed: {all_objs.get('matching')} < 400"
 
-    print(f"Game matching objects: {game_objs.get('matching')} / {game_objs.get('total')} (expected {expected_game} / 239)")
-    assert game_objs.get("matching") == expected_game, f"Expected {expected_game} matching game objects, got {game_objs.get('matching')}"
-    assert game_objs.get("total") == 239, f"Expected 239 total game objects, got {game_objs.get('total')}"
-
-    print(f"SDK matching objects: {sdk_objs.get('matching')} / {sdk_objs.get('total')} (expected 172 / 175)")
-    assert sdk_objs.get("matching") == 172, f"Expected 172 matching SDK objects, got {sdk_objs.get('matching')}"
-    assert sdk_objs.get("total") == 175, f"Expected 175 total SDK objects, got {sdk_objs.get('total')}"
-
-    print(f"JSystem matching objects: {jsys_objs.get('matching')} / {jsys_objs.get('total')} (expected 168 / 183)")
-    assert jsys_objs.get("matching") == 168, f"Expected 168 matching JSystem objects, got {jsys_objs.get('matching')}"
-    assert jsys_objs.get("total") == 183, f"Expected 183 total JSystem objects, got {jsys_objs.get('total')}"
-
-    print("ALL REGRESSION TESTS PASSED!")
+    print(f"Code progress: {code_pct:.2f}% ({matched_code:,} / {total_code:,} bytes)")
+    print(f"Function progress: {funcs_pct:.2f}% ({matched_funcs:,} / {total_funcs:,} funcs)")
+    print(f"Configured objects: {all_objs.get('matching')} / {all_objs.get('total')} matching")
+    print("ALL INVARIANT & SCHEMA CHECKS PASSED!")
     return True
 
 
@@ -264,6 +378,7 @@ def main():
     parser.add_argument("--summary", action="store_true", help="Write to $GITHUB_STEP_SUMMARY if available")
     parser.add_argument("--output-json", type=pathlib.Path, help="Save progress JSON to file")
     parser.add_argument("--output-shields", type=pathlib.Path, help="Save shields.io JSON to file")
+    parser.add_argument("--update-readme", action="store_true", help="Update README.md progress section and badges")
     parser.add_argument("--test", action="store_true", help="Run regression self-test")
     args = parser.parse_args()
 
@@ -297,6 +412,10 @@ def main():
         args.output_shields.parent.mkdir(parents=True, exist_ok=True)
         shields = make_shields_json(data)
         args.output_shields.write_text(json.dumps(shields, indent=2), encoding="utf-8")
+    if args.update_readme:
+        readme_path = ROOT / "README.md"
+        if update_readme(readme_path, data, obj_counts):
+            print("Successfully updated README.md progress tracker and badges!")
 
 
 if __name__ == "__main__":

@@ -1,0 +1,73 @@
+name: Build
+
+on:
+  push:
+    branches: [main, integration*]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    name: build (${{ matrix.version }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        version: [G4SE01]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Verify Progress Metadata & Run Regression Tests
+      run: |
+        python3 tools/progress.py --version ${{ matrix.version }} --test
+
+    - name: Generate Progress Report & Summary
+      run: |
+        python3 tools/progress.py --version ${{ matrix.version }} \
+          --output-json build/${{ matrix.version }}_progress.json \
+          --output-shields build/${{ matrix.version }}_shields.json
+
+    - name: Upload progress report
+      uses: actions/upload-artifact@v4
+      with:
+        name: ${{ matrix.version }}_report
+        path: build/*.json
+        if-no-files-found: warn
+
+  website:
+    name: website
+    runs-on: ubuntu-latest
+    needs: build
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: "3.11"
+
+    - name: Download progress reports
+      uses: actions/download-artifact@v4
+      with:
+        name: G4SE01_report
+        path: build/
+
+    - name: Generate Markdown Job Summary
+      run: |
+        python3 tools/progress.py --summary
