@@ -314,4 +314,99 @@ extern "C" void fn_801BCD70(FallRoute* r, u32 flags) {
     r->f24 = 0;
 }
 
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" s32 fn_801CD664(s32 range);
+extern "C" void fn_801D2608(void* p, void* tbl, s32 n);
+extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+extern u8 lbl_804A3E30[];
+extern const f32 lbl_8053EC3C;
+extern const f32 lbl_8053EC68;
+
+static inline u8 fallIsMoving(char* this_) {
+    u8 r = FALSE;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+        r = TRUE;
+        break;
+    }
+    return r;
+}
+
+extern "C" void fn_801BC9DC(char* this_) {
+    fn_801D0ED0(this_);
+    u32 kind = *(u32*)(this_ + 0x90) & 0x1f;
+    if (kind >= 2) {
+        *(u32*)(this_ + 0x230) |= 0x4000;
+    }
+    *(s32*)(this_ + 0x2a8) = kind & 1;
+    fn_801BCD70((FallRoute*)(this_ + 0x2c8), *(u32*)(this_ + 0x90));
+    if (*(u32*)(this_ + 0x230) & 0x4000) {
+        *(s32*)(this_ + 0x2ac) = *(s32*)(this_ + 0x4);
+    } else {
+        *(s32*)(this_ + 0x2ac) = (*(u32*)(this_ + 0x90) >> 24) & 7;
+        if (*(s32*)(this_ + 0x2ac) != 0) {
+            *(s32*)(this_ + 0x2ac) += 7;
+        }
+    }
+    if (!(*(u32*)(this_ + 0x230) & 0x4000)) {
+        f32 ox = lbl_8053EC0C;
+        f32 oy = ox;
+        s32 room = *(s32*)(this_ + 0x2ac);
+        if (room == 0) {
+            char* base = fn_802D6A9C();
+            f32* r;
+            if (room < 8) {
+                r = (f32*)(base + 0xcc);
+            } else {
+                r = (f32*)(base + 0xdc);
+            }
+            ox = r[0];
+            oy = r[1];
+        }
+        u32 p = *(u32*)(this_ + 0x90);
+        u32 px = ((p >> 16) & 0x3f) * 8;
+        u32 py = ((p >> 8) & 0x3f) * 8;
+        *(f32*)(this_ + 0x2b0) = lbl_8053EC3C + ((f32)px + ox);
+        *(f32*)(this_ + 0x2b4) = lbl_8053EC3C + ((f32)py + oy);
+    }
+    f32 hi = lbl_8053EC68;
+    f32 lo = lbl_8053EC08;
+    *(f32*)(this_ + 0x60) = lo;
+    *(f32*)(this_ + 0x64) = lo;
+    *(f32*)(this_ + 0x68) = hi;
+    *(f32*)(this_ + 0x6c) = hi;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = lo;
+    *(f32*)(this_ + 0x84) = lo;
+    *(f32*)(this_ + 0x88) = hi;
+    *(f32*)(this_ + 0x8c) = hi;
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x100;
+    *(u8*)(this_ + 0x194) = 1;
+    if (*(s32*)(this_ + 0x2a8) == 0) {
+        *(s32*)(this_ + 0x248) = 0;
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
+        *(f32*)(this_ + 0x14) = lbl_8053EC00;
+    } else {
+        *(s32*)(this_ + 0x248) = 9;
+        *(s32*)(this_ + 0x250) = fn_801CD664(0xb5) + 0xb4;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(f32*)(this_ + 0x254) = lbl_8053EC0C;
+    *(f32*)(this_ + 0x258) = lbl_8053EC0C;
+    fn_801D2608(this_ + 0x270, lbl_804A3E30, 5);
+    fn_801D22DC(this_ + 0x270, 0, 0, 0);
+    if (fallIsMoving(this_)) {
+        *(u32*)(this_ + 0xb0) = 0x40004;
+    } else {
+        *(u32*)(this_ + 0xb0) = 0x41101;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
