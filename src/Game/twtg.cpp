@@ -319,6 +319,81 @@ extern "C" void fn_80315080(char* p) {
     }
 }
 
+extern "C" void fn_80315460(char* p) {
+    TwtgBox b;
+    JGeometry::TVec3f v;
+    f32 dist;
+    twtgUpdateDir(p, v, dist);
+    b.min.x = *(f32*)(p + 0x258);
+    b.min.y = *(f32*)(p + 0x25c);
+    b.max.x = *(f32*)(p + 0x260);
+    b.max.y = *(f32*)(p + 0x264);
+    b.min.x += *(f32*)(p + 0xc);
+    b.min.y += *(f32*)(p + 0x10);
+    b.max.x += *(f32*)(p + 0xc);
+    b.max.y += *(f32*)(p + 0x10);
+    s32 slot;
+    if (*(s32*)(p + 0x234) == 0) {
+        s32 n = fn_80138A30(lbl_8053AAF8);
+        switch (*(s32*)(p + 0x238)) {
+        case 0:
+            fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
+            slot = fn_8022FD8C(*(void**)(p + 0x198));
+            if (slot >= 0 && fn_802300EC()) {
+                void* room = *(void**)(p + 0x198);
+                s32 player = *(s32*)(p + 4);
+                if (fn_8038AD24(slot, 0x4ce, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {
+                    *(s32*)(p + 0x254) = slot;
+                    *(s32*)(p + 0x268) = 0x4ce;
+                    *(s32*)(p + 0x234) = 1;
+                }
+            }
+            break;
+        case 1:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4cf);
+            break;
+        case 2: {
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            s32 i;
+            for (i = 0; i < n; i++) {
+                if (twtgPlayerFlag(i)) {
+                    break;
+                }
+            }
+            if (i < n) {
+                *(s32*)(p + 0x268) = 0x4d0;
+                fn_803894BC(*(s32*)(p + 0x254), i + 1);
+            } else {
+                *(s32*)(p + 0x268) = 0x4d1;
+            }
+            if (twtgAsk(p, *(s32*)(p + 0x268)) && *(u32*)(p + 0x268) == 0x4d0) {
+                fn_8043D874(lbl_8053AED0, i, 500, 0);
+            }
+            break;
+        }
+        default:
+            *(s32*)(p + 0x230) = 4;
+            *(s32*)(p + 0x238) = 5;
+            *(s32*)(p + 0x254) = 0;
+            *(s32*)(p + 0x234) = 0;
+            break;
+        }
+    } else if (*(s32*)(p + 0x234) == 1) {
+        fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        if (fn_803865B8(*(s32*)(p + 0x254))) {
+            if (*(s32*)(p + 0x238) < 2) {
+                (*(s32*)(p + 0x238))++;
+                *(s32*)(p + 0x234) = 0;
+            } else {
+                *(s32*)(p + 0x230) = 4;
+                *(s32*)(p + 0x238) = 0;
+                *(s32*)(p + 0x234) = 0;
+            }
+        }
+    }
+}
+
 // fn_803167F4 - TWTG: setParams().
 extern const f32 lbl_80541898;
 extern const f32 lbl_8054189C;
