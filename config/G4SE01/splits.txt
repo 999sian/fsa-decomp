@@ -1978,12 +1978,14 @@ game/fgn2.cpp:
 	extabindex  start:0x800143C8 end:0x80014440
 	.text       start:0x80187144 end:0x8018A8D8
 	.ctors      start:0x8045BFAC end:0x8045BFB0
+	.sdata2     start:0x8053DFE0 end:0x8053E0C8
 
 game/bph2.cpp:
 	extab       start:0x800076BC end:0x80007724
 	extabindex  start:0x80014440 end:0x800144DC
 	.text       start:0x8018A8D8 end:0x8018EB94
 	.ctors      start:0x8045BFB0 end:0x8045BFB4
+	.sdata2     start:0x8053E0C8 end:0x8053E1C8
 
 game/dgt2.cpp:
 	extab       start:0x80007724 end:0x8000774C
@@ -1996,6 +1998,7 @@ game/gnon.cpp:
 	extabindex  start:0x80014560 end:0x800145F0
 	.text       start:0x80192038 end:0x80197070
 	.ctors      start:0x8045BFBC end:0x8045BFC0
+	.sdata2     start:0x8053E278 end:0x8053E370
 
 game/tu_80197070.cpp:
 	extab       start:0x8000784C end:0x800078AC

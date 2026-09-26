@@ -25,4 +25,22 @@ extern "C" void fn_8018E8C0(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] 
 extern "C" void fn_8018E8DC(void* a, void* b, void* c) { fn_802D8050(fn_802D6A9C(), a, b, c); }
 extern "C" void fn_8018E930(void* a) { fn_802D800C(fn_802D6A9C(), a); }
 
+struct ActorVt_bph2 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void setShadow(s32 type, f32 x, f32 y);
+};
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+
+extern "C" void fn_8018A8D8(ActorVt_bph2* this_) {
+    fn_801F0E34(this_, 0x40015, 0);
+    this_->setShadow(2, 0.0f, 16.0f);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

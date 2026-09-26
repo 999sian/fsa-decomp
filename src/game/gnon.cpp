@@ -43,3 +43,21 @@ extern "C" void fn_80196D30(void* a, void* b) { fn_80134DE4(lbl_8053AAF8, a, b);
 extern "C" void fn_80196D60(f32* v, f32 x, f32 y, f32 z) { v[0] = x; v[1] = y; v[2] = z; }
 extern "C" void fn_80196D70(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 extern "C" void fn_80196D8C(void* a, void* b, f32 x, f32 y) { fn_802D79E8(fn_802D6A9C(), a, b, x, y); }
+
+struct ActorVt_gnon {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void setShadow(s32 type, f32 x, f32 y);
+};
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+
+extern "C" void fn_80192038(ActorVt_gnon* this_) {
+    fn_801F0E34(this_, 0x40006, 0);
+    this_->setShadow(2, 0.0f, 0.0f);
+}
