@@ -2,6 +2,7 @@
 // Functions: draw (TODO), update (slot 3), state handlers (TODO), hit reaction
 // (TODO), dtor, init (TODO).
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -90,6 +91,57 @@ extern "C" void fn_801AC1F4(char* p) {
         *(f32*)(p + 0x40) = lbl_8053E7B0 * JMASCos(fn_801F6874(ang));
         *(s32*)(p + 0x230) = 5;
     }
+}
+
+extern "C" void fn_801EFD34(void* actor, void* res, DrawRec* rec, s32 n, f32 a, f32 b, f32 c);
+extern u32 lbl_804A3020[];
+extern const f32 lbl_8053E740;
+extern const f32 lbl_8053E748;
+extern const f32 lbl_8053E74C;
+
+static inline void tu_setScale(f32 (*mtx)[4], f32 sx, f32 sy) {
+    f32 zero = lbl_8053E744;
+    mtx[0][0] = sx;
+    mtx[0][1] = zero;
+    mtx[0][2] = zero;
+    mtx[1][0] = zero;
+    mtx[1][1] = sy;
+    mtx[1][2] = zero;
+    mtx[2][0] = zero;
+    mtx[2][1] = zero;
+    mtx[2][2] = sy;
+    mtx[0][3] = zero;
+    mtx[1][3] = zero;
+    mtx[2][3] = zero;
+}
+
+class GnmaResMgr {
+public:
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* getRes(u32 type, u32 name);
+};
+
+extern "C" void fn_801AAC8C(char* p) {
+    DrawRec rec;
+    f32 mtx[3][4];
+    f32 sx = *(f32*)(p + 0x270);
+    if (*(s32*)(p + 0x98) == 0) {
+        sx *= lbl_8053E740;
+    }
+    tu_setScale(mtx, sx, *(f32*)(p + 0x274));
+    rec.w18 = mtx;
+    s32 n = 4;
+    f32 scale = lbl_8053E748;
+    s32 mode = *(s32*)(p + 0x254);
+    if (mode == 0 || mode == 2) {
+        n = 3;
+        scale = lbl_8053E74C;
+    }
+    void* res = (*(GnmaResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('TIMG', lbl_804A3020[*(s32*)(p + 0x250)]);
+    fn_801EFD34(p, res, &rec, n, lbl_8053E744, scale, lbl_8053E744);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
