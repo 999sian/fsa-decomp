@@ -1317,7 +1317,7 @@ config.libs = [
         "objects": [
             Object(NonMatching, "Game/ltzr.cpp"),
             Object(Matching, "Game/lfgn.cpp"),
-            Object(NonMatching, "Game/rins.cpp"),
+            Object(Matching, "Game/rins.cpp"),
             Object(Matching, "Game/tu_8045ba84.cpp"),
             Object(Matching, "Game/ssmi.cpp"),
             Object(Matching, "Game/endr.cpp"),
