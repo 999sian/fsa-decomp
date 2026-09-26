@@ -1,6 +1,7 @@
 // TU 0x80212e3c-0x80213e00 (actor ARIJ).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- fn_80212E3C_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -240,6 +241,109 @@ f32 sx = AF32(0x54);
             }
         }
         break;
+    }
+}
+
+struct ArijDrawParam {
+    ArijDrawParam() : m40(-1), m44(-1) {
+        for (u8 i = 0; i < 16; i++) {
+            mIdx[i] = i;
+        }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
+        mMtx = NULL;
+        m4C = 0;
+        m4D = 0;
+        m4E = 0;
+        m4F = 1;
+        m50 = 1;
+        m51 = 0;
+        m52 = 0;
+        m53 = 0;
+        m54 = 0;
+        m55 = 0;
+        m56 = 1;
+        m58 = 3;
+        m5C = 1;
+        m5D = 0;
+        m5E = 0;
+        m60 = -1;
+        m64 = 0;
+        m68 = 2;
+    }
+    u8 mIdx[16];
+    s32 m40;
+    s32 m44;
+    f32 (*mMtx)[4];
+    u8 m4C, m4D, m4E, m4F, m50, m51, m52, m53, m54, m55, m56;
+    s32 m58;
+    u8 m5C, m5D, m5E;
+    s32 m60;
+    s32 m64;
+    s32 m68;
+};
+struct ArijResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* get(u32 type, const char* name);
+};
+extern const f32 lbl_8053FB50;
+extern const char lbl_8046A564[];
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AB10;
+extern "C" void fn_802F86CC(void* map, void* pos, void* res, f32 a, f32 b, s32 id, ArijDrawParam* prm);
+extern "C" void fn_801F06F0(void* this_, const char* table, s32 id, ArijDrawParam* prm, f32 f1, f32 f2, s32 mode);
+
+extern "C" void fn_80213098(char* p) {
+    if (((JGeometry::TVec3<f32>*)(p + 0x54))->isZero() == false) {
+        switch (AS32(0x248)) {
+        case 0:
+        case 1:
+        case 2:
+            break;
+        default: {
+            s32 id = AS32(0x280) + 0x13d;
+            if (AS32(0x230) & 0x2000) {
+                id += 4;
+            }
+            ArijDrawParam prm;
+            f32 mtx[3][4];
+            prm.reset();
+            mtx[0][3] = lbl_8053FB54;
+            mtx[1][3] = lbl_8053FB54;
+            mtx[2][3] = lbl_8053FB54;
+            f32 sx = AF32(0x54);
+            f32 sy = AF32(0x58);
+            f32 sz = AF32(0x5c);
+            mtx[0][0] = sx;
+            mtx[0][1] = lbl_8053FB54;
+            mtx[0][2] = lbl_8053FB54;
+            mtx[1][0] = lbl_8053FB54;
+            mtx[1][1] = sy;
+            mtx[1][2] = lbl_8053FB54;
+            mtx[2][0] = lbl_8053FB54;
+            mtx[2][1] = lbl_8053FB54;
+            mtx[2][2] = sz;
+            prm.mMtx = mtx;
+            if (AS32(0x230) & 0x2000) {
+                if (AS32(4) < 8) {
+                    void* res = (*(ArijResMgr**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, lbl_8046A564);
+                    fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), p + 0xc, res, lbl_8053FB48, lbl_8053FB48, id, &prm);
+                }
+            } else {
+                s32 mode = -1;
+                if (AF32(0x14) > lbl_8053FB54) {
+                    mode = 7;
+                }
+                fn_801F06F0(p, lbl_8046A564, id, &prm, lbl_8053FB48, lbl_8053FB48, mode);
+            }
+            break;
+        }
+        }
     }
 }
 
