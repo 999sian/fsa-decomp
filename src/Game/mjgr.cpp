@@ -2,7 +2,26 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Box.h"
-#include "std/math.h"
+#include <math.h>
+
+static inline f64 sqrtStep(f64 tmpd, f32 mag) {
+    return tmpd * 0.5 * (3.0 - mag * (tmpd * tmpd));
+}
+static inline f32 dolsqrtfull(f32 mag) {
+    if (mag > 0.0f) {
+        f64 tmpd = __frsqrte(mag);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        return mag * tmpd;
+    } else if (mag < 0.0) {
+        return NAN;
+    } else if (fpclassify(mag) == 1) {
+        return NAN;
+    } else {
+        return mag;
+    }
+}
 
 // ---- EmptyHook_802E7DB4.cpp ----
 // EmptyHook_802E7DB4 - actor @lbl_804A9FB0: empty no-op override (0x4, leaf, no extab needed)
@@ -114,7 +133,7 @@ extern "C" void fn_802E80A0(char* p) {
         pos = *(JGeometry::TVec3<f32>*)(key + 0xc);
         f32 dx = pos.x - *(f32*)(p + 0xc);
         f32 dy = pos.y - *(f32*)(p + 0x10);
-        s32 d = std::sqrtf(dx * dx + dy * dy);
+        s32 d = dolsqrtfull(dx * dx + dy * dy);
         if (d > 0x40) {
             d = 0x40;
         }

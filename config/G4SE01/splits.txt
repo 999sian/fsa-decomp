@@ -2121,6 +2121,7 @@ Game/hbb2.cpp:
 	extabindex  start:0x800148D8 end:0x80014908
 	.text       start:0x801A8194 end:0x801A908C
 	.ctors      start:0x8045BFDC end:0x8045BFE0
+	.bss        start:0x804C6870 end:0x804C68DC
 	.sdata2     start:0x8053E690 end:0x8053E6E0
 
 Game/ttat.cpp:
