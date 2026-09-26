@@ -11,7 +11,7 @@ extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern "C" void* fn_801D0F40(void* this_);
 
-extern "C" void* dtor_801D2C60(void* this_, s16 freeFlag) {
+extern "C" void* __dt__14Fn801D30B8BaseFv(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
         *(void**)p = lbl_804A48B0;
