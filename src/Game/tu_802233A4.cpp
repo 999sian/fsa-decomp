@@ -106,10 +106,8 @@ struct Rect_802233A4 {
     f32 x0, y0, x1, y1;
 };
 
-s32 fn_802233A4(void* this_) {
-    char* p = (char*)this_;
-    s32 ret = 0;
-    Rect_802233A4 r(1.0f, 1.0f, -1.0f, -1.0f);
+static inline void CalcRect_802233A4(char* p, Rect_802233A4& r) {
+    r.set(1.0f, 1.0f, -1.0f, -1.0f);
     if (*(s32*)(p + 0x248) == 5) {
         r.set(-8.0f, -8.0f, 8.0f, 8.0f);
         switch (*(s32*)(p + 0x98)) {
@@ -127,6 +125,13 @@ s32 fn_802233A4(void* this_) {
             break;
         }
     }
+}
+
+s32 fn_802233A4(void* this_) {
+    char* p = (char*)this_;
+    s32 ret = 0;
+    Rect_802233A4 r;
+    CalcRect_802233A4(p, r);
     if (r.x1 - r.x0 > 0.0f && r.y1 - r.y0 > 0.0f) {
         Rect_802233A4 save = *(Rect_802233A4*)(p + 0x60);
         *(Rect_802233A4*)(p + 0x60) = r;
@@ -169,6 +174,119 @@ void fn_80223F14(void* this_) {
     *(f32*)(p + 0x254) = 0.0f;
     *(f32*)(p + 0x258) = 0.0f;
     fn_801D22DC(p + 0x270, 2, 0, 0);
+}
+}
+
+// ---- fn_80223664 (update) / fn_802238CC (spawn rect corners) ----
+#include "JSystem/JGeometry.h"
+
+extern "C" {
+extern const f32 lbl_8053FE70;
+extern void* lbl_8053AC98;
+void fn_80221408(void* this_);
+void fn_80221334(void* this_);
+void fn_802212AC(void* this_);
+void fn_802216E8(void* this_, s32 t);
+void fn_8022149C(void* this_, s32 a);
+void fn_801F0E34(void* this_, s32 p1, s32 p2);
+u16 fn_8022461C(void* pos, u32 room);
+u8 fn_80224B88(void* pos, u32 room);
+u8 fn_80224E88(void* pos, u32 room);
+s32 fn_801CD30C(s32 val);
+void fn_802A20F0(void* mgr, JGeometry::TVec3<f32>* pos, s32 a, u32 room, s32 b, s32 c);
+void fn_80223AD8(void* this_, s32 state);
+void fn_802238CC(void* this_);
+
+void fn_80223664(void* this_, u8 flag) {
+    char* p = (char*)this_;
+    switch (*(u32*)(p + 0x248)) {
+    case 0:
+        fn_80221408(this_);
+        break;
+    case 1:
+        fn_80221334(this_);
+        break;
+    case 2:
+        fn_802212AC(this_);
+        break;
+    case 3:
+        if (*(s32*)(p + 0x24c) >= 0x78) {
+            fn_80223AD8(this_, 5);
+        }
+        break;
+    case 4:
+        fn_802216E8(this_, 0x78);
+        if (*(f32*)(p + 0x14) <= 0.0f) {
+            if (*(u32*)(p + 0x230) & 0x2000) {
+                fn_80223AD8(this_, 5);
+            } else {
+                *(f32*)(p + 0x44) = lbl_8053FE70;
+            }
+        }
+        break;
+    case 5: {
+        s32 se = 0x400e7;
+        if (fn_8022461C(p + 0xc, *(u32*)(p + 0x4)) == 0x39) {
+            se = 0x400e8;
+        } else if (fn_80224B88(p + 0xc, *(u32*)(p + 0x4))) {
+            se = 0x400e9;
+        } else if (fn_80224E88(p + 0xc, *(u32*)(p + 0x4))) {
+            se = 0x400ea;
+        }
+        fn_801F0E34(this_, se, 0);
+        fn_802238CC(this_);
+        if (*(s32*)(p + 0x24c) > 1 && flag) {
+            fn_801EE434(*(void**)(p + 0x2bc));
+            fn_801EE434(*(void**)(p + 0x2c0));
+            *(s32*)(p + 0x2bc) = 0;
+            *(s32*)(p + 0x2c0) = 0;
+            fn_80223AD8(this_, 6);
+        }
+        break;
+    }
+    case 6:
+        if (*(s32*)(p + 0x24c) > 1 && *(f32*)(p + 0x14) <= 0.0f) {
+            fn_80223AD8(this_, 7);
+        }
+        break;
+    case 7:
+        if (*(s32*)(p + 0x24c) >= 0x7b) {
+            if (*(u32*)(p + 0x2b8) != 0) {
+                void* base = fn_8013C824();
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)base + 0xc), *(s32*)(p + 0x2b8));
+                *(s32*)(p + 0x2b8) = 0;
+            }
+            fn_801CDC8C(this_, 0x4000E);
+            fn_80223AD8(this_, 8);
+        } else if (*(s32*)(p + 0x24c) % 6 == 0) {
+            *(s32*)(p + 0x98) = fn_801CD30C(*(s32*)(p + 0x98));
+            fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 0, 0);
+        }
+        break;
+    case 8:
+        if (*(s32*)(p + 0x24c) >= 0x1e) {
+            fn_8022149C(this_, 1);
+        }
+        break;
+    }
+}
+
+// NonMatching: callee-saved float register assignment (y0/x1 swapped).
+void fn_802238CC(void* this_) {
+    char* p = (char*)this_;
+    Rect_802233A4 r;
+    CalcRect_802233A4(p, r);
+    if (r.x1 - r.x0 > 0.0f && r.y1 - r.y0 > 0.0f) {
+        r.add(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+        JGeometry::TVec3<f32> a(r.x0, r.y0, 0.0f);
+        fn_802A20F0(lbl_8053AC98, &a, -1, *(u32*)(p + 0x4), 0, 0);
+        JGeometry::TVec3<f32> b(r.x1, r.y0, 0.0f);
+        fn_802A20F0(lbl_8053AC98, &b, -1, *(u32*)(p + 0x4), 0, 0);
+        JGeometry::TVec3<f32> c(r.x1, r.y1, 0.0f);
+        fn_802A20F0(lbl_8053AC98, &c, -1, *(u32*)(p + 0x4), 0, 0);
+        JGeometry::TVec3<f32> d(r.x0, r.y1, 0.0f);
+        fn_802A20F0(lbl_8053AC98, &d, -1, *(u32*)(p + 0x4), 0, 0);
+    }
 }
 }
 
