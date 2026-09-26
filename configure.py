@@ -1065,7 +1065,7 @@ config.libs = [
             Object(NonMatching, "Game/OPGL_80124AD8.cpp"),
             Object(NonMatching, "Game/OPGA_80125B58.cpp"),
             Object(NonMatching, "Game/FZRA_80126A4C.cpp"),
-            Object(NonMatching, "Game/tu_80127E20.cpp"),
+            Object(Matching, "Game/tu_80127E20.cpp"),
             Object(NonMatching, "Game/DMNR_801286C0.cpp"),
             Object(NonMatching, "Game/CRGN_801291A0.cpp"),
             Object(NonMatching, "Game/RNBW_80129B0C.cpp"),
