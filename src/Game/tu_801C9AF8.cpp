@@ -345,4 +345,253 @@ extern "C" u8 fn_801CA274(char* p) {
     return r;
 }
 
+extern const f32 lbl_8053EF24;
+extern const f32 lbl_8053EF38;
+extern const f32 lbl_8053EF3C;
+extern const f32 lbl_8053EF40;
+extern const f32 lbl_8053EF44;
+extern const f32 lbl_8053EF48;
+extern const f32 lbl_8053EF4C;
+extern const f32 lbl_8053EF50;
+extern const f32 lbl_8053EF54;
+extern "C" s32 fn_801F285C(void* self, JGeometry::TVec2<f32>* hit, s32* kind, s32 c, s32 idx);
+extern "C" s32 fn_8023B6CC(s32 idx);
+extern "C" void fn_80237948(s32 idx, void* pos);
+extern "C" u8 fn_801EAC20(void* obj, s32 idx);
+extern "C" void fn_80230FD0(s32 idx, u32 flag);
+extern "C" void fn_801CB4A4(s32 room, JGeometry::TVec3f* pos, s32 a, s32 b);
+extern "C" s32 fn_801D0020(void* self, void* pos, s32 idx, s32 a);
+extern "C" void fn_8021CDE4(void* self, s32 a);
+extern "C" u8 fn_8021D020(void* self);
+extern "C" void fn_801F0E34(void* self, u32 se, s32 b);
+
+static inline u8 tuOtherPlayer(char* p, s32 i) {
+    s32 w = *(s32*)(p + 0x560);
+    u8 r = 0;
+    if (w != 4 && w != i) {
+        r = 1;
+    }
+    return r;
+}
+
+static inline void tuPushAway(char* p, s32 who) {
+    f32 dy = *(f32*)(p + 0x10) - fn_8023E724(who)->y;
+    f32 dx = *(f32*)(p + 0xc) - fn_8023E724(who)->x;
+    JGeometry::TVec2<f32> d;
+    d.x = dx;
+    d.y = dy;
+    d.normalize();
+    d.scale(lbl_8053EF34);
+    *(f32*)(p + 0x3c) = d.x;
+    *(f32*)(p + 0x40) = d.y;
+}
+
+// near-match (98.8%): register coloring in the last two player loops differs
+extern "C" u8 fn_801CA564(char* p) {
+    switch (*(s32*)(p + 0x248)) {
+    case 0: case 1: case 2: case 3: case 4: case 5: case 6: case 7: case 8: case 9: case 10: case 11: case 12: case 13:
+    case 0x17: case 0x18: case 0x19: case 0x1a:
+    case 0x29: case 0x2a: case 0x2b: case 0x2c: case 0x2d: case 0x2f:
+        return 0;
+    }
+    s32 who;
+    f32 hx, hy;
+    u8 found;
+    JGeometry::TVec2<f32> hit;
+    JGeometry::TVec3f vel;
+    JGeometry::TVec3f d;
+    JGeometry::TVec3f fx1;
+    JGeometry::TVec3f fx2;
+    s32 kind;
+    u8 held = fn_801C53C4(p);
+    if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
+        && *(f32*)(p + 0x538) - *(f32*)(p + 0x530) > lbl_8053EF20) {
+        f32 s0 = *(f32*)(p + 0x60);
+        f32 s1 = *(f32*)(p + 0x64);
+        f32 s2 = *(f32*)(p + 0x68);
+        f32 s3 = *(f32*)(p + 0x6c);
+        found = 0;
+        *(f32*)(p + 0x60) = *(f32*)(p + 0x52c);
+        *(f32*)(p + 0x64) = *(f32*)(p + 0x530);
+        *(f32*)(p + 0x68) = *(f32*)(p + 0x534);
+        *(f32*)(p + 0x6c) = *(f32*)(p + 0x538);
+        for (s32 i = 0; i < 4; i++) {
+            if (i == fn_801F285C(p, &hit, 0, 1, i) && !tuOtherPlayer(p, i)) {
+                hx = hit.x;
+                hy = hit.y;
+                found = 1;
+                *(s32*)(p + 0x338) = i;
+                fn_8023B6CC(i);
+                fn_80237948(i, p + 0xc);
+            }
+        }
+        *(f32*)(p + 0x60) = s0;
+        *(f32*)(p + 0x64) = s1;
+        *(f32*)(p + 0x68) = s2;
+        *(f32*)(p + 0x6c) = s3;
+        if (found) {
+            who = *(s32*)(p + 0x338);
+            tuPushAway(p, who);
+            if (fn_801EAC20(p + 0x1dc, who)) {
+                fn_80230FD0(who, 0x20002);
+                fx1.set(hx, hy, lbl_8053EF20);
+                fn_801CB4A4(*(s32*)(p + 0x4), &fx1, 0, 0);
+            }
+            fn_801C3B7C(p, 0x20);
+            *(u32*)(p + 0x230) |= 0x80000;
+            return 0;
+        }
+    }
+    f32 x0, y0, x1, y1;
+    switch (*(s32*)(p + 0x248)) {
+    case 0xe: case 0xf: case 0x11: case 0x1b: case 0x20:
+    case 0x22: case 0x23: case 0x24: case 0x25: case 0x26: case 0x27: case 0x28:
+        switch (*(s32*)(p + 0x98)) {
+        case 0:
+            x0 = lbl_8053EF38;
+            y0 = lbl_8053EF3C;
+            x1 = lbl_8053EF40;
+            y1 = lbl_8053EF44;
+            break;
+        case 1:
+            x0 = lbl_8053EF48;
+            y0 = lbl_8053EF3C;
+            x1 = lbl_8053EF4C;
+            y1 = lbl_8053EF44;
+            break;
+        case 2:
+            x0 = lbl_8053EF3C;
+            y0 = lbl_8053EF38;
+            x1 = lbl_8053EF44;
+            y1 = lbl_8053EF40;
+            break;
+        case 3:
+            x0 = lbl_8053EF3C;
+            y0 = lbl_8053EF48;
+            x1 = lbl_8053EF44;
+            y1 = lbl_8053EF4C;
+            break;
+        }
+        break;
+    default:
+        y0 = x0 = lbl_8053EF50;
+        y1 = x1 = lbl_8053EF24;
+        break;
+    }
+    if (x1 - x0 > lbl_8053EF20 && y1 - y0 > lbl_8053EF20) {
+        f32 s0 = *(f32*)(p + 0x60);
+        f32 s1 = *(f32*)(p + 0x64);
+        f32 s2 = *(f32*)(p + 0x68);
+        f32 s3 = *(f32*)(p + 0x6c);
+        found = 0;
+        *(f32*)(p + 0x60) = x0;
+        *(f32*)(p + 0x64) = y0;
+        *(f32*)(p + 0x68) = x1;
+        *(f32*)(p + 0x6c) = y1;
+        for (s32 i = 0; i < 4; i++) {
+            if (i == fn_801F285C(p, &hit, 0, 1, i) && *(s32*)(p + 0x98) == fn_801D0020(p, p + 0xc, i, 0)) {
+                if (held) {
+                    fn_8023B6CC(i);
+                fn_80237948(i, p + 0xc);
+                } else if (!tuOtherPlayer(p, i)) {
+                    hx = hit.x;
+                    hy = hit.y;
+                    found = 1;
+                    *(s32*)(p + 0x338) = i;
+                    fn_8023B6CC(i);
+                    fn_802379E4(i, p + 0xc);
+                }
+            }
+        }
+        *(f32*)(p + 0x60) = s0;
+        *(f32*)(p + 0x64) = s1;
+        *(f32*)(p + 0x68) = s2;
+        *(f32*)(p + 0x6c) = s3;
+        if (found) {
+            switch (*(s32*)(p + 0x98)) {
+            case 0:
+                hx = lbl_8053EF44 + *(f32*)(p + 0xc);
+                break;
+            case 1:
+                hx = *(f32*)(p + 0xc) - lbl_8053EF44;
+                break;
+            case 2:
+                hy = lbl_8053EF44 + *(f32*)(p + 0x10);
+                break;
+            case 3:
+                hy = *(f32*)(p + 0x10) - lbl_8053EF44;
+                break;
+            }
+            who = *(s32*)(p + 0x338);
+            tuPushAway(p, who);
+            if (fn_801EAC20(p + 0x1dc, who)) {
+                fn_801F0E34(p, 0x400d1, 0);
+                fx2.set(hx, hy, lbl_8053EF20);
+                fn_801CB4A4(*(s32*)(p + 0x4), &fx2, 0, 0);
+            }
+            fn_801C3B7C(p, 0x20);
+            return 0;
+        }
+    }
+    found = 0;
+    if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053EF20
+        && *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053EF20) {
+        u8 other = 0;
+        for (s32 i = 0; i < 4; i++) {
+            if (i == fn_801F285C(p, 0, 0, 1, i)) {
+                if (held) {
+                    fn_8023B6CC(i);
+                fn_80237948(i, p + 0xc);
+                } else if (tuOtherPlayer(p, i)) {
+                    other = 1;
+                    *(s32*)(p + 0x590) = i;
+                }
+            }
+        }
+        if (other) {
+            fn_801F0E34(p, 0x400c0, 0);
+            fn_801F0E34(p, 0x400c7, 0);
+            fn_801C3B7C(p, 0x2a);
+            if (*(s32*)(p + 0x564) == 3) {
+                fn_8021CDE4(p, 2);
+            }
+            return 0;
+        }
+        if (!held) {
+            vel = *(JGeometry::TVec3f*)(p + 0x3c);
+            for (s32 i = 0; i < 4; i++) {
+                if (i == fn_801F285C(p, 0, &kind, 1, i)) {
+                    JGeometry::TVec3f* pp = fn_8023E724(i);
+                    if (fn_801F37AC(p, fn_8023B6CC(i), pp, 0, kind, i)) {
+                        found = 1;
+                        *(s32*)(p + 0x338) = i;
+                    }
+                }
+            }
+            if (found) {
+                f32 dy = *(f32*)(p + 0x10) - fn_8023E724(*(s32*)(p + 0x338))->y;
+                f32 dx = *(f32*)(p + 0xc) - fn_8023E724(*(s32*)(p + 0x338))->x;
+                d.set(dx, dy, lbl_8053EF20);
+                d.normalize();
+                *(JGeometry::TVec3f*)(p + 0x3c) = vel;
+                d.scale(lbl_8053EF54);
+                ((JGeometry::TVec3f*)(p + 0x3c))->add(d);
+                *(f32*)(p + 0x44) = lbl_8053EF20;
+                *(s32*)(p + 0xf8) = 0;
+                if (fn_8021D020(p) && *(s32*)(p + 0x564) == 2) {
+                    *(u32*)(p + 0x230) |= 0x4000000;
+                    *(s32*)(p + 0xd8) = 0x30;
+                    *(s32*)(p + 0xdc) = 0x30;
+                } else {
+                    *(u32*)(p + 0x230) &= ~0x4000000;
+                    *(s32*)(p + 0xd8) = 0x18;
+                    *(s32*)(p + 0xdc) = 0x18;
+                }
+                fn_801C3B7C(p, 0x21);
+            }
+        }
+    }
+    return found;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
