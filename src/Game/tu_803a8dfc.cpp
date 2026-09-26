@@ -311,6 +311,8 @@ struct GameInfo {
     u8 pad0[0x150];
     s32 score[4];               // 0x150
     s32 m160[4];                // 0x160
+    u8 pad170[0x190 - 0x170];
+    s32 m190[4];                // 0x190
 };
 
 extern "C" void fn_803AC6FC(Menu_Score* p) {
@@ -526,13 +528,18 @@ extern "C" void fn_803AE598(Menu_Join* p) {
 struct Menu_Rank {
     u8 pad0[0x330];
     s32 target[4];              // 0x330
-    u8 pad340[0x360 - 0x340];
+    s32 disp340[4];             // 0x340
+    s32 disp350[4];             // 0x350
     s32 disp[4];                // 0x360
-    u8 pad370[0x3c0 - 0x370];
+    u8 pad370[0x390 - 0x370];
+    s32 src390[4];              // 0x390
+    u8 pad3a0[0x3c0 - 0x3a0];
     s32 state[4];               // 0x3c0
     u8 pad3d0[0x438 - 0x3d0];
     s32 doneCount;              // 0x438
-    u8 pad43c[0x450 - 0x43c];
+    u8 pad43c[0x440 - 0x43c];
+    s32 timer;                  // 0x440
+    u8 pad444[0x450 - 0x444];
     s32 cur;                    // 0x450
     s32 count;                  // 0x454
     u8 pad458[0x4ac - 0x458];
@@ -718,6 +725,114 @@ extern "C" void fn_803AEF08(Menu_Join* p) {
     }
 }
 
+// NONMATCHING (99.8%): r6/r7 swap in the ranking loop.
+extern "C" void fn_803AF1B0(Menu_Rank* p) {
+    static const s32 tbl0[4] = {300, 150, 50, 0};
+    static const s32 tbl1[3] = {300, 150, 0};
+    static const s32 tbl2[2] = {150, 0};
+    s32 done = 0;
+    s32 n = 0;
+    u8 any = 0;
+    s32 best = 0;
+    for (s32 i = 0; i < p->count; i++) {
+        if (p->src390[i] != 0) {
+            any = 1;
+            break;
+        }
+    }
+    if (any) {
+        s32 vals[4];
+        s32 used[4];
+        s32 placed = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            used[i] = 0;
+            vals[i] = p->src390[i];
+        }
+        while (true) {
+            s32 top = -1;
+            for (s32 i = 0; i < p->count; i++) {
+                if (used[i] == 0 && top < vals[i]) {
+                    top = vals[i];
+                }
+            }
+            s32 cnt = 0;
+            for (s32 i = 0; i < p->count; i++) {
+                if (used[i] == 0 && top == vals[i]) {
+                    if (vals[i] == 0) {
+                        p->target[i] = 0;
+                    } else {
+                        switch (p->cur) {
+                        case 0:
+                            p->target[i] = tbl0[placed];
+                            break;
+                        case 1:
+                            p->target[i] = tbl1[placed];
+                            break;
+                        case 2:
+                            p->target[i] = tbl2[placed];
+                            break;
+                        }
+                    }
+                    used[i] = 1;
+                    cnt++;
+                }
+            }
+            placed += cnt;
+            if (placed >= p->count) {
+                break;
+            }
+        }
+    } else {
+        for (s32 i = 0; i < p->count; i++) {
+            p->target[i] = 0;
+        }
+    }
+    for (s32 i = 0; i < p->count; i++) {
+        if (p->disp350[i] < p->target[i]) {
+            p->disp350[i] += 2;
+        }
+        if (p->disp350[i] >= p->target[i]) {
+            p->disp350[i] = p->target[i];
+            done++;
+        }
+    }
+    if (done >= p->count) {
+        for (s32 j = 0; j < p->count; j++) {
+            s32 t = p->target[j];
+            if (best < t) {
+                p->m4c8 = 0;
+                best = t;
+                p->ids[p->m4c8] = j;
+            } else if (best > 0 && best == t) {
+                p->m4c8++;
+                p->ids[p->m4c8] = j;
+            }
+        }
+        for (s32 i = 0; i < p->count; i++) {
+            if (p->m4c8 != 0xff && i == p->ids[n]) {
+                p->state[i] = 0x3e;
+                if (p->m4c8 > n) {
+                    n++;
+                }
+            }
+        }
+        if (p->m4c8 != 0xff) {
+            fn_80458880(lbl_8053AF80, 0xf, -1);
+            fn_80458880(lbl_8053AF80, 0x2a, -1);
+        } else {
+            p->timer = 0x3c;
+        }
+        p->doneCount = 0;
+        p->m4c1 = 0xe;
+    } else {
+        if (done != p->doneCount) {
+            p->doneCount = done;
+            fn_80458880(lbl_8053AF80, 0x10, -1);
+        }
+        fn_80458880(lbl_8053AF80, 0xe, -1);
+    }
+}
+
 extern "C" void fn_803AF604(void* this_) {
     char* t = (char*)this_;
     s32 v = *(s32*)(t + 0x440) - 1;
@@ -838,6 +953,114 @@ extern "C" void fn_803AFA78(Menu_Join* p) {
     }
 }
 
+
+// NONMATCHING (99.8%): r6/r7 swap in the ranking loop.
+extern "C" void fn_803AFCF0(Menu_Rank* p) {
+    static const s32 tbl0[4] = {300, 150, 50, 0};
+    static const s32 tbl1[3] = {300, 150, 0};
+    static const s32 tbl2[2] = {150, 0};
+    s32 done = 0;
+    s32 n = 0;
+    u8 any = 0;
+    s32 best = 0;
+    for (s32 i = 0; i < p->count; i++) {
+        if (((GameInfo*)lbl_80529DEC)->m190[i] != 0) {
+            any = 1;
+            break;
+        }
+    }
+    if (any) {
+        s32 vals[4];
+        s32 used[4];
+        s32 placed = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            used[i] = 0;
+            vals[i] = ((GameInfo*)lbl_80529DEC)->m190[i];
+        }
+        while (true) {
+            s32 top = -1;
+            for (s32 i = 0; i < p->count; i++) {
+                if (used[i] == 0 && top < vals[i]) {
+                    top = vals[i];
+                }
+            }
+            s32 cnt = 0;
+            for (s32 i = 0; i < p->count; i++) {
+                if (used[i] == 0 && top == vals[i]) {
+                    if (vals[i] == 0) {
+                        p->target[i] = 0;
+                    } else {
+                        switch (p->cur) {
+                        case 0:
+                            p->target[i] = tbl0[placed];
+                            break;
+                        case 1:
+                            p->target[i] = tbl1[placed];
+                            break;
+                        case 2:
+                            p->target[i] = tbl2[placed];
+                            break;
+                        }
+                    }
+                    used[i] = 1;
+                    cnt++;
+                }
+            }
+            placed += cnt;
+            if (placed >= p->count) {
+                break;
+            }
+        }
+    } else {
+        for (s32 i = 0; i < p->count; i++) {
+            p->target[i] = 0;
+        }
+    }
+    for (s32 i = 0; i < p->count; i++) {
+        if (p->disp340[i] < p->target[i]) {
+            p->disp340[i] += 2;
+        }
+        if (p->disp340[i] >= p->target[i]) {
+            p->disp340[i] = p->target[i];
+            done++;
+        }
+    }
+    if (done >= p->count) {
+        for (s32 j = 0; j < p->count; j++) {
+            s32 t = p->target[j];
+            if (best < t) {
+                p->m4c8 = 0;
+                best = t;
+                p->ids[p->m4c8] = j;
+            } else if (best > 0 && best == t) {
+                p->m4c8++;
+                p->ids[p->m4c8] = j;
+            }
+        }
+        for (s32 i = 0; i < p->count; i++) {
+            if (p->m4c8 != 0xff && i == p->ids[n]) {
+                p->state[i] = 0x3e;
+                if (p->m4c8 > n) {
+                    n++;
+                }
+            }
+        }
+        if (p->m4c8 != 0xff) {
+            fn_80458880(lbl_8053AF80, 0xf, -1);
+            fn_80458880(lbl_8053AF80, 0x2a, -1);
+        } else {
+            fn_80458880(lbl_8053AF80, 0x2d, -1);
+        }
+        p->doneCount = 0;
+        p->m4c1 = 0xa;
+    } else {
+        if (done != p->doneCount) {
+            p->doneCount = done;
+            fn_80458880(lbl_8053AF80, 0x10, -1);
+        }
+        fn_80458880(lbl_8053AF80, 0xe, -1);
+    }
+}
 
 extern "C" void fn_803B0158(Menu_Slide* p) {
     p->timer--;
