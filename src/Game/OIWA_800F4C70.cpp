@@ -4,6 +4,7 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Box.h"
 
 // ---- from Game/fn_800F659C_dtor.cpp
 
@@ -190,7 +191,7 @@ public:
     virtual u8 v11();
 };
 extern "C" s32 fn_8023DE58(s32 player);
-extern "C" void fn_8022E088(s32 player, s32 idx, JGeometry::TVec2<f32>* out);
+extern "C" void fn_8022E088(s32 player, s32 idx, JGeometry::TVec3<f32>* out);
 extern "C" void fn_8022DF48(s32 player);
 extern "C" s32 fn_801F2718(void* actor, u32 type);
 extern "C" void* fn_801F856C(void);
@@ -220,7 +221,7 @@ extern "C" void fn_800F5E08(char* this_) {
                     f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
                     f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
                     for (s32 j = 0; j < 8; j++) {
-                        JGeometry::TVec2<f32> pt;
+                        JGeometry::TVec3<f32> pt;
                         fn_8022E088(i, j, &pt);
                         u8 in = 0;
                         if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
@@ -439,16 +440,13 @@ extern "C" s32 Actor_CreateByID(void* mgr, u32 fourCC, u32 owner, void* pos, u32
 static inline void oiwaBox(OiwaRect* b, char* this_) {
     f32 r = 16.0f;
     JGeometry::TVec2<f32>& p = *(JGeometry::TVec2<f32>*)(this_ + 0xc);
-    b->x0 = p.x - r;
-    b->y0 = p.y - r;
-    b->x1 = p.x + r;
-    b->y1 = p.y + r;
+    ((JGeometry::TBox2<f32>*)b)->set(p.x - r, p.y - r, r + p.x, r + p.y);
 }
 
 extern "C" void fn_800F555C(char* this_) {
     OiwaRect box;
     s32 dir;
-    u8 present = 0;
+    s32 present = 0;
     oiwaBox(&box, this_);
     for (s32 i = 0; i < 4; i++) {
         if (*(s32*)(this_ + 4) == fn_8023DE58(i)) {
@@ -509,7 +507,8 @@ extern "C" void fn_800F555C(char* this_) {
             }
             fn_80238E08(*(u32*)(this_ + 0x198));
             for (s32 i = 0; i < 4; i++) {
-                if (fn_80238CB4(i) == *(s32*)(this_ + 0x198)) {
+                s32 id = *(s32*)(this_ + 0x198);
+                if (fn_80238CB4(i) != id) continue; {
                     fn_80230FD0(i, 0x10012);
                 }
             }
@@ -523,7 +522,7 @@ extern "C" void fn_800F555C(char* this_) {
         }
         *(s32*)(this_ + 0x23c) = *(s32*)(this_ + 0x23c) & 3;
         if (__fabsf(*(f32*)(this_ + 0x3c)) < 1.5f && __fabsf(*(f32*)(this_ + 0x40)) < 1.5f &&
-            0.0f == __fabsf(*(f32*)(this_ + 0x44))) {
+            __fabsf(*(f32*)(this_ + 0x44)) == 0.0f) {
             fn_80239914(&box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
         } else {
             f32 z = 0.0f;
@@ -571,7 +570,7 @@ extern "C" void fn_800F555C(char* this_) {
             }
         }
         if (*(s8*)(this_ + 0x232) == -1 && 0.0f == *(f32*)(this_ + 0x44)) {
-            if (*(u8*)(this_ + 0x234) == 1) {
+            if ((s8)*(u8*)(this_ + 0x234) == 1) {
                 switch (*(s8*)(this_ + 0x233)) {
                 case 0:
                     *(s8*)(this_ + 0x232) = 3;
@@ -612,7 +611,7 @@ extern "C" void fn_800F555C(char* this_) {
                 f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
                 f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
                 for (s32 j = 0; j < 8; j++) {
-                    JGeometry::TVec2<f32> pt;
+                    JGeometry::TVec3<f32> pt;
                     fn_8022E088(i, j, &pt);
                     u8 in = 0;
                     if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
