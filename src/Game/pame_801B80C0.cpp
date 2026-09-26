@@ -39,11 +39,11 @@ extern "C" void* fn_801B94C8(void* this_) {
     return this_;
 }
 
+extern "C" void fn_801B91A8(u8* this_, s32 mode);
 extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
 extern "C" s32 fn_801F2DB4(void* actor, u32 a, u32 b, u32 c);
 extern "C" s32 fn_801D22A0(void* obj, s32 a, s32 b);
 extern "C" void fn_801CE4BC(void* this_);
-extern "C" void fn_801B91A8(void* this_, s32 mode);
 extern const f32 lbl_8053EB20;
 extern const f32 lbl_8053EB24;
 extern const f32 lbl_8053EB34;
@@ -291,6 +291,116 @@ extern "C" void fn_801B9378(u8* this_) {
     fn_801D2608(this_ + 0x270, lbl_8053A120, 2);
     fn_801D22DC(this_ + 0x270, 0, 2, 0);
     fn_801D1D60(this_ + 0x270);
+}
+
+extern "C" s32 fn_801CF6B8(void* this_);
+extern "C" s32 fn_801CD354(s32 val);
+extern "C" void fn_801CEBD0(void* this_);
+extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_801F2FAC(void* this_);
+extern "C" f32* fn_8023E724(s32 idx);
+extern const f32 lbl_8053EB30;
+extern const f32 lbl_8053EB38;
+extern const f32 lbl_8053EB60;
+extern const f32 lbl_8053EB64;
+extern int __float_epsilon[];
+
+extern "C" void fn_801B91A8(u8* this_, s32 mode) {
+    switch (mode) {
+    case 0:
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x10) + 0x1e;
+        *(f32*)(this_ + 0x258) = lbl_8053EB5C;
+        if (*(s32*)(this_ + 0x248) != 4) {
+            *(s32*)(this_ + 0x98) = fn_801CF6B8(this_);
+        }
+        break;
+    case 1:
+    case 4:
+        if (mode == 1) {
+            if (*(u32*)(this_ + 0x230) & 0x2000) {
+                fn_801F0E34(this_, 0x50016, 0);
+            } else {
+                fn_801F0E34(this_, 0x50017, 0);
+            }
+        } else {
+            if (*(u32*)(this_ + 0x230) & 0x2000) {
+                fn_801F0E34(this_, 0x50021, 0);
+            } else {
+                fn_801F0E34(this_, 0x50022, 0);
+            }
+        }
+        *(s32*)(this_ + 0x250) = -1;
+        *(s32*)(this_ + 0x98) = fn_801CD354(*(s32*)(this_ + 0x98));
+        *(f32*)(this_ + 0x258) = lbl_8053EB60;
+        *(f32*)(this_ + 0x254) = lbl_8053EB60;
+        if (*(u32*)(this_ + 0x230) & 0x2000) {
+            *(f32*)(this_ + 0x44) = lbl_8053EB50;
+        } else {
+            *(f32*)(this_ + 0x44) = lbl_8053EB38;
+        }
+        break;
+    case 2:
+        *(s32*)(this_ + 0x250) = fn_801CD664(0x65) + 0x190;
+        *(f32*)(this_ + 0x258) = lbl_8053EB20;
+        break;
+    case 3:
+        *(s32*)(this_ + 0x250) = fn_801CD664(0xb) + 0x1e;
+        *(f32*)(this_ + 0x258) = lbl_8053EB20;
+        break;
+    case 5:
+        *(s32*)(this_ + 0x250) = fn_801CD664(1) + 0x21c;
+        *(s32*)(this_ + 0x98) = fn_801CD354(*(s32*)(this_ + 0x98));
+        *(f32*)(this_ + 0x258) = lbl_8053EB64;
+        *(f32*)(this_ + 0x254) = lbl_8053EB64;
+        *(f32*)(this_ + 0x44) = lbl_8053EB50;
+        break;
+    }
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = mode;
+}
+
+
+extern "C" s32 fn_801B8518(u8* this_) {
+    s32 result = 0;
+    u8 use = 1;
+    s32 st = *(s32*)(this_ + 0x248);
+    if (pameIsActive(st)) {
+        use = 0;
+        if (*(s32*)(this_ + 0x24c) < 10) {
+            switch (st) {
+            case 1:
+            case 5:
+                use = 1;
+                break;
+            }
+        }
+    }
+    if (use) {
+        if (*(u32*)(this_ + 0x230) & 0x2000) {
+            fn_801CEBD0(this_);
+        } else if (st == 0) {
+            s32 pl = fn_801F285C(this_, 0, 0, 1, -1);
+            if (pl >= 0) {
+                fn_801B91A8(this_, 5);
+                JGeometry::TVec2<f32> d;
+                d.y = *(f32*)(this_ + 0x10) - fn_8023E724(pl)[1];
+                d.x = *(f32*)(this_ + 0xc) - fn_8023E724(pl)[0];
+                if (d.squared() <= JGeometry::TUtil<f32>::epsilon()) {
+                    *(f32*)(this_ + 0x3c) = 0.0f;
+                    *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x254);
+                } else {
+                    d.normalize();
+                    d.scale(*(f32*)(this_ + 0x254));
+                    *(f32*)(this_ + 0x3c) = d.x;
+                    *(f32*)(this_ + 0x40) = d.y;
+                }
+                fn_801F0E34(this_, 0x4003b, 0);
+            }
+        }
+    } else {
+        result = fn_801F2FAC(this_);
+    }
+    return result;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
