@@ -549,6 +549,66 @@ inline void addLife(char* p, s32 n, u8 flag) {
     }
     U8(p, 0xd35) = flag;
 }
+u8 fn_80236890(void);
+u8 fn_8022E438(s32, s32);
+s32 fn_802417CC(char*);
+u8 fn_80243194(char*, s32);
+void fn_802363DC(s32);
+u8 fn_80239D38(void);
+s32 fn_801F7A08(void*, s32);
+u8 fn_80236B50(s32);
+u8 fn_80236AB4(s32);
+void fn_80236350(s32);
+inline u8 isStage7() { return S32(lbl_8053AAF8, 0x4c) == 7; }
+void fn_8027057C(char* p) {
+    if (U8(lbl_8053AAF8, 0x7f) == 0 && (U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4)))) {
+        return;
+    }
+    if (U8(lbl_8053AAF8, 0x7e) != 0 && fn_80236890()) {
+        return;
+    }
+    if (U8(p, 0xd2d) == 1) {
+        return;
+    }
+    if (U8(p, 0xd2c) == 1) {
+        U8(p, 0x124d) = 0;
+        if (fn_80251AEC(p, 0)) {
+            addLife(p, fn_802417CC(p) - 4, 0);
+            S32(p, 0x464) = 0xb4;
+            U8(p, 0xd2c) = 0;
+            *(JGeometry::TVec3<f32>*)(p + 0x8) = *(JGeometry::TVec3<f32>*)(p + 0xd10);
+            S32(p, 0x3b4) = 0;
+            U8(p, 0xcfc) = 0;
+        }
+    } else if (U8(p, 0xcfd) == 1 && F32(p, 0x10) <= 0.0f && F32(p, 0x1c) > 0.0f && U8(lbl_8053AAF8, 0x7e) != 0) {
+        for (s32 i = 0; i < 4; i++) {
+            if (fn_80243194(p, i)) {
+                fn_802363DC(i);
+            }
+        }
+    } else if (U8(p, 0xd35) == 1) {
+        U8(p, 0x124d) = 0;
+        if (fn_80251AEC(p, 0x34)) {
+            U8(p, 0xcfc) = 0;
+            U8(p, 0xd34) = 1;
+        }
+    } else if (isStage7() && U8(lbl_8053AAF8, 0x7f) != 0 && U8(lbl_8053AAF8, 0x7e) != 0 && !((u8(*)(char*))fn_8025F448)(p) &&
+               !fn_80239D38() && S32(p, 0x494) > 0) {
+        S32(p, 0x494)--;
+        if (S32(p, 0x494) == 0) {
+            if (fn_801F7A08(fn_801F856C(), 'TNGL') >= 0) {
+                S32(p, 0x494) = 1;
+            } else {
+                U8(p, 0xcfc) = 0;
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_8022E438(S32(p, 0x4), i) && fn_80236B50(i) && !fn_80236AB4(i)) {
+                        fn_80236350(i);
+                    }
+                }
+            }
+        }
+    }
+}
 void fn_80270DDC(char* p, s32 n, u8 flag) {
     if (U8(p, 0xd35) != 0) {
         return;
@@ -1848,7 +1908,7 @@ BOOL fn_80275D9C(char* p) {
     return 0;
 }
 void fn_802356B8(s32);
-u8 fn_8022E438(s32, s32);
+
 void fn_8027BC90(char* p) {
     stopEmitter(p, 0x1274);
     stopEmitter(p, 0x128c);
