@@ -1,6 +1,7 @@
 // Game TU 801BDE5C-801BEDBC (BMST). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
@@ -32,6 +33,39 @@ extern "C" void* fn_801BDE5C(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+struct BmstColor {
+    BmstColor(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
+    u8 r, g, b, a;
+};
+extern u8 lbl_804693D8[];
+extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_8013AC90(void* pos, void* color, s32 a, s32 flag, s32 b, f32 scale);
+
+extern "C" void fn_801BDEEC(char* this_) {
+    DrawRec rec;
+    if (*(s32*)(this_ + 0x248) == 2) {
+        ((u8*)&rec.w14)[0] = 0x80;
+        ((u8*)&rec.w14)[1] = 0x80;
+        ((u8*)&rec.w14)[2] = 0x80;
+    }
+    fn_801F06F0(this_, lbl_804693D8, 0x13c, &rec, -1, 1.0f, 1.0f);
+    if (!(*(u32*)(this_ + 0x230) & 0x2000)) {
+        static BmstColor color(0xff, 0xff, 0xff, 0xff);
+        s16 a = *(s16*)(this_ + 0x2a8);
+        f32 c = JMASCos(a);
+        JGeometry::TVec3<f32> pos(10.0f * JMASSin(a) + *(f32*)(this_ + 0xc),
+                                  -15.0f + (6.0f * c + *(f32*)(this_ + 0x10)),
+                                  *(f32*)(this_ + 0x14));
+        BOOL flag = FALSE;
+        if (pos.y >= -15.0f + *(f32*)(this_ + 0x10)) {
+            flag = TRUE;
+        }
+        fn_8013AC90(&pos, &color, 0, flag, 0, 4.0f);
+    }
+}
+
+
 
 extern "C" void* fn_801BEB44(void* this_) {
     fn_801D0F40(this_);
