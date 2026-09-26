@@ -1102,7 +1102,7 @@ config.libs = [
             Object(Matching, "Game/enbz.cpp"),
             Object(NonMatching, "Game/tu_801a3c50.cpp"),
             Object(NonMatching, "Game/ryya.cpp"),
-            Object(NonMatching, "Game/hbb2.cpp"),
+            Object(Matching, "Game/hbb2.cpp"),
             Object(NonMatching, "Game/ttat.cpp"),
             Object(NonMatching, "Game/ddgo.cpp"),
             Object(NonMatching, "Game/okam.cpp"),
