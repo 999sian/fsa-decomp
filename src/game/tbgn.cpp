@@ -28,6 +28,64 @@ void Tbgn_EmptyHook2(void) {}
 
 }
 
+// fn_802F3FE4 - TBGN: setParams(). Scans the 32x32 tile grid of room 0 and
+// of rooms 8..14 for tile type 0x41; for each hit either spawns a "TBO2"
+// actor at the tile (numbered from the spawn param) or, when that switch is
+// already set, replaces the tile with type 0x12.
+struct TbgnVec { f32 x, y, z; };
+extern char* lbl_8053AB10;
+extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 idx);
+extern "C" void fn_802F9974(void* mgr, s32 room, s32 idx, u16 value);
+extern "C" void fn_80226CA8(s32 idx, s32 room, TbgnVec* out);
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F9484(void* base, u32 fourCC, s32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D76A8(void* rec, u32 id);
+
+// NONMATCHING (98.8%): retail allocates sw=r31, this=r30, tile=r29.
+extern "C" void fn_802F3FE4(char* p) {
+    u32 sw = *(u32*)(p + 0x90);
+    u32 tile;
+    s32 y, x;
+    s32 r, room, y2, x2;
+    TbgnVec pos;
+    *(s32*)(p + 0x230) = 0;
+    for (y = 0; y < 32; y++) {
+        for (x = 0; x < 32; x++) {
+            tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), 0, *(s32*)(p + 0x230)) & 0x3FF;
+            if (tile == 0x41) {
+                if (!fn_802D76A8(fn_802D6A9C(), sw)) {
+                    fn_80226CA8(*(s32*)(p + 0x230), 0, &pos);
+                    fn_801F9484(fn_801F856C(), 0x54424f32, 0, &pos, tile, sw, -1);
+                } else {
+                    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), 0, *(s32*)(p + 0x230), 0x12);
+                }
+                sw++;
+            }
+            *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+        }
+    }
+    for (r = 0; r < 7; r++) {
+        room = r + 8;
+        *(s32*)(p + 0x230) = 0;
+        for (y2 = 0; y2 < 32; y2++) {
+            for (x2 = 0; x2 < 32; x2++) {
+                tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)(p + 0x230)) & 0x3FF;
+                if (tile == 0x41) {
+                    if (!fn_802D76A8(fn_802D6A9C(), sw)) {
+                        fn_80226CA8(*(s32*)(p + 0x230), room, &pos);
+                        fn_801F9484(fn_801F856C(), 0x54424f32, room, &pos, tile, sw, -1);
+                    } else {
+                        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)(p + 0x230), 0x12);
+                    }
+                    sw++;
+                }
+                *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+            }
+        }
+    }
+}
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT
