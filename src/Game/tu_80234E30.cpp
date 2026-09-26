@@ -359,6 +359,16 @@ void fn_80236804(int idx, int a1) {
     if (isPlayerEnabled(idx)) fn_80270F00(lbl_8053AC90->players[idx], a1);
 }
 
+u8 fn_80236890() {
+    if (lbl_8053AC90 == NULL) return 1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (*(u8*)((char*)lbl_8053AAF8 + 0x82) & (u8)(1 << i))) {
+            if (!(u8)fn_80270A04(lbl_8053AC90->players[i])) return 0;
+        }
+    }
+    return 1;
+}
+
 int fn_8023697C(int idx) {
     if (lbl_8053AC90 == NULL) return -1;
     if (isPlayerEnabled(idx)) return fn_8024322C(lbl_8053AC90->players[idx]);
@@ -432,6 +442,17 @@ int fn_8023725C(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_802415CC(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+u8 fn_80241618(Player*, int, int);
+u8 fn_802372F8(int idx, int a1, int a2) {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_8022E438(idx, i)) {
+            if (!fn_80241618(lbl_8053AC90->players[i], a1, a2)) return 0;
+        }
+    }
+    return 1;
 }
 
 int fn_802373EC(int idx) {
@@ -508,9 +529,27 @@ void fn_80238244(int idx) {
     if (isPlayerEnabled(idx)) fn_80248DCC(lbl_8053AC90->players[idx]);
 }
 
+void* fn_80238430(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0x324;
+    return lbl_804CF460;
+}
+
 void fn_802384BC(int idx) {
     if (lbl_8053AC90 == NULL) return;
     if (isPlayerEnabled(idx)) fn_8024051C(lbl_8053AC90->players[idx]);
+}
+
+int fn_80239108(int);
+u8 fn_80250030(Player*, int);
+int fn_80238BC4(int a1) {
+    if (fn_80239108(a1) <= 0) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_80250030(lbl_8053AC90->players[i], a1)) {
+            return *(int*)((char*)lbl_8053AC90->players[i] + 0x3dc);
+        }
+    }
+    return -1;
 }
 
 int fn_80238CB4(int idx) {
@@ -519,10 +558,51 @@ int fn_80238CB4(int idx) {
     return -1;
 }
 
+void fn_8024FF9C(Player*, int);
+void fn_80238D50(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i)) fn_8024FF9C(lbl_8053AC90->players[i], a1);
+    }
+}
+
+void fn_8024FFB4(Player*, int);
+void fn_80238E08(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_80250030(lbl_8053AC90->players[i], a1)) {
+            fn_8024FFB4(lbl_8053AC90->players[i], a1);
+        }
+    }
+}
+
 int fn_80238EDC(int idx) {
     if (lbl_8053AC90 == NULL) return -1;
     if (isPlayerEnabled(idx)) return fn_8024FF54(lbl_8053AC90->players[idx]);
     return -1;
+}
+
+int fn_8024FF6C(Player*);
+int fn_80238F78(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && a1 == fn_8024FF6C(lbl_8053AC90->players[i])) return i;
+    }
+    return -1;
+}
+
+int fn_80239040(int a1) {
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && a1 == fn_8024FF84(lbl_8053AC90->players[i])) return i;
+    }
+    return -1;
+}
+
+u8 fn_802728AC(Player*, int, int, int);
+int fn_80239470(int a1, int a2, int a3) {
+    if (lbl_8053AC90 == NULL) return 0;
+    int r = -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && fn_802728AC(lbl_8053AC90->players[i], a1, a2, a3) && r < 0) r = i;
+    }
+    return r;
 }
 
 int fn_80239558(int a1, int a2, int a3) {
@@ -533,10 +613,25 @@ int fn_80239558(int a1, int a2, int a3) {
     return -1;
 }
 
+u8 fn_80239638(int a1) {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)fn_802729F0(lbl_8053AC90->players[i], a1)) return 1;
+    }
+    return 0;
+}
+
 int fn_80239718(int idx, int a1) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_802729F0(lbl_8053AC90->players[idx], a1);
     return 0;
+}
+
+void fn_802397B4(int a1, int a2, int a3) {
+    if (lbl_8053AC90 == NULL) return;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i)) fn_80272C20(lbl_8053AC90->players[i], a1, a2, a3);
+    }
 }
 
 int fn_80239878(int idx, int a1, int a2, int a3) {
@@ -549,6 +644,14 @@ int fn_802399D8(int idx, int a1, int a2, int a3) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_80272DCC(lbl_8053AC90->players[idx], a1, a2, a3);
     return 0;
+}
+
+int fn_80239A74(int a1, int a2, int a3, int a4, int a5) {
+    if (lbl_8053AC90 == NULL) return -1;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)fn_80272224(lbl_8053AC90->players[i], a1, a2, a3, a4, a5)) return i;
+    }
+    return -1;
 }
 
 int fn_80239B64(int idx, int a1, int a2, int a3, int a4, int a5) {
@@ -586,10 +689,25 @@ int fn_8023A240() {
     return -1;
 }
 
+u8 fn_8023A30C() {
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && (u8)Player_HasAnyStatusFlagSet(lbl_8053AC90->players[i])) return 1;
+    }
+    return 0;
+}
+
 int fn_8023A3DC(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return Player_CheckField_0xc9c(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+void* Player_GetModeSubPtr_0xb9a(Player*);
+void* fn_8023A478(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return Player_GetModeSubPtr_0xb9a(lbl_8053AC90->players[idx]);
+    return lbl_804CF460;
 }
 
 int fn_8023A51C(int idx) {
@@ -602,6 +720,11 @@ int fn_8023A5B8(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return Player_GetField_0xb9b(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+void fn_8023A654(int idx) {
+    if (lbl_8053AC90 == NULL) return;
+    if (isPlayerEnabled(idx)) *(u8*)((char*)lbl_8053AC90->players[idx] + 0xb9f) = 1;
 }
 
 int fn_8023A6CC(int a1, int a2) {
@@ -694,6 +817,11 @@ int fn_8023B484(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(idx)) return fn_802577E0(lbl_8053AC90->players[idx]);
     return 0;
+}
+
+int fn_8023B5B4(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    return isPlayerEnabled(idx) ? 4 : 0;
 }
 
 int fn_8023B630(int idx) {
@@ -816,6 +944,12 @@ int fn_8023CE10(int idx) {
     return 0;
 }
 
+int fn_8023DE58(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(idx)) return *(int*)((char*)lbl_8053AC90->players[idx] + 0x3b4);
+    return 0;
+}
+
 void fn_8023DEDC(int idx, int a1) {
     if (lbl_8053AC90 == NULL) return;
     if (isPlayerEnabled(idx)) fn_80252BD0(lbl_8053AC90->players[idx], a1);
@@ -842,9 +976,28 @@ int fn_8023E10C(int idx) {
     return 0;
 }
 
+int fn_8023E190(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (isPlayerEnabled(idx)) return *(int*)((char*)lbl_8053AC90->players[idx] + 0xce0);
+    return 0;
+}
+
+void* fn_8023E214(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcd4;
+    return lbl_804CF460;
+}
+
 void* fn_8023E32C(int idx) {
     if (lbl_8053AC90 == NULL) return lbl_804CF460;
     if (isPlayerEnabled(idx)) return (char*)lbl_8053AC90->players[idx] + 0xcb0;
+    return lbl_804CF460;
+}
+
+void* fn_8024C378(Player*);
+void* fn_8023E3B8(int idx) {
+    if (lbl_8053AC90 == NULL) return lbl_804CF460;
+    if (isPlayerEnabled(idx)) return fn_8024C378(lbl_8053AC90->players[idx]);
     return lbl_804CF460;
 }
 
