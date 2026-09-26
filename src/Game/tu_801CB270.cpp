@@ -1,6 +1,7 @@
 // Game TU 801CB270-801CDC8C (unnamed). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JGeometry.h"
 extern "C" void* fn_8022F3DC(void* p);
 extern "C" s32 fn_80236228(void* p);
 extern "C" u32 fn_80226998(void* p, s32 layer);
@@ -612,6 +613,34 @@ extern "C" s32 fn_801CC730(s32 player, s32* outId, f32* outPos) {
                 outPos[2] = *(f32*)(a + 0x44);
             }
             *(s32*)(a + 0x108) = 0;
+        }
+    }
+    return result;
+}
+
+extern "C" s32 fn_8023B22C(s32 player);
+extern const f32 lbl_8053EF90;
+
+extern "C" s32 fn_801CC538(s32 player, const f32* in, JGeometry::TVec3<f32>* out, s32* outId) {
+    s32 result = 0;
+    if (outId != 0) {
+        *outId = -1;
+    }
+    s32 id = fn_8023B22C(player);
+    if (id >= 0) {
+        u8* a = (u8*)fn_801F666C(fn_801F856C(), id);
+        if (a != 0 && a[0x11c] != 0 && *(u32*)(a + 0x1a0) == 'BOME') {
+            result = 1;
+            if (outId != 0) {
+                *outId = id;
+            }
+            *(s32*)(a + 0x254) = 1;
+            if (out != 0) {
+                JGeometry::TVec3<f32> scaled;
+                scaled = *(JGeometry::TVec3<f32>*)(a + 0x3c);
+                scaled.scale(3.0f);
+                out->sub(JGeometry::TVec3<f32>(in[0], in[1], 0.0f), scaled);
+            }
         }
     }
     return result;
