@@ -9,7 +9,7 @@ struct ActorGroup_8021F064 {
     }
     u16 mFlags;
     s32 mCount;
-    s32 mIds[1];
+    s32 mIds[6];
 };
 
 extern "C" {

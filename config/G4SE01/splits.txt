@@ -2604,6 +2604,8 @@ Game/tu_8021F064.cpp:
 	extabindex  start:0x80018274 end:0x80018298
 	.text       start:0x8021F064 end:0x8021F4B0
 	.ctors      start:0x8045C188 end:0x8045C18C
+	.bss        start:0x804CE640 end:0x804CE6CC
+	.sbss       start:0x8053AC78 end:0x8053AC80
 
 Game/fbal.cpp:
 	extab       start:0x8000A52C end:0x8000A55C
