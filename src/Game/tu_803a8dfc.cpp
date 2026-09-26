@@ -3,11 +3,7 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 
-class J2DGrafContext;
-class J2DScreen {
-public:
-    void draw(f32 x, f32 y, const J2DGrafContext* ctx);
-};
+#include "JSystem/J2D/J2DScreen.h"
 
 struct VObj_803A8DFC {
     virtual void v00();
@@ -82,6 +78,71 @@ extern "C" void fn_80458880(void* p1, s32 p2, s32 p3);
 extern "C" void fn_803B35F8(void* this_, u8 flag);
 
 extern void* lbl_8053AF80;
+
+extern void* lbl_8053AD30;
+extern "C" u32 fn_80309C4C(void* p, s32 a, s32 b);
+
+struct Menu_803AD220 {
+    u8 pad0[0x98];
+    J2DPane* pane98;
+    J2DPane* pane9C;
+    u8 padA0[0x3c0 - 0xa0];
+    s32 state[4];               // 0x3c0
+    u8 pad3d0[0x404 - 0x3d0];
+    f32 y404;
+    f32 y408;
+    u8 pad40c[0x440 - 0x40c];
+    s32 timer;                  // 0x440
+    u8 pad444[0x454 - 0x444];
+    s32 count;                  // 0x454
+    u8 pad458[0x4c1 - 0x458];
+    u8 m4c1;
+    u8 m4c2;
+    u8 m4c3;
+    u8 m4c4;
+    u8 m4c5;
+    u8 m4c6;
+};
+
+extern "C" void fn_803AD220(Menu_803AD220* p) {
+    p->timer--;
+    if (fn_80309C4C(lbl_8053AD30, 0x100, -1) != 0) {
+        if (p->timer >= 0x3c) {
+            p->pane9C->hide();
+            { f32 x = p->pane9C->getBounds()->i.x; p->pane9C->move(x, p->y404); }
+            p->pane98->show();
+            { f32 x = p->pane98->getBounds()->i.x; p->pane98->move(x, p->y408); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+        p->timer = 0;
+    }
+    s32 t = p->timer;
+    if (t == 0) {
+        p->timer = 0x96;
+        p->m4c4 = 0;
+        p->m4c6 = 0;
+        for (s32 i = 0; i < p->count; i++) {
+            p->state[i] = 0x3e;
+        }
+        p->m4c1 = 0x1a;
+    } else if (t >= 0x8a) {
+        f32 off = -150.0f * ((f32)(12 - (t - 0x8a)) / 12.0f);
+        { f32 x = p->pane9C->getBounds()->i.x; p->pane9C->move(x, p->y404 + off); }
+        if (p->timer == 0x8a) {
+            p->pane9C->hide();
+            p->pane98->show();
+            { f32 x = p->pane98->getBounds()->i.x; p->pane98->move(x, p->y408 + off); }
+        }
+    } else if (t >= 0x80) {
+        f32 x = p->pane98->getBounds()->i.x;
+        f32 off = -150.0f * ((f32)(t - 0x80) / 12.0f);
+        p->pane98->move(x, p->y408 + off);
+        if (p->timer == 0x80) {
+            { f32 x = p->pane9C->getBounds()->i.x; p->pane9C->move(x, p->y404); }
+            fn_80458880(lbl_8053AF80, 0x2c, -1);
+        }
+    }
+}
 
 extern "C" void fn_803AF604(void* this_) {
     char* t = (char*)this_;
@@ -165,7 +226,6 @@ struct MsgSinkObj : MsgSinkHolder {
     virtual void send(void* msg);
 };
 
-extern void* lbl_8053AD30;
 extern "C" s32 fn_8030AAF4(s32 a);
 extern "C" u32 fn_80309D24(void* p, s32 a, s32 b);
 extern "C" void fn_8015F8FC(void* p, s32 a, void* b, s32 c);
