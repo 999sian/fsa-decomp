@@ -192,6 +192,70 @@ extern "C" void fn_801D77B4(void* p);
 extern "C" void fn_801E4B0C(void* p);
 extern "C" void fn_801E6AB8(void* p);
 
+
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" void fn_801EB418(void* p, Vec* pos);
+extern "C" u8 fn_801EB648(void* p);
+extern "C" void fn_801E5754(void* this_);
+extern "C" void fn_801E4D88(void* this_);
+extern "C" void fn_801D6E20(void* p, void* pos);
+extern "C" void fn_801CE2BC(void* this_, void* arg);
+extern "C" void fn_8021798C(void* p);
+
+extern "C" void fn_801D5180(u8* this_, void* arg) {
+    if (!(*(u32*)(this_ + 0x230) & 0x2000)) {
+        switch (*(s32*)(this_ + 0x248)) {
+        case 1:
+        case 2:
+        case 3:
+            fn_801F0E34(this_, 0x4005e, 0);
+            break;
+        }
+        if (this_[0x5ce] != 0) {
+            this_[0x5ce]--;
+            if (this_[0x5ce] == 0) {
+                *(u32*)(this_ + 0x230) |= 0x4000;
+            }
+        }
+        JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), lbl_8053F0EC);
+        fn_801EB418(this_ + 0x464, &pos);
+        if (fn_801EB648(this_ + 0x464)) {
+            fn_801F0E34(this_, 0x40051, 0);
+        }
+        fn_801E5754(this_);
+        fn_801E4D88(this_);
+    } else {
+        fn_801D6E20(this_ + 0x4c4, this_ + 0xc);
+        if (*(s32*)(this_ + 0x108) > 0 && !(*(u32*)(this_ + 0x230) & 7)
+            && *(s32*)(this_ + 0x248) != 0xb && *(s32*)(this_ + 0x248) != 0x17)
+        {
+            fn_801F0E34(this_, 0x4005e, 0);
+            switch (*(s32*)(this_ + 0x248)) {
+            case 0xc:
+            case 0xd:
+                fn_801F0E34(this_, 0x4005f, 0);
+                break;
+            }
+        }
+    }
+    bool doIt = false;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 6:
+    case 7:
+        doIt = true;
+        break;
+    default:
+        if (!(*(u32*)(this_ + 0x230) & 7)) {
+            doIt = true;
+        }
+        break;
+    }
+    if (doIt) {
+        fn_801CE2BC(this_, arg);
+    }
+    fn_8021798C(this_ + 0x448);
+}
+
 struct BogfA { u8 b[0x18]; };
 struct BogfB { u8 b[0x14]; };
 struct BogfBody {
