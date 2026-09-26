@@ -72,4 +72,70 @@ extern "C" u8 fn_801CA0F8(char* p) {
     return r;
 }
 
+struct HitRectList;
+struct HitRectMgr {
+    u8 cur;
+    u8 other;
+    u8 pad[2];
+    u8 lists[2][0x784];
+};
+extern "C" HitRectMgr* fn_8020D58C(void);
+extern "C" bool fn_8020D6AC(void* l, s32 kind, const JGeometry::TVec3f& pos, s32 exclude, const u32* names);
+extern "C" u16 fn_8022461C(JGeometry::TVec3f* pos, s32 room);
+extern "C" u16 fn_80226850(JGeometry::TVec3f* pos, s32 room);
+extern "C" u8 fn_802265DC(JGeometry::TVec3f* pos, s32 room, s32 zero);
+extern const u32 lbl_8053EF18[2];
+extern "C" void* fn_802D6A9C(void);
+
+extern "C" u8 fn_801C9AF8(char* p, s32 room, const JGeometry::TVec3f* in) {
+    JGeometry::TVec3f pos(*in);
+    u8* cfg = (u8*)fn_802D6A9C() + 0x10000;
+    if (cfg[room + 0x31df]) {
+        pos.y -= pos.z;
+        pos.z = lbl_8053EF20;
+    }
+    u8 ok = 0;
+    if (pos.z <= lbl_8053EF20) {
+        switch (*(s32*)(p + 0x248)) {
+        case 0x11:
+        case 0x17:
+            ok = 1;
+            break;
+        }
+    }
+    if (ok) {
+        switch (fn_8022461C(&pos, room)) {
+        case 0x27:
+        case 0x28:
+        case 0x29:
+        case 0x2a:
+        case 0x2b:
+            return 0;
+        case 3:
+            if (fn_80226850(&pos, room) == 0x7a) {
+                return 0;
+            }
+            break;
+        case 1:
+            switch (fn_80226850(&pos, room)) {
+            case 0x9b:
+            case 0x9c:
+            case 0x322:
+            case 0x323:
+                return 0;
+            }
+            break;
+        }
+    }
+    u8 r = 1;
+    if (!fn_802265DC(&pos, room, 0)) {
+        s32 self = *(s32*)(p + 0x198);
+        HitRectMgr* m = fn_8020D58C();
+        if (!fn_8020D6AC(m->lists[m->other], room, pos, self, lbl_8053EF18)) {
+            r = 0;
+        }
+    }
+    return r;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
