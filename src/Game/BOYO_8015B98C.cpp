@@ -70,4 +70,96 @@ extern "C" void fn_8015C42C(char* this_) {
     *(s32*)(this_ + 0x230) = 0;
 }
 
+struct BoyoDrawKey {
+    s32 a, b;
+    BoyoDrawKey() { a = -1; b = -1; }
+};
+
+struct BoyoDrawParam {
+    u8 map[16];      // 0x00
+    BoyoDrawKey key; // 0x10
+    void* mtx;       // 0x18
+    u8 palette;      // 0x1c
+    s8 color;        // 0x1d
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;       // 0x28
+    u8 f2c, f2d, f2e;
+    s32 g;           // 0x30
+    s32 h;           // 0x34
+    s32 i;           // 0x38
+
+    BoyoDrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        mtx = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_801F06F0(void* actor, const char* tbl, s32 idx, BoyoDrawParam* param, s32 p5, f32 a, f32 b);
+extern const char lbl_804660E0[];
+extern const f32 lbl_8053D4BC;
+extern const f32 lbl_8053D4C0;
+
+struct BoyoMtx {
+    f32 m[3][4];
+    BoyoMtx() {
+        m[0][3] = lbl_8053D4B8;
+        m[1][3] = lbl_8053D4B8;
+        m[2][3] = lbl_8053D4B8;
+    }
+};
+
+extern "C" void fn_8015B9EC(char* this_) {
+    BoyoMtx mtx;
+    BoyoDrawParam param;
+    f32 cx; f32 ry; f32 sx; f32 sy; f32 sz; f32 cy; f32 cz;
+    ry = *(u16*)(this_ + 0x25c) / lbl_8053D4BC;
+    sx = sin(lbl_8053D4B8);
+    sy = sin(ry);
+    sz = sin(lbl_8053D4B8);
+    cx = cos(lbl_8053D4B8);
+    cy = cos(ry);
+    cz = cos(lbl_8053D4B8);
+    f32 sc = lbl_8053D4C0;
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    mtx.m[0][0] = sc * (cy * cz);
+    mtx.m[1][0] = sc * (cy * sz);
+    mtx.m[2][0] = sc * -sy;
+    mtx.m[0][1] = sc * (sxsy * cz - cxsz);
+    mtx.m[1][1] = sc * (sxsy * sz + cxcz);
+    mtx.m[2][1] = sc * (sx * cy);
+    mtx.m[0][2] = sc * (cxcz * sy + sxsz);
+    mtx.m[1][2] = sc * (cxsz * sy - sxcz);
+    mtx.m[2][2] = sc * (cx * cy);
+    param.mtx = &mtx;
+    fn_801F06F0(this_, lbl_804660E0, *(s32*)(this_ + 0x258) + 0x70, &param, 0, sc, sc);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
