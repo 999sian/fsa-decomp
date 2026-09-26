@@ -4,7 +4,6 @@
 
 // ---- fn_802DF458_dtor.cpp ----
 extern "C" void dtor_801F593C(void* this_, int flag);
-extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804A9968[];
 
 extern "C" void* fn_802DF458(void* this_, s16 freeFlag) {
@@ -12,7 +11,7 @@ extern "C" void* fn_802DF458(void* this_, s16 freeFlag) {
         *(void**)this_ = lbl_804A9968;
         dtor_801F593C(this_, 0);
         if (freeFlag > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -104,6 +103,68 @@ extern "C" void fn_802DF508(char* p) {
         fn_801F0E34(p, 0x30003, 0);
     }
     *(u8*)(p + 0x11c) = 0;
+}
+
+// fn_802DF754 - YASI: draw(). Fills a model draw descriptor on the stack
+// and hands it to fn_801F02BC; when held, the holder's palette is used.
+struct YasiDrawKey {
+    s32 a, b;
+    YasiDrawKey() { a = -1; b = -1; }
+};
+struct YasiDrawParam {
+    u8 map[16];      // 0x00
+    YasiDrawKey key; // 0x10
+    s32 c;           // 0x18
+    u8 palette;      // 0x1c
+    u8 color;        // 0x1d
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;       // 0x28
+    u8 f2c, f2d, f2e;
+    s32 g;           // 0x30
+    s32 h;           // 0x34
+    s32 i;           // 0x38
+
+    YasiDrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+extern const char lbl_8046E998[];
+extern "C" s32 fn_8023CB24(s32 holder);
+extern "C" u8 fn_8023CA88(s32 holder);
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, YasiDrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+
+extern "C" void fn_802DF754(char* p) {
+    YasiDrawParam param;
+    ((u8*)&param.key.a)[3] = *(u8*)(p + 0x234);
+    if (*(u8*)(p + 0xc4) != 0) {
+        param.f20 = 0;
+        param.color = fn_8023CB24(*(s32*)(p + 0xc8)) + 1;
+        param.palette = fn_8023CA88(*(s32*)(p + 0xc8));
+    }
+    fn_801F02BC(p, lbl_8046E998, 0x1ae, &param, 7, 0, 1, lbl_8054116C, lbl_8054116C);
 }
 
 // fn_802DF8C8 - YASI: carried / thrown update. While held it follows the
