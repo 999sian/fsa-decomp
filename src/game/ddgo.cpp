@@ -109,4 +109,61 @@ extern "C" void fn_801AC8EC(char* this_) {
     }
 }
 
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+extern "C" void* fn_801F856C(void);
+extern "C" char* fn_801F666C(void* mgr, s32 handle);
+extern s32 lbl_8053ABE0;
+
+struct Handles_ddgo { u8 pad[0x29c]; void* h[2]; };
+// DDGO destructor
+extern void* lbl_804A3334[];
+extern "C" void* fn_801ACC14(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A3334;
+        for (int i = 0; i < 2; i++) {
+            fn_801EE434(((Handles_ddgo*)this_)->h[i]);
+        }
+        s32 h = *(s32*)(this_ + 0x260);
+        if (h >= 0) {
+            char* c = fn_801F666C(fn_801F856C(), h);
+            if (c != 0) {
+                *(s32*)(this_ + 0x260) = -1;
+                *(s32*)(c + 0x108) = 0;
+            }
+        }
+        if (*(s32*)(this_ + 0x234) == 2) {
+            lbl_8053ABE0--;
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+extern "C" void fn_801ACFF4(void* this_);
+extern "C" void fn_801ACCF0(void* this_);
+struct DdgoTimers { u8 pad[0x238]; s32 t[5]; };
+
+// DDGO update
+extern "C" void fn_801ACB50(char* this_) {
+    switch (*(s32*)(this_ + 0x234)) {
+    case 0:
+    case 2:
+        fn_801ACFF4(this_);
+        break;
+    case 1:
+        fn_801ACCF0(this_);
+        break;
+    }
+    for (int i = 0; i < 5; i++) {
+        if (((DdgoTimers*)this_)->t[i] > 0) {
+            ((DdgoTimers*)this_)->t[i]--;
+        }
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

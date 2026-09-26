@@ -87,4 +87,34 @@ extern "C" BOOL fn_8019CE40(s32 a, s32 b) {
 }
 extern "C" void fn_8019CECC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* mgr, s32 a);
+extern u8 lbl_8053AB98;
+extern u8 lbl_8053ABA8;
+
+struct Handles_tu_80197070 { u8 pad[0x304]; void* h[13]; };
+// TU_80197070 destructor
+extern void* lbl_804A2944[];
+extern "C" void* fn_8019C7EC(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A2944;
+        for (int i = 0; i < 13; i++) {
+            fn_801EE434(((Handles_tu_80197070*)this_)->h[i]);
+        }
+        if (*(s32*)(this_ + 0x90) == 0) {
+            fn_802D7440(fn_802D6A9C(), 1);
+            lbl_8053AB98 = 0;
+            lbl_8053ABA8 = 0;
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -61,3 +61,24 @@ extern "C" void fn_80192038(ActorVt_gnon* this_) {
     fn_801F0E34(this_, 0x40006, 0);
     this_->setShadow(2, 0.0f, 0.0f);
 }
+
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+
+struct Handles_gnon { u8 pad[0x328]; void* h[5]; };
+// GNON destructor
+extern void* lbl_804A25F0[];
+extern "C" void* fn_80196834(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A25F0;
+        for (int i = 0; i < 5; i++) {
+            fn_801EE434(((Handles_gnon*)this_)->h[i]);
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}

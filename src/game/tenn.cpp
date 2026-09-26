@@ -45,4 +45,39 @@ extern "C" void fn_801A0B8C(void* this_) {
     }
 }
 
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+extern "C" void fn_8022AF2C(void);
+extern "C" void fn_80138B7C(void* game);
+extern "C" void fn_80458508(void* snd, s32 a);
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AF80;
+
+struct Handles_tenn { u8 pad[0x344]; void* h[4]; };
+// TENN destructor
+extern void* lbl_804A2BF4[];
+extern "C" void* fn_801A2F90(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A2BF4;
+        if (*(s32*)(this_ + 0x274) == 0) {
+            s32 state = *(s32*)(this_ + 0x230);
+            if (state == 5 || (state == 6 && (fn_8022AF2C(), true))) {
+                if (*(s32*)(lbl_8053AAF8 + 0x4c) != 9) {
+                    fn_80138B7C(lbl_8053AAF8);
+                }
+                fn_80458508(lbl_8053AF80, 0);
+            }
+        }
+        for (int i = 0; i < 4; i++) {
+            fn_801EE434(((Handles_tenn*)this_)->h[i]);
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
