@@ -1763,6 +1763,100 @@ extern "C" s32 fn_8030AAF4(s32 a);
 extern "C" u32 fn_80309D24(void* p, s32 a, s32 b);
 extern "C" void fn_8015F8FC(void* p, s32 a, void* b, s32 c);
 
+struct TagPair {
+    u64 tag[2];
+};
+
+struct Menu_Intro {
+    u8 pad0[0x10];
+    J2DScreen* screens[4];      // 0x10
+    u8 pad20[0x424 - 0x20];
+    f32 y424;                   // 0x424
+    u8 pad428[0x440 - 0x428];
+    s32 timer;                  // 0x440
+    u8 pad444[0x450 - 0x444];
+    s32 cur;                    // 0x450
+    s32 count;                  // 0x454
+    u8 pad458[0x460 - 0x458];
+    s16 m460[4];                // 0x460
+    u8 pad468[0x4bc - 0x468];
+    u8 ready[4];                // 0x4bc
+    u8 pad4c0;
+    u8 m4c1;
+    u8 pad4c2[0x4d9 - 0x4c2];
+    u8 alpha[2];                // 0x4d9
+};
+
+extern TagPair lbl_804762D0[];
+extern u8 lbl_8050DB0C[];
+extern "C" u8 fn_80389BF0(s32 idx, s32 id);
+
+// NONMATCHING (99.5%): register allocation in the slide loops.
+extern "C" void fn_803B0FD4(Menu_Intro* p) {
+    p->timer++;
+    s32 end;
+    s32 t1 = *(s16*)(lbl_8050DB0C + 0x25a);
+    s32 t2 = *(s16*)(lbl_8050DB0C + 0x25c);
+    s32 dist = *(s16*)(lbl_8050DB0C + 0x25e);
+    end = t1 + t2;
+    if (p->timer <= end) {
+        if (p->timer <= t1) {
+            f32 off = (f32)dist * ((f32)(p->timer * p->timer) / (f32)(t1 * t1));
+            for (s32 i = 0; i < p->count; i++) {
+                f32 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
+                p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, p->y424 + off);
+            }
+        } else if (p->timer <= end) {
+            s32 d = p->timer - t1;
+            f32 off = ((f32)dist + 40.0f) * ((f32)(d * d) / (f32)(t2 * t2));
+            for (s32 i = 0; i < p->count; i++) {
+                f32 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
+                p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, (p->y424 + (f32)dist) - off);
+                f32 a = 1.0f - (f32)(p->timer - t1) / (f32)t2;
+                if (p->cur < 2) {
+                    for (s32 k = 0; k < 2; k++) {
+                        p->screens[p->cur]->search(lbl_804762D0[i].tag[k])->setAlpha((u8)(p->alpha[k] * a));
+                    }
+                }
+            }
+        }
+    }
+    if (p->timer >= end) {
+        if (p->cur == 1) {
+            if (p->ready[0] == 0xff && fn_80389BF0(0, 0x103)) {
+                p->ready[0] = 1;
+            }
+            if (p->ready[1] == 0xff && fn_80389BF0(1, 0x104)) {
+                p->ready[1] = 1;
+            }
+            if (p->ready[2] == 0xff && fn_80389BF0(2, 0x105)) {
+                p->ready[2] = 1;
+            }
+            p->ready[3] = 1;
+        } else {
+            if (p->ready[0] == 0xff && fn_80389BF0(0, 0xde)) {
+                p->ready[0] = 1;
+            }
+            if (p->ready[1] == 0xff && fn_80389BF0(1, 0xdf)) {
+                p->ready[1] = 1;
+            }
+            if (p->ready[2] == 0xff && fn_80389BF0(2, 0xe0)) {
+                p->ready[2] = 1;
+            }
+            if (p->ready[3] == 0xff && fn_80389BF0(3, 0xe1)) {
+                p->ready[3] = 1;
+            }
+        }
+        if (p->ready[0] == 1 && p->ready[1] == 1 && p->ready[2] == 1 && p->ready[3] == 1) {
+            for (s32 i = 0; i < p->count; i++) {
+                p->ready[i] = 0xff;
+                p->m460[i] = 0;
+            }
+            p->m4c1 = 6;
+        }
+    }
+}
+
 struct PFlag {
     u8 v;
 };
