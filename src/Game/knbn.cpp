@@ -45,6 +45,8 @@ extern u8* lbl_8053AAF8;
 extern "C" void fn_8038FA58(void* thisPtr) {
 	char* p = (char*)thisPtr;
 	u32 flag;
+	u32 a, b;
+	u32 id;
 	int kind = fn_80226850(p + 0xc, *(u32*)(p + 0x4));
 	if (kind == 0x1c7) {
 		*(f32*)(p + 0x60) = 0.0f;
@@ -58,7 +60,7 @@ extern "C" void fn_8038FA58(void* thisPtr) {
 	switch (*(s32*)(p + 0x230)) {
 	case 0:
 		if (kind == 0x71 || kind == 0x3c || kind == 0x1c7) {
-			u32 id = *(u32*)(p + 0x4);
+			id = *(u32*)(p + 0x4);
 			if (((KnbnMgr*)fn_802D6A9C())->flag(id) != 0) {
 				fn_8022FEB8(&box, *(u32*)(p + 0x4), *(u32*)(p + 0x198), 1, 0);
 			} else {
@@ -66,11 +68,11 @@ extern "C" void fn_8038FA58(void* thisPtr) {
 			}
 			*(s32*)(p + 0x234) = fn_8022FD8C(*(u32*)(p + 0x198));
 			flag = (kind == 0x71) ? 0x200 : 0x400;
-			id = *(u32*)(p + 0x4);
-			if (((KnbnMgr*)fn_802D6A9C())->flag(id) != 0) {
+			u32 id2 = *(u32*)(p + 0x4);
+			if (((KnbnMgr*)fn_802D6A9C())->flag(id2) != 0) {
 				if (*(s32*)(p + 0x234) >= 0) {
-					u32 a = *(u32*)(p + 0x198);
-					u32 b = *(u32*)(p + 0x4);
+					a = *(u32*)(p + 0x198);
+					b = *(u32*)(p + 0x4);
 					JGeometry::TVec3<f32> pos(*fn_8023E724(*(s32*)(p + 0x234)));
 					if (fn_8038C678(*(s32*)(p + 0x234), (*(u32*)(p + 0x90) & 0xFFFF) + 0x12b, a, b, &pos, flag)) {
 						*(s32*)(p + 0x230) = 1;
