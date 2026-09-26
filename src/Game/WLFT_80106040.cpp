@@ -207,4 +207,52 @@ extern "C" void fn_8010645C(u8* this_) {
     }
 }
 
+// ---- fn_801060A0: draw (shadow + lift sprite, scaled rotation matrices)
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void PSMTXTrans(f32 (*m)[4], f32 x, f32 y, f32 z);
+extern "C" void v06__5ActorFv(void* this_);
+extern "C" void fn_802F745C(void* mgr, void* pos, void* tex, WLFT_DrawParam* prm);
+extern u8* lbl_8053AB10;
+
+static inline void wlftMakeMtx(f32 (*m)[4], const f32* s) {
+    f32 rx = 0.0f;
+    PSMTXTrans(m, rx, rx, rx);
+    f32 sx = s[0];
+    f32 sy = s[1];
+    f32 sz = 1.0f;
+    f32 sa = sin(rx);
+    f32 sb = sin(rx);
+    f32 sc = sin(rx);
+    f32 ca = cos(rx);
+    f32 cb = cos(rx);
+    f32 cc = cos(rx);
+    m[0][0] = sx * (cb * cc);
+    m[1][0] = sx * (cb * sc);
+    m[2][0] = sx * -sb;
+    m[0][1] = sz * (sa * sb * cc - ca * sc);
+    m[1][1] = sz * (sa * sb * sc + ca * cc);
+    m[2][1] = sz * (sa * cb);
+    m[0][2] = sy * (ca * cc * sb + sa * sc);
+    m[1][2] = sy * (ca * sc * sb - sa * cc);
+    m[2][2] = sy * (ca * cb);
+}
+
+extern "C" void fn_801060A0(WLFT* this_) {
+    v06__5ActorFv(this_);
+    this_->m238.color = 0xff;
+    f32 m0[3][4];
+    wlftMakeMtx(m0, &this_->m288);
+    this_->m238.c = (s32)m0;
+    WLFT_DrawParam prm;
+    prm.color = 0;
+    f32 m1[3][4];
+    wlftMakeMtx(m1, &this_->m280);
+    prm.c = (s32)m1;
+    if (*(s32*)((u8*)this_ + 4) < 8) {
+        void* tex = (*(WLFT_ResMgr**)(lbl_8053AAF8 + 0xA4))->vf18('TIMG', lbl_80539EC8[0]);
+        fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), (u8*)this_ + 0xc, tex, &this_->m238);
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
