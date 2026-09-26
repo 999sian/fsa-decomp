@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801A8194-801A908C (HBB2). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "Game/ItemBase.h"
 
 // from src/Game/fn_801A8194_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -65,6 +66,94 @@ extern "C" void fn_801A8CB8(char* this_) {
     *(s32*)(this_ + 0x108) = 10000;
     *(s32*)(this_ + 0x260) = 0;
     *(s32*)(this_ + 0x230) = 0;
+}
+
+extern "C" void fn_801F02BC(void* actor, const char* file, s32 idx, f32 sx, f32 sy, DrawRec* rec, s32 a, s32 b, s32 c);
+
+struct Hbb2Mtx {
+    Hbb2Mtx() {
+        m[0][3] = 0.0f;
+        m[1][3] = 0.0f;
+        m[2][3] = 0.0f;
+    }
+    void setScale(f32 s) {
+        m[0][0] = s;
+        m[0][1] = 0.0f;
+        m[0][2] = 0.0f;
+        m[1][0] = 0.0f;
+        m[1][1] = s;
+        m[1][2] = 0.0f;
+        m[2][0] = 0.0f;
+        m[2][1] = 0.0f;
+        m[2][2] = s;
+    }
+    f32 m[3][4];
+};
+
+struct Hbb2VT {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual u8 check();
+};
+
+// HBB2 draw: body plus a fading trail of 39 afterimages.
+extern "C" void fn_801A81F4(char* this_) {
+    DrawRec rec;
+    Hbb2Mtx mtx;
+    if (*(s32*)(this_ + 0x258) == 0 && (*(u32*)(this_ + 0x90) >> 27) != 0) {
+        if (!((Hbb2VT*)this_)->check()) {
+            return;
+        }
+    }
+    rec.ids[4] = 3;
+    rec.b1d = 2;
+    mtx.setScale(*(f32*)(this_ + 0x26c));
+    rec.w18 = &mtx;
+    fn_801F02BC(this_, "enemy_both2_sob.bin", *(s32*)(this_ + 0x260) + 0x155, 1.0f, 1.0f, &rec, 7, 0, 0);
+    f32 sx, sy, sz;
+    f32 scale = *(f32*)(this_ + 0x26c);
+    f32 alpha = *(f32*)(this_ + 0x274);
+    s32 frame = *(s32*)(this_ + 0x260);
+    Hbb2* h = (Hbb2*)this_;
+    rec.ids[4] = 5;
+    rec.b1d = 1;
+    sx = h->pos.x;
+    sy = h->pos.y;
+    sz = h->pos.z;
+    for (s32 i = 1; i < 40; i++) {
+        if (h->trail[i].z) {
+            scale *= 0.95f;
+            if (scale < 0.5f) {
+                scale = 0.5f;
+            }
+            alpha -= 2.0f;
+            if (alpha < 0.0f) {
+                alpha = 0.0f;
+            }
+            ((u8*)&rec.w10)[3] = (s32)alpha;
+            mtx.setScale(scale);
+            rec.w18 = &mtx;
+            if (--frame < 0) {
+                frame = 2;
+            }
+            h->pos.x = h->trail[i].x;
+            h->pos.y = h->trail[i].y;
+            h->pos.z = h->trail[i].z;
+            fn_801F02BC(this_, "enemy_both2_sob.bin", frame + 0x155, 1.0f, 1.0f, &rec, 7, 0, 0);
+        }
+    }
+    h->pos.x = sx;
+    h->pos.y = sy;
+    h->pos.z = sz;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
