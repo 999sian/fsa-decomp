@@ -1,15 +1,113 @@
 // TU 0x802684a4-0x8026fc20.
-// Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
+// SetField_0x98 from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
-// ---- SetField_0x98.cpp ----
-// SetField_0x98(this) - trivial setter: this->0x98 = 1.
+extern "C" void __dl__FPv(void*);
+extern "C" s32 fn_802486A0(void*);
+extern "C" bool Player_IsLinked(void*);
+extern "C" void fn_802685D4(void*);
+extern "C" u8 fn_80251AEC(void*, s32);
+extern f32 lbl_80540228;
+extern void* lbl_804A71A8[];
+
+struct Vec2f {
+    void set(const Vec2f& o) {
+        f32 ox = o.x;
+        f32 oy = o.y;
+        x = ox;
+        y = oy;
+    }
+    f32 x, y;
+};
+
+struct HitRect {
+    f32 x0, y0, x1, y1;
+};
+
+struct HitRectTable {
+    u8 pad0[0x5fc];
+    HitRect rects[80];
+    u8 padAFC[0xdb0 - 0xafc];
+    s32 ids[80];
+    s32 hits[80];
+    s32 types[80];
+};
+
+
+inline bool rectContains(const HitRect& r, const Vec2f* p) {
+    bool in = false;
+    if (p->x >= r.x0 && p->y >= r.y0 && p->x < r.x1 && p->y < r.y1) {
+        in = true;
+    }
+    return in;
+}
+
+extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
+    for (s32 i = 0; i < 80; i++) {
+        if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], (const Vec2f*)p)) {
+            t->hits[i] = t->ids[i];
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" void fn_80268B3C(u8* p) {
+    if (fn_802486A0(p) == 5 && Player_IsLinked(p)) {
+        fn_802685D4(p);
+    } else {
+        f32 saved = *(f32*)(p + 0x10);
+        *(f32*)(p + 0x10) = lbl_80540228;
+        fn_802685D4(p);
+        if (lbl_80540228 == *(f32*)(p + 0x10)) {
+            *(f32*)(p + 0x10) = saved;
+        }
+    }
+}
+
 extern "C" {
 
 void SetField_0x98(void* thisPtr) {
 	*(u8*)((char*)thisPtr + 0x98) = 1;
 }
 
+}
+
+extern "C" u8 fn_8026E5F8(u8* p, Vec2f* pos) {
+    if (!p[0xd64]) {
+        if (fn_80251AEC(p, 0x38)) {
+            ((JGeometry::TVec2<f32>*)(p + 0x324))->set(pos->x, pos->y);
+            return 1;
+        }
+    } else {
+        if (fn_80251AEC(p, 0x13)) {
+            ((JGeometry::TVec2<f32>*)(p + 0x324))->set(pos->x, pos->y);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+struct Obj8026F998 {
+    void* vtbl;
+    void* m4;
+};
+
+extern "C" Obj8026F998* fn_8026F998(Obj8026F998* o, s16 flag) {
+    if (o) {
+        o->vtbl = lbl_804A71A8;
+        o->m4 = 0;
+        if (flag > 0) {
+            __dl__FPv(o);
+        }
+    }
+    return o;
+}
+
+extern "C" void fn_8026F9E8(Obj8026F998* o, void* p) {
+    o->vtbl = lbl_804A71A8;
+    o->m4 = p;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
