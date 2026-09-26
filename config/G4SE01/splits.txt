@@ -2055,6 +2055,7 @@ game/egol.cpp:
 	extabindex  start:0x80014AA0 end:0x80014ADC
 	.text       start:0x801AFB38 end:0x801B0A00
 	.ctors      start:0x8045BFF0 end:0x8045BFF4
+	.sdata2     start:0x8053E888 end:0x8053E8E0
 
 game/zld3_801B0A00.cpp:
 	extab       start:0x80007B94 end:0x80007BC4
