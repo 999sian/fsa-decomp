@@ -208,13 +208,7 @@ static inline f32 fallClamp(f32 v, f32 lo, f32 hi) {
     return v;
 }
 
-extern "C" void fn_801BB618(char* this_) {
-    switch (*(s32*)(this_ + 0x248)) {
-    case 0:
-    case 9:
-        return;
-    }
-    FallDrawParam param;
+static inline u8 fallAlpha(char* this_) {
     u8 alpha;
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
@@ -227,9 +221,8 @@ extern "C" void fn_801BB618(char* this_) {
         break;
     default: {
         f32 t = (*(f32*)(this_ + 0x14) - lbl_8053EC00) * lbl_8053EC04;
-        f32 hi = lbl_8053EC08;
-        if (t > hi) {
-            t = hi;
+        if (t > lbl_8053EC08) {
+            t = lbl_8053EC08;
         } else if (t < lbl_8053EC0C) {
             t = lbl_8053EC0C;
         }
@@ -237,7 +230,17 @@ extern "C" void fn_801BB618(char* this_) {
         break;
     }
     }
-    ((u8*)&param.key.a)[3] = alpha;
+    return alpha;
+}
+
+extern "C" void fn_801BB618(char* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 9:
+        return;
+    }
+    FallDrawParam param;
+    ((u8*)&param.key.a)[3] = fallAlpha(this_);
     fn_801F02BC(this_, lbl_804693C4, *(s32*)(this_ + 0x280) + 0x8a, &param, 0x407, 0, 0, lbl_8053EC08, lbl_8053EC08);
 }
 
@@ -406,6 +409,92 @@ extern "C" void fn_801BC9DC(char* this_) {
         *(u32*)(this_ + 0xb0) = 0x40004;
     } else {
         *(u32*)(this_ + 0xb0) = 0x41101;
+    }
+}
+
+struct FallSound {
+    u8 pad[0x4c];
+    f32 volume;
+};
+extern "C" FallSound* fn_801F1184(void* this_);
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
+extern "C" void fn_801BC554(char* this_, s32 state);
+extern "C" f32* fn_8023E724(s32 id);
+extern "C" void fn_8023DFF4(s32 id, void* v);
+extern "C" s32 fn_80236228(s32 id);
+extern "C" void fn_80236074(s32 id, s32 n, s32 f);
+extern const f32 lbl_8053EC30;
+extern const f32 lbl_8053EC58;
+
+static inline u8 fallIsFalling(char* this_) {
+    u8 r = FALSE;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 6:
+    case 7:
+    case 8:
+        r = TRUE;
+        break;
+    }
+    return r;
+}
+
+struct FallVec {
+    f32 x, y, z;
+    FallVec(f32 x_, f32 y_, f32 z_) { x = x_; y = y_; z = z_; }
+};
+
+extern "C" void fn_801BC244(char* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+    case 2: {
+        u8 alpha = fallAlpha(this_);
+        FallSound* snd = fn_801F1184(this_);
+        snd->volume = alpha / lbl_8053EC10;
+        fn_801F0E34(this_, 0x400a3, 0);
+        break;
+    }
+    }
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+    case 2: {
+        (*(s32*)(this_ + 0x2bc))++;
+        s32 p = fn_801D05F8(this_, this_ + 0xc, lbl_8053EC0C);
+        if (p != *(s32*)(this_ + 0x2b8)) {
+            if (p < 0) {
+                if (*(s32*)(this_ + 0x248) != 1 || *(s32*)(this_ + 0x24c) >= 0x3c) {
+                    fn_801BC554(this_, 5);
+                }
+            } else if (*(s32*)(this_ + 0x2bc) >= 0x2d) {
+                *(s32*)(this_ + 0x2b8) = p;
+                *(s32*)(this_ + 0x2bc) = 0;
+            }
+        }
+        break;
+    }
+    }
+    if (fallIsMoving(this_)) {
+        if (!fn_8022DCD8(*(s32*)(this_ + 0x2b8))) {
+            fn_801BC554(this_, 5);
+        } else {
+            FallVec v(*(f32*)(this_ + 0xc) - fn_8023E724(*(s32*)(this_ + 0x2b8))[0], *(f32*)(this_ + 0x10) - fn_8023E724(*(s32*)(this_ + 0x2b8))[1], *(f32*)(this_ + 0x14) - fn_8023E724(*(s32*)(this_ + 0x2b8))[2] - lbl_8053EC30);
+            v.x *= lbl_8053EC58;
+            v.y *= lbl_8053EC58;
+            fn_8023DFF4(*(s32*)(this_ + 0x2b8), &v);
+        }
+    }
+    if (fallIsFalling(this_)) {
+        (*(s32*)(this_ + 0x2c0))++;
+        if (*(s32*)(this_ + 0x2c0) >= 0x78) {
+            if (fn_80236228(*(s32*)(this_ + 0x2b8)) >= 0x14) {
+                fn_80236074(*(s32*)(this_ + 0x2b8), 0x14, 1);
+            }
+            *(s32*)(this_ + 0x2c0) = 0;
+        }
+    }
+    if ((*(u32*)(this_ + 0x230) & 0x8000) && fn_8022DD74(*(s32*)(this_ + 0x2c4))) {
+        *(u32*)(this_ + 0x230) &= ~0x8000;
+        *(s32*)(this_ + 0x2c4) = -1;
     }
 }
 
