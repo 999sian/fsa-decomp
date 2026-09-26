@@ -2,12 +2,12 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 
-extern "C" u16 fn_8022461C(void* pos);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
 extern "C" u16 fn_80226850(void* pos, s32 room);
 extern "C" u8* fn_802D6A9C(void);
 
 extern "C" u8 fn_801B27DC(void* this_, s32 room, void* pos) {
-    s32 kind = fn_8022461C(pos);
+    s32 kind = fn_8022461C(pos, room);
     s32 attr = fn_80226850(pos, room);
     if ((u32)(attr - 0x230) <= 1 || attr == 0x234) {
         return 0;
