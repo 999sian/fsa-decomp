@@ -40,4 +40,77 @@ extern "C" void* fn_8021ED04(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_8021DFAC(void* this_, s32 state);
+extern "C" void fn_801CE120(void* this_);
+extern "C" void fn_801D0F40(void* this_);
+struct NaviVec {
+    f32 x, y, z;
+    NaviVec(f32 a, f32 b, f32 c) { x = a; y = b; z = c; }
+};
+extern "C" void fn_8030C210(void* p, NaviVec* v);
+extern const f32 lbl_8053FD64;
+extern const f32 lbl_8053FD88;
+extern const f32 lbl_8053FD58;
+extern const f32 lbl_8053FD60;
+extern char* lbl_8053AB10;
+
+extern "C" void fn_8021D734(char* p) {
+    if (*(s32*)(p + 0x248) != 8) {
+        fn_8021DFAC(p, 8);
+    }
+}
+
+extern "C" void fn_8021D764(char* p) {
+    if (*(s32*)(p + 0x248) != 6) {
+        fn_8021DFAC(p, 6);
+    }
+}
+
+extern "C" bool fn_8021D794(char* p) {
+    return *(s32*)(p + 0x248) == 5;
+}
+
+extern "C" void fn_8021D938(char* p) {
+    if (*(s32*)(p + 0x248) != 3) {
+        u32 fl = *(u32*)(p + 0x230);
+        if ((fl & 0x2000) && !(fl & 0x40000)) {
+            u8* q = *(u8**)(lbl_8053AB10 + 0x30);
+            if (q[0x284] == 0) {
+                q[0x284] = 1;
+                *(f32*)(q + 0x28c) = lbl_8053FD60;
+            }
+        }
+        if (!(*(u32*)(p + 0x230) & 0x10000)) {
+            NaviVec v(*(f32*)(p + 0x2c8), *(f32*)(p + 0x2cc) - *(f32*)(p + 0x14), lbl_8053FD58);
+            fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &v);
+        }
+    }
+}
+
+extern "C" void fn_8021D9D4(char* p) {
+    fn_801CE120(p);
+    if (*(s32*)(p + 0x248) == 9) {
+        if (*(f32*)(p + 0x14) > lbl_8053FD64) { *(f32*)(p + 0x14) = lbl_8053FD64; }
+    }
+}
+
+extern "C" void* fn_8021EDC0(char* p) {
+    fn_801D0F40(p);
+    *(void**)p = lbl_804A6708;
+    *(s32*)(p + 0x2a8) = 0;
+    p[0x2ac] = 0;
+    p[0x2ad] = 0;
+    *(s32*)(p + 0x2b0) = 0;
+    *(s32*)(p + 0x2b4) = -1;
+    *(f32*)(p + 0x2b8) = lbl_8053FD88;
+    *(f32*)(p + 0x2bc) = lbl_8053FD58;
+    *(f32*)(p + 0x2c0) = lbl_8053FD58;
+    *(f32*)(p + 0x2c4) = lbl_8053FD58;
+    *(f32*)(p + 0x2c8) = lbl_8053FD58;
+    *(f32*)(p + 0x2cc) = lbl_8053FD58;
+    *(s32*)(p + 0x2d0) = 0;
+    *(s32*)(p + 0x2d4) = 0;
+    return p;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
