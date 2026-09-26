@@ -1,10 +1,18 @@
 // Game TU 801DC264-801DCC98 (BOIT). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+extern "C" bool fn_801CD2F8(s32 id);
+extern "C" void fn_80307AC8(void* obj, u32 id, void* pos, u32 kind, u32 a, u32 b, s32 c);
+extern "C" void fn_801F02BC(void* actor, void* res, u32 id, void* rec, s32 p5, u32 p6, u32 p7, f32 a, f32 b);
+extern "C" void fn_801F2DB4(void* actor, u32 a, u32 b, u32 c);
+extern "C" void fn_801D22A0(void* obj, u32 a, u32 b);
+extern u8 lbl_80469AE4[];
+extern const f32 lbl_8053F340;
+extern const f32 lbl_8053F344;
+extern const f32 lbl_8053F35C;
 
 extern "C" {
 }
-extern f32 lbl_8053F344;
 extern f32 lbl_8053EFB8;
 extern "C" void fn_801CE2BC(void* this_);
 struct ActorSlot37 {
@@ -84,6 +92,39 @@ extern "C" void fn_801DC758(void* thisPtr)
         *(f32*)((char*)thisPtr + 0x40) = vy + kick;
     } else {
         *(f32*)((char*)thisPtr + 0x40) = zero;
+    }
+}
+
+extern "C" void fn_801DC2D4(u8* this_) {
+    if (fn_801CD2F8(*(s32*)(this_ + 0x4))) {
+        fn_80307AC8(*(void**)(this_ + 0x198), *(u32*)(this_ + 0x4), this_ + 0xc, *(s32*)(this_ + 0x280) + 0xe3, 0, 0, -1);
+    } else {
+        fn_801F02BC(this_, lbl_80469AE4, *(s32*)(this_ + 0x280) + 0xe3, 0, -1, 0, 0, lbl_8053F340, lbl_8053F340);
+    }
+}
+
+extern "C" int fn_801DC364(u8* this_) {
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053F344 && *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053F344) {
+        fn_801F2DB4(this_, *(u32*)(this_ + 0x1a0), 'NULL', 0);
+    }
+    return 0;
+}
+
+extern "C" void fn_801DC6B4(u8* this_) {
+    fn_801D22A0(this_ + 0x270, 0, 2);
+    if (this_[0x2a8] >= 10) {
+        *(f32*)(this_ + 0x60) = lbl_8053F340;
+        *(f32*)(this_ + 0x64) = lbl_8053F340;
+        *(f32*)(this_ + 0x68) = lbl_8053F35C;
+        *(f32*)(this_ + 0x6c) = lbl_8053F35C;
+        *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+        *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+        *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+        *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+        *(u32*)(this_ + 0xb0) = 0;
+        *(u16*)((u8*)fn_801DAC6C() + 0x84) |= 1;
+        *(s32*)(this_ + 0x24c) = 0;
+        *(s32*)(this_ + 0x248) = 1;
     }
 }
 
