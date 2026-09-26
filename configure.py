@@ -1090,7 +1090,7 @@ config.libs = [
             Object(NonMatching, "Game/stal.cpp"),
             Object(NonMatching, "Game/wizr.cpp"),
             Object(NonMatching, "Game/rdvr.cpp"),
-            Object(NonMatching, "Game/gdmn.cpp"),
+            Object(Matching, "Game/gdmn.cpp"),
             Object(NonMatching, "Game/fagn.cpp"),
             Object(NonMatching, "Game/wnwn.cpp"),
             Object(NonMatching, "Game/fgn2.cpp"),
