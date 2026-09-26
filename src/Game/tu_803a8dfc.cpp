@@ -2061,9 +2061,8 @@ extern "C" void fn_803B31AC(void* this_) {
     if (mode == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1) return;
     if (mode == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 3) return;
     if (mode == 10 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    // NONMATCHING: retail compares with cmplwi + bne/b (5 diff lines).
-    switch (*(u8*)(lbl_80529DEC + 0x237)) {
-    case 8:
+    // NONMATCHING: retail compares with cmplwi + bne/b.
+    if (*(u8*)(lbl_80529DEC + 0x237) == 8) {
         return;
     }
     fn_8013B490(lbl_8053AB10);
