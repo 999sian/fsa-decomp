@@ -37,9 +37,31 @@ static inline bool rinsIsStill(char* a) {
     return false;
 }
 
-// NONMATCHING (data only): code is 100%, but MWCC emits this function's
-// .sdata2 literals after fn_80357B14's (the TBox2 copy / TUtil::sqrt inlines
-// defer it); retail has them first.
+// Using the JGeometry TBox2/TVec2/TUtil templates here defers this function's
+// codegen to the end of the TU (template instantiation), which puts its .sdata2
+// literals after fn_80357B14's. Retail has them first, so plain local helpers.
+struct RinsVec2 {
+    f32 x, y;
+    void add(const RinsVec2& o) {
+        x += o.x;
+        y += o.y;
+    }
+};
+struct RinsBox2 {
+    RinsVec2 i, f;
+    void addPos(const RinsVec2& p) {
+        i.add(p);
+        f.add(p);
+    }
+};
+static inline f32 rinsSqrt(f32 x) {
+    if (x <= 0.0f)
+        return x;
+    f32 y = __frsqrte(x);
+    y = 0.5f * y * (3.0f - (x * (y * y)));
+    return x * y;
+}
+
 extern "C" void fn_8035793C(void* thisPtr) {
     s32 id;
     char* p = (char*)thisPtr;
@@ -48,15 +70,20 @@ extern "C" void fn_8035793C(void* thisPtr) {
         char* a = fn_801F666C(fn_801F856C(), id);
         if (a != NULL) {
             if (rinsIsStill(a) == true) {
-                JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(a + 0x60);
-                box.addPos(*(JGeometry::TVec2<f32>*)(a + 0xc));
+                RinsBox2 box;
+                RinsBox2* src = (RinsBox2*)(a + 0x60);
+                box.i.x = src->i.x;
+                box.i.y = src->i.y;
+                box.f.x = src->f.x;
+                box.f.y = src->f.y;
+                box.addPos(*(RinsVec2*)(a + 0xc));
                 f32 cx = 0.5f * (box.i.x - box.f.x) + box.f.x;
                 f32 cy = 0.5f * (box.i.y - box.f.y) + box.f.y;
                 f32 dx = *(f32*)(p + 0xc) - cx;
                 f32 dy = *(f32*)(p + 0x10) - cy;
                 f32 dx2 = dx * dx;
                 f32 dy2 = dy * dy;
-                if (JGeometry::TUtil<f32>::sqrt(dx2 + dy2) < 4.0f) {
+                if (rinsSqrt(dx2 + dy2) < 4.0f) {
                     if (!((RinsActorV*)p)->s11()) {
                         ((RinsActorV*)p)->s10(0xff, 1);
                     }

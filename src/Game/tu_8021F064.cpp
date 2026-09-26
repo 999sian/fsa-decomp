@@ -42,8 +42,9 @@ bool fn_8021F094(ActorGroup_8021F064* g) {
 
 void fn_8021F130(ActorGroup_8021F064* g) {
     if (g->mCount > 0 && (g->mFlags & 3)) {
+        void* actor;
         for (s32 i = 0; i < g->mCount; i++) {
-            void* actor = fn_801F666C(fn_801F856C(), g->mIds[i]);
+            actor = fn_801F666C(fn_801F856C(), g->mIds[i]);
             if (actor != NULL) {
                 if (g->mFlags & 1) {
                     fn_8021D764(actor);

@@ -4,7 +4,7 @@
 
 // ---- Gsck_dtor_802F4AEC.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+void operator delete(void* p);
 extern void* lbl_804AA800[];
 
 extern "C" void* fn_802F4AEC(void* this_, short how) {
@@ -12,7 +12,7 @@ extern "C" void* fn_802F4AEC(void* this_, short how) {
         *(void**)this_ = lbl_804AA800;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -60,16 +60,18 @@ extern "C" u8 fn_80230534(s32 a);
 extern "C" void fn_801F0D20(void* this_, s32 id);
 extern "C" void detach__5ActorFv(void* this_);
 
-// NONMATCHING (99.6%): params/switch ids land in r28/r27/r29/r30 instead of
-// retail r29/r28/r30/r27.
 extern "C" void fn_802F4B50(char* p) {
     s32 i;
-    u32 params = *(u32*)(p + 0x90);
-    u32 swDone = (params >> 7) & 0x1f;
+    u32 swDone;
+    u32 params;
+    u32 sw2;
+    u32 sw3;
+    params = *(u32*)(p + 0x90);
+    swDone = (params >> 7) & 0x1f;
     switch (*(s32*)(p + 0x230)) {
     case 0: {
-        u32 sw2 = (params >> 17) & 0x1f;
-        u32 sw3 = (params >> 12) & 0x1f;
+        sw2 = (params >> 17) & 0x1f;
+        sw3 = (params >> 12) & 0x1f;
         if (fn_802D7F40(fn_802D6A9C(), (params >> 22) & 0x1f) &&
             fn_802D7F40(fn_802D6A9C(), sw2) &&
             fn_802D7F40(fn_802D6A9C(), sw3)) {

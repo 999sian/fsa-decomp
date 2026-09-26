@@ -44,8 +44,7 @@ extern "C" void fn_80316E50(AnimEffectRec* r, s32 player, const JGeometry::TVec3
     r->pos = pos;
 }
 
-// NONMATCHING (98.1%): retail keeps dur in r0 and re-extends it (extsh) for
-// the timer compare; register choice around the timer increment differs.
+// Redundant (s16) casts on the s16 durations force the retail extsh.
 extern "C" s32 fn_80316E74(AnimEffectRec* r, s32 arg) {
     s32 ret = -1;
     s32 mode = fn_8037E9F4(arg);
@@ -65,14 +64,14 @@ extern "C" s32 fn_80316E74(AnimEffectRec* r, s32 arg) {
         AnimFrame* tbl = lbl_804AADB8[r->mode];
         r->frame = tbl[r->index].frame;
         s16 dur = tbl[r->index].duration;
-        if (dur != -1) {
+        if ((s16)dur != -1) {
             r->timer++;
-            if (r->timer >= dur) {
+            if (r->timer >= (s16)dur) {
                 r->index++;
                 s16 next = tbl[r->index].duration;
-                if (next == -2) {
+                if ((s16)next == -2) {
                     r->index = 0;
-                } else if (next == -1 && r->player < 8) {
+                } else if ((s16)next == -1 && r->player < 8) {
                     if (mode == 0) {
                         fn_8013CC50(r->player, &r->pos, lbl_805418B8, 0x275, 0, 0, 0, 0, 1);
                     } else if (mode == 1) {
