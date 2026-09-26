@@ -16,22 +16,6 @@ extern "C" void* Hrmn_ActivateSlotA(void* obj);
 // (Hrmn_ActivateSlotB, then finally Hrmn_ActivateSlotA) - the last
 // write to each address is the one that persists). Also zeroes
 // this->0x8/0x9/0xa.
-extern "C" void* fn_80216238(char* this_) {
-    Hrmn_InitSlotStateType3(this_ + 0xc);
-    *(u8*)(this_ + 0x8) = 0;
-    *(u8*)(this_ + 0x9) = 0;
-    *(u8*)(this_ + 0xa) = 0;
-    Hrmn_InitSlotStateType3(this_ + 0xc);
-    Hrmn_ActivateSlotB(this_ + 0x18);
-    *(s32*)(this_ + 0x0) = 0;
-    *(s32*)(this_ + 0x4) = -1;
-    *(u8*)(this_ + 0x8) = 0;
-    *(u8*)(this_ + 0x9) = 0;
-    *(u8*)(this_ + 0xa) = 0;
-    Hrmn_InitSlotStateType3(this_ + 0xc);
-    Hrmn_ActivateSlotA(this_ + 0x18);
-    return this_;
-}
 
 
 // ---- HRMN slot table (count + 4 entries of 0x24) ----
@@ -49,6 +33,8 @@ extern "C" void fn_801ED5C8(void*);
 extern "C" void fn_801ED798(void*);
 extern "C" void fn_801ED7F0(void*);
 extern "C" void* Hrmn_InitSlotStateType0xc(void*);
+extern "C" void* fn_80138A30(void* game);
+extern "C" void* Hrmn_InitSlotStateType3(void* obj);
 extern s32 lbl_8046A590[];
 extern void* lbl_8053AED0;
 extern u8 lbl_8050EC80[];
@@ -67,12 +53,32 @@ struct HrmnEntry {
     u8 m21;       // 0x21
     u8 pad22[2];
     bool isSet() const { return mId >= 0 ? true : false; }
+    HrmnEntry();
+};
+
+struct HrmnSub0xc {
+    HrmnSub0xc() { Hrmn_InitSlotStateType0xc(this); }
+    u8 data[0xc];
 };
 
 struct HrmnTable {
+    HrmnTable();
+    void reset() {
+        for (int i = 0; i < mCount; i++) {
+            mEntry[i].mA = i;
+            mEntry[i].mId = -1;
+            mEntry[i].m08 = 0;
+            mEntry[i].m09 = 0;
+            mEntry[i].m0A = 0;
+            Hrmn_InitSlotStateType3(mEntry[i].mSub);
+            fn_801ED7F0(mEntry[i].mSub2);
+        }
+        Hrmn_InitSlotStateType0xc(mSub.data);
+        mA0 = 0;
+    }
     s32 mCount;          // 0x00
     HrmnEntry mEntry[4]; // 0x04
-    u8 mSub[0xc];        // 0x94
+    HrmnSub0xc mSub;     // 0x94
     u8 mA0;              // 0xa0
     int countSet() const {
         int n = 0;
@@ -194,10 +200,11 @@ extern "C" int fn_80215E98(HrmnTable* t) {
 }
 
 extern "C" void fn_80215ECC(HrmnTable* t) {
-    int i;
     s32 n = t->mCount;
-    for (i = 0; i < n; i++) {
-        fn_801ED3DC(t->mEntry[i].mSub2, t->mEntry[i].mA, t->mEntry[i].mId);
+    HrmnTable* p = t;
+    for (int i = 0; i < n; i++) {
+        fn_801ED3DC(p->mEntry[0].mSub2, p->mEntry[0].mA, p->mEntry[0].mId);
+        p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry));
     }
 }
 
@@ -234,6 +241,27 @@ extern "C" int fn_8021606C(HrmnTable* t) {
     return result;
 }
 
+HrmnEntry::HrmnEntry() {
+    Hrmn_InitSlotStateType3(mSub);
+    m08 = 0;
+    m09 = 0;
+    m0A = 0;
+    Hrmn_InitSlotStateType3(mSub);
+    Hrmn_ActivateSlotB(mSub2);
+    mA = 0;
+    mId = -1;
+    m08 = 0;
+    m09 = 0;
+    m0A = 0;
+    Hrmn_InitSlotStateType3(mSub);
+    Hrmn_ActivateSlotA(mSub2);
+}
+
+
+HrmnTable::HrmnTable() : mCount((s32)fn_80138A30(lbl_8053AAF8)) {
+    reset();
+}
+
 extern "C" void fn_802160F4(HrmnTable* t) {
     for (int i = 0; i < t->mCount; i++) {
         t->mEntry[i].mA = i;
@@ -244,7 +272,7 @@ extern "C" void fn_802160F4(HrmnTable* t) {
         Hrmn_InitSlotStateType3(t->mEntry[i].mSub);
         fn_801ED7F0(t->mEntry[i].mSub2);
     }
-    Hrmn_InitSlotStateType0xc(t->mSub);
+    Hrmn_InitSlotStateType0xc(t->mSub.data);
     t->mA0 = 0;
 }
 
