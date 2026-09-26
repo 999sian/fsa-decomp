@@ -29,20 +29,17 @@ void fn_803B89D4(void) {}
 
 }
 
-// ---- fn_803B89D8 ----
-struct Tlk2Color { u32 rgba; };
-extern "C" void fn_8037F2FC(s32 a, s32 b, u8 c, f32 x, f32 y, f32 z, f32 w, Tlk2Color* col);
+// ---- fn_803B89D8: TLK2 setup ----
+#include "JSystem/JUtility/TColor.h"
+extern "C" void fn_8037F2FC(u32 a, u32 b, u8 c, JUtility::TColor color, f32 x, f32 y, f32 z, f32 w);
 
-extern "C" void fn_803B89D8(char* p) {
-    Tlk2Color c1;
-    Tlk2Color c0;
-    c0.rgba = 0xFF0000FF;
-    *(u32*)(p + 0x234) = *(u32*)(p + 0x90) & 0xFFFF;
-    *(u8*)(p + 0x23c) = *(u32*)(p + 0x90) >> 28;
-    *(u32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 16) & 0xFFF;
-    c1 = c0;
-    fn_8037F2FC(*(s32*)(p + 0x234), *(s32*)(p + 0x238), *(u8*)(p + 0x23c),
-                *(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14), *(f32*)(p + 0x14), &c1);
+extern "C" void fn_803B89D8(void* thisPtr) {
+	char* p = (char*)thisPtr;
+	*(u32*)(p + 0x234) = *(u32*)(p + 0x90) & 0xFFFF;
+	*(u8*)(p + 0x23c) = *(u32*)(p + 0x90) >> 28;
+	*(u32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 16) & 0xFFF;
+	fn_8037F2FC(*(u32*)(p + 0x234), *(u32*)(p + 0x238), *(u8*)(p + 0x23c), JUtility::TColor(0xFF0000FF),
+	            *(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14), *(f32*)(p + 0x14));
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
