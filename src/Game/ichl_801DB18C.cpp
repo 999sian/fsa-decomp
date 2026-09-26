@@ -85,6 +85,10 @@ static inline void ichlScale(IchlVec2* v, f32 s) {
     v->x *= s;
     v->y *= s;
 }
+static inline void ichlSet2(IchlVec2* v, f32 x, f32 y) {
+    v->x = x;
+    v->y = y;
+}
 static inline void ichlSet(IchlVec3* v, f32 x, f32 y, f32 z) {
     v->x = x;
     v->y = y;
@@ -287,6 +291,67 @@ extern "C" char* fn_801DBFB0(char* p) {
     *(f32*)(p + 0x2e0) = lbl_8053F2E4;
     *(s32*)(p + 0x2e4) = 0;
     return p;
+}
+
+extern const f32 lbl_8053F328;
+extern const f32 lbl_8053F32C;
+extern const f32 lbl_8053F330;
+extern const f32 lbl_8053F300;
+extern const f32 lbl_8053F334;
+extern const f32 lbl_8053F338;
+extern char lbl_8053A148[8];
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" void fn_801D1D60(void* this_);
+extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801DAF14(void* singleton, s32 id);
+extern "C" void fn_801D2608(void*, const char*, int);
+extern "C" void fn_801D22DC(void*, int, int, int);
+
+extern "C" void fn_801DBCEC(char* p) {
+    fn_801D0ED0(p);
+    *(f32*)(p + 0x60) = lbl_8053F328;
+    *(f32*)(p + 0x64) = lbl_8053F32C;
+    *(f32*)(p + 0x68) = lbl_8053F330;
+    *(f32*)(p + 0x6c) = lbl_8053F330;
+    *(f32*)(p + 0x80) = lbl_8053F2E0;
+    *(f32*)(p + 0x84) = lbl_8053F2E0;
+    *(f32*)(p + 0x88) = lbl_8053F300;
+    *(f32*)(p + 0x8c) = lbl_8053F300;
+    *(s32*)(p + 0xb0) = 0x10101;
+    *(s32*)(p + 0x98) = 2;
+    *(u32*)(p + 0x230) |= 0x20;
+    *(s32*)(p + 0x114) = 2;
+    *(u8*)(p + 0x194) = 1;
+    if (*(s32*)(p + 0x16c) == -1) {
+        s16 ang = fn_801CD664(0x3800);
+        if (fn_801CD664(2) == 0) {
+            ang = -ang;
+        }
+        s32 n = fn_801CD664(0x3c) + 1;
+        ichlSet2((IchlVec2*)(p + 0x2b4), lbl_8053F2E4, lbl_8053F334 * n);
+        s16 a = -ang;
+        f32 x = *(f32*)(p + 0x2b4);
+        *(f32*)(p + 0x2b4) = x * JMath::sincosTable_[(u16)a >> 5].c - *(f32*)(p + 0x2b8) * JMath::sincosTable_[(u16)a >> 5].s;
+        *(f32*)(p + 0x2b8) = x * JMath::sincosTable_[(u16)a >> 5].s + *(f32*)(p + 0x2b8) * JMath::sincosTable_[(u16)a >> 5].c;
+    }
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    if (*(s32*)(p + 0x16c) == -1) {
+        *(s32*)(p + 0x250) = fn_801CD664(1) + 1;
+    } else {
+        *(s32*)(p + 0x250) = fn_801CD664(0x3d) + 0x1e;
+    }
+    *(f32*)(p + 0x254) = lbl_8053F2E4;
+    *(f32*)(p + 0x258) = lbl_8053F2E4;
+    fn_801D2608(p + 0x270, lbl_8053A148, 1);
+    fn_801D22DC(p + 0x270, 0, 2, 0);
+    *(f32*)(p + 0x2a0) = lbl_8053F338;
+    fn_801D1D60(p + 0x270);
+    *(s32*)(p + 0x2e4) = fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_8053F2E0, 0x258, 1, 0, 0, 0, 1);
+    if (*(s32*)(p + 0x16c) == -1) {
+        fn_801DAF14(fn_801DAC6C(), *(s32*)(p + 0x198));
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
