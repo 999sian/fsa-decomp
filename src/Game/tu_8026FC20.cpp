@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JGeometry/Box.h"
+#include "JSystem/JMath/JMath.h"
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define U16(p, o) (*(u16*)((char*)(p) + (o)))
@@ -296,6 +297,75 @@ inline void pushDir(char* p, s32 i) {
     U8(p, 0x11a4 + i) = U8(p, 0x11a0 + i);
     U8(p, 0x11a0 + i) = U8(p, 0x119c + i);
     U8(p, 0x119c + i) = 1;
+}
+inline void decPos(char* p, s32 o) {
+    if (S32(p, o) > 0) {
+        S32(p, o)--;
+    }
+}
+void fn_8026FD14(char* p) {
+    if (fn_80246F28(p) > 0.0f) {
+        if (S32(p, 0x11c8) >= 3) {
+            S32(p, 0x11c4) = 3;
+        } else if (S32(p, 0x11c4) > 0) {
+            S32(p, 0x11c4)--;
+        }
+        S32(p, 0x11c8) = 0;
+    } else {
+        if (S32(p, 0x11c8) < 3) {
+            S32(p, 0x11c8)++;
+        }
+        decPos(p, 0x11c4);
+    }
+    decPos(p, 0x11d4);
+    decPos(p, 0x11cc);
+    if (fn_80247330(p) > 0.0f && 0.0f == fn_8024712C(p)) {
+        S32(p, 0x117c) = 60;
+        if (S32(p, 0x1184) < S32(p, 0x1180) && S32(p, 0x1188) < S32(p, 0x1180)) {
+            S32(p, 0x1184) = 0;
+        }
+    } else {
+        decPos(p, 0x117c);
+    }
+    if (fn_80247330(p) < 0.0f && 0.0f == fn_8024712C(p)) {
+        S32(p, 0x1180) = 60;
+        if (S32(p, 0x1184) < S32(p, 0x117c) && S32(p, 0x1188) < S32(p, 0x117c)) {
+            S32(p, 0x1184) = 0;
+        }
+    } else {
+        decPos(p, 0x1180);
+    }
+    if (fn_8024712C(p) < 0.0f && 0.0f == fn_80247330(p)) {
+        S32(p, 0x1184) = 60;
+        if (S32(p, 0x117c) < S32(p, 0x1188) && S32(p, 0x1180) < S32(p, 0x1188)) {
+            S32(p, 0x1184) = 0;
+        }
+    } else {
+        decPos(p, 0x1184);
+    }
+    if (fn_8024712C(p) > 0.0f && 0.0f == fn_80247330(p)) {
+        S32(p, 0x1188) = 60;
+        if (S32(p, 0x117c) < S32(p, 0x1184) && S32(p, 0x1180) < S32(p, 0x1184)) {
+            S32(p, 0x1184) = 0;
+        }
+    } else {
+        decPos(p, 0x1188);
+    }
+    if (fn_80247330(p) <= 0.0f) {
+        U8(p, 0x119c) = 0; U8(p, 0x11a0) = 0; U8(p, 0x11a4) = 0; U8(p, 0x11a8) = 0;
+    }
+    if (fn_80247330(p) >= 0.0f) {
+        U8(p, 0x119d) = 0; U8(p, 0x11a1) = 0; U8(p, 0x11a5) = 0; U8(p, 0x11a9) = 0;
+    }
+    if (fn_8024712C(p) >= 0.0f) {
+        U8(p, 0x119e) = 0; U8(p, 0x11a2) = 0; U8(p, 0x11a6) = 0; U8(p, 0x11aa) = 0;
+    }
+    if (fn_8024712C(p) <= 0.0f) {
+        U8(p, 0x119f) = 0; U8(p, 0x11a3) = 0; U8(p, 0x11a7) = 0; U8(p, 0x11ab) = 0;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        decPos(p + i * 4, 0x118c);
+    }
 }
 void fn_80270088(char* p) {
     if (fn_80246F28(p) > 0.0f) {
@@ -824,6 +894,69 @@ bool fn_80272E98(char* p, const JGeometry::TBox2<f32>* box, s32 room) {
         r = 1;
     }
     return r;
+}
+extern "C" u8 fn_8025F590(char*);
+extern "C" u8 Player_GetField_0x454(char*);
+inline bool boxHit(const JGeometry::TBox2<f32>& m, const JGeometry::TBox2<f32>& b) {
+    JGeometry::TBox2<f32> c(m);
+    c.i.setMax(b.i);
+    c.f.setMin(b.f);
+    bool r = 0;
+    if (c.f.x >= c.i.x && c.f.y >= c.i.y) {
+        r = 1;
+    }
+    return r;
+}
+bool fn_80273518(char* p, const JGeometry::TBox2<f32>* box, s32 room, f32* out) {
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (GetBusyLocked(p)) {
+        return 0;
+    }
+    if (Player_GetField_0x454(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    JGeometry::TBox2<f32> b(*box);
+    f32* o = roomOffset(room);
+    JGeometry::TVec2<f32> n;
+    n.x = -o[0];
+    n.y = -o[1];
+    b.addPos(n);
+    if (room != S32(p, 0x3b4) && (S32(p, 0x3b4) != 8 || room >= 8)) {
+        return 0;
+    }
+    if (U8(p, 0x459) != 0) {
+        if (fn_8025F590(p)) {
+            JGeometry::TBox2<f32> m(-8.0f, -8.0f, 8.0f, 8.0f);
+            f32* o2 = roomOffset(S32(p, 0x3b4));
+            m.addPos(-o2[0], -o2[1]);
+            m.addPos(F32(p, 0x2f4), F32(p, 0x2f8));
+            if (boxHit(m, b)) {
+                out[0] = 0.5f * (m.i.x - m.f.x) + m.f.x;
+                out[1] = 0.5f * (m.i.y - m.f.y) + m.f.y;
+                return 1;
+            }
+        } else {
+            char* obj = (char*)fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+            if (obj != NULL) {
+                JGeometry::TBox2<f32> m(*(JGeometry::TBox2<f32>*)(obj + 0x60));
+                f32* o2 = roomOffset(S32(p, 0x3b4));
+                m.addPos(-o2[0], -o2[1]);
+                m.addPos(F32(p, 0x2f4), F32(p, 0x2f8));
+                if (boxHit(m, b)) {
+                    out[0] = 0.5f * (m.i.x - m.f.x) + m.f.x;
+                    out[1] = 0.5f * (m.i.y - m.f.y) + m.f.y;
+                    (*(void (**)(char*))(*(char**)obj + 0x48))(obj);
+                    return 1;
+                }
+            }
+        }
+    }
+    return 0;
 }
 s32 fn_80241864(char*);
 bool fn_802724E0(char* p, const JGeometry::TBox2<f32>* box, s32 room) {
@@ -1414,6 +1547,100 @@ void fn_802771C8(char* p) {
     killEmitter(p, 0x136c);
     killEmitter(p, 0x1370);
 }
+extern "C" {
+void fn_802808E8(char*, f32);
+u16 fn_8022461C(void*, void*);
+void fn_8013CB44(void* h, void* pos, s32 a, s32 b, s32 c);
+}
+void fn_80277220(char* p) {
+    F32(p, 0x358) = 0.0f;
+    JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x350), (Vec*)(p + 8));
+    if (F32(p, 0x10) <= 0.0f) {
+        fn_802808E8(p, 1.5f);
+    }
+    U8(p, 0x3fc)++;
+    if (U8(p, 0x3fc) >= 20) {
+        fn_80251AEC(p, 0);
+    }
+    fn_80268B3C(p);
+    switch (S32(p, 0x45c)) {
+    case 0:
+        if (U8(p, 0x3fa) < 4) {
+            U8(p, 0x3fb) = U8(p, 0x3fa);
+        } else {
+            U8(p, 0x3fb) = U8(p, 0x3fa) - 1;
+        }
+        if (U8(p, 0x3fb) >= 7) {
+            U8(p, 0x3fb) = 6;
+        }
+        break;
+    case 1:
+        if (U8(p, 0x3fa) < 4) {
+            U8(p, 0x3fb) = U8(p, 0x3fa);
+        } else {
+            U8(p, 0x3fb) = U8(p, 0x3fa) - 1;
+        }
+        if (U8(p, 0x3fb) >= 8) {
+            U8(p, 0x3fb) = 7;
+        }
+        break;
+    case 2:
+        if (U8(p, 0x3fa) < 1) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) < 5) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) < 6) {
+            U8(p, 0x3fb) = 2;
+        } else {
+            U8(p, 0x3fb) = 3;
+        }
+        break;
+    case 3:
+        if (U8(p, 0x3fa) < 2) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) < 4) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) < 13) {
+            U8(p, 0x3fb) = 2;
+        } else {
+            U8(p, 0x3fb) = 3;
+        }
+        break;
+    case 4:
+        if (U8(p, 0x3fa) < 6) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) < 7) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) < 8) {
+            U8(p, 0x3fb) = 2;
+        } else if (U8(p, 0x3fa) < 9) {
+            U8(p, 0x3fb) = 3;
+        } else if (U8(p, 0x3fa) < 11) {
+            U8(p, 0x3fb) = 4;
+        } else {
+            U8(p, 0x3fb) = 5;
+        }
+        break;
+    }
+    U8(p, 0x3fa)++;
+    if (F32(p, 0x10) <= 0.0f) {
+        if (fn_8022461C(p + 8, PTR(p, 0x3b4)) == 0x39) {
+            if (PTR(p, 0x1370) == NULL) {
+                PTR(p, 0x1370) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3d4, 0, -1, (s32)(p + 0x13a8), NULL, 1, 1.0f);
+            } else {
+                fn_8013CB44(PTR(p, 0x1370), p + 8, 0, -1, 1);
+            }
+            killEmitter(p, 0x136c);
+        } else {
+            if (PTR(p, 0x136c) == NULL) {
+                PTR(p, 0x136c) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3d3, 0, -1, (s32)(p + 0x1398), NULL, 1, 1.0f);
+            } else {
+                fn_8013CB44(PTR(p, 0x136c), p + 8, 0, -1, 1);
+            }
+            killEmitter(p, 0x1370);
+        }
+    }
+}
 void fn_80277580(char* p) {
     if (S32(p, 0x1248) != 4) {
         S32(p, 0x45c) = 0;
@@ -1732,6 +1959,300 @@ inline void setOfs30c(char* p, f32 x, f32 y) {
     *v += po->pos;
 }
 #define setBox(p, off, a, b, c, d_) { PlayerOfs* po_ = (PlayerOfs*)(p); ((JGeometry::TBox2<f32>*)((p) + (off)))->set(a, b, c, d_); }
+extern "C" {
+void* fn_80246D1C(char*, s32);
+u8 fn_8022AF5C(void);
+void fn_8043D67C(void*, s32, s32, s32);
+extern void* lbl_8053AED0;
+}
+void fn_8027439C(char* p) {
+    if (U8(p, 0x3fd) == 0) {
+        U8(p, 0x3fa)++;
+        if (U8(p, 0x3fa) <= 7) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) <= 14) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) <= 21) {
+            U8(p, 0x3fb) = 2;
+        } else if (U8(p, 0x3fa) <= 28) {
+            U8(p, 0x3fb) = 3;
+        } else if (U8(p, 0x3fa) <= 35) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) <= 42) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) <= 49) {
+            U8(p, 0x3fb) = 2;
+        } else if (U8(p, 0x3fa) <= 56) {
+            U8(p, 0x3fb) = 3;
+        } else {
+            U8(p, 0x3fd) = 1;
+            U8(p, 0x3fa) = 0;
+            U8(p, 0x3fb) = 0;
+            if (U8(p, 0x490) == 1) {
+                fn_8043D67C(lbl_8053AED0, 400, S32(p, 4), 0);
+                U8(p, 0x490) = 0;
+            }
+        }
+    } else if (U8(p, 0x3fd) == 2) {
+        U8(p, 0x3fa)++;
+        if (U8(p, 0x3fa) <= 7) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) <= 14) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) <= 21) {
+            U8(p, 0x3fb) = 2;
+        } else if (U8(p, 0x3fa) <= 28) {
+            U8(p, 0x3fb) = 3;
+        } else if (U8(p, 0x3fa) <= 35) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) <= 42) {
+            U8(p, 0x3fb) = 1;
+        } else {
+            U8(p, 0x3fd) = 1;
+            U8(p, 0x3fa) = 0;
+            U8(p, 0x3fb) = 0;
+        }
+    } else {
+        void* q;
+        if (S32(p, 0xbc0) > 0 || ((q = fn_80246D1C(p, 0x200)) != NULL && !fn_8022AF5C())) {
+            U8(p, 0xbba) = 1;
+        }
+        if (U8(p, 0xbba) == 1) {
+            U8(p, 0x3fa) += 2;
+        } else {
+            U8(p, 0x3fa)++;
+        }
+        if (U8(p, 0x3fa) >= 19) {
+            U8(p, 0x3fb) = 0;
+            U8(p, 0x3fa) = 0;
+            if (U8(p, 0xbba) == 1) {
+                F32(p, 0xbbc) = 4.0f;
+            } else {
+                F32(p, 0xbbc) = 3.0f;
+            }
+            U8(p, 0xbba) = 0;
+        }
+        if (U8(p, 0x3fa) < 7) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) < 12) {
+            U8(p, 0x3fb) = 1;
+        } else {
+            U8(p, 0x3fb) = 2;
+        }
+        if (U8(p, 0x3fb) >= 1) {
+            F32(p, 0xbbc) -= 0.2f;
+            if (F32(p, 0xbbc) < 2.0f) {
+                F32(p, 0xbbc) = 2.0f;
+            }
+        }
+        if (F32(p, 0x10) > 0.0f) {
+            if (F32(p, 0x34c) > 1.0f) {
+                U8(p, 0x3fb) = 2;
+            } else {
+                U8(p, 0x3fb) = 0;
+            }
+        }
+    }
+    setBox(p, 0x4b0, po_->pos.x - 20.0f, po_->pos.y - 20.0f, 20.0f + po_->pos.x, 20.0f + po_->pos.y);
+    setBox(p, 0x4a0, po_->pos.x - 12.0f, po_->pos.y - 12.0f, 12.0f + po_->pos.x, 12.0f + po_->pos.y);
+    setOfs30c(p, 0.0f, 0.0f);
+    S32(p, 0x3f0) = -1;
+}
+extern "C" {
+u8 fn_80241230(char*);
+u8 fn_80241284(char*);
+u8 fn_80241338(char*);
+u8 fn_802412E0(char*);
+}
+inline void hitR(char* p) {
+    setBox(p, 0x5ec, 8.0f + po_->pos.x, po_->pos.y - 8.0f, 16.0f + po_->pos.x, 8.0f + po_->pos.y);
+    S32(p, 0x3ec) = 0;
+    U8(p, 0xb98) = 1;
+}
+inline void hitL(char* p) {
+    setBox(p, 0x5ec, po_->pos.x - 16.0f, po_->pos.y - 8.0f, po_->pos.x - 8.0f, 8.0f + po_->pos.y);
+    S32(p, 0x3ec) = 1;
+    U8(p, 0xb98) = 1;
+}
+inline void hitD(char* p) {
+    setBox(p, 0x5ec, po_->pos.x - 8.0f, 8.0f + po_->pos.y, 8.0f + po_->pos.x, 16.0f + po_->pos.y);
+    S32(p, 0x3ec) = 2;
+    U8(p, 0xb98) = 1;
+}
+inline void hitU(char* p) {
+    setBox(p, 0x5ec, po_->pos.x - 8.0f, po_->pos.y - 16.0f, 8.0f + po_->pos.x, po_->pos.y - 8.0f);
+    S32(p, 0x3ec) = 3;
+    U8(p, 0xb98) = 1;
+}
+inline void hitAll(char* p) {
+    setBox(p, 0x5ec, po_->pos.x - 15.0f, po_->pos.y - 15.0f, 15.0f + po_->pos.x, po_->pos.y - 15.0f);
+    S32(p, 0x3ec) = -1;
+    U8(p, 0xb98) = 1;
+}
+void fn_80276078(char* p) {
+    U8(p, 0xb98) = 0;
+    if (!fn_802413F0(p)) {
+        return;
+    }
+    if (S32(p, 0x468) > 0) {
+        hitAll(p);
+    } else if (S32(p, 0x1240) == 0 || S32(p, 0x1240) == 2 || S32(p, 0x1240) == 3) {
+        switch (S32(p, 0x3dc)) {
+        case 0: hitR(p); break;
+        case 1: hitL(p); break;
+        case 2: hitD(p); break;
+        case 3: hitU(p); break;
+        }
+    } else if (fn_80241284(p) || fn_80241230(p)) {
+        hitAll(p);
+    } else if (fn_80241338(p)) {
+        switch (S32(p, 0x3dc)) {
+        case 0: hitU(p); break;
+        case 1: hitU(p); break;
+        case 2: hitL(p); break;
+        case 3: hitR(p); break;
+        }
+    } else if (fn_802412E0(p)) {
+        switch (S32(p, 0x3dc)) {
+        case 0: hitL(p); break;
+        case 1: hitR(p); break;
+        case 2: hitU(p); break;
+        case 3: hitD(p); break;
+        }
+    }
+}
+extern "C" u8 fn_80246464(char*);
+extern "C" void fn_80276E5C(char*);
+inline void setOfs30c2(char* p, f32 x, f32 y) {
+    PlayerOfs* po = (PlayerOfs*)p;
+    JGeometry::TVec3<f32>* v = (JGeometry::TVec3<f32>*)(p + 0x30c);
+    v->set(x, y, 0.0f);
+    *v += po->pos;
+}
+inline void endState(char* p, u8 n) {
+    if (U8(p, 0x3fa) >= n) {
+        if (fn_80246464(p)) {
+            fn_80251AEC(p, 8);
+        } else {
+            fn_80251AEC(p, 0);
+        }
+    } else {
+        U8(p, 0x3fa)++;
+    }
+}
+void fn_802756E4(char* p) {
+    s32 ang = 0;
+    switch (S32(p, 0x45c)) {
+    case 0:
+        if (U8(p, 0x3fa) < 4) {
+            U8(p, 0x3fb) = U8(p, 0x3fa);
+        } else {
+            U8(p, 0x3fb) = U8(p, 0x3fa) - 1;
+        }
+        if (U8(p, 0x3fb) >= 7) {
+            U8(p, 0x3fb) = 6;
+        }
+        endState(p, 7);
+        switch (S32(p, 0x3dc)) {
+        case 0: ang = (s16)(U8(p, 0x3fb) << 12) - 0x4000; break;
+        case 1: ang = (s16)(-U8(p, 0x3fb) << 12) - 0x4000; break;
+        case 2: ang = (s16)(-U8(p, 0x3fb) << 12) - 0x8000; break;
+        case 3: ang = (s16)(-U8(p, 0x3fb) << 12); break;
+        }
+        break;
+    case 1:
+        if (U8(p, 0x3fa) < 4) {
+            U8(p, 0x3fb) = U8(p, 0x3fa);
+        } else {
+            U8(p, 0x3fb) = U8(p, 0x3fa) - 1;
+        }
+        if (U8(p, 0x3fb) >= 8) {
+            U8(p, 0x3fb) = 7;
+        }
+        endState(p, 8);
+        switch (S32(p, 0x3dc)) {
+        case 0: ang = (s16)(-U8(p, 0x3fb) << 12) + 0x4000; break;
+        case 1: ang = (s16)(U8(p, 0x3fb) << 12) + 0x4000; break;
+        case 2: ang = (s16)(U8(p, 0x3fb) << 12); break;
+        case 3: ang = (s16)(U8(p, 0x3fb) << 12) - 0x8000; break;
+        }
+        break;
+    case 2:
+        if (U8(p, 0x3fa) < 1) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) < 5) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) < 6) {
+            U8(p, 0x3fb) = 2;
+        } else {
+            U8(p, 0x3fb) = 3;
+        }
+        endState(p, 7);
+        fn_80276E5C(p);
+        break;
+    case 3:
+        if (U8(p, 0x3fa) < 2) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) < 4) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) < 13) {
+            U8(p, 0x3fb) = 2;
+        } else {
+            U8(p, 0x3fb) = 3;
+        }
+        endState(p, 15);
+        fn_80276E5C(p);
+        break;
+    case 4:
+        if (U8(p, 0x3fa) < 6) {
+            U8(p, 0x3fb) = 0;
+        } else if (U8(p, 0x3fa) < 7) {
+            U8(p, 0x3fb) = 1;
+        } else if (U8(p, 0x3fa) < 8) {
+            U8(p, 0x3fb) = 2;
+        } else if (U8(p, 0x3fa) < 9) {
+            U8(p, 0x3fb) = 3;
+        } else if (U8(p, 0x3fa) < 11) {
+            U8(p, 0x3fb) = 4;
+        } else {
+            U8(p, 0x3fb) = 5;
+        }
+        endState(p, 30);
+        fn_80276E5C(p);
+        break;
+    }
+    switch (S32(p, 0x45c)) {
+    case 0:
+    case 1:
+        fn_80276E5C(p);
+        s16 a2 = ang;
+        if (a2 <= -0x7000) {
+            setOfs30c2(p, -16.0f, 0.0f);
+        } else if (a2 <= -0x5000) {
+            setOfs30c2(p, -16.0f, -16.0f);
+        } else if (a2 <= -0x3000) {
+            setOfs30c2(p, 0.0f, -16.0f);
+        } else if (a2 <= -0x1000) {
+            setOfs30c2(p, 16.0f, -16.0f);
+        } else if (a2 <= 0x1000) {
+            setOfs30c2(p, 16.0f, 0.0f);
+        } else if (a2 <= 0x3000) {
+            setOfs30c2(p, 16.0f, 16.0f);
+        } else if (a2 <= 0x5000) {
+            setOfs30c2(p, 0.0f, 16.0f);
+        } else if (a2 <= 0x7000) {
+            setOfs30c2(p, -16.0f, 16.0f);
+        } else {
+            setOfs30c2(p, -16.0f, 0.0f);
+        }
+        break;
+    case 2:
+    case 3:
+    case 4:
+        fn_80276E5C(p);
+        break;
+    }
+}
 inline void faceLeft(char* p, s32 d) {
     setBox(p, 0x4b0, po_->pos.x - 32.0f, po_->pos.y - 8.0f, po_->pos.x - 16.0f, 8.0f + po_->pos.y);
     setBox(p, 0x4a0, po_->pos.x - 16.0f, po_->pos.y - 8.0f, 4.0f + po_->pos.x, 8.0f + po_->pos.y);
@@ -1755,6 +2276,48 @@ inline void faceDown(char* p, s32 d) {
     setBox(p, 0x4a0, po_->pos.x - 8.0f, po_->pos.y - 4.0f, 8.0f + po_->pos.x, 16.0f + po_->pos.y);
     setOfs30c(p, 0.0f, 16.0f);
     S32(p, 0x3f0) = d;
+}
+void fn_802765C0(char* p) {
+    s16 a = S16(p, 0x11c0);
+    if (a < -0x7000) {
+        faceLeft(p, 1);
+    } else if (a < -0x5000) {
+        setBox(p, 0x4b0, po_->pos.x - 24.0f, po_->pos.y - 24.0f, po_->pos.x - 8.0f, po_->pos.y - 8.0f);
+        setBox(p, 0x4a0, po_->pos.x - 16.0f, po_->pos.y - 16.0f, po_->pos.x, po_->pos.y);
+        setOfs30c(p, -16.0f, -16.0f);
+        if (S32(p, 0x3f0) != 3 || S32(p, 0x3f0) != 1) {
+            S32(p, 0x3f0) = 3;
+        }
+    } else if (a < -0x3000) {
+        faceUp(p, 3);
+    } else if (a < -0x1000) {
+        setBox(p, 0x4b0, 8.0f + po_->pos.x, po_->pos.y - 24.0f, 24.0f + po_->pos.x, po_->pos.y - 8.0f);
+        setBox(p, 0x4a0, po_->pos.x, po_->pos.y - 16.0f, 16.0f + po_->pos.x, po_->pos.y);
+        setOfs30c(p, 16.0f, -16.0f);
+        if (S32(p, 0x3f0) != 3 || S32(p, 0x3f0) != 0) {
+            S32(p, 0x3f0) = 3;
+        }
+    } else if (a < 0x1000) {
+        faceRight(p, 0);
+    } else if (a < 0x3000) {
+        setBox(p, 0x4b0, 8.0f + po_->pos.x, 8.0f + po_->pos.y, 24.0f + po_->pos.x, 24.0f + po_->pos.y);
+        setBox(p, 0x4a0, po_->pos.x, po_->pos.y, 16.0f + po_->pos.x, 16.0f + po_->pos.y);
+        setOfs30c(p, 16.0f, 16.0f);
+        if (S32(p, 0x3f0) != 2 || S32(p, 0x3f0) != 0) {
+            S32(p, 0x3f0) = 2;
+        }
+    } else if (a < 0x5000) {
+        faceDown(p, 2);
+    } else if (a < 0x7000) {
+        setBox(p, 0x4b0, po_->pos.x - 24.0f, 8.0f + po_->pos.y, po_->pos.x - 8.0f, 24.0f + po_->pos.y);
+        setBox(p, 0x4a0, po_->pos.x - 16.0f, po_->pos.y, po_->pos.x, 16.0f + po_->pos.y);
+        setOfs30c(p, -16.0f, 16.0f);
+        if (S32(p, 0x3f0) != 2 || S32(p, 0x3f0) != 1) {
+            S32(p, 0x3f0) = 2;
+        }
+    } else {
+        faceLeft(p, 1);
+    }
 }
 void fn_80276BB8(char* p) {
     switch (S32(p, 0x3dc)) {
@@ -1909,6 +2472,79 @@ BOOL fn_80275D9C(char* p) {
 }
 void fn_802356B8(s32);
 
+extern "C" {
+void fn_8027FA08(char*, JGeometry::TVec3<f32>*);
+f32 PSVECMag(const Vec*);
+u8 fn_80241284(char*);
+s32 fn_80237810(s32);
+s32 fn_8024189C(char*);
+extern const Vec2f lbl_8046BD88[];
+}
+void fn_8027B648(char* p) {
+    fn_80274988(p);
+    if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4)) && U8(p, 0x3fa) >= 11 && U8(p, 0x3fa) < 35) {
+        JGeometry::TVec3<f32> t;
+        fn_8027FA08(p, &t);
+        JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 8);
+        JGeometry::TVec3<f32> d = t - pos;
+        d.z = 0.0f;
+        if (PSVECMag((Vec*)&d) >= 6.0f) {
+            d.normalize();
+            d.scale(6.0f);
+            pos += d;
+        } else {
+            pos.set(t);
+        }
+    }
+    fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+    fn_80268B3C(p);
+    if (U8(p, 0x3fa) == 10) {
+        s32 dir = S32(p, 0x3dc);
+        if (S32(p, 0xb38) < 0) {
+            if (fn_80241284(p) && S32(p, 0x11ac) == 1 && fn_80241544(p) >= 2) {
+                goto create;
+            }
+            if (Player_IsLinked(p)) {
+                s32 m = fn_80237810(Player_GetLinkTargetIndex(p));
+                if (fn_80237774(Player_GetLinkTargetIndex(p)) >= m) {
+                    goto create;
+                }
+                goto skip;
+            } else {
+                s32 m = fn_802417CC(p);
+                if (fn_8024189C(p) < m) {
+                    goto skip;
+                }
+            }
+        create:
+            JGeometry::TVec3<f32> v;
+            v.x = F32(p, 0x8);
+            v.y = F32(p, 0xc);
+            v.z = F32(p, 0x10);
+            v.x += lbl_8046BD88[dir].x;
+            v.y += lbl_8046BD88[dir].y;
+            if (fn_80241284(p) && S32(p, 0x11ac) == 1) {
+                s32 no = S32(p, 0x4);
+                S32(p, 0xb38) = Actor_CreateByID(fn_801F856C(), 'SWBM', PTR(p, 0x3b4), &v,
+                                                 ((dir & 3) << 4) | 0x100 | (no & 3), -1, no);
+            } else {
+                s32 no = S32(p, 0x4);
+                S32(p, 0xb38) = Actor_CreateByID(fn_801F856C(), 'SWBM', PTR(p, 0x3b4), &v,
+                                                 ((dir & 3) << 4) | (no & 3), -1, no);
+            }
+            if (S32(p, 0xb38) >= 0) {
+                S32(p, 0xb6c) = S32(p, 0x3b4);
+            }
+        }
+    }
+skip:
+    if (PTR(p, 0x12bc) != NULL) {
+        JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(p + 8));
+        v.x += 20.0f * JMASCos(S16(p, 0x11c0));
+        v.y += 20.0f * JMASSin(S16(p, 0x11c0));
+        fn_8013CB44(PTR(p, 0x12bc), &v, 0, 1, 1);
+    }
+}
 void fn_8027BC90(char* p) {
     stopEmitter(p, 0x1274);
     stopEmitter(p, 0x128c);
@@ -1976,6 +2612,845 @@ void fn_8027C4FC(char* p) {
     S32(p, 0x40c) = 0;
 }
 void fn_8027C6B8(char* p) { U8(p, 0x436) = 0; }
+extern "C" {
+f32 fn_8022C76C(s32);
+u8 fn_80246464(char*);
+}
+struct RoomRect { f32 x0, y0, x1, y1; };
+inline bool rectIn(const RoomRect& r, const JGeometry::TVec2<f32>& v) {
+    bool in = 0;
+    if (v.x >= r.x0 && v.y >= r.y0 && v.x < r.x1 && v.y < r.y1) {
+        in = 1;
+    }
+    return in;
+}
+inline void stopVel(char* p) {
+    ((JGeometry::TVec3<f32>*)(p + 0x368))->set(F32(p, 0x344), F32(p, 0x348), 0.0f);
+    F32(p, 0x344) = 0.0f;
+    F32(p, 0x348) = 0.0f;
+    F32(p, 0x34c) = 0.0f;
+}
+inline void landVel(char* p) {
+    if (fn_80246464(p)) {
+        if (fn_80251AEC(p, 8)) {
+            stopVel(p);
+        }
+    } else {
+        if (fn_80251AEC(p, 0)) {
+            stopVel(p);
+        }
+    }
+}
+extern "C" {
+void* fn_80246B10(char*, s32);
+void fn_80274CB8(char*);
+u8 fn_8022486C(void*, void*);
+s8 fn_8024EE0C(char*);
+s8 fn_8024EE14(char*);
+extern u8* lbl_8053AB10;
+extern const JGeometry::TVec3<f32> lbl_8046BBA8[];
+}
+void fn_8027BE74(char* p) {
+    U8(p, 0x404)++;
+    JGeometry::TVec3<f32>* vel = (JGeometry::TVec3<f32>*)(p + 0x344);
+    if (!vel->isZero() || F32(p, 0x10) > 0.0f) {
+        JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)vel, (Vec*)(p + 8));
+        F32(p, 0x34c) -= 0.25f;
+        if (F32(p, 0x10) <= 0.0f) {
+            F32(p, 0x10) = 0.0f;
+            stopVel(p);
+            U8(p, 0x43d) = 3;
+        }
+        if (U8(p, 0x403) < 0xa8) {
+            fn_80276E5C(p);
+        } else {
+            fn_80276BB8(p);
+        }
+        fn_80274CB8(p);
+        fn_80268B3C(p);
+    } else {
+        if (U8(p, 0x43d) != 0) {
+            U8(p, 0x43d)--;
+        } else if (fn_80246B10(p, 0x20) != NULL) {
+            if (0.0f == fn_80246F28(p) && U8(PTR(p, 0xbf0), 0xb7) != 0) {
+                F32(p, 0x344) = F32(p, 0x368);
+                F32(p, 0x348) = F32(p, 0x36c);
+            } else {
+                F32(p, 0x344) = 2.5f * fn_80247330(p);
+                F32(p, 0x348) = 2.5f * -fn_8024712C(p);
+            }
+            F32(p, 0x34c) = 1.5f;
+            fn_8024F0E8(p, 0x10002);
+        } else {
+            fn_802808E8(p, 1.125f);
+        }
+        fn_80275D9C(p);
+        fn_80274CB8(p);
+        fn_80268B3C(p);
+        if (U8(p, 0x403) < 0xa8 && ((u8*)PTR(p, 0xbf0) + S32(p, 0x3dc))[0x48] != 0 && fn_80251AEC(p, 0x37)) {
+            *(Vec*)(p + 0x350) = ((const Vec*)lbl_8046BBA8)[S32(p, 0x3dc)];
+            fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+            if (fn_8022486C(p + 0x30c, PTR(p, 0x3b4))) {
+                fn_8024F0E8(p, 0x20062);
+            } else {
+                fn_8024F0E8(p, 0x20061);
+            }
+        }
+    }
+    if (PTR(p, 0x12b0) != NULL) {
+        JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(p + 8));
+        switch (S32(p, 0x3dc)) {
+        case 0:
+            v.x += (U8(p, 0x403) * 14) / 48 + 6;
+            break;
+        case 1:
+            v.x -= (U8(p, 0x403) * 14) / 48 + 6;
+            break;
+        case 2:
+            v.x += 4.0f;
+            v.y += (U8(p, 0x403) * 14) / 48 + 2;
+            break;
+        case 3:
+            v.x -= 4.0f;
+            v.y -= (U8(p, 0x403) * 14) / 48 + 7;
+            break;
+        }
+        fn_8013CB44(PTR(p, 0x12b0), &v, 0, 1, 1);
+    }
+    if (PTR(p, 0x12b4) != NULL) {
+        JGeometry::TVec3<f32> v(*(JGeometry::TVec3<f32>*)(p + 8));
+        if (U8(p, 0x403) < 0xa8) {
+            switch (S32(p, 0x3dc)) {
+            case 0:
+                v.x += 13.0f;
+                break;
+            case 1:
+                v.x -= 13.0f;
+                break;
+            case 2:
+                v.x += 4.0f;
+                v.y += 9.0f;
+                break;
+            case 3:
+                v.x -= 4.0f;
+                v.y -= 14.0f;
+                break;
+            }
+        } else {
+            switch (S32(p, 0x3dc)) {
+            case 0:
+                v.x -= 19.0f;
+                break;
+            case 1:
+                v.x += 17.0f;
+                break;
+            case 2:
+                v.x += 2.0f;
+                v.y -= 17.0f;
+                break;
+            case 3:
+                v.x -= 5.0f;
+                v.y += 11.0f;
+                break;
+            }
+        }
+        s32 a = fn_8024EE0C(p);
+        fn_8013CB44(PTR(p, 0x12b4), &v, fn_8024EE14(p), a - 1, 0);
+    }
+    if (PTR(p, 0x12b8) != NULL) {
+        s32 a = fn_8024EE0C(p);
+        fn_8013CB44(PTR(p, 0x12b8), p + 8, fn_8024EE14(p), a - 1, 0);
+    }
+    if (S32(p, 0x40c) < 30) {
+        S32(p, 0x40c)++;
+    } else {
+        char* g = *(char**)(lbl_8053AB10 + 0x24);
+        if (U8(g, 0x7f4) == 0) {
+            U8(g, 0x7f5) = 1;
+        }
+    }
+    if ((U8(p, 0xcae) == 1 || U8(p, 0xcaf) == 1) && fn_80251AEC(p, 0)) {
+        U8(p, 0x403) = 0;
+    }
+}
+void fn_8027C6C4(char* p) {
+    F32(p, 0x34c) -= 0.25f;
+    if (F32(p, 0x34c) < -8.0f) {
+        F32(p, 0x34c) = -8.0f;
+    }
+    char* base = (char*)PTR(p, 0x3b4);
+    if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
+        F32(p, 0x8) += F32(p, 0x344);
+        F32(p, 0xc) -= F32(p, 0x34c);
+        F32(p, 0x10) = 0.5f;
+        RoomRect r = *(RoomRect*)roomOffset(S32(p, 0x3b4));
+        r.x0 -= -16.0f;
+        r.y0 -= -16.0f;
+        r.x1 += -16.0f;
+        r.y1 += -16.0f;
+        if (F32(p, 0x34c) < 0.0f) {
+            if (U8(PTR(p, 0xbf0), 0x4a) != 0 || !rectIn(r, *(JGeometry::TVec2<f32>*)(p + 8))) {
+                F32(p, 0x10) = 0.0f;
+            }
+        }
+    } else {
+        JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x344), (Vec*)(p + 8));
+        if (F32(p, 0x34c) < 0.0f && F32(p, 0x10) <= 0.0f) {
+            F32(p, 0x10) = 0.0f;
+        }
+    }
+    if (U8(p, 0x3fa) < 6) {
+        U8(p, 0x3fb) = 0;
+    } else if (U8(p, 0x3fa) < 7) {
+        U8(p, 0x458) = 1;
+        U8(p, 0x3fb) = 1;
+    } else if (U8(p, 0x3fa) < 8) {
+        U8(p, 0x3fb) = 2;
+    } else if (U8(p, 0x3fa) < 9) {
+        U8(p, 0x3fb) = 3;
+    } else if (U8(p, 0x3fa) < 11) {
+        U8(p, 0x3fb) = 4;
+    } else {
+        U8(p, 0x3fb) = 5;
+    }
+    if (U8(p, 0x3fa) >= 15) {
+        char* base2 = (char*)PTR(p, 0x3b4);
+        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base2 + 0x31df) != 0 && fn_8022C76C(S32(p, 0x4)) != 0.0f) {
+            JGeometry::TVec3<f32> v;
+            fn_8024B298(p, 2, &v.x);
+            v.y += 2.0f;
+            if (fn_8022461C(&v, PTR(p, 0x3b4)) != 2) {
+                landVel(p);
+            }
+        }
+        if (F32(p, 0x34c) < 0.0f && F32(p, 0x10) <= 0.0f) {
+            landVel(p);
+        }
+    } else {
+        U8(p, 0x3fa)++;
+    }
+    fn_80276E5C(p);
+    fn_802685D4(p);
+}
+extern "C" u8 fn_80234B24(s32);
+inline bool anyBtn(char* p) {
+    u8* s = (u8*)PTR(p, 0xbf0);
+    for (s32 i = 0; i < 8; i++) {
+        if (s[0xb4] == 1 && (i == 2 || i == 4 || i == 5)) {
+            continue;
+        }
+        if (s[i + 0x48] == 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
+void fn_802791B0(char* p) {
+    if (U8(p, 0x3fc) == 0) {
+        JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x350), (Vec*)(p + 8));
+        if (F32(p, 0x10) < 0.0f) {
+            F32(p, 0x10) = 0.0f;
+        }
+        F32(p, 0x358) -= 0.25f;
+        if (F32(p, 0x358) < -4.0f) {
+            F32(p, 0x358) = -4.0f;
+        }
+        U8(p, 0x11e9) = 1;
+        RoomRect r = *(RoomRect*)roomOffset(S32(p, 0x3b4));
+        r.x0 -= -16.0f;
+        r.y0 -= -16.0f;
+        r.x1 += -16.0f;
+        r.y1 += -16.0f;
+        if (!anyBtn(p) && rectIn(r, *(JGeometry::TVec2<f32>*)(p + 8)) &&
+            (!Player_IsLinked(p) || fn_802486A0(p) == 4 || fn_80234B24(Player_GetLinkTargetIndex(p)))) {
+            goto end;
+        }
+        if (U8(p, 0x3fa) >= 20) {
+            if (fn_8024189C(p) <= 0) {
+                fn_80251AEC(p, 0x33);
+            } else {
+                JGeometry::TVec3<f32>& v = *(JGeometry::TVec3<f32>*)(p + 0x344);
+                v.x = F32(p, 0x350);
+                v.y = F32(p, 0x354);
+                v.z = F32(p, 0x358);
+                v.z = 0.0f;
+                v.normalize();
+                v.scale(-2.0f);
+                v.z = 4.0f;
+                U8(p, 0x3fc)++;
+            }
+        }
+    } else {
+        JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x344), (Vec*)(p + 8));
+        if (F32(p, 0x10) < 0.0f && F32(p, 0x34c) < 0.0f) {
+            F32(p, 0x10) = 0.0f;
+            stopVel(p);
+            fn_80251AEC(p, 0);
+        } else if (F32(p, 0x34c) >= -4.0f) {
+            F32(p, 0x34c) -= 0.25f;
+            if (F32(p, 0x34c) < -4.0f) {
+                F32(p, 0x34c) = -4.0f;
+            }
+        }
+    }
+end:
+    if (U8(p, 0x3fa) < 20) {
+        U8(p, 0x3fa)++;
+    }
+    if (U8(p, 0x3fa) < 10) {
+        U8(p, 0x3fd) = 0;
+    } else if (U8(p, 0x3fa) < 14) {
+        U8(p, 0x3fd) = 1;
+    } else {
+        U8(p, 0x3fd) = 2;
+    }
+    fn_80268B3C(p);
+}
+extern "C++" void JPAGetXYZRotateMtx(s16, s16, s16, f32 (*)[4]);
+extern "C" const s32 lbl_8046BC98[];
+inline void groundDustFx(char* p) {
+    if (F32(p, 0x10) <= 0.0f) {
+        if (fn_8022461C(p + 8, PTR(p, 0x3b4)) == 0x39) {
+            if (PTR(p, 0x1370) == NULL) {
+                PTR(p, 0x1370) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3d4, 0, -1, (s32)(p + 0x13a8), NULL, 1, 1.0f);
+            } else {
+                fn_8013CB44(PTR(p, 0x1370), p + 8, 0, -1, 1);
+            }
+            killEmitter(p, 0x136c);
+        } else {
+            if (PTR(p, 0x136c) == NULL) {
+                PTR(p, 0x136c) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3d3, 0, -1, (s32)(p + 0x1398), NULL, 1, 1.0f);
+            } else {
+                fn_8013CB44(PTR(p, 0x136c), p + 8, 0, -1, 1);
+            }
+            killEmitter(p, 0x1370);
+        }
+    }
+}
+inline void landState(char* p) {
+    if (U8(p, 0x3fa) >= 20 && F32(p, 0x10) <= 0.0f) {
+        if (fn_8024189C(p) <= 0) {
+            fn_80251AEC(p, 0x33);
+        } else if (S32(p, 0x1248) == 0x4a || S32(p, 0x1248) == 0x4b) {
+            fn_80251AEC(p, S32(p, 0x1248));
+        } else {
+            fn_80251AEC(p, 0);
+        }
+    }
+}
+void fn_80279824(char* p) {
+    JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x350), (Vec*)(p + 8));
+    if (F32(p, 0x10) < 0.0f) {
+        F32(p, 0x10) = 0.0f;
+    }
+    if (F32(p, 0x358) >= -4.0f) {
+        F32(p, 0x358) -= 0.25f;
+        if (F32(p, 0x358) < -4.0f) {
+            F32(p, 0x358) = -4.0f;
+        }
+    }
+    U8(p, 0x3fa)++;
+    if (U8(p, 0x3fa) < 10) {
+        if (S32(p, 0x488) > 0) {
+            U8(p, 0x3fd) = 0;
+        } else {
+            U8(p, 0x3fd) = 1;
+        }
+    } else if (U8(p, 0x3fa) < 14) {
+        U8(p, 0x3fd) = 2;
+    } else {
+        U8(p, 0x3fd) = 3;
+    }
+    if (S32(p, 0x11e4) == 3) {
+        U8(p, 0x11e9) = 1;
+        RoomRect r = *(RoomRect*)roomOffset(S32(p, 0x3b4));
+        r.x0 -= -16.0f;
+        r.y0 -= -16.0f;
+        r.x1 += -16.0f;
+        // TODO: target keeps the (unused) room rect on the stack
+        landState(p);
+    } else {
+        if (F32(p, 0x10) <= 0.0f) {
+            fn_802808E8(p, 1.5f);
+        }
+        landState(p);
+    }
+    if (PTR(p, 0x135c) != NULL) {
+        switch (S32(p, 0x3dc)) {
+        case 0:
+        case 1:
+        case 3:
+            fn_8013CB44(PTR(p, 0x135c), p + 8, 0, 0, 1);
+            break;
+        case 2:
+            fn_8013CB44(PTR(p, 0x135c), p + 8, 0, -1, 1);
+            break;
+        }
+        JPAGetXYZRotateMtx(0, lbl_8046BC98[S32(p, 0x3dc)], 0, (f32(*)[4])((char*)PTR(p, 0x135c) + 0x68));
+    }
+    if (PTR(p, 0x132c) != NULL) {
+        F32(p, 0x1344) = F32(p, 0x8);
+        F32(p, 0x1348) = F32(p, 0xc);
+        F32(p, 0x134c) = F32(p, 0x10);
+        if (S32(p, 0x3dc) == 2) {
+            F32(p, 0x1348) -= 3.0f;
+        } else if (S32(p, 0x3dc) == 3) {
+            F32(p, 0x1348) += 3.0f;
+        }
+        F32(p, 0x1334) = F32(p, 0x1344);
+        F32(p, 0x1338) = F32(p, 0x1348);
+        F32(p, 0x133c) = F32(p, 0x134c);
+        JPAGetXYZRotateMtx(0, lbl_8046BC98[S32(p, 0x3dc)], 0, (f32(*)[4])((char*)PTR(p, 0x132c) + 0x68));
+    }
+    groundDustFx(p);
+    if (S32(p, 0x11e4) == 0x17 || S32(p, 0x11e4) == 0x19) {
+        fn_802685D4(p);
+    } else {
+        fn_80268B3C(p);
+    }
+}
+extern "C" {
+u8 fn_8024B24C(char*);
+void fn_802D79E8(void* mgr, s32 a, s32 b, f32 x, f32 y);
+void fn_80134DE4(void* game, s32 a, s32 b);
+void fn_802F601C(void*, void*, s32, s32, f32, f32);
+extern const JGeometry::TVec3<f32> lbl_8046BB78[];
+}
+inline void quake(void* pos, s32 room) {
+    if (room < 8) {
+        fn_802F601C(*(void**)(lbl_8053AB10 + 0x20), pos, 1, 0, 1.0f, 1.0f);
+    }
+}
+void fn_8027CC90(char* p) {
+    JGeometry::TVec3<f32>* vel = (JGeometry::TVec3<f32>*)(p + 0x344);
+    if ((!vel->isZero() || F32(p, 0x10) > 0.0f) && U8(p, 0x3fa) >= 11) {
+        F32(p, 0x34c) -= 0.25f;
+        if (F32(p, 0x34c) < -6.5f) {
+            F32(p, 0x34c) = -6.5f;
+        }
+        char* base = (char*)PTR(p, 0x3b4);
+        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
+            F32(p, 0x8) += F32(p, 0x344);
+            F32(p, 0xc) -= F32(p, 0x34c);
+            F32(p, 0x10) = 0.5f;
+            RoomRect r = *(RoomRect*)roomOffset(S32(p, 0x3b4));
+            r.x0 -= -16.0f;
+            r.y0 -= -16.0f;
+            r.x1 += -16.0f;
+            r.y1 += -16.0f;
+            if (F32(p, 0x34c) < 0.0f) {
+                if (U8(PTR(p, 0xbf0), 0x4a) != 0 || !rectIn(r, *(JGeometry::TVec2<f32>*)(p + 8))) {
+                    stopVel(p);
+                    F32(p, 0x10) = 0.0f;
+                }
+            }
+        } else {
+            JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x344), (Vec*)(p + 8));
+            if (F32(p, 0x34c) < 0.0f && F32(p, 0x10) <= 0.0f) {
+                F32(p, 0x10) = 0.0f;
+                stopVel(p);
+            }
+        }
+    }
+    if (U8(p, 0x3fa) < 2) {
+        U8(p, 0x3fb) = 0;
+        U8(p, 0x3fa)++;
+    } else if (U8(p, 0x3fa) < 10) {
+        U8(p, 0x3fb) = 1;
+        U8(p, 0x3fa)++;
+    } else if (U8(p, 0x3fa) < 11) {
+        U8(p, 0x3fb) = 0;
+        U8(p, 0x3fa)++;
+    } else if (U8(p, 0x3fa) < 12) {
+        U8(p, 0x3fb) = 2;
+        char* base = (char*)PTR(p, 0x3b4);
+        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
+            S32(p, 0xbf4) = 10;
+            U8(p, 0x458) = 1;
+        }
+        if (F32(p, 0x10) <= 0.0f) {
+            u16 g = fn_8022461C(p + 8, PTR(p, 0x3b4));
+            if ((g == 3 || g == 14) && !fn_8024B24C(p)) {
+                fn_80251AEC(p, 0);
+            } else {
+                U8(p, 0x458) = 1;
+                S32(p, 0xbf4) = 10;
+                fn_802D79E8(fn_802D6A9C(), S32(p, 0x3b4), 0, 4.0f, 0.0f);
+                fn_80134DE4(lbl_8053AAF8, 1, 0);
+                void* pp = p + 8;
+                if (S32(p, 0x3b4) < 8) {
+                    fn_802F601C(*(void**)(lbl_8053AB10 + 0x20), pp, 1, 0, 1.0f, 1.0f);
+                }
+                fn_8024F0E8(p, 0x20024);
+                fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x23d, 0, 0, 0, NULL, 1, 1.0f);
+                fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x23e, 0, 0, 0, NULL, 1, 1.0f);
+                fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x23f, 0, 0, 0, NULL, 1, 1.0f);
+                if (g == 0x39 || g == 13) {
+                    fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3d0, 0, 0, 0, NULL, 1, 1.0f);
+                    s32 no = S32(p, 0x4);
+                    Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x5c0, (no & 3) | 0x2c, -1, no);
+                } else {
+                    fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3cf, 0, 0, 0, NULL, 1, 1.0f);
+                }
+                Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x14, -1, -1);
+                U8(p, 0x3fa)++;
+            }
+        }
+    } else if (U8(p, 0x3fa) < 20) {
+        U8(p, 0x3fb) = 2;
+        U8(p, 0x3fa)++;
+    } else {
+        U8(p, 0x3fb) = 2;
+        fn_80251AEC(p, 6);
+    }
+    PlayerOfs* po = (PlayerOfs*)p;
+    po->ofs.set(lbl_8046BB78[S32(p, 0x3dc)]);
+    po->ofs += po->pos;
+    if (PTR(p, 0x1274) != NULL) {
+        F32(p, 0x127c) = F32(p, 0x12a4);
+        F32(p, 0x1280) = F32(p, 0x12a8);
+        F32(p, 0x1284) = F32(p, 0x12ac);
+    }
+    if (PTR(p, 0x128c) != NULL) {
+        F32(p, 0x1294) = F32(p, 0x12a4);
+        F32(p, 0x1298) = F32(p, 0x12a8);
+        F32(p, 0x129c) = F32(p, 0x12ac);
+    }
+    s32 id = S32(p, 0x12c0);
+    if (id >= 0) {
+        char* a = (char*)fn_801F666C(fn_801F856C(), id);
+        if (a != NULL) {
+            *(JGeometry::TVec3<f32>*)(a + 0xc) = ((PlayerOfs*)p)->ofs;
+        }
+    }
+    setBox(p, 0x4b0, po_->pos.x - 20.0f, po_->pos.y - 20.0f, 20.0f + po_->pos.x, 20.0f + po_->pos.y);
+    setBox(p, 0x4a0, po_->pos.x - 12.0f, po_->pos.y - 12.0f, 12.0f + po_->pos.x, 12.0f + po_->pos.y);
+    setOfs30c(p, 0.0f, 0.0f);
+    S32(p, 0x3f0) = -1;
+    fn_802685D4(p);
+}
+inline void spawnDeathFx(char* p) {
+    if (fn_80241544(p) <= 1) {
+        fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3b0, 1, 1, 0, NULL, 1, 1.0f);
+        fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3b1, 1, 1, 0, NULL, 1, 1.0f);
+    } else {
+        fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3b2, 1, 1, 0, NULL, 1, 1.0f);
+        fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3b3, 1, 1, 0, NULL, 1, 1.0f);
+    }
+    fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3a7, 1, 1, 0, NULL, 1, 1.0f);
+    fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3a8, 1, 1, 0, NULL, 1, 1.0f);
+    fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3a9, 1, 1, 0, NULL, 1, 1.0f);
+    fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3aa, 1, 1, 0, NULL, 1, 1.0f);
+    fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3ab, 1, 1, 0, NULL, 1, 1.0f);
+    Actor_CreateByID(fn_801F856C(), 'TNGL', PTR(p, 0x3b4), p + 8, 1, -1, S32(p, 0x4));
+}
+inline void reviveLife(char* p) {
+    if (S32(p, 0xd30) == 420) {
+        U8(p, 0xc00) = 0;
+        if (fn_8024189C(p) <= 0) {
+            addLife(p, fn_802417CC(p) - 4, 0);
+        }
+    }
+}
+void fn_8027776C(char* p) {
+    if (U8(lbl_8053AAF8, 0x7e) == 0) {
+        char* a = (char*)fn_801F666C(fn_801F856C(), fn_801F7A08(fn_801F856C(), 'TNGL'));
+        if (a != NULL) {
+            if (a == NULL) {
+                return;
+            }
+            if (U8(a, 0x251) == 0) {
+                return;
+            }
+        }
+        if (S32(p, 0xd30) < 60) {
+            S32(p, 0xd30) = 60;
+            S32(p, 0x3dc) = 2;
+            S32(p, 0x3e8) = 2;
+            spawnDeathFx(p);
+        }
+        reviveLife(p);
+        if (S32(p, 0xd30) >= 480) {
+            U8(p, 0x124d) = 0;
+            fn_80251AEC(p, 0);
+        } else {
+            S32(p, 0xd30)++;
+        }
+    } else {
+        if (S32(p, 0xd30) == 60) {
+            S32(p, 0xd30)++;
+            S32(p, 0x3dc) = 2;
+            S32(p, 0x3e8) = 2;
+            spawnDeathFx(p);
+        }
+        reviveLife(p);
+        if (S32(p, 0xd30) >= 480) {
+            if (!Player_IsLinked(p) || (Player_IsLinked(p) && !fn_80236B50(Player_GetLinkTargetIndex(p)))) {
+                U8(p, 0x124d) = 0;
+                fn_80251AEC(p, 0);
+            }
+        } else {
+            S32(p, 0xd30)++;
+        }
+    }
+}
+extern "C" {
+void fn_80230BF4(s32, s32);
+void fn_80230C6C(s32);
+u8 fn_8025196C(char*, s32);
+extern const JGeometry::TVec3<f32> lbl_8046BC38[];
+}
+void fn_8027A1E0(char* p) {
+    s32 oldDir = S32(p, 0x3dc);
+    fn_8027439C(p);
+    if (F32(p, 0x10) <= 0.0f && (U8(p, 0x3fd) == 1 || U8(p, 0x3fd) == 2)) {
+        fn_8027EB04(p);
+    }
+    if (U8(p, 0x3fd) == 1) {
+        JGeometry::TVec3<f32> v;
+        v.set(lbl_8046BC38[S32(p, 0x3e8)]);
+        v.scale(F32(p, 0xbbc));
+        if (F32(p, 0x10) > 0.0f) {
+            v.scale(0.7f);
+        }
+        *(JGeometry::TVec3<f32>*)(p + 8) += v;
+        if (F32(p, 0x10) <= 0.0f) {
+            fn_8024F0E8(p, 0x40076);
+            if (fn_80246D1C(p, 0x100) != NULL) {
+                F32(p, 0x34c) = 2.0f;
+                fn_8024F0E8(p, 0x2004a);
+            }
+        }
+        if (F32(p, 0x10) > 0.0f || F32(p, 0x34c) > 0.0f) {
+            F32(p, 0x34c) -= 0.1f;
+            F32(p, 0x10) += F32(p, 0x34c);
+            if (F32(p, 0x10) < 0.0f) {
+                F32(p, 0x34c) = 0.0f;
+                F32(p, 0x10) = 0.0f;
+                U8(p, 0x3fb) = 0;
+                U8(p, 0x3fa) = 6;
+            }
+        }
+        if (fn_8022461C(p + 8, PTR(p, 0x3b4)) == 0x39) {
+            if (PTR(p, 0x1378) != NULL && oldDir != S32(p, 0x3dc)) {
+                EmitterObj* e = (EmitterObj*)PTR(p, 0x1378);
+                e->mF4 |= 1;
+                e->m24 = 1;
+                PTR(p, 0x1378) = NULL;
+            }
+            if (PTR(p, 0x1378) == NULL) {
+                if (S32(p, 0x3dc) == 0 || S32(p, 0x3dc) == 1) {
+                    PTR(p, 0x1378) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x250, 0, -1, (s32)(p + 0x13a8), NULL, 1, 1.0f);
+                } else {
+                    PTR(p, 0x1378) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x251, 0, -1, (s32)(p + 0x13a8), NULL, 1, 1.0f);
+                }
+            } else {
+                fn_8013CB44(PTR(p, 0x1378), p + 8, 0, -1, 1);
+            }
+            killEmitter(p, 0x1374);
+        } else {
+            if (PTR(p, 0x1374) != NULL && oldDir != S32(p, 0x3dc)) {
+                EmitterObj* e = (EmitterObj*)PTR(p, 0x1374);
+                e->mF4 |= 1;
+                e->m24 = 1;
+                PTR(p, 0x1374) = NULL;
+            }
+            if (PTR(p, 0x1374) == NULL) {
+                if (S32(p, 0x3dc) == 0 || S32(p, 0x3dc) == 1) {
+                    PTR(p, 0x1374) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x24e, 0, -1, (s32)(p + 0x1398), NULL, 1, 1.0f);
+                } else {
+                    PTR(p, 0x1374) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x24f, 0, -1, (s32)(p + 0x1398), NULL, 1, 1.0f);
+                }
+            } else {
+                fn_8013CB44(PTR(p, 0x1374), p + 8, 0, -1, 1);
+            }
+            killEmitter(p, 0x1378);
+        }
+        U8(p, 0xbb9) = 1;
+        setBox(p, 0xbc4, po_->pos.x - 20.0f, po_->pos.y - 20.0f, 20.0f + po_->pos.x, 20.0f + po_->pos.y);
+        fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+    }
+    fn_802685D4(p);
+    if (U8(p, 0x3fd) == 1) {
+        for (s32 i = 0; i < 8; i++) {
+            JGeometry::TVec3<f32> v;
+            fn_8024B298(p, i, &v.x);
+            v.sub(v, *(JGeometry::TVec3<f32>*)(p + 8));
+            v.scale(2.0f, v);
+            v.add(v, *(JGeometry::TVec3<f32>*)(p + 8));
+            fn_802A20F0(lbl_8053AC98, &v, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+        }
+        if (F32(p, 0x10) <= 0.0f && fn_8025196C(p, S32(p, 0x3dc))) {
+            if (fn_8022AF5C()) {
+                U8(p, 0x3fd) = 2;
+                U8(p, 0x3fa) = 0;
+                U8(p, 0x3fb) = 0;
+                fn_8024F0E8(p, 0x20010);
+                if (0.0f != F32(p, 0x348)) {
+                    fn_802D79E8(fn_802D6A9C(), S32(p, 0x3b4), 0, 4.0f, 0.0f);
+                } else {
+                    fn_802D79E8(fn_802D6A9C(), S32(p, 0x3b4), 0, 0.0f, 4.0f);
+                }
+                switch (S32(p, 0x3dc)) {
+                case 0:
+                    ((JGeometry::TVec3<f32>*)(p + 0x344))->set(-2.5f, 0.0f, 2.0f);
+                    break;
+                case 1:
+                    ((JGeometry::TVec3<f32>*)(p + 0x344))->set(2.5f, 0.0f, 2.0f);
+                    break;
+                case 2:
+                    ((JGeometry::TVec3<f32>*)(p + 0x344))->set(0.0f, -2.5f, 2.0f);
+                    break;
+                case 3:
+                    ((JGeometry::TVec3<f32>*)(p + 0x344))->set(0.0f, 2.5f, 2.0f);
+                    break;
+                }
+            } else {
+                s32 d = S32(p, 0x3dc);
+                for (s32 i = 0; i < 4; i++) {
+                    if (fn_80243194(p, i)) {
+                        switch (d) {
+                        case 0: fn_80230BF4(i, 1); break;
+                        case 1: fn_80230BF4(i, 0); break;
+                        case 2: fn_80230BF4(i, 3); break;
+                        case 3: fn_80230BF4(i, 2); break;
+                        }
+                    }
+                }
+            }
+        }
+    } else if (U8(p, 0x3fd) == 2) {
+        F32(p, 0x34c) -= 0.25f;
+        if (F32(p, 0x34c) < -4.0f) {
+            F32(p, 0x34c) = -4.0f;
+        }
+        JMathInlineVEC::PSVECAdd((Vec*)(p + 8), (Vec*)(p + 0x344), (Vec*)(p + 8));
+        if (F32(p, 0x10) < 0.0f && F32(p, 0x34c) < 0.0f) {
+            F32(p, 0x344) = 0.0f;
+            F32(p, 0x348) = 0.0f;
+            F32(p, 0x34c) = 0.0f;
+            F32(p, 0x10) = 0.0f;
+        }
+    }
+    if (fn_8025F418(p)) {
+        fn_80230C6C(S32(p, 0xd70));
+    }
+}
+extern "C" {
+u8 fn_802265DC(const JGeometry::TVec3<f32>&, void*, s32);
+f32 fn_8022C82C(s32);
+extern const JGeometry::TVec3<f32> lbl_8046BBD8[];
+}
+inline bool wallAt(char* p, f32 x, f32 y) {
+    JGeometry::TVec3<f32> t;
+    t.set(x, y, F32(p, 0x11bc));
+    return fn_802265DC(t, PTR(p, 0x3b4), 1);
+}
+inline void addPos(char* p, const JGeometry::TVec3<f32>& a) {
+    JGeometry::TVec3<f32> v;
+    v.set(a);
+    *(JGeometry::TVec3<f32>*)(p + 8) += v;
+}
+inline void moveToward(char* p) {
+    JGeometry::TVec3<f32> t;
+    fn_8027FA08(p, &t);
+    JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 8);
+    JGeometry::TVec3<f32> d = t - pos;
+    d.z = 0.0f;
+    if (PSVECMag((Vec*)&d) >= 6.0f) {
+        d.normalize();
+        d.scale(6.0f);
+        pos += d;
+    } else {
+        pos.set(t);
+    }
+}
+void fn_8027AAD0(char* p) {
+    fn_80274728(p);
+    fn_8027EB04(p);
+    if (fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4))) {
+        if (fn_8022C82C(S32(p, 0x4)) > 0.0f) {
+            if (!fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+                F32(p, 0x11b4) += 2.0f;
+            }
+        } else if (fn_8022C82C(S32(p, 0x4)) < 0.0f) {
+            if (!fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+                F32(p, 0x11b4) -= 2.0f;
+            }
+        }
+        if (fn_8022C76C(S32(p, 0x4)) < 0.0f) {
+            if (!fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4), 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, 24.0f + F32(p, 0x11b8), F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+                F32(p, 0x11b8) += 2.0f;
+            }
+        } else if (fn_8022C76C(S32(p, 0x4)) > 0.0f) {
+            if (!fn_802265DC(JGeometry::TVec3<f32>(24.0f + F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4), F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1) &&
+                !fn_802265DC(JGeometry::TVec3<f32>(F32(p, 0x11b4) - 24.0f, F32(p, 0x11b8) - 24.0f, F32(p, 0x11bc)), PTR(p, 0x3b4), 1)) {
+                F32(p, 0x11b8) -= 2.0f;
+            }
+        }
+        if (U8(p, 0x3fa) >= 11) {
+            JGeometry::TVec3<f32> t;
+            fn_8027FA08(p, &t);
+            JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 8);
+            JGeometry::TVec3<f32> d = t - pos;
+            d.z = 0.0f;
+            if (PSVECMag((Vec*)&d) >= 6.0f) {
+                d.normalize();
+                d.scale(6.0f);
+                pos += d;
+            } else {
+                pos.set(t);
+            }
+        }
+    } else {
+        addPos(p, lbl_8046BBD8[S32(p, 0x3e8)]);
+    }
+    fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+    fn_802A20F0(lbl_8053AC98, p + 0x30c, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+    fn_80268B3C(p);
+    for (s32 i = 0; i < 8; i++) {
+        JGeometry::TVec3<f32> v;
+        fn_8024B298(p, i, &v.x);
+        v.sub(v, *(JGeometry::TVec3<f32>*)(p + 8));
+        v.scale(2.0f, v);
+        v.add(v, *(JGeometry::TVec3<f32>*)(p + 8));
+        fn_802A20F0(lbl_8053AC98, &v, S32(p, 0x4), PTR(p, 0x3b4), 0, 1);
+    }
+    fn_8024F0E8(p, 0x20029);
+    if (PTR(p, 0x12b8) != NULL) {
+        s32 a = fn_8024EE0C(p);
+        fn_8013CB44(PTR(p, 0x12b8), p + 8, fn_8024EE14(p), a - 1, 0);
+    }
+    if (PTR(p, 0x12bc) != NULL) {
+        JGeometry::TVec3<f32> w(*(JGeometry::TVec3<f32>*)(p + 8));
+        w.x += 20.0f * JMASCos(S16(p, 0x11c0));
+        w.y += 20.0f * JMASSin(S16(p, 0x11c0));
+        s32 a = fn_8024EE0C(p);
+        fn_8013CB44(PTR(p, 0x12bc), &w, fn_8024EE14(p), a + 1, 0);
+    }
+    if (fn_8022461C(p + 8, PTR(p, 0x3b4)) == 0x39) {
+        if (PTR(p, 0x1378) == NULL) {
+            PTR(p, 0x1378) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3d4, 0, -1, (s32)(p + 0x13a8), NULL, 1, 1.0f);
+        } else {
+            fn_8013CB44(PTR(p, 0x1378), p + 8, 0, -1, 1);
+        }
+        killEmitter(p, 0x1374);
+    } else {
+        if (PTR(p, 0x1374) == NULL) {
+            PTR(p, 0x1374) = fn_8013CC50(PTR(p, 0x3b4), p + 8, 0x3d3, 0, -1, (s32)(p + 0x1398), NULL, 1, 1.0f);
+        } else {
+            fn_8013CB44(PTR(p, 0x1374), p + 8, 0, -1, 1);
+        }
+        killEmitter(p, 0x1378);
+    }
+}
 void fn_8027CAA8(char* p) {
     U8(p, 0x458) = 0;
     U8(p, 0x436) = 1;
@@ -2082,6 +3557,77 @@ void fn_8027D4F4(char* p) {
         return;
     }
     S32(p, 0x11cc) = 0;
+}
+inline s32 comboDirCount2(char* p) {
+    PlayerCombo* c = (PlayerCombo*)p;
+    for (int i = 0; i < 4; i++) {
+        if (!(c->mTimerB[i] > 0)) {
+            return i;
+        }
+        bool any = 0;
+        u8* d = c->mDir[i];
+        for (int j = 0; j < 4; j++) {
+            if (d[j] == 1) {
+                any = 1;
+            }
+        }
+        if (!any) {
+            return i;
+        }
+    }
+    return 4;
+}
+void fn_8027DEA0(char* p) {
+    bool full = 0;
+    if (comboDirCount2(p) >= 3) {
+        full = 1;
+        clearCombo(p);
+    } else {
+        fn_80270088(p);
+    }
+    if (!(fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4))) && (full == 1 || S32(p, 0x11c4) > 0)) {
+        S32(p, 0x45c) = 4;
+        fn_8027EB04(p);
+        if (S32(p, 0x3dc) == 0) {
+            ((JGeometry::TVec3<f32>*)(p + 0x344))->set(4.0f, 0.0f, 1.0f);
+        } else if (S32(p, 0x3dc) == 1) {
+            ((JGeometry::TVec3<f32>*)(p + 0x344))->set(-4.0f, 0.0f, 1.0f);
+        } else if (S32(p, 0x3dc) == 2) {
+            ((JGeometry::TVec3<f32>*)(p + 0x344))->set(0.0f, 4.0f, 1.0f);
+        } else {
+            ((JGeometry::TVec3<f32>*)(p + 0x344))->set(0.0f, -4.0f, 1.0f);
+        }
+        F32(p, 0x10) = 0.0f;
+    } else if (!(fn_802486A0(p) == 3 && !fn_8023434C(S32(p, 0x4))) && S32(p, 0x11cc) > 0 &&
+               ((S32(p, 0x11d0) == 0 && fn_80247330(p) < 0.0f) || (S32(p, 0x11d0) == 1 && fn_80247330(p) > 0.0f) ||
+                (S32(p, 0x11d0) == 2 && fn_8024712C(p) > 0.0f) || (S32(p, 0x11d0) == 3 && fn_8024712C(p) < 0.0f))) {
+        S32(p, 0x45c) = 3;
+    } else if (comboDirCount2(p) == 0) {
+        if (comboFreeSlot(p) <= 2) {
+            S32(p, 0x45c) = 2;
+        } else if (comboFreeSlot(p) == 3) {
+            S32(p, 0x45c) = 0;
+        } else {
+            S32(p, 0x45c) = 1;
+        }
+    } else {
+        if (comboFreeSlot(p) <= 2) {
+            S32(p, 0x45c) = 0;
+        } else {
+            S32(p, 0x45c) = 1;
+        }
+    }
+    if (S32(p, 0x45c) == 4) {
+        U8(p, 0x458) = 0;
+        S32(p, 0xbf4) = 8;
+        fn_8024F0E8(p, 0x1000b);
+    } else {
+        U8(p, 0x458) = 1;
+        S32(p, 0xbf4) = 4;
+        fn_8024F0E8(p, 0x10000);
+    }
+    fn_8024F0E8(p, 0x20000);
+    S32(p, 0x3f0) = S32(p, 0x3dc);
 }
 }
 
