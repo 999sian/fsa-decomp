@@ -1239,6 +1239,53 @@ void fn_8027AA10(char* p) {
     DELETE_JPA(p, 0x1378);
     U16(p, 0x11c0) = 0;
 }
+void fn_8027BA2C(char* p) {
+    switch (S32(p, 0x11ac)) {
+    case 1: S32(p, 0xbf4) = 8; break;
+    case 2: S32(p, 0xbf4) = 6; break;
+    case 3: S32(p, 0xbf4) = 4; break;
+    case 4: S32(p, 0xbf4) = 8; break;
+    default: S32(p, 0xbf4) = 4; break;
+    }
+    U8(p, 0x458) = 1;
+    fn_8027EB04(p);
+    fn_8024F0E8(p, 0x10001);
+    fn_8024F0E8(p, 0x20001);
+    fn_8024F0E8(p, 0x2000e);
+    clearCombo(p);
+    PlayerOfs* po = (PlayerOfs*)p;
+    *(JGeometry::TVec3<f32>*)(p + 0x11b4) = po->pos;
+    switch (S32(p, 0x4)) {
+    case 0: {
+        char* base = (char*)PTR(p, 0x3b4);
+        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
+            F32(p, 0x11b8) -= 4.0f;
+        } else {
+            F32(p, 0x11b8) += 16.0f;
+        }
+        break;
+    }
+    case 1:
+        F32(p, 0x11b4) += 16.0f;
+        break;
+    case 2:
+        F32(p, 0x11b4) -= 16.0f;
+        break;
+    case 3: {
+        char* base = (char*)PTR(p, 0x3b4);
+        if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) != 0) {
+            F32(p, 0x11b8) += 4.0f;
+        } else {
+            F32(p, 0x11b8) -= 16.0f;
+        }
+        break;
+    }
+    }
+    S16(p, 0x11c0) = 0;
+    if (PTR(p, 0x12bc) == NULL) {
+        PTR(p, 0x12bc) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0x26a, 0, 1, 0, NULL, 1, 1.0f);
+    }
+}
 void fn_802356B8(s32);
 u8 fn_8022E438(s32, s32);
 void fn_8027BC90(char* p) {
