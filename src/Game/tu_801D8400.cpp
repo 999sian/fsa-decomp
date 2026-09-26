@@ -618,4 +618,118 @@ extern "C" void fn_801D9C58(char* p, s32 state) {
     *(s32*)(p + 0x248) = state;
 }
 
+#include "JSystem/JMath/JMath.h"
+extern "C" s32 fn_801D0338(void* this_, JGeometry::TVec3<f32>* pos, s16 ang);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 player);
+extern "C" u8 fn_801DA894(void* p);
+extern "C" void* fn_801F856C();
+extern "C" s32 Actor_CreateByID(void* mgr, u32 type, s32 room, JGeometry::TVec3<f32>* pos, s32 a, s32 b, s32 c);
+extern "C" char* fn_801F666C(void* mgr, s32 id);
+extern const f32 lbl_8053F200;
+extern const f32 lbl_8053F204;
+extern const f32 lbl_8053F208;
+extern const f32 lbl_8053F20C;
+extern const f32 lbl_8053F220;
+
+static inline void t84FrontPos(char* p, JGeometry::TVec3<f32>* v) {
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        v->set(*(f32*)(p + 0xc) - lbl_8053F204, lbl_8053F200 + *(f32*)(p + 0x10), lbl_8053F1CC);
+    } else {
+        v->set(lbl_8053F204 + *(f32*)(p + 0xc), lbl_8053F200 + *(f32*)(p + 0x10), lbl_8053F1CC);
+    }
+}
+
+static inline s16 t84FaceAngle(char* p) {
+    return (*(u32*)(p + 0x230) & 0x2000) ? 0x2000 : -0x2000;
+}
+
+static inline s32 t84FindPlayer(char* p) {
+    s32 found = -1;
+    JGeometry::TVec3<f32> v;
+    t84FrontPos(p, &v);
+    s16 ang = t84FaceAngle(p);
+    s32 pl = fn_801D0338(p, &v, ang);
+    if (pl >= 0) {
+        f32 dy = fn_8023E724(pl)->y - v.y;
+        f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
+        s16 d = ang - (s16)(a * lbl_8053F208);
+        if (lbl_8053F20C * __fabsf(d) <= lbl_8053F1F0) {
+            found = pl;
+        }
+    }
+    return found;
+}
+
+extern "C" void fn_801D9960(char* p) {
+    if (*(u16*)(p + 0x33c) != 0) {
+        (*(u16*)(p + 0x33c))--;
+    }
+    if (*(u16*)(p + 0x33c) == 0) {
+        if (t84FindPlayer(p) >= 0 && fn_801DA894(p + 0x2a8)) {
+            fn_801D9C58(p, 0xd);
+        }
+    }
+    if (*(s32*)(p + 0x248) == 0xb) {
+        (*(u16*)(p + 0x338))--;
+        if (*(u16*)(p + 0x338) == 0) {
+            t84PickTarget(p);
+            bool turn = false;
+            bool left = false;
+            f32 x = *(f32*)(p + 0xc);
+            f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
+            if (x < tx || (x == tx && (*(u32*)(p + 0x230) & 0x2000))) {
+                left = true;
+            }
+            if (left) {
+                if (!(*(u32*)(p + 0x230) & 0x2000)) {
+                    turn = true;
+                }
+            } else {
+                if (*(u32*)(p + 0x230) & 0x2000) {
+                    turn = true;
+                }
+            }
+            if (turn) {
+                fn_801D9C58(p, 0xc);
+            }
+        }
+    }
+}
+
+extern "C" BOOL fn_801D95F4(char* p) {
+    BOOL ok = FALSE;
+    JGeometry::TVec3<f32> pos;
+    t84FrontPos(p, &pos);
+    s32 id = Actor_CreateByID(fn_801F856C(), 0x424f4942, *(s32*)(p + 4), &pos, 0, -1, -1);
+    if (id >= 0) {
+        char* a = fn_801F666C(fn_801F856C(), id);
+        if (a != NULL) {
+            s32 pl = t84FindPlayer(p);
+            JGeometry::TVec2<f32> dir;
+            if (pl >= 0) {
+                dir.y = fn_8023E724(pl)->y - pos.y;
+                dir.x = fn_8023E724(pl)->x - pos.x;
+                if (dir.squared() <= JGeometry::TUtilf::epsilon()) {
+                    dir.set(lbl_8053F1D8, lbl_8053F1CC);
+                } else {
+                    dir.normalize();
+                }
+            } else {
+                s16 ang = -t84FaceAngle(p);
+                f32 sn = JMASSin(ang);
+                f32 cs = JMASCos(ang);
+                dir.x = lbl_8053F1CC * cs - lbl_8053F1D8 * sn;
+                dir.y = lbl_8053F1CC * sn + lbl_8053F1D8 * cs;
+            }
+            s16 r = -(s16)(fn_801CD664(0xe39) - 0x71c);
+            f32 sn = JMASSin(r);
+            f32 cs = JMASCos(r);
+            JGeometry::TVec3<f32> vel((dir.x * cs - dir.y * sn) * lbl_8053F220, (dir.x * sn + dir.y * cs) * lbl_8053F220, lbl_8053F1CC);
+            *(JGeometry::TVec3<f32>*)(a + 0x3c) = vel;
+            ok = TRUE;
+        }
+    }
+    return ok;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
