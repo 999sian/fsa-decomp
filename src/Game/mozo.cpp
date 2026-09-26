@@ -3,7 +3,7 @@
 // child release, dtor.
 #include "types.h"
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern void* lbl_804A0668[];
@@ -58,7 +58,7 @@ extern "C" void* fn_801676A8(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A0668;
         fn_801EE434(*(void**)(this_ + 0x26c));
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

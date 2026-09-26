@@ -129,7 +129,7 @@ extern "C" void fn_801AF678(char* this_) {
 extern void* lbl_8053AAF8;
 extern "C" s32 fn_80138A30(void* game);
 extern "C" void* fn_801F856C(void);
-extern "C" s32 fn_801F9484(void* mgr, u32 id, u32 arg, void* pos, u32 arg2, s32 a, s32 b);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, u32 arg, void* pos, u32 arg2, s32 a, s32 b);
 extern u32 lbl_804A33B8[];
 extern u32 lbl_804A33C4[];
 
@@ -154,7 +154,7 @@ extern "C" void fn_801AF05C(char* this_) {
         s32 i = 0;
         u32 arg = lbl_804A33C4[i];
         u32 id = lbl_804A33B8[i];
-        if (fn_801F9484(fn_801F856C(), id, *(u32*)(this_ + 4), this_ + 0xc, arg, -1, -1) >= 0) {
+        if (Actor_CreateByID(fn_801F856C(), id, *(u32*)(this_ + 4), this_ + 0xc, arg, -1, -1) >= 0) {
             *(u8*)(this_ + 0x11c) = 0;
         }
         return;

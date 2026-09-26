@@ -10,30 +10,34 @@ void Wave_EmptyHook(void) {}
 
 }
 
-// ---- fn_802E72A8 ----
-struct WaveSinkBase { void* pad0; void* pad1; };
-struct WaveSink : WaveSinkBase {
-    virtual void s0();
-    virtual void s1();
-    virtual void s2();
-    virtual void Send(u32* msg);
+// fn_802E72A8 - WAVE: update(). Sends message 0x3003c to the linked object
+// (this->0x230, interface vtable at +8, slot 5); when this->0x234 is zero,
+// re-arms it to 60 and sends 0x3003d.
+struct WaveMsg { u32 id; };
+struct WaveTargetBase { u8 pad[8]; };
+struct WaveTarget : WaveTargetBase {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void send(WaveMsg*);
 };
 
-extern "C" void fn_802E72A8(char* p) {
-    u32 m0 = 0x3003c;
-    (*(WaveSink**)(p + 0x230))->Send(&m0);
-    if (*(s32*)(p + 0x234) == 0) {
-        *(s32*)(p + 0x234) = 0x3c;
-        u32 m1 = 0x3003d;
-        (*(WaveSink**)(p + 0x230))->Send(&m1);
+extern "C" void fn_802E72A8(void* this_) {
+    WaveMsg m1;
+    m1.id = 0x3003c;
+    WaveTarget* t = *(WaveTarget**)((char*)this_ + 0x230);
+    t->send(&m1);
+    if (*(s32*)((char*)this_ + 0x234) == 0) {
+        WaveMsg m2;
+        *(s32*)((char*)this_ + 0x234) = 60;
+        m2.id = 0x3003d;
+        t = *(WaveTarget**)((char*)this_ + 0x230);
+        t->send(&m2);
     }
 }
 
 // ---- Wave_dtor_802E732C.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
 extern void* lbl_804A9EA8[];
 
 struct NonPolyBase {
@@ -70,7 +74,7 @@ extern "C" void* fn_802E732C(void* this_, short how) {
         }
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -110,4 +114,19 @@ extern "C" void Wave_SetParams(void* this_) {
     *(WaveController**)(p + 0x230) = new WaveController(0, 0, 8);
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

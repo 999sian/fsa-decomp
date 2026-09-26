@@ -75,7 +75,7 @@ extern EnbzGame* lbl_8053AAF8;
 extern u32 lbl_804A2C80[];
 
 extern "C" void* fn_801F856C(void);
-extern "C" s32 fn_801F9484(void* mgr, u32 id, u32 arg, EnbzVec* pos, u32 arg2, s32 a, s32 b);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 id, u32 arg, EnbzVec* pos, u32 arg2, s32 a, s32 b);
 extern "C" void* fn_801F666C(void* mgr, s32 handle);
 
 extern "C" void fn_801A3610(ENBZ* this_) {
@@ -106,9 +106,9 @@ extern "C" void fn_801A3610(ENBZ* this_) {
                     }
                     pos.x += 8.0f - 16.0f * lbl_8053AAF8->rnd.get_ufloat_1();
                     pos.y += 8.0f - 16.0f * lbl_8053AAF8->rnd.get_ufloat_1();
-                    this_->handles[i] = fn_801F9484(fn_801F856C(), id, this_->m_4, &pos, arg, -1, -1);
+                    this_->handles[i] = Actor_CreateByID(fn_801F856C(), id, this_->m_4, &pos, arg, -1, -1);
                     if (this_->handles[i] != 0) {
-                        fn_801F9484(fn_801F856C(), 'HBMB', this_->m_4, &pos, 0xb, -1, -1);
+                        Actor_CreateByID(fn_801F856C(), 'HBMB', this_->m_4, &pos, 0xb, -1, -1);
                     }
                 }
             }

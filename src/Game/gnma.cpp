@@ -3,7 +3,7 @@
 // (TODO), dtor, init (TODO).
 #include "types.h"
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_80138B7C(void* game);
@@ -49,7 +49,7 @@ extern "C" void* fn_801AC324(char* this_, s16 freeFlag) {
                 fn_80138B7C(lbl_8053AAF8);
             }
         }
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

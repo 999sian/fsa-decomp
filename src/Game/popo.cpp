@@ -2,7 +2,7 @@
 // Functions: dtor, draw (slot 6), update (slot 3, not yet decompiled), init (slot 1).
 #include "types.h"
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, f32 sx, f32 sy, s32 a, s32 b);
 extern void* lbl_804A0868[];
@@ -23,7 +23,7 @@ extern PopoGame* lbl_8053AAF8;
 extern "C" void* fn_80172170(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A0868;
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

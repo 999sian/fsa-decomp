@@ -117,7 +117,7 @@ extern "C" void fn_801A961C(char* this_) {
     }
 }
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_80138B7C(void* game);
@@ -136,7 +136,7 @@ extern "C" void* fn_801AA464(char* this_, s16 freeFlag) {
         if (*(s32*)(this_ + 0x258) == 5) {
             lbl_8053ABD0--;
         }
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

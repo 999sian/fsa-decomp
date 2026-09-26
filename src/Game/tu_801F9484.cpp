@@ -1045,7 +1045,7 @@ SMRI::SMRI() {
 // project_fsa_multiple_inheritance_pattern.md). lbl_804A5958 is
 // shared with sibling constructors using the exact same intermediate
 // vtable, meaning several of these actors share one un-landed mixin
-// base class. Identified via the fn_801F9484 dispatcher sweep (see
+// base class. Identified via the Actor_CreateByID dispatcher sweep (see
 // reference_fsa_full_dispatch_sweep.md).
 
 extern "C" void* Actor_ctor(void* this_);

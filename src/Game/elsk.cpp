@@ -4,9 +4,7 @@
 
 // ---- Emsk_dtor_802EF448.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
+extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AA498[];
 
 extern "C" void* fn_802EF448(void* this_, short how) {
@@ -28,22 +26,24 @@ void Emsk_EmptyHook(void) {}
 
 }
 
-// ---- fn_802EF4AC ----
+// fn_802EF4AC - update(): counts down this->0x234; on expiry notifies the
+// room config (fn_802D9FF4) with the pair selected by this->0x230 and plays
+// sound 0xf through the global sound object.
+struct ElskPair { u32 a; u32 b; };
+extern const ElskPair lbl_8046F610[3];
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D9FF4(void* rec, u32 a, u32 b);
-static inline void elskSet(u32 a, u32 b) { fn_802D9FF4(fn_802D6A9C(), a, b); }
-extern "C" void fn_80136798(void* mgr, s32 a, s32 b);
-struct ElskEntry { u32 a; u32 b; };
-extern const ElskEntry lbl_8046F610[3];
-extern void* lbl_8053AAF8;
+extern "C" void fn_80136798(void* obj, int id, int arg);
+extern void* lbl_8053AAF8[2];
 
 extern "C" void fn_802EF4AC(void* this_) {
-    char* p = (char*)this_;
-    (*(s32*)(p + 0x234))--;
-    if (*(s32*)(p + 0x234) == 0) {
-        s32 idx = *(s32*)(p + 0x230);
-        elskSet(lbl_8046F610[idx].a, lbl_8046F610[idx].b);
-        fn_80136798(lbl_8053AAF8, 0xf, 0);
+    *(s32*)((char*)this_ + 0x234) = *(s32*)((char*)this_ + 0x234) - 1;
+    if (*(s32*)((char*)this_ + 0x234) == 0) {
+        // NONMATCHING (99.2%): retail swaps r30/r31 (offset vs value).
+        s32 i = *(s32*)((char*)this_ + 0x230);
+        u32 a = lbl_8046F610[i].a;
+        fn_802D9FF4(fn_802D6A9C(), a, lbl_8046F610[i].b);
+        fn_80136798(lbl_8053AAF8[0], 0xf, 0);
     }
 }
 
@@ -60,4 +60,19 @@ void Emsk_SetParams(void* thisPtr) {
 }
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

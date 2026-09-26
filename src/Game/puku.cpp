@@ -2,7 +2,7 @@
 // Functions: dtor, draw (slot 6, TODO), update (slot 3, TODO), tile check, init (slot 1).
 #include "types.h"
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" u16 fn_8022461C(void* pos);
 extern void* lbl_804A11B8[];
@@ -23,7 +23,7 @@ extern PukuGame* lbl_8053AAF8;
 extern "C" void* fn_8017B140(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A11B8;
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

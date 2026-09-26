@@ -45,7 +45,7 @@ extern "C" void fn_801A0B8C(void* this_) {
     }
 }
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_8022AF2C(void);
@@ -72,7 +72,7 @@ extern "C" void* fn_801A2F90(char* this_, s16 freeFlag) {
         for (int i = 0; i < 4; i++) {
             fn_801EE434(((Handles_tenn*)this_)->h[i]);
         }
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

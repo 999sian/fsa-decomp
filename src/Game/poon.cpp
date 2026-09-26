@@ -2,7 +2,7 @@
 // Functions: dtor, draw (slot 6, TODO), update (slot 3, TODO), init (slot 1).
 #include "types.h"
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804A06C0[];
 
@@ -10,7 +10,7 @@ extern void* lbl_804A06C0[];
 extern "C" void* fn_80167938(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A06C0;
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

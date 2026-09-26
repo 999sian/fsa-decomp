@@ -4,9 +4,6 @@
 
 // ---- fn_802E40A8_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
 extern void* lbl_804A9C78[];
 
 extern "C" void* fn_802E40A8(void* this_, s16 freeFlag) {
@@ -14,7 +11,7 @@ extern "C" void* fn_802E40A8(void* this_, s16 freeFlag) {
         *(void**)this_ = lbl_804A9C78;
         __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -27,19 +24,6 @@ extern "C" {
 
 void Senp_EmptyHook(void) {}
 
-}
-
-// ---- fn_802E410C ----
-extern "C" void* fn_801F1184(void* this_);
-extern "C" void fn_804561D8(void* obj, u32* id, u8 a, s32 b, u8 c);
-extern const u32 lbl_8046F0B8[4];
-extern const u8 lbl_805411F8[8];
-
-extern "C" void fn_802E410C(void* this_) {
-    char* p = (char*)this_;
-    void* obj = fn_801F1184(this_);
-    u32 id = lbl_8046F0B8[*(s32*)(p + 0x234)];
-    fn_804561D8(obj, &id, lbl_805411F8[*(s32*)(p + 0x238)], 0, *(u8*)(p + 0x23c));
 }
 
 // ---- SpawnParamBits_802E416C.cpp ----
@@ -56,6 +40,20 @@ struct ActorSlot5 {
     virtual void slot5();
 };
 
+extern "C" void* fn_801F1184(void* this_);
+extern "C" void fn_804561D8(void* obj, u32* id, u8 a, int b, u8 c);
+extern const u32 lbl_8046F0B8[];
+extern const u8 lbl_805411F8[8];
+
+// fn_802E410C - SENP: init/setup; looks up a table id by this->0x234 and a
+// byte parameter by this->0x238, then forwards to fn_804561D8.
+extern "C" void fn_802E410C(void* this_) {
+    u32 id;
+    void* obj = fn_801F1184(this_);
+    id = lbl_8046F0B8[*(u32*)((char*)this_ + 0x234)];
+    fn_804561D8(obj, &id, lbl_805411F8[*(u32*)((char*)this_ + 0x238)], 0, *(u8*)((char*)this_ + 0x23c));
+}
+
 extern "C" void fn_802E416C(void* this_) {
     *(u32*)((char*)this_ + 0x234) = *(u32*)((char*)this_ + 0x90) & 0xFFF;
     *(u32*)((char*)this_ + 0x238) = (*(u32*)((char*)this_ + 0x90) >> 24) & 0x7;
@@ -63,4 +61,19 @@ extern "C" void fn_802E416C(void* this_) {
     ((ActorSlot5*)this_)->slot5();
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

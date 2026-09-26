@@ -4,9 +4,6 @@
 
 // ---- fn_802E6EC4_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
 extern void* lbl_804A9E50[];
 
 extern "C" void* fn_802E6EC4(void* this_, s16 freeFlag) {
@@ -14,24 +11,26 @@ extern "C" void* fn_802E6EC4(void* this_, s16 freeFlag) {
         *(void**)this_ = lbl_804A9E50;
         __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
 }
 
-// ---- fn_802E6F24 ----
+// fn_802E6F24 - draw(): spawns effect 0x26d + this->0x238 at the actor's
+// position via fn_803075AC; the "visible" arg is this->0x234 != 0.
 extern "C" void fn_803075AC(u32 callerID, u32 ownerID, void* posPtr, s32 effectRef,
-                             s32 unused, s32 mode, s32 targetPlayerIdx, s32 kind,
-                             s32 stackArg9, s32 stackArg10);
+                            bool flag, s32 mode, s32 targetPlayerIdx, s32 kind,
+                            s32 stackArg9, s32 stackArg10);
 
-extern "C" void fn_802E6F24(char* p) {
-    s32 f = 0;
-    if (*(s32*)(p + 0x234) != 0) {
-        f = 1;
+extern "C" void fn_802E6F24(void* this_) {
+    int on = 0;
+    if (*(s32*)((char*)this_ + 0x234) != 0) {
+        on = 1;
     }
-    fn_803075AC(*(u32*)(p + 0x198), *(u32*)(p + 0x4), p + 0xc, *(s32*)(p + 0x238) + 0x26d,
-                f != 0, 2, -1, 1, 0, 0);
+    fn_803075AC(*(u32*)((char*)this_ + 0x198), *(u32*)((char*)this_ + 0x4),
+                (char*)this_ + 0xc, *(s32*)((char*)this_ + 0x238) + 0x26d,
+                on, 2, -1, 1, 0, 0);
 }
 
 // ---- stub_802e6f94.cpp ----
@@ -90,4 +89,19 @@ extern "C" void fn_802E7038(void* thisObj) {
 	}
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -4,9 +4,7 @@
 
 // ---- fn_8032AB80_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
+extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AB6D8[];
 
 extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
@@ -18,6 +16,51 @@ extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+// RUPY: small helpers.
+extern const f32 lbl_80541D88;
+extern "C" void fn_8032D534(char* p) {
+    *(f32*)(p + 0x44) = lbl_80541D88;
+    *(f32*)(p + 0x40) = lbl_80541D88;
+    *(f32*)(p + 0x3c) = lbl_80541D88;
+    if (*(s32*)(p + 0x24c) < 800) {
+        *(s32*)(p + 0x24c) = 800;
+    }
+    *(s32*)(p + 0x230) = 1;
+}
+
+extern const u32 lbl_804719D8[];
+extern "C" u32 fn_8032D564(void* p, s32 i) { return lbl_804719D8[i]; }
+
+// NONMATCHING (93.1%): the constant extent copy is scheduled before the
+// register saves here, after them in retail.
+// fn_8032D578 - RUPY: can the rupee land at pos? Checks the collision map
+// first, then the tile type.
+struct RupyPt { f32 x, y; };
+extern const RupyPt lbl_80541D80;
+extern "C" u8* fn_8020D58C();
+extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, u32 id, RupyPt* ext);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" bool fn_802265DC(void* pos, s32 room, s32 a);
+extern "C" u8 fn_8032D578(char* p, s32 room, void* pos) {
+    RupyPt ext = lbl_80541D80;
+    u32 id = *(u32*)(p + 0x198);
+    u8* mgr = fn_8020D58C();
+    if (fn_8020D6AC(mgr + 4 + mgr[1] * 0x784, room, pos, id, &ext) == 1) {
+        return 1;
+    }
+    bool ok;
+    s32 t = fn_8022461C(pos, room);
+    if (t == 0x3b || t == 0x23) {
+        ok = 0;
+    } else {
+        ok = fn_802265DC(pos, room, 0);
+    }
+    if (!ok) {
+        *(u8*)(p + 0x283) = 0;
+    }
+    return ok;
 }
 
 // ---- FlagClear_8032D660.cpp ----
@@ -54,4 +97,19 @@ extern "C" void fn_8032D660(void* this_) {
     }
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

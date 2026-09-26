@@ -1,6 +1,23 @@
 // TU 0x80313c20-0x80316e34 (actor TWTG).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#ifndef unknown
+#define unknown jsys_unknown
+#endif
+#include "JSystem/JGeometry/Vec.h"
+#include "Game/AnimEffectRec.h"
 
 // ---- Twtg_ctor_80316A60.cpp ----
 // fn_80316A60 - "TWTG" real constructor. Identical shape to FTGL/JIJI -
@@ -31,7 +48,163 @@ extern "C" void* lbl_804AAD60[];
 class Twtg : public Actor {
 public:
     Twtg();
+    void update();
 };
+
+extern "C" void fn_80315C80(void) {}
+
+// fn_8031662C - TWTG: draw(). Picks the frame from the animated effect
+// record while it runs (playing its sound on mode changes), else from the
+// idle table, then draws the model and its effect.
+extern const s32 lbl_80471518[];
+extern const char lbl_80471528[];
+extern const f32 lbl_80541888;
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
+extern "C" void fn_803075AC(u32 callerID, u32 ownerID, void* posPtr, s32 effectRef, s32 flag,
+                            s32 mode, s32 targetPlayerIdx, s32 kind, s32 stackArg9, s32 stackArg10);
+
+extern "C" void fn_8031662C(char* p) {
+    s32 frame;
+    if (*(s32*)(p + 0x230) == 3) {
+        return;
+    }
+    if (*(s32*)(p + 0x234) == 1 && *(s32*)(p + 0x254) >= 0) {
+        s32 snd = fn_80316E74(*(AnimEffectRec**)(p + 0x278), *(s32*)(p + 0x254));
+        if (fn_80316E34(*(AnimEffectRec**)(p + 0x278)) >= 0) {
+            frame = fn_80316E34(*(AnimEffectRec**)(p + 0x278));
+            if ((u32)snd != 0xFFFFFFFF) {
+                fn_801F0E34(p, snd, 0);
+            }
+        } else {
+            frame = lbl_80471518[*(s32*)(p + 0x270)];
+        }
+    } else {
+        frame = lbl_80471518[*(s32*)(p + 0x270)];
+    }
+    fn_801F06F0(p, lbl_80471528, frame + 0xc0, 0, 7, lbl_80541888, lbl_80541888);
+    fn_803075AC(*(u32*)(p + 0x198), *(u32*)(p + 0x4), p + 0xc, frame + 0xc0, 0, 2, -1, 0, 0, 0);
+}
+
+struct TwtgPt { f32 x, y; };
+struct TwtgBox { TwtgPt min, max; };
+extern "C" void fn_80239914(TwtgBox* box, u32 room, u32 id);
+typedef void (Twtg::*TwtgStateFn)();
+extern TwtgStateFn lbl_804AACDC[];
+
+// fn_80316754 - TWTG: update(). Refreshes the collision box and runs the
+// state handler from the member-function table lbl_804AACDC.
+void Twtg::update() {
+    char* p = (char*)this;
+    TwtgBox box;
+    box.min.x = *(f32*)(p + 0x60);
+    box.min.y = *(f32*)(p + 0x64);
+    box.max.x = *(f32*)(p + 0x68);
+    box.max.y = *(f32*)(p + 0x6c);
+    box.min.x += *(f32*)(p + 0xc);
+    box.min.y += *(f32*)(p + 0x10);
+    box.max.x += *(f32*)(p + 0xc);
+    box.max.y += *(f32*)(p + 0x10);
+    fn_80239914(&box, *(u32*)(p + 0x4), *(u32*)(p + 0x198));
+    (this->*lbl_804AACDC[*(s32*)(p + 0x230)])();
+}
+
+// fn_803167F4 - TWTG: setParams().
+extern const f32 lbl_80541898;
+extern const f32 lbl_8054189C;
+extern const f32 lbl_805418A0;
+extern const f32 lbl_805418A4;
+extern const f32 lbl_805418A8;
+extern const f32 lbl_805418AC;
+extern const f32 lbl_805418B0;
+extern const f32 lbl_805418B4;
+extern const s32 lbl_804714F8[];
+extern const s32 lbl_804714D8[];
+extern u8 lbl_8050EC80[];
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7844(void* rec, s32 a, s32 b);
+
+static inline u8 twtgHasItem(s32 k) {
+    u8* g = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+    s32 r = (u8)(1 << k) & g[0x7a];
+    return r != 0;
+}
+
+extern "C" void fn_803167F4(char* p) {
+    *(u32*)(p + 0x230) = *(u32*)(p + 0x90) & 3;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x240) = 0;
+    *(u32*)(p + 0x23c) = (*(u32*)(p + 0x90) >> 4) & 7;
+    if (*(s32*)(p + 0x230) == 0) {
+        *(f32*)(p + 0x60) = lbl_80541898;
+        *(f32*)(p + 0x64) = lbl_80541898;
+        *(f32*)(p + 0x68) = lbl_8054189C;
+        *(f32*)(p + 0x6c) = lbl_8054189C;
+        *(f32*)(p + 0x258) = lbl_805418A0;
+        *(f32*)(p + 0x25c) = lbl_805418A4;
+        *(f32*)(p + 0x260) = lbl_805418A8;
+        *(f32*)(p + 0x264) = lbl_805418AC;
+        for (s32 i = 0; i < 4; i++) {
+            fn_802D7844(fn_802D6A9C(), 0, i);
+        }
+    } else if (*(s32*)(p + 0x230) == 3) {
+        *(f32*)(p + 0x60) = lbl_805418B0;
+        *(f32*)(p + 0x64) = lbl_805418B0;
+        *(f32*)(p + 0x68) = lbl_805418B4;
+        *(f32*)(p + 0x6c) = lbl_805418B4;
+        *(f32*)(p + 0x258) = lbl_805418B0;
+        *(f32*)(p + 0x25c) = lbl_805418B0;
+        *(f32*)(p + 0x260) = lbl_805418B4;
+        *(f32*)(p + 0x264) = lbl_805418B4;
+    } else {
+        *(s32*)(p + 0x230) = lbl_804714F8[*(s32*)(p + 0x23c)];
+        *(f32*)(p + 0x60) = lbl_80541898;
+        *(f32*)(p + 0x64) = lbl_80541898;
+        *(f32*)(p + 0x68) = lbl_8054189C;
+        *(f32*)(p + 0x6c) = lbl_8054189C;
+        *(f32*)(p + 0x258) = lbl_805418A0;
+        *(f32*)(p + 0x25c) = lbl_805418A0;
+        *(f32*)(p + 0x260) = lbl_805418A8;
+        *(f32*)(p + 0x264) = lbl_805418A8;
+    }
+    s32 k = *(s32*)(p + 0x23c);
+    // NONMATCHING (99.1%): retail tests the bool with srwi. (no cmplwi).
+    if (twtgHasItem(k) == 1) {
+        *(s32*)(p + 0x268) = lbl_804714D8[k];
+    } else {
+        *(s32*)(p + 0x268) = 0x473;
+    }
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 1;
+    *(s32*)(p + 0x24c) = 2;
+    *(s32*)(p + 0x250) = 3;
+    *(s32*)(p + 0x254) = -1;
+    *(s32*)(p + 0x238) = 0;
+    *(u8*)(p + 0x26c) = 0;
+    *(s32*)(p + 0x270) = 2;
+    *(s32*)(p + 0x274) = 0;
+    s32 room = *(s32*)(p + 0x4);
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
+    fn_80316E50(*(AnimEffectRec**)(p + 0x278), room, pos);
+}
+
+// fn_803169E0 - TWTG: destructor.
+extern "C" void __dt__5ActorFv(void* this_, int how);
+extern "C" void* fn_803169E0(char* p, s16 how) {
+    if (p != 0) {
+        *(void**)p = lbl_804AAD60;
+        AnimEffectRec* r = *(AnimEffectRec**)(p + 0x278);
+        if (r != 0) {
+            delete r;
+            *(AnimEffectRec**)(p + 0x278) = 0;
+        }
+        __dt__5ActorFv(p, 0);
+        if (how > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
 
 Twtg::Twtg() : Actor() {
     *(void**)this = lbl_804AAD60;
@@ -39,4 +212,19 @@ Twtg::Twtg() : Actor() {
     *(ResourceHandle**)((char*)this + 0x278) = h;
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

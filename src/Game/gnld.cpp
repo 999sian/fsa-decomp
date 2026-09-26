@@ -5,9 +5,7 @@
 // ---- Gold_dtor_8032A8E0.cpp ----
 extern "C" void fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int how);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
+extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AB660[];
 
 // GOLD cluster, part 5/6. Destructor - culls 3 handles (this+0x24c/0x250/
@@ -27,4 +25,19 @@ extern "C" void* Gold_dtor(void* this_, short how) {
     return this_;
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

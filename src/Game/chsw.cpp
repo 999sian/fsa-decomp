@@ -4,9 +4,6 @@
 
 // ---- Chsw_dtor_802EEC50.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
 extern void* lbl_804AA3E8[];
 
 extern "C" void* fn_802EEC50(void* this_, short how) {
@@ -14,7 +11,7 @@ extern "C" void* fn_802EEC50(void* this_, short how) {
         *(void**)this_ = lbl_804AA3E8;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -133,4 +130,18 @@ extern "C" void fn_802EEDF0(void* this_) {
     *(u8*)((char*)this_ + 0x234) = result;
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md); drop ESD macros that macros.h redefines.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#define unknown jsys_unknown
+#undef NULL
+#define NULL 0
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

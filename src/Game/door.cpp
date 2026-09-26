@@ -4,9 +4,7 @@
 
 // ---- fn_802C5950_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
+extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804A8D88[];
 
 extern "C" void* fn_802C5950(void* this_, s16 freeFlag) {
@@ -18,6 +16,12 @@ extern "C" void* fn_802C5950(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+// fn_802C59B0 - DOOR: add a 2D offset to this->0x258.
+extern "C" void fn_802C59B0(char* p, const f32* d) {
+    *(f32*)(p + 0x258) += d[0];
+    *(f32*)(p + 0x25c) += d[1];
 }
 
 // ---- oscluster_802c59d4.cpp ----
@@ -41,4 +45,19 @@ extern "C" void Actor_SetVec3_0x0(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x8) = z;
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

@@ -87,7 +87,7 @@ extern "C" BOOL fn_8019CE40(s32 a, s32 b) {
 }
 extern "C" void fn_8019CECC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void* fn_802D6A9C(void);
@@ -109,7 +109,7 @@ extern "C" void* fn_8019C7EC(char* this_, s16 freeFlag) {
             lbl_8053AB98 = 0;
             lbl_8053ABA8 = 0;
         }
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

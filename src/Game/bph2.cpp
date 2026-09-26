@@ -43,7 +43,7 @@ extern "C" void fn_8018A8D8(ActorVt_bph2* this_) {
     this_->setShadow(2, 0.0f, 16.0f);
 }
 
-extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_802D7440(void* mgr, s32 a);
@@ -61,7 +61,7 @@ extern "C" void* fn_8018D9D4(char* this_, s16 freeFlag) {
             fn_802D7440(fn_802D6A9C(), 1);
             fn_8022ADCC();
         }
-        dtor_801F593C(this_, 0);
+        __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
             __dl__FPv(this_);
         }

@@ -4,9 +4,6 @@
 
 // ---- Glbs_dtor_802E910C.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
 extern void* lbl_804AA060[];
 
 extern "C" void* fn_802E910C(void* this_, short how) {
@@ -14,7 +11,7 @@ extern "C" void* fn_802E910C(void* this_, short how) {
         *(void**)this_ = lbl_804AA060;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -83,4 +80,19 @@ extern "C" void fn_802E91D8(void* this_) {
     ((ActorSlot5*)this_)->slot5();
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"

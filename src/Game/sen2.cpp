@@ -4,9 +4,6 @@
 
 // ---- Pnp2_dtor_802E7634.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-#ifndef dtor_80084580
-#define dtor_80084580(p) (::operator delete(p))
-#endif
 extern void* lbl_804A9F00[];
 
 extern "C" void* fn_802E7634(void* this_, short how) {
@@ -14,7 +11,7 @@ extern "C" void* fn_802E7634(void* this_, short how) {
         *(void**)this_ = lbl_804A9F00;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
@@ -28,20 +25,21 @@ void Pnp2_EmptyHook(void) {}
 
 }
 
-// ---- fn_802E7698 ----
-extern "C" void fn_801F0D20(void* this_, u32 arg);
+// fn_802E7698 - SEN2: update(). Counts down this->0x238; when it is zero,
+// optionally (this->0x230 == 0) calls fn_801F0D20 with a table id, then
+// clears the flag byte this->0x11c.
+extern "C" void fn_801F0D20(void* this_, u32 id);
 extern const u32 lbl_80541250[2];
 
 extern "C" void fn_802E7698(void* this_) {
-    char* p = (char*)this_;
-    s32 timer = *(s32*)(p + 0x238);
-    if (timer == 0) {
-        if (*(s32*)(p + 0x230) == 0) {
-            fn_801F0D20(this_, lbl_80541250[*(s32*)(p + 0x234)]);
+    s32 t = *(s32*)((char*)this_ + 0x238);
+    if (t == 0) {
+        if (*(s32*)((char*)this_ + 0x230) == 0) {
+            fn_801F0D20(this_, lbl_80541250[*(s32*)((char*)this_ + 0x234)]);
         }
-        *(u8*)(p + 0x11c) = 0;
+        *(u8*)((char*)this_ + 0x11c) = 0;
     } else {
-        *(s32*)(p + 0x238) = timer - 1;
+        *(s32*)((char*)this_ + 0x238) = t - 1;
     }
 }
 
@@ -61,4 +59,19 @@ void Pnp2_SetParams(void* thisPtr) {
 }
 }
 
+// Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
+// macros/typedefs that clash with the JSystem headers first.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
