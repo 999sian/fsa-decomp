@@ -144,4 +144,118 @@ extern "C" void fn_801AAC8C(char* p) {
     fn_801EFD34(p, res, &rec, n, lbl_8053E744, scale, lbl_8053E744);
 }
 
+extern const f32 lbl_8053E754;
+
+struct GnmaRandom {
+    u32 seed;
+    u32 get() {
+        seed = 0x19660d * seed + 0x3c6ef35f;
+        return seed;
+    }
+    f32 get_ufloat_1() {
+        union { f32 f; u32 s; } out;
+        out.s = (get() >> 9) | 0x3f800000;
+        return out.f - lbl_8053E754;
+    }
+};
+
+extern "C" u8* fn_802D6A9C(void);
+extern "C" s32 fn_80458F9C(void* mgr, s32 handle);
+extern void* lbl_8053AF80;
+extern const f32 lbl_8053E758;
+extern const f32 lbl_8053E75C;
+extern const f32 lbl_8053E770;
+extern const f32 lbl_8053E774;
+extern const f32 lbl_8053E778;
+extern const f32 lbl_8053E77C;
+extern const f32 lbl_8053E794;
+extern const f32 lbl_8053E7B8;
+extern const f32 lbl_8053E7C0;
+extern const f32 lbl_8053E7C4;
+extern const f32 lbl_8053E7C8;
+
+struct GnmaCfg { u8 pad[0x131df]; u8 flags[8]; };
+static inline u8 gnma_cfgFlagId(s32 id) {
+    u8* cfg = fn_802D6A9C();
+    return cfg[id + 0x131df];
+}
+#define gnma_cfgFlag(p) gnma_cfgFlagId(*(s32*)((p) + 0x4))
+
+extern "C" void fn_801AC3F0(char* p) {
+    *(f32*)(p + 0x60) = lbl_8053E7B0;
+    *(f32*)(p + 0x64) = lbl_8053E7C0;
+    *(f32*)(p + 0x68) = lbl_8053E7C4;
+    *(f32*)(p + 0x6c) = lbl_8053E794;
+    *(f32*)(p + 0x80) = lbl_8053E770;
+    *(f32*)(p + 0x84) = lbl_8053E7C0;
+    *(f32*)(p + 0x88) = lbl_8053E774;
+    *(f32*)(p + 0x8c) = lbl_8053E794;
+    *(f32*)(p + 0x70) = lbl_8053E778;
+    *(f32*)(p + 0x74) = lbl_8053E778;
+    *(f32*)(p + 0x78) = lbl_8053E77C;
+    *(f32*)(p + 0x7c) = lbl_8053E77C;
+    *(s32*)(p + 0x254) = *(u32*)(p + 0x90) & 0xf;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    for (int i = 0; i < 4; i++) {
+        ((GnmaTimers*)p)->t[i] = 0;
+    }
+    *(s32*)(p + 0x27c) = 0;
+    *(s32*)(p + 0x280) = 0;
+    *(s32*)(p + 0xb8) = 1;
+    *(s32*)(p + 0x98) = (s32)(lbl_8053E7B8 * ((GnmaRandom*)(lbl_8053AAF8 + 0xb4))->get_ufloat_1());
+    *(s32*)(p + 0x98) &= 3;
+    if (gnma_cfgFlag(p)) {
+        *(s32*)(p + 0x98) &= 1;
+    }
+    *(s32*)(p + 0x250) = (*(s32*)(p + 0x98) << 2) + *(s32*)(p + 0x244);
+    *(f32*)(p + 0x26c) = lbl_8053E744;
+    *(f32*)(p + 0x268) = lbl_8053E744;
+    *(f32*)(p + 0x264) = lbl_8053E744;
+    *(s32*)(p + 0x108) = 0x3ef;
+    *(s32*)(p + 0x258) = 3;
+    *(s32*)(p + 0x260) = *(s32*)(p + 0x98);
+    *(u32*)(p + 0xb0) = 0x0a040010;
+    s32 mode = *(s32*)(p + 0x254);
+    if (mode == 0 || mode == 2) {
+        *(s32*)(p + 0x258) = 2;
+        *(s32*)(p + 0xbc) = 2;
+        *(f32*)(p + 0x270) = lbl_8053E754;
+        *(f32*)(p + 0x274) = lbl_8053E754;
+        *(f32*)(p + 0x278) = lbl_8053E754;
+        if (gnma_cfgFlag(p)) {
+            *(f32*)(p + 0x80) = lbl_8053E7C8;
+            *(f32*)(p + 0x84) = lbl_8053E7C0;
+            *(f32*)(p + 0x88) = lbl_8053E7B8;
+            *(f32*)(p + 0x8c) = lbl_8053E794;
+        }
+        *(s32*)(p + 0x230) = 1;
+        if (*(s32*)(p + 0x254) == 2 && lbl_8053ABD8 == 0) {
+            fn_80458F9C(lbl_8053AF80, 0x3c);
+            lbl_8053ABD8++;
+            *(s32*)(p + 0x230) = 0;
+        }
+    } else {
+        *(s32*)(p + 0xbc) = 3;
+        *(s32*)(p + 0x108) = 0x3f2;
+        *(s32*)(p + 0x260) = *(s32*)(p + 0x98) & 1;
+        *(s32*)(p + 0x98) = 2;
+        *(u32*)(p + 0xb0) = 0x0a040004;
+        *(f32*)(p + 0x270) = lbl_8053E758;
+        *(f32*)(p + 0x274) = lbl_8053E75C;
+        *(f32*)(p + 0x278) = lbl_8053E75C;
+        *(s32*)(p + 0xc0) = 3;
+        *(s32*)(p + 0x98) &= 1;
+        *(s32*)(p + 0x250) = 0x13;
+        *(s32*)(p + 0x230) = 8;
+        if (*(s32*)(p + 0x254) == 3 && lbl_8053ABD8 == 0) {
+            fn_80458F9C(lbl_8053AF80, 0x3c);
+            lbl_8053ABD8++;
+            *(s32*)(p + 0x230) = 7;
+        }
+    }
+    *(s32*)(p + 0x25c) = *(s32*)(p + 0x108);
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
