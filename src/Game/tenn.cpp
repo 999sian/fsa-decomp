@@ -62,11 +62,12 @@ extern "C" void* fn_801A2F90(char* this_, s16 freeFlag) {
         *(void**)this_ = lbl_804A2BF4;
         if (*(s32*)(this_ + 0x274) == 0) {
             s32 state = *(s32*)(this_ + 0x230);
-            if (state == 5 || (state == 6 && (fn_8022AF2C(), true))) {
+            if (state == 5 || state == 6) {
+                fn_8022AF2C();
                 if (*(s32*)(lbl_8053AAF8 + 0x4c) != 9) {
                     fn_80138B7C(lbl_8053AAF8);
+                    fn_80458508(lbl_8053AF80, 0);
                 }
-                fn_80458508(lbl_8053AF80, 0);
             }
         }
         for (int i = 0; i < 4; i++) {

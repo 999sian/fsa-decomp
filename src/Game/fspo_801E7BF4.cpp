@@ -43,6 +43,7 @@ extern "C" void fn_801EA75C(void* entry, u32 a, u32 b, u32 c, u32 d, f32* pos);
 extern const f32 lbl_8053F5F0;
 extern const f32 lbl_8053F5F4;
 
+static inline u8* fspo_mgr() { u8* mgr = fn_801E9AFC(); return mgr + mgr[0xf0] * 0x78; }
 extern "C" void fn_801E7C88(u8* this_) {
     u32 hi, lo, d, mid, dir;
     fn_801D0ED0(this_);

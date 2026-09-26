@@ -44,6 +44,7 @@ extern "C" BOOL fn_8017BBA8(void* this_, void* arg1, void* pos) {
 }
 
 // PUKU init (vtable slot 1)
+static inline f32 puku_zero() { return 0.0f; }
 extern "C" void fn_8017BBFC(char* this_) {
     *(f32*)(this_ + 0x60) = -8.0f;
     *(f32*)(this_ + 0x64) = -8.0f;
@@ -76,7 +77,8 @@ extern "C" void fn_8017BBFC(char* this_) {
     *(f32*)(this_ + 0x278) = *(f32*)(this_ + 0x14);
     *(s32*)(this_ + 0x98) = (s32)(1.99f * lbl_8053AAF8->rnd.get_ufloat_1());
     if (*(s32*)(this_ + 0x258) == 1) {
-        *(s32*)(this_ + 0x254) = (s32)(1.99f * lbl_8053AAF8->rnd.get_ufloat_1());
+        PukuGame* g = lbl_8053AAF8;
+        *(s32*)(this_ + 0x254) = (s32)(1.99f * g->rnd.get_ufloat_1());
         *(s32*)(this_ + 0x114) = 4;
         *(f32*)(this_ + 0x60) = -16.0f;
         *(f32*)(this_ + 0x64) = -16.0f;
@@ -89,7 +91,7 @@ extern "C" void fn_8017BBFC(char* this_) {
     }
     *(s32*)(this_ + 0x230) = 0;
     if ((*(u32*)(this_ + 0x90) >> 4) & 0xff) {
-        if (*(f32*)(this_ + 0x260) == 0.0f) {
+        if (*(f32*)(this_ + 0x260) == puku_zero()) {
             *(f32*)(this_ + 0x260) = 16.0f;
         }
         *(u32*)(this_ + 0x98) = (*(u32*)(this_ + 0x90) >> 4) & 0xf;

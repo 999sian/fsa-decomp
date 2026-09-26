@@ -103,11 +103,12 @@ extern "C" void* fn_801A7B98(char* this_, s16 freeFlag) {
         s32 kind = *(s32*)(this_ + 0x260);
         if (kind == 0 || kind == 1) {
             s32 state = *(s32*)(this_ + 0x230);
-            if (state == 4 || (state == 5 && (fn_8022B1C8(), true))) {
+            if (state == 4 || state == 5) {
+                fn_8022B1C8();
                 if (*(s32*)(lbl_8053AAF8 + 0x4c) != 9) {
                     fn_80138B7C(lbl_8053AAF8);
+                    fn_80458508(lbl_8053AF80, 0);
                 }
-                fn_80458508(lbl_8053AF80, 0);
             }
         }
         __dt__5ActorFv(this_, 0);

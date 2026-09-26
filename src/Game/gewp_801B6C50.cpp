@@ -86,8 +86,8 @@ extern "C" void fn_801B73B8(u8* this_) {
         *(s32*)(this_ + 0x230) = 0;
     } else {
         fn_80119468(fn_80119DD0(), 0, 0);
-        for (s32 j = 0; j < 4; j++) {
-            fn_8023EE28(j);
+        for (i = 0; i < 4; i++) {
+            fn_8023EE28(i);
         }
         *(s32*)(this_ + 0x230) = 6;
     }
