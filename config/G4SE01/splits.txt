@@ -2096,6 +2096,8 @@ Game/tu_8012FF9C.cpp:
 	extabindex  start:0x80012FAC end:0x80012FDC
 	.text       start:0x8012FF9C end:0x80130310
 	.ctors      start:0x8045BED8 end:0x8045BEDC
+	.bss        start:0x804BE200 end:0x804BE278
+	.sbss       start:0x8053AAC0 end:0x8053AACC
 
 Game/MRMT_80130310.cpp:
 	extab       start:0x800067B4 end:0x800067EC
