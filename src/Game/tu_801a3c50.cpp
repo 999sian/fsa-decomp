@@ -11,7 +11,7 @@ public:
     virtual void v38(); virtual void v3C(); virtual void v40(); virtual void v44();
 };
 
-extern "C" void fn_801F4694(void* this_, s32 id);
+extern "C" void fn_801F4694(void* this_);
 extern s32 lbl_8053A100;
 
 static inline void Saya_setTarget(u8* this_, s32 id) {
@@ -23,7 +23,7 @@ static inline void Saya_setTarget(u8* this_, s32 id) {
     *(s32*)(this_ + 0xD8) = 0;
     *(s32*)(this_ + 0xDC) = 0;
     *(s32*)(this_ + 0xA4) = 0;
-    fn_801F4694(this_, id);
+    fn_801F4694(this_);
     if (*(s32*)(this_ + 4) >= 8) {
         *(s32*)(this_ + 0xA8) = 0x1E;
     } else {
@@ -67,19 +67,72 @@ extern "C" s32 fn_801A4D1C(void* this_, void* a4, void* a5) {
     return fn_801A4754(target, a4, a5);
 }
 
+extern "C" u8* fn_802D6A9C(void);
+extern "C" s32 fn_8023AA18(void* a, s32 room, void* b);
+extern "C" s32 fn_8023B520(void);
+extern "C" void* fn_8023E724(s32 player);
+extern "C" void fn_801F37AC(void* this_, s32 a, void* pos, s32 b, s32 c, s32 d);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 flag);
+
+extern "C" s32 fn_801A4D74(u8* this_, void* a4, void* a5) {
+    s32 room; u8* mgr; s32 t; s32 kind; s32 id;
+    kind = (*(u32*)(this_ + 0xB0) >> 8) & 0xF;
+    if (kind == 0) {
+        return 0;
+    }
+    room = *(s32*)(this_ + 4);
+    mgr = fn_802D6A9C();
+    if (mgr[room + 0x131DF] == 0 && *(f32*)(this_ + 0x14) > 32.0f) {
+        return 0;
+    }
+    id = fn_8023AA18(a4, *(s32*)(this_ + 4), a5);
+    if (id < 0) {
+        return 0;
+    }
+    if (kind != 3) {
+        if (*(s32*)(this_ + 0xD8) == 0) {
+            t = *(s32*)(this_ + 0x108);
+            s32 d = t - fn_8023B520();
+            *(s32*)(this_ + 0x10C) = id;
+            if (d <= 0) {
+                d = 0;
+                if (*(s32*)(this_ + 0xBC) != 3) {
+                    Saya_setTarget(this_, id);
+                    return 0x28;
+                }
+            }
+            *(s32*)(this_ + 0x108) = d;
+            fn_801F37AC(this_, 0, fn_8023E724(id), 0, 4, -1);
+            if (*(s32*)(this_ + 0xBC) == 3) {
+                *(JGeometry::TVec3<f32>*)(this_ + 0x3C) = JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f);
+            }
+            if (id >= 0) {
+                lbl_8053A100 = id;
+            }
+            ((SayaActor*)this_)->v44();
+        }
+    } else {
+        return 0xFF;
+    }
+    fn_801F0E34(this_, 0x4001E, 0);
+    return 0x1E;
+}
+
 // from src/Game/Saya_ForceState3_801A4F5C.cpp
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
-extern "C" s32 fn_801A4D74(void* this_, void* a4, void* a5);
+extern "C" s32 fn_801A4D74(u8* this_, void* a4, void* a5);
 
 // SAYA cluster, part 8/18 (88B). Vtable-slot wrapper directly invoking
 // state-handler fn_801A4D74 (same external-entry-point pattern). Return
 // value is passed through to callers that check it.
+#pragma dont_inline on
 extern "C" s32 fn_801A4F5C(void* this_, void* a4, void* a5) {
     void* base = fn_801F856C();
     void* target = fn_801F666C(base, (u32)this_);
-    return fn_801A4D74(target, a4, a5);
+    return fn_801A4D74((u8*)target, a4, a5);
 }
+#pragma dont_inline reset
 
 // from src/Game/Saya_ForceState4_801A6108.cpp
 extern "C" void* fn_801F856C(void);
