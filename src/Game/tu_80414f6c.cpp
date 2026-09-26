@@ -16,6 +16,66 @@ extern void* lbl_804B1378[];
 extern void* lbl_8053AEC4;
 extern s32 lbl_8053AE00;
 
+struct T80414F6C_Obj {
+    u8 pad0[0xe0];
+    void* fe0;
+};
+
+class TU80414F6C {
+public:
+    void fn_80414F78();
+    void fn_80415028();
+    void fn_80416038();
+    void fn_804170B0();
+
+    u8 pad0[0x109];
+    u8 f109;
+    u8 f10a;
+};
+
+typedef void (TU80414F6C::*TU80414F6C_StateFn)();
+static TU80414F6C_StateFn lbl_804B1354[3] = {
+    &TU80414F6C::fn_80416038,
+    &TU80414F6C::fn_80415028,
+    &TU80414F6C::fn_80414F78,
+};
+
+extern "C" {
+BOOL fn_8042EC7C(void*);
+BOOL fn_8042EBEC(void*);
+void* fn_80309C4C(void*, s32, s32);
+extern void* lbl_8053AD30;
+
+void* fn_80414F6C() {
+    return ((T80414F6C_Obj*)lbl_8053AE00)->fe0;
+}
+}
+
+void TU80414F6C::fn_80414F78() {
+    switch (f10a) {
+    case 0:
+        if (fn_8042EC7C(lbl_8053AEC4)) {
+            f10a = 1;
+        }
+        break;
+    case 1:
+        if (fn_80309C4C(lbl_8053AD30, 0x1300, -1)) {
+            f10a = 2;
+        }
+        break;
+    case 2:
+        if (fn_8042EBEC(lbl_8053AEC4)) {
+            f10a = 0;
+            f109 = 1;
+        }
+        break;
+    }
+}
+
+void TU80414F6C::fn_804170B0() {
+    (((TU80414F6C*)lbl_8053AE00)->*lbl_804B1354[f109])();
+}
+
 // actor@lbl_804B1378: destructor (0x1E0). Resets the vtable pointer, then
 // tears down a large family of owned sub-object slots via real virtual
 // dispatch (vtable slot 2, freeFlag=1): 1 single slot (0x24), a 3-element
