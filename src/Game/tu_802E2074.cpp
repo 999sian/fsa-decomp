@@ -27,6 +27,8 @@ void EmptyHook_802E20D4(void) {}
 
 }
 
+static u8 lbl_804D4768[0x140];
+
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
 // macros/typedefs that clash with the JSystem headers first.
 #undef ALIGN_NEXT

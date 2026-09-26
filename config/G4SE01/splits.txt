@@ -2786,6 +2786,7 @@ Game/tu_802E2074.cpp:
 	extabindex  start:0x8001C03C end:0x8001C06C
 	.text       start:0x802E2074 end:0x802E2990
 	.ctors      start:0x8045C30C end:0x8045C310
+	.bss        start:0x804D4768 end:0x804D4914
 
 Game/gnl2.cpp:
 	extab       start:0x8000CF5C end:0x8000CF84
