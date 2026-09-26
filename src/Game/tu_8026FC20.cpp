@@ -487,7 +487,7 @@ BOOL fn_80270ABC(char* p) {
     }
     return S32(p, 0x464) > 0;
 }
-BOOL fn_80270C88(char* p) {
+inline BOOL isBusy(char* p) {
     if (fn_80241200(p)) {
         return 1;
     }
@@ -500,6 +500,7 @@ BOOL fn_80270C88(char* p) {
     }
     return fn_80270ABC(p);
 }
+BOOL fn_80270C88(char* p) { return isBusy(p); }
 void fn_80270D08(char* p) {
     if (S32(p, 0x464) > 0) {
         S32(p, 0x464)--;
@@ -764,16 +765,7 @@ bool fn_80272E98(char* p, const JGeometry::TBox2<f32>* box, s32 room) {
     return r;
 }
 u8 Player_GetField_0x454(char*);
-bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) {
-    if (room != S32(p, 0x3b4)) {
-        return 0;
-    }
-    if (!force && isDying(p)) {
-        return 0;
-    }
-    if (Player_GetField_0x454(p)) {
-        return 0;
-    }
+inline bool areaTail(char* p, const f32* box, f32 h) {
     char* base = (char*)PTR(p, 0x3b4);
     if (*(u8*)((s32)fn_802D6A9C() + 0x10000 + base + 0x31df) == 0 && F32(p, 0x10) > h) {
         return 0;
@@ -805,6 +797,36 @@ bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) {
         r = 1;
     }
     return r;
+}
+bool fn_802730D8(char* p, const f32* box, s32 room, u8 force, f32 h) {
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (!force && isDying(p)) {
+        return 0;
+    }
+    if (Player_GetField_0x454(p)) {
+        return 0;
+    }
+    return areaTail(p, box, h);
+}
+bool fn_802732C4(char* p, const f32* box, s32 room) {
+    if ((u8)isBusy(p)) {
+        return 0;
+    }
+    if (U8(p, 0x42c) != 0) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (isDying(p)) {
+        return 0;
+    }
+    if (Player_GetField_0x454(p)) {
+        return 0;
+    }
+    return areaTail(p, box, 0.0f);
 }
 BOOL fn_80272DCC(char* p, const f32* box, s32 a, s32 b) {
     if (GetBusyLocked(p)) {
