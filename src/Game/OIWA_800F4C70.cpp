@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+#include "Game/ItemBase.h"
 
 // ---- from Game/fn_800F659C_dtor.cpp
 
@@ -301,6 +302,124 @@ extern "C" void fn_800F5E08(char* this_) {
     if (50.0f + r[3] < *(f32*)(this_ + 0x10)) {
         *(u8*)(this_ + 0x11c) = 0;
     }
+}
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_801F06F0(void* actor, const char* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_801F02BC(void* actor, const char* res, u32 id, DrawRec* rec, s32 p5, u32 p6, u32 p7, f32 a, f32 b);
+extern "C" void fn_801EFD34(void* actor, void* tex, DrawRec* rec, s32 p, f32 a, f32 b, f32 c);
+extern "C" void* fn_804032E8(u32 type, const char* name);
+extern const char lbl_804636E8[];
+extern const char lbl_804636FC[];
+extern const char* lbl_8049C458[];
+
+static inline void oiwaScaleMtx(f32 (*m)[4], f32 s) {
+    m[0][0] = s;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = s;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = s;
+}
+
+extern "C" void fn_800F4C70(char* this_) {
+    DrawRec rec;
+    f32 mtx[3][4];
+    s32 mode;
+    rec.b1c = 1;
+    rec.b1f = 0;
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
+    switch (*(u8*)(this_ + 0x230)) {
+    case 0:
+    case 4:
+        oiwaScaleMtx(mtx, 1.0f);
+        mode = 3;
+        if (*(s32*)(this_ + 0x240) == 1) {
+            rec.b1c = 0;
+            *(s8*)&rec.b1d = -1;
+            mode = -1;
+            ((u8*)&rec.w10)[0] = 200;
+            ((u8*)&rec.w10)[1] = 200;
+            ((u8*)&rec.w10)[2] = 200;
+        } else if (*(s32*)(this_ + 0x240) == 2) {
+            rec.b1c = 0;
+            *(s8*)&rec.b1d = -1;
+            mode = -1;
+            oiwaScaleMtx(mtx, (f32)(60 - *(s32*)(this_ + 0x248)) / 60.0f);
+            ((u8*)&rec.w10)[0] = 200 - *(s32*)(this_ + 0x248) * 2;
+            ((u8*)&rec.w10)[1] = 200 - *(s32*)(this_ + 0x248) * 2;
+            ((u8*)&rec.w10)[2] = 200 - *(s32*)(this_ + 0x248) * 2;
+        }
+        break;
+    case 1:
+        oiwaScaleMtx(mtx, 0.8f);
+        {
+            f32 z = 0.0f;
+            if (*(f32*)(this_ + 0x3c) != z || *(f32*)(this_ + 0x40) != z || *(f32*)(this_ + 0x44) != z) {
+                mode = 3;
+            } else {
+                mode = -1;
+            }
+        }
+        break;
+    case 2:
+        oiwaScaleMtx(mtx, 0.2f);
+        mode = 7;
+        rec.w30 = 0x11;
+        break;
+    case 3:
+        oiwaScaleMtx(mtx, 1.0f);
+        mode = 3;
+        if (*(s32*)(this_ + 0x240) == 2) {
+            *(s8*)&rec.b1d = -1;
+            *(s8*)&rec.b1c = -1;
+        }
+        break;
+    case 5: {
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
+        f32 ang = (f32)*(s32*)(this_ + 0x244) / -10430.228f;
+        f32 rx = 0.0f;
+        f32 sa = sin(rx);
+        f32 sb = sin(ang);
+        f32 sc = sin(rx);
+        f32 ca = cos(rx);
+        f32 cb = cos(ang);
+        f32 cc = cos(rx);
+        f32 s = 1.0f;
+        mtx[0][0] = s * (cb * cc);
+        mtx[1][0] = s * (cb * sc);
+        mtx[2][0] = s * -sb;
+        f32 sasb = sa * sb;
+        f32 cacc = ca * cc;
+        f32 casc = ca * sc;
+        mtx[0][1] = s * (sasb * cc - casc);
+        mtx[1][1] = s * (sasb * sc + cacc);
+        mtx[2][1] = s * (sa * cb);
+        mtx[0][2] = s * (cacc * sb + sa * sc);
+        mtx[1][2] = s * (casc * sb - sa * cc);
+        mtx[2][2] = s * (ca * cb);
+        rec.w18 = mtx;
+        fn_801EFD34(this_, fn_804032E8('TIMG', lbl_8049C458[*(s32*)(this_ + 0x240)]), &rec, -1, 0.0f, 0.0f, 0.0f);
+        return;
+    }
+    }
+    rec.w18 = mtx;
+    JGeometry::TVec3<f32> save(OIWA_POS(this_));
+    OIWA_POS(this_) += *(JGeometry::TVec3<f32>*)(this_ + 0x254);
+    if (*(s32*)(this_ + 4) <= 8) {
+        fn_801F06F0(this_, lbl_804636E8, *(s32*)(this_ + 0x23c) + 0xb1, &rec, mode, 1.0f, 1.0f);
+    } else {
+        fn_801F02BC(this_, lbl_804636FC, *(s32*)(this_ + 0x23c), &rec, mode, 0, 0, 1.0f, 1.0f);
+    }
+    *(Vec*)(this_ + 0xc) = save;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
