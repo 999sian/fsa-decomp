@@ -411,6 +411,33 @@ s32 fn_80240628(char* p) {
 }
 u32 Player_GetLinkTargetIndex(char* p) { return S32(p, 0xd60); }
 s32 fn_8024064C(char* p) { return fn_8022EA0C(S32(p, 0x4)); }
+inline s32 linkIdx(char* p) { return S32(p, 0xd60) >= 0 ? fn_80234004(S32(p, 0xd60)) : S32(p, 0x1224); }
+inline s32 linkRank(char* p) {
+    s32 n;
+    s32 linked = S32(p, 0xd60);
+    if (linked < 0) {
+        return 0;
+    }
+    n = S32(p, 0x4);
+    s32 c = 0;
+    for (int i = 0; i < n; i++) {
+        if (linked == fn_8022F3DC(i)) {
+            c++;
+        }
+    }
+    return c + 1;
+}
+BOOL fn_80240670(char* p) {
+    u8 bit = 1 << S32(p, 0x4);
+    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
+        return 1;
+    }
+    if (getMode(p) == 4) {
+        s32 v = linkIdx(p);
+        return v != linkRank(p);
+    }
+    return ((u32)S32(p, 0xd60) >> 31) ^ 1;
+}
 BOOL Player_IsLinked(char* p) { return ((u32)S32(p, 0xd60) >> 31) ^ 1; }
 BOOL fn_80240818(char* p) {
     BOOL r = 0;
@@ -975,7 +1002,8 @@ bool fn_8024AFF8(char* p) {
         if (!fn_80251BFC(p, 0)) {
             return 0;
         }
-        if (!(U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && S32(p, 0xd60) < 0) {
+        u8 bit = 1 << S32(p, 0x4);
+    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
             S32(p, 0x1244) = 1;
         } else if (U8(p, 0x434) != 0) {
             if (S32(p, 0x1240) == 2) {
