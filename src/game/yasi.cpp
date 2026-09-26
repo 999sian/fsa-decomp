@@ -49,6 +49,118 @@ extern "C" s32 Yasi_CanBeActiveHere(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
 
+// fn_802DF508 - YASI: break(). Spawns debris / effects depending on the
+// ground tile under the actor, plays a sound and deactivates.
+#undef ALIGN_NEXT
+#undef ALIGN_PREV
+#undef ARRAY_SIZE
+#undef ASM
+#undef ATTRIBUTE_ALIGN
+#undef IS_ALIGNED
+#undef IS_NOT_ALIGNED
+#undef MACROS_H
+#undef MAX
+#undef MIN
+#undef NULL
+#define NULL 0
+#ifndef unknown
+#define unknown jsys_unknown
+#endif
+#include "JSystem/JGeometry/Vec.h"
+typedef JGeometry::TVec3<f32> YasiVec;
+extern const f32 lbl_80541168;
+extern const f32 lbl_8054116C;
+extern const f32 lbl_80541170;
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F9484(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern "C" u16 fn_8022461C(YasiVec* pos, u32 room);
+extern "C" void fn_8013CC50(u32 room, YasiVec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" u8 fn_802DE9A0();
+extern "C" u8 fn_802DEB58();
+
+extern "C" void fn_802DF508(char* p) {
+    if (*(s32*)(p + 0x4) >= 8) {
+        YasiVec pos(*(YasiVec*)(p + 0xc));
+        pos.z = lbl_80541168;
+        fn_801F9484(fn_801F856C(), 0x4b4d5249, *(u32*)(p + 0x4), &pos, 0, -1, -1);
+    }
+    if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xd || fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0x39) {
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_8054116C, 0x3d0, 0, 1, 0, 0, 1);
+        fn_801F0E34(p, 0x30022, 0);
+    } else if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xe) {
+        if (fn_802DE9A0()) {
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_8054116C, 0x2a9, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_8054116C, 0x2aa, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5005f, 0);
+        } else if (fn_802DEB58()) {
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_8054116C, 0x45e, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_8054116C, 0x45f, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5003f, 0);
+        }
+    } else {
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_8054116C, 0x8c, 1, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_8054116C, 0x7a, 1, 0, 0, 0, 1);
+        fn_801F0E34(p, 0x30003, 0);
+    }
+    *(u8*)(p + 0x11c) = 0;
+}
+
+// fn_802DF8C8 - YASI: carried / thrown update. While held it follows the
+// holder; otherwise it falls (gravity on the z speed), and breaks when it
+// lands or hits something.
+struct YasiVT {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void breakUp();
+};
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AC98;
+extern "C" YasiVec* fn_8023E7B0(s32 holder);
+extern "C" s32 fn_8023DE58(s32 holder);
+extern "C" u8 fn_8023BCD4(s32 holder);
+extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" u16 fn_80226850(YasiVec* pos, u32 room);
+extern "C" void fn_802A381C(void* mgr, YasiVec* pos, u32 room, s32 id);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 holder, s32 b);
+extern "C" u8 fn_801F2B20(void* this_, s32 a);
+
+extern "C" void fn_802DF8C8(char* p) {
+    *(u8*)(p + 0x234) = 0xff;
+    if (*(u8*)(p + 0xc4) != 0) {
+        YasiVec* h = fn_8023E7B0(*(s32*)(p + 0xc8));
+        *(f32*)(p + 0xc) = h->x;
+        *(f32*)(p + 0x10) = h->y;
+        *(f32*)(p + 0x14) = h->z;
+        *(s32*)(p + 0x4) = fn_8023DE58(*(s32*)(p + 0xc8));
+        *(u8*)(p + 0x234) = fn_8023BCD4(*(s32*)(p + 0xc8));
+        return;
+    }
+    *(f32*)(p + 0x44) += lbl_80541170;
+    *(YasiVec*)(p + 0xc) += *(YasiVec*)(p + 0x3c);
+    s32 hit = *(s32*)(p + 0x114);
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+        hit = 0;
+    }
+    if (*(f32*)(p + 0x14) < lbl_80541168 || fn_801F2618(p, 0, 0)) {
+        if (*(f32*)(p + 0x14) < lbl_80541168) {
+            if (fn_80226850((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0x90) {
+                fn_802A381C(lbl_8053AC98, (YasiVec*)(p + 0xc), *(u32*)(p + 0x4), 0x91);
+            } else if (fn_80226850((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0x91) {
+                fn_802A381C(lbl_8053AC98, (YasiVec*)(p + 0xc), *(u32*)(p + 0x4), 0x92);
+            }
+        }
+        ((YasiVT*)p)->breakUp();
+    } else if (fn_801F2B7C(p, hit, *(s32*)(p + 0xc8), 4) || fn_801F2B20(p, 0)) {
+        ((YasiVT*)p)->breakUp();
+    }
+}
+
 // fn_802DFA80 - YASI: setParams (draw/collision extents).
 extern const f32 lbl_80541174;
 extern const f32 lbl_80541178;
