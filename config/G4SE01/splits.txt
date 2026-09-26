@@ -3126,6 +3126,7 @@ Game/tu_802BA334.cpp:
 	extabindex  start:0x8001B640 end:0x8001B64C
 	.text       start:0x802BA334 end:0x802BA558
 	.ctors      start:0x8045C28C end:0x8045C290
+	.bss        start:0x804D2768 end:0x804D2868
 
 Game/fire.cpp:
 	extab       start:0x8000C88C end:0x8000C8E4
