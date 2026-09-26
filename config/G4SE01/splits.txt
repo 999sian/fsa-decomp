@@ -3792,6 +3792,9 @@ Game/tu_803372D0.cpp:
 	extabindex  start:0x8001D518 end:0x8001D53C
 	.text       start:0x803372D0 end:0x80337650
 	.ctors      start:0x8045C418 end:0x8045C41C
+	.rodata     start:0x80471BA0 end:0x80471BB8
+	.bss        start:0x805096F8 end:0x805097F8
+	.sdata2     start:0x80542050 end:0x80542058
 
 Game/tu_80337650.cpp:
 	extab       start:0x8000DDE4 end:0x8000DE1C
@@ -3842,6 +3845,7 @@ Game/tu_8033F448.cpp:
 	extabindex  start:0x8001D71C end:0x8001D740
 	.text       start:0x8033F448 end:0x8033F9A0
 	.ctors      start:0x8045C438 end:0x8045C43C
+	.bss        start:0x80509EF8 end:0x80509FF8
 
 Game/ltzr.cpp:
 	extab       start:0x8000DF3C end:0x8000DF8C
