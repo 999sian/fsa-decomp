@@ -966,28 +966,37 @@ void Actor::v04() {
     if (field_0C.z <= 16.0f) {
         if (field_68 - field_60 > 0.0f) {
             if (field_6C - field_64 > 0.0f) {
+                f32 y = field_0C.y;
+                f32 x = field_0C.x;
                 f32 rect[4];
-                rect[0] = field_60 + field_0C.x;
-                rect[1] = field_64 + field_0C.y - field_0C.z;
-                rect[2] = field_68 + field_0C.x;
-                rect[3] = field_6C + field_0C.y - field_0C.z;
-                for (s32 i = 0; i < 4; i++) {
+                rect[2] = field_68 + x;
+                rect[0] = field_60 + x;
+                rect[1] = field_64 + y - field_0C.z;
+                rect[3] = field_6C + y - field_0C.z;
+                s32 id;
+                s32 i;
+                for (i = 0; i < 4; i++) {
                     if (fn_8023F264(i) == 0) {
                         continue;
                     }
-                    if (field_04 != (u32)fn_8023DE58(i)) {
+                    id = field_04;
+                    if (id != fn_8023DE58(i)) {
                         continue;
                     }
                     f32* p = (f32*)fn_8023E724(i);
                     f32 x1 = -12.0f + p[0];
                     f32 x2 = 12.0f + p[0];
-                    f32 y1 = (-28.0f + p[1]) - p[2];
                     f32 y2 = (12.0f + p[1]) - p[2];
-                    f32 loX = (rect[0] > x1) ? rect[0] : x1;
-                    f32 loY = (rect[1] > y1) ? rect[1] : y1;
-                    f32 hiX = (x2 < rect[2]) ? x2 : rect[2];
-                    f32 hiY = (y2 < rect[3]) ? y2 : rect[3];
-                    if (loX <= hiX && loY <= hiY) {
+                    f32 y1 = (-28.0f + p[1]) - p[2];
+                    f32 r0 = rect[0];
+                    f32 r1 = rect[1];
+                    f32 r2 = rect[2];
+                    f32 r3 = rect[3];
+                    if (r0 < x1) r0 = x1;
+                    if (r1 < y1) r1 = y1;
+                    if (r2 > x2) r2 = x2;
+                    if (r3 > y2) r3 = y2;
+                    if (r2 >= r0 && r3 >= r1) {
                         fn_802397B4(rect, field_04, field_198);
                         return;
                     }
