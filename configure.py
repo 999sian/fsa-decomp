@@ -1048,6 +1048,10 @@ config.libs = [
         "Game",
         [
             Object(Matching, "Game/actors/BOTS.cpp"),
+            Object(Matching, "Game/actors/DWAP.cpp"),
+            Object(Matching, "Game/actors/GFBS.cpp"),
+            Object(Matching, "Game/actors/STGN.cpp"),
+            Object(Matching, "Game/actors/TJIJ.cpp"),
         ],
     ),
 ]
