@@ -34,33 +34,34 @@ extern "C" void fn_80230498(s32 i, void* p, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F71A4(f32* p, f32 a, f32 b, f32 c);
 extern "C" void fn_80230BF4(s32 player, s32 a);
 extern "C" void fn_802303FC(s32 player, void* pos, s32 a);
-extern "C" f64 fabs(f64);
 
 extern "C" void fn_801B2000(u8* this_, s32 mode, f32 depth) {
+    s32 room; u8* q; s32 i;
     f32 y = *(f32*)(this_ + 0x10);
     y -= depth;
-    u8* q = this_;
-    for (s32 i = 0; i < 4; i++) {
-        if (fn_8023F264(i) && *(s32*)(this_ + 4) == fn_8023DE58(i) + 0) {
-            ZLD3_Vec* v = fn_8023E724(i);
-            *(f32*)(q + 0x288) = v->x;
-            *(f32*)(q + 0x28C) = v->y;
-            *(f32*)(q + 0x290) = v->z;
-            if (mode == 0) {
-                if (*(u8*)(this_ + 0x258) == 1) {
-                    *(f32*)(q + 0x28C) = y;
+    for (i = 0, q = this_; i < 4; i++, q += 0xC) {
+        if (fn_8023F264(i)) {
+            room = *(s32*)(this_ + 4);
+            if (room == fn_8023DE58(i)) {
+                ZLD3_Vec* v = fn_8023E724(i);
+                *(f32*)(q + 0x288) = v->x;
+                *(f32*)(q + 0x28C) = v->y;
+                *(f32*)(q + 0x290) = v->z;
+                if (mode == 0) {
+                    if (*(u8*)(this_ + 0x258) == 1) {
+                        *(f32*)(q + 0x28C) = y;
+                    }
                     fn_80230498(i, q + 0x288, 0x3E, 0xFF, -0x80, -0x80, 1);
                 } else {
                     fn_801F71A4((f32*)(q + 0x28C), y, 0.3f, 1.0f);
                     fn_80230BF4(i, 2);
                     fn_802303FC(i, q + 0x288, 0xFF);
-                    if ((f32)fabs(fn_8023E724(i)->y - y) < 1.0f) {
+                    if ((f32)__fabs(fn_8023E724(i)->y - y) < 1.0f) {
                         *(u8*)(this_ + 0x258) = 1;
                     }
                 }
             }
         }
-        q += 0xC;
     }
 }
 
