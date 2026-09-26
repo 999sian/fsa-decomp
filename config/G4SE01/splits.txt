@@ -1916,6 +1916,7 @@ game/flme.cpp:
 	extabindex  start:0x80013B88 end:0x80013BDC
 	.text       start:0x8015DE10 end:0x8015F454
 	.ctors      start:0x8045BF4C end:0x8045BF50
+	.sdata2     start:0x8053D590 end:0x8053D628
 
 game/ezry.cpp:
 	extab       start:0x80007064 end:0x8000708C
@@ -2005,6 +2006,7 @@ game/tu_80197070.cpp:
 	extabindex  start:0x800145F0 end:0x80014680
 	.text       start:0x80197070 end:0x8019D12C
 	.ctors      start:0x8045BFC0 end:0x8045BFC4
+	.sdata2     start:0x8053E370 end:0x8053E440
 
 game/tenn.cpp:
 	extab       start:0x8000793C end:0x8000798C
@@ -2024,6 +2026,7 @@ game/tu_801a3c50.cpp:
 	extabindex  start:0x800147F4 end:0x80014890
 	.text       start:0x801A3C50 end:0x801A6690
 	.ctors      start:0x8045BFD4 end:0x8045BFD8
+	.sdata2     start:0x8053E5C8 end:0x8053E628
 
 game/ryya.cpp:
 	extab       start:0x80007A0C end:0x80007A3C

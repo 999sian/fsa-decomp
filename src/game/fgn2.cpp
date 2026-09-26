@@ -58,4 +58,45 @@ extern "C" void fn_80187144(ActorVt_fgn2* this_) {
     this_->setShadow(*(s8*)((char*)this_ + 0x2ee), 8.0f, -16.0f);
 }
 
+extern "C" void dtor_801F593C(void* this_, int flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801EE434(void* handle);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* mgr, s32 a);
+extern "C" void fn_8022ADCC(void);
+extern "C" char* fn_801F666C(void* mgr, s32 handle);
+extern void* lbl_804A1A98[];
+struct Handles_fgn2 { u8 pad[0x2f4]; void* a[4]; void* b[4]; void* c; };
+
+// FGN2 destructor
+extern "C" void* fn_80189F74(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A1A98;
+        for (int i = 0; i < 4; i++) {
+            fn_801EE434(((Handles_fgn2*)this_)->a[i]);
+            fn_801EE434(((Handles_fgn2*)this_)->b[i]);
+        }
+        fn_801EE434(((Handles_fgn2*)this_)->c);
+        if (*(u32*)(this_ + 0x90) == 0) {
+            fn_802D7440(fn_802D6A9C(), 1);
+            fn_8022ADCC();
+        }
+        if (*(u32*)(this_ + 0x90) == 10) {
+            s32 h = *(s32*)(this_ + 0x274);
+            if (h >= 0) {
+                char* c = fn_801F666C(fn_801F856C(), h);
+                if (c != 0) {
+                    *(f32*)(c + 0x28c) = 3.0f;
+                    *(s32*)(this_ + 0x274) = -1;
+                }
+            }
+        }
+        dtor_801F593C(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
