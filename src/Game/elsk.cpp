@@ -4,7 +4,7 @@
 
 // ---- Emsk_dtor_802EF448.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
-extern "C" void dtor_80084580(void* this_);
+void operator delete(void* p);
 extern void* lbl_804AA498[];
 
 extern "C" void* fn_802EF448(void* this_, short how) {
@@ -12,7 +12,7 @@ extern "C" void* fn_802EF448(void* this_, short how) {
         *(void**)this_ = lbl_804AA498;
         __dt__5ActorFv(this_, 0);
         if (how > 0) {
-            dtor_80084580(this_);
+            operator delete(this_);
         }
     }
     return this_;
