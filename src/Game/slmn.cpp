@@ -93,4 +93,57 @@ extern "C" void fn_80207F00(char* this_) {
     *(f32*)(this_ + 0x44) = z;
 }
 
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+extern "C" void fn_80209CA4(void* obj, s32 a, s32 b, void* c, s32 d);
+extern "C" void fn_80209D44(void* obj);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u16 fn_80226850(void* pos, s32 room);
+
+struct SlmnPart {
+    s32 id;       // 0x2b0
+    u8 pad4[4];
+    s32 a;        // 0x2b8
+    s32 b;        // 0x2bc
+    u8 c[0xc];    // 0x2c0
+    s32 d;        // 0x2cc
+    u8 pad20[4];
+};
+
+struct Slmn {
+    u8 pad0[0x248];
+    s32 state; // 0x248
+    u8 pad24c[0x2b0 - 0x24c];
+    SlmnPart parts[4]; // 0x2b0
+};
+
+extern "C" void fn_80208834(char* this_) {
+    if (*(s32*)(this_ + 0x248) != 7) {
+        fn_80208244(this_, 7);
+    }
+    for (s32 i = 0; i < 4; i++) {
+        void* a = fn_801F666C(fn_801F856C(), ((Slmn*)this_)->parts[i].id);
+        if (a != 0) {
+            fn_80209CA4(a, ((Slmn*)this_)->parts[i].a, ((Slmn*)this_)->parts[i].b, ((Slmn*)this_)->parts[i].c, ((Slmn*)this_)->parts[i].d);
+        }
+    }
+}
+
+extern "C" void fn_802088B4(char* this_) {
+    if (*(s32*)(this_ + 0x248) != 5) {
+        fn_80208244(this_, 5);
+    }
+    for (s32 i = 0; i < 4; i++) {
+        void* a = fn_801F666C(fn_801F856C(), ((Slmn*)this_)->parts[i].id);
+        if (a != 0) {
+            fn_80209D44(a);
+        }
+    }
+}
+
+extern "C" void fn_80208924(char* this_) {
+    *(u16*)(this_ + 0x346) = fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4));
+    *(u16*)(this_ + 0x348) = fn_80226850(this_ + 0xc, *(s32*)(this_ + 0x4));
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
