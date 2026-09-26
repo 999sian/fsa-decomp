@@ -61,6 +61,7 @@ struct MiraRGB { u8 r, g, b, a; };
 extern "C" void v07__5ActorFv(void* this_);
 extern "C" void* fn_8013CC50(u32 id, f32* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void fn_801B9DD4(void* this_, s32 state);
+
 extern f32 lbl_8053EB70;
 extern char* lbl_8053AB10;
 
@@ -127,6 +128,134 @@ extern "C" void fn_801B97C0(char* this_) {
         rec.ids[3] = 6;
     }
     fn_801F06F0(this_, lbl_80469300, *(s32*)(this_ + 0x280) + 0xc1, &rec, 7, lbl_8053EB70, lbl_8053EB70);
+}
+
+extern "C" s32 fn_801CF1B0(void* this_, s32 flag, f32 a, f32 b);
+extern "C" s32 fn_801D05F8(void* this_, void* pos, f32 r);
+extern "C" u8 fn_801D21F0(void* anim);
+extern "C" void fn_801CD150(void* src, void* dst);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* base, s32 id);
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern const f32 lbl_8053EB74;
+extern const f32 lbl_8053EB78;
+extern const f32 lbl_8053EB80;
+extern const f32 lbl_8053EB84;
+extern const f32 lbl_8053EB88;
+
+static inline bool mira_chk(char* p, u32 f) { return *(s32*)(p + 0x230) & f; }
+static inline void mira_off(char* p, u32 f) { ((ItemBase*)p)->m230 &= ~f; }
+
+static inline void mira_pickNext(char* p) {
+    if (fn_801D05F8(p, p + 0xc, lbl_8053EB74) < 0) {
+        fn_801B9DD4(p, 1);
+    } else {
+        s32 flag = 0;
+        if (mira_chk(p, 0x2000)) {
+            flag = 1;
+            mira_off(p, 0x2000);
+        }
+        s32 dir = fn_801CF1B0(p, flag, lbl_8053EB74, lbl_8053EB78);
+        if (dir == *(s32*)(p + 0x98)) {
+            fn_801B9DD4(p, 0);
+        } else {
+            *(s32*)(p + 0x98) = dir;
+            fn_801B9DD4(p, 2);
+        }
+    }
+}
+
+extern "C" void fn_801B9A5C(char* p, u8 arg) {
+    switch (*(s32*)(p + 0x248)) {
+    case 0:
+        if (mira_chk(p, 0x8000) && *(s32*)(p + 0x24c) >= 5) {
+            mira_off(p, 0x8000);
+        }
+        if (arg) {
+            s32 dir = fn_801CF1B0(p, 1, lbl_8053EB74, lbl_8053EB78);
+            if (dir == *(s32*)(p + 0x98)) {
+                *(s32*)(p + 0x250) += 10;
+            } else if (fn_801D05F8(p, p + 0xc, lbl_8053EB74) < 0) {
+                *(u32*)(p + 0x230) |= 0x2000;
+                fn_801B9DD4(p, 1);
+            } else {
+                *(s32*)(p + 0x98) = dir;
+                fn_801B9DD4(p, 2);
+            }
+        } else if (*(s32*)(p + 0x24c) >= *(s32*)(p + 0x250)) {
+            mira_pickNext(p);
+        }
+        break;
+    case 1:
+        if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
+            s32 flag = 0;
+            if (mira_chk(p, 0x2000)) {
+                flag = 1;
+                mira_off(p, 0x2000);
+            }
+            s32 dir = fn_801CF1B0(p, flag, lbl_8053EB74, lbl_8053EB78);
+            if (dir == *(s32*)(p + 0x98)) {
+                fn_801B9DD4(p, 0);
+            } else {
+                *(s32*)(p + 0x98) = dir;
+                fn_801B9DD4(p, 2);
+            }
+        }
+        break;
+    case 2:
+        if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
+            s32 cur = *(s32*)(p + 0x98);
+            s32 dir = 0;
+            switch (*(u32*)(p + 0x278)) {
+            case 0: case 4: case 12: case 14:
+                dir = 0;
+                break;
+            case 1: case 5: case 13: case 15:
+                dir = 1;
+                break;
+            case 2: case 6: case 8: case 10:
+                dir = 2;
+                break;
+            case 3: case 7: case 9: case 11:
+                dir = 3;
+                break;
+            }
+            if (cur != dir) {
+                fn_801B9DD4(p, 2);
+            } else {
+                fn_801B9DD4(p, 0);
+            }
+        }
+        break;
+    case 3:
+        if (*(s32*)(p + 0x24c) >= 0xb4) {
+            f32 pos[3];
+            fn_801CD150(p + 0xc, pos);
+            s32 id = Actor_CreateByID(fn_801F856C(), 'STAL', 8, pos, 3, *(s32*)(p + 0x16c), -1);
+            if (id >= 0) {
+                char* a = (char*)fn_801F666C(fn_801F856C(), id);
+                if (a != 0) {
+                    *(s32*)(a + 0x98) = 2;
+                }
+            }
+            *(u8*)(p + 0x11c) = 0;
+        }
+        break;
+    }
+    if (*(s32*)(p + 0x248) != 0 || (*(u32*)(p + 0x230) & 0x8000)) {
+        *(f32*)(p + 0x258) = lbl_8053EB7C;
+    } else {
+        switch (*(u32*)(p + 0x280)) {
+        case 1: case 2: case 6: case 7: case 11: case 12: case 16: case 17:
+            *(f32*)(p + 0x258) = lbl_8053EB7C;
+            *(f32*)(p + 0x25c) = lbl_8053EB80;
+            break;
+        default:
+            *(f32*)(p + 0x258) = lbl_8053EB84;
+            *(f32*)(p + 0x25c) = lbl_8053EB88;
+            break;
+        }
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
