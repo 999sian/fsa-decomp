@@ -1853,6 +1853,7 @@ game/IFCK_8012F008.cpp:
 	extabindex  start:0x80012EE0 end:0x80012F1C
 	.text       start:0x8012F008 end:0x8012F3E4
 	.ctors      start:0x8045BEC8 end:0x8045BECC
+	.bss        start:0x804BDCF0 end:0x804BDD5C
 
 game/WPCN_80130FAC.cpp:
 	extab       start:0x800067EC end:0x80006838

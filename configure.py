@@ -1001,7 +1001,7 @@ config.libs = [
             Object(NonMatching, "game/BARI_8011EEEC.cpp"),
             Object(NonMatching, "game/RNBW_80129B0C.cpp"),
             Object(NonMatching, "game/BTBZ_8012CF5C.cpp"),
-            Object(NonMatching, "game/IFCK_8012F008.cpp"),
+            Object(Matching, "game/IFCK_8012F008.cpp"),
             Object(NonMatching, "game/WPCN_80130FAC.cpp"),
             Object(NonMatching, "game/tu_80134C04.cpp"),
             Object(NonMatching, "game/tu_8013AAD4.cpp"),
