@@ -2059,6 +2059,7 @@ game/okam.cpp:
 	extabindex  start:0x80014A4C end:0x80014AA0
 	.text       start:0x801AE9C4 end:0x801AFB38
 	.ctors      start:0x8045BFEC end:0x8045BFF0
+	.sdata2     start:0x8053E838 end:0x8053E888
 
 game/egol.cpp:
 	extab       start:0x80007B6C end:0x80007B94
