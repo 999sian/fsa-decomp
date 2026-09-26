@@ -723,4 +723,30 @@ extern "C" f32 fn_801CB270(const char* name, GXTexObj* tex, GXTlutObj* tlut) {
     return (f32)img->mSizeY * (lbl_8053EF60 / (f32)img->mSizeX);
 }
 
+extern "C" s32 fn_801CD398(s32 a, s32 b) {
+    if (a == b) {
+        s32 list[3];
+        s32* p = list;
+        s32 n = 0;
+        for (s32 i = 0; i < 4; i++) {
+            if (i != a) {
+                *p++ = i;
+                n++;
+            }
+        }
+        return list[fn_801CD664(n)];
+    } else {
+        s32 list[2];
+        s32* p = list;
+        s32 n = 0;
+        for (s32 i = 0; i < 4; i++) {
+            if (i != a && i != b) {
+                *p++ = i;
+                n++;
+            }
+        }
+        return list[fn_801CD664(n)];
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
