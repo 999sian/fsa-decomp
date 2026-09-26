@@ -554,6 +554,17 @@ u8 GetField_0xcfe(char* p) { return U8(p, 0xcfe); }
 void IncrementField_0x1224(char* p) { S32(p, 0x1224) += 1; }
 FWD(80240888, 80234004, 0x1224)
 u8 fn_802408C0(char* p) { return U8(p, 0x1217); }
+u8 fn_80233EDC(s32);
+bool fn_80240B84(char* p) {
+    if ((u8)isLinkOwner(p)) {
+        return fn_80233EDC(fn_8022EA0C(S32(p, 0x4)));
+    }
+    bool r = 0;
+    if (S32(p, 0x1240) == 0x1b || S32(p, 0x1244) == 0x1b) {
+        r = 1;
+    }
+    return r;
+}
 u8 fn_80240AD4(char* p) {
     if (U8(p, 0xce8) != 0) {
         return 0;
