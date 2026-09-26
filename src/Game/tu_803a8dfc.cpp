@@ -4,6 +4,10 @@
 #include "types.h"
 
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/JKernel/JKRHeap.h"
+#include "JSystem/JParticle/JPAEmitter.h"
+
+extern "C" void __dl__FPv(void* p);
 
 struct VObj_803A8DFC {
     virtual void v00();
@@ -1003,6 +1007,126 @@ extern "C" void fn_803B35F8(void* this_, u32 kind) {
         }
         break;
     }
+}
+
+struct DelObj {
+    virtual ~DelObj();
+};
+
+struct DelObj8 {
+    u32 m0;
+    u32 m4;
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual ~DelObj8();
+};
+
+struct Menu_Dtor {
+    void* vt;
+    DelObj* scr04[3];           // 0x04
+    DelObj* scr10[3];           // 0x10
+    DelObj* m1c;                // 0x1c
+    DelObj* m20;                // 0x20
+    DelObj* m24[3];             // 0x24
+    u8 pad30[0x170 - 0x30];
+    DelObj* m170;               // 0x170
+    DelObj8* sinks[4];          // 0x174
+    DelObj8* m184;              // 0x184
+    EffHandle* e188[4];         // 0x188
+    EffHandle* e198[4];         // 0x198
+    EffHandle* e1a8[4];         // 0x1a8
+    EffHandle* e1b8[4];         // 0x1b8
+    JPABaseEmitter* emitters[30]; // 0x1c8
+};
+
+extern void* lbl_804AF9A0[];
+extern void* lbl_8053ADA0;
+extern "C" void* fn_8013C824(void);
+
+static inline void killEmitter(JPABaseEmitter*& e) {
+    if (e != 0) {
+        JPAEmitterManager* m = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc); m->forceDeleteEmitter(e);
+        e = 0;
+    }
+}
+
+extern "C" Menu_Dtor* fn_803B6D04(Menu_Dtor* p, s16 freeFlag) {
+    if (p != 0) {
+        p->vt = lbl_804AF9A0;
+        for (s32 i = 0; i < 30; i++) {
+            killEmitter(p->emitters[i]);
+        }
+        for (s32 i = 0; i < 4; i++) {
+            {
+                EffHandle* h = p->e1a8[i];
+                if (h != 0) {
+                    h->flags |= 1;
+                    h->m24 = 1;
+                    p->e1a8[i] = 0;
+                }
+            }
+            {
+                EffHandle* h = p->e188[i];
+                if (h != 0) {
+                    h->flags |= 1;
+                    h->m24 = 1;
+                    p->e188[i] = 0;
+                }
+            }
+            {
+                EffHandle* h = p->e198[i];
+                if (h != 0) {
+                    h->flags |= 1;
+                    h->m24 = 1;
+                    p->e198[i] = 0;
+                }
+            }
+            {
+                EffHandle* h = p->e1b8[i];
+                if (h != 0) {
+                    h->flags |= 1;
+                    h->m24 = 1;
+                    p->e1b8[i] = 0;
+                }
+            }
+        }
+        (*(JKRHeap**)(lbl_80529DEC + 8))->getTotalFreeSize();
+        for (s32 i = 0; i < 3; i++) {
+            delete p->scr04[i];
+            p->scr04[i] = 0;
+            delete p->scr10[i];
+            p->scr10[i] = 0;
+        }
+        delete p->m20;
+        p->m20 = 0;
+        delete p->m1c;
+        p->m1c = 0;
+        for (s32 i = 0; i < 3; i++) {
+            delete p->m24[i];
+            p->m24[i] = 0;
+        }
+        delete p->m170;
+        p->m170 = 0;
+        for (s32 i = 0; i < 4; i++) {
+            delete p->sinks[i];
+            p->sinks[i] = 0;
+        }
+        delete p->m184;
+        p->m184 = 0;
+        lbl_8053ADA0 = 0;
+        if (freeFlag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
