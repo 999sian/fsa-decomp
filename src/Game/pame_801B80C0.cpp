@@ -2,6 +2,7 @@
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
 #include "JSystem/JGeometry.h"
+#include "Game/ItemBase.h"
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -212,6 +213,37 @@ extern "C" void fn_801B8700(u8* this_) {
     if (*(s32*)(this_ + 0x248) == 5) {
         pameDropRupees(this_);
     }
+}
+
+extern "C" void fn_801F06F0(void* this_, void* table, u32 id, void* data, f32 f1, f32 f2, s32 mode);
+extern u8 lbl_80469198[];
+
+static inline void pameScaleMtx(f32 m[3][4], f32 x, f32 y, f32 z) {
+    m[0][0] = x;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = y;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = z;
+}
+
+extern "C" void fn_801B8150(u8* this_) {
+    DrawRec r;
+    f32 m[3][4];
+    if (*(u32*)(this_ + 0x230) & 0x2000) {
+        m[0][3] = 0.0f;
+        m[1][3] = 0.0f;
+        m[2][3] = 0.0f;
+        pameScaleMtx(m, *(f32*)(this_ + 0x54), *(f32*)(this_ + 0x58), *(f32*)(this_ + 0x5c));
+        r.w18 = m;
+    }
+    if (*(u32*)(this_ + 0x230) & 0x4000) {
+        r.ids[8] = *(s32*)(this_ + 0x2a8) + 2;
+    }
+    fn_801F06F0(this_, lbl_80469198, *(u32*)(this_ + 0x280) + 0xbd, &r, lbl_8053EB24, lbl_8053EB24, 0);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
