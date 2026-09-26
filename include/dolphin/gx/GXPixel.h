@@ -9,7 +9,7 @@ extern "C" {
 
 void GXSetFog(GXFogType type, f32 startz, f32 endz, f32 nearz, f32 farz, GXColor color);
 void GXSetFogColor(GXColor color);
-// ? GXSetFogRangeAdj();
+void GXSetFogRangeAdj(GXBool enable, u16 center, GXFogAdjTable* table);
 void GXSetBlendMode(GXBlendMode type, GXBlendFactor src_factor, GXBlendFactor dst_factor,
                     GXLogicOp op);
 void GXSetColorUpdate(GXBool update_enable);

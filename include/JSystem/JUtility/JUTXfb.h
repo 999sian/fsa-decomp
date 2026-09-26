@@ -31,6 +31,7 @@ public:
     int getDrawingXfbIndex() const { return mDrawingXfbIndex; }
     int getDisplayingXfbIndex() const { return mDisplayingXfbIndex; }
     int getSDrawingFlag() const { return mSDrawingFlag; }
+    void *getBufferPtr(int i) { return mBuffer[i]; }
 
     void *getDrawnXfb() const {
         return (mDrawnXfbIndex >= 0) ? mBuffer[mDrawnXfbIndex] : nullptr;

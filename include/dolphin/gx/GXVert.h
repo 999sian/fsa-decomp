@@ -23,7 +23,13 @@ typedef union {
 } PPCWGPipe;
 
 #ifdef __MWERKS__
+#ifdef GX_WGPIPE_VOLATILE
+// The retail SDK header declares the pipe volatile; J3D needs this to match.
+// Opt-in so that the mkdd-derived TUs (which match without it) are unaffected.
+volatile PPCWGPipe GXWGFifo : GXFIFO_ADDR;
+#else
 /*volatile*/ PPCWGPipe GXWGFifo : GXFIFO_ADDR;
+#endif
 #else
 #define GXWGFifo (*(volatile PPCWGPipe*)GXFIFO_ADDR)
 #endif

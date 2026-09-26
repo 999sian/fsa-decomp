@@ -32,7 +32,8 @@ enum J3DAnmKind
     J3DAnmKind_VisibilityFull = 6,
     J3DAnmKind_VtxColor = 7,
     J3DAnmKind_VtxColorFull = 14,
-    J3DAnmKind_VtxColorKey = 15
+    J3DAnmKind_VtxColorKey = 15,
+    J3DAnmKind_TransformFullWithLerp = 16
 };
 
 #pragma enumalwaysint off
@@ -51,6 +52,11 @@ struct J3DAnmBase
 {
     inline J3DAnmBase()
         : mAttribute(0), _05(0), mMaxFrame(0), mCurrentFrame(0.0f)
+    {
+    }
+
+    inline J3DAnmBase(s16 frameMax)
+        : mAttribute(0), _05(0), mMaxFrame(frameMax), mCurrentFrame(0.0f)
     {
     }
 
@@ -82,41 +88,6 @@ struct J3DAnmFullData : public J3DFileBlockBase {
 
 struct J3DAnmKeyTableBase
 {
-
-    /**
-     * @fabricated
-     * TODO: This is wrong. It's not generating the paired instructions that I was hoping it'd generate.
-     */
-    inline void getColorField(f32 fTime, s16 *result, s16 *values)
-    {
-        switch (mMaxFrame)
-        {
-        case 0:
-            *result = 0;
-            break;
-        case 1:
-            *result = values[mOffset];
-            break;
-        default:
-        {
-            f32 interpolation = J3DGetKeyFrameInterpolation(fTime, this, values + mOffset);
-            if (-1024.0f > interpolation)
-            {
-                *result = -1024;
-            }
-            else if (interpolation > 1023.0f)
-            {
-                *result = 1023;
-            }
-            else
-            {
-                *result = interpolation;
-            }
-            break;
-        }
-        }
-    }
-
     u16 mMaxFrame; // _00
     u16 mOffset;   // _02
     u16 mType;     // _04

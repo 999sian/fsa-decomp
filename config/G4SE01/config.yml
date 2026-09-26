@@ -16,3 +16,7 @@ detect_strings: true
 write_asm: true
 symbols_known: false
 fill_gaps: true
+# False-positive relocations in data (values that merely look like addresses).
+block_relocations:
+  # Word 0x80005600 inside lbl_804936A0 (DSP data), not a pointer to extab.
+  - source: 0x80494F24

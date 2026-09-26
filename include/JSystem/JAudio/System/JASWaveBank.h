@@ -114,12 +114,10 @@ class JASSimpleWaveBank : public JASWaveBank, public JASWaveArc
 public:
     struct TWaveHandle : public JASWaveHandle
     {
-        TWaveHandle() { 
-            mHeap = NULL;
-        }
+        TWaveHandle();
         ~TWaveHandle() {}
         int getWavePtr() const;
-        const JASWaveInfo *getWaveInfo() const { return &mInfo; }
+        const JASWaveInfo *getWaveInfo() const;
         bool compareHeap(JASHeap *heap) const { return mHeap == heap; }
 
         JASWaveInfo mInfo; // 04
@@ -132,7 +130,7 @@ public:
     JASWaveHandle *getWaveHandle(u32) const;
     void setWaveInfo(u32, const JASWaveInfo &);
     JASWaveArc *getWaveArc(u32);
-    virtual u32 getArcCount() const { return 1; }
+    virtual u32 getArcCount() const;
 
     TWaveHandle *mWaveTable;
     u32 mWaveCount;

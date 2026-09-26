@@ -7,6 +7,10 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "types.h"
 
+// FSA's JAUSoundObject differs from mkdd's: it has an "active" flag that
+// dispose() clears, index-based startSound/startLevelSound overloads and
+// stopSound. The reserved-handle mask moved to 0x10. There is no
+// JAUDopplerSoundObject in the FSA binary.
 class JAUSoundObject : public JAISoundHandles
 {
 public:
@@ -17,31 +21,17 @@ public:
     virtual void dispose();
     virtual bool stopOK(JAISoundHandle &);
     virtual JAISoundHandle *startSound(JAISoundID);
+    virtual JAISoundHandle *startSound(JAISoundID, u8);
     virtual JAISoundHandle *startLevelSound(JAISoundID);
-    
-    JAISoundHandle *getFreeHandleNotReserved();
+    virtual JAISoundHandle *startLevelSound(JAISoundID, u8);
+
+    void stopSound(JAISoundID, u32);
     JAISoundHandle *getLowPrioSound(JAISoundID);
-    //void startLevelSoundIndex(int, unsigned char);
-    //void startSoundIndex(int, unsigned char);
-    //void stopSound(int soundID, u32); // unused, not sure
+    JAISoundHandle *getFreeHandleNotReserved();
 
-    u32 _C; // size of object?
-    u8 _10;
+    u8 mIsActive;                     // 0C
+    u32 mReservedHandles;             // 10, bit i set = handle i is reserved
     JGeometry::TVec3<f32> *mSoundPos; // 14
-};
-
-class JAUDopplerSoundObject : public JAUSoundObject
-{ 
-public:
-    JAUDopplerSoundObject(JGeometry::TVec3f *, u8, JKRHeap *);
-    ~JAUDopplerSoundObject();
-
-    virtual void process();
-    virtual JAISoundHandle *startSound(JAISoundID soundID);
-    virtual JAISoundHandle *startLevelSound(JAISoundID soundID);
-
-    JGeometry::TVec3f _18;
-    JGeometry::TVec3f _24;
 };
 
 #endif

@@ -45,3 +45,4 @@ compile_commands.json
 # Reference manuals (download from files.decomp.dev)
 docs/reference/*.pdf
 docs/reference/*.txt
+docs/versions/function_map.csv

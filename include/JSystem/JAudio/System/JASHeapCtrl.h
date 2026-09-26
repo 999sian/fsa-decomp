@@ -39,12 +39,7 @@ template <typename T>
 struct JASMemPool : public JASGenericMemPool
 {
     JASMemPool<T>() : JASGenericMemPool() {}
-    // Out-of-line: retail's __dt__20JASMemPool<T>Fv is a real 0x54-byte weak function.
-    // Inlining it here makes every TU emit nine weak dtor copies plus their extab
-    // entries, which prevents any JAudio/game unit that includes this header from
-    // matching: retail carries extabindex entries only for the unit's own functions
-    // that need exception metadata plus its __sinit, never nine extra dtors.
-    ~JASMemPool();
+    ~JASMemPool<T>() {}
 
     typedef JASMemPool<T> JASMemPoolT;
 

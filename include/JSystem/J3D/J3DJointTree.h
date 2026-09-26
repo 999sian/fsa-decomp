@@ -31,16 +31,16 @@ struct J3DJointTree {
     void clear();
 
     J3DJoint *getJointNodePointer(u16 idx) const { return mJoints[idx]; }
-    u16 getWEvlpMtxNum() const { return mEnvelopeCnt; }
+    u32 getWEvlpMtxNum() const { return mEnvelopeCnt; }
     u8 getWEvlpMixMtxNum(u16 idx) const { return mEnvelopeMixCnt[idx]; }
     u16 *getWEvlpMixIndex() const { return mEnvelopeMixIdx; }
     f32 *getWEvlpMixWeight() const { return mEnvelopeMixWeight; }
     u16 *getWEvlpImportantMtxIndex() const { return mEnvelopeImptIdx; }
-    u16 getDrawFullWgtMtxNum() const { return mMtxData.mDrawMtxCount; }
+    u32 getDrawFullWgtMtxNum() const { return mMtxData.mDrawMtxCount; }
     u16 getJointNum() const { return mJointCnt; }
     u16 getDrawMtxNum() const { return mMtxData.mCount; }
     u8 getDrawMtxFlag(u16 idx) const { return mMtxData.mDrawMtxFlag[idx]; }
-    u8 getDrawMtxIndex(u16 idx) const { return mMtxData.mDrawMtxIdx[idx]; }
+    u16 getDrawMtxIndex(u16 idx) const { return mMtxData.mDrawMtxIdx[idx]; }
     JUTNameTab *getJointName() const { return mNametab; }
     J3DJoint *getRootNode() { return mRootNode; }
     J3DMtxCalc *getBasicMtxCalc() const { return mTransformCalc; }

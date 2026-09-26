@@ -29,7 +29,9 @@ from tools.project import (
 # Game versions
 DEFAULT_VERSION = 0
 VERSIONS = [
-    "G4SE01",  # 0
+    "G4SE01",  # 0 USA
+    "G4SJ01",  # 1 Japan
+    "G4SP01",  # 2 Europe (PAL)
 ]
 
 parser = argparse.ArgumentParser()
@@ -278,7 +280,78 @@ cflags_jsystem = [
     "-DNDEBUG=1" if not args.debug else "-DDEBUG=1",
 ]
 
+# JAudio/Interface (JAI) flags: JSystem flags plus MATCHING, which enables the
+# JASFakeMatch*.h headers that emit the per-TU JASPoolAllocObject memPool_
+# instances (and their __sinit guards) exactly as the retail objects have them.
+cflags_jai = [
+    *cflags_jsystem,
+    "-DMATCHING=1",
+]
+# JAudio/Utility + JAudio/Task flags (jau-task unit)
+cflags_jau = [*cflags_jsystem, "-DMATCHING=1"]
+# Extra flags for JAudio/Task (DSP driver), as in the mkdd decomp
+cflags_jaudio_task = ["-O4,s", "-inline noauto", "-use_lmw_stmw off", "-func_align 32"]
+# J3D/GraphBase flags: JSystem flags + retail volatile GXWGFifo (see dolphin/gx/GXVert.h)
+cflags_j3d_base = [
+    *cflags_jsystem,
+    "-DGX_WGPIPE_VOLATILE",
+]
+
 config.linker_version = "GC/1.3.2"
+
+
+# SDK / MSL / Runtime / MetroTRK flags. Sources and headers (include/sdk) were
+# imported from the Pikmin 2 decomp (projectPiki/pikmin2), whose SDK build
+# stamps match FSA's; flags follow that project's configure.py.
+cflags_sdk_base = [
+    "-nodefaults",
+    "-proc gekko",
+    "-align powerpc",
+    "-enum int",
+    "-fp hardware",
+    "-Cpp_exceptions off",
+    "-w off",
+    "-O4,p",
+    "-inline auto",
+    '-pragma "cats off"',
+    '-pragma "warn_notinlined off"',
+    "-maxerrors 1",
+    "-nosyspath",
+    "-RTTI off",
+    "-fp_contract on",
+    "-str reuse",
+    "-multibyte",
+    "-i include/sdk",
+    "-i include/sdk/stl",
+    f"-i build/{config.version}/include",
+    f"-DVERSION_{config.version}",
+]
+
+cflags_sdk_runtime = [
+    *cflags_sdk_base,
+    "-use_lmw_stmw on",
+    "-str reuse,readonly",
+    "-common off",
+    "-inline auto",
+]
+
+# Per-library extra flags for Dolphin SDK libraries (GC/1.2.5n)
+dolphin_lib_cflags = {
+    "OdemuExi2": ["-inline deferred"],
+    "ai": ["-str noreadonly"],
+    "ar": ["-str noreadonly"],
+    "card": ["-str noreadonly"],
+    "db": ["-str noreadonly"],
+    "dsp": ["-str noreadonly"],
+    "dvd": ["-str noreadonly"],
+    "exi": ["-str noreadonly"],
+    "gba": ["-str noreadonly"],
+    "gx": ["-str noreadonly", "-fp_contract off"],
+    "os": ["-str noreadonly"],
+    "pad": ["-fp_contract off", "-str noreadonly"],
+    "si": ["-str noreadonly"],
+    "vi": ["-str noreadonly"],
+}
 
 
 # Helper function for Dolphin libraries
@@ -286,7 +359,18 @@ def DolphinLib(lib_name: str, objects: List[Object]) -> Dict[str, Any]:
     return {
         "lib": lib_name,
         "mw_version": "GC/1.2.5n",
-        "cflags": cflags_base,
+        "cflags": [*cflags_sdk_runtime, *dolphin_lib_cflags.get(lib_name, [])],
+        "progress_category": "sdk",
+        "objects": objects,
+    }
+
+
+# Helper function for MSL / Runtime / MetroTRK libraries
+def SdkLib(lib_name: str, mw_version: str, cflags: List[str], objects: List[Object]) -> Dict[str, Any]:
+    return {
+        "lib": lib_name,
+        "mw_version": mw_version,
+        "cflags": cflags,
         "progress_category": "sdk",
         "objects": objects,
     }
@@ -370,17 +454,313 @@ def MatchingFor(*versions):
     return config.version in versions
 
 
+# JAudio/System flags (jas-a unit)
+cflags_jas_a = [*cflags_jsystem, "-DMATCHING=1"]
+
 config.warn_missing_config = True
 config.warn_missing_source = False
 config.libs = [
+    DolphinLib(
+        "base",
+        [
+            Object(Matching, "dolphin/base/PPCArch.c"),
+        ],
+    ),
+    DolphinLib(
+        "db",
+        [
+            Object(Matching, "dolphin/db/db.c"),
+        ],
+    ),
+    DolphinLib(
+        "os",
+        [
+            Object(Matching, "dolphin/os/OS.c"),
+            Object(Matching, "dolphin/os/OSAlarm.c"),
+            Object(Matching, "dolphin/os/OSAlloc.c"),
+            Object(Matching, "dolphin/os/OSArena.c"),
+            Object(Matching, "dolphin/os/OSAudioSystem.c"),
+            Object(Matching, "dolphin/os/OSCache.c"),
+            Object(Matching, "dolphin/os/OSContext.c"),
+            Object(Matching, "dolphin/os/OSError.c"),
+            Object(Matching, "dolphin/os/OSFont.c"),
+            Object(Matching, "dolphin/os/OSInterrupt.c"),
+            Object(Matching, "dolphin/os/OSLink.c"),
+            Object(Matching, "dolphin/os/OSMessage.c"),
+            Object(Matching, "dolphin/os/OSMemory.c"),
+            Object(Matching, "dolphin/os/OSMutex.c"),
+            Object(Matching, "dolphin/os/OSReboot.c"),
+            Object(Matching, "dolphin/os/OSReset.c"),
+            Object(Matching, "dolphin/os/OSResetSW.c"),
+            Object(Matching, "dolphin/os/OSRtc.c"),
+            Object(Matching, "dolphin/os/OSSync.c"),
+            Object(Matching, "dolphin/os/OSThread.c"),
+            Object(Matching, "dolphin/os/OSTime.c"),
+            Object(Matching, "dolphin/os/__start.c"),
+            Object(Matching, "dolphin/os/__ppc_eabi_init.cpp"),
+        ],
+    ),
+    DolphinLib(
+        "mtx",
+        [
+            Object(Matching, "dolphin/mtx/mtx.c"),
+            Object(Matching, "dolphin/mtx/mtxvec.c"),
+            Object(Matching, "dolphin/mtx/mtx44.c"),
+            Object(Matching, "dolphin/mtx/vec.c", extra_cflags=["-fp_contract off"]),
+        ],
+    ),
+    DolphinLib(
+        "dvd",
+        [
+            Object(Matching, "dolphin/dvd/dvdlow.c"),
+            Object(Matching, "dolphin/dvd/dvdfs.c"),
+            Object(Matching, "dolphin/dvd/dvd.c"),
+            Object(Matching, "dolphin/dvd/dvdqueue.c"),
+            Object(Matching, "dolphin/dvd/dvderror.c"),
+            Object(Matching, "dolphin/dvd/dvdidutils.c"),
+            Object(Matching, "dolphin/dvd/dvdFatal.c"),
+            Object(Matching, "dolphin/dvd/fstload.c"),
+        ],
+    ),
+    DolphinLib(
+        "vi",
+        [
+            Object(Matching, "dolphin/vi/vi.c"),
+        ],
+    ),
+    DolphinLib(
+        "pad",
+        [
+            Object(Matching, "dolphin/pad/Padclamp.c"),
+            Object(Matching, "dolphin/pad/Pad.c"),
+        ],
+    ),
+    DolphinLib(
+        "ai",
+        [
+            Object(Matching, "dolphin/ai/ai.c"),
+        ],
+    ),
+    DolphinLib(
+        "ar",
+        [
+            Object(Matching, "dolphin/ar/ar.c"),
+            Object(Matching, "dolphin/ar/arq.c"),
+        ],
+    ),
+    DolphinLib(
+        "dsp",
+        [
+            Object(Matching, "dolphin/dsp/dsp.c"),
+            Object(Matching, "dolphin/dsp/dsp_debug.c"),
+            Object(Matching, "dolphin/dsp/dsp_task.c"),
+        ],
+    ),
+    DolphinLib(
+        "card",
+        [
+            Object(Matching, "dolphin/card/CARDBios.c"),
+            Object(Matching, "dolphin/card/CARDUnlock.c"),
+            Object(Matching, "dolphin/card/CARDRdwr.c"),
+            Object(Matching, "dolphin/card/CARDBlock.c"),
+            Object(Matching, "dolphin/card/CARDDir.c"),
+            Object(Matching, "dolphin/card/CARDCheck.c"),
+            Object(Matching, "dolphin/card/CARDMount.c"),
+            Object(Matching, "dolphin/card/CARDFormat.c"),
+            Object(Matching, "dolphin/card/CARDOpen.c"),
+            Object(Matching, "dolphin/card/CARDCreate.c"),
+            Object(Matching, "dolphin/card/CARDRead.c"),
+            Object(Matching, "dolphin/card/CARDWrite.c"),
+            Object(Matching, "dolphin/card/CARDStat.c"),
+            Object(Matching, "dolphin/card/CARDNet.c"),
+        ],
+    ),
+    DolphinLib(
+        "gx",
+        [
+            Object(Matching, "dolphin/gx/GXInit.c"),
+            Object(Matching, "dolphin/gx/GXFifo.c"),
+            Object(Matching, "dolphin/gx/GXAttr.c"),
+            Object(Matching, "dolphin/gx/GXMisc.c"),
+            Object(Matching, "dolphin/gx/GXGeometry.c"),
+            Object(Matching, "dolphin/gx/GXFrameBuf.c"),
+            Object(Matching, "dolphin/gx/GXLight.c"),
+            Object(Matching, "dolphin/gx/GXTexture.c"),
+            Object(Matching, "dolphin/gx/GXBump.c"),
+            Object(Matching, "dolphin/gx/GXTev.c"),
+            Object(Matching, "dolphin/gx/GXPixel.c"),
+            Object(Matching, "dolphin/gx/GXDraw.c"),
+            Object(Matching, "dolphin/gx/GXDisplayList.c"),
+            Object(Matching, "dolphin/gx/GXTransform.c"),
+            Object(Matching, "dolphin/gx/GXPerf.c"),
+        ],
+    ),
+    SdkLib(
+        "TRK_MINNOW_DOLPHIN",
+        "GC/2.6",
+        [*cflags_sdk_runtime, "-inline deferred", "-sdata 0", "-sdata2 0"],
+        [
+            Object(Matching, "TRK_MINNOW_DOLPHIN/mainloop.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/nubevent.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/nubinit.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/msg.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/msgbuf.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/serpoll.c", extra_cflags=["-sdata 8"]),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/usr_put.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/dispatch.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/msghndlr.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/support.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/mutex_TRK.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/notify.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/flush_cache.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/mem_TRK.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/targimpl.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/targsupp.s"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/mpc_7xx_603e.c"),
+            Object(NonMatching, "TRK_MINNOW_DOLPHIN/__exception.s"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/dolphin_trk.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/main_TRK.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/dolphin_trk_glue.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/targcont.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/target_options.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/mslsupp.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/UDP_Stubs.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/ddh/main.c", extra_cflags=["-sdata 8"]),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/CircleBuffer.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/gdev/main.c", extra_cflags=["-sdata 8"]),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/MWTrace.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.cpp"),
+        ],
+    ),
+    SdkLib(
+        "Runtime.PPCEABI.H",
+        "GC/2.6",
+        [*cflags_sdk_runtime, "-inline deferred"],
+        [
+            Object(Matching, "Runtime.PPCEABI.H/__mem.c"),
+            Object(Matching, "Runtime.PPCEABI.H/__va_arg.c"),
+            Object(Matching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
+            Object(Matching, "Runtime.PPCEABI.H/NMWException.cp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "Runtime.PPCEABI.H/ptmf.c"),
+            Object(Matching, "Runtime.PPCEABI.H/runtime.c"),
+            Object(Matching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
+            Object(Matching, "Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp", extra_cflags=["-Cpp_exceptions on"]),
+            Object(Matching, "Runtime.PPCEABI.H/GCN_mem_alloc.c"),
+        ],
+    ),
+    SdkLib(
+        "MSL_C.PPCEABI.bare.H",
+        "GC/2.6",
+        [*cflags_sdk_runtime, "-inline deferred"],
+        [
+            Object(Matching, "MSL_C/PPC_EABI/abort_exit.c"),
+            Object(Matching, "MSL_C/MSL_Common/alloc.c"),
+            Object(Matching, "MSL_C/MSL_Common/errno.c"),
+            Object(Matching, "MSL_C/MSL_Common/ansi_files.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/ansi_fp.c", extra_cflags=["-str pool"]),
+            Object(Matching, "MSL_C/MSL_Common/arith.c"),
+            Object(Matching, "MSL_C/MSL_Common/buffer_io.c"),
+            Object(Matching, "MSL_C/PPC_EABI/critical_regions.gamecube.c"),
+            Object(Matching, "MSL_C/MSL_Common/ctype.c"),
+            Object(NonMatching, "MSL_C/MSL_Common/locale.c", extra_cflags=["-str pool"]),
+            Object(Matching, "MSL_C/MSL_Common/direct_io.c"),
+            Object(Matching, "MSL_C/MSL_Common/file_io.c"),
+            Object(Matching, "MSL_C/MSL_Common/FILE_POS.C"),
+            Object(Matching, "MSL_C/MSL_Common/mbstring.c", extra_cflags=["-inline noauto,deferred"]),
+            Object(Matching, "MSL_C/MSL_Common/mem.c"),
+            Object(Matching, "MSL_C/MSL_Common/mem_funcs.c"),
+            Object(Matching, "MSL_C/MSL_Common/misc_io.c"),
+            Object(Matching, "MSL_C/MSL_Common/printf.c", extra_cflags=["-str pool"]),
+            Object(Matching, "MSL_C/MSL_Common/float.c"),
+            Object(Matching, "MSL_C/MSL_Common/qsort.c"),
+            Object(Matching, "MSL_C/MSL_Common/scanf.c"),
+            Object(Matching, "MSL_C/MSL_Common/signal.c"),
+            Object(Matching, "MSL_C/MSL_Common/string.c"),
+            Object(Matching, "MSL_C/MSL_Common/strtoul.c"),
+            Object(Matching, "MSL_C/MSL_Common/wchar_io.c"),
+            Object(Matching, "MSL_C/PPC_EABI/uart_console_io_gcn.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/e_asin.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/e_atan2.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/e_rem_pio2.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/k_cos.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/k_rem_pio2.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/k_sin.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_atan.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ceil.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_cos.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_floor.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_frexp.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ldexp.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_modf.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/s_sin.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_asin.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_atan2.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/e_sqrt.c"),
+            Object(Matching, "MSL_C/PPC_EABI/math_ppc.c"),
+            Object(Matching, "MSL_C/MSL_Common_Embedded/Math/Double_precision/w_sqrt.c"),
+        ],
+    ),
+    DolphinLib(
+        "amcstubs",
+        [
+            Object(Matching, "dolphin/amcstubs/AmcExi2Stubs.c"),
+        ],
+    ),
+    DolphinLib(
+        "odenotstub",
+        [
+            Object(Matching, "dolphin/odenotstub/odenotstub.c"),
+        ],
+    ),
+    DolphinLib(
+        "OdemuExi2",
+        [
+            Object(Matching, "dolphin/OdemuExi2/DebuggerDriver.c"),
+        ],
+    ),
+    DolphinLib(
+        "gd",
+        [
+            Object(Matching, "dolphin/gd/GDBase.c"),
+            Object(Matching, "dolphin/gd/GDGeometry.c"),
+        ],
+    ),
+    DolphinLib(
+        "exi",
+        [
+            Object(Matching, "dolphin/exi/EXIBios.c"),
+            Object(Matching, "dolphin/exi/EXIUart.c"),
+        ],
+    ),
+    DolphinLib(
+        "si",
+        [
+            Object(Matching, "dolphin/si/SIBios.c"),
+            Object(Matching, "dolphin/si/SISamplingRate.c"),
+        ],
+    ),
+    DolphinLib(
+        "gba",
+        [
+            Object(Matching, "dolphin/gba/GBA.c"),
+            Object(NonMatching, "dolphin/gba/GBAJoyBoot.c"),
+            Object(Matching, "dolphin/gba/GBARead.c"),
+            Object(Matching, "dolphin/gba/GBAWrite.c"),
+            Object(Matching, "dolphin/gba/GBAXfer.c"),
+            Object(NonMatching, "dolphin/gba/GBAKey.c"),
+        ],
+    ),
+    # jas-sinit: first .text TU (shared per-TU JASPoolAllocObject __sinit pools).
+    # MATCHING enables the JASFakeMatch*.h memPool_ definitions; retail has
+    # extab entries for this TU, so it was built with C++ exceptions on.
     {
-        "lib": "Runtime.PPCEABI.H",
-        "mw_version": config.linker_version,
-        "cflags": cflags_runtime,
-        "progress_category": "sdk",  # str | List[str]
+        "lib": "JAudio_PoolSinit",
+        "mw_version": "GC/2.6",
+        "cflags": [*cflags_jsystem, "-DMATCHING=1", "-Cpp_exceptions on"],
+        "progress_category": "jsys",
         "objects": [
-            Object(NonMatching, "Runtime.PPCEABI.H/global_destructor_chain.c"),
-            Object(NonMatching, "Runtime.PPCEABI.H/__init_cpp_exceptions.cpp"),
+            Object(Matching, "JSystem/JAudio/JASPoolSinit.cpp"),
         ],
     },
     JSystemLib(
@@ -389,22 +769,30 @@ config.libs = [
             Object(Matching, "JSystem/JKernel/JKRAram.cpp"),
             Object(Matching, "JSystem/JKernel/JKRAramBlock.cpp"),
             Object(Matching, "JSystem/JKernel/JKRAramHeap.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRAramPiece.cpp"),
             Object(Matching, "JSystem/JKernel/JKRAramStream.cpp"),
             Object(Matching, "JSystem/JKernel/JKRArchivePri.cpp"),
             Object(Matching, "JSystem/JKernel/JKRArchivePub.cpp"),
             Object(Matching, "JSystem/JKernel/JKRCompArchive.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRDecomp.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDisposer.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDvdAramRipper.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDvdArchive.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDvdFile.cpp"),
             Object(Matching, "JSystem/JKernel/JKRDvdRipper.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRExpHeap.cpp"),
             Object(Matching, "JSystem/JKernel/JKRFileLoader.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRHeap.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRMemArchive.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRSolidHeap.cpp"),
+            Object(Matching, "JSystem/JKernel/JKRThread.cpp"),
         ],
     ),
     JSystemLib(
         "JSupport",
         [
             Object(Matching, "JSystem/JSupport/JSUFileStream.cpp"),
+            Object(Matching, "JSystem/JSupport/JSUInputStream.cpp"),
             Object(Matching, "JSystem/JSupport/JSUList.cpp"),
             Object(Matching, "JSystem/JSupport/JSUMemoryStream.cpp"),
         ],
@@ -414,15 +802,246 @@ config.libs = [
         [
             Object(Matching, "JSystem/JUtility/JUTAssert.cpp"),
             Object(Matching, "JSystem/JUtility/JUTConsole.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTDbPrint.cpp"),
             Object(Matching, "JSystem/JUtility/JUTDirectFile.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTDirectPrint.cpp"),
             Object(Matching, "JSystem/JUtility/JUTFont.cpp"),
             Object(Matching, "JSystem/JUtility/JUTGraphFifo.cpp"),
             Object(Matching, "JSystem/JUtility/JUTNameTab.cpp"),
             Object(Matching, "JSystem/JUtility/JUTPalette.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTProcBar.cpp"),
             Object(Matching, "JSystem/JUtility/JUTResFont.cpp"),
             Object(Matching, "JSystem/JUtility/JUTResource.cpp"),
             Object(Matching, "JSystem/JUtility/JUTTexture.cpp"),
             Object(Matching, "JSystem/JUtility/JUTVideo.cpp"),
+            Object(Matching, "JSystem/JUtility/JUTXfb.cpp"),
+        ],
+    ),
+    {
+        "lib": "JAudio_Interface",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jai,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/Interface/JAIAudience.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISe.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeq.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeqDataMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISeqMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISound.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundChild.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundHandles.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundInfo.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundParams.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAISoundStarter.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStream.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStreamDataMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIStreamMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Interface/JAIAudible.cpp"),
+        ],
+    },
+    JSystemLib(
+        "jas-b",
+        [
+            Object(NonMatching, "JSystem/JAudio/System/JASHeapCtrl.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstRand.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASInstSense.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASLfo.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASOscillator.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASProbe.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASRegisterParam.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASReport.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASResArcLoader.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSeqCtrl.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASSeqParser.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASSeqReader.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSimpleWaveBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASSoundParams.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASTaskThread.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASTrack.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(Matching, "JSystem/JAudio/System/JASTrackPort.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
+            # JASWaveBank.cpp (only JASWaveBank::isLoading) is dead-stripped in FSA:
+            # it has no code or data in main.dol.
+            Object(Matching, "JSystem/JAudio/System/JASWSParser.cpp"),
+        ],
+    ),
+    # JSystem TUs not present in the mkdd decomp (JMessage, extra JGadget, ...)
+    JSystemLib(
+        "jextra",
+        [
+            Object(Matching, "JSystem/JMessage/resource.cpp"),
+            Object(Matching, "JSystem/JMessage/data.cpp"),
+            Object(Matching, "JSystem/JMessage/processor.cpp"),
+            Object(Matching, "JSystem/JMessage/control.cpp"),
+            Object(Matching, "JSystem/JGadget/binary.cpp"),
+            Object(Matching, "JSystem/JGadget/std-vector.cpp"),
+        ],
+    ),
+    {
+        # JAudio/Utility + JAudio/Task (jau-task); -DMATCHING=1 enables the
+        # donor's explicit static memPool_ definitions (JASFakeMatch*.h)
+        "lib": "jau-task",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jau,
+        "progress_category": "jsys",
+        "objects": [
+            # JAudio/Task: DSP driver, built with mkdd's per-file flags
+            Object(Matching, "JSystem/JAudio/Task/dspproc.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/dsptask.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/osdsp.c", extra_cflags=cflags_jaudio_task),
+            Object(Matching, "JSystem/JAudio/Task/osdsp_task.c", extra_cflags=cflags_jaudio_task),
+            # JAudio/Utility
+            Object(Matching, "JSystem/JAudio/Utility/JAUAudioArcInterpreter.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUAudioArcLoader.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUBankTable.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUClusterSound.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUInitializer.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSectionHeap.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSeqCollection.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSeqDataBlockMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSoundMgr.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSoundObject.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUSoundTable.cpp"),
+            Object(Matching, "JSystem/JAudio/Utility/JAUStreamFileTable.cpp"),
+        ],
+    },
+    JSystemLib(
+        "JParticle",
+        [
+            Object(NonMatching, "JSystem/JParticle/JPABaseShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAChildShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPADynamicsBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAEmitter.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAEmitterManager.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAExTexShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAExtraShape.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAFieldBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAKeyBlock.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAMath.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAParticle.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResource.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResourceLoader.cpp"),
+            Object(Matching, "JSystem/JParticle/JPAResourceManager.cpp"),
+            Object(Matching, "JSystem/JParticle/JPATexture.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "j2d-a",
+        [
+            Object(Matching, "JSystem/J2DGraph/J2DAnimation.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DAnmLoader.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DBloSaver.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DGrafContext.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DManage.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DMatBlock.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DMaterial.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DMaterialFactory.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DOrthoGraph.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPane.cpp"),
+        ],
+    ),
+    {
+        # J3D/GraphBase (source from the Pikmin 2 decomp; mkdd has none).
+        # J3D needs the retail (volatile) GX write-gather pipe declaration.
+        "lib": "j3d-base",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_j3d_base,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/J3D/GraphBase/J3DGD.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DTransform.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DSys.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DDrawBuffer.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DShapeDraw.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DVertex.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DPacket.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphBase/J3DShape.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DMaterial.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphBase/J3DTevs.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DShapeMtx.cpp"),
+            Object(Matching, "JSystem/J3D/GraphBase/J3DStruct.cpp"),
+        ],
+    },
+    {
+        # JAudio/System (jas-a); -DMATCHING=1 enables the donor's explicit
+        # JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_ definitions
+        "lib": "jas-a",
+        "mw_version": "GC/2.6",
+        "cflags": cflags_jas_a,
+        "progress_category": "jsys",
+        "objects": [
+            Object(Matching, "JSystem/JAudio/System/JASAiCtrl.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASAramStream.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASAudioReseter.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASAudioThread.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASBasicBank.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASBasicInst.cpp"),
+            Object(NonMatching, "JSystem/JAudio/System/JASBasicWaveBank.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCalc.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCallback.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASChannel.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASCmdStack.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDriverIF.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDSPChannel.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDSPInterface.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDrumSet.cpp"),
+            Object(Matching, "JSystem/JAudio/System/JASDvdThread.cpp"),
+        ],
+    },
+    # jmisc: J3DU + JMath + JGadget + JFramework
+    JSystemLib(
+        "jmisc",
+        [
+            Object(Matching, "JSystem/JFramework/JFWDisplay.cpp"),
+            Object(Matching, "JSystem/JFramework/JFWSystem.cpp"),
+            Object(Matching, "JSystem/JMath/JMath.cpp"),
+            Object(Matching, "JSystem/JMath/random.cpp"),
+            Object(Matching, "JSystem/JMath/JMATrigonometric.cpp"),
+            Object(Matching, "JSystem/JGadget/linklist.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "j3d-loader",
+        [
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelLoader.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelLoaderCalcSize.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DJointFactory.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DShapeFactory.cpp"),
+            Object(Matching, "JSystem/J3D/GraphLoader/J3DModelSaver.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "J3DGraphAnimator",
+        [
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DAnimation.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DCluster.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJoint.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DJointTree.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DMaterialAnm.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DMaterialAttach.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DModel.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DModelData.cpp"),
+            Object(NonMatching, "JSystem/J3D/GraphAnimator/J3DMtxBuffer.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DShapeTable.cpp"),
+            Object(Matching, "JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp"),
+        ],
+    ),
+    JSystemLib(
+        "j2d-b",
+        [
+            Object(Matching, "JSystem/J2DGraph/J2DPicture.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DPictureEx.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DPrint.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DScreen.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTevs.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTextBox.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DTextBoxEx.cpp"),
+            Object(NonMatching, "JSystem/J2DGraph/J2DWindow.cpp"),
+            Object(Matching, "JSystem/J2DGraph/J2DWindowEx.cpp"),
         ],
     ),
     GameLib(
