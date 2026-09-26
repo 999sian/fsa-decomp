@@ -1081,7 +1081,7 @@ config.libs = [
             Object(Matching, "Game/tu_8012FF9C.cpp"),
             Object(NonMatching, "Game/MRMT_80130310.cpp"),
             Object(NonMatching, "Game/WPCN_80130FAC.cpp"),
-            Object(NonMatching, "Game/tu_80131D98.cpp"),
+            Object(Matching, "Game/tu_80131D98.cpp"),
             Object(NonMatching, "Game/SPFR_801321DC.cpp"),
             Object(NonMatching, "Game/CRNV_8013394C.cpp"),
             Object(NonMatching, "Game/tu_801344C0.cpp"),
