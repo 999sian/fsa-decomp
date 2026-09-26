@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [G4SE01]
+        version: [G4SE01, G4SJ01, G4SP01]
 
     steps:
     - name: Checkout repository
@@ -35,9 +35,7 @@ jobs:
 
     - name: Generate Progress Report & Summary
       run: |
-        python3 tools/progress.py --version ${{ matrix.version }} \
-          --output-json build/${{ matrix.version }}_progress.json \
-          --output-shields build/${{ matrix.version }}_shields.json
+        python3 tools/progress.py --version ${{ matrix.version }} --output-json build/${{ matrix.version }}_progress.json --output-shields build/${{ matrix.version }}_shields.json
 
     - name: Upload progress report
       uses: actions/upload-artifact@v4
@@ -62,12 +60,16 @@ jobs:
       with:
         python-version: "3.11"
 
-    - name: Download progress reports
+    - name: Download all progress reports
       uses: actions/download-artifact@v4
       with:
-        name: G4SE01_report
-        path: build/
+        path: build/artifacts/
 
     - name: Generate Markdown Job Summary
       run: |
-        python3 tools/progress.py --summary
+        for v in G4SE01 G4SJ01 G4SP01; do
+          if [ -f "build/artifacts/${v}_report/${v}_progress.json" ]; then
+            cp "build/artifacts/${v}_report/${v}_progress.json" "build/${v}_progress.json"
+          fi
+          python3 tools/progress.py --version "$v" --summary
+        done

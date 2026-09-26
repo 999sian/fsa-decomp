@@ -80,9 +80,25 @@ def load_progress_data(version: str = "G4SE01") -> Tuple[Dict[str, Any], str]:
             data = json.load(f)
             source_desc = f"config/{version}/progress.json (committed snapshot)"
             data["source"] = source_desc
+    elif version in ("G4SJ01", "G4SP01"):
+        total_code = 4436808 if version == "G4SJ01" else 4542176
+        total_funcs = 11559 if version == "G4SJ01" else 11585
+        source_desc = f"{version} (baseline metadata)"
+        data = {
+            "version": version,
+            "source": source_desc,
+            "measures": {
+                "matched_code_percent": 0.0,
+                "matched_code": 0,
+                "total_code": total_code,
+                "matched_functions_percent": 0.0,
+                "matched_functions": 0,
+                "total_functions": total_funcs,
+            },
+            "categories": [],
+        }
     else:
         sys.exit(f"Error: Neither {build_report}, {artifact_report}, nor {snapshot_report} exists.")
-
     # Convert numeric strings to int/float
     def convert_numbers(d: Dict[str, Any]) -> None:
         for k, v in d.items():
