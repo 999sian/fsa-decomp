@@ -6,6 +6,8 @@
 #include <dolphin/vi.h>
 #include <string.h>
 #include <dolphin/dvd.h>
+#include <dolphin/gx.h>
+#include <dolphin/mtx.h>
 #include "JSystem/JAudio/System/JASDriver.h"
 
 struct Obj8042E1E4 { u8 pad[0x1c]; u16 m1C; u8 pad2[2]; u32 m20; };
@@ -67,7 +69,7 @@ extern void* lbl_8053AE80;
 extern void* lbl_8053AE84;
 extern "C" void* fn_8042ACCC(void*, u32);
 extern "C" void fn_8042AD10(void*, u32);
-extern "C" void fn_8042A708(void*, u32);
+extern "C" void* fn_8042A708(void*, u32);
 extern "C" void fn_8042A74C(void*, u32);
 extern "C" void fn_8042A3E4(void*);
 extern "C" void fn_8042A818(void*);
@@ -148,7 +150,7 @@ struct THPPlayerState {
     s32 mF0;
     s32 mF4;
     THPTextureSet* dispTextureSet;
-    u32 mFC;
+    struct THPAudioBuffer* playAudioBuffer;
     THPReadBuffer readBuffer[10];
     THPTextureSet textureSet[3];
     THPAudioBuffer audioBuffer[3];
@@ -232,7 +234,14 @@ extern "C" void fn_80429894(THPTextureSet* buffer);
 extern "C" void fn_804298C4();
 extern "C" void fn_804298EC();
 extern "C" s16* fn_80429918(s32 sample);
+extern "C" void fn_804299C0(s16* destination, s16* source, u32 sample);
+extern "C" void fn_80429BE4(u8* yImage, u8* uImage, u8* vImage, s16 x, s16 y, s16 textureWidth, s16 textureHeight, s16 polygonWidth, s16 polygonHeight);
 extern "C" void fn_80429DE0();
+extern "C" void fn_80429DE4(s16 s, s16 t);
+extern "C" void fn_80429DF4(s16 x, s16 y, s16 z);
+extern "C" void fn_80429E08(GXRenderModeObj* rmode);
+extern "C" void fn_8042A2A4(GXTexCoordID dst, GXTexGenType func, GXTexGenSrc src, u32 mtx);
+extern "C" void fn_8042A2CC();
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v);
 extern "C" void* fn_8042E1F4();
 extern "C" u16 fn_8042E1FC(Obj8042E1E4* o);
@@ -243,7 +252,7 @@ extern "C" void fn_8042E278();
 extern "C" u8 fn_8042E29C(u32 a);
 extern "C" void* fn_8042E2C4(u32 a);
 extern "C" void fn_8042E2EC(u32 a);
-extern "C" void fn_8042E314(u32 a);
+extern "C" void* fn_8042E314(u32 a);
 extern "C" void fn_8042E33C(u32 a);
 extern "C" void fn_8042E364();
 extern "C" void fn_8042E388();
@@ -270,16 +279,13 @@ extern "C" void fn_8042E6E4(u32 a);
 extern "C" void fn_8042E70C(u32 a);
 extern "C" void fn_8042E734();
 extern "C" void* fn_8042E780(void* o);
+
 extern u32 lbl_8053AEB0;
 extern "C" u8 fn_80428AC8(s32, s32);
 extern "C" void* fn_8042E758();
 extern "C" void* alloc__7JKRHeapFUli(void*, u32, int);
 
 extern "C" u32 AIGetDSPSampleRate(void);
-extern "C" void GXDrawDone(void);
-extern "C" void fn_80429E08(void*);
-extern "C" void fn_80429BE4(u8*, u8*, u8*, s16, s16, s16, s16, s16, s16);
-extern "C" void fn_8042A2CC();
 extern u8 lbl_8053AE88;
 
 extern "C" u32 VIGetNextField(void);
@@ -291,12 +297,13 @@ extern "C" void DCStoreRange(void*, u32);
 extern "C" void LCEnable(void);
 extern "C" void LCDisable(void);
 extern "C" u8 fn_8042B148();
-extern "C" void fn_804299C0(s16*, s32, s32);
 extern s32 lbl_8053AEA0;
 extern u32 lbl_8053AE94;
 extern u32 lbl_8053AE98;
 extern u32 lbl_8053AE9C;
 extern char lbl_80543ABC[];
+
+extern u16 lbl_804B14C0[];
 
 extern "C" s32 fn_80427D2C(s32 a, s32 b, s32 c, s32 d, s32 e) {
     if (lbl_8053AEBD) {
@@ -471,7 +478,7 @@ extern "C" s32 fn_8042829C() {
             lbl_8052AAD0.internalState = 0;
             lbl_8052AAD0.state = 1;
             lbl_8052AAD0.dispTextureSet = 0;
-            lbl_8052AAD0.mFC = 0;
+            lbl_8052AAD0.playAudioBuffer = 0;
             lbl_8052AAD0.mF0 = 0;
             lbl_8052AAD0.mF4 = 0;
             lbl_8053AE90 = (void*)VISetPostRetraceCallback((VIRetraceCallback)fn_80428CBC);
@@ -638,7 +645,7 @@ extern "C" s32 fn_80428858(void* dst) {
 
 extern "C" s32 fn_804288A0(void* rmode, s32 x, s32 y, s32 w, s32 h) {
     if (lbl_8052AAD0.open && lbl_8052AAD0.state && lbl_8052AAD0.dispTextureSet) {
-        fn_80429E08(rmode);
+        fn_80429E08((GXRenderModeObj*)rmode);
         fn_80429BE4(lbl_8052AAD0.dispTextureSet->ytexture, lbl_8052AAD0.dispTextureSet->utexture,
                     lbl_8052AAD0.dispTextureSet->vtexture, x, y, lbl_8052AAD0.videoInfo[0], lbl_8052AAD0.videoInfo[1],
                     w, h);
@@ -757,7 +764,7 @@ extern "C" void fn_80428CBC(u32 retraceCount) {
         }
         if (!(lbl_8052AAD0.playFlag & 1)) {
             if (lbl_8052AAD0.audioExist) {
-                if (lbl_8052AAD0.mF4 + lbl_8052AAD0.initReadFrame == lbl_8052AAD0.header.numFrames && lbl_8052AAD0.mFC == 0) {
+                if (lbl_8052AAD0.mF4 + lbl_8052AAD0.initReadFrame == lbl_8052AAD0.header.numFrames && lbl_8052AAD0.playAudioBuffer == 0) {
                     lbl_8052AAD0.state = lbl_8052AAD0.internalState = 3;
                 }
             } else {
@@ -1015,7 +1022,212 @@ extern "C" s16* fn_80429918(s32 sample) {
     return lbl_8052AD40[lbl_8053AE94];
 }
 
+extern "C" void fn_804299C0(s16* destination, s16* source, u32 sample) {
+    u32 sampleNum;
+    u32 requestSample;
+    u32 i;
+    s32 mix;
+    s16* dst;
+    s16* thpsrc;
+    u16 attenuation;
+    if (lbl_8052AAD0.open && lbl_8052AAD0.internalState == 2 && lbl_8052AAD0.audioExist) {
+        requestSample = sample;
+        dst = destination;
+        while (true) {
+            if (lbl_8052AAD0.playAudioBuffer == 0) {
+                if ((lbl_8052AAD0.playAudioBuffer = (THPAudioBuffer*)fn_8042E314(0)) == 0) {
+                    memset(dst, 0, requestSample << 2);
+                    return;
+                }
+                lbl_8052AAD0.mF4++;
+            }
+            if (lbl_8052AAD0.playAudioBuffer->validSample) {
+                if (lbl_8052AAD0.playAudioBuffer->validSample >= requestSample) {
+                    sampleNum = requestSample;
+                } else {
+                    sampleNum = lbl_8052AAD0.playAudioBuffer->validSample;
+                }
+                thpsrc = lbl_8052AAD0.playAudioBuffer->curPtr;
+                for (i = 0; i < sampleNum; i++) {
+                    if (lbl_8052AAD0.rampCount) {
+                        lbl_8052AAD0.rampCount--;
+                        lbl_8052AAD0.curVolume += lbl_8052AAD0.deltaVolume;
+                    } else {
+                        lbl_8052AAD0.curVolume = lbl_8052AAD0.targetVolume;
+                    }
+                    attenuation = lbl_804B14C0[(s32)lbl_8052AAD0.curVolume];
+                    mix = 0.7f * ((attenuation * *thpsrc) >> 15);
+                    if (mix < -32768) {
+                        mix = -32768;
+                    }
+                    if (mix > 32767) {
+                        mix = 32767;
+                    }
+                    *dst = mix;
+                    dst++;
+                    thpsrc++;
+                    mix = 0.7f * ((attenuation * *thpsrc) >> 15);
+                    if (mix < -32768) {
+                        mix = -32768;
+                    }
+                    if (mix > 32767) {
+                        mix = 32767;
+                    }
+                    *dst = mix;
+                    dst++;
+                    thpsrc++;
+                }
+                requestSample -= sampleNum;
+                lbl_8052AAD0.playAudioBuffer->validSample -= sampleNum;
+                lbl_8052AAD0.playAudioBuffer->curPtr = thpsrc;
+                if (lbl_8052AAD0.playAudioBuffer->validSample == 0) {
+                    fn_8042E33C((u32)lbl_8052AAD0.playAudioBuffer);
+                    lbl_8052AAD0.playAudioBuffer = 0;
+                }
+                if (!requestSample) {
+                    break;
+                }
+            }
+        }
+    } else {
+        memset(destination, 0, sample << 2);
+    }
+}
+
+extern "C" void fn_80429BE4(u8* yImage, u8* uImage, u8* vImage, s16 x, s16 y, s16 textureWidth, s16 textureHeight, s16 polygonWidth, s16 polygonHeight) {
+    GXTexObj tobj0;
+    GXTexObj tobj1;
+    GXTexObj tobj2;
+    GXInitTexObj(&tobj0, yImage, textureWidth, textureHeight, GX_TF_I8, GX_CLAMP, GX_CLAMP, GX_FALSE);
+    GXInitTexObjLOD(&tobj0, GX_NEAR, GX_NEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
+    GXLoadTexObj(&tobj0, GX_TEXMAP0);
+    GXInitTexObj(&tobj1, uImage, textureWidth >> 1, textureHeight >> 1, GX_TF_I8, GX_CLAMP, GX_CLAMP, GX_FALSE);
+    GXInitTexObjLOD(&tobj1, GX_NEAR, GX_NEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
+    GXLoadTexObj(&tobj1, GX_TEXMAP1);
+    GXInitTexObj(&tobj2, vImage, textureWidth >> 1, textureHeight >> 1, GX_TF_I8, GX_CLAMP, GX_CLAMP, GX_FALSE);
+    GXInitTexObjLOD(&tobj2, GX_NEAR, GX_NEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
+    GXLoadTexObj(&tobj2, GX_TEXMAP2);
+    GXBegin(GX_QUADS, GX_VTXFMT7, 4);
+    fn_80429DF4(x, y, 0);
+    fn_80429DE4(0, 0);
+    fn_80429DF4(x + polygonWidth, y, 0);
+    fn_80429DE4(1, 0);
+    fn_80429DF4(x + polygonWidth, y + polygonHeight, 0);
+    fn_80429DE4(1, 1);
+    fn_80429DF4(x, y + polygonHeight, 0);
+    fn_80429DE4(0, 1);
+    fn_80429DE0();
+}
+
 extern "C" void fn_80429DE0() {}
+
+#pragma dont_inline on
+extern "C" void fn_80429DE4(s16 s, s16 t) {
+    GXWGFifo.s16 = s;
+    GXWGFifo.s16 = t;
+}
+#pragma dont_inline off
+
+#pragma dont_inline on
+extern "C" void fn_80429DF4(s16 x, s16 y, s16 z) {
+    GXWGFifo.s16 = x;
+    GXWGFifo.s16 = y;
+    GXWGFifo.s16 = z;
+}
+#pragma dont_inline off
+
+extern "C" void fn_80429E08(GXRenderModeObj* rmode) {
+    s32 scrWidth;
+    s32 scrHeight;
+    Mtx44 pMtx;
+    Mtx mMtx;
+    static const GXColorS10 color0 = {-90, 0, -114, 135};
+    static const GXColor kcolor0 = {0x00, 0x00, 0xe2, 0x58};
+    static const GXColor kcolor1 = {0xb3, 0x00, 0x00, 0xb6};
+    static const GXColor kcolor2 = {0xff, 0x00, 0xff, 0x80};
+    scrWidth = rmode->fbWidth;
+    scrHeight = rmode->efbHeight;
+    C_MTXOrtho(pMtx, 0.0f, scrHeight, 0.0f, scrWidth, 0.0f, -1.0f);
+    GXSetProjection(pMtx, GX_ORTHOGRAPHIC);
+    GXSetViewport(0.0f, 0.0f, scrWidth, scrHeight, 0.0f, 1.0f);
+    GXSetScissor(0, 0, scrWidth, scrHeight);
+    PSMTXIdentity(mMtx);
+    GXLoadPosMtxImm(mMtx, GX_PNMTX0);
+    GXSetCurrentMtx(GX_PNMTX0);
+    GXSetZMode((GXBool)1, (GXCompare)7, (GXBool)0);
+    GXSetBlendMode((GXBlendMode)0, (GXBlendFactor)1, (GXBlendFactor)0, (GXLogicOp)0);
+    GXSetColorUpdate((GXBool)1);
+    GXSetAlphaUpdate((GXBool)0);
+    GXSetNumChans(0);
+    GXSetNumTexGens(2);
+    fn_8042A2A4((GXTexCoordID)0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+    fn_8042A2A4((GXTexCoordID)1, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY);
+    GXInvalidateTexAll();
+    GXClearVtxDesc();
+    GXSetVtxDesc((GXAttr)9, (GXAttrType)1);
+    GXSetVtxDesc((GXAttr)13, (GXAttrType)1);
+    GXSetVtxAttrFmt((GXVtxFmt)7, (GXAttr)9, (GXCompCnt)1, (GXCompType)3, 0);
+    GXSetVtxAttrFmt((GXVtxFmt)7, (GXAttr)13, (GXCompCnt)1, (GXCompType)2, 0);
+    GXSetNumTevStages(4);
+    GXSetTevOrder((GXTevStageID)0, (GXTexCoordID)1, (GXTexMapID)1, (GXChannelID)255);
+    GXSetTevColorIn((GXTevStageID)0, (GXTevColorArg)15, (GXTevColorArg)8, (GXTevColorArg)14, (GXTevColorArg)2);
+    GXSetTevColorOp((GXTevStageID)0, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)0, (GXTevRegID)0);
+    GXSetTevAlphaIn((GXTevStageID)0, (GXTevAlphaArg)7, (GXTevAlphaArg)4, (GXTevAlphaArg)6, (GXTevAlphaArg)1);
+    GXSetTevAlphaOp((GXTevStageID)0, (GXTevOp)1, (GXTevBias)0, (GXTevScale)0, (GXBool)0, (GXTevRegID)0);
+    GXSetTevKColorSel((GXTevStageID)0, (GXTevKColorSel)12);
+    GXSetTevKAlphaSel((GXTevStageID)0, (GXTevKAlphaSel)28);
+    GXSetTevSwapMode((GXTevStageID)0, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevOrder((GXTevStageID)1, (GXTexCoordID)1, (GXTexMapID)2, (GXChannelID)255);
+    GXSetTevColorIn((GXTevStageID)1, (GXTevColorArg)15, (GXTevColorArg)8, (GXTevColorArg)14, (GXTevColorArg)0);
+    GXSetTevColorOp((GXTevStageID)1, (GXTevOp)0, (GXTevBias)0, (GXTevScale)1, (GXBool)0, (GXTevRegID)0);
+    GXSetTevAlphaIn((GXTevStageID)1, (GXTevAlphaArg)7, (GXTevAlphaArg)4, (GXTevAlphaArg)6, (GXTevAlphaArg)0);
+    GXSetTevAlphaOp((GXTevStageID)1, (GXTevOp)1, (GXTevBias)0, (GXTevScale)0, (GXBool)0, (GXTevRegID)0);
+    GXSetTevKColorSel((GXTevStageID)1, (GXTevKColorSel)13);
+    GXSetTevKAlphaSel((GXTevStageID)1, (GXTevKAlphaSel)29);
+    GXSetTevSwapMode((GXTevStageID)1, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevOrder((GXTevStageID)2, (GXTexCoordID)0, (GXTexMapID)0, (GXChannelID)255);
+    GXSetTevColorIn((GXTevStageID)2, (GXTevColorArg)15, (GXTevColorArg)8, (GXTevColorArg)12, (GXTevColorArg)0);
+    GXSetTevColorOp((GXTevStageID)2, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevAlphaIn((GXTevStageID)2, (GXTevAlphaArg)4, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)0);
+    GXSetTevAlphaOp((GXTevStageID)2, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)2, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevOrder((GXTevStageID)3, (GXTexCoordID)255, (GXTexMapID)255, (GXChannelID)255);
+    GXSetTevColorIn((GXTevStageID)3, (GXTevColorArg)1, (GXTevColorArg)0, (GXTevColorArg)14, (GXTevColorArg)15);
+    GXSetTevColorOp((GXTevStageID)3, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevAlphaIn((GXTevStageID)3, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7);
+    GXSetTevAlphaOp((GXTevStageID)3, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)3, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevKColorSel((GXTevStageID)3, (GXTevKColorSel)14);
+    GXSetTevColorS10(GX_TEVREG0, color0);
+    GXSetTevKColor((GXTevKColorID)0, kcolor0);
+    GXSetTevKColor((GXTevKColorID)1, kcolor1);
+    GXSetTevKColor((GXTevKColorID)2, kcolor2);
+    GXSetTevSwapModeTable((GXTevSwapSel)0, (GXTevColorChan)0, (GXTevColorChan)1, (GXTevColorChan)2, (GXTevColorChan)3);
+}
+
+#pragma dont_inline on
+extern "C" void fn_8042A2A4(GXTexCoordID dst, GXTexGenType func, GXTexGenSrc src, u32 mtx) {
+    GXSetTexCoordGen2(dst, func, src, mtx, GX_FALSE, GX_PTIDENTITY);
+}
+#pragma dont_inline off
+
+extern "C" void fn_8042A2CC() {
+    GXSetZMode((GXBool)1, (GXCompare)7, (GXBool)0);
+    GXSetBlendMode((GXBlendMode)0, (GXBlendFactor)1, (GXBlendFactor)0, (GXLogicOp)15);
+    GXSetNumTexGens(1);
+    GXSetNumChans(0);
+    GXSetNumTevStages(1);
+    GXSetTevOrder((GXTevStageID)0, (GXTexCoordID)0, (GXTexMapID)0, (GXChannelID)255);
+    GXSetTevOp((GXTevStageID)0, (GXTevMode)3);
+    GXSetTevSwapMode((GXTevStageID)0, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevSwapMode((GXTevStageID)1, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevSwapMode((GXTevStageID)2, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevSwapMode((GXTevStageID)3, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevSwapModeTable((GXTevSwapSel)0, (GXTevColorChan)0, (GXTevColorChan)1, (GXTevColorChan)2, (GXTevColorChan)3);
+    GXSetTevSwapModeTable((GXTevSwapSel)1, (GXTevColorChan)0, (GXTevColorChan)0, (GXTevColorChan)0, (GXTevColorChan)3);
+    GXSetTevSwapModeTable((GXTevSwapSel)2, (GXTevColorChan)1, (GXTevColorChan)1, (GXTevColorChan)1, (GXTevColorChan)3);
+    GXSetTevSwapModeTable((GXTevSwapSel)3, (GXTevColorChan)2, (GXTevColorChan)2, (GXTevColorChan)2, (GXTevColorChan)3);
+}
 
 #pragma dont_inline on
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
@@ -1058,7 +1270,7 @@ extern "C" void fn_8042E2EC(u32 a) { fn_8042AD10(lbl_8053AE80, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
-extern "C" void fn_8042E314(u32 a) { fn_8042A708(lbl_8053AE84, a); }
+extern "C" void* fn_8042E314(u32 a) { return fn_8042A708(lbl_8053AE84, a); }
 #pragma dont_inline off
 
 #pragma dont_inline on
