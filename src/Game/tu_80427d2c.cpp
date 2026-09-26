@@ -1715,6 +1715,33 @@ extern "C" u8 fn_8042B148() {
 }
 
 #pragma dont_inline on
+extern u8* lbl_8053AE74;
+extern "C" void fn_8042CF9C() {
+    lbl_8053AE74[0x6a9] = 1;
+    *(u8**)(lbl_8053AE74 + 0x69c) += 2;
+    *(u16*)(lbl_8053AE74 + 0x6aa) = (*(u8**)(lbl_8053AE74 + 0x69c))[0] << 8 | (*(u8**)(lbl_8053AE74 + 0x69c))[1];
+    *(u8**)(lbl_8053AE74 + 0x69c) += 2;
+    *(u16*)(lbl_8053AE74 + 0x6ac) = *(u16*)(lbl_8053AE74 + 0x6aa);
+}
+
+extern u8* lbl_8053AE3C;
+extern u16* lbl_8053AE40;
+extern "C" void fn_8042D0E0() {
+    u8 len;
+    u16 i;
+    u16 code;
+    i = 0;
+    code = 0;
+    len = lbl_8053AE3C[0];
+    while (lbl_8053AE3C[i] != 0) {
+        while (lbl_8053AE3C[i] == len) {
+            lbl_8053AE40[i++] = code++;
+        }
+        code <<= 1;
+        len++;
+    }
+}
+
 extern u32 lbl_8053AE70;
 extern "C" void fn_8042DA10() {
     u32 p = (lbl_8053AE70 + 0x1f) & ~0x1f;
@@ -1733,6 +1760,24 @@ extern "C" void fn_8042DC88(BitReader* r, u8* p) {
     r->b8 = (*r->p >> 4) & 7;
     r->b9 = *r->p & 0xf;
     r->p++;
+}
+
+extern "C" s32 fn_8042DCC4(BitReader* r) {
+    s32 v;
+    if ((r->w4 & 0xf) == 0) {
+        r->b8 = (*r->p >> 4) & 7;
+        r->b9 = *r->p & 0xf;
+        r->p++;
+        r->w4 += 2;
+    }
+    if (r->w4 & 1) {
+        v = (s32)(*r->p << 28) >> 28;
+        r->p++;
+    } else {
+        v = (s32)((*r->p & 0xf0) << 24) >> 28;
+    }
+    r->w4++;
+    return v;
 }
 
 extern "C" void fn_8042E1E4(Obj8042E1E4* o, u16 v) { o->m1C = v; o->m20 = 0; }
