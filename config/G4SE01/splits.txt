@@ -1699,5 +1699,37 @@ Game/actors/BOTS.cpp:
 	.data       start:0x8049C7F0 end:0x8049C844
 	.bss        start:0x804BACF8 end:0x804BAD64
 
+Game/actors/DWAP.cpp:
+	extab       start:0x80005940 end:0x80005958
+	extabindex  start:0x80011D10 end:0x80011D34
+	.text       start:0x8010307C end:0x80103348
+	.ctors      start:0x8045BE1C end:0x8045BE20
+	.data       start:0x8049C9E8 end:0x8049CA3C
+	.bss        start:0x804BB0F8 end:0x804BB164
+
+Game/actors/GFBS.cpp:
+	extab       start:0x800064A8 end:0x800064C0
+	extabindex  start:0x80012B68 end:0x80012B8C
+	.text       start:0x8012679C end:0x80126A4C
+	.ctors      start:0x8045BE9C end:0x8045BEA0
+	.data       start:0x8049E3A8 end:0x8049E3FC
+	.bss        start:0x804BD160 end:0x804BD1CC
+
+Game/actors/STGN.cpp:
+	extab       start:0x8000D38C end:0x8000D3A4
+	extabindex  start:0x8001C654 end:0x8001C678
+	.text       start:0x802F4820 end:0x802F4AEC
+	.ctors      start:0x8045C384 end:0x8045C388
+	.data       start:0x804AA7A8 end:0x804AA7FC
+	.bss        start:0x804D67B8 end:0x804D6824
+
+Game/actors/TJIJ.cpp:
+	extab       start:0x8000E8DC end:0x8000E8EC
+	extabindex  start:0x8001E55C end:0x8001E574
+	.text       start:0x80372EA8 end:0x80373138
+	.ctors      start:0x8045C4D8 end:0x8045C4DC
+	.data       start:0x804AE508 end:0x804AE55C
+	.bss        start:0x8050CA00 end:0x8050CA6C
+
 Runtime.PPCEABI.H/__mem.c:
 	.init       start:0x8000540C end:0x80005544
