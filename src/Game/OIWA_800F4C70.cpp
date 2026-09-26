@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 // ---- from Game/fn_800F659C_dtor.cpp
 
@@ -169,6 +170,136 @@ extern "C" void fn_800F5248(char* this_) {
             *(u8*)(this_ + 0x11c) = 0;
         }
         break;
+    }
+}
+
+class OiwaActor {
+public:
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10(s32 a, s32 b);
+    virtual u8 v11();
+};
+extern "C" s32 fn_8023DE58(s32 player);
+extern "C" void fn_8022E088(s32 player, s32 idx, JGeometry::TVec2<f32>* out);
+extern "C" void fn_8022DF48(s32 player);
+extern "C" s32 fn_801F2718(void* actor, u32 type);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+extern "C" s32 fn_801F778C(void* mgr, u32 type, void* pos, s32 a);
+extern const f32 lbl_80463678[4][2];
+
+extern "C" void fn_800F5E08(char* this_) {
+    if (*(s32*)(this_ + 0x240) != 0) {
+        *(s32*)(this_ + 0x244) = *(s32*)(this_ + 0x244) + 1;
+        if (*(s32*)(this_ + 0x240) != 2 && *(s32*)(this_ + 0x244) >= 120) {
+            *(f32*)(this_ + 0xc) = 0.8f * JMASSin((*(s32*)(this_ + 0x244) & 3) << 14) + *(f32*)(this_ + 0xc);
+        }
+        if (*(s32*)(this_ + 0x244) >= 180) {
+            ((OiwaActor*)this_)->v10(0xff, 0);
+            *(s32*)(this_ + 0x240) = 2;
+            *(s32*)(this_ + 0x248) = *(s32*)(this_ + 0x248) + 1;
+            if (*(s32*)(this_ + 0x248) == 60) {
+                *(u8*)(this_ + 0x11c) = 0;
+            }
+        } else {
+            for (s32 i = 0; i < 4; i++) {
+                s32 room = *(s32*)(this_ + 4);
+                if (fn_8023DE58(i) == room) {
+                    f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+                    f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+                    f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+                    f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+                    for (s32 j = 0; j < 8; j++) {
+                        JGeometry::TVec2<f32> pt;
+                        fn_8022E088(i, j, &pt);
+                        u8 in = 0;
+                        if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+                            in = 1;
+                        }
+                        if (in) {
+                            fn_8022DF48(i);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        return;
+    }
+    *(u8*)(this_ + 0x231) = *(u8*)(this_ + 0x231) + 1;
+    if (*(u8*)(this_ + 0x231) == 10) {
+        *(s32*)(this_ + 0x23c) = *(s32*)(this_ + 0x23c) + 1;
+        *(u8*)(this_ + 0x231) = 0;
+    }
+    *(s32*)(this_ + 0x23c) = *(s32*)(this_ + 0x23c) & 3;
+    fn_801F2B7C(this_, 2, -1, 6);
+    s32 id = fn_801F2718(this_, 'OIWA');
+    if (id != -1) {
+        char* other = (char*)fn_801F666C(fn_801F856C(), id);
+        JGeometry::TVec3<f32> d;
+        d.sub(OIWA_POS(this_), OIWA_POS(other));
+        if (d.x > 0.0f) {
+            *(f32*)(this_ + 0x3c) = 0.5f;
+        } else {
+            *(f32*)(this_ + 0x3c) = -0.5f;
+        }
+    }
+    *(f32*)(this_ + 0x44) = *(f32*)(this_ + 0x44) - 0.04f;
+    OIWA_POS(this_) += OIWA_VEL(this_);
+    if (*(f32*)(this_ + 0x14) <= 0.0f) {
+        if (lbl_8053AAF8->rnd.get_ufloat_1() < 0.5) {
+            *(f32*)(this_ + 0x3c) = 0.5f;
+        } else {
+            *(f32*)(this_ + 0x3c) = -0.5f;
+        }
+        *(f32*)(this_ + 0x14) = 0.0f;
+        *(f32*)(this_ + 0x44) = 1.0f;
+        fn_801F0E34(this_, 0x30028, 0);
+        char* eff = (char*)fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x3cf, 1, 0, 0, 0, 1, 1.2f);
+        if (eff != 0) {
+            *(f32*)(eff + 0x3c) = 0.0f;
+        }
+        if (*(u8*)(this_ + 0x230) == 4) {
+            const f32 (*off)[2] = lbl_80463678;
+            for (s32 k = 0; k < 4; k++, off++) {
+                JGeometry::TVec3<f32> p(OIWA_POS(this_));
+                p.x = p.x + (*off)[0];
+                p.y = p.y + (*off)[1];
+                s32 t = (u16)((u32(*)(void*, u32))fn_8022461C)(&p, *(u32*)(this_ + 4));
+                if ((t == 3 || t == 0xe || t == 2) && !((OiwaActor*)this_)->v11()) {
+                    fn_802D79E8(fn_802D6A9C(), *(u32*)(this_ + 4), 0, 4.0f, 0.0f);
+                    fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x76, 0, 0, 0, 0, 1, 0.8f);
+                    *(s32*)(this_ + 0x240) = 1;
+                    ((OiwaActor*)this_)->v10(0xff, 1);
+                    fn_801F0E34(this_, 0x4002c, 0);
+                    s32 bid = fn_801F778C(fn_801F856C(), 'BTIN', this_ + 0xc, 0);
+                    char* b = (char*)fn_801F666C(fn_801F856C(), bid);
+                    OIWA_POS(this_) = OIWA_POS(b);
+                    *(f32*)(this_ + 0x14) = 0.0f;
+                    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + 8.0f;
+                }
+            }
+        }
+    }
+    s32 room = *(s32*)(this_ + 4);
+    u8* mgr = (u8*)fn_802D6A9C();
+    f32* r;
+    if (room < 8) {
+        r = (f32*)(mgr + 0xcc);
+    } else {
+        r = (f32*)(mgr + 0xdc);
+    }
+    if (50.0f + r[3] < *(f32*)(this_ + 0x10)) {
+        *(u8*)(this_ + 0x11c) = 0;
     }
 }
 
