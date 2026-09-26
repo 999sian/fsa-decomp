@@ -810,6 +810,70 @@ hit:
     }
     return r;
 }
+bool fn_80272224(char* p, const f32* box, s32 room, s32 dir, u8 fx, u8 snd) {
+    if (!fn_802413F0(p)) {
+        return 0;
+    }
+    if (room != S32(p, 0x3b4)) {
+        return 0;
+    }
+    if (F32(p, 0x10) > 0.0f) {
+        return 0;
+    }
+    if (U8(p, 0xb98) == 0) {
+        return 0;
+    }
+    if (Player_IsLinked(p) && fn_802486A0(p) == 5) {
+        return 0;
+    }
+    if (fn_80241200(p)) {
+        return 0;
+    }
+    if (dir < 0) {
+        return 0;
+    }
+    if (S32(p, 0x3ec) >= 0 && dir >= 0) {
+        switch (S32(p, 0x3ec)) {
+        case 0:
+            if (dir != 1) return 0;
+            break;
+        case 1:
+            if (dir != 0) return 0;
+            break;
+        case 2:
+            if (dir != 3) return 0;
+            break;
+        case 3:
+            if (dir != 2) return 0;
+            break;
+        }
+    }
+    JGeometry::TBox2<f32>* pb = (JGeometry::TBox2<f32>*)(p + 0x5ec);
+    JGeometry::TBox2<f32> b(*pb);
+    const JGeometry::TBox2<f32>* o = (const JGeometry::TBox2<f32>*)box;
+    b.i.setMax(o->i);
+    b.f.setMin(o->f);
+    bool hit = 0;
+    if (b.f.x >= b.i.x && b.f.y >= b.i.y) {
+        hit = 1;
+    }
+    if (hit) {
+        if (fx == 1 && S32(p, 0x3f4) <= 0) {
+            JGeometry::TVec3<f32> v;
+            v.x = 0.5f * (pb->i.x - pb->f.x) + pb->f.x;
+            v.y = 0.5f * (pb->i.y - pb->f.y) + pb->f.y;
+            v.z = F32(p, 0x10);
+            fn_8013CC50(PTR(p, 0x3b4), &v, 0x117, 1, 1, 0, NULL, 1, 1.0f);
+            fn_8013CC50(PTR(p, 0x3b4), &v, 0x118, 1, 1, 0, NULL, 1, 1.0f);
+        }
+        if (snd == 1 && S32(p, 0x3f4) <= 0) {
+            fn_8024F0E8(p, 0x20003);
+        }
+        S32(p, 0x3f4) = 5;
+        return 1;
+    }
+    return 0;
+}
 u8 Player_GetField_0x454(char*);
 inline bool areaTail(char* p, const f32* box, f32 h) {
     char* base = (char*)PTR(p, 0x3b4);
