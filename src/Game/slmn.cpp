@@ -241,4 +241,70 @@ extern "C" void fn_8020896C(char* this_) {
     *(f32*)(this_ + 0x258) = lbl_8053F8E0;
 }
 
+extern "C" void fn_80207A60(void* this_);
+extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
+extern "C" u8 fn_801D0B44(void* this_, s32 player);
+extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
+
+extern "C" void fn_80207F14(char* this_) {
+    fn_80207A60(this_);
+    switch (*(s32*)(this_ + 0x248)) {
+    case 1:
+        break;
+    case 3:
+        break;
+    case 0: {
+        u8 go; f32 r; s32 j; s32 bit; s32 i;
+        go = FALSE;
+        r = lbl_8053F8E4 * *(u8*)(this_ + 0x344);
+        switch (*(s32*)(this_ + 0x340)) {
+        case 0:
+            go = TRUE;
+            break;
+        case 1:
+            for (j = 0; j < 4; j++) {
+                if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
+                    go = TRUE;
+                    break;
+                }
+            }
+            break;
+        case 2:
+            for (i = 0; i < 4; i++) {
+                bit = 1 << i;
+                if (*(u8*)(this_ + 0x345) & bit) {
+                    if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
+                        go = TRUE;
+                        break;
+                    }
+                } else if (fn_801D08B4(this_, i, this_ + 0xc, r)) {
+                    *(u8*)(this_ + 0x345) |= bit;
+                }
+            }
+            break;
+        case 3:
+            if (*(u16*)(this_ + 0x346) != fn_8022461C(this_ + 0xc, *(s32*)(this_ + 0x4)) ||
+                *(u16*)(this_ + 0x348) != fn_80226850(this_ + 0xc, *(s32*)(this_ + 0x4))) {
+                go = TRUE;
+            }
+            break;
+        }
+        if (go) {
+            slmnSpawn(this_);
+            fn_80208244(this_, 1);
+        }
+        break;
+    }
+    case 2:
+        if (*(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) {
+            if (!(*(u32*)(this_ + 0x230) & 0x2000) && *(u8*)(this_ + 0x34a) >= 5) {
+                fn_80208244(this_, 4);
+            } else {
+                fn_80208244(this_, 3);
+            }
+        }
+        break;
+    }
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
