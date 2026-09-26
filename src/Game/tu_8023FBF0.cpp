@@ -83,6 +83,12 @@ inline void resetTrail(char* p) {
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+bool fn_80236B50(s32);
+bool fn_80251BFC(char*, s32);
+void fn_80272160(char*, s32, void*, s32);
+bool fn_80239D38(void);
+bool fn_8022F514(s32);
+bool fn_8022C1D8(s32);
 void fn_80237524(s32);
 bool fn_80270A8C(char*);
 void fn_8024B2E0(char*);
@@ -345,6 +351,24 @@ s32 fn_802415CC(char* p) {
 FWD(802416C4, 802373EC, 0xc10)
 FWD(80241794, 802375B0, 0xc08)
 FWD(802417CC, 80237810, 0xbf8)
+BOOL fn_80241618(char* p, s32 a, s32 b) {
+    S32(p, 0xc10) = a;
+    if (S32(p, 0xc10) == 0) {
+        S32(p, 0xc14) = 0;
+    } else if (S32(p, 0xc10) != 0) {
+        if (b < 2 || S32(p, 0xc10) != 2) {
+            S32(p, 0xc14) = b;
+            U8(lbl_8053AED0, 0x255) |= (u8)(1 << S32(p, 0x4));
+        }
+    }
+    if (S32(p, 0xc10) != 0) {
+        U8(lbl_8053AED0, 0x255) |= (u8)(1 << S32(p, 0x4));
+        if (U8(lbl_8053AAF8, 0x7f) == 0 && S32(p, 0x464) < 0x3c) {
+            S32(p, 0x464) = 0x3c;
+        }
+    }
+    return 1;
+}
 void fn_802416FC(char* p, s32 n) {
     s32 linked = S32(p, 0xd60);
     if (linked >= 0) {
@@ -472,6 +496,16 @@ void fn_80247F0C(char* p) {
         }
     }
 }
+void fn_80247F58(char* p) {
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        if (fn_80236B50(linked) && fn_80251BFC(p, 0x33)) {
+            fn_80272160(p, 0, p + 0x8, 0x12);
+        }
+    } else if (fn_80239D38() && U8(p, 0xd34) == 0 && fn_80251BFC(p, 0x33)) {
+        fn_80272160(p, 0, p + 0x8, 0x12);
+    }
+}
 void fn_80248604(char* p) {
     if (U8(p, 0x1216) != 0) {
         return;
@@ -496,6 +530,33 @@ s32 fn_80248778(char* p) {
         }
     }
     return c + 1;
+}
+s32 fn_80248970(char* p) {
+    s32 me;
+    s32 c;
+    s32 i;
+    s32 linked;
+    me = S32(p, 0x4);
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == me) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
 }
 void fn_80248DAC(char* p) { U8(p, 0x121e) = 0; }
 void fn_80248DB8(char* p) {
@@ -580,6 +641,23 @@ s32 fn_8024C460(char* p, s32 v) {
     return 1;
 }
 BOOL fn_8024CA0C(char* p, s32 v) { return S32(p, 0xd44) == v ? 1 : 0; }
+void fn_8024CA20(char* p) {
+    if (S32(p, 0xd50) > 0) {
+        S32(p, 0xd50)--;
+    }
+    if (U8(p, 0xd4d) == 0) {
+        if (S32(p, 0xd3c) < 0) {
+            S32(p, 0xd44) = -1;
+            U8(p, 0xd4c) = 0;
+        } else if (S32(p, 0xd44) < 0) {
+            if (U8(p, 0xd4e) == 0 || fn_8022C1D8(S32(p, 0x4))) {
+                S32(p, 0xd44) = S32(p, 0xd3c);
+            }
+        }
+    }
+    S32(p, 0xd40) = S32(p, 0xd3c);
+    S32(p, 0xd3c) = -1;
+}
 s32 fn_8024D98C(char* p) {
     U8(p, 0x455) = 1;
     return 1;
@@ -724,6 +802,28 @@ u8 fn_80250030(char* p, s32 v) {
     return 0;
 }
 BOOL fn_802517E4(char* p) { return S32(p, 0x1240) == 0x1a; }
+BOOL fn_802517F8(char* p, u8 all) {
+    char* s = (char*)PTR(p, 0xbf0);
+    if (U8(s, 0x49) == 1) {
+        return 1;
+    }
+    if (U8(s, 0x48) == 1) {
+        return 1;
+    }
+    if (all == 1 && U8(s, 0x4c) == 1) {
+        return 1;
+    }
+    if (all == 1 && U8(s, 0x4d) == 1) {
+        return 1;
+    }
+    if (all == 1 && U8(s, 0x4e) == 1) {
+        return 1;
+    }
+    if (all == 1 && U8(s, 0x4f) == 1) {
+        return 1;
+    }
+    return 0;
+}
 BOOL fn_802518AC(char* p, u8 v) {
     char* s = (char*)PTR(p, 0xbf0);
     if (U8(s, 0x4a) == 1) return 1;
