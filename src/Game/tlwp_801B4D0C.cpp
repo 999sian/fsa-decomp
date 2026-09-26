@@ -93,7 +93,7 @@ extern const char lbl_804690F8[];
 extern const f32 lbl_8053EA10;
 extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, TlwpDrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, TlwpDrawParam* param, s32 a, f32 s0, f32 s1);
-extern "C" void fn_801B4EC8(void* this_);
+extern "C" void fn_801B4EC8(char* p);
 extern "C" void fn_801B56A0(void* this_);
 extern "C" void fn_801B5228(void* this_);
 
@@ -133,6 +133,158 @@ extern "C" void fn_801B5198(char* p) {
             (*(s32*)(p + i * 4 + 0x234))--;
         }
     }
+}
+
+struct TlwpVec { f32 x, y, z; };
+struct TlwpRect { f32 x0, y0, x1, y1; };
+extern const f32 lbl_8053EA7C;
+extern const f32 lbl_8053EA80;
+extern const f32 lbl_8053EA84;
+extern const f32 lbl_8053EA3C;
+extern const f32 lbl_8053EA88;
+extern const f32 lbl_8053EA8C;
+extern const f32 lbl_8053EA90;
+extern const f32 lbl_8053EA18;
+extern const f32 lbl_8053EA58;
+extern u8 lbl_8053ABF8;
+extern s32 lbl_8053A118;
+extern const u16 lbl_804A37E0[];
+extern "C" char* fn_802D6A9C(void);
+extern "C" s32 fn_8013CC50(s32 room, TlwpVec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+
+static inline void tlwpSet(TlwpVec* v, f32 x, f32 y, f32 z) {
+    v->x = x;
+    v->y = y;
+    v->z = z;
+}
+
+static inline void tlwpLerp(TlwpVec* v, const TlwpRect* r, f32 t, f32 z) {
+    tlwpSet(v, r->x0 + t * (r->x1 - r->x0), r->y0 + t * (r->y1 - r->y0), z);
+}
+
+extern "C" void fn_801B6170(char* p) {
+    *(f32*)(p + 0x60) = lbl_8053EA7C;
+    *(f32*)(p + 0x64) = lbl_8053EA7C;
+    *(f32*)(p + 0x68) = lbl_8053EA80;
+    *(f32*)(p + 0x6c) = lbl_8053EA80;
+    *(f32*)(p + 0x80) = lbl_8053EA84;
+    *(f32*)(p + 0x84) = lbl_8053EA84;
+    *(f32*)(p + 0x88) = lbl_8053EA3C;
+    *(f32*)(p + 0x8c) = lbl_8053EA3C;
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x294) = 0;
+    *(s32*)(p + 0x298) = 0;
+    *(s32*)(p + 0x29c) = 0;
+    *(s32*)(p + 0x2a0) = 0;
+    *(s32*)(p + 0x2a4) = 0;
+    *(s32*)(p + 0x2a8) = 0;
+    *(s32*)(p + 0x2ac) = 0;
+    *(s32*)(p + 0x2b0) = 0;
+    *(s32*)(p + 0x2b4) = 0;
+    *(s32*)(p + 0x2b8) = 0;
+    *(s32*)(p + 0x2bc) = 0;
+    *(s32*)(p + 0x2c0) = 0;
+    *(s32*)(p + 0x2c4) = 0;
+    *(s32*)(p + 0x2c8) = 0;
+    *(s32*)(p + 0x2cc) = 0;
+    *(s32*)(p + 0x2d0) = 0;
+    *(s32*)(p + 0x2d4) = 0;
+    *(s32*)(p + 0x2d8) = 0;
+    *(s32*)(p + 0x2dc) = 0;
+    *(s32*)(p + 0x2e0) = 0;
+    *(s32*)(p + 0x2e4) = 0;
+    *(s32*)(p + 0x2e8) = 0;
+    *(s32*)(p + 0x2ec) = 0;
+    lbl_8053ABF8 = 0;
+    *(f32*)(p + 0x25c) = lbl_8053EA10;
+    *(s32*)(p + 0x250) = (*(u32*)(p + 0x90) >> 4) & 0xf;
+    *(s32*)(p + 0x254) = *(u32*)(p + 0x90) & 0xf;
+    if (*(s32*)(p + 0x250) == 0 && *(s32*)(p + 0x254) == 0) {
+        char* cfg = fn_802D6A9C();
+        TlwpRect r = *(TlwpRect*)(cfg + 0xcc);
+        TlwpVec v;
+        TlwpVec* pos = (TlwpVec*)(p + 0xc);
+        v.x = pos->x;
+        v.y = pos->y;
+        tlwpLerp(&v, &r, lbl_8053EA88, pos->z);
+        tlwpSet(&v, pos->x, pos->y, pos->z);
+        v.x += lbl_8053EA8C;
+        v.y += lbl_8053EA90;
+        for (s32 i = 0; i < 20; i++) {
+            *(s32*)(p + i * 4 + 0x2a0) = fn_8013CC50(*(s32*)(p + 0x4), &v, lbl_8053EA10, lbl_804A37E0[i], 0, 0, 0, 0, 1);
+        }
+    }
+    *(s32*)(p + 0x24c) = 0;
+    *(TlwpVec*)(p + 0x264) = *(TlwpVec*)(p + 0xc);
+    *(TlwpVec*)(p + 0x270) = *(TlwpVec*)(p + 0xc);
+    *(TlwpVec*)(p + 0x27c) = *(TlwpVec*)(p + 0xc);
+    *(TlwpVec*)(p + 0x288) = *(TlwpVec*)(p + 0xc);
+    *(f32*)(p + 0x258) = lbl_8053EA18;
+    *(u16*)(p + 0x260) = 0;
+    if (*(s32*)(p + 0x250) == 0) {
+        lbl_8053A118 = 3;
+        *(s32*)(p + 0x230) = 0;
+    } else {
+        *(f32*)(p + 0x14) = lbl_8053EA58;
+        *(s32*)(p + 0x230) = 8;
+    }
+}
+
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern const char lbl_8046910C[];
+extern const f32 lbl_8053EA14;
+
+static inline void tlwpRotMtx(f32 m[3][4], f32 ax, f32 ay, f32 az, f32 s) {
+    f32 sz, sy, sx, cz, cy, cx;
+    sx = sin(ax);
+    sy = sin(ay);
+    sz = sin(az);
+    cx = cos(ax);
+    cy = cos(ay);
+    cz = cos(az);
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    f32 sxcz, sxsz, cxcz, cxsz, sxsy;
+    sxsy = sx * sy;
+    cxsz = cx * sz;
+    cxcz = cx * cz;
+    sxsz = sx * sz;
+    sxcz = sx * cz;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
+
+extern "C" void fn_801B4EC8(char* p) {
+    TlwpDrawParam param;
+    f32 m[3][4];
+    switch (*(s32*)(p + 0x250)) {
+    case 2:
+        param.color = 1;
+        param.map[2] = 9;
+        break;
+    case 1:
+        param.color = 1;
+        param.map[2] = 3;
+        break;
+    case 3:
+        param.color = 1;
+        param.map[2] = 4;
+        break;
+    }
+    tlwpRotMtx(m, lbl_8053EA18, (f32)*(u16*)(p + 0x260) / lbl_8053EA14, lbl_8053EA18, lbl_8053EA10);
+    param.c = m;
+    fn_801F06F0(p, lbl_8046910C, *(s32*)(p + 0x24c) + 0xc0, &param, 7, lbl_8053EA10, lbl_8053EA10);
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
