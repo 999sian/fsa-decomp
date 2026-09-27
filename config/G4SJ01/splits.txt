@@ -207,6 +207,10 @@ TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.cpp:
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x80066EC0 end:0x80066F88
 
+Runtime.PPCEABI.H/runtime.c:
+	.text       start:0x80067414 end:0x80067AF0
+	.rodata     start:0x8045E848 end:0x8045E860
+
 MSL_C/PPC_EABI/abort_exit.c:
 	.text       start:0x80067C8C end:0x80067E18
 	.bss        start:0x804AFF08 end:0x804B0008
