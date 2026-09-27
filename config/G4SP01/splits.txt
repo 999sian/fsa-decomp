@@ -133,6 +133,12 @@ dolphin/gx/GXTev.c:
 	.text       start:0x8005F548 end:0x8005FCAC
 	.data       start:0x804B4290 end:0x804B4308
 
+dolphin/gx/GXDraw.c:
+	.text       start:0x800602F4 end:0x800607BC
+	.data       start:0x804B4328 end:0x804B4638
+	.bss        start:0x804D3730 end:0x804D39B8
+	.sdata2     start:0x80558728 end:0x80558740
+
 dolphin/gx/GXDisplayList.c:
 	.text       start:0x800607BC end:0x8006082C
 
@@ -186,6 +192,11 @@ TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.cpp:
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x80067950 end:0x80067A18
 
+MSL_C/PPC_EABI/abort_exit.c:
+	.text       start:0x8006871C end:0x800688A8
+	.bss        start:0x804D66A8 end:0x804D67A8
+	.sbss       start:0x80557A68 end:0x80557A78
+
 MSL_C/MSL_Common/arith.c:
 	.text       start:0x8006ADC8 end:0x8006ADD8
 
@@ -226,6 +237,15 @@ MSL_C/MSL_Common/string.c:
 
 MSL_C/MSL_Common/wchar_io.c:
 	.text       start:0x8006EB18 end:0x8006EBA0
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_atan2.c:
+	.text       start:0x8006EEA8 end:0x8006F138
+	.sdata2     start:0x805587F8 end:0x80558850
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/e_rem_pio2.c:
+	.text       start:0x8006F138 end:0x8006F4D8
+	.rodata     start:0x80478618 end:0x804787A0
+	.sdata2     start:0x80558850 end:0x805588A8
 
 MSL_C/MSL_Common_Embedded/Math/Double_precision/k_cos.c:
 	.text       start:0x8006F4D8 end:0x8006F5CC
@@ -310,3 +330,7 @@ JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp:
 
 JSystem/J3D/GraphBase/J3DStruct.cpp:
 	.text       start:0x800E53FC end:0x800E556C
+
+JSystem/JParticle/JPAChildShape.cpp:
+	.text       start:0x800EAF8C end:0x800EB118
+	.sdata2     start:0x805590A0 end:0x805590A8
