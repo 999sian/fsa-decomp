@@ -239,17 +239,22 @@ def main():
             sys.exit("self-validation failed; do not trust JP/PAL output")
         versions = ["G4SJ01", "G4SP01"]
     us_bytes = dol_read(dols["G4SE01"][0], dols["G4SE01"][1], known[0], known[1] - known[0]) if known else None
+    failed = False
     for v in versions:
         r = locate_direct(args.object, v, dols, bases, secs_of, fmap)
         if r[0] != "ok":
             print(f"{v}: {r}")
+            failed = True
             continue
         # cross-version gate: same-source constants must be byte-identical to the US pool
         vb = dol_read(dols[v][0], dols[v][1], r[1], r[2] - r[1])
         if us_bytes is not None and vb != us_bytes:
             print(f"{v}: CANDIDATE start:0x{r[1]:08X} end:0x{r[2]:08X} — bytes differ from US, verify manually")
+            failed = True
         else:
             print(f"{v}: .sdata2 start:0x{r[1]:08X} end:0x{r[2]:08X}  (bytes match US)")
+    if failed:
+        sys.exit(1)
 
 
 if __name__ == "__main__":
