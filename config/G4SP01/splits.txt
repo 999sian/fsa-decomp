@@ -325,6 +325,11 @@ dolphin/amcstubs/AmcExi2Stubs.c:
 dolphin/odenotstub/odenotstub.c:
 	.text       start:0x80071180 end:0x80071188
 
+dolphin/OdemuExi2/DebuggerDriver.c:
+	.text       start:0x80071188 end:0x80071C08
+	.sdata      start:0x80557090 end:0x80557098
+	.sbss       start:0x80557A90 end:0x80557AA8
+
 dolphin/si/SISamplingRate.c:
 	.text       start:0x80075F94 end:0x8007609C
 	.data       start:0x804B52D8 end:0x804B5370

@@ -1,9 +1,9 @@
 # The Legend of Zelda: Four Swords Adventures
 
 [![Build Status](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml/badge.svg)](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml)
-[![Matched Code](https://img.shields.io/badge/Code-1.26%25-red.svg)](https://github.com/999sian/fsa-decomp)
-[![Matched Functions](https://img.shields.io/badge/Functions-3.45%25-green.svg)](https://github.com/999sian/fsa-decomp)
-[![Linked Objects](https://img.shields.io/badge/Linked_Files-96%20%2F%2096-blue.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Code](https://img.shields.io/badge/Code-1.32%25-red.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Functions](https://img.shields.io/badge/Functions-3.57%25-green.svg)](https://github.com/999sian/fsa-decomp)
+[![Linked Objects](https://img.shields.io/badge/Linked_Files-97%20%2F%2097-blue.svg)](https://github.com/999sian/fsa-decomp)
 
 A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**.
 
@@ -29,12 +29,12 @@ Current progress is automatically tracked against compiler-verified metadata fro
 <!-- PROGRESS_START -->
 | Category | Matched Code | Matched Functions | Linked Files | Progress |
 | :--- | :--- | :--- | :--- | :--- |
-| **Overall** | **1.26%** (57,200 / 4,542,176 B) | **3.45%** (400 / 11,585 fns) | **96 / 96** | `░░░░░░░░░░░░░░░` |
+| **Overall** | **1.32%** (59,888 / 4,542,176 B) | **3.57%** (414 / 11,585 fns) | **97 / 97** | `░░░░░░░░░░░░░░░` |
 | **Game Code** | **0.00%** (0 / 0 B) | **0.00%** (0 / 0 fns) | **0 / 0** | `░░░░░░░░░░░░░░░` |
-| **SDK Code** | **100.00%** (48,544 / 48,544 B) | **100.00%** (317 / 317 fns) | **75 / 75** | `███████████████` |
+| **SDK Code** | **100.00%** (51,232 / 51,232 B) | **100.00%** (331 / 331 fns) | **76 / 76** | `███████████████` |
 | **JSystem Code** | **100.00%** (8,656 / 8,656 B) | **100.00%** (83 / 83 fns) | **21 / 21** | `███████████████` |
 
-*Fuzzy code matching stands at **1.26%** (includes near-matches).*
+*Fuzzy code matching stands at **1.32%** (includes near-matches).*
 <!-- PROGRESS_END -->
 ---
 
