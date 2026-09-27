@@ -207,9 +207,20 @@ TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.cpp:
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x80066EC0 end:0x80066F88
 
+Runtime.PPCEABI.H/global_destructor_chain.c:
+	.text       start:0x80066F88 end:0x80066FE8
+	.dtors      start:0x8045D1E8 end:0x8045D1EC
+	.sbss       start:0x80531398 end:0x805313A0
+
 Runtime.PPCEABI.H/runtime.c:
 	.text       start:0x80067414 end:0x80067AF0
 	.rodata     start:0x8045E848 end:0x8045E860
+
+Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
+	.text       start:0x80067AF0 end:0x80067B6C
+	.ctors      start:0x8045C8A0 end:0x8045C8A4
+	.dtors      start:0x8045D1E0 end:0x8045D1E8
+	.sdata      start:0x805309A8 end:0x805309B0
 
 MSL_C/PPC_EABI/abort_exit.c:
 	.text       start:0x80067C8C end:0x80067E18
