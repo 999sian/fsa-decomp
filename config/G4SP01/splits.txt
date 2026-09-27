@@ -416,6 +416,11 @@ JSystem/J2DGraph/J2DManage.cpp:
 	.text       start:0x800A7460 end:0x800A7724
 	.bss        start:0x804D77E0 end:0x804D78E8
 
+JSystem/J3D/GraphAnimator/J3DAnimation.cpp:
+	.text       start:0x800C4194 end:0x800C7F78
+	.data       start:0x804B7708 end:0x804B7838
+	.sdata2     start:0x80558F40 end:0x80558F78
+
 JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp:
 	.text       start:0x800CCC14 end:0x800CCC20
 
