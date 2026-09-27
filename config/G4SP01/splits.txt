@@ -335,6 +335,10 @@ dolphin/si/SISamplingRate.c:
 	.data       start:0x804B52D8 end:0x804B5370
 	.sbss       start:0x80557AD8 end:0x80557AE0
 
+JSystem/JSupport/JSUInputStream.cpp:
+	.text       start:0x80087628 end:0x800879B8
+	.data       start:0x804B5E4C end:0x804B5E90
+
 JSystem/JSupport/JSUList.cpp:
 	.text       start:0x800879B8 end:0x80087ED4
 
