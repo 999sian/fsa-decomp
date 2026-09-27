@@ -43,8 +43,14 @@ dolphin/dvd/dvdidutils.c:
 dolphin/dsp/dsp_debug.c:
 	.text       start:0x8005296C end:0x800529BC
 
+dolphin/gx/GXGeometry.c:
+	.text       start:0x8005CD34 end:0x8005D070
+
 dolphin/gx/GXLight.c:
 	.text       start:0x8005DC9C end:0x8005E024
+
+dolphin/gx/GXDisplayList.c:
+	.text       start:0x800607BC end:0x8006082C
 
 TRK_MINNOW_DOLPHIN/mutex_TRK.c:
 	.text       start:0x80064068 end:0x80064080

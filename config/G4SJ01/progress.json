@@ -1,18 +1,18 @@
 {
   "version": "G4SJ01",
   "measures": {
-    "fuzzy_match_percent": 0.25198296,
+    "fuzzy_match_percent": 0.27316937,
     "total_code": "4436808",
-    "matched_code": "11180",
-    "matched_code_percent": 0.25198296,
+    "matched_code": "12120",
+    "matched_code_percent": 0.27316937,
     "total_data": "1025320",
     "total_functions": 11559,
-    "matched_functions": 146,
-    "matched_functions_percent": 1.263085,
-    "complete_code": "11180",
-    "complete_code_percent": 0.25198296,
-    "total_units": 6048,
-    "complete_units": 38
+    "matched_functions": 156,
+    "matched_functions_percent": 1.3495977,
+    "complete_code": "12120",
+    "complete_code_percent": 0.27316937,
+    "total_units": 6052,
+    "complete_units": 40
   },
   "categories": [
     {
@@ -32,18 +32,18 @@
       "name": "SDK Code",
       "measures": {
         "fuzzy_match_percent": 100.0,
-        "total_code": "7836",
-        "matched_code": "7836",
+        "total_code": "8776",
+        "matched_code": "8776",
         "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
-        "total_functions": 106,
-        "matched_functions": 106,
+        "total_functions": 116,
+        "matched_functions": 116,
         "matched_functions_percent": 100.0,
-        "complete_code": "7836",
+        "complete_code": "8776",
         "complete_code_percent": 100.0,
         "complete_data_percent": 100.0,
-        "total_units": 28,
-        "complete_units": 28
+        "total_units": 30,
+        "complete_units": 30
       }
     },
     {

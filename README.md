@@ -18,8 +18,8 @@ The goal of this project is to produce readable, idiomatic C/C++ source code tha
 | ID | Region | Disc SHA-1 | `main.dol` SHA-1 | Status |
 | :--- | :--- | :--- | :--- | :--- |
 | **G4SE01** | USA (Rev 0) | `4bd926835dfbeaae72d01abe5fb581b527154a30` | `d86b3d9f785566e34264035e140ef3daf3cc19f0` | **Primary Target** (29.74% code matched) |
-| **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | **Supported** (0.25% code matched, retail verified) |
-| **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | **Supported** (0.25% code matched, retail verified) |
+| **G4SJ01** | Japan | `520d86a7b82c45aaa26cb6dd29300ccfb671cd95` | `56097356bceafde9a64abeab8501b909746ac03c` | **Supported** (0.27% code matched, retail verified) |
+| **G4SP01** | Europe | `e9842565f6f39a321f28f56e621a0b6de58bc960` | `66dbc77f258a64d8bc8d7b0041c619ed70d0c00b` | **Supported** (0.27% code matched, retail verified) |
 ---
 
 ## Progress Tracker
