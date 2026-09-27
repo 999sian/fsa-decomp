@@ -37,6 +37,21 @@ dolphin/dvd/dvdidutils.c:
 dolphin/dsp/dsp_debug.c:
 	.text       start:0x80051EDC end:0x80051F2C
 
+dolphin/gx/GXLight.c:
+	.text       start:0x8005D20C end:0x8005D594
+
+TRK_MINNOW_DOLPHIN/mutex_TRK.c:
+	.text       start:0x800635D8 end:0x800635F0
+
+TRK_MINNOW_DOLPHIN/flush_cache.c:
+	.text       start:0x80063688 end:0x800636C0
+
+TRK_MINNOW_DOLPHIN/UDP_Stubs.c:
+	.text       start:0x800664D8 end:0x80066520
+
+TRK_MINNOW_DOLPHIN/MWTrace.c:
+	.text       start:0x80066E18 end:0x80066E68
+
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x80066EC0 end:0x80066F88
 
