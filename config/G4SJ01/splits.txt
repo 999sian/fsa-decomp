@@ -431,6 +431,12 @@ JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp:
 JSystem/J3D/GraphLoader/J3DModelSaver.cpp:
 	.text       start:0x800D6824 end:0x800D682C
 
+JSystem/J3D/GraphBase/J3DGD.cpp:
+	.text       start:0x800D682C end:0x800D95AC
+	.data       start:0x80491DF0 end:0x80491E98
+	.sdata      start:0x80530A98 end:0x80530AE0
+	.sdata2     start:0x80532998 end:0x805329D8
+
 JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp:
 	.text       start:0x800E99D4 end:0x800E9A8C
 

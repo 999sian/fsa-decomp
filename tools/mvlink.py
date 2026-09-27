@@ -199,7 +199,7 @@ class Linker:
         starts = set()
         reg = 2 if sec == ".sdata2" else 13
         base = (self.sda2 if sec == ".sdata2" else self.sda)[version]
-        LOAD_OPS = {32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 48, 49, 50, 51, 52, 53, 54, 55}  # all 16-bit D-form load/stores
+        LOAD_OPS = {14, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 48, 49, 50, 51, 52, 53, 54, 55}  # addi + all 16-bit D-form load/stores
         for toff, effval in sda:
             ia = self.reg_instr_addr(tbl, offs, toff & ~3, version)
             if ia is None: continue
