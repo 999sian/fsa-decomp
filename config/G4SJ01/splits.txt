@@ -127,6 +127,18 @@ MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ceil.c:
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c:
 	.text       start:0x8006FD8C end:0x8006FDB4
 
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_floor.c:
+	.text       start:0x8006FE88 end:0x8006FFD0
+	.sdata2     start:0x805322E8 end:0x805322F8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_frexp.c:
+	.text       start:0x8006FFD0 end:0x8007005C
+	.sdata2     start:0x805322F8 end:0x80532300
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ldexp.c:
+	.text       start:0x8007005C end:0x80070220
+	.sdata2     start:0x80532300 end:0x80532328
+
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_modf.c:
 	.text       start:0x80070220 end:0x8007031C
 
