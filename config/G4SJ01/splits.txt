@@ -64,11 +64,17 @@ Runtime.PPCEABI.H/__va_arg.c:
 MSL_C/MSL_Common/arith.c:
 	.text       start:0x8006A338 end:0x8006A348
 
+MSL_C/PPC_EABI/critical_regions.gamecube.c:
+	.text       start:0x8006A440 end:0x8006A44C
+
 MSL_C/MSL_Common/mem.c:
 	.text       start:0x8006AFC4 end:0x8006B134
 
 MSL_C/MSL_Common/mem_funcs.c:
 	.text       start:0x8006B134 end:0x8006B404
+
+MSL_C/MSL_Common/qsort.c:
+	.text       start:0x8006D5DC end:0x8006D748
 
 MSL_C/MSL_Common/string.c:
 	.text       start:0x8006D898 end:0x8006DB74
@@ -84,3 +90,12 @@ dolphin/amcstubs/AmcExi2Stubs.c:
 
 dolphin/odenotstub/odenotstub.c:
 	.text       start:0x800706F0 end:0x800706F8
+
+JSystem/JMath/random.cpp:
+	.text       start:0x80099474 end:0x8009947C
+
+JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp:
+	.text       start:0x800D21C4 end:0x800D21D0
+
+JSystem/J3D/GraphLoader/J3DModelSaver.cpp:
+	.text       start:0x800D6824 end:0x800D682C
