@@ -13,6 +13,10 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:32
 
+JSystem/JAudio/Interface/JAISoundParams.cpp:
+	.text       start:0x8002640C end:0x8002656C
+	.sdata2     start:0x80558350 end:0x80558358
+
 JSystem/JAudio/System/JASSeqReader.cpp:
 	.text       start:0x800360AC end:0x800362E8
 

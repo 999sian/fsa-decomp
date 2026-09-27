@@ -135,10 +135,13 @@ def locate(name, version, dols, bases, secs_of, fmap):
     o = str(ROOT / "build/G4SE01/src" / (name.rsplit(".", 1)[0] + ".o"))
     if ".sdata2" not in secs_of.get(name, {}):
         return ("no-sdata2",)
-    obj_text_start = secs_of[name][".text"][0]
+    obj_text_start, obj_text_end = secs_of[name][".text"]
+    split_size = obj_text_end - obj_text_start
     size, align = sec_size_align(o, ".sdata2")
     good = local_sdata2_syms(o)
-    rl = [(t, sv) for (t, si, sv) in sda21_relocs(o) if si in good and sv < size]
+    # Only relocations inside the linked split .text; weak-COMDAT tails (compiled
+    # but excluded from the split) live at r_offset >= split_size and must be ignored.
+    rl = [(t, sv) for (t, si, sv) in sda21_relocs(o) if si in good and sv < size and t < split_size]
     if not rl:
         return ("no-local-relocs",)
     d, secs = dols[version]
