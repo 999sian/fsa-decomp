@@ -17,6 +17,9 @@ JSystem/JAudio/Interface/JAISoundParams.cpp:
 	.text       start:0x8002640C end:0x8002656C
 	.sdata2     start:0x80558350 end:0x80558358
 
+JSystem/JAudio/System/JASCallback.cpp:
+	.text       start:0x80028024 end:0x80028248
+
 JSystem/JAudio/System/JASSoundParams.cpp:
 	.text       start:0x8002DDD4 end:0x8002DE30
 	.sdata2     start:0x805584B8 end:0x805584C0
@@ -31,6 +34,9 @@ JSystem/JAudio/System/JASSeqReader.cpp:
 
 JSystem/JAudio/System/JASTrackPort.cpp:
 	.text       start:0x80039AC4 end:0x80039BE4
+
+JSystem/JAudio/Utility/JAUBankTable.cpp:
+	.text       start:0x8003B3E8 end:0x8003B42C
 
 dolphin/base/PPCArch.c:
 	.text       start:0x8003F770 end:0x8003F884
@@ -77,11 +83,17 @@ dolphin/gx/GXTransform.c:
 	.text       start:0x8006082C end:0x80060DD4
 	.sdata2     start:0x80558740 end:0x80558758
 
+TRK_MINNOW_DOLPHIN/mainloop.c:
+	.text       start:0x800616F0 end:0x800617E8
+
 TRK_MINNOW_DOLPHIN/mutex_TRK.c:
 	.text       start:0x80064068 end:0x80064080
 
 TRK_MINNOW_DOLPHIN/flush_cache.c:
 	.text       start:0x80064118 end:0x80064150
+
+TRK_MINNOW_DOLPHIN/targcont.c:
+	.text       start:0x80066D1C end:0x80066D50
 
 TRK_MINNOW_DOLPHIN/UDP_Stubs.c:
 	.text       start:0x80066F68 end:0x80066FB0
@@ -107,6 +119,9 @@ MSL_C/MSL_Common/buffer_io.c:
 MSL_C/PPC_EABI/critical_regions.gamecube.c:
 	.text       start:0x8006AED0 end:0x8006AEDC
 
+MSL_C/MSL_Common/direct_io.c:
+	.text       start:0x8006AF00 end:0x8006B288
+
 MSL_C/MSL_Common/mbstring.c:
 	.text       start:0x8006B93C end:0x8006BA54
 	.sdata2     start:0x80558760 end:0x80558768
@@ -116,6 +131,9 @@ MSL_C/MSL_Common/mem.c:
 
 MSL_C/MSL_Common/mem_funcs.c:
 	.text       start:0x8006BBC4 end:0x8006BE94
+
+MSL_C/MSL_Common/misc_io.c:
+	.text       start:0x8006BE94 end:0x8006BEA4
 
 MSL_C/MSL_Common/qsort.c:
 	.text       start:0x8006E06C end:0x8006E1D8
