@@ -123,12 +123,13 @@ def sym_table(o, idx2name):
 
 
 def relocs(o):
-    """list of (text_off, type, symidx)."""
+    """list of (text_off, type, symidx, addend)."""
     res = []
     for line in subprocess.check_output(["readelf", "-rW", o], stderr=subprocess.DEVNULL).decode().splitlines():
-        m = re.match(r"([0-9a-f]{8})\s+([0-9a-f]{8})\s+(R_PPC_\S+)", line)
+        m = re.match(r"\s*([0-9a-f]{8})\s+([0-9a-f]{8})\s+(R_PPC_\S+)\s+[0-9a-f]+\s+(.*?)\s*([+-]\s*[0-9a-fA-Fx]+)?\s*$", line)
         if m:
-            res.append((int(m.group(1), 16), m.group(3), int(m.group(2), 16) >> 8))
+            addend = int(m.group(5).replace(" ", ""), 16) if m.group(5) else 0
+            res.append((int(m.group(1), 16), m.group(3), int(m.group(2), 16) >> 8, addend))
     return res
 
 
@@ -188,35 +189,35 @@ class Linker:
         rl = relocs(o)
         tbl = self.o_func_table(o); offs = [t[0] for t in tbl]
         ha = {}; lo = {}; sda = []
-        for toff, typ, si in rl:
+        for toff, typ, si, addend in rl:
             sinfo = syms.get(si)
             if not sinfo or sinfo[0] != sec: continue
-            symval = sinfo[1]
-            if typ == "R_PPC_EMB_SDA21": sda.append((toff, symval))
-            elif typ == "R_PPC_ADDR16_HA": ha.setdefault(symval, []).append(toff)
-            elif typ == "R_PPC_ADDR16_LO": lo.setdefault(symval, []).append(toff)
+            effval = sinfo[1] + addend
+            if typ == "R_PPC_EMB_SDA21": sda.append((toff, effval))
+            elif typ == "R_PPC_ADDR16_HA": ha.setdefault(effval, []).append(toff)
+            elif typ == "R_PPC_ADDR16_LO": lo.setdefault(effval, []).append(toff)
         starts = set()
         reg = 2 if sec == ".sdata2" else 13
         base = (self.sda2 if sec == ".sdata2" else self.sda)[version]
         LOAD_OPS = {48, 50, 52, 54, 32, 36}  # lfs lfd stfs stfd lwz stw (16-bit D-form)
-        for toff, symval in sda:
+        for toff, effval in sda:
             ia = self.reg_instr_addr(tbl, offs, toff & ~3, version)
             if ia is None: continue
             ins = w32(self.dols, version, ia)
             if ins is None or (ins >> 26) not in LOAD_OPS or ((ins >> 16) & 31) != reg:
                 continue  # skip paired-single / mis-mapped / wrong base
             off = ins & 0xFFFF; off = off - 0x10000 if off & 0x8000 else off
-            starts.add(base + off - symval)
-        for symval, hoffs in ha.items():
-            if len(hoffs) != len(lo.get(symval, [])): return None
-            for hoff, loff in zip(sorted(hoffs), sorted(lo.get(symval, []))):
+            starts.add(base + off - effval)
+        for effval, hoffs in ha.items():
+            if len(hoffs) != len(lo.get(effval, [])): return None
+            for hoff, loff in zip(sorted(hoffs), sorted(lo.get(effval, []))):
                 iha = self.reg_instr_addr(tbl, offs, hoff & ~3, version)
                 ilo = self.reg_instr_addr(tbl, offs, loff & ~3, version)
                 if iha is None or ilo is None: continue
                 a = w32(self.dols, version, iha); b = w32(self.dols, version, ilo)
                 if a is None or b is None or (a >> 26) != 15: continue
                 hi = a & 0xFFFF; low = b & 0xFFFF; low = low - 0x10000 if low & 0x8000 else low
-                starts.add(((hi << 16) + low) - symval)
+                starts.add(((hi << 16) + low) - effval)
         if len(starts) != 1: return None
         start = starts.pop()
         return start, start + (size + align - 1) // align * align

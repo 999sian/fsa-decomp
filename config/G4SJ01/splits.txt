@@ -105,6 +105,12 @@ dolphin/pad/Padclamp.c:
 	.rodata     start:0x8045DFE0 end:0x8045DFF0
 	.sdata2     start:0x80531FA8 end:0x80531FC8
 
+dolphin/ai/ai.c:
+	.text       start:0x8004F5CC end:0x8004FEB0
+	.data       start:0x8048D490 end:0x8048D4D8
+	.sdata      start:0x80530918 end:0x80530920
+	.sbss       start:0x80531278 end:0x805312B8
+
 dolphin/dsp/dsp_debug.c:
 	.text       start:0x80051EDC end:0x80051F2C
 
