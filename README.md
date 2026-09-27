@@ -1,8 +1,8 @@
 # The Legend of Zelda: Four Swords Adventures
 
 [![Build Status](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml/badge.svg)](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml)
-[![Matched Code](https://img.shields.io/badge/Code-29.74%25-yellow.svg)](https://github.com/999sian/fsa-decomp)
-[![Matched Functions](https://img.shields.io/badge/Functions-59.06%25-green.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Code](https://img.shields.io/badge/Code-30.68%25-yellow.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Functions](https://img.shields.io/badge/Functions-62.67%25-green.svg)](https://github.com/999sian/fsa-decomp)
 [![Linked Objects](https://img.shields.io/badge/Linked_Files-444%20%2F%20889-blue.svg)](https://github.com/999sian/fsa-decomp)
 
 A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**.

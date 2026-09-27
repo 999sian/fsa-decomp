@@ -126,3 +126,51 @@ Per function: name, address, size, final `match_percent`, the `main.dol: OK` lin
 the call-target check result. A partial body must be committed as such and **never** described as
 matched; a map of a function you could not finish (signature, call sequence with argument setup, branch
 structure, needed prototypes) is a legitimate deliverable and lets the next owner start from it.
+
+## Round 7 results (2026-09-27)
+
+Ten isolated source workstreams reconstructed 483 small functions from retail
+assembly; five additional workstreams refined the compiler differences. Against
+baseline `fd0b86a`, 417 functions / 41,608 bytes became instruction-exact:
+
+| Unit | Implemented | Instruction-exact |
+|---|---:|---:|
+| `tu_8022AD64` | 160 | 157 |
+| `tu_802D39B8` | 79 | 45 |
+| `SLR1_8014FD5C` | 38 | 35 |
+| `tu_8027E5BC` | 36 | 33 |
+| `tu_80256C74` | 34 | 28 |
+| `tu_8025EB18` | 34 | 31 |
+| `tu_801213EC` | 33 | 25 |
+| `tu_8028FBA0` | 26 | 25 |
+| `tu_8016A2B4` | 22 | 21 |
+| `tu_804023D0` | 21 | 17 |
+
+The USA build passes its retail DOL hash. All 483 emitted symbols have the same
+named direct-call sequences as retail, and all 417 instruction-exact functions
+have matching relocation bindings or byte-verified equivalent scalar constants.
+Neither the baseline nor the first compiled pass lost any function match score.
+Overall matched code increased from 29.74% to 30.68%; game code reached 17.52%.
+
+**All ten objects remain NonMatching.** The 66 other implementations, missing
+larger functions, data ownership and exception metadata still require work.
+The DOL check proves integration safety through the existing assembly fallback,
+not that these complete objects can be linked from C++. Function emission order
+also remains unresolved in `tu_80256C74`, `tu_801213EC`, `tu_8016A2B4` and
+`tu_804023D0`.
+
+Useful matching details:
+
+- An `int` result with an explicit `u8` cast can reproduce a byte-width `extrwi`
+  without changing the caller ABI. This matched `fn_8025F684` while preserving
+  the already-exact `fn_8023EFEC` forwarder; byte-consuming callers cast explicitly.
+- Simple direct geometry-field accesses avoided template-driven function
+  deferral in SLR1 without losing its existing instruction matches. Aggregate
+  `Vec` initialization was not interchangeable with scalar stores; the dynamic
+  offset in `fn_8016B8AC` still needed its original TVec3 constructor.
+- Ghidra corroborated signed `/32` and `%32` room indexing, and the asymmetric
+  64-bit mask operation in `fn_802D7EB0`: setting sign-extends the 32-bit mask,
+  while clearing zeroes the upper word.
+- `Game/Actor.h` and the SDK header independently define `Vec`; including both
+  exposes a collision. Unifying them also requires migrating Actor.cpp's legacy
+  SDK declarations, so no shared-header change was retained in this round.
