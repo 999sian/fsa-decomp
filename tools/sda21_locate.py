@@ -244,10 +244,12 @@ def main():
         if r[0] != "ok":
             print(f"{v}: {r}")
             continue
-        # cross-version byte check: same-source constants must be identical to US
+        # cross-version gate: same-source constants must be byte-identical to the US pool
         vb = dol_read(dols[v][0], dols[v][1], r[1], r[2] - r[1])
-        note = "  (bytes match US)" if us_bytes is not None and vb == us_bytes else ""
-        print(f"{v}: .sdata2 start:0x{r[1]:08X} end:0x{r[2]:08X}{note}")
+        if us_bytes is not None and vb != us_bytes:
+            print(f"{v}: CANDIDATE start:0x{r[1]:08X} end:0x{r[2]:08X} — bytes differ from US, verify manually")
+        else:
+            print(f"{v}: .sdata2 start:0x{r[1]:08X} end:0x{r[2]:08X}  (bytes match US)")
 
 
 if __name__ == "__main__":
