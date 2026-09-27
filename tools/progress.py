@@ -17,7 +17,7 @@ ROOT = pathlib.Path(__file__).resolve().parent.parent
 
 
 def load_config_objects(version: str = "G4SE01") -> Dict[str, Dict[str, int]]:
-    """Parse configure.py to count completed vs total objects per category for the specified version."""
+    """Parse configure.py and version-specific splits to count completed vs total objects per category."""
     cats: Dict[str, Dict[str, int]] = {
         "all": {"matching": 0, "total": 0},
         "game": {"matching": 0, "total": 0},
@@ -25,29 +25,54 @@ def load_config_objects(version: str = "G4SE01") -> Dict[str, Dict[str, int]]:
         "jsys": {"matching": 0, "total": 0},
     }
 
-    if version != "G4SE01":
-        # Other releases (G4SJ01, G4SP01) are currently assembly-split baselines without C++ source splits
-        return cats
-
     saved_argv = sys.argv
     sys.argv = ["configure.py", "--version", version]
     try:
         sys.path.insert(0, str(ROOT))
+        if "configure" in sys.modules:
+            del sys.modules["configure"]
         import configure
         config = configure.config
     finally:
         sys.argv = saved_argv
+
+    if version == "G4SE01":
+        for lib in config.libs:
+            cat_id = lib.get("progress_category", "game")
+            if cat_id not in cats:
+                cats[cat_id] = {"matching": 0, "total": 0}
+            for obj in lib.get("objects", []):
+                cats[cat_id]["total"] += 1
+                cats["all"]["total"] += 1
+                if obj.completed:
+                    cats[cat_id]["matching"] += 1
+                    cats["all"]["matching"] += 1
+        return cats
+
+    # For other versions (G4SJ01, G4SP01), filter configured objects by version's splits.txt
+    splits_file = ROOT / f"config/{version}/splits.txt"
+    split_paths = set()
+    if splits_file.exists():
+        for line in splits_file.read_text(encoding="utf-8").splitlines():
+            line = line.strip()
+            if line.endswith(":") and not line.startswith("Sections:"):
+                split_paths.add(line[:-1].strip().lower())
+
+    if not split_paths:
+        return cats
 
     for lib in config.libs:
         cat_id = lib.get("progress_category", "game")
         if cat_id not in cats:
             cats[cat_id] = {"matching": 0, "total": 0}
         for obj in lib.get("objects", []):
-            cats[cat_id]["total"] += 1
-            cats["all"]["total"] += 1
-            if obj.completed:
-                cats[cat_id]["matching"] += 1
-                cats["all"]["matching"] += 1
+            obj_name = str(getattr(obj, "src_path", None) or obj.name).lower()
+            if any(p in obj_name or obj_name.endswith(p) for p in split_paths):
+                cats[cat_id]["total"] += 1
+                cats["all"]["total"] += 1
+                if obj.completed:
+                    cats[cat_id]["matching"] += 1
+                    cats["all"]["matching"] += 1
     return cats
 
 

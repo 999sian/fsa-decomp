@@ -1,0 +1,62 @@
+{
+  "version": "G4SJ01",
+  "measures": {
+    "fuzzy_match_percent": 0.0062206886,
+    "total_code": "4436808",
+    "matched_code": "276",
+    "matched_code_percent": 0.0062206886,
+    "total_data": "1025320",
+    "total_functions": 11559,
+    "matched_functions": 22,
+    "matched_functions_percent": 0.19032788,
+    "complete_code": "276",
+    "complete_code_percent": 0.0062206886,
+    "total_units": 5985,
+    "complete_units": 1
+  },
+  "categories": [
+    {
+      "id": "game",
+      "name": "Game Code",
+      "measures": {
+        "fuzzy_match_percent": 100.0,
+        "matched_code_percent": 100.0,
+        "matched_data_percent": 100.0,
+        "matched_functions_percent": 100.0,
+        "complete_code_percent": 100.0,
+        "complete_data_percent": 100.0
+      }
+    },
+    {
+      "id": "sdk",
+      "name": "SDK Code",
+      "measures": {
+        "fuzzy_match_percent": 100.0,
+        "total_code": "276",
+        "matched_code": "276",
+        "matched_code_percent": 100.0,
+        "matched_data_percent": 100.0,
+        "total_functions": 22,
+        "matched_functions": 22,
+        "matched_functions_percent": 100.0,
+        "complete_code": "276",
+        "complete_code_percent": 100.0,
+        "complete_data_percent": 100.0,
+        "total_units": 1,
+        "complete_units": 1
+      }
+    },
+    {
+      "id": "jsys",
+      "name": "JSystem Code",
+      "measures": {
+        "fuzzy_match_percent": 100.0,
+        "matched_code_percent": 100.0,
+        "matched_data_percent": 100.0,
+        "matched_functions_percent": 100.0,
+        "complete_code_percent": 100.0,
+        "complete_data_percent": 100.0
+      }
+    }
+  ]
+}
