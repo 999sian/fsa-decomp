@@ -29,11 +29,19 @@ JSystem/JAudio/System/JASInstSense.cpp:
 	.data       start:0x804886F8 end:0x80488708
 	.sdata2     start:0x80531E50 end:0x80531E70
 
+JSystem/JAudio/System/JASRegisterParam.cpp:
+	.text       start:0x800330F0 end:0x800333A8
+	.data       start:0x804887F0 end:0x80488840
+
 JSystem/JAudio/System/JASSeqReader.cpp:
 	.text       start:0x80036024 end:0x80036260
 
 JSystem/JAudio/System/JASTrackPort.cpp:
 	.text       start:0x80039A3C end:0x80039B5C
+
+JSystem/JAudio/Utility/JAUAudioArcInterpreter.cpp:
+	.text       start:0x8003A5EC end:0x8003AAE8
+	.data       start:0x8048C040 end:0x8048C088
 
 JSystem/JAudio/Utility/JAUBankTable.cpp:
 	.text       start:0x8003B368 end:0x8003B3AC
@@ -41,11 +49,28 @@ JSystem/JAudio/Utility/JAUBankTable.cpp:
 dolphin/base/PPCArch.c:
 	.text       start:0x8003F6F0 end:0x8003F804
 
+dolphin/db/db.c:
+	.text       start:0x8003F804 end:0x8003F8F0
+	.data       start:0x8048C260 end:0x8048C278
+	.sbss       start:0x80531048 end:0x80531050
+
+dolphin/os/OSAudioSystem.c:
+	.text       start:0x80040D6C end:0x80041000
+	.data       start:0x8048C480 end:0x8048C500
+
+dolphin/os/OSCache.c:
+	.text       start:0x80041000 end:0x80041678
+	.data       start:0x8048C500 end:0x8048C730
+
 dolphin/os/OSLink.c:
 	.text       start:0x80042F84 end:0x80042F9C
 
 dolphin/os/OSMessage.c:
 	.text       start:0x80042F9C end:0x80043274
+
+dolphin/os/OSMemory.c:
+	.text       start:0x80043274 end:0x80043610
+	.data       start:0x8048CC58 end:0x8048CC68
 
 dolphin/os/OSMutex.c:
 	.text       start:0x80043610 end:0x80043A2C
@@ -60,11 +85,33 @@ dolphin/mtx/vec.c:
 	.text       start:0x80047124 end:0x80047330
 	.sdata2     start:0x80531F98 end:0x80531FA8
 
+dolphin/dvd/dvdqueue.c:
+	.text       start:0x8004B1BC end:0x8004B3B4
+	.bss        start:0x804AC4F8 end:0x804AC518
+
+dolphin/dvd/dvderror.c:
+	.text       start:0x8004B3B4 end:0x8004B54C
+	.data       start:0x8048CFB0 end:0x8048CFF8
+
 dolphin/dvd/dvdidutils.c:
 	.text       start:0x8004B54C end:0x8004B644
 
+dolphin/dvd/dvdFatal.c:
+	.text       start:0x8004B644 end:0x8004B674
+	.sbss       start:0x805311D0 end:0x805311D8
+
+dolphin/pad/Padclamp.c:
+	.text       start:0x8004D718 end:0x8004DC10
+	.rodata     start:0x8045DFE0 end:0x8045DFF0
+	.sdata2     start:0x80531FA8 end:0x80531FC8
+
 dolphin/dsp/dsp_debug.c:
 	.text       start:0x80051EDC end:0x80051F2C
+
+dolphin/gx/GXAttr.c:
+	.text       start:0x8005A53C end:0x8005BA50
+	.data       start:0x8048DB60 end:0x8048DDD8
+	.sdata      start:0x80530958 end:0x80530968
 
 dolphin/gx/GXGeometry.c:
 	.text       start:0x8005C2A4 end:0x8005C5E0
@@ -72,9 +119,19 @@ dolphin/gx/GXGeometry.c:
 dolphin/gx/GXLight.c:
 	.text       start:0x8005D20C end:0x8005D594
 
+dolphin/gx/GXTexture.c:
+	.text       start:0x8005D594 end:0x8005E57C
+	.data       start:0x8048DF08 end:0x8048E130
+	.sdata      start:0x80530968 end:0x805309A8
+	.sdata2     start:0x80532000 end:0x80532028
+
 dolphin/gx/GXBump.c:
 	.text       start:0x8005E57C end:0x8005EAB8
 	.sdata2     start:0x80532028 end:0x80532030
+
+dolphin/gx/GXTev.c:
+	.text       start:0x8005EAB8 end:0x8005F21C
+	.data       start:0x8048E130 end:0x8048E1A8
 
 dolphin/gx/GXDisplayList.c:
 	.text       start:0x8005FD2C end:0x8005FD9C
@@ -82,6 +139,10 @@ dolphin/gx/GXDisplayList.c:
 dolphin/gx/GXTransform.c:
 	.text       start:0x8005FD9C end:0x80060344
 	.sdata2     start:0x80532080 end:0x80532098
+
+dolphin/gx/GXPerf.c:
+	.text       start:0x80060344 end:0x80060C60
+	.data       start:0x8048E4D8 end:0x8048E5C8
 
 TRK_MINNOW_DOLPHIN/mainloop.c:
 	.text       start:0x80060C60 end:0x80060D58
@@ -92,11 +153,26 @@ TRK_MINNOW_DOLPHIN/mutex_TRK.c:
 TRK_MINNOW_DOLPHIN/flush_cache.c:
 	.text       start:0x80063688 end:0x800636C0
 
+TRK_MINNOW_DOLPHIN/main_TRK.c:
+	.text       start:0x80065CDC end:0x80065D34
+	.rodata     start:0x8045E560 end:0x8045E570
+	.bss        start:0x804AF1A0 end:0x804AF1A8
+
 TRK_MINNOW_DOLPHIN/targcont.c:
 	.text       start:0x8006628C end:0x800662C0
 
+TRK_MINNOW_DOLPHIN/target_options.c:
+	.text       start:0x800662C0 end:0x800662DC
+	.bss        start:0x804AF1B0 end:0x804AF1B8
+
 TRK_MINNOW_DOLPHIN/UDP_Stubs.c:
 	.text       start:0x800664D8 end:0x80066520
+
+TRK_MINNOW_DOLPHIN/ddh/main.c:
+	.text       start:0x80066520 end:0x80066864
+	.rodata     start:0x8045E678 end:0x8045E758
+	.bss        start:0x804AF1B8 end:0x804AF9D8
+	.sbss       start:0x80531388 end:0x80531390
 
 TRK_MINNOW_DOLPHIN/CircleBuffer.c:
 	.text       start:0x80066864 end:0x80066ACC
@@ -141,6 +217,10 @@ MSL_C/MSL_Common/qsort.c:
 MSL_C/MSL_Common/scanf.c:
 	.text       start:0x8006D748 end:0x8006D7D8
 
+MSL_C/MSL_Common/signal.c:
+	.text       start:0x8006D7D8 end:0x8006D898
+	.bss        start:0x804B0340 end:0x804B0358
+
 MSL_C/MSL_Common/string.c:
 	.text       start:0x8006D898 end:0x8006DB74
 
@@ -151,9 +231,19 @@ MSL_C/MSL_Common_Embedded/Math/Double_precision/k_cos.c:
 	.text       start:0x8006EA48 end:0x8006EB3C
 	.sdata2     start:0x805321E8 end:0x80532230
 
+MSL_C/MSL_Common_Embedded/Math/Double_precision/k_rem_pio2.c:
+	.text       start:0x8006EB3C end:0x8006F990
+	.rodata     start:0x8045EB80 end:0x8045EBD0
+	.sdata2     start:0x80532230 end:0x80532270
+
 MSL_C/MSL_Common_Embedded/Math/Double_precision/k_sin.c:
 	.text       start:0x8006F990 end:0x8006FA30
 	.sdata2     start:0x80532270 end:0x805322A8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_atan.c:
+	.text       start:0x8006FA30 end:0x8006FC48
+	.rodata     start:0x8045EBD0 end:0x8045EC68
+	.sdata2     start:0x805322A8 end:0x805322D0
 
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ceil.c:
 	.text       start:0x8006FC48 end:0x8006FD8C
@@ -191,6 +281,11 @@ dolphin/amcstubs/AmcExi2Stubs.c:
 
 dolphin/odenotstub/odenotstub.c:
 	.text       start:0x800706F0 end:0x800706F8
+
+dolphin/si/SISamplingRate.c:
+	.text       start:0x80075504 end:0x8007560C
+	.data       start:0x8048F178 end:0x8048F210
+	.sbss       start:0x80531410 end:0x80531418
 
 JSystem/JSupport/JSUList.cpp:
 	.text       start:0x8008CF68 end:0x8008D484

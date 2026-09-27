@@ -1,9 +1,9 @@
 # The Legend of Zelda: Four Swords Adventures
 
 [![Build Status](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml/badge.svg)](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml)
-[![Matched Code](https://img.shields.io/badge/Code-0.45%25-red.svg)](https://github.com/999sian/fsa-decomp)
-[![Matched Functions](https://img.shields.io/badge/Functions-1.85%25-green.svg)](https://github.com/999sian/fsa-decomp)
-[![Linked Objects](https://img.shields.io/badge/Linked_Files-63%20%2F%2063-blue.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Code](https://img.shields.io/badge/Code-1.04%25-red.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Functions](https://img.shields.io/badge/Functions-2.93%25-green.svg)](https://github.com/999sian/fsa-decomp)
+[![Linked Objects](https://img.shields.io/badge/Linked_Files-84%20%2F%2084-blue.svg)](https://github.com/999sian/fsa-decomp)
 
 A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**.
 
@@ -29,12 +29,12 @@ Current progress is automatically tracked against compiler-verified metadata fro
 <!-- PROGRESS_START -->
 | Category | Matched Code | Matched Functions | Linked Files | Progress |
 | :--- | :--- | :--- | :--- | :--- |
-| **Overall** | **0.45%** (20,320 / 4,542,176 B) | **1.85%** (214 / 11,585 fns) | **63 / 63** | `░░░░░░░░░░░░░░░` |
+| **Overall** | **1.04%** (47,304 / 4,542,176 B) | **2.93%** (340 / 11,585 fns) | **84 / 84** | `░░░░░░░░░░░░░░░` |
 | **Game Code** | **0.00%** (0 / 0 B) | **0.00%** (0 / 0 fns) | **0 / 0** | `░░░░░░░░░░░░░░░` |
-| **SDK Code** | **100.00%** (15,468 / 15,468 B) | **100.00%** (162 / 162 fns) | **48 / 48** | `███████████████` |
-| **JSystem Code** | **100.00%** (4,852 / 4,852 B) | **100.00%** (52 / 52 fns) | **15 / 15** | `███████████████` |
+| **SDK Code** | **100.00%** (40,480 / 40,480 B) | **100.00%** (279 / 279 fns) | **67 / 67** | `███████████████` |
+| **JSystem Code** | **100.00%** (6,824 / 6,824 B) | **100.00%** (61 / 61 fns) | **17 / 17** | `███████████████` |
 
-*Fuzzy code matching stands at **0.45%** (includes near-matches).*
+*Fuzzy code matching stands at **1.04%** (includes near-matches).*
 <!-- PROGRESS_END -->
 ---
 
