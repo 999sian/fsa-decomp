@@ -24,3 +24,12 @@ dolphin/os/OSMutex.c:
 
 dolphin/mtx/mtxvec.c:
 	.text       start:0x80047B14 end:0x80047C44
+
+dolphin/dvd/dvdidutils.c:
+	.text       start:0x8004C018 end:0x8004C110
+
+dolphin/dsp/dsp_debug.c:
+	.text       start:0x8005296C end:0x800529BC
+
+dolphin/odenotstub/odenotstub.c:
+	.text       start:0x80071180 end:0x80071188
