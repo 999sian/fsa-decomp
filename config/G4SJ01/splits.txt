@@ -21,6 +21,10 @@ JSystem/JAudio/Interface/JAISoundParams.cpp:
 	.text       start:0x80026384 end:0x800264E4
 	.sdata2     start:0x80531C90 end:0x80531C98
 
+JSystem/JAudio/Interface/JAIStreamDataMgr.cpp:
+	.text       start:0x800270B0 end:0x800270F8
+	.data       start:0x804884F0 end:0x80488500
+
 JSystem/JAudio/System/JASCallback.cpp:
 	.text       start:0x80027F9C end:0x800281C0
 
@@ -402,6 +406,10 @@ JSystem/J3D/GraphLoader/J3DModelSaver.cpp:
 
 JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp:
 	.text       start:0x800E99D4 end:0x800E9A8C
+
+JSystem/J3D/GraphBase/J3DShapeDraw.cpp:
+	.text       start:0x800E9A8C end:0x800E9B18
+	.data       start:0x80492D78 end:0x80492D84
 
 JSystem/J3D/GraphBase/J3DStruct.cpp:
 	.text       start:0x800EA9AC end:0x800EAB1C

@@ -2,8 +2,8 @@
 
 [![Build Status](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml/badge.svg)](https://github.com/999sian/fsa-decomp/actions/workflows/build.yml)
 [![Matched Code](https://img.shields.io/badge/Code-1.46%25-red.svg)](https://github.com/999sian/fsa-decomp)
-[![Matched Functions](https://img.shields.io/badge/Functions-4.01%25-green.svg)](https://github.com/999sian/fsa-decomp)
-[![Linked Objects](https://img.shields.io/badge/Linked_Files-106%20%2F%20106-blue.svg)](https://github.com/999sian/fsa-decomp)
+[![Matched Functions](https://img.shields.io/badge/Functions-4.04%25-green.svg)](https://github.com/999sian/fsa-decomp)
+[![Linked Objects](https://img.shields.io/badge/Linked_Files-108%20%2F%20108-blue.svg)](https://github.com/999sian/fsa-decomp)
 
 A matching decompilation of **The Legend of Zelda: Four Swords Adventures** (GameCube), targeting **G4SE01 — USA, Rev 0**.
 
@@ -29,10 +29,10 @@ Current progress is automatically tracked against compiler-verified metadata fro
 <!-- PROGRESS_START -->
 | Category | Matched Code | Matched Functions | Linked Files | Progress |
 | :--- | :--- | :--- | :--- | :--- |
-| **Overall** | **1.46%** (66,328 / 4,542,176 B) | **4.01%** (464 / 11,585 fns) | **106 / 106** | `░░░░░░░░░░░░░░░` |
+| **Overall** | **1.46%** (66,540 / 4,542,176 B) | **4.04%** (468 / 11,585 fns) | **108 / 108** | `░░░░░░░░░░░░░░░` |
 | **Game Code** | **0.00%** (0 / 0 B) | **0.00%** (0 / 0 fns) | **0 / 0** | `░░░░░░░░░░░░░░░` |
 | **SDK Code** | **100.00%** (55,208 / 55,208 B) | **100.00%** (357 / 357 fns) | **81 / 81** | `███████████████` |
-| **JSystem Code** | **100.00%** (11,120 / 11,120 B) | **100.00%** (107 / 107 fns) | **25 / 25** | `███████████████` |
+| **JSystem Code** | **100.00%** (11,332 / 11,332 B) | **100.00%** (111 / 111 fns) | **27 / 27** | `███████████████` |
 
 *Fuzzy code matching stands at **1.46%** (includes near-matches).*
 <!-- PROGRESS_END -->
