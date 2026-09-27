@@ -169,6 +169,11 @@ dolphin/gx/GXTev.c:
 	.text       start:0x8005EAB8 end:0x8005F21C
 	.data       start:0x8048E130 end:0x8048E1A8
 
+dolphin/gx/GXPixel.c:
+	.text       start:0x8005F21C end:0x8005F864
+	.data       start:0x8048E1A8 end:0x8048E1C8
+	.sdata2     start:0x80532030 end:0x80532068
+
 dolphin/gx/GXDraw.c:
 	.text       start:0x8005F864 end:0x8005FD2C
 	.data       start:0x8048E1C8 end:0x8048E4D8
