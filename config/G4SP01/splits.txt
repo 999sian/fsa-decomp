@@ -262,6 +262,10 @@ MSL_C/MSL_Common/buffer_io.c:
 MSL_C/PPC_EABI/critical_regions.gamecube.c:
 	.text       start:0x8006AED0 end:0x8006AEDC
 
+MSL_C/MSL_Common/ctype.c:
+	.text       start:0x8006AEDC end:0x8006AF00
+	.data       start:0x804B4AD0 end:0x804B4DD0
+
 MSL_C/MSL_Common/direct_io.c:
 	.text       start:0x8006AF00 end:0x8006B288
 
