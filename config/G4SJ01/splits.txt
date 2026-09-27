@@ -40,6 +40,15 @@ dolphin/dsp/dsp_debug.c:
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x80066EC0 end:0x80066F88
 
+MSL_C/MSL_Common/mem.c:
+	.text       start:0x8006AFC4 end:0x8006B134
+
+MSL_C/MSL_Common/mem_funcs.c:
+	.text       start:0x8006B134 end:0x8006B404
+
+MSL_C/MSL_Common/string.c:
+	.text       start:0x8006D898 end:0x8006DB74
+
 dolphin/amcstubs/AmcExi2Stubs.c:
 	.text       start:0x800706C0 end:0x800706F0
 
