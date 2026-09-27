@@ -17,6 +17,10 @@ JSystem/JAudio/Interface/JAISoundParams.cpp:
 	.text       start:0x80026384 end:0x800264E4
 	.sdata2     start:0x80531C90 end:0x80531C98
 
+JSystem/JAudio/System/JASSoundParams.cpp:
+	.text       start:0x8002DD4C end:0x8002DDA8
+	.sdata2     start:0x80531DF8 end:0x80531E00
+
 JSystem/JAudio/System/JASInstSense.cpp:
 	.text       start:0x80030A90 end:0x80030C50
 	.data       start:0x804886F8 end:0x80488708
@@ -68,6 +72,10 @@ dolphin/gx/GXBump.c:
 
 dolphin/gx/GXDisplayList.c:
 	.text       start:0x8005FD2C end:0x8005FD9C
+
+dolphin/gx/GXTransform.c:
+	.text       start:0x8005FD9C end:0x80060344
+	.sdata2     start:0x80532080 end:0x80532098
 
 TRK_MINNOW_DOLPHIN/mutex_TRK.c:
 	.text       start:0x800635D8 end:0x800635F0
