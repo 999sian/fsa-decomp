@@ -13,6 +13,10 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:32
 
+JSystem/JAudio/Interface/JAISeqDataMgr.cpp:
+	.text       start:0x80024CB0 end:0x80024D40
+	.data       start:0x804AD9F0 end:0x804ADA20
+
 JSystem/JAudio/Interface/JAISoundParams.cpp:
 	.text       start:0x8002640C end:0x8002656C
 	.sdata2     start:0x80558350 end:0x80558358
@@ -334,6 +338,14 @@ JSystem/JGadget/linklist.cpp:
 
 JSystem/JGadget/std-vector.cpp:
 	.text       start:0x80088640 end:0x80088648
+
+JSystem/JUtility/JUTFont.cpp:
+	.text       start:0x8008D7CC end:0x8008DAE0
+	.data       start:0x804B6250 end:0x804B6298
+
+JSystem/JUtility/JUTNameTab.cpp:
+	.text       start:0x8008F4C8 end:0x8008F6C0
+	.data       start:0x804B62D8 end:0x804B62E8
 
 JSystem/JMath/random.cpp:
 	.text       start:0x80093EC4 end:0x80093ECC
