@@ -22,6 +22,9 @@ dolphin/os/OSMessage.c:
 dolphin/os/OSMutex.c:
 	.text       start:0x800442B8 end:0x800446D4
 
+dolphin/os/OSSync.c:
+	.text       start:0x80045CB4 end:0x80045D38
+
 dolphin/mtx/mtxvec.c:
 	.text       start:0x80047B14 end:0x80047C44
 
@@ -30,6 +33,12 @@ dolphin/dvd/dvdidutils.c:
 
 dolphin/dsp/dsp_debug.c:
 	.text       start:0x8005296C end:0x800529BC
+
+Runtime.PPCEABI.H/__va_arg.c:
+	.text       start:0x80067950 end:0x80067A18
+
+dolphin/amcstubs/AmcExi2Stubs.c:
+	.text       start:0x80071150 end:0x80071180
 
 dolphin/odenotstub/odenotstub.c:
 	.text       start:0x80071180 end:0x80071188
