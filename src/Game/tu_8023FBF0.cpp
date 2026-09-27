@@ -284,7 +284,7 @@ bool fn_80270C88(char*);
 void fn_80248004(char*, s32, s32);
 bool fn_80236890(void);
 bool fn_802D7804(char*, s32, s32);
-void fn_8028FBA0(char*);
+bool fn_8028FBA0(char*);
 f32* fn_80238430(s32);
 bool fn_8026E5F8(char*, JGeometry::TVec2<f32>*);
 void fn_80458880(void*, u32, s32);
