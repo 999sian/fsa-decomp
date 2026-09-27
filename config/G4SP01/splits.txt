@@ -50,6 +50,10 @@ JSystem/JAudio/Utility/JAUAudioArcInterpreter.cpp:
 JSystem/JAudio/Utility/JAUBankTable.cpp:
 	.text       start:0x8003B3E8 end:0x8003B42C
 
+JSystem/JAudio/Utility/JAUSeqCollection.cpp:
+	.text       start:0x8003B9BC end:0x8003BB80
+	.data       start:0x804B1700 end:0x804B1718
+
 dolphin/base/PPCArch.c:
 	.text       start:0x8003F770 end:0x8003F884
 
@@ -84,8 +88,16 @@ dolphin/os/OSMemory.c:
 dolphin/os/OSMutex.c:
 	.text       start:0x800442B8 end:0x800446D4
 
+dolphin/os/OSResetSW.c:
+	.text       start:0x80044BF8 end:0x80044FA4
+	.sbss       start:0x805577B0 end:0x805577D0
+
 dolphin/os/OSSync.c:
 	.text       start:0x80045CB4 end:0x80045D38
+
+dolphin/os/OSTime.c:
+	.text       start:0x80047070 end:0x80047494
+	.data       start:0x804B2DB8 end:0x804B2E18
 
 dolphin/mtx/mtxvec.c:
 	.text       start:0x80047B14 end:0x80047C44
@@ -357,6 +369,10 @@ JSystem/JSupport/JSUInputStream.cpp:
 JSystem/JSupport/JSUList.cpp:
 	.text       start:0x800879B8 end:0x80087ED4
 
+JSystem/JSupport/JSUMemoryStream.cpp:
+	.text       start:0x80087ED4 end:0x8008805C
+	.data       start:0x804B5E90 end:0x804B5EB8
+
 JSystem/JGadget/linklist.cpp:
 	.text       start:0x800883F4 end:0x80088640
 
@@ -373,6 +389,10 @@ JSystem/JUtility/JUTNameTab.cpp:
 
 JSystem/JMath/random.cpp:
 	.text       start:0x80093EC4 end:0x80093ECC
+
+JSystem/J2DGraph/J2DManage.cpp:
+	.text       start:0x800A7460 end:0x800A7724
+	.bss        start:0x804D77E0 end:0x804D78E8
 
 JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp:
 	.text       start:0x800CCC14 end:0x800CCC20
