@@ -70,6 +70,9 @@ Runtime.PPCEABI.H/__va_arg.c:
 MSL_C/MSL_Common/arith.c:
 	.text       start:0x8006A338 end:0x8006A348
 
+MSL_C/MSL_Common/buffer_io.c:
+	.text       start:0x8006A348 end:0x8006A440
+
 MSL_C/PPC_EABI/critical_regions.gamecube.c:
 	.text       start:0x8006A440 end:0x8006A44C
 
@@ -81,6 +84,9 @@ MSL_C/MSL_Common/mem_funcs.c:
 
 MSL_C/MSL_Common/qsort.c:
 	.text       start:0x8006D5DC end:0x8006D748
+
+MSL_C/MSL_Common/scanf.c:
+	.text       start:0x8006D748 end:0x8006D7D8
 
 MSL_C/MSL_Common/string.c:
 	.text       start:0x8006D898 end:0x8006DB74
