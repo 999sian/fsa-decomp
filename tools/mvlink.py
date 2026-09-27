@@ -196,20 +196,25 @@ class Linker:
             elif typ == "R_PPC_ADDR16_HA": ha.setdefault(symval, []).append(toff)
             elif typ == "R_PPC_ADDR16_LO": lo.setdefault(symval, []).append(toff)
         starts = set()
+        reg = 2 if sec == ".sdata2" else 13
         base = (self.sda2 if sec == ".sdata2" else self.sda)[version]
+        LOAD_OPS = {48, 50, 52, 54, 32, 36}  # lfs lfd stfs stfd lwz stw (16-bit D-form)
         for toff, symval in sda:
             ia = self.reg_instr_addr(tbl, offs, toff & ~3, version)
-            if ia is None: return None
+            if ia is None: continue
             ins = w32(self.dols, version, ia)
+            if ins is None or (ins >> 26) not in LOAD_OPS or ((ins >> 16) & 31) != reg:
+                continue  # skip paired-single / mis-mapped / wrong base
             off = ins & 0xFFFF; off = off - 0x10000 if off & 0x8000 else off
             starts.add(base + off - symval)
         for symval, hoffs in ha.items():
+            if len(hoffs) != len(lo.get(symval, [])): return None
             for hoff, loff in zip(sorted(hoffs), sorted(lo.get(symval, []))):
                 iha = self.reg_instr_addr(tbl, offs, hoff & ~3, version)
                 ilo = self.reg_instr_addr(tbl, offs, loff & ~3, version)
-                if iha is None or ilo is None: return None
+                if iha is None or ilo is None: continue
                 a = w32(self.dols, version, iha); b = w32(self.dols, version, ilo)
-                if (a >> 26) != 15: return None
+                if a is None or b is None or (a >> 26) != 15: continue
                 hi = a & 0xFFFF; low = b & 0xFFFF; low = low - 0x10000 if low & 0x8000 else low
                 starts.add(((hi << 16) + low) - symval)
         if len(starts) != 1: return None
