@@ -103,6 +103,12 @@ dolphin/amcstubs/AmcExi2Stubs.c:
 dolphin/odenotstub/odenotstub.c:
 	.text       start:0x80071180 end:0x80071188
 
+JSystem/JSupport/JSUList.cpp:
+	.text       start:0x800879B8 end:0x80087ED4
+
+JSystem/JGadget/linklist.cpp:
+	.text       start:0x800883F4 end:0x80088640
+
 JSystem/JGadget/std-vector.cpp:
 	.text       start:0x80088640 end:0x80088648
 
