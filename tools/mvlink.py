@@ -21,7 +21,8 @@ driver over candidate objects (see __main__).
 import csv, os, pathlib, re, struct, subprocess, sys, bisect
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
-FUNCMAP = pathlib.Path(os.environ.get("FSA_FUNCMAP", "/home/sian/Documents/FSA Decomp/docs/versions/function_map.csv"))
+_FM_DEFAULT = ROOT / "docs/versions/function_map.csv"
+FUNCMAP = pathlib.Path(os.environ.get("FSA_FUNCMAP", _FM_DEFAULT))
 VERS = ["G4SE01", "G4SJ01", "G4SP01"]
 SHA1 = {"G4SE01": "d86b3d9f785566e34264035e140ef3daf3cc19f0",
         "G4SJ01": "56097356bceafde9a64abeab8501b909746ac03c",
@@ -79,6 +80,8 @@ def splits(cfg):
 
 
 def funcmap():
+    if not FUNCMAP.exists():
+        sys.exit(f"function_map.csv not found at {FUNCMAP}; set $FSA_FUNCMAP or place it at docs/versions/")
     m = {}
     with open(FUNCMAP) as f:
         for r in csv.reader(f):
@@ -190,8 +193,8 @@ class Linker:
             if not sinfo or sinfo[0] != sec: continue
             symval = sinfo[1]
             if typ == "R_PPC_EMB_SDA21": sda.append((toff, symval))
-            elif typ == "R_PPC_ADDR16_HA": ha.setdefault(symval, toff)
-            elif typ == "R_PPC_ADDR16_LO": lo.setdefault(symval, toff)
+            elif typ == "R_PPC_ADDR16_HA": ha.setdefault(symval, []).append(toff)
+            elif typ == "R_PPC_ADDR16_LO": lo.setdefault(symval, []).append(toff)
         starts = set()
         base = (self.sda2 if sec == ".sdata2" else self.sda)[version]
         for toff, symval in sda:
@@ -200,15 +203,15 @@ class Linker:
             ins = w32(self.dols, version, ia)
             off = ins & 0xFFFF; off = off - 0x10000 if off & 0x8000 else off
             starts.add(base + off - symval)
-        for symval, hoff in ha.items():
-            if symval not in lo: continue
-            iha = self.reg_instr_addr(tbl, offs, hoff & ~3, version)
-            ilo = self.reg_instr_addr(tbl, offs, lo[symval] & ~3, version)
-            if iha is None or ilo is None: return None
-            a = w32(self.dols, version, iha); b = w32(self.dols, version, ilo)
-            if (a >> 26) != 15: return None
-            hi = a & 0xFFFF; low = b & 0xFFFF; low = low - 0x10000 if low & 0x8000 else low
-            starts.add(((hi << 16) + low) - symval)
+        for symval, hoffs in ha.items():
+            for hoff, loff in zip(sorted(hoffs), sorted(lo.get(symval, []))):
+                iha = self.reg_instr_addr(tbl, offs, hoff & ~3, version)
+                ilo = self.reg_instr_addr(tbl, offs, loff & ~3, version)
+                if iha is None or ilo is None: return None
+                a = w32(self.dols, version, iha); b = w32(self.dols, version, ilo)
+                if (a >> 26) != 15: return None
+                hi = a & 0xFFFF; low = b & 0xFFFF; low = low - 0x10000 if low & 0x8000 else low
+                starts.add(((hi << 16) + low) - symval)
         if len(starts) != 1: return None
         start = starts.pop()
         return start, start + (size + align - 1) // align * align
