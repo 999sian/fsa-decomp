@@ -37,6 +37,10 @@ dolphin/os/OSSync.c:
 dolphin/mtx/mtxvec.c:
 	.text       start:0x80046F5C end:0x8004708C
 
+dolphin/mtx/vec.c:
+	.text       start:0x80047124 end:0x80047330
+	.sdata2     start:0x80531F98 end:0x80531FA8
+
 dolphin/dvd/dvdidutils.c:
 	.text       start:0x8004B54C end:0x8004B644
 
@@ -48,6 +52,10 @@ dolphin/gx/GXGeometry.c:
 
 dolphin/gx/GXLight.c:
 	.text       start:0x8005D20C end:0x8005D594
+
+dolphin/gx/GXBump.c:
+	.text       start:0x8005E57C end:0x8005EAB8
+	.sdata2     start:0x80532028 end:0x80532030
 
 dolphin/gx/GXDisplayList.c:
 	.text       start:0x8005FD2C end:0x8005FD9C
@@ -82,6 +90,10 @@ MSL_C/MSL_Common/buffer_io.c:
 MSL_C/PPC_EABI/critical_regions.gamecube.c:
 	.text       start:0x8006A440 end:0x8006A44C
 
+MSL_C/MSL_Common/mbstring.c:
+	.text       start:0x8006AEAC end:0x8006AFC4
+	.sdata2     start:0x805320A0 end:0x805320A8
+
 MSL_C/MSL_Common/mem.c:
 	.text       start:0x8006AFC4 end:0x8006B134
 
@@ -96,6 +108,21 @@ MSL_C/MSL_Common/scanf.c:
 
 MSL_C/MSL_Common/string.c:
 	.text       start:0x8006D898 end:0x8006DB74
+
+MSL_C/MSL_Common/wchar_io.c:
+	.text       start:0x8006E088 end:0x8006E110
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/k_cos.c:
+	.text       start:0x8006EA48 end:0x8006EB3C
+	.sdata2     start:0x805321E8 end:0x80532230
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/k_sin.c:
+	.text       start:0x8006F990 end:0x8006FA30
+	.sdata2     start:0x80532270 end:0x805322A8
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ceil.c:
+	.text       start:0x8006FC48 end:0x8006FD8C
+	.sdata2     start:0x805322D0 end:0x805322E0
 
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c:
 	.text       start:0x8006FD8C end:0x8006FDB4
