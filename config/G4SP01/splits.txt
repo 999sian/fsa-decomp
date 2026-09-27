@@ -15,3 +15,9 @@ Sections:
 
 dolphin/base/PPCArch.c:
 	.text       start:0x8003F770 end:0x8003F884
+
+dolphin/os/OSMessage.c:
+	.text       start:0x80043C44 end:0x80043F1C
+
+dolphin/os/OSMutex.c:
+	.text       start:0x800442B8 end:0x800446D4
