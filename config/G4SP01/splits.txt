@@ -21,3 +21,6 @@ dolphin/os/OSMessage.c:
 
 dolphin/os/OSMutex.c:
 	.text       start:0x800442B8 end:0x800446D4
+
+dolphin/mtx/mtxvec.c:
+	.text       start:0x80047B14 end:0x80047C44
