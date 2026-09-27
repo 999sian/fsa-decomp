@@ -371,6 +371,10 @@ dolphin/OdemuExi2/DebuggerDriver.c:
 	.sdata      start:0x805309C8 end:0x805309D0
 	.sbss       start:0x805313C8 end:0x805313E0
 
+dolphin/gd/GDBase.c:
+	.text       start:0x80071178 end:0x800712E4
+	.sbss       start:0x805313E0 end:0x805313E8
+
 dolphin/si/SISamplingRate.c:
 	.text       start:0x80075504 end:0x8007560C
 	.data       start:0x8048F178 end:0x8048F210
