@@ -163,6 +163,53 @@ def locate(name, version, dols, bases, secs_of, fmap):
     return ("ok" if got == blob else "BYTEFAIL", start, end)
 
 
+def locate_direct(name, version, dols, bases, secs_of, fmap):
+    """Robust locator: decode the object's own `.sdata2` pool straight from the
+    regional DOL, independent of the `.o`'s layout.
+
+    The linked `.text` is byte-identical across versions, so an own-pool load sits
+    at the same offset-from-split-start in every DOL. We identify which `r2`-relative
+    loads reference this object's *own* pool by checking, in G4SE01, that the target
+    lands inside the known US `.sdata2` split range (this naturally excludes shared
+    globals like `__GXData`), then decode those same offsets in the target version.
+    """
+    ts, te = secs_of[name][".text"]
+    pool = secs_of[name].get(".sdata2")
+    if not pool:
+        return ("no-sdata2",)
+    ps, pe = pool
+    LOADS = (48, 50, 52, 54, 32, 36)  # lfs lfd stfs stfd lwz stw
+    d_us, secs_us = dols["G4SE01"]
+    own_offsets = []
+    for off in range(0, te - ts, 4):
+        ins = dol_w32(d_us, secs_us, ts + off)
+        if ins is None:
+            continue
+        if (ins >> 26) in LOADS and ((ins >> 16) & 31) == 2:
+            imm = ins & 0xFFFF
+            tgt = bases["G4SE01"] + (imm - 0x10000 if imm & 0x8000 else imm)
+            if ps <= tgt < pe:
+                own_offsets.append(off)
+    if not own_offsets:
+        return ("no-own-loads",)
+    if version == "G4SE01":
+        vts = ts
+    else:
+        vts = fmap.get(ts, (None, None))[0 if version == "G4SJ01" else 1]
+    if vts is None:
+        return ("no-textmap",)
+    d, secs = dols[version]
+    targets = set()
+    for off in own_offsets:
+        ins = dol_w32(d, secs, vts + off)
+        if ins is None:
+            return ("no-instr",)
+        imm = ins & 0xFFFF
+        targets.add(bases[version] + (imm - 0x10000 if imm & 0x8000 else imm))
+    start = min(targets)
+    return ("ok", start, start + (pe - ps))
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("object", help="source path relative to src/, e.g. dolphin/mtx/vec.c")
@@ -181,21 +228,26 @@ def main():
     if args.object not in secs_of:
         sys.exit(f"{args.object}: not found in config/G4SE01/splits.txt (must be a Matching object)")
 
+    known = secs_of[args.object].get(".sdata2")
     versions = [args.version] if args.version else ["G4SE01", "G4SJ01", "G4SP01"]
     if not args.version:
-        se = locate(args.object, "G4SE01", dols, bases, secs_of, fmap)
-        known = secs_of[args.object].get(".sdata2")
-        ok = se[0] == "ok" and (se[1], se[2]) == known
-        print(f"G4SE01 self-check: {se} known {hex(known[0])}-{hex(known[1])} -> {'OK' if ok else 'MISMATCH'}")
+        se = locate_direct(args.object, "G4SE01", dols, bases, secs_of, fmap)
+        ok = se[0] == "ok" and known is not None and (se[1], se[2]) == known
+        kn = f"{hex(known[0])}-{hex(known[1])}" if known else "n/a"
+        print(f"G4SE01 self-check (direct): {se} known {kn} -> {'OK' if ok else 'MISMATCH'}")
         if not ok:
             sys.exit("self-validation failed; do not trust JP/PAL output")
         versions = ["G4SJ01", "G4SP01"]
+    us_bytes = dol_read(dols["G4SE01"][0], dols["G4SE01"][1], known[0], known[1] - known[0]) if known else None
     for v in versions:
-        r = locate(args.object, v, dols, bases, secs_of, fmap)
-        if r[0] == "ok":
-            print(f"{v}: .sdata2 start:0x{r[1]:08X} end:0x{r[2]:08X}  (byte-verified)")
-        else:
+        r = locate_direct(args.object, v, dols, bases, secs_of, fmap)
+        if r[0] != "ok":
             print(f"{v}: {r}")
+            continue
+        # cross-version byte check: same-source constants must be identical to US
+        vb = dol_read(dols[v][0], dols[v][1], r[1], r[2] - r[1])
+        note = "  (bytes match US)" if us_bytes is not None and vb == us_bytes else ""
+        print(f"{v}: .sdata2 start:0x{r[1]:08X} end:0x{r[2]:08X}{note}")
 
 
 if __name__ == "__main__":
