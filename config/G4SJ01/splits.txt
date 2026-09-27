@@ -103,6 +103,15 @@ MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c:
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_modf.c:
 	.text       start:0x80070220 end:0x8007031C
 
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_asin.c:
+	.text       start:0x800703F4 end:0x80070414
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_atan2.c:
+	.text       start:0x80070414 end:0x80070434
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/w_sqrt.c:
+	.text       start:0x800706A0 end:0x800706C0
+
 dolphin/amcstubs/AmcExi2Stubs.c:
 	.text       start:0x800706C0 end:0x800706F0
 
