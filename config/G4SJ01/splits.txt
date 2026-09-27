@@ -13,6 +13,12 @@ Sections:
 	.sdata2     type:rodata align:16
 	.sbss2      type:bss align:32
 
+JSystem/JAudio/System/JASSeqReader.cpp:
+	.text       start:0x80036024 end:0x80036260
+
+JSystem/JAudio/System/JASTrackPort.cpp:
+	.text       start:0x80039A3C end:0x80039B5C
+
 dolphin/base/PPCArch.c:
 	.text       start:0x8003F6F0 end:0x8003F804
 
@@ -91,6 +97,9 @@ dolphin/amcstubs/AmcExi2Stubs.c:
 dolphin/odenotstub/odenotstub.c:
 	.text       start:0x800706F0 end:0x800706F8
 
+JSystem/JGadget/std-vector.cpp:
+	.text       start:0x8008DBF0 end:0x8008DBF8
+
 JSystem/JMath/random.cpp:
 	.text       start:0x80099474 end:0x8009947C
 
@@ -99,3 +108,9 @@ JSystem/J3D/GraphLoader/J3DBinaryFormat.cpp:
 
 JSystem/J3D/GraphLoader/J3DModelSaver.cpp:
 	.text       start:0x800D6824 end:0x800D682C
+
+JSystem/J3D/GraphAnimator/J3DSkinDeform.cpp:
+	.text       start:0x800E99D4 end:0x800E9A8C
+
+JSystem/J3D/GraphBase/J3DStruct.cpp:
+	.text       start:0x800EA9AC end:0x800EAB1C
