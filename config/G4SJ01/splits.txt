@@ -62,6 +62,11 @@ dolphin/os/OSCache.c:
 	.text       start:0x80041000 end:0x80041678
 	.data       start:0x8048C500 end:0x8048C730
 
+dolphin/os/OSInterrupt.c:
+	.text       start:0x80042718 end:0x80042F84
+	.data       start:0x8048CC28 end:0x8048CC58
+	.sbss       start:0x805310B0 end:0x805310C8
+
 dolphin/os/OSLink.c:
 	.text       start:0x80042F84 end:0x80042F9C
 
@@ -278,6 +283,10 @@ MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ceil.c:
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c:
 	.text       start:0x8006FD8C end:0x8006FDB4
 
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_cos.c:
+	.text       start:0x8006FDB4 end:0x8006FE88
+	.sdata2     start:0x805322E0 end:0x805322E8
+
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_floor.c:
 	.text       start:0x8006FE88 end:0x8006FFD0
 	.sdata2     start:0x805322E8 end:0x805322F8
@@ -292,6 +301,10 @@ MSL_C/MSL_Common_Embedded/Math/Double_precision/s_ldexp.c:
 
 MSL_C/MSL_Common_Embedded/Math/Double_precision/s_modf.c:
 	.text       start:0x80070220 end:0x8007031C
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_sin.c:
+	.text       start:0x8007031C end:0x800703F4
+	.sdata2     start:0x80532328 end:0x80532330
 
 MSL_C/MSL_Common_Embedded/Math/Double_precision/w_asin.c:
 	.text       start:0x800703F4 end:0x80070414
