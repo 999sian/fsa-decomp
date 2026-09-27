@@ -49,11 +49,20 @@ TRK_MINNOW_DOLPHIN/flush_cache.c:
 TRK_MINNOW_DOLPHIN/UDP_Stubs.c:
 	.text       start:0x80066F68 end:0x80066FB0
 
+TRK_MINNOW_DOLPHIN/CircleBuffer.c:
+	.text       start:0x800672F4 end:0x8006755C
+
 TRK_MINNOW_DOLPHIN/MWTrace.c:
 	.text       start:0x800678A8 end:0x800678F8
 
+TRK_MINNOW_DOLPHIN/MWCriticalSection_gc.cpp:
+	.text       start:0x800678F8 end:0x80067950
+
 Runtime.PPCEABI.H/__va_arg.c:
 	.text       start:0x80067950 end:0x80067A18
+
+MSL_C/MSL_Common/arith.c:
+	.text       start:0x8006ADC8 end:0x8006ADD8
 
 MSL_C/MSL_Common/mem.c:
 	.text       start:0x8006BA54 end:0x8006BBC4
@@ -63,6 +72,12 @@ MSL_C/MSL_Common/mem_funcs.c:
 
 MSL_C/MSL_Common/string.c:
 	.text       start:0x8006E328 end:0x8006E604
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_copysign.c:
+	.text       start:0x8007081C end:0x80070844
+
+MSL_C/MSL_Common_Embedded/Math/Double_precision/s_modf.c:
+	.text       start:0x80070CB0 end:0x80070DAC
 
 dolphin/amcstubs/AmcExi2Stubs.c:
 	.text       start:0x80071150 end:0x80071180
