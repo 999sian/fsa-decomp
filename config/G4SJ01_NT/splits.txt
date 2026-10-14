@@ -16,6 +16,13 @@ Sections:
 dolphin/base/PPCArch.c:
 	.text       start:0x801BA844 end:0x801BA958
 
+dolphin/os/OS.c:
+	.text       start:0x801BA958 end:0x801BB444
+	.data       start:0x8029BCD0 end:0x8029BEC8
+	.bss        start:0x802F6C00 end:0x802F6C50
+	.sdata      start:0x802FE950 end:0x802FE960
+	.sbss       start:0x802FF710 end:0x802FF750
+
 dolphin/os/OSArena.c:
 	.text       start:0x801BBF2C end:0x801BBF4C
 	.sdata      start:0x802FE968 end:0x802FE970
@@ -51,6 +58,13 @@ dolphin/os/OSSync.c:
 dolphin/os/__ppc_eabi_init.cpp:
 	.init       start:0x80003400 end:0x80003458
 	.text       start:0x801C22B0 end:0x801C2344
+
+dolphin/exi/EXIBios.c:
+	.text       start:0x801C2344 end:0x801C3D20
+	.data       start:0x8029CF30 end:0x8029D040
+	.bss        start:0x802F7710 end:0x802F77D0
+	.sdata      start:0x802FE988 end:0x802FE990
+	.sbss       start:0x802FF7E0 end:0x802FF7E8
 
 dolphin/exi/EXIUart.c:
 	.text       start:0x801C3D20 end:0x801C42F4
@@ -125,10 +139,19 @@ TRK_MINNOW_DOLPHIN/dispatch.c:
 	.rodata     start:0x80202DA0 end:0x80202DE0
 	.data       start:0x8029EF90 end:0x8029F000
 
+TRK_MINNOW_DOLPHIN/mutex_TRK.c:
+	.text       start:0x801ECC94 end:0x801ECCAC
+
 TRK_MINNOW_DOLPHIN/main_TRK.c:
 	.text       start:0x801EEFAC end:0x801EF004
 	.rodata     start:0x80203108 end:0x80203118
 	.bss        start:0x802FA9A0 end:0x802FA9A8
+
+TRK_MINNOW_DOLPHIN/dolphin_trk_glue.c:
+	.text       start:0x801EF004 end:0x801EF55C
+	.rodata     start:0x80203118 end:0x80203220
+	.data       start:0x8029F0A8 end:0x8029F0D0
+	.bss        start:0x802FA9A8 end:0x802FA9B0
 
 TRK_MINNOW_DOLPHIN/targcont.c:
 	.text       start:0x801EF55C end:0x801EF590

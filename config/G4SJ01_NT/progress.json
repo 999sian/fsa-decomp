@@ -1,0 +1,70 @@
+{
+  "version": "G4SJ01_NT",
+  "source": "build/G4SJ01_NT/report.json (fresh build)",
+  "measures": {
+    "fuzzy_match_percent": 1.2552859,
+    "total_code": 2010060,
+    "matched_code": 25232,
+    "matched_code_percent": 1.255286,
+    "total_data": 1123822,
+    "matched_data": 1840,
+    "matched_data_percent": 0.163727,
+    "total_functions": 8120,
+    "matched_functions": 194,
+    "matched_functions_percent": 2.3891625,
+    "complete_code": 25232,
+    "complete_code_percent": 1.255286,
+    "complete_data": 3536,
+    "complete_data_percent": 0.31464058,
+    "total_units": 513,
+    "complete_units": 36
+  },
+  "categories": [
+    {
+      "id": "game",
+      "name": "Game Code",
+      "measures": {
+        "fuzzy_match_percent": 100.0,
+        "matched_code_percent": 100.0,
+        "matched_data_percent": 100.0,
+        "matched_functions_percent": 100.0,
+        "complete_code_percent": 100.0,
+        "complete_data_percent": 100.0
+      }
+    },
+    {
+      "id": "sdk",
+      "name": "SDK Code",
+      "measures": {
+        "fuzzy_match_percent": 100.0,
+        "total_code": 25232,
+        "matched_code": 25232,
+        "matched_code_percent": 100.0,
+        "total_data": 3536,
+        "matched_data": 1840,
+        "matched_data_percent": 52.0362,
+        "total_functions": 194,
+        "matched_functions": 194,
+        "matched_functions_percent": 100.0,
+        "complete_code": 25232,
+        "complete_code_percent": 100.0,
+        "complete_data": 3536,
+        "complete_data_percent": 100.0,
+        "total_units": 36,
+        "complete_units": 36
+      }
+    },
+    {
+      "id": "jsys",
+      "name": "JSystem Code",
+      "measures": {
+        "fuzzy_match_percent": 100.0,
+        "matched_code_percent": 100.0,
+        "matched_data_percent": 100.0,
+        "matched_functions_percent": 100.0,
+        "complete_code_percent": 100.0,
+        "complete_data_percent": 100.0
+      }
+    }
+  ]
+}
