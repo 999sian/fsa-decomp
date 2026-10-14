@@ -1149,8 +1149,8 @@ void fn_80247F0C(char* p) {
 }
 void fn_80247F58(char* p) {
     s32 linked = S32(p, 0xd60);
-    if (linked >= 0) {
-        if (fn_80236B50(linked) && fn_80251BFC(p, 0x33)) {
+    if (linked >= 0 && fn_80236B50(linked)) {
+        if (fn_80251BFC(p, 0x33)) {
             fn_80272160(p, 0, p + 0x8, 0x12);
         }
     } else if (fn_80239D38() && U8(p, 0xd34) == 0 && fn_80251BFC(p, 0x33)) {
@@ -1810,7 +1810,7 @@ s32 fn_8024EFA0(char* p, u8 v) {
     return 0;
 }
 void fn_8024EFF8(char* p, u32 se) {
-    if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))) && fn_8030381C(S32(p, 0x4))) {
+    if ((u8)fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))) && fn_8030381C(S32(p, 0x4))) {
         if (se == 4) {
             fn_803037D4(S32(p, 0x4), 4);
             return;
