@@ -45,3 +45,11 @@ expected to match there too once splits/symbols are ported.
   0x8038DA00, 0x803A3210, 0x80403204.
 
 Full per-function detail (kind, similarity, confidence) is in the CSV.
+
+## Promotion sweep
+
+`tools/promote_sweep.py` promotes each G4SE01 unit that `tools/mvlink.py`
+places in both G4SJ01 and G4SP01 (`Linker.plan`). Each unit is applied to the
+two configs (split block plus symbol renames), then both DOLs are built and
+checked against `config/<V>/build.sha1`. A unit that fails is reverted alone.
+`--dry-run` lists the candidates; results go to `build/promote_sweep.json`.
