@@ -1711,6 +1711,8 @@ if config.version == "G4SJ01_NT":
         "objects": [
             Object(Matching, "Navi/SSystem/c_tag.cpp"),
             Object(Matching, "Navi/SSystem/c_tree.cpp"),
+            Object(Matching, "Navi/SSystem/c_list.cpp"),
+            Object(Matching, "Navi/SSystem/c_node.cpp"),
         ],
     })
 

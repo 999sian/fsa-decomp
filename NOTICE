@@ -22,8 +22,8 @@ The JGadget::binary::TParseValue templates and parts of the JMessage processor
 (its tag parsing and the FSA-era TProcessor layout) follow the Wind Waker
 (https://github.com/zeldaret/tww) and Twilight Princess
 (https://github.com/zeldaret/tp) decompilations, with thanks.
-The Navi Trackers SSystem tag and tree routines and layouts are adapted from the same
-Wind Waker project (CC0), and verified against Navi Trackers retail code.
+The Navi Trackers SSystem node, list, tag and tree routines and layouts are adapted
+from the same Wind Waker project (CC0), and verified against Navi Trackers retail code.
 
 Parts of src/JSystem/JParticle/ (JPAResourceManager swapTexture/getResUserWork) are based on the Twilight Princess decompilation (https://github.com/zeldaret/tp).
 The J3D/GraphBase sources under src/JSystem/J3D/GraphBase/ and the matching

@@ -28,6 +28,16 @@ typedef struct create_tag_class {
 } create_tag_class;
 
 void cNd_Create(node_class* pNode, void* pData);
+int cNd_LengthOf(node_class* pNode);
+node_class* cNd_First(node_class* pNode);
+node_class* cNd_Last(node_class* pNode);
+node_class* cNd_Order(node_class* pNode, int idx);
+void cNd_SingleCut(node_class* pNode);
+void cNd_Addition(node_class* pA, node_class* pB);
+void cNd_Insert(node_class* pA, node_class* pB);
+void cNd_SetObject(node_class* pNode, void* pData);
+void cNd_ClearObject(node_class* pNode);
+void cNd_ForcedClear(node_class* pNode);
 int cLs_SingleCut(node_class* pNode);
 int cLs_Addition(node_list_class* pList, node_class* pNode);
 int cLs_Insert(node_list_class* pList, int idx, node_class* pNode);

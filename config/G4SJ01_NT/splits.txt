@@ -13,6 +13,12 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:32
 
+Navi/SSystem/c_list.cpp:
+	.text       start:0x801149F8 end:0x80114C5C
+
+Navi/SSystem/c_node.cpp:
+	.text       start:0x80114CCC end:0x80114F44
+
 Navi/SSystem/c_tree.cpp:
 	.text       start:0x80115078 end:0x80115178
 
