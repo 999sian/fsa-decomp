@@ -103,6 +103,12 @@ objdiff scores: source linkage moves its initializer from `0x80028CA4` to
 `0x80028CB0` and fails the retail hash. Weak-function emission order still
 needs reconciliation; do not promote it from objdiff scores alone.
 
+The Actor recovery corrected `fn_801F2618` to return success even when its
+optional output vector is null, as retail does. Its 180-byte function now
+matches exactly, including its `fn_801F23BC` call target; the Actor TU remains
+NonMatching. Reordering `fn_801F3128` temporaries also improves its score to
+96.81%. No other Actor function score regressed, and all four hash gates pass.
+
 
 Passing the retail hash while assembly fallback remains is not a claim of
 complete source decompilation; track source-linked code separately.

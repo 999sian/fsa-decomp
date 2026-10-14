@@ -634,9 +634,9 @@ extern "C" void fn_801F26CC(Actor* a, u32 b) {
 
 /* --- 0x801F3128: midpoint of the two derived edge points ------------------- */
 extern "C" void fn_801F3128(Actor* a, f32* out) {
-    f32 b1 = a->field_6C + a->field_0C.y - a->field_0C.z;
-    f32 b0 = a->field_68 + a->field_0C.x;
     f32 a1 = a->field_64 + a->field_0C.y - a->field_0C.z;
+    f32 b0 = a->field_68 + a->field_0C.x;
+    f32 b1 = a->field_6C + a->field_0C.y - a->field_0C.z;
     f32 a0 = a->field_60 + a->field_0C.x;
     out[0] = 0.5f * (a0 - b0) + b0;
     out[1] = 0.5f * (a1 - b1) + b1;
@@ -856,8 +856,8 @@ extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c) {
                 out[0] = v0[0];
                 out[1] = v0[1];
                 out[2] = v0[2];
-                r = 1;
             }
+            r = 1;
         }
     }
     return (u8)r;
