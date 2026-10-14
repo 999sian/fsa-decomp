@@ -603,7 +603,7 @@ config.libs = [
         [
             Object(Matching, "TRK_MINNOW_DOLPHIN/mainloop.c"),
             Object(Matching, "TRK_MINNOW_DOLPHIN/nubevent.c"),
-            Object(MatchingFor("G4SE01", "G4SJ01", "G4SP01"), "TRK_MINNOW_DOLPHIN/nubinit.c"),
+            Object(Matching, "TRK_MINNOW_DOLPHIN/nubinit.c"),
             Object(Matching, "TRK_MINNOW_DOLPHIN/msg.c"),
             Object(Matching, "TRK_MINNOW_DOLPHIN/msgbuf.c"),
             Object(Matching, "TRK_MINNOW_DOLPHIN/serpoll.c", extra_cflags=["-sdata 8"]),
