@@ -1,6 +1,15 @@
 #include "Dolphin/gba.h"
 
+#ifdef VERSION_G4SP01
+char* __GBAVersion = "<< Dolphin SDK - GBA\trelease build: Dec  3 2003 18:41:55 (0x2301) >>";
+static BOOL __GBAInitFlag;
+#endif
+
+#ifdef VERSION_G4SP01
+static OSResetFunctionInfo ResetFunctionInfo = { OnReset, 0x7E };
+#else
 static OSResetFunctionInfo ResetFunctionInfo = { OnReset, 0x7F };
+#endif
 static GBASecParam SecParams[4] ATTRIBUTE_ALIGN(32);
 GBAControl __GBA[4];
 BOOL __GBAReset;
@@ -30,6 +39,14 @@ void GBAInit(void)
 {
 	GBAControl* gba;
 	s32 chan;
+
+#ifdef VERSION_G4SP01
+	if (__GBAInitFlag) {
+		return;
+	}
+	__GBAInitFlag = TRUE;
+	OSRegisterVersion(__GBAVersion);
+#endif
 
 	for (chan = 0; chan < 4; ++chan) {
 		gba        = &__GBA[chan];
