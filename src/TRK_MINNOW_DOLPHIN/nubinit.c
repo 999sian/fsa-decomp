@@ -60,7 +60,11 @@ DSError TRKTerminateNub(void)
  */
 void TRKNubWelcome(void)
 {
+#ifdef VERSION_G4SJ01_NT
+	TRK_board_display("MetroTRK for GAMECUBE v2.0");
+#else
 	TRK_board_display("MetroTRK for GAMECUBE v2.6"); //"MetroTRK for GAMECUBE v2.6"
+#endif
 	return;
 }
 

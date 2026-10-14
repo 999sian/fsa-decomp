@@ -1,0 +1,146 @@
+Sections:
+	.init       type:code align:4
+	extab       type:rodata align:32
+	extabindex  type:rodata align:32
+	.text       type:code align:32
+	.ctors      type:rodata align:32
+	.dtors      type:rodata align:32
+	.rodata     type:rodata align:32
+	.data       type:data align:32
+	.bss        type:bss align:32
+	.sdata      type:data align:32
+	.sbss       type:bss align:32
+	.sdata2     type:rodata align:32
+	.sbss2      type:bss align:32
+
+dolphin/base/PPCArch.c:
+	.text       start:0x801BA844 end:0x801BA958
+
+dolphin/os/OSArena.c:
+	.text       start:0x801BBF2C end:0x801BBF4C
+	.sdata      start:0x802FE968 end:0x802FE970
+	.sbss       start:0x802FF768 end:0x802FF770
+
+dolphin/os/OSAudioSystem.c:
+	.text       start:0x801BBF4C end:0x801BC1E0
+	.data       start:0x8029BED8 end:0x8029BF58
+
+dolphin/os/OSContext.c:
+	.text       start:0x801BC644 end:0x801BCFE0
+	.data       start:0x8029C188 end:0x8029C360
+
+dolphin/os/OSInterrupt.c:
+	.text       start:0x801BD538 end:0x801BDDA4
+	.data       start:0x8029C680 end:0x8029C6B0
+	.sbss       start:0x802FF770 end:0x802FF788
+
+dolphin/os/OSLink.c:
+	.text       start:0x801BDDA4 end:0x801BDDBC
+
+dolphin/os/OSMemory.c:
+	.text       start:0x801BDFCC end:0x801BE368
+	.data       start:0x8029C6B0 end:0x8029C6C0
+
+dolphin/os/OSResetSW.c:
+	.text       start:0x801BF0C8 end:0x801BF474
+	.sbss       start:0x802FF7A8 end:0x802FF7C8
+
+dolphin/os/OSSync.c:
+	.text       start:0x801C0018 end:0x801C009C
+
+dolphin/os/__ppc_eabi_init.cpp:
+	.init       start:0x80003400 end:0x80003458
+	.text       start:0x801C22B0 end:0x801C2344
+
+dolphin/exi/EXIUart.c:
+	.text       start:0x801C3D20 end:0x801C42F4
+	.sbss       start:0x802FF7E8 end:0x802FF7F8
+
+dolphin/si/SISamplingRate.c:
+	.text       start:0x801C5B54 end:0x801C5C5C
+	.data       start:0x8029D158 end:0x8029D1F0
+	.sbss       start:0x802FF808 end:0x802FF810
+
+dolphin/db/db.c:
+	.text       start:0x801C5C5C end:0x801C5D48
+	.data       start:0x8029D1F0 end:0x8029D208
+	.sbss       start:0x802FF810 end:0x802FF818
+
+dolphin/dvd/dvdqueue.c:
+	.text       start:0x801CA8DC end:0x801CAAD4
+	.bss        start:0x802F7B38 end:0x802F7B58
+
+dolphin/dvd/dvderror.c:
+	.text       start:0x801CAAD4 end:0x801CAC6C
+	.data       start:0x8029D4F0 end:0x8029D538
+
+dolphin/dvd/fstload.c:
+	.text       start:0x801CAD94 end:0x801CAFD4
+	.data       start:0x8029D538 end:0x8029D5A8
+	.bss        start:0x802F7B58 end:0x802F7BC8
+	.sdata      start:0x802FE9C8 end:0x802FE9D8
+	.sbss       start:0x802FF8D0 end:0x802FF8E0
+
+Runtime.PPCEABI.H/global_destructor_chain.c:
+	.text       start:0x801E0C34 end:0x801E0C94
+	.dtors      start:0x801F0D68 end:0x801F0D6C
+	.sbss       start:0x802FFA88 end:0x802FFA90
+
+Runtime.PPCEABI.H/__init_cpp_exceptions.cpp:
+	.text       start:0x801E1894 end:0x801E1910
+	.ctors      start:0x801F0BE0 end:0x801F0BE4
+	.dtors      start:0x801F0D60 end:0x801F0D68
+	.sdata      start:0x802FEA98 end:0x802FEAA0
+
+Runtime.PPCEABI.H/Gecko_ExceptionPPC.cp:
+	.text       start:0x801E1910 end:0x801E1978
+	.bss        start:0x802F85D0 end:0x802F85E0
+
+MSL_C/PPC_EABI/critical_regions.gamecube.c:
+	.text       start:0x801E30A0 end:0x801E30AC
+
+TRK_MINNOW_DOLPHIN/mainloop.c:
+	.text       start:0x801EA39C end:0x801EA494
+
+TRK_MINNOW_DOLPHIN/nubevent.c:
+	.text       start:0x801EA494 end:0x801EA6BC
+	.bss        start:0x802F8A18 end:0x802F8A40
+
+TRK_MINNOW_DOLPHIN/nubinit.c:
+	.text       start:0x801EA6BC end:0x801EA854
+	.rodata     start:0x80202B98 end:0x80202BC8
+	.bss        start:0x802F8A40 end:0x802F8A48
+
+TRK_MINNOW_DOLPHIN/serpoll.c:
+	.text       start:0x801EB0D4 end:0x801EB38C
+	.rodata     start:0x80202C10 end:0x80202DA0
+	.bss        start:0x802FA3F8 end:0x802FA410
+	.sbss       start:0x802FFAB8 end:0x802FFAC0
+
+TRK_MINNOW_DOLPHIN/usr_put.c:
+	.text       start:0x801EB38C end:0x801EB418
+
+TRK_MINNOW_DOLPHIN/dispatch.c:
+	.text       start:0x801EB418 end:0x801EB590
+	.rodata     start:0x80202DA0 end:0x80202DE0
+	.data       start:0x8029EF90 end:0x8029F000
+
+TRK_MINNOW_DOLPHIN/main_TRK.c:
+	.text       start:0x801EEFAC end:0x801EF004
+	.rodata     start:0x80203108 end:0x80203118
+	.bss        start:0x802FA9A0 end:0x802FA9A8
+
+TRK_MINNOW_DOLPHIN/targcont.c:
+	.text       start:0x801EF55C end:0x801EF590
+
+TRK_MINNOW_DOLPHIN/UDP_Stubs.c:
+	.text       start:0x801EF724 end:0x801EF76C
+
+TRK_MINNOW_DOLPHIN/MWTrace.c:
+	.text       start:0x801F0064 end:0x801F00B4
+
+dolphin/amcstubs/AmcExi2Stubs.c:
+	.text       start:0x801F010C end:0x801F013C
+
+dolphin/odenotstub/odenotstub.c:
+	.text       start:0x801F0BBC end:0x801F0BC4

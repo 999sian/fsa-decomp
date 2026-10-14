@@ -32,6 +32,7 @@ VERSIONS = [
     "G4SE01",  # 0 USA
     "G4SJ01",  # 1 Japan
     "G4SP01",  # 2 Europe (PAL)
+    "G4SJ01_NT",  # 3 Japan — Navi Trackers (separate executable)
 ]
 
 parser = argparse.ArgumentParser()

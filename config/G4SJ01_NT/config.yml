@@ -1,0 +1,15 @@
+# Navi Trackers (Japan), the separate executable on the G4SJ01 disc.
+# Uses the normal disc VFS/extraction path, independently of FSA's sys/main.dol.
+name: framework
+object_base: orig/G4SJ01
+object: files/DOL/framework.dol
+hash: ab5f67bcf0687923d8dc1caf5afeb3bb9fe69011
+symbols: config/G4SJ01_NT/symbols.txt
+splits: config/G4SJ01_NT/splits.txt
+mw_comment_version: 10
+quick_analysis: false
+detect_objects: true
+detect_strings: true
+write_asm: true
+symbols_known: false
+fill_gaps: true
