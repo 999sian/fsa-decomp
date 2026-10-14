@@ -394,6 +394,30 @@ dolphin/si/SISamplingRate.c:
 	.data       start:0x804B52D8 end:0x804B5370
 	.sbss       start:0x80557AD8 end:0x80557AE0
 
+dolphin/gba/GBA.c:
+	.text       start:0x8007609C end:0x800763A8
+	.data       start:0x804B5370 end:0x804B53C8
+	.bss        start:0x804D6DC0 end:0x804D72C0
+	.sdata      start:0x805570A8 end:0x805570AC
+	.sbss       start:0x80557AE0 end:0x80557AE8
+
+dolphin/gba/GBAJoyBoot.c:
+	.text       start:0x800763A8 end:0x80077428
+	.data       start:0x804B53C8 end:0x804B53F8
+
+dolphin/gba/GBARead.c:
+	.text       start:0x80077428 end:0x80077588
+
+dolphin/gba/GBAWrite.c:
+	.text       start:0x80077588 end:0x80077710
+
+dolphin/gba/GBAXfer.c:
+	.text       start:0x80077710 end:0x80077A48
+
+dolphin/gba/GBAKey.c:
+	.text       start:0x80077A48 end:0x80077CB0
+	.data       start:0x804B53F8 end:0x804B57A0
+
 JSystem/JSupport/JSUInputStream.cpp:
 	.text       start:0x80087628 end:0x800879B8
 	.data       start:0x804B5E4C end:0x804B5E90
