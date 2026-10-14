@@ -2,22 +2,22 @@
   "version": "G4SJ01_NT",
   "source": "build/G4SJ01_NT/report.json (fresh build)",
   "measures": {
-    "fuzzy_match_percent": 1.2552859,
+    "fuzzy_match_percent": 1.2932947,
     "total_code": 2010060,
-    "matched_code": 25232,
-    "matched_code_percent": 1.255286,
+    "matched_code": 25996,
+    "matched_code_percent": 1.2932947,
     "total_data": 1123822,
     "matched_data": 1840,
     "matched_data_percent": 0.163727,
     "total_functions": 8120,
-    "matched_functions": 194,
-    "matched_functions_percent": 2.3891625,
-    "complete_code": 25232,
-    "complete_code_percent": 1.255286,
+    "matched_functions": 206,
+    "matched_functions_percent": 2.5369458,
+    "complete_code": 25996,
+    "complete_code_percent": 1.2932947,
     "complete_data": 3536,
     "complete_data_percent": 0.31464058,
-    "total_units": 513,
-    "complete_units": 36
+    "total_units": 517,
+    "complete_units": 38
   },
   "categories": [
     {
@@ -25,11 +25,18 @@
       "name": "Game Code",
       "measures": {
         "fuzzy_match_percent": 100.0,
+        "total_code": 764,
+        "matched_code": 764,
         "matched_code_percent": 100.0,
         "matched_data_percent": 100.0,
+        "total_functions": 12,
+        "matched_functions": 12,
         "matched_functions_percent": 100.0,
+        "complete_code": 764,
         "complete_code_percent": 100.0,
-        "complete_data_percent": 100.0
+        "complete_data_percent": 100.0,
+        "total_units": 2,
+        "complete_units": 2
       }
     },
     {

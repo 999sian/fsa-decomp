@@ -91,5 +91,18 @@ and kernel-report strings identify `Nov 26 2003 05:18:37`; these are selected
 only under `VERSION_G4SJ01_NT`. This raises NT source-linked code to
 25,232 / 2,010,060 bytes (1.26%), not to complete decompilation.
 
+Wind Waker's `c_tag.cpp` and `c_tree.cpp` now have direct NT verification:
+all twelve functions match the retail instruction stream, and both source
+objects pass the linked `framework.dol` hash. They contribute another
+764 bytes, bringing NT source-linked code to 25,996 bytes (1.29%) and
+matched functions to 206 / 8,120. These are the first source-linked NT
+framework components beyond the shared SDK/runtime objects.
+
+The existing USA `JASHeapCtrl.cpp` remains NonMatching despite 100% per-function
+objdiff scores: source linkage moves its initializer from `0x80028CA4` to
+`0x80028CB0` and fails the retail hash. Weak-function emission order still
+needs reconciliation; do not promote it from objdiff scores alone.
+
+
 Passing the retail hash while assembly fallback remains is not a claim of
 complete source decompilation; track source-linked code separately.

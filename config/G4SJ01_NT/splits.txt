@@ -13,6 +13,12 @@ Sections:
 	.sdata2     type:rodata align:32
 	.sbss2      type:bss align:32
 
+Navi/SSystem/c_tree.cpp:
+	.text       start:0x80115078 end:0x80115178
+
+Navi/SSystem/c_tag.cpp:
+	.text       start:0x80115610 end:0x8011580C
+
 dolphin/base/PPCArch.c:
 	.text       start:0x801BA844 end:0x801BA958
 

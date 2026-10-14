@@ -1702,6 +1702,18 @@ config.libs = [
     ),
 ]
 
+if config.version == "G4SJ01_NT":
+    config.libs.append({
+        "lib": "NaviSSystem",
+        "mw_version": "GC/1.3.2",
+        "cflags": cflags_jsystem,
+        "progress_category": "game",
+        "objects": [
+            Object(Matching, "Navi/SSystem/c_tag.cpp"),
+            Object(Matching, "Navi/SSystem/c_tree.cpp"),
+        ],
+    })
+
 
 # Optional callback to adjust link order. This can be used to add, remove, or reorder objects.
 # This is called once per module, with the module ID and the current link order.
