@@ -1,7 +1,8 @@
 .include "macros.inc"
+# MetroTRK monitor-call traps, adapted from zeldaret/tww (CC0); see NOTICE.
 
 .text
-.balign 32
+.balign 16
 
 .fn TRKAccessFile, global
 	twi 31, r0, 0

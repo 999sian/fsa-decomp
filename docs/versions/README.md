@@ -100,6 +100,18 @@ components beyond shared SDK/runtime objects. A native smoke run exercised tag
 ownership, duplicate-add rejection, empty-list removal, tree bounds and node
 insertion. The retail node-order boundary behavior is retained, not normalized.
 
+The MetroTRK architecture audit also source-links `targsupp.s` and
+`__exception.s` in all four targets, adding 8,020 bytes per target. These are
+PowerPC monitor-call traps and interrupt vectors, retained as architecture
+assembly, not claimed as new C/C++ recovery. The vector source is identical
+to the public Wind Waker donor; each target's reset/handler relocations are
+verified by its retail hash. USA now links all 174 SDK report units.
+
+NT now source-links 35,260 bytes (1.75%), including its 7,988-byte vector table.
+That newly classified `.init` table raises the report's total code denominator
+from 2,010,060 to 2,018,048 bytes; the retail binary itself has not changed.
+FSA source-linked code is now 18.23% USA, 8.73% Japan and 8.51% Europe.
+
 The existing USA `JASHeapCtrl.cpp` remains NonMatching despite 100% per-function
 objdiff scores: source linkage moves its initializer from `0x80028CA4` to
 `0x80028CB0` and fails the retail hash. Weak-function emission order still

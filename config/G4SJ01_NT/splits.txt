@@ -154,6 +154,9 @@ TRK_MINNOW_DOLPHIN/dispatch.c:
 TRK_MINNOW_DOLPHIN/mutex_TRK.c:
 	.text       start:0x801ECC94 end:0x801ECCAC
 
+TRK_MINNOW_DOLPHIN/targsupp.s:
+	.text       start:0x801EE900 end:0x801EE920 align:16
+
 TRK_MINNOW_DOLPHIN/main_TRK.c:
 	.text       start:0x801EEFAC end:0x801EF004
 	.rodata     start:0x80203108 end:0x80203118
@@ -179,3 +182,6 @@ dolphin/amcstubs/AmcExi2Stubs.c:
 
 dolphin/odenotstub/odenotstub.c:
 	.text       start:0x801F0BBC end:0x801F0BC4
+
+TRK_MINNOW_DOLPHIN/__exception.s:
+	.init       start:0x800035E4 end:0x80005518

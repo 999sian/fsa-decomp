@@ -24,6 +24,8 @@ The JGadget::binary::TParseValue templates and parts of the JMessage processor
 (https://github.com/zeldaret/tp) decompilations, with thanks.
 The Navi Trackers SSystem node, list, tag and tree routines and layouts are adapted
 from the same Wind Waker project (CC0), and verified against Navi Trackers retail code.
+The MetroTRK interrupt-vector assembly in src/TRK_MINNOW_DOLPHIN/__exception.s
+and monitor-call traps in targsupp.s also follow that project's PowerPC sources.
 
 Parts of src/JSystem/JParticle/ (JPAResourceManager swapTexture/getResUserWork) are based on the Twilight Princess decompilation (https://github.com/zeldaret/tp).
 The J3D/GraphBase sources under src/JSystem/J3D/GraphBase/ and the matching
