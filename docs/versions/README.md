@@ -53,3 +53,43 @@ places in both G4SJ01 and G4SP01 (`Linker.plan`). Each unit is applied to the
 two configs (split block plus symbol renames), then both DOLs are built and
 checked against `config/<V>/build.sha1`. A unit that fails is reverted alone.
 `--dry-run` lists the candidates; results go to `build/promote_sweep.json`.
+
+## Navi Trackers (`G4SJ01_NT`)
+
+Navi Trackers is a separate executable on the Japanese disc, not another
+regional FSA main DOL. Its original is `files/DOL/framework.dol`, with SHA1
+`ab5f67bcf0687923d8dc1caf5afeb3bb9fe69011`. Put the Japanese disc in
+`orig/G4SJ01/`, or supply the extracted binary at
+`orig/G4SJ01/files/DOL/framework.dol`. It has separate configuration,
+symbols, splits, progress, and build products.
+
+```sh
+python3 configure.py --version G4SJ01_NT
+ninja -j3
+sha1sum -c config/G4SJ01_NT/build.sha1
+python3 tools/progress.py --version G4SJ01_NT --test
+```
+
+The output is `build/G4SJ01_NT/framework.dol`. The other targets retain their
+`main.dol` outputs and original version numbers. NT uses `BUILD_VERSION=3`
+and `VERSION_G4SJ01_NT`.
+
+The CI progress matrix includes all four targets and uses their individual
+committed snapshots when retail assets are unavailable. Refresh a target's
+`config/<target>/progress.json` only from a freshly hash-verified build.
+Progress queries must not regenerate `build.ninja` or switch the selected
+build target; importing `configure.py` only constructs its configuration.
+
+The FSA `function_map.csv` does not map Navi Trackers. Wind Waker candidates
+in `allv-nt-candidates.md` are research leads, not verified names or matches.
+Compile donor source against the actual NT binary before accepting it.
+
+The 2026-10-14 NT recovery links `OS.c`, `EXIBios.c`, `mutex_TRK.c`, and
+`dolphin_trk_glue.c` from the existing verified SDK sources: 54 additional
+functions and 10,808 bytes. All four retail hash gates pass. NT's OS banner
+and kernel-report strings identify `Nov 26 2003 05:18:37`; these are selected
+only under `VERSION_G4SJ01_NT`. This raises NT source-linked code to
+25,232 / 2,010,060 bytes (1.26%), not to complete decompilation.
+
+Passing the retail hash while assembly fallback remains is not a claim of
+complete source decompilation; track source-linked code separately.

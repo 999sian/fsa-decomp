@@ -1736,11 +1736,12 @@ config.progress_report_args = [
     # "--config functionRelocDiffs=data_value",
 ]
 
-if args.mode == "configure":
-    # Write build.ninja and objdiff.json
-    generate_build(config)
-elif args.mode == "progress":
-    # Print progress information
-    calculate_progress(config)
-else:
-    sys.exit("Unknown mode: " + args.mode)
+if __name__ == "__main__":
+    if args.mode == "configure":
+        # Write build.ninja and objdiff.json
+        generate_build(config)
+    elif args.mode == "progress":
+        # Print progress information
+        calculate_progress(config)
+    else:
+        sys.exit("Unknown mode: " + args.mode)

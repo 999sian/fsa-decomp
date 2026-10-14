@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        version: [G4SE01, G4SJ01, G4SP01]
+        version: [G4SE01, G4SJ01, G4SP01, G4SJ01_NT]
 
     steps:
     - name: Checkout repository
@@ -41,7 +41,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.version }}_report
-        path: build/*.json
+        path: build/${{ matrix.version }}_*.json
         if-no-files-found: warn
 
   website:
@@ -67,7 +67,7 @@ jobs:
 
     - name: Generate Markdown Job Summary
       run: |
-        for v in G4SE01 G4SJ01 G4SP01; do
+        for v in G4SE01 G4SJ01 G4SP01 G4SJ01_NT; do
           if [ -f "build/artifacts/${v}_report/${v}_progress.json" ]; then
             cp "build/artifacts/${v}_report/${v}_progress.json" "build/${v}_progress.json"
           fi

@@ -124,6 +124,9 @@ def load_progress_data(version: str = "G4SE01") -> Tuple[Dict[str, Any], str]:
         }
     else:
         sys.exit(f"Error: Neither {build_report}, {artifact_report}, nor {snapshot_report} exists.")
+    if data.get("version") != version:
+        sys.exit(f"Error: {source_desc} describes {data.get('version')!r}, not {version}.")
+
     # Convert numeric strings to int/float
     def convert_numbers(d: Dict[str, Any]) -> None:
         for k, v in d.items():
@@ -155,6 +158,7 @@ def format_markdown(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]])
     m = data["measures"]
     version = data["version"]
     source = data.get("source", "")
+    title = "Navi Trackers" if version == "G4SJ01_NT" else "The Legend of Zelda: Four Swords Adventures"
 
     matched_code_pct = float(m.get("matched_code_percent", 0.0))
     fuzzy_code_pct = float(m.get("fuzzy_match_percent", 0.0))
@@ -169,7 +173,7 @@ def format_markdown(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, int]])
     files_pct = (all_objs["matching"] / all_objs["total"] * 100.0) if all_objs.get("total", 0) > 0 else 0.0
 
     lines = [
-        f"## 🗡️ The Legend of Zelda: Four Swords Adventures — Decompilation Progress",
+        f"## {title} — Decompilation Progress",
         "",
         f"**Target**: `{version}` | **Source**: *{source}*",
         "",
@@ -341,6 +345,7 @@ def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, in
     """Verify progress reporting against invariant rules, schema constraints, and sanity floors."""
     print(f"Running regression test on progress reporting (source: {source})...")
     m = data.get("measures", {})
+    version = data.get("version", "G4SE01")
     code_pct = float(m.get("matched_code_percent", 0.0))
     funcs_pct = float(m.get("matched_functions_percent", 0.0))
     total_code = int(m.get("total_code", 0))
@@ -348,9 +353,13 @@ def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, in
     total_funcs = int(m.get("total_functions", 0))
     matched_funcs = int(m.get("matched_functions", 0))
 
-    # 1. Total size & function count invariants for G4SE01 retail main.dol
-    assert total_code >= 4_400_000, f"Expected total_code >= 4.4M bytes, got {total_code}"
-    assert total_funcs >= 11_000, f"Expected total_funcs >= 11,000, got {total_funcs}"
+    # Navi Trackers is a separate, smaller executable, not another FSA region.
+    if version == "G4SJ01_NT":
+        assert total_code >= 2_000_000, f"Expected NT total_code >= 2M bytes, got {total_code}"
+        assert total_funcs > 0, f"Expected NT total_funcs > 0, got {total_funcs}"
+    else:
+        assert total_code >= 4_400_000, f"Expected total_code >= 4.4M bytes, got {total_code}"
+        assert total_funcs >= 11_000, f"Expected total_funcs >= 11,000, got {total_funcs}"
     assert 0 <= matched_code <= total_code, f"Invariant violated: matched_code {matched_code} not in [0, {total_code}]"
     assert 0 <= matched_funcs <= total_funcs, f"Invariant violated: matched_funcs {matched_funcs} not in [0, {total_funcs}]"
     assert 0.0 <= code_pct <= 100.0, f"Invariant violated: code_pct {code_pct} not in [0, 100]"
@@ -393,7 +402,6 @@ def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, in
     sdk_objs = obj_counts.get("sdk", {})
     jsys_objs = obj_counts.get("jsys", {})
 
-    version = data.get("version", "G4SE01")
     for cat_name, counts in obj_counts.items():
         if version == "G4SE01":
             assert counts.get("total", 0) > 0, f"Category {cat_name} has 0 total objects"
@@ -424,7 +432,10 @@ def run_regression_test(data: Dict[str, Any], obj_counts: Dict[str, Dict[str, in
 
 def main():
     parser = argparse.ArgumentParser(description="Decompilation progress reporter")
-    parser.add_argument("--version", default="G4SE01", help="Game version target")
+    parser.add_argument(
+        "--version", choices=["G4SE01", "G4SJ01", "G4SP01", "G4SJ01_NT"],
+        default="G4SE01", help="Game executable target",
+    )
     parser.add_argument("--format", choices=["console", "markdown", "json"], default="console")
     parser.add_argument("--summary", action="store_true", help="Write to $GITHUB_STEP_SUMMARY if available")
     parser.add_argument("--output-json", type=pathlib.Path, help="Save progress JSON to file")
