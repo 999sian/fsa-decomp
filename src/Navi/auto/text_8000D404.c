@@ -43,7 +43,8 @@ extern "C" void fn_8000EDF8(void) {
 extern "C" void fn_8000EDFC(void) {
 }
 
-void fn_8000EE00(void) {}
+extern "C" void fn_8000EE00(void) {
+}
 
 extern "C" void* fn_8000EE0C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
