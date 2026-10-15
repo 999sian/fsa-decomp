@@ -38,3 +38,7 @@ void fn_80086614(void* self_) {
     fn_8008665C(self_, result);
 }
 
+extern "C" u32 fn_80086654(int param_1) {
+    return *(u32*)(param_1 + 0x80);
+}
+
