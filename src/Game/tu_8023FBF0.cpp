@@ -402,7 +402,6 @@ void fn_8023FF90(char* p, const f32* v) {
 }
 BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
-    s32 me;
     s32 c;
     s32 i;
     s32 linked;
@@ -416,8 +415,8 @@ inline s32 countSharing2(char* p) {
                     c++;
                 }
             } else {
-                me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
                     c++;
                 }
             }
@@ -1106,7 +1105,7 @@ BOOL fn_802454C0(char* p) {
         ok2 = false;
     } else {
         s32 c = 0;
-        s32 i;
+        s32 i = c;
         s32 linked;
         s32 me;
         s32 mode;
