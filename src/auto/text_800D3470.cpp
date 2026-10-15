@@ -927,14 +927,16 @@ extern "C" u32 fn_800DE954() {
     return 1;
 }
 
-extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
+extern "C" void fn_800DE95C(u8* this_, s32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
-    p[0xf] = src[1];
-    p[0x10] = src[2];
-    p[0x11] = src[3];
-    p[0x13] = src[5];
-    p[0x14] = src[6];
-    p[0x15] = src[7];
+    GXColor a = src[0];
+    GXColor b = src[1];
+    p[0xf] = a.g;
+    p[0x10] = a.b;
+    p[0x11] = a.a;
+    p[0x13] = b.g;
+    p[0x14] = b.b;
+    p[0x15] = b.a;
 }
 
 extern "C" u8* fn_800DE9D4(u8* this_, s32 idx) {
@@ -1041,12 +1043,12 @@ extern "C" int fn_800DECE4(int p, int i) {
 
 extern "C" void fn_800DECF8(int p, int i, const u8* v)
 {
-    u8 v0 = v[0];
-    int addr = p + (i << 2);
-    *(u8*)(addr + 0xb8) = v0;
-    *(u8*)(addr + 0xb9) = v[1];
-    *(u8*)(addr + 0xba) = v[2];
-    *(u8*)(addr + 0xbb) = v[3];
+    u8* base = (u8*)p;
+    int offset = i << 2;
+    base[offset + 0xb8] = v[0];
+    base[offset + 0xb9] = v[1];
+    base[offset + 0xba] = v[2];
+    base[offset + 0xbb] = v[3];
 }
 
 extern "C" int fn_800DED50(int p, int i) {
