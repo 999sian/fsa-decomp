@@ -172,6 +172,33 @@ extern "C" void fn_801A38B8(u8* p, s32 i, u32* pv) {
     *((u32*)(p + (i << 2) + 0x18)) = *pv;
 }
 
+extern "C" u8* fn_801A38CC(u8* p, s32 i) {
+    return p + 0x18 + i * 4;
+}
+
+void fn_801A38E0(char* p, int i, short* src)
+{
+    short* dst = (short*)(p + i * 8 + 0xda);
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+}
+
+char* fn_801A3938(char* p, int i)
+{
+    return p + 0xda + i * 8;
+}
+
+void fn_801A394C(char* p, int i, unsigned char* src)
+{
+    unsigned char* dst = (unsigned char*)(p + i * 4 + 0xfa);
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+}
+
 extern "C" void* fn_801A3B8C(void* p) {
     return *(void**)((char*)p + 4);
 }
