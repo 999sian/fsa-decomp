@@ -252,6 +252,10 @@ extern "C" void* fn_80130CB8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801327D8(void) {
+    return 3;
+}
+
 extern "C" float lbl_803017A0;
 extern "C" float fn_801327EC(void) {
     return lbl_803017A0;
