@@ -786,6 +786,10 @@ extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
     ((u8*)param_1 + param_2)[0x10a] = param_3;
 }
 
+extern "C" void fn_800DDD70(int param_1, int param_2, u8* param_3) {
+    *(u8*)(param_1 + param_2 + 0x10a) = *param_3;
+}
+
 extern "C" u8 fn_800DDD80(int param_1, int param_2) {
     param_1 += param_2;
     return *(u8 *)(param_1 + 0x10a);
@@ -1036,6 +1040,10 @@ extern "C" void fn_800DE350(u32* this_, s32 idx, u32* src) {
 
 extern "C" u32* fn_800DE364(u8* this_, s32 idx) {
     return (u32*)(this_ + 0x80 + idx * 4);
+}
+
+extern "C" void* fn_800DE378(u8* this_) {
+    return *(void**)(this_ + 4);
 }
 
 extern "C" void fn_800DE388(Actor* a, u32 v);
