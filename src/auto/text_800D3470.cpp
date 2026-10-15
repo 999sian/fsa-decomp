@@ -183,7 +183,8 @@ extern "C" u8* fn_800DD970(u8* self) {
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
         typedef void (*FuncPtr)(void);
-        FuncPtr fn = *(FuncPtr*)((u32*)obj + 7);
+        void* vtable = *(void**)obj;
+        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x1c);
         fn();
     }
 }
@@ -194,8 +195,10 @@ extern "C" u32 fn_800DDA50(void) {
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     *(u16*)(this_ + 0x4) = *(u16*)src;
-    *(u8*)(this_ + 0x6) = src[2];
-    *(u8*)(this_ + 0x7) = src[3];
+    u8 v2 = src[2];
+    u8 v3 = src[3];
+    *(u8*)(this_ + 0x6) = v2;
+    *(u8*)(this_ + 0x7) = v3;
 }
 
 extern "C" void* fn_800DDA94(u8* this_) {
@@ -698,6 +701,22 @@ extern "C" void fn_800DF60C(int param_1, int param_2, u32* param_3)
 extern "C" int fn_800DF620(int param_1, int param_2)
 {
   return param_1 + param_2 * 4 + 0x6c;
+}
+
+extern "C" void* fn_800DF634(void* param_1, short param_2)
+{
+  if (param_1 != nullptr) {
+    *(void**)param_1 = &__vt__15J3DIndBlockFull;
+    __destroy_arr((u8*)param_1 + 0x6c, &__dt__19J3DIndTexCoordScaleFv, 4, 4);
+    __destroy_arr((u8*)param_1 + 0x18, &__dt__12J3DIndTexMtxFv, 0x1c, 3);
+    if (param_1 != nullptr) {
+      *(void**)param_1 = &__vt__11J3DIndBlock;
+    }
+    if (0 < param_2) {
+      __dl__FPv(param_1);
+    }
+  }
+  return param_1;
 }
 
 struct UnkVtableTest8248 {
