@@ -85,7 +85,8 @@ extern "C" bool fn_802D39CC(char* p) {
 }
 
 extern "C" u8 fn_802D39FC(char* p) {
-    return ((RoomArrays*)p)->roomNumbers[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)];
+    s32 x = *(s32*)(p + 0x14);
+    return ((RoomArrays*)p)->roomNumbers[*(s32*)(p + 0x18)][x];
 }
 
 extern "C" bool fn_802D46D8(char*, s32 index, u32 bit, u8 set) {

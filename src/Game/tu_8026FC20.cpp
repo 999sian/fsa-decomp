@@ -2789,7 +2789,7 @@ void fn_8027C6C4(char* p) {
         r.x1 += -16.0f;
         r.y1 += -16.0f;
         if (F32(p, 0x34c) < 0.0f) {
-            if (U8(PTR(p, 0xbf0), 0x4a) != 0 || !rectIn(r, *(JGeometry::TVec2<f32>*)(p + 8))) {
+            if (U8(PTR(p, 0xbf0), 0x4a) != 0 || !rectIn(r, F32(p, 0x8), F32(p, 0xc))) {
                 F32(p, 0x10) = 0.0f;
             }
         }

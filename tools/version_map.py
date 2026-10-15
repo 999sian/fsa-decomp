@@ -563,7 +563,164 @@ class FuncMap:
                     if q is not None and q.confident and q.b.addr != tb:
                         p.confident = False
                         break
+# --------------------------------------------------------------------------
+# EH table mapping (extab/extabindex ownership via function map)
+#
+# Why this exists: section_delta resolves data sections through DataMap
+# votes, but nothing ever votes for @etb_/@eti_ symbols (no code references
+# them via @ha/@l relocs, and DataMap._infer_neighbours only bridges voted
+# anchors). So every Game TU split, which always carries extab+extabindex
+# ranges, died with "extab: 0 candidate deltas".
+#
+# Each extabindex entry is 12 bytes (func_addr, func_size, etb_addr) owned by
+# exactly one TU: the TU whose .text range contains func_addr. The TU's
+# extab range is exactly the union of the etb blobs its entries point at
+# (verified: all 531 US Game TUs, byte-exact, no strays). So the owning
+# functions' mapped images determine the EH delta: no byte search, no global
+# constant-delta assumption.
 
+EH_SECTIONS = ("extab", "extabindex")
+
+
+class EHMap:
+    """func addr -> (eti_addr, eti_size_field, etb_addr) per version, live only.
+
+    An entry is live when its func word names a function symbol and the size
+    field equals that symbol's size; DOL section tails carry non-entry words
+    (link metadata) that must not be treated as EH ownership.
+    """
+
+    def __init__(self, V: "Version"):
+        self.V = V
+        self.by_func: Dict[int, Tuple[int, int, int]] = {}
+        syms = V.sec_syms.get("extabindex", [])
+        if not syms:
+            return
+        lo = syms[0].addr
+        hi = syms[-1].addr + syms[-1].size
+        blob = V.read(lo, hi - lo)
+        if blob is None:
+            return
+        for off in range(0, (hi - lo) // 12 * 12, 12):
+            func, size, etb = struct.unpack(">3I", blob[off : off + 12])
+            f = V.func_at.get(func)
+            if f is not None and f.size == size:
+                self.by_func[func] = (lo + off, size, etb)
+
+
+def eh_delta(
+    fm: FuncMap, sec: str, start: int, end: int
+) -> Tuple[Optional[int], str]:
+    """Delta for an extab/extabindex split range via owning functions.
+
+    Every extabindex entry in the TU's range must name a TU-owned function
+    (func word inside a .text/.init function symbol); each such function
+    must be confidently mapped with identical size on both sides, and the
+    mapped images' EH entries must preserve entry order and etb blob sizes.
+    For sec == "extab", the range must additionally be exactly covered by
+    the owned etb blobs (no gaps, no strays). Returns (delta, "") or
+    (None, reason); ambiguity and divergence are rejections, not guesses.
+    """
+    A, B = fm.A, fm.B
+    ea = getattr(fm, "_eh_a", None)
+    if ea is None:
+        ea = fm._eh_a = EHMap(A)  # ponytail: cached per FuncMap; EH blobs are immutable retail bytes
+    eb = getattr(fm, "_eh_b", None)
+    if eb is None:
+        eb = fm._eh_b = EHMap(B)
+    # TU-owned functions: entries of the extabindex range name them; but
+    # section_delta calls us per section, so derive ownership from the A-side
+    # extabindex range when sec == "extabindex", and peer through the owning
+    # TU's extabindex range otherwise (callers pass the TU's own ranges).
+    if sec == "extabindex":
+        if (end - start) % 12:
+            return None, f"{sec}: range not a multiple of 12"
+        span = range(start, end, 12)
+    else:
+        span = None  # resolved below via the owning functions' etb blobs
+    # Collect owned (func, eti_a, size, etb_a) in entry order.
+    owned: List[Tuple[int, int, int, int]] = []
+    if span is not None:
+        for eti in span:
+            w = A.read(eti, 12)
+            if w is None:
+                return None, f"{sec}: unreadable"
+            func, size, etb = struct.unpack(">3I", w)
+            rec = ea.by_func.get(func)
+            if rec is None or rec[0] != eti:
+                return None, f"{sec}: entry at {eti:#x} names no live function"
+            owned.append((func, eti, size, etb))
+    else:
+        # sec == "extab": ownership comes from A etb symbols in range, each
+        # of which must be pointed at by exactly one live A-side entry whose
+        # func is a TU function; then the range must equal their union.
+        syms = [s for s in A.sec_syms.get("extab", []) if start <= s.addr < end]
+        if not syms or syms[0].addr != start or syms[-1].addr + syms[-1].size != end:
+            return None, f"{sec}: range does not align to etb symbols"
+        for i in range(len(syms) - 1):
+            if syms[i].addr + syms[i].size != syms[i + 1].addr:
+                return None, f"{sec}: etb symbols not contiguous"
+        etb2func = {etb: func for func, (_, _, etb) in ea.by_func.items()}
+        seen_funcs = set()
+        for s in syms:
+            func = etb2func.get(s.addr)
+            if func is None or func in seen_funcs:
+                return None, f"{sec}: etb at {s.addr:#x} has no unique owner"
+            seen_funcs.add(func)
+            eti, size, _ = ea.by_func[func]
+            owned.append((func, eti, size, s.addr))
+        owned.sort(key=lambda r: r[1])  # entry order, not etb order
+    if not owned:
+        return None, f"{sec}: no owned functions"
+    deltas = set()
+    prev_b = -1
+    for func, eti_a, size, etb_a in owned:
+        p = fm.a2b.get(func)
+        if p is None or not p.confident:
+            return None, f"{sec}: owner {func:#x} not confidently mapped"
+        rec_b = eb.by_func.get(p.b.addr)
+        if rec_b is None:
+            return None, f"{sec}: owner {func:#x} has no live image entry"
+        eti_b, size_b, etb_b = rec_b
+        if size_b != size or p.b.size != p.a.size:
+            return None, f"{sec}: owner {func:#x} size-divergent"
+        sa = A.containing("extab", etb_a)
+        sb = B.containing("extab", etb_b)
+        if sa is None or sb is None or sa.addr != etb_a or sb.addr != etb_b or sa.size != sb.size:
+            return None, f"{sec}: owner {func:#x} etb-size-divergent"
+        if eti_b <= prev_b:
+            return None, f"{sec}: image entry order differs"
+        prev_b = eti_b
+        deltas.add((eti_b if sec == "extabindex" else etb_b) - (eti_a if sec == "extabindex" else etb_a))
+    if len(deltas) != 1:
+        return None, f"{sec}: {len(deltas)} candidate deltas"
+    d = deltas.pop()
+    # Image side must be contiguous: entries back to back for extabindex,
+    # etb blobs exactly tiling the image range for extab.
+    if sec == "extabindex":
+        if prev_b - (owned[0][1] + d) != end - start - 12:
+            return None, f"{sec}: image entries not contiguous"
+    else:
+        lo_b = owned[0][3] + d if owned[0][3] + d == min(
+            eb.by_func[fm.a2b[f].b.addr][2] for f, _, _, _ in owned
+        ) else None
+        if lo_b is None:
+            return None, f"{sec}: image blobs do not tile the range"
+        # every image blob must sit inside [start+d, end+d) and tile it fully
+        cov = bytearray(end - start)
+        for func, _, _, _ in owned:
+            _, _, etb_b = eb.by_func[fm.a2b[func].b.addr]
+            sb = B.containing("extab", etb_b)
+            o = etb_b - (start + d)
+            if o < 0 or o + sb.size > end - start:
+                return None, f"{sec}: image blob outside range"
+            for k in range(o, o + sb.size):
+                if cov[k]:
+                    return None, f"{sec}: image blobs overlap"
+                cov[k] = 1
+        if not all(cov):
+            return None, f"{sec}: image blobs do not tile the range"
+    return d, ""
 
 # --------------------------------------------------------------------------
 # Data mapping (relocation votes)

@@ -76,39 +76,6 @@ extern "C" void fn_8016005C(void* p);
 extern "C" u32* fn_8013C394();
 extern "C" u8 fn_80239D38();
 
-extern "C" void fn_8013BBE0(u8* this_) {
-    if (lbl_8053AAF8->mode == 9) {
-        return;
-    }
-    fn_8030E154(*(void**)(this_ + 0x24));
-    fn_802FF568(*(void**)(this_ + 0x20));
-    fn_8013DC44(*(void**)(this_ + 0x28));
-    fn_80159330(*(void**)(this_ + 0x2c));
-    fn_8016005C(*(void**)(this_ + 0x30));
-    u32* vp = fn_8013C394();
-    JGeometry::TBox2f box((f32)vp[0], (f32)vp[1], (f32)vp[2], (f32)vp[3]);
-    (*(J2DGrafContext**)(this_ + 0x14))->place(box);
-    (*(J2DGrafContext**)(this_ + 0x14))->scissor(box);
-    if (!lbl_8053AAF8->b7f || !isNot12()) {
-        this_[0x39] = 0;
-        return;
-    }
-        if (!isEventMode()) {
-            this_[0x39] = 1;
-        } else {
-        u8 r = 0;
-        if (this_[0x38] >= 0xff) {
-            bool ok = true;
-            if (lbl_8053AAF8->mode != 11 && !fn_80239D38()) {
-                ok = false;
-            }
-            if (ok) {
-                r = 1;
-            }
-        }
-        this_[0x39] = r;
-        }
-}
 
 
 extern "C" s32 fn_8030DFE8(void* subObj, void* matrix);
@@ -124,58 +91,7 @@ static inline bool isDrawMode(u8* this_) {
     return this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6;
 }
 
-extern "C" void fn_8013B71C(u8* this_) {
-    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
-        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
-        j3dSys.drawInit();
-        j3dSys.reinitGX();
-        GXSetColorUpdate(GX_TRUE);
-        GXSetAlphaUpdate(GX_FALSE);
-        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk3;
-        (*(J3DDrawBuffer**)(this_ + 0x8))->draw();
-        j3dSys.reinitGX();
-        if (isEventMode() && lbl_8053AAF8->mode != 12) {
-            fn_802FF3B0(*(void**)(this_ + 0x20));
-        }
-        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
-        j3dSys.drawInit();
-        j3dSys.reinitGX();
-        GXSetColorUpdate(GX_TRUE);
-        GXSetAlphaUpdate(GX_FALSE);
-        GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_NOOP);
-        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk4;
-        (*(J3DDrawBuffer**)(this_ + 0xc))->draw();
-        j3dSys.reinitGX();
-        if (isEventMode() && lbl_8053AAF8->mode != 12) {
-            fn_802FF2D8(*(void**)(this_ + 0x20));
-        }
-        fn_8013DA10(*(void**)(this_ + 0x28));
-        j3dSys.drawInit();
-        fn_80158F70(*(void**)(this_ + 0x2c));
-    }
-    fn_8013D908(*(void**)(this_ + 0x28));
-    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
-        __sinit_tu_8013C5C8_cpp_8013D6E4(*(void**)(this_ + 0x28));
-        if (isEventMode() || lbl_8053AAF8->mode == 12) {
-            fn_8015F9C0(*(void**)(this_ + 0x30));
-        }
-    }
-}
 
-extern "C" void fn_8013B538(void* this_) {
-    if (isEventMode()) {
-        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
-    }
-}
-
-extern "C" void fn_8013B618(void* this_) {
-    if (isEventMode()) {
-        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
-        fn_8013D5D4(*(void**)((char*)this_ + 0x28));
-    }
-    (*(J3DDrawBuffer**)((char*)this_ + 0x8))->frameInit();
-    (*(J3DDrawBuffer**)((char*)this_ + 0xc))->frameInit();
-}
 extern _GXRenderModeObj lbl_8049F090;
 extern _GXRenderModeObj lbl_8049F0CC;
 
@@ -395,6 +311,57 @@ extern "C" void fn_8013B4F8(void* this_) {
     fn_800C1EA4(*(void**)((char*)this_ + 0xc));
 }
 
+extern "C" void fn_8013B538(void* this_) {
+    if (isEventMode()) {
+        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
+    }
+}
+
+extern "C" void fn_8013B618(void* this_) {
+    if (isEventMode()) {
+        fn_802FF0EC(*(void**)((char*)this_ + 0x20));
+        fn_8013D5D4(*(void**)((char*)this_ + 0x28));
+    }
+    (*(J3DDrawBuffer**)((char*)this_ + 0x8))->frameInit();
+    (*(J3DDrawBuffer**)((char*)this_ + 0xc))->frameInit();
+}
+extern "C" void fn_8013B71C(u8* this_) {
+    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
+        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
+        j3dSys.drawInit();
+        j3dSys.reinitGX();
+        GXSetColorUpdate(GX_TRUE);
+        GXSetAlphaUpdate(GX_FALSE);
+        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk3;
+        (*(J3DDrawBuffer**)(this_ + 0x8))->draw();
+        j3dSys.reinitGX();
+        if (isEventMode() && lbl_8053AAF8->mode != 12) {
+            fn_802FF3B0(*(void**)(this_ + 0x20));
+        }
+        fn_8030DFE8(*(void**)((char*)lbl_8053AB10 + 0x24), 0);
+        j3dSys.drawInit();
+        j3dSys.reinitGX();
+        GXSetColorUpdate(GX_TRUE);
+        GXSetAlphaUpdate(GX_FALSE);
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_ONE, GX_BL_ONE, GX_LO_NOOP);
+        j3dSys.mDrawMode = J3DSys::SYSDRAW_Unk4;
+        (*(J3DDrawBuffer**)(this_ + 0xc))->draw();
+        j3dSys.reinitGX();
+        if (isEventMode() && lbl_8053AAF8->mode != 12) {
+            fn_802FF2D8(*(void**)(this_ + 0x20));
+        }
+        fn_8013DA10(*(void**)(this_ + 0x28));
+        j3dSys.drawInit();
+        fn_80158F70(*(void**)(this_ + 0x2c));
+    }
+    fn_8013D908(*(void**)(this_ + 0x28));
+    if (this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6) {
+        __sinit_tu_8013C5C8_cpp_8013D6E4(*(void**)(this_ + 0x28));
+        if (isEventMode() || lbl_8053AAF8->mode == 12) {
+            fn_8015F9C0(*(void**)(this_ + 0x30));
+        }
+    }
+}
 // ---- from Game/fn_8013BAF4.cpp
 
 extern "C" s32 fn_8013DB2C(void* subObj);
@@ -457,6 +424,39 @@ extern "C" s32 fn_8013BBBC(void* this_) {
     return fn_8013DC1C(*(void**)((char*)this_ + 0x28));
 }
 
+extern "C" void fn_8013BBE0(u8* this_) {
+    if (lbl_8053AAF8->mode == 9) {
+        return;
+    }
+    fn_8030E154(*(void**)(this_ + 0x24));
+    fn_802FF568(*(void**)(this_ + 0x20));
+    fn_8013DC44(*(void**)(this_ + 0x28));
+    fn_80159330(*(void**)(this_ + 0x2c));
+    fn_8016005C(*(void**)(this_ + 0x30));
+    u32* vp = fn_8013C394();
+    JGeometry::TBox2f box((f32)vp[0], (f32)vp[1], (f32)vp[2], (f32)vp[3]);
+    (*(J2DGrafContext**)(this_ + 0x14))->place(box);
+    (*(J2DGrafContext**)(this_ + 0x14))->scissor(box);
+    if (!lbl_8053AAF8->b7f || !isNot12()) {
+        this_[0x39] = 0;
+        return;
+    }
+        if (!isEventMode()) {
+            this_[0x39] = 1;
+        } else {
+        u8 r = 0;
+        if (this_[0x38] >= 0xff) {
+            bool ok = true;
+            if (lbl_8053AAF8->mode != 11 && !fn_80239D38()) {
+                ok = false;
+            }
+            if (ok) {
+                r = 1;
+            }
+        }
+        this_[0x39] = r;
+        }
+}
 // ---- from Game/fn_8013BE04.cpp
 
 extern "C" void fn_802FF798(void* subObj);

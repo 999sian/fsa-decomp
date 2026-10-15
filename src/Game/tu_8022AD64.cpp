@@ -191,6 +191,25 @@ void fn_8022ADE4()
     *((u8*)lbl_8053AC90 + 0x73) = 1;
 }
 
+static inline u8 playerMgrByte(u32 offset)
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    return *((u8*)lbl_8053AC90 + offset);
+}
+
+u8 fn_8022ADFC()
+{
+    if (playerMgrByte(0x6c)) return 1;
+    if (playerMgrByte(0x6d)) return 1;
+    if (playerMgrByte(0x6e)) return 1;
+    if (playerMgrByte(0x6f)) return 1;
+    if (playerMgrByte(0x70)) return 1;
+    if (playerMgrByte(0x71)) return 1;
+    if (playerMgrByte(0x72)) return 1;
+    return 0;
+}
+
+
 u8 fn_8022AF10()
 {
     if (lbl_8053AC90 == NULL) return 0;
