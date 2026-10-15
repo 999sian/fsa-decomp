@@ -613,3 +613,21 @@ extern "C" int fn_80135980(int param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" int fn_80135A14(int param_1, s16 param_2) {
+    if (param_1 != 0) {
+        *(void**)(param_1 + 0x8) = lbl_802922B0;
+        if (param_1 != 0) {
+            *(void**)(param_1 + 0x8) = lbl_802925EC;
+            fn_80135858_Obj* obj = *(fn_80135858_Obj**)(param_1 + 0x34);
+            if (obj != 0) {
+                obj->Release(1);
+            }
+            fn_8013A5EC(param_1, 0);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C((void*)param_1);
+        }
+    }
+    return param_1;
+}
+
