@@ -786,8 +786,9 @@ extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
     ((u8*)param_1 + param_2)[0x10a] = param_3;
 }
 
-extern "C" void fn_800DDD70(int param_1, int param_2, u8* param_3) {
-    *(u8*)(param_1 + param_2 + 0x10a) = *param_3;
+extern "C" void fn_800DDD70(u8* param_1, int param_2, u8* param_3) {
+    u8* p = param_1 + param_2;
+    p[0x10a] = *param_3;
 }
 
 extern "C" u8 fn_800DDD80(int param_1, int param_2) {
@@ -843,15 +844,10 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x59;
 }
 
-extern "C" void fn_800DDE5C(int param_1, int param_2, u8* param_3) {
-    struct Bits {
-        u8 pad : 4;
-        u8 b1 : 2;
-        u8 b0 : 2;
-    };
-    Bits* p = (Bits*)(param_1 + param_2 * 8 + 0x60);
-    p->b1 = param_3[1];
-    p->b0 = param_3[0];
+extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
+    u8* p = param_1 + param_2 * 8;
+    p[0x60] = (p[0x60] & ~0xC) | (param_3[1] << 2);
+    p[0x60] = (p[0x60] & ~0x3) | param_3[0];
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -888,6 +884,9 @@ extern "C" u32 fn_800DDF40(int param_1) {
 
 extern "C" void fn_800DDF48(Actor* a, u32 v);
 extern "C" void fn_800DDF48(Actor* a, u32 v) { *(u32*)((u8*)a + 0x170) = v; }
+
+extern "C" void fn_800DDFAC(void) {
+}
 
 extern "C" u32 fn_800DE050(void) {
     return 'TVB4';
