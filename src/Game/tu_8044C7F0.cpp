@@ -22,12 +22,8 @@ extern "C" void* fn_8044F664(void) {
 }
 
 extern "C" void fn_804522C8(u8* p) {
-    switch (*(s16*)(p + 0xfa)) {
-    case 7:
-    case 8:
-    case 9:
+    if (*(s16*)(p + 0xfa) == 7 || *(s16*)(p + 0xfa) == 8 || *(s16*)(p + 0xfa) == 9) {
         fn_804316EC(lbl_8053AEC0);
-        break;
     }
 }
 
@@ -63,5 +59,9 @@ extern "C" void fn_80453874(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x0) = x;
 	*(f32*)((char*)thisObj + 0x4) = y;
 	*(f32*)((char*)thisObj + 0x8) = z;
+}
+
+extern "C" void fn_80453884(J2DWindow* window, JUtility::TColor* colors) {
+    window->setContentsColor(colors[0], colors[1], colors[2], colors[3]);
 }
 
