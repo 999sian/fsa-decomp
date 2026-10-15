@@ -206,6 +206,10 @@ extern "C" void fn_800DDCF8(u8* this_, s32 idx, UnkDCF8* src) {
     *(UnkDCF8*)(this_ + 0xfa + idx * 4) = *src;
 }
 
+extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
+    this_[idx + 0x12a] = *src;
+}
+
 extern "C" void fn_800DDF48(Actor* a, u32 v);
 extern "C" void fn_800DDF48(Actor* a, u32 v) { *(u32*)((u8*)a + 0x170) = v; }
 
