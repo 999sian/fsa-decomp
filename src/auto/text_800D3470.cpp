@@ -507,12 +507,18 @@ extern "C" u8 fn_800DE208(int param_1)
 extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
   u8* addr = (u8*)(param_1 + param_2 * 8);
-  addr[0x22] = param_3[1];
-  addr[0x23] = param_3[2];
-  addr[0x24] = param_3[3];
-  addr[0x26] = param_3[5];
-  addr[0x27] = param_3[6];
-  addr[0x28] = param_3[7];
+  u8 b1 = param_3[1];
+  u8 b2 = param_3[2];
+  addr[0x22] = b1;
+  u8 b3 = param_3[3];
+  addr[0x23] = b2;
+  u8 b5 = param_3[5];
+  addr[0x24] = b3;
+  u8 b6 = param_3[6];
+  addr[0x26] = b5;
+  u8 b7 = param_3[7];
+  addr[0x27] = b6;
+  addr[0x28] = b7;
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -926,6 +932,10 @@ extern "C" u32 fn_800DF160(u8* self, int i) {
 
 extern "C" void fn_800DF170(u8* self, u8 val) {
     *(u8*)(self + 0x40) = val;
+}
+
+extern "C" void fn_800DF178(u8* self, u8* src) {
+    *(u8*)(self + 0x40) = *src;
 }
 
 extern "C" void* fn_800DF1AC(void* self, short flag) {
