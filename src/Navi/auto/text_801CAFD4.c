@@ -308,6 +308,11 @@ extern "C" void* fn_801D9F10(void)
 	return lbl_802FFA4C;
 }
 
+extern "C" uint fn_801DD3D8(uint *param_1)
+{
+  return *param_1 & 3;
+}
+
 extern "C" uint fn_801DD3E4(uint *param_1)
 {
   return *param_1 >> 2 & 3;
