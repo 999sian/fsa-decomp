@@ -573,6 +573,10 @@ extern "C" u8* fn_800DD970(u8* self) {
     return self + 0x38;
 }
 
+extern "C" void fn_800DD978(int param_1, u8 param_2) {
+    *(u8*)(param_1 + 0x3a) = param_2;
+}
+
 extern "C" void fn_800DD980(int param_1, u8* param_2) {
     *(u8*)(param_1 + 0x3a) = *param_2;
 }
@@ -762,6 +766,10 @@ extern "C" void fn_800DDD24(Unk800DDC8C* this_, s32 idx, const u8* src) {
 
 extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
     return this_->b[idx];
+}
+
+extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
+    *(u8*)(param_1 + param_2 + 0x10a) = param_3;
 }
 
 extern "C" u8 fn_800DDD80(int param_1, int param_2) {
