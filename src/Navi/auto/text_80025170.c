@@ -172,6 +172,12 @@ extern "C" int fn_80026DD4(u8 i) {
     return *(int*)(p + 0xc);
 }
 
+extern "C" int fn_80026DFC(u8 i) {
+    u8* p = lbl_802BC618 + i * 0x2c;
+    p += *(s16*)(p + 0x28) * 0x14;
+    return *(int*)(p + 0xc);
+}
+
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
