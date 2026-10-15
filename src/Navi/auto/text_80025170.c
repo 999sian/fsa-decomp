@@ -29,6 +29,12 @@ extern "C" void fn_800254AC(void) {
     fn_80025710();
 }
 
+extern u8 lbl_802BBD38[];
+extern "C" u8 fn_800265AC(u8);
+extern "C" void fn_80026500(u8 param_1) {
+    lbl_802FED9C |= (u8)(1 << param_1);
+}
+
 extern u8 lbl_802FED9C;
 extern "C" void fn_80026520(void) {
     lbl_802FED9C = 0;
@@ -73,7 +79,7 @@ extern "C" void fn_800266C8(u8 param_1) {
 }
 
 extern "C" u32 fn_800266DC(void) {
-    u32 result = 1;
+    volatile u32 result = 1;
     for (u8 i = 0; i < 4; i++) {
         if ((lbl_802FED9D & (1 << i)) != 0) {
             u8 val = ((u8*)&lbl_802FEDA4)[i];
