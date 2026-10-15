@@ -1,7 +1,7 @@
 #include "types.h"
 extern "C" int fn_800636A0(void*, void*, int);
 extern "C" unsigned int fn_8001C554(void*, int*);
-extern void fn_8001E8B4(void);
+extern "C" void fn_8001E8B4(void);
 extern u8 lbl_802B7CA0[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80019470-0x80021014 (291 functions). split_file divides it into the game's real files.
@@ -140,6 +140,33 @@ extern "C" int fn_8001BBBC(short* param_1) {
 
 extern "C" void fn_8001BBC4(unsigned short* param_1, unsigned short param_2) {
     *param_1 = param_2;
+}
+
+extern "C" unsigned int fn_8001BBCC(int param_1) {
+    int arr[1];
+    arr[0] = param_1;
+    
+    unsigned int check = (unsigned int)(param_1 + 2);
+    if (check > 1) {
+        return fn_8001C554((void*)&fn_8001E8B4, arr);
+    }
+    
+    return 0;
+}
+
+extern "C" int fn_8001BC10(int param_1) {
+    int arr[1];
+    arr[0] = param_1;
+    
+    unsigned int check = (unsigned int)(param_1 + 2);
+    if (check > 1) {
+        unsigned int result = fn_8001C554((void*)&fn_8001E8B4, arr);
+        if (result != 0) {
+            return 1;
+        }
+    }
+    
+    return 0;
 }
 
 extern "C" void fn_8001EA5C(void);
