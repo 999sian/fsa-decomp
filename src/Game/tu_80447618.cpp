@@ -80,6 +80,10 @@ extern void* __nw__FUl(unsigned long size);
 extern void __ct__9J2DScreenFv();
 extern void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* pane, const char* name, unsigned long id, void* archive);
 extern void fn_80402F04(void* a, void* b);
+extern void* lbl_8053AED0;
+extern f32 fn_8043D514(void* a);
+extern f32 fn_8043D57C(void* a);
+extern void fn_80402E08(void* a, f32 b);
 }
 
 extern "C" void* fn_804030C4(u32 type, const char* name);
