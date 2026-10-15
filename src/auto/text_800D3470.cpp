@@ -361,6 +361,8 @@ extern "C" u8* fn_800DD970(u8* self) {
     return self + 0x38;
 }
 
+extern "C" void fn_800DD9B8(u8* p, u32 v) { *(u32*)(p + 0x3c) = v; }
+
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
         typedef void (*FuncPtr)(void);
@@ -456,20 +458,14 @@ extern "C" void loadTexNo(u32, const u16&);
 extern "C" void DCStoreRange(void* addr, u32 nBytes);
 extern "C" void fn_800DDB70(void* param_1)
 {
+  u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* pStart = __GDCurrentDL->pDisplayListData;
   void* pCurr = __GDCurrentDL->pDisplayListData;
-  u32 i;
-  
-  i = 0;
-  
-  while (true) {
-    if (!isTexNoReg(pCurr)) break;
+  for (; isTexNoReg(pCurr); i++) {
     u16 texNo = getTexNoReg(pCurr);
     loadTexNo(i, texNo);
-    i++;
   }
-  
   DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
 }
 
