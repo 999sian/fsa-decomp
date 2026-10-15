@@ -1499,6 +1499,11 @@ extern "C" void fn_800DEED0(int param_1, u32* param_2)
   *(u32*)(param_1 + 4) = *param_2;
 }
 
+extern "C" u32 fn_800DEEDC(int param_1)
+{
+  return *(u32*)(param_1 + 4);
+}
+
 extern "C" void fn_800DEF34(u8* param_1, u32 param_2) {
     *(u32*)(param_1 + 0x58) = param_2;
 }
