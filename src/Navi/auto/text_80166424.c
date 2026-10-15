@@ -339,6 +339,18 @@ extern "C" void fn_80173268(Unk801727E4Class* param_1, int param_2, int param_3)
     param_1->vf7C(param_2, param_3, 0);
 }
 
+extern "C" u32 fn_801732B8(void* param_1, u32 param_2) {
+    if (param_2 < 1) {
+        u32 index = param_2 << 2;
+        return *(u32*)((u8*)param_1 + index + 0x54);
+    }
+    return 0;
+}
+
+extern "C" u32 fn_801732D8(void* param_1) {
+    return *(u32*)((u8*)param_1 + 0x58);
+}
+
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
     Unk80174858Pair fallback;
     fallback.x = lbl_80301AC0.x;
