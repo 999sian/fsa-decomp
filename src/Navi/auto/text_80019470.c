@@ -86,7 +86,7 @@ extern "C" void fn_8001A238(void* param_1, u16 param_2) {
 }
 
 extern "C" int fn_8001A24C(void* param_1) {
-    if (((*(u8*)param_1 >> 7) & 1) == 1 || *(u16*)((u8*)param_1 + 6) != 0) {
+    if ((u32)((*(u8*)param_1 >> 7) & 1) == 1 || *(u16*)((u8*)param_1 + 6) != 0) {
         return 0;
     }
     fn_801155E0(param_1, 2);
