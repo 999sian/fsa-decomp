@@ -42,7 +42,6 @@ extern "C" void fn_80440BF4(void* self_, u8 flag) {
         *(u8*)((u8*)r + 0xb0) = 0;
     }
 }
-#pragma scheduling reset
 extern "C" void fn_80440C6C(void* self_, u8 flag) {
     u8* self = (u8*)self_;
     Obj4* obj = (Obj4*)*(void**)(self + 4);
