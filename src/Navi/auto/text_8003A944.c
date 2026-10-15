@@ -142,3 +142,27 @@ extern "C" void* fn_8004038C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
+    double dconst = *(double*)&lbl_802FFEC8;
+    
+    s32 v1 = ((s32)param_1 & 0xFFFF) | 0x43300000;
+    s32 v2 = ((s32)param_2 & 0xFFFF) | 0x43300000;
+    s32 v3 = ((s32)param_3 & 0xFFFF) | 0x43300000;
+    
+    v1 ^= 0x80000000;
+    v2 ^= 0x80000000;
+    v3 ^= 0x80000000;
+    
+    double d1 = (double)v1 - dconst;
+    double d2 = (double)v2 - dconst;
+    double d3 = (double)v3 - dconst;
+    
+    d1 *= (double)factor;
+    d2 *= (double)factor;
+    d3 *= (double)factor;
+    
+    lbl_802FEFB4[0] = (s16)(s32)d1;
+    lbl_802FEFB4[1] = (s16)(s32)d2;
+    lbl_802FEFB4[2] = (s16)(s32)d3;
+}
