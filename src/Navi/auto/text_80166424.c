@@ -34,6 +34,11 @@ public:
 extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
 struct RGB3 { u8 r, g, b; };
 struct S16x4 { s16 v[4]; };
+struct NaviColVec {
+    u8 pad0[0xa];
+    u8 col[2][4];
+    s16 vec[1][4];
+};
 
 
 extern void* lbl_80298390[];
@@ -216,11 +221,10 @@ extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 extern "C" u16 fn_801725FC(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
 
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
-    u8* p = param_1 + param_2 * 8;
-    u8 b = param_3[1];
-    u8 a = param_3[0];
-    p[0x7e] = (p[0x7e] & 0xf3) | (b << 2);
-    p[0x7e] = (p[0x7e] & 0xfc) | a;
+    u32 b = param_3[1];
+    u32 a = param_3[0];
+    param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0xc) | ((b & 0xff) << 2);
+    param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0x3) | a;
 }
 
 extern "C" void fn_8017279C(int param_1, int param_2, u8* param_3) {
@@ -307,13 +311,20 @@ extern "C" void fn_80172DF0(u8* p, u16 v) { *(u16*)(p + 8) = v; }
 extern "C" u16 fn_80172DF8(u8* p) { return *(u16*)(p + 8); }
 
 extern "C" void fn_80172E00(u8* p, s32 i, RGB3* c) {
-    *(RGB3*)(p + i * 4 + 10) = *c;
+    RGB3* e = (RGB3*)(p + 10 + i * 4);
+    e->r = c->r;
+    e->g = c->g;
+    e->b = c->b;
 }
 
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
 
 extern "C" void fn_80172E38(u8* p, s32 i, S16x4* c) {
-    *(S16x4*)(p + i * 8 + 0x12) = *c;
+    S16x4* e = &((S16x4*)(p + 0x12))[i];
+    e->v[0] = c->v[0];
+    e->v[1] = c->v[1];
+    e->v[2] = c->v[2];
+    e->v[3] = c->v[3];
 }
 
 extern "C" void fn_80172FC8(Unk801727E4Class* param_1, int param_2, int param_3) {
