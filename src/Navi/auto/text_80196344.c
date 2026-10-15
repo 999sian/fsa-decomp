@@ -1,6 +1,7 @@
 #include "types.h"
 #include "types.h"
 extern "C" void* lbl_8029AF34[];
+extern void* lbl_8029A150[];
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80196344-0x801a537c (574 functions). split_file divides it into the game's real files.
