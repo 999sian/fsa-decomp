@@ -175,6 +175,14 @@ extern "C" u8* fn_800DD970(u8* self) {
     return self + 0x38;
 }
 
+extern "C" void fn_800DDA1C(void* obj, u32 flags) {
+    if (flags & 0x20000000) {
+        typedef void (*FuncPtr)(void);
+        FuncPtr fn = *(FuncPtr*)((u32*)obj + 7);
+        fn();
+    }
+}
+
 extern "C" u32 fn_800DDA50(void) {
     return 0x50454647;
 }
@@ -214,6 +222,10 @@ extern "C" Vec* fn_800DDAD4(Actor* a) { return (Vec*)((u8*)a + 0xC); }
 
 extern "C" void fn_800DDADC(u8* this_, u8 val) {
     this_[0xe] = val;
+}
+
+extern "C" void fn_800DDAE4(u8* this_, u8* src) {
+    *(u8*)(this_ + 0xe) = *src;
 }
 
 extern "C" void fn_800DDC1C(u16* this_, s32 idx, u16 val) {
