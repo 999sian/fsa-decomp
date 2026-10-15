@@ -105,6 +105,11 @@ extern "C" void* fn_80174A68(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_80174A80(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d) {
     u32 aa, bb, cc, dd;
     u32 vd = *d, vc = *c, vb = *b, va = *a;
