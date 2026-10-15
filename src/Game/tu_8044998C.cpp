@@ -14,7 +14,7 @@ struct VObj {
 
 extern "C" void* fn_8044A418(VObj** param_1, short param_2) {
     if (param_1 != 0) {
-        *(void**)param_1 = &lbl_804B1CC8;
+        *(void**)param_1 = lbl_804B1CC8;
         delete param_1[1];
         param_1[1] = 0;
         for (int i = 0; i < 2; i++) {
