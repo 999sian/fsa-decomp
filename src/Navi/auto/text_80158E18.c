@@ -24,6 +24,10 @@ extern "C" void fn_8015AB40(void* p) {
     fn_80159C6C(p, 0);
 }
 
+extern "C" void fn_8015ABDC(void** param_1, void* param_2) {
+    *param_1 = param_2;
+}
+
 extern "C" void fn_8015D030(void) {
     fn_80159DB4();
 }
