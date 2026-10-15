@@ -63,6 +63,19 @@ extern "C" void fn_800B97C0(u8* p) {
     (*(u8**)(p + 0x18c))[0xb0] = 0;
 }
 
+extern "C" void fn_800B9800(u8* p) {
+    (*(u8**)(p + 0x1c0))[0xb0] = 1;
+    (*(u8**)(p + 0x64))[0xb0] = 1;
+    (*(u8**)(p + 0x78))[0xb0] = 1;
+    (*(u8**)(p + 0x68))[0xb0] = 1;
+    (*(u8**)(p + 0x7c))[0xb0] = 1;
+    if (lbl_802B7CA0[((lbl_802BB0FC[0x10] >> 1) & 1) * 0xc + lbl_802313EC[p[0x387] + p[0x388] * 4] + 0x93c] == 0) {
+        (*(u8**)(p + p[0x37d] * 4 + 0x188))[0xb0] = 0;
+    } else {
+        (*(u8**)(p + p[0x37d] * 4 + 0x188))[0xb0] = 1;
+    }
+}
+
 extern "C" void* fn_800B9970(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80287910;
@@ -74,6 +87,11 @@ extern "C" void* fn_800B9970(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_800B99CC(u8* p) {
+    char* base = lbl_802B7CA0 + 0x1424;
+    fn_80060794(base, base + 0x204, base + 0x208, p + 4);
 }
 
 extern char lbl_802B7CA0[];
