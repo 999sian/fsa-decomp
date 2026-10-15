@@ -219,11 +219,11 @@ extern "C" u8* fn_800DDEEC(u8* this_, s32 idx) {
 }
 
 extern "C" void fn_800DDEFC(u8* this_, s32 idx, u32* src) {
-    *(u32*)(this_ + 0x130 + idx * 4) = *src;
+    *(u32*)(this_ + idx * 4 + 0x130) = *src;
 }
 
 extern "C" u32* fn_800DDF24(u8* this_, s32 idx) {
-    return (u32*)(this_ + (idx * 4 + 0x130));
+    return (u32*)(this_ + 0x130 + idx * 4);
 }
 
 extern "C" void fn_800DDF48(Actor* a, u32 v);
