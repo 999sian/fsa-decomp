@@ -1,5 +1,7 @@
 #include "types.h"
 extern "C" int fn_800636A0(void*, void*, int);
+extern "C" unsigned int fn_8001C554(void*, int*);
+extern void fn_8001E8B4(void);
 extern u8 lbl_802B7CA0[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80019470-0x80021014 (291 functions). split_file divides it into the game's real files.
@@ -202,8 +204,7 @@ extern "C" void* fn_8001D708(void* param_1) {
 }
 
 extern "C" void* fn_8001D76C(void* param_1) {
-    s32 p = (s32)param_1;
-    if (p != 0) {
+    if (param_1 != nullptr) {
         s32 result = (s32)fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
         if (result != 0) {
             void* ptr = (u8*)param_1 + 0xbc;
@@ -218,9 +219,6 @@ extern "C" void* fn_8001D76C(void* param_1) {
 }
 
 extern "C" u32 fn_8001D7EC(void* param_1) {
-    extern u32 lbl_802FBA08;
-    extern char lbl_802FEC48[];
-    
     if (lbl_802FBA08 != 1) {
         return 1;
     }
@@ -229,18 +227,24 @@ extern "C" u32 fn_8001D7EC(void* param_1) {
         return 0;
     }
     
-    s32 result = (s32)fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
-    if (result == 0) {
+    void* result = fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
+    if (result == nullptr) {
         return 0;
     }
     
     void* ptr = (u8*)param_1 + 0xbc;
-    if (fn_8001BFBC(ptr) == nullptr) {
-        void* final = fn_8001C518(ptr, (void*)fn_8001D76C, nullptr);
-        return final == nullptr ? 1 : 0;
+    void* check = fn_8001BFBC(ptr);
+    void* final_result;
+    if (check == nullptr) {
+        final_result = fn_8001C518(ptr, (void*)fn_8001D76C, nullptr);
+    } else {
+        final_result = param_1;
     }
     
-    return 0;
+    if (final_result != nullptr) {
+        return 0;
+    }
+    return 1;
 }
 
 extern "C" void* fn_8001D91C(void* param_1) {
