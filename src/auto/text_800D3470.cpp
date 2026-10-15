@@ -667,6 +667,10 @@ extern "C" void fn_800DECF8(int p, int i, const u8* v) {
     *(u8*)(addr + 3) = v[3];
 }
 
+extern "C" int fn_800DED50(int p, int i) {
+    return p + i * 4 + 0xb8;
+}
+
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
     *(J3DNBTScaleInfo*)(self + 0x5c) = *other;
 }
