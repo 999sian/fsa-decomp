@@ -61,6 +61,14 @@ extern "C" void fn_80071CD0(void) {
     fn_80071D8C();
 }
 
+extern "C" BOOL fn_80072134(s8* p)
+{
+    if (p[0x294] == 0) {
+        p[0x294]++;
+    }
+    return TRUE;
+}
+
 extern "C" void fn_80071CF0(void);
 extern "C" void fn_80072240(void) {
     fn_80071CF0();
