@@ -249,6 +249,10 @@ extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
     this_[idx + 0x7a] = *src;
 }
 
+extern "C" u8* fn_800DE32C(u8* this_, s32 idx) {
+    return this_ + 0x7a + idx;
+}
+
 extern "C" void fn_800DE388(Actor* a, u32 v);
 extern "C" void fn_800DE388(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
 
