@@ -213,8 +213,8 @@ extern "C" u32 fn_800DDA50(void) {
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
     u8 b2 = src[2];
-    u8 b3 = src[3];
     *(u16*)(this_ + 0x4) = w;
+    u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
 }
@@ -262,6 +262,10 @@ extern "C" void fn_800DDB00(int param_1, u8* param_2)
 extern "C" u8 fn_800DDB0C(int param_1)
 {
   return *(u8*)(param_1 + 0xf);
+}
+
+extern "C" u32 fn_800DDC10() {
+    return 'TV16';
 }
 
 extern "C" void fn_800DDC1C(u16* this_, s32 idx, u16 val) {
