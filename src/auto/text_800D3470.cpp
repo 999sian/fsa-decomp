@@ -288,6 +288,22 @@ extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
     this_[idx + 0x59] = *src;
 }
 
+extern "C" void fn_800DE75C(u8* this_, u32 idx, const u8* src) {
+    this_[idx + 0x59] = *src;
+}
+
+extern "C" u8* fn_800DE76C(u8* this_, u32 idx) {
+    return this_ + (idx + 0x59);
+}
+
+extern "C" void fn_800DE77C(u8* this_, u32 idx, const u32* src) {
+    *(u32*)(this_ + idx * 4 + 0x60) = *src;
+}
+
+extern "C" u32* fn_800DE7A4(u8* this_, u32 idx) {
+    return (u32*)(this_ + (idx * 4 + 0x60));
+}
+
 extern "C" void fn_800DE8DC(u16* this_, s32 idx, u16 val) {
     this_[idx + 4] = val;
 }
