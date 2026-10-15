@@ -388,6 +388,17 @@ extern "C" void* fn_80133510(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801338F8(u8* p, void* unused, int i) {
+    *(u32*)(*(u8**)(p + 4) + i * 0x14 + 8) = 0;
+}
+
+extern "C" void fn_80133910(u8* p, void* unused, int i, f32* v) {
+    u8* e = *(u8**)(p + 4) + i * 0x14;
+    *(void**)(e + 8) = (void*)fn_8013345C;
+    *(u32*)(e + 4) = 0;
+    *(f32*)(e + 0xc) = *v;
+}
+
 extern "C" void fn_80133968(u8* p, u8* q, int i, void* a, void* b) {
     u8* e = *(u8**)(p + 4) + i * 0x14;
     u8* r = (u8*)fn_80139950(*(u8**)(q + 0x14) + 0x60, a, b);
