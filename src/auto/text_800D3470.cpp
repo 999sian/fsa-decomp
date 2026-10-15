@@ -1,5 +1,28 @@
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
+extern "C" char __vt__22J3DColorBlockAmbientOn[];
+extern "C" char __vt__21J3DColorBlockLightOff[];
+extern "C" char __vt__13J3DColorBlock[];
+extern "C" void __dl__FPv(void*);
+struct Actor {
+    Actor();
+    virtual ~Actor();
+    void setBox70(const ActorBox& box);                 /* 0x801FF630 */
+    void setPos(const JGeometry::TVec3<f32>& pos);      /* 0x801FF704 */
+    u8 _base[0x22c];
+};
+struct QuadHalf {
+    QuadHalf() {}
+    f32 x, y;
+};
+struct Quad {
+    Quad() {}
+    QuadHalf a, b;
+};
+struct ActorBox {
+    Quad q;
+};
+
 
 struct UnkDC8C {
     s16 m_a;
@@ -40,6 +63,9 @@ extern "C" int fn_800D3E90(void) { return 0x55; }
 extern "C" void fn_800DDA9C(void* dst, const void* src) {
     *(u32*)((u8*)dst + 8) = *(const u32*)src;
 }
+
+extern "C" Vec* fn_800DDAD4(Actor* a);
+extern "C" Vec* fn_800DDAD4(Actor* a) { return (Vec*)((u8*)a + 0xC); }
 
 extern "C" void fn_800DDC1C(u16* this_, s32 idx, u16 val) {
     this_[idx + 4] = val;
@@ -152,6 +178,9 @@ extern "C" void fn_800DEE30(u8* self, const J3DNBTScaleInfo* other) {
 extern "C" u8* fn_800DEE54(u8* self) {
     return self + 0x5c;
 }
+
+extern "C" void fn_800DEEC8(Actor* a, s32 v);
+extern "C" void fn_800DEEC8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x4) = v; }
 
 extern "C" void fn_800DEF48(u8* self, const J3DNBTScaleInfo* other) {
     *(J3DNBTScaleInfo*)(self + 0x5c) = *other;
