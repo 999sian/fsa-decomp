@@ -4,12 +4,16 @@ extern "C" void __dl__FPv(void*);
 extern "C" u8 lbl_804B1BE8[];
 extern "C" u32 lbl_8053AF00;
 
+struct fn_80447190_Obj {
+    virtual void Release(int);
+};
+
 extern "C" void* fn_80447190(void* param_1, short param_2)
 {
     void* result = param_1;
     
     if (result != 0) {
-        void* addr = &lbl_804B1BE8;
+        void* addr = (void*)lbl_804B1BE8;
         *(void**)result = addr;
         
         void* ptr1 = *(void**)((u32)result + 0x4);
