@@ -11,4 +11,6 @@ public:
     virtual void drawAfter(JPABaseEmitter*);
 };
 
+void JPAEmitterCallBack::executeAfter(JPABaseEmitter*) {}
+
 void JPAEmitterCallBack::execute(JPABaseEmitter*) {}
