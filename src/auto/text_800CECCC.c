@@ -22,9 +22,9 @@ extern "C" void** fn_800CF2CC(void** p, short del) {
 
 extern "C" void** fn_800CF314(void** p, short del) {
     if (p != 0) {
-        *p = &lbl_8049AE24;
+        *p = lbl_8049AE24;
         if (p != 0) {
-            *p = &lbl_8049AE38;
+            *p = lbl_8049AE38;
         }
         if (del > 0) {
             __dl__FPv(p);
