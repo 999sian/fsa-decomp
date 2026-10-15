@@ -216,3 +216,16 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_80133414(void*, int);
+extern char lbl_80293190[];
+extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_80293190;
+        fn_80133414(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
