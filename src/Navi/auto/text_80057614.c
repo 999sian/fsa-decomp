@@ -9,6 +9,11 @@ extern "C" void fn_8005867C(void) {
     fn_8005845C();
 }
 
+extern "C" void fn_80058740(void*, int);
+extern "C" void fn_8005871C(void* p) {
+    fn_80058740(p, 0);
+}
+
 extern "C" void fn_800595FC(void);
 extern "C" void fn_80058D50(void) {
     fn_800595FC();
