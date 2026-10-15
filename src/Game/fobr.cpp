@@ -43,6 +43,10 @@ extern "C" void fn_8020B74C(u8* this_) {
     v07__5ActorFv(this_);
 }
 
+extern "C" void fn_8020B838(u8* this_) {
+    *(u32*)(this_ + 0x230) |= 0x80;
+}
+
 extern "C" s32 fn_801F285C(void*, u32, void*, u32, s32);
 extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8023B6CC(s32);
