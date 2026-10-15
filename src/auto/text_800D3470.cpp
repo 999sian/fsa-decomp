@@ -166,11 +166,10 @@ extern "C" int fn_800D3E88(void) { return 0x1e; }
 
 extern "C" int fn_800D3E90(void) { return 0x55; }
 
-extern "C" void fn_800D5120(int* param_1)
+extern "C" void fn_800D5120(Vtable800D8248* obj)
 {
-  int* vtable = *(int**)param_1;
-  (*(void(**)(void))(vtable + 0x14))();
-  (*(void(**)(int*))(vtable + 0x18))(param_1);
+  obj->m3();
+  obj->m4();
 }
 
 extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
