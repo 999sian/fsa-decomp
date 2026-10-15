@@ -397,6 +397,12 @@ extern "C" void* fn_8013AFB8(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" BOOL fn_8013B138(void);
+extern "C" BOOL fn_8013B138(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_80132C50(void*, int);
 extern char lbl_8029308C[];
 extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
