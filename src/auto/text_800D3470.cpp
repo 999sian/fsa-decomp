@@ -210,6 +210,22 @@ extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
     this_[idx + 0x12a] = *src;
 }
 
+extern "C" void fn_800DDEDC(u8* this_, s32 idx, u8* src) {
+    this_[idx + 0x12a] = *src;
+}
+
+extern "C" u8* fn_800DDEEC(u8* this_, s32 idx) {
+    return this_ + (idx + 0x12a);
+}
+
+extern "C" void fn_800DDEFC(u8* this_, s32 idx, u32* src) {
+    *(u32*)(this_ + 0x130 + idx * 4) = *src;
+}
+
+extern "C" u32* fn_800DDF24(u8* this_, s32 idx) {
+    return (u32*)(this_ + (idx * 4 + 0x130));
+}
+
 extern "C" void fn_800DDF48(Actor* a, u32 v);
 extern "C" void fn_800DDF48(Actor* a, u32 v) { *(u32*)((u8*)a + 0x170) = v; }
 
