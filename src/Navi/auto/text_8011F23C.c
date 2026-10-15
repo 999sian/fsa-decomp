@@ -1,5 +1,11 @@
 #include "types.h"
 #include "dolphin/os/OSFastCast.h"
+extern "C" void fn_8013A57C(void);
+extern "C" void* fn_80139950(void*, void*, void*);
+extern "C" void fn_801334AC();
+extern "C" void fn_8013345C();
+extern void* lbl_802925EC;
+extern void* lbl_80292558;
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8011f23c-0x80135cf8 (427 functions). split_file divides it into the game's real files.
 
@@ -382,6 +388,15 @@ extern "C" void* fn_80133510(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80133BB0(int param_1, void* param_2, void* param_3, void* param_4, void* param_5) {
+    int* obj = *(int**)(param_1 + 0x34);
+    if (obj != 0) {
+        int** vftbl = *(int***)obj;
+        void (*method)(int, int, void*, void*, void*, void*) = (void (*)(int, int, void*, void*, void*, void*))vftbl[7];
+        method(param_1, (int)obj, param_2, param_3, param_4, param_5);
+    }
+}
+
 extern void* lbl_8029259C[];
 extern void* lbl_8029260C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2) {
@@ -452,5 +467,31 @@ extern "C" void* fn_80134B3C(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern void* lbl_80292070;
+extern void* lbl_802925EC;
+extern void* lbl_80292558;
+extern void* lbl_802026C0;
+extern void* lbl_80291BB4;
+extern "C" void fn_8013A5EC(int ptr, int param);
+extern "C" void fn_8013A57C(void);
+extern "C" void fn_801E10DC(int ptr, uint param);
+extern "C" int fn_80135858(int param_1, s16 param_2) {
+    if (param_1 != 0) {
+        *(int*)(param_1 + 0x8) = (int)lbl_80292070;
+        *(int*)(param_1 + 0x8) = (int)lbl_802925EC;
+        int* obj = *(int**)(param_1 + 0x34);
+        if (obj != 0) {
+            int* vftbl = *(int**)obj;
+            void (*func)(int*, int) = (void (*)(int*, int))vftbl[2];
+            func(obj, 1);
+        }
+        fn_8013A5EC(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C((void*)param_1);
+        }
+    }
+    return param_1;
 }
 
