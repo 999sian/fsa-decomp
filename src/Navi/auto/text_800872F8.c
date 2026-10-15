@@ -67,16 +67,20 @@ extern "C" void* fn_80087788(void* ptr, s16 param_2) {
 }
 
 extern "C" int fn_800877E4(void* param_1) {
-    u8* addr = (u8*)param_1;
-    s8 byte_val = *(s8*)(addr + 0x420);
-    
-    if (byte_val == 0) {
+    register s8 byte = *(s8*)((u8*)param_1 + 0x420);
+    if (!byte) {
         fn_80057C38(0x1e);
-        addr[0x420]++;
-    } else if (byte_val != (s8)-1) {
+        (*(u8*)((u8*)param_1 + 0x420))++;
+    } else if (byte != -1) {
         fn_8001A454(4, 0, 5);
     }
     return 1;
+}
+
+extern "C" BOOL fn_80087A60(void);
+extern "C" BOOL fn_80087A60(void)
+{
+    return TRUE;
 }
 
 extern "C" void fn_800885B4(void);
