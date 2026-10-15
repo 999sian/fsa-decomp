@@ -429,6 +429,11 @@ extern "C" int fn_801328B8(void) {
     return 5;
 }
 
+extern "C" BOOL fn_801328C0(void)
+{
+	return TRUE;
+}
+
 extern "C" void fn_801328C8(void) {
 }
 
