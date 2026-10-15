@@ -97,3 +97,8 @@ extern "C" void fn_8003772C(void* p) {
     fn_8002E3C4(p, 0);
 }
 
+extern "C" void fn_80037750(void* p) {
+    *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
+    *(unsigned int*)((char*)p + 0x2ec) = 7;
+}
+
