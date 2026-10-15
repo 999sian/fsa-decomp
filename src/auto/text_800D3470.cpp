@@ -653,6 +653,11 @@ extern "C" int fn_800DF568(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 5;
 }
 
+extern "C" int fn_800DF5E4(int param_1, int param_2)
+{
+  return param_1 + param_2 * 0x1c + 0x18;
+}
+
 extern "C" void fn_800DF5F8(int param_1, int param_2, u32* param_3)
 {
   *(u32*)(param_1 + param_2 * 4 + 0x6c) = *param_3;
