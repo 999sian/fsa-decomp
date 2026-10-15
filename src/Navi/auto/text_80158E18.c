@@ -49,6 +49,10 @@ extern "C" void* fn_8015ABE4(void* p) {
     return ((void**)p)[2];
 }
 
+extern "C" void* fn_8015ABF8(void* p) {
+    return ((void**)p)[2];
+}
+
 extern "C" void fn_80159AE4(char** start, int* size, void* arg);
 extern "C" char* fn_8015ADE8(char* base, char* data, int size, int flag, void* arg);
 extern "C" char* lbl_802FF548;
