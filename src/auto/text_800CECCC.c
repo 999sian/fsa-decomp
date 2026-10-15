@@ -12,6 +12,7 @@ extern "C" void fn_800CF2B0(void** p) {
 }
 
 #include "JSystem/JSupport.h"
+#include "JSystem/J3D/J3DAnmColor.h"
 
 extern "C" void** fn_800CF2CC(void** p, short del) {
     if (p != 0) {
