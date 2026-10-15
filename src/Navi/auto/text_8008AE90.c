@@ -19,6 +19,11 @@ extern "C" void fn_8008BD00(void) {
     fn_8008B95C();
 }
 
+extern "C" void fn_8008B580(void);
+extern "C" void fn_8008BD20(void) {
+    fn_8008B580();
+}
+
 extern "C" void* fn_8008BD48(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80284A14;
