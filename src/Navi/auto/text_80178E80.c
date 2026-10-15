@@ -43,6 +43,10 @@ extern "C" void fn_80180B88(void) {
     fn_80177F0C();
 }
 
+extern "C" void fn_80184BF4(void) {
+    fn_80177F0C();
+}
+
 extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     *(u8*)(param_1 + 0xb2) = param_2;
     u8* p = (u8*)*(void**)(param_1 + 0x168);
