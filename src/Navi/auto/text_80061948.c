@@ -72,6 +72,12 @@ extern "C" void* fn_80062F90(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80062FCC(s16* p) {
+    p[0] = 0;
+    p[1] = 1;
+    *(s32*)(p + 2) = 0;
+}
+
 extern "C" int fn_800636A0(void* a, u8* p, int n) {
     void* r = fn_800637F0(a, p, n);
     if (r == 0) {
