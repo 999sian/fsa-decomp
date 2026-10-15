@@ -11,6 +11,10 @@ extern "C" int ddh_cc_shutdown()
 	return 0;
 }
 
+extern "C" int fn_801EFD10(int param_1) {
+  return *(int *)(param_1 + 0x10);
+}
+
 extern "C" int gdev_cc_close()
 {
 	return 0;
