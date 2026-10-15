@@ -1,5 +1,96 @@
 #include "types.h"
 
+extern "C" void fn_8010E074(u8* this_);
+extern "C" void fn_801D267C(u8* p);
+extern u8 lbl_8049D740[];
+extern f32 lbl_8053C628;
+extern f32 lbl_8053C65C;
+
+extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
+{
+    switch (param_1) {
+        case 3:
+            switch (param_2) {
+                case 3: return 0x2d3;
+                case 1: return 0x2df;
+                case 0: return 0x2d0;
+                case 2: return 0x2d6;
+                case 4: return 0x2dc;
+                default: return 0x2d9;
+            }
+        case 1:
+            switch (param_2) {
+                case 3: return 0x300;
+                case 1: return 0x308;
+                case 0: return 0x2fe;
+                case 2: return 0x302;
+                case 4: return 0x306;
+                default: return 0x304;
+            }
+        case 0:
+            switch (param_2) {
+                case 3: return 0x2ff;
+                case 1: return 0x307;
+                case 0: return 0x2fd;
+                case 2: return 0x301;
+                case 4: return 0x305;
+                default: return 0x303;
+            }
+        case 2:
+            switch (param_2) {
+                case 3: return 0x2d2;
+                case 1: return 0x2de;
+                case 0: return 0x2cf;
+                case 2: return 0x2d5;
+                case 4: return 0x2db;
+                default: return 0x2d8;
+            }
+        case 5:
+            switch (param_2) {
+                case 3: return 0x2d4;
+                case 1: return 0x2e0;
+                case 0: return 0x2d1;
+                case 2: return 0x2d7;
+                case 4: return 0x2dd;
+                default: return 0x2da;
+            }
+        default:
+            switch (param_2) {
+                case 3: return 0x2e5;
+                case 1: return 0x2e9;
+                case 0: return 0x2e4;
+                case 2: return 0x2e6;
+                case 4: return 0x2e8;
+                default: return 0x2e7;
+            }
+    }
+}
+
 extern "C" s32 fn_80112C94(u8* this_) {
     return *(s32*)(this_ + 0x238);
 }
+
+extern "C" void fn_8010E074(u8* this_);
+extern "C" void fn_801D267C(u8* p);
+extern u8 lbl_8049D740[];
+extern f32 lbl_8053C628;
+extern f32 lbl_8053C65C;
+extern "C" u8* fn_801134DC(u8* this_) {
+    fn_8010E074(this_);
+    *(u8**)(this_ + 0x0) = lbl_8049D740;
+    *(u8*)(this_ + 0x230) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(s32*)(this_ + 0x240) = -1;
+    *(s32*)(this_ + 0x244) = 0;
+    *(f32*)(this_ + 0x248) = lbl_8053C628;
+    *(f32*)(this_ + 0x24c) = lbl_8053C628;
+    *(f32*)(this_ + 0x250) = lbl_8053C65C;
+    fn_801D267C(this_ + 0x260);
+    *(s32*)(this_ + 0x298) = 0;
+    *(s32*)(this_ + 0x29c) = 0;
+    *(s32*)(this_ + 0x2a0) = 0;
+    return this_;
+}
+
