@@ -16,6 +16,9 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80287910[];
 extern void* lbl_80286A30[];
 extern unsigned char lbl_802313EC[];
+extern char lbl_802B7CA0[];
+extern u32 lbl_802BB0FC[];
+extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" unsigned char fn_800B51E8(void* self, int i) {
     return lbl_802313EC[i];
 }
