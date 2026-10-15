@@ -309,7 +309,7 @@ extern "C" void fn_8000EF28(u32* p) {
 
 extern "C" void fn_8000F258(void) {}
 
-void fn_8000F328(void) {}
+extern "C" void fn_8000F328(void) {}
 
 extern void* lbl_8020455C[];
 extern "C" void* fn_8000F32C(void* ptr, s16 param_2) {
@@ -494,6 +494,20 @@ extern "C" void fn_80011588(void)
 
 void fn_80011688(void) {}
 
+extern "C" void fn_80011B24(void* param_1)
+{
+	void* ptr1 = *(void**)((char*)param_1 + 0x10);
+	(*(void(*)(void))(*(void**)((char*)(*(void**)ptr1) + 0xc)))();
+	
+	ptr1 = *(void**)((char*)param_1 + 0x10);
+	do {
+		(*(void(*)(void*))*(void**)((char*)(*(void**)ptr1) + 0x10))(ptr1);
+		ptr1 = *(void**)((char*)ptr1 + 0x4);
+	} while (ptr1 != NULL);
+	
+	*(int*)lbl_802FF6E0 = 0;
+}
+
 extern void* lbl_80204470[];
 extern "C" void* fn_80011DF8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -673,15 +687,16 @@ extern "C" void fn_80012170(void) {
 extern "C" void fn_80012198(void* param_1)
 {
 	char buffer[0x20];
+	unsigned int result;
 	
-	unsigned int result = (*(unsigned int (*)(void))*(void**)((char*)(*(void**)param_1) + 0x10))();
+	result = (*(unsigned int (*)(void))*(void**)((char*)(*(void**)param_1) + 0x10))();
 	
-	if (result == 0) {
-		fn_801AF744((void*)((char*)lbl_802FF704 + 0x18));
-	} else {
+	if (result != 0) {
 		unsigned short val = *(unsigned short*)((char*)lbl_802FF704 + 0x14);
 		void* ptr2 = (*(void* (*)(void*, void*))*(void**)((char*)(*(void**)param_1) + 0x10))(param_1, (void*)lbl_802FF704);
 		(*(void (*)(void*, unsigned short, void*))*(void**)((char*)(*(void**)ptr2) + 0x10))(ptr2, val, buffer);
+	} else {
+		fn_801AF744((void*)((char*)lbl_802FF704 + 0x18));
 	}
 }
 
