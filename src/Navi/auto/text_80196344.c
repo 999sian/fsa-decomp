@@ -239,6 +239,8 @@ extern "C" void* fn_801A3FD4(void* p) {
     return *(void**)((char*)p + 4);
 }
 
+extern "C" u32 fn_801A3FDC(u8* p) { return *(u32*)(p + 0x90); }
+
 extern void* lbl_8029A4F8[];
 extern "C" void* fn_801A3FEC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
