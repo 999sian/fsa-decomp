@@ -62,7 +62,7 @@ extern "C" float lbl_802FFB6C;
 extern "C" char lbl_80203B80[];
 extern "C" char lbl_8029F0E0[];
 extern "C" void* lbl_802FEBB0;
-extern "C" void fn_800101A0(float* p) {
+extern "C" void fn_800101A0(volatile float* p) {
     if (p[1] <= lbl_802FFB6C) {
         return;
     }
@@ -121,6 +121,30 @@ extern "C" void* fn_800102D8(void* ptr, s16 param_2) {
             *(void**)ptr = lbl_80204948;
         }
         if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
+extern "C" void* lbl_802046F4[];
+extern "C" void* lbl_80204984[];
+extern "C" void* fn_80010428(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802046F4;
+        if ((char*)ptr + (unsigned)0xC != nullptr) {
+            *(void**)((char*)ptr + 0xC) = lbl_80204984;
+        }
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80204720;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_8020474C;
+                if (ptr != nullptr) {
+                    *(void**)ptr = lbl_80204948;
+                }
+            }
+        }
+        if (0 < param_2) {
             fn_8015AB1C(ptr);
         }
     }
