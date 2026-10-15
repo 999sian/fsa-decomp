@@ -30,6 +30,10 @@ extern "C" void* fn_8018B098(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8018B35C(void* self, void* src) {
+    fn_8018B384(self, *(void**)((u8*)self + 4), src);
+}
+
 extern "C" void* fn_8018C308(void* base, u32 offset);
 extern "C" void* fn_8018C2F0(void* base, u32 offset);
 extern "C" void* fn_8018C2D8(void* base, u32 offset);
