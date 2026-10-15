@@ -49,3 +49,7 @@ extern "C" void fn_801148F4(void* p) {
     }
 }
 
+extern "C" int fn_80114920() {
+    return lbl_8028F698[4]();
+}
+
