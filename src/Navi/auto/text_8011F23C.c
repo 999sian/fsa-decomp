@@ -520,6 +520,11 @@ extern "C" void fn_8013296C(void)
 {
 }
 
+extern "C" int fn_80132970(void)
+{
+	return -1;
+}
+
 extern "C" BOOL fn_80132A14(void)
 {
     return TRUE;
