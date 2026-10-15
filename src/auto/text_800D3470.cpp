@@ -207,6 +207,13 @@ extern "C" void fn_800D6394(int* param_1, u32 param_2)
   }
 }
 
+extern "C" void fn_800D6DAC(void* param_1) {
+    u32 val = *(u32*)((u8*)param_1 + 4);
+    if (val != 0) {
+        loadTexCoordGens__FUlP11J3DTexCoord(val, (u8*)param_1 + 8);
+    }
+}
+
 extern "C" void fn_800D7F78(void* p) {
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
