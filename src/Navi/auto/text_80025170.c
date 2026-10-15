@@ -7,6 +7,7 @@ extern u8 lbl_802FED9D;
 extern u8 lbl_802FED9E;
 extern u8 lbl_802FED9F;
 extern u8 lbl_802FEDA4;
+extern "C" u8 lbl_802BBD38[];
 
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_800254CC(void);
@@ -38,7 +39,8 @@ extern "C" int fn_800264AC(u8 i) {
 
 extern "C" void fn_800264D4(u8 i) {
     u8* p = lbl_802BBD38 + i * 0x204;
-    *(int*)(p + *(s16*)(p + 0x200) * 0x20 + 0x1c) = 0;
+    p += *(s16*)(p + 0x200) * 0x20;
+    *(int*)(p + 0x1c) = 0;
 }
 
 extern u8 lbl_802BBD38[];
