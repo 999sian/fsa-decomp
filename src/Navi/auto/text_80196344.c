@@ -278,6 +278,10 @@ extern "C" void fn_801A394C(NaviRectHolder* p, s32 i, NaviColor8* src) {
     p->colors[i].a = src->a;
 }
 
+extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
+    param_1[param_2 + 0x12a] = *param_3;
+}
+
 extern "C" void* fn_801A3B8C(void* p) {
     return *(void**)((char*)p + 4);
 }
