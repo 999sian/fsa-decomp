@@ -24,12 +24,20 @@ extern "C" void fn_8015AB40(void* p) {
     fn_80159C6C(p, 0);
 }
 
+extern "C" bool fn_8015AB68(void* a, int* b, int* c) {
+    return b[1] == c[1];
+}
+
 extern "C" void fn_8015AB80(void) {
 }
 
 extern "C" int fn_8015AB84()
 {
 	return 0;
+}
+
+extern "C" int fn_8015AB8C() {
+    return 0;
 }
 
 extern "C" int fn_8015AB94(int* p, int v) {
