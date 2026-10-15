@@ -3,6 +3,10 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_80300AF0;
 extern "C" void fn_8015FDA8(void*, void*);
 extern "C" char lbl_802BB0FC[];
+extern "C" u8 fn_8010B734(void*);
+extern "C" void fn_8010BAA0(void*);
+extern "C" u8 fn_8010B8D4(void*);
+extern "C" void fn_800C55B8(void*, u8);
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
