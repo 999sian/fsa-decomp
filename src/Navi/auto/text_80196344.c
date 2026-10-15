@@ -105,6 +105,11 @@ extern "C" int fn_80198EA0()
 	return 0;
 }
 
+extern "C" int fn_80198EA8()
+{
+	return 0;
+}
+
 extern "C" int fn_80198EB0()
 {
 	return 0;
