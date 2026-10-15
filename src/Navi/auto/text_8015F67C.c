@@ -5,6 +5,17 @@
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8015D29C(void*, int);
 extern char lbl_80297BD4[];
+extern "C" void fn_801BDDBC(void*, void*, int);
+extern "C" void fn_801BDEE4(void*, void*, int);
+extern "C" void fn_8015F814(void);
+extern "C" void* fn_8015D13C(void*, void*, int, int);
+extern "C" void fn_801C0EEC(void*);
+extern "C" void* fn_8015A9A8(int, void*, int);
+extern "C" void fn_8015FB6C(int, int, int);
+extern int lbl_802FF5E0;
+extern void* lbl_802FF540;
+extern void* lbl_80297B40;
+extern void* lbl_80297B30;
 extern "C" void* fn_8015F73C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80297BD4;
