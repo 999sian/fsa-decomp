@@ -20,7 +20,7 @@ extern "C" void* fn_80041C4C(void* ptr, s16 param_2) {
 extern "C" void fn_801303BC(void*, int);
 extern char lbl_80246FDC[];
 extern char lbl_80247000[];
-extern char lbl_802FF0C8[];
+extern u32 lbl_802FF0C8;
 extern "C" void* fn_8004AF1C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80247000;
@@ -68,8 +68,22 @@ extern "C" void fn_8004B11C(void* param_1) {
     *(void**)((char*)param_1 + 0x4) = nullptr;
 }
 
+extern "C" void* fn_8004B16C(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_80246FDC;
+        *(void**)param_1 = (void*)lbl_80247000;
+        fn_801303BC(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_8004B1DC(void* param_1, void* param_2, void* param_3, void* param_4) {
-    (*(void(**)(void))((*(void***)param_1)[0x20 / sizeof(void*)]))();
+    void* vtable = *(void**)param_1;
+    (*(void(**)(void))((char*)vtable + 0x20))();
+    
     if (*(u8*)((char*)param_1 + 0x13) == 0) {
         *(void**)((char*)param_1 + 0x4) = param_2;
         *(u32*)((char*)param_2 + 0xf4) = *(u32*)((char*)param_2 + 0xf4) | 0x40;
@@ -83,7 +97,7 @@ extern "C" void fn_8004B1DC(void* param_1, void* param_2, void* param_3, void* p
         *(u8*)((char*)param_1 + 0x10) = 0x0;
     }
     *(u8*)((char*)param_2 + 0x110) = 0x2;
-    *(u32*)((char*)param_2 + 0xf0) = 0x0;
+    *(u32*)((char*)param_2 + 0xf0) = (u32)(void*)lbl_802FF0C8;
     *(u32*)((char*)param_2 + 0xc0) = *(u8*)((char*)param_1 + 0x14);
 }
 
