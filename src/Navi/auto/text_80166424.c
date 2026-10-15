@@ -158,7 +158,7 @@ extern "C" void* fn_8016AD94(void* ptr, s16 param_2) {
     return ptr;
 }
 
-u32 fn_801725D8(void) { return 0x54563136; }
+extern "C" u32 fn_801725D8(void) { return 0x54563136; }
 
 extern "C" u32 fn_801725E4(void) { return 0x10; }
 
