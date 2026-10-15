@@ -40,7 +40,8 @@ extern "C" int fn_8000ED7C(void) {
 extern "C" void fn_8000EDF8(void) {
 }
 
-void fn_8000EDFC(void) {}
+extern "C" void fn_8000EDFC(void) {
+}
 
 void fn_8000EE00(void) {}
 
