@@ -253,6 +253,10 @@ extern "C" void fn_800DE090(u8* this_, u32 idx, const u32* src) {
     *(u32*)(this_ + idx * 4 + 0x10) = *src;
 }
 
+extern "C" void fn_800DE0A4(u8* this_, u32 idx, const u32* src) {
+    *(u32*)(this_ + idx * 4 + 0x10) = *src;
+}
+
 extern "C" u32* fn_800DE0B8(u32* this_, u32 idx) {
     return &this_[4] + idx;
 }
