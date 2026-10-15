@@ -27,6 +27,11 @@ extern "C" void fn_800704A4(void) {
     fn_800704C4();
 }
 
+extern "C" BOOL fn_800704C4(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_800709B4(void* param_1, u8** param_2) {
     u8* p = param_2[0];
     if (p != nullptr) {
