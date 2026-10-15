@@ -29,6 +29,12 @@ extern "C" void fn_8011EA30(s64 param_1) {
     }
 }
 
+extern "C" u32 fn_8011EBB4(u32 param_1) {
+    u32 old = lbl_802FF2F4;
+    lbl_802FF2F4 = param_1;
+    return old;
+}
+
 extern "C" void fn_8011F174(void* param_1, u32 param_2, u16 param_3, u32 param_4, u32 param_5) {
     *(u32*)param_1 = param_2;
     *(u32*)((u8*)param_1 + 4) = param_5;
