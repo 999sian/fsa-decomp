@@ -127,6 +127,10 @@ extern "C" int fn_801699B4(void) {
     return 0xFFFF;
 }
 
+extern "C" int fn_801699C0(void) {
+    return 0xFFFF;
+}
+
 extern void* lbl_80298600[];
 extern "C" void* fn_8016ABEC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
