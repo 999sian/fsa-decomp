@@ -37,7 +37,8 @@ extern "C" int fn_8000ED7C(void) {
     return 0xFFFF;
 }
 
-void fn_8000EDF8(void) {}
+extern "C" void fn_8000EDF8(void) {
+}
 
 void fn_8000EDFC(void) {}
 
