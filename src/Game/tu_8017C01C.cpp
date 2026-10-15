@@ -31,6 +31,7 @@ extern "C" void fn_8017ECF4(void* thisPtr, u8 a, u8 b, u8 c, u8 d) {
 
 extern void* fn_8053AB10_ptr;
 extern void* lbl_8053AB10;
+extern "C" u8 fn_8017ECC0(void);
 extern "C" void fn_8017ED08(void) {
     void* p = *(void**)((char*)lbl_8053AB10 + 0x20);
     *(u8*)((char*)p + 0x216) = 1;
