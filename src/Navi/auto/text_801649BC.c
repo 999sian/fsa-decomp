@@ -17,3 +17,9 @@ extern "C" void* fn_801649BC(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern u8 lbl_802FE390;
+extern "C" u8 fn_801655B4(void) {
+    return lbl_802FE390;
+}
+
