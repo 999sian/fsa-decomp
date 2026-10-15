@@ -16,3 +16,6 @@ extern "C" void fn_80182650(void* thisObj, f32 x, f32 y, f32 z) {
 }
 
 extern "C" void fn_80182674(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
+
+extern "C" void fn_801826E4(f32* dst, f32 a, f32 b) { dst[0] = a; dst[1] = b; }
+
