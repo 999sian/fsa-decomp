@@ -5,7 +5,12 @@
 extern void* lbl_802469E8[];
 extern void* lbl_80246AF4[];
 extern void* lbl_80246B28[];
+extern void* lbl_80246ABC[];
+extern void* lbl_80246A88[];
 extern void* lbl_80299A8C[];
+extern void* lbl_802BF110[];
+extern s64 lbl_802FFEC8;
+extern s16 lbl_802FEFB4[];
 extern "C" void* fn_801E0D40(void* dst, void* src, s16 size, s16 count);
 extern "C" void fn_8000CEC4(void);
 extern "C" void fn_8015AB1C(void* ptr);
@@ -39,19 +44,17 @@ extern "C" void* fn_8003CE80(void* ptr, s16 param_2) {
 
 extern "C" void fn_80040120(void) {
     extern void* lbl_802BF0E8[];
-    void* obj1 = lbl_802BF0E8[1];
-    if (obj1 != nullptr) {
-        void** vtable = *(void***)obj1;
+    if (lbl_802BF0E8[1] != nullptr) {
+        void** vtable = *(void***)lbl_802BF0E8[1];
         void (*dtor)(void*, s16) = (void (*)(void*, s16))vtable[4];
-        dtor(obj1, 1);
+        dtor(lbl_802BF0E8[1], 1);
     }
     lbl_802BF0E8[1] = nullptr;
     
-    void* obj2 = lbl_802BF0E8[2];
-    if (obj2 != nullptr) {
-        void** vtable = *(void***)obj2;
+    if (lbl_802BF0E8[2] != nullptr) {
+        void** vtable = *(void***)lbl_802BF0E8[2];
         void (*dtor)(void*, s16) = (void (*)(void*, s16))vtable[4];
-        dtor(obj2, 1);
+        dtor(lbl_802BF0E8[2], 1);
     }
     lbl_802BF0E8[2] = nullptr;
 }
