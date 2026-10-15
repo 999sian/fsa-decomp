@@ -13,6 +13,8 @@ extern void* lbl_802994F0[];
 extern "C" void fn_8016A0B4(void*);
 extern "C" void fn_8018DEF0(void*, u16, u8*);
 extern "C" void fn_80178BFC(void*, void*);
+extern "C" void fn_801780D4(void);
+extern "C" int fn_80177E84(void*, int);
 extern "C" int fn_8017A8CC(void) {
     return 8;
 }
