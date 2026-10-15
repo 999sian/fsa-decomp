@@ -162,3 +162,9 @@ extern "C" void fn_80077CDC(void) {
     fn_8007634C();
 }
 
+extern "C" BOOL fn_80077CFC(void);
+extern "C" BOOL fn_80077CFC(void)
+{
+    return TRUE;
+}
+
