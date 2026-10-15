@@ -6,6 +6,16 @@ extern void* lbl_80283F48[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_802883C4[];
 extern void* lbl_8027EC78[];
+extern "C" int fn_800636A0(void*, void*, int);
+extern u8 lbl_802B7CA0[];
+extern "C" int fn_80087348(void* param_1) {
+    int ret = fn_800636A0(param_1, lbl_802B7CA0 + 0x2200, 0x40);
+    if (ret < 0) {
+        return 5;
+    }
+    return ret > 0 ? 0 : 2;
+}
+
 extern "C" void* fn_80087788(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_802883C4;
