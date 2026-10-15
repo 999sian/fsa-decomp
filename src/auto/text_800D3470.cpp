@@ -322,6 +322,10 @@ extern "C" void fn_800DE50C(Unk800DE4D0* p, int i, const Unk800DE50C& v) {
     p->b[i] = v;
 }
 
+extern "C" void fn_800DE538(Unk800DE4D0* p, int i, const Unk800DE50C& v) {
+    p->b[i] = v;
+}
+
 extern "C" Unk800DE50C* fn_800DE564(Unk800DE4D0* p, int i) {
     return &p->b[i];
 }
