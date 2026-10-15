@@ -5,3 +5,9 @@ extern "C" int TRKDoSupportMask()
 {
 	return 0;
 }
+
+extern "C" int TRKDoVersions()
+{
+	return 0;
+}
+
