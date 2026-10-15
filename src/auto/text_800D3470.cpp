@@ -145,6 +145,10 @@ extern "C" void fn_800DD8A8(u8* self, const J3DFogInfo* other) {
     *(J3DFogInfo*)(self + 4) = *other;
 }
 
+extern "C" void fn_800DD8CC(u8* self, const J3DFogInfo* other) {
+    *(J3DFogInfo*)(self + 4) = *other;
+}
+
 extern "C" void fn_800DD8F8(u8* self, const u8* other) {
     *(u16*)(self + 0x30) = *(const u16*)other;
     self[0x32] = other[2];
