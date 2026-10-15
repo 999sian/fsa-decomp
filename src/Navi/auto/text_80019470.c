@@ -260,6 +260,17 @@ extern "C" void fn_8001C39C(void* param_1) {
     }
 }
 
+extern "C" void fn_8001C3E0(void* param_1) {
+    if (*(s8*)((u8*)param_1 + 0xc) == 0) {
+        void* r31 = *(void**)((u8*)param_1 + 0x10);
+        *(void**)((u8*)param_1 + 0xb8) = *(void**)((u8*)r31 + 0x1c);
+        *(void**)((u8*)param_1 + 0xb4) = fn_8001AC84((void*)lbl_802FEC38);
+        fn_8001BBC4((unsigned short*)((u8*)param_1 + 0xbe), *(s16*)((u8*)r31 + 0x20));
+        *(u8*)((u8*)param_1 + 0xbc) = 0;
+    }
+    fn_8001D630(*(void**)((u8*)param_1 + 0xb8), param_1);
+}
+
 extern "C" void fn_8001C454(void* param_1, int param_2, int param_3) {
     int local[2];
     local[0] = param_2;
@@ -324,6 +335,10 @@ extern "C" void* fn_8001D630(void* param_1, void* param_2) {
         return fn(param_2);
     }
     return (void*)1;
+}
+
+extern "C" void fn_8001D66C(void* param_1, void* param_2) {
+    fn_8001D540(*(void**)((u8*)param_1 + 0x10), param_2);
 }
 
 extern "C" void* fn_8001D690(void* param_1) {
