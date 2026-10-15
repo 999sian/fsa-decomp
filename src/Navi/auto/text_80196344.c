@@ -287,7 +287,7 @@ extern "C" void fn_801A3B30(u8* param_1, int param_2, u8* param_3) {
 }
 
 extern "C" u8* fn_801A3B40(u8* param_1, int param_2) {
-    return &param_1[param_2 + 0x12a];
+    return (param_1 + 0x12a) + param_2;
 }
 
 extern "C" void fn_801A3B50(u8* param_1, int param_2, u32* param_3) {
