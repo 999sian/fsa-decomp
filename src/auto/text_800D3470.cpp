@@ -959,6 +959,8 @@ extern "C" u32* fn_800DE7A4(u32* this_, u32 idx) {
 
 extern "C" u32 fn_800DE7B8(u8* p) { return *(u32*)(p + 4); }
 
+extern "C" u32 fn_800DE7C0(u8* p) { return *(u32*)(p + 0x68); }
+
 extern "C" char __vt__12J3DTevBlock2[];
 extern "C" char __vt__11J3DTevBlock[];
 extern "C" void* fn_800DE7D0(void* p, s16 del) {
