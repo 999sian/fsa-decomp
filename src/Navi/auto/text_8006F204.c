@@ -32,42 +32,36 @@ extern "C" BOOL fn_800704C4(void)
     return TRUE;
 }
 
-extern "C" void fn_800708F8(void* ptr)
+extern "C" void fn_800708F8(void* param)
 {
-    u8* data = (u8*)ptr;
-    s16 s0 = *(s16*)(data + 0x20);
-    s16 s1 = *(s16*)(data + 0x22);
-    s16 s2 = *(s16*)(data + 0x24);
-    f32 f0 = *(f32*)(data + 0x14);
-    f32 f1 = *(f32*)(data + 0x18);
-    f32 f2 = *(f32*)(data + 0x1c);
-    void** ptrs = (void**)data;
+    u8* base = (u8*)param;
+    void** ptrs = (void**)param;
+    s16 val0 = *(s16*)(base + 0x20);
+    s16 val1 = *(s16*)(base + 0x22);
+    s16 val2 = *(s16*)(base + 0x24);
+    f32 fval0 = *(f32*)(base + 0x14);
+    f32 fval1 = *(f32*)(base + 0x18);
+    f32 fval2 = *(f32*)(base + 0x1c);
     
     for (int i = 0; i < 2; i++) {
         void* obj = ptrs[i];
-        if (obj != nullptr) {
-            *(f32*)((u8*)obj + 0xa4) = f0;
-            *(f32*)((u8*)obj + 0xa8) = f1;
-            *(f32*)((u8*)obj + 0xac) = f2;
-            fn_80132450(s0, s1, s2, (u8*)obj + 0x68);
+        if (obj != NULL) {
+            *(f32*)((u8*)obj + 0xa4) = fval0;
+            *(f32*)((u8*)obj + 0xa8) = fval1;
+            *(f32*)((u8*)obj + 0xac) = fval2;
+            fn_80132450(val0, val1, val2, (u8*)obj + 0x68);
         }
     }
 }
 
 extern "C" void fn_800709B4(void* param_1, u8** param_2) {
-    s32 one = 1;
-    u8* zero = nullptr;
-    u8* p = param_2[0];
-    if (p != nullptr) {
-        *(u32*)(p + 0xF4) |= 1;
-        *(s32*)(p + 0x24) = one;
-        param_2[0] = zero;
-    }
-    p = param_2[1];
-    if (p != nullptr) {
-        *(u32*)(p + 0xF4) |= 1;
-        *(s32*)(p + 0x24) = one;
-        param_2[1] = zero;
+    for (s32 i = 0; i < 2; i++) {
+        u8* p = param_2[i];
+        if (p != nullptr) {
+            *(u32*)(p + 0xF4) |= 1;
+            *(s32*)(p + 0x24) = 1;
+            param_2[i] = nullptr;
+        }
     }
 }
 
