@@ -17,6 +17,11 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_80301204;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
+extern "C" BOOL fn_800FFBBC(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
     fn_8015FDA8(a, b);
 }
