@@ -90,7 +90,7 @@ extern "C" int fn_800636A0(void* a, u8* p, int n) {
 extern "C" void* fn_800637F0(void* a, u8* p, int n) {
     int i;
     for (i = 0; i < n; i++) {
-        if (*(s16*)(p + 0xe) != 0 && fn_801E6578(a, p) == 0) {
+        if ((int)*(u16*)(p + 0xe) != 0 && fn_801E6578(a, p) == 0) {
             return p;
         }
         p += 0x24;
