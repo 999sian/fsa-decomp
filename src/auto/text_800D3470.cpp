@@ -1482,8 +1482,12 @@ extern "C" u8* fn_800DEE54(u8* self) {
 extern "C" void* fn_800DEE5C(void* param_1, short param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)&__vt__19J3DTexGenBlockBasic;
-        *(void**)param_1 = (void*)&__vt__21J3DTexGenBlockPatched;
-        *(void**)param_1 = (void*)&__vt__14J3DTexGenBlock;
+        if (param_2 != 0) {
+            *(void**)param_1 = (void*)&__vt__21J3DTexGenBlockPatched;
+        }
+        if (param_2 != 0) {
+            *(void**)param_1 = (void*)&__vt__14J3DTexGenBlock;
+        }
         if ((short)param_2 > 0) {
             __dl__FPv(param_1);
         }
@@ -1512,6 +1516,11 @@ extern "C" void fn_800DEEE4(int param_1, int param_2, u32* param_3)
 extern "C" int fn_800DEEF8(int param_1, int param_2)
 {
   return param_1 + param_2 * 6 + 8;
+}
+
+extern "C" void fn_800DEF0C(u8* self, int i, u32 val) {
+    self = self + i * 4;
+    *(u32*)(self + 0x38) = val;
 }
 
 extern "C" void fn_800DEF34(u8* param_1, u32 param_2) {
