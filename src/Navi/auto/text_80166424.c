@@ -1,3 +1,4 @@
+#include "types.h"
 
 
 extern "C" int fn_8016997C()
@@ -38,6 +39,11 @@ extern "C" int fn_801699E4()
 extern "C" int fn_801699EC()
 {
 	return 0;
+}
+
+extern "C" BOOL fn_80173190(void)
+{
+    return TRUE;
 }
 
 extern "C" int fn_8017334C()
