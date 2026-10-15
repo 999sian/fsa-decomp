@@ -315,6 +315,10 @@ extern "C" void fn_80172E38(u8* p, s32 i, S16x4* c) {
     *(S16x4*)(p + i * 8 + 0x12) = *c;
 }
 
+extern "C" void fn_80172FC8(Unk801727E4Class* param_1, int param_2, int param_3) {
+    param_1->vf7C(param_2, param_3, 0);
+}
+
 extern "C" void fn_80173074(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_80173084(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
