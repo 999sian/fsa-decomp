@@ -373,15 +373,19 @@ extern "C" int fn_800A1BE8(int i) {
     } else if (x >= 0x600) {
         x = 0x5ff;
     }
-    if (y < 0) {
+    if ((s16)y < 0) {
         y = 0;
-    } else if (y >= 0x600) {
+    } else if ((s16)(s32)(s16)y >= 0x600) {
         y = 0x5ff;
     }
     return x / 256 + (y / 256) * 6;
 }
 
 extern "C" void fn_800A1CE0(void) {
+}
+
+extern "C" void fn_8015FDA8(void*, void*);
+extern "C" void fn_800A1CE4(void) {
 }
 
 extern "C" void* fn_800A1CE8(void* ptr, s16 param_2) {
