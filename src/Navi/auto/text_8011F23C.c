@@ -562,9 +562,9 @@ extern "C" int fn_80135858(int param_1, s16 param_2) {
         *(void**)(param_1 + 0x8) = lbl_80292070;
         if (param_1 != 0) {
             *(void**)(param_1 + 0x8) = lbl_802925EC;
-            void (***obj)(void*, int) = *(void (****)(void*, int))(param_1 + 0x34);
+            fn_80135858_Obj* obj = *(fn_80135858_Obj**)(param_1 + 0x34);
             if (obj != 0) {
-                (*obj)[2](obj, 1);
+                obj->Release(1);
             }
             fn_8013A5EC(param_1, 0);
         }
