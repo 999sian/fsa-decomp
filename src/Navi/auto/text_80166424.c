@@ -871,11 +871,11 @@ extern "C" void fn_80178DDC(void* param_1) {
 extern "C" u32 fn_80178E08(void) { return 0x10; }
 
 extern "C" void fn_80178E10(void* param_1, int param_2) {
-    register int r4 = 0;
+    uInt r4 = 0;
     if ((param_2 & 0xFF) != 0) {
-        r4 = 2;
+        register r4 = 2;
     }
-    void (*func)(void*, int) = *(void (**)(void*, int))(*(u8**)param_1 + 0x20);
+    void (*func)((unsigned short)void*, int) = *(void (**)(void*, int))(*(u8**)param_1 + 0x20);
     func(param_1, r4);
 }
 
