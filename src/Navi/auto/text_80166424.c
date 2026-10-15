@@ -317,6 +317,14 @@ extern "C" int fn_80172680(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x56;
 }
 
+extern "C" void fn_80172694(int param_1, int param_2, unsigned char* param_3) {
+    param_1 = param_1 + param_2 * 4;
+    *(unsigned char*)(param_1 + 0xf8) = param_3[0];
+    *(unsigned char*)(param_1 + 0xf9) = param_3[1];
+    *(unsigned char*)(param_1 + 0xfa) = param_3[2];
+    *(unsigned char*)(param_1 + 0xfb) = param_3[3];
+}
+
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
     u32 b = param_3[1];
     u32 a = param_3[0];
@@ -376,6 +384,10 @@ extern "C" int fn_80172884(void) {
 extern "C" void fn_8017288C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_8017289C(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
+
+extern "C" unsigned short fn_801728B4(int param_1) {
+    return *(unsigned short*)(param_1 + 0x14);
+}
 
 extern "C" void fn_80172A84(Unk801727E4Class* param_1, int param_2, int param_3) {
     param_1->vf7C(param_2, param_3, 0);
