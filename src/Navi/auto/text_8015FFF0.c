@@ -5,7 +5,7 @@ extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
 extern "C" char lbl_802EE2EC[];
 extern "C" char lbl_802981A8[];
 extern "C" char lbl_802981B8[];
-extern "C" char lbl_802FE368[];
+extern "C" char lbl_802FE368[4];
 extern "C" void fn_801BE3A0(void*);
 extern "C" void fn_801BDEE4(void*, void*, int);
 extern "C" void fn_801BE47C(void*);
@@ -79,6 +79,17 @@ extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_801647A0(u8* p) {
+    if (p[0x18]) {
+        if (fn_801C7D34(p + 0x5c)) {
+            p[0x18] = 0;
+            fn_80166FC4(lbl_802EE2EC, p + 0xe4);
+        } else {
+            fn_8011C9EC(lbl_802981A8, 0xd5, lbl_802FE368, lbl_802981B8);
+        }
+    }
 }
 
 extern "C" u32 fn_801648EC(u8* p) {
