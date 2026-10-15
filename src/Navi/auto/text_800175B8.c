@@ -26,3 +26,8 @@ extern "C" void* fn_8001766C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void);
+extern "C" void fn_80017F88(void) {
+    cTg_SingleCutFromTree__FP16create_tag_class();
+}
+
