@@ -484,3 +484,6 @@ extern "C" int fn_80178E4C(int param_1) {
     return 0;
 }
 
+extern "C" void fn_80178E5C(void) {
+}
+
