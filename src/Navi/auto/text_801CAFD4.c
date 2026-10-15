@@ -4,6 +4,10 @@
 extern "C" int OSDisableInterrupts(void);
 extern "C" void OSRestoreInterrupts(int state);
 int lbl_802FF8F4;
+extern unsigned long lbl_802FF944;
+extern unsigned long lbl_802FE9F8;
+extern unsigned long lbl_802FE9F4;
+extern unsigned long CurrTvMode_802FF92C;
 int jumptable_8029D79C[];
 extern "C" int fn_801CB248(int param_1) {
     volatile int dummy;
