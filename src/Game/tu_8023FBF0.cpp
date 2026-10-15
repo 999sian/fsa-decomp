@@ -1345,7 +1345,7 @@ inline bool padActive5(char* p) {
     return true;
 }
 BOOL fn_80246464(char* p) {
-    if (!padActive4(p)) {
+    if (!padActive5(p)) {
         return 0;
     }
     if (fn_8022B244()) {
