@@ -1,4 +1,6 @@
 #include "types.h"
+extern void* lbl_802FEBA0;
+
 extern void* lbl_80299A8C[];
 
 extern "C" void* lbl_8020491C[];
@@ -212,6 +214,9 @@ extern "C" void* fn_8000EE4C(void* ptr, s16 param_2) {
 extern "C" void fn_8000EE88(void) {
 }
 
+extern "C" void fn_8000EE8C(void) {
+}
+
 extern "C" void fn_8000EEC0(void) {
 }
 
@@ -259,6 +264,11 @@ extern "C" void* fn_8000F388(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+void* fn_8000F484(void)
+{
+	return lbl_802FEBA0;
 }
 
 extern "C" void fn_80159BB4(void);
