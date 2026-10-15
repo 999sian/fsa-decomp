@@ -4,6 +4,8 @@
 // .text 0x80196344-0x801a537c (574 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_801A7E24(int);
+struct NaviRect16 { s16 x, y, w, h; };
+struct NaviColor8 { u8 r, g, b, a; };
 extern void* lbl_80299E68[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80196388(void* ptr, s16 param_2) {
@@ -177,11 +179,11 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A38E0(u8* p, s32 i, s16* src) {
-    s16* dst = (s16*)(p + i * 8 + 0xda);
-    dst[0] = src[0];
-    dst[1] = src[1];
-    dst[2] = src[2];
-    dst[3] = src[3];
+    s16* dst = (s16*)(p + i * 8);
+    dst[0x6d] = src[0];
+    dst[0x6e] = src[1];
+    dst[0x6f] = src[2];
+    dst[0x70] = src[3];
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
@@ -189,11 +191,11 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
-    u8* dst = p + i * 4 + 0xfa;
-    dst[0] = src[0];
-    dst[1] = src[1];
-    dst[2] = src[2];
-    dst[3] = src[3];
+    u8* dst = p + i * 4;
+    dst[0xfa] = src[0];
+    dst[0xfb] = src[1];
+    dst[0xfc] = src[2];
+    dst[0xfd] = src[3];
 }
 
 extern "C" void* fn_801A3B8C(void* p) {
