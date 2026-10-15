@@ -8,9 +8,7 @@ extern u16 lbl_80301ADE;
 struct Unk80174858Pair { u8 x; u8 y; };
 extern Unk80174858Pair lbl_80301AC0;
 extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
-static inline void fn_80174BD0Init(void* ptr, u32 arg, u32 a, u32 b, u32 c, u32 d) {
-    fn_80174CAC(ptr, arg, &a, &b, &c, &d, 0);
-}
+
 
 extern void* lbl_80298390[];
 extern "C" void fn_8015AB1C(void* ptr);
@@ -180,7 +178,11 @@ extern "C" void* fn_80174BB8(void* base, u32 offset) {
 }
 
 extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d) {
+    u32 aa, bb, cc, dd;
+    u32 va, vb, vc, vd;
+    vd = *d; vc = *c; vb = *b;
     *(void**)ptr = lbl_80298C5C;
+    va = *a;
     u32* words = (u32*)ptr;
     words[2] = -1;
     words[3] = -1;
@@ -188,7 +190,8 @@ extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d)
     words[15] = -1;
     words[16] = -1;
     words[17] = -1;
-    fn_80174BD0Init(ptr, arg, *a, *b, *c, *d);
+    dd = vd; cc = vc; bb = vb; aa = va;
+    fn_80174CAC(ptr, arg, &aa, &bb, &cc, &dd, 0);
     return ptr;
 }
 
