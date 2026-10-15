@@ -752,9 +752,15 @@ extern "C" Unk800DE578* fn_800DE190(Unk800DE0CC* p, int i) {
     return &p->b[i];
 }
 
+extern "C" void fn_800DE1B0(int param_1, int param_2, u8* param_3)
+{
+  *(u8*)(param_1 + param_2 + 0x72) = *param_3;
+}
+
 extern "C" u8 fn_800DE1C0(int param_1, int param_2)
 {
-  return *(u8*)(param_1 + param_2 + 0x72);
+  u8* ptr = (u8*)param_1;
+  return *(ptr + param_2 + 0x72);
 }
 
 extern "C" void fn_800DE1CC(int param_1, int param_2, u8 param_3)
@@ -764,7 +770,7 @@ extern "C" void fn_800DE1CC(int param_1, int param_2, u8 param_3)
 
 extern "C" void fn_800DE1D8(int param_1, int param_2, u8* param_3)
 {
-  *(u8*)(param_1 + param_2 + 0x76) = param_3[0];
+  *(u8*)(param_1 + param_2 + 0x76) = *param_3;
 }
 
 extern "C" u8 fn_800DE1E8(int param_1, int param_2)
