@@ -1,4 +1,6 @@
 #include "types.h"
+extern void* lbl_80283F48[];
+
 struct NaviState_8009E6F0 {
     void f();
 };
@@ -160,6 +162,22 @@ extern "C" void* fn_80091DD8(void* ptr, s16 param_2) {
             }
         }
         if (0 < param_2) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
+extern "C" void* fn_80091E4C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80283F48;
+        if ((s32)ptr + (unsigned)0x4 != 0) {
+            ((void**)(ptr))[1] = lbl_80289A14;
+            if ((s32)ptr + 0x4 != 0) {
+                ((void**)(ptr))[1] = lbl_8027EC78;
+            }
+        }
+        if (param_2 > 0) {
             fn_8015AB1C(ptr);
         }
     }
@@ -724,6 +742,129 @@ extern "C" void fn_800A03E0(void* param_1) {
 
 extern "C" void fn_800A1748(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((char*)param_1 + 0x25c));
+}
+
+extern f32 lbl_80300B20;
+extern f64 lbl_80300B00;
+extern f64 lbl_80300B58;
+extern f64 lbl_80300B60;
+extern f32 lbl_80300B38;
+extern f64 lbl_80300B68;
+extern f32 lbl_80300B70;
+extern f32 lbl_80300B74;
+extern f32 lbl_80300AFC;
+extern f32 lbl_802FEAB0;
+extern f32* lbl_802F0BC0;
+extern "C" f32 fn_800A1774(s32 param_1, s32 param_2, u8 param_3)
+{
+    if (param_1 <= 0) {
+        return lbl_80300B20;
+    }
+    
+    if (param_2 < 0) {
+        param_2 = 0;
+    }
+    
+    if (param_2 > param_1) {
+        param_2 = param_1;
+    }
+    
+    // Convert to double using 2^52 trick and compute ratio
+    f64 ratio = ((f64)(u32)param_2 - 4503599627370496.0) / ((f64)(u32)param_1 - 4503599627370496.0);
+    f32 f4 = (f32)ratio;
+    
+    u8 mode = param_3 & 0xFF;
+    
+    switch (mode) {
+    case 0:
+        return f4 * f4;
+    case 1: {
+        if (f4 <= lbl_80300AF0) {
+            if (f4 < lbl_80300B68) {
+                return lbl_802FEAB0;
+            }
+            f32 x = f4;
+            f32 bit_pattern = x;
+            // Check for special values
+            u32 bits;
+            *(u32*)&bits = *(u32*)&bit_pattern;
+            u32 exp = (bits >> 23) & 0xFF;
+            if (exp == 0xFF) {
+                // Infinity
+                if ((bits & 0x7FFFFF) == 0) {
+                    return lbl_802FEAB0;
+                }
+                // NaN
+                return lbl_802FEAB0;
+            }
+            if (bits == 0) {
+                // Zero
+                return f4;
+            }
+            
+            // Newton-Raphson sqrt
+            f32 result = __frsqrte(f4);
+            f64 magic3 = lbl_80300B58;
+            f64 magic2 = lbl_80300B60;
+            
+            f64 res_d = (f64)result;
+            f64 temp = res_d * res_d;
+            f64 temp2 = magic3 * res_d;
+            temp = (f64)f4 * temp;
+            temp = magic2 - temp;
+            res_d = temp2 * temp;
+            
+            temp = res_d * res_d;
+            temp2 = magic3 * res_d;
+            temp = (f64)f4 * temp;
+            temp = magic2 - temp;
+            res_d = temp2 * temp;
+            
+            temp = res_d * res_d;
+            temp2 = magic3 * res_d;
+            temp = (f64)f4 * temp;
+            temp = magic2 - temp;
+            res_d = temp2 * temp;
+            
+            result = (f32)(res_d * (f64)f4);
+            return result;
+        } else {
+            return f4;
+        }
+    }
+    case 2: {
+        f32 threshold = lbl_80300B38;
+        f32 bias = lbl_80300B20;
+        f32 temp = threshold * f4;
+        temp = temp - bias;
+        temp = threshold * temp;
+        return temp - bias;
+    }
+    case 3:
+        return f4;
+    case 4: {
+        f32 scale = lbl_80300B70;
+        f32 index_scale = lbl_80300AFC;
+        f32 scaled = scale * f4;
+        scaled = index_scale * scaled;
+        s32 idx = (s32)scaled;
+        idx = (idx << 2) & 0x3FF;
+        f32 val = *(f32*)((u8*)lbl_802F0BC0 + idx);
+        return val * val;
+    }
+    case 5: {
+        f32 scale = lbl_80300B74;
+        f32 index_scale = lbl_80300AFC;
+        f32 scaled = scale * f4;
+        scaled = index_scale * scaled;
+        s32 idx = (s32)scaled;
+        idx = (idx << 2) & 0x3FF;
+        f32 val = *(f32*)((u8*)lbl_802F0BC0 + idx);
+        return val * val;
+    }
+    default:
+        return f4;
+    }
 }
 
 extern "C" void fn_800175B8(void*);
