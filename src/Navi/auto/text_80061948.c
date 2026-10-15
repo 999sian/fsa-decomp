@@ -687,3 +687,9 @@ extern "C" void fn_8006CE28(void) {
     fn_8006B6D8();
 }
 
+extern "C" BOOL fn_8006CFD0(void);
+extern "C" BOOL fn_8006CFD0(void)
+{
+    return TRUE;
+}
+
