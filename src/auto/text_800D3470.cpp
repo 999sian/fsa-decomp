@@ -126,6 +126,8 @@ void J3DTexGenBlockPatched::initialize()
 	mTexMtxOffset = 0;
 }
 
+extern "C" int fn_800D3E30(void) { return 0xfe; }
+
 extern "C" int fn_800D3E38(void) { return 0x1f2; }
 
 extern "C" u32 fn_800D3E40(void)
