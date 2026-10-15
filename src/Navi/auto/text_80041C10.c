@@ -105,6 +105,24 @@ extern "C" void fn_8004B1DC(void* param_1, void* param_2, void* param_3, void* p
     *(u32*)((char*)param_2 + 0xc0) = *(u8*)((char*)param_1 + 0x14);
 }
 
+extern "C" void fn_8004B854(void* param_1) {
+    void* obj = *(void**)((char*)param_1 + 0x4);
+    if (obj == nullptr) {
+        return;
+    }
+    *(u32*)((char*)obj + 0xf4) = *(u32*)((char*)obj + 0xf4) | 0x1;
+    *(u32*)((char*)obj + 0x24) = 0x1;
+    
+    obj = *(void**)((char*)param_1 + 0x4);
+    *(u32*)((char*)obj + 0xf4) = *(u32*)((char*)obj + 0xf4) & 0xffffffbf;
+    
+    obj = *(void**)((char*)param_1 + 0x4);
+    *(void**)((char*)obj + 0xec) = (void*)lbl_802BF42C;
+    
+    *(u8*)((char*)param_1 + 0x10) = *(u8*)((char*)param_1 + 0x10) | 0x1;
+    *(void**)((char*)param_1 + 0x4) = nullptr;
+}
+
 extern "C" void* fn_8004CBB4(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
