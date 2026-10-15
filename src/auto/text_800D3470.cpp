@@ -358,6 +358,8 @@ extern "C" u8* fn_800DD970(u8* self) {
     return self + 0x38;
 }
 
+extern "C" u8 fn_800DD9A8(u8* p) { return p[0x3b]; }
+
 extern "C" u32 fn_800DD9B0(u8* p) { return *(u32*)(p + 0x3c); }
 
 extern "C" void fn_800DD9B8(u8* p, u32 v) { *(u32*)(p + 0x3c) = v; }
