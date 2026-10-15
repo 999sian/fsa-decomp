@@ -286,6 +286,9 @@ extern "C" int fn_801328B8(void) {
     return 5;
 }
 
+extern "C" void fn_801328C8(void) {
+}
+
 extern void* lbl_80291320[];
 extern "C" void* fn_801328F8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
