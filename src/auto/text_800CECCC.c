@@ -45,6 +45,11 @@ extern "C" void fn_800CF370(void** p) {
     *vp = lbl_8049AE10;
 }
 
+extern "C" void fn_800CF8F4(void* param_1, unsigned char* anm, const J3DAnmVisibilityFullData* data);
+extern "C" void fn_800CF8CC(void** self, const J3DAnmVisibilityFullData* data) {
+    fn_800CF8F4(self, (unsigned char*)self[1], data);
+}
+
 struct J3DAnmVisibilityFullTable;
 extern "C" void fn_800CF8F4(void* param_1, unsigned char* anm, const J3DAnmVisibilityFullData* data) {
     *(short*)(anm + 6) = data->mTotalFrameCount;
