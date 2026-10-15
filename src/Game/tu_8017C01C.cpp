@@ -13,6 +13,15 @@ extern "C" void fn_8017EB0C(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x8) = z;
 }
 
+extern "C" u32 fn_8017EB1C(f32 value) {
+    void* p = *(void**)((char*)lbl_8053AB10 + 0x30);
+    if (*(u8*)((char*)p + 0x284) == 0) {
+        *(u8*)((char*)p + 0x284) = 1;
+        *(f32*)((char*)p + 0x28c) = value;
+    }
+    return 0;
+}
+
 extern "C" void fn_8017EC38(u32* dst, const u32* src) {
     dst[0] = src[0];
     dst[1] = src[1];
