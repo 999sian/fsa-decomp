@@ -379,9 +379,8 @@ extern "C" u32 fn_801327D8(void) {
     return 3;
 }
 
-BOOL fn_801327E0()
-{
-	return TRUE;
+extern "C" BOOL fn_801327E0(void) {
+    return TRUE;
 }
 
 extern "C" void fn_801327E8(void) {
