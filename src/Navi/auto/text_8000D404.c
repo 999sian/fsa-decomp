@@ -38,6 +38,17 @@ extern "C" void* fn_8000F388(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_80204984[];
+extern "C" void* fn_80010224(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80204984;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void fn_800120AC(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
