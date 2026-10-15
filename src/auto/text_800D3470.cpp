@@ -384,6 +384,16 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
     return *(unsigned char *)(param_1 + 0x58);
 }
 
+extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
+    int addr = param_1 + param_2 * 8;
+    *(u8 *)(addr + 0x5a) = param_3[1];
+    *(u8 *)(addr + 0x5b) = param_3[2];
+    *(u8 *)(addr + 0x5c) = param_3[3];
+    *(u8 *)(addr + 0x5e) = param_3[5];
+    *(u8 *)(addr + 0x5f) = param_3[6];
+    *(u8 *)(addr + 0x60) = param_3[7];
+}
+
 extern "C" int fn_800DDE48(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x59;
 }
@@ -826,6 +836,19 @@ extern "C" u16* fn_800DF13C(Unk800DF13C* self, int i) {
 
 extern "C" void fn_800DF150(u8* self, int i, void* v) {
     ((void**)(self + 0x20))[i] = v;
+}
+
+extern "C" void* fn_800DF1AC(void* self, short flag) {
+    if (self) {
+        *(void**)self = __vt__20J3DColorBlockLightOn;
+        if (self) {
+            *(void**)self = __vt__13J3DColorBlock;
+        }
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
 }
 
 extern "C" u32 fn_800DF208(void) {
