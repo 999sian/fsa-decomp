@@ -5,6 +5,12 @@
 extern void* lbl_80280CEC[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80132450(s16, s16, s16, void*);
+extern "C" void fn_80070454(void* ptr, u8 val)
+{
+    ((u8*)ptr)[0x2fa] = val;
+    ((u8*)ptr)[0x2fb] = 0;
+}
+
 extern "C" void* fn_80070464(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
