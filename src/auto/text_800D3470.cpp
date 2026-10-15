@@ -19,6 +19,12 @@ struct Vtable800D8248 {
 #include "dolphin/os/OSCache.h"
 #include "JSystem/J3D/J3DPE.h"
 #include "JSystem/J3D/J3DInd.h"
+struct Bits800DDE5C {
+    u8 pad : 4;
+    u8 b : 2;
+    u8 a : 2;
+    u8 rest[7];
+};
 extern "C" char __vt__22J3DColorBlockAmbientOn[];
 extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
@@ -846,9 +852,9 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
+    u8* p = param_1 + param_2 * 8;
     u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    u8* p = param_1 + param_2 * 8;
     p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
     p[0x60] = (p[0x60] & ~0x3) | b0;
 }
@@ -1695,6 +1701,17 @@ extern "C" void* fn_800DF460(void* self, short flag) {
 
 extern "C" u32 fn_800DF4BC(void) {
     return 0x50454f50;
+}
+
+extern "C" void* fn_800DF4C8(void* param_1, short param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = &__vt__13J3DPEBlockOpa;
+        *(void**)param_1 = &__vt__10J3DPEBlock;
+        if (param_2 > 0) {
+            __dl__FPv(param_1);
+        }
+    }
+    return param_1;
 }
 
 extern "C" void fn_800DF540(int param_1, int param_2, u32* param_3) {
