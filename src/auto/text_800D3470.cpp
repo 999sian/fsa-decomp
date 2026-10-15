@@ -1832,6 +1832,10 @@ extern "C" void* fn_800DF634(void* param_1, short param_2)
   return param_1;
 }
 
+extern "C" unsigned long fn_800DF6D0(void) {
+    return 'CLOF';
+}
+
 struct UnkVtableTest8248 {
     int x;
 };
