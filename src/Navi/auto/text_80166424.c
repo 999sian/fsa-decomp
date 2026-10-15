@@ -1,4 +1,4 @@
-
+#include <string.h>
 
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
     u32 b = param_3[1];
