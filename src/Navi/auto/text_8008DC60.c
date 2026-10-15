@@ -614,6 +614,11 @@ extern "C" void fn_8009EBA0(NaviState_8009E6F0* p) {
     (p->*lbl_8028661C[((u8*)p)[0x800]])();
 }
 
+extern NaviStateFunc_8009E6F0 lbl_80286694[];
+extern "C" void fn_8009F01C(NaviState_8009E6F0* p) {
+    (p->*lbl_80286694[((u8*)p)[0x800]])();
+}
+
 extern void* lbl_80288AB4[];
 extern "C" void* fn_8009FC88(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
