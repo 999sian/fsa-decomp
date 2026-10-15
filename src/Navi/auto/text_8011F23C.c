@@ -10,6 +10,9 @@ extern void* lbl_80292558[];
 // .text 0x8011f23c-0x80135cf8 (427 functions). split_file divides it into the game's real files.
 
 extern void* lbl_80290ACC[];
+extern "C" void* lbl_802FF364;
+extern "C" void* lbl_802FF368;
+extern "C" void fn_801328F8(...);
 
 extern "C" void fn_8013345C();
 
