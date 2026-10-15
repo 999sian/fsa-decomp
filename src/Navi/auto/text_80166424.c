@@ -41,7 +41,7 @@ extern "C" void fn_80178B74(void* param_1, void* param_2) {
 
 extern "C" void* fn_80178BFC(void* param_1, void* param_2) {
     if (*(void**)((u8*)param_1 + 0xf8) != NULL) {
-        register param_2 = *(void**)((u8*)param_1 + 0xf8);
+        	register void* param_2 = *(void**)((u8*)param_1 + 0xf8);
     }
     u8* it = *(u8**)((u8*)param_1 + 0xdc);
     if (it != NULL) {
