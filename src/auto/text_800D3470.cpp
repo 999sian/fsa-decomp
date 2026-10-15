@@ -292,17 +292,17 @@ extern "C" void fn_800D91D8(void) {
 
 extern "C" void fn_800D92CC(u8* self) {
     u32 value = *(u32*)(self + 0x18);
-    u32 combined = value | 0x1000;
+    u32 combined = value | 0x10000000;
     
     u8* dl = __GDCurrentDL->pDisplayListData;
     
-    *dl++ = 0x61;
-    *dl++ = (combined >> 24) & 0xff;
-    *dl++ = (combined >> 16) & 0xff;
-    *dl++ = (combined >> 8) & 0xff;
-    *dl++ = combined & 0xff;
+    dl[0] = 0x61;
+    dl[1] = (combined >> 24) & 0xff;
+    dl[2] = (combined >> 16) & 0xff;
+    dl[3] = (combined >> 8) & 0xff;
+    dl[4] = combined & 0xff;
     
-    __GDCurrentDL->pDisplayListData = dl;
+    __GDCurrentDL->pDisplayListData = dl + 5;
 }
 
 extern "C" void fn_800D971C(u8* self) {
@@ -1060,7 +1060,7 @@ extern "C" void fn_800DED64(int p, int i, int v) {
 
 extern "C" void fn_800DED70(int param_1, int param_2, const u8* param_3)
 {
-    *(u8*)(param_1 + param_2 + 0xc8) = *param_3;
+    *(u8*)(param_1 + param_2 + 0xc8) = param_3[0];
 }
 
 extern "C" u8 fn_800DED80(int param_1, int param_2)
@@ -1171,6 +1171,10 @@ extern "C" void fn_800DF178(u8* self, u8* src) {
     *(u8*)(self + 0x40) = *src;
 }
 
+extern "C" void fn_800DF1A4(int param_1, u32 param_2) {
+    *(u32*)(param_1 + 0x48) = param_2;
+}
+
 extern "C" void* fn_800DF1AC(void* self, short flag) {
     if (self) {
         *(void**)self = __vt__20J3DColorBlockLightOn;
@@ -1188,13 +1192,8 @@ extern "C" u32 fn_800DF208(void) {
     return 0x434c4142;
 }
 
-extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
-    int offset = param_2 * 4;
-    param_1 = param_1 + offset;
-    *(u8*)(param_1 + 0x20) = param_3[0];
-    *(u8*)(param_1 + 0x21) = param_3[1];
-    *(u8*)(param_1 + 0x22) = param_3[2];
-    *(u8*)(param_1 + 0x23) = param_3[3];
+extern "C" void fn_800DF214(int param_1, int param_2, GXColor* param_3) {
+    ((GXColor*)(param_1 + 0x20))[param_2] = *param_3;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
