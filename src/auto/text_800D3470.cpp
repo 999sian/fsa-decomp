@@ -33,6 +33,7 @@ extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
 extern "C" void* sTexCoordScaleTable__6J3DSys;
 extern "C" void J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(unsigned char, unsigned short, unsigned char, unsigned char, unsigned short, unsigned char, unsigned char);
 extern "C" void loadTexNo__FUlRCUs(unsigned long, unsigned short*);
+extern "C" void loadTexCoordGens__FUlP11J3DTexCoord(unsigned long, void*);
 extern "C" void DCStoreRange(void*, unsigned long);
 extern "C" void __dt__12J3DIndTexMtxFv(void*);
 extern "C" void __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo(J3DIndTexMtxInfo*, const J3DIndTexMtxInfo&);
