@@ -98,3 +98,6 @@ extern "C" int fn_800CBDA8(void) {
     return 0;
 }
 
+extern "C" void fn_800CBDB0(void) {
+}
+
