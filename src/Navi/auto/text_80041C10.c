@@ -17,6 +17,9 @@ extern "C" void* fn_80041C4C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8004A37C(void) {
+}
+
 extern "C" void fn_801303BC(void*, int);
 extern "C" void fn_8003E748(void);
 extern char lbl_80246FDC[];
