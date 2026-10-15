@@ -89,8 +89,7 @@ extern "C" void fn_801200F0(void)
 {
 	void* obj = lbl_802FF328;
 	if (obj != 0) {
-		void** vtable = *(void***)obj;
-		VirtualMethod0 vf = (VirtualMethod0)(vtable[2]);
+		VirtualMethod0 vf = (VirtualMethod0)(*((void**)(*((void***)obj)) + 2));
 		vf(obj, 1);
 		lbl_802FF328 = 0;
 	}
@@ -543,6 +542,15 @@ extern "C" void fn_8013296C(void)
 extern "C" int fn_80132970(void)
 {
 	return -1;
+}
+
+extern "C" int fn_80132978(void* param_1, void* param_2, f32* param_3) {
+    extern const f32 lbl_803017B0;
+    f32 val = lbl_803017B0;
+    for (int i = 0; i < 12; i++) {
+        param_3[i] = val;
+    }
+    return 0;
 }
 
 extern "C" BOOL fn_80132A14(void)
