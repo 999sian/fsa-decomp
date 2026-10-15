@@ -104,6 +104,10 @@ extern "C" u8 fn_80026694(void) {
     return lbl_802FED9F;
 }
 
+extern "C" void fn_8002669C(void) {
+    lbl_802FED9F = 1;
+}
+
 extern u8 lbl_802FED9F;
 extern "C" void fn_800266A8(void) {
     lbl_802FED9F = 0;
