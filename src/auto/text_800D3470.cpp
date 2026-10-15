@@ -518,6 +518,10 @@ extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
     return &p->a[i];
 }
 
+extern "C" void fn_800DF0F8(u8* self, const u8* v) {
+    self[0x14] = *v;
+}
+
 extern "C" void* fn_800DF280(void* self, short flag) {
     if (self) {
         *(void**)self = __vt__22J3DColorBlockAmbientOn;
