@@ -27,6 +27,12 @@ extern "C" BOOL fn_800A3030(void)
     return TRUE;
 }
 
+extern "C" BOOL fn_800A3038(void);
+extern "C" BOOL fn_800A3038(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_800A4EF0(void* param_1) {
     VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
     obj->v3();
