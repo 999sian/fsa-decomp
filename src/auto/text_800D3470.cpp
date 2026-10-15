@@ -771,7 +771,8 @@ extern "C" void fn_800DE1CC(int param_1, int param_2, u8 param_3)
 
 extern "C" void fn_800DE1D8(int param_1, int param_2, u8* param_3)
 {
-  *(u8*)(param_1 + param_2 + 0x76) = *param_3;
+  u8* ptr = (u8*)param_1;
+  *(ptr + param_2 + 0x76) = *param_3;
 }
 
 extern "C" u8 fn_800DE1E8(int param_1, int param_2)
