@@ -19,7 +19,12 @@ struct Vtable800D8248 {
 extern "C" char __vt__22J3DColorBlockAmbientOn[];
 extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
+extern "C" char __vt__15J3DIndBlockFull[];
+extern "C" char __vt__11J3DIndBlock[];
 extern "C" void __dl__FPv(void*);
+extern "C" void __destroy_arr(void*, void*, u32, u32);
+extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
+extern "C" void __dt__12J3DIndTexMtxFv(void*);
 struct ActorBox;
 struct Unk800DF13C {
     u8 _0[0x16];
