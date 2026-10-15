@@ -20,6 +20,17 @@ extern u8 lbl_802A2140[];
 extern u8 lbl_802A3460[];
 extern u8 lbl_802FEBE0;
 extern f32 lbl_802FFBB8;
+
+struct Unk80013DA0 {
+    u8 pad[0x24];
+    u32 b0 : 2;
+    u32 b1 : 15;
+    u32 b2 : 15;
+    u8 pad28[0x50 - 0x28];
+    u8 unk50;
+    u8 pad51[0x5f - 0x51];
+    u8 unk5f;
+};
 extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80204F9C;
