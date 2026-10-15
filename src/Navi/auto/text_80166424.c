@@ -272,6 +272,11 @@ extern "C" int fn_8016B418()
 	return 0;
 }
 
+extern "C" u32 fn_80172468(void)
+{
+    return 0x49424c46;
+}
+
 extern "C" u32 fn_801725D8(void) { return 0x54563136; }
 
 extern "C" u32 fn_801725E4(void) { return 0x10; }
