@@ -475,6 +475,10 @@ extern "C" void fn_801A4D74(u8* param_1, u8* param_2) {
     param_1[0x14] = param_2[0];
 }
 
+extern "C" void fn_801A4D80(u8* param_1, u8 param_2) {
+    param_1[0x14] = param_2;
+}
+
 extern void* lbl_8029AAB8[];
 extern "C" void* fn_801A4E28(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
