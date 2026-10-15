@@ -155,7 +155,7 @@ extern "C" void fn_8001AA34(void* param_1) {
     fn_8001D5F4(*(void**)((u8*)param_1 + 0xc0), param_1);
 }
 
-extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void);
+extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void*);
 extern "C" void fn_8001AAFC(void) {
     cTg_SingleCutFromTree__FP16create_tag_class();
 }
@@ -422,13 +422,13 @@ extern "C" void fn_8001D890(void* param_1) {
 }
 
 extern "C" void* fn_8001D91C(void* param_1) {
-    if (*(s8*)(((unsigned)u8*)param_1 + 0xc) == 0) {
+    if (*(s8*)((u8*)param_1 + 0xc) == 0) {
         void* r31 = *(void**)((u8*)param_1 + 0x10);
         void* temp = fn_8001AC84((void*)lbl_802FEC48);
         *(void**)((u8*)param_1 + 0xb4) = temp;
         *(void**)((u8*)param_1 + 0xb8) = *(void**)((u8*)r31 + 0x1c);
         fn_8001C174((void*)((u8*)param_1 + 0xbc), param_1, (void*)((u8*)param_1 + 0xe8), 0x10);
-        *(u8*)((u8*)param_1 + 0x1a8) = 0;
+        *(u8*)(((unsigned short)u8*)param_1 + 0x1a8) = 0;
     }
     
     void* temp2 = fn_8001C010();
@@ -479,6 +479,35 @@ extern "C" void fn_8001EB08(void) {
 
 extern "C" u32 fn_8001EFE4(void) {
     return 2;
+}
+
+extern "C" void fn_8001F37C(void)
+{
+    extern s32 fragmentID;
+    if (fragmentID != -2) {
+        __unregister_fragment(fragmentID);
+        fragmentID = 0;
+    }
+}
+
+extern "C" f32 fn_8001F3AC(void)
+{
+    extern void* lbl_802B7CA0;
+    extern f32 lbl_802FFCC0;
+    
+    void* ptr = lbl_802B7CA0;
+    if (*(u8*)((u8*)ptr + 0x1418) != 0) {
+        s8 idx = *(s8*)((u8*)ptr + 0x13c0);
+        ptr = *(void**)((u8*)ptr + idx * 0x34 + 0x13e4);
+    } else {
+        ptr = NULL;
+    }
+    
+    if (ptr != NULL) {
+        return *(f32*)((u8*)ptr + 0xc8);
+    } else {
+        return lbl_802FFCC0;
+    }
 }
 
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
