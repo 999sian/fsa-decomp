@@ -512,6 +512,29 @@ extern "C" void fn_8006B928(void* param_1) {
     *(u32*)((u8*)param_1 + 0x2cc) = (u32)result;
 }
 
+extern "C" void fn_8006B9A4(void* param_1) {
+    fn_8006C404();
+    if (*(u32*)((u8*)param_1 + 0x2fc) < 480000) {
+        *(s32*)((u8*)param_1 + 0x2cc) = *(s32*)((u8*)param_1 + 0x2cc) - 1;
+        if (*(s32*)((u8*)param_1 + 0x2cc) == 0) {
+            u32 rng = *(u32*)(0x802FC710);
+            rng = rng * 0x19660d + 0x3c6f35f;
+            *(u32*)(0x802FC710) = rng;
+            u16 val = *(u16*)((u8*)param_1 + 0x30e);
+            val = val + ((rng >> 1) & 0x6000);
+            *(u16*)((u8*)param_1 + 0x30e) = val;
+            fn_8006C5B0((s32)param_1);
+        }
+    } else {
+        fn_8006C5B0((s32)param_1);
+    }
+}
+
+extern "C" void fn_8006BA44(void* param_1) {
+    *(u16*)((u8*)param_1 + 0x310) = 0;
+    fn_80030534((u8*)param_1 + 0x2ec, 0x58, 1);
+}
+
 extern "C" void fn_8006BADC(void) {
 }
 
