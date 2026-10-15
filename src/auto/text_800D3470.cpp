@@ -537,13 +537,10 @@ extern "C" int fn_800DD8F0(int param_1) {
     return param_1 + 4;
 }
 
-extern "C" void fn_800DD8F8(u8* param_1, u8* param_2) {
-    u16 w = *(u16*)param_2;
-    u8 b2 = param_2[2];
-    *(u16*)(param_1 + 0x30) = w;
-    u8 b3 = param_2[3];
-    *(u8*)(param_1 + 0x32) = b2;
-    *(u8*)(param_1 + 0x33) = b3;
+extern "C" void fn_800DD8F8(u8* self, const u8* other) {
+    *(u16*)(self + 0x30) = *(const u16*)other;
+    self[0x32] = other[2];
+    self[0x33] = other[3];
 }
 
 extern "C" void fn_800DD914(u8* self, const u8* other) {
@@ -609,8 +606,12 @@ extern "C" void fn_800DD9B8(u8* p, u32 v) { *(u32*)(p + 0x3c) = v; }
 extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = &__vt__14J3DPEBlockFull;
-        *(void**)param_1 = &__vt__10J3DPEBlock;
-        if ((short)param_2 > 0) {
+        if (param_2 != 0) {
+            *(void**)param_1 = &__vt__10J3DPEBlock;
+            if (param_2 > 0) {
+                __dl__FPv(param_1);
+            }
+        } else if (param_2 > 0) {
             __dl__FPv(param_1);
         }
     }
