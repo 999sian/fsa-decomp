@@ -1,4 +1,15 @@
 #include "types.h"
+extern "C" int fn_801C7D34(void*);
+extern "C" void fn_80166FC4(void*, void*);
+extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
+extern "C" char lbl_802EE2EC[];
+extern "C" char lbl_802981A8[];
+extern "C" char lbl_802981B8[];
+extern "C" char lbl_802FE368[];
+extern "C" void fn_801BE3A0(void*);
+extern "C" void fn_801BDEE4(void*, void*, int);
+extern "C" void fn_801BE47C(void*);
+extern "C" void fn_801BDE1C(void*, void*, int);
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8015fff0-0x80164978 (90 functions). split_file divides it into the game's real files.
 
