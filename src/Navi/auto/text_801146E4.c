@@ -61,3 +61,15 @@ extern "C" int fn_80114980() {
     return lbl_8028F698[3]();
 }
 
+extern "C" int lbl_802C5C78[];
+extern "C" int fn_800198DC();
+extern "C" void fn_801146EC();
+extern "C" void fn_801149B0(int a) {
+    if (a == 1) {
+        lbl_802C5C78[1] = 0;
+    } else {
+        lbl_802C5C78[1]++;
+    }
+    lbl_802C5C78[0]++;
+}
+
