@@ -22,3 +22,20 @@ extern "C" void fn_8008E6F8(void *param_1) {
     *(unsigned short *)((char *)param_1 + 0xc) = 0;
 }
 
+extern "C" void fn_8008E714(void *param_1)
+{
+    *(unsigned long *)((char *)param_1 + 0x0) = 0;
+    *(unsigned long *)((char *)param_1 + 0x4) = 0;
+    *(unsigned long *)((char *)param_1 + 0x8) = 0;
+    *(unsigned long *)((char *)param_1 + 0x18) = 0;
+    *(unsigned char *)((char *)param_1 + 0xc) = 0;
+    *(unsigned char *)((char *)param_1 + 0xd) = 0;
+    *(unsigned char *)((char *)param_1 + 0xe) = 0;
+    *(unsigned char *)((char *)param_1 + 0xf) = 0;
+    *(unsigned long *)((char *)param_1 + 0x1c) = 0;
+    *(unsigned long *)((char *)param_1 + 0x20) = 0;
+    *(unsigned long *)((char *)param_1 + 0x24) = 0;
+    *(unsigned long *)((char *)param_1 + 0x28) = 0;
+    *(unsigned long *)((char *)param_1 + 0x2c) = 0;
+}
+
