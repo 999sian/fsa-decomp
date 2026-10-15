@@ -17,3 +17,10 @@ extern "C" void fn_8017EC5C(JGeometry::TBox2<f32>* box, f32 x0, f32 y0, f32 x1, 
     box->f.y = y1;
 }
 
+extern void* fn_8053AB10_ptr;
+extern void* lbl_8053AB10;
+extern "C" void fn_8017ED08(void) {
+    void* p = *(void**)((char*)lbl_8053AB10 + 0x20);
+    *(u8*)((char*)p + 0x216) = 1;
+}
+
