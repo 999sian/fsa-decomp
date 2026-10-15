@@ -933,6 +933,12 @@ extern "C" void fn_800A1A3C(void) {
     fn_80092228();
 }
 
+extern "C" BOOL fn_800A1A5C(void);
+extern "C" BOOL fn_800A1A5C(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300AF0;
