@@ -254,6 +254,11 @@ extern "C" void fn_800DDAE4(u8* this_, u8* src) {
     *(u8*)(this_ + 0xe) = *src;
 }
 
+extern "C" void fn_800DDB00(int param_1, u8* param_2)
+{
+  *(u8*)(param_1 + 0xf) = *param_2;
+}
+
 extern "C" u8 fn_800DDB0C(int param_1)
 {
   return *(u8*)(param_1 + 0xf);
