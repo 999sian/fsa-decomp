@@ -197,6 +197,10 @@ extern "C" void fn_8004C5A0(void*, void* p) {
 extern "C" void* fn_8011FD10(void);
 extern "C" void fn_8011FD18(void*, void*, int, void*, void*);
 extern "C" void fn_80007AB8(void*, int, void*);
+extern "C" void fn_80130C64(void*, unsigned char, int);
+extern "C" void fn_8003C510(void*, void*, void*);
+extern "C" void fn_80115914(void*, void*);
+extern "C" void fn_801E0DB8(void*, void*, void*, int, int);
 extern "C" void* fn_8004C970(void*);
 extern "C" void fn_8004C614(void* p) {
     if (p == 0) {
