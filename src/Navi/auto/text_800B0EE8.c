@@ -15,6 +15,11 @@ extern void* lbl_8028794C[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80287910[];
 extern void* lbl_80286A30[];
+extern unsigned char lbl_802313EC[];
+extern "C" unsigned char fn_800B51E8(void* self, int i) {
+    return lbl_802313EC[i];
+}
+
 extern "C" void* fn_800B9970(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80287910;
