@@ -526,6 +526,9 @@ extern "C" int fn_8013294C()
 	return 0;
 }
 
+extern "C" void fn_80132954(void) {
+}
+
 extern "C" int fn_80132958()
 {
 	return 0;
