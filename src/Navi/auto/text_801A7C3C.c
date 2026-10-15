@@ -362,6 +362,12 @@ extern "C" void* fn_801B70F8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801AF5D4(void*);
+extern "C" char* lbl_802FF704;
+extern "C" void fn_801B71B0(void) {
+    fn_801AF5D4(lbl_802FF704 + 0x18);
+}
+
 extern "C" void* lbl_8029BB78[];
 extern "C" void* fn_801B71D8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
