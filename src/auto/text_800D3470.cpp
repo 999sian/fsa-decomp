@@ -121,6 +121,11 @@ void J3DTexGenBlockPatched::initialize()
 	mTexMtxOffset = 0;
 }
 
+extern "C" u32 fn_800D3E40(void)
+{
+  return 0x230;
+}
+
 void J3DColorBlockAmbientOn::initialize()
 {
 	mColorChanNum = 0;
