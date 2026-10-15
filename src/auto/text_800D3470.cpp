@@ -283,8 +283,11 @@ extern "C" u32* fn_800DDC78(u8* this_, s32 idx) {
     return (u32*)(this_ + 0x18 + idx * 4);
 }
 
-extern "C" void fn_800DDC8C(u8* this_, s32 idx, UnkDC8C* src) {
-    *(UnkDC8C*)(this_ + 0xda + idx * 8) = *src;
+extern "C" void fn_800DDC8C(Unk800DDC8C* this_, s32 idx, const s16* src) {
+    this_->a[idx][0] = src[0];
+    this_->a[idx][1] = src[1];
+    this_->a[idx][2] = src[2];
+    this_->a[idx][3] = src[3];
 }
 
 extern "C" void* fn_800DDCE4(u8* this_, s32 idx) {
