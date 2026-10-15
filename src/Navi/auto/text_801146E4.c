@@ -12,6 +12,13 @@ extern "C" int fn_801146E4() {
     return 1;
 }
 
+extern "C" int fn_80114780() {
+    if (fn_800198DC() != 0) {
+        lbl_802FF210 = (void*)fn_801146EC;
+    }
+    return 1;
+}
+
 extern "C" int fn_80114864() {
     ((void (*)())lbl_802FF210)();
     return 1;
