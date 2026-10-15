@@ -31,6 +31,10 @@ struct Unk80013DA0 {
     u8 pad51[0x5f - 0x51];
     u8 unk5f;
 };
+extern "C" void fn_80013C14(void* self, void* p) {
+    fn_80013F24(p);
+}
+
 extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80204F9C;
