@@ -34,6 +34,8 @@ extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
 
+extern "C" int fn_8012A80C(int* p) { return *p; }
+
 extern void* lbl_80290F9C[];
 extern "C" void* fn_8012F204(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
