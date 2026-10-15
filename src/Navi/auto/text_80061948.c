@@ -13,6 +13,8 @@ extern "C" void fn_80067EEC(void* p);
 extern "C" int fn_801E6578(void* a, void* b);
 extern "C" void fn_800074C0(const char* fmt, ...);
 extern "C" int fn_80062FE4(void* p);
+extern "C" void fn_801AB758(f32);
+extern "C" void fn_801ACC40(void*, u16, void*);
 extern "C" void* fn_800637F0(void* a, u8* p, int n);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80062E28(void* ptr, s16 param_2) {
