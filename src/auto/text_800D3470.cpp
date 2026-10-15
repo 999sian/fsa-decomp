@@ -47,6 +47,7 @@ struct Unk800DE4D0 {
     u32 a[2];
     Unk800DE50C b[1];
 };
+struct Unk800DE578 { u8 a, b, c, d; };
 struct Unk800DEC3C {
     u8 _0[0x38];
     Unk800DE50C a[8];
@@ -263,6 +264,18 @@ extern "C" void fn_800DDB00(int param_1, u8* param_2)
 extern "C" u8 fn_800DDB0C(int param_1)
 {
   return *(u8*)(param_1 + 0xf);
+}
+
+extern "C" void* fn_800DDB14(void* param_1, short param_2)
+{
+  if (param_1 != nullptr) {
+    *(void**)param_1 = &__vt__16J3DPEBlockFogOff;
+    *(void**)param_1 = &__vt__10J3DPEBlock;
+    if (param_2 > 0) {
+      __dl__FPv(param_1);
+    }
+  }
+  return param_1;
 }
 
 extern "C" u32 fn_800DDC10() {
