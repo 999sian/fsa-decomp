@@ -26,6 +26,10 @@ extern "C" void fn_801E9FC0(void) {
     fn_801E7758();
 }
 
+extern "C" float fn_801EA204(void) {
+    return (float)fn_801E997C();
+}
+
 extern "C" void fn_801E9FE0(void);
 extern "C" void fn_801EA338(void) {
     fn_801E9FE0();
