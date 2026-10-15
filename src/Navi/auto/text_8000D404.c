@@ -78,6 +78,11 @@ extern "C" int fn_8000ED2C()
 	return 0;
 }
 
+extern "C" int fn_8000ED3C()
+{
+	return 0;
+}
+
 extern "C" int fn_8000ED7C(void) {
     return 0xFFFF;
 }
