@@ -53,6 +53,12 @@ extern "C" void* fn_80062F3C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80062F78(s16* p) {
+    p[0] = 0;
+    p[1] = 1;
+    *(s32*)(p + 2) = 0;
+}
+
 extern "C" void* fn_80062F90(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -67,6 +73,17 @@ extern "C" int fn_800636A0(void* a, u8* p, int n) {
         return 1;
     }
     return fn_80062FE4(r);
+}
+
+extern "C" void* fn_800637F0(void* a, u8* p, int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        if (*(s16*)(p + 0xe) != 0 && fn_801E6578(a, p) == 0) {
+            return p;
+        }
+        p += 0x24;
+    }
+    return 0;
 }
 
 extern void* lbl_8027F214[];
