@@ -72,3 +72,31 @@ extern "C" void* fn_80041B34(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void* fn_800401AC(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = &lbl_80246AF4;
+        fn_801E0D40((char*)param_1 + 0x20, &fn_8000CEC4, 0xc, 0x8);
+        if (param_1 != nullptr) {
+            *(void**)param_1 = &lbl_80299A8C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
+extern "C" void* fn_80040230(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = &lbl_80246B28;
+        fn_801E0D40((char*)param_1 + 0x10, &fn_8000CEC4, 0xc, 0x2);
+        if (param_1 != nullptr) {
+            *(void**)param_1 = &lbl_80299A8C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
