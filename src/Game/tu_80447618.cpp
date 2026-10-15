@@ -62,40 +62,28 @@ extern void fn_80402F04(void* a, void* b);
 }
 
 extern "C" void* fn_804030C4(u32 type, const char* name);
-void fn_804479A0(void *this_)
+extern "C" const char* lbl_804B1BF8[];
+typedef void (*PaneSetFn)(J2DPane*, void*, int);
+extern "C" void fn_804479A0(Obj80447C30* self)
 {
-    u32 i;
-    void *obj;
-    void *res;
-    
-    i = 0;
+    TagEntry* e = lbl_80490410;
+    int i = 0;
     do {
-        *(u8 *)((u32)this_ + 0x2c) = *(u8 *)((u32)this_ + 0x2c) & ~(1 << i);
-        
-        res = fn_804030C4(0x54494d47, *(const char **)0x804B1BF8);
-        
-        obj = *(void **)((u32)this_ + 4);
-        
-        // Call virtual function at obj[0][0x3c], get result
-        void *call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490410, *(void **)0x80490414);
-        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
-        
-        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490418, *(void **)0x8049041C);
-        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
-        
-        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490420, *(void **)0x80490424);
-        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
-        
-        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490428, *(void **)0x8049042C);
-        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
-        
-        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490410, *(void **)0x80490414);
-        *(u8 *)((u32)call_result + 0xb0) = 0;
-        
-        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490430, *(void **)0x80490434);
-        *(u8 *)((u32)call_result + 0xb0) = 0;
-        
+        self->f2c &= (u8)~(u8)(1 << i);
+        void* res = fn_804030C4('TIMG', 0);
+        J2DPane* p;
+        p = self->screen->search(*(u64*)(e->pad2 + 0x10));
+        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
+        p = self->screen->search(*(u64*)(e->pad2 + 0x18));
+        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
+        p = self->screen->search(*(u64*)(e->pad2 + 0x20));
+        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
+        p = self->screen->search(*(u64*)(e->pad2 + 0x28));
+        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
+        ((u8*)self->screen->search(e->tag0))[0xb0] = 0;
+        ((u8*)self->screen->search(e->tag1))[0xb0] = 0;
         i++;
+        e++;
     } while (i < 4);
 }
 
