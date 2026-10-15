@@ -230,20 +230,22 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
 }
 
 extern "C" void fn_800D8D58(int* param_1, u32 param_4) {
+    int* vtable = *(int**)param_1;
+    
     if ((param_4 >> 0x10) & 0xf) {
-        (*(void(**)(void))(*(int*)param_1 + 0x14))();
+        (*(void(**)(void))(vtable + 0x14))();
     }
     if (param_4 & 0x04000000) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x1c))(param_1);
+        (*(void(**)(int*))(vtable + 0x1c))(param_1);
     }
     if ((param_4 >> 0x14) & 0xf) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x20))(param_1);
+        (*(void(**)(int*))(vtable + 0x20))(param_1);
         if (param_4 & 0x08000000) {
-            (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
+            (*(void(**)(int*))(vtable + 0x24))(param_1);
         }
     }
     if (param_4 & 0x01000000) {
-        (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
+        (*(void(**)(int*))(vtable + 0x18))(param_1);
     }
 }
 
@@ -718,14 +720,22 @@ extern "C" Unk800DE578* fn_800DE190(Unk800DE0CC* p, int i) {
     return &p->b[i];
 }
 
+extern "C" u8 fn_800DE1C0(int param_1, int param_2)
+{
+  u32 addr = param_1 + param_2;
+  return *(u8*)(addr + 0x72);
+}
+
 extern "C" void fn_800DE1CC(int param_1, int param_2, u8 param_3)
 {
-  *(u8*)(param_1 + param_2 + 0x76) = param_3;
+  u32 addr = param_1 + param_2;
+  *(u8*)(addr + 0x76) = param_3;
 }
 
 extern "C" void fn_800DE1D8(int param_1, int param_2, u8* param_3)
 {
-  *(u8*)(param_1 + param_2 + 0x76) = param_3[0];
+  u32 addr = param_1 + param_2;
+  *(u8*)(addr + 0x76) = param_3[0];
 }
 
 extern "C" u8 fn_800DE1E8(int param_1, int param_2)
@@ -863,18 +873,20 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
 
 extern "C" u8 fn_800DE600(int param_1, int param_2)
 {
-  return *(u8*)(param_1 + param_2 + 0x55);
+  u8* ptr = (u8*)(param_1 + param_2);
+  return *((u8*)ptr + 0x55);
 }
 
 extern "C" void fn_800DE60C(int param_1, int param_2, u8 param_3)
 {
-  *(u8*)(param_1 + param_2 + 0x57) = param_3;
+  u8* ptr = (u8*)(param_1 + param_2);
+  *((u8*)ptr + 0x57) = param_3;
 }
 
 extern "C" void fn_800DE618(int param_1, int param_2, u8* param_3)
 {
-  u8 val = param_3[0];
-  *(u8*)(param_1 + param_2 + 0x57) = val;
+  u8* ptr = (u8*)(param_1 + param_2);
+  *((u8*)ptr + 0x57) = *param_3;
 }
 
 extern "C" u8 fn_800DE628(int param_1, int param_2) {
@@ -893,14 +905,15 @@ extern "C" u8 fn_800DE648(int param_1) {
     return *(u8*)(param_1 + 0x34);
 }
 
-extern "C" void fn_800DE650(int param_1, int param_2, u8* param_3) {
-    int offset = param_1 + param_2 * 8;
-    *(u8*)(offset + 0x36) = param_3[1];
-    *(u8*)(offset + 0x37) = param_3[2];
-    *(u8*)(offset + 0x38) = param_3[3];
-    *(u8*)(offset + 0x3a) = param_3[5];
-    *(u8*)(offset + 0x3b) = param_3[6];
-    *(u8*)(offset + 0x3c) = param_3[7];
+extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
+    u8* p = this_ + idx * 8;
+    u8 t;
+    t = src[0].g; p[0x36] = t;
+    t = src[0].b; p[0x37] = t;
+    t = src[0].a; p[0x38] = t;
+    t = src[1].g; p[0x3a] = t;
+    t = src[1].b; p[0x3b] = t;
+    t = src[1].a; p[0x3c] = t;
 }
 
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
@@ -943,6 +956,8 @@ extern "C" void fn_800DE790(u32* this_, u32 idx, const u32* src) {
 extern "C" u32* fn_800DE7A4(u32* this_, u32 idx) {
     return &this_[0x18] + idx;
 }
+
+extern "C" u32 fn_800DE7B8(u8* p) { return *(u32*)(p + 4); }
 
 extern "C" char __vt__12J3DTevBlock2[];
 extern "C" char __vt__11J3DTevBlock[];
@@ -1285,8 +1300,7 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
-    GXColor c = *param_3;
-    ((J3DGXColor*)(param_1 + 0x20))[param_2] = *(J3DGXColor*)&c;
+    ((GXColor*)(param_1 + 0x20))[param_2] = *param_3;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
