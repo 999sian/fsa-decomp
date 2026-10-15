@@ -406,6 +406,12 @@ extern "C" void* fn_80011E54(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" BOOL fn_80011EB0(void);
+extern "C" BOOL fn_80011EB0(void)
+{
+    return TRUE;
+}
+
 extern "C" int fn_80011EB8()
 {
 	return 0;
