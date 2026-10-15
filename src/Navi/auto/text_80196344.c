@@ -433,6 +433,18 @@ extern "C" void* fn_801A4C14(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801A4C90(void) {
+    return 0x434c4f4e;
+}
+
+extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, u8* param_3) {
+    param_1 = param_1 + param_2 * 4;
+    param_1[4] = param_3[0];
+    param_1[5] = param_3[1];
+    param_1[6] = param_3[2];
+    param_1[7] = param_3[3];
+}
+
 extern void* lbl_8029AAB8[];
 extern "C" void* fn_801A4E28(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
