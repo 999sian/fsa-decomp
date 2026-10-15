@@ -29,6 +29,10 @@ extern "C" void* fn_801ADA54(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801ADB98(void) {
+    return 2;
+}
+
 extern "C" void* lbl_8029B3E0[];
 extern "C" void* fn_801ADD54(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
