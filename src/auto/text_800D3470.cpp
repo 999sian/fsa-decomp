@@ -293,18 +293,19 @@ extern "C" void loadTexNo(u32, const u16&);
 extern "C" void DCStoreRange(void* addr, u32 nBytes);
 extern "C" void fn_800DDB70(void* param_1)
 {
-  u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
-  void* start = __GDCurrentDL->pDisplayListData;
-  void* curr = __GDCurrentDL->pDisplayListData;
+  void* pStart = __GDCurrentDL->pDisplayListData;
+  void* pCurr = __GDCurrentDL->pDisplayListData;
+  u32 i = 0;
   
-  while (isTexNoReg(curr)) {
-    u16 texNo = getTexNoReg(curr);
+  while (true) {
+    if (!isTexNoReg(pCurr)) break;
+    u16 texNo = getTexNoReg(pCurr);
     loadTexNo(i, texNo);
     i++;
   }
   
-  DCStoreRange(start, (u8*)__GDCurrentDL->pDisplayListData - (u8*)start);
+  DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
 }
 
 extern "C" u32 fn_800DDC10() {
@@ -446,6 +447,10 @@ extern "C" void fn_800DE138(u8* this_, u32 idx, const u8* src) {
     dst[0x65] = src[3];
 }
 
+extern "C" u8* fn_800DE190(u8* this_, u32 idx) {
+    return this_ + (idx * 4 + 0x62);
+}
+
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
     this_[idx + 0x7a] = *src;
 }
@@ -513,8 +518,8 @@ extern "C" void fn_800DE578(Unk800DE5D0* p, int i, const Unk800DE578& v) {
     p->a[i] = v;
 }
 
-extern "C" Unk800DE578* fn_800DE5D0(u8* p, int i) {
-    return (Unk800DE578*)(p + 0x45 + i * 4);
+extern "C" Unk800DE578* fn_800DE5D0(Unk800DE5D0* p, int i) {
+    return &p->a[i];
 }
 
 extern "C" void fn_800DE5E4(u8* p, int i, u8 v) {
@@ -648,6 +653,14 @@ extern "C" void fn_800DEC8C(Unk800DEC3C* p, int i, const Unk800DE50C& v) {
 
 extern "C" void fn_800DECB8(Unk800DEC3C* p, int i, const Unk800DE50C& v) {
     p->c[i] = v;
+}
+
+extern "C" void fn_800DECF8(int p, int i, const u8* v) {
+    u32 addr = p + i * 4 + 0xb8;
+    *(u8*)(addr + 0) = v[0];
+    *(u8*)(addr + 1) = v[1];
+    *(u8*)(addr + 2) = v[2];
+    *(u8*)(addr + 3) = v[3];
 }
 
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
