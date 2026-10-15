@@ -51,21 +51,21 @@ void fn_8008D8E4(void)
     fn_8008E4A4(0xf0000000);
 }
 
-void fn_8008D910(u32 *param_1)
+extern "C" void fn_8008D910(void *param_1)
 {
-    param_1[0] = 0;
-    param_1[1] = 0;
-    param_1[2] = 0;
-    param_1[6] = 0;
+    *(u32 *)((u32)param_1 + 0x0) = 0;
+    *(u32 *)((u32)param_1 + 0x4) = 0;
+    *(u32 *)((u32)param_1 + 0x8) = 0;
+    *(u32 *)((u32)param_1 + 0x18) = 0;
     *(u8 *)((u32)param_1 + 0xc) = 0;
     *(u8 *)((u32)param_1 + 0xd) = 0;
     *(u8 *)((u32)param_1 + 0xe) = 0;
     *(u8 *)((u32)param_1 + 0xf) = 0;
-    param_1[7] = 0;
-    param_1[8] = 0;
-    param_1[9] = 0;
-    param_1[10] = 0;
-    param_1[11] = 0;
+    *(u32 *)((u32)param_1 + 0x1c) = 0;
+    *(u32 *)((u32)param_1 + 0x20) = 0;
+    *(u32 *)((u32)param_1 + 0x24) = 0;
+    *(u32 *)((u32)param_1 + 0x28) = 0;
+    *(u32 *)((u32)param_1 + 0x2c) = 0;
 }
 
 extern "C" void fn_8008DADC(u32 *param_1) {
@@ -76,11 +76,46 @@ extern "C" void fn_8008DADC(u32 *param_1) {
     *(u16 *)((char *)param_1 + 0xc) = 0;
 }
 
+extern "C" u32 fn_8008DDB0(float *param_1, u32 param_2) {
+    float f2 = *param_1;
+    float thres = lbl_80539DA4;
+    u32 result = param_2 & 0xf;
+    
+    if (f2 <= -thres || f2 >= thres) {
+        if (f2 > -thres) {
+            if (f2 >= thres) {
+                result = (param_2 & 0xe) | 2;
+            }
+        } else {
+            result = (param_2 & 0xd) | 1;
+        }
+    } else {
+        result = param_2 & 0xc;
+    }
+    
+    f2 = param_1[1];
+    thres = lbl_80539DA0;
+    
+    if (f2 <= -thres || f2 >= thres) {
+        if (f2 > -thres) {
+            if (f2 >= thres) {
+                result = (result & 0xfffffffb) | 8;
+            }
+        } else {
+            result = (result & 0xfffffff7) | 4;
+        }
+    } else {
+        result = result & 0xfffffff3;
+    }
+    
+    return result;
+}
+
 extern "C" void fn_8008DE64(u32 *param_1, int param_2) {
     short idx = *(short *)(param_2 + 0x7c);
     if (idx >= 0 && idx < 4) {
         lbl_8053A934[idx] = 0;
-        fn_8008DF30(idx, 1);
+        fn_8008DF30(*(short *)(param_2 + 0x7c), 1);
     }
     param_1[0] = 0;
     param_1[1] = 0;
