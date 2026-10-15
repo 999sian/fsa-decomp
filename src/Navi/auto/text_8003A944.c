@@ -156,6 +156,26 @@ extern "C" void* fn_80040464(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_800404E8(void) {
+    extern void* lbl_802BF0F4[];
+    if (lbl_802BF0F4[3] != nullptr) {
+        void** vtable = *(void***)lbl_802BF0F4[3];
+        void (*fn)(void*, s16) = (void (*)(void*, s16))vtable[4];
+        fn(lbl_802BF0F4[3], 1);
+    }
+    lbl_802BF0F4[3] = nullptr;
+}
+
+extern "C" void fn_800405C0(void) {
+    extern void* lbl_802BF128[];
+    void* obj = lbl_802BF128[2];
+    if (obj != nullptr) {
+        fn_801E0D40(obj, &fn_80040628, 0x34, 0x1e);
+        fn_8015AB1C(obj);
+    }
+    lbl_802BF128[2] = nullptr;
+}
+
 extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     volatile union {
         s64 i;
