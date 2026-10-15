@@ -201,4 +201,6 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-
+static inline void fn_80174BD0Init(void* ptr, u32 arg, u32 a, u32 b, u32 c, u32 d) {
+    fn_80174CAC(ptr, arg, &a, &b, &c, &d, 0);
+}
