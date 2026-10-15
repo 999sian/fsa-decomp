@@ -802,4 +802,10 @@ extern "C" void* fn_800A1D78(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-
+struct NaviState_8009E6F0 {
+    void f();
+};
+typedef void (NaviState_8009E6F0::*NaviStateFunc_8009E6F0)();
+extern NaviStateFunc_8009E6F0 lbl_802865A4[];
+extern u32 lbl_802FEDD8;
+extern s32 lbl_802FEDE4;
