@@ -37,6 +37,12 @@ extern "C" BOOL fn_80071BCC(void)
     return TRUE;
 }
 
+extern "C" BOOL fn_80071BD4(void);
+extern "C" BOOL fn_80071BD4(void)
+{
+    return TRUE;
+}
+
 extern void* lbl_80247380[];
 extern "C" void fn_80071CA0(void* p);
 extern "C" void fn_80071CA0(void* p) {
