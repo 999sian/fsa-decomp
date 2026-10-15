@@ -120,6 +120,12 @@ extern "C" f64 fn_801363A4(f64 a, f64 b) {
     return r;
 }
 
+extern "C" void fn_80136404(f64* p, f64 a, f64 b) {
+    p[0] = a;
+    p[1] = b;
+    p[2] = b - a;
+}
+
 extern "C" u32 fn_80136A68(void) {
     return 2;
 }
