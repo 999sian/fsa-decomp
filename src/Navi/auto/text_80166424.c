@@ -181,28 +181,32 @@ extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_801725FC(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
 
-extern "C" void fn_801727BC(u32* param_1, int param_2, u32* param_3) {
-    u32* addr = (u32*)((u8*)param_1 + (param_2 << 2));
-    addr[0x12c / 4] = *param_3;
+extern "C" int fn_801727AC(int param_1, int param_2) {
+    return param_1 + param_2 + 0x128;
+}
+
+extern "C" void fn_801727BC(void* param_1, int param_2, u32* param_3) {
+    void* p = (void*)((u8*)param_1 + param_2 * 4);
+    *(u32*)((u8*)p + 0x12c) = *param_3;
 }
 
 extern "C" int fn_801727D0(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x12c;
 }
 
-extern "C" void fn_801727E4(void* param_1, u32 param_2) {
+extern "C" void fn_801727E4(void* param_1) {
     typedef void (*CodeFunc)();
     void* base = *(void**)param_1;
     CodeFunc func = *(CodeFunc*)((u8*)base + 0x7c);
     func();
 }
 
-extern "C" u32 fn_80172814(u32* param_1, u32 param_2) {
+extern "C" u32 fn_80172814(void* param_1, u32 param_2) {
     if (param_2 >= 8) {
         return 0;
     }
-    u32* addr = (u32*)((u8*)param_1 + (param_2 << 2));
-    return addr[0x16c / 4];
+    void* p = (void*)((u8*)param_1 + param_2 * 4);
+    return *(u32*)((u8*)p + 0x16c);
 }
 
 extern "C" void fn_8017288C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
