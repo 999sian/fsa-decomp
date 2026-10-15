@@ -93,6 +93,10 @@ extern "C" void fn_801647A0(u8* p) {
     }
 }
 
+extern "C" int fn_801648E4(void) {
+    return -1;
+}
+
 extern "C" u32 fn_801648EC(u8* p) {
     u32 v;
     fn_801BE3A0(p + 0x1c);
