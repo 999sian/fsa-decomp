@@ -149,6 +149,12 @@ extern "C" int fn_8000EDB0()
 	return 0;
 }
 
+extern "C" BOOL fn_8000EDB8(void);
+extern "C" BOOL fn_8000EDB8(void)
+{
+    return TRUE;
+}
+
 extern "C" int fn_8000EDC0()
 {
 	return 0;
