@@ -47,6 +47,10 @@ extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8011FA0C(void)
+{
+}
+
 extern "C" void* lbl_802FDD84;
 void* fn_8011FD10(void)
 {
