@@ -16,6 +16,11 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301058;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern "C" void fn_8015FDA8(void*, void*);
+extern "C" void fn_800EE0F0(void* param_1, void* param_2) {
+    fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
+}
+
 extern "C" void fn_800EE344(void* param_1) {
     VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
     obj->v3();
