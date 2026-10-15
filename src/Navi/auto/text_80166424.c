@@ -216,10 +216,11 @@ extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 extern "C" u16 fn_801725FC(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
 
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
-    u32 b = param_3[1];
-    u32 a = param_3[0];
-    param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0xc) | ((b & 0xff) << 2);
-    param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0x3) | a;
+    u8* p = param_1 + param_2 * 8;
+    u8 b = param_3[1];
+    u8 a = param_3[0];
+    p[0x7e] = (p[0x7e] & 0xf3) | (b << 2);
+    p[0x7e] = (p[0x7e] & 0xfc) | a;
 }
 
 extern "C" void fn_8017279C(int param_1, int param_2, u8* param_3) {
@@ -322,6 +323,10 @@ extern "C" void fn_80172FC8(Unk801727E4Class* param_1, int param_2, int param_3)
 extern "C" void fn_80173074(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_80173084(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
+
+extern "C" void fn_80173268(Unk801727E4Class* param_1, int param_2, int param_3) {
+    param_1->vf7C(param_2, param_3, 0);
+}
 
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
     Unk80174858Pair fallback;
