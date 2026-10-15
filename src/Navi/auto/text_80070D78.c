@@ -2,6 +2,14 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80070d78-0x80077d64 (99 functions). split_file divides it into the game's real files.
 
+struct StateObj_80072080;
+typedef BOOL (StateObj_80072080::*StateFunc_80072080)(int);
+struct StateObj_80072080 {
+    u8 pad[0x294];
+    s8 m_state;
+    StateFunc_80072080 m_func;
+};
+
 extern void* lbl_80281904[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80070D98(void);
