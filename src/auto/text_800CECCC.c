@@ -11,6 +11,8 @@ extern "C" void fn_800CF2B0(void** p) {
     *vp = lbl_8049AE24;
 }
 
+#include "JSystem/JSupport.h"
+
 extern "C" void** fn_800CF2CC(void** p, short del) {
     if (p != 0) {
         *p = lbl_8049AE38;
