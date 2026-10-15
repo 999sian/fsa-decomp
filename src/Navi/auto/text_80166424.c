@@ -313,6 +313,10 @@ extern "C" unsigned short fn_80172614(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
 
+extern "C" int fn_80172680(int param_1, int param_2) {
+    return param_1 + param_2 * 8 + 0x56;
+}
+
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
     u32 b = param_3[1];
     u32 a = param_3[0];
