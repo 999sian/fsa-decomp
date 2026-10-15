@@ -469,9 +469,8 @@ extern "C" void fn_800DE0CC(Unk800DE0CC* p, int i, const Unk800DE50C& v) {
     p->a[i] = v;
 }
 
-extern "C" u8* fn_800DE124(u8* this_, u32 idx) {
-    u32 off = idx * 8 + 0x42;
-    return this_ + off;
+extern "C" Unk800DE50C* fn_800DE124(Unk800DE0CC* p, int i) {
+    return &p->a[i];
 }
 
 extern "C" void fn_800DE138(u8* this_, u32 idx, const u8* src) {
