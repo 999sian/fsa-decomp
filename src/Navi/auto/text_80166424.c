@@ -41,6 +41,11 @@ extern "C" int fn_801699EC()
 	return 0;
 }
 
+extern "C" u8 fn_80173180(int param_1, int param_2)
+{
+    return ((u8*)(param_1 + param_2))[0x45];
+}
+
 extern "C" void fn_8017318C(void)
 {
 }
@@ -48,6 +53,17 @@ extern "C" void fn_8017318C(void)
 extern "C" BOOL fn_80173190(void)
 {
     return TRUE;
+}
+
+extern "C" void fn_80173198(int param_1, int param_2, int param_3)
+{
+    u8* ptr = (u8*)(param_1 + param_2 * 8);
+    ptr[0x2d] = ((u8*)param_3)[1];
+    ptr[0x2e] = ((u8*)param_3)[2];
+    ptr[0x2f] = ((u8*)param_3)[3];
+    ptr[0x31] = ((u8*)param_3)[5];
+    ptr[0x32] = ((u8*)param_3)[6];
+    ptr[0x33] = ((u8*)param_3)[7];
 }
 
 extern "C" int fn_8017334C()
@@ -66,6 +82,11 @@ extern "C" int fn_8017335C()
 }
 
 extern "C" int fn_80173364()
+{
+	return 0;
+}
+
+extern "C" int fn_8017336C()
 {
 	return 0;
 }
