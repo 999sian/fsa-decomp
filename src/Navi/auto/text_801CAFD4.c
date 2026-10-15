@@ -308,6 +308,17 @@ extern "C" void* fn_801D9F10(void)
 	return lbl_802FFA4C;
 }
 
+extern "C" uint fn_801DD3E4(uint *param_1)
+{
+  return *param_1 >> 2 & 3;
+}
+
+extern "C" uint fn_801DD3F0(int param_1)
+{
+  u8 val = *(u8*)(param_1 + 0x1f);
+  return (uint)__cntlzw((val & 1) - 1) >> 5;
+}
+
 extern "C" u32 fn_801DD408(int param_1)
 {
     return *(u32*)(param_1 + 0x18);
