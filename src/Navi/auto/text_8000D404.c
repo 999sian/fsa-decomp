@@ -5,3 +5,8 @@
 extern "C" void fn_8000EAE0(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
+
+extern "C" void fn_800120AC(void* ptr, u32 value) {
+    *(u32*)((char*)ptr + 4) = value;
+}
+
