@@ -22,9 +22,10 @@ extern "C" void fn_80375970(int param_1) {
 extern "C" void* fn_80375DBC(void* param_1, short param_2) {
     if (param_1 != 0) {
         *(void**)param_1 = (void*)lbl_804AE678;
-        if (*(unsigned int*)((char*)param_1 + 0x230) != 0) {
-            fn_801EE434();
-            *(unsigned int*)((char*)param_1 + 0x230) = 0;
+        void* val = *(void**)((char*)param_1 + 0x230);
+        if (val != 0) {
+            ((void (*)(void*))fn_801EE434)(val);
+            *(void**)((char*)param_1 + 0x230) = 0;
         }
         __dt__5ActorFv(param_1, 0);
         if (param_2 > 0) {
