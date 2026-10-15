@@ -433,6 +433,9 @@ extern "C" void* fn_801A4C14(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801A4C80(void) {
+}
+
 extern "C" u32 fn_801A4C84(void) {
     return 0x54475054;
 }
