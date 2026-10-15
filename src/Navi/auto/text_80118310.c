@@ -32,24 +32,31 @@ extern "C" void fn_80118364(void* param_1) {
 extern "C" void fn_801189FC(char *param_1, int param_2, int param_3, int param_4) {
     fn_801670D0(param_2, param_1, 1);
     fn_801670D0(param_2, param_1 + 1, 1);
-    fn_801670D0(param_2, param_1 + 2, param_1[1]);
+    fn_801670D0(param_2, param_1 + 2, (u32)(u8)param_1[1]);
     
-    if (param_1[0] == 2 || param_1[0] == 3 || param_1[0] == 4) {
-        param_1[param_1[1] + 2] = 0;
+    u8 b0 = (u8)param_1[0];
+    if ((unsigned)b0 == 2 || (unsigned)b0 == 3 || (unsigned)b0 == 4) {
+        register u8 b1 = (u8)param_1[1];
+        param_1[b1 + 2] = 0;
     }
     fn_80118B58(param_1, param_3, param_4);
 }
 
 extern "C" void fn_80118AB4(char *param_1, char *param_2, int param_3, int param_4) {
-    param_1[0] = param_2[0];
-    param_1[1] = param_2[1];
+    u8 byte1 = (u8)param_2[1];
+    u8 byte0 = (u8)param_2[0];
+    param_1[0] = (char)byte0;
+    param_1[1] = (char)byte1;
     
-    if (param_1[1] != 0) {
-        memcpy(param_1 + 2, param_2 + 2, param_1[1]);
+    u8 stored_byte1 = (u8)param_1[1];
+    if (stored_byte1 != 0) {
+        memcpy(param_1 + 2, param_2 + 2, stored_byte1);
     }
     
-    if (param_1[0] == 2 || param_1[0] == 3 || param_1[0] == 4) {
-        param_1[param_1[1] + 2] = 0;
+    u8 stored_byte0 = (u8)param_1[0];
+    if (stored_byte0 == 2 || stored_byte0 == 3 || stored_byte0 == 4) {
+        u8 b1 = (u8)param_1[1];
+        param_1[b1 + 2] = 0;
     }
     fn_80118B58(param_1, param_3, param_4);
 }
