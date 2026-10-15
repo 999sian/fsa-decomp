@@ -1574,6 +1574,10 @@ extern "C" void fn_800DF3DC(u8* this_, u32 val) { *(u32*)(this_ + 0x18) = val; }
 
 extern "C" void fn_800DF3E4(u8* this_, u32 val) { *(u32*)(this_ + 0x1c) = val; }
 
+extern "C" u32 fn_800DF3EC(void) {
+    return 0x5045584c;
+}
+
 extern "C" u32 fn_800DF4BC(void) {
     return 0x50454f50;
 }
