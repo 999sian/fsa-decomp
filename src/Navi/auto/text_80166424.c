@@ -109,6 +109,13 @@ extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_8016AD40(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
     Unk80174858Pair fallback;
     fallback.x = lbl_80301AC0.x;
