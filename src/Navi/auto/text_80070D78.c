@@ -125,6 +125,20 @@ extern "C" void fn_800724B4(void) {
     fn_80072570();
 }
 
+extern "C" BOOL fn_80072864(StateObj_80072080* self, StateFunc_80072080* func, int arg)
+{
+    if (self->m_func) {
+        if (self->m_func) {
+            self->m_state = -1;
+            (self->*self->m_func)(arg);
+        }
+        self->m_func = *func;
+        self->m_state = 0;
+        (self->*self->m_func)(arg);
+    }
+    return TRUE;
+}
+
 extern "C" BOOL fn_80072918(s8* p)
 {
     if (p[0x294] == 0) {
