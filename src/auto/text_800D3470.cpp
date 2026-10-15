@@ -25,6 +25,7 @@ extern "C" char __vt__15J3DIndBlockFull[];
 extern "C" char __vt__11J3DIndBlock[];
 extern "C" char __vt__20J3DColorBlockLightOn[];
 extern "C" char __vt__16J3DPEBlockFogOff[];
+extern "C" char __vt__14J3DPEBlockFull[];
 extern "C" char __vt__10J3DPEBlock[];
 extern "C" void __dl__FPv(void*);
 extern "C" void __destroy_arr(void*, void*, u32, u32);
@@ -163,27 +164,30 @@ extern "C" int fn_800D3E90(void) { return 0x55; }
 
 extern "C" void fn_800D5120(int* param_1)
 {
-  (*(void(**)(void))(*(int*)param_1 + 0x14))();
-  (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
+  int* vtable = *(int**)param_1;
+  (*(void(**)(void))(vtable + 0x14))();
+  (*(void(**)(int*))(vtable + 0x18))(param_1);
 }
 
 extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
 {
+  int* vtable = *(int**)param_1;
   if ((param_2 & 1) != 0) {
-    (*(void(**)(void))(*(int*)param_1 + 0x20))();
+    (*(void(**)(void))(vtable + 0x20))();
   }
   if ((param_2 & 2) != 0) {
-    (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
+    (*(void(**)(int*))(vtable + 0x24))(param_1);
   }
 }
 
 extern "C" void fn_800D6394(int* param_1, u32 param_2)
 {
+  int* vtable = *(int**)param_1;
   if ((param_2 & 1) != 0) {
-    (*(void(**)(void))(*(int*)param_1 + 0x20))();
+    (*(void(**)(void))(vtable + 0x20))();
   }
   if (((param_2 & 2) != 0) || (((param_2 >> 4) & 0xf) != 0)) {
-    (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
+    (*(void(**)(int*))(vtable + 0x24))(param_1);
   }
 }
 
@@ -255,17 +259,20 @@ extern "C" void fn_800D8F78(u8* self) {
     u8 count = *(u8*)(self + 0xd0);
     if (count == 0) return;
     
-    u32 accumulator = 0;
+    u8* dl = __GDCurrentDL->pDisplayListData;
+    
     for (u32 i = 0; i < count; i++) {
         u32 value = *(u32*)(self + 0x78);
-        accumulator = (value & 0xff000000) | ((i + 0x10) << 24);
+        u32 combined = value | ((i + 0x10) << 24);
         
-        __GDWrite(0x61);
-        __GDWrite(accumulator >> 24);
-        __GDWrite((accumulator >> 16) & 0xff);
-        __GDWrite((accumulator >> 8) & 0xff);
-        __GDWrite(accumulator & 0xff);
+        *dl++ = 0x61;
+        *dl++ = (combined >> 24) & 0xff;
+        *dl++ = (combined >> 16) & 0xff;
+        *dl++ = (combined >> 8) & 0xff;
+        *dl++ = combined & 0xff;
     }
+    
+    __GDCurrentDL->pDisplayListData = dl;
 }
 
 extern "C" void fn_800D9020(u8* self) {
@@ -369,8 +376,8 @@ extern "C" u32 fn_800DDA50(void) {
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
-    *(u16*)(this_ + 0x4) = w;
     u8 b2 = src[2];
+    *(u16*)(this_ + 0x4) = w;
     u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
