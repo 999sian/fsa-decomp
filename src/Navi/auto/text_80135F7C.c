@@ -174,13 +174,13 @@ extern "C" u32 fn_80138340(void) {
     return 6;
 }
 
-extern "C" void fn_80138348(u32* param_1, int param_2) {
+extern "C" void fn_80138348(void* param_1, unsigned int param_2) {
     if (param_2 != 0) {
         param_2 = param_2 + 8;
     }
-    param_1[0] = 0;
-    param_1[1] = param_2;
-    param_1[2] = 0;
+    *(u32*)param_1 = 0;
+    *(u32*)((u8*)param_1 + 4) = param_2;
+    *(u32*)((u8*)param_1 + 8) = 0;
 }
 
 extern "C" void fn_80138368(u32* param_1, u32 param_2, u32 param_3, u32 param_4) {
