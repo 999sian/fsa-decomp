@@ -38,6 +38,12 @@ extern "C" void fn_800266A8(void) {
     lbl_802FED9F = 0;
 }
 
+extern u8 lbl_802FEDA4;
+extern u8 lbl_802FED9D;
+extern "C" void fn_800266B4(u8 param_1) {
+    ((u8*)&lbl_802FEDA4)[param_1] = 1;
+}
+
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
