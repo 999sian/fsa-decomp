@@ -625,9 +625,9 @@ extern "C" u32 fn_800DDA50(void) {
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
-    u8 b2 = src[2];
+    u8 b2 = *(volatile u8*)(src + 2);
     *(u16*)(this_ + 0x4) = w;
-    u8 b3 = src[3];
+    u8 b3 = *(volatile u8*)(src + 3);
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
 }
@@ -1421,6 +1421,25 @@ extern "C" void fn_800DEF6C(u8* self, const J3DNBTScaleInfo* other) {
 
 extern "C" u8* fn_800DEF90(u8* self) {
     return self + 0x5c;
+}
+
+extern "C" char __vt__15J3DTexGenBlock4[];
+extern "C" char __vt__21J3DTexGenBlockPatched[];
+extern "C" char __vt__14J3DTexGenBlock[];
+extern "C" void* fn_800DEF98(void* self, short flag) {
+    if (self) {
+        *(void**)self = __vt__15J3DTexGenBlock4;
+        if (self) {
+            *(void**)self = __vt__21J3DTexGenBlockPatched;
+            if (self) {
+                *(void**)self = __vt__14J3DTexGenBlock;
+            }
+        }
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
 }
 
 extern "C" void fn_800DF004(void) {}
