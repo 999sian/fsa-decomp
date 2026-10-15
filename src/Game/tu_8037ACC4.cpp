@@ -15,3 +15,12 @@ extern "C" void fn_8037AD00(void) {
         fn_8044CB08(lbl_8053AF40);
     }
 }
+
+extern "C" void fn_8037AE30(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        *(u8*)(lbl_8053AF40 + 0x13f) = 1;
+    } else {
+        *(u8*)(lbl_8053AF48 + 0x54) = 1;
+    }
+}
+
