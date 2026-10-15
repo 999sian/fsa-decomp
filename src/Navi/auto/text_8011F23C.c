@@ -388,6 +388,20 @@ extern "C" void* fn_80133510(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80133968(u8* p, u8* q, int i, void* a, void* b) {
+    u8* e = *(u8**)(p + 4) + i * 0x14;
+    u8* r = (u8*)fn_80139950(*(u8**)(q + 0x14) + 0x60, a, b);
+    u32 v;
+    if (r == 0) {
+        v = 0;
+    } else {
+        v = *(u32*)(r + 0x14);
+    }
+    *(void**)(e + 8) = (void*)fn_801334AC;
+    *(u32*)(e + 4) = 0;
+    *(u32*)(e + 0xc) = v;
+}
+
 extern "C" void fn_80133BB0(int param_1, void* param_2, void* param_3, void* param_4, void* param_5) {
     int* obj = *(int**)(param_1 + 0x34);
     if (obj != 0) {
@@ -410,6 +424,14 @@ extern "C" void* fn_80133C0C(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" u8* fn_80133C68(u8* p, void* a, void* b) {
+    fn_8013A57C();
+    *(void**)(p + 8) = &lbl_802925EC;
+    *(void**)(p + 0x34) = b;
+    *(void**)(p + 8) = &lbl_80292558;
+    return p;
 }
 
 extern void* lbl_80292500[];
