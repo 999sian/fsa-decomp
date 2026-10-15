@@ -56,6 +56,20 @@ extern "C" void fn_80013C14(void* self, void* p) {
     fn_80013F24(p);
 }
 
+extern "C" void fn_80013FC0(void* p);
+extern "C" void fn_80013C38(void* self, void* p) {
+    fn_80013FC0(p);
+}
+
+extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
+    self->unk50 = a;
+    self->unk5f = b;
+    self->b2 = fn_80116064(lbl_802FFBB8);
+    self->b1 = fn_80116064(lbl_802FFBB8);
+    self->b0 = self->unk50;
+    fn_80013E18(self);
+}
+
 extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80204F9C;
