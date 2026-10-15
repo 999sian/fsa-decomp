@@ -49,6 +49,10 @@ extern "C" void* fn_8015ABE4(void* p) {
     return ((void**)p)[2];
 }
 
+extern "C" void* fn_8015ABEC(void** p) {
+    return ((void**)*p)[3];
+}
+
 extern "C" void* fn_8015ABF8(void* p) {
     return ((void**)p)[2];
 }
