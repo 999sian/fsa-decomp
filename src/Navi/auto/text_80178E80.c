@@ -58,6 +58,11 @@ extern "C" void fn_8018B384(void* /*unused*/, void* dest, void* src) {
     *(void**)(d + 0x18) = (void*)fn_8018C2F0(src, *(u32*)(s + 0x20));
 }
 
+extern "C" void fn_8018B448(void* unused, void* dest, void* src);
+extern "C" void fn_8018B420(void* self, void* src) {
+    fn_8018B448(self, *(void**)((u8*)self + 4), src);
+}
+
 extern "C" void fn_8018B65C(void* unused, void* dest, void* src);
 extern "C" void fn_8018B634(void* self, void* src) {
     fn_8018B65C(self, *(void**)((u8*)self + 4), src);
