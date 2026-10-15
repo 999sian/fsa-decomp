@@ -22,6 +22,12 @@ extern "C" void fn_8006D300(void) {
     fn_8006D320();
 }
 
+extern "C" BOOL fn_8006D9C0(void);
+extern "C" BOOL fn_8006D9C0(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_8006DAD4(void);
 extern "C" void fn_8006D9C8(void) {
     fn_8006DAD4();
@@ -35,6 +41,12 @@ extern "C" void fn_8006EA60(void) {
 extern "C" void fn_8006DEC4(void);
 extern "C" void fn_8006EC94(void) {
     fn_8006DEC4();
+}
+
+extern "C" BOOL fn_8006ECB4(void);
+extern "C" BOOL fn_8006ECB4(void)
+{
+    return TRUE;
 }
 
 extern "C" void* fn_8006F16C(void* ptr, s16 param_2) {
