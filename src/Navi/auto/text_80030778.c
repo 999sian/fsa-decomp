@@ -13,6 +13,11 @@ extern "C" void fn_800307E4(void) {
     fn_80030B3C();
 }
 
+extern "C" void fn_80031CBC(void* p) {
+    *(void**)((char*)p + 0x38) = *(void**)((char*)lbl_802BB0FC + 0x58);
+    *(unsigned int*)((char*)p + 0x40) |= 0x80000000;
+}
+
 extern "C" void fn_80031CDC(void* p) {
     *(unsigned int*)((char*)p + 0x8) = 0;
     *(unsigned char*)((char*)p + 0xc) = 0;
