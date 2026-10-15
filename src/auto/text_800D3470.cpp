@@ -135,6 +135,10 @@ extern "C" void fn_800DD958(u8* this_, const u16* src) {
     *(u16*)(this_ + 0x38) = *src;
 }
 
+extern "C" void fn_800DD964(u8* this_, const u16* src) {
+    *(u16*)(this_ + 0x38) = *src;
+}
+
 extern "C" void fn_800DDA9C(void* dst, const void* src) {
     *(u32*)((u8*)dst + 8) = *(const u32*)src;
 }
