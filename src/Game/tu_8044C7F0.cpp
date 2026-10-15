@@ -30,3 +30,9 @@ extern "C" u8 fn_80453848(u8* p) {
     return dead;
 }
 
+extern "C" void fn_80453874(void* thisObj, f32 x, f32 y, f32 z) {
+	*(f32*)((char*)thisObj + 0x0) = x;
+	*(f32*)((char*)thisObj + 0x4) = y;
+	*(f32*)((char*)thisObj + 0x8) = z;
+}
+
