@@ -65,18 +65,15 @@ extern "C" int fn_800D3E88(void) { return 0x1e; }
 extern "C" int fn_800D3E90(void) { return 0x55; }
 
 extern "C" void fn_800D8248(void* p) {
-    typedef void (*Fn0)(void);
-    typedef void (*Fn1)(void*);
-    Fn0* vtbl = *(Fn0**)p;
-    vtbl[11]();
-    ((Fn1)vtbl[12])(p);
+    void (*cb)(void) = ((void (**)())*(void**)p)[11];
+    cb();
+    ((void (*)(void*))((void (**)())*(void**)p)[12])(p);
 }
 
 extern "C" void fn_800D8294(void* p) {
-    __GDCurrentDL->pDisplayListData += *(u32*)((u8*)p + 4);
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
-    u16 tex = *(u16*)((u8*)p + 8);
-    if (tex != 0xffff) {
+    if (*(u16*)((u8*)p + 8) != 0xffff) {
         loadTexNo(0, *reinterpret_cast<const u16*>((u8*)p + 8));
     }
     u8* now = __GDCurrentDL->pDisplayListData;
@@ -84,6 +81,10 @@ extern "C" void fn_800D8294(void* p) {
 }
 
 extern "C" void fn_800D8300(void) {
+}
+
+extern "C" void fn_800D83E8(void* p) {
+    ((void (*)())*((void**)*(void**)p + 11))();
 }
 
 extern "C" void fn_800DDA9C(void* dst, const void* src) {
@@ -280,4 +281,16 @@ extern "C" u32 fn_800DF3D4(u8* this_) { return *(u32*)(this_ + 0x1c); }
 extern "C" void fn_800DF3DC(u8* this_, u32 val) { *(u32*)(this_ + 0x18) = val; }
 
 extern "C" void fn_800DF3E4(u8* this_, u32 val) { *(u32*)(this_ + 0x1c) = val; }
-
+struct Vtable800D8248 {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10(void*) = 0;
+};
