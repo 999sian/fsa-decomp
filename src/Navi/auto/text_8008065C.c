@@ -40,3 +40,9 @@ extern "C" void fn_80086858(void) {
     fn_80081CD4();
 }
 
+extern "C" BOOL fn_80086878(void);
+extern "C" BOOL fn_80086878(void)
+{
+    return TRUE;
+}
+
