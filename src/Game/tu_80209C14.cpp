@@ -1,4 +1,10 @@
 #include "Game/ItemBase.h"
+
+extern "C" void* fn_801F856C();
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" void fn_802075D8(void*, u16);
+extern "C" void v07__5ActorFv(void*);
+extern "C" u32 fn_801F37AC(void*, u32, void*, u32, u32, u32);
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
