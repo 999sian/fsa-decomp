@@ -319,11 +319,7 @@ extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
 }
 
 extern "C" void fn_800DE50C(Unk800DE4D0* p, int i, const Unk800DE50C& v) {
-    Unk800DE50C& d = p->b[i];
-    d.a = v.a;
-    d.b = v.b;
-    d.c = v.c;
-    d.d = v.d;
+    p->b[i] = v;
 }
 
 extern "C" Unk800DE50C* fn_800DE564(Unk800DE4D0* p, int i) {
