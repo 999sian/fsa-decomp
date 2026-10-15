@@ -80,10 +80,10 @@ extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subi
 extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
     u8* data = *(u8**)((u8*)ptr + 4);
     u16* indices = *(u16**)((u8*)ptr + 8);
-    u32 value = *(u16*)(data + indices[index] * 0xe8 + 0xe2);
+    u16 value = *(u16*)(data + indices[index] * 0xe8 + 0xe2);
     if (value != 0xffff) {
-        u8* entry = *(u8**)((u8*)ptr + 0x50) + value * 8;
-        out[0] = (entry[0] << 5 | entry[2] << 3) | entry[3];
+        u8* entry = *(u8**)((u8*)ptr + 0x50) + (u16)value * 8;
+        out[0] = ((u8)entry[0] << 5 | (u8)entry[2] << 3) | entry[3];
         ((u8*)out)[2] = entry[1];
         ((u8*)out)[3] = entry[4];
     } else {
@@ -99,11 +99,9 @@ extern "C" void* fn_80174A50(void* base, u32 offset) {
 }
 
 extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d) {
-    u32 dd = *d;
-    u32 cc = *c;
-    u32 bb = *b;
+    u32 aa, bb, cc, dd;
+    u32 vd = *d, vc = *c, vb = *b, va = *a;
     *(void**)ptr = lbl_80298C5C;
-    u32 aa = *a;
     u32* words = (u32*)ptr;
     words[2] = -1;
     words[3] = -1;
@@ -111,6 +109,7 @@ extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d)
     words[15] = -1;
     words[16] = -1;
     words[17] = -1;
+    dd = vd; cc = vc; bb = vb; aa = va;
     fn_80174CAC(ptr, arg, &aa, &bb, &cc, &dd, 0);
     return ptr;
 }
