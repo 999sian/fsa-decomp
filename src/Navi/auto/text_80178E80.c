@@ -300,6 +300,11 @@ extern "C" void* fn_8018C308(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void fn_8018E9EC(u32* p) {
+    p[0] = 0;
+    p[1] = 0;
+}
+
 extern "C" void* lbl_80299634[];
 extern "C" void* fn_8018E9FC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
