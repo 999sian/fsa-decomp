@@ -26,3 +26,11 @@ extern "C" int fn_801148A0() {
 extern "C" void fn_801148B4(void* p) {
     lbl_802FF218 = p;
 }
+
+extern "C" int fn_801148BC(void* a, void* b) {
+    if (b == 0) {
+        return 0;
+    }
+    return fn_80159C40(lbl_802FF218, b, a);
+}
+
