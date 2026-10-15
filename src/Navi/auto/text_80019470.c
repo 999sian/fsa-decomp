@@ -102,6 +102,10 @@ extern "C" u32 fn_8001DB08(void) {
     return 2;
 }
 
+extern "C" u32 fn_8001DB10(void) {
+    return 2;
+}
+
 extern "C" void cTg_IsUse__FP16create_tag_class(void);
 extern "C" void fn_8001E69C(void) {
     cTg_IsUse__FP16create_tag_class();
