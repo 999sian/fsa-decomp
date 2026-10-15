@@ -15,6 +15,13 @@ extern "C" void* fn_8000D404(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_8000D440(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
 extern "C" void fn_8000EAE0(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
