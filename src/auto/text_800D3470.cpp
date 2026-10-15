@@ -29,6 +29,7 @@ extern "C" void __dl__FPv(void*);
 extern "C" void __destroy_arr(void*, void*, u32, u32);
 extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
 extern "C" void __dt__12J3DIndTexMtxFv(void*);
+extern "C" void __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo(J3DIndTexMtxInfo*, const J3DIndTexMtxInfo&);
 struct ActorBox;
 struct UnkDC8C;
 struct UnkDCF8;
@@ -203,7 +204,8 @@ extern "C" u8* fn_800DD970(u8* self) {
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
         typedef void (*FuncPtr)(void);
-        FuncPtr fn = *(FuncPtr*)((u8*)*(void**)obj + 0x1c);
+        void** pv = (void**)obj;
+        FuncPtr fn = *(FuncPtr*)((u8*)pv[0] + 0x1c);
         fn();
     }
 }
@@ -278,6 +280,27 @@ extern "C" void* fn_800DDB14(void* param_1, short param_2)
     }
   }
   return param_1;
+}
+
+extern "C" bool isTexNoReg(void*);
+extern "C" u16 getTexNoReg(void*);
+extern "C" void loadTexNo(u32, const u16&);
+extern "C" void DCStoreRange(void* addr, u32 nBytes);
+extern "C" void fn_800DDB70(void* param_1)
+{
+  u32 i = 0;
+  void* pDL = __GDCurrentDL->pDisplayListData;
+  __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
+  void* start = __GDCurrentDL->pDisplayListData;
+  void* curr = __GDCurrentDL->pDisplayListData;
+  
+  while (isTexNoReg(curr)) {
+    u16 texNo = getTexNoReg(curr);
+    loadTexNo(i, texNo);
+    i++;
+  }
+  
+  DCStoreRange(start, (u8*)__GDCurrentDL->pDisplayListData - (u8*)start);
 }
 
 extern "C" u32 fn_800DDC10() {
@@ -405,6 +428,10 @@ extern "C" void fn_800DE0CC(u8* this_, u32 idx, const s16* src) {
     dst[0x22] = src[1];
     dst[0x23] = src[2];
     dst[0x24] = src[3];
+}
+
+extern "C" u8* fn_800DE124(u8* this_, u32 idx) {
+    return this_ + (idx * 8 + 0x42);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
