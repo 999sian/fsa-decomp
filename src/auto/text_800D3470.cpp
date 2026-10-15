@@ -689,6 +689,11 @@ extern "C" Unk800DE578* fn_800DE190(Unk800DE0CC* p, int i) {
     return &p->b[i];
 }
 
+extern "C" void fn_800DE1F4(u8* param_1, u8 param_2)
+{
+  *(u8*)(param_1 + 0x20) = param_2;
+}
+
 extern "C" void fn_800DE1FC(u8* param_1, u8* param_2)
 {
   *(u8*)(param_1 + 0x20) = *param_2;
