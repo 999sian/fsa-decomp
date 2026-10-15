@@ -56,6 +56,11 @@ extern "C" int fn_8017332C()
 	return 0;
 }
 
+extern "C" int fn_8017334C()
+{
+	return 0;
+}
+
 extern "C" void fn_80178AEC(void* param_1, void* param_2) {
     (*(void (**)(void*))(*(u8**)param_1 + 0x84))(param_1);
     u8* it = *(u8**)((u8*)param_1 + 0xdc);
