@@ -325,6 +325,21 @@ extern "C" void fn_801D9CFC(void)
 	__cpReg[1] = *(u32*)(gx + 0x8);
 }
 
+extern "C" void fn_801D9D20(u8 enable)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x8) = __rlwimi(*(u32*)(gx + 0x8), enable ? 1 : 0, 4, 27, 27);
+	__cpReg[1] = *(u32*)(gx + 0x8);
+}
+
+extern "C" void fn_801D9D54(u32 a, u8 b)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x8) = __rlwimi(*(u32*)(gx + 0x8), a, 2, 29, 29);
+	*(u32*)(gx + 0x8) = __rlwimi(*(u32*)(gx + 0x8), b, 3, 28, 28);
+	__cpReg[1] = *(u32*)(gx + 0x8);
+}
+
 extern void* lbl_802FFA50;
 extern void* lbl_802FFA48;
 extern "C" void* fn_801C027C(void);
