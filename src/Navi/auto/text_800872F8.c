@@ -116,6 +116,10 @@ extern "C" void* fn_80088DD4(u8* p) {
     return *(void**)(p + 0x48);
 }
 
+extern "C" u16 fn_80088DDC(u8* p) {
+    return *(u16*)(*(u8**)(p + 0x4c) + 0x8);
+}
+
 extern "C" void fn_80088ED4(void);
 extern "C" void fn_80088E74(void) {
     fn_80088ED4();
