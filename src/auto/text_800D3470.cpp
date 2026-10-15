@@ -1578,6 +1578,19 @@ extern "C" u32 fn_800DF3EC(void) {
     return 0x5045584c;
 }
 
+extern "C" void* fn_800DF3F8(void* self, short flag) {
+    if (self) {
+        *(void**)self = __vt__13J3DPEBlockXlu;
+        if (self) {
+            *(void**)self = __vt__10J3DPEBlock;
+        }
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
+}
+
 extern "C" u32 fn_800DF4BC(void) {
     return 0x50454f50;
 }
