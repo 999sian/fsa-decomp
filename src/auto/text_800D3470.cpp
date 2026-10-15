@@ -23,6 +23,7 @@ extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
 extern "C" char __vt__15J3DIndBlockFull[];
 extern "C" char __vt__11J3DIndBlock[];
+extern "C" char __vt__20J3DColorBlockLightOn[];
 extern "C" char __vt__16J3DPEBlockFogOff[];
 extern "C" char __vt__10J3DPEBlock[];
 extern "C" void __dl__FPv(void*);
@@ -672,11 +673,15 @@ extern "C" int fn_800DECE4(int p, int i) {
 }
 
 extern "C" void fn_800DECF8(int p, int i, const u8* v) {
+    u8 v0 = v[0];
+    u8 v1 = v[1];
+    u8 v2 = v[2];
+    u8 v3 = v[3];
     int addr = p + (i << 2);
-    *(u8*)(addr + 0xb8) = v[0];
-    *(u8*)(addr + 0xb9) = v[1];
-    *(u8*)(addr + 0xba) = v[2];
-    *(u8*)(addr + 0xbb) = v[3];
+    *(u8*)(addr + 0xb8) = v0;
+    *(u8*)(addr + 0xb9) = v1;
+    *(u8*)(addr + 0xba) = v2;
+    *(u8*)(addr + 0xbb) = v3;
 }
 
 extern "C" int fn_800DED50(int p, int i) {
