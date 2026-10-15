@@ -416,6 +416,11 @@ extern "C" void* fn_80011F1C(void* ptr, s16 param_2) {
 extern "C" void fn_80011F7C(void) {
 }
 
+extern "C" int fn_80011F88()
+{
+	return 0;
+}
+
 extern "C" void fn_80011F90(void) {
 }
 
