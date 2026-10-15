@@ -317,6 +317,11 @@ extern "C" void fn_801D9D84(u32 a, u8 b)
 	__cpReg[2] = *(u32*)(__GXData + 0x10);
 }
 
+extern "C" void* fn_801D9F00(void)
+{
+	return lbl_802FFA50;
+}
+
 extern "C" void* fn_801D9F10(void)
 {
 	return lbl_802FFA4C;
