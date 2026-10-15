@@ -444,6 +444,10 @@ extern "C" void fn_801328D4(void) {
 extern "C" void fn_801328D8(void) {
 }
 
+extern "C" void fn_801328DC(void)
+{
+}
+
 extern void* lbl_80291320[];
 extern "C" void* fn_801328F8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
