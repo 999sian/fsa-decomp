@@ -163,10 +163,10 @@ extern "C" void fn_8001CA1C(void) {
 
 extern "C" s32 fn_8001D5F4(void* param_1, void* param_2) {
     s32 (*fn)(void*) = *(s32 (**)(void*))((u8*)param_1 + 4);
-    if (fn == nullptr) {
-        return 1;
+    if (fn != nullptr) {
+        return fn(param_2);
     }
-    return fn(param_2);
+    return 1;
 }
 
 extern "C" void* fn_8001D630(void* param_1, void* param_2) {
