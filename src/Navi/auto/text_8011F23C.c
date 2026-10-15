@@ -9,6 +9,7 @@ extern const f32 lbl_803016E4;
 extern "C" void fn_8012C274(void*);
 extern "C" void fn_8015AB1C(void* ptr);
 extern u8 lbl_802FF334;
+extern f32 lbl_802FEAB4;
 extern "C" void fn_80166C08(void*, int);
 extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     if (param_1) {
