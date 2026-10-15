@@ -55,6 +55,11 @@ struct Unk800DE5D0 {
     Unk800DE578 a[4];
     u8 b[1];
 };
+struct Unk800DE0CC {
+    u8 _0[0x42];
+    Unk800DE50C a[4];
+    Unk800DE578 b[4];
+};
 struct Unk800DEC3C {
     u8 _0[0x38];
     Unk800DE50C a[8];
