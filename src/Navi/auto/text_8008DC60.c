@@ -226,6 +226,14 @@ extern "C" void fn_80094CC8(char* param_1) {
     }
 }
 
+extern "C" void fn_80094D1C(char* param_1) {
+    fn_8010BAA0(*(void**)(param_1 + 0x29c));
+    fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x29c) + 0x9d));
+    if (*(*(u8**)(param_1 + 0x29c) + 0x9c) == 1) {
+        param_1[0x7e8] = 4;
+    }
+}
+
 extern void* lbl_8028E870[];
 extern "C" void* fn_80094EE8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
