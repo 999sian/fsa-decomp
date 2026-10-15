@@ -20,6 +20,18 @@ extern "C" void* fn_80167404(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802911A0[];
+extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void* fn_80167880(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802911A0;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
     u8* data = *(u8**)((u8*)ptr + 4);
     u16* indices = *(u16**)((u8*)ptr + 8);
