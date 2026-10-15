@@ -4,8 +4,8 @@ extern "C" void fn_8013A57C(void);
 extern "C" void* fn_80139950(void*, void*, void*);
 extern "C" void fn_801334AC();
 extern "C" void fn_8013345C();
-extern void* lbl_802925EC;
-extern void* lbl_80292558;
+extern void* lbl_802925EC[];
+extern void* lbl_80292558[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8011f23c-0x80135cf8 (427 functions). split_file divides it into the game's real files.
 
