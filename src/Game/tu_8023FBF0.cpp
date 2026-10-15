@@ -1170,7 +1170,7 @@ inline bool padActive3(char* p) {
     if (!ok) {
         return false;
     }
-    if ((getMode3(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+    if ((getMode2(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
         return false;
     }
     return true;
