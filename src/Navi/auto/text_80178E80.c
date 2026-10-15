@@ -5,6 +5,13 @@
 extern void* lbl_80299504[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_802994F0[];
+extern "C" void fn_8018B07C(void* ptr) {
+    register void* a asm("r5") = (void*)lbl_80299504;
+    register void* b asm("r4") = (void*)lbl_802994F0;
+    *(void**)ptr = a;
+    *(void**)ptr = b;
+}
+
 extern "C" void* fn_8018B098(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_802994F0;
@@ -16,6 +23,30 @@ extern "C" void* fn_8018B098(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void* fn_8018C308(void* base, u32 offset);
+extern "C" void* fn_8018C2F0(void* base, u32 offset);
+extern "C" void* fn_8018C2D8(void* base, u32 offset);
+extern "C" void* fn_8018C260(void* base, u32 offset);
+extern const f32 lbl_80301C30;
+extern "C" void fn_8018B384(void* /*unused*/, void* dest, void* src) {
+    u8* d = (u8*)dest;
+    u8* s = (u8*)src;
+
+    s16 t0 = *(s16*)(s + 0x0a);
+    *(u16*)(d + 0x22) = *(u16*)(s + 0x0c);
+    u8 t1 = *(u8*)(s + 0x08);
+    *(s16*)(d + 0x06) = t0;
+    u8 t2 = *(u8*)(s + 0x09);
+    *(u8*)(d + 0x04) = t1;
+    u32 t3 = *(u32*)(s + 0x14);
+    *(u32*)(d + 0x24) = t2;
+    *(f32*)(d + 0x08) = 0.0f;
+    *(void**)(d + 0x28) = (void*)fn_8018C308(src, t3);
+    *(void**)(d + 0x10) = (void*)fn_8018C2F0(src, *(u32*)(s + 0x18));
+    *(void**)(d + 0x14) = (void*)fn_8018C2D8(src, *(u32*)(s + 0x1c));
+    *(void**)(d + 0x18) = (void*)fn_8018C2F0(src, *(u32*)(s + 0x20));
 }
 
 extern void* lbl_802994BC[];
@@ -30,6 +61,22 @@ extern "C" void* fn_8018BAF0(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_8018BB74(void* /*unused*/, void* dest, void* src) {
+    u8* d = (u8*)dest;
+    u8* s = (u8*)src;
+
+    *(u16*)(d + 0x22) = *(u16*)(s + 0x0c);
+    *(s16*)(d + 0x06) = *(s16*)(s + 0x0a);
+    u8 t4 = *(u8*)(s + 0x08);
+    u32 t14 = *(u32*)(s + 0x14);
+    *(u8*)(d + 0x04) = t4;
+    *(f32*)(d + 0x08) = lbl_80301C30;
+    *(void**)(d + 0x24) = (void*)fn_8018C260(src, t14);
+    *(void**)(d + 0x10) = (void*)fn_8018C2F0(src, *(u32*)(s + 0x18));
+    *(void**)(d + 0x14) = (void*)fn_8018C2D8(src, *(u32*)(s + 0x1c));
+    *(void**)(d + 0x18) = (void*)fn_8018C2F0(src, *(u32*)(s + 0x20));
 }
 
 extern void* lbl_80299540[];
@@ -120,5 +167,22 @@ extern "C" void* fn_8018C2F0(void* base, u32 offset) {
 extern "C" void* fn_8018C308(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" void* lbl_80299634[];
+extern "C" void* fn_8018E9FC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80299634;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80299540;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80286A30;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
