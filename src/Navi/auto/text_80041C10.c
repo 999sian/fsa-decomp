@@ -214,6 +214,11 @@ extern "C" void fn_8004C614(void* p) {
     }
 }
 
+extern "C" void fn_8004CB14(void* param_1, void* param_2) {
+    unsigned char byte = *(unsigned char*)((char*)param_1 + 4);
+    fn_80130C64(param_2, byte, 0);
+}
+
 extern "C" void* fn_8004CBB4(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
