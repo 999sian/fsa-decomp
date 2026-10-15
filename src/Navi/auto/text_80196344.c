@@ -369,6 +369,11 @@ extern "C" void* fn_801A4688(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801A46F8()
+{
+	return 0;
+}
+
 extern "C" void fn_801A47D0(u8* p, s32 i, u16 v) {
     ((u16*)(p + 8))[i] = v;
 }
