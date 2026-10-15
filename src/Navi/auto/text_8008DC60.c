@@ -311,6 +311,20 @@ extern "C" void* fn_800A0238(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800175B8(void*);
+extern "C" void fn_8008DE8C(void*);
+extern "C" void fn_800A199C(void* ptr)
+{
+	if (ptr != nullptr) {
+		fn_800175B8(ptr);
+		*(void**)((char*)ptr + 0x244) = lbl_8027EC78;
+		*(void**)((char*)ptr + 0x244) = lbl_80286928;
+		*(void**)((char*)ptr + 0x24c) = lbl_8027EC78;
+		*(void**)((char*)ptr + 0x24c) = lbl_80286908;
+	}
+	fn_8008DE8C(ptr);
+}
+
 extern "C" void fn_800A19FC(void) {
     fn_800911F0();
 }
