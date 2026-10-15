@@ -1,4 +1,6 @@
 #include "types.h"
+extern void* lbl_80299A8C[];
+
 extern "C" void* lbl_8020491C[];
 extern void* lbl_80204948[];
 extern "C" void fn_8015AB1C(void* ptr);
@@ -113,6 +115,20 @@ extern "C" void fn_8000EF10(u32* p) {
 extern "C" u32 lbl_80301D04;
 extern "C" void fn_8000EF28(u32* p) {
     *p = lbl_80301D04;
+}
+
+extern void* lbl_8020455C[];
+extern "C" void* fn_8000F32C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8020455C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80299A8C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern void* lbl_80299A8C[];
