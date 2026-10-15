@@ -85,27 +85,31 @@ extern void fn_80402F04(void* a, void* b);
 extern "C" void* fn_804030C4(u32 type, const char* name);
 extern "C" const char* lbl_804B1BF8[];
 typedef void (*PaneSetFn)(J2DPane*, void*, int);
+extern "C" void fn_8013B490(void*);
+extern u8* lbl_8053AB10;
+extern f32 lbl_80543D98;
+struct J2DGrafContext;
+extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
+extern "C" void fn_80447958(void* self_) {
+    u8* self = (u8*)self_;
+    fn_8013B490(lbl_8053AB10);
+    f32 f = lbl_80543D98;
+    draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
 extern "C" void fn_804479A0(Obj80447C30* self)
 {
-    TagEntry* e = lbl_80490410;
-    int i = 0;
-    do {
-        self->f2c &= (u8)~(u8)(1 << i);
+    for (int i = 0; i < 4; i++) {
+        self->f2c &= ~(u8)(1 << i);
         void* res = fn_804030C4('TIMG', lbl_804B1BF8[0]);
-        J2DPane* p;
-        p = self->screen->search(*(u64*)(e->pad2 + 0x10));
-        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
-        p = self->screen->search(*(u64*)(e->pad2 + 0x18));
-        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
-        p = self->screen->search(*(u64*)(e->pad2 + 0x20));
-        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
-        p = self->screen->search(*(u64*)(e->pad2 + 0x28));
-        (*(PaneSetFn**)p)[0x110 / 4](p, res, 0);
-        ((u8*)self->screen->search(e->tag0))[0xb0] = 0;
-        ((u8*)self->screen->search(e->tag1))[0xb0] = 0;
-        i++;
-        e++;
-    } while (i < 4);
+        TagEntry* e = &lbl_80490410[i];
+        self->screen->search(*(u64*)(e->pad2 + 0x10))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(e->pad2 + 0x18))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(e->pad2 + 0x20))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(e->pad2 + 0x28))->changeTexture(res, 0);
+        self->screen->search(e->tag0)->mVisible = 0;
+        self->screen->search(e->tag1)->mVisible = 0;
+    }
 }
 
 extern "C" Obj80447C30* fn_80447C30(Obj80447C30* self) {
