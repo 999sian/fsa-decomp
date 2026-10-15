@@ -19,6 +19,10 @@ extern "C" void fn_8001978C(void) {
 extern "C" void fn_80019790(void) {
 }
 
+extern "C" void fn_80019794(void* param_1) {
+    fn_8001C2E4(*(void**)((u8*)param_1 + 0xc0), param_1);
+}
+
 extern "C" void fn_8001DC20(void);
 extern "C" void fn_8001A5D0(void) {
     fn_8001DC20();
