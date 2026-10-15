@@ -125,10 +125,12 @@ void J3DColorBlockAmbientOn::initialize()
 {
 	mColorChanNum = 0;
 	for (int i = 0; i < 2; i++) {
-		mMatColor[i] = J3DGXColor(j3dDefaultColInfo);
+		GXColor c = j3dDefaultColInfo;
+		mMatColor[i] = *(J3DGXColor*)&c;
 	}
 	for (int i = 0; i < 2; i++) {
-		mAmbColor[i] = J3DGXColor(j3dDefaultAmbInfo);
+		GXColor c = j3dDefaultAmbInfo;
+		mAmbColor[i] = *(J3DGXColor*)&c;
 	}
 	mMatColorOffset = 0;
 	mColorChanOffset = 0;
@@ -647,6 +649,10 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
     p->b[i] = v;
 }
 
+extern "C" u8 fn_800DE628(int param_1, int param_2) {
+    return *(u8*)(param_1 + param_2 + 0x57);
+}
+
 extern "C" void fn_800DE634(u8* param_1, u8 param_2) {
     *(u8*)(param_1 + 0x34) = param_2;
 }
@@ -674,12 +680,13 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
-    u8 val0 = param_3[0];
     u8 val1 = param_3[1];
-    int offset = param_1 + param_2 * 8;
+    u8 val0 = param_3[0];
+    int tmp = param_2 << 3;
+    int offset = param_1 + tmp;
     
     u8 byte = *(u8*)(offset + 0x3c);
-    byte = (byte & 0xfc) | (val1 << 2);
+    byte = (byte & 0xf3) | (val1 << 2);
     *(u8*)(offset + 0x3c) = byte;
     
     byte = *(u8*)(offset + 0x3c);
@@ -909,19 +916,15 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 }
 
 extern "C" void fn_800DF08C(u8* self, int i, u8* c) {
-    u8* p;
-    u8 uVar1;
-    u8 uVar2;
-    u8 uVar3;
-    p = self + i * 4;
-    uVar1 = c[0];
-    uVar2 = c[1];
-    *(u8*)(p + 0xc) = uVar1;
-    uVar3 = c[2];
-    *(u8*)(p + 0xd) = uVar2;
-    uVar1 = c[3];
-    *(u8*)(p + 0xe) = uVar3;
-    *(u8*)(p + 0xf) = uVar1;
+    self = self + i * 4;
+    u8 c0 = c[0];
+    u8 c1 = c[1];
+    *(u8*)(self + 0xc) = c0;
+    u8 c2 = c[2];
+    *(u8*)(self + 0xd) = c1;
+    u8 c3 = c[3];
+    *(u8*)(self + 0xe) = c2;
+    *(u8*)(self + 0xf) = c3;
 }
 
 extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
