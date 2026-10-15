@@ -7,3 +7,7 @@ extern char lbl_802B4880[];
 extern "C" void* fn_800172F0(void* p);
 extern "C" void fn_80017534(void* p, s16 param_2);
 extern "C" void __register_global_object(void* object, void* destructor, void* regmem);
+
+extern "C" void fn_8001757C(void) {
+    __register_global_object(fn_800172F0(lbl_802B488C), (void*)fn_80017534, lbl_802B4880);
+}
