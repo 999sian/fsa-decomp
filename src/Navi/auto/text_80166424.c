@@ -240,8 +240,8 @@ extern "C" int fn_801727D0(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x12c;
 }
 
-extern "C" void fn_801727E4(Unk801727E4Obj* param_1, int param_2, int param_3) {
-    param_1->vt->func(param_1, param_2, param_3, 0);
+extern "C" void fn_801727E4(Unk801727E4Class* param_1, int param_2, int param_3) {
+    param_1->vf7C(param_2, param_3, 0);
 }
 
 extern "C" u32 fn_80172814(void* param_1, u32 param_2) {
