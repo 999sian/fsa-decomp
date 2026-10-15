@@ -19,6 +19,15 @@ extern "C" float lbl_80539DA4;
 extern "C" float lbl_80539DA0;
 extern "C" u8 lbl_8053A934[];
 extern "C" u32 lbl_80499470[];
+extern "C" u8 lbl_8053A920;
+extern "C" u8 lbl_8053A924[];
+extern "C" u32 lbl_8053A948;
+extern "C" u32 lbl_8053A94C;
+extern "C" u8 lbl_8052E8A0[];
+extern "C" u32 lbl_8052EA28[];
+extern "C" u32 lbl_8052EA58[];
+extern "C" void initiate__10JSUPtrListFv(void *);
+extern "C" void fn_8008E488(void *, u32, u32, u32);
 
 extern "C" void fn_8008D148(int param_1)
 {
@@ -117,7 +126,7 @@ extern "C" void fn_8008DE64(u32 *param_1, int param_2) {
     short idx = *(short *)(param_2 + 0x7c);
     if (idx >= 0 && idx < 4) {
         lbl_8053A934[idx] = 0;
-        fn_8008DF30(idx, 1);
+        fn_8008DF30(*(short *)(param_2 + 0x7c), 1);
     }
     param_1[0] = 0;
     param_1[1] = 0;
@@ -133,5 +142,31 @@ extern "C" void fn_8008DED8(u32 param_1) {
         PADControlMotor(param_1, 1);
         lbl_8053A934[param_1] = 1;
     }
+}
+
+extern "C" void fn_8008E1FC(u32 *param_1, u8 *param_2, s32 param_3, u32 param_4) {
+    u32 value = (*param_2 << 8) | param_2[1];
+    param_1[3] = value;
+    param_1[2] = (u32)(param_2 + 2);
+    
+    if (param_3 == 1) {
+        if (param_1[2] == 0 || param_1[3] == 0) return;
+        param_1[1] = 0xffffffff;
+        param_1[0] = 0;
+        return;
+    }
+    
+    if (param_3 < 1) {
+        if (param_3 < 0) return;
+        if (param_1[2] == 0 || param_1[3] == 0) return;
+        param_1[1] = param_1[3];
+        param_1[0] = 0;
+        return;
+    }
+    
+    if (param_3 >= 3) return;
+    if (param_1[2] == 0 || param_1[3] == 0) return;
+    param_1[1] = param_4;
+    param_1[0] = 0;
 }
 
