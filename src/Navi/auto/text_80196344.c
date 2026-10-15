@@ -236,6 +236,13 @@ extern "C" int fn_80199A58() {
     return 0x1e;
 }
 
+extern "C" void fn_801A605C(int, void*);
+extern "C" void fn_801BC250(int, int);
+extern "C" void fn_8019DEF0(void)
+{
+	return;
+}
+
 extern "C" int fn_801A3544(int p) { return p + 4; }
 
 extern void* lbl_8029A2C0[];
