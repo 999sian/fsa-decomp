@@ -11,6 +11,15 @@ extern void* lbl_80292558[];
 
 extern void* lbl_80290ACC[];
 
+extern "C" void fn_8013345C();
+
+static inline void fn_80133624_set(u8* self, int i, f32 v) {
+    u8* e = *(u8**)(self + 4) + i * 0x14;
+    *(void**)(e + 8) = (void*)fn_8013345C;
+    *(u32*)(e + 4) = 0;
+    *(f32*)(e + 0xC) = v;
+}
+
 class Unk80133A44Listener {
 public:
     virtual void vf2();
@@ -417,24 +426,22 @@ extern "C" void fn_80133584(void* a, void* b, int c, unsigned int type, void* d,
 }
 
 extern "C" void fn_80133624(u8* self, int* idx, f32* vals) {
+    int i0 = idx[0];
     int i1 = idx[1];
     int i2 = idx[2];
-    f32 v0 = vals[0];
-    f32 v1 = vals[1];
-    f32 v2 = vals[2];
     u8* e;
-    e = *(u8**)(self + 4) + idx[0] * 0x14;
+    e = *(u8**)(self + 4) + i0 * 0x14;
     *(void**)(e + 8) = (void*)fn_8013345C;
     *(u32*)(e + 4) = 0;
-    *(f32*)(e + 0xC) = v0;
+    *(f32*)(e + 0xC) = vals[0];
     e = *(u8**)(self + 4) + i1 * 0x14;
     *(void**)(e + 8) = (void*)fn_8013345C;
     *(u32*)(e + 4) = 0;
-    *(f32*)(e + 0xC) = v1;
+    *(f32*)(e + 0xC) = vals[1];
     e = *(u8**)(self + 4) + i2 * 0x14;
     *(void**)(e + 8) = (void*)fn_8013345C;
     *(u32*)(e + 4) = 0;
-    *(f32*)(e + 0xC) = v2;
+    *(f32*)(e + 0xC) = vals[2];
 }
 
 extern "C" void fn_80133694(int param_1, f32* param_2, int* param_3) {
