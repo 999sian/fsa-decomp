@@ -553,3 +553,8 @@ extern "C" int fn_80020EE4(void** param_1) {
     return r;
 }
 
+extern "C" int fn_80020F94()
+{
+	return 0;
+}
+
