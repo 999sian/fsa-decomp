@@ -534,6 +534,14 @@ extern "C" void fn_800DF114(u8* self, int i, const u16* v) {
     ((u16*)(self + 0x16))[i] = *v;
 }
 
+extern "C" void fn_800DF128(u8* self, int i, const u16* v) {
+    ((u16*)(self + 0x16))[i] = *v;
+}
+
+extern "C" u16* fn_800DF13C(u8* self, int i) {
+    return &((u16*)(self + 0x16))[i];
+}
+
 extern "C" void* fn_800DF280(void* self, short flag) {
     if (self) {
         *(void**)self = __vt__22J3DColorBlockAmbientOn;
