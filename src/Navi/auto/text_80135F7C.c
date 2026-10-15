@@ -185,6 +185,10 @@ extern "C" void fn_80139714(void* param_1, void* param_2) {
     *(f64*)((char*)param_1 + 0x38) = v;
 }
 
+extern "C" void fn_80139780(void* param_1, void* param_2) {
+    *(f64*)((char*)param_1 + 0x20) = **(f32**)((char*)param_2 + 8);
+}
+
 extern void* lbl_80292CAC[];
 extern "C" void* fn_80139A60(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
