@@ -58,6 +58,10 @@ extern "C" void fn_800265F0(u8 param_1) {
     lbl_802FED9D &= ~((u8)(1 << param_1));
 }
 
+extern "C" void fn_80026610(u8 param_1) {
+    lbl_802FED9E |= (u8)(1 << param_1);
+}
+
 extern u8 lbl_802FED9E;
 extern "C" void fn_80026630(void) {
     lbl_802FED9E = 0;
