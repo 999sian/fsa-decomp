@@ -754,6 +754,10 @@ extern "C" void fn_800DE924(char* p, int i, u32* v) {
     *(u32*)(p + i * 4 + 10) = *v;
 }
 
+extern "C" u8* fn_800DE938(u8* this_, u32 idx) {
+    return this_ + idx * 4 + 10;
+}
+
 extern "C" void fn_800DE94C(void) {}
 
 extern "C" void fn_800DE950(void) {}
