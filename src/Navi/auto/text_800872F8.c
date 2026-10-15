@@ -52,3 +52,8 @@ extern "C" void* fn_80088D50(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_80088ED4(void);
+extern "C" void fn_80088E74(void) {
+    fn_80088ED4();
+}
+
