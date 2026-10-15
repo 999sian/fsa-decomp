@@ -4,6 +4,21 @@
 
 extern void* lbl_80292BB4[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern void* lbl_8029270C[];
+extern void* lbl_80292694[];
+extern "C" void* fn_80135F7C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029270C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80292694;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_8013635C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80292BB4;
