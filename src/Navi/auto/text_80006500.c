@@ -1,2 +1,36 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80006500-0x8000b470 (36 functions). split_file divides it into the game's real files.
+#include "types.h"
+
+extern void* lbl_80298574[];
+extern void* lbl_80298520[];
+extern u8 lbl_802B7CA0[];
+extern u8 lbl_8029F8B0[];
+extern char lbl_802037D8[];
+extern char lbl_8020383C[];
+extern char lbl_802FB790[4];
+extern char lbl_802FB794[4];
+extern s16 lbl_802FEB42;
+extern void* lbl_802FEB5C;
+extern void* lbl_802FEB4C;
+extern void* lbl_802FEB50;
+extern u32 lbl_802FEB54;
+extern u8 lbl_802FB7B0, lbl_802FB7B1, lbl_802FB7B2;
+extern "C" {
+void fn_8015AB1C(void*);
+u32 fn_8000F74C(u32, u32, u32);
+void fn_800082C8(void);
+void fn_8005FEC0(void*);
+void fn_8000F9E8(u32);
+void fn_8000FAB4(void);
+void fn_801BB7E0(void*);
+BOOL OSDisableInterrupts(void);
+BOOL OSRestoreInterrupts(BOOL);
+void (*fn_801DB640(void*))(void);
+void* fn_8011FD10(void);
+void fn_8011FD18(void*, const char*, int, const char*, ...);
+void fn_80007AB8(const char*, int, const char*, ...);
+u32 fn_800095BC(void*, void*, u8, u8, u8);
+void DCFlushRange(void*, u32);
+void fn_801C0A6C(u32);
+}
