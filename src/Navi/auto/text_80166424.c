@@ -96,3 +96,8 @@ extern "C" int fn_80173374()
 	return 0;
 }
 
+extern "C" int fn_8017337C()
+{
+	return 0;
+}
+
