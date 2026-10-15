@@ -372,6 +372,10 @@ extern "C" void* fn_801A4B58(void* p) {
     return *(void**)((char*)p + 4);
 }
 
+extern "C" void fn_801A4BC4(int param_1) {
+    fn_801A7E24(param_1 + 0x5c);
+}
+
 extern "C" int fn_801A4C0C(int param_1) {
     return param_1 + 0x5c;
 }
