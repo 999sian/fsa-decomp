@@ -536,10 +536,12 @@ extern "C" void fn_800DD8CC(u8* self, const J3DFogInfo* other) {
     *(J3DFogInfo*)(self + 4) = *other;
 }
 
-extern "C" void fn_800DD8F8(u8* self, const u8* other) {
-    *(u16*)(self + 0x30) = *(const u16*)other;
-    self[0x32] = other[2];
-    self[0x33] = other[3];
+extern "C" void fn_800DD8F8(void* param_1, const void* param_2)
+{
+    u16 val = *(u16*)param_2;
+    *(u16*)((u8*)param_1 + 0x30) = val;
+    *(u8*)((u8*)param_1 + 0x32) = *(u8*)((u8*)param_2 + 2);
+    *(u8*)((u8*)param_1 + 0x33) = *(u8*)((u8*)param_2 + 3);
 }
 
 extern "C" void fn_800DD914(u8* self, const u8* other) {
