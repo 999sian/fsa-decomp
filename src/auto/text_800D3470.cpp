@@ -119,6 +119,10 @@ extern "C" void fn_800DDA9C(void* dst, const void* src) {
     *(u32*)((u8*)dst + 8) = *(const u32*)src;
 }
 
+extern "C" void fn_800DDAA8(void* dst, const void* src) {
+    *(u32*)((u8*)dst + 8) = *(const u32*)src;
+}
+
 extern "C" Vec* fn_800DDAD4(Actor* a);
 extern "C" Vec* fn_800DDAD4(Actor* a) { return (Vec*)((u8*)a + 0xC); }
 
