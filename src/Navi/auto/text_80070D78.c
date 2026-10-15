@@ -19,6 +19,19 @@ extern "C" void fn_800711AC(void) {
     fn_800711CC();
 }
 
+extern void* lbl_80247380[];
+extern "C" void fn_80071CA0(void* p);
+extern "C" void fn_80071CA0(void* p) {
+    f32* f = (f32*)p;
+    *(void**)p = lbl_80247380;
+    f[1] = 0.0f;
+    f[2] = 0.0f;
+    f[3] = 0.0f;
+    f[4] = 1.0f;
+    f[5] = 1.0f;
+    f[6] = 1.0f;
+}
+
 extern "C" void fn_80071D8C(void);
 extern "C" void fn_80071CD0(void) {
     fn_80071D8C();
