@@ -103,6 +103,11 @@ extern "C" void fn_8018BB74(void* /*unused*/, void* dest, void* src) {
     *(void**)(d + 0x18) = (void*)fn_8018C2F0(src, *(u32*)(s + 0x20));
 }
 
+extern "C" void fn_8018BC30(void* unused, void* dest, void* src);
+extern "C" void fn_8018BC08(void* self, void* src) {
+    fn_8018BC30(self, *(void**)((u8*)self + 4), src);
+}
+
 extern "C" void fn_8018BD24(void* /*unused*/, void* dest, void* src) {
     u8* d = (u8*)dest;
     u8* s = (u8*)src;
