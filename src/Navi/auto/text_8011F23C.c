@@ -13,8 +13,6 @@ extern void* lbl_80290ACC[];
 
 class Unk80133A44Listener {
 public:
-    virtual void vf0();
-    virtual void vf1();
     virtual void vf2();
     virtual void vf3();
     virtual void vf4(void* owner);
@@ -499,16 +497,16 @@ extern "C" void fn_801339D8(u8* p, u8* q, int i, void** a) {
 }
 
 extern "C" void fn_80133A44(u8* p) {
-    void** obj = *(void***)(p + 0x34);
+    Unk80133A44Listener* obj = *(Unk80133A44Listener**)(p + 0x34);
     if (obj != 0) {
-        ((void (*)(void*, void*))((void**)*obj)[4])(obj, p);
+        obj->vf4(p);
     }
 }
 
 extern "C" void fn_80133A80(u8* p) {
-    void** obj = *(void***)(p + 0x34);
+    Unk80133A44Listener* obj = *(Unk80133A44Listener**)(p + 0x34);
     if (obj != 0) {
-        ((void (*)(void*, void*))((void**)*obj)[5])(obj, p);
+        obj->vf5(p);
     }
 }
 
