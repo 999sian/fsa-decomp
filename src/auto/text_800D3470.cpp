@@ -496,9 +496,10 @@ extern "C" void fn_800DDB70(void* param_1)
 {
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
-  void* pStart = __GDCurrentDL->pDisplayListData;
-  void* pCurr = __GDCurrentDL->pDisplayListData;
-  while (isTexNoReg(pCurr)) {
+  void* pStart = GDGetCurrPointer();
+  void* pCurr = GDGetCurrPointer();
+  for (;;) {
+    if (!isTexNoReg(pCurr)) break;
     u16 texNo = getTexNoReg(pCurr);
     loadTexNo(i, texNo);
     i++;
@@ -1058,6 +1059,16 @@ extern "C" void fn_800DED64(int p, int i, int v) {
 extern "C" void fn_800DED70(int param_1, int param_2, const u8* param_3)
 {
     *(u8*)(param_1 + param_2 + 0xc8) = *param_3;
+}
+
+extern "C" u8 fn_800DED80(int param_1, int param_2)
+{
+    return *(u8*)(param_1 + param_2 + 0xc8);
+}
+
+extern "C" u32 fn_800DED8C(int param_1)
+{
+    return *(u32*)(param_1 + 4);
 }
 
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
