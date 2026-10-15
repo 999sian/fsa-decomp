@@ -591,6 +591,11 @@ extern "C" void fn_800DF374(u8* this_, s32 idx, u16* src) {
     p[idx] = *src;
 }
 
+extern "C" void fn_800DF388(u8* this_, s32 idx, u16* src) {
+    u16* p = (u16*)(this_ + 0xe);
+    p[idx] = *src;
+}
+
 extern "C" u8* fn_800DF39C(u8* this_, s32 idx) {
     return this_ + idx * 2 + 0xe;
 }
