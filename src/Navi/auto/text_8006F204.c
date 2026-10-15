@@ -4,6 +4,7 @@
 
 extern void* lbl_80280CEC[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_80132450(s16, s16, s16, void*);
 extern "C" void* fn_80070464(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -14,6 +15,21 @@ extern "C" void* fn_80070464(void* ptr, s16 param_2) {
 extern "C" void fn_800704C4(void);
 extern "C" void fn_800704A4(void) {
     fn_800704C4();
+}
+
+extern "C" void fn_800709B4(void* param_1, u8** param_2) {
+    u8* p = param_2[0];
+    if (p != nullptr) {
+        *(u32*)(p + 0xF4) |= 1;
+        *(s32*)(p + 0x24) = 1;
+        param_2[0] = nullptr;
+    }
+    p = param_2[1];
+    if (p != nullptr) {
+        *(u32*)(p + 0xF4) |= 1;
+        *(s32*)(p + 0x24) = 1;
+        param_2[1] = nullptr;
+    }
 }
 
 extern "C" void fn_8004A380(void);
