@@ -298,25 +298,23 @@ extern "C" void fn_8019DEF0(void)
 extern "C" void fn_8019E004(int param_1)
 {
 	extern int* lbl_802FFA80;
-	int *addr = lbl_802FFA80;
-	int val = *(int *)(param_1 + 4);
-	int base = addr[0];
-	int sum = base + val;
-	addr[2] = sum;
-	int saved = addr[2];
+	int base = lbl_802FFA80[0];
+	int sum = base + *(int *)(param_1 + 4);
+	lbl_802FFA80[2] = sum;
+	int saved = lbl_802FFA80[2];
 	
 	int ptr = param_1;
-	int i = 0;
+	unsigned int i = 0;
 	do {
 		unsigned short check = *(unsigned short *)(ptr + 8);
 		if (check != 0xffff) {
-			fn_801A605C(i, (void *)(ptr + 8));
+			fn_801A605C((int)i, (void *)(ptr + 8));
 		}
 		i++;
 		ptr += 2;
 	} while (i < 2);
 	
-	int final = addr[2];
+	int final = lbl_802FFA80[2];
 	fn_801BC250(saved, final - saved);
 }
 
