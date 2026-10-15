@@ -84,6 +84,18 @@ extern "C" void fn_8001A238(void* param_1, u16 param_2) {
     *(u16*)((u8*)param_1 + 6) = param_2;
 }
 
+extern "C" int fn_8001A24C(void* param_1) {
+    if (((*(u8*)param_1 >> 7) & 1) == 1 || *(u16*)((u8*)param_1 + 6) != 0) {
+        return 0;
+    }
+    fn_801155E0(param_1, 2);
+    return 1;
+}
+
+extern "C" void fn_8001A298(void* param_1) {
+    fn_8001D66C(*(void**)((u8*)param_1 + 0x1ac), param_1);
+}
+
 extern "C" void fn_8001DC20(void);
 extern "C" void fn_8001A5D0(void) {
     fn_8001DC20();
