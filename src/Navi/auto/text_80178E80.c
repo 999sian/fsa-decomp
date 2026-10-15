@@ -1,4 +1,8 @@
 #include "types.h"
+extern "C" void fn_8016A530(void*);
+
+extern "C" void fn_8018BD24(void* /*unused*/, void* dest, void* src);
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80178e80-0x80192e18 (416 functions). split_file divides it into the game's real files.
 
@@ -118,6 +122,13 @@ extern "C" void fn_80188928(u8* param_1) {
     void* p = *(void**)(param_1 + 0x168);
     if (p != nullptr) {
         fn_8016A0B4(p);
+    }
+}
+
+extern "C" void fn_801889AC(u8* param_1) {
+    void* p = *(void**)(param_1 + 0x168);
+    if (p != nullptr) {
+        fn_8016A530(p);
     }
 }
 
@@ -286,6 +297,10 @@ extern "C" void fn_8018BB74(void* /*unused*/, void* dest, void* src) {
 extern "C" void fn_8018BC30(void* unused, void* dest, void* src);
 extern "C" void fn_8018BC08(void* self, void* src) {
     fn_8018BC30(self, *(void**)((u8*)self + 4), src);
+}
+
+extern "C" void fn_8018BCFC(void* self, void* src) {
+    fn_8018BD24(self, *(void**)((u8*)self + 4), src);
 }
 
 extern "C" void fn_8018BD24(void* /*unused*/, void* dest, void* src) {
