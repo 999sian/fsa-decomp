@@ -18,6 +18,15 @@ extern int lbl_802FF5E0;
 extern void* lbl_802FF540;
 extern void* lbl_80297B40;
 extern void* lbl_80297B30;
+extern "C" void* fn_8015F6EC(void* ptr, void* param_2)
+{
+	void* r31 = ptr;
+	fn_8015D13C(ptr, 0x4000, 0x10, param_2);
+	*(void**)r31 = &lbl_80297BD4;
+	fn_801C0EEC(((void**)r31)[0xb]);
+	return r31;
+}
+
 extern "C" void* fn_8015F73C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80297BD4;
@@ -27,6 +36,21 @@ extern "C" void* fn_8015F73C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_8015F79C(void)
+{
+	fn_801BDDBC(&lbl_80297B40, &lbl_80297B30, 4);
+	while (true) {
+		void* local_18 = NULL;
+		fn_801BDEE4(&lbl_80297B40, &local_18, 1);
+		int iVar1 = *(int*)local_18;
+		if (iVar1 == 2) {
+			fn_8015F814();
+		} else if (iVar1 == 1) {
+			fn_8015F80C();
+		}
+	}
 }
 
 extern "C" BOOL fn_8015F80C()
