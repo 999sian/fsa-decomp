@@ -510,12 +510,8 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
     return self + i * 4 + 4;
 }
 
-extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8* p = self + i * 4;
-    p[0xc] = c[0];
-    p[0xd] = c[1];
-    p[0xe] = c[2];
-    p[0xf] = c[3];
+extern "C" void fn_800DF08C(u8* self, int i, const GXColor* c) {
+    ((GXColor*)(self + 0xc))[i] = *c;
 }
 
 extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
@@ -528,6 +524,10 @@ extern "C" void fn_800DF0F8(u8* self, const u8* v) {
 
 extern "C" void fn_800DF104(u8* self, u8 v) {
     self[0x14] = v;
+}
+
+extern "C" void fn_800DF114(u8* self, int i, const u16* v) {
+    ((u16*)(self + 0x16))[i] = *v;
 }
 
 extern "C" void* fn_800DF280(void* self, short flag) {
