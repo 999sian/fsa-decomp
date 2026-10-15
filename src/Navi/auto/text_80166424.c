@@ -13,6 +13,12 @@ struct Unk80172764Entry {
     u8 unk7E_b : 2;
     u8 unk7E_a : 2;
 };
+struct Unk801727E4VT;
+struct Unk801727E4Obj { Unk801727E4VT* vt; };
+struct Unk801727E4VT {
+    u8 pad[0x7c];
+    void (*func)(Unk801727E4Obj*, int, int, int);
+};
 extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
 
 
@@ -196,9 +202,10 @@ extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 extern "C" u16 fn_801725FC(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
 
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
-    Unk80172764Entry* e = (Unk80172764Entry*)(param_1 + param_2 * 8);
-    e->unk7E_b = param_3[1];
-    e->unk7E_a = param_3[0];
+    u32 b = param_3[1];
+    u32 a = param_3[0];
+    param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0xc) | ((b & 0xff) << 2);
+    param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0x3) | a;
 }
 
 extern "C" void fn_8017279C(int param_1, int param_2, u8* param_3) {
