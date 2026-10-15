@@ -7,6 +7,7 @@ extern void* lbl_80246AF4[];
 extern void* lbl_80246B28[];
 extern void* lbl_80246ABC[];
 extern void* lbl_80246A88[];
+extern void* lbl_80246A20[];
 extern void* lbl_80299A8C[];
 extern void* lbl_802BF110[];
 extern s64 lbl_802FFEC8;
@@ -106,11 +107,9 @@ extern "C" void* fn_80040230(void* param_1, s16 param_2) {
 
 extern "C" void fn_800402B4(void) {
     extern void* lbl_802BF110[];
-    void* obj = lbl_802BF110[2];
-    if (obj != nullptr) {
-        void** vtable = *(void***)obj;
-        void (*dtor)(void*, s16) = (void (*)(void*, s16))vtable[4];
-        dtor(obj, 1);
+    if (lbl_802BF110[2] != nullptr) {
+        void (*dtor)(void*, s16) = (void (*)(void*, s16))(*(void**)(*(void***)lbl_802BF110[2] + 4));
+        dtor(lbl_802BF110[2], 1);
     }
     lbl_802BF110[2] = nullptr;
 }
@@ -144,22 +143,23 @@ extern "C" void* fn_8004038C(void* param_1, s16 param_2) {
 }
 
 extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
+    volatile union {
+        s64 i;
+        double d;
+    } temp;
+    
     double dconst = *(double*)&lbl_802FFEC8;
     
-    s32 v1 = ((s32)param_1 & 0xFFFF) | 0x43300000;
-    s32 v2 = ((s32)param_2 & 0xFFFF) | 0x43300000;
-    s32 v3 = ((s32)param_3 & 0xFFFF) | 0x43300000;
-    
-    v1 ^= 0x80000000;
-    v2 ^= 0x80000000;
-    v3 ^= 0x80000000;
-    
-    double d1 = (double)v1 - dconst;
-    double d2 = (double)v2 - dconst;
-    double d3 = (double)v3 - dconst;
-    
+    temp.i = 0x4330000000000000LL | ((s32)param_1 ^ 0x80000000);
+    double d1 = temp.d - dconst;
     d1 *= (double)factor;
+    
+    temp.i = 0x4330000000000000LL | ((s32)param_2 ^ 0x80000000);
+    double d2 = temp.d - dconst;
     d2 *= (double)factor;
+    
+    temp.i = 0x4330000000000000LL | ((s32)param_3 ^ 0x80000000);
+    double d3 = temp.d - dconst;
     d3 *= (double)factor;
     
     lbl_802FEFB4[0] = (s16)(s32)d1;
