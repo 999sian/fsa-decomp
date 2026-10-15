@@ -35,6 +35,13 @@ void DCFlushRange(void*, u32);
 void fn_801C0A6C(u32);
 }
 
+extern "C" u32 fn_8000A1AC(void) {
+    u32 value = fn_800095BC(lbl_802FEB4C, lbl_802FEB50, lbl_802FB7B1, lbl_802FB7B2, lbl_802FB7B0);
+    DCFlushRange(lbl_802FEB50, lbl_802FEB54);
+    fn_801C0A6C(value);
+    return value;
+}
+
 extern "C" void fn_8000A208(void) {
     fn_801BB7E0(lbl_8029F8B0);
     BOOL enabled = OSDisableInterrupts();
