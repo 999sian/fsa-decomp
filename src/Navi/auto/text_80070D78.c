@@ -34,6 +34,11 @@ extern "C" void fn_800724B4(void) {
     fn_80072570();
 }
 
+extern "C" void fn_800724D4(void);
+extern "C" void fn_80072A5C(void) {
+    fn_800724D4();
+}
+
 extern "C" void* fn_80075890(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80281904;
