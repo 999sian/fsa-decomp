@@ -385,13 +385,13 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 }
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
-    int addr = param_1 + param_2 * 8;
-    *(u8 *)(addr + 0x5a) = param_3[1];
-    *(u8 *)(addr + 0x5b) = param_3[2];
-    *(u8 *)(addr + 0x5c) = param_3[3];
-    *(u8 *)(addr + 0x5e) = param_3[5];
-    *(u8 *)(addr + 0x5f) = param_3[6];
-    *(u8 *)(addr + 0x60) = param_3[7];
+    param_1 += param_2 * 8;
+    *(u8 *)(param_1 + 0x5a) = param_3[1];
+    *(u8 *)(param_1 + 0x5b) = param_3[2];
+    *(u8 *)(param_1 + 0x5c) = param_3[3];
+    *(u8 *)(param_1 + 0x5e) = param_3[5];
+    *(u8 *)(param_1 + 0x5f) = param_3[6];
+    *(u8 *)(param_1 + 0x60) = param_3[7];
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
@@ -605,6 +605,24 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
     p->b[i] = v;
 }
 
+extern "C" int fn_800DE6C8(int param_1, int param_2) {
+    return param_1 + param_2 * 8 + 0x35;
+}
+
+extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
+    u8 val0 = param_3[0];
+    u8 val1 = param_3[1];
+    int offset = param_1 + param_2 * 8;
+    
+    u8 byte = *(u8*)(offset + 0x3c);
+    byte = (byte & 0xf3) | (val1 << 2);
+    *(u8*)(offset + 0x3c) = byte;
+    
+    byte = *(u8*)(offset + 0x3c);
+    byte = (byte & 0xfc) | val0;
+    *(u8*)(offset + 0x3c) = byte;
+}
+
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
     this_[idx + 0x59] = *src;
 }
@@ -746,7 +764,7 @@ extern "C" int fn_800DED50(int p, int i) {
     return p + i * 4 + 0xb8;
 }
 
-extern "C" void fn_800DED64(int p, int i, u8 v) {
+extern "C" void fn_800DED64(int p, int i, int v) {
     int addr = p + i;
     *(u8*)(addr + 0xc8) = v;
 }
