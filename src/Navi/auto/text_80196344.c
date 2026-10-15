@@ -113,6 +113,10 @@ extern "C" void* fn_801A3768(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_801A3B8C(void* p) {
+    return *(void**)((char*)p + 4);
+}
+
 extern void* lbl_8029A400[];
 extern "C" void* fn_801A3BA4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
