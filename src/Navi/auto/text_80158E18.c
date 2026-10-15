@@ -31,6 +31,11 @@ extern "C" int fn_8015AB94(int* p, int v) {
     return (unsigned int)((v - *p) | (*p - v)) >> 31;
 }
 
+extern "C" int fn_8015ABAC()
+{
+	return 0;
+}
+
 extern "C" void fn_8015ABB4(char** p) {
     char* q = *(char**)(*p + 0x18);
     if (q != 0) q -= 0xc;
