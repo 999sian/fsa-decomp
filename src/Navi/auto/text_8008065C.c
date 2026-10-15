@@ -14,6 +14,12 @@ extern "C" void* fn_800808C4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" BOOL fn_800811B8(void);
+extern "C" BOOL fn_800811B8(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_800813BC(void);
 extern "C" void fn_80081308(void) {
     fn_800813BC();
