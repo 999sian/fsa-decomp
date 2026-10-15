@@ -194,6 +194,10 @@ extern "C" void* fn_80063BA4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_80063BEC() {
+    return 0;
+}
+
 extern void* lbl_8027F2AC[];
 extern void* lbl_8027F2C0[];
 extern void* lbl_8027F240[];
