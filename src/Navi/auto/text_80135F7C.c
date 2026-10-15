@@ -108,6 +108,18 @@ extern "C" void* fn_8013635C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" f64 fn_801363A4(f64 a, f64 b) {
+    f64 m = 2.0 * b;
+    f64 r = fn_801E9FA0(a, m);
+    if (r < 0.0) {
+        r += m;
+    }
+    if (r >= b) {
+        r = m - r;
+    }
+    return r;
+}
+
 extern "C" u32 fn_80136A68(void) {
     return 2;
 }
