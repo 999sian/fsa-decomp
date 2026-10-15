@@ -13,6 +13,7 @@ extern "C" void* __nw__FUl(unsigned long);
 extern "C" void __dl__FPv(void*);
 extern "C" void* fn_80452A80(void*);
 extern "C" void* fn_80454DEC(void*);
+extern "C" u8 fn_8044CB00(u8*);
 extern "C" void fn_8044CB08(void*);
 extern "C" int fn_8044F664(void);
 extern "C" int fn_80453AF8(void);
@@ -127,13 +128,13 @@ extern "C" void* fn_8037B0B8(void* this_) {
     if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
         void* p = __nw__FUl(0x188);
         if (p != 0) {
-            fn_80452A80(p);
+            p = fn_80452A80(p);
         }
         *(void**)((char*)this_ + 0x4) = p;
     } else {
         void* p = __nw__FUl(0x5c);
         if (p != 0) {
-            fn_80454DEC(p);
+            p = fn_80454DEC(p);
         }
         *(void**)((char*)this_ + 0x8) = p;
     }
