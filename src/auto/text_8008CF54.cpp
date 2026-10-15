@@ -29,6 +29,14 @@ extern "C" u32 lbl_8052EA58[];
 extern "C" void initiate__10JSUPtrListFv(void *);
 extern "C" void fn_8008E488(void *, u32, u32, u32);
 
+extern "C" void fn_8008D0D4(void)
+{
+    if (lbl_8053A920 == 0) {
+        initiate__10JSUPtrListFv((void *)lbl_8052E8A0);
+        lbl_8053A920 = 1;
+    }
+}
+
 extern "C" void fn_8008D148(int param_1)
 {
   *(u8 *)(param_1 + 0x98) = 0;
@@ -145,28 +153,35 @@ extern "C" void fn_8008DED8(u32 param_1) {
 }
 
 extern "C" void fn_8008E1FC(u32 *param_1, u8 *param_2, s32 param_3, u32 param_4) {
-    u32 value = (*param_2 << 8) | param_2[1];
-    param_1[3] = value;
-    param_1[2] = (u32)(param_2 + 2);
+    u8 b0 = param_2[0];
+    u8 b1 = param_2[1];
+    u32 ptr_val = (u32)(param_2 + 2);
+    u32 byte_val = (b0 << 8) + b1;
+    
+    param_1[3] = byte_val;
+    param_1[2] = ptr_val;
     
     if (param_3 == 1) {
-        if (param_1[2] == 0 || param_1[3] == 0) return;
+        if (param_1[2] == 0) return;
+        if (param_1[3] == 0) return;
         param_1[1] = 0xffffffff;
         param_1[0] = 0;
         return;
     }
     
-    if (param_3 < 1) {
-        if (param_3 < 0) return;
-        if (param_1[2] == 0 || param_1[3] == 0) return;
-        param_1[1] = param_1[3];
+    if (param_3 >= 2) {
+        if (param_3 >= 3) return;
+        if (param_1[2] == 0) return;
+        if (param_1[3] == 0) return;
+        param_1[1] = param_4;
         param_1[0] = 0;
         return;
     }
     
-    if (param_3 >= 3) return;
-    if (param_1[2] == 0 || param_1[3] == 0) return;
-    param_1[1] = param_4;
+    if (param_3 < 0) return;
+    if (param_1[2] == 0) return;
+    if (param_1[3] == 0) return;
+    param_1[1] = param_1[3];
     param_1[0] = 0;
 }
 
