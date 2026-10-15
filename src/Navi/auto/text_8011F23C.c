@@ -47,7 +47,7 @@ extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     return param_1;
 }
 
-extern void* lbl_802FDD84;
+extern "C" void* lbl_802FDD84;
 void* fn_8011FD10(void)
 {
 	return lbl_802FDD84;
@@ -410,9 +410,24 @@ extern "C" float fn_80132814(void) {
     return lbl_803017A0;
 }
 
+void fn_80132820(void)
+{
+    return;
+}
+
+void fn_80132824(void)
+{
+    return;
+}
+
 extern "C" BOOL fn_80132828(void)
 {
     return TRUE;
+}
+
+void fn_80132830(void)
+{
+    return;
 }
 
 extern "C" float fn_8013284C(void) {
