@@ -183,16 +183,26 @@ extern "C" void fn_80138348(void* param_1, unsigned int param_2) {
     *(u32*)((u8*)param_1 + 8) = 0;
 }
 
-extern "C" void fn_80138368(u32* param_1, u32 param_2, u32 param_3, u32 param_4) {
-    param_1[0x10] = param_2;
-    param_1[0x11] = param_3;
-    param_1[0x12] = param_4;
-    param_1[0x13] = param_1[0x10];
-    param_1[0x14] = param_1[0x12];
-    param_1[0x15] = param_1[0x10] + param_1[0x11] * param_1[0x12] * 4;
-    param_1[0x16] = param_1[0x12];
-    param_1[0x17] = param_1[0x13];
-    param_1[0x18] = param_1[0x14];
+extern "C" void fn_80138368(void* param_1, u32 param_2, u32 param_3, u32 param_4) {
+    u32 temp0, temp1, temp2;
+    
+    *(u32*)((u8*)param_1 + 0x40) = param_2;
+    *(u32*)((u8*)param_1 + 0x44) = param_3;
+    *(u32*)((u8*)param_1 + 0x48) = param_4;
+    
+    temp2 = *(u32*)((u8*)param_1 + 0x48);
+    temp0 = *(u32*)((u8*)param_1 + 0x40);
+    *(u32*)((u8*)param_1 + 0x4c) = temp0;
+    *(u32*)((u8*)param_1 + 0x50) = temp2;
+    
+    temp1 = *(u32*)((u8*)param_1 + 0x48);
+    temp0 = *(u32*)((u8*)param_1 + 0x44);
+    temp2 = *(u32*)((u8*)param_1 + 0x40);
+    *(u32*)((u8*)param_1 + 0x54) = temp2 + temp0 * temp1 * 4;
+    *(u32*)((u8*)param_1 + 0x58) = temp1;
+    
+    *(u32*)((u8*)param_1 + 0x5c) = *(u32*)((u8*)param_1 + 0x4c);
+    *(u32*)((u8*)param_1 + 0x60) = *(u32*)((u8*)param_1 + 0x50);
 }
 
 extern f32 lbl_802FEAB0;
