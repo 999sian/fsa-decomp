@@ -9,3 +9,15 @@ extern "C" void* fn_80012970(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" char lbl_80204E88[];
+extern "C" void* fn_80012E08(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)((char*)ptr + 0x10) = lbl_80204E88;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
