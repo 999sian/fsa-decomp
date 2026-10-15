@@ -115,6 +115,10 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
     p->m10();
 }
 
+extern "C" void fn_800DD938(u8* this_, const u32* src) {
+    *(u32*)(this_ + 0x34) = *src;
+}
+
 extern "C" void fn_800DDA9C(void* dst, const void* src) {
     *(u32*)((u8*)dst + 8) = *(const u32*)src;
 }
