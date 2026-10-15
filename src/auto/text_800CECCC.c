@@ -71,6 +71,10 @@ extern "C" void fn_800CF998(void* param_1, unsigned char* anm, const unsigned ch
     *(float**)(anm + 0xc) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x14));
 }
 
+extern "C" void fn_800CFA04(void** self, const void* data) {
+    fn_800CFA2C(self, self[1], data);
+}
+
 extern float lbl_8053BC80;
 void fn_800CFA2C(void* param_1, void* param_3, void* param_2) {
     unsigned char val8 = *(unsigned char*)((unsigned char*)param_3 + 8);
