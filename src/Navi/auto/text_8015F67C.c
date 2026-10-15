@@ -15,3 +15,9 @@ extern "C" void* fn_8015F73C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern "C" BOOL fn_8015F80C()
+{
+	return TRUE;
+}
+
