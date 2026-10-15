@@ -652,6 +652,11 @@ extern "C" u32 fn_801A51A0(void)
     return 0x49424c46;
 }
 
+extern "C" void fn_801A51AC(int param_1, u8 param_2)
+{
+    *(u8*)(param_1 + 4) = param_2;
+}
+
 extern "C" int fn_801A5368()
 {
 	return 0;
