@@ -31,6 +31,18 @@ extern "C" void* fn_8020B354(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void* fn_801F856C();
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" void fn_802075D8(void*, u16);
+extern "C" void v07__5ActorFv(void*);
+extern "C" void fn_8020B74C(u8* this_) {
+    void* actor = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
+    if (actor != 0) {
+        fn_802075D8(actor, *(u16*)(this_ + 0x94));
+    }
+    v07__5ActorFv(this_);
+}
+
 extern "C" void* fn_8020BE40(void* this_) {
     fn_801D0F40(this_);
     *(void**)this_ = lbl_804A5E98;
