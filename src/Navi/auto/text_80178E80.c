@@ -58,6 +58,11 @@ extern "C" void fn_80180B88(void) {
     fn_80177F0C();
 }
 
+extern "C" int fn_801820EC()
+{
+	return 0;
+}
+
 extern "C" void fn_80184BF4(void) {
     fn_80177F0C();
 }
