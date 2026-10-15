@@ -281,6 +281,12 @@ extern "C" void fn_800D9020(u8* self) {
     }
 }
 
+extern "C" void fn_800D91A4(u8* self) {
+    if (*(u16*)(self + 8) != 0xffff) {
+        loadTexNo(0, *(u16*)(self + 8));
+    }
+}
+
 extern "C" void fn_800D91D8(void) {
 }
 
