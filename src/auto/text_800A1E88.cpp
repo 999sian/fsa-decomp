@@ -2,4 +2,8 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "JSystem/J2D/J2DPane.h"
 
+bool J2DWindow::isUsed(const ResFONT *resource) {
+    return J2DPane::isUsed(resource);
+}
+
 void J2DWindow::rewriteAlpha() {}
