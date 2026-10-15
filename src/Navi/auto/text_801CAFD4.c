@@ -310,12 +310,52 @@ extern "C" u32 fn_801CED8C(void) {
     return *reg & 1;
 }
 
+extern "C" void* fn_801CF5D0(int param_1) {
+    volatile long long dummy;
+    int r30 = param_1;
+    int state = OSDisableInterrupts();
+    void* r31 = lbl_802FF9C0;
+    
+    lbl_802FF9C0 = (void*)((u32)lbl_802FF9C0 + r30);
+    *(int*)lbl_802FF9C8 = r30;
+    
+    lbl_802FF9C8 = (void*)((u32)lbl_802FF9C8 + 4);
+    lbl_802FF9C4 = (void*)((u32)lbl_802FF9C4 - 1);
+    
+    OSRestoreInterrupts(state);
+    
+    return r31;
+}
+
 extern "C" u32 fn_801CF6FC(void) {
     return 0x4000;
 }
 
 extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
+}
+
+extern "C" void __GXFifoInit(void) {
+    extern void fn_801D9640(void);
+    extern void* fn_801C027C(void);
+    extern void __OSSetInterruptHandler(int, void (*)(void));
+    extern void __OSUnmaskInterrupts(unsigned int);
+    extern void* lbl_802FFA50;
+    extern void* lbl_802FFA58;
+    extern void* lbl_802FFA48;
+    __OSSetInterruptHandler(0x11, fn_801D9640);
+    __OSUnmaskInterrupts(0x4000);
+    lbl_802FFA50 = fn_801C027C();
+    lbl_802FFA58 = 0;
+    lbl_802FFA48 = 0;
+    lbl_802FFA4C = 0;
+}
+
+extern "C" void fn_801D9CD8(void)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x8) = __rlwimi(*(u32*)(gx + 0x8), 1, 0, 31, 31);
+	__cpReg[1] = *(u32*)(gx + 0x8);
 }
 
 extern "C" void fn_801D9CFC(void)
@@ -327,9 +367,14 @@ extern "C" void fn_801D9CFC(void)
 
 extern "C" void fn_801D9D20(u8 enable)
 {
-	u8* gx = __GXData;
-	*(u32*)(gx + 0x8) = __rlwimi(*(u32*)(gx + 0x8), enable ? 1 : 0, 4, 27, 27);
-	__cpReg[1] = *(u32*)(gx + 0x8);
+	u32 v;
+	if (enable) {
+		v = 1;
+	} else {
+		v = 0;
+	}
+	*(u32*)(__GXData + 0x8) = __rlwimi(*(u32*)(__GXData + 0x8), v, 4, 27, 27);
+	__cpReg[1] = *(u32*)(__GXData + 0x8);
 }
 
 extern "C" void fn_801D9D54(u32 a, u8 b)
