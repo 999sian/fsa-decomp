@@ -377,7 +377,8 @@ extern "C" void fn_80069DC0(void) {
 }
 
 extern "C" int fn_8006A5D0(void* param_1, int param_2) {
-    if (*(s32*)((u8*)param_1 + 0x26c) != param_2) {
+    s32 old_val = *(s32*)((u8*)param_1 + 0x26c);
+    if (old_val != param_2) {
         *(s32*)((u8*)param_1 + 0x26c) = param_2;
         
         u8* data = (u8*)lbl_80280080 + param_2 * 0x14;
@@ -388,11 +389,11 @@ extern "C" int fn_8006A5D0(void* param_1, int param_2) {
         *(u16*)((u8*)param_1 + 0x278) = data_0;
         *(u8*)((u8*)param_1 + 0x27d) = 0;
         
-        u16 idx = *(u16*)((u8*)param_1 + 0x278);
+        u16 idx = data_0;
         u16 idx_val = lbl_802FC94C[idx];
+        u16 data_1 = *(u16*)(data + 0x2);
         f32 f3 = *(f32*)(data + 0xc);
         f32 f4 = *(f32*)(data + 0x10);
-        u16 data_1 = *(u16*)(data + 0x2);
         
         void* ptr = *(void**)((u8*)param_1 + 0x24c);
         fn_80022438(ptr, 0, idx_val, data_1);
@@ -459,6 +460,9 @@ extern "C" u8 fn_8006B030(u8* param_1) {
 extern "C" void fn_8006B240(void);
 extern "C" void fn_8006B13C(void) {
     fn_8006B240();
+}
+
+extern "C" void fn_8006B8A0(void) {
 }
 
 extern "C" void fn_8006B15C(void);
