@@ -1046,6 +1046,10 @@ extern "C" void* fn_800DE378(u8* this_) {
     return *(void**)(this_ + 4);
 }
 
+extern "C" void* fn_800DE380(u8* this_) {
+    return *(void**)(this_ + 0x90);
+}
+
 extern "C" void fn_800DE388(Actor* a, u32 v);
 extern "C" void fn_800DE388(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
 
