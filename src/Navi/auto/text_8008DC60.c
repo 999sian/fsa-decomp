@@ -560,6 +560,9 @@ extern "C" void* fn_800970F8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8009E960(void) {
+}
+
 extern void* lbl_80288AB4[];
 extern "C" void* fn_8009FC88(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
