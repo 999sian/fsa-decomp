@@ -19,12 +19,6 @@ struct Vtable800D8248 {
 #include "dolphin/os/OSCache.h"
 #include "JSystem/J3D/J3DPE.h"
 #include "JSystem/J3D/J3DInd.h"
-struct Bits800DDE5C {
-    u8 pad : 4;
-    u8 b : 2;
-    u8 a : 2;
-    u8 rest[7];
-};
 extern "C" char __vt__22J3DColorBlockAmbientOn[];
 extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
@@ -852,11 +846,9 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8* p = param_1 + param_2 * 8;
-    u8 b1 = param_3[1];
-    u8 b0 = param_3[0];
-    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
-    p[0x60] = (p[0x60] & ~0x3) | b0;
+    param_1 += param_2 * 8;
+    param_1[0x60] = (param_1[0x60] & ~0xC) | (param_3[1] << 2);
+    param_1[0x60] = (param_1[0x60] & ~0x3) | param_3[0];
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -1586,12 +1578,8 @@ extern "C" u32 fn_800DF208(void) {
     return 0x434c4142;
 }
 
-extern "C" void fn_800DF214(u8* param_1, int param_2, const u8* param_3) {
-    u8* base = param_1 + 0x20 + param_2 * 4;
-    base[0] = param_3[0];
-    base[1] = param_3[1];
-    base[2] = param_3[2];
-    base[3] = param_3[3];
+extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
+    ((GXColor*)(param_1 + 0x20))[param_2] = *param_3;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
