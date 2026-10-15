@@ -1494,6 +1494,11 @@ extern "C" void* fn_800DEE5C(void* param_1, short param_2) {
 extern "C" void fn_800DEEC8(Actor* a, s32 v);
 extern "C" void fn_800DEEC8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x4) = v; }
 
+extern "C" void fn_800DEED0(int param_1, u32* param_2)
+{
+  *(u32*)(param_1 + 4) = *param_2;
+}
+
 extern "C" void fn_800DEF34(u8* param_1, u32 param_2) {
     *(u32*)(param_1 + 0x58) = param_2;
 }
