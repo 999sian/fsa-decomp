@@ -79,7 +79,7 @@ extern "C" void fn_800CBD78(void)
 {
 }
 
-void fn_800CBD7C(void)
+extern "C" void fn_800CBD7C(void)
 {
 }
 
