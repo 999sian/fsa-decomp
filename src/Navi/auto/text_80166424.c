@@ -477,7 +477,23 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80178DDC(void* param_1) {
+    void* vtable = *(void**)param_1;
+    void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x78);
+    func();
+}
+
 extern "C" u32 fn_80178E08(void) { return 0x10; }
+
+extern "C" void fn_80178E10(void* param_1, int param_2) {
+    int r4 = 0;
+    if ((param_2 & 0xFF) != 0) {
+        r4 = 2;
+    }
+    void* vtable = *(void**)param_1;
+    void (*func)(int) = *(void(**)(int))((u8*)vtable + 0x20);
+    func(r4);
+}
 
 extern "C" int fn_80178E4C(int param_1) {
     *(u8*)(param_1 + 0xb5) = 0;
@@ -485,5 +501,8 @@ extern "C" int fn_80178E4C(int param_1) {
 }
 
 extern "C" void fn_80178E5C(void) {
+}
+
+extern "C" void fn_80178E60(void) {
 }
 
