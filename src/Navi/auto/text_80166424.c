@@ -112,7 +112,7 @@ extern "C" void fn_80178B74(void* param_1, void* param_2) {
         it = *(u8**)(it + 0x18);
         (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
         if (it != NULL) {
-            it -= (u32)0xc;
+            it -= 0xc;
         }
     }
 }
