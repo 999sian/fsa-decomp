@@ -219,6 +219,20 @@ extern "C" void fn_8004CB14(void* param_1, void* param_2) {
     fn_80130C64(param_2, byte, 0);
 }
 
+extern "C" void fn_8004CBF0(void);
+extern "C" void* fn_8004CBB4(void* ptr, s16 param_2);
+extern "C" void* fn_8004CB44(void* param_1) {
+    extern unsigned char lbl_80247020[];
+    extern unsigned char lbl_80246E48[];
+    
+    *(void**)param_1 = (void*)lbl_80247020;
+    *(void**)param_1 = (void*)lbl_80246E48;
+    fn_801E0DB8((void*)((char*)param_1 + 0x10), (void*)fn_8004CBF0, (void*)fn_8004CBB4, 0x14, 0x20);
+    *(unsigned int*)((char*)param_1 + 4) = 0;
+    *(unsigned short*)((char*)param_1 + 0xc) = 0;
+    return param_1;
+}
+
 extern "C" void* fn_8004CBB4(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
