@@ -44,7 +44,7 @@ extern "C" void fn_8017A948(void) {
     fn_801789D0();
 }
 
-extern "C" int fn_8017D1EC()
+extern "C" int fn_8017D1E4()
 {
 	return 0;
 }
