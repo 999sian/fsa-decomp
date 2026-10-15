@@ -189,6 +189,40 @@ void fn_801CE970(int r31) {
     OSRestoreInterrupts(interrupt_state);
 }
 
+extern "C" int fn_801CE9E4(int param_1) {
+    if (*(int*)(&lbl_802FF960) != 0) {
+        fn_801CEB00(0);
+    }
+    
+    if (param_1 == 0) {
+        return 0;
+    }
+    
+    int interrupt_state = OSDisableInterrupts();
+    int result = 0;
+    
+    if ((*(int*)(&lbl_802FF948) == 0) && (*(int*)(&lbl_802FE9EC) == 0x20)) {
+        if (fn_801C42F4() == 0) {
+            result = 1;
+        }
+    }
+    
+    OSRestoreInterrupts(interrupt_state);
+    
+    if (*(int*)(&lbl_802FF964) == 0) {
+        if (result != 0) {
+            fn_801CDB9C(0xf0000000);
+            *(int*)(&lbl_802FF964) = 1;
+            return 0;
+        }
+    } else {
+        *(int*)(&lbl_802FF964) = 0;
+        return 1;
+    }
+    
+    return result;
+}
+
 extern "C" void fn_801CEAA0(void* param_1) {
     char context[720];
     
@@ -213,5 +247,58 @@ extern "C" int fn_801CEB00(unsigned int param_1) {
     }
     
     return old_value;
+}
+
+extern "C" int __PADDisableRecalibration(int param_1) {
+    int state = OSDisableInterrupts();
+    
+    volatile unsigned char* ptr = (volatile unsigned char*)0x800030E3;
+    unsigned char val = *ptr;
+    
+    int result = (val >> 6) & 1;
+    
+    val = (val & 0xBF);
+    *ptr = val;
+    
+    if (param_1 != 0) {
+        val = *ptr;
+        val = (val | 0x40);
+        *ptr = val;
+    }
+    
+    OSRestoreInterrupts(state);
+    return result;
+}
+
+extern "C" void fn_801CEC14(unsigned int param_1, unsigned int param_2) {
+    int state = OSDisableInterrupts();
+    
+    volatile unsigned short* base = (volatile unsigned short*)0xCC005000;
+    
+    unsigned short r0 = base[0x30/2];
+    r0 = (r0 & 0xFC00) | ((param_1 >> 16) & 0x3FF);
+    base[0x30/2] = r0;
+    
+    unsigned short r4 = base[0x32/2];
+    r4 = (r4 & 0xFFE0) | (param_1 & 0x1F);
+    base[0x32/2] = r4;
+    
+    unsigned short r4_2 = base[0x36/2];
+    r4_2 = (r4_2 & 0x7FFF) | ((param_2 >> 5) & 0x7FFF);
+    base[0x36/2] = r4_2;
+    
+    OSRestoreInterrupts(state);
+}
+
+extern "C" void fn_801CEC9C(void) {
+    unsigned long base = 0xCC005000;
+    volatile unsigned short* ptr = (volatile unsigned short*)base;
+    unsigned short* reg = (unsigned short*)((unsigned long)ptr + 0x36);
+    *reg = *reg | 0x8000;
+}
+
+extern "C" u32 fn_801CED8C(void) {
+    volatile unsigned int* reg = (volatile unsigned int*)0xCC006C00;
+    return *reg & 1;
 }
 
