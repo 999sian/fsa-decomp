@@ -44,6 +44,11 @@ extern "C" void fn_8001B590(void) {
     cTg_SingleCut__FP16create_tag_class();
 }
 
+extern "C" void fn_8001B0B0(void);
+extern "C" void fn_8001B5D4(void) {
+    fn_8001B0B0();
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
