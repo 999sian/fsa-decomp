@@ -1,6 +1,20 @@
 #include "types.h"
 
 
+extern "C" void fn_801693F4(void *, void *, unsigned int);
+extern "C" void fn_801DF378(void *, int, unsigned char);
+extern "C" void fn_80169578(void *, void *, void *);
+extern "C" void fn_80169710(void *, void *);
+extern "C" void fn_801693A8(void *param_1, unsigned int param_2, float param_3, float param_4, float param_5)
+{
+	float local_c = param_3 + param_5;
+	float local_8 = param_4 + param_5;
+	unsigned int local_18 = *(unsigned int *)param_1;
+	float local_14 = param_3;
+	float local_10 = param_4;
+	fn_801693F4(&local_14, &local_18, param_2);
+}
+
 extern "C" BOOL fn_801694D8(void)
 {
 	return TRUE;
@@ -107,5 +121,11 @@ extern "C" void fn_80178AEC(void* param_1, void* param_2) {
             it -= 0xc;
         }
     }
+}
+
+extern "C" void fn_80178DB0(void* param_1) {
+    void* vtable = *(void**)param_1;
+    void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x74);
+    func();
 }
 
