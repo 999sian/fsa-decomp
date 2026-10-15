@@ -219,3 +219,17 @@ extern "C" void* fn_801A5074(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_8029ACD0[];
+extern "C" void* fn_801A50DC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029ACD0;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80299F88;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
