@@ -11,6 +11,11 @@ extern "C" int fn_8016997C()
 	return 0;
 }
 
+extern "C" int fn_80169984()
+{
+	return 0;
+}
+
 extern "C" int fn_8016999C()
 {
 	return 0;
@@ -24,12 +29,6 @@ extern "C" int fn_801699A4()
 extern "C" int fn_801699AC()
 {
 	return 0;
-}
-
-extern "C" BOOL fn_801699CC(void);
-extern "C" BOOL fn_801699CC(void)
-{
-    return TRUE;
 }
 
 extern "C" int fn_801699D4()
