@@ -24,6 +24,9 @@ extern "C" void fn_8000EBAC(void) {
 extern "C" void fn_8000EBB0(void) {
 }
 
+extern "C" void fn_8000EBB4(void) {
+}
+
 extern "C" void fn_800120AC(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
