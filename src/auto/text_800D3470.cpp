@@ -1764,6 +1764,10 @@ extern "C" void* fn_800DF4C8(void* param_1, short param_2) {
     return param_1;
 }
 
+extern "C" unsigned long fn_800DF524(void) {
+    return 'IBLF';
+}
+
 extern "C" void fn_800DF530(void* self, unsigned char num) {
     *((unsigned char*)self + 4) = num;
 }
