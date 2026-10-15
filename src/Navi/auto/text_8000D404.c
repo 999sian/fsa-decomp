@@ -187,3 +187,21 @@ extern "C" void fn_800120AC(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
 
+extern "C" void* lbl_802048F0[];
+extern "C" void* lbl_8020491C[];
+extern "C" void* fn_800120B4(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802048F0;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8020491C;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80204948;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
