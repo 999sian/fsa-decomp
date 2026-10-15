@@ -1,5 +1,8 @@
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
+#include "dolphin/gd.h"
+#include "JSystem/J3D/J3DTevBlock.h"
+#include "dolphin/os/OSCache.h"
 extern "C" char __vt__22J3DColorBlockAmbientOn[];
 extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
@@ -60,6 +63,28 @@ extern "C" int fn_800D3E80(void) { return 0x1e; }
 extern "C" int fn_800D3E88(void) { return 0x1e; }
 
 extern "C" int fn_800D3E90(void) { return 0x55; }
+
+extern "C" void fn_800D8248(void* p) {
+    typedef void (*Fn0)(void);
+    typedef void (*Fn1)(void*);
+    Fn0* vtbl = *(Fn0**)p;
+    vtbl[11]();
+    ((Fn1)vtbl[12])(p);
+}
+
+extern "C" void fn_800D8294(void* p) {
+    __GDCurrentDL->pDisplayListData += *(u32*)((u8*)p + 4);
+    u8* saved = __GDCurrentDL->pDisplayListData;
+    u16 tex = *(u16*)((u8*)p + 8);
+    if (tex != 0xffff) {
+        loadTexNo(0, *reinterpret_cast<const u16*>((u8*)p + 8));
+    }
+    u8* now = __GDCurrentDL->pDisplayListData;
+    DCStoreRange(saved, (u32)(now - saved));
+}
+
+extern "C" void fn_800D8300(void) {
+}
 
 extern "C" void fn_800DDA9C(void* dst, const void* src) {
     *(u32*)((u8*)dst + 8) = *(const u32*)src;
