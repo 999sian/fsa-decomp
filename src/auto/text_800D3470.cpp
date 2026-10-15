@@ -1528,6 +1528,10 @@ extern "C" u32 fn_800DEF1C(u8* self, int i) {
     return *(u32*)(self + 0x38);
 }
 
+extern "C" u32 fn_800DEF2C(u8* self) {
+    return *(u32*)(self + 0x58);
+}
+
 extern "C" void fn_800DEF34(u8* param_1, u32 param_2) {
     *(u32*)(param_1 + 0x58) = param_2;
 }
