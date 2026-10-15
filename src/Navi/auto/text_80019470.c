@@ -19,6 +19,11 @@ extern "C" void fn_8001C008(void*);
 extern "C" void fn_8001B9CC(void);
 extern "C" void* fn_8001BF80(void*);
 extern "C" void* fn_8001C094(void*);
+extern "C" void fn_8001EB7C(void*, u8);
+extern "C" void fn_8001EDEC(void*, void*, void*, void*, void*);
+extern "C" void fn_8001C930(void);
+extern void* lbl_802B7BD8;
+extern void* lbl_802B7C04;
 extern "C" void* fn_8001D540(void*, void*);
 extern "C" void fn_8001D57C(void*, void*);
 extern "C" void* fn_8001AC74(void*, void*);
@@ -159,13 +164,14 @@ extern "C" int fn_8001BC10(int param_1) {
     arr[0] = param_1;
     
     unsigned int check = (unsigned int)(param_1 + 2);
-    if (check > 1) {
-        unsigned int result = fn_8001C554((void*)&fn_8001E8B4, arr);
-        if (result != 0) {
-            return 1;
-        }
+    if (check <= 1) {
+        return 0;
     }
     
+    unsigned int result = fn_8001C554((void*)fn_8001E8B4, arr);
+    if (result != 0) {
+        return 1;
+    }
     return 0;
 }
 
