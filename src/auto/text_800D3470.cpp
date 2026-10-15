@@ -1051,6 +1051,16 @@ extern "C" void fn_800DECF8(int p, int i, const u8* v)
     base[offset + 0xbb] = v[3];
 }
 
+extern "C" void fn_800DED24(int p, int i, const u8* v)
+{
+    u8* base = (u8*)p;
+    int offset = i << 2;
+    base[offset + 0xb8] = v[0];
+    base[offset + 0xb9] = v[1];
+    base[offset + 0xba] = v[2];
+    base[offset + 0xbb] = v[3];
+}
+
 extern "C" int fn_800DED50(int p, int i) {
     return p + i * 4 + 0xb8;
 }
