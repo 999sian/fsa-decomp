@@ -93,6 +93,16 @@ extern "C" int fn_8000ED44()
 	return 0;
 }
 
+extern "C" int fn_8000ED4C()
+{
+	return 0;
+}
+
+extern "C" int fn_8000ED54()
+{
+	return 0;
+}
+
 extern "C" int fn_8000ED7C(void) {
     return 0xFFFF;
 }
