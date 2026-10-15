@@ -52,6 +52,11 @@ extern "C" void* fn_8000F388(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80159BB4(void);
+extern "C" void fn_8000FA24(void) {
+    fn_80159BB4();
+}
+
 extern void* lbl_80204984[];
 extern "C" void* fn_80010224(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
