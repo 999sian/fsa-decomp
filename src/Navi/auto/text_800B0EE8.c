@@ -20,6 +20,10 @@ extern "C" unsigned char fn_800B51E8(void* self, int i) {
     return lbl_802313EC[i];
 }
 
+extern "C" void fn_800B96CC(u8* p) {
+    *(u32*)(p + 0x1bc) = 0;
+}
+
 extern "C" void fn_800B96D8(char* p) {
     if (*(u8*)(*(char**)(p + 0x1b0) + 0xb0) != 0 || *(u8*)(*(char**)(p + 0x1b4) + 0xb0) != 0) {
         *(s32*)(p + 0x1bc) += 1;
