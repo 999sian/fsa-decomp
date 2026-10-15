@@ -530,6 +530,11 @@ extern "C" void fn_80011F78(void)
 extern "C" void fn_80011F7C(void) {
 }
 
+extern "C" int fn_80011F80()
+{
+	return 0;
+}
+
 extern "C" int fn_80011F88()
 {
 	return 0;
