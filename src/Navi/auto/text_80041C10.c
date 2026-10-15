@@ -75,6 +75,18 @@ extern "C" void* fn_8004D9C4(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern char lbl_80246F4C[];
+extern "C" void* fn_8004DA28(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_80246F4C;
+        fn_80130CB8(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern void* lbl_80222428[];
 extern void* lbl_80247088[];
 extern "C" void* fn_8004DC80(void* ptr, s16 param_2) {
