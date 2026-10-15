@@ -29,6 +29,9 @@ extern u16 lbl_802FC94C[];
 extern int lbl_802FC930;  // SDA label
 extern void* lbl_802B7CA0[];  // Address table
 extern void* lbl_802BB0FC[];
+extern void* lbl_802BF814[];
+extern f64 lbl_80300470;  // SDA label
+extern void fn_8002F358(int, int);
 extern f32 lbl_80300468;  // SDA label
 extern f32 lbl_8030046C;  // SDA label
 extern void* lbl_80280230[];
@@ -533,6 +536,20 @@ extern "C" void fn_8006B9A4(void* param_1) {
 extern "C" void fn_8006BA44(void* param_1) {
     *(u16*)((u8*)param_1 + 0x310) = 0;
     fn_80030534((u8*)param_1 + 0x2ec, 0x58, 1);
+}
+
+extern "C" void fn_8006BA78(void* param_1) {
+    fn_8006C404();
+    void* ptr = (void*)0x802BF814;
+    s16 offset1 = *(s16*)((u8*)ptr + 0x1fc);
+    s16 offset2 = *(s16*)((u8*)ptr + 0x1fa);
+    u16 val = *(u16*)((u8*)param_1 + 0x310);
+    val = val + offset1;
+    *(u16*)((u8*)param_1 + 0x310) = val;
+    if (val >= (u16)offset2) {
+        *(u16*)((u8*)param_1 + 0x310) = (u16)offset2;
+        fn_8006C5B0((s32)param_1);
+    }
 }
 
 extern "C" void fn_8006BADC(void) {
