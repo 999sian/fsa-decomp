@@ -548,7 +548,7 @@ extern "C" u8* fn_80134B98(u8* p, void* a, void* b) {
     return p;
 }
 
-extern void* lbl_80292070;
+extern void* lbl_80292070[];
 extern void* lbl_802026C0;
 extern void* lbl_80291BB4;
 extern "C" void fn_8013A5EC(int ptr, int param);
@@ -556,15 +556,15 @@ extern "C" void fn_8013A57C(void);
 extern "C" void fn_801E10DC(int ptr, uint param);
 extern "C" int fn_80135858(int param_1, s16 param_2) {
     if (param_1 != 0) {
-        *(int*)(param_1 + 0x8) = (int)lbl_80292070;
-        *(int*)(param_1 + 0x8) = (int)lbl_802925EC;
-        int* obj = *(int**)(param_1 + 0x34);
-        if (obj != 0) {
-            int* vftbl = *(int**)obj;
-            void (*func)(int*, int) = (void (*)(int*, int))vftbl[2];
-            func(obj, 1);
+        *(void**)(param_1 + 0x8) = &lbl_80292070;
+        if (param_1 != 0) {
+            *(void**)(param_1 + 0x8) = lbl_802925EC;
+            int* obj = *(int**)(param_1 + 0x34);
+            if (obj != 0) {
+                (*(void (**)(int*, int))(*obj + 8))(obj, 1);
+            }
+            fn_8013A5EC(param_1, 0);
         }
-        fn_8013A5EC(param_1, 0);
         if (param_2 > 0) {
             fn_8015AB1C((void*)param_1);
         }
