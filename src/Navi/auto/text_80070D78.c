@@ -14,6 +14,12 @@ extern "C" void fn_800710A4(void) {
     fn_80070E64();
 }
 
+extern "C" BOOL fn_800710C4(void);
+extern "C" BOOL fn_800710C4(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_800711CC(void);
 extern "C" void fn_800711AC(void) {
     fn_800711CC();
@@ -40,6 +46,11 @@ extern "C" void fn_80071CD0(void) {
 extern "C" void fn_80071CF0(void);
 extern "C" void fn_80072240(void) {
     fn_80071CF0();
+}
+
+BOOL fn_8007247C()
+{
+	return TRUE;
 }
 
 extern void* lbl_802473AC[];
