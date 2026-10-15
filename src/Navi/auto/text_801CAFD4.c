@@ -318,6 +318,13 @@ extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
 }
 
+extern "C" void fn_801D9CFC(void)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x8) = __rlwimi(*(u32*)(gx + 0x8), 0, 0, 31, 31);
+	__cpReg[1] = *(u32*)(gx + 0x8);
+}
+
 extern void* lbl_802FFA50;
 extern void* lbl_802FFA48;
 extern "C" void* fn_801C027C(void);
