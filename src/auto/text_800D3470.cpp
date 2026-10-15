@@ -435,6 +435,10 @@ extern "C" u32* fn_800DEBB0(u8* this_, s32 idx) {
     return (u32*)(this_ + 0x18 + idx * 4);
 }
 
+extern "C" void fn_800DEC50(u8* p, int i, const u32& v) {
+    ((u32*)(p + 0x78))[i] = v;
+}
+
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
     *(J3DNBTScaleInfo*)(self + 0x5c) = *other;
 }
