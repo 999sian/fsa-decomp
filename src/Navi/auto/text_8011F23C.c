@@ -499,6 +499,10 @@ extern "C" int fn_80132A24(void)
     return 0;
 }
 
+extern "C" void fn_80132A2C(void)
+{
+}
+
 extern "C" int fn_80132A30()
 {
 	return 0;
