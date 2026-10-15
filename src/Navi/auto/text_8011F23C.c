@@ -14,6 +14,10 @@ extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_8012A804(void* p) {
+    return *(void**)((char*)p + 4);
+}
+
 extern void* lbl_80290F9C[];
 extern "C" void* fn_8012F204(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
