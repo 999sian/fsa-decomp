@@ -9,7 +9,7 @@ struct Vtable800D8248 {
     virtual void m7() = 0;
     virtual void m8() = 0;
     virtual void m9() = 0;
-    virtual void m10(void*) = 0;
+    virtual void m10() = 0;
 };
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
@@ -80,7 +80,6 @@ extern "C" int fn_800D3E90(void) { return 0x55; }
 struct Vtable800D8248;
 extern "C" void fn_800D8248(Vtable800D8248* p) {
     p->m9();
-    p->m10(p);
 }
 
 extern "C" void fn_800D8294(void* p) {
