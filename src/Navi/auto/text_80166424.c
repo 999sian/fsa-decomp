@@ -10,6 +10,11 @@ extern "C" int fn_8016999C()
 	return 0;
 }
 
+extern "C" int fn_801699A4()
+{
+	return 0;
+}
+
 extern "C" int fn_8017334C()
 {
 	return 0;
