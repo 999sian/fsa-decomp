@@ -232,6 +232,11 @@ extern char lbl_802FEC38[];
 extern "C" void fn_8001C2C0(void* param_1) {
     fn_8001BBBC((short*)((u8*)param_1 + 0xbe));
 }
+
+extern "C" void fn_8001C2E4(void* param_1, void* param_2) {
+    fn_8001D540(*(void**)((u8*)param_1 + 0x10), param_2);
+}
+
 #pragma pop
 extern "C" void* fn_8001C308(void* param_1) {
     void* result = nullptr;
