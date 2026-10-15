@@ -32,6 +32,7 @@ public:
 };
 extern const f32 lbl_803016E0;
 extern const f32 lbl_803016E4;
+extern const f32 lbl_803017B0;
 extern "C" void fn_8012C274(void*);
 extern "C" void fn_8015AB1C(void* ptr);
 extern u8 lbl_802FF334;
@@ -73,15 +74,15 @@ extern "C" void fn_80120090(u8 param_1) {
 
 extern "C" void* fn_80120098(void* param_1)
 {
-	void* allocated;
-	if ((allocated = lbl_802FF328) == 0) {
+	void* allocated = lbl_802FF328;
+	if (allocated == 0) {
 		allocated = fn_8015A90C(0x58);
 		if (allocated != 0) {
 			allocated = fn_80120138(allocated, param_1);
 		}
 	}
 	lbl_802FF328 = allocated;
-	return lbl_802FF328;
+	return *(void**)&lbl_802FF328;
 }
 
 extern "C" void fn_801200F0(void)
