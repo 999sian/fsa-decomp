@@ -9,6 +9,7 @@ extern "C" void fn_8001C2E4(void*, void*);
 extern "C" void fn_801155E0(void*, int);
 extern "C" void* fn_8001D630(void*, void*);
 extern char lbl_802FEC48[];
+extern u32 lbl_802FBA08;
 extern "C" void* fn_8001AC84(void*);
 extern "C" void fn_8001C174(void*, void*, void*, int);
 extern "C" void* fn_8001C010(void);
