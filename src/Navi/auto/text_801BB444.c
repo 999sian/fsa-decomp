@@ -6,3 +6,11 @@ extern "C" void OSCreateAlarm(u32* p) {
     p[0] = 0;
     p[1] = 0;
 }
+
+extern u32 lbl_802FE960;
+extern "C" u32 fn_801BBE40(u32 param_1) {
+    u32 old = lbl_802FE960;
+    lbl_802FE960 = param_1;
+    return old;
+}
+
