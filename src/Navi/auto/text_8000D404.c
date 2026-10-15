@@ -75,28 +75,21 @@ extern "C" void fn_8000EBB4(void) {
 
 void fn_8000EC78(void *param_1)
 {
-  int *p = (int *)param_1;
-  int *vtable = (int *)*p;
-  int *obj_data = (int *)p[1];
-  
-  if ((*(int *)((char *)obj_data + 0x1c) == 1) && (*(short *)((char *)obj_data + 0x74) != 1)) {
-    typedef void (*VFunc)(void *);
-    VFunc vfunc = (VFunc)vtable[5];
-    vfunc(param_1);
+  if ((*(int *)((char *)((int **)param_1)[1] + 0x1c) == 1) && 
+      (*(short *)((char *)((int **)param_1)[1] + 0x74) != 1)) {
+    void **vtable = *(void ***)param_1;
+    ((void (*)(void))vtable[5])();
     fn_801A9E44(param_1);
-    vfunc = (VFunc)vtable[3];
-    vfunc(param_1);
+    ((void (*)(void *))vtable[3])(param_1);
   }
   else {
     fn_801A9A60(param_1);
-    typedef void (*VFunc)(void *);
-    VFunc vfunc = (VFunc)vtable[3];
-    vfunc(param_1);
+    void **vtable = *(void ***)param_1;
+    ((void (*)(void *))vtable[3])(param_1);
     fn_801A9930(param_1);
   }
-  typedef void (*VFunc)(void *);
-  VFunc vfunc = (VFunc)vtable[7];
-  vfunc(param_1);
+  void **vtable = *(void ***)param_1;
+  ((void (*)(void *))vtable[7])(param_1);
 }
 
 extern "C" int fn_8000ED24()
@@ -284,6 +277,12 @@ extern "C" void fn_8000EEA8(void) {}
 extern "C" void fn_8000EEAC(void) {}
 
 extern "C" void fn_8000EEB0(void) {}
+
+extern "C" void fn_8000EEB4(void) {}
+
+void fn_8000EEB8(void) {}
+
+void fn_8000EEBC(void) {}
 
 extern "C" void fn_8000EEC0(void) {
 }
