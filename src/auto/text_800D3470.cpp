@@ -175,6 +175,16 @@ extern "C" u8* fn_800DD970(u8* self) {
     return self + 0x38;
 }
 
+extern "C" u32 fn_800DDA50(void) {
+    return 0x50454647;
+}
+
+extern "C" void fn_800DDA5C(u8* this_, u8* src) {
+    *(u16*)(this_ + 0x4) = *(u16*)src;
+    *(u8*)(this_ + 0x6) = src[2];
+    *(u8*)(this_ + 0x7) = src[3];
+}
+
 extern "C" void* fn_800DDA94(u8* this_) {
     return this_ + 4;
 }
