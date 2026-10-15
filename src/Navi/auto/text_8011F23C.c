@@ -116,6 +116,11 @@ extern "C" void fn_80123EB0(void* p)
 	lbl_802FF368 = p;
 }
 
+extern "C" void* fn_80123EB8(void)
+{
+	return lbl_802FF368;
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
