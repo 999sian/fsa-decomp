@@ -47,10 +47,8 @@ extern "C" int fn_800264AC(u8 i) {
 }
 
 extern "C" void fn_800264D4(u8 i) {
-    int v = 0;
-    u8* p = lbl_802BBD38 + i * 0x204;
-    p += *(s16*)(p + 0x200) * 0x20;
-    *(int*)(p + 0x1c) = v;
+    NaviSlot* s = (NaviSlot*)lbl_802BBD38 + i;
+    s->e[s->cur].flag = 0;
 }
 
 extern u8 lbl_802BBD38[];
