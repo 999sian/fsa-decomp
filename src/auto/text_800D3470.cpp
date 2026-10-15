@@ -1595,6 +1595,19 @@ extern "C" u32 fn_800DF454(void) {
     return 0x50454544;
 }
 
+extern "C" void* fn_800DF460(void* self, short flag) {
+    if (self) {
+        *(void**)self = __vt__17J3DPEBlockTexEdge;
+        if (self) {
+            *(void**)self = __vt__10J3DPEBlock;
+        }
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
+}
+
 extern "C" u32 fn_800DF4BC(void) {
     return 0x50454f50;
 }
