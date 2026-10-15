@@ -393,10 +393,11 @@ extern "C" void fn_801338F8(u8* p, void* unused, int i) {
 }
 
 extern "C" void fn_80133910(u8* p, void* unused, int i, f32* v) {
+    f32 f = *v;
     u8* e = *(u8**)(p + 4) + i * 0x14;
     *(void**)(e + 8) = (void*)fn_8013345C;
     *(u32*)(e + 4) = 0;
-    *(f32*)(e + 0xc) = *v;
+    *(f32*)(e + 0xc) = f;
 }
 
 extern "C" void fn_80133968(u8* p, u8* q, int i, void* a, void* b) {
