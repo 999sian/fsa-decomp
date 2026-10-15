@@ -60,6 +60,15 @@ extern "C" void* fn_80062F90(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_800636A0(void* a, u8* p, int n) {
+    void* r = fn_800637F0(a, p, n);
+    if (r == 0) {
+        fn_800074C0(lbl_8027F098, a);
+        return 1;
+    }
+    return fn_80062FE4(r);
+}
+
 extern void* lbl_8027F214[];
 extern "C" void* fn_80063BA4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
