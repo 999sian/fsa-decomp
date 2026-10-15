@@ -13,9 +13,6 @@ extern "C" void fn_8015EA78(void) {
 }
 
 typedef void (*fn_ptr)(void);
-extern "C" {
-    extern fn_ptr __ctors[];
-    fn_ptr __ctors[] __attribute__((section(".ctors"))) = {
-        fn_8015EA78
-    };
-}
+const fn_ptr __ctors[] __attribute__((section(".ctors"))) = {
+    (fn_ptr)fn_8015EA78
+};
