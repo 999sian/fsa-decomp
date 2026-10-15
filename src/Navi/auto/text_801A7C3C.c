@@ -1,4 +1,6 @@
 #include "types.h"
+extern void* lbl_8029BBBC[];
+
 extern "C" void* lbl_8029B5AC[];
 extern "C" void* lbl_8027F240[];
 
@@ -395,6 +397,20 @@ extern "C" void* fn_801B5128(void* base, u32 offset) {
 extern "C" void* fn_801B5140(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern void* lbl_8029B9B0[];
+extern "C" void* fn_801B7034(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029B9B0;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029BBBC;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern void* lbl_8029BBBC[];
