@@ -1,13 +1,6 @@
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 
-extern "C" void fn_800DD938(s32 param_1, u32 *param_2)
-{
-    u32 r0 = *param_2;
-    param_1[13] = r0;
-    return;
-}
-
 struct UnkDC8C {
     s16 m_a;
     s16 m_b;

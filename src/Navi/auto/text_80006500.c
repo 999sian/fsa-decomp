@@ -4,3 +4,8 @@
 extern "C" void fn_800085E0(void) {
   return;
 }
+
+void fn_800085E4(void) {
+  return;
+}
+
