@@ -66,6 +66,10 @@ extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
     }
 }
 
+extern "C" s32 fn_80112C8C(void) {
+    return 1;
+}
+
 extern "C" s32 fn_80112C94(u8* this_) {
     return *(s32*)(this_ + 0x238);
 }
