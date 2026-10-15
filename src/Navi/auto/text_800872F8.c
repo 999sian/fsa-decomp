@@ -16,9 +16,14 @@ extern "C" int fn_80087348(void* param_1) {
     return ret > 0 ? 0 : 2;
 }
 
+extern "C" int fn_80058A88(int x);
+extern "C" int fn_80058A28(int x);
+extern "C" void fn_80057C38(int x);
+extern "C" void fn_8001A454(int a, int b, int c);
+extern void* lbl_80283D2C[];
 extern "C" void* fn_800873FC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
-        *(void**)ptr = lbl_80283F48;
+        *(void**)ptr = lbl_80283D2C;
         if ((s32)ptr + (unsigned)0x4 != 0) {
             ((void**)(ptr))[1] = lbl_802883C4;
             if ((s32)ptr + 0x4 != 0) {
