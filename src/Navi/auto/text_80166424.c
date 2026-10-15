@@ -1,5 +1,13 @@
 #include <string.h>
 
+struct Node {
+    struct Node* prev;
+    struct Node* next;
+};
+
+extern void fn_8015AB1C(void* ptr);
+extern void* lbl_802911A0[];
+
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
     u32 b = param_3[1];
     u32 a = param_3[0];
@@ -25,14 +33,14 @@ extern "C" void fn_80178AEC(void* param_1, void* param_2) {
 
 extern "C" void fn_80178B74(void* param_1, void* param_2) {
     (*(void (**)(void*))(*(u8**)param_1 + 0x8c))(param_1);
-    register u8* it = *(u8**)((u8*)param_1 + 0xdc);
+    u8* it = *(u8**)((u8*)param_1 + 0xdc);
     if (it != NULL) {
         it -= 0xc;
     }
     while (it != NULL) {
         void* obj = *(void**)(it + 0xc);
-        (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
         it = *(u8**)(it + 0x18);
+        (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
         if (it != NULL) {
             it -= 0xc;
         }
