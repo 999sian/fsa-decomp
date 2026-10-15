@@ -53,7 +53,7 @@ extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern f32 lbl_80300E40;
 extern "C" void fn_800CA3EC(u8* p) {
     *(s16*)(p + 0x15a) = 0;
-    fn_800CB450(p, *(s16*)(p + 0x15a), lbl_802C56B4.unk10, 0, 0, lbl_802C56B4.unkC, lbl_80300E40);
+    fn_800CB450(p, *(s16*)(p + 0x15a), lbl_802C56B4.unk10, 0, 0, lbl_802C56B4.unkC, 40.0f);
 }
 
 extern "C" void fn_800CA7C4(u8* p) {
