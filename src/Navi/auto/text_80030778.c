@@ -13,6 +13,17 @@ extern "C" void fn_800307E4(void) {
     fn_80030B3C();
 }
 
+extern "C" void fn_800335C4(void* p) {
+    *(unsigned int*)((char*)p + 0xe8) |= 0x200000;
+    *(unsigned int*)((char*)p + 0xe8) |= 0x10000000;
+    fn_8002A3CC(p, (char*)p + 0xfc, 0x46, 1);
+    if (!lbl_802FEE44) {
+        lbl_802FEE44 = 1;
+        lbl_802FEE43 |= 4;
+        lbl_802FEE30 |= 0x8000;
+    }
+}
+
 extern "C" void fn_80033644(void* p) {
     fn_8002E3C4(p, 0);
 }
