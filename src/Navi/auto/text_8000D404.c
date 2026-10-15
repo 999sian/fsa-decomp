@@ -34,6 +34,13 @@ extern "C" void* fn_8000EE0C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_8000EE4C(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
 extern void* lbl_80299A8C[];
 extern "C" void* fn_8000F388(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
