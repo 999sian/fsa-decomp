@@ -394,6 +394,11 @@ extern "C" void* fn_801B71D8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801AF3A4(void*, void*);
+extern "C" void fn_801B7244(void* self, void* a, void* b) {
+    fn_801AF3A4(a, b);
+}
+
 extern "C" void fn_801AF4B4(void*);
 extern "C" char* lbl_802FF704;
 extern "C" void fn_801B726C(void) {
