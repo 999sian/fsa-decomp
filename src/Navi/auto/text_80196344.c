@@ -229,6 +229,10 @@ extern "C" void fn_801A4B44(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
 
+extern "C" void* fn_801A4B58(void* p) {
+    return *(void**)((char*)p + 4);
+}
+
 extern "C" void* lbl_8029A9AC[];
 extern "C" void* fn_801A4C14(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
