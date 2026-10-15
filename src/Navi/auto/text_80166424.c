@@ -1,6 +1,7 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80166424-0x80178e64 (536 functions). split_file divides it into the game's real files.
 #include "types.h"
+#include <cstring>
 
 
 extern void* lbl_80298C5C[];
@@ -733,18 +734,14 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
 
 extern "C" void fn_80178C9C(void* param_1, void* param_2);
 extern "C" void fn_80178B74(void* param_1, void* param_2) {
-    void* vtable = *(void**)param_1;
-    void (*func)(void*) = *(void (**)(void*))(((u8*)vtable) + 0x8c);
-    func(param_1);
+    (*(void (**)(void*))(*(u8**)param_1 + 0x8c))(param_1);
     u8* it = *(u8**)((u8*)param_1 + 0xdc);
     if (it != NULL) {
         it -= 0xc;
     }
     while (it != NULL) {
         void* obj = *(void**)(it + 0xc);
-        void* obj_vtable = *(void**)obj;
-        void (*obj_func)(void*, void*) = *(void (**)(void*, void*))(((u8*)obj_vtable) + 0x88);
-        obj_func(obj, param_2);
+        (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
         it = *(u8**)(it + 0x18);
         if (it != NULL) {
             it -= 0xc;
@@ -762,9 +759,7 @@ extern "C" void* fn_80178BFC(void* param_1, void* param_2) {
     }
     while (it != NULL) {
         void* obj = *(void**)(it + 0xc);
-        void* obj_vtable = *(void**)obj;
-        void (*obj_func)(void*, void*) = *(void (**)(void*, void*))(((u8*)obj_vtable) + 0x90);
-        obj_func(obj, param_2);
+        (*(void (**)(void*, void*))(*(u8**)obj + 0x90))(obj, param_2);
         it = *(u8**)(it + 0x18);
         if (it != NULL) {
             it -= 0xc;
@@ -784,9 +779,7 @@ extern "C" void fn_80178DAC(void) {
 }
 
 extern "C" void fn_80178DB0(void* param_1) {
-    void* vtable = *(void**)param_1;
-    void (*func)(void*) = *(void (**)(void*))(((u8*)vtable) + 0x74);
-    func(param_1);
+    (*(void (**)(void*))(*(u8**)param_1 + 0x74))(param_1);
 }
 
 extern "C" void fn_80178DDC(void* param_1) {
@@ -802,8 +795,7 @@ extern "C" void fn_80178E10(void* param_1, int param_2) {
     if ((param_2 & 0xFF) != 0) {
         r4 = 2;
     }
-    void* vtable = *(void**)param_1;
-    void (*func)(int) = *(void(**)(int))((u8*)vtable + 0x20);
+    void (*func)(int) = *(void (**)(int))(*(u8**)param_1 + 0x20);
     func(r4);
 }
 
