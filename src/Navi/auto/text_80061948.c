@@ -204,3 +204,8 @@ extern "C" void fn_80067FE8(void) {
     fn_800680A4();
 }
 
+extern "C" void fn_80068008(void);
+extern "C" void fn_80068804(void) {
+    fn_80068008();
+}
+
