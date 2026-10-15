@@ -207,6 +207,10 @@ extern "C" void* fn_80011F1C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_800120A4(void* p) {
+    return *(void**)((char*)p + 4);
+}
+
 extern "C" void fn_800120AC(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
