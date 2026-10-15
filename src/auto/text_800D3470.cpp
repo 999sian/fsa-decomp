@@ -442,11 +442,10 @@ extern "C" u8* fn_800DE124(u8* this_, u32 idx) {
 }
 
 extern "C" void fn_800DE138(u8* this_, u32 idx, const u8* src) {
-    u8* dst = this_ + idx * 4;
-    dst[0x62] = src[0];
-    dst[0x63] = src[1];
-    dst[0x64] = src[2];
-    dst[0x65] = src[3];
+    (this_ + idx * 4)[0x62] = src[0];
+    (this_ + idx * 4)[0x63] = src[1];
+    (this_ + idx * 4)[0x64] = src[2];
+    (this_ + idx * 4)[0x65] = src[3];
 }
 
 extern "C" u8* fn_800DE190(u8* this_, u32 idx) {
