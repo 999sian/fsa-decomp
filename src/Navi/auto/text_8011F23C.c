@@ -198,6 +198,10 @@ extern "C" float fn_80132814(void) {
     return lbl_803017A0;
 }
 
+extern "C" float fn_8013284C(void) {
+    return lbl_803017A0;
+}
+
 extern void* lbl_80291320[];
 extern "C" void* fn_801328F8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
