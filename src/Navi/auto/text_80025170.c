@@ -152,6 +152,12 @@ extern "C" int fn_800268A4()
 	return 0;
 }
 
+extern "C" int fn_80026D3C(u8 i) {
+    u8* p = lbl_802BC618 + i * 0x2c;
+    p += *(s16*)(p + 0x28) * 0x14;
+    return *(int*)(p + 0x10);
+}
+
 extern u8 lbl_802BC618[];
 extern "C" void fn_80026D64(u8 i) {
     u8* p = lbl_802BC618 + i * 0x2c;
