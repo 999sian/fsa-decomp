@@ -102,6 +102,15 @@ struct UnkDCF8 {
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
+void J3DTexGenBlockPatched::initialize()
+{
+	mTexGenCnt = 0;
+	for (int i = 0; i < 8; i++) {
+		mTexMatrices[i] = nullptr;
+	}
+	mTexMtxOffset = 0;
+}
+
 extern "C" int fn_800D3E48(void) { return 0x69; }
 
 extern "C" int fn_800D3E50(void) { return 0x14f; }
@@ -493,13 +502,13 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  int offset = param_1 + param_2 * 8;
-  *(u8*)(offset + 0x22) = param_3[1];
-  *(u8*)(offset + 0x23) = param_3[2];
-  *(u8*)(offset + 0x24) = param_3[3];
-  *(u8*)(offset + 0x26) = param_3[5];
-  *(u8*)(offset + 0x27) = param_3[6];
-  *(u8*)(offset + 0x28) = param_3[7];
+  u8* addr = (u8*)(param_1 + param_2 * 8);
+  addr[0x22] = param_3[1];
+  addr[0x23] = param_3[2];
+  addr[0x24] = param_3[3];
+  addr[0x26] = param_3[5];
+  addr[0x27] = param_3[6];
+  addr[0x28] = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
