@@ -22,6 +22,12 @@ extern "C" BOOL fn_800FFBBC(void)
     return TRUE;
 }
 
+extern "C" BOOL fn_800FFBC4(void);
+extern "C" BOOL fn_800FFBC4(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
     fn_8015FDA8(a, b);
 }
