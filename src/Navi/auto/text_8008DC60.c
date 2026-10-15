@@ -249,6 +249,11 @@ extern "C" void fn_80094D1C(char* param_1) {
     }
 }
 
+extern StateFn_8009287C lbl_802860CC[];
+extern "C" void fn_80094DCC(Obj_8009287C* param_1) {
+    (param_1->*lbl_802860CC[param_1->state])();
+}
+
 extern void* lbl_8028E870[];
 extern "C" void* fn_80094EE8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
