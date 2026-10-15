@@ -89,6 +89,10 @@ extern "C" void* fn_80198F44(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_80199A30() {
+    return 0x3e8;
+}
+
 extern "C" int fn_80199A38() {
     return 0x8c;
 }
