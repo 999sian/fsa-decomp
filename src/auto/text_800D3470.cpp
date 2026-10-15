@@ -581,6 +581,10 @@ extern "C" void fn_800DD980(int param_1, u8* param_2) {
     *(u8*)(param_1 + 0x3a) = *param_2;
 }
 
+extern "C" void fn_800DD99C(u8* param_1, u8* param_2) {
+    *(u8*)(param_1 + 0x3b) = *param_2;
+}
+
 extern "C" u8 fn_800DD9A8(u8* p) { return p[0x3b]; }
 
 extern "C" u32 fn_800DD9B0(u8* p) { return *(u32*)(p + 0x3c); }
@@ -696,10 +700,9 @@ extern "C" void fn_800DDB70(void* param_1)
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* pStart = GDGetCurrPointer();
-  void* pCurr = GDGetCurrPointer();
-  while (isTexNoReg(pCurr)) {
-    loadTexNo(i, getTexNoReg(pCurr));
-    i++;
+  for (void* pCurr = GDGetCurrPointer(); isTexNoReg(pCurr); i++) {
+    u16 texNo = getTexNoReg(pCurr);
+    loadTexNo(i, texNo);
   }
   DCStoreRange(pStart, (u8*)GDGetCurrPointer() - (u8*)pStart);
 }
@@ -769,7 +772,7 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 }
 
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
-    *(u8*)(param_1 + param_2 + 0x10a) = param_3;
+    ((u8*)param_1 + param_2)[0x10a] = param_3;
 }
 
 extern "C" u8 fn_800DDD80(int param_1, int param_2) {
