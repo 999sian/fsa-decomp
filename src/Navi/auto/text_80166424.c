@@ -20,6 +20,8 @@ struct Unk801727E4VT {
     void (*func)(Unk801727E4Obj*, int, int, int);
 };
 extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
+struct RGB3 { u8 r, g, b; };
+struct S16x4 { s16 v[4]; };
 
 
 extern void* lbl_80298390[];
@@ -226,9 +228,8 @@ extern "C" int fn_801727D0(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x12c;
 }
 
-extern "C" void fn_801727E4(void** param_1, int param_2, int param_3) {
-    typedef void (*CodeFunc)(void*, int, int, int);
-    (*(CodeFunc*)((u8*)*param_1 + 0x7c))(param_1, param_2, param_3, 0);
+extern "C" void fn_801727E4(Unk801727E4Obj* param_1, int param_2, int param_3) {
+    param_1->vt->func(param_1, param_2, param_3, 0);
 }
 
 extern "C" u32 fn_80172814(void* param_1, u32 param_2) {
