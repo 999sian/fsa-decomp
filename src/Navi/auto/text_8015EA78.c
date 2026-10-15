@@ -11,3 +11,10 @@ extern "C" void fn_8015EA78(void) {
     fn_80166C70(&lbl_802EE25C);
     __register_global_object(&lbl_802EE25C, (void*)fn_8015EABC, &lbl_802EE250);
 }
+
+extern "C" {
+    typedef void (*CtorFunc)(void);
+    const CtorFunc __ctors[] = {
+        fn_8015EA78
+    };
+}
