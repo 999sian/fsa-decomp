@@ -105,6 +105,15 @@ extern "C" void fn_8001A2E8(void* param_1) {
     fn_8001D5B8(*(void**)((u8*)param_1 + 0x1ac), param_1);
 }
 
+extern "C" s32 fn_8001A310(void* param_1) {
+    s32 ret = fn_8001D5F4(*(void**)((u8*)param_1 + 0x1ac), param_1);
+    if (ret == 1) {
+        ((void (*)(void*))fn_8001A950)((u8*)param_1 + 0x1b0);
+    }
+    fn_800126C4(lbl_8029FDB4);
+    return ret;
+}
+
 extern "C" void fn_8001DC20(void);
 extern "C" void fn_8001A5D0(void) {
     fn_8001DC20();
@@ -213,6 +222,10 @@ extern "C" void fn_8001BE84(void) {
 extern "C" void fn_8001EB08(void);
 extern "C" void fn_8001BEA4(void) {
     fn_8001EB08();
+}
+
+extern "C" void fn_8001C34C(void* param_1) {
+    fn_8001D57C(*(void**)((u8*)param_1 + 0xb8), param_1);
 }
 
 extern "C" void fn_8001EC90(void);
