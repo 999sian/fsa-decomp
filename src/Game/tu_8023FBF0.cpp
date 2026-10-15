@@ -1105,19 +1105,21 @@ BOOL fn_802454C0(char* p) {
     if (!ok) {
         ok2 = false;
     } else {
-        s32 mode;
         s32 c = 0;
-        for (s32 i = 0; i < 4; i++) {
+        s32 i;
+        s32 linked;
+        s32 me;
+        s32 mode;
+        for (i = 0; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
-                s32 linked;
                 if ((linked = S32(p, 0xd60)) >= 0) {
                     if (linked == fn_8022F3DC(i)) {
                         c++;
                     }
                 } else {
-                    s32 me = S32(p, 0x4);
+                    me = S32(p, 0x4);
                     if (me == fn_8022F3DC(i)) {
                         c++;
                     }
@@ -1152,6 +1154,41 @@ BOOL fn_802454C0(char* p) {
 }
 PAD_GATED(802456FC, fn_80309D24, 0x20)
 PAD_GATED(80245938, fn_80309D6C, 0x20)
+inline s32 countSharingB(char* p) {
+    s32 c;
+    s32 i;
+    s32 linked;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getModeB(char* p) {
+    if (countSharingB(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
 inline bool padActive3(char* p) {
     bool ok;
     if (U8(p, 0xc80) == 0) {
