@@ -28,3 +28,13 @@ extern "C" void* fn_80209C14(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+extern "C" void* fn_801F856C();
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" void fn_802075D8(void*, u16);
+extern "C" void v07__5ActorFv(void*);
+extern "C" u32 fn_801F2DB4(void*, u32, u32, void*);
+extern "C" void fn_8020A008(ItemBase* this_) {
+    this_->m230 |= 0x80;
+}
+
