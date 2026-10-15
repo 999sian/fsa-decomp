@@ -2,6 +2,8 @@
 #include "JSystem/JGeometry/Box.h"
 
 extern void* lbl_8053AB10;
+extern f32 lbl_8053DDC8;
+extern "C" u8 fn_8030C2A8(void* mgr, f32* vec);
 
 extern "C" void fn_8017EADC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
