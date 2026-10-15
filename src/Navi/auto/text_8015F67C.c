@@ -25,7 +25,7 @@ extern "C" void* fn_8015F67C(void* param_1)
 		if (iVar1 != 0) {
 			iVar1 = fn_8015F6EC(iVar1, param_1);
 		}
-		lbl_802FF5E0 = (int)iVar1;
+		lbl_802FF5E0 = (u32)iVar1;
 		fn_8015FB6C(0, 0, 0);
 	}
 	return (void*)lbl_802FF5E0;
@@ -53,10 +53,10 @@ extern "C" void* fn_8015F73C(void* param_1, s16 param_2) {
 
 extern "C" void fn_8015F79C(void)
 {
-	fn_801BDDBC(&lbl_80297B40, &lbl_80297B30, 4);
+	fn_801BDDBC(lbl_80297B40, lbl_80297B30, 4);
 	while (true) {
-		void* local_18 = NULL;
-		fn_801BDEE4(&lbl_80297B40, &local_18, 1);
+		void* local_18;
+		fn_801BDEE4(lbl_80297B40, &local_18, 1);
 		int iVar1 = *(int*)local_18;
 		if (iVar1 == 2) {
 			fn_8015F814();
