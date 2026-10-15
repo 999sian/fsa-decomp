@@ -66,4 +66,14 @@ extern "C" void fn_80120118(EZZR* p) {
     fn_801D1F14(p->field_230, lbl_8053C964);
 }
 
+extern "C" s32 fn_8011FFB8(void)
+{
+	return 0;
+}
+
+s32 fn_8011FFC0(void)
+{
+	return 0;
+}
+
 extern "C" void fn_8011FFC8(void) {}
