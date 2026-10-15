@@ -19,6 +19,18 @@ struct Unk801727E4VT {
     u8 pad[0x7c];
     void (*func)(Unk801727E4Obj*, int, int, int);
 };
+class Unk801727E4Class {
+public:
+    virtual void vf00(); virtual void vf01(); virtual void vf02(); virtual void vf03();
+    virtual void vf04(); virtual void vf05(); virtual void vf06(); virtual void vf07();
+    virtual void vf08(); virtual void vf09(); virtual void vf10(); virtual void vf11();
+    virtual void vf12(); virtual void vf13(); virtual void vf14(); virtual void vf15();
+    virtual void vf16(); virtual void vf17(); virtual void vf18(); virtual void vf19();
+    virtual void vf20(); virtual void vf21(); virtual void vf22(); virtual void vf23();
+    virtual void vf24(); virtual void vf25(); virtual void vf26(); virtual void vf27();
+    virtual void vf28();
+    virtual void vf7C(int, int, int);
+};
 extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
 struct RGB3 { u8 r, g, b; };
 struct S16x4 { s16 v[4]; };
