@@ -62,6 +62,9 @@ extern "C" s32 fn_8020B848(u8* this_) {
     return 0;
 }
 
+extern "C" void fn_8020BC2C() {
+}
+
 extern "C" void fn_8020BCE4(char* this_) {
     *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x24);
     *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28);
@@ -76,3 +79,4 @@ extern "C" void* fn_8020BE40(void* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "Game/ItemBase.h"
