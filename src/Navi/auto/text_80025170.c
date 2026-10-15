@@ -40,6 +40,20 @@ extern "C" void fn_80026520(void) {
     lbl_802FED9C = 0;
 }
 
+extern "C" int fn_8002652C(void) {
+    u8 i;
+    for (i = 0; i < 4; i++) {
+        if (fn_800265AC(i) && !(lbl_802FED9C & (u8)(1 << i))) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
+extern "C" void fn_800265D0(u8 param_1) {
+    lbl_802FED9D |= (u8)(1 << param_1);
+}
+
 extern "C" void fn_800265F0(u8 param_1) {
     lbl_802FED9D &= ~((u8)(1 << param_1));
 }
