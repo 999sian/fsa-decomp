@@ -41,3 +41,11 @@ extern "C" int fn_801148BC(void* a, void* b) {
     return fn_80159C40(lbl_802FF218, b, a);
 }
 
+extern "C" int fn_80159CB4(void*, void*);
+extern "C" int (*lbl_8028F698[])();
+extern "C" void fn_801148F4(void* p) {
+    if (p != 0) {
+        fn_80159CB4(lbl_802FF218, p);
+    }
+}
+
