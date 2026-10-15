@@ -138,6 +138,12 @@ extern "C" void fn_80136418(void* param_1) {
     *(u32*)((u8*)param_1 + 0xc) = 0;
 }
 
+extern "C" BOOL fn_8013647C(void);
+extern "C" BOOL fn_8013647C(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_80136484(void* param_1, void* param_2) {
     if (param_2 != nullptr) {
         param_2 = (void*)((u8*)param_2 + 4);
