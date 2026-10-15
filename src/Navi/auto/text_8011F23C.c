@@ -57,7 +57,7 @@ extern void* lbl_802FDD84;
 extern u8 lbl_802FDD88;
 extern void* lbl_802FF328;
 extern void* lbl_80290AB4;
-extern void fn_8015A90C(s32 size);
+extern void* fn_8015A90C(s32 size);
 extern void fn_8015AB1C(void* ptr);
 extern void* fn_80120138(void* ptr, void* param);
 extern void fn_801CB248(void* ptr);
