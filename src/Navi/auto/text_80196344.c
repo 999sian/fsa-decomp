@@ -633,3 +633,8 @@ extern "C" void* fn_801A5144(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801A5368()
+{
+	return 0;
+}
+
