@@ -42,6 +42,18 @@ extern "C" int fn_8015A90C(int a) {
     return 0;
 }
 
+extern "C" int fn_8015A958(int a, int b) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6();
+        virtual int v8(int, int);
+    };
+    if (lbl_802FF544 != 0) {
+        return ((Obj*)lbl_802FF544)->v8(a, b);
+    }
+    return 0;
+}
+
 extern "C" void fn_80159C6C(void*, int);
 extern "C" void fn_8015AB40(void* p) {
     fn_80159C6C(p, 0);
