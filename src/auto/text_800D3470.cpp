@@ -30,6 +30,10 @@ extern "C" char __vt__10J3DPEBlock[];
 extern "C" void __dl__FPv(void*);
 extern "C" void __destroy_arr(void*, void*, u32, u32);
 extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
+extern "C" void* sTexCoordScaleTable__6J3DSys;
+extern "C" void J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(unsigned char, unsigned short, unsigned char, unsigned char, unsigned short, unsigned char, unsigned char);
+extern "C" void loadTexNo__FUlRCUs(unsigned long, unsigned short*);
+extern "C" void DCStoreRange(void*, unsigned long);
 extern "C" void __dt__12J3DIndTexMtxFv(void*);
 extern "C" void __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo(J3DIndTexMtxInfo*, const J3DIndTexMtxInfo&);
 struct ActorBox;
@@ -230,22 +234,20 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
 }
 
 extern "C" void fn_800D8D58(int* param_1, u32 param_4) {
-    int* vtable = *(int**)param_1;
-    
     if ((param_4 >> 0x10) & 0xf) {
-        (*(void(**)(void))(vtable + 0x14))();
+        (*(void(**)(void))(*(int*)param_1 + 0x14))();
     }
     if (param_4 & 0x04000000) {
-        (*(void(**)(int*))(vtable + 0x1c))(param_1);
+        (*(void(**)(int*))(*(int*)param_1 + 0x1c))(param_1);
     }
     if ((param_4 >> 0x14) & 0xf) {
-        (*(void(**)(int*))(vtable + 0x20))(param_1);
+        (*(void(**)(int*))(*(int*)param_1 + 0x20))(param_1);
         if (param_4 & 0x08000000) {
-            (*(void(**)(int*))(vtable + 0x24))(param_1);
+            (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
         }
     }
     if (param_4 & 0x01000000) {
-        (*(void(**)(int*))(vtable + 0x18))(param_1);
+        (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
     }
 }
 
@@ -722,20 +724,17 @@ extern "C" Unk800DE578* fn_800DE190(Unk800DE0CC* p, int i) {
 
 extern "C" u8 fn_800DE1C0(int param_1, int param_2)
 {
-  u32 addr = param_1 + param_2;
-  return *(u8*)(addr + 0x72);
+  return *(u8*)(param_1 + param_2 + 0x72);
 }
 
 extern "C" void fn_800DE1CC(int param_1, int param_2, u8 param_3)
 {
-  u32 addr = param_1 + param_2;
-  *(u8*)(addr + 0x76) = param_3;
+  *(u8*)(param_1 + param_2 + 0x76) = param_3;
 }
 
 extern "C" void fn_800DE1D8(int param_1, int param_2, u8* param_3)
 {
-  u32 addr = param_1 + param_2;
-  *(u8*)(addr + 0x76) = param_3[0];
+  *(u8*)(param_1 + param_2 + 0x76) = param_3[0];
 }
 
 extern "C" u8 fn_800DE1E8(int param_1, int param_2)
@@ -761,13 +760,13 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  int offset = param_1 + param_2 * 8;
-  *(u8*)(offset + 0x22) = param_3[1];
-  *(u8*)(offset + 0x23) = param_3[2];
-  *(u8*)(offset + 0x24) = param_3[3];
-  *(u8*)(offset + 0x26) = param_3[5];
-  *(u8*)(offset + 0x27) = param_3[6];
-  *(u8*)(offset + 0x28) = param_3[7];
+  int base = param_1 + param_2 * 8;
+  *(u8*)(base + 0x22) = param_3[1];
+  *(u8*)(base + 0x23) = param_3[2];
+  *(u8*)(base + 0x24) = param_3[3];
+  *(u8*)(base + 0x26) = param_3[5];
+  *(u8*)(base + 0x27) = param_3[6];
+  *(u8*)(base + 0x28) = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -920,17 +919,18 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x35;
 }
 
-extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3)
-{
-  int offset = param_1 + param_2 * 8;
-  u8 b0 = param_3[0];
-  u8 b1 = param_3[1];
-  u8 val = *(u8*)(offset + 0x3c);
-  val = (val & 0xf3) | (b1 << 2);
-  *(u8*)(offset + 0x3c) = val;
-  val = *(u8*)(offset + 0x3c);
-  val = (val & 0xfc) | b0;
-  *(u8*)(offset + 0x3c) = val;
+extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
+    u8 val0 = param_3[0];
+    u8 val1 = param_3[1];
+    int offset = param_1 + param_2 * 8;
+    
+    u8 byte = *(u8*)(offset + 0x3c);
+    byte = (byte & 0xfc) | (val1 << 2);
+    *(u8*)(offset + 0x3c) = byte;
+    
+    byte = *(u8*)(offset + 0x3c);
+    byte = (byte & 0xfc) | val0;
+    *(u8*)(offset + 0x3c) = byte;
 }
 
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
