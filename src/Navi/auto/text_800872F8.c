@@ -28,3 +28,17 @@ extern "C" void* fn_800888E0(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_80119978(void*, int);
+extern char lbl_80283FC4[];
+extern "C" void* fn_80088D50(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_80283FC4;
+        fn_80119978(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
