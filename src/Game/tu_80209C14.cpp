@@ -35,6 +35,32 @@ extern "C" void* fn_80209C14(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_80209CA4(ItemBase* this_, u32 index, u32 value, void* pos, u32 buf) {
+    if ((u8)fn_801F37AC(this_, value, pos, 0, buf, index)) {
+        this_->m230 &= ~0x80;
+    }
+}
+
+extern "C" void fn_80209CF4(u8* this_, const f32* pos) {
+    if ((*(u32*)(this_ + 0x230) & 0x2000) != 0) {
+        return;
+    }
+    f32 x = pos[0];
+    f32 y = pos[1];
+    *(u32*)(this_ + 0x230) |= 0x8000;
+    *(f32*)(this_ + 0x2C8) = x;
+    *(f32*)(this_ + 0x2CC) = y;
+}
+
+extern "C" void fn_80209D20(u8* this_, u32 value, u8 flag) {
+    if ((*(u32*)(this_ + 0x230) & 0x2000) != 0) {
+        return;
+    }
+    *(u32*)(this_ + 0x230) |= 0x4000;
+    *(u32*)(this_ + 0x2AC) = value;
+    *(u8*)(this_ + 0x2B0) = flag;
+}
+
 extern "C" void fn_80209D44(ItemBase* this_) {
     this_->m230 |= 0x2000;
 }
