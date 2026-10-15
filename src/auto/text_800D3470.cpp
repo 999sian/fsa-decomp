@@ -502,12 +502,13 @@ extern "C" void fn_800D9AAC(u8* self) {
 extern "C" void fn_800D9E3C(void* p) {
     u32 byteCount = 0;
     u8* addr = (u8*)p;
+    
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
     
     for (u32 i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
-            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4) + byteCount;
+            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + byteCount + *(u32*)((u8*)p + 4);
             patchTexNo_PtrToIdx(i, *(const u16*)(addr + 8));
             
             byteCount += 0x14;
