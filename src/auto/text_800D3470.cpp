@@ -388,6 +388,18 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x59;
 }
 
+extern "C" void fn_800DDE5C(int param_1, int param_2, u8 *param_3) {
+    int addr = param_1 + param_2 * 8;
+    u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
+    u8 val = *(u8 *)(addr + 0x60);
+    val = (val & 0xf3) | (b1 << 2);
+    *(u8 *)(addr + 0x60) = val;
+    val = *(u8 *)(addr + 0x60);
+    val = (val & 0xfc) | b0;
+    *(u8 *)(addr + 0x60) = val;
+}
+
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
     this_[idx + 0x12a] = *src;
 }
@@ -443,11 +455,8 @@ extern "C" u32* fn_800DE0B8(u32* this_, u32 idx) {
     return &this_[4] + idx;
 }
 
-extern "C" void fn_800DE0CC(u8* this_, u32 idx, const s16* src) {
-    ((s16*)(this_ + idx * 8 + 0x42))[0] = src[0];
-    ((s16*)(this_ + idx * 8 + 0x42))[1] = src[1];
-    ((s16*)(this_ + idx * 8 + 0x42))[2] = src[2];
-    ((s16*)(this_ + idx * 8 + 0x42))[3] = src[3];
+extern "C" void fn_800DE0CC(Unk800DE0CC* p, int i, const Unk800DE50C& v) {
+    p->a[i] = v;
 }
 
 extern "C" u8* fn_800DE124(u8* this_, u32 idx) {
@@ -500,8 +509,11 @@ extern "C" void fn_800DE29C(int param_1, int param_2, u8* param_3)
   u8 b0 = param_3[0];
   u8 b1 = param_3[1];
   u8 val = *(u8*)(offset + 0x28);
-  val = (val & 0xf3) | (b1 << 2);
-  *(u8*)(offset + 0x28) = val;
+  
+  u8 b1_shifted = b1 << 2;
+  u8 masked = val & 0xf3;
+  *(u8*)(offset + 0x28) = masked | b1_shifted;
+  
   val = *(u8*)(offset + 0x28);
   val = (val & 0xfc) | b0;
   *(u8*)(offset + 0x28) = val;
@@ -719,13 +731,12 @@ extern "C" int fn_800DECE4(int p, int i) {
     return p + i * 8 + 0x98;
 }
 
-extern "C" void fn_800DECF8(void* p, int i, const u8* v) {
-    int p_int = (int)p;
-    int addr = p_int + (i << 2) + 0xb8;
-    *(u8*)(addr + 0) = v[0];
-    *(u8*)(addr + 1) = v[1];
-    *(u8*)(addr + 2) = v[2];
-    *(u8*)(addr + 3) = v[3];
+extern "C" void fn_800DECF8(int p, int i, const u8* v) {
+    int addr = p + (i * 4);
+    *(u8*)(addr + 0xb8) = v[0];
+    *(u8*)(addr + 0xb9) = v[1];
+    *(u8*)(addr + 0xba) = v[2];
+    *(u8*)(addr + 0xbb) = v[3];
 }
 
 extern "C" int fn_800DED50(int p, int i) {
@@ -822,15 +833,11 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
-    u8 local_r6 = param_3[0];
-    int base = param_1 + param_2 * 4;
-    u8 local_r0 = param_3[1];
-    *(u8*)(base + 0x20) = local_r6;
-    u8 local_r3 = param_3[2];
-    *(u8*)(base + 0x21) = local_r0;
-    local_r0 = param_3[3];
-    *(u8*)(base + 0x22) = local_r3;
-    *(u8*)(base + 0x23) = local_r0;
+    param_1 = param_1 + param_2 * 4;
+    *(u8*)(param_1 + 0x20) = param_3[0];
+    *(u8*)(param_1 + 0x21) = param_3[1];
+    *(u8*)(param_1 + 0x22) = param_3[2];
+    *(u8*)(param_1 + 0x23) = param_3[3];
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
