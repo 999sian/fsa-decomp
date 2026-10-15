@@ -491,6 +491,10 @@ extern "C" void fn_801A4D90(u8* p, s32 i, u16* pv) {
     ((u16*)(p + 0x16))[i] = *pv;
 }
 
+extern "C" void fn_801A4DA4(u8* p, s32 i, u16* pv) {
+    ((u16*)(p + 0x16))[i] = *pv;
+}
+
 extern "C" void* fn_801A4E10(u8* p) {
     return *(void**)(p + 0x48);
 }
