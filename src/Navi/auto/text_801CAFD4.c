@@ -6,6 +6,13 @@
 extern "C" int OSDisableInterrupts(void);
 extern "C" void OSRestoreInterrupts(int state);
 extern "C" void fn_801C5050(int);
+extern "C" void OSClearContext(void*);
+extern "C" void OSSetCurrentContext(void*);
+extern "C" void fn_801C4A28(void*);
+extern "C" void fn_801C4AF4(void*);
+extern "C" void fn_801CEB00(int);
+extern "C" void fn_801C42F4(void);
+extern "C" void fn_801CDB9C(int);
 int lbl_802FF8F4;
 extern unsigned long lbl_802FF944;
 extern unsigned long lbl_802FE9F8;
@@ -135,5 +142,11 @@ extern "C" void fn_801CE1B8(unsigned long spec) {
         break;
     }
     lbl_802FE9F8 = spec;
+}
+
+void fn_801CE970(int r31) {
+    int interrupt_state = OSDisableInterrupts();
+    fn_801C5050(r31);
+    OSRestoreInterrupts(interrupt_state);
 }
 
