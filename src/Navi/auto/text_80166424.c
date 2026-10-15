@@ -351,6 +351,12 @@ extern "C" u32 fn_801732D8(void* param_1) {
     return *(u32*)((u8*)param_1 + 0x58);
 }
 
+extern "C" void fn_801732E0(void* param_1, u8 param_2) {
+    u8 val = *(u8*)((u8*)param_1 + 0x5c);
+    val &= param_2;
+    *(u8*)((u8*)param_1 + 0x5c) = val;
+}
+
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
     Unk80174858Pair fallback;
     fallback.x = lbl_80301AC0.x;
@@ -487,6 +493,23 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80178C9C(void* param_1, void* param_2);
+extern "C" void fn_80178B74(void* param_1, void* param_2) {
+    (*(void (**)(void*))(*(u8**)param_1 + 0x8c))(param_1);
+    u8* it = *(u8**)((u8*)param_1 + 0xdc);
+    if (it != NULL) {
+        it -= 0xc;
+    }
+    while (it != NULL) {
+        void* obj = *(void**)(it + 0xc);
+        (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
+        it = *(u8**)(it + 0x18);
+        if (it != NULL) {
+            it -= 0xc;
+        }
+    }
 }
 
 extern "C" void fn_80178DA4(void) {
