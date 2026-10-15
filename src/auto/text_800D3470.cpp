@@ -311,18 +311,19 @@ extern "C" u16 fn_800DE4C0(u16* this_, s32 idx) {
 }
 
 extern "C" void fn_800DE4D0(Unk800DE4D0* p, int i, const u32& v) {
-    p->a[i] = v;
+    ((u32*)p)[i + 3] = v;
 }
 
 extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
     return &p->a[i];
 }
 
-extern "C" void fn_800DE50C(Unk800DE4D0* p, int i, Unk800DE50C* v) {
-    p->b[i].a = v->a;
-    p->b[i].b = v->b;
-    p->b[i].c = v->c;
-    p->b[i].d = v->d;
+extern "C" void fn_800DE50C(Unk800DE4D0* p, int i, const Unk800DE50C& v) {
+    Unk800DE50C& d = p->b[i];
+    d.a = v.a;
+    d.b = v.b;
+    d.c = v.c;
+    d.d = v.d;
 }
 
 extern "C" Unk800DE50C* fn_800DE564(Unk800DE4D0* p, int i) {
