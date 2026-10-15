@@ -29,6 +29,12 @@ extern "C" void fn_80118364(void* param_1) {
     *(float*)((char*)param_1 + 0x58) = 100000.0f;
 }
 
+extern "C" BOOL fn_801189F4(void);
+extern "C" BOOL fn_801189F4(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_801189FC(char *param_1, int param_2, int param_3, int param_4) {
     fn_801670D0(param_2, param_1, 1);
     fn_801670D0(param_2, param_1 + 1, 1);
@@ -64,5 +70,10 @@ extern "C" void fn_80118AB4(char *param_1, char *param_2, int param_3, int param
 extern "C" int fn_8011AB38()
 {
 	return 0;
+}
+
+BOOL fn_8011AB40()
+{
+	return TRUE;
 }
 
