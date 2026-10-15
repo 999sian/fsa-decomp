@@ -29,6 +29,11 @@ extern "C" int fn_8017A8CC(void) {
     return 8;
 }
 
+extern "C" void fn_801788C0(void);
+extern "C" void fn_8017A928(void) {
+    fn_801788C0();
+}
+
 extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     *(u8*)(param_1 + 0xb2) = param_2;
     u8* p = (u8*)*(void**)(param_1 + 0x168);
