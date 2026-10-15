@@ -67,6 +67,20 @@ extern "C" void* fn_8012F304(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_80291060[];
+extern "C" void* fn_8012F360(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80291060;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80290F9C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_80247020[];
 extern "C" void* fn_801303BC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
