@@ -71,7 +71,7 @@ extern "C" s32 fn_8011FFB8(void)
 	return 0;
 }
 
-s32 fn_8011FFC0(void)
+extern "C" s32 fn_8011FFC0(void)
 {
 	return 0;
 }
