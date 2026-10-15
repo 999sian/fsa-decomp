@@ -31,7 +31,7 @@ extern u8 lbl_802BF104;
 extern u8 lbl_802BF0F4;
 extern u8 lbl_802BF0E8;
 extern u8 lbl_802BF188;
-extern u8 lbl_802BF134;
+extern char lbl_802BF134[];
 extern f32 lbl_8030011C;
 extern "C" void* fn_8004AF1C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
