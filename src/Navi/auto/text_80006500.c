@@ -53,6 +53,17 @@ extern "C" void fn_80006EFC(void) {
     lbl_802FEB20 = 1;
 }
 
+extern "C" void fn_8000829C(u8 param_1, u8 param_2) {
+    lbl_8029F408[0x46] = param_1;
+    lbl_8029F408[0x47] = param_2;
+    lbl_8029F408[0x96] = param_1;
+    lbl_8029F408[0x97] = param_2;
+    lbl_8029F408[0xe6] = param_1;
+    lbl_8029F408[0xe7] = param_2;
+    lbl_8029F408[0x136] = param_1;
+    lbl_8029F408[0x137] = param_2;
+}
+
 extern "C" u32 fn_8000A1AC(void) {
     u32 value = fn_800095BC(lbl_802FEB4C, lbl_802FEB50, lbl_802FB7B1, lbl_802FB7B2, lbl_802FB7B0);
     DCFlushRange(lbl_802FEB50, lbl_802FEB54);
