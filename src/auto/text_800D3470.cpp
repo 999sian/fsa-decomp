@@ -526,6 +526,10 @@ extern "C" void fn_800DF104(u8* self, u8 v) {
     self[0x14] = v;
 }
 
+extern "C" u8 fn_800DF10C(u8* self) {
+    return self[0x14];
+}
+
 extern "C" void fn_800DF114(u8* self, int i, const u16* v) {
     ((u16*)(self + 0x16))[i] = *v;
 }
