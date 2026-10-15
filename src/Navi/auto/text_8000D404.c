@@ -73,23 +73,20 @@ extern "C" void fn_8000EBB0(void) {
 extern "C" void fn_8000EBB4(void) {
 }
 
-void fn_8000EC78(void *param_1)
+void fn_8000EC78(int *param_1)
 {
-  if ((*(int *)((char *)((int **)param_1)[1] + 0x1c) == 1) && 
-      (*(short *)((char *)((int **)param_1)[1] + 0x74) != 1)) {
-    void **vtable = *(void ***)param_1;
-    ((void (*)(void))vtable[5])();
+  if ((*(int *)(param_1[1] + 0x1c) == 1) && (*(short *)(param_1[1] + 0x74) != 1)) {
+    (*(void (*)(void))*(void **)(*param_1 + 0x14))();
     fn_801A9E44(param_1);
-    ((void (*)(void *))vtable[3])(param_1);
+    (*(void (*)(void *))*(void **)(*param_1 + 0xc))(param_1);
   }
   else {
     fn_801A9A60(param_1);
-    void **vtable = *(void ***)param_1;
-    ((void (*)(void *))vtable[3])(param_1);
+    (*(void (*)(void *))*(void **)(*param_1 + 0xc))(param_1);
     fn_801A9930(param_1);
   }
-  void **vtable = *(void ***)param_1;
-  ((void (*)(void *))vtable[7])(param_1);
+  (*(void (*)(void *))*(void **)(*param_1 + 0x1c))(param_1);
+  return;
 }
 
 extern "C" int fn_8000ED24()
@@ -524,6 +521,10 @@ extern "C" void* fn_80011F1C(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80011F78(void)
+{
 }
 
 extern "C" void fn_80011F7C(void) {
