@@ -502,6 +502,10 @@ extern "C" void fn_800DF020(u8* this_, s32 idx, u8* src) {
     this_[off + 7] = src[3];
 }
 
+extern "C" u8* fn_800DF078(u8* self, int i) {
+    return self + i * 4 + 4;
+}
+
 extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
     return &p->a[i];
 }
