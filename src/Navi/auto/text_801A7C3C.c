@@ -81,6 +81,11 @@ extern "C" void* fn_801ADEBC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" float lbl_80301D68;
+extern "C" float fn_801ADF20(void) {
+    return lbl_80301D68;
+}
+
 extern "C" void* lbl_8029B4D8[];
 extern "C" void* fn_801ADF28(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
