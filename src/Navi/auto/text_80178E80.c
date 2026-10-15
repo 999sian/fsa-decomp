@@ -20,6 +20,11 @@ extern "C" void fn_8017A488(void) {
     fn_80177F0C();
 }
 
+extern "C" void fn_80178B74(void);
+extern "C" void fn_8017A85C(void) {
+    fn_80178B74();
+}
+
 extern "C" int fn_8017A8CC(void) {
     return 8;
 }
