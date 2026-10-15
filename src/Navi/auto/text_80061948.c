@@ -435,6 +435,12 @@ extern "C" void fn_80068804(void) {
     fn_80068008();
 }
 
+extern "C" BOOL fn_80068A40(void);
+extern "C" BOOL fn_80068A40(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_80068B30(void);
 extern "C" void fn_80068B10(void) {
     fn_80068B30();
