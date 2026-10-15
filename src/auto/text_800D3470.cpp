@@ -209,6 +209,22 @@ extern "C" void fn_800DF020(u8* this_, s32 idx, u8* src) {
     this_[off + 7] = src[3];
 }
 
+extern "C" void fn_800DF318(u8* this_, s32 idx, u8* src) {
+    s32 off = idx * 4;
+    this_[off + 4] = src[0];
+    this_[off + 5] = src[1];
+    this_[off + 6] = src[2];
+    this_[off + 7] = src[3];
+}
+
+extern "C" void fn_800DF374(u8* this_, s32 idx, u16* src) {
+    *(u16*)(this_ + idx * 2 + 0xe) = *src;
+}
+
+extern "C" u8* fn_800DF39C(u8* this_, s32 idx) {
+    return this_ + idx * 2 + 0xe;
+}
+
 extern "C" u32 fn_800DF3CC(u8* this_) { return *(u32*)(this_ + 0x18); }
 
 extern "C" u32 fn_800DF3D4(u8* this_) { return *(u32*)(this_ + 0x1c); }
