@@ -20,6 +20,16 @@ extern "C" int fn_80087348(void* param_1) {
     return ret > 0 ? 0 : 2;
 }
 
+extern "C" int fn_8008739C(void) {
+    fn_80058A28(0xb);
+    return 2;
+}
+
+extern "C" int fn_800873C4(void) {
+    int result = fn_80058A88(0xb);
+    return (result == 0) ? 0 : 4;
+}
+
 extern "C" int fn_80058A88(int x);
 extern "C" int fn_80058A28(int x);
 extern "C" void fn_80057C38(int x);
