@@ -1,4 +1,6 @@
 #include "types.h"
+extern void* lbl_8027F2C0[];
+
 extern void* lbl_8027F240[];
 extern void* lbl_8027F214[];
 
@@ -42,6 +44,22 @@ extern "C" void fn_8006C404(void);
 extern "C" void fn_8006C5B0(s32);
 extern "C" void fn_80030534(void*, int, int);
 extern "C" void* fn_80022434(s32);
+extern "C" void* fn_80062D60(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8027F2C0;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8027F240;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_8027F214;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_80062DCC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027F240;
