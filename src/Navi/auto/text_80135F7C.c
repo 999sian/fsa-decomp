@@ -159,6 +159,11 @@ extern "C" void* fn_80139280(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern char lbl_80201F70[];
+extern "C" void fn_801396D8(f64* dst, f32* src) {
+    *dst = *src;
+}
+
 extern void* lbl_80292CAC[];
 extern "C" void* fn_80139A60(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
