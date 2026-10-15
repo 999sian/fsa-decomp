@@ -265,6 +265,8 @@ extern "C" void fn_8019DE38(int *param_1)
 	fnptr fn = (fnptr)(vtable[0x2c/4]);
 	fn();
 	
+	int *ptr2 = ptr;
+	ptr = ptr2;
 	vtable = (int *)(*ptr);
 	fn = (fnptr)(vtable[0x30/4]);
 	fn();
@@ -273,16 +275,17 @@ extern "C" void fn_8019DE38(int *param_1)
 extern "C" void fn_8019DE84(int param_1)
 {
 	extern int* lbl_802FFA80;
-	int val = *(int *)(param_1 + 4);
-	int *addr = lbl_802FFA80;
-	int sum = addr[0] + val;
-	addr[2] = sum;
+	int base = lbl_802FFA80[0];
+	int sum = base + *(int *)(param_1 + 4);
+	lbl_802FFA80[2] = sum;
+	unsigned short check = *(unsigned short *)(param_1 + 8);
+	int saved = lbl_802FFA80[2];
 	
-	if (*(short *)(param_1 + 8) != -1) {
+	if (check != 0xffff) {
 		fn_801A605C(0, (void *)(param_1 + 8));
 	}
-	int saved = addr[2];
-	fn_801BC250(saved, saved - saved);
+	int final = lbl_802FFA80[2];
+	fn_801BC250(saved, final - saved);
 }
 
 extern "C" void fn_801A605C(int, void*);
@@ -295,22 +298,26 @@ extern "C" void fn_8019DEF0(void)
 extern "C" void fn_8019E004(int param_1)
 {
 	extern int* lbl_802FFA80;
-	int val = *(int *)(param_1 + 4);
 	int *addr = lbl_802FFA80;
+	int val = *(int *)(param_1 + 4);
 	int base = addr[0];
-	addr[2] = base + val;
+	int sum = base + val;
+	addr[2] = sum;
 	int saved = addr[2];
 	
-	int i = 0;
 	int ptr = param_1;
-	while (i < 2) {
-		if (*(short *)(ptr + 8) != -1) {
+	int i = 0;
+	do {
+		unsigned short check = *(unsigned short *)(ptr + 8);
+		if (check != 0xffff) {
 			fn_801A605C(i, (void *)(ptr + 8));
 		}
 		i++;
 		ptr += 2;
-	}
-	fn_801BC250(saved, addr[2] - base);
+	} while (i < 2);
+	
+	int final = addr[2];
+	fn_801BC250(saved, final - saved);
 }
 
 extern "C" int fn_801A3544(int p) { return p + 4; }
