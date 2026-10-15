@@ -39,6 +39,11 @@ extern "C" void* fn_8000BF14(void)
 	return lbl_802FF540;
 }
 
+extern "C" void fn_8000BF1C(void)
+{
+	fn_8000B928(lbl_802FF548);
+}
+
 extern "C" void fn_8000CB28(f32 matrix[3][4], u32 angle) {
     f32 m[3][4];
     f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
