@@ -33,6 +33,7 @@ extern f32 lbl_80300468;  // SDA label
 extern f32 lbl_8030046C;  // SDA label
 extern void* lbl_80280230[];
 extern "C" void fn_8006C5B0(s32);
+extern "C" void* fn_80022434(s32);
 extern "C" void* fn_80062E28(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -468,6 +469,27 @@ extern "C" void fn_8006B13C(void) {
 }
 
 extern "C" void fn_8006B8A0(void) {
+}
+
+extern "C" void fn_8006B8A4(void* param_1) {
+    s32 val = *(s32*)((u8*)lbl_802BB0FC + 0x44);
+    if (val < 0xc) return;
+    if (val >= 0xe) return;
+    
+    u32 flags = *(u32*)((u8*)lbl_802B7CA0 + 0x3f4);
+    if ((flags & 0x08) == 0) return;
+    
+    *(u8*)((u8*)param_1 + 0x31b) = 1;
+    
+    u32 flags2 = *(u32*)((u8*)lbl_802B7CA0 + 0x3f4);
+    if ((flags2 & 0x80) != 0) {
+        void* ptr = *(void**)((u8*)param_1 + 0x2a4);
+        *(f32*)((u8*)ptr + 0x10) = lbl_80300468;
+    } else {
+        void* ptr = *(void**)((u8*)param_1 + 0x2a4);
+        *(f32*)((u8*)ptr + 0x10) = lbl_8030046C;
+    }
+    fn_8006C5B0(1);
 }
 
 extern "C" void fn_8006B15C(void);
