@@ -264,6 +264,9 @@ extern "C" float fn_801327EC(void) {
     return lbl_803017A0;
 }
 
+extern "C" void fn_801327F4(void) {
+}
+
 extern f32 lbl_802FEAB4;
 extern "C" f32 fn_801327F8(void) {
     return lbl_802FEAB4;
