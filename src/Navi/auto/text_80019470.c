@@ -10,6 +10,9 @@ extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8001978C(void) {
+}
+
 extern "C" void fn_80019790(void) {
 }
 
