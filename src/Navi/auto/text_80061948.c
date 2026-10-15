@@ -17,6 +17,15 @@ extern "C" f32 fn_801AB758(f32);
 extern "C" void fn_801ACC40(void*, u32, void*);
 extern "C" void* fn_800637F0(void* a, u8* p, int n);
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_800636F4(s32, void*, s32);
+extern "C" void fn_8000DDAC(void*, void*, s32);
+extern "C" void fn_80010CE4(void*);
+extern "C" void fn_801AFE98(void*, void*);
+extern "C" void fn_8000EBB8(void*);
+extern "C" void fn_80022438(void*, s32, u16, u16);
+extern u8 lbl_802FF17C;
+extern u16 lbl_80280080[];
+extern u16 lbl_802FC94C[];
 extern "C" void* fn_80062E28(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
