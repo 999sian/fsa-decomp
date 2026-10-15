@@ -19,17 +19,17 @@ void fn_800C9CFC(void)
 {
 }
 
-void fn_800C9D04(void) {
+extern "C" void fn_800C9D04(void) {
 }
 
-void fn_800C9D08(void) {
+extern "C" void fn_800C9D08(void) {
 }
 
-s32 fn_800C9D0C(void) {
+extern "C" s32 fn_800C9D0C(void) {
     return 0;
 }
 
-void fn_800C9D14(void) {
+extern "C" void fn_800C9D14(void) {
 }
 
 extern "C" void fn_800CAAA8(void) {
@@ -73,6 +73,23 @@ extern "C" s32 fn_800CBD6C(void) {
 }
 
 extern "C" void fn_800CBD74(void) {
+}
+
+void fn_800CBD78(void)
+{
+}
+
+void fn_800CBD7C(void)
+{
+}
+
+s32 fn_800CBD80(void)
+{
+    return 0;
+}
+
+void fn_800CBD88(void)
+{
 }
 
 extern "C" s32 fn_800CBD8C(void) {
