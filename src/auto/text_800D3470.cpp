@@ -689,6 +689,12 @@ extern "C" Unk800DE578* fn_800DE190(Unk800DE0CC* p, int i) {
     return &p->b[i];
 }
 
+extern "C" u8 fn_800DE1E8(int param_1, int param_2)
+{
+  u8* base = (u8*)(param_1 + param_2);
+  return base[0x76];
+}
+
 extern "C" void fn_800DE1F4(u8* param_1, u8 param_2)
 {
   *(u8*)(param_1 + 0x20) = param_2;
@@ -973,6 +979,8 @@ extern "C" u32 fn_800DEA24(u8* this_) {
     return *(u32*)(this_ + 4);
 }
 
+extern "C" void fn_800DEA88(void) {}
+
 extern "C" void fn_800DEB38(u8* p, u8 v) {
     p[0xd0] = v;
 }
@@ -1228,16 +1236,12 @@ extern "C" u32 fn_800DF208(void) {
     return 0x434c4142;
 }
 
-extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
-    u8 r = param_3[0];
-    u8 g = param_3[1];
-    u8 b = param_3[2];
-    u8 a = param_3[3];
-    u8* p = (u8*)(param_1 + param_2 * 4);
-    p[0x20] = r;
-    p[0x21] = g;
-    p[0x22] = b;
-    p[0x23] = a;
+extern "C" void fn_800DF214(int param_1, int param_2, GXColor* param_3) {
+    GXColor* dst = (GXColor*)(param_1 + param_2 * 4 + 0x20);
+    dst->r = param_3->r;
+    dst->g = param_3->g;
+    dst->b = param_3->b;
+    dst->a = param_3->a;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
