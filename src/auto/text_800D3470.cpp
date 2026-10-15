@@ -345,9 +345,8 @@ extern "C" u16 fn_800DE900(u16* this_, s32 idx) {
     return this_[idx + 4];
 }
 
-void fn_800DE910(char* p, int i, unsigned int* v)
-{
-    *(unsigned int*)(p + i * 4 + 10) = *v;
+extern "C" void fn_800DE910(char* p, int i, u32* v) {
+    *(u32*)(p + i * 4 + 10) = *v;
 }
 
 void fn_800DE94C(void) {}
