@@ -433,7 +433,7 @@ extern "C" BOOL fn_80132828(void)
     return TRUE;
 }
 
-void fn_80132830(void)
+extern "C" void fn_80132830(void)
 {
     return;
 }
