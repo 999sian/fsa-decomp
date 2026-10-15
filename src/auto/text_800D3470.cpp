@@ -319,14 +319,10 @@ extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
 }
 
 extern "C" void fn_800DE50C(Unk800DE4D0* p, int i, Unk800DE50C* v) {
-    s16 a = v->a;
-    s16 b = v->b;
-    s16 c = v->c;
-    s16 d = v->d;
-    p->b[i].a = a;
-    p->b[i].b = b;
-    p->b[i].c = c;
-    p->b[i].d = d;
+    p->b[i].a = v->a;
+    p->b[i].b = v->b;
+    p->b[i].c = v->c;
+    p->b[i].d = v->d;
 }
 
 extern "C" Unk800DE50C* fn_800DE564(Unk800DE4D0* p, int i) {
@@ -400,6 +396,10 @@ extern "C" void fn_800DE9E8(u8* this_, s32 idx, u32* src) {
 
 extern "C" u32* fn_800DEA10(u8* this_, s32 idx) {
     return (u32*)(this_ + 0x18 + idx * 4);
+}
+
+extern "C" u32 fn_800DEA24(u8* this_) {
+    return *(u32*)(this_ + 4);
 }
 
 extern "C" void fn_800DEB54(u16* this_, s32 idx, u16 val) {
