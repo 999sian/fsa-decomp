@@ -161,6 +161,10 @@ extern "C" void fn_801A3CB8(u8* p, s32 i, u16 v) {
     ((u16*)(p + 8))[i] = v;
 }
 
+extern "C" u16 fn_801A3CDC(u8* p, s32 i) {
+    return ((u16*)(p + 8))[i];
+}
+
 extern "C" void* fn_801A3FD4(void* p) {
     return *(void**)((char*)p + 4);
 }
