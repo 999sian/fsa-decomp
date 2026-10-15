@@ -233,6 +233,10 @@ extern "C" u32* fn_800DDF24(u8* this_, s32 idx) {
 extern "C" void fn_800DDF48(Actor* a, u32 v);
 extern "C" void fn_800DDF48(Actor* a, u32 v) { *(u32*)((u8*)a + 0x170) = v; }
 
+extern "C" u32 fn_800DE050(void) {
+    return 'TVB4';
+}
+
 extern "C" void fn_800DE05C(u16* this_, s32 idx, u16 val) {
     this_[idx + 4] = val;
 }
@@ -251,6 +255,10 @@ extern "C" void fn_800DE090(u8* this_, u32 idx, const u32* src) {
 
 extern "C" u32* fn_800DE0B8(u32* this_, u32 idx) {
     return &this_[4] + idx;
+}
+
+extern "C" void fn_800DE0CC(u8* this_, u32 idx, const UnkDC8C* src) {
+    *(UnkDC8C*)(this_ + idx * 8 + 0x42) = *src;
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
