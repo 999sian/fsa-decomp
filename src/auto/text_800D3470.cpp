@@ -269,8 +269,10 @@ extern "C" u8 fn_800DDB0C(int param_1)
 extern "C" void* fn_800DDB14(void* param_1, short param_2)
 {
   if (param_1 != nullptr) {
-    *(void**)param_1 = &__vt__16J3DPEBlockFogOff;
-    *(void**)param_1 = &__vt__10J3DPEBlock;
+    void* vt1 = &__vt__16J3DPEBlockFogOff;
+    *(void**)param_1 = vt1;
+    void* vt2 = &__vt__10J3DPEBlock;
+    *(void**)param_1 = vt2;
     if (param_2 > 0) {
       __dl__FPv(param_1);
     }
@@ -462,6 +464,14 @@ extern "C" void fn_800DE538(Unk800DE4D0* p, int i, const Unk800DE50C& v) {
 
 extern "C" Unk800DE50C* fn_800DE564(Unk800DE4D0* p, int i) {
     return &p->b[i];
+}
+
+extern "C" void fn_800DE578(u8* p, int i, const Unk800DE578& v) {
+    *(Unk800DE578*)(p + 0x45 + i * 4) = v;
+}
+
+extern "C" Unk800DE578* fn_800DE5D0(u8* p, int i) {
+    return (Unk800DE578*)(p + 0x45 + i * 4);
 }
 
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
