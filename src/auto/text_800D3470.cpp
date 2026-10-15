@@ -281,6 +281,9 @@ extern "C" void fn_800D9020(u8* self) {
     }
 }
 
+extern "C" void fn_800D91D8(void) {
+}
+
 extern "C" void fn_800D971C(u8* self) {
 	for (u32 i = 0; i < 4; i++) {
 		if (*(u16*)(self + 8 + i * 2) != 0xffff) {
@@ -368,7 +371,7 @@ extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = &__vt__14J3DPEBlockFull;
         *(void**)param_1 = &__vt__10J3DPEBlock;
-        if (0 < param_2) {
+        if ((short)param_2 > 0) {
             __dl__FPv(param_1);
         }
     }
@@ -474,9 +477,10 @@ extern "C" void fn_800DDB70(void* param_1)
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* pStart = __GDCurrentDL->pDisplayListData;
   void* pCurr = __GDCurrentDL->pDisplayListData;
-  for (; isTexNoReg(pCurr); i++) {
+  while (isTexNoReg(pCurr)) {
     u16 texNo = getTexNoReg(pCurr);
     loadTexNo(i, texNo);
+    i++;
   }
   DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
 }
@@ -846,6 +850,21 @@ extern "C" void fn_800DE790(u32* this_, u32 idx, const u32* src) {
 
 extern "C" u32* fn_800DE7A4(u32* this_, u32 idx) {
     return &this_[0x18] + idx;
+}
+
+extern "C" char __vt__12J3DTevBlock2[];
+extern "C" char __vt__11J3DTevBlock[];
+extern "C" void* fn_800DE7D0(void* p, s16 del) {
+    if (p) {
+        *(void**)p = __vt__12J3DTevBlock2;
+        if (p) {
+            *(void**)p = __vt__11J3DTevBlock;
+            if (del > 0) {
+                __dl__FPv(p);
+            }
+        }
+    }
+    return p;
 }
 
 extern "C" u32 fn_800DE8D0() {
