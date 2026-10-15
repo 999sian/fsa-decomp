@@ -20,6 +20,42 @@ extern "C" unsigned char fn_800B51E8(void* self, int i) {
     return lbl_802313EC[i];
 }
 
+extern "C" void fn_800B96D8(char* p) {
+    if (*(u8*)(*(char**)(p + 0x1b0) + 0xb0) != 0 || *(u8*)(*(char**)(p + 0x1b4) + 0xb0) != 0) {
+        *(s32*)(p + 0x1bc) += 1;
+        s32 n = *(s16*)(*(char**)(p + 0x1b8) + 6);
+        s32 c = *(s32*)(p + 0x1bc);
+        if (c >= n) {
+            *(s32*)(p + 0x1bc) = c - n;
+        }
+        *(f32*)(*(char**)(p + 0x1b8) + 8) = *(s32*)(p + 0x1bc);
+    }
+}
+
+extern "C" void fn_800B9754(char* self) {
+    if (*(unsigned char*)(*(char**)(self + 0x19c) + 0xb0) != 0) {
+        *(int*)(self + 0x1ac) += 1;
+        short n = *(short*)(*(char**)(self + 0x1a8) + 6);
+        int v = *(int*)(self + 0x1ac);
+        if (v >= n) {
+            *(int*)(self + 0x1ac) = v - n;
+        }
+        *(float*)(*(char**)(self + 0x1a8) + 8) = (float)*(int*)(self + 0x1ac);
+    }
+}
+
+extern u32 lbl_802BB0FC[];
+extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_800B97C0(u8* p) {
+    (*(u8**)(p + 0x1c0))[0xb0] = 0;
+    (*(u8**)(p + 0x64))[0xb0] = 0;
+    (*(u8**)(p + 0x78))[0xb0] = 0;
+    (*(u8**)(p + 0x188))[0xb0] = 0;
+    (*(u8**)(p + 0x68))[0xb0] = 0;
+    (*(u8**)(p + 0x7c))[0xb0] = 0;
+    (*(u8**)(p + 0x18c))[0xb0] = 0;
+}
+
 extern "C" void* fn_800B9970(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80287910;
