@@ -120,6 +120,10 @@ extern "C" void fn_8001EB08(void) {
     cTg_SingleCut__FP16create_tag_class();
 }
 
+extern "C" u32 fn_8001EFE4(void) {
+    return 2;
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
