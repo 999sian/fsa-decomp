@@ -229,6 +229,11 @@ extern "C" void* fn_80094AFC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern StateFn_8009287C lbl_80286054[];
+extern "C" void fn_80094C90(Obj_8009287C* param_1) {
+    (param_1->*lbl_80286054[param_1->state])();
+}
+
 extern "C" void fn_80094CC8(char* param_1) {
     if (fn_8010B734(*(void**)(param_1 + 0x29c)) == 1) {
         fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x29c) + 0x9d));
