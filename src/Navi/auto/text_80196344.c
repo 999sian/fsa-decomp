@@ -5,6 +5,8 @@ extern void* lbl_8029A0D4[];
 
 extern "C" void* lbl_8029AF34[];
 extern void* lbl_8029A150[];
+extern "C" void fn_801A605C(int, void*);
+extern "C" void fn_801BC250(int, int);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80196344-0x801a537c (574 functions). split_file divides it into the game's real files.
@@ -236,11 +238,44 @@ extern "C" int fn_80199A58() {
     return 0x1e;
 }
 
+extern "C" void fn_8019DE38(int *param_1)
+{
+	typedef void (*fnptr)(void);
+	int *vtable = (int *)(*param_1);
+	fnptr fn;
+	
+	fn = (fnptr)(vtable[0x2c/4]);
+	fn();
+	
+	fn = (fnptr)(vtable[0x30/4]);
+	fn();
+}
+
 extern "C" void fn_801A605C(int, void*);
 extern "C" void fn_801BC250(int, int);
 extern "C" void fn_8019DEF0(void)
 {
 	return;
+}
+
+extern "C" void fn_8019E004(int param_1)
+{
+	extern int* lbl_802FFA80;
+	int val = *(int *)(param_1 + 4);
+	int *addr = lbl_802FFA80;
+	int base = addr[0];
+	int sum = base + val;
+	addr[2] = sum;
+	
+	int i;
+	for (i = 0; i < 2; i++) {
+		if (*(short *)(param_1 + 8) != -1) {
+			fn_801A605C(i, (void *)(param_1 + 8));
+		}
+		param_1 += 2;
+	}
+	int saved = addr[2];
+	fn_801BC250(saved, sum - base);
 }
 
 extern "C" int fn_801A3544(int p) { return p + 4; }
