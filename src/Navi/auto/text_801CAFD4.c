@@ -326,8 +326,8 @@ extern volatile u16* __cpReg;
 extern "C" void fn_801D9D84(u32 a, u8 b)
 {
 	u8* gx = __GXData;
-	*(u32*)(gx + 0x10) = (a & 1) | (*(u32*)(gx + 0x10) & ~1);
-	*(u32*)(gx + 0x10) = (((u32)b << 1) & 2) | (*(u32*)(gx + 0x10) & ~2);
+	*(u32*)(gx + 0x10) = __rlwimi(*(u32*)(gx + 0x10), a, 0, 31, 31);
+	*(u32*)(gx + 0x10) = __rlwimi(*(u32*)(gx + 0x10), b, 1, 30, 30);
 	__cpReg[2] = *(u32*)(gx + 0x10);
 }
 
