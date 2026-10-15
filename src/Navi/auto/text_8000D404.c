@@ -687,13 +687,13 @@ extern "C" void fn_80012170(void) {
 extern "C" void fn_80012198(void* param_1)
 {
 	char buffer[0x20];
-	unsigned int result;
 	
-	result = (*(unsigned int (*)(void))*(void**)((char*)(*(void**)param_1) + 0x10))();
+	int result = (*(unsigned int (*)(void))*(void**)((char*)(*(void**)param_1) + 0x10))();
 	
-	if (result != 0) {
+	if (result) {
 		unsigned short val = *(unsigned short*)((char*)lbl_802FF704 + 0x14);
 		void* ptr2 = (*(void* (*)(void*, void*))*(void**)((char*)(*(void**)param_1) + 0x10))(param_1, (void*)lbl_802FF704);
+		fn_801AF744(buffer);
 		(*(void (*)(void*, unsigned short, void*))*(void**)((char*)(*(void**)ptr2) + 0x10))(ptr2, val, buffer);
 	} else {
 		fn_801AF744((void*)((char*)lbl_802FF704 + 0x18));
