@@ -15,6 +15,8 @@ extern "C" void fn_80182650(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x8) = z;
 }
 
+extern "C" void fn_80182660(u8* dst, const f32* src) { JGeometry::setTVec3f(src, (f32*)(dst + 0xc)); }
+
 extern "C" void fn_80182674(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
 extern "C" void fn_80182690(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; }
