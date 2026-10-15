@@ -31,6 +31,9 @@ void fn_800C9D0C(void) {
 void fn_800C9D14(void) {
 }
 
+extern "C" void fn_800CAAA8(void) {
+}
+
 extern "C" void fn_800CAAAC(void* a, s32 v) {
     *(s32*)((u8*)a + 0x4) = v;
 }
