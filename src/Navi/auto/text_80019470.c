@@ -33,6 +33,11 @@ extern "C" void fn_800197E4(void* param_1) {
     fn_8001D5B8(*(void**)((u8*)param_1 + 0xc0), param_1);
 }
 
+extern "C" void fn_8001D5F4(void*, void*);
+extern "C" void fn_8001980C(void* param_1) {
+    fn_8001D5F4(*(void**)((u8*)param_1 + 0xc0), param_1);
+}
+
 extern "C" void fn_80019834(void* param_1) {
     if (*(s8*)((u8*)param_1 + 0xc) == 0) {
         void* iVar1 = *(void**)((u8*)param_1 + 0x10);
