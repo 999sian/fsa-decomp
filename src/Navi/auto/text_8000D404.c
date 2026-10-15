@@ -481,6 +481,11 @@ extern "C" void* fn_80010428(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8001154C(void)
+{
+	fn_80159528(0, 0, 0, 0, 0, 1, 1);
+}
+
 extern "C" void fn_80011588(void)
 {
 	fn_80159528(0, 0, 0, 0, 1, 0, 1);
