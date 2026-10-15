@@ -310,6 +310,10 @@ extern "C" u32 fn_801CED8C(void) {
     return *reg & 1;
 }
 
+extern "C" u32 fn_801CF6FC(void) {
+    return 0x4000;
+}
+
 extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
 }
