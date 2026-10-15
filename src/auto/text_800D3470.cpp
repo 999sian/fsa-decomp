@@ -222,6 +222,10 @@ extern "C" void fn_800DDEFC(u32* this_, s32 idx, u32* src) {
     this_[idx + 0x4c] = *src;
 }
 
+extern "C" void fn_800DDF10(u32* this_, s32 idx, u32* src) {
+    this_[idx + 0x4c] = *src;
+}
+
 extern "C" u32* fn_800DDF24(u8* this_, s32 idx) {
     return (u32*)(this_ + 0x130 + idx * 4);
 }
