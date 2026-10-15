@@ -53,6 +53,7 @@ void* fn_8011FD10(void)
 	return lbl_802FDD84;
 }
 
+extern void* lbl_802FDD84;
 extern u8 lbl_802FDD88;
 extern void* lbl_802FF328;
 extern void* lbl_80290AB4;
