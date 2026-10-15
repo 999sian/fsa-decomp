@@ -217,6 +217,11 @@ extern "C" void fn_8001D4D4(void* param_1, u8 param_2) {
     fn_8001EB7C(param_1, param_2 & 0xFF);
 }
 
+extern "C" void fn_8001EBA4(void*, u8);
+extern "C" void fn_8001D4F8(void* param_1, u8 param_2) {
+    fn_8001EBA4(param_1, param_2 & 0xFF);
+}
+
 extern "C" void fn_8001EC10(void*, u8);
 extern "C" void fn_8001D51C(void* param_1, u8 param_2) {
     fn_8001EC10(param_1, param_2 & 0xFF);
