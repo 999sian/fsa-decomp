@@ -4,6 +4,22 @@
 
 extern void* lbl_80204F9C[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_80013F24(void* p);
+extern "C" void* fn_801C027C(void);
+extern "C" void fn_8015D1F4(void* p, void* q, s32 r);
+extern "C" void fn_8015D29C(void* p, s32 r);
+extern "C" void fn_80159BA4(s32 r);
+extern "C" s32 DVDGetDriveStatus(void);
+extern "C" void fn_80012DE0(void);
+extern "C" void fn_801C1174(void* p);
+extern "C" void OSCancelThread(void* p);
+extern "C" void fn_801BB7E0(void* p);
+extern "C" f32 fn_80116064(f32 x);
+extern "C" void fn_80013E18(void* p);
+extern u8 lbl_802A2140[];
+extern u8 lbl_802A3460[];
+extern u8 lbl_802FEBE0;
+extern f32 lbl_802FFBB8;
 extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80204F9C;
