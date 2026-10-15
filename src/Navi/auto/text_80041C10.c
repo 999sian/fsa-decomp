@@ -5,6 +5,11 @@
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8004C614(void*);
 extern "C" void fn_8004C694(void*);
+
+extern unsigned char lbl_80246BD8[];
+extern unsigned char lbl_80246C0C[];
+extern int lbl_802FC1B0;
+extern int lbl_802FC1B4;
 extern "C" void* fn_80041C10(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -152,6 +157,59 @@ extern "C" void fn_8004C52C(void*, void* p) {
         fn_8004C614(p);
     } else {
         fn_8004C694(p);
+    }
+}
+
+extern "C" void fn_8004C5A0(void*, void* p) {
+    extern void* lbl_802FF0A0;
+    extern unsigned char lbl_802FF0A4;
+    extern unsigned char lbl_802FF0A5;
+    extern int lbl_802FF09C;
+    
+    *(unsigned int*)((char*)p + 0xec) = 0;
+    
+    void* base = lbl_802FF0A0;
+    if (base == 0) return;
+    
+    unsigned char max_count = lbl_802FF0A4;
+    if (max_count <= 0) return;
+    
+    unsigned char current_idx = lbl_802FF0A5;
+    unsigned char rem = current_idx % max_count;
+    lbl_802FF0A5 = rem;
+    
+    unsigned char cnt = max_count;
+    while (true) {
+        int val = *(int*)((char*)base + rem * 0xc4);
+        if (val == 0) {
+            rem++;
+            lbl_802FF0A5 = rem;
+            *(unsigned int*)((char*)p + 0xc0) = rem - 1;
+            *(unsigned int*)((char*)p + 0xf0) = (unsigned int)&lbl_802FF09C;
+            return;
+        }
+        rem++;
+        if (--cnt == 0) break;
+    }
+}
+
+extern "C" void fn_8011FD10(void);
+extern "C" void fn_8011FD18(void*, void*, int, void*, void*);
+extern "C" void fn_80007AB8(void*, int, void*);
+extern "C" void* fn_8004C970(void*);
+extern "C" void fn_8004C614(void* p) {
+    if (p == 0) {
+        fn_8011FD10();
+        void* bd8 = (void*)0x80246BD8;
+        void* c0c = (void*)0x80246C0C;
+        extern int lbl_802FC1B0;
+        extern int lbl_802FC1B4;
+        fn_8011FD18(0, bd8, 0x42e, &lbl_802FC1B0, c0c);
+        fn_80007AB8(bd8, 0x42e, &lbl_802FC1B4);
+    }
+    void* result = fn_8004C970(p);
+    if (result != 0) {
+        *(unsigned int*)result = 0;
     }
 }
 
