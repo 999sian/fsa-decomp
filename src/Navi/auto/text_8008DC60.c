@@ -1,4 +1,10 @@
 #include "types.h"
+extern char lbl_802B7CA0[];
+extern f32 lbl_80300AF0;
+extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern "C" void fn_80092228(void);
+extern "C" void fn_80092444(void);
+extern "C" void fn_800911F0(void);
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8008dc60-0x800a1dc0 (285 functions). split_file divides it into the game's real files.
 
@@ -298,6 +304,21 @@ extern "C" void* fn_800A0238(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern char lbl_802B7CA0[];
+extern f32 lbl_80300AF0;
+extern "C" void fn_80092228(void);
+extern "C" void fn_80092444(void);
+extern "C" void fn_800911F0(void);
+extern "C" void fn_800A1A64(void* param_1) {
+    void* obj = *(void**)(lbl_802B7CA0 + 0x1394);
+    typedef void (*VFunc)(void*);
+    VFunc* vtable = *(VFunc**)obj;
+    vtable[5](obj);
+    f32 c = lbl_80300AF0;
+    fn_80179CB4(*(void**)((char*)param_1 + 4), obj, c, c);
 }
 
 extern "C" void* fn_800A1CE8(void* ptr, s16 param_2) {
