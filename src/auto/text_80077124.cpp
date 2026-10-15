@@ -7,3 +7,5 @@ public:
     virtual ~JPAEmitterCallBack();
     virtual void execute(JPABaseEmitter*);
 };
+
+void JPAEmitterCallBack::execute(JPABaseEmitter*) {}
