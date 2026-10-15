@@ -5,6 +5,9 @@ extern void* lbl_80543ED8;
 extern void* lbl_80543F0C;
 extern void* lbl_80495470;
 extern void* sInstance__33JASGlobalInstance__12JAISoundInfo;
+extern void __dt__16JAIStreamDataMgrFv(void*, int);
+extern void __dt__12JAISoundInfoFv(void*, int);
+extern void __dl__FPv(void*);
 
 extern "C" s32 fn_8045A6F4(void) {
     return -1;
