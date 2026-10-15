@@ -218,6 +218,9 @@ extern "C" void* fn_80011F1C(void* ptr, s16 param_2) {
 extern "C" void fn_80011F7C(void) {
 }
 
+extern "C" void fn_80011F90(void) {
+}
+
 extern "C" float fn_80011F94(void) {
     return lbl_802FFB6C;
 }
