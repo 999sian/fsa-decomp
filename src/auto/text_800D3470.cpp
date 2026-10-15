@@ -1060,12 +1060,14 @@ extern "C" void fn_800DED64(int p, int i, int v) {
 
 extern "C" void fn_800DED70(int param_1, int param_2, const u8* param_3)
 {
-    *(u8*)(param_1 + param_2 + 0xc8) = param_3[0];
+    u8* base = (u8*)param_1;
+    base[param_2 + 0xc8] = param_3[0];
 }
 
 extern "C" u8 fn_800DED80(int param_1, int param_2)
 {
-    return *(u8*)(param_1 + param_2 + 0xc8);
+    int addr = param_1 + param_2;
+    return *(u8*)(addr + 0xc8);
 }
 
 extern "C" u32 fn_800DED8C(int param_1)
@@ -1200,8 +1202,16 @@ extern "C" u32 fn_800DF208(void) {
     return 0x434c4142;
 }
 
-extern "C" void fn_800DF214(int param_1, int param_2, GXColor* param_3) {
-    ((GXColor*)(param_1 + 0x20))[param_2] = *param_3;
+extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
+    u8 r = param_3[0];
+    u8 g = param_3[1];
+    u8 b = param_3[2];
+    u8 a = param_3[3];
+    u8* p = (u8*)(param_1 + param_2 * 4);
+    p[0x20] = r;
+    p[0x21] = g;
+    p[0x22] = b;
+    p[0x23] = a;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
