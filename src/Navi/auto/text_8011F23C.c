@@ -400,6 +400,15 @@ extern "C" void fn_80133910(u8* p, void* unused, int i, f32* v) {
     *(f32*)(e + 0xc) = f;
 }
 
+extern "C" void fn_80133470();
+extern "C" void fn_8013393C(u8* p, void* unused, int i, f32* v) {
+    f32 f = *v;
+    u8* e = *(u8**)(p + 4) + i * 0x14;
+    *(void**)(e + 8) = (void*)fn_80133470;
+    *(u32*)(e + 4) = 0;
+    *(f32*)(e + 0xc) = f;
+}
+
 extern "C" void fn_80133968(u8* p, u8* q, int i, void* a, void* b) {
     u8* e = *(u8**)(p + 4) + i * 0x14;
     u8* r = (u8*)fn_80139950(*(u8**)(q + 0x14) + 0x60, a, b);
