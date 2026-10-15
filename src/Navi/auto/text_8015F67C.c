@@ -13,6 +13,7 @@ extern "C" void fn_801C0EEC(void*);
 extern "C" void* fn_8015A9A8(int, void*, int);
 extern "C" void fn_8015FB6C(int, int, int);
 extern "C" BOOL fn_8015F80C();
+extern "C" void* fn_8015F6EC(void*, void*);
 extern int lbl_802FF5E0;
 extern void* lbl_802FF540;
 extern void* lbl_80297B40;
