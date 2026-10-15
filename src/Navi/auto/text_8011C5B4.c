@@ -13,7 +13,7 @@ extern "C" void fn_80166B58(void* param_1, void* param_2);
 extern "C" void fn_80166C84(void* param_1, void* param_2);
 extern "C" s64 OSGetTime(void);
 extern u32 lbl_802FE970;
-extern void fn_8011C8E8();
+extern "C" void fn_8011C8E8();
 extern "C" void OSSetErrorHandler(u32 code, void* handler);
 extern "C" void fn_80166C08(void*, int);
 extern "C" void* fn_8011C5B4(void* param_1, s16 param_2) {
@@ -35,6 +35,22 @@ extern "C" void* fn_8011C660(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_8011CB8C(u32 param_1) {
+    lbl_802FE970 = param_1;
+    if (param_1 == 0) {
+        OSSetErrorHandler(0x10, nullptr);
+    } else {
+        OSSetErrorHandler(0x10, (void*)fn_8011C8E8);
+    }
+}
+
+extern "C" u32 fn_8011DF90(void* param_1) {
+    u32 val = *(u32*)((u8*)param_1 + 0x84);
+    if (val == 0xffffffff) return 1;
+    if (*(s32*)((u8*)param_1 + 0x88) >= 0) return 1;
+    return ((-val) | val) >> 31;
 }
 
 extern "C" void fn_8011EA30(s64 param_1) {
