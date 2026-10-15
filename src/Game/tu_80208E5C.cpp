@@ -6,6 +6,12 @@ extern void* lbl_804A5B28[];
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
 extern void* lbl_804A5C88[];
+extern void* fn_801F856C();
+extern void* fn_801F666C(void*, s32);
+extern void fn_8020B434(void*);
+extern void fn_8020B3E4(void*, s32, s32, void*, s32);
+extern void* fn_80207AC0(void*);
+extern f32 lbl_8053F918;
 void operator delete(void* p);
 extern "C" void* fn_80208E5C(void* this_, s16 freeFlag) {
     if (this_ != 0) {
