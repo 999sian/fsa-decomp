@@ -37,6 +37,10 @@ extern "C" int fn_800D3E88(void) { return 0x1e; }
 
 extern "C" int fn_800D3E90(void) { return 0x55; }
 
+extern "C" void fn_800DDA9C(void* dst, const void* src) {
+    *(u32*)((u8*)dst + 8) = *(const u32*)src;
+}
+
 extern "C" void fn_800DDC1C(u16* this_, s32 idx, u16 val) {
     this_[idx + 4] = val;
 }
