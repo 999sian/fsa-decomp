@@ -408,6 +408,11 @@ extern "C" int fn_8017332C()
 	return 0;
 }
 
+extern "C" int fn_80173344()
+{
+	return 0;
+}
+
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
     Unk80174858Pair fallback;
     fallback.x = lbl_80301AC0.x;
