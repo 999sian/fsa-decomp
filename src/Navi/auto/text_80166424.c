@@ -130,10 +130,16 @@ extern "C" void* fn_80174AE0(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_80174AF8(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d) {
     u32 aa, bb, cc, dd;
-    u32 vd = *d, vc = *c, vb = *b, va = *a;
+    u32 vd = *d, vc = *c, vb = *b;
     *(void**)ptr = lbl_80298C5C;
+    u32 va = *a;
     u32* words = (u32*)ptr;
     words[2] = -1;
     words[3] = -1;
