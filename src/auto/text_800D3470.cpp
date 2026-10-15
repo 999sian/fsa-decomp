@@ -294,3 +294,6 @@ struct Vtable800D8248 {
     virtual void m9() = 0;
     virtual void m10(void*) = 0;
 };
+struct UnkVtableTest8248 {
+    int x;
+};
