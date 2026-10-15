@@ -131,6 +131,10 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
     p->m10();
 }
 
+extern "C" u32 fn_800DD89C() {
+    return 'PEFL';
+}
+
 extern "C" void fn_800DD8F8(u8* self, const u8* other) {
     *(u16*)(self + 0x30) = *(const u16*)other;
     self[0x32] = other[2];
