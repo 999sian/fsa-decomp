@@ -121,6 +121,19 @@ void J3DTexGenBlockPatched::initialize()
 	mTexMtxOffset = 0;
 }
 
+void J3DColorBlockAmbientOn::initialize()
+{
+	mColorChanNum = 0;
+	for (int i = 0; i < 2; i++) {
+		mMatColor[i] = J3DGXColor(j3dDefaultColInfo);
+	}
+	for (int i = 0; i < 2; i++) {
+		mAmbColor[i] = J3DGXColor(j3dDefaultAmbInfo);
+	}
+	mMatColorOffset = 0;
+	mColorChanOffset = 0;
+}
+
 extern "C" int fn_800D3E48(void) { return 0x69; }
 
 extern "C" int fn_800D3E50(void) { return 0x14f; }
