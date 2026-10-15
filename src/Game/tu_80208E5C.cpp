@@ -36,6 +36,19 @@ extern "C" void* fn_80208E5C(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_802091EC(char* this_) {
+    if (*(s32*)(this_ + 0x248) != 2) {
+        *(s32*)(this_ + 0x24c) = 0;
+        *(s32*)(this_ + 0x248) = 2;
+    }
+    for (s32 i = 0; i < 4; i++) {
+        void* a = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2b0 + i * 0x24));
+        if (a != 0) {
+            fn_8020B434(a);
+        }
+    }
+}
+
 extern "C" void fn_80209264(char* this_) {
     *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x24);
     *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28);
