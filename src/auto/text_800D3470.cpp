@@ -839,16 +839,15 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x59;
 }
 
-extern "C" void fn_800DDE5C(int param_1, int param_2, u8 *param_3) {
-    u8 b1 = param_3[1];
-    u8 b0 = param_3[0];
-    param_1 = param_1 + param_2 * 8;
-    u8 val = *(u8 *)(param_1 + 0x60);
-    val = (val & 0xf3) | (b1 << 2);
-    *(u8 *)(param_1 + 0x60) = val;
-    val = *(u8 *)(param_1 + 0x60);
-    val = (val & 0xfc) | b0;
-    *(u8 *)(param_1 + 0x60) = val;
+extern "C" void fn_800DDE5C(int param_1, int param_2, u8* param_3) {
+    struct Bits {
+        u8 pad : 4;
+        u8 b1 : 2;
+        u8 b0 : 2;
+    };
+    Bits* p = (Bits*)(param_1 + param_2 * 8 + 0x60);
+    p->b1 = param_3[1];
+    p->b0 = param_3[0];
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -1410,6 +1409,10 @@ extern "C" u8* fn_800DEE54(u8* self) {
 
 extern "C" void fn_800DEEC8(Actor* a, s32 v);
 extern "C" void fn_800DEEC8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x4) = v; }
+
+extern "C" void fn_800DEF34(u8* param_1, u32 param_2) {
+    *(u32*)(param_1 + 0x58) = param_2;
+}
 
 extern "C" u32 fn_800DEF3C(void) {
     return 0x54474234;
