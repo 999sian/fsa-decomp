@@ -148,6 +148,11 @@ extern "C" int fn_80198FEC()
 	return 0;
 }
 
+extern "C" int fn_80198FF8()
+{
+	return 0;
+}
+
 extern "C" int fn_80199A28() {
     return 0x244;
 }
