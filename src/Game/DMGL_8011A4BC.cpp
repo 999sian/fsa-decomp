@@ -1,5 +1,18 @@
 #include "types.h"
 
+extern "C" void fn_8010DF58();
+extern "C" void fn_8010DF98();
+extern "C" void fn_801D2608(void* p, u32 a, u32 b);
+extern "C" void fn_801D22DC(void* p, u32 a, u32 b, u32 c);
+extern "C" void fn_801D1F14(void* p);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D7440(void* p, u32 a);
+extern "C" void __dt__13Base_8010E074Fv(void* p, int how);
+extern void operator delete(void* p);
+
+extern void* lbl_8049DB30[];
+extern void* lbl_8049CC34[];
+
 extern "C" s32 fn_8011AAC8(char* p) {
     return *(s32*)(p + 0x234);
 }
