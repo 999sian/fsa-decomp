@@ -19,6 +19,12 @@ extern "C" void fn_80058D50(void) {
     fn_800595FC();
 }
 
+extern "C" void* lbl_802FF118;
+extern "C" void* fn_8005C498(void)
+{
+	return lbl_802FF118;
+}
+
 extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027EC78;
