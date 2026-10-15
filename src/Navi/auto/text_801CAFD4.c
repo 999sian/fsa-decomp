@@ -10,9 +10,14 @@ extern "C" void OSClearContext(void*);
 extern "C" void OSSetCurrentContext(void*);
 extern "C" void fn_801C4A28(void*);
 extern "C" void fn_801C4AF4(void*);
-extern "C" void fn_801CEB00(int);
 extern "C" void fn_801C42F4(void);
 extern "C" void fn_801CDB9C(int);
+
+extern int lbl_802FF928;
+extern int lbl_802FF960;
+extern int lbl_802FF948;
+extern int lbl_802FE9EC;
+extern int lbl_802FF964;
 int lbl_802FF8F4;
 extern unsigned long lbl_802FF944;
 extern unsigned long lbl_802FE9F8;
