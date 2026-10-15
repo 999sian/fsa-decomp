@@ -301,7 +301,11 @@ extern "C" int fn_80020EA4(void* param_1, int param_2) {
 }
 
 extern "C" int fn_80020EE4(void** param_1) {
-    extern u8 lbl_802B7CA0[];
-    return fn_8006347C(param_1[0], lbl_802B7CA0 + 0x2200, 0x40, lbl_802061AC, 0, (int)param_1[1]) == 0 ? 5 : 2;
+    int ret = fn_8006347C(param_1[0], lbl_802B7CA0 + 0x2200, 0x40, lbl_802061AC, 0, (int)param_1[1]);
+    int r = 2;
+    if (ret == 0) {
+        r = 5;
+    }
+    return r;
 }
 
