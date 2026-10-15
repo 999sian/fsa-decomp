@@ -277,6 +277,11 @@ extern "C" u32 fn_80172468(void)
     return 0x49424c46;
 }
 
+extern "C" void fn_80172474(int param_1, u8 param_2)
+{
+    *(u8*)(param_1 + 4) = param_2;
+}
+
 extern "C" u32 fn_801725D8(void) { return 0x54563136; }
 
 extern "C" u32 fn_801725E4(void) { return 0x10; }
