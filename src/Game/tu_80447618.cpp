@@ -18,8 +18,6 @@ struct J2DScreen {
     virtual void vf28();
     virtual void vf2C();
     virtual void vf30();
-    virtual void vf34();
-    virtual void vf38();
     virtual J2DPane* search(u64);
     u8 pad[0x114];
 };
@@ -63,52 +61,63 @@ extern void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* pane, const char* n
 extern void fn_80402F04(void* a, void* b);
 }
 
-void* fn_80447C30(void* this_) {
-    char* pthis = (char*)this_;
-    void* screen;
-    int i;
-    void* obj;
-    void* (*get_method)(void);
-    void* param;
+extern "C" void* fn_804030C4(u32 type, const char* name);
+void fn_804479A0(void *this_)
+{
+    u32 i;
+    void *obj;
+    void *res;
     
-    *(void**)pthis = &lbl_804B1C20;
-    *(void**)&lbl_8053AF08 = this_;
-    
-    screen = __nw__FUl(0x118);
-    if (screen != 0) {
-        __ct__9J2DScreenFv();
+    i = 0;
+    do {
+        *(u8 *)((u32)this_ + 0x2c) = *(u8 *)((u32)this_ + 0x2c) & ~(1 << i);
+        
+        res = fn_804030C4(0x54494d47, *(const char **)0x804B1BF8);
+        
+        obj = *(void **)((u32)this_ + 4);
+        
+        // Call virtual function at obj[0][0x3c], get result
+        void *call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490410, *(void **)0x80490414);
+        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
+        
+        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490418, *(void **)0x8049041C);
+        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
+        
+        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490420, *(void **)0x80490424);
+        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
+        
+        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490428, *(void **)0x8049042C);
+        ((void (*)(void*, void*, int))*(void **)((u32)*(void **)call_result + 0x110))(call_result, res, 0);
+        
+        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490410, *(void **)0x80490414);
+        *(u8 *)((u32)call_result + 0xb0) = 0;
+        
+        call_result = ((void* (*)(void*, void*, void*))*(void **)((u32)*(void **)obj + 0x3c))(obj, *(void **)0x80490430, *(void **)0x80490434);
+        *(u8 *)((u32)call_result + 0xb0) = 0;
+        
+        i++;
+    } while (i < 4);
+}
+
+extern "C" Obj80447C30* fn_80447C30(Obj80447C30* self) {
+    self->vt = &lbl_804B1C20;
+    lbl_8053AF08 = self;
+    self->screen = new J2DScreen();
+    self->screen->setPriority((const char*)&lbl_80490698, 0x1100000, ((ArcHolder*)&lbl_80529DEC)->arc);
+    for (int i = 0; i < 4; i++) {
+        PaneCtrl* p = (PaneCtrl*)operator new(0x2c);
+        if (p) p->vt = &lbl_804AF86C;
+        self->a[i] = p;
+        fn_80402F04(self->a[i], self->screen->search(lbl_80490410[i].tag0));
+        p = (PaneCtrl*)operator new(0x2c);
+        if (p) p->vt = &lbl_804AF86C;
+        self->b[i] = p;
+        fn_80402F04(self->b[i], self->screen->search(lbl_80490410[i].tag1));
     }
-    *(void**)(pthis + 0x4) = screen;
-    
-    setPriority__9J2DScreenFPCcUlP10JKRArchive(screen, (const char*)&lbl_80490698, 0x110, 0);
-    
-    for (i = 0; i < 4; i++) {
-        obj = __nw__FUl(0x2c);
-        if (obj != 0) {
-            *(void**)obj = &lbl_804AF86C;
-        }
-        *(void**)(pthis + 8 + i * 4) = obj;
-        
-        get_method = *(void*(**)(void))(*(char**)screen + 0x3c);
-        param = get_method();
-        fn_80402F04(obj, param);
-        
-        obj = __nw__FUl(0x2c);
-        if (obj != 0) {
-            *(void**)obj = &lbl_804AF86C;
-        }
-        *(void**)(pthis + 0x18 + i * 4) = obj;
-        
-        get_method = *(void*(**)(void))(*(char**)screen + 0x3c);
-        param = get_method();
-        fn_80402F04(obj, param);
-    }
-    
-    *(char*)(pthis + 0x28) = 0;
-    *(char*)(pthis + 0x29) = 0;
-    *(char*)(pthis + 0x2a) = 0;
-    *(char*)(pthis + 0x2b) = 0;
-    *(char*)(pthis + 0x2c) = 0;
-    
-    return this_;
+    self->f28 = 0;
+    self->f29 = 0;
+    self->f2a = 0;
+    self->f2b = 0;
+    self->f2c = 0;
+    return self;
 }
