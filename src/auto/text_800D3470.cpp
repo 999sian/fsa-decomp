@@ -1608,7 +1608,7 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
-    ((GXColor*)(param_1 + 0x20))[param_2] = (unsigned)*param_3;
+    ((GXColor*)(param_1 + 0x20))[param_2] = *param_3;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
