@@ -60,6 +60,9 @@ extern "C" void* fn_8000EE4C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8000EEC8(void) {
+}
+
 extern "C" u32 lbl_80301D14;
 extern "C" void fn_8000EECC(u32* p) {
     *p = lbl_80301D14;
