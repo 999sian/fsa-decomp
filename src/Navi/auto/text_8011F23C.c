@@ -439,9 +439,9 @@ extern "C" void* fn_80133C0C(void* ptr, s16 param_2) {
 
 extern "C" u8* fn_80133C68(u8* p, void* a, void* b) {
     fn_8013A57C();
-    *(void**)(p + 8) = &lbl_802925EC;
+    *(void***)(p + 8) = lbl_802925EC;
     *(void**)(p + 0x34) = b;
-    *(void**)(p + 8) = &lbl_80292558;
+    *(void***)(p + 8) = lbl_80292558;
     return p;
 }
 
