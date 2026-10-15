@@ -204,10 +204,7 @@ extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
 }
 
 extern "C" void fn_800D5E14(void* param) {
-    static const u32 size = 0x0d;
-    if (__GDCurrentDL->pDisplayListData + size > __GDCurrentDL->end) {
-        GDOverflowed();
-    }
+    GDOverflowCheck(13);
     
     __GDWrite(0x10);
     __GDWrite(0x00);
@@ -215,7 +212,7 @@ extern "C" void fn_800D5E14(void* param) {
     __GDWrite(0x10);
     __GDWrite(0x0c);
     
-    u32 val1 = *(u32*)((char*)param + 4);
+    unsigned long val1 = *(u32*)((char*)param + 4);
     __GDWrite((u8)(val1 >> 24));
     __GDWrite((u8)(val1 >> 16));
     __GDWrite((u8)(val1 >> 8));
@@ -502,13 +499,12 @@ extern "C" void fn_800D9AAC(u8* self) {
 extern "C" void fn_800D9E3C(void* p) {
     u32 byteCount = 0;
     u8* addr = (u8*)p;
-    
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
     
     for (u32 i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
-            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + byteCount + *(u32*)((u8*)p + 4);
+            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4) + byteCount;
             patchTexNo_PtrToIdx(i, *(const u16*)(addr + 8));
             
             byteCount += 0x14;
@@ -535,6 +531,10 @@ extern "C" void fn_800DD8A8(u8* self, const J3DFogInfo* other) {
 
 extern "C" void fn_800DD8CC(u8* self, const J3DFogInfo* other) {
     *(J3DFogInfo*)(self + 4) = *other;
+}
+
+int fn_800DD8F0(int param_1) {
+    return param_1 + 4;
 }
 
 extern "C" void fn_800DD8F8(void* param_1, const void* param_2)
@@ -618,9 +618,9 @@ extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
 
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
+        u32 vtable = *(u32*)obj;
         typedef void (*FuncPtr)(void);
-        void** pv = (void**)obj;
-        FuncPtr fn = *(FuncPtr*)((u8*)pv[0] + 0x1c);
+        FuncPtr fn = *(FuncPtr*)(vtable + 0x1c);
         fn();
     }
 }
@@ -1320,6 +1320,10 @@ extern "C" u32 fn_800DEA24(u8* this_) {
 
 extern "C" void fn_800DEA88(void) {}
 
+unsigned int fn_800DEB2C(void) {
+    return 0x54565054U;
+}
+
 extern "C" void fn_800DEB38(u8* p, u8 v) {
     p[0xd0] = v;
 }
@@ -1521,10 +1525,10 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 }
 
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    register u8* p = self + i * 4;
+    u8* p = self + i * 4;
     p[0xc] = c[0];
-    p[0xd] = c[1];
     p[0xe] = c[2];
+    p[0xd] = c[1];
     p[0xf] = c[3];
 }
 
