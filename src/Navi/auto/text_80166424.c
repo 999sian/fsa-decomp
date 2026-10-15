@@ -54,6 +54,17 @@ extern "C" void* fn_8016ABEC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_80298B14[];
+extern "C" void* fn_8016AC34(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80298B14;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
     Unk80174858Pair fallback = lbl_80301AC0;
     u8* data = *(u8**)((u8*)ptr + 0xc);
