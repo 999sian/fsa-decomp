@@ -161,6 +161,22 @@ extern "C" int fn_800D3E88(void) { return 0x1e; }
 
 extern "C" int fn_800D3E90(void) { return 0x55; }
 
+extern "C" void fn_800D5120(int* param_1)
+{
+  (*(void(**)(void))(*(int*)param_1 + 0x14))();
+  (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
+}
+
+extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
+{
+  if ((param_2 & 1) != 0) {
+    (*(void(**)(void))(*(int*)param_1 + 0x20))();
+  }
+  if ((param_2 & 2) != 0) {
+    (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
+  }
+}
+
 struct Vtable800D8248;
 extern "C" void fn_800D8248(Vtable800D8248* p) {
     p->m9();
@@ -225,6 +241,29 @@ extern "C" void fn_800D8E14(u8* self) {
     }
 }
 
+extern "C" void fn_800D8F78(u8* self) {
+    u32 count = *(u32*)(self + 0xd0);
+    if (count == 0) return;
+    
+    for (u32 i = 0; i < count; i++) {
+        u32 value = *(u32*)(self + 0x78 + i * 4);
+        __GDWrite(0x61);
+        __GDWrite((value >> 24) | ((i + 0x10) << 24));
+        __GDWrite((value >> 16) & 0xff);
+        __GDWrite((value >> 8) & 0xff);
+        __GDWrite(value & 0xff);
+    }
+}
+
+extern "C" void fn_800D9020(u8* self) {
+    for (u32 i = 0; i < 3; i++) {
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(self + 0x42 + i * 8));
+    }
+    for (u32 i = 0; i < 4; i++) {
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(self + 0x62 + i * 4));
+    }
+}
+
 extern "C" void fn_800D971C(u8* self) {
 	for (u32 i = 0; i < 4; i++) {
 		if (*(u16*)(self + 8 + i * 2) != 0xffff) {
@@ -240,6 +279,14 @@ extern "C" void fn_800D9778(u8* self) {
 	for (u32 i = 0; i < 4; i++) {
 		J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(self + 0x62 + i * 4));
 	}
+}
+
+extern "C" void fn_800D9AAC(u8* self) {
+    for (u32 i = 0; i < 8; i++) {
+        if (*(u16*)(self + 8 + i * 2) != 0xffff) {
+            loadTexNo(i, *(u16*)(self + 8 + i * 2));
+        }
+    }
 }
 
 extern "C" u32 fn_800DD89C() {
