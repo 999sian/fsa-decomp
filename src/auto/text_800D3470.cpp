@@ -1411,6 +1411,10 @@ extern "C" u8* fn_800DEE54(u8* self) {
 extern "C" void fn_800DEEC8(Actor* a, s32 v);
 extern "C" void fn_800DEEC8(Actor* a, s32 v) { *(s32*)((u8*)a + 0x4) = v; }
 
+extern "C" u32 fn_800DEF3C(void) {
+    return 0x54474234;
+}
+
 extern "C" void fn_800DEF48(u8* self, const J3DNBTScaleInfo* other) {
     *(J3DNBTScaleInfo*)(self + 0x5c) = *other;
 }
@@ -1550,8 +1554,12 @@ extern "C" u32 fn_800DF208(void) {
     return 0x434c4142;
 }
 
-extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
-    ((GXColor*)(param_1 + 0x20))[param_2] = *param_3;
+extern "C" void fn_800DF214(u8* param_1, int param_2, const u8* param_3) {
+    u8* base = param_1 + 0x20 + param_2 * 4;
+    base[0] = param_3[0];
+    base[1] = param_3[1];
+    base[2] = param_3[2];
+    base[3] = param_3[3];
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
