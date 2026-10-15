@@ -79,6 +79,25 @@ extern "C" void fn_8020A008(ItemBase* this_) {
     this_->m230 |= 0x80;
 }
 
+extern "C" s32 fn_801F285C(void*, u32, void*, u32, s32);
+extern "C" void* fn_8023E724(s32);
+extern "C" s32 fn_8023B6CC(s32);
+extern "C" void fn_80207830(void*, u16, s32, s32, void*, u32);
+extern "C" s32 fn_8020A018(u8* this_) {
+    u32 out;
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > 0.0f &&
+        *(f32*)(this_ + 0x6C) - *(f32*)(this_ + 0x64) > 0.0f) {
+        s32 player = fn_801F285C(this_, 0, &out, 1, -1);
+        if (player >= 0) {
+            void* actor = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
+            if (actor != 0) {
+                fn_80207830(actor, *(u16*)(this_ + 0x94), player, fn_8023B6CC(player), fn_8023E724(player), out);
+            }
+        }
+    }
+    return 0;
+}
+
 extern "C" s32 fn_8020A0E8(u8* this_) {
     fn_801F2DB4(this_, *(u32*)(this_ + 0x1A0), 'NULL', 0);
     return 0;
