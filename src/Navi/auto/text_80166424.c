@@ -287,6 +287,10 @@ extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_80172B3C(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
 
+extern "C" void fn_80172D24(Unk801727E4Class* param_1, int param_2, int param_3) {
+    param_1->vf7C(param_2, param_3, 0);
+}
+
 extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
 
 extern "C" u32 fn_80172DC8(void) {
