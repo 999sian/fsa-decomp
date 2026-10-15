@@ -623,14 +623,19 @@ extern "C" u8 fn_800DE648(int param_1) {
 }
 
 extern "C" void fn_800DE650(int param_1, int param_2, u8* param_3) {
+    u8 val1 = param_3[1];
     int offset = param_1 + param_2 * 8;
-    *(u8*)(offset + 0x36) = param_3[1];
-    *(u8*)(offset + 0x37) = param_3[2];
-    *(u8*)(offset + 0x38) = param_3[3];
-    *(u8*)(offset + 0x3a) = param_3[5];
-    *(u8*)(offset + 0x3b) = param_3[6];
-    *(u8*)(offset + 0x3c) = param_3[7];
-    return;
+    u8 val2 = param_3[2];
+    *(u8*)(offset + 0x36) = val1;
+    u8 val3 = param_3[3];
+    *(u8*)(offset + 0x37) = val2;
+    u8 val5 = param_3[5];
+    *(u8*)(offset + 0x38) = val3;
+    u8 val6 = param_3[6];
+    *(u8*)(offset + 0x3a) = val5;
+    u8 val7 = param_3[7];
+    *(u8*)(offset + 0x3b) = val6;
+    *(u8*)(offset + 0x3c) = val7;
 }
 
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
@@ -726,6 +731,10 @@ extern "C" u32* fn_800DEA10(u8* this_, s32 idx) {
 
 extern "C" u32 fn_800DEA24(u8* this_) {
     return *(u32*)(this_ + 4);
+}
+
+extern "C" void fn_800DEB38(u8* p, u8 v) {
+    p[0xd0] = v;
 }
 
 extern "C" void fn_800DEB40(u8* p, const u8* v) {
