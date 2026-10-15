@@ -19,6 +19,13 @@ extern "C" int fn_8044F664(void);
 extern "C" int fn_80453AF8(void);
 extern "C" int fn_8044F680(void*);
 extern "C" int fn_80453B14(void*);
+extern "C" u8 fn_8037ACC4(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        return fn_8044CB00(lbl_8053AF40);
+    }
+    return 0;
+}
+
 extern "C" void fn_8037AD00(void) {
     if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
         fn_8044CB08(lbl_8053AF40);
