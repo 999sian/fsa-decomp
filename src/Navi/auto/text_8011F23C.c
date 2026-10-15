@@ -388,6 +388,47 @@ extern "C" void* fn_80133510(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801338F8(u8* p, void* unused, int i);
+extern "C" void fn_80133910(u8* p, void* unused, int i, f32* v);
+extern "C" void fn_8013393C(u8* p, void* unused, int i, f32* v);
+extern "C" void fn_80133968(u8* p, u8* q, int i, void* a, void* b);
+extern "C" void fn_801339D8(u8* p, u8* q, int i, void** a);
+typedef void (*DispatchFn)(void*, void*, int, void*, void*);
+extern "C" void fn_80133584(void* a, void* b, int c, unsigned int type, void* d, void* e) {
+    DispatchFn fn;
+    switch (type) {
+    case 0: fn = (DispatchFn)fn_801338F8; break;
+    case 1: fn = (DispatchFn)fn_80133910; break;
+    case 2: fn = (DispatchFn)fn_8013393C; break;
+    case 3: fn = (DispatchFn)fn_80133968; break;
+    case 4: fn = (DispatchFn)fn_801339D8; break;
+    case 18:
+    default: return;
+    }
+    fn(a, b, c, d, e);
+}
+
+extern "C" void fn_80133624(u8* self, int* idx, f32* vals) {
+    int i1 = idx[1];
+    int i2 = idx[2];
+    f32 v0 = vals[0];
+    f32 v1 = vals[1];
+    f32 v2 = vals[2];
+    u8* e;
+    e = *(u8**)(self + 4) + idx[0] * 0x14;
+    *(void**)(e + 8) = (void*)fn_8013345C;
+    *(u32*)(e + 4) = 0;
+    *(f32*)(e + 0xC) = v0;
+    e = *(u8**)(self + 4) + i1 * 0x14;
+    *(void**)(e + 8) = (void*)fn_8013345C;
+    *(u32*)(e + 4) = 0;
+    *(f32*)(e + 0xC) = v1;
+    e = *(u8**)(self + 4) + i2 * 0x14;
+    *(void**)(e + 8) = (void*)fn_8013345C;
+    *(u32*)(e + 4) = 0;
+    *(f32*)(e + 0xC) = v2;
+}
+
 extern "C" void fn_80133694(int param_1, f32* param_2, int* param_3) {
     int i1 = param_3[1];
     char* base = *(char**)(param_1 + 4);
@@ -445,6 +486,20 @@ extern "C" void fn_801339D8(u8* p, u8* q, int i, void** a) {
     *(void**)(e + 8) = (void*)fn_801334AC;
     *(u32*)(e + 4) = 0;
     *(u32*)(e + 0xc) = v;
+}
+
+extern "C" void fn_80133A44(u8* p) {
+    void** obj = *(void***)(p + 0x34);
+    if (obj != 0) {
+        ((void (*)(void*, void*))(*(void***)obj)[4])(obj, p);
+    }
+}
+
+extern "C" void fn_80133A80(u8* p) {
+    void** obj = *(void***)(p + 0x34);
+    if (obj != 0) {
+        ((void (*)(void*, void*))(*(void***)obj)[5])(obj, p);
+    }
 }
 
 extern "C" void fn_80133BB0(int param_1, void* param_2, void* param_3, void* param_4, void* param_5) {
