@@ -217,6 +217,14 @@ extern "C" void fn_800D8D58(int* param_1, u32 param_4) {
     }
 }
 
+extern "C" void fn_800D8E14(u8* self) {
+    for (u32 i = 0; i < 8; i++) {
+        if (*(u16*)(self + 8 + i * 2) != 0xffff) {
+            loadTexNo(i, *(u16*)(self + 8 + i * 2));
+        }
+    }
+}
+
 extern "C" void fn_800D971C(u8* self) {
 	for (u32 i = 0; i < 4; i++) {
 		if (*(u16*)(self + 8 + i * 2) != 0xffff) {
