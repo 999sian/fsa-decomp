@@ -16,8 +16,8 @@ extern "C" BOOL fn_8015F80C();
 extern "C" void* fn_8015F6EC(void*, void*);
 extern u32 lbl_802FF5E0;
 extern void* lbl_802FF540;
-extern void* lbl_80297B40;
-extern void* lbl_80297B30;
+extern int lbl_80297B40[];
+extern int lbl_80297B30[];
 extern "C" void* fn_8015F67C(void* param_1)
 {
 	if (lbl_802FF5E0 == 0) {
