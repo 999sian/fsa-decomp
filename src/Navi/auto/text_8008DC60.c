@@ -371,6 +371,13 @@ extern "C" void fn_800A1A64(void* param_1) {
     fn_80179CB4(*(void**)((char*)param_1 + 4), obj, c, c);
 }
 
+extern "C" void fn_800A1AC8(void* param_1) {
+    VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
+    obj->v3();
+    f32 c = lbl_80300AF0;
+    fn_80179CB4(*(void**)((char*)param_1 + 4), obj, c, c);
+}
+
 extern "C" char lbl_802C545C[];
 extern "C" char lbl_802BB0FC[];
 extern "C" void fn_800A1B2C(s16* a, s16* b) {
