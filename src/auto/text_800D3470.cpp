@@ -32,6 +32,16 @@ extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
 extern "C" void __dt__12J3DIndTexMtxFv(void*);
 extern "C" void __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo(J3DIndTexMtxInfo*, const J3DIndTexMtxInfo&);
 struct ActorBox;
+struct J3DColorBlockAmbientOn {
+    void initialize();
+    void* __vt;
+    J3DGXColor mMatColor[2];
+    u8 mColorChanNum;
+    u16 mColorChan[4];
+    u32 mMatColorOffset;
+    u32 mColorChanOffset;
+    J3DGXColor mAmbColor[2];
+};
 struct UnkDC8C;
 struct UnkDCF8;
 struct Unk800DDC8C {
@@ -394,13 +404,19 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 }
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
+    u8 v1 = param_3[1];
     param_1 = param_1 + param_2 * 8;
-    *(u8 *)(param_1 + 0x5a) = param_3[1];
-    *(u8 *)(param_1 + 0x5b) = param_3[2];
-    *(u8 *)(param_1 + 0x5c) = param_3[3];
-    *(u8 *)(param_1 + 0x5e) = param_3[5];
-    *(u8 *)(param_1 + 0x5f) = param_3[6];
-    *(u8 *)(param_1 + 0x60) = param_3[7];
+    u8 v2 = param_3[2];
+    *(u8 *)(param_1 + 0x5a) = v1;
+    u8 v3 = param_3[3];
+    *(u8 *)(param_1 + 0x5b) = v2;
+    u8 v5 = param_3[5];
+    *(u8 *)(param_1 + 0x5c) = v3;
+    u8 v6 = param_3[6];
+    *(u8 *)(param_1 + 0x5e) = v5;
+    u8 v7 = param_3[7];
+    *(u8 *)(param_1 + 0x5f) = v6;
+    *(u8 *)(param_1 + 0x60) = v7;
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
@@ -408,12 +424,14 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(int param_1, int param_2, u8 *param_3) {
+    u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
     param_1 = param_1 + param_2 * 8;
     u8 val = *(u8 *)(param_1 + 0x60);
-    val = (val & 0xf3) | (param_3[1] << 2);
+    val = (val & 0xf3) | (b1 << 2);
     *(u8 *)(param_1 + 0x60) = val;
     val = *(u8 *)(param_1 + 0x60);
-    val = (val & 0xfc) | param_3[0];
+    val = (val & 0xfc) | b0;
     *(u8 *)(param_1 + 0x60) = val;
 }
 
@@ -870,17 +888,16 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 }
 
 extern "C" void fn_800DF08C(u8* self, int i, u8* c) {
-    u8 uVar1;
-    u8 uVar2;
+    u8 r6, r0, r3;
     self = self + i * 4;
-    uVar1 = c[0];
-    *(u8*)(self + 0xc) = uVar1;
-    uVar1 = c[1];
-    *(u8*)(self + 0xd) = uVar1;
-    uVar2 = c[2];
-    *(u8*)(self + 0xe) = uVar2;
-    uVar1 = c[3];
-    *(u8*)(self + 0xf) = uVar1;
+    r6 = c[0];
+    r0 = c[1];
+    *(u8*)(self + 0xc) = r6;
+    r3 = c[2];
+    *(u8*)(self + 0xd) = r0;
+    r0 = c[3];
+    *(u8*)(self + 0xe) = r3;
+    *(u8*)(self + 0xf) = r0;
 }
 
 extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
