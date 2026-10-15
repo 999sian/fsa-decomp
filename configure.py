@@ -781,7 +781,7 @@ config.libs = [
             Object(NonMatching, "auto/text_8003C8D8.c"),
             Object(NonMatching, "auto/text_8003D264.c"),
             Object(NonMatching, "auto/text_8003D488.c"),
-            Object(NonMatching, "auto/text_80077124.cpp"),
+            Object(MatchingFor("G4SE01"), "auto/text_80077124.cpp"),
             Object(NonMatching, "auto/text_80079034.cpp"),
             Object(NonMatching, "auto/text_80079EFC.cpp"),
             Object(NonMatching, "auto/text_8007BC30.c"),
