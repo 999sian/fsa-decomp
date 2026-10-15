@@ -209,16 +209,39 @@ extern "C" void fn_800DF020(u8* this_, s32 idx, u8* src) {
     this_[off + 7] = src[3];
 }
 
-extern "C" void fn_800DF318(u8* this_, s32 idx, u8* src) {
-    s32 off = idx * 4;
-    this_[off + 4] = src[0];
-    this_[off + 5] = src[1];
-    this_[off + 6] = src[2];
-    this_[off + 7] = src[3];
+extern "C" void* fn_800DF280(void* self, short flag) {
+    if (self) {
+        *(void**)self = __vt__22J3DColorBlockAmbientOn;
+        if (self) {
+            *(void**)self = __vt__21J3DColorBlockLightOff;
+            if (self) {
+                *(void**)self = __vt__13J3DColorBlock;
+            }
+        }
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
+}
+
+extern "C" void fn_800DF318(int param_1, int param_2, u8* param_3) {
+    u8 uVar1;
+    u8 uVar2;
+    param_1 = param_1 + param_2 * 4;
+    uVar1 = param_3[1];
+    *(u8*)(param_1 + 4) = param_3[0];
+    uVar2 = param_3[2];
+    *(u8*)(param_1 + 5) = uVar1;
+    uVar1 = param_3[3];
+    *(u8*)(param_1 + 6) = uVar2;
+    *(u8*)(param_1 + 7) = uVar1;
 }
 
 extern "C" void fn_800DF374(u8* this_, s32 idx, u16* src) {
-    *(u16*)(this_ + idx * 2 + 0xe) = *src;
+    u16 v = *src;
+    u16* dest = (u16*)(this_ + idx * 2);
+    dest[7] = v;
 }
 
 extern "C" u8* fn_800DF39C(u8* this_, s32 idx) {
