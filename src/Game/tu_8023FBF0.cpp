@@ -1334,7 +1334,67 @@ PAD_GATED2(802466B4, fn_80309D6C, 0x200)
 PAD_BTN(80246904, fn_80309A78)
 PAD_BTN(80246B10, fn_80309D24)
 PAD_BTN(80246D1C, fn_80309D6C)
-PAD_AXIS(80246F28, fn_80309D90)
+inline s32 countSharing6(char* p) {
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getMode6(char* p) {
+    if (countSharing6(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline bool padActive6(char* p) {
+    bool ok;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getMode6(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+f32 fn_80246F28(char* p) {
+    return !padActive6(p) ? 0.0f : fn_80309D90(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+}
 PAD_AXIS(8024712C, fn_80309F20)
 PAD_AXIS(80247330, fn_80309FCC)
 s32 fn_80247534(char* p) { return fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); }
