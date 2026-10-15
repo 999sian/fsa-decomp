@@ -13,3 +13,9 @@ extern "C" void* fn_8007BF20(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_8007C698(void);
+extern "C" void fn_8007C5E4(void) {
+    fn_8007C698();
+}
+
