@@ -29,19 +29,20 @@ struct Obj4 {
     virtual void f30();
     virtual void* fn(u32, u32, u32);
 };
-
 extern "C" void fn_80440BF4(void* self_, u8 flag) {
-    u8* self = (u8*)self_;
-    Obj4* obj = (Obj4*)*(void**)(self + 4);
     if (flag) {
+        u8* self = (u8*)self_;
+        Obj4* obj = (Obj4*)*(void**)(self + 4);
         void* r = obj->fn(0x62620000u, 0x50u, 0x62623033u);
         *(u8*)((u8*)r + 0xb0) = 1;
     } else {
+        u8* self = (u8*)self_;
+        Obj4* obj = (Obj4*)*(void**)(self + 4);
         void* r = obj->fn(0x62620000u, 0x50u, 0x62623033u);
         *(u8*)((u8*)r + 0xb0) = 0;
     }
 }
-
+#pragma scheduling reset
 extern "C" void fn_80440C6C(void* self_, u8 flag) {
     u8* self = (u8*)self_;
     Obj4* obj = (Obj4*)*(void**)(self + 4);
