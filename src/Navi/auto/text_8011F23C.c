@@ -10,6 +10,16 @@ extern void* lbl_80292558[];
 // .text 0x8011f23c-0x80135cf8 (427 functions). split_file divides it into the game's real files.
 
 extern void* lbl_80290ACC[];
+
+class Unk80133A44Listener {
+public:
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4(void* owner);
+    virtual void vf5(void* owner);
+};
 extern const f32 lbl_803016E0;
 extern const f32 lbl_803016E4;
 extern "C" void fn_8012C274(void*);
@@ -491,14 +501,14 @@ extern "C" void fn_801339D8(u8* p, u8* q, int i, void** a) {
 extern "C" void fn_80133A44(u8* p) {
     void** obj = *(void***)(p + 0x34);
     if (obj != 0) {
-        ((void (*)(void*, void*))(*(void***)obj)[4])(obj, p);
+        ((void (*)(void*, void*))((void**)*obj)[4])(obj, p);
     }
 }
 
 extern "C" void fn_80133A80(u8* p) {
     void** obj = *(void***)(p + 0x34);
     if (obj != 0) {
-        ((void (*)(void*, void*))(*(void***)obj)[5])(obj, p);
+        ((void (*)(void*, void*))((void**)*obj)[5])(obj, p);
     }
 }
 
