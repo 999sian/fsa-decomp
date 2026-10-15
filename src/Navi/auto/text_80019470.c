@@ -147,11 +147,11 @@ extern "C" unsigned int fn_8001BBCC(int param_1) {
     arr[0] = param_1;
     
     unsigned int check = (unsigned int)(param_1 + 2);
-    if (check > 1) {
-        return fn_8001C554((void*)&fn_8001E8B4, arr);
+    if (check <= 1) {
+        return 0;
     }
     
-    return 0;
+    return fn_8001C554((void*)fn_8001E8B4, arr);
 }
 
 extern "C" int fn_8001BC10(int param_1) {
