@@ -7,7 +7,7 @@ extern u8 lbl_802B7CA0[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8001C2E4(void*, void*);
 extern "C" void fn_801155E0(void*, int);
-extern "C" void fn_8001D630(void*, void*);
+extern "C" void* fn_8001D630(void*, void*);
 extern char lbl_802FEC48[];
 extern "C" void* fn_8001AC84(void*);
 extern "C" void fn_8001C174(void*, void*, void*, int);
