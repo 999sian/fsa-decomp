@@ -127,6 +127,11 @@ extern "C" void fn_8018BD24(void* /*unused*/, void* dest, void* src) {
     fn_801193D8(d + 0x20, fn_8018C2C0(src, *(u32*)(s + 0x1c)));
 }
 
+extern "C" void fn_8018BDF0(void* unused, void* dest, void* src);
+extern "C" void fn_8018BDC8(void* self, void* src) {
+    fn_8018BDF0(self, *(void**)((u8*)self + 4), src);
+}
+
 extern void* lbl_80299540[];
 extern void* lbl_80286A30[];
 extern "C" void* fn_8018C144(void* ptr, s16 param_2) {
