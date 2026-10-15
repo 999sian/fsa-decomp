@@ -399,15 +399,9 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(int param_1, int param_2, u8 *param_3) {
-    int addr = param_1 + param_2 * 8;
-    u8 b1 = param_3[1];
-    u8 b0 = param_3[0];
-    u8 val = *(u8 *)(addr + 0x60);
-    val = (val & 0xf3) | (b1 << 2);
-    *(u8 *)(addr + 0x60) = val;
-    val = *(u8 *)(addr + 0x60);
-    val = (val & 0xfc) | b0;
-    *(u8 *)(addr + 0x60) = val;
+    param_1 += param_2 * 8;
+    *(u8 *)(param_1 + 0x60) = (*(u8 *)(param_1 + 0x60) & 0xf3) | (param_3[1] << 2);
+    *(u8 *)(param_1 + 0x60) = (*(u8 *)(param_1 + 0x60) & 0xfc) | param_3[0];
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -488,8 +482,8 @@ extern "C" void fn_800DE164(u8* this_, u32 idx, const u8* src) {
     (this_ + idx * 4)[0x65] = src[3];
 }
 
-extern "C" u8* fn_800DE190(u8* this_, u32 idx) {
-    return &((u8(*)[4])(this_ + 0x62))[idx][0];
+extern "C" Unk800DE578* fn_800DE190(Unk800DE0CC* p, int i) {
+    return &p->b[i];
 }
 
 extern "C" u8 fn_800DE208(int param_1)
@@ -515,15 +509,17 @@ extern "C" int fn_800DE288(int param_1, int param_2)
 
 extern "C" void fn_800DE29C(int param_1, int param_2, u8* param_3)
 {
-  u8* ptr = (u8*)(param_1 + param_2 * 8 + 0x28);
-  u8 val = *ptr;
+  u8* addr = (u8*)(param_1 + param_2 * 8 + 0x28);
+  u8 b0 = param_3[0];
+  u8 b1 = param_3[1];
   
-  val = (val & 0xf3) | (param_3[1] << 2);
-  *ptr = val;
+  u8 val = *addr;
+  val = (val & 0xf3) | (b1 << 2);
+  *addr = val;
   
-  val = *ptr;
-  val = (val & 0xfc) | param_3[0];
-  *ptr = val;
+  val = *addr;
+  val = (val & 0xfc) | b0;
+  *addr = val;
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -854,7 +850,8 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
-    param_1 = param_1 + param_2 * 4;
+    int offset = param_2 * 4;
+    param_1 = param_1 + offset;
     *(u8*)(param_1 + 0x20) = param_3[0];
     *(u8*)(param_1 + 0x21) = param_3[1];
     *(u8*)(param_1 + 0x22) = param_3[2];
