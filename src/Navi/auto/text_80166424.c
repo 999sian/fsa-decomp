@@ -66,14 +66,16 @@ extern "C" void* fn_8016AC34(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
-    Unk80174858Pair fallback = lbl_80301AC0;
+    Unk80174858Pair fallback;
+    fallback.x = lbl_80301AC0.x;
+    fallback.y = lbl_80301AC0.y;
     u8* data = *(u8**)((u8*)ptr + 0xc);
     if (data != nullptr && data[index * 0x128] == 1) {
         Unk80174858Pair* entry = (Unk80174858Pair*)(data + index * 0x128 + subindex * 2 + 0x60);
         out->x = entry->x;
         out->y = entry->y;
     } else {
-        *out = fallback;
+        *(u16*)out = *(u16*)&fallback;
     }
 }
 
