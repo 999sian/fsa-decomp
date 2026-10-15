@@ -223,6 +223,8 @@ extern "C" void fn_8000EE88(void) {
 extern "C" void fn_8000EE8C(void) {
 }
 
+extern "C" void fn_8000EE90(void) {}
+
 extern "C" void fn_8000EEC0(void) {
 }
 
