@@ -39,6 +39,14 @@ extern "C" void fn_800320DC(void* p) {
     *(unsigned int*)((char*)p + 0x20) = 0;
 }
 
+extern "C" void fn_8003267C(void* p) {
+    *(unsigned int*)((char*)p + 0x8) = 0;
+    *(unsigned char*)((char*)p + 0xc) = 0;
+    *(unsigned char*)((char*)p + 0xd) = 0;
+    *(unsigned char*)((char*)p + 0x25) = 0;
+    *(unsigned int*)((char*)p + 0x20) = 0;
+}
+
 extern "C" void fn_800335C4(void* p) {
     *(unsigned int*)((char*)p + 0xe8) |= 0x200000;
     *(unsigned int*)((char*)p + 0xe8) |= 0x10000000;
