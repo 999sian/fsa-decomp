@@ -310,21 +310,21 @@ extern "C" void fn_80172DF0(u8* p, u16 v) { *(u16*)(p + 8) = v; }
 
 extern "C" u16 fn_80172DF8(u8* p) { return *(u16*)(p + 8); }
 
-extern "C" void fn_80172E00(u8* p, s32 i, RGB3* c) {
-    RGB3* e = (RGB3*)(p + 10 + i * 4);
-    e->r = c->r;
-    e->g = c->g;
-    e->b = c->b;
+extern "C" void fn_80172E00(u8* p, s32 i, u8* c) {
+    u8* e = p + i * 4;
+    e[10] = c[0];
+    e[11] = c[1];
+    e[12] = c[2];
 }
 
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
 
-extern "C" void fn_80172E38(u8* p, s32 i, S16x4* c) {
-    S16x4* e = &((S16x4*)(p + 0x12))[i];
-    e->v[0] = c->v[0];
-    e->v[1] = c->v[1];
-    e->v[2] = c->v[2];
-    e->v[3] = c->v[3];
+extern "C" void fn_80172E38(u8* p, s32 i, s16* c) {
+    s16* e = (s16*)(p + i * 8);
+    e[9] = c[0];
+    e[10] = c[1];
+    e[11] = c[2];
+    e[12] = c[3];
 }
 
 extern "C" void fn_80172FC8(Unk801727E4Class* param_1, int param_2, int param_3) {
@@ -478,4 +478,9 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
 }
 
 extern "C" u32 fn_80178E08(void) { return 0x10; }
+
+extern "C" int fn_80178E4C(int param_1) {
+    *(u8*)(param_1 + 0xb5) = 0;
+    return 0;
+}
 
