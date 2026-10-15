@@ -16,6 +16,7 @@ struct Vtable800D8248 {
 #include "dolphin/gd.h"
 #include "JSystem/J3D/J3DTevBlock.h"
 #include "dolphin/os/OSCache.h"
+#include "JSystem/J3D/J3DPE.h"
 extern "C" char __vt__22J3DColorBlockAmbientOn[];
 extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
@@ -140,6 +141,10 @@ extern "C" u32 fn_800DD89C() {
     return 'PEFL';
 }
 
+extern "C" void fn_800DD8A8(u8* self, const J3DFogInfo* other) {
+    *(J3DFogInfo*)(self + 4) = *other;
+}
+
 extern "C" void fn_800DD8F8(u8* self, const u8* other) {
     *(u16*)(self + 0x30) = *(const u16*)other;
     self[0x32] = other[2];
@@ -183,8 +188,8 @@ extern "C" u8* fn_800DD970(u8* self) {
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
         typedef void (*FuncPtr)(void);
-        void* vtable = *(void**)obj;
-        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x1c);
+        void* inner = *(void**)obj;
+        FuncPtr fn = *(FuncPtr*)((u8*)inner + 0x1c);
         fn();
     }
 }
@@ -195,10 +200,9 @@ extern "C" u32 fn_800DDA50(void) {
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     *(u16*)(this_ + 0x4) = *(u16*)src;
-    u8 v2 = src[2];
-    u8 v3 = src[3];
-    *(u8*)(this_ + 0x6) = v2;
-    *(u8*)(this_ + 0x7) = v3;
+    u8* p = src + 2;
+    *(u8*)(this_ + 0x6) = p[0];
+    *(u8*)(this_ + 0x7) = p[1];
 }
 
 extern "C" void* fn_800DDA94(u8* this_) {
