@@ -41,6 +41,11 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300E30;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern f32 lbl_80300E40;
+extern "C" void fn_800CA7C4(u8* p) {
+    p[0x160] = 2;
+}
+
 extern "C" void fn_800CAB90(void) {}
 
 extern Unk802C56B4 lbl_802C56B4;
@@ -72,7 +77,7 @@ extern "C" void fn_800CB64C(u8* p) {
 extern "C" void fn_800CB688(u8* p) {
     VObj_800CB688A* a = *(VObj_800CB688A**)(p + 0xc);
     if (a != nullptr) {
-        a->v1(1);
+        a->v0(1);
     }
     (*(VObj_800CB688B**)(p + 4))->v7();
     if (lbl_802C56B4.unk4 >= 0) {
