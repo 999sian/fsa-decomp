@@ -161,6 +161,22 @@ extern "C" void fn_8001CA1C(void) {
     fn_8001B5D4();
 }
 
+extern "C" s32 fn_8001D5F4(void* param_1, void* param_2) {
+    s32 (*fn)(void*) = *(s32 (**)(void*))((u8*)param_1 + 4);
+    if (fn == nullptr) {
+        return 1;
+    }
+    return fn(param_2);
+}
+
+extern "C" void* fn_8001D630(void* param_1, void* param_2) {
+    void* (*fn)(void*) = *(void* (**)(void*))(param_1);
+    if (fn != nullptr) {
+        return fn(param_2);
+    }
+    return (void*)1;
+}
+
 extern "C" void* fn_8001D690(void* param_1) {
     void* result = nullptr;
     
@@ -186,25 +202,25 @@ extern "C" void* fn_8001D708(void* param_1) {
 }
 
 extern "C" void* fn_8001D76C(void* param_1) {
-    if (param_1 == nullptr) {
-        return nullptr;
+    s32 p = (s32)param_1;
+    if (p != 0) {
+        s32 result = (s32)fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
+        if (result != 0) {
+            void* ptr = (u8*)param_1 + 0xbc;
+            s32 check = (s32)fn_8001BFBC(ptr);
+            if (check == 0) {
+                return fn_8001C518(ptr, (void*)fn_8001D76C, nullptr);
+            }
+            return param_1;
+        }
     }
-    
-    void* result = fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
-    if (result == nullptr) {
-        return nullptr;
-    }
-    
-    void* ptr = (u8*)param_1 + 0xbc;
-    void* check = fn_8001BFBC(ptr);
-    if (check == nullptr) {
-        return fn_8001C518(ptr, (void*)fn_8001D76C, nullptr);
-    }
-    
-    return param_1;
+    return nullptr;
 }
 
 extern "C" u32 fn_8001D7EC(void* param_1) {
+    extern u32 lbl_802FBA08;
+    extern char lbl_802FEC48[];
+    
     if (lbl_802FBA08 != 1) {
         return 1;
     }
@@ -213,24 +229,18 @@ extern "C" u32 fn_8001D7EC(void* param_1) {
         return 0;
     }
     
-    void* result = fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
-    if (result == nullptr) {
+    s32 result = (s32)fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
+    if (result == 0) {
         return 0;
     }
     
     void* ptr = (u8*)param_1 + 0xbc;
-    void* check = fn_8001BFBC(ptr);
-    void* final_result;
-    if (check == nullptr) {
-        final_result = fn_8001C518(ptr, (void*)fn_8001D76C, nullptr);
-    } else {
-        final_result = param_1;
+    if (fn_8001BFBC(ptr) == nullptr) {
+        void* final = fn_8001C518(ptr, (void*)fn_8001D76C, nullptr);
+        return final == nullptr ? 1 : 0;
     }
     
-    if (final_result != nullptr) {
-        return 0;
-    }
-    return 1;
+    return 0;
 }
 
 extern "C" void* fn_8001D91C(void* param_1) {
