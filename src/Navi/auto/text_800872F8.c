@@ -164,3 +164,9 @@ extern "C" void fn_80089420(void) {
     fn_80069BEC();
 }
 
+extern "C" BOOL fn_80089850(void);
+extern "C" BOOL fn_80089850(void)
+{
+    return TRUE;
+}
+
