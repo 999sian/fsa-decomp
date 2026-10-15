@@ -477,11 +477,8 @@ extern "C" Unk800DE50C* fn_800DE124(Unk800DE0CC* p, int i) {
     return &p->a[i];
 }
 
-extern "C" void fn_800DE138(u8* this_, u32 idx, const u8* src) {
-    (this_ + idx * 4)[0x62] = src[0];
-    (this_ + idx * 4)[0x63] = src[1];
-    (this_ + idx * 4)[0x64] = src[2];
-    (this_ + idx * 4)[0x65] = src[3];
+extern "C" void fn_800DE138(Unk800DE0CC* p, int i, const Unk800DE578& v) {
+    p->b[i] = v;
 }
 
 extern "C" void fn_800DE164(u8* this_, u32 idx, const u8* src) {
@@ -754,7 +751,8 @@ extern "C" int fn_800DED50(int p, int i) {
 }
 
 extern "C" void fn_800DED64(int p, int i, u8 v) {
-    *(u8*)(p + i + 0xc8) = v;
+    int addr = p + i;
+    *(u8*)(addr + 0xc8) = v;
 }
 
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
