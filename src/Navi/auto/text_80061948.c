@@ -241,6 +241,16 @@ extern "C" void fn_800648CC(void) {
     fn_80064120();
 }
 
+extern "C" BOOL fn_800648EC(void)
+{
+    return TRUE;
+}
+
+BOOL fn_80064BDC()
+{
+	return TRUE;
+}
+
 extern void* lbl_8027F6D0[];
 extern "C" void* fn_80064BE4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
