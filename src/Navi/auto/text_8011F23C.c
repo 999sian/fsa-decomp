@@ -39,6 +39,16 @@ extern "C" void* fn_8012A804(void* p) {
 
 extern "C" int fn_8012A80C(int* p) { return *p; }
 
+extern "C" void* fn_8012C240(void* ptr, void* param_2) {
+    *(void**)ptr = param_2;
+    fn_8012C274(ptr);
+    return ptr;
+}
+
+extern "C" void fn_8012C4A4(void* param_1, u8* param_2) {
+    param_2[0x96] = (u8)(lbl_803016E0 * (lbl_803016E4 - *(f32*)(param_2 + 0x84)));
+}
+
 extern "C" void fn_8012C4D0(void* param_1, u8* param_2) {
     *(f32*)(param_2 + 0x60) = *(f32*)(param_2 + 0x68) * (lbl_803016E4 - *(f32*)(param_2 + 0x84));
     *(f32*)(param_2 + 0x64) = *(f32*)(param_2 + 0x6c) * (lbl_803016E4 - *(f32*)(param_2 + 0x84));
