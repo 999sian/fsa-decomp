@@ -184,6 +184,11 @@ extern "C" int fn_801699A4()
 	return 0;
 }
 
+extern "C" int fn_801699AC()
+{
+	return 0;
+}
+
 extern "C" int fn_801699B4(void) {
     return 0xFFFF;
 }
@@ -642,7 +647,7 @@ extern "C" void fn_80178DB0(void* param_1) {
 }
 
 extern "C" void fn_80178DDC(void* param_1) {
-    void* vtable = *(void**)param_1;
+    register void* vtable = *(void**)param_1;
     void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x78);
     func();
 }
