@@ -511,6 +511,9 @@ extern "C" void fn_801732F0(void* param_1) {
     *(u8*)((u8*)param_1 + 0x5c) = val;
 }
 
+extern "C" void fn_80173304(void) {
+}
+
 extern "C" int fn_8017332C()
 {
 	return 0;
@@ -745,7 +748,7 @@ extern "C" void fn_80178DB0(void* param_1) {
 }
 
 extern "C" void fn_80178DDC(void* param_1) {
-    void* vtable = *(void**)param_1;
+    register void* vtable = *(void**)param_1;
     void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x78);
     func();
 }
