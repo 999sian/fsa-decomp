@@ -152,6 +152,11 @@ extern "C" int fn_800268A4()
 	return 0;
 }
 
+extern "C" void fn_80026CF0(NaviEnt14* out, u8 i) {
+    NaviSlot2C* s = (NaviSlot2C*)lbl_802BC618 + i;
+    *out = s->e[s->cur];
+}
+
 extern "C" int fn_80026D3C(u8 i) {
     u8* p = lbl_802BC618 + i * 0x2c;
     p += *(s16*)(p + 0x28) * 0x14;
@@ -188,9 +193,8 @@ extern "C" int fn_80026DFC(u8 i) {
 }
 
 extern "C" void fn_80026E24(u8 i) {
-    u8* p = lbl_802BC618 + i * 0x2c;
-    p += *(s16*)(p + 0x28) * 0x14;
-    *(int*)(p + 0xc) = 0;
+    NaviSlot2C* s = (NaviSlot2C*)lbl_802BC618 + i;
+    s->e[s->cur].val = 0;
 }
 
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
