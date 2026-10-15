@@ -4,6 +4,11 @@
 
 extern void* lbl_80299504[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void* fn_80174BA0(void* base, u32 offset);
+extern "C" void* fn_8018C2C0(void* base, u32 offset);
+extern "C" void* fn_8018C230(void* base, u32 offset);
+extern "C" void fn_801193D8(void* dest, void* src);
+extern "C" void fn_8018B384(void* unused, void* dest, void* src);
 extern void* lbl_802994F0[];
 extern "C" void fn_8018B07C(void* ptr) {
     register void* a asm("r5") = (void*)lbl_80299504;
