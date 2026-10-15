@@ -221,8 +221,8 @@ extern "C" u32 fn_800DDA50(void) {
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
-    *(u16*)(this_ + 0x4) = w;
     u8 b2 = src[2];
+    *(u16*)(this_ + 0x4) = w;
     u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
@@ -294,7 +294,6 @@ extern "C" void DCStoreRange(void* addr, u32 nBytes);
 extern "C" void fn_800DDB70(void* param_1)
 {
   u32 i = 0;
-  void* pDL = __GDCurrentDL->pDisplayListData;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* start = __GDCurrentDL->pDisplayListData;
   void* curr = __GDCurrentDL->pDisplayListData;
@@ -437,6 +436,14 @@ extern "C" void fn_800DE0CC(u8* this_, u32 idx, const s16* src) {
 
 extern "C" u8* fn_800DE124(u8* this_, u32 idx) {
     return this_ + (idx * 8 + 0x42);
+}
+
+extern "C" void fn_800DE138(u8* this_, u32 idx, const u8* src) {
+    u8* dst = this_ + idx * 4;
+    dst[0x62] = src[0];
+    dst[0x63] = src[1];
+    dst[0x64] = src[2];
+    dst[0x65] = src[3];
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -805,6 +812,10 @@ extern "C" void fn_800DF554(int param_1, int param_2, u32* param_3) {
 
 extern "C" int fn_800DF568(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 5;
+}
+
+extern "C" void fn_800DF57C(int param_1, int param_2, J3DIndTexMtxInfo param_3) {
+    __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo((J3DIndTexMtxInfo*)(param_1 + param_2 * 0x1c + 0x18), param_3);
 }
 
 extern "C" int fn_800DF5E4(int param_1, int param_2)
