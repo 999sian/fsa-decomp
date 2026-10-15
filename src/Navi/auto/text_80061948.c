@@ -285,6 +285,17 @@ extern "C" f32 fn_80067EB0(f32 a, f32 b) {
     return a + fn_80116064(b);
 }
 
+extern "C" void fn_80067EEC(void* p) {
+    f32* f = (f32*)p;
+    *(void**)p = lbl_80247430;
+    f[1] = 0.0f;
+    f[2] = 0.0f;
+    f[3] = 0.0f;
+    f[4] = 1.0f;
+    f[5] = 1.0f;
+    f[6] = 1.0f;
+}
+
 extern void* lbl_8027FDCC[];
 extern "C" void* fn_80067F8C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
