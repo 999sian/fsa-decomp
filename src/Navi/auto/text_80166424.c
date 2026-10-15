@@ -313,24 +313,52 @@ extern "C" unsigned short fn_80172614(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
 
+extern "C" void fn_80172654(int param_1, int param_2, s16* param_3) {
+    int offset = param_2 * 8;
+    int addr = param_1 + offset;
+    s16 h0 = param_3[0];
+    s16 h1 = param_3[1];
+    s16 h2 = param_3[2];
+    s16 h3 = param_3[3];
+    *(s16*)(addr + 0x56) = h0;
+    *(s16*)(addr + 0x58) = h1;
+    *(s16*)(addr + 0x5a) = h2;
+    *(s16*)(addr + 0x5c) = h3;
+}
+
 extern "C" int fn_80172680(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x56;
 }
 
 extern "C" void fn_80172694(int param_1, int param_2, unsigned char* param_3) {
-    param_1 = param_1 + param_2 * 4;
-    *(unsigned char*)(param_1 + 0xf8) = param_3[0];
-    *(unsigned char*)(param_1 + 0xf9) = param_3[1];
-    *(unsigned char*)(param_1 + 0xfa) = param_3[2];
-    *(unsigned char*)(param_1 + 0xfb) = param_3[3];
+    int offset = param_2 * 4;
+    int addr = param_1 + offset;
+    unsigned char b0 = param_3[0];
+    unsigned char b1 = param_3[1];
+    unsigned char b2 = param_3[2];
+    unsigned char b3 = param_3[3];
+    *(unsigned char*)(addr + 0xf8) = b0;
+    *(unsigned char*)(addr + 0xf9) = b1;
+    *(unsigned char*)(addr + 0xfa) = b2;
+    *(unsigned char*)(addr + 0xfb) = b3;
 }
 
 extern "C" int fn_801726C0(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0xf8;
 }
 
+extern "C" void fn_801726D4(int param_1, int param_2, unsigned char param_3) {
+    int addr = param_1 + param_2;
+    *(unsigned char*)(addr + 0x108) = param_3;
+}
+
+extern "C" unsigned char fn_801726E0(int param_1, int param_2) {
+    int addr = param_1 + param_2;
+    return *(unsigned char*)(addr + 0x108);
+}
+
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
-    u32 b = param_3[1];
+    unsigned long b = param_3[1];
     u32 a = param_3[0];
     param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0xc) | ((b & 0xff) << 2);
     param_1[param_2 * 8 + 0x7e] = (param_1[param_2 * 8 + 0x7e] & ~0x3) | a;
@@ -450,6 +478,13 @@ extern "C" u16 fn_80173084(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
 
 extern "C" void fn_80173268(Unk801727E4Class* param_1, int param_2, int param_3) {
     param_1->vf7C(param_2, param_3, 0);
+}
+
+extern "C" u32 fn_80173298(void* param_1, u32 param_2) {
+    if (param_2 >= 1) {
+        return 0;
+    }
+    return *(u32*)((u8*)param_1 + (param_2 << 2) + 0x50);
 }
 
 extern "C" u32 fn_801732B8(void* param_1, u32 param_2) {
