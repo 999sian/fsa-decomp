@@ -8,6 +8,11 @@ extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8001C2E4(void*, void*);
 extern "C" void fn_801155E0(void*, int);
 extern "C" void fn_8001D630(void*, void*);
+extern char lbl_802FEC48[];
+extern "C" void* fn_8001AC84(void*);
+extern "C" void fn_8001C174(void*, void*, void*, int);
+extern "C" void* fn_8001C010(void);
+extern "C" void fn_8001C008(void*);
 extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
