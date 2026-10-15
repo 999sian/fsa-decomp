@@ -143,6 +143,11 @@ extern "C" void* fn_801B37D8(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_801B4BFC(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern void* lbl_8029B970[];
 extern "C" void* fn_801B50C8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
