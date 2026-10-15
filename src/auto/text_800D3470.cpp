@@ -608,10 +608,8 @@ extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
         *(void**)param_1 = &__vt__14J3DPEBlockFull;
         if (param_2 != 0) {
             *(void**)param_1 = &__vt__10J3DPEBlock;
-            if (param_2 > 0) {
-                __dl__FPv(param_1);
-            }
-        } else if (param_2 > 0) {
+        }
+        if ((short)param_2 > 0) {
             __dl__FPv(param_1);
         }
     }
@@ -1460,6 +1458,10 @@ extern "C" u32 fn_800DED94(u8* param_1) {
 
 extern "C" void fn_800DED9C(u8* param_1, u32 param_2) {
     *(u32*)(param_1 + 0xd4) = param_2;
+}
+
+extern "C" u32 fn_800DEE00(void) {
+    return 0x54474243;
 }
 
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
