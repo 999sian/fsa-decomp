@@ -17,6 +17,11 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_80300F88;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_8015FDA8(void*, void*);
+extern "C" void fn_800D2F3C(void* param_1, void* param_2) {
+    fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
+}
+
 extern "C" void fn_800D3238(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
