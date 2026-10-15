@@ -92,6 +92,10 @@ extern "C" int fn_8016B418()
 	return 0;
 }
 
+extern "C" int fn_801727AC(int param_1, int param_2) {
+    return param_1 + param_2 + 0x128;
+}
+
 extern "C" int fn_801727D0(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x12c;
 }
