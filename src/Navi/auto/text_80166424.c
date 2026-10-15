@@ -32,6 +32,29 @@ extern "C" void* fn_80167880(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_80298520[];
+extern "C" void* fn_80168D68(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80298520;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
+extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
+    Unk80174858Pair fallback = lbl_80301AC0;
+    u8* data = *(u8**)((u8*)ptr + 0xc);
+    if (data != nullptr && data[index * 0x128] == 1) {
+        Unk80174858Pair* entry = (Unk80174858Pair*)(data + index * 0x128 + subindex * 2 + 0x60);
+        out->x = entry->x;
+        out->y = entry->y;
+    } else {
+        *out = fallback;
+    }
+}
+
 extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
     u8* data = *(u8**)((u8*)ptr + 4);
     u16* indices = *(u16**)((u8*)ptr + 8);
