@@ -9,6 +9,7 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_801A9E44(void*);
 extern "C" void fn_801A9A60(void*);
 extern "C" void fn_801A9930(void*);
+extern "C" void fn_80159528(int, int, int, int, int, int, int);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8000d404-0x80012630 (157 functions). split_file divides it into the game's real files.
@@ -307,6 +308,8 @@ extern "C" void fn_8000EF28(u32* p) {
 
 extern "C" void fn_8000F258(void) {}
 
+void fn_8000F328(void) {}
+
 extern void* lbl_8020455C[];
 extern "C" void* fn_8000F32C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -330,6 +333,28 @@ extern "C" void* fn_8000F388(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void*, const char*, int, const char*, const char*, ...);
+extern "C" void fn_80007AB8(const char*, int, const char*, ...);
+extern "C" void* fn_8015AC80(void*, void*, int);
+extern "C" char lbl_80203B9C[];
+extern "C" char lbl_80203DE8[];
+extern "C" char lbl_802FB810[];
+extern "C" char lbl_802FB814[];
+extern "C" void* fn_8000F3D0(void* a, void* b) {
+    bool ok = false;
+    if (lbl_802FEBA0 == nullptr || a == nullptr) {
+        ok = true;
+    }
+    if (!ok) {
+        fn_8011FD18(fn_8011FD10(), lbl_80203B9C, 0x63f, lbl_802FB810, lbl_80203DE8);
+        fn_80007AB8(lbl_80203B9C, 0x63f, lbl_802FB814);
+    }
+    lbl_802FEBA0 = fn_8015AC80(a, b, 1);
+    *((u8*)lbl_802FEBA0 + 0x6c) = 1;
+    return lbl_802FEBA0;
 }
 
 extern "C" void* fn_8000F484(void)
@@ -455,6 +480,8 @@ extern "C" void* fn_80010428(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+void fn_80011688(void) {}
 
 extern void* lbl_80204470[];
 extern "C" void* fn_80011DF8(void* ptr, s16 param_2) {
@@ -630,5 +657,20 @@ extern "C" void fn_801AF744(void*);
 extern "C" char* lbl_802FF704;
 extern "C" void fn_80012170(void) {
     fn_801AF744(lbl_802FF704 + 0x18);
+}
+
+extern "C" void fn_80012198(void* param_1)
+{
+	char buffer[0x20];
+	
+	unsigned int result = (*(unsigned int (*)(void))*(void**)((char*)(*(void**)param_1) + 0x10))();
+	
+	if (result == 0) {
+		fn_801AF744((void*)((char*)lbl_802FF704 + 0x18));
+	} else {
+		unsigned short val = *(unsigned short*)((char*)lbl_802FF704 + 0x14);
+		void* ptr2 = (*(void* (*)(void*, void*))*(void**)((char*)(*(void**)param_1) + 0x10))(param_1, (void*)lbl_802FF704);
+		(*(void (*)(void*, unsigned short, void*))*(void**)((char*)(*(void**)ptr2) + 0x10))(ptr2, val, buffer);
+	}
 }
 
