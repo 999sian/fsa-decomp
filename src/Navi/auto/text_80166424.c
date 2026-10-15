@@ -12,6 +12,20 @@ extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
 
 extern void* lbl_80298390[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern void* lbl_8029839C[];
+extern "C" void* fn_80167074(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029839C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80298390;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_80167404(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80298390;
