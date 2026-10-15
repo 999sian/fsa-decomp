@@ -325,6 +325,10 @@ extern "C" void fn_80172694(int param_1, int param_2, unsigned char* param_3) {
     *(unsigned char*)(param_1 + 0xfb) = param_3[3];
 }
 
+extern "C" int fn_801726C0(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 0xf8;
+}
+
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
     u32 b = param_3[1];
     u32 a = param_3[0];
