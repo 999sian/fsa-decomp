@@ -71,3 +71,7 @@ extern "C" void* fn_80198E48(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801A3C00(void* ptr, u32 value) {
+    *(u32*)((char*)ptr + 4) = value;
+}
+
