@@ -102,16 +102,16 @@ extern "C" int fn_8017337C()
 }
 
 extern "C" void fn_80178B74(void* param_1, void* param_2) {
+    register u8* it = *(u8**)((u8*)param_1 + 0xdc);
     (*(void (**)(void*))(*(u8**)param_1 + 0x8c))(param_1);
-    u8* it = *(u8**)((u8*)param_1 + 0xdc);
     if (it != NULL) {
         it -= 0xc;
     }
-    while (it != NULL) {
-        void* obj = *(void**)(it + 0xc);
-        it = *(u8**)(it + 0x18);
+    while ((unsigned)it != NULL) {
+        register void* obj = *(void**)(it + 0xc);
         (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
-        if (it != NULL) {
+        it = *(u8**)(it + 0x18);
+        if ((unsigned)it != NULL) {
             it -= 0xc;
         }
     }
