@@ -12,9 +12,11 @@ extern "C" void fn_8015EA78(void) {
     __register_global_object(&lbl_802EE25C, (void*)fn_8015EABC, &lbl_802EE250);
 }
 
+#pragma data_seg ".ctors"
 extern "C" {
     typedef void (*CtorFunc)(void);
     const CtorFunc __ctors[] = {
         fn_8015EA78
     };
 }
+#pragma data_seg
