@@ -223,10 +223,18 @@ extern void* lbl_802047F4[];
 extern "C" void* fn_80011F9C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_802047F4;
-        *(void**)ptr = lbl_80204820;
-        *(void**)ptr = lbl_80204720;
-        *(void**)ptr = lbl_8020474C;
-        *(void**)ptr = lbl_80204948;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80204820;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80204720;
+                if (ptr != nullptr) {
+                    *(void**)ptr = lbl_8020474C;
+                    if (ptr != nullptr) {
+                        *(void**)ptr = lbl_80204948;
+                    }
+                }
+            }
+        }
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
         }
