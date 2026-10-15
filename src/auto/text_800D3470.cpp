@@ -206,6 +206,22 @@ extern "C" void fn_800D6394(int* param_1, u32 param_2)
   }
 }
 
+extern "C" void fn_800D7F78(void* p) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
+    u8* saved = __GDCurrentDL->pDisplayListData;
+    
+    u8* addr = (u8*)p;
+    for (u32 i = 0; i < 8; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+        }
+        addr += 2;
+    }
+    
+    u8* now = __GDCurrentDL->pDisplayListData;
+    DCStoreRange(saved, (u32)(now - saved));
+}
+
 struct Vtable800D8248;
 extern "C" void fn_800D8248(Vtable800D8248* p) {
     p->m9();
@@ -229,9 +245,52 @@ extern "C" void fn_800D83E8(Vtable800D8248* p) {
     p->m9();
 }
 
+extern "C" void fn_800D8414(void* param_1) {
+    unsigned int i = 0;
+    void* pParam = param_1;
+    unsigned int dlOffset = *(unsigned int*)((char*)pParam + 4);
+    unsigned int currentDL = *(unsigned int*)(&__GDCurrentDL);
+    *(unsigned int*)(&__GDCurrentDL) = currentDL + dlOffset;
+    void* dlStart = (void*)*(unsigned int*)(&__GDCurrentDL);
+    
+    for (i = 0; i < 2; i++) {
+        unsigned short texNum = *(unsigned short*)((char*)pParam + 8);
+        if (texNum != 0xFFFF) {
+            loadTexNo__FUlRCUs(i, (unsigned short*)((char*)pParam + 8));
+        }
+        pParam = (char*)pParam + 2;
+    }
+    
+    unsigned int dlEnd = *(unsigned int*)(&__GDCurrentDL);
+    unsigned int dlSize = dlEnd - (unsigned int)dlStart;
+    DCStoreRange(dlStart, dlSize);
+}
+
 extern "C" void fn_800D86D4(Vtable800D8248* p) {
     p->m9();
     p->m10();
+}
+
+extern "C" void fn_800D8720(void* param_1) {
+    unsigned int dlOffset = *(unsigned int*)((char*)param_1 + 4);
+    unsigned int currentDL = *(unsigned int*)(&__GDCurrentDL);
+    unsigned int newDL = currentDL + dlOffset;
+    *(unsigned int*)(&__GDCurrentDL) = newDL;
+    void* dlStart = (void*)newDL;
+    unsigned int i = 0;
+    void* pParam = param_1;
+    
+    for (i = 0; i < 4; i++) {
+        unsigned short texNum = *(unsigned short*)((char*)pParam + 8);
+        if (texNum != 0xFFFF) {
+            loadTexNo__FUlRCUs(i, (unsigned short*)((char*)pParam + 8));
+        }
+        pParam = (char*)pParam + 2;
+    }
+    
+    unsigned int dlEnd = *(unsigned int*)(&__GDCurrentDL);
+    unsigned int dlSize = dlEnd - (unsigned int)dlStart;
+    DCStoreRange(dlStart, dlSize);
 }
 
 extern "C" void fn_800D89F0(Vtable800D8248* p) {
@@ -337,6 +396,19 @@ extern "C" void fn_800D934C(void* param_1) {
     unsigned char s1 = (lz1 >> 12) & 0xFF;
     
     J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(texCoordID, v0, s0, (unsigned char)0, v2, s1, (unsigned char)0);
+}
+
+extern "C" void fn_800D93B4(void* param_1) {
+    unsigned int i = 0;
+    void* pParam = param_1;
+    
+    for (i = 0; i < 2; i++) {
+        unsigned short texNum = *(unsigned short*)((char*)pParam + 8);
+        if (texNum != 0xFFFF) {
+            loadTexNo__FUlRCUs(i, (unsigned short*)((char*)pParam + 8));
+        }
+        pParam = (char*)pParam + 2;
+    }
 }
 
 extern "C" void fn_800D971C(u8* self) {
