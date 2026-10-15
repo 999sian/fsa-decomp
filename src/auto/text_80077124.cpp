@@ -6,6 +6,9 @@ class JPAEmitterCallBack {
 public:
     virtual ~JPAEmitterCallBack();
     virtual void execute(JPABaseEmitter*);
+    virtual void executeAfter(JPABaseEmitter*);
+    virtual void draw(JPABaseEmitter*);
+    virtual void drawAfter(JPABaseEmitter*);
 };
 
 void JPAEmitterCallBack::execute(JPABaseEmitter*) {}
