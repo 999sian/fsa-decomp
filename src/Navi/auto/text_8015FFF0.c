@@ -82,6 +82,27 @@ extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern void fn_80166B70(void* p, int r4);
+extern void fn_8015D0B8(void* p, int r4);
+extern void fn_8015AB1C(void* p);
+extern void fn_801BE368(void* p);
+extern void fn_801BDDBC(void* p, void* p2, int r5);
+extern u32 fn_801C7C6C(u32 r4, void* p);
+extern void fn_80166C84(u32 r3, void* p);
+extern void fn_801CA1E4(void* p);
+extern void fn_8015D050(void);
+extern void fn_80166B58(void* p, void* p2);
+extern "C" void fn_80164644(u8* p) {
+    *(u8**)(p + 0x98) = p;
+    fn_801BE368(p + 0x1c);
+    fn_801BE368(p + 0x34);
+    fn_801BDDBC(p + 0xc0, p + 0xe0, 1);
+    fn_801BDDBC(p + 0x9c, p + 0xbc, 1);
+    *(u32*)(p + 0xf4) = 0;
+    *(u32*)(p + 0x50) = 0;
+    *(u32*)(p + 0x58) = 0;
+}
+
 extern "C" void fn_801647A0(u8* p) {
     if (p[0x18]) {
         if (fn_801C7D34(p + 0x5c)) {
