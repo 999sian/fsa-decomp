@@ -97,15 +97,14 @@ extern "C" int fn_8008F378()
 
 extern "C" void* fn_80091918(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
-        *(void**)ptr = lbl_80286B38;
-        volatile void* vptr = ptr;
-        if ((s32)(vptr) + 0x8 != 0) {
-            ((void**)(ptr))[2] = lbl_80288854;
-            if ((s32)(vptr) + 0x8 != 0) {
-                ((void**)(ptr))[2] = lbl_8027EC78;
+        *(void**)ptr = lbl_80288EDC;
+        if ((s32)ptr + (unsigned)0x8 != 0) {
+            ((void**)(ptr))[2] = lbl_80288520;
+            if ((s32)ptr + 0x8 != 0) {
+                ((void**)((unsigned)ptr))[2] = lbl_8027EC78;
             }
         }
-        if (param_2 > 0) {
+        if (0 < param_2) {
             fn_8015AB1C(ptr);
         }
     }
