@@ -36,6 +36,14 @@ extern "C" void fn_8018A758(u8* self) {
     }
 }
 
+extern "C" void fn_8016A530(void*);
+extern "C" void fn_8018A784(u8* self) {
+    void* p = *(void**)(self + 0x138);
+    if (p != NULL) {
+        fn_8016A530(p);
+    }
+}
+
 extern "C" void fn_8018A7B0(u8* self, void* p) {
     *(void**)(self + 0x144) = p;
 }
@@ -55,8 +63,10 @@ extern "C" void fn_8018A7B8(u8* self, void* arg) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    *(void**)ptr = lbl_80299504;
-    *(void**)ptr = lbl_802994F0;
+    void* a = lbl_80299504;
+    void* b = lbl_802994F0;
+    *(void**)ptr = a;
+    *(void**)ptr = b;
 }
 
 extern "C" void* fn_8018B098(void* ptr, s16 param_2) {
