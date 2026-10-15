@@ -286,6 +286,14 @@ extern "C" void fn_801A3B30(u8* param_1, int param_2, u8* param_3) {
     param_1[param_2 + 0x12a] = *param_3;
 }
 
+extern "C" u8* fn_801A3B40(u8* param_1, int param_2) {
+    return &param_1[param_2 + 0x12a];
+}
+
+extern "C" void fn_801A3B50(u8* param_1, int param_2, u32* param_3) {
+    ((u32*)(param_1 + 0x130))[param_2] = *param_3;
+}
+
 extern "C" void* fn_801A3B8C(void* p) {
     return *(void**)((char*)p + 4);
 }
