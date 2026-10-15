@@ -53,3 +53,7 @@ extern "C" int fn_80114920() {
     return lbl_8028F698[4]();
 }
 
+extern "C" int fn_80114950() {
+    return lbl_8028F698[2]();
+}
+
