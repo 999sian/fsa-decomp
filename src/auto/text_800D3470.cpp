@@ -311,7 +311,7 @@ extern "C" u16 fn_800DE4C0(u16* this_, s32 idx) {
 }
 
 extern "C" void fn_800DE4D0(Unk800DE4D0* p, int i, u32* v) {
-    p->a[i] = *v;
+    *(u32*)((u8*)p + (i * 4 + 0xc)) = *v;
 }
 
 extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
@@ -319,7 +319,14 @@ extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
 }
 
 extern "C" void fn_800DE50C(Unk800DE4D0* p, int i, Unk800DE50C* v) {
-    p->b[i] = *v;
+    s16 a = v->a;
+    s16 b = v->b;
+    s16 c = v->c;
+    s16 d = v->d;
+    p->b[i].a = a;
+    p->b[i].b = b;
+    p->b[i].c = c;
+    p->b[i].d = d;
 }
 
 extern "C" Unk800DE50C* fn_800DE564(Unk800DE4D0* p, int i) {
@@ -375,10 +382,16 @@ extern "C" void fn_800DE94C(void) {}
 extern "C" void fn_800DE950(void) {}
 
 extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
-    struct C3 { u8 v[3]; };
     u8* p = this_ + idx * 8;
-    *(C3*)(p + 0xf) = *(C3*)(src + 1);
-    *(C3*)(p + 0x13) = *(C3*)(src + 5);
+    for (s32 i = 0; i < 2; i++) {
+        p[0xf + i * 4] = src[1 + i * 4];
+        p[0x10 + i * 4] = src[2 + i * 4];
+        p[0x11 + i * 4] = src[3 + i * 4];
+    }
+}
+
+extern "C" void fn_800DE9E8(u8* this_, s32 idx, u32* src) {
+    ((u32*)(this_ + 0x18))[idx] = *src;
 }
 
 extern "C" u32* fn_800DEA10(u8* this_, s32 idx) {
