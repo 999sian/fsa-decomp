@@ -16,7 +16,13 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300B80;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
-extern "C" BOOL fn_800A2F68(void)
+BOOL fn_800A2F68()
+{
+	return TRUE;
+}
+
+extern "C" BOOL fn_800A3030(void);
+extern "C" BOOL fn_800A3030(void)
 {
     return TRUE;
 }
