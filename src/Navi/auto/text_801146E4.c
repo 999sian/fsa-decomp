@@ -5,6 +5,10 @@ extern "C" void* lbl_802FF218;
 extern "C" void fn_801147B8();
 extern "C" void* lbl_802FF210;
 extern "C" int fn_80159C40(void*, void*, void*);
+extern "C" int fn_801146E4() {
+    return 1;
+}
+
 extern "C" int fn_80114890() {
     return 1;
 }
