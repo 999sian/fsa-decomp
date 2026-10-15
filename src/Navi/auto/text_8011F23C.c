@@ -506,6 +506,15 @@ extern "C" void* fn_80134898(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_80292354[];
+extern "C" u8* fn_801348F4(u8* p, void* a, void* b) {
+    fn_8013A57C();
+    *(void**)(p + 8) = &lbl_802925EC;
+    *(void**)(p + 0x34) = b;
+    *(void**)(p + 8) = &lbl_80292354;
+    return p;
+}
+
 extern void* lbl_802922F4[];
 extern "C" void* fn_80134B3C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
