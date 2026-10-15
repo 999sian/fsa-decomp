@@ -513,6 +513,10 @@ extern "C" void* fn_801A4EFC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801A4FC0(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 4;
+}
+
 extern void* lbl_8029AC34[];
 extern "C" void* fn_801A5074(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
