@@ -281,6 +281,10 @@ extern "C" u16 fn_80067E94(u16* p) {
     return *p;
 }
 
+extern "C" f32 fn_80067EB0(f32 a, f32 b) {
+    return a + fn_80116064(b);
+}
+
 extern void* lbl_8027FDCC[];
 extern "C" void* fn_80067F8C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
