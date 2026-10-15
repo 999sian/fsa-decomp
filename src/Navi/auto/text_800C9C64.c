@@ -8,6 +8,31 @@ struct VObj_800A1A64 {
     virtual void v5();
 };
 
+struct Unk802C56B4 {
+    u8 pad0[4];
+    s8 unk4;
+    u8 pad5[3];
+    u32 unk8;
+    f32 unkC;
+    u8 unk10;
+    u8 pad11[0x13];
+    u8 unk24;
+};
+struct VObj_800CB688A {
+    virtual void v0();
+    virtual void v1(s32);
+};
+struct VObj_800CB688B {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+};
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800c9c64-0x800cb9f4 (21 functions). split_file divides it into the game's real files.
 
