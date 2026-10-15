@@ -144,6 +144,10 @@ extern "C" u32 fn_80198EBC(void) {
     return 2;
 }
 
+extern "C" void fn_80198EC4()
+{
+}
+
 extern "C" int fn_80198EC8()
 {
 	return 0;
