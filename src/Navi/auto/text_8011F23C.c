@@ -531,6 +531,9 @@ extern "C" int fn_80132958()
 	return 0;
 }
 
+extern "C" void fn_80132964(void) {
+}
+
 extern "C" void fn_80132968(void)
 {
 }
