@@ -74,3 +74,8 @@ extern "C" void fn_80075B40(void) {
     fn_80075CB8();
 }
 
+extern "C" void fn_80075B60(void);
+extern "C" void fn_80077B10(void) {
+    fn_80075B60();
+}
+
