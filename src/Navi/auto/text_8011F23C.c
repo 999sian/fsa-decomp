@@ -503,8 +503,6 @@ extern "C" void* fn_80134B3C(void* ptr, s16 param_2) {
 }
 
 extern void* lbl_80292070;
-extern void* lbl_802925EC;
-extern void* lbl_80292558;
 extern void* lbl_802026C0;
 extern void* lbl_80291BB4;
 extern "C" void fn_8013A5EC(int ptr, int param);
