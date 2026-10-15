@@ -33,10 +33,8 @@ extern "C" void fn_800254AC(void) {
 }
 
 extern "C" void fn_80026480(u8 i) {
-    int v = 1;
-    u8* p = lbl_802BBD38 + i * 0x204;
-    p += *(s16*)(p + 0x202) * 0x20;
-    *(int*)(p + 0x1c) = v;
+    NaviSlot* s = (NaviSlot*)lbl_802BBD38 + i;
+    s->e[s->next].flag = 1;
 }
 
 extern "C" u8 lbl_802BBD38[];
