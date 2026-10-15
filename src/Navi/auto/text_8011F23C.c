@@ -44,6 +44,19 @@ extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern u8 lbl_802FDD88;
+extern void* lbl_802FF328;
+extern void* lbl_80290AB4;
+extern void fn_8015A90C(s32 size);
+extern void fn_8015AB1C(void* ptr);
+extern void* fn_80120138(void* ptr, void* param);
+extern void fn_801CB248(void* ptr);
+extern void fn_801CB28C(void* ptr);
+typedef void (*VirtualMethod0)(void*, s16);
+extern "C" void fn_80120090(u8 param_1) {
+    lbl_802FDD88 = param_1;
+}
+
 extern "C" void fn_801204E4(void) {
     lbl_802FF334 = 0;
 }
