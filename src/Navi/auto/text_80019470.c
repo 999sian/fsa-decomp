@@ -236,6 +236,12 @@ extern "C" void fn_8001C34C(void* param_1) {
     fn_8001D57C(*(void**)((u8*)param_1 + 0xb8), param_1);
 }
 
+extern "C" void fn_8001C39C(void* param_1) {
+    if (fn_8001D5F4(*(void**)((u8*)param_1 + 0xb8), param_1) == 1) {
+        *(u32*)((u8*)param_1 + 0xb4) = 0;
+    }
+}
+
 extern "C" void fn_8001EC90(void);
 extern "C" void fn_8001C984(void) {
     fn_8001EC90();
