@@ -224,6 +224,10 @@ extern "C" void fn_8001BEA4(void) {
     fn_8001EB08();
 }
 
+extern "C" void fn_8001BF5C(void* self, void* p) {
+    cTg_SingleCutFromTree__FP16create_tag_class(p);
+}
+
 extern "C" void fn_80115178(void*, void*, void*);
 extern "C" void fn_8011580C(void);
 extern char lbl_802FEC38[];
@@ -260,6 +264,9 @@ extern "C" void fn_8001C39C(void* param_1) {
     }
 }
 
+extern char lbl_802FEC38[8];
+#pragma push
+#pragma dont_inline on
 extern "C" void fn_8001C3E0(void* param_1) {
     if (*(s8*)((u8*)param_1 + 0xc) == 0) {
         void* r31 = *(void**)((u8*)param_1 + 0x10);
@@ -270,7 +277,7 @@ extern "C" void fn_8001C3E0(void* param_1) {
     }
     fn_8001D630(*(void**)((u8*)param_1 + 0xb8), param_1);
 }
-
+#pragma pop
 extern "C" void fn_8001C454(void* param_1, int param_2, int param_3) {
     int local[2];
     local[0] = param_2;
@@ -366,7 +373,8 @@ extern "C" void* fn_8001D708(void* param_1) {
 }
 
 extern "C" void* fn_8001D76C(void* param_1) {
-    if (param_1 != nullptr) {
+    s32 p = (s32)param_1;
+    if (p != 0) {
         s32 result = (s32)fn_8001AC74((void*)lbl_802FEC48, *(void**)((u8*)param_1 + 0xb4));
         if (result != 0) {
             void* ptr = (u8*)param_1 + 0xbc;
@@ -377,7 +385,7 @@ extern "C" void* fn_8001D76C(void* param_1) {
             return param_1;
         }
     }
-    return nullptr;
+    register return nullptr;
 }
 
 extern "C" u32 fn_8001D7EC(void* param_1) {
@@ -414,7 +422,7 @@ extern "C" void fn_8001D890(void* param_1) {
 }
 
 extern "C" void* fn_8001D91C(void* param_1) {
-    if (*(s8*)((u8*)param_1 + 0xc) == 0) {
+    if (*(s8*)(((unsigned)u8*)param_1 + 0xc) == 0) {
         void* r31 = *(void**)((u8*)param_1 + 0x10);
         void* temp = fn_8001AC84((void*)lbl_802FEC48);
         *(void**)((u8*)param_1 + 0xb4) = temp;
