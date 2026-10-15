@@ -34,3 +34,16 @@ u32 fn_800095BC(void*, void*, u8, u8, u8);
 void DCFlushRange(void*, u32);
 void fn_801C0A6C(u32);
 }
+
+extern "C" void* fn_8000B3B8(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80298574;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80298520;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
