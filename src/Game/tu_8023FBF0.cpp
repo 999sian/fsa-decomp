@@ -1167,8 +1167,11 @@ inline s32 countSharingB(char* p) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
                 }
-            } else if (S32(p, 0x4) == fn_8022F3DC(i)) {
-                c++;
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
             }
         } else if (i == S32(p, 0xd60)) {
             c++;
