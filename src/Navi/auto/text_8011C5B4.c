@@ -35,6 +35,33 @@ extern "C" u32 fn_8011EBB4(u32 param_1) {
     return old;
 }
 
+extern u32 lbl_802FF2F8;
+extern "C" u32 fn_8011EBC4(u32 param_1) {
+    u32 old = lbl_802FF2F8;
+    lbl_802FF2F8 = param_1;
+    return old;
+}
+
+extern "C" void fn_8011EBD4(void* param_1) {
+    if (param_1 != nullptr) {
+        void* current = lbl_802C6170;
+        
+        while (current != nullptr) {
+            if (fn_801E6578(param_1, *(void**)current) == nullptr) {
+                return;
+            }
+            current = *(void**)((u8*)current + 12);
+        }
+        
+        void* new_node = fn_8015A90C(0x14);
+        if (new_node != nullptr) {
+            fn_80166B58((u8*)new_node + 4, new_node);
+            *(void**)new_node = param_1;
+            fn_80166C84(&lbl_802C6170, (u8*)new_node + 4);
+        }
+    }
+}
+
 extern "C" void fn_8011F174(void* param_1, u32 param_2, u16 param_3, u32 param_4, u32 param_5) {
     *(u32*)param_1 = param_2;
     *(u32*)((u8*)param_1 + 4) = param_5;
