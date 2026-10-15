@@ -9,6 +9,11 @@ extern "C" int fn_801146E4() {
     return 1;
 }
 
+extern "C" int fn_80114864() {
+    ((void (*)())lbl_802FF210)();
+    return 1;
+}
+
 extern "C" int fn_80114890() {
     return 1;
 }
