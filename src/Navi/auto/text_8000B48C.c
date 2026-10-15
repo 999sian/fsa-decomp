@@ -7,3 +7,10 @@ extern const f32 lbl_802FFB64;
 extern const f32 lbl_802FFB60;
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801C5DA8(const f32 (*)[4], const f32 (*)[4], f32 (*)[4]);
+
+extern "C" void* fn_8000CEC4(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
