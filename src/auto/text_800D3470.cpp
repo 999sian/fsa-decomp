@@ -1,3 +1,16 @@
+struct Vtable800D8248 {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10(void*) = 0;
+};
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 #include "dolphin/gd.h"
