@@ -220,3 +220,18 @@ extern "C" void* fn_80133510(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_8029259C[];
+extern void* lbl_8029260C[];
+extern "C" void* fn_80133C0C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029259C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029260C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
