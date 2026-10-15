@@ -460,6 +460,15 @@ extern "C" void* fn_8013414C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802924B4[];
+extern "C" u8* fn_801341A8(u8* p, void* a, void* b) {
+    fn_8013A57C();
+    *(void**)(p + 8) = &lbl_802925EC;
+    *(void**)(p + 0x34) = b;
+    *(void**)(p + 8) = &lbl_802924B4;
+    return p;
+}
+
 extern void* lbl_80292438[];
 extern "C" void* fn_801343E4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
