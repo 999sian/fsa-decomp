@@ -27,6 +27,12 @@ struct Unk800DE4D0 {
     u32 a[2];
     Unk800DE50C b[1];
 };
+struct Unk800DEC3C {
+    u8 _0[0x38];
+    Unk800DE50C a[8];
+    u32 b[8];
+    Unk800DE50C c[1];
+};
 struct Actor {
     Actor();
     virtual ~Actor();
