@@ -31,6 +31,27 @@ struct Unk80013DA0 {
     u8 pad51[0x5f - 0x51];
     u8 unk5f;
 };
+extern "C" void fn_80013B48(void) {
+    if (lbl_802FEBE0) {
+        OSCancelThread(lbl_802A2140);
+        fn_801BB7E0(lbl_802A3460);
+        lbl_802FEBE0 = 0;
+    }
+}
+
+extern "C" void fn_80013B90(void) {
+    u8 buf[0x84];
+    fn_8015D1F4(buf, fn_801C027C(), 0);
+    fn_8015D29C(buf, -1);
+    fn_80159BA4(0);
+    while (true) {
+        if (DVDGetDriveStatus() == -1) {
+            fn_80012DE0();
+        }
+        fn_801C1174(lbl_802A2140);
+    }
+}
+
 extern "C" void fn_80013C14(void* self, void* p) {
     fn_80013F24(p);
 }
