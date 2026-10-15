@@ -252,6 +252,11 @@ extern "C" void* fn_8016AD94(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_8016B418()
+{
+	return 0;
+}
+
 extern "C" u32 fn_801725D8(void) { return 0x54563136; }
 
 extern "C" u32 fn_801725E4(void) { return 0x10; }
@@ -424,11 +429,6 @@ extern "C" int fn_8017335C()
 }
 
 extern "C" int fn_80173364()
-{
-	return 0;
-}
-
-extern "C" int fn_80173374()
 {
 	return 0;
 }
