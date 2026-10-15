@@ -52,7 +52,7 @@ extern "C" void fn_8011FA0C(void)
 }
 
 extern "C" void* lbl_802FDD84;
-void* fn_8011FD10(void)
+extern "C" void* fn_8011FD10(void)
 {
 	return lbl_802FDD84;
 }
