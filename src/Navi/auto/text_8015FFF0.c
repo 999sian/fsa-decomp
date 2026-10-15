@@ -81,6 +81,15 @@ extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" u32 fn_801648EC(u8* p) {
+    u32 v;
+    fn_801BE3A0(p + 0x1c);
+    fn_801BDEE4(p + 0xc0, &v, 1);
+    *(u32*)(p + 0xf4) = 0;
+    fn_801BE47C(p + 0x1c);
+    return v;
+}
+
 extern "C" void fn_80164940(void* a, u8* b) {
     fn_801BDE1C(*(u8**)(b + 0x3c) + 0xc0, a, 0);
 }
