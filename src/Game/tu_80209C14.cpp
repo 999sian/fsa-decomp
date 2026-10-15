@@ -38,3 +38,8 @@ extern "C" void fn_8020A008(ItemBase* this_) {
     this_->m230 |= 0x80;
 }
 
+extern "C" s32 fn_8020A0E8(u8* this_) {
+    fn_801F2DB4(this_, *(u32*)(this_ + 0x1A0), 'NULL', 0);
+    return 0;
+}
+
