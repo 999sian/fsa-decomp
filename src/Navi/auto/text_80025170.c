@@ -139,6 +139,11 @@ extern "C" u32 fn_800266DC(void) {
     return result;
 }
 
+extern "C" int fn_8002689C()
+{
+	return 0;
+}
+
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
