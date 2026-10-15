@@ -528,6 +528,12 @@ extern "C" int fn_8006AF78(void* param_1) {
     return 1;
 }
 
+extern "C" BOOL fn_8006B028(void);
+extern "C" BOOL fn_8006B028(void)
+{
+    return TRUE;
+}
+
 extern "C" u8 fn_8006B030(u8* param_1) {
     u8 val = *param_1;
     if (val != 0) {
