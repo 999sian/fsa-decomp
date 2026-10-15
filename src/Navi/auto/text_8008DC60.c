@@ -1,6 +1,8 @@
 #include "types.h"
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300AF0;
+extern "C" void fn_8015FDA8(void*, void*);
+extern "C" char lbl_802BB0FC[];
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80092228(void);
 extern "C" void fn_80092444(void);
