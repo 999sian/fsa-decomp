@@ -117,3 +117,17 @@ extern "C" void* fn_80067E38(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_8027FDCC[];
+extern "C" void* fn_80067F8C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8027FDCC;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8027F6DC;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
