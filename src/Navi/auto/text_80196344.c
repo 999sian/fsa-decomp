@@ -179,6 +179,10 @@ extern "C" void* fn_801A3FEC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801A40F8(u8* p, s32 i, u16 v) {
+    ((u16*)(p + 8))[i] = v;
+}
+
 extern "C" void* fn_801A4414(void* p) {
     return *(void**)((char*)p + 4);
 }
