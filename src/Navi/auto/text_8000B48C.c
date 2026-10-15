@@ -14,7 +14,7 @@ char* fn_8000BEE0(char** p) {
     return q - 0xc;
 }
 
-int fn_8000BEF4(int p) { return p + 0x40; }
+extern "C" int fn_8000BEF4(int p) { return p + 0x40; }
 
 extern "C" int fn_8000BEFC(int p) { return *(int*)(p + 0xc); }
 
