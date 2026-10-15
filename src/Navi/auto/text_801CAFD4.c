@@ -1,6 +1,8 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801cafd4-0x801e0c34 (354 functions). split_file divides it into the game's real files.
 
+#include <types.h>
+
 extern "C" int OSDisableInterrupts(void);
 extern "C" void OSRestoreInterrupts(int state);
 int lbl_802FF8F4;
