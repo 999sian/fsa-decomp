@@ -353,8 +353,8 @@ extern "C" void fn_801726D4(int param_1, int param_2, unsigned char param_3) {
 }
 
 extern "C" unsigned char fn_801726E0(int param_1, int param_2) {
-    int addr = param_1 + param_2;
-    return *(unsigned char*)(addr + 0x108);
+    param_1 = param_1 + param_2;
+    return *(unsigned char*)(param_1 + 0x108);
 }
 
 extern "C" void fn_80172764(u8* param_1, int param_2, u8* param_3) {
@@ -480,19 +480,19 @@ extern "C" void fn_80173268(Unk801727E4Class* param_1, int param_2, int param_3)
     param_1->vf7C(param_2, param_3, 0);
 }
 
-extern "C" u32 fn_80173298(void* param_1, u32 param_2) {
-    if (param_2 >= 1) {
-        return 0;
+extern "C" u32 fn_80173298(void* param_1, s32 param_2) {
+    if (param_2 < 1) {
+        s32 offset = param_2 << 2;
+        return *(u32*)((u8*)param_1 + offset + 0x50);
     }
-    return *(u32*)((u8*)param_1 + (param_2 << 2) + 0x50);
+    return 0;
 }
 
 extern "C" u32 fn_801732B8(void* param_1, u32 param_2) {
-    if (param_2 < 1) {
-        u32 offset = param_2 << 2;
-        return *(u32*)((u8*)param_1 + offset + 0x54);
+    if (param_2 >= 1) {
+        return 0;
     }
-    return 0;
+    return *(u32*)((u8*)param_1 + (param_2 << 2) + 0x54);
 }
 
 extern "C" u32 fn_801732D8(void* param_1) {
@@ -509,6 +509,9 @@ extern "C" void fn_801732F0(void* param_1) {
     u8 val = *(u8*)((u8*)param_1 + 0x5c);
     val &= 0x7f;
     *(u8*)((u8*)param_1 + 0x5c) = val;
+}
+
+extern "C" void fn_80173300(void) {
 }
 
 extern "C" void fn_80173304(void) {
