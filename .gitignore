@@ -46,3 +46,6 @@ JASPoolSinit.d
 docs/reference/*.pdf
 docs/reference/*.txt
 docs/versions/function_map.csv
+
+# decomp.wtf keeps its own state (report, index, twins) here
+.decomp-wtf/
