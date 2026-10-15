@@ -385,6 +385,11 @@ extern "C" void* fn_80011E54(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_80011EB8()
+{
+	return 0;
+}
+
 extern void* lbl_80204598[];
 extern "C" void* fn_80011EC0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
