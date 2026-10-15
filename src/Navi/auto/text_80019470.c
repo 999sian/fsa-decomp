@@ -15,6 +15,11 @@ extern "C" void fn_8001A5D0(void) {
     fn_8001DC20();
 }
 
+extern "C" void fn_8001E628(void);
+extern "C" void fn_8001A910(void) {
+    fn_8001E628();
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
