@@ -465,6 +465,22 @@ extern "C" int fn_801A4CF4(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 4;
 }
 
+extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
+    u8* dst = param_1 + param_2 * 4;
+    u8 v0 = param_3[0];
+    u8 v1 = param_3[1];
+    u8 v2 = param_3[2];
+    u8 v3 = param_3[3];
+    dst[0xc] = v0;
+    dst[0xd] = v1;
+    dst[0xe] = v2;
+    dst[0xf] = v3;
+}
+
+extern "C" void fn_801A4D74(u8* param_1, u8* param_2) {
+    param_1[0x14] = param_2[0];
+}
+
 extern void* lbl_8029AAB8[];
 extern "C" void* fn_801A4E28(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
