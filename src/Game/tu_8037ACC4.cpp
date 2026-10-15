@@ -32,6 +32,14 @@ extern "C" void fn_8037AD00(void) {
     }
 }
 
+extern "C" u8 fn_8044D290(u8*);
+extern "C" u8 fn_8037AD34(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        return fn_8044D290(lbl_8053AF40);
+    }
+    return 0;
+}
+
 extern "C" void fn_8044D298(void*);
 extern "C" void fn_8037AD70(void) {
     if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
