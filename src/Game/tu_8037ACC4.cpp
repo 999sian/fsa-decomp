@@ -23,6 +23,13 @@ extern "C" void fn_8037AD70(void) {
     }
 }
 
+extern "C" void fn_8044D894(void*);
+extern "C" void fn_8037ADA4(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        fn_8044D894(lbl_8053AF40);
+    }
+}
+
 extern "C" void fn_8037AE30(void) {
     if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
         *(u8*)(lbl_8053AF40 + 0x13f) = 1;
