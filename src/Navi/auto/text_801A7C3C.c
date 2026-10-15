@@ -479,6 +479,11 @@ extern "C" void fn_801B9C58(void* self, void* src) {
     fn_801B9C80(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void fn_801B9E80(void* unused, void* dest, void* src);
+extern "C" void fn_801B9E58(void* self, void* src) {
+    fn_801B9E80(self, *(void**)((u8*)self + 4), src);
+}
+
 extern void* lbl_8029BCC0[];
 extern "C" void* fn_801BA34C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
