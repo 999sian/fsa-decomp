@@ -433,6 +433,22 @@ extern "C" void fn_80095084(Obj_8009287C* param_1) {
     (param_1->*lbl_80286144[param_1->state])();
 }
 
+extern "C" void* fn_8009551C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80288EDC;
+        if ((s32)ptr + (unsigned)0x8 != 0) {
+            ((void**)(ptr))[2] = lbl_80288520;
+            if ((s32)ptr + 0x8 != 0) {
+                ((void**)((unsigned)ptr))[2] = lbl_8027EC78;
+            }
+        }
+        if (0 < param_2) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern StateFn_8009287C lbl_802861BC[];
 extern "C" void fn_80095628(Obj_8009287C* param_1) {
     (param_1->*lbl_802861BC[param_1->state])();
