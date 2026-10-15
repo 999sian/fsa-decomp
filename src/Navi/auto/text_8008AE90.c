@@ -25,9 +25,25 @@ extern s8 lbl_802C5394[];
 extern u8 lbl_8029FDB4[];
 extern u32 lbl_80284940[];
 extern u8 lbl_802B7CA0[];
-s32 fn_8008BC84(void)
+extern "C" void fn_8008B4E4(void* param_1)
 {
-    void* addr = (void*)(0x802B7CA0 + 0x2200);
+    *((u8*)param_1 + 0x2b7) = 0;
+    lbl_802FCE90 = 1;
+    f32 f1 = *((f32*)((u8*)param_1 + 0x128));
+    f32 f2 = *((f32*)((u8*)param_1 + 0x130));
+    *((f32*)((u8*)param_1 + 0x2a4)) = f1;
+    *((f32*)((u8*)param_1 + 0x2a8)) = lbl_80300A54;
+    *((f32*)((u8*)param_1 + 0x2ac)) = f2;
+    fn_8008BA14(param_1);
+    
+    if (lbl_802C5394[4] < 0) {
+        fn_800126C8(&lbl_8029FDB4[4], &lbl_80284940[0], &lbl_802C5394[0]);
+    }
+}
+
+extern "C" s32 fn_8008BC84(void)
+{
+    void* addr = (u8*)lbl_802B7CA0 + 0x2200;
     fn_800636F4(&lbl_802FCE94, addr, 0x40);
     
     if (lbl_802C5394[4] >= 0) {
