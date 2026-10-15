@@ -734,6 +734,10 @@ extern "C" u32* fn_800DE7A4(u32* this_, u32 idx) {
     return &this_[0x18] + idx;
 }
 
+extern "C" u32 fn_800DE8D0() {
+    return 0x54564231;
+}
+
 extern "C" void fn_800DE8DC(u16* this_, s32 idx, u16 val) {
     this_[idx + 4] = val;
 }
