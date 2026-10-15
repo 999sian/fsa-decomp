@@ -8,10 +8,10 @@ extern const f32 lbl_802FFB60;
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801C5DA8(const f32 (*)[4], const f32 (*)[4], f32 (*)[4]);
 
-char* fn_8000BEE0(char** p) {
+extern "C" char* fn_8000BEE0(char** p) {
     char* q = *p;
-    if (q == 0) return 0;
-    return q - 0xc;
+    if (q != 0) q -= 0xc;
+    return q;
 }
 
 extern "C" int fn_8000BEF4(int p) { return p + 0x40; }
