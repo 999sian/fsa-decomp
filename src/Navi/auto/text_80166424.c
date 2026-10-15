@@ -179,6 +179,11 @@ extern "C" int fn_8016999C()
 	return 0;
 }
 
+extern "C" int fn_801699A4()
+{
+	return 0;
+}
+
 extern "C" int fn_801699B4(void) {
     return 0xFFFF;
 }
@@ -245,11 +250,6 @@ extern "C" void* fn_8016AD94(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
-}
-
-extern "C" int fn_8016B418()
-{
-	return 0;
 }
 
 extern "C" u32 fn_801725D8(void) { return 0x54563136; }
@@ -401,6 +401,11 @@ extern "C" void fn_801732F0(void* param_1) {
     u8 val = *(u8*)((u8*)param_1 + 0x5c);
     val &= 0x7f;
     *(u8*)((u8*)param_1 + 0x5c) = val;
+}
+
+extern "C" int fn_8017332C()
+{
+	return 0;
 }
 
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
