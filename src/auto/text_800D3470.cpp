@@ -290,6 +290,21 @@ extern "C" void fn_800D91A4(u8* self) {
 extern "C" void fn_800D91D8(void) {
 }
 
+extern "C" void fn_800D92CC(u8* self) {
+    u32 value = *(u32*)(self + 0x18);
+    u32 combined = value | 0x1000;
+    
+    u8* dl = __GDCurrentDL->pDisplayListData;
+    
+    *dl++ = 0x61;
+    *dl++ = (combined >> 24) & 0xff;
+    *dl++ = (combined >> 16) & 0xff;
+    *dl++ = (combined >> 8) & 0xff;
+    *dl++ = combined & 0xff;
+    
+    __GDCurrentDL->pDisplayListData = dl;
+}
+
 extern "C" void fn_800D971C(u8* self) {
 	for (u32 i = 0; i < 4; i++) {
 		if (*(u16*)(self + 8 + i * 2) != 0xffff) {
@@ -865,9 +880,9 @@ extern "C" void* fn_800DE7D0(void* p, s16 del) {
         *(void**)p = __vt__12J3DTevBlock2;
         if (p) {
             *(void**)p = __vt__11J3DTevBlock;
-            if (del > 0) {
-                __dl__FPv(p);
-            }
+        }
+        if (del > 0) {
+            __dl__FPv(p);
         }
     }
     return p;
@@ -1021,9 +1036,11 @@ extern "C" int fn_800DECE4(int p, int i) {
     return p + i * 8 + 0x98;
 }
 
-extern "C" void fn_800DECF8(int p, int i, const u8* v) {
-    int addr = p + (i * 4);
-    *(u8*)(addr + 0xb8) = v[0];
+extern "C" void fn_800DECF8(int p, int i, const u8* v)
+{
+    u8 v0 = v[0];
+    int addr = p + (i << 2);
+    *(u8*)(addr + 0xb8) = v0;
     *(u8*)(addr + 0xb9) = v[1];
     *(u8*)(addr + 0xba) = v[2];
     *(u8*)(addr + 0xbb) = v[3];
@@ -1036,6 +1053,11 @@ extern "C" int fn_800DED50(int p, int i) {
 extern "C" void fn_800DED64(int p, int i, int v) {
     int addr = p + i;
     *(u8*)(addr + 0xc8) = v;
+}
+
+extern "C" void fn_800DED70(int param_1, int param_2, const u8* param_3)
+{
+    *(u8*)(param_1 + param_2 + 0xc8) = *param_3;
 }
 
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
