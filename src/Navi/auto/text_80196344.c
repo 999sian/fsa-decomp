@@ -338,6 +338,10 @@ extern "C" void fn_801A4A88(int param_1) {
     fn_801A7E24(param_1 + 0x5c);
 }
 
+extern "C" void fn_801A4AAC(int param_1) {
+    fn_801A7E24(param_1 + 0x5c);
+}
+
 extern "C" int fn_801A4AD0(int param_1) {
     return param_1 + 0x5c;
 }
