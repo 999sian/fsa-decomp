@@ -886,7 +886,7 @@ config.libs = [
     JSystemLib(
         "jas-b",
         [
-            Object(NonMatching, "JSystem/JAudio/System/JASHeapCtrl.cpp"),
+            Object(MatchingFor("G4SE01"), "JSystem/JAudio/System/JASHeapCtrl.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASInstRand.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASInstSense.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASLfo.cpp"),
@@ -901,9 +901,9 @@ config.libs = [
             Object(Matching, "JSystem/JAudio/System/JASSimpleWaveBank.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASSoundParams.cpp"),
             Object(Matching, "JSystem/JAudio/System/JASTaskThread.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASTrack.cpp", extra_cflags=["-DMATCHING=1"]),
+            Object(MatchingFor("G4SE01"), "JSystem/JAudio/System/JASTrack.cpp", extra_cflags=["-DMATCHING=1"]),
             Object(Matching, "JSystem/JAudio/System/JASTrackPort.cpp"),
-            Object(NonMatching, "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
+            Object(MatchingFor("G4SE01"), "JSystem/JAudio/System/JASWaveArcLoader.cpp"),
             # JASWaveBank.cpp (only JASWaveBank::isLoading) is dead-stripped in FSA:
             # it has no code or data in main.dol.
             Object(Matching, "JSystem/JAudio/System/JASWSParser.cpp"),
