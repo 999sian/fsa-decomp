@@ -177,6 +177,16 @@ extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
   }
 }
 
+extern "C" void fn_800D6394(int* param_1, u32 param_2)
+{
+  if ((param_2 & 1) != 0) {
+    (*(void(**)(void))(*(int*)param_1 + 0x20))();
+  }
+  if (((param_2 & 2) != 0) || (((param_2 >> 4) & 0xf) != 0)) {
+    (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
+  }
+}
+
 struct Vtable800D8248;
 extern "C" void fn_800D8248(Vtable800D8248* p) {
     p->m9();
@@ -242,25 +252,28 @@ extern "C" void fn_800D8E14(u8* self) {
 }
 
 extern "C" void fn_800D8F78(u8* self) {
-    u32 count = *(u32*)(self + 0xd0);
+    u8 count = *(u8*)(self + 0xd0);
     if (count == 0) return;
     
+    u32 accumulator = 0;
     for (u32 i = 0; i < count; i++) {
-        u32 value = *(u32*)(self + 0x78 + i * 4);
+        u32 value = *(u32*)(self + 0x78);
+        accumulator = (value & 0xff000000) | ((i + 0x10) << 24);
+        
         __GDWrite(0x61);
-        __GDWrite((value >> 24) | ((i + 0x10) << 24));
-        __GDWrite((value >> 16) & 0xff);
-        __GDWrite((value >> 8) & 0xff);
-        __GDWrite(value & 0xff);
+        __GDWrite(accumulator >> 24);
+        __GDWrite((accumulator >> 16) & 0xff);
+        __GDWrite((accumulator >> 8) & 0xff);
+        __GDWrite(accumulator & 0xff);
     }
 }
 
 extern "C" void fn_800D9020(u8* self) {
     for (u32 i = 0; i < 3; i++) {
-        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(self + 0x42 + i * 8));
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(self + 0x98 + i * 8));
     }
     for (u32 i = 0; i < 4; i++) {
-        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(self + 0x62 + i * 4));
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(self + 0xb8 + i * 4));
     }
 }
 
@@ -356,8 +369,8 @@ extern "C" u32 fn_800DDA50(void) {
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
-    u8 b2 = src[2];
     *(u16*)(this_ + 0x4) = w;
+    u8 b2 = src[2];
     u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
