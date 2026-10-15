@@ -34,9 +34,23 @@ extern "C" void fn_80026520(void) {
     lbl_802FED9C = 0;
 }
 
+extern "C" void fn_800265F0(u8 param_1) {
+    lbl_802FED9D &= ~((u8)(1 << param_1));
+}
+
 extern u8 lbl_802FED9E;
 extern "C" void fn_80026630(void) {
     lbl_802FED9E = 0;
+}
+
+extern "C" u32 fn_8002663C(void) {
+    for (u8 i = 0; i < 4; i++) {
+        u8 mask = 1 << i;
+        if ((lbl_802FED9D & mask) != 0 && (lbl_802FED9E & mask) == 0) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 extern "C" u8 fn_80026694(void) {
@@ -62,10 +76,11 @@ extern "C" u32 fn_800266DC(void) {
     u32 result = 1;
     for (u8 i = 0; i < 4; i++) {
         if ((lbl_802FED9D & (1 << i)) != 0) {
-            if (((u8*)&lbl_802FEDA4)[i] == 2) {
+            u8 val = ((u8*)&lbl_802FEDA4)[i];
+            if (val == 2) {
                 result = 2;
             }
-            if (((u8*)&lbl_802FEDA4)[i] == 0) {
+            if (val == 0) {
                 return 0;
             }
         }
