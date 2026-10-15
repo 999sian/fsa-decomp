@@ -647,6 +647,10 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
     p->b[i] = v;
 }
 
+extern "C" void fn_800DE634(u8* param_1, u8 param_2) {
+    *(u8*)(param_1 + 0x34) = param_2;
+}
+
 extern "C" void fn_800DE63C(u8* param_1, u8* param_2) {
     *(u8*)(param_1 + 0x34) = *param_2;
 }
