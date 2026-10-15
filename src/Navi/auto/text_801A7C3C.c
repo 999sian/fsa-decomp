@@ -1,4 +1,7 @@
 #include "types.h"
+extern "C" void* lbl_8029B5AC[];
+extern "C" void* lbl_8027F240[];
+
 extern void* lbl_8029B49C[];
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -132,6 +135,26 @@ extern "C" void* fn_801ADF28(void* ptr, s16 param_2) {
 
 extern "C" int fn_801AE024(void) {
     return 4;
+}
+
+extern void* lbl_8029B598[];
+extern "C" void* fn_801AE02C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029B598;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029B5AC;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_8027F240;
+                if (ptr != nullptr) {
+                    *(void**)ptr = lbl_8027F214;
+                }
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" u32 fn_801AE0A8(void) { return 0x10; }
