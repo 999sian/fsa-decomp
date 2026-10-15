@@ -497,7 +497,7 @@ extern "C" void fn_800DDB70(void* param_1)
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* pStart = GDGetCurrPointer();
-  void* pCurr = GDGetCurrPointer();
+  void* pCurr = __GDCurrentDL->pDisplayListData;
   for (;;) {
     if (!isTexNoReg(pCurr)) break;
     u16 texNo = getTexNoReg(pCurr);
@@ -888,6 +888,8 @@ extern "C" void* fn_800DE7D0(void* p, s16 del) {
     }
     return p;
 }
+
+extern "C" void fn_800DE82C(void) {}
 
 extern "C" u32 fn_800DE8D0() {
     return 0x54564231;
