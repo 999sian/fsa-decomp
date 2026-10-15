@@ -1517,6 +1517,10 @@ extern "C" u8 fn_800DF184(int param_1) {
     return *(u8*)(param_1 + 0x40);
 }
 
+extern "C" u32 fn_800DF18C(int param_1) {
+    return *(u32*)(param_1 + 0x44);
+}
+
 extern "C" u32 fn_800DF194(int param_1) {
     return *(u32*)(param_1 + 0x48);
 }
