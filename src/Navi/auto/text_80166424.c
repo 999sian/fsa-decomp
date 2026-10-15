@@ -166,6 +166,10 @@ extern "C" void fn_80178DA4(void* param_1)
 extern "C" void fn_80178C9C(int, int);
 extern "C" u32 fn_80178E08(void) { return 0x10; }
 
+extern "C" void fn_80178E5C(void* param_1)
+{
+}
+
 extern "C" void fn_80178E60(void) {
 }
 
