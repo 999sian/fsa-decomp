@@ -17,6 +17,8 @@ extern "C" void fn_80182650(void* thisObj, f32 x, f32 y, f32 z) {
 
 extern "C" void fn_80182674(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
+extern "C" void fn_80182690(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; }
+
 extern "C" u8* fn_801826A4(s32 idx) {
     u8* mgr = fn_802D6A9C();
     if (idx < 8) {
