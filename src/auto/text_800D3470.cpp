@@ -539,7 +539,8 @@ extern "C" void fn_800DF128(u8* self, int i, const u16* v) {
 }
 
 extern "C" u16* fn_800DF13C(u8* self, int i) {
-    return (u16*)(self + 0x16) + i;
+    int off = i * 2 + 0x16;
+    return (u16*)((u32)self + off);
 }
 
 extern "C" void fn_800DF150(u8* self, int i, void* v) {
@@ -580,13 +581,15 @@ extern "C" u8* fn_800DF344(u8* self, int i) {
 }
 
 extern "C" void fn_800DF374(u8* this_, s32 idx, u16* src) {
-    u16 v = *src;
-    u16* dest = (u16*)(this_ + idx * 2);
-    dest[7] = v;
+    *(u16*)(this_ + (idx << 1) + 0xe) = *src;
 }
 
 extern "C" u8* fn_800DF39C(u8* this_, s32 idx) {
     return this_ + idx * 2 + 0xe;
+}
+
+extern "C" void fn_800DF3B0(u8* this_, u8 val) {
+    *(u8*)(this_ + 0x16) = val;
 }
 
 extern "C" u32 fn_800DF3CC(u8* this_) { return *(u32*)(this_ + 0x18); }
