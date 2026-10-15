@@ -24,3 +24,8 @@ extern "C" void fn_80080430(void) {
     fn_8007C604();
 }
 
+extern "C" void fn_8007FD34(void);
+extern "C" void fn_80080564(void) {
+    fn_8007FD34();
+}
+
