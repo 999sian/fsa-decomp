@@ -131,6 +131,8 @@ extern "C" void* fn_801A3614(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801A36E8(int p) { return p + 4; }
+
 extern void* lbl_8029A35C[];
 extern "C" void* fn_801A3768(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
