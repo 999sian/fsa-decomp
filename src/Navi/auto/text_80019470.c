@@ -39,8 +39,11 @@ extern "C" void fn_8001980C(void* param_1) {
 }
 
 extern "C" void fn_80019834(void* param_1) {
-    if (*(s8*)((u8*)param_1 + 0xc) == 0) {
-        void* iVar1 = *(void**)((u8*)param_1 + 0x10);
+    void* iVar1;
+    s8 temp = *(s8*)((u8*)param_1 + 0xc);
+    
+    if (temp == 0) {
+        iVar1 = *(void**)((u8*)param_1 + 0x10);
         fn_801155E0((u8*)param_1 + 0xc4, 1);
         *(void**)((u8*)param_1 + 0xc0) = *(void**)((u8*)iVar1 + 0x24);
         *(s32*)((u8*)param_1 + 0xc8) = -1;
@@ -134,6 +137,7 @@ extern "C" void fn_8001C9DC(void) {
 }
 
 extern "C" void fn_8001B9CC(void);
+extern "C" u32 fn_8001F26C(u32, s16, u32, void*, u32);
 extern "C" void fn_8001C9FC(void) {
     fn_8001B9CC();
 }
