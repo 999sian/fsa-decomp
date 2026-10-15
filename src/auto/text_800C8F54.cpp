@@ -94,3 +94,7 @@ extern "C" void fn_800CBDA0(void) {
 extern "C" void fn_800CBDA4(void) {
 }
 
+extern "C" int fn_800CBDA8(void) {
+    return 0;
+}
+
