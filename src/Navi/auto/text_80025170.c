@@ -18,6 +18,11 @@ extern "C" void fn_8002548C(void) {
     fn_8002566C();
 }
 
+extern "C" void fn_80025710(void);
+extern "C" void fn_800254AC(void) {
+    fn_80025710();
+}
+
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
