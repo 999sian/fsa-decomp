@@ -100,6 +100,10 @@ extern "C" int fn_801727D0(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x12c;
 }
 
+extern "C" u32 fn_80172854(u8* param_1) {
+    return *(u32*)(param_1 + 0x1ac);
+}
+
 extern "C" BOOL fn_80173190(void);
 extern "C" BOOL fn_80173190(void)
 {
