@@ -28,6 +28,14 @@ extern "C" void fn_8018A72C(u8* self) {
     }
 }
 
+extern "C" void fn_8016A39C(void*);
+extern "C" void fn_8018A758(u8* self) {
+    void* p = *(void**)(self + 0x138);
+    if (p != NULL) {
+        fn_8016A39C(p);
+    }
+}
+
 extern "C" void fn_8018A7B0(u8* self, void* p) {
     *(void**)(self + 0x144) = p;
 }
