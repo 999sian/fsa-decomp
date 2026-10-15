@@ -100,6 +100,12 @@ extern "C" void fn_80072A5C(void) {
     fn_800724D4();
 }
 
+extern "C" BOOL fn_80072CD8(void);
+extern "C" BOOL fn_80072CD8(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_80072E68(void);
 extern "C" void fn_80072D6C(void) {
     fn_80072E68();
