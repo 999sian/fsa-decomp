@@ -28,6 +28,8 @@ extern "C" char __vt__20J3DColorBlockLightOn[];
 extern "C" char __vt__16J3DPEBlockFogOff[];
 extern "C" char __vt__14J3DPEBlockFull[];
 extern "C" char __vt__10J3DPEBlock[];
+extern "C" char __vt__13J3DPEBlockXlu[];
+extern "C" char __vt__17J3DPEBlockTexEdge[];
 extern "C" void __dl__FPv(void*);
 extern "C" void __destroy_arr(void*, void*, u32, u32);
 extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
@@ -198,8 +200,11 @@ extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
   }
 }
 
-void fn_800D5E14(void* param) {
-    u32 val1, val2;
+extern "C" void fn_800D5E14(void* param) {
+    static const u32 size = 0x0d;
+    if (__GDCurrentDL->pDisplayListData + size > __GDCurrentDL->end) {
+        GDOverflowed();
+    }
     
     __GDWrite(0x10);
     __GDWrite(0x00);
@@ -207,13 +212,13 @@ void fn_800D5E14(void* param) {
     __GDWrite(0x10);
     __GDWrite(0x0c);
     
-    val1 = *(u32*)((char*)param + 4);
+    u32 val1 = *(u32*)((char*)param + 4);
     __GDWrite((u8)(val1 >> 24));
     __GDWrite((u8)(val1 >> 16));
     __GDWrite((u8)(val1 >> 8));
     __GDWrite((u8)val1);
     
-    val2 = *(u32*)((char*)param + 8);
+    u32 val2 = *(u32*)((char*)param + 8);
     __GDWrite((u8)(val2 >> 24));
     __GDWrite((u8)(val2 >> 16));
     __GDWrite((u8)(val2 >> 8));
@@ -489,6 +494,31 @@ extern "C" void fn_800D9AAC(u8* self) {
             loadTexNo(i, *(u16*)(self + 8 + i * 2));
         }
     }
+}
+
+extern "C" void fn_800D9E3C(void* p) {
+    u32 byteCount = 0;
+    u8* addr = (u8*)p;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
+    u8* saved = __GDCurrentDL->pDisplayListData;
+    
+    for (u32 i = 0; i < 8; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4) + byteCount;
+            patchTexNo_PtrToIdx(i, *(const u16*)(addr + 8));
+            
+            byteCount += 0x14;
+            u8* texData = (u8*)(*(u32*)((u8*)j3dSys.mTexture + 4));
+            u8 val = texData[(*(u16*)(addr + 8) << 5) + 8];
+            if (val == 0x1) {
+                byteCount += 0x23;
+            }
+        }
+        addr += 2;
+    }
+    
+    u8* now = __GDCurrentDL->pDisplayListData;
+    DCStoreRange(saved, (u32)(now - saved));
 }
 
 extern "C" u32 fn_800DD89C() {
