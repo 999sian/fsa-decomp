@@ -2,6 +2,27 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8001287c-0x80013a30 (29 functions). split_file divides it into the game's real files.
 
+typedef struct ThreadBlock {
+    u8 thread[0x320];
+    u8 stack[0x1800];
+    u8 param[1];
+} ThreadBlock;
+
+struct node_class;
+void cLs_SingleCut(node_class*);
+
+struct UnkVtbl {
+    void* unk0;
+    void* unk4;
+    void* unk8;
+    int (*fnC)();
+};
+
+struct UnkObj {
+    u8 pad[0x10];
+    UnkVtbl* vt;
+};
+
 extern "C" void fn_8015AB1C(void*);
 extern "C" void* fn_80012970(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
