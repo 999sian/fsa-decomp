@@ -203,3 +203,21 @@ extern "C" void* fn_8018EA68(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* lbl_80299764[];
+extern "C" void* lbl_80286A1C[];
+extern "C" void* fn_8018EBDC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80299764;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80286A1C;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80286A30;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
