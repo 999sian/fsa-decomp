@@ -281,3 +281,10 @@ extern "C" int fn_80020E9C(void) {
     return 4;
 }
 
+extern "C" int fn_80020EA4(void* param_1, int param_2) {
+    if (*(int*)((u8*)param_1 + 4) == 2) {
+        return 4;
+    }
+    return fn_80021240(param_1, lbl_802061C0, param_2);
+}
+
