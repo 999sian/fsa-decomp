@@ -134,6 +134,8 @@ extern "C" void* fn_800102D8(void* ptr, s16 param_2) {
 }
 
 extern "C" void* lbl_802046F4[];
+extern void* lbl_802047F4[];
+extern void* lbl_80204820[];
 extern "C" void* lbl_80204984[];
 extern "C" void* fn_80010428(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
