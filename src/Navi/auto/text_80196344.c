@@ -307,6 +307,10 @@ extern "C" void* fn_801A4A08(void* p) {
     return *(void**)((char*)p + 4);
 }
 
+extern "C" void fn_801A4A18(int param_1, int param_2) {
+    *(int*)(param_1 + 0xd4) = param_2;
+}
+
 extern void* lbl_8029A7E4[];
 extern "C" void* fn_801A4A20(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
