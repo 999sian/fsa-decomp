@@ -1,10 +1,18 @@
 #include "types.h"
 
+struct Slot0 {
+    virtual void slot0(s32 arg);
+};
 
 extern u8* lbl_8053AAF8;
 extern u8* lbl_8053AF40;
 extern u8* lbl_8053AF48;
 extern u32 lbl_8053AD70;
+extern u8 lbl_804AE9B0[];
+extern void* __nw__FUl(unsigned long);
+extern "C" void __dl__FPv(void*);
+extern "C" void* fn_80452A80(void*);
+extern "C" void* fn_80454DEC(void*);
 extern "C" void fn_8044CB08(void*);
 extern "C" int fn_8044F664(void);
 extern "C" int fn_80453AF8(void);
@@ -49,6 +57,7 @@ extern "C" int fn_8037AE60(void) {
     return 9;
 }
 
+#pragma scheduling off
 extern "C" int fn_8037AEAC(void* self_) {
     u8* self = (u8*)self_;
     int uVar1;
@@ -70,7 +79,6 @@ extern "C" int fn_8037AEAC(void* self_) {
     }
     return uVar1;
 }
-
 extern "C" void fn_804522C8(void*);
 extern "C" void fn_8037AF4C(void) {
     if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
