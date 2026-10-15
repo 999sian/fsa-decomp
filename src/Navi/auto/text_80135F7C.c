@@ -126,6 +126,15 @@ extern "C" void fn_80136404(f64* p, f64 a, f64 b) {
     p[2] = b - a;
 }
 
+extern "C" void fn_80136484(void* param_1, void* param_2) {
+    if (param_2 != nullptr) {
+        param_2 = (void*)((u8*)param_2 + 4);
+    }
+    *(void**)param_1 = param_2;
+    *(u32*)((u8*)param_1 + 4) = 0;
+    *(u32*)((u8*)param_1 + 8) = 0;
+}
+
 extern "C" u32 fn_80136A68(void) {
     return 2;
 }
