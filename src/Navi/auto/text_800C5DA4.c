@@ -14,8 +14,11 @@ struct VObj_800A1A64 {
 extern void* lbl_80288750[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
+extern char lbl_802C567C[];
 extern f32 lbl_80300DD4;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern "C" int fn_800C91A4(void*, int, s16, u8, int, f32, f32, int);
+extern "C" int fn_800C93F4(void*, s16, u8, int);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_800C9510(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
