@@ -171,6 +171,10 @@ extern "C" void fn_8018A7B8(u8* self, void* arg) {
     fn_80178BFC(self, arg);
 }
 
+extern "C" void fn_8018A8C0(void) {
+    fn_801788C0();
+}
+
 extern "C" void fn_8018B07C(void* ptr) {
     void* a = lbl_80299504;
     void* b = lbl_802994F0;
