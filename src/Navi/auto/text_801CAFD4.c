@@ -2,6 +2,8 @@
 // .text 0x801cafd4-0x801e0c34 (354 functions). split_file divides it into the game's real files.
 
 #include <types.h>
+extern void* lbl_802FFA4C;
+
 
 extern "C" int OSDisableInterrupts(void);
 extern "C" void OSRestoreInterrupts(int state);
@@ -300,5 +302,10 @@ extern "C" void fn_801CEC9C(void) {
 extern "C" u32 fn_801CED8C(void) {
     volatile unsigned int* reg = (volatile unsigned int*)0xCC006C00;
     return *reg & 1;
+}
+
+extern "C" void* fn_801D9F10(void)
+{
+	return lbl_802FFA4C;
 }
 
