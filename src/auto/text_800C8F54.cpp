@@ -25,7 +25,8 @@ void fn_800C9D04(void) {
 void fn_800C9D08(void) {
 }
 
-void fn_800C9D0C(void) {
+s32 fn_800C9D0C(void) {
+    return 0;
 }
 
 void fn_800C9D14(void) {
@@ -47,15 +48,12 @@ extern "C" s32 fn_800CAEC8(int param_1, u32 param_2) {
 }
 
 extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
+    int p2_4 = *(int *)(param_2 + 4);
+    int p2_8 = *(int *)(param_2 + 8);
+    int p2_10 = *(int *)(param_2 + 0x10);
     s32 default_val = lbl_8053BC70;
-    int p2_4, p2_8, p2_10;
-    ushort idx1, uVar1;
-    
-    p2_4 = *(int *)(param_2 + 4);
-    p2_8 = *(int *)(param_2 + 8);
-    p2_10 = *(int *)(param_2 + 0x10);
-    idx1 = *(ushort *)(p2_8 + param_3 * 2);
-    uVar1 = *(ushort *)(p2_4 + idx1 * 0x14c + 8 + param_4 * 2);
+    ushort idx1 = *(ushort *)(p2_8 + param_3 * 2);
+    ushort uVar1 = *(ushort *)(p2_4 + idx1 * 0x14c + 8 + param_4 * 2);
     
     if (uVar1 != 0xffff) {
         *param_1 = *(int *)(p2_10 + ((uint)uVar1 << 2));
