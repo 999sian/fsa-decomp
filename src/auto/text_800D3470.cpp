@@ -787,8 +787,8 @@ extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
 }
 
 extern "C" void fn_800DDD70(u8* param_1, int param_2, u8* param_3) {
-    u8* p = param_1 + param_2;
-    p[0x10a] = *param_3;
+    u8 v = *param_3;
+    (param_1 + param_2)[0x10a] = v;
 }
 
 extern "C" u8 fn_800DDD80(int param_1, int param_2) {
