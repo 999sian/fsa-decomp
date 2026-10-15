@@ -16,6 +16,12 @@ extern "C" void fn_800704A4(void) {
     fn_800704C4();
 }
 
+extern "C" void fn_8004ACA4(void*, void*);
+extern "C" s32 fn_80070CB4(void* tag, void* data) {
+    fn_8004ACA4(tag, data);
+    return 1;
+}
+
 extern "C" void* fn_80070CE0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80280CEC;
