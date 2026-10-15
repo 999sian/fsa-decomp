@@ -461,6 +461,10 @@ extern "C" void fn_800DEC8C(Unk800DEC3C* p, int i, const Unk800DE50C& v) {
     p->c[i] = v;
 }
 
+extern "C" void fn_800DECB8(Unk800DEC3C* p, int i, const Unk800DE50C& v) {
+    p->c[i] = v;
+}
+
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
     *(J3DNBTScaleInfo*)(self + 0x5c) = *other;
 }
