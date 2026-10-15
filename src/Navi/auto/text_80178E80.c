@@ -25,6 +25,13 @@ extern "C" void fn_80188868(u8* param_1) {
     }
 }
 
+extern "C" void fn_80188928(u8* param_1) {
+    void* p = *(void**)(param_1 + 0x168);
+    if (p != nullptr) {
+        fn_8016A0B4(p);
+    }
+}
+
 extern "C" void fn_801889D8(u8* param_1, void* param_2) {
     *(void**)((u8*)param_1 + 0x19c) = param_2;
 }
