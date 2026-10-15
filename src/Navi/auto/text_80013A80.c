@@ -81,6 +81,11 @@ extern "C" void fn_80013CC8(void* self, void* p) {
     fn_800141EC(p);
 }
 
+extern "C" void fn_80014260(void* p);
+extern "C" void fn_80013CEC(void* self, void* p) {
+    fn_80014260(p);
+}
+
 extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     self->unk50 = a;
     self->unk5f = b;
