@@ -273,7 +273,7 @@ extern "C" void fn_8000EE94(void) {}
 
 extern "C" void fn_8000EE98(void) {}
 
-void fn_8000EE9C(void) {}
+extern "C" void fn_8000EE9C(void) {}
 
 void fn_8000EEA0(void) {}
 
