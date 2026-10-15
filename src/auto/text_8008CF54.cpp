@@ -17,7 +17,7 @@ extern "C" u32 lbl_8053A938;
 extern "C" float lbl_8053B8A0;
 extern "C" float lbl_80539DA4;
 extern "C" float lbl_80539DA0;
-extern "C" u8 *const lbl_8053A934;
+extern "C" u8 lbl_8053A934[];
 extern "C" u32 lbl_80499470[];
 extern "C" u8 lbl_8053A920;
 extern "C" u8 lbl_8053A924[];
