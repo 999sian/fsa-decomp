@@ -81,6 +81,11 @@ extern "C" void fn_800355C8(void* p) {
     *(unsigned int*)((char*)p + 0x220) = 0x6;
 }
 
+extern "C" void fn_80037698(void* p) {
+    *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
+    *(unsigned int*)((char*)p + 0x2ec) = 3;
+}
+
 extern "C" void fn_800376B0(void* p) {
     *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
     *(unsigned int*)((char*)p + 0x2ec) = 4;
