@@ -649,6 +649,11 @@ extern "C" int fn_800DF568(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 5;
 }
 
+extern "C" void fn_800DF5F8(int param_1, int param_2, u32* param_3)
+{
+  *(u32*)(param_1 + param_2 * 4 + 0x6c) = *param_3;
+}
+
 struct UnkVtableTest8248 {
     int x;
 };
