@@ -293,7 +293,7 @@ extern "C" void fn_800DE75C(u8* this_, u32 idx, const u8* src) {
 }
 
 extern "C" u8* fn_800DE76C(u8* this_, u32 idx) {
-    return this_ + (idx + 0x59);
+    return &this_[0x59] + idx;
 }
 
 extern "C" void fn_800DE77C(u8* this_, u32 idx, const u32* src) {
