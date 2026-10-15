@@ -5,6 +5,7 @@
 
 extern "C" int OSDisableInterrupts(void);
 extern "C" void OSRestoreInterrupts(int state);
+extern "C" void fn_801C5050(int);
 int lbl_802FF8F4;
 extern unsigned long lbl_802FF944;
 extern unsigned long lbl_802FE9F8;
@@ -75,6 +76,40 @@ extern "C" void fn_801CC8B4(int param_1) {
     
     fn_801CBD48(arg1, arg2, arg3, arg4, arg5, arg6, arg7, arg8, saved_param);
     OSRestoreInterrupts(interrupt_state);
+}
+
+int fn_801CC938(void) {
+    u32 val1, val2, val3;
+    int i;
+    
+    for (i = 0; i < 10; i++) {
+        val1 = *(vu16*)0xcc00202c;
+        val2 = *(vu16*)0xcc00202e;
+        val3 = *(vu16*)0xcc00202c;
+        if (val1 == val3) {
+            return val1 + (val2 << 16);
+        }
+    }
+    return 0;
+}
+
+extern "C" unsigned long SIGetType(long chan);
+extern "C" void fn_801C4F24(long, unsigned long);
+extern "C" void fn_801C4F38(void);
+extern "C" void fn_801CE100(long chan, unsigned long command) {
+    int enabled = OSDisableInterrupts();
+    unsigned long chanBit = 0x80000000 >> chan;
+    if ((lbl_802FF944 & chanBit) && !(SIGetType(chan) & 0x20000000)) {
+        if (lbl_802FE9F8 < 2 && command == 2) {
+            command = 0;
+        }
+        if (*(unsigned char*)0x800030E3 & 0x20) {
+            command = 0;
+        }
+        fn_801C4F24(chan, lbl_802FE9F4 | 0x400000 | (command & 3));
+        fn_801C4F38();
+    }
+    OSRestoreInterrupts(enabled);
 }
 
 extern unsigned long __PADSpec;
