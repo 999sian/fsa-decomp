@@ -68,6 +68,16 @@ extern "C" void fn_8000EBB0(void) {
 extern "C" void fn_8000EBB4(void) {
 }
 
+extern "C" int fn_8000ED24()
+{
+	return 0;
+}
+
+extern "C" int fn_8000ED2C()
+{
+	return 0;
+}
+
 extern "C" int fn_8000ED7C(void) {
     return 0xFFFF;
 }
