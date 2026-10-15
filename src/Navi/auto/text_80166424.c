@@ -477,6 +477,15 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80178DAC(void) {
+}
+
+extern "C" void fn_80178DB0(void* param_1) {
+    void* vtable = *(void**)param_1;
+    void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x74);
+    func();
+}
+
 extern "C" void fn_80178DDC(void* param_1) {
     void* vtable = *(void**)param_1;
     void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x78);
