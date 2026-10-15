@@ -375,6 +375,10 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
     return this_->b[idx];
 }
 
+extern "C" unsigned char fn_800DDDC8(int param_1) {
+    return *(unsigned char *)(param_1 + 0x58);
+}
+
 extern "C" int fn_800DDE48(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x59;
 }
@@ -813,15 +817,15 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
-    u8 r6 = param_3[0];
-    int r4 = param_1 + (param_2 * 4);
-    u8 r0 = param_3[1];
-    *(u8*)(r4 + 0x20) = r6;
-    u8 r3 = param_3[2];
-    *(u8*)(r4 + 0x21) = r0;
-    r0 = param_3[3];
-    *(u8*)(r4 + 0x22) = r3;
-    *(u8*)(r4 + 0x23) = r0;
+    u8 local_r6 = param_3[0];
+    int base = param_1 + param_2 * 4;
+    u8 local_r0 = param_3[1];
+    *(u8*)(base + 0x20) = local_r6;
+    u8 local_r3 = param_3[2];
+    *(u8*)(base + 0x21) = local_r0;
+    local_r0 = param_3[3];
+    *(u8*)(base + 0x22) = local_r3;
+    *(u8*)(base + 0x23) = local_r0;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
