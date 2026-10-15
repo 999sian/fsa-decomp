@@ -625,9 +625,9 @@ extern "C" u32 fn_800DDA50(void) {
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
-    u8 b2 = *(volatile u8*)(src + 2);
+    u8 b2 = src[2];
     *(u16*)(this_ + 0x4) = w;
-    u8 b3 = *(volatile u8*)(src + 3);
+    u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
 }
@@ -1460,12 +1460,12 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
     return self + i * 4 + 4;
 }
 
-extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8* p = self + i * 4;
-    p[0xc] = c[0];
-    p[0xd] = c[1];
-    p[0xe] = c[2];
-    p[0xf] = c[3];
+extern "C" void fn_800DF08C(int param_1, int param_2, const GXColor* param_3) {
+    GXColor* dst = (GXColor*)(param_1 + param_2 * 4);
+    dst[3].r = param_3->r;
+    dst[3].g = param_3->g;
+    dst[3].b = param_3->b;
+    dst[3].a = param_3->a;
 }
 
 extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
@@ -1511,6 +1511,10 @@ extern "C" void fn_800DF170(u8* self, u8 val) {
 
 extern "C" void fn_800DF178(u8* self, u8* src) {
     *(u8*)(self + 0x40) = *src;
+}
+
+extern "C" u8 fn_800DF184(int param_1) {
+    return *(u8*)(param_1 + 0x40);
 }
 
 extern "C" u32 fn_800DF194(int param_1) {
