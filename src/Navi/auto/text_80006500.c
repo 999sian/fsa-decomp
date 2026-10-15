@@ -47,3 +47,13 @@ extern "C" void* fn_8000B3B8(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" int fn_8000B414(void) {
+    u32 value = fn_8000F74C(0, 0, 0);
+    fn_800082C8();
+    fn_8005FEC0(lbl_802B7CA0 + 0x1424);
+    fn_8000F9E8(value);
+    fn_8000FAB4();
+    return 1;
+}
+
