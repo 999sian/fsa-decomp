@@ -1,5 +1,6 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
+#pragma exceptions off
 
 extern "C" void __dt__10JSUPtrListFv(void *, int);
 void operator delete(void *);
