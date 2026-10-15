@@ -581,7 +581,8 @@ extern "C" u8* fn_800DF344(u8* self, int i) {
 }
 
 extern "C" void fn_800DF374(u8* this_, s32 idx, u16* src) {
-    *(u16*)(this_ + (idx << 1) + 0xe) = *src;
+    u16* p = (u16*)(this_ + 0xe);
+    p[idx] = *src;
 }
 
 extern "C" u8* fn_800DF39C(u8* this_, s32 idx) {
