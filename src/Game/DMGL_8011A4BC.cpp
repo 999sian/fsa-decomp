@@ -13,6 +13,12 @@ extern void operator delete(void* p);
 extern void* lbl_8049DB30[];
 extern void* lbl_8049CC34[];
 
+extern f32 lbl_8053C7D0;
+extern "C" u32 fn_8011AAB0(void* param_1) {
+    u32 val = *(u32*)((u8*)param_1 + 0x234);
+    return ((3U - val) | (val - 3U)) >> 31;
+}
+
 extern "C" s32 fn_8011AAC8(char* p) {
     return *(s32*)(p + 0x234);
 }
