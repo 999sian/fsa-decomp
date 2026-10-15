@@ -316,3 +316,5 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80178E08(void) { return 0x10; }
+
