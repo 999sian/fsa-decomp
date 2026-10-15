@@ -75,3 +75,7 @@ extern "C" void fn_801A3C00(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
 
+extern "C" void fn_801A4B44(void* ptr, u32 value) {
+    *(u32*)((char*)ptr + 4) = value;
+}
+
