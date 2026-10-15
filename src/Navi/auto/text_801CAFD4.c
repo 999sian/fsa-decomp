@@ -99,6 +99,11 @@ extern "C" void fn_801CC8B4(int param_1) {
     OSRestoreInterrupts(interrupt_state);
 }
 
+extern "C" int fn_801CC930(void)
+{
+	return lbl_802FF8E4;
+}
+
 int fn_801CC938(void) {
     u32 val1, val2, val3;
     int i;
