@@ -29,6 +29,10 @@ extern "C" void* fn_80209C14(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_80209D44(ItemBase* this_) {
+    this_->m230 |= 0x2000;
+}
+
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" void fn_802075D8(void*, u16);
