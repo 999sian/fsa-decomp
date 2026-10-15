@@ -94,6 +94,24 @@ extern "C" void* fn_801ADF28(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* lbl_8029B5AC[];
+extern "C" void* lbl_8027F240[];
+extern "C" void* fn_801AE0B0(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029B5AC;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8027F240;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_8027F214;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_8029B5F8[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_801AE580(void* ptr, s16 param_2) {
