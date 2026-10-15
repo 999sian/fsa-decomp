@@ -303,12 +303,8 @@ extern "C" void fn_80172E00(u8* p, s32 i, RGB3* c) {
 
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
 
-extern "C" void fn_80172E38(u8* p, s32 i, s16* c) {
-    s16* e = (s16*)(p + i * 8);
-    e[9] = c[0];
-    e[10] = c[1];
-    e[11] = c[2];
-    e[12] = c[3];
+extern "C" void fn_80172E38(u8* p, s32 i, S16x4* c) {
+    *(S16x4*)(p + i * 8 + 0x12) = *c;
 }
 
 extern "C" void fn_80173074(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
