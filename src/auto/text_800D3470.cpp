@@ -110,6 +110,11 @@ extern "C" void fn_800D89F0(Vtable800D8248* p) {
     p->m10();
 }
 
+extern "C" void fn_800D8D0C(Vtable800D8248* p) {
+    p->m9();
+    p->m10();
+}
+
 extern "C" void fn_800DDA9C(void* dst, const void* src) {
     *(u32*)((u8*)dst + 8) = *(const u32*)src;
 }
