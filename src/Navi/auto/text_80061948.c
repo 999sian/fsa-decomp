@@ -118,8 +118,7 @@ extern "C" int fn_80063AF8(u8* p, int n) {
 }
 
 extern "C" void fn_80063B74(u8* p, void* a) {
-    u32 n = *(u16*)(p + 4);
-    fn_801ACC40(*(void**)(p + 8), n, a);
+    fn_801ACC40(*(void**)(p + 8), (int)*(u16*)(p + 4), a);
 }
 
 extern void* lbl_8027F214[];
@@ -160,8 +159,7 @@ extern "C" int fn_80063C70(void) {
 }
 
 extern "C" f32 fn_80063C78(void* p) {
-    f32 f = ((f32*)p)[2];
-    fn_801AB758(f);
+    return fn_801AB758(((f32*)p)[2]);
 }
 
 extern "C" void fn_800641AC(void);
@@ -375,6 +373,15 @@ extern "C" void fn_8006AF00(void) {
 extern "C" void fn_8006A29C(void);
 extern "C" void fn_8006AF58(void) {
     fn_8006A29C();
+}
+
+extern "C" u8 fn_8006B030(u8* param_1) {
+    u8 val = *param_1;
+    if (val != 0) {
+        val = val - 1;
+        *param_1 = val;
+    }
+    return *param_1;
 }
 
 extern "C" void fn_8006B240(void);
