@@ -40,6 +40,8 @@ extern "C" void* fn_80161874(void* a, void** b) {
 
 extern "C" int fn_801618B8(int p) { return p + 4; }
 
+extern "C" u16 fn_801618C0(u16* p) { return *p; }
+
 extern "C" void fn_8015D0B8(void*, int);
 extern char lbl_80297E68[];
 extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
