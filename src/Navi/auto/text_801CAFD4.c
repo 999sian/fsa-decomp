@@ -335,7 +335,9 @@ extern "C" uint fn_801DD3E4(uint *param_1)
 extern "C" uint fn_801DD3F0(int param_1)
 {
   u8 val = *(u8*)(param_1 + 0x1f);
-  return (uint)__cntlzw((val & 1) - 1) >> 5;
+  u32 tmp = (val & 1) - 1;
+  u32 cnt = __cntlzw(tmp);
+  return (cnt >> 5) & 0xFF;
 }
 
 extern "C" u32 fn_801DD408(int param_1)
