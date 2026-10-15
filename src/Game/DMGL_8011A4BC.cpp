@@ -8,7 +8,9 @@ extern "C" void fn_801D1F14(void* p);
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_802D7440(void* p, u32 a);
 extern "C" void __dt__13Base_8010E074Fv(void* p, int how);
+extern "C" void fn_801EE434(void* p);
 extern void operator delete(void* p);
+extern f32 lbl_8053C7D0;
 
 extern void* lbl_8049DB30[];
 extern void* lbl_8049CC34[];
