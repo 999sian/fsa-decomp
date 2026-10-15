@@ -22,6 +22,12 @@ extern "C" void fn_8008BE44(void) {
     fn_8008BE64();
 }
 
+extern "C" BOOL fn_8008C4D4(void);
+extern "C" BOOL fn_8008C4D4(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_8008C5F4(void);
 extern "C" void fn_8008C4DC(void) {
     fn_8008C5F4();
