@@ -176,17 +176,15 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-void fn_801A38E0(char* p, int i, short* src)
-{
-    short* dst = (short*)(p + i * 8 + 0xda);
+extern "C" void fn_801A38E0(u8* p, s32 i, s16* src) {
+    s16* dst = (s16*)(p + i * 8 + 0xda);
     dst[0] = src[0];
     dst[1] = src[1];
     dst[2] = src[2];
     dst[3] = src[3];
 }
 
-char* fn_801A3938(char* p, int i)
-{
+extern "C" u8* fn_801A3938(u8* p, s32 i) {
     return p + 0xda + i * 8;
 }
 
