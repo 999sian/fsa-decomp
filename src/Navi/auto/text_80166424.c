@@ -93,9 +93,9 @@ extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
     }
 }
 
-extern "C" u32 fn_80174A50(u32 base, u32 offset) {
-    if (offset == 0) return 0;
-    return base + offset;
+extern "C" void* fn_80174A50(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
 }
 
 extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d) {
