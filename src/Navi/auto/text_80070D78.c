@@ -20,6 +20,12 @@ extern "C" BOOL fn_800710C4(void)
     return TRUE;
 }
 
+extern "C" BOOL fn_800710CC(void);
+extern "C" BOOL fn_800710CC(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_800711CC(void);
 extern "C" void fn_800711AC(void) {
     fn_800711CC();
