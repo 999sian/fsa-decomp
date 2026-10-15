@@ -533,16 +533,17 @@ extern "C" void fn_800DD8CC(u8* self, const J3DFogInfo* other) {
     *(J3DFogInfo*)(self + 4) = *other;
 }
 
-int fn_800DD8F0(int param_1) {
+extern "C" int fn_800DD8F0(int param_1) {
     return param_1 + 4;
 }
 
-extern "C" void fn_800DD8F8(void* param_1, const void* param_2)
-{
-    u16 val = *(u16*)param_2;
-    *(u16*)((u8*)param_1 + 0x30) = val;
-    *(u8*)((u8*)param_1 + 0x32) = *(u8*)((u8*)param_2 + 2);
-    *(u8*)((u8*)param_1 + 0x33) = *(u8*)((u8*)param_2 + 3);
+extern "C" void fn_800DD8F8(u8* param_1, u8* param_2) {
+    u16 w = *(u16*)param_2;
+    u8 b2 = param_2[2];
+    *(u16*)(param_1 + 0x30) = w;
+    u8 b3 = param_2[3];
+    *(u8*)(param_1 + 0x32) = b2;
+    *(u8*)(param_1 + 0x33) = b3;
 }
 
 extern "C" void fn_800DD914(u8* self, const u8* other) {
@@ -1615,7 +1616,7 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
-    ((GXColor*)(param_1 + 0x20))[param_2] = *param_3;
+    ((GXColor*)((u32)param_1 + 0x20))[param_2] = *param_3;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
