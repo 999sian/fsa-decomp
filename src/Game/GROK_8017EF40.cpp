@@ -1,4 +1,7 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+
+extern "C" u8* fn_802D6A9C(void);
 
 extern "C" void fn_80182640(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x0) = x;
