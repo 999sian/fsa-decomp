@@ -5,14 +5,6 @@ extern void* lbl_8049AE38[];
 extern void* lbl_8049AE10[];
 extern void* lbl_8049AE24[];
 void __dl__FPv(void*);
-struct Base_800CF2B0 {
-    void* vt;
-    Base_800CF2B0() { vt = lbl_8049AE38; }
-};
-struct Derived_800CF2B0 : Base_800CF2B0 {
-    Derived_800CF2B0() { vt = lbl_8049AE24; }
-    void* operator new(unsigned long, void* p) { return p; }
-};
 extern "C" void fn_800CF2B0(void** p) {
     void** volatile* vp = (void** volatile*)p;
     *vp = lbl_8049AE38;
