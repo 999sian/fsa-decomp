@@ -194,6 +194,23 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
     p->m10();
 }
 
+extern "C" void fn_800D971C(u8* self) {
+	for (u32 i = 0; i < 4; i++) {
+		if (*(u16*)(self + 8 + i * 2) != 0xffff) {
+			loadTexNo(i, *(u16*)(self + 8 + i * 2));
+		}
+	}
+}
+
+extern "C" void fn_800D9778(u8* self) {
+	for (u32 i = 0; i < 3; i++) {
+		J3DGDSetTevColorS10((GXTevRegID)(i + 1), ((GXColorS10*)(self + 0x42))[i]);
+	}
+	for (u32 i = 0; i < 4; i++) {
+		J3DGDSetTevKColor((GXTevKColorID)i, ((GXColor*)(self + 0x62))[i]);
+	}
+}
+
 extern "C" u32 fn_800DD89C() {
     return 'PEFL';
 }
@@ -680,13 +697,12 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
-    u8 val1 = param_3[1];
     u8 val0 = param_3[0];
-    int tmp = param_2 << 3;
-    int offset = param_1 + tmp;
+    u8 val1 = param_3[1];
+    int offset = param_1 + param_2 * 8;
     
     u8 byte = *(u8*)(offset + 0x3c);
-    byte = (byte & 0xf3) | (val1 << 2);
+    byte = (byte & 0xfc) | (val1 << 2);
     *(u8*)(offset + 0x3c) = byte;
     
     byte = *(u8*)(offset + 0x3c);
