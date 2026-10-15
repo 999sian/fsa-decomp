@@ -668,6 +668,11 @@ extern "C" void fn_800DF60C(int param_1, int param_2, u32* param_3)
   *(u32*)(param_1 + param_2 * 4 + 0x6c) = *param_3;
 }
 
+extern "C" int fn_800DF620(int param_1, int param_2)
+{
+  return param_1 + param_2 * 4 + 0x6c;
+}
+
 struct UnkVtableTest8248 {
     int x;
 };
