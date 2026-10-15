@@ -188,9 +188,8 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
     return p + 0xda + i * 8;
 }
 
-void fn_801A394C(char* p, int i, unsigned char* src)
-{
-    unsigned char* dst = (unsigned char*)(p + i * 4 + 0xfa);
+extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
+    u8* dst = p + i * 4 + 0xfa;
     dst[0] = src[0];
     dst[1] = src[1];
     dst[2] = src[2];
@@ -294,6 +293,10 @@ extern "C" u16 fn_801A455C(u8* p, s32 i) {
 }
 
 extern "C" u8* fn_801A4594(u8* p, s32 i) { return p + i * 4 + 10; }
+
+extern "C" u8* fn_801A466C(u8* p, s32 i) {
+    return p + 0x18 + i * 4;
+}
 
 extern "C" void* fn_801A4680(void* p) {
     return *(void**)((char*)p + 4);
