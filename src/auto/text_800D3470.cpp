@@ -394,6 +394,10 @@ extern "C" void fn_800DE9E8(u8* this_, s32 idx, u32* src) {
     ((u32*)(this_ + 0x18))[idx] = *src;
 }
 
+extern "C" void fn_800DE9FC(u8* this_, s32 idx, u32* src) {
+    ((u32*)(this_ + 0x18))[idx] = *src;
+}
+
 extern "C" u32* fn_800DEA10(u8* this_, s32 idx) {
     return (u32*)(this_ + 0x18 + idx * 4);
 }
