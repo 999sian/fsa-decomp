@@ -126,6 +126,12 @@ extern "C" void fn_800755F0(void) {
     fn_8007356C();
 }
 
+extern "C" BOOL fn_80075610(void);
+extern "C" BOOL fn_80075610(void)
+{
+    return TRUE;
+}
+
 extern "C" void* fn_80075890(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80281904;
