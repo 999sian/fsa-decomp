@@ -278,3 +278,17 @@ extern "C" void* fn_80134898(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802922F4[];
+extern "C" void* fn_80134B3C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802922F4;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029260C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
