@@ -18,7 +18,9 @@ extern "C" void* fn_80041C4C(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_801303BC(void*, int);
+extern char lbl_80246FDC[];
 extern char lbl_80247000[];
+extern char lbl_802FF0C8[];
 extern "C" void* fn_8004AF1C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80247000;
@@ -31,7 +33,9 @@ extern "C" void* fn_8004AF1C(void* param_1, s16 param_2) {
 }
 
 extern "C" void fn_8004B074(void* param_1, void* param_2, void* param_3, void* param_4) {
-    (*(void(**)(void))((*(void***)param_1)[0x20 / sizeof(void*)]))();
+    void* vtable = *(void**)param_1;
+    (*(void(**)(void))((char*)vtable + 0x20))();
+    
     if (*(u8*)((char*)param_1 + 0x13) == 0) {
         *(void**)((char*)param_1 + 0x4) = param_2;
         *(u32*)((char*)param_2 + 0xf4) = *(u32*)((char*)param_2 + 0xf4) | 0x40;
