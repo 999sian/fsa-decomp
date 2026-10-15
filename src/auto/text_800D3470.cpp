@@ -21,6 +21,7 @@ extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
 extern "C" void __dl__FPv(void*);
 struct ActorBox;
+struct Unk800DE50C { s16 a, b, c, d; };
 struct Actor {
     Actor();
     virtual ~Actor();
@@ -304,6 +305,10 @@ extern "C" u16 fn_800DE4C0(u16* this_, s32 idx) {
     return this_[idx + 4];
 }
 
+extern "C" void fn_800DE4D0(char* p, int i, u32* v) {
+    ((u32*)(p + 0xc))[i] = *v;
+}
+
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
     this_[idx + 0x59] = *src;
 }
@@ -338,6 +343,26 @@ extern "C" void fn_800DE8EC(u16* this_, s32 idx, u16* src) {
 
 extern "C" u16 fn_800DE900(u16* this_, s32 idx) {
     return this_[idx + 4];
+}
+
+void fn_800DE910(char* p, int i, unsigned int* v)
+{
+    *(unsigned int*)(p + i * 4 + 10) = *v;
+}
+
+void fn_800DE94C(void) {}
+
+void fn_800DE950(void) {}
+
+void fn_800DE95C(unsigned char* p, int i, unsigned char* v)
+{
+    p += i * 8;
+    p[0xf] = v[1];
+    p[0x10] = v[2];
+    p[0x11] = v[3];
+    p[0x13] = v[5];
+    p[0x14] = v[6];
+    p[0x15] = v[7];
 }
 
 extern "C" u32* fn_800DEA10(u8* this_, s32 idx) {
