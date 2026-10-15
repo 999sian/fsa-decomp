@@ -14,10 +14,23 @@ extern "C" void* fn_8015A9A8(int, void*, int);
 extern "C" void fn_8015FB6C(int, int, int);
 extern "C" BOOL fn_8015F80C();
 extern "C" void* fn_8015F6EC(void*, void*);
-extern int lbl_802FF5E0;
+extern u32 lbl_802FF5E0;
 extern void* lbl_802FF540;
 extern void* lbl_80297B40;
 extern void* lbl_80297B30;
+extern "C" void* fn_8015F67C(void* param_1)
+{
+	if (lbl_802FF5E0 == 0) {
+		void* iVar1 = fn_8015A9A8(0x7c, lbl_802FF540, 0);
+		if (iVar1 != 0) {
+			iVar1 = fn_8015F6EC(iVar1, param_1);
+		}
+		lbl_802FF5E0 = (int)iVar1;
+		fn_8015FB6C(0, 0, 0);
+	}
+	return (void*)lbl_802FF5E0;
+}
+
 extern "C" void* fn_8015F6EC(void* ptr, void* param_2)
 {
 	void* r31 = ptr;
