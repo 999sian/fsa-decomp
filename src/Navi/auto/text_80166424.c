@@ -390,17 +390,16 @@ extern "C" unsigned short fn_80172614(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
 
+extern "C" int fn_80172640(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 0x16;
+}
+
 extern "C" void fn_80172654(int param_1, int param_2, s16* param_3) {
-    int offset = param_2 * 8;
-    int addr = param_1 + offset;
-    s16 h0 = param_3[0];
-    s16 h1 = param_3[1];
-    s16 h2 = param_3[2];
-    s16 h3 = param_3[3];
-    *(s16*)(addr + 0x56) = h0;
-    *(s16*)(addr + 0x58) = h1;
-    *(s16*)(addr + 0x5a) = h2;
-    *(s16*)(addr + 0x5c) = h3;
+    s16* p = (s16*)(param_1 + param_2 * 8);
+    p[0x2b] = param_3[0];
+    p[0x2c] = param_3[1];
+    p[0x2d] = param_3[2];
+    p[0x2e] = param_3[3];
 }
 
 extern "C" int fn_80172680(int param_1, int param_2) {
@@ -858,7 +857,7 @@ extern "C" void fn_80178DAC(void) {
 }
 
 extern "C" void fn_80178DB0(void* param_1) {
-    void* vtable = *(void**)param_1;
+    register void* vtable = *(void**)param_1;
     void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x74);
     func();
 }
@@ -872,7 +871,7 @@ extern "C" void fn_80178DDC(void* param_1) {
 extern "C" u32 fn_80178E08(void) { return 0x10; }
 
 extern "C" void fn_80178E10(void* param_1, int param_2) {
-    int r4 = 0;
+    register int r4 = 0;
     if ((param_2 & 0xFF) != 0) {
         r4 = 2;
     }
