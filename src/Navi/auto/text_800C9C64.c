@@ -72,7 +72,7 @@ extern "C" void fn_800127A0(void*);
 extern "C" s32 fn_800CB450(void*, s16, u8, s32, s32, f32, f32);
 extern "C" void fn_8002F198(void);
 extern "C" void fn_800CACA4(u8* p) {
-    s32 r = fn_800CB450(p, *(s16*)(p + 0x15a), lbl_802C56B4.unk10, 4, 1, lbl_80300E30, -lbl_802C56B4.unkC);
+    s32 r = fn_800CB450(p, *(s16*)(p + 0x15a), lbl_802C56B4.unk10, 4, 1, 0.0f, -lbl_802C56B4.unkC);
     (*(s16*)(p + 0x15a))++;
     if (r == 1) {
         *(s16*)(p + 0x15a) = 0;
