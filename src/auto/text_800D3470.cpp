@@ -310,8 +310,8 @@ extern "C" u16 fn_800DE4C0(u16* this_, s32 idx) {
     return this_[idx + 4];
 }
 
-extern "C" void fn_800DE4D0(Unk800DE4D0* p, int i, u32* v) {
-    *(u32*)((u8*)p + (i * 4 + 0xc)) = *v;
+extern "C" void fn_800DE4D0(Unk800DE4D0* p, int i, const u32& v) {
+    p->a[i] = v;
 }
 
 extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
