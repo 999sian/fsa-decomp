@@ -10,6 +10,9 @@ extern u8 lbl_802FEDA4;
 extern "C" u8 lbl_802BBD38[];
 struct NaviEntry { u8 pad[0x1c]; int flag; };
 struct NaviSlot { NaviEntry e[16]; s16 cur; s16 next; };
+struct NaviEnt14 { int a[3]; int val; int b; };
+struct NaviSlot2C { NaviEnt14 e[2]; s16 cur; s16 next; };
+extern u8 lbl_802BC618[];
 
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_800254CC(void);
@@ -176,6 +179,12 @@ extern "C" int fn_80026DFC(u8 i) {
     u8* p = lbl_802BC618 + i * 0x2c;
     p += *(s16*)(p + 0x28) * 0x14;
     return *(int*)(p + 0xc);
+}
+
+extern "C" void fn_80026E24(u8 i) {
+    u8* p = lbl_802BC618 + i * 0x2c;
+    p += *(s16*)(p + 0x28) * 0x14;
+    *(int*)(p + 0xc) = 0;
 }
 
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
