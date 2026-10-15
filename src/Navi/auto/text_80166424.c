@@ -6,6 +6,11 @@ extern "C" BOOL fn_801694D8(void)
 	return TRUE;
 }
 
+extern "C" void fn_801694E0(unsigned char *param_1, int param_2)
+{
+	fn_801DF378(param_1 + 0x24, param_2 * 3 + 0x1e, *param_1);
+}
+
 extern "C" int fn_8016997C()
 {
 	return 0;
@@ -57,16 +62,6 @@ extern "C" int fn_8017332C()
 }
 
 extern "C" int fn_8017334C()
-{
-	return 0;
-}
-
-extern "C" int fn_80173354()
-{
-	return 0;
-}
-
-extern "C" int fn_80173374()
 {
 	return 0;
 }
