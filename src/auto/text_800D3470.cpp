@@ -510,8 +510,8 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
     return self + i * 4 + 4;
 }
 
-extern "C" void fn_800DF08C(u8* self, int i, const GXColor* c) {
-    ((GXColor*)(self + 0xc))[i] = *c;
+extern "C" void fn_800DF08C(u8* self, int i, GXColor c) {
+    ((GXColor*)(self + 0xc))[i] = c;
 }
 
 extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
@@ -539,7 +539,7 @@ extern "C" void fn_800DF128(u8* self, int i, const u16* v) {
 }
 
 extern "C" u16* fn_800DF13C(u8* self, int i) {
-    return &((u16*)(self + 0x16))[i];
+    return (u16*)(self + (i * 2 + 0x16));
 }
 
 extern "C" void fn_800DF150(u8* self, int i, void* v) {
@@ -596,6 +596,10 @@ extern "C" u32 fn_800DF3D4(u8* this_) { return *(u32*)(this_ + 0x1c); }
 extern "C" void fn_800DF3DC(u8* this_, u32 val) { *(u32*)(this_ + 0x18) = val; }
 
 extern "C" void fn_800DF3E4(u8* this_, u32 val) { *(u32*)(this_ + 0x1c) = val; }
+
+extern "C" void fn_800DF540(int param_1, int param_2, u32* param_3) {
+    *(u32*)(param_1 + param_2 * 4 + 5) = *param_3;
+}
 
 struct UnkVtableTest8248 {
     int x;
