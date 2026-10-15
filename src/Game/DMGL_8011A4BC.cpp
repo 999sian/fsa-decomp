@@ -24,3 +24,8 @@ extern "C" u32 fn_8011AAB0(void* param_1) {
 extern "C" s32 fn_8011AAC8(char* p) {
     return *(s32*)(p + 0x234);
 }
+
+extern "C" void fn_8011AD30() {
+    fn_8010DF58();
+}
+
