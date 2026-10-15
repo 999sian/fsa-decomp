@@ -551,6 +551,9 @@ extern "C" u8* fn_80134B98(u8* p, void* a, void* b) {
 extern void* lbl_80292070[];
 struct fn_80135858_Obj {
     virtual void Release(int);
+    virtual void fn_0C(int);
+    virtual void fn_10(int);
+    virtual void fn_14(int);
 };
 extern void* lbl_802026C0;
 extern void* lbl_80291BB4;
