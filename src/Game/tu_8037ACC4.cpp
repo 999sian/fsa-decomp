@@ -24,3 +24,14 @@ extern "C" void fn_8037AE30(void) {
     }
 }
 
+extern "C" int fn_8037AE60(void) {
+    if (lbl_8053AD70 != 0) {
+        if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+            return fn_8044F664();
+        } else {
+            return fn_80453AF8();
+        }
+    }
+    return 9;
+}
+
