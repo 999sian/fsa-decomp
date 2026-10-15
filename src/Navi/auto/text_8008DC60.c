@@ -365,10 +365,8 @@ extern "C" void fn_80092228(void);
 extern "C" void fn_80092444(void);
 extern "C" void fn_800911F0(void);
 extern "C" void fn_800A1A64(void* param_1) {
-    void* obj = *(void**)(lbl_802B7CA0 + 0x1394);
-    void** vt = *(void***)obj;
-    void (*f)(void*) = (void (*)(void*))vt[5];
-    f(obj);
+    VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
+    obj->v3();
     f32 c = lbl_80300AF0;
     fn_80179CB4(*(void**)((char*)param_1 + 4), obj, c, c);
 }
