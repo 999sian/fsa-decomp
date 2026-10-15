@@ -15,8 +15,30 @@ extern "C" void fn_8018DEF0(void*, u16, u8*);
 extern "C" void fn_80178BFC(void*, void*);
 extern "C" void fn_801780D4(void);
 extern "C" int fn_80177E84(void*, int);
+extern "C" void fn_80177F0C(void);
+extern "C" void fn_8017A488(void) {
+    fn_80177F0C();
+}
+
 extern "C" int fn_8017A8CC(void) {
     return 8;
+}
+
+extern "C" void fn_80188814(u8* param_1, u8 param_2) {
+    *(u8*)(param_1 + 0xb2) = param_2;
+    u8* p = (u8*)*(void**)(param_1 + 0x168);
+    if ((u32)p == 0) return;
+    if ((u32)p + 0x10 == 0) return;
+    *(u8*)(p + 0x3) = param_2;
+}
+
+extern "C" void fn_80188834(u8* param_1, u8 param_2) {
+    *(u8*)(param_1 + 0xb1) = param_2;
+    u8* q = (u8*)*(void**)(param_1 + 0x168);
+    if (q != nullptr) {
+        *(u8*)(q + 0x22) = param_2;
+    }
+    fn_801780D4();
 }
 
 extern "C" void fn_80188868(u8* param_1) {
@@ -25,6 +47,24 @@ extern "C" void fn_80188868(u8* param_1) {
         u8 val = *(u8*)((u8*)p + 0x13);
         *(u8*)((u8*)param_1 + 0xb2) = val;
     }
+}
+
+extern "C" int fn_80188880(u8* param_1, int param_2) {
+    void* base = *(void**)(param_1 + 0x168);
+    if (base != nullptr) {
+        void* table = *(void**)((u8*)base + 0x70);
+        if (table != nullptr) {
+            for (int i = 0; i < 8; i++) {
+                void** vtable = *(void***)table;
+                void* method_addr = *(void**)((u8*)vtable + 0xa0);
+                void* result = ((void* (*)(void*, int))method_addr)(table, i);
+                if (result != nullptr && *(int*)((u8*)result + 0x20) == param_2) {
+                    return 1;
+                }
+            }
+        }
+    }
+    return fn_80177E84(param_1, param_2);
 }
 
 extern "C" void fn_80188928(u8* param_1) {
