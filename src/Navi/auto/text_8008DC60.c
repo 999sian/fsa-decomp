@@ -7,6 +7,12 @@ extern "C" u8 fn_8010B734(void*);
 extern "C" void fn_8010BAA0(void*);
 extern "C" u8 fn_8010B8D4(void*);
 extern "C" void fn_800C55B8(void*, u8);
+struct Obj_8009287C {
+    u8 pad[0x7e8];
+    u8 state;
+};
+typedef void (Obj_8009287C::*StateFn_8009287C)();
+extern StateFn_8009287C lbl_80285C30[];
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
