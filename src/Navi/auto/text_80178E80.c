@@ -17,6 +17,10 @@ extern "C" int fn_8017A8CC(void) {
     return 8;
 }
 
+extern "C" void fn_801889D8(u8* param_1, void* param_2) {
+    *(void**)((u8*)param_1 + 0x19c) = param_2;
+}
+
 extern "C" void fn_8018A700(u8* self) {
     void* p = *(void**)(self + 0x138);
     if (p != NULL) {
