@@ -77,3 +77,17 @@ extern "C" BOOL fn_80012F60(u8* self) {
     return *(u32*)(self + 0x1c) != 0;
 }
 
+extern "C" char lbl_80204E3C[];
+extern "C" void* fn_80012FB4(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)((char*)ptr + 0x10) = lbl_80204E3C;
+        if (ptr != nullptr) {
+            *(void**)((char*)ptr + 0x10) = lbl_80204E88;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
