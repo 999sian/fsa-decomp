@@ -404,15 +404,12 @@ extern "C" void fn_800D934C(void* param_1) {
 }
 
 extern "C" void fn_800D93B4(void* param_1) {
-    unsigned int i = 0;
-    void* pParam = param_1;
-    
-    for (i = 0; i < 2; i++) {
-        unsigned short texNum = *(unsigned short*)((char*)pParam + 8);
-        if (texNum != 0xFFFF) {
-            loadTexNo__FUlRCUs(i, (unsigned short*)((char*)pParam + 8));
+    u8* addr = (u8*)param_1;
+    for (u32 i = 0; i < 2; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
         }
-        pParam = (char*)pParam + 2;
+        addr += 2;
     }
 }
 
