@@ -39,3 +39,13 @@ extern "C" void fn_8008E714(void *param_1)
     *(unsigned long *)((char *)param_1 + 0x2c) = 0;
 }
 
+extern "C" void *fn_8008E750(void *self, short flags) {
+    if (self != 0) {
+        __dt__10JSUPtrListFv(self, 0);
+        if (flags > 0) {
+            operator delete(self);
+        }
+    }
+    return self;
+}
+
