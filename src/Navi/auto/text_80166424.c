@@ -176,6 +176,8 @@ extern "C" u32 fn_80172DC8(void) {
 
 extern "C" void fn_80172DD0(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
+extern "C" void fn_80173074(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
+
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
     Unk80174858Pair fallback;
     fallback.x = lbl_80301AC0.x;
