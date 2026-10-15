@@ -43,3 +43,7 @@ extern "C" void fn_80033678(void* p) {
     }
 }
 
+extern "C" void fn_8003548C(void* p) {
+    fn_8002E3C4(p, 0);
+}
+
