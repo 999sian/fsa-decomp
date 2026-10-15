@@ -548,11 +548,19 @@ extern "C" int fn_80132970(void)
 }
 
 extern "C" int fn_80132978(void* param_1, void* param_2, f32* param_3) {
-    extern const f32 lbl_803017B0;
     f32 val = lbl_803017B0;
-    for (int i = 0; i < 12; i++) {
-        param_3[i] = val;
-    }
+    param_3[0] = val;
+    param_3[1] = val;
+    param_3[2] = val;
+    param_3[3] = val;
+    param_3[4] = val;
+    param_3[5] = val;
+    param_3[6] = val;
+    param_3[7] = val;
+    param_3[8] = val;
+    param_3[9] = val;
+    param_3[10] = val;
+    param_3[11] = val;
     return 0;
 }
 
