@@ -62,6 +62,9 @@ extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4)
     }
 }
 
+extern "C" void fn_800CBD68(void) {
+}
+
 extern "C" s32 fn_800CBD6C(void) {
     return 0;
 }
