@@ -16,6 +16,22 @@ extern "C" int fn_80087348(void* param_1) {
     return ret > 0 ? 0 : 2;
 }
 
+extern "C" void* fn_800873FC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80283F48;
+        if ((s32)ptr + (unsigned)0x4 != 0) {
+            ((void**)(ptr))[1] = lbl_802883C4;
+            if ((s32)ptr + 0x4 != 0) {
+                ((void**)(ptr))[1] = lbl_8027EC78;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_80087788(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_802883C4;
