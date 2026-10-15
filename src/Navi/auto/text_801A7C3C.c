@@ -49,6 +49,12 @@ extern "C" int fn_801ADC28(void) {
     return 5;
 }
 
+extern "C" BOOL fn_801ADD48(void);
+extern "C" BOOL fn_801ADD48(void)
+{
+    return TRUE;
+}
+
 extern "C" void* lbl_8029B3E0[];
 extern "C" void* fn_801ADD54(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
