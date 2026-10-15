@@ -14,6 +14,13 @@ extern "C" BOOL fn_8000B920(void)
     return TRUE;
 }
 
+extern "C" char* fn_8000BECC(char* p)
+{
+	char* q = *(char**)(p + 0x18);
+	if (q != 0) q -= 0xc;
+	return q;
+}
+
 extern "C" char* fn_8000BEE0(char** p) {
     char* q = *p;
     if (q != 0) q -= 0xc;
