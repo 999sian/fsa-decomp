@@ -6,6 +6,11 @@
 extern "C" void fn_801A7E24(int);
 struct NaviRect16 { s16 x, y, w, h; };
 struct NaviColor8 { u8 r, g, b, a; };
+struct NaviRectHolder {
+    u8 unk_0x0[0xda];
+    NaviRect16 rects[4];
+    NaviColor8 colors[4];
+};
 extern void* lbl_80299E68[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80196388(void* ptr, s16 param_2) {
@@ -178,24 +183,16 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A38E0(u8* p, s32 i, s16* src) {
-    s16* dst = (s16*)(p + i * 8);
-    dst[0x6d] = src[0];
-    dst[0x6e] = src[1];
-    dst[0x6f] = src[2];
-    dst[0x70] = src[3];
+extern "C" void fn_801A38E0(u8* p, s32 i, NaviRect16* src) {
+    *(NaviRect16*)(p + i * 8 + 0xda) = *src;
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
     return p + 0xda + i * 8;
 }
 
-extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
-    u8* dst = p + i * 4;
-    dst[0xfa] = src[0];
-    dst[0xfb] = src[1];
-    dst[0xfc] = src[2];
-    dst[0xfd] = src[3];
+extern "C" void fn_801A394C(u8* p, s32 i, NaviColor8* src) {
+    *(NaviColor8*)(p + i * 4 + 0xfa) = *src;
 }
 
 extern "C" void* fn_801A3B8C(void* p) {
