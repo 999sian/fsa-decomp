@@ -13,7 +13,7 @@ extern "C" void fn_80067EEC(void* p);
 extern "C" int fn_801E6578(void* a, void* b);
 extern "C" void fn_800074C0(const char* fmt, ...);
 extern "C" int fn_80062FE4(void* p);
-extern "C" void fn_801AB758(f32);
+extern "C" f32 fn_801AB758(f32);
 extern "C" void fn_801ACC40(void*, u32, void*);
 extern "C" void* fn_800637F0(void* a, u8* p, int n);
 extern "C" void fn_8015AB1C(void* ptr);
@@ -118,7 +118,8 @@ extern "C" int fn_80063AF8(u8* p, int n) {
 }
 
 extern "C" void fn_80063B74(u8* p, void* a) {
-    fn_801ACC40(*(void**)(p + 8), *(u16*)(p + 4), a);
+    u32 n = *(u16*)(p + 4);
+    fn_801ACC40(*(void**)(p + 8), n, a);
 }
 
 extern void* lbl_8027F214[];
@@ -158,8 +159,9 @@ extern "C" int fn_80063C70(void) {
     return 8;
 }
 
-extern "C" void fn_80063C78(u8* p) {
-    fn_801AB758(*(f32*)(p + 8));
+extern "C" f32 fn_80063C78(void* p) {
+    f32 f = ((f32*)p)[2];
+    fn_801AB758(f);
 }
 
 extern "C" void fn_800641AC(void);
