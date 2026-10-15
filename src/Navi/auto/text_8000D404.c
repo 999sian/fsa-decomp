@@ -7,6 +7,12 @@ extern "C" void fn_8000EAE0(void* ptr, u32 value) {
 }
 
 extern void* lbl_80204948[];
+extern void* lbl_80204820[];
+extern void* lbl_80204720[];
+extern void* lbl_8020474C[];
+extern "C" void fn_801AF42C(void*, void*);
+extern "C" void fn_801AF744(void*);
+extern char* lbl_802FF704;
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_8000EB44(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
