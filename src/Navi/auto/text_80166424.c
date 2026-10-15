@@ -177,6 +177,10 @@ extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_801725FC(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
 
+extern "C" int fn_801727D0(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 0x12c;
+}
+
 extern "C" void fn_8017288C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_8017289C(u8* p, s32 i) { return ((u16*)(p + 4))[i]; }
