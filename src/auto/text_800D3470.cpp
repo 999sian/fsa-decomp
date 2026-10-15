@@ -259,20 +259,17 @@ extern "C" void fn_800D8F78(u8* self) {
     u8 count = *(u8*)(self + 0xd0);
     if (count == 0) return;
     
-    u8* dl = __GDCurrentDL->pDisplayListData;
-    
+    u32 accumulator = 0;
     for (u32 i = 0; i < count; i++) {
         u32 value = *(u32*)(self + 0x78);
-        u32 combined = value | ((i + 0x10) << 24);
+        accumulator = (value & 0xff000000) | ((i + 0x10) << 24);
         
-        *dl++ = 0x61;
-        *dl++ = (combined >> 24) & 0xff;
-        *dl++ = (combined >> 16) & 0xff;
-        *dl++ = (combined >> 8) & 0xff;
-        *dl++ = combined & 0xff;
+        __GDWrite(0x61);
+        __GDWrite(accumulator >> 24);
+        __GDWrite((accumulator >> 16) & 0xff);
+        __GDWrite((accumulator >> 8) & 0xff);
+        __GDWrite(accumulator & 0xff);
     }
-    
-    __GDCurrentDL->pDisplayListData = dl;
 }
 
 extern "C" void fn_800D9020(u8* self) {
@@ -361,7 +358,20 @@ extern "C" u8* fn_800DD970(u8* self) {
     return self + 0x38;
 }
 
+extern "C" u32 fn_800DD9B0(u8* p) { return *(u32*)(p + 0x3c); }
+
 extern "C" void fn_800DD9B8(u8* p, u32 v) { *(u32*)(p + 0x3c) = v; }
+
+extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = &__vt__14J3DPEBlockFull;
+        *(void**)param_1 = &__vt__10J3DPEBlock;
+        if (0 < param_2) {
+            __dl__FPv(param_1);
+        }
+    }
+    return param_1;
+}
 
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
