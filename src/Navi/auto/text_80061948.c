@@ -296,6 +296,16 @@ extern "C" void fn_80067EEC(void* p) {
     f[6] = 1.0f;
 }
 
+extern "C" void* fn_80067F1C(void* p) {
+    f32* f = (f32*)p;
+    *(void**)p = lbl_802474F4;
+    fn_801E0DB8((u8*)p + 4, fn_80067EEC, fn_8004F19C, 0x1c, 1);
+    f[8] = 10.0f;
+    f[9] = -5.0f;
+    f[10] = 0.5f;
+    return p;
+}
+
 extern void* lbl_8027FDCC[];
 extern "C" void* fn_80067F8C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
