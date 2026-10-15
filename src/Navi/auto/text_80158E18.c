@@ -30,6 +30,10 @@ extern "C" void fn_8015ABB4(char** p) {
     *p = q;
 }
 
+extern "C" void* fn_8015ABD0(void** p) {
+    return ((void**)*p)[3];
+}
+
 extern "C" void fn_8015ABDC(void** param_1, void* param_2) {
     *param_1 = param_2;
 }
