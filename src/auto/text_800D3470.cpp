@@ -551,6 +551,10 @@ extern "C" void fn_800DF318(int param_1, int param_2, u8* param_3) {
     *(u8*)(param_1 + 7) = uVar1;
 }
 
+extern "C" u8* fn_800DF344(u8* self, int i) {
+    return self + i * 4 + 4;
+}
+
 extern "C" void fn_800DF374(u8* this_, s32 idx, u16* src) {
     u16 v = *src;
     u16* dest = (u16*)(this_ + idx * 2);
