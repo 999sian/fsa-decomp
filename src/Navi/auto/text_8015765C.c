@@ -6,6 +6,10 @@
 extern "C" unsigned char lbl_802FF4E8;
 extern "C" char* lbl_802FF4BC;
 extern "C" void* lbl_802FF4C0;
+extern "C" void fn_8015765C(u8 param_1) {
+    lbl_802FF4E8 = param_1;
+}
+
 extern "C" unsigned char fn_80157664(void) {
     return lbl_802FF4E8;
 }
