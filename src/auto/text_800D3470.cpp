@@ -208,6 +208,17 @@ extern "C" void fn_800D6394(int* param_1, u32 param_2)
   }
 }
 
+extern "C" void fn_800D6D54(void* p) {
+    u8* addr = (u8*)p;
+    for (u32 i = 0; i < 8; i++) {
+        void* obj = *(void**)((u8*)addr + 0x38);
+        if (obj != 0) {
+            load__9J3DTexMtxCFUl(obj, i);
+        }
+        addr += 4;
+    }
+}
+
 extern "C" void fn_800D6DAC(void* param_1) {
     u32 val = *(u32*)((u8*)param_1 + 4);
     if (val != 0) {
