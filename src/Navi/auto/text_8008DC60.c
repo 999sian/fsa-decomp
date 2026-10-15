@@ -352,6 +352,38 @@ extern "C" void fn_800A1A64(void* param_1) {
     fn_80179CB4(*(void**)((char*)param_1 + 4), obj, c, c);
 }
 
+extern "C" char lbl_802C545C[];
+extern "C" char lbl_802BB0FC[];
+extern "C" void fn_800A1B2C(s16* a, s16* b) {
+    char* p = lbl_802C545C;
+    s16 x = (s16)(*(s16*)(p + 0x14) + b[0] * *(f32*)(p + 0xc));
+    s16 y = (s16)(*(s16*)(p + 0x16) + b[1] * *(f32*)(p + 0x10));
+    a[0] = x;
+    b[0] = x;
+    b[1] = y;
+    a[1] = y;
+}
+
+extern "C" int fn_800A1BE8(int i) {
+    char* p = lbl_802BB0FC + i * 0x4c;
+    s16 x = *(s16*)(p + 0x1a4) - 0xe00;
+    s16 y = *(s16*)(p + 0x1a6) - 0x2c00;
+    if (x < 0) {
+        x = 0;
+    } else if (x >= 0x600) {
+        x = 0x5ff;
+    }
+    if (y < 0) {
+        y = 0;
+    } else if (y >= 0x600) {
+        y = 0x5ff;
+    }
+    return x / 256 + (y / 256) * 6;
+}
+
+extern "C" void fn_800A1CE0(void) {
+}
+
 extern "C" void* fn_800A1CE8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80286A30;
