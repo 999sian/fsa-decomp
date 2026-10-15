@@ -212,12 +212,13 @@ extern "C" void fn_801383B8(void* param_1) {
     *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
     *(u8*)((u8*)param_1 + 0x20) = 0;
     *(u8*)((u8*)param_1 + 0x21) = 0;
-    *(u32*)((u8*)param_1 + 0x38) = 0;
-    *(u32*)((u8*)param_1 + 0x3c) = 0;
-    *(u32*)((u8*)param_1 + 0x40) = 0;
-    *(u32*)((u8*)param_1 + 0x44) = 0;
-    *(u32*)((u8*)param_1 + 0x48) = 0;
-    *(u32*)((u8*)param_1 + 0x4c) = 0;
+    u32 v0 = 0;
+    *(u32*)((u8*)param_1 + 0x38) = v0;
+    *(u32*)((u8*)param_1 + 0x3c) = v0;
+    *(u32*)((u8*)param_1 + 0x40) = v0;
+    *(u32*)((u8*)param_1 + 0x44) = v0;
+    *(u32*)((u8*)param_1 + 0x48) = v0;
+    *(u32*)((u8*)param_1 + 0x4c) = v0;
     *(u32*)((u8*)param_1 + 0x50) = *(u32*)((u8*)param_1 + 0x48);
     *(u32*)((u8*)param_1 + 0x54) = *(u32*)((u8*)param_1 + 0x4c);
     *(u32*)((u8*)param_1 + 0x58) = *(u32*)((u8*)param_1 + 0x50);
@@ -370,6 +371,11 @@ extern "C" void* fn_8013AF0C(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" int fn_8013AF54()
+{
+	return 0;
 }
 
 extern "C" void fn_80167880(void*, int);
