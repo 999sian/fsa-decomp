@@ -308,6 +308,8 @@ extern "C" void fn_8000EF28(u32* p) {
     *p = lbl_80301D04;
 }
 
+extern "C" void fn_8000F258(void) {}
+
 extern void* lbl_8020455C[];
 extern "C" void* fn_8000F32C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
