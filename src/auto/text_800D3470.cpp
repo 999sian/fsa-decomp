@@ -199,8 +199,8 @@ extern "C" u8* fn_800DD970(u8* self) {
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
         typedef void (*FuncPtr)(void);
-        void* inner = *(void**)obj;
-        FuncPtr fn = *(FuncPtr*)((u8*)inner + 0x1c);
+        void* p = *(void**)obj;
+        FuncPtr fn = *(FuncPtr*)((u8*)p + 0x1c);
         fn();
     }
 }
@@ -251,6 +251,11 @@ extern "C" void fn_800DDADC(u8* this_, u8 val) {
 
 extern "C" void fn_800DDAE4(u8* this_, u8* src) {
     *(u8*)(this_ + 0xe) = *src;
+}
+
+extern "C" u8 fn_800DDB0C(int param_1)
+{
+  return *(u8*)(param_1 + 0xf);
 }
 
 extern "C" void fn_800DDC1C(u16* this_, s32 idx, u16 val) {
