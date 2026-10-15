@@ -342,8 +342,8 @@ extern "C" void fn_80007AB8(const char*, int, const char*, ...);
 extern "C" void* fn_8015AC80(void*, void*, int);
 extern "C" char lbl_80203B9C[];
 extern "C" char lbl_80203DE8[];
-extern "C" char lbl_802FB810[];
-extern "C" char lbl_802FB814[];
+extern "C" char lbl_802FB810[3];
+extern "C" char lbl_802FB814[5];
 extern "C" void* fn_8000F3D0(void* a, void* b) {
     bool ok = false;
     if (lbl_802FEBA0 == nullptr || a == nullptr) {
