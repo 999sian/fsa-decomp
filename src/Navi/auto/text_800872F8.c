@@ -7,6 +7,10 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_802883C4[];
 extern void* lbl_8027EC78[];
 extern "C" int fn_800636A0(void*, void*, int);
+extern "C" int fn_80058A88(int x);
+extern "C" int fn_80058A28(int x);
+extern "C" void fn_80057C38(int x);
+extern "C" void fn_8001A454(int a, int b, int c);
 extern u8 lbl_802B7CA0[];
 extern "C" int fn_80087348(void* param_1) {
     int ret = fn_800636A0(param_1, lbl_802B7CA0 + 0x2200, 0x40);
@@ -48,6 +52,17 @@ extern "C" void* fn_80087788(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" int fn_800877E4(void* param_1) {
+    s8 byte = *(s8*)((u8*)param_1 + 0x420);
+    if (byte == 0) {
+        fn_80057C38(0x1e);
+        (*(u8*)((u8*)param_1 + 0x420))++;
+    } else if (byte != -1) {
+        fn_8001A454(4, 0, 5);
+    }
+    return 1;
 }
 
 extern "C" void fn_800885B4(void);
