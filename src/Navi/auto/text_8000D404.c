@@ -48,6 +48,9 @@ extern "C" void fn_8000EDFC(void) {
 extern "C" void fn_8000EE00(void) {
 }
 
+extern "C" void fn_8000EE04(void) {
+}
+
 extern "C" void* fn_8000EE0C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
