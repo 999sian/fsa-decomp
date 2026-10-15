@@ -250,6 +250,18 @@ extern "C" void* fn_80130304(u8* p, s16 del) {
     return p;
 }
 
+extern "C" u8* fn_80130364(u8* p) {
+    fn_80166B58(p + 0x58, p);
+    *(u32*)(p + 0xc4) = 0;
+    *(u32*)(p + 0xc8) = 0;
+    *(u32*)(p + 0xcc) = 0;
+    *(u32*)(p + 0xd0) = 0;
+    *(u32*)(p + 0xd4) = 0;
+    *(u32*)(p + 0xd8) = 0;
+    *(u32*)(p + 0xdc) = 0;
+    return p;
+}
+
 extern void* lbl_80247020[];
 extern "C" void* fn_801303BC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
