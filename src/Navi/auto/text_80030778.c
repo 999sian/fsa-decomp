@@ -20,3 +20,14 @@ extern "C" void fn_80033668(void* p) {
     *(unsigned int*)((char*)p + 0xe8) |= 0x40000000;
 }
 
+extern "C" void fn_80033678(void* p) {
+    *(unsigned int*)((char*)p + 0xe8) |= 0x80000000;
+    *(int*)((char*)p + 0xe0) = *(int*)(lbl_802BB0FC + 0x58) + 4000;
+    fn_8002A3CC(p, (char*)p + 0xf0, 0x46, 1);
+    if (!lbl_802FEE44) {
+        lbl_802FEE44 = 1;
+        lbl_802FEE43 |= 4;
+        lbl_802FEE30 |= 0x8000;
+    }
+}
+
