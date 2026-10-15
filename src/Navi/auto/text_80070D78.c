@@ -42,6 +42,19 @@ extern "C" void fn_80072240(void) {
     fn_80071CF0();
 }
 
+extern void* lbl_802473AC[];
+extern "C" void fn_80072484(void* p);
+extern "C" void fn_80072484(void* p) {
+    f32* f = (f32*)p;
+    *(void**)p = lbl_802473AC;
+    f[1] = 0.0f;
+    f[2] = 0.0f;
+    f[3] = 0.0f;
+    f[4] = 1.0f;
+    f[5] = 1.0f;
+    f[6] = 1.0f;
+}
+
 extern "C" void fn_80072570(void);
 extern "C" void fn_800724B4(void) {
     fn_80072570();
