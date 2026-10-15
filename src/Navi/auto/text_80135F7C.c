@@ -75,6 +75,29 @@ extern "C" void* fn_801360EC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801E10DC(void* p, int a, void* b, int c);
+extern "C" f64 fn_801E9FA0(f64 a, f64 b);
+extern "C" u32 lbl_80201F60[];
+extern "C" void fn_80136148(void* self, void* p, f32 x) {
+    int v = 0;
+    if (x >= 0.5f) {
+        v = 1;
+    }
+    fn_801E10DC(p, 2, &v, 4);
+}
+
+extern "C" u32 fn_80136314(u32 i) {
+    u32 tmp = 0;
+    u32* p = &lbl_80201F60[i];
+    if (i >= 4) {
+        p = &tmp;
+    }
+    if (*p == 0) {
+        return lbl_80201F60[0];
+    }
+    return *p;
+}
+
 extern "C" void* fn_8013635C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80292BB4;
