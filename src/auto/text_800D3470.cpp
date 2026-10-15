@@ -1063,6 +1063,10 @@ extern "C" void fn_800DE388(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
 extern "C" void fn_800DE3EC(void) {
 }
 
+extern "C" u32 fn_800DE490(void) {
+    return 'TVB2';
+}
+
 extern "C" void fn_800DE49C(u16* this_, s32 idx, u16 val) {
     this_[idx + 4] = val;
 }
