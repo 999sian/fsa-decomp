@@ -41,6 +41,10 @@ extern "C" int fn_801699EC()
 	return 0;
 }
 
+extern "C" void fn_8017318C(void)
+{
+}
+
 extern "C" BOOL fn_80173190(void)
 {
     return TRUE;
