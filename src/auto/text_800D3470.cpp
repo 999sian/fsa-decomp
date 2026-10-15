@@ -174,6 +174,12 @@ extern "C" void fn_800D5120(Vtable800D8248* obj)
   obj->m4();
 }
 
+extern "C" void fn_800D5750(Vtable800D8248* obj)
+{
+  obj->m3();
+  obj->m4();
+}
+
 extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
 {
   int* vtable = *(int**)param_1;
