@@ -571,6 +571,11 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
     return this_->b[idx];
 }
 
+extern "C" u8 fn_800DDD80(int param_1, int param_2) {
+    param_1 += param_2;
+    return *(u8 *)(param_1 + 0x10a);
+}
+
 extern "C" void fn_800DDD8C(int param_1, int param_2, u8 param_3) {
     param_1 += param_2;
     *(u8 *)(param_1 + 0x11a) = param_3;
@@ -711,6 +716,11 @@ extern "C" void fn_800DE164(u8* this_, u32 idx, const u8* src) {
 
 extern "C" Unk800DE578* fn_800DE190(Unk800DE0CC* p, int i) {
     return &p->b[i];
+}
+
+extern "C" void fn_800DE1CC(int param_1, int param_2, u8 param_3)
+{
+  *(u8*)(param_1 + param_2 + 0x76) = param_3;
 }
 
 extern "C" void fn_800DE1D8(int param_1, int param_2, u8* param_3)
@@ -987,14 +997,14 @@ extern "C" u32 fn_800DE954() {
     return 1;
 }
 
-extern "C" void fn_800DE95C(u8* this_, s32 idx, GXColor* src) {
-    GXColor* p = (GXColor*)(this_ + idx * 8 + 0xc);
-    p[0].a = src[0].g;
-    p[1].r = src[0].b;
-    p[1].g = src[0].a;
-    p[1].a = src[1].g;
-    p[2].r = src[1].b;
-    p[2].g = src[1].a;
+extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
+    u8* p = this_ + idx * 8;
+    p[0xf] = src[1];
+    p[0x10] = src[2];
+    p[0x11] = src[3];
+    p[0x13] = src[5];
+    p[0x14] = src[6];
+    p[0x15] = src[7];
 }
 
 extern "C" u8* fn_800DE9D4(u8* this_, s32 idx) {
