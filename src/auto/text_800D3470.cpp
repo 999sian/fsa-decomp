@@ -21,6 +21,10 @@ extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
 extern "C" void __dl__FPv(void*);
 struct ActorBox;
+struct Unk800DF13C {
+    u8 _0[0x16];
+    u16 a[1];
+};
 struct Unk800DE50C { s16 a, b, c, d; };
 struct Unk800DE4D0 {
     u8 _0[0xc];
