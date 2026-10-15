@@ -39,17 +39,18 @@ extern "C" void* fn_8011C660(void* param_1, s16 param_2) {
 
 extern "C" void fn_8011CB8C(u32 param_1) {
     lbl_802FE970 = param_1;
-    if (param_1 == 0) {
-        OSSetErrorHandler(0x10, nullptr);
-    } else {
+    if (param_1 != 0) {
         OSSetErrorHandler(0x10, (void*)fn_8011C8E8);
+    } else {
+        OSSetErrorHandler(0x10, nullptr);
     }
 }
 
 extern "C" u32 fn_8011DF90(void* param_1) {
     u32 val = *(u32*)((u8*)param_1 + 0x84);
     if (val == 0xffffffff) return 1;
-    if (*(s32*)((u8*)param_1 + 0x88) >= 0) return 1;
+    s32 val2 = *(s32*)((u8*)param_1 + 0x88);
+    if (val2 >= 0) return 1;
     return ((-val) | val) >> 31;
 }
 
