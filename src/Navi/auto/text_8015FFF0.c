@@ -81,6 +81,10 @@ extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_80164940(void* a, u8* b) {
+    fn_801BDE1C(*(u8**)(b + 0x3c) + 0xc0, a, 0);
+}
+
 extern "C" int fn_801C7D34(void*);
 extern "C" void fn_80166FC4(void*, void*);
 extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
