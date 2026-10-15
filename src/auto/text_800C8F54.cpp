@@ -3,7 +3,7 @@
 
 #include "types.h"
 
-extern s32 lbl_8053BC70;
+extern volatile s32 lbl_8053BC70;
 
 #include <types.h>
 
@@ -47,14 +47,20 @@ extern "C" s32 fn_800CAEC8(int param_1, u32 param_2) {
 }
 
 extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
-    ushort uVar1;
+    s32 default_val = lbl_8053BC70;
+    int p2_4, p2_8, p2_10;
+    ushort idx1, uVar1;
     
-    uVar1 = *(ushort *)(*(int *)(param_2 + 4) + (uint)*(ushort *)(*(int *)(param_2 + 8) + param_3 * 2) * 0x14c + 8 + param_4 * 2);
+    p2_4 = *(int *)(param_2 + 4);
+    p2_8 = *(int *)(param_2 + 8);
+    p2_10 = *(int *)(param_2 + 0x10);
+    idx1 = *(ushort *)(p2_8 + param_3 * 2);
+    uVar1 = *(ushort *)(p2_4 + idx1 * 0x14c + 8 + param_4 * 2);
     
-    if (uVar1 == 0xffff) {
-        *param_1 = lbl_8053BC70;
+    if (uVar1 != 0xffff) {
+        *param_1 = *(int *)(p2_10 + ((uint)uVar1 << 2));
     } else {
-        *param_1 = *(int *)(*(int *)(param_2 + 0x10) + (uint)uVar1 * 4);
+        *param_1 = default_val;
     }
 }
 
