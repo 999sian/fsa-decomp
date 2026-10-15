@@ -19,3 +19,8 @@ extern "C" int fn_800D0618(void)
     return 6;
 }
 
+extern "C" int fn_800D068C(void)
+{
+    return 8;
+}
+
