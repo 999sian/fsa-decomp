@@ -1,4 +1,11 @@
 #include "types.h"
+struct NaviState_8009E6F0 {
+    void f();
+};
+typedef void (NaviState_8009E6F0::*NaviStateFunc_8009E6F0)();
+extern NaviStateFunc_8009E6F0 lbl_802865A4[];
+extern u32 lbl_802FEDD8;
+extern s32 lbl_802FEDE4;
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300AF0;
 extern "C" void fn_8015FDA8(void*, void*);
