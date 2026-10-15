@@ -9,6 +9,13 @@ extern void __dt__16JAIStreamDataMgrFv(void*, int);
 extern void __dt__12JAISoundInfoFv(void*, int);
 extern void __dl__FPv(void*);
 
+typedef struct {
+    u32 id;
+} JAISoundID;
+
+extern void* getData__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
+extern u8 getTypeID__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
+
 extern "C" void* fn_8045A640(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
@@ -17,12 +24,12 @@ extern "C" void* fn_8045A640(void* this_, s16 freeFlag) {
         *(void**)(p + 0x4) = (void*)(base + 0x24);
         *(void**)(p + 0x8) = (void*)(base + 0x34);
         __dt__16JAIStreamDataMgrFv((void*)(p + 0x8), 0);
+        
         if (p + 0x4 != 0) {
             *(void**)(p + 0x4) = (void*)&lbl_80495470;
             if (p + 0x4 != 0) {
-                void** ptr = (void**)(p + 0x4);
-                if (*ptr == (void*)&sInstance__33JASGlobalInstance__12JAISoundInfo) {
-                    *ptr = 0;
+                if ((void*)(p + 0x4) == *sInstance__33JASGlobalInstance__12JAISoundInfo) {
+                    *sInstance__33JASGlobalInstance__12JAISoundInfo = (void*)0;
                 }
             }
         }
