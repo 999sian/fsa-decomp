@@ -1,6 +1,8 @@
 #include "types.h"
 extern void* lbl_8027F2C0[];
 
+extern void* lbl_8027F2C0[];
+
 extern void* lbl_8027F240[];
 extern void* lbl_8027F214[];
 
