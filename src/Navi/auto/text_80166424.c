@@ -123,6 +123,23 @@ extern "C" void fn_8016744C(int param_1, int param_2, int param_3)
 	*(int*)(param_1 + 0x10) = 0;
 }
 
+extern "C" int fn_80167460(int param_1, void* param_2, int param_3)
+{
+	int pos = *(int*)(param_1 + 0x10);
+	int cap = *(int*)(param_1 + 0xc);
+	
+	if (pos + param_3 > cap) {
+		param_3 = cap - pos;
+	}
+	
+	if (param_3 > 0) {
+		memcpy(param_2, (void*)(*(int*)(param_1 + 0x8) + pos), param_3);
+		*(int*)(param_1 + 0x10) = *(int*)(param_1 + 0x10) + param_3;
+	}
+	
+	return param_3;
+}
+
 extern "C" int fn_80167554(int p) { return *(int*)(p + 0xc); }
 
 extern "C" int fn_8016755C(int param_1) {
@@ -795,8 +812,8 @@ extern "C" void fn_80178E10(void* param_1, int param_2) {
     if ((param_2 & 0xFF) != 0) {
         r4 = 2;
     }
-    void (*func)(int) = *(void (**)(int))(*(u8**)param_1 + 0x20);
-    func(r4);
+    void (*func)(void*, int) = *(void (**)(void*, int))(*(u8**)param_1 + 0x20);
+    func(param_1, r4);
 }
 
 extern "C" int fn_80178E4C(int param_1) {
