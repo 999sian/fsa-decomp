@@ -43,8 +43,11 @@ extern "C" void fn_80026520(void) {
 extern "C" int fn_8002652C(void) {
     u8 i;
     for (i = 0; i < 4; i++) {
-        if (fn_800265AC(i) && !(lbl_802FED9C & (u8)(1 << i))) {
-            return 0;
+        if (fn_800265AC(i)) {
+            u8 m = lbl_802FED9C & (u8)(1 << i);
+            if (!m) {
+                return 0;
+            }
         }
     }
     return 1;
