@@ -1066,8 +1066,8 @@ extern "C" void fn_800DED70(int param_1, int param_2, const u8* param_3)
 
 extern "C" u8 fn_800DED80(int param_1, int param_2)
 {
-    int addr = param_1 + param_2;
-    return *(u8*)(addr + 0xc8);
+    u8* base = (u8*)param_1;
+    return base[param_2 + 0xc8];
 }
 
 extern "C" u32 fn_800DED8C(int param_1)
