@@ -567,6 +567,42 @@ extern "C" void* fn_800970F8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8009E6F0(NaviState_8009E6F0* p);
+extern "C" void fn_8009EBA0(NaviState_8009E6F0* p);
+extern "C" void fn_8009F01C(NaviState_8009E6F0* p);
+extern "C" void fn_8009F440(NaviState_8009E6F0* p);
+extern "C" void fn_8009E640(NaviState_8009E6F0* p) {
+    if (!(lbl_802FEDD8 & 1)) {
+        if (((u8*)p)[0x800] == 0) {
+            return;
+        }
+        ((u8*)p)[0x800] = 2;
+    }
+    if ((lbl_802FEDD8 & 2) && ((u8*)p)[0x800] != 0) {
+        ((u8*)p)[0x800] = 2;
+    }
+    switch (lbl_802FEDE4) {
+    case 0:
+    case 1:
+        fn_8009E6F0(p);
+        break;
+    case 2:
+    case 3:
+        fn_8009EBA0(p);
+        break;
+    case 4:
+        fn_8009F01C(p);
+        break;
+    case 5:
+        fn_8009F440(p);
+        break;
+    }
+}
+
+extern "C" void fn_8009E6F0(NaviState_8009E6F0* p) {
+    (p->*lbl_802865A4[((u8*)p)[0x800]])();
+}
+
 extern "C" void fn_8009E960(void) {
 }
 
