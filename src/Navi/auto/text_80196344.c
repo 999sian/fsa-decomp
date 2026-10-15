@@ -71,6 +71,10 @@ extern "C" void* fn_80198E48(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80198EBC(void) {
+    return 2;
+}
+
 extern void* lbl_8029A02C[];
 extern "C" void* fn_80198F44(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
