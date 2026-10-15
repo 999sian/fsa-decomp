@@ -71,3 +71,9 @@ extern "C" void* fn_80012F04(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" BOOL fn_80012F60(u8* self) {
+    *(u32*)(self + 0x1c) = (*(u32 (**)(u32))(self + 0x14))(*(u32*)(self + 0x18));
+    self[0xc] = 1;
+    return *(u32*)(self + 0x1c) != 0;
+}
+
