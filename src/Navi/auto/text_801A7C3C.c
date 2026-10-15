@@ -103,6 +103,8 @@ extern "C" void* fn_801ADF28(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801AE0A8(void) { return 0x10; }
+
 extern "C" void* lbl_8029B5AC[];
 extern "C" void* lbl_8027F240[];
 extern "C" void* fn_801AE0B0(void* ptr, s16 param_2) {
