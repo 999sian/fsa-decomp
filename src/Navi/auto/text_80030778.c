@@ -16,3 +16,7 @@ extern "C" void fn_80033644(void* p) {
     fn_8002E3C4(p, 0);
 }
 
+extern "C" void fn_80033668(void* p) {
+    *(unsigned int*)((char*)p + 0xe8) |= 0x40000000;
+}
+
