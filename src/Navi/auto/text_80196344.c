@@ -105,11 +105,21 @@ extern "C" int fn_80198EA0()
 	return 0;
 }
 
+extern "C" int fn_80198EB0()
+{
+	return 0;
+}
+
 extern "C" u32 fn_80198EBC(void) {
     return 2;
 }
 
 extern "C" int fn_80198EC8()
+{
+	return 0;
+}
+
+extern "C" int fn_80198F20()
 {
 	return 0;
 }
