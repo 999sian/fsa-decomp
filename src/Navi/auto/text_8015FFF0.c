@@ -27,6 +27,17 @@ extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_80160C34(void*, void*, int);
+extern "C" u8 fn_80161A2C(void*, void*, void*);
+extern "C" void fn_80166D3C(void*, void*);
+extern "C" char lbl_80297DD4[];
+extern "C" char lbl_802EE2D4[];
+extern "C" void* fn_80161710(void*, void*);
+extern "C" void* fn_80161874(void* a, void** b) {
+    *b = fn_80161710(a, *b);
+    return a;
+}
+
 extern "C" void fn_8015D0B8(void*, int);
 extern char lbl_80297E68[];
 extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
