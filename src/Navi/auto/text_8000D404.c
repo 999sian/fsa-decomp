@@ -287,6 +287,10 @@ extern "C" void* fn_800120B4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80012120(void* self, void* a, void* b) {
+    fn_801AF42C(a, b);
+}
+
 extern "C" void* lbl_80204820[];
 extern "C" void fn_801AF42C(void*, void*);
 extern "C" void fn_801AF744(void*);
