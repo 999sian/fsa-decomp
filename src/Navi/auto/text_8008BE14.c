@@ -5,6 +5,19 @@
 extern void* lbl_80284C98[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_8008BE64(void);
+extern void* lbl_8024751C[];
+extern "C" void fn_8008BE14(void* p);
+extern "C" void fn_8008BE14(void* p) {
+    f32* f = (f32*)p;
+    *(void**)p = lbl_8024751C;
+    f[1] = 0.0f;
+    f[2] = 0.0f;
+    f[3] = 0.0f;
+    f[4] = 1.0f;
+    f[5] = 1.0f;
+    f[6] = 1.0f;
+}
+
 extern "C" void fn_8008BE44(void) {
     fn_8008BE64();
 }
