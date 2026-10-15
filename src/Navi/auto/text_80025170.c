@@ -152,9 +152,9 @@ extern "C" int fn_800268A4()
 	return 0;
 }
 
-extern "C" void fn_80026CF0(NaviEnt14* out, u8 i) {
+extern "C" NaviEnt14 fn_80026CF0(u8 i) {
     NaviSlot2C* s = (NaviSlot2C*)lbl_802BC618 + i;
-    *out = s->e[s->cur];
+    return s->e[s->cur];
 }
 
 extern "C" int fn_80026D3C(u8 i) {
