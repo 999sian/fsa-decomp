@@ -146,7 +146,6 @@ extern "C" void fn_8001C9DC(void) {
     fn_8001BC68();
 }
 
-extern "C" void fn_8001B9CC(void);
 extern "C" u32 fn_8001F26C(u32, s16, u32, void*, u32);
 extern "C" void fn_8001C9FC(void) {
     fn_8001B9CC();
