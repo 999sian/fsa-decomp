@@ -314,6 +314,10 @@ extern "C" void fn_800DE4D0(Unk800DE4D0* p, int i, const u32& v) {
     ((u32*)p)[i + 3] = v;
 }
 
+extern "C" void fn_800DE4E4(Unk800DE4D0* p, int i, const u32& v) {
+    ((u32*)p)[i + 3] = v;
+}
+
 extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
     return &p->a[i];
 }
