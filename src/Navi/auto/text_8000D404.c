@@ -71,6 +71,9 @@ extern "C" void* fn_8000EE4C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8000EE88(void) {
+}
+
 extern "C" void fn_8000EEC0(void) {
 }
 
