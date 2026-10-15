@@ -95,6 +95,11 @@ extern "C" void* fn_80198E48(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_80198E98()
+{
+	return 0;
+}
+
 extern "C" u32 fn_80198EBC(void) {
     return 2;
 }
