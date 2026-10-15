@@ -13,6 +13,7 @@ struct Vtable800D8248 {
 };
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
+#include "JSystem/J3D/J3DSys.h"
 #include "dolphin/gd.h"
 #include "JSystem/J3D/J3DTevBlock.h"
 #include "dolphin/os/OSCache.h"
@@ -197,6 +198,28 @@ extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
   }
 }
 
+void fn_800D5E14(void* param) {
+    u32 val1, val2;
+    
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0c);
+    
+    val1 = *(u32*)((char*)param + 4);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+    
+    val2 = *(u32*)((char*)param + 8);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+}
+
 extern "C" void fn_800D6394(int* param_1, u32 param_2)
 {
   int* vtable = *(int**)param_1;
@@ -206,6 +229,16 @@ extern "C" void fn_800D6394(int* param_1, u32 param_2)
   if (((param_2 & 2) != 0) || (((param_2 >> 4) & 0xf) != 0)) {
     (*(void(**)(int*))(vtable + 0x24))(param_1);
   }
+}
+
+extern "C" void fn_800D6CEC(void* r3, u32 r4) {
+    if ((r4 >> 8) & 0xf) {
+        (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
+        
+        if (r4 & (1 << 12)) {
+            (*(void(**)(void*))(*(void***)r3 + 0xb))(r3);
+        }
+    }
 }
 
 extern "C" void fn_800D6D54(void* p) {
