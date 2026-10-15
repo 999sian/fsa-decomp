@@ -25,3 +25,14 @@ extern "C" void* fn_8003A6C8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802463DC[];
+extern "C" void* fn_8003A710(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802463DC;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
