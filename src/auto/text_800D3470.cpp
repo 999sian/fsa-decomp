@@ -1454,6 +1454,10 @@ extern "C" u32 fn_800DED8C(int param_1)
     return *(u32*)(param_1 + 4);
 }
 
+extern "C" u32 fn_800DED94(u8* param_1) {
+    return *(u32*)(param_1 + 0xd4);
+}
+
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
     *(J3DNBTScaleInfo*)(self + 0x5c) = *other;
 }
