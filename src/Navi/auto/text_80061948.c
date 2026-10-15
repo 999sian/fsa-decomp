@@ -246,9 +246,9 @@ extern "C" BOOL fn_800648EC(void)
     return TRUE;
 }
 
-BOOL fn_80064BDC()
+extern "C" BOOL fn_80064BDC(void)
 {
-	return TRUE;
+    return TRUE;
 }
 
 extern void* lbl_8027F6D0[];
