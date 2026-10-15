@@ -113,6 +113,10 @@ extern "C" void fn_8018903C(void) {
     fn_80178990();
 }
 
+extern "C" void fn_8018905C(void) {
+    fn_801788C0();
+}
+
 extern "C" void fn_8018A700(u8* self) {
     void* p = *(void**)(self + 0x138);
     if (p != NULL) {
