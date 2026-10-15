@@ -28,6 +28,11 @@ extern "C" void fn_80026520(void) {
     lbl_802FED9C = 0;
 }
 
+extern u8 lbl_802FED9E;
+extern "C" void fn_80026630(void) {
+    lbl_802FED9E = 0;
+}
+
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
