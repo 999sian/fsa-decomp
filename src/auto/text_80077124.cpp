@@ -15,4 +15,6 @@ void JPAEmitterCallBack::executeAfter(JPABaseEmitter*) {}
 
 void JPAEmitterCallBack::draw(JPABaseEmitter*) {}
 
+void JPAEmitterCallBack::drawAfter(JPABaseEmitter*) {}
+
 void JPAEmitterCallBack::execute(JPABaseEmitter*) {}
