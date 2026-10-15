@@ -26,8 +26,8 @@ extern "C" void fn_80022438(void*, s32, u16, u16);
 extern u8 lbl_802FF17C;
 extern u16 lbl_80280080[];
 extern u16 lbl_802FC94C[];
-extern s32 lbl_802FC930;
-extern void* lbl_802B7CA0[];
+extern int lbl_802FC930;  // SDA label
+extern void* lbl_802B7CA0[];  // Address table
 extern "C" void* fn_80062E28(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -380,19 +380,25 @@ extern "C" int fn_8006A5D0(void* param_1, int param_2) {
     if (*(s32*)((u8*)param_1 + 0x26c) != param_2) {
         *(s32*)((u8*)param_1 + 0x26c) = param_2;
         
-        u16* data = (u16*)((u8*)lbl_80280080 + param_2 * 0x14);
-        *(u16*)((u8*)param_1 + 0x278) = data[0];
+        u8* data = (u8*)lbl_80280080 + param_2 * 0x14;
+        f32 f1 = *(f32*)(data + 0x4);
+        u16 data_0 = *(u16*)(data + 0x0);
+        f32 f2 = *(f32*)(data + 0x8);
         
+        *(u16*)((u8*)param_1 + 0x278) = data_0;
         *(u8*)((u8*)param_1 + 0x27d) = 0;
         
         u16 idx = *(u16*)((u8*)param_1 + 0x278);
-        u16 idx2 = lbl_802FC94C[idx];
-        u16 data2 = data[1];
+        u16 idx_val = lbl_802FC94C[idx];
+        f32 f3 = *(f32*)(data + 0xc);
+        f32 f4 = *(f32*)(data + 0x10);
+        u16 data_1 = *(u16*)(data + 0x2);
         
         void* ptr = *(void**)((u8*)param_1 + 0x24c);
-        fn_80022438(ptr, 0, idx2, data2);
+        fn_80022438(ptr, 0, idx_val, data_1);
         
-        f32 f0 = *(f32*)((u8*)ptr + 0x1c);
+        void* ptr2 = *(void**)((u8*)param_1 + 0x24c);
+        f32 f0 = *(f32*)((u8*)ptr2 + 0x1c);
         *(f32*)((u8*)param_1 + 0x274) = f0;
     }
     return 0;
@@ -404,7 +410,8 @@ extern "C" void fn_8006AF00(void) {
 }
 
 extern "C" int fn_8006AF20(void) {
-    fn_800636F4(lbl_802FC930, (void*)((u8*)lbl_802B7CA0 + 0x2200), 0x40);
+    void* addr = (void*)((u8*)lbl_802B7CA0 + 0x2200);
+    fn_800636F4(lbl_802FC930, addr, 0x40);
     return 1;
 }
 
