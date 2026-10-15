@@ -219,6 +219,14 @@ extern "C" void* fn_80130264(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80166B70(void*, s32);
+extern "C" void fn_8015AB1C(void*);
+extern "C" void fn_80166B58(void*, void*);
+extern "C" void fn_801302A0(u32* p) {
+    p[0] = 0;
+    p[1] = 0;
+}
+
 extern "C" void fn_80166C08(void*, int);
 extern "C" void* fn_801302B0(void* param_1, s16 param_2) {
     if (param_1) {
@@ -269,7 +277,8 @@ extern "C" void fn_801327F4(void) {
 
 extern f32 lbl_802FEAB4;
 extern "C" f32 fn_801327F8(void) {
-    return lbl_802FEAB4;
+    f32 temp = lbl_802FEAB4;
+    return temp;
 }
 
 extern "C" float lbl_803017A0;
