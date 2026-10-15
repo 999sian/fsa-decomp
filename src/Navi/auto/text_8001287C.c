@@ -51,3 +51,23 @@ extern "C" void* fn_80012E08(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801BDEE4(void*, int, int);
+extern "C" void fn_801BDE1C(void*, int, int);
+extern "C" void fn_801BE3A0(void*);
+extern "C" void fn_801BE47C(void*);
+extern "C" void fn_800074C0(const char*, ...);
+extern "C" char lbl_80204B20[];
+extern "C" char lbl_80204E78[];
+extern "C" void* fn_80012F04(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)((char*)ptr + 0x10) = lbl_80204E78;
+        if (ptr != nullptr) {
+            *(void**)((char*)ptr + 0x10) = lbl_80204E88;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
