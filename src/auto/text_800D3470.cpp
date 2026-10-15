@@ -878,6 +878,10 @@ extern "C" u32 fn_800DDF38(int param_1) {
     return *(u32*)(param_1 + 4);
 }
 
+extern "C" u32 fn_800DDF40(int param_1) {
+    return *(u32*)(param_1 + 0x170);
+}
+
 extern "C" void fn_800DDF48(Actor* a, u32 v);
 extern "C" void fn_800DDF48(Actor* a, u32 v) { *(u32*)((u8*)a + 0x170) = v; }
 
