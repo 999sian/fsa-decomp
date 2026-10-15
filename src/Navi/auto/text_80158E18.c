@@ -89,6 +89,11 @@ extern "C" void fn_8015D030(void) {
     fn_80159DB4();
 }
 
+extern "C" int fn_8015DA14()
+{
+	return 0;
+}
+
 extern "C" void* fn_8015DA4C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029796C;
