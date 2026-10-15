@@ -27,6 +27,7 @@ extern "C" char __vt__11J3DIndBlock[];
 extern "C" char __vt__20J3DColorBlockLightOn[];
 extern "C" char __vt__16J3DPEBlockFogOff[];
 extern "C" char __vt__14J3DPEBlockFull[];
+extern "C" char __vt__13J3DPEBlockOpa[];
 extern "C" char __vt__10J3DPEBlock[];
 extern "C" char __vt__13J3DPEBlockXlu[];
 extern "C" char __vt__17J3DPEBlockTexEdge[];
@@ -845,9 +846,11 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
+    u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
     u8* p = param_1 + param_2 * 8;
-    p[0x60] = (p[0x60] & ~0xC) | (param_3[1] << 2);
-    p[0x60] = (p[0x60] & ~0x3) | param_3[0];
+    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
+    p[0x60] = (p[0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
