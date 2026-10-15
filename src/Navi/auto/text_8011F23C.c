@@ -61,7 +61,7 @@ extern void* lbl_802FDD84;
 extern u8 lbl_802FDD88;
 extern void* lbl_802FF328;
 extern void* lbl_80290AB4;
-extern void* fn_8015A90C(s32 size);
+extern "C" void* fn_8015A90C(s32 size);
 extern void fn_8015AB1C(void* ptr);
 extern void* fn_80120138(void* ptr, void* param);
 extern void fn_801CB248(void* ptr);
@@ -71,13 +71,28 @@ extern "C" void fn_80120090(u8 param_1) {
     lbl_802FDD88 = param_1;
 }
 
-extern "C" void fn_801200F0(void) {
-    void* obj = lbl_802FF328;
-    if (obj != 0) {
-        VirtualMethod0 vf = *(VirtualMethod0*)((void**)obj + 1);
-        vf(obj, 1);
-        lbl_802FF328 = 0;
-    }
+extern "C" void* fn_80120098(void* param_1)
+{
+	void* allocated;
+	if ((allocated = lbl_802FF328) == 0) {
+		allocated = fn_8015A90C(0x58);
+		if (allocated != 0) {
+			allocated = fn_80120138(allocated, param_1);
+		}
+	}
+	lbl_802FF328 = allocated;
+	return lbl_802FF328;
+}
+
+extern "C" void fn_801200F0(void)
+{
+	void* obj = lbl_802FF328;
+	if (obj != 0) {
+		void** vtable = *(void***)obj;
+		VirtualMethod0 vf = (VirtualMethod0)(vtable[2]);
+		vf(obj, 1);
+		lbl_802FF328 = 0;
+	}
 }
 
 extern "C" void* fn_8012022C(void* param_1, s16 param_2) {
