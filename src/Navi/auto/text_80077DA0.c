@@ -13,3 +13,9 @@ extern "C" void* fn_80077F44(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_80078414(void);
+extern "C" void fn_80078364(void) {
+    fn_80078414();
+}
+
