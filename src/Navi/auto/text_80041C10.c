@@ -139,6 +139,22 @@ extern "C" void fn_8004B854(void* param_1) {
     *(void**)((char*)param_1 + 0x4) = nullptr;
 }
 
+extern "C" void fn_8004C52C(void*, void* p) {
+    bool flag = false;
+    if (((*(unsigned int*)((char*)p + 0xf4) & 0x8) != 0) &&
+        ((*(unsigned int*)((char*)p + 0xd0) + *(unsigned int*)((char*)p + 0xdc)) == 0)) {
+        flag = true;
+    }
+    if (flag) {
+        *(unsigned int*)((char*)p + 0xf4) &= 0xffffffbf;
+        *(unsigned int*)((char*)p + 0xec) = 0;
+        *(unsigned int*)((char*)p + 0xf0) = 0;
+        fn_8004C614(p);
+    } else {
+        fn_8004C694(p);
+    }
+}
+
 extern "C" void* fn_8004CBB4(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
