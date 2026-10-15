@@ -1,2 +1,7 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801ee920-0x801eefac (8 functions). split_file divides it into the game's real files.
+
+extern "C" void EnableEXI2Interrupts(void);
+extern "C" void EnableMetroTRKInterrupts(void) {
+    EnableEXI2Interrupts();
+}
