@@ -12,9 +12,10 @@ extern "C" void fn_8015EA78(void) {
     __register_global_object(&lbl_802EE25C, (void*)fn_8015EABC, &lbl_802EE250);
 }
 
+typedef void (*fn_ptr)(void);
 extern "C" {
-    typedef void (*CtorFunc)(void);
-    const CtorFunc __ctors[] __attribute__((section(".ctors"))) = {
+    extern fn_ptr __ctors[];
+    fn_ptr __ctors[] __attribute__((section(".ctors"))) = {
         fn_8015EA78
     };
 }
