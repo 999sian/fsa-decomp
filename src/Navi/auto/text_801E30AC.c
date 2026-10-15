@@ -47,6 +47,11 @@ extern "C" float fn_801EA270(void) {
     return (float)fn_801E9E10();
 }
 
+extern "C" double fn_801E98A8(void);
+extern "C" float fn_801EA294(void) {
+    return (float)fn_801E98A8();
+}
+
 extern "C" int fn_801EA2B8(double f1_param) {
     unsigned int high_word = *(unsigned int*)&f1_param;
     unsigned int exponent = high_word & 0x7ff00000;
