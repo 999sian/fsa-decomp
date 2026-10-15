@@ -1,4 +1,7 @@
 #include "types.h"
+extern void* lbl_8027F240[];
+extern void* lbl_8027F214[];
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80061948-0x8006cfd8 (186 functions). split_file divides it into the game's real files.
 
@@ -39,6 +42,19 @@ extern "C" void fn_8006C404(void);
 extern "C" void fn_8006C5B0(s32);
 extern "C" void fn_80030534(void*, int, int);
 extern "C" void* fn_80022434(s32);
+extern "C" void* fn_80062DCC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8027F240;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8027F214;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_80062E28(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -540,19 +556,65 @@ extern "C" void fn_8006BA44(void* param_1) {
 
 extern "C" void fn_8006BA78(void* param_1) {
     fn_8006C404();
-    void* ptr = (void*)0x802BF814;
+    
+    void* ptr = &lbl_802BF814;
     s16 offset1 = *(s16*)((u8*)ptr + 0x1fc);
     s16 offset2 = *(s16*)((u8*)ptr + 0x1fa);
+    
     u16 val = *(u16*)((u8*)param_1 + 0x310);
     val = val + offset1;
     *(u16*)((u8*)param_1 + 0x310) = val;
-    if (val >= (u16)offset2) {
+    
+    if ((s32)val >= (s32)offset2) {
         *(u16*)((u8*)param_1 + 0x310) = (u16)offset2;
         fn_8006C5B0((s32)param_1);
     }
 }
 
 extern "C" void fn_8006BADC(void) {
+}
+
+extern "C" void fn_8006BAE0(void* param_1) {
+    fn_8006C404();
+    
+    s32 limit = *(s32*)((u8*)&lbl_802BB0FC + 0x58);
+    s32 val = *(s32*)((u8*)param_1 + 0x2fc);
+    
+    if (val <= limit) {
+        fn_8006C5B0((s32)param_1);
+        
+        void* ptr = &lbl_802BF814;
+        s16 counter = *(s16*)((u8*)ptr + 0x1f8);
+        counter += 10;
+        *(s16*)((u8*)ptr + 0x1f8) = counter;
+        
+        if ((s32)counter > 0xff) {
+            *(s16*)((u8*)ptr + 0x1f8) = 0xff;
+        }
+    }
+}
+
+extern "C" void fn_8006BB68(void* param_1) {
+    f64 const_val = lbl_80300470;
+    
+    u16 val1 = *(u16*)((u8*)param_1 + 0x30e);
+    u16 masked = val1 & 0xf000;
+    *(u16*)((u8*)param_1 + 0x312) = masked + 0x800;
+    
+    u16 val2 = *(u16*)((u8*)param_1 + 0x310);
+    
+    union { u32 i[2]; f64 d; } conv;
+    conv.i[0] = 0x43300000;
+    conv.i[1] = val2;
+    
+    f64 double_val = conv.d;
+    f32 result = (f32)(double_val - const_val);
+    *(f32*)((u8*)param_1 + 0x2dc) = result;
+    
+    *(s32*)((u8*)param_1 + 0x2cc) = 0;
+    
+    fn_80030534((void*)((u8*)param_1 + 0x2ec), 0x59, 1);
+    fn_8002F358(0x6a, 0);
 }
 
 extern "C" void fn_8006B15C(void);
