@@ -35,6 +35,20 @@ void DCFlushRange(void*, u32);
 void fn_801C0A6C(u32);
 }
 
+extern "C" void fn_8000A208(void) {
+    fn_801BB7E0(lbl_8029F8B0);
+    BOOL enabled = OSDisableInterrupts();
+    if (lbl_802FEB42 == 2) {
+        if (fn_801DB640(lbl_802FEB5C) != fn_8000A208) {
+            fn_8011FD18(fn_8011FD10(), lbl_802037D8, 0x9D3, lbl_802FB790, lbl_8020383C);
+            fn_80007AB8(lbl_802037D8, 0x9D3, lbl_802FB794);
+        }
+        lbl_802FEB5C = nullptr;
+        lbl_802FEB42++;
+    }
+    OSRestoreInterrupts(enabled);
+}
+
 extern "C" void* fn_8000B3B8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80298574;
