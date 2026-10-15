@@ -141,3 +141,13 @@ void fn_800CFA2C(void* param_1, void* param_3, void* param_2) {
     *(void**)((unsigned char*)param_2 + 0x2c) = ptr3c;
 }
 
+extern "C" void fn_800D0204(void* param_1, unsigned char* anm, const unsigned char* data);
+extern "C" void* fn_800D06B8(const void* data, void* offset);
+extern "C" void fn_800D0204(void* param_1, unsigned char* anm, const unsigned char* data) {
+    *(short*)(anm + 6) = *(const short*)(data + 10);
+    anm[4] = data[8];
+    *(float*)(anm + 8) = 0.0f;
+    *(void**)(anm + 0x10) = fn_800D06B8(data, (void*)*(const unsigned int*)(data + 0x10));
+    *(float**)(anm + 0xc) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x14));
+}
+
