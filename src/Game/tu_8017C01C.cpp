@@ -1,1 +1,19 @@
 #include "types.h"
+#include "JSystem/JGeometry/Box.h"
+
+extern "C" void fn_8017EADC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
+
+extern "C" void fn_8017EB0C(void* thisObj, f32 x, f32 y, f32 z) {
+	*(f32*)((char*)thisObj + 0x0) = x;
+	*(f32*)((char*)thisObj + 0x4) = y;
+	*(f32*)((char*)thisObj + 0x8) = z;
+}
+
+extern "C" void fn_8017EC5C(JGeometry::TBox2<f32>* box, f32 x0, f32 y0, f32 x1, f32 y1)
+{
+    box->i.x = x0;
+    box->i.y = y0;
+    box->f.x = x1;
+    box->f.y = y1;
+}
+

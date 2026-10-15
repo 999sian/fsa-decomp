@@ -68,8 +68,10 @@ extern "C" void fn_801BB7F4(char* this_) {
 }
 
 extern "C" void fn_801BB844(char* this_) {
+    struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
     s32 room = *(s32*)(this_ + 0x4);
-    if (((u8*)fn_802D6A9C() + room)[0x131df] == 0 && *(f32*)(this_ + 0x14) > lbl_8053EC14) {
+    TndrG* g = (TndrG*)fn_802D6A9C();
+    if (g->arr[room] == 0 && *(f32*)(this_ + 0x14) > lbl_8053EC14) {
         fn_801CEA60(this_);
     } else {
         fn_801CE9F8(this_);

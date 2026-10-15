@@ -1086,14 +1086,242 @@ BOOL fn_80245238(char* p) {
         } \
         return PADF(fn, mask) != 0; \
     }
-PAD_GATED(802454C0, fn_80309A54, 0x20)
+BOOL fn_802454C0(char* p) {
+    bool ok;
+    bool ok2;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        ok2 = false;
+    } else {
+        s32 mode;
+        s32 c = 0;
+        for (s32 i = 0; i < 4; i++) {
+            if (i == S32(p, 0x4)) {
+                c++;
+            } else if (fn_8022F514(i)) {
+                s32 linked;
+                if ((linked = S32(p, 0xd60)) >= 0) {
+                    if (linked == fn_8022F3DC(i)) {
+                        c++;
+                    }
+                } else {
+                    s32 me = S32(p, 0x4);
+                    if (me == fn_8022F3DC(i)) {
+                        c++;
+                    }
+                }
+            } else if (i == S32(p, 0xd60)) {
+                c++;
+            }
+        }
+        if (c <= 1) {
+            mode = 5;
+        } else if (S32(p, 0xd60) >= 0) {
+            mode = fn_8022CAF8(S32(p, 0xd60));
+        } else {
+            mode = S32(p, 0x120c);
+        }
+        if ((mode == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+            ok2 = false;
+        } else {
+            ok2 = true;
+        }
+    }
+    if (!ok2) {
+        return 0;
+    }
+    if (U8(p, 0x456) != 0) {
+        return 0;
+    }
+    if (S32(p, 0x11f0) > 0) {
+        return 0;
+    }
+    return PADF(fn_80309A54, 0x20) != 0;
+}
 PAD_GATED(802456FC, fn_80309D24, 0x20)
 PAD_GATED(80245938, fn_80309D6C, 0x20)
-PAD_GATED(80245B74, fn_80309A78, 0x100)
+inline bool padActive3(char* p) {
+    bool ok;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getMode3(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+BOOL fn_80245B74(char* p) {
+    if (!padActive3(p)) {
+        return 0;
+    }
+    if (U8(p, 0x456) != 0) {
+        return 0;
+    }
+    if (S32(p, 0x11f0) > 0) {
+        return 0;
+    }
+    return PADF(fn_80309A78, 0x100) != 0;
+}
 PAD_GATED(80245DB0, fn_80309D6C, 0x100)
 PAD_GATED(80245FEC, fn_80309D24, 0x100)
 PAD_GATED(80246228, fn_80309D6C, 0x100)
-PAD_GATED2(80246464, fn_80309D24, 0x200)
+inline s32 countSharing4(char* p) {
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getMode4(char* p) {
+    if (countSharing4(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline bool padActive4(char* p) {
+    bool ok;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getMode4(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+inline s32 countSharing5(char* p, s32& me) {
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getMode5(char* p, s32& me) {
+    if (countSharing5(p, me) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline bool padActive5(char* p) {
+    bool ok;
+    s32 v;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getMode5(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+BOOL fn_80246464(char* p) {
+    if (!padActive4(p)) {
+        return 0;
+    }
+    if (fn_8022B244()) {
+        return 0;
+    }
+    if (U8(p, 0x456) != 0) {
+        return 0;
+    }
+    if (S32(p, 0x11f0) > 0) {
+        return 0;
+    }
+    return PADF(fn_80309D24, 0x200) != 0;
+}
 PAD_GATED2(802466B4, fn_80309D6C, 0x200)
 #define PAD_BTN(addr, fn) \
     u32 fn_##addr(char* p, u32 mask) { \

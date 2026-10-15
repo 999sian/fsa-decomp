@@ -193,8 +193,12 @@ extern "C" void fn_801D74E0(Tu6CECGroup* g, Tu6CECVec p, s32 kind) {
 }
 
 extern "C" void fn_801D7638(Tu6CECGroup* g) {
+    s32* p = g->ids;
+    s32 id;
     for (int i = 0; i < 16; i++) {
-        tu6cec_kill(g->ids[i]);
+        id = *p;
+        tu6cec_kill(id);
+        p++;
     }
 }
 

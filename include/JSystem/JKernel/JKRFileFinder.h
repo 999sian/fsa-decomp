@@ -45,7 +45,11 @@ class JKRArcFinder : public JKRFileFinder
     public:
     JKRArcFinder(JKRArchive *, long, long);
 
-    virtual ~JKRArcFinder() {}   // _08 (weak)
+    #ifdef VERSION_G4SE01
+      virtual ~JKRArcFinder(); // _08 (out-of-line in FSA's object)
+#else
+      virtual ~JKRArcFinder() {}   // _08 (weak)
+#endif
     virtual bool findNextFile(); // _0C
 
     // _00     = VTBL

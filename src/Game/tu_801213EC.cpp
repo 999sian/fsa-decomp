@@ -123,6 +123,19 @@ extern const f32 lbl_8053C9F8;
 extern "C" s32 fn_801213EC() { return 0; }
 extern "C" s32 fn_801213F4() { return 0; }
 extern "C" s32 fn_801213FC() { return 0; }
+
+extern "C" void fn_80121414() {}
+
+extern "C" void fn_80121418() {
+    return;
+}
+
+extern "C" void fn_8012141C() {}
+
+extern "C" void fn_80121420() {}
+
+extern "C" void fn_80121424() {}
+
 extern "C" s32 fn_80121428() { return 1; }
 extern "C" s32 fn_80121430() { return 0; }
 
@@ -190,9 +203,9 @@ extern "C" s32 fn_80121DB0(u8* self) {
 
 #pragma fp_contract off
 extern "C" f32 fn_80121DC8(u8* self, s32 player) {
-    GameLowVec position(*fn_8023E724(player));
-    f32 x = position.x - *(f32*)(self + 0xC);
-    f32 y = position.y - *(f32*)(self + 0x10);
+    const JGeometry::TVec3<f32>* pos = fn_8023E724(player);
+    f32 x = pos->x - *(f32*)(self + 0xC);
+    f32 y = pos->y - *(f32*)(self + 0x10);
     f32 distance = x * x + y * y;
     if (distance > lbl_8053C9B4) {
         distance = __frsqrte(distance) * distance;

@@ -1,1 +1,69 @@
 #include "types.h"
+#include "Game/Actor.h"
+
+class GateRegistry;
+extern "C" GateRegistry* fn_80131F0C(void);
+extern "C" u8* fn_80131E30(GateRegistry*, s32);
+
+class EZZR : public Actor {
+public:
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void v24();
+    virtual void v25(s32);
+    u8 field_230[0x38];
+};
+
+extern "C" void fn_80123394(void*);
+extern "C" void fn_8011FFCC(void* p) {
+}
+
+extern "C" bool fn_8011FFD0(Actor* p) {
+    if (*(s32*)fn_80131F0C() < 2) {
+        return false;
+    }
+    Actor* other = (Actor*)fn_80131E30(fn_80131F0C(), 1);
+    if (other == 0) {
+        return false;
+    }
+    return p->field_198 == other->field_198;
+}
+
+extern "C" s32 fn_80120040(void* p) {
+    return 1;
+}
+
+extern "C" void fn_80120048(void* p) {
+    fn_80123394(p);
+}
+
+extern "C" void fn_80120068(void* p) {
+    ((EZZR*)p)->v25(12);
+}
+
+extern "C" void fn_80120098(void* p) {
+    ((EZZR*)p)->v25(9);
+}
+
+extern "C" void fn_801200C8(void* p) {
+    ((EZZR*)p)->v25(11);
+}
+
+class GateRegistry;
+extern "C" GateRegistry* fn_80131F0C(void);
+extern "C" u8* fn_80131E30(GateRegistry*, s32);
+extern "C" void fn_801D2608(void*, void*, s32);
+extern "C" void fn_801D22DC(void*, s32, s32, s32);
+extern "C" void fn_801D1F14(void*, f32);
+extern u8 lbl_8049DF40[];
+extern f32 lbl_8053C964;
+extern "C" void fn_80120118(EZZR* p) {
+    fn_801D2608(p->field_230, lbl_8049DF40, 14);
+    fn_801D22DC(p->field_230, 7, 2, 0);
+    fn_801D1F14(p->field_230, lbl_8053C964);
+}
+
+extern "C" void fn_8011FFC8(void) {}
