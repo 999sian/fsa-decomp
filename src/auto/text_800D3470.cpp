@@ -17,6 +17,7 @@ struct Vtable800D8248 {
 #include "JSystem/J3D/J3DTevBlock.h"
 #include "dolphin/os/OSCache.h"
 #include "JSystem/J3D/J3DPE.h"
+#include "JSystem/J3D/J3DInd.h"
 extern "C" char __vt__22J3DColorBlockAmbientOn[];
 extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
