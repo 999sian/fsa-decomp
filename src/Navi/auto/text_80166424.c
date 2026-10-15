@@ -177,10 +177,7 @@ extern "C" void* fn_80174BB8(void* base, u32 offset) {
 }
 
 extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d) {
-    u32 aa, bb, cc, dd;
-    u32 vd = *d, vc = *c, vb = *b;
     *(void**)ptr = lbl_80298C5C;
-    u32 va = *a;
     u32* words = (u32*)ptr;
     words[2] = -1;
     words[3] = -1;
@@ -188,8 +185,7 @@ extern "C" void* fn_80174BD0(void* ptr, u32 arg, u32* a, u32* b, u32* c, u32* d)
     words[15] = -1;
     words[16] = -1;
     words[17] = -1;
-    dd = vd; cc = vc; bb = vb; aa = va;
-    fn_80174CAC(ptr, arg, &aa, &bb, &cc, &dd, 0);
+    fn_80174BD0Init(ptr, arg, *a, *b, *c, *d);
     return ptr;
 }
 
@@ -202,6 +198,4 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-static inline void fn_80174BD0Init(void* ptr, u32 arg, u32 a, u32 b, u32 c, u32 d) {
-    fn_80174CAC(ptr, arg, &a, &b, &c, &d, 0);
-}
+
