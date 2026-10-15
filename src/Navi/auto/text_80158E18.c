@@ -4,6 +4,7 @@
 
 extern void* lbl_8029796C[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_80159C6C(void*, int);
 extern "C" void fn_80159DB4(void);
 extern u32 lbl_802FF540;
 extern "C" u32 fn_80159B94(u32 param_1) {
