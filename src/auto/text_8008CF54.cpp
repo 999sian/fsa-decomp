@@ -15,6 +15,8 @@ extern "C" u32 lbl_8053A940;
 extern "C" u32 lbl_8053A954;
 extern "C" u32 lbl_8053A938;
 extern "C" float lbl_8053B8A0;
+extern "C" float lbl_80539DA4;
+extern "C" float lbl_80539DA0;
 extern "C" u8 lbl_8053A934[];
 extern "C" u32 lbl_80499470[];
 
@@ -73,3 +75,26 @@ extern "C" void fn_8008DADC(u32 *param_1) {
     *(float *)((char *)param_1 + 8) = f;
     *(u16 *)((char *)param_1 + 0xc) = 0;
 }
+
+extern "C" void fn_8008DE64(u32 *param_1, int param_2) {
+    short idx = *(short *)(param_2 + 0x7c);
+    if (idx >= 0 && idx < 4) {
+        lbl_8053A934[idx] = 0;
+        fn_8008DF30(idx, 1);
+    }
+    param_1[0] = 0;
+    param_1[1] = 0;
+    param_1[2] = 0;
+    param_1[3] = 0;
+    param_1[4] = 0;
+    lbl_8053A938 = 0xf0000000;
+}
+
+extern "C" void fn_8008DED8(u32 param_1) {
+    u32 mask = lbl_80499470[param_1];
+    if ((lbl_8053A938 & mask) != 0) {
+        PADControlMotor(param_1, 1);
+        lbl_8053A934[param_1] = 1;
+    }
+}
+
