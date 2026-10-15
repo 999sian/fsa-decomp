@@ -410,6 +410,11 @@ extern "C" float fn_80132814(void) {
     return lbl_803017A0;
 }
 
+extern "C" BOOL fn_80132828(void)
+{
+    return TRUE;
+}
+
 extern "C" float fn_8013284C(void) {
     return lbl_803017A0;
 }
