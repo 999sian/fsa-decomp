@@ -24,6 +24,9 @@ extern "C" void fn_8015AB40(void* p) {
     fn_80159C6C(p, 0);
 }
 
+extern "C" void fn_8015AB80(void) {
+}
+
 extern "C" int fn_8015AB94(int* p, int v) {
     return (unsigned int)((v - *p) | (*p - v)) >> 31;
 }
