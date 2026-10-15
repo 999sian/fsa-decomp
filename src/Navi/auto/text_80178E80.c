@@ -17,6 +17,14 @@ extern "C" int fn_8017A8CC(void) {
     return 8;
 }
 
+extern "C" void fn_80188868(u8* param_1) {
+    void* p = *(void**)(param_1 + 0x168);
+    if (p != nullptr) {
+        u8 val = *(u8*)((u8*)p + 0x13);
+        *(u8*)((u8*)param_1 + 0xb2) = val;
+    }
+}
+
 extern "C" void fn_801889D8(u8* param_1, void* param_2) {
     *(void**)((u8*)param_1 + 0x19c) = param_2;
 }
