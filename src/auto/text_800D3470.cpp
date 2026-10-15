@@ -924,6 +924,10 @@ extern "C" u32 fn_800DF160(u8* self, int i) {
     return *(u32*)(self + i * 4 + 0x20);
 }
 
+extern "C" void fn_800DF170(u8* self, u8 val) {
+    *(u8*)(self + 0x40) = val;
+}
+
 extern "C" void* fn_800DF1AC(void* self, short flag) {
     if (self) {
         *(void**)self = __vt__20J3DColorBlockLightOn;
