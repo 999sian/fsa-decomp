@@ -224,6 +224,14 @@ extern "C" void fn_8001BEA4(void) {
     fn_8001EB08();
 }
 
+extern "C" void* fn_8001C308(void* param_1) {
+    void* result = nullptr;
+    if (*(s8*)((u8*)param_1 + 0xbc) == 0) {
+        result = fn_8001D540(*(void**)((u8*)*(void**)((u8*)param_1 + 0xb8) + 0x10), param_1);
+    }
+    return result;
+}
+
 extern "C" void fn_8001C34C(void* param_1) {
     fn_8001D57C(*(void**)((u8*)param_1 + 0xb8), param_1);
 }
