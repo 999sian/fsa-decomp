@@ -246,24 +246,19 @@ extern "C" void fn_800D83E8(Vtable800D8248* p) {
 }
 
 extern "C" void fn_800D8414(void* param_1) {
-    unsigned int i = 0;
-    void* pParam = param_1;
-    unsigned int dlOffset = *(unsigned int*)((char*)pParam + 4);
-    unsigned int currentDL = *(unsigned int*)(&__GDCurrentDL);
-    *(unsigned int*)(&__GDCurrentDL) = currentDL + dlOffset;
-    void* dlStart = (void*)*(unsigned int*)(&__GDCurrentDL);
+    __GDCurrentDL->pDisplayListData = (u8*)__GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
+    u8* dlStart = __GDCurrentDL->pDisplayListData;
     
-    for (i = 0; i < 2; i++) {
-        unsigned short texNum = *(unsigned short*)((char*)pParam + 8);
-        if (texNum != 0xFFFF) {
-            loadTexNo__FUlRCUs(i, (unsigned short*)((char*)pParam + 8));
+    u8* addr = (u8*)param_1;
+    for (u32 i = 0; i < 2; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
         }
-        pParam = (char*)pParam + 2;
+        addr += 2;
     }
     
-    unsigned int dlEnd = *(unsigned int*)(&__GDCurrentDL);
-    unsigned int dlSize = dlEnd - (unsigned int)dlStart;
-    DCStoreRange(dlStart, dlSize);
+    u8* dlEnd = __GDCurrentDL->pDisplayListData;
+    DCStoreRange(dlStart, (u32)(dlEnd - dlStart));
 }
 
 extern "C" void fn_800D86D4(Vtable800D8248* p) {
