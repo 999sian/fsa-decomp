@@ -81,6 +81,10 @@ extern "C" void fn_8001A9E4(void* param_1) {
     fn_8001D57C(*(void**)((u8*)param_1 + 0xc0), param_1);
 }
 
+extern "C" void fn_8001AA0C(void* param_1) {
+    fn_8001D5B8(*(void**)((u8*)param_1 + 0xc0), param_1);
+}
+
 extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void);
 extern "C" void fn_8001AAFC(void) {
     cTg_SingleCutFromTree__FP16create_tag_class();
