@@ -10,6 +10,12 @@ struct StateObj_80072080 {
     StateFunc_80072080 m_func;
 };
 
+struct VObj_800723CC {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+};
+
 extern void* lbl_80281904[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80070D98(void);
