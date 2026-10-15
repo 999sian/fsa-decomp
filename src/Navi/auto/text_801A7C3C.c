@@ -11,6 +11,11 @@ extern void* lbl_8029B49C[];
 
 extern void* lbl_8029B220[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void* lbl_802FF700;
+extern "C" void fn_801A833C(void* p) {
+    lbl_802FF700 = p;
+}
+
 extern "C" void* fn_801A8574(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029B220;
