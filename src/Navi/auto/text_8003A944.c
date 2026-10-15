@@ -8,6 +8,7 @@ extern void* lbl_80246B28[];
 extern void* lbl_80246ABC[];
 extern void* lbl_80246A88[];
 extern void* lbl_80246A20[];
+extern void* lbl_80246A54[];
 extern void* lbl_80299A8C[];
 extern void* lbl_802BF110[];
 extern s64 lbl_802FFEC8;
