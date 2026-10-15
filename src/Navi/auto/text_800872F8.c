@@ -109,6 +109,12 @@ extern "C" void* fn_800888E0(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" BOOL fn_80088CF0(void);
+extern "C" BOOL fn_80088CF0(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_80119978(void*, int);
 extern char lbl_80283FC4[];
 extern "C" void* fn_80088D50(void* param_1, s16 param_2) {
