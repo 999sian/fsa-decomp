@@ -72,8 +72,8 @@ extern "C" int fn_8011AB38()
 	return 0;
 }
 
-BOOL fn_8011AB40()
+extern "C" BOOL fn_8011AB40(void)
 {
-	return TRUE;
+    return TRUE;
 }
 
