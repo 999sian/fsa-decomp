@@ -204,10 +204,10 @@ extern "C" void fn_800D971C(u8* self) {
 
 extern "C" void fn_800D9778(u8* self) {
 	for (u32 i = 0; i < 3; i++) {
-		J3DGDSetTevColorS10((GXTevRegID)(i + 1), ((GXColorS10*)(self + 0x42))[i]);
+		J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(self + 0x42 + i * 8));
 	}
 	for (u32 i = 0; i < 4; i++) {
-		J3DGDSetTevKColor((GXTevKColorID)i, ((GXColor*)(self + 0x62))[i]);
+		J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(self + 0x62 + i * 4));
 	}
 }
 
