@@ -12,6 +12,7 @@ extern "C" void fn_801C4A28(void*);
 extern "C" void fn_801C4AF4(void*);
 extern "C" void fn_801C42F4(void);
 extern "C" void fn_801CDB9C(int);
+extern "C" int fn_801CEB00(unsigned int param_1);
 
 extern int lbl_802FF928;
 extern int lbl_802FF960;
@@ -105,6 +106,39 @@ int fn_801CC938(void) {
     return 0;
 }
 
+extern "C" u32 fn_801CC9A0(void) {
+    u32 val1_masked, val2_masked, val3_masked;
+    u32 result;
+    u32 divisor;
+    u32 threshold;
+    u32 dummy[4];  // force stack frame to 0x20
+    
+    int interrupt_state = OSDisableInterrupts();
+    
+    for (int i = 0; i < 10; i++) {
+        val1_masked = (*(vu16*)0xcc00202c) & 0x7ff;
+        val2_masked = (*(vu16*)0xcc00202e) & 0x7ff;
+        val3_masked = (*(vu16*)0xcc00202c) & 0x7ff;
+        
+        if (val1_masked == val3_masked) {
+            divisor = *(u16*)((u32)&lbl_802FF928 + 0x1a);
+            result = (val3_masked - 1) * 2 + (val2_masked - 1) / divisor;
+            
+            OSRestoreInterrupts(interrupt_state);
+            
+            threshold = *(u16*)((u32)&lbl_802FF928 + 0x18);
+            if (result > threshold) {
+                result -= threshold;
+            }
+            
+            return result >> 1;
+        }
+    }
+    
+    OSRestoreInterrupts(interrupt_state);
+    return 0;
+}
+
 extern "C" unsigned long SIGetType(long chan);
 extern "C" void fn_801C4F24(long, unsigned long);
 extern "C" void fn_801C4F38(void);
@@ -153,5 +187,31 @@ void fn_801CE970(int r31) {
     int interrupt_state = OSDisableInterrupts();
     fn_801C5050(r31);
     OSRestoreInterrupts(interrupt_state);
+}
+
+extern "C" void fn_801CEAA0(void* param_1) {
+    char context[720];
+    
+    if (*(void**)(&lbl_802FF960) != NULL) {
+        OSClearContext(context);
+        OSSetCurrentContext(context);
+        ((void(*)(void))*(void**)(&lbl_802FF960))();;
+        OSClearContext(context);
+        OSSetCurrentContext(param_1);
+    }
+}
+
+extern "C" int fn_801CEB00(unsigned int param_1) {
+    u32 padding[2];
+    int old_value = lbl_802FF960;
+    lbl_802FF960 = param_1;
+    
+    if (param_1 != 0) {
+        fn_801C4A28((void*)fn_801CEAA0);
+    } else {
+        fn_801C4AF4((void*)fn_801CEAA0);
+    }
+    
+    return old_value;
 }
 
