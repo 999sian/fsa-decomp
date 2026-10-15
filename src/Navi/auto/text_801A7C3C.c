@@ -408,6 +408,16 @@ extern "C" void* fn_801B7090(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801B70E8()
+{
+	return 0;
+}
+
+extern "C" int fn_801B70F0()
+{
+	return 0;
+}
+
 extern void* lbl_80204948[];
 extern "C" void* lbl_8029BAEC[];
 extern "C" void* lbl_8020474C[];
