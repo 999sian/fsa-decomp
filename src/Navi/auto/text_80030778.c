@@ -64,6 +64,13 @@ extern "C" void fn_800354B0(void* p) {
     *(unsigned int*)((char*)p + 0x220) = 0x7;
 }
 
+extern "C" void fn_800354C8(void* p) {
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
+    *(unsigned int*)((char*)p + 0x220) = 0x8;
+    *(int*)((char*)p + 0x198) = *(int*)(lbl_802BB0FC + 0x58) + 0x1194;
+    fn_8002A3CC(p, (char*)p + 0x1a8, 0x46, 0x1);
+}
+
 extern "C" void fn_8003772C(void* p) {
     fn_8002E3C4(p, 0);
 }
