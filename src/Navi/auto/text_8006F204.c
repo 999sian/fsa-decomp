@@ -22,7 +22,7 @@ extern "C" void fn_800704A0(void)
 {
 }
 
-extern "C" void fn_800704C4(void);
+extern "C" BOOL fn_800704C4(void);
 extern "C" void fn_800704A4(void) {
     fn_800704C4();
 }
