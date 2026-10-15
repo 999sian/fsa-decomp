@@ -153,6 +153,10 @@ extern "C" int fn_80198EC8()
 	return 0;
 }
 
+extern "C" void fn_80198ED0()
+{
+}
+
 extern "C" int fn_80198F20()
 {
 	return 0;
