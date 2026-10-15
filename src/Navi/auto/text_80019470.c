@@ -373,6 +373,10 @@ extern "C" u32 fn_8001D7EC(void* param_1) {
     return 1;
 }
 
+extern "C" void fn_8001D890(void* param_1) {
+    fn_8001D5B8(*(void**)((u8*)param_1 + 0xb8), param_1);
+}
+
 extern "C" void* fn_8001D91C(void* param_1) {
     if (*(s8*)((u8*)param_1 + 0xc) == 0) {
         void* r31 = *(void**)((u8*)param_1 + 0x10);
