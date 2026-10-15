@@ -19,7 +19,7 @@ struct Unk802C56B4 {
     u8 unk24;
 };
 struct VObj_800CB688A {
-    virtual void v0();
+    virtual void v0(s32);
     virtual void v1(s32);
 };
 struct VObj_800CB688B {
@@ -43,10 +43,44 @@ extern f32 lbl_80300E30;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_800CAB90(void) {}
 
+extern Unk802C56B4 lbl_802C56B4;
+extern u8 lbl_8029FDB4[];
+extern "C" void fn_800127A0(void*);
+extern "C" s32 fn_800CB450(void*, s16, u8, s32, s32, f32, f32);
+extern "C" void fn_8002F198(void);
+extern "C" void fn_800CACA4(u8* p) {
+    s32 r = fn_800CB450(p, *(s16*)(p + 0x15a), lbl_802C56B4.unk10, 4, 1, lbl_80300E30, -lbl_802C56B4.unkC);
+    (*(s16*)(p + 0x15a))++;
+    if (r == 1) {
+        *(s16*)(p + 0x15a) = 0;
+        if (*(s32*)(p + 0x164) != -1) {
+            fn_8002F198();
+        }
+        p[0x15f] = 0;
+        p[0x15e] = lbl_802C56B4.unk24;
+        p[0x159] = 2;
+        p[0x160] = 0;
+    }
+}
+
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_800CB64C(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
+}
+
+extern "C" void fn_800CB688(u8* p) {
+    VObj_800CB688A* a = *(VObj_800CB688A**)(p + 0xc);
+    if (a != nullptr) {
+        a->v1(1);
+    }
+    (*(VObj_800CB688B**)(p + 4))->v7();
+    if (lbl_802C56B4.unk4 >= 0) {
+        if (--lbl_802C56B4.unk8 == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            lbl_802C56B4.unk4 = -1;
+        }
+    }
 }
 
 extern "C" void fn_800CB948(void* param_1) {
