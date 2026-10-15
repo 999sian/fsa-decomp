@@ -18,7 +18,7 @@ extern "C" int fn_8000BEF4(int p) { return p + 0x40; }
 
 extern "C" int fn_8000BEFC(int p) { return *(int*)(p + 0xc); }
 
-int fn_8000BF04(int* p) { return *p; }
+extern "C" int fn_8000BF04(int* p) { return *p; }
 
 extern "C" void fn_8000CB28(f32 matrix[3][4], u32 angle) {
     f32 m[3][4];
