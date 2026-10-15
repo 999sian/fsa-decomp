@@ -58,6 +58,18 @@ extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_8015D13C(void*, int, int, void*);
+extern "C" void fn_801C0EEC(void*);
+extern "C" void* fn_801664D8(void*, void*);
+extern "C" void* fn_801664D8(void* ptr, void* param_2)
+{
+	void* r31 = ptr;
+	fn_8015D13C(ptr, 0x4000, 0x10, param_2);
+	*(void**)r31 = &lbl_80298304;
+	fn_801C0EEC(((void**)r31)[0xb]);
+	return r31;
+}
+
 extern "C" void* fn_80166528(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80298304;
@@ -138,6 +150,35 @@ extern "C" int fn_80167460(int param_1, void* param_2, int param_3)
 	}
 	
 	return param_3;
+}
+
+extern "C" int fn_801674D8(int param_1, int param_2, int param_3)
+{
+	int old_pos = *(int*)(param_1 + 0x10);
+	
+	if (param_3 != 1) {
+		if (param_3 >= 2) {
+			if (param_3 < 3) {
+				*(int*)(param_1 + 0x10) = *(int*)(param_1 + 0xc) - param_2;
+			}
+		} else if (param_3 >= 0) {
+			*(int*)(param_1 + 0x10) = param_2;
+		}
+	} else {
+		*(int*)(param_1 + 0x10) = old_pos + param_2;
+	}
+	
+	if (*(int*)(param_1 + 0x10) < 0) {
+		*(int*)(param_1 + 0x10) = 0;
+	}
+	
+	int new_pos = *(int*)(param_1 + 0x10);
+	int cap = *(int*)(param_1 + 0xc);
+	if (cap < new_pos) {
+		*(int*)(param_1 + 0x10) = cap;
+	}
+	
+	return *(int*)(param_1 + 0x10) - old_pos;
 }
 
 extern "C" int fn_80167554(int p) { return *(int*)(p + 0xc); }
