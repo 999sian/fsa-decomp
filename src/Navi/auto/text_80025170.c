@@ -39,6 +39,10 @@ extern "C" void fn_80026630(void) {
     lbl_802FED9E = 0;
 }
 
+extern "C" u8 fn_80026694(void) {
+    return lbl_802FED9F;
+}
+
 extern u8 lbl_802FED9F;
 extern "C" void fn_800266A8(void) {
     lbl_802FED9F = 0;
