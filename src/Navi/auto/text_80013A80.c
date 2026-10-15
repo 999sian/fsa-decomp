@@ -40,7 +40,7 @@ extern "C" void fn_80013B48(void) {
 }
 
 extern "C" void fn_80013B90(void) {
-    u8 buf[0x84];
+    u8 buf[0x74];
     fn_8015D1F4(buf, fn_801C027C(), 0);
     fn_8015D29C(buf, -1);
     fn_80159BA4(0);
