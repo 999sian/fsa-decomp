@@ -24,6 +24,9 @@ extern "C" void fn_8015AB40(void* p) {
     fn_80159C6C(p, 0);
 }
 
+extern "C" void fn_8015AB64() {
+}
+
 extern "C" bool fn_8015AB68(void* a, int* b, int* c) {
     return b[1] == c[1];
 }
