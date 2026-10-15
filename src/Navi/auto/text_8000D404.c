@@ -279,6 +279,12 @@ void* fn_8000F484(void)
 	return lbl_802FEBA0;
 }
 
+extern "C" void* lbl_802FEBA4;
+extern "C" void* fn_8000F534(void)
+{
+	return lbl_802FEBA4;
+}
+
 extern "C" void fn_80159BB4(void);
 extern "C" void fn_8000FA24(void) {
     fn_80159BB4();
