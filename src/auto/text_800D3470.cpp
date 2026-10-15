@@ -1171,6 +1171,10 @@ extern "C" void fn_800DF178(u8* self, u8* src) {
     *(u8*)(self + 0x40) = *src;
 }
 
+extern "C" void fn_800DF19C(int param_1, u32 param_2) {
+    *(u32*)(param_1 + 0x44) = param_2;
+}
+
 extern "C" void fn_800DF1A4(int param_1, u32 param_2) {
     *(u32*)(param_1 + 0x48) = param_2;
 }
