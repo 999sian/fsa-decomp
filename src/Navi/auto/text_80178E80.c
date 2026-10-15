@@ -13,3 +13,9 @@ extern "C" void* fn_8018C1A0(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void* fn_8018C1E8(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
