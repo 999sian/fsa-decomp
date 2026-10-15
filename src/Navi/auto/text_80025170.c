@@ -8,6 +8,8 @@ extern u8 lbl_802FED9E;
 extern u8 lbl_802FED9F;
 extern u8 lbl_802FEDA4;
 extern "C" u8 lbl_802BBD38[];
+struct NaviEntry { u8 pad[0x1c]; int flag; };
+struct NaviSlot { NaviEntry e[16]; s16 cur; s16 next; };
 
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_800254CC(void);
@@ -30,6 +32,13 @@ extern "C" void fn_800254AC(void) {
     fn_80025710();
 }
 
+extern "C" void fn_80026480(u8 i) {
+    int v = 1;
+    u8* p = lbl_802BBD38 + i * 0x204;
+    p += *(s16*)(p + 0x202) * 0x20;
+    *(int*)(p + 0x1c) = v;
+}
+
 extern "C" u8 lbl_802BBD38[];
 extern "C" int fn_800264AC(u8 i) {
     u8* p = lbl_802BBD38 + i * 0x204;
@@ -38,9 +47,10 @@ extern "C" int fn_800264AC(u8 i) {
 }
 
 extern "C" void fn_800264D4(u8 i) {
+    int v = 0;
     u8* p = lbl_802BBD38 + i * 0x204;
     p += *(s16*)(p + 0x200) * 0x20;
-    *(int*)(p + 0x1c) = 0;
+    *(int*)(p + 0x1c) = v;
 }
 
 extern u8 lbl_802BBD38[];
