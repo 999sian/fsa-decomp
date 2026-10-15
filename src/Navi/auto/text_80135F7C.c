@@ -97,6 +97,10 @@ extern "C" int fn_80136F18(void) {
     return 4;
 }
 
+extern "C" int fn_80137824(void) {
+    return 5;
+}
+
 extern void* lbl_80292974[];
 extern "C" void* fn_80139110(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
