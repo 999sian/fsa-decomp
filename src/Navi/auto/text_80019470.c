@@ -10,12 +10,18 @@ extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8001DC20(void);
+extern "C" void fn_8001A5D0(void) {
+    fn_8001DC20();
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
-    f32 uVar1 = param_2[1];
-    *(f32*)(param_1 + 0x30) = param_2[0];
-    f32 uVar2 = param_2[2];
-    *(f32*)(param_1 + 0x34) = uVar1;
-    *(f32*)(param_1 + 0x38) = uVar2;
+    f32 t0, t1, t2;
+    t0 = param_2[0], t1 = param_2[1];
+    *(f32*)(param_1 + 0x30) = t0;
+    t2 = param_2[2];
+    *(f32*)(param_1 + 0x34) = t1;
+    *(f32*)(param_1 + 0x38) = t2;
     *(u8*)(param_1 + 4) |= 0x20;
 }
 
