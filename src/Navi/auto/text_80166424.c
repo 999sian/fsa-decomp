@@ -101,3 +101,23 @@ extern "C" int fn_8017337C()
 	return 0;
 }
 
+extern "C" void fn_80178B74(void* param_1, void* param_2) {
+    (*(void (**)(void*))(*(u8**)param_1 + 0x8c))(param_1);
+    u8* it = *(u8**)((u8*)param_1 + 0xdc);
+    if (it != NULL) {
+        it -= 0xc;
+    }
+    while (it != NULL) {
+        void* obj = *(void**)(it + 0xc);
+        it = *(u8**)(it + 0x18);
+        (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
+        if (it != NULL) {
+            it -= 0xc;
+        }
+    }
+}
+
+extern "C" void fn_80178DA4(void* param_1)
+{
+}
+
