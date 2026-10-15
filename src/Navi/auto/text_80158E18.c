@@ -12,6 +12,13 @@ extern "C" u32 fn_80159B94(u32 param_1) {
     return old;
 }
 
+extern u32 lbl_802FF544;
+extern "C" u32 fn_80159BA4(u32 param_1) {
+    u32 old = lbl_802FF544;
+    lbl_802FF544 = param_1;
+    return old;
+}
+
 extern "C" void fn_8015D030(void) {
     fn_80159DB4();
 }
