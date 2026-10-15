@@ -193,19 +193,15 @@ extern "C" void fn_8004C5A0(void*, void* p) {
     }
 }
 
-extern "C" void fn_8011FD10(void);
+extern "C" void* fn_8011FD10(void);
 extern "C" void fn_8011FD18(void*, void*, int, void*, void*);
 extern "C" void fn_80007AB8(void*, int, void*);
 extern "C" void* fn_8004C970(void*);
 extern "C" void fn_8004C614(void* p) {
     if (p == 0) {
         fn_8011FD10();
-        void* bd8 = (void*)0x80246BD8;
-        void* c0c = (void*)0x80246C0C;
-        extern int lbl_802FC1B0;
-        extern int lbl_802FC1B4;
-        fn_8011FD18(0, bd8, 0x42e, &lbl_802FC1B0, c0c);
-        fn_80007AB8(bd8, 0x42e, &lbl_802FC1B4);
+        fn_8011FD18(0, lbl_80246BD8, 0x42e, &lbl_802FC1B0, lbl_80246C0C);
+        fn_80007AB8(lbl_80246BD8, 0x42e, &lbl_802FC1B4);
     }
     void* result = fn_8004C970(p);
     if (result != 0) {
