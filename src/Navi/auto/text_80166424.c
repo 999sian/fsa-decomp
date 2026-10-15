@@ -7,6 +7,12 @@ extern void* lbl_80298C5C[];
 extern u16 lbl_80301ADE;
 struct Unk80174858Pair { u8 x; u8 y; };
 extern Unk80174858Pair lbl_80301AC0;
+struct Unk80172764Entry {
+    u8 pad[0x7e];
+    u8 unk7E_hi : 4;
+    u8 unk7E_b : 2;
+    u8 unk7E_a : 2;
+};
 extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
 
 
