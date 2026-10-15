@@ -605,6 +605,20 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
     p->b[i] = v;
 }
 
+extern "C" u8 fn_800DE648(int param_1) {
+    return *(u8*)(param_1 + 0x34);
+}
+
+extern "C" void fn_800DE650(int param_1, int param_2, u8* param_3) {
+    int offset = param_1 + param_2 * 8;
+    *(u8*)(offset + 0x36) = param_3[1];
+    *(u8*)(offset + 0x37) = param_3[2];
+    *(u8*)(offset + 0x38) = param_3[3];
+    *(u8*)(offset + 0x3a) = param_3[5];
+    *(u8*)(offset + 0x3b) = param_3[6];
+    *(u8*)(offset + 0x3c) = param_3[7];
+}
+
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x35;
 }
