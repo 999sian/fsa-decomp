@@ -8,8 +8,8 @@ extern u8* lbl_8053AAF8;
 extern u8* lbl_8053AF40;
 extern u8* lbl_8053AF48;
 extern u32 lbl_8053AD70;
-extern u8 lbl_804AE9B0[];
-extern void* __nw__FUl(unsigned long);
+extern "C" u8 lbl_804AE9B0[];
+extern "C" void* __nw__FUl(unsigned long);
 extern "C" void __dl__FPv(void*);
 extern "C" void* fn_80452A80(void*);
 extern "C" void* fn_80454DEC(void*);
@@ -94,5 +94,49 @@ extern "C" void fn_8037AF80(void) {
     } else {
         fn_80454A00(lbl_8053AF48);
     }
+}
+
+extern "C" void* fn_8037B000(void* this_, s16 flag) {
+    if (this_ != 0) {
+        *(void**)this_ = (void*)lbl_804AE9B0;
+        void* p1 = *(void**)((char*)this_ + 0x4);
+        if (p1 != 0) {
+            ((Slot0*)p1)->slot0(1);
+        }
+        *(void**)((char*)this_ + 0x4) = 0;
+        void* p2 = *(void**)((char*)this_ + 0x8);
+        if (p2 != 0) {
+            ((Slot0*)p2)->slot0(1);
+        }
+        *(void**)((char*)this_ + 0x8) = 0;
+        lbl_8053AD70 = 0;
+        if (flag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+extern "C" void* __nw__FUl(unsigned long);
+extern "C" void* fn_8037B0B8(void* this_) {
+    *(void**)this_ = (void*)lbl_804AE9B0;
+    lbl_8053AD70 = (u32)this_;
+    *(void**)((char*)this_ + 0x4) = 0;
+    *(void**)((char*)this_ + 0x8) = 0;
+    *((unsigned char*)this_ + 0xc) = 0;
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        void* p = __nw__FUl(0x188);
+        if (p != 0) {
+            fn_80452A80(p);
+        }
+        *(void**)((char*)this_ + 0x4) = p;
+    } else {
+        void* p = __nw__FUl(0x5c);
+        if (p != 0) {
+            fn_80454DEC(p);
+        }
+        *(void**)((char*)this_ + 0x8) = p;
+    }
+    return this_;
 }
 
