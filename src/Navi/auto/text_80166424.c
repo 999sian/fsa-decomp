@@ -477,6 +477,12 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80178DA4(void) {
+}
+
+extern "C" void fn_80178DA8(void) {
+}
+
 extern "C" void fn_80178DAC(void) {
 }
 
