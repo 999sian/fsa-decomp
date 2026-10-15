@@ -4,6 +4,7 @@ extern "C" char __vt__22J3DColorBlockAmbientOn[];
 extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
 extern "C" void __dl__FPv(void*);
+struct ActorBox;
 struct Actor {
     Actor();
     virtual ~Actor();
