@@ -132,6 +132,11 @@ extern "C" void fn_8018BDC8(void* self, void* src) {
     fn_8018BDF0(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void fn_8018BFA4(void* unused, void* dest, void* src);
+extern "C" void fn_8018BF7C(void* self, void* src) {
+    fn_8018BFA4(self, *(void**)((u8*)self + 4), src);
+}
+
 extern void* lbl_80299540[];
 extern void* lbl_80286A30[];
 extern "C" void* fn_8018C144(void* ptr, s16 param_2) {
