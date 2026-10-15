@@ -29,6 +29,18 @@ extern "C" void fn_800254AC(void) {
     fn_80025710();
 }
 
+extern "C" u8 lbl_802BBD38[];
+extern "C" int fn_800264AC(u8 i) {
+    u8* p = lbl_802BBD38 + i * 0x204;
+    p += *(s16*)(p + 0x200) * 0x20;
+    return *(int*)(p + 0x1c);
+}
+
+extern "C" void fn_800264D4(u8 i) {
+    u8* p = lbl_802BBD38 + i * 0x204;
+    *(int*)(p + *(s16*)(p + 0x200) * 0x20 + 0x1c) = 0;
+}
+
 extern u8 lbl_802BBD38[];
 extern "C" u8 fn_800265AC(u8);
 extern "C" void fn_80026500(u8 param_1) {
