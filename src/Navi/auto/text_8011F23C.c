@@ -483,6 +483,15 @@ extern "C" void* fn_801343E4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802923F0[];
+extern "C" u8* fn_80134440(u8* p, void* a, void* b) {
+    fn_8013A57C();
+    *(void**)(p + 8) = &lbl_802925EC;
+    *(void**)(p + 0x34) = b;
+    *(void**)(p + 8) = &lbl_802923F0;
+    return p;
+}
+
 extern void* lbl_80292398[];
 extern "C" void* fn_80134898(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
