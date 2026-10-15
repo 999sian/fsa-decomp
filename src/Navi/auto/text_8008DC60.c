@@ -589,14 +589,14 @@ extern "C" void* fn_8009FF64(void* ptr, s16 param_2) {
 
 extern "C" void* fn_800A0098(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
-        *(void**)ptr = lbl_8028B3B8;
-        if ((s32)ptr + 0x8 != 0) {
-            ((void**)(ptr))[2] = lbl_80288B1C;
+        *(void**)ptr = lbl_80288EDC;
+        if ((s32)ptr + (unsigned)0x8 != 0) {
+            ((void**)(ptr))[2] = lbl_80288520;
             if ((s32)ptr + 0x8 != 0) {
-                ((void**)(ptr))[2] = lbl_8027EC78;
+                ((void**)((unsigned)ptr))[2] = lbl_8027EC78;
             }
         }
-        if (param_2 > 0) {
+        if (0 < param_2) {
             fn_8015AB1C(ptr);
         }
     }
