@@ -489,6 +489,11 @@ extern "C" BOOL fn_80132A14(void)
     return TRUE;
 }
 
+extern "C" BOOL fn_80132A1C(void)
+{
+    return TRUE;
+}
+
 extern "C" int fn_80132A30()
 {
 	return 0;
