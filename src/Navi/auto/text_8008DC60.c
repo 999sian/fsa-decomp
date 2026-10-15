@@ -313,6 +313,10 @@ extern "C" void* fn_800A0238(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800A1748(void* param_1, void* param_2) {
+    fn_8015FDA8(param_2, *(void**)((char*)param_1 + 0x25c));
+}
+
 extern "C" void fn_800175B8(void*);
 extern "C" void fn_8008DE8C(void*);
 extern "C" void fn_800A199C(void* ptr)
