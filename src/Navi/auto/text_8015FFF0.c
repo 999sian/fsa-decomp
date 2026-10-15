@@ -15,3 +15,17 @@ extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern "C" void fn_8015D0B8(void*, int);
+extern char lbl_80297E68[];
+extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_80297E68;
+        fn_8015D0B8(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
