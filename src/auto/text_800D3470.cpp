@@ -141,6 +141,12 @@ extern "C" void fn_800DD8F8(u8* self, const u8* other) {
     self[0x33] = other[3];
 }
 
+extern "C" void fn_800DD914(u8* self, const u8* other) {
+    *(u16*)(self + 0x30) = *(const u16*)other;
+    self[0x32] = other[2];
+    self[0x33] = other[3];
+}
+
 extern "C" void* fn_800DD930(u8* this_) {
     return this_ + 0x30;
 }
