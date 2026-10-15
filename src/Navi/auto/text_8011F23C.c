@@ -5,6 +5,17 @@
 extern void* lbl_80290ACC[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern u8 lbl_802FF334;
+extern "C" void fn_80166C08(void*, int);
+extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
+    if (param_1) {
+        fn_80166C08(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_801204E4(void) {
     lbl_802FF334 = 0;
 }
