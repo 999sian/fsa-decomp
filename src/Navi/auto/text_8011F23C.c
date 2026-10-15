@@ -65,6 +65,13 @@ extern "C" void fn_8012C604(void** param_1, void* param_2) {
     *param_1 = param_2;
 }
 
+extern "C" void fn_8012D010(void*);
+extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
+    *(void**)ptr = param_2;
+    fn_8012D010(ptr);
+    return ptr;
+}
+
 extern void* lbl_80290F9C[];
 extern "C" void* fn_8012F204(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
