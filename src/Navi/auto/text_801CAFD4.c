@@ -283,24 +283,12 @@ extern "C" int __PADDisableRecalibration(int param_1) {
     return result;
 }
 
-extern "C" void fn_801CEC14(unsigned int param_1, unsigned int param_2) {
-    int state = OSDisableInterrupts();
-    
-    volatile unsigned short* base = (volatile unsigned short*)0xCC005000;
-    
-    unsigned short r0 = base[0x30/2];
-    r0 = (r0 & 0xFC00) | ((param_1 >> 16) & 0x3FF);
-    base[0x30/2] = r0;
-    
-    unsigned short r4 = base[0x32/2];
-    r4 = (r4 & 0xFFE0) | (param_1 & 0x1F);
-    base[0x32/2] = r4;
-    
-    unsigned short r4_2 = base[0x36/2];
-    r4_2 = (r4_2 & 0x7FFF) | ((param_2 >> 5) & 0x7FFF);
-    base[0x36/2] = r4_2;
-    
-    OSRestoreInterrupts(state);
+extern "C" void fn_801CEC14(u32 start, u32 length) {
+    int enabled = OSDisableInterrupts();
+    ((volatile u16*)0xCC005000)[24] = (u16)((((volatile u16*)0xCC005000)[24] & ~0x3FF) | (start >> 16));
+    ((volatile u16*)0xCC005000)[25] = (u16)((((volatile u16*)0xCC005000)[25] & ~0xFFE0) | (0xFFFF & start));
+    ((volatile u16*)0xCC005000)[27] = (u16)((((volatile u16*)0xCC005000)[27] & ~0x7FFF) | (u16)((length >> 5) & 0xFFFF));
+    OSRestoreInterrupts(enabled);
 }
 
 extern "C" void fn_801CEC9C(void) {
@@ -318,5 +306,10 @@ extern "C" u32 fn_801CED8C(void) {
 extern "C" void* fn_801D9F10(void)
 {
 	return lbl_802FFA4C;
+}
+
+extern "C" u32 fn_801DD408(int param_1)
+{
+    return *(u32*)(param_1 + 0x18);
 }
 
