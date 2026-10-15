@@ -21,6 +21,7 @@ extern "C" void fn_801303BC(void*, int);
 extern char lbl_80246FDC[];
 extern char lbl_80247000[];
 extern u32 lbl_802FF0C8;
+extern char lbl_802BF42C[];
 extern "C" void* fn_8004AF1C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80247000;
