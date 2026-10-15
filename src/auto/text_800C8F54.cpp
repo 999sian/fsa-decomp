@@ -109,3 +109,7 @@ extern "C" int fn_800CBDBC(void) {
     return 0;
 }
 
+extern "C" int fn_800CBDC4(void) {
+    return 0;
+}
+
