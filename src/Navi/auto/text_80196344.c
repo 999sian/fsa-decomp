@@ -205,6 +205,10 @@ extern "C" int fn_80198FEC()
 	return 0;
 }
 
+extern "C" void fn_80198FF4(void)
+{
+}
+
 extern "C" int fn_80198FF8()
 {
 	return 0;
@@ -290,18 +294,19 @@ extern "C" void fn_8019E004(int param_1)
 	int val = *(int *)(param_1 + 4);
 	int *addr = lbl_802FFA80;
 	int base = addr[0];
-	int sum = base + val;
-	addr[2] = sum;
-	
-	int i;
-	for (i = 0; i < 2; i++) {
-		if (*(short *)(param_1 + 8) != -1) {
-			fn_801A605C(i, (void *)(param_1 + 8));
-		}
-		param_1 += 2;
-	}
+	addr[2] = base + val;
 	int saved = addr[2];
-	fn_801BC250(saved, sum - base);
+	
+	int i = 0;
+	int ptr = param_1;
+	while (i < 2) {
+		if (*(short *)(ptr + 8) != -1) {
+			fn_801A605C(i, (void *)(ptr + 8));
+		}
+		i++;
+		ptr += 2;
+	}
+	fn_801BC250(saved, addr[2] - base);
 }
 
 extern "C" int fn_801A3544(int p) { return p + 4; }
