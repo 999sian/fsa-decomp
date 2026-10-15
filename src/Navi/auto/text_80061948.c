@@ -28,6 +28,11 @@ extern u16 lbl_80280080[];
 extern u16 lbl_802FC94C[];
 extern int lbl_802FC930;  // SDA label
 extern void* lbl_802B7CA0[];  // Address table
+extern void* lbl_802BB0FC[];
+extern f32 lbl_80300468;  // SDA label
+extern f32 lbl_8030046C;  // SDA label
+extern void* lbl_80280230[];
+extern "C" void fn_8006C5B0(s32);
 extern "C" void* fn_80062E28(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
