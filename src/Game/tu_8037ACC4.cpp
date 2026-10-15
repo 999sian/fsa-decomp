@@ -71,3 +71,10 @@ extern "C" int fn_8037AEAC(void* self_) {
     return uVar1;
 }
 
+extern "C" void fn_804522C8(void*);
+extern "C" void fn_8037AF4C(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        fn_804522C8(lbl_8053AF40);
+    }
+}
+
