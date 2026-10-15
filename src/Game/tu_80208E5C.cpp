@@ -29,3 +29,10 @@ extern "C" void* fn_80208E5C(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+extern "C" void fn_80209264(char* this_) {
+    *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x24);
+    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28);
+    *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x2c);
+}
+
