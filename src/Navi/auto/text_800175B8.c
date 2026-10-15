@@ -31,6 +31,19 @@ extern "C" void fn_80017F88(void* tag) {
     cTg_SingleCutFromTree__FP16create_tag_class(tag);
 }
 
+extern "C" void fn_8001D5B8(void*, void*);
+extern "C" s32 fn_8001D5B8_(void*, void*);
+extern "C" void fn_8001AAFC(void*);
+extern "C" s32 fn_8001D5F4(void*, void*);
+extern "C" void fn_8001836C(void*);
+extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
+extern u8 lbl_80205388[];
+extern "C" void cTg_Create__FP16create_tag_classPv(void*, void*);
+extern "C" s32 fn_80017FA8(void* tag, void* data) {
+    cTg_Create__FP16create_tag_classPv(tag, data);
+    return 1;
+}
+
 extern "C" void fn_8001C9FC(void);
 extern "C" void fn_80017FCC(void) {
     fn_8001C9FC();
