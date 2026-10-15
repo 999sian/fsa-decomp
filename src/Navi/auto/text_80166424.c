@@ -401,8 +401,8 @@ extern "C" void fn_80173268(Unk801727E4Class* param_1, int param_2, int param_3)
 
 extern "C" u32 fn_801732B8(void* param_1, u32 param_2) {
     if (param_2 < 1) {
-        u32 index = param_2 << 2;
-        return *(u32*)((u8*)param_1 + index + 0x54);
+        u32 offset = param_2 << 2;
+        return *(u32*)((u8*)param_1 + offset + 0x54);
     }
     return 0;
 }
