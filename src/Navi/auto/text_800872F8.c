@@ -83,6 +83,12 @@ extern "C" BOOL fn_80087A60(void)
     return TRUE;
 }
 
+extern "C" BOOL fn_8008856C(void);
+extern "C" BOOL fn_8008856C(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_800885B4(void);
 extern "C" void fn_80088574(void) {
     fn_800885B4();
