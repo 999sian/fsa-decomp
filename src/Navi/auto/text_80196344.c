@@ -157,6 +157,10 @@ extern "C" void fn_80198ED0()
 {
 }
 
+extern "C" void fn_80198F10()
+{
+}
+
 extern "C" void fn_80198F14()
 {
 }
