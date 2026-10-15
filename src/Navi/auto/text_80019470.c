@@ -1,4 +1,6 @@
 #include "types.h"
+extern "C" int fn_800636A0(void*, void*, int);
+extern u8 lbl_802B7CA0[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80019470-0x80021014 (291 functions). split_file divides it into the game's real files.
 
@@ -269,6 +271,16 @@ extern "C" void* fn_80020344(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" int fn_80020E48(void* param_1) {
+    extern u8 lbl_802B7CA0[];
+    extern int fn_800636A0(void*, void*, int);
+    int ret = fn_800636A0(param_1, lbl_802B7CA0 + 0x2200, 0x40);
+    if (ret < 0) {
+        return 5;
+    }
+    return ret == 0 ? 2 : 0;
 }
 
 extern "C" int fn_800636A0(void*, void*, int);
