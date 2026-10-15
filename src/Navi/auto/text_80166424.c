@@ -8,6 +8,9 @@ extern u16 lbl_80301ADE;
 struct Unk80174858Pair { u8 x; u8 y; };
 extern Unk80174858Pair lbl_80301AC0;
 extern "C" void fn_80174CAC(void*, u32, u32*, u32*, u32*, u32*, u32);
+static inline void fn_80174BD0Init(void* ptr, u32 arg, u32 a, u32 b, u32 c, u32 d) {
+    fn_80174CAC(ptr, arg, &a, &b, &c, &d, 0);
+}
 
 extern void* lbl_80298390[];
 extern "C" void fn_8015AB1C(void* ptr);
