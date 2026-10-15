@@ -27,6 +27,13 @@ extern "C" void __destroy_arr(void*, void*, u32, u32);
 extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
 extern "C" void __dt__12J3DIndTexMtxFv(void*);
 struct ActorBox;
+struct UnkDC8C;
+struct UnkDCF8;
+struct Unk800DDC8C {
+    u8 _0[0xda];
+    s16 a[4][4];
+    u8 b[4][4];
+};
 struct Unk800DF13C {
     u8 _0[0x16];
     u16 a[1];
@@ -203,10 +210,12 @@ extern "C" u32 fn_800DDA50(void) {
 }
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    *(u16*)(this_ + 0x4) = *(u16*)src;
-    u8* p = src + 2;
-    *(u8*)(this_ + 0x6) = p[0];
-    *(u8*)(this_ + 0x7) = p[1];
+    u16 w = *(u16*)src;
+    u8 b2 = src[2];
+    u8 b3 = src[3];
+    *(u16*)(this_ + 0x4) = w;
+    *(u8*)(this_ + 0x6) = b2;
+    *(u8*)(this_ + 0x7) = b3;
 }
 
 extern "C" void* fn_800DDA94(u8* this_) {
