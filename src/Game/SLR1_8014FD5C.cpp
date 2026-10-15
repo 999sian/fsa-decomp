@@ -205,7 +205,8 @@ extern "C" u32 fn_8015461C(const Actor* actor)
 
 extern "C" u8 fn_80154624(s32 index)
 {
-    return ((u8*)fn_802D6A9C() + 0x131DF)[index];
+    u8* base = (u8*)fn_802D6A9C();
+    return base[0x131DF + index];
 }
 
 extern "C" s32 fn_8015465C(f32 y, f32 x)
