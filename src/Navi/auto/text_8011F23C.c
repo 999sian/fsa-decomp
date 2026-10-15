@@ -101,6 +101,11 @@ extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80123EA0(void* p)
+{
+	lbl_802FF364 = p;
+}
+
 void* fn_80123EA8(void)
 {
 	return lbl_802FF364;
