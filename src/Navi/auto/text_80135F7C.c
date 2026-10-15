@@ -89,6 +89,10 @@ extern "C" u32 fn_80136A68(void) {
     return 2;
 }
 
+extern "C" u32 fn_80136B14(void) {
+    return 3;
+}
+
 extern "C" int fn_80136F18(void) {
     return 4;
 }
