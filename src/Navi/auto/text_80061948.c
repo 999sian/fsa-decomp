@@ -239,3 +239,8 @@ extern "C" void fn_8006CDCC(void) {
     fn_8006B15C();
 }
 
+extern "C" void fn_8006B6D8(void);
+extern "C" void fn_8006CE28(void) {
+    fn_8006B6D8();
+}
+
