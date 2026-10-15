@@ -105,3 +105,17 @@ extern "C" void* fn_800132E4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" char lbl_80204D78[];
+extern "C" void* fn_800136A8(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)((char*)ptr + 0x10) = lbl_80204D78;
+        if (ptr != nullptr) {
+            *(void**)((char*)ptr + 0x10) = lbl_80204E88;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
