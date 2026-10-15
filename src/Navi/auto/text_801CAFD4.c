@@ -71,6 +71,12 @@ extern "C" void fn_801CC840(int param_1) {
     OSRestoreInterrupts(interrupt_state);
 }
 
+extern "C" void* lbl_802FF934;
+extern "C" void* fn_801CC8AC(void)
+{
+	return lbl_802FF934;
+}
+
 extern "C" void fn_801CC8B4(int param_1) {
     int saved_param = param_1;
     char* base = (char*)lbl_802F7BC8;
