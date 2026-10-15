@@ -52,6 +52,12 @@ extern "C" void fn_801200C8(void* p) {
     ((EZZR*)p)->v25(11);
 }
 
+extern "C" void fn_80121DB0(void);
+extern "C" void fn_801200F8(void)
+{
+	fn_80121DB0();
+}
+
 class GateRegistry;
 extern "C" GateRegistry* fn_80131F0C(void);
 extern "C" u8* fn_80131E30(GateRegistry*, s32);
@@ -64,6 +70,30 @@ extern "C" void fn_80120118(EZZR* p) {
     fn_801D2608(p->field_230, lbl_8049DF40, 14);
     fn_801D22DC(p->field_230, 7, 2, 0);
     fn_801D1F14(p->field_230, lbl_8053C964);
+}
+
+extern "C" void fn_80120F38(int param_1)
+{
+    if ((*(unsigned int *)(param_1 + 0x90) & 1) != 0) {
+        *(u8 *)(param_1 + 0x3c4) = 1;
+    }
+    *(unsigned int *)(param_1 + 0x35c) = (*(unsigned int *)(param_1 + 0x90) >> 16) & 0xff;
+    *(unsigned int *)(param_1 + 0x3d0) = (*(unsigned int *)(param_1 + 0x90) >> 8) & 0xff;
+}
+
+extern "C" s32 fn_80121040(void* p)
+{
+	s32 val = *(s32*)((u8*)p + 0x33c);
+	if (val != 8) {
+		if (val < 8) {
+			if (val > 6) {
+				return 1;
+			}
+		} else if (val < 0xd) {
+			return 1;
+		}
+	}
+	return 0;
 }
 
 extern "C" s32 fn_8011FFB8(void)
