@@ -432,6 +432,12 @@ extern "C" int fn_801328B8(void) {
 extern "C" void fn_801328C8(void) {
 }
 
+extern void* lbl_803017A8;
+extern "C" void* fn_801328CC(void)
+{
+	return lbl_803017A8;
+}
+
 extern "C" void fn_801328D4(void) {
 }
 
