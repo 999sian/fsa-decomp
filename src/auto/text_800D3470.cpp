@@ -23,6 +23,8 @@ extern "C" char __vt__21J3DColorBlockLightOff[];
 extern "C" char __vt__13J3DColorBlock[];
 extern "C" char __vt__15J3DIndBlockFull[];
 extern "C" char __vt__11J3DIndBlock[];
+extern "C" char __vt__16J3DPEBlockFogOff[];
+extern "C" char __vt__10J3DPEBlock[];
 extern "C" void __dl__FPv(void*);
 extern "C" void __destroy_arr(void*, void*, u32, u32);
 extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
