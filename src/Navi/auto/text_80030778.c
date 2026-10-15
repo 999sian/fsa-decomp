@@ -43,6 +43,11 @@ extern "C" void fn_80033678(void* p) {
     }
 }
 
+extern "C" void fn_8003545C(void* p) {
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
+    *(unsigned int*)((char*)p + 0x220) = 0x6;
+}
+
 extern "C" void fn_8003548C(void* p) {
     fn_8002E3C4(p, 0);
 }
