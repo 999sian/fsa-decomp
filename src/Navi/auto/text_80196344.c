@@ -223,6 +223,10 @@ extern "C" void fn_80199008(void)
 {
 }
 
+extern "C" void fn_8019900C(void)
+{
+}
+
 extern "C" int fn_80199A28() {
     return 0x244;
 }
