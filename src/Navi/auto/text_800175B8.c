@@ -31,3 +31,8 @@ extern "C" void fn_80017F88(void) {
     cTg_SingleCutFromTree__FP16create_tag_class();
 }
 
+extern "C" void fn_8001C9FC(void);
+extern "C" void fn_80017FCC(void) {
+    fn_8001C9FC();
+}
+
