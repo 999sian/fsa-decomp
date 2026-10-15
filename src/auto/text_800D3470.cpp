@@ -1591,6 +1591,10 @@ extern "C" void* fn_800DF3F8(void* self, short flag) {
     return self;
 }
 
+extern "C" u32 fn_800DF454(void) {
+    return 0x50454544;
+}
+
 extern "C" u32 fn_800DF4BC(void) {
     return 0x50454f50;
 }
