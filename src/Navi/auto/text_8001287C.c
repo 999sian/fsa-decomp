@@ -2,12 +2,6 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8001287c-0x80013a30 (29 functions). split_file divides it into the game's real files.
 
-typedef struct Unk802A05C0 {
-    u8 thread[0x320];
-    u8 stack[0x1800];
-    u8 param[1];
-} Unk802A05C0;
-
 extern "C" void fn_8015AB1C(void*);
 extern "C" void* fn_80012970(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
