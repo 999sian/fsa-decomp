@@ -86,3 +86,13 @@ extern "C" void fn_8037AF4C(void) {
     }
 }
 
+extern "C" void fn_80452308(void*);
+extern "C" void fn_80454A00(void*);
+extern "C" void fn_8037AF80(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        fn_80452308(lbl_8053AF40);
+    } else {
+        fn_80454A00(lbl_8053AF48);
+    }
+}
+
