@@ -75,7 +75,7 @@ extern "C" s32 fn_800CBD6C(void) {
 extern "C" void fn_800CBD74(void) {
 }
 
-void fn_800CBD78(void)
+extern "C" void fn_800CBD78(void)
 {
 }
 
