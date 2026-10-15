@@ -448,8 +448,15 @@ extern "C" void fn_800DE138(u8* this_, u32 idx, const u8* src) {
     (this_ + idx * 4)[0x65] = src[3];
 }
 
+extern "C" void fn_800DE164(u8* this_, u32 idx, const u8* src) {
+    (this_ + idx * 4)[0x62] = src[0];
+    (this_ + idx * 4)[0x63] = src[1];
+    (this_ + idx * 4)[0x64] = src[2];
+    (this_ + idx * 4)[0x65] = src[3];
+}
+
 extern "C" u8* fn_800DE190(u8* this_, u32 idx) {
-    return this_ + (idx * 4 + 0x62);
+    return &((u8(*)[4])(this_ + 0x62))[idx][0];
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
