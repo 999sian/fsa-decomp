@@ -12,6 +12,17 @@ extern "C" void* fn_8015A90C(u32 size);
 extern "C" void fn_80166B58(void* param_1, void* param_2);
 extern "C" void fn_80166C84(void* param_1, void* param_2);
 extern "C" s64 OSGetTime(void);
+extern "C" void fn_80166C08(void*, int);
+extern "C" void* fn_8011C5B4(void* param_1, s16 param_2) {
+    if (param_1) {
+        fn_80166C08(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_8011EA30(s64 param_1) {
     if (param_1 > 0) {
         s64 time1 = OSGetTime();
@@ -44,20 +55,22 @@ extern "C" u32 fn_8011EBC4(u32 param_1) {
 
 extern "C" void fn_8011EBD4(void* param_1) {
     if (param_1 != nullptr) {
-        void* current = lbl_802C6170;
+        void** head = (void**)&lbl_802C6170;
+        void** current = (void**)lbl_802C6170;
         
         while (current != nullptr) {
-            if (fn_801E6578(param_1, *(void**)current) == nullptr) {
+            void* val = *(void**)current;
+            if (fn_801E6578(param_1, val) == nullptr) {
                 return;
             }
-            current = *(void**)((u8*)current + 12);
+            current = (void**)current[3];
         }
         
         void* new_node = fn_8015A90C(0x14);
         if (new_node != nullptr) {
             fn_80166B58((u8*)new_node + 4, new_node);
             *(void**)new_node = param_1;
-            fn_80166C84(&lbl_802C6170, (u8*)new_node + 4);
+            fn_80166C84(head, (u8*)new_node + 4);
         }
     }
 }
