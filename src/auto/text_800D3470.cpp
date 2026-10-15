@@ -194,6 +194,24 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
     p->m10();
 }
 
+extern "C" void fn_800D8D58(int* param_1, u32 param_4) {
+    if ((param_4 >> 0x10) & 0xf) {
+        (*(void(**)(void))(*(int*)param_1 + 0x14))();
+    }
+    if (param_4 & 0x04000000) {
+        (*(void(**)(int*))(*(int*)param_1 + 0x1c))(param_1);
+    }
+    if ((param_4 >> 0x14) & 0xf) {
+        (*(void(**)(int*))(*(int*)param_1 + 0x20))(param_1);
+        if (param_4 & 0x08000000) {
+            (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
+        }
+    }
+    if (param_4 & 0x01000000) {
+        (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
+    }
+}
+
 extern "C" void fn_800D971C(u8* self) {
 	for (u32 i = 0; i < 4; i++) {
 		if (*(u16*)(self + 8 + i * 2) != 0xffff) {
@@ -318,6 +336,10 @@ extern "C" void fn_800DDADC(u8* this_, u8 val) {
 
 extern "C" void fn_800DDAE4(u8* this_, u8* src) {
     *(u8*)(this_ + 0xe) = *src;
+}
+
+extern "C" u8 fn_800DDAF0(u8* self) {
+    return *(u8*)(self + 0xe);
 }
 
 extern "C" void fn_800DDB00(int param_1, u8* param_2)
@@ -772,18 +794,12 @@ extern "C" u32 fn_800DE954() {
 
 extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
     u8* p = this_ + idx * 8;
-    u8 a = src[1];
-    u8 b = src[2];
-    u8 c = src[3];
-    u8 d = src[5];
-    u8 e = src[6];
-    u8 f = src[7];
-    p[0xf] = a;
-    p[0x10] = b;
-    p[0x11] = c;
-    p[0x13] = d;
-    p[0x14] = e;
-    p[0x15] = f;
+    p[0xf] = src[1];
+    p[0x10] = src[2];
+    p[0x11] = src[3];
+    p[0x13] = src[5];
+    p[0x14] = src[6];
+    p[0x15] = src[7];
 }
 
 extern "C" u8* fn_800DE9D4(u8* this_, s32 idx) {
