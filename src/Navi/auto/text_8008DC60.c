@@ -54,6 +54,11 @@ extern "C" void* fn_8008E134(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_8008F378()
+{
+	return 0;
+}
+
 extern void* lbl_80286A1C[];
 extern "C" void* fn_80092158(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -326,9 +331,9 @@ extern "C" void fn_80092444(void);
 extern "C" void fn_800911F0(void);
 extern "C" void fn_800A1A64(void* param_1) {
     void* obj = *(void**)(lbl_802B7CA0 + 0x1394);
-    typedef void (*VFunc)(void*);
-    VFunc* vtable = *(VFunc**)obj;
-    vtable[5](obj);
+    void** vt = *(void***)obj;
+    void (*f)(void*) = (void (*)(void*))vt[5];
+    f(obj);
     f32 c = lbl_80300AF0;
     fn_80179CB4(*(void**)((char*)param_1 + 4), obj, c, c);
 }
