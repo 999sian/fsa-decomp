@@ -10,7 +10,7 @@ extern "C" void OSClearContext(void*);
 extern "C" void OSSetCurrentContext(void*);
 extern "C" void fn_801C4A28(void*);
 extern "C" void fn_801C4AF4(void*);
-extern "C" void fn_801C42F4(void);
+extern "C" int fn_801C42F4(void);
 extern "C" void fn_801CDB9C(int);
 extern "C" int fn_801CEB00(unsigned int param_1);
 
