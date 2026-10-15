@@ -92,10 +92,11 @@ extern "C" void fn_8004B11C(void* param_1) {
 
 extern "C" void* fn_8004B16C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
-        volatile void** vpp = (volatile void**)param_1;
-        *vpp = (void*)lbl_80246FDC;
-        if (*vpp != nullptr) {
-            *vpp = (void*)lbl_80247000;
+        void** pp = (void**)param_1;
+        *pp = (void*)lbl_80246FDC;
+        void* temp = *pp;
+        if (temp != nullptr) {
+            *pp = (void*)lbl_80247000;
         }
         fn_801303BC(param_1, 0);
         if (param_2 > 0) {
@@ -199,8 +200,8 @@ extern "C" void fn_80007AB8(void*, int, void*);
 extern "C" void* fn_8004C970(void*);
 extern "C" void fn_8004C614(void* p) {
     if (p == 0) {
-        fn_8011FD10();
-        fn_8011FD18(0, lbl_80246BD8, 0x42e, &lbl_802FC1B0, lbl_80246C0C);
+        void* tmp = fn_8011FD10();
+        fn_8011FD18(tmp, lbl_80246BD8, 0x42e, &lbl_802FC1B0, lbl_80246C0C);
         fn_80007AB8(lbl_80246BD8, 0x42e, &lbl_802FC1B4);
     }
     void* result = fn_8004C970(p);
@@ -214,6 +215,9 @@ extern "C" void* fn_8004CBB4(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" void fn_8004CBF0(void) {
 }
 
 extern char lbl_80246DC4[];
