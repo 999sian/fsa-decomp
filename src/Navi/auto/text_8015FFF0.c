@@ -42,6 +42,21 @@ extern "C" int fn_801618B8(int p) { return p + 4; }
 
 extern "C" u16 fn_801618C0(u16* p) { return *p; }
 
+extern "C" u8* fn_801618C8(u8* p, void* a, void* b) {
+    fn_80160C34(p, a, 1);
+    *(void**)p = lbl_80297DD4;
+    p[0x30] = 0;
+    *(void**)(p + 0x60) = b;
+    if (!fn_80161A2C(p, a, *(void**)(p + 0x60))) {
+        return p;
+    }
+    *(u32*)(p + 0x2c) = 0x52415243;
+    *(int*)(p + 0x28) = *(int*)(p + 0x54) + *(int*)(*(u8**)(p + 0x48) + 4);
+    fn_80166D3C(lbl_802EE2D4, p + 0x18);
+    p[0x30] = 1;
+    return p;
+}
+
 extern "C" void fn_8015D0B8(void*, int);
 extern char lbl_80297E68[];
 extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
