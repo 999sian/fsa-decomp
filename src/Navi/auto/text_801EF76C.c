@@ -11,3 +11,8 @@ extern "C" int ddh_cc_shutdown()
 	return 0;
 }
 
+extern "C" int gdev_cc_close()
+{
+	return 0;
+}
+
