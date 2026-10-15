@@ -183,16 +183,22 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A38E0(u8* p, s32 i, NaviRect16* src) {
-    *(NaviRect16*)(p + i * 8 + 0xda) = *src;
+extern "C" void fn_801A38E0(NaviRectHolder* p, s32 i, NaviRect16* src) {
+    p->rects[i].x = src->x;
+    p->rects[i].y = src->y;
+    p->rects[i].w = src->w;
+    p->rects[i].h = src->h;
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
     return p + 0xda + i * 8;
 }
 
-extern "C" void fn_801A394C(u8* p, s32 i, NaviColor8* src) {
-    *(NaviColor8*)(p + i * 4 + 0xfa) = *src;
+extern "C" void fn_801A394C(NaviRectHolder* p, s32 i, NaviColor8* src) {
+    p->colors[i].r = src->r;
+    p->colors[i].g = src->g;
+    p->colors[i].b = src->b;
+    p->colors[i].a = src->a;
 }
 
 extern "C" void* fn_801A3B8C(void* p) {
@@ -444,11 +450,19 @@ extern "C" u32 fn_801A4C90(void) {
 }
 
 extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, u8* param_3) {
-    param_1 = param_1 + param_2 * 4;
-    param_1[4] = param_3[0];
-    param_1[5] = param_3[1];
-    param_1[6] = param_3[2];
-    param_1[7] = param_3[3];
+    u8* dst = param_1 + param_2 * 4;
+    u8 v0 = param_3[0];
+    u8 v1 = param_3[1];
+    u8 v2 = param_3[2];
+    u8 v3 = param_3[3];
+    dst[4] = v0;
+    dst[5] = v1;
+    dst[6] = v2;
+    dst[7] = v3;
+}
+
+extern "C" int fn_801A4CF4(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 4;
 }
 
 extern void* lbl_8029AAB8[];
