@@ -32,6 +32,9 @@ extern "C" void* fn_8004AF1C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8004B070(void) {
+}
+
 extern "C" void fn_8004B074(void* param_1, void* param_2, void* param_3, void* param_4) {
     void* vtable = *(void**)param_1;
     (*(void(**)(void))((char*)vtable + 0x20))();
@@ -97,7 +100,7 @@ extern "C" void fn_8004B1DC(void* param_1, void* param_2, void* param_3, void* p
         *(u8*)((char*)param_1 + 0x10) = 0x0;
     }
     *(u8*)((char*)param_2 + 0x110) = 0x2;
-    *(u32*)((char*)param_2 + 0xf0) = (u32)(void*)lbl_802FF0C8;
+    *(u32*)((char*)param_2 + 0xf0) = (u32)&lbl_802FF0C8;
     *(u32*)((char*)param_2 + 0xc0) = *(u8*)((char*)param_1 + 0x14);
 }
 
