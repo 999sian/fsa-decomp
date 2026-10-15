@@ -210,6 +210,11 @@ extern "C" int fn_80198FF8()
 	return 0;
 }
 
+extern "C" int fn_80199000()
+{
+	return 0;
+}
+
 extern "C" int fn_80199A28() {
     return 0x244;
 }
@@ -241,12 +246,14 @@ extern "C" int fn_80199A58() {
 extern "C" void fn_8019DE38(int *param_1)
 {
 	typedef void (*fnptr)(void);
-	int *vtable = (int *)(*param_1);
-	fnptr fn;
+	int *ptr = param_1;
+	int *vtable;
 	
-	fn = (fnptr)(vtable[0x2c/4]);
+	vtable = (int *)(*ptr);
+	fnptr fn = (fnptr)(vtable[0x2c/4]);
 	fn();
 	
+	vtable = (int *)(*ptr);
 	fn = (fnptr)(vtable[0x30/4]);
 	fn();
 }
