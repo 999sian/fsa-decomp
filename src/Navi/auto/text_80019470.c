@@ -227,10 +227,12 @@ extern "C" void fn_8001BEA4(void) {
 extern "C" void fn_80115178(void*, void*, void*);
 extern "C" void fn_8011580C(void);
 extern char lbl_802FEC38[];
+#pragma push
+#pragma dont_inline on
 extern "C" void fn_8001C2C0(void* param_1) {
     fn_8001BBBC((short*)((u8*)param_1 + 0xbe));
 }
-
+#pragma pop
 extern "C" void* fn_8001C308(void* param_1) {
     void* result = nullptr;
     if (*(s8*)((u8*)param_1 + 0xbc) == 0) {
