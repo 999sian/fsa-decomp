@@ -142,6 +142,20 @@ extern "C" void* fn_8004038C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_80040464(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = lbl_80246A20;
+        fn_801E0D40((char*)param_1 + 0x18, &fn_8003CE80, 0x38, 0x96);
+        if (param_1 != nullptr) {
+            *(void**)param_1 = lbl_80299A8C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     volatile union {
         s64 i;
