@@ -77,6 +77,13 @@ extern "C" void fn_80019834(void* param_1) {
     fn_8001D630(*(void**)((u8*)self + 0xc0), self);
 }
 
+extern "C" void fn_8001A238(void* param_1, u16 param_2) {
+    if (param_2 > 0x7fff) {
+        return;
+    }
+    *(u16*)((u8*)param_1 + 6) = param_2;
+}
+
 extern "C" void fn_8001DC20(void);
 extern "C" void fn_8001A5D0(void) {
     fn_8001DC20();
