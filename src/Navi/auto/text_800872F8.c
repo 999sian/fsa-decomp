@@ -26,8 +26,10 @@ extern "C" int fn_8008739C(void) {
 }
 
 extern "C" int fn_800873C4(void) {
-    int result = fn_80058A88(0xb);
-    return (result == 0) ? 0 : 4;
+    int x = fn_80058A88(0xb);
+    int neg_x = -x;
+    int tmp = (neg_x | x) >> 31;
+    return 4 & tmp;
 }
 
 extern "C" int fn_80058A88(int x);
@@ -65,11 +67,13 @@ extern "C" void* fn_80087788(void* ptr, s16 param_2) {
 }
 
 extern "C" int fn_800877E4(void* param_1) {
-    s8 byte = *(s8*)((u8*)param_1 + 0x420);
-    if (byte == 0) {
+    u8* addr = (u8*)param_1;
+    s8 byte_val = *(s8*)(addr + 0x420);
+    
+    if (byte_val == 0) {
         fn_80057C38(0x1e);
-        (*(u8*)((u8*)param_1 + 0x420))++;
-    } else if (byte != -1) {
+        addr[0x420]++;
+    } else if (byte_val != (s8)-1) {
         fn_8001A454(4, 0, 5);
     }
     return 1;
@@ -106,6 +110,10 @@ extern "C" void* fn_80088D50(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void* fn_80088DD4(u8* p) {
+    return *(void**)(p + 0x48);
 }
 
 extern "C" void fn_80088ED4(void);
