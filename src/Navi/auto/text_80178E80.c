@@ -10,11 +10,26 @@ extern "C" void* fn_8018C230(void* base, u32 offset);
 extern "C" void fn_801193D8(void* dest, void* src);
 extern "C" void fn_8018B384(void* unused, void* dest, void* src);
 extern void* lbl_802994F0[];
+extern "C" void fn_8016A0B4(void*);
+extern "C" void fn_8018DEF0(void*, u16, u8*);
+extern "C" void fn_80178BFC(void*, void*);
+extern "C" void fn_8018A7B8(u8* self, void* arg) {
+    u8 buf[8];
+    void* p = *(void**)(self + 0x144);
+    if (p != NULL && *(u16*)(self + 0x13c) != 0xffff) {
+        fn_8018DEF0(p, *(u16*)(self + 0x13c), buf);
+        if (buf[0] != 0) {
+            self[0xb0] = 1;
+        } else {
+            self[0xb0] = 0;
+        }
+    }
+    fn_80178BFC(self, arg);
+}
+
 extern "C" void fn_8018B07C(void* ptr) {
-    register void* a asm("r5") = (void*)lbl_80299504;
-    register void* b asm("r4") = (void*)lbl_802994F0;
-    *(void**)ptr = a;
-    *(void**)ptr = b;
+    *(void**)ptr = lbl_80299504;
+    *(void**)ptr = lbl_802994F0;
 }
 
 extern "C" void* fn_8018B098(void* ptr, s16 param_2) {
