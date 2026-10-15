@@ -1,5 +1,6 @@
 #include "types.h"
 
+extern f32 lbl_802FEAB0;
 extern void fn_80167CD8(void*, u32, u32);
 extern void* lbl_802985C8[];
 extern void* lbl_80298B14[];
@@ -171,6 +172,47 @@ extern "C" int fn_80137824(void) {
 
 extern "C" u32 fn_80138340(void) {
     return 6;
+}
+
+extern "C" void fn_80138348(u32* param_1, int param_2) {
+    if (param_2 != 0) {
+        param_2 = param_2 + 8;
+    }
+    param_1[0] = 0;
+    param_1[1] = param_2;
+    param_1[2] = 0;
+}
+
+extern "C" void fn_80138368(u32* param_1, u32 param_2, u32 param_3, u32 param_4) {
+    param_1[0x10] = param_2;
+    param_1[0x11] = param_3;
+    param_1[0x12] = param_4;
+    param_1[0x13] = param_1[0x10];
+    param_1[0x14] = param_1[0x12];
+    param_1[0x15] = param_1[0x10] + param_1[0x11] * param_1[0x12] * 4;
+    param_1[0x16] = param_1[0x12];
+    param_1[0x17] = param_1[0x13];
+    param_1[0x18] = param_1[0x14];
+}
+
+extern f32 lbl_802FEAB0;
+extern "C" void fn_801383B8(void* param_1) {
+    *(f64*)((u8*)param_1 + 0x8) = lbl_802FEAB0;
+    *(f64*)((u8*)param_1 + 0x10) = *(f64*)((u8*)param_1 + 0x8);
+    *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
+    *(u8*)((u8*)param_1 + 0x20) = 0;
+    *(u8*)((u8*)param_1 + 0x21) = 0;
+    *(u32*)((u8*)param_1 + 0x38) = 0;
+    *(u32*)((u8*)param_1 + 0x3c) = 0;
+    *(u32*)((u8*)param_1 + 0x40) = 0;
+    *(u32*)((u8*)param_1 + 0x44) = 0;
+    *(u32*)((u8*)param_1 + 0x48) = 0;
+    *(u32*)((u8*)param_1 + 0x4c) = 0;
+    *(u32*)((u8*)param_1 + 0x50) = *(u32*)((u8*)param_1 + 0x48);
+    *(u32*)((u8*)param_1 + 0x54) = *(u32*)((u8*)param_1 + 0x4c);
+    *(u32*)((u8*)param_1 + 0x58) = *(u32*)((u8*)param_1 + 0x50);
+    *(u32*)((u8*)param_1 + 0x5c) = *(u32*)((u8*)param_1 + 0x4c);
+    *(u32*)((u8*)param_1 + 0x60) = *(u32*)((u8*)param_1 + 0x50);
 }
 
 extern void* lbl_80292974[];
