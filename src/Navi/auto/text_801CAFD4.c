@@ -3,6 +3,8 @@
 
 #include <types.h>
 extern void* lbl_802FFA4C;
+extern u8* __GXData;
+extern volatile u16* __cpReg;
 
 
 extern "C" int OSDisableInterrupts(void);
@@ -301,6 +303,18 @@ extern "C" void fn_801CEC9C(void) {
 extern "C" u32 fn_801CED8C(void) {
     volatile unsigned int* reg = (volatile unsigned int*)0xCC006C00;
     return *reg & 1;
+}
+
+extern void* lbl_802FFA50;
+extern void* lbl_802FFA48;
+extern "C" void* fn_801C027C(void);
+extern u8* __GXData;
+extern volatile u16* __cpReg;
+extern "C" void fn_801D9D84(u32 a, u8 b)
+{
+	*(u32*)(__GXData + 0x10) = (*(u32*)(__GXData + 0x10) & ~1) | (a & 1);
+	*(u32*)(__GXData + 0x10) = (*(u32*)(__GXData + 0x10) & ~2) | ((b & 1) << 1);
+	__cpReg[2] = *(u32*)(__GXData + 0x10);
 }
 
 extern "C" void* fn_801D9F10(void)
