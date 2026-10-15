@@ -56,6 +56,13 @@ extern "C" void fn_800CF8F4(void* param_1, unsigned char* anm, const J3DAnmVisib
     *(unsigned char**)(anm + 0x14) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)data->mValuesOffset);
 }
 
+extern "C" void fn_800CF998(void* param_1, unsigned char* anm, const unsigned char* data);
+extern "C" void fn_800CFA2C(void* param_1, void* anm, const void* data);
+extern "C" void* fn_800D06D0(const void* data, void* offset);
+extern "C" void fn_800CF970(void** self, const unsigned char* data) {
+    fn_800CF998(self, (unsigned char*)self[1], data);
+}
+
 extern float lbl_8053BC80;
 void fn_800CFA2C(void* param_1, void* param_3, void* param_2) {
     unsigned char val8 = *(unsigned char*)((unsigned char*)param_3 + 8);
