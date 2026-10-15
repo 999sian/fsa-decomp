@@ -296,7 +296,9 @@ extern "C" void fn_800DDB70(void* param_1)
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* pStart = __GDCurrentDL->pDisplayListData;
   void* pCurr = __GDCurrentDL->pDisplayListData;
-  u32 i = 0;
+  u32 i;
+  
+  i = 0;
   
   while (true) {
     if (!isTexNoReg(pCurr)) break;
@@ -428,15 +430,15 @@ extern "C" u32* fn_800DE0B8(u32* this_, u32 idx) {
 }
 
 extern "C" void fn_800DE0CC(u8* this_, u32 idx, const s16* src) {
-    s16* dst = (s16*)(this_ + idx * 8);
-    dst[0x21] = src[0];
-    dst[0x22] = src[1];
-    dst[0x23] = src[2];
-    dst[0x24] = src[3];
+    ((s16*)(this_ + idx * 8 + 0x42))[0] = src[0];
+    ((s16*)(this_ + idx * 8 + 0x42))[1] = src[1];
+    ((s16*)(this_ + idx * 8 + 0x42))[2] = src[2];
+    ((s16*)(this_ + idx * 8 + 0x42))[3] = src[3];
 }
 
 extern "C" u8* fn_800DE124(u8* this_, u32 idx) {
-    return this_ + (idx * 8 + 0x42);
+    u32 off = idx * 8 + 0x42;
+    return this_ + off;
 }
 
 extern "C" void fn_800DE138(u8* this_, u32 idx, const u8* src) {
@@ -675,6 +677,10 @@ extern "C" int fn_800DED50(int p, int i) {
     return p + i * 4 + 0xb8;
 }
 
+extern "C" void fn_800DED64(int p, int i, u8 v) {
+    *(u8*)(p + i + 0xc8) = v;
+}
+
 extern "C" void fn_800DEE0C(u8* self, const J3DNBTScaleInfo* other) {
     *(J3DNBTScaleInfo*)(self + 0x5c) = *other;
 }
@@ -754,6 +760,18 @@ extern "C" u16* fn_800DF13C(Unk800DF13C* self, int i) {
 
 extern "C" void fn_800DF150(u8* self, int i, void* v) {
     ((void**)(self + 0x20))[i] = v;
+}
+
+extern "C" u32 fn_800DF208(void) {
+    return 0x434c4142;
+}
+
+extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
+    int offset = param_1 + param_2 * 4;
+    *(u8*)(offset + 0x20) = param_3[0];
+    *(u8*)(offset + 0x21) = param_3[1];
+    *(u8*)(offset + 0x22) = param_3[2];
+    *(u8*)(offset + 0x23) = param_3[3];
 }
 
 extern "C" void* fn_800DF280(void* self, short flag) {
