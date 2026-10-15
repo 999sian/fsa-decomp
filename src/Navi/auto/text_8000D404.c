@@ -157,6 +157,11 @@ extern "C" int fn_8000EDC8()
 	return 0;
 }
 
+extern "C" int fn_8000EDD0()
+{
+	return 0;
+}
+
 extern "C" int fn_8000EDD8()
 {
 	return 0;
