@@ -215,6 +215,10 @@ extern "C" int fn_80199000()
 	return 0;
 }
 
+extern "C" void fn_80199008(void)
+{
+}
+
 extern "C" int fn_80199A28() {
     return 0x244;
 }
@@ -256,6 +260,21 @@ extern "C" void fn_8019DE38(int *param_1)
 	vtable = (int *)(*ptr);
 	fn = (fnptr)(vtable[0x30/4]);
 	fn();
+}
+
+extern "C" void fn_8019DE84(int param_1)
+{
+	extern int* lbl_802FFA80;
+	int val = *(int *)(param_1 + 4);
+	int *addr = lbl_802FFA80;
+	int sum = addr[0] + val;
+	addr[2] = sum;
+	
+	if (*(short *)(param_1 + 8) != -1) {
+		fn_801A605C(0, (void *)(param_1 + 8));
+	}
+	int saved = addr[2];
+	fn_801BC250(saved, saved - saved);
 }
 
 extern "C" void fn_801A605C(int, void*);
