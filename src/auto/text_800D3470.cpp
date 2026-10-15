@@ -581,6 +581,10 @@ extern "C" void fn_800DD980(int param_1, u8* param_2) {
     *(u8*)(param_1 + 0x3a) = *param_2;
 }
 
+extern "C" u8 fn_800DD98C(u8* param_1) {
+    return *(u8*)(param_1 + 0x3a);
+}
+
 extern "C" void fn_800DD994(u8* param_1, u8 param_2) {
     *(u8*)(param_1 + 0x3b) = param_2;
 }
