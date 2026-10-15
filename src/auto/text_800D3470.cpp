@@ -158,6 +158,10 @@ extern "C" void fn_800DDABC(u8* this_, const u16* src) {
 extern "C" Vec* fn_800DDAD4(Actor* a);
 extern "C" Vec* fn_800DDAD4(Actor* a) { return (Vec*)((u8*)a + 0xC); }
 
+extern "C" void fn_800DDADC(u8* this_, u8 val) {
+    this_[0xe] = val;
+}
+
 extern "C" void fn_800DDC1C(u16* this_, s32 idx, u16 val) {
     this_[idx + 4] = val;
 }
