@@ -42,18 +42,18 @@ extern "C" void fn_80209CA4(ItemBase* this_, u32 index, u32 value, void* pos, u3
 }
 
 extern "C" void fn_80209CF4(u8* this_, const f32* pos) {
-    if ((*(u32*)(this_ + 0x230) & 0x2000) != 0) {
+    if ((bool)(*(u32*)(this_ + 0x230) & 0x2000)) {
         return;
     }
+    *(u32*)(this_ + 0x230) |= 0x8000;
     f32 x = pos[0];
     f32 y = pos[1];
-    *(u32*)(this_ + 0x230) |= 0x8000;
     *(f32*)(this_ + 0x2C8) = x;
     *(f32*)(this_ + 0x2CC) = y;
 }
 
 extern "C" void fn_80209D20(u8* this_, u32 value, u8 flag) {
-    if ((*(u32*)(this_ + 0x230) & 0x2000) != 0) {
+    if ((*(volatile u32*)(this_ + 0x230) & 0x2000) != 0) {
         return;
     }
     *(u32*)(this_ + 0x230) |= 0x4000;
