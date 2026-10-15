@@ -130,6 +130,15 @@ extern "C" void fn_80092C54(char* param_1) {
     }
 }
 
+extern "C" void fn_80092CAC(char* param_1) {
+    if (fn_8010B8D4(*(void**)(param_1 + 0x29c)) == 1) {
+        char* p = *(char**)(param_1 + 0x264);
+        p[0x19a] = 3;
+        p[0x19b] = 0;
+        param_1[0x7e8] = 1;
+    }
+}
+
 extern void* lbl_80288854[];
 extern "C" void* fn_80092F20(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
