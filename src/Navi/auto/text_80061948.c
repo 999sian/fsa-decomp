@@ -345,6 +345,12 @@ extern "C" void fn_80067C54(void) {
     fn_80067564();
 }
 
+extern "C" BOOL fn_80067DD4(void);
+extern "C" BOOL fn_80067DD4(void)
+{
+    return TRUE;
+}
+
 extern void* lbl_8027FCA8[];
 extern "C" void* fn_80067DDC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
