@@ -100,6 +100,11 @@ extern "C" void fn_800D83E8(Vtable800D8248* p) {
     p->m9();
 }
 
+extern "C" void fn_800D86D4(Vtable800D8248* p) {
+    p->m9();
+    p->m10();
+}
+
 extern "C" void fn_800D89F0(Vtable800D8248* p) {
     p->m9();
     p->m10();
