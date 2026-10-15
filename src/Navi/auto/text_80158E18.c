@@ -5,6 +5,16 @@
 extern void* lbl_8029796C[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80159C6C(void*, int);
+struct Unk802FF544 {
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void vf18();
+    virtual void vf1C();
+    virtual void vf20();
+    virtual int vf24(int, int);
+};
 extern "C" void fn_80159DB4(void);
 extern u32 lbl_802FF540;
 extern "C" u32 fn_80159B94(u32 param_1) {
@@ -18,6 +28,14 @@ extern "C" u32 fn_80159BA4(u32 param_1) {
     u32 old = lbl_802FF544;
     lbl_802FF544 = param_1;
     return old;
+}
+
+extern "C" int fn_8015A90C(int a) {
+    void** obj = (void**)lbl_802FF544;
+    if (obj != 0) {
+        return (*(int (**)(void*, int, int))(*(char**)obj + 0x24))(obj, a, 4);
+    }
+    return 0;
 }
 
 extern "C" void fn_80159C6C(void*, int);
