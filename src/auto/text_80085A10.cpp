@@ -42,3 +42,39 @@ extern "C" u32 fn_80086654(int param_1) {
     return *(u32*)(param_1 + 0x80);
 }
 
+extern "C" int fn_8008665C(int param_1, int param_2) {
+    if (param_2 < 0) {
+        return 0;
+    }
+    u32 limit = *(u32*)(param_1 + 0x70);
+    if ((u32)param_2 >= limit) {
+        return 0;
+    }
+    int divisor = *(int*)(param_1 + 0x6c);
+    int offset = *(int*)(param_1 + 0x7c);
+    return offset + divisor * param_2;
+}
+
+extern "C" int fn_8008668C(int param_1, u32 param_2) {
+    int offset = *(int*)(param_1 + 0x7c);
+    
+    if ((int)(param_2 - offset) < 0) {
+        return -1;
+    }
+    
+    u32 diff = param_2 - offset;
+    u32 divisor = *(u32*)(param_1 + 0x6c);
+    u32 quotient = diff / divisor;
+    
+    if (diff != quotient * divisor) {
+        return -1;
+    }
+    
+    u32 limit = *(u32*)(param_1 + 0x70);
+    if (quotient >= limit) {
+        return -1;
+    }
+    
+    return (int)quotient;
+}
+
