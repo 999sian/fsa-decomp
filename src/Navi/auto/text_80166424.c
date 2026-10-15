@@ -520,6 +520,9 @@ extern "C" void fn_80173304(void) {
 extern "C" void fn_80173308(void) {
 }
 
+extern "C" void fn_8017330C(void) {
+}
+
 extern "C" int fn_8017332C()
 {
 	return 0;
