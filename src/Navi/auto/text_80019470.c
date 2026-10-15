@@ -69,6 +69,11 @@ extern "C" void fn_8001BEA4(void) {
     fn_8001EB08();
 }
 
+extern "C" void fn_8001EC90(void);
+extern "C" void fn_8001C984(void) {
+    fn_8001EC90();
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
