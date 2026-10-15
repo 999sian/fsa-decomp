@@ -539,7 +539,7 @@ extern "C" void fn_800DF128(u8* self, int i, const u16* v) {
 }
 
 extern "C" u16* fn_800DF13C(u8* self, int i) {
-    return (u16*)(self + (i * 2 + 0x16));
+    return (u16*)(self + 0x16) + i;
 }
 
 extern "C" void fn_800DF150(u8* self, int i, void* v) {
@@ -599,6 +599,10 @@ extern "C" void fn_800DF3E4(u8* this_, u32 val) { *(u32*)(this_ + 0x1c) = val; }
 
 extern "C" void fn_800DF540(int param_1, int param_2, u32* param_3) {
     *(u32*)(param_1 + param_2 * 4 + 5) = *param_3;
+}
+
+extern "C" int fn_800DF568(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 5;
 }
 
 struct UnkVtableTest8248 {
