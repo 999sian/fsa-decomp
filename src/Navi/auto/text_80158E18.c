@@ -31,9 +31,13 @@ extern "C" u32 fn_80159BA4(u32 param_1) {
 }
 
 extern "C" int fn_8015A90C(int a) {
-    void** obj = (void**)lbl_802FF544;
-    if (obj != 0) {
-        return (*(int (**)(void*, int, int))(*(char**)obj + 0x24))(obj, a, 4);
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6();
+        virtual int v8(int, int);
+    };
+    if (lbl_802FF544 != 0) {
+        return ((Obj*)lbl_802FF544)->v8(a, 4);
     }
     return 0;
 }
