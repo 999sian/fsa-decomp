@@ -49,6 +49,11 @@ extern "C" int fn_801ADC28(void) {
     return 5;
 }
 
+extern "C" int fn_801ADD40(void)
+{
+  return 10;
+}
+
 extern "C" BOOL fn_801ADD48(void);
 extern "C" BOOL fn_801ADD48(void)
 {
