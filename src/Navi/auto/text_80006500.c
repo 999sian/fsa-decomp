@@ -64,6 +64,10 @@ extern "C" void fn_8000829C(u8 param_1, u8 param_2) {
     lbl_8029F408[0x137] = param_2;
 }
 
+void fn_800085E0(void) {}
+
+extern "C" void fn_800085E4(void) {}
+
 extern "C" u32 fn_8000A1AC(void) {
     u32 value = fn_800095BC(lbl_802FEB4C, lbl_802FEB50, lbl_802FB7B1, lbl_802FB7B2, lbl_802FB7B0);
     DCFlushRange(lbl_802FEB50, lbl_802FEB54);
