@@ -704,9 +704,9 @@ struct J2DWindow : public J2DPane
     }
     virtual J2DMaterial *getFrameMaterial(u8 index) const { return nullptr; } // _C0 (weak)
     virtual J2DMaterial *getContentsMaterial() const { return nullptr; }      // _C4 (weak)
-    virtual void drawContents(const JGeometry::TBox2f &);                     // _C8
+          virtual void drawContents(const JGeometry::TBox2f &);                     // _C8
 
-    virtual void rewriteAlpha() {}                                                 // _58 (weak)
+      virtual void rewriteAlpha();                                                    // _58
     virtual bool isUsed(const ResFONT *resource) { return J2DPane::isUsed(resource); } // _50 (weak), currently gets placed at the wrong spot
     void private_readStream(J2DPane *, JSURandomInputStream *, JKRArchive *);
     void initinfo2();
