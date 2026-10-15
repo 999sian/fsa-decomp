@@ -80,6 +80,7 @@ extern "C" int fn_800D3E90(void) { return 0x55; }
 struct Vtable800D8248;
 extern "C" void fn_800D8248(Vtable800D8248* p) {
     p->m9();
+    p->m10();
 }
 
 extern "C" void fn_800D8294(void* p) {
