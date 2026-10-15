@@ -573,10 +573,11 @@ extern "C" void fn_8009F01C(NaviState_8009E6F0* p);
 extern "C" void fn_8009F440(NaviState_8009E6F0* p);
 extern "C" void fn_8009E640(NaviState_8009E6F0* p) {
     if (!(lbl_802FEDD8 & 1)) {
-        if (((u8*)p)[0x800] == 0) {
+        if (((u8*)p)[0x800] != 0) {
+            ((u8*)p)[0x800] = 2;
+        } else {
             return;
         }
-        ((u8*)p)[0x800] = 2;
     }
     if ((lbl_802FEDD8 & 2) && ((u8*)p)[0x800] != 0) {
         ((u8*)p)[0x800] = 2;
