@@ -474,6 +474,10 @@ extern "C" Unk800DE578* fn_800DE5D0(u8* p, int i) {
     return (Unk800DE578*)(p + 0x45 + i * 4);
 }
 
+extern "C" void fn_800DE5E4(u8* p, int i, u8 v) {
+    p[i + 0x55] = v;
+}
+
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
     this_[idx + 0x59] = *src;
 }
