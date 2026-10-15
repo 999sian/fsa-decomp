@@ -126,6 +126,8 @@ void J3DTexGenBlockPatched::initialize()
 	mTexMtxOffset = 0;
 }
 
+extern "C" int fn_800D3E28(void) { return 0x1a8; }
+
 extern "C" int fn_800D3E30(void) { return 0xfe; }
 
 extern "C" int fn_800D3E38(void) { return 0x1f2; }
@@ -316,6 +318,25 @@ extern "C" void fn_800D92CC(u8* self) {
     dl[4] = combined & 0xff;
     
     __GDCurrentDL->pDisplayListData = dl + 5;
+}
+
+extern "C" void fn_800D934C(void* param_1) {
+    unsigned char texCoordID = *(unsigned char*)param_1;
+    unsigned char scaleIdx = *((unsigned char*)param_1 + 1);
+    
+    unsigned short* entry = (unsigned short*)(&sTexCoordScaleTable__6J3DSys) + ((scaleIdx & 7) * 4);
+    
+    unsigned short v0 = entry[0];
+    unsigned short v1 = entry[1];
+    unsigned short v2 = entry[2];
+    unsigned short v3 = entry[3];
+    
+    unsigned int lz0 = __cntlzw(1 - v1);
+    unsigned int lz1 = __cntlzw(1 - v3);
+    unsigned char s0 = (lz0 >> 12) & 0xFF;
+    unsigned char s1 = (lz1 >> 12) & 0xFF;
+    
+    J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(texCoordID, v0, s0, (unsigned char)0, v2, s1, (unsigned char)0);
 }
 
 extern "C" void fn_800D971C(u8* self) {
