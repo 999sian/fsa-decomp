@@ -31,6 +31,12 @@ extern "C" void fn_801143FC(void) {
     fn_801123B4();
 }
 
+extern "C" BOOL fn_8011441C(void);
+extern "C" BOOL fn_8011441C(void)
+{
+    return TRUE;
+}
+
 extern "C" void* fn_8011461C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8028F648;
