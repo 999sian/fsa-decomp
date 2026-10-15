@@ -111,6 +111,11 @@ extern "C" void* fn_80064D40(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80064FB0(void);
+extern "C" void fn_80064DEC(void) {
+    fn_80064FB0();
+}
+
 extern void* lbl_8027FBE0[];
 extern "C" void* fn_80066CA4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
