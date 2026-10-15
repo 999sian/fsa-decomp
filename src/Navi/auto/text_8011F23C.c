@@ -12,7 +12,7 @@ extern void* lbl_80292558[];
 extern void* lbl_80290ACC[];
 extern "C" void* lbl_802FF364;
 extern "C" void* lbl_802FF368;
-extern "C" void fn_801328F8(...);
+extern "C" void* fn_801328F8(void* ptr, s16 param_2);
 
 extern "C" void fn_8013345C();
 
