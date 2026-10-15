@@ -84,3 +84,8 @@ extern "C" void fn_80077CBC(void) {
     fn_80077314();
 }
 
+extern "C" void fn_8007634C(void);
+extern "C" void fn_80077CDC(void) {
+    fn_8007634C();
+}
+
