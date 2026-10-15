@@ -318,16 +318,12 @@ extern "C" u32* fn_800DE4F8(Unk800DE4D0* p, int i) {
     return &p->a[i];
 }
 
-extern "C" void fn_800DE50C(char* p, int i, s16* v) {
-    s16* d = (s16*)(p + i * 8);
-    d[10] = v[0];
-    d[11] = v[1];
-    d[12] = v[2];
-    d[13] = v[3];
+extern "C" void fn_800DE50C(Unk800DE4D0* p, int i, Unk800DE50C* v) {
+    p->b[i] = *v;
 }
 
-extern "C" Unk800DE50C* fn_800DE564(Unk800DE50C* p, int i) {
-    return (Unk800DE50C*)((char*)&p[i] + 0x14);
+extern "C" Unk800DE50C* fn_800DE564(Unk800DE4D0* p, int i) {
+    return &p->b[i];
 }
 
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
@@ -379,12 +375,10 @@ extern "C" void fn_800DE94C(void) {}
 extern "C" void fn_800DE950(void) {}
 
 extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
-    this_[idx * 8 + 0xf] = src[1];
-    this_[idx * 8 + 0x10] = src[2];
-    this_[idx * 8 + 0x11] = src[3];
-    this_[idx * 8 + 0x13] = src[5];
-    this_[idx * 8 + 0x14] = src[6];
-    this_[idx * 8 + 0x15] = src[7];
+    struct C3 { u8 v[3]; };
+    u8* p = this_ + idx * 8;
+    *(C3*)(p + 0xf) = *(C3*)(src + 1);
+    *(C3*)(p + 0x13) = *(C3*)(src + 5);
 }
 
 extern "C" u32* fn_800DEA10(u8* this_, s32 idx) {
