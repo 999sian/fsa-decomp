@@ -378,6 +378,12 @@ extern "C" u16 fn_801A455C(u8* p, s32 i) {
 
 extern "C" u8* fn_801A4594(u8* p, s32 i) { return p + i * 4 + 10; }
 
+extern "C" BOOL fn_801A45B0(void);
+extern "C" BOOL fn_801A45B0(void)
+{
+    return TRUE;
+}
+
 extern "C" u8* fn_801A466C(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
