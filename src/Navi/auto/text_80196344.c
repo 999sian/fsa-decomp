@@ -321,6 +321,10 @@ extern "C" void* fn_801A4A20(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801A4A7C(void) {
+    return 0x54474243;
+}
+
 extern "C" void* lbl_8029A91C[];
 extern "C" void* lbl_8029AA18[];
 extern "C" void* fn_801A4AD8(void* ptr, s16 param_2) {
