@@ -134,6 +134,10 @@ extern "C" void fn_8001B760(void) {
     fn_8001B65C();
 }
 
+extern "C" void fn_8001BBC4(unsigned short* param_1, unsigned short param_2) {
+    *param_1 = param_2;
+}
+
 extern "C" void fn_8001EA5C(void);
 extern "C" void fn_8001BE84(void) {
     fn_8001EA5C();
