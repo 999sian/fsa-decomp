@@ -322,6 +322,11 @@ extern "C" void* fn_801D9F00(void)
 	return lbl_802FFA50;
 }
 
+extern "C" void* fn_801D9F08(void)
+{
+	return lbl_802FFA48;
+}
+
 extern "C" void* fn_801D9F10(void)
 {
 	return lbl_802FFA4C;
