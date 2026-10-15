@@ -417,7 +417,7 @@ void fn_80132820(void)
     return;
 }
 
-void fn_80132824(void)
+extern "C" void fn_80132824(void)
 {
     return;
 }
