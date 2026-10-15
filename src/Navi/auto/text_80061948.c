@@ -39,6 +39,13 @@ extern "C" void* fn_80062ED0(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80062F18(void** p) {
+    p[0] = lbl_8027F1FC;
+    ((s16*)p)[2] = 0;
+    ((s16*)p)[3] = 1;
+    p[2] = 0;
+}
+
 extern "C" void* fn_80062F3C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
