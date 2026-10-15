@@ -728,6 +728,10 @@ extern "C" u32 fn_800DEA24(u8* this_) {
     return *(u32*)(this_ + 4);
 }
 
+extern "C" void fn_800DEB40(u8* p, const u8* v) {
+    p[0xd0] = *v;
+}
+
 extern "C" u8 fn_800DEB4C(u8* p) {
     return p[0xd0];
 }
