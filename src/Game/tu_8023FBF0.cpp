@@ -1374,14 +1374,14 @@ PAD_BTN(80246D1C, fn_80309D6C)
 inline s32 countSharing6(char* p) {
     s32 c;
     s32 i;
+    s32 linked;
     s32 me;
     c = 0;
-    me = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
-            s32 linked = S32(p, 0xd60);
+            linked = S32(p, 0xd60);
             if (linked >= 0) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
