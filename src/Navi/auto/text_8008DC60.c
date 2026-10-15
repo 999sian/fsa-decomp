@@ -633,7 +633,7 @@ extern void* lbl_8028699C[];
 extern "C" void* fn_800A1C6C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8028699C;
-        if ((s32)ptr + 0x8 != 0) {
+        if ((s32)ptr + (unsigned)0x8 != 0) {
             ((void**)(ptr))[2] = lbl_80288988;
             if ((s32)ptr + 0x8 != 0) {
                 ((void**)(ptr))[2] = lbl_8027EC78;
