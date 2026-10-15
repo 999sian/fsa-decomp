@@ -22,6 +22,13 @@ extern "C" void fn_8017ECE8(void* thisPtr, f32 a, f32 b) {
     *(f32*)((char*)thisPtr + 0x4) = b; 
 }
 
+extern "C" void fn_8017ECF4(void* thisPtr, u8 a, u8 b, u8 c, u8 d) {
+    *(u8*)((char*)thisPtr + 0x0) = a;
+    *(u8*)((char*)thisPtr + 0x1) = b;
+    *(u8*)((char*)thisPtr + 0x2) = c;
+    *(u8*)((char*)thisPtr + 0x3) = d;
+}
+
 extern void* fn_8053AB10_ptr;
 extern void* lbl_8053AB10;
 extern "C" void fn_8017ED08(void) {
