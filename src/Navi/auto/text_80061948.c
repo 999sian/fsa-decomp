@@ -62,6 +62,10 @@ extern "C" void* fn_80062D60(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801AE194(void);
+extern "C" void fn_80017FEC(int, u32, void*, void*, int, int, int);
+extern void* lbl_801F9320[];
+
 extern "C" void* fn_80062DCC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027F240;
