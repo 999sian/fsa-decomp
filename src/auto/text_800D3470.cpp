@@ -596,6 +596,10 @@ extern "C" void fn_800DF3B8(u8* this_, u8* src) {
     *(u8*)(this_ + 0x16) = *src;
 }
 
+extern "C" u8 fn_800DF3C4(u8* this_) {
+    return *(u8*)(this_ + 0x16);
+}
+
 extern "C" u32 fn_800DF3CC(u8* this_) { return *(u32*)(this_ + 0x18); }
 
 extern "C" u32 fn_800DF3D4(u8* this_) { return *(u32*)(this_ + 0x1c); }
