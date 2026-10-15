@@ -109,8 +109,8 @@ extern "C" void fn_80013D7C(void* self, void* p) {
 extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     self->unk50 = a;
     self->unk5f = b;
-    self->b2 = fn_80116064(lbl_802FFBB8);
-    self->b1 = fn_80116064(lbl_802FFBB8);
+    self->b2 = (u32)fn_80116064(32767.0f);
+    self->b1 = (u32)fn_80116064(32767.0f);
     self->b0 = self->unk50;
     fn_80013E18(self);
 }
