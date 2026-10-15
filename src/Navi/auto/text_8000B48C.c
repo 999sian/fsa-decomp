@@ -1,0 +1,2 @@
+// Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
+// .text 0x8000b48c-0x8000d388 (30 functions). split_file divides it into the game's real files.
