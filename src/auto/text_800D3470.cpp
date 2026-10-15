@@ -655,6 +655,10 @@ extern "C" void fn_800DECB8(Unk800DEC3C* p, int i, const Unk800DE50C& v) {
     p->c[i] = v;
 }
 
+extern "C" int fn_800DECE4(int p, int i) {
+    return p + i * 8 + 0x98;
+}
+
 extern "C" void fn_800DECF8(int p, int i, const u8* v) {
     u32 addr = p + i * 4 + 0xb8;
     *(u8*)(addr + 0) = v[0];
