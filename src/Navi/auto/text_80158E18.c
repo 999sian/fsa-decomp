@@ -24,8 +24,33 @@ extern "C" void fn_8015AB40(void* p) {
     fn_80159C6C(p, 0);
 }
 
+extern "C" void fn_8015ABB4(char** p) {
+    char* q = *(char**)(*p + 0x18);
+    if (q != 0) q -= 0xc;
+    *p = q;
+}
+
 extern "C" void fn_8015ABDC(void** param_1, void* param_2) {
     *param_1 = param_2;
+}
+
+extern "C" void fn_80159AE4(char** start, int* size, void* arg);
+extern "C" char* fn_8015ADE8(char* base, char* data, int size, int flag, void* arg);
+extern "C" char* lbl_802FF548;
+extern "C" char* fn_8015AC00(void* arg, void* arg2) {
+    char* p = 0;
+    if (lbl_802FF548 == 0) {
+        char* start;
+        int size;
+        fn_80159AE4(&start, &size, arg);
+        p = 0;
+        if (start != 0) {
+            p = fn_8015ADE8(start, start + 0x90, size - 0x90, 0, arg2);
+        }
+        lbl_802FF548 = p;
+    }
+    p[0x6e] = 1;
+    return p;
 }
 
 extern "C" void fn_8015D030(void) {
