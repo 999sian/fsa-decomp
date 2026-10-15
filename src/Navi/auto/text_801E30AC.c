@@ -7,6 +7,18 @@ extern "C" int fn_801E7F88(void* param);
 extern unsigned char lbl_8029EC18[];
 
 extern "C" void fn_801E6F54(void);
+extern "C" void fn_801E9EE8(double f1_param) {
+    unsigned int high_word = *(unsigned int*)&f1_param;
+    unsigned int exponent = high_word & 0x7fffffff;
+    
+    if (exponent < 0x3fe921fc) {
+        fn_801E9310(1);
+    } else if (exponent < 0x7ff00000) {
+        int result = fn_801E7F88((void*)&f1_param);
+        fn_801E9310(((result & 1) << 1) - 1);
+    }
+}
+
 extern "C" void fn_801E9F60(void) {
     fn_801E6F54();
 }
@@ -30,8 +42,43 @@ extern "C" float fn_801EA204(void) {
     return (float)fn_801E997C();
 }
 
+extern "C" double fn_801E9E10(void);
+extern "C" float fn_801EA270(void) {
+    return (float)fn_801E9E10();
+}
+
+extern "C" int fn_801EA2B8(double f1_param) {
+    unsigned int high_word = *(unsigned int*)&f1_param;
+    unsigned int exponent = high_word & 0x7ff00000;
+    
+    if (exponent == 0x7ff00000) {
+        if ((high_word & 0xfffff) == 0 && *(unsigned int*)((unsigned char*)&f1_param + 4) == 0) {
+            return 2;
+        }
+        return 1;
+    } else if (exponent == 0) {
+        if ((high_word & 0xfffff) == 0 && *(unsigned int*)((unsigned char*)&f1_param + 4) == 0) {
+            return 3;
+        }
+        return 5;
+    }
+    return 4;
+}
+
 extern "C" void fn_801E9FE0(void);
 extern "C" void fn_801EA338(void) {
     fn_801E9FE0();
+}
+
+extern "C" void fn_801EA358(unsigned char* param_1) {
+    unsigned char byte_val;
+    while ((byte_val = *param_1) != 0) {
+        if (byte_val == 0xff) {
+            *param_1 = 0xff;
+        } else {
+            *param_1 = lbl_8029EC18[byte_val];
+        }
+        param_1++;
+    }
 }
 
