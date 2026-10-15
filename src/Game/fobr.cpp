@@ -43,6 +43,12 @@ extern "C" void fn_8020B74C(u8* this_) {
     v07__5ActorFv(this_);
 }
 
+extern "C" void fn_8020BCE4(char* this_) {
+    *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x24);
+    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28);
+    *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x2c);
+}
+
 extern "C" void* fn_8020BE40(void* this_) {
     fn_801D0F40(this_);
     *(void**)this_ = lbl_804A5E98;
