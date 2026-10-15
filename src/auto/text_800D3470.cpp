@@ -298,6 +298,22 @@ extern "C" void fn_800D89F0(Vtable800D8248* p) {
     p->m10();
 }
 
+extern "C" void fn_800D8A3C(void* p) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
+    u8* saved = __GDCurrentDL->pDisplayListData;
+    
+    u8* addr = (u8*)p;
+    for (u32 i = 0; i < 8; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+        }
+        addr += 2;
+    }
+    
+    u8* now = __GDCurrentDL->pDisplayListData;
+    DCStoreRange(saved, (u32)(now - saved));
+}
+
 extern "C" void fn_800D8D0C(Vtable800D8248* p) {
     p->m9();
     p->m10();
