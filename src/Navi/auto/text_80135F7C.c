@@ -89,6 +89,10 @@ extern "C" u32 fn_80136A68(void) {
     return 2;
 }
 
+extern "C" int fn_80136F18(void) {
+    return 4;
+}
+
 extern void* lbl_80292974[];
 extern "C" void* fn_80139110(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -189,12 +193,11 @@ extern "C" void fn_80139708(f64* dst, f32* src) {
 }
 
 extern "C" void fn_80139714(void* param_1, void* param_2) {
-    u32* p = *(u32**)((char*)param_2 + 8);
-    void* arg = p + 1;
-    u32* e = (u32*)(lbl_80201F70 + *p * 8);
     f64 v;
-    ((void (*)(f64*, void*))e[1])(&v, arg);
-    *(u32*)((char*)param_1 + 0x30) = e[0];
+    u32* p = *(u32**)((char*)param_2 + 8);
+    char* e = lbl_80201F70 + *p * 8;
+    (*(void (**)(f64*, void*))(e + 4))(&v, p + 1);
+    *(u32*)((char*)param_1 + 0x30) = *(u32*)e;
     *(f64*)((char*)param_1 + 0x38) = v;
 }
 
