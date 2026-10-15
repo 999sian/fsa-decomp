@@ -306,6 +306,10 @@ extern "C" void* fn_800A0238(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800A1A3C(void) {
+    fn_80092228();
+}
+
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300AF0;
