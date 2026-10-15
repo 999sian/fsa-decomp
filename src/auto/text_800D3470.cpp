@@ -375,6 +375,10 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
     return this_->b[idx];
 }
 
+extern "C" int fn_800DDE48(int param_1, int param_2) {
+    return param_1 + param_2 * 8 + 0x59;
+}
+
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
     this_[idx + 0x12a] = *src;
 }
