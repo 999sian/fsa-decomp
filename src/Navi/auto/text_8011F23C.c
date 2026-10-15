@@ -106,7 +106,7 @@ extern "C" void fn_80123EA0(void* p)
 	lbl_802FF364 = p;
 }
 
-void* fn_80123EA8(void)
+extern "C" void* fn_80123EA8(void)
 {
 	return lbl_802FF364;
 }
