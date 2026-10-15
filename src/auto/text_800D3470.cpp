@@ -665,11 +665,11 @@ extern "C" int fn_800DECE4(int p, int i) {
 }
 
 extern "C" void fn_800DECF8(int p, int i, const u8* v) {
-    u32 addr = p + i * 4 + 0xb8;
-    *(u8*)(addr + 0) = v[0];
-    *(u8*)(addr + 1) = v[1];
-    *(u8*)(addr + 2) = v[2];
-    *(u8*)(addr + 3) = v[3];
+    int addr = p + (i << 2);
+    *(u8*)(addr + 0xb8) = v[0];
+    *(u8*)(addr + 0xb9) = v[1];
+    *(u8*)(addr + 0xba) = v[2];
+    *(u8*)(addr + 0xbb) = v[3];
 }
 
 extern "C" int fn_800DED50(int p, int i) {
@@ -771,6 +771,10 @@ extern "C" void fn_800DF214(int param_1, int param_2, u8* param_3) {
     *(u8*)(offset + 0x21) = param_3[1];
     *(u8*)(offset + 0x22) = param_3[2];
     *(u8*)(offset + 0x23) = param_3[3];
+}
+
+extern "C" int fn_800DF26C(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 0x20;
 }
 
 extern "C" void* fn_800DF280(void* self, short flag) {
