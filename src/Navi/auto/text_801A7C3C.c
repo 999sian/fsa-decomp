@@ -553,6 +553,10 @@ extern "C" void* fn_801BA34C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801BA3A8(void) {
+    return 6;
+}
+
 extern void* lbl_8029BC7C[];
 extern "C" void* fn_801BA3B0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
