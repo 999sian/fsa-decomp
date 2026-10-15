@@ -274,7 +274,7 @@ extern "C" void* fn_8000F388(void* ptr, s16 param_2) {
     return ptr;
 }
 
-void* fn_8000F484(void)
+extern "C" void* fn_8000F484(void)
 {
 	return lbl_802FEBA0;
 }
