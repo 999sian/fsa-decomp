@@ -36,6 +36,15 @@ struct VObj_800CB688B {
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800c9c64-0x800cb9f4 (21 functions). split_file divides it into the game's real files.
 
+extern Unk802C56B4 lbl_802C56B4;
+extern "C" s32 fn_800CB450(void*, s16, u8, s32, s32, f32, f32);
+extern f32 lbl_80300E40;
+struct NaviState_800CAB58 {
+    void f();
+};
+typedef void (NaviState_800CAB58::*NaviStateFunc_800CAB58)();
+extern NaviStateFunc_800CAB58 lbl_802887D8[];
+
 extern void* lbl_802888AC[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
