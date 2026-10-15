@@ -831,6 +831,10 @@ extern "C" void fn_800DF57C(int param_1, int param_2, J3DIndTexMtxInfo param_3) 
     __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo((J3DIndTexMtxInfo*)(param_1 + param_2 * 0x1c + 0x18), param_3);
 }
 
+extern "C" void fn_800DF5B0(int param_1, int param_2, J3DIndTexMtxInfo param_3) {
+    __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo((J3DIndTexMtxInfo*)(param_1 + param_2 * 0x1c + 0x18), param_3);
+}
+
 extern "C" int fn_800DF5E4(int param_1, int param_2)
 {
   return param_1 + param_2 * 0x1c + 0x18;
