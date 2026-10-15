@@ -4,6 +4,12 @@
 
 extern void* lbl_8027F1FC[];
 extern char lbl_8027F098[];
+extern void* lbl_80247430[];
+extern void* lbl_802474F4[];
+extern "C" f32 fn_80116064(f32 x);
+extern "C" void* fn_8004F19C(void* ptr, s16 param_2);
+extern "C" void fn_801E0DB8(void* arr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void fn_80067EEC(void* p);
 extern "C" int fn_801E6578(void* a, void* b);
 extern "C" void fn_800074C0(const char* fmt, ...);
 extern "C" int fn_80062FE4(void* p);
