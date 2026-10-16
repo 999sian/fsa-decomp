@@ -1,5 +1,8 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
+#include "types.h"
+
+extern "C" const f32 lbl_8053B2CC;
 
 extern "C" void* lbl_804954D8[];
 extern "C" void* lbl_804954F8[];
@@ -59,6 +62,12 @@ extern "C" void* fn_8003CE04(char* p, int i) {
         return r;
     }
     return 0;
+}
+
+extern "C" void fn_8003CF84(void* param_1, void** param_2) {
+    if (param_2 != 0) {
+        ((void (*)(void*, int))((void**)*param_2)[2])(param_2, 1);
+    }
 }
 
 extern "C" void* lbl_80495518[];
