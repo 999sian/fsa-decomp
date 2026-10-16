@@ -574,6 +574,35 @@ extern "C" void fn_8019B97C(NaviVObj* p, u32 flags) {
     }
 }
 
+extern "C" void fn_8019B9E4(int param_1)
+{
+	extern int* lbl_802FFA80;
+	extern int lbl_802FE708;
+	extern void fn_801E012C(void);
+	u32 w;
+
+	if ((u32)(lbl_802FFA80[2] + lbl_802FE708) > (u32)lbl_802FFA80[3]) {
+		fn_801E012C();
+	}
+	*(*(u8**)&lbl_802FFA80[2])++ = 0x10;
+	*(*(u8**)&lbl_802FFA80[2])++ = 0;
+	*(*(u8**)&lbl_802FFA80[2])++ = 1;
+	*(*(u8**)&lbl_802FFA80[2])++ = 0x10;
+	*(*(u8**)&lbl_802FFA80[2])++ = 0xc;
+
+	w = *(u32*)(param_1 + 4);
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+	*(*(u8**)&lbl_802FFA80[2])++ = w;
+
+	w = *(u32*)(param_1 + 8);
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+	*(*(u8**)&lbl_802FFA80[2])++ = w;
+}
+
 extern "C" void fn_8019BF64(NaviVObj* p, u32 flags) {
     if (flags & 1) {
         p->vf6();
@@ -1157,6 +1186,37 @@ extern "C" void fn_8019F8B8(int param_1) {
     }
 }
 
+extern "C" void fn_801A6214(int, void*);
+#pragma use_lmw_stmw off
+extern "C" void fn_8019FA54(int param_1)
+{
+	extern int* lbl_802FFA80;
+	int base = lbl_802FFA80[0];
+	int sum = base + *(int *)(param_1 + 4);
+	lbl_802FFA80[2] = sum;
+	int saved = lbl_802FFA80[2];
+
+	int ptr = param_1;
+	int off = 0;
+	unsigned int i = 0;
+	do {
+		unsigned short check = *(unsigned short *)(ptr + 8);
+		if (check != 0xffff) {
+			lbl_802FFA80[2] = lbl_802FFA80[0] + off + *(int *)(param_1 + 4);
+			fn_801A6214((int)i, (void *)(ptr + 8));
+			off += 0x14;
+			if (*(u8*)(*(u8**)(*(u8**)(lbl_802EE470 + 0x58) + 4) + *(unsigned short *)(ptr + 8) * 0x20 + 8) == 1) {
+				off += 0x23;
+			}
+		}
+		i++;
+		ptr += 2;
+	} while (i < 8);
+
+	int final = lbl_802FFA80[2];
+	fn_801BC250(saved, final - saved);
+}
+#pragma use_lmw_stmw on
 extern "C" void fn_8019FC0C(void* param_1, s32 param_2) {
     extern u32* lbl_802FFA80;
     u32 start;
