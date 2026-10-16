@@ -16,6 +16,8 @@ u8 fn_801CC8E4(void);
 void fn_802BAA00(void* p);
 void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 void fn_801E9B54(void);
+void fn_801E8C74(void* a, s32 b);
+void qsort(void* base, size_t nmemb, size_t size, s32 (*compar)(void*, void*));
 }
 
 extern "C" void* fn_801E9AFC(void) {
@@ -55,7 +57,6 @@ extern "C" void fn_801E9C00(s16 param_1, f32* param_2) {
 
     param_2[0] = lbl_8053F660;
     param_2[1] = lbl_8053F664;
-    fy = param_2[1];
     sVar3 = 0x2000;
     if (param_1 < 0) {
         sVar3 = -0x2000;
@@ -63,8 +64,9 @@ extern "C" void fn_801E9C00(s16 param_1, f32* param_2) {
     uVar2 = ((u32)(-(s32)(s16)(param_1 + sVar3)) >> 2) & 0x3ff8;
     pt = (f32*)((u8*)sincosTable___5JMath + uVar2);
     fx = param_2[0];
+    fy = param_2[1];
     param_2[0] = fx * pt[1] - fy * pt[0];
-    param_2[1] = param_2[1] * pt[1] + fx * pt[0];
+    param_2[1] = fy * pt[1] + fx * pt[0];
 }
 
 extern "C" void fn_801EA304(u8* param_1) {
@@ -78,39 +80,45 @@ extern "C" void fn_801EA344(u8* param_1) {
 }
 
 extern "C" s32 fn_801EA6D8(u8* param_1, u8 param_2, s32 param_3) {
+    u8* entry;
+    s32 result = -1;
     s32 i;
     s32 count;
-    u8* entry;
     u8* p;
 
     if (param_2 == 0) {
-        *(s32*)(param_1 + 0x64 + *(s32*)(param_1 + 0x74) * 4) = param_3;
+        u8* slot = param_1 + *(s32*)(param_1 + 0x74) * 4;
+        *(s32*)(slot + 0x64) = param_3;
         *(s32*)(param_1 + 0x74) = *(s32*)(param_1 + 0x74) + 1;
-        return -1;
-    }
-    count = *(s32*)(param_1 + 0x60);
-    entry = param_1;
-    for (i = 0; i < count; i++) {
-        if (param_2 == entry[4]) {
-            *(s32*)(param_1 + i * 0xc + 8) = param_3;
-            p = *(u8**)(param_1 + i * 0xc);
-            if (p == NULL) {
-                return -1;
+    } else {
+        count = *(s32*)(param_1 + 0x60);
+        entry = param_1;
+        for (i = 0; i < count; i++) {
+            if (param_2 == entry[4]) {
+                *(s32*)(param_1 + i * 0xc + 8) = param_3;
+                p = *(u8**)(param_1 + i * 0xc);
+                if (p != NULL) {
+                    result = *(s32*)(p + 0x198);
+                }
+                break;
             }
-            return *(s32*)(p + 0x198);
+            entry += 0xc;
         }
-        entry += 0xc;
     }
-    return -1;
+    return result;
 }
 
 extern "C" s32 fn_801EA8C0(u8* param_1, u8* param_2) {
-    if (param_1[4] < param_2[4]) {
+    s32 result = 0;
+    u8 a = param_1[4];
+    u8 b = param_2[4];
+
+    if (a < b) {
         return -1;
     }
-    if (param_1[4] <= param_2[4]) {
-        return 0;
+    if (a > b) {
+        result = 1;
     }
-    return 1;
+    return result;
 }
 
