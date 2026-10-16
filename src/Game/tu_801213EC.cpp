@@ -153,12 +153,11 @@ extern "C" s32 fn_801216D0(void*, s32 player) {
 
 extern "C" void fn_80121764(u8* self) {
     if (self[0x332]) {
-        CompanionSlots* slots = (CompanionSlots*)self;
-        for (s32 i = 0; i < slots->count; ++i) {
-            u8* actor = fn_801F666C(fn_801F856C(), slots->handles[i]);
+        for (s32 i = 0; i < ((CompanionSlots*)self)->count; ++i) {
+            u8* actor = fn_801F666C(fn_801F856C(), ((CompanionSlots*)self)->handles[i]);
             if (actor && *(u32*)(actor + 0x1A0) == 'LIMT') {
                 actor[0x11C] = 0;
-                slots->handles[i] = -1;
+                ((CompanionSlots*)self)->handles[i] = -1;
             }
         }
     }
@@ -203,9 +202,9 @@ extern "C" s32 fn_80121DB0(u8* self) {
 
 #pragma fp_contract off
 extern "C" f32 fn_80121DC8(u8* self, s32 player) {
-    const JGeometry::TVec3<f32>* pos = fn_8023E724(player);
-    f32 x = pos->x - *(f32*)(self + 0xC);
-    f32 y = pos->y - *(f32*)(self + 0x10);
+    JGeometry::TVec3<f32> pos = *fn_8023E724(player);
+    f32 x = pos.x - *(f32*)(self + 0xC);
+    f32 y = pos.y - *(f32*)(self + 0x10);
     f32 distance = x * x + y * y;
     if (distance > lbl_8053C9B4) {
         distance = __frsqrte(distance) * distance;
