@@ -9,6 +9,7 @@ struct Tu802F5040Tbl {
 };
 
 extern "C" void fn_802FF798(void* mgr);
+extern void* lbl_8053AAF8;
 extern "C" f32 fn_802F5FF4(f32 x) {
     f32 a = lbl_805414FC;
     f32 v;
