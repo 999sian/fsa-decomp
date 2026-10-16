@@ -246,7 +246,7 @@ struct Unk800DBCCCSrc {
     virtual u8* getMatColor(u32) = 0;
     virtual void m13() = 0;
     virtual void m14() = 0;
-    virtual void m15() = 0;
+    virtual u8* m15(u32) = 0;
     virtual void m16() = 0;
     virtual void m17() = 0;
     virtual u8 getColorChanNum() = 0;
@@ -1343,6 +1343,39 @@ extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
         *(u16*)(dst + 0xe) = *src->getColorChan(i);
         dst += 2;
     }
+}
+
+extern "C" void fn_800DC058(u8* self, Unk800DC058Src* src) {
+    *(u32*)(self + 4) = src->m16();
+    u8* dst = self;
+    for (u32 i = 0; i < 8; i++) {
+        *(u32*)(dst + 8) = *src->m18(i);
+        dst += 6;
+    }
+    dst = self;
+    for (u32 i = 0; i < 8; i++) {
+        if (src->m20(i) != 0 && *(void**)(dst + 0x38) != 0) {
+            memcpy(*(void**)(dst + 0x38), src->m20(i), 0x94);
+            DCStoreRange(*(void**)(dst + 0x38), 0x94);
+        }
+        dst += 4;
+    }
+}
+
+extern "C" void fn_800DC290(u8* p, Unk800DC164Src* src) {
+    *(u32*)(p + 4) = src->m16();
+    u8* q = p;
+    for (int i = 0; i < 8; i++) {
+        *(u32*)(q + 8) = *src->m18(i);
+        q += 6;
+    }
+    for (int i = 0; i < 8; i++) {
+        if (src->m20(i) != nullptr && ((void**)(p + 0x38))[i] != nullptr) {
+            memcpy(((void**)(p + 0x38))[i], src->m20(i), 0x94);
+            DCStoreRange(((void**)(p + 0x38))[i], 0x94);
+        }
+    }
+    *(J3DNBTScaleInfo*)(p + 0x5c) = *src->m23();
 }
 
 extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
