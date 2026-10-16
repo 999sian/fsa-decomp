@@ -307,10 +307,10 @@ extern "C" int fn_80064120(u8* p) {
         }
         *(u32*)(p + 0xf8) |= 8;
     }
-    if (fn_800183AC(p, (void*)fn_80064100, lbl_801F9650[*(s8*)(p + 0x240)]) == 0) {
-        return 5;
+    if ((u8)fn_800183AC(p, (void*)fn_80064100, lbl_801F9650[*(s8*)(p + 0x240)])) {
+        return fn_80064430(p);
     }
-    return fn_80064430(p);
+    return 5;
 }
 #pragma dont_inline reset
 
