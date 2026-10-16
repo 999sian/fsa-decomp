@@ -573,6 +573,30 @@ extern "C" void fn_8019BF64(NaviVObj* p, u32 flags) {
     }
 }
 
+extern "C" void fn_8019C584(int param_1)
+{
+	extern int* lbl_802FFA80;
+	extern void fn_801A598C(u32, u32);
+	extern void fn_801A5454(u32, void*);
+	*(int *)(param_1 + 0x58) = lbl_802FFA80[2] - lbl_802FFA80[0];
+
+	int p = param_1;
+	int q = param_1;
+	unsigned int i = 0;
+	do {
+		if (*(u32 *)(p + 0x38) != 0 && *(unsigned char *)(q + 10) != 0x3c) {
+			fn_801A598C(*(u32 *)(p + 0x38), i);
+		}
+		i++;
+		p += 4;
+		q += 6;
+	} while (i < 4);
+
+	if (*(u32 *)(param_1 + 4) != 0) {
+		fn_801A5454(*(u32 *)(param_1 + 4), (void *)(param_1 + 8));
+	}
+}
+
 extern "C" void fn_8019C62C(int param_1)
 {
 	extern int* lbl_802FFA80;
