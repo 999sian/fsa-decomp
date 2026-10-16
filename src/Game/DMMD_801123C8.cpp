@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 
 extern "C" void fn_8010E074(u8* this_);
 extern "C" void fn_801D267C(u8* p);
@@ -72,6 +73,20 @@ extern "C" s32 fn_80112C8C(void) {
 
 extern "C" s32 fn_80112C94(u8* this_) {
     return *(s32*)(this_ + 0x238);
+}
+
+extern "C" void fn_8010DF58(void* this_);
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern s32 lbl_80464704[];
+extern const char lbl_804647B0[];
+extern const f32 lbl_8053C644;
+extern "C" void fn_80112E68(u8* this_) {
+    fn_8010DF58(this_);
+    if (this_[0x230] == 0) {
+        s32 id = lbl_80464704[*(s32*)(this_ + 0x234)];
+        DrawRec rec;
+        fn_801F06F0(this_, lbl_804647B0, id + *(s32*)(this_ + 0x270), &rec, 7, lbl_8053C644, lbl_8053C644);
+    }
 }
 
 extern "C" void fn_8010E074(u8* this_);
