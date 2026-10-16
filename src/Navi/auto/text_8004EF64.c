@@ -80,6 +80,17 @@ extern "C" void* fn_8004F2E4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_8004F32C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802474F4;
+        fn_801E0D40((char*)ptr + 4, (void*)fn_8004F19C, 0x1c, 0x1);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_802474AC[];
 extern "C" void* fn_8004F40C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
