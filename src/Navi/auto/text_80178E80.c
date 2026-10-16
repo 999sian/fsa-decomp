@@ -759,6 +759,19 @@ extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     }
 }
 
+extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
+extern "C" void fn_80188754(s32* self, s32 a) {
+    s32 local_14;
+    s32 local_18;
+    local_14 = -1;
+    local_18 = -1;
+    if (!(fn_801884B0(a, &local_14, &local_18) & 0xff)) {
+        *self = 0;
+    } else {
+        *self = local_14;
+    }
+}
+
 extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     *(u8*)(param_1 + 0xb2) = param_2;
     void* p = *(void**)(param_1 + 0x168);
