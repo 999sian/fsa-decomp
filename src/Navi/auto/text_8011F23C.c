@@ -176,6 +176,19 @@ extern "C" void fn_80123F9C(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
 
+extern "C" void fn_80124034(void* a, ...);
+extern "C" void fn_80124034(void* a, ...) {
+    char buf[0x100];
+    va_list args;
+    va_start(args, a);
+    if (lbl_802FF364 == NULL) {
+        fn_801E4334(buf, 0x100, a, args);
+    } else if (*(u32*)((u8*)lbl_802FF364 + 0x58) & 3) {
+        fn_801E4334(buf, 0x100, a, args);
+        fn_80123628(lbl_802FF364, buf);
+    }
+}
+
 extern "C" void fn_80124110(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
