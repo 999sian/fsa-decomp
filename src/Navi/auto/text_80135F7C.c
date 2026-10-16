@@ -568,6 +568,13 @@ extern "C" void fn_8013C204(void* param_1, void* param_2, void* param_3, void* p
     fn_8013C508(param_1, local, param_2, param_3, param_4);
 }
 
+extern "C" void fn_8013C258(void* param_1, s32 param_2, void** param_3) {
+    if (param_2 != 2) {
+        return;
+    }
+    *(void**)((u8*)param_1 + 0x12c) = *param_3;
+}
+
 extern void* lbl_802930B8[];
 extern "C" void fn_8013C26C(void* param_1, void* param_2, void* param_3, void* param_4) {
     void* local[3];
