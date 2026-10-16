@@ -785,3 +785,14 @@ extern "C" void fn_8003FF4C(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     lbl_802FEFE4[2] = (s16)(s32)d3;
 }
 
+extern s16 lbl_802FEFEC[3];
+extern "C" void fn_8003FFE8(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
+    f32 d1 = (f32)param_1 * factor;
+    f32 d2 = (f32)param_2 * factor;
+    f32 d3 = (f32)param_3 * factor;
+
+    lbl_802FEFEC[0] = (s16)(s32)d1;
+    lbl_802FEFEC[1] = (s16)(s32)d2;
+    lbl_802FEFEC[2] = (s16)(s32)d3;
+}
+
