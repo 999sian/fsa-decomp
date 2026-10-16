@@ -165,6 +165,19 @@ extern "C" u32 fn_800CBE58(void) {
     return 0x434c4e4c;
 }
 
+extern "C" void** fn_800CBE64(void** param_1, short param_2) {
+    if (param_1 != NULL) {
+        *param_1 = lbl_8049ABFC;
+        if (param_1 != NULL) {
+            *param_1 = __vt__13J3DColorBlock;
+        }
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void* fn_800CBEC0(const void* base, const void* offset) {
     if (offset == 0) {
         return 0;
