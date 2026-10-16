@@ -227,12 +227,15 @@ struct NaviVObj {
     };
 extern "C" u32 fn_80197B4C(void* param_1) {
     u8* p = (u8*)param_1;
-    u32 a = ((NaviVObj*)*(void**)(p + 0x28))->vf10();
-    u32 b = ((NaviVObj*)*(void**)(p + 0x24))->vf8();
+    u32 b;
+    u32 a;
+    u32 c;
+    b = ((NaviVObj*)*(void**)(p + 0x28))->vf10();
+    a = ((NaviVObj*)*(void**)(p + 0x24))->vf8();
     a += ((NaviVObj*)*(void**)(p + 0x2c))->vf15();
     a += ((NaviVObj*)*(void**)(p + 0x30))->vf3();
-    u32 c = ((NaviVObj*)*(void**)(p + 0x34))->vf6();
-    return (a + c + 0x1f + b) & ~0x1f;
+    c = ((NaviVObj*)*(void**)(p + 0x34))->vf6();
+    return (a + (b + c + 0x1f)) & ~0x1f;
 }
 
 extern "C" void fn_801981E4(void* param_1) {
@@ -1872,7 +1875,7 @@ extern "C" void fn_801A37C4(int param_1) {
     int i = 0;
     lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 4);
     u32 start = lbl_802FFA80[2];
-    u32 p = *(volatile u32*)&lbl_802FFA80[2];
+    u32 p = ((volatile int*)lbl_802FFA80)[2];
     while (true) {
         if (!fn_801A602C(p)) {
             break;
@@ -1881,7 +1884,7 @@ extern "C" void fn_801A37C4(int param_1) {
         fn_801A605C(i, &tmp);
         i++;
     }
-    fn_801BC250(start, *(volatile u32*)&lbl_802FFA80[2] - start);
+    fn_801BC250(start, lbl_802FFA80[2] - start);
 }
 
 extern "C" u32 fn_801A3864(void) { return 0x54563136; }
@@ -2272,14 +2275,10 @@ extern "C" s32 fn_801A41C0(s32 p, s32 i) {
 
 extern "C" void fn_801A41D4(u8* p, s32 i, u8* src) {
     u8* d = p + i * 4;
-    u8 a = src[0];
-    d[0x45] = a;
-    u8 b = src[1];
-    d[0x46] = b;
-    u8 c = src[2];
-    d[0x47] = c;
-    u8 e = src[3];
-    d[0x48] = e;
+    d[0x45] = src[0];
+    d[0x46] = src[1];
+    d[0x47] = src[2];
+    d[0x48] = src[3];
 }
 
 extern "C" int fn_801A422C(int param_1, int param_2) {
@@ -2539,8 +2538,8 @@ extern "C" u8* fn_801A482C(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
+    u8* p = p1 + 8 * p2;
     u8 a = p3[1];
-    u8* p = p1 + p2 * 8;
     p[0x39] = a;
     p[0x3a] = p3[2];
     p[0x3b] = p3[3];
