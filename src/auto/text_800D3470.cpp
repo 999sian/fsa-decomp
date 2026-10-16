@@ -282,6 +282,28 @@ struct Unk800DC058Src {
     virtual u8* m20(u32) = 0;
 };
 
+struct Unk800DC058Vt {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual u32 m14() = 0;
+    virtual void m15() = 0;
+    virtual u32* m16(u32) = 0;
+    virtual void m17() = 0;
+    virtual u8* m18(u32) = 0;
+};
+
 struct Unk800DBCCCSrc {
     virtual void m0() = 0;
     virtual void m1() = 0;
@@ -409,13 +431,15 @@ void J3DTevBlock4::initialize()
 	mKAlphaSels[1] = 0x1c;
 	mKAlphaSels[2] = 0x1c;
 	mKAlphaSels[3] = 0x1c;
-	mColors[0] = j3dDefaultTevColor;
-	mColors[1] = j3dDefaultTevColor;
-	mColors[2] = j3dDefaultTevColor;
-	mKColors[0] = *(u32*)&j3dDefaultTevKColor;
-	mKColors[1] = *(u32*)&j3dDefaultTevKColor;
-	mKColors[2] = *(u32*)&j3dDefaultTevKColor;
-	mKColors[3] = *(u32*)&j3dDefaultTevKColor;
+	J3DGXColorS10 color = *(J3DGXColorS10*)&j3dDefaultTevColor;
+	mColors[0] = color;
+	mColors[1] = color;
+	mColors[2] = color;
+	u32 kcolor = *(u32*)&j3dDefaultTevKColor;
+	mKColors[0] = kcolor;
+	mKColors[1] = kcolor;
+	mKColors[2] = kcolor;
+	mKColors[3] = kcolor;
 	mTexNoOffset = 0;
 	mRegOffset = 0;
 }
@@ -1548,25 +1572,25 @@ extern "C" void fn_800DBDB0(u8* self, Unk800DBCCCSrc* src) {
 extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
     param_1[0x14] = param_2->m20();
 
-    u32 i = 0;
-    u8* out = param_1;
-    while (i < 2) {
+    u32 i;
+    u8* out;
+    out = param_1;
+    for (i = 0; i < 2; i++) {
         u8* src = param_2->m14(i);
         out[4] = src[0];
         out[5] = src[1];
         out[6] = src[2];
         out[7] = src[3];
-        i++;
         out += 4;
     }
 
-    for (i = 0, out = param_1; i < 4; i++) {
+    for (out = param_1, i = 0; i < 4; i++) {
         u16* src = param_2->m23(i);
         *(u16*)(out + 0x16) = *src;
         out += 2;
     }
 
-    for (i = 0, out = param_1; i < 2; i++) {
+    for (out = param_1, i = 0; i < 2; i++) {
         if (param_2->m17(i) != 0) {
             u8* src = param_2->m17(i);
             out[0xc] = src[0];
