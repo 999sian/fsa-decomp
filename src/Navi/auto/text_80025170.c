@@ -197,6 +197,8 @@ extern "C" void fn_80026E24(u8 i) {
     s->e[s->cur].val = 0;
 }
 
+extern "C" void fn_80026E50(void) {}
+
 extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
