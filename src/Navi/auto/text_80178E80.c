@@ -592,10 +592,8 @@ extern "C" void fn_80180868(void* self, u32 a) {
 }
 
 extern "C" void fn_8018089C(void* self, u32 unused, u8 idx) {
-    u8* bytes = (u8*)self;
-    if (idx < bytes[0x110] && idx < 4) {
-        void** arr = (void**)((u8*)self + idx * 4);
-        void* p = arr[64];
+    if (idx < ((u8*)self)[0x110] && idx < 4) {
+        void* p = ((void**)((u8*)self + 0x100))[idx];
         if (p != NULL) {
             fn_801191F0(p);
         }
@@ -804,6 +802,33 @@ extern "C" s32 fn_80184438(void* self, int b) {
         }
     }
     return 0;
+}
+
+extern "C" s32 fn_80184800(u8* self, u8 idx);
+extern "C" void fn_801845C0(u8* self, void* obj) {
+    u8 i;
+    for (i = 0; i < 4; i++) {
+        if (fn_80184800(self, i)) {
+            fn_8016A0B4(*(void**)(self + i * 4 + 0x148), obj);
+        }
+    }
+    if (*(void**)(self + 0x160) != 0) {
+        fn_8016A0B4(*(void**)(self + 0x160), obj);
+    }
+}
+
+extern "C" s32 fn_80184800(u8* self, u8 idx) {
+    u8 i;
+    for (i = 0; i < idx; i++) {
+        if (((u32*)(self + 0x148))[i] == ((u32*)(self + 0x148))[idx]) {
+            return 0;
+        }
+    }
+    return ((u32*)(self + 0x148))[idx] != 0;
+}
+
+extern "C" void fn_8018485C(u8* self, u32 v) {
+    *(u32*)(self + 0x174) = v;
 }
 
 extern "C" void fn_80184B34(u8* self, u32* out) {
