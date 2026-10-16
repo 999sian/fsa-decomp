@@ -267,6 +267,15 @@ extern "C" void fn_80159DE0(void* p) {
     ((Obj*)p)->v16();
 }
 
+extern "C" u32 fn_80159E0C(void* p, u32 align) {
+    u32 a = ((VObj_80159E0C*)p)->m15();
+    u32 b = ((VObj_80159E0C*)p)->m14();
+    u32 m = align - 1;
+    u32 off = m & (align - (a & 0xf));
+    m = ~m;
+    return m & (b - off);
+}
+
 extern "C" int fn_8015A3E4(void* heap, u32 start, u32 size) {
     struct HeapObj {
         virtual void vf8(int);
