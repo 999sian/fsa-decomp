@@ -10,7 +10,7 @@ extern "C" void fn_8015AB1C(void* p);
 
 struct VObj_80178E10 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
-    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v4(); virtual void v5();
     virtual void vf20(int mode);
 };
 extern "C" s32 fn_80166A54(void);
@@ -1912,6 +1912,14 @@ extern "C" void fn_80178DB0(void* param_1) {
 }
 
 extern "C" u32 fn_80178E08(void) { return 0x10; }
+
+extern "C" void fn_80178E10(VObj_80178E10* self, u8 flag) {
+    int mode = 0;
+    if (flag) {
+        mode = 2;
+    }
+    self->vf20(mode);
+}
 
 extern "C" int fn_80178E4C(int param_1) {
     *(u8*)(param_1 + 0xb5) = 0;
