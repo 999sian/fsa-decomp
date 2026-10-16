@@ -86,6 +86,15 @@ extern "C" void fn_8001955C(void* param_1) {
     fn_8001D57C(*(void**)((u8*)param_1 + 0x224), param_1);
 }
 
+extern "C" s32 fn_80019584(void* param_1) {
+    s32 iVar1;
+    iVar1 = fn_8001D5B8(*(void**)((u8*)param_1 + 0x224), param_1);
+    if (iVar1 == 1) {
+        fn_8001AAFC((u8*)param_1 + 0x210);
+    }
+    return iVar1;
+}
+
 extern "C" void fn_8001978C(void) {
 }
 
