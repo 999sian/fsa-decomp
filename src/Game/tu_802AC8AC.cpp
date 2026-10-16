@@ -1,5 +1,8 @@
 #include "types.h"
 
+extern void fn_8013B490(void*);
+extern void* lbl_8053AB10;
+
 
 extern "C" void fn_802AC8AC(u8* this_, u32 val) { *(u32*)(this_ + 0x18) = val; }
 
@@ -39,6 +42,7 @@ extern "C" void fn_802AC980(u8* this_) { *(u32*)(this_ + 0x10) = 2; }
 
 extern void* lbl_8053AB10;
 extern void fn_8013B490(void*);
+extern "C" void fn_8013B490(void*);
 extern "C" void fn_802AC98C(u8* this_) {
     s32 v = *(s32*)(this_ + 0x10);
     if (v > 0) {
@@ -48,15 +52,49 @@ extern "C" void fn_802AC98C(u8* this_) {
             *(s32*)(this_ + 0x10) = 0xff;
         }
         fn_8013B490(lbl_8053AB10);
-        s32 a = 0;
-        s32 b = 0xff;
-        s32 c = 0xff;
-        s32 d = 0;
-        void* obj = *(void**)(this_ + 4);
-        ((void (*)(void*, s32*, s32*))(*(void***)obj)[0x130 / 4])(obj, &b, &a);
-        ((void (*)(void*, u8))(*(void***)obj)[0x24 / 4])(obj, (u8)*(s32*)(this_ + 0x10));
-        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)obj)[0xec / 4])(obj, 0, 0, 0, 0.0f, 0.0f, 0.0f, 0.0f);
+        s32 buf[4];
+        buf[0] = 0;
+        buf[1] = 0;
+        buf[2] = 0xff;
+        buf[3] = 0xff;
+        ((void (*)(void*, s32*, s32*))(*(void***)(*(u8**)(this_ + 4)))[0x130 / 4])(*(void**)(this_ + 4), &buf[3], &buf[1]);
+        ((void (*)(void*, u8))(*(void***)(*(u8**)(this_ + 4)))[0x24 / 4])(*(void**)(this_ + 4), (u8)*(s32*)(this_ + 0x10));
+        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)(*(u8**)(this_ + 4)))[0xec / 4])(*(void**)(this_ + 4), 0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
     }
+}
+
+extern const f32 lbl_805408B8;
+extern const f32 lbl_805408BC;
+extern const f32 lbl_805408C0;
+typedef void (*FnPair)(void*, void*, void*);
+typedef void (*FnByte)(void*, u8);
+typedef void (*FnFloats)(void*, s32, s32, s32, f32, f32, f32, f32);
+extern "C" void fn_802ACA64(u8* this_)
+{
+    s32 p[2];
+    s32 q[2];
+    void* obj;
+
+    fn_8013B490(lbl_8053AB10);
+    if (*(s32*)(this_ + 0x18) == 0) {
+        p[1] = 0;
+        q[1] = 0xff;
+        p[0] = 0;
+        q[0] = 0xff;
+        obj = *(void**)(this_ + 4);
+        ((FnPair)((void**)*(void**)obj)[0x130 / 4])(obj, &q[1], &p[1]);
+    } else {
+        p[1] = -0x100;
+        q[1] = -1;
+        p[0] = -0x100;
+        q[0] = -1;
+        obj = *(void**)(this_ + 4);
+        ((FnPair)((void**)*(void**)obj)[0x130 / 4])(obj, &q[1], &p[1]);
+    }
+    obj = *(void**)(this_ + 4);
+    ((FnByte)((void**)*(void**)obj)[0x24 / 4])(obj, (u8)*(u32*)(this_ + 0xc));
+    obj = *(void**)(this_ + 4);
+    ((FnFloats)((void**)*(void**)obj)[0xec / 4])(obj, 0, 0, 0, lbl_805408B8, lbl_805408B8, lbl_805408BC, lbl_805408C0);
 }
 
 extern "C" void fn_802ACB58(u8* this_) {
