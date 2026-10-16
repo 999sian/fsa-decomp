@@ -1223,18 +1223,17 @@ extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
     }
 }
 
-extern "C" void fn_800DC574(u8* param_1, int* param_2) {
-    u16 v = (*(u16(**)(int*, int))(*(u8**)param_2 + 0x50))(param_2, 0);
-    *(u16*)(param_1 + 8) = v;
-    *(u32*)(param_1 + 0xa) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0x5c))(param_2, 0));
-    u8* p = (*(u8*(**)(int*, int))(*(u8**)param_2 + 0xa4))(param_2, 0);
+extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
+    *(u16*)(param_1 + 8) = param_2->m18(0);
+    *(u32*)(param_1 + 0xa) = *param_2->m21(0);
+    u8* p = param_2->m39(0);
     param_1[0xf] = p[1];
     param_1[0x10] = p[2];
     param_1[0x11] = p[3];
     param_1[0x13] = p[5];
     param_1[0x14] = p[6];
     param_1[0x15] = p[7];
-    *(u32*)(param_1 + 0x18) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0xc4))(param_2, 0));
+    *(u32*)(param_1 + 0x18) = *param_2->m47(0);
 }
 
 extern "C" void fn_800DD148(u8* this_, void* obj) {
