@@ -339,6 +339,21 @@ extern "C" int fn_8016BC8C(u8* p, void* a, void* b)
     return 1;
 }
 
+extern "C" int fn_8016BD18(u8* p, u32 a)
+{
+    if (a >= 1) {
+        return 0;
+    }
+    if (p[0x5c] & 1) {
+        fn_80118BD0(*(void**)(p + 0x50), 1);
+    }
+    *(void**)(p + 0x50) = 0;
+    p[0x5c] &= 0x80;
+    fn_8015AB1C(*(void**)(p + 0x54));
+    *(u16*)(p + 4) = 0xffff;
+    return 1;
+}
+
 extern "C" void* fn_8015A90C(u32);
 extern "C" void* fn_80119904(void*, void*, int);
 extern "C" int fn_8016BD94(u8* p, void* src)
