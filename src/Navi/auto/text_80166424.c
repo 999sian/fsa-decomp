@@ -1967,12 +1967,37 @@ extern "C" void fn_80176294(void* param_1)
 	*(f32*)(p + 0x1c) = *(f32*)(p + 0x54);
 }
 
+extern "C" void* fn_80176550(void* param_1)
+{
+	u8* p = (u8*)param_1;
+	*(void**)p = (void*)lbl_80298C88;
+	fn_80166C70(p + 0xdc);
+	fn_80166B58((u32*)(p + 0xe8), (u32)p);
+	*(u32*)(p + 0xf8) = 0;
+	*(u32*)(p + 0x8) = 0x50414e31;
+	*(u8*)(p + 0xb0) = 1;
+	*(u32*)(p + 0x14) = 0;
+	*(u32*)(p + 0x10) = 0;
+	*(u32*)(p + 0x1c) = 0;
+	*(u32*)(p + 0x18) = 0;
+	*(f32*)(p + 0x20) = lbl_80301B20;
+	*(f32*)(p + 0x24) = lbl_80301B20;
+	*(f32*)(p + 0x28) = lbl_80301B20;
+	*(f32*)(p + 0x2c) = lbl_80301B20;
+	fn_80176610(p);
+	fn_80176E24(p, 0);
+	((UnkVObj_80166424*)p)->vf11();
+	return p;
+}
+
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
+    f32 w = *(f32*)((char*)self + 0x28) - *(f32*)((char*)self + 0x20);
+    f32 h = *(f32*)((char*)self + 0x2c) - *(f32*)((char*)self + 0x24);
     f32 rect[4];
     rect[0] = a;
     rect[1] = b;
-    rect[2] = a + (*(f32*)((char*)self + 0x28) - *(f32*)((char*)self + 0x20));
-    rect[3] = b + (*(f32*)((char*)self + 0x2c) - *(f32*)((char*)self + 0x24));
+    rect[2] = a + w;
+    rect[3] = b + h;
     fn_80177728(self, rect);
 }
 
