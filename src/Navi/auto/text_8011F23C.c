@@ -1,4 +1,7 @@
 #include "types.h"
+
+extern s32 lbl_802FDDB0;
+extern "C" void fn_80123EC0(void* a, ...);
 #include "dolphin/os/OSFastCast.h"
 extern "C" void fn_8013A57C(void);
 extern "C" void* fn_80139950(void*, void*, void*);
