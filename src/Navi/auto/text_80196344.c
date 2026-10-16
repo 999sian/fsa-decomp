@@ -1,5 +1,6 @@
 #include "types.h"
 #include "types.h"
+#include "dolphin/gx/GXStruct.h"
 extern "C" void fn_80191388(int, void*);
 extern "C" void fn_80191220(int, void*);
 extern "C" void* lbl_8029AA18[];
@@ -45,6 +46,10 @@ extern "C" void fn_80196344(void* self, void* a, s32 b) {
     *(s32*)((u8*)self + 4) = b;
 }
 
+extern "C" void fn_8019635C(void** self) {
+    fn_801DF0BC(self[2], (s32)self[1]);
+}
+
 extern "C" void* fn_80196388(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80299E68;
@@ -53,6 +58,52 @@ extern "C" void* fn_80196388(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_801963D0(void* self) {
+    extern f32 lbl_80301CD8;
+    extern u32 lbl_802FF6A8;
+    u8* p = (u8*)self;
+    *(u32*)(p + 0x4) = 0;
+    *(u16*)(p + 0x8) = 0xffff;
+    *(u16*)(p + 0xa) = 0;
+    *(u32*)(p + 0xc) = 0;
+    *(f32*)(p + 0x10) = lbl_80301CD8;
+    *(f32*)(p + 0x14) = lbl_80301CD8;
+    *(f32*)(p + 0x18) = lbl_80301CD8;
+    *(f32*)(p + 0x1c) = lbl_80301CD8;
+    *(f32*)(p + 0x20) = lbl_80301CD8;
+    *(f32*)(p + 0x24) = lbl_80301CD8;
+    *(f32*)(p + 0x28) = lbl_80301CD8;
+    *(u32*)(p + 0x30) = 0;
+    *(u32*)(p + 0x38) = 0;
+    *(u32*)(p + 0x3c) = 0;
+    *(u32*)(p + 0x4c) = 0;
+    *(u32*)(p + 0x50) = 0;
+    *(u32*)(p + 0x54) = 0;
+    *(u32*)(p + 0x58) = 0;
+    *(u32*)(p + 0x5c) = 0;
+    *(u32*)(p + 0x60) = (u32)&lbl_802FF6A8;
+    *(u8*)(p + 0x34) = 0;
+    *(u8*)(p + 0x48) = 0;
+}
+
+extern "C" void fn_80196440(void* self, void* a, void* b, void* c) {
+    u16 i;
+    for (i = 0; i < *(u16*)((u8*)self + 0xa); i++) {
+        void* obj = (*(void***)((u8*)self + 0x38))[i];
+        ((void (*)(void*, void*, void*, void*))((*(void***)obj)[7]))(obj, a, b, c);
+    }
+}
+
+extern "C" s32 fn_801964C0(void* self) {
+    s32 sum = 0;
+    u16 i;
+    for (i = 0; i < *(u16*)((u8*)self + 0xa); i++) {
+        void* obj = (*(void***)((u8*)self + 0x38))[i];
+        sum += ((s32 (*)(void*))((*(void***)obj)[4]))(obj);
+    }
+    return sum;
 }
 
 extern "C" int fn_801979BC(int param_1) {
@@ -145,10 +196,10 @@ struct NaviVObj {
     virtual void vf0(void);
     virtual void vf1(void);
     virtual void vf2(void);
-    virtual void vf3(void);
+    virtual u32 vf3(void);
     virtual void vf4(void);
     virtual u32 vf5(void);
-    virtual void vf6(void);
+    virtual u32 vf6(void);
     virtual void vf7(void);
     virtual u32 vf8(void);
     virtual void vf9(void);
@@ -190,17 +241,17 @@ extern "C" void fn_80198298(u8* param_1) {
 }
 
 extern "C" void fn_80198534(u8* param_1) {
-    if ((*(u32*)(lbl_802EE470 + 0x34) & 0x40000000) == 0) {
-        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf1();
-    } else {
+    if (*(volatile u32*)(lbl_802EE470 + 0x34) & 0x40000000) {
         ((NaviVObj*)*(void**)(param_1 + 0x28))->vf3();
+    } else {
+        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf1();
     }
     fn_80198620(param_1);
     fn_80198608(param_1);
 }
 
 extern "C" void fn_801985AC(u8* param_1) {
-    if (*(u32*)(lbl_802EE470 + 0x34) & 0x40000000) {
+    if (*(volatile u32*)(lbl_802EE470 + 0x34) & 0x40000000) {
         ((NaviVObj*)*(void**)(param_1 + 0x28))->vf4();
     } else {
         ((NaviVObj*)*(void**)(param_1 + 0x28))->vf2();
@@ -2679,15 +2730,11 @@ extern "C" int fn_801A4CF4(int param_1, int param_2) {
 
 extern "C" void fn_801DF0BC(void*, s32);
 extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
-    u8 a = param_3[0];
     u8* dst = param_1 + param_2 * 4;
-    u8 b = param_3[1];
-    dst[0xc] = a;
-    u8 c = param_3[2];
-    dst[0xd] = b;
-    u8 d = param_3[3];
-    dst[0xe] = c;
-    dst[0xf] = d;
+    dst[0xc] = param_3[0];
+    dst[0xd] = param_3[1];
+    dst[0xe] = param_3[2];
+    dst[0xf] = param_3[3];
 }
 
 extern "C" int fn_801A4D60(int param_1, int param_2) {
@@ -2772,12 +2819,12 @@ extern "C" u32 fn_801A4E84(void) {
     return 0x434C4142;
 }
 
-extern "C" void fn_801A4E90(void* p, s32 i, u8* src) {
-    u8* dst = (u8*)p + i * 4;
-    dst[0x20] = src[0];
-    dst[0x21] = src[1];
-    dst[0x22] = src[2];
-    dst[0x23] = src[3];
+extern "C" void fn_801A4E90(u8* p, s32 i, GXColor* src) {
+    GXColor* dst = (GXColor*)(p + 0x20);
+    dst[i].r = src->r;
+    dst[i].g = src->g;
+    dst[i].b = src->b;
+    dst[i].a = src->a;
 }
 
 extern "C" u8* fn_801A4EE8(u8* p, s32 i) {
