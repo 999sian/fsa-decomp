@@ -63,3 +63,26 @@ extern "C" void* fn_8011B01C(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_8010E074(void* this_);
+extern "C" void fn_801D267C(void* p);
+extern "C" void* fn_8011B0DC(void* this_) {
+    fn_8010E074(this_);
+    *(void**)this_ = lbl_8049DB30;
+    *((u8*)this_ + 0x230) = 1;
+    *(s32*)((u8*)this_ + 0x234) = 0;
+    *(s32*)((u8*)this_ + 0x238) = 0;
+    *(s32*)((u8*)this_ + 0x23c) = 0;
+    *(s32*)((u8*)this_ + 0x240) = 0;
+    *((u8*)this_ + 0x244) = 0x9f;
+    *((u8*)this_ + 0x245) = 0xaf;
+    *((u8*)this_ + 0x246) = 0xff;
+    *((u8*)this_ + 0x247) = 0;
+    *((u8*)this_ + 0x248) = 0xff;
+    *(s32*)((u8*)this_ + 0x24c) = 0;
+    *(s32*)((u8*)this_ + 0x250) = 0;
+    *(s32*)((u8*)this_ + 0x254) = 0;
+    *(s32*)((u8*)this_ + 0x258) = 0;
+    fn_801D267C((u8*)this_ + 0x25c);
+    return this_;
+}
+
