@@ -261,7 +261,6 @@ extern "C" void fn_801801F4(void* self, void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
 extern "C" void fn_8018BC30(void* self, void* dst, void* src);
 extern "C" void fn_8018BFA4(void* self, void* dst, void* src);
-extern "C" s32 fn_8017FCEC(void* self);
 
 struct VObj_80189C70 {
     virtual void v2(); virtual void v3();
