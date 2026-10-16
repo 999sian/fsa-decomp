@@ -155,14 +155,15 @@ extern "C" int fn_801194B4(void*, unsigned short);
 extern "C" int fn_80119414(int, int);
 extern "C" void fn_801AC4DC(char* self, char* other)
 {
+    int a;
     unsigned short i;
     for (i = 0; i < *(unsigned short*)(self + 0x14); i++) {
-        int a = *(int*)(other + 0xc);
+        a = *(int*)(other + 0xc);
         int r = fn_80119414(a, fn_801194B4(self + 0x1c, i));
-        if (r == -1) {
-            (*(unsigned short**)(self + 0x18))[i] = 0xffff;
-        } else {
+        if (r != -1) {
             (*(unsigned short**)(self + 0x18))[i] = r;
+        } else {
+            (*(unsigned short**)(self + 0x18))[i] = 0xffff;
         }
     }
 }
