@@ -15,6 +15,7 @@ extern const f32 lbl_8053EFEC;
 extern "C" JAUSoundObject* fn_801F1184(void* this_);
 extern "C" void fn_801F0E34(void* this_, void* arg, u32 c);
 extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_801CCD34(f32* in, f32* out);
 extern const f32 lbl_8053EFC8;
 extern "C" void __ct__5ActorFv(void* this_);
 extern "C" void* fn_801D267C(void* this_);
