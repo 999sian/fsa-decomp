@@ -101,6 +101,12 @@ extern "C" void fn_80030A48(void* p) {
     fn_800302F0(3);
 }
 
+extern "C" void fn_80030AB4(void* p) {
+    *(int*)p = *(int*)((char*)lbl_802BB0FC + 0x58) + 500;
+    *(unsigned char*)((char*)p + 0x31) |= 0x4;
+    *(unsigned int*)((char*)p + 0x8) |= 0x20000000;
+}
+
 extern "C" void fn_80031CBC(void* p) {
     *(void**)((char*)p + 0x38) = *(void**)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x40) |= 0x80000000;
