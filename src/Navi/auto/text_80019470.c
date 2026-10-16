@@ -1272,6 +1272,16 @@ extern "C" void fn_8001E9B0(void* param_1) {
     ((s32*)param_1)[5] = -1;
 }
 
+extern "C" void* fn_8001E9E4(void* param_1, void* param_2) {
+    extern void* fn_8011580C(void*, void*);
+    void* p = *(void**)(*(u8**)((u8*)param_1 + 0xc) + 0x2c);
+    void* temp = fn_8001C010();
+    fn_8001C008(p);
+    void* result = fn_8011580C(param_1, param_2);
+    fn_8001C008(temp);
+    return result;
+}
+
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_8001EAE8(void* param_1, void* param_2) {
     cTg_Addition__FP15node_list_classP16create_tag_class(param_1, param_2);
