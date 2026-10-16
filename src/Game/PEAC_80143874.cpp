@@ -1,4 +1,11 @@
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
+
+struct PopoGame {
+    u8 pad[0xb4];
+    JMARandFast rnd;
+};
+extern PopoGame* lbl_8053AAF8;
 
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, s32 a, s32 b, f32 sx, f32 sy);
 extern const char lbl_80465B68[];
