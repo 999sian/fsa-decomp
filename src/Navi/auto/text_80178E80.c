@@ -24,6 +24,7 @@ extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
 extern "C" void fn_801C5DA8(u32 a, u8* b, u8* c);
 extern u8 lbl_802994F0[];
 extern u8 lbl_80299504[];
+extern u8 lbl_80299244[];
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 
 struct VObj_80185DA4 {
@@ -1573,9 +1574,10 @@ extern "C" void fn_801851FC(u32* self, s32 a) {
 }
 
 extern "C" s32 fn_80185520(void* self, s32 a, s32 b) {
-    void** vt = *(void***)self;
-    if (*(u32*)((u8*)self + 0x168) != 0) {
-        return ((s32 (*)(void*, s32, s32, u8))vt[50])(self, a, b, *(u8*)(*(u8**)((u8*)self + 0x168) + 0x28));
+    void* obj = *(void**)((u8*)self + 0x168);
+    if (obj != nullptr) {
+        void** vt = *(void***)self;
+        return ((s32 (*)(void*, s32, s32, u8))vt[50])(self, a, b, (u8)*(u32*)((u8*)obj + 0x28));
     }
     return 0;
 }
