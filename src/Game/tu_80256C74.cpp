@@ -83,9 +83,9 @@ extern "C" u8 fn_802577E0(u8* p) {
 }
 
 extern "C" void fn_80257FF4(u8* p) {
-    s32 i = 0;
+    s32 i;
     s32 id;
-    for (; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         id = S32(p, 0xb30);
         if (id >= 0) {
             if (!fn_801F666C(fn_801F856C(), id)) {
@@ -205,7 +205,7 @@ extern "C" void fn_8025851C(u8* p) {
 extern "C" void fn_802585F4(u8* p) {
     u8* ids = p;
     u8* boxes = p;
-    for (s32 i = 0; i < 3; i++, boxes += 0x10, ids += 4) {
+    for (s32 i = 0; i < 3; i++, ids += 4, boxes += 0x10) {
         void* manager = fn_801F856C();
         u8* actor = fn_801F666C(manager, S32(ids, 0xb00));
         if (!actor) {
