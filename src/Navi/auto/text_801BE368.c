@@ -4,8 +4,8 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801be368-0x801bf0c8 (21 functions). split_file divides it into the game's real files.
 
-void ICFlashInvalidate(void);
-void Reset(u32 resetCode);
+extern "C" void ICFlashInvalidate(void);
+extern "C" void Reset(u32 resetCode);
 
 extern "C" void fn_801C13D0(int);
 extern "C" OSThread* fn_801C027C(void);
@@ -209,11 +209,24 @@ extern "C" void OSRegisterResetFunction(OSResetFunctionInfo* info)
     tmp->next = info;
 }
 
+extern "C" void fn_801BED90(int param_1)
+{
+    OSDisableInterrupts();
+    *(u16*)0xcc002002 = 0;
+    ICFlashInvalidate();
+    Reset(param_1 << 3);
+}
+
 extern "C" u32 OSGetResetCode(void)
 {
-    if (*(u8*)0x800030e2 == 0) {
-        return (*(u32*)0xcc003024 & ~7) >> 3;
+    u32 code;
+
+    if (*(u8*)0x800030e2) {
+        code = *(u32*)0x800030f0 | 0x80000000;
+    } else {
+        code = *(u32*)0xcc003024;
+        code = (code & ~7) >> 3;
     }
-    return *(u32*)0x800030f0 | 0x80000000;
+    return code;
 }
 
