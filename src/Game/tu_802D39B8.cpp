@@ -106,6 +106,107 @@ extern "C" bool fn_802D46D8(char*, s32 index, u32 bit, u8 set) {
     return true;
 }
 
+extern "C" void fn_802D4768(u8* p, s32 x, u16 v, s32* out, u32* out2) {
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    s32 base = (x < 8) ? 0 : x - 7;
+    s32 idx = 0x3c;
+    s32 cnt = 0xf;
+    do {
+        if (rooms->values2948[base][idx] == 0) {
+            rooms->values2948[base][idx] = v;
+            break;
+        }
+        idx -= 4;
+        cnt--;
+    } while (cnt != 0);
+    s32 n = 0xf - (idx >> 2);
+    out[1] = n;
+    out[0] = n >> 31;
+    if (x < 8) {
+        u8* e = (u8*)rooms + *(s32*)(p + 0x18) * 0x280 + *(s32*)(p + 0x14) * 0x40;
+        out2[0] = *(u32*)(e + 0x1048);
+        out2[1] = *(u32*)(e + 0x104c);
+    } else {
+        u8* e = (u8*)rooms + *(s32*)(p + 0x18) * 0x280 + *(s32*)(p + 0x14) * 0x40 + (x << 3);
+        out2[0] = *(u32*)(e + 0x1010);
+        out2[1] = *(u32*)(e + 0x1014);
+    }
+}
+
+extern "C" void fn_802D4874(u8* p, s32 x, u16 v, u32* out, u32* out2) {
+    s32 base = (x < 8) ? 0 : x - 7;
+    s32 idx;
+    for (idx = 0; idx < 0x40; idx++) {
+        RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        if (rooms->values2948[base][idx] == 0) {
+            rooms->values2948[base][idx] = v;
+            break;
+        }
+    }
+    out[1] = 1;
+    out[0] = 0;
+    for (; idx != 0; idx--) {
+        u32 hi = out[1];
+        out[1] = hi << 1;
+        out[0] = hi >> 0x1f | out[0] << 1;
+    }
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    if (x < 8) {
+        u8* e = (u8*)rooms + *(s32*)(p + 0x18) * 0x280 + *(s32*)(p + 0x14) * 0x40;
+        out2[0] = *(u32*)(e + 0x1048);
+        out2[1] = *(u32*)(e + 0x104c);
+    } else {
+        u8* e = (u8*)rooms + *(s32*)(p + 0x18) * 0x280 + *(s32*)(p + 0x14) * 0x40 + (x << 3);
+        out2[0] = *(u32*)(e + 0x1010);
+        out2[1] = *(u32*)(e + 0x1014);
+    }
+}
+
+extern "C" bool fn_802D49A8(char* p, s32 x, u16 value) {
+    s32 base = (x < 8) ? 0 : x - 7;
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    s32 i;
+    for (i = 0; i < 64; i++) {
+        if (rooms->values2948[base][i] == 0) {
+            rooms->values2948[base][i] = value;
+            break;
+        }
+    }
+    u64 mask = 1;
+    while (i != 0) {
+        mask <<= 1;
+        i--;
+    }
+    u64 flags = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][base];
+    return (mask & flags) != 0;
+}
+
+extern "C" bool fn_802D4ADC(char* p, s32 x, u16 v) {
+    s32 base = x < 8 ? 0 : x - 7;
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    s32 i;
+    for (i = 0; i < 0x40; i++) {
+        if (v == rooms->values2948[base][i]) {
+            break;
+        }
+    }
+    if (i >= 0x40) {
+        return false;
+    }
+    u64 mask = 1;
+    while (i != 0) {
+        mask <<= 1;
+        i--;
+    }
+    u64 word;
+    if (x < 8) {
+        word = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][0];
+    } else {
+        word = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][x - 7];
+    }
+    return (mask & word) != 0;
+}
+
 extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     index = index < 8 ? 0 : index - 7;
@@ -408,6 +509,14 @@ extern "C" u32 fn_802D7B34(char* p, s32 index, s32 digit) {
     return (mask & value) >> shift;
 }
 
+extern "C" void fn_802D7BE8(char* p, s32 index, s32 bit, u32 value) {
+    index = index < 8 ? 0 : index - 7;
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] &= ~((u64)0xf << (0x3c - bit * 4));
+    rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] |= (u64)value << (0x3c - bit * 4);
+}
+
 extern "C" void fn_802D7D00(char* p, s32 index, s32 bit, u8 set) {
     index = index < 8 ? 0 : index - 7;
     if (set) {
@@ -582,6 +691,53 @@ extern "C" u8 fn_802DA000(char*) {
     return *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
 }
 
+extern "C" u8 fn_802DEDFC(s32 value);
+extern "C" void fn_8038D454(void);
+extern "C" void fn_8022BD70(void);
+extern "C" void fn_8037AE30(void* p);
+extern "C" void fn_8023F1D4(int idx, void* pos, int a, int b, u8 c);
+extern void* lbl_8053AD70;
+extern const f32 lbl_8046E148[];
+extern "C" void fn_802DA788(char* p) {
+    if (*(s32*)(p + 0x14) < *(s32*)(p + 0x1c)) {
+        *(s32*)(p + 0x2c) = 1;
+        *(s32*)(p + 0x30) = 0;
+    } else {
+        *(s32*)(p + 0x2c) = -1;
+        *(s32*)(p + 0x30) = 0;
+    }
+    if (fn_802DEDFC((s32)(p + 0x2c))) {
+        fn_8038D454();
+        fn_801F7CAC(fn_801F856C());
+        fn_801F6204(fn_801F856C(), 0);
+        fn_80308D0C();
+        char* base = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        *(u8*)(base + 0x131DE) = 0;
+        fn_8013C8CC(fn_8013C824());
+        s32 i = 0;
+        *(u8*)(p + 0xC9) = 0;
+        const f32* t = lbl_8046E148;
+        do {
+            f32 v[3];
+            v[0] = t[0];
+            v[1] = t[1];
+            v[2] = t[2];
+            v[0] = v[0] + *(f32*)(p + 0xCC);
+            v[1] = v[1] + *(f32*)(p + 0xD0);
+            fn_8023F1D4(i, v, 2, 0, 0);
+            i++;
+            t += 3;
+        } while (i < 4);
+        fn_8022BD70();
+        fn_8037AE30(lbl_8053AD70);
+        if (*(u8*)(lbl_8053AAF8 + 0x7F) == 1) {
+            *(s32*)(p + 0xC4) = 36000;
+        } else {
+            *(s32*)(p + 0xC4) = 0x2A30;
+        }
+    }
+}
+
 extern "C" u8 fn_802DCD0C(char*) {
     return *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
 }
@@ -629,6 +785,39 @@ extern "C" void* fn_802DE604(void* p, s16 freeFlag) {
     return p;
 }
 
+extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void __ct__Q29JGeometry8TVec2_f_Fv();
+extern const f32 lbl_80541144;
+extern "C" void* fn_802DE64C(char* p) {
+    *(void**)p = lbl_804A9950;
+    __construct_array(p + 0xf0, (void*)__ct__Q29JGeometry8TVec2_f_Fv, 0, 8, 0x10);
+    __construct_array(p + 0x13088, (void*)__ct__Q29JGeometry8TVec2_f_Fv, 0, 8, 8);
+    __construct_array(p + 0x130e8, (void*)__ct__Q29JGeometry8TVec2_f_Fv, 0, 8, 8);
+    __construct_array(p + 0x13148, (void*)__ct__Q29JGeometry8TVec2_f_Fv, 0, 8, 8);
+    *(s32*)(p + 0x4) = 0;
+    *(s32*)(p + 0x8) = 0;
+    *(s32*)(p + 0x14) = 0;
+    *(s32*)(p + 0x18) = 0;
+    *(s32*)(p + 0x34) = 0;
+    *(s32*)(p + 0x38) = 0;
+    *(s32*)(p + 0x3c) = 0;
+    *(s32*)(p + 0x40) = 0;
+    *(s32*)(p + 0x44) = 0;
+    *(s32*)(p + 0x48) = 0;
+    *(s32*)(p + 0x4c) = 0;
+    *(s32*)(p + 0x50) = 0;
+    *(s32*)(p + 0x54) = 0;
+    *(s32*)(p + 0x58) = 0;
+    *(s32*)(p + 0xec) = 0;
+    *(f32*)(p + 0xdc) = lbl_8054111C;
+    *(f32*)(p + 0xe0) = lbl_8054111C;
+    *(f32*)(p + 0xe4) = lbl_80541144;
+    *(f32*)(p + 0xe8) = lbl_80541144;
+    *(u8*)(p + 0x131f7) = 0;
+    *(u8*)(p + 0x131f8) = 0;
+    return p;
+}
+
 extern "C" bool fn_802DE764(s32 a, s32 b, s32 c) {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) == 0)
         return false;
@@ -646,6 +835,32 @@ extern "C" bool fn_802DE7CC() {
     if (*(s32*)(p + 4) == 0 && *(s32*)(p + 8) == 0)
         return true;
     return false;
+}
+
+extern "C" bool fn_802DE814(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7F) == 0)
+        return false;
+    s32 state = *(s32*)(lbl_80529DEC + 0x118);
+    bool ok = false;
+    if (state == 0 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    else if (state == 1 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    else if (state == 2 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    else if (state == 3 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    else if (state == 4 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    else if (state == 5 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    else if (state == 6 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    else if (state == 7 && *(s32*)(lbl_80529DEC + 0x11C) == 1)
+        ok = true;
+    else if (state == 10 && *(s32*)(lbl_80529DEC + 0x11C) == 2)
+        ok = true;
+    return ok;
 }
 
 extern "C" bool fn_802DE93C() {
