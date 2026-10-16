@@ -57,9 +57,10 @@ extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2
 extern "C" void fn_8008A100(JUTException* this_)
 {
     extern JUTException* lbl_8053A900;
+    extern void* lbl_80539D90;
 
     PPCMtmsr(PPCMfmsr() & ~0x900);
-    OSInitMessageQueue(&lbl_80499390, 0, 1);
+    OSInitMessageQueue(&lbl_80499390, &lbl_80539D90, 1);
     while (true)
     {
         OSMessage message;
