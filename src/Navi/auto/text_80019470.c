@@ -67,8 +67,15 @@ extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
-extern "C" void fn_80019470(Quat4* d, const Vec* s, f32 w) {
-    *d = Quat4(*s, w);
+extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
+    f32 x = s->x;
+    f32 y = s->y;
+    f32 z;
+    d[0] = x;
+    d[1] = y;
+    z = s->z;
+    d[2] = z;
+    d[3] = w;
 }
 
 extern "C" void fn_80019490(f32* d, const f32* s) {
@@ -671,8 +678,12 @@ extern "C" int fn_8001BC10(int param_1) {
 
 #pragma dont_inline on
 extern "C" void* fn_8001BC68(void* param_1) {
-    if (*((u8*)param_1 + 0xc) == 2 && fn_8001EB7C(param_1, 1) != 1 && fn_8002689C() != 1) {
-        return fn_8001ACEC(param_1);
+    if (*((s8*)param_1 + 0xc) == 2) {
+        if (fn_8001EB7C(param_1, 1) != 1) {
+            if (fn_8002689C() != 1) {
+                return fn_8001ACEC(param_1);
+            }
+        }
     }
     return NULL;
 }
@@ -993,6 +1004,13 @@ extern "C" void fn_8001E69C(void* param_1) {
 extern void* lbl_80205810[];
 extern "C" void* fn_8001E884(s16 param_1) {
     return lbl_80205810[param_1];
+}
+
+extern "C" void* fn_8001E8B4(void* param_1, u32* param_2) {
+    if (((u32*)param_1)[1] == *param_2) {
+        return param_1;
+    }
+    return 0;
 }
 
 extern "C" s32 fn_8001E8CC(void* param_1, s32 param_2) {
