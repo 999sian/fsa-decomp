@@ -106,6 +106,21 @@ extern "C" s32 fn_80058A88(s32 param_1) {
     return result;
 }
 
+extern "C" BOOL fn_80058B18(s32 param_1) {
+    u32 result;
+    fn_8005C424();
+    result = fn_8005B97C(1, param_1, 0);
+    fn_8005C460();
+    return result == 0;
+}
+
+extern "C" void fn_80058BC4(void) {
+    fn_8005C424();
+    fn_8005B6CC(1, -1, 0);
+    fn_8005B6CC(1, -1, 1);
+    fn_8005C460();
+}
+
 extern "C" s32 fn_80058C08(s32 idx) {
     u8* p = lbl_8026D4BC + idx * 0xc;
     if (fn_80058D70(idx) != 0) {
