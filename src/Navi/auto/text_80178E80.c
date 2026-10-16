@@ -18,6 +18,11 @@ extern "C" void fn_8017A4A8(void* self) {
     }
 }
 
+extern "C" void fn_80178990(void);
+extern "C" void fn_8017A908(void) {
+    fn_80178990();
+}
+
 extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
     if (idx < 4) {
         return *(int*)(self + (idx << 2) + 0x148);
