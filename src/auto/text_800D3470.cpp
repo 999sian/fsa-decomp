@@ -113,6 +113,7 @@ extern "C" void loadTexNo__FUlRCUs(unsigned long, unsigned short*);
 extern "C" void loadTexCoordGens__FUlP11J3DTexCoord(unsigned long, void*);
 extern "C" void load__9J3DTexMtxCFUl(void*, unsigned long);
 extern "C" void DCStoreRange(void*, unsigned long);
+extern "C" void* memcpy(void*, const void*, unsigned long);
 extern "C" void __dt__12J3DIndTexMtxFv(void*);
 extern "C" void __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo(J3DIndTexMtxInfo*, const J3DIndTexMtxInfo&);
 struct ActorBox;
