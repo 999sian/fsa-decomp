@@ -7,6 +7,16 @@ struct Slot0 {
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B1AE8[];
 extern s32 lbl_8053AEF0;
+extern "C" void fn_80443494(void* this_) {
+    char* p = (char*)this_;
+    s32 v = *(s16*)(p + 0x12);
+    if (v > 0) {
+        *(s16*)(p + 0x12) = v - 1;
+        return;
+    }
+    *(u8*)(p + 0x15) = 3;
+}
+
 extern "C" void* fn_8044368C(void* this_, s16 flag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804B1AE8;
