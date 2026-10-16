@@ -31,6 +31,10 @@ extern "C" void* fn_802D3184(void* p, s16 flags) {
     return p;
 }
 
+extern "C" void fn_802D31E4(Vtable802D31E4* p) {
+    p->m7();
+}
+
 extern "C" s32 fn_802D3210(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
