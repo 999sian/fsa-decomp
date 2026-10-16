@@ -7,6 +7,7 @@ public:
 };
 
 extern "C" void fn_8016A39C(void* item, UnkVObj_80184B60* obj);
+extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
 
 extern "C" int fn_8018A064(void* self, s32* param_2) {
     s32 local_14 = -1;
