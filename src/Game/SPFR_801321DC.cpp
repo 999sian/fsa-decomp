@@ -71,6 +71,12 @@ extern "C" s32 fn_80132AE0(char* p) {
     return 0;
 }
 
+extern "C" void fn_80132E18(void* param_1) {
+    fn_8010DF58();
+    SPFR_DrawParam param;
+    fn_801F02BC(param_1, lbl_80465270, *(s32*)((char*)param_1 + 0x260) + 0x2fb, &param, 0x407, 0, 0, lbl_8053CD00, lbl_8053CD00);
+}
+
 extern "C" void fn_8010DF98(void);
 extern "C" void fn_801D2608(void* a, void* b, s32 c);
 extern "C" void fn_801D22DC(void* a, s32 b, s32 c, s32 d);
