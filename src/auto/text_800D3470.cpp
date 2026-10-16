@@ -1692,6 +1692,21 @@ extern "C" u32 fn_800DEA24(u8* this_) {
 
 extern "C" void fn_800DEA88(void) {}
 
+extern "C" void fn_800DEA8C(void* param_1)
+{
+  u32 i = 0;
+  __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
+  void* pStart = GDGetCurrPointer();
+  for (;;) {
+    void* pCurr = GDGetCurrPointer();
+    if (!isTexNoReg(pCurr)) break;
+    u16 texNo = getTexNoReg(pCurr);
+    loadTexNo(i, texNo);
+    i++;
+  }
+  DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
+}
+
 unsigned int fn_800DEB2C(void) {
     return 0x54565054U;
 }
