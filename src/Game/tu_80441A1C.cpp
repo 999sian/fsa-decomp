@@ -41,13 +41,10 @@ extern "C" void fn_80442200(void* this_) {
     }
 }
 
-extern "C" void fn_80402E08(void*);
+extern "C" void fn_80402E08(void*, f32, f32);
 extern "C" void fn_803832BC(const char*, u32, u32, u32, u32);
 extern "C" void* lbl_8053AAF8;
-void fn_80402E08(void*, f32, f32);
-extern f32 lbl_80543D40;
-extern f32 lbl_80543D44;
-extern "C" void fn_80402E08(void*, f32, f32);
+extern "C" f32 lbl_80543D44;
 extern "C" void fn_80442254(char* this_, s32 param_2, s32 param_3) {
     Unk80442254Vt* obj = *(Unk80442254Vt**)(*(char**)(this_ + 0x8) + 0x4);
     obj->m7(0);
