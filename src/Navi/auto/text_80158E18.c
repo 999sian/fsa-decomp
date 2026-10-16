@@ -194,14 +194,14 @@ extern "C" void* fn_80159C40(void* p, u32 size, u32 align) {
     return ((Obj*)p)->v7(size, align);
 }
 
-extern "C" void* fn_80159E8C();
+extern "C" void* fn_80159E8C(void* ptr);
 extern "C" void fn_80159CB4(void* heap, void* p);
 #pragma push
 #pragma dont_inline on
 extern "C" void fn_80159C6C(void* p, int heap) {
     void* h = (void*)heap;
     if (h == 0) {
-        h = fn_80159E8C();
+        h = fn_80159E8C(p);
         if (h == 0) {
             return;
         }
