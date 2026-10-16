@@ -37,7 +37,8 @@ extern "C" s32 fn_800CC1C4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 fr
         return 1;
     }
     f32 t = fn_800CC3D8(self, n, i);
-    (*(VObj_800CC1C4**)(self + 0x14))->SetPos(*(f32*)(self + 0x1c), *(f32*)(self + 0x20) + (from + t * (to - from)));
+    f32 d = t * (to - from);
+    (*(VObj_800CC1C4**)(self + 0x14))->SetPos(*(f32*)(self + 0x1c), *(f32*)(self + 0x20) + (from + d));
     if (mode != 2) {
         if (mode == 1) {
             t = lbl_80300EA4 - t;
