@@ -545,8 +545,7 @@ extern "C" s32 fn_801ADE3C(void) {
     return 0x7;
 }
 
-void fn_801ADE44(void)
-{
+extern "C" void fn_801ADE44(void) {
 }
 
 extern void* lbl_8029B488[];
