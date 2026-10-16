@@ -43,6 +43,15 @@ extern "C" int fn_801792B4(void* param_1, int param_2) {
     return 0;
 }
 
+extern "C" int fn_80177D24(void);
+extern "C" int fn_80179E80(void* param_1, int param_2, u64 param_3) {
+    int result = 0;
+    if (param_3 != 0) {
+        result = fn_80177D24();
+    }
+    return result;
+}
+
 extern "C" void fn_8017A468(void) {
     fn_80177E84();
 }
@@ -177,16 +186,13 @@ extern "C" void fn_80184C54(void) {
 }
 
 extern "C" void fn_80184C58(UnkVObj_80184B60* self, void* unused, void* param_3) {
-    void* obj = *(void**)((u8*)self + 0x168);
-    if (*(void**)((u8*)obj + 0x28) == 0) {
-        if (self->v9C(lbl_80301BF8) && param_3 != 0) {
-            UnkVObj_80184B60* sub = *(UnkVObj_80184B60**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-            if (sub->vA4(0) == 0) {
-                sub = *(UnkVObj_80184B60**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-                sub->v98(0, param_3);
-            }
+    u8* obj = *(u8**)((u8*)self + 0x168);
+    if (*(u32*)(obj + 0x28) == 0 && self->v9C(lbl_80301BF8) && param_3 != 0) {
+        if ((*(UnkVObj_80184B60**)(*(u8**)((u8*)self + 0x168) + 0x70))->vA4(0) == 0) {
+            (*(UnkVObj_80184B60**)(*(u8**)((u8*)self + 0x168) + 0x70))->v98(0, param_3);
         }
     }
+    unused = obj;
 }
 
 extern "C" void fn_8018901C(void) {
@@ -214,13 +220,13 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     return ((int (*)(void*, s32*, s32*))((*(void***)self)[0xac / 4]))(self, &local_c, &local_18);
 }
 
-extern "C" int fn_8018A4B4(void* param_1, s32* param_2, s32* param_3) {
-    if (*param_2 == 0 && *param_3 == -1) {
+extern "C" int fn_8018A4B4(void* param_1, u32* param_2, u32* param_3) {
+    if (*param_2 == 0 && *param_3 == 0xffffffff) {
         return 1;
     }
-    void* obj = *(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70);
-    ((void (*)(void*))(*(void***)obj)[0x58 / 4])(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
-    u8 c = ((u8 (*)(void*))(*(void***)obj)[0x18 / 4])(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
+    u32 obj = *(u32*)(*(u32*)((u8*)param_1 + 0x138) + 0x70);
+    ((void (*)(u32))(*(u32*)(*(u32*)obj + 0x58)))(obj);
+    u8 c = ((u8 (*)(u32))(*(u32*)(*(u32*)obj + 0x18)))(obj);
     if (c == 1) {
         return 0;
     }
