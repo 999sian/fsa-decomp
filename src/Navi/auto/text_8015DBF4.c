@@ -1,5 +1,15 @@
 #include "types.h"
 
+extern "C" void fn_8015D29C(void* p, s32 a);
+extern "C" void* fn_8015A9A8(s32 size, void* vtbl, s32 a);
+extern "C" void* fn_8015DD38(void* p, void* a, void* b, s32 c);
+extern "C" void fn_8015F67C(void* p);
+extern "C" void fn_80166478(void* p);
+extern "C" void fn_801C0EEC(void* p);
+extern "C" void* lbl_802FF540;
+extern "C" void* lbl_802FF5A0;
+extern "C" char lbl_80297A5C[];
+
 typedef void (*VirtualMethod0)(void*, s16);
 typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 
