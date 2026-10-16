@@ -349,6 +349,8 @@ extern "C" u8 fn_8017247C(int param_1)
     return *(u8*)(param_1 + 4);
 }
 
+extern "C" u32 fn_801725D8(void) { return 0x54563136; }
+
 extern "C" s32 fn_80172640(s32 p, s32 i)
 {
 	return p + i * 4 + 0x16;
