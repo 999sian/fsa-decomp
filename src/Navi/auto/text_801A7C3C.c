@@ -553,6 +553,35 @@ extern "C" void* fn_801B73C0(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_801B7390(void* base, u32 offset);
+#pragma dont_inline on
+extern "C" int fn_801B78C0(u8* param_1, u8* param_2, u16 param_3) {
+    s32 ret = 0;
+    s32 flags = (param_3 | *(u16*)(param_2 + 8)) & 0xf;
+    switch (flags) {
+    case 0:
+    case 1:
+    case 2:
+        ret = 4;
+        break;
+    }
+    *(void**)(param_1 + 0x14) = fn_801B7390(param_2, *(u32*)(param_2 + 0x14));
+    return ret;
+}
+#pragma dont_inline reset
+extern "C" int fn_801B7950(void* param_1, u8* param_2) {
+    s32 total = 0;
+    if (*(void**)(param_2 + 0x14) != nullptr) {
+        total = 0x10;
+    }
+    u32 count = *(u16*)(param_2 + 8);
+    total += count * 4;
+    total += count * 0x5c;
+    return total;
+}
+
+#pragma dont_inline reset
+
 extern "C" int fn_801B797C(u8* param_1, u8* param_2) {
     *(u16*)(param_1 + 0x1a) = *(u16*)(param_2 + 8);
     return 0;
@@ -631,6 +660,14 @@ extern "C" int fn_801B7C18(void* param_1, u8* param_2, void* param_3) {
     return total;
 }
 
+extern "C" void* fn_801B7F50(void* base, u32 offset);
+#pragma dont_inline on
+extern "C" void* fn_801B7D90(void** param_1, u8* param_2) {
+    param_1[0] = fn_801B7F50(param_2, *(u32*)(param_2 + 0xc));
+    param_1[1] = fn_801B73C0(param_2, *(u32*)(param_2 + 0x10));
+    return param_1;
+}
+#pragma dont_inline reset
 extern "C" void* fn_801B7F50(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
