@@ -31,7 +31,7 @@ extern "C" void fn_803CBEE0(void) {
 
 extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
-extern "C" int fn_80309C4C(void* a, u32 b, int c);
+extern "C" u32 fn_80309C4C(void* a, u32 b, int c);
 extern "C" void fn_80458880(void* a, int b, int c);
 extern "C" void fn_803CC048(char* p) {
     if (*(s32*)(p + 0xb0) > 0) {
