@@ -22,6 +22,11 @@ extern "C" void fn_801103A0(u8* p) {
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
 }
 
+extern "C" void fn_8015FDA8(void*, void*);
+extern "C" void fn_80110494(void* param_1, void* param_2) {
+    fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 0x10));
+}
+
 extern "C" void fn_801106E8(void* param_1) {
     VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
     obj->v3();
