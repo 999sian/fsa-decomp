@@ -294,6 +294,17 @@ extern "C" void* fn_8015AE80(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" BOOL fn_8015C744(void* p, u32* a, u32* b) {
+    if (a[1] == b[1]) {
+        return a[0] == b[0];
+    }
+    return 0;
+}
+
+extern "C" s32 fn_8015C774(void) {
+    return 0x45585048;
+}
+
 extern void* lbl_802977D0[];
 extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     if (p != nullptr) {
