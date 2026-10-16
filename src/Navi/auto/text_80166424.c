@@ -124,6 +124,8 @@ extern "C" void fn_801721F0(u8* p) {
     *p = lbl_80301ADC;
 }
 
+extern "C" u32 fn_801725E4(void) { return 0x10; }
+
 extern "C" s32 fn_80172640(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
