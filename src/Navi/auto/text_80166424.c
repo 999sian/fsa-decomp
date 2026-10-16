@@ -4,6 +4,13 @@ extern "C" void fn_80178C9C(void*, void*);
 
 
 extern "C" void fn_80168280(void);
+extern "C" u8 fn_80166FC4(void*);
+extern "C" void fn_80166C70(void* param_1) {
+    *(u32*)param_1 = 0;
+    *(u32*)((u8*)param_1 + 4) = 0;
+    *(u32*)((u8*)param_1 + 8) = 0;
+}
+
 extern "C" void fn_80167CB8(void) {
     fn_80168280();
 }
