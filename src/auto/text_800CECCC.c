@@ -165,6 +165,40 @@ extern "C" int fn_800D0618(void)
     return 6;
 }
 
+#if defined(VERSION_G4SJ01)
+extern "C" void** fn_800D0620(void** p, short flag)
+{
+    if (p != 0) {
+        *p = lbl_8049AE5C;
+        if (p != 0) {
+            *p = __vt__15J3DAnmTransform;
+            if (p != 0) {
+                *p = __vt__10J3DAnmBase;
+            }
+        }
+        if (flag > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+#elif defined(VERSION_G4SP01)
+extern "C" void** fn_800D0620(void** p, short del) {
+    if (p) {
+        *p = lbl_8049AE5C;
+        if (p) {
+            *p = __vt__15J3DAnmTransform;
+            if (p) {
+                *p = __vt__10J3DAnmBase;
+            }
+        }
+        if (del > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+#else
 extern "C" void* fn_800D0620(void* param_1, short param_2)
 {
     if (param_1 != 0) {
@@ -181,6 +215,7 @@ extern "C" void* fn_800D0620(void* param_1, short param_2)
     }
     return param_1;
 }
+#endif
 
 extern "C" int fn_800D068C(void)
 {
@@ -191,7 +226,6 @@ extern "C" void fn_800D0694(const J3DAnmTransformKey* p1, unsigned short p2, J3D
     p1->calcTransform(p1->mCurrentFrame, p2, p3);
 }
 
-extern "C" void fn_800D0204(void*, void*, void*);
 extern "C" void fn_800D00F0(void*, void*, void*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
 extern "C" void* fn_800D06B8(const void* ptr, const void* offset)
