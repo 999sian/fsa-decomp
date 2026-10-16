@@ -4,6 +4,52 @@
 extern "C" char lbl_804AB4C0[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_801EE434(void*);
+extern "C" void* lbl_8053AAF8;
+extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" void fn_8032722C(void* thisPtr) {
+	char* p = (char*)thisPtr;
+	*(f32*)(p + 0x60) = -4.0f;
+	*(f32*)(p + 0x64) = -4.0f;
+	*(f32*)(p + 0x68) = 4.0f;
+	*(f32*)(p + 0x6c) = 4.0f;
+	*(s32*)(p + 0x244) = 0;
+	*(s32*)(p + 0x248) = 0;
+	*(s32*)(p + 0x24c) = 0;
+	*(s32*)(p + 0x234) = 0;
+	*(s32*)(p + 0x238) = 0;
+	*(s32*)(p + 0x23c) = 0;
+	*(s32*)(p + 0x240) = 0;
+	*(s32*)(p + 0x108) = 8;
+	*(s32*)(p + 0x250) = 0;
+	*(f32*)(p + 0x258) = 0.0f;
+	*(f32*)(p + 0x25c) = 0.0f;
+	*(f32*)(p + 0x260) = 0.0f;
+	*(f32*)(p + 0x3c) = 0.0f;
+	*(f32*)(p + 0x40) = 0.0f;
+	*(f32*)(p + 0x44) = 0.0f;
+	*(s32*)(p + 0x234) = 0x400;
+	*(f32*)(p + 0x260) = 10.0f;
+	*(s32*)(p + 0x23c) = 10;
+	{
+		char* g = (char*)lbl_8053AAF8;
+		u32 s = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+		*(u32*)(g + 0xb4) = s;
+		u32 b = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+		*(s32*)(p + 0x240) = (s32)(30.0f * (*(f32*)&b - 1.0f)) + 0x1e;
+	}
+	{
+		char* g = (char*)lbl_8053AAF8;
+		u32 s = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+		*(u32*)(g + 0xb4) = s;
+		u32 b = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+		*(s32*)(p + 0x248) = (s32)(32768.0f * (*(f32*)&b - 1.0f));
+	}
+	*(s32*)(p + 0x230) = 0;
+	*(u32*)(p + 0xb0) = 0x20000;
+	*(s32*)(p + 0x264) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 1.5f, 0x183, 0, 0, 0, 0, 1);
+	*(s32*)(p + 0x268) = fn_8013CC50(*(u32*)(p + 4), p + 0xc, 1.5f, 0x184, 0, 0, 0, 0, 1);
+}
+
 extern "C" void fn_803273E0(void* thisPtr) {
 	char* p = (char*)thisPtr;
 	void* a = *(void**)(p + 0x264);
