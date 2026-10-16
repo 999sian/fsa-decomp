@@ -188,6 +188,10 @@ extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
     p[10] = param_3[2];
 }
 
+extern "C" void fn_8017318C(void)
+{
+}
+
 extern "C" BOOL fn_80173190(void)
 {
     return TRUE;
