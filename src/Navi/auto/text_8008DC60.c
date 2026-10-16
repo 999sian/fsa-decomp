@@ -947,84 +947,58 @@ extern f64 lbl_80300B68;
 extern f32 lbl_80300B70;
 extern f32 lbl_80300B74;
 extern f32 lbl_80300AFC;
-extern f32 lbl_802FEAB0;
-extern f32* lbl_802F0BC0;
-extern "C" f32 fn_800A1774(s32 param_1, s32 param_2, u8 param_3)
+extern f32 lbl_802FEAB0[];
+extern f32 lbl_802F0BC0[];
+extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
 {
     if (param_1 <= 0) {
         return lbl_80300B20;
     }
-    
     if (param_2 < 0) {
         param_2 = 0;
-    }
-    
-    if (param_2 > param_1) {
+    } else if (param_2 > param_1) {
         param_2 = param_1;
     }
-    
-    // Convert to double using 2^52 trick and compute ratio
-    f64 ratio = ((f64)(u32)param_2 - 4503599627370496.0) / ((f64)(u32)param_1 - 4503599627370496.0);
-    f32 f4 = (f32)ratio;
-    
-    u8 mode = param_3 & 0xFF;
-    
-    switch (mode) {
+    f32 num = (f32)param_2;
+    f32 den = (f32)param_1;
+    f32 f4 = num / den;
+    switch (param_3) {
     case 0:
         return f4 * f4;
     case 1: {
-        if (f4 <= lbl_80300AF0) {
-            if (f4 < lbl_80300B68) {
-                return lbl_802FEAB0;
-            }
-            f32 x = f4;
-            f32 bit_pattern = x;
-            // Check for special values
-            u32 bits;
-            *(u32*)&bits = *(u32*)&bit_pattern;
-            u32 exp = (bits >> 23) & 0xFF;
-            if (exp == 0xFF) {
-                // Infinity
-                if ((bits & 0x7FFFFF) == 0) {
-                    return lbl_802FEAB0;
-                }
-                // NaN
-                return lbl_802FEAB0;
-            }
-            if (bits == 0) {
-                // Zero
-                return f4;
-            }
-            
-            // Newton-Raphson sqrt
-            f32 result = __frsqrte(f4);
+        f32 r;
+        if (f4 > lbl_80300AF0) {
+            f64 res_d = __frsqrte(f4);
             f64 magic3 = lbl_80300B58;
             f64 magic2 = lbl_80300B60;
-            
-            f64 res_d = (f64)result;
             f64 temp = res_d * res_d;
             f64 temp2 = magic3 * res_d;
             temp = (f64)f4 * temp;
             temp = magic2 - temp;
             res_d = temp2 * temp;
-            
             temp = res_d * res_d;
             temp2 = magic3 * res_d;
             temp = (f64)f4 * temp;
             temp = magic2 - temp;
             res_d = temp2 * temp;
-            
             temp = res_d * res_d;
             temp2 = magic3 * res_d;
             temp = (f64)f4 * temp;
             temp = magic2 - temp;
             res_d = temp2 * temp;
-            
-            result = (f32)(res_d * (f64)f4);
-            return result;
+            r = (f32)(res_d * (f64)f4);
+        } else if (f4 < lbl_80300B68) {
+            r = *(f32*)&lbl_802FEAB0;
         } else {
-            return f4;
+            u32 bits;
+            *(f32*)&bits = f4;
+            if (((bits >> 23) & 0xFF) == 0xFF && (bits & 0x7FFFFF) != 0) {
+                r = *(f32*)&lbl_802FEAB0;
+            } else {
+                r = f4;
+            }
         }
+        return r;
     }
     case 2: {
         f32 threshold = lbl_80300B38;
@@ -1037,20 +1011,16 @@ extern "C" f32 fn_800A1774(s32 param_1, s32 param_2, u8 param_3)
     case 3:
         return f4;
     case 4: {
-        f32 scale = lbl_80300B70;
-        f32 index_scale = lbl_80300AFC;
-        f32 scaled = scale * f4;
-        scaled = index_scale * scaled;
+        f32 scaled = lbl_80300B70 * f4;
+        scaled = lbl_80300AFC * scaled;
         s32 idx = (s32)scaled;
         idx = (idx << 2) & 0x3FF;
         f32 val = *(f32*)((u8*)lbl_802F0BC0 + idx);
         return val * val;
     }
     case 5: {
-        f32 scale = lbl_80300B74;
-        f32 index_scale = lbl_80300AFC;
-        f32 scaled = scale * f4;
-        scaled = index_scale * scaled;
+        f32 scaled = lbl_80300B74 * f4;
+        scaled = lbl_80300AFC * scaled;
         s32 idx = (s32)scaled;
         idx = (idx << 2) & 0x3FF;
         f32 val = *(f32*)((u8*)lbl_802F0BC0 + idx);
