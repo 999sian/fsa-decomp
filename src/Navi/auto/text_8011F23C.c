@@ -855,6 +855,7 @@ extern "C" void fn_80132BBC(void* self, void* table);
 extern char lbl_802914AC[];
 extern char lbl_80201E40[];
 extern float lbl_803017B8;
+extern f32 lbl_803017B8;
 extern "C" void* fn_801329B4(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_8029138C;
