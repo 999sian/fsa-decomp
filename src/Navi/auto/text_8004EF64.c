@@ -1,5 +1,7 @@
 #include "types.h"
 #include "types.h"
+extern "C" void* fn_8004F67C(void* ptr, s16 param_2);
+
 extern "C" void* fn_8004F50C(void* ptr, s16 param_2);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -164,6 +166,18 @@ extern void* lbl_802473AC[];
 extern "C" void* fn_8004F5C4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_802473AC;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
+extern void* lbl_802475BC[];
+extern "C" void* fn_8004F60C(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802475BC;
+        fn_801E0D40((char*)ptr + 4, (void*)fn_8004F67C, 0x1c, 0x1);
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
         }
