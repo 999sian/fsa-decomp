@@ -15,8 +15,8 @@ class JASInstParam {
 public:
     JASInstParam() {
         mVolume = 1.0f;
-        mFxMix = 0.0f;
         mPitch = 1.0f;
+        mFxMix = 0.0f;
         mPan = 0.5f;
         mDolby = 0.0f;
         _14 = 0;
@@ -79,6 +79,27 @@ extern "C" void* fn_8002F294(const void* data, JKRHeap* heap) {
     }
     lbl_80557688 += before - heap->getFreeSize();
     return bank;
+}
+
+extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key) {
+    for (int i = 0; i < 0x80; i++) {
+        char* p = fn_80030454(data, *(unsigned long*)(data + 0x20 + i * 4 + 4));
+        if (p != 0) {
+            for (int j = 0; j < 2; j++, p += 4) {
+                if (fn_8003043C(data, *(unsigned long*)(p + 0x10)) == key) {
+                    JASInst* inst = bank->getInst(i);
+                    if (inst != 0) {
+                        JASInstParam param;
+                        inst->getParam(0x3c, 0x7f, &param);
+                        if (j < param._20) {
+                            return param._1c[j];
+                        }
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 extern "C" void fn_80030380(short* p) {
