@@ -472,6 +472,7 @@ extern "C" void* fn_8017A4A8(void* param_1) {
     }
 }
 
+#pragma dont_inline reset
 extern "C" void fn_8017A4F8(void* self) {
     void (*vfn)(void*, void*) = (void (*)(void*, void*))((*(void***)self)[0x90 / 4]);
     u16 i;
