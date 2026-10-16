@@ -133,12 +133,20 @@ extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
         if (bank != NULL) {
             BOOL enabled = OSDisableInterrupts();
             for (s32 i = 0; i < 0x10; i++) {
-                JASTrack* track = bank->v9(i);
+                JASTrack* track = bank->v7(i);
                 if (track != NULL) {
-                    if (param_3 == 0) {
-                        track->mute((i == 2 || i == 7) ? FALSE : TRUE);
+                    if (param_3 != 0) {
+                        if (i == 2) {
+                            track->mute(TRUE);
+                        } else {
+                            track->mute(FALSE);
+                        }
                     } else {
-                        track->mute(i == 2 ? TRUE : FALSE);
+                        if (i == 2 || i == 7) {
+                            track->mute(FALSE);
+                        } else {
+                            track->mute(TRUE);
+                        }
                     }
                 }
             }
@@ -192,6 +200,23 @@ extern "C" void fn_80458F9C(Unk80458F9C* self, u32 fadeout)
     self->m58 = 0;
     self->m5C = 0;
     self->m60 = 0;
+}
+
+extern "C" void fn_804593D4(char* this_) {
+    this_[0x8e] = 1;
+    fn_80458744(this_, 1);
+    ((JAISeCategoryMgr*)(*(char**)(this_ + 0x34) + 0x80))->pause(true);
+    ((JAISeCategoryMgr*)(*(char**)(this_ + 0x34) + 0xec))->pause(true);
+    ((JAISeCategoryMgr*)(*(char**)(this_ + 0x34) + 0x158))->pause(true);
+    ((JAISeCategoryMgr*)(*(char**)(this_ + 0x34) + 0x1c4))->pause(true);
+    ((JAISeCategoryMgr*)(*(char**)(this_ + 0x34) + 0x230))->pause(true);
+    ((JAISeCategoryMgr*)(*(char**)(this_ + 0x34) + 0x29c))->pause(true);
+    ((JAISoundParamsMove*)(*(char**)(this_ + 0x34) + 0x88))->moveVolume(lbl_80543EB0, 3);
+    ((JAISoundParamsMove*)(*(char**)(this_ + 0x34) + 0xf4))->moveVolume(lbl_80543EB0, 3);
+    ((JAISoundParamsMove*)(*(char**)(this_ + 0x34) + 0x160))->moveVolume(lbl_80543EB0, 3);
+    ((JAISoundParamsMove*)(*(char**)(this_ + 0x34) + 0x1cc))->moveVolume(lbl_80543EB0, 3);
+    ((JAISoundParamsMove*)(*(char**)(this_ + 0x34) + 0x238))->moveVolume(lbl_80543EB0, 3);
+    ((JAISoundParamsMove*)(*(char**)(this_ + 0x34) + 0x2a4))->moveVolume(lbl_80543EB0, 3);
 }
 
 extern "C" const f32 lbl_80543EB0;
