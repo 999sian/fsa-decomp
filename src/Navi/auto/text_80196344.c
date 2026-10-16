@@ -64,7 +64,7 @@ extern "C" void* fn_80196388(void* ptr, s16 param_2) {
 
 extern "C" void fn_801963D0(void* self) {
     extern f32 lbl_80301CD8;
-    extern u8 lbl_802FF6A8[];
+    extern u32 lbl_802FF6A8;
     u8* p = (u8*)self;
     *(u32*)(p + 0x4) = 0;
     f32 zero = lbl_80301CD8;
@@ -86,7 +86,7 @@ extern "C" void fn_801963D0(void* self) {
     *(u32*)(p + 0x54) = 0;
     *(u32*)(p + 0x58) = 0;
     *(u32*)(p + 0x5c) = 0;
-    *(u8**)(p + 0x60) = lbl_802FF6A8;
+    *(u32*)(p + 0x60) = (u32)&lbl_802FF6A8;
     *(u8*)(p + 0x34) = 0;
     *(u8*)(p + 0x48) = 0;
 }
@@ -233,6 +233,14 @@ extern "C" u32 fn_80197B4C(void* param_1) {
     a += ((NaviVObj*)*(void**)(p + 0x30))->vf3();
     u32 c = ((NaviVObj*)*(void**)(p + 0x34))->vf6();
     return (a + c + 0x1f + b) & ~0x1f;
+}
+
+extern "C" void fn_801981E4(void* param_1) {
+    *(u32*)(lbl_802EE470 + 0x54) = *(u32*)((u8*)param_1 + 0x10);
+    if (!(*(volatile u32*)(lbl_802EE470 + 0x34) & 2)) {
+        ((NaviVObj*)*(void**)((u8*)param_1 + 0x28))->vf21();
+        fn_801A6238();
+    }
 }
 
 extern "C" void fn_80198298(u8* param_1) {
