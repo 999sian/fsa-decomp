@@ -1130,18 +1130,19 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 }
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
-    u8 *dst = (u8 *)(param_1 + param_2 * 8);
+    int off = param_2 << 3;
+    u8 *dst = (u8 *)(param_1 + off);
     u8 v1 = param_3[1];
-    u8 v2 = param_3[2];
     dst[0x5a] = v1;
-    u8 v3 = param_3[3];
+    u8 v2 = param_3[2];
     dst[0x5b] = v2;
-    u8 v5 = param_3[5];
+    u8 v3 = param_3[3];
     dst[0x5c] = v3;
-    u8 v6 = param_3[6];
+    u8 v5 = param_3[5];
     dst[0x5e] = v5;
-    u8 v7 = param_3[7];
+    u8 v6 = param_3[6];
     dst[0x5f] = v6;
+    u8 v7 = param_3[7];
     dst[0x60] = v7;
 }
 
@@ -1990,8 +1991,11 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
-    GXColor* dst = (GXColor*)(param_1 + param_2 * 4 + 0x20);
-    *dst = *param_3;
+    GXColor* dst = &((GXColor*)(param_1 + 0x20))[param_2];
+    dst->r = param_3->r;
+    dst->g = param_3->g;
+    dst->b = param_3->b;
+    dst->a = param_3->a;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
