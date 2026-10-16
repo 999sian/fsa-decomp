@@ -684,6 +684,8 @@ extern "C" void fn_8017DE68(u32* param_1) {
     }
 }
 
+#pragma push
+#pragma use_lmw_stmw off
 extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
     extern void* lbl_80298ED8[];
     s32 i;
