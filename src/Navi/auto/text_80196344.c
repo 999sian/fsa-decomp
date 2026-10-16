@@ -156,6 +156,13 @@ extern "C" void fn_80198BA8(void* param_1) {
     *(u32*)(p + 0x48) = 0;
 }
 
+extern "C" void fn_80198C00(void* param_1) {
+    *(u32*)(lbl_802EE470 + 0x54) = *(u32*)((u8*)param_1 + 0x10);
+    if (*(volatile u32*)(lbl_802EE470 + 0x34) & 2) {
+        return;
+    }
+}
+
 extern "C" void fn_80198C1C(void* param_1) {
     *(u32*)(lbl_802EE470 + 0x54) = *(u32*)((u8*)param_1 + 0x10);
     if (!(*(volatile u32*)(lbl_802EE470 + 0x34) & 2)) {
