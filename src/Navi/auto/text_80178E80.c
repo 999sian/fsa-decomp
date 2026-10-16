@@ -5,7 +5,7 @@
 extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
 
 struct VObj_8018939C {
-    virtual void v0(); virtual void v1(); virtual void v2(s32 mode);
+    virtual void v0(s32 mode); virtual void v1(); virtual void v2(s32 mode);
 };
 
 struct VObj_80189BD8 {
@@ -1194,7 +1194,7 @@ extern "C" void fn_80189BD8(void* self, u32 param_2) {
     }
 }
 
-extern "C" s32 fn_80189C24(void* self) {
+extern "C" s32 fn_80189C24(u8* self) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
         virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
@@ -1206,18 +1206,18 @@ extern "C" s32 fn_80189C24(void* self) {
         virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
         virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
         virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
-        virtual void v40(); virtual void v41();
-        virtual s32 v42();
+        virtual s32 v40();
     };
     Obj* b;
-    void* a = *(void**)((u8*)self + 0x138);
-    if (a != nullptr) {
-        b = *(Obj**)((u8*)a + 0x70);
-        if (b != nullptr) {
-            return b->v42();
-        }
+    u8* a = *(u8**)(self + 0x138);
+    if (a == 0) {
+        return 0;
     }
-    return 0;
+    b = *(Obj**)(a + 0x70);
+    if (b == 0) {
+        return 0;
+    }
+    return b->v40();
 }
 
 extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
