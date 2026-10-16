@@ -58,13 +58,10 @@ extern "C" void fn_8005CB2C(int param_1) {
 }
 
 extern "C" int fn_8005CB7C(int param_1) {
-    if (param_1 == 0xd4) {
-        return 0;
+    if (param_1 != 0xd4 && param_1 != 0xd3) {
+        return 1;
     }
-    if (param_1 == 0xd3) {
-        return 0;
-    }
-    return 1;
+    return 0;
 }
 
 extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
@@ -75,6 +72,37 @@ extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_8005E820(void* self) {
+    void* sub = (u8*)self + 8;
+    ((void (*)(void*, u8))(*(void***)sub)[0x24 / 4])(sub, *((u8*)self + 0x174));
+    s16 x = *(s16*)((u8*)self + 0x170);
+    s16 y = *(s16*)((u8*)self + 0x172);
+    ((void (*)(void*, s32, s32, s32, f32, f32))(*(void***)sub)[0xe4 / 4])(sub, 0, 0, 0, x, y);
+}
+
+extern "C" void fn_8005E8B8(void* self, s32 a, s32 b, s32 c) {
+    void** vtbl = *(void***)self;
+    ((void (*)(void*, s32, s32, s32, s32))vtbl[0xe8 / 4])(self, 0, a, b, c);
+}
+
+extern "C" void fn_8005E8F8(void* self, u8 idx, f32 p1, f32 p2, s32 a, s32 b, s32 c) {
+    if (idx < *((u8*)self + 0x110)) {
+        void* slot = *(void**)((u8*)self + idx * 4 + 0x100);
+        if (slot != nullptr) {
+            u8* q = *(u8**)((u8*)slot + 0x20);
+            f32 x = (f32)*(u16*)(q + 2);
+            f32 y = (f32)*(u16*)(q + 4);
+            void** vtbl = *(void***)self;
+            ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))vtbl[0xec / 4])(self, a, b, c, p1, p2, x, y);
+        }
+    }
+}
+
+extern "C" void fn_8005E990(void* self, s16 a, s16 b) {
+    *(s16*)((u8*)self + 0x170) = a;
+    *(s16*)((u8*)self + 0x172) = b;
 }
 
 extern "C" void* fn_8005F864(void* ptr, s16 param_2) {
