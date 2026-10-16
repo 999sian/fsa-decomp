@@ -141,6 +141,14 @@ extern "C" void* fn_80123EB8(void)
 	return lbl_802FF368;
 }
 
+extern "C" void fn_80128718(u8* self) {
+    *(s16*)(self + 0x214) = 0;
+}
+
+extern "C" void fn_80128794(u8* self) {
+    *(s16*)(self + 0x214) = 0;
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
