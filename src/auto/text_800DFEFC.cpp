@@ -17,11 +17,11 @@ u16 J3DMaterialFactory_v21::countUniqueMaterials()
 	return count;
 }
 
-extern "C" GXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
+extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mMatColorIndex[no] != 0xffff) {
-		return self->mColorData[initData->mMatColorIndex[no]];
+		return *(u32*)&self->mColorData[initData->mMatColorIndex[no]];
 	}
 	return J3DGXColor(0xffffffffU);
 }
