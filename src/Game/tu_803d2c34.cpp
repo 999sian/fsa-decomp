@@ -270,8 +270,9 @@ void MemCardMenu::fn_803D2C9C() {
             if (!(e[0x85] & 1)) {
                 e[0x85] |= 1;
             }
-            if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
-                ((u8*)&lbl_8050EC80)[lbl_8050EC80.idx * 0xc8 + 0x85] |= 2;
+            if (((SaveEntry*)((u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8 + 0x20))->f8 & 1) {
+                e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
+                e[0x85] |= 2;
             }
             self->f54 = 0x7e;
             self->f2177 = 0;
