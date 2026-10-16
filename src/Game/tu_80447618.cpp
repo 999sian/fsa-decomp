@@ -74,7 +74,7 @@ struct Obj80447C30 {
 };
 
 extern "C" {
-extern void* lbl_804B1C20;
+extern void* lbl_804B1C20[];
 extern void* lbl_8053AF08;
 extern void* lbl_80490698;
 extern void* lbl_804AF86C;
@@ -189,6 +189,44 @@ extern "C" void fn_804479A0(Obj80447C30* self)
         self->screen->search(e->tag0)->mVisible = 0;
         self->screen->search(e->tag1)->mVisible = 0;
     }
+}
+
+extern "C" void __dl__FPv(void*);
+extern "C" void* fn_80447B34(void* param_1, short param_2)
+{
+    void* result = param_1;
+
+    if (result != 0) {
+        *(void**)result = (void*)&lbl_804B1C20;
+
+        if (((fn_80447B34_Obj**)result)[1] != 0) {
+            ((fn_80447B34_Obj**)result)[1]->Release(1);
+        }
+        ((fn_80447B34_Obj**)result)[1] = 0;
+
+        fn_80447B34_Obj** ptr = (fn_80447B34_Obj**)result;
+        int i = 0;
+        do {
+            if (ptr[2] != 0) {
+                ptr[2]->Release(1);
+            }
+            ptr[2] = 0;
+            if (ptr[6] != 0) {
+                ptr[6]->Release(1);
+            }
+            i++;
+            ptr[6] = 0;
+            ptr++;
+        } while (i < 4);
+
+        lbl_8053AF08 = 0;
+
+        if (param_2 > 0) {
+            __dl__FPv(result);
+        }
+    }
+
+    return result;
 }
 
 extern "C" Obj80447C30* fn_80447C30(Obj80447C30* self) {
