@@ -561,6 +561,22 @@ extern "C" void fn_800D8294(void* p) {
 extern "C" void fn_800D8300(void) {
 }
 
+extern "C" void fn_800D8304(void* p) {
+    u8* addr = (u8*)p;
+    u8* saved;
+    u16* s;
+
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(addr + 4);
+    saved = __GDCurrentDL->pDisplayListData;
+    if (*(u16*)(addr + 8) != 0xffff) {
+        loadTexNo(0, *(u16*)(addr + 8));
+    }
+    J3DGDSetTevOrder((GXTevStageID)0, (GXTexCoordID)addr[10], (GXTexMapID)addr[11], (GXChannelID)addr[12], (GXTexCoordID)0xff, (GXTexMapID)0xff, (GXChannelID)0xff);
+    s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (addr[11] & 7) * 8);
+    J3DGDSetTexCoordScale2((GXTexCoordID)addr[10], s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+    DCStoreRange(saved, (u32)(__GDCurrentDL->pDisplayListData - saved));
+}
+
 extern "C" void fn_800D83E8(Vtable800D8248* p) {
     p->m9();
 }
