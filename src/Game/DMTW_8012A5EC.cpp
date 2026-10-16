@@ -1,5 +1,9 @@
 #include "types.h"
 
+extern "C" void fn_802D9FF4(s32, s32, s32);
+extern "C" void fn_80136798(s32, s32, s32);
+extern "C" void fn_8011921C(void);
+extern "C" void fn_801183BC(void);
 extern "C" s32 fn_802D6A9C(void);
 extern "C" s32 fn_80119DD0(void);
 extern "C" void fn_80119468(s32, s32, s32);
@@ -27,8 +31,8 @@ extern "C" void fn_8012A8C0(char* this_) {
     };
     s32 i = 0;
     char* p = this_;
+    Box box = {{*(f32*)(this_ + 0x60), *(f32*)(this_ + 0x64)}, {*(f32*)(this_ + 0x68), *(f32*)(this_ + 0x6c)}};
     Box orig = {{*(f32*)(this_ + 0x60), *(f32*)(this_ + 0x64)}, {*(f32*)(this_ + 0x68), *(f32*)(this_ + 0x6c)}};
-    Box box = orig;
     do {
         box.min.x += *(f32*)(p + 0x25c);
         box.min.y += *(f32*)(p + 0x260);
