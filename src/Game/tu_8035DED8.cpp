@@ -34,6 +34,15 @@ extern "C" void fn_8035E238(int param_1) {
     *(int*)(p + 0x238) = 0;
 }
 
+extern "C" void fn_8035E394(int param_1) {
+    char* p = (char*)param_1;
+    if (*(int*)(p + 0x238) != 0) {
+        *(int*)(p + 0x230) = 1;
+        fn_8035C1C4(p, 0, 0x274);
+        *(int*)(p + 0x238) = 0;
+    }
+}
+
 extern "C" void fn_8035E57C(Unk8035DA78* self) {
     char* p = (char*)self;
     if (*(int*)(p + 0x234) != 0) *(int*)(p + 0x234) -= 1;
