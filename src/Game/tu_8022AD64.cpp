@@ -183,7 +183,7 @@ static inline u8 isEnabled2(int i) {
     if (lbl_8053AC90->players[i] == NULL) return 0;
     return Player_GetCapabilityFlag(lbl_8053AC90->players[i]);
 }
-static inline u8 isLinked2(int i) {
+static inline int isLinked2(int i) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isEnabled2(i)) return 0;
     return Player_IsLinked(lbl_8053AC90->players[i]);
