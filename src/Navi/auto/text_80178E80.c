@@ -1652,7 +1652,8 @@ extern "C" u32 fn_80185DA4(VObj_80185DA4* self) {
     if (*(void**)(p + 0x70) == NULL) {
         return 0;
     }
-    return self->v52((u8)(p[0x28] - 1));
+    u32 n = *(u32*)(p + 0x28);
+    return self->v52((u8)((u8)n - 1));
 }
 
 extern "C" u32 fn_80185ED0(u8* self, u8 b) {
