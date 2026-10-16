@@ -1,5 +1,11 @@
 #include "types.h"
 extern u32 lbl_802FF208;
+extern "C" int fn_80021994(void*);
+extern "C" int fn_8002185C(void*);
+extern char lbl_802BB0FC[];
+extern unsigned short lbl_802FD540[];
+extern unsigned short lbl_802FD544[];
+extern unsigned short lbl_802FD548[];
 extern void* lbl_80289A64[];
 extern void* lbl_8027EC78[];
 extern void* lbl_8028EFB0[];
