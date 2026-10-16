@@ -86,3 +86,27 @@ extern "C" void* fn_8010AF3C(u8* self, s16 deleting) {
     return self;
 }
 
+extern "C" void* fn_8010AFC4(u8* self) {
+    __ct__5ActorFv(self);
+    *(void***)(self) = lbl_8049CEE0;
+    *(u8*)(self + 0x2f8) = 0;
+    *(s32*)(self + 0x2fc) = 0;
+    *(s32*)(self + 0x300) = -1;
+    *(s32*)(self + 0x304) = -1;
+    *(s32*)(self + 0x308) = 0;
+    *(s32*)(self + 0x30c) = 0;
+    *(s32*)(self + 0x310) = -1;
+    *(s32*)(self + 0x314) = 0;
+    *(s32*)(self + 0x31c) = -1;
+    *(s32*)(self + 0x320) = 0;
+    *(s32*)(self + 0x324) = 0;
+    *(s32*)(self + 0x328) = 0;
+    *(s32*)(self + 0x32c) = 0;
+    *(f32*)(self + 0x330) = lbl_8053C3E8;
+    *(f32*)(self + 0x334) = lbl_8053C3E0;
+    *(u8*)(self + 0x338) = 1;
+    *(u8*)(self + 0x339) = 1;
+    fn_801D267C(self + 0x33c);
+    return self;
+}
+
