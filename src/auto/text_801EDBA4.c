@@ -15,10 +15,9 @@ typedef struct {
 } Vec3f;
 
 extern "C" void fn_801EDBA4(char* this_) {
-    Vec3f v;
     if (*(s32*)(this_ + 0x248) != 0x17) {
-        v = *(Vec3f*)(this_ + 0xc);
+        JGeometry::TVec3f v(*(JGeometry::TVec3f*)(this_ + 0xc));
         fn_801EDC0C(this_, (f32*)(*(char**)(this_ + 0x280) + 0x10c));
-        *(Vec3f*)(this_ + 0xc) = v;
+        ((JGeometry::TVec3f*)(this_ + 0xc))->set(v);
     }
 }
