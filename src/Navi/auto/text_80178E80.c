@@ -2862,3 +2862,15 @@ extern "C" void fn_801928E0(void* p) {
     fn_801DD58C(buf, 7);
 }
 
+extern "C" void fn_80192D84(void* p) {
+    fn_801DEDBC(0, 4, 5, 0);
+    fn_801DEE10(1);
+    fn_801DEE3C(1);
+    fn_801DEFA4(1);
+    s32 buf = lbl_802FE658;
+    fn_801DEA74(0, &buf, lbl_80301CA0, lbl_80301CA4, lbl_80301CA8, lbl_80301CA4);
+    fn_801DEC98(0, 0, 0);
+    fn_801DEE68(1, 3, 1);
+    fn_801DEE9C(1);
+}
+
