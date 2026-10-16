@@ -1789,7 +1789,7 @@ void fn_8023F390() {
     updateFloorFlag();
 }
 
-extern "C" void fn_8023F6C4() {
+void fn_8023F6C4() {
     for (int i = 0; i < 4; i++) fn_80254660(getPlayer(i));
 }
 
