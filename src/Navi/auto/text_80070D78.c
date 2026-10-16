@@ -439,7 +439,7 @@ extern "C" void fn_80075550(void) {
 
 extern "C" BOOL fn_80075570(u8* p) {
     fn_800636F4((void*)&lbl_802FCAA8, lbl_802B7CA0 + 0x2200, 0x40);
-    if (p[0x240] == 0) {
+    if (*(s8*)(p + 0x240) == 0) {
         fn_80058B64(0x14b0);
     }
     lbl_802FF190 = 0;
