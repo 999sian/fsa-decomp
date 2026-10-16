@@ -91,25 +91,24 @@ extern "C" void fn_8015DEE4(void) {
     s32 data;
     fn_801BDDBC(&lbl_802979D8, &lbl_802979C8, 4);
     while (true) {
-        while (true) {
-            fn_801BDEE4(&lbl_802979D8, &msg, 1);
-            type = msg[0];
-            data = msg[1];
-            fn_8015AB1C(msg);
-            if (type == 1) {
-                break;
-            }
+        fn_801BDEE4(&lbl_802979D8, &msg, 1);
+        type = msg[0];
+        data = msg[1];
+        fn_8015AB1C(msg);
+        switch (type) {
+        case 1:
+            fn_8015F400(data);
+            break;
         }
-        fn_8015F400(data);
     }
 }
 
 extern "C" u32 fn_8015E8FC(void) {
     u32 tail = lbl_802FF5A8;
     u32 head = lbl_802FF5A4;
-    u32 left = lbl_802FF5BC;
-    u32 size = tail - head;
     lbl_802FF5C0 = tail - 0x19;
+    u32 size = tail - head;
+    u32 left = lbl_802FF5BC;
     if (left < size) {
         size = left;
     }
