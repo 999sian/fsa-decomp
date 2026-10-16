@@ -24,6 +24,10 @@ struct Slot0 {
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B1AE8[];
 extern s32 lbl_8053AEF0;
+extern u8 lbl_8048FB88[];
+extern "C" f32 lbl_80543D64;
+extern "C" void fn_80402E08(void* this_, f32 a, f32 b);
+extern "C" void fn_80402CE0(void* this_, f32 a, f32 b);
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_80543D60;
 extern "C" void fn_8013B490(void* p);
@@ -131,18 +135,17 @@ extern "C" void* fn_80443760(void* this_) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 8) = obj;
-    u32 c = 0x746d6170;
+    u32 a = 0x50740000;
     u32 b = 0x50746573;
-    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x50740000, b, c));
+    u32 c = 0x746d6170;
+    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(a, b, c));
 
     obj = __nw__FUl(0x2c);
     if (obj != 0) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 12) = obj;
-    u32 e = 0x7074656e;
-    u32 d = 0x506d61;
-    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x500000, d, e));
+    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x500000, 0x506d61, 0x7074656e));
 
     self[0x14] = 0;
     *(s16*)(self + 0x10) = 0;
