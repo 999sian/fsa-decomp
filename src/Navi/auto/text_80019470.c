@@ -49,6 +49,7 @@ extern "C" s32 fn_8001EB7C(void*, u8);
 extern "C" int fn_8002689C();
 extern "C" s32 fn_8001E958(void*, u16);
 extern "C" s32 fn_8001C6D0(void*);
+extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
 extern "C" void fn_8001EDEC(void*, void*, void*, void*, void*);
 extern "C" void fn_8001C930(void);
 extern void* lbl_802B7BD8;
@@ -667,6 +668,14 @@ extern "C" int fn_8001BC10(int param_1) {
     }
     
     return 0;
+}
+
+extern "C" s32 fn_8001BD74(void* param_1) {
+    s32 result = fn_8001C6D0((u8*)param_1 + 0x18);
+    if (result == 1) {
+        *((u8*)param_1 + 0xc) = 3;
+    }
+    return result == 1;
 }
 
 extern "C" void fn_8001EA5C(void);
