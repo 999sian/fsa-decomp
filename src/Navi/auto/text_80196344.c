@@ -227,6 +227,9 @@ extern "C" void fn_80198BA8(void* param_1) {
     *(u32*)(p + 0x48) = 0;
 }
 
+extern "C" void fn_80198BF8(void) {
+}
+
 extern "C" void fn_80198BFC(void) {
 }
 
