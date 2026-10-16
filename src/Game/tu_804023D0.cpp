@@ -108,8 +108,10 @@ extern "C" void fn_80402F04(PaneState* state, J2DPane* pane) {
 extern "C" void fn_80402FBC(u32 player, const JGeometry::TVec3f* position) {
     s32 index = fn_8022F340(player);
     JGeometry::TVec3f value(*position);
-    lbl_80529DEC.positions[index].set(value);
-    lbl_80529DEC.positionMask |= (u8)(1 << fn_8022F340(player));
+    JGeometry::TVec3f copy(value);
+    lbl_80529DEC.positions[index].set(copy);
+    s32 bit = 1 << fn_8022F340(player);
+    lbl_80529DEC.positionMask |= (u8)bit;
 }
 
 extern "C" u32 fn_8040305C(s32 index) {
