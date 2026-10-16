@@ -10,6 +10,14 @@
 #include <dolphin/mtx.h>
 #include "JSystem/JAudio/System/JASDriver.h"
 
+extern u8* lbl_8053AE74;
+extern "C" void fn_8042CD38();
+extern "C" void fn_8042CD64();
+extern "C" void fn_8042C9F8();
+extern "C" void fn_8042C79C();
+extern "C" void fn_8042B1DC();
+extern "C" void fn_8042CD24();
+
 struct Obj8042E1E4 { u8 pad[0x1c]; u16 m1C; u8 pad2[2]; u32 m20; };
 
 // ---- from src/Game/Dtor_lbl804B15D0_80427F60.cpp ----
@@ -585,14 +593,12 @@ extern "C" u8 fn_80428448() {
     lbl_8053AEA4 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->fbWidth - lbl_8052BEC0[0]) >> 1;
     lbl_8053AEA8 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->efbHeight - lbl_8052BEC0[1]) >> 1;
     fn_804291F0((u8*)lbl_8053AEAC);
-    u32 r;
+    u32 r = 0;
     if (lbl_8052BECC[3] != 1) {
         r = OSGetTick() % lbl_8052BECC[3];
-    } else {
-        r = 0;
     }
     lbl_8053AEB0 = r;
-    if (!fn_80428AC8(0, 0, 0)) {
+    if (!((u8 (*)(s32, s32))fn_80428AC8)(0, 0)) {
         return 0;
     }
     return 1;
@@ -1369,18 +1375,22 @@ extern "C" u8 fn_8042A458(AudioThreadObj* t, s32 priority, void* param) {
     return 1;
 }
 
+extern u32 lbl_8053AE68;
+extern u32 lbl_8053AE6C;
 extern "C" void fn_8042A534(AudioThreadObj* t, u8* bufPtr) {
     THPReadBuffer readBuffer;
     s32 tmp;
     s32 readSize;
     s32 i;
+    u32 frame;
     readBuffer.ptr = bufPtr;
     readSize = lbl_8052AAD0.initReadSize;
     i = 0;
     while (true) {
         readBuffer.frameNumber = i;
         fn_8042E53C(&readBuffer);
-        if ((i + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+        frame = i + lbl_8052AAD0.initReadFrame;
+        if (frame % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
             if (lbl_8052AAD0.playFlag & 1) {
                 readSize = *(s32*)readBuffer.ptr;
                 readBuffer.ptr = lbl_8052AAD0.movieData;
@@ -1550,7 +1560,7 @@ extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
         if (lbl_8052AAD0.audioExist) {
             while (lbl_8052AAD0.mD8 < 0) {
                 readBuffer = (THPReadBuffer*)fn_8042E674();
-                if ((readBuffer->frameNumber + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
+                if ((u32)(lbl_8052AAD0.initReadFrame + readBuffer->frameNumber) % (u32)lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
                     !(lbl_8052AAD0.playFlag & 1)) {
                     fn_8042E64C(readBuffer);
                 }
@@ -1679,7 +1689,8 @@ extern "C" void fn_8042AE74(ReadThreadObj* t, u32) {
         fn_8042E70C((u32)readBuffer);
         offset += size;
         size = fn_8042AF54(readBuffer);
-        if ((readFrame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+        s32 frame = readFrame + lbl_8052AAD0.initReadFrame;
+        if (frame % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
             if (lbl_8052AAD0.playFlag & 1) {
                 offset = lbl_8052AAD0.header.movieDataOffsets;
             } else {
