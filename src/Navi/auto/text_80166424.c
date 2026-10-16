@@ -215,6 +215,12 @@ extern "C" void fn_8016991C(u8* p, s32 x)
     fn_801DE01C((u8)x, p[0], p[1]);
 }
 
+extern "C" void fn_801DE160(u8 a, u8 b, u8 c);
+extern "C" void fn_8016994C(u8* p, s32 x)
+{
+    fn_801DE160((u8)x, p[0], p[1]);
+}
+
 extern "C" int fn_8016997C()
 {
 	return 0;
