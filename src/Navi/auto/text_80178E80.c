@@ -115,6 +115,24 @@ extern "C" void fn_8017A610(void* param_1, void* param_2) {
     }
 }
 
+extern "C" void fn_8017A6CC(void* self, void* obj) {
+    void (*vfn)(void*, void*) = (void (*)(void*, void*))((*(void***)obj)[0xc / 4]);
+    u16 count;
+    u16 i;
+    vfn(obj, self);
+    count = *(u16*)((u8*)obj + 0x1a);
+    for (i = 0; i < count; i++) {
+        u16 idx = ((u16*)*(u8**)((u8*)obj + 0x1c))[i];
+        if (idx < *(u16*)((u8*)self + 0x102)) {
+            fn_8016A39C(*(u8**)((u8*)self + 0x104) + idx * 0x88, obj);
+        }
+    }
+}
+
+extern "C" void fn_8017A85C(void) {
+    fn_80178B74();
+}
+
 extern "C" void fn_8017A928(void) {
     fn_801788C0();
 }
