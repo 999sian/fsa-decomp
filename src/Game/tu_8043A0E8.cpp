@@ -33,7 +33,7 @@ extern "C" void fn_804490B8(void);
 extern "C" void fn_804479A0(void);
 extern "C" void fn_80446DB0(void);
 extern "C" void fn_804263A8(void* p);
-extern "C" void fn_80443688(void* p);
+extern "C" void fn_80443688(s32 p);
 extern "C" void fn_8043A0E8(u8 param_1) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0 && (*(u32*)(lbl_8050EC80 + 0x28 + 0xc8 * *(s32*)(lbl_8050EC80 + 0x10)) & 1) == 0 &&
         *(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 0) {
