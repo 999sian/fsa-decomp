@@ -121,6 +121,32 @@ extern "C" u32 fn_80172468(void)
     return 0x49424c46;
 }
 
+extern "C" void fn_801724B4(u8* p, s32 i, f32* src)
+{
+    f32* dst = (f32*)(p + i * 0x1c + 0x10);
+
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+    dst[4] = src[4];
+    dst[5] = src[5];
+    *(u8*)(p + i * 0x1c + 0x28) = *((u8*)src + 0x18);
+}
+
+extern "C" s32 fn_80172750(s32 p, s32 i)
+{
+    return p + i * 8 + 0x77;
+}
+
+extern "C" void fn_8017298C(int param_1, int param_2, u8 param_3) {
+    *(u8*)(param_1 + param_2 + 0xb0) = param_3;
+}
+
+extern "C" u8 fn_80172998(int param_1, int param_2) {
+    return *(u8*)(param_1 + param_2 + 0xb0);
+}
+
 extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
 }
