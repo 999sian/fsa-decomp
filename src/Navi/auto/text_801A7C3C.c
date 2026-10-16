@@ -541,8 +541,7 @@ extern "C" s32 fn_801ADE34(void) {
     return 0xe;
 }
 
-s32 fn_801ADE3C(void)
-{
+extern "C" s32 fn_801ADE3C(void) {
     return 0x7;
 }
 
