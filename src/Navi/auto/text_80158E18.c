@@ -194,6 +194,9 @@ extern "C" void* fn_8015ABF8(void* p) {
 }
 
 extern "C" void fn_80159AE4(char** start, int* size, void* arg);
+extern void* lbl_802975C4[];
+extern "C" void fn_801598A4(void* p);
+extern "C" void fn_8015C518(void* p, int a, int b, int c, int d, int e);
 extern "C" char* fn_8015ADE8(char* base, char* data, int size, int flag, void* arg);
 extern "C" char* lbl_802FF548;
 extern char* lbl_802FF548;
