@@ -382,7 +382,7 @@ struct J3DIndTexCoordScaleInfo {
     u8 mScaleT; // _01
     u8 _02;
     u8 _03;
-};
+} __attribute__((aligned(4)));
 extern const J3DIndTexCoordScaleInfo j3dDefaultIndTexCoordScaleInfo;
 struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
     J3DIndTexCoordScale() { *(J3DIndTexCoordScaleInfo*)this = j3dDefaultIndTexCoordScaleInfo; }
