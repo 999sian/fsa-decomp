@@ -29,6 +29,18 @@ extern "C" int fn_801820CC(int param_1)
     return *(int*)(param_1 + 0x100);
 }
 
+extern "C" int fn_80184B2C(u8* self) {
+    return *(int*)(self + 0x160);
+}
+
+extern "C" void fn_80184B34(u8* self, u32* dest) {
+    dest[0] = *(u32*)(self + 0x148);
+    dest[1] = *(u32*)(self + 0x14c);
+    dest[2] = *(u32*)(self + 0x150);
+    dest[3] = *(u32*)(self + 0x154);
+    dest[4] = *(u32*)(self + 0x160);
+}
+
 extern "C" void fn_801788C0(void);
 extern "C" void fn_80184C34(void) {
     fn_801788C0();
