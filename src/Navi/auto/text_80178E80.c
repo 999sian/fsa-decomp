@@ -93,6 +93,21 @@ extern "C" void fn_8017A56C(void* self, void* obj) {
     }
 }
 
+extern "C" void fn_8017A610(void* param_1, void* param_2) {
+    u16 count;
+    u16 i;
+    u16 idx;
+    void** vtbl = *(void***)param_2;
+    ((void (*)(void*, void*))vtbl[3])(param_2, param_1);
+    count = *(u16*)((u8*)param_2 + 0x14) / 3;
+    for (i = 0; i < count; i++) {
+        idx = ((u16*)*(u32*)((u8*)param_2 + 0x34))[i];
+        if (idx < *(u16*)((u8*)param_1 + 0x102)) {
+            fn_8016A1F8((u8*)*(u32*)((u8*)param_1 + 0x104) + idx * 0x88, param_2);
+        }
+    }
+}
+
 extern "C" void fn_8017A928(void) {
     fn_801788C0();
 }
@@ -134,6 +149,10 @@ extern "C" void* fn_80180BAC(u32* self) {
 
 extern "C" int fn_80181BA0(char* self) {
     return *(int*)(self + 0x124);
+}
+
+extern "C" void fn_801820F4(void) {
+    fn_80177E84();
 }
 
 extern "C" void fn_80184B34(u8* self, u32* out) {
