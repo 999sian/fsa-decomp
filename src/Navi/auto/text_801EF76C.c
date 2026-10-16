@@ -50,6 +50,26 @@ extern "C" DSError gdev_cc_initinterrupts(void)
 	return DS_NoError;
 }
 
+extern "C" int gdev_cc_peek(void)
+{
+	u8 buf[1288];
+	int n = fn_801F0430();
+	if (n > 0) {
+		if (fn_801F03A4(buf, n) == 0) {
+			fn_801EFBB8(lbl_802FB6D8, buf, n);
+			return n;
+		}
+		return -0x2719;
+	}
+	return 0;
+}
+
+extern "C" DSError gdev_cc_post_stop(void)
+{
+	fn_801F0140();
+	return DS_NoError;
+}
+
 extern "C" int gdev_cc_close()
 {
 	return 0;
