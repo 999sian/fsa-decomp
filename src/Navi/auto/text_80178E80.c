@@ -21,7 +21,7 @@ extern u8 lbl_80299504[];
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 
 struct VObj_80186B6C {
-    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v0(); virtual void v1(); virtual void v2(u32 a, u8 b); virtual void v3();
     virtual void v4(u32 a, u8 b);
 };
 
@@ -1512,9 +1512,9 @@ extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
 extern "C" void fn_80186B6C(u8* self, u32 a, u32 b) {
     void* p = *(void**)(self + 0x168);
     if (p != NULL) {
-        void* sub = *(void**)((u8*)p + 0x70);
+        VObj_80186B6C* sub = *(VObj_80186B6C**)((u8*)p + 0x70);
         if (sub != NULL) {
-            ((void (*)(void*, u32, u8))(*(void***)sub)[0x10 / 4])(sub, a, (u8)b);
+            sub->v4(a, (u8)b);
         }
     }
 }
