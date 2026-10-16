@@ -41,6 +41,18 @@ extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_8015D13C(void*, int, int, void*);
+extern "C" void fn_801C0EEC(void*);
+extern "C" void* fn_801664D8(void*, void*);
+extern "C" void* fn_801664D8(void* ptr, void* param_2)
+{
+	void* r31 = ptr;
+	fn_8015D13C(ptr, 0x4000, 0x10, param_2);
+	*(void**)r31 = &lbl_80298304;
+	fn_801C0EEC(((void**)r31)[0xb]);
+	return r31;
+}
+
 extern "C" void* fn_80166528(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80298304;
@@ -424,13 +436,13 @@ extern "C" void fn_80172BD4(u8* param_1, s32 param_2, u8* param_3) {
     u8 uVar1;
     u8 uVar2;
     u8* p = param_1 + param_2 * 4;
+    u8 uVar3 = param_3[0];
+    p[0x60] = uVar3;
     uVar1 = param_3[1];
-    p[0x60] = param_3[0];
-    uVar2 = param_3[2];
     p[0x61] = uVar1;
-    uVar1 = param_3[3];
+    uVar2 = param_3[2];
     p[0x62] = uVar2;
-    p[0x63] = uVar1;
+    p[0x63] = param_3[3];
 }
 
 extern "C" s32 fn_80172C00(s32 param_1, s32 param_2) {
