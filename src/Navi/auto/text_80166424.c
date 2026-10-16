@@ -364,6 +364,13 @@ extern "C" void fn_8016AD7C(u8* p) {
     p[1] = lbl_80301AC0[1];
 }
 
+extern "C" void* fn_8016AD94(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
 extern u8 lbl_80301AB4[2];
 extern "C" void fn_8016AE10(u8* p) {
     p[0] = lbl_80301AB4[0];
