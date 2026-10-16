@@ -1371,6 +1371,12 @@ extern "C" s32 fn_8001EB7C(void* p, u8 mask) {
     return (u32)__cntlzw(ne) >> 5;
 }
 
+extern "C" BOOL fn_8001EDE4(void);
+extern "C" BOOL fn_8001EDE4(void)
+{
+    return TRUE;
+}
+
 extern "C" int fn_8001EF94(u8* p) {
     int (*fn)(u32, u32) = *(int (**)(u32, u32))(p + 0x58);
     if (fn != NULL && fn(*(u32*)(p + 0x40), *(u32*)(p + 0x5c)) == 0) {
