@@ -18,6 +18,11 @@ struct ActorVt_tu8017C01C {
     virtual void setShadow(s32 type, f32 x, f32 y);
 };
 
+extern "C" void fn_8017C01C(ActorVt_tu8017C01C* this_) {
+    fn_801F0E34(this_, 0x40047, 0);
+    this_->setShadow(*(s8*)((char*)this_ + 0x2ba), 8.0f, -16.0f);
+}
+
 extern "C" void fn_8017EAB4(void* thisPtr) {
     *(u32*)((char*)thisPtr + 0xf4) |= 1;
     *(u32*)((char*)thisPtr + 0x24) = 1;
