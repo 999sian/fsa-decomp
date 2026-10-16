@@ -120,6 +120,10 @@ extern "C" void fn_801729A4(s32 p, u8 v)
 	*(u8*)(p + 0x56) = v;
 }
 
+extern "C" s32 fn_80172B18(void) {
+    return 0x54564234;
+}
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
