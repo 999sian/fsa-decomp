@@ -23,7 +23,7 @@ struct Init48 {
     s32 w18;
     s32 w1c;
     s32 w20;
-    u8 b24[0xc];
+    s8 b24[0xc];
     s32 w30;
     u8 b34[3];
     s32 w38;
