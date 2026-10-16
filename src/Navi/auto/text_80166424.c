@@ -1473,9 +1473,6 @@ extern "C" void fn_801721FC(void);
 extern "C" void* fn_801749F0(void* p, void* q);
 extern "C" u8 lbl_80301AB4[];
 extern "C" u8 lbl_80301AC8[2];
-extern "C" u32 lbl_80301AF4;
-extern "C" u32 lbl_80302388;
-extern "C" u32 lbl_8030238C;
 extern "C" u8 fn_80174588(u8* p, u32 n) {
     if (*(u8**)(p + 0xc) != nullptr && (*(u8**)(p + 0xc))[n * 0x128] == 1) {
         return (*(u8**)(p + 0xc))[n * 0x128 + 1];
