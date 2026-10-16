@@ -17,7 +17,7 @@ extern "C" Actor* fn_8034543C(Actor* this_, s16 n) {
 }
 
 extern "C" s32 fn_803466C0(s32 param_1, s32 param_2, s32 param_3) {
-    u16 r = fn_8022461C(param_3);
+    s32 r = (u16)fn_8022461C(param_3);
     if (r == 0xd || r == 0x3a) {
         return 0;
     }
