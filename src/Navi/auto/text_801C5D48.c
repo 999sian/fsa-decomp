@@ -12,6 +12,8 @@ static volatile BOOL PauseFlag_802FF88C = FALSE;
 static volatile BOOL ResetRequired_802FF8B8;
 static vu32 ResumeFromHere_802FF8A8;
 static u32 lbl_802FF8B4;
+static BOOL StopAtNextInt_802FF818;
+extern "C" void AlarmHandlerForTimeout(OSAlarm* alarm, OSContext* context);
 static DVDLowCallback Callback_802FF820;
 static volatile BOOL WaitingCoverClose_802FF834;
 static u32 WorkAroundType_802FF83C;
