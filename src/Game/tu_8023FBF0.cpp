@@ -1217,6 +1217,8 @@ inline bool padActive3(char* p) {
   inline s32 countSharingC(char* p) {
 s32 c;
 s32 i;
+        s32 linked;
+        s32 me;
         c = 0;
     for (i = 0; i < 4; i++) {
         s32 linked;
