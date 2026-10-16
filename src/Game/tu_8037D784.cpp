@@ -29,6 +29,19 @@ extern "C" void fn_8037D7E4(void* this_) {
     *(u32*)((u8*)this_ + 0x230) = 2;
 }
 
+extern "C" void fn_8037D800(u8* this_) {
+    s32 st = *(s32*)(this_ + 0x234);
+    if (st >= 0x100 || (st & 2) == 0) {
+        if (*(u32*)(this_ + 0x90) == 0) {
+            fn_801F06F0(this_, lbl_80475588, 0x5c, 0, 2, lbl_80543094, lbl_80543094);
+            fn_803075AC(*(u32*)(this_ + 0x198), *(u32*)(this_ + 0x4), this_ + 0xc, 0x5c, 0, 2, -1, 0, 0, 0);
+        } else {
+            fn_801F06F0(this_, lbl_80475588, 0x5d, 0, 1, lbl_80543094, lbl_80543094);
+            fn_803075AC(*(u32*)(this_ + 0x198), *(u32*)(this_ + 0x4), this_ + 0xc, 0x5d, 0, 2, -1, 0, 0, 0);
+        }
+    }
+}
+
 extern "C" void fn_8037DD38(u8* this_) {
     this_[0x11c] = 0;
 }
