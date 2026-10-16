@@ -257,6 +257,8 @@ extern "C" void fn_80262B8C(char* p) {
     fn_80283D2C(p);
 }
 
+extern "C" void fn_802632A4(void) {}
+
 extern "C" void fn_802635C8(char* p) {
     p[0x458] = 0;
 }
@@ -330,3 +332,8 @@ extern "C" void fn_80264768(char* p) {
 #undef U32
 #undef F32
 #undef VEC
+
+// Keep regional definitions that were present before source-tree consolidation.
+#if defined(VERSION_G4SJ01)
+extern "C" void fn_802636D0(void) {}
+#endif
