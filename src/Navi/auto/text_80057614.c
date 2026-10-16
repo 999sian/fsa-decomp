@@ -84,6 +84,15 @@ extern "C" void fn_800589CC(s32 param_1) {
     fn_8005C460();
 }
 
+extern "C" void fn_80058A28(s32 param_1) {
+    fn_8005C424();
+    fn_8005B454(1, param_1, 0);
+    if (fn_80058DB8(param_1) != 0) {
+        fn_8005B454(1, param_1, 1);
+    }
+    fn_8005C460();
+}
+
 extern "C" s32 fn_80058C08(s32 idx) {
     u8* p = lbl_8026D4BC + idx * 0xc;
     if (fn_80058D70(idx) != 0) {
