@@ -32,6 +32,12 @@ extern "C" void* fn_8020B354(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_8020B3E4(void* this_, u32 index, u32 value, void* pos, u32 buf) {
+    if ((u8)fn_801F37AC(this_, value, pos, 0, buf, index)) {
+        *(u32*)((char*)this_ + 0x230) &= ~0x80;
+    }
+}
+
 extern "C" void fn_8020B500(u8* param_1) {
     *(f32*)(param_1 + 0x60) = -10.0f;
     *(f32*)(param_1 + 0x64) = -10.0f;
