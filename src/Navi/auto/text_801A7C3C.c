@@ -17,6 +17,13 @@ typedef struct {
     f32* values;
     Key_801ABEA8* keys;
 } Anim_801ABEA8;
+typedef struct { u16 type; u16 offset; u16 unk4; } Key_801ABF3C;
+typedef struct {
+    u8 pad0[8];
+    f32 frame;
+    f32* values;
+    Key_801ABF3C* keys;
+} Anim_801ABF3C;
 struct Entry_801B4B54 {
     u8 a;
     f32 b;
