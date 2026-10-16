@@ -14,12 +14,33 @@ extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" void fn_801C26D8(void);
+extern "C" u16 lbl_80469424[];
+extern "C" u16 lbl_8053EDB8;
+extern "C" f32 lbl_8053EDC0;
+extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
+extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
+extern "C" void fn_801C1768(u8* this_) {
+    u16* kind = lbl_80469424;
+    void** p = (void**)this_;
+    for (s32 i = 0; i < 5; i++, p++, kind++) {
+        p[0xb0] = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, *kind, 0, 0, 0, 0, 1, lbl_8053EDC0);
+    }
+    u16* kind2 = (u16*)&lbl_8053EDB8;
+    for (s32 i = 0; i < 4; i++, kind2++) {
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, *kind2, 0, 0, 0, 0, 1, lbl_8053EDC0);
+    }
+    fn_801EE434(*(void**)(this_ + 0x2b0));
+    *(void**)(this_ + 0x2b0) = 0;
+    fn_801F0E34(this_, 0x50049, 0);
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x248) = 4;
+}
+
 extern "C" void fn_801C186C(u8* p)
 {
-    u8 hi = p[0x2a9];
-    u8 lo = p[0x2a8];
-    s32 diff = hi - lo;
     u32 mgr;
+    s32 diff = p[0x2a9] - p[0x2a8];
+    u8 lo = p[0x2a8];
     s32 i;
 
     for (i = 0; i < 4; i++) {
