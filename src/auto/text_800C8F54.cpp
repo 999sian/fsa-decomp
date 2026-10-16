@@ -340,8 +340,9 @@ extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, c
 extern "C" void fn_800CB4C0(void* out, u8* e) {
     u8* p = (u8*)out;
     setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(out, e);
-    p[7] = (p[7] & ~0x0C) | (j3dDefaultTevSwapMode.mTexSel << 2);
-    p[7] = (p[7] & ~0x03) | j3dDefaultTevSwapMode.mRasSel;
+    const J3DTevSwapModeInfo& info = j3dDefaultTevSwapMode;
+    p[7] = (p[7] & ~0x0C) | (info.mTexSel << 2);
+    p[7] = (p[7] & ~0x03) | info.mRasSel;
 }
 
 extern "C" u8 j3dDefaultTevSwapModeTable[];
