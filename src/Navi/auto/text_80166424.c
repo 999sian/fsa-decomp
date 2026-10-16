@@ -150,6 +150,13 @@ extern "C" s32 fn_801671B0(UnkVObj_801671B0* param_1, u32 param_2) {
     return diff;
 }
 
+extern "C" void* fn_801679DC(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
 extern "C" void fn_80168280(void);
 extern "C" void* fn_80167E08(void);
 extern "C" void fn_80167CB8(void) {
