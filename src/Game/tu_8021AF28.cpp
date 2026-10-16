@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 
 
 extern "C" void* fn_8013C824(void);
