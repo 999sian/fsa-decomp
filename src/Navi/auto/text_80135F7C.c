@@ -14,6 +14,11 @@ extern void* lbl_80298B14[];
 
 extern void* lbl_80292BB4[];
 extern "C" void fn_8015AB1C(void* ptr);
+
+struct fn_80139DB0_Obj {
+    u8 pad[8];
+    virtual void fn_0(s32);
+};
 extern void* lbl_8029270C[];
 extern void* lbl_80292694[];
 extern "C" void* fn_80135F7C(void* ptr, s16 param_2) {
@@ -461,8 +466,14 @@ extern "C" void* fn_80139A60(void* ptr, s16 param_2) {
 
 extern "C" void fn_80139DB0(void* param_1, void* param_2) {
     if (param_2 != nullptr) {
-        ((void (*)(void*, s32))((void**)*(void**)((u8*)param_2 + 8))[2])(param_2, 1);
+        (*(void (**)(void*, s32))((u8*)*(void**)((u8*)param_2 + 8) + 8))(param_2, 1);
     }
+}
+
+extern "C" void fn_80139DEC(void* param_1, u32 param_2) {
+    *(void**)param_1 = (void*)lbl_802911A0;
+    *(void**)param_1 = (void*)lbl_80292C80;
+    ((u32*)param_1)[1] = param_2;
 }
 
 extern "C" void fn_80167880(void*, int);
