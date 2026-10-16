@@ -170,6 +170,16 @@ extern "C" void fn_8003C418(void) {
     fn_80017FEC(0x1d, 0, 0, 0, 0, -1, 0);
 }
 
+extern "C" void fn_8003C494(Vec3_8003C318* out) {
+    Vec3_8003C318 v;
+    fn_80115914(&v, *(f32*)(lbl_802BF188 + 0x1c));
+    *out = v;
+}
+
+extern "C" void* fn_8003C4F4(void) {
+    return lbl_802BF188;
+}
+
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
