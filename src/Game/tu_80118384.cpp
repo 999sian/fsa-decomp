@@ -1,5 +1,8 @@
 #include "types.h"
 
+extern "C" void* fn_80119E5C(u8* self, s16 size);
+extern "C" void __register_global_object(void* obj, void (*dtor)(void*), void* handle);
+
 extern "C" void* __nw__FUl(u32 size);
 extern "C" void __ct__10J2DPictureFPC7ResTIMG(void* self, const void* res);
 extern u8* lbl_8053AAF8;
@@ -73,6 +76,36 @@ extern "C" BOOL fn_801186B0(u8* self, u32 param)
     return 0;
 }
 
+extern "C" u8** fn_8011871C(u8* self, u8** param_2, u32 param_3)
+{
+    u8** begin = *(u8***)(self + 0x10);
+    u8** end;
+    u32 count;
+    u8** it;
+    if (begin == 0) {
+        count = 0;
+    } else {
+        count = ((int)*(u8***)(self + 0x14) - (int)begin) / 4;
+    }
+    if (count == 0) {
+        return *(u8***)(self + 0x14);
+    }
+    end = *(u8***)(self + 0x14);
+    if (param_2 == end) {
+        return end;
+    }
+    volatile u32 a = param_3;
+    volatile u32 b = param_3;
+    it = param_2;
+    while (it != end) {
+        if (param_3 == *(u32*)(*it + 0x1a0)) {
+            break;
+        }
+        it++;
+    }
+    return it;
+}
+
 extern "C" void fn_8011888C(u8* self, u32 val)
 {
     u32 local = val;
@@ -114,8 +147,8 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
 
 extern "C" void* fn_8011921C(void)
 {
+    u8 v = lbl_8053AA90;
     if (lbl_8053AA92 == 0) {
-        u8 v = lbl_8053AA90;
         lbl_804BC540.m_00 = 0;
         lbl_804BC540.m_01 = 0;
         lbl_804BC540.m_02 = 0;
@@ -145,9 +178,6 @@ extern "C" void fn_80119468(u32 a, u32 b, s32 c)
     void fn_80119998(u32 a, u32 b, u32 c, s32 d, u32 e, u32 f, u32 g, u32 h);
     u32 v;
     switch (c) {
-    case 2:
-        v = 0x46;
-        break;
     case 0:
     case 1:
         v = 0x23;
@@ -185,10 +215,11 @@ extern "C" void fn_80119D48(u8* self)
         virtual void v0c(void);
         virtual void* v10(u32 a, u32 b);
     };
+    u8* pic;
+    void* res;
     if (*(u32*)(self + 0x2c) == 0) {
-        VObj* obj = *(VObj**)((u8*)lbl_8053AAF8 + 0xa4);
-        void* res = obj->v10(0x3f3f3f3f, lbl_80539F10);
-        u8* pic = (u8*)__nw__FUl(0x168);
+        res = ((VObj*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->v10(0x3f3f3f3f, lbl_80539F10);
+        pic = (u8*)__nw__FUl(0x168);
         if (pic != 0) {
             __ct__10J2DPictureFPC7ResTIMG(pic, res);
         }
