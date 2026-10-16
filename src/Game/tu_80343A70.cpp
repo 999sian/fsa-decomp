@@ -14,3 +14,16 @@ extern "C" Actor* fn_80343A70(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_80343AD0(char* this_) {
+    u32 n;
+    s32 t = *(s32*)(this_ + 0x274);
+    if (t == 1) {
+        n = 3;
+    } else if (t == 2) {
+        n = 1;
+    }
+    fn_801F8544(fn_801F856C(), 'RUPY', *(s32*)(this_ + 4), this_ + 0xc, n | 0x261e00);
+    v07__5ActorFv(this_);
+}
+
