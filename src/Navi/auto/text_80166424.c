@@ -357,6 +357,8 @@ extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
 }
 
+extern "C" u8 fn_80172EC4(u8* p, s32 i) { return *(p + i + 0x54); }
+
 extern "C" unsigned int fn_80172FF8(unsigned char* self, unsigned int idx) {
     if (idx >= 2) {
         return 0;
