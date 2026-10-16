@@ -16,6 +16,39 @@ extern "C" void fn_80124AD8(void* p) {
     ((OPGL*)p)->v25(9);
 }
 
+extern "C" u8 fn_80122834(void*);
+extern "C" void fn_80124B60(void* this_) {
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v0a();
+        virtual void v0b();
+        virtual void v0c();
+        virtual void v0d();
+        virtual void v0e();
+        virtual void v0f();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual void v15();
+        virtual void v16();
+        virtual void v17();
+        virtual void v18();
+        virtual void v19(int);
+    };
+    ((VObj*)this_)->v19(8);
+}
+
 extern "C" void fn_80124B90(void* this_) {
     typedef void (*method_t)(void*, int);
     method_t method = (method_t)(*(void***)this_)[27];
@@ -71,15 +104,19 @@ extern "C" bool fn_801257A8(void* param_1)
   case 4:
   case 7:
   case 8:
-    {
-      int r = fn_8012285C(param_1);
-      float f = fn_80121DC8(param_1, r);
-      return f <= lbl_8053CA6C;
-    }
+    return fn_80121DC8(param_1, fn_8012285C(param_1)) <= lbl_8053CA6C;
   case 0x11:
   default:
     return false;
   }
+}
+
+extern "C" s32 fn_80125830(void* self) {
+    s32 v = *(s32*)((char*)self + 0x33c);
+    if (v < 9 && v >= 4) {
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void fn_80124448(void*);
