@@ -212,6 +212,9 @@ extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
 extern "C" void fn_8016ACFC(void) {
 }
 
+extern "C" void fn_8016AD00(void) {
+}
+
 extern "C" void fn_8016AD04() {}
 
 extern "C" void fn_8016AD08() {}
