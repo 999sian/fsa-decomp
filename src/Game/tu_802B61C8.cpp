@@ -4,6 +4,7 @@
 
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, s32 a, s32 b, f32 sx, f32 sy);
 extern "C" const f32 lbl_80540A3C;
+extern "C" const f32 lbl_80540A38;
 extern "C" char lbl_8046CAB8[];
 extern "C" char lbl_804A8750[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
