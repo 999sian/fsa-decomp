@@ -114,6 +114,29 @@ extern "C" s32 fn_8001A310(void* param_1) {
     return ret;
 }
 
+extern "C" void fn_80114C94(void*, void*, void*);
+extern "C" void fn_8011583C();
+extern "C" void fn_8001E89C();
+extern "C" int fn_8001A828(int, int, int, int, int, int);
+extern u8 lbl_80205620[];
+extern int lbl_802FB9C0;
+extern "C" void fn_8001A3E4(int param_1, void* param_2) {
+    int local[2];
+    local[0] = param_1;
+    local[1] = (int)param_2;
+    fn_80114C94(lbl_80205620, (void*)fn_8011583C, local);
+}
+
+extern "C" s32 fn_800199A8(void);
+extern "C" u32 fn_8001A5A0(void) {
+    s32 iVar1 = fn_800199A8();
+    u32 uVar2 = 0;
+    if (iVar1 == 1) {
+        uVar2 = 2;
+    }
+    return uVar2;
+}
+
 extern "C" void fn_8001DC20(void);
 extern "C" void fn_8001A5D0(void) {
     fn_8001DC20();
@@ -155,7 +178,7 @@ extern "C" void fn_8001AA34(void* param_1) {
     fn_8001D5F4(*(void**)((u8*)param_1 + 0xc0), param_1);
 }
 
-extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void*);
+extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void);
 extern "C" void fn_8001AAFC(void) {
     cTg_SingleCutFromTree__FP16create_tag_class();
 }
