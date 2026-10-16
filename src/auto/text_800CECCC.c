@@ -187,6 +187,10 @@ extern "C" int fn_800D068C(void)
     return 8;
 }
 
+extern "C" void fn_800D0694(const J3DAnmTransformKey* p1, unsigned short p2, J3DTransformInfo* p3) {
+    p1->calcTransform(p1->mCurrentFrame, p2, p3);
+}
+
 extern "C" void fn_800D0204(void*, void*, void*);
 extern "C" void fn_800D00F0(void*, void*, void*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
