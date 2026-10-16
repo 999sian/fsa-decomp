@@ -73,8 +73,7 @@ extern "C" void fn_802BF7CC(Actor* this_) {
     }
 
     if (self[0x11c] != 0) {
-        Actor* a = this_;
-        (*(void (***)(Actor*))a)[5](a);
+        ((ActorSlots*)this_)->v3();
     }
 }
 
