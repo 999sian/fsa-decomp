@@ -268,8 +268,13 @@ extern "C" void fn_80136B1C(void* p, unsigned int q) {
 
 extern "C" void fn_80136B94(void* p) {
     switch (*(s8*)((u8*)p + 0x20)) {
+    case 0:
+    default:
+        *(f64*)((u8*)p + 0x28) = 0.0;
+        *(f64*)((u8*)p + 0x30) = 1.0;
+        break;
     case 1:
-        *(f64*)((u8*)p + 0x28) = *(f64*)((u8*)p + 0x10);
+        *(f64*)((u8*)p + 0x28) = 0.0;
         *(f64*)((u8*)p + 0x30) = -1.0;
         break;
     case 2:
@@ -277,15 +282,11 @@ extern "C" void fn_80136B94(void* p) {
         *(f64*)((u8*)p + 0x30) = -1.0;
         break;
     case 3:
-        *(f64*)((u8*)p + 0x28) = 0.0;
-        *(f64*)((u8*)p + 0x30) = 1.0;
+        *(f64*)((u8*)p + 0x28) = *(f64*)((u8*)p + 0x10);
+        *(f64*)((u8*)p + 0x30) = -1.0;
         break;
     case 4:
         *(f64*)((u8*)p + 0x28) = 0.5 * (*(f64*)((u8*)p + 0x8) + *(f64*)((u8*)p + 0x10));
-        *(f64*)((u8*)p + 0x30) = -1.0;
-        break;
-    default:
-        *(f64*)((u8*)p + 0x28) = 0.0;
         *(f64*)((u8*)p + 0x30) = -1.0;
         break;
     }
@@ -438,12 +439,16 @@ extern "C" f64 fn_80137F58(void* p, f32 x) {
 
 extern "C" f64 fn_80137F88(void* p, f32 x) {
     f32* q = *(f32**)((u8*)p + 0x54);
-    f32 dx = x - q[-2];
-    f64 t = dx * (1.0 / (q[0] - q[-2]));
-    f64 h2 = (3.0 + -2.0 * t) * (t * t);
+    f64 dx = (f64)x - q[-2];
+    f64 t = dx * (1.0 / ((f64)q[0] - q[-2]));
+    f64 tt = t * t;
+    f64 h2 = (3.0 + -2.0 * t) * tt;
     f64 u = t - 1.0;
     f64 h1 = 1.0 - h2;
-    return t * (u * dx) * 0.0 + (dx * (u * u) * 0.0 + (h1 * q[-1] + h2 * q[1]));
+    f64 uu = u * u;
+    f64 b = t * (u * dx);
+    f64 a = dx * uu;
+    return b * 0.0 + (a * 0.0 + (h1 * q[-1] + h2 * q[1]));
 }
 
 extern "C" u32 fn_80138340(void) {
@@ -803,8 +808,6 @@ extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
-    void* arr[2] = {*b, *c};
-    void* arr2[2] = {*c, *b};
     while (*c != *b && !fn_8013A48C((u8*)*b - 0xc, d)) {
         *b = *(void**)*b;
     }
