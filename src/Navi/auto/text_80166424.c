@@ -66,6 +66,11 @@ struct UnkVObj_801670D0 {
 };
 
 extern "C" void fn_801BDDBC(void*, void*, int);
+extern "C" void* fn_8015A9A8(int, void*, int);
+extern "C" void fn_801BDE1C(void*, void*, int);
+extern "C" void fn_801BDEE4(void*, void*, int);
+extern "C" u8 lbl_802982A0[];
+extern "C" void* lbl_802FF540;
 extern "C" void fn_80166C08(void*, int);
 extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     if (param_1) {
