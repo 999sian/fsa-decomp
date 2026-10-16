@@ -14,18 +14,18 @@ void fn_80030380(short *param_1)
 
 extern "C" int fn_80030394(int param_1, int param_2)
 {
-  if ((unsigned int)param_2 == 0) {
-    return 0;
+  if (param_2 != 0) {
+    return param_1 + param_2;
   }
-  return param_1 + param_2;
+  return 0;
 }
 
-int fn_800303AC(int param_1, int param_2)
+extern "C" void* fn_800303AC(const void* ptr, const void* offset)
 {
-  if (param_2 == 0) {
+  if (offset == 0) {
     return 0;
   }
-  return param_1 + param_2;
+  return (unsigned char*)ptr + (unsigned int)offset;
 }
 
 extern "C" void* fn_800303C4(const void* base, const void* offset)
