@@ -49,6 +49,26 @@ extern "C" void* fn_8004F22C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_80247544[];
+extern void* lbl_802474F4[];
+extern void* lbl_802474D0[];
+extern void* lbl_80247594[];
+extern "C" void fn_801E0D40(void* dst, void* fn, s32 size, s32 count);
+extern "C" void* fn_8004F154(void* ptr, s16 param_2);
+extern "C" void* fn_8004F19C(void* ptr, s16 param_2);
+extern "C" void* fn_8004F1E4(void* ptr, s16 param_2);
+extern "C" void* fn_8004F5C4(void* ptr, s16 param_2);
+extern "C" void* fn_8004F274(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80247544;
+        fn_801E0D40((char*)ptr + 4, (void*)fn_8004F1E4, 0x30, 0x1d);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_8024751C[];
 extern "C" void* fn_8004F2E4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
