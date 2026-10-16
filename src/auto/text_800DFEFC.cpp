@@ -99,6 +99,15 @@ u8 J3DMaterialFactory_v21::newTevStageNum(int idx) const
     return 0xff;
 }
 
+J3DTevStage J3DMaterialFactory_v21::newTevStage(int idx, int stage) const
+{
+    J3DMaterialInitData_v21* initData = &mInitData[mMatRemapTable[idx]];
+    if (initData->mTevStageInfoIndex[stage] != 0xffff) {
+        return J3DTevStage(mTevStageInfo[initData->mTevStageInfoIndex[stage]]);
+    }
+    return J3DTevStage();
+}
+
 J3DZMode J3DMaterialFactory_v21::newZMode(int idx) const
 {
     u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[6];
