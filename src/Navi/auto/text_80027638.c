@@ -9,6 +9,21 @@ extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
 
+extern "C" void fn_8002D2EC(char* p) {
+    lbl_802FEDE0 |= 0x800;
+    lbl_802FEDDC |= 0x2000;
+    *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
+}
+
+extern "C" void fn_8002D31C(char* p) {
+    unsigned int flags = lbl_802FEDE0 | 0x4000;
+    if (*(signed char*)(p + 0xc6e) == -1) {
+        flags = lbl_802FEDE0 | 0x1000;
+    }
+    lbl_802FEDE0 = flags;
+    *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
+}
+
 extern "C" void fn_8002D354(char* p) {
     lbl_802FEDE0 |= 0x1000;
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
