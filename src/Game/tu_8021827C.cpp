@@ -7,12 +7,6 @@ extern "C" void fn_801CE010(void*, void*);
 extern "C" void fn_8030C210(void*, void*);
 extern u8* lbl_8053AB10;
 extern f32 lbl_8053FC40;
-struct Vec3f {
-    f32 x;
-    f32 y;
-    f32 z;
-};
-
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" u8 fn_8022BA58(s32 room, f32* pos);
 extern "C" bool fn_8030C2A8(u8* p, f32* v);
@@ -60,8 +54,8 @@ extern "C" void fn_8021835C(u8* p) {
         lo = v;
         hi = v;
         if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053FC40) {
-            lo.x += *(f32*)(p + 0x60);
-            hi.x += *(f32*)(p + 0x68);
+            hi.x = hi.x + *(f32*)(p + 0x68);
+            lo.x = lo.x + *(f32*)(p + 0x60);
         }
         if (fn_801CD2F8(*(s32*)(p + 4))) {
             if (fn_8022BA58(*(s32*)(p + 4), &lo.x) && fn_8022BA58(*(s32*)(p + 4), &hi.x)) {
