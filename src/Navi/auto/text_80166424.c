@@ -176,6 +176,11 @@ extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
     p[10] = param_3[2];
 }
 
+extern "C" int fn_8017334C()
+{
+	return 0;
+}
+
 extern "C" void* fn_80174B70(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
