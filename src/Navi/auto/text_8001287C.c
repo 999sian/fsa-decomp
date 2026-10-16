@@ -36,8 +36,9 @@ extern "C" int fn_801C0EEC(void*);
 extern "C" void* fn_80012D28(void*);
 extern "C" u8 lbl_802A05C0[];
 extern "C" void fn_80012D84(s32 prio) {
-    fn_801C0884(lbl_802A05C0, (void*)fn_80012D28, lbl_802A05C0 + 0x1b20, lbl_802A05C0 + 0x320 + 0x1800, 0x1800, prio, 1);
-    fn_801C0EEC(lbl_802A05C0);
+    ThreadBlock* p = (ThreadBlock*)lbl_802A05C0;
+    fn_801C0884(&p->thread, (void*)fn_80012D28, &p->param, (void*)((u32)p->stack + sizeof(p->stack)), sizeof(p->stack), prio, 1);
+    fn_801C0EEC(&p->thread);
 }
 
 extern "C" char lbl_80204E88[];
