@@ -109,6 +109,49 @@ extern "C" void fn_8035EB18(void* this_) {
     }
 }
 
+extern "C" void fn_8013CC50(void* this_, f32* pos, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f);
+extern const f32 lbl_805429C0;
+extern const f32 lbl_805429C4;
+extern const f32 lbl_805429C8;
+extern u16 lbl_80472820[];
+extern "C" void fn_8035EC98(void* this_) {
+    char* p = (char*)this_;
+    if (*(s32*)(p + 0x234) == 0) {
+        f32 pos[3] = {lbl_805429C0, lbl_805429C4, lbl_805429BC};
+        for (s32 i = 0; i < 0x11; i++) {
+            fn_8013CC50(*(void**)(p + 4), pos, lbl_80472820[i], 1, 1, 0, 0, 1, lbl_805429C8);
+        }
+        fn_801F0E34(this_, 0x30087, 0);
+        *(s32*)(p + 0x234) = 0x14;
+        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+    }
+}
+
+extern "C" void fn_8035ED60(char* self) {
+    *(f32*)(self + 0x260) = *(f32*)(self + 0x10);
+    if (*(f32*)(self + 0x10) >= lbl_805429B0) {
+        *(f32*)(self + 0x10) = *(f32*)(self + 0x10) - lbl_805429CC;
+        if (*(s32*)(self + 0x244) == 0) {
+            *(s32*)(self + 0x244) = 7;
+            *(s32*)(self + 0x248) = *(s32*)(self + 0x248) + 1;
+            if (*(s32*)(self + 0x248) >= 8) {
+                *(s32*)(self + 0x248) = 0;
+            }
+        }
+        *(s32*)(self + 0x268) = *(s32*)(self + 0x248);
+    } else {
+        *(s32*)(self + 0x268) = 0;
+        *(s32*)(self + 0x248) = 0;
+        *(s32*)(self + 0x244) = 0;
+        char* p = (char*)fn_801F666C(fn_801F856C(), *(s32*)(self + 0x23c));
+        if (p != 0) {
+            *(s32*)(p + 0x230) = 2;
+        }
+        *(s32*)(self + 0x234) = 0x8f;
+        *(s32*)(self + 0x230) = *(s32*)(self + 0x230) + 1;
+    }
+}
+
 extern "C" void fn_8035EE30(void) {
 }
 
