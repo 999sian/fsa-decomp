@@ -23,6 +23,8 @@ extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8003CC68(void) {}
+
 extern "C" void* fn_8003CCB4(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
