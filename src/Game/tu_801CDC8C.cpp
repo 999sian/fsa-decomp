@@ -11,6 +11,11 @@ extern const f32 lbl_8053EFD8;
 extern const f32 lbl_8053EFEC;
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JAUSoundObject.h"
+extern "C" s32 fn_801F285C(void* this_, f32* pos, s32* out, s32 a, s32 idx);
+extern "C" void fn_8023B6CC(s32 idx);
+extern "C" void fn_802379E4(s32 idx, void* pos);
+extern "C" u8 fn_801EAC20(void* list, s32 idx);
+extern "C" void fn_801CB538(u32 room, f32* pos, s32 a, s32 b);
 
 extern "C" JAUSoundObject* fn_801F1184(void* this_);
 extern "C" void fn_801F0E34(void* this_, void* arg, u32 c);
@@ -161,6 +166,42 @@ extern "C" void fn_801CE5D4(u8* this_) {
                 *(f32*)(this_ + 0x44) = lbl_8053EFC4;
             }
         }
+    }
+}
+
+extern "C" u16 fn_802265FC(f32* pos, s32 room);
+extern "C" void fn_801CE800(u8* this_) {
+    f32 pos[2];
+    f32 out[2];
+    bool bVar1 = false;
+    if (*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) <= lbl_8053EFC4) {
+        return;
+    }
+    if (*(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) <= lbl_8053EFC4) {
+        return;
+    }
+    pos[0] = *(f32*)(this_ + 0xc);
+    pos[1] = *(f32*)(this_ + 0x8c) + (*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+    s32 r = fn_802265FC(pos, *(s32*)(this_ + 0x4));
+    if (r == 1) {
+        bVar1 = true;
+    } else if (r > 1) {
+        if (r >= 3) {
+            bVar1 = true;
+        }
+    } else if (r == 0) {
+        if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
+            bVar1 = true;
+        }
+    } else {
+        bVar1 = true;
+    }
+    if (bVar1) {
+        fn_801CCD34(pos, out);
+        *(f32*)(this_ + 0x10) = (out[1] - lbl_8053EFDC) - *(f32*)(this_ + 0x8c);
+        *(f32*)(this_ + 0x14) = lbl_8053EFC4;
+        *(f32*)(this_ + 0x44) = lbl_8053EFC4;
+        *(u32*)(this_ + 0x230) |= 8;
     }
 }
 
@@ -343,13 +384,11 @@ extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
         dx *= scale;
         dz *= scale;
     }
+    f32 ddz = rec[1] - *(f32*)(this_ + 0x10);
+    f32 ddx = rec[0] - *(f32*)(this_ + 0xc);
+    f32 dist = ddx * ddx + ddz * ddz;
     out[0] = dx;
     out[1] = dz;
-#pragma fp_contract off
-    f32 ddx = rec[0] - *(f32*)(this_ + 0xc);
-    f32 ddz = rec[1] - *(f32*)(this_ + 0x10);
-    f32 dist = ddx * ddx + ddz * ddz;
-#pragma fp_contract on
     if (dist > lbl_8053EFC4) {
         dist = __frsqrte(dist) * dist;
     }
