@@ -4,6 +4,15 @@ extern void* lbl_80558260;
 
 
 typedef unsigned char u8;
+
+struct VObj {
+    virtual void v00(int);
+    virtual void v01();
+};
+extern char lbl_804AF480[];
+extern u8 lbl_80529DEC[];
+extern "C" void getTotalFreeSize__7JKRHeapFv(void* heap);
+extern "C" void __dl__FPv(void* p);
 extern u8* lbl_8053AAF8;
 extern u8* lbl_8053ADF8;
 extern u8* lbl_8053AE00;
