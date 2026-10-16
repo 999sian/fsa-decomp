@@ -86,6 +86,21 @@ extern "C" void fn_8003CF84(void* param_1, void** param_2) {
     }
 }
 
+class JASPoolObj3_FSA;
+extern "C" void** fn_8003CFC0(void** p, short del) {
+    if (p != 0) {
+        *p = lbl_8049552C;
+        if (p != 0) {
+            *p = lbl_80495518;
+            __dt__10JAIAudibleFv(p, 0);
+        }
+        if (del > 0) {
+            JASPoolAllocObject<JASPoolObj3_FSA>::operator delete(p, 0x40);
+        }
+    }
+    return p;
+}
+
 extern "C" void* lbl_80495518[];
 extern "C" void __dt__10JAIAudibleFv(void*, short);
 extern "C" void** fn_8003D200(void** p, short del) {
