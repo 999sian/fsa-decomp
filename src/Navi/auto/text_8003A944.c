@@ -172,8 +172,10 @@ extern "C" void fn_8003C418(void) {
 
 extern "C" void fn_8003C494(Vec3_8003C318* out) {
     Vec3_8003C318 v;
+    Vec3_8003C318 w;
     fn_80115914(&v, *(f32*)(lbl_802BF188 + 0x1c));
-    *out = v;
+    w = v;
+    *out = w;
 }
 
 extern "C" void* fn_8003C4F4(void) {
