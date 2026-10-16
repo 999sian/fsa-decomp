@@ -20,6 +20,11 @@ extern u8 lbl_802994F0[];
 extern u8 lbl_80299504[];
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 
+struct VObj_80186B6C {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(u32 a, u8 b);
+};
+
 struct VObj_80187FCC {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
@@ -1537,6 +1542,32 @@ extern "C" void fn_801878E4(u8* self, u8 count) {
             void* p = *(void**)(*(u8**)(self + 0x168) + 0x70);
             ((void (*)(void*, u8, u8))(*(void***)p)[0x4c / 4])(p, i, (u8)(0x1c - (i - 4) * 4));
         }
+    }
+}
+
+extern "C" void fn_80187AAC(u8* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
+    if (*(void**)(self + 0x168) != nullptr) {
+        *(f32*)(self + 0x124) = a;
+        *(f32*)(self + 0x128) = b;
+        *(f32*)(self + 0x12c) = c;
+        *(f32*)(self + 0x130) = d;
+        *(f32*)(self + 0x178) = e;
+        *(f32*)(self + 0x17c) = f;
+        *(f32*)(self + 0x180) = g;
+        *(f32*)(self + 0x184) = h;
+    }
+}
+
+extern "C" void fn_80187B04(u8* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
+    if (*(void**)(self + 0x168) != nullptr) {
+        *(f32*)(self + 0x134) = a;
+        *(f32*)(self + 0x138) = b;
+        *(f32*)(self + 0x13c) = c;
+        *(f32*)(self + 0x140) = d;
+        *(f32*)(self + 0x188) = e;
+        *(f32*)(self + 0x18c) = f;
+        *(f32*)(self + 0x190) = g;
+        *(f32*)(self + 0x194) = h;
     }
 }
 
