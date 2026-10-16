@@ -30,6 +30,17 @@ extern "C" u32 fn_80159BA4(u32 param_1) {
     return old;
 }
 
+extern "C" void fn_8015A60C(void);
+extern u32 lbl_802FF54C;
+extern "C" u32 fn_8015A654(u32 param_1) {
+    u32 old = lbl_802FF54C;
+    if (param_1 == 0) {
+        param_1 = (u32)fn_8015A60C;
+    }
+    lbl_802FF54C = param_1;
+    return old;
+}
+
 extern "C" int fn_8015A90C(int a) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
