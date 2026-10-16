@@ -22,6 +22,23 @@ extern void* lbl_80292558[];
 
 extern void* lbl_80290ACC[];
 
+extern void* lbl_80298574[];
+extern void* lbl_80298520[];
+extern "C" void fn_80168E04(void* p);
+extern "C" void fn_801688F0(void* p, u32* a, u32* b, u32* c, u32* d);
+extern "C" void fn_80168A38(void* p, void* rect);
+
+struct Unk80168Base {
+    void** vt;
+    u8 pad[0xDC];
+    ~Unk80168Base() { vt = lbl_80298520; }
+};
+
+struct Unk80168 : Unk80168Base {
+    Unk80168() { fn_80168E04(this); }
+    ~Unk80168() { vt = lbl_80298574; }
+};
+
 struct Unk80120880 {
     void** vt;
     s32 m4;
@@ -254,22 +271,20 @@ extern "C" void fn_80120704(void) {
     lbl_802FF340 = 0;
 }
 
-extern "C" void fn_80120880(u8* p, s32 x, s32 y, s32 w, s32 h, u32* q) {
-    f32 x0 = x;
-    f32 y0 = y;
-    f32 x1 = x + w;
-    f32 y1 = y + h;
-    *(void***)(p + 0x0) = lbl_80290ACC;
-    *(u32*)(p + 0xc) = *q;
-    *(f32*)(p + 0x10) = x0;
-    *(f32*)(p + 0x14) = y0;
-    *(f32*)(p + 0x18) = x1;
-    *(f32*)(p + 0x1c) = y1;
-    *(u32*)(p + 0x4) = 0;
-    *(u16*)(p + 0x8) = 0;
-    *(u16*)(p + 0xa) = 0;
-    *(u32*)(p + 0x24) = 0;
-    *(s32*)(p + 0x20) = -1;
+extern "C" void fn_80120880(Unk80120880* p, s32 x, s32 y, s32 w, s32 h, u32* q) {
+    s32 r = x + w;
+    s32 b = y + h;
+    p->vt = lbl_80290ACC;
+    p->mC = *q;
+    p->x0 = x;
+    p->y0 = y;
+    p->x1 = r;
+    p->y1 = b;
+    p->m4 = 0;
+    p->m8 = 0;
+    p->mA = 0;
+    p->m24 = 0;
+    p->m20 = -1;
 }
 
 extern "C" bool fn_80120ABC(u8* p, u16 v) {
