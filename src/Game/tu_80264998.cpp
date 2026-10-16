@@ -173,6 +173,36 @@ extern "C" void fn_80267818(char* p)
     *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
 }
 
+extern "C" void fn_80267990(char* p)
+{
+    int t;
+    if (*(unsigned char*)(p + 0x3fb) == 1) {
+        t = *(int*)(p + 0x3dc);
+        if (t == 0) {
+            *(short*)(p + 0x3c4) = 0x14f;
+        } else if (t == 1) {
+            *(short*)(p + 0x3c4) = 0x152;
+        } else if (t == 2) {
+            *(short*)(p + 0x3c4) = 0x155;
+        } else {
+            *(short*)(p + 0x3c4) = 0x158;
+        }
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        return;
+    }
+    t = *(int*)(p + 0x3dc);
+    if (t == 0) {
+        *(short*)(p + 0x3c4) = 0x13f;
+    } else if (t == 1) {
+        *(short*)(p + 0x3c4) = 0x143;
+    } else if (t == 2) {
+        *(short*)(p + 0x3c4) = 0x147;
+    } else {
+        *(short*)(p + 0x3c4) = 0x14b;
+    }
+    *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+}
+
 extern "C" void fn_80267B18(char* p)
 {
     int t;
