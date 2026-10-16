@@ -319,6 +319,8 @@ extern "C" s32 fn_80172B18(void) {
     return 0x54564234;
 }
 
+extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
+
 extern "C" void fn_80172B5C(s32 p, s32 i, u8* src) {
     u8* dst = (u8*)(p + i * 4);
     dst[0xe] = src[0];
