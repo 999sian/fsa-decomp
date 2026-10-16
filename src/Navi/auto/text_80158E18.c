@@ -607,6 +607,19 @@ extern "C" void fn_8015B584(char* p, u32 addr) {
     fn_801BE47C(p + 0x18);
 }
 
+#pragma push
+#pragma dont_inline on
+extern "C" void fn_8015B5F8(char* p) {
+    fn_801BE3A0(p + 0x18);
+    fn_80159CE0(p);
+    *(int*)(p + 0x78) = *(int*)(p + 0x30);
+    *(int*)(p + 0x7c) = *(int*)(p + 0x78);
+    fn_8015C518(*(char**)(p + 0x78), 0, 0, *(int*)(p + 0x38) - 0x10, 0, 0);
+    *(int*)(p + 0x80) = 0;
+    *(int*)(p + 0x84) = 0;
+    fn_801BE47C(p + 0x18);
+}
+#pragma pop
 extern "C" BOOL fn_8015C744(void* p, u32* a, u32* b) {
     BOOL r = 1;
     if (a[1] != b[1]) {
