@@ -57,6 +57,22 @@ extern "C" void fn_801183BC(u8* self)
     lbl_804BC504[1] = 0;
 }
 
+extern "C" BOOL fn_801186B0(u8* self, u32 param)
+{
+    void fn_801F856C(void);
+    int fn_801F68E0(void);
+    fn_801F856C();
+    if (fn_801F68E0() != 0) {
+        self[0] = 1;
+        self[1] = 0;
+        self[2] = 0;
+        *(u32*)(self + 0x4) = param;
+        *(u32*)(self + 0x8) = 0;
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" void fn_8011888C(u8* self, u32 val)
 {
     u32 local = val;
@@ -94,6 +110,26 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
             }
         }
     }
+}
+
+extern "C" void* fn_8011921C(void)
+{
+    if (lbl_8053AA92 == 0) {
+        u8 v = lbl_8053AA90;
+        lbl_804BC540.m_00 = 0;
+        lbl_804BC540.m_01 = 0;
+        lbl_804BC540.m_02 = 0;
+        lbl_804BC540.m_04 = 0x13;
+        lbl_804BC540.m_08 = 0;
+        lbl_804BC540.m_0c = v;
+        lbl_804BC540.m_10 = 0;
+        lbl_804BC540.m_14 = 0;
+        lbl_804BC540.m_18 = 0;
+        lbl_804BC540.m_1c = (void*)JGadget::vector::extend_default;
+        __register_global_object(&lbl_804BC540, fn_801192AC, lbl_804BC534);
+        lbl_8053AA92 = 1;
+    }
+    return &lbl_804BC540;
 }
 
 struct VObj {
@@ -142,9 +178,16 @@ extern "C" void fn_80119958(u8* self)
 
 extern "C" void fn_80119D48(u8* self)
 {
+    struct VObj {
+        virtual void v00(void);
+        virtual void v04(void);
+        virtual void v08(void);
+        virtual void v0c(void);
+        virtual void* v10(u32 a, u32 b);
+    };
     if (*(u32*)(self + 0x2c) == 0) {
-        void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-        void* res = ((void* (*)(void*, u32, u32))(*(void***)obj)[6])(obj, 0x3f3f3f3f, lbl_80539F10);
+        VObj* obj = *(VObj**)((u8*)lbl_8053AAF8 + 0xa4);
+        void* res = obj->v10(0x3f3f3f3f, lbl_80539F10);
         u8* pic = (u8*)__nw__FUl(0x168);
         if (pic != 0) {
             __ct__10J2DPictureFPC7ResTIMG(pic, res);
