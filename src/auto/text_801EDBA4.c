@@ -3,6 +3,8 @@
 // split_file divides it into the game's real files (file_status shows its range).
 
 extern "C" void fn_801EDC0C(char* this_, f32* param_2);
+#include "JSystem/JGeometry/Vec.h"
+
 typedef struct {
     f32 x, y;
 } Vec2f;
