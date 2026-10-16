@@ -49,8 +49,8 @@ extern "C" void fn_8029D898(void* a, s32 b) {
     fn_802D7970(fn_802D6A9C(), v);
 }
 
-extern "C" void fn_802A381C(void* self, JGeometry::TVec2<f32>* pos, u32 room, u16 value) {
-    JGeometry::TVec2<f32> p = *pos;
+extern "C" void fn_802A381C(void* self, JGeometry::TVec2<f32>* pos, u32 room, u32 value) {
+    JGeometry::TVec2<f32> p(pos->x, pos->y);
     s32 r = fn_80226BC4(&p, room & 0xfe);
     fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, r, value);
 }
