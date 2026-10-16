@@ -20,6 +20,7 @@ extern const f32 lbl_805405A8;
 extern const f32 lbl_805405B4;
 extern const f32 lbl_80540600;
 extern const f32 lbl_8054060C;
+extern const f32 lbl_80540614;
 extern const f32 lbl_80540618;
 extern const f32 lbl_8054061C;
 extern const f32 lbl_80540620;
