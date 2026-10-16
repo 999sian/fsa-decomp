@@ -84,10 +84,14 @@ extern "C" s32 fn_80173108(s32 p, s32 i)
 extern "C" void fn_8017311C(s32 p, s32 i, u8* src)
 {
     u8* dst = (u8*)(p + i * 4);
-    dst[0x34] = src[0];
-    dst[0x35] = src[1];
-    dst[0x36] = src[2];
-    dst[0x37] = src[3];
+    u8 a = src[0];
+    u8 b = src[1];
+    u8 c = src[2];
+    u8 d = src[3];
+    dst[0x34] = a;
+    dst[0x35] = b;
+    dst[0x36] = c;
+    dst[0x37] = d;
 }
 
 extern "C" void fn_8017318C(void)
