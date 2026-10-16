@@ -66,6 +66,7 @@ extern "C" void fn_8008C308(s32 param_1) {
     }
 }
 
+extern "C" void fn_8008CA24(unsigned int* p, unsigned int a, unsigned short b, unsigned int unused, unsigned int c);
 extern "C" void fn_8008C390(JUTException* this_)
 {
     GXRenderModeObj* renderMode = &GXNtsc480Int;
@@ -77,7 +78,9 @@ extern "C" void fn_8008C390(JUTException* this_)
 
     void* begin = (void*)ALIGN_PREV((u32)end - size, 32);
     void* object = (void*)ALIGN_PREV((s32)begin - sizeof(JUTExternalFB), 32);
-    new (object) JUTExternalFB(renderMode, GX_GM_1_7, begin, size);
+    if (object != 0) {
+        fn_8008CA24((unsigned int*)object, (unsigned int)renderMode, 1, (unsigned int)begin, size);
+    }
 
     this_->mDirectPrint->changeFrameBuffer(begin, renderMode->fbWidth, renderMode->efbHeight);
     VIConfigure(renderMode);
