@@ -182,12 +182,13 @@ extern "C" void fn_8001A3E4(int param_1, void* param_2) {
 }
 
 #pragma dont_inline on
-#pragma dont_inline reset
 extern "C" void fn_8001A424(s16 param_1) {
     s16 local[1];
     local[0] = param_1;
     fn_8001A3E4((int)fn_8001E89C, local);
 }
+#pragma dont_inline reset
+
 extern "C" int fn_8001A454(int param_1, int param_2, int param_3, int param_4) {
     u32 r = fn_8001A828(2, param_1, param_2, 0, param_3, param_4);
     if (r == 0xFFFFFFFF) {
