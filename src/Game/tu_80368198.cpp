@@ -9,8 +9,6 @@ struct Sub8036C69C {
     virtual void v2(int);
 };
 struct Sub8036C0EC {
-    virtual void v0();
-    virtual void v1();
     virtual void v2();
     virtual void v3();
     virtual void v4();
@@ -63,7 +61,7 @@ extern "C" u8 fn_8036B018(u8* this_) {
     return 0;
 }
 
-extern "C" void fn_8036C0EC(void* this_) {
+extern "C" void fn_8036C0EC(Sub8036C0EC* this_) {
     extern void* fn_8011921C(void);
     char* self = (char*)this_;
     s32 id;
@@ -110,7 +108,7 @@ extern "C" void fn_8036C0EC(void* this_) {
                 return;
             }
         }
-        (*(void (**)(void*, s32))(*(char**)this_ + 0x60))(this_, id);
+        this_->v24(id);
     }
 }
 
