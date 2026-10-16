@@ -1550,6 +1550,10 @@ extern "C" void fn_801A4E90(u8* p, s32 i, u8* src) {
     dst[0x23] = src[3];
 }
 
+extern "C" u8* fn_801A4EE8(u8* p, s32 i) {
+    return p + i * 4 + 0x20;
+}
+
 extern "C" void* lbl_8029AB90[];
 extern "C" void* lbl_8029AF34[];
 extern "C" void* fn_801A4EFC(void* ptr, s16 param_2) {
