@@ -313,3 +313,7 @@ extern "C" void fn_8016EDB0(u8* self) {
     self[0x1BC] = 0;
     *(s32*)(self + 0x1C0) = 0;
 }
+
+extern "C" void fn_8016FDE0(void) {
+}
+
