@@ -22,14 +22,22 @@ extern u8 lbl_8029FDB4[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_800127A0(void*);
 extern "C" u32 fn_800AD744(void* param_1, u8* param_2, u8* param_3) {
-    *(u8*)((u8*)param_1 + 0x13c) = param_2[0];
-    *(u8*)((u8*)param_1 + 0x13d) = param_2[1];
-    *(u8*)((u8*)param_1 + 0x13e) = param_2[2];
-    *(u8*)((u8*)param_1 + 0x13f) = param_2[3];
-    *(u8*)((u8*)param_1 + 0x138) = param_3[0];
-    *(u8*)((u8*)param_1 + 0x139) = param_3[1];
-    *(u8*)((u8*)param_1 + 0x13a) = param_3[2];
-    *(u8*)((u8*)param_1 + 0x13b) = param_3[3];
+    u8 r6 = param_2[0];
+    u8 r0 = param_2[1];
+    *(u8*)((u8*)param_1 + 0x13c) = r6;
+    r6 = param_2[2];
+    r0 = param_2[3];
+    *(u8*)((u8*)param_1 + 0x13d) = r0;
+    u8 r4 = param_3[0];
+    *(u8*)((u8*)param_1 + 0x13e) = r6;
+    *(u8*)((u8*)param_1 + 0x13f) = r0;
+    r0 = param_3[1];
+    *(u8*)((u8*)param_1 + 0x138) = r4;
+    r4 = param_3[2];
+    *(u8*)((u8*)param_1 + 0x139) = r0;
+    r0 = param_3[3];
+    *(u8*)((u8*)param_1 + 0x13a) = r4;
+    *(u8*)((u8*)param_1 + 0x13b) = r0;
     return 1;
 }
 
@@ -43,22 +51,52 @@ extern "C" void fn_800AD78C(void* param_1, s32 param_2) {
     *(u8*)((u8*)p3 + 0xb0) = 0;
     void* p4 = *(void**)((u8*)base + 0xbc);
     *(u8*)((u8*)p4 + 0xb0) = 0;
-    void* p5 = *(void**)((u8*)base + 0xc0);
+    register void* p5 = *(void**)((u8*)base + 0xc0);
     *(u8*)((u8*)p5 + 0xb0) = 0;
     void* p6 = *(void**)((u8*)base + 0xc4);
     *(u8*)((u8*)p6 + 0xb0) = 0;
     void* p7 = *(void**)((u8*)base + 0xf0);
     *(u8*)((u8*)p7 + 0xb0) = 0;
-    void* p8 = *(void**)((u8*)base + 0xf4);
+    register void* p8 = *(void**)((u8*)base + 0xf4);
     *(u8*)((u8*)p8 + 0xb0) = 0;
     void* p9 = *(void**)((u8*)base + 0xf8);
     *(u8*)((u8*)p9 + 0xb0) = 0;
     void* p10 = *(void**)((u8*)base + 0xe4);
     *(u8*)((u8*)p10 + 0xb0) = 0;
     void* p11 = *(void**)((u8*)base + 0xe8);
-    *(u8*)((u8*)p11 + 0xb0) = 0;
+    *(u8*)((u8*)p11 + (unsigned short)0xb0) = 0;
     void* p12 = *(void**)((u8*)base + 0xec);
     *(u8*)((u8*)p12 + 0xb0) = 0;
+}
+
+extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_800B051C(u8* param_1) {
+    char* base = (char*)lbl_802B7CA0 + 0x1424;
+    fn_80060794(base, base + 0xfc, base + 0x100, param_1 + 8);
+}
+
+extern "C" void fn_800B0558(void* param_1) {
+    void* obj = *(void**)((u8*)param_1 + 0xc);
+    if (obj != nullptr) {
+        register void** vtbl = *(void***)obj;
+        void (*method)(void*, int) = (void(*)(void*, int))*(void**)((u8*)vtbl + 8);
+        method(obj, 1);
+    }
+    fn_8015AB1C(*(void**)((u8*)param_1 + 0x14));
+    void* obj2 = *(void**)((u8*)param_1 + 4);
+    void** vtbl2 = *(void***)obj2;
+    void (*method2)(void*) = (void(*)(void*))*(void**)((u8*)vtbl2 + 0x24);
+    method2(obj2);
+    
+    s8 byte = *(s8*)(lbl_802C5524 + 4);
+    if (byte >= 0) {
+        s32 val = *(s32*)(lbl_802C5524 + 8) - 1;
+        *(s32*)(lbl_802C5524 + 8) = val;
+        if (val == 0) {
+            fn_800127A0((void*)(lbl_8029FDB4 + 4));
+            *(s8*)(lbl_802C5524 + 4) = -1;
+        }
+    }
 }
 
 extern "C" void fn_800B05F8(void* param_1, void* param_2) {
