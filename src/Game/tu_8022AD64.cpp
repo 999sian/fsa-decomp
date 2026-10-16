@@ -1324,6 +1324,19 @@ int fn_80234134(int index)
     return 0;
 }
 
+u8 fn_802341D0(int idx)
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (!(*((u8*)lbl_8053AAF8 + 0x82) & (u8)(1 << idx))) return 0;
+    for (int i = 0; i < 4; i++) {
+        if (isPlayerEnabled(i) && idx != i && fn_8022E438(idx, i)) {
+            if (!fn_802408C0(lbl_8053AC90->players[i])) return 0;
+        }
+    }
+    return 1;
+}
+
 int fn_8023434C(int idx) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
