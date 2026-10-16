@@ -1,6 +1,54 @@
 #include "types.h"
 
 extern "C" void fn_8010DF58(void);
+extern const char lbl_80465270[];
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, struct SPFR_DrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+
+struct SPFR_DrawKey {
+    s32 a, b;
+    SPFR_DrawKey() { a = -1; b = -1; }
+};
+struct SPFR_DrawParam {
+    u8 map[16];
+    SPFR_DrawKey key;
+    s32 c;
+    u8 palette;
+    u8 color;
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;
+    u8 f2c, f2d, f2e;
+    s32 g;
+    s32 h;
+    s32 i;
+
+    SPFR_DrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+
 extern "C" s32 fn_801321DC(char* p) {
     return *(s32*)(p + 0x234);
 }
