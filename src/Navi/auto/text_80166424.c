@@ -162,6 +162,10 @@ extern "C" s32 fn_80172B18(void) {
     return 0x54564234;
 }
 
+extern "C" s32 fn_80172B80(s32 p, s32 i) {
+    return p + i * 4 + 0xe;
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
