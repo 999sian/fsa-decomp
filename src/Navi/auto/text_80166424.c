@@ -806,6 +806,31 @@ extern "C" void fn_8016ED24(u8* p, int unused, u32 idx)
     }
 }
 
+extern "C" int fn_80170018(u8* p, void* src)
+{
+    void* obj;
+    DtorVObj_80166424* old;
+    if (src == 0) {
+        return 0;
+    }
+    obj = fn_8015A90C(0x70);
+    if (obj != 0) {
+        obj = fn_80119904(obj, src, 0);
+    }
+    if (obj == 0) {
+        return 0;
+    }
+    if (p[0x121]) {
+        old = *(DtorVObj_80166424**)(p + 0x11c);
+        if (old != 0) {
+            old->Destroy(1);
+        }
+    }
+    *(void**)(p + 0x11c) = obj;
+    p[0x121] = 1;
+    return 1;
+}
+
 #pragma pop
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
