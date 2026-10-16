@@ -221,6 +221,9 @@ extern "C" void fn_801290C4(void* p) {
     fn_801DF2A4((u8*)p + 0x184, 0);
 }
 
+extern "C" void fn_801290EC(void) {
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
