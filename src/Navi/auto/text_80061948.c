@@ -47,6 +47,7 @@ extern s32 lbl_802FF170;
 extern s32 lbl_802FC910;
 extern "C" int fn_80068190(u8* p);
 extern "C" int fn_801E2F8C(s32 v);
+extern void* lbl_8024745C[];
 extern u16 lbl_80280080[];
 extern u16 lbl_802FC94C[];
 extern int lbl_802FC930;  // SDA label
