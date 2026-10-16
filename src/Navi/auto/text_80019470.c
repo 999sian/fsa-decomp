@@ -458,7 +458,7 @@ extern "C" void fn_8001C39C(void* param_1) {
     }
 }
 
-extern char lbl_802FEC38[8];
+extern s8 lbl_802FEC38;
 #pragma push
 #pragma dont_inline on
 extern "C" void fn_8001C3E0(void* param_1) {
