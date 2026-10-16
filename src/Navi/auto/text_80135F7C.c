@@ -13,7 +13,7 @@ struct KeyIter {
     f32* p;
 };
 
-static inline s32 KeyIter_distance(KeyIter first, KeyIter last) {
+static inline s32 KeyIter_distance(KeyIter last, KeyIter first) {
     return (s32*)last.p - (s32*)first.p;
 }
 
@@ -798,18 +798,14 @@ extern "C" void* fn_801392DC(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void fn_80139364(f32** ret, f32** first, f32** last, f64* val) {
-    f32* l = *last;
-    f32* f = *first;
-    f32** pl = &l;
-    f32** pf = &f;
-    s32 len = (u32)((s32*)*pl - (s32*)*pf) >> 1;
+extern "C" void fn_80139364(KeyIter* ret, KeyIter* first, KeyIter* last, f64* val) {
+    s32 len = (u32)KeyIter_distance(*first, *last) >> 1;
     f64 v = *val;
     while (len > 0) {
         s32 half = len / 2;
-        f32* mid = *first + half * 2;
+        f32* mid = first->p + half * 2;
         if (!(v < *mid)) {
-            *first = mid + 2;
+            first->p = mid + 2;
             len = len - (half + 1);
         } else {
             len = half;
