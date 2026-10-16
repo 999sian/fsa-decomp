@@ -75,6 +75,17 @@ extern "C" s32 fn_80402628(PaneState* state, s16 duration, u8 startAlpha, u8 end
     return 0;
 }
 
+extern "C" void fn_80402CE0(PaneState* state, f32 sx, f32 sy) {
+    f32 width = state->pane->mBounds.f.x - state->pane->mBounds.i.x;
+    f32 x = state->pane->getBounds()->i.x;
+    f32 height = state->pane->mBounds.f.y - state->pane->mBounds.i.y;
+    f32 y = state->pane->getBounds()->i.y;
+    state->pane->resize(state->width * sx, state->height * sy);
+    f32 newWidth = state->pane->mBounds.f.x - state->pane->mBounds.i.x;
+    f32 newHeight = state->pane->mBounds.f.y - state->pane->mBounds.i.y;
+    state->pane->move(lbl_80543868 * width + x - lbl_80543868 * newWidth, lbl_80543868 * height + y - lbl_80543868 * newHeight);
+}
+
 extern "C" void fn_80402E08(PaneState* state, f32 x, f32 y) {
     J2DPane* pane = state->pane;
     pane->move((state->centerX + x) - lbl_80543868 * (pane->mBounds.f.x - pane->mBounds.i.x),
