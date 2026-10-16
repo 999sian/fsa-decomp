@@ -88,6 +88,19 @@ extern "C" s32 fn_802D0BB0(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
 
+extern "C" void fn_802D0E28(char* p) {
+    s32 flag = 7;
+    YasiDrawParam param;
+    ((u8*)&param.key.a)[3] = *(u8*)(p + 0x234);
+    if (*(u8*)(p + 0xc4) != 0) {
+        param.f20 = 0;
+        flag = -1;
+        param.color = fn_8023CB24(*(s32*)(p + 0xc8)) + 1;
+        param.palette = fn_8023CA88(*(s32*)(p + 0xc8));
+    }
+    fn_801F02BC(p, lbl_8046E058, 0x29, &param, flag, 0, 1, lbl_80540EAC, lbl_80540EAC);
+}
+
 extern "C" void fn_802D1270(char* p) {
     *(f32*)(p + 0x60) = lbl_80540EB8;
     *(f32*)(p + 0x64) = lbl_80540EB8;
