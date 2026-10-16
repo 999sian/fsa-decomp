@@ -1581,7 +1581,8 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* dst = p + (i << 3);
+    u8* dst;
+    dst = p + i * 8;
     dst[0xf] = src[1];
     dst[0x10] = src[2];
     dst[0x11] = src[3];
