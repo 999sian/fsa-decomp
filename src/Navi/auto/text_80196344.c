@@ -567,6 +567,10 @@ extern "C" void fn_801A35E8(u8* param_1, u8 param_2) {
     param_1[0x3b] = param_2;
 }
 
+extern "C" void fn_801A35F0(u8* param_1, u8* param_2) {
+    param_1[0x3b] = *param_2;
+}
+
 extern "C" u8 fn_801A35FC(int param_1) {
     return *(u8*)(param_1 + 0x3b);
 }
