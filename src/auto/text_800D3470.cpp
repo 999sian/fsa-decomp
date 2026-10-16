@@ -18,16 +18,20 @@ struct Unk800DE210 {
     u8 a, b, c;
 };
 
-struct Unk800DE6DCSwap {
-    u8 unk0 : 4;
-    u8 mTex : 2;
-    u8 mRas : 2;
+struct Unk800DE6DCStage {
     u8 pad[7];
+    u8 mSwap;
+    void setTexSel(u8 sel) { mSwap = (mSwap & ~0x0c) | (sel << 2); }
+    void setRasSel(u8 sel) { mSwap = (mSwap & ~0x03) | sel; }
+    void setSwapModeInfo(const u8* info) {
+        setTexSel(info[1]);
+        setRasSel(info[0]);
+    }
 };
 
 struct Unk800DE6DC {
-    u8 pad[0x3c];
-    Unk800DE6DCSwap mSwap[1];
+    u8 pad[0x35];
+    Unk800DE6DCStage mStage[1];
 };
 
 struct Unk800DDA5C {
@@ -1423,13 +1427,12 @@ struct fn_800DE29C_Bits2 {
   u8 a : 2;
 };
 
-extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE29C(u8* param_1, int param_2, s8* param_3)
 {
   u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
-  u8 v = e[0x28];
-  e[0x28] = (b1 << 2) | (v & ~0xC);
+  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
   e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
@@ -1596,17 +1599,11 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
-    u8 val0 = param_3[0];
+    u8* p = (u8*)(param_1 + param_2 * 8);
     u8 val1 = param_3[1];
-    int offset = param_1 + param_2 * 8;
-
-    u8 byte = *(u8*)(offset + 0x3c);
-    byte = (byte & ~0x0c) | (val1 << 2);
-    *(u8*)(offset + 0x3c) = byte;
-
-    byte = *(u8*)(offset + 0x3c);
-    byte = (byte & ~0x03) | val0;
-    *(u8*)(offset + 0x3c) = byte;
+    u8 val0 = param_3[0];
+    p[0x3c] = (p[0x3c] & ~0x0c) | (val1 << 2);
+    p[0x3c] = (p[0x3c] & ~0x03) | val0;
 }
 
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
@@ -1708,7 +1705,7 @@ extern "C" u32 fn_800DE954() {
     return 1;
 }
 
-extern "C" void fn_800DE95C(u8* this_, u32 idx, const u8* src) {
+extern "C" void fn_800DE95C(u8* this_, s32 idx, const u8* src) {
     u8* p = this_ + idx * 8;
     p[0xf] = src[1];
     p[0x10] = src[2];
