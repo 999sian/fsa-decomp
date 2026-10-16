@@ -14,6 +14,7 @@ extern char lbl_802B7CA0[];
 extern char lbl_802BB0FC[];
 extern char lbl_802C4F3C[];
 extern char lbl_8029FDB4[];
+extern char lbl_802EE470[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80077F44(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -89,10 +90,12 @@ extern "C" void fn_800127A0(void* param_1);
 extern "C" BOOL fn_8007BB4C(void) {
     *(s32*)((char*)lbl_802BB0FC + 0x38) = 0;
     fn_800636F4((void*)&lbl_802FCB30, lbl_802B7CA0 + 0x2200, 0x40);
-    if (lbl_802C4F3C[4] >= 0) {
-        if (--*(s32*)(lbl_802C4F3C + 8) == 0) {
+    s8* st = (s8*)lbl_802C4F3C;
+    s8 flag = st[4];
+    if (flag >= 0) {
+        if (--*(s32*)(st + 8) == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
-            lbl_802C4F3C[4] = -1;
+            st[4] = -1;
         }
     }
     return 1;
