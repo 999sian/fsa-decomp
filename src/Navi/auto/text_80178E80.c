@@ -714,7 +714,6 @@ extern "C" void fn_801809B0(void* self, int a, int b) {
         virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
         virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43();
         virtual void v44(); virtual void v45(); virtual void v46(); virtual void v47();
-        virtual void v48(); virtual void v49();
         virtual void vfC8(int, int, int);
     };
     ((Obj*)self)->vfC8(a, b, 0);
@@ -1535,12 +1534,14 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
     u8* table = *(u8**)((u8*)self + 0x14);
     u8* data = *(u8**)((u8*)self + 0x18);
     u16 base = *(u16*)(table + param_2 * 4);
-    u16 len = *(u16*)(table + param_2 * 4 + 2);
     if (pos < 0.0f) {
+        u16 len = *(u16*)(table + param_2 * 4 + 2);
         *param_3 = data[len];
     } else if (pos >= (f32)base) {
+        u16 len = *(u16*)(table + param_2 * 4 + 2);
         *param_3 = data[(s32)pos + len];
     } else {
+        u16 len = *(u16*)(table + param_2 * 4 + 2);
         *param_3 = data[base + len - 1];
     }
 }
