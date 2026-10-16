@@ -1692,7 +1692,7 @@ extern "C" void fn_801928E0(void*);
 extern "C" void fn_80192984(void*);
 extern "C" void fn_80192C8C(void*);
 extern "C" void fn_80192D84(void*);
-extern u8 lbl_802FE644[];
+extern u8 lbl_802FE644;
 extern u8 lbl_802FE64C[];
 extern "C" u32 fn_80185ED0(u8* self, u8 b) {
     u8* p = *(u8**)(self + 0x168);
@@ -2191,8 +2191,10 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    *(void**)ptr = lbl_80299504;
-    *(void**)ptr = lbl_802994F0;
+    void* a = lbl_80299504;
+    void* b = lbl_802994F0;
+    *(void**)ptr = a;
+    *(void**)ptr = b;
 }
 
 extern "C" void fn_80178990(void);
@@ -2741,15 +2743,15 @@ extern "C" void fn_80191C50(u32* data, s32 index) {
 
 extern "C" void fn_80191CE8(u32 p1, u32 p2, s32 p3, u32 p4, s32 p5) {
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = lbl_802FE644[p1] << 24 | (p3 + 3) << 18 | (p2 >> 5) | (p3 + 3) << 15;
+    *(volatile u32*)0xCC008000 = *((u8*)&lbl_802FE644 + p1) << 24 | (p3 + 3) << 18 | (p2 >> 5) | (p3 + 3) << 15;
     if (p5 == 3) {
         return;
     }
-    if (p4 > 0xFFFFF) {
+    if (p4 >= 0x100000) {
         return;
     }
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = lbl_802FE64C[p1] << 24 | (p5 + 3) << 18 | (p4 >> 5) | (p5 + 3) << 15;
+    *(volatile u32*)0xCC008000 = *((u8*)&lbl_802FE64C + p1) << 24 | (p5 + 3) << 18 | (p4 >> 5) | (p5 + 3) << 15;
 }
 
 extern "C" void fn_80191E7C(u32 a, s16 b, u16 c) {
