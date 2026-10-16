@@ -1766,6 +1766,10 @@ extern "C" int fn_801A4FC0(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 4;
 }
 
+extern "C" void fn_801A4FD4(void* p, u8* src) {
+    *((u8*)p + 0xc) = *src;
+}
+
 extern "C" void fn_801A4FF0(u8* p, s32 i, u16* pv) {
     ((u16*)(p + 0xe))[i] = *pv;
 }
