@@ -44,7 +44,7 @@ extern "C" bool fn_8030C210(u8* p, f32* v) {
 }
 
 extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
-    f32 pos[2];
+    f32 pos[3];
     fn_8030C5F0(p, r4, 1, 0, pos);
     bool ret = false;
     if (pos[0] >= (f32)(u32)(*(u32*)(p + 0x144) + 0xe) && pos[0] < (f32)(u32)(*(u32*)(p + 0x14c) - 0xe) &&
@@ -127,6 +127,56 @@ extern "C" void fn_8030DD68(void) {
 }
 
 extern "C" void fn_8030E150(void) {
+}
+
+extern "C" void fn_8030CB10(u8* p, f32* v, f32 s);
+extern "C" void fn_8030E5BC(u8* p) {
+    f32 v[4];
+    *(f32*)(p + 0x154) = 0.0f;
+    *(f32*)(p + 0x158) = 0.0f;
+    *(f32*)(p + 0x15c) = 512.0f;
+    *(f32*)(p + 0x160) = 384.0f;
+    p[0x1e8] = 0;
+    *(f32*)(p + 0x1b8) = 0.0f;
+    *(f32*)(p + 0x1b4) = 0.0f;
+    *(f32*)(p + 0x1c0) = 0.0f;
+    *(f32*)(p + 0x1bc) = 0.0f;
+    *(f32*)(p + 0x1e4) = 0.0f;
+    *(f32*)(p + 0x1e0) = 0.0f;
+    *(f32*)(p + 0x1dc) = 0.0f;
+    *(s32*)(p + 0x1c4) = 0;
+    *(s32*)(p + 0x1c8) = 0;
+    *(s32*)(p + 0x1cc) = 0;
+    *(s32*)(p + 0x1d0) = 0;
+    *(f32*)(p + 0x1d4) = -1.0f;
+    *(f32*)(p + 0x1d8) = -1.0f;
+    v[0] = 0.0f;
+    v[1] = 0.0f;
+    v[2] = 256.0f;
+    v[3] = 192.0f;
+    fn_8030CB10(p, v, 1024.0f);
+    *(s32*)(p + 0x7f0) = 0;
+    p[0x7f4] = 0;
+    p[0x7f5] = 0;
+    *(s32*)(p + 0x838) = -1;
+    p[0x7f6] = 0;
+    *(s32*)(p + 0x83c) = -1;
+    p[0x840] = 0;
+    u16 h = JUTVideo::sManager->getRenderMode()->efbHeight;
+    u16 w = JUTVideo::sManager->getRenderMode()->fbWidth;
+    *(s32*)(p + 0x144) = 0;
+    *(s32*)(p + 0x148) = 0;
+    *(u32*)(p + 0x14c) = w;
+    *(u32*)(p + 0x150) = h;
+    *(f32*)(p + 0x858) = 1.0f;
+    *(s32*)(p + 0x174) = 0;
+    p[0x178] = 0;
+    p[0x179] = 0;
+    p[0x17a] = 0;
+    p[0x17b] = 0;
+    p[0x17c] = 0;
+    p[0x17d] = 0;
+    p[0x17e] = 0;
 }
 
 extern u8 lbl_804AA9E4[];
