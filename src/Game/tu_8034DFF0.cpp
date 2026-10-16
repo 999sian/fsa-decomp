@@ -57,7 +57,7 @@ extern "C" void fn_8034EAB4(char* this_) {
     *(f32*)(this_ + 0x27c) = lbl_805425CC;
     *(f32*)(this_ + 0x278) = lbl_805425CC;
     *(s32*)(this_ + 0x230) = 0;
-    if (*(s32*)(this_ + 0x234) == 1 && (u8)((YnswVirt*)this_)->v13() == 1) {
+    if (*(s32*)(this_ + 0x234) == 1 && (u8)((YnswVirt*)this_)->v11() == 1) {
         *(s32*)(this_ + 0x238) = 2;
         *(s32*)(this_ + 0x230) = 4;
     }
