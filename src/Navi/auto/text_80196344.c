@@ -527,6 +527,10 @@ extern "C" u8 fn_801A35FC(int param_1) {
     return *(u8*)(param_1 + 0x3b);
 }
 
+extern "C" u32 fn_801A3604(void* param_1) {
+    return *(u32*)((u8*)param_1 + 0x3c);
+}
+
 extern void* lbl_8029A2C0[];
 extern "C" void* fn_801A3614(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
