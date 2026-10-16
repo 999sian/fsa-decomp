@@ -66,6 +66,25 @@ extern "C" BOOL fn_80071BD4(void)
     return TRUE;
 }
 
+extern u8 lbl_802FCA30;
+extern "C" int fn_80071C14(u8* p) {
+    int iVar1 = fn_80020EA4(p + 0x244, (int)lbl_802FCA30);
+    if (iVar1 == 4) {
+        if ((*(u32*)(p + 0xf8) & 8) == 0) {
+            if (p != nullptr) {
+                fn_800175B8(p);
+            }
+            *(u32*)(p + 0xf8) |= 8;
+        }
+        if ((u8)fn_800183AC(p, (void*)fn_800711AC, (void*)0x2190)) {
+            iVar1 = 4;
+        } else {
+            iVar1 = 5;
+        }
+    }
+    return iVar1;
+}
+
 extern void* lbl_80247380[];
 extern "C" void fn_80071CA0(void* p);
 extern "C" void fn_80071CA0(void* p) {
