@@ -499,6 +499,42 @@ extern "C" void fn_800D9AAC(u8* self) {
     }
 }
 
+extern "C" void fn_800D9CA8(void* param_1) {
+    u8 count = *(u8*)((u8*)param_1 + 0x58);
+    if (count == 0) {
+        return;
+    }
+    
+    u32* gd = (u32*)&__GDCurrentDL;
+    
+    for (u32 i = 0; i < count; i++) {
+        u32 val = *(u32*)((u8*)param_1 + 0x4 + i * 4);
+        u8* dl = (u8*)(gd[2]);
+        
+        u8 high_nibble = (i + 0x10) & 0xff;
+        u32 combined = val | (high_nibble << 24);
+        
+        *dl = 0x61;
+        gd[2]++;
+        
+        dl = (u8*)(gd[2]);
+        *dl = (combined >> 24) & 0xff;
+        gd[2]++;
+        
+        dl = (u8*)(gd[2]);
+        *dl = (combined >> 16) & 0xff;
+        gd[2]++;
+        
+        dl = (u8*)(gd[2]);
+        *dl = (combined >> 8) & 0xff;
+        gd[2]++;
+        
+        dl = (u8*)(gd[2]);
+        *dl = combined & 0xff;
+        gd[2]++;
+    }
+}
+
 extern "C" void fn_800D9E3C(void* p) {
     u32 byteCount = 0;
     u8* addr = (u8*)p;
@@ -522,6 +558,109 @@ extern "C" void fn_800D9E3C(void* p) {
     
     u8* now = __GDCurrentDL->pDisplayListData;
     DCStoreRange(saved, (u32)(now - saved));
+}
+
+extern "C" void fn_800D9FE4(void* param_1, u32 param_2) {
+    u32* gd = (u32*)&__GDCurrentDL;
+    u32 cur = *(u32*)gd;
+    gd[2] = cur + param_2;
+    
+    u32 dl_ptr = gd[2];
+    gd = (u32*)&__GDCurrentDL;
+    u32 cur_dl = gd[2];
+    
+    u32 i = 0;
+    while (1) {
+        if (!isTexNoReg((void*)cur_dl)) {
+            break;
+        }
+        u16 tex_no = getTexNoReg((void*)cur_dl);
+        loadTexNo(i, tex_no);
+        i++;
+        gd = (u32*)&__GDCurrentDL;
+        cur_dl = gd[2];
+    }
+    
+    gd = (u32*)&__GDCurrentDL;
+    u32 dl_end = gd[2];
+    DCStoreRange((void*)dl_ptr, dl_end - dl_ptr);
+}
+
+extern "C" void fn_800DB844(void* param_1) {
+    u32* gd = (u32*)&__GDCurrentDL;
+    u32 size = *(u32*)((u8*)param_1 + 0x3c);
+    u32 cur = *(u32*)gd;
+    gd[2] = cur + size;
+    
+    u32 cur2 = gd[2];
+    u32 cap = gd[3];
+    if (cur2 > cap + 0x37) {
+        GDOverflowed();
+    }
+    
+    gd = (u32*)&__GDCurrentDL;
+    u32 dl_ptr = gd[2];
+    
+    GXFogType fog_type = (GXFogType)*(u8*)((u8*)param_1 + 0x4);
+    f32 f1 = *(f32*)((u8*)param_1 + 0x8);
+    f32 f2 = *(f32*)((u8*)param_1 + 0xc);
+    f32 f3 = *(f32*)((u8*)param_1 + 0x10);
+    f32 f4 = *(f32*)((u8*)param_1 + 0x14);
+    GXColor color = *(GXColor*)((u8*)param_1 + 0x18);
+    
+    J3DGDSetFog(fog_type, f1, f2, f3, f4, color);
+    
+    GXFogAdjTable* adj_tbl = (GXFogAdjTable*)((u8*)param_1 + 0x1c);
+    u8 adj_type = *(u8*)((u8*)param_1 + 0x5);
+    u16 adj_val = *(u16*)((u8*)param_1 + 0x6);
+    
+    J3DGDSetFogRangeAdj(adj_type, adj_val, adj_tbl);
+    
+    gd = (u32*)&__GDCurrentDL;
+    u32 dl_end = gd[2];
+    DCStoreRange((void*)dl_ptr, dl_end - dl_ptr);
+}
+
+extern "C" void GDOverflowed(void);
+extern "C" void J3DGDSetFog__F10_GXFogTypeffff8_GXColor(u8, u32, float, float, float, float);
+extern "C" void J3DGDSetFogRangeAdj__FUcUsP14_GXFogAdjTable(u8, u16, void*);
+extern "C" void fn_800DB8F4(void* param_1) {
+    u32* gd = (u32*)&__GDCurrentDL;
+    u32 cur = gd[2];
+    u32 max = gd[3];
+    
+    if (cur + 0x37 > max) {
+        GDOverflowed();
+    }
+    
+    u8* p = (u8*)param_1;
+    u32 color = *(u32*)(p + 0x18);
+    u8 type = p[4];
+    float f1 = *(float*)(p + 0x8);
+    float f2 = *(float*)(p + 0xc);
+    float f3 = *(float*)(p + 0x10);
+    float f4 = *(float*)(p + 0x14);
+    
+    J3DGDSetFog__F10_GXFogTypeffff8_GXColor(type, color, f1, f2, f3, f4);
+    
+    u8 uc = p[5];
+    u16 us = *(u16*)(p + 6);
+    J3DGDSetFogRangeAdj__FUcUsP14_GXFogAdjTable(uc, us, p + 0x1c);
+}
+
+extern "C" void fn_800DBC64(void* obj, u32 flags) {
+    if (flags & 0x10000000) {
+        typedef void (*FuncPtr)(void);
+        void* vtable = *(void**)obj;
+        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x18);
+        fn();
+    }
+    if (flags & 0x20000000) {
+        typedef void (*FuncPtr)(void*);
+        void* vtable = *(void**)obj;
+        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x1c);
+        fn(obj);
+    }
 }
 
 extern "C" u32 fn_800DD89C() {
@@ -621,9 +760,9 @@ extern "C" void* fn_800DD9C0(void* param_1, short param_2) {
 
 extern "C" void fn_800DDA1C(void* obj, u32 flags) {
     if (flags & 0x20000000) {
-        u32 vtable = *(u32*)obj;
         typedef void (*FuncPtr)(void);
-        FuncPtr fn = *(FuncPtr*)(vtable + 0x1c);
+        register void* vtable = *(void**)obj;
+        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x1c);
         fn();
     }
 }
@@ -1461,6 +1600,22 @@ extern "C" u32 fn_800DED94(u8* param_1) {
 
 extern "C" void fn_800DED9C(u8* param_1, u32 param_2) {
     *(u32*)(param_1 + 0xd4) = param_2;
+}
+
+extern char lbl_8049B440[];
+extern char __vt__11J3DTevBlock[];
+extern "C" u32* fn_800DEDA4(u32* self, short flag) {
+    if (self != NULL) {
+        u32 tmp;
+        tmp = (u32)lbl_8049B440;
+        self[0] = tmp;
+        tmp = (u32)&__vt__11J3DTevBlock;
+        self[0] = tmp;
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
 }
 
 extern "C" u32 fn_800DEE00(void) {
