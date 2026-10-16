@@ -53,7 +53,6 @@ extern "C" DSError ddh_cc_pre_continue(void)
 	return DS_NoError;
 }
 
-void MWTRACE(u8, char*, ...);
 extern char lbl_80203220[];
 extern int lbl_802FFAC0;
 extern "C" void MWTRACE(u8, char*, ...);
