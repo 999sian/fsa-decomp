@@ -409,6 +409,8 @@ extern "C" void* fn_80198F44(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80198FA8(void) {}
+
 extern "C" void fn_80198FAC(void) {}
 
 extern "C" void fn_80198FB0(void) {}
