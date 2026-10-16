@@ -49,3 +49,16 @@ extern "C" void fn_8035E57C(Unk8035DA78* self) {
     if (*(int*)(p + 0x244) != 0) *(int*)(p + 0x244) -= 1;
     (self->*lbl_804AD6A8[*(int*)(p + 0x230)])();
 }
+
+extern "C" void fn_8035E5DC(int param_1) {
+    char* p = (char*)param_1;
+    *(int*)(p + 0x230) = 0;
+    *(int*)(p + 0x234) = 0;
+    *(int*)(p + 0x238) = 0;
+    *(int*)(p + 0x240) = 1;
+    *(int*)(p + 0x244) = 0;
+    *(int*)(p + 0x248) = 0;
+    *(int*)(p + 0x24c) = 0;
+    *(int*)(p + 0x250) = 0x274;
+}
+
