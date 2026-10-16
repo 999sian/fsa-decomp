@@ -501,6 +501,11 @@ extern "C" int fn_801699EC()
 	return 0;
 }
 
+extern "C" int fn_801699F4()
+{
+	return 0;
+}
+
 extern "C" u32* fn_80169B1C(u32* self, short param_2)
 {
     if (self != NULL) {
