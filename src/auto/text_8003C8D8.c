@@ -54,7 +54,7 @@ extern "C" void* fn_8003CBC0(char* p) {
 }
 
 extern "C" void* fn_8003CE04(char* p, int i) {
-    void* r = *(void**)(p + i * 4 + 0x18);
+    void* r = ((void**)(p + 0x18))[i];
     if (r != 0) {
         return r;
     }
