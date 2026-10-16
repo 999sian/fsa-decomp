@@ -64,14 +64,14 @@ extern "C" s32 fn_800CAEC8(int param_1, u32 param_2) {
 }
 
 extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
+    struct Col { s32 v; };
     u8* p = (u8*)param_2;
-    s32 def[1];
-    def[0] = lbl_8053BC70;
+    Col def = *(Col*)&lbl_8053BC70;
     u16 i = ((u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[param_3] * 0x14c + 8))[param_4];
     if (i != 0xffff) {
         *param_1 = (*(s32**)(p + 0x10))[i];
     } else {
-        *param_1 = def[0];
+        *(Col*)param_1 = def;
     }
 }
 
@@ -95,8 +95,7 @@ extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
 }
 
 extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
-    u8 b = (*(u8**)(p + 4))[off + 3];
+    u8 b = *(u8*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 3);
     if (b != 0xff) {
         return (*(u8**)(p + 0x24))[b];
     }
@@ -112,7 +111,9 @@ extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
 }
 
 extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
-    u16 v = *(u16*)((*(u8**)(p + 4)) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x84 + b * 2);
+    u8* base = *(u8**)(p + 4);
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
+    u16 v = *(u16*)(base + off + 0x84 + b * 2);
     if (v != 0xffff) {
         return (*(u16**)(p + 0x38))[v];
     }
