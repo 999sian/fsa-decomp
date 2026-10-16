@@ -38,3 +38,16 @@ extern "C" void fn_802D31E4(Vtable802D31E4* p) {
 extern "C" s32 fn_802D3210(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
+
+extern "C" void fn_802D3758(char* p) {
+    *(f32*)(p + 0x60) = lbl_80540F44;
+    *(f32*)(p + 0x64) = lbl_80540F44;
+    *(f32*)(p + 0x68) = lbl_80540F48;
+    *(f32*)(p + 0x6c) = lbl_80540F48;
+    *(f32*)(p + 0x80) = lbl_80540F4C;
+    *(f32*)(p + 0x84) = lbl_80540F4C;
+    *(f32*)(p + 0x88) = lbl_80540F50;
+    *(f32*)(p + 0x8c) = lbl_80540F50;
+    *(s32*)(p + 0x230) = 0;
+}
+
