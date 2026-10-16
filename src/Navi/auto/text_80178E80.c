@@ -1679,6 +1679,21 @@ extern "C" u32 fn_80185DA4(VObj_80185DA4* self) {
     return self->v52((u8)((u8)n - 1));
 }
 
+extern "C" void fn_801DCCA0(s32);
+extern "C" void fn_801DAF24(s32);
+extern "C" void fn_801DEA4C(s32);
+extern "C" void fn_801DE24C(s32);
+extern "C" void fn_801DBAE4(s32);
+extern "C" void fn_801DBB28(s32);
+extern "C" void fn_801926E4(void);
+extern "C" void fn_80192730(void*);
+extern "C" void fn_801927DC(void*);
+extern "C" void fn_801928E0(void*);
+extern "C" void fn_80192984(void*);
+extern "C" void fn_80192C8C(void*);
+extern "C" void fn_80192D84(void*);
+extern u8 lbl_802FE644[];
+extern u8 lbl_802FE64C[];
 extern "C" u32 fn_80185ED0(u8* self, u8 b) {
     u8* p = *(u8**)(self + 0x168);
     if (p == NULL) {
@@ -1688,13 +1703,10 @@ extern "C" u32 fn_80185ED0(u8* self, u8 b) {
         return 0;
     }
     u32 n = *(u32*)(p + 0x28);
-    if ((u8)n <= b) {
-        return 0;
+    if ((u8)n > b && (u8)n != 1) {
+        return 1;
     }
-    if ((u8)n == 1) {
-        return 0;
-    }
-    return 1;
+    return 0;
 }
 
 extern "C" void fn_80186B6C(u8* self, u32 a, u32 b) {
@@ -2727,6 +2739,19 @@ extern "C" void fn_80191C50(u32* data, s32 index) {
     *(volatile u32*)0xCC008000 = *(u32*)&z2;
 }
 
+extern "C" void fn_80191CE8(u32 p1, u32 p2, s32 p3, u32 p4, s32 p5) {
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = lbl_802FE644[p1] << 24 | (p3 + 3) << 18 | (p2 >> 5) | (p3 + 3) << 15;
+    if (p5 == 3) {
+        return;
+    }
+    if (p4 > 0xFFFFF) {
+        return;
+    }
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = lbl_802FE64C[p1] << 24 | (p5 + 3) << 18 | (p4 >> 5) | (p5 + 3) << 15;
+}
+
 extern "C" void fn_80191E7C(u32 a, s16 b, u16 c) {
     *(volatile u8*)0xCC008000 = 0x20;
     *(volatile u16*)0xCC008000 = c;
@@ -2737,5 +2762,15 @@ extern "C" void fn_80191EA0(u32 a, s16 b, u16 c) {
     *(volatile u8*)0xCC008000 = 0x28;
     *(volatile u16*)0xCC008000 = c;
     *(volatile u16*)0xCC008000 = (u16)(b * 9 + 0x400) | 0x8000;
+}
+
+extern "C" void fn_80192688(void* p) {
+    fn_801926E4();
+    fn_80192730(p);
+    fn_801927DC(p);
+    fn_801928E0(p);
+    fn_80192984(p);
+    fn_80192C8C(p);
+    fn_80192D84(p);
 }
 
