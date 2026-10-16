@@ -55,6 +55,65 @@ extern "C" void fn_803B7E64(u8* this_) {
     fn_8013B414(lbl_8053AB10, rect, 1);
 }
 
+extern "C" void fn_8013A884(u32* color);
+extern "C" void fn_80128C58(s32 val);
+extern "C" void fn_80458F9C(void* obj, s32 a);
+extern "C" void fn_80458FF0(void* obj, s32 id, s32 a, s32 b);
+extern void* lbl_8053AF80;
+extern "C" void fn_803B8188(u8* this_) {
+    this_[0x296] = 0;
+    *(s32*)(this_ + 0x1a0) = 0;
+    *(s32*)(this_ + 0x1a4) = 0;
+    *(s32*)(this_ + 0x1a8) = 0;
+    *(s32*)(this_ + 0x1ac) = 0;
+    *(s32*)(this_ + 0x1b8) = 0;
+    *(s32*)(this_ + 0x1bc) = 0;
+    *(s32*)(this_ + 0x284) = 0;
+    *(s32*)(this_ + 0x288) = 0;
+    *(s32*)(this_ + 0x198) = 0;
+    *(s32*)(this_ + 0x19c) = 0;
+    *(u16*)(this_ + 0x1dc) = 0;
+    *(s32*)(this_ + 0x1c0) = 0;
+    *(s32*)(this_ + 0x1c4) = 0;
+    *(s32*)(this_ + 0x1c8) = 0;
+    *(s32*)(this_ + 0x1cc) = 0;
+    *(s32*)(this_ + 0x1d0) = -1;
+    *(s32*)(this_ + 0x1d4) = -1;
+    *(s32*)(this_ + 0x1d8) = -1;
+    this_[0x297] = 0;
+    this_[0x298] = 0;
+    this_[0x29b] = 0;
+    this_[0x29c] = 0;
+    this_[0x29d] = 0;
+    this_[0x29e] = 0;
+    this_[0x29f] = 0;
+    if (*(s32*)(lbl_80529DEC + 0x118) < 8) {
+        *(s32*)(this_ + 0x284) = *(s32*)(lbl_80529DEC + 0x118);
+    } else {
+        *(s32*)(this_ + 0x284) = 0;
+    }
+    if (*(s32*)(lbl_80529DEC + 0x11c) < 4) {
+        *(s32*)(this_ + 0x288) = *(s32*)(lbl_80529DEC + 0x11c);
+    } else {
+        *(s32*)(this_ + 0x288) = 0;
+    }
+    this_[0x294] = 5;
+    this_[0x295] = 1;
+    *(s32*)(this_ + 0x280) = 0x80;
+    if (*(s32*)(lbl_80529DEC + 0x118) == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 3) {
+        fn_80458F9C(lbl_8053AF80, 0x3c);
+    } else {
+        fn_80458FF0(lbl_8053AF80, 0x100002f, 1, 0);
+    }
+    *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235c) = 0;
+    *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235d) = 0;
+    *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235e) = 0;
+    *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0x235f) = 0;
+    fn_80128C58(0xff);
+    u32 color = 0xffffff00;
+    fn_8013A884(&color);
+}
+
 extern "C" void __dl__FPv(void* this_);
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* p);
@@ -62,11 +121,12 @@ extern "C" void getTotalFreeSize__7JKRHeapFv(void* heap);
 extern "C" char lbl_804AFAB0[];
 extern "C" s32 lbl_8053ADA8;
 extern "C" void* fn_803B82FC(void* this_, s16 flag) {
+    s32 i;
+    void** p;
     if (this_ != 0) {
         *(void**)this_ = lbl_804AFAB0;
-        s32 i = 0;
-        void** p = (void**)this_;
-        for (; i < 50; i++) {
+        p = (void**)this_;
+        for (i = 0; i < 50; i++) {
             if (p[9] != 0) {
                 void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
                 forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, p[9]);
