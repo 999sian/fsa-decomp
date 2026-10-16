@@ -10,6 +10,10 @@ public:
 
 extern "C" void fn_8016A39C(void* item, UnkVObj_80184B60* obj);
 extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
+extern "C" void fn_80118BD0(void* p, s32 flag);
+extern "C" void fn_8015AB1C(void* p);
+extern "C" void fn_80176FE8(void* self, s32 flag);
+extern char lbl_80298DF0[];
 
 extern "C" void fn_8017A6CC(void* self, UnkVObj_80184B60* obj) {
     u16 count;
@@ -58,6 +62,11 @@ extern "C" void* fn_8018C1A0(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void* fn_8018C1E8(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
 }
 
 extern void* lbl_80286A30[];
