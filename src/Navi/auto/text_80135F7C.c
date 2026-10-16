@@ -21,6 +21,12 @@ struct VObj_8013BC94 {
     virtual void v7(u32, void*, void*);
 };
 
+struct PmfObj_80136148;
+typedef void (PmfObj_80136148::*PmfFunc_80136148)(s32, void*, s32);
+struct PmfObj_80136148 {
+    void m_call(s32, void*, s32);
+};
+
 struct KeyIter {
     f32* p;
 };
