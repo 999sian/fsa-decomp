@@ -52,8 +52,8 @@ extern "C" void fn_8005867C(void) {
     fn_8005845C();
 }
 
-extern "C" void fn_80058740(void*, int);
-extern "C" void fn_8005871C(void* p) {
+extern "C" s32 fn_80058740(s32, s32);
+extern "C" void fn_8005871C(s32 p) {
     fn_80058740(p, 0);
 }
 
