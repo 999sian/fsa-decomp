@@ -57,7 +57,7 @@ extern "C" void fn_8012A8C0(char* this_) {
 
 extern "C" void fn_8012A9A0(char* this_) {
     fn_8012A5EC(this_);
-    if (this_[0x404] == 0) {
+    if (*(u8*)(this_ + 0x404) == 0) {
         fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
         if (fn_803865B8(0)) {
             fn_80388EEC(0);
@@ -67,6 +67,9 @@ extern "C" void fn_8012A9A0(char* this_) {
     } else if (*(s32*)(this_ + 0x250) == 0) {
         fn_8011921C();
         fn_801183BC();
+        char* mgr = *(char**)(lbl_8053AB10 + 0x24);
+        mgr[0x17a] = 1;
+        mgr[0x179] = 0;
         fn_802D9FF4(fn_802D6A9C(), 0, 0);
         fn_80136798(lbl_8053AAF8, 0xd, 0);
         fn_80119468(fn_80119DD0(), 0, 1);
