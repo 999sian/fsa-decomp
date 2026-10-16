@@ -1927,6 +1927,9 @@ extern "C" void fn_801A5354(void) {}
 extern "C" void fn_801A5358(void) {
 }
 
+extern "C" void fn_801A535C(void) {
+}
+
 extern "C" int fn_801A5368()
 {
 	return 0;
