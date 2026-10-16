@@ -46,17 +46,19 @@ extern "C" void* fn_8003CE80(void* ptr, s16 param_2) {
 
 extern "C" void fn_80040120(void) {
     extern void* lbl_802BF0E8[];
-    if (lbl_802BF0E8[1] != nullptr) {
-        void** vtable = *(void***)lbl_802BF0E8[1];
+    register void* obj1 = lbl_802BF0E8[1];
+    if (obj1 != nullptr) {
+        register void** vtable = *(void***)obj1;
         void (*dtor)(void*, s16) = (void (*)(void*, s16))vtable[4];
-        dtor(lbl_802BF0E8[1], 1);
+        dtor(obj1, 1);
     }
     lbl_802BF0E8[1] = nullptr;
     
-    if (lbl_802BF0E8[2] != nullptr) {
-        void** vtable = *(void***)lbl_802BF0E8[2];
+    register void* obj2 = lbl_802BF0E8[2];
+    if (obj2 != nullptr) {
+        register void** vtable = *(void***)obj2;
         void (*dtor)(void*, s16) = (void (*)(void*, s16))vtable[4];
-        dtor(lbl_802BF0E8[2], 1);
+        dtor(obj2, 1);
     }
     lbl_802BF0E8[2] = nullptr;
 }
@@ -160,8 +162,8 @@ extern "C" void* fn_80040464(void* param_1, s16 param_2) {
 extern "C" void fn_800404E8(void) {
     extern void* lbl_802BF0F4[];
     if (lbl_802BF0F4[3] != nullptr) {
-        void** vtable = *(void***)lbl_802BF0F4[3];
-        void (*fn)(void*, s16) = (void (*)(void*, s16))vtable[4];
+        register void** vtable = *(void***)lbl_802BF0F4[3];
+        void (*fn)(void*, s16) = (void (*)((uInt)void*, s16))vtable[4];
         fn(lbl_802BF0F4[3], 1);
     }
     lbl_802BF0F4[3] = nullptr;
@@ -214,4 +216,6 @@ extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     lbl_802FEFB4[0] = (s16)(s32)d1;
     lbl_802FEFB4[1] = (s16)(s32)d2;
     lbl_802FEFB4[2] = (s16)(s32)d3;
+}
+32)d3;
 }
