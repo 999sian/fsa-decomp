@@ -222,8 +222,42 @@ extern "C" void fn_80136B1C(void* p, unsigned int q) {
     *(u32*)((u8*)p + 8) = b;
 }
 
+extern "C" void fn_80136EA0(void* p) {
+    extern void* lbl_80292A64[];
+    *(void**)p = lbl_80292BB4;
+    *(f64*)((u8*)p + 0x8) = *(f32*)&lbl_802FEAB0;
+    *(f64*)((u8*)p + 0x10) = *(f64*)((u8*)p + 0x8);
+    *(f64*)((u8*)p + 0x18) = *(f64*)((u8*)p + 0x8);
+    *(u8*)((u8*)p + 0x20) = 0;
+    *(u8*)((u8*)p + 0x21) = 0;
+    *(f64*)((u8*)p + 0x28) = *(f64*)((u8*)p + 0x8);
+    *(f64*)((u8*)p + 0x30) = *(f64*)((u8*)p + 0x8);
+    *(s32*)((u8*)p + 0x38) = 0;
+    *(s32*)((u8*)p + 0x3c) = 0;
+    *(s32*)((u8*)p + 0x40) = 0;
+    *(void**)p = lbl_80292A64;
+    *(s32*)((u8*)p + 0x44) = 0;
+    *(s32*)((u8*)p + 0x48) = 0;
+    *(f64*)((u8*)p + 0x50) = *(f32*)&lbl_802FEAB0;
+    *(s32*)((u8*)p + 0x58) = 0;
+}
+
 extern "C" int fn_80136F18(void) {
     return 4;
+}
+
+extern "C" void fn_80136F20(void* p, unsigned int q) {
+    unsigned int a = q;
+    unsigned int b = q;
+    if (q != 0) {
+        b = b + 0x40;
+    }
+    if (q != 0) {
+        a = q + 8;
+    }
+    *(u32*)p = 0;
+    *(u32*)((u8*)p + 4) = a;
+    *(u32*)((u8*)p + 8) = b;
 }
 
 extern "C" void fn_80136F50(void* p) {
