@@ -1,5 +1,6 @@
 #include "JSystem/JAudio/Interface/JAISoundParams.h"
 #include "JSystem/JAudio/Interface/JAISound.h"
+#include "JSystem/JAudio/Interface/JAISoundHandles.h"
 #include "JSystem/JAudio/System/JASDriver.h"
 #include "JSystem/JAudio/System/JASAudioReseter.h"
 #include "JSystem/JAudio/System/JASHeapCtrl.h"
