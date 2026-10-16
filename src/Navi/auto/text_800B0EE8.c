@@ -28,24 +28,24 @@ extern "C" void fn_800B96CC(u8* p) {
 }
 
 extern "C" void fn_800B96D8(char* p) {
-    if (*(u8*)(*(char**)(p + 0x1b0) + 0xb0) != 0 || *(u8*)(*(char**)(p + 0x1b4) + 0xb0) != 0) {
+    if (*(u8*)(*(char**)(p + 0x1b0) + (short)0xb0) != 0 || *(u8*)(*(char**)(p + 0x1b4) + 0xb0) != 0) {
+        register char* q = *(char**)(p + 0x1b8);
         *(s32*)(p + 0x1bc) += 1;
-        s32 n = *(s16*)(*(char**)(p + 0x1b8) + 6);
-        s32 c = *(s32*)(p + 0x1bc);
-        if (c >= n) {
-            *(s32*)(p + 0x1bc) = c - n;
+        register u32 c = *(s32*)(p + 0x1bc);
+        if (c >= *(s16*)(q + 6)) {
+            *(s32*)(p + 0x1bc) = c - *(s16*)(q + 6);
         }
         *(f32*)(*(char**)(p + 0x1b8) + 8) = *(s32*)(p + 0x1bc);
     }
 }
 
 extern "C" void fn_800B9754(char* self) {
-    if (*(unsigned char*)(*(char**)(self + 0x19c) + 0xb0) != 0) {
+    if (*(unsigned char*)(*(char**)(self + 0x19c) + (int)0xb0) != 0) {
         *(int*)(self + 0x1ac) += 1;
-        short n = *(short*)(*(char**)(self + 0x1a8) + 6);
-        int v = *(int*)(self + 0x1ac);
-        if (v >= n) {
-            *(int*)(self + 0x1ac) = v - n;
+        char* p = *(char**)(self + 0x1a8);
+        register unsigned int v = *(int*)(self + 0x1ac);
+        if (v >= *(short*)(p + 6)) {
+            *(int*)(self + 0x1ac) = v - *(short*)(p + 6);
         }
         *(float*)(*(char**)(self + 0x1a8) + 8) = (float)*(int*)(self + 0x1ac);
     }
@@ -69,10 +69,10 @@ extern "C" void fn_800B9800(u8* p) {
     (*(u8**)(p + 0x78))[0xb0] = 1;
     (*(u8**)(p + 0x68))[0xb0] = 1;
     (*(u8**)(p + 0x7c))[0xb0] = 1;
-    if (lbl_802B7CA0[((lbl_802BB0FC[0x10] >> 1) & 1) * 0xc + lbl_802313EC[p[0x387] + p[0x388] * 4] + 0x93c] == 0) {
-        (*(u8**)(p + p[0x37d] * 4 + 0x188))[0xb0] = 0;
+    if ((u8)lbl_802B7CA0[((lbl_802BB0FC[0x10] >> 1) & 1) * 0xc + ((u8(*)[4])lbl_802313EC)[p[0x388]][p[0x387]] + 0x93c] == 0) {
+        ((u8**)(p + 0x188))[p[0x37d]][0xb0] = 0;
     } else {
-        (*(u8**)(p + p[0x37d] * 4 + 0x188))[0xb0] = 1;
+        ((u8**)(p + 0x188))[p[0x37d]][0xb0] = 1;
     }
 }
 
