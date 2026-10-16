@@ -237,6 +237,7 @@ extern "C" void fn_801788C0(void);
 extern "C" void fn_80178990(void);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
+extern "C" void fn_8018BB74(void* self, void* dst, void* src);
 extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
 extern "C" void fn_8018BC30(void* self, void* dst, void* src);
 
