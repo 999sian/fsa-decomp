@@ -24,6 +24,11 @@ extern "C" void fn_803E4308(u8* param_1) {
     *(s32*)(param_1 + 0x1d4) = 4;
 }
 
+extern "C" void fn_803E4330(u8* param_1) {
+    *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
+    *(s32*)(param_1 + 0x1d4) = 3;
+}
+
 extern "C" void fn_803E4610(u8* param_1) {
     *(s32*)(param_1 + 0x1e0) = 0;
     *(s16*)(param_1 + 0x254) = 0;
