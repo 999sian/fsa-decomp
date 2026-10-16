@@ -111,6 +111,28 @@ extern "C" void fn_8043CEA0(u8* self) {
     self[0x10b] = 3;
 }
 
+extern "C" void fn_8043CF40(u8* self) {
+    f32 f31;
+    f32 f30;
+    u8 r;
+    s32 i;
+    if (self[0x10c] == 0) {
+        f31 = lbl_80543CC4;
+        f30 = lbl_80543C88;
+    } else {
+        f30 = lbl_80543CC8 - *(f32*)(*(u8**)(self + 0x64) + 0xc);
+        f31 = f30 - lbl_80543CC4;
+    }
+    r = fn_80402940(*(void**)(self + 0x40), 0x13, f31, f30, 0);
+    for (i = 1; i < 12; i++) {
+        fn_80402940(*(void**)(self + 0x40 + i * 4), 0x13, f31, f30, 0);
+    }
+    if (r) {
+        *(s16*)(self + 0x104) = 0xa0;
+        self[0x10b] = 2;
+    }
+}
+
 extern "C" f32 fn_8043D514(u8* param_1) {
     f32 ret = lbl_80543C88;
     if (param_1[0x10b] != 0 && param_1[0x10c] == 1) {
