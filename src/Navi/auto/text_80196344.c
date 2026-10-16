@@ -12,6 +12,11 @@ extern "C" void fn_801BC250(int, int);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80196344-0x801a537c (574 functions). split_file divides it into the game's real files.
+extern "C" u8 fn_801A602C(u32 p);
+extern "C" u16 fn_801A6050(u32 p);
+extern "C" void fn_801915BC(u8 a, void* b, f32 c, f32 d, f32 e, f32 f);
+extern "C" void fn_80191924(u8 a, u16 b, void* c);
+extern "C" void fn_801E012C(void);
 
 extern "C" void fn_801A7E24(int);
 extern "C" void fn_801A7D78(void* p);
@@ -581,6 +586,33 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019F1B8(int param_1) {
+    extern int* lbl_802FFA80;
+    u8 n = *(u8*)(param_1 + 0x34);
+    u32 i;
+    u8* p = (u8*)param_1;
+    for (i = 0; i < n; i++) {
+        u32 w = *(u32*)(p + 0x60) | ((i + 0x10) << 24);
+        u8* out;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = 0x61;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 24;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 16;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 8;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w;
+        p += 4;
+    }
+}
+
 extern "C" void fn_8019F520(int param_1) {
     extern int* lbl_802FFA80;
     u8 n = *(u8*)(param_1 + 0x20);
@@ -611,8 +643,8 @@ extern "C" void fn_8019F520(int param_1) {
 extern "C" void fn_8019F718(int param_1) {
     u32 pair[2];
     u32 word;
-    u8* p = (u8*)param_1;
     u32 i = 0;
+    u8* p = (u8*)param_1;
     do {
         u32 a = *(u32*)(p + 0xda);
         u32 b = *(u32*)(p + 0xde);
@@ -622,14 +654,14 @@ extern "C" void fn_8019F718(int param_1) {
         i++;
         p += 8;
     } while (i < 3);
-    u8* q = (u8*)param_1;
-    u32 j = 0;
+    i = 0;
+    p = (u8*)param_1;
     do {
-        word = *(u32*)(q + 0xfa);
-        fn_80191220(j, &word);
-        j++;
-        q += 4;
-    } while (j < 4);
+        word = *(u32*)(p + 0xfa);
+        fn_80191220(i, &word);
+        i++;
+        p += 4;
+    } while (i < 4);
 }
 
 extern "C" void fn_8019F8B8(int param_1) {
