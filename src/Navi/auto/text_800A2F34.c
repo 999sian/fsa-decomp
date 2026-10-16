@@ -38,9 +38,33 @@ extern "C" BOOL fn_800A3038(void)
     return TRUE;
 }
 
+extern "C" void fn_800A4764(void) {
+}
+
 extern "C" void fn_800A4BD4(u8* param_1) {
     char* base = (char*)lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0xfc, base + 0x100, param_1 + 8);
+}
+
+extern "C" void fn_800A4C10(u8* param_1) {
+    void* p = *(void**)(param_1 + 0xc);
+    if (p != nullptr) {
+        ((void (*)(void*, s32))((*(void***)p)[0x8 / 4]))(p, 1);
+    }
+    p = *(void**)(param_1 + 0x158);
+    if (p != nullptr) {
+        ((void (*)(void*, s32))((*(void***)p)[0x8 / 4]))(p, 1);
+    }
+    p = *(void**)(param_1 + 4);
+    ((void (*)(void*))((*(void***)p)[0x24 / 4]))(p);
+    if (*(s8*)(lbl_802C54FC + 4) >= 0) {
+        s32 n = *(s32*)(lbl_802C54FC + 8) - 1;
+        *(s32*)(lbl_802C54FC + 8) = n;
+        if (n == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            *(s8*)(lbl_802C54FC + 4) = -1;
+        }
+    }
 }
 
 extern "C" void fn_800A4EF0(void* param_1) {
