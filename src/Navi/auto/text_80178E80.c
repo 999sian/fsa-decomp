@@ -206,7 +206,7 @@ extern "C" void* fn_8018EAD4(void* ptr, s16 param_2) {
         *(void**)ptr = lbl_802996C0;
         if (ptr != nullptr) {
             *(void**)ptr = lbl_8029970C;
-            if ((char*)ptr + 0x20 != nullptr) {
+            if ((u32)ptr + 0x20 != 0) {
                 ((void**)ptr)[8] = lbl_80286A4C;
             }
             if (ptr != nullptr) {
