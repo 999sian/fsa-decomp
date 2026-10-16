@@ -484,8 +484,7 @@ extern "C" void fn_801780D4(u8* self, u8 flag)
     u8* it = *(u8**)(self + 0xdc);
     if (it != 0) it -= 0xc;
     while (it != 0) {
-        void* obj = *(void**)(it + 0xc);
-        ((void (*)(void*, u8))(*(void***)obj)[8])(obj, flag);
+        (*(Obj80178**)(it + 0xc))->setFlag(flag);
         it = *(u8**)(it + 0x18);
         if (it != 0) it -= 0xc;
     }
