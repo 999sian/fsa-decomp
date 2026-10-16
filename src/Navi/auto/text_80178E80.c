@@ -2,6 +2,12 @@
 
 #include "types.h"
 
+extern "C" void fn_80176550(void* self);
+extern "C" void fn_8016A39C(void* p, void* obj);
+extern "C" void fn_80178B74(void);
+extern "C" void fn_8017B07C(u32* self, int a, int b, int c);
+extern void* lbl_80298DF0[];
+
 extern "C" void fn_80177F0C(void);
 extern "C" void fn_80177E84(void);
 extern "C" void fn_801670D0(int, void*, int);
@@ -97,13 +103,14 @@ extern "C" void fn_8017A610(void* param_1, void* param_2) {
     u16 count;
     u16 i;
     u16 idx;
-    void** vtbl = *(void***)param_2;
-    ((void (*)(void*, void*))vtbl[3])(param_2, param_1);
-    count = *(u16*)((u8*)param_2 + 0x14) / 3;
+    void* obj = param_2;
+    void* fn = ((void**)*(void**)obj)[3];
+    ((void (*)(void*, void*))fn)(obj, param_1);
+    count = *(u16*)((u8*)obj + 0x14) / 3;
     for (i = 0; i < count; i++) {
-        idx = ((u16*)*(u32*)((u8*)param_2 + 0x34))[i];
+        idx = ((u16*)*(u32*)((u8*)obj + 0x34))[i];
         if (idx < *(u16*)((u8*)param_1 + 0x102)) {
-            fn_8016A1F8((u8*)*(u32*)((u8*)param_1 + 0x104) + idx * 0x88, param_2);
+            fn_8016A1F8((u8*)*(u32*)((u8*)param_1 + 0x104) + idx * 0x88, obj);
         }
     }
 }
