@@ -117,6 +117,15 @@ J3DTevSwapModeTable J3DMaterialFactory_v21::newTevSwapModeTable(int idx, int sta
     return J3DTevSwapModeTable(j3dDefaultTevSwapModeTable);
 }
 
+J3DAlphaComp J3DMaterialFactory_v21::newAlphaComp(int idx) const
+{
+    J3DMaterialInitData_v21* initData = &mInitData[mMatRemapTable[idx]];
+    if (initData->mAlphaCompareIndex != 0xffff) {
+        return J3DAlphaComp(mAlphaCompInfo[initData->mAlphaCompareIndex]);
+    }
+    return J3DAlphaComp(0xffff);
+}
+
 J3DZMode J3DMaterialFactory_v21::newZMode(int idx) const
 {
     u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[6];
