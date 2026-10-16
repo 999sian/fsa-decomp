@@ -10,15 +10,6 @@ struct J3DNBTScaleInfo {
     f32 mScale[3];
 };
 extern "C" J3DNBTScaleInfo j3dDefaultNBTScaleInfo;
-
-struct J3DNBTScale : public J3DNBTScaleInfo {
-    J3DNBTScale() {
-        mHasScale = j3dDefaultNBTScaleInfo.mHasScale;
-        mScale[0] = j3dDefaultNBTScaleInfo.mScale[0];
-        mScale[1] = j3dDefaultNBTScaleInfo.mScale[1];
-        mScale[2] = j3dDefaultNBTScaleInfo.mScale[2];
-    }
-};
 extern "C" char lbl_8049AA38[];
 extern "C" char __vt__10J3DPEBlock[];
 
@@ -122,19 +113,23 @@ extern "C" u8 fn_800CBB64(u8* param_1, s32 param_2) {
 }
 
 extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) {
-    J3DNBTScaleInfo local = j3dDefaultNBTScaleInfo;
+    J3DNBTScaleInfo local;
     u32 uVar4;
     u8* puVar5;
 
+    local.mHasScale = j3dDefaultNBTScaleInfo.mHasScale;
+    local.mScale[0] = j3dDefaultNBTScaleInfo.mScale[0];
+    local.mScale[1] = j3dDefaultNBTScaleInfo.mScale[1];
+    local.mScale[2] = j3dDefaultNBTScaleInfo.mScale[2];
     uVar4 = *(u16*)(*(u8**)(param_2 + 4) + (u32)*(u16*)(*(u8**)(param_2 + 8) + param_3 * 2) * 0x14c + 0x14a);
-    if (uVar4 == 0xffff) {
-        *param_1 = local;
-    } else {
+    if (uVar4 != 0xffff) {
         puVar5 = *(u8**)(param_2 + 0x74) + (uVar4 << 4);
         param_1->mHasScale = *puVar5;
         param_1->mScale[0] = *(f32*)(puVar5 + 4);
         param_1->mScale[1] = *(f32*)(puVar5 + 8);
         param_1->mScale[2] = *(f32*)(puVar5 + 0xc);
+    } else {
+        *param_1 = local;
     }
 }
 
