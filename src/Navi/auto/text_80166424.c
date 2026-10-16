@@ -402,9 +402,27 @@ extern "C" void* fn_80174AF8(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_80174B10(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern "C" void* fn_80174B40(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" void fn_801780D4(u8* self, u8 flag)
+{
+    self[0xb1] = flag;
+    u8* p = *(u8**)(self + 0xdc);
+    u8* it = p ? p - 0xc : 0;
+    while (it != 0) {
+        void* obj = *(void**)(it + 0xc);
+        ((void (*)(void*, u8))(*(void***)obj)[8])(obj, flag);
+        p = *(u8**)(it + 0x18);
+        it = p ? p - 0xc : 0;
+    }
 }
 
 extern "C" void* fn_80178424(u8* self)
