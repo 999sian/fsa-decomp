@@ -12,6 +12,20 @@ extern const f32 lbl_805429AC;
 extern const f32 lbl_805429B0;
 extern char lbl_804AD858[];
 extern char lbl_804A5958[];
+extern "C" void* fn_8035E8CC(void* p, short f) {
+    if (p) {
+        *(void**)p = lbl_804AD858;
+        if (p) {
+            *(void**)p = lbl_804A5958;
+            __dt__5ActorFv(p, 0);
+        }
+        if (f > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_8035E93C(void* this_) {
     char* p = (char*)this_;
     if (*(f32*)(p + 0x10) < lbl_805429A8) {
