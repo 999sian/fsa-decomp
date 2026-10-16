@@ -81,6 +81,21 @@ extern "C" u32 fn_800CBCDC(void) {
     return 0x54564E4C;
 }
 
+extern "C" char lbl_8049AAB4[];
+extern "C" char __vt__11J3DTevBlock[];
+extern "C" void** fn_800CBCE8(void** param_1, short param_2) {
+    if (param_1 != NULL) {
+        *param_1 = lbl_8049AAB4;
+        if (param_1 != NULL) {
+            *param_1 = __vt__11J3DTevBlock;
+        }
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_800CBD4C(void) {}
 
 extern "C" void fn_800CBD50(void) {}
