@@ -27,17 +27,9 @@ extern "C" void fn_80265D8C(char* p)
 
 extern "C" void fn_80265DB0(char* p)
 {
-    unsigned short v;
-    if (*(unsigned short*)(p + 0x3c4) == 0x122) {
-        *(unsigned char*)(p + 0xca1) = 0;
-        return;
-    }
-    v = *(unsigned short*)(p + 0x3c4);
-    if (v >= 0xb7 && v < 0xbd) {
-        *(unsigned char*)(p + 0xca1) = 0;
-        return;
-    }
-    if (*(int*)(p + 0x3b4) > 8) {
+    int n;
+    unsigned short v = *(unsigned short*)(p + 0x3c4);
+    if (v == 0x122 || (v >= 0xb7 && v < 0xbd) || *(int*)(p + 0x3b4) > 8) {
         *(unsigned char*)(p + 0xca1) = 0;
         return;
     }
@@ -46,7 +38,8 @@ extern "C" void fn_80265DB0(char* p)
         return;
     }
     if (fn_8025F448(p) != 0) {
-        if (*(int*)(p + 0xd70) < 0 || fn_8023DE58() != 8) {
+        n = *(int*)(p + 0xd70);
+        if (n < 0 || fn_8023DE58() != 8) {
             if (*(unsigned char*)(p + 0xca1) >= 8) {
                 *(unsigned char*)(p + 0xca1) -= 8;
                 return;
@@ -151,6 +144,43 @@ extern "C" void fn_80267384(char* p)
         *(short*)(p + 0x3c4) = 0x3e;
     } else {
         *(short*)(p + 0x3c4) = 0x3f;
+    }
+}
+
+extern "C" char* lbl_8053AAF8;
+extern "C" unsigned char Player_IsLinked(char* p);
+extern "C" void fn_80267470(char* p)
+{
+    if ((((unsigned char)lbl_8053AAF8[0x82]) & (unsigned char)(1 << *(int*)(p + 4))) == 0 && Player_IsLinked(p) == 0) {
+        *(short*)(p + 0x3c4) = 0x31d;
+    } else {
+        if (fn_802486A0(p) == 4) {
+            int a = fn_80248778(p);
+            int b = fn_80240888(p);
+            if (b != a) {
+                int t = *(int*)(p + 0x3dc);
+                if (t == 0) {
+                    *(short*)(p + 0x3c4) = 0x1bf;
+                } else if (t == 1) {
+                    *(short*)(p + 0x3c4) = 0x1c1;
+                } else if (t == 2) {
+                    *(short*)(p + 0x3c4) = 0x1c3;
+                } else {
+                    *(short*)(p + 0x3c4) = 0x1c3;
+                }
+                return;
+            }
+        }
+        int t = *(int*)(p + 0x3dc);
+        if (t == 0) {
+            *(short*)(p + 0x3c4) = 0x3c;
+        } else if (t == 1) {
+            *(short*)(p + 0x3c4) = 0x3d;
+        } else if (t == 2) {
+            *(short*)(p + 0x3c4) = 0x3e;
+        } else {
+            *(short*)(p + 0x3c4) = 0x3f;
+        }
     }
 }
 
