@@ -19,6 +19,12 @@ extern "C" void fn_803E2A0C(u8* param_1) {
     *(s32*)(param_1 + 0x1d4) = 0xd;
 }
 
+extern "C" void fn_803E3548(u8* param_1) {
+    *(s16*)(param_1 + 0x254) = 0;
+    *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
+    *(s32*)(param_1 + 0x1d4) = 10;
+}
+
 extern "C" void fn_803E3C80(u8* param_1) {
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
     *(s32*)(param_1 + 0x1d4) = 7;
