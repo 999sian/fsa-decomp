@@ -59,6 +59,25 @@ extern "C" BOOL fn_8007A190(void* param_1) {
     return TRUE;
 }
 
+extern "C" BOOL fn_8007A348(void* param_1) {
+    char* p = (char*)param_1;
+    if (p[0x445] != 0) {
+        s32* table = (s32*)lbl_80281950[*(s32*)(p + 0x3e4)];
+        s32 count = *(s32*)(p + 0x3ec);
+        if (count == 0) {
+            *(s32*)(p + 0x3e8) += 1;
+            fn_8007A404(param_1, (void*)table[*(s32*)(p + 0x3e8) * 2]);
+            *(s32*)(p + 0x3ec) = table[*(s32*)(p + 0x3e8) * 2 + 1];
+        } else if (count > 0) {
+            *(s32*)(p + 0x3ec) = count - 1;
+            fn_8007A404(param_1, (void*)table[*(s32*)(p + 0x3e8) * 2]);
+        } else {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_80078384(void);
 extern "C" void fn_8007BB2C(void) {
     fn_80078384();
