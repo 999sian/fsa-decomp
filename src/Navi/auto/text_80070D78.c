@@ -565,6 +565,11 @@ extern "C" void fn_800766B0(f32* out, u8* obj) {
     out[2] = *(f32*)(obj + 0x2cc);
 }
 
+extern "C" void fn_800766CC(u8* dst, u8* p) {
+    *(u32*)dst = *(u32*)(p + 0x2d0);
+    *(u16*)(dst + 4) = *(u16*)(p + 0x2d4);
+}
+
 extern "C" void fn_80075B60(void);
 extern "C" void fn_80077B10(void) {
     fn_80075B60();
