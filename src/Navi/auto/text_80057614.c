@@ -96,8 +96,8 @@ extern "C" void fn_8005E820(void* self) {
 }
 
 extern "C" void fn_8005E8B8(void* self, s32 a, s32 b, s32 c) {
-    void (**vtbl)(void*, s32, s32, s32, s32) = *(void (***)(void*, s32, s32, s32, s32))self;
-    vtbl[0xe8 / 4](self, 0, a, b, c);
+    void** vtbl = *(void***)self;
+    ((void (*)(void*, s32, s32, s32, s32))vtbl[0xe8 / 4])(self, 0, a, b, c);
 }
 
 extern "C" void fn_8005E8F8(void* self, u8 idx, f32 p1, f32 p2, s32 a, s32 b, s32 c) {
@@ -122,6 +122,9 @@ extern "C" void* fn_8005F864(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" void fn_8005F8A0(void) {
 }
 
 extern void* lbl_8027EB8C[];
