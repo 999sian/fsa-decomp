@@ -2000,6 +2000,10 @@ extern "C" void fn_800DF214(GXColor* param_1, int param_2, const GXColor* param_
     param_1[param_2 + 8] = *param_3;
 }
 
+extern "C" void fn_800DF240(GXColor* param_1, int param_2, const GXColor* param_3) {
+    param_1[param_2 + 8] = *param_3;
+}
+
 extern "C" int fn_800DF26C(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x20;
 }
