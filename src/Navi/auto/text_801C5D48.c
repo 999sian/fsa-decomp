@@ -67,10 +67,6 @@ extern "C" BOOL fn_801CA2DC(BOOL param_1)
 	return old;
 }
 
-BOOL fn_801CA33C(DVDCommandBlock* block, DVDCBCallback callback);
-void fn_801CA664(s32 result, DVDCommandBlock* block);
-void fn_801C12E4(OSThreadQueue* queue);
-extern OSThreadQueue __DVDThreadQueue;
 extern "C" s32 fn_801CA5B8(DVDCommandBlock* block)
 {
 	BOOL level;
