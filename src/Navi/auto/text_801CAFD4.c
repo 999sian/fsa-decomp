@@ -335,6 +335,10 @@ extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
 }
 
+extern "C" u16 fn_801D1324(void) {
+    return (*(vu16*)0xcc005004 >> 15) & 1;
+}
+
 extern "C" u32 fn_801D1334(void) {
     volatile u16* p = (volatile u16*)(0xCC000000 + 0x5000);
     return (p[2] << 16) | p[3];
