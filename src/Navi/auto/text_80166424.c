@@ -322,11 +322,13 @@ extern "C" s32 fn_80172BC0(s32 p, s32 i) {
 }
 
 extern "C" s32 fn_80172C00(s32 p, s32 i) {
-    return p + (i * 4 + 0x60);
+    i = i * 4;
+    return p + (i + 0x60);
 }
 
 extern "C" void fn_80172C2C(s32 p, s32 i, u8 v) {
-    *(u8*)(p + i + 0x74) = v;
+    p = p + i;
+    *(u8*)(p + 0x74) = v;
 }
 
 extern "C" u8 fn_80172C38(s32 p, s32 i) {
