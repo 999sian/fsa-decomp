@@ -31,8 +31,7 @@ static inline f32 s16ToF32(s16 v) {
     } u;
     u.w[0] = 0x43300000;
     u.w[1] = (u32)v ^ 0x80000000;
-    f32 r = u.d - lbl_80301C58;
-    return r;
+    return (f32)(u.d - lbl_80301C58);
 }
 extern "C" void* fn_80174BA0(void* base, u32 offset);
 extern "C" void* fn_8018C278(void* base, u32 offset);
