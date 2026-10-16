@@ -26,7 +26,3 @@ extern "C" void* fn_802CCA10(void* this_, short freeFlag) {
     }
     return this_;
 }
-struct GXColor_CC {
-    unsigned char r, g, b, a;
-    GXColor_CC(unsigned char r_, unsigned char g_, unsigned char b_, unsigned char a_) : r(r_), g(g_), b(b_), a(a_) {}
-};
