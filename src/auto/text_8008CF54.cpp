@@ -50,6 +50,13 @@ extern "C" void fn_8008D0D4(void)
     }
 }
 
+void JUTGamePad::init() {
+    PADSetSpec(5);
+    lbl_8053A92C = 3;
+    PADSetAnalogMode(3);
+    PADInit();
+}
+
 extern "C" void fn_8008D148(int param_1)
 {
   *(u8 *)(param_1 + 0x98) = 0;
