@@ -151,19 +151,20 @@ extern "C" float fn_801EA294(void) {
 }
 
 extern "C" int fn_801EA2B8(double f1_param) {
-    unsigned int high_word = *(unsigned int*)&f1_param;
-    unsigned int exponent = high_word & 0x7ff00000;
-    
-    if (exponent == 0x7ff00000) {
-        if ((high_word & 0xfffff) == 0 && *(unsigned int*)((unsigned char*)&f1_param + 4) == 0) {
-            return 2;
+    int high_word = *(int*)&f1_param;
+    int exponent = high_word & 0x7ff00000;
+
+    switch (exponent) {
+    case 0x7ff00000:
+        if ((high_word & 0xfffff) != 0 || *(int*)((unsigned char*)&f1_param + 4) != 0) {
+            return 1;
         }
-        return 1;
-    } else if (exponent == 0) {
-        if ((high_word & 0xfffff) == 0 && *(unsigned int*)((unsigned char*)&f1_param + 4) == 0) {
-            return 3;
+        return 2;
+    case 0:
+        if ((high_word & 0xfffff) != 0 || *(int*)((unsigned char*)&f1_param + 4) != 0) {
+            return 5;
         }
-        return 5;
+        return 3;
     }
     return 4;
 }
