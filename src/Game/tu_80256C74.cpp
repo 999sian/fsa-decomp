@@ -217,6 +217,9 @@ extern "C" void fn_802585F4(u8* p) {
     }
 }
 
+extern "C" void fn_802586CC(void) {
+}
+
 extern "C" void fn_80258880(u8* p) {
     U8(p, 0x458) = 0;
 }
