@@ -2,6 +2,14 @@
 
 
 extern "C" s32 OSResumeThread(void* subObj);
+
+class Unk8053ACB8 {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+};
+extern Unk8053ACB8* lbl_8053ACB8;
+
 extern "C" u8 fn_803006E8(u32 data) {
     u32 mask;
     int crc;
