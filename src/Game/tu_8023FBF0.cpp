@@ -1105,13 +1105,13 @@ BOOL fn_802454C0(char* p) {
     if (!ok) {
         ok2 = false;
     } else {
-        s32 mode;
         s32 e;
+        s32 d;
+        s32 mode;
         s32 i;
         s32 c;
-        s32 d;
         c = 0;
-        for (i = c; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
@@ -1214,7 +1214,7 @@ inline bool padActive3(char* p) {
     }
     return true;
 }
-inline s32 countSharingC(char* p) {
+  inline s32 countSharingC(char* p) {
     s32 c;
     s32 i;
     c = 0;
@@ -1229,8 +1229,9 @@ inline s32 countSharingC(char* p) {
                     c++;
                 }
             } else {
-                                  s32 me = S32(p, 0x4);
-                  if (me == fn_8022F3DC(i)) {
+                s32 me = S32(p, 0x4);
+                s32 other = fn_8022F3DC(i);
+                    if (me == other) {
                       c++;
                   }
               }
@@ -1564,6 +1565,7 @@ void fn_80247F58(char* p) {
         fn_80272160(p, 0, p + 0x8, 0x12);
     }
 }
+extern "C" f32 lbl_80540034;
 void fn_80248604(char* p) {
     if (U8(p, 0x1216) != 0) {
         return;
@@ -1572,7 +1574,18 @@ void fn_80248604(char* p) {
         fn_8024B2E0(p);
         return;
     }
-    resetTrail(p);
+    PlayerTrail* t = (PlayerTrail*)p;
+    int i = 0;
+    for (; i < 0x31; i++) {
+        t->pos[i].x = t->x;
+        t->pos[i].y = t->y;
+        t->pos[i].z = t->z;
+        if (t->z > 0.0f) {
+            t->onGround[i] = true;
+        } else {
+            t->onGround[i] = false;
+        }
+    }
 }
 BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
     if (S32(p, 0x1240) != 0) {
