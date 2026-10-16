@@ -583,13 +583,10 @@ extern "C" void fn_8019E310(int param_1)
 
 extern "C" void fn_8019F520(int param_1) {
     extern int* lbl_802FFA80;
-    u32 n = *(u8*)(param_1 + 0x20);
-    u32 i = 0;
+    u8 n = *(u8*)(param_1 + 0x20);
+    u32 i;
     u8* p = (u8*)param_1;
-    if (n == 0) {
-        return;
-    }
-    do {
+    for (i = 0; i < n; i++) {
         u32 w = *(u32*)(p + 0x80) | ((i + 0x10) << 24);
         u8* out;
         out = (u8*)lbl_802FFA80[2];
@@ -607,20 +604,40 @@ extern "C" void fn_8019F520(int param_1) {
         out = (u8*)lbl_802FFA80[2];
         lbl_802FFA80[2] = (int)(out + 1);
         *out = w;
-        i++;
         p += 4;
-    } while (--n != 0);
+    }
+}
+
+extern "C" void fn_8019F718(int param_1) {
+    u32 pair[2];
+    u32 word;
+    u8* p = (u8*)param_1;
+    u32 i = 0;
+    do {
+        u32 a = *(u32*)(p + 0xda);
+        u32 b = *(u32*)(p + 0xde);
+        pair[0] = a;
+        pair[1] = b;
+        fn_80191388(i + 1, pair);
+        i++;
+        p += 8;
+    } while (i < 3);
+    u8* q = (u8*)param_1;
+    u32 j = 0;
+    do {
+        word = *(u32*)(q + 0xfa);
+        fn_80191220(j, &word);
+        j++;
+        q += 4;
+    } while (j < 4);
 }
 
 extern "C" void fn_8019F8B8(int param_1) {
     extern int* lbl_802FFA80;
-    u32 n = *(u8*)(param_1 + 0x58);
-    u32 i = 0;
+    u8 n = *(u8*)(param_1 + 0x58);
+    u32 i;
     u8* p = (u8*)param_1;
-    if (n == 0) {
-        return;
-    }
-    do {
+    for (i = 0; i < n; i++) {
         u32 w = *(u32*)(p + 0x130) | ((i + 0x10) << 24);
         u8* out;
         out = (u8*)lbl_802FFA80[2];
@@ -638,9 +655,8 @@ extern "C" void fn_8019F8B8(int param_1) {
         out = (u8*)lbl_802FFA80[2];
         lbl_802FFA80[2] = (int)(out + 1);
         *out = w;
-        i++;
         p += 4;
-    } while (--n != 0);
+    }
 }
 
 extern "C" void fn_801A188C(NaviVObj* p, u32 flags) {
@@ -1145,9 +1161,9 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x21;
 }
 
-extern "C" void fn_801A3EF8(u8* param_1, u32 param_2, u8* param_3) {
-    u8 b0 = param_3[0];
+extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
     u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
     u8* p = param_1 + param_2 * 8;
     p[0x28] = (p[0x28] & ~0x0c) | ((b1 & 0xff) << 2);
     p[0x28] = (p[0x28] & ~0x03) | b0;
@@ -1415,7 +1431,7 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* dst = p + i * 8;
+    u8* dst = p + (i << 3);
     dst[0xf] = src[1];
     dst[0x10] = src[2];
     dst[0x11] = src[3];
@@ -1855,6 +1871,10 @@ extern "C" void fn_801A4FD4(void* p, u8* src) {
 
 extern "C" void fn_801A4FE0(void* p, u8 v) {
     *((u8*)p + 0xc) = v;
+}
+
+extern "C" u8 fn_801A4FE8(u8* param_1) {
+    return param_1[0xc];
 }
 
 extern "C" void fn_801A4FF0(u8* p, s32 i, u16* pv) {
