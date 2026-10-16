@@ -168,15 +168,11 @@ extern "C" u8* fn_80172A4C(u8* p, s32 i) {
 }
 
 extern "C" s32 fn_80172AB4(s32 p, u32 i) {
-    s32 ret;
-    if (i < 8) {
-        i = i * 4;
-        p = p + i;
-        ret = *(s32*)(p + 0xdc);
-    } else {
-        ret = 0;
+    if (i >= 8) {
+        return 0;
     }
-    return ret;
+    p = p + (i << 2);
+    return *(s32*)(p + 0xdc);
 }
 
 extern "C" s32 fn_80172AD4(s32 p, u32 i) {
