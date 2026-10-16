@@ -254,18 +254,23 @@ extern "C" u8 fn_801729AC(void* p) {
 extern "C" void fn_801729B4(u8* p, s32 idx, u8* src) {
     u8 a;
     u8 b;
+    u8 c;
+    u8 d;
+    u8 e;
+    u8 f;
     p = p + idx * 8;
-    a = src[2];
-    p[0x58] = src[1];
-    b = src[3];
-    p[0x59] = a;
-    a = src[5];
-    p[0x5a] = b;
-    b = src[6];
-    p[0x5c] = a;
-    a = src[7];
-    p[0x5d] = b;
-    p[0x5e] = a;
+    a = src[1];
+    b = src[2];
+    p[0x58] = a;
+    c = src[3];
+    p[0x59] = b;
+    d = src[5];
+    p[0x5a] = c;
+    e = src[6];
+    p[0x5c] = d;
+    f = src[7];
+    p[0x5d] = e;
+    p[0x5e] = f;
 }
 
 extern "C" s32 fn_801729F0(s32 p, s32 i) {
@@ -280,6 +285,10 @@ extern "C" void fn_80172A04(u8* p, s32 i, u8* src) {
 
 extern "C" void fn_80172A3C(u8* p1, s32 p2, u8* p3) {
     p1[p2 + 0xb8] = *p3;
+}
+
+extern "C" u8* fn_80172A4C(u8* p, s32 i) {
+    return p + i + 0xb8;
 }
 
 extern "C" s32 fn_80172AB4(s32 p, u32 i) {
