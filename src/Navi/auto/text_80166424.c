@@ -31,6 +31,18 @@ extern "C" void* lbl_80298644[];
 extern "C" u8 lbl_80298660[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8016B170(u32*, int);
+extern "C" void fn_801DE01C(u8, u8, u8);
+extern "C" void* lbl_8029839C[];
+extern "C" void* lbl_80298390[];
+
+struct UnkVObj_80167128 {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual s32 vf5(void*, s32);
+};
 
 struct Unk80174858Pair {
     u8 x;
