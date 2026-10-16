@@ -19,6 +19,7 @@ extern "C" s32 fn_80039A84(s32 param_1, s32 param_2, s32 param_3, s32 param_4, s
 extern "C" void* __vt__12JASVoiceBank[];
 extern "C" void* __vt__7JASBank[];
 extern void operator delete(void*);
+#pragma exceptions off
 extern "C" void** fn_80039ABC(void** self, short param_2)
 {
     if (self != 0) {
@@ -32,7 +33,7 @@ extern "C" void** fn_80039ABC(void** self, short param_2)
     }
     return self;
 }
-
+#pragma exceptions reset
 extern "C" u32 fn_80039B18(void)
 {
     return 0x564F4943;
