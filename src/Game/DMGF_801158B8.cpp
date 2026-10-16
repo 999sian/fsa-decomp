@@ -19,6 +19,30 @@ extern "C" void fn_801EE434(void*);
 extern "C" void dtor_801EB8CC(void*, s32);
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void __dl__FPv(void*);
+extern "C" s32 fn_80115A7C(char* p) {
+    f32 maxSq = lbl_8053C6D0;
+    f32 maxDist = lbl_8053C6DC;
+    JGeometry::TVec3<f32> a;
+    JGeometry::TVec3<f32> b;
+    for (s32 i = 0; i < 4; i++) {
+        a = *fn_8023E724(i);
+        fn_80115BC4(p, &a, &b);
+        a += b;
+        f32 dx = a.x - *(f32*)(p + 0xc);
+        f32 dy = a.y - *(f32*)(p + 0x10);
+        f32 d2 = dx * dx + dy * dy;
+        if (d2 > maxSq) {
+            if (std::sqrtf(d2) <= maxDist) {
+                fn_80230498(i, &a, *(s32*)(p + 0x280) + 0x3b5, (s32)lbl_8053C6E0, -0x80, -0x80, 1);
+            } else {
+                fn_8023DFF4(i, &a);
+            }
+        }
+    }
+    fn_801D1C18(p + 0x270);
+    return 1;
+}
+
 extern "C" s32 fn_801162B8(char* p) {
     switch (*(s32*)(p + 0x230)) {
     case 11:
@@ -29,6 +53,39 @@ extern "C" s32 fn_801162B8(char* p) {
 
 extern "C" s32 fn_801162D8(char* p) {
     return *(s32*)(p + 0x230);
+}
+
+extern "C" void fn_801162E0(void* this_) {
+    extern s32 lbl_804649A4[];
+    extern void* fn_8011921C(void);
+    extern void fn_80115F9C(void*, s32);
+
+    if (*(s32*)((char*)fn_8011921C() + 4) == 2) {
+        s32 v = *(s32*)((char*)fn_8011921C() + 8);
+        if (v == lbl_804649A4[1]) {
+            fn_80115F9C(this_, 1);
+        } else if (v == lbl_804649A4[2]) {
+            fn_80115F9C(this_, 2);
+        } else if (v == lbl_804649A4[3]) {
+            fn_80115F9C(this_, 3);
+        } else if (v == lbl_804649A4[4]) {
+            fn_80115F9C(this_, 4);
+        } else if (v == lbl_804649A4[5]) {
+            fn_80115F9C(this_, 5);
+        } else if (v == lbl_804649A4[6]) {
+            fn_80115F9C(this_, 6);
+        } else if (v == lbl_804649A4[7]) {
+            fn_80115F9C(this_, 7);
+        } else if (v == lbl_804649A4[8]) {
+            fn_80115F9C(this_, 8);
+        } else if (v == lbl_804649A4[9]) {
+            fn_80115F9C(this_, 9);
+        } else if (v == lbl_804649A4[10]) {
+            fn_80115F9C(this_, 10);
+        } else if (v == lbl_804649A4[11]) {
+            fn_80115F9C(this_, 11);
+        }
+    }
 }
 
 extern "C" char lbl_8049D930[];
