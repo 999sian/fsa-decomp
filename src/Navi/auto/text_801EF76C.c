@@ -55,14 +55,15 @@ extern "C" int gdev_cc_peek(void)
 {
 	u8 buf[1280];
 	int n = fn_801F0430();
-	if (n > 0) {
-		if (fn_801F03A4(buf, n) == 0) {
-			fn_801EFBB8(lbl_802FB6D8, buf, n);
-			return n;
-		}
+	if (n <= 0) {
+		return 0;
+	}
+	if (fn_801F03A4(buf, n) == 0) {
+		fn_801EFBB8(lbl_802FB6D8, buf, n);
+	} else {
 		return -0x2719;
 	}
-	return 0;
+	return n;
 }
 
 extern "C" DSError gdev_cc_post_stop(void)
