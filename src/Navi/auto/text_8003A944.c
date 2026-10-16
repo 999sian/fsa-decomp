@@ -138,6 +138,13 @@ extern "C" void fn_80047B58(void* dst, void* src);
 extern "C" void fn_80047144(void* dst, void* src);
 extern "C" void fn_80042638(void* dst, void* src, void* src2);
 extern "C" void* fn_801E0DB8(void* dst, void* src, void* src2, s16 size, s16 count);
+extern "C" void fn_8003ABDC(u32* param_1, u32 param_2, u32 param_3, u32 param_4, u32 param_5) {
+    param_1[0] = param_2;
+    param_1[1] = param_3;
+    param_1[2] = param_4;
+    param_1[3] = param_5;
+}
+
 extern "C" void fn_8003B920(VObj_8003B920* obj) {
     obj->m8();
 }
