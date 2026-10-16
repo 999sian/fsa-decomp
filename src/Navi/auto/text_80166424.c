@@ -150,6 +150,14 @@ extern "C" void fn_8017298C(u8* p, s32 i, u8 v) {
     p[i + 0xb0] = v;
 }
 
+extern "C" unsigned char fn_80172998(int param_1, int param_2) {
+    return *(unsigned char*)(param_1 + param_2 + 0xb0);
+}
+
+extern "C" void fn_801729A4(int param_1, unsigned char param_2) {
+    *(unsigned char*)(param_1 + 0x56) = param_2;
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
@@ -205,16 +213,19 @@ extern "C" void fn_801730A4(u8* param_1, int param_2, u8* param_3) {
     p[10] = uVar2;
 }
 
-extern "C" void fn_801730DC(u8* p, u32 i, s16* src)
+extern "C" void fn_801730DC(u8* p, s32 i, s16* src)
 {
-	s16 v0 = src[0];
-	s16 v1 = src[1];
-	s16 v2 = src[2];
-	s16 v3 = src[3];
+	s16 v0;
+	s16 v1;
+	s16 v2;
+	s16 v3;
 
-	p = p + (i << 3);
-	*(s16*)(p + 0xc) = v0;
+	p = p + i * 8;
+	v1 = src[1];
+	*(s16*)(p + 0xc) = src[0];
+	v2 = src[2];
 	*(s16*)(p + 0xe) = v1;
+	v3 = src[3];
 	*(s16*)(p + 0x10) = v2;
 	*(s16*)(p + 0x12) = v3;
 }
@@ -294,6 +305,22 @@ extern "C" void* fn_80174B88(void* base, u32 offset) {
 extern "C" void* fn_80174BB8(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+typedef void (*VFn_801780D4)(void*, unsigned char);
+typedef unsigned char (*VFn_80177F0C)(void*, void*);
+extern "C" void fn_801780D4(char* self, unsigned char v)
+{
+    char* n;
+    *(unsigned char*)(self + 0xb1) = v;
+    n = *(char**)(self + 0xdc);
+    n = n != 0 ? n - 0xc : 0;
+    while (n != 0) {
+        void* o = *(void**)(n + 0xc);
+        ((VFn_801780D4)(*(void***)o)[8])(o, v);
+        n = *(char**)(n + 0x18);
+        n = n != 0 ? n - 0xc : 0;
+    }
 }
 
 extern "C" void fn_80178DB0(void* param_1) {
