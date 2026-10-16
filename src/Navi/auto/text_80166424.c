@@ -1,4 +1,6 @@
 #include "types.h"
+extern "C" void fn_8015AB1C(void* ptr);
+
 
 class Obj80178 {
 public:
@@ -32,6 +34,21 @@ extern "C" void* fn_80166BD0(void* param_1, u8 param_2)
 		fn_80166C70(param_1);
 	}
 	return param_1;
+}
+
+extern void* lbl_8029839C[];
+extern void* lbl_80298390[];
+extern "C" void* fn_80167074(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029839C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80298390;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" void fn_80167CB8(void) {
