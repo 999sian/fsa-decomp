@@ -380,6 +380,23 @@ extern "C" void fn_800590D0(s32 param_1, s32* param_2, s32* param_3) {
     *param_3 = 0;
 }
 
+extern "C" float lbl_80300230;
+extern "C" void fn_80059290(void* p) {
+    unsigned char* q = (unsigned char*)p;
+    if (q == 0) {
+        return;
+    }
+    *(s32*)(q + 0x0) = 0;
+    *(s32*)(q + 0x4) = 0;
+    *(s16*)(q + 0x8) = 0;
+    q[0x12] = 0;
+    q[0x13] = 0;
+    *(s16*)(q + 0xa) = 0;
+    *(float*)(q + 0xc) = 0.0f;
+    q[0x14] = 0x40;
+    q[0x15] = 0;
+}
+
 extern "C" void fn_8005A480(void) {}
 
 extern "C" void fn_8005B450(void) {}
