@@ -412,6 +412,11 @@ extern "C" void* fn_80174B40(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_80174B58(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern "C" void fn_801780D4(u8* self, u8 flag)
 {
     self[0xb1] = flag;
