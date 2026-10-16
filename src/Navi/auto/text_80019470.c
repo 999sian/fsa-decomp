@@ -1365,6 +1365,29 @@ extern "C" f32 fn_8001F3AC(void)
     }
 }
 
+extern "C" void fn_8001F51C(void* param_1, f32* out) {
+    struct Ent { u8 pad[0x20]; u8* obj; u8 pad2[0x10]; };
+    struct Mgr { u8 pad[0x13c0]; s8 idx; u8 pad1[3]; Ent ents[1]; };
+    extern u8 lbl_802B7CA0[];
+    extern f32 lbl_802FFCC0;
+    Mgr* m = (Mgr*)lbl_802B7CA0;
+    u8* obj;
+    if ((int)lbl_802B7CA0[0x1418] != 0) {
+        obj = m->ents[m->idx].obj;
+    } else {
+        obj = 0;
+    }
+    if (obj == 0) {
+        f32 z = lbl_802FFCC0;
+        out[0] = z;
+        out[1] = z;
+        out[2] = z;
+    }
+    out[0] = *(f32*)(obj + 0xd8);
+    out[1] = *(f32*)(obj + 0xdc);
+    out[2] = *(f32*)(obj + 0xe0);
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
