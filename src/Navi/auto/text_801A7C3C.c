@@ -12,6 +12,32 @@ extern void* lbl_8029B49C[];
 // .text 0x801a7c3c-0x801ba678 (389 functions). split_file divides it into the game's real files.
 
 extern void* lbl_8029B220[];
+struct Src_801B9BBC {
+    u8 pad0[8];
+    u8 b8;
+    u8 b9;
+    s16 hA;
+    u16 hC;
+    u8 padE[6];
+    u32 w14;
+    u32 w18;
+    u32 w1C;
+    u32 w20;
+};
+struct Dst_801B9BBC {
+    u8 pad0[4];
+    u8 b4;
+    u8 pad5;
+    s16 h6;
+    f32 f8;
+    void* pC;
+    void* p10;
+    void* p14;
+    u8 pad18[6];
+    u16 h1E;
+    u32 w20;
+    void* p24;
+};
 typedef struct { u16 count; u16 offset; } Key_801ABEA8;
 typedef struct {
     u8 pad0[8];
@@ -57,6 +83,10 @@ extern "C" int fn_801B864C(void* param_1);
 extern "C" int fn_801B85B8(void* param_1, u16 param_2, void* param_3);
 extern "C" void* lbl_802FF700;
 extern "C" void fn_801A7C3C(Struct_801A7C3C* dst, const Struct_801A7C3C* src) {
+    *dst = *src;
+}
+
+extern "C" void fn_801A7D54(Blk_801A7D54* dst, Blk_801A7D54* src) {
     *dst = *src;
 }
 
