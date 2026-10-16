@@ -144,8 +144,8 @@ struct VObj_80180980 {
     virtual void vfD8(u8);
     virtual void vfDC(); virtual void vfE0(); virtual void vfE4(); virtual void vfE8(); virtual void vfEC();
     virtual void vfF0(); virtual void vfF4(); virtual void vfF8(); virtual void vfFC(); virtual void vf100(); virtual void vf104();
-    virtual void vf108();
-    virtual void vf10C(void*, f32, f32, f32, f32, f32, f32, f32, f32);
+    virtual void vf108(f32, f32, f32, f32, f32, f32, f32, f32);
+    virtual void vf10C(f32, f32, f32, f32, f32, f32, f32, f32);
 };
 
 struct VObj_80180920 {
