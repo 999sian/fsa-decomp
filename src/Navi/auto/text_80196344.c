@@ -1529,6 +1529,10 @@ extern "C" void* fn_801A4E10(u8* p) {
     return *(void**)(p + 0x48);
 }
 
+extern "C" void fn_801A4E20(u8* p, u32 v) {
+    *(u32*)(p + 0x48) = v;
+}
+
 extern void* lbl_8029AAB8[];
 extern "C" void* fn_801A4E28(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
