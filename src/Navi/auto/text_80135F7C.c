@@ -690,7 +690,7 @@ extern "C" It_80138B20 fn_80138B20(It_80138B20* a, It_80138B20* b, It_80138B20* 
     return fn_80138B7C(*a, *b, *c, d, t);
 }
 
-extern "C" void fn_80138DA8(void* p, It2_80138DA8 a, It2_80138DA8 b, It2_80138DA8 c, void* d) {
+extern "C" It2_80138DA8 fn_80138DA8(It2_80138DA8* a, It2_80138DA8* b, It2_80138DA8* c, void* d) {
 }
 
 extern void* lbl_80292974[];
