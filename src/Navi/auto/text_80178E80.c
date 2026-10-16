@@ -43,7 +43,8 @@ extern "C" void fn_8017A56C(void* self, void* obj) {
     u16 i;
     u8* p = (u8*)self;
     u8* q = (u8*)obj;
-    ((void (*)(void*, void*))((void**)(*(void**)obj))[0xc / 4])(obj, self);
+    void** vtbl = *(void***)obj;
+    ((void (*)(void*, void*))vtbl[0xc / 4])(obj, self);
     count = *(u16*)(q + 0x18);
     for (i = 0; i < count; i++) {
         u16 idx = ((u16*)*(u8**)(q + 0x1c))[i];
