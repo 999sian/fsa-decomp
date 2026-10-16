@@ -513,6 +513,11 @@ extern "C" void fn_80199280(void* param_1) {
     p[1] = 0;
 }
 
+extern "C" int fn_80199A18(void)
+{
+	return 0x69;
+}
+
 extern "C" int fn_80199A20(void)
 {
 	return 0x14f;
