@@ -1,7 +1,7 @@
 #include "types.h"
 
 struct FsaHeapUser {
-    virtual void m0() = 0;
+    virtual void m0(int) = 0;
     virtual void m1() = 0;
     virtual void m2(int) = 0;
 };
@@ -67,7 +67,7 @@ extern "C" void* fn_8044BCA4(u8* p, s16 param_2)
             oldHeap = sCurrentHeap__7JKRHeap;
             becomeCurrentHeap__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
             if (*(void**)(p + 4) != 0) {
-                (*(void (**)(void*, int))(**(u8***)(p + 4) + 8))(*(void**)(p + 4), 1);
+                ((FsaHeapUser*)*(void**)(p + 4))->m2(1);
             }
             *(void**)(p + 4) = 0;
             freeAll__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
@@ -77,7 +77,7 @@ extern "C" void* fn_8044BCA4(u8* p, s16 param_2)
             oldHeap = sCurrentHeap__7JKRHeap;
             becomeCurrentHeap__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
             if (*(void**)(p + 8) != 0) {
-                (*(void (**)(void*, int))(**(u8***)(p + 8) + 8))(*(void**)(p + 8), 1);
+                ((FsaHeapUser*)*(void**)(p + 8))->m2(1);
             }
             *(void**)(p + 8) = 0;
             freeAll__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
