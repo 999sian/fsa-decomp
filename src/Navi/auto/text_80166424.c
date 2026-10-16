@@ -68,6 +68,13 @@ extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8016AD04(void) {
+}
+
+extern "C" void fn_8017318C(void)
+{
+}
+
 extern "C" BOOL fn_80173190(void)
 {
     return TRUE;
