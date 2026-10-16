@@ -519,7 +519,6 @@ extern "C" void fn_8001F37C(void)
 
 extern "C" f32 fn_8001F3AC(void)
 {
-    extern void* lbl_802B7CA0;
     extern f32 lbl_802FFCC0;
     
     void* ptr = lbl_802B7CA0;
