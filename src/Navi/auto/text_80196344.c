@@ -530,6 +530,10 @@ extern "C" int fn_801A3DEC(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x62;
 }
 
+extern "C" void fn_801A3E50(u8* p, u8 v) {
+    p[0x20] = v;
+}
+
 extern "C" void fn_801A3E58(u8* p, u8* src) {
     p[0x20] = *src;
 }
