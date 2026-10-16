@@ -214,6 +214,15 @@ extern "C" void fn_8001AAFC(void) {
     ((void (*)(void))cTg_SingleCutFromTree__FP16create_tag_class)();
 }
 
+extern "C" void fn_80114C5C(void*, void*, void*);
+extern u8 lbl_80205648[];
+extern "C" void fn_8001B014(int param_1, void* param_2) {
+    int local[2];
+    local[0] = param_1;
+    local[1] = (int)param_2;
+    fn_80114C5C(lbl_80205648, (void*)fn_8011580C, local);
+}
+
 extern "C" void fn_8001B590(void) {
     cTg_SingleCut__FP16create_tag_class();
 }
