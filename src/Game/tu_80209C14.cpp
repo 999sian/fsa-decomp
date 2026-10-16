@@ -103,3 +103,37 @@ extern "C" s32 fn_8020A0E8(u8* this_) {
     return 0;
 }
 
+
+// Keep regional definitions that were present before source-tree consolidation.
+#if defined(VERSION_G4SJ01)
+extern "C" void fn_8020AE2C(void* param_1) {
+    f32 f1 = *(f32*)((u8*)param_1 + 0x24);
+    f32 f0 = *(f32*)((u8*)param_1 + 0xc);
+    f32 f3 = *(f32*)((u8*)param_1 + 0x28);
+    f32 f2 = *(f32*)((u8*)param_1 + 0x10);
+    *(f32*)((u8*)param_1 + 0x2c0) = f1 - f0;
+    *(f32*)((u8*)param_1 + 0x2c4) = f3 - f2;
+}
+
+extern "C" void* fn_801D0F40(void* this_);
+extern "C" float lbl_8053F964;
+extern "C" void fn_801D0F40(void* this_);
+extern "C" const f32 lbl_8053F964;
+extern "C" void* fn_8020B0B8(char* this_) {
+    fn_801D0F40(this_);
+    *(void**)this_ = lbl_804A5D60;
+    *(s32*)(this_ + 0x2a8) = -1;
+    *(s32*)(this_ + 0x2ac) = 0;
+    *(u8*)(this_ + 0x2b0) = 1;
+    *(u8*)(this_ + 0x2b1) = 0;
+    *(f32*)(this_ + 0x2b4) = lbl_8053F964;
+    *(f32*)(this_ + 0x2b8) = lbl_8053F964;
+    *(f32*)(this_ + 0x2bc) = lbl_8053F964;
+    *(f32*)(this_ + 0x2c0) = lbl_8053F964;
+    *(f32*)(this_ + 0x2c4) = lbl_8053F964;
+    *(f32*)(this_ + 0x2c8) = lbl_8053F964;
+    *(f32*)(this_ + 0x2cc) = lbl_8053F964;
+    return this_;
+}
+
+#endif
