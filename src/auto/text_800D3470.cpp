@@ -14,6 +14,33 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 
+struct Unk800DC290Src {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual void m14() = 0;
+    virtual void m15() = 0;
+    virtual u32 m16() = 0;
+    virtual void m17() = 0;
+    virtual u32* m18(int) = 0;
+    virtual void m19() = 0;
+    virtual void* m20(int) = 0;
+    virtual void m21() = 0;
+    virtual void m22() = 0;
+    virtual J3DNBTScaleInfo* m23() = 0;
+};
+
 static inline void setBits2_3(u8* p, u8 v) { *p = (*p & ~0xC) | (v << 2); }
 static inline void setBits0_1(u8* p, u8 v) { *p = (*p & ~0x3) | v; }
 
@@ -1397,6 +1424,39 @@ extern "C" void fn_800DBDB0(u8* self, Unk800DBCCCSrc* src) {
             dst[0x23] = c[3];
         }
         dst += 4;
+    }
+}
+
+extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
+    param_1[0x14] = param_2->m20();
+
+    u8* out = param_1;
+    for (int i = 0; i < 2; i++) {
+        u8* src = param_2->m14(i);
+        out[4] = src[0];
+        out[5] = src[1];
+        out[6] = src[2];
+        out[7] = src[3];
+        out += 4;
+    }
+
+    out = param_1;
+    for (int i = 0; i < 4; i++) {
+        u16* src = param_2->m23(i);
+        *(u16*)(out + 0x16) = *src;
+        out += 2;
+    }
+
+    out = param_1;
+    for (int i = 0; i < 2; i++) {
+        if (param_2->m17(i) != 0) {
+            u8* src = param_2->m17(i);
+            out[0xc] = src[0];
+            out[0xd] = src[1];
+            out[0xe] = src[2];
+            out[0xf] = src[3];
+        }
+        out += 4;
     }
 }
 
