@@ -56,6 +56,10 @@ extern "C" void* fn_8017B7E4(void* self, s16 param_2) {
     return self;
 }
 
+extern "C" u8 fn_80180B58(u8* self) {
+    return self[0x110];
+}
+
 extern "C" void fn_80177F0C(void);
 extern "C" void fn_80176550(void* self);
 extern "C" void fn_8018119C(void* self, s32 a, s32 b, s32 c, s32 d, s32 e);
