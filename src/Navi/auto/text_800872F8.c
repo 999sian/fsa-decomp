@@ -204,6 +204,8 @@ extern "C" void fn_80089420(void) {
 
 extern "C" void fn_8008962C(void) {}
 
+extern "C" void fn_80089630(void) {}
+
 extern "C" BOOL fn_80089850(void);
 extern "C" BOOL fn_80089850(void)
 {
