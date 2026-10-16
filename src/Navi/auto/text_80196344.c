@@ -542,6 +542,15 @@ extern "C" void fn_8019C810(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019C8BC(NaviVObj* p, u32 flags) {
+    if ((flags >> 8) & 0xf) {
+        p->vf8();
+        if (flags & 0x1000) {
+            p->vf9();
+        }
+    }
+}
+
 extern "C" void fn_801A598C(u32, u32);
 extern "C" void fn_8019C924(int param_1) {
     u8* p = (u8*)param_1;
