@@ -833,3 +833,7 @@ extern "C" void* fn_8015DA4C(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
+extern char lbl_80297240[];
+extern char lbl_80297250[];
+extern char lbl_802FE168[];
