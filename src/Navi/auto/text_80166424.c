@@ -119,6 +119,21 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
     return uVar1;
 }
 
+extern "C" void* fn_80167074(void* ptr, s16 param_2) {
+    extern void* lbl_8029839C[];
+    extern void* lbl_80298390[];
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029839C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80298390;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" s32 fn_801671B0(UnkVObj_801671B0* param_1, u32 param_2) {
     u32 size = param_1->vf5();
     u32 aligned = param_2 + size;
