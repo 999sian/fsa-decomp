@@ -1,5 +1,12 @@
 #include "types.h"
 
+extern "C" void fn_80178C9C(void*, void*);
+
+
+extern "C" void fn_80168280(void);
+extern "C" void fn_80167CB8(void) {
+    fn_80168280();
+}
 
 extern "C" int fn_8016997C()
 {
@@ -83,9 +90,14 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
     return self;
 }
 
+extern "C" int fn_80172EA4(int p, int index) {
+    return p + index * 4 + 0x44;
+}
+
 extern "C" u8 fn_80173180(int param_1, int param_2)
 {
-    return ((u8*)(param_1 + param_2))[0x45];
+    int addr = param_1 + param_2;
+    return ((u8*)addr)[0x45];
 }
 
 extern "C" void fn_8017318C(void)
@@ -99,13 +111,14 @@ extern "C" BOOL fn_80173190(void)
 
 extern "C" void fn_80173198(int param_1, int param_2, int param_3)
 {
-    u8* ptr = (u8*)(param_1 + param_2 * 8);
-    ptr[0x2d] = ((u8*)param_3)[1];
-    ptr[0x2e] = ((u8*)param_3)[2];
-    ptr[0x2f] = ((u8*)param_3)[3];
-    ptr[0x31] = ((u8*)param_3)[5];
-    ptr[0x32] = ((u8*)param_3)[6];
-    ptr[0x33] = ((u8*)param_3)[7];
+    u8* base = (u8*)(param_1 + param_2 * 8);
+    u8* src = (u8*)param_3;
+    base[0x2d] = src[1];
+    base[0x2e] = src[2];
+    base[0x2f] = src[3];
+    base[0x31] = src[5];
+    base[0x32] = src[6];
+    base[0x33] = src[7];
 }
 
 extern "C" int fn_8017334C()
@@ -143,6 +156,25 @@ extern "C" int fn_8017337C()
 	return 0;
 }
 
+extern "C" void fn_801789D0(int* param_1)
+{
+	int iVar1;
+
+	(*(void (**)(int*, int))(*param_1 + 0x60))(param_1, 0);
+	iVar1 = param_1[0x37];
+	if (iVar1 != 0) {
+		iVar1 = iVar1 - 0xc;
+	}
+	while (iVar1 != 0) {
+		int* obj = *(int**)(iVar1 + 0xc);
+		(*(void (**)(int*))(*obj + 0x54))(obj);
+		iVar1 = *(int*)(iVar1 + 0x18);
+		if (iVar1 != 0) {
+			iVar1 = iVar1 - 0xc;
+		}
+	}
+}
+
 extern "C" void fn_80178B74(void* param_1, void* param_2) {
     (*(void (**)(void*))(*(u8**)param_1 + 0x8c))(param_1);
     u8* it = *(u8**)((u8*)param_1 + 0xdc);
@@ -163,7 +195,6 @@ extern "C" void fn_80178DA4(void* param_1)
 {
 }
 
-extern "C" void fn_80178C9C(int, int);
 extern "C" u32 fn_80178E08(void) { return 0x10; }
 
 extern "C" void fn_80178E5C(void* param_1)
