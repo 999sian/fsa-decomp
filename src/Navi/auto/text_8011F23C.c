@@ -156,6 +156,17 @@ extern "C" void fn_801204F0(void) {
     }
 }
 
+extern "C" u32 fn_801CC930(void);
+extern "C" void fn_801BDE1C(void* p, u32 a, u32 b);
+extern "C" void fn_80120578(void* arg)
+{
+    void (*cb)(void*) = *(void (**)(void*))((u8*)lbl_802FF328 + 0x28);
+    if (cb != 0) {
+        cb(arg);
+    }
+    fn_801BDE1C((u8*)lbl_802FF328 + 0x38, fn_801CC930(), 0);
+}
+
 extern "C" void fn_8012063C(void)
 {
 }
