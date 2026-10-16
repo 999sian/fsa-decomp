@@ -955,6 +955,31 @@ extern "C" int fn_80171640(u8* p, u32 idx, void* val)
     return 1;
 }
 
+extern "C" int fn_80171900(u8* p, void* src)
+{
+    void* obj;
+    DtorVObj_80166424* old;
+    if (src == 0) {
+        return 0;
+    }
+    obj = fn_8015A90C(0x70);
+    if (obj != 0) {
+        obj = fn_80119904(obj, src, 0);
+    }
+    if (obj == 0) {
+        return 0;
+    }
+    if (p[0x1b1]) {
+        old = *(DtorVObj_80166424**)(p + 0x1ac);
+        if (old != 0) {
+            old->Destroy(1);
+        }
+    }
+    *(void**)(p + 0x1ac) = obj;
+    p[0x1b1] = 1;
+    return 1;
+}
+
 #pragma pop
 extern "C" int fn_801719B4(u8* p, DtorVObj_80166424* obj) {
     DtorVObj_80166424* old;
@@ -1141,6 +1166,14 @@ extern "C" s32 fn_80172C90(s32 param_1, s32 param_2) {
     return param_1 + param_2 * 8 + 0x3f;
 }
 
+extern "C" void fn_80172CA4(u8* param_1, s32 param_2, u8* param_3) {
+    u8* p = param_1 + param_2 * 8;
+    u8 a = param_3[0];
+    u8 b = param_3[1];
+    p[0x46] = (p[0x46] & 0xf3) | (b << 2);
+    p[0x46] = (p[0x46] & 0xfc) | a;
+}
+
 extern "C" void fn_80172CDC(u8* p, s32 i, u8* src) {
     p[i + 0x78] = *src;
 }
@@ -1169,6 +1202,16 @@ extern "C" u8 fn_80172EDC(u8* p, s32 i) { return *(p + i + 0x56); }
 
 extern "C" void fn_80172EE8(u8* p, u8 v) {
     p[0x32] = v;
+}
+
+extern "C" void fn_80172EF8(u8* param_1, s32 param_2, u8* param_3) {
+    u8* p = param_1 + param_2 * 8;
+    p[0x34] = param_3[1];
+    p[0x35] = param_3[2];
+    p[0x36] = param_3[3];
+    p[0x38] = param_3[5];
+    p[0x39] = param_3[6];
+    p[0x3a] = param_3[7];
 }
 
 extern "C" void fn_80172FA0(u8* p, s32 i, u32* src)
