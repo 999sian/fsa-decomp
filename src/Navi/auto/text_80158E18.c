@@ -1,4 +1,15 @@
 #include "types.h"
+struct VObj_80088CF8 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+};
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80158e18-0x8015db8c (138 functions). split_file divides it into the game's real files.
 
@@ -275,6 +286,10 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
 
 extern "C" void fn_8015D030(void) {
     fn_80159DB4();
+}
+
+extern "C" void fn_8015D474(VObj_80088CF8* obj) {
+    obj->m1();
 }
 
 extern "C" int fn_8015DA14()
