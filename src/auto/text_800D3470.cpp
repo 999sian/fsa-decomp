@@ -729,6 +729,32 @@ extern "C" void fn_800D9E3C(void* p) {
     DCStoreRange(saved, (u32)(__GDCurrentDL->pDisplayListData - saved));
 }
 
+extern "C" void fn_800D9F10(void* p) {
+    u8* saved;
+    u8* addr;
+    u32 byteCount;
+    u32 i;
+
+    byteCount = 0;
+    addr = (u8*)p;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
+    saved = __GDCurrentDL->pDisplayListData;
+
+    for (i = 0; i < 8; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + (*(u32*)((u8*)p + 4) + byteCount);
+            patchTexNo_PtrToIdx(i, *(const u16*)(addr + 8));
+            byteCount += 0x14;
+            if (((u8*)(*(u32*)((u8*)j3dSys.mTexture + 4)))[(*(u16*)(addr + 8) << 5) + 8] == 1) {
+                byteCount += 0x23;
+            }
+        }
+        addr += 2;
+    }
+
+    DCStoreRange(saved, (u32)(__GDCurrentDL->pDisplayListData - saved));
+}
+
 extern "C" u8 isTexNoReg__FPv(void*);
 extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
@@ -1130,19 +1156,18 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 }
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
-    int off = param_2 << 3;
-    u8 *dst = (u8 *)(param_1 + off);
     u8 v1 = param_3[1];
-    dst[0x5a] = v1;
+    u8 *dst = (u8 *)(param_1 + param_2 * 8);
     u8 v2 = param_3[2];
-    dst[0x5b] = v2;
+    dst[0x5a] = v1;
     u8 v3 = param_3[3];
-    dst[0x5c] = v3;
+    dst[0x5b] = v2;
     u8 v5 = param_3[5];
-    dst[0x5e] = v5;
+    dst[0x5c] = v3;
     u8 v6 = param_3[6];
-    dst[0x5f] = v6;
+    dst[0x5e] = v5;
     u8 v7 = param_3[7];
+    dst[0x5f] = v6;
     dst[0x60] = v7;
 }
 
@@ -1481,13 +1506,12 @@ extern "C" u8 fn_800DE648(int param_1) {
 
 extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
-    u8 t;
-    t = src[0].g; p[0x36] = t;
-    t = src[0].b; p[0x37] = t;
-    t = src[0].a; p[0x38] = t;
-    t = src[1].g; p[0x3a] = t;
-    t = src[1].b; p[0x3b] = t;
-    t = src[1].a; p[0x3c] = t;
+    p[0x36] = src[0].g;
+    p[0x37] = src[0].b;
+    p[0x38] = src[0].a;
+    p[0x3a] = src[1].g;
+    p[0x3b] = src[1].b;
+    p[0x3c] = src[1].a;
 }
 
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
