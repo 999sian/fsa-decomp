@@ -10,6 +10,16 @@ extern "C" u8 fn_8020609C(u8* p);
 extern "C" u8 fn_801F2618(u8* p, u8* q, u8 c);
 extern "C" u8 fn_801F2DB4(u8* p, u32 a, u32 b, u32 c);
 extern "C" void fn_80205E0C(u8* p, s32 n);
+extern "C" u8 fn_80206C18(u8* p) {
+    u8 ret = 0;
+    if (!fn_8020609C(p) && !(*(u32*)(p + 0x230) & 0x1000) &&
+        *(f32*)(p + 0x88) - *(f32*)(p + 0x80) > lbl_8053F8AC &&
+        *(f32*)(p + 0x8c) - *(f32*)(p + 0x84) > lbl_8053F8AC) {
+        ret = fn_801F2618(p, p + 0x264, lbl_8053EFC0);
+    }
+    return ret;
+}
+
 extern "C" u8 fn_80207004(u8* p) {
     u8 ret = 0;
     if (p[0xc4] == 0 && *(s32*)(p + 0x248) != 3 && *(s32*)(p + 0x248) != 4 &&
