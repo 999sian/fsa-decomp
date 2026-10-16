@@ -32,6 +32,20 @@ extern "C" void fn_8012A8C0(char* this_) {
     } while (i < 6);
 }
 
+extern "C" void fn_8012B02C(char* this_) {
+    fn_8012A5EC(this_);
+    fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+    if (fn_803865B8(0)) {
+        fn_80388EEC(0);
+        fn_8011921C();
+        fn_801183BC();
+        *(s32*)(this_ + 0x250) = 0x604;
+        ++*(s32*)(this_ + 0x230);
+        *(f32*)(this_ + 0x244) = (*(f32*)(this_ + 0x23c) - (154.0f + *(f32*)(this_ + 0x3f4))) / 270.0f;
+        *(f32*)(this_ + 0x24c) = (*(f32*)(this_ + 0x248) - 186.0f) / 270.0f;
+    }
+}
+
 extern "C" void fn_8012B0D8(char* this_) {
     u8 result = fn_8012A5EC(this_);
     if (*(f32*)(this_ + 0x23c) == 260.0f + *(f32*)(this_ + 0x3f4) &&
