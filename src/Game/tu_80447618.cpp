@@ -1,4 +1,8 @@
 #include "types.h"
+struct fn_80447190_Obj {
+    virtual void Release(int);
+};
+
 
 struct fn_80447B34_Obj {
     virtual void Release(int);
@@ -199,12 +203,12 @@ extern "C" void* fn_80447B34(void* param_1, short param_2)
     if (result != 0) {
         *(void**)result = (void*)lbl_804B1C20;
 
-        if (((fn_80447B34_Obj**)result)[1] != 0) {
-            ((fn_80447B34_Obj**)result)[1]->Release(1);
+        if (((fn_80447190_Obj**)result)[1] != 0) {
+            ((fn_80447190_Obj**)result)[1]->Release(1);
         }
-        ((fn_80447B34_Obj**)result)[1] = 0;
+        ((fn_80447190_Obj**)result)[1] = 0;
 
-        fn_80447B34_Obj** ptr = (fn_80447B34_Obj**)result;
+        fn_80447190_Obj** ptr = (fn_80447190_Obj**)result;
         int i = 0;
         do {
             if (ptr[2] != 0) {
@@ -238,11 +242,13 @@ extern "C" Obj80447C30* fn_80447C30(Obj80447C30* self) {
         PaneCtrl* p = (PaneCtrl*)operator new(0x2c);
         if (p) p->vt = &lbl_804AF86C;
         self->a[i] = p;
-        fn_80402F04(self->a[i], self->screen->search(lbl_80490410[i].tag0));
+        u64 tag0 = lbl_80490410[i].tag0;
+        fn_80402F04(self->a[i], self->screen->search(tag0));
         p = (PaneCtrl*)operator new(0x2c);
         if (p) p->vt = &lbl_804AF86C;
         self->b[i] = p;
-        fn_80402F04(self->b[i], self->screen->search(lbl_80490410[i].tag1));
+        u64 tag1 = lbl_80490410[i].tag1;
+        fn_80402F04(self->b[i], self->screen->search(tag1));
     }
     self->f28 = 0;
     self->f29 = 0;
