@@ -292,6 +292,10 @@ extern "C" void fn_80172A5C(u8* p, s32 i, u32* src) {
     ((u32*)(p + 0xbc))[i] = *src;
 }
 
+extern "C" s32 fn_80172A70(s32 p, s32 i) {
+    return p + i * 4 + 0xbc;
+}
+
 extern "C" s32 fn_80172AB4(s32 p, u32 i) {
     if (i >= 8) {
         return 0;
