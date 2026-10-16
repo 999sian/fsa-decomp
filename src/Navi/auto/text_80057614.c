@@ -42,6 +42,33 @@ extern "C" void fn_8005871C(void* p) {
     fn_80058740(p, 0);
 }
 
+extern "C" s32 fn_80058C08(s32 idx) {
+    u8* p = lbl_8026D4BC + idx * 0xc;
+    if (fn_80058D70(idx) != 0) {
+        return (p[1] << 3) + 0x4000;
+    }
+    return 0;
+}
+
+extern "C" void fn_80058C5C(void) {
+    u8* p = lbl_802C05F0;
+    s32 i;
+    for (i = 0; i < 0x10; i++) {
+        fn_80059290(p);
+        p[0x16] = i;
+        p += 0x18;
+    }
+}
+
+extern "C" void fn_80058CB0(void) {
+    u8* p = lbl_802C05F0;
+    s32 i;
+    for (i = 0; i < 0x10; i++) {
+        fn_800592CC(p);
+        p += 0x18;
+    }
+}
+
 extern "C" void fn_800595FC(void);
 extern "C" void fn_80058D50(void) {
     fn_800595FC();
