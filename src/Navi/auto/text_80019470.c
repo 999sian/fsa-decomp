@@ -627,6 +627,10 @@ extern "C" s32 fn_8001B780(void* param_1) {
     return 0;
 }
 
+extern "C" void fn_8001B7E8(void) {
+    fn_80114C5C(lbl_80205658, (void*)fn_8001B6AC, (void*)fn_8001B780);
+}
+
 extern "C" int fn_8001BBBC(short* param_1) {
     return (int)*param_1;
 }
