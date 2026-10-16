@@ -31,6 +31,18 @@ extern "C" int fn_801E30AC(int param_1) {
     }
     return result;
 }
+
+extern unsigned char lbl_8029EB18[];
+extern "C" int fn_801E30E8(int param_1) {
+    register int result;
+    if (param_1 == -1) {
+        result = -1;
+    } else {
+        result = lbl_8029EB18[(unsigned char)param_1];
+    }
+    return result;
+}
+
 #pragma pop
 extern "C" unsigned char fn_801E3124(unsigned int param_1) {
     return lbl_8029EA18[param_1 & 0xff] & 0x80;
