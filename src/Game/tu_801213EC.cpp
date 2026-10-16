@@ -101,6 +101,10 @@ void* __dt__5ActorFv(void*, s32);
 void __dl__FPv(void*);
 void* __ct__5ActorFv(void*);
 void fn_801D267C(void*);
+void fn_8022FEB8(void*, s32, void*, s32, s32);
+s32 fn_8022FD8C(void*);
+u8 fn_802300EC(void);
+u8 fn_8038AD24(s32, u16, void*, s32, GameLowVec, s32);
 
 extern u8 lbl_8053AAA0;
 extern void* lbl_8053AAF8;
@@ -402,10 +406,12 @@ extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   *b = lbl_8053C9B4;
   s32 idx = *out;
   s32 sel = idx;
-  if (idx >= 0 && idx < 4) {
-    for (s32 i = 0; i < 4; ++i) {
-      if (fn_8022E438(i, idx)) {
-        sel = i;
+  if (idx >= 0) {
+    if (idx < 4) {
+      for (s32 i = 0; i < 4; ++i) {
+        if (fn_8022E438(i, idx)) {
+          sel = i;
+        }
       }
     }
   }
@@ -454,29 +460,29 @@ extern "C" void fn_80122D38(u8* self, f32* x, f32* y, s32* player) {
 }
 
 extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
-    f32 f31 = lbl_8053C9B4;
-    f32 f30;
+    f32 t;
+    f32 offset = lbl_8053C9B4;
 
-    if (((CompanionCalls*)self)->v49()) {
-        f31 = lbl_8053C9BC;
+    if (((CompanionCalls*)self)->v47()) {
+        offset = lbl_8053C9BC;
     }
-    f30 = lbl_8053C9C4 * (f32)(fn_8022E970(*player) - 1) - lbl_8053C9C4;
+    t = lbl_8053C9C4 * (f32)(fn_8022E970(*player) - 1) - lbl_8053C9C4;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = lbl_8053C9B8;
-        *y = lbl_8053C9BC * f30 + f31;
+        *y = lbl_8053C9BC * t + offset;
         break;
     case 1:
         *x = lbl_8053C9BC;
-        *y = lbl_8053C9BC * f30 + f31;
+        *y = lbl_8053C9BC * t + offset;
         break;
     case 2:
         *x = lbl_8053C9B8;
-        *y = lbl_8053C9BC * f30 + f31;
+        *y = lbl_8053C9BC * t + offset;
         break;
     case 3:
         *x = lbl_8053C9B8;
-        *y = lbl_8053C9BC * f30 + f31;
+        *y = lbl_8053C9BC * t + offset;
         break;
     }
 }
