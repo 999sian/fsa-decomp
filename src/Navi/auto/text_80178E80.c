@@ -16,7 +16,7 @@ struct VObj_80189BD8 {
     virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
     virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29();
     virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
-    virtual void v35(); virtual void v36(); virtual void v37();
+    virtual void v35();
 };
 
 struct VObj_80183C4C {
@@ -1239,9 +1239,9 @@ extern "C" s32 fn_80189FDC(void* self, s32* param_2) {
     if (fn_8018A318(self, &local_14, &local_10) == 0) {
         return 0;
     }
-    s32 local_18 = local_10;
     s32 local_c = *param_2;
-    return ((VObj_80189FDC*)self)->vfAC(&local_c, &local_18);
+    s32 local_18 = local_10;
+    return ((s32 (*)(void*, s32*, s32*))(*(void***)self)[0xac / 4])(self, &local_c, &local_18);
 }
 
 extern "C" int fn_8018A064(void* self, s32* param_2) {
