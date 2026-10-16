@@ -123,6 +123,10 @@ extern "C" void fn_801204E4(void) {
     lbl_802FF334 = 0;
 }
 
+extern "C" void fn_8012063C(void)
+{
+}
+
 extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80290ACC;
