@@ -84,16 +84,30 @@ extern "C" void fn_80120F38(int param_1)
 extern "C" s32 fn_80121040(void* p)
 {
 	s32 val = *(s32*)((u8*)p + 0x33c);
-	if (val != 8) {
-		if (val < 8) {
-			if (val > 6) {
-				return 1;
-			}
-		} else if (val < 0xd) {
+	if (val == 7) {
+		return 0;
+	}
+	if (val < 7) {
+		if (val > 6) {
 			return 1;
 		}
+	} else if (val < 0xd) {
+		return 1;
 	}
 	return 0;
+}
+
+extern u8 lbl_8049DF78[];
+extern "C" void fn_80124740(void*, s32);
+extern "C" void* fn_80121104(void* p, s16 flag) {
+    if (p != 0) {
+        *(u8**)p = lbl_8049DF78;
+        fn_80124740(p, 0);
+        if (flag > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
 }
 
 extern "C" s32 fn_8011FFB8(void)
