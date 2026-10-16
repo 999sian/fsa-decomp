@@ -1141,11 +1141,15 @@ extern "C" void fn_801820F4(void) {
 
 extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     f32 pos[4];
-    u8 buf[52];
-    pos[0] = *(f32*)(self + 0x20) + f1;
-    pos[1] = *(f32*)(self + 0x24) + f2;
-    pos[2] = *(f32*)(self + 0x28) + f1;
-    pos[3] = *(f32*)(self + 0x2c) + f2;
+    u8 buf[56];
+    pos[0] = *(f32*)(self + 0x20);
+    pos[1] = *(f32*)(self + 0x24);
+    pos[2] = *(f32*)(self + 0x28);
+    pos[3] = *(f32*)(self + 0x2c);
+    pos[0] += f1;
+    pos[1] += f2;
+    pos[2] += f1;
+    pos[3] += f2;
     fn_801C5DA8(param_2, self + 0x80, buf);
     fn_801DF2A4(buf, 0);
     fn_80182764(self, pos, self + 0x114);
@@ -1158,10 +1162,8 @@ extern "C" s32 fn_80183BC4(u32* self, s32* param_2) {
     if (fn_80183FC8((s32)self, &local_14, &local_10) == 0) {
         return 0;
     }
-    s32 local_c;
-    s32 local_8;
-    local_8 = local_10;
-    local_c = *param_2;
+    s32 local_c = *param_2;
+    s32 local_8 = local_10;
     return ((VObj_80183C4C*)self)->vfA8(&local_c, &local_8);
 }
 
@@ -1944,5 +1946,25 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
         u16 len = *(u16*)(table + param_2 * 4 + 2);
         *param_3 = (*(u8**)((u8*)self + 0x18))[base + len - 1];
     }
+}
+
+extern void* lbl_802997A4[];
+extern void* lbl_80286A1C[];
+extern u8 lbl_802FE624[];
+extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void* fn_8018EC78(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802997A4;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80286A1C;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80286A30;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
