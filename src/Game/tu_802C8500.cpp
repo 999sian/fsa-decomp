@@ -1,5 +1,12 @@
 #include "Game/esd/types.h"
 
+extern "C" void* fn_802D6A9C(void);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F78F4(void* mgr, u32 tag, s32 idx);
+extern "C" u8* fn_801F666C(void* mgr, s32 idx);
+extern "C" u8 fn_802C1970(u8* p, s32 room, void* pos);
+extern "C" void fn_802C2B64(u8* p);
+extern const f32 lbl_80540D58;
 
 extern "C" s32 fn_802C8500(f32 a, f32 b, f32 c) {
     f32 d = a - b;
