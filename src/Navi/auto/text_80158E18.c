@@ -117,8 +117,24 @@ extern "C" void fn_80159BB4(VObj_8003B920* obj) {
     obj->m6();
 }
 
-extern "C" void fn_80159C40(VObj_80088CF8* obj) {
-    obj->m7();
+extern "C" void* fn_80159C40(void* p, u32 size, u32 align);
+extern "C" void* fn_80159BE0(u32 size, u32 align, void* p) {
+    if (p != 0) {
+        return fn_80159C40(p, size, align);
+    }
+    if (lbl_802FF544 != 0) {
+        return fn_80159C40((void*)lbl_802FF544, size, align);
+    }
+    return 0;
+}
+
+extern "C" void* fn_80159C40(void* p, u32 size, u32 align) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6();
+        virtual void* v7(u32, u32);
+    };
+    return ((Obj*)p)->v7(size, align);
 }
 
 extern "C" void fn_80159CB4(VObj_8003B920* obj) {
@@ -453,6 +469,24 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" void fn_8015CD08(unsigned char* p) {
+    unsigned char* q;
+    unsigned int a;
+    unsigned int b;
+    fn_801BE3A0(p + 0x18);
+    a = *(unsigned int*)(p + 0x34);
+    b = *(unsigned int*)(p + 0x74);
+    if (b != a) {
+        fn_8015A48C(p);
+    }
+    *(unsigned int*)(p + 0x6c) += *(unsigned int*)(p + 0x34) - *(unsigned int*)(p + 0x74);
+    *(unsigned int*)(p + 0x74) = *(unsigned int*)(p + 0x34);
+    for (q = *(unsigned char**)(p + 0x78); q != 0; q = *(unsigned char**)(q + 0x10)) {
+        *(unsigned int*)(q + 0xc) = *(unsigned int*)(p + 0x34);
+    }
+    fn_801BE47C(p + 0x18);
+}
+
 extern "C" void fn_8015CD94(void) {
 }
 
@@ -475,13 +509,9 @@ extern "C" int fn_8015CDC8(void) {
 
 extern "C" int fn_8015CDF8(unsigned char* p) {
     int result;
-    unsigned int a;
     fn_801BE3A0(p + 0x18);
-    a = *(unsigned int*)(p + 0x30);
     result = 1;
-    a = *(unsigned int*)(p + 0x70) - a;
-    a += *(unsigned int*)(p + 0x34) - *(unsigned int*)(p + 0x74);
-    if (*(unsigned int*)(p + 0x6c) + a != *(unsigned int*)(p + 0x38)) {
+    if (*(unsigned int*)(p + 0x6c) + (*(unsigned int*)(p + 0x70) - *(unsigned int*)(p + 0x30)) + (*(unsigned int*)(p + 0x34) - *(unsigned int*)(p + 0x74)) != *(unsigned int*)(p + 0x38)) {
         result = 0;
         fn_80124034(lbl_80297718);
     }
