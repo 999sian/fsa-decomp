@@ -1067,6 +1067,19 @@ u8 fn_80230534(int value)
     return 1;
 }
 
+u8 fn_8023077C()
+{
+    if (lbl_8053AC90 == NULL) return 0;
+    for (int index = 0; index < 4; index++) {
+        if (isPlayerEnabled(index) && !(u8)fn_8024E060(lbl_8053AC90->players[index])) return 0;
+    }
+    for (int index = 0; index < 4; index++) {
+        if (isPlayerEnabled(index) && !(u8)fn_8024DCD0(lbl_8053AC90->players[index])) return 0;
+    }
+    fn_8037AE30(lbl_8053AD70);
+    return 1;
+}
+
 int fn_80230AD4(int index)
 {
     if (lbl_8053AC90 == NULL) return 0;
