@@ -165,4 +165,6 @@ extern "C" void* fn_80127B48(void* this_) {
     *(s32*)(p + 0x380) = 0;
     return this_;
 }
-
+struct FZRA_Quad {
+    f32 a, b, c, d;
+};
