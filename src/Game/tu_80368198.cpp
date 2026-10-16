@@ -16,6 +16,34 @@ extern "C" void __dt__13Base_8010E074Fv(void* this_, int how);
 extern "C" void fn_8036A65C(void* this_);
 extern "C" void fn_801F0E34(void* self, u32 msg, s32 flag);
 
+extern "C" u8 fn_8036B018(u8* this_) {
+    s32 v = *(s32*)(this_ + 0x240);
+    if (v == 0x11 || v == 0x26) {
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" void* fn_8036C69C(void* this_, short how) {
+    if (this_) {
+        *(void**)this_ = (void*)lbl_804AE088;
+        Sub8036C69C* sub = *(Sub8036C69C**)((char*)this_ + 0x314);
+        if (sub) {
+            sub->v2(1);
+        }
+        *(void**)((char*)this_ + 0x314) = 0;
+        fn_8036A65C(this_);
+        if (this_ != (void*)-0x318 && this_ != (void*)-0x33c) {
+            *(void**)((char*)this_ + 0x33c) = (void*)lbl_8049CC34;
+        }
+        __dt__13Base_8010E074Fv(this_, 0);
+        if (how > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" s32 fn_8036C8F4(void* this_) {
     return *(s32*)((char*)this_ + 0x240);
 }
