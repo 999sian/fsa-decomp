@@ -68,22 +68,21 @@ extern "C" s32 fn_8040245C(PaneState* state, s16 duration, u8 startAlpha, u8 end
     if (state->alphaFrame >= duration) {
         state->alphaFrame = 0;
     }
-    s16 half = duration / 2;
-    s32 frame = state->alphaFrame;
-    f32 dc = (f32)duration * lbl_80543868;
     f32 t;
     if (mode == 1) {
-        if (frame < half) {
-            t = (f32)(frame * frame) / (dc * dc);
+        s32 half = duration / 2;
+        if (state->alphaFrame < half) {
+            t = (f32)(state->alphaFrame * state->alphaFrame) / ((f32)duration * lbl_80543868 * ((f32)duration * lbl_80543868));
         } else {
-            s32 r = frame - half;
-            t = lbl_8054386C - (f32)(r * r) / (dc * dc);
+            s32 r = state->alphaFrame - half;
+            t = lbl_8054386C - (f32)(r * r) / ((f32)duration * lbl_80543868 * ((f32)duration * lbl_80543868));
         }
     } else {
-        s32 x = frame < half ? frame : duration - frame;
-        t = (f32)x / dc;
+        s32 half = duration / 2;
+        s32 x = state->alphaFrame < half ? state->alphaFrame : duration - state->alphaFrame;
+        t = (f32)x / ((f32)duration * lbl_80543868);
     }
-    state->pane->setAlpha((s32)(t * (f32)(endAlpha - startAlpha) + (f32)startAlpha));
+    state->pane->setAlpha(t * (f32)(endAlpha - startAlpha) + (f32)startAlpha);
     return 0;
 }
 
