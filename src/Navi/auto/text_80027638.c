@@ -77,6 +77,27 @@ extern "C" int fn_8002F168(void) {
     return 0;
 }
 
+extern "C" void* fn_8002F198(void) {
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    void* ret = &lbl_802BB0FC;
+    if (obj != 0) {
+        if (obj[0x57e] == 3) {
+            fn_800589CC(5);
+            fn_800589CC(6);
+        } else if (obj[0x57e] != 0) {
+            fn_800589CC(5);
+        }
+        *(unsigned short*)(obj + 0x57c) = 0;
+        ret = obj + 0x594;
+        obj[0x57e] = 0;
+        obj[0x57f] = 1;
+        if (*(int*)(obj + 0x598) != 0) {
+            ret = fn_80024BC8();
+        }
+    }
+    return ret;
+}
+
 extern "C" void fn_8002F2E0(void* p) {
     fn_80058740(1, p);
 }
@@ -98,6 +119,14 @@ extern "C" void fn_8002F358(void* p, int off) {
 
 extern "C" void fn_8002F3A0(void* p, int off, float f) {
     fn_80058654(off + fn_80058C08(), p, 1, f);
+}
+
+extern "C" int fn_8002F87C(void) {
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    if (obj != 0 && obj[0x57e] != 0) {
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void fn_80030664(void) {}
