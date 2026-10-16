@@ -7,6 +7,7 @@ extern "C" void fn_802D6BF8(void*, s32);
 extern "C" void fn_8013A884(u32*);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 extern "C" char* fn_8016A3AC(void);
+extern "C" void fn_80128C58(u8);
 extern "C" void fn_801EE434(void*);
 extern "C" u8 fn_802DEBF8(void);
 extern "C" void fn_80458FF0(void* obj, u32 id, s32 a, s32 b);
