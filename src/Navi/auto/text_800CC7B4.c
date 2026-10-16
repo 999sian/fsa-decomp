@@ -1,4 +1,15 @@
 #include "types.h"
+struct VObj_800CC1C4 {
+    virtual void v0();
+    virtual void v1();
+    virtual void SetPos(f32 x, f32 y);
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void SetAlpha(s32 a);
+};
+
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
@@ -17,6 +28,27 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_80300EF0;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern f32 lbl_80300EE4;
+extern "C" f32 fn_800CDAFC(void* self, s32 n, s32 i);
+extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
+    if (i < 0) {
+        return 0;
+    }
+    if (i > n) {
+        return 1;
+    }
+    f32 t = fn_800CDAFC(self, n, i);
+    f32 d = t * (to - from);
+    (*(VObj_800CC1C4**)(self + 0x14))->SetPos(*(f32*)(self + 0x1c), *(f32*)(self + 0x20) + (from + d));
+    if (mode != 2) {
+        if (mode == 1) {
+            t = lbl_80300EE4 - t;
+        }
+        (*(VObj_800CC1C4**)(self + 0x14))->SetAlpha((s32)((f32)*(u8*)(self + 0x18) * t));
+    }
+    return 0;
+}
+
 extern "C" void fn_800CD9FC(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
