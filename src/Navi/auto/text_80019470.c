@@ -975,6 +975,14 @@ extern "C" s32 fn_8001D57C(void* param_1, void* param_2) {
     return 1;
 }
 
+extern "C" s32 fn_8001D5B8(void* param_1, void* param_2) {
+    s32 (*fn)(void*) = *(s32 (**)(void*))((u8*)param_1 + 0xc);
+    if (fn != 0) {
+        return fn(param_2);
+    }
+    return 1;
+}
+
 extern "C" s32 fn_8001D5F4(void* param_1, void* param_2) {
     s32 (*fn)(void*) = *(s32 (**)(void*))((u8*)param_1 + 4);
     if (fn != nullptr) {
