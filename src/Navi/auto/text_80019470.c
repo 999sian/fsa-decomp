@@ -850,6 +850,16 @@ extern "C" unsigned int fn_8001C554(void* param_1, int* param_2) {
     return 0;
 }
 
+extern "C" s32 fn_8001C6D0(void* param_1) {
+    if (fn_8001BF5C(*(void**)((u8*)param_1 + 0x14), param_1) == 1) {
+        *(u32*)((u8*)param_1 + 0x14) = 0;
+        *(u16*)((u8*)param_1 + 0x18) = 0xffff;
+        *(u16*)((u8*)param_1 + 0x1a) = 0xffff;
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" void fn_8001EC90(void);
 extern "C" void fn_8001C984(void) {
     fn_8001EC90();
