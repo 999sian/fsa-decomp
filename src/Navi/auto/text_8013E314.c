@@ -25,6 +25,10 @@ extern "C" void fn_8013EA90(void* param_1) {
     fn_8013BD54(*(void**)((u8*)param_1 + 0x114));
 }
 
+extern "C" void fn_8013EAB4(void* param_1, void* param_2) {
+    *(u32*)((u8*)param_2 + 0x118) = *(u32*)((u8*)param_1 + 8);
+}
+
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_802937C0[];
