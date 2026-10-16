@@ -101,6 +101,16 @@ extern "C" void fn_8043E7CC(void* game, void* v);
 extern "C" void fn_8041E58C(void* p);
 extern "C" void fn_80425128(void* p);
 extern "C" void fn_8041FC2C(void* p);
+extern "C" void fn_8041F5FC(void* p);
+extern "C" void fn_80425F24(void* p);
+extern "C" void fn_8043E80C(u8* self, s32 digit, s32 alpha, u32 c1, u32 c2, f32 a, f32 b, f32 c);
+extern const f32 lbl_80543CA0;
+extern const f32 lbl_80543CD0;
+extern const f32 lbl_80543CD4;
+extern const f32 lbl_80543CD8;
+extern const f32 lbl_80543CDC;
+extern const f32 lbl_80543CE0;
+extern const f32 lbl_80543CE4;
 extern "C" void fn_8044A06C(void* p);
 extern "C" void fn_80445D24(void* p);
 extern "C" void fn_80448334(void* p);
@@ -167,18 +177,18 @@ extern "C" void fn_8043A608(void* param_1) {
 extern "C" void fn_8043ABCC(u8* param_1, s32 param_2) {
     void* uVar1;
     Fn8043ABCC_Obj* piVar2;
-    if (param_2 < 0) {
-        param_2 = 0;
-    }
-    if (param_2 == 1) {
-        uVar1 = fn_804030C4(0x54494D47, lbl_804B1900[param_2]);
+    s32 idx = param_2 & ~(param_2 >> 31);
+    if (idx != 1) {
+        uVar1 = fn_804032E8(0x54494D47, lbl_804B1900[idx]);
     } else {
-        uVar1 = fn_804032E8(0x54494D47, lbl_804B1900[param_2]);
+        uVar1 = fn_804030C4(0x54494D47, lbl_804B1900[idx]);
     }
     piVar2 = (Fn8043ABCC_Obj*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x64660000, 0x50, 0x64663031);
     piVar2->v68(uVar1, 0);
-    ((u8*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x64660000, 0x50, 0x64663031))[0xb0] = 1;
-    ((u8*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x30310000, 0x5077, 0x30313031))[0xb0] = 0;
+    u8* p = (u8*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x64660000, 0x50, 0x64663031);
+    p[0xb0] = 1;
+    u8* q = (u8*)(*(Fn8043ABCC_Obj**)(param_1 + 8))->v15(0x30310000, 0x5077, 0x30313031);
+    q[0xb0] = 0;
     *(s16*)(param_1 + 0x106) = 1;
     param_1[0x10d] = 0;
 }
