@@ -506,6 +506,32 @@ extern "C" void fn_801383B8(void* param_1) {
     *(u32*)((u8*)param_1 + 0x60) = *(u32*)((u8*)param_1 + 0x50);
 }
 
+extern "C" void fn_80138424(void* p) {
+    switch (*(s8*)((u8*)p + 0x20)) {
+    case 0:
+    default:
+        *(f64*)((u8*)p + 0x28) = 0.0;
+        *(f64*)((u8*)p + 0x30) = 1.0;
+        break;
+    case 1:
+        *(f64*)((u8*)p + 0x28) = 0.0;
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    case 2:
+        *(f64*)((u8*)p + 0x28) = *(f64*)((u8*)p + 0x8);
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    case 3:
+        *(f64*)((u8*)p + 0x28) = *(f64*)((u8*)p + 0x10);
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    case 4:
+        *(f64*)((u8*)p + 0x28) = 0.5 * (*(f64*)((u8*)p + 0x8) + *(f64*)((u8*)p + 0x10));
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    }
+}
+
 extern "C" void fn_80138AB4(void) {}
 
 extern void* lbl_80292974[];
