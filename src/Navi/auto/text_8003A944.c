@@ -12,7 +12,7 @@ extern void* lbl_80246A54[];
 extern void* lbl_80299A8C[];
 extern void* lbl_802BF110[];
 extern s64 lbl_802FFEC8;
-extern s16 lbl_802FEFB4[];
+extern s16 lbl_802FEFB4[3];
 extern u8 lbl_802FEF6C[8];
 extern u8 lbl_802FEF74[4];
 extern f32 lbl_802FEE74;
@@ -710,23 +710,9 @@ extern "C" void fn_800405C0(void) {
 }
 
 extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
-    volatile union {
-        s64 i;
-        f64 d;
-    } t1, t2, t3;
-    f64 dconst = *(f64*)&lbl_802FFEC8;
-
-    t1.i = 0x4330000000000000LL | ((s32)param_1 ^ 0x80000000);
-    f32 d1 = t1.d - dconst;
-    d1 *= factor;
-
-    t2.i = 0x4330000000000000LL | ((s32)param_2 ^ 0x80000000);
-    f32 d2 = t2.d - dconst;
-    d2 *= factor;
-
-    t3.i = 0x4330000000000000LL | ((s32)param_3 ^ 0x80000000);
-    f32 d3 = t3.d - dconst;
-    d3 *= factor;
+    f32 d1 = (f32)param_1 * factor;
+    f32 d2 = (f32)param_2 * factor;
+    f32 d3 = (f32)param_3 * factor;
 
     lbl_802FEFB4[0] = (s16)(s32)d1;
     lbl_802FEFB4[1] = (s16)(s32)d2;
