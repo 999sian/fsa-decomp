@@ -38,9 +38,9 @@ struct JUTFader
     EStatus mStatus;            // _04 - current status
     u16 mTicksTarget;           // _08 - ticks (calls to control()) to run a fade in/out for
     u16 mTicksRun;              // _0A - ticks the current fade has run
-    bool mResetting;            // _0C - probably exclusive to mkdd, holds true when starting the fadeout for reset, sets back to false when fading in
-    u8 _0D[3];                  // padding
-    JUtility::TColor mColor;    // _10 - color of fade
+    JUtility::TColor mColor;    // _0C - color of fade
+    bool mResetting;            // _10 - probably exclusive to mkdd, holds true when starting the fadeout for reset, sets back to false when fading in
+    u8 _11[3];                  // padding
     u8 _14[0xC];                // _14 - ortho box to render within (TBox2f?)
     int mEStatus;               // _20 - countdown before the next status is applied
     EStatus mNextStatus;        // _24 - status to switch to when the countdown ends
