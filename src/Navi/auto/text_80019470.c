@@ -219,6 +219,14 @@ extern "C" void fn_8001AAFC(void) {
     ((void (*)(void))cTg_SingleCutFromTree__FP16create_tag_class)();
 }
 
+extern "C" void fn_8001ACC4(void) {
+    if (lbl_802FEC18 == 0) {
+        lbl_802FEC14 = 1;
+        lbl_802FEC18 = 1;
+    }
+    lbl_802FEC14 = lbl_802FEC14 + 1;
+}
+
 extern "C" void fn_8001B1F8(void);
 extern "C" void* fn_8001ACEC(void* param_1) {
     extern void* fn_8001D57C(void*, void*);
