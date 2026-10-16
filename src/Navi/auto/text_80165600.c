@@ -1,4 +1,5 @@
 #include "dolphin/os/OSFastCast.h"
+#include "types.h"
 typedef void (*VirtualMethod0)(void*, s16);
 typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 
@@ -17,3 +18,21 @@ extern "C" void* fn_80165600(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern char lbl_8029836C[];
+extern "C" void fn_80167074(void*, int);
+extern char lbl_802984EC[];
+extern "C" void* fn_80165BB4(void** param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        param_1[0] = (void*)lbl_802984EC;
+        if (param_1 != nullptr) {
+            param_1[0] = (void*)lbl_8029836C;
+            fn_80167074(param_1, 0);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
