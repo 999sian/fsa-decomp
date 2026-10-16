@@ -406,6 +406,20 @@ extern "C" void* fn_80094284(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800943BC(void* p) {
+    if (fn_800BC8A4(*(void**)((char*)p + 0x26c))) {
+        if (*(unsigned char*)(*(char**)((char*)p + 0x26c) + 0xe1) == 3) {
+            *(unsigned char*)((char*)p + 0x7e8) = 0;
+            *(unsigned int*)((char*)lbl_802BB0FC + 0x44) = 2;
+            *(unsigned char*)((char*)p + 0x85c) = 7;
+        } else {
+            *(unsigned char*)((char*)p + 0x7e8) = 0;
+            *(unsigned char*)((char*)p + 0x2836) = 0;
+            *(unsigned int*)((char*)lbl_802BB0FC + 0x44) = 4;
+        }
+    }
+}
+
 extern StateFn_8009287C lbl_80285FE8[];
 extern "C" void fn_8009456C(Obj_8009287C* param_1) {
     (param_1->*lbl_80285FE8[param_1->state])();
