@@ -507,6 +507,42 @@ extern "C" void* fn_8005C4A0(void)
 	return lbl_802FF11C;
 }
 
+extern "C" void* memset(void*, int, unsigned long);
+extern "C" void fn_8005C4A8(u8 flag, s32** bufs)
+{
+    if (flag == 0) {
+        s32* b;
+        s32* a;
+        int i;
+        s32 first;
+        BOOL same;
+        s32 max;
+        max = 0;
+        b = bufs[1];
+        a = bufs[0];
+        i = 0;
+        same = TRUE;
+        first = (a[0] + b[0]) / 2;
+        for (; i < 160; i++) {
+            s32 v = (a[i] + b[i]) / 2;
+            s32 av = v < 0 ? -v : v;
+            if (av > max) {
+                max = av;
+            }
+            if (v != first) {
+                same = FALSE;
+            }
+        }
+        if (same) {
+            max = 0;
+        }
+        memset(bufs[0], 0, 0x280);
+        memset(bufs[1], 0, 0x280);
+        memset(bufs[2], 0, 0x280);
+        *(s32*)&lbl_802FF118 = max;
+    }
+}
+
 extern int lbl_802FF128;
 extern int lbl_802FF12C;
 extern int lbl_802FF130;
@@ -613,6 +649,10 @@ extern "C" void fn_8005FE84(void** p) {
     p[3] = nullptr;
     p[0] = lbl_802044AC;
     p[4] = nullptr;
+}
+
+extern "C" void fn_8005FEB4(u8* self) {
+    *self = 0;
 }
 
 extern "C" void fn_8006081C(void) {
