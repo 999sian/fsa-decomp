@@ -171,6 +171,18 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
 }
 
+extern "C" int fn_8018A4B4(void* param_1, s32* param_2, s32* param_3) {
+    if (*param_2 == 0 && *param_3 == -1) {
+        return 1;
+    }
+    ((void (*)(void*))((*(void***)(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70)))[0x58 / 4]))(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
+    u8 c = ((u8 (*)(void*))((*(void***)(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70)))[0x18 / 4]))(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
+    if (c == 1) {
+        return 0;
+    }
+    return 1;
+}
+
 extern "C" void fn_8018A87C(void) {
     fn_80177E84();
 }
