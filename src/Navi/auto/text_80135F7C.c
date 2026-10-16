@@ -549,6 +549,10 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8013C17C(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
+    fn_8013BC94(*(void**)((u8*)param_1 + 0x128), param_3, param_4, param_5, param_6);
+}
+
 extern void* lbl_802930A0[];
 extern "C" void fn_8013C508(void* a, void* b, void* c, void* d, void* e);
 extern "C" void fn_8013BC94(void* a, void* b, void* c, void* d, void* e);
