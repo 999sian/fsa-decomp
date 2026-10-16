@@ -1288,6 +1288,20 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" s32 fn_8013BA1C(void* a, u8* b, VObj_8013BA1C* c, u32 d) {
+    u8 out[48];
+    u8 tmp[48];
+    if (c == nullptr) {
+        return 0;
+    }
+    if (!c->v12(d, out)) {
+        return 0;
+    }
+    fn_80133000(tmp, b + 0x18, b + 0xc, b);
+    fn_801C5DA8(out, tmp, a);
+    return 1;
+}
+
 extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
 extern "C" void fn_801C5DA8(void* a, void* b, void* c);
 extern "C" void fn_801C5E74(void* a, void* b);
