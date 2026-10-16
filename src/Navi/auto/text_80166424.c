@@ -2,6 +2,8 @@
 
 #include "types.h"
 
+struct RGB8_8017261C { u8 r, g, b; };
+
 struct VObj_80174F08 {
     virtual void vf0();
     virtual void vf1();
@@ -1187,9 +1189,11 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
+    u8 a = p3[0];
+    u8 b = p3[1];
     u8* p = p1 + p2 * 4;
-    p[0x16] = p3[0];
-    p[0x17] = p3[1];
+    p[0x16] = a;
+    p[0x17] = b;
     p[0x18] = p3[2];
 }
 
