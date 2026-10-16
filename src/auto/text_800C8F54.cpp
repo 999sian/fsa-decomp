@@ -10,6 +10,15 @@ struct J3DNBTScaleInfo {
     f32 mScale[3];
 };
 extern "C" J3DNBTScaleInfo j3dDefaultNBTScaleInfo;
+
+struct J3DNBTScale : public J3DNBTScaleInfo {
+    J3DNBTScale() {
+        mHasScale = j3dDefaultNBTScaleInfo.mHasScale;
+        mScale[0] = j3dDefaultNBTScaleInfo.mScale[0];
+        mScale[1] = j3dDefaultNBTScaleInfo.mScale[1];
+        mScale[2] = j3dDefaultNBTScaleInfo.mScale[2];
+    }
+};
 extern "C" char lbl_8049AA38[];
 extern "C" char __vt__10J3DPEBlock[];
 
