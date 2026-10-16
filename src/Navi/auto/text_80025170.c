@@ -205,3 +205,12 @@ extern "C" void* fn_80026E54(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_80013DA0(void);
+extern "C" void fn_80026EC4(u8* p);
+extern u32 lbl_802026C0[3];
+extern "C" void fn_80026E90(u8* p) {
+    fn_80013DA0();
+    fn_80026EC4(p);
+}
+
