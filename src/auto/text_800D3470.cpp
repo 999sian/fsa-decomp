@@ -409,13 +409,15 @@ void J3DTevBlock4::initialize()
 	mKAlphaSels[1] = 0x1c;
 	mKAlphaSels[2] = 0x1c;
 	mKAlphaSels[3] = 0x1c;
-	mColors[0] = j3dDefaultTevColor;
-	mColors[1] = j3dDefaultTevColor;
-	mColors[2] = j3dDefaultTevColor;
-	mKColors[0] = j3dDefaultTevKColor;
-	mKColors[1] = j3dDefaultTevKColor;
-	mKColors[2] = j3dDefaultTevKColor;
-	mKColors[3] = j3dDefaultTevKColor;
+	J3DGXColorS10 color = j3dDefaultTevColor;
+	mColors[0] = color;
+	mColors[1] = color;
+	mColors[2] = color;
+	GXColor kcolor = j3dDefaultTevKColor;
+	mKColors[0] = kcolor;
+	mKColors[1] = kcolor;
+	mKColors[2] = kcolor;
+	mKColors[3] = kcolor;
 	mTexNoOffset = 0;
 	mRegOffset = 0;
 }
@@ -732,13 +734,12 @@ extern "C" void fn_800D800C(u8* self) {
 }
 
 extern "C" void fn_800D80DC(u8* p) {
-    u32 i = 0;
-    u8 count = p[0xd0];
-    u8* addr = p;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
+    u8 count = p[0xd0];
 
-    for (; i < 8; i++) {
+    u8* addr = p;
+    for (u32 i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
             loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
         }
@@ -746,7 +747,7 @@ extern "C" void fn_800D80DC(u8* p) {
     }
 
     u8* tev = p;
-    for (i = 0; i < count; i += 2) {
+    for (u32 i = 0; i < count; i += 2) {
         u8* next = p + (i + 1) * 4;
         J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
         u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
@@ -884,19 +885,18 @@ extern "C" void fn_800D87B4(u8* self) {
 }
 
 extern "C" void fn_800D8884(u8* p) {
-    u16* s;
-    u8* r;
-    u8* q;
-    u32 i;
-    u8 n;
+    u8* addr = p;
     u8* saved;
-    u8* addr;
+    u8 n;
+    u8* q;
+    u8* r;
+    u16* s;
+    u32 i;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
-    saved = __GDCurrentDL->pDisplayListData;
     n = p[0x20];
+    saved = __GDCurrentDL->pDisplayListData;
 
-    addr = p;
     for (i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
             loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
@@ -1532,9 +1532,9 @@ extern "C" void fn_800DBDB0(u8* self, Unk800DBCCCSrc* src) {
 extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
     param_1[0x14] = param_2->m20();
 
-    u8* out;
+    u8* out = param_1;
     u32 i;
-    for (out = param_1, i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         u8* src = param_2->m14(i);
         out[4] = src[0];
         out[5] = src[1];
@@ -1674,46 +1674,36 @@ extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
     u8* p = this_;
     u8* gen = this_;
     for (u32 i = 0; i < 8; i++) {
-        J3DTexMtx* obj = *(J3DTexMtx**)(p + 0x38);
-        if (obj != nullptr) {
-            u32 type = obj->getTexMtxInfo().mInfo & 0x3f;
+        if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
             *(u16*)(gen + 0xc) = gen[0xa];
-            switch (type) {
+            switch ((*(J3DTexMtx**)(p + 0x38))->getTexMtxInfo().mInfo & 0x3f) {
             case 0:
-                obj->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 1:
                 if (j3dSys.mFlags & 4) {
-                    obj->calc(j3dDefaultMtx);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 } else {
-                    obj->calc(mtx);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(mtx);
                 }
                 break;
             case 2:
-                obj->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 3:
                 if (j3dSys.mFlags & 8) {
-                    obj->calc(j3dDefaultMtx);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 } else {
                     Mtx m;
                     PSMTXCopy(mtx, m);
                     m[0][3] = 0.0f;
                     m[1][3] = 0.0f;
                     m[2][3] = 0.0f;
-                    obj->calc(m);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
                 }
                 break;
-            case 4:
-            case 5:
-            case 6:
-            case 7:
-            case 8:
-            case 9:
-            case 10:
-            case 11:
             default:
-                obj->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             }
         }
@@ -1775,8 +1765,8 @@ extern "C" void fn_800DD644(u8* this_) {
 }
 
 extern "C" void fn_800DD784(u8* this_) {
-    u8* p = this_;
     u8* q = this_;
+    u8* p = this_;
     for (s32 i = 0; i < 8; i++) {
         if (*(J3DTexMtx**)(q + 0x38) != nullptr) {
             u32 type = (*(J3DTexMtx**)(q + 0x38))->getTexMtxInfo().mInfo & 0x3f;
@@ -1812,8 +1802,8 @@ extern "C" void fn_800DD784(u8* this_) {
                 break;
             }
         }
-        p += 6;
         q += 4;
+        p += 6;
     }
 }
 
