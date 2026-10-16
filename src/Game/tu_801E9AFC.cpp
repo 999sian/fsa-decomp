@@ -1,4 +1,5 @@
 #include "types.h"
+#include <dolphin/gx.h>
 extern "C" {
 extern const f32 lbl_8053F65C;
 extern const f32 lbl_8053F660;
@@ -30,19 +31,74 @@ extern "C" void fn_801E9B54(void) {
 
 extern "C" s32 fn_801E9B58(u8* param_1) {
     s32 iVar2;
-    void* iVar3;
+    s32 iVar3;
 
     iVar2 = fn_801F7F58(fn_801F856C(), param_1, lbl_80469C78, *(s32*)(param_1 + 0x198), lbl_8053F65C);
     if (iVar2 >= 0 && iVar2 != *(s32*)(param_1 + 0x198)) {
-        iVar3 = fn_801F666C(fn_801F856C(), iVar2);
-        if (iVar3 != NULL) {
+        iVar3 = (s32)fn_801F666C(fn_801F856C(), iVar2);
+        if (iVar3 != 0) {
             if (fn_801CC8E4() != 0) {
                 iVar2 = -1;
-            } else if (*(u32*)((u8*)iVar3 + 0x1a0) == 0x46495245) {
-                fn_802BAA00(iVar3);
+            } else if (*(u32*)(iVar3 + 0x1a0) == 0x46495245) {
+                fn_802BAA00((void*)iVar3);
             }
         }
     }
     return iVar2;
+}
+
+extern "C" void fn_801E9C00(s16 param_1, f32* param_2) {
+    s16 sVar3;
+    u32 uVar2;
+    f32* pt;
+    f32 fx;
+    f32 fy;
+
+    param_2[0] = lbl_8053F660;
+    param_2[1] = lbl_8053F664;
+    fy = param_2[1];
+    sVar3 = 0x2000;
+    if (param_1 < 0) {
+        sVar3 = -0x2000;
+    }
+    uVar2 = ((u32)(-(s32)(s16)(param_1 + sVar3)) >> 2) & 0x3ff8;
+    pt = (f32*)((u8*)sincosTable___5JMath + uVar2);
+    fx = param_2[0];
+    param_2[0] = fx * pt[1] - fy * pt[0];
+    param_2[1] = param_2[1] * pt[1] + fx * pt[0];
+}
+
+extern "C" s32 fn_801EA6D8(u8* param_1, s8 param_2, s32 param_3) {
+    u32 i;
+    s32 count;
+    u8* entry;
+
+    if (param_2 == 0) {
+        *(s32*)(param_1 + 0x64 + *(s32*)(param_1 + 0x74) * 4) = param_3;
+        *(s32*)(param_1 + 0x74) = *(s32*)(param_1 + 0x74) + 1;
+        return -1;
+    }
+    count = *(s32*)(param_1 + 0x60);
+    for (i = 0; i < count; i++) {
+        entry = param_1 + i * 0xc;
+        if (param_2 == entry[4]) {
+            *(s32*)(entry + 8) = param_3;
+            if (*(s32*)(param_1 + i * 0xc) == 0) {
+                return -1;
+            }
+            return *(s32*)(*(s32*)(param_1 + i * 0xc) + 0x198);
+        }
+    }
+    return -1;
+}
+
+extern "C" s32 fn_801EA8C0(u8* param_1, u8* param_2) {
+    if (param_1[4] < param_2[4]) {
+        return -1;
+    }
+    if (param_1[4] <= param_2[4]) {
+        return 0;
+    }
+    return 1;
 }
 
