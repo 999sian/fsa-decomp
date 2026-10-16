@@ -40,6 +40,11 @@ extern "C" void fn_8018B748(void* self, void* src) {
     fn_8018B770(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void fn_8018BB74(void* unused, void* dest, void* src);
+extern "C" void fn_8018BB4C(void* self, void* src) {
+    fn_8018BB74(self, *(void**)((u8*)self + 4), src);
+}
+
 extern void* lbl_80299504[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_8018C1A0(void* ptr, s16 param_2) {
