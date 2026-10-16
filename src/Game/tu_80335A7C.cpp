@@ -39,7 +39,3 @@ extern "C" void fn_80335D4C(void* this_) {
     p[0x247] = *(u32*)(p + 0x90) & 0xf;
     p[0x248] = (*(u32*)(p + 0x90) >> 4) & 0xf;
 }
-struct Vec2_FSA {
-    f32 x;
-    f32 y;
-};
