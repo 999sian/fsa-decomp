@@ -12,11 +12,8 @@ public:
     virtual void v25(s32);
 };
 
-extern "C" void fn_80124AD8(void* this_) {
-    register void** vtable = (void**)*(void**)this_;
-    typedef void (*method_t)(void*, int);
-    register method_t method = (method_t)vtable[0x6c / sizeof(void*)];
-    method(this_, 0x9);
+extern "C" void fn_80124AD8(void* p) {
+    ((OPGL*)p)->v25(9);
 }
 
 extern "C" void fn_80124B90(void* this_) {
