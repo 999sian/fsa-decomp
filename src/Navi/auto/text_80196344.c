@@ -586,6 +586,30 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019EDE0(void) {
+}
+
+extern "C" void fn_8019EED4(int param_1) {
+    extern int* lbl_802FFA80;
+    u32 w = *(u32*)(param_1 + 0x18) | 0x10000000;
+    u8* out;
+    out = (u8*)lbl_802FFA80[2];
+    lbl_802FFA80[2] = (int)(out + 1);
+    *out = 0x61;
+    out = (u8*)lbl_802FFA80[2];
+    lbl_802FFA80[2] = (int)(out + 1);
+    *out = w >> 24;
+    out = (u8*)lbl_802FFA80[2];
+    lbl_802FFA80[2] = (int)(out + 1);
+    *out = w >> 16;
+    out = (u8*)lbl_802FFA80[2];
+    lbl_802FFA80[2] = (int)(out + 1);
+    *out = w >> 8;
+    out = (u8*)lbl_802FFA80[2];
+    lbl_802FFA80[2] = (int)(out + 1);
+    *out = w;
+}
+
 extern "C" void fn_8019019C(u8, u16, int, int, u16, int, int);
 extern "C" u16 lbl_802EE5D4[][4];
 extern "C" void fn_8019EF54(int param_1) {
@@ -609,15 +633,11 @@ extern "C" void fn_8019F018(int param_1) {
     u8* p;
     u32 pair[2];
     u32 val;
-    u32 a;
-    u32 b;
 
     p = (u8*)param_1;
     for (i = 0; i < 3; i++) {
-        a = *(u32*)(p + 0x14);
-        b = *(u32*)(p + 0x18);
-        pair[0] = a;
-        pair[1] = b;
+        pair[0] = *(u32*)(p + 0x14);
+        pair[1] = *(u32*)(p + 0x18);
         fn_80191388(i + 1, pair);
         p += 8;
     }
@@ -669,24 +689,27 @@ extern "C" void fn_8019F324(int param_1) {
 }
 
 extern "C" void fn_8019F380(int param_1) {
-    u32 i;
-    u8* p;
     u32 pair[2];
-    u32 val;
-
-    p = (u8*)param_1;
-    for (i = 0; i < 3; i++) {
-        pair[0] = *(u32*)(p + 0x42);
-        pair[1] = *(u32*)(p + 0x46);
+    u32 word;
+    u32 i = 0;
+    u8* p = (u8*)param_1;
+    do {
+        u32 a = *(u32*)(p + 0x42);
+        u32 b = *(u32*)(p + 0x46);
+        pair[0] = a;
+        pair[1] = b;
         fn_80191388(i + 1, pair);
+        i++;
         p += 8;
-    }
+    } while (i < 3);
+    i = 0;
     p = (u8*)param_1;
-    for (i = 0; i < 4; i++) {
-        val = *(u32*)(p + 0x62);
-        fn_80191220(i, &val);
+    do {
+        word = *(u32*)(p + 0x62);
+        fn_80191220(i, &word);
+        i++;
         p += 4;
-    }
+    } while (i < 4);
 }
 
 extern "C" void fn_8019F520(int param_1) {
