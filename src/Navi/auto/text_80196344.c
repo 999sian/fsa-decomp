@@ -408,6 +408,8 @@ extern "C" void* fn_80198F44(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80198FBC(void) {}
+
 extern "C" int fn_80198FC0()
 {
 	return 0;
