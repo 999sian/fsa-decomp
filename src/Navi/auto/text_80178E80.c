@@ -140,7 +140,7 @@ struct VObj_80180980 {
     virtual void vfC8(int, int, int);
     virtual void vfCC(int, int);
     virtual void vfD0();
-    virtual void vfD4();
+    virtual void vfD4(int, int);
     virtual void vfD8(u8);
 };
 
