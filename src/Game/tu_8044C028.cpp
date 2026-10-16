@@ -1,9 +1,19 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
 
 
 extern "C" void fn_8044C028(u8* this_, f32 val) {
     this_[0x18] = 1;
     *(f32*)(this_ + 0x14) = val;
+}
+
+extern "C" void fn_8044C038(u8* this_) {
+    if (this_[0x18] != 0) {
+        f32 x = (*(J2DPane**)(this_ + 8))->search(0x54703031)->getBounds()->i.x;
+        (*(J2DPane**)(this_ + 8))->search(0x54703031)->move(x, *(f32*)(this_ + 0xc) - *(f32*)(this_ + 0x14));
+        x = (*(J2DPane**)(this_ + 8))->search(0x54703032)->getBounds()->i.x;
+        (*(J2DPane**)(this_ + 8))->search(0x54703032)->move(x, *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+    }
 }
 
 extern "C" void fn_8013B490(void* p);
