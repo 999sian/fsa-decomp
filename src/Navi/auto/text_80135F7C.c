@@ -161,6 +161,9 @@ extern "C" void fn_801364A4(void* param_1) {
     *(u64*)((u8*)param_1 + 0x20) = tmp;
 }
 
+extern "C" void fn_801364F0(void) {
+}
+
 extern "C" void fn_801364F4(void* param_1) {
     ((void (*)(void*, void*))*(void**)((u8*)param_1 + 0x18))((u8*)param_1 + 4, (u8*)param_1 + 0x20);
 }
