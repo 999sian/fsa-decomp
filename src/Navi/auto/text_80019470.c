@@ -49,9 +49,12 @@ extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
-    d[0] = s->x;
-    d[1] = s->y;
-    d[2] = s->z;
+    f32 x = s->x;
+    f32 y = s->y;
+    d[0] = x;
+    f32 z = s->z;
+    d[1] = y;
+    d[2] = z;
     d[3] = w;
 }
 
@@ -413,7 +416,7 @@ extern "C" void fn_8001B494(void) {
 }
 
 extern "C" void* fn_801148BC(s32);
-extern "C" void fn_8001B0EC(void);
+extern "C" void fn_8001B0EC(void*);
 extern "C" void fn_8001EB28(void*, void*, void*);
 extern "C" void fn_8001BFD0(void*);
 extern "C" void fn_8001BEC4(void*, void*);
@@ -458,6 +461,9 @@ extern "C" void fn_8001B5D4(void) {
 
 #pragma dont_inline on
 extern "C" void fn_8001B5F4(void* p) { fn_8001B1DC(*(void**)((char*)p + 0x14)); }
+
+extern "C" void fn_8001B618(void* p) { ((void (*)(void*))fn_8001B0EC)(*(void**)((char*)p + 0x14)); }
+
 #pragma dont_inline reset
 extern "C" void fn_8001B494(void);
 extern "C" void fn_8001B63C(void) {
