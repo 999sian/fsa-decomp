@@ -589,6 +589,14 @@ extern "C" u16 fn_801D2C88(void) {
     return lbl_802FFA18;
 }
 
+extern "C" void fn_801D2C90(u32 a)
+{
+    u8* base = lbl_802F7D60;
+    void* p = (void*)a;
+    *(void**)(base + 0x10c) = p ? p : (void*)(base + 0x220);
+    *(void**)(base + 0x21c) = p ? p : (void*)(base + 0x220);
+}
+
 extern "C" s32 fn_801D2CC8(s32 chan, u8** pcard)
 {
     extern u8 lbl_802F7D60[];
