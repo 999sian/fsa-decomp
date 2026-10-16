@@ -134,7 +134,7 @@ extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
 
 extern u32 j3dDefaultTexCoordInfo;
 extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
-    u16 i = *(u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 0x28 + b * 2);
+    u16 i = ((u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 0x28))[b];
     if (i != 0xffff) {
         *out = (*(u32**)(p + 0x28))[i];
         ((u16*)out)[2] = ((u8*)out)[2];
@@ -172,9 +172,7 @@ extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
 extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
     u32 off = ids[idx] * 0x14c + 0x84;
-    u32 i = off + b * 2;
-    u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + i);
+    u16 v = *(u16*)(*(u8**)(p + 4) + (b * 2 + off));
     if (v != 0xffff) {
         return (*(u16**)(p + 0x38))[v];
     }
@@ -185,9 +183,7 @@ extern unsigned int j3dDefaultTevOrderInfoNull;
 extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
     u32 off = ids[idx] * 0x14c + 0xbc;
-    u32 i = off + b * 2;
-    u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + i);
+    u16 v = *(u16*)(*(u8**)(p + 4) + (b * 2 + off));
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x40))[v];
         return;
@@ -215,14 +211,13 @@ extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
 }
 
 extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b) {
-    u32 def = lbl_8053BC78;
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x94 + b * 2;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off);
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x94;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x48))[v];
         return;
     }
-    *out = def;
+    *out = lbl_8053BC78;
 }
 
 extern "C" u8 fn_800CB428(u8* p, s32 idx) {
@@ -245,9 +240,15 @@ extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
     __ct__11J3DTevStageFv(out);
 }
 
+extern u8 j3dDefaultTevSwapMode[];
+extern u8 j3dDefaultTevSwapModeTable[];
+extern u32 j3dDefaultIndTexOrderNull;
+extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, const void* info);
 extern "C" void fn_800CB4C0(void* out, u8* e) {
     u8* p = (u8*)out;
-    *(u8*)(p + 7) = *(u8*)(p + 7);
+    setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(out, e);
+    p[7] = (p[7] & 0xF3) | (j3dDefaultTevSwapMode[1] << 2);
+    p[7] = (p[7] & 0xFC) | j3dDefaultTevSwapMode[0];
 }
 
 extern "C" u8 j3dDefaultTevSwapModeTable[];
@@ -255,19 +256,21 @@ extern "C" u32 j3dDefaultIndTexOrderNull;
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + ids[idx] * 0x14c + 0x124 + stage * 2);
+    u32 off = ids[idx] * 0x14c + 0x124;
+    u16 v = *(u16*)(base + off + stage * 2);
     if (v != 0xffff) {
         u8* e = *(u8**)(p + 0x58) + v * 4;
         *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
         return;
     }
-    *out = 0;
+    *out = j3dDefaultTevSwapModeTable[0] * 0x40 + j3dDefaultTevSwapModeTable[1] * 0x10 + j3dDefaultTevSwapModeTable[2] * 4 + j3dDefaultTevSwapModeTable[3];
 }
 
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
-    u8* e = *(u8**)(p + 0xc) + idx * 0x138;
-    if (e[0] == 1) {
-        return e[1];
+    u8* base = *(u8**)(p + 0xc);
+    s32 off = idx * 0x138;
+    if (base[off] == 1) {
+        return base[off + 1];
     }
     return 0;
 }
@@ -278,7 +281,7 @@ extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
         *out = *(u32*)(e + 4 + stage * 4);
         return;
     }
-    *out = j3dDefaultIndTexOrderNull;
+    *out = 0;
 }
 
 extern unsigned int j3dDefaultBlendInfo;
