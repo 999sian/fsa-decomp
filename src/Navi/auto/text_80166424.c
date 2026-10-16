@@ -1152,6 +1152,11 @@ extern "C" void fn_80172464(void)
 {
 }
 
+extern "C" u32 fn_80172468(void)
+{
+    return 0x49424c46;
+}
+
 extern "C" void fn_80172474(int param_1, u8 param_2)
 {
     *(u8*)(param_1 + 4) = param_2;
