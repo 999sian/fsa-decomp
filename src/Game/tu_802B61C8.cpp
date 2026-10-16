@@ -21,3 +21,26 @@ extern "C" Actor* fn_802B61C8(Actor* this_, s16 n) {
 extern "C" void fn_802B6358(void* this_) {
     fn_801F06F0(this_, lbl_8046CAB8, 0x29, 0, 0, lbl_80540A3C, lbl_80540A3C);
 }
+
+extern "C" const f32 lbl_80540A38;
+extern "C" const f32 lbl_80540A40;
+extern "C" const f32 lbl_80540A44;
+extern "C" const f32 lbl_80540A68;
+extern "C" const f32 lbl_80540A6C;
+extern "C" const f32 lbl_80540A70;
+extern "C" void fn_802B67F8(char* p) {
+    *(f32*)(p + 0x60) = lbl_80540A68;
+    *(f32*)(p + 0x64) = lbl_80540A68;
+    *(f32*)(p + 0x68) = lbl_80540A6C;
+    *(f32*)(p + 0x6c) = lbl_80540A6C;
+    *(f32*)(p + 0x80) = lbl_80540A44;
+    *(f32*)(p + 0x84) = lbl_80540A44;
+    *(f32*)(p + 0x88) = lbl_80540A40;
+    *(f32*)(p + 0x8c) = lbl_80540A40;
+    *(f32*)(p + 0x23c) = lbl_80540A38;
+    *(f32*)(p + 0x238) = lbl_80540A38;
+    *(f32*)(p + 0x234) = lbl_80540A38;
+    *(f32*)(p + 0x240) = lbl_80540A70;
+    *(s32*)(p + 0x230) = 0;
+}
+
