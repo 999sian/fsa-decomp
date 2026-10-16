@@ -415,7 +415,7 @@ void MemCardMenu::fn_803D335C() {
     fn_803B9D54(&lbl_8051C1A0, self->entries, 0x258, self->work, 0x1d4c, 0);
     for (s32 i = 0; i < 3; i++) {
         if (i != lbl_8050EC80.idx) {
-            memcpy(&lbl_8050EC80.entries[i], &self->entries[i], sizeof(SaveEntry));
+            memcpy(&lbl_8050EC80.entries[i], (u8*)self + 0x1c0 + i * sizeof(SaveEntry), sizeof(SaveEntry));
         }
     }
     self->f216c = 0x10;
