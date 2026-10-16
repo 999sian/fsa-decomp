@@ -345,6 +345,14 @@ extern "C" void fn_80136F50(void* p) {
     *(s32*)((u8*)p + 0x58) = 0;
 }
 
+extern "C" void fn_80136F9C(u8* p) {
+    s8 k = p[0x20];
+    if (k == 2) {
+        return;
+    }
+}
+
+extern "C" void fn_801376D0(void* param_1, void* param_2);
 extern "C" f32 fn_801375FC(void* param_1, u32* param_2) {
     f32* table = *(f32**)((u8*)param_1 + 0x44);
     return table[param_2[4]];
@@ -364,25 +372,26 @@ extern "C" f64 fn_80137644(void* param_1, f64* param_2) {
 }
 
 extern "C" void fn_801377A0(void* param_1) {
-    void* vt = lbl_80292BB4;
-    *(void**)((u8*)param_1 + 0x0) = vt;
-    *(f64*)((u8*)param_1 + 0x8) = *(f32*)&lbl_802FEAB0;
-    *(f64*)((u8*)param_1 + 0x10) = *(f64*)((u8*)param_1 + 0x8);
-    *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
-    *(u8*)((u8*)param_1 + 0x20) = 0;
-    *(u8*)((u8*)param_1 + 0x21) = 0;
-    *(f64*)((u8*)param_1 + 0x28) = *(f64*)((u8*)param_1 + 0x8);
-    *(f64*)((u8*)param_1 + 0x30) = *(f64*)((u8*)param_1 + 0x8);
-    *(s32*)((u8*)param_1 + 0x38) = 0;
-    *(s32*)((u8*)param_1 + 0x3c) = 0;
-    *(s32*)((u8*)param_1 + 0x40) = 0;
-    *(void**)((u8*)param_1 + 0x0) = lbl_80292A08;
-    *(s32*)((u8*)param_1 + 0x44) = 0;
-    *(s32*)((u8*)param_1 + 0x48) = 0;
-    *(s32*)((u8*)param_1 + 0x4c) = 0;
-    *(s32*)((u8*)param_1 + 0x50) = *(s32*)((u8*)param_1 + 0x4c);
-    *(s32*)((u8*)param_1 + 0x54) = *(s32*)((u8*)param_1 + 0x4c);
-    *(s32*)((u8*)param_1 + 0x58) = 0;
+    u8* p = (u8*)param_1;
+    void* vt2 = lbl_80292A08;
+    *(void**)(p + 0x0) = lbl_80292BB4;
+    *(f64*)(p + 0x8) = *(f32*)&lbl_802FEAB0;
+    *(f64*)(p + 0x10) = *(f64*)(p + 0x8);
+    *(f64*)(p + 0x18) = *(f64*)(p + 0x8);
+    *(u8*)(p + 0x20) = 0;
+    *(u8*)(p + 0x21) = 0;
+    *(f64*)(p + 0x28) = *(f64*)(p + 0x8);
+    *(f64*)(p + 0x30) = *(f64*)(p + 0x8);
+    *(s32*)(p + 0x38) = 0;
+    *(s32*)(p + 0x3c) = 0;
+    *(s32*)(p + 0x40) = 0;
+    *(void**)(p + 0x0) = vt2;
+    *(s32*)(p + 0x44) = 0;
+    *(s32*)(p + 0x48) = 0;
+    *(s32*)(p + 0x4c) = 0;
+    *(s32*)(p + 0x50) = *(s32*)(p + 0x4c);
+    *(s32*)(p + 0x54) = *(s32*)(p + 0x4c);
+    *(s32*)(p + 0x58) = 0;
 }
 
 extern "C" int fn_80137824(void) {
