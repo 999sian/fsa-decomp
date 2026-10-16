@@ -46,9 +46,3 @@ extern "C" u8 fn_803006E8(u32 data) {
 extern "C" s32 fn_80301A88(void* this_) {
     return OSResumeThread(*(void**)((char*)this_ + 0x28));
 }
-class Unk8053ACB8 {
-public:
-    virtual void vf08();
-    virtual void vf0C();
-};
-extern Unk8053ACB8* lbl_8053ACB8;
