@@ -26,3 +26,26 @@ extern "C" void* fn_8001267C(void* ptr, s16 param_2) {
 
 extern "C" void fn_800126C4(void) {}
 
+extern char lbl_802049C8[];
+extern char lbl_80204A10[];
+extern "C" void fn_800074C0(const char* fmt, ...);
+extern "C" void fn_801E6704(void* dst, const void* src, u32 size);
+extern "C" s32 fn_800126C8(Table_800126C8* self, const void* src, u32 key) {
+    s32 i;
+    for (i = 0; i < 0x40; i++) {
+        if (self->entries[i].key == key) {
+            fn_800074C0(lbl_802049C8);
+            return -1;
+        }
+    }
+    for (i = 0; i < 0x40; i++) {
+        if (self->entries[i].key == 0) {
+            fn_801E6704(self->entries[i].data, src, 0x18);
+            self->entries[i].key = key;
+            return (s8)i;
+        }
+    }
+    fn_800074C0(lbl_80204A10);
+    return -1;
+}
+
