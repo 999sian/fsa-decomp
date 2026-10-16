@@ -60,5 +60,21 @@ extern "C" void fn_8002F308(void) {
     lbl_802FEE28 = 0;
 }
 
+extern "C" void fn_80057B9C(void);
+extern "C" void fn_8002F330(void) {
+    fn_80057B9C();
+    lbl_802FEE28 = 0;
+}
+
+extern "C" void fn_8002F358(void* p, int off) {
+    int iVar1 = fn_80058C08();
+    fn_80058628(off + iVar1, p, 1);
+}
+
+extern "C" void fn_8002F3A0(void* p, int off, float f) {
+    int iVar1 = fn_80058C08();
+    fn_80058654(off + iVar1, p, 1, f);
+}
+
 extern "C" void fn_80030664(void) {}
 
