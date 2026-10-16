@@ -73,6 +73,9 @@ extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
 extern "C" void fn_8016AD04(void) {
 }
 
+extern "C" void fn_8016AD08(void) {
+}
+
 extern "C" s32 fn_80173108(s32 p, s32 i)
 {
     return p + i * 8 + 0xc;
