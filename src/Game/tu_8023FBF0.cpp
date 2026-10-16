@@ -1385,8 +1385,12 @@ BOOL fn_802466B4(char* p) {
 u32 fn_80246904(char* p, u32 mask) {
     return !padActive5(p) ? 0 : fn_80309A78(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask);
 }
-PAD_BTN(80246B10, fn_80309D24)
-PAD_BTN(80246D1C, fn_80309D6C)
+u32 fn_80246B10(char* p, u32 mask) {
+    return !padActive5(p) ? 0 : fn_80309D24(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask);
+}
+u32 fn_80246D1C(char* p, u32 mask) {
+    return !padActive5(p) ? 0 : fn_80309D6C(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask);
+}
 inline s32 countSharing6(char* p) {
     s32 c;
     s32 i;
