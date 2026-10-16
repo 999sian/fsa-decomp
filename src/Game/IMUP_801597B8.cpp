@@ -14,6 +14,10 @@ public:
     virtual void m9();
 };
 
+struct Vec2f {
+    f32 x, y;
+};
+
 struct Vec3f {
     f32 x, y, z;
 };
@@ -73,13 +77,10 @@ extern "C" void fn_80159AA0(char* this_) {
         }
         *(s32*)(this_ + 0x278) = -1;
     }
-    if (*(s32*)(this_ + 0x294) < 0) {
-        f32* pos = (f32*)fn_8023E724(*(void**)(this_ + 0x250));
-        *(f32*)(this_ + 0x27c) = pos[0];
-        *(f32*)(this_ + 0x280) = pos[1];
-        *(f32*)(this_ + 0x284) = pos[2];
+    if (*(s32*)(this_ + 0x294) >= 0) {
+        *(Vec3f*)(this_ + 0x27c) = *(Vec3f*)fn_8023E724(*(void**)(this_ + 0x250));
     }
-    Actor_CreateByID(fn_801F856C(), 0x4C535449, *(void**)(this_ + 0x4), this_ + 0x27c, *(u32*)(this_ + 0x294) | (*(u32*)(this_ + 0x298) << 22), -1, -1);
+    Actor_CreateByID(fn_801F856C(), 0x4C535449, *(void**)(this_ + 0x4), this_ + 0x27c, (*(u32*)(this_ + 0x298) << 22) | *(u32*)(this_ + 0x294), -1, -1);
 }
 
 extern "C" void* fn_8015B420(char* this_, short how) {
