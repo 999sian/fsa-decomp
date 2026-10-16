@@ -1,5 +1,8 @@
 #include "types.h"
 extern u8 lbl_802EE470[];
+extern "C" void fn_80041268(void* a, u8* b, int n);
+extern "C" void fn_8000EB8C(void* a, void* b, f32 c);
+extern "C" void fn_8000EBB8(void* a);
 extern void* lbl_8027F2C0[];
 
 extern void* lbl_8027F2C0[];
