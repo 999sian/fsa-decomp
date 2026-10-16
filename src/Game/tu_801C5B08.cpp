@@ -1,5 +1,15 @@
 #include "types.h"
 
+struct Unk801C5B08 {
+    u8 unk_00[0x4];
+    s32 field_04;
+    u8 unk_08[0x4];
+    f32 field_0C;
+    u8 unk_10[0x33C - 0x10];
+    s16 field_33C;
+    u8 unk_33E[0x590 - 0x33E];
+    s32 field_590;
+};
 s16 fn_801D0280(void* p, s32 idx);
 u8 fn_801CC9F8(void* p, s32 idx);
 u8* fn_802D6A9C(void);
