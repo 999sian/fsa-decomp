@@ -40,6 +40,21 @@ extern "C" void* fn_800D3844(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800D54EC(char* p)
+{
+    if (lbl_802FF208 & 2) {
+        if (*(u8*)(p + 0x131) == 0) {
+            *(u8*)(p + 0x131) = 1;
+            *(u8*)(p + 0x130) = 5;
+        }
+    } else {
+        if (*(u8*)(p + 0x131) == 1) {
+            *(u8*)(p + 0x131) = 0;
+            *(u8*)(p + 0x130) = 6;
+        }
+    }
+}
+
 extern void* lbl_8028EFB0[];
 extern "C" void* fn_800D63D4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
