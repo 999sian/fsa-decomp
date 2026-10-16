@@ -49,10 +49,11 @@ extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
+    f32 z;
     f32 x = s->x;
     f32 y = s->y;
     d[0] = x;
-    f32 z = s->z;
+    z = s->z;
     d[1] = y;
     d[2] = z;
     d[3] = w;
@@ -101,6 +102,9 @@ extern "C" void fn_80019834(void* param_1) {
         *(s32*)((u8*)self + 0xc8) = -1;
     }
     fn_8001D630(*(void**)((u8*)self + 0xc0), self);
+}
+
+extern "C" void fn_80019AE0(void) {
 }
 
 extern "C" s32 fn_80019CFC(u8* p) {
