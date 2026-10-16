@@ -302,6 +302,13 @@ extern "C" void* fn_800643E8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" BOOL fn_800646E4(s8* p) {
+    if (p[0x254] == 0) {
+        p[0x254]++;
+    }
+    return TRUE;
+}
+
 extern "C" void fn_80064120(void);
 extern "C" void fn_800648CC(void) {
     fn_80064120();
@@ -310,6 +317,19 @@ extern "C" void fn_800648CC(void) {
 extern "C" BOOL fn_800648EC(void)
 {
     return TRUE;
+}
+
+extern "C" int fn_80064B20(u8* p) {
+    *(u64*)(lbl_802EE470 + 0x48) = *(u64*)((u8*)lbl_802B7CA0 + 0x142c);
+    fn_80041268(*(void**)(p + 0x24c), p + 0x180, 5);
+    s32 c = *(s8*)(p + 0x240);
+    if (c == 0x1b || c == 0x1c || c == 0xa) {
+        fn_8000EB8C(*(void**)(p + 0x250), *(void**)(*(u8**)(p + 0x24c) + 4),
+                    *(f32*)(*(u8**)(*(u8**)(p + 0x250) + 4) + 0x10));
+    }
+    fn_8000EBB8(*(void**)(p + 0x24c));
+    *(u64*)(lbl_802EE470 + 0x48) = *(u64*)((u8*)lbl_802B7CA0 + 0x1434);
+    return 1;
 }
 
 extern "C" BOOL fn_80064BDC(void)
