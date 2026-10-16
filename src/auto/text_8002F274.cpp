@@ -27,10 +27,10 @@ void fn_80030380(short *param_1)
 
 extern "C" void* fn_80030394(const void* param_1, const void* param_2)
 {
-  if (param_2 != 0) {
-    return (char*)param_1 + (unsigned int)param_2;
+  if (param_2 == 0) {
+    return 0;
   }
-  return 0;
+  return (char*)param_1 + (unsigned int)param_2;
 }
 
 extern "C" void* fn_800303AC(const void* ptr, const void* offset)
