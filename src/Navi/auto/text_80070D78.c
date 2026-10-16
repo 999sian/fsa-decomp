@@ -390,8 +390,3 @@ extern "C" BOOL fn_80077CFC(void)
 {
     return TRUE;
 }
-struct Entry_80281230 { u16 a; u16 b; f32 f0; f32 f1; f32 f2; f32 f3; };
-extern Entry_80281230 lbl_80281230[];
-extern u16 lbl_802FCAD0[];
-extern u8 lbl_802FCAA8[];
-extern "C" void fn_80022438(void*, void*, s32, s32, f32, f32, f32, f32);
