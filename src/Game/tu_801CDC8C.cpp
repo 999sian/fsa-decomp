@@ -115,11 +115,11 @@ extern "C" void fn_801CE5D4(u8* this_) {
     if (*(u32*)(this_ + 0x230) & 7) {
         *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x20);
         *(f32*)(this_ + 0x44) = *(f32*)(this_ + 0x23c);
-        ((void (*)(u8*))(*(void***)this_)[0x84 / 4])(this_);
+        ((ItemBase*)this_)->v31();
         *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
         if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
-            if (fn_802D6A9C()[0x131df + *(s32*)(this_ + 0x4)]) {
-                ((void (*)(u8*))(*(void***)this_)[0x80 / 4])(this_);
+            if (*(fn_802D6A9C() + 0x131df + *(u32*)(this_ + 0x4))) {
+                ((ItemBase*)this_)->v30();
             } else {
                 *(f32*)(this_ + 0x14) = lbl_8053EFC4;
                 *(f32*)(this_ + 0x44) = lbl_8053EFC4;
@@ -137,6 +137,14 @@ extern "C" void fn_801CE91C(void) {}
 extern "C" void fn_801CE920(void) {}
 
 extern "C" void fn_801CE924(void) {}
+
+extern "C" s32 fn_801CE928(u8* this_) {
+    s32 result = 0;
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053EFC4 && *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053EFC4) {
+        result = ((s32 (*)(u8*, u32, s32, s32))fn_801F2B7C)(this_, *(u32*)(this_ + 0x114), -1, 1);
+    }
+    return result;
+}
 
 extern "C" s32 fn_801CE98C(u8* this_) {
     s32 result = 0;
@@ -167,7 +175,9 @@ extern "C" int fn_801CECEC(void) { return 0; }
 
 #pragma fp_contract off
 extern "C" s32 fn_801CF0F4(u8* this_) {
-    f32 a = JMAAtan2Radian(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
+    f32 x = *(f32*)(this_ + 0x3c);
+    f32 y = *(f32*)(this_ + 0x40);
+    f32 a = JMAAtan2Radian(x, y);
     return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
 }
 
@@ -239,12 +249,14 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
 
 extern "C" BOOL fn_801D0DD4(char* this_) {
     struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
-    s32 room = *(s32*)(this_ + 0x4);
+    struct Self { u8 pad0[4]; s32 room; u8 pad8[0xc]; f32 f14; u8 pad18[0x218]; u32 flags; };
+    Self* s = (Self*)this_;
+    s32 room = s->room;
     TndrG* g = (TndrG*)fn_802D6A9C();
     if (g->arr[room] != 0) {
-        return (*(u32*)(this_ + 0x230) & 0x18) != 0;
+        return (s->flags & 0x18) != 0;
     }
-    return *(f32*)(this_ + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
+    return s->f14 <= lbl_8053EFC4 ? TRUE : FALSE;
 }
 
 extern "C" void fn_801D0E58(char* p) {
