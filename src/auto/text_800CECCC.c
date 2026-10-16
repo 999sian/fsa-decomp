@@ -12,7 +12,7 @@ extern "C" void __dl__FPv(void*);
 extern "C" void fn_800CFE2C(void*, void*, void*);
 extern "C" void fn_800CF8F4(void*, void*, void*);
 extern "C" void fn_800CF828(void*, void*, void*);
-extern "C" void fn_800D0204(void*, void*, void*);
+extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800D00F0(void*, void*, void*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
 extern "C" void fn_800CF2B0(void** p) {
@@ -118,13 +118,11 @@ extern "C" void fn_800D00C8(void** self, void* data)
 
 extern "C" void fn_800D01DC(void** self, void* data)
 {
-    fn_800D0204(self, self[1], data);
+    fn_800D0204(self, (unsigned char*)self[1], (const unsigned char*)data);
 }
 
 extern "C" void* fn_800D06B8(const void* ptr, const void* offset);
-extern "C" void fn_800D0204(void* param_1, void* anmp, void* datap) {
-    unsigned char* anm = (unsigned char*)anmp;
-    const unsigned char* data = (const unsigned char*)datap;
+extern "C" void fn_800D0204(void* param_1, unsigned char* anm, const unsigned char* data) {
     *(short*)(anm + 6) = *(const short*)(data + 10);
     anm[4] = data[8];
     *(float*)(anm + 8) = 0.0f;
