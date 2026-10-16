@@ -1306,6 +1306,21 @@ extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
     *(u32*)(param_1 + 0x18) = *param_2->m47(0);
 }
 
+extern "C" void fn_800DD040(u8* this_, J3DIndBlock* src) {
+    this_[4] = src->getIndTexStageNum();
+    u8* dst = this_;
+    for (u32 i = 0; i < 4; i++) {
+        *(u32*)(dst + 5) = *(u32*)src->getIndTexOrder(i);
+        dst += 4;
+    }
+    for (u32 i = 0; i < 3; i++) {
+        *(J3DIndTexMtxInfo*)(this_ + 0x18 + i * 0x1c) = *src->getIndTexMtx(i);
+    }
+    for (u32 i = 0; i < 4; i++) {
+        *(u32*)(this_ + 0x6c + i * 4) = *(u32*)src->getIndTexCoordScale(i);
+    }
+}
+
 extern "C" void fn_800DD148(u8* this_, Unk800DD148Obj* obj) {
     switch (obj->m7()) {
     case 0x5045464c:
