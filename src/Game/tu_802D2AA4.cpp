@@ -16,6 +16,16 @@ extern const f32 lbl_80540F24;
 extern const f32 lbl_80540F28;
 extern const f32 lbl_80540F2C;
 extern const f32 lbl_80540F30;
+extern const f32 lbl_80540F18;
+extern const f32 lbl_80540F20;
+extern "C" void* lbl_8053AC98;
+extern "C" u8 fn_801F2618(void* a, s32 b, s32 c);
+extern "C" u8 fn_801F2B7C(void* a, s32 b, s32 c, s32 d);
+extern "C" u8 fn_801F2B20(void* a, s32 b);
+extern "C" f32* fn_8023E7B0(s32 a);
+extern "C" s32 fn_8023DE58(s32 a);
+extern "C" u16 fn_80226850(void* pos, s32 room);
+extern "C" void fn_802A381C(void* mgr, void* pos, s32 room, s32 id);
 extern "C" void* fn_802D2AA4(void* this_, short how) {
     if (this_) {
         *(void**)this_ = lbl_804A9480;
