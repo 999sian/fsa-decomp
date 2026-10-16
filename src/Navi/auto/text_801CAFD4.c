@@ -1059,20 +1059,6 @@ extern "C" void fn_801DB4F8(void) {
 }
 
 extern void* __peReg;
-
-struct PeReg_801DB550 {
-    u8 unk_0x0[2];
-    u16 m_0x2_d : 4;
-    u16 m_0x2_a3 : 1;
-    u16 m_0x2_b : 3;
-    u16 m_0x2_c : 3;
-    u16 m_0x2_f4 : 1;
-    u16 m_0x2_f3 : 1;
-    u16 m_0x2_f2 : 1;
-    u16 m_0x2_a2 : 1;
-    u16 m_0x2_ch : 1;
-};
-
 extern "C" void fn_801DB51C(s32 a, s32 b) {
     *(u16*)((u8*)__peReg + 6) = (u16)((a << 8) | (b & 0xff));
 }
