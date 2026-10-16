@@ -13,6 +13,7 @@ struct FsaStateEntry {
 };
 extern FsaStateEntry lbl_804ADA50[];
 struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" s32 lbl_804742A8[];
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" u8 fn_8035F3C0(u8* p);
 extern "C" void fn_8013CB44(u8* owner, u8* p, s32 a, s32 b, s32 c);
