@@ -32,11 +32,11 @@ extern "C" void* fn_80196388(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" u32 fn_80197A80(u32 param_1) {
-    if (param_1 == 0) {
-        return 4;
+extern "C" u32 fn_80197A80(int param_1) {
+    if (param_1 != 0) {
+        return 0x7c;
     }
-    return 0x7c;
+    return 4;
 }
 
 extern "C" u32 fn_80197A94(u32 param_1, u32 param_2) {
@@ -63,7 +63,7 @@ extern "C" void fn_80197AFC(void* param_1) {
     *(u32*)(p + 0x4) = 0;
     *(u32*)(p + 0xc) = 0;
     *(u32*)(p + 0x10) = 1;
-    *(s16*)(p + 0x14) = 0xffff;
+    *(s16*)(p + 0x14) = (s16)(0x10000 - 1);
     *(u32*)(p + 0x18) = 0;
     *(u32*)(p + 0x20) = 0;
     *(u32*)(p + 0x24) = 0;
@@ -78,20 +78,15 @@ extern "C" void fn_80197AFC(void* param_1) {
 
 extern "C" u32 fn_80197B4C(void* param_1) {
     u8* p = (u8*)param_1;
-    void* obj;
     u32 a;
     u32 b;
-    obj = *(void**)(p + 0x28);
-    a = ((u32 (*)(void*))((*(void***)obj)[0x30 / 4]))(obj);
-    obj = *(void**)(p + 0x24);
-    b = ((u32 (*)(void*))((*(void***)obj)[0x28 / 4]))(obj);
-    obj = *(void**)(p + 0x2c);
-    a += ((u32 (*)(void*))((*(void***)obj)[0x44 / 4]))(obj);
-    obj = *(void**)(p + 0x30);
-    a += ((u32 (*)(void*))((*(void***)obj)[0x14 / 4]))(obj);
-    obj = *(void**)(p + 0x34);
-    a += ((u32 (*)(void*))((*(void***)obj)[0x20 / 4]))(obj);
-    return (b + a + 0x1f) & ~0x1f;
+    u32 c;
+    a = ((u32 (*)(void*))((*(void***)(*(void**)(p + 0x28)))[0x30 / 4]))(*(void**)(p + 0x28));
+    b = ((u32 (*)(void*))((*(void***)(*(void**)(p + 0x24)))[0x28 / 4]))(*(void**)(p + 0x24));
+    a += ((u32 (*)(void*))((*(void***)(*(void**)(p + 0x2c)))[0x44 / 4]))(*(void**)(p + 0x2c));
+    a += ((u32 (*)(void*))((*(void***)(*(void**)(p + 0x30)))[0x14 / 4]))(*(void**)(p + 0x30));
+    c = ((u32 (*)(void*))((*(void***)(*(void**)(p + 0x34)))[0x20 / 4]))(*(void**)(p + 0x34));
+    return (b + (a + c + 0x1f)) & ~0x1f;
 }
 
 extern u8 lbl_802EE470[];
@@ -441,8 +436,8 @@ extern "C" int fn_801A3544(int p) { return p + 4; }
 extern "C" void fn_801A7D78(void* p);
 extern "C" void fn_801A354C(u8* param_1, u16* param_2) {
     u16 uVar0 = param_2[0];
-    u8 uVar1 = *(u8*)(param_2 + 1);
     *(u16*)(param_1 + 0x30) = uVar0;
+    u8 uVar1 = *((u8*)param_2 + 2);
     u8 uVar2 = *((u8*)param_2 + 3);
     *(u8*)(param_1 + 0x32) = uVar1;
     *(u8*)(param_1 + 0x33) = uVar2;
