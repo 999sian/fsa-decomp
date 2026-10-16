@@ -31,6 +31,13 @@ extern "C" void* fn_8020B354(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_8020B500(u8* param_1) {
+    *(f32*)(param_1 + 0x60) = -10.0f;
+    *(f32*)(param_1 + 0x64) = -10.0f;
+    *(f32*)(param_1 + 0x68) = 10.0f;
+    *(f32*)(param_1 + 0x6c) = 10.0f;
+}
+
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" void fn_802075D8(void*, u16);
@@ -41,6 +48,15 @@ extern "C" void fn_8020B74C(u8* this_) {
         fn_802075D8(actor, *(u16*)(this_ + 0x94));
     }
     v07__5ActorFv(this_);
+}
+
+extern "C" void fn_8020B798(u8* param_1) {
+    u32* ptr = (u32*)(param_1 + 0x230);
+    if (*ptr != 0) {
+        if ((*ptr & 0x80) != 0) {
+            *ptr &= ~0x80u;
+        }
+    }
 }
 
 extern "C" void fn_8020B838(u8* this_) {
@@ -67,6 +83,27 @@ extern "C" s32 fn_8020B848(u8* this_) {
 }
 
 extern "C" void fn_8020BC2C() {
+}
+
+extern "C" u32 fn_801F37AC(void*, u32, void*, u32, u32, u32);
+extern "C" void* fn_802D6A9C();
+extern "C" const f32 lbl_8053F9D4;
+extern "C" void fn_8020BC30(void* this_) {
+    char* p = (char*)this_;
+    switch (*(s32*)(p + 0x248)) {
+    case 2: {
+        s32 kind = *(s32*)(p + 0x4);
+        char* record = (char*)fn_802D6A9C();
+        f32* r = (f32*)((kind < 8) ? (record + 0xcc) : (record + 0xdc));
+        if (*(f32*)(p + 0xc) < r[0] - lbl_8053F9D4 || *(f32*)(p + 0x10) < r[1] - lbl_8053F9D4 ||
+            *(f32*)(p + 0xc) > lbl_8053F9D4 + r[2] || *(f32*)(p + 0x10) > lbl_8053F9D4 + r[3]) {
+            *(u8*)(p + 0x11c) = 0;
+        }
+        break;
+    }
+    case 1:
+        break;
+    }
 }
 
 extern "C" void fn_8020BCE4(char* this_) {
