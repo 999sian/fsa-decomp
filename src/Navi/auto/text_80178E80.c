@@ -418,8 +418,9 @@ extern "C" int fn_801792B4(void* param_1, int param_2) {
 extern "C" void fn_80118BD0(void* p, s32 x);
 extern "C" int fn_80177D24(void);
 extern "C" int fn_80179E80(s64 param_1, s64 param_2) {
-    int result = 0;
-    if (param_2 != result) {
+    u32 result = 0;
+    if (param_2 == result) {
+    } else {
         result = fn_80177D24();
     }
     return result;
@@ -664,13 +665,14 @@ extern "C" void fn_8017FD50(void* self, f32 a, f32 b, f32 c, f32 d) {
 }
 
 extern "C" void fn_80180144(char* self, f32* p) {
-    s32 i;
-    for (i = 0; i < 4; i++) {
+    s32 i = 0;
+    do {
         *(u16*)(self + 0x112) = fn_801786BC(8, p[0]);
         *(u16*)(self + 0x114) = fn_801786BC(8, p[1]);
+        i++;
         p += 2;
         self += 4;
-    }
+    } while (i < 4);
 }
 
 extern "C" void fn_801801B8(void* self, s32 a, s32 b, s32 c, s32 d) {
@@ -708,7 +710,7 @@ extern "C" void fn_80180680(u32* self, int a) {
 }
 
 extern "C" void fn_801806B0(u32* self, int a, int b) {
-    ((VObj_80180980*)self)->vfC4(a, b);
+    ((VObj_80180980*)self)->vfC0(a, 0, b);
 }
 
 extern "C" void fn_801806E4(u32* self, int a) {
