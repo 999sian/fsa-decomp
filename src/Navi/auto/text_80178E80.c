@@ -1329,6 +1329,10 @@ extern "C" void fn_80188E70(void* self, int a) {
     ((Obj*)self)->vfC4(a, 0);
 }
 
+extern "C" void fn_80188ED4(u32* self, int a, int b) {
+    ((VObj_80180980*)self)->vfC0(a, 0, b);
+}
+
 extern "C" void fn_80188FAC(void* self, u32 a) {
     ((VObj_80180868*)self)->v61((u8)a, a);
 }
