@@ -11,3 +11,16 @@ extern "C" void fn_801601E0(char* p) {
     *(float*)(p + 0x288) = lbl_8053D628;
     *(float*)(p + 0x28c) = lbl_8053D628;
 }
+
+extern "C" void* fn_80160278(void* p, s16 flag) {
+    if (p != 0) {
+        *(void**)p = lbl_804A03A8;
+        __dt__10JUTTextureFv(*(void**)((char*)p + 0x294), 1);
+        __dt__10JUTTextureFv(*(void**)((char*)p + 0x290), 1);
+        if (flag > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
