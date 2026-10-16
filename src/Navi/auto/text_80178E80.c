@@ -61,6 +61,19 @@ extern "C" void fn_80180B88(void) {
 extern "C" void fn_80180BA8(void) {
 }
 
+extern "C" u32* fn_80180BAC(u32* self) {
+    fn_80176550(self);
+    self[0] = (u32)lbl_80299040;
+    self[0x40] = 0;
+    self[0x41] = 0xFFFFFFFF;
+    self[0x42] = 0xFFFFFFFF;
+    self[0x49] = 0;
+    self[0x4A] = 0xFFFFFFFF;
+    self[0x4B] = 0xFFFFFFFF;
+    fn_8018119C(self, 0, 0, 0, 2, 2);
+    return self;
+}
+
 extern "C" void fn_80184BF4(void) {
     fn_80177F0C();
 }
