@@ -95,6 +95,8 @@ extern u8 lbl_8050EC80[];
 extern "C" void fn_8043A450(void* param_1, s32 param_2, s32 param_3);
 extern const f32 lbl_80543CFC;
 extern const f32 lbl_80543CF8;
+extern const f32 lbl_80543CF0;
+extern const f32 lbl_80543CF4;
 extern "C" void fn_8041E708(void* p);
 extern "C" void fn_80425234(void* p);
 extern "C" void fn_8043E7CC(void* game, void* v);
