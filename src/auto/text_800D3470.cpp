@@ -14,6 +14,17 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 
+struct Unk800DE29CBits {
+    u8 pad : 4;
+    u8 hi : 2;
+    u8 lo : 2;
+};
+
+struct Unk800DE29CEntry {
+    u8 pad0[0x28];
+    Unk800DE29CBits bits;
+};
+
 struct Unk800DE210 {
     u8 a, b, c;
 };
