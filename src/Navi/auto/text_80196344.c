@@ -552,10 +552,10 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
 
 extern "C" void fn_801A3EF8(int param_1, int param_2, u8* param_3) {
     u8 b1 = param_3[1];
-    u8* p = (u8*)(param_1 + param_2 * 8);
+    param_1 = param_1 + param_2 * 8;
     u8 b0 = param_3[0];
-    p[0x28] = (p[0x28] & 0xf3) | (b1 << 2);
-    p[0x28] = (p[0x28] & 0xfc) | b0;
+    *(u8*)(param_1 + 0x28) = (*(u8*)(param_1 + 0x28) & 0xf3) | (b1 << 2);
+    *(u8*)(param_1 + 0x28) = (*(u8*)(param_1 + 0x28) & 0xfc) | b0;
 }
 
 extern "C" void fn_801A3F68(int param_1, int param_2, u8* param_3) {
@@ -656,12 +656,19 @@ extern "C" void fn_801A4268(u8* param_1, int param_2, u8 param_3) {
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
 extern "C" void fn_801A42AC(u8* p1, int p2, u8* p3) {
-    p1[p2 * 8 + 0x36] = p3[1];
-    p1[p2 * 8 + 0x37] = p3[2];
-    p1[p2 * 8 + 0x38] = p3[3];
-    p1[p2 * 8 + 0x3a] = p3[5];
-    p1[p2 * 8 + 0x3b] = p3[6];
-    p1[p2 * 8 + 0x3c] = p3[7];
+    u8 a = p3[1];
+    u8 b = p3[2];
+    u8 c = p3[3];
+    u8 e = p3[5];
+    u8 f = p3[6];
+    u8 g = p3[7];
+    p1 += p2 * 8;
+    p1[0x36] = a;
+    p1[0x37] = b;
+    p1[0x38] = c;
+    p1[0x3a] = e;
+    p1[0x3b] = f;
+    p1[0x3c] = g;
 }
 
 extern "C" int fn_801A4324(int p1, int p2) {
@@ -773,6 +780,8 @@ extern "C" int fn_801A46F8()
 {
 	return 0;
 }
+
+extern "C" void fn_801A4700(void) { }
 
 extern "C" void fn_801A47D0(u8* p, s32 i, u16 v) {
     ((u16*)(p + 8))[i] = v;
