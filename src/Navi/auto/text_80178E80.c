@@ -702,6 +702,13 @@ extern "C" void fn_801841FC(s32* self, s32 a) {
     }
 }
 
+extern "C" void fn_801843B8(void* self) {
+    void* child = *(void**)((u8*)self + 0x160);
+    if (child != 0) {
+        *((u8*)self + 0xb2) = *((u8*)child + 0x13);
+    }
+}
+
 extern "C" void fn_80184B34(u8* self, u32* out) {
     u32 a = *(u32*)(self + 0x148);
     u32 b = *(u32*)(self + 0x14c);
