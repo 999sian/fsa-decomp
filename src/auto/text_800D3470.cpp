@@ -621,8 +621,9 @@ extern "C" void fn_800D9410(u8* this_) {
         J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
         p += 8;
     }
+    i = 0;
     p = this_;
-    for (i = 0; i < 4; i++) {
+    for (; i < 4; i++) {
         GXColor c = *(GXColor*)(p + 0x45);
         J3DGDSetTevKColor(GXTevKColorID(i), c);
         p += 4;
