@@ -359,6 +359,8 @@ extern "C" u8 fn_80172C38(s32 p, s32 i) {
 
 extern "C" void fn_80172C44(u8* p, u8 v) { p[0x3e] = v; }
 
+extern "C" u8 fn_80172C4C(u8* p) { return p[0x3e]; }
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
