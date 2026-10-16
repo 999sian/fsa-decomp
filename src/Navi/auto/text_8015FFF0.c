@@ -31,6 +31,51 @@ extern "C" void* fn_8015FFF0(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" int fn_8016061C(void* a, char* p) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13();
+        virtual int v40(void*, int);
+    };
+    extern void* lbl_802FF5F8;
+    extern void* fn_801611A8(void*, char*, void*);
+    Obj* o = (Obj*)a;
+    void* r;
+    if (*p == '/') {
+        r = fn_801611A8(o, p + 1, 0);
+    } else {
+        r = fn_801611A8(o, p, lbl_802FF5F8);
+    }
+    if (r != 0) {
+        return o->v40(r, 0);
+    }
+    return 0;
+}
+
+extern "C" void* fn_80161518(void*, void*);
+extern "C" void* fn_801610AC(void*, u32, void*);
+extern "C" int fn_80160698(void* self, u32 id, void* name) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13();
+        virtual int v40(void* r, int b);
+    };
+    void* r;
+    if (id == 0 || id == 0x3f3f3f3f) {
+        r = fn_80161518(self, name);
+    } else {
+        r = fn_801610AC(self, id, name);
+    }
+    if (r != 0) {
+        return ((Obj*)self)->v40(r, 0);
+    }
+    return 0;
+}
+
 extern "C" BOOL fn_801609A8(u8* a, void* b) {
     u8* p = (u8*)fn_801615C4();
     if (p == NULL) {
