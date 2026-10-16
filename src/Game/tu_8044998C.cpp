@@ -22,6 +22,24 @@ struct VObj2 {
     u8 pad[0x28];
 };
 
+struct J2DScreenVt {
+    virtual ~J2DScreenVt();
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual u32 m13(u32, u32, u32) = 0;
+};
+
 extern "C" {
 extern char lbl_80490DA8[];
 extern void* lbl_80529DEC[];
