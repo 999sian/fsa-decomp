@@ -60,6 +60,33 @@ extern "C" void fn_801183BC(u8* self)
     lbl_804BC504[1] = 0;
 }
 
+extern "C" void fn_80118454(u8* self)
+{
+    extern s8 lbl_8053AA91;
+    extern u8 lbl_804BC504[];
+    extern u8 lbl_804BC4F8[];
+    extern f32 lbl_8053C798;
+    self[1] = 1;
+    if (lbl_8053AA91 == 0) {
+        lbl_804BC504[0] = 0;
+        lbl_804BC504[1] = 0;
+        lbl_804BC504[2] = 0;
+        *(u32*)(lbl_804BC504 + 0x8) = 0;
+        *(u32*)(lbl_804BC504 + 0xc) = 0;
+        *(u32*)(lbl_804BC504 + 0x10) = 0;
+        *(f32*)(lbl_804BC504 + 0x14) = lbl_8053C798;
+        *(f32*)(lbl_804BC504 + 0x18) = lbl_8053C798;
+        *(u32*)(lbl_804BC504 + 0x1c) = 0;
+        *(u32*)(lbl_804BC504 + 0x20) = 0;
+        *(u32*)(lbl_804BC504 + 0x24) = 0;
+        *(u32*)(lbl_804BC504 + 0x28) = 0;
+        *(u32*)(lbl_804BC504 + 0x2c) = 0;
+        __register_global_object(lbl_804BC504, (void (*)(void*))fn_80119E5C, lbl_804BC4F8);
+        lbl_8053AA91 = 1;
+    }
+    lbl_804BC504[1] = 1;
+}
+
 extern "C" BOOL fn_801186B0(u8* self, u32 param)
 {
     void fn_801F856C(void);
