@@ -114,5 +114,5 @@ extern "C" void** fn_8003D200(void** p, short del) {
     return p;
 }
 
-void fn_8003D260(void) {
+extern "C" void fn_8003D260(void) {
 }
