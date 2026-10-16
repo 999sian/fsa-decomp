@@ -575,8 +575,8 @@ extern "C" void fn_80180714(u32* self, int a, int b) {
 
 extern "C" void* fn_80180814(void* self, u8 idx) {
     if (idx < 4) {
-        void** arr = (void**)((u8*)self + idx * 4);
-        return arr[64];
+        u8* p = (u8*)self + idx * 4;
+        return *(void**)(p + 0x100);
     }
     return NULL;
 }
@@ -619,9 +619,8 @@ extern "C" void fn_80180950(void* self, int a, int b, int c) {
     ((VObj_80180920*)self)->vfC8(a, b, 0);
 }
 
-extern "C" void fn_80180980(void* self, int a) {
-    void (**vtbl)(void*, int, int) = *(void (***)(void*, int, int))self;
-    vtbl[0x33](self, a, 0);
+extern "C" void fn_80180980(VObj_80180980* self, int a) {
+    self->vfCC(a, 0);
 }
 
 extern "C" void fn_801809B0(void* self, int a, int b) {
