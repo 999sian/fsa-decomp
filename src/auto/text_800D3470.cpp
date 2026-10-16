@@ -18,9 +18,16 @@ struct Unk800DE210 {
     u8 a, b, c;
 };
 
-struct Unk800DE6DCStage {
+struct Unk800DE6DCSwap {
+    u8 unk0 : 4;
+    u8 mTex : 2;
+    u8 mRas : 2;
     u8 pad[7];
-    u8 mSwap;
+};
+
+struct Unk800DE6DC {
+    u8 pad[0x3c];
+    Unk800DE6DCSwap mSwap[1];
 };
 
 struct Unk800DDA5C {
@@ -1421,7 +1428,8 @@ extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
   u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
-  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
+  u8 v = e[0x28];
+  e[0x28] = (b1 << 2) | (v & ~0xC);
   e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
@@ -1574,18 +1582,13 @@ extern "C" u8 fn_800DE648(int param_1) {
 
 extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
-    u8 a = src[0].g;
-    u8 b = src[0].b;
-    u8 c = src[0].a;
-    u8 d = src[1].g;
-    u8 e = src[1].b;
-    u8 f = src[1].a;
-    p[0x36] = a;
-    p[0x37] = b;
-    p[0x38] = c;
-    p[0x3a] = d;
-    p[0x3b] = e;
-    p[0x3c] = f;
+    u8 t;
+    t = src[0].g; p[0x36] = t;
+    t = src[0].b; p[0x37] = t;
+    t = src[0].a; p[0x38] = t;
+    t = src[1].g; p[0x3a] = t;
+    t = src[1].b; p[0x3b] = t;
+    t = src[1].a; p[0x3c] = t;
 }
 
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
@@ -1705,7 +1708,7 @@ extern "C" u32 fn_800DE954() {
     return 1;
 }
 
-extern "C" void fn_800DE95C(u8* this_, s32 idx, const u8* src) {
+extern "C" void fn_800DE95C(u8* this_, u32 idx, const u8* src) {
     u8* p = this_ + idx * 8;
     p[0xf] = src[1];
     p[0x10] = src[2];
@@ -2036,10 +2039,12 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    self[i * 4 + 0xc] = c[0];
-    self[i * 4 + 0xd] = c[1];
-    self[i * 4 + 0xe] = c[2];
-    self[i * 4 + 0xf] = c[3];
+    u32 off = i * 4;
+    u8* p = self + off;
+    p[0xc] = c[0];
+    p[0xd] = c[1];
+    p[0xe] = c[2];
+    p[0xf] = c[3];
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
