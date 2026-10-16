@@ -2,6 +2,8 @@
 
 extern f32 lbl_802FEAB0[];
 extern void* lbl_80292A08[];
+extern "C" void fn_8013BC94(void* a, void* b, void* c, void* d, void* e);
+extern "C" void fn_8013C544(void* a, void* b);
 extern void fn_80167CD8(void*, u32, u32);
 extern void* lbl_802985C8[];
 extern void* lbl_80298B14[];
