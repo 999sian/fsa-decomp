@@ -1,4 +1,5 @@
 #include "types.h"
+extern u32 lbl_802FF208;
 struct DtorVObj_800D64E4 { virtual void Destroy(int); };
 struct VObj_800D69D4 {
     virtual void v0();
