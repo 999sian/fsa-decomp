@@ -228,3 +228,26 @@ extern "C" void fn_8045A0E4(int count)
     JASPoolAllocObject<JASPoolObj3_FSA>::memPool_.JASGenericMemPool::newMemPool(0x40, count);
 }
 
+extern "C" void** fn_8045A338(void** p, short del) {
+    if (p != 0) {
+        *p = lbl_804B2074;
+        if (p != 0) {
+            *p = lbl_804954D8;
+            if (p != 0) {
+                *p = lbl_804954F8;
+                if (p != 0) {
+                    *p = lbl_80495480;
+                    if (p != 0) {
+                        *p = lbl_80495450;
+                        __dt__11JAIAudienceFv(p, 0);
+                    }
+                }
+            }
+        }
+        if (del > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
