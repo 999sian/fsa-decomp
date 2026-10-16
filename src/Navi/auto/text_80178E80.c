@@ -2849,3 +2849,16 @@ extern "C" void fn_80192730(void* p) {
     fn_801DCBB0(5, &d);
 }
 
+extern "C" void fn_801928E0(void* p) {
+    u8 buf[40];
+    fn_801DCFB8(buf, lbl_80299860, 4, 4, 3, 0, 0, 0);
+    fn_801DD58C(buf, 0);
+    fn_801DD58C(buf, 1);
+    fn_801DD58C(buf, 2);
+    fn_801DD58C(buf, 3);
+    fn_801DD58C(buf, 4);
+    fn_801DD58C(buf, 5);
+    fn_801DD58C(buf, 6);
+    fn_801DD58C(buf, 7);
+}
+
