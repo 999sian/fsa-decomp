@@ -2,6 +2,9 @@
 
 
 extern "C" void* fn_8013C824(void);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D6BF8(void*, s32);
+extern "C" void fn_8013A884(u32*);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 extern "C" char* fn_8016A3AC(void);
 extern "C" void fn_801EE434(void*);
@@ -75,5 +78,37 @@ extern "C" void fn_802B3A48(char* p) {
 }
 
 extern "C" void fn_802B3AB4(void) {
+}
+
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern char lbl_804A8638[];
+extern "C" void* fn_802B51C0(void* this_, s16 how) {
+    if (this_) {
+        *(void**)this_ = lbl_804A8638;
+        char* p = fn_8016A3AC();
+        p[0x1ee] = 0;
+        void* h0 = *(void**)((char*)this_ + 0x234);
+        if (h0) {
+            fn_801EE434(h0);
+        }
+        void* h1 = *(void**)((char*)this_ + 0x238);
+        if (h1) {
+            fn_801EE434(h1);
+        }
+        void* h2 = *(void**)((char*)this_ + 0x23c);
+        if (h2) {
+            fn_801EE434(h2);
+        }
+        void* sub = *(void**)((char*)this_ + 0x230);
+        if (sub) {
+            void** vt = *(void***)((char*)sub + 8);
+            ((void (*)(void*, s32))vt[12])(sub, 1);
+        }
+        __dt__5ActorFv(this_, 0);
+        if (how > 0) {
+            ::operator delete(this_);
+        }
+    }
+    return this_;
 }
 
