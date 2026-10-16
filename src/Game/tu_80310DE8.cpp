@@ -25,20 +25,20 @@ extern "C" void fn_80310E48(void* this_) {
     *(s32*)((u8*)this_ + 0x230) = 0;
 }
 
-extern "C" void fn_80310E98(void* this_) {
-    if (*(s32*)((u8*)this_ + 0x230) == 1) {
-        fn_802A3948(lbl_8053AC98, (u8*)this_ + 0xc, 0, *(u32*)((u8*)this_ + 4), 0x10);
+extern "C" void fn_80310E98(u8* this_) {
+    if (*(s32*)(this_ + 0x230) == 1) {
+        fn_802A3948(lbl_8053AC98, this_ + 0xc, 0, *(u32*)(this_ + 4), 0x10);
         fn_801F0E34(this_, 0x30076, 0);
-        *(f32*)((u8*)this_ + 0x248) = *(f32*)((u8*)this_ + 0xc);
-        *(f32*)((u8*)this_ + 0x24c) = *(f32*)((u8*)this_ + 0x10);
-        *(f32*)((u8*)this_ + 0x250) = *(f32*)((u8*)this_ + 0x14);
-        *(u8*)((u8*)this_ + 0x254) = 0;
-        *(s32*)((u8*)this_ + 0x240) = 0x5a;
-        *(s32*)((u8*)this_ + 0x230) = 2;
-    } else if (*(s32*)((u8*)this_ + 0x230) == 3) {
-        fn_8023061C(*(s32*)((u8*)this_ + 0x234), 0);
-        *(s32*)((u8*)this_ + 0x234) = -1;
-        *(s32*)((u8*)this_ + 0x230) = 0;
+        *(f32*)(this_ + 0x248) = *(f32*)(this_ + 0xc);
+        *(f32*)(this_ + 0x24c) = *(f32*)(this_ + 0x10);
+        *(f32*)(this_ + 0x250) = *(f32*)(this_ + 0x14);
+        *(u8*)(this_ + 0x254) = 0;
+        *(s32*)(this_ + 0x240) = 0x5a;
+        *(s32*)(this_ + 0x230) = 2;
+    } else if (*(s32*)(this_ + 0x230) == 3) {
+        fn_8023061C(*(s32*)(this_ + 0x234), 0);
+        *(s32*)(this_ + 0x234) = -1;
+        *(s32*)(this_ + 0x230) = 0;
     }
 }
 
