@@ -383,6 +383,10 @@ extern "C" u8 fn_801A3744(int param_1) {
     return *(u8*)(param_1 + 0xe);
 }
 
+extern "C" void fn_801A374C(int param_1, u8 param_2) {
+    *(u8*)(param_1 + 0xf) = param_2;
+}
+
 extern void* lbl_8029A35C[];
 extern "C" void* fn_801A3768(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
