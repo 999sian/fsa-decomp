@@ -141,11 +141,13 @@ extern "C" s32 fn_80172750(s32 p, s32 i)
 }
 
 extern "C" void fn_8017298C(int param_1, int param_2, u8 param_3) {
-    *(u8*)(param_1 + param_2 + 0xb0) = param_3;
+    u8* p = (u8*)(param_1 + param_2);
+    *(p + 0xb0) = param_3;
 }
 
 extern "C" u8 fn_80172998(int param_1, int param_2) {
-    return *(u8*)(param_1 + param_2 + 0xb0);
+    u8* p = (u8*)(param_1 + param_2);
+    return *(p + 0xb0);
 }
 
 extern "C" void fn_801729A4(int param_1, u8 param_2) {
