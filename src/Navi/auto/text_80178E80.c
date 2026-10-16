@@ -6,6 +6,7 @@ extern "C" void fn_80177F0C(void);
 extern "C" void fn_80177E84(void);
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_8016A0B4(void* p, void* obj);
+extern "C" void fn_8016A1F8(void* p, void* obj);
 extern "C" void fn_801788C0(void);
 extern "C" void fn_80178990(void);
 extern "C" void fn_8015AB1C(void* p);
@@ -61,10 +62,9 @@ extern "C" void fn_8018ECE4(void*, void*);
 extern "C" void fn_8016A72C(void*);
 extern void* lbl_802FF6A0;
 extern "C" void fn_8017A4A8(void* param_1) {
-    void* p;
     if (fn_8015FDA8(param_1, nullptr) == nullptr) {
-        p = lbl_802FF6A0;
-        if (p) {
+        void* p = lbl_802FF6A0;
+        if (p != nullptr) {
             fn_8018ECE4(p, param_1);
         }
     }
