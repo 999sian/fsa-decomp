@@ -10,18 +10,14 @@ extern "C" s32 fn_8013CC50(void* p, void* q, f32 f, s32 a, s32 b, s32 c, s32 d, 
 extern "C" void fn_801F0E34(Actor* p, s32 a, s32 b);
 extern "C" s32 fn_8022461C(s32 a);
 extern "C" BOOL fn_8031EA3C(Actor* p, s32 param_2, s32 param_3) {
-    u16 status = fn_8022461C(param_3);
+    s32 status = (u16)fn_8022461C(param_3);
     if (status == 0xc || status == 3 || status == 0xe) {
-        p->field_3C.x = lbl_80541A20;
-        p->field_3C.y = lbl_80541A20;
-        p->field_3C.z = lbl_80541A20;
+        p->field_3C.x = p->field_3C.y = p->field_3C.z = lbl_80541A20;
         *(s32*)((char*)p + 0x230) = 2;
         return FALSE;
     } else if (status == 0xd) {
-        p->field_3C.x = lbl_80541A20;
-        p->field_3C.y = lbl_80541A20;
-        p->field_3C.z = lbl_80541A20;
-        if (*(s32*)((char*)p + 0x268) == 0) {
+        p->field_3C.x = p->field_3C.y = p->field_3C.z = lbl_80541A20;
+        if (*(u32*)((char*)p + 0x268) == 0) {
             *(s32*)((char*)p + 0x268) = fn_8013CC50(*(void**)((char*)p + 4), (char*)p + 0xc, lbl_80541A24, 0x3d0, 0, 0, 0, 0, 1);
             fn_801F0E34(p, 0x30022, 0);
         }
