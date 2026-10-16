@@ -107,4 +107,6 @@ extern "C" void fn_8035EB18(void* this_) {
 
 extern "C" void fn_8035EE30(void) {
 }
-
+extern "C" void fn_80234810();
+extern "C" void fn_802382D0(u32 a, u32 b);
+extern "C" void fn_8023077C();
