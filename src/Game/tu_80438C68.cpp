@@ -2,6 +2,7 @@
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JParticle/JPAEmitter.h"
 
 
 extern "C" f32 lbl_80543C40;
@@ -47,12 +48,13 @@ extern "C" void fn_8013B490(void* p);
 extern "C" void fn_804399A0(u8* param_1)
 {
     fn_8013B490(lbl_8053AB10);
+    s32 frame = (s32)*(f32*)(param_1 + 0x50);
     void** obj = *(void***)(param_1 + 0x34);
-    ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)*(f32*)(param_1 + 0x50));
+    ((void (*)(void*, s32))(*(void***)obj)[9])(obj, frame);
     obj = *(void***)(param_1 + 0x34);
     ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)obj)[59])(obj, 0, 0, 0, lbl_80543C78, lbl_80543C78, lbl_80543C7C, lbl_80543C80);
     *(f32*)(*(u8**)(param_1 + 8) + 8) = (f32)*(s32*)(param_1 + 0x3c);
-    ((J2DPane* (*)(void*, u32, u32, u32))(*(void***)*(void**)(param_1 + 4))[15])(*(void**)(param_1 + 4), 0x74610000, 0x4e6461, 0x74613031)->animationTransform();
+    (*(J2DPane**)(param_1 + 4))->search(0x004e646174613031ULL)->animationTransform();
     (*(J2DScreen**)(param_1 + 4))->draw(lbl_80543C44, lbl_80543C44, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
     if (*(u8*)(param_1 + 0x40) == 3) {
         *(u8*)((u8*)lbl_8053ADC8 + 0x20) = 1;
