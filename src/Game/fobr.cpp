@@ -11,6 +11,7 @@ extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804A4808[];
 extern void* lbl_8049CC34[];
+extern "C" u32 fn_801F37AC(void*, u32, void*, u32, u32, u32);
 extern "C" void* fn_8020B354(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
