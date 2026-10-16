@@ -3,6 +3,26 @@
 
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" void fn_802D7440(u8* mgr, s32 p);
+extern "C" void fn_8022ADCC(void);
+extern "C" void fn_801EE434(void* p);
+extern "C" void __dt__5ActorFv(void* this_, s32 p);
+extern "C" void __dl__FPv(void* p);
+extern "C" char __vt__4GROK[];
+
+struct ActorVt_grok {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void setShadow(s32 type, f32 x, f32 y);
+};
 
 extern "C" void fn_80182640(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x0) = x;
