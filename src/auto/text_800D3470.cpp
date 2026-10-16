@@ -704,28 +704,29 @@ extern "C" void fn_800D9CA8(void* param_1) {
 }
 
 extern "C" void fn_800D9E3C(void* p) {
-    u32 byteCount = 0;
-    u8* addr = (u8*)p;
+    u8* saved;
+    u8* addr;
+    u32 byteCount;
+    u32 i;
+
+    byteCount = 0;
+    addr = (u8*)p;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
-    u8* saved = __GDCurrentDL->pDisplayListData;
-    
-    for (u32 i = 0; i < 8; i++) {
+    saved = __GDCurrentDL->pDisplayListData;
+
+    for (i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
-            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4) + byteCount;
+            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + byteCount + *(u32*)((u8*)p + 4);
             patchTexNo_PtrToIdx(i, *(const u16*)(addr + 8));
-            
             byteCount += 0x14;
-            u8* texData = (u8*)(*(u32*)((u8*)j3dSys.mTexture + 4));
-            u8 val = texData[(*(u16*)(addr + 8) << 5) + 8];
-            if (val == 0x1) {
+            if (((u8*)(*(u32*)((u8*)j3dSys.mTexture + 4)))[(*(u16*)(addr + 8) << 5) + 8] == 1) {
                 byteCount += 0x23;
             }
         }
         addr += 2;
     }
-    
-    u8* now = __GDCurrentDL->pDisplayListData;
-    DCStoreRange(saved, (u32)(now - saved));
+
+    DCStoreRange(saved, (u32)(__GDCurrentDL->pDisplayListData - saved));
 }
 
 extern "C" u8 isTexNoReg__FPv(void*);
@@ -929,9 +930,8 @@ extern "C" u32 fn_800DDA50(void) {
 }
 
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    u16 w = *(u16*)src;
     u8 b2 = src[2];
-    *(u16*)(this_ + 0x4) = w;
+    *(u16*)(this_ + 0x4) = *(u16*)src;
     u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
@@ -1012,15 +1012,15 @@ extern "C" void fn_800DDB70(void* param_1)
 {
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
-  u8* pStart = __GDCurrentDL->pDisplayListData;
-  u8* pCurr = GDGetCurrPointer();
+  void* pStart = GDGetCurrPointer();
+  void* pCurr = *(void* volatile*)&__GDCurrentDL->pDisplayListData;
   for (;;) {
     if (!isTexNoReg(pCurr)) break;
     u16 texNo = getTexNoReg(pCurr);
     loadTexNo(i, texNo);
     i++;
   }
-  DCStoreRange(pStart, __GDCurrentDL->pDisplayListData - pStart);
+  DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
 }
 
 extern "C" u32 fn_800DDC10() {
@@ -1088,7 +1088,7 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 }
 
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
-    ((u8*)param_1 + (unsigned short)param_2)[0x10a] = param_3;
+    ((u8*)param_1 + param_2)[0x10a] = param_3;
 }
 
 extern "C" void fn_800DDD70(u8* param_1, int param_2, u8* param_3) {
@@ -1130,19 +1130,19 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 }
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
+    u8 *dst = (u8 *)(param_1 + param_2 * 8);
     u8 v1 = param_3[1];
-    param_1 = param_1 + param_2 * 8;
     u8 v2 = param_3[2];
-    *(u8 *)(param_1 + 0x5a) = v1;
+    dst[0x5a] = v1;
     u8 v3 = param_3[3];
-    *(u8 *)(param_1 + 0x5b) = v2;
+    dst[0x5b] = v2;
     u8 v5 = param_3[5];
-    *(u8 *)(param_1 + 0x5c) = v3;
+    dst[0x5c] = v3;
     u8 v6 = param_3[6];
-    *(u8 *)(param_1 + 0x5e) = v5;
+    dst[0x5e] = v5;
     u8 v7 = param_3[7];
-    *(u8 *)(param_1 + 0x5f) = v6;
-    *(u8 *)(param_1 + 0x60) = v7;
+    dst[0x5f] = v6;
+    dst[0x60] = v7;
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
@@ -1150,11 +1150,10 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8 b1 = param_3[1];
-    u8 b0 = param_3[0];
-    u8* p = param_1 + param_2 * 8;
-    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
-    p[0x60] = (p[0x60] & ~0x3) | b0;
+    int b1 = param_3[1];
+    int b0 = param_3[0];
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -1315,13 +1314,13 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
 {
-  u8 (*p)[8] = (u8 (*)[8])(param_1 + 0x20);
-  p[param_2][2] = param_3[1];
-  p[param_2][3] = param_3[2];
-  p[param_2][4] = param_3[3];
-  p[param_2][6] = param_3[5];
-  p[param_2][7] = param_3[6];
-  p[param_2][8] = param_3[7];
+  u8* dst = param_1 + param_2 * 8;
+  dst[0x22] = param_3[1];
+  dst[0x23] = param_3[2];
+  dst[0x24] = param_3[3];
+  dst[0x26] = param_3[5];
+  dst[0x27] = param_3[6];
+  dst[0x28] = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -1337,10 +1336,11 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  u8 b0 = param_3[0];
+  u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
-  (param_1 + param_2 * 8)[0x28] = (b1 << 2) | ((param_1 + param_2 * 8)[0x28] & ~0xC);
-  (param_1 + param_2 * 8)[0x28] = b0 | ((param_1 + param_2 * 8)[0x28] & ~0x3);
+  u8 b0 = param_3[0];
+  e[0x28] = (e[0x28] & ~0xC) | (b1 << 2);
+  e[0x28] = (e[0x28] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -1500,7 +1500,7 @@ extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
     *(u8*)(offset + 0x3c) = byte;
 
     byte = *(u8*)(offset + 0x3c);
-    byte = (byte & 0xfc) | val0;
+    byte = (byte & ~0x03) | val0;
     *(u8*)(offset + 0x3c) = byte;
 }
 
@@ -1591,16 +1591,16 @@ extern "C" u32 fn_800DE954() {
 extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
     u8* p = this_ + idx * 8;
     u8 a = src[1];
-    u8 b = src[2];
     p[0xf] = a;
-    u8 c = src[3];
+    u8 b = src[2];
     p[0x10] = b;
-    u8 d = src[5];
+    u8 c = src[3];
     p[0x11] = c;
-    u8 e = src[6];
+    u8 d = src[5];
     p[0x13] = d;
-    u8 f = src[7];
+    u8 e = src[6];
     p[0x14] = e;
+    u8 f = src[7];
     p[0x15] = f;
 }
 
@@ -1909,9 +1909,8 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 }
 
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8 r = c[0];
-    u8* p = self + i * 4;
-    p[0xc] = r;
+    u8* p = &self[i * 4];
+    p[0xc] = c[0];
     p[0xd] = c[1];
     p[0xe] = c[2];
     p[0xf] = c[3];
@@ -2000,7 +1999,8 @@ extern "C" u32 fn_800DF208(void) {
 }
 
 extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
-    ((GXColor*)((u32)param_1 + 0x20))[param_2] = *param_3;
+    GXColor* dst = (GXColor*)(param_1 + param_2 * 4 + 0x20);
+    *dst = *param_3;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
