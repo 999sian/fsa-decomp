@@ -569,6 +569,11 @@ extern "C" void fn_8001BEA4(void) {
     fn_8001EB08();
 }
 
+extern "C" void fn_8001EAE8(void* param_1, void* param_2);
+extern "C" void fn_8001BEC4(void* param_1, void* param_2) {
+    fn_8001EAE8((u8*)param_1 + 0x1c, param_2);
+}
+
 extern void* lbl_802056AC[];
 extern "C" int fn_8001EABC(void);
 extern "C" bool fn_8001BEE8(void) {
