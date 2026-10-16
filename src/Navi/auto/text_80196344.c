@@ -1170,6 +1170,10 @@ extern "C" void fn_801A4274(u8* p, s32 i, u8* src) {
     p[i + 0x57] = *src;
 }
 
+extern "C" void fn_801A4298(u8* p, u8* src) {
+    p[0x34] = *src;
+}
+
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
 extern "C" void fn_801A42AC(u8* p, s32 i, u8* src) {
