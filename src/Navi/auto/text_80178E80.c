@@ -170,6 +170,9 @@ struct VObj_80180980 {
     virtual void vfF0(f32*, f32*); virtual void vfF4(); virtual void vfF8(f32*, f32*); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf108(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf10C(f32, f32, f32, f32, f32, f32, f32, f32);
+    virtual void vf110();
+    virtual void vf114();
+    virtual void vf118(void*, int, int);
 };
 
 struct VObj_80180920 {
@@ -707,11 +710,16 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
     return param_1;
 }
 
+#pragma push
+#pragma use_lmw_stmw off
+#pragma dont_inline on
 extern "C" void fn_8017EC94(u32* self, void* a, int b, int c) {
-    void* r = ((void* (*)(void*))fn_8017A4A8)(a);
-    ((void (*)(void*, void*, int, int))(*(u32**)self)[70])(self, r, b, c);
+    void* r = fn_8017A4A8(a);
+    void (*vfn)(void*, void*, int, int) = (void (*)(void*, void*, int, int))((*(void***)self)[0x118 / 4]);
+    vfn(self, r, b, c);
 }
-
+#pragma dont_inline reset
+#pragma pop
 extern "C" void fn_801C5D48(void* p);
 extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     u8 buf[48];
