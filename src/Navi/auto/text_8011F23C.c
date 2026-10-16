@@ -141,6 +141,17 @@ extern "C" void* fn_80123EB8(void)
 	return lbl_802FF368;
 }
 
+extern "C" void fn_801286CC(u8* param_1, u8* param_2) {
+    u8* p = *(u8**)(param_1 + 4);
+    s32 b = *(u8*)(param_2 + 0x95);
+    u8* iVar2 = **(u8***)(p + 0x1c);
+    s32 sum = *(s16*)(param_2 + 0x80) + (b & *(u8*)(iVar2 + 0x2f));
+    s32 d = *(s16*)(iVar2 + 0x24);
+    s32 q = sum / d;
+    s32 rem = sum - q * d;
+    *(s16*)(param_1 + 0x214) = rem + (q & 1) * (d - rem * 2);
+}
+
 extern "C" void fn_80128718(u8* self) {
     *(s16*)(self + 0x214) = 0;
 }
@@ -154,6 +165,15 @@ extern "C" void fn_80128724(u8* param_1, u8* param_2) {
 
 extern "C" void fn_80128794(u8* self) {
     *(s16*)(self + 0x214) = 0;
+}
+
+extern "C" void fn_801287A0(u8* param_1, u8* param_2) {
+    u8* p = *(u8**)(param_1 + 4);
+    u8 b = *(u8*)(param_2 + 0x95);
+    u8* iVar2 = **(u8***)(p + 0x1c);
+    s32 d = *(s16*)(iVar2 + 0x24) + 1;
+    s32 m = b & *(u8*)(iVar2 + 0x2f);
+    *(s16*)(param_1 + 0x214) = m % d;
 }
 
 extern "C" void fn_80128EE8(u8* a, u8* b) {
@@ -411,6 +431,12 @@ extern "C" void* fn_8012F52C(void* ptr, s16 param_2) {
 
 extern "C" void fn_801300FC(u8* p, u32 v, u8 i) {
     (*(u32**)(p + 0x1c))[i] = v;
+}
+
+extern "C" void fn_80166C70(unsigned short* param_1, unsigned short param_2);
+extern "C" void* fn_80130234(unsigned short* param_1, unsigned short param_2) {
+    fn_80166C70(param_1, param_2);
+    return param_1;
 }
 
 extern "C" void* fn_80130264(void* ptr, s16 param_2) {
