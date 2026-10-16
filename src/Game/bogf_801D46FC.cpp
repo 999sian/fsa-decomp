@@ -67,7 +67,7 @@ extern "C" void fn_801D4A84(u8* this_) {
         fn_801E4D74(this_);
     }
     if (*(u32*)(this_ + 0x230) & 0x8000) {
-        *(u32*)(this_ + 0x230) &= ~0x8000;
+        *(volatile u32*)(this_ + 0x230) &= 0xFFFF7FFF;
         if (fn_801CD2F8(*(s32*)(this_ + 0x4))) {
             fn_801D5D84(this_, 0x15);
         } else {
