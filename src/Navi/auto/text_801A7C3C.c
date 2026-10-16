@@ -18,6 +18,7 @@ struct Entry_801B4B54 {
 };
 extern "C" Entry_801B4B54 lbl_80202660;
 extern "C" void* lbl_8029B50C[];
+extern void* lbl_8027F214[];
 extern "C" f32 lbl_80301D6C;
 extern "C" void fn_8011935C(void* p);
 extern "C" void fn_8015AB1C(void* ptr);
@@ -407,6 +408,23 @@ extern "C" void* fn_801B37C0(void* base, u32 offset) {
 extern "C" void* fn_801B37D8(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" Entry_801B4B54 fn_801B4B54(void* self, int idx) {
+    Entry_801B4B54 def = lbl_80202660;
+    u16* tbl = *(u16**)((u8*)self + 8);
+    u8* base = *(u8**)((u8*)self + 4);
+    u16 i = *(u16*)(base + tbl[idx] * 0x138 + 0x136);
+    if (i != 0xffff) {
+        Entry_801B4B54* e = (Entry_801B4B54*)(*(u8**)((u8*)self + 0x68) + i * 0x10);
+        Entry_801B4B54 r;
+        r.a = e->a;
+        r.b = e->b;
+        r.c = e->c;
+        r.d = e->d;
+        return r;
+    }
+    return def;
 }
 
 extern "C" void* fn_801B4BFC(void* base, u32 offset) {
