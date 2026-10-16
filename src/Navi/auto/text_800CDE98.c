@@ -53,14 +53,14 @@ extern "C" s32 fn_800D01C0(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode) {
     }
     f32 t = fn_800D0570(p, b, a, c, x, y);
     VObjLerp* o = *(VObjLerp**)(p + 0x14);
-    o->v4(*(f32*)(p + 0x1c) + (x + t * (y - x)), *(f32*)(p + 0x20));
-    switch (mode) {
-    case 1:
+    f32 d = t * (y - x);
+    o->v4(*(f32*)(p + 0x1c) + (x + d), *(f32*)(p + 0x20));
+    if (mode != 2) {
+        if (mode == 1) {
+            t = lbl_80300F48 - t;
+        }
         o = *(VObjLerp**)(p + 0x14);
-        o->v9((s32)((f32)p[0x18] * (lbl_80300F48 - t)));
-        break;
-    case 2:
-        break;
+        o->v9((s32)((f32)p[0x18] * t));
     }
     return 0;
 }
