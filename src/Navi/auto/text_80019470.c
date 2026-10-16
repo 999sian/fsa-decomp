@@ -66,6 +66,10 @@ extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80019534(void* param_1) {
+    fn_8001C2E4(*(void**)((u8*)param_1 + 0x224), param_1);
+}
+
 extern "C" void fn_8001978C(void) {
 }
 
