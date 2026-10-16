@@ -451,7 +451,7 @@ extern "C" void* fn_8001D91C(void* param_1) {
         *(void**)((u8*)param_1 + 0xb4) = temp;
         *(void**)((u8*)param_1 + 0xb8) = *(void**)((u8*)r31 + 0x1c);
         fn_8001C174((void*)((u8*)param_1 + 0xbc), param_1, (void*)((u8*)param_1 + 0xe8), 0x10);
-        *(u8*)(((unsigned short)u8*)param_1 + 0x1a8) = 0;
+        *(u8*)((u8*)param_1 + 0x1a8) = 0;
     }
     
     void* temp2 = fn_8001C010();
