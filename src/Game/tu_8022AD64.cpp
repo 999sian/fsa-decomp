@@ -163,7 +163,7 @@ void fn_80457F6C(void*);
 int fn_80242624(Player*, const JGeometry::TVec3<f32>&);
 int GetPtrField_0x4(Player*);
 
-static inline int pIsLinked(int i) {
+static inline u8 pIsLinked(int i) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(i)) return 0;
     return Player_IsLinked(lbl_8053AC90->players[i]);
