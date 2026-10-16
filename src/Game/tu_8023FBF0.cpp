@@ -1935,12 +1935,15 @@ JGeometry::TVec3<f32>* fn_8024C378(char* p) {
         f32 x = F32(r, 0xcc);
         f32 y = F32(r, 0xd0);
         f32* o = roomOffset(S32(p, 0x3b4));
+        f32 ox = o[0];
+        f32 oy = o[1];
+        JGeometry::TVec3<f32>* src = (JGeometry::TVec3<f32>*)(p + 0x8);
         JGeometry::TVec3<f32>* v = (JGeometry::TVec3<f32>*)(p + 0x1268);
-        v->x = F32(p, 0x8);
-        v->y = F32(p, 0xc);
-        v->z = F32(p, 0x10);
-        v->x += x - o[0];
-        v->y += y - o[1];
+        v->x = src->x;
+        v->y = src->y;
+        v->z = src->z;
+        v->x += x - ox;
+        v->y += y - oy;
         return v;
     }
     return (JGeometry::TVec3<f32>*)(p + 0x8);
@@ -2012,7 +2015,19 @@ BOOL fn_8024D058(char* p, u8 on) {
             if (U8(p, 0x454) != 0) {
                 fn_8024B2E0(p);
             } else {
-                resetTrail(p);
+                u32 i;
+                char* q = p;
+                for (i = 0; i < 0x31; i++) {
+                    F32(q, 0x38) = F32(p, 0x8);
+                    F32(q, 0x3c) = F32(p, 0xc);
+                    F32(q, 0x40) = F32(p, 0x10);
+                    if (F32(p, 0x10) > 0.0f) {
+                        p[0x284 + i] = 1;
+                    } else {
+                        p[0x284 + i] = 0;
+                    }
+                    q += 0xc;
+                }
             }
         }
     } else {
