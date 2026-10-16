@@ -31,11 +31,12 @@ extern u8 lbl_803007FC[];
 extern void* lbl_802FF0BC;
 extern "C" int fn_8004D308(void* a, s32 b, s32 c, void* d, void* e, void* f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern "C" void fn_8007C540(u8* p, u8* q) {
-    u32 i = 0;
     s32 off = 0;
+    u8* tbl = lbl_802EE470;
+    u32 i = 0;
     do {
         if (*(u16*)(p + off + 0x16)) {
-            u8* r28 = *(u8**)(*(u8**)(lbl_802EE470 + 0x38) + 0x14);
+            u8* r28 = *(u8**)(*(u8**)(tbl + 0x38) + 0x14);
             u8* obj0 = *(u8**)(q + 0x28);
             u8* obj = ((u8* (*)(u8*, s32))*(void**)(*(u8**)obj0 + 0x50))(obj0, i);
             *(f32*)(obj + 0x1c) = *(f32*)(obj + 0x1c) + *(f32*)(r28 + 0x414);
@@ -45,7 +46,6 @@ extern "C" void fn_8007C540(u8* p, u8* q) {
         off += 8;
     } while (i < 8);
 }
-
 extern "C" void fn_8007C698(void);
 extern "C" void fn_8007C5E4(void) {
     fn_8007C698();
