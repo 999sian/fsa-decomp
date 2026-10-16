@@ -491,9 +491,9 @@ extern "C" void fn_8001E69C(void) {
     cTg_IsUse__FP16create_tag_class();
 }
 
-extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void);
-extern "C" void fn_8001EAE8(void) {
-    cTg_Addition__FP15node_list_classP16create_tag_class();
+extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
+extern "C" void fn_8001EAE8(void* param_1, void* param_2) {
+    cTg_Addition__FP15node_list_classP16create_tag_class(param_1, param_2);
 }
 
 extern "C" void fn_8001EB08(void) {
