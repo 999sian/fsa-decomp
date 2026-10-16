@@ -726,8 +726,8 @@ extern "C" void fn_80180748(void* self, int a) {
 }
 
 extern "C" void fn_80180778(void* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
-    ((VObj_80180980*)self)->vf108(a, b, c, d, e, f, g, h);
-    ((VObj_80180980*)self)->vf10C(a, b, c, d, e, f, g, h);
+    ((VObj_80180980*)self)->vf100(a, b, c, d, e, f, g, h);
+    ((VObj_80180980*)self)->vf104(a, b, c, d, e, f, g, h);
 }
 
 extern "C" void* fn_80180814(void* self, u8 idx) {
