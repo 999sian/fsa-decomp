@@ -414,6 +414,16 @@ extern "C" void fn_80199200(void* param_1) {
     p[22] = 0;
 }
 
+extern "C" void fn_80199230(void* param_1) {
+    s32* p = (s32*)param_1;
+    p[1] = 0;
+    p[14] = 0;
+    p[15] = 0;
+    p[16] = 0;
+    p[17] = 0;
+    p[22] = 0;
+}
+
 extern "C" int fn_80199A28() {
     return 0x244;
 }
