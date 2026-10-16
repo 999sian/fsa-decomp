@@ -361,8 +361,8 @@ extern "C" void fn_800D6B94(u8* this_) {
 
 extern "C" void fn_800D6C40(u8* this_) {
     u8* start;
-    u8* p = this_;
     u8* q = this_;
+    u8* p = this_;
     u32 i = 0;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x58);
     start = __GDCurrentDL->pDisplayListData;
@@ -371,8 +371,8 @@ extern "C" void fn_800D6C40(u8* this_) {
             load__9J3DTexMtxCFUl(*(void**)(q + 0x38), i);
         }
         i++;
-        p += 6;
         q += 4;
+        p += 6;
     } while (i < 8);
     DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
 }
