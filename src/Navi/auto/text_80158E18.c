@@ -663,6 +663,20 @@ extern "C" long fn_8015B91C(char* p, unsigned long addr) {
     return *(long*)(n + 4);
 }
 
+extern "C" long fn_8015B9A4(char* p) {
+    char* n;
+    long max;
+    fn_801BE3A0(p + 0x18);
+    max = 0;
+    for (n = *(char**)(p + 0x78); n != 0; n = *(char**)(n + 0xc)) {
+        if (max < *(long*)(n + 4)) {
+            max = *(long*)(n + 4);
+        }
+    }
+    fn_801BE47C(p + 0x18);
+    return max;
+}
+
 #pragma pop
 
 #pragma pop
