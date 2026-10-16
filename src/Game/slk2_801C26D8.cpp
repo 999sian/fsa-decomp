@@ -13,7 +13,7 @@ extern "C" void fn_801C1374(void* subRecord, s32 flag);
 extern "C" void fn_801F4F28(void* this_);
 extern "C" void fn_801C3B7C(void* this_, s32 state);
 extern "C" u8 fn_801C11F0(void* rec);
-extern "C" s32 fn_801D05F8(f32 r, void* pos);
+extern "C" s32 fn_801D05F8(void* this_, f32 r, void* pos);
 extern "C" u8 fn_801D0D50(void* this_, s32 idx, void* pos, f32 r);
 extern "C" void fn_801C1440(void* rec, u32 v);
 extern "C" void dtor_80214F9C(void* p, s32 flag);
