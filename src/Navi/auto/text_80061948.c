@@ -294,6 +294,34 @@ extern "C" void fn_80064030(void* param_1) {
     *(u8*)((u8*)param_1 + 0x2c) = one;
 }
 
+extern void* lbl_80247544[];
+extern f32 lbl_801F96C4[];
+extern "C" void* fn_8004F1E4(void* ptr, s16 param_2);
+extern "C" void* fn_80064058(void* p) {
+    *(void**)p = lbl_80247544;
+    fn_801E0DB8((u8*)p + 4, fn_80064030, fn_8004F1E4, 0x30, 0x1d);
+    f32* src = lbl_801F96C4;
+    u8* dst = (u8*)p;
+    f32 a, b, c;
+    for (int i = 0x1d; i > 0; i--) {
+        a = src[0];
+        b = src[1];
+        *(f32*)(dst + 0x8) = a;
+        c = src[2];
+        *(f32*)(dst + 0xc) = b;
+        a = src[3];
+        *(f32*)(dst + 0x10) = c;
+        b = src[4];
+        *(f32*)(dst + 0x14) = a;
+        a = src[5];
+        *(f32*)(dst + 0x18) = b;
+        *(f32*)(dst + 0x1c) = a;
+        src += 6;
+        dst += 0x30;
+    }
+    return p;
+}
+
 extern "C" void fn_800641AC(void);
 extern "C" void fn_80064100(void) {
     fn_800641AC();
@@ -445,9 +473,9 @@ extern "C" void* fn_80064D40(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80064DC4(void** p) {
+    void* z = 0;
     void* a = lbl_8027F6DC;
     void* b = lbl_8027F6D0;
-    void* z = 0;
     p[0] = a;
     p[1] = z;
     p[0] = b;
