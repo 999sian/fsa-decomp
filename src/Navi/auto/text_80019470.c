@@ -180,6 +180,14 @@ extern "C" s32 fn_80019930(void) {
     return 0;
 }
 
+#pragma dont_inline on
+extern "C" s32 fn_8001994C(void) {
+    if (lbl_802FB9B8 != NULL) {
+        return fn_80115564(lbl_802FB9B8);
+    }
+    return 0;
+}
+
 extern "C" void fn_80019AE0(void) {
 }
 
