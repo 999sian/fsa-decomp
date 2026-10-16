@@ -812,8 +812,8 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A38E0(u8* p, s32 i, NaviRect16* src) {
-    *(NaviRect16*)(p + (i << 3) + 0xda) = *src;
+extern "C" void fn_801A38E0(NaviRectHolder* p, s32 i, NaviRect16* src) {
+    p->rects[i] = *src;
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
@@ -1552,6 +1552,10 @@ extern "C" void* fn_801A4AD8(void* ptr, s16 param_2) {
 
 extern "C" void fn_801A4B44(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
+}
+
+extern "C" void fn_801A4B4C(u8* p, u32* src) {
+    *(u32*)(p + 4) = *src;
 }
 
 extern "C" void* fn_801A4B58(void* p) {
