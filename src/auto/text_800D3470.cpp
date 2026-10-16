@@ -205,21 +205,22 @@ extern "C" void fn_800D5DAC(Vtable800D8248* param_1, u32 param_2)
   }
 }
 
+extern "C" u32 lbl_80539E10;
 extern "C" void fn_800D5E14(void* param) {
-    GDOverflowCheck(13);
-    
+    GDOverflowCheck(lbl_80539E10);
+
     __GDWrite(0x10);
     __GDWrite(0x00);
     __GDWrite(0x01);
     __GDWrite(0x10);
     __GDWrite(0x0c);
-    
-    unsigned long val1 = *(u32*)((char*)param + 4);
+
+    u32 val1 = *(u32*)((char*)param + 4);
     __GDWrite((u8)(val1 >> 24));
     __GDWrite((u8)(val1 >> 16));
     __GDWrite((u8)(val1 >> 8));
     __GDWrite((u8)val1);
-    
+
     u32 val2 = *(u32*)((char*)param + 8);
     __GDWrite((u8)(val2 >> 24));
     __GDWrite((u8)(val2 >> 16));
