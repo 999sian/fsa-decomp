@@ -704,6 +704,7 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
     }
     return param_1;
 }
+#pragma pop
 
 extern "C" void fn_8017E65C(u32* self, void* a, f32 f, int b, int c) {
     ((void (*)(void*, void*, f32, int, int))(*(u32**)self)[50])(self, fn_8017A4A8(a), f, b, c);
