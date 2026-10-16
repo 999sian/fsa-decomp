@@ -2107,23 +2107,23 @@ extern "C" void fn_80191B4C(u32* data, s32 index) {
 }
 
 extern "C" void fn_80191BB8(u32* data, s32 index) {
-    struct {
-        f32 x, y, z;
-    } zero = {0.0f, 0.0f, 0.0f};
+    f32 z0 = 0.0f;
+    f32 z1 = 0.0f;
+    f32 z2 = 0.0f;
     *(volatile u8*)0xCC008000 = 0x10;
     *(volatile u16*)0xCC008000 = 0xB;
     *(volatile u16*)0xCC008000 = (u16)(index << 2);
     *(volatile u32*)0xCC008000 = data[0];
     *(volatile u32*)0xCC008000 = data[1];
     *(volatile u32*)0xCC008000 = data[2];
-    *(volatile u32*)0xCC008000 = *(u32*)&zero.x;
+    *(volatile u32*)0xCC008000 = *(u32*)&z0;
     *(volatile u32*)0xCC008000 = data[4];
     *(volatile u32*)0xCC008000 = data[5];
     *(volatile u32*)0xCC008000 = data[6];
-    *(volatile u32*)0xCC008000 = *(u32*)&zero.y;
+    *(volatile u32*)0xCC008000 = *(u32*)&z1;
     *(volatile u32*)0xCC008000 = data[8];
     *(volatile u32*)0xCC008000 = data[9];
     *(volatile u32*)0xCC008000 = data[10];
-    *(volatile u32*)0xCC008000 = *(u32*)&zero.z;
+    *(volatile u32*)0xCC008000 = *(u32*)&z2;
 }
 
