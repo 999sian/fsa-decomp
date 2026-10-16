@@ -16,9 +16,11 @@ extern "C" void fn_8002D2EC(char* p) {
 }
 
 extern "C" void fn_8002D31C(char* p) {
-    unsigned int flags = lbl_802FEDE0 | 0x4000;
+    unsigned int flags;
     if (*(signed char*)(p + 0xc6e) == -1) {
         flags = lbl_802FEDE0 | 0x1000;
+    } else {
+        flags = lbl_802FEDE0 | 0x4000;
     }
     lbl_802FEDE0 = flags;
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
