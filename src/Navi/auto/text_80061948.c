@@ -65,7 +65,8 @@ extern u8 lbl_80280248[];
 extern f32 lbl_8030046C;  // SDA label
 extern void* lbl_80280230[];
 extern "C" void fn_8006C404(void);
-extern "C" void fn_8006C5B0(s32);
+extern "C" void fn_8006C5B0(s32, s32 = 0);
+extern u32 lbl_802FC710;
 extern "C" void fn_80030534(void*, int, int);
 extern "C" void* fn_80022434(s32);
 extern "C" void* fn_80062D60(void* ptr, s16 param_2) {
@@ -1049,21 +1050,18 @@ extern "C" void fn_8006B928(void* param_1) {
     *(u32*)((u8*)param_1 + 0x2cc) = (u32)result;
 }
 
+extern u32 lbl_802FC710;
 extern "C" void fn_8006B9A4(void* param_1) {
     fn_8006C404();
-    if (*(u32*)((u8*)param_1 + 0x2fc) < 480000) {
+    if (*(s32*)((u8*)param_1 + 0x2fc) < 480000) {
         *(s32*)((u8*)param_1 + 0x2cc) = *(s32*)((u8*)param_1 + 0x2cc) - 1;
         if (*(s32*)((u8*)param_1 + 0x2cc) == 0) {
-            u32 rng = *(u32*)(0x802FC710);
-            rng = rng * 0x19660d + 0x3c6f35f;
-            *(u32*)(0x802FC710) = rng;
-            u16 val = *(u16*)((u8*)param_1 + 0x30e);
-            val = val + ((rng >> 1) & 0x6000);
-            *(u16*)((u8*)param_1 + 0x30e) = val;
-            fn_8006C5B0((s32)param_1);
+            lbl_802FC710 = lbl_802FC710 * 0x19660d + 0x3c6f35f;
+            *(u16*)((u8*)param_1 + 0x30e) += (lbl_802FC710 << 1) & 0xC000;
+            ((void (*)(void*, s32))fn_8006C5B0)(param_1, 2);
         }
     } else {
-        fn_8006C5B0((s32)param_1);
+        ((void (*)(void*, s32))fn_8006C5B0)(param_1, 6);
     }
 }
 
@@ -1074,18 +1072,10 @@ extern "C" void fn_8006BA44(void* param_1) {
 
 extern "C" void fn_8006BA78(void* param_1) {
     fn_8006C404();
-    
-    void* ptr = &lbl_802BF814;
-    s16 offset1 = *(s16*)((u8*)ptr + 0x1fc);
-    s16 offset2 = *(s16*)((u8*)ptr + 0x1fa);
-    
-    u16 val = *(u16*)((u8*)param_1 + 0x310);
-    val = val + offset1;
-    *(u16*)((u8*)param_1 + 0x310) = val;
-    
-    if ((s32)val >= (s32)offset2) {
-        *(u16*)((u8*)param_1 + 0x310) = (u16)offset2;
-        fn_8006C5B0((s32)param_1);
+    *(u16*)((u8*)param_1 + 0x310) += *(s16*)((u8*)lbl_802BF814 + 0x1fc);
+    if (*(u16*)((u8*)param_1 + 0x310) >= *(s16*)((u8*)lbl_802BF814 + 0x1fa)) {
+        *(u16*)((u8*)param_1 + 0x310) = *(s16*)((u8*)lbl_802BF814 + 0x1fa);
+        ((void (*)(void*, s32))fn_8006C5B0)(param_1, 3);
     }
 }
 
