@@ -1,4 +1,10 @@
 #include "types.h"
+extern "C" void TRKConstructEvent(void* event, int eventType);
+extern "C" int TRKPostEvent(void* event);
+extern "C" void MWTRACE(u8, char*, ...);
+extern void* lbl_802FA410[];
+extern char lbl_80202FBC[];
+extern char lbl_80202FC4[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801eb590-0x801ecc94 (22 functions). split_file divides it into the game's real files.
 
