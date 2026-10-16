@@ -65,6 +65,10 @@ struct Tbl4_8017D014 {
     u32 v[4];
 };
 
+struct Tbl5_8017D090 {
+    u32 v[5];
+};
+
 extern "C" void fn_801C5D48(void* p);
 extern u8 lbl_802022C8[];
 extern u8 lbl_802022D8[];
