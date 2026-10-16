@@ -2,6 +2,8 @@
 
 #include "types.h"
 
+extern "C" void fn_8015AB1C(void* p);
+
 typedef void VFn_80169B1C(u32*, int);
 struct UnkVObj_80166424 {
     virtual void vf0();
