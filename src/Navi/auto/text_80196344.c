@@ -579,6 +579,8 @@ extern "C" void fn_801A4240(u8* p, s32 i, u8 v) {
     *(p + i + 0x55) = v;
 }
 
+extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
+
 extern "C" void fn_801A42AC(int p1, int p2, u8* p3) {
     u8* d = (u8*)(p1 + p2 * 8);
     d[0x36] = p3[1];
