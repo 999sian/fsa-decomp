@@ -63,3 +63,40 @@ extern "C" bool fn_804446A4(T804446A4* this_) {
     return true;
 }
 
+extern "C" void* fn_80444A24(T80444A24* this_, s16 flag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804B1B60;
+        void* p1 = *(void**)((u8*)this_ + 0x4);
+        if (p1 != 0) {
+            ((Slot0*)p1)->slot0(1);
+        }
+        *(void**)((u8*)this_ + 0x4) = 0;
+        void* p2 = *(void**)((u8*)this_ + 0x8);
+        if (p2 != 0) {
+            ((Slot0*)p2)->slot0(1);
+        }
+        *(void**)((u8*)this_ + 0x8) = 0;
+        void* p3 = *(void**)((u8*)this_ + 0xc);
+        if (p3 != 0) {
+            ((Slot0*)p3)->slot0(1);
+        }
+        *(void**)((u8*)this_ + 0xc) = 0;
+        for (int i = 0; i < 6; i++) {
+            if (this_->a[i] != 0) {
+                this_->a[i]->slot0(1);
+            }
+            this_->a[i] = 0;
+        }
+        for (int i = 0; i < 2; i++) {
+            if (this_->b[i] != 0) {
+                this_->b[i]->slot0(1);
+            }
+            this_->b[i] = 0;
+        }
+        if (flag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
