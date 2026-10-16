@@ -31,6 +31,7 @@ public:
 class JKRAramArchive {
 public:
     static u32 fetchResource_subroutine(u32, u32, u8*, u32, int);
+    static u32 fetchResource_subroutine(u32, u32, JKRHeap*, int, u8**);
 };
 
 extern char lbl_8045E0F8[];
@@ -81,6 +82,45 @@ extern "C" bool fn_8007A198(u8* this_, s32 entryNum, s32 mountDirection) {
     prepend__10JSUPtrListFP10JSUPtrLink(sVolumeList__13JKRFileLoader, this_ + 0x18);
     *(u8*)(this_ + 0x30) = 1;
     return 1;
+}
+
+extern "C" void* fn_8007A7F0(void* this_, void* data, u32 compressedSize, void* entry, u32* pSize) {
+    u8* fileEntry = (u8*)entry;
+    u32 fileSize = *(u32*)(fileEntry + 0xc);
+    if (fileSize > compressedSize) {
+        fileSize = compressedSize;
+    }
+
+    u32 flag = *(u32*)(fileEntry + 0x4);
+    int compression;
+    if ((flag >> 24 & 4) == 0) {
+        compression = 0;
+    } else if (flag >> 24 & 0x80) {
+        compression = 2;
+    } else {
+        compression = 1;
+    }
+
+    if (*(void**)(fileEntry + 0x10) == nullptr) {
+        u8* block = *(u8**)((u8*)this_ + 0x64);
+        fileSize = JKRAramArchive::fetchResource_subroutine(*(u32*)(fileEntry + 0x8) + *(u32*)(block + 0x14), fileSize, (u8*)data, compressedSize & ~0x1f, compression);
+    } else {
+        if (compression == 2) {
+            u32 expandSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, entry);
+            if (expandSize != 0) {
+                fileSize = expandSize;
+            }
+        }
+        if (fileSize > compressedSize) {
+            fileSize = compressedSize;
+        }
+        JKRHeap::copyMemory(data, *(void**)(fileEntry + 0x10), fileSize);
+    }
+
+    if (pSize != nullptr) {
+        *pSize = fileSize;
+    }
+    return data;
 }
 
 u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, u32 dstLength, int compression)
