@@ -188,6 +188,8 @@ extern "C" void fn_80172A04(u8* p, s32 i, u8* src) {
     d[0x5e] = (d[0x5e] & ~0x3) | src[0];
 }
 
+extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
