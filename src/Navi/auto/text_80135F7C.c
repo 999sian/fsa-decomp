@@ -212,7 +212,7 @@ extern "C" void fn_80136B1C(void* p, unsigned int q) {
     unsigned int a = q;
     unsigned int b = q;
     if (q != 0) {
-        b = q + 0x40;
+        b = b + 0x40;
     }
     if (q != 0) {
         a = q + 8;
