@@ -47,14 +47,16 @@ extern "C" void fn_801D11FC(u8* this_)
     }
 }
 
-extern "C" u8 fn_801D183C(u8* this_, f32 radius) {
+extern "C" s32 fn_801D183C(u8* this_, f32 radius) {
     s32 result = 0;
     JGeometry::TVec3<f32> v;
     JGeometry::TVec3<f32> tmp;
     JGeometry::TVec3<f32> pos;
+    s32 idx;
 
-    if (*(s32*)(this_ + 0x338) >= 0 && *(s32*)(this_ + 0x338) < 4 && fn_801F320C(this_, *(s32*)(this_ + 0x338))) {
-        s32 idx = *(s32*)(this_ + 0x338);
+    idx = *(s32*)(this_ + 0x338);
+    if (idx >= 0 && idx < 4 && fn_801F320C(this_, idx)) {
+        idx = *(s32*)(this_ + 0x338);
         fn_8022E114(idx, &pos);
         if (fn_801F329C(this_, idx)) {
             fn_801CD150(&pos, &tmp);
