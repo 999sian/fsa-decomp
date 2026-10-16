@@ -52,7 +52,7 @@ extern "C" s32 fn_80334378(Actor* a) {
     f32 fx;
     f32 fy;
     if (idx == 0) {
-        u8* m = (u8*)fn_802D6A9C();
+        register u8* m = (u8*)fn_802D6A9C();
         fx = *(f32*)(m + 0xcc);
         fy = *(f32*)(m + 0xd0);
     } else {
@@ -61,9 +61,9 @@ extern "C" s32 fn_80334378(Actor* a) {
         fx = fy;
     }
     f32 pos[3];
-    pos[2] = lbl_80541F70;
     pos[0] = lbl_80541F74 + ((f32)((st >> 13) & 0x1f8) + fx);
     pos[1] = lbl_80541F74 + ((f32)((st >> 5) & 0x1f8) + fy);
+    pos[2] = lbl_80541F70;
     fn_801F349C(a, idx, pos);
 done:
     return i;
