@@ -234,6 +234,11 @@ extern "C" void fn_8001B590(void) {
     cTg_SingleCut__FP16create_tag_class();
 }
 
+extern "C" s32 fn_8001B5B0(void* tag, void* data) {
+    cTg_Create__FP16create_tag_classPv(tag, data);
+    return 1;
+}
+
 extern "C" void fn_8001B0B0(void);
 extern "C" void fn_8001B5D4(void) {
     fn_8001B0B0();
