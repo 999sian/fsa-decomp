@@ -17,6 +17,12 @@ extern "C" s32 fn_80226BC4(f32* pos, u32 id);
 extern "C" s32 fn_802D4C10(void* mgr, u32 id, u16 idx);
 extern "C" void fn_802D7D00(void* mgr, u32 id, s32 idx, s32 flag);
 extern char lbl_804A8E40[];
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F78F4(void* mgr, u32 tag, s32 idx);
+extern "C" u8* fn_801F666C(void* mgr, s32 idx);
+extern "C" u8 fn_802C1970(u8* p, s32 room, void* pos);
+extern "C" void fn_802C2B64(u8* p);
+extern const f32 lbl_80540D58;
 extern "C" u8* fn_802C8E60(u8* p, s16 n) {
     if (p != NULL) {
         *(void**)p = lbl_804A8E40;
