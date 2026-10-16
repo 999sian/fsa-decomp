@@ -67,6 +67,12 @@ extern "C" BOOL fn_800710CC(void)
     return TRUE;
 }
 
+extern "C" int fn_800710D4(void)
+{
+    fn_800636F4(&lbl_802FCA18, lbl_802B7CA0 + 0x2200, 0x40);
+    return 1;
+}
+
 extern u8 lbl_802FCA18;
 extern u16 lbl_802FED38;
 extern u8 lbl_802FF058;
