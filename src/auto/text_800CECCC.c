@@ -1,3 +1,4 @@
+#include "JSystem/J3D/J3DAnmTransform.h"
 
 
 extern void* lbl_8049AE38[];
