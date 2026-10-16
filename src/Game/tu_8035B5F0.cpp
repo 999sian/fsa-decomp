@@ -28,6 +28,32 @@ extern "C" void* fn_8035B5F0(void* this_, s16 flag) {
     return this_;
 }
 
+extern "C" void fn_8035B81C(u8* p) {
+    s32 cnt = 0;
+    f32 v = *(f32*)(p + 0x240);
+    if (v < lbl_805428D8) {
+        *(f32*)(p + 0x240) = v + *(f32*)(p + 0x258);
+    } else {
+        *(f32*)(p + 0x240) = lbl_805428D8;
+        cnt = 1;
+    }
+    v = *(f32*)(p + 0x254);
+    if (v > lbl_805428DC) {
+        *(f32*)(p + 0x254) = v - *(f32*)(p + 0x25c);
+    } else {
+        *(f32*)(p + 0x254) = lbl_805428DC;
+        cnt++;
+    }
+    if (cnt >= 2) {
+        void* base = fn_801F856C();
+        void* found = fn_801F666C(base, *(s32*)(p + 0x278));
+        if (found != 0) {
+            *(s32*)((u8*)found + 0x238) = 1;
+        }
+        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+    }
+}
+
 extern "C" void fn_8035BE00(u8 *param_1) {
   f32 v = *(f32 *)(param_1 + 0x254);
   if (v > lbl_805428E8) {
