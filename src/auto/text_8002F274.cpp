@@ -12,10 +12,10 @@ void fn_80030380(short *param_1)
   } while (sVar1 < 0xb);
 }
 
-extern "C" int fn_80030394(int param_1, int param_2)
+extern "C" void* fn_80030394(const void* param_1, const void* param_2)
 {
   if (param_2 != 0) {
-    return param_1 + param_2;
+    return (char*)param_1 + (unsigned int)param_2;
   }
   return 0;
 }
@@ -83,10 +83,3 @@ extern "C" void* fn_80030454(const void* ptr, const void* offset)
 	}
 	return (void*)((int)ptr + (int)offset);
 }
-class JKRHeap;
-class JASBank;
-extern "C" JASBank* fn_8002F294(const void*, JKRHeap*);
-class JASBNKParser {
-public:
-    static JASBank* createBank(const void*, JKRHeap*);
-};
