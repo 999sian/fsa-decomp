@@ -44,6 +44,19 @@ extern "C" void fn_80139C84(unsigned char* p) {
     }
 }
 
+extern "C" void fn_80139CC4(unsigned char* p) {
+    struct VObj { virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C(); };
+    fn_8013B438(lbl_8053AB10);
+    (*(VObj**)(p + 0xc))->v0C();
+    fn_8013B438(lbl_8053AB10);
+    fn_8023F2BC();
+    fn_801F8658(*(void**)(p + 8));
+    fn_801902D0(*(void**)(p + 0x20));
+    if (lbl_8053AB10[0x39] == 0) {
+        fn_8016DA6C(*(void**)(p + 0x24));
+    }
+}
+
 extern "C" void fn_80139D3C(unsigned char* p) {
     if (lbl_8053AB10[0x39] == 0) {
         fn_8016DB60(*(void**)(p + 0x24));
