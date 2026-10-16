@@ -38,6 +38,11 @@ extern "C" BOOL fn_800A3038(void)
     return TRUE;
 }
 
+extern "C" void fn_800A4BD4(u8* param_1) {
+    char* base = (char*)lbl_802B7CA0 + 0x1424;
+    fn_80060794(base, base + 0xfc, base + 0x100, param_1 + 8);
+}
+
 extern "C" void fn_800A4EF0(void* param_1) {
     VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
     obj->v3();
