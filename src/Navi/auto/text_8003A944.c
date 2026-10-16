@@ -343,11 +343,10 @@ extern "C" void fn_800415DC(void) {}
 extern "C" void fn_800415E0(void) {}
 
 extern "C" void fn_80041AC4(void* self) {
-    VObj_80041AC4* obj = *(VObj_80041AC4**)((u8*)self + 0x2c);
-    s16* p = (s16*)obj->vf68(0);
+    s16* p = (s16*)(*(VObj_80041AC4**)((u8*)self + 0x2c))->vf68(0);
     if (p != 0) {
-        *(s16*)(lbl_802FF04C + 6) = p[3];
-        obj->vf60(0, &lbl_802FF04C);
+        *(s16*)((u8*)&lbl_802FF04C + 6) = p[3];
+        (*(VObj_80041AC4**)((u8*)self + 0x2c))->vf60(0, &lbl_802FF04C);
     }
 }
 
