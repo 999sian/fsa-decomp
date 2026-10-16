@@ -30,6 +30,14 @@ extern "C" void fn_80177E84(void);
 extern "C" u32 fn_8015FDA8(void* self, int flag);
 extern "C" void fn_8018ECE4(void* a, void* b);
 extern "C" void fn_8016A72C(void* p);
+extern "C" void fn_8016A1F8(void* p, void* obj);
+
+struct Fn8017A610Obj {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3(void* self);
+};
 extern void* lbl_802FF6A0;
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" int fn_801792B4(void* param_1, int param_2) {
@@ -197,7 +205,7 @@ extern "C" void fn_80184C58(UnkVObj_80184B60* self, void* unused, void* param_3)
 
 extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     *(u8*)(param_1 + 0xb2) = param_2;
-    register void* p = *(void**)(param_1 + 0x168);
+    void* p = *(void**)(param_1 + 0x168);
     if (p == nullptr) return;
     if (((u32)p + 0x10) == 0) return;
     *(u8*)((u8*)p + 0x3) = (int)param_2;
@@ -223,9 +231,12 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     if (fn_8018A318(self, &local_14, &local_10) == 0) {
         return 0;
     }
-    s32 local_c = local_14;
-    s32 local_18 = *param_2;
-    return ((int (*)(void*, s32*, s32*))((*(void***)self)[0xac / 4]))(self, &local_c, &local_18);
+    s32 local_c;
+    s32 local_18;
+    local_18 = *param_2;
+    local_c = local_14;
+    void** vtbl = *(void***)self;
+    return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
 }
 
 extern "C" int fn_8018A4B4(void* param_1, u32* param_2, u32* param_3) {
