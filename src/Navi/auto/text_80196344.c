@@ -984,20 +984,14 @@ extern "C" u8 fn_801A3E64(u8* p) {
     return p[0x20];
 }
 
-extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
-    u8* d = p + (i << 3);
-    u8 a = src[1];
-    u8 b = src[2];
-    d[0x22] = a;
-    u8 c = src[3];
-    d[0x23] = b;
-    b = src[5];
-    d[0x24] = c;
-    c = src[6];
-    d[0x26] = b;
-    b = src[7];
-    d[0x27] = c;
-    d[0x28] = b;
+extern "C" void fn_801A3E6C(u8* p, int i, u8* src) {
+    u8* d = p + i * 8;
+    d[0x22] = src[1];
+    d[0x23] = src[2];
+    d[0x24] = src[3];
+    d[0x26] = src[5];
+    d[0x27] = src[6];
+    d[0x28] = src[7];
 }
 
 extern "C" int fn_801A3EE4(int param_1, int param_2) {
@@ -1518,6 +1512,10 @@ extern "C" void* fn_801A4E28(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" u32 fn_801A4E84(void) {
+    return 0x434C4142;
 }
 
 extern "C" void fn_801A4E90(u8* p, s32 i, u8* src) {
