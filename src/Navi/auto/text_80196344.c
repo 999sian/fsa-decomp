@@ -1471,7 +1471,7 @@ extern "C" int fn_801A4960(int param_1, int param_2) {
 
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
     u8 a = p3[0];
-    u8* p = p1 + p2 * 4;
+    u8* p = (u8*)((u32*)p1 + p2);
     p[0xb8] = a;
     p[0xb9] = p3[1];
     p[0xba] = p3[2];
@@ -1733,8 +1733,8 @@ extern "C" u32 fn_801A4E84(void) {
     return 0x434C4142;
 }
 
-extern "C" void fn_801A4E90(u8* p, u32 i, u8* src) {
-    u8* dst = p + (i << 2);
+extern "C" void fn_801A4E90(void* p, s32 i, u8* src) {
+    u8* dst = (u8*)p + i * 4;
     dst[0x20] = src[0];
     dst[0x21] = src[1];
     dst[0x22] = src[2];
