@@ -362,7 +362,7 @@ extern "C" void* fn_80119904(void*, void*, int);
 extern "C" int fn_8016BD94(u8* p, void* src)
 {
     void* obj;
-    void** old;
+    DtorVObj_80166424* old;
     if (src == 0) {
         return 0;
     }
@@ -374,9 +374,9 @@ extern "C" int fn_8016BD94(u8* p, void* src)
         return 0;
     }
     if (p[0x5c] & 0x80) {
-        old = *(void***)(p + 0x58);
+        old = *(DtorVObj_80166424**)(p + 0x58);
         if (old != 0) {
-            ((void (*)(void*, int))((void**)*old)[2])(old, 1);
+            old->Destroy(1);
         }
     }
     *(void**)(p + 0x58) = obj;
