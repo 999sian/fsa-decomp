@@ -37,6 +37,17 @@ struct Unk80458F04 {
     Unk80458F04Sound* m84;
 };
 
+extern "C" void fn_80458744(void*, s32);
+extern "C" void fn_80457E04(u8* this_, u8 flag) {
+    if (this_[0x8c] == 0 && this_[0x8b] == 0) {
+        if (flag) {
+            fn_80458744(this_, 3);
+        } else {
+            fn_80458744(this_, 0);
+        }
+    }
+}
+
 extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
 {
     if (self->m4 != 0) {
