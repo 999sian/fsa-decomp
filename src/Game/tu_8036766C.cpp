@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
 
 struct Pair2f {
     f32 x;
@@ -38,6 +39,25 @@ extern "C" void fn_803676CC(u8* param_1) {
     *(u8**)(param_1 + 0x274) = 0;
 }
 
+extern "C" u8 lbl_80474C20[];
+extern "C" f32 lbl_80542C08;
+extern "C" void fn_801F06F0(void* this_, void* name, s32 id, DrawRec* rec, s32 n, f32 a, f32 b);
+extern "C" void fn_80367710(u8* param_1) {
+    DrawRec rec;
+    u8* p = param_1;
+    if (*(s32*)(p + 0x268) != 0) {
+        *(s32*)(p + 0x268) = *(s32*)(p + 0x268) - 1;
+    }
+    if (*(s32*)(p + 0x268) == 0) {
+        *(s32*)(p + 0x268) = 1;
+        *(s32*)(p + 0x26c) = *(s32*)(p + 0x26c) + 1;
+        if (*(s32*)(p + 0x26c) >= 6) {
+            *(s32*)(p + 0x26c) = 0;
+        }
+    }
+    fn_801F06F0(p, lbl_80474C20, *(s32*)(p + 0x264) + *(s32*)(p + 0x26c), &rec, 7, lbl_80542C08, lbl_80542C08);
+}
+
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_80367E24(u8* p) {
@@ -49,8 +69,7 @@ extern "C" void fn_80367E24(u8* p) {
         if (actor != 0 && *(u32*)(actor + 0x1a0) == 'DCR2') {
             *(s32*)(p + 0x250) = i;
             *(u8**)(p + 0x254) = actor;
-            *(Pair2f*)(p + 0x258) = *(Pair2f*)(actor + 0xc);
-            *(f32*)(p + 0x260) = *(f32*)(actor + 0x14);
+            *(Vec*)(p + 0x258) = *(Vec*)(actor + 0xc);
             break;
         }
     }
