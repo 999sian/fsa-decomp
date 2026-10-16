@@ -1,4 +1,16 @@
 #include "types.h"
+struct BPOHV {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void setAnim(s32, float, float);
+};
+
 struct BPOHVt {
     char pad[0x28];
     void (*fn28)(void*, s32, float, float);
@@ -17,10 +29,10 @@ extern const float lbl_8053D6C0;
 extern const float lbl_8053D6D0;
 extern "C" void fn_80161F20(char* this_) {
     fn_801F0E34(this_, 0x40015, 0);
-    (*(BPOHVt**)this_)->fn28(this_, 7, lbl_8053D6C0, lbl_8053D6D0);
-    void* p = *(void**)(this_ + 0x270);
+    ((void (*)(void*, s32, float, float))(*(void***)this_)[10])(this_, 7, lbl_8053D6C0, lbl_8053D6D0);
+    s32 p = *(s32*)(this_ + 0x270);
     if (p != 0) {
-        fn_802D8050(fn_802D6A9C(), p, 1, 0xff);
+        fn_802D8050(fn_802D6A9C(), (void*)p, 1, 0xff);
     }
 }
 
