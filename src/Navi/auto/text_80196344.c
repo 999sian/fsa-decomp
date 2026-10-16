@@ -1145,7 +1145,7 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x21;
 }
 
-extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
+extern "C" void fn_801A3EF8(u8* param_1, u32 param_2, u8* param_3) {
     u8 b0 = param_3[0];
     u8 b1 = param_3[1];
     u8* p = param_1 + param_2 * 8;
