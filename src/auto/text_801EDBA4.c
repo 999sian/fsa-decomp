@@ -5,15 +5,6 @@
 extern "C" void fn_801EDC0C(char* this_, f32* param_2);
 #include "JSystem/JGeometry/Vec.h"
 
-typedef struct {
-    f32 x, y;
-} Vec2f;
-
-typedef struct {
-    Vec2f xy;
-    f32 z;
-} Vec3f;
-
 extern "C" void fn_801EDBA4(char* this_) {
     if (*(s32*)(this_ + 0x248) != 0x17) {
         JGeometry::TVec3f v(*(JGeometry::TVec3f*)(this_ + 0xc));
