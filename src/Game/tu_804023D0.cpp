@@ -56,6 +56,7 @@ extern u8* lbl_8053AAF8;
 extern const u32 lbl_8048C160[];
 extern const u32 lbl_8048C170[];
 extern const f32 lbl_80543868;
+extern const f32 lbl_8054386C;
 extern "C" s32 fn_8022F340(u32 player);
 
 extern "C" void fn_804023D0(PaneState* state, J2DPane* pane, u8 alpha) {
@@ -73,6 +74,32 @@ extern "C" s32 fn_80402628(PaneState* state, s16 duration, u8 startAlpha, u8 end
         return 1;
     }
     return 0;
+}
+
+extern "C" s32 fn_80402940(PaneState* state, s16 index, u8 mode, f32 a, f32 b) {
+    f32 t;
+    f32 y;
+
+    if (state->field22 < index - 1) {
+        state->field22++;
+        if (mode == 0) {
+            t = (f32)(state->field22 * state->field22) / (f32)(index * index);
+        } else if (mode == 1) {
+            t = (f32)state->field22 / (f32)index;
+        } else {
+            t = (f32)((index - state->field22) * (index - state->field22)) / (f32)(index * index);
+            f32 tmp = a;
+            a = b;
+            b = tmp;
+        }
+        y = state->centerY + (a + t * (b - a)) - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
+        state->pane->move(state->pane->getBounds()->i.x, y);
+        return 0;
+    }
+    state->field22 = index;
+    y = state->centerY + b - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
+    state->pane->move(state->pane->getBounds()->i.x, y);
+    return 1;
 }
 
 extern "C" void fn_80402CE0(PaneState* state, f32 sx, f32 sy) {
