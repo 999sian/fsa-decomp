@@ -110,6 +110,18 @@ extern "C" void* fn_80121104(void* p, s16 flag) {
     return p;
 }
 
+extern "C" void fn_801247C8(void*, void*, s32, s32);
+extern u8 lbl_80464CC0[];
+extern "C" void* fn_80121164(u8* p) {
+    fn_801247C8(p, lbl_80464CC0, 0x242, 0);
+    *(void**)p = lbl_8049DF78;
+    *(u8*)(p + 0x3c4) = 0;
+    *(s32*)(p + 0x3c8) = 0;
+    *(s32*)(p + 0x3cc) = -1;
+    *(s32*)(p + 0x3d0) = 0;
+    return p;
+}
+
 extern "C" s32 fn_8011FFB8(void)
 {
 	return 0;
