@@ -415,6 +415,8 @@ extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
 
+extern "C" void fn_80173074(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
+
 extern "C" void fn_801730A4(unsigned char* self, int idx, unsigned char* src) {
     unsigned char* p = self + idx * 4;
     p[8] = src[0];
