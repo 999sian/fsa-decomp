@@ -1,6 +1,16 @@
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Vec.h"
 typedef JGeometry::TVec3<f32> YasiVec;
+struct YasiVT {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void breakUp();
+};
 extern const f32 lbl_80540F18;
 
 
@@ -79,6 +89,34 @@ extern "C" void fn_802D2D0C(void* this_) {
     f32 c = lbl_80540F1C;
     fn_801F06F0(this_, lbl_8046E118, 0x2b, 0, 7, c, c);
     fn_803075AC(*(void**)((char*)this_ + 0x198), *(s32*)((char*)this_ + 4), (char*)this_ + 0xc, 0x2b, 0, 2, -1, 1, 0, 0);
+}
+
+extern "C" void fn_802D2D84(char* p) {
+    if (*(u8*)(p + 0xc4) != 0) {
+        YasiVec* h = (YasiVec*)fn_8023E7B0(*(s32*)(p + 0xc8));
+        *(f32*)(p + 0xc) = h->x;
+        *(f32*)(p + 0x10) = h->y;
+        *(f32*)(p + 0x14) = h->z;
+        *(s32*)(p + 0x4) = fn_8023DE58(*(s32*)(p + 0xc8));
+        if (*(s32*)(p + 0x230) < 1000) {
+            *(s32*)(p + 0x230) += 1;
+        }
+        return;
+    }
+    *(f32*)(p + 0x44) += lbl_80540F20;
+    *(YasiVec*)(p + 0xc) += *(YasiVec*)(p + 0x3c);
+    if (*(f32*)(p + 0x14) < lbl_80540F18 || fn_801F2618(p, 0, 0)) {
+        if (*(f32*)(p + 0x14) < lbl_80540F18) {
+            if (fn_80226850((YasiVec*)(p + 0xc), *(s32*)(p + 0x4)) == 0x90) {
+                fn_802A381C(lbl_8053AC98, (YasiVec*)(p + 0xc), *(s32*)(p + 0x4), 0x91);
+            } else if (fn_80226850((YasiVec*)(p + 0xc), *(s32*)(p + 0x4)) == 0x91) {
+                fn_802A381C(lbl_8053AC98, (YasiVec*)(p + 0xc), *(s32*)(p + 0x4), 0x92);
+            }
+        }
+        (*(void (**)(char*))(*(s32*)p + 0x24))(p);
+    } else if (fn_801F2B7C(p, 0, *(s32*)(p + 0xc8), 5) || fn_801F2B20(p, 0)) {
+        (*(void (**)(char*))(*(s32*)p + 0x24))(p);
+    }
 }
 
 extern "C" void fn_802D2F18(char* p) {
