@@ -311,3 +311,4 @@ public:
     virtual u8 v9C(f32);
     virtual void* vA4(s32);
 };
+extern "C" void fn_80177F0C(void);
