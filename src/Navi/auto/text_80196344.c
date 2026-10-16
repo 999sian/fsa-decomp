@@ -609,11 +609,15 @@ extern "C" void fn_8019F018(int param_1) {
     u8* p;
     u32 pair[2];
     u32 val;
+    u32 a;
+    u32 b;
 
     p = (u8*)param_1;
     for (i = 0; i < 3; i++) {
-        pair[0] = *(u32*)(p + 0x14);
-        pair[1] = *(u32*)(p + 0x18);
+        a = *(u32*)(p + 0x14);
+        b = *(u32*)(p + 0x18);
+        pair[0] = a;
+        pair[1] = b;
         fn_80191388(i + 1, pair);
         p += 8;
     }
@@ -653,14 +657,15 @@ extern "C" void fn_8019F1B8(int param_1) {
 }
 
 extern "C" void fn_8019F324(int param_1) {
-    u32 i;
     u8* p = (u8*)param_1;
-    for (i = 0; i < 4; i++) {
+    u32 i = 0;
+    do {
         if (*(u16*)(p + 8) != 0xffff) {
             fn_801A605C(i, p + 8);
         }
+        i++;
         p += 2;
-    }
+    } while (i < 4);
 }
 
 extern "C" void fn_8019F380(int param_1) {
