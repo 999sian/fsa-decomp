@@ -123,6 +123,10 @@ extern "C" void fn_8016AC7C(void)
 {
 }
 
+extern "C" void fn_8016AC80(void)
+{
+}
+
 extern void* lbl_802985C8[];
 extern void* lbl_80298600[];
 extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
