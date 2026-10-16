@@ -26,6 +26,12 @@ extern "C" void fn_80124C2C(void) {
     fn_80121DB0();
 }
 
+extern "C" void fn_8012562C(void* this_) {
+    char* p = (char*)this_;
+    *(unsigned int*)(p + 0x35c) = *(unsigned int*)(p + 0x90) & 0xFF;
+    *(unsigned int*)(p + 0x3cc) = (*(unsigned int*)(p + 0x90) >> 22) & 0x1F;
+}
+
 extern "C" void fn_80124448(void*);
 extern "C" int fn_8012285C(void*);
 extern "C" float fn_80121DC8(void*, int);
