@@ -68,6 +68,9 @@ extern "C" void fn_800CBD50(void) {}
 
 extern "C" void fn_800CBD54(void) {}
 
+extern "C" void fn_800CBD60(void) {
+}
+
 extern "C" void fn_800CBD64(void) {
 }
 
