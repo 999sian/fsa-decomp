@@ -23,6 +23,37 @@ struct Vec3_8003C318 {
     f32 x, y, z;
 };
 extern u8 lbl_802BF188[];
+extern u8 lbl_802FF04C[];
+extern "C" void fn_80043FCC(void* a, void* b, void* c, void* d);
+extern "C" void fn_80043518(void* a, void* b, void* c, void* d);
+struct VObj_80041AC4 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+    virtual void m8();
+    virtual void m9();
+    virtual void m10();
+    virtual void m11();
+    virtual void m12();
+    virtual void m13();
+    virtual void m14();
+    virtual void m15();
+    virtual void m16();
+    virtual void m17();
+    virtual void m18();
+    virtual void m19();
+    virtual void m20();
+    virtual void m21();
+    virtual void m22();
+    virtual void m23();
+    virtual void vf60(s32 a, void* b);
+    virtual void* vf68(s32 a);
+};
 extern "C" void fn_80017FEC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 extern "C" void fn_80115914(Vec3_8003C318* out, f32 s);
 struct VObj_8003B920 {
