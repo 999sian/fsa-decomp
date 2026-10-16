@@ -13,7 +13,10 @@ public:
 #include <JSystem/JKernel/JKRCompression.h>
 
 // Trimmed declarations: the real JKRAram.h and JUTException.h pull in JKRFile.h, which this file defines itself.
-class JKRHeap;
+class JKRHeap {
+public:
+    static void copyMemory(void*, void*, u32);
+};
 
 class JKRAram {
 public:
