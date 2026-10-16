@@ -195,6 +195,10 @@ extern "C" void fn_80033678(void* p) {
     }
 }
 
+extern "C" void fn_800336F0(void* p) {
+    fn_80033ADC((char*)p + 0xe0, p);
+}
+
 extern "C" void fn_80035410(void* p) {
     *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
     *(unsigned int*)((char*)p + 0x220) = 0x4;
