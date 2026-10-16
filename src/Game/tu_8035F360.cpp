@@ -3,6 +3,20 @@
 
 extern "C" u8* lbl_804ADA98[];
 extern "C" void fn_80360914(u8* p);
+extern "C" u8 __vt__4EOWL[];
+extern "C" void __dt__5ActorFv(void* p, s32 flag);
+extern "C" void __dl__FPv(void* p);
+extern "C" void* fn_8035F360(void* param_1, s16 param_2) {
+  if (param_1 != 0) {
+    *(u8**)param_1 = __vt__4EOWL;
+    __dt__5ActorFv(param_1, 0);
+    if (param_2 > 0) {
+      __dl__FPv(param_1);
+    }
+  }
+  return param_1;
+}
+
 extern "C" void fn_8035FCD8(u8* param_1) {
   u8 done;
   s32 tbl = *(s32*)(param_1 + 0x244);
