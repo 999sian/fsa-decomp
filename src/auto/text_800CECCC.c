@@ -78,8 +78,8 @@ extern "C" void fn_800CF70C(void** p, void* a) {
 }
 
 extern "C" void fn_800CF734(void* param_1, unsigned char* anm, const unsigned char* data) {
-    anm[4] = data[8];
     *(short*)(anm + 6) = *(const short*)(data + 12);
+    anm[4] = data[8];
     *(float*)(anm + 8) = 0.0f;
     *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 14);
     *(J3DAnmColorFullTable**)(anm + 0x3c) = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(data, (void*)*(const unsigned int*)(data + 0x18));
@@ -141,7 +141,7 @@ extern "C" void fn_800D00F0(void* param_1, void* param_2, void* param_3) {
     const unsigned char* data = (const unsigned char*)param_3;
     *(short*)(anm + 6) = *(const short*)(data + 12);
     anm[4] = data[8];
-    *(float*)(anm + 8) = lbl_8053BC80;
+    *(float*)(anm + 8) = 0.0f;
     *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 14);
     *(unsigned short*)(anm + 0xc) = *(const unsigned short*)(data + 16);
     *(unsigned short*)(anm + 0xe) = *(const unsigned short*)(data + 18);
