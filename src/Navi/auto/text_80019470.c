@@ -461,6 +461,10 @@ extern "C" void fn_8001BF14(void* param_1, s32 param_2, void* param_3, s32 param
     cTg_InsertToTree((node_lists_tree_class*)((u8*)param_1 + 0x10), param_2, (create_tag_class*)param_3, param_4);
 }
 
+extern "C" void fn_8001BF38(void* param_1, s32 param_2, void* param_3, s32 param_4) {
+    cTg_InsertToTree((node_lists_tree_class*)((u8*)param_1 + 0x10), param_2, (create_tag_class*)param_3, param_4);
+}
+
 extern "C" s32 fn_8001BF5C(void* self, void* p) {
     return cTg_SingleCutFromTree__FP16create_tag_class(p);
 }
