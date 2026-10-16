@@ -1176,14 +1176,20 @@ extern "C" void fn_801A4298(u8* p, u8* src) {
 
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
-extern "C" void fn_801A42AC(u8* p1, s32 p2, u8* p3) {
-    u8* d = p1 + (p2 << 3);
-    d[0x36] = p3[1];
-    d[0x37] = p3[2];
-    d[0x38] = p3[3];
-    d[0x3a] = p3[5];
-    d[0x3b] = p3[6];
-    d[0x3c] = p3[7];
+extern "C" void fn_801A42AC(u8* p, s32 i, u8* src) {
+    u8 a = src[1];
+    u8* d = p + (i << 3);
+    u8 b = src[2];
+    d[0x36] = a;
+    u8 c = src[3];
+    d[0x37] = b;
+    b = src[5];
+    d[0x38] = c;
+    c = src[6];
+    d[0x3a] = b;
+    b = src[7];
+    d[0x3b] = c;
+    d[0x3c] = b;
 }
 
 extern "C" int fn_801A4324(int p1, int p2) {
@@ -1272,10 +1278,23 @@ extern "C" void fn_801A4580(u8* p1, s32 i, u32* pv) {
 
 extern "C" u8* fn_801A4594(u8* p, s32 i) { return p + i * 4 + 10; }
 
+extern "C" void fn_801A45AC(void) {
+}
+
 extern "C" BOOL fn_801A45B0(void);
 extern "C" BOOL fn_801A45B0(void)
 {
     return TRUE;
+}
+
+extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
+    u8* dst = p + i * 8;
+    dst[0xf] = src[1];
+    dst[0x10] = src[2];
+    dst[0x11] = src[3];
+    dst[0x13] = src[5];
+    dst[0x14] = src[6];
+    dst[0x15] = src[7];
 }
 
 extern "C" void fn_801A4644(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x18))[p2] = *p3; }
@@ -1574,15 +1593,11 @@ extern "C" u32 fn_801A4E84(void) {
 }
 
 extern "C" void fn_801A4E90(u8* p, s32 i, u8* src) {
-    u8 a = src[0];
-    u8 b = src[1];
     u8* dst = p + i * 4;
-    dst[0x20] = a;
-    u8 c = src[2];
-    dst[0x21] = b;
-    u8 d = src[3];
-    dst[0x22] = c;
-    dst[0x23] = d;
+    dst[0x20] = src[0];
+    dst[0x21] = src[1];
+    dst[0x22] = src[2];
+    dst[0x23] = src[3];
 }
 
 extern "C" u8* fn_801A4EE8(u8* p, s32 i) {
