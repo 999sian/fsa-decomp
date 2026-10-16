@@ -1282,6 +1282,14 @@ extern "C" void* fn_8001E9E4(void* param_1, void* param_2) {
     return result;
 }
 
+extern "C" void fn_8001EA5C(int param_1) {
+    extern char lbl_802FB9F0;
+    int local[2];
+    local[0] = param_1;
+    local[1] = 0;
+    fn_80115178((void*)&lbl_802FB9F0, (void*)fn_8001E9E4, local);
+}
+
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_8001EAE8(void* param_1, void* param_2) {
     cTg_Addition__FP15node_list_classP16create_tag_class(param_1, param_2);
