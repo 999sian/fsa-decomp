@@ -52,6 +52,10 @@ extern "C" void fn_80457E04(u8* this_, u8 flag) {
     }
 }
 
+extern "C" void fn_80457F60(u8* this_) {
+    this_[0x74] = 1;
+}
+
 extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
 {
     if (self->m4 != 0) {
