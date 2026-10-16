@@ -15,33 +15,41 @@ struct FileFlags {
 };
 
 extern "C" void fn_801E6F54(void);
-extern "C" int fn_801E6DB0(unsigned char* file, int mode) {
-    int orientation;
-    int result;
+#pragma push
+#pragma optimization_level 1
+extern "C" void fn_801E2238(void);
+extern "C" void* __stdio_exit;
+extern "C" void fn_801E419C(void) {
+    __stdio_exit = (void*)fn_801E2238;
+}
 
-    if (file == 0 || ((*(unsigned short*)(file + 4) >> 6) & 7) == 0) {
+extern "C" int fn_801E6DB0(FileFlags* file, int mode) {
+    register int orientation;
+    register int result;
+
+    if (file == 0 || file->type == 0) {
         return 0;
     }
-    orientation = (file[5] >> 4) & 3;
+    orientation = file->orient;
     switch (orientation) {
     case 0:
         if (mode > 0) {
-            file[5] = (file[5] & ~0x30) | 0x20;
+            file->orient = 2;
         } else if (mode < 0) {
-            file[5] = (file[5] & ~0x30) | 0x10;
+            file->orient = 1;
         }
         result = mode;
-        break;
-    case 1:
-        result = -1;
         break;
     case 2:
         result = 1;
         break;
+    case 1:
+        result = -1;
+        break;
     }
     return result;
 }
-
+#pragma pop
 extern "C" int fn_801E6EB4()
 {
 	return 0;
