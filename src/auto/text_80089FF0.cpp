@@ -9,6 +9,7 @@
 
 extern "C" void fn_8008A220(void);
 extern "C" void fn_8008C308(s32 param_1);
+extern char lbl_8045E878[];
 extern "C" void fn_8008A4C4(unsigned int param_1)
 {
     __OSFpscrEnableBits = param_1;
@@ -16,6 +17,36 @@ extern "C" void fn_8008A4C4(unsigned int param_1)
         OSSetErrorHandler(OS_ERROR_FPE, (OSErrorHandler)fn_8008A220);
     } else {
         OSSetErrorHandler(OS_ERROR_FPE, 0);
+    }
+}
+
+extern "C" void fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2);
+extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
+{
+    if (!JUTException::sConsole)
+    {
+        return;
+    }
+
+    u32 i;
+
+    JUTException::sConsole->print("-------------------------------- TRACE\n");
+    u32* stackPointer = (u32*)this_->mStackPointer;
+    JUTException::sConsole->print_f("Address:   BackChain   LR save\n");
+
+    for (i = 0; (stackPointer != nullptr) && (stackPointer != (u32*)0xFFFFFFFF) && (i++ < 0x10);)
+    {
+        if (i > this_->mTraceSuppress)
+        {
+            JUTException::sConsole->print("Suppress trace.\n");
+            return;
+        }
+
+        JUTException::sConsole->print_f("%08X:  %08X    %08X\n", stackPointer, stackPointer[0], stackPointer[1]);
+        fn_8008AFBC(this_, stackPointer[1], false);
+        JUTConsoleManager::sManager->drawDirect(true);
+        fn_8008C308(this_->mPrintWaitTime1);
+        stackPointer = (u32*)stackPointer[0];
     }
 }
 
