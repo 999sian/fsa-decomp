@@ -224,6 +224,9 @@ extern "C" void fn_80258880(u8* p) {
     U8(p, 0x458) = 0;
 }
 
+extern "C" void fn_8025888C(void) {
+}
+
 extern "C" void fn_80258BA8(u8* p) {
     U8(p, 0x458) = 0;
     U8(p, 0xb9f) = 0;
