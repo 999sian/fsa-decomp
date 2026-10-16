@@ -65,7 +65,7 @@ extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     *(u8*)(param_1 + 0xb2) = param_2;
     void* p = *(void**)(param_1 + 0x168);
     if (p == nullptr) return;
-    if ((p + 0x10) == 0) return;
+    if (((u8*)p + 0x10) == 0) return;
     *(u8*)((u8*)p + 0x3) = param_2;
 }
 
