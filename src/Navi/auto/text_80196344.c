@@ -772,25 +772,11 @@ extern "C" void fn_8019EDE0(void) {
 extern "C" void fn_8019EED4(int param_1) {
     extern int* lbl_802FFA80;
     u32 w = *(u32*)(param_1 + 0x18) | 0x10000000;
-    u8* out;
-    out = (u8*)lbl_802FFA80[2];
-    lbl_802FFA80[2] = (int)(out + 1);
-    u8 b3 = w >> 24;
-    u8 b2 = w >> 16;
-    u8 b1 = w >> 8;
-    *out = 0x61;
-    out = (u8*)lbl_802FFA80[2];
-    lbl_802FFA80[2] = (int)(out + 1);
-    *out = b3;
-    out = (u8*)lbl_802FFA80[2];
-    lbl_802FFA80[2] = (int)(out + 1);
-    *out = b2;
-    out = (u8*)lbl_802FFA80[2];
-    lbl_802FFA80[2] = (int)(out + 1);
-    *out = b1;
-    out = (u8*)lbl_802FFA80[2];
-    lbl_802FFA80[2] = (int)(out + 1);
-    *out = w;
+    *(*(u8**)&lbl_802FFA80[2])++ = 0x61;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+    *(*(u8**)&lbl_802FFA80[2])++ = w;
 }
 
 extern "C" void fn_8019019C(u8, u16, int, int, u16, int, int);
