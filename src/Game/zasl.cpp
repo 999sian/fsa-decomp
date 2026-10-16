@@ -7,6 +7,15 @@
 extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern char lbl_8046A3AC[];
 extern const f32 lbl_8053F9E8;
+extern "C" void fn_801D0ED0(void*);
+extern "C" bool fn_801CF144(void*);
+extern "C" s32 fn_801CF720(void*, s32);
+extern "C" s32 fn_801F6874(s32);
+extern "C" void fn_801D2608(void*, char*, s32);
+extern "C" void fn_801D22DC(void*, s32, s32, s32);
+extern "C" void fn_801D1D60(void*);
+extern "C" void detach__5ActorFv(void*);
+extern char lbl_8053A178[];
 
 extern "C" void fn_801CE32C(void*);
 extern "C" void fn_801CE5D4(void*);
@@ -98,6 +107,67 @@ extern "C" void fn_8020C374(void* p) {
     (*(void (**)(void*))(*(char**)p + 0x84))(p);
 }
 
+extern "C" s32 fn_8023F264(s32);
+extern "C" s32 fn_8022D75C(s32);
+extern "C" s32 fn_8022F478(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" f32 fn_801D0DA0(void*, s32, void*);
+extern "C" s32 fn_801CD664(s32);
+extern const f32 lbl_8053F9F4;
+extern const f32 lbl_8053F9F8;
+extern "C" void fn_8020C6E8(void* this_) {
+    char* p = (char*)this_;
+    s32 i;
+    s32 best = -1;
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        f32 min = FLT_MAX;
+        for (i = 0; i < 4; i++) {
+            if (!(u8)fn_8023F264(i)) {
+                continue;
+            }
+            if ((u8)fn_8022D75C(i)) {
+                continue;
+            }
+            if ((u8)fn_8022F478(i)) {
+                continue;
+            }
+            s32 owner = *(s32*)(p + 4);
+            if (fn_8023DE58(i) == owner) {
+                f32 d = fn_801D0DA0(this_, i, p + 0xc);
+                if (d < min) {
+                    min = d;
+                    best = i;
+                }
+            }
+        }
+    }
+    if (*(s32*)(p + 0x248) == 2) {
+        if (best < 0) {
+            *(s32*)(p + 0x250) = fn_801CD664(0x3d) + 0x28;
+            *(f32*)(p + 0x258) = lbl_8053F9F4;
+            *(s32*)(p + 0x2a8) = -1;
+            *(u8*)(p + 0x2ac) = 0;
+            *(s32*)(p + 0x24c) = 0;
+            *(s32*)(p + 0x248) = 0;
+        } else if (*(u8*)(p + 0x2ac) == 0) {
+            if (*(s32*)(p + 0x2a8) != best) {
+                *(s32*)(p + 0x2a8) = best;
+                *(u8*)(p + 0x2ac) = 0x5a;
+            }
+        } else {
+            *(u8*)(p + 0x2ac) = *(u8*)(p + 0x2ac) - 1;
+        }
+    } else if (best >= 0) {
+        *(s32*)(p + 0x2a8) = best;
+        *(u8*)(p + 0x2ac) = 0x5a;
+        *(f32*)(p + 0x258) = lbl_8053F9F8;
+        *(s32*)(p + 0x24c) = 0;
+        *(s32*)(p + 0x248) = 2;
+    } else {
+        *(u8*)(p + 0x2ac) = 0;
+    }
+}
+
 extern "C" void* fn_8020CA34(void* this_) {
     fn_801D0F40(this_);
     *(void**)this_ = lbl_804A5F40;
@@ -109,3 +179,4 @@ extern "C" void* fn_8020CA34(void* this_) {
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 #include "JSystem/JMath/JMath.h"
+#include "sdk/stl/float.h"
