@@ -20,6 +20,30 @@ extern "C" void fn_801E6F54(void);
 #pragma optimization_level 1
 extern "C" void fn_801E2238(void);
 extern "C" void* __stdio_exit;
+#pragma push
+#pragma optimization_level 0
+extern "C" int fn_801E30AC(int param_1) {
+    register int result;
+    if (param_1 == -1) {
+        result = -1;
+    } else {
+        result = lbl_8029EC18[(unsigned char)param_1];
+    }
+    return result;
+}
+#pragma pop
+extern "C" unsigned char fn_801E3124(unsigned int param_1) {
+    return lbl_8029EA18[param_1 & 0xff] & 0x80;
+}
+
+extern "C" unsigned char fn_801E3140(unsigned int param_1) {
+    return lbl_8029EA18[param_1 & 0xff] & 6;
+}
+
+extern "C" unsigned char fn_801E315C(unsigned int param_1) {
+    return lbl_8029EA18[param_1 & 0xff] & 0x10;
+}
+
 extern "C" void fn_801E419C(void) {
     __stdio_exit = (void*)fn_801E2238;
 }
