@@ -904,6 +904,10 @@ extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
     *(s16*)(d + 0x48) = src[3];
 }
 
+extern "C" s32 fn_801A3D80(s32 p, s32 i) {
+    return p + i * 8 + 0x42;
+}
+
 extern "C" void fn_801A3D94(u8* p, s32 i, u8* src) {
     u8* d = p + (i << 2);
     d[0x62] = src[0];
