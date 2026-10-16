@@ -3,6 +3,7 @@
 #include "types.h"
 
 extern "C" void fn_80177F0C(void);
+extern "C" void fn_80177E84(void);
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_8016A0B4(void* p, void* obj);
 extern "C" void fn_801788C0(void);
@@ -43,8 +44,7 @@ extern "C" void fn_8017A4A8(void* param_1) {
 
 extern "C" void fn_8017A4F8(void* self) {
     u16 i;
-    void** vtbl = *(void***)self;
-    ((void (*)(void*, void*))vtbl[0x90 / 4])(self, *(void**)((u8*)self + 0xf8));
+    ((void (*)(void*, void*))(*(void***)self)[0x90 / 4])(self, *(void**)((u8*)self + 0xf8));
     for (i = 0; i < *(u16*)((u8*)self + 0x102); i++) {
         fn_8016A72C(*(u8**)((u8*)self + 0x104) + i * 0x88);
     }
@@ -65,6 +65,14 @@ extern "C" void fn_8017A56C(void* self, void* obj) {
 
 extern "C" void fn_8017A928(void) {
     fn_801788C0();
+}
+
+extern "C" int fn_80180B60(u8* self, u8* src) {
+    self[0x14c] = src[0];
+    self[0x14d] = src[1];
+    self[0x14e] = src[2];
+    self[0x14f] = src[3];
+    return 1;
 }
 
 extern "C" void fn_80176550(void* self);
