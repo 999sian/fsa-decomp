@@ -548,6 +548,19 @@ extern "C" void* fn_801B73C0(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void fn_801B075C(void* param_1);
+extern "C" int fn_801B2254(void* param_1, s32 param_2, s32 param_3, u16 param_4, void* param_5);
+extern "C" void fn_801B7F68(void* param_1);
+extern "C" int fn_801B864C(void* param_1);
+extern "C" int fn_801B85B8(void* param_1, u16 param_2, void* param_3);
+extern "C" int fn_801B7B40(void* param_1, u8* param_2) {
+    s32 size = 0;
+    if (*(void**)(param_2 + 0x10) != nullptr) {
+        size = 0x10;
+    }
+    return size + 0xc;
+}
+
 extern "C" void* fn_801B7F50(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
