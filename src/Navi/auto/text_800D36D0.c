@@ -155,3 +155,4 @@ extern "C" void* fn_800D7074(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+extern u32 lbl_802FF208;
