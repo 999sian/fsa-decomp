@@ -1416,8 +1416,8 @@ extern "C" void fn_8001F5A8(void* param_1, f32* out) {
         obj = 0;
     }
     if (obj == 0) {
-        f32 z = lbl_802FFCC0;
         f32 o = lbl_802FFCC4;
+        f32 z = lbl_802FFCC0;
         out[0] = z;
         out[1] = o;
         out[2] = z;
@@ -1428,10 +1428,8 @@ extern "C" void fn_8001F5A8(void* param_1, f32* out) {
 }
 
 extern "C" void fn_8001F610(u8* param_1, f32* in) {
-    f32* d = (f32*)(param_1 + 0x24);
-    d[0] = in[0];
-    d[1] = in[1];
-    d[2] = in[2];
+    struct V { f32 x, y, z; };
+    *(V*)(param_1 + 0x24) = *(V*)in;
     param_1[4] |= 0x20;
 }
 
@@ -1450,9 +1448,10 @@ extern "C" void fn_8001F638(void* param_1, f32* out) {
     }
     if (obj == 0) {
         f32 z = lbl_802FFCC0;
+        f32 o = lbl_802FFCC4;
         out[0] = z;
         out[1] = z;
-        out[2] = lbl_802FFCC4;
+        out[2] = o;
     }
     out[0] = *(f32*)(obj + 0xe4);
     out[1] = *(f32*)(obj + 0xe8);
@@ -1460,11 +1459,28 @@ extern "C" void fn_8001F638(void* param_1, f32* out) {
 }
 
 extern "C" void fn_8001F6A0(u8* param_1, f32* in) {
-    f32* d = (f32*)(param_1 + 0x30);
-    d[0] = in[0];
-    d[1] = in[1];
-    d[2] = in[2];
+    struct V { f32 x, y, z; };
+    *(V*)(param_1 + 0x30) = *(V*)in;
     param_1[4] |= 0x40;
+}
+
+extern "C" f32 fn_8001F6C8(void) {
+    struct Ent { u8 pad[0x20]; u8* obj; u8 pad2[0x10]; };
+    struct Mgr { u8 pad[0x13c0]; s8 idx; u8 pad1[3]; Ent ents[1]; };
+    extern u8 lbl_802B7CA0[];
+    extern f32 lbl_802FFCC0;
+    extern f32 lbl_802FFCD0;
+    Mgr* m = (Mgr*)lbl_802B7CA0;
+    u8* obj;
+    if ((int)lbl_802B7CA0[0x1418] != 0) {
+        obj = m->ents[m->idx].obj;
+    } else {
+        obj = 0;
+    }
+    if (obj == 0) {
+        return lbl_802FFCC0;
+    }
+    return lbl_802FFCD0 * (f32)*(s16*)(obj + 0xfc);
 }
 
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
