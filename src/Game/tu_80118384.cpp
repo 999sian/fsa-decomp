@@ -1,5 +1,12 @@
 #include "types.h"
 
+extern "C" void fn_8011888C(u8* self, u32 val)
+{
+    u32 local = val;
+    void fn_801188B8(u8* self, u32* ptr);
+    fn_801188B8(self + 0xc, &local);
+}
+
 extern "C" void fn_801188B8(u8* self, void* ptr)
 {
     u32* fn_801188E0(u8* self, u32 p, void* q);
