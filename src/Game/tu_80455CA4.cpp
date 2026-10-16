@@ -4,7 +4,7 @@
 extern u8* lbl_8053AF80;
 typedef void (*VFn)(void*);
 typedef u32 (*VFnArg)(void*, void*);
-extern "C" BOOL fn_804560D0(void* unused, u8** p) {
+extern "C" int fn_804560D0(void* unused, u8** p) {
     struct VObj {
         virtual void v0();
         virtual void v1();
@@ -24,11 +24,14 @@ extern "C" BOOL fn_804560D0(void* unused, u8** p) {
         virtual void v15();
         virtual void v16();
         virtual void v17();
-        virtual s32 v18(u32*);
+        virtual u32 v18(u32*);
     };
     u32 v = *(u32*)(*p + 0x18);
     VObj* obj = *(VObj**)(lbl_8053AF80 + 0x40);
-    return (obj->v18(&v) & 0x8000) == 0;
+    if (obj->v18(&v) & 0x8000) {
+        return 0;
+    }
+    return 1;
 }
 
 extern "C" void fn_80456120(u8* p) {
@@ -76,5 +79,22 @@ extern "C" void fn_80457840(u8* p, f32* src) {
     } else {
         *(f32**)(p + 0x14) = NULL;
     }
+}
+
+extern "C" char lbl_804B1E28[];
+extern "C" void __dt__11JKRDisposerFv(void*, s16);
+extern "C" void __dt__14JAUSoundObjectFv(void*, s16);
+extern "C" void* fn_8045787C(char* param_1, s16 param_2)
+{
+    if (param_1 != 0) {
+        *(char**)(param_1 + 8) = lbl_804B1E28;
+        *(char**)(param_1 + 0x18) = lbl_804B1E28 + 0x24;
+        __dt__11JKRDisposerFv(param_1 + 0x18, 0);
+        __dt__14JAUSoundObjectFv(param_1, 0);
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
 }
 
