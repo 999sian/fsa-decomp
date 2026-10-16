@@ -27,6 +27,7 @@ extern "C" void fn_8005845C(void);
 extern "C" void fn_8005C424(void);
 extern "C" void fn_8005C460(void);
 extern "C" s32 fn_80059190(s32 idx);
+extern "C" void fn_800595FC(void);
 extern "C" void fn_80057868(void) {
 }
 
@@ -78,12 +79,17 @@ extern "C" void fn_80058D50(void) {
 }
 
 extern "C" s32 fn_80058D70(s32 idx) {
+    u8* base = lbl_8026D4BC;
+    s32 off = idx * 0xc;
     u8 t;
     if (idx <= 0 || idx > 0x152a) {
         return 0;
     }
-    t = lbl_8026D4BC[idx * 0xc];
-    if (t != 0 && t < 4) {
+    t = base[off];
+    if (t == 0) {
+        return 0;
+    }
+    if (t < 4) {
         return 1;
     }
     return 0;
