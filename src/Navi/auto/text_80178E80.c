@@ -2007,6 +2007,26 @@ extern "C" void* fn_8018EAD4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802996F8[];
+extern "C" void* fn_8018EB58(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802996F8;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029970C;
+            if ((s32)ptr + 0x20 != 0) {
+                ((void**)(ptr))[8] = lbl_80286A4C;
+            }
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80286A30;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_80299764[];
 extern "C" void* fn_8018EBDC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
