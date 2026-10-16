@@ -589,7 +589,7 @@ typedef void (*VFnA_80180868)(void*, u8, u32);
 typedef void (*VFnB_80180838)(void*, u32, u32, u8);
 extern "C" void fn_801191F0(void* p);
 extern "C" void fn_80180868(void* self, u32 a) {
-    ((VObj_80180868*)self)->v63((u8)a, a);
+    ((VObj_80180868*)self)->v61((u8)a, a);
 }
 
 extern "C" void fn_8018089C(void* self, u32 unused, u8 idx) {
