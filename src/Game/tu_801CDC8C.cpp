@@ -107,6 +107,26 @@ extern "C" void fn_801CE594(u8* this_) {
     }
 }
 
+extern "C" void fn_801F2B7C(u8* this_, u32 a, s32 b, s32 c);
+extern "C" s32 fn_801F2618(u8* this_, s32 a);
+extern "C" s32 fn_801F2DB4(u8* this_, u32 a, u32 b, s32 c);
+extern "C" void fn_801CE5D4(u8* this_) {
+    if (*(u32*)(this_ + 0x230) & 7) {
+        *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x20);
+        *(f32*)(this_ + 0x44) = *(f32*)(this_ + 0x23c);
+        ((void (*)(u8*))(*(void***)this_)[0x84 / 4])(this_);
+        *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+        if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
+            if (fn_802D6A9C()[0x131df + *(s32*)(this_ + 0x4)]) {
+                ((void (*)(u8*))(*(void***)this_)[0x80 / 4])(this_);
+            } else {
+                *(f32*)(this_ + 0x14) = lbl_8053EFC4;
+                *(f32*)(this_ + 0x44) = lbl_8053EFC4;
+            }
+        }
+    }
+}
+
 extern "C" void fn_801CE914(void) {}
 
 extern "C" void fn_801CE918(void) {}
@@ -116,6 +136,23 @@ extern "C" void fn_801CE91C(void) {}
 extern "C" void fn_801CE920(void) {}
 
 extern "C" void fn_801CE924(void) {}
+
+extern "C" s32 fn_801CE98C(u8* this_) {
+    s32 result = 0;
+    if (!(*(u32*)(this_ + 0x230) & 0x1000) && *(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > lbl_8053EFC4 && *(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > lbl_8053EFC4) {
+        result = fn_801F2618(this_ + 0x264, 0);
+    }
+    return result;
+}
+
+extern "C" s32 fn_801CE9F8(u8* this_) {
+    s32 result = 0;
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053EFC4 && *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053EFC4) {
+        u32 tag = 0x4E554C4C;
+        result = fn_801F2DB4(this_, tag, tag, 0);
+    }
+    return result;
+}
 
 extern "C" u8 fn_801CEB78(u8* this_) {
     u8 result = 0;
@@ -131,6 +168,15 @@ extern "C" int fn_801CECEC(void) { return 0; }
 extern "C" s32 fn_801CF0F4(u8* this_) {
     f32 a = JMAAtan2Radian(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
     return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
+}
+
+extern "C" bool fn_801CF144(u8* this_) {
+    Vec3f pos = { *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14) - lbl_8053EFF0, lbl_8053EFC4 };
+    bool result = false;
+    if (fn_801CCB1C((const f32*)&pos, *(s32*)(this_ + 0x4))) {
+        result = true;
+    }
+    return result;
 }
 
 extern "C" u8 fn_801CCB1C(const f32* pos, s32 layer);
@@ -182,15 +228,13 @@ extern "C" BOOL fn_801D0DD4(char* this_) {
     struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
     s32 room = *(s32*)(this_ + 0x4);
     TndrG* g = (TndrG*)fn_802D6A9C();
-    BOOL r;
     if (g->arr[room] != 0) {
-        r = (*(u32*)(this_ + 0x230) & 0x18) != 0;
-    } else if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
-        r = TRUE;
-    } else {
-        r = FALSE;
+        return (*(u32*)(this_ + 0x230) & 0x18) != 0;
     }
-    return r;
+    if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
+        return TRUE;
+    }
+    return FALSE;
 }
 
 extern "C" void fn_801D0E58(char* p) {
