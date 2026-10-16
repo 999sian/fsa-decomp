@@ -1065,7 +1065,7 @@ extern "C" void fn_8006B9A4(void* param_1) {
     if (*(s32*)((u8*)param_1 + 0x2fc) < 480000) {
         *(s32*)((u8*)param_1 + 0x2cc) = *(s32*)((u8*)param_1 + 0x2cc) - 1;
         if (*(s32*)((u8*)param_1 + 0x2cc) == 0) {
-            lbl_802FC710 = lbl_802FC710 * 0x19660d + 0x3c6f35f;
+            lbl_802FC710 = lbl_802FC710 * 0x19660d + 0x3c6ef35f;
             *(u16*)((u8*)param_1 + 0x30e) += (lbl_802FC710 << 1) & 0xC000;
             fn_8006C5B0((s32)param_1, 2);
         }
