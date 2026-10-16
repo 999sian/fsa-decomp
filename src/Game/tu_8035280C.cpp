@@ -1,10 +1,6 @@
 #include "Game/Actor.h"
 
 
-typedef struct {
-    u32 a;
-    u32 b;
-} Pair8;
 extern "C" char lbl_804ACBF0[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_8035280C(Actor* param_1, s16 param_2)
