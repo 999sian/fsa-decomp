@@ -19,7 +19,8 @@ struct Vec2f {
 };
 
 struct Vec3f {
-    f32 x, y, z;
+    Vec2f xy;
+    f32 z;
 };
 
 extern "C" s32 fn_801597B8(char* p) {
