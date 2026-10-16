@@ -652,6 +652,38 @@ extern "C" void fn_8019F1B8(int param_1) {
     }
 }
 
+extern "C" void fn_8019F324(int param_1) {
+    u32 i;
+    u8* p = (u8*)param_1;
+    for (i = 0; i < 4; i++) {
+        if (*(u16*)(p + 8) != 0xffff) {
+            fn_801A605C(i, p + 8);
+        }
+        p += 2;
+    }
+}
+
+extern "C" void fn_8019F380(int param_1) {
+    u32 i;
+    u8* p;
+    u32 pair[2];
+    u32 val;
+
+    p = (u8*)param_1;
+    for (i = 0; i < 3; i++) {
+        pair[0] = *(u32*)(p + 0x42);
+        pair[1] = *(u32*)(p + 0x46);
+        fn_80191388(i + 1, pair);
+        p += 8;
+    }
+    p = (u8*)param_1;
+    for (i = 0; i < 4; i++) {
+        val = *(u32*)(p + 0x62);
+        fn_80191220(i, &val);
+        p += 4;
+    }
+}
+
 extern "C" void fn_8019F520(int param_1) {
     extern int* lbl_802FFA80;
     u8 n = *(u8*)(param_1 + 0x20);
@@ -749,6 +781,32 @@ extern "C" void fn_8019FC0C(void* param_1, s32 param_2) {
         i++;
     }
     fn_801BC250(start, lbl_802FFA80[2] - start);
+}
+
+extern "C" void fn_801A146C(u8* param_1) {
+    extern u32* lbl_802FFA80;
+    u32 start;
+    u32 local;
+    lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 0x3c);
+    if ((lbl_802FFA80[2] + 0x37) > lbl_802FFA80[3]) {
+        fn_801E012C();
+    }
+    local = *(u32*)(param_1 + 0x18);
+    start = lbl_802FFA80[2];
+    fn_801915BC(param_1[4], &local, *(f32*)(param_1 + 0x8), *(f32*)(param_1 + 0xc), *(f32*)(param_1 + 0x10), *(f32*)(param_1 + 0x14));
+    fn_80191924(param_1[5], *(u16*)(param_1 + 6), param_1 + 0x1c);
+    fn_801BC250(start, lbl_802FFA80[2] - start);
+}
+
+extern "C" void fn_801A151C(u8* param_1) {
+    extern u32* lbl_802FFA80;
+    u32 local;
+    if ((lbl_802FFA80[2] + 0x37) > lbl_802FFA80[3]) {
+        fn_801E012C();
+    }
+    local = *(u32*)(param_1 + 0x18);
+    fn_801915BC(param_1[4], &local, *(f32*)(param_1 + 0x8), *(f32*)(param_1 + 0xc), *(f32*)(param_1 + 0x10), *(f32*)(param_1 + 0x14));
+    fn_80191924(param_1[5], *(u16*)(param_1 + 6), param_1 + 0x1c);
 }
 
 extern "C" void fn_801A188C(NaviVObj* p, u32 flags) {
