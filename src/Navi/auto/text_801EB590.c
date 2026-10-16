@@ -7,6 +7,15 @@ extern char lbl_80202FBC[];
 extern char lbl_80202FC4[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801eb590-0x801ecc94 (22 functions). split_file divides it into the game's real files.
+extern char lbl_80202DE0[];
+extern char lbl_80202E14[];
+extern "C" void memset(void* dst, int val, u32 n);
+extern "C" void TRKWriteUARTN(void* data, u32 size);
+extern "C" int TRKTargetStopped();
+extern "C" int TRKTargetContinue();
+extern "C" int usr_puts_serial(const char* msg);
+extern "C" int fn_801ED220();
+extern "C" void fn_801EF5A0(int);
 
 extern "C" int TRKDoSupportMask()
 {
