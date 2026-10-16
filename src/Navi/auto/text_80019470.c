@@ -6,8 +6,14 @@ extern "C" int fn_80115564(void*);
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
 typedef struct {
-    int w[6];
-    short h[2];
+    int unk_0x0;
+    int unk_0x4;
+    int unk_0x8;
+    int unk_0xc;
+    int unk_0x10;
+    void* unk_0x14;
+    short unk_0x18;
+    short unk_0x1a;
 } fn_8001C88C_tag;
 extern "C" fn_8001C88C_tag lbl_802056D0;
 
@@ -877,7 +883,7 @@ extern "C" bool fn_8001C88C(fn_8001C88C_tag* tag, void* a, void* b) {
     cTg_Create__FP16create_tag_classPv(tag, b);
     void* r = fn_8001C018(a);
     if (r != 0) {
-        tag->w[5] = (int)r;
+        ((void**)tag)[5] = r;
         return true;
     }
     return false;
