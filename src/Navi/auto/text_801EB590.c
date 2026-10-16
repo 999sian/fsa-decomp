@@ -29,7 +29,7 @@ extern "C" int TRKDoSetOption(u8* param_1)
 	u8 option = param_1[0x1c];
 
 	if (param_1[0x18] == 1) {
-		usr_puts_serial(lbl_80202DE0);
+		usr_puts_serial(lbl_80202DE0 + 0);
 		if (option != 0) {
 			usr_puts_serial(lbl_80202DE0 + 0x20);
 		} else {
@@ -58,20 +58,22 @@ extern "C" int TRKDoStop()
 	u8 state;
 
 	result = fn_801ED220();
-	if (result == 0x704) {
+	switch (result) {
+	case 0:
+		state = 0;
+		break;
+	case 0x704:
 		state = 0x21;
-	} else if (result < 0x704) {
-		if (result == 0) {
-			state = 0;
-		} else {
-			state = 1;
-		}
-	} else if (result == 0x706) {
-		state = 0x20;
-	} else if (result < 0x706) {
+		break;
+	case 0x705:
 		state = 0x22;
-	} else {
+		break;
+	case 0x706:
+		state = 0x20;
+		break;
+	default:
 		state = 1;
+		break;
 	}
 	memset(&msg, 0, 0x40);
 	msg.type = 0x80;
@@ -240,9 +242,8 @@ extern char lbl_80202E14[];
 extern char lbl_80202DE0[];
 extern "C" void fn_801EC4B8(u8* param_1, int param_2)
 {
+	u8* p = param_1;
 	int i;
-	u8* p;
-	p = param_1;
 	for (i = 0; i < param_2; i++) {
 		MWTRACE(8, lbl_80202FBC, *p);
 		if (i % 16 == 15) {
