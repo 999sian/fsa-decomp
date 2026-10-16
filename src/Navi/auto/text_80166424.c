@@ -10,6 +10,12 @@ extern "C" void fn_8015AB1C(void* p);
 extern "C" s32 fn_80166A54(void);
 extern "C" void fn_801667B4(void* a, u32 b, u32 c, u32 d);
 extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d);
+struct Rgba4_80166424 {
+    u8 r;
+    u8 g;
+    u8 b;
+    u8 a;
+};
 extern "C" u32 lbl_80301AF4;
 extern "C" u32 lbl_80302388;
 extern "C" u32 lbl_8030238C;
@@ -1080,6 +1086,21 @@ extern "C" s32 fn_80172640(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
 
+extern "C" void fn_801727E4(void* self, int a, int b) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+        virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+        virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+        virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+        virtual void v28(); virtual void v29(); virtual void v30();
+        virtual void vf7C(int, int, int);
+    };
+    ((Obj*)self)->vf7C(a, b, 0);
+}
+
 extern "C" void fn_8017288C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_8017289C(u8* p, s32 i) {
@@ -1462,6 +1483,17 @@ extern "C" int fn_8017337C()
 
 extern "C" void fn_80173384(void)
 {
+}
+
+extern u32 lbl_80301AF0;
+extern "C" void fn_80173F24(u32* dst, u8* src, s32 i, s32 j) {
+    u16 v = ((u16*)*(u8**)(src + 8))[i];
+    u16 w = *(u16*)(*(u8**)(src + 4) + v * 0xe8 + 8 + j * 2);
+    if (w == 0xffff) {
+        *dst = lbl_80301AF0;
+    } else {
+        *dst = ((u32*)*(u8**)(src + 0x10))[w];
+    }
 }
 
 extern "C" u16 fn_80174224(u8* s, u32 a, u32 b) {
