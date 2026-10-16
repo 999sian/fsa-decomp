@@ -647,6 +647,13 @@ extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     self->vf38(buf, x, y);
 }
 
+extern "C" void fn_8017ED64(VObj_8017ED64* self, f32 x, f32 y) {
+    u8* p = (u8*)self;
+    if (*(u32*)(p + 0x100) != 0 && *(u8*)(p + 0x110) != 0) {
+        self->vf140(*(f32*)(p + 0x30) + x, *(f32*)(p + 0x34) + y, *(f32*)(p + 0x28) - *(f32*)(p + 0x20), *(f32*)(p + 0x2c) - *(f32*)(p + 0x24));
+    }
+}
+
 extern "C" u8 fn_8017FCEC(void* self);
 extern "C" s32 fn_8017FC54(void* self) {
     s32 flags = 0;
