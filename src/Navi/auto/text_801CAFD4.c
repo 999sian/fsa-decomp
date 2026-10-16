@@ -421,10 +421,10 @@ extern "C" void fn_801D1C34(void* p) {
             *(void**)(node + 0x3c) = *(void**)(cur + 0x3c);
             *(void**)(cur + 0x3c) = p;
             *(void**)(node + 0x38) = cur;
-            if (*(void**)(node + 0x3c) != 0) {
-                *(void**)(*(u8**)(node + 0x3c) + 0x38) = p;
-            } else {
+            if (*(void**)(node + 0x3c) == 0) {
                 lbl_802FFA10 = p;
+            } else {
+                *(void**)(*(u8**)(node + 0x3c) + 0x38) = p;
             }
             break;
         }
