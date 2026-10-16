@@ -1,6 +1,7 @@
 #include "types.h"
 
-struct Blk_801A7D54 { f32 f[6]; u8 b; };
+struct Pair_801A7D54 { f32 x, y; };
+struct Blk_801A7D54 { Pair_801A7D54 p[3]; u8 b; };
 extern void* lbl_8029BBBC[];
 
 extern "C" void* lbl_8029B5AC[];
