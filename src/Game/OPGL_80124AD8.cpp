@@ -1,6 +1,8 @@
 #include "types.h"
 #include "Game/Actor.h"
 
+extern "C" u8 fn_80122834(void*);
+
 class OPGL : public Actor {
 public:
     virtual void v19();
