@@ -72,7 +72,7 @@ extern "C" void fn_80128398(void* a, void* b);
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* mgr, s32 kind);
 extern "C" void fn_80126A4C(void* this_, s32 flag);
-extern "C" void* lbl_8049E400;
+extern "C" void* lbl_8049E400[];
 extern "C" f32 lbl_8053CAD0;
 extern "C" f32 lbl_8053CABC;
 extern "C" f32 lbl_8053CAD4;
