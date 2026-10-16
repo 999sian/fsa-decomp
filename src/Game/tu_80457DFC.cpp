@@ -34,7 +34,7 @@ struct Unk80458408Obj {
     virtual Unk80458408Obj* v4();
     virtual void v5();
     virtual Unk80458408Obj* v6();
-    virtual void v7();
+    virtual JASTrack* v7(s32 idx);
     virtual void v8();
     virtual JASTrack* v9(s32 idx);
 };
@@ -129,7 +129,7 @@ extern "C" u32 fn_804580DC(char* this_, u8 idx) {
 extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
     Unk80458408Obj* obj = *(Unk80458408Obj**)(this_ + 0x80);
     if (obj != NULL && param_2 == 0x100001a) {
-        Unk80458408Obj* bank = obj->v6();
+        Unk80458408Obj* bank = obj->v4();
         if (bank != NULL) {
             BOOL enabled = OSDisableInterrupts();
             for (s32 i = 0; i < 0x10; i++) {
