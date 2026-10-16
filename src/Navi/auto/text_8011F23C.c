@@ -368,17 +368,13 @@ extern "C" void fn_80128F2C(void** param_1) {
 }
 
 extern "C" void fn_80128F7C(u8* a, u8* b) {
-    u8 flags = b[0x95];
-    u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
-    s16 off = *(s16*)(b + 0x80);
-    u8* iVar2 = info[0];
-    u8* tbl = info[2];
-    s32 v = off + (flags & iVar2[0x30]);
-    s32 m = iVar2[0x1f] - 1;
+    u8* info = *(u8**)(*(u8**)(a + 4) + 0x1c);
+    s32 v = *(s16*)(b + 0x80) + (b[0x95] & (*(u8**)info)[0x30]);
+    s32 m = (*(u8**)info)[0x1f] - 1;
     s32 q = v / m;
     s32 r = v - q * m;
     u8 idx = r + (q & 1) * (m - 2 * r);
-    b[0x94] = tbl[idx];
+    b[0x94] = (*(u8**)(info + 8))[idx];
 }
 
 extern "C" void fn_80128FD8(void** param_1) {
@@ -389,13 +385,10 @@ extern "C" void fn_80128FD8(void** param_1) {
 
 extern "C" void fn_801DF2A4(void*, s32);
 extern "C" void fn_80128FF4(u8* a, u8* b) {
-    u8 flags = b[0x95];
-    u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
-    u8* iVar2 = info[0];
-    u8* tbl = info[2];
-    s32 m = iVar2[0x1f];
-    s32 v = (s32)((f32)m * *(f32*)(b + 0x84)) + (flags & iVar2[0x30]);
-    b[0x94] = tbl[(v - (v / m) * m) & 0xff];
+    u8* info = *(u8**)(*(u8**)(a + 4) + 0x1c);
+    s32 m = (*(u8**)info)[0x1f];
+    s32 v = (s32)(*(f32*)(b + 0x84) * (f32)m) + (b[0x95] & (*(u8**)info)[0x30]);
+    b[0x94] = (*(u8**)(info + 8))[(u8)(v % m)];
 }
 
 extern "C" void fn_8012906C(void** param_1) {
@@ -405,13 +398,9 @@ extern "C" void fn_8012906C(void** param_1) {
 }
 
 extern "C" void fn_80129088(u8* a, u8* b) {
-    u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
-    u8* iVar2 = info[0];
-    u8* tbl = info[2];
-    u8 flags = b[0x95];
-    s32 v = flags & iVar2[0x30];
-    s32 m = iVar2[0x1f];
-    b[0x94] = tbl[(v - (v / m) * m) & 0xff];
+    u8* info = *(u8**)(*(u8**)(a + 4) + 0x1c);
+    s32 v = b[0x95] & (*(u8**)info)[0x30];
+    b[0x94] = (*(u8**)(info + 8))[(u8)(v % (*(u8**)info)[0x1f])];
 }
 
 extern "C" void fn_801290C4(void* p) {
@@ -422,9 +411,9 @@ extern "C" void fn_801290EC(void) {
 }
 
 extern "C" void fn_801DF378(void* a, s32 b, s32 c);
-extern "C" void fn_801290F0(u8* self) {
+extern "C" void fn_801290F0(u8* self, void* p) {
     u8 buf[0x38];
-    fn_801C5DA8(self + 0x1b4, 0, buf);
+    fn_801C5DA8(self + 0x1b4, p, buf);
     fn_801DF378(buf, 0x1e, 0);
 }
 
