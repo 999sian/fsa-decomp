@@ -1,5 +1,24 @@
 #include "types.h"
 
+struct NaviTracker {
+    virtual void fn_0();
+    virtual void fn_1();
+    virtual void fn_2();
+    virtual void fn_3();
+    virtual void fn_4();
+    virtual void fn_5();
+    virtual u32 fn_6();
+    virtual void fn_7(u32);
+    virtual void fn_8();
+    virtual void fn_9();
+    virtual void fn_10();
+    virtual void fn_11();
+    virtual void fn_12();
+    virtual void fn_13();
+    virtual void fn_14();
+    virtual s32 fn_15(u32*, u32, s32);
+};
+
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 
@@ -183,17 +202,11 @@ extern "C" void fn_801364F4(void* param_1) {
 
 extern "C" f64 fn_80136528(void* param_1, u32* param_2) {
     void** begin = *(void***)((u8*)param_1 + 4);
-    u32 idx = *param_2;
-    s32 count;
-    if (begin == nullptr) {
-        count = 0;
-    } else {
-        count = (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
-    }
-    if (idx >= count) {
+    s32 count = begin == nullptr ? 0 : (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
+    if (*param_2 >= count) {
         return 0.0;
     }
-    void* elem = begin[idx];
+    void* elem = begin[*param_2];
     return ((f64 (*)(void*))(*(void***)elem)[7])(elem);
 }
 
@@ -545,19 +558,19 @@ extern "C" void fn_80139780(void* param_1, void* param_2) {
 
 extern "C" void* fn_801399E4(void* list, u32 index)
 {
-    void** start;
-    void** cur;
+    struct Iter {
+        void** p;
+    };
     if (index >= *(u32*)((char*)list + 0x8)) {
         return 0;
     }
-    start = *(void***)((char*)list + 0xc);
-    cur = start;
-    void*** p1 = &start;
-    void*** p2 = &cur;
+    Iter a;
+    a.p = *(void***)((char*)list + 0xc);
+    Iter b = a;
     for (; index != 0; index--) {
-        *p2 = (void**)**p2;
+        b.p = (void**)*b.p;
     }
-    return (char*)*p2 - 0xc;
+    return (char*)b.p - 0xc;
 }
 
 extern void* lbl_80292CAC[];
