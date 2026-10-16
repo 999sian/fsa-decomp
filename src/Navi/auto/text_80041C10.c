@@ -37,6 +37,22 @@ extern "C" void* fn_80041C4C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" f64 fn_801EA338(f64 v);
+extern f64 lbl_802FFED8;
+extern f32 lbl_802FFEE0;
+extern "C" void fn_80041C88(f64* param_1, f32* param_2) {
+    f64 len = fn_801EA338(param_1[2] * param_1[2] + (param_1[0] * param_1[0] + param_1[1] * param_1[1]));
+    if (len == lbl_802FFED8) {
+        param_2[0] = lbl_802FFEE0;
+        param_2[1] = lbl_802FFEE0;
+        param_2[2] = lbl_802FFEE0;
+    } else {
+        param_2[0] = (f32)(param_1[0] / len);
+        param_2[1] = (f32)(param_1[1] / len);
+        param_2[2] = (f32)(param_1[2] / len);
+    }
+}
+
 extern "C" void fn_8004A37C(void) {
 }
 
@@ -103,19 +119,18 @@ extern "C" void fn_8004B11C(void* param_1) {
     *(void**)((char*)param_1 + 0x4) = nullptr;
 }
 
-extern "C" void* fn_8004B16C(void* param_1, s16 param_2) {
-    void* self = param_1;
-    if (self != nullptr) {
-        *(void**)self = (void*)lbl_80246FDC;
-        if (self != nullptr) {
-            *(void**)self = (void*)lbl_80247000;
+extern "C" void* fn_8004B16C(void** param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        param_1[0] = (void*)lbl_80246FDC;
+        if (param_1 != nullptr) {
+            param_1[0] = (void*)lbl_80247000;
+            fn_801303BC(param_1, 0);
         }
-        fn_801303BC(param_1, 0);
         if (param_2 > 0) {
-            fn_8015AB1C(self);
+            fn_8015AB1C(param_1);
         }
     }
-    return self;
+    return param_1;
 }
 
 extern "C" void fn_8004B1DC(void* param_1, void* param_2, void* param_3, void* param_4) {
@@ -404,6 +419,22 @@ extern "C" void* fn_8004DA28(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80246F4C;
         fn_80130CB8(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
+extern "C" void* fn_8004DA88(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_80246FB8;
+        (*(void (**)(void*))(*(u32*)param_1 + 0x20))(param_1);
+        if (param_1 != nullptr) {
+            *(void**)param_1 = (void*)lbl_80246FDC;
+            *(void**)param_1 = (void*)lbl_80247000;
+            fn_801303BC(param_1, 0);
+        }
         if (param_2 > 0) {
             fn_8015AB1C(param_1);
         }
