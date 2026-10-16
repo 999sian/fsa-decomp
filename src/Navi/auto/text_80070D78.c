@@ -67,10 +67,11 @@ extern "C" int fn_8007110C(u8* p) {
         if ((u8)fn_800183AC(p, (void*)fn_80070D78, (void*)0xc40)) {
             u16 flags = lbl_802FED38;
             lbl_802FF058 = 0;
-            lbl_802FED38 = flags | 1;
-            return 4;
+            lbl_802FED38 = (u16)(flags | 1);
+            iVar1 = 4;
+        } else {
+            iVar1 = 5;
         }
-        return 5;
     }
     return iVar1;
 }
@@ -301,26 +302,31 @@ extern f32 lbl_80300558;
 extern f32 lbl_8030055C;
 extern f32 lbl_80300560;
 extern "C" void fn_80072CE0(void* p) {
+    f32* f = (f32*)p;
+    s16* h = (s16*)p;
+    u8* b = (u8*)p;
+    f32 zero = lbl_80300548;
     *(void**)p = lbl_8024756C;
-    ((f32*)p)[1] = lbl_80300548;
-    ((f32*)p)[2] = lbl_80300548;
-    ((f32*)p)[3] = lbl_80300548;
-    ((f32*)p)[4] = lbl_8030054C;
-    ((f32*)p)[5] = lbl_8030054C;
-    ((f32*)p)[6] = lbl_8030054C;
-    ((f32*)p)[7] = lbl_80300550;
-    ((f32*)p)[8] = lbl_80300554;
-    ((f32*)p)[9] = lbl_80300558;
-    ((f32*)p)[10] = lbl_8030055C;
-    ((f32*)p)[11] = lbl_80300560;
-    ((s16*)p)[24] = 0x3c;
-    ((s16*)p)[25] = 0xf0;
-    ((s16*)p)[26] = 0x15cc;
-    ((s16*)p)[27] = 0x3c;
-    ((s16*)p)[28] = 0x6800;
-    ((u8*)p)[0x3a] = 0;
-    ((u8*)p)[0x3b] = 0;
-    ((u8*)p)[0x3c] = 0;
+    f[1] = zero;
+    f[2] = zero;
+    f[3] = zero;
+    f32 one = lbl_8030054C;
+    f[4] = one;
+    f[5] = one;
+    f[6] = one;
+    f[7] = lbl_80300550;
+    f[8] = lbl_80300554;
+    f[9] = lbl_80300558;
+    f[10] = lbl_8030055C;
+    f[11] = lbl_80300560;
+    h[24] = 0x3c;
+    h[25] = 0xf0;
+    h[26] = 0x15cc;
+    h[27] = 0x3c;
+    h[28] = 0x6800;
+    b[0x3a] = 0;
+    b[0x3b] = 0;
+    b[0x3c] = 0;
 }
 
 extern "C" void fn_80072E68(void);
@@ -384,4 +390,8 @@ extern "C" BOOL fn_80077CFC(void)
 {
     return TRUE;
 }
-
+struct Entry_80281230 { u16 a; u16 b; f32 f0; f32 f1; f32 f2; f32 f3; };
+extern Entry_80281230 lbl_80281230[];
+extern u16 lbl_802FCAD0[];
+extern u8 lbl_802FCAA8[];
+extern "C" void fn_80022438(void*, void*, s32, s32, f32, f32, f32, f32);
