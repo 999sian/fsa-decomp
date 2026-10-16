@@ -143,4 +143,19 @@ extern "C" void* fn_801E97B4(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" char* fn_801E9850(char* p) {
+    fn_801D0F40(p);
+    *(void***)p = lbl_804A5568;
+    *(u32*)(p + 0x2a8) = 0;
+    *(u8*)(p + 0x2ac) = 0;
+    *(u8*)(p + 0x2ad) = 0;
+    __construct_array(p + 0x2b0, (void*)__ct__Q29JGeometry8TVec2_f_Fv, 0, 8, 0x20);
+    *(u8*)(p + 0x3b0) = 0;
+    *(f32*)(p + 0x3b4) = 0.0f;
+    *(s32*)(p + 0x3b8) = -1;
+    *(s16*)(p + 0x3bc) = 0;
+    *(u32*)(p + 0x3c0) = 0;
+    return p;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
