@@ -1077,6 +1077,10 @@ extern "C" void fn_801A5058(int param_1, u32 param_2)
     *(u32*)(param_1 + 0x18) = param_2;
 }
 
+extern "C" u32 fn_801A5068(void) {
+    return 0x5045584c;
+}
+
 extern void* lbl_8029AC34[];
 extern "C" void* fn_801A5074(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
