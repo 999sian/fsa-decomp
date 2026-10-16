@@ -195,9 +195,10 @@ extern "C" void fn_80365AF0(Unk80365AB8* self) {
 extern "C" char lbl_804ADF28[];
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern "C" void __dl__FPv(void*);
+extern "C" char __vt__4EETC[];
 extern "C" void* fn_80366D44(void* this_, short how) {
     if (this_) {
-        *(void**)this_ = lbl_804ADF28;
+        *(void**)this_ = __vt__4EETC;
         if (*(s32*)((char*)this_ + 0x234) == 3) {
             if (*(void**)((char*)this_ + 0x300)) {
                 void* base = fn_8013C824();
