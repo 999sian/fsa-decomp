@@ -1493,11 +1493,11 @@ extern "C" void fn_800DC164(u8* this_, Unk800DC164Src* src)
 extern "C" void fn_800DC290(u8* p, Unk800DC290Src* src) {
     *(u32*)(p + 4) = src->m16();
     u8* q = p;
-    for (int i = 0; i < 8; i++) {
+    for (u32 i = 0; i < 8; i++) {
         *(u32*)(q + 8) = *src->m18(i);
         q += 6;
     }
-    for (int i = 0; i < 8; i++) {
+    for (u32 i = 0; i < 8; i++) {
         if (src->m20(i) != nullptr && *(void**)(p + 0x38 + i * 4) != nullptr) {
             memcpy(*(void**)(p + 0x38 + i * 4), src->m20(i), 0x94);
             DCStoreRange(*(void**)(p + 0x38 + i * 4), 0x94);
