@@ -12,6 +12,7 @@
 
 extern "C" {
 extern const f32 lbl_80540360, lbl_80540368, lbl_8054036C;
+extern const f32 lbl_80540390;
 extern const f32 lbl_8054037C, lbl_80540384, lbl_80540398;
 extern const f32 lbl_805403A4, lbl_805403AC, lbl_805403B4, lbl_80540404;
 extern const f32 lbl_80540380;
