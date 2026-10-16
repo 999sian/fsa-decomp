@@ -83,6 +83,23 @@ struct VObj_80041740 {
     virtual void m26();
     virtual void* vf74(s32 a);
 };
+struct Color_8003C7DC {
+    u8 r, g, b, a;
+};
+struct FogAdjTable_8003C7DC {
+    u16 r[10];
+};
+extern "C" void fn_801DEA74(s32 type, Color_8003C7DC color, f32 startz, f32 endz, f32 nearz, f32 farz);
+extern "C" void fn_801DEC98(u8 enable, u16 center, FogAdjTable_8003C7DC* table);
+extern s16 lbl_802FEFAC[3];
+extern f32 lbl_802FFDD0;
+extern f32 lbl_802FFDD4;
+extern f32 lbl_802FFDF0;
+extern u16 lbl_802FF054;
+extern u8 lbl_802FF056;
+extern u8 lbl_802FF057;
+extern FogAdjTable_8003C7DC lbl_80246984[];
+extern FogAdjTable_8003C7DC lbl_802BF1FC;
 extern u8 lbl_802FEFA8[4];
 extern s16 lbl_802FEF80[3];
 extern f32 lbl_802FEE5C;
