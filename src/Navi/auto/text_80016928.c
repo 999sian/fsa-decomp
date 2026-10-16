@@ -32,6 +32,17 @@ extern "C" void fn_80017490(void)
     fn_801149B0(0);
 }
 
+extern "C" void fn_800174C4(void)
+{
+    fn_8001D434();
+    fn_8001A59C();
+    fn_80019AE0();
+    fn_80019790();
+    fn_8001AB40();
+    fn_8001A4AC(1, 0x7fff, 0, 0);
+    lbl_802B488C[4] = fn_800126C8(lbl_8029FDB4 + 4, lbl_80205058, lbl_802B488C);
+}
+
 extern "C" void* fn_80017534(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80205090;
