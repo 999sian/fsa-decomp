@@ -369,6 +369,9 @@ extern "C" void fn_80198ED0()
 {
 }
 
+extern "C" void fn_80198EDC(void) {
+}
+
 extern "C" void fn_80198EE0(void) {
 }
 
