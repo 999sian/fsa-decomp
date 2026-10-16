@@ -776,6 +776,10 @@ extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     *(u8*)((u8*)p + 0x3) = param_2;
 }
 
+extern "C" void fn_80188DB0(void* self, int a, int b, int c) {
+    ((VObj_80180920*)self)->vfCC(a, 0, c);
+}
+
 extern "C" void fn_8018901C(void) {
     fn_80177F0C();
 }
