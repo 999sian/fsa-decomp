@@ -32,6 +32,9 @@ extern "C" char lbl_802FB814[5];
 extern "C" float lbl_802FFB6C;
 extern "C" char lbl_80203E4C[];
 extern "C" char lbl_80203F2C[];
+extern "C" void* lbl_802FEBA4;
+extern "C" void* lbl_802FEBA8;
+extern "C" void* lbl_802FEBAC;
 extern "C" void* lbl_802FF544;
 extern "C" void* fn_8015C788(u32 size, void* heap, u32 flags);
 extern "C" void fn_8015A644(void* ptr, s32 flag);
@@ -473,6 +476,27 @@ extern "C" void* lbl_802FEBAC;
 extern "C" void* fn_8000F6A0(void)
 {
 	return lbl_802FEBAC;
+}
+
+extern "C" void* fn_8000F6A8(u32 param_1, u32 param_2) {
+    void* heap = lbl_802FEBA4;
+    if (heap == nullptr) {
+        heap = lbl_802FF544;
+    }
+    void* result;
+    if (param_1 == 0 || param_1 == 0xffffffff) {
+        result = fn_8015C788(0xffffffff, heap, 0);
+    } else {
+        u32 size = ((param_1 + 0xf) & ~0xf) + 0x80;
+        if (param_2 > 0x10) {
+            size = size + param_2 - 0x10;
+        }
+        result = fn_8015C788(size, heap, 0);
+    }
+    if (result != nullptr) {
+        fn_8015A644(result, 1);
+    }
+    return result;
 }
 
 extern "C" u32 fn_8000F9E8(u32 param_1) {
