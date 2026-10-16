@@ -9,6 +9,9 @@ extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8010F4DC(void*);
 extern "C" void fn_8010E7E8(void*, s32);
 extern "C" void fn_8010E2D4(void*, s32);
+extern "C" void* fn_8011921C(void);
+extern "C" void* fn_8011871C(void* list, void* it, u32 tag);
+
 extern "C" void* fn_8010FA84(u8* this_) {
 #if defined(VERSION_G4SP01)
     return *(void**)(this_ + 0x23c);
