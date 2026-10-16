@@ -43,6 +43,20 @@ extern "C" void* fn_80196388(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_80197A38(int param_1) {
+    int size = 0;
+    if (param_1 <= 1) {
+        size = 0x1c;
+    } else if (param_1 == 2) {
+        size = 0x6c;
+    } else if (param_1 <= 4) {
+        size = 0x94;
+    } else if (param_1 <= 0x10) {
+        size = 0x174;
+    }
+    return size;
+}
+
 extern "C" u32 fn_80197A80(int param_1) {
     if (param_1 != 0) {
         return 0x7c;
@@ -115,15 +129,15 @@ extern "C" u32 fn_80197B4C(void* param_1) {
     u32 b;
     u32 c;
     obj = *(void**)(p + 0x28);
-    a = ((NaviVFunc)(*(void***)obj)[0x30 / 4])(obj);
+    a = (*(NaviVFunc**)obj)[0x30 / 4](obj);
     obj = *(void**)(p + 0x24);
-    b = ((NaviVFunc)(*(void***)obj)[0x28 / 4])(obj);
+    b = (*(NaviVFunc**)obj)[0x28 / 4](obj);
     obj = *(void**)(p + 0x2c);
-    a += ((NaviVFunc)(*(void***)obj)[0x44 / 4])(obj);
+    a += (*(NaviVFunc**)obj)[0x44 / 4](obj);
     obj = *(void**)(p + 0x30);
-    a += ((NaviVFunc)(*(void***)obj)[0x14 / 4])(obj);
+    a += (*(NaviVFunc**)obj)[0x14 / 4](obj);
     obj = *(void**)(p + 0x34);
-    c = ((NaviVFunc)(*(void***)obj)[0x20 / 4])(obj);
+    c = (*(NaviVFunc**)obj)[0x20 / 4](obj);
     return (b + (a + c + 0x1f)) & ~0x1f;
 }
 
@@ -1642,12 +1656,9 @@ extern u32* lbl_802FFA80;
 extern "C" u8 fn_801A602C(u32 p);
 extern "C" u16 fn_801A6050(u32 p);
 extern "C" void fn_801A36B0(int param_1, u8* param_2) {
-    u16 h = *(u16*)param_2;
-    u8 t = param_2[2];
-    *(u16*)(param_1 + 4) = h;
-    u8 b = param_2[3];
-    *(u8*)(param_1 + 6) = t;
-    *(u8*)(param_1 + 7) = b;
+    *(u16*)(param_1 + 4) = *(u16*)param_2;
+    *(u8*)(param_1 + 6) = param_2[2];
+    *(u8*)(param_1 + 7) = param_2[3];
 }
 
 extern "C" int fn_801A36E8(int p) { return p + 4; }
