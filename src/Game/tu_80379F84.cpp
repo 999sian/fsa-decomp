@@ -13,6 +13,19 @@ extern "C" void fn_803D87C0(void* p);
 extern "C" void fn_803A97A0(void* p);
 extern "C" void fn_803B7E64(void* p);
 extern "C" void fn_803D8670(void* p);
+extern "C" void fn_8037A708(u8* p) {
+    if (*(void**)(p + 4) != 0) {
+        fn_803B6768(*(void**)(p + 4));
+    }
+    if (*(void**)(p + 8) != 0) {
+        fn_803B8188(*(void**)(p + 8));
+    }
+    if (*(void**)(p + 0xc) != 0) {
+        fn_803D87C0(*(void**)(p + 0xc));
+    }
+    p[0x1c] = 0;
+}
+
 extern "C" u8 fn_8037AA28(void) { return *((u8*)lbl_8053ADB8 + 0x216c); }
 
 extern "C" void* fn_8037AA34(void) { return fn_803D5090(lbl_8053ADB8); }
