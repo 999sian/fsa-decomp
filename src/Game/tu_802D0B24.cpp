@@ -1,5 +1,15 @@
 #include "JSystem/JGeometry/Vec.h"
 
+struct Vtable802D0B84 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+};
 
 extern "C" s32 fn_801F132C(void* this_, u32 param2, u32 param3, void* statePtr);
 extern "C" char lbl_804A93D0[];
