@@ -1,6 +1,8 @@
 
 
 #include "types.h"
+extern void* lbl_8029839C[];
+
 extern void* lbl_80298390[];
 
 
@@ -305,6 +307,23 @@ extern "C" s32 fn_801671B0(UnkVObj_801671B0* param_1, u32 param_2) {
         }
     }
     return diff;
+}
+
+extern void* lbl_8029836C[];
+extern "C" void* fn_80167398(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029836C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029839C;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80298390;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" void* fn_80167404(void* ptr, s16 param_2) {
@@ -1163,13 +1182,21 @@ extern "C" u8 fn_80172C4C(u8* self) {
 }
 
 extern "C" void fn_80172C54(s32 param_1, s32 param_2, u8* param_3) {
-    s32 p = param_1 + param_2 * 8;
-    *(u8*)(p + 0x40) = param_3[1];
-    *(u8*)(p + 0x41) = param_3[2];
-    *(u8*)(p + 0x42) = param_3[3];
-    *(u8*)(p + 0x44) = param_3[5];
-    *(u8*)(p + 0x45) = param_3[6];
-    *(u8*)(p + 0x46) = param_3[7];
+    u8 uVar1;
+    u8 uVar2;
+    param_1 = param_1 + param_2 * 8;
+    uVar2 = param_3[1];
+    uVar1 = param_3[2];
+    *(u8*)(param_1 + 0x40) = uVar2;
+    uVar2 = param_3[3];
+    *(u8*)(param_1 + 0x41) = uVar1;
+    uVar1 = param_3[5];
+    *(u8*)(param_1 + 0x42) = uVar2;
+    uVar2 = param_3[6];
+    *(u8*)(param_1 + 0x44) = uVar1;
+    uVar1 = param_3[7];
+    *(u8*)(param_1 + 0x45) = uVar2;
+    *(u8*)(param_1 + 0x46) = uVar1;
 }
 
 extern "C" s32 fn_80172C90(s32 param_1, s32 param_2) {
