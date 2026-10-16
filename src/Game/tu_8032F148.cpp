@@ -37,15 +37,43 @@ extern "C" void fn_80331B40(char* this_) {
     }
 }
 
+extern "C" void fn_80331C24(char* this_) {
+    extern unsigned short fn_8022461C(void* a, int b);
+    extern int fn_801F0E34(void* this_, unsigned int id, int c);
+    extern float lbl_80541EE8;
+    if (*(int*)(this_ + 0x290) == 0 || *(int*)(this_ + 0x290) == 6) {
+        int code = fn_8022461C(this_ + 0xc, *(int*)(this_ + 4));
+        if (code == 0x39 &&
+            ((*(int*)(this_ + 0x230) == 0 && *(int*)(this_ + 0x258) == 0) || *(int*)(this_ + 0x230) == 1) &&
+            *(float*)(this_ + 0x14) < lbl_80541EE8) {
+            fn_801F0E34(this_, 0x4007f, 0);
+            void* h = *(void**)(this_ + 0x2f8);
+            if (h == 0) {
+                *(int*)(this_ + 0x2f8) = fn_8013CC50(*(int*)(this_ + 4), this_ + 0xc, lbl_80541EBC, 0x4d2, 0, 3, 0, 0, 1);
+            } else {
+                fn_8013CB44(h, this_ + 0xc, 0, 3, 1);
+            }
+        } else {
+            void* h = *(void**)(this_ + 0x2f8);
+            if (h != 0) {
+                *(unsigned int*)((char*)h + 0xf4) |= 1;
+                *(int*)((char*)h + 0x24) = 1;
+                *(int*)(this_ + 0x2f8) = 0;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80333078(char* this_) {
     int idx = -1;
     if (*(int*)(this_ + 0x16c) != -1) {
         for (;;) {
-            idx = fn_801F78F4(fn_801F856C(), 0x4e495741, idx);
-            if (idx < 0) {
+            int h = fn_801F78F4(fn_801F856C(), 0x4e495741, idx);
+            idx = h;
+            if (h < 0) {
                 break;
             }
-            char* obj = (char*)fn_801F666C(fn_801F856C(), idx);
+            char* obj = (char*)fn_801F666C(fn_801F856C(), h);
             if (obj == 0) {
                 continue;
             }
