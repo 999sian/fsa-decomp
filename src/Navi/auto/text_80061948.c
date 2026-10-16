@@ -69,6 +69,15 @@ extern "C" void fn_8006C5B0(s32, s32 = 0);
 extern u32 lbl_802FC710;
 extern "C" void fn_80030534(void*, int, int);
 extern "C" void* fn_80022434(s32);
+extern "C" void fn_80061948(void* param_1) {
+    *(u16*)((u8*)param_1 + 0xe) = 0;
+    *(u32*)((u8*)param_1 + 0x10) = 0;
+    *(u32*)((u8*)param_1 + 0x14) = 0;
+    *(u32*)((u8*)param_1 + 0x18) = 0;
+    *(u32*)((u8*)param_1 + 0x1c) = 0;
+    *(u32*)((u8*)param_1 + 0x20) = 0;
+}
+
 extern "C" void* fn_80062D60(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027F2C0;
