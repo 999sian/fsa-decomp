@@ -34,10 +34,11 @@ extern "C" void* fn_80160D88(void*, char*, void*);
 extern "C" void* lbl_802FF5F8;
 extern "C" BOOL fn_80160A08(void) {
     u8* p = (u8*)fn_801615C4();
-    if (p != NULL) {
-        *(u32*)(p + 0x10) = 0;
+    if (p == NULL) {
+        return 0;
     }
-    return p != NULL;
+    *(u32*)(p + 0x10) = 0;
+    return 1;
 }
 
 extern "C" s32 fn_80160A44(void) {
