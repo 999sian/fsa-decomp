@@ -778,9 +778,9 @@ extern "C" void fn_8001C984(void) {
     fn_8001EC90();
 }
 
-extern "C" void fn_8001BC68(void);
-extern "C" void fn_8001C9DC(void) {
-    fn_8001BC68();
+extern "C" void* fn_8001BC68(void* param_1);
+extern "C" void fn_8001C9DC(void* param_1) {
+    fn_8001BC68(param_1);
 }
 
 extern "C" u32 fn_8001F26C(u32, s16, u32, void*, u32);
