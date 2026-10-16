@@ -56,7 +56,12 @@ extern void* lbl_802BB0FC[];
 extern void* lbl_802BF814[];
 extern f64 lbl_80300470;  // SDA label
 extern void fn_8002F358(int, int);
-extern f32 lbl_80300468;  // SDA label
+extern f32 lbl_80300468; // SDA label
+extern f32 lbl_80300460; // SDA label
+extern f32 lbl_80300448; // SDA label
+extern f32 lbl_80300464; // SDA label
+extern s32 lbl_802802A8[];
+extern u8 lbl_80280248[];
 extern f32 lbl_8030046C;  // SDA label
 extern void* lbl_80280230[];
 extern "C" void fn_8006C404(void);
