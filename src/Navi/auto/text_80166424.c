@@ -18,6 +18,10 @@ extern "C" int fn_801699AC()
 	return 0;
 }
 
+extern "C" int fn_801699B4(void) {
+    return 0xFFFF;
+}
+
 extern "C" u32* fn_80169B1C(u32* self, short param_2)
 {
     if (self != NULL) {
@@ -134,12 +138,11 @@ extern "C" unsigned int fn_80173060(void) {
 }
 
 extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
-    param_1 = param_1 + param_2 * 4;
-    u8 uVar1 = param_3[1];
-    *(u8*)(param_1 + 8) = param_3[0];
-    u8 uVar2 = param_3[2];
-    *(u8*)(param_1 + 9) = uVar1;
-    *(u8*)(param_1 + 10) = uVar2;
+    u8 uVar0 = param_3[0];
+    u8* p = (u8*)(param_1 + param_2 * 4);
+    p[8] = uVar0;
+    p[9] = param_3[1];
+    p[10] = param_3[2];
 }
 
 extern "C" void* fn_80174B70(void* base, u32 offset) {
