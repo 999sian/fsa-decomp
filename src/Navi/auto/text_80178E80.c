@@ -1313,6 +1313,18 @@ extern "C" void fn_8018A548(s32* self, void* a) {
     }
 }
 
+extern "C" void fn_8018A5A8(s32* self, void* a) {
+    s32 local_14;
+    s32 local_18;
+    local_14 = -1;
+    local_18 = -1;
+    if (!(fn_8018A318(a, &local_14, &local_18) & 0xff)) {
+        *self = -1;
+    } else {
+        *self = local_18;
+    }
+}
+
 extern "C" void fn_8018A87C(void) {
     fn_80177E84();
 }
