@@ -1513,6 +1513,24 @@ extern "C" void fn_8001F764(u8* param_1, f32* param_2) {
     param_1[4] |= 2;
 }
 
+extern "C" void fn_8001F78C(u8* param_1, u8* param_2) {
+    u8 uVar1 = param_2[1];
+    param_1[0x20] = param_2[0];
+    u8 uVar2 = param_2[2];
+    param_1[0x21] = uVar1;
+    uVar1 = param_2[3];
+    param_1[0x22] = uVar2;
+    param_1[0x23] = uVar1;
+    param_1[4] |= 4;
+}
+
+extern "C" void fn_8001F7BC(u8* param_1, u32 param_2, f32 param_3, f32 param_4) {
+    *(f32*)(param_1 + 0x24) = param_3;
+    *(f32*)(param_1 + 0x28) = param_4;
+    *(u32*)(param_1 + 0xc) = param_2;
+    param_1[4] |= 8;
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
