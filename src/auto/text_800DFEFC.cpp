@@ -153,6 +153,16 @@ u8 J3DMaterialFactory_v21::newDither(int idx) const
 	return 1;
 }
 
+J3DNBTScale J3DMaterialFactory_v21::newNBTScale(int idx) const
+{
+	J3DNBTScale defaultScale;
+	u16 index = *(u16*)((u8*)&mInitData[mMatRemapTable[idx]] + 0x136);
+	if (index != 0xffff) {
+		return J3DNBTScale(mNBTScaleInfo[index]);
+	}
+	return defaultScale;
+}
+
 extern "C" void* fn_800E1300(const void* base, const void* offset)
 {
 	if (offset == 0) {
