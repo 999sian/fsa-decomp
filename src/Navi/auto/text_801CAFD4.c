@@ -40,12 +40,11 @@ extern unsigned long lbl_802FE9F4;
 extern unsigned long CurrTvMode_802FF92C;
 int jumptable_8029D79C[];
 extern "C" int fn_801CB248(int param_1) {
-    volatile int dummy;
     int r30 = param_1;
     int r31 = lbl_802FF8F4;
-    int interrupt_state = OSDisableInterrupts();
+    OSDisableInterrupts();
     lbl_802FF8F4 = r30;
-    OSRestoreInterrupts(interrupt_state);
+    OSRestoreInterrupts(0);
     return r31;
 }
 
@@ -313,6 +312,10 @@ extern "C" void fn_801CEC9C(void) {
 extern "C" u32 fn_801CED8C(void) {
     volatile unsigned int* reg = (volatile unsigned int*)0xCC006C00;
     return *reg & 1;
+}
+
+extern "C" BOOL fn_801CEE7C(void) {
+    return ((*(vu32*)0xcc006c00 >> 6) & 1) ^ 1;
 }
 
 extern "C" void* fn_801CF5D0(int param_1) {
@@ -791,6 +794,58 @@ extern "C" void fn_801DAC08(s32 attr, void* base, u8 stride)
 extern "C" void fn_801DAC94(void)
 {
     *(volatile u8*)0xCC008000 = 0x48;
+}
+
+extern "C" void fn_801DAF24(u32 v)
+{
+    u8* gx = __GXData;
+    *(u32*)&gx[0x204] = (*(u32*)&gx[0x204] & ~0xF) | (v & 0xF);
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u32*)0xCC008000 = 0x103f;
+    *(volatile u32*)0xCC008000 = (u8)v;
+    *(u32*)&gx[0x5ac] |= 4;
+}
+
+extern "C" void GXSetMisc(s32 token, u32 val)
+{
+	u8* gx;
+	switch (token) {
+	case 0:
+		break;
+	case 1:
+		gx = __GXData;
+		*(u16*)(gx + 4) = val;
+		*(u16*)(gx + 0) = (u16)(*(u16*)(gx + 4) == 0 ? 1 : 0);
+		*(u16*)(gx + 2) = 1;
+		if (*(u16*)(gx + 4) != 0) {
+			*(u32*)(gx + 0x5ac) |= 8;
+		}
+		break;
+	case 2:
+		__GXData[0x5a9] = (u8)(val > 0);
+		break;
+	case 3:
+		__GXData[0x5aa] = (u8)(val > 0);
+		break;
+	}
+}
+
+extern "C" void fn_801DB844(void);
+extern "C" void PPCSync(void);
+extern "C" void fn_801DAFF4(void)
+{
+	if (*(u32*)(__GXData + 0x5ac) != 0) {
+		fn_801DB844();
+	}
+	*(volatile u32*)0xCC008000 = 0;
+	*(volatile u32*)0xCC008000 = 0;
+	*(volatile u32*)0xCC008000 = 0;
+	*(volatile u32*)0xCC008000 = 0;
+	*(volatile u32*)0xCC008000 = 0;
+	*(volatile u32*)0xCC008000 = 0;
+	*(volatile u32*)0xCC008000 = 0;
+	*(volatile u32*)0xCC008000 = 0;
+	PPCSync();
 }
 
 extern "C" uint fn_801DD3D8(uint *param_1)
