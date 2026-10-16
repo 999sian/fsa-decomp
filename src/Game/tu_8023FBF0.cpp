@@ -1457,6 +1457,7 @@ u32 fn_80246D1C(char* p, u32 mask) {
 inline s32 countSharing6(char* p) {
     s32 c;
     s32 i;
+    s32 me;
     s32 linked;
     c = 0;
     for (i = 0; i < 4; i++) {
