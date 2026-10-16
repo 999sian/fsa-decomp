@@ -31,6 +31,9 @@ extern "C" void fn_8013C544(void* a, void* b);
 extern void fn_80167CD8(void*, u32, u32);
 extern void* lbl_802985C8[];
 extern void* lbl_80298B14[];
+extern void* lbl_80292EC4[];
+extern void* lbl_80292EB4[];
+extern "C" void fn_80167BB0(void* p, u32 x);
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80135f7c-0x8013c97c (185 functions). split_file divides it into the game's real files.
 
@@ -562,6 +565,27 @@ extern "C" void fn_80139780(void* param_1, void* param_2) {
     *(f64*)((char*)param_1 + 0x20) = **(f32**)((char*)param_2 + 8);
 }
 
+extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d);
+extern "C" void* fn_80139950(u8* self, u32 a, u32 b) {
+    u32 key[2];
+    void* first[2];
+    void* last[2];
+    void* res[2];
+    void* tmp[2];
+    void* end = self + 0xc;
+    void* head = *(void**)(self + 0xc);
+    key[0] = a;
+    key[1] = b;
+    first[0] = head;
+    first[1] = end;
+    last[0] = end;
+    last[1] = end;
+    fn_8013A388(res, first, last, (u32)key);
+    tmp[0] = res[0];
+    if (tmp[0] != end) return (u8*)tmp[0] - 0xc;
+    return 0;
+}
+
 extern "C" void* fn_801399E4(void* list, u32 index)
 {
     struct Iter {
@@ -615,6 +639,25 @@ extern "C" void* fn_80139E0C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" int fn_801E3C54(const void*, const void*, u32);
+extern "C" char lbl_80301880[];
+extern "C" BOOL fn_80139E6C(void* param_1, u8** param_2, u32* param_3) {
+    u8* p = *param_2;
+    *param_2 = p + 0x10;
+    *param_3 = *(u32*)(p + 0xc);
+    if (fn_801E3C54(p, &lbl_80301880, 4) != 0) {
+        return FALSE;
+    }
+    if (*(u16*)(p + 4) != 0xFEFF) {
+        return FALSE;
+    }
+    u16 n = *(u16*)(p + 6);
+    if (n < 2) {
+        return FALSE;
+    }
+    return n <= 0x100;
 }
 
 extern void* lbl_80292D58[];
@@ -696,6 +739,56 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
+extern "C" void fn_801C5DA8(void* a, void* b, void* c);
+extern "C" void fn_801C5E74(void* a, void* b);
+extern "C" void fn_80133000(void* a, void* b, void* c, void* d);
+extern "C" s32 fn_8013BAB4(void* a, f32* b, void* c, u32 d) {
+    u8 pos[48];
+    u8 out[48];
+    if (c == nullptr) {
+        return 0;
+    }
+    if (!((u8 (*)(void*, u32, void*))(*(void***)c)[14])(c, d, out)) {
+        return 0;
+    }
+    fn_801C61AC(pos, b[0], b[1], b[2]);
+    fn_801C5DA8(out, pos, a);
+    return 1;
+}
+
+extern "C" s32 fn_8013BB4C(void* a, u8* b, void* c, u32 d) {
+    u8 pos[48];
+    u8 tmp[48];
+    u8 out[48];
+    if (c == nullptr) {
+        return 0;
+    }
+    if (!((u8 (*)(void*, u32, void*))(*(void***)c)[14])(c, d, out)) {
+        return 0;
+    }
+    fn_80133000(tmp, b + 0x18, b + 0xc, b);
+    fn_801C5E74(out, pos);
+    fn_801C5DA8(pos, tmp, a);
+    return 1;
+}
+
+extern "C" s32 fn_8013BBF0(void* a, f32* b, void* c, u32 d) {
+    u8 pos[48];
+    u8 tmp[48];
+    u8 out[48];
+    if (c == nullptr) {
+        return 0;
+    }
+    if (!((u8 (*)(void*, u32, void*))(*(void***)c)[14])(c, d, out)) {
+        return 0;
+    }
+    fn_801C61AC(tmp, b[0], b[1], b[2]);
+    fn_801C5E74(out, pos);
+    fn_801C5DA8(pos, tmp, a);
+    return 1;
+}
+
 extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
     u32 out;
     if (param_1->fn_13(&out, param_2, 0) != 0) {
@@ -707,14 +800,13 @@ extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 extern "C" void* fn_8013BEB0(NaviTracker* ptr, s16 param_2) {
-    if (ptr == nullptr) {
-        return nullptr;
-    }
-    *(void**)ptr = lbl_8029320C;
-    ptr->fn_3();
-    fn_80133C0C(ptr, 0);
-    if (param_2 > 0) {
-        fn_8015AB1C(ptr);
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029320C;
+        ptr->fn_3();
+        fn_80133C0C(ptr, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
     }
     return ptr;
 }
