@@ -131,6 +131,20 @@ extern "C" void fn_800329CC(void* p) {
     *(unsigned int*)((char*)p + 0x20) = 0;
 }
 
+extern "C" void fn_80033ADC(void*, void*);
+extern float lbl_802FFD48;
+extern int lbl_80244A88[];
+extern "C" void fn_80033448(void* p) {
+    if (*(int*)((char*)lbl_802BB0FC + 0x118) < 6) {
+        *(unsigned char*)((char*)p + 0xef) = 0;
+    } else if (*(int*)((char*)lbl_802BB0FC + 0x118) < 8) {
+        *(unsigned char*)((char*)p + 0xef) = 1;
+    } else {
+        *(unsigned char*)((char*)p + 0xef) = 2;
+    }
+    fn_800300C0(0x18, lbl_802FFD48, lbl_80244A88[*(unsigned char*)((char*)p + 0xef)], 0x2000, 0);
+}
+
 extern "C" void fn_800335C4(void* p) {
     *(unsigned int*)((char*)p + 0xe8) |= 0x200000;
     *(unsigned int*)((char*)p + 0xe8) |= 0x10000000;
