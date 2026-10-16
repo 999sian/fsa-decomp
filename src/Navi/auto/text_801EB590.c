@@ -34,6 +34,26 @@ extern "C" int TRKDoOverride()
     return 0;
 }
 
+extern "C" void __TRK_reset();
+extern "C" int TRKDoReset()
+{
+    struct {
+        u32 length;
+        u8 type;
+        u8 pad[3];
+        u8 flag;
+        u8 rest[0x40 - 9];
+    } msg;
+
+    memset(&msg, 0, 0x40);
+    msg.type = 0x80;
+    msg.length = 0x40;
+    msg.flag = 0;
+    TRKWriteUARTN(&msg, 0x40);
+    __TRK_reset();
+    return 0;
+}
+
 extern "C" void* GetTRKConnected(void);
 extern void* lbl_802FA410[];
 extern "C" void* GetTRKConnected(void) {
