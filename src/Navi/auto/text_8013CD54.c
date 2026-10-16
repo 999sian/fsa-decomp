@@ -5,6 +5,7 @@
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_80293318[];
+extern char lbl_80201E80[];
 extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
 extern "C" void fn_8013D5DC(void*, void*);
 extern "C" void fn_8013D7E0(void*, void*);
