@@ -553,8 +553,7 @@ extern "C" void fn_801808F0(void* self, int a, int b, int c) {
 }
 
 extern "C" void fn_80180920(void* self, int a, int b, int c) {
-    void** vtbl = *(void***)self;
-    ((void (*)(void*, int, int, int))vtbl[0xd4 / 4])(self, a, 0, c);
+    ((VObj_80180920*)self)->vfCC(a, 0, c);
 }
 
 extern "C" void fn_80180950(void* self, int a, int b, int c) {
