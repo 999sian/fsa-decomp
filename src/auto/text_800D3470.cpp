@@ -14,6 +14,10 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 
+struct Unk800DE210 {
+    u8 a, b, c;
+};
+
 struct Unk800DDA5C {
     u16 a;
     u8 b;
@@ -727,16 +731,13 @@ extern "C" void fn_800D9E3C(void* p) {
 extern "C" u8 isTexNoReg__FPv(void*);
 extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
-    u32 i = 0;
     GDSetCurrOffset(param_2);
     u8* start = GDGetCurrPointer();
-    u8* cur = GDGetCurrPointer();
-    for (;;) {
-        if (!isTexNoReg__FPv(cur)) {
-            break;
-        }
-        u16 texNo = getTexNoReg__FPv(cur);
-        loadTexNo__FUlRCUs(i, &texNo);
+    u8* cur = __GDCurrentDL->pDisplayListData;
+    u32 i = 0;
+    while (true) {
+        if (!isTexNoReg(cur)) break;
+        loadTexNo(i, getTexNoReg(cur));
         i++;
     }
     DCStoreRange(start, GDGetCurrPointer() - start);
@@ -927,8 +928,13 @@ extern "C" u32 fn_800DDA50(void) {
     return 0x50454647;
 }
 
-extern "C" void fn_800DDA5C(u8* this_, Unk800DDA5C* src) {
-    *(Unk800DDA5C*)(this_ + 4) = *src;
+extern "C" void fn_800DDA5C(u8* this_, u8* src) {
+    u16 w = *(u16*)src;
+    u8 b2 = src[2];
+    *(u16*)(this_ + 0x4) = w;
+    u8 b3 = src[3];
+    *(u8*)(this_ + 0x6) = b2;
+    *(u8*)(this_ + 0x7) = b3;
 }
 
 extern "C" void* fn_800DDA94(u8* this_) {
@@ -1007,7 +1013,7 @@ extern "C" void fn_800DDB70(void* param_1)
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   u8* pStart = __GDCurrentDL->pDisplayListData;
-  u8* pCurr = __GDCurrentDL->pDisplayListData;
+  u8* pCurr = GDGetCurrPointer();
   for (;;) {
     if (!isTexNoReg(pCurr)) break;
     u16 texNo = getTexNoReg(pCurr);
@@ -1307,15 +1313,15 @@ extern "C" u8 fn_800DE208(int param_1)
   return *(u8*)(param_1 + 0x20);
 }
 
-extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
 {
-  int base = param_1 + param_2 * 8;
-  *(u8*)(base + 0x22) = param_3[1];
-  *(u8*)(base + 0x23) = param_3[2];
-  *(u8*)(base + 0x24) = param_3[3];
-  *(u8*)(base + 0x26) = param_3[5];
-  *(u8*)(base + 0x27) = param_3[6];
-  *(u8*)(base + 0x28) = param_3[7];
+  u8 (*p)[8] = (u8 (*)[8])(param_1 + 0x20);
+  p[param_2][2] = param_3[1];
+  p[param_2][3] = param_3[2];
+  p[param_2][4] = param_3[3];
+  p[param_2][6] = param_3[5];
+  p[param_2][7] = param_3[6];
+  p[param_2][8] = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -1329,17 +1335,12 @@ struct fn_800DE29C_Bits2 {
   u8 a : 2;
 };
 
-extern "C" void fn_800DE29C(int param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
   u8 b0 = param_3[0];
   u8 b1 = param_3[1];
-  int base = param_1 + param_2 * 8;
-  u8 val = *(u8*)(base + 0x28);
-  val = ((val >> 2) << 2) | (b1 << 2);
-  *(u8*)(base + 0x28) = val;
-  val = *(u8*)(base + 0x28);
-  val = (val & ~3) | b0;
-  *(u8*)(base + 0x28) = val;
+  (param_1 + param_2 * 8)[0x28] = (b1 << 2) | ((param_1 + param_2 * 8)[0x28] & ~0xC);
+  (param_1 + param_2 * 8)[0x28] = b0 | ((param_1 + param_2 * 8)[0x28] & ~0x3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -1495,7 +1496,7 @@ extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
     int offset = param_1 + param_2 * 8;
 
     u8 byte = *(u8*)(offset + 0x3c);
-    byte = (byte & 0xf3) | (val1 << 2);
+    byte = (byte & ~0x0c) | (val1 << 2);
     *(u8*)(offset + 0x3c) = byte;
 
     byte = *(u8*)(offset + 0x3c);
@@ -1589,12 +1590,18 @@ extern "C" u32 fn_800DE954() {
 
 extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
     u8* p = this_ + idx * 8;
-    p[0xf] = src[1];
-    p[0x10] = src[2];
-    p[0x11] = src[3];
-    p[0x13] = src[5];
-    p[0x14] = src[6];
-    p[0x15] = src[7];
+    u8 a = src[1];
+    u8 b = src[2];
+    p[0xf] = a;
+    u8 c = src[3];
+    p[0x10] = b;
+    u8 d = src[5];
+    p[0x11] = c;
+    u8 e = src[6];
+    p[0x13] = d;
+    u8 f = src[7];
+    p[0x14] = e;
+    p[0x15] = f;
 }
 
 extern "C" u8* fn_800DE9D4(u8* this_, s32 idx) {
@@ -1902,10 +1909,11 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 }
 
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
+    u8 r = c[0];
     u8* p = self + i * 4;
-    p[0xc] = c[0];
-    p[0xe] = c[2];
+    p[0xc] = r;
     p[0xd] = c[1];
+    p[0xe] = c[2];
     p[0xf] = c[3];
 }
 
