@@ -288,6 +288,10 @@ extern "C" u8* fn_80172A4C(u8* p, s32 i) {
     return p + i + 0xb8;
 }
 
+extern "C" void fn_80172A5C(u8* p, s32 i, u32* src) {
+    ((u32*)(p + 0xbc))[i] = *src;
+}
+
 extern "C" s32 fn_80172AB4(s32 p, u32 i) {
     if (i >= 8) {
         return 0;
@@ -318,12 +322,14 @@ extern "C" void fn_80172B5C(s32 p, s32 i, u8* src) {
 }
 
 extern "C" s32 fn_80172BC0(s32 p, s32 i) {
-    return p + (i * 8 + 0x1e);
+    i = i * 8;
+    return p + (i + 0x1e);
 }
 
 extern "C" s32 fn_80172C00(s32 p, s32 i) {
-    i = i * 4;
-    return p + (i + 0x60);
+    s32 q = p;
+    i = i * 4 + 0x60;
+    return q + i;
 }
 
 extern "C" void fn_80172C2C(s32 p, s32 i, u8 v) {
