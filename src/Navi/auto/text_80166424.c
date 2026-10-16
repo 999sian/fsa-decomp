@@ -155,7 +155,7 @@ extern "C" void fn_8017298C(u8* p, s32 i, u8 v) {
 }
 
 extern "C" unsigned char fn_80172998(int param_1, int param_2) {
-    return *(unsigned char*)(param_1 + param_2 + 0xb0);
+    return ((unsigned char*)(param_1 + 0xb0))[param_2];
 }
 
 extern "C" void fn_801729A4(int param_1, unsigned char param_2) {
@@ -245,14 +245,14 @@ extern "C" u8* fn_80173108(u8* p, s32 i)
 
 extern "C" void fn_8017311C(u8* p, s32 i, u8* src)
 {
-    u8* dst = p + (i << 2);
     u8 a = src[0];
-    dst[0x34] = a;
     u8 b = src[1];
-    dst[0x35] = b;
+    u8* dst = p + i * 4;
+    dst[0x34] = a;
     u8 c = src[2];
-    dst[0x36] = c;
+    dst[0x35] = b;
     u8 d = src[3];
+    dst[0x36] = c;
     dst[0x37] = d;
 }
 
