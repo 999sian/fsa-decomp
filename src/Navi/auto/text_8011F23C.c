@@ -149,6 +149,17 @@ extern "C" void fn_80128794(u8* self) {
     *(s16*)(self + 0x214) = 0;
 }
 
+extern "C" void fn_80128EE8(u8* a, u8* b) {
+    u8 flags = b[0x95];
+    u8** piVar1 = *(u8***)(*(u8**)(a + 4) + 0x1c);
+    s16 off = *(s16*)(b + 0x80);
+    u8* iVar2 = piVar1[0];
+    u8* tbl = piVar1[2];
+    int iVar4 = off + (flags & iVar2[0x30]);
+    u32 uVar3 = iVar2[0x1f];
+    b[0x94] = tbl[(iVar4 - (iVar4 / (int)uVar3) * uVar3) & 0xff];
+}
+
 extern "C" void fn_80128F2C(void** param_1) {
     u8* obj = (u8*)*param_1;
     u8* info = *(u8**)((u8*)param_1[1] + 0x1c);
@@ -158,6 +169,26 @@ extern "C" void fn_80128F2C(void** param_1) {
     s32 r = v - q * m;
     u8 idx = r + (q & 1) * (m - 2 * r);
     obj[0x111] = (*(u8**)(info + 8))[idx];
+}
+
+extern "C" void fn_80128F7C(u8* a, u8* b) {
+    u8 flags = b[0x95];
+    u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
+    s16 off = *(s16*)(b + 0x80);
+    u8* iVar2 = info[0];
+    u8* tbl = info[2];
+    s32 v = off + (flags & iVar2[0x30]);
+    s32 m = iVar2[0x1f] - 1;
+    s32 q = v / m;
+    s32 r = v - q * m;
+    u8 idx = r + (q & 1) * (m - 2 * r);
+    b[0x94] = tbl[idx];
+}
+
+extern "C" void fn_80128FD8(void** param_1) {
+    u8* obj = (u8*)*param_1;
+    u8* info = *(u8**)((u8*)param_1[1] + 0x1c);
+    obj[0x111] = (*(u8**)info)[0x20];
 }
 
 extern "C" void* fn_8012A804(void* p) {
