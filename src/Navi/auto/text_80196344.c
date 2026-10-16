@@ -181,6 +181,10 @@ extern "C" int fn_80198F20()
 	return 0;
 }
 
+extern "C" u32 fn_80198F38(void) {
+    return 0x49424C4E;
+}
+
 extern void* lbl_8029A02C[];
 extern "C" void* fn_80198F44(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -552,9 +556,9 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
 
 extern "C" void fn_801A3EF8(int param_1, int param_2, u8* param_3) {
     u8 b1 = param_3[1];
-    volatile u8* p = (volatile u8*)(param_1 + param_2 * 8);
+    u8* p = (u8*)(param_1 + param_2 * 8);
     u8 b0 = param_3[0];
-    p[0x28] = (p[0x28] & 0xf3) | (b1 << 2);
+    p[0x28] = (p[0x28] & 0xf3) | (u8)(b1 << 2);
     p[0x28] = (p[0x28] & 0xfc) | b0;
 }
 
