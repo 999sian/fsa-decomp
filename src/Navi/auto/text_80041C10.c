@@ -55,7 +55,7 @@ extern "C" void fn_8004B070(void) {
 }
 
 extern "C" void fn_8004B074(void* param_1, void* param_2, void* param_3, void* param_4) {
-    void* vtable = *(void**)param_1;
+    register void* vtable = *(void**)param_1;
     (*(void(**)(void))((char*)vtable + 0x20))();
     
     if (*(u8*)((char*)param_1 + 0x13) == 0) {
@@ -107,7 +107,7 @@ extern "C" void* fn_8004B16C(void* param_1, s16 param_2) {
 }
 
 extern "C" void fn_8004B1DC(void* param_1, void* param_2, void* param_3, void* param_4) {
-    void* vtable = *(void**)param_1;
+    register void* vtable = *(void**)param_1;
     (*(void(**)(void))((char*)vtable + 0x20))();
     
     if (*(u8*)((char*)param_1 + 0x13) == 0) {
@@ -214,6 +214,35 @@ extern "C" void fn_8004C614(void* p) {
     }
 }
 
+extern "C" void* fn_8004C970(void* param_1) {
+    extern void* lbl_802FF0A0;
+    extern unsigned char lbl_802FF0A4;
+    extern unsigned char lbl_80246BD8[];
+    extern unsigned char lbl_80246C1C[];
+    extern int lbl_802FC1B0;
+    extern int lbl_802FC1B4;
+    
+    void* base = lbl_802FF0A0;
+    if (base == 0 || param_1 == 0) {
+        return 0;
+    }
+    
+    unsigned int value = *(unsigned int*)((char*)param_1 + 0xc0);
+    
+    if (value == 0xffffffff) {
+        return 0;
+    }
+    
+    unsigned char max_val = lbl_802FF0A4;
+    if (value >= (unsigned int)max_val) {
+        void* tmp = fn_8011FD10();
+        fn_8011FD18(tmp, (void*)lbl_80246BD8, 0x477, (void*)lbl_80246C1C, (void*)lbl_802FC1B0);
+        fn_80007AB8((void*)lbl_80246BD8, 0x477, (void*)lbl_802FC1B4);
+    }
+    
+    return (void*)((char*)base + value * 0xc4);
+}
+
 extern "C" void fn_8004CB14(void* param_1, void* param_2) {
     unsigned char byte = *(unsigned char*)((char*)param_1 + 4);
     fn_80130C64(param_2, byte, 0);
@@ -241,6 +270,28 @@ extern "C" void* fn_8004CBB4(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_8004CBF0(void) {
+}
+
+extern "C" void fn_8004CEC8(void* param_1, void* param_2, void* param_3) {
+    extern float lbl_80300124;
+    
+    float arr1[3];
+    arr1[0] = *(float*)((char*)param_3 + 0x18);
+    arr1[1] = *(float*)((char*)param_3 + 0x1c);
+    arr1[2] = *(float*)((char*)param_3 + 0x20);
+    
+    float arr2[3];
+    float arr3[3];
+    
+    fn_8003C510(arr1, arr2, arr3);
+    
+    float scale = lbl_80300124 * arr1[0];
+    
+    fn_80115914(param_2, arr2);
+    
+    *(float*)((char*)param_3 + 0x18) = arr1[0];
+    *(float*)((char*)param_3 + 0x1c) = arr1[1];
+    *(float*)((char*)param_3 + 0x20) = arr1[2];
 }
 
 extern char lbl_80246DC4[];
