@@ -13,6 +13,8 @@ extern "C" void fn_8008A4C4(unsigned int param_1);
 extern "C" unsigned int lbl_8053A904;
 extern "C" unsigned int lbl_8053A908;
 extern "C" JUTException* lbl_8053A900;
+extern "C" void* __nw__FUlP7JKRHeapi(size_t size, JKRHeap* heap, int align);
+extern "C" void __ct__9JKRThreadFUlii(JKRThread* this_, u32 stackSize, int msgCount, int threadPriority);
 extern "C" u32 lbl_8053A918;
 extern "C" u32 lbl_8053A91C;
 extern "C" u8 lbl_804BA1B0[];
