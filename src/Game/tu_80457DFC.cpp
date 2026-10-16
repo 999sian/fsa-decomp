@@ -202,6 +202,32 @@ extern "C" void fn_80458F9C(Unk80458F9C* self, u32 fadeout)
     self->m60 = 0;
 }
 
+extern "C" void fn_80459274(u8* this_) {
+    this_[0x8e] = 0;
+    if (this_[0x8c]) {
+        fn_80458744(this_, 2);
+    } else {
+        fn_80458744(this_, 0);
+    }
+    ((JAISeCategoryMgr*)(*(u8**)(this_ + 0x34) + 0x80))->pause(false);
+    ((JAISeCategoryMgr*)(*(u8**)(this_ + 0x34) + 0xec))->pause(false);
+    if (this_[0x8a] == 1) {
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x88))->moveVolume(lbl_80543EB4, 3);
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0xf4))->moveVolume(lbl_80543EB4, 3);
+    } else {
+        ((JAISeCategoryMgr*)(*(u8**)(this_ + 0x34) + 0x158))->pause(false);
+        ((JAISeCategoryMgr*)(*(u8**)(this_ + 0x34) + 0x1c4))->pause(false);
+        ((JAISeCategoryMgr*)(*(u8**)(this_ + 0x34) + 0x230))->pause(false);
+        ((JAISeCategoryMgr*)(*(u8**)(this_ + 0x34) + 0x29c))->pause(false);
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x88))->moveVolume(lbl_80543EB4, 3);
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0xf4))->moveVolume(lbl_80543EB4, 3);
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x160))->moveVolume(lbl_80543EB4, 3);
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x1cc))->moveVolume(lbl_80543EB4, 3);
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x238))->moveVolume(lbl_80543EB4, 3);
+        ((JAISoundParamsMove*)(*(u8**)(this_ + 0x34) + 0x2a4))->moveVolume(lbl_80543EB4, 3);
+    }
+}
+
 extern "C" void fn_804593D4(char* this_) {
     this_[0x8e] = 1;
     fn_80458744(this_, 1);
