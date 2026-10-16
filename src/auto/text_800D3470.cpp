@@ -172,6 +172,14 @@ void J3DTexGenBlockBasic::initialize()
 	mTexMtxOffset = 0;
 }
 
+void J3DTevBlock1::initialize()
+{
+	mTexIndices[0] = 0xffff;
+	mStages[0].mBPCommand1 = 0xc0;
+	mStages[0].mBPCommand2 = 0xc1;
+	mTexNoOffset = 0;
+}
+
 extern "C" void fn_800D36E0(u32* param_1) {
     param_1[1] = 0;
 }
