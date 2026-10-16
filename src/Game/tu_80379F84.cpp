@@ -1,5 +1,16 @@
 #include "types.h"
 
+struct VObj {
+    virtual void v00(int);
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+};
+
 
 extern void* lbl_8053ADB8;
 extern "C" void* fn_803D5090(void* game);
@@ -133,6 +144,65 @@ extern "C" void fn_8037A708(u8* p) {
         fn_803D87C0(*(void**)(p + 0xc));
     }
     p[0x1c] = 0;
+}
+
+extern u8 lbl_804AE9A0[];
+extern void* lbl_8053AB10;
+extern "C" void* __nw__FUl(u32 size);
+extern "C" u32 getTotalFreeSize__7JKRHeapFv(void* heap);
+extern "C" void fn_80158B3C(void* p);
+extern "C" void fn_803D901C(void* p);
+extern "C" void fn_803B8414(void* p);
+extern "C" void fn_803B6FD8(void* p);
+extern "C" void fn_803D58E0(void* a, void* b, s32 c);
+extern "C" void* fn_8037A8D4(void* this_) {
+    u8* p = (u8*)this_;
+    void* obj;
+
+    *(void**)p = lbl_804AE9A0;
+    getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 8));
+    lbl_8053AD68 = this_;
+    fn_80158B3C(*(void**)((u8*)lbl_8053AB10 + 0x2c));
+    *(void**)(p + 0x14) = *(void**)(lbl_80529DEC + 0x38);
+    *(void**)(p + 0x18) = 0;
+    p[0x1d] = 0;
+    p[0x1e] = 0;
+    *(void**)(p + 4) = 0;
+    *(void**)(p + 8) = 0;
+    *(void**)(p + 0xc) = 0;
+
+    if (*((u8*)lbl_8053AAF8 + 0x7f) == 0) {
+        obj = __nw__FUl(0x84);
+        if (obj != 0) {
+            fn_803D901C(obj);
+        }
+        *(void**)(p + 0xc) = obj;
+    } else if (*((u8*)lbl_8053AAF8 + 0x7e) == 0) {
+        *(void**)(p + 0x18) = *(void**)(lbl_80529DEC + 0x40);
+        *(void**)(lbl_80529DEC + 0x3c) = *(void**)(p + 0x18);
+        obj = __nw__FUl(0x2a0);
+        if (obj != 0) {
+            fn_803B8414(obj);
+        }
+        *(void**)(p + 8) = obj;
+    } else {
+        *(void**)(p + 0x18) = *(void**)(lbl_80529DEC + 0x44);
+        *(void**)(lbl_80529DEC + 0x3c) = *(void**)(p + 0x18);
+        obj = __nw__FUl(0x4e0);
+        if (obj != 0) {
+            fn_803B6FD8(obj);
+        }
+        *(void**)(p + 4) = obj;
+    }
+
+    getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 8));
+    obj = __nw__FUl(0x2180);
+    if (obj != 0) {
+        fn_803D58E0(obj, *(void**)((u8*)lbl_8053AD68 + 0x14), 1);
+    }
+    *(void**)(p + 0x10) = obj;
+    p[0x1c] = 0;
+    return this_;
 }
 
 extern "C" u8 fn_8037AA28(void) {
