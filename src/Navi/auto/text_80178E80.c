@@ -116,6 +116,9 @@ extern "C" void fn_80184C34(void) {
     fn_801788C0();
 }
 
+extern "C" void fn_80184C54(void) {
+}
+
 extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     void* obj = *(void**)((u8*)self + 0x168);
     if (*(void**)((u8*)obj + 0x28) == 0) {
