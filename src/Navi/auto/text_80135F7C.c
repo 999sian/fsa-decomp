@@ -530,6 +530,12 @@ extern "C" int fn_8013AF54()
 	return 0;
 }
 
+extern "C" void fn_8013AF5C(void* param_1, fn_80139DB0_Obj* param_2) {
+    if (param_2 != nullptr) {
+        param_2->fn_0(1);
+    }
+}
+
 extern "C" void fn_80167880(void*, int);
 extern char lbl_80292F24[];
 extern "C" void* fn_8013AFB8(void* param_1, s16 param_2) {
