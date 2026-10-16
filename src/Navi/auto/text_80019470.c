@@ -951,9 +951,9 @@ extern "C" u32 fn_8001DB10(void) {
     return 2;
 }
 
-extern "C" void cTg_IsUse__FP16create_tag_class(void);
-extern "C" void fn_8001E69C(void) {
-    cTg_IsUse__FP16create_tag_class();
+extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
+extern "C" void fn_8001E69C(void* param_1) {
+    cTg_IsUse__FP16create_tag_class(param_1);
 }
 
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
