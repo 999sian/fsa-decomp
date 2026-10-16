@@ -377,6 +377,26 @@ extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
     *out = def;
 }
 
+struct J3DIndTexCoordScaleInfo {
+    u8 mScaleS; // _00
+    u8 mScaleT; // _01
+    u8 _02;
+    u8 _03;
+};
+extern const J3DIndTexCoordScaleInfo j3dDefaultIndTexCoordScaleInfo;
+struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
+    J3DIndTexCoordScale() { *(J3DIndTexCoordScaleInfo*)this = j3dDefaultIndTexCoordScaleInfo; }
+};
+extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no) {
+    J3DIndTexCoordScale dflt;
+    u8* data = *(u8**)(p + 0xc) + idx * 0x138;
+    if (data[0] == 1) {
+        *out = ((J3DIndTexCoordScaleInfo*)(data + 0x68))[no];
+    } else {
+        *out = dflt;
+    }
+}
+
 extern unsigned int j3dDefaultBlendInfo;
 extern "C" void fn_800CBA88(unsigned int* out, void* self, int idx) {
     unsigned char* p = (unsigned char*)self;
