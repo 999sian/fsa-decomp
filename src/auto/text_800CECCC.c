@@ -91,3 +91,11 @@ extern "C" void* fn_800D06B8(const void* ptr, const void* offset)
     return (unsigned char*)ptr + (unsigned int)offset;
 }
 
+extern "C" void* fn_800D06D0(const void* ptr, const void* offset)
+{
+    if (offset == 0) {
+        return 0;
+    }
+    return (unsigned char*)ptr + (unsigned int)offset;
+}
+
