@@ -35,6 +35,35 @@ extern "C" u8 fn_8036B018(u8* this_) {
     return 0;
 }
 
+extern "C" void fn_8036C250(char* self) {
+    Vec3f saved = *(Vec3f*)(self + 0xc);
+    if (*(s32*)(self + 0x23c) == 5 && *(s32*)(self + 0x240) >= 0x24 && *(s32*)(self + 0x240) != 0x26) {
+        fn_803683AC(self);
+    } else {
+        fn_8010DF58(self);
+        fn_8036A894(self);
+        if (*(u8*)(self + 0x236) != 0) {
+            fn_8036AC58(self, lbl_80474C48[*(s32*)(self + 0x23c)]);
+        }
+        fn_80368660(self);
+    }
+    *(Vec3f*)(self + 0xc) = saved;
+}
+
+extern "C" void fn_8036C300(Unk8036C300* this_) {
+    char* self = (char*)this_;
+    if (*(s32*)(self + 0x2f0) != 0) {
+        *(s32*)(self + 0x2f0) = *(s32*)(self + 0x2f0) - 1;
+        if (*(s32*)(self + 0x2f0) == 0xe1) {
+            fn_801F0E34(self, 0x30082, 0);
+        } else if (*(s32*)(self + 0x2f0) == 0xb4) {
+            fn_801F0E34(self, 0x30082, 0);
+            fn_801F0E34(self, 0x30083, 0);
+        }
+    }
+    (this_->*lbl_804AE070[*(s32*)(self + 0x23c) - 4])();
+}
+
 extern "C" void* fn_8036C69C(void* this_, short how) {
     if (this_) {
         *(void**)this_ = (void*)lbl_804AE088;
