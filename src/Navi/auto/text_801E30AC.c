@@ -63,8 +63,129 @@ extern "C" unsigned char fn_801E3178(unsigned int param_1) {
     return *p & 0xc0;
 }
 
+extern "C" int fn_801E3C54(unsigned char* s1, unsigned char* s2, unsigned int n) {
+    unsigned char* p1 = s1 - 1;
+    unsigned char* p2 = s2 - 1;
+    int result;
+    while (n--) {
+        if (*++p1 == *++p2) {
+            continue;
+        }
+        if (*p1 < *p2) {
+            result = -1;
+        } else {
+            result = 1;
+        }
+        return result;
+    }
+    return 0;
+}
+
+extern "C" unsigned char* fn_801E3CD4(unsigned char* s, int c, unsigned int n) {
+    unsigned char* p = s + n;
+    unsigned char ch = c;
+    while (n--) {
+        if (*--p == ch) {
+            return p;
+        }
+    }
+    return 0;
+}
+
+extern "C" char* fn_801E3D2C(char* str, int c, unsigned long n) {
+    register char* p = str - 1;
+    register unsigned char target = c;
+    unsigned long count = n;
+    char* result = 0;
+
+    count++;
+    while (--count) {
+        if ((unsigned char)*++p == target) {
+            result = p;
+            break;
+        }
+    }
+    return result;
+}
+
+extern "C" void fn_801E3E8C(unsigned char* dst, const unsigned char* src, unsigned long n) {
+    unsigned long i;
+    unsigned long chunks;
+    unsigned long words;
+
+    dst += n;
+    src += n;
+    i = (unsigned long)dst & 3;
+    if (i != 0) {
+        n -= i;
+        do {
+            *--dst = *--src;
+        } while (--i != 0);
+    }
+}
+
+extern "C" void fn_801E4018(unsigned char* dst, const unsigned char* src, unsigned long n) {
+    unsigned long i;
+    unsigned long* d32;
+    const unsigned long* s32;
+
+    dst += n;
+    src += n;
+    i = (unsigned long)dst & 3;
+    if (i != 0) {
+        n -= i;
+        do {
+            *--dst = *--src;
+        } while (--i != 0);
+    }
+    d32 = (unsigned long*)dst;
+    s32 = (const unsigned long*)src;
+    i = n >> 5;
+    if (i != 0) {
+        do {
+            d32[-1] = s32[-1];
+            d32[-2] = s32[-2];
+            d32[-3] = s32[-3];
+            d32[-4] = s32[-4];
+            d32[-5] = s32[-5];
+            d32[-6] = s32[-6];
+            d32[-7] = s32[-7];
+            d32[-8] = s32[-8];
+            d32 -= 8;
+            s32 -= 8;
+        } while (--i != 0);
+    }
+    i = (n >> 2) & 7;
+    if (i != 0) {
+        do {
+            *--d32 = *--s32;
+        } while (--i != 0);
+    }
+    dst = (unsigned char*)d32;
+    src = (const unsigned char*)s32;
+    i = n & 3;
+    if (i != 0) {
+        do {
+            *--dst = *--src;
+        } while (--i != 0);
+    }
+}
+
 extern "C" void fn_801E419C(void) {
     __stdio_exit = (void*)fn_801E2238;
+}
+
+extern "C" unsigned long fn_801E34D0(void* a, int b, unsigned long c, void* d);
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
+extern "C" int fn_801E4650(void* fn, void* lock, void* a, void* b);
+extern "C" void __begin_critical_region(int);
+extern "C" void __end_critical_region(int);
+extern "C" unsigned char lbl_8029E7B0[];
+extern "C" void* fn_801E45E8(void* param_1, void* param_2, unsigned long param_3) {
+    if (param_3 != fn_801E34D0(param_2, 1, param_3, param_1)) {
+        param_1 = 0;
+    }
+    return param_1;
 }
 
 extern "C" unsigned int lbl_802FEAA8;
@@ -73,11 +194,43 @@ extern "C" unsigned int fn_801E63D0(void) {
     return (lbl_802FEAA8 >> 16) & 0x7fff;
 }
 
+extern "C" int fn_801E63F4(void* state, int param_2, int mode) {
+    register int* isc = (int*)state;
+    register unsigned char ch;
+    register int result;
+
+    result = 0;
+    switch (mode) {
+    case 0:
+        ch = *(unsigned char*)isc[0];
+        if (ch == 0) {
+            isc[1] = 1;
+            result = -1;
+        } else {
+            isc[0] = isc[0] + 1;
+            result = ch;
+        }
+        break;
+    case 1:
+        if (isc[1] == 0) {
+            isc[0] = isc[0] - 1;
+        } else {
+            isc[1] = 0;
+        }
+        result = param_2;
+        break;
+    case 2:
+        result = isc[1];
+        break;
+    }
+    return result;
+}
+
 extern "C" char* fn_801E64A4(char* str, int c) {
     register char* p = str - 1;
-    register unsigned char target = c;
     register unsigned char ch;
-    register char* result;
+    register unsigned char target = c;
+    register char* result = 0;
 
     ch = *++p;
     while (ch != 0) {
@@ -88,8 +241,6 @@ extern "C" char* fn_801E64A4(char* str, int c) {
     }
     if (target == 0) {
         result = p;
-    } else {
-        result = 0;
     }
     return result;
 }
@@ -274,6 +425,12 @@ extern "C" float fn_801EA228(void) {
     return (float)fn_801E9FC0();
 }
 
+extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c);
+#pragma dont_inline on
+extern "C" float fn_801EA24C(double x) {
+    return (float)fn_801E9EE8(x);
+}
+#pragma dont_inline reset
 extern "C" double fn_801E9E10(void);
 extern "C" float fn_801EA270(void) {
     return (float)fn_801E9E10();
