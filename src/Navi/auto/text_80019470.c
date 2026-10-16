@@ -883,10 +883,23 @@ extern "C" bool fn_8001C88C(fn_8001C88C_tag* tag, void* a, void* b) {
     cTg_Create__FP16create_tag_classPv(tag, b);
     void* r = fn_8001C018(a);
     if (r != 0) {
-        ((void**)tag)[5] = r;
+        tag->unk_0x14 = r;
         return true;
     }
     return false;
+}
+
+struct node_list_class;
+void cLs_Create(node_list_class*);
+extern "C" char lbl_802B7B18[];
+extern "C" void fn_8001C930(void) {
+    int i = 15;
+    char* p = lbl_802B7B18;
+    do {
+        char* cur = p;
+        p += 0xc;
+        cLs_Create((node_list_class*)cur);
+    } while (i-- > 0);
 }
 
 extern "C" void fn_8001EC90(void);
