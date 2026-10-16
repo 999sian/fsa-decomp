@@ -1105,21 +1105,20 @@ BOOL fn_802454C0(char* p) {
     if (!ok) {
         ok2 = false;
     } else {
-        s32 c;
-        s32 i;
-        s32 linked;
-        s32 me;
+        s32 c = 0;
+        s32 i = c;
         s32 mode;
-        for (i = c = 0; i < 4; i++) {
+        for (; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
-                if ((linked = S32(p, 0xd60)) >= 0) {
+                s32 linked = S32(p, 0xd60);
+                if (linked >= 0) {
                     if (linked == fn_8022F3DC(i)) {
                         c++;
                     }
                 } else {
-                    me = S32(p, 0x4);
+                    s32 me = S32(p, 0x4);
                     if (me == fn_8022F3DC(i)) {
                         c++;
                     }
@@ -1208,6 +1207,64 @@ inline bool padActive3(char* p) {
         return false;
     }
     if ((getModeB(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        return false;
+    }
+    return true;
+}
+inline s32 countSharingC(char* p) {
+    s32 c;
+    s32 i;
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    return c;
+}
+inline s32 getModeC(char* p) {
+    if (countSharingC(p) <= 1) {
+        return 5;
+    }
+    s32 linked = S32(p, 0xd60);
+    if (linked >= 0) {
+        return fn_8022CAF8(linked);
+    }
+    return S32(p, 0x120c);
+}
+inline bool padActiveC(char* p) {
+    bool ok;
+    if (U8(p, 0xc80) == 0) {
+        ok = false;
+    } else if (U8(p, 0xcee) != 0) {
+        ok = false;
+    } else if (U8(p, 0x1215) != 0) {
+        ok = false;
+    } else if (U8(p, 0xca0) == 0) {
+        ok = false;
+    } else if (U8(p, 0xce9) == 0) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return false;
+    }
+    if ((getModeC(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
         return false;
     }
     return true;
