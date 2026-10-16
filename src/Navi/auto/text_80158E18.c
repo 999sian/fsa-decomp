@@ -742,19 +742,19 @@ extern "C" void fn_8015BB50(char* p, char* q) {
 }
 
 extern "C" void fn_8015BBEC(u8* list, u8* node, u8* prev, u8* next) {
-    if (prev != 0) {
-        *(u8**)(prev + 0xc) = node;
-        *(u8**)(node + 0x8) = prev;
-    } else {
+    if (prev == 0) {
         *(u8**)(list + 0x78) = node;
         *(u8**)(node + 0x8) = 0;
-    }
-    if (next != 0) {
-        *(u8**)(next + 0x8) = node;
-        *(u8**)(node + 0xc) = next;
     } else {
+        *(u8**)(prev + 0xc) = node;
+        *(u8**)(node + 0x8) = prev;
+    }
+    if (next == 0) {
         *(u8**)(list + 0x7c) = node;
         *(u8**)(node + 0xc) = 0;
+    } else {
+        *(u8**)(next + 0x8) = node;
+        *(u8**)(node + 0xc) = next;
     }
     *(u16*)node = 0;
 }
