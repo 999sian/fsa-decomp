@@ -1,5 +1,19 @@
 #include "types.h"
 
+class FSAVirtBase {
+public:
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+    virtual void m8();
+    virtual void m9();
+};
+
 extern "C" s32 fn_801597B8(char* p) {
     return *(s32*)(p + 0x230);
 }
