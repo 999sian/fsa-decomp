@@ -2032,6 +2032,16 @@ extern "C" void fn_80177BF0(void* self, s8 flag, f32 a, f32 b, f32 c) {
     fn_80177C20(self, c);
 }
 
+extern "C" f32 fn_80177C78(void* self) {
+    s8 axis = *(s8*)((char*)self + 0xb6);
+    if (axis == 'x') {
+        return *(f32*)((char*)self + 0xb8);
+    } else if (axis == 'y') {
+        return *(f32*)((char*)self + 0xbc);
+    }
+    return *(f32*)((char*)self + 0xc0);
+}
+
 extern "C" u8 fn_80177F0C(char* self, void* arg)
 {
     char* n = *(char**)(self + 0xdc);
