@@ -1926,6 +1926,13 @@ extern "C" void fn_8018A758(u8* self, void* obj) {
     }
 }
 
+extern "C" void fn_8018A784(u8* self, void* obj) {
+    void* p = *(void**)(self + 0x138);
+    if (p != NULL) {
+        fn_8016A530(p, obj);
+    }
+}
+
 extern "C" void fn_8018A87C(void) {
     fn_80177E84();
 }
