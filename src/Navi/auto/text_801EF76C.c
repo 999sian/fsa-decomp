@@ -47,7 +47,7 @@ extern "C" DSError ddh_cc_post_stop(void)
 	return DS_NoError;
 }
 
-DSError ddh_cc_pre_continue(void)
+extern "C" DSError ddh_cc_pre_continue(void)
 {
 	EXI2_Unreserve();
 	return DS_NoError;
