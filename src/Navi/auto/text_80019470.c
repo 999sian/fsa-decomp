@@ -957,8 +957,8 @@ extern "C" void fn_8001D470(void* param_1, void* param_2, void* param_3, void* p
     fn_8001EDEC(result, param_1, param_2, param_3, param_4);
 }
 
-extern "C" void fn_8001D4D4(void* param_1, u8 param_2) {
-    fn_8001EB7C(param_1, param_2 & 0xFF);
+extern "C" s32 fn_8001D4D4(void* param_1, u8 param_2) {
+    return fn_8001EB7C(param_1, param_2 & 0xFF);
 }
 
 extern "C" void fn_8001EBA4(void*, u8);
@@ -1514,13 +1514,14 @@ extern "C" void fn_8001F764(u8* param_1, f32* param_2) {
 }
 
 extern "C" void fn_8001F78C(u8* param_1, u8* param_2) {
-    u8 uVar1 = param_2[1];
-    param_1[0x20] = param_2[0];
-    u8 uVar2 = param_2[2];
-    param_1[0x21] = uVar1;
-    uVar1 = param_2[3];
-    param_1[0x22] = uVar2;
-    param_1[0x23] = uVar1;
+    u8 a = param_2[0];
+    u8 b = param_2[1];
+    param_1[0x20] = a;
+    u8 c = param_2[2];
+    param_1[0x21] = b;
+    u8 d = param_2[3];
+    param_1[0x22] = c;
+    param_1[0x23] = d;
     param_1[4] |= 4;
 }
 
