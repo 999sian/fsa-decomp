@@ -65,6 +65,16 @@ extern "C" void fn_800C8B30(void* param_1)
     }
 }
 
+extern "C" void fn_800C8CD8(u8* param_1) {
+    if (param_1[0x8b] != 0) {
+        param_1[0x8b]--;
+    } else if (fn_8002F6BC() == 0 && fn_80058A88(0x70) != 0) {
+        fn_801CA690();
+        lbl_802FEBC0 = 1;
+        param_1[0x88] = 0x15;
+    }
+}
+
 extern "C" void fn_800C9510(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
