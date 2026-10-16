@@ -986,11 +986,11 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D94(s32 p, s32 i, u8* src) {
-    s32 d = p + i * 4;
-    *(u8*)(d + 0x62) = src[0];
-    *(u8*)(d + 0x63) = src[1];
-    *(u8*)(d + 0x64) = src[2];
-    *(u8*)(d + 0x65) = src[3];
+    u8* d = (u8*)(p + i * 4);
+    d[0x62] = src[0];
+    d[0x63] = src[1];
+    d[0x64] = src[2];
+    d[0x65] = src[3];
 }
 
 extern "C" int fn_801A3DEC(int param_1, int param_2) {
