@@ -2,6 +2,59 @@
 
 #include "types.h"
 
+struct VObj_801843 {
+    virtual void* vf0();
+    virtual void* vf4();
+    virtual void* vf8();
+    virtual void* vfC();
+    virtual void* vf10();
+    virtual void* vf14();
+    virtual void* vf18();
+    virtual void* vf1C();
+    virtual void* vf20();
+    virtual void* vf24();
+    virtual void* vf28();
+    virtual void* vf2C();
+    virtual void* vf30();
+    virtual void* vf34();
+    virtual void* vf38();
+    virtual void* vf3C();
+    virtual void* vf40();
+    virtual void* vf44();
+    virtual void* vf48();
+    virtual void* vf4C();
+    virtual void* vf50();
+    virtual void* vf54();
+    virtual void* vf58();
+    virtual void* vf5C();
+    virtual void* vf60();
+    virtual void* vf64();
+    virtual void* vf68();
+    virtual void* vf6C();
+    virtual void* vf70();
+    virtual void* vf74();
+    virtual void* vf78();
+    virtual void* vf7C();
+    virtual void* vf80();
+    virtual void* vf84();
+    virtual void* vf88();
+    virtual void* vf8C();
+    virtual void* vf90();
+    virtual void* vf94();
+    virtual void* vf98();
+    virtual void* vf9C();
+    virtual void* vfA0(u8);
+    virtual void* vfA4();
+    virtual void* vfA8();
+    virtual void* vfAC();
+    virtual void* vfB0();
+    virtual void* vfB4();
+    virtual void* vfB8();
+    virtual void* vfBC();
+    virtual void* vfC0();
+    virtual void* vfC4();
+};
+
 struct VObj_80180980 {
     virtual void vf0();
     virtual void vf4();
@@ -720,12 +773,12 @@ extern "C" s32 fn_801843D0(void* self, int a, u8 b) {
     return 0;
 }
 
-extern "C" s32 fn_80184438(void* self, u8 b) {
+extern "C" s32 fn_80184438(void* self, int b) {
     void* p = (*(void* (**)(void*))(*(int*)self + 0xc4))(self);
     if (p != 0) {
         void* q = *(void**)((u8*)p + 0x70);
         if (q != 0) {
-            return (*(s32 (**)(void*, u8))(*(int*)q + 0xa0))(q, b);
+            return (*(s32 (**)(void*, u8))(*(int*)q + 0xa0))(q, (u8)b);
         }
     }
     return 0;
