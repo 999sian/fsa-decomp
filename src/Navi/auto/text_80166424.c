@@ -11,6 +11,34 @@ extern "C" void fn_80166C70(void* param_1) {
     *(u32*)((u8*)param_1 + 8) = 0;
 }
 
+extern "C" void fn_80166C70(void* param_1);
+extern "C" u8 fn_80166C84(u8* list, u8* node) {
+    u8 ok;
+    if (*(void**)(node + 4) == 0) {
+        ok = 1;
+    } else {
+        ok = fn_80166FC4(*(void**)(node + 4));
+    }
+    if (ok) {
+        if (*(u32*)(list + 8) == 0) {
+            *(u8**)(node + 4) = list;
+            *(u32*)(node + 8) = 0;
+            *(u32*)(node + 0xc) = 0;
+            *(u8**)(list + 4) = node;
+            *(u8**)list = node;
+            *(u32*)(list + 8) = 1;
+        } else {
+            *(u8**)(node + 4) = list;
+            *(u8**)(node + 8) = *(u8**)(list + 4);
+            *(u32*)(node + 0xc) = 0;
+            *(u8**)(*(u8**)(list + 4) + 0xc) = node;
+            *(u8**)(list + 4) = node;
+            *(u32*)(list + 8) = *(u32*)(list + 8) + 1;
+        }
+    }
+    return ok;
+}
+
 extern "C" void fn_80167CB8(void) {
     fn_80168280();
 }
@@ -161,12 +189,17 @@ extern "C" void fn_801729A4(int param_1, u8 param_2) {
     *(u8*)(param_1 + 0x56) = param_2;
 }
 
+extern "C" s32 fn_80172B18(void) {
+    return 0x54564234;
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
 
-extern "C" void fn_80172CFC(s32 p, s32 i, u32* v) {
-    *(u32*)(p + i * 4 + 0x7c) = *v;
+extern "C" void fn_80172CFC(u8* p, s32 i, u32* v) {
+    p += i << 2;
+    *(u32*)(p + 0x7c) = *v;
 }
 
 extern "C" s32 fn_80172D10(s32 p, s32 i) {
