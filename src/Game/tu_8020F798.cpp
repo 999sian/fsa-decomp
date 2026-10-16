@@ -3,11 +3,11 @@ struct Vec3f { float x, y, z; };
 struct TblEnt { char pad[0xc]; char* p; char pad2[4]; };
 extern TblEnt lbl_8046A238[];
 extern "C" void fn_8020F80C(void* self, char* p);
-extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u16 fn_8022461C(void* pos, u32 room);
 extern "C" void fn_801F0E34(void* self, u32 id, s32 flag);
-extern "C" void* fn_8013CC50(s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
-extern "C" void fn_801CB7A0(void* obj);
-extern "C" void fn_801CB71C(void* a, void* b, u32 c, u32 d);
+extern "C" void* fn_8013CC50(u32 id, void* pos, u16 kind, s32 a, f32 scale, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801CB7A0(void);
+extern "C" void fn_801CB71C(void* a, void* b, s32 c, s32 d);
 
 extern "C" void fn_8020F798(char* self)
 {
