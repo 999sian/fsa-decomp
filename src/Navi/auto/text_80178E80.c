@@ -55,16 +55,29 @@ extern "C" void fn_8017A928(void) {
 }
 
 extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
-    unsigned char* p;
+    int* p;
     if (idx >= 4) {
         return 0;
     }
-    p = self + (idx << 2);
-    return *(int*)(p + 0x148);
+    p = (int*)(self + (idx << 2));
+    return p[0x148 / 4];
 }
 
 extern "C" int fn_80184B2C(unsigned char* self) {
     return *(int*)(self + 0x160);
+}
+
+extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
+    volatile f32 p[2];
+    f32 rect[4];
+    p[0] = x;
+    p[1] = y;
+    rect[0] = (f32)(double)x;
+    rect[1] = (f32)(double)y;
+    rect[2] = x + w;
+    rect[3] = y + h;
+    void (**vt)(void*, f32*) = *(void (***)(void*, f32*))self;
+    vt[0x94 / 4](self, rect);
 }
 
 extern "C" void fn_80177F0C(void);
@@ -83,6 +96,19 @@ extern "C" void fn_80184C34(void) {
 }
 
 extern "C" void fn_80184C54(void) {
+}
+
+extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
+    void* obj = *(void**)((u8*)self + 0x168);
+    if (*(void**)((u8*)obj + 0x28) == 0) {
+        if (((u8 (*)(void*, f32))(*(void***)self)[0x9c / 4])(self, lbl_80301BF8) && param_3 != 0) {
+            void* sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
+            if (((void* (*)(void*, s32))(*(void***)sub)[0xa4 / 4])(sub, 0) == 0) {
+                sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
+                ((void (*)(void*, s32, void*))(*(void***)sub)[0x98 / 4])(sub, 0, param_3);
+            }
+        }
+    }
 }
 
 extern "C" void fn_8018901C(void) {
