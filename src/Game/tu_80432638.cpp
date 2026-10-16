@@ -55,3 +55,39 @@ extern "C" void fn_80433718(char* this_) {
         }
     }
 }
+
+extern "C" void* fn_804337B0(void* this_, s16 how) {
+	if (this_ != 0) {
+		*(void**)this_ = lbl_804B1668;
+		char* p = (char*)this_;
+
+		for (s32 i = 0; i < 2; i++) {
+			DispatchSlot2(p + 0x4);
+			DispatchSlot2(p + 0x10);
+			p += 4;
+		}
+
+		s32 j = 0;
+		p = (char*)this_;
+		for (; j < 4; j++) {
+			DispatchSlot2(p + 0x18);
+			p += 4;
+		}
+
+		s32 k = 0;
+		p = (char*)this_;
+		for (; k < 3; k++) {
+			DispatchSlot2(p + 0x28);
+			p += 4;
+		}
+
+		DispatchSlot2((char*)this_ + 0x34);
+		DispatchSlot2((char*)this_ + 0xc);
+		DispatchSlot2((char*)this_ + 0x3c);
+		if (how > 0) {
+			__dl__FPv(this_);
+		}
+	}
+	return this_;
+}
+
