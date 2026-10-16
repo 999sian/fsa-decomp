@@ -382,8 +382,8 @@ extern "C" u32 fn_801D1334(void) {
 extern void* lbl_802FFA0C;
 extern void* lbl_802FFA14;
 extern "C" void fn_801D134C(u32 a) {
-    *(vu16*)0xcc005000 = a >> 16;
-    *(vu16*)0xcc005002 = a;
+    *(vu16*)0xcc005000 = (u16)(a >> 16);
+    *(vu16*)0xcc005002 = (u16)a;
 }
 
 extern "C" void fn_801D1AA8(void* p);
@@ -426,9 +426,12 @@ extern "C" void fn_801D1C34(void* p) {
             } else {
                 lbl_802FFA10 = p;
             }
-            return;
+            break;
         }
         cur = *(u8**)(cur + 0x38);
+    }
+    if (cur != 0) {
+        return;
     }
     *(void**)((u8*)lbl_802FFA0C + 0x38) = p;
     *(void**)(node + 0x38) = 0;
@@ -438,13 +441,12 @@ extern "C" void fn_801D1C34(void* p) {
 
 extern "C" void fn_801D1CD4(void* p) {
     u8* node = (u8*)p;
-    *(u32*)(node + 8) = 0;
-    *(u32*)node = 3;
+    *(void**)(node + 8) = 0;
+    *(s32*)node = 3;
     if (lbl_802FFA10 == p) {
-        void* next = *(void**)(node + 0x38);
-        if (next != 0) {
-            lbl_802FFA10 = next;
-            *(void**)((u8*)next + 0x3c) = 0;
+        if (*(void**)(node + 0x38) != 0) {
+            lbl_802FFA10 = *(void**)(node + 0x38);
+            *(void**)(*(u8**)(node + 0x38) + 0x3c) = 0;
             return;
         }
         lbl_802FFA14 = 0;
