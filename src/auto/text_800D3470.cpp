@@ -1012,7 +1012,7 @@ extern "C" void fn_800DDB70(void* param_1)
 {
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
-  void* pStart = GDGetCurrPointer();
+  void* pStart = (*(GDCurrentDL* volatile*)&__GDCurrentDL)->pDisplayListData;
   void* pCurr = (*(GDCurrentDL* volatile*)&__GDCurrentDL)->pDisplayListData;
   for (;;) {
     if (!isTexNoReg(pCurr)) break;
@@ -1337,10 +1337,12 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  int off = param_2 * 8;
-  u8 b1 = param_3[1];
-  u8* e = param_1 + off;
-  u8 b0 = param_3[0];
+  u8 b1;
+  u8* e;
+  u8 b0;
+  e = param_1 + (param_2 << 3);
+  b1 = param_3[1];
+  b0 = param_3[0];
   e[0x28] = (e[0x28] & ~0xC) | (b1 << 2);
   e[0x28] = (e[0x28] & ~0x3) | b0;
 }
@@ -1994,12 +1996,8 @@ extern "C" u32 fn_800DF208(void) {
     return 0x434c4142;
 }
 
-extern "C" void fn_800DF214(int param_1, int param_2, const GXColor* param_3) {
-    GXColor* dst = &((GXColor*)(param_1 + 0x20))[param_2];
-    dst->r = param_3->r;
-    dst->g = param_3->g;
-    dst->b = param_3->b;
-    dst->a = param_3->a;
+extern "C" void fn_800DF214(GXColor* param_1, int param_2, const GXColor* param_3) {
+    param_1[param_2 + 8] = *param_3;
 }
 
 extern "C" int fn_800DF26C(int param_1, int param_2) {
