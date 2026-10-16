@@ -16,8 +16,9 @@ extern const f32 lbl_80542984;
 struct Unk8035CD00 {
     u8 pad0[0x14];
     f32 m14;
-    u8 pad18[0x25c - 0x18];
-    f32 m25C;
+    u8 pad18[0x258 - 0x18];
+f32 m258;
+f32 m25C;
     s16 m260;
     u8 pad262[2];
     f32 m264;
