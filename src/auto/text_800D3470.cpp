@@ -1057,6 +1057,15 @@ extern "C" void fn_800D9B08(u8* self) {
     }
 }
 
+extern "C" void fn_800D9BA0(u8* p) {
+    u8 n = p[0x58];
+    for (u32 i = 0; i < n; i++) {
+        J3DGDWriteBPCmd(*(u32*)(p + 0x59));
+        J3DGDWriteBPCmd(*(u32*)(p + 0x5d));
+        p += 8;
+    }
+}
+
 extern "C" void fn_800D9CA8(void* param_1) {
     u8 count = *(u8*)((u8*)param_1 + 0x58);
     if (count == 0) {
