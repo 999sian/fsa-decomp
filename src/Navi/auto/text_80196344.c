@@ -37,6 +37,12 @@ struct NaviRectHolder {
 };
 extern void* lbl_80299E68[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_80196344(void* self, void* a, s32 b) {
+    *(void**)self = lbl_80299E68;
+    *(void**)((u8*)self + 8) = a;
+    *(s32*)((u8*)self + 4) = b;
+}
+
 extern "C" void* fn_80196388(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80299E68;
@@ -155,20 +161,20 @@ struct NaviVObj {
 };
 extern "C" u32 fn_80197B4C(void* param_1) {
     u8* p = (u8*)param_1;
-    void* obj;
+    NaviVObj* obj;
     u32 a;
     u32 b;
     u32 c;
-    obj = *(void**)(p + 0x28);
-    a = (*(NaviVFunc**)obj)[0x30 / 4](obj);
-    obj = *(void**)(p + 0x24);
-    b = (*(NaviVFunc**)obj)[0x28 / 4](obj);
-    obj = *(void**)(p + 0x2c);
-    a += (*(NaviVFunc**)obj)[0x44 / 4](obj);
-    obj = *(void**)(p + 0x30);
-    a += (*(NaviVFunc**)obj)[0x14 / 4](obj);
-    obj = *(void**)(p + 0x34);
-    c = (*(NaviVFunc**)obj)[0x20 / 4](obj);
+    obj = *(NaviVObj**)(p + 0x28);
+    a = obj->vf12();
+    obj = *(NaviVObj**)(p + 0x24);
+    b = obj->vf10();
+    obj = *(NaviVObj**)(p + 0x2c);
+    a += obj->vf17();
+    obj = *(NaviVObj**)(p + 0x30);
+    a += obj->vf5();
+    obj = *(NaviVObj**)(p + 0x34);
+    c = obj->vf8();
     return (b + (a + c + 0x1f)) & ~0x1f;
 }
 
@@ -2659,12 +2665,17 @@ extern "C" int fn_801A4CF4(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 4;
 }
 
+extern "C" void fn_801DF0BC(void*, s32);
 extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
+    u8 a = param_3[0];
     u8* dst = param_1 + param_2 * 4;
-    dst[0xc] = param_3[0];
-    dst[0xd] = param_3[1];
-    dst[0xe] = param_3[2];
-    dst[0xf] = param_3[3];
+    u8 b = param_3[1];
+    dst[0xc] = a;
+    u8 c = param_3[2];
+    dst[0xd] = b;
+    u8 d = param_3[3];
+    dst[0xe] = c;
+    dst[0xf] = d;
 }
 
 extern "C" int fn_801A4D60(int param_1, int param_2) {
