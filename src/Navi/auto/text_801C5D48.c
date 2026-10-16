@@ -2,8 +2,22 @@
 // .text 0x801c5d48-0x801ca8dc (109 functions). split_file divides it into the game's real files.
 #include "Dolphin/dvd.h"
 #include "Dolphin/os.h"
+#include "sdk/Dolphin/vec.h"
 
 BOOL __DVDPushWaitingQueue(s32 prio, DVDCommandBlock* block);
+
+typedef struct DVDWACommand {
+	s32 type;
+	u32 arg0;
+	u32 arg1;
+	u32 arg2;
+	u32 arg3;
+} DVDWACommand;
+
+extern DVDWACommand CommandList_802F79D0[];
+static s32 NextCommandNumber_802FF85C;
+extern "C" void fn_801C6E64(u32 a, u32 b, u32 c, u32 d);
+extern "C" void fn_801C728C(u32 a, u32 b);
 extern "C" void stateReady(void);
 
 static BOOL autoInvalidation_802FE9B4 = TRUE;
@@ -79,8 +93,103 @@ extern "C" void fn_801C5FDC(void* dst, s32 axis, f32 x, f32 y);
 extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
     f32 a = fn_801EA270(v);
     f32 b = fn_801EA294(v);
+    f64 pad;
     fn_801C5FDC(dst, axis, a, b);
-    v = a;
+}
+
+extern "C" f32 fn_801C6A28(const Vec* vec1, const Vec* vec2)
+{
+    f32 dx = vec1->x - vec2->x;
+    f32 dy = vec1->y - vec2->y;
+    f32 dz = vec1->z - vec2->z;
+    return dx * dx + dy * dy + dz * dz;
+}
+
+extern "C" BOOL DVDLowWaitCoverClose(DVDLowCallback cb)
+{
+	vu32* di;
+
+	Callback_802FF820 = cb;
+	di = (vu32*)0xCC006000;
+	WaitingCoverClose_802FF834 = TRUE;
+	StopAtNextInt_802FF818 = FALSE;
+	di[1] = 2;
+	return TRUE;
+}
+
+extern "C" BOOL DVDLowStopMotor(DVDLowCallback cb)
+{
+	vu32* di;
+	OSAlarm* alarm;
+	u32 timeout;
+	f64 pad;
+
+	Callback_802FF820 = cb;
+	di = (vu32*)0xCC006000;
+	StopAtNextInt_802FF818 = FALSE;
+	di[2] = 0xe3000000;
+	di[7] = 1;
+	alarm = (OSAlarm*)AlarmForTimeout_802F7A38;
+	timeout = (*(u32*)0x800000F8 >> 2) * 10;
+	OSCreateAlarm(alarm);
+	OSSetAlarm(alarm, timeout, AlarmHandlerForTimeout);
+	return TRUE;
+}
+
+extern "C" void fn_801C747C(void (*callback)(u32))
+{
+	vu32* di;
+	OSAlarm* alarm;
+	OSTime timeout;
+
+	Callback_802FF820 = (DVDLowCallback)callback;
+	StopAtNextInt_802FF818 = FALSE;
+	di = (vu32*)0xCC006000;
+	di[2] = 0xe0000000;
+	di[7] = 1;
+	alarm = (OSAlarm*)AlarmForTimeout_802F7A38;
+	timeout = (*(u32*)0x800000F8 >> 2) * 10;
+	OSCreateAlarm(alarm);
+	OSSetAlarm(alarm, timeout, AlarmHandlerForTimeout);
+}
+
+extern "C" BOOL fn_801C763C(u32 a, DVDLowCallback cb)
+{
+	vu32* di;
+	OSAlarm* alarm;
+	u32 timeout;
+	f64 pad;
+
+	Callback_802FF820 = cb;
+	StopAtNextInt_802FF818 = FALSE;
+	di = (vu32*)0xCC006000;
+	di[2] = a | 0xe2000000;
+	di[7] = 1;
+	alarm = (OSAlarm*)AlarmForTimeout_802F7A38;
+	timeout = (*(u32*)0x800000F8 >> 2) * 10;
+	OSCreateAlarm(alarm);
+	OSSetAlarm(alarm, timeout, AlarmHandlerForTimeout);
+	return TRUE;
+}
+
+extern "C" BOOL fn_801C76C8(s32 a, u32 b, void* cb)
+{
+	vu32* di;
+	OSAlarm* alarm;
+	u32 timeout;
+
+	Callback_802FF820 = (DVDLowCallback)cb;
+	StopAtNextInt_802FF818 = FALSE;
+	if (a != 0) {
+		di = (vu32*)0xCC006000;
+		di[2] = b | 0x10000 | 0xe4000000;
+		di[7] = 1;
+		alarm = (OSAlarm*)AlarmForTimeout_802F7A38;
+		timeout = (*(u32*)0x800000F8 >> 2) * 10;
+		OSCreateAlarm(alarm);
+		OSSetAlarm(alarm, timeout, AlarmHandlerForTimeout);
+	}
+	return TRUE;
 }
 
 extern "C" DVDLowCallback fn_801C7834(void)
@@ -106,10 +215,7 @@ extern char lbl_802F7A60[];
 extern char AlarmForTimeout_802F7A38[];
 extern "C" BOOL fn_801C7894(u32 param_1)
 {
-	if (param_1 == (u32)lbl_802F7A60) {
-		return TRUE;
-	}
-	if (param_1 == (u32)AlarmForTimeout_802F7A38) {
+	if (param_1 == (u32)lbl_802F7A60 || param_1 == (u32)AlarmForTimeout_802F7A38) {
 		return TRUE;
 	}
 	return FALSE;
