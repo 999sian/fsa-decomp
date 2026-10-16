@@ -1,5 +1,9 @@
 #include "types.h"
 
+extern "C" void* fn_8011921C(void);
+extern "C" void fn_80128728(void* p, s32 x);
+extern "C" const s32 lbl_80464FC0[];
+
 extern "C" char lbl_8049E500[];
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void* fn_801286C0(void* p, s16 n) {
@@ -47,8 +51,8 @@ extern "C" void fn_80128C68(char* p) {
 extern "C" void fn_80128F10(char* p) {
     fn_8010DF98();
     void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-    void** vt = *(void***)obj;
-    *(s32*)(p + 0x23c) = ((s32 (*)(void*, s32, void*))vt[6])(obj, 0x3f3f3f3f, lbl_80539F38);
+    void* vt = *(void**)obj;
+    *(s32*)(p + 0x23c) = ((s32 (*)(void*, s32, void*))((void**)vt)[6])(obj, 0x3f3f3f3f, lbl_80539F38);
     fn_802D7440(fn_802D6A9C(), 0);
     fn_80128728(p, 0);
 }
