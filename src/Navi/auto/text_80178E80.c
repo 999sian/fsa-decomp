@@ -335,6 +335,8 @@ extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     self->vf38(buf, x, y);
 }
 
+extern "C" void fn_8018067C(void) {}
+
 extern "C" int fn_80180B60(u8* self, u8* src) {
     u8 a = src[0];
     u8 b = src[1];
