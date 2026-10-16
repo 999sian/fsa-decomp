@@ -1453,9 +1453,11 @@ extern "C" s32 fn_801A48F4(s32 p, s32 i) {
     return p + i * 4 + 0x78;
 }
 
-extern "C" void fn_801A4908(s32 p, s32 i, s16* src) {
-    s32 d = p + i * 8;
-    *(s16*)(d + 0x98) = src[0];
+extern "C" void fn_801A4908(u8* p, s32 i, s16* src) {
+    s32 off = i << 3;
+    s16 a = src[0];
+    u8* d = p + off;
+    *(s16*)(d + 0x98) = a;
     *(s16*)(d + 0x9a) = src[1];
     *(s16*)(d + 0x9c) = src[2];
     *(s16*)(d + 0x9e) = src[3];
