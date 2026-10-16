@@ -1300,6 +1300,10 @@ extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
     dst[0x15] = src[7];
 }
 
+extern "C" s32 fn_801A4630(s32 p, s32 i) {
+    return p + i * 8 + 0xe;
+}
+
 extern "C" void fn_801A4644(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x18))[p2] = *p3; }
 
 extern "C" void fn_801A4658(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x18))[p2] = *p3; }
