@@ -467,6 +467,18 @@ extern "C" void* fn_8000F534(void)
 	return lbl_802FEBA4;
 }
 
+extern "C" void fn_8000F53C(void* a, void* b) {
+    bool ok = false;
+    if (lbl_802FEBA8 == nullptr || a == nullptr) {
+        ok = true;
+    }
+    if (!ok) {
+        fn_8011FD18(fn_8011FD10(), lbl_80203B9C, 0x6ba, lbl_802FB810, lbl_80203E28);
+        fn_80007AB8(lbl_80203B9C, 0x6ba, lbl_802FB814);
+    }
+    lbl_802FEBA8 = fn_8015AC80(a, b, 1);
+}
+
 extern "C" void* lbl_802FEBA8;
 extern "C" void* fn_8000F5E4(void)
 {
