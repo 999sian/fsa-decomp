@@ -22,6 +22,7 @@ extern "C" f32 fn_802F5FF4(f32 x) {
     return a / (a - v);
 }
 
+extern f32 lbl_80541518;
 extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 b, void* ptr, f32 f1, f32 f2);
 extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr);
 extern "C" void fn_802F6CF4(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr);
