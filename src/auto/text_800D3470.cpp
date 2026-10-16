@@ -126,6 +126,18 @@ struct J3DColorBlockAmbientOn {
     u32 mColorChanOffset;
     J3DGXColor mAmbColor[2];
 };
+struct J3DColorBlockLightOn {
+    void initialize();
+    void* __vt;
+    J3DGXColor mMaterialColors[2];
+    J3DGXColor mAmbientColors[2];
+    u8 mColorChannelNum;
+    u8 mColorChannels[0xa];
+    void* mLights[8];
+    u8 mCullMode;
+    u32 mMaterialColorOffset;
+    u32 mColorChannelOffset;
+};
 struct UnkDC8C;
 struct UnkDCF8;
 struct Unk800DDC8C {
@@ -1236,21 +1248,16 @@ extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
     *(u32*)(param_1 + 0x18) = *param_2->m47(0);
 }
 
-extern "C" void fn_800DD148(u8* this_, void* obj) {
-    switch (((s32 (*)(void*))(*(void***)obj)[9])(obj)) {
-    case 0x5045464c:
-    case 0x50454647: {
-        u8* p = (u8*)((void* (*)(void*))(*(void***)obj)[15])(obj);
+extern "C" void fn_800DD148(u8* this_, Unk800DD148Obj* obj) {
+    s32 id = obj->m9();
+    if (id == 0x5045464c || (id < 0x5045464c && id == 0x50454647)) {
+        u8* p = obj->m15();
         *(u16*)(this_ + 0x4) = *(u16*)p;
         this_[0x6] = p[2];
         this_[0x7] = p[3];
-        u32* q = (u32*)((void* (*)(void*))(*(void***)obj)[18])(obj);
-        *(u32*)(this_ + 0x8) = *q;
-        u16* r = (u16*)((void* (*)(void*))(*(void***)obj)[21])(obj);
-        *(u16*)(this_ + 0xc) = *r;
-        this_[0xe] = ((u8 (*)(void*))(*(void***)obj)[24])(obj);
-        break;
-    }
+        *(u32*)(this_ + 0x8) = *(u32*)obj->m18();
+        *(u16*)(this_ + 0xc) = *obj->m21();
+        this_[0xe] = obj->m24();
     }
 }
 
