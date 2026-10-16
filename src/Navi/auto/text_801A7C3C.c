@@ -1272,4 +1272,3 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
-struct Blk_801A7D54 { u8 b[0x19]; };
