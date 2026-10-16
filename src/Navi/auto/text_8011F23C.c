@@ -201,6 +201,31 @@ extern "C" void fn_80120640(void* self) {
     *(s16*)((u8*)self + 0x18) = -1;
 }
 
+extern "C" void fn_801DBEE8(u16, u16);
+extern "C" void* fn_801DBE58(u16);
+extern "C" void fn_80120794(void*, u16, void*, void*, void*);
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" u8* fn_80120654(void* param_1, void* param_2) {
+    if (lbl_802FF340 == 0) {
+        u8* obj = (u8*)fn_8015A90C(0x20);
+        if (obj != 0) {
+            *(void**)(obj + 0x10) = param_2;
+            *(s16*)(obj + 0x14) = -1;
+            *(s16*)(obj + 0x16) = -1;
+            *(s16*)(obj + 0x18) = -1;
+            *(s32*)(obj + 0x1c) = 99;
+            u8* p = *(u8**)((u8*)lbl_802FF328 + 4);
+            u16 a = *(u16*)(p + 6);
+            u16 b = *(u16*)(p + 4);
+            fn_801DBEE8(a, *(u16*)(p + 8));
+            fn_80120794(obj, b, fn_801DBE58(a), param_1, param_2);
+        }
+        lbl_802FF340 = obj;
+    }
+    return lbl_802FF340;
+}
+#pragma pop
 extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80290ACC;
