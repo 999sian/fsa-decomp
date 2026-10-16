@@ -36,6 +36,12 @@ extern void* lbl_8027F214[];
 extern void* lbl_8029B430[];
 extern void* lbl_8029B41C[];
 extern "C" f32 lbl_80301D6C;
+
+struct Struct_801A7C3C {
+    f32 a[6];
+    u8 b[4];
+    f32 c[6];
+};
 extern "C" void fn_8011935C(void* p);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_801B075C(void* param_1);
@@ -117,6 +123,24 @@ extern "C" f32 fn_801ABF3C(Anim_801ABF3C* self, u16 idx)
     default:
         return fn_801AD8D8(&self->keys[idx].type, self->frame, &self->values[self->keys[idx].offset]);
     }
+}
+
+extern "C" void* fn_801ABFC0(u8* p) {
+    f32 f = lbl_80301D6C;
+    *(void**)p = lbl_8027F214;
+    p[4] = 0;
+    p[5] = 0;
+    *(u16*)(p + 6) = 0;
+    *(f32*)(p + 8) = f;
+    *(void**)p = lbl_8029B430;
+    *(u16*)(p + 0xc) = 0;
+    *(u16*)(p + 0xe) = 0;
+    *(u32*)(p + 0x10) = 0;
+    *(u32*)(p + 0x14) = 0;
+    *(void**)p = lbl_8029B41C;
+    *(u32*)(p + 0x18) = 0;
+    *(u32*)(p + 0x1c) = 0;
+    return p;
 }
 
 extern "C" f32 fn_801AD8D8(u16* hdr, f32 t, f32* k) {
