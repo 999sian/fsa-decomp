@@ -1,6 +1,6 @@
 #include "types.h"
 
-struct Blk_801A7D54 { u8 b[0x19]; };
+struct Blk_801A7D54 { f32 f[6]; u8 b; };
 extern void* lbl_8029BBBC[];
 
 extern "C" void* lbl_8029B5AC[];
@@ -1230,12 +1230,18 @@ extern "C" void fn_801B9BBC(void* unused, void* dest, void* src) {
     extern f32 lbl_80301DF0;
     u8* dst = (u8*)dest;
     u8* s = (u8*)src;
-    *(u16*)(dst + 0x1e) = *(u16*)(s + 0xc);
-    *(s16*)(dst + 6) = *(s16*)(s + 0xa);
-    *(u8*)(dst + 4) = *(u8*)(s + 8);
-    *(u32*)(dst + 0x20) = *(u8*)(s + 9);
-    *(f32*)(dst + 8) = lbl_80301DF0;
-    *(void**)(dst + 0x24) = fn_8018C308(s, *(u32*)(s + 0x14));
+    f32 f = lbl_80301DF0;
+    u16 a = *(u16*)(s + 0xc);
+    s16 b = *(s16*)(s + 0xa);
+    *(u16*)(dst + 0x1e) = a;
+    u8 c = *(u8*)(s + 8);
+    *(s16*)(dst + 6) = b;
+    u8 e = *(u8*)(s + 9);
+    *(u8*)(dst + 4) = c;
+    u32 d = *(u32*)(s + 0x14);
+    *(u32*)(dst + 0x20) = e;
+    *(f32*)(dst + 8) = f;
+    *(void**)(dst + 0x24) = fn_8018C308(s, d);
     *(void**)(dst + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x18));
     *(void**)(dst + 0x10) = fn_8018C2D8(s, *(u32*)(s + 0x1c));
     *(void**)(dst + 0x14) = fn_8018C2F0(s, *(u32*)(s + 0x20));
