@@ -1137,12 +1137,12 @@ extern "C" s32 fn_8001DC20(void) {
 extern "C" void fn_8001BFE0(void*);
 extern "C" s32 fn_8001DC84(void* param_1) {
     fn_8001BFE0(*(void**)((u8*)param_1 + 0x50));
-    ((void (*)(void*))fn_8001BEA4)((u8*)param_1 + 0x14);
+    fn_8001BEA4((u8*)param_1 + 0x14);
     cTg_SingleCut((create_tag_class*)param_1);
     void* p = *(void**)((u8*)param_1 + 0x3c);
     if (p != NULL) {
         void* q = *(void**)((u8*)p + 8);
-        if (q != NULL && fn_8001D540(q, param_1) == NULL) {
+        if (q != NULL && (s32)fn_8001D540(q, param_1) == 0) {
             return 0;
         }
     }
