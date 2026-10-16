@@ -696,13 +696,12 @@ extern "C" void fn_800D9778(u8* self) {
 }
 
 extern "C" void fn_800D9918(u8* self) {
-    u8 count = self[0x20];
-    if (count == 0) {
-        return;
-    }
-    for (u32 i = 0; i < count; i++) {
+    u32 count = self[0x20];
+    u32 accumulator;
+    u32 i = 0;
+    for (; i < count; i++) {
         u32 value = *(u32*)(self + 0x80);
-        u32 accumulator = value | ((i + 0x10) << 24);
+        accumulator = value | ((i + 0x10) << 24);
         __GDWrite(0x61);
         __GDWrite(accumulator >> 24);
         __GDWrite((accumulator >> 16) & 0xff);
@@ -1258,10 +1257,11 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    int b1 = param_3[1];
-    int b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
+    u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
+    u8* p = param_1 + param_2 * 8;
+    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
+    p[0x60] = (p[0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
