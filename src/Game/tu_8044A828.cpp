@@ -27,7 +27,7 @@ struct J2DScreenVT {
     virtual void m10() = 0;
     virtual void m11() = 0;
     virtual void m12() = 0;
-    virtual void m13() = 0;
+    virtual u32 m13(u32, u32, u32) = 0;
     virtual void m14() = 0;
     virtual u32 m15(u32, u32, u32) = 0;
 };
@@ -79,13 +79,13 @@ extern "C" void* fn_8044B4B8(VObj** param_1) {
         *(void**)a = lbl_804AF86C;
     }
     param_1[2] = a;
-    fn_80402F04(param_1[2], ((u32 (*)(void*, u32, u32, u32))(*(void***)param_1[1])[15])(param_1[1], 0x4e0000, 0x4e6461, 0x74613030));
+    fn_80402F04(param_1[2], ((J2DScreenVT*)param_1[1])->m15(0x4e0000, 0x4e6461, 0x74613030));
     VObj* b = (VObj*)__nw__FUl(0x2c);
     if (b != 0) {
         *(void**)b = lbl_804AF86C;
     }
     param_1[3] = b;
-    fn_80402F04(param_1[3], ((u32 (*)(void*, u32, u32, u32))(*(void***)param_1[1])[15])(param_1[1], 0x4e0000, 0x4e6461, 0x74613031));
+    fn_80402F04(param_1[3], ((J2DScreenVT*)param_1[1])->m15(0x4e0000, 0x4e6461, 0x74613031));
     *(u16*)(param_1 + 4) = 0;
     *(u8*)((u8*)param_1 + 0x12) = 0;
     *(u8*)((u8*)param_1 + 0x13) = 0;
