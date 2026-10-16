@@ -13,6 +13,7 @@ extern "C" void fn_8015AB1C(void* ptr);
 
 
 extern "C" void fn_80178990(void);
+extern "C" void fn_80177F0C(void);
 extern "C" int fn_8017A8CC(void) {
     return 8;
 }
@@ -28,6 +29,18 @@ extern "C" void fn_8017A928(void) {
 extern "C" int fn_8017D1EC()
 {
 	return 0;
+}
+
+extern "C" BOOL fn_80180B60(u8* self, u8* src) {
+    u8 b = src[1];
+    u8 a = src[0];
+    self[0x14C] = a;
+    self[0x14D] = b;
+    a = src[2];
+    b = src[3];
+    self[0x14E] = a;
+    self[0x14F] = b;
+    return 1;
 }
 
 extern "C" void fn_80176550(void* self);
@@ -56,8 +69,7 @@ extern "C" int fn_801820CC(int param_1)
 
 extern "C" int fn_80184B08(u8* self, u8 idx) {
     if (idx < 4) {
-        int* p = (int*)(self + (idx << 2));
-        return p[0x148 / 4];
+        return *(int*)(self + idx * 4 + 0x148);
     }
     return 0;
 }
@@ -67,16 +79,11 @@ extern "C" int fn_80184B2C(u8* self) {
 }
 
 extern "C" void fn_80184B34(u8* self, u32* dest) {
-    u32 b = *(u32*)(self + 0x14c);
-    u32 a = *(u32*)(self + 0x148);
-    dest[0] = a;
-    u32 c = *(u32*)(self + 0x150);
-    dest[1] = b;
-    u32 d = *(u32*)(self + 0x154);
-    dest[2] = c;
-    u32 e = *(u32*)(self + 0x160);
-    dest[3] = d;
-    dest[4] = e;
+    struct Quad {
+        u32 v[4];
+    };
+    *(Quad*)dest = *(Quad*)(self + 0x148);
+    dest[4] = *(u32*)(self + 0x160);
 }
 
 extern "C" void fn_80184B60(void* self, f64 x, f64 y, f64 w, f64 h) {
