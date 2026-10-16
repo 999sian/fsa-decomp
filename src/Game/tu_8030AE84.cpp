@@ -1,6 +1,14 @@
 #include "types.h"
 
 
+extern "C" void fn_8030AE84(u8* p, f32* rect)
+{
+    rect[0] = *(int*)(p + 0x290);
+    rect[1] = *(int*)(p + 0x294);
+    rect[2] = *(int*)(p + 0x290) + 0xf0;
+    rect[3] = *(int*)(p + 0x294) + 0xa0;
+}
+
 extern "C" int fn_8030B084(u8* p, int idx, f32* pos)
 {
     if (idx >= 8 && idx != *(int*)(p + 0x28c)) {
