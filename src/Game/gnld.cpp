@@ -156,7 +156,7 @@ extern const char lbl_80471930[];
 
 extern "C" void fn_80329468(char* this_) {
     if (*(s32*)(this_ + 0x230) == 3) {
-        GnldDrawParam param; f32 m[3][4]; f32 z; f32 sc; f32 c; f32 z0; f32 y; f32 x;
+        GnldDrawParam param; f32 m[3][4]; f32 z; f32 sc;
         PSMTXIdentity(m);
         sc = *(f32*)(this_ + 0x248);
         z = lbl_80541D10;
@@ -170,14 +170,13 @@ extern "C" void fn_80329468(char* this_) {
         m[2][1] = z;
         m[2][2] = sc;
         param.mtx = m;
-        z0 = *(f32*)(this_ + 0x14);
-        c = lbl_80541D14;
-        y = c + *(f32*)(this_ + 0x10);
-        x = c + *(f32*)(this_ + 0xc);
+        f32 x = lbl_80541D14 + *(f32*)(this_ + 0xc);
+        f32 y = lbl_80541D14 + *(f32*)(this_ + 0x10);
+        f32 z0 = *(f32*)(this_ + 0x14);
         f32 pos[3];
-        pos[2] = z0;
         pos[0] = x;
         pos[1] = y;
+        pos[2] = z0;
         if (*(s32*)(this_ + 4) < 8) {
             void* res = (*(GnldResMgr**)(lbl_8053AAF8 + 0xa4))->vf18(0x534f4220, lbl_80471930);
             fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, res, 0x2a, lbl_80541D18, lbl_80541D18, &param);
