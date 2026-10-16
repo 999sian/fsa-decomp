@@ -373,30 +373,17 @@ extern "C" void fn_8019900C(void)
 extern u32 lbl_80301CF8;
 extern u32 lbl_80301CFC;
 extern "C" void fn_80199078(void* param_1) {
-    u8* p = (u8*)param_1;
-    union {
-        u32 w;
+    struct Pack4 {
         u8 b[4];
-    } a, b;
-    a.w = lbl_80301CF8;
-    b.w = lbl_80301CFC;
+    };
+    u8* p = (u8*)param_1;
+    Pack4 a = *(Pack4*)&lbl_80301CF8;
+    Pack4 b = *(Pack4*)&lbl_80301CFC;
     p[0xc] = 0;
-    p[4] = a.b[0];
-    p[5] = a.b[1];
-    p[6] = a.b[2];
-    p[7] = a.b[3];
-    p[8] = a.b[0];
-    p[9] = a.b[1];
-    p[0xa] = a.b[2];
-    p[0xb] = a.b[3];
-    p[0x20] = b.b[0];
-    p[0x21] = b.b[1];
-    p[0x22] = b.b[2];
-    p[0x23] = b.b[3];
-    p[0x24] = b.b[0];
-    p[0x25] = b.b[1];
-    p[0x26] = b.b[2];
-    p[0x27] = b.b[3];
+    *(Pack4*)(p + 4) = a;
+    *(Pack4*)(p + 8) = a;
+    *(Pack4*)(p + 0x20) = b;
+    *(Pack4*)(p + 0x24) = b;
     *(s32*)(p + 0x18) = 0;
     *(s32*)(p + 0x1c) = 0;
 }
@@ -1290,7 +1277,7 @@ extern "C" BOOL fn_801A45B0(void)
     return TRUE;
 }
 
-extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
+extern "C" void fn_801A45B8(u8* p, u32 i, u8* src) {
     u8* dst = p + i * 8;
     dst[0xf] = src[1];
     dst[0x10] = src[2];
@@ -1350,6 +1337,10 @@ extern "C" void fn_801A4704(void) { }
 
 extern "C" u32 fn_801A47A8(void) { return 0x54565054; }
 
+extern "C" u8 fn_801A47C8(u8* p) {
+    return p[0xd0];
+}
+
 extern "C" void fn_801A47D0(u8* p, s32 i, u16 v) {
     ((u16*)(p + 8))[i] = v;
 }
@@ -1374,7 +1365,7 @@ extern "C" u8* fn_801A482C(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
+extern "C" void fn_801A4840(u8* p1, int p2, u8* p3) {
     u8* p = p1 + p2 * 8;
     p[0x39] = p3[1];
     p[0x3a] = p3[2];
