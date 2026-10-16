@@ -8,6 +8,12 @@ extern f32 lbl_8053ED90;
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, s32 idx);
 extern "C" void fn_801C1768(void* obj);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* p, s32 v);
+extern "C" void fn_802D6BC8(void* p, s32 v);
+extern "C" void fn_80138B7C(void* p);
+extern "C" void fn_8022ADCC(void);
+extern void* lbl_8053AAF8;
 extern "C" void fn_8021C468(void* obj);
 
 extern "C" void* fn_801C0D70(void) {
