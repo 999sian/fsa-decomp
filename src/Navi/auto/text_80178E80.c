@@ -1549,15 +1549,19 @@ extern "C" void fn_80187E64(u32* self, void* a, int b, int c) {
 }
 
 extern "C" int fn_80187ECC(u8* self, int arg) {
+    int ret;
     u8* p = *(u8**)(self + 0x168);
     if (p == nullptr) {
-        return 0;
+        ret = 0;
+    } else {
+        VObj_80187ECC* obj = *(VObj_80187ECC**)(p + 0x70);
+        if (obj == nullptr) {
+            ret = 0;
+        } else {
+            ret = obj->vfA0(arg);
+        }
     }
-    VObj_80187ECC* obj = *(VObj_80187ECC**)(p + 0x70);
-    if (obj == nullptr) {
-        return 0;
-    }
-    return obj->vfA0(arg);
+    return ret;
 }
 
 extern "C" u32 fn_80187F24(void* self) {
@@ -1905,6 +1909,13 @@ extern "C" void fn_8018A700(u8* self, void* obj) {
     void* p = *(void**)(self + 0x138);
     if (p != NULL) {
         fn_8016A0B4(p, obj);
+    }
+}
+
+extern "C" void fn_8018A758(u8* self, void* obj) {
+    void* p = *(void**)(self + 0x138);
+    if (p != NULL) {
+        fn_8016A39C(p, obj);
     }
 }
 
