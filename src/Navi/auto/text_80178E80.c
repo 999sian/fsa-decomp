@@ -27,7 +27,7 @@ struct UnkVObj_80181CCC {
     virtual void vf38();
     virtual void* vf3C();
 };
-extern "C" void fn_80177E84(void);
+extern "C" u32 fn_80177E84(void);
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_8016A0B4(void* p, void* obj);
 extern "C" void fn_8016A1F8(void* p, void* obj);
