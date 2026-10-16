@@ -12,7 +12,7 @@ extern "C" void fn_803DD3DC(void)
 {
 }
 
-void fn_803DD760(void)
+extern "C" void fn_803DD760(void)
 {
 }
 
