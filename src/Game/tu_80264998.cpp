@@ -140,7 +140,7 @@ extern "C" void fn_80267818(char* p)
             *(short*)(p + 0x3c4) = 0x138;
         }
     }
-    *(short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+    *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
 }
 
 extern "C" void fn_80268194(char* p)
