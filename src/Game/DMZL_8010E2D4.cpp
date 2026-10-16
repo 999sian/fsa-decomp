@@ -125,6 +125,51 @@ extern "C" void* fn_80111F74(char* p, s16 freeFlag) {
     return p;
 }
 
+extern "C" void* fn_8010E074(void* this_);
+extern "C" void fn_801D267C(void* this_);
+extern const f32 lbl_8053C55C;
+extern const f32 lbl_8053C5FC;
+extern const f32 lbl_8053C598;
+extern void __construct_array(void* p, void* ctor, void* dtor, s32 size, s32 count);
+extern "C" void __ct__Q29JGeometry8TVec3_f_Fv();
+extern "C" void* fn_80112070(u8* this_) {
+    fn_8010E074(this_);
+    *(void**)this_ = lbl_8049D208;
+    this_[0x230] = 0;
+    this_[0x231] = 0;
+    *(s32*)(this_ + 0x234) = 4;
+    *(s32*)(this_ + 0x238) = 1;
+    *(s32*)(this_ + 0x23c) = -1;
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = 0;
+    *(s32*)(this_ + 0x254) = 0;
+    *(s32*)(this_ + 0x258) = 0;
+    *(s32*)(this_ + 0x25c) = -1;
+    *(s32*)(this_ + 0x260) = 0;
+    *(s32*)(this_ + 0x264) = 0;
+    *(f32*)(this_ + 0x268) = lbl_8053C55C;
+    *(f32*)(this_ + 0x26c) = lbl_8053C55C;
+    *(f32*)(this_ + 0x270) = lbl_8053C5FC;
+    *(f32*)(this_ + 0x274) = lbl_8053C598;
+    *(f32*)(this_ + 0x278) = lbl_8053C55C;
+    __construct_array(this_ + 0x288, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 7);
+    fn_801D267C(this_ + 0x2f4);
+    fn_801D267C(this_ + 0x32c);
+    *(s32*)(this_ + 0x364) = 0;
+    *(s32*)(this_ + 0x368) = 0;
+    *(s32*)(this_ + 0x36c) = 0;
+    for (s32 i = 0; i < 4; i++) {
+        *(s32*)(this_ + 0x370 + i * 4) = 0;
+        if (i < 2) {
+            *(s32*)(this_ + 0x380 + i * 4) = 0;
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_8010F478(u8* this_, s32 param_2) {
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
