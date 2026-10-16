@@ -58,22 +58,22 @@ struct Unk800DD148Obj {
     virtual void m6() = 0;
     virtual void m7() = 0;
     virtual void m8() = 0;
-    virtual void m9() = 0;
+    virtual s32 m9() = 0;
     virtual void m10() = 0;
     virtual void m11() = 0;
     virtual void m12() = 0;
     virtual void m13() = 0;
     virtual void m14() = 0;
-    virtual void m15() = 0;
+    virtual u8* m15() = 0;
     virtual void m16() = 0;
     virtual void m17() = 0;
-    virtual void m18() = 0;
+    virtual u8* m18() = 0;
     virtual void m19() = 0;
     virtual void m20() = 0;
-    virtual void m21() = 0;
+    virtual u16* m21() = 0;
     virtual void m22() = 0;
     virtual void m23() = 0;
-    virtual void m24() = 0;
+    virtual u8 m24() = 0;
 };
 
 struct Unk800DDA5C {
@@ -1157,32 +1157,34 @@ extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
 }
 
 extern "C" void fn_800DC574(u8* param_1, int* param_2) {
-    int* obj = param_2;
-    *(u16*)(param_1 + 8) = (*(u16(**)(int*, int))(*(u8**)obj + 0x50))(obj, 0);
-    *(u32*)(param_1 + 0xa) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)obj + 0x5c))(obj, 0));
-    u8* p = (*(u8*(**)(int*, int))(*(u8**)obj + 0xa4))(obj, 0);
+    u16 v = (*(u16(**)(int*, int))(*(u8**)param_2 + 0x50))(param_2, 0);
+    *(u16*)(param_1 + 8) = v;
+    *(u32*)(param_1 + 0xa) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0x5c))(param_2, 0));
+    u8* p = (*(u8*(**)(int*, int))(*(u8**)param_2 + 0xa4))(param_2, 0);
     param_1[0xf] = p[1];
     param_1[0x10] = p[2];
     param_1[0x11] = p[3];
     param_1[0x13] = p[5];
     param_1[0x14] = p[6];
     param_1[0x15] = p[7];
-    *(u32*)(param_1 + 0x18) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)obj + 0xc4))(obj, 0));
+    *(u32*)(param_1 + 0x18) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0xc4))(param_2, 0));
 }
 
 extern "C" void fn_800DD148(u8* this_, void* obj) {
-    void** vt = *(void***)obj;
-    u32 id = ((u32 (*)(void*))vt[9])(obj);
-    if (id == 0x5045464c || (id < 0x5045464c && id == 0x50454647)) {
-        u8* p = (u8*)((void* (*)(void*))vt[15])(obj);
+    switch (((s32 (*)(void*))(*(void***)obj)[9])(obj)) {
+    case 0x5045464c:
+    case 0x50454647: {
+        u8* p = (u8*)((void* (*)(void*))(*(void***)obj)[15])(obj);
         *(u16*)(this_ + 0x4) = *(u16*)p;
         this_[0x6] = p[2];
         this_[0x7] = p[3];
-        u32* q = (u32*)((void* (*)(void*))vt[18])(obj);
+        u32* q = (u32*)((void* (*)(void*))(*(void***)obj)[18])(obj);
         *(u32*)(this_ + 0x8) = *q;
-        u16* r = (u16*)((void* (*)(void*))vt[21])(obj);
+        u16* r = (u16*)((void* (*)(void*))(*(void***)obj)[21])(obj);
         *(u16*)(this_ + 0xc) = *r;
-        this_[0xe] = ((u8 (*)(void*))vt[24])(obj);
+        this_[0xe] = ((u8 (*)(void*))(*(void***)obj)[24])(obj);
+        break;
+    }
     }
 }
 
