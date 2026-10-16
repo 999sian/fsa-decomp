@@ -65,6 +65,19 @@ extern "C" void fn_801721F0(u8* p) {
     *p = lbl_80301ADC;
 }
 
+extern "C" void fn_80172974(u8* p, s32 i, u8 v) {
+    p[i + 0xa8] = v;
+}
+
+extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
+    param_1 = param_1 + param_2 * 4;
+    u8 uVar1 = param_3[1];
+    *(u8*)(param_1 + 8) = param_3[0];
+    u8 uVar2 = param_3[2];
+    *(u8*)(param_1 + 9) = uVar1;
+    *(u8*)(param_1 + 10) = uVar2;
+}
+
 extern "C" void* fn_80174B70(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
