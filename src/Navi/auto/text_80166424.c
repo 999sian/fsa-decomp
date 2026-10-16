@@ -1436,6 +1436,16 @@ extern "C" void fn_80173384(void)
 {
 }
 
+extern "C" u16 fn_80174224(u8* s, u32 a, u32 b) {
+    u16 row = ((u16*)*(u8**)(s + 8))[a];
+    u16* tbl = (u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x38);
+    u16 idx = tbl[b];
+    if (idx != 0xffff) {
+        return ((u16*)*(u8**)(s + 0x28))[idx];
+    }
+    return 0xffff;
+}
+
 extern "C" u16 fn_8017426C(u8* s, u32 a) {
     u16 row = ((u16*)*(u8**)(s + 8))[a];
     u16 idx = *(u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x48);
