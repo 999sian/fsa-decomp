@@ -2,6 +2,16 @@
 #include "types.h"
 #include <cstring>
 
+extern "C" void fn_8011C280(int);
+extern "C" void fn_8011C3C8(u32);
+extern "C" BOOL OSGetResetSwitchState(void);
+extern f32 lbl_80301540;
+extern u8 lbl_802FF2E8;
+extern u8 lbl_802FF2E9;
+extern s32 lbl_802FF2EC;
+extern s32 lbl_802FF2D8;
+extern void (*lbl_802FF2D4)(s32, s32);
+
 extern "C" void fn_80166C08(void*, int);
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801670D0(int, void*, int);
