@@ -306,6 +306,8 @@ struct Unk800DC574Src {
 };
 
 struct Unk800DC164Src {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
@@ -1432,6 +1434,19 @@ extern "C" void fn_800DD148(u8* this_, Unk800DD148Obj* obj) {
         this_[0xe] = obj->m22();
         break;
     }
+    }
+}
+
+extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
+    if (src->getFog() != nullptr) {
+        this_->mFog = *src->getFog();
+    }
+    JBlockType type = src->getType();
+    if (type == JBT_PEFull || type == JBT_PEFogOff) {
+        this_->mAlphaComp = *src->getAlphaComp();
+        this_->mBlend = *src->getBlend();
+        this_->mZMode = *src->getZMode();
+        this_->mZCompLoc = src->getZCompLoc();
     }
 }
 
