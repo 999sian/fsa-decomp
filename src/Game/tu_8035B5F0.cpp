@@ -28,6 +28,22 @@ extern "C" void* fn_8035B5F0(void* this_, s16 flag) {
     return this_;
 }
 
+extern "C" void fn_8035B7A8(u8* p) {
+    if (*(s32*)(p + 0x234) != 0) {
+        void* base = fn_801F856C();
+        void* found = fn_801F666C(base, *(s32*)(p + 0x278));
+        if (found != 0) {
+            *(s32*)((u8*)found + 0x238) = 1;
+        }
+        base = fn_801F856C();
+        found = fn_801F666C(base, *(s32*)(p + 0x294));
+        if (found != 0) {
+            *(s32*)((u8*)found + 0x238) = 1;
+        }
+        *(s32*)(p + 0x234) = 0;
+    }
+}
+
 extern "C" void fn_8035B81C(u8* p) {
     s32 cnt = 0;
     f32 v = *(f32*)(p + 0x240);
