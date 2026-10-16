@@ -65,6 +65,8 @@ extern void* lbl_8027F214[];
 extern void* lbl_8029B430[];
 extern void* lbl_8029B41C[];
 extern "C" f32 lbl_80301D6C;
+extern void* lbl_8029B388[];
+extern void* lbl_8029B374[];
 
 struct Vec6_801A7C3C {
     f32 v[6];
@@ -904,6 +906,34 @@ extern "C" void* fn_801B5140(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void fn_801B6818(u8* a, u8* b) {
+    void* fn_8015A90C(u32);
+    void* fn_801B7330(void*, u32);
+    void* fn_8018C2C0(void*, u32);
+    void* fn_8011939C(void*, void*);
+    extern void* lbl_8029BBB0[];
+    u16 h = *(u16*)(b + 8);
+    void* q = fn_801B7330(b, *(u32*)(b + 0xc));
+    if (*(u32*)(b + 0x10) == 0) {
+        *(void**)(*(u8**)(a + 8) + 0x18) = 0;
+    } else {
+        void* p = fn_8015A90C(0x10);
+        void* r = 0;
+        if (p != 0) {
+            r = fn_8011939C(p, fn_8018C2C0(b, *(u32*)(b + 0x10)));
+        }
+        *(void**)(*(u8**)(a + 8) + 0x18) = r;
+    }
+    void* blk = fn_8015A90C(0xc);
+    if (blk != 0) {
+        *(void**)((u8*)blk + 8) = lbl_8029BBB0;
+        *(u16*)blk = h;
+        *(u16*)((u8*)blk + 2) = 0;
+        *(void**)((u8*)blk + 4) = q;
+    }
+    *(void**)(*(u8**)(a + 8) + 0x14) = blk;
+}
+
 extern "C" void fn_801B1E30(void* param_1, void* param_2, u16 param_3);
 extern "C" void fn_801B6F5C(u8* p, u32 flags) {
     u8 buf[0x88];
@@ -1370,9 +1400,10 @@ extern "C" void fn_801B9718(void* unused, void* dest, void* src) {
     u8* s = (u8*)src;
     u8 b = s[8];
     *(s16*)(d + 6) = *(s16*)(s + 0xa);
+    u32 v = *(u32*)(s + 0x10);
     d[4] = b;
     *(f32*)(d + 8) = 0.0f;
-    *(void**)(d + 0x10) = fn_801BA410(s, *(u32*)(s + 0x10));
+    *(void**)(d + 0x10) = fn_801BA410(s, v);
     *(void**)(d + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x14));
 }
 
