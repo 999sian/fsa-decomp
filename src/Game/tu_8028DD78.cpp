@@ -14,3 +14,7 @@ extern "C" void* fn_8028DD78(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+extern "C" void fn_8028E1E8(void) {
+}
+
