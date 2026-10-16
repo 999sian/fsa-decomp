@@ -223,11 +223,13 @@ extern "C" void* fn_80166B70(void* param_1, s16 param_2) {
     return param_1;
 }
 
+#pragma dont_inline on
 extern "C" void fn_80166C70(void* param_1) {
     *(u32*)param_1 = 0;
     *(u32*)((u8*)param_1 + 4) = 0;
     *(u32*)((u8*)param_1 + 8) = 0;
 }
+#pragma dont_inline reset
 
 extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
     u32 uVar1 = (*(void**)((u8*)param_2 + 4) == nullptr);
@@ -1658,6 +1660,7 @@ extern "C" int fn_8017404C(int p, int i)
 	return 0;
 }
 
+extern const u8 lbl_80202218[];
 extern "C" void fn_80174084(u8* p, u8* s, u32 a, u32 b) {
     u16 row = ((u16*)*(u8**)(s + 8))[a];
     u16* tbl = (u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x14);
@@ -1668,10 +1671,9 @@ extern "C" void fn_80174084(u8* p, u8* s, u32 a, u32 b) {
         p[1] = t[1];
         p[2] = t[2];
     } else {
-        const u8* c = (const u8*)&lbl_80202218;
-        p[0] = c[0];
-        p[1] = c[1];
-        p[2] = c[2];
+        p[0] = lbl_80202218[0];
+        p[1] = lbl_80202218[1];
+        p[2] = lbl_80202218[2];
     }
 }
 
@@ -2004,7 +2006,7 @@ extern "C" void* fn_80176550(void* param_1)
 	*(f32*)(self + 0x2c) = c;
 	fn_80176610(self);
 	fn_80176E24(self, 0);
-	((UnkVObj_80166424*)self)->vf9();
+	((UnkVObj_80166424*)self)->vf11();
 	return self;
 }
 
@@ -2014,17 +2016,17 @@ extern "C" void fn_80176610(void* p_self)
 {
     u32* self = (u32*)p_self;
     u8* b = (u8*)p_self;
+    f32 f0 = lbl_80301B24;
     f32 f1 = lbl_80301B20;
 
-    *(u16*)(b + 0x4) = 0xffff;
     ((f32*)self)[0x2e] = f1;
     ((f32*)self)[0x2f] = f1;
     ((f32*)self)[0x30] = f1;
     ((f32*)self)[0x31] = f1;
     ((f32*)self)[0x32] = f1;
+    *(u16*)(b + 0x4) = 0xffff;
     b[0xb7] = 0;
     b[0xb6] = 0x7a;
-    f32 f0 = lbl_80301B24;
     ((f32*)self)[0x33] = f0;
     ((f32*)self)[0x34] = f0;
     b[0xb1] = 0;
