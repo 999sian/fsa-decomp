@@ -5,7 +5,7 @@
 extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
 
 struct VObj_8018939C {
-    virtual void v0(s32 mode); virtual void v1(); virtual void v2(s32 mode);
+    virtual void v0(s32 mode);
 };
 
 struct VObj_80189BD8 {
