@@ -4,7 +4,7 @@ extern "C" void fn_803DD19C(void)
 {
 }
 
-void fn_803DD1A0(void)
+extern "C" void fn_803DD1A0(void)
 {
 }
 
