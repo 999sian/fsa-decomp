@@ -1,5 +1,8 @@
 #include "types.h"
 
+extern void* lbl_8029320C[];
+extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
+
 extern f32 lbl_802FEAB0[];
 extern char lbl_802911A0[];
 extern char lbl_80292C80[];
@@ -180,18 +183,29 @@ extern "C" void fn_801364F4(void* param_1) {
 
 extern "C" f64 fn_80136528(void* param_1, u32* param_2) {
     void** begin = *(void***)((u8*)param_1 + 4);
-    u32 idx = *param_2;
     s32 count;
     if (begin == nullptr) {
         count = 0;
     } else {
         count = (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
     }
+    u32 idx = *param_2;
     if (idx >= count) {
         return 0.0;
     }
     void* elem = begin[idx];
     return ((f64 (*)(void*))(*(void***)elem)[7])(elem);
+}
+
+extern "C" void fn_80136700(void* param_1, f64 param_2, f64* param_3) {
+    void** volatile end = *(void***)((u8*)param_1 + 8);
+    void** volatile cur = *(void***)((u8*)param_1 + 4);
+    f64 d = param_2 - *param_3;
+    while (cur != end) {
+        void* elem = *cur;
+        cur++;
+        ((void (*)(void*, f64))(*(void***)elem)[7])(elem, d);
+    }
 }
 
 extern "C" u32 fn_80136A68(void) {
@@ -284,9 +298,9 @@ extern "C" f32 fn_801375FC(void* param_1, u32* param_2) {
 extern "C" f64 fn_80137610(void* param_1, f64* param_2) {
     f32* table = *(f32**)((u8*)param_1 + 0x44);
     u32 idx = ((u32*)param_2)[4];
-    f64 d = param_2[0] - param_2[1];
     f64 a = table[idx];
     f64 b = table[idx + 1];
+    f64 d = param_2[0] - param_2[1];
     return a + (b - a) * d;
 }
 #pragma fp_contract reset
@@ -644,6 +658,26 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern void* lbl_8029320C[];
+extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
+extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029320C;
+        ((void (*)(void*))(*(void***)ptr)[5])(ptr);
+        fn_80133C0C(ptr, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
+extern "C" void fn_8013C0E4(void* param_1) {
+    void* piVar1 = *(void**)((u8*)param_1 + 0x128);
+    u32 uVar2 = ((u32 (*)(void*))(*(void***)piVar1)[6])(piVar1);
+    ((void (*)(void*, u32))(*(void***)piVar1)[7])(piVar1, uVar2 & 0xfffffffe);
 }
 
 extern "C" void fn_8013C138(void* param_1, void* param_2) {
