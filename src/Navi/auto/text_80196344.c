@@ -113,6 +113,39 @@ extern "C" s32 fn_801964C0(void* self) {
     return sum;
 }
 
+extern "C" void fn_801DFFF0(void* p, u32 a, u32 b);
+extern "C" void fn_801E015C(u32 a);
+extern "C" void fn_8019662C(void* self);
+extern "C" void fn_8018FA7C(u32 a, u32 b, u8 c);
+extern "C" void fn_801E0034(void);
+extern "C" void fn_801E0008(void);
+extern "C" void OSEnableScheduler(void);
+extern "C" void OSDisableScheduler(void);
+extern "C" void OSRestoreInterrupts(u32 level);
+extern "C" u32 OSDisableInterrupts(void);
+extern "C" void fn_80196928(void* self) {
+    extern s8 lbl_802FF6DC;
+    extern u32 lbl_802FF6D8;
+    extern u32 lbl_802FFA80;
+    u8 buf[16];
+    u8* p = (u8*)self;
+    if (lbl_802FF6DC == 0) {
+        lbl_802FF6D8 = OSDisableInterrupts();
+        lbl_802FF6DC = 1;
+    }
+    OSDisableScheduler();
+    fn_801DFFF0(buf, *(u32*)(p + 0x2c), 0xc0);
+    lbl_802FFA80 = (u32)buf;
+    fn_801E015C(*(u32*)(p + 0x30));
+    fn_8019662C(self);
+    fn_8018FA7C(0, *(u32*)(*(u32*)(p + 0x4c) + 0x14), *(u8*)(p + 0x34));
+    fn_801E0034();
+    fn_801E0008();
+    lbl_802FFA80 = 0;
+    OSEnableScheduler();
+    OSRestoreInterrupts(lbl_802FF6D8);
+}
+
 extern "C" int fn_801979BC(int param_1) {
     int size = 0;
     switch (param_1) {
@@ -1806,9 +1839,9 @@ extern "C" u8 fn_801A602C(u32 p);
 extern "C" u16 fn_801A6050(u32 p);
 extern "C" void fn_801A36B0(int param_1, u8* param_2) {
     u16 h = *(u16*)param_2;
-    u8 t = param_2[2];
+    u32 t = param_2[2];
     *(u16*)(param_1 + 4) = h;
-    u8 b = param_2[3];
+    u32 b = param_2[3];
     *(u8*)(param_1 + 6) = t;
     *(u8*)(param_1 + 7) = b;
 }
@@ -2107,9 +2140,8 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
-    u8 a = src[0];
-    u8* d = (u8*)(p + (i << 2));
-    d[0x62] = a;
+    u8* d = (u8*)(p + i * 4);
+    d[0x62] = src[0];
     d[0x63] = src[1];
     d[0x64] = src[2];
     d[0x65] = src[3];
@@ -2854,8 +2886,12 @@ extern "C" u32 fn_801A4E84(void) {
     return 0x434C4142;
 }
 
-extern "C" void fn_801A4E90(u8* p, s32 i, GXColor* src) {
-    ((GXColor*)(p + 0x20))[i] = *src;
+extern "C" void fn_801A4E90(u8* p, s32 i, u8* src) {
+    u8* dst = p + i * 4;
+    dst[0x20] = src[0];
+    dst[0x21] = src[1];
+    dst[0x22] = src[2];
+    dst[0x23] = src[3];
 }
 
 extern "C" u8* fn_801A4EE8(u8* p, s32 i) {
