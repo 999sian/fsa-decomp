@@ -1,4 +1,7 @@
 #include "types.h"
+
+extern "C" u8 fn_803865B8(s32);
+extern "C" void fn_80388EEC(s32);
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JUtility/JUTVideo.h"
 
@@ -13,20 +16,19 @@ extern "C" void fn_80388EEC(s32);
 extern s32 lbl_804650C8[];
 extern "C" void fn_80239914(void*, u32, u32);
 extern "C" void fn_8012A8C0(char* this_) {
+    struct Box {
+        f32 minX, minY, maxX, maxY;
+    };
     s32 i = 0;
     char* p = this_;
-    f32 box[4];
-    f32 orig[4];
-    orig[0] = *(f32*)(this_ + 0x60);
-    orig[1] = *(f32*)(this_ + 0x64);
-    orig[2] = *(f32*)(this_ + 0x68);
-    orig[3] = *(f32*)(this_ + 0x6c);
+    Box orig = {*(f32*)(this_ + 0x60), *(f32*)(this_ + 0x64), *(f32*)(this_ + 0x68), *(f32*)(this_ + 0x6c)};
     do {
-        box[0] = orig[0] + *(f32*)(p + 0x25c);
-        box[2] = orig[2] + *(f32*)(p + 0x25c);
-        box[1] = orig[1] + *(f32*)(p + 0x260);
-        box[3] = orig[3] + *(f32*)(p + 0x260);
-        fn_80239914(box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
+        Box box = orig;
+        box.minX += *(f32*)(p + 0x25c);
+        box.minY += *(f32*)(p + 0x260);
+        box.maxX += *(f32*)(p + 0x25c);
+        box.maxY += *(f32*)(p + 0x260);
+        fn_80239914(&box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
         i++;
         p += 0xc;
     } while (i < 6);
