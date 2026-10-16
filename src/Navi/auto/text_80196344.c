@@ -530,6 +530,10 @@ extern "C" void fn_801A358C(void* param_1, u32* param_2) {
     *(u32*)((u8*)param_1 + 0x34) = *param_2;
 }
 
+extern "C" void* fn_801A35A4(void* param_1) {
+    return (u8*)param_1 + 0x34;
+}
+
 extern "C" void fn_801A35AC(void* param_1, u16* param_2) {
     *(u16*)((u8*)param_1 + 0x38) = *param_2;
 }
