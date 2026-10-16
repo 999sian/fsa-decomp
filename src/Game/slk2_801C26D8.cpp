@@ -12,7 +12,7 @@ extern "C" void* fn_801C0D70();
 extern "C" void fn_801C1374(void* subRecord, s32 flag);
 extern "C" void fn_801F4F28(void* this_);
 extern "C" void fn_801C3B7C(void* this_, s32 state);
-extern "C" char fn_8021D020(void* this_);
+extern "C" u8 fn_8021D020(void* this_);
 extern "C" void fn_8021CDE4(void* this_, s32 state);
 extern "C" void fn_80214AF8(void* this_);
 extern "C" u8 fn_801C11F0(void* rec);
@@ -59,6 +59,37 @@ extern "C" void fn_801C27F0(void* this_) {
     void* subRecord = fn_801C0D70();
     fn_801C1374(subRecord, flag);
     ((Actor*)this_)->Actor::v07();
+}
+
+extern "C" void fn_801C2960(u8* this_) {
+    *(u32*)(this_ + 0x230) &= 0xfdffffff;
+    s32 state = *(s32*)(this_ + 0x248);
+    if (state == 0x21) {
+        if (fn_8021D020(this_) == 0) {
+            fn_801C3B7C(this_, 0x1b);
+        } else {
+            s32 s = *(s32*)(this_ + 0x564);
+            if (s == 2) {
+                fn_8021CDE4(this_, 3);
+            } else if (s < 2) {
+                if (s == 0) {
+                    if (!(*(u32*)(this_ + 0x230) & 0x10000)) {
+                        fn_801C3B7C(this_, 0x29);
+                    } else if (!(*(u32*)(this_ + 0x524) & 0x80)) {
+                        fn_8021CDE4(this_, 2);
+                    } else {
+                        fn_8021CDE4(this_, 1);
+                    }
+                } else if (s > 0) {
+                    fn_8021CDE4(this_, 2);
+                }
+            } else if (s < 4) {
+                fn_801C3B7C(this_, 0x29);
+            }
+        }
+    } else if (state == 0x10 && !(*(u32*)(this_ + 0x230) & 0x800000)) {
+        fn_80214AF8(this_ + 0x4ec);
+    }
 }
 
 extern const f32 lbl_8053EFB8;
