@@ -76,11 +76,11 @@ int fn_8003043C(int param_1, int param_2)
   return param_1 + param_2;
 }
 
-int fn_80030454(int param_1, int param_2)
+extern "C" void* fn_80030454(const void* ptr, const void* offset)
 {
-  if (param_2 == 0) {
-    return 0;
-  }
-  return param_1 + param_2;
+	if (offset == 0) {
+		return 0;
+	}
+	return (void*)((int)ptr + (int)offset);
 }
 
