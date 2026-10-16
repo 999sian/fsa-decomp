@@ -1,6 +1,8 @@
 #include "types.h"
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
+extern "C" s32 fn_8001D5B8(void*, void*);
+extern "C" void fn_8001AAFC(void*);
 extern "C" void fn_8001D66C(void*, void*);
 extern "C" void fn_800126C4(void*);
 extern "C" void fn_8001A950(void);
@@ -59,29 +61,14 @@ extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
     d[3] = w;
 }
 
-extern "C" void fn_80019490(f32* d, const f32* s) {
+extern "C" void fn_80019490(Vec* d, const Vec* s) {
     d[0] = s[0];
     d[1] = s[1];
-    d[2] = s[2];
-    d[3] = s[3];
-    d[4] = s[4];
-    d[5] = s[5];
 }
 
-extern "C" void fn_800194C4(f32* d, const Vec* a, const Vec* b) {
-    f32 z;
-    f32 x = a->x;
-    f32 y = a->y;
-    d[0] = x;
-    z = a->z;
-    d[1] = y;
-    d[2] = z;
-    x = b->x;
-    y = b->y;
-    d[3] = x;
-    z = b->z;
-    d[4] = y;
-    d[5] = z;
+extern "C" void fn_800194C4(Vec* d, const Vec* a, const Vec* b) {
+    *d = *a;
+    d[1] = *b;
 }
 
 extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
