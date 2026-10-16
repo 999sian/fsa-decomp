@@ -221,6 +221,9 @@ extern "C" void fn_8016AD08() {}
 
 extern "C" void fn_8016AD0C() {}
 
+extern "C" void fn_8016AE28(void) {
+}
+
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
         return 0;
