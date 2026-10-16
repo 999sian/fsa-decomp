@@ -486,6 +486,8 @@ extern "C" u32 fn_80172DC8(void) {
     return 2;
 }
 
+extern "C" u16 fn_80172DF8(u8* p) { return *(u16*)(p + 8); }
+
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
 
 extern "C" u8 fn_80172EC4(u8* p, s32 i) { return *(p + i + 0x54); }
