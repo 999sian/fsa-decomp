@@ -1,5 +1,8 @@
 #include "types.h"
 
+extern "C" s32 fn_802D6A9C(void);
+extern "C" s32 fn_80119DD0(void);
+extern "C" void fn_80119468(s32, s32, s32);
 extern "C" u8 fn_803865B8(s32);
 extern "C" void fn_80388EEC(s32);
 #include "JSystem/JGeometry/Vec.h"
@@ -16,19 +19,23 @@ extern "C" void fn_80388EEC(s32);
 extern s32 lbl_804650C8[];
 extern "C" void fn_80239914(void*, u32, u32);
 extern "C" void fn_8012A8C0(char* this_) {
+    struct Vec2 {
+        f32 x, y;
+    };
     struct Box {
-        f32 minX, minY, maxX, maxY;
+        Vec2 min, max;
     };
     s32 i = 0;
     char* p = this_;
-    Box orig = {*(f32*)(this_ + 0x60), *(f32*)(this_ + 0x64), *(f32*)(this_ + 0x68), *(f32*)(this_ + 0x6c)};
+    Box orig = {{*(f32*)(this_ + 0x60), *(f32*)(this_ + 0x64)}, {*(f32*)(this_ + 0x68), *(f32*)(this_ + 0x6c)}};
+    Box box = orig;
     do {
-        Box box = orig;
-        box.minX += *(f32*)(p + 0x25c);
-        box.minY += *(f32*)(p + 0x260);
-        box.maxX += *(f32*)(p + 0x25c);
-        box.maxY += *(f32*)(p + 0x260);
+        box.min.x += *(f32*)(p + 0x25c);
+        box.min.y += *(f32*)(p + 0x260);
+        box.max.x += *(f32*)(p + 0x25c);
+        box.max.y += *(f32*)(p + 0x260);
         fn_80239914(&box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
+        box = orig;
         i++;
         p += 0xc;
     } while (i < 6);
