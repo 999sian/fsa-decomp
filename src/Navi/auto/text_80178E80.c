@@ -858,6 +858,10 @@ extern "C" int fn_8017D1EC()
 	return 0;
 }
 
+extern "C" void fn_8017D1F4(void) {
+    fn_80177F0C();
+}
+
 extern "C" void fn_8017D214(void) {}
 
 extern "C" void fn_8017DE68(u32* param_1) {
