@@ -16,8 +16,8 @@ extern u8 lbl_802FF058;
 
 struct Entry_80281230 { u16 a; u16 b; f32 f0; f32 f1; f32 f2; f32 f3; };
 extern Entry_80281230 lbl_80281230[];
-extern u16 lbl_802FCAD0[];
-extern u8 lbl_802FCAA8[];
+extern u16 lbl_802FCAD0[4];
+extern u8 lbl_802FCAA8[0x28];
 extern "C" void fn_80022438(void*, void*, s32, s32, f32, f32, f32, f32);
 struct StateObj_80072080;
 typedef BOOL (StateObj_80072080::*StateFunc_80072080)(int);
@@ -337,6 +337,19 @@ extern "C" void fn_80072CE0(void* p) {
 extern "C" void fn_80072E68(void);
 extern "C" void fn_80072D6C(void) {
     fn_80072E68();
+}
+
+extern "C" BOOL fn_800738DC(u8* self, s32 idx)
+{
+    if (*(s32*)(self + 0x2c8) != idx) {
+        Entry_80281230* e;
+        *(s32*)(self + 0x2c8) = idx;
+        e = &lbl_80281230[idx];
+        *(u16*)(self + 0x2de) = e->a;
+        *(u8*)(self + 0x2e7) = 0;
+        fn_80022438(*(void**)(self + 0x258), lbl_802FCAA8, lbl_802FCAD0[*(u16*)(self + 0x2de)], e->b, e->f0, e->f1, e->f2, e->f3);
+    }
+    return 0;
 }
 
 extern "C" void fn_80072D8C(void);
