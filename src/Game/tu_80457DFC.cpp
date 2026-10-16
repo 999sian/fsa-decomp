@@ -9,7 +9,6 @@ struct Unk80458F04Sound {
 
 struct Unk80458F04Starter {
     virtual void v0();
-    virtual void v4();
     virtual bool startSound(u32* id, Unk80458F04Sound** handle, void* pos);
 };
 
@@ -24,3 +23,17 @@ struct Unk80458F04 {
     char pad54[0x84 - 0x54];
     Unk80458F04Sound* m84;
 };
+
+extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
+{
+    if (self->m4 != 0) {
+        return;
+    }
+    if (self->m5 == 1 && self->m84 != 0 && id == self->m84->mID) {
+        return;
+    }
+    self->m30->startSound(&id, &self->m84, 0);
+    if (self->m84 != 0) {
+        self->m84->mMove.moveVolume(self->m50, 0);
+    }
+}
