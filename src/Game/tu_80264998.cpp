@@ -13,6 +13,16 @@ extern "C" void fn_80265D68(char* p)
     *(unsigned char*)(p + 0xca0) = 0;
 }
 
+extern "C" void fn_80265D8C(char* p)
+{
+    unsigned char v = *(unsigned char*)(p + 0xca0);
+    if (v <= 0xf7) {
+        *(unsigned char*)(p + 0xca0) = v + 8;
+        return;
+    }
+    *(unsigned char*)(p + 0xca0) = 0xff;
+}
+
 extern "C" void fn_80267384(char* p)
 {
     if (fn_802486A0(p) == 4) {
