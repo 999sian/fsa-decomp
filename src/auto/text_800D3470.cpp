@@ -1878,12 +1878,8 @@ extern "C" int fn_800DF008(void) { return 0x54475054; }
 
 extern "C" int fn_800DF014(void) { return 0x434c4f4e; }
 
-extern "C" void fn_800DF020(u8* this_, s32 idx, u8* src) {
-    s32 off = idx * 4;
-    this_[off + 4] = src[0];
-    this_[off + 5] = src[1];
-    this_[off + 6] = src[2];
-    this_[off + 7] = src[3];
+extern "C" void fn_800DF020(GXColor* param_1, int param_2, const GXColor* param_3) {
+    param_1[param_2 + 1] = *param_3;
 }
 
 extern "C" u8* fn_800DF078(u8* self, int i) {
