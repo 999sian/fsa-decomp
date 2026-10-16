@@ -1575,12 +1575,13 @@ extern "C" u32 fn_80185568(VObj_80185DA4* self, u32 a, u32 b) {
     return self->v50(a, b, (u8)p[0x28]);
 }
 
-extern "C" s32 fn_801855B0(u8* self, s32 a) {
+extern "C" s32 fn_801855B0(u8* self) {
+    s32 unused;
     u8* p = *(u8**)(self + 0x168);
     if (p == NULL) {
         return 0;
     }
-    return ((VObj_80187834*)self)->vfd4(p[0x28]);
+    return (*(s32 (**)(void*, s32, u8))((u8*)*(void**)self + 0xd4))(self, unused, (u8)*(u32*)(p + 0x28));
 }
 
 extern "C" s32 fn_801855F8(u8* self, void* p, s32 b, s32 c, f32 f) {
@@ -1592,7 +1593,7 @@ extern "C" s32 fn_801855F8(u8* self, void* p, s32 b, s32 c, f32 f) {
     }
     fn_801857C8(self, f, c);
     VObj_80187834* obj = *(VObj_80187834**)(*(u8**)(self + 0x168) + 0x70);
-    obj->vf7c(c & 0xff, p, b);
+    obj->vf7c((u8)c, p, b);
     return 1;
 }
 
