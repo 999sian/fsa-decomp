@@ -15,8 +15,6 @@ struct Vtable800D8248 {
 #include "JSystem/J3D/J3DTypes.h"
 
 struct Unk800DC290Src {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
