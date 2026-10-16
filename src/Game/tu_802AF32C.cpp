@@ -14,6 +14,45 @@ extern "C" Actor* fn_802AF32C(Actor* p, s16 n) {
 	return p;
 }
 
+extern "C" void fn_802AF6B0(Actor* thisObj) {
+	u8* p = (u8*)thisObj;
+	*(s32*)(p + 0x230) -= 1;
+	if (*(s32*)(p + 0x230) != 0) {
+		return;
+	}
+	if (*(s32*)(p + 0x238) == 2) {
+		*(u8*)(p + 0x11c) = 0;
+		return;
+	}
+	*(s32*)(p + 0x230) = 2;
+	*(s32*)(p + 0x234) += 1;
+	if (*(s32*)(p + 0x238) == 4) {
+		*(s32*)(p + 0x230) = 4;
+		if (*(s32*)(p + 0x234) < 7) {
+			return;
+		}
+		*(u8*)(p + 0x11c) = 0;
+		return;
+	}
+	if (*(s32*)(p + 0x234) >= 4 && *(s32*)(p + 0x238) == 6) {
+		*(u8*)(p + 0x11c) = 0;
+		return;
+	}
+	if (*(s32*)(p + 0x234) < 8) {
+		return;
+	}
+	if (*(s32*)(p + 0x238) == 1) {
+		*(s32*)(p + 0x240) += 1;
+		if (*(s32*)(p + 0x240) >= 8) {
+			*(u8*)(p + 0x11c) = 0;
+			return;
+		}
+		*(s32*)(p + 0x234) = 0;
+		return;
+	}
+	*(u8*)(p + 0x11c) = 0;
+}
+
 extern "C" void fn_802AF78C(Actor* thisObj) {
 	u8* p = (u8*)thisObj;
 	*(u32*)(p + 0x238) = *(u32*)(p + 0x90) & 0x3f;
