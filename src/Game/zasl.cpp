@@ -15,7 +15,7 @@ extern "C" void fn_801D2608(void*, void*, s32);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
 extern "C" void fn_801D1D60(void*);
 extern "C" void detach__5ActorFv(void*);
-extern char lbl_8053A178[];
+extern "C" char lbl_8053A178;
 
 extern "C" void fn_801CE32C(void*);
 extern "C" void fn_801CE5D4(void*);
@@ -189,7 +189,7 @@ extern "C" void fn_8020C878(void* this_) {
     *(s32*)(p + 0x250) = v;
     *(f32*)(p + 0x254) = f;
     *(f32*)(p + 0x258) = f;
-    fn_801D2608(p + 0x270, lbl_8053A178, 1);
+    fn_801D2608(p + 0x270, (void*)&lbl_8053A178, 1);
     fn_801D22DC(p + 0x270, 0, 2, 0);
     fn_801D1D60(p + 0x270);
     if (*(u32*)(p + 0x230) & 0x2000) {
@@ -207,14 +207,8 @@ extern "C" void fn_8020C878(void* this_) {
             f32 x = *(f32*)(p + 0xc);
             f32 y = *(f32*)(p + 0x10);
             bool bVar1 = false;
-            if (*(f32*)(p + 0x80) + x < pf[0]) {
-                if (*(f32*)(p + 0x84) + y < pf[1]) {
-                    if (*(f32*)(p + 0x88) + x < pf[2]) {
-                        if (*(f32*)(p + 0x8c) + y < pf[3]) {
-                            bVar1 = true;
-                        }
-                    }
-                }
+            if (!(*(f32*)(p + 0x80) + x >= pf[0] || *(f32*)(p + 0x84) + y >= pf[1] || *(f32*)(p + 0x88) + x >= pf[2] || *(f32*)(p + 0x8c) + y >= pf[3])) {
+                bVar1 = true;
             }
             if (!bVar1) {
                 detach__5ActorFv(this_);
