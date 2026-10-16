@@ -10,6 +10,8 @@ extern char lbl_802BB0FC[];
 extern int lbl_802FF0E4;
 extern "C" char lbl_802BB0FC[];
 extern "C" int lbl_802FF0E4;
+extern "C" char lbl_802C050C[];
+extern "C" float lbl_803001FC;
 extern "C" void fn_80052E2C(void)
 {
 	lbl_802FF0E4 = *(int*)(lbl_802BB0FC + 0x58) + 1000;
@@ -20,6 +22,11 @@ extern "C" float lbl_803001FC;
 extern "C" void fn_80052E44(void)
 {
 	lbl_802FF0E4 = *(int*)(lbl_802BB0FC + 0x58) + 500;
+}
+
+extern "C" void fn_80052E5C(void)
+{
+	lbl_802FF0E4 = (int)(lbl_803001FC * *(float*)(lbl_802C050C + 0x3c)) + *(int*)(lbl_802BB0FC + 0x58);
 }
 
 extern "C" void fn_8005556C(void* self, void* p) {
