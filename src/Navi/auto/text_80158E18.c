@@ -108,6 +108,12 @@ extern "C" int fn_8015AAB0(int a, void* p) {
     return 0;
 }
 
+#pragma dont_inline on
+extern "C" void fn_8015AB1C(void* p) {
+    fn_80159C6C(p, 0);
+}
+#pragma dont_inline reset
+
 extern "C" void fn_80159C6C(void*, int);
 extern "C" void fn_8015AB40(void* p) {
     fn_80159C6C(p, 0);
