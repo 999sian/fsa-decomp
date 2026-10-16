@@ -13,6 +13,22 @@ extern s32 fn_8008668C(int);
 extern "C" void fn_80085F0C(void);
 extern "C" void fn_800861C4(int, u32);
 extern "C" void fn_8008603C(int, u32);
+extern "C" char lbl_80498FB8[];
+extern "C" void dispose__7JKRHeapFv(void* param_1);
+extern "C" void __dt__7JKRHeapFv(void* param_1, s32 param_2);
+extern "C" void __dl__FPv(void* param_1);
+extern "C" void* fn_80085C50(void* param_1, s16 param_2) {
+    if (param_1 != 0) {
+        *(char**)param_1 = lbl_80498FB8;
+        dispose__7JKRHeapFv(param_1);
+        __dt__7JKRHeapFv(param_1, 0);
+        if (param_2 > 0) {
+            __dl__FPv(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_80085FF4(int param_1, s32 param_2, u32 param_3) {
     if (param_3 == 1) {
         fn_80085F0C();
