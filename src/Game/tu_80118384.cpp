@@ -71,6 +71,8 @@ struct VObj {
     virtual void v08(int);
 };
 
+void __dl__FPv(void* p);
+
 extern "C" void fn_80119468(u32 a, u32 b, s32 c)
 {
     void fn_80119998(u32 a, u32 b, u32 c, s32 d, u32 e, u32 f, u32 g, u32 h);
