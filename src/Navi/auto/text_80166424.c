@@ -657,7 +657,7 @@ extern "C" void fn_80174F08(u8* param_1) {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
         virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
         virtual void v8(); virtual void v9();
-        virtual u32 v30(); virtual u32 v34();
+        virtual int v30(); virtual int v34();
     };
     if (*(Obj**)(param_1 + 4) != 0) {
         *(f32*)(param_1 + 0x50) = (f32)(*(Obj**)(param_1 + 4))->v30();
