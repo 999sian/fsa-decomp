@@ -213,6 +213,10 @@ extern "C" void* fn_8003C4F4(void) {
     return lbl_802BF188;
 }
 
+extern "C" f32 fn_8003C500(void) {
+    return *(f32*)(lbl_802BF188 + 0x1c);
+}
+
 extern "C" void fn_8003CB48(void* p) {
     fn_80043518(lbl_802EE470, (u8*)p + 0x10, (u8*)p + 0x4c, (u8*)p + 0x50);
 }
