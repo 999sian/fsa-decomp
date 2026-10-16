@@ -29,7 +29,7 @@ extern "C" char __vt__10J3DPEBlock[];
 
 #include <types.h>
 
-void fn_800C9CF4(void)
+extern "C" void fn_800C9CF4(void)
 {
 }
 
