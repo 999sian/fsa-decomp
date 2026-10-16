@@ -22,6 +22,15 @@ extern "C" void fn_8006D300(void) {
     fn_8006D320();
 }
 
+extern u8 lbl_802FC990;
+extern "C" void fn_800636F4(void*, void*, s32);
+extern char lbl_802B7CA0[];
+extern "C" int fn_8006D760(void)
+{
+    fn_800636F4(&lbl_802FC990, lbl_802B7CA0 + 0x2200, 0x40);
+    return 1;
+}
+
 extern "C" BOOL fn_8006D9C0(void);
 extern "C" BOOL fn_8006D9C0(void)
 {
