@@ -470,6 +470,22 @@ extern "C" void fn_801D1CD4(void* p) {
 extern "C" void fn_801D1D68(void) {
 }
 
+extern "C" s32 fn_801D4864(int param_1) {
+    return *(s32 *)(param_1 + 0x84);
+}
+
+extern "C" s32 fn_801D544C(void* self, void* out, void* cb);
+extern "C" void fn_801D1D6C(void);
+extern "C" void fn_801D59DC(void* param_1) {
+    s32 pad;
+    void* local;
+    if (fn_801D544C(param_1, &local, fn_801D1D6C) >= 0) {
+        if (&local != nullptr) {
+            fn_801D2F34((s32)param_1);
+        }
+    }
+}
+
 extern "C" u32 fn_801D6D18(char* self, char* param_2) {
     char* pcVar3 = self + 8;
     s32 lVar4 = 0x20;
