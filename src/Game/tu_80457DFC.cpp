@@ -86,6 +86,20 @@ extern "C" void fn_80458090(char* this_) {
     ((JAUSection*)*(void**)(this_ + 0x44))->loadWaveArc(4);
 }
 
+extern "C" u32 fn_804580DC(char* this_, u8 idx) {
+    Unk804580DCBank* bank = *(Unk804580DCBank**)(this_ + 0x44);
+    if (bank != NULL) {
+        Unk804580DCTrack* track = NULL;
+        if (idx < bank->mF0) {
+            track = bank->mEC[idx];
+        }
+        if (track != NULL && track->v4(0)->m4C == 2) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_8045873C(u8* this_, u8 v) {
     this_[0x69] = v;
 }
@@ -124,6 +138,31 @@ extern "C" char* lbl_8053AAF8;
 extern "C" void fn_804594E4(void* self, u32 mode)
 {
     JASDriver::setOutputMode(mode);
+}
+
+extern "C" void fn_80459508(char* this_) {
+    ((JAUSoundMgr*)*(void**)(this_ + 0x30))->stop();
+    *(f32*)(this_ + 0x4c) = lbl_80543EB4;
+    *(f32*)(this_ + 0x50) = lbl_80543EB4;
+    *(f32*)(this_ + 0x54) = lbl_80543EB4;
+    *(u32*)(this_ + 0x58) = 0;
+    *(u32*)(this_ + 0x5c) = 0;
+    *(u32*)(this_ + 0x60) = 0;
+    *(s32*)(this_ + 0x64) = -1;
+    *(u8*)(this_ + 0x68) = 0;
+    *(u8*)(this_ + 0x89) = 0;
+    *(u8*)(this_ + 0x69) = 0;
+    *(u8*)(this_ + 0x7c) = 0;
+    *(u8*)(this_ + 0x6a) = 0;
+    *(u8*)(this_ + 0x88) = 0;
+    *(u8*)(this_ + 0x8a) = 0;
+    *(u8*)(this_ + 0x8b) = 0;
+    *(u8*)(this_ + 0x8c) = 0;
+    *(u8*)(this_ + 0x8d) = 0;
+    *(u8*)(this_ + 0x8e) = 0;
+    *(u8*)(this_ + 0x75) = 0;
+    *(u32*)(this_ + 0x78) = 0;
+    ((JASAudioReseter*)*(void**)(this_ + 0x2c))->resume();
 }
 
 extern "C" void fn_80459624(char* self, f32* pos, Mtx mtx, int idx)
