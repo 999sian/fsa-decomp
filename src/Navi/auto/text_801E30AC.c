@@ -53,6 +53,36 @@ extern "C" unsigned long fn_801E6840(const char* str) {
 
     return len;
 }
+
+extern "C" int fn_801E63F4(void*, int, int);
+extern "C" unsigned long fn_801E6A3C(int base, int max_width, int (*ReadProc)(void*, int, int), void* ReadProcArg, int* chars_scanned, int* negative, int* overflow);
+extern "C" int lbl_802FFAA8;
+extern "C" unsigned long fn_801E6980(const char* str, char** end, int base) {
+    struct {
+        char* NextChar;
+        int NullCharDetected;
+    } isc;
+    unsigned long value;
+    int count, negative, overflow;
+
+    isc.NextChar = (char*)str;
+    isc.NullCharDetected = 0;
+
+    value = fn_801E6A3C(base, 0x7FFFFFFF, fn_801E63F4, (void*)&isc, &count, &negative, &overflow);
+
+    if (end)
+        *end = (char*)str + count;
+
+    if (overflow) {
+        value = -1;
+        lbl_802FFAA8 = 0x22;
+    } else if (negative) {
+        value = -value;
+    }
+
+    return value;
+}
+
 #pragma pop
 extern "C" int fn_801E6DB0(FileFlags* file, int mode) {
     register int orientation;
