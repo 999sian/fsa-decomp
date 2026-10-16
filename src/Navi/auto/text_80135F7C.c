@@ -30,7 +30,7 @@ struct NaviTracker {
 
 struct It_80138B20 { void* p; };
 struct Tag_80138B20 {};
-extern "C" void fn_80138B7C(void*, It_80138B20, It_80138B20, It_80138B20, void*, Tag_80138B20);
+extern "C" It_80138B20 fn_80138B7C(It_80138B20, It_80138B20, It_80138B20, void*, Tag_80138B20);
 
 struct VObj_801398CC {
     virtual void v0();
