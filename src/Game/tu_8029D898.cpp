@@ -44,7 +44,7 @@ extern "C" void* fn_8023E724(void* p);
 extern "C" u32 fn_802A0800(char* self, void* p3, u32 room);
 extern void* lbl_8053AAF8;
 extern u16 lbl_8046CB88[];
-extern "C" s16 fn_8022461C(JGeometry::TVec2<f32>* pos, s32 flag);
+extern "C" u16 fn_8022461C(JGeometry::TVec2<f32>* pos, s32 flag);
 extern "C" void fn_8029D898(void* a, s32 b) {
     s32 v = *(s32*)((char*)fn_802D6A9C() + 0x34);
     fn_802D7970(fn_802D6A9C(), b);
