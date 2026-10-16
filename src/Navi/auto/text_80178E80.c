@@ -709,9 +709,7 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
 #pragma push
 #pragma use_lmw_stmw off
 extern "C" void fn_8017E65C(u32* self, void* a, f32 f, int b, int c) {
-    void* p = fn_8017A4A8(a);
-    void (*vfn)(void*, void*, f32, int, int) = (void (*)(void*, void*, f32, int, int))((*(void***)self)[50]);
-    vfn(self, p, f, b, c);
+    ((void (*)(void*, void*, f32, int, int))(*(u32**)self)[50])(self, fn_8017A4A8(a), f, b, c);
 }
 #pragma pop
 extern "C" void fn_8017E9DC(u32* self, u32 a) {
@@ -730,9 +728,8 @@ extern "C" void fn_8017EB2C(u32* self, void* a, int b) {
 
 #pragma push
 #pragma use_lmw_stmw off
-extern "C" void fn_8017EC94(void* self, void* a, int b, int c) {
-    void* r = fn_8017A4A8(a);
-    ((void (*)(void*, void*, int, int))(*(void***)self)[70])(self, r, b, c);
+extern "C" void fn_8017EC94(u32* self, void* a, int b, int c) {
+    ((VObj_80180980*)self)->vf118(fn_8017A4A8(a), b, c);
 }
 #pragma pop
 extern "C" void fn_801C5D48(void* p);
