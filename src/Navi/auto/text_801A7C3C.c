@@ -447,6 +447,15 @@ extern "C" void* fn_801B37D8(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" u8 fn_801B4B1C(u8* self, int idx) {
+    int off = (*(u16**)(self + 8))[idx] * 0x138;
+    u8 v = (*(u8**)(self + 4))[off + 7];
+    if (v != 0xff) {
+        return (*(u8**)(self + 0x64))[v];
+    }
+    return 1;
+}
+
 extern "C" Entry_801B4B54 fn_801B4B54(void* self, int idx) {
     Entry_801B4B54 def = lbl_80202660;
     u16* tbl = *(u16**)((u8*)self + 8);
@@ -473,7 +482,7 @@ extern "C" void* fn_801B4C14(u32* data) {
     void* fn_801B4CB0(void*);
     void* fn_801B4D28(void*, u32*);
     void* fn_801B4CCC(void*, s16);
-    u8 buf[24];
+    u8 buf[12];
     void* r;
     if (data[0] == 0x4a334431 && data[1] == 0x626c7331) {
         fn_801B4CB0(buf);
@@ -500,6 +509,28 @@ extern "C" void* fn_801B4CCC(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" void* fn_801B4D28(u8* self, u8* data) {
+    void* fn_8015A90C(u32);
+    void* fn_801AE680(void*);
+    void fn_801B4DC4(void*, u8*);
+    void* p = fn_8015A90C(0x28);
+    if (p != 0) {
+        p = fn_801AE680(p);
+    }
+    *(void**)(self + 4) = p;
+    u32 n = *(u32*)(data + 0xc);
+    u8* e = data + 0x20;
+    for (u32 i = 0; i < n; i++) {
+        if (*(u32*)e == 0x434c5331) {
+            fn_801B4DC4(self, e);
+        }
+        e += *(u32*)(e + 4);
+    }
+    return *(void**)(self + 4);
 }
 
 extern void* lbl_8029B970[];
