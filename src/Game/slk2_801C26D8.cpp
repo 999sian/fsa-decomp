@@ -25,6 +25,10 @@ extern const f32 lbl_8053EE08;
 extern u16 lbl_8046A748;
 extern void* lbl_8053AC98;
 extern "C" void fn_801C12B8(void* rec);
+extern const f32 lbl_8053EFB8;
+extern const f32 lbl_8053EE08;
+extern const f32 lbl_8053EE0C;
+extern const f32 lbl_8053EE10;
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" void fn_801D1974(void* this_);
@@ -73,6 +77,65 @@ extern "C" void fn_801C27F0(void* this_) {
     ((Actor*)this_)->Actor::v07();
 }
 
+extern f32 lbl_8053EE04;
+extern char* lbl_8053AB10;
+extern void* lbl_8053AED0;
+extern "C" void fn_8030C210(void* cam, void* pos);
+extern "C" void fn_8043E7CC(void* a, void* b);
+extern "C" void fn_801C283C(u8* this_) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0:
+    case 1:
+    case 2:
+    case 0xd:
+    case 0x17:
+        return;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 0xa:
+    case 0xb:
+    case 0xc:
+        if (*(u32*)(this_ + 0x230) & 0x2000) {
+            char* a = *(char**)(lbl_8053AB10 + 0x30);
+            if (*(u8*)(a + 0x284) == 0) {
+                *(u8*)(a + 0x284) = 1;
+                *(f32*)(a + 0x28c) = lbl_8053EE04;
+            }
+            char* cam = *(char**)(lbl_8053AB10 + 0x24);
+            if (*(u8*)(cam + 0x7f5) == 0) {
+                *(u8*)(cam + 0x7f4) = 1;
+                *(s32*)(cam + 0x7f8) = 4;
+                *(f32*)(cam + 0x7fc) = *(f32*)(this_ + 0xc);
+                *(f32*)(cam + 0x800) = *(f32*)(this_ + 0x10);
+                *(f32*)(cam + 0x804) = lbl_8053EE08;
+                *(u8*)(cam + 0x7f6) = 0;
+            }
+        }
+        break;
+    default:
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), this_ + 0xc);
+        {
+            char* cam = *(char**)(lbl_8053AB10 + 0x24);
+            if (*(u8*)(cam + 0x179) == 0) {
+                *(u8*)(cam + 0x178) = 1;
+            }
+        }
+        break;
+    }
+    struct Vec3f {
+        f32 x;
+        f32 y;
+        f32 z;
+    } pos;
+    pos = *(struct Vec3f*)(this_ + 0xc);
+    fn_8043E7CC(lbl_8053AED0, &pos);
+}
+
 extern "C" void fn_801C2960(u8* this_) {
     *(u32*)(this_ + 0x230) &= 0xfdffffff;
     switch (*(s32*)(this_ + 0x248)) {
@@ -107,6 +170,58 @@ extern "C" void fn_801C2960(u8* this_) {
             fn_801C3B7C(this_, 0x1b);
         }
         break;
+    }
+}
+
+extern "C" void fn_801CE32C(void* this_);
+extern "C" void fn_801CE5D4(void* this_);
+extern "C" void fn_80214CE4(void* this_);
+extern "C" void fn_80214994(void* this_);
+extern "C" u8 fn_801CD2F8(void* this_);
+extern "C" u16 fn_8022461C(void* p, void* a);
+extern "C" u16 fn_80226850(void* p, void* a);
+extern "C" void fn_802A381C(void* a, void* b, void* c, s32 d);
+extern "C" void fn_801F0E34(void* this_, s32 a, s32 b);
+extern "C" void fn_801C2A84(u8* this_) {
+    s32 state = *(s32*)(this_ + 0x248);
+    if (state == 0x2f || (state >= 0x17 && state < 0x1b)) {
+        *(f32*)(this_ + 0x3c) = lbl_8053EE08;
+        *(f32*)(this_ + 0x40) = lbl_8053EE08;
+        *(f32*)(this_ + 0x44) = lbl_8053EE08;
+        return;
+    }
+    u32 flags = *(u32*)(this_ + 0x230);
+    if ((flags & 7) == 0) {
+        fn_801CE32C(this_);
+    } else if (!(flags & 2)) {
+        fn_801CE5D4(this_);
+    }
+    fn_80214CE4(this_ + 0x4ec);
+    fn_80214994(this_ + 0x4ec);
+    if ((*(u32*)(this_ + 0x524) & 1) && !fn_801CD2F8(*(void**)(this_ + 4)) && *(f32*)(this_ + 0x14) <= lbl_8053EE08) {
+        state = *(s32*)(this_ + 0x248);
+        if (state < 0x17) {
+            if (state != 10) {
+                if (state < 10) {
+                    if (state >= 0) {
+                        return;
+                    }
+                } else if (state < 0xf) {
+                    return;
+                }
+            }
+        } else {
+            if (state == 0x29) {
+                return;
+            }
+            if (state < 0x29 && state < 0x1b) {
+                return;
+            }
+        }
+        if (fn_8022461C(this_ + 0xc, *(void**)(this_ + 4)) == 0 && fn_80226850(this_ + 0xc, *(void**)(this_ + 4)) != 0xad) {
+            fn_802A381C(lbl_8053AC98, this_ + 0xc, *(void**)(this_ + 4), 0xad);
+            fn_801F0E34(this_, 0x3008a, 0);
+        }
     }
 }
 
@@ -227,9 +342,9 @@ extern "C" void* fn_801C573C(void* this_) {
     ResetFlagBlock3c_Zero(p + 0x548);
     fn_80217484(p + 0x550);
     *(u8*)(p + 0x55c) = 0;
-    *(s32*)(p + 0x560) = 4;
     *(u8*)(p + 0x55d) = 0;
     *(u8*)(p + 0x55e) = 0;
+    *(s32*)(p + 0x560) = 4;
     *(s32*)(p + 0x564) = 0;
     *(s32*)(p + 0x568) = lbl_8046A748;
     *(s32*)(p + 0x56c) = 0;
