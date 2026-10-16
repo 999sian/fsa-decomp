@@ -72,6 +72,14 @@ extern "C" void fn_804594E4(void* self, u32 mode)
     JASDriver::setOutputMode(mode);
 }
 
+extern "C" void fn_80459624(char* self, f32* pos, Mtx mtx, int idx)
+{
+    *(f32*)(self + 0x8) = pos[0];
+    *(f32*)(self + 0xc) = pos[2];
+    *(f32*)(self + 0x10) = pos[1];
+    PSMTXCopy(mtx, (f32(*)[4])(*(char**)(self + 0x3c) + idx * 0x30 + 0x54));
+}
+
 extern "C" void fn_8045A080(char* self)
 {
     *(u32*)(self + 0x80) = 0;
