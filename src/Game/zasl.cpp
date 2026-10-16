@@ -2,6 +2,9 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "Game/ItemBase.h"
+
+extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 
 extern "C" void fn_801CE32C(void*);
 extern "C" void fn_801CE5D4(void*);
@@ -78,8 +81,12 @@ extern "C" void fn_8020C30C(void* p) {
 
 extern "C" void fn_8020C374(void* p) {
     char* c = (char*)p;
-    *(f32*)(c + 0x3c) = JMASinShort(*(s16*)(c + 0x2ae)) * *(f32*)(c + 0x254);
-    *(f32*)(c + 0x40) = JMACosShort(*(s16*)(c + 0x2ae)) * *(f32*)(c + 0x254);
+    s16 a = *(s16*)(c + 0x2ae);
+    f32 r = *(f32*)(c + 0x254);
+    f32 x = JMASinShort(a) * r;
+    f32 y = JMACosShort(a) * r;
+    *(f32*)(c + 0x3c) = x;
+    *(f32*)(c + 0x40) = y;
     (*(void (**)(void*))(*(char**)p + 0x84))(p);
 }
 
