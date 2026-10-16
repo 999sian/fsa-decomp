@@ -17,3 +17,48 @@ extern "C" void fn_80449070(void* self_) {
     f32 f = lbl_80543DA8;
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
+
+extern "C" void __dl__FPv(void*);
+extern "C" u8 lbl_804B1C90[];
+extern u8* lbl_8053AF18;
+extern "C" void* fn_80449494(void* param_1, short param_2) {
+    void* result = param_1;
+
+    if (result != 0) {
+        *(void**)result = (void*)lbl_804B1C90;
+
+        if (((fn_80449494_Obj**)result)[1] != 0) {
+            ((fn_80449494_Obj**)result)[1]->Release(1);
+        }
+        ((fn_80449494_Obj**)result)[1] = 0;
+
+        if (((fn_80449494_Obj**)result)[2] != 0) {
+            ((fn_80449494_Obj**)result)[2]->Release(1);
+        }
+        ((fn_80449494_Obj**)result)[2] = 0;
+
+        fn_80449494_Obj** ptr = (fn_80449494_Obj**)result;
+        int i = 0;
+        do {
+            if (ptr[3] != 0) {
+                ptr[3]->Release(1);
+            }
+            ptr[3] = 0;
+            if (ptr[7] != 0) {
+                ptr[7]->Release(1);
+            }
+            i++;
+            ptr[7] = 0;
+            ptr++;
+        } while (i < 4);
+
+        lbl_8053AF18 = 0;
+
+        if (param_2 > 0) {
+            __dl__FPv(result);
+        }
+    }
+
+    return result;
+}
+
