@@ -48,6 +48,11 @@ extern "C" float fn_801EA204(void) {
     return (float)fn_801E997C();
 }
 
+extern const double lbl_80302320;
+extern "C" float fn_801EA228(void) {
+    return (float)fn_801E9FC0();
+}
+
 extern "C" double fn_801E9E10(void);
 extern "C" float fn_801EA270(void) {
     return (float)fn_801E9E10();
