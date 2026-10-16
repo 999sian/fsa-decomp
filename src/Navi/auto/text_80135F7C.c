@@ -1278,13 +1278,16 @@ extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
 extern "C" void fn_801C5DA8(void* a, void* b, void* c);
 extern "C" void fn_801C5E74(void* a, void* b);
 extern "C" void fn_80133000(void* a, void* b, void* c, void* d);
-extern "C" s32 fn_8013BAB4(void* a, f32* b, void* c, u32 d) {
+extern "C" void fn_801C5DA8(void*, void*, void*);
+extern "C" void fn_801C5E74(void*, void*);
+extern "C" void fn_801C61AC(void*, f32, f32, f32);
+extern "C" s32 fn_8013BAB4(void* a, f32* b, VObj_8013BA1C* c, u32 d) {
     u8 out[48];
     u8 pos[48];
     if (c == nullptr) {
         return 0;
     }
-    if (!((u8 (*)(void*, u32, void*))(*(void***)c)[14])(c, d, out)) {
+    if (!c->v12(d, out)) {
         return 0;
     }
     fn_801C61AC(pos, b[0], b[1], b[2]);
