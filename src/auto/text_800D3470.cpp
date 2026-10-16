@@ -137,6 +137,15 @@ void J3DTexGenBlockPatched::initialize()
 	mTexMtxOffset = 0;
 }
 
+void J3DTexGenBlockBasic::initialize()
+{
+	mTexGenCnt = 0;
+	for (int i = 0; i < 8; i++) {
+		mTexMatrices[i] = nullptr;
+	}
+	mTexMtxOffset = 0;
+}
+
 extern "C" int fn_800D3E10(void) {
     return 0x22;
 }
