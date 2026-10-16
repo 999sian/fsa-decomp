@@ -1,7 +1,14 @@
 #include "Game/Actor.h"
+#include "types.h"
 
 
 extern "C" char lbl_804B19E0[];
+extern "C" void fn_802D6A9C(void);
+extern "C" u8 fn_802D39CC(void);
+extern "C" int fn_80231A50(void);
+extern "C" void fn_8044148C(void) {
+}
+
 extern "C" void fn_8044172C(void) {
 }
 
