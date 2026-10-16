@@ -25,6 +25,11 @@ struct Init48 {
     s32 w40;
 };
 extern s32 lbl_804AB248[];
+extern u8* lbl_8053AB10;
+extern char lbl_8047174C[];
+extern f32 lbl_80541A58;
+extern "C" void fn_802F86CC(u32, void*, u32, s32, f32, f32, void*);
+extern "C" void fn_80307AC8(u32, s32, void*, s32, s32, s32, s32);
 
 extern "C" Actor* fn_8031EF4C(Actor* param_1, s16 param_2)
 {
