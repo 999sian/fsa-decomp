@@ -11,6 +11,7 @@ extern void* lbl_8027EC78[];
 extern void* lbl_80299A8C[];
 extern void* lbl_802044AC[];
 extern u8 lbl_8027D7C0[];
+extern s32 lbl_8027D340[];
 extern u32 lbl_802FBA78;
 extern "C" void fn_801DA39C(s32, s32, s32, s32, s32);
 extern "C" void fn_801DA364(void);
@@ -111,7 +112,7 @@ extern "C" BOOL fn_80058B18(s32 param_1) {
     fn_8005C424();
     result = fn_8005B97C(1, param_1, 0);
     fn_8005C460();
-    return result == 0;
+    return !result;
 }
 
 extern "C" void fn_80058B64(s32 param_1) {
