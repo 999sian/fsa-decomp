@@ -47,11 +47,11 @@ extern "C" Actor* fn_8034DFF0(Actor* p, s16 n) {
 
 extern "C" void fn_8034E2F0(char* this_) {
     Init48 s;
-    u8 i;
+    s32 i;
     s.w18 = -1;
     s.w1c = -1;
-    for (i = 0; i < 0x10; i += 8) {
-        s.idx[i] = i;
+    for (i = 0; (u8)i < 0x10; i += 8) {
+        s.idx[(u8)i] = i;
         s.idx[(u8)(i + 1)] = i + 1;
         s.idx[(u8)(i + 2)] = i + 2;
         s.idx[(u8)(i + 3)] = i + 3;
@@ -83,10 +83,10 @@ extern "C" void fn_8034E2F0(char* this_) {
     s.w40 = 2;
     s.b24[1] = -3;
     s.b24[0] = 0;
-    s32 iVar1 = *(s32*)(this_ + 0x238);
+    s32 iVar1 = *(s32*)(this_ + 0x238) + 0xd;
     if (*(s32*)(this_ + 0x4) < 8) {
         u32 uVar2 = ((SlotVirt6*)*(char**)(lbl_8053AAF8 + 0xa4))->v06(0x534f4220, lbl_80472210);
-        fn_802F86CC(*(u32*)(lbl_8053AB10 + 0x20), this_ + 0xc, uVar2, iVar1 + 0xd, lbl_805425C0, lbl_805425C0, &s);
+        fn_802F86CC(*(u32*)(lbl_8053AB10 + 0x20), this_ + 0xc, uVar2, iVar1, lbl_805425C0, lbl_805425C0, &s);
     }
     fn_80307AC8(*(s32*)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, *(s32*)(this_ + 0x238) + 0xd, 0, 0, -1);
 }
