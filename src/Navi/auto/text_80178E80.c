@@ -10,6 +10,23 @@ extern void* lbl_80298DF0[];
 
 extern "C" void fn_80177F0C(void);
 extern "C" void fn_801813CC(u32*, int, int, int);
+
+struct UnkVObj_80181CCC {
+    virtual void vf8(int);
+    virtual u16 vfC();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void vf18();
+    virtual void vf1C();
+    virtual void vf20();
+    virtual void vf24();
+    virtual void vf28();
+    virtual void vf2C();
+    virtual void vf30();
+    virtual void vf34();
+    virtual void vf38();
+    virtual void* vf3C();
+};
 extern "C" void fn_80177E84(void);
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_8016A0B4(void* p, void* obj);
