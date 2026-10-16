@@ -49,6 +49,25 @@ extern u8 lbl_802994F0[];
 extern u8 lbl_80299504[];
 extern u8 lbl_80299244[];
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
+extern "C" void fn_801DCCDC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern "C" void fn_801DCAC0(s32 a, void* b);
+extern "C" void fn_801DCBB0(s32 a, void* b);
+extern "C" void fn_801DCFB8(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" void fn_801DD58C(void* a, s32 b);
+extern "C" void fn_801DEDBC(s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_801DEE10(s32 a);
+extern "C" void fn_801DEE3C(s32 a);
+extern "C" void fn_801DEFA4(s32 a);
+extern "C" void fn_801DEA74(s32 a, void* b, f32 c, f32 d, f32 e, f32 f);
+extern "C" void fn_801DEC98(s32 a, s32 b, s32 c);
+extern "C" void fn_801DEE68(s32 a, s32 b, s32 c);
+extern "C" void fn_801DEE9C(s32 a);
+extern s32 lbl_802FE658;
+extern s32 lbl_802FE65C;
+extern f32 lbl_80301CA0;
+extern f32 lbl_80301CA4;
+extern f32 lbl_80301CA8;
+extern u8 lbl_80299860[];
 
 struct VObj_80185DA4 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
