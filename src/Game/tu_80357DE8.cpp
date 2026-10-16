@@ -19,3 +19,8 @@ extern "C" void* fn_80357DE8(void* self, s16 del)
     }
     return self;
 }
+
+extern "C" void fn_80357E48(void)
+{
+}
+
