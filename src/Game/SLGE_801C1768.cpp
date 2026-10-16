@@ -8,6 +8,8 @@ extern "C" void fn_801EE434(void* p);
 extern "C" void fn_8021FAB8(u8* p, s32 n);
 extern "C" void __dt__5ActorFv(u8* this_, s32 flags);
 extern "C" void __dl__FPv(void* p);
+extern "C" void fn_802F745C(void* a, void* b, void* c, void* d);
+extern "C" u32 lbl_8053AB10;
 
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" u32 fn_801C5660(s32 a, s32 b, s32 c, s32 d, s32 e);
