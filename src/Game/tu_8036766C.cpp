@@ -6,6 +6,12 @@ struct Pair2f {
     f32 y;
 };
 
+struct Vec3f {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
 
 extern "C" char lbl_804ADFE8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -36,14 +42,15 @@ extern "C" void* fn_801F856C(void);
 extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_80367E24(u8* p) {
     s32 n = *(s32*)((u8*)fn_801F856C() + 0x1008);
-    s32 i;
     s32 off;
+    s32 i;
     for (i = 0, off = 0; i < n; i++, off += 4) {
         u8* actor = *(u8**)((u8*)fn_801F856C() + off + 8);
         if (actor != 0 && *(u32*)(actor + 0x1a0) == 'DCR2') {
             *(s32*)(p + 0x250) = i;
             *(u8**)(p + 0x254) = actor;
-            *(Vec*)(p + 0x258) = *(Vec*)(actor + 0xc);
+            *(Pair2f*)(p + 0x258) = *(Pair2f*)(actor + 0xc);
+            *(f32*)(p + 0x260) = *(f32*)(actor + 0x14);
             break;
         }
     }
