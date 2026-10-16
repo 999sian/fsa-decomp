@@ -791,8 +791,8 @@ extern "C" void fn_801A146C(u8* param_1) {
     if ((lbl_802FFA80[2] + 0x37) > lbl_802FFA80[3]) {
         fn_801E012C();
     }
-    local = *(u32*)(param_1 + 0x18);
     start = lbl_802FFA80[2];
+    local = *(u32*)(param_1 + 0x18);
     fn_801915BC(param_1[4], &local, *(f32*)(param_1 + 0x8), *(f32*)(param_1 + 0xc), *(f32*)(param_1 + 0x10), *(f32*)(param_1 + 0x14));
     fn_80191924(param_1[5], *(u16*)(param_1 + 6), param_1 + 0x1c);
     fn_801BC250(start, lbl_802FFA80[2] - start);
