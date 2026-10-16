@@ -95,6 +95,20 @@ struct VObj_8013BA1C {
 extern "C" void fn_80133000(void* a, void* b, void* c, void* d);
 extern "C" void fn_801C5DA8(void*, void*, void*);
 
+struct VObj_8013C4B0 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10(BOOL, u32, u32);
+};
+
 struct Ptr_8013B368 { u32* p; };
 
 struct Chunk_8013B368 {
@@ -1434,6 +1448,18 @@ extern "C" void fn_8013C2C0(void* param_1, s32 param_2, void** param_3) {
         return;
     }
     *(void**)((u8*)param_1 + 0x130) = *param_3;
+}
+
+extern "C" void fn_8013C4B0(void* param_1, s32 param_2, u32* param_3) {
+    switch (param_2) {
+    case 2: {
+        void* obj = *(void**)((u8*)param_1 + 0x128);
+        BOOL flag = *param_3 != 0;
+        void (*fn)(void*, BOOL, u32, u32) = *(void (**)(void*, BOOL, u32, u32))(*(u8**)obj + 0x30);
+        fn(obj, flag, *(u32*)((u8*)param_1 + 0x144), *(u32*)((u8*)param_1 + 0x148));
+        break;
+    }
+    }
 }
 
 extern "C" void fn_80133414(void*, int);
