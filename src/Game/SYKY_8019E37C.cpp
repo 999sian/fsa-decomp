@@ -40,7 +40,7 @@ extern "C" void fn_8019E37C(u8* p) {
         fn_8019E480(p);
         break;
     case 3:
-        fn_8019E7A4();
+        fn_8019E7A4(p);
         break;
     }
 }
