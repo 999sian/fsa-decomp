@@ -1153,14 +1153,14 @@ extern "C" int fn_801A4154(int param_1, int param_2) {
 
 extern "C" void fn_801A4168(u8* p, s32 i, s16* src) {
     s16 a = src[0];
-    u8* d = p + (i << 3);
+    p = p + i * 8;
     s16 b = src[1];
-    *(s16*)(d + 0x14) = a;
+    *(s16*)(p + 0x14) = a;
     s16 c = src[2];
-    *(s16*)(d + 0x16) = b;
+    *(s16*)(p + 0x16) = b;
     s16 e = src[3];
-    *(s16*)(d + 0x18) = c;
-    *(s16*)(d + 0x1a) = e;
+    *(s16*)(p + 0x18) = c;
+    *(s16*)(p + 0x1a) = e;
 }
 
 extern "C" s32 fn_801A41C0(s32 p, s32 i) {
@@ -1479,8 +1479,7 @@ extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
 }
 
 extern "C" s32 fn_801A49CC(s32 p, s32 i) {
-    s32 off = i * 4 + 0xb8;
-    return p + off;
+    return p + i * 4 + 0xb8;
 }
 
 extern "C" void fn_801A49E0(u8* p, s32 i, u8 v) {
