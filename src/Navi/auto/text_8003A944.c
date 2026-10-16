@@ -131,8 +131,8 @@ extern "C" void fn_8003C2B4(u8* p, s16 a, s16 b, s16 c, s16 d, s16 e, s16 f, s16
 
 extern "C" void* memset(void* dst, int c, unsigned long n);
 extern "C" void fn_8003C34C(f32* out, u8* obj);
-extern "C" void fn_8003C318(Vec3_8003C318* out) {
-    fn_8003C34C(&out->x, lbl_802BB0FC);
+extern "C" void fn_8003C318(f32* out) {
+    fn_8003C34C(out, lbl_802BB0FC);
 }
 
 extern "C" void fn_8003C34C(f32* out, u8* obj) {
@@ -230,6 +230,18 @@ extern "C" void fn_8003CDD4(void) {}
 
 extern "C" void fn_8003CDD8(void* param_1) {
     fn_80042638(lbl_802EE470, (char*)param_1 + 0x10, (char*)param_1 + 0x14);
+}
+
+extern "C" void fn_8003CEBC(void);
+extern "C" void* fn_8003CE80(void* ptr, s16 param_2);
+extern "C" void* fn_8003CE0C(void* param_1) {
+    *(void**)param_1 = lbl_80299A8C;
+    *((s32*)param_1 + 1) = 0;
+    *((s32*)param_1 + 2) = 0;
+    *((s32*)param_1 + 3) = 0;
+    *(void**)param_1 = lbl_80246A20;
+    fn_801E0DB8((char*)param_1 + 0x18, (void*)fn_8003CEBC, (void*)fn_8003CE80, 0x38, 0x96);
+    return param_1;
 }
 
 extern "C" void* fn_8003CE80(void* ptr, s16 param_2) {
