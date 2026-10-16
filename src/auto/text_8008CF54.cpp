@@ -33,6 +33,7 @@ extern "C" void PADSetAnalogMode(u32);
 extern "C" int PADInit(void);
 extern "C" u32 lbl_8053A92C;
 extern "C" u32 lbl_80499490[];
+extern "C" u32 lbl_80499480[];
 extern "C" void remove__10JSUPtrListFP10JSUPtrLink(void *, void *);
 extern "C" void __dt__10JSUPtrLinkFv(void *, s16);
 extern "C" void __dt__11JKRDisposerFv(void *, s16);
@@ -50,6 +51,28 @@ void operator delete(void *p);
 struct JUTGamePad {
     static void init();
 };
+
+extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
+    __ct__11JKRDisposerFv(this_);
+    *(u32*)this_ = (u32)lbl_80499490;
+    fn_8008D910(this_ + 0x18);
+    fn_8008DADC((u32*)(this_ + 0x48));
+    fn_8008DADC((u32*)(this_ + 0x58));
+    fn_8008DE64((u32*)(this_ + 0x68), (int)this_);
+    __ct__10JSUPtrLinkFPv(this_ + 0x80, this_);
+    this_[0x98] = 0;
+    *(s16*)(this_ + 0x7c) = (s16)param_2;
+    if (*(s16*)(this_ + 0x7c) >= 0) {
+        lbl_8053A924[param_2]++;
+        fn_8008D0D4();
+    }
+    append__10JSUPtrListFP10JSUPtrLink((void*)lbl_8052E8A0, this_ + 0x80);
+    fn_8008D538(this_);
+    *(u32*)(this_ + 0x90) = 0;
+    *(u32*)(this_ + 0x94) = 0;
+    fn_8008D148((int)this_);
+    return this_;
+}
 
 extern "C" void* dtor_8008D028(void* this_, s16 freeFlag) {
     if (this_ != 0) {
