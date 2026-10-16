@@ -472,6 +472,29 @@ extern "C" s32 fn_8001AB70(void* p) {
     return 0;
 }
 
+extern "C" void fn_8001D51C(void* param_1, u8 param_2);
+extern "C" s32 fn_8001D4D4(void* param_1, u8 param_2);
+extern "C" int fn_8001BC10(int param_1);
+extern "C" s32 fn_8001ABBC(void* param_1) {
+    void* obj;
+    if (param_1 != NULL) {
+        obj = *(void**)((u8*)*(void**)((u8*)param_1 + 0x2c) + 0x18);
+        if (obj == NULL) {
+            fn_8001D51C(param_1, 1);
+            fn_8001D51C(param_1, 2);
+        } else if (fn_8001BC10(*(int*)((u8*)obj + 4)) == 1) {
+            if (fn_8001D4D4(obj, 1) == 0) {
+                fn_8001D51C(param_1, 1);
+            }
+            if (fn_8001D4D4(obj, 2) == 0) {
+                fn_8001D51C(param_1, 2);
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" void* fn_8001AC84(void* param_1) {
     if (lbl_802FEC10 == 0) {
         lbl_802FEC0C = 0x09130000;
@@ -1528,10 +1551,10 @@ extern "C" void fn_8001F750(u8* param_1, u32 param_2) {
 
 extern "C" void fn_8001F764(u8* param_1, f32* param_2) {
     f32 x = param_2[0];
-    *(f32*)(param_1 + 0x14) = x;
     f32 y = param_2[1];
-    *(f32*)(param_1 + 0x18) = y;
+    *(f32*)(param_1 + 0x14) = x;
     f32 z = param_2[2];
+    *(f32*)(param_1 + 0x18) = y;
     *(f32*)(param_1 + 0x1c) = z;
     param_1[4] |= 2;
 }
