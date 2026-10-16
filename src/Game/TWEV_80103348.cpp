@@ -31,19 +31,6 @@ extern "C" s32 fn_8013CC50(void* a, void* b, f32 scale, s32 c, s32 d, s32 e, s32
 extern f32 lbl_8053C1D0;
 extern f32 lbl_8053C1D8;
 extern char lbl_80463BD0[];
-
-struct TWEVParam {
-    u8 buf[16];
-    s32 a;
-    s32 b;
-    s32 c;
-    u8 d[11];
-    s32 e;
-    u8 f[3];
-    s32 g;
-    s32 h;
-    s32 i;
-};
 extern "C" void fn_80103F9C(void* this_) {
     char* p = (char*)this_;
     *(s32*)(p + 0x230) = 0;
