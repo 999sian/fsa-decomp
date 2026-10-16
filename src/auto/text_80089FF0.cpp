@@ -1,5 +1,7 @@
 #include "dolphin/os.h"
 #include "JSystem/JSupport/JSUList.h"
+#include "JSystem/JUtility/JUTException.h"
+#include "JSystem/JUtility/JUTConsole.h"
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
@@ -56,6 +58,31 @@ extern "C" void fn_8008C494(char* param_1) {
             entry[0] = param_1;
         }
         lbl_8054BBDC.append((JSUPtrLink*)(entry + 1));
+    }
+}
+
+void JUTException::createConsole(void* console_buffer, u32 console_buffer_size)
+{
+    if (!console_buffer || !console_buffer_size)
+    {
+        return;
+    }
+
+    u32 lines = JUTConsole::getLineFromObjectSize(console_buffer_size, 0x32);
+    if (lines != 0)
+    {
+        sConsoleBuffer = console_buffer;
+        sConsoleBufferSize = console_buffer_size;
+        sConsole = JUTConsole::create(0x32, console_buffer, console_buffer_size);
+
+        JUTConsoleManager* manager = JUTConsoleManager::sManager;
+        manager->setDirectConsole(sConsole);
+
+        sConsole->setFontSize(10.0, 6.0);
+        sConsole->setPosition(15, 26);
+        sConsole->setHeight(23);
+        sConsole->setVisible(true);
+        sConsole->setOutput(JUTConsole::OUTPUT_OSR_AND_CONSOLE);
     }
 }
 
