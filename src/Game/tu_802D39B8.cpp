@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "sdk/stl/float.h"
 
 #pragma auto_inline off
@@ -155,11 +156,10 @@ extern "C" void fn_802D4874(u8* p, s32 x, u16 v, u32* out, u32* out2) {
     }
     out[1] = 1;
     out[0] = 0;
-    while (idx > 0) {
+    for (; idx != 0; idx--) {
         u32 hi = out[1];
         out[1] = hi << 1;
         out[0] = hi >> 0x1f | out[0] << 1;
-        idx--;
     }
     RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     if (x < 8) {
@@ -200,20 +200,22 @@ extern "C" bool fn_802D49A8(char* p, s32 x, u16 value) {
 
 extern "C" bool fn_802D4ADC(char* p, s32 x, u16 v) {
     s32 base = x < 8 ? 0 : x - 7;
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     s32 i;
     for (i = 0; i < 0x40; i++) {
-        if (v != (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[base][i]) {
-            continue;
+        if (v == rooms->values2948[base][i]) {
+            break;
         }
-        if (i >= 0x40) {
-            return false;
-        }
+    }
+    if (i < 0x40) {
         u64 mask = 1;
-        while (i != 0) {
+        for (;;) {
+            if (i == 0) {
+                break;
+            }
             mask <<= 1;
             i--;
         }
-        RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
         u64 word;
         if (x < 8) {
             word = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][0];
@@ -275,28 +277,35 @@ extern "C" void fn_802D6BF8(char*, u8 value) {
 }
 
 extern const f32 lbl_80541120;
-extern "C" void fn_802D6C10(char*, f32* pos, s32 id) {
-    char* rooms = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    s32 i;
-    for (i = 0; i < 8; i++) {
-        if (id == *(s32*)(rooms + i * 4 + 0x13188)) {
+extern "C" void fn_802D6C10(char*, f32* pos, u32 id) {
+    s32 off4 = 0;
+    s32 off8 = 0;
+    u32 i = 0;
+    for (s32 n = 8; n != 0; n--) {
+        char* rooms = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        if (id == *(u32*)(rooms + off4 + 0x13188)) {
+            f32* pair = (f32*)(rooms + off8 + 0x13148);
             f32 eps = lbl_80541120 * FLT_EPSILON;
-            f32* pair = (f32*)(rooms + i * 8 + 0x13148);
             f32 dx = pair[0] - pos[0];
             if (-eps <= dx && dx <= eps) {
                 f32 dy = pair[1] - pos[1];
                 if (-eps <= dy && dy <= eps) {
-                    f32* dst = (f32*)(rooms + i * 8 + 0x130E8);
+                    off4 = (s32)i * 4;
+                    off8 = (s32)i * 8;
+                    f32* dst = (f32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + off8 + 0x130E8);
                     dst[0] = lbl_8054111C;
                     dst[1] = lbl_8054111C;
-                    *(s32*)(rooms + i * 4 + 0x13128) = -1;
+                    *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + off4 + 0x13128) = -1;
                     pair[0] = lbl_8054111C;
                     pair[1] = lbl_8054111C;
-                    *(s32*)(rooms + i * 4 + 0x13188) = -1;
+                    *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + off4 + 0x13188) = -1;
                     return;
                 }
             }
         }
+        off4 += 4;
+        off8 += 8;
+        i++;
     }
 }
 
@@ -735,6 +744,35 @@ extern "C" u8 fn_802DA000(char*) {
     return *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
 }
 
+extern "C" u8 fn_802DA630(char* p) {
+    u8 flag = *(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1E8);
+    if (flag == 0) {
+        f32 offset;
+        s32 i;
+        Vec3f v;
+        void* e;
+        s32 count;
+
+        offset = *(s32*)(p + 0x2C) > 0 ? lbl_80541160 : lbl_80541164;
+        for (i = 0; i < 4; i++) {
+            v = *(Vec3f*)fn_8023E724(i);
+            v.x += offset;
+            fn_80230498(i, &v, (u16)fn_8023CBC0(), 0xff, -0x80, -0x80, 1);
+        }
+        count = *(s32*)((char*)fn_801F856C() + 0x1008);
+        for (i = 0; i < count; i++) {
+            e = *(void**)((char*)fn_801F856C() + i * 4 + 8);
+            if (e != NULL && *(s32*)((char*)e + 0x1A0) == 0x4F53494E && *(s32*)((char*)e + 0x230) == 2) {
+                v = *(Vec3f*)((char*)e + 0xC);
+                v.x += offset;
+                *(Vec3f*)((char*)e + 0xC) = v;
+                break;
+            }
+        }
+    }
+    return flag;
+}
+
 extern "C" u8 fn_802DEDFC(s32 value);
 extern "C" void fn_8038D454(void);
 extern "C" void fn_8022BD70(void);
@@ -818,10 +856,10 @@ extern "C" void fn_802DCDF4(char* p) {
 }
 
 extern "C" u8 fn_802DD3D4(char* p, s32* param_2) {
-    u8 result = 0;
-    u32 mask = 0xf;
     s32 col = *(s32*)(p + 0x14);
     s32 row = *(s32*)(p + 0x18);
+    u32 result = 0;
+    u32 mask = 0xf;
     *(u8*)(p + 0xc9) = 0;
     if (*(u8*)(*(char**)(lbl_8053AB10 + 0x24) + 0x1e8) == 0) {
         s32 count = *(s32*)((char*)fn_801F856C() + 0x1008);
@@ -834,30 +872,29 @@ extern "C" u8 fn_802DD3D4(char* p, s32* param_2) {
             }
             off += 4;
         }
-        if (*param_2 < 1) {
-            if (*param_2 < 0) {
-                col--;
-                *(u8*)(p + 0xc8) = 2;
-            } else if (param_2[1] < 1) {
-                row--;
-                *(u8*)(p + 0xc8) = 8;
-            } else {
-                row++;
-                *(u8*)(p + 0xc8) = 4;
-            }
-        } else {
+        if (*param_2 > 0) {
             col++;
             *(u8*)(p + 0xc8) = 1;
+        } else if (*param_2 < 0) {
+            col--;
+            *(u8*)(p + 0xc8) = 2;
+        } else if (param_2[1] > 0) {
+            row++;
+            *(u8*)(p + 0xc8) = 4;
+        } else {
+            row--;
+            *(u8*)(p + 0xc8) = 8;
         }
         if (row >= 0 && row < 10 && col >= 0 && col < 10) {
-            if (*(u8*)(p + row * 10 + col + 0x60) == 0xff) {
-                if ((mask & *(u8*)(p + 0xc8)) == 0) {
+            u8* cell = (u8*)(p + row * 10 + col);
+            if (cell[0x60] != 0xff) {
+                if ((mask & *(u8*)(p + 0xc8)) != 0) {
+                    result = 1;
+                } else {
                     *(u8*)(p + 0xc9) = 1;
                 }
             } else if ((mask & *(u8*)(p + 0xc8)) == 0) {
                 *(u8*)(p + 0xc9) = 1;
-            } else {
-                result = 1;
             }
         }
     }
