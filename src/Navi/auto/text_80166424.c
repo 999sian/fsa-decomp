@@ -639,6 +639,11 @@ extern "C" void fn_8016AE10(u8* p) {
 extern "C" void fn_8016AE28(void) {
 }
 
+extern "C" int fn_8016B410()
+{
+	return 0;
+}
+
 extern "C" void fn_80118BD0(void*, int);
 extern "C" int fn_8016BC8C(u8* p, void* a, void* b)
 {
