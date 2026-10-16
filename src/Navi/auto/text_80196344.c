@@ -26,6 +26,10 @@ struct NaviRect16 { s16 x, y, w, h; };
 struct NaviColor8 { u8 r, g, b, a; };
 struct NaviBytes4 { u8 b[4]; };
 typedef void (*NaviVFn)(void* self);
+extern u8 lbl_802EE470[];
+extern "C" void fn_80193D9C(u32* p);
+extern "C" void fn_80193DFC(u32* p);
+extern "C" void fn_80198620(u8* p);
 struct NaviRectHolder {
     u8 unk_0x0[0xda];
     NaviRect16 rects[4];
@@ -1683,9 +1687,12 @@ extern u32* lbl_802FFA80;
 extern "C" u8 fn_801A602C(u32 p);
 extern "C" u16 fn_801A6050(u32 p);
 extern "C" void fn_801A36B0(int param_1, u8* param_2) {
-    *(u16*)(param_1 + 4) = *(u16*)param_2;
-    *(u8*)(param_1 + 6) = param_2[2];
-    *(u8*)(param_1 + 7) = param_2[3];
+    u16 h = *(u16*)param_2;
+    u8 t = param_2[2];
+    *(u16*)(param_1 + 4) = h;
+    u8 b = param_2[3];
+    *(u8*)(param_1 + 6) = t;
+    *(u8*)(param_1 + 7) = b;
 }
 
 extern "C" int fn_801A36E8(int p) { return p + 4; }
@@ -2460,13 +2467,15 @@ extern "C" int fn_801A4960(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x98;
 }
 
+extern "C" void fn_80193D9C(u32* p);
+extern "C" void fn_80193DFC(u32* p);
+extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8 a = p3[0];
-    u8* p = p1 + p2 * 4;
-    p[0xb8] = a;
-    p[0xb9] = p3[1];
-    p[0xba] = p3[2];
-    p[0xbb] = p3[3];
+    NaviBytes4* d = (NaviBytes4*)(p1 + 0xb8) + p2;
+    d->b[0] = p3[0];
+    d->b[1] = p3[1];
+    d->b[2] = p3[2];
+    d->b[3] = p3[3];
 }
 
 extern "C" s32 fn_801A49CC(s32 p, s32 i) {
