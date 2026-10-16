@@ -140,6 +140,16 @@ extern "C" int gdev_cc_close()
 	return 0;
 }
 
+extern int lbl_802FFAC8;
+extern "C" int gdev_cc_open()
+{
+	if (lbl_802FFAC8 != 0) {
+		return -0x2715;
+	}
+	lbl_802FFAC8 = 1;
+	return 0;
+}
+
 extern "C" int gdev_cc_shutdown()
 {
 	return 0;
