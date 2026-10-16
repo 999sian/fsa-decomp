@@ -70,6 +70,36 @@ extern "C" void fn_8035E238(int param_1) {
     *(int*)(p + 0x238) = 0;
 }
 
+extern "C" void fn_8035E274(int param_1) {
+    char* p = (char*)param_1;
+    int iVar1 = *(int*)(p + 0x238);
+    if (iVar1 == 0) {
+        if (fn_8035C15C(p, 0) == 1) {
+            fn_8035C1C4(p, 1, 0x21b);
+            *(int*)(p + 0x240) = 0;
+            *(int*)(p + 0x238) = 4;
+        }
+    } else if (iVar1 == 4) {
+        if (fn_8035C15C(p, 1) == 1) {
+            fn_8035C1C4(p, 1, 0x21b);
+        }
+    } else if (iVar1 == 1) {
+        fn_8035C1C4(p, 3, 0x274);
+        *(int*)(p + 0x240) = 1;
+        *(int*)(p + 0x238) = 2;
+    } else if (iVar1 == 2) {
+        if (fn_8035C15C(p, 2) == 1) {
+            fn_8035C1C4(p, 2, 0x274);
+        }
+    } else if (iVar1 == 3) {
+        *(int*)(p + 0x248) = 3;
+        *(int*)(p + 0x244) = 0x45;
+        *(int*)(p + 0x24c) = 0;
+        *(int*)(p + 0x230) = 2;
+        *(int*)(p + 0x238) = 0;
+    }
+}
+
 extern "C" void fn_8035E394(int param_1) {
     char* p = (char*)param_1;
     if (*(int*)(p + 0x238) != 0) {
