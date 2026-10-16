@@ -118,6 +118,12 @@ extern "C" u32 fn_80197B4C(void* param_1) {
     return (b + (a + c + 0x1f)) & ~0x1f;
 }
 
+extern "C" void fn_80198608(u8* param_1) {
+    u8* p = *(u8**)(param_1 + 8);
+    *(u32*)(p + 0x40) = *(u32*)(param_1 + 0x40);
+    *(u32*)(p + 0x44) = *(u32*)(param_1 + 0x44);
+}
+
 extern "C" void fn_801989A4(u8* param_1) {
     if ((*(u32*)(param_1 + 0x20) & 0xC0000000) != 0) {
         return;
