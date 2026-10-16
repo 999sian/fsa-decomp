@@ -353,17 +353,20 @@ struct UnkVObj_80177F0C {
     virtual void vf17();
     virtual u8 vf18(void*);
 };
-extern "C" void fn_801780D4(char* self, unsigned char v)
+extern "C" void fn_801780D4(char* self, u8 v)
 {
     char* n;
-    *(unsigned char*)(self + 0xb1) = v;
+    *(u8*)(self + 0xb1) = v;
     n = *(char**)(self + 0xdc);
-    n = n != 0 ? n - 0xc : 0;
+    if (n != 0) {
+        n -= 0xc;
+    }
     while (n != 0) {
-        void* o = *(void**)(n + 0xc);
-        ((VFn_801780D4)(*(void***)o)[8])(o, v);
+        (*(UnkVObj_80177F0C**)(n + 0xc))->vf6(v);
         n = *(char**)(n + 0x18);
-        n = n != 0 ? n - 0xc : 0;
+        if (n != 0) {
+            n -= 0xc;
+        }
     }
 }
 
