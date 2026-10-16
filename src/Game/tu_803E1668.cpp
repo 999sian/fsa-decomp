@@ -6,3 +6,19 @@ extern "C" int fn_804366B8(void* p);
 extern "C" void fn_80436668(void* p);
 extern "C" void fn_80458880(void* mgr, s32 id, s32 a);
 extern "C" void fn_803E6A28(void) {}
+
+extern "C" void fn_803E6A2C(u8* param_1) {
+    if (fn_804366B8(*(void**)(param_1 + 0x5c)) != 0) {
+        if (param_1[0x26e] == 0) {
+            *(s32*)(param_1 + 0x1dc) = 9;
+            param_1[0x26e] = 1;
+        }
+        if (*(s32*)(param_1 + 0x1bc) == 0) {
+            *(s32*)(param_1 + 0x1b8) = 1;
+        } else {
+            *(s32*)(param_1 + 0x1b8) = 0;
+        }
+        fn_80458880(lbl_8053AF80, 0xb, -1);
+    }
+}
+
