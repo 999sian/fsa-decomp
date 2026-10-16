@@ -10,6 +10,14 @@ extern unsigned char lbl_80246BD8[];
 extern unsigned char lbl_80246C0C[];
 extern int lbl_802FC1B0;
 extern int lbl_802FC1B4;
+extern void* lbl_802FF0C0;
+extern u8 lbl_802EE470[];
+extern "C" void fn_8012FDE0(void*);
+extern "C" void fn_8012FE90(void*, void*, void*);
+extern "C" void fn_80192688(void*);
+extern "C" void fn_801DEE3C(s32);
+extern "C" void fn_801DE24C(s32);
+extern "C" void fn_801DE3E0(s32, s32, s32, s32, s32);
 extern "C" void* fn_80041C10(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -91,12 +99,10 @@ extern "C" void fn_8004B11C(void* param_1) {
 }
 
 extern "C" void* fn_8004B16C(void* param_1, s16 param_2) {
-    if (param_1 != nullptr) {
-        void** pp = (void**)param_1;
-        *pp = (void*)lbl_80246FDC;
-        void* temp = *pp;
-        if (temp != nullptr) {
-            *pp = (void*)lbl_80247000;
+    if (param_1) {
+        *(void**)param_1 = (void*)lbl_80246FDC;
+        if (param_1) {
+            *(void**)param_1 = (void*)lbl_80247000;
         }
         fn_801303BC(param_1, 0);
         if (param_2 > 0) {
