@@ -154,6 +154,10 @@ extern "C" void fn_80172A3C(u8* p1, s32 p2, u8* p3) {
     p1[p2 + 0xb8] = *p3;
 }
 
+extern "C" u8* fn_80172A4C(u8* p, s32 i) {
+    return p + i + 0xb8;
+}
+
 extern "C" s32 fn_80172B18(void) {
     return 0x54564234;
 }
