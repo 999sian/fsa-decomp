@@ -1171,7 +1171,7 @@ extern "C" void* fn_8018939C(void* self, s16 param_2) {
         if (*((u8*)self + 0x140) != 0) {
             VObj_8018939C* obj = *(VObj_8018939C**)((u8*)self + 0x138);
             if (obj != nullptr) {
-                obj->v2(1);
+                obj->v0(1);
             }
         }
         fn_80181724(self, 0);
@@ -1208,16 +1208,14 @@ extern "C" s32 fn_80189C24(u8* self) {
         virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
         virtual s32 v40();
     };
-    Obj* b;
     u8* a = *(u8**)(self + 0x138);
-    if (a == 0) {
-        return 0;
+    if (a != nullptr) {
+        Obj* b = *(Obj**)(a + 0x70);
+        if (b != nullptr) {
+            return b->v40();
+        }
     }
-    b = *(Obj**)(a + 0x70);
-    if (b == 0) {
-        return 0;
-    }
-    return b->v40();
+    return 0;
 }
 
 extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
