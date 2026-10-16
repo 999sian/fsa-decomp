@@ -407,6 +407,10 @@ extern "C" s32 fn_80172D10(s32 p, s32 i) {
     return p + (i << 2) + 0x7c;
 }
 
+extern "C" u32 fn_80172DC8(void) {
+    return 2;
+}
+
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
 
 extern "C" u8 fn_80172EC4(u8* p, s32 i) { return *(p + i + 0x54); }
