@@ -11,6 +11,13 @@ extern void* lbl_8053AB10;
 extern void* sManager__8JUTVideo;
 extern "C" void fn_802FC80C(u8* this_);
 
+struct Tu802F5040Rect {
+    s32 m00;
+    s32 m04;
+    s32 m08;
+    s32 m0c;
+};
+
 struct Tu802F5040Tbl {
     u8 pad0[0x28];
     u8* m_tbl[8];
@@ -33,13 +40,12 @@ extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
             f32 lo_y = *(f32*)(this_ + 0x236c);
             if (y >= lo_y && y < (f32)*(s32*)(this_ + 0x2384) * lbl_80541510 + lo_y) {
                 f32 scale = lbl_80541514;
-                s32 ix = (s32)((x - lo_x) * scale);
-                s32 iy = (s32)((y - lo_y) * scale);
+                s32 ix = (s32)(scale * (x - lo_x));
+                s32 iy = (s32)(scale * (y - lo_y));
                 f32 fx = scale * ((x - lo_x) - lbl_80541510 * (f32)ix);
                 f32 fy = scale * ((y - lo_y) - lbl_80541510 * (f32)iy);
-                u8** slot = (u8**)(this_ + *(s32*)(this_ + 0x2388) * 4);
-                u8* tbl = slot[0x100 / 4];
-                u8* cell = tbl + iy * 0x30c + ix * 0xc;
+                u8* tbl = *(u8**)(this_ + 0x100 + *(s32*)(this_ + 0x2388) * 4);
+                u8* cell = tbl + (iy * 0x30c + ix * 0xc);
                 f32 a = *(f32*)(cell + 0x8);
                 f32 b = *(f32*)(cell + 0x14);
                 f32 c = *(f32*)(cell + 0x314);
@@ -156,6 +162,47 @@ extern "C" void fn_802FF3B0(u8* this_) {
     if (this_[0xe451] != 0 && *(u32*)((u8*)lbl_8053AAF8 + 0x4) != 0) {
         fn_802FA3FC(this_);
     }
+}
+
+extern "C" void fn_802FF3F0(u8* this_) {
+    s32 i;
+    u8* p;
+    u8* e;
+    u8* mgr;
+    u8* video;
+    s32 rect[4];
+    if (this_[0x248] != 0 && *(s32*)(this_ + 0x254) != 0) {
+        mgr = *(u8**)((u8*)lbl_8053AB10 + 0x24);
+        *(s32*)(mgr + 0x144) = *(s32*)(this_ + 0x24c);
+        *(s32*)(mgr + 0x148) = *(s32*)(this_ + 0x250);
+        *(s32*)(mgr + 0x14c) = *(s32*)(this_ + 0x254);
+        *(s32*)(mgr + 0x150) = *(s32*)(this_ + 0x258);
+    } else {
+        video = *(u8**)((u8*)sManager__8JUTVideo + 4);
+        mgr = *(u8**)((u8*)lbl_8053AB10 + 0x24);
+        rect[0] = 0;
+        rect[1] = 0;
+        rect[2] = *(u16*)(video + 4);
+        rect[3] = *(u16*)(video + 6);
+        *(s32*)(mgr + 0x144) = rect[0];
+        *(s32*)(mgr + 0x148) = rect[1];
+        *(s32*)(mgr + 0x14c) = rect[2];
+        *(s32*)(mgr + 0x150) = rect[3];
+    }
+    fn_802FC80C(this_);
+    p = this_;
+    for (i = 0; i < *(s32*)(this_ + 0xd320); i++) {
+        e = p + 0xc220;
+        if (*(u32*)(e + 0xc) != 0) {
+            fn_802F86CC((Tu802F5040Tbl*)this_, e, *(u32*)(e + 0xc), *(u32*)(e + 0x10), e + 0x1c, lbl_80541518, lbl_80541518);
+        } else if (*(u32*)(e + 0x14) != 0) {
+            fn_802F745C((Tu802F5040Tbl*)this_, e, *(u32*)(e + 0x14), e + 0x1c);
+        } else if (*(u32*)(e + 0x18) != 0) {
+            fn_802F6CF4((Tu802F5040Tbl*)this_, e, *(u32*)(e + 0x18), e + 0x1c);
+        }
+        p += 0x88;
+    }
+    *(s32*)(this_ + 0xd320) = 0;
 }
 
 extern "C" void fn_802FA3FC(void* mgr);
