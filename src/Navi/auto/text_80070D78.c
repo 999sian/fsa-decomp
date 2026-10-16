@@ -369,6 +369,28 @@ extern "C" BOOL fn_80072A7C(void)
     return TRUE;
 }
 
+extern StateFunc_80072080 lbl_80280FF4;
+extern "C" BOOL fn_80072A84(u8* p)
+{
+    StateObj_80072080* self = (StateObj_80072080*)p;
+    StateFunc_80072080* cur = &self->m_func;
+    if (!*cur) {
+        StateFunc_80072080 func = lbl_80280FF4;
+        if (*cur != func) {
+            if (*cur) {
+                self->m_state = -1;
+                (self->**cur)(0);
+            }
+            *cur = func;
+            self->m_state = 0;
+            (self->**cur)(0);
+        }
+    }
+    (self->**cur)(0);
+    fn_80071FE4(p);
+    return TRUE;
+}
+
 extern "C" BOOL fn_80072CD8(void);
 extern "C" BOOL fn_80072CD8(void)
 {
