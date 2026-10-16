@@ -30,6 +30,9 @@ void fn_80268B3C(char*);
 s32 fn_80270A8C(char*);
 void fn_8027221C(char*, s32);
 void fn_80283D2C(char*);
+u8 Player_GetField_0xce8(char*);
+u8 Player_GetField_0x454(char*);
+u8 fn_80241230(char*);
 }
 extern f32 lbl_80540150;
 extern char* lbl_8053AAF8;
@@ -161,6 +164,55 @@ extern "C" int fn_8025F684(char* p) {
     return (u8)(U8(p, 0xd64) == 1);
 }
 
+extern "C" bool fn_8025FCC8(char* p) {
+    s32 state = S32(p, 0x1244);
+    if (state != 0x11 && (u32)(state - 0x12) > 4 && state != 0x18 && (u32)(state - 0x1b) > 2) {
+        if (U8(p, 0xd64) == 1) {
+            bool carrying = S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+            if (!carrying && (u32)(state - 0x20) < 6) {
+                return false;
+            }
+        }
+        if (S32(p, 0xd6c) != 0x4b455930 || (u32)(state - 0x1e) > 1) {
+            if (U8(p, 0xd64) == 1) {
+                bool carrying = S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+                if (!carrying) {
+                    if (state == 0x4c) {
+                        return false;
+                    }
+                    if (state == 0x4d) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+    }
+    return false;
+}
+
+extern "C" char* fn_8023E7B0(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" char* fn_802D6A9C();
+extern "C" bool fn_8025FDD0(char* p, JGeometry::TVec3<f32>* v) {
+    *(JGeometry::TVec3<f32>*)(p + 0x8) = *(JGeometry::TVec3<f32>*)fn_8023E7B0(S32(p, 0xd70));
+    s32 idx = fn_8023DE58(S32(p, 0xd70));
+    char* r = fn_802D6A9C();
+    f32* o = (f32*)(r + (idx < 8 ? 0xcc : 0xdc));
+    f32 ox = o[0];
+    f32 oy = o[1];
+    s32 idx2 = S32(p, 0x3b4);
+    r = fn_802D6A9C();
+    o = (f32*)(r + (idx2 < 8 ? 0xcc : 0xdc));
+    F32(p, 0x8) += o[0] - ox;
+    F32(p, 0xc) += o[1] - oy;
+    S32(p, 0xd70) = -1;
+    S32(p, 0xd58) = 5;
+    *(JGeometry::TVec3<f32>*)(p + 0xd78) = *v;
+    F32(p, 0xd80) = v->z;
+    return true;
+}
+
 extern "C" bool fn_8025FEDC(char* p) {
     u8 attached;
     if (((S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4) || S32(p, 0xd68) >= 0) && U8(p, 0xd64) == 0)
@@ -172,9 +224,10 @@ extern "C" bool fn_8025FEDC(char* p) {
     fn_80251AEC(p, 0);
     f32 height = lbl_80540150;
     S32(p, 0xd70) = -1;
+    bool ok = true;
     S32(p, 0xd68) = -1;
     F32(p, 0x10) = height;
-    return true;
+    return ok;
 }
 
 extern "C" bool fn_8025FF70(char* p) {
@@ -281,8 +334,8 @@ extern "C" void fn_802635D8(char* p) {
     const JGeometry::TVec3<f32>& pos = lbl_8046B490[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
     f32 x = pos.x;
     f32 y = pos.y;
-    f32 z = pos.z;
     F32(p, 0x2f4) = x;
+    f32 z = pos.z;
     F32(p, 0x2f8) = y;
     F32(p, 0x2fc) = z;
     VEC(p, 0x2f4).add(VEC(p, 8));
@@ -338,5 +391,7 @@ extern "C" void fn_80264768(char* p) {
 
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_802636D0(void) {}
+extern "C" void fn_802636D0(void) {
+    return;
+}
 #endif
