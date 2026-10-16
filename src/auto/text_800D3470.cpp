@@ -1258,18 +1258,19 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
     u8 v1 = param_3[1];
-    param_1 = param_1 + param_2 * 8;
+    u32 off = param_2 << 3;
     u8 v2 = param_3[2];
-    *(u8 *)(param_1 + 0x5a) = v1;
+    u8 *dst = (u8 *)(param_1 + off);
+    dst[0x5a] = v1;
     u8 v3 = param_3[3];
-    *(u8 *)(param_1 + 0x5b) = v2;
+    dst[0x5b] = v2;
     u8 v5 = param_3[5];
-    *(u8 *)(param_1 + 0x5c) = v3;
+    dst[0x5c] = v3;
     u8 v6 = param_3[6];
-    *(u8 *)(param_1 + 0x5e) = v5;
+    dst[0x5e] = v5;
     u8 v7 = param_3[7];
-    *(u8 *)(param_1 + 0x5f) = v6;
-    *(u8 *)(param_1 + 0x60) = v7;
+    dst[0x5f] = v6;
+    dst[0x60] = v7;
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
@@ -1632,7 +1633,7 @@ extern "C" u8 fn_800DE648(int param_1) {
     return *(u8*)(param_1 + 0x34);
 }
 
-extern "C" void fn_800DE650(u8* this_, u32 idx, GXColor* src) {
+extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
     u8 t;
     t = src[0].g; p[0x36] = t;
@@ -2093,8 +2094,9 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
+    u8 c0 = c[0];
     u8* p = self + i * 4;
-    p[0xc] = c[0];
+    p[0xc] = c0;
     p[0xd] = c[1];
     p[0xe] = c[2];
     p[0xf] = c[3];
@@ -2102,7 +2104,7 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
     u8 c0 = c[0];
-    u8* p = self + (i << 2);
+    u8* p = self + i * 4;
     p[0xc] = c0;
     p[0xd] = c[1];
     p[0xe] = c[2];
