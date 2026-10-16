@@ -1603,6 +1603,15 @@ extern "C" int fn_80173FC0(int p, int i)
 	return 0;
 }
 
+extern "C" int fn_8017404C(int p, int i)
+{
+	u8 b = *(u8*)(*(int*)(p + 4) + (*(u16*)(*(int*)(p + 8) + i * 2)) * 0xe8 + 3);
+	if (b != 0xff) {
+		return *(u8*)(*(int*)(p + 0x1c) + b);
+	}
+	return 0;
+}
+
 extern "C" u16 fn_80174224(u8* s, u32 a, u32 b) {
     u16 row = ((u16*)*(u8**)(s + 8))[a];
     u16* tbl = (u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x38);
