@@ -729,8 +729,8 @@ extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
     u32 i = 0;
     GDSetCurrOffset(param_2);
-    u8* cur = GDGetCurrPointer();
     u8* start = GDGetCurrPointer();
+    u8* cur = GDGetCurrPointer();
     for (;;) {
         if (!isTexNoReg__FPv(cur)) {
             break;
@@ -927,10 +927,8 @@ extern "C" u32 fn_800DDA50(void) {
     return 0x50454647;
 }
 
-extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    *(u16*)(this_ + 0x4) = *(u16*)src;
-    this_[6] = src[2];
-    this_[7] = src[3];
+extern "C" void fn_800DDA5C(u8* this_, Unk800DDA5C* src) {
+    *(Unk800DDA5C*)(this_ + 4) = *src;
 }
 
 extern "C" void* fn_800DDA94(u8* this_) {
@@ -1010,9 +1008,10 @@ extern "C" void fn_800DDB70(void* param_1)
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   u8* pStart = __GDCurrentDL->pDisplayListData;
   u8* pCurr = __GDCurrentDL->pDisplayListData;
-  while (true) {
+  for (;;) {
     if (!isTexNoReg(pCurr)) break;
-    loadTexNo(i, getTexNoReg(pCurr));
+    u16 texNo = getTexNoReg(pCurr);
+    loadTexNo(i, texNo);
     i++;
   }
   DCStoreRange(pStart, __GDCurrentDL->pDisplayListData - pStart);
@@ -1323,6 +1322,12 @@ extern "C" int fn_800DE288(int param_1, int param_2)
 {
   return param_1 + param_2 * 8 + 0x21;
 }
+
+struct fn_800DE29C_Bits2 {
+  u8 hi : 4;
+  u8 b : 2;
+  u8 a : 2;
+};
 
 extern "C" void fn_800DE29C(int param_1, int param_2, u8* param_3)
 {
