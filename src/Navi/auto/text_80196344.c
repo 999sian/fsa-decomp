@@ -628,6 +628,10 @@ extern "C" void fn_801A371C(int param_1, u16* param_2) {
     *(u16*)(param_1 + 0xc) = *param_2;
 }
 
+extern "C" int fn_801A3728(int param_1) {
+    return param_1 + 0xc;
+}
+
 extern "C" u8 fn_801A3744(int param_1) {
     return *(u8*)(param_1 + 0xe);
 }
