@@ -165,6 +165,14 @@ extern "C" void fn_80124110(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
 
+extern "C" void fn_80127DD4(void* param_1, u8* self) {
+    u8* cfg = *(u8**)self;
+    f32 mtx[3][4];
+    fn_80132450(*(s16*)(cfg + 0x4c) * 0xb6, *(s16*)(cfg + 0x4e) * 0xb6, *(s16*)(cfg + 0x50) * 0xb6, mtx);
+    fn_801C5DA8(cfg + 0x68, mtx, self + 0xa8);
+    fn_801C6684(self + 0xa8, cfg + 0x18, self + 0x120);
+}
+
 extern "C" void fn_80127E54(void) {
 }
 
@@ -179,6 +187,12 @@ extern "C" void fn_80127E58(u8* self) {
 extern "C" void fn_80127ED0(u8* self, u8* other) {
     f32 scale = 25.0f * *(f32*)(self + 0x144);
     fn_801DBA5C((s32)(*(f32*)(other + 0x60) * scale), 5);
+}
+
+extern "C" void fn_801DBA1C(s32 v, s32 n);
+extern "C" void fn_80127F14(u8* self, u8* other) {
+    f32 scale = 25.0f * *(f32*)(self + 0x144);
+    fn_801DBA1C((s32)(*(f32*)(other + 0x60) * scale), 5);
 }
 
 extern "C" void fn_801286CC(u8* param_1, u8* param_2) {
