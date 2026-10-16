@@ -7,6 +7,33 @@ extern "C" void fn_801EE434(void*);
 extern "C" const f32 lbl_805409A0;
 extern "C" const f32 lbl_805409A4;
 extern "C" const f32 lbl_80540990;
+extern "C" void* fn_802B0998(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        char* p = (char*)this_;
+        *(void**)p = lbl_804A84C8;
+        if (*(void**)(p + 0x234) != 0) {
+            fn_801EE434(*(void**)(p + 0x234));
+        }
+        if (*(void**)(p + 0x238) != 0) {
+            fn_801EE434(*(void**)(p + 0x238));
+        }
+        if (*(void**)(p + 0x23c) != 0) {
+            fn_801EE434(*(void**)(p + 0x23c));
+        }
+        if (*(void**)(p + 0x240) != 0) {
+            fn_801EE434(*(void**)(p + 0x240));
+        }
+        if (*(void**)(p + 0x244) != 0) {
+            fn_801EE434(*(void**)(p + 0x244));
+        }
+        __dt__5ActorFv((Actor*)this_, 0);
+        if (freeFlag > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_802B0A4C(char* p) {
     *(u32*)(p + 0x248) = (*(u32*)(p + 0x90) >> 22) & 0x1f;
     *(u32*)(p + 0x24c) = (*(u32*)(p + 0x90) >> 17) & 0x1f;
