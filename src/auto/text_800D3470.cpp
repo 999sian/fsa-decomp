@@ -79,7 +79,7 @@ extern "C" char __vt__17J3DPEBlockTexEdge[];
 extern "C" void __dl__FPv(void*);
 extern "C" void __destroy_arr(void*, void*, u32, u32);
 extern "C" void __dt__19J3DIndTexCoordScaleFv(void*);
-extern "C" void* sTexCoordScaleTable__6J3DSys;
+extern "C" u8 sTexCoordScaleTable__6J3DSys[64];
 extern "C" void J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(unsigned char, unsigned short, unsigned char, unsigned char, unsigned short, unsigned char, unsigned char);
 extern "C" void loadTexNo__FUlRCUs(unsigned long, unsigned short*);
 extern "C" void loadTexCoordGens__FUlP11J3DTexCoord(unsigned long, void*);
@@ -616,9 +616,9 @@ extern "C" void fn_800D8A3C(void* p) {
 }
 
 extern "C" void fn_800D8AD0(u8* this_) {
-    u8* base;
-    u8* p;
     u32 i = 0;
+    u8* p;
+    u8* base;
 
     p = this_;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x170);
@@ -1373,9 +1373,11 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
+    u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
+    u8* p = param_1 + param_2 * 8;
+    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
+    p[0x60] = (p[0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
