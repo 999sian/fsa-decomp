@@ -99,6 +99,21 @@ extern "C" void fn_8013F588(void) {
     fn_8013C958(*(void**)(lbl_8053AB10 + 0x28));
 }
 
+extern "C" void PSMTXScale(f32 (*m)[4], f32 x, f32 y, f32 z);
+extern "C" void PSMTXTrans(f32 (*m)[4], f32 x, f32 y, f32 z);
+extern "C" void PSMTXConcat(const f32 (*a)[4], const f32 (*b)[4], f32 (*ab)[4]);
+extern "C" void fn_8013F5B0(void* this_, u8* p) {
+    f32 a[3][4];
+    f32 s[3][4];
+    u8* obj = (u8*)*(void**)((u8*)*(void**)((u8*)*(void**)(lbl_8053AB10 + 0x28) + 0xc) + 0x20);
+    PSMTXCopy(obj + 0x184, a);
+    PSMTXScale(s, 1.0f, 1.0f, 1.0f);
+    PSMTXConcat(a, s, a);
+    PSMTXTrans(s, 0.0f, *(f32*)(p + 0xa8), *(f32*)(p + 0xac));
+    PSMTXConcat(a, s, a);
+    PSMTXCopy(a, obj + 0x184);
+}
+
 extern "C" void fn_8013F6BC(void) {
     PSMTXCopy((u8*)*(void**)(lbl_8053AB10 + 0x24) + 0xe4, (u8*)*(void**)((u8*)*(void**)((u8*)*(void**)(lbl_8053AB10 + 0x28) + 0xc) + 0x20) + 0x184);
 }
@@ -199,10 +214,23 @@ extern "C" void fn_8013D908(u8* this_) {
     draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), &info, 7);
 }
 
+extern "C" void fn_8013DA10(u8* this_) {
+    DrawInfoPOD_ info;
+    DrawInfoPOD_* src;
+    if (fn_80134CC8(lbl_8053AAF8) == 0) {
+        src = (DrawInfoPOD_*)((u8*)*(void**)(lbl_8053AB10 + 0x24) + 0xe4);
+        info.cam = src->cam;
+        info.prj = src->prj;
+        fn_8013B438(lbl_8053AB10);
+        GXSetAlphaUpdate(0);
+        draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), &info, 9);
+    }
+}
+
 extern "C" f32 fn_802F5E9C(void*, const f32*);
 
-extern "C" bool fn_8013CB44(u8* this_, f32* pos, s32 a, s32 b, u8 flag) {
-    bool ret = false;
+extern "C" u8 fn_8013CB44(u8* this_, f32* pos, s32 a, s32 b, u8 flag) {
+    s32 ret = 0;
     if (this_ != 0) {
         if (flag) {
             flag = pos[2] > 0.0f;
@@ -216,10 +244,11 @@ extern "C" bool fn_8013CB44(u8* this_, f32* pos, s32 a, s32 b, u8 flag) {
         f32 y = pos[1] + off;
         f32 z = pos[2] + off;
         f32 g = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), pos);
-        ret = true;
+        f32 d = g - pos[2];
+        ret = 1;
         *(f32*)(this_ + 0xa4) = x;
         *(f32*)(this_ + 0xa8) = y;
-        *(f32*)(this_ + 0xac) = z + (g - pos[2]);
+        *(f32*)(this_ + 0xac) = z + d;
     }
     return ret;
 }
