@@ -22,6 +22,10 @@ extern "C" void fn_802B1D98(u8* p) {
     p[6] = 0;
 }
 
+extern "C" u32 fn_802B1DB0(void) {
+    return lbl_80529DEC[0x220] != 0;
+}
+
 extern "C" u32 fn_802B1DCC(void) {
     return lbl_80529DEC[0x21f] != 0;
 }
