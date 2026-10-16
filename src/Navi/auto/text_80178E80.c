@@ -73,6 +73,11 @@ extern "C" void fn_80184BF4(void) {
     fn_80177F0C();
 }
 
+extern "C" f32 lbl_80301BF8;
+extern "C" void fn_80184C14(void) {
+    fn_80178990();
+}
+
 extern "C" void fn_801788C0(void);
 extern "C" void fn_80184C34(void) {
     fn_801788C0();
