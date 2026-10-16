@@ -122,6 +122,44 @@ extern "C" u8 fn_8026E5F8(u8* p, Vec2f* pos) {
     return 0;
 }
 
+extern "C" u8 fn_80250D30(void*);
+extern "C" u8 fn_8026EB1C(u8* p, u16 param) {
+    if (!fn_80250D30(*(void**)(p + 4))) {
+        return 0;
+    }
+    switch (param) {
+    case 0x10:
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 3;
+    case 0x11:
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 2;
+    case 0x12:
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 1;
+    case 0x13:
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 0;
+    case 0x14:
+        if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 3) {
+            return 1;
+        }
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 1;
+    case 0x15:
+        if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 3) {
+            return 1;
+        }
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 0;
+    case 0x16:
+        if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 2) {
+            return 1;
+        }
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 1;
+    case 0x17:
+        if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 2) {
+            return 1;
+        }
+        return *(s32*)(*(u8**)(p + 4) + 0x3dc) == 0;
+    }
+    return 0;
+}
+
 struct Obj8026F998 {
     void* vtbl;
     void* m4;
