@@ -111,6 +111,11 @@ extern "C" void* fn_8018C2A8(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_8018C2C0(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern void* lbl_80286A30[];
 extern void* lbl_80299634[];
 extern void* lbl_80299540[];
