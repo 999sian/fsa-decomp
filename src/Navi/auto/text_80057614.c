@@ -436,6 +436,26 @@ extern "C" void fn_80059290(void* p) {
     q[0x15] = 0;
 }
 
+extern "C" s32 fn_80059FE8(s32 mode, void* p) {
+    s32 result;
+    double v = fn_80059DA0(p);
+    if (v > lbl_803002B0) {
+        v = lbl_803002B0;
+    }
+    switch (mode) {
+    default:
+        result = 0;
+        break;
+    case 1:
+        result = (s32)v;
+        break;
+    case 2:
+        result = (s32)v / 2;
+        break;
+    }
+    return result;
+}
+
 extern "C" void fn_8005A480(void) {}
 
 extern "C" void fn_80059338(void*);
