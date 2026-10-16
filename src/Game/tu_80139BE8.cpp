@@ -1,5 +1,13 @@
 #include "types.h"
 
+class VObj {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+};
+
 extern "C" void fn_8043D644(void*);
 extern "C" void fn_8043D8B4(void*);
 extern "C" void fn_8016DB60(void*);
