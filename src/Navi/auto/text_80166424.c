@@ -429,6 +429,16 @@ extern "C" void* fn_80168D68(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" f32 lbl_80301AF8;
+extern "C" f32 lbl_80301B20;
+extern "C" void* lbl_80298C88[];
+extern "C" void fn_80176610(void* p);
+extern "C" void fn_80176E24(void* p, int mode);
+extern "C" int fn_80168DF8()
+{
+	return 0;
+}
+
 extern "C" void fn_80168E00(void)
 {
 }
@@ -1927,6 +1937,15 @@ extern "C" void* fn_80174E9C(void* param_1) {
     lbl_802FF698 = param_1;
     lbl_802FF694 = 1;
     return old;
+}
+
+extern "C" void fn_80177970(void* self, f32 a, f32 b) {
+    f32 rect[4];
+    rect[0] = a;
+    rect[1] = b;
+    rect[2] = a + (*(f32*)((char*)self + 0x28) - *(f32*)((char*)self + 0x20));
+    rect[3] = b + (*(f32*)((char*)self + 0x2c) - *(f32*)((char*)self + 0x24));
+    fn_80177728(self, rect);
 }
 
 extern "C" u8 fn_80177F0C(char* self, void* arg)
