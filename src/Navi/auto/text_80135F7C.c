@@ -1,4 +1,8 @@
 #include "types.h"
+extern "C" f32 fn_80137F4C(void* param_1);
+extern "C" f64 fn_80137F58(void* p, f32 x);
+extern "C" f64 fn_80137F88(void* p, f32 x);
+
 
 extern "C" f32 fn_801375FC(void* param_1, u32* param_2);
 extern "C" f64 fn_80137610(void* param_1, f64* param_2);
@@ -477,6 +481,51 @@ extern "C" void fn_8013788C(void* param_1) {
     *(s32*)((u8*)param_1 + 0x50) = *(s32*)((u8*)param_1 + 0x4c);
     *(s32*)((u8*)param_1 + 0x54) = *(s32*)((u8*)param_1 + 0x4c);
     *(s32*)((u8*)param_1 + 0x58) = 0;
+}
+
+extern "C" void fn_80138004(void* param_1, void* param_2);
+extern "C" void fn_801378E4(u8* p) {
+    switch (*(s8*)(p + 0x20)) {
+    case 0:
+    default:
+        *(f64*)(p + 0x28) = 0.0;
+        *(f64*)(p + 0x30) = 1.0;
+        break;
+    case 1:
+        *(f64*)(p + 0x28) = 0.0;
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    case 2:
+        *(f64*)(p + 0x28) = *(f64*)(p + 0x8);
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    case 3:
+        *(f64*)(p + 0x28) = *(f64*)(p + 0x10);
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    case 4:
+        *(f64*)(p + 0x28) = 0.5 * (*(f64*)(p + 0x8) + *(f64*)(p + 0x10));
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    }
+    switch (*(s32*)(p + 0x40)) {
+    case 0:
+    default:
+        *(void**)(p + 0x58) = (void*)fn_80137F4C;
+        break;
+    case 1:
+        *(void**)(p + 0x58) = (void*)fn_80137F58;
+        break;
+    case 2:
+        *(void**)(p + 0x58) = (void*)fn_80137F88;
+        break;
+    case 3:
+        *(void**)(p + 0x58) = (void*)fn_80138004;
+        if (*(u32*)(p + 0x48) == 2) {
+            *(void**)(p + 0x58) = (void*)fn_80137F58;
+        }
+        break;
+    }
 }
 
 extern "C" f32 fn_80137F4C(void* param_1) {
