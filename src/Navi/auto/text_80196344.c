@@ -392,7 +392,7 @@ extern "C" int fn_80198F20()
 
 void fn_80198F30(void) {}
 
-void fn_80198F34(void) {}
+extern "C" void fn_80198F34(void) {}
 
 extern "C" u32 fn_80198F38(void) {
     return 0x49424C4E;
