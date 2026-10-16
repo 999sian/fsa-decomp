@@ -1508,6 +1508,8 @@ extern "C" void fn_8013C374(void* param_1, s32 param_2, u32* param_3) {
                 (*(VObj_8013C374**)((u8*)param_1 + 0x128))->v9(a, c);
                 break;
             }
+            case 0:
+                break;
             }
         }
         break;
