@@ -308,6 +308,27 @@ extern "C" void* fn_80174BB8(void* base, u32 offset) {
 
 typedef void (*VFn_801780D4)(void*, unsigned char);
 typedef unsigned char (*VFn_80177F0C)(void*, void*);
+struct UnkVObj_80177F0C {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6(u8);
+    virtual void vf7();
+    virtual void vf8();
+    virtual void vf9();
+    virtual void vf10();
+    virtual void vf11();
+    virtual void vf12();
+    virtual void vf13();
+    virtual void vf14();
+    virtual void vf15();
+    virtual void vf16();
+    virtual void vf17();
+    virtual u8 vf18(void*);
+};
 extern "C" void fn_801780D4(char* self, unsigned char v)
 {
     char* n;
