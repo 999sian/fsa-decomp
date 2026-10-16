@@ -421,7 +421,6 @@ extern "C" void fn_80075550(void) {
     fn_80072D8C();
 }
 
-extern "C" BOOL fn_80073720(u8* p);
 extern "C" void fn_800755D0(u8* p) {
     fn_80073720(p);
 }
