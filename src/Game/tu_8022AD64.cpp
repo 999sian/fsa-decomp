@@ -40,6 +40,7 @@ int fn_80245B74(Player*);
 int fn_80245DB0(Player*);
 int fn_80245FEC(Player*);
 int fn_80246228(Player*);
+u8 fn_802408C0(Player*);
 int fn_802486A0(Player*);
 int GetBusyLocked(Player*);
 int fn_8024BB94(Player*);
