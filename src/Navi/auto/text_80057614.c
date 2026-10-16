@@ -25,6 +25,9 @@ extern "C" void fn_80057868(void) {
 extern "C" void fn_800579E0(void) {
 }
 
+extern "C" void fn_800579F8(void) {
+}
+
 extern "C" void fn_8005867C(void) {
     fn_8005845C();
 }
