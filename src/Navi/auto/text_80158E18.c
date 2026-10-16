@@ -694,6 +694,17 @@ extern "C" char* fn_8015BA10(char* p) {
     return best;
 }
 
+extern "C" long fn_8015BA84(char* p) {
+    char* n;
+    long sum = 0;
+    fn_801BE3A0(p + 0x18);
+    for (n = *(char**)(p + 0x78); n != 0; n = *(char**)(n + 0xc)) {
+        sum += *(long*)(n + 4);
+    }
+    fn_801BE47C(p + 0x18);
+    return sum;
+}
+
 #pragma pop
 
 #pragma pop
