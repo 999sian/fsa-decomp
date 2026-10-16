@@ -93,6 +93,8 @@ extern "C" s32 fn_80172D10(s32 p, s32 i) {
 
 extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
 
+extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
+
 extern "C" u32 fn_80172FF8(int param_1, u32 param_2) {
     if (param_2 > 1) {
         return 0;
