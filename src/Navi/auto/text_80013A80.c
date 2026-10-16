@@ -115,6 +115,9 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     fn_80013E18(self);
 }
 
+extern "C" void fn_80015C24(void) {
+}
+
 extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80204F9C;
