@@ -214,3 +214,23 @@ extern "C" void fn_80026E90(u8* p) {
     fn_80026EC4(p);
 }
 
+extern "C" void fn_80026EC4(u8* p) {
+    *(u32*)(p + 0xac) = lbl_802026C0[0];
+    *(u32*)(p + 0xb0) = lbl_802026C0[1];
+    *(u32*)(p + 0xb4) = lbl_802026C0[2];
+    p[0xd0] = 0;
+    *(u32*)(p + 0xb8) = lbl_802026C0[0];
+    *(u32*)(p + 0xbc) = lbl_802026C0[1];
+    *(u32*)(p + 0xc0) = lbl_802026C0[2];
+    *(u32*)(p + 0xc4) = 0;
+    p[0xd1] = 0;
+    p[0xd2] = 0;
+}
+
+extern "C" BOOL fn_80026F14(s8* p) {
+    if (p[0xd0] == 0) {
+        p[0xd0]++;
+    }
+    return TRUE;
+}
+
