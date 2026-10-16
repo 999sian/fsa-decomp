@@ -84,6 +84,11 @@ extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_80166650(void* p)
+{
+    fn_801BDE1C(lbl_802982A0, p, 1);
+}
+
 #pragma use_lmw_stmw off
 extern "C" s32 fn_80166680(u32 a, u32 b, u32 c, u32 d)
 {
