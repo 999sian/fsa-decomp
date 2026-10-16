@@ -220,8 +220,20 @@ extern "C" void fn_80172A04(u8* p, s32 i, s8* src) {
 
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
+extern "C" s32 fn_80172BC0(s32 param_1, s32 param_2) {
+    return param_1 + param_2 * 8 + 0x1e;
+}
+
 extern "C" s32 fn_80172C00(s32 param_1, s32 param_2) {
     return param_1 + param_2 * 4 + 0x60;
+}
+
+extern "C" void fn_80172C2C(s32 param_1, s32 param_2, u8 param_3) {
+    *(u8*)(param_1 + param_2 + 0x74) = param_3;
+}
+
+extern "C" u8 fn_80172C38(s32 param_1, s32 param_2) {
+    return *(u8*)(param_1 + param_2 + 0x74);
 }
 
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
