@@ -81,12 +81,12 @@ extern "C" void* fn_80030424(const void* ptr, const void* offset)
 	return (void*)((int)ptr + (int)offset);
 }
 
-int fn_8003043C(int param_1, int param_2)
+extern "C" void* fn_8003043C(const void* ptr, const void* offset)
 {
-  if (param_2 == 0) {
+  if (offset == 0) {
     return 0;
   }
-  return param_1 + param_2;
+  return (unsigned char*)ptr + (unsigned int)offset;
 }
 
 extern "C" void* fn_80030454(const void* ptr, const void* offset)
