@@ -1,4 +1,16 @@
 #include "types.h"
+struct VObj_8003B920 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+    virtual void m8();
+};
+
 struct VObj_80088CF8 {
     virtual void m0();
     virtual void m1();
@@ -42,6 +54,10 @@ extern "C" u32 fn_80159BA4(u32 param_1) {
     u32 old = lbl_802FF544;
     lbl_802FF544 = param_1;
     return old;
+}
+
+extern "C" void fn_80159CB4(VObj_8003B920* obj) {
+    obj->m8();
 }
 
 extern "C" u8 fn_8015A644(u8* p, u8 v) {
