@@ -29,6 +29,11 @@ extern "C" u8 lbl_80298660[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8016B170(u32*, int);
 
+struct Unk80174858Pair {
+    u8 x;
+    u8 y;
+};
+
 struct UnkVObj_801671B0 {
     virtual void vf0();
     virtual void vf1();
@@ -295,6 +300,13 @@ extern "C" void fn_8016AD08() {}
 
 extern "C" void fn_8016AD0C() {}
 
+extern u8 lbl_80202218[3];
+extern "C" void fn_8016AD10(u8* p) {
+    p[0] = lbl_80202218[0];
+    p[1] = lbl_80202218[1];
+    p[2] = lbl_80202218[2];
+}
+
 extern u8 lbl_80301AC0[2];
 extern "C" void fn_8016AD7C(u8* p) {
     p[0] = lbl_80301AC0[0];
@@ -341,7 +353,7 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    u8* p = p1 + p2 * 4;
+    u8* p = (u8*)(p2 * 4) + (s32)p1;
     p[0x16] = p3[0];
     p[0x17] = p3[1];
     p[0x18] = p3[2];
@@ -412,6 +424,10 @@ extern "C" void fn_80172A3C(u8* p1, s32 p2, u8* p3) {
 
 extern "C" s32 fn_80172A4C(s32 p1, s32 p2) {
     return p1 + (p2 + 0xb8);
+}
+
+extern "C" void fn_80172A5C(u8* p1, s32 p2, u32* p3) {
+    *(u32*)(p1 + p2 * 4 + 0xbc) = *p3;
 }
 
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
