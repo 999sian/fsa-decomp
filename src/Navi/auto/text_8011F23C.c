@@ -243,6 +243,26 @@ extern "C" void fn_80120704(void) {
     lbl_802FF340 = 0;
 }
 
+extern "C" bool fn_80120ABC(u8* p, u16 v) {
+    bool r = *(s32*)(p + 4) == 0;
+    if (r) {
+        *(s32*)(p + 4) = 2;
+        *(u16*)(p + 0xa) = 0;
+        *(u16*)(p + 0x8) = v;
+    }
+    return r;
+}
+
+extern "C" BOOL fn_80120AEC(u8* p, u16 v) {
+    BOOL r = *(s32*)(p + 4) == 1;
+    if (r) {
+        *(s32*)(p + 4) = 3;
+        *(u16*)(p + 0xa) = 0;
+        *(u16*)(p + 0x8) = v;
+    }
+    return r;
+}
+
 #pragma pop
 extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
