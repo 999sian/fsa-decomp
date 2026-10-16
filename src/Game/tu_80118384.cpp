@@ -121,8 +121,8 @@ extern "C" void* fn_80119E5C(u8* self, s16 size)
     VObj* obj;
     if (self != 0) {
         obj = *(VObj**)(self + 0x2c);
-        if (obj != 0) {
-            obj->v08(1);
+        if (obj != 0 && obj != 0) {
+            obj->v00(1);
         }
         *(VObj**)(self + 0x2c) = 0;
         if (size > 0) {
