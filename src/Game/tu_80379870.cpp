@@ -58,8 +58,4 @@ extern "C" void fn_80379A90(Actor* this_) {
         }
     }
 }
-struct Quad {
-    f32 v[4];
-};
-extern "C" const Quad lbl_804752C0[4];
-extern "C" const Quad lbl_80475300[4];
+
