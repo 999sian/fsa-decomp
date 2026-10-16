@@ -387,6 +387,10 @@ extern "C" void fn_801A374C(int param_1, u8 param_2) {
     *(u8*)(param_1 + 0xf) = param_2;
 }
 
+extern "C" void fn_801A3754(int param_1, u8* param_2) {
+    *(u8*)(param_1 + 0xf) = *param_2;
+}
+
 extern void* lbl_8029A35C[];
 extern "C" void* fn_801A3768(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -501,6 +505,14 @@ extern "C" u16 fn_801A3CDC(u8* p, s32 i) {
 
 extern "C" void fn_801A3CEC(u8* p, s32 i, u32* pv) {
     *((u32*)(p + (i << 2) + 0x10)) = *pv;
+}
+
+extern "C" void fn_801A3D94(u8* p, s32 i, u8* src) {
+    u8* d = p + (i << 2);
+    d[0x62] = src[0];
+    d[0x63] = src[1];
+    d[0x64] = src[2];
+    d[0x65] = src[3];
 }
 
 extern "C" void fn_801A3EF8(int param_1, int param_2, u8* param_3) {
