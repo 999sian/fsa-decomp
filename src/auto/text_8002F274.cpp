@@ -1,98 +1,111 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
-#include <JSystem/JSupport.h>
 
-class JKRHeap;
-class JASBank;
-extern "C" JASBank* fn_8002F294(const void*, JKRHeap*);
-class JASBNKParser {
+class JKRHeap {
 public:
-    static JASBank* createBank(const void*, JKRHeap*);
+    int getFreeSize();
 };
 
-JASBank* JASBNKParser::createBank(const void* stream, JKRHeap* heap)
-{
-    return fn_8002F294(stream, heap);
+class JASBNKParser {
+public:
+    static void* createBank(const void*, JKRHeap*);
+};
+
+extern JKRHeap* JASDram;
+extern "C" int lbl_80557688;
+extern "C" void* fn_8002FB90(const void*, JKRHeap*);
+extern "C" void* fn_8002F34C(const void*, JKRHeap*);
+extern "C" void* fn_8002F294(const void* data, JKRHeap* heap);
+void* JASBNKParser::createBank(const void* data, JKRHeap* heap) {
+    return fn_8002F294(data, heap);
 }
 
-void fn_80030380(short *param_1)
-{
-  short sVar1;
-  
-  do {
-    sVar1 = *param_1;
-    param_1 = param_1 + 3;
-  } while (sVar1 < 0xb);
+extern "C" void* fn_8002F294(const void* data, JKRHeap* heap) {
+    if (heap == 0) {
+        heap = JASDram;
+    }
+    int before = heap->getFreeSize();
+    void* bank = 0;
+    switch (*(int*)((char*)data + 0xc)) {
+    case 0:
+        bank = fn_8002FB90(data, heap);
+        break;
+    case 1:
+        bank = fn_8002F34C(data, heap);
+        break;
+    }
+    lbl_80557688 += before - heap->getFreeSize();
+    return bank;
 }
 
-extern "C" void* fn_80030394(const void* param_1, const void* param_2)
-{
-  if (param_2 == 0) {
-    return 0;
-  }
-  return (char*)param_1 + (unsigned int)param_2;
+extern "C" void fn_80030380(short* p) {
+    short v;
+    do {
+        v = *p;
+        p += 3;
+    } while (v <= 10);
 }
 
-extern "C" void* fn_800303AC(const void* ptr, const void* offset)
-{
-  if (offset == 0) {
-    return 0;
-  }
-  return (unsigned char*)ptr + (unsigned int)offset;
+extern "C" char* fn_80030394(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
 
-extern "C" void* fn_800303C4(const void* base, const void* offset)
-{
-  if (offset == 0) {
-    return 0;
-  }
-  return (void*)((int)base + (int)offset);
+extern "C" char* fn_800303AC(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
 
-extern "C" void* fn_800303DC(const void* base, const void* offset)
-{
-  if (offset == 0) {
-    return 0;
-  }
-  return (void*)((int)base + (int)offset);
+extern "C" char* fn_800303C4(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
 
-extern "C" void* fn_800303F4(const void* ptr, const void* offset)
-{
-  if (offset == 0) {
-    return 0;
-  }
-  return (unsigned char*)ptr + (unsigned int)offset;
+extern "C" char* fn_800303DC(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
 
-extern "C" void* fn_8003040C(const void* base, const void* offset)
-{
-	if (offset == 0) {
-		return 0;
-	}
-	return (void*)((int)base + (int)offset);
+extern "C" char* fn_800303F4(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
 
-extern "C" void* fn_80030424(const void* ptr, const void* offset)
-{
-	if (offset == 0) {
-		return 0;
-	}
-	return (void*)((int)ptr + (int)offset);
+extern "C" char* fn_8003040C(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
 
-extern "C" void* fn_8003043C(const void* ptr, const void* offset)
-{
-  if (offset == 0) {
-    return 0;
-  }
-  return (unsigned char*)ptr + (unsigned int)offset;
+extern "C" char* fn_80030424(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
 
-extern "C" void* fn_80030454(const void* ptr, const void* offset)
-{
-	if (offset == 0) {
-		return 0;
-	}
-	return (void*)((int)ptr + (int)offset);
+extern "C" char* fn_8003043C(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
 }
+
+extern "C" char* fn_80030454(char* base, unsigned long off) {
+    if (off == 0) {
+        return 0;
+    }
+    return base + off;
+}
+
