@@ -867,6 +867,20 @@ extern "C" int fn_801700CC(u8* p, void* obj)
     return 1;
 }
 
+extern "C" void fn_80170220(u8* p, u32 bit, u8 flag) {
+    if (flag != 0) {
+        u32 mask = (1 << (u8)bit) - 1;
+        u8 v = p[0x120];
+        p[0x120] = (v & mask) | ((v & ~mask) << 1);
+        return;
+    }
+    {
+        u32 mask = (1 << ((u8)bit + 1)) - 1;
+        u8 v = p[0x120];
+        p[0x120] = (v & ((1 << (u8)bit) - 1)) | ((s32)(v & ~mask) >> 1);
+    }
+}
+
 extern "C" void fn_80170574(u8* p, int unused, u32 idx) {
     u8* obj;
     if (idx >= 8) {
