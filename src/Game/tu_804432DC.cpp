@@ -17,6 +17,17 @@ extern "C" void fn_80443494(void* this_) {
     *(u8*)(p + 0x15) = 3;
 }
 
+extern "C" void fn_804435B8(void* this_) {
+    char* p = (char*)this_;
+    s32 v = *(s16*)(p + 0x10);
+    if (v > 0) {
+        *(s16*)(p + 0x10) = v - 1;
+        return;
+    }
+    *(s16*)(p + 0x10) = 0;
+    *(u8*)(p + 0x15) = 1;
+}
+
 extern "C" void fn_8013B490(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 extern "C" void* lbl_8053AB10;
