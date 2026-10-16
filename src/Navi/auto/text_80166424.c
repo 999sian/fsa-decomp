@@ -35,6 +35,7 @@ struct DtorVObj_80166424 {
     virtual void Destroy(int);
 };
 extern "C" void* lbl_80298644[];
+extern "C" void* lbl_80298600[];
 extern "C" u8 lbl_80298660[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8016B170(u32*, int);
