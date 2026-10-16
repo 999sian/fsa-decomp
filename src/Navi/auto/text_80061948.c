@@ -1,4 +1,5 @@
 #include "types.h"
+extern u8 lbl_802EE470[];
 extern void* lbl_8027F2C0[];
 
 extern void* lbl_8027F2C0[];
