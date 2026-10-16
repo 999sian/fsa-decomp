@@ -91,6 +91,11 @@ extern "C" void fn_8016AD04(void) {
 extern "C" void fn_8016AD08(void) {
 }
 
+extern "C" s32 fn_80172640(s32 p, s32 i)
+{
+	return p + i * 4 + 0x16;
+}
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
@@ -114,9 +119,9 @@ extern "C" s32 fn_80173108(s32 p, s32 i)
 
 extern "C" void fn_8017311C(s32 p, s32 i, u8* src)
 {
+	s32 off = i << 2;
 	u8 a = src[0];
-	u32 off = i << 2;
-	u8* dst = (u8*)(p + off);
+	u8* dst = (u8*)p + off;
 	u8 b = src[1];
 	dst[0x34] = a;
 	u8 c = src[2];
