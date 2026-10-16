@@ -33,8 +33,11 @@ void fn_80283D2C(char*);
 u8 Player_GetField_0xce8(char*);
 u8 Player_GetField_0x454(char*);
 u8 fn_80241230(char*);
+s32 Actor_CreateByID(void*, u32, u32, void*, u32, s32, s32);
+void* fn_8023E724(s32);
 }
 extern f32 lbl_80540150;
+extern JGeometry::TVec3<f32> lbl_8046B400[];
 extern char* lbl_8053AAF8;
 extern JGeometry::TVec3<f32> lbl_8046B490[20];
 
@@ -234,12 +237,10 @@ extern "C" bool fn_8025FDD0(char* p, JGeometry::TVec3<f32>* v) {
     f32 y = o[1];
     F32(p, 0x8) += x - ox;
     F32(p, 0xc) += y - oy;
-    bool ok = true;
     S32(p, 0xd70) = -1;
     S32(p, 0xd58) = 5;
     *(JGeometry::TVec3<f32>*)(p + 0xd78) = *v;
-    F32(p, 0xd80) = v->z;
-    return ok;
+    return true;
 }
 
 extern "C" bool fn_8025FEDC(char* p) {
