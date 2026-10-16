@@ -1,4 +1,5 @@
 #include "JSystem/J3D/J3DAnmTransform.h"
+#include "JSystem/JUtility/JUTNameTab.h"
 
 
 extern void* lbl_8049AE38[];
