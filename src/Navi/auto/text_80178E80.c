@@ -1630,8 +1630,8 @@ extern "C" u32 fn_80185ED0(u8* self, u8 b) {
     if (*(void**)(p + 0x70) == NULL) {
         return 0;
     }
-    u8 n = p[0x28];
-    if (n > b && n != 1) {
+    u32 n = *(u32*)(p + 0x28);
+    if ((u8)n > b && (u8)n != 1) {
         return 1;
     }
     return 0;
@@ -1650,12 +1650,12 @@ extern "C" void fn_80186B6C(u8* self, u32 a, u32 b) {
 extern "C" void fn_80187834(u8* self, u8 count) {
     u8 i;
     for (i = 0; i < count; i++) {
-        if (i < 4) {
+        if ((u8)i < 4) {
             VObj_80187834* p = *(VObj_80187834**)(*(u8**)(self + 0x168) + 0x70);
-            p->vf44(i, (u8)(0x1f - i * 4));
+            p->vf44((u8)i, (u8)(0x1f - i * 4));
         } else {
             VObj_80187834* p = *(VObj_80187834**)(*(u8**)(self + 0x168) + 0x70);
-            p->vf44(i, (u8)(0x1e - (i - 4) * 4));
+            p->vf44((u8)i, (u8)(0x1e - (i - 4) * 4));
         }
     }
 }
@@ -2365,10 +2365,8 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
         f32 u2x = u + u;
         f32 w = u2 - u;
         f32 a = u2x * w - u2;
-        f32 m0 = k[2];
-        f32 m1 = k[5];
         f32 c = a * dv + k[1];
-        f32 e = u * m0 - (m1 * w + (m0 * w + m0));
+        f32 e = u * k[2] - (k[5] * w + (k[2] * w + k[2]));
         return c - dt * e;
     } else {
         u32 n = hdr[0];
@@ -2392,10 +2390,8 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
         f32 u2x = u + u;
         f32 w = u2 - u;
         f32 a = u2x * w - u2;
-        f32 m0 = k[3];
-        f32 m1 = k[6];
         f32 c = a * dv + k[1];
-        f32 e = u * m0 - (m1 * w + (m0 * w + m0));
+        f32 e = u * k[3] - (k[6] * w + (k[3] * w + k[3]));
         return c - dt * e;
     }
 }
