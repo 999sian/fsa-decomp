@@ -407,7 +407,7 @@ extern "C" u8 fn_802D7E04(char*, s32 index) {
 
 extern "C" u8 fn_802D7E1C(char*, s32 index) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    return *(u8*)(p + index + 0x328);
+    return (p + index)[0x328];
 }
 
 extern "C" void fn_802D7E34(char*, s32 index) {
