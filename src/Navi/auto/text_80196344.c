@@ -60,13 +60,14 @@ extern "C" int fn_801979BC(int param_1) {
 }
 
 extern "C" int fn_80197A0C(int param_1) {
+    int size = 0x6c;
     switch (param_1) {
     case 0:
-        return 0x6c;
+        break;
     case 0x8000000:
         return 0x6c;
     }
-    return 0x6c;
+    return size;
 }
 
 extern "C" int fn_80197A38(int param_1) {
