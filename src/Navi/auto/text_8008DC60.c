@@ -446,6 +446,13 @@ extern "C" void fn_80094444(void* ptr) {
     ((u8*)ptr)[0x7e8] = 0;
 }
 
+extern "C" void fn_80094468(char* param_1) {
+    if (fn_8010B734(*(void**)(param_1 + 0x29c)) == 1) {
+        fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x29c) + 0x9d));
+        param_1[0x7e8] = 6;
+    }
+}
+
 extern StateFn_8009287C lbl_80285FE8[];
 extern "C" void fn_8009456C(Obj_8009287C* param_1) {
     (param_1->*lbl_80285FE8[param_1->state])();
