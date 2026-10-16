@@ -168,36 +168,29 @@ extern "C" void fn_80457F6C(u8* this_) {
 }
 
 extern "C" s32 fn_80457F80(u8* this_, u32* param_2, s8 param_3) {
-    s32 i;
     if (param_3 == -2) {
         JAISoundID soundID = *param_2;
         if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(soundID) != NULL) {
             return 0;
         }
-        i = 0;
-        do {
+        for (s32 i = 0; i < 4; i++) {
             JAISoundID loopID = *param_2;
-            if (((JAISoundHandles*)*(void**)(this_ + 0x18))->getHandleSoundID(loopID) != NULL) {
+            if (((JAISoundHandles*)*(void**)(this_ + 0x18 + i * 4))->getHandleSoundID(loopID) != NULL) {
                 return 0;
             }
-            this_ += 4;
-            i++;
-        } while (i < 4);
+        }
     } else if (param_3 == -1) {
         JAISoundID soundID = *param_2;
         if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(soundID) != NULL) {
             return 0;
         }
     } else {
-        i = 0;
-        do {
+        for (s32 i = 0; i < 4; i++) {
             JAISoundID loopID = *param_2;
-            if (((JAISoundHandles*)*(void**)(this_ + 0x18))->getHandleSoundID(loopID) != NULL) {
+            if (((JAISoundHandles*)*(void**)(this_ + 0x18 + i * 4))->getHandleSoundID(loopID) != NULL) {
                 return 0;
             }
-            this_ += 4;
-            i++;
-        } while (i < 4);
+        }
     }
     return 1;
 }
