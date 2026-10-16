@@ -13,3 +13,12 @@ extern "C" Actor* fn_8028C068(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" s16 fn_8022461C(float*);
+extern "C" int fn_8028D470(Actor* this_, int a, float* b) {
+    if ((s32)(u16)fn_8022461C(b) == 0xd) {
+        return 0;
+    }
+    return this_->Actor::v17(a, b);
+}
+
