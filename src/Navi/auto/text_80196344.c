@@ -1160,6 +1160,8 @@ extern "C" void fn_801A5274(u8* p, s32 i, u32* pv) {
     *((u32*)(p + (i << 2) + 0x6c)) = *pv;
 }
 
+extern "C" void fn_801A534C(void) {}
+
 extern "C" int fn_801A5368()
 {
 	return 0;
