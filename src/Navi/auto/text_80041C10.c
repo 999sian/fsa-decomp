@@ -408,3 +408,10 @@ extern "C" void* fn_8004DC80(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_8004DCDC(u32* p) {
+    if (*p != 0) {
+        *p = *p - 1;
+    }
+    return *p;
+}
+
