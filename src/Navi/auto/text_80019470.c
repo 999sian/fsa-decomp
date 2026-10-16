@@ -760,7 +760,6 @@ extern "C" void fn_8001C008(void* p) {
 }
 #pragma dont_inline reset
 
-extern "C" void fn_80115178(void*, void*, void*);
 extern "C" void fn_8011580C(void);
 #pragma push
 #pragma dont_inline on
@@ -814,6 +813,18 @@ extern "C" void fn_8001C454(void* param_1, int param_2, int param_3) {
     local[0] = param_2;
     local[1] = param_3;
     fn_80115178((u8*)param_1 + 0x10, (void*)fn_8011580C, local);
+}
+
+extern "C" int fn_8001C490(void* param_1, int param_2, int param_3) {
+    void* temp = fn_8001C010();
+    int local[2];
+    int result;
+    fn_8001C008(param_1);
+    local[0] = param_2;
+    local[1] = param_3;
+    result = ((int (*)(void*, void*, void*))fn_80115178)((u8*)param_1 + 0x10, (void*)fn_8011580C, local);
+    fn_8001C008(temp);
+    return result;
 }
 
 extern "C" void fn_8001EC90(void);
