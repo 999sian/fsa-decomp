@@ -318,6 +318,10 @@ extern "C" BOOL fn_801CEE7C(void) {
     return ((*(vu32*)0xcc006c00 >> 6) & 1) ^ 1;
 }
 
+extern "C" BOOL fn_801CEF64(void) {
+    return (*(vu32*)0xcc006c00 >> 1) & 1;
+}
+
 extern "C" void* fn_801CF5D0(int param_1) {
     volatile long long dummy;
     int r30 = param_1;
