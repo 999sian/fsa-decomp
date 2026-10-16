@@ -6,6 +6,15 @@ extern void* lbl_80222428[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80249D24[];
 extern "C" void fn_80021DDC(void* p);
+extern char lbl_802BB0FC[];
+extern int lbl_802FF0E4;
+extern "C" char lbl_802BB0FC[];
+extern "C" int lbl_802FF0E4;
+extern "C" void fn_80052E2C(void)
+{
+	lbl_802FF0E4 = *(int*)(lbl_802BB0FC + 0x58) + 1000;
+}
+
 extern "C" void fn_8005556C(void* self, void* p) {
     fn_80021DDC(p);
 }
