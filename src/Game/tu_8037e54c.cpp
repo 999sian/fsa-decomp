@@ -343,14 +343,17 @@ extern "C" u32 fn_803846BC(u32 id) {
 
 extern "C" u8 fn_8038C60C(s32 a, s32 b, s32 c, u32 id, s32 e, u16 f) {
     u32 i;
+    u32 count;
     Inf1* inf = &lbl_8053AD78->p8->inf;
-    for (i = 0; i < inf->count; i++) {
+    i = 0;
+    count = inf->count;
+    for (; i < count; i++) {
         if (inf->entries[i].id == id) {
             id = i;
             break;
         }
     }
-    if (i >= inf->count) {
+    if (i >= count) {
         id = 0x12b;
     }
     return fn_8038A984(a, b, c, id, e, f);
