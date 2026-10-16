@@ -106,3 +106,24 @@ extern "C" int fn_801ED468(unsigned long rangeStart, unsigned long rangeEnd, int
     return result;
 }
 
+extern "C" int fn_801ED520(unsigned long count, int stepOver)
+{
+    int result;
+
+    if (stepOver) {
+        result = 0x703;
+    } else {
+        lbl_8029F054[2] = count;
+        lbl_8029F054[1] = 0;
+        lbl_8029F054[0] = 1;
+        MWTRACE(1, lbl_802030F8);
+        *(unsigned long*)(gTRKCPUState + 0x1f8) |= 0x400;
+        if (lbl_8029F054[1] == 0 || lbl_8029F054[1] == 0x10) {
+            lbl_8029F054[2]--;
+        }
+        *(int*)(gTRKState + 0x98) = 0;
+        result = 0;
+    }
+    return result;
+}
+
