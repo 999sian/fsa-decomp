@@ -26,6 +26,7 @@ struct NaviSrc4 { u16 a; u8 b, c; };
 struct NaviRect16 { s16 x, y, w, h; };
 struct NaviColor8 { u8 r, g, b, a; };
 struct NaviBytes4 { u8 b[4]; };
+struct NaviBits2x2 { u8 hi : 4; u8 a : 2; u8 b : 2; u8 pad[7]; };
 extern u8 lbl_802EE470[];
 extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
@@ -97,6 +98,20 @@ extern "C" void fn_80196440(void* self, void* a, void* b, void* c) {
         ((void (*)(void*, void*, void*, void*))((*(void***)obj)[7]))(obj, a, b, c);
     }
 }
+
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" s32 fn_801964C0(void* self) {
+    s32 sum = 0;
+    u16 i;
+    for (i = 0; i < *(u16*)((u8*)self + 0xa); i++) {
+        void* obj = (*(void***)((u8*)self + 0x38))[i];
+        sum += ((s32 (*)(void*))((*(void***)obj)[4]))(obj);
+    }
+    return sum;
+}
+#pragma pop
+
 #pragma pop
 extern "C" int fn_801979BC(int param_1) {
     int size = 0;
@@ -1938,14 +1953,14 @@ extern "C" u8 fn_801A3A1C(u8* p) {
 }
 
 extern "C" void fn_801A3A24(u8* p, u32 i, u8* src) {
+    u32 off = i * 8;
     u8 a = src[1];
-    u8* d = p + i * 8;
-    d[0x5a] = a;
-    d[0x5b] = src[2];
-    d[0x5c] = src[3];
-    d[0x5e] = src[5];
-    d[0x5f] = src[6];
-    d[0x60] = src[7];
+    p[off + 0x5a] = a;
+    p[off + 0x5b] = src[2];
+    p[off + 0x5c] = src[3];
+    p[off + 0x5e] = src[5];
+    p[off + 0x5f] = src[6];
+    p[off + 0x60] = src[7];
 }
 
 extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
@@ -2130,11 +2145,9 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
 }
 
 extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
-    u8 b1 = param_3[1];
-    u8 b0 = param_3[0];
     u8* p = param_1 + param_2 * 8;
-    p[0x28] = (p[0x28] & ~0x0c) | ((b1 & 0xff) << 2);
-    p[0x28] = (p[0x28] & ~0x03) | b0;
+    p[0x28] = (p[0x28] & ~0x0c) | ((param_3[1] & 0xff) << 2);
+    p[0x28] = (p[0x28] & ~0x03) | param_3[0];
 }
 
 extern "C" void fn_801A3F68(int param_1, int param_2, u8* param_3) {
