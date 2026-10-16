@@ -839,7 +839,7 @@ extern "C" void fn_801A3F78(int param_1, int param_2, u8* param_3) {
 }
 
 extern "C" s32 fn_801A3F88(s32 a, s32 b) {
-    return a + (b + 0x7a);
+    return b + 0x7a + a;
 }
 
 extern "C" void fn_801A3E64_unused_placeholder(void);
@@ -847,8 +847,12 @@ extern "C" void fn_801A3F98(u32* p, s32 i, u32* pv) {
     p[i + 0x20] = *pv;
 }
 
+extern "C" void fn_801A3FAC(u32* p, s32 i, u32* pv) {
+    p[i + 0x20] = *pv;
+}
+
 extern "C" s32 fn_801A3FC0(s32 a, s32 b) {
-    return a + (b * 4 + 0x80);
+    return (b << 2) + 0x80 + a;
 }
 
 extern "C" void* fn_801A3FD4(void* p) {
