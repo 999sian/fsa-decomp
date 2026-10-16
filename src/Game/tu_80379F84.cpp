@@ -13,6 +13,37 @@ extern "C" void fn_803D87C0(void* p);
 extern "C" void fn_803A97A0(void* p);
 extern "C" void fn_803B7E64(void* p);
 extern "C" void fn_803D8670(void* p);
+extern "C" u8 fn_8037A120(void) {
+    if (*(void**)((u8*)lbl_8053AD68 + 4) != 0) {
+        return *((u8*)lbl_8053ADA0 + 0x4c0);
+    }
+    if (*(void**)((u8*)lbl_8053AD68 + 8) != 0) {
+        return *((u8*)lbl_8053ADA8 + 0x294);
+    }
+    if (*(void**)((u8*)lbl_8053AD68 + 0xc) != 0) {
+        return *((u8*)lbl_8053ADC0 + 0x76);
+    }
+    return 0;
+}
+
+extern "C" void fn_8037A664(u8* p) {
+    if (*(void**)(p + 4) != 0) {
+        u8 v = *((u8*)lbl_8053ADA0 + 0x4c0);
+        if (v != 5 && v != 8 && v != 7) {
+            fn_803A97A0(lbl_8053ADA0);
+        }
+    }
+    if (*(void**)(p + 8) != 0) {
+        u8 v = *((u8*)lbl_8053ADA8 + 0x294);
+        if (v != 5 && v != 8 && v != 7) {
+            fn_803B7E64(lbl_8053ADA8);
+        }
+    }
+    if (*(void**)(p + 0xc) != 0) {
+        fn_803D8670(lbl_8053ADC0);
+    }
+}
+
 extern "C" void fn_8037A708(u8* p) {
     if (*(void**)(p + 4) != 0) {
         fn_803B6768(*(void**)(p + 4));
