@@ -25,16 +25,3 @@ extern "C" void* fn_8015B420(char* this_, short how) {
     }
     return this_;
 }
-class FSAVirtBase {
-public:
-    virtual void m0();
-    virtual void m1();
-    virtual void m2();
-    virtual void m3();
-    virtual void m4();
-    virtual void m5();
-    virtual void m6();
-    virtual void m7();
-    virtual void m8();
-    virtual void m9();
-};
