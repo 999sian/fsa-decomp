@@ -406,6 +406,24 @@ extern "C" void* fn_80094284(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800BC984(void*);
+extern "C" void fn_80094334(char* param_1) {
+    if (*(void**)(param_1 + 0x26c) != nullptr) {
+        fn_800BC984(*(void**)(param_1 + 0x26c));
+    }
+    fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x26c) + 0xe4));
+    s32 x = *(*(u8**)(param_1 + 0x26c) + 0xe1);
+    switch (x) {
+    case 2:
+        param_1[0x7e8] = 5;
+        break;
+    case 1:
+    case 3:
+        param_1[0x7e8] = 3;
+        break;
+    }
+}
+
 extern "C" void fn_800943BC(void* p) {
     if (fn_800BC8A4(*(void**)((char*)p + 0x26c))) {
         if (*(unsigned char*)(*(char**)((char*)p + 0x26c) + 0xe1) == 3) {
