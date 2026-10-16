@@ -705,6 +705,17 @@ extern "C" long fn_8015BA84(char* p) {
     return sum;
 }
 
+extern "C" long fn_8015BAE8(char* p) {
+    char* n;
+    long sum = 0;
+    fn_801BE3A0(p + 0x18);
+    for (n = *(char**)(p + 0x80); n != 0; n = *(char**)(n + 0xc)) {
+        sum += *(long*)(n + 4) + 0x10;
+    }
+    fn_801BE47C(p + 0x18);
+    return sum;
+}
+
 #pragma pop
 
 #pragma pop
@@ -844,7 +855,3 @@ extern "C" void* fn_8015DA4C(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
-extern char lbl_80297240[];
-extern char lbl_80297250[];
-extern char lbl_802FE168[];
