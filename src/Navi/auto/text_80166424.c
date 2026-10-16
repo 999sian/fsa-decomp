@@ -3,7 +3,8 @@
 #include "types.h"
 
 struct RGB8_8017261C { u8 r, g, b; };
-struct Entry_8017261C { u8 pad[0x16]; RGB8_8017261C color; };
+struct Color4_8017261C { u8 r, g, b, a; };
+struct Entry_8017261C { u8 pad[0x16]; Color4_8017261C colors[1]; };
 
 struct VObj_80174F08 {
     virtual void vf0();
@@ -1190,7 +1191,13 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    *(RGB8_8017261C*)(p1 + p2 * 4 + 0x16) = *(RGB8_8017261C*)p3;
+    u8 r = p3[0];
+    u8 g = p3[1];
+    u8 b = p3[2];
+    p1 += p2 * 4;
+    p1[0x16] = r;
+    p1[0x17] = g;
+    p1[0x18] = b;
 }
 
 extern "C" s32 fn_80172640(s32 p, s32 i) {
