@@ -623,20 +623,20 @@ extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
 }
 
 extern "C" u8 fn_8017FCEC(void* self);
-extern "C" u8 fn_8017FC54(void* self) {
-    u8 flags = 0;
+extern "C" s32 fn_8017FC54(void* self) {
+    s32 flags = 0;
     if (fn_8017FCEC(self)) {
         if (*(s16*)((u8*)self + 0x114) < *(s16*)((u8*)self + 0x120)) {
             flags |= 1;
         }
-        if (*(s16*)((u8*)self + 0x11e) < *(s16*)((u8*)self + 0x112)) {
+        if (*(s16*)((u8*)self + 0x112) > *(s16*)((u8*)self + 0x11e)) {
             flags |= 2;
         }
     } else {
-        if (*(s16*)((u8*)self + 0x11e) < *(s16*)((u8*)self + 0x112)) {
+        if (*(s16*)((u8*)self + 0x112) > *(s16*)((u8*)self + 0x11e)) {
             flags |= 2;
         }
-        if (*(s16*)((u8*)self + 0x120) < *(s16*)((u8*)self + 0x114)) {
+        if (*(s16*)((u8*)self + 0x114) > *(s16*)((u8*)self + 0x120)) {
             flags |= 1;
         }
     }
