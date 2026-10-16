@@ -163,7 +163,7 @@ void fn_80457F6C(void*);
 int fn_80242624(Player*, const JGeometry::TVec3<f32>&);
 int GetPtrField_0x4(Player*);
 
-static inline u8 pIsLinked(int i) {
+static inline int pIsLinked(int i) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(i)) return 0;
     return Player_IsLinked(lbl_8053AC90->players[i]);
@@ -1294,6 +1294,31 @@ int fn_80234134(int index)
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(index)) return GetField_0xcfe(lbl_8053AC90->players[index]);
     return 0;
+}
+
+int fn_8023434C(int idx) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (pIsLinked(idx)) {
+        idx = pLinkTarget(idx);
+        if (lbl_8053AC90 == NULL) return 0;
+        if (!isPlayerEnabled(idx)) return 0;
+        if (isLinked2(idx)) {
+            idx = linkTarget2(idx);
+            if (lbl_8053AC90 == NULL) return 0;
+            if (!isEnabled2(idx)) return 0;
+            if (isLinked3(idx)) {
+                idx = linkTarget3(idx);
+                if (lbl_8053AC90 == NULL) return 0;
+                if (!fn_8023F264(idx)) return 0;
+                if (fn_8022F514(idx)) return fn_8023434C(fn_8022F3DC(idx));
+                return fn_80241964(lbl_8053AC90->players[idx]);
+            }
+            return fn_80241964(lbl_8053AC90->players[idx]);
+        }
+        return fn_80241964(lbl_8053AC90->players[idx]);
+    }
+    return fn_80241964(lbl_8053AC90->players[idx]);
 }
 
 void fn_80234810()
