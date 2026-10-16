@@ -149,7 +149,7 @@ extern "C" s32 fn_801CE928(u8* this_) {
 extern "C" s32 fn_801CE98C(u8* this_) {
     s32 result = 0;
     if (!(*(u32*)(this_ + 0x230) & 0x1000) && *(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > lbl_8053EFC4 && *(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > lbl_8053EFC4) {
-        result = fn_801F2618(this_ + 0x264, 0);
+        result = ((s32 (*)(u8*, u8*, s32))fn_801F2618)(this_, this_ + 0x264, 0);
     }
     return result;
 }
