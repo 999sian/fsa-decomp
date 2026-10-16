@@ -207,6 +207,12 @@ extern "C" void fn_80034B54(void) {
     *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 4;
 }
 
+extern "C" void fn_80034BBC(void* p) {
+    fn_8002A3CC(p, (char*)p + 0x1b4, 0x4b, 1);
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 6;
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x80;
+}
+
 extern "C" void fn_80035410(void* p) {
     *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
     *(unsigned int*)((char*)p + 0x220) = 0x4;
