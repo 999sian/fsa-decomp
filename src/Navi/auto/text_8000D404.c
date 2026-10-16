@@ -485,6 +485,21 @@ extern "C" void fn_8000FA24(void) {
     fn_80159BB4();
 }
 
+extern "C" char lbl_80203E28[];
+extern "C" char lbl_80203E4C[];
+extern "C" void* lbl_802FF544;
+extern "C" void* fn_8015C788(u32 size, void* heap, u32 flags);
+extern "C" void fn_8015A644(void* ptr, s32 flag);
+extern "C" char lbl_80203F2C[];
+extern "C" void fn_80159BA4(void* p);
+extern "C" void fn_8000FA44(void* p) {
+    if (p == nullptr) {
+        fn_8011FD18(fn_8011FD10(), lbl_80203B9C, 0x8b9, lbl_802FB810, lbl_80203F2C);
+        fn_80007AB8(lbl_80203B9C, 0x8b9, lbl_802FB814);
+    }
+    fn_80159BA4(p);
+}
+
 extern "C" float lbl_802FFB68;
 extern "C" float lbl_802FFB6C;
 extern "C" char lbl_80203B80[];
