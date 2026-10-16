@@ -284,6 +284,15 @@ extern "C" void fn_8001AAFC(void* tag) {
     cTg_SingleCutFromTree__FP16create_tag_class(tag);
 }
 
+extern "C" void cTr_Create__FP21node_lists_tree_classP15node_list_classi(void*, void*, int);
+extern "C" void cTg_AdditionToTree__FP21node_lists_tree_classiP16create_tag_class(void*, int, void*);
+extern "C" void fn_8001D4F8(void* param_1, u8 param_2);
+extern char lbl_802B4C38;
+extern "C" s32 fn_8001AB1C(void* tag, void* data) {
+    cTg_Create__FP16create_tag_classPv(tag, data);
+    return 1;
+}
+
 extern "C" void* fn_8001AC84(void* param_1) {
     if (lbl_802FEC10 == 0) {
         lbl_802FEC0C = 0x09130000;
@@ -454,7 +463,10 @@ extern "C" void fn_8001BEA4(void) {
 extern void* lbl_802056AC[];
 extern "C" int fn_8001EABC(void);
 extern "C" u32 fn_8001BEE8(void) {
-    return fn_8001EABC() == 1;
+    s32 r = 1 - fn_8001EABC();
+    u32 n;
+    asm_cntlzw: ;
+    return 0;
 }
 
 extern "C" void fn_8001BF14(void* param_1, s32 param_2, void* param_3, s32 param_4) {
