@@ -42,9 +42,9 @@ int jumptable_8029D79C[];
 extern "C" int fn_801CB248(int param_1) {
     int r30 = param_1;
     int r31 = lbl_802FF8F4;
-    OSDisableInterrupts();
+    BOOL enabled = OSDisableInterrupts();
     lbl_802FF8F4 = r30;
-    OSRestoreInterrupts(0);
+    OSRestoreInterrupts(enabled);
     return r31;
 }
 
@@ -320,6 +320,16 @@ extern "C" BOOL fn_801CEE7C(void) {
 
 extern "C" BOOL fn_801CEF64(void) {
     return (*(vu32*)0xcc006c00 >> 1) & 1;
+}
+
+extern "C" void fn_801CEF74(u8 param_1) {
+    vu32* reg = (vu32*)0xcc006c04;
+    *reg = (*reg & 0xffffff00) | param_1;
+}
+
+extern "C" u32 fn_801CEF90(void) {
+    volatile unsigned int* reg = (volatile unsigned int*)0xCC006C04;
+    return *reg & 0xFF;
 }
 
 extern "C" void* fn_801CF5D0(int param_1) {
