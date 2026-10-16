@@ -60,12 +60,12 @@ s32 fn_8003040C(s32 param_1, s32 param_2)
 	return param_1 + param_2;
 }
 
-s32 fn_80030424(s32 param_1, s32 param_2)
+extern "C" void* fn_80030424(const void* ptr, const void* offset)
 {
-	if (param_2 == 0) {
+	if (offset == 0) {
 		return 0;
 	}
-	return param_1 + param_2;
+	return (void*)((int)ptr + (int)offset);
 }
 
 int fn_8003043C(int param_1, int param_2)
