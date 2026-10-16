@@ -119,15 +119,3 @@ extern "C" void fn_8017ED08(void) {
     void* p = *(void**)((char*)lbl_8053AB10 + 0x20);
     *(u8*)((char*)p + 0x216) = 1;
 }
-struct ActorVt_tu8017C01C {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2();
-    virtual void v3();
-    virtual void v4();
-    virtual void v5();
-    virtual void v6();
-    virtual void v7();
-    virtual void setShadow(s32 type, f32 x, f32 y);
-};
-extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
