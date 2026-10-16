@@ -1452,13 +1452,9 @@ extern "C" void fn_8013C2C0(void* param_1, s32 param_2, void** param_3) {
 
 extern "C" void fn_8013C4B0(void* param_1, s32 param_2, u32* param_3) {
     switch (param_2) {
-    case 2: {
-        void* obj = *(void**)((u8*)param_1 + 0x128);
-        BOOL flag = *param_3 != 0;
-        void (*fn)(void*, BOOL, u32, u32) = *(void (**)(void*, BOOL, u32, u32))(*(u8**)obj + 0x30);
-        fn(obj, flag, *(u32*)((u8*)param_1 + 0x144), *(u32*)((u8*)param_1 + 0x148));
+    case 2:
+        (*(VObj_8013C4B0**)((u8*)param_1 + 0x128))->v10(*param_3 != 0, *(u32*)((u8*)param_1 + 0x144), *(u32*)((u8*)param_1 + 0x148));
         break;
-    }
     }
 }
 
