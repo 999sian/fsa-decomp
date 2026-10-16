@@ -622,7 +622,8 @@ extern "C" u8 fn_80180648(s32 a, void* b, u32 c) {
     if (*(u16*)((u8*)b + 0xa) > 0x100) {
         s = (u8)c;
         s = s >> 31;
-        r = (c << 30) - s;
+        r = (c << 30);
+        r = r - s;
         r = (r << 2) | (r >> 30);
         return r + s + 0x10;
     }
@@ -1194,6 +1195,31 @@ extern "C" void fn_80189BD8(void* self, u32 param_2) {
     }
 }
 
+extern "C" s32 fn_80189C24(u8* self) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+        virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+        virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+        virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+        virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+        virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+        virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+        virtual void v40(); virtual void v41();
+        virtual s32 v42();
+    };
+    u8* a = *(u8**)(self + 0x138);
+    if (a != nullptr) {
+        Obj* b = *(Obj**)(a + 0x70);
+        if (b != nullptr) {
+            return b->v42();
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
 extern "C" void fn_80189C70(void* self, u8 flag) {
     void* obj = *(void**)((u8*)self + 0x138);
@@ -1273,6 +1299,18 @@ extern "C" int fn_8018A4B4(u8* self, u32* p1, u32* p2) {
         return 0;
     }
     return 1;
+}
+
+extern "C" void fn_8018A548(s32* self, void* a) {
+    s32 local_14;
+    s32 local_18;
+    local_14 = -1;
+    local_18 = -1;
+    if (!(fn_8018A318(a, &local_14, &local_18) & 0xff)) {
+        *self = 0;
+    } else {
+        *self = local_14;
+    }
 }
 
 extern "C" void fn_8018A87C(void) {
