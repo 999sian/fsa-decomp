@@ -26,6 +26,19 @@ struct Unk804580DCTrack {
     s32 m4C;
 };
 
+struct Unk80458408Obj {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual Unk80458408Obj* v6();
+    virtual void v7();
+    virtual void v8();
+    virtual JASTrack* v9(s32 idx);
+};
+
 struct Unk804580DCBank {
     char padEC[0xEC];
     Unk804580DCTrack** mEC;
@@ -111,6 +124,22 @@ extern "C" u32 fn_804580DC(char* this_, u8 idx) {
         }
     }
     return 0;
+}
+
+extern "C" void fn_80458658(u8* this_, bool flag) {
+    this_[0x8a] = flag;
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(3)->pause(flag);
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(4)->pause(flag);
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(5)->pause(flag);
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(6)->pause(flag);
+    f32 volume = lbl_80543EB4;
+    if (flag) {
+        volume = lbl_80543EB0;
+    }
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(3)->getParams()->moveVolume(volume, 3);
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(4)->getParams()->moveVolume(volume, 3);
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(5)->getParams()->moveVolume(volume, 3);
+    ((JAISeMgr*)*(void**)(this_ + 0x34))->getCategory(6)->getParams()->moveVolume(volume, 3);
 }
 
 extern "C" void fn_8045873C(u8* this_, u8 v) {
