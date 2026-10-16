@@ -1939,6 +1939,15 @@ extern "C" void* fn_80174E9C(void* param_1) {
     return old;
 }
 
+extern "C" void fn_80174FA0(void* param_1, f32 param_2, f32 param_3)
+{
+	*(f32*)((u8*)param_1 + 0x24) = param_2;
+	*(f32*)((u8*)param_1 + 0x28) = param_3;
+	*(f32*)((u8*)param_1 + 0x2c) = param_2;
+	*(f32*)((u8*)param_1 + 0x30) = param_3;
+	*(f32*)((u8*)param_1 + 0x34) = lbl_80301AF8;
+}
+
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
     f32 rect[4];
     rect[0] = a;
@@ -1957,6 +1966,13 @@ extern "C" void fn_801779C4(void* self, f32 a, f32 b) {
     *(f32*)((char*)self + 0xd4) += a;
     *(f32*)((char*)self + 0xd8) += b;
     ((Obj*)self)->vf2c();
+}
+
+extern "C" void fn_80177BF0(void* self, s8 flag, f32 a, f32 b, f32 c) {
+    *(f32*)((char*)self + 0xc4) = a;
+    *(f32*)((char*)self + 0xc8) = b;
+    *(s8*)((char*)self + 0xb6) = flag;
+    fn_80177C20(self, c);
 }
 
 extern "C" u8 fn_80177F0C(char* self, void* arg)
