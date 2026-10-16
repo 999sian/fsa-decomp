@@ -1,5 +1,22 @@
 #include "JSystem/J2D/J2DPane.h"
 
+struct fn_804461D0_Self {
+    void* vt;
+    J2DScreen* screen;
+    void* a[4];
+    void* b[4];
+    void* c[4];
+    u8 d[4];
+    u8 e[4];
+    u8 f[4];
+    u8 g;
+};
+extern "C" u64 lbl_8048FC08[];
+extern "C" char lbl_80490020[];
+extern "C" u8 lbl_80529DEC[];
+extern "C" u8 lbl_804AF86C[];
+extern "C" void fn_80402F04(void*, void*);
+
 
 extern "C" void fn_8013B490(void*);
 extern u8* lbl_8053AB10;
