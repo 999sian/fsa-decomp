@@ -77,6 +77,16 @@ extern "C" void fn_80197AFC(void* param_1) {
 }
 
 typedef u32 (*NaviVFunc)(void*);
+struct NaviVObj {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+    virtual void vf3(void);
+    virtual void vf4(void);
+    virtual void vf5(void);
+    virtual void vf6(void);
+    virtual void vf7(void);
+};
 extern "C" u32 fn_80197B4C(void* param_1) {
     u8* p = (u8*)param_1;
     void* obj;
@@ -567,6 +577,15 @@ extern "C" void fn_8019E310(int param_1)
 	
 	int final = lbl_802FFA80[2];
 	fn_801BC250(saved, final - saved);
+}
+
+extern "C" void fn_801A188C(void* p, u32 flags) {
+    if (flags & 0x10000000) {
+        ((NaviVFunc)(*(void***)p)[0x18 / 4])(p);
+    }
+    if (flags & 0x20000000) {
+        ((NaviVFunc)(*(void***)p)[0x1c / 4])(p);
+    }
 }
 
 extern "C" void fn_801A34DC(void) {
@@ -1329,7 +1348,7 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* dst = &p[i * 8];
+    u8* dst = p + i * 8;
     dst[0xf] = src[1];
     dst[0x10] = src[2];
     dst[0x11] = src[3];
