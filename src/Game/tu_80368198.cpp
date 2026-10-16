@@ -8,6 +8,11 @@ struct Sub8036C69C {
     virtual void v2(int);
 };
 struct Unk8036C300;
+struct Vec3f {
+    f32 x;
+    f32 y;
+    f32 z;
+};
 typedef void (Unk8036C300::*Unk8036C300Func)();
 extern Unk8036C300Func lbl_804AE070[];
 extern char lbl_804AE088[];
