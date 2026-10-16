@@ -331,6 +331,8 @@ extern "C" void* fn_8004D634(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8004D694(void) {}
+
 extern "C" void fn_80130CB8(void*, int);
 extern char lbl_80246F18[];
 extern "C" void* fn_8004D9C4(void* param_1, s16 param_2) {
