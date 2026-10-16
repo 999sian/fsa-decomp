@@ -317,13 +317,14 @@ extern "C" void fn_80176698(void* self, s32 a, s32 b, s32 c, s32 d, u32 e, void*
 extern "C" void* fn_80178E80(void* self) {
     f32 rect[6];
     s32 unused;
-    u32 tag = 0x726f6f74;
+    u32 tag;
     rect[0] = 0.0f;
     rect[1] = 0.0f;
     rect[2] = 0.0f;
     rect[3] = 0.0f;
     rect[4] = 640.0f;
     rect[5] = 480.0f;
+    tag = 0x726f6f74;
     fn_80176698(self, 0, 1, unused, 0, tag, &rect[2]);
     *(void**)self = lbl_80298D38;
     *(s32*)((u8*)self + 0x114) = -1;
@@ -599,11 +600,15 @@ extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     self->vf38(buf, x, y);
 }
 
-extern "C" u8 fn_80180648(s32 a, void* b, u8 c) {
+extern "C" u8 fn_80180648(s32 a, void* b, u32 c) {
+    u32 s = (u8)c >> 31;
+    u32 r;
     if (*(u16*)((u8*)b + 0xa) > 0x100) {
-        return (c & 3) + 0x10;
+        r = (c << 30) - s;
+        r = (r << 2) | (r >> 30);
+        return (u8)(r + s + 0x10);
     }
-    return c;
+    return (u8)c;
 }
 
 extern "C" void fn_8018067C(void) {}
