@@ -809,13 +809,16 @@ extern "C" BOOL fn_80068A40(void)
 extern "C" void* fn_80068A48(void* p) {
     *(void**)p = lbl_802474D0;
     fn_801E0DB8((u8*)p + 4, fn_80068AD0, fn_8004F154, 0x24, 8);
+    f32 f0 = lbl_803003D0;
     *(u8*)((u8*)p + 0x13c) = 0;
     f32* f = (f32*)p;
-    f[0x49] = lbl_803003D0;
-    f[0x4a] = lbl_803003D0;
-    f[0x4b] = lbl_803003D0;
-    f[0x4c] = lbl_803003D4;
-    f[0x4d] = lbl_803003D8;
+    f[0x49] = f0;
+    f32 f2 = lbl_803003D4;
+    f[0x4a] = f0;
+    f32 f1 = lbl_803003D8;
+    f[0x4b] = f0;
+    f[0x4c] = f2;
+    f[0x4d] = f1;
     f[0x4e] = lbl_803003DC;
     return p;
 }
