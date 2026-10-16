@@ -2290,6 +2290,10 @@ extern "C" void fn_8018A784(u8* self, void* obj) {
     }
 }
 
+extern "C" void fn_8018A7B0(u8* self, void* p) {
+    *(void**)(self + 0x144) = p;
+}
+
 extern "C" void fn_8018A840(VObj_80178E10* self, u8 flag) {
     int mode = 0;
     if (flag) {
@@ -2311,9 +2315,10 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    u32 a = (u32)lbl_80299504;
-    *(u32*)ptr = a;
-    *(u32*)ptr = (u32)lbl_802994F0;
+    void* b = lbl_802994F0;
+    void* a = lbl_80299504;
+    *(void**)ptr = a;
+    *(void**)ptr = b;
 }
 
 extern "C" void fn_80178990(void);
