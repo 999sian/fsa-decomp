@@ -26,6 +26,11 @@ extern const f32 lbl_8053EFD0;
 extern const f32 lbl_8053EFDC;
 extern const f32 lbl_8053F010;
 extern const f32 lbl_8053F014;
+extern const f32 lbl_8053EFF0;
+extern "C" u8 fn_801CCB1C(const f32* pos, s32 layer);
+extern "C" u8 fn_801CFCF0(u8* this_, s32 idx);
+extern "C" s32 fn_801CF798(u8* this_, s32 idx, s32 dir);
+extern "C" s32 fn_801CD580(s32 exclude);
 
 extern "C" {
 }
@@ -171,6 +176,21 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
     f32 dz = record[1] - point[1];
     f32 dx = record[0] - point[0];
     return dx * dx + dz * dz;
+}
+
+extern "C" BOOL fn_801D0DD4(char* this_) {
+    struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
+    s32 room = *(s32*)(this_ + 0x4);
+    TndrG* g = (TndrG*)fn_802D6A9C();
+    BOOL r;
+    if (g->arr[room] != 0) {
+        r = (*(u32*)(this_ + 0x230) & 0x18) != 0;
+    } else if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
+        r = TRUE;
+    } else {
+        r = FALSE;
+    }
+    return r;
 }
 
 extern "C" void fn_801D0E58(char* p) {
