@@ -203,6 +203,29 @@ extern "C" s32 fn_80058D70(s32 idx) {
     return 1;
 }
 
+extern "C" s32 fn_80058DB8(s32 param_1) {
+    u8* p;
+    s32 valid;
+    s32 t;
+    s32 r;
+    p = lbl_8026D4BC + param_1 * 0xc;
+    if (param_1 <= 0 || param_1 > 0x152a) {
+        valid = 0;
+    } else if (p[0] == 0 || p[0] >= 4) {
+        valid = 0;
+    } else {
+        valid = 1;
+    }
+    if (valid == 0) {
+        return 0;
+    }
+    t = fn_801E6840(*(s32*)(p + 8));
+    t += *(s32*)(p + 8);
+    t -= 6;
+    r = fn_801E6510(t, &lbl_802FC724, 3);
+    return (u32)r == 0 ? 1 : 0;
+}
+
 extern "C" void fn_800590D0(s32 param_1, s32* param_2, s32* param_3) {
     s32 local_14;
     s32 local_18;
