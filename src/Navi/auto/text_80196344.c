@@ -438,6 +438,16 @@ extern "C" void fn_8019DEF0(void)
 	return;
 }
 
+extern "C" void fn_8019DFD8(void* p) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13(); virtual void v14();
+    };
+    ((Obj*)p)->v9();
+}
+
 extern "C" void fn_8019E004(int param_1)
 {
 	extern int* lbl_802FFA80;
@@ -805,8 +815,8 @@ extern "C" void fn_801A3AB0(s32 param_1, s32 param_2, u8* param_3) {
     u8* p = (u8*)(param_1 + param_2 * 8);
     u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    p[0x60] = (p[0x60] & 0xF3) | ((b1 << 2) & 0xFC);
-    p[0x60] = (p[0x60] & 0xFC) | b0;
+    p[0x60] = (p[0x60] & ~0x0C) | ((b1 & 0xFF) << 2);
+    p[0x60] = (p[0x60] & ~0x03) | b0;
 }
 
 extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
