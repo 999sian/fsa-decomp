@@ -17,7 +17,7 @@ extern char lbl_802B7CA0[];
 extern char lbl_802C567C[];
 extern f32 lbl_80300DD4;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
-extern "C" int fn_800C91A4(void*, int, s16, u8, int, f32, f32, int);
+extern "C" int fn_800C91A4(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 from, f32 to);
 extern "C" int fn_800C93F4(void*, s16, u8, int);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" s32 fn_80020384(void*, s32);
