@@ -52,6 +52,18 @@ extern "C" void fn_8005867C(void) {
     fn_8005845C();
 }
 
+extern "C" void fn_8005869C(s32 param_1, s32 param_2) {
+    fn_8005C424();
+    if (param_1 >= 1 && param_1 <= 0xffff && param_2 >= 1 && param_2 <= 3) {
+        u8* p = (u8*)fn_80059190(param_1);
+        if (p != 0) {
+            p[0x13] = param_2;
+            *(u16*)(p + 0x10) = 0x80;
+        }
+    }
+    fn_8005C460();
+}
+
 extern "C" s32 fn_80058740(s32, s32);
 extern "C" void fn_8005871C(s32 p) {
     fn_80058740(p, 0);
