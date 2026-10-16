@@ -21,6 +21,13 @@ extern "C" void fn_803F2660(u8* p) {
     *(s32*)(p + 0x1c4) = 8;
 }
 
+extern "C" void fn_803F2AEC(u8* p) {
+    fn_80431A9C(lbl_8053AEC0, 0xc4, (u8)(*(s32*)(p + 0x1ac) + 2), 0);
+    *(u8*)(p + 0x25c) = 0;
+    *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
+    *(s32*)(p + 0x1c4) = 6;
+}
+
 extern "C" void fn_803F32E8(u8* p) {
     *(s32*)(p + 0x210) = 0;
     *(s16*)(p + 0x240) = 0;
