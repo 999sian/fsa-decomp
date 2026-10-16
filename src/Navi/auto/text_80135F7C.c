@@ -17,7 +17,7 @@ struct VObj_8013BC94 {
     virtual void v4();
     virtual void v5();
     virtual void v6();
-    virtual void v7(void*, void*);
+    virtual void v7(u32, void*, void*);
 };
 
 struct KeyIter {
