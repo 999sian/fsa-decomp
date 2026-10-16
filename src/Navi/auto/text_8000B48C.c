@@ -54,6 +54,38 @@ extern "C" void fn_8000BF1C(void)
 	fn_8000B928(lbl_802FF548);
 }
 
+extern "C" void fn_8000C8A4(f32 matrix[3][4], short param_2, short param_3, short param_4) {
+    f32 m[3][4];
+    if (param_4 != 0) {
+        fn_8000CBA4(m, param_4);
+        fn_801C5DA8(matrix, m, matrix);
+    }
+    if (param_3 != 0) {
+        fn_8000CAD0(m, param_3);
+        fn_801C5DA8(matrix, m, matrix);
+    }
+    if (param_2 != 0) {
+        fn_8000C9FC(m, param_2);
+        fn_801C5DA8(matrix, m, matrix);
+    }
+}
+
+extern "C" void fn_8000C950(f32 matrix[3][4], s32 param_2, s32 param_3, s32 param_4) {
+    f32 m[3][4];
+    if ((short)param_3 != 0) {
+        fn_8000CAD0(m, param_3);
+        fn_801C5DA8(matrix, m, matrix);
+    }
+    if ((short)param_2 != 0) {
+        fn_8000C9FC(m, param_2);
+        fn_801C5DA8(matrix, m, matrix);
+    }
+    if ((short)param_4 != 0) {
+        fn_8000CBA4(m, param_4);
+        fn_801C5DA8(matrix, m, matrix);
+    }
+}
+
 extern "C" void fn_801C61AC(void*);
 extern f32 lbl_8029F8D8[3][4];
 extern "C" void fn_8000C9FC(f32 m[3][4], u32 angle) {
@@ -77,6 +109,7 @@ extern "C" void fn_8000CA54(f32 matrix[3][4], u32 angle) {
     f32 m[3][4];
     f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
     f32 s = lbl_802F0BC0[(angle >> 5) & 0x7FF][0];
+    m[0][0] = lbl_802FFB60;
     m[0][1] = lbl_802FFB64;
     m[0][2] = lbl_802FFB64;
     m[0][3] = lbl_802FFB64;
@@ -88,7 +121,6 @@ extern "C" void fn_8000CA54(f32 matrix[3][4], u32 angle) {
     m[2][1] = s;
     m[2][2] = c;
     m[2][3] = lbl_802FFB64;
-    m[0][0] = lbl_802FFB60;
     fn_801C5DA8(matrix, m, matrix);
 }
 
