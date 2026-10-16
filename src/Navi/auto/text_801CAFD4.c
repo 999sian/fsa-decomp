@@ -335,6 +335,40 @@ extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
 }
 
+extern "C" u32 fn_801D1334(void) {
+    volatile u16* p = (volatile u16*)(0xCC000000 + 0x5000);
+    return (p[2] << 16) | p[3];
+}
+
+extern "C" void fn_801D1AA8(void* p);
+extern "C" void fn_801D1C34(void* p);
+extern void* lbl_802FFA10;
+extern "C" void* fn_801D1424(void* param_1) {
+    u32 interrupt_state = OSDisableInterrupts();
+    fn_801D1C34(param_1);
+    *(u32*)param_1 = 0;
+    *(u32*)((u8*)param_1 + 8) = 1;
+    OSRestoreInterrupts(interrupt_state);
+    if (param_1 == lbl_802FFA10) {
+        fn_801D1AA8(param_1);
+    }
+    return param_1;
+}
+
+extern "C" void fn_801D1494(const char* fmt, ...) {
+}
+
+extern "C" s32 fn_801D782C(void* a);
+extern "C" void fn_801D2F34(s32 a);
+extern "C" s32 fn_801D72DC(void* a);
+extern "C" s32 fn_801D2CC8(s32 a, u32* b);
+extern "C" void fn_801D2D80(s32 a, s32 b);
+extern "C" void fn_801D7970(s32* param_1) {
+    if (fn_801D782C(param_1) >= 0) {
+        fn_801D2F34(*param_1);
+    }
+}
+
 extern "C" void fn_801D9BF8(u8* a, u8* b, u8* c, u8* d, u8* e)
 {
 	u8* gx = __GXData;
