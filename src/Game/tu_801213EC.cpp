@@ -525,3 +525,36 @@ extern "C" void* fn_801247C8(u8* self, const char* name, s32 kind, u8 companions
     strcpy((char*)(self + 0x384), name);
     return self;
 }
+
+// Keep regional definitions that were present before source-tree consolidation.
+#if defined(VERSION_G4SE01)
+extern "C" void fn_80121404(void) {
+}
+
+extern "C" void fn_80121408(void) {
+}
+
+extern "C" void fn_8012140C(void) {
+}
+
+extern "C" void fn_80121410(void) {
+}
+#endif
+#if defined(VERSION_G4SJ01)
+extern "C" void fn_80121404(void) {
+    return;
+}
+#endif
+#if defined(VERSION_G4SP01)
+extern "C" void fn_80121404(void) {
+}
+
+extern "C" void fn_80121408(void) {
+}
+
+extern "C" void fn_8012140C(void) {
+}
+
+extern "C" void fn_80121410(void) {
+}
+#endif
