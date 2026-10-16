@@ -14,6 +14,14 @@ extern "C" void fn_80443D5C(u8* p) {
     }
 }
 
+extern const f32 lbl_80543D80;
+extern const f32 lbl_80543D84;
+extern "C" void fn_80444590(u8* p) {
+    if (fn_80402940(*(void**)(p + 8), 5, 0, lbl_80543D80, lbl_80543D78)) {
+        p[0x4d] = 2;
+    }
+}
+
 extern "C" void fn_80444650(void* this_) {
     char* p = (char*)this_;
     if (*(u8*)(p + 0x4d) != 4) {
