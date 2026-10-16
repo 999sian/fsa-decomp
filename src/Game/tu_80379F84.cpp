@@ -10,6 +10,9 @@ struct VObj {
     virtual void v06();
     virtual void v07();
 };
+extern u8 lbl_804AE9A0[];
+extern "C" u32 getTotalFreeSize__7JKRHeapFv(void* heap);
+extern "C" void __dl__FPv(void* p);
 
 
 extern void* lbl_8053ADB8;
