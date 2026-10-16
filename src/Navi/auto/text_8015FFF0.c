@@ -108,6 +108,29 @@ extern "C" int fn_8016076C(void* self) {
     return 0;
 }
 
+extern "C" int fn_801607C0(void* self, void* a, void* b, u32 id, void* name) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13();
+        virtual int v40(void* r, int b);
+        virtual void v44(void* a, void* b, void* r, int* out);
+    };
+    void* r;
+    int out;
+    if (id == 0 || id == 0x3f3f3f3f) {
+        r = fn_80161518(self, name);
+    } else {
+        r = fn_801610AC(self, id, name);
+    }
+    if (r != 0) {
+        ((Obj*)self)->v44(a, b, r, &out);
+        return out;
+    }
+    return 0;
+}
+
 extern "C" BOOL fn_801609A8(u8* a, void* b) {
     u8* p = (u8*)fn_801615C4();
     if (p == NULL) {
