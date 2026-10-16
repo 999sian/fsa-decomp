@@ -29,6 +29,18 @@ extern "C" u8 lbl_80298660[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8016B170(u32*, int);
 
+struct UnkVObj_801671B0 {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6();
+    virtual u32 vf7();
+    virtual s32 vf8(u32, u32);
+};
+
 extern "C" void* fn_80166B1C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -90,7 +102,7 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
 
 extern "C" s32 fn_801671B0(void* param_1, u32 param_2) {
     u32 size = ((u32(*)(void*))(*(void***)param_1)[7])(param_1);
-    u32 aligned = (size + param_2 - 1) & ~(param_2 - 1);
+    u32 aligned = (param_2 + size - 1) & ~(param_2 - 1);
     s32 diff = aligned - size;
     if (diff != 0) {
         if (((s32(*)(void*, u32, u32))(*(void***)param_1)[8])(param_1, aligned, 0) != diff) {
@@ -108,9 +120,10 @@ extern "C" void fn_80167CB8(void) {
 
 extern "C" void* fn_80167CD8(u8* param_1, u32* param_2, u32* param_3) {
     u32* end = *(u32**)(param_1 + 8);
+    u32* dst;
     u32 words = ((u32)end + 3 - (u32)param_3) >> 2;
-    u32* dst = param_2;
     if (param_3 < end) {
+        dst = param_2;
         for (u32 i = words >> 3; i != 0; i--) {
             dst[0] = param_3[0];
             dst[1] = param_3[1];
@@ -126,6 +139,8 @@ extern "C" void* fn_80167CD8(u8* param_1, u32* param_2, u32* param_3) {
         for (u32 i = words & 7; i != 0; i--) {
             *dst++ = *param_3++;
         }
+    } else {
+        dst = param_2;
     }
     for (u32* p = dst; p != *(u32**)(param_1 + 8); p++) {
     }
