@@ -16,3 +16,16 @@ extern "C" Actor* fn_802B7C78(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_802B7CD8(void* this_) {
+    fn_802D6A9C();
+    fn_802D9FBC();
+    (*(void (**)(void*))(*(char**)this_ + 0x24))(this_);
+}
+
+extern "C" void fn_802B8420(char* this_) {
+    fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x173, 1, 0, 0, 0, 1, 1.0f);
+    *(u8*)(this_ + 0x11c) = 0;
+    fn_801F0E34(this_, 0x40041, 0);
+}
+
