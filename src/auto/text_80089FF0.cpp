@@ -26,7 +26,9 @@ extern void* lbl_80499414[];
 extern "C" void __ct__9JKRThreadFUlii(JKRThread* this_, u32 stackSize, int msgCount, int threadPriority);
 JUTException* JUTException::create(JUTDirectPrint* directPrint)
 {
-    if (sErrorManager == nullptr) {
+    extern void* lbl_80499414[];
+
+    if (lbl_8053A900 == nullptr) {
         JUTException* manager = (JUTException*)__nw__FUlP7JKRHeapi(sizeof(JUTException), JKRGetSystemHeap(), 0);
         if (manager != nullptr) {
             __ct__9JKRThreadFUlii(manager, 0x4000, 0x10, 0);
@@ -40,8 +42,8 @@ JUTException* JUTException::create(JUTDirectPrint* directPrint)
             OSSetErrorHandler(OS_ERROR_PROTECTION, (OSErrorHandler)fn_8008A220);
             fn_8008A4C4(0);
 
-            sPreUserCallback = nullptr;
-            sPostUserCallback = nullptr;
+            lbl_8053A904 = 0;
+            lbl_8053A908 = 0;
             manager->mGamePad = nullptr;
             manager->mPadPort = JUTGamePad::Port_Invalid;
             manager->mPrintWaitTime0 = 10;
@@ -50,10 +52,10 @@ JUTException* JUTException::create(JUTDirectPrint* directPrint)
             manager->_98 = 0;
             manager->mPrintFlags = EXPRINTFLAG_All;
         }
-        sErrorManager = manager;
-        sErrorManager->resume();
+        lbl_8053A900 = manager;
+        lbl_8053A900->resume();
     }
-    return sErrorManager;
+    return lbl_8053A900;
 }
 
 extern "C" void fn_8008C390(JUTException* this_);
