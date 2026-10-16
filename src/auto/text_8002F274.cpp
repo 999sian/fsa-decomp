@@ -11,6 +11,47 @@ public:
     static void* createBank(const void*, JKRHeap*);
 };
 
+class JASInstParam {
+public:
+    JASInstParam() {
+        mVolume = 1.0f;
+        mFxMix = 0.0f;
+        mPitch = 1.0f;
+        mPan = 0.5f;
+        mDolby = 0.0f;
+        _14 = 0;
+        _18 = 0;
+        _1c = 0;
+        _20 = 0;
+        _24 = 0;
+        _26 = 0;
+    }
+
+    float mVolume;
+    float mFxMix;
+    float mPitch;
+    float mPan;
+    float mDolby;
+    unsigned long _14;
+    unsigned long _18;
+    void** _1c;
+    unsigned long _20;
+    unsigned char _24;
+    unsigned short _26;
+};
+
+class JASInst {
+public:
+    virtual ~JASInst();
+    virtual bool getParam(int, int, JASInstParam*) const;
+    virtual unsigned long getType() const;
+};
+
+class JASBasicBank {
+public:
+    JASInst* getInst(int) const;
+};
+
 extern JKRHeap* JASDram;
 extern "C" int lbl_80557688;
 extern "C" void* fn_8002FB90(const void*, JKRHeap*);
