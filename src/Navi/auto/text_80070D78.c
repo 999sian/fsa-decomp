@@ -69,6 +69,8 @@ extern u8 lbl_802FCA18;
 extern u16 lbl_802FED38;
 extern u8 lbl_802FF058;
 extern u32 lbl_802FF190;
+extern u32 lbl_802FF194;
+extern f32 lbl_8030054C;
 extern u8 lbl_802BB0FC[];
 extern u8 lbl_802C4E74[];
 extern u8 lbl_802EE470[];
