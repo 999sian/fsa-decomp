@@ -61,6 +61,17 @@ extern "C" void* fn_80167404(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802911A0[];
+extern "C" void* fn_80167880(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802911A0;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void fn_80167CB8(void) {
     fn_80168280();
 }
