@@ -328,6 +328,14 @@ extern "C" s32 fn_80172B80(s32 p, s32 i) {
     return p + i * 4 + 0xe;
 }
 
+extern "C" void fn_80172B94(u8* p, s32 i, s16* v) {
+    s16* d = (s16*)(p + i * 8 + 0x1e);
+    d[0] = v[0];
+    d[1] = v[1];
+    d[2] = v[2];
+    d[3] = v[3];
+}
+
 extern "C" s32 fn_80172BC0(s32 p, s32 i) {
     i = i * 8;
     return p + (i + 0x1e);
@@ -348,6 +356,8 @@ extern "C" u8 fn_80172C38(s32 p, s32 i) {
     p = p + i;
     return *(u8*)(p + 0x74);
 }
+
+extern "C" void fn_80172C44(u8* p, u8 v) { p[0x3e] = v; }
 
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
