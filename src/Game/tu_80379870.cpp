@@ -2,6 +2,7 @@
 
 
 extern void* lbl_804AE948[];
+extern "C" void* fn_801F856C(void);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* p);
 extern "C" void* fn_80379870(void* this_, s16 freeFlag) {
