@@ -225,7 +225,7 @@ extern u8 lbl_80301BF8[];
 
 struct VObj_80184164 {
     virtual void v0(); virtual void v1(); virtual void v2();
-    virtual void v3(); virtual void v4(); virtual void v5();
+    virtual void v3(); virtual u8 v4(); virtual void v5();
     virtual u8 v6();
 };
 
