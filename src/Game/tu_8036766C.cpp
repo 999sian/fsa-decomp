@@ -2,17 +2,6 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
-struct Pair2f {
-    f32 x;
-    f32 y;
-};
-
-struct Vec3f {
-    f32 x;
-    f32 y;
-    f32 z;
-};
-
 
 extern "C" char lbl_804ADFE8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -64,12 +53,13 @@ extern "C" void fn_80367E24(u8* p) {
     s32 n = *(s32*)((u8*)fn_801F856C() + 0x1008);
     s32 off;
     s32 i;
-    for (i = 0, off = 0; i < n; i++, off += 4) {
+    for (i = 0, off = 0; i < n; off += 4, i++) {
         u8* actor = *(u8**)((u8*)fn_801F856C() + off + 8);
         if (actor != 0 && *(u32*)(actor + 0x1a0) == 'DCR2') {
             *(s32*)(p + 0x250) = i;
             *(u8**)(p + 0x254) = actor;
-            *(Vec*)(p + 0x258) = *(Vec*)(actor + 0xc);
+            *(f64*)(p + 0x258) = *(f64*)(actor + 0xc);
+            *(f32*)(p + 0x260) = *(f32*)(actor + 0x14);
             break;
         }
     }
