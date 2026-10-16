@@ -461,6 +461,11 @@ extern "C" s32 fn_8001BF5C(void* self, void* p) {
     return cTg_SingleCutFromTree__FP16create_tag_class(p);
 }
 
+extern "C" u32 fn_8001BF80(void* param_1) {
+    s32 v = *(s16*)((u8*)param_1 + 0x2a);
+    return (u32)((-v) & ~v) >> 31;
+}
+
 extern "C" void* fn_8001BFF8(void) {
     return lbl_802056AC[0];
 }
