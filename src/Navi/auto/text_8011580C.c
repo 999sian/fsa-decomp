@@ -75,6 +75,14 @@ extern "C" int fn_80115AC8(Vec3f* a) {
     return 1;
 }
 
+extern "C" int fn_80115B18(Vec3f* a, Vec3f* b) {
+    int ret = 0;
+    if (a->x != b->x || a->y != b->y || a->z != b->z) {
+        ret = 1;
+    }
+    return ret;
+}
+
 extern const float lbl_80301424;
 extern const float lbl_802FEAB8;
 extern "C" int fn_80115B58(Vec3f* a) {
