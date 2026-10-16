@@ -774,3 +774,5 @@ extern "C" void fn_80178DA4(void* param_1)
 {
 }
 
+extern "C" u32 fn_80178E08(void) { return 0x10; }
+
