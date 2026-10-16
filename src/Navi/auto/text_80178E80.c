@@ -10,6 +10,10 @@ extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
 
 extern "C" void fn_801C5DA8(u32 a, u8* b, u8* c);
 extern "C" void fn_801DF2A4(u8* a, s32 b);
+struct Vec4F {
+    f32 x, y, z, w;
+};
+
 extern "C" void fn_80182764(u8* a, f32* b, u8* c);
 extern "C" void fn_80177CA8(u8* a, u8* b);
 
@@ -1135,14 +1139,29 @@ extern "C" void fn_801820F4(void) {
     fn_80177E84();
 }
 
+extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
+    f32 pos[4];
+    u8 buf[52];
+    pos[0] = *(f32*)(self + 0x20) + f1;
+    pos[1] = *(f32*)(self + 0x24) + f2;
+    pos[2] = *(f32*)(self + 0x28) + f1;
+    pos[3] = *(f32*)(self + 0x2c) + f2;
+    fn_801C5DA8(param_2, self + 0x80, buf);
+    fn_801DF2A4(buf, 0);
+    fn_80182764(self, pos, self + 0x114);
+    fn_80177CA8(self, self + 0x114);
+}
+
 extern "C" s32 fn_80183BC4(u32* self, s32* param_2) {
     s32 local_14 = -1;
     s32 local_10 = -1;
     if (fn_80183FC8((s32)self, &local_14, &local_10) == 0) {
         return 0;
     }
-    s32 local_c = *param_2;
-    s32 local_8 = local_10;
+    s32 local_c;
+    s32 local_8;
+    local_8 = local_10;
+    local_c = *param_2;
     return ((VObj_80183C4C*)self)->vfA8(&local_c, &local_8);
 }
 
