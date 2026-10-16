@@ -1158,6 +1158,10 @@ extern "C" s32 fn_80172A70(s32 p, s32 i)
 
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
+extern "C" u16 fn_80172B3C(u8* p, s32 i) {
+    return ((u16*)(p + 4))[i];
+}
+
 extern "C" s32 fn_80172B80(s32 p, s32 i)
 {
     return p + i * 4 + 0xe;
