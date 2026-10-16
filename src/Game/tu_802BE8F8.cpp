@@ -1,6 +1,10 @@
 extern "C" char lbl_804A8B78[];
 extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(void*, int);
+extern "C" float lbl_80540C10;
+extern "C" float lbl_80540C1C;
+extern "C" float lbl_80540C24;
+extern "C" float lbl_80540C28;
 
 extern "C" void* fn_802BED00(void* this_, short freeFlag) {
     if (this_ != 0) {
