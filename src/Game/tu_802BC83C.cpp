@@ -40,3 +40,18 @@ extern "C" void fn_802BC88C(u8* p) {
     }
 }
 
+extern "C" Actor* fn_802BD1A8(Actor* a, s16 n) {
+    if (a) {
+        u8* p = (u8*)a;
+        *(void**)p = lbl_804A8A50;
+        if (*(void**)(p + 0x230)) fn_801EE434(*(void**)(p + 0x230));
+        if (*(void**)(p + 0x234)) fn_801EE434(*(void**)(p + 0x234));
+        if (*(void**)(p + 0x238)) fn_801EE434(*(void**)(p + 0x238));
+        if (*(void**)(p + 0x23c)) fn_801EE434(*(void**)(p + 0x23c));
+        fn_802D73CC(fn_802D6A9C(), *(u32*)(p + 0x26c), 0);
+        __dt__5ActorFv(a, 0);
+        if (n > 0) operator delete(a);
+    }
+    return a;
+}
+
