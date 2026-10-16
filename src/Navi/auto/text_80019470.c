@@ -776,6 +776,10 @@ extern "C" void fn_8001C008(void* p) {
     lbl_802FEC20 = p;
 }
 
+extern "C" void* fn_8001C010(void) {
+    return lbl_802FEC20;
+}
+
 extern "C" void fn_8001EA98(void*, bool (*)(void));
 extern "C" void fn_8001C148(char* p) {
     fn_8001EA98(p + 0x1c, (bool (*)(void))fn_8001BEE8);
@@ -1518,11 +1522,11 @@ extern "C" void fn_8001F764(u8* param_1, f32* param_2) {
 }
 
 extern "C" void fn_8001F78C(u8* param_1, u8* param_2) {
-    u8 b = param_2[1];
     u8 a = param_2[0];
+    u8 b = param_2[1];
     param_1[0x20] = a;
-    param_1[0x21] = b;
     u8 c = param_2[2];
+    param_1[0x21] = b;
     u8 d = param_2[3];
     param_1[0x22] = c;
     param_1[0x23] = d;
