@@ -506,6 +506,15 @@ extern "C" void fn_8019B97C(NaviVObj* p, u32 flags) {
     }
 }
 
+extern "C" void fn_8019BF64(NaviVObj* p, u32 flags) {
+    if (flags & 1) {
+        p->vf6();
+    }
+    if ((flags & 2) || ((flags >> 4) & 0xf)) {
+        p->vf7();
+    }
+}
+
 extern "C" void fn_8019C62C(int param_1)
 {
 	extern int* lbl_802FFA80;
