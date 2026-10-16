@@ -357,22 +357,24 @@ extern "C" void fn_8043DB58(u8* param_1) {
 		virtual void v54();
 		virtual void v55(s32 a, f32 b, s32 c, f32 d, s32 e);
 	};
-	u8 n;
 	fn_8013B490(lbl_8053AB10);
-	n = param_1[0x256];
-	if (n != 0xff) {
-		if (n == 2) {
+	if (param_1[0x256] != 0xff) {
+		switch (param_1[0x256]) {
+		case 0:
+			((VObj*)*(void**)(param_1 + 0x14))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+			break;
+		case 1:
+			((VObj*)*(void**)(param_1 + 0x18))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+			break;
+		case 2:
 			((VObj*)*(void**)(param_1 + 0x1c))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
-		} else if (n < 2) {
-			if (n == 0) {
-				((VObj*)*(void**)(param_1 + 0x14))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
-			} else {
-				((VObj*)*(void**)(param_1 + 0x18))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
-			}
-		} else if (n == 4) {
-			((VObj*)*(void**)(param_1 + 0x24))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
-		} else if (n < 4) {
+			break;
+		case 3:
 			((VObj*)*(void**)(param_1 + 0x20))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+			break;
+		case 4:
+			((VObj*)*(void**)(param_1 + 0x24))->v55(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+			break;
 		}
 	}
 }
