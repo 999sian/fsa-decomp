@@ -32,6 +32,13 @@ extern "C" void* fn_80196388(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80197A80(u32 param_1) {
+    if (param_1 == 0) {
+        return 4;
+    }
+    return 0x7c;
+}
+
 extern "C" u32 fn_80197A94(u32 param_1, u32 param_2) {
     u32 r5 = 0;
     if (param_1 == 0) {
@@ -421,12 +428,17 @@ extern "C" u32 fn_801A34F0(void) {
     return 0x5045464c;
 }
 
+extern "C" void fn_801A34FC(void* param_1) {
+    fn_801A7D78((u8*)param_1 + 4);
+}
+
 extern "C" int fn_801A3544(int p) { return p + 4; }
 
 extern "C" void fn_801A7D78(void* p);
 extern "C" void fn_801A354C(u8* param_1, u16* param_2) {
-    *(u16*)(param_1 + 0x30) = param_2[0];
+    u16 uVar0 = param_2[0];
     u8 uVar1 = *(u8*)(param_2 + 1);
+    *(u16*)(param_1 + 0x30) = uVar0;
     u8 uVar2 = *((u8*)param_2 + 3);
     *(u8*)(param_1 + 0x32) = uVar1;
     *(u8*)(param_1 + 0x33) = uVar2;
