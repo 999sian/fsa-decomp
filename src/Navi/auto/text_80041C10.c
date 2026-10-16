@@ -326,6 +326,24 @@ extern "C" void fn_8004D468(void) {
     fn_801DE3E0(0, 7, 7, 7, 1);
 }
 
+extern "C" void fn_8004D49C(void* param_1, u8* param_2) {
+    u32 local_c;
+    s16 local_8;
+    u32 uVar2;
+    s16 uVar1;
+    local_c = *(u32*)(param_2 + 0xc0) >> 16;
+    uVar2 = (u8)*(u32*)(param_2 + 0xc0);
+    uVar1 = (*(u32*)(param_2 + 0xc0) >> 8) & 0xff;
+    if ((u32)fn_8004DCDC(&local_c) == 0) {
+        local_8 = param_2[0xbb];
+        if (fn_801167D0(&local_8, uVar2, uVar1) != 0) {
+            *(u32*)(param_2 + 0xec) = 0;
+        }
+        param_2[0xbb] = local_8;
+    }
+    *(u32*)(param_2 + 0xc0) = (s16)uVar2 | (local_c << 16 | (s16)uVar1 << 8);
+}
+
 extern "C" void fn_8004D5C0(void) {}
 
 extern "C" void fn_8004D5C4(void) {}
