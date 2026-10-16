@@ -8,6 +8,11 @@ extern "C" s32 fn_801786BC(s32 a, f32 b);
 
 extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
 
+extern "C" void fn_801C5DA8(u32 a, u8* b, u8* c);
+extern "C" void fn_801DF2A4(u8* a, s32 b);
+extern "C" void fn_80182764(u32* a, f32* b, u8* c);
+extern "C" void fn_80177CA8(u32* a, u8* b);
+
 struct VObj_8017ED64 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
     virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
@@ -1128,6 +1133,19 @@ extern "C" int fn_80182058(char* self, void* v) {
 
 extern "C" void fn_801820F4(void) {
     fn_80177E84();
+}
+
+extern "C" s32 fn_80183BC4(u32* self, s32* param_2) {
+    s32 local_14 = -1;
+    s32 local_10 = -1;
+    if (fn_80183FC8((s32)self, &local_14, &local_10) == 0) {
+        return 0;
+    }
+    s32 local_c;
+    s32 local_8;
+    local_8 = local_10;
+    local_c = *param_2;
+    return ((VObj_80183C4C*)self)->vfA8(&local_c, &local_8);
 }
 
 extern "C" s32 fn_80183C4C(VObj_80183C4C* self, s32* p) {
