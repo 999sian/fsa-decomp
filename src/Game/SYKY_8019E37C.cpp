@@ -23,8 +23,10 @@ extern "C" void fn_802372F8(s32 i, s32 a, s32 b);
 extern void* lbl_804A2B18[];
 extern void* lbl_8053AAF8;
 extern "C" void* fn_801A024C(u8* this_, s16 freeFlag) {
+    s32 i;
+    u8* cur;
     if (this_ != 0) {
-        *(void**)this_ = &lbl_804A2B18;
+        *(void**)this_ = lbl_804A2B18;
         if (*(s32*)(this_ + 0x268) == 0) {
             s32 state = *(s32*)(this_ + 0x230);
             if (state == 3 || state == 4) {
@@ -33,9 +35,9 @@ extern "C" void* fn_801A024C(u8* this_, s16 freeFlag) {
                     fn_80138B7C(lbl_8053AAF8);
                     fn_80458508(lbl_8053AF80, 0);
                 }
-                for (s32 i = 0; i < 4; i++) {
+                for (i = 0, cur = this_; i < 4; i++, cur += 4) {
                     if (fn_8022F514(i) == 0) {
-                        fn_802372F8(i, *(s32*)(this_ + 0x26c + i * 4), *(s32*)(this_ + 0x27c + i * 4));
+                        fn_802372F8(i, *(s32*)(cur + 0x26c), *(s32*)(cur + 0x27c));
                     }
                 }
             }
