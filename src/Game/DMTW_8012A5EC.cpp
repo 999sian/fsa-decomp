@@ -1,6 +1,7 @@
 #include "types.h"
 
 extern s32 lbl_8053AAF8;
+extern s32 lbl_8053AB10;
 extern "C" void fn_802D9FF4(s32, s32, s32);
 extern "C" void fn_80136798(s32, s32, s32);
 extern "C" void fn_8011921C(void);
@@ -52,6 +53,25 @@ extern "C" void fn_8012A8C0(char* this_) {
         i++;
         p += 0xc;
     } while (i < 6);
+}
+
+extern "C" void fn_8012A9A0(char* this_) {
+    fn_8012A5EC(this_);
+    if (this_[0x404] == 0) {
+        fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+        if (fn_803865B8(0)) {
+            fn_80388EEC(0);
+            *(s32*)(this_ + 0x250) = 0x28;
+            this_[0x404] = 1;
+        }
+    } else if (*(s32*)(this_ + 0x250) == 0) {
+        fn_8011921C();
+        fn_801183BC();
+        fn_802D9FF4(fn_802D6A9C(), 0, 0);
+        fn_80136798(lbl_8053AAF8, 0xd, 0);
+        fn_80119468(fn_80119DD0(), 0, 1);
+        *(s32*)(this_ + 0x230) += 1;
+    }
 }
 
 extern "C" void fn_8012B02C(char* this_) {
