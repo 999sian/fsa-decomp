@@ -332,6 +332,14 @@ extern "C" u32 fn_801CEF90(void) {
     return *reg & 0xFF;
 }
 
+extern "C" void fn_801CEFA0(u32 param_1) {
+    *(vu32*)0xcc006c04 = (*(vu32*)0xcc006c04 & 0xffff00ff) | ((param_1 & 0xff) << 8);
+}
+
+extern "C" u32 fn_801CEFBC(void) {
+    return (*(vu32*)0xcc006c04 >> 8) & 0xff;
+}
+
 extern "C" void* fn_801CF5D0(int param_1) {
     volatile long long dummy;
     int r30 = param_1;
