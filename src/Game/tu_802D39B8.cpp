@@ -2,6 +2,11 @@
 
 #pragma auto_inline off
 
+#if defined(VERSION_G4SP01)
+extern "C" int fn_801365A8(void);
+extern "C" int fn_80045948(void);
+#endif
+
 struct RoomMaskEntry {
     u64 flags;
     u8 pad08[0x318];
@@ -581,6 +586,9 @@ extern "C" void fn_802DCDF4(char* p) {
     *(u8*)(p + 0xC9) = 0;
 }
 
+extern "C" void fn_802DD548(void) {
+}
+
 extern "C" void* fn_802DE604(void* p, s16 freeFlag) {
     if (p != 0) {
         *(void**)p = lbl_804A9950;
@@ -720,3 +728,23 @@ extern "C" u8 fn_802DEDFC(s32 value) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     return fn_802DCE5C(p, value);
 }
+
+// Keep regional definitions that were present before source-tree consolidation.
+#if defined(VERSION_G4SP01)
+extern "C" void fn_802E0BD0(char* p)
+{
+    if (lbl_8053AAF8[0x7f] == 1) {
+        if (fn_801365A8() == 1 && fn_80045948() != 1) {
+            *(int*)(p + 0xc4) = 30000;
+        } else {
+            *(int*)(p + 0xc4) = 36000;
+        }
+    } else {
+        if (fn_801365A8() == 1 && fn_80045948() != 1) {
+            *(int*)(p + 0xc4) = 9000;
+        } else {
+            *(int*)(p + 0xc4) = 10800;
+        }
+    }
+}
+#endif
