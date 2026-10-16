@@ -166,11 +166,10 @@ extern "C" void fn_80124110(void* p) {
 }
 
 extern "C" void fn_80127DD4(void* param_1, u8* self) {
-    u8* cfg = *(u8**)self;
     f32 mtx[3][4];
-    fn_80132450(*(s16*)(cfg + 0x4c) * 0xb6, *(s16*)(cfg + 0x4e) * 0xb6, *(s16*)(cfg + 0x50) * 0xb6, mtx);
-    fn_801C5DA8(cfg + 0x68, mtx, self + 0xa8);
-    fn_801C6684(self + 0xa8, cfg + 0x18, self + 0x120);
+    fn_80132450(*(s16*)(*(u8**)self + 0x4c) * 0xb6, *(s16*)(*(u8**)self + 0x4e) * 0xb6, *(s16*)(*(u8**)self + 0x50) * 0xb6, mtx);
+    fn_801C5DA8(*(u8**)self + 0x68, mtx, self + 0xa8);
+    fn_801C6684(self + 0xa8, *(u8**)self + 0x18, self + 0x120);
 }
 
 extern "C" void fn_80127E54(void) {
