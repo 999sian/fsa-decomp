@@ -17,7 +17,7 @@ struct StrideIter {
     f32* p;
     u32 stride;
 
-    StrideIter() {}
+    StrideIter(const StrideIter& o) : p(o.p), stride(o.stride) {}
     StrideIter& operator++() { p += stride; return *this; }
     StrideIter& operator+=(s32 n) { p += stride * n; return *this; }
 };
