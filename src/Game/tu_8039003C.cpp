@@ -6,6 +6,20 @@ extern u8* lbl_8053ADF8;
 extern u8* lbl_8053AE00;
 extern "C" void fn_8040F480(void*);
 extern "C" void fn_80416BD0(void*);
+extern u8* lbl_8053AD80;
+extern "C" int fn_8040F474(void);
+extern "C" int fn_80414F6C(void);
+extern "C" int fn_8039003C(void) {
+    if (lbl_8053AD80 != 0) {
+        if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+            return fn_8040F474();
+        } else {
+            return fn_80414F6C();
+        }
+    }
+    return 6;
+}
+
 extern "C" void fn_80390088(void) {
     if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
         fn_8040F480(lbl_8053ADF8);
