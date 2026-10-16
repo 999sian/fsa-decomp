@@ -100,6 +100,22 @@ extern "C" void fn_8016AD08(void) {
 extern "C" void fn_8016AD0C(void) {
 }
 
+extern "C" s32 fn_8016BC8C(void* self, s32 param_2, void* param_3) {
+    u8* p = (u8*)self;
+    if (param_2 == 0) {
+        if (p[0x5c] & 1) {
+            fn_80118BD0(*(void**)(p + 0x50), 1);
+        }
+        *(void**)(p + 0x50) = param_3;
+        p[0x5c] &= 0x80;
+        fn_8015AB1C(*(void**)(p + 0x54));
+        *(void**)(p + 0x54) = nullptr;
+        *(s16*)(p + 4) = -1;
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" u32 fn_80172468(void)
 {
     return 0x49424c46;
