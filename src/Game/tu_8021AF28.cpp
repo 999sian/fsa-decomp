@@ -8,6 +8,15 @@ extern "C" void fn_801CB7A0(void* obj);
 extern "C" bool fn_80219E04(void* thisObj);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern const f32 lbl_8053FCD4;
+extern "C" void fn_8021B548(void* this_) {
+    char* p = (char*)this_;
+    char cVar2 = 0;
+    if (fn_80219E04(this_)) {
+        cVar2 = -6;
+    }
+    fn_801CB71C((void**)(p + 0x2c4), p + 0xc, 0, cVar2);
+}
+
 extern "C" void fn_8021B5A0(void* this_) {
     fn_801CB7A0(*(void**)((char*)this_ + 0x2c4));
 }
