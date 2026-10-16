@@ -1545,6 +1545,7 @@ extern "C" void fn_801878E4(u8* self, u8 count) {
     }
 }
 
+extern "C" void fn_80187388(u8* self, u8 mode);
 extern "C" void fn_80187AAC(u8* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
     if (*(void**)(self + 0x168) != nullptr) {
         *(f32*)(self + 0x124) = a;
@@ -1555,6 +1556,7 @@ extern "C" void fn_80187AAC(u8* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, 
         *(f32*)(self + 0x17c) = f;
         *(f32*)(self + 0x180) = g;
         *(f32*)(self + 0x184) = h;
+        fn_80187388(self, *(u32*)(*(u8**)(self + 0x168) + 0x28));
     }
 }
 
