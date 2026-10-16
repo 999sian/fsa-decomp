@@ -561,6 +561,44 @@ extern "C" int fn_801B7B40(void* param_1, u8* param_2) {
     return size + 0xc;
 }
 
+extern "C" int fn_801B7B5C(void* param_1, u8* param_2, void* param_3) {
+    u8 buf[0x88];
+    s32 total = 0;
+    u16 count = *(u16*)(param_2 + 8);
+    fn_801B075C(buf);
+    if (*(void**)(param_2 + 0x14) != nullptr) {
+        total = 0x10;
+    }
+    total += count * 4;
+    for (u16 i = 0; i < count; i++) {
+        total += fn_801B2254(buf, 0, 0, i, param_3);
+    }
+    return total;
+}
+
+extern "C" int fn_801B7BFC(void* param_1, u8* param_2) {
+    s32 size = 0;
+    if (*(void**)(param_2 + 0x10) != nullptr) {
+        size = 0x10;
+    }
+    return size + 0xc;
+}
+
+extern "C" int fn_801B7C18(void* param_1, u8* param_2, void* param_3) {
+    u8 buf[0x88];
+    s32 total = 0;
+    u16 count = *(u16*)(param_2 + 8);
+    fn_801B075C(buf);
+    if (*(void**)(param_2 + 0x14) != nullptr) {
+        total = 0x10;
+    }
+    total += count * 4;
+    for (u16 i = 0; i < count; i++) {
+        total += fn_801B2254(buf, 0, 2, i, param_3);
+    }
+    return total;
+}
+
 extern "C" void* fn_801B7F50(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
