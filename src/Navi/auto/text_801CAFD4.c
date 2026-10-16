@@ -1052,23 +1052,54 @@ extern "C" void fn_801DB478(void) {
     OSRestoreInterrupts(interrupt_state);
 }
 extern "C" void fn_801DB4F8(void) {
-    u8* gx = __GXData;
     *(volatile u8*)0xCC008000 = 0x61;
+    u8* gx = __GXData;
     *(volatile u32*)0xCC008000 = *(u32*)(gx + 0x1dc);
     *(u16*)(gx + 2) = 0;
 }
 
 extern void* __peReg;
+
+struct PeReg_801DB550 {
+    u8 unk_0x0[2];
+    u16 m_0x2_d : 4;
+    u16 m_0x2_a3 : 1;
+    u16 m_0x2_b : 3;
+    u16 m_0x2_c : 3;
+    u16 m_0x2_f4 : 1;
+    u16 m_0x2_f3 : 1;
+    u16 m_0x2_f2 : 1;
+    u16 m_0x2_a2 : 1;
+    u16 m_0x2_ch : 1;
+};
+
 extern "C" void fn_801DB51C(s32 a, s32 b) {
-    *(u16*)((u8*)__peReg + 6) = (u16)((a << 8) | (u8)b);
+    *(u16*)((u8*)__peReg + 6) = (u16)((a << 8) | (b & 0xff));
 }
 
 extern "C" void fn_801DB530(s32 a) {
-    u32 val = 0;
+    u16 val = 0;
     val |= a & 3;
-    u32 flag = 1;
-    val |= flag << 2;
+    val |= 4;
     *(u16*)((u8*)__peReg + 8) = val;
+}
+
+extern "C" void fn_801DB550(u8 a) {
+    *(u16*)((u8*)__peReg + 2) = (*(u16*)((u8*)__peReg + 2) & 0xffef) | ((a & 1) << 4);
+}
+
+extern "C" void fn_801DB568(s32 a, u16 b, u16 c, s16 d) {
+    u16 ch = 1;
+    if (a != 1 && a != 3) {
+        ch = 0;
+    }
+    u16 val = *(u16*)((u8*)__peReg + 2);
+    val = (ch) | ((a == 3) << 11) | ((a == 2) << 1) | ((d & 0xf) << 12) | ((b & 7) << 8) | ((c & 7) << 5) | (val & 0x1c);
+    *(u16*)((u8*)__peReg + 2) = val;
+}
+
+extern "C" void fn_801DB5CC(u8 a) {
+    *(u16*)((u8*)__peReg + 2) = (*(u16*)((u8*)__peReg + 2) & 0xfff7) | ((a & 1) << 3);
 }
 
 extern "C" uint fn_801DD3D8(uint *param_1)
