@@ -134,6 +134,8 @@ extern "C" s32 fn_80172640(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
 
+extern "C" void fn_8017288C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
+
 extern "C" unsigned short fn_801728B4(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
@@ -206,14 +208,12 @@ extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
 
-extern "C" void fn_801730A4(u8* param_1, int param_2, u8* param_3) {
+extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
     u8 uVar0 = param_3[0];
-    u8* p = param_1 + param_2 * 4;
-    u8 uVar1 = param_3[1];
+    u8* p = (u8*)(param_1 + param_2 * 4);
     p[8] = uVar0;
-    u8 uVar2 = param_3[2];
-    p[9] = uVar1;
-    p[10] = uVar2;
+    p[9] = param_3[1];
+    p[10] = param_3[2];
 }
 
 extern "C" void fn_801730DC(u8* p, s32 i, s16* src)
