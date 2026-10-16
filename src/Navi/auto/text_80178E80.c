@@ -655,6 +655,14 @@ extern "C" void fn_8017FD20(VObj_80180980* self, f32 a, f32 b, f32 c, f32 d) {
     fn_8017FD80();
 }
 
+extern "C" void fn_8017FD50(void* self, f32 a, f32 b, f32 c, f32 d) {
+    *(f32*)((char*)self + 0x134) = a;
+    *(f32*)((char*)self + 0x138) = b;
+    *(f32*)((char*)self + 0x13c) = c;
+    *(f32*)((char*)self + 0x140) = d;
+    fn_8017FED0();
+}
+
 extern "C" void fn_801801B8(void* self, s32 a, s32 b, s32 c, s32 d) {
     fn_801801F4(self, (u8*)self + 0x112, a, b, c, d);
 }
