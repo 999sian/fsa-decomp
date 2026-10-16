@@ -25,6 +25,21 @@ extern "C" void fn_80081308(void) {
     fn_800813BC();
 }
 
+extern u8 lbl_8029F8D8[];
+extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
+extern "C" void fn_8000C8A4(void* m, s32 a, s32 b, s32 c);
+extern "C" void fn_801C5D74(void* p, void* q);
+extern "C" void fn_800827C4(u8* p)
+{
+	u8* q = *(u8**)(*(u8**)(p + 0x358) + 4);
+	*(f32*)(q + 0x18) = *(f32*)(p + 0x144);
+	*(f32*)(q + 0x1c) = *(f32*)(p + 0x148);
+	*(f32*)(q + 0x20) = *(f32*)(p + 0x14c);
+	fn_801C61AC(lbl_8029F8D8, *(f32*)(p + 0x128), *(f32*)(p + 0x12c), *(f32*)(p + 0x130));
+	fn_8000C8A4(lbl_8029F8D8, *(s16*)(p + 0x13c), *(s16*)(p + 0x13e), *(s16*)(p + 0x140));
+	fn_801C5D74(lbl_8029F8D8, *(u8**)(*(u8**)(p + 0x358) + 4) + 0x24);
+}
+
 extern "C" void fn_80081328(void);
 extern "C" void fn_80086710(void) {
     fn_80081328();
