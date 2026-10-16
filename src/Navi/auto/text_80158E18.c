@@ -774,6 +774,15 @@ extern "C" void fn_8015BC38(u8* list, u8* node) {
     *(u8**)(next + 0x8) = prev;
 }
 
+extern "C" void fn_8015C518(void* p, int a, int b, int c, int d, int e) {
+    *(u16*)p = 0x484d;
+    ((u8*)p)[2] = e;
+    ((u8*)p)[3] = d;
+    *(u32*)((u8*)p + 0x4) = c;
+    *(u32*)((u8*)p + 0x8) = a;
+    *(u32*)((u8*)p + 0xc) = b;
+}
+
 #pragma pop
 
 #pragma pop
