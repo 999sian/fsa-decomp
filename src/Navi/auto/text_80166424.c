@@ -216,6 +216,31 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
     return uVar1;
 }
 
+extern "C" u32 fn_80166FC4(void* p_list, void* p_node)
+{
+    u32* list = (u32*)p_list;
+    u32* node = (u32*)p_node;
+    u32 r = __cntlzw((u32)list - node[1]);
+    if ((u8)(r >> 5)) {
+        if (list[2] == 1) {
+            list[0] = 0;
+            list[1] = 0;
+        } else if ((u32)node == list[0]) {
+            ((u32*)node[3])[2] = 0;
+            list[0] = node[3];
+        } else if ((u32)node == list[1]) {
+            ((u32*)node[2])[3] = 0;
+            list[1] = node[2];
+        } else {
+            ((u32*)node[2])[3] = node[3];
+            ((u32*)node[3])[2] = node[2];
+        }
+        node[1] = 0;
+        list[2] = list[2] - 1;
+    }
+    return r >> 5;
+}
+
 extern "C" void* fn_80167074(void* ptr, s16 param_2) {
     extern void* lbl_8029839C[];
     extern void* lbl_80298390[];
