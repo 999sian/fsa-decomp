@@ -456,8 +456,9 @@ extern "C" void fn_8001B5D4(void) {
     fn_8001B0B0();
 }
 
+#pragma dont_inline on
 extern "C" void fn_8001B5F4(void* p) { fn_8001B1DC(*(void**)((char*)p + 0x14)); }
-
+#pragma dont_inline reset
 extern "C" void fn_8001B494(void);
 extern "C" void fn_8001B63C(void) {
     fn_8001B494();
