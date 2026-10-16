@@ -11,3 +11,10 @@ extern "C" Actor* fn_8030FD60(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_8030FDC0(char* p, s32 v) {
+    *(s32*)(p + 0x25c) = v;
+    *(s32*)(p + 0x234) = 0x3c;
+    *(s32*)(p + 0x230) = 6;
+}
+
