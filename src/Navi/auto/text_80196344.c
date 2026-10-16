@@ -1329,8 +1329,7 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* dst;
-    dst = p + i * 8;
+    u8* dst = &p[i * 8];
     dst[0xf] = src[1];
     dst[0x10] = src[2];
     dst[0x11] = src[3];
@@ -1940,6 +1939,11 @@ extern "C" int fn_801A5368()
 {
 	return 0;
 }
+
+extern "C" u32 fn_801A5370(void) {
+    return 0x434c4f46;
+}
+
 struct B4_801A4974 { u8 c[4]; };
 struct B3_801A4840 { u8 c[3]; };
 struct E_801A4840 { u8 x; B3_801A4840 rgb; };
