@@ -471,9 +471,11 @@ extern "C" void* fn_80064CBC(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80064D18(void** p) {
-    p[0] = lbl_8027F6DC;
+    void* a = lbl_8027F6DC;
+    void* b = lbl_8027FB48;
+    p[0] = a;
     p[1] = 0;
-    p[0] = lbl_8027FB48;
+    p[0] = b;
     p[2] = 0;
 }
 
@@ -1093,18 +1095,18 @@ extern "C" void fn_8006BADC(void) {
 
 extern "C" void fn_8006BAE0(void* param_1) {
     fn_8006C404();
-    
+
     s32 limit = *(s32*)((u8*)&lbl_802BB0FC + 0x58);
     s32 val = *(s32*)((u8*)param_1 + 0x2fc);
-    
+
     if (val <= limit) {
-        fn_8006C5B0((s32)param_1);
-        
+        fn_8006C5B0((s32)param_1, 4);
+
         void* ptr = &lbl_802BF814;
         s16 counter = *(s16*)((u8*)ptr + 0x1f8);
         counter += 10;
         *(s16*)((u8*)ptr + 0x1f8) = counter;
-        
+
         if ((s32)counter > 0xff) {
             *(s16*)((u8*)ptr + 0x1f8) = 0xff;
         }
@@ -1112,26 +1114,26 @@ extern "C" void fn_8006BAE0(void* param_1) {
 }
 
 extern "C" void fn_8006BB68(void* param_1) {
-    f64 const_val = lbl_80300470;
-    
     u16 val1 = *(u16*)((u8*)param_1 + 0x30e);
-    u16 masked = val1 & 0xf000;
-    *(u16*)((u8*)param_1 + 0x312) = masked + 0x800;
-    
+    *(u16*)((u8*)param_1 + 0x312) = (val1 & 0xf000) + 0x800;
+
     u16 val2 = *(u16*)((u8*)param_1 + 0x310);
-    
+
     union { u32 i[2]; f64 d; } conv;
     conv.i[0] = 0x43300000;
     conv.i[1] = val2;
-    
-    f64 double_val = conv.d;
-    f32 result = (f32)(double_val - const_val);
-    *(f32*)((u8*)param_1 + 0x2dc) = result;
-    
+
+    *(f32*)((u8*)param_1 + 0x2dc) = conv.d - lbl_80300470;
+
     *(s32*)((u8*)param_1 + 0x2cc) = 0;
-    
+
     fn_80030534((void*)((u8*)param_1 + 0x2ec), 0x59, 1);
     fn_8002F358(0x6a, 0);
+}
+
+extern "C" void fn_8006BCD0(void* param_1) {
+    *(s32*)((u8*)param_1 + 0x2cc) = 0;
+    *(void**)((u8*)param_1 + 0x2d0) = fn_80022434(0x1e);
 }
 
 extern "C" void fn_8006C38C(void) {}
