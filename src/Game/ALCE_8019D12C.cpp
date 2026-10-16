@@ -10,6 +10,10 @@ extern char lbl_804A2AB0[];
 extern void* lbl_8053AAF8;
 extern void* lbl_8053AD70;
 extern u8 lbl_8053ABB0;
+struct Quad {
+    f32 v[4];
+};
+
 extern "C" void* fn_8019DEB4(char* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A2AB0;
