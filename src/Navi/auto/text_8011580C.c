@@ -67,6 +67,14 @@ extern "C" void fn_80115A74(Vec3f* out, Vec3f* a) {
     *out = *a;
 }
 
+extern "C" int fn_80115AC8(Vec3f* a) {
+    if (fn_801C6970(a) < lbl_8030141C) {
+        return 0;
+    }
+    fn_801C692C(a, a);
+    return 1;
+}
+
 extern const float lbl_80301424;
 extern const float lbl_802FEAB8;
 extern "C" int fn_80115B58(Vec3f* a) {
