@@ -1483,6 +1483,30 @@ extern "C" u32 fn_80187F24(void* self) {
     return *(u32*)((u8*)p + 0x28) & 0xff;
 }
 
+extern "C" s32 fn_80187F44(void* self, s32* param_2) {
+    s32 local_14 = -1;
+    s32 local_10 = -1;
+    if (fn_801884B0((s32)self, &local_14, &local_10) == 0) {
+        return 0;
+    }
+    s32 local_c = *param_2;
+    s32 local_18 = local_10;
+    return ((s32 (*)(void*, s32*, s32*))(*(void***)self)[0x130 / 4])(self, &local_c, &local_18);
+}
+
+extern "C" s32 fn_80187FCC(void* self, s32* param_2) {
+    s32 local_14 = -1;
+    s32 local_10 = -1;
+    if (fn_801884B0((s32)self, &local_14, &local_10) == 0) {
+        return 0;
+    }
+    s32 local_c;
+    s32 local_18;
+    local_18 = *param_2;
+    local_c = local_14;
+    return (*(s32 (**)(void*, s32*, s32*))((u8*)*(void**)self + 0x130))(self, &local_c, &local_18);
+}
+
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 extern "C" void fn_80188754(s32* self, s32 a) {
     s32 local_14;
@@ -1514,6 +1538,13 @@ extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     if (p == nullptr) return;
     if (((u8*)p + 0x10) == 0) return;
     *(u8*)((u8*)p + 0x3) = param_2;
+}
+
+extern "C" void fn_80188928(u8* self, void* obj) {
+    void* p = *(void**)(self + 0x168);
+    if (p != nullptr) {
+        fn_8016A0B4(p, obj);
+    }
 }
 
 extern "C" void fn_80188DB0(void* self, int a, int b, int c) {
@@ -1772,6 +1803,12 @@ extern "C" void fn_8018A8A0(void) {
 
 extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
+}
+
+extern "C" void fn_8018B07C(void* ptr) {
+    void* a = lbl_80299504;
+    *(void**)ptr = a;
+    *(void**)ptr = lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
