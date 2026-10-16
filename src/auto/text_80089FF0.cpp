@@ -17,10 +17,36 @@ extern "C" u8 lbl_804BA1B0[];
 extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
+extern "C" void* __nw__FUlP7JKRHeapi(size_t size, JKRHeap* heap, int align);
+extern void* lbl_80499414[];
+extern "C" void __ct__9JKRThreadFUlii(JKRThread* this_, u32 stackSize, int msgCount, int threadPriority);
 JUTException* JUTException::create(JUTDirectPrint* directPrint)
 {
     if (sErrorManager == nullptr) {
-        sErrorManager = new (JKRGetSystemHeap(), 0) JUTException(directPrint);
+        JUTException* manager = (JUTException*)__nw__FUlP7JKRHeapi(sizeof(JUTException), JKRGetSystemHeap(), 0);
+        if (manager != nullptr) {
+            __ct__9JKRThreadFUlii(manager, 0x4000, 0x10, 0);
+            *(void**)manager = lbl_80499414;
+            manager->mDirectPrint = directPrint;
+
+            OSSetErrorHandler(OS_ERROR_DSI, (OSErrorHandler)fn_8008A220);
+            OSSetErrorHandler(OS_ERROR_ISI, (OSErrorHandler)fn_8008A220);
+            OSSetErrorHandler(OS_ERROR_PROGRAM, (OSErrorHandler)fn_8008A220);
+            OSSetErrorHandler(OS_ERROR_ALIGNMENT, (OSErrorHandler)fn_8008A220);
+            OSSetErrorHandler(OS_ERROR_PROTECTION, (OSErrorHandler)fn_8008A220);
+            fn_8008A4C4(0);
+
+            sPreUserCallback = nullptr;
+            sPostUserCallback = nullptr;
+            manager->mGamePad = nullptr;
+            manager->mPadPort = JUTGamePad::Port_Invalid;
+            manager->mPrintWaitTime0 = 10;
+            manager->mPrintWaitTime1 = 10;
+            manager->mTraceSuppress = 0xffffffff;
+            manager->_98 = 0;
+            manager->mPrintFlags = EXPRINTFLAG_All;
+        }
+        sErrorManager = manager;
         sErrorManager->resume();
     }
     return sErrorManager;
@@ -40,8 +66,8 @@ extern "C" void fn_8008A100(JUTException* this_)
         OSReceiveMessage(&lbl_80499390, &message, 1);
         VISetPreRetraceCallback(0);
         VISetPostRetraceCallback(0);
-        u16 error = *(u16*)((u8*)message + 4);
         JUTErrorHandler callback = *(JUTErrorHandler*)message;
+        u16 error = *(u16*)((u8*)message + 4);
         OSContext* context = *(OSContext**)((u8*)message + 8);
         u32 dsisr = *(u32*)((u8*)message + 0xc);
         u32 dar = *(u32*)((u8*)message + 0x10);
