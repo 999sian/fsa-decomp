@@ -24,11 +24,11 @@ JKRArcFinder::JKRArcFinder(JKRArchive *archive, long startindex, long entries) :
     findNextFile();
 }
 
-extern "C" bool fn_80083018(void* param_1) {
+extern "C" u8 fn_80083018(void* param_1) {
     JKRArchive::SDirEntry entry;
     char* self = (char*)param_1;
     if (*(u8*)(self + 0x10) != 0) {
-        *(u8*)(self + 0x10) = *(s32*)(self + 0x1c) >= *(s32*)(self + 0x20);
+        *(u8*)(self + 0x10) = *(s32*)(self + 0x20) <= *(s32*)(self + 0x1c);
         if (*(u8*)(self + 0x10) != 0) {
             *(u8*)(self + 0x10) = ((JKRArchive*)*(void**)(self + 0x14))->getDirEntry(&entry, *(u32*)(self + 0x20));
             *(char**)(self + 0x0) = entry.mName;
