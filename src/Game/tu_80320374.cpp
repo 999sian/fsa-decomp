@@ -13,3 +13,17 @@ extern "C" void fn_803221F4(char* p) {
         *(s32*)(p + 0x278) = 0xb6;
     }
 }
+
+extern "C" void** fn_80323708(void** p, short del) {
+    if (p != 0) {
+        *p = lbl_804AB308;
+        fn_801EE434(*(void**)((char*)p + 0x2c4));
+        fn_801EE434(*(void**)((char*)p + 0x2c8));
+        __dt__5ActorFv(p, 0);
+        if (del > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
