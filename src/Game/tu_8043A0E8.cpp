@@ -38,13 +38,24 @@ extern "C" void fn_8043A170(u32 param_1, u8 param_2) {
 }
 
 extern "C" void fn_8043A208(u8* param_1, f32 param_2, f32 param_3, f32 param_4, f32 param_5) {
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+    };
     if (*(void**)(param_1 + 0x10) != NULL) {
         *(f32*)(param_1 + 0x1c0) = param_2;
         *(f32*)(param_1 + 0x1c4) = param_3;
         *(f32*)(param_1 + 0x1c8) = param_4;
         *(f32*)(param_1 + 0x1cc) = param_5;
-        void* obj = *(void**)(param_1 + 0x10);
-        ((void (*)(void*))((*(void***)obj)[9]))(obj);
+        ((VObj*)*(void**)(param_1 + 0x10))->v07();
         *(u8*)(param_1 + 0x254) = 1;
     }
 }
