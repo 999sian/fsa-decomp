@@ -42,7 +42,7 @@ extern "C" void fn_8005556C(void* self, void* p) {
     fn_80021DDC(p);
 }
 
-void fn_80055C08(void) {}
+extern "C" void fn_80055C08(void) {}
 
 extern int lbl_802FF0E8;
 extern "C" void fn_80055C0C(void)
