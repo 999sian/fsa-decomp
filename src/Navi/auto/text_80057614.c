@@ -70,6 +70,26 @@ extern "C" s32 fn_80058740(s32 param_1, s32 param_2) {
     return result;
 }
 
+extern "C" s32 fn_800587CC(s32 param_1, s32 param_2) {
+    s32 result = 0;
+    fn_8005C424();
+    if (param_1 >= 1 && param_1 <= 0xffff) {
+        s32* p = (s32*)fn_80059190(param_1);
+        if (p != 0 && (param_2 == 0 || param_2 == *p)) {
+            switch (((u8*)p)[0x12]) {
+            case 1:
+                result = 1;
+                break;
+            case 2:
+                result = 2;
+                break;
+            }
+        }
+    }
+    fn_8005C460();
+    return result;
+}
+
 extern "C" s32 fn_801E6840(s32);
 extern "C" s32 fn_801E6510(s32, void*, s32);
 extern u32 lbl_802FC724;
