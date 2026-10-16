@@ -333,8 +333,14 @@ struct J3DTevSwapModeInfo {
     u8 mRasSel; // _00
     u8 mTexSel; // _01
 };
+struct J3DTevSwapModeTableInfo {
+    u8 mR; // _00
+    u8 mG; // _01
+    u8 mB; // _02
+    u8 mA; // _03
+};
 extern J3DTevSwapModeInfo j3dDefaultTevSwapMode;
-extern u8 j3dDefaultTevSwapModeTable[];
+extern const J3DTevSwapModeTableInfo j3dDefaultTevSwapModeTable;
 extern u32 j3dDefaultIndTexOrderNull;
 extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, const void* info);
 extern "C" void fn_800CB4C0(void* out, u8* e) {
@@ -347,17 +353,15 @@ extern "C" void fn_800CB4C0(void* out, u8* e) {
     p[7] = (v & ~0x03) | j3dDefaultTevSwapMode.mRasSel;
 }
 
-extern "C" u8 j3dDefaultTevSwapModeTable[];
-extern "C" u32 j3dDefaultIndTexOrderNull;
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u16* ids = *(u16**)(p + 8);
     u16 v = *(u16*)(*(u8**)(p + 4) + (ids[idx] * 0x14c + 0x124 + stage * 2));
     if (v != 0xffff) {
-        u8* e = *(u8**)(p + 0x58) + v * 4;
-        *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
+        J3DTevSwapModeTableInfo* e = (J3DTevSwapModeTableInfo*)(*(u8**)(p + 0x58) + v * 4);
+        *out = e->mR * 0x40 + e->mG * 0x10 + e->mB * 4 + e->mA;
         return;
     }
-    *out = j3dDefaultTevSwapModeTable[0] * 0x40 + j3dDefaultTevSwapModeTable[1] * 0x10 + j3dDefaultTevSwapModeTable[2] * 4 + j3dDefaultTevSwapModeTable[3];
+    *out = j3dDefaultTevSwapModeTable.mR * 0x40 + j3dDefaultTevSwapModeTable.mG * 0x10 + j3dDefaultTevSwapModeTable.mB * 4 + j3dDefaultTevSwapModeTable.mA;
 }
 
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
@@ -372,11 +376,12 @@ extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
 extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
     u8* e = *(u8**)(p + 0xc) + idx * 0x138;
     u32 def = j3dDefaultIndTexOrderNull;
+    u32* defp = &def;
     if (e[0] == 1) {
         *out = *(u32*)(e + stage * 4 + 4);
         return;
     }
-    *out = def;
+    *out = *defp;
 }
 
 struct J3DIndTexCoordScaleInfo {
