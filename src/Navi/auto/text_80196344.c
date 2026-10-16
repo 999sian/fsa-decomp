@@ -24,6 +24,8 @@ extern "C" void fn_801A7D78(void* p);
 struct NaviSrc4 { u16 a; u8 b, c; };
 struct NaviRect16 { s16 x, y, w, h; };
 struct NaviColor8 { u8 r, g, b, a; };
+struct NaviBytes4 { u8 b[4]; };
+typedef void (*NaviVFn)(void* self);
 struct NaviRectHolder {
     u8 unk_0x0[0xda];
     NaviRect16 rects[4];
@@ -1533,8 +1535,15 @@ extern "C" void fn_801A3520(void* param_1) {
 extern "C" int fn_801A3544(int p) { return p + 4; }
 
 extern "C" void fn_801A7D78(void* p);
-extern "C" void fn_801A354C(u8* param_1, NaviSrc4* param_2) {
-    *(NaviSrc4*)(param_1 + 0x30) = *param_2;
+extern "C" void fn_801A354C(u8* param_1, u8* param_2) {
+    u16 a = *(u16*)param_2;
+    u8 b;
+    u8 c;
+    b = param_2[2];
+    *(u16*)(param_1 + 0x30) = a;
+    c = param_2[3];
+    param_1[0x32] = b;
+    param_1[0x33] = c;
 }
 
 extern "C" void* fn_801A3584(void* param_1) {
