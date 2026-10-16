@@ -353,10 +353,10 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    u8* p = p1 + p2 * 4;
+    u8* p = p1 + (p2 << 2);
     u8 a = p3[0];
-    u8 b = p3[1];
     p[0x16] = a;
+    u8 b = p3[1];
     p[0x17] = b;
     p[0x18] = p3[2];
 }
@@ -745,6 +745,22 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void* lbl_802FF540;
+extern "C" void* lbl_802FF690;
+extern "C" void* lbl_802FF698;
+extern "C" u8 lbl_802FF694;
+extern "C" int fn_8015AAB0(void*, void*, int);
+extern "C" void* fn_80174E9C(void* param_1) {
+    void* old = lbl_802FF690;
+    if (lbl_802FF694 != 0) {
+        fn_8015AB1C(lbl_802FF690);
+    }
+    lbl_802FF690 = (void*)fn_8015AAB0(param_1, lbl_802FF540, 0);
+    lbl_802FF698 = param_1;
+    lbl_802FF694 = 1;
+    return old;
 }
 
 extern "C" u8 fn_80177F0C(char* self, void* arg)
