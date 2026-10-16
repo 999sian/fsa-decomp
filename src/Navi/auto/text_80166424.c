@@ -360,6 +360,8 @@ extern "C" int fn_8016755C(int param_1) {
   return *(int *)(param_1 + 0x10);
 }
 
+extern "C" int fn_80167810(int p) { return *(int*)(p + 0xc); }
+
 extern "C" void* fn_801679DC(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
