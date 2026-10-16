@@ -70,6 +70,12 @@ extern "C" void fn_8011F668(u8* p, void* buf, s16 w, s16 h)
     *(u32*)(p + 0xc) = *(u16*)(p + 0x8) * *(u16*)(p + 0x6) * 2;
 }
 
+extern u8 lbl_802FDD78[8];
+extern "C" void fn_8011F6CC(void* a, void* b, void* c, void* d, void* e, ...);
+extern "C" void fn_8011F6A0(void* a, void* b, void* c, void* e) {
+    fn_8011F6CC(a, b, c, lbl_802FDD78, e);
+}
+
 extern "C" void fn_8011FA0C(void)
 {
 }
