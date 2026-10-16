@@ -213,6 +213,8 @@ extern "C" int fn_8001A454(int param_1, int param_2, int param_3, int param_4) {
     return 1;
 }
 
+extern "C" void fn_8001A59C(void) {}
+
 extern "C" s32 fn_800199A8(void);
 extern "C" u32 fn_8001A5A0(void) {
     s32 iVar1 = fn_800199A8();
@@ -909,12 +911,16 @@ extern "C" void* fn_80020304(void* ptr, s16 param_2) {
     return ptr;
 }
 
+void fn_80020340(void) {}
+
 extern "C" void* fn_80020344(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
     }
     return ptr;
 }
+
+void fn_80020380(void) {}
 
 extern "C" int fn_80020E48(void* param_1) {
     int ret = fn_800636A0(param_1, lbl_802B7CA0 + 0x2200, 0x40);
