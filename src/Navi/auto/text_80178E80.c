@@ -325,10 +325,10 @@ extern "C" u32 fn_8017D014(char* self, u8 idx, u8 flag) {
 }
 
 extern "C" void fn_801C5D48(void* p);
-extern "C" void fn_8017ECFC(void* self, f32 a, f32 b) {
-    u8 buf[0x38];
+extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
+    u8 buf[48];
     fn_801C5D48(buf);
-    ((void (*)(void*, void*, f32, f32))((*(void***)self)[0x38 / 4]))(self, buf, a, b);
+    self->vf38(buf, x, y);
 }
 
 extern "C" int fn_80180B60(u8* self, u8* src) {
