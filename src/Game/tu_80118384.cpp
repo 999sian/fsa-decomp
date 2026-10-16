@@ -1,5 +1,10 @@
 #include "types.h"
 
+extern "C" void* __nw__FUl(u32 size);
+extern "C" void __ct__10J2DPictureFPC7ResTIMG(void* self, const void* res);
+extern u8* lbl_8053AAF8;
+extern u32 lbl_80539F10;
+
 extern "C" void fn_80118384(u8* self)
 {
     void fn_801F856C(void);
@@ -78,6 +83,9 @@ extern "C" void fn_80119468(u32 a, u32 b, s32 c)
     void fn_80119998(u32 a, u32 b, u32 c, s32 d, u32 e, u32 f, u32 g, u32 h);
     u32 v;
     switch (c) {
+    case 2:
+        v = 0x46;
+        break;
     case 0:
     case 1:
         v = 0x23;
