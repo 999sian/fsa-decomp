@@ -339,6 +339,55 @@ extern "C" int fn_8016BC8C(u8* p, void* a, void* b)
     return 1;
 }
 
+extern "C" void* fn_8015A90C(u32);
+extern "C" void* fn_80119904(void*, void*, int);
+extern "C" int fn_8016BD94(u8* p, void* src)
+{
+    void* obj;
+    void* old;
+    if (src == 0) {
+        return 0;
+    }
+    obj = fn_8015A90C(0x70);
+    if (obj != 0) {
+        obj = fn_80119904(obj, src, 0);
+    }
+    if (obj == 0) {
+        return 0;
+    }
+    if (p[0x5c] & 0x80) {
+        old = *(void**)(p + 0x58);
+        if (old != 0) {
+            (*(void (**)(void*, int))(*(u8**)old + 8))(old, 1);
+        }
+    }
+    *(void**)(p + 0x58) = obj;
+    p[0x5c] = (p[0x5c] & 0x7f) | 0x80;
+    return 1;
+}
+
+extern "C" int fn_8016BE50(u8* p, void* obj)
+{
+    void* old;
+    if (obj == 0) {
+        return 0;
+    }
+    if (p[0x5c] & 0x80) {
+        old = *(void**)(p + 0x58);
+        if (old != 0) {
+            (*(void (**)(void*, int))(*(u8**)old + 8))(old, 1);
+        }
+    }
+    *(void**)(p + 0x58) = obj;
+    p[0x5c] &= 0x7f;
+    return 1;
+}
+
+extern "C" void fn_8016BF98(u8* p)
+{
+    p[0x5c] &= 0x80;
+}
+
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
         return 0;
