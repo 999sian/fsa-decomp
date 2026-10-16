@@ -823,12 +823,18 @@ extern "C" u8* fn_801A482C(u8* p, s32 i) {
 
 extern "C" void fn_801A4840(u8* p1, int p2, u8* p3) {
     u8* p = p1 + p2 * 8;
-    p[0x39] = p3[1];
-    p[0x3a] = p3[2];
-    p[0x3b] = p3[3];
-    p[0x3d] = p3[5];
-    p[0x3e] = p3[6];
-    p[0x3f] = p3[7];
+    u8 a = p3[1];
+    u8 b = p3[2];
+    u8 c = p3[3];
+    p[0x39] = a;
+    p[0x3a] = b;
+    p[0x3b] = c;
+    a = p3[5];
+    b = p3[6];
+    c = p3[7];
+    p[0x3d] = a;
+    p[0x3e] = b;
+    p[0x3f] = c;
 }
 
 extern "C" void fn_801A48CC(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] = *p3; }
