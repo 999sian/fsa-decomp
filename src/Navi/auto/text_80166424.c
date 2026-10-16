@@ -1061,6 +1061,10 @@ extern "C" u32 fn_801725E4(void) { return 0x10; }
 
 extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
+extern "C" u16 fn_801725FC(u8* p, s32 i) {
+    return ((u16*)(p + 4))[i];
+}
+
 extern "C" unsigned short fn_80172614(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
@@ -1515,13 +1519,13 @@ extern "C" u8 fn_80174454(u8* param_1, u32 param_2) {
     return 0xff;
 }
 
-extern "C" void fn_8017448C(void* param_1, u8* param_2, u32 param_3, u32 param_4) {
-    u16* table = *(u16**)(param_2 + 8);
-    u32 sub = param_4 * 2;
-    u8* base = *(u8**)(param_2 + 4);
-    u16 uVar1 = *(u16*)(base + (table[param_3] * 0xe8 + 0x9a + sub));
-    if (uVar1 != 0xffff) {
-        fn_801749F0(param_1, *(u8**)(param_2 + 0x44) + uVar1 * 0x14);
+extern "C" void fn_8017448C(u8* p, u8* s, u32 a, u32 b) {
+    u16* table = *(u16**)(s + 8);
+    u16 row = table[a];
+    u16* tbl = (u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x9a);
+    u16 idx = tbl[b];
+    if (idx != 0xffff) {
+        fn_801749F0(p, *(u8**)(s + 0x44) + idx * 0x14);
     } else {
         fn_801721FC();
     }
