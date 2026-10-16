@@ -47,6 +47,28 @@ extern "C" void fn_80030908(void* p) {
     *(unsigned int*)((char*)p + 0x8) |= 0x40000;
 }
 
+extern "C" void fn_8003092C(void* p) {
+    *(unsigned int*)((char*)lbl_802BB0FC + 0xf8) |= 0x8;
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x3ec) = 0;
+    *(int*)((char*)p + 0x20) = *(int*)((char*)lbl_802BB0FC + 0x58) + 60000;
+    fn_8002F358(0x8a, 0);
+    if (*(unsigned char*)((char*)p + 0x32) == 0) {
+        *(unsigned int*)((char*)p + 0x8) |= 0x2000000;
+    } else {
+        ((void (*)(void*))fn_80030B3C)(p);
+    }
+}
+
+extern "C" void fn_800309B0(void* p) {
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x400) = *(unsigned char*)((char*)p + 0xc);
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x444) &= 0xfffffff7;
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x450) &= 0xfffffff7;
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x45c) &= 0xfffffff7;
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x468) &= 0xfffffff7;
+    fn_80030250(2);
+    fn_800302F0(3);
+}
+
 extern "C" void fn_80031CBC(void* p) {
     *(void**)((char*)p + 0x38) = *(void**)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x40) |= 0x80000000;
