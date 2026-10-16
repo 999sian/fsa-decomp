@@ -171,6 +171,13 @@ extern "C" void fn_80459508(char* this_) {
     ((JASAudioReseter*)*(void**)(this_ + 0x2c))->resume();
 }
 
+extern "C" s32 fn_8045959C(u8* this_) {
+    if (this_[0x7c] == 0) {
+        return 0;
+    }
+    return (((JASAudioReseter*)*(u32*)(this_ + 0x2c))->checkDone() != 0) + 1;
+}
+
 extern "C" void fn_804595E4(u8* this_, bool b) {
     ((JASAudioReseter*)*(u32*)(this_ + 0x2c))->start(5, b);
     this_[0x7c] = 1;
