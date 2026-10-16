@@ -166,7 +166,7 @@ extern "C" void fn_8001A3E4(int param_1, void* param_2) {
 }
 
 extern "C" void fn_8001A424(s16 param_1) {
-    s16 local[4];
+    s16 local[1];
     local[0] = param_1;
     fn_8001A3E4((int)fn_8001E89C, local);
 }
