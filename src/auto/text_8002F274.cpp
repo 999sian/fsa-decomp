@@ -83,4 +83,10 @@ extern "C" void* fn_80030454(const void* ptr, const void* offset)
 	}
 	return (void*)((int)ptr + (int)offset);
 }
-
+class JKRHeap;
+class JASBank;
+extern "C" JASBank* fn_8002F294(const void*, JKRHeap*);
+class JASBNKParser {
+public:
+    static JASBank* createBank(const void*, JKRHeap*);
+};
