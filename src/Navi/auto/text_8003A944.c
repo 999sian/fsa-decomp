@@ -54,20 +54,18 @@ extern u8 lbl_802464E8[];
 extern void* lbl_802FECC8;
 extern "C" void fn_8003B94C(void* a, s32 mode, void* p) {
     switch (mode) {
-    case 0: {
-        void* x = fn_800F0D64(lbl_802B7CA0);
-        fn_801E41AC(p, &lbl_802FC158, (s32)x);
-        break;
-    }
     case 1:
         fn_801E41AC(p, &lbl_802FC158, *(s32*)(lbl_802BB0FC + 0x3f8));
+        break;
+    case 0:
+        fn_801E41AC(p, &lbl_802FC158, fn_800F0D64(lbl_802B7CA0));
         break;
     }
 }
 
 extern "C" u32 fn_8003BCA4(void* a, u16 idx) {
-    u8* p = (u8*)fn_80160564(0x524f4f54, lbl_80246678, lbl_802FECC8);
-    return *(u32*)(p + idx * 4 + 0x2c);
+    u32* p = (u32*)fn_80160564(0x524f4f54, lbl_80246678, lbl_802FECC8);
+    return *(u32*)((u8*)p + idx * 4 + 0x2c);
 }
 
 extern s32 lbl_802FC144;
@@ -81,7 +79,23 @@ extern "C" void fn_8003C19C(void* a, s32 n, void* p) {
 
 extern "C" void* fn_8003C1EC(void* a, s32 idx) {
     u8* p = (u8*)fn_80160564(0x524f4f54, lbl_802464E8, lbl_802FECC8) + 0x20;
-    return p + *(s32*)(p + 4) + *(s32*)(p + (idx << 3) + 0x10) + 8;
+    return p + (*(s32*)(p + 4) + *(s32*)((p + (idx << 3)) + 0x10) + 8);
+}
+
+extern "C" u16 fn_8003C250(void* a, char* p) {
+    char c;
+    u16 n = 0;
+    while ((c = *p) != 0) {
+        if (c == 0x1a) {
+            p += p[1];
+        } else {
+            if (c == 0xa) {
+                n++;
+            }
+            p++;
+        }
+    }
+    return n + 1;
 }
 
 extern "C" void fn_8003C2A4(u8* p) {
