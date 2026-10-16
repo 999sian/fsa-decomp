@@ -505,22 +505,19 @@ extern "C" s32 fn_801D4EFC(void* self, s32 a);
 extern "C" s32 fn_801D513C(void* self, s32 a);
 extern "C" s32 fn_801D53C0(void* param_1) {
     s32 iVar1 = fn_801D4C78(param_1);
-    if (iVar1 < 0) {
-        return iVar1;
-    }
-    s32 iVar2 = fn_801D4EFC(param_1, 0);
-    s32 iVar3 = fn_801D513C(param_1, 0);
-    iVar1 = iVar2 + iVar3;
-    if (iVar1 == 1) {
-        return -6;
-    }
-    if (iVar1 > 1) {
-        return -6;
-    }
     if (iVar1 >= 0) {
-        return 0;
+        s32 iVar2 = fn_801D4EFC(param_1, 0);
+        s32 iVar3 = fn_801D513C(param_1, 0);
+        iVar1 = iVar2 + iVar3;
+        if (iVar1 == 1) {
+            iVar1 = -6;
+        } else if (iVar1 < 1 && iVar1 >= 0) {
+            iVar1 = 0;
+        } else {
+            iVar1 = -6;
+        }
     }
-    return -6;
+    return iVar1;
 }
 
 extern "C" s32 fn_801D544C(void* self, void* out, void* cb);
@@ -728,6 +725,29 @@ extern "C" void fn_801DA364(void)
 	*(u8*)(gx + 0x4d4) = 0;
 	*(u8*)(gx + 0x4d5) = 0;
 	*(u32*)(gx + (unsigned)0x5ac) |= 8;
+}
+
+extern "C" void fn_801DA878(void)
+{
+	u8* gx = __GXData;
+	volatile u8* wg = (volatile u8*)0xCC008000;
+	u8 i;
+	s32 off = 0;
+	for (i = 0; i < 8; i++) {
+		if (*(u8*)(gx + 0x5ab) & (1 << i)) {
+			*wg = 8;
+			*wg = i | 0x70;
+			*(volatile u32*)wg = *(u32*)((u32)gx + (u32)(off + 0x1c));
+			*wg = 8;
+			*wg = i | 0x80;
+			*(volatile u32*)wg = *(u32*)((u32)gx + (u32)(off + 0x3c));
+			*wg = 8;
+			*wg = i | 0x90;
+			*(volatile u32*)wg = *(u32*)((u32)gx + (u32)(off + 0x5c));
+		}
+		off += 4;
+	}
+	*(u8*)(__GXData + 0x5ab) = 0;
 }
 
 extern "C" uint fn_801DD3D8(uint *param_1)
