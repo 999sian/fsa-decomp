@@ -75,8 +75,8 @@ extern "C" void fn_800C8CD8(u8* param_1) {
     }
 }
 
-extern "C" void fn_800C8D48(u8* param_1) {
-    s32 r = fn_80020384(lbl_802B7CA0 + 0x1388, 0);
+extern "C" void fn_800C8D48(u8* param_1, s32 param_2) {
+    s32 r = fn_80020384(lbl_802B7CA0 + 0x1388, param_2);
     if (r == 1) {
         param_1[0x88] = 0x15;
     }
