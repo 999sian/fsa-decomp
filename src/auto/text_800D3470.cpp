@@ -1043,9 +1043,8 @@ extern "C" u32 fn_800DDA50(void) {
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
-    u8 b2 = src[2];
     *(u16*)(this_ + 0x4) = w;
-    *(u8*)(this_ + 0x6) = b2;
+    *(u8*)(this_ + 0x6) = src[2];
     *(u8*)(this_ + 0x7) = src[3];
 }
 #else
@@ -1278,9 +1277,8 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
     param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
@@ -1457,12 +1455,15 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
 {
-  param_1[param_2 * 8 + 0x22] = param_3[1];
-  param_1[param_2 * 8 + 0x23] = param_3[2];
-  param_1[param_2 * 8 + 0x24] = param_3[3];
-  param_1[param_2 * 8 + 0x26] = param_3[5];
-  param_1[param_2 * 8 + 0x27] = param_3[6];
-  param_1[param_2 * 8 + 0x28] = param_3[7];
+  struct Elem { u8 m0; u8 r0; u8 g0; u8 b0; u8 m4; u8 r1; u8 g1; u8 b1; };
+  Elem* e = (Elem*)(param_1 + 0x21) + param_2;
+  Elem* src = (Elem*)param_3;
+  e->r0 = src->r0;
+  e->g0 = src->g0;
+  e->b0 = src->b0;
+  e->r1 = src->r1;
+  e->g1 = src->g1;
+  e->b1 = src->b1;
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -1479,10 +1480,12 @@ struct fn_800DE29C_Bits2 {
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
   u8* e = param_1 + param_2 * 8;
-  u8 b1 = param_3[1];
   u8 b0 = param_3[0];
-  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
-  e[0x28] = b0 | (e[0x28] & ~0x3);
+  u8 b1 = param_3[1];
+  u8 v = e[0x28];
+  e[0x28] = (b1 << 2) | (v & ~0xC);
+  v = e[0x28];
+  e[0x28] = b0 | (v & ~0x3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -1634,13 +1637,8 @@ extern "C" u8 fn_800DE648(int param_1) {
 
 extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
-    u8 t;
-    t = src[0].g; p[0x36] = t;
-    t = src[0].b; p[0x37] = t;
-    t = src[0].a; p[0x38] = t;
-    t = src[1].g; p[0x3a] = t;
-    t = src[1].b; p[0x3b] = t;
-    t = src[1].a; p[0x3c] = t;
+    *(Unk800DE210*)(p + 0x36) = *(Unk800DE210*)((u8*)src + 1);
+    *(Unk800DE210*)(p + 0x3a) = *(Unk800DE210*)((u8*)src + 5);
 }
 
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
@@ -2397,12 +2395,12 @@ struct UnkVtableTest8248 {
 
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DF364(void* param_1, u8 param_2) {
-    *(u8*)((u32)param_1 + 0xc) = param_2;
+extern "C" fn_800DF364(void* param_1, u8 param_2) {
+*(u8*)((u32)param_1 + 0xc) param_2;
 }
 
 extern "C" u8 fn_800DF36C(void* param_1) {
-    return *(u8*)((u32)param_1 + 0xc);
+return *(u8*)((u32)param_1 + 0xc);
 }
 
 extern "C" void fn_800DF358(void* param_1, u8* param_2) {
