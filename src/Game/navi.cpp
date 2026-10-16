@@ -48,7 +48,7 @@ struct NaviVec {
     NaviVec(f32 a, f32 b, f32 c) { x = a; y = b; z = c; }
 };
 extern "C" void fn_8030C210(void* p, NaviVec* v);
-extern f32 lbl_8053FD64;
+extern const f32 lbl_8053FD64;
 extern const f32 lbl_8053FD88;
 extern const f32 lbl_8053FD58;
 extern const f32 lbl_8053FD60;
@@ -90,10 +90,8 @@ extern "C" void fn_8021D938(char* p) {
 extern "C" void fn_8021D9D4(char* p) {
     fn_801CE120(p);
     if (*(s32*)(p + 0x248) == 9) {
-        f32 v = *(f32*)(p + 0x14);
-        if (v > lbl_8053FD64) {
-            v = lbl_8053FD64;
-            *(f32*)(p + 0x14) = v;
+        if (*(f32*)(p + 0x14) > lbl_8053FD64) {
+            *(f32*)(p + 0x14) = lbl_8053FD64;
         }
     }
 }
