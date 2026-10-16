@@ -213,6 +213,10 @@ extern "C" void* fn_8003C4F4(void) {
     return lbl_802BF188;
 }
 
+extern "C" void fn_8003CB80(void* p) {
+    fn_80043FCC(lbl_802EE470, (u8*)p + 0x20, (u8*)p + 0x10, (u8*)p + 0x14);
+}
+
 extern "C" void fn_8003CC68(void);
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2);
 extern "C" void* fn_8003CBB8(void* param_1) {
@@ -330,6 +334,15 @@ extern "C" void* fn_80040628(void* ptr, s16 param_2) {
 extern "C" void fn_800415DC(void) {}
 
 extern "C" void fn_800415E0(void) {}
+
+extern "C" void fn_80041AC4(void* self) {
+    VObj_80041AC4* obj = *(VObj_80041AC4**)((u8*)self + 0x2c);
+    s16* p = (s16*)obj->vf68(0);
+    if (p != 0) {
+        *(s16*)(lbl_802FF04C + 6) = p[3];
+        obj->vf60(0, lbl_802FF04C);
+    }
+}
 
 extern "C" void* fn_80041B34(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
