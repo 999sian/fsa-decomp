@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Navi/SSystem/c_tag.h"
+#include "sdk/Dolphin/vec.h"
 extern "C" void fn_8001D66C(void*, void*);
 extern "C" void fn_800126C4(void*);
 extern "C" void fn_8001A950(void);
@@ -47,13 +48,8 @@ extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
-extern "C" void fn_80019470(f32* d, f32* s, f32 w) {
-    f32 x = s[0];
-    f32 y = s[1];
-    f32 z = s[2];
-    d[0] = x;
-    d[1] = y;
-    d[2] = z;
+extern "C" void fn_80019470(f32* d, Vec* s, f32 w) {
+    *(Vec*)d = *s;
     d[3] = w;
 }
 
@@ -298,7 +294,7 @@ extern "C" void fn_8001AAFC(void* tag) {
 extern "C" void cTr_Create__FP21node_lists_tree_classP15node_list_classi(void*, void*, int);
 extern "C" void cTg_AdditionToTree__FP21node_lists_tree_classiP16create_tag_class(void*, int, void*);
 extern "C" void fn_8001D4F8(void* param_1, u8 param_2);
-extern char lbl_802B4C38;
+extern u8 lbl_802B4C38[];
 extern "C" s32 fn_8001AB1C(void* tag, void* data) {
     cTg_Create__FP16create_tag_classPv(tag, data);
     return 1;
