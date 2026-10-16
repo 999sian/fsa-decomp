@@ -13,7 +13,7 @@ extern void* lbl_80299A8C[];
 extern void* lbl_802BF110[];
 extern s64 lbl_802FFEC8;
 extern s16 lbl_802FEFB4[];
-extern "C" void fn_801E41AC(void* dst, void* src, s32 n);
+extern "C" void fn_801E41AC(void* dst, void* src, ...);
 extern "C" void fn_801E66C0(void* dst, void* src);
 extern "C" void* fn_800F0D64(void* p);
 extern u8 lbl_802BB0FC[];
