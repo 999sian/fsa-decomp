@@ -507,6 +507,10 @@ extern "C" void fn_801A3CEC(u8* p, s32 i, u32* pv) {
     *((u32*)(p + (i << 2) + 0x10)) = *pv;
 }
 
+extern "C" void fn_801A3D00(u8* p, s32 i, u32* pv) {
+    *((u32*)(p + (i << 2) + 0x10)) = *pv;
+}
+
 extern "C" void fn_801A3D94(u8* p, s32 i, u8* src) {
     u8* d = p + (i << 2);
     d[0x62] = src[0];
