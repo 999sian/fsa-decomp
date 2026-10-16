@@ -58,6 +58,25 @@ extern "C" void fn_800D54EC(char* p)
     }
 }
 
+extern "C" void* fn_8015A90C(unsigned long);
+extern "C" void fn_8010D1DC(void*);
+extern "C" void fn_800C5444(void*, int);
+extern "C" void fn_800D6340(char* p) {
+    if (*(void**)(p + 0x20) == 0) {
+        void** o = (void**)fn_8015A90C(0xd8);
+        if (o != 0) {
+            o[0] = lbl_80289A64;
+            o[1] = lbl_8027EC78;
+            o[1] = lbl_8028EFB0;
+        }
+        *(void***)(p + 0x20) = o;
+        *(void**)(*(char**)(p + 0x20) + 0xc) = *(void**)(p + 0xc);
+        fn_8010D1DC(*(void**)(p + 0x20));
+    }
+    fn_800C5444(*(void**)(p + 0x18), 0);
+    p[0x137] = 1;
+}
+
 extern void* lbl_8028EFB0[];
 extern "C" void* fn_800D63D4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
