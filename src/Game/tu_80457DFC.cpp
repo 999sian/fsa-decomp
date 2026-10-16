@@ -112,6 +112,7 @@ extern "C" void fn_80458F9C(Unk80458F9C* self, u32 fadeout)
 }
 
 extern "C" const f32 lbl_80543EB0;
+extern "C" const f32 lbl_80543EB4;
 extern "C" void* lbl_8053AF80;
 extern "C" char* lbl_8053AAF8;
 extern "C" void fn_804594E4(void* self, u32 mode)
