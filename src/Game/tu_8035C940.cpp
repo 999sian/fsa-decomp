@@ -1,5 +1,6 @@
 #include "JSystem/JMath/JMath.h"
 #include "dolphin/mtx.h"
+#include "JSystem/JGeometry.h"
 
 struct Unk8035CD00 {
     u8 pad0[0x14];
@@ -32,12 +33,62 @@ extern "C" Vec fn_8035CD00(Unk8035CD00* p) {
     return ret;
 }
 
+extern const f32 lbl_80542938;
+extern const f32 lbl_8054293C;
+extern "C" JGeometry::TVec3<f32> fn_8035CDC0(char* p) {
+    s16 old = *(s16*)(p + 0x260);
+    *(s16*)(p + 0x260) = old + 0x400;
+    s16 ang = *(s16*)(p + 0x260);
+    f32 z = *(f32*)(p + 0x14);
+    JGeometry::TVec3<f32> v(lbl_80542938 * JMath::sincosTable_.mTable[(u16)ang >> 5].second + (*(f32*)(p + 0x264) - lbl_8054293C),
+        lbl_80542938 * JMath::sincosTable_.mTable[(u16)ang >> 5].first + (*(f32*)(p + 0x268) + *(f32*)(p + 0x25c) - lbl_80542938),
+        z);
+    if (ang >= 0x4000 && old < 0x4000) {
+        if (*(s16*)(p + 0x270) < 0) {
+            *(s16*)(p + 0x270) = -0x4000;
+        } else {
+            *(s16*)(p + 0x270) = -0x8000;
+        }
+    }
+    return v;
+}
+
 extern "C" void fn_8035D6C4(char* p) {
     if (*(int*)(p + 0x238) == 0) return;
     *(int*)(p + 0x234) = 0x400;
     *(int*)(p + 0x230) = 1;
     *(int*)(p + 0x244) = 0x38;
     *(int*)(p + 0x238) = 4;
+}
+
+extern void* lbl_804AD5B8[];
+extern void* lbl_804A5958[];
+extern "C" void __dt__5ActorFv(void* this_, s16 freeFlag);
+void operator delete(void* p);
+extern "C" void* fn_8035D6F4(u8* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804AD5B8;
+        if (*(u8**)(this_ + 0x274) != 0) {
+            u8* p = *(u8**)(this_ + 0x274);
+            *(u32*)(p + 0xf4) |= 1;
+            *(s32*)(p + 0x24) = 1;
+            *(void**)(this_ + 0x274) = 0;
+        }
+        if (*(u8**)(this_ + 0x278) != 0) {
+            u8* p = *(u8**)(this_ + 0x278);
+            *(u32*)(p + 0xf4) |= 1;
+            *(s32*)(p + 0x24) = 1;
+            *(void**)(this_ + 0x278) = 0;
+        }
+        if (this_ != 0) {
+            *(void**)this_ = lbl_804A5958;
+            __dt__5ActorFv(this_, 0);
+        }
+        if (freeFlag > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
 }
 
 struct Unk8035DA78;
