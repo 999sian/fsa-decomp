@@ -741,9 +741,9 @@ extern "C" void fn_8001BEC4(void* param_1, void* param_2) {
 }
 
 extern void* lbl_802056AC[];
-extern "C" int fn_8001EABC(void);
-extern "C" bool fn_8001BEE8(void) {
-    return fn_8001EABC() == 1;
+extern "C" int fn_8001EABC(void* p);
+extern "C" bool fn_8001BEE8(void* p) {
+    return fn_8001EABC(p) == 1;
 }
 
 extern "C" void fn_8001BF14(void* param_1, s32 param_2, void* param_3, s32 param_4) {
