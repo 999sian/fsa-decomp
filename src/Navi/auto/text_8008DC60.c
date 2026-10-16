@@ -507,6 +507,17 @@ extern "C" void fn_800946B8(char* param_1) {
     }
 }
 
+extern "C" void fn_8009470C(char* param_1) {
+    if (*(void**)(param_1 + 0x278) != 0) {
+        fn_800F3D84(*(void**)(param_1 + 0x278));
+    }
+    fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x278) + 0x62));
+    if (*(*(u8**)(param_1 + 0x278) + 0x61) != 0) {
+        *(u8*)(param_1 + 0x2837) = *(*(u8**)(param_1 + 0x278) + 0x58) ^ 1;
+        param_1[0x7e8] = 3;
+    }
+}
+
 extern void* lbl_80287888[];
 extern "C" void* fn_80094AFC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
