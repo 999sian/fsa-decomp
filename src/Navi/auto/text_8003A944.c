@@ -164,6 +164,12 @@ extern "C" void fn_8003C368(u8* p, u8 a, u8 b) {
     p[0x8f] = 0;
 }
 
+extern "C" void fn_8003C418(void) {
+    fn_80017FEC(0x1e, 0, 0, 0, 0, -1, 0);
+    fn_80017FEC(0x1c, 0, 0, 0, 0, -1, 0);
+    fn_80017FEC(0x1d, 0, 0, 0, 0, -1, 0);
+}
+
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
