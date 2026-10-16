@@ -669,12 +669,30 @@ extern "C" int fn_8001BC10(int param_1) {
     return 0;
 }
 
+extern "C" s32 fn_8001BCC8(void* param_1) {
+    u8* p = (u8*)param_1;
+    u8* tag = *(u8**)(*(u8**)(p + 0x2c) + 0x18);
+    if (*(u32*)(*(u8**)(p + 0x2c) + 0xc) == 0 || cTg_IsUse__FP16create_tag_class(tag + 0x34) == 1) {
+        if (fn_8001E958(p + 0x34, *(u16*)(p + 0xa4)) == 0) {
+            fn_8001C6D0(p + 0x18);
+            return 0;
+        }
+        p[0xc] = 2;
+        if (fn_8001AC74(lbl_802FEC48, *(void**)(p + 0xb4)) != NULL) {
+            fn_8001C454(p + 0xbc, (int)fn_8001BCC8, (int)p);
+        }
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" s32 fn_8001BD74(void* param_1) {
     s32 result = fn_8001C6D0((u8*)param_1 + 0x18);
     if (result == 1) {
         *((u8*)param_1 + 0xc) = 3;
+        return 1;
     }
-    return result == 1;
+    return 0;
 }
 
 extern "C" void fn_8001EA5C(void);
