@@ -1118,6 +1118,22 @@ extern "C" u32 fn_8001DB10(void) {
     return 2;
 }
 
+extern "C" s32 fn_8001DB18(void);
+extern "C" s32 fn_8001DC20(void) {
+    s32 ret = fn_8001DB18();
+    switch (ret) {
+    case 0:
+    case 1:
+        return 0;
+    case 4:
+        return 2;
+    case 3:
+    case 5:
+        return 3;
+    }
+    return ret;
+}
+
 extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
 extern "C" void fn_8001E69C(void* param_1) {
     cTg_IsUse__FP16create_tag_class(param_1);
