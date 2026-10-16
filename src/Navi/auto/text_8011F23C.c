@@ -197,9 +197,9 @@ extern "C" void fn_80128FF4(u8* a, u8* b) {
     u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
     u8* iVar2 = info[0];
     u8* tbl = info[2];
-    u8 m = iVar2[0x1f];
+    s32 m = iVar2[0x1f];
     s32 v = (s32)((f32)m * *(f32*)(b + 0x84)) + (flags & iVar2[0x30]);
-    b[0x94] = tbl[(v - (v / (s32)m) * m) & 0xff];
+    b[0x94] = tbl[(v - (v / m) * m) & 0xff];
 }
 
 extern "C" void fn_8012906C(void** param_1) {
@@ -212,9 +212,10 @@ extern "C" void fn_80129088(u8* a, u8* b) {
     u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
     u8* iVar2 = info[0];
     u8* tbl = info[2];
-    s32 v = b[0x95] & iVar2[0x30];
-    u8 m = iVar2[0x1f];
-    b[0x94] = tbl[(v - (v / (s32)m) * m) & 0xff];
+    u8 flags = b[0x95];
+    s32 v = flags & iVar2[0x30];
+    s32 m = iVar2[0x1f];
+    b[0x94] = tbl[(v - (v / m) * m) & 0xff];
 }
 
 extern "C" void fn_801290C4(void* p) {
