@@ -575,8 +575,8 @@ extern "C" void fn_80180714(u32* self, int a, int b) {
 
 extern "C" void* fn_80180814(void* self, u8 idx) {
     if (idx < 4) {
-        u8* p = (u8*)self + idx * 4;
-        return *(void**)(p + 0x100);
+        void** arr = (void**)((u8*)self + idx * 4);
+        return arr[64];
     }
     return NULL;
 }
@@ -595,7 +595,8 @@ extern "C" void fn_80180868(void* self, u32 a) {
 extern "C" void fn_8018089C(void* self, u32 unused, u8 idx) {
     u8* bytes = (u8*)self;
     if (idx < bytes[0x110] && idx < 4) {
-        void* p = *(void**)(bytes + idx * 4 + 0x100);
+        void** arr = (void**)((u8*)self + idx * 4);
+        void* p = arr[64];
         if (p != NULL) {
             fn_801191F0(p);
         }
