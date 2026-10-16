@@ -1486,6 +1486,10 @@ extern "C" void fn_801A49EC(u8* p, s32 i, u8* src) {
     p[i + 0xc8] = *src;
 }
 
+extern "C" u8 fn_801A49FC(u8* p, s32 i) {
+    return p[i + 0xc8];
+}
+
 extern "C" void* fn_801A4A08(void* p) {
     return *(void**)((char*)p + 4);
 }
