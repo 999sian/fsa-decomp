@@ -3,6 +3,10 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
+extern "C" const char lbl_80474BFC[];
+extern "C" f32 lbl_80542B10;
+
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern "C" void* fn_804032E8(u32 type, const char* name);
