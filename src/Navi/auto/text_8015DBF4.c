@@ -42,6 +42,19 @@ extern "C" void* fn_8015DC48(void* param_1, s16 param_2) {
 
 #pragma push
 #pragma use_lmw_stmw off
+extern u32 lbl_802FF5A4;
+extern u32 lbl_802FF5A8;
+extern u32 lbl_802FF5B8;
+extern u32 lbl_802FF5BC;
+extern u32 lbl_802FF5C0;
+extern u32 lbl_802FF5C4;
+extern u8 lbl_802979C8[];
+extern u8 lbl_802979D8[];
+void fn_801BDDBC(void* a, void* b, s32 c);
+void fn_801BDEE4(void* a, void* b, s32 c);
+void fn_8015F248(s32 a, u32 b, u32 c, u32 d, s32 e);
+void fn_8015F400(s32 a);
+
 extern "C" void* fn_8015DC9C(void* param_1, void* param_2, void* param_3, void* param_4, s32 param_5) {
     if (lbl_802FF5A0 == 0) {
         void* obj = fn_8015A9A8(0xa4, lbl_802FF540, 0);
