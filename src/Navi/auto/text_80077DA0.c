@@ -15,6 +15,7 @@ extern char lbl_802BB0FC[];
 extern char lbl_802C4F3C[];
 extern char lbl_8029FDB4[];
 extern char lbl_802EE470[];
+extern f32 lbl_803006D4;
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80077F44(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -31,6 +32,26 @@ extern "C" BOOL fn_8007820C(void)
 {
     return TRUE;
 }
+
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" void fn_800782C0(char* param_1, char* param_2) {
+    u32 i = 0;
+    char* data = lbl_802EE470;
+    u32 off = 0;
+    do {
+        if (*(u16*)(param_1 + off + 0x16) != 0) {
+            char* obj = *(char**)(param_2 + 0x28);
+            char* g = *(char**)(*(char**)(data + 0x38) + 0x14);
+            char* part = (char*)((void* (*)(void*, u32))((void**)*(void**)obj)[0x50 / 4])(obj, i);
+            *(f32*)(part + 0x1c) = *(f32*)(part + 0x1c) + *(f32*)(g + 0x418);
+            *(f32*)(part + 0x20) = *(f32*)(part + 0x20) + *(f32*)(g + 0x41c);
+        }
+        i++;
+        off += 8;
+    } while (i < 8);
+}
+#pragma pop
 
 extern "C" void fn_80078414(void);
 extern "C" void fn_80078364(void) {
