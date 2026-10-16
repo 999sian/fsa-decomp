@@ -1017,6 +1017,10 @@ extern "C" void fn_801A4FF0(u8* p, s32 i, u16* pv) {
     ((u16*)(p + 0xe))[i] = *pv;
 }
 
+extern "C" void fn_801A5004(u8* p, s32 i, u16* pv) {
+    ((u16*)(p + 0xe))[i] = *pv;
+}
+
 extern "C" s32 fn_801A5018(s32 p, s32 i) {
     return p + i * 2 + 0xe;
 }
