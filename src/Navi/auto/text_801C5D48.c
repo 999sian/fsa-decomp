@@ -13,6 +13,7 @@ static volatile BOOL ResetRequired_802FF8B8;
 static vu32 ResumeFromHere_802FF8A8;
 static u32 lbl_802FF8B4;
 static BOOL StopAtNextInt_802FF818;
+extern char AlarmForTimeout_802F7A38[];
 extern "C" void AlarmHandlerForTimeout(OSAlarm* alarm, OSContext* context);
 static DVDLowCallback Callback_802FF820;
 static volatile BOOL WaitingCoverClose_802FF834;
