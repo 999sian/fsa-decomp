@@ -400,6 +400,21 @@ extern "C" BOOL fn_8007395C(u8* self, int idx)
     fn_8000DABC(self + 0x25c, *(u8**)(*(u8**)(*(u8**)(self + 0x254) + 4) + 4) + 0x58, r, 1, e->b, e->c, e->d, f);
 }
 
+extern "C" BOOL fn_80073A1C(u8* self, int idx)
+{
+    Entry_80281294* e;
+    f32 f;
+    void* r;
+    *(int*)(self + 0x2d0) = idx;
+    e = &lbl_802812AC[idx];
+    f = e->f;
+    r = fn_800638A4(lbl_802FCAA8, lbl_802FCADC[e->a], lbl_802B7CA0 + 0x2200, 0x40);
+    if (r == NULL) {
+        return FALSE;
+    }
+    fn_8000DABC(self + 0x268, *(u8**)(*(u8**)(self + 0x24c) + 4) + 0x58, r, 1, e->b, e->c, e->d, f);
+}
+
 extern "C" void fn_80072D8C(void);
 extern "C" void fn_80075550(void) {
     fn_80072D8C();
