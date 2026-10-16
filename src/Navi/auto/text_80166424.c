@@ -4,6 +4,8 @@ extern "C" void fn_80178C9C(void*, void*);
 
 
 extern "C" void fn_80168280(void);
+extern "C" void fn_8015AB1C(void*);
+extern "C" void fn_80166C70(void* param_1);
 extern "C" u8 fn_80166FC4(void*);
 extern "C" void fn_80166C70(void* param_1) {
     *(u32*)param_1 = 0;
@@ -201,26 +203,37 @@ extern "C" void fn_801729A4(int param_1, u8 param_2) {
 }
 
 extern "C" s32 fn_80172AD4(s32 p, u32 i) {
-    struct Tmp {
-        s32 pad[63];
-        s32 val[8];
-    };
     if (i >= 8) {
         return 0;
     }
-    return ((Tmp*)p)->val[i];
+    return ((s32*)p)[i + 63];
 }
 
 extern "C" s32 fn_80172B18(void) {
     return 0x54564234;
 }
 
+extern "C" void fn_80172B5C(s32 p, s32 i, u8* src) {
+    u8 a;
+    u8 b;
+    u8 c;
+    p = p + i * 4;
+    a = src[0];
+    b = src[1];
+    *(u8*)(p + 0xe) = a;
+    c = src[2];
+    *(u8*)(p + 0xf) = b;
+    *(u8*)(p + 0x10) = c;
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
 
-extern "C" void fn_80172CFC(u32* p, s32 i, u32* v) {
-    *(u32*)((u8*)(p + i) + 0x7c) = *v;
+extern "C" void fn_80172CFC(s32 p, s32 i, s32* v) {
+    s32 off = i * 4;
+    p += off;
+    *(s32*)(p + 0x7c) = *v;
 }
 
 extern "C" s32 fn_80172D10(s32 p, s32 i) {
