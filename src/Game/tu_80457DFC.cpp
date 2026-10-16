@@ -80,6 +80,12 @@ extern "C" void fn_80457F6C(u8* this_) {
     this_[0x6d] = 0xb4;
 }
 
+extern "C" void fn_80458090(char* this_) {
+    ((JAUSection*)*(void**)(this_ + 0x44))->loadWaveArc(2);
+    ((JAUSection*)*(void**)(this_ + 0x44))->loadWaveArc(3);
+    ((JAUSection*)*(void**)(this_ + 0x44))->loadWaveArc(4);
+}
+
 extern "C" void fn_8045873C(u8* this_, u8 v) {
     this_[0x69] = v;
 }
