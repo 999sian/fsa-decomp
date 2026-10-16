@@ -50,16 +50,15 @@ struct VObj_800C8D90 {
 struct VObj_800C91A4 {
     virtual void v0();
     virtual void v1();
-    virtual void v2();
-    virtual void v3();
     virtual void SetPos(f32 x, f32 y);
+    virtual void v3();
+    virtual void v4();
     virtual void v5();
     virtual void v6();
-    virtual void v7();
-    virtual void v8();
     virtual void SetAlpha(s32 a);
 };
 extern f32 lbl_80300DE8;
+extern f64 lbl_80300DE0;
 extern "C" f32 fn_800C95E4(u8* p, s32 max, s32 t, s32 b, f32 from, f32 to);
 extern "C" void fn_800C8B30(void* param_1)
 {
@@ -137,7 +136,7 @@ extern "C" int fn_800C91A4(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 f
         }
         for (s32 i = 0; i < 3; i++) {
             f32 a = p[idx + 0x6c];
-            o = *(VObj_800C91A4**)(q + 0x54);
+            o = *(VObj_800C91A4**)(p + (idx * 4 + 0x54));
             o->SetAlpha((s32)(a * r));
         }
     }
