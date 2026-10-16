@@ -1,4 +1,8 @@
 #include "types.h"
+extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
+extern char lbl_80297240[];
+extern char lbl_80297250[];
+extern char lbl_802FE168[];
 extern "C" u32 fn_80159E0C(void* p, u32 r4);
 extern "C" void* fn_80159BE0(u32 size, u32 r4, void* p);
 extern "C" void* fn_8015C89C(void* p, void* p2, u32 size, void* r6, void* r7);
