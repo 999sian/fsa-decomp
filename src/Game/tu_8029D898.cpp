@@ -52,6 +52,24 @@ extern "C" void fn_8029D898(void* a, s32 b) {
     fn_802D7970(fn_802D6A9C(), v);
 }
 
+extern "C" void fn_8029DEBC(void* p, s32 a, s32 room, s32 flag, s32 c, s32 value) {
+    if (flag == 0) {
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, room, c);
+        room += 1;
+        if ((room & 0xf) == 0) {
+            room += 0xf0;
+        }
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, room, value);
+    } else {
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, room, c);
+        s32 idx = room + 0x10;
+        if ((room & 0x100) != (idx & 0x100)) {
+            idx = room + 0x110;
+        }
+        fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), a, idx, value);
+    }
+}
+
 extern "C" u16 fn_802F9908(void* mgr, u32 room, s32 idx);
 extern "C" u32 fn_8029E888(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
     JGeometry::TVec2<f32> p;
