@@ -12,6 +12,23 @@ struct Entry_802C67C4 { s32 unk0; s32 id; u8 pad[0x18]; };
 extern Entry_802C67C4 lbl_802C67C4[];
 extern u32 lbl_802FF378;
 struct Slot_8013D1D4 { u8 pad[0x10]; void* ptr; };
+struct VObj_8013CD54 {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6();
+    virtual void vf7();
+    virtual void vf8();
+    virtual void vf9();
+    virtual void vfA();
+    virtual void vfB();
+    virtual void vfC();
+    virtual void vfD();
+    virtual void vfE(void*);
+};
 struct VObj_8013D304 {
     virtual void vf0();
     virtual void vf1();
