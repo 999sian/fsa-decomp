@@ -15,6 +15,7 @@ extern const f32 lbl_8053EF60;
 extern const f64 lbl_8053EF68;
 extern const f64 lbl_8053EF70;
 extern const f32 lbl_8053EF7C;
+extern const f32 lbl_8053EF90;
 extern const f32 lbl_8053EF98;
 
 extern "C" u8 fn_8022F514(void* this_);
