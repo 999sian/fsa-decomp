@@ -1,5 +1,11 @@
 #include "types.h"
 
+struct FsaHeapUser {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2(int) = 0;
+};
+
 
 extern "C" char lbl_804B1D10[];
 extern "C" void* lbl_8053AF30;
@@ -49,6 +55,40 @@ extern "C" void fn_8044B8EC(u8* p)
         draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 8), lbl_80543DC0, lbl_80543DC0, *(void**)((u8*)lbl_8053AB10 + 0x10));
         p[0x14] = 0;
     }
+}
+
+extern "C" void* fn_8044BCA4(u8* p, s16 param_2)
+{
+    void* oldHeap;
+
+    if (p != 0) {
+        *(char**)p = lbl_804B1D10;
+        if (*(void**)(p + 4) != 0) {
+            oldHeap = sCurrentHeap__7JKRHeap;
+            becomeCurrentHeap__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
+            if (*(void**)(p + 4) != 0) {
+                (*(void (**)(void*, int))(**(u8***)(p + 4) + 8))(*(void**)(p + 4), 1);
+            }
+            *(void**)(p + 4) = 0;
+            freeAll__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
+            becomeCurrentHeap__7JKRHeapFv(oldHeap);
+        }
+        if (*(void**)(p + 8) != 0) {
+            oldHeap = sCurrentHeap__7JKRHeap;
+            becomeCurrentHeap__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
+            if (*(void**)(p + 8) != 0) {
+                (*(void (**)(void*, int))(**(u8***)(p + 8) + 8))(*(void**)(p + 8), 1);
+            }
+            *(void**)(p + 8) = 0;
+            freeAll__7JKRHeapFv(*(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x30));
+            becomeCurrentHeap__7JKRHeapFv(oldHeap);
+        }
+        lbl_8053AF30 = 0;
+        if (param_2 > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
 }
 
 extern "C" void fn_8044BDCC(u8* p)
