@@ -52,6 +52,33 @@ extern "C" u32 fn_8030EA0C(void* p) {
     return (u32)((v & m) - (v >> 1)) >> 31;
 }
 
+extern "C" u32 fn_8030EA2C(Actor* p, s32 room, f32* pos) {
+    s32 kind;
+    s32 x;
+
+    if (*((u8*)p + 0x245) != 0) {
+        return 0;
+    }
+    kind = fn_8022461C(pos, room);
+    x = fn_80226850(pos, room);
+    if ((u32)(kind - 0x10) <= 7 || (x >= 0x140 && x <= 0x15f)) {
+        *((u8*)p + 0x245) = 1;
+        return 0;
+    }
+    if (kind != 0 && kind != 4 && kind != 5 && kind != 6 && kind != 7 && kind != 2 && kind != 3 && kind != 0xe && kind != 0x50 && kind != 0xc && kind != 0x27 && kind != 0x28 && kind != 0x29 && kind != 0x2a && kind != 0x2b && kind != 0x2c && kind != 0x2d && kind != 0x2e && kind != 0x2f && kind != 0x20 && kind != 0xd && kind != 0x3b && kind != 0x39 && kind != 0x3a && kind != 0x4c && kind != 0x4d && kind != 0x4e && kind != 0x4f && kind != 0x24) {
+        if (kind == 0x25) {
+            return fn_802D6A9C()[0x171] == 0;
+        }
+        if (kind == 0x26) {
+            return fn_802D6A9C()[0x171] == 1;
+        }
+        if (kind != 0x22 || fn_802D6A9C()[0x170] == 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 extern "C" char lbl_804713A8[];
 extern "C" f32 lbl_80541744;
 extern "C" s32 fn_8023CB24(void*);
