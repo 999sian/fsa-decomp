@@ -503,7 +503,7 @@ extern "C" void* fn_8000F6A8(u32 param_1, u32 param_2) {
     } else {
         u32 size = ((param_1 + 0xf) & ~0xf) + 0x80;
         if (param_2 > 0x10) {
-            size = size + param_2 - 0x10;
+            size = param_2 + size - 0x10;
         }
         result = fn_8015C788(size, heap, 0);
     }
