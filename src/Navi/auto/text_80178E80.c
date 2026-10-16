@@ -2402,8 +2402,10 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
 extern f64 lbl_80301C58;
 extern f32 __psq_l(void* p, int off, int w, int gqr);
 extern "C" f32 fn_8018E63C(u16* hdr, s16* tbl, f32 key) {
-    f64 b = lbl_80301C58;
-    return key + (f32)b;
+    if (key < s16ToF32(tbl[0])) {
+        return s16ToF32(tbl[1]);
+    }
+    return key;
 }
 
 extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
@@ -2725,5 +2727,11 @@ extern "C" void fn_80191C50(u32* data, s32 index) {
     *(volatile u32*)0xCC008000 = data[7];
     *(volatile u32*)0xCC008000 = data[8];
     *(volatile u32*)0xCC008000 = *(u32*)&z2;
+}
+
+extern "C" void fn_80191E7C(u32 a, s16 b, u16 c) {
+    *(volatile u8*)0xCC008000 = 0x20;
+    *(volatile u16*)0xCC008000 = c;
+    *(volatile u16*)0xCC008000 = (u16)(b * 0xc) | 0xb000;
 }
 
