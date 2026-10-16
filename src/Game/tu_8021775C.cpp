@@ -8,6 +8,12 @@ extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
 extern const f32 lbl_8053FC38;
 
 extern const f32 __float_epsilon;
+struct Vec3f {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
 extern "C" void fn_8021775C(void** p, f32 t) {
     Vec target = *(Vec*)((u8*)p[6] + 0x600);
     Vec cur = *(Vec*)((u8*)p[6] + 0x60c);
