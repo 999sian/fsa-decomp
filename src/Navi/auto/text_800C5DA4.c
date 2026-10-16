@@ -58,7 +58,7 @@ extern "C" void fn_800C8B30(void* param_1)
         u8 byte_val = (u8)base[0x24];
         f32 fval = *(f32*)(base + 0x20);
         f32 fval2 = lbl_80300DD4;
-        local_18[i] = fn_800C91A4(param_1, i, val, byte_val, 0, fval, fval2, 0);
+        local_18[i] = 0;
         i++;
     } while (i < 2);
     
@@ -108,6 +108,23 @@ extern "C" void fn_800C8DF4(u8* param_1) {
 extern "C" void fn_800C9510(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
+}
+
+extern "C" void fn_800C954C(u8* p) {
+    VObj_800C954C* o = *(VObj_800C954C**)(p + 8);
+    if (o != 0) {
+        o->v0(1);
+    }
+    (*(VObj_800C954C**)(p + 0x10))->v7();
+    char* base = lbl_802C567C;
+    if (base[4] >= 0) {
+        s32 n = *(s32*)(base + 8) - 1;
+        *(s32*)(base + 8) = n;
+        if (n == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            base[4] = -1;
+        }
+    }
 }
 
 extern "C" void fn_800C980C(void* param_1) {
