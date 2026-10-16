@@ -2,6 +2,8 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 
+struct TzokVec3 { f32 x, y, z; };
+
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" u8 fn_802046FC(void* base, void* a, void* b);
 extern "C" u8 fn_801F2618(u8* p, u8* q, u8 c);
