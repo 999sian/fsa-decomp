@@ -50,4 +50,12 @@ extern "C" bool fn_804446A4(T804446A4* this_) {
     }
     return true;
 }
+struct Slot0 {
+    virtual void slot0(s32 arg);
+};
 
+struct T80444A24 {
+    u8 pad0[0x10];
+    Slot0* a[6];
+    Slot0* b[2];
+};
