@@ -593,16 +593,18 @@ extern "C" void fn_800D93B4(void* param_1) {
 }
 
 extern "C" void fn_800D9410(u8* this_) {
-    u8* p = this_;
     u32 i;
+    u8* p = this_;
     for (i = 0; i < 3; i++) {
         GXColorS10 c = *(GXColorS10*)(p + 0x14);
         J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
         p += 8;
     }
-    u32 k = *(u32*)(this_ + 0x45);
+    p = this_;
     for (i = 0; i < 4; i++) {
-        J3DGDSetTevKColor(GXTevKColorID(i), *(GXColor*)&k);
+        GXColor c = *(GXColor*)(p + 0x45);
+        J3DGDSetTevKColor(GXTevKColorID(i), c);
+        p += 4;
     }
 }
 
@@ -896,8 +898,8 @@ extern "C" u32 fn_800DDA50(void) {
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
     u8 b2 = src[2];
-    *(u16*)(this_ + 0x4) = w;
     u8 b3 = src[3];
+    *(u16*)(this_ + 0x4) = w;
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
 }
