@@ -579,14 +579,14 @@ extern u8 lbl_80292CD8[];
 extern "C" void fn_801679DC(void*, int);
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80167A44(void*, void*, void*);
-extern "C" void fn_80139830(u8* p) {
-    *(u8**)p = lbl_80292CD8;
-    *(u32*)(p + 4) = 0;
-    *(u32*)(p + 0xc) = 0;
-    *(u32*)(p + 0x10) = 0;
-    *(u32*)(p + 8) = 0;
-    *(u8**)(p + 0xc) = p + 0xc;
-    *(u8**)(p + 0x10) = p + 0xc;
+extern "C" void fn_80139830(void** p) {
+    p[0] = lbl_80292CD8;
+    p[1] = 0;
+    p[3] = 0;
+    p[4] = 0;
+    p[2] = 0;
+    p[3] = &p[3];
+    p[4] = &p[3];
 }
 
 extern "C" void* fn_80139860(u8* p, s16 del) {
@@ -672,9 +672,10 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
 }
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    void* vt = lbl_802911A0;
-    param_1[0] = vt;
-    param_1[0] = lbl_80292C80;
+    char* base = lbl_802911A0;
+    char* derived = lbl_80292C80;
+    param_1[0] = base;
+    param_1[0] = derived;
     ((u32*)param_1)[1] = param_2;
 }
 
