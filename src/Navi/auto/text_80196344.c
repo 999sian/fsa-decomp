@@ -609,6 +609,10 @@ extern "C" int fn_801A4154(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0xc;
 }
 
+extern "C" int fn_801A422C(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 0x45;
+}
+
 extern "C" void fn_801A4240(u8* p, s32 i, u8 v) {
     *(p + i + 0x55) = v;
 }
