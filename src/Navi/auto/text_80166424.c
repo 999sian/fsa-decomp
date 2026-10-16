@@ -192,8 +192,9 @@ extern "C" s32 fn_801729F0(s32 p, s32 i) {
 
 extern "C" void fn_80172A04(u8* p, s32 i, u8* src) {
     u8* d = p + i * 8;
+    u8 a = src[0];
     d[0x5e] = (d[0x5e] & ~0xC) | (src[1] << 2);
-    d[0x5e] = (d[0x5e] & ~0x3) | src[0];
+    d[0x5e] = (d[0x5e] & ~0x3) | a;
 }
 
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
@@ -338,6 +339,11 @@ extern "C" int fn_80173374()
 extern "C" int fn_8017337C()
 {
 	return 0;
+}
+
+extern "C" void* fn_80174A68(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
 }
 
 extern "C" void* fn_80174B70(void* base, u32 offset) {
