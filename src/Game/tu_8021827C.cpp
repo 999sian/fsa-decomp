@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" u8* fn_802D6A9C(void);
@@ -52,26 +53,22 @@ extern "C" void fn_8021827C(u8* p) {
 extern "C" void fn_8021835C(u8* p) {
     bool ok = false;
     if (*(s32*)(p + 0x248) == 1) {
-        f32 v[3];
-        f32 hi[3];
-        f32 lo[3];
-        fn_801CE010(p, v);
-        lo[0] = v[0];
-        lo[1] = v[1];
-        lo[2] = v[2];
-        hi[0] = v[0];
-        hi[1] = v[1];
-        hi[2] = v[2];
+        Vec3f v;
+        Vec3f hi;
+        Vec3f lo;
+        fn_801CE010(p, &v);
+        lo = v;
+        hi = v;
         if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053FC40) {
-            lo[0] = lo[0] + *(f32*)(p + 0x60);
-            hi[0] = hi[0] + *(f32*)(p + 0x68);
+            lo.x = lo.x + *(f32*)(p + 0x60);
+            hi.x = hi.x + *(f32*)(p + 0x68);
         }
         if (fn_801CD2F8(*(s32*)(p + 4))) {
-            if (fn_8022BA58(*(s32*)(p + 4), lo) && fn_8022BA58(*(s32*)(p + 4), hi)) {
+            if (fn_8022BA58(*(s32*)(p + 4), &lo.x) && fn_8022BA58(*(s32*)(p + 4), &hi.x)) {
                 ok = true;
             }
         } else {
-            if (fn_8030C2A8(*(u8**)(lbl_8053AB10 + 0x24), lo) && fn_8030C2A8(*(u8**)(lbl_8053AB10 + 0x24), hi)) {
+            if (fn_8030C2A8(*(u8**)(lbl_8053AB10 + 0x24), &lo.x) && fn_8030C2A8(*(u8**)(lbl_8053AB10 + 0x24), &hi.x)) {
                 ok = true;
             }
         }
