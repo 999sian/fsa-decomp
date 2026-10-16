@@ -79,6 +79,26 @@ extern "C" void fn_8015949C(int attr, u32 base, u8 stride)
     *(volatile u32*)0xCC008000 = stride;
 }
 
+#pragma dont_inline on
+extern "C" void fn_8015980C(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, u32 b0, u32 b1, u32 b2, u32 b3) {
+    u32 regA;
+    u32 regB;
+    u8 cmd = 0x08;
+    regA = a0 | (a1 << 6) | (a2 << 12) | (a3 << 18) | (a4 << 24);
+    *(volatile u8*)0xCC008000 = cmd;
+    *(volatile u8*)0xCC008000 = 0x30;
+    *(volatile u32*)0xCC008000 = regA;
+    regB = b0 | (b1 << 6) | (b2 << 12) | (b3 << 18);
+    *(volatile u8*)0xCC008000 = cmd;
+    *(volatile u8*)0xCC008000 = 0x40;
+    *(volatile u32*)0xCC008000 = regB;
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u16*)0xCC008000 = 1;
+    *(volatile u16*)0xCC008000 = 0x1018;
+    *(volatile u32*)0xCC008000 = regA;
+    *(volatile u32*)0xCC008000 = regB;
+}
+#pragma dont_inline reset
 extern "C" int fn_80159AE4(char** outStart, int* outSize, void* arg) {
     char* lo = (char*)OSGetArenaLo();
     char* hi = (char*)OSGetArenaHi();
@@ -208,6 +228,33 @@ extern "C" void fn_80159DE0(void* p) {
         virtual void v16();
     };
     ((Obj*)p)->v16();
+}
+
+extern "C" int fn_8015A3E4(void* heap, u32 start, u32 size) {
+    struct HeapObj {
+        virtual void vf8(int);
+    };
+    struct Node {
+        HeapObj* obj; u32 unk4; u32 unk8; Node* next;
+    };
+    Node* prev = 0;
+    u32 end = start + size;
+    Node* n = *(Node**)((u8*)heap + 0x5c);
+    while (n != 0) {
+        HeapObj* o = n->obj;
+        if (start <= (u32)o && (u32)o < end) {
+            o->vf8(-1);
+            if (prev == 0) {
+                n = *(Node**)((u8*)heap + 0x5c);
+            } else {
+                n = prev->next;
+            }
+        } else {
+            prev = n;
+            n = n->next;
+        }
+    }
+    return 0;
 }
 
 extern "C" u8 fn_8015A644(u8* p, u8 v) {
