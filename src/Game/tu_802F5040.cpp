@@ -12,10 +12,10 @@ extern "C" void fn_802FF798(void* mgr);
 extern "C" f32 fn_802F5FF4(f32 x) {
     f32 a = lbl_805414FC;
     f32 v;
-    if (x < lbl_80541500) {
-        v = lbl_80541500;
-    } else {
+    if (x >= lbl_80541500) {
         v = x;
+    } else {
+        v = lbl_80541500;
     }
     return a / (a - v);
 }
@@ -42,6 +42,8 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
     }
 }
 
+extern "C" void fn_802FA3FC(void* mgr);
+extern void* lbl_8053AAF8;
 extern "C" void fn_802FF548(void* mgr) {
     fn_802FF798(mgr);
 }
