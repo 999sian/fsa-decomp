@@ -292,6 +292,15 @@ extern "C" void fn_8013625C(void* self, void* p, f32 x) {
     (((PmfObj_80136148*)p)->*(*pmf))(2, &v, 4);
 }
 
+extern "C" void fn_801362B8(void* self, void* p, f32 x) {
+    int v = 0;
+    if (x >= 0.5f) {
+        v = 1;
+    }
+    PmfFunc_80136148* pmf = (PmfFunc_80136148*)((u8*)self + 4);
+    (((PmfObj_80136148*)p)->*(*pmf))(2, &v, 4);
+}
+
 extern "C" u32 fn_80136314(u32 i) {
     u32 tmp = 0;
     u32* p = &lbl_80201F60[i];
