@@ -13,6 +13,11 @@ struct KeyIter {
     f32* p;
 };
 
+struct StrideIter {
+    f32* p;
+    u32 stride;
+};
+
 static inline s32 KeyIter_distance(KeyIter first, KeyIter last) {
     return (s32*)last.p - (s32*)first.p;
 }
@@ -799,7 +804,9 @@ extern "C" void* fn_801392DC(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80139364(KeyIter* ret, KeyIter* first, KeyIter* last, f64* val) {
-    s32 len = (u32)KeyIter_distance(*last, *first) >> 1;
+    KeyIter f = *first;
+    KeyIter l = *last;
+    s32 len = (u32)KeyIter_distance(f, l) >> 1;
     f64 v = *val;
     while (len > 0) {
         s32 half = len / 2;
@@ -869,6 +876,11 @@ extern "C" void fn_801397A8(void* param_1, void* param_2) {
     s32 v = ((s32*)p)[1];
     *(f32**)((char*)param_1 + 0x5c) = p + 2;
     *(s32*)((char*)param_1 + 0x60) = v;
+}
+
+extern "C" void fn_801397C8(void* param_1, void* param_2) {
+    s32* p = *(s32**)((u8*)param_2 + 8);
+    fn_8013785C((u8*)param_1 + 0x18, (s32)(p + 1), *p);
 }
 
 extern u8 lbl_80292CD8[];
