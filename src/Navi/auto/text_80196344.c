@@ -843,8 +843,8 @@ extern "C" s32 fn_801A3F88(s32 a, s32 b) {
 }
 
 extern "C" void fn_801A3E64_unused_placeholder(void);
-extern "C" void fn_801A3F98(u8* p, s32 i, u32* pv) {
-    *(u32*)(p + i * 4 + 0x80) = *pv;
+extern "C" void fn_801A3F98(u32* p, s32 i, u32* pv) {
+    p[i + 0x20] = *pv;
 }
 
 extern "C" s32 fn_801A3FC0(s32 a, s32 b) {
