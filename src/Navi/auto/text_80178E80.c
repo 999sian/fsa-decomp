@@ -2781,6 +2781,12 @@ extern "C" void fn_80191EA0(u32 a, s16 b, u16 c) {
     *(volatile u16*)0xCC008000 = (u16)(b * 9 + 0x400) | 0x8000;
 }
 
+extern "C" void fn_80192730(void* p);
+extern "C" void fn_801927DC(void* p);
+extern "C" void fn_801928E0(void* p);
+extern "C" void fn_80192984(void* p);
+extern "C" void fn_80192C8C(void* p);
+extern "C" void fn_80192D84(void* p);
 extern "C" void fn_80192688(void* p) {
     fn_801926E4();
     fn_80192730(p);
