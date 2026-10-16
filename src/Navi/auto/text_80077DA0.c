@@ -3,6 +3,14 @@
 // .text 0x80077da0-0x8007bc94 (37 functions). split_file divides it into the game's real files.
 
 extern void* lbl_80282198[];
+extern void* lbl_80281950[];
+extern void* lbl_8028216C[];
+extern void* lbl_80281904[];
+extern char lbl_802FCB30[];
+extern char lbl_802B7CA0[];
+extern char lbl_802BB0FC[];
+extern char lbl_802C4F3C[];
+extern char lbl_8029FDB4[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80077F44(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
