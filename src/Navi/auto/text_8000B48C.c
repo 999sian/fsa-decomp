@@ -167,3 +167,10 @@ extern "C" void* fn_8000CEC4(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_8000D318(void) {
+    f32 m[3][4];
+    fn_801C61AC(m);
+    fn_801C5DA8(lbl_8029F8D8, m, lbl_8029F8D8);
+}
+
