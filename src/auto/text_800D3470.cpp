@@ -1266,19 +1266,19 @@ extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
     *(u32*)(param_1 + 0x18) = *param_2->m47(0);
 }
 
-extern "C" void fn_800DD148(u8* this_, void* obj) {
-    void** vt = *(void***)obj;
-    s32 id = ((s32 (*)(void*))vt[9])(obj);
-    if (id == 0x5045464c || (id < 0x5045464c && id == 0x50454647)) {
-        u8* p = (u8*)((void* (*)(void*))vt[15])(obj);
+extern "C" void fn_800DD148(u8* this_, Unk800DD148Obj* obj) {
+    switch (obj->m7()) {
+    case 0x5045464c:
+    case 0x50454647: {
+        u8* p = obj->m13();
         *(u16*)(this_ + 0x4) = *(u16*)p;
         this_[0x6] = p[2];
         this_[0x7] = p[3];
-        u32* q = (u32*)((void* (*)(void*))vt[18])(obj);
-        *(u32*)(this_ + 0x8) = *q;
-        u16* r = (u16*)((void* (*)(void*))vt[21])(obj);
-        *(u16*)(this_ + 0xc) = *r;
-        this_[0xe] = ((u8 (*)(void*))vt[24])(obj);
+        *(u32*)(this_ + 0x8) = *obj->m16();
+        *(u16*)(this_ + 0xc) = *obj->m19();
+        this_[0xe] = obj->m22();
+        break;
+    }
     }
 }
 
@@ -1392,11 +1392,12 @@ extern "C" u32 fn_800DDA50(void) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    u16 id = *(u16*)src;
-    *(u16*)(this_ + 0x4) = id;
-    u8 ref0 = src[2];
-    *(u8*)(this_ + 0x6) = ref0;
-    *(u8*)(this_ + 0x7) = src[3];
+    u16 w = *(u16*)src;
+    u8 b2 = src[2];
+    *(u16*)(this_ + 0x4) = w;
+    u8 b3 = src[3];
+    *(u8*)(this_ + 0x6) = b2;
+    *(u8*)(this_ + 0x7) = b3;
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
@@ -1832,7 +1833,7 @@ extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
   e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
-  e[0x28] = (e[0x28] & ~0x3) | b0;
+  e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
