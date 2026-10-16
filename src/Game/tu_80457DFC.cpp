@@ -9,6 +9,12 @@
 #include "JSystem/JAudio/JAUSoundMgr.h"
 #include "JSystem/JAudio/System/JASAudioReseter.h"
 
+extern "C" void* lbl_804B2074[];
+extern "C" void* lbl_804954D8[];
+extern "C" void* lbl_804954F8[];
+extern "C" void* lbl_80495480[];
+extern "C" void* lbl_80495450[];
+
 struct Unk804580DCTrack {
     virtual void v0();
     virtual void v1();
@@ -92,16 +98,15 @@ extern "C" void fn_80458090(char* this_) {
 
 extern "C" u32 fn_804580DC(char* this_, u8 idx) {
     Unk804580DCBank* bank = *(Unk804580DCBank**)(this_ + 0x44);
-    if (bank != NULL) {
-        Unk804580DCTrack* track;
-        if (idx < bank->mF0) {
-            track = bank->mEC[idx];
-        } else {
-            track = NULL;
-        }
-        if (track != NULL && track->v4(0)->m4C == 2) {
-            return 1;
-        }
+    if (bank == NULL) {
+        return 0;
+    }
+    Unk804580DCTrack* track = NULL;
+    if (idx < bank->mF0) {
+        track = bank->mEC[idx];
+    }
+    if (track != NULL && track->v2(0)->m4C == 2) {
+        return 1;
     }
     return 0;
 }
