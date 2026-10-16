@@ -24,6 +24,33 @@ struct ActorVt_grok {
     virtual void setShadow(s32 type, f32 x, f32 y);
 };
 
+extern "C" void fn_8017EF40(ActorVt_grok* this_) {
+    fn_801F0E34(this_, 0x40038, 0);
+    this_->setShadow(2, 0.0f, 16.0f);
+}
+
+extern "C" void* fn_80181FFC(void* this_, s16 param_2) {
+    if (this_ != 0) {
+        *(void**)this_ = __vt__4GROK;
+        if (*(u32*)((u8*)this_ + 0x90) == 0) {
+            u8* mgr = fn_802D6A9C();
+            fn_802D7440(mgr, 1);
+            fn_8022ADCC();
+        }
+        for (s32 i = 0; i < 2; i++) {
+            void* p = *(void**)((u8*)this_ + 0x318 + i * 4);
+            if (p != 0) {
+                fn_801EE434(p);
+            }
+        }
+        __dt__5ActorFv(this_, 0);
+        if (param_2 > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_80182640(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x0) = x;
 	*(f32*)((char*)thisObj + 0x4) = y;
