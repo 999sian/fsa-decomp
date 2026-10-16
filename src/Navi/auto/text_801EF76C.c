@@ -23,11 +23,11 @@ extern "C" int ddh_cc_peek(void)
 {
 	int iVar1;
 	int iVar2;
-	u8 auStack_808[2056];
+	u8 auStack_808[2048];
 
 	iVar1 = EXI2_Poll();
-	if (iVar1 == 0) {
-		iVar1 = 0;
+	if (iVar1 <= 0) {
+		return 0;
 	}
 	else {
 		iVar2 = EXI2_ReadN(auStack_808, iVar1);
@@ -35,7 +35,7 @@ extern "C" int ddh_cc_peek(void)
 			fn_801EFBB8(lbl_802FB1B8, auStack_808, iVar1);
 		}
 		else {
-			iVar1 = -0x2719;
+			return -0x2719;
 		}
 	}
 	return iVar1;
