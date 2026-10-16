@@ -31,6 +31,40 @@ extern "C" void fn_802D2B04(void* this_, s32 b, s32 c) {
     fn_801F132C(this_, b, c, (s32*)((char*)this_ + 0x234));
 }
 
+extern "C" u16 fn_8022461C(YasiVec* pos, u32 room);
+extern "C" void fn_8013CC50(u32 room, YasiVec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" void* fn_801F856C();
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern "C" void fn_802D2B28(char* p) {
+    s32 c = fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4));
+    if (c == 0xd || c == 0x3b || c == 0x39) {
+        *(f32*)(p + 0x14) = lbl_80540F18;
+        *(f32*)(p + 0x3c) = lbl_80540F18;
+        *(f32*)(p + 0x40) = lbl_80540F18;
+        *(f32*)(p + 0x44) = lbl_80540F18;
+        fn_801F0E34(p, 0x30047, 0);
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F1C, 0x4f3, -1, 1, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F1C, 0x4f4, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F1C, 0x4f5, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F1C, 0x4f6, 0, 0, 0, 0, 1);
+        *(u8*)(p + 0x11c) = 0;
+    } else {
+        if (*(s32*)(p + 0x230) < 0x50) {
+            if (*(s32*)(p + 0x4) >= 8) {
+                YasiVec pos(*(YasiVec*)(p + 0xc));
+                pos.z = lbl_80540F18;
+                Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(u32*)(p + 0x4), &pos, 0, -1, -1);
+            } else {
+                fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F1C, 0x8a, 1, 0, 0, 0, 1);
+                fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540F1C, 0x8b, 1, 0, 0, 0, 1);
+            }
+        }
+        fn_801F0E34(p, 0x30003, 0);
+        *(u8*)(p + 0x11c) = 0;
+    }
+}
+
 extern "C" void fn_802D2D0C(void* this_) {
     f32 c = lbl_80540F1C;
     fn_801F06F0(this_, lbl_8046E118, 0x2b, 0, 7, c, c);
