@@ -511,6 +511,30 @@ extern "C" void fn_800D8414(void* param_1) {
     DCStoreRange(dlStart, (u32)(dlEnd - dlStart));
 }
 
+extern "C" void fn_800D84A8(u8* this_) {
+    u32 kcol;
+    GXColorS10 col;
+    u8* base;
+    u8* p;
+    s32 i;
+
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x68);
+    base = __GDCurrentDL->pDisplayListData;
+    p = this_;
+    for (i = 0; i < 3; i++) {
+        col = *(GXColorS10*)(p + 0x14);
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), col);
+        p += 8;
+    }
+    p = this_;
+    for (i = 0; i < 4; i++) {
+        kcol = *(u32*)(p + 0x45);
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)&kcol);
+        p += 4;
+    }
+    DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
+}
+
 extern "C" void fn_800D86D4(Vtable800D8248* p) {
     p->m9();
     p->m10();
@@ -532,6 +556,21 @@ extern "C" void fn_800D8720(void* param_1) {
     DCStoreRange(dlStart, (u32)(dlEnd - dlStart));
 }
 
+extern "C" void fn_800D87B4(u8* self) {
+    u32 i;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0x90);
+    u8* start = __GDCurrentDL->pDisplayListData;
+    for (i = 0; i < 3; i++) {
+        GXColorS10 c = *(GXColorS10*)(self + 0x42 + i * 8);
+        J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
+    }
+    for (i = 0; i < 4; i++) {
+        GXColor c = *(GXColor*)(self + 0x62 + i * 4);
+        J3DGDSetTevKColor(GXTevKColorID(i), c);
+    }
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
 extern "C" void fn_800D89F0(Vtable800D8248* p) {
     p->m9();
     p->m10();
@@ -551,6 +590,22 @@ extern "C" void fn_800D8A3C(void* p) {
     
     u8* now = __GDCurrentDL->pDisplayListData;
     DCStoreRange(saved, (u32)(now - saved));
+}
+
+extern "C" void fn_800D8AD0(u8* this_) {
+    u8* p = this_;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x170);
+    u8* base = __GDCurrentDL->pDisplayListData;
+    for (u32 i = 0; i < 3; i++) {
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0xda));
+        p += 8;
+    }
+    p = this_;
+    for (u32 i = 0; i < 4; i++) {
+        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0xfa));
+        p += 4;
+    }
+    DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
 }
 
 extern "C" void fn_800D8D0C(Vtable800D8248* p) {
@@ -1042,11 +1097,11 @@ extern "C" u32 fn_800DDA50(void) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    *(u16*)(this_ + 0x4) = *(u16*)src;
-    u8 b2 = src[2];
-    u8 b3 = src[3];
-    *(u8*)(this_ + 0x6) = b2;
-    *(u8*)(this_ + 0x7) = b3;
+    u16 id = *(u16*)src;
+    *(u16*)(this_ + 0x4) = id;
+    u8 ref0 = src[2];
+    *(u8*)(this_ + 0x6) = ref0;
+    *(u8*)(this_ + 0x7) = src[3];
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
@@ -1454,16 +1509,15 @@ extern "C" u8 fn_800DE208(int param_1)
   return *(u8*)(param_1 + 0x20);
 }
 
-extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  u8 a = param_3[1];
-  u8* dst = param_1 + param_2 * 8;
-  dst[0x22] = a;
-  dst[0x23] = param_3[2];
-  dst[0x24] = param_3[3];
-  dst[0x26] = param_3[5];
-  dst[0x27] = param_3[6];
-  dst[0x28] = param_3[7];
+  int offset = param_1 + param_2 * 8;
+  *(u8*)(offset + 0x22) = param_3[1];
+  *(u8*)(offset + 0x23) = param_3[2];
+  *(u8*)(offset + 0x24) = param_3[3];
+  *(u8*)(offset + 0x26) = param_3[5];
+  *(u8*)(offset + 0x27) = param_3[6];
+  *(u8*)(offset + 0x28) = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -1479,7 +1533,7 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  u8* e = param_1 + param_2 * 8;
+  u8* e = &param_1[param_2 * 8];
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
   e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
@@ -2094,8 +2148,8 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8* p = self + i * 4;
     u8 c0 = c[0];
+    u8* p = self + (i << 2);
     p[0xc] = c0;
     p[0xd] = c[1];
     p[0xe] = c[2];
@@ -2445,6 +2499,11 @@ extern "C" void fn_800D95B0(u8* p)
         p += 4;
     }
 }
+
+extern "C" void fn_800D9658(void* p) {
+    return;
+}
+
 #endif
 struct Rgb3_800DE210 {
     u8 r, g, b;
