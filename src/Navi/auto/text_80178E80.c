@@ -695,7 +695,7 @@ extern "C" void fn_80180980(VObj_80180980* self, int a) {
     self->vfCC(a, 0);
 }
 
-extern "C" void fn_801809B0(VObj_80180980* self, int a, int b) {
+extern "C" void fn_801809B0(VObj_80180920* self, int a, int b) {
     self->vfC8(a, b, 0);
 }
 
