@@ -11,6 +11,29 @@ extern "C" void __ct__5ActorFv(void* this_);
 extern "C" void fn_801D267C(void* anim);
 extern void* lbl_8049CBE0[];
 extern const f32 lbl_8053C228;
+extern "C" void v01__5ActorFv(void* this_);
+extern "C" void fn_801D2608(void* anim, void* arg, s32 n);
+extern "C" void fn_801D22DC(void* anim, s32 a, s32 b, s32 c);
+extern "C" void fn_801D1F14(void* anim, f32 scale);
+extern u8 lbl_80539EC0[];
+extern char* lbl_8053AAF8;
+extern const char* lbl_8049CBB0[][4];
+extern const f32 lbl_8053C250;
+extern const f32 lbl_8053C254;
+extern const f32 lbl_8053C258;
+extern const f32 lbl_8053C25C;
+extern const f32 lbl_8053C260;
+extern const f32 lbl_8053C264;
+extern const f32 lbl_8053C268;
+extern const f32 lbl_8053C26C;
+class CLOD_ResMgr {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void* vf18(u32 type, const char* name);
+};
 
 extern "C" void fn_80105654(char* p) {
     v06__5ActorFv(p);
