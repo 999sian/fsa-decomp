@@ -44,7 +44,7 @@ extern "C" void* fn_8023E724(void* p);
 extern "C" u32 fn_802A0800(char* self, void* p3, u32 room);
 extern void* lbl_8053AAF8;
 extern u16 lbl_8046CB88[];
-extern "C" u16 fn_8022461C(JGeometry::TVec2<f32>* pos, s32 flag);
+extern "C" s16 fn_8022461C(JGeometry::TVec2<f32>* pos, s32 flag);
 extern "C" void fn_8029D898(void* a, s32 b) {
     s32 v = *(s32*)((char*)fn_802D6A9C() + 0x34);
     fn_802D7970(fn_802D6A9C(), b);
@@ -81,6 +81,24 @@ extern "C" u32 fn_8029E888(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32
     return *(u16*)(self + 0x24) == 0x30;
 }
 
+extern "C" void fn_8029E928(void* self, JGeometry::TVec2<f32>* pos, u32 room, u32 value) {
+    f32 y = pos->y;
+    f32 x = pos->x;
+    JGeometry::TVec2<f32> p;
+    p.y = y;
+    p.x = x;
+    void* mgr = lbl_8053AC98;
+    s32 r = fn_80226BC4(&p, room & 0xfe);
+    *(s32*)((char*)mgr + 0x20) = r;
+    s32 idx = *(s32*)((char*)mgr + 0x20);
+    fn_802D782C(fn_802D6A9C(), 1);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, idx, value);
+    s32 n = fn_802D4C10(fn_802D6A9C(), room, *(s32*)((char*)mgr + 0x20));
+    if (n != -1) {
+        fn_802D7D00(fn_802D6A9C(), room, n, 1);
+    }
+}
+
 extern "C" u32 fn_802A01F0(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32 room) {
     JGeometry::TVec2<f32> p;
     p.y = pos->y;
@@ -98,6 +116,19 @@ extern "C" u32 fn_802A01F0(char* self, JGeometry::TVec2<f32>* pos, void* p3, u32
         break;
     }
     return ret;
+}
+
+extern "C" BOOL fn_802A1490(void* this_, JGeometry::TVec2<f32>* param_2) {
+    JGeometry::TVec2<f32> tmp = *param_2;
+    *(u32*)((u8*)this_ + 0x20) = fn_80226BC4(&tmp, 0);
+    *(u16*)((u8*)this_ + 0x24) = fn_802F9908(*(void**)((u8*)lbl_8053AB10 + 0x20), 0, *(u32*)((u8*)this_ + 0x20));
+    if (lbl_8046CB88[*(u16*)((u8*)this_ + 0x24)] == 0) {
+        return TRUE;
+    }
+    if (fn_8022461C(param_2, 0) == 0x22 && *(u8*)((u8*)fn_802D6A9C() + 0x170) == 0) {
+        return TRUE;
+    }
+    return FALSE;
 }
 
 extern "C" void fn_802A381C(void* self, JGeometry::TVec2<f32>* pos, u32 room, u32 value) {
