@@ -340,6 +340,13 @@ extern "C" unsigned short fn_80172614(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
 
+extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
+    u8* p = p1 + p2 * 4;
+    p[0x16] = p3[0];
+    p[0x17] = p3[1];
+    p[0x18] = p3[2];
+}
+
 extern "C" s32 fn_80172640(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
@@ -397,6 +404,10 @@ extern "C" void fn_80172A04(u8* p, s32 i, s8* src) {
     u8 a = src[0];
     p[0x5e] = (p[0x5e] & ~0xC) | ((u8)src[1] << 2);
     p[0x5e] = (p[0x5e] & ~0x3) | a;
+}
+
+extern "C" void fn_80172A3C(u8* p1, s32 p2, u8* p3) {
+    p1[p2 + 0xb8] = *p3;
 }
 
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
