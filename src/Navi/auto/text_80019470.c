@@ -1388,6 +1388,74 @@ extern "C" void fn_8001F51C(void* param_1, f32* out) {
     out[2] = *(f32*)(obj + 0xe0);
 }
 
+extern "C" void fn_8001F580(u8* param_1, f32* in) {
+    f32 x = in[0];
+    f32 y = in[1];
+    *(f32*)(param_1 + 0x18) = x;
+    f32 z = in[2];
+    *(f32*)(param_1 + 0x1c) = y;
+    *(f32*)(param_1 + 0x20) = z;
+    param_1[4] |= 0x10;
+}
+
+extern "C" void fn_8001F5A8(void* param_1, f32* out) {
+    struct Ent { u8 pad[0x20]; u8* obj; u8 pad2[0x10]; };
+    struct Mgr { u8 pad[0x13c0]; s8 idx; u8 pad1[3]; Ent ents[1]; };
+    extern u8 lbl_802B7CA0[];
+    extern f32 lbl_802FFCC0;
+    extern f32 lbl_802FFCC4;
+    Mgr* m = (Mgr*)lbl_802B7CA0;
+    u8* obj;
+    if ((int)lbl_802B7CA0[0x1418] != 0) {
+        obj = m->ents[m->idx].obj;
+    } else {
+        obj = 0;
+    }
+    if (obj == 0) {
+        out[0] = lbl_802FFCC0;
+        out[1] = lbl_802FFCC4;
+        out[2] = lbl_802FFCC0;
+    }
+    out[0] = *(f32*)(obj + 0xf0);
+    out[1] = *(f32*)(obj + 0xf4);
+    out[2] = *(f32*)(obj + 0xf8);
+}
+
+extern "C" void fn_8001F610(u8* param_1, f32* in) {
+    struct V { f32 x, y, z; };
+    *(V*)(param_1 + 0x24) = *(V*)in;
+    param_1[4] |= 0x20;
+}
+
+extern "C" void fn_8001F638(void* param_1, f32* out) {
+    struct Ent { u8 pad[0x20]; u8* obj; u8 pad2[0x10]; };
+    struct Mgr { u8 pad[0x13c0]; s8 idx; u8 pad1[3]; Ent ents[1]; };
+    extern u8 lbl_802B7CA0[];
+    extern f32 lbl_802FFCC0;
+    extern f32 lbl_802FFCC4;
+    Mgr* m = (Mgr*)lbl_802B7CA0;
+    u8* obj;
+    if ((int)lbl_802B7CA0[0x1418] != 0) {
+        obj = m->ents[m->idx].obj;
+    } else {
+        obj = 0;
+    }
+    if (obj == 0) {
+        out[0] = lbl_802FFCC0;
+        out[1] = lbl_802FFCC0;
+        out[2] = lbl_802FFCC4;
+    }
+    out[0] = *(f32*)(obj + 0xe4);
+    out[1] = *(f32*)(obj + 0xe8);
+    out[2] = *(f32*)(obj + 0xec);
+}
+
+extern "C" void fn_8001F6A0(u8* param_1, f32* in) {
+    struct V { f32 x, y, z; };
+    *(V*)(param_1 + 0x30) = *(V*)in;
+    param_1[4] |= 0x40;
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
@@ -1508,6 +1576,14 @@ extern "C" int fn_80020EE4(void** param_1) {
         r = 5;
     }
     return r;
+}
+
+extern "C" int fn_80020F3C(void** param_1) {
+    int ret = fn_800636A0(param_1[0], lbl_802B7CA0 + 0x2200, 0x40);
+    if (ret < 0) {
+        return 5;
+    }
+    return ret > 0 ? 0 : 2;
 }
 
 extern "C" int fn_80020F94()
