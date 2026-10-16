@@ -851,8 +851,8 @@ extern "C" void fn_801A3FAC(u32* p, s32 i, u32* pv) {
     p[i + 0x20] = *pv;
 }
 
-extern "C" s32 fn_801A3FC0(s32 a, s32 b) {
-    return (b << 2) + 0x80 + a;
+extern "C" s32 fn_801A3FC0(s32 p, s32 i) {
+    return p + i * 4 + 0x80;
 }
 
 extern "C" void* fn_801A3FD4(void* p) {
