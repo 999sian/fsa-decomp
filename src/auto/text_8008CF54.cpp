@@ -20,7 +20,7 @@ extern "C" float lbl_80539DA0;
 extern "C" u8 lbl_8053A934[];
 extern "C" u32 lbl_80499470[];
 extern "C" u8 lbl_8053A920;
-extern "C" u8 lbl_8053A924[];
+extern "C" u8 lbl_8053A924[4];
 extern "C" u32 lbl_8053A948;
 extern "C" u32 lbl_8053A94C;
 extern "C" u8 lbl_8052E8A0[];
@@ -41,6 +41,27 @@ void operator delete(void *p);
 struct JUTGamePad {
     static void init();
 };
+
+extern "C" void* dtor_8008D028(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        char* p = (char*)this_;
+        *(void**)p = lbl_80499490;
+        s16 idx = *(s16*)(p + 0x7c);
+        if (idx >= 0) {
+            lbl_8053A924[idx]--;
+            *(s16*)(p + 0x7c) = -1;
+        }
+        remove__10JSUPtrListFP10JSUPtrLink(lbl_8052E8A0, p + 0x80);
+        if (p + 0x80 != 0) {
+            __dt__10JSUPtrLinkFv(p + 0x80, 0);
+        }
+        __dt__11JKRDisposerFv(this_, 0);
+        if (freeFlag > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
+}
 
 extern "C" void fn_8008D0D4(void)
 {
