@@ -1203,6 +1203,28 @@ extern "C" s32 fn_8001E6BC(void* param_1) {
     return 1;
 }
 
+extern "C" s32 fn_8001E7D8(void* param_1, void* param_2, u32 param_3, u16 param_4, u16 param_5) {
+    s32 ok;
+    if (param_3 < 0xfffffffe && param_4 < 0xfffe && param_5 < 0xfffe) {
+        ok = 1;
+    } else {
+        ok = 0;
+    }
+    if (!ok) {
+        return 0;
+    }
+    u8* p = (u8*)param_1;
+    *(u32*)(p + 0x30) = param_3;
+    *(u16*)(p + 0x34) = param_4;
+    *(u16*)(p + 0x36) = param_5;
+    *(u32*)(p + 0x38) = *(u32*)(p + 0x30);
+    *(u16*)(p + 0x3c) = *(u16*)(p + 0x34);
+    *(u16*)(p + 0x3e) = *(u16*)(p + 0x36);
+    cTg_Create__FP16create_tag_classPv(param_1, param_2);
+    fn_8001EB28(p + 0x14, (void*)fn_8001E6BC, p);
+    return 1;
+}
+
 extern void* lbl_80205810[];
 extern "C" void* fn_8001E884(s16 param_1) {
     return lbl_80205810[param_1];
