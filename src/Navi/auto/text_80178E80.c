@@ -1,4 +1,6 @@
 #include "types.h"
+extern void* lbl_802994BC[];
+extern void* lbl_80299504[];
 extern "C" void fn_801788C0(void);
 extern "C" void fn_80177F0C(void);
 
@@ -49,15 +51,12 @@ extern "C" void fn_8016A0B4(void* p, void* obj);
 extern "C" void fn_8017A56C(void* self, void* obj) {
     u16 count;
     u16 i;
-    u8* p = (u8*)self;
-    u8* q = (u8*)obj;
-    void** vtbl = *(void***)obj;
-    ((void (*)(void*, void*))vtbl[0xc / 4])(obj, self);
-    count = *(u16*)(q + 0x18);
+    ((void (*)(void*, void*))((*(void***)obj)[3]))(obj, self);
+    count = *(u16*)((u8*)obj + 0x18);
     for (i = 0; i < count; i++) {
-        u16 idx = ((u16*)*(u8**)(q + 0x1c))[i];
-        if (idx < *(u16*)(p + 0x102)) {
-            fn_8016A0B4(*(u8**)(p + 0x104) + idx * 0x88, obj);
+        u16 idx = ((u16*)*(u8**)((u8*)obj + 0x1c))[i];
+        if (idx < *(u16*)((u8*)self + 0x102)) {
+            fn_8016A0B4(*(u8**)((u8*)self + 0x104) + idx * 0x88, obj);
         }
     }
 }
@@ -176,13 +175,14 @@ extern "C" void fn_8018905C(void) {
 
 extern "C" u8 fn_8018A318(void* self, s32* a, s32* b);
 extern "C" int fn_8018A064(void* self, s32* param_2) {
-    s32 local_c = -1;
+    s32 local_14 = -1;
     s32 local_10 = -1;
-    if (fn_8018A318(self, &local_c, &local_10) == 0) {
+    if (fn_8018A318(self, &local_14, &local_10) == 0) {
         return 0;
     }
     s32 local_18 = *param_2;
-    return ((int (*)(void*, s32*, s32*))((*(void***)self)[0xac / 4]))(self, &local_c, &local_18);
+    s32 local_c = local_14;
+    return ((int (*)(void*, s32*, s32*))(*(u32*)(*(u32*)self + 0xac)))(self, &local_c, &local_18);
 }
 
 extern "C" int fn_8018A4B4(void* param_1, s32* param_2, s32* param_3) {
