@@ -10,6 +10,9 @@ extern "C" void fn_801C5D74(void*, void*);
 extern "C" int fn_80020EA4(void* p, int x);
 extern "C" int fn_800183AC(void* p, void* f, void* a);
 extern "C" int fn_800175B8(void* p);
+extern u8 lbl_802FCA18;
+extern u16 lbl_802FED38;
+extern u8 lbl_802FF058;
 
 struct StateObj_80072080;
 typedef BOOL (StateObj_80072080::*StateFunc_80072080)(int);
@@ -47,6 +50,29 @@ extern "C" BOOL fn_800710CC(void);
 extern "C" BOOL fn_800710CC(void)
 {
     return TRUE;
+}
+
+extern u8 lbl_802FCA18;
+extern u16 lbl_802FED38;
+extern u8 lbl_802FF058;
+extern "C" int fn_8007110C(u8* p) {
+    int iVar1 = fn_80020EA4(p + 0x244, (int)&lbl_802FCA18);
+    if (iVar1 == 4) {
+        if ((*(u32*)(p + 0xf8) & 8) == 0) {
+            if (p != nullptr) {
+                fn_800175B8(p);
+            }
+            *(u32*)(p + 0xf8) |= 8;
+        }
+        if ((u8)fn_800183AC(p, (void*)fn_80070D78, (void*)0xc40)) {
+            u16 flags = lbl_802FED38;
+            lbl_802FF058 = 0;
+            lbl_802FED38 = flags | 1;
+            return 4;
+        }
+        return 5;
+    }
+    return iVar1;
 }
 
 extern "C" void fn_800711CC(void);
