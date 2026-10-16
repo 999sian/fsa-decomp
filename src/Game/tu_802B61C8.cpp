@@ -7,6 +7,11 @@ extern "C" const f32 lbl_80540A3C;
 extern "C" char lbl_8046CAB8[];
 extern "C" char lbl_804A8750[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
+extern "C" void* fn_801F856C(Actor*);
+extern "C" void* Actor_CreateByID(void*, u32, s32, Vec*, s32, s32, s32);
+extern "C" u16 fn_8022461C(Vec*);
+extern "C" void* fn_8013CC50(u32, void*, f32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_801F0E34(Actor*, u32, s32);
 extern "C" Actor* fn_802B61C8(Actor* this_, s16 n) {
     if (this_ != nullptr) {
         *(void**)this_ = lbl_804A8750;
