@@ -112,6 +112,16 @@ extern "C" void fn_8037AF80(void) {
     }
 }
 
+extern "C" void fn_80452350(void* subObj);
+extern "C" void fn_80454A6C(void* subObj);
+extern "C" void fn_8037AFC0(void* this_) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        fn_80452350(*(void**)((char*)this_ + 0x4));
+    } else {
+        fn_80454A6C(*(void**)((char*)this_ + 0x8));
+    }
+}
+
 extern "C" void* fn_8037B000(void* this_, s16 flag) {
     if (this_ != 0) {
         *(void**)this_ = (void*)lbl_804AE9B0;
