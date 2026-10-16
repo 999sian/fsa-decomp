@@ -8,5 +8,26 @@ extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void __dl__FPv(void* this_);
 extern "C" char lbl_804AE338[];
 
+extern "C" void fn_8036E544(void* this_) {
+    char* p = (char*)this_;
+    int i = 0;
+    do {
+        if (*(void**)(p + 0x258)) {
+            void* base = fn_8013C824();
+            void* mgr = *(void**)((char*)base + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x258));
+            *(void**)(p + 0x258) = 0;
+        }
+        i++;
+        p += 4;
+    } while (i < 0x14);
+    if (*(void**)((char*)this_ + 0x2a8)) {
+        void* base = fn_8013C824();
+        void* mgr = *(void**)((char*)base + 0xc);
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)((char*)this_ + 0x2a8));
+        *(void**)((char*)this_ + 0x2a8) = 0;
+    }
+}
+
 extern "C" void fn_8036E5E4(void) {
 }
