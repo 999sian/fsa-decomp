@@ -164,7 +164,6 @@ extern "C" void fn_80019794(void* param_1) {
     fn_8001C2E4(*(void**)((u8*)param_1 + 0xc0), param_1);
 }
 
-extern "C" void fn_8001D57C(void*, void*);
 extern "C" void fn_800197BC(void* param_1) {
     fn_8001D57C(*(void**)((u8*)param_1 + 0xc0), param_1);
 }
@@ -933,13 +932,12 @@ extern "C" void fn_8001D084(char* self, char value) {
 }
 
 extern "C" int fn_8001D08C(char* self, char* color) {
-    char r, g, b, a;
-    r = color[0];
-    g = color[1];
-    b = color[2];
-    a = color[3];
+    char r = color[0];
+    char g = color[1];
     self[0x12c] = r;
+    char b = color[2];
     self[0x12d] = g;
+    char a = color[3];
     self[0x12e] = b;
     self[0x12f] = a;
     return 1;
