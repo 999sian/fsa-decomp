@@ -8,6 +8,33 @@ struct Sub8036C69C {
     virtual void v1();
     virtual void v2(int);
 };
+struct Sub8036C0EC {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void v24(int);
+};
 struct Unk8036C300;
 struct Vec3f {
     f32 x;
@@ -36,9 +63,59 @@ extern "C" u8 fn_8036B018(u8* this_) {
     return 0;
 }
 
+extern "C" void fn_8036C0EC(void* this_) {
+    extern void* fn_8011921C(void);
+    char* self = (char*)this_;
+    s32 id;
+    s32 v = *(s32*)((char*)fn_8011921C() + 8);
+    if (*(u8*)(self + 0x270) != 1) {
+        if (*(s32*)(self + 0x23c) == 4) {
+            if (v == 0) {
+                id = 2;
+            } else if (v == 0x96) {
+                id = 3;
+            } else if (v == 0x1fe) {
+                id = 4;
+            } else if (v == 0x32a) {
+                id = 5;
+            } else if (v == 0x3f2) {
+                id = 0xe;
+            } else if (v == 0x51e) {
+                id = 0xf;
+            } else if (v == 0x5b4) {
+                id = 0x10;
+            } else if (v == 0x6e0) {
+                id = 0x11;
+            } else {
+                return;
+            }
+        } else {
+            if (v == 0) {
+                id = 0x15;
+            } else if (v == 0x96) {
+                id = 0x16;
+            } else if (v == 0x1fe) {
+                id = 0x17;
+            } else if (v == 0x32a) {
+                id = 0x18;
+            } else if (v == 0x3f2) {
+                id = 0x1a;
+            } else if (v == 0x51e) {
+                id = 0x1b;
+            } else if (v == 0x5b4) {
+                id = 0x1c;
+            } else if (v == 0x6e0) {
+                id = 0x26;
+            } else {
+                return;
+            }
+        }
+        (*(void (**)(void*, s32))(*(char**)this_ + 0x60))(this_, id);
+    }
+}
+
 extern "C" void fn_8036C250(char* self) {
-    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(self + 0xc);
-    JGeometry::TVec3<f32> saved = *pos;
+    JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(self + 0xc);
     if (*(s32*)(self + 0x23c) == 5 && *(s32*)(self + 0x240) >= 0x24 && *(s32*)(self + 0x240) != 0x26) {
         fn_803683AC(self);
     } else {
@@ -49,7 +126,7 @@ extern "C" void fn_8036C250(char* self) {
         }
         fn_80368660(self);
     }
-    *pos = saved;
+    *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
 }
 
 extern "C" void fn_8036C300(Unk8036C300* this_) {
