@@ -91,6 +91,19 @@ extern "C" void fn_8018905C(void) {
     fn_801788C0();
 }
 
+extern "C" u8 fn_8018A318(void* self, s32* a, s32* b);
+extern "C" int fn_8018A064(void* self, s32* param_2) {
+    s32 local_14 = -1;
+    s32 local_10 = -1;
+    if (fn_8018A318(self, &local_14, &local_10) == 0) {
+        return 0;
+    }
+    s32 local_18 = *param_2;
+    s32 local_c = local_14;
+    void** vtbl = *(void***)self;
+    return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
+}
+
 extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
 }
@@ -128,6 +141,11 @@ extern "C" void* fn_8018C1E8(void* base, u32 offset) {
 }
 
 extern "C" void* fn_8018C200(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
+extern "C" void* fn_8018C218(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
