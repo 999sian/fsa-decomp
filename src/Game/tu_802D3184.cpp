@@ -20,6 +20,17 @@ extern "C" const f32 lbl_80540F4C;
 extern "C" const f32 lbl_80540F50;
 
 extern "C" s32 fn_801F132C(void* this_, u32 param2, u32 param3, void* statePtr);
+extern "C" void* fn_802D3184(void* p, s16 flags) {
+    if (p != 0) {
+        *(void**)p = lbl_804A94D8;
+        __dt__5ActorFv(p, 0);
+        if (flags > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
 extern "C" s32 fn_802D3210(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
