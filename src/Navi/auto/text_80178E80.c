@@ -61,6 +61,10 @@ extern "C" void fn_80180B88(void) {
 extern "C" void fn_80180BA8(void) {
 }
 
+extern "C" void fn_80184BF4(void) {
+    fn_80177F0C();
+}
+
 extern "C" void fn_80178990(void);
 extern "C" void fn_8018903C(void) {
     fn_80178990();
