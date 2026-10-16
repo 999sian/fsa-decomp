@@ -11,6 +11,11 @@ extern void* lbl_8029B49C[];
 
 extern void* lbl_8029B220[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_801B075C(void* param_1);
+extern "C" int fn_801B2254(void* param_1, s32 param_2, s32 param_3, u16 param_4, void* param_5);
+extern "C" void fn_801B7F68(void* param_1);
+extern "C" int fn_801B864C(void* param_1);
+extern "C" int fn_801B85B8(void* param_1, u16 param_2, void* param_3);
 extern "C" void* lbl_802FF700;
 extern "C" void fn_801A833C(void* p) {
     lbl_802FF700 = p;
