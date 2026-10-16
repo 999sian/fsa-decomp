@@ -17,3 +17,6 @@ extern "C" void* fn_80079EFC(void* this_) {
     *(void**)this_ = lbl_80498BB0;
     return this_;
 }
+
+JKRFile::~JKRFile() {}
+
