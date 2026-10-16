@@ -1694,6 +1694,10 @@ extern "C" void* fn_801A4E10(u8* p) {
     return *(void**)(p + 0x48);
 }
 
+extern "C" void fn_801A4E18(void* p, s32 v) {
+    *(s32*)((u8*)p + 0x44) = v;
+}
+
 extern "C" void fn_801A4E20(u8* p, u32 v) {
     *(u32*)(p + 0x48) = v;
 }
