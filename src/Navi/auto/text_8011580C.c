@@ -37,6 +37,12 @@ extern "C" void fn_80115914(Vec3f* out, void* a) {
     *out = v;
 }
 
+extern "C" void fn_80115960(Vec3f* out, void* a, void* b) {
+    Vec3f v;
+    fn_801C69EC(a, b, &v);
+    *out = v;
+}
+
 extern "C" Vec3f* fn_801159B4(Vec3f* out, void* a, void* b) {
     fn_80115960(out, a, b);
     return out;
