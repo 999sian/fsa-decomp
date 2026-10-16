@@ -586,6 +586,44 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019EA14(int param_1) {
+    u8* p = (u8*)param_1;
+    u32 i = 0;
+    do {
+        if (*(u16*)(p + 8) != 0xffff) {
+            fn_801A605C(i, p + 8);
+        }
+        i++;
+        p += 2;
+    } while (i < 8);
+}
+
+extern "C" void fn_8019EB78(int param_1) {
+    extern int* lbl_802FFA80;
+    u32 i;
+    u32 n = *(u8*)(param_1 + 0xd0);
+    for (i = 0; i < n; i++) {
+        u32 w = *(u32*)(param_1 + 0x78) | ((u8)(i + 0x10) << 24);
+        u8* out;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = 0x61;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 24;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 16;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 8;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w;
+        param_1 += 4;
+    }
+}
+
 extern "C" void fn_8019EDE0(void) {
 }
 
@@ -629,20 +667,29 @@ extern "C" void fn_8019EFBC(int param_1) {
 }
 
 extern "C" void fn_8019F018(int param_1) {
+    struct NaviPair8 {
+        u32 a;
+        u32 b;
+    };
+    NaviPair8 pair;
     u32 i;
     u8* p;
-    u32 pair[2];
     u32 val;
+    u32 b;
+    u32 a;
 
     p = (u8*)param_1;
     for (i = 0; i < 3; i++) {
-        pair[0] = *(u32*)(p + 0x14);
-        pair[1] = *(u32*)(p + 0x18);
-        fn_80191388(i + 1, pair);
+        a = *(u32*)(p + 0x14);
+        b = *(u32*)(p + 0x18);
+        pair.a = a;
+        pair.b = b;
+        fn_80191388(i + 1, &pair);
         p += 8;
     }
+    i = 0;
     p = (u8*)param_1;
-    for (i = 0; i < 4; i++) {
+    for (; i < 4; i++) {
         val = *(u32*)(p + 0x45);
         fn_80191220(i, &val);
         p += 4;
@@ -689,27 +736,18 @@ extern "C" void fn_8019F324(int param_1) {
 }
 
 extern "C" void fn_8019F380(int param_1) {
-    u32 pair[2];
+    struct Pair { u32 a, b; };
+    u32 i;
+    u8* p;
     u32 word;
-    u32 i = 0;
-    u8* p = (u8*)param_1;
-    do {
-        u32 a = *(u32*)(p + 0x42);
-        u32 b = *(u32*)(p + 0x46);
-        pair[0] = a;
-        pair[1] = b;
-        fn_80191388(i + 1, pair);
-        i++;
-        p += 8;
-    } while (i < 3);
-    i = 0;
-    p = (u8*)param_1;
-    do {
+    for (i = 0, p = (u8*)param_1; i < 3; i++, p += 8) {
+        Pair pair = *(Pair*)(p + 0x42);
+        fn_80191388(i + 1, (u32*)&pair);
+    }
+    for (i = 0, p = (u8*)param_1; i < 4; i++, p += 4) {
         word = *(u32*)(p + 0x62);
         fn_80191220(i, &word);
-        i++;
-        p += 4;
-    } while (i < 4);
+    }
 }
 
 extern "C" void fn_8019F520(int param_1) {
