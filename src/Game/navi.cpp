@@ -104,6 +104,39 @@ extern "C" void fn_8021D9D4(char* p) {
     }
 }
 
+extern "C" void fn_8021DA20(char* p) {
+    f32 v[2];
+    *(f32*)(p + 0x3c) = lbl_8053FD58;
+    *(f32*)(p + 0x40) = lbl_8053FD58;
+    *(f32*)(p + 0x44) = lbl_8053FD58;
+    switch (*(s32*)(p + 0x248)) {
+    case 4:
+        *(f32*)(p + 0x44) = lbl_8053FD68;
+        break;
+    case 7:
+        *(f32*)(p + 0x44) = lbl_8053FD6C;
+        break;
+    case 9:
+        *(f32*)(p + 0x44) = lbl_8053FD70;
+        break;
+    }
+    switch (*(s32*)(p + 0x248)) {
+    case 4:
+    case 7:
+        fn_801D01A0(p, *(f32*)__float_max, p + 0x2c0, v);
+        *(f32*)(p + 0x3c) = v[0];
+        *(f32*)(p + 0x40) = v[1];
+        break;
+    case 10:
+        *(f32*)(p + 0x3c) = lbl_8053FD74;
+        *(f32*)(p + 0x40) = lbl_8053FD78;
+        break;
+    case 9:
+        *(f32*)(p + 0x40) = lbl_8053FD7C;
+        break;
+    }
+}
+
 extern "C" void* fn_8021EDC0(char* p) {
     fn_801D0F40(p);
     *(void**)p = lbl_804A6708;
