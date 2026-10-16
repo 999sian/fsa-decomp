@@ -2000,6 +2000,10 @@ extern "C" void fn_801889AC(u8* self, void* obj) {
     }
 }
 
+extern "C" void fn_801889D8(u8* param_1, void* param_2) {
+    *(void**)((u8*)param_1 + 0x19c) = param_2;
+}
+
 extern "C" void fn_80188DB0(void* self, int a, int b, int c) {
     ((VObj_80180920*)self)->vfCC(a, 0, c);
 }
