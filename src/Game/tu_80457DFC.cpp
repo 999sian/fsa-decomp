@@ -32,7 +32,8 @@ extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
     if (self->m5 == 1 && self->m84 != 0 && id == self->m84->mID) {
         return;
     }
-    self->m30->startSound(&id, &self->m84, 0);
+    u32 soundID = id;
+    self->m30->startSound(&soundID, &self->m84, 0);
     if (self->m84 != 0) {
         self->m84->mMove.moveVolume(self->m50, 0);
     }
