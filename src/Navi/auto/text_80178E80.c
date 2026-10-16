@@ -54,6 +54,22 @@ extern "C" void fn_8017A928(void) {
     fn_801788C0();
 }
 
+extern "C" void fn_80176550(u32* self);
+extern "C" void fn_8018119C(u32* self, int a, int b, int c, int d, int e);
+extern u32 lbl_80299040[];
+extern "C" u32* fn_80180BAC(u32* self) {
+    fn_80176550(self);
+    self[0] = (u32)lbl_80299040;
+    self[0x40] = 0;
+    self[0x41] = 0xFFFFFFFF;
+    self[0x42] = 0xFFFFFFFF;
+    self[0x49] = 0;
+    self[0x4A] = 0xFFFFFFFF;
+    self[0x4B] = 0xFFFFFFFF;
+    fn_8018119C(self, 0, 0, 0, 2, 2);
+    return self;
+}
+
 extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
     int* p;
     if (idx >= 4) {
