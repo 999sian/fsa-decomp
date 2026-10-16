@@ -266,6 +266,31 @@ extern "C" void fn_80136B1C(void* p, unsigned int q) {
     *(u32*)((u8*)p + 8) = b;
 }
 
+extern "C" void fn_80136B94(void* p) {
+    switch (*(s8*)((u8*)p + 0x20)) {
+    case 1:
+        *(f64*)((u8*)p + 0x28) = *(f64*)((u8*)p + 0x10);
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    case 2:
+        *(f64*)((u8*)p + 0x28) = *(f64*)((u8*)p + 0x8);
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    case 3:
+        *(f64*)((u8*)p + 0x28) = 0.0;
+        *(f64*)((u8*)p + 0x30) = 1.0;
+        break;
+    case 4:
+        *(f64*)((u8*)p + 0x28) = 0.5 * (*(f64*)((u8*)p + 0x8) + *(f64*)((u8*)p + 0x10));
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    default:
+        *(f64*)((u8*)p + 0x28) = 0.0;
+        *(f64*)((u8*)p + 0x30) = -1.0;
+        break;
+    }
+}
+
 extern "C" void fn_80136EA0(void* p) {
     extern void* lbl_80292A64[];
     *(void**)p = lbl_80292BB4;
@@ -404,6 +429,21 @@ extern "C" void fn_8013788C(void* param_1) {
 
 extern "C" f32 fn_80137F4C(void* param_1) {
     return *(f32*)(*(u8**)((u8*)param_1 + 0x54) - 4);
+}
+
+extern "C" f64 fn_80137F58(void* p, f32 x) {
+    f32* q = *(f32**)((u8*)p + 0x54);
+    return q[-1] + ((f64)q[1] - q[-1]) * ((f64)x - q[-2]) / ((f64)q[0] - q[-2]);
+}
+
+extern "C" f64 fn_80137F88(void* p, f32 x) {
+    f32* q = *(f32**)((u8*)p + 0x54);
+    f32 dx = x - q[-2];
+    f64 t = dx * (1.0 / (q[0] - q[-2]));
+    f64 h2 = (3.0 + -2.0 * t) * (t * t);
+    f64 u = t - 1.0;
+    f64 h1 = 1.0 - h2;
+    return t * (u * dx) * 0.0 + (dx * (u * u) * 0.0 + (h1 * q[-1] + h2 * q[1]));
 }
 
 extern "C" u32 fn_80138340(void) {
@@ -763,6 +803,8 @@ extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
+    void* arr[2] = {*b, *c};
+    void* arr2[2] = {*c, *b};
     while (*c != *b && !fn_8013A48C((u8*)*b - 0xc, d)) {
         *b = *(void**)*b;
     }
