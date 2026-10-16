@@ -431,10 +431,9 @@ void J3DTevBlock4::initialize()
 	mKAlphaSels[1] = 0x1c;
 	mKAlphaSels[2] = 0x1c;
 	mKAlphaSels[3] = 0x1c;
-	J3DGXColorS10 color = *(J3DGXColorS10*)&j3dDefaultTevColor;
-	mColors[0] = color;
-	mColors[1] = color;
-	mColors[2] = color;
+	mColors[0] = *(J3DGXColorS10*)&j3dDefaultTevColor;
+	mColors[1] = *(J3DGXColorS10*)&j3dDefaultTevColor;
+	mColors[2] = *(J3DGXColorS10*)&j3dDefaultTevColor;
 	u32 kcolor = *(u32*)&j3dDefaultTevKColor;
 	mKColors[0] = kcolor;
 	mKColors[1] = kcolor;
@@ -1613,8 +1612,8 @@ extern "C" void fn_800DC058(u8* self, Unk800DC058Vt* src) {
         *(u32*)(dst + 8) = *src->m16(i);
         dst += 6;
     }
-    dst = self;
-    for (u32 i = 0; i < 8; i++) {
+    u32 i;
+    for (i = 0, dst = self; i < 8; i++) {
         if (src->m18(i) != 0 && *(void**)(dst + 0x38) != 0) {
             memcpy(*(void**)(dst + 0x38), src->m18(i), 0x94);
             DCStoreRange(*(void**)(dst + 0x38), 0x94);
