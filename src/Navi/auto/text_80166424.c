@@ -222,12 +222,13 @@ extern "C" s32 fn_80172C00(s32 param_1, s32 param_2) {
     return param_1 + param_2 * 4 + 0x60;
 }
 
-extern "C" void fn_80172C2C(s32 param_1, s32 param_2, u8 param_3) {
-    *(u8*)(param_1 + param_2 + 0x74) = param_3;
+extern "C" void fn_80172C2C(u8* param_1, u32 param_2, u8 param_3) {
+    (param_1 + param_2)[0x74] = param_3;
 }
 
 extern "C" u8 fn_80172C38(s32 param_1, s32 param_2) {
-    return *(u8*)(param_1 + param_2 + 0x74);
+    s32 p = param_1 + param_2;
+    return *(u8*)(p + 0x74);
 }
 
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
