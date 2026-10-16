@@ -37,7 +37,7 @@ extern "C" void fn_80166C70(void* param_1) {
 extern "C" void fn_80166C70(void* param_1);
 extern "C" u8 fn_80166C84(u8* list, u8* node) {
     u8 ok = *(void**)(node + 4) == 0;
-    if (!(u8)(*(void**)(node + 4) == 0)) {
+    if (!ok) {
         ok = fn_80166FC4(*(void**)(node + 4));
     }
     if (ok) {
@@ -176,8 +176,7 @@ extern "C" void fn_801191F0(void* param_1);
 extern "C" void fn_80171E5C(void* param_1, int param_2, u32 param_3)
 {
     if (param_3 < 8) {
-        void** arr = (void**)((u8*)param_1 + param_3 * 4);
-        void* p = arr[0x5b];
+        void* p = *(void**)(((u8*)param_1 + (param_3 * 4)) + 0x16c);
         if (p != NULL && *(void**)((u8*)p + 0x20) != NULL) {
             fn_801191F0(p);
         }
@@ -263,6 +262,10 @@ extern "C" u32 fn_80172DBC(void) {
 
 extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
+}
+
+extern "C" unsigned int fn_80173060(void) {
+    return 0x54564231;
 }
 
 extern "C" u8 fn_80173180(int param_1, int param_2)
