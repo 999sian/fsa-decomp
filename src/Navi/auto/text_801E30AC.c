@@ -5,6 +5,7 @@ extern "C" double fn_801E997C(void);
 extern "C" void fn_801E9310(int param);
 extern "C" int fn_801E7F88(void* param);
 extern unsigned char lbl_8029EC18[];
+extern unsigned char lbl_8029EA18[];
 
 struct FileFlags {
     unsigned char pad[4];
@@ -160,16 +161,18 @@ extern "C" double fn_801E9880(double x, double y) {
     return x;
 }
 
-extern "C" void fn_801E9EE8(double f1_param) {
-    unsigned int high_word = *(unsigned int*)&f1_param;
-    unsigned int exponent = high_word & 0x7fffffff;
-    
-    if (exponent < 0x3fe921fc) {
-        fn_801E9310(1);
-    } else if (exponent < 0x7ff00000) {
-        int result = fn_801E7F88((unsigned char*)&f1_param);
-        int sign_adjust = ((result & 1) == 0) ? 1 : -1;
-        fn_801E9310(sign_adjust);
+extern const double lbl_80302358;
+extern "C" double fn_801E9EE8(double x) {
+    double y[2], z = lbl_80302358;
+    int n, ix;
+
+    ix = *(int*)&x;
+    ix &= 0x7fffffff;
+    if (ix <= 0x3fe921fb) return ((double (*)(double, double, int))fn_801E9310)(x, z, 1);
+    else if (ix >= 0x7ff00000) return x - x;
+    else {
+        n = ((int (*)(double, double*))fn_801E7F88)(x, y);
+        return ((double (*)(double, double, int))fn_801E9310)(y[0], y[1], 1 - ((n & 1) << 1));
     }
 }
 
