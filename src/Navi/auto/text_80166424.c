@@ -410,6 +410,10 @@ extern "C" void fn_80172A3C(u8* p1, s32 p2, u8* p3) {
     p1[p2 + 0xb8] = *p3;
 }
 
+extern "C" s32 fn_80172A4C(s32 p1, s32 p2) {
+    return p1 + (p2 + 0xb8);
+}
+
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" s32 fn_80172BC0(s32 param_1, s32 param_2) {
@@ -601,6 +605,23 @@ extern "C" int fn_8017337C()
 
 extern "C" void fn_80173384(void)
 {
+}
+
+extern "C" u16 lbl_80301ADE;
+extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u16 value = *(u16*)(data + indices[index] * 0xe8 + 0xe2);
+    if (value != 0xffff) {
+        u8* entry = *(u8**)((u8*)ptr + 0x50) + (u16)value * 8;
+        out[0] = ((u8)entry[0] << 5 | (u8)entry[2] << 3) | entry[3];
+        ((u8*)out)[2] = entry[1];
+        ((u8*)out)[3] = entry[4];
+    } else {
+        out[0] = lbl_80301ADE;
+        ((u8*)out)[2] = 0;
+        ((u8*)out)[3] = 0;
+    }
 }
 
 extern "C" void* fn_80174A50(void* base, u32 offset) {
