@@ -2,6 +2,17 @@
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry.h"
 
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
+extern const u32 lbl_80472718[];
+extern const s16 lbl_80472748[];
+extern const f32 lbl_80542930;
+extern const f32 lbl_80542940;
+extern const f32 lbl_80542950;
+extern const f32 lbl_80542954;
+extern const f32 lbl_80542980;
+extern const f32 lbl_80542984;
+
 struct Unk8035CD00 {
     u8 pad0[0x14];
     f32 m14;
