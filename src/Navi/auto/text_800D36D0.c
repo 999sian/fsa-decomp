@@ -100,6 +100,26 @@ extern "C" void* fn_800D6574(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" float fn_800D6DE8(char*, u8, short);
+extern float lbl_80300FDC;
+extern "C" int fn_800D69D4(char* param_1, short param_2, u8 param_3, int param_4, int param_5) {
+    float f;
+    if (param_2 < 0) {
+        return 0;
+    }
+    if (param_2 > param_3) {
+        return 1;
+    }
+    f = fn_800D6DE8(param_1, (u8)param_3, (short)param_2);
+    if (param_5 != 2) {
+        if (param_5 == 1) {
+            f = lbl_80300FDC - f;
+        }
+        (*(VObj_800D69D4**)(param_1 + 0x80))->v7((int)((float)*(u8*)(param_1 + 0x84) * f));
+    }
+    return 0;
+}
+
 extern "C" void* fn_800D6D48(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80283F48;
