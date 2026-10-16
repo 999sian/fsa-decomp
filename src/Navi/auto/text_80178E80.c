@@ -14,6 +14,21 @@ extern u8 lbl_80301BF8[];
 extern void* lbl_80286A30[];
 extern void* lbl_80299634[];
 extern void* lbl_80299540[];
+extern void* lbl_80298D38[];
+extern "C" void fn_80178F90(void*);
+extern "C" void fn_80176FE8(void*, int);
+extern "C" void* fn_80178F28(void* p, s16 param_2) {
+    if (p != nullptr) {
+        *(void**)p = lbl_80298D38;
+        fn_80178F90(p);
+        fn_80176FE8(p, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" int fn_801792B4(void* param_1, int param_2) {
     u32 buf[8];
     fn_801670D0(param_2, buf, 0x20);
@@ -123,9 +138,12 @@ extern "C" void fn_80184B34(u8* self, u32* out) {
 }
 
 extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
+    f32 pos[2];
     f32 rect[4];
-    rect[0] = x;
-    rect[1] = y;
+    pos[0] = x;
+    pos[1] = y;
+    rect[0] = pos[0];
+    rect[1] = pos[1];
     rect[2] = x + w;
     rect[3] = y + h;
     ((void (*)(void*, f32*))(*(void***)self)[0x94 / 4])(self, rect);
