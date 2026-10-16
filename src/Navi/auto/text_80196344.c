@@ -1641,9 +1641,8 @@ extern "C" int fn_801A4CF4(int param_1, int param_2) {
 }
 
 extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
-    u8 a = param_3[0];
     u8* dst = param_1 + param_2 * 4;
-    dst[0xc] = a;
+    dst[0xc] = param_3[0];
     dst[0xd] = param_3[1];
     dst[0xe] = param_3[2];
     dst[0xf] = param_3[3];
@@ -1924,6 +1923,9 @@ extern "C" void fn_801A534C(void) {}
 extern "C" void fn_801A5350(void) {}
 
 extern "C" void fn_801A5354(void) {}
+
+extern "C" void fn_801A5358(void) {
+}
 
 extern "C" int fn_801A5368()
 {
