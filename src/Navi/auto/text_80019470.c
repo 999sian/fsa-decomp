@@ -1531,6 +1531,12 @@ extern "C" void fn_8001F7BC(u8* param_1, u32 param_2, f32 param_3, f32 param_4) 
     param_1[4] |= 8;
 }
 
+extern "C" void fn_8001F7D8(u8* param_1, u32 param_2, f32 param_3) {
+    *(f32*)(param_1 + 0x2c) = param_3;
+    *(u32*)(param_1 + 0x10) = param_2;
+    param_1[4] |= 0x10;
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
