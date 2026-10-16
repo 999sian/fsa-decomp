@@ -82,13 +82,17 @@ extern "C" void fn_8035BE20(void) {
 
 extern "C" u32 fn_8035C15C(u8 *param_1, s32 param_2) {
   if (*(s32 *)(param_1 + 0x244) == 0) {
-    s32 off = *(s32 *)(param_1 + 0x24c) * 8;
-    u8 *base = (u8 *)lbl_804AD460[param_2];
-    if (*(s32 *)(base + off) < 0) {
+    s32 idx = *(s32 *)(param_1 + 0x24c);
+    struct Entry {
+      s32 m_0;
+      u32 m_4;
+    };
+    Entry *base = (Entry *)lbl_804AD460[param_2];
+    if (base[idx].m_0 < 0) {
       return 1;
     }
-    *(u32 *)(param_1 + 0x244) = *(u32 *)(base + off + 4);
-    *(u32 *)(param_1 + 0x248) = *(u32 *)(base + *(s32 *)(param_1 + 0x24c) * 8);
+    *(u32 *)(param_1 + 0x244) = base[idx].m_4;
+    *(u32 *)(param_1 + 0x248) = base[*(s32 *)(param_1 + 0x24c)].m_0;
     *(s32 *)(param_1 + 0x24c) = *(s32 *)(param_1 + 0x24c) + 1;
   }
   return 0;
@@ -102,11 +106,10 @@ extern "C" void fn_8035C1C4(u8 *param_1, s32 param_2, u32 param_3) {
     return;
   }
   u8 *base = (u8 *)lbl_804AD460[param_2];
-  u8 *ent = base + *(s32 *)(param_1 + 0x24c) * 8;
-  if (*(s32 *)ent < 0) {
+  if (*(s32 *)(base + *(s32 *)(param_1 + 0x24c) * 8) < 0) {
     return;
   }
-  *(u32 *)(param_1 + 0x244) = *(u32 *)(ent + 4);
+  *(u32 *)(param_1 + 0x244) = *(u32 *)(base + *(s32 *)(param_1 + 0x24c) * 8 + 4);
   *(u32 *)(param_1 + 0x248) = *(u32 *)(base + *(s32 *)(param_1 + 0x24c) * 8);
   *(s32 *)(param_1 + 0x24c) = *(s32 *)(param_1 + 0x24c) + 1;
 }
