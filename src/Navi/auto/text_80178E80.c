@@ -460,7 +460,7 @@ extern "C" void* fn_8015FDA8(void*, void*);
 extern "C" void fn_8018ECE4(void*, void*);
 extern "C" void fn_8016A72C(void*);
 extern void* lbl_802FF6A0;
-extern "C" void fn_8017A4A8(void* param_1) {
+extern "C" void* fn_8017A4A8(void* param_1) {
     if (fn_8015FDA8(param_1, nullptr) == nullptr) {
         void* p = lbl_802FF6A0;
         if (p != nullptr) {
@@ -707,6 +707,11 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8017EC94(u32* self, void* a, int b, int c) {
+    void* r = ((void* (*)(void*))fn_8017A4A8)(a);
+    ((void (*)(void*, void*, int, int))(*(u32**)self)[70])(self, r, b, c);
+}
+
 extern "C" void fn_801C5D48(void* p);
 extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     u8 buf[48];
@@ -751,8 +756,9 @@ extern "C" s32 fn_8017FC54(void* self) {
 
 extern "C" u8 fn_8017FCEC(void* self) {
     u8* p = (u8*)self;
+    s16 x = *(s16*)(p + 0x120);
     u8 r = 0;
-    if (*(s16*)(p + 0x116) == *(s16*)(p + 0x112) && *(s16*)(p + 0x118) == *(s16*)(p + 0x120)) {
+    if (*(s16*)(p + 0x116) == *(s16*)(p + 0x112) && *(s16*)(p + 0x118) == x) {
         r = 1;
     }
     return r;
@@ -949,18 +955,22 @@ extern "C" void fn_80180A48(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy
 extern "C" void fn_80180AAC(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy0, f32 x1, f32 y1) {
     f32 a[4];
     f32 b[4];
+    f32 dx;
+    f32 dy;
     u8* p = *(u8**)((u8*)self + 0x100);
     if (p != 0) {
         u16* q = *(u16**)(p + 0x20);
-        a[0] = x0;
-        a[1] = y0;
-        a[2] = x0 + dx0;
-        a[3] = y0 + dy0;
-        b[0] = x1;
-        b[1] = y1;
-        b[2] = x1 + (s32)q[1];
-        b[3] = y1 + (s32)q[2];
+        dx = (s32)q[1];
+        dy = (s32)q[2];
     }
+    a[0] = x0;
+    a[1] = y0;
+    a[2] = x0 + dx0;
+    a[3] = y0 + dy0;
+    b[0] = x1;
+    b[1] = y1;
+    b[2] = x1 + dx;
+    b[3] = y1 + dy;
     self->vfF0(a, b);
 }
 
