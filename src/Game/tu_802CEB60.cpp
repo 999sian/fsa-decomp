@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 
 void operator delete(void* p);
 extern "C" void __dt__5ActorFv(void* this_, int how);
@@ -33,6 +34,26 @@ extern "C" void fn_802CEBC0(Vt802CEBC0* p) {
 
 extern "C" void fn_802CEBEC(void* this_, void* b, void* c) {
     fn_801F132C(this_, b, c, (char*)this_ + 0x23c);
+}
+
+extern "C" void fn_801F02BC(void* a, u8* p2, s32 p3, DrawRec* p4, s32 p5, s32 p6, u8 p7, f32 f6, f32 f7);
+extern "C" s32 fn_8023CB24(s32 a);
+extern "C" s32 fn_8023CA88(s32 a);
+extern "C" u8 lbl_8046DFB8[];
+extern "C" f32 lbl_80540E58;
+extern "C" void fn_802CF408(char* p) {
+    if (*(s32*)(p + 0x238) != 2) {
+        s32 n = 7;
+        DrawRec rec;
+        ((u8*)&rec.w10)[3] = *(u8*)(p + 0x244);
+        if (*(u8*)(p + 0xc4) != 0) {
+            rec.b20 = 0;
+            n = -1;
+            rec.b1d = fn_8023CB24(*(s32*)(p + 0xc8)) + 1;
+            rec.b1c = fn_8023CA88(*(s32*)(p + 0xc8));
+        }
+        fn_801F02BC(p, lbl_8046DFB8, 0x27, &rec, n, 0, 1, lbl_80540E58, lbl_80540E58);
+    }
 }
 
 extern "C" s32 fn_8013CC50(s32 a, char* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
