@@ -143,6 +143,17 @@ extern "C" s32 lbl_8053BC74;
 extern "C" void fn_800C9D1C(void) {
 }
 
+extern "C" void** __dt__11J3DMaterialFv(void** param_1, short param_2)
+{
+    if (param_1 != NULL) {
+        *param_1 = __vt__11J3DMaterial;
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_800CAAA8(void) {
 }
 
