@@ -627,6 +627,10 @@ extern "C" void fn_8016AC90(void)
 {
 }
 
+extern "C" u32 fn_8016AC94(void) {
+    return 0x49424C4E;
+}
+
 extern void* lbl_802985C8[];
 extern void* lbl_80298600[];
 extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
