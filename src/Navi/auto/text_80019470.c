@@ -419,8 +419,8 @@ extern "C" void fn_8001BEA4(void) {
     fn_8001EB08();
 }
 
-extern "C" void fn_8001BF5C(void* self, void* p) {
-    cTg_SingleCutFromTree__FP16create_tag_class(p);
+extern "C" s32 fn_8001BF5C(void* self, void* p) {
+    return cTg_SingleCutFromTree__FP16create_tag_class(p);
 }
 
 extern "C" void fn_80115178(void*, void*, void*);
