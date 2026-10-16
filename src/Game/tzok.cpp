@@ -116,16 +116,13 @@ extern "C" void fn_80204DAC(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x248) == 3) {
         if (*(u8*)(p + 0xc4) != 0) {
-            f32 zero = lbl_8053F860;
             *(void**)(p + 0x98) = fn_80230CFC(*(void**)(p + 0xc8));
             *(s16*)(p + 0x33c) = fn_801F6874(*(void**)(p + 0x98));
-            f32* src = fn_8023E7B0(*(void**)(p + 0xc8));
-            *(f32*)(p + 0xc) = src[0];
-            *(f32*)(p + 0x10) = src[1];
-            *(f32*)(p + 0x14) = src[2];
-            *(f32*)(p + 0x3c) = zero;
-            *(f32*)(p + 0x40) = zero;
-            *(f32*)(p + 0x44) = zero;
+            TzokVec3* src = (TzokVec3*)fn_8023E7B0(*(void**)(p + 0xc8));
+            *(TzokVec3*)(p + 0xc) = *src;
+            *(f32*)(p + 0x3c) = lbl_8053F860;
+            *(f32*)(p + 0x40) = lbl_8053F860;
+            *(f32*)(p + 0x44) = lbl_8053F860;
             if (*(s32*)(p + 4) != fn_8023DE58(*(void**)(p + 0xc8))) {
                 *(s32*)(p + 4) = fn_8023DE58(*(void**)(p + 0xc8));
                 *(s32*)(p + 0x2a8) = 0;
@@ -133,10 +130,8 @@ extern "C" void fn_80204DAC(void* this_) {
                 if (fn_8022F514(obj)) {
                     obj = fn_8022F3DC(obj);
                 }
-                f32* pos = fn_8023E724(obj);
-                *(f32*)(p + 0x32c) = pos[0];
-                *(f32*)(p + 0x330) = pos[1];
-                *(f32*)(p + 0x334) = pos[2];
+                TzokVec3* pos = (TzokVec3*)fn_8023E724(obj);
+                *(TzokVec3*)(p + 0x32c) = *pos;
             }
         }
     } else if ((*(u32*)(p + 0x230) & 7) == 0) {
@@ -147,10 +142,12 @@ extern "C" void fn_80204DAC(void* this_) {
 extern "C" void fn_80204EB8(TzokActor* self) {
     bool outside = false;
     if (self->m94 == 1 && !fn_801CD2F8(self->mRoom)) {
+        s32 room = self->mRoom;
         u8* cfg = (u8*)fn_802D6A9C();
-        f32* rect = (f32*)(self->mRoom < 8 ? cfg + 0xcc : cfg + 0xdc);
+        f32* rect = (f32*)(room < 8 ? cfg + 0xcc : cfg + 0xdc);
+        f32 x = self->mX;
         bool inside = false;
-        if (self->mX >= rect[0] && self->mY >= rect[1] && self->mX < rect[2] && self->mY < rect[3]) {
+        if (x >= rect[0] && self->mY >= rect[1] && x < rect[2] && self->mY < rect[3]) {
             inside = true;
         }
         if (!inside) {
@@ -160,18 +157,14 @@ extern "C" void fn_80204EB8(TzokActor* self) {
     if (outside) {
         return;
     }
-    s32 state = self->mState;
-    if (state != 6) {
-        if (state < 6) {
-            if (state >= 3) {
-                return;
-            }
-            if (state < 1) {
-                return;
-            }
-        } else if (state != 8) {
-            return;
-        }
+    switch (self->mState) {
+    case 1:
+    case 2:
+    case 6:
+    case 8:
+        break;
+    default:
+        return;
     }
     if (fn_802046FC(fn_80204638(), (u8*)self + 0x3c, &self->mX) != 0 &&
         (*(u32*)((u8*)self + 0x230) & 0x1000)) {
@@ -194,7 +187,7 @@ extern "C" void fn_80205478(void* this_) {
     if (*(s32*)(p + 0x350) == 2) {
         fn_801D22A0(p + 0x270, *(s32*)(p + 0x98), 2);
     } else if (state == 0) {
-        if (*(s32*)(p + 0x278) >= 0 && *(s32*)(p + 0x278) < 4) {
+        if (*(s32*)(p + 0x278) < 4 && *(s32*)(p + 0x278) >= 0) {
             fn_801D2264(p + 0x270, *(s32*)(p + 0x98), 2);
         } else {
             fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 2, 0);
