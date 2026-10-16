@@ -322,8 +322,9 @@ extern "C" void fn_801383B8(void* param_1) {
     *(u32*)((u8*)param_1 + 0x40) = 0;
     *(u32*)((u8*)param_1 + 0x44) = 0;
     *(u32*)((u8*)param_1 + 0x48) = 0;
+    u32 temp = *(u32*)((u8*)param_1 + 0x48);
     *(u32*)((u8*)param_1 + 0x4c) = 0;
-    *(u32*)((u8*)param_1 + 0x50) = *(u32*)((u8*)param_1 + 0x48);
+    *(u32*)((u8*)param_1 + 0x50) = temp;
     *(u32*)((u8*)param_1 + 0x54) = *(u32*)((u8*)param_1 + 0x4c);
     *(u32*)((u8*)param_1 + 0x58) = *(u32*)((u8*)param_1 + 0x50);
     *(u32*)((u8*)param_1 + 0x5c) = *(u32*)((u8*)param_1 + 0x4c);
