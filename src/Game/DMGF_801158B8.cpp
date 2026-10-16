@@ -33,13 +33,6 @@ extern "C" char lbl_80464A14[];
 extern void* lbl_8053AAF8;
 extern f32 lbl_8053C704;
 extern f32 lbl_8053C6D0;
-extern f32 lbl_8053C6DC;
-extern f32 lbl_8053C6E0;
-extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 i);
-extern "C" void fn_80115BC4(char* p, JGeometry::TVec3<f32>* a, JGeometry::TVec3<f32>* b);
-extern "C" void fn_8023DFF4(s32 i, JGeometry::TVec3<f32>* pos);
-extern "C" void fn_80230498(s32 i, JGeometry::TVec3<f32>* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
-extern "C" void fn_801D1C18(void* p);
 extern "C" void fn_801169E8(char* p) {
     fn_8010DF98(p);
     u32* ids = (u32*)lbl_8049D930;
