@@ -180,6 +180,8 @@ extern "C" void* fn_80196048(void* ptr, s16 param_2) {
 
 extern "C" u16 fn_801960B0(u8* p) { return *(u16*)(p + 8); }
 
+extern "C" u16 fn_801960B8(u8* p, u16 idx) { return ((u16*)*(void**)(p + 0xC))[idx]; }
+
 extern void* lbl_80299E10[];
 extern "C" void* fn_801960C8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
