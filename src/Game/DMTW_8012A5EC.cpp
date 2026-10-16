@@ -7,7 +7,31 @@ extern "C" void fn_8022FE80(int, int, int, u8, u8);
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
 extern "C" void fn_8011921C();
 extern "C" void fn_80118454();
+extern "C" void fn_801183BC();
+extern "C" u8 fn_803865B8(s32);
+extern "C" void fn_80388EEC(s32);
 extern s32 lbl_804650C8[];
+extern "C" void fn_80239914(void*, u32, u32);
+extern "C" void fn_8012A8C0(char* this_) {
+    s32 i = 0;
+    char* p = this_;
+    f32 box[4];
+    f32 orig[4];
+    orig[0] = *(f32*)(this_ + 0x60);
+    orig[1] = *(f32*)(this_ + 0x64);
+    orig[2] = *(f32*)(this_ + 0x68);
+    orig[3] = *(f32*)(this_ + 0x6c);
+    do {
+        box[0] = orig[0] + *(f32*)(p + 0x25c);
+        box[2] = orig[2] + *(f32*)(p + 0x25c);
+        box[1] = orig[1] + *(f32*)(p + 0x260);
+        box[3] = orig[3] + *(f32*)(p + 0x260);
+        fn_80239914(box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
+        i++;
+        p += 0xc;
+    } while (i < 6);
+}
+
 extern "C" void fn_8012B0D8(char* this_) {
     u8 result = fn_8012A5EC(this_);
     if (*(f32*)(this_ + 0x23c) == 260.0f + *(f32*)(this_ + 0x3f4) &&
