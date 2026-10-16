@@ -617,6 +617,10 @@ extern "C" u8 fn_801A425C(u8* param_1, int param_2) {
     return param_1[param_2 + 0x55];
 }
 
+extern "C" void fn_801A4268(u8* param_1, int param_2, u8 param_3) {
+    param_1[param_2 + 0x57] = param_3;
+}
+
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
 extern "C" void fn_801A42AC(int p1, int p2, u8* p3) {
