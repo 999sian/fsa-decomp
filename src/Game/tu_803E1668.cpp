@@ -5,6 +5,13 @@ extern void* lbl_8053AF80;
 extern "C" int fn_804366B8(void* p);
 extern "C" void fn_80436668(void* p);
 extern "C" void fn_80458880(void* mgr, s32 id, s32 a);
+extern "C" void fn_803E4610(u8* param_1) {
+    *(s32*)(param_1 + 0x1e0) = 0;
+    *(s16*)(param_1 + 0x254) = 0;
+    *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
+    *(s32*)(param_1 + 0x1d4) = 0;
+}
+
 extern "C" void fn_803E462C(u8* param_1) {
     fn_80436668(*(void**)(param_1 + 0x5c));
 }
