@@ -614,6 +614,11 @@ extern "C" void fn_801D97E0(s32* fifo, s32 readPtr, s32 writePtr) {
     OSRestoreInterrupts(enabled);
 }
 
+extern "C" void fn_801D9850(void* base, u32 hi, u32 lo) {
+    *(u32*)((u8*)base + 0xc) = hi;
+    *(u32*)((u8*)base + 0x10) = lo;
+}
+
 extern "C" void fn_801D9BF8(u8* a, u8* b, u8* c, u8* d, u8* e)
 {
 	u8* gx = __GXData;
