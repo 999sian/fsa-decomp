@@ -1251,24 +1251,34 @@ extern "C" u8 fn_80172EF0(u8* p)
 }
 
 extern "C" void fn_80172EF8(s32 param_1, s32 param_2, u8* param_3) {
-    u8 a = param_3[1];
-    s32 p = param_1 + param_2 * 8;
-    u8 b = param_3[2];
-    *(u8*)(p + 0x34) = a;
-    a = param_3[3];
-    *(u8*)(p + 0x35) = b;
-    b = param_3[5];
-    *(u8*)(p + 0x36) = a;
-    a = param_3[6];
-    *(u8*)(p + 0x38) = b;
-    b = param_3[7];
-    *(u8*)(p + 0x39) = a;
-    *(u8*)(p + 0x3a) = b;
+    u8 a;
+    u8 b;
+    param_1 = param_1 + param_2 * 8;
+    a = param_3[2];
+    *(u8*)(param_1 + 0x34) = param_3[1];
+    b = param_3[3];
+    *(u8*)(param_1 + 0x35) = a;
+    a = param_3[5];
+    *(u8*)(param_1 + 0x36) = b;
+    b = param_3[6];
+    *(u8*)(param_1 + 0x38) = a;
+    a = param_3[7];
+    *(u8*)(param_1 + 0x39) = b;
+    *(u8*)(param_1 + 0x3a) = a;
 }
 
 extern "C" s32 fn_80172F34(s32 p, s32 i)
 {
     return p + i * 8 + 0x33;
+}
+
+extern "C" void fn_80172F48(s32 param_1, s32 param_2, u8* param_3) {
+    u32 a = param_3[1];
+    u8* p = (u8*)(param_1 + param_2 * 8);
+    u32 v = p[0x3a];
+    p[0x3a] = (v & 0xF3) | (a << 2);
+    v = p[0x3a];
+    p[0x3a] = (v & 0xFC) | param_3[0];
 }
 
 extern "C" void fn_80172FA0(u8* p, s32 i, u32* src)
@@ -1426,9 +1436,9 @@ extern "C" void fn_80173384(void)
 
 extern "C" void fn_8017448C(void* param_1, u8* param_2, u32 param_3, u32 param_4) {
     u16* table = *(u16**)(param_2 + 8);
-    u32 off = table[param_3] * 0xe8 + 0x9a + param_4 * 2;
     u8* base = *(u8**)(param_2 + 4);
-    u16 uVar1 = *(u16*)(base + off);
+    u32 off = table[param_3] * 0xe8 + 0x9a;
+    u16 uVar1 = *(u16*)(base + (off + param_4 * 2));
     if (uVar1 != 0xffff) {
         fn_801749F0(param_1, *(u8**)(param_2 + 0x44) + uVar1 * 0x14);
     } else {
@@ -1454,10 +1464,9 @@ extern "C" void fn_801721FC(void);
 extern "C" void* fn_801749F0(void* p, void* q);
 extern "C" u8 lbl_80301AB4[];
 extern "C" u8 lbl_80301AC8[2];
-extern "C" u8 fn_80174588(u8* p, s32 n) {
-    u8* data = *(u8**)(p + 0xc);
-    if (data != nullptr && data[n * 0x128] == 1) {
-        return data[n * 0x128 + 1];
+extern "C" u8 fn_80174588(u8* p, u32 n) {
+    if (*(u8**)(p + 0xc) != nullptr && (*(u8**)(p + 0xc))[n * 0x128] == 1) {
+        return (*(u8**)(p + 0xc))[n * 0x128 + 1];
     }
     return 0;
 }
