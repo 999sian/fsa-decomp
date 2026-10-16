@@ -759,10 +759,10 @@ extern "C" void fn_800D800C(u8* self) {
 }
 
 extern "C" void fn_800D80DC(u8* p) {
-    u8* addr = p;
     u32 i = 0;
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
     u8 count = p[0xd0];
+    u8* addr = p;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
 
     for (; i < 8; i++) {
@@ -920,8 +920,8 @@ extern "C" void fn_800D8884(u8* p) {
     u32 i;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
-    n = p[0x20];
     saved = __GDCurrentDL->pDisplayListData;
+    n = p[0x20];
 
     addr = p;
     for (i = 0; i < 8; i++) {
@@ -1605,13 +1605,15 @@ extern "C" void fn_800DC058(u8* self, Unk800DC058Src* src) {
     }
 }
 
-extern "C" void fn_800DC164(u8* this_, Unk800DC164Src* src)
+extern "C" void fn_800DC164(u8* this_, Unk800DC290Src* src)
 {
     *(u32*)(this_ + 4) = src->m16();
-    for (int i = 0; i < 4; i++) {
-        *(u32*)(this_ + 8 + i * 6) = *src->m18(i);
+    u8* q = this_;
+    for (u32 i = 0; i < 4; i++) {
+        *(u32*)(q + 8) = *src->m18(i);
+        q += 6;
     }
-    for (int i = 0; i < 4; i++) {
+    for (u32 i = 0; i < 4; i++) {
         if (src->m20(i) != nullptr && *(void**)(this_ + 0x38 + i * 4) != nullptr) {
             memcpy(*(void**)(this_ + 0x38 + i * 4), src->m20(i), 0x94);
             DCStoreRange(*(void**)(this_ + 0x38 + i * 4), 0x94);
@@ -1696,38 +1698,49 @@ extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
 }
 
 extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
-    u8* gen = this_;
     u8* p = this_;
+    u8* gen = this_;
     for (u32 i = 0; i < 8; i++) {
-        if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
-            switch ((*(J3DTexMtx**)(p + 0x38))->getTexMtxInfo().mInfo & 0x3f) {
+        J3DTexMtx* obj = *(J3DTexMtx**)(p + 0x38);
+        if (obj != nullptr) {
+            u32 type = obj->getTexMtxInfo().mInfo & 0x3f;
+            *(u16*)(gen + 0xc) = gen[0xa];
+            switch (type) {
             case 0:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                obj->calc(j3dDefaultMtx);
                 break;
             case 1:
                 if (j3dSys.mFlags & 4) {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                    obj->calc(j3dDefaultMtx);
                 } else {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(mtx);
+                    obj->calc(mtx);
                 }
                 break;
             case 2:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                obj->calc(j3dDefaultMtx);
                 break;
             case 3:
                 if (j3dSys.mFlags & 8) {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                    obj->calc(j3dDefaultMtx);
                 } else {
                     Mtx m;
                     PSMTXCopy(mtx, m);
                     m[0][3] = 0.0f;
                     m[1][3] = 0.0f;
                     m[2][3] = 0.0f;
-                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                    obj->calc(m);
                 }
                 break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
             default:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                obj->calc(j3dDefaultMtx);
                 break;
             }
         }
