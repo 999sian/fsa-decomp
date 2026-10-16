@@ -101,11 +101,13 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
 }
 
 extern "C" s32 fn_801671B0(UnkVObj_801671B0* param_1, u32 param_2) {
-    u32 size = param_1->vf7();
-    u32 aligned = (param_2 + size - 1) & ~(param_2 - 1);
+    u32 size = param_1->vf5();
+    u32 aligned = param_2 + size;
+    aligned = (aligned - 1) & ~(param_2 - 1);
     s32 diff = aligned - size;
     if (diff != 0) {
-        if (param_1->vf8(aligned, 0) != diff) {
+        s32 r = param_1->vf6(aligned, 0);
+        if (r != diff) {
             *((u8*)param_1 + 4) |= 1;
         }
     }
