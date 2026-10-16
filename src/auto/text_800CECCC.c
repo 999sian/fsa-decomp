@@ -1,4 +1,5 @@
 #include "JSystem/J3D/J3DAnmTransform.h"
+#include "JSystem/J3D/J3DAnmColor.h"
 #include "JSystem/JUtility/JUTNameTab.h"
 
 
