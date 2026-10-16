@@ -165,6 +165,21 @@ extern "C" void fn_8001A3E4(int param_1, void* param_2) {
     fn_80114C94(lbl_80205620, (void*)fn_8011583C, local);
 }
 
+extern "C" void fn_8001A424(s16 param_1) {
+    s16 local[4];
+    local[0] = param_1;
+    fn_8001A3E4((int)fn_8001E89C, local);
+}
+
+extern "C" int fn_8001A454(int param_1, int param_2, int param_3, int param_4) {
+    u32 r = fn_8001A828(2, param_1, param_2, 0, param_3, param_4);
+    if (r == 0xFFFFFFFF) {
+        return 0;
+    }
+    lbl_802FB9C0 = r;
+    return 1;
+}
+
 extern "C" s32 fn_800199A8(void);
 extern "C" u32 fn_8001A5A0(void) {
     s32 iVar1 = fn_800199A8();
