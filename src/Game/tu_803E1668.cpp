@@ -62,3 +62,12 @@ extern "C" void fn_803E6A2C(u8* param_1) {
     }
 }
 
+extern "C" void fn_803ED5B4(u8* param_1) {
+    if (param_1[0x26e] == 0) {
+        *(s32*)(param_1 + 0x1dc) = 9;
+        param_1[0x26e] = 1;
+    }
+    *(s32*)(param_1 + 0x1b8) = 1;
+    fn_80458880(lbl_8053AF80, 0xb, -1);
+}
+
