@@ -1,10 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
 
-struct F4 {
-    f32 a, b, c, d;
-};
-
 extern "C" char lbl_8049E8A0[];
 extern "C" f32 lbl_8053CC3C;
 extern "C" void __ct__5ActorFv(Actor*);
