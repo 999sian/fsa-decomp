@@ -81,6 +81,7 @@ extern "C" void fn_801BDEE4(void*, void*, int);
 extern "C" u8 lbl_802982A0[];
 extern "C" void* lbl_802FF540;
 extern "C" void* lbl_802FF688;
+extern "C" void* fn_801664D8(void* ptr, void* param_2);
 extern "C" void fn_80166C08(void*, int);
 extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     if (param_1) {
