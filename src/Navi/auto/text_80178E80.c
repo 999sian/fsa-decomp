@@ -186,7 +186,7 @@ struct VObj_80180868 {
     virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
     virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43();
     virtual void v44(); virtual void v45(); virtual void v46(); virtual void v47();
-    virtual void v48(); virtual void v49(); virtual void v50(); virtual void v51();
+    virtual void v48(u32, u32, u8); virtual void v49(); virtual void v50(); virtual void v51();
     virtual void v52(); virtual void v53(); virtual void v54(); virtual void v55();
     virtual void v56(); virtual void v57(); virtual void v58(); virtual void v59();
     virtual void v60(); virtual void v61(u8, u32); virtual void v62(); virtual void v63(u8, u32);
@@ -620,7 +620,8 @@ extern "C" void fn_80180950(void* self, int a, int b, int c) {
 }
 
 extern "C" void fn_80180980(void* self, int a) {
-    ((void (*)(void*, int, int))((void**)(*(void**)self))[0x33])(self, a, 0);
+    void (**vtbl)(void*, int, int) = *(void (***)(void*, int, int))self;
+    vtbl[0x33](self, a, 0);
 }
 
 extern "C" void fn_801809B0(void* self, int a, int b) {
