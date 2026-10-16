@@ -92,6 +92,22 @@ extern "C" int fn_80160718(void* self) {
     return 0;
 }
 
+extern "C" void* fn_801615F8(void*);
+extern "C" int fn_8016076C(void* self) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13();
+        virtual int v40(void* r, int b);
+    };
+    void* r = fn_801615F8(self);
+    if (r != 0) {
+        return ((Obj*)self)->v40(r, 0);
+    }
+    return 0;
+}
+
 extern "C" BOOL fn_801609A8(u8* a, void* b) {
     u8* p = (u8*)fn_801615C4();
     if (p == NULL) {
