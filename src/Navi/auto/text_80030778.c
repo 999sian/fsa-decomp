@@ -176,6 +176,10 @@ extern "C" void fn_800335C4(void* p) {
     }
 }
 
+extern "C" void fn_80033634(void* p) {
+    *(unsigned int*)((char*)p + 0xe8) |= 0x20000000;
+}
+
 extern "C" void fn_80033644(void* p) {
     fn_8002E3C4(p, 0);
 }
