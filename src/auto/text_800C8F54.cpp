@@ -94,6 +94,22 @@ u32 J3DMaterialFactory::countUniqueMaterials()
     return count;
 }
 
+J3DMaterial* J3DMaterialFactory::create(J3DMaterial* material, MaterialType type, int idx, u32 flags) const
+{
+    switch (type) {
+    case NORMAL:
+        material = fn_800C92E8(this, material, idx, flags);
+        break;
+    case LOCKED:
+        material = fn_800CA7F0(this, material, idx, flags);
+        break;
+    case PATCHED:
+        material = fn_800C9D20(this, material, idx, flags);
+        break;
+    }
+    return material;
+}
+
 extern "C" void fn_800C9CF4(void)
 {
 }
