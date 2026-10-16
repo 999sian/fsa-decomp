@@ -1,11 +1,51 @@
 #include "types.h"
 
+extern "C" char* lbl_8053AAF8;
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802DCD0C(void* room);
+
 extern "C" void fn_80158B3C(char* p) {
     *(u8*)(p + 0x4) = 0xff;
     *(u8*)(p + 0x5) = 0xff;
     *(u8*)(p + 0x6) = 0xff;
     *(u8*)(p + 0x7) = 0;
     *(u8*)(p + 0xc) = 0xff;
+}
+
+extern "C" char lbl_804BFB60[];
+extern "C" f32 lbl_8053D440;
+extern "C" f32 lbl_8053D43C;
+extern "C" f32 lbl_8053D454;
+extern "C" f32 lbl_8053D458;
+extern "C" u32 lbl_8053D420;
+extern "C" u32 lbl_8053D424;
+extern "C" u32 lbl_8053D428;
+extern "C" u32 lbl_8053D42C;
+extern "C" void GXInitLightPos(char* light, f32 x, f32 y, f32 z);
+extern "C" void GXInitLightAttn(char* light, f32 a0, f32 a1, f32 a2, f32 k0, f32 k1, f32 k2);
+extern "C" void GXInitLightColor(char* light, u32* color);
+extern "C" void GXLoadLightObjImm(char* light, s32 chan);
+extern "C" void GXSetChanAmbColor(s32 chan, u32* color);
+extern "C" void GXSetChanMatColor(s32 chan, u32* color);
+extern "C" void fn_80158E88(void) {
+    u32 c1;
+    u32 c2;
+    u32 c3;
+    u32 c4;
+
+    GXInitLightPos(lbl_804BFB60, lbl_8053D454, lbl_8053D454, lbl_8053D458);
+    GXInitLightAttn(lbl_804BFB60, lbl_8053D43C, lbl_8053D440, lbl_8053D440, lbl_8053D43C, lbl_8053D440, lbl_8053D440);
+    c1 = lbl_8053D420;
+    GXInitLightColor(lbl_804BFB60, &c1);
+    GXLoadLightObjImm(lbl_804BFB60, 1);
+    GXInitLightPos(lbl_804BFB60, lbl_8053D458, lbl_8053D454, lbl_8053D458);
+    c2 = lbl_8053D424;
+    GXInitLightColor(lbl_804BFB60, &c2);
+    GXLoadLightObjImm(lbl_804BFB60, 2);
+    c3 = lbl_8053D428;
+    GXSetChanAmbColor(4, &c3);
+    c4 = lbl_8053D42C;
+    GXSetChanMatColor(4, &c4);
 }
 
 extern "C" void fn_8015945C(char* p) {
