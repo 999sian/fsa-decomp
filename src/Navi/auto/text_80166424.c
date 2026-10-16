@@ -1207,12 +1207,12 @@ extern "C" s32 fn_80172C90(s32 param_1, s32 param_2) {
 
 extern "C" void fn_80172CA4(u8* param_1, s32 param_2, u8* param_3) {
     u8* p = param_1 + param_2 * 8;
-    u32 a = param_3[0];
-    u32 b = param_3[1];
-    u32 x = p[0x46];
-    p[0x46] = (x & 0xf3) | ((b & 0xff) << 2);
+    u32 b = param_3[1] & 0xff;
+    u8 a = param_3[0];
+    u8 x = p[0x46];
+    p[0x46] = (x & ~0x0c) | (b << 2);
     x = p[0x46];
-    p[0x46] = (x & 0xfc) | a;
+    p[0x46] = (x & ~3) | a;
 }
 
 extern "C" void fn_80172CDC(u8* p, s32 i, u8* src) {
@@ -1510,7 +1510,7 @@ extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
 extern "C" void* fn_801749F0(void* param_1, void* param_2) {
     u8* p = (u8*)param_1;
     fn_80172264(param_1);
-    p[7] = (p[7] & ~0x0c) | (lbl_80301AC8[1] << 2);
+    p[7] = (p[7] & ~0x0c) | (((u8)lbl_80301AC8[1]) << 2);
     p[7] = (p[7] & ~3) | lbl_80301AC8[0];
     return param_1;
 }
