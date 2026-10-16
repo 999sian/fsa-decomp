@@ -231,6 +231,10 @@ extern "C" void fn_8001B054(int param_1, void* param_2) {
     fn_80114C94(lbl_80205648, (void*)fn_8011583C, local);
 }
 
+extern "C" void fn_8001B564(void* tag) {
+    cTg_Addition__FP15node_list_classP16create_tag_class(lbl_80205648, tag);
+}
+
 extern "C" void fn_8001B590(void) {
     cTg_SingleCut__FP16create_tag_class();
 }
