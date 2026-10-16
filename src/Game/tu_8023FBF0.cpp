@@ -1215,7 +1215,6 @@ inline bool padActive3(char* p) {
     return true;
 }
   inline s32 countSharingC(char* p) {
-s32 me;
 s32 c;
 s32 i;
         c = 0;
@@ -1230,7 +1229,7 @@ s32 i;
                       c++;
                   }
               } else {
-                  me = S32(p, 0x4);
+                  s32 me = S32(p, 0x4);
                     if (me == fn_8022F3DC(i)) {
                       c++;
                   }
