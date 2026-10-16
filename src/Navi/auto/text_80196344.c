@@ -1690,6 +1690,10 @@ extern "C" u32 fn_801A4DDC(u8* param_1, s32 param_2) {
     return ((u32*)(param_1 + 0x20))[param_2];
 }
 
+extern "C" void fn_801A4DF4(int param_1, u8* param_2) {
+    *(u8*)(param_1 + 0x40) = *param_2;
+}
+
 extern "C" void* fn_801A4E10(u8* p) {
     return *(void**)(p + 0x48);
 }
