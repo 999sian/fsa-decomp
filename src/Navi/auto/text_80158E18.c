@@ -305,6 +305,10 @@ extern "C" s32 fn_8015C774(void) {
     return 0x45585048;
 }
 
+extern "C" u8 fn_8015C780(u8* p) {
+    return p[0x6d];
+}
+
 extern void* lbl_802977D0[];
 extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     if (p != nullptr) {
