@@ -331,4 +331,6 @@ extern "C" void* fn_800618A0(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-
+extern "C" void fn_8005C424(void);
+extern "C" void fn_8005C460(void);
+extern "C" s32 fn_80059190(s32 idx);
