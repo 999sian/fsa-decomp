@@ -311,6 +311,10 @@ extern "C" void fn_8004D29C(void* param_1, void* param_2, void* param_3) {
     }
 }
 
+extern "C" void fn_8004D468(void) {
+    fn_801DE3E0(0, 7, 7, 7, 1);
+}
+
 extern "C" void fn_8004D5C0(void) {}
 
 extern "C" void fn_8004D5C4(void) {}
