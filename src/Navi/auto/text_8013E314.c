@@ -17,6 +17,14 @@ extern "C" void* fn_8013E314(void* param_1, s16 param_2) {
     return param_1;
 }
 
+struct PmfObj_8013E374;
+typedef void (PmfObj_8013E374::*PmfFunc_8013E374)();
+extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
+extern "C" void fn_8013BD54(void*);
+extern "C" void fn_8013EA90(void* param_1) {
+    fn_8013BD54(*(void**)((u8*)param_1 + 0x114));
+}
+
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_802937C0[];
