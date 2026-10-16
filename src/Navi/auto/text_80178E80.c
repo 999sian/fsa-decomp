@@ -657,6 +657,10 @@ extern "C" void fn_8017D150(void* param_1, f32 a, f32 b, f32 c, f32 d) {
     ((Obj*)param_1)->vf94(rect);
 }
 
+extern "C" void fn_8017D198(void* param_1, void* param_2) {
+    *(u32*)param_1 = *(u32*)((u8*)param_2 + 0x13c);
+}
+
 extern "C" void fn_8017D214(void) {}
 
 extern "C" void fn_801C5D48(void* p);
@@ -888,19 +892,19 @@ extern "C" void fn_80180AAC(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy
     f32 dx;
     f32 dy;
     u8* p = *(u8**)((u8*)self + 0x100);
-    a[2] = x0 + dx0;
-    a[3] = y0 + dy0;
-    b[0] = x1;
-    b[1] = y1;
     if (p != 0) {
         u16* q = *(u16**)(p + 0x20);
         dx = (s32)q[1];
         dy = (s32)q[2];
     }
-    b[2] = x1 + dx;
-    b[3] = y1 + dy;
     a[0] = x0;
     a[1] = y0;
+    a[2] = x0 + dx0;
+    a[3] = y0 + dy0;
+    b[0] = x1;
+    b[1] = y1;
+    b[2] = x1 + dx;
+    b[3] = y1 + dy;
     self->vfF0(a, b);
 }
 
