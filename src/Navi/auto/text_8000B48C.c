@@ -7,6 +7,9 @@ extern const f32 lbl_802FFB64;
 extern const f32 lbl_802FFB60;
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801C5DA8(const f32 (*)[4], const f32 (*)[4], f32 (*)[4]);
+extern "C" void fn_8000C9FC(f32 m[3][4], u32 angle);
+extern "C" void fn_8000CAD0(f32 m[3][4], u32 angle);
+extern "C" void fn_8000CBA4(f32 m[3][4], u32 angle);
 
 extern "C" BOOL fn_8000B920(void);
 extern "C" BOOL fn_8000B920(void)
@@ -74,7 +77,6 @@ extern "C" void fn_8000CA54(f32 matrix[3][4], u32 angle) {
     f32 m[3][4];
     f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
     f32 s = lbl_802F0BC0[(angle >> 5) & 0x7FF][0];
-    m[0][0] = lbl_802FFB60;
     m[0][1] = lbl_802FFB64;
     m[0][2] = lbl_802FFB64;
     m[0][3] = lbl_802FFB64;
@@ -86,6 +88,7 @@ extern "C" void fn_8000CA54(f32 matrix[3][4], u32 angle) {
     m[2][1] = s;
     m[2][2] = c;
     m[2][3] = lbl_802FFB64;
+    m[0][0] = lbl_802FFB60;
     fn_801C5DA8(matrix, m, matrix);
 }
 
