@@ -27,3 +27,10 @@ extern "C" void* fn_802D2AA4(void* this_, short how) {
 extern "C" void fn_802D2B04(void* this_, s32 b, s32 c) {
     fn_801F132C(this_, b, c, (s32*)((char*)this_ + 0x234));
 }
+
+extern "C" void fn_802D2D0C(void* this_) {
+    f32 c = lbl_80540F1C;
+    fn_801F06F0(this_, lbl_8046E118, 0x2b, 0, 7, c, c);
+    fn_803075AC(*(void**)((char*)this_ + 0x198), *(s32*)((char*)this_ + 4), (char*)this_ + 0xc, 0x2b, 0, 2, -1, 1, 0, 0);
+}
+
