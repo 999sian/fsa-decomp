@@ -304,6 +304,7 @@ extern "C" u32 fn_80166FC4(void* p_list, void* p_node)
     return r >> 5;
 }
 
+#pragma dont_inline on
 extern "C" void* fn_80167074(void* ptr, s16 param_2) {
     extern void* lbl_8029839C[];
     extern void* lbl_80298390[];
