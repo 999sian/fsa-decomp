@@ -12,6 +12,11 @@ extern "C" int fn_801E6EB4()
 	return 0;
 }
 
+extern "C" double fn_801E9880(double x, double y) {
+    *(unsigned int*)&x = (*(unsigned int*)&x & 0x7fffffff) | (*(unsigned int*)&y & 0x80000000);
+    return x;
+}
+
 extern "C" void fn_801E9EE8(double f1_param) {
     unsigned int high_word = *(unsigned int*)&f1_param;
     unsigned int exponent = high_word & 0x7fffffff;
