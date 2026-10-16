@@ -357,6 +357,10 @@ extern "C" void fn_801780D4(char* self, unsigned char v)
     }
 }
 
+extern "C" void fn_80178DA4(void* param_1)
+{
+}
+
 extern "C" void fn_80178DB0(void* param_1) {
     register void* vtable = *(void**)param_1;
     void (*func)(void) = *(void(**)(void))((u8*)vtable + 0x74);
