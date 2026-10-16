@@ -201,6 +201,68 @@ extern "C" void fn_801AC4DC(char* self, char* other)
     }
 }
 
+extern void* lbl_8029B388[];
+extern void* lbl_8029B374[];
+extern void* lbl_8029B2F0[];
+extern void* lbl_8029B2C4[];
+extern "C" void* fn_801ACBC8(u8* p) {
+    f32 f = lbl_80301D6C;
+    *(void**)p = lbl_8027F214;
+    p[4] = 0;
+    p[5] = 0;
+    *(u16*)(p + 6) = 0;
+    *(f32*)(p + 8) = f;
+    *(void**)p = lbl_8029B2C4;
+    *(u32*)(p + 0xc) = 0;
+    *(u32*)(p + 0x10) = 0;
+    *(u16*)(p + 0x14) = 0;
+    *(u16*)(p + 0x16) = 0;
+    *(u32*)(p + 0x18) = 0;
+    fn_8011935C(p + 0x1c);
+    return p;
+}
+
+extern "C" void fn_801ACC40(u8* self, u16 idx, u16* out) {
+    f32 t = *(f32*)(self + 8);
+    u16* e = (u16*)(*(u8**)(self + 0x10) + idx * 8);
+    u32 n = e[0];
+    if (t < lbl_80301D6C) {
+        *out = (*(u16**)(self + 0xc))[e[1]];
+    } else if (t >= (f32)n) {
+        *out = (*(u16**)(self + 0xc))[n + e[1] - 1];
+    } else {
+        *out = (*(u16**)(self + 0xc))[(int)t + e[1]];
+    }
+}
+
+extern "C" void fn_801ACCF4(u8* self, u16 idx, u8* out) {
+    s32 i = (s32)(*(f32*)(self + 8) + lbl_80301D80);
+    u16* e = (u16*)(*(u8**)(self + 0x10) + idx * 4);
+    u8* data = *(u8**)(self + 0x14);
+    if (i < 0) {
+        *out = data[e[1]];
+    } else if (i < e[0]) {
+        *out = data[i + e[1]];
+    } else {
+        *out = data[e[0] + e[1] - 1];
+    }
+}
+
+extern "C" void fn_801ACD84(char* self, char* other)
+{
+    int a;
+    unsigned short i;
+    for (i = 0; i < *(unsigned short*)(self + 0x16); i++) {
+        a = *(int*)(other + 0xc);
+        int r = fn_80119414(a, fn_801194B4(self + 0x1c, i));
+        if (r != -1) {
+            (*(unsigned short**)(self + 0x18))[i] = r;
+        } else {
+            (*(unsigned short**)(self + 0x18))[i] = 0xffff;
+        }
+    }
+}
+
 extern "C" f32 fn_801AD8D8(u16* hdr, f32 t, f32* k) {
     if (t < k[0]) {
         return k[1];
