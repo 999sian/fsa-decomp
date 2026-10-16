@@ -87,10 +87,7 @@ extern "C" void fn_800CBACC(unsigned short* out, void* self, int idx) {
     unsigned char i = *(unsigned char*)(*(unsigned char**)(p + 4) + (*(unsigned short**)(p + 8))[idx] * 0x14c + 6);
     if (i != 0xff) {
         unsigned char* z = *(unsigned char**)(p + 0x68) + i * 4;
-        unsigned char a = z[0];
-        unsigned char b = z[1];
-        unsigned char c = z[2];
-        *out = b * 2 + (a * 16 + c);
+        *out = (z[0] << 4) + z[2] + (z[1] << 1);
         return;
     }
     *out = j3dDefaultZModeID;
@@ -113,6 +110,23 @@ extern "C" u8 fn_800CBB64(u8* param_1, s32 param_2) {
         return *(u8*)(*(u8**)(param_1 + 0x70) + bVar1);
     }
     return 1;
+}
+
+extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) {
+    J3DNBTScaleInfo local = j3dDefaultNBTScaleInfo;
+    u32 uVar4;
+    u8* puVar5;
+
+    uVar4 = *(u16*)(*(u8**)(param_2 + 4) + (u32)*(u16*)(*(u8**)(param_2 + 8) + param_3 * 2) * 0x14c + 0x14a);
+    if (uVar4 == 0xffff) {
+        *param_1 = local;
+    } else {
+        puVar5 = *(u8**)(param_2 + 0x74) + (uVar4 << 4);
+        param_1->mHasScale = *puVar5;
+        param_1->mScale[0] = *(f32*)(puVar5 + 4);
+        param_1->mScale[1] = *(f32*)(puVar5 + 8);
+        param_1->mScale[2] = *(f32*)(puVar5 + 0xc);
+    }
 }
 
 extern "C" void fn_800CBC44(void) {
@@ -269,8 +283,6 @@ extern "C" u32 fn_800CBDF0(void) {
 
 extern "C" char lbl_8049ABFC[];
 extern "C" char __vt__13J3DColorBlock[];
-extern "C" char lbl_8049AA38[];
-extern "C" char __vt__10J3DPEBlock[];
 extern "C" void __dl__FPv(void*);
 extern "C" char lbl_8049AB90[];
 extern "C" char __vt__14J3DTexGenBlock[];
