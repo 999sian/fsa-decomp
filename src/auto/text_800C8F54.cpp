@@ -224,7 +224,7 @@ extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
     return 0;
 }
 
-extern u32 j3dDefaultTexCoordInfo;
+extern u32 j3dDefaultTexCoordInfo[];
 extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
     u16* tbl = (u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 0x28);
     if (tbl[b] != 0xffff) {
@@ -232,7 +232,7 @@ extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
         ((u16*)out)[2] = ((u8*)out)[2];
         return;
     }
-    *out = j3dDefaultTexCoordInfo;
+    *out = j3dDefaultTexCoordInfo[0];
     ((u16*)out)[2] = ((u8*)out)[2];
 }
 
@@ -368,11 +368,12 @@ extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
 
 extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
     u8* e = *(u8**)(p + 0xc) + idx * 0x138;
+    u32 def = j3dDefaultIndTexOrderNull;
     if (e[0] == 1) {
         *out = *(u32*)(e + stage * 4 + 4);
-    } else {
-        *out = j3dDefaultIndTexOrderNull;
+        return;
     }
+    *out = def;
 }
 
 extern unsigned int j3dDefaultBlendInfo;
