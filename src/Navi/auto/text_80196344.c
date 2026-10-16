@@ -318,7 +318,34 @@ extern "C" void fn_8019E004(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019E310(int param_1)
+{
+	extern int* lbl_802FFA80;
+	int base = lbl_802FFA80[0];
+	int sum = base + *(int *)(param_1 + 4);
+	lbl_802FFA80[2] = sum;
+	int saved = lbl_802FFA80[2];
+	
+	int ptr = param_1;
+	unsigned int i = 0;
+	do {
+		unsigned short check = *(unsigned short *)(ptr + 8);
+		if (check != 0xffff) {
+			fn_801A605C((int)i, (void *)(ptr + 8));
+		}
+		i++;
+		ptr += 2;
+	} while (i < 4);
+	
+	int final = lbl_802FFA80[2];
+	fn_801BC250(saved, final - saved);
+}
+
 extern "C" int fn_801A3544(int p) { return p + 4; }
+
+extern "C" u8 fn_801A35FC(int param_1) {
+    return *(u8*)(param_1 + 0x3b);
+}
 
 extern void* lbl_8029A2C0[];
 extern "C" void* fn_801A3614(void* ptr, s16 param_2) {
@@ -335,6 +362,14 @@ extern "C" void* fn_801A3614(void* ptr, s16 param_2) {
 }
 
 extern "C" int fn_801A36E8(int p) { return p + 4; }
+
+extern "C" void fn_801A36F0(int param_1, u32* param_2) {
+    *(u32*)(param_1 + 8) = *param_2;
+}
+
+extern "C" void fn_801A3710(int param_1, u16* param_2) {
+    *(u16*)(param_1 + 0xc) = *param_2;
+}
 
 extern void* lbl_8029A35C[];
 extern "C" void* fn_801A3768(void* ptr, s16 param_2) {
