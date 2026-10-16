@@ -110,6 +110,23 @@ extern "C" DSError ddh_cc_initialize(vu8** param_1, AmcEXICallback param_2)
 	return DS_NoError;
 }
 
+extern char lbl_802033B4[];
+extern char lbl_802033C8[];
+extern u8 lbl_802FB1D8[];
+extern "C" void fn_801F0108(void* p);
+extern "C" void fn_801F0520(void* a, void* b);
+extern "C" void fn_801EFCC0(void* p, void* buf, int len)
+{
+	int* words = (int*)p;
+	words[2] = (int)buf;
+	words[3] = len;
+	words[0] = words[2];
+	words[1] = words[2];
+	words[4] = 0;
+	words[5] = words[3];
+	fn_801F0108(words + 6);
+}
+
 extern "C" int fn_801EFD10(int param_1) {
   return *(int *)(param_1 + 0x10);
 }
