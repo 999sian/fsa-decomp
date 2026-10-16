@@ -52,6 +52,15 @@ extern "C" void fn_800579E0(void) {
 extern "C" void fn_800579F8(void) {
 }
 
+extern "C" void fn_80057F74(u8* p) {
+    if (p == nullptr) {
+        return;
+    }
+    *(u16*)p = 0;
+    p[2] = 0;
+    p[3] = 1;
+}
+
 extern "C" void fn_800581CC(void) {
     unsigned char* base = lbl_802C05B0;
     if (base[0xa] == 1) {
