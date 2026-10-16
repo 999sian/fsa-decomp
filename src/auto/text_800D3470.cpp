@@ -1336,8 +1336,9 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  u8* e = param_1 + param_2 * 8;
+  int off = param_2 * 8;
   u8 b1 = param_3[1];
+  u8* e = param_1 + off;
   u8 b0 = param_3[0];
   e[0x28] = (e[0x28] & ~0xC) | (b1 << 2);
   e[0x28] = (e[0x28] & ~0x3) | b0;
@@ -1491,9 +1492,9 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
-    u8 val0 = param_3[0];
-    u8 val1 = param_3[1];
     int offset = param_1 + param_2 * 8;
+    u8 val1 = param_3[1];
+    u8 val0 = param_3[0];
 
     u8 byte = *(u8*)(offset + 0x3c);
     byte = (byte & ~0x0c) | (val1 << 2);
