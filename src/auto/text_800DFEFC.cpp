@@ -108,6 +108,15 @@ J3DTevStage J3DMaterialFactory_v21::newTevStage(int idx, int stage) const
     return J3DTevStage();
 }
 
+J3DTevSwapModeTable J3DMaterialFactory_v21::newTevSwapModeTable(int idx, int stage) const
+{
+    J3DMaterialInitData_v21* initData = &mInitData[mMatRemapTable[idx]];
+    if (initData->mTevSwapModeTableIndex[stage] != 0xffff) {
+        return J3DTevSwapModeTable(mTevSwapModeTableInfo[initData->mTevSwapModeTableIndex[stage]]);
+    }
+    return J3DTevSwapModeTable(j3dDefaultTevSwapModeTable);
+}
+
 J3DZMode J3DMaterialFactory_v21::newZMode(int idx) const
 {
     u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[6];
