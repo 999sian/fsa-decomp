@@ -1193,6 +1193,16 @@ extern "C" void fn_8001E69C(void* param_1) {
     cTg_IsUse__FP16create_tag_class(param_1);
 }
 
+extern "C" s32 fn_8001E6BC(void* param_1) {
+    extern u8 lbl_802FBA10[8];
+    cTg_SingleCut((create_tag_class*)param_1);
+    fn_8001BEA4((u8*)param_1 + 0x14);
+    *(u32*)((u8*)param_1 + 0x30) = *(u32*)lbl_802FBA10;
+    *(u16*)((u8*)param_1 + 0x34) = *(u16*)(lbl_802FBA10 + 4);
+    *(u16*)((u8*)param_1 + 0x36) = *(u16*)(lbl_802FBA10 + 6);
+    return 1;
+}
+
 extern void* lbl_80205810[];
 extern "C" void* fn_8001E884(s16 param_1) {
     return lbl_80205810[param_1];
