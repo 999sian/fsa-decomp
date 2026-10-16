@@ -14,3 +14,9 @@ extern "C" Actor* fn_802B8F7C(Actor* param_1, s16 param_2)
     }
     return param_1;
 }
+
+extern "C" void fn_802B8FDC(void)
+{
+    return;
+}
+
