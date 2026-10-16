@@ -94,3 +94,8 @@ extern "C" void fn_8045A080(char* self)
     *(f32*)(self + 0x10) = lbl_80543EB0;
 }
 
+extern "C" u8 fn_8045A0D8()
+{
+    return *(u8*)(lbl_8053AAF8 + 0x96);
+}
+
