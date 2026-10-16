@@ -232,8 +232,12 @@ extern "C" bool fn_802D75BC(char* p, s32 bit) {
 }
 
 extern "C" void fn_802D7618(char* p, s32 bit) {
-    u32* flags = (u32*)(p + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + 0x6768);
-    flags[bit / 32] |= 1U << (bit % 32);
+    s32 word = bit / 32;
+    char* q = p + *(s32*)(p + 0x18) * 0x500;
+    char* s = q + *(s32*)(p + 0x14) * 0x80;
+    s += word * 4;
+    u32 mask = 1U << (bit % 32);
+    *(u32*)(s + 0x6768) = *(u32*)(s + 0x6768) | mask;
 }
 
 extern "C" void fn_802D766C(char* p, u8 value, s32 index) {
@@ -244,13 +248,17 @@ extern "C" void fn_802D766C(char* p, u8 value, s32 index) {
 }
 
 extern "C" bool fn_802D76A8(char* p, s32 bit) {
-    u32* flags = (u32*)(p + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + 0x3548);
-    return (flags[bit / 32] & (1U << (bit % 32))) != 0;
+    char* q = p + *(s32*)(p + 0x18) * 0x500;
+    char* r = q + *(s32*)(p + 0x14) * 0x80;
+    char* s = r + (bit / 32) * 4;
+    return (*(u32*)(s + 0x3548) & (1U << (bit % 32))) != 0;
 }
 
 extern "C" void fn_802D7704(char* p, s32 bit, u8 value, s32 index) {
-    u32* flags = (u32*)(p + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + 0x3548);
-    flags[bit / 32] |= 1U << (bit % 32);
+    char* q = p + *(s32*)(p + 0x18) * 0x500;
+    char* r = q + *(s32*)(p + 0x14) * 0x80;
+    char* s = r + (bit / 32) * 4;
+    *(u32*)(s + 0x3548) |= 1U << (bit % 32);
     if (value != 0) {
         index = index < 8 ? 0 : index - 7;
         ++((s32*)(p + 0x6748))[index];
@@ -453,8 +461,8 @@ extern "C" void fn_802D7F84(char* p, s32 bit, u8 set) {
 }
 
 extern "C" bool fn_802D800C(char* p, s32 bit) {
-    char* base = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    return ((1U << bit) & ((RoomArrays*)base)->flags178[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)]) != 0;
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    return ((1U << bit) & rooms->flags178[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)]) != 0;
 }
 
 extern "C" void fn_802D8050(char* p, s32 bit, u8 set, u8 value) {
