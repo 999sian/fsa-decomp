@@ -164,3 +164,9 @@ extern "C" void fn_801BEC7C(u32 param_1, u32 param_2)
     lbl_802FF78C = param_2;
 }
 
+extern "C" void fn_801BEC88(u32* param_1, u32* param_2)
+{
+    *param_1 = lbl_802FF788;
+    *param_2 = lbl_802FF78C;
+}
+
