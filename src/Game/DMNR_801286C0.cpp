@@ -1,5 +1,17 @@
 #include "types.h"
 
+extern "C" char lbl_8049E500[];
+extern "C" void __dt__13Base_8010E074Fv(void*, s32);
+extern "C" void* fn_801286C0(void* p, s16 n) {
+    if (p) {
+        *(void**)p = lbl_8049E500;
+        *(s32*)((u8*)p + 0x23c) = 0;
+        __dt__13Base_8010E074Fv(p, 0);
+        if (n > 0) operator delete(p);
+    }
+    return p;
+}
+
 extern "C" u8 fn_80128B18(char* p) {
     return *(s32*)(p + 0x230) == 10;
 }
@@ -28,5 +40,13 @@ extern "C" void fn_80128C68(char* p) {
         fn_8044C028((u8*)lbl_8053AF38, *(f32*)(p + 0x238));
     }
     fn_8010DF58(p);
+}
+
+extern "C" void fn_80128F10(char* p) {
+    fn_8010DF98();
+    void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
+    *(s32*)(p + 0x23c) = ((s32 (*)(void*, s32, void*))(*(void***)obj)[6])(obj, 0x3f3f3f3f, lbl_80539F38);
+    fn_802D7440(fn_802D6A9C(), 0);
+    fn_80128728(p, 0);
 }
 
