@@ -425,6 +425,12 @@ extern "C" u8 fn_80181CCC(char* self, u8 v) {
     return v;
 }
 
+extern "C" void fn_80181D44(VObj_8017C154* self, f32 x, f32 y) {
+    u8 buf[48];
+    fn_801C5D48(buf);
+    self->vf38(buf, x, y);
+}
+
 extern "C" int fn_80182058(char* self, void* v) {
     UnkVObj_80181CCC* o = *(UnkVObj_80181CCC**)(self + 0x100);
     if (o != 0 && o->vf3C() == v) {
