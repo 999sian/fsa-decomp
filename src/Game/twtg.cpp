@@ -163,7 +163,7 @@ static inline void twtgUpdateDir(char* p, JGeometry::TVec3f& v, f32& dist) {
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
         s32 room;
-        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), (u32)fn_8023DE58(*(s32*)(p + 0x254)) != (u32)room)) {
+        if (*(s32*)(p + 0x254) < 0 || *(s32*)(p + 0x4) != fn_8023DE58(*(s32*)(p + 0x254))) {
             fn_801EE558(p, &v, &dist, 0);
         } else {
             fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
