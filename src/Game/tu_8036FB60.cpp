@@ -11,6 +11,19 @@ extern "C" void fn_803704E8(void)
 	fn_803721F4();
 }
 
+extern "C" void fn_803703C8(void*);
+extern "C" void fn_80370C18(void* this_)
+{
+	char* p = (char*)this_;
+	fn_803703C8(this_);
+	fn_8022FE80(0, *(int*)(p + 4), *(int*)(p + 0x198), 1, 0);
+	if (fn_80388EEC(0)) {
+		*(int*)(p + 0x240) = 0x1e;
+		*(int*)(p + 0x230) = 6;
+		*(int*)(p + 0x23c) = 0;
+	}
+}
+
 extern "C" void fn_803711F0(char* self)
 {
 	fn_803703C8(self);
