@@ -2,7 +2,7 @@
 
 
 extern "C" u8 fn_80204D44(u8* param_1);
-void fn_80204834(u8* param_1) {
+extern "C" void fn_80204834(u8* param_1) {
     for (int i = 0; i < 2; i++) {
         for (int j = 4; j <= 0x28; j += 4) {
             u8* p = *(u8**)(param_1 + j);
@@ -15,7 +15,7 @@ void fn_80204834(u8* param_1) {
 }
 
 extern "C" void fn_802049E0(u8* param_1, u8* param_2) {
-    u8** slot = (u8**)(param_1 + param_2[0x34a] * 8 + 4);
+    u8** slot = (u8**)(param_1 + ((u32)param_2[0x34a] & 0xff) * 8 + 4);
     if (slot[0] == param_2) {
         slot[0] = 0;
         return;
