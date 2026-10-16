@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" u8* lbl_804ADA98[];
@@ -26,6 +27,30 @@ extern "C" void* fn_8035F360(void* param_1, s16 param_2) {
     }
   }
   return param_1;
+}
+
+extern "C" void fn_8035FB64(u8* param_1) {
+    if (*(s32*)(param_1 + 0x234) == 0) {
+        if (lbl_804742A8[*(s32*)(param_1 + 0x240) * 2] < 0) {
+            *(s32*)(param_1 + 0x240) = 0;
+        }
+        *(s32*)(param_1 + 0x234) = lbl_804742A8[*(s32*)(param_1 + 0x240) * 2 + 1];
+        *(s32*)(param_1 + 0x23c) = lbl_804742A8[*(s32*)(param_1 + 0x240) * 2];
+        *(s32*)(param_1 + 0x240) = *(s32*)(param_1 + 0x240) + 1;
+    }
+    if (*(f32*)(param_1 + 0x26c) < 16.0f) {
+        *(f32*)(param_1 + 0x26c) = *(f32*)(param_1 + 0x26c) + 0.2f;
+    }
+    s32 step = (s32)(65536.0f * (1.75f / (6.28318f * *(f32*)(param_1 + 0x26c))));
+    *(s16*)(param_1 + 0x254) = *(s16*)(param_1 + 0x254) - step;
+    *(f32*)(param_1 + 0x3c) = 1.75f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].cos;
+    *(f32*)(param_1 + 0x40) = 1.75f * sincosTable___5JMath[(*(s16*)(param_1 + 0x254) >> 5) & 0x7ff].sin;
+    *(f32*)(param_1 + 0x44) = 0.2f;
+    *(s32*)(param_1 + 0x264) = *(s32*)(param_1 + 0x264) + (s16)step;
+    if (*(f32*)(param_1 + 0x26c) < 16.0f) {
+        fn_80360914(param_1);
+        *(f32*)(param_1 + 0x44) = 0.0f;
+    }
 }
 
 extern "C" void fn_8035FCD8(u8* param_1) {
