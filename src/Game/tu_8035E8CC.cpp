@@ -12,6 +12,26 @@ extern const f32 lbl_805429AC;
 extern const f32 lbl_805429B0;
 extern char lbl_804AD858[];
 extern char lbl_804A5958[];
+extern "C" void fn_8035E9A0(void* this_) {
+    char* p = (char*)this_;
+    void* base = fn_801F856C();
+    void* found = fn_801F666C(base, *(s32*)(p + 0x90));
+    if (found != 0) {
+        if (*(f32*)((char*)found + 0x10) >= lbl_805429B0) {
+            *(s32*)(p + 0x248) = 0;
+            *(s32*)(p + 0x250) = 0x3d;
+            if (*(s32*)((char*)found + 0x230) == 4 && *(s32*)((char*)found + 0x234) < 0xf0) {
+                *(s32*)(p + 0x250) = 0x3f;
+            }
+        }
+    }
+    if (*(s32*)(p + 0x238) != 0) {
+        *(s32*)(p + 0x248) = 0;
+        *(s32*)(p + 0x250) = 0x10;
+        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+    }
+}
+
 extern "C" void fn_8035EA48(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x234) == 0) {
