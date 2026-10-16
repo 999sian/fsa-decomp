@@ -1,6 +1,10 @@
 #include "JSystem/JAudio/Interface/JAISoundParams.h"
 #include "JSystem/JAudio/Interface/JAISound.h"
 #include "JSystem/JAudio/System/JASDriver.h"
+#include "JSystem/JAudio/System/JASAudioReseter.h"
+#include "JSystem/JAudio/System/JASHeapCtrl.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JAudio/Interface/JAIAudience.h"
 #include "JSystem/JAudio/JAUSectionHeap.h"
 #include "JSystem/JAudio/JAUSoundMgr.h"
 #include "JSystem/JAudio/System/JASAudioReseter.h"
@@ -89,9 +93,11 @@ extern "C" void fn_80458090(char* this_) {
 extern "C" u32 fn_804580DC(char* this_, u8 idx) {
     Unk804580DCBank* bank = *(Unk804580DCBank**)(this_ + 0x44);
     if (bank != NULL) {
-        Unk804580DCTrack* track = NULL;
+        Unk804580DCTrack* track;
         if (idx < bank->mF0) {
             track = bank->mEC[idx];
+        } else {
+            track = NULL;
         }
         if (track != NULL && track->v4(0)->m4C == 2) {
             return 1;
