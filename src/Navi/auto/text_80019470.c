@@ -1692,3 +1692,33 @@ extern "C" int fn_80020F94()
 {
 	return 0;
 }
+
+extern "C" void fn_80020F9C(u32* param_1) {
+    param_1[0] = 3;
+    *(u8*)(param_1 + 2) = 0;
+    *(u8*)((u8*)param_1 + 9) = 0;
+    *(u16*)(param_1 + 1) = 0;
+    *(u16*)((u8*)param_1 + 6) = 0;
+    *(u8*)((u8*)param_1 + 10) = 0;
+    param_1[3] = 3;
+    *(u8*)(param_1 + 5) = 0;
+    *(u8*)((u8*)param_1 + 0x15) = 0;
+    *(u16*)(param_1 + 4) = 0;
+    *(u16*)((u8*)param_1 + 0x12) = 0;
+    *(u8*)((u8*)param_1 + 0x16) = 0;
+    param_1[6] = 3;
+    *(u8*)(param_1 + 8) = 0;
+    *(u8*)((u8*)param_1 + 0x21) = 0;
+    *(u16*)(param_1 + 7) = 0;
+    *(u16*)((u8*)param_1 + 0x1e) = 0;
+    *(u8*)((u8*)param_1 + 0x22) = 0;
+    param_1[9] = 3;
+    *(u8*)(param_1 + 0xb) = 0;
+    *(u8*)((u8*)param_1 + 0x2d) = 0;
+    *(u16*)(param_1 + 10) = 0;
+    *(u16*)((u8*)param_1 + 0x2a) = 0;
+    *(u8*)((u8*)param_1 + 0x2e) = 0;
+    *(u8*)(param_1 + 0xc) = 1;
+    *(u8*)((u8*)param_1 + 0x31) = 0;
+}
+
