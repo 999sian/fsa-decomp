@@ -39,6 +39,15 @@ extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, i
 	return texMtx;
 }
 
+u8 J3DMaterialFactory_v21::newCullMode(int idx) const
+{
+    u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[1];
+    if (bVar1 != 0xff) {
+        return mCullModeInfo[bVar1];
+    }
+    return 0xff;
+}
+
 extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
