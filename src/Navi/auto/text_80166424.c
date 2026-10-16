@@ -359,6 +359,18 @@ extern "C" void fn_80167D90(u8* param_1, u32 param_2, u32 param_3, u32* param_4)
     }
 }
 
+extern "C" void fn_8015AB1C(void* ptr);
+extern void* lbl_80298520[];
+extern "C" void* fn_80168D68(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80298520;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void fn_80168E00(void)
 {
 }
