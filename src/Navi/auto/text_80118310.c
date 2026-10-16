@@ -87,3 +87,24 @@ extern "C" BOOL fn_8011AB40(void)
     return TRUE;
 }
 
+extern "C" void fn_8011B8F8(void) {
+    if (lbl_802FF2E9 == 0) {
+        if (OSGetResetSwitchState() != 0) {
+            lbl_802FF2E8 = 1;
+        } else if (lbl_802FF2E8 == 1) {
+            void (*fn)(s32, s32) = lbl_802FF2D4;
+            lbl_802FF2E9 = 1;
+            lbl_802FF2EC = -1;
+            if (fn != NULL) {
+                fn(-1, lbl_802FF2D8);
+            }
+            lbl_802FF2E8 = 0;
+        }
+    }
+}
+
+extern "C" void fn_8011B978(void) {
+    fn_8011C280(0);
+    fn_8011C3C8(0xf0000000);
+}
+
