@@ -214,6 +214,11 @@ extern "C" void fn_80172ED0(u8* p, s32 i, u8 v) { *(p + i + 0x56) = v; }
 
 extern "C" u8 fn_80172EDC(u8* p, s32 i) { return *(p + i + 0x56); }
 
+extern "C" s32 fn_80172FB4(s32 p, s32 i)
+{
+	return p + i * 4 + 0x5c;
+}
+
 extern "C" u32 fn_80172FF8(int param_1, u32 param_2) {
     if (param_2 >= 2) {
         return 0;
