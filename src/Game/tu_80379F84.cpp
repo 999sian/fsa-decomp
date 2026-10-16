@@ -59,7 +59,9 @@ extern "C" void fn_8037A708(u8* p) {
     p[0x1c] = 0;
 }
 
-extern "C" u8 fn_8037AA28(void) { return *((u8*)lbl_8053ADB8 + 0x216c); }
+extern "C" u8 fn_8037AA28(void) {
+    return *((u8*)lbl_8053ADB8 + 0x216c);
+}
 
 extern "C" void* fn_8037AA34(void) { return fn_803D5090(lbl_8053ADB8); }
 
