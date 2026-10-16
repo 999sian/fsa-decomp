@@ -102,6 +102,10 @@ extern "C" void* fn_8003CCB4(void* ptr, s16 param_2) {
 
 extern "C" void fn_8003CCF0(void) {}
 
+extern "C" void fn_8003CCF4(void* param_1) {
+    fn_8004816C(lbl_802EE470, (char*)param_1 + 0x10);
+}
+
 extern "C" void* fn_8003CD98(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
