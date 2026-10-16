@@ -122,6 +122,25 @@ extern "C" void fn_803CC3DC(char* p) {
     }
 }
 
+extern "C" void fn_803CC490(char* p) {
+    int r = fn_803B9BDC(lbl_8051C1A0);
+    if (r == 1) {
+        *(s32*)(p + 0x80) = 0x5b;
+        p[0x112] = p[0x110];
+        p[0x110] = 0xa;
+        p[0x113] = 0;
+        lbl_80529DEC[0x24c] = 0;
+        *(s32*)(p + 0xb0) = 0x5a;
+    } else if (r == 2) {
+        *(s32*)(p + 0x80) = 0x5a;
+        fn_803CE4CC(p);
+        p[0x112] = p[0x110];
+        p[0x110] = 0;
+        p[0x113] = 0;
+        lbl_80529DEC[0x24c] = 0;
+    }
+}
+
 extern u32 lbl_8053ADB0;
 extern "C" s32 fn_803CE4B0(void) {
     if (lbl_8053ADB0 != 0) {
