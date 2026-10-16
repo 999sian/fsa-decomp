@@ -111,6 +111,7 @@ extern const f32 lbl_80543CD8;
 extern const f32 lbl_80543CDC;
 extern const f32 lbl_80543CE0;
 extern const f32 lbl_80543CE4;
+extern void* lbl_8053AB10;
 extern "C" void fn_8044A06C(void* p);
 extern "C" void fn_80445D24(void* p);
 extern "C" void fn_80448334(void* p);
