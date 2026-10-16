@@ -1987,6 +1987,18 @@ extern "C" void* fn_8018EC78(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801E6578(void* a, void* b);
+extern "C" int fn_8018ECE4(void* self, void* arg) {
+    void** node = *(void***)self;
+    while (node != nullptr) {
+        if (fn_801E6578(node[1], arg) == 0) {
+            return (int)node[0];
+        }
+        node = (void**)node[2];
+    }
+    return 0;
+}
+
 extern "C" int fn_8018EE10(unsigned short* self, unsigned short index) {
     if (self[0] <= index) {
         return 0;
