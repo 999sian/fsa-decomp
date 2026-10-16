@@ -36,8 +36,9 @@ extern "C" void fn_80115914(Vec3f* out, void* a) {
     *out = v;
 }
 
-extern "C" void fn_801159B4(void* self) {
+extern "C" void* fn_801159B4(void* self) {
     fn_80115960(self);
+    return self;
 }
 
 extern const float lbl_8030141C;
