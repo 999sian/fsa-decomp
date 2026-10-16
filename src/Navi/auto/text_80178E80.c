@@ -48,14 +48,14 @@ extern "C" void fn_80184C34(void) {
     fn_801788C0();
 }
 
-extern "C" void fn_80184C58(UnkVObj_80184B60* self, void* unused, void* param_3) {
+extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     void* obj = *(void**)((u8*)self + 0x168);
     if (*(void**)((u8*)obj + 0x28) == 0) {
         if (((s32 (*)(void*, void*))(*(void***)self)[0x9c / 4])(self, lbl_80301BF8) && param_3 != 0) {
-            register UnkVObj_80184B60* sub = *(UnkVObj_80184B60**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-            if (sub->vA4(0) == 0) {
-                sub = *(UnkVObj_80184B60**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-                sub->v98(0, param_3);
+            register void* sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
+            if (((s32 (*)(void*, s32))(*(void***)sub)[0xa4 / 4])(sub, 0) == 0) {
+                sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
+                ((void (*)(void*, s32, void*))(*(void***)sub)[0x98 / 4])(sub, 0, param_3);
             }
         }
     }
