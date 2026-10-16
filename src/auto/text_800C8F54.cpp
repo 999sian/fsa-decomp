@@ -132,8 +132,24 @@ extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
     return 0;
 }
 
+extern "C" void* __nw__FUl(u32);
+extern "C" void __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(void*, const void*);
+extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
+    u16* ids = *(u16**)(p + 8);
+    u8* base = *(u8**)(p + 4);
+    u32 off = ids[idx] * 0x14c + 0x48 + b * 2;
+    void* ret = NULL;
+    if (*(u16*)(base + off) != 0xffff) {
+        ret = __nw__FUl(0x94);
+        if (ret != NULL) {
+            __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, *(u8**)(p + 0x30) + *(u16*)(base + off) * 0x64);
+        }
+    }
+    return ret;
+}
+
 extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
-    u8 b = (*(u8**)(p + 4))[((u16*)*(u8**)(p + 8))[idx] * 0x14c + 1];
+    u8 b = *(u8*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 1);
     if (b != 0xff) {
         return (*(u32**)(p + 0x3c))[b];
     }
@@ -159,6 +175,54 @@ extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
         return;
     }
     *out = j3dDefaultTevOrderInfoNull;
+}
+
+extern u32 lbl_80543F08;
+extern u32 lbl_80543F0C;
+extern u32 lbl_8053BC78;
+extern "C" void fn_800CB4C0(void* out, u8* e);
+extern "C" void __ct__11J3DTevStageFv(void* self);
+extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xdc + b * 2;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off);
+    if (v != 0xffff) {
+        u32* e = (u32*)(*(u8**)(p + 0x44) + v * 8);
+        out[0] = e[0];
+        out[1] = e[1];
+        return;
+    }
+    out[0] = lbl_80543F08;
+    out[1] = lbl_80543F0C;
+}
+
+extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b) {
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x94 + b * 2;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off);
+    if (v != 0xffff) {
+        *out = (*(u32**)(p + 0x48))[v];
+        return;
+    }
+    *out = lbl_8053BC78;
+}
+
+extern "C" u8 fn_800CB428(u8* p, s32 idx) {
+    u16 i = ((u16*)*(u8**)(p + 8))[idx];
+    u8* base = *(u8**)(p + 4);
+    u8 v = base[i * 0x14c + 4];
+    if (v != 0xff) {
+        return (*(u8**)(p + 0x4c))[v];
+    }
+    return 0xff;
+}
+
+extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xe4 + b * 2;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off);
+    if (v != 0xffff) {
+        fn_800CB4C0(out, *(u8**)(p + 0x50) + v * 0x14);
+        return;
+    }
+    __ct__11J3DTevStageFv(out);
 }
 
 extern unsigned int j3dDefaultBlendInfo;
