@@ -60,9 +60,11 @@ extern "C" bool fn_802574CC(u8* p, const JGeometry::TBox2<f32>* bounds,
     if (S32(p, 0xb58) != id) {
         return false;
     }
-    if (BOX(p, 0x540).intersect(*bounds)) {
-        center->x = lbl_805400C0 * (BOX(p, 0x540).i.x - BOX(p, 0x540).f.x) + BOX(p, 0x540).f.x;
-        center->y = lbl_805400C0 * (BOX(p, 0x540).i.y - BOX(p, 0x540).f.y) + BOX(p, 0x540).f.y;
+    JGeometry::TBox2<f32>& box = BOX(p, 0x540);
+    JGeometry::TBox2<f32> overlap = box;
+    if (overlap.intersect(*bounds)) {
+        center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
+        center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
         return true;
     }
     return false;
@@ -151,9 +153,10 @@ extern "C" void fn_8025819C(u8* p) {
 }
 
 extern "C" void fn_80258384(u8* p) {
+    s32 i = 0;
     u8* ids = p;
     u8* boxes = p;
-    for (s32 i = 0; i < 3; i++, boxes += 0x10, ids += 4) {
+    for (; i < 3; i++, boxes += 0x10, ids += 4) {
         s32 id = S32(ids, 0xb1c);
         if (id >= 0) {
             u8* actor = fn_801F666C(fn_801F856C(), id);
