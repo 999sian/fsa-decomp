@@ -112,6 +112,8 @@ extern const f32 lbl_8053C9B4;
 extern const f32 lbl_8053C9B8;
 extern const f32 lbl_8053C9BC;
 extern const f32 lbl_8053C9C0;
+extern const f32 lbl_8053C9C4;
+extern const f64 lbl_8053C9D0;
 extern const f32 lbl_8053C9C8;
 extern const f32 lbl_8053C9DC;
 extern const f32 lbl_8053C9E0;
@@ -358,6 +360,40 @@ extern "C" void fn_80122A9C(u8* self, f32* x, f32* y, s32* player) {
     case 2: *x = lbl_8053C9B4; *y = lbl_8053C9B8 - offset; break;
     case 3: *x = lbl_8053C9B4; *y = lbl_8053C9BC + offset; break;
     }
+}
+
+extern "C" u8 fn_8022E438(s32, s32);
+extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
+  *a = lbl_8053C9B4;
+  *b = lbl_8053C9B4;
+  s32 idx = *out;
+  s32 sel = idx;
+  if (idx >= 0 && idx < 4) {
+    for (s32 i = 0; i < 4; ++i) {
+      if (fn_8022E438(i, idx)) {
+        sel = i;
+      }
+    }
+  }
+  *out = sel;
+  f32 v = lbl_8053C9B4;
+  if (((CompanionCalls*)self)->v49()) {
+    v = lbl_8053C9BC;
+  }
+  switch (fn_80230CFC(*out)) {
+    case 0:
+      *a = -v;
+      break;
+    case 1:
+      *a = v;
+      break;
+    case 2:
+      *b = -v;
+      break;
+    case 3:
+      *b = v;
+      break;
+  }
 }
 
 extern "C" void fn_80122CAC(u8* self, f32* x, f32* y, s32* player) {
