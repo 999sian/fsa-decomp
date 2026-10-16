@@ -812,12 +812,8 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A38E0(u8* p, s32 i, s16* src) {
-    s16* d = (s16*)(p + (i << 3) + 0xda);
-    d[0] = src[0];
-    d[1] = src[1];
-    d[2] = src[2];
-    d[3] = src[3];
+extern "C" void fn_801A38E0(u8* p, s32 i, NaviRect16* src) {
+    *(NaviRect16*)(p + (i << 3) + 0xda) = *src;
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
@@ -1484,6 +1480,10 @@ extern "C" s32 fn_801A49CC(s32 p, s32 i) {
 
 extern "C" void fn_801A49E0(u8* p, s32 i, u8 v) {
     p[i + 0xc8] = v;
+}
+
+extern "C" void fn_801A49EC(u8* p, s32 i, u8* src) {
+    p[i + 0xc8] = *src;
 }
 
 extern "C" void* fn_801A4A08(void* p) {
