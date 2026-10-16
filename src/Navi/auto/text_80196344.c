@@ -1091,6 +1091,10 @@ extern "C" void* fn_801A5074(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801A50D0(void) {
+    return 0x50454544;
+}
+
 extern void* lbl_8029ACD0[];
 extern "C" void* fn_801A50DC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
