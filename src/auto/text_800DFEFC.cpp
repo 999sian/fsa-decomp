@@ -2,6 +2,29 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
+u16 J3DMaterialFactory_v21::countUniqueMaterials()
+{
+	u16 count = 0;
+	u16 num = mMaterialNum;
+	if (num == 0) {
+		return 0;
+	}
+	if (num > 8) {
+		for (; count < (u16)(num - 8); count += 8) {}
+	}
+	for (; count < num; count++) {}
+	return count;
+}
+
+extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
+{
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mMatColorIndex[no] != 0xffff) {
+		return J3DGXColor(self->mColorData[initData->mMatColorIndex[no]]);
+	}
+	return j3dDefaultColInfo;
+}
+
 u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
 {
     u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[2];
@@ -65,6 +88,15 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 		return J3DTevOrder(self->mTevOrderInfo[initData->mTevOrderInfoIndex[no]]);
 	}
 	return J3DTevOrder();
+}
+
+J3DZMode J3DMaterialFactory_v21::newZMode(int idx) const
+{
+    u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[6];
+    if (bVar1 != 0xff) {
+        return J3DZMode(mZModeInfo[bVar1]);
+    }
+    return J3DZMode();
 }
 
 extern "C" void* fn_800E1300(const void* base, const void* offset)
