@@ -582,8 +582,7 @@ extern "C" void* fn_80180814(void* self, u8 idx) {
 }
 
 extern "C" void fn_80180838(void* self, u32 a, u32 b) {
-    void** vt = *(void***)self;
-    ((void (*)(void*, u32, u32, u8))vt[50])(self, a, b, ((u8*)self)[0x110]);
+    ((VObj_80180868*)self)->v48(a, b, ((u8*)self)[0x110]);
 }
 
 typedef void (*VFnA_80180868)(void*, u8, u32);
