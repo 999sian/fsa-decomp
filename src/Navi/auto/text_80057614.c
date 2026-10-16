@@ -45,6 +45,18 @@ extern "C" void fn_8005CB14(void) {
     lbl_802FF130++;
 }
 
+extern "C" void fn_8005CB2C(int param_1) {
+    s32 prev = lbl_802FF12C;
+    if (lbl_802FF12C == 0 && param_1 == 0xd4) {
+        lbl_802FF12C = 1;
+    } else if (lbl_802FF12C != 0 && param_1 == 0xd3) {
+        lbl_802FF12C = 0;
+    }
+    if (lbl_802FF12C != prev) {
+        lbl_802FF130 = 1;
+    }
+}
+
 extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027EC78;
