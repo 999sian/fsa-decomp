@@ -1111,8 +1111,7 @@ BOOL fn_802454C0(char* p) {
         s32 c;
         s32 d;
         c = 0;
-        i = c;
-        for (; i < 4; i++) {
+        for (i = c; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
@@ -1459,7 +1458,6 @@ inline s32 countSharing6(char* p) {
     s32 c;
     s32 i;
     s32 linked;
-    s32 me;
     c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
@@ -1470,7 +1468,7 @@ inline s32 countSharing6(char* p) {
                     c++;
                 }
             } else {
-                me = S32(p, 0x4);
+                s32 me = S32(p, 0x4);
                 if (me == fn_8022F3DC(i)) {
                     c++;
                 }
