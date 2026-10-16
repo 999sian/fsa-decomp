@@ -15,8 +15,7 @@ extern "C" f32 fn_80116314(f32* p, f32 target, f32 rate, f32 maxStep, f32 minSte
     f32 cur = *p;
     if (cur != target) {
         f32 d = rate * (target - cur);
-        f32 negMin;
-        if (d >= minStep || d <= (negMin = -minStep)) {
+        if (d >= minStep || d <= -minStep) {
             if (d > maxStep) {
                 d = maxStep;
             }
@@ -31,8 +30,8 @@ extern "C" f32 fn_80116314(f32* p, f32 target, f32 rate, f32 maxStep, f32 minSte
                     *p = target;
                 }
             }
-        } else if (d > negMin) {
-            *p = cur + negMin;
+        } else if (d > -minStep) {
+            *p = cur + -minStep;
             if (*p < target) {
                 *p = target;
             }
