@@ -192,13 +192,20 @@ extern "C" s32 fn_80172B80(s32 p, s32 i) {
 }
 
 extern "C" void fn_80172C54(u8* p1, int p2, u8* p3) {
+    u8 v1;
+    u8 v2;
     u8* dst = p1 + p2 * 8;
+    v1 = p3[2];
     dst[0x40] = p3[1];
-    dst[0x41] = p3[2];
-    dst[0x42] = p3[3];
-    dst[0x44] = p3[5];
-    dst[0x45] = p3[6];
-    dst[0x46] = p3[7];
+    v2 = p3[3];
+    dst[0x41] = v1;
+    v1 = p3[5];
+    dst[0x42] = v2;
+    v2 = p3[6];
+    dst[0x44] = v1;
+    v1 = p3[7];
+    dst[0x45] = v2;
+    dst[0x46] = v1;
 }
 
 extern "C" s32 fn_80172C90(s32 p, s32 i) {
@@ -240,13 +247,20 @@ extern "C" u8 fn_80172EF0(u8* p) {
 }
 
 extern "C" void fn_80172EF8(u8* p1, int p2, u8* p3) {
+    u8 v1;
+    u8 v2;
     u8* dst = p1 + p2 * 8;
+    v1 = p3[2];
     dst[0x34] = p3[1];
-    dst[0x35] = p3[2];
-    dst[0x36] = p3[3];
-    dst[0x38] = p3[5];
-    dst[0x39] = p3[6];
-    dst[0x3a] = p3[7];
+    v2 = p3[3];
+    dst[0x35] = v1;
+    v1 = p3[5];
+    dst[0x36] = v2;
+    v2 = p3[6];
+    dst[0x38] = v1;
+    v1 = p3[7];
+    dst[0x39] = v2;
+    dst[0x3a] = v1;
 }
 
 extern "C" unsigned int fn_80173060(void) {
