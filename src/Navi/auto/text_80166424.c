@@ -7,6 +7,12 @@ extern void* lbl_80298390[];
 
 
 extern "C" void fn_8015AB1C(void* p);
+
+struct VObj_80178E10 {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void vf20(int mode);
+};
 extern "C" s32 fn_80166A54(void);
 extern "C" void fn_801667B4(void* a, u32 b, u32 c, u32 d);
 extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d);
@@ -1548,13 +1554,16 @@ extern "C" void fn_80173384(void)
 extern u32 lbl_80301AF0;
 extern "C" u32 lbl_80301AF0;
 extern "C" void fn_80173F24(Rgba4_80166424* dst, u8* src, s32 i, s32 j) {
+    u32 tmp = lbl_80301AF0;
+    Rgba4_80166424 d = *(Rgba4_80166424*)&tmp;
     u16 v = ((u16*)*(u8**)(src + 8))[i];
     u16 w = *(u16*)(*(u8**)(src + 4) + v * 0xe8 + 8 + j * 2);
-    if (w == 0xffff) {
-        *dst = *(Rgba4_80166424*)&lbl_80301AF0;
-    } else {
-        *dst = ((Rgba4_80166424*)*(u8**)(src + 0x10))[w];
+    if (w != 0xffff) {
+        u32 t = ((u32*)*(u8**)(src + 0x10))[w];
+        *dst = *(Rgba4_80166424*)&t;
+        return;
     }
+    *(u32*)dst = *(u32*)&d;
 }
 
 extern "C" u16 fn_80174224(u8* s, u32 a, u32 b) {
