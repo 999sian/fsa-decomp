@@ -48,6 +48,16 @@ u8 J3DMaterialFactory_v21::newCullMode(int idx) const
     return 0xff;
 }
 
+u16 J3DMaterialFactory_v21::newTexNo(int idx, int no) const
+{
+    u8* pTexNo = (u8*)&mInitData[mMatRemapTable[idx]] + 0x70;
+    u16 uVar1 = *(u16*)(pTexNo + no * 2);
+    if (uVar1 != 0xffff) {
+        return mTextureRemapTable[uVar1];
+    }
+    return 0xffff;
+}
+
 extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
