@@ -197,7 +197,7 @@ extern "C" void* fn_80447B34(void* param_1, short param_2)
     void* result = param_1;
 
     if (result != 0) {
-        *(void**)result = (void*)&lbl_804B1C20;
+        *(void**)result = (void*)lbl_804B1C20;
 
         if (((fn_80447B34_Obj**)result)[1] != 0) {
             ((fn_80447B34_Obj**)result)[1]->Release(1);
