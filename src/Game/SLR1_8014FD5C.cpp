@@ -28,6 +28,10 @@ extern const f64 lbl_8053D2F8;
 extern const f64 lbl_8053D300;
 extern const f64 lbl_8053D308;
 extern const f32 lbl_8053D310;
+extern s32 lbl_804BF850[];
+extern s32 lbl_8053AB44;
+extern s32 lbl_8053AB48;
+extern s32 lbl_80539F68;
 }
 
 extern "C" s32 fn_80154248(u32 type, u32 owner, const Vec* position, u32 parameter)
@@ -48,7 +52,8 @@ extern "C" s32 fn_80154310(u32 type, u32 owner, const Vec* position, u32 paramet
 
 extern "C" f32 fn_8015436C(f32 value)
 {
-    return __fabs(value);
+    volatile f32 result = __fabs(value);
+    return result;
 }
 
 extern "C" f32 fn_80154378(f32 value)
@@ -231,8 +236,13 @@ extern "C" void fn_801546D0(JGeometry::TVec3<f32>* vector,
     JGeometry::setTVec3f(&other->x, &vector->x);
 }
 
-inline JGeometry::TVec2<f32>::TVec2() {
+#if defined(VERSION_G4SE01)
+JGeometry::TVec2<f32>::TVec2() {
 }
+#else
+JGeometry::TVec2<f32>::TVec2() {
+}
+#endif
 
 extern "C" void fn_801546E8(JGeometry::TVec2<f32>* vector, f32 x, f32 y)
 {
