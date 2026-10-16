@@ -32,6 +32,30 @@ extern "C" void* fn_8015FFF0(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" int fn_80160564(void* a, void* b, void* p) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual int v18(void* a, void* b);
+        u8 pad[0x28];
+        u32 m2c;
+    };
+    int ret = 0;
+    void** node;
+    if (p != 0) {
+        return ((Obj*)p)->v18(a, b);
+    }
+    for (node = *(void***)lbl_802EE2D4; node != 0; node = (void**)node[3]) {
+        Obj* o = (Obj*)node[0];
+        if (o->m2c == 0x52415243) {
+            ret = o->v18(a, b);
+            if (ret != 0) {
+                break;
+            }
+        }
+    }
+    return ret;
+}
+
 extern "C" int fn_8016061C(void* a, char* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
