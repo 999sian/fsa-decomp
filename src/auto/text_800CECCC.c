@@ -21,6 +21,10 @@ extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800D00F0(void*, void*, void*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
+extern "C" void fn_800CF678(void*, void*, void*);
+extern "C" void fn_800CF734(void*, unsigned char*, const unsigned char*);
+extern "C" void fn_800CF998(void*, unsigned char*, const unsigned char*);
+extern "C" void fn_800CFA2C(void**, void*, const void*);
 extern "C" void fn_800CF2B0(void** p) {
     *p = lbl_8049AE38;
     *p = lbl_8049AE24;
@@ -65,6 +69,40 @@ extern "C" void** fn_800CF38C(void** p, short del) {
         }
     }
     return p;
+}
+
+extern "C" void fn_800CF650(void** self, void* data);
+extern "C" void fn_800CF70C(void** self, void* data);
+extern "C" void fn_800CF800(void** self, void* data);
+extern "C" void fn_800CF8CC(void** self, void* data);
+extern "C" void fn_800CF970(void** self, const unsigned char* data);
+extern "C" void fn_800CFA04(void** self, const void* data);
+extern "C" void* fn_800CF3E8(void** self, unsigned char* data) {
+    u32 count = *(u32*)(data + 0xc);
+    unsigned char* entry = data + 0x20;
+    u32 i;
+    for (i = 0; i < count; i++) {
+        u32 tag = *(u32*)entry;
+        if (tag == 0x54505431) {
+            fn_800CF800(self, entry);
+        } else if (tag < 0x54505431) {
+            if (tag == 0x434c4631) {
+                fn_800CF970(self, entry);
+            } else if (tag < 0x434c4631) {
+                if (tag == 0x414e4631) {
+                    fn_800CF650(self, entry);
+                }
+            } else if (tag == 0x50414631) {
+                fn_800CF70C(self, entry);
+            }
+        } else if (tag == 0x56434631) {
+            fn_800CFA04(self, entry);
+        } else if (tag == 0x56414631) {
+            fn_800CF8CC(self, entry);
+        }
+        entry = entry + *(u32*)(entry + 4);
+    }
+    return self[1];
 }
 
 extern "C" void fn_800CF678(void*, void*, void*);
@@ -119,6 +157,73 @@ extern "C" void fn_800CF998(void* param_1, unsigned char* anm, const unsigned ch
 extern "C" void fn_800CFA2C(void** self, void* res, const void* data);
 extern "C" void fn_800CFA04(void** self, const void* data) {
     fn_800CFA2C(self, self[1], data);
+}
+
+extern "C" void fn_800CFE04(void** self, void* data);
+extern "C" void fn_800D01DC(void** self, void* data);
+extern "C" void fn_800D00C8(void** self, void* data);
+extern "C" void fn_800D0270(void** self, void* data);
+extern "C" void fn_800CFEC8(void** self, void* data);
+extern "C" void fn_800D0424(void** self, const void* data);
+extern "C" void* fn_800CFB9C(void** self, unsigned char* data) {
+    unsigned int count = *(unsigned int*)(data + 0xc);
+    unsigned char* chunk = data + 0x20;
+    unsigned int i = 0;
+    while (i < count) {
+        switch (*(unsigned int*)chunk) {
+        case 0x414e4b31:
+            fn_800CFE04(self, chunk);
+            break;
+        case 0x50414b31:
+            fn_800D00C8(self, chunk);
+            break;
+        case 0x434c4b31:
+            fn_800D01DC(self, chunk);
+            break;
+        case 0x54544b31:
+            fn_800CFEC8(self, chunk);
+            break;
+        case 0x54524b31:
+            fn_800D0270(self, chunk);
+            break;
+        case 0x56434b31:
+            fn_800D0424(self, chunk);
+            break;
+        }
+        chunk += *(unsigned int*)(chunk + 4);
+        i++;
+    }
+    return self[1];
+}
+
+extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3) {
+    void fn_800D0298(void*, void*, void*);
+    void fn_800D044C(void**, void*, const void*);
+    u32 count = *(u32*)(param_3 + 0xc);
+    unsigned char* p = param_3 + 0x20;
+    for (u32 i = 0; i < count; i++) {
+        switch (*(u32*)p) {
+        case 0x414e4b31:
+            fn_800CFE2C(param_1, param_2, p);
+            break;
+        case 0x50414b31:
+            fn_800D00F0(param_1, param_2, p);
+            break;
+        case 0x434c4b31:
+            fn_800D0204(param_1, (unsigned char*)param_2, p);
+            break;
+        case 0x54544b31:
+            fn_800CFEF0(param_1, param_2, p);
+            break;
+        case 0x54524b31:
+            fn_800D0298(param_1, param_2, p);
+            break;
+        case 0x56434b31:
+            fn_800D044C((void**)param_1, param_2, p);
+            break;
+        }
+        p += *(u32*)(p + 4);
+    }
 }
 
 extern "C" void fn_800CFE04(void** self, void* data)
