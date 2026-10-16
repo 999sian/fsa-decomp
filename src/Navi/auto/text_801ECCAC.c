@@ -205,3 +205,14 @@ extern "C" void TRKPostInterruptEvent(void)
     }
 }
 
+extern "C" int fn_801EE50C(void*, unsigned long, unsigned long*, int, int);
+extern "C" int fn_801EE4C0(unsigned long* instr, unsigned long addr)
+{
+    unsigned long size = 4;
+    int result = fn_801EE50C(instr, addr, &size, 0, 1);
+    if (result == 0 && size != 4) {
+        result = 0x700;
+    }
+    return result;
+}
+
