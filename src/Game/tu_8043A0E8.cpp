@@ -88,6 +88,32 @@ extern "C" void fn_8043A608(void* param_1) {
     fn_8043A450(param_1, *(s32*)(lbl_80529DEC + 0x118), *(s32*)(lbl_80529DEC + 0x11c));
 }
 
+extern "C" void fn_8043CDA0(u8* self) {
+	f32 x;
+	f32 y;
+	u8 done;
+	if (self[0x10c] == 0) {
+		x = lbl_80543C88;
+		y = lbl_80543CC4;
+	} else {
+		f32 pane_y = *(f32*)(*(u8**)(self + 0x64) + 0xc);
+		x = lbl_80543CC8 - pane_y;
+		y = x - lbl_80543CC4;
+	}
+	done = fn_80402940(*(void**)(self + 0x40), 0xb, x, y, 0);
+	for (int i = 1; i < 12; i++) {
+		fn_80402940(*(void**)(self + 0x40 + i * 4), 0xb, x, y, 0);
+	}
+	if (done) {
+		u8* game = (u8*)lbl_8053AED0;
+		game[0x10a] = 0;
+		*(u32*)(game + 0xfc) = 0;
+		*(u32*)(game + 0xe8) = 0;
+		*(u32*)(game + 0x100) = 0;
+		self[0x10b] = 0;
+	}
+}
+
 extern "C" void fn_8043CEA0(u8* self) {
     *(s16*)(self + 0x104) = *(s16*)(self + 0x104) - 1;
     if (*(s32*)(lbl_8053AAF8 + 0x4c) != 7) {
