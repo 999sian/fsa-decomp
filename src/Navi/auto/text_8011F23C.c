@@ -34,7 +34,7 @@ struct Color32 {
 
 struct Unk80168Base {
     void** vt;
-    u8 pad[0xDC];
+    u8 pad[0xCC];
     ~Unk80168Base() { vt = lbl_80298520; }
 };
 
@@ -294,16 +294,13 @@ extern "C" void fn_80120880(Unk80120880* p, s32 x, s32 y, s32 w, s32 h, u32* q) 
 extern "C" void fn_80120A2C(u8* p) {
     if (*(u8*)(p + 0xf) != 0) {
         Unk80168 obj;
-        u32 a, b, c, d;
-        u32 col;
-        col = *(u32*)(p + 0xc);
-        d = col;
-        c = col;
-        b = col;
-        a = col;
-        fn_801688F0(&obj, &a, &b, &c, &d);
+        Color32 col = *(Color32*)(p + 0xc);
+        Color32 d = col;
+        Color32 c = col;
+        Color32 b = col;
+        Color32 a = col;
+        fn_801688F0(&obj, (u32*)&a, (u32*)&b, (u32*)&c, (u32*)&d);
         fn_80168A38(&obj, p + 0x10);
-        (void)&col;
     }
 }
 
