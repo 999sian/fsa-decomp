@@ -29,6 +29,14 @@ extern "C" void* fn_80178F28(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" int fn_80179174(int, int, int, void*);
+extern "C" int fn_80179144(int a, int b, int c, void* d) {
+    if (d == 0) {
+        return 0;
+    }
+    return fn_80179174(a, b, c, d);
+}
+
 extern "C" int fn_801792B4(void* param_1, int param_2) {
     u32 buf[8];
     fn_801670D0(param_2, buf, 0x20);
@@ -313,6 +321,22 @@ extern "C" void* fn_80174B40(void* base, u32 offset);
 extern "C" void fn_8018BDF0(void* self, void* dst, void* src);
 extern "C" void fn_8018BDC8(void* self, void* src) {
     fn_8018BDF0(self, *(void**)((u8*)self + 4), src);
+}
+
+extern "C" void* fn_8018C1E8(void* base, u32 offset);
+extern "C" void fn_8018BFA4(void* self, void* dst, void* src) {
+    f32 zero = lbl_80301C30;
+    u8 flag = ((u8*)src)[8];
+    *(s16*)((u8*)dst + 6) = *(s16*)((u8*)src + 10);
+    u16 a = *(u16*)((u8*)src + 0xc);
+    *(u8*)((u8*)dst + 4) = flag;
+    u16 b = *(u16*)((u8*)src + 0xe);
+    *(f32*)((u8*)dst + 8) = zero;
+    *(u16*)((u8*)dst + 0x10) = a;
+    u32 c = *(u32*)((u8*)src + 0x10);
+    *(u16*)((u8*)dst + 0x12) = b;
+    *(void**)((u8*)dst + 0x14) = fn_8018C1E8(src, c);
+    *(void**)((u8*)dst + 0x18) = fn_80174B40(src, *(u32*)((u8*)src + 0x14));
 }
 
 extern "C" void fn_8018C048(void* unused, void* dest, void* src);
