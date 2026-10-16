@@ -194,6 +194,7 @@ extern "C" void* fn_80159C40(void* p, u32 size, u32 align) {
     return ((Obj*)p)->v7(size, align);
 }
 
+extern "C" char* lbl_802FF548;
 extern "C" void* fn_80159E8C(void* ptr);
 extern "C" void fn_80159CB4(void* heap, void* p);
 #pragma push
