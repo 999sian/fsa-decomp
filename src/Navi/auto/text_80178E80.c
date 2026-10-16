@@ -780,6 +780,10 @@ extern "C" void fn_80188DB0(void* self, int a, int b, int c) {
     ((VObj_80180920*)self)->vfCC(a, 0, c);
 }
 
+extern "C" void fn_80188DE0(void* self, int a, int b, int c) {
+    ((VObj_80180920*)self)->vfC8(a, b, 0);
+}
+
 extern "C" void fn_8018901C(void) {
     fn_80177F0C();
 }
