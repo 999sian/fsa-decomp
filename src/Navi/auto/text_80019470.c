@@ -486,6 +486,20 @@ extern "C" void fn_8001B760(void) {
     fn_8001B65C();
 }
 
+extern "C" void fn_8001E924(void*);
+extern "C" s32 fn_8001ADB4(void*);
+extern "C" void fn_8001BFA4(void*);
+extern "C" s32 fn_8001B780(void* param_1) {
+    void* p = *(void**)((u8*)param_1 + 0x60);
+    fn_8001C008(p);
+    fn_8001E924((u8*)param_1 + 0x34);
+    if (fn_8001ADB4(param_1) == 1) {
+        fn_8001BFA4(p);
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" int fn_8001BBBC(short* param_1) {
     return (int)*param_1;
 }
