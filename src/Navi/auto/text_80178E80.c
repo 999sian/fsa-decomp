@@ -77,9 +77,11 @@ extern "C" int fn_80180B60(u8* self, u8* src) {
     u8 a = src[0];
     u8 b = src[1];
     self[0x14c] = a;
+    u8 c = src[2];
     self[0x14d] = b;
-    self[0x14e] = src[2];
-    self[0x14f] = src[3];
+    u8 d = src[3];
+    self[0x14e] = c;
+    self[0x14f] = d;
     return 1;
 }
 
@@ -154,6 +156,10 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     local_c = local_14;
     void** vtbl = *(void***)self;
     return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
+}
+
+extern "C" void fn_8018A87C(void) {
+    fn_80177E84();
 }
 
 extern "C" void fn_80177E84(void);
