@@ -133,6 +133,13 @@ extern "C" int fn_800CBDC4(void) {
 extern "C" void fn_800CBDCC(void) {
 }
 
+extern "C" void* fn_800CBED8(const void* base, const void* offset) {
+    if (offset == 0) {
+        return 0;
+    }
+    return (void*)((unsigned int)base + (unsigned int)offset);
+}
+
 extern "C" void* fn_800CBF80(const void* base, const void* offset) {
     if (offset == 0) {
         return 0;
