@@ -36,6 +36,7 @@ extern "C" void fn_8001D57C(void*, void*);
 extern "C" void* fn_8001AC74(void*, void*);
 extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
+extern "C" void __unregister_fragment(int);
 extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
