@@ -704,6 +704,8 @@ extern "C" void* fn_8009672C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800967E0(void) {}
+
 extern StateFn_8009287C lbl_802862A8[];
 extern "C" void fn_800967E4(Obj_8009287C* param_1) {
     (param_1->*lbl_802862A8[param_1->state])();
