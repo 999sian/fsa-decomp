@@ -1,6 +1,3 @@
 #include "Game/Actor.h"
 
-class TOOI : public Actor {
-public:
-    virtual ~TOOI();
-};
+extern void* lbl_804ACB40[];
