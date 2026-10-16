@@ -23,6 +23,12 @@ extern char lbl_8029D308[];
 extern "C" void fn_80007AB8(const char*, int, const char*, ...);
 extern "C" BOOL fn_801C9D94(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, DVDCallback callback, s32 prio);
 
+extern "C" void cbForStateError(u32 intType);
+extern "C" void __DVDStoreErrorCode(u32 code);
+extern "C" BOOL DVDLowStopMotor(DVDLowCallback callback);
+extern "C" void fn_801C747C(void (*callback)(u32));
+extern "C" void fn_801C88E8(void);
+
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 {
 	BOOL level;
@@ -66,6 +72,19 @@ extern "C" void fn_801C803C(s32 result, DVDFileInfo* fileInfo);
 extern "C" BOOL fn_801C7D34(DVDCommandBlock* block)
 {
 	fn_801CA5B8(block);
+	return TRUE;
+}
+
+extern "C" BOOL fn_801C7F7C(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, DVDCallback callback, s32 prio)
+{
+	if (offset < 0 || offset > fileInfo->length) {
+		fn_80007AB8(lbl_802FE9A8, 0x2ee, lbl_8029D308);
+	}
+	if (offset + length < 0 || offset + length >= fileInfo->length + 0x20) {
+		fn_80007AB8(lbl_802FE9A8, 0x2f4, lbl_8029D308);
+	}
+	fileInfo->callback = callback;
+	fn_801C9D94(fileInfo, addr, length, fileInfo->startAddr + offset, fn_801C803C, prio);
 	return TRUE;
 }
 
