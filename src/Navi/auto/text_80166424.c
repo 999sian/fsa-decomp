@@ -88,6 +88,19 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
     return uVar1;
 }
 
+extern "C" s32 fn_801671B0(void* param_1, u32 param_2) {
+    void** vtbl = *(void***)param_1;
+    u32 size = ((u32(*)(void*))vtbl[7])(param_1);
+    u32 aligned = (param_2 + size - 1) & ~(param_2 - 1);
+    s32 diff = aligned - size;
+    if (diff != 0) {
+        if (((s32(*)(void*, u32, u32))vtbl[8])(param_1, aligned, 0) != diff) {
+            *((u8*)param_1 + 4) |= 1;
+        }
+    }
+    return diff;
+}
+
 extern "C" void fn_80168280(void);
 extern "C" void* fn_80167E08(void);
 extern "C" void fn_80167CB8(void) {
@@ -613,6 +626,17 @@ extern "C" void* fn_80174B88(void* base, u32 offset) {
 extern "C" void* fn_80174BB8(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern void* lbl_80298C5C[];
+extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80298C5C;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" u8 fn_80177F0C(char* self, void* arg)
