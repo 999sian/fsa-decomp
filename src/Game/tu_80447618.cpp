@@ -87,7 +87,7 @@ extern void fn_80402F04(void* a, void* b);
 extern void* lbl_8053AED0;
 extern f32 fn_8043D514(void* a);
 extern f32 fn_8043D57C(void* a);
-extern void fn_80402E08(void* a, f32 b);
+extern void fn_80402E08(void* a, f32 b, f32 c);
 }
 
 extern "C" void* fn_804030C4(u32 type, const char* name);
