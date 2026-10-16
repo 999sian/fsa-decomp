@@ -101,6 +101,11 @@ extern "C" int TRKDoConnect()
 	return 0;
 }
 
+extern "C" void SetTRKConnected(void* param)
+{
+	lbl_802FA410[0] = param;
+}
+
 extern "C" void* GetTRKConnected(void);
 extern void* lbl_802FA410[];
 extern "C" void* GetTRKConnected(void) {
