@@ -114,3 +114,20 @@ extern "C" void* fn_8018EBDC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_802997A4[];
+extern "C" void* fn_8018EC78(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802997A4;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80286A1C;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80286A30;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
