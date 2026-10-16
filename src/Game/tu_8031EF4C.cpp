@@ -16,8 +16,6 @@ struct SlotVirt6 {
     virtual void v01();
     virtual void v02();
     virtual void v03();
-    virtual void v04();
-    virtual void v05();
     virtual u32 v06(u32 a, char* b);
 };
 struct Init48 {
@@ -49,6 +47,55 @@ extern "C" Actor* fn_8031EF4C(Actor* param_1, s16 param_2)
         }
     }
     return param_1;
+}
+
+extern "C" void fn_8031EFAC(char* this_) {
+    Init48 s;
+    s32 i;
+    s.w18 = -1;
+    s.w1c = -1;
+    for (i = 0; (u8)i < 0x10; i += 8) {
+        s.idx[(u8)i] = i;
+        s.idx[(u8)(i + 1)] = i + 1;
+        s.idx[(u8)(i + 2)] = i + 2;
+        s.idx[(u8)(i + 3)] = i + 3;
+        s.idx[(u8)(i + 4)] = i + 4;
+        s.idx[(u8)(i + 5)] = i + 5;
+        s.idx[(u8)(i + 6)] = i + 6;
+        s.idx[(u8)(i + 7)] = i + 7;
+    }
+    s.w18 = -1;
+    s.w1c = 0;
+    s.w20 = 0;
+    s.b24[0] = 0;
+    s.b24[1] = 0;
+    s.b24[2] = 0;
+    s.b24[3] = 1;
+    s.b24[4] = 1;
+    s.b24[5] = 0;
+    s.b24[6] = 0;
+    s.b24[7] = 0;
+    s.b24[8] = 0;
+    s.b24[9] = 0;
+    s.b24[10] = 1;
+    s.w30 = 3;
+    s.b34[0] = 1;
+    s.b34[1] = 0;
+    s.b34[2] = 0;
+    s.w38 = -1;
+    s.w3c = 0;
+    s.w40 = 2;
+    s.b24[1] = -2;
+    s.b24[0] = 0;
+    s.b34[1] = 1;
+    if (*(s32*)(this_ + 0x230) == 0) {
+        s32 iVar1 = *(s32*)(this_ + 0x238) + lbl_804AB248[*(s32*)(this_ + 0x244)];
+        if (*(s32*)(this_ + 0x4) < 8) {
+            u32 uVar2 = ((SlotVirt6*)*(char**)((u8*)lbl_8053AAF8 + 0xa4))->v06(0x534f4220, lbl_8047174C);
+            fn_802F86CC(*(u32*)(lbl_8053AB10 + 0x20), this_ + 0xc, uVar2, iVar1, lbl_80541A58, lbl_80541A58, &s);
+        }
+        fn_80307AC8(*(s32*)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, *(s32*)(this_ + 0x238) + lbl_804AB248[*(s32*)(this_ + 0x244)], 0, 0, -1);
+    }
 }
 
 extern "C" u16 fn_80226850(void* pos, s32 room);
