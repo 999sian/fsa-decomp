@@ -31,6 +31,7 @@ extern "C" char lbl_802FB810[3];
 extern "C" char lbl_802FB814[5];
 extern "C" float lbl_802FFB6C;
 extern "C" char lbl_80203E4C[];
+extern "C" char lbl_80203E28[];
 extern "C" char lbl_80203F2C[];
 extern "C" void* lbl_802FEBA4;
 extern "C" void* lbl_802FEBA8;
