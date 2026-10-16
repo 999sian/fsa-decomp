@@ -27,6 +27,7 @@ extern const f32 lbl_8053EFDC;
 extern const f32 lbl_8053F010;
 extern const f32 lbl_8053F014;
 extern const f32 lbl_8053EFF0;
+extern "C" s32 fn_801CF720(u8* this_, s32 dir);
 extern "C" u8 fn_801CCB1C(const f32* pos, s32 layer);
 extern "C" u8 fn_801CFCF0(u8* this_, s32 idx);
 extern "C" s32 fn_801CF798(u8* this_, s32 idx, s32 dir);
@@ -231,10 +232,7 @@ extern "C" BOOL fn_801D0DD4(char* this_) {
     if (g->arr[room] != 0) {
         return (*(u32*)(this_ + 0x230) & 0x18) != 0;
     }
-    if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
-        return TRUE;
-    }
-    return FALSE;
+    return *(f32*)(this_ + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
 }
 
 extern "C" void fn_801D0E58(char* p) {
