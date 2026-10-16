@@ -16,7 +16,7 @@ struct Vec3f {
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" u8 fn_8022BA58(s32 room, f32* pos);
 extern "C" bool fn_8030C2A8(u8* p, f32* v);
-extern "C" s32 fn_801E1DE8(void* this_);
+extern "C" bool fn_801E1DE8(void* this_);
 extern "C" void fn_801F0E34(void* p, u32 id, s32 flag);
 extern "C" void fn_8021827C(u8* p) {
     u8 buf[0x10];
@@ -51,17 +51,17 @@ extern "C" void fn_8021827C(u8* p) {
 }
 
 extern "C" void fn_8021835C(u8* p) {
-    bool ok = false;
     if (*(s32*)(p + 0x248) == 1) {
-        Vec3f v;
-        Vec3f hi;
-        Vec3f lo;
+        JGeometry::TVec3<f32> v;
+        JGeometry::TVec3<f32> lo;
+        JGeometry::TVec3<f32> hi;
+        bool ok = false;
         fn_801CE010(p, &v);
         lo = v;
         hi = v;
         if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053FC40) {
-            lo.x = lo.x + *(f32*)(p + 0x60);
-            hi.x = hi.x + *(f32*)(p + 0x68);
+            lo.x += *(f32*)(p + 0x60);
+            hi.x += *(f32*)(p + 0x68);
         }
         if (fn_801CD2F8(*(s32*)(p + 4))) {
             if (fn_8022BA58(*(s32*)(p + 4), &lo.x) && fn_8022BA58(*(s32*)(p + 4), &hi.x)) {
