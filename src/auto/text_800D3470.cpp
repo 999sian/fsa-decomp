@@ -719,8 +719,8 @@ extern "C" void fn_800D9E3C(void* p) {
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
     u32 i = 0;
     GDSetCurrOffset(param_2);
-    u8* cur = GDGetCurrPointer();
     u8* start = GDGetCurrPointer();
+    u8* cur = GDGetCurrPointer();
     for (;;) {
         if (!isTexNoReg(cur)) {
             break;
@@ -920,8 +920,8 @@ extern "C" u32 fn_800DDA50(void) {
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
     u8 b2 = src[2];
-    u8 b3 = src[3];
     *(u16*)(this_ + 0x4) = w;
+    u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
 }
