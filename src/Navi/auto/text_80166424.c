@@ -541,6 +541,18 @@ extern "C" void fn_8016D24C(u8* p, u8 n, u8 flag)
     p[0x78] |= top;
 }
 
+extern "C" void fn_8016D5BC(u8* p, int unused, u32 idx)
+{
+    u8* obj;
+    if (idx >= 2) {
+        return;
+    }
+    obj = ((u8**)(p + 0x64))[idx];
+    if (obj != 0 && *(void**)(obj + 0x20) != 0) {
+        fn_801191F0(obj);
+    }
+}
+
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
         return 0;
