@@ -12,6 +12,11 @@ extern "C" void fn_8010E7E8(void*, s32);
 extern "C" void fn_8010E2D4(void*, s32);
 extern "C" void* fn_8011921C(void);
 extern "C" void* fn_8011871C(void* list, void* it, u32 tag);
+extern "C" void fn_801EE434(void*);
+extern "C" void __dt__13Base_8010E074Fv(void*, s32);
+extern "C" void __dl__FPv(void*);
+extern "C" char lbl_8049D208[];
+extern "C" char lbl_8049CC34[];
 
 extern "C" void* fn_8010FA84(u8* this_) {
 #if defined(VERSION_G4SP01)
@@ -50,6 +55,39 @@ extern "C" void fn_80111CC0(u8* this_) {
     if (this_[0x230] != 0) {
         fn_8010F4DC(this_);
     }
+}
+
+extern "C" void fn_80111D44(u8* this_) {
+    u8* list;
+    u8** it;
+    u8* elem;
+    s32 idx;
+    Vec tmp;
+
+    list = (u8*)fn_8011921C();
+    it = (u8**)fn_8011871C(list, *(void**)(list + 0x10), 0x444d474c);
+    if (it != *(u8***)((u8*)fn_8011921C() + 0x14)) {
+        elem = *it;
+        tmp = *(Vec*)(elem + 0xc);
+        *(Vec*)(this_ + 0x27c) = tmp;
+    }
+
+    list = (u8*)fn_8011921C();
+    it = (u8**)fn_8011871C(fn_8011921C(), *(void**)(list + 0x10), 0x444d4d44);
+    if (it != *(u8***)((u8*)fn_8011921C() + 0x14)) {
+        do {
+            elem = *it;
+            idx = *(s32*)(elem + 0x234);
+            if (idx < 6) {
+                tmp = *(Vec*)(elem + 0xc);
+                *(Vec*)(this_ + 0x288 + idx * 12) = tmp;
+            }
+            it++;
+        } while (it != *(u8***)((u8*)fn_8011921C() + 0x14));
+    }
+
+    tmp = *(Vec*)(this_ + 0xc);
+    *(Vec*)(this_ + 0x2d0) = tmp;
 }
 
 extern "C" void fn_8010F478(u8* this_, s32 param_2) {
