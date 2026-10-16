@@ -26,12 +26,8 @@ extern "C" void* fn_80133624(char* p, s16 flag) {
         *(void**)p = lbl_8049EB8C;
         fn_801EE434(*(void**)(p + 0x288));
         *(void**)(p + 0x288) = 0;
-        char* sub = p + 0x250;
-        if (sub != 0) {
-            char* s2 = sub + 0x24;
-            if (s2 != 0) {
-                *(void**)s2 = lbl_8049CC34;
-            }
+        if (p + 0x250 != 0 && p + 0x274 != 0) {
+            *(void**)(p + 0x274) = lbl_8049CC34;
         }
         __dt__13Base_8010E074Fv(p, 0);
         if (flag > 0) {
