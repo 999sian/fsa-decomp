@@ -217,6 +217,57 @@ struct Unk800DBCCCSrc {
     virtual void m20() = 0;
     virtual u16* getColorChan(u32) = 0;
 };
+struct Unk800DC574Src {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual void m14() = 0;
+    virtual void m15() = 0;
+    virtual void m16() = 0;
+    virtual void m17() = 0;
+    virtual u16 m18(int) = 0;
+    virtual void m19() = 0;
+    virtual void m20() = 0;
+    virtual u32* m21(int) = 0;
+    virtual void m22() = 0;
+    virtual void m23() = 0;
+    virtual void m24() = 0;
+    virtual void m25() = 0;
+    virtual void m26() = 0;
+    virtual void m27() = 0;
+    virtual void m28() = 0;
+    virtual void m29() = 0;
+    virtual void m30() = 0;
+    virtual void m31() = 0;
+    virtual void m32() = 0;
+    virtual void m33() = 0;
+    virtual void m34() = 0;
+    virtual void m35() = 0;
+    virtual void m36() = 0;
+    virtual void m37() = 0;
+    virtual void m38() = 0;
+    virtual u8* m39(int) = 0;
+    virtual void m40() = 0;
+    virtual void m41() = 0;
+    virtual void m42() = 0;
+    virtual void m43() = 0;
+    virtual void m44() = 0;
+    virtual void m45() = 0;
+    virtual void m46() = 0;
+    virtual u32* m47(int) = 0;
+};
+
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
