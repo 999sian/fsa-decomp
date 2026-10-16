@@ -60,6 +60,20 @@ extern "C" unsigned short fn_800D5324(void) {
     return lbl_802FD548[idx];
 }
 
+extern unsigned short lbl_802FD54C[2];
+extern unsigned short lbl_802FD550[2];
+extern unsigned short lbl_802FD554[2];
+extern "C" unsigned short fn_800D53A4(void) {
+    u32 idx = (*(u32*)(lbl_802BB0FC + 0x40) >> 1) & 1;
+    if (fn_80021994(lbl_802BB0FC) != -1) {
+        return lbl_802FD550[idx];
+    }
+    if (fn_8002185C(lbl_802BB0FC) > 1) {
+        return lbl_802FD54C[idx];
+    }
+    return lbl_802FD554[idx];
+}
+
 extern "C" void fn_800D54EC(char* p)
 {
     if (lbl_802FF208 & 2) {
