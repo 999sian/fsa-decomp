@@ -578,6 +578,10 @@ extern "C" u32 fn_801A441C(u8* p1) {
     return *(u32*)(p1 + 0x68);
 }
 
+extern "C" void fn_801A4424(u8* p1, u32 p2) {
+    *(u32*)(p1 + 0x68) = p2;
+}
+
 extern void* lbl_8029A5F0[];
 extern "C" void* fn_801A442C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
