@@ -38,6 +38,18 @@ struct KeyIter {
     f32* p;
 };
 
+extern char lbl_802911A0[];
+extern char lbl_80292C80[];
+struct NaviBase_80139DEC {
+    void* m_vtbl;
+    NaviBase_80139DEC() { m_vtbl = lbl_802911A0; }
+};
+struct NaviDerived_80139DEC : NaviBase_80139DEC {
+    u32 m_0x4;
+    NaviDerived_80139DEC(u32 v) { m_vtbl = lbl_80292C80; m_0x4 = v; }
+};
+inline void* operator new(unsigned long, void* p) { return p; }
+
 struct StrideIter {
     f32* p;
     u32 stride;
@@ -1526,9 +1538,8 @@ extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
-    if (ptr != nullptr) {
-        void* vt = lbl_8029320C;
-        *(void**)ptr = vt;
+    if (ptr) {
+        *(void**)ptr = lbl_8029320C;
         ((NaviTracker*)ptr)->fn_3();
         fn_80133C0C(ptr, 0);
         if (param_2 > 0) {
