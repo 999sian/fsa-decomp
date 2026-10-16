@@ -805,7 +805,7 @@ config.libs = [
             Object(NonMatching, "auto/text_800DF6DC.c"),
             Object(NonMatching, "auto/text_800DFEFC.cpp"),
             Object(MatchingFor("G4SE01"), "auto/text_801EDBA4.c"),
-            Object(NonMatching, "auto/text_801EDC0C.c"),
+            Object(MatchingFor("G4SE01"), "auto/text_801EDC0C.c"),
             Object(NonMatching, "auto/text_801EDD0C.c"),
             Object(NonMatching, "auto/text_801EE028.c"),
         ],
