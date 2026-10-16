@@ -240,6 +240,7 @@ static inline u8 playerMgrByte(u32 offset)
 
 u8 fn_8022ADFC()
 {
+    u8 r;
     if (playerMgrByte(0x6c)) return 1;
     if (playerMgrByte(0x6d)) return 1;
     if (playerMgrByte(0x6e)) return 1;
@@ -648,6 +649,19 @@ void fn_8022CF08(int owner)
     for (int index = 0; index < 4; index++) {
         if (isPlayerEnabled(index) && (owner == index || fn_8022E438(owner, index))) {
             SetBusyLocked(lbl_8053AC90->players[index]);
+        }
+    }
+}
+
+void fn_8024BB88(Player*);
+void fn_8022D36C(int index)
+{
+    if (lbl_8053AC90 == NULL) return;
+    if (isPlayerEnabled(index)) {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && fn_8022E438(index, i)) {
+                fn_8024BB88(lbl_8053AC90->players[i]);
+            }
         }
     }
 }
@@ -1219,8 +1233,8 @@ JGeometry::TBox2<f32>& fn_80233BA0(JGeometry::TBox2<f32>& destination, const JGe
 
 JGeometry::TVec3<f32> fn_80233BC4(JGeometry::TVec3<f32>& left, const JGeometry::TVec3<f32>& right)
 {
-    JGeometry::TVec3<f32> difference(left);
-    difference.sub(right);
+    JGeometry::TVec3<f32> difference;
+    difference.sub(left, right);
     return difference;
 }
 
