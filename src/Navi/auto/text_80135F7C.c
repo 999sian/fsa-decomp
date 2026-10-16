@@ -320,6 +320,20 @@ extern "C" int fn_80137824(void) {
     return 5;
 }
 
+extern "C" void fn_8013782C(void* p, unsigned int q) {
+    unsigned int a = q;
+    unsigned int b = q;
+    if (q != 0) {
+        b = b + 0x40;
+    }
+    if (q != 0) {
+        a = q + 8;
+    }
+    *(u32*)p = 0;
+    *(u32*)((u8*)p + 4) = a;
+    *(u32*)((u8*)p + 8) = b;
+}
+
 extern "C" void fn_8013785C(void* param_1, s32 param_2, s32 param_3) {
     *(s32*)((u8*)param_1 + 0x44) = param_2;
     *(s32*)((u8*)param_1 + 0x48) = param_3;
