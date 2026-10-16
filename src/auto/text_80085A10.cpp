@@ -8,6 +8,29 @@ extern u32 fn_8008668C(void);
 extern u8 fn_800866D4(void*, u32);
 extern void fn_8008665C(void*, u32);
 
+extern u8 g_bit_mask_table[8];
+extern s32 fn_8008668C(int);
+extern "C" void fn_800863C0(void* param_1) {
+    s32 idx = fn_8008668C((int)param_1);
+    
+    if (idx < 0) {
+        return;
+    }
+    
+    s32 byte_idx = idx >> 3;
+    u32 bit_pos = idx & 7;
+    u8* data = *(u8**)((u8*)param_1 + 0x78);
+    u8 mask = g_bit_mask_table[bit_pos];
+    u8 old_byte = data[byte_idx];
+    u8 new_byte = old_byte & ~mask;
+    data[byte_idx] = new_byte;
+    
+    u8 check_byte = data[byte_idx];
+    if (old_byte != check_byte) {
+        *(u32*)((u8*)param_1 + 0x80) += *(u32*)((u8*)param_1 + 0x6c);
+    }
+}
+
 void fn_8008657C(void) {
 }
 
@@ -42,17 +65,17 @@ extern "C" u32 fn_80086654(int param_1) {
     return *(u32*)(param_1 + 0x80);
 }
 
-extern "C" int fn_8008665C(int param_1, int param_2) {
+extern "C" int fn_8008665C(int param_1, uint param_2) {
     if (param_2 < 0) {
         return 0;
     }
     u32 limit = *(u32*)(param_1 + 0x70);
-    if ((u32)param_2 >= limit) {
+    if (param_2 >= limit) {
         return 0;
     }
     int divisor = *(int*)(param_1 + 0x6c);
     int offset = *(int*)(param_1 + 0x7c);
-    return offset + divisor * param_2;
+    return offset + divisor * (int)param_2;
 }
 
 extern "C" int fn_8008668C(int param_1, u32 param_2) {
@@ -76,5 +99,23 @@ extern "C" int fn_8008668C(int param_1, u32 param_2) {
     }
     
     return (int)quotient;
+}
+
+extern "C" u8 fn_800866D4(int param_1, u32 param_2) {
+    if (!((-1 < (s32)param_2) && (param_2 < *(u32*)(param_1 + 0x70)))) {
+        return 0;
+    }
+    
+    s32 idx = ((s32)param_2 >> 3) + ((u32)((s32)param_2 < 0 && (param_2 & 7) != 0));
+    u8* data = *(u8**)(param_1 + 0x78);
+    u8 byte_val = data[idx];
+    u8 mask = *(u8*)(0x8053B770 + (param_2 & 7));
+    u8 res = byte_val & mask;
+    
+    return (u8)((-(s32)res | res) >> 31);
+}
+
+extern "C" u32 fn_80086A48(void) {
+    return 0x554e4954;
 }
 
