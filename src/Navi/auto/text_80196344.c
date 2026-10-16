@@ -352,6 +352,9 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_801A34E4(void) {
+}
+
 extern "C" void fn_801A34E8(void) {
 }
 
