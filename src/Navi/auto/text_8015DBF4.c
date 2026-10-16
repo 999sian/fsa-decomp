@@ -29,3 +29,14 @@ extern "C" void* fn_8015DBF4(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern "C" void* fn_8015DC48(void* param_1, s16 param_2) {
+    if (param_1) {
+        fn_80166C08(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
