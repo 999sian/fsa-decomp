@@ -1051,9 +1051,6 @@ extern "C" void fn_801DB478(void) {
     }
     OSRestoreInterrupts(interrupt_state);
 }
-#pragma dont_inline reset
-extern u8 lbl_802FFA70;
-extern u8 lbl_802FFA74[];
 extern "C" void fn_801DB4F8(void) {
     u8* gx = __GXData;
     *(volatile u8*)0xCC008000 = 0x61;
