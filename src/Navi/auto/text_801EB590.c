@@ -11,3 +11,9 @@ extern "C" int TRKDoVersions()
 	return 0;
 }
 
+extern "C" void* GetTRKConnected(void);
+extern void* lbl_802FA410[];
+extern "C" void* GetTRKConnected(void) {
+    return lbl_802FA410[0];
+}
+
