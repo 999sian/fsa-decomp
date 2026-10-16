@@ -462,6 +462,7 @@ extern "C" void* fn_8015FDA8(void*, void*);
 extern "C" void fn_8018ECE4(void*, void*);
 extern "C" void fn_8016A72C(void*);
 extern void* lbl_802FF6A0;
+#pragma dont_inline on
 extern "C" void* fn_8017A4A8(void* param_1) {
     if (fn_8015FDA8(param_1, nullptr) == nullptr) {
         void* p = lbl_802FF6A0;
