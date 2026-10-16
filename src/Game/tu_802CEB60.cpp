@@ -35,7 +35,6 @@ extern "C" void fn_802CEBEC(void* this_, void* b, void* c) {
     fn_801F132C(this_, b, c, (char*)this_ + 0x23c);
 }
 
-s32 fn_8013CC50(s32 a, char* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern "C" s32 fn_8013CC50(s32 a, char* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern "C" void fn_802CFABC(char* p) {
     *(s32*)(p + 0x230) = *(s32*)(p + 0x90) & 0xf;
