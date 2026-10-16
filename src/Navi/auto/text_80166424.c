@@ -1171,6 +1171,14 @@ extern "C" void fn_801721F0(u8* p) {
     *p = lbl_80301ADC;
 }
 
+extern "C" void* fn_801721FC(void* self) {
+    ((void (*)(void*, char*))fn_80172264)(self, lbl_80202278);
+    u8* p = (u8*)self;
+    p[7] = (p[7] & ~0x0c) | (((u8)lbl_80301AC8[1]) << 2);
+    p[7] = (p[7] & ~3) | lbl_80301AC8[0];
+    return self;
+}
+
 extern "C" void fn_80172464(void)
 {
 }
@@ -1913,7 +1921,6 @@ extern "C" void fn_801744EC(u8* p, u8* s, u32 a, u32 b) {
     }
 }
 
-extern "C" void fn_80172264(void* p);
 extern "C" void* fn_801749F0(void* p, void* q);
 extern "C" u8 lbl_80301AB4[];
 extern "C" u8 lbl_80301AC8[2];
