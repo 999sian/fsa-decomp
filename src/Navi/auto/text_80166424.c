@@ -1700,7 +1700,8 @@ extern "C" u8 fn_801741E4(u8* p, s32 idx)
 {
     u8* tbl = *(u8**)(p + 4);
     u16* ids = *(u16**)(p + 8);
-    u8 v = tbl[ids[idx] * 0xe8 + 1];
+    s32 n = ids[idx] * 0xe8 + 1;
+    u8 v = tbl[n];
     if (v != 0xff) {
         u32* arr = *(u32**)(p + 0x30);
         return arr[v];
