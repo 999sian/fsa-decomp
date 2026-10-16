@@ -394,6 +394,26 @@ extern "C" int fn_801ADC28(void) {
     return 5;
 }
 
+extern void* lbl_8029B33C[];
+extern "C" void* fn_801ADC30(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029B33C;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029B388;
+            if ((s32)ptr + 0x1c != 0) {
+                ((void**)(ptr))[7] = lbl_80286A4C;
+            }
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_8027F214;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" int fn_801ADD40(void)
 {
   return 10;
