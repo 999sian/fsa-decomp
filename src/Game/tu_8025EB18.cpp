@@ -232,12 +232,12 @@ extern "C" bool fn_8025FDD0(char* p, JGeometry::TVec3<f32>* v) {
     o = idx2 < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
     f32 x = o[0];
     f32 y = o[1];
-    bool ok = true;
     F32(p, 0x8) += x - ox;
-    *(JGeometry::TVec3<f32>*)(p + 0xd78) = *v;
     F32(p, 0xc) += y - oy;
+    bool ok = true;
     S32(p, 0xd70) = -1;
     S32(p, 0xd58) = 5;
+    *(JGeometry::TVec3<f32>*)(p + 0xd78) = *v;
     F32(p, 0xd80) = v->z;
     return ok;
 }
@@ -422,15 +422,6 @@ extern "C" void fn_80264768(char* p) {
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_802636D0(void) {
     return;
-}
-
-extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
-extern "C" void* fn_8023E724(s32);
-extern JGeometry::TVec3<f32> lbl_8046B400[];
-extern "C" void fn_802636D4(char* p) {
-    U8(p, 0x3fc)++;
-    fn_8025EB18(p);
-    fn_80268B3C(p);
 }
 
 #endif
