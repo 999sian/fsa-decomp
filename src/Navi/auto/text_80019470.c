@@ -725,9 +725,9 @@ extern "C" s32 fn_8001BD74(void* param_1) {
     return 0;
 }
 
-extern "C" void fn_8001EA5C(void);
-extern "C" void fn_8001BE84(void) {
-    fn_8001EA5C();
+extern "C" void fn_8001EA5C(int);
+extern "C" void fn_8001BE84(int param_1) {
+    fn_8001EA5C(param_1);
 }
 
 extern "C" void fn_8001EB08(void);
