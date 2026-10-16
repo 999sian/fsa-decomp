@@ -8,6 +8,7 @@ extern "C" f32 fn_801375FC(void* param_1, u32* param_2);
 extern "C" f64 fn_80137610(void* param_1, f64* param_2);
 extern "C" f64 fn_80137644(void* param_1, f64* param_2);
 extern "C" void fn_801376D0(void* param_1, void* param_2);
+extern "C" u32 fn_8013BD28(void* param_1, u32* param_2);
 
 struct VObj_8013BC94 {
     virtual void v0();
