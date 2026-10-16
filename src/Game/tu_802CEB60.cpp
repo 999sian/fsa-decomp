@@ -31,3 +31,7 @@ extern "C" void fn_802CEBC0(Vt802CEBC0* p) {
     p->m7();
 }
 
+extern "C" void fn_802CEBEC(void* this_, void* b, void* c) {
+    fn_801F132C(this_, b, c, (char*)this_ + 0x23c);
+}
+
