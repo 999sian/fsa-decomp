@@ -39,9 +39,9 @@ extern "C" void fn_801E9FA0(void) {
     fn_801E741C();
 }
 
-extern "C" void fn_801E7758(void);
-extern "C" void fn_801E9FC0(void) {
-    fn_801E7758();
+extern "C" double fn_801E7758(void);
+extern "C" double fn_801E9FC0(void) {
+    return fn_801E7758();
 }
 
 extern "C" float fn_801EA204(void) {
