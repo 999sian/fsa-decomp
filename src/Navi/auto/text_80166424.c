@@ -29,6 +29,14 @@ extern "C" u8 lbl_80298660[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8016B170(u32*, int);
 
+extern "C" void fn_80166B58(u32* param_1, u32 param_2)
+{
+	param_1[1] = 0;
+	*param_1 = param_2;
+	param_1[2] = 0;
+	param_1[3] = 0;
+}
+
 extern "C" int fn_8016997C()
 {
 	return 0;
@@ -88,8 +96,8 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
         self[0] = (u32)lbl_80298644;
         u32* p = (u32*)self[0x1c];
         if (p != NULL) {
-            VFn_80169B1C* f = ((VFn_80169B1C**)*p)[0xb8 / 4];
-            f(p, 1);
+            VFn_80169B1C** vt = (VFn_80169B1C**)*p;
+            vt[0xb8 / 4](p, 1);
         }
         p = (u32*)self[0x1d];
         if (p != NULL) {
@@ -98,7 +106,7 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
         fn_8015AB1C((void*)self[0x21]);
         fn_8016B170(self + 10, -1);
         if ((u8*)self + 0x10 != NULL) {
-            self[9] = (u32)&lbl_80298660;
+            self[9] = (u32)lbl_80298660;
         }
         if (param_2 > 0) {
             fn_8015AB1C(self);
