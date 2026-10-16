@@ -350,7 +350,7 @@ extern "C" u32 fn_8001A5A0(void) {
     return uVar2;
 }
 
-extern "C" void fn_8001DC20(void);
+extern "C" s32 fn_8001DC20(void);
 extern "C" void fn_8001A5D0(void) {
     fn_8001DC20();
 }
