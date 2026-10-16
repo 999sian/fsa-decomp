@@ -69,6 +69,22 @@ extern "C" void fn_800CAAAC(void* a, s32 v) {
     *(s32*)((u8*)a + 0x4) = v;
 }
 
+size_t J3DMaterialFactory::calcSize(J3DMaterial* mat, MaterialType type, int idx, u32 flags) const {
+    size_t size = 0;
+    switch (type) {
+    case NORMAL:
+        size = calcSizeNormalMaterial(mat, idx, flags);
+        break;
+    case LOCKED:
+        size = calcSizeLockedMaterial(mat, idx, flags);
+        break;
+    case PATCHED:
+        size = calcSizePatchedMaterial(mat, idx, flags);
+        break;
+    }
+    return size;
+}
+
 extern "C" s32 fn_800CAEC8(int param_1, u32 param_2) {
     s32 result = 0;
     if (param_2 == 0) {
