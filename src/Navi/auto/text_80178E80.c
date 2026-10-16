@@ -24,6 +24,10 @@ extern "C" int fn_801792B4(void* param_1, int param_2) {
     return 0;
 }
 
+extern "C" void fn_8017A468(void) {
+    fn_80177E84();
+}
+
 extern "C" void fn_8017A488(void) {
     fn_80177F0C();
 }
@@ -68,10 +72,14 @@ extern "C" void fn_8017A928(void) {
 }
 
 extern "C" int fn_80180B60(u8* self, u8* src) {
-    self[0x14c] = src[0];
-    self[0x14d] = src[1];
-    self[0x14e] = src[2];
-    self[0x14f] = src[3];
+    u8 a = src[0];
+    u8 b = src[1];
+    self[0x14c] = a;
+    a = src[2];
+    self[0x14d] = b;
+    b = src[3];
+    self[0x14e] = a;
+    self[0x14f] = b;
     return 1;
 }
 
