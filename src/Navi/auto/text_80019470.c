@@ -2,6 +2,8 @@
 extern "C" void fn_8001D66C(void*, void*);
 extern "C" void fn_800126C4(void*);
 extern "C" void fn_8001A950(void);
+extern "C" void fn_8001A99C(void*, void*);
+extern "C" void fn_8001A970(void*);
 extern u8 lbl_8029FDB4[];
 extern "C" int fn_800636A0(void*, void*, int);
 extern "C" unsigned int fn_8001C554(void*, int*);
