@@ -81,6 +81,18 @@ extern "C" void fn_80071CD0(void) {
     fn_80071D8C();
 }
 
+extern "C" void fn_80071FE4(u8* p) {
+    u8* q = *(u8**)(p + 0x24c);
+    s16 rot[3];
+    *(f32*)(q + 0x18) = *(f32*)(p + 0x144);
+    *(f32*)(q + 0x1c) = *(f32*)(p + 0x148);
+    *(f32*)(q + 0x20) = *(f32*)(p + 0x14c);
+    fn_801C61AC(lbl_8029F8D8, *(f32*)(p + 0x128), *(f32*)(p + 0x12c), *(f32*)(p + 0x130));
+    fn_80115D38(rot, *(s16*)(p + 0x13c), 0, 0);
+    fn_8000C8A4(lbl_8029F8D8, rot[0], rot[1], rot[2]);
+    fn_801C5D74(lbl_8029F8D8, *(u8**)(p + 0x24c) + 0x24);
+}
+
 extern "C" BOOL fn_80072080(StateObj_80072080* self, StateFunc_80072080* func, int arg)
 {
     if (self->m_func) {
