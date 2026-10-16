@@ -790,6 +790,8 @@ extern "C" void fn_801A4700(void) { }
 
 extern "C" void fn_801A4704(void) { }
 
+extern "C" u32 fn_801A47A8(void) { return 0x54565054; }
+
 extern "C" void fn_801A47D0(u8* p, s32 i, u16 v) {
     ((u16*)(p + 8))[i] = v;
 }
