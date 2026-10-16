@@ -93,6 +93,17 @@ extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_80166478(void* param_1) {
+    if (lbl_802FF688 == nullptr) {
+        void* p = fn_8015A9A8(0x7c, lbl_802FF540, 0);
+        if (p != nullptr) {
+            p = fn_801664D8(p, param_1);
+        }
+        lbl_802FF688 = p;
+    }
+    return lbl_802FF688;
+}
+
 extern "C" void* fn_801664D8(void* ptr, void* param_2)
 {
     void* r31 = ptr;
