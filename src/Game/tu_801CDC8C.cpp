@@ -16,6 +16,8 @@ extern "C" void fn_8023B6CC(s32 idx);
 extern "C" void fn_802379E4(s32 idx, void* pos);
 extern "C" u8 fn_801EAC20(void* list, s32 idx);
 extern "C" void fn_801CB538(u32 room, f32* pos, s32 a, s32 b);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u16 fn_802265FC(f32* pos, s32 room);
 
 extern "C" JAUSoundObject* fn_801F1184(void* this_);
 extern "C" void fn_801F0E34(void* this_, void* arg, u32 c);
@@ -173,14 +175,14 @@ extern "C" u16 fn_802265FC(f32* pos, s32 room);
 extern "C" void fn_801CE800(u8* this_) {
     f32 pos[2];
     f32 out[2];
-    if (!(*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > lbl_8053EFC4)) {
+    if (*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) <= lbl_8053EFC4) {
         return;
     }
-    if (!(*(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > lbl_8053EFC4)) {
+    if (*(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) <= lbl_8053EFC4) {
         return;
     }
-    pos[0] = *(f32*)(this_ + 0xc);
     pos[1] = *(f32*)(this_ + 0x8c) + (*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
+    pos[0] = *(f32*)(this_ + 0xc);
     bool bVar1 = false;
     switch (fn_802265FC(pos, *(s32*)(this_ + 0x4))) {
     case 0:
