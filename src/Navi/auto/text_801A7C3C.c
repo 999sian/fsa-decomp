@@ -151,6 +151,22 @@ extern "C" void* fn_801ABFC0(u8* p) {
     return p;
 }
 
+extern "C" int fn_801194B4(void*, unsigned short);
+extern "C" int fn_80119414(int, int);
+extern "C" void fn_801AC4DC(char* self, char* other)
+{
+    unsigned short i;
+    for (i = 0; i < *(unsigned short*)(self + 0x14); i++) {
+        int a = *(int*)(other + 0xc);
+        int r = fn_80119414(a, fn_801194B4(self + 0x1c, i));
+        if (r == -1) {
+            (*(unsigned short**)(self + 0x18))[i] = 0xffff;
+        } else {
+            (*(unsigned short**)(self + 0x18))[i] = r;
+        }
+    }
+}
+
 extern "C" f32 fn_801AD8D8(u16* hdr, f32 t, f32* k) {
     if (t < k[0]) {
         return k[1];
@@ -975,6 +991,45 @@ extern "C" void* fn_801B7F50(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" int fn_801B865C(unsigned char** self, unsigned int flags, int idx)
+{
+    unsigned char* base = self[0];
+    int off = ((unsigned short*)self[1])[idx] * 0x28;
+    int result = 0;
+    switch (flags & 0x10) {
+    case 0x10:
+        switch (base[off]) {
+        case 0:
+            result = 8;
+            break;
+        case 1:
+            result = 8;
+            break;
+        case 2:
+            result = 8;
+            break;
+        case 3:
+            result = 0x10;
+            break;
+        }
+        break;
+    case 0:
+    default:
+        switch (base[off]) {
+        case 0:
+        case 1:
+        case 2:
+            result = 8;
+            break;
+        case 3:
+            result = 0x10;
+            break;
+        }
+        break;
+    }
+    return result;
+}
+
 extern "C" void* fn_801B8704(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
@@ -1113,6 +1168,18 @@ extern "C" void fn_801B9674(void* unused, void* dest, void* src) {
 extern "C" void fn_801B9718(void* unused, void* dest, void* src);
 extern "C" void fn_801B96F0(void* self, void* src) {
     fn_801B9718(self, *(void**)((u8*)self + 4), src);
+}
+
+extern "C" void* fn_801BA410(void* base, u32 offset);
+extern "C" void fn_801B9718(void* unused, void* dest, void* src) {
+    u8* d = (u8*)dest;
+    u8* s = (u8*)src;
+    u8 b = s[8];
+    *(s16*)(d + 6) = *(s16*)(s + 0xa);
+    d[4] = b;
+    *(f32*)(d + 8) = 0.0f;
+    *(void**)(d + 0x10) = fn_801BA410(s, *(u32*)(s + 0x10));
+    *(void**)(d + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x14));
 }
 
 extern "C" void fn_801B97AC(void* unused, void* dest, void* src);
