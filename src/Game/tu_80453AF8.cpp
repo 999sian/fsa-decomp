@@ -35,3 +35,37 @@ extern "C" void fn_80454A00(u8* p) {
     }
 }
 
+extern "C" void* fn_80454CD8(void* this_, s16 flag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804B1DA8;
+        fn_80459274(lbl_8053AF80);
+        void* p1 = *(void**)((u8*)this_ + 0x4);
+        if (p1 != 0) {
+            ((Slot0*)p1)->slot0(1);
+        }
+        *(void**)((u8*)this_ + 0x4) = 0;
+        void* p2 = *(void**)((u8*)this_ + 0x8);
+        if (p2 != 0) {
+            ((Slot0*)p2)->slot0(1);
+        }
+        *(void**)((u8*)this_ + 0x8) = 0;
+        void* p3 = *(void**)((u8*)this_ + 0xc);
+        if (p3 != 0) {
+            ((Slot0*)p3)->slot0(1);
+        }
+        *(void**)((u8*)this_ + 0xc) = 0;
+        T80454CD8* o = (T80454CD8*)this_;
+        for (int i = 0; i < 3; i++) {
+            if (o->a[i] != 0) {
+                o->a[i]->slot0(1);
+            }
+            o->a[i] = 0;
+        }
+        lbl_8053AF48 = 0;
+        if (flag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
