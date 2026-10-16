@@ -774,7 +774,7 @@ extern "C" void fn_8001C008(void* p) {
 
 extern "C" void fn_8001EA98(void*, bool (*)(void));
 extern "C" void fn_8001C148(char* p) {
-    fn_8001EA98(p + 0x1c, fn_8001BEE8);
+    fn_8001EA98(p + 0x1c, (bool (*)(void))fn_8001BEE8);
 }
 
 #pragma dont_inline reset
