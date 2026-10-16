@@ -7,6 +7,13 @@ extern "C" void fn_80168280(void);
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80166C70(void* param_1);
 extern "C" u8 fn_80166FC4(void*);
+extern "C" void* fn_80166BD0(void* param_1, u8 param_2) {
+    if (param_2) {
+        fn_80166C70(param_1);
+    }
+    return param_1;
+}
+
 extern "C" void* fn_80166C08(void* param_1, s16 param_2) {
     if (param_1) {
         u8* node = *(u8**)param_1;
@@ -169,8 +176,8 @@ extern "C" void fn_801191F0(void* param_1);
 extern "C" void fn_80171E5C(void* param_1, int param_2, u32 param_3)
 {
     if (param_3 < 8) {
-        u8* base = (u8*)param_1 + param_3 * 4;
-        void* p = *(void**)(base + 0x16c);
+        void** arr = (void**)((u8*)param_1 + param_3 * 4);
+        void* p = arr[0x5b];
         if (p != NULL && *(void**)((u8*)p + 0x20) != NULL) {
             fn_801191F0(p);
         }
