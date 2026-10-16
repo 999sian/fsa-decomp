@@ -420,9 +420,9 @@ extern "C" void fn_80075550(void) {
     fn_80072D8C();
 }
 
-extern "C" void fn_80073720(void);
-extern "C" void fn_800755D0(void) {
-    fn_80073720();
+extern "C" BOOL fn_80073720(u8* p);
+extern "C" void fn_800755D0(u8* p) {
+    fn_80073720(p);
 }
 
 extern "C" void fn_8007356C(void);
