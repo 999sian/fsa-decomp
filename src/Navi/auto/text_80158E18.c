@@ -137,6 +137,22 @@ extern "C" void* fn_80159C40(void* p, u32 size, u32 align) {
     return ((Obj*)p)->v7(size, align);
 }
 
+extern "C" void* fn_80159E8C();
+extern "C" void fn_80159CB4(void* heap, void* p);
+#pragma push
+#pragma dont_inline on
+extern "C" void fn_80159C6C(void* p, int heap) {
+    void* h = (void*)heap;
+    if (h == 0) {
+        h = fn_80159E8C();
+        if (h == 0) {
+            return;
+        }
+    }
+    fn_80159CB4(h, p);
+}
+#pragma pop
+
 extern "C" void fn_80159CB4(void* heap, void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
