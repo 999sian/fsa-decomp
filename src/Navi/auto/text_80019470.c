@@ -64,23 +64,29 @@ extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
 }
 
 extern "C" void fn_80019490(f32* d, const f32* s) {
-    d[0] = s[0];
-    d[1] = s[1];
-    d[2] = s[2];
-    d[3] = s[3];
-    d[4] = s[4];
-    d[5] = s[5];
+    f32 y = s[1];
+    f32 x = s[0];
+    d[0] = x;
+    f32 z = s[2];
+    d[1] = y;
+    f32 w = s[3];
+    d[2] = z;
+    f32 v = s[4];
+    d[3] = w;
+    f32 u = s[5];
+    d[4] = v;
+    d[5] = u;
 }
 
 extern "C" void fn_800194C4(f32* d, const f32* a, const f32* b) {
-    f32 x = a[0];
     f32 y = a[1];
+    f32 x = a[0];
     d[0] = x;
     f32 z = a[2];
     d[1] = y;
-    f32 bx = b[0];
-    d[2] = z;
     f32 by = b[1];
+    d[2] = z;
+    f32 bx = b[0];
     d[3] = bx;
     f32 bz = b[2];
     d[4] = by;
