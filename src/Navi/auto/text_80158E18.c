@@ -105,6 +105,13 @@ extern "C" void fn_80159CB4(VObj_8003B920* obj) {
     obj->m8();
 }
 
+extern "C" void fn_80159CE0(void* p) {
+    while (*(void**)((u8*)p + 0x5c) != 0) {
+        Unk8015AD64* obj = **(Unk8015AD64***)((u8*)p + 0x5c);
+        obj->vf08(-1);
+    }
+}
+
 extern "C" void fn_80159DE0(void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -363,7 +370,7 @@ extern "C" u8 fn_8015C780(u8* p) {
 }
 
 extern "C" void* fn_8015C788(u32 size, void* heap, void* arg) {
-    s32 p;
+    u8* p;
     if (heap == NULL) {
         heap = lbl_802FF548;
     }
@@ -374,11 +381,11 @@ extern "C" void* fn_8015C788(u32 size, void* heap, void* arg) {
     if (size < 0x80) {
         return NULL;
     }
-    p = (s32)fn_80159BE0(size, 0x10, heap);
-    if (p == 0) {
+    p = (u8*)fn_80159BE0(size, 0x10, heap);
+    if (p == NULL) {
         return NULL;
     }
-    return fn_8015C89C((void*)p, (void*)(p + 0x80), size - 0x80, heap, arg);
+    return fn_8015C89C(p, p + 0x80, size - 0x80, heap, arg);
 }
 
 extern void* lbl_802977D0[];
