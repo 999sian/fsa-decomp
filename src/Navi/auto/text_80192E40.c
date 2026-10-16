@@ -192,6 +192,8 @@ extern "C" void* fn_801960C8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80196124(void) { return 0x534D4356; }
+
 extern "C" void* fn_80196130(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80299E38;
