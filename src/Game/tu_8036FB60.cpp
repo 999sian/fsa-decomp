@@ -19,6 +19,24 @@ extern "C" void fn_803704E8(void)
 	fn_803721F4();
 }
 
+extern "C" void fn_80370508(char* self)
+{
+	struct VObj { virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03(); virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07(); virtual void v08(); virtual void v09(); virtual void v10(int, int); };
+	fn_803703C8(self);
+	int state = *(int*)(self + 0x240);
+	if (state != 0) {
+		if (state == 1) {
+			*(int*)(self + 0x368) = 0x104;
+		}
+	} else if (*(float*)(self + 0x328) < lbl_80542E00) {
+		*(float*)(self + 0x328) = *(float*)(self + 0x328) + lbl_80542E04;
+	} else {
+		fn_80230534(0);
+		*(int*)(self + 0x230) = 0xb;
+		((VObj*)self)->v10(0xff, 1);
+	}
+}
+
 extern "C" void fn_803706AC(char* self)
 {
 	fn_803703C8(self);
