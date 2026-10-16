@@ -23,7 +23,9 @@ struct StrideIter {
 };
 
 static inline s32 StrideIter_distance(StrideIter first, StrideIter last) {
-    return (last.p - first.p) / last.stride;
+    StrideIter* f = &first;
+    StrideIter* l = &last;
+    return (l->p - f->p) / l->stride;
 }
 
 static inline s32 KeyIter_distance(KeyIter first, KeyIter last) {
