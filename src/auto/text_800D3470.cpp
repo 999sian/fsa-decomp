@@ -1408,6 +1408,21 @@ extern "C" void fn_800DE388(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
 extern "C" void fn_800DE3EC(void) {
 }
 
+extern "C" void fn_800DE3F0(void* param_1)
+{
+  u32 i = 0;
+  __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
+  void* pStart = GDGetCurrPointer();
+  for (;;) {
+    void* pCurr = GDGetCurrPointer();
+    if (!isTexNoReg(pCurr)) break;
+    u16 texNo = getTexNoReg(pCurr);
+    loadTexNo(i, texNo);
+    i++;
+  }
+  DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
+}
+
 extern "C" u32 fn_800DE490(void) {
     return 'TVB2';
 }
