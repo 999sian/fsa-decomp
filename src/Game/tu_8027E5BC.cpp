@@ -270,6 +270,9 @@ void fn_80283D00(char* p) { fn_8027EB04(p); }
 
 void fn_80283D20(char* p) { U8(p, 0x458) = 0; }
 
+void fn_80284290(void) {
+}
+
 void fn_80284294(char* p) {
     if (U8(p, 0x3fc) < 10) {
         F32(p, 0xc8c) = lbl_805403A4 * (10 - U8(p, 0x3fc)) + lbl_8054037C;
