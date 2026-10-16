@@ -719,6 +719,11 @@ extern "C" void fn_8017A928(void) {
     fn_801788C0();
 }
 
+extern "C" void fn_801789D0(void);
+extern "C" void fn_8017A948(void) {
+    fn_801789D0();
+}
+
 extern "C" void fn_8017A968(void) {}
 
 extern "C" void* fn_8017AA68(u32* self, int a, int b, int c) {
