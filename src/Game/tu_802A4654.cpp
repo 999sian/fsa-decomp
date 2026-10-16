@@ -19,20 +19,20 @@ struct Unk802A4654 {
     s32 m234;
 };
 
-extern "C" void fn_802A4654(void* this_) {
-    f32 x = *(f32*)((u8*)this_ + 0xc);
-    f32 y = *(f32*)((u8*)this_ + 0x10);
-    f32 z = *(f32*)((u8*)this_ + 0x14);
+extern "C" void fn_802A4654(Unk802A4654* this_) {
+    f32 x = this_->mPos.x;
+    f32 y = this_->mPos.y;
+    f32 z = this_->mPos.z;
     s32 i;
     for (i = 0; i < 4; i++) {
-        *(f32*)((u8*)this_ + 0xc) = x + (f32)lbl_8046C658[*(s32*)((u8*)this_ + 0x234)][i];
-        *(f32*)((u8*)this_ + 0x10) = y + (f32)lbl_8046C6C8[*(s32*)((u8*)this_ + 0x234)][i];
+        this_->mPos.x = x + (f32)lbl_8046C658[this_->m234][i];
+        this_->mPos.y = y + (f32)lbl_8046C6C8[this_->m234][i];
         fn_801F0E34(this_, 0x30084, 0);
-        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), (u8*)this_ + 0xc);
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &this_->mPos);
     }
-    *(f32*)((u8*)this_ + 0xc) = x;
-    *(f32*)((u8*)this_ + 0x10) = y;
-    *(f32*)((u8*)this_ + 0x14) = z;
+    this_->mPos.x = x;
+    this_->mPos.y = y;
+    this_->mPos.z = z;
 }
 
 extern "C" void* fn_802A64E8(void* this_, short how) {
