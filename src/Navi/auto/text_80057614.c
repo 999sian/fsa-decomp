@@ -50,6 +50,44 @@ extern "C" void fn_800579E0(void) {
 extern "C" void fn_800579F8(void) {
 }
 
+extern "C" void fn_800583D8(s32 idx);
+extern "C" void fn_80058628(void* a, s32 b, s32 c);
+extern "C" void fn_800582A0(s32 idx, s32 val) {
+    unsigned char* base = lbl_802C05B0;
+    unsigned char* e = base + idx * 4 + 8;
+    if (idx < 0 || idx >= 2) {
+        return;
+    }
+    fn_800583D8(idx);
+    bool b = false;
+    if (idx == 0 && base[0xe] == 1) {
+        b = true;
+    }
+    s32 mode = 1;
+    if (b) {
+        mode = 2;
+    }
+    fn_80058628((void*)(idx + 0x8000), val, mode);
+    *(unsigned short*)e = val;
+    e[2] = 1;
+    e[3] = mode;
+}
+
+extern "C" void fn_8005835C(s32 idx) {
+    s32 id = idx + 0x8000;
+    unsigned char* e = lbl_802C05B0 + idx * 4 + 8;
+    switch (idx) {
+    case 0:
+    case 1:
+        if (e[2] == 1) {
+            fn_8005869C(id, 3);
+            e[2] = 2;
+            e[3] = 3;
+        }
+        break;
+    }
+}
+
 extern "C" unsigned char lbl_802C05B0[];
 extern "C" void fn_8005869C(s32 param_1, s32 param_2);
 
