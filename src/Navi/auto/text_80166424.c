@@ -652,6 +652,13 @@ extern "C" int fn_8016B410()
 	return 0;
 }
 
+extern "C" void fn_80177728(void* self, f32* rect);
+extern "C" void fn_80177C20(void* self, f32 c);
+extern "C" int fn_8016B418()
+{
+	return 0;
+}
+
 extern "C" void fn_80118BD0(void*, int);
 extern "C" int fn_8016BC8C(u8* p, void* a, void* b)
 {
@@ -1627,6 +1634,23 @@ extern "C" int fn_8017404C(int p, int i)
 		return *(u8*)(*(int*)(p + 0x1c) + b);
 	}
 	return 0;
+}
+
+extern "C" void fn_80174084(u8* p, u8* s, u32 a, u32 b) {
+    u16 row = ((u16*)*(u8**)(s + 8))[a];
+    u16* tbl = (u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x14);
+    u16 idx = tbl[b];
+    if (idx != 0xffff) {
+        u8* t = *(u8**)(s + 0x20) + idx * 4;
+        p[0] = t[0];
+        p[1] = t[1];
+        p[2] = t[2];
+    } else {
+        const u8* c = (const u8*)&lbl_80202218;
+        p[0] = c[0];
+        p[1] = c[1];
+        p[2] = c[2];
+    }
 }
 
 extern "C" u16 fn_80174224(u8* s, u32 a, u32 b) {
