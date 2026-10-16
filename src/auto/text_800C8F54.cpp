@@ -133,6 +133,9 @@ extern "C" int fn_800CBDC4(void) {
 extern "C" void fn_800CBDCC(void) {
 }
 
+extern "C" void fn_800CBDEC(void) {
+}
+
 extern "C" u32 fn_800CBDF0(void) {
     return 0x54474E4C;
 }
