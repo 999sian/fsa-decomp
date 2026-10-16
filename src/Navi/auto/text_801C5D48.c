@@ -12,6 +12,10 @@ static volatile BOOL PauseFlag_802FF88C = FALSE;
 static volatile BOOL ResetRequired_802FF8B8;
 static vu32 ResumeFromHere_802FF8A8;
 static u32 lbl_802FF8B4;
+static DVDLowCallback Callback_802FF820;
+static volatile BOOL WaitingCoverClose_802FF834;
+static u32 WorkAroundType_802FF83C;
+static u32 WorkAroundSeekLocation_802FF840;
 static void (*lbl_802FF8C4)(DVDCommandBlock*);
 static u8* IDShouldBe_802FF884;
 extern char lbl_802F7AC0[];
@@ -66,6 +70,16 @@ static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 
 extern u8* FstStart_802FF864;
 extern s32 MaxEntryNum_802FF86C;
+extern "C" float fn_801EA270(f32 x);
+extern "C" float fn_801EA294(f32 x);
+extern "C" void fn_801C5FDC(void* dst, s32 axis, f32 x, f32 y);
+extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
+    f32 a = fn_801EA270(v);
+    f32 b = fn_801EA294(v);
+    fn_801C5FDC(dst, axis, a, b);
+    v = a;
+}
+
 extern "C" BOOL fn_801C7BF8(s32 entryNum, DVDFileInfo* fileInfo)
 {
 	if (entryNum >= 0 && (u32)entryNum < (u32)MaxEntryNum_802FF86C) {
