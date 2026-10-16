@@ -1,4 +1,23 @@
 #include "types.h"
+struct NaviTracker {
+    virtual void fn_0();
+    virtual void fn_1();
+    virtual void fn_2();
+    virtual void fn_3(s32);
+    virtual u32 fn_4();
+    virtual void fn_5(u32);
+    virtual u32 fn_6();
+    virtual void fn_7(u32);
+    virtual void fn_8();
+    virtual void fn_9();
+    virtual void fn_10();
+    virtual void fn_11();
+    virtual void fn_12();
+    virtual s32 fn_13(u32*, u32, s32);
+    virtual void fn_14();
+    virtual s32 fn_15(u32*, u32, s32);
+};
+
 struct Entry_802C67C4 { s32 unk0; s32 id; u8 pad[0x18]; };
 struct Slot_8013D1D4 { u8 pad[0x10]; void* ptr; };
 
@@ -17,6 +36,20 @@ extern "C" void* fn_8013DD14(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern void* lbl_8029366C[];
+extern "C" void* fn_80134898(void* ptr, s16 param_2);
+extern "C" void* fn_8013DE44(void* ptr, s16 param_2) {
+    if (ptr) {
+        *(void**)ptr = lbl_8029366C;
+        ((NaviTracker*)ptr)->fn_3(0);
+        fn_80134898(ptr, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern Entry_802C67C4 lbl_802C688C[];
