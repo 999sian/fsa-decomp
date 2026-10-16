@@ -1,4 +1,5 @@
 #include "types.h"
+#include <JSystem/J2D/J2DScreen.h>
 
 
 extern const f32 lbl_80543D78;
