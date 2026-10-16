@@ -672,6 +672,26 @@ extern "C" void fn_80076950(u8* p, s32 idx)
 	*(s32*)(p + 0x3c0) = table[*(s32*)(p + 0x3bc) * 2 + 1];
 }
 
+extern void* lbl_8028192C[];
+extern "C" BOOL fn_800769C4(u8* p)
+{
+	if (*(s8*)(p + 0x400) != 0) {
+		s32* table = (s32*)lbl_80281428[*(s32*)(p + 0x3b8)];
+		s32 n = *(s32*)(p + 0x3c0);
+		if (n == 0) {
+			*(s32*)(p + 0x3bc) += 1;
+			fn_80076A80(p, (void*)table[*(s32*)(p + 0x3bc) * 2]);
+			*(s32*)(p + 0x3c0) = table[*(s32*)(p + 0x3bc) * 2 + 1];
+		} else if (n > 0) {
+			*(s32*)(p + 0x3c0) = n - 1;
+			fn_80076A80(p, (void*)table[*(s32*)(p + 0x3bc) * 2]);
+		} else {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 extern "C" void fn_80075B60(void);
 extern "C" void fn_80077B10(void) {
     fn_80075B60();
