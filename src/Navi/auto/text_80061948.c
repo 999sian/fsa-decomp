@@ -1001,6 +1001,8 @@ extern "C" void fn_8006BB68(void* param_1) {
     fn_8002F358(0x6a, 0);
 }
 
+extern "C" void fn_8006C38C(void) {}
+
 extern "C" void fn_8006B15C(void);
 extern "C" void fn_8006CDCC(void) {
     fn_8006B15C();
