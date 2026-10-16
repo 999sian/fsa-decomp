@@ -921,6 +921,20 @@ extern "C" void fn_801B93D0(void* self, void* src) {
     fn_801B93F8(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void fn_801B93F8(void* unused, void* dest, void* src) {
+    extern f32 lbl_80301DF0;
+    u8* dst = (u8*)dest;
+    u8* s = (u8*)src;
+    *(u16*)(dst + 0x1e) = *(u16*)(s + 0xc);
+    *(s16*)(dst + 6) = *(s16*)(s + 0xa);
+    *(u8*)(dst + 4) = *(u8*)(s + 8);
+    *(f32*)(dst + 8) = lbl_80301DF0;
+    *(void**)(dst + 0x20) = fn_8018C260(src, *(u32*)(s + 0x14));
+    *(void**)(dst + 0xc) = fn_8018C2F0(src, *(u32*)(s + 0x18));
+    *(void**)(dst + 0x10) = fn_8018C2D8(src, *(u32*)(s + 0x1c));
+    *(void**)(dst + 0x14) = fn_8018C2F0(src, *(u32*)(s + 0x20));
+}
+
 extern "C" void fn_801B94B4(void* unused, void* dest, void* src);
 extern "C" void fn_801B948C(void* self, void* src) {
     fn_801B94B4(self, *(void**)((u8*)self + 4), src);
@@ -1014,4 +1028,10 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
-
+typedef struct { u16 count; u16 offset; } Key_801ABEA8;
+typedef struct {
+    u8 pad0[8];
+    f32 frame;
+    f32* values;
+    Key_801ABEA8* keys;
+} Anim_801ABEA8;
