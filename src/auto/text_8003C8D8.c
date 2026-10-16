@@ -1,6 +1,7 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 #include "types.h"
+#include "JSystem/JAudio/System/JASHeapCtrl.h"
 
 extern "C" const f32 lbl_8053B2CC;
 extern "C" const f64 lbl_8053B2E0;
@@ -77,9 +78,11 @@ extern "C" void* fn_8003CE04(char* p, int i) {
 }
 
 extern "C" void fn_8003CF84(void* param_1, void** param_2) {
-    void* obj = param_2;
-    if (obj != 0) {
-        ((void (*)(void*, int))(*(void***)obj)[2])(obj, 1);
+    struct VObj {
+        virtual void v00(int);
+    };
+    if (param_2 != 0) {
+        ((VObj*)param_2)->v00(1);
     }
 }
 
