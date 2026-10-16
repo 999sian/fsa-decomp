@@ -493,6 +493,37 @@ extern "C" s32 fn_80065DA0(void) {
     return 4;
 }
 
+extern "C" void fn_800667B4(u8* p) {
+    s32 i;
+    u8* a;
+    u8* b;
+
+    a = p;
+    b = p;
+    for (i = 0; i < 4; i++) {
+        fn_8000D6F4(a + 0x29c);
+        fn_8000D6F4(b + 0x33c);
+        fn_8000D6F4(b + 0x378);
+        a += 0x10;
+        b += 0xc;
+    }
+    fn_8000D6F4(p + 0x2dc);
+    fn_8000D6F4(p + 0x36c);
+    fn_8000D6F4(p + 0x3a8);
+    fn_8000D6F4(p + 0x2ec);
+    fn_8000D6F4(p + 0x2fc);
+    fn_8000D6F4(p + 0x30c);
+    fn_8000D6F4(p + 0x31c);
+    fn_8000D6F4(p + 0x32c);
+}
+
+extern "C" BOOL fn_80066B6C(char* p) {
+    if (p[0x3ba] == 0) {
+        p[0x3ba]++;
+    }
+    return TRUE;
+}
+
 extern "C" void fn_80064E0C(void);
 extern "C" void fn_80066B88(void) {
     fn_80064E0C();
