@@ -279,25 +279,47 @@ extern "C" void* fn_8017B7E4(u32* param_1, s16 param_2) {
     return param_1;
 }
 
-extern "C" void fn_8017C0A8(u8* self, Quad_8017C0A8* a, Quad_8017C0A8* b, Quad_8017C0A8* c, Quad_8017C0A8* d) {
-    Quad_8017C0A8 qa = *a;
-    Quad_8017C0A8 qb = *b;
-    Quad_8017C0A8 qc = *c;
-    Quad_8017C0A8 qd = *d;
-    *(Quad_8017C0A8*)(self + 0x128) = qa;
-    *(Quad_8017C0A8*)(self + 0x12c) = qb;
-    *(Quad_8017C0A8*)(self + 0x130) = qc;
-    *(Quad_8017C0A8*)(self + 0x134) = qd;
+extern "C" void fn_8017C0A8(u8* self, u32* a, u32* b, u32* c, u32* d) {
+    u32 va = *a;
+    u32 vb = *b;
+    u32 vc = *c;
+    u32 vd = *d;
+    u8* pa = (u8*)&va;
+    u8* pb = (u8*)&vb;
+    u8* pc = (u8*)&vc;
+    u8* pd = (u8*)&vd;
+    self[0x128] = pa[0];
+    self[0x129] = pa[1];
+    self[0x12a] = pa[2];
+    self[0x12b] = pa[3];
+    self[0x12c] = pb[0];
+    self[0x12d] = pb[1];
+    self[0x12e] = pb[2];
+    self[0x12f] = pb[3];
+    self[0x130] = pc[0];
+    self[0x131] = pc[1];
+    self[0x132] = pc[2];
+    self[0x133] = pc[3];
+    self[0x134] = pd[0];
+    self[0x135] = pd[1];
+    self[0x136] = pd[2];
+    self[0x137] = pd[3];
+}
+
+extern "C" void fn_8017C154(VObj_8017C154* self, f32 x, f32 y) {
+    u8 buf[48];
+    fn_801C5D48(buf);
+    self->vf38(buf, x, y);
 }
 
 extern "C" u32 fn_8017D014(char* self, u8 idx, u8 flag) {
-    u32 tbl[4];
-    tbl[0] = *(u32*)(self + 0x100);
-    tbl[1] = *(u32*)(self + 0x104);
-    tbl[2] = *(u32*)(self + 0x108);
-    tbl[3] = *(u32*)(self + 0x10c);
+    Tbl4_8017D014 tbl = *(Tbl4_8017D014*)lbl_802022C8;
+    tbl.v[0] = *(u32*)(self + 0x100);
+    tbl.v[1] = *(u32*)(self + 0x104);
+    tbl.v[2] = *(u32*)(self + 0x108);
+    tbl.v[3] = *(u32*)(self + 0x10c);
     if (idx < 4 && flag == 0) {
-        return tbl[idx];
+        return tbl.v[idx];
     }
     return 0;
 }
