@@ -10,6 +10,28 @@ extern const float lbl_8053F6AC;
 extern const float lbl_8053F6B0;
 extern const float lbl_8053F678;
 extern "C" u16 fn_801CD664(s32);
+extern "C" int fn_801EB648(void* param_1) {
+    int result = 0;
+    if ((unsigned char)(int)*(float*)((char*)param_1 + 0x54) != 0) {
+        if (*(unsigned int*)((char*)param_1 + 0x34) != 0) {
+            result = 1;
+        } else if (*(unsigned int*)((char*)param_1 + 0x38) != 0) {
+            result = 1;
+        } else if (*(unsigned int*)((char*)param_1 + 0x3c) != 0) {
+            result = 1;
+        } else if (*(unsigned int*)((char*)param_1 + 0x40) != 0) {
+            result = 1;
+        } else if (*(unsigned int*)((char*)param_1 + 0x44) != 0) {
+            result = 1;
+        } else if (*(unsigned int*)((char*)param_1 + 0x48) != 0) {
+            result = 1;
+        } else if (*(unsigned int*)((char*)param_1 + 0x4c) != 0) {
+            result = 1;
+        }
+    }
+    return result;
+}
+
 extern "C" char* dtor_801EB8CC(char* p, s16 freeFlag) {
     if (p != 0) {
         for (s32 i = 0; i < 7; i++) {
@@ -20,6 +42,35 @@ extern "C" char* dtor_801EB8CC(char* p, s16 freeFlag) {
             __dl__FPv(p);
         }
     }
+    return p;
+}
+
+extern "C" char* fn_801EB950(char* p) {
+    *(f32*)(p + 0x0) = lbl_8053F678;
+    *(f32*)(p + 0x4) = lbl_8053F678;
+    *(f32*)(p + 0x8) = lbl_8053F678;
+    *(s32*)(p + 0xC) = 1;
+    *(s32*)(p + 0x10) = 1;
+    *(f32*)(p + 0x14) = lbl_8053F69C;
+    *(f32*)(p + 0x18) = lbl_8053F6A0;
+    *(f32*)(p + 0x1C) = lbl_8053F6A4;
+    *(f32*)(p + 0x20) = lbl_8053F6A8;
+    *(f32*)(p + 0x24) = lbl_8053F6AC;
+    *(f32*)(p + 0x28) = lbl_8053F6B0;
+    *(f32*)(p + 0x2C) = lbl_8053F6AC;
+    *(s16*)(p + 0x30) = 0x600;
+    *(s32*)(p + 0x50) = 0;
+    *(f32*)(p + 0x54) = lbl_8053F678;
+    *(f32*)(p + 0x58) = lbl_8053F678;
+    *(u8*)(p + 0x5C) = 0;
+    *(s16*)(p + 0x5E) = fn_801CD664(0x10000);
+    *(s32*)(p + 0x34) = 0;
+    *(s32*)(p + 0x38) = 0;
+    *(s32*)(p + 0x3C) = 0;
+    *(s32*)(p + 0x40) = 0;
+    *(s32*)(p + 0x44) = 0;
+    *(s32*)(p + 0x48) = 0;
+    *(s32*)(p + 0x4C) = 0;
     return p;
 }
 
