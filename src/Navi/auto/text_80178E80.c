@@ -170,6 +170,8 @@ struct VObj_80180980 {
     virtual void vfF0(f32*, f32*); virtual void vfF4(); virtual void vfF8(f32*, f32*); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf108(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf10C(f32, f32, f32, f32, f32, f32, f32, f32);
+    virtual void vf110(); virtual void vf114(); virtual void vf118(); virtual void vf11C(); virtual void vf120(); virtual void vf124(); virtual void vf128(); virtual void vf12C(); virtual void vf130(); virtual void vf134(); virtual void vf138(); virtual void vf13C(); virtual void vf140();
+    virtual void vf144(f32, f32, s16, s16, s16, s16, s16, s16, s16, s32, s32);
 };
 
 struct VObj_80180920 {
@@ -699,6 +701,24 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8017E65C(u32* self, void* a, f32 f, int b, int c) {
+    ((void (*)(void*, void*, f32, int, int))(*(u32**)self)[50])(self, fn_8017A4A8(a), f, b, c);
+}
+
+extern "C" void fn_8017E9DC(u32* self, u32 a) {
+    u8 i;
+    for (i = 0; i < *((u8*)self + 0x110); i++) {
+        if (self[0x40 + i] == a) {
+            break;
+        }
+    }
+    ((void (*)(void*, int))(*(u32**)self)[54])(self, i);
+}
+
+extern "C" void fn_8017EB2C(u32* self, void* a, int b) {
+    ((void (*)(void*, void*, int))(*(u32**)self)[68])(self, fn_8017A4A8(a), b);
+}
+
 #pragma push
 #pragma use_lmw_stmw off
 extern "C" void fn_8017EC94(void* self, void* a, int b, int c) {
@@ -723,7 +743,8 @@ extern "C" void fn_8017ED64(VObj_8017ED64* self, f32 x, f32 y) {
 extern "C" void fn_8017EDD0(u32* self, s32 a) {
     u8* p = (u8*)self;
     if (*(u32*)(p + 0x100) != 0 && *(u8*)(p + 0x110) != 0) {
-        ((void (*)(void*, f32, f32, s16, s16, s16, s16, s16, s16, s16, s32, s32))(*(u32**)self)[81])(self, *(f32*)(p + 0x20), *(f32*)(p + 0x24), *(s16*)(p + 0x112), *(s16*)(p + 0x114), *(s16*)(p + 0x116), *(s16*)(p + 0x118), *(s16*)(p + 0x11a), *(s16*)(p + 0x11c), *(s16*)(p + 0x11e), *(s16*)(p + 0x120), a);
+        void (*vfn)(void*, f32, f32, s16, s16, s16, s16, s16, s16, s16, s32, s32) = (void (*)(void*, f32, f32, s16, s16, s16, s16, s16, s16, s16, s32, s32))((*(void***)self)[0x144 / 4]);
+        vfn(self, *(f32*)(p + 0x20), *(f32*)(p + 0x24), *(s16*)(p + 0x112), *(s16*)(p + 0x114), *(s16*)(p + 0x116), *(s16*)(p + 0x118), *(s16*)(p + 0x11a), *(s16*)(p + 0x11c), *(s16*)(p + 0x11e), *(s16*)(p + 0x120), a);
     }
 }
 
