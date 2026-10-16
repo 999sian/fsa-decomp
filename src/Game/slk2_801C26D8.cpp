@@ -24,6 +24,8 @@ extern void* lbl_804A43E8[];
 extern const f32 lbl_8053EE08;
 extern u16 lbl_8046A748;
 extern "C" void fn_801C12B8(void* rec);
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" void fn_801D1974(void* this_);
 extern "C" void Slk2_ResetFlags7(void* p);
 extern "C" void Slk2_InitVtablePairRecord(void* p);
