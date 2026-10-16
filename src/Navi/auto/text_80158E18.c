@@ -33,6 +33,12 @@ extern "C" u32 fn_80159BA4(u32 param_1) {
     return old;
 }
 
+extern "C" u8 fn_8015A644(u8* p, u8 v) {
+    u8 old = p[0x68];
+    p[0x68] = v;
+    return old;
+}
+
 extern "C" void fn_8015A60C(void);
 extern u32 lbl_802FF54C;
 extern "C" u32 fn_8015A654(u32 param_1) {
