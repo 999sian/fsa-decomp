@@ -663,6 +663,16 @@ extern "C" void fn_8017FD50(void* self, f32 a, f32 b, f32 c, f32 d) {
     fn_8017FED0();
 }
 
+extern "C" void fn_80180144(char* self, f32* p) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        *(u16*)(self + 0x112) = fn_801786BC(8, p[0]);
+        *(u16*)(self + 0x114) = fn_801786BC(8, p[1]);
+        p += 2;
+        self += 4;
+    }
+}
+
 extern "C" void fn_801801B8(void* self, s32 a, s32 b, s32 c, s32 d) {
     fn_801801F4(self, (u8*)self + 0x112, a, b, c, d);
 }
@@ -784,8 +794,23 @@ extern "C" void fn_801809B0(void* self, int a, int b) {
     ((Obj*)self)->vfC8(a, b, 0);
 }
 
-extern "C" void fn_801809E0(VObj_80180980* self, int a) {
-    self->vfC4(a, 0);
+extern "C" void fn_801809E0(void* self, int a) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+        virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+        virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+        virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+        virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+        virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+        virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+        virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43();
+        virtual void v44(); virtual void v45(); virtual void v46();
+        virtual void vfC4(int, int);
+    };
+    ((Obj*)self)->vfC4(a, 0);
 }
 
 extern "C" void fn_80180A10(VObj_80180980* self) {
