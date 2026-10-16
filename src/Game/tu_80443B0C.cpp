@@ -22,3 +22,15 @@ extern "C" void fn_80444650(void* this_) {
     }
 }
 
+struct T804446A4;
+typedef void (T804446A4::*PMF804446A4)();
+extern PMF804446A4 lbl_804B1B30[];
+extern "C" bool fn_804446A4(T804446A4* this_) {
+    u8 state = *(u8*)((char*)this_ + 0x4d);
+    if (state != 4) {
+        (this_->*lbl_804B1B30[state])();
+        return false;
+    }
+    return true;
+}
+
