@@ -30,22 +30,25 @@ extern "C" void fn_8044C028(u8* this_, f32 val);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7440(void* p, s32 x);
 extern "C" void fn_80128728(void* p, s32 x);
-extern "C" void fn_80128C58(u8 val) {
+extern "C" void fn_80128C58(s32 val) {
     *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x2c) + 0xc) = val;
 }
 
+#pragma dont_inline on
 extern "C" void fn_80128C68(char* p) {
     fn_80128C58((s32)*(f32*)(p + 0x234));
-    if (*(s32*)(p + 0x230) > 0 && *(s32*)(p + 0x230) < 4) {
+    s32 v = *(s32*)(p + 0x230);
+    if (v >= 1 && v <= 3) {
         fn_8044C028((u8*)lbl_8053AF38, *(f32*)(p + 0x238));
     }
     fn_8010DF58(p);
 }
-
+#pragma dont_inline reset
 extern "C" void fn_80128F10(char* p) {
     fn_8010DF98();
     void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-    *(s32*)(p + 0x23c) = ((s32 (*)(void*, s32, void*))(*(void***)obj)[6])(obj, 0x3f3f3f3f, lbl_80539F38);
+    void** vt = *(void***)obj;
+    *(s32*)(p + 0x23c) = ((s32 (*)(void*, s32, void*))vt[6])(obj, 0x3f3f3f3f, lbl_80539F38);
     fn_802D7440(fn_802D6A9C(), 0);
     fn_80128728(p, 0);
 }
