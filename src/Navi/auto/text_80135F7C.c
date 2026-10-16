@@ -494,6 +494,7 @@ extern "C" void fn_8013782C(void* p, unsigned int q) {
     *(u32*)((u8*)p + 8) = b;
 }
 
+#pragma dont_inline on
 extern "C" void fn_8013785C(void* param_1, s32 param_2, s32 param_3) {
     *(s32*)((u8*)param_1 + 0x44) = param_2;
     *(s32*)((u8*)param_1 + 0x48) = param_3;
@@ -501,6 +502,7 @@ extern "C" void fn_8013785C(void* param_1, s32 param_2, s32 param_3) {
     *(s32*)((u8*)param_1 + 0x50) = *(s32*)((u8*)param_1 + 0x44) + *(s32*)((u8*)param_1 + 0x48) * 8;
     *(s32*)((u8*)param_1 + 0x54) = *(s32*)((u8*)param_1 + 0x4c);
 }
+#pragma dont_inline reset
 
 extern "C" void fn_8013788C(void* param_1) {
     *(f64*)((u8*)param_1 + 0x8) = *(f32*)&lbl_802FEAB0;
@@ -830,17 +832,16 @@ extern "C" void fn_80139364(KeyIter* ret, KeyIter* first, KeyIter* last, f64* va
 }
 
 extern "C" StrideIter fn_801393E4(StrideIter first, StrideIter last, const f64& val) {
-    s32 len = (s32)((last.p - first.p) / last.stride);
+    s32 len = StrideIter_distance(first, last);
     while (len > 0) {
         s32 half = len / 2;
         StrideIter mid = first;
-        mid.p += mid.stride * half;
+        mid += half;
         if (val < *mid.p) {
             len = half;
         } else {
-            mid.p += mid.stride;
-            first = mid;
-            len = len - (half + 1);
+            first = ++mid;
+            len = len - half - 1;
         }
     }
     return first;
