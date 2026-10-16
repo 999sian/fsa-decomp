@@ -43,6 +43,10 @@ extern "C" BOOL fn_80180B60(u8* self, u8* src) {
     return 1;
 }
 
+extern "C" void fn_80180B88(void) {
+    fn_80177F0C();
+}
+
 extern "C" void fn_80176550(void* self);
 extern "C" void fn_8018119C(void* self, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" u32 lbl_80299040[];
