@@ -34,6 +34,9 @@ void* fn_801F856C(void);
 void fn_80238244(s32);
 BOOL fn_80240670(char*);
 void fn_80241454(char*, u8);
+int fn_80241E28(char*, s32, JGeometry::TVec3<f32>*);
+BOOL fn_80240D64(char*);
+void fn_80248604(char*);
 s32 fn_8024189C(char*);
 void fn_80248004(char*, s32, s32);
 s32 fn_802486A0(const char*);
@@ -405,6 +408,36 @@ void fn_80293534(char* p) {
 void fn_80293760(char* p) {
     U8(p, 0x124d) = 1;
     U8(p, 0x458) = 0;
+}
+
+void fn_80293774(char* p) {
+    if (U8(p, 0x3fc) == 0x3c) {
+        if (S32(p, 0xcf4) != 0x1d) {
+            if (S32(p, 0x3b4) < 8) {
+                JGeometry::TVec3<f32> pos;
+                pos.x = F32(p, 0x8);
+                pos.y = F32(p, 0xc) + lbl_80540614;
+                pos.z = F32(p, 0x10) + lbl_805405A8;
+                fn_8013CC50(S32(p, 0x3b4), &pos, 0x17d, 1, 0, 0, NULL, 1, lbl_80540600);
+            } else if (S32(p, 0xce4) < 8) {
+                fn_8024EFA0(p, 0);
+            }
+        }
+        U8(p, 0x3fd) = 0;
+    } else if (U8(p, 0x3fc) >= 0x76) {
+        if (S32(p, 0x3b4) < 8) {
+            VEC(p, 0xcb0) = VEC(p, 0x8);
+        }
+        U8(p, 0x124d) = 0;
+        if (fn_80251AEC(p, 0x21)) {
+            fn_80241454(p, 0);
+            S32(p, 0x3b4) = S32(p, 0xce4);
+            VEC(p, 0x8) = VEC(p, 0xcd4);
+            F32(p, 0x10) = lbl_805405B4;
+            fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
+        }
+    }
+    U8(p, 0x3fc)++;
 }
 
 void fn_802938B8(char* p) {
