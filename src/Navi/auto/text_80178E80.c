@@ -111,7 +111,7 @@ struct VObj_80180920 {
     virtual void vfBC();
     virtual void vfC0();
     virtual void vfC4();
-    virtual void vfC8();
+    virtual void vfC8(int, int, int);
     virtual void vfCC(int, int, int);
     virtual void vfD0(int, int, int);
 };
