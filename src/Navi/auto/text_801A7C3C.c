@@ -532,6 +532,7 @@ extern "C" void* fn_801B4D28(u8* self, u8* data) {
     }
     return *(void**)(self + 4);
 }
+#pragma pop
 
 extern void* lbl_8029B970[];
 extern "C" void* fn_801B50C8(void* ptr, s16 param_2) {
