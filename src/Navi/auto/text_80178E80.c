@@ -15,7 +15,6 @@ struct VObj_80183C4C {
     virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
     virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
     virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
-    virtual void v40(); virtual void v41();
     virtual s32 vfA8(s32* a, s32* b);
 };
 
@@ -760,6 +759,21 @@ extern "C" int fn_80182058(char* self, void* v) {
 
 extern "C" void fn_801820F4(void) {
     fn_80177E84();
+}
+
+extern "C" s32 fn_80183C4C(VObj_80183C4C* self, s32* p) {
+    s32 local_14;
+    s32 local_10;
+    s32 local_c;
+    s32 local_18;
+    local_14 = -1;
+    local_10 = -1;
+    if (!(fn_80183FC8((s32)self, &local_14, &local_10) & 0xff)) {
+        return 0;
+    }
+    local_c = local_14;
+    local_18 = *p;
+    return self->vfA8(&local_c, &local_18);
 }
 
 extern "C" s32 fn_80184164(char* self, s32* a, s32* b) {
