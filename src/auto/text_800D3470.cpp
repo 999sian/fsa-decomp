@@ -1637,8 +1637,13 @@ extern "C" u8 fn_800DE648(int param_1) {
 
 extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
-    *(Unk800DE210*)(p + 0x36) = *(Unk800DE210*)((u8*)src + 1);
-    *(Unk800DE210*)(p + 0x3a) = *(Unk800DE210*)((u8*)src + 5);
+    u8 t;
+    t = src[0].g; p[0x36] = t;
+    t = src[0].b; p[0x37] = t;
+    t = src[0].a; p[0x38] = t;
+    t = src[1].g; p[0x3a] = t;
+    t = src[1].b; p[0x3b] = t;
+    t = src[1].a; p[0x3c] = t;
 }
 
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
