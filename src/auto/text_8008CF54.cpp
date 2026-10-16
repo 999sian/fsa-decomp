@@ -43,6 +43,8 @@ extern "C" void fn_8008D910(void *);
 extern "C" void fn_8008D538(void *);
 extern "C" void fn_8008DADC(u32 *);
 extern "C" void fn_8008DE64(u32 *, int);
+extern "C" void fn_8008D0D4(void);
+extern "C" void fn_8008D148(int);
 void operator delete(void *p);
 
 struct JUTGamePad {
