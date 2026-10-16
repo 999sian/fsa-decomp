@@ -576,6 +576,15 @@ extern "C" int fn_8005CB7C(int param_1) {
     return 0;
 }
 
+extern "C" void fn_8005CC04(void* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f) {
+    *(f32*)((u8*)self + 0x0) = a;
+    *(f32*)((u8*)self + 0x4) = b;
+    *(f32*)((u8*)self + 0x8) = c;
+    *(f32*)((u8*)self + 0xc) = d;
+    *(f32*)((u8*)self + 0x10) = e;
+    *(f32*)((u8*)self + 0x14) = f;
+}
+
 extern "C" void fn_8005CC20(void* self, f32 a, f32 b, f32 c, f32 d) {
     *(f32*)((u8*)self + 0x18) = a;
     *(f32*)((u8*)self + 0x1c) = b;
