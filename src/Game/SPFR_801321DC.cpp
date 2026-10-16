@@ -1,5 +1,6 @@
 #include "types.h"
 
+extern "C" void fn_8010DF58(void);
 extern "C" s32 fn_801321DC(char* p) {
     return *(s32*)(p + 0x234);
 }
@@ -38,15 +39,13 @@ extern "C" void fn_801334CC(char* p) {
         f32 y;
         f32 z;
     } pos;
-    f32 a = lbl_8053CD28;
-    f32 b = lbl_8053CD08;
     fn_8010DF98();
     *(s32*)(p + 0x238) = *(s32*)(p + 0x90) & 1;
     *(s32*)(p + 0x248) = (*(u32*)(p + 0x90) >> 22) & 0x1f;
-    *(f32*)(p + 0x60) = a;
-    *(f32*)(p + 0x64) = a;
-    *(f32*)(p + 0x68) = b;
-    *(f32*)(p + 0x6c) = b;
+    *(f32*)(p + 0x60) = lbl_8053CD28;
+    *(f32*)(p + 0x64) = lbl_8053CD28;
+    *(f32*)(p + 0x68) = lbl_8053CD08;
+    *(f32*)(p + 0x6c) = lbl_8053CD08;
     *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
     *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
     *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
@@ -58,7 +57,7 @@ extern "C" void fn_801334CC(char* p) {
     fn_801D2608(p + 0x250, lbl_8049EB80, 3);
     fn_801D22DC(p + 0x250, 0, 2, 0);
     fn_801D1F14(p + 0x250, lbl_8053CCF0);
-    *(f32*)(p + 0x14) = b;
+    *(f32*)(p + 0x14) = lbl_8053CD08;
     *(u8*)(p + 0x11d) = 0;
     if (*(s32*)(p + 0x238) == 1) {
         if ((*(s32(**)(char*))(*(char**)p + 0x34))(p)) {
