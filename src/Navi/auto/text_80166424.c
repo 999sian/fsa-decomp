@@ -1951,8 +1951,9 @@ extern "C" void* fn_80174E9C(void* param_1) {
 
 extern "C" void fn_80174FA0(void* param_1, f32 param_2, f32 param_3)
 {
-	f32 c = lbl_80301AF8;
+	f32 c;
 	*(f32*)((u8*)param_1 + 0x24) = param_2;
+	c = lbl_80301AF8;
 	*(f32*)((u8*)param_1 + 0x28) = param_3;
 	*(f32*)((u8*)param_1 + 0x2c) = param_2;
 	*(f32*)((u8*)param_1 + 0x30) = param_3;
@@ -2010,7 +2011,6 @@ extern "C" void fn_80176610(void* p_self)
     u32* self = (u32*)p_self;
     u8* b = (u8*)p_self;
     f32 f1 = lbl_80301B20;
-    f32 f0 = lbl_80301B24;
 
     *(u16*)(b + 0x4) = 0xffff;
     ((f32*)self)[0x2e] = f1;
@@ -2020,6 +2020,7 @@ extern "C" void fn_80176610(void* p_self)
     ((f32*)self)[0x32] = f1;
     b[0xb7] = 0;
     b[0xb6] = 0x7a;
+    f32 f0 = lbl_80301B24;
     ((f32*)self)[0x33] = f0;
     ((f32*)self)[0x34] = f0;
     b[0xb1] = 0;
@@ -2027,7 +2028,7 @@ extern "C" void fn_80176610(void* p_self)
     b[0xb4] = 1;
     b[0xb3] = 0xff;
     b[0xb5] = 0;
-    ((void (*)(void*))((u32**)self)[0][11])(p_self);
+    (*(void (***)(void*))p_self)[11](p_self);
 }
 
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
