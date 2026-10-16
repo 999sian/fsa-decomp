@@ -37,13 +37,13 @@ extern "C" void fn_8036335C(void) {
 extern "C" void fn_80363F7C(char* self) {
     if (*(s32*)(self + 0x25c) == 0) {
         *(s32*)(self + 0x268) = *(s32*)(self + 0x268) + 1;
-        if (*(s32*)(self + 0x268) > 5) {
+        if (*(s32*)(self + 0x268) >= 6) {
             *(s32*)(self + 0x268) = 0;
         }
         *(s32*)(self + 0x25c) = lbl_80474B88[*(s32*)(self + 0x268)];
         *(s32*)(self + 0x264) = lbl_80474BA0[*(s32*)(self + 0x268)];
-        ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
     }
+    ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
 }
 
 
