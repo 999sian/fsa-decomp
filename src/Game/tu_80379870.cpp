@@ -15,6 +15,7 @@ extern "C" void* fn_80379870(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void* fn_801F856C(void);
 extern "C" u8 fn_803798D0(void* this_);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" void fn_80239914(f32* rect, s32 a, void* b);
