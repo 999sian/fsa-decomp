@@ -15,6 +15,12 @@ extern "C" void* fn_802D6A9C(void);
 extern f32 lbl_8053F4A4;
 extern f32 lbl_8053F480;
 extern void* lbl_804A51E4[];
+extern void* lbl_804A4808[];
+extern void* lbl_8049CC34[];
+extern u8 lbl_8050EC80[];
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern "C" void __dl__FPv(void* p);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801CE4BC(void* this_);
 extern "C" void fn_801D0F40(void* this_);
@@ -127,6 +133,47 @@ extern "C" void fn_801E2004(void* this_) {
     f32 v0 = *(f32*)(p + 0xc);
     *(f32*)(p + 0x2c4) = v0;
     *(f32*)(p + 0x2c8) = v1;
+}
+
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" s32 fn_801CD664(s32 kind);
+extern "C" void fn_801D2608(void* p, void* data, s32 n);
+extern f32 lbl_8053F4C0;
+extern f32 lbl_8053F4C4;
+extern char lbl_804A51A0[];
+extern "C" void fn_801E2080(void* this_) {
+    char* p = (char*)this_;
+    fn_801D0ED0(this_);
+    f32 one = lbl_8053F4C0;
+    f32 negOne = lbl_8053F4C4;
+    *(f32*)(p + 0x80) = one;
+    *(f32*)(p + 0x84) = one;
+    *(f32*)(p + 0x88) = negOne;
+    *(f32*)(p + 0x8c) = negOne;
+    *(f32*)(p + 0x60) = one;
+    *(f32*)(p + 0x64) = one;
+    *(f32*)(p + 0x68) = negOne;
+    *(f32*)(p + 0x6c) = negOne;
+    *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+    *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+    *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+    *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+    *(s32*)(p + 0xb0) = 0;
+    *(s32*)(p + 0x98) = 0;
+    *(u32*)(p + 0x230) |= 0x300;
+    *(s32*)(p + 0x108) = 1000;
+    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
+    *(u8*)(p + 0x194) = 1;
+    *(s32*)(p + 0x4) = 0;
+    *(s16*)(p + 0x2cc) = fn_801CD664(0x3d) + 0x3c;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = -1;
+    f32 zero = lbl_8053F480;
+    *(f32*)(p + 0x254) = zero;
+    *(f32*)(p + 0x258) = zero;
+    fn_801D2608(p + 0x270, lbl_804A51A0, 0x11);
+    fn_801D22DC(p + 0x270, 0, 2, 0);
 }
 
 extern "C" void* fn_801E22A4(void* this_) {
