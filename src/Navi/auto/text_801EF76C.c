@@ -1,6 +1,21 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801ef76c-0x801f0064 (24 functions). split_file divides it into the game's real files.
 
+#include "Dolphin/AmcExi2Stubs.h"
+#include "PowerPC_EABI_Support/MetroTRK/trkenum.h"
+
+DSError ddh_cc_initinterrupts(void)
+{
+	EXI2_EnableInterrupts();
+	return DS_NoError;
+}
+
+DSError ddh_cc_pre_continue(void)
+{
+	EXI2_Unreserve();
+	return DS_NoError;
+}
+
 extern "C" int ddh_cc_close()
 {
 	return 0;
