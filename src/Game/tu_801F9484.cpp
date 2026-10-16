@@ -4382,9 +4382,8 @@ extern void* lbl_804A1790[];
 
 
 GDMN::GDMN() {
-    char* p = (char*)this;
-    *(void**)p = lbl_804A1790;
-    *(s32*)(p + 0x234) = -1;
+    *(void**)this = lbl_804A1790;
+    *(s32*)((char*)this + 0x234) = -1;
 }
 
 // ---- fn_8020229C_ctor.cpp ----
