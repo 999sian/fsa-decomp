@@ -1693,7 +1693,7 @@ extern "C" void fn_80192984(void*);
 extern "C" void fn_80192C8C(void*);
 extern "C" void fn_80192D84(void*);
 extern u8 lbl_802FE644;
-extern u8 lbl_802FE64C[];
+extern u8 lbl_802FE64C;
 extern "C" u32 fn_80185ED0(u8* self, u8 b) {
     u8* p = *(u8**)(self + 0x168);
     if (p == NULL) {
