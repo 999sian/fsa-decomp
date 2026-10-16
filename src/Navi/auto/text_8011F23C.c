@@ -645,6 +645,17 @@ extern "C" void* fn_80130CB8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_80132778(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_802911E4;
+        fn_801328F8(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" u32 fn_801327D8(void) {
     return 3;
 }
