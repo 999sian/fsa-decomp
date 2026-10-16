@@ -211,12 +211,9 @@ extern "C" void fn_80034B54(void) {
 }
 
 extern "C" void fn_80034B68(void* p) {
-    char* base;
-    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x3c));
-    base = lbl_802BB0FC;
-    *(int*)((char*)p + 0x198) += *(int*)(base + 0x58);
+    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x3c)) + *(int*)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x1a0) |= 0x2000;
-    *(unsigned int*)(base + 0x454) = 0xe;
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 0xe;
 }
 
 extern "C" void fn_80034BBC(void* p) {
@@ -229,6 +226,12 @@ extern "C" void fn_80034C10(void* p) {
     *(unsigned int*)((char*)p + 0x1a0) |= 0x4000;
     *(unsigned char*)((char*)p + 0x240) |= 2;
     *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 8;
+}
+
+extern "C" void fn_80034C3C(void* p) {
+    *(int*)((char*)p + 0x238) = *(int*)((char*)lbl_802BB0FC + 0x58) + 0x1388;
+    *(int*)((char*)p + 0x214) = *(int*)((char*)lbl_802BB0FC + 0x58);
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x8000;
 }
 
 extern "C" void fn_80034C68(void) {
