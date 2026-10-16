@@ -63,13 +63,10 @@ extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
-    f32 x = s->x;
-    f32 y;
-    d[0] = x;
-    y = s->y;
-    f32 z = s->z;
-    d[1] = y;
-    d[2] = z;
+    Vec t = *s;
+    d[0] = t.x;
+    d[1] = t.y;
+    d[2] = t.z;
     d[3] = w;
 }
 
@@ -671,6 +668,14 @@ extern "C" int fn_8001BC10(int param_1) {
     return 0;
 }
 
+#pragma dont_inline on
+extern "C" void* fn_8001BC68(void* param_1) {
+    if (*((u8*)param_1 + 0xc) == 2 && fn_8001EB7C(param_1, 1) != 1 && fn_8002689C() != 1) {
+        return fn_8001ACEC(param_1);
+    }
+    return NULL;
+}
+
 extern "C" s32 fn_8001BCC8(void* param_1) {
     u8* p = (u8*)param_1;
     u8* tag = *(u8**)(*(u8**)(p + 0x2c) + 0x18);
@@ -680,7 +685,7 @@ extern "C" s32 fn_8001BCC8(void* param_1) {
             return 0;
         }
         p[0xc] = 2;
-        if (fn_8001AC74(lbl_802FEC48, *(void**)(p + 0xb4)) != NULL) {
+        if ((s32)fn_8001AC74(lbl_802FEC48, *(void**)(p + 0xb4)) != 0) {
             fn_8001C454(p + 0xbc, (int)fn_8001BCC8, (int)p);
         }
         return 1;
