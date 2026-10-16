@@ -102,6 +102,11 @@ extern "C" s32 fn_80172640(s32 p, s32 i)
 	return p + i * 4 + 0x16;
 }
 
+extern "C" s32 fn_80172750(s32 p, s32 i)
+{
+	return p + i * 8 + 0x77;
+}
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
