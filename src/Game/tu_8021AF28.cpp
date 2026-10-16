@@ -11,3 +11,19 @@ extern const f32 lbl_8053FCD4;
 extern "C" void fn_8021B5A0(void* this_) {
     fn_801CB7A0(*(void**)((char*)this_ + 0x2c4));
 }
+
+extern "C" void fn_8021B5C4(void* this_) {
+    char* p = (char*)this_;
+    if (*(void**)(p + 0x2c4) != 0) {
+        void* mgr = fn_8013C824();
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)mgr + 0xc), *(void**)(p + 0x2c4));
+        *(void**)(p + 0x2c4) = 0;
+    }
+    void* uVar2 = *(void**)(p + 0x4);
+    char cVar4 = 0;
+    if (fn_80219E04(this_)) {
+        cVar4 = -6;
+    }
+    *(void**)(p + 0x2c4) = fn_8013CC50(uVar2, p + 0xc, 0x344, 0, cVar4, 0, 0, 1, lbl_8053FCD4);
+}
+
