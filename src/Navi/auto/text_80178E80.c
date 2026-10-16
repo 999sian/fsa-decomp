@@ -27,9 +27,32 @@ extern "C" void fn_8017A488(void) {
     fn_80177F0C();
 }
 
-extern "C" void fn_8017A56C(void* self, void* obj) {
+extern "C" void* fn_8015FDA8(void*, void*);
+extern "C" void fn_8018ECE4(void*, void*);
+extern "C" void fn_8016A72C(void*);
+extern void* lbl_802FF6A0;
+extern "C" void fn_8017A4A8(void* param_1) {
+    void* p;
+    if (fn_8015FDA8(param_1, nullptr) == nullptr) {
+        p = lbl_802FF6A0;
+        if (p != nullptr) {
+            fn_8018ECE4(p, param_1);
+        }
+    }
+}
+
+extern "C" void fn_8017A4F8(void* self) {
     u16 i;
+    void** vtbl = *(void***)self;
+    ((void (*)(void*, void*))vtbl[0x90 / 4])(self, *(void**)((u8*)self + 0xf8));
+    for (i = 0; i < *(u16*)((u8*)self + 0x102); i++) {
+        fn_8016A72C(*(u8**)((u8*)self + 0x104) + i * 0x88);
+    }
+}
+
+extern "C" void fn_8017A56C(void* self, void* obj) {
     u16 count;
+    u16 i;
     ((void (*)(void*, void*))(*(void***)obj)[0xc / 4])(obj, self);
     count = *(u16*)((u8*)obj + 0x18);
     for (i = 0; i < count; i++) {
@@ -42,6 +65,13 @@ extern "C" void fn_8017A56C(void* self, void* obj) {
 
 extern "C" void fn_8017A928(void) {
     fn_801788C0();
+}
+
+extern "C" void fn_80176550(void* self);
+extern "C" void fn_8018119C(void* self, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern void* lbl_80299040[];
+extern "C" void fn_80180B88(void) {
+    fn_80177F0C();
 }
 
 extern "C" void fn_80184C34(void) {
