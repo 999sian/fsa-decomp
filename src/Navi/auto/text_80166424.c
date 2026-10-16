@@ -209,8 +209,8 @@ extern "C" u8* fn_80173108(u8* p, s32 i)
 extern "C" void fn_8017311C(u8* p, s32 i, u8* src)
 {
     u8 a = src[0];
-    u8* dst = p + i * 4;
     u8 b = src[1];
+    u8* dst = p + i * 4;
     dst[0x34] = a;
     u8 c = src[2];
     dst[0x35] = b;
@@ -289,5 +289,9 @@ extern "C" u32 fn_80178E08(void) { return 0x10; }
 extern "C" int fn_80178E4C(int param_1) {
     *(u8*)(param_1 + 0xb5) = 0;
     return 0;
+}
+
+extern "C" void fn_80178E5C(void* param_1)
+{
 }
 
