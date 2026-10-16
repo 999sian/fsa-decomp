@@ -78,8 +78,8 @@ extern "C" void fn_801C1224(char* this_, s32 param_2) {
         virtual void v07();
         virtual void v08();
     };
-    char* p = this_;
     s32 count = *(s32*)(this_ + 0xc);
+    char* p = this_;
     for (s32 i = 0; i < count; i++) {
         char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
         if (obj != 0 && (*(u32*)(obj + 0x230) & 0x10000) == 0) {
@@ -91,8 +91,7 @@ extern "C" void fn_801C1224(char* this_, s32 param_2) {
 }
 
 extern "C" void fn_801C12B8(char* this_) {
-    s32 idx = fn_801CD664(*(s32*)(this_ + 0xc));
-    s32 id = *(s32*)(this_ + idx * 4 + 0x10);
+    s32 id = *(s32*)(this_ + fn_801CD664(*(s32*)(this_ + 0xc)) * 4 + 0x10);
     char* obj = (char*)fn_801F666C(fn_801F856C(), id);
     if (obj != 0) {
         *(u32*)(obj + 0x230) |= 0x10000;
@@ -133,6 +132,10 @@ extern "C" void fn_801C1440(char* this_, s32 param_2) {
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7440(void* p, s32 v);
+extern "C" void fn_802D6BC8(void* p, s32 v);
+extern "C" void fn_80138B7C(void* p);
+extern "C" void fn_8022ADCC(void);
+extern void* lbl_8053AAF8;
 extern "C" u16 fn_801C14A8(char* this_, void* param_2) {
     void** arr = (void**)(this_ + 0x10);
     arr[*(s32*)(this_ + 0xc)] = param_2;
