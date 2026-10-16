@@ -1137,20 +1137,20 @@ extern "C" void fn_8006BB68(void* param_1) {
 
 extern "C" void fn_8006C38C(void) {}
 
-extern "C" void fn_8006C9F4(void) {
-    u8* p;
+extern "C" void fn_8006C9F4(u8* p) {
     s32 i;
     s32 val;
-    p = (u8*)lbl_802802A8;
     *(u32*)(p + 0x308) = 0;
-    for (i = 0; i < 8; i++) {
+    for (i = 0; i <= 7; i++) {
         val = lbl_802802A8[i];
         if (val >= 0) {
-            ((void (*)(void*, void*, s32, s32, f32, f32, f32, f32))fn_80022438)(*(void**)(p + 0x270 + i * 4), lbl_80280248, val, 0, lbl_80300460, lbl_80300448, lbl_80300460, lbl_80300464);
-            *(u32*)(p + 0x308) = *(u32*)(p + 0x308) | (1 << i);
+            fn_80022438(*(void**)(p + 0x270 + i * 4), lbl_80280248, val, 0, lbl_80300460, lbl_80300448, lbl_80300460, lbl_80300464);
+            *(u32*)(p + 0x308) |= 1 << i;
         }
     }
 }
+
+extern "C" void fn_8006CC58(void) {}
 
 extern "C" void fn_8006B15C(void);
 extern "C" void fn_8006CDCC(void) {
