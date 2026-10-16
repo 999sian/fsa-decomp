@@ -44,12 +44,12 @@ extern "C" void* fn_800303DC(const void* base, const void* offset)
   return (void*)((int)base + (int)offset);
 }
 
-s32 fn_800303F4(s32 param_1, s32 param_2)
+extern "C" void* fn_800303F4(const void* ptr, const void* offset)
 {
-	if (param_2 == 0) {
-		return 0;
-	}
-	return param_1 + param_2;
+  if (offset == 0) {
+    return 0;
+  }
+  return (unsigned char*)ptr + (unsigned int)offset;
 }
 
 s32 fn_8003040C(s32 param_1, s32 param_2)
