@@ -88,17 +88,3 @@ extern "C" void fn_80129598(Actor* p) {
     }
 }
 #pragma dont_inline reset
-struct CRGNState {
-    u8 pad00[0x90];
-    u32 flags90;
-    u8 pad94[0x234 - 0x94];
-    u32 field234;
-    u8 pad238[0x240 - 0x238];
-    s32 count240;
-    s32 count244;
-    s32 list248[10];
-    s32 list270[4];
-    u32 flags280;
-};
-
-extern s32 lbl_80465000[];
