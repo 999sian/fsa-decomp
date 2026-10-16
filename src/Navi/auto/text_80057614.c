@@ -55,7 +55,6 @@ extern "C" s32 fn_80058930(s32 idx) {
         u32 w[2];
     } u;
     u32 v;
-    f64 f;
     s32 r;
     if (fn_80058D70(idx) == 0) {
         return 0;
@@ -63,8 +62,7 @@ extern "C" s32 fn_80058930(s32 idx) {
     v = *(u32*)(lbl_8026D4BC + idx * 0xc + 4);
     u.w[0] = 0x43300000;
     u.w[1] = v ^ 0x80000000;
-    f = u.d - lbl_80300248;
-    r = (s32)((lbl_80300238 * f) / lbl_80300240);
+    r = (s32)((lbl_80300238 * (lbl_80300248 - u.d)) / lbl_80300240);
     if (v == 1000000) {
         r = 1000000;
     }
@@ -91,13 +89,11 @@ extern "C" s32 fn_80058C08(s32 idx) {
 
 extern "C" void fn_80058C5C(void) {
     s32 i = 0;
-    u8* p = lbl_802C05F0;
-    while (i < 0x10) {
-        fn_80059290(p);
-        p[0x16] = i;
+    do {
+        fn_80059290(&lbl_802C05F0[i * 0x18]);
+        lbl_802C05F0[i * 0x18 + 0x16] = i;
         i++;
-        p += 0x18;
-    }
+    } while (i < 0x10);
 }
 
 extern "C" void fn_80058CB0(void) {
