@@ -494,18 +494,16 @@ extern "C" s32 fn_80065DA0(void) {
 }
 
 extern "C" void fn_800667B4(u8* p) {
-    s32 i;
     u8* a;
     u8* b;
+    s32 i;
 
     a = p;
     b = p;
-    for (i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++, a += 0x10, b += 0xc) {
         fn_8000D6F4(a + 0x29c);
         fn_8000D6F4(b + 0x33c);
         fn_8000D6F4(b + 0x378);
-        a += 0x10;
-        b += 0xc;
     }
     fn_8000D6F4(p + 0x2dc);
     fn_8000D6F4(p + 0x36c);
