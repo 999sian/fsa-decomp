@@ -626,6 +626,17 @@ extern "C" void fn_801801B8(void* self, s32 a, s32 b, s32 c, s32 d) {
     fn_801801F4(self, (u8*)self + 0x112, a, b, c, d);
 }
 
+extern "C" u32 fn_80180514(void* self, u32 a) {
+    u8 i;
+    for (i = 0; i < *((u8*)self + 0x110); i++) {
+        u32* p = *(u32**)((u8*)self + 0x100 + i * 4);
+        if (p != 0 && p[8] == a) {
+            return 1;
+        }
+    }
+    return fn_80177E84();
+}
+
 extern "C" u8 fn_80180648(s32 a, void* b, u32 c) {
     u32 s;
     u32 r;
@@ -646,7 +657,7 @@ extern "C" void fn_80180680(u32* self, int a) {
 }
 
 extern "C" void fn_801806B0(u32* self, int a, int b) {
-    ((void (*)(void*, int, int, int))(*(u32**)self)[50])(self, a, 0, b);
+    ((VObj_80180980*)self)->vfC8(a, 0, b);
 }
 
 extern "C" void fn_801806E4(u32* self, int a) {
@@ -655,6 +666,15 @@ extern "C" void fn_801806E4(u32* self, int a) {
 
 extern "C" void fn_80180714(u32* self, int a, int b) {
     ((void (*)(void*, int, int, int))(*(u32**)self)[52])(self, a, 0, b);
+}
+
+extern "C" void fn_80180748(void* self, int a) {
+    ((VObj_80180980*)self)->vfD4(a, *((u8*)self + 0x110));
+}
+
+extern "C" void fn_80180778(void* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
+    ((VObj_80180980*)self)->vf108(a, b, c, d, e, f, g, h);
+    ((VObj_80180980*)self)->vf10C(a, b, c, d, e, f, g, h);
 }
 
 extern "C" void* fn_80180814(void* self, u8 idx) {
