@@ -1912,7 +1912,6 @@ extern "C" void fn_801744EC(u8* p, u8* s, u32 a, u32 b) {
 }
 
 extern "C" void fn_80172264(void* p);
-extern "C" void fn_801721FC(void);
 extern "C" void* fn_801749F0(void* p, void* q);
 extern "C" u8 lbl_80301AB4[];
 extern "C" u8 lbl_80301AC8[2];
