@@ -351,18 +351,23 @@ extern "C" void OSRegisterVersion(const char* id);
 extern "C" void fn_801CF49C(void (*fn)(void));
 extern "C" void fn_801D107C(void);
 extern "C" void fn_801D1148(void) {
+    int zero = 0;
     if (lbl_802FF9F4 != 1) {
         OSRegisterVersion(lbl_802FEA18);
-        lbl_802FF9D8 = 0;
-        lbl_802FF9D0 = 0;
+        lbl_802FF9D8 = zero;
+        lbl_802FF9D0 = zero;
         lbl_802FF9F0 = 0x1000;
         fn_801CF49C(fn_801D107C);
-        lbl_802FF9E0 = 0;
-        lbl_802FF9E4 = 0;
-        lbl_802FF9E8 = 0;
-        lbl_802FF9EC = 0;
+        lbl_802FF9E0 = zero;
+        lbl_802FF9E4 = zero;
+        lbl_802FF9E8 = zero;
+        lbl_802FF9EC = zero;
         lbl_802FF9F4 = 1;
     }
+}
+
+extern "C" u16 fn_801D1314(void) {
+    return (*(vu16*)0xcc005000 >> 15) & 1;
 }
 
 extern "C" u16 fn_801D1324(void) {
