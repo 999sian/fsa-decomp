@@ -68,7 +68,7 @@ struct VObj_8013B140 {
     virtual void v2();
     virtual void v3();
     virtual void v4();
-    virtual void v5();
+    virtual void v5(u32**, void*);
     virtual void v6(u32*);
 };
 
