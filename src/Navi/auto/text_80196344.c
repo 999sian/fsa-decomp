@@ -929,6 +929,10 @@ extern "C" u32 fn_801A3B94(u8* p) {
     return *(u32*)(p + 0x170);
 }
 
+extern "C" void fn_801A3B9C(u8* p, u32 v) {
+    *(u32*)(p + 0x170) = v;
+}
+
 extern void* lbl_8029A400[];
 extern "C" void* fn_801A3BA4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
