@@ -91,14 +91,16 @@ extern "C" void fn_8011B8F8(void) {
     if (lbl_802FF2E9 == 0) {
         if (OSGetResetSwitchState() != 0) {
             lbl_802FF2E8 = 1;
-        } else if (lbl_802FF2E8 == 1) {
-            void (*fn)(s32, s32) = lbl_802FF2D4;
-            lbl_802FF2E9 = 1;
-            lbl_802FF2EC = -1;
-            if (fn != NULL) {
-                fn(-1, lbl_802FF2D8);
-                lbl_802FF2E8 = 0;
+        } else {
+            if (lbl_802FF2E8 == 1) {
+                void (*fn)(s32, s32) = lbl_802FF2D4;
+                lbl_802FF2E9 = 1;
+                lbl_802FF2EC = -1;
+                if (fn != NULL) {
+                    fn(-1, lbl_802FF2D8);
+                }
             }
+            lbl_802FF2E8 = 0;
         }
     }
 }
