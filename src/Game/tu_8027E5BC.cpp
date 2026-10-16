@@ -360,6 +360,9 @@ void fn_80285074(char* p) {
 
 void fn_8028537C(char* p) { U8(p, 0x458) = 0; }
 
+void fn_80285388(void) {
+}
+
 void fn_80285668(char* p) {
     if (S32(p, 0x1248) == 2) {
         U8(p, 0x3f8) = U8(p, 0x437);
