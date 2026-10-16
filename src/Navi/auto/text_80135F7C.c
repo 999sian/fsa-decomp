@@ -223,7 +223,8 @@ extern "C" f64 fn_80137644(void* param_1, f64* param_2) {
 }
 
 extern "C" void fn_801377A0(void* param_1) {
-    *(void**)((u8*)param_1 + 0x0) = lbl_80292BB4;
+    void* vt = lbl_80292BB4;
+    *(void**)((u8*)param_1 + 0x0) = vt;
     *(f64*)((u8*)param_1 + 0x8) = *(f32*)&lbl_802FEAB0;
     *(f64*)((u8*)param_1 + 0x10) = *(f64*)((u8*)param_1 + 0x8);
     *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
@@ -544,6 +545,18 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern void* lbl_802930A0[];
+extern "C" void fn_8013C508(void* a, void* b, void* c, void* d, void* e);
+extern "C" void fn_8013BC94(void* a, void* b, void* c, void* d, void* e);
+extern "C" void fn_8013C544(void* a, void* b);
+extern "C" void fn_8013C1B0(void* param_1, void* param_2, void* param_3, void* param_4) {
+    void* local[3];
+    local[0] = lbl_802930A0[0];
+    local[1] = lbl_802930A0[1];
+    local[2] = lbl_802930A0[2];
+    fn_8013C508(param_1, local, param_2, param_3, param_4);
 }
 
 extern "C" void fn_80133414(void*, int);
