@@ -77,15 +77,14 @@ extern "C" void fn_801C1224(char* this_, s32 param_2) {
         virtual void v06();
         virtual void v07();
         virtual void v08();
-        virtual void v09();
     };
-    s32 count = *(s32*)(this_ + 0xc);
     char* p = this_;
+    s32 count = *(s32*)(this_ + 0xc);
     for (s32 i = 0; i < count; i++) {
         char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
         if (obj != 0 && (*(u32*)(obj + 0x230) & 0x10000) == 0) {
             *(s32*)(obj + 0x10c) = param_2;
-            ((VObj*)obj)->v09();
+            ((VObj*)obj)->v07();
         }
         p += 4;
     }
