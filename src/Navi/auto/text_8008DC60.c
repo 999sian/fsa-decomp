@@ -126,7 +126,7 @@ extern "C" int fn_8008F378()
 
 extern "C" void fn_80090D44(void) {}
 
-void fn_80090D48(void) {}
+extern "C" void fn_80090D48(void) {}
 
 extern "C" void* fn_80091918(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
