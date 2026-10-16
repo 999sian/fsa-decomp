@@ -210,6 +210,18 @@ extern "C" char* fn_8015AC00(void* arg, void* arg2) {
     return p;
 }
 
+extern "C" void fn_8015AD64(Unk8015AD64* p) {
+    if (*((u8*)p + 0x6e) == 0) {
+        u32 iVar = *(u32*)(*(u32*)((u8*)p + 0x50) + 0xc);
+        if (iVar != 0) {
+            p->vf08(-1);
+            fn_80159C6C(p, iVar);
+        }
+    } else {
+        p->vf08(-1);
+    }
+}
+
 extern "C" void fn_8015D030(void) {
     fn_80159DB4();
 }
