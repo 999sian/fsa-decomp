@@ -65,6 +65,18 @@ extern "C" void fn_801C2D40(u8* this_) {
     }
 }
 
+extern "C" void fn_800FE8C0(u8*);
+extern "C" void fn_80216A8C(u8*);
+extern "C" void fn_801C2E70(u8* this_) {
+    *(u8*)(this_ + 0x34c) = *(s32*)(this_ + 0x98);
+    if (*(s32*)(this_ + 0x248) != 0x13 || *(s32*)(this_ + 0x24c) <= 1) {
+        if (!(*(u32*)(this_ + 0x230) & 0x80000)) {
+            fn_800FE8C0(this_ + 0x340);
+        }
+    }
+    fn_80216A8C(this_ + 0x528);
+}
+
 extern "C" int fn_801C5340(void) { return 0; }
 
 extern "C" bool fn_801C53C4(void* thisObj) {
