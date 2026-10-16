@@ -28,6 +28,13 @@ public:
 
 extern "C" void fn_80168280(void);
 extern "C" void fn_80166C70(void*);
+extern "C" void* fn_80166B1C(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
 extern "C" void* fn_80166BD0(void* param_1, u8 param_2)
 {
 	if (param_2) {
