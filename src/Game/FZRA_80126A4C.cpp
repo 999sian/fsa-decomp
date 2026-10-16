@@ -11,7 +11,10 @@ extern const f32 lbl_8053CAA4;
 extern const f32 lbl_8053CAA8;
 extern "C" u8 fn_80126EF8(u8* this_) {
     s32 v = *(s32*)(this_ + 0x230);
-    return (v == 1) || (v == 0xc);
+    if (v == 1 || v == 0xc) {
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void* fn_80127AAC(void* this_, s16 freeFlag) {
