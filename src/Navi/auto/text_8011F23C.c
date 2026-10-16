@@ -230,13 +230,16 @@ extern "C" u8* fn_801251B0(u8* self, s32 param_2, s32 param_3) {
 }
 
 extern "C" s32 fn_80125208(u8* self, u16 param_2) {
-    u16 i;
+    u16 n = *(u16*)(self + 0xe);
+    s32* list = *(s32**)(self + 0x4);
+    u16 i = 0;
     s32 r;
-    for (i = 0; i < *(u16*)(self + 0xe); i++) {
-        r = ((s32*)(*(s32*)(self + 0x4)))[i];
+    while (i < n) {
+        r = list[i];
         if (param_2 == *(u16*)(r + 0x3c)) {
             return r;
         }
+        i++;
     }
     return 0;
 }
@@ -792,6 +795,9 @@ extern "C" int fn_80132940()
 	return 0;
 }
 
+extern "C" void fn_80132948(void) {
+}
+
 extern "C" int fn_8013294C()
 {
 	return 0;
@@ -839,6 +845,25 @@ extern "C" int fn_80132978(void* param_1, void* param_2, f32* param_3) {
     param_3[10] = val;
     param_3[11] = val;
     return 0;
+}
+
+extern char lbl_8029138C[];
+extern "C" void fn_8013AB60(void* self);
+extern "C" void fn_80139830(void* self);
+extern "C" void fn_80132B3C(void* self, void* table);
+extern "C" void fn_80132BBC(void* self, void* table);
+extern char lbl_802914AC[];
+extern char lbl_80201E40[];
+extern float lbl_803017B8;
+extern "C" void* fn_801329B4(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_8029138C;
+        fn_801328F8(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
 }
 
 extern "C" BOOL fn_80132A14(void)
