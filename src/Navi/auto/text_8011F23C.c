@@ -890,6 +890,9 @@ extern "C" int fn_80132A30()
 	return 0;
 }
 
+extern "C" void fn_80132A38(void) {
+}
+
 extern void* lbl_8020597C[];
 extern "C" void* fn_80132C50(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
