@@ -195,14 +195,13 @@ extern "C" void fn_800D5750(Vtable800D8248* obj)
   obj->m4();
 }
 
-extern "C" void fn_800D5DAC(int* param_1, u32 param_2)
+extern "C" void fn_800D5DAC(Vtable800D8248* param_1, u32 param_2)
 {
-  int* vtable = *(int**)param_1;
   if ((param_2 & 1) != 0) {
-    (*(void(**)(void))(vtable + 0x20))();
+    param_1->m6();
   }
   if ((param_2 & 2) != 0) {
-    (*(void(**)(int*))(vtable + 0x24))(param_1);
+    param_1->m7();
   }
 }
 
@@ -560,30 +559,20 @@ extern "C" void fn_800D9E3C(void* p) {
     DCStoreRange(saved, (u32)(now - saved));
 }
 
-extern "C" void fn_800D9FE4(void* param_1, u32 param_2) {
-    u32* gd = (u32*)&__GDCurrentDL;
-    u32 cur = *(u32*)gd;
-    gd[2] = cur + param_2;
-    
-    u32 dl_ptr = gd[2];
-    gd = (u32*)&__GDCurrentDL;
-    u32 cur_dl = gd[2];
-    
+extern "C" void fn_800D9FE4(int param_1, int param_2) {
     u32 i = 0;
-    while (1) {
-        if (!isTexNoReg((void*)cur_dl)) {
+    GDSetCurrOffset(param_2);
+    u8* cur = GDGetCurrPointer();
+    u8* start = GDGetCurrPointer();
+    for (;;) {
+        if (!isTexNoReg(cur)) {
             break;
         }
-        u16 tex_no = getTexNoReg((void*)cur_dl);
-        loadTexNo(i, tex_no);
+        u16 texNo = getTexNoReg(cur);
+        loadTexNo(i, texNo);
         i++;
-        gd = (u32*)&__GDCurrentDL;
-        cur_dl = gd[2];
     }
-    
-    gd = (u32*)&__GDCurrentDL;
-    u32 dl_end = gd[2];
-    DCStoreRange((void*)dl_ptr, dl_end - dl_ptr);
+    DCStoreRange(start, GDGetCurrPointer() - start);
 }
 
 extern "C" void fn_800DB844(void* param_1) {
