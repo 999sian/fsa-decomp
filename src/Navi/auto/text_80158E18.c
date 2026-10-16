@@ -642,6 +642,15 @@ extern "C" void fn_8015B674(char* p) {
 
 extern "C" void fn_8015B704(void) {}
 
+extern "C" char fn_8015B708(char* p, char v) {
+    char old;
+    fn_801BE3A0(p + 0x18);
+    old = *(char*)(p + 0x6d);
+    *(char*)(p + 0x6d) = v;
+    fn_801BE47C(p + 0x18);
+    return old;
+}
+
 #pragma pop
 
 #pragma pop
