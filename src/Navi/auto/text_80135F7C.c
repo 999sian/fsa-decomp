@@ -61,6 +61,8 @@ struct VObj_801398CC {
     virtual void v0();
     virtual void v1();
     virtual void v2(void*);
+    virtual void v3();
+    virtual void v4(void*);
 };
 
 struct VObj_8013B140 {
@@ -1187,6 +1189,30 @@ extern "C" void fn_8013B140(VObj_8013B140* self, u32* p)
 {
     u32 v = *p;
     self->v6(&v);
+}
+
+extern "C" void fn_8013B368(u32** src, u8* dst)
+{
+    u32* p = *src;
+    u32 hdr;
+    u32 size;
+    u8 type;
+    *(u32*)(dst + 8) = 0;
+    *(u32*)(dst + 0xc) = 0;
+    hdr = *p;
+    type = hdr >> 24;
+    size = hdr & 0xffffff;
+    dst[0] = type;
+    *(u32*)(dst + 4) = size;
+    if (type != 0) {
+        p++;
+        if (type <= 0x7f) {
+            *(u32**)(dst + 0xc) = p;
+        } else {
+            *(u32**)(dst + 8) = p;
+            *(u8**)(dst + 0xc) = (u8*)p + size;
+        }
+    }
 }
 
 extern "C" void fn_80132C50(void*, int);
