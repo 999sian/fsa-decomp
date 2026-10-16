@@ -2,6 +2,16 @@
 #include "JSystem/JKernel/JKRArchive.h"
 extern char lbl_80498E38[];
 extern char lbl_80498E48[];
+extern "C" void* fn_80082F44(void* param_1, s16 param_2) {
+    if (param_1 != NULL) {
+        *(char**)((char*)param_1 + 0xc) = lbl_80498E38;
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
 JKRArcFinder::JKRArcFinder(JKRArchive *archive, long startindex, long entries) : JKRFileFinder()
 {
     mArchive = archive;
@@ -14,7 +24,7 @@ JKRArcFinder::JKRArcFinder(JKRArchive *archive, long startindex, long entries) :
     findNextFile();
 }
 
-bool fn_80083018(void* param_1) {
+extern "C" bool fn_80083018(void* param_1) {
     JKRArchive::SDirEntry entry;
     char* self = (char*)param_1;
     if (*(u8*)(self + 0x10) != 0) {
