@@ -26,7 +26,7 @@ extern "C" JASGenericMemPool* fn_8003D530(JASGenericMemPool* p, s16 flag)
     return p;
 }
 
-JASGenericMemPool* fn_8003D584(JASGenericMemPool* p, s16 flag)
+extern "C" JASGenericMemPool* fn_8003D584(JASGenericMemPool* p, s16 flag)
 {
     if (p != NULL) {
         __dt__17JASGenericMemPoolFv(p, 0);
