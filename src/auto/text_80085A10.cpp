@@ -10,6 +10,22 @@ extern void fn_8008665C(void*, u32);
 
 extern u8 g_bit_mask_table[8];
 extern s32 fn_8008668C(int);
+extern void fn_80085F0C(void);
+extern void fn_800861C4(int, int);
+extern void fn_8008603C(int, int);
+extern "C" void fn_80085F0C(void);
+extern "C" void fn_800861C4(int, u32);
+extern "C" void fn_8008603C(int, u32);
+extern "C" void fn_80085FF4(int param_1, s32 param_2, u32 param_3) {
+    if (param_3 == 1) {
+        fn_80085F0C();
+    } else if (param_2 >= 0) {
+        fn_8008603C(param_1, param_3);
+    } else {
+        fn_800861C4(param_1, param_3);
+    }
+}
+
 extern "C" void fn_800863C0(void* param_1) {
     s32 idx = fn_8008668C((int)param_1);
     
