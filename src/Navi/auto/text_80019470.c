@@ -941,6 +941,8 @@ extern "C" void* fn_80020344(void* ptr, s16 param_2) {
 
 extern "C" void fn_80020380(void) {}
 
+extern "C" void fn_800204F0(void) {}
+
 extern "C" int fn_80020E48(void* param_1) {
     int ret = fn_800636A0(param_1, lbl_802B7CA0 + 0x2200, 0x40);
     if (ret < 0) {
