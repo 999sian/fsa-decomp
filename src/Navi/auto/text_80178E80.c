@@ -47,3 +47,16 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     int (*fn)(void*, s32*, s32*) = (int (*)(void*, s32*, s32*))(*(void***)self)[0xac / 4];
     return fn(self, &local_c, &local_18);
 }
+
+extern void* lbl_80299504[];
+extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void* fn_8018C1A0(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80299504;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
