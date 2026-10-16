@@ -925,8 +925,8 @@ extern "C" void fn_800D9CA8(void* param_1) {
 }
 
 extern "C" void fn_800D9D50(u8* p) {
-    u32 n = p[0x58];
     u8* e = p;
+    u32 n = p[0x58];
     for (u32 i = 0; i < n; i += 2) {
         u16* t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0x18] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
