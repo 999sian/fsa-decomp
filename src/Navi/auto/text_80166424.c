@@ -564,6 +564,10 @@ extern "C" BOOL fn_80173190(void)
     return TRUE;
 }
 
+extern "C" u32 fn_801732D8(void* param_1) {
+    return *(u32*)((u8*)param_1 + 0x58);
+}
+
 extern "C" int fn_8017332C()
 {
 	return 0;
