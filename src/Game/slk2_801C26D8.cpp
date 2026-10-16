@@ -22,6 +22,7 @@ extern "C" void fn_801C1440(void* rec, u32 v);
 extern "C" void dtor_80214F9C(void* p, s32 flag);
 extern void* lbl_804A43E8[];
 extern const f32 lbl_8053EE08;
+extern u16 lbl_8046A748;
 extern "C" void fn_801C12B8(void* rec);
 extern "C" void fn_801D1974(void* this_);
 extern "C" void Slk2_ResetFlags7(void* p);
@@ -71,34 +72,38 @@ extern "C" void fn_801C27F0(void* this_) {
 
 extern "C" void fn_801C2960(u8* this_) {
     *(u32*)(this_ + 0x230) &= 0xfdffffff;
-    s32 state = *(s32*)(this_ + 0x248);
-    if (state == 0x21) {
+    switch (*(s32*)(this_ + 0x248)) {
+    case 0x10:
+        if (!(*(u32*)(this_ + 0x230) & 0x800000)) {
+            fn_80214AF8(this_ + 0x4ec);
+        }
+        break;
+    case 0x21:
         if (!fn_8021D020(this_)) {
             fn_801C3B7C(this_, 0x1b);
         } else {
-            s32 s = *(s32*)(this_ + 0x564);
-            if (s == 2) {
-                fn_8021CDE4(this_, 3);
-            } else if (s < 2) {
-                if (s == 0) {
-                    if (!(*(u32*)(this_ + 0x230) & 0x10000)) {
-                        fn_801C3B7C(this_, 0x29);
-                    } else if (*(u32*)(this_ + 0x524) & 0x80) {
-                        fn_8021CDE4(this_, 1);
-                    } else {
-                        fn_8021CDE4(this_, 2);
-                    }
-                } else if (s > 0) {
+            switch (*(s32*)(this_ + 0x564)) {
+            case 0:
+                if (!(*(u32*)(this_ + 0x230) & 0x10000)) {
+                    fn_801C3B7C(this_, 0x29);
+                } else if (*(u32*)(this_ + 0x524) & 0x80) {
+                    fn_8021CDE4(this_, 1);
+                } else {
                     fn_8021CDE4(this_, 2);
                 }
-            } else if (s < 4) {
+                break;
+            case 1:
+                fn_8021CDE4(this_, 2);
+                break;
+            case 2:
+                fn_8021CDE4(this_, 3);
+                break;
+            case 3:
                 fn_801C3B7C(this_, 0x29);
+                break;
             }
         }
-    } else if (state < 0x21) {
-        if (state == 0x10 && !(*(u32*)(this_ + 0x230) & 0x800000)) {
-            fn_80214AF8(this_ + 0x4ec);
-        }
+        break;
     }
 }
 
