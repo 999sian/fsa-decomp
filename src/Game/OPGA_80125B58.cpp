@@ -28,8 +28,6 @@ struct OpgaVT {
     virtual void v07();
     virtual void v08();
     virtual void v09();
-    virtual void v10();
-    virtual void v11();
     virtual void v12(u32 a, u32 b);
     virtual u8 v13();
     virtual void v14();
@@ -85,6 +83,51 @@ extern "C" void fn_80125C58(u8* this_, u8 flag) {
             break;
         }
         fn_801D1F14(this_ + 0x27c, lbl_8053CA70);
+    }
+}
+
+extern "C" void fn_8012639C(u8* this_) {
+    ((Actor*)this_)->v01();
+    *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x90) & 1;
+    *(s32*)(this_ + 0x240) = (*(u32*)(this_ + 0x90) >> 22) & 0x1f;
+    *(f32*)(this_ + 0x60) = lbl_8053CA90;
+    *(f32*)(this_ + 0x64) = lbl_8053CA90;
+    *(f32*)(this_ + 0x68) = lbl_8053CA94;
+    *(f32*)(this_ + 0x6c) = lbl_8053CA94;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x84) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x88) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x8c) = *(f32*)(this_ + 0x6c);
+    *(s32*)(this_ + 0x98) = 2;
+    fn_801D2608(this_ + 0x244, lbl_8049E330, 4);
+    fn_801D22DC(this_ + 0x244, 2, 2, 0);
+    fn_801D1F14(this_ + 0x244, lbl_8053CA70);
+    fn_801D2608(this_ + 0x27c, lbl_8049E340, 4);
+    fn_801D22DC(this_ + 0x27c, 0, 0, 0);
+    fn_801D1F14(this_ + 0x27c, lbl_8053CA70);
+    *(u8*)(this_ + 0x11d) = 0;
+    if (((OpgaVT*)this_)->v15() == 0 || ((OpgaVT*)this_)->v13()) {
+        *(s32*)(this_ + 0x234) = 1;
+        switch (*(s32*)(this_ + 0x234)) {
+        case 1:
+            ((OpgaVT*)this_)->v12(0xff, 1);
+            *(u8*)(this_ + 0x230) = 1;
+            *(u8*)(this_ + 0x11d) = 1;
+            *(s32*)(this_ + 0x23c) = -1;
+            break;
+        case 0:
+            *(u8*)(this_ + 0x230) = 0;
+            break;
+        case 2:
+            if (*(s32*)(this_ + 0x240) > 0) {
+                fn_802D8050(fn_802D6A9C(), *(s32*)(this_ + 0x240), 1, 0xff);
+            }
+            break;
+        }
     }
 }
 
