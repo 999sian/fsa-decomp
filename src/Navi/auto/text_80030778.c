@@ -219,6 +219,10 @@ extern "C" void fn_80034C10(void* p) {
     *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 8;
 }
 
+extern "C" void fn_80034C68(void) {
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 4;
+}
+
 extern "C" void fn_80035410(void* p) {
     *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
     *(unsigned int*)((char*)p + 0x220) = 0x4;
