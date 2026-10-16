@@ -10,8 +10,6 @@ extern "C" void fn_803C0018(char* p);
 extern "C" void OSResetSystem(int reset, unsigned long resetCode, int forceMenu);
 
 struct J2DTextBoxVt {
-    virtual void v0();
-    virtual void v1();
     virtual void v2();
     virtual void v3();
     virtual void v4();
@@ -412,13 +410,14 @@ extern "C" void fn_803CE370(char* p) {
             r = 0x116;
         }
         *(s32*)(p + 0x84) = r;
-        void* tb = ((void* (*)(void*, u32, u32, u32))((*(void***)(p + 8))[15]))(*(void**)(p + 8), r, 0x54, 0x66743031);
+        void* tb = ((J2DTextBoxVt*)*(void**)(p + 8))->v15(r, 0x54, 0x66743031);
         fn_803832BC(getStringPtr__10J2DTextBoxCFv(tb), *(s32*)(p + 0x84), 0, 0, 0);
         if (*(u32*)(p + 0x84) == 0x60 || *(u32*)(p + 0x84) == 0x64) {
             *(s32*)(p + 0xb0) = 0x5a;
         }
         f32* bounds = getBounds__7J2DPaneFv(*(void**)(*(char**)(p + 0x20) + 4));
-        if (*bounds - *(f32*)(*(char**)(p + 0x20) + 8) < lbl_80543498) {
+        f32 w = *bounds;
+        if (w - *(f32*)(*(char**)(p + 0x20) + 8) < lbl_80543498) {
             *(s16*)(*(char**)(p + 0x20) + 0x20) = 0;
             *(s16*)(*(char**)(p + 0x20) + 0x26) = 0;
             p[0x117] = 1;
