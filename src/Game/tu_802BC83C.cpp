@@ -8,7 +8,14 @@ extern "C" void fn_801EE434(void*);
 extern "C" char lbl_804A8A50[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_802BC83C(u8* p) {
-    (*(void (**)(u8*))(*(u8**)p + 0x54))(p);
+    struct VObj {
+        virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C();
+        virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1C();
+        virtual void v20(); virtual void v24(); virtual void v28(); virtual void v2C();
+        virtual void v30(); virtual void v34(); virtual void v38(); virtual void v3C();
+        virtual void v40(); virtual void v44(); virtual void v48(); virtual void v4C();
+    };
+    ((VObj*)p)->v4C();
     *(u8*)(p + 0x11c) = 0;
     fn_802D73CC(fn_802D6A9C(), *(u32*)(p + 0x26c), 0);
 }
