@@ -149,6 +149,17 @@ extern "C" void fn_80128794(u8* self) {
     *(s16*)(self + 0x214) = 0;
 }
 
+extern "C" void fn_80128F2C(void** param_1) {
+    u8* obj = (u8*)*param_1;
+    u8* info = *(u8**)((u8*)param_1[1] + 0x1c);
+    s32 v = *(s32*)(obj + 0x100);
+    s32 m = (*(u8**)info)[0x1f] - 1;
+    s32 q = v / m;
+    s32 r = v - q * m;
+    u8 idx = r + (q & 1) * (m - 2 * r);
+    obj[0x111] = (*(u8**)(info + 8))[idx];
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
