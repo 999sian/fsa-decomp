@@ -85,6 +85,12 @@ extern "C" void fn_800309B0(void* p) {
     fn_800302F0(3);
 }
 
+extern "C" void fn_80030A1C(void* p) {
+    *(int*)p = *(int*)((char*)lbl_802BB0FC + 0x58) + 500;
+    *(unsigned char*)((char*)p + 0x31) |= 0x1;
+    *(int*)((char*)p + 0x24) = *(int*)((char*)lbl_802BB0FC + 0x58);
+}
+
 extern "C" void fn_80030A48(void* p) {
     *(unsigned int*)((char*)lbl_802BB0FC + 0x400) = *(unsigned char*)((char*)p + 0xc);
     *(unsigned int*)((char*)lbl_802BB0FC + 0x444) &= 0xfffffff7;
