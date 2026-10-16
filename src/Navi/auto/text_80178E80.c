@@ -60,6 +60,13 @@ struct VObj_8017C154 {
     virtual void vf34();
     virtual void vf38(void* buf, f32 x, f32 y);
 };
+
+struct Tbl4_8017D014 {
+    u32 v[4];
+};
+
+extern "C" void fn_801C5D48(void* p);
+extern u8 lbl_802022C8[];
 extern void* lbl_80286A30[];
 extern void* lbl_80299634[];
 extern void* lbl_80299540[];
@@ -270,6 +277,29 @@ extern "C" void* fn_8017B7E4(u32* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_8017C0A8(u8* self, Quad_8017C0A8* a, Quad_8017C0A8* b, Quad_8017C0A8* c, Quad_8017C0A8* d) {
+    Quad_8017C0A8 qa = *a;
+    Quad_8017C0A8 qb = *b;
+    Quad_8017C0A8 qc = *c;
+    Quad_8017C0A8 qd = *d;
+    *(Quad_8017C0A8*)(self + 0x128) = qa;
+    *(Quad_8017C0A8*)(self + 0x12c) = qb;
+    *(Quad_8017C0A8*)(self + 0x130) = qc;
+    *(Quad_8017C0A8*)(self + 0x134) = qd;
+}
+
+extern "C" u32 fn_8017D014(char* self, u8 idx, u8 flag) {
+    u32 tbl[4];
+    tbl[0] = *(u32*)(self + 0x100);
+    tbl[1] = *(u32*)(self + 0x104);
+    tbl[2] = *(u32*)(self + 0x108);
+    tbl[3] = *(u32*)(self + 0x10c);
+    if (idx < 4 && flag == 0) {
+        return tbl[idx];
+    }
+    return 0;
 }
 
 extern "C" void fn_801C5D48(void* p);
