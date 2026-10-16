@@ -709,6 +709,28 @@ extern "C" void fn_801843B8(void* self) {
     }
 }
 
+extern "C" s32 fn_801843D0(void* self, int a, u8 b) {
+    void* p = (*(void* (**)(void*))(*(int*)self + 0xc0))(self);
+    if (p != 0) {
+        void* q = *(void**)((u8*)p + 0x70);
+        if (q != 0) {
+            return (*(s32 (**)(void*, u8))(*(int*)q + 0xa0))(q, b);
+        }
+    }
+    return 0;
+}
+
+extern "C" s32 fn_80184438(void* self, u8 b) {
+    void* p = (*(void* (**)(void*))(*(int*)self + 0xc4))(self);
+    if (p != 0) {
+        void* q = *(void**)((u8*)p + 0x70);
+        if (q != 0) {
+            return (*(s32 (**)(void*, u8))(*(int*)q + 0xa0))(q, b);
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_80184B34(u8* self, u32* out) {
     u32 a = *(u32*)(self + 0x148);
     u32 b = *(u32*)(self + 0x14c);
