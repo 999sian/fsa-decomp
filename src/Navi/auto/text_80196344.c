@@ -1698,6 +1698,10 @@ extern "C" void fn_801A4DF4(int param_1, u8* param_2) {
     *(u8*)(param_1 + 0x40) = *param_2;
 }
 
+extern "C" u8 fn_801A4E00(int param_1) {
+    return *(u8*)(param_1 + 0x40);
+}
+
 extern "C" void* fn_801A4E10(u8* p) {
     return *(void**)(p + 0x48);
 }
