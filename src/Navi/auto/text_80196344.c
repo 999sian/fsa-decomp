@@ -492,6 +492,29 @@ extern "C" int fn_80199A58() {
     return 0x1e;
 }
 
+extern "C" void fn_8019C6D4(int param_1)
+{
+	extern int* lbl_802FFA80;
+	extern void fn_801A598C(u32, u32);
+	int base = lbl_802FFA80[0];
+	int sum = base + *(int *)(param_1 + 0x58);
+	lbl_802FFA80[2] = sum;
+	int saved = lbl_802FFA80[2];
+
+	int p = param_1;
+	unsigned int i = 0;
+	do {
+		if (*(u32 *)(p + 0x38) != 0) {
+			fn_801A598C(*(u32 *)(p + 0x38), i);
+		}
+		i++;
+		p += 4;
+	} while (i < 8);
+
+	int final = lbl_802FFA80[2];
+	fn_801BC250(saved, final - saved);
+}
+
 extern "C" void fn_8019C764(int param_1)
 {
 	extern int* lbl_802FFA80;
@@ -752,16 +775,19 @@ extern "C" void fn_8019EED4(int param_1) {
     u8* out;
     out = (u8*)lbl_802FFA80[2];
     lbl_802FFA80[2] = (int)(out + 1);
+    u8 b3 = w >> 24;
+    u8 b2 = w >> 16;
+    u8 b1 = w >> 8;
     *out = 0x61;
     out = (u8*)lbl_802FFA80[2];
     lbl_802FFA80[2] = (int)(out + 1);
-    *out = w >> 24;
+    *out = b3;
     out = (u8*)lbl_802FFA80[2];
     lbl_802FFA80[2] = (int)(out + 1);
-    *out = w >> 16;
+    *out = b2;
     out = (u8*)lbl_802FFA80[2];
     lbl_802FFA80[2] = (int)(out + 1);
-    *out = w >> 8;
+    *out = b1;
     out = (u8*)lbl_802FFA80[2];
     lbl_802FFA80[2] = (int)(out + 1);
     *out = w;
