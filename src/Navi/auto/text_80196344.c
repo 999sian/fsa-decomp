@@ -505,6 +505,10 @@ extern "C" void* fn_801A3614(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801A36A4(void) {
+    return 0x50454647;
+}
+
 extern "C" int fn_801A36E8(int p) { return p + 4; }
 
 extern "C" void fn_801A36F0(int param_1, u32* param_2) {
