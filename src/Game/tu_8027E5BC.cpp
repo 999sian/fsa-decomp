@@ -168,10 +168,11 @@ void fn_8028286C(char* p) {
 }
 
 void fn_802828A8(char* p) {
+    s32 area;
     void* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd8c));
     if (actor != NULL) {
-        s32 area = S32(p, 0x3b4);
-        if (U8(fn_802D6A9C(), 0x131df + area) != 0) {
+        area = S32(p, 0x3b4);
+        if (*((u8*)((u8*)fn_802D6A9C() + 0x10000) + 0x31df + area) != 0) {
             f32 speed = -fn_801080B8(actor);
             F32(p, 0x374) = lbl_80540360;
             F32(p, 0x378) = speed;
