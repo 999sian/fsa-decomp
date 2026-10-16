@@ -205,6 +205,30 @@ struct UnkDCF8 {
     u8 m_c;
     u8 m_d;
 };
+struct Unk800DC058Src {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual void m14() = 0;
+    virtual void m15() = 0;
+    virtual u32 m16() = 0;
+    virtual void m17() = 0;
+    virtual u32* m18(u32) = 0;
+    virtual void m19() = 0;
+    virtual u8* m20(u32) = 0;
+};
+
 struct Unk800DBCCCSrc {
     virtual void m0() = 0;
     virtual void m1() = 0;
