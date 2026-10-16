@@ -13,6 +13,33 @@ extern "C" s32 fn_8011BDE4(u8* this_) {
 #endif
 }
 
+extern "C" void fn_8010DF98(u8* this_);
+extern "C" void fn_8011B878(u8* this_, s32 id);
+extern "C" void fn_800FEB78(u8* this_, s32 flag);
+extern "C" f32 lbl_8053C858;
+extern "C" void fn_8011CB5C(u8* this_) {
+    fn_8010DF98(this_);
+    *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xf;
+    *(s32*)(this_ + 0x98) = (s8)((*(u32*)(this_ + 0x90) >> 4) & 3);
+    switch (*(s32*)(this_ + 0x234)) {
+    case 1:
+        fn_8011B878(this_, 0xd);
+        *(s32*)(this_ + 0x98) = 3;
+        fn_800FEB78(this_ + 0x278, 0);
+        break;
+    case 2:
+        fn_8011B878(this_, 0x16);
+        *(s32*)(this_ + 0x98) = 3;
+        fn_800FEB78(this_ + 0x278, 1);
+        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + lbl_8053C858;
+        break;
+    default:
+        fn_800FEB78(this_ + 0x278, 0);
+        break;
+    }
+    *(u8*)(this_ + 0x284) = *(s32*)(this_ + 0x98);
+}
+
 extern "C" u8* fn_8011CC2C(u8* p) {
     f32 zero;
 
@@ -40,11 +67,13 @@ extern "C" char lbl_8049DB90[];
 extern "C" f32 lbl_8053C7D8;
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void fn_8010E074(u8*);
-extern "C" void* fn_8011B390(void* p, s16 n) {
-    if (p) {
+extern "C" void* fn_8011B390(u8* p, s16 n) {
+    if (p != 0) {
         *(void**)p = lbl_8049DB90;
         __dt__13Base_8010E074Fv(p, 0);
-        if (n > 0) operator delete(p);
+        if (n > 0) {
+            operator delete(p);
+        }
     }
     return p;
 }
