@@ -30,6 +30,13 @@ struct StateObj_80072080 {
     s8 m_state;
     StateFunc_80072080 m_func;
 };
+struct StateObj_80073ECC;
+typedef BOOL (StateObj_80073ECC::*StateFunc_80073ECC)(int);
+struct StateObj_80073ECC {
+    u8 pad[0x2e4];
+    s8 m_state;
+    StateFunc_80073ECC m_func;
+};
 
 struct VObj_800723CC {
     virtual void v0();
@@ -383,6 +390,25 @@ extern "C" void fn_80072E68(void);
 extern "C" void fn_80072D6C(void) {
     fn_80072E68();
 }
+
+#pragma dont_inline on
+extern "C" BOOL fn_80073720(u8* p) {
+    u32 flags = lbl_802FF194 | 4;
+    if (lbl_802BB0FC[0xee] != 0) {
+        flags = lbl_802FF194 & ~4;
+    }
+    lbl_802FF194 = flags;
+    if (*(s32*)(p + 0x2c4) == 1 && *(f32*)(*(u8**)(p + 0x254) + 0x1c) == lbl_8030054C) {
+        fn_8002F358(0x47, 0);
+    }
+    fn_80073AD8(p);
+    fn_800187B0(p);
+    fn_80018804(p, 0);
+    fn_80073F80(p, 0);
+    fn_80073DDC(p);
+    return TRUE;
+}
+#pragma dont_inline reset
 
 extern "C" BOOL fn_800738DC(u8* self, s32 idx)
 {
