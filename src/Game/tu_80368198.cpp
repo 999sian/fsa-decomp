@@ -15,6 +15,12 @@ extern char lbl_8049CC34[];
 extern "C" void __dt__13Base_8010E074Fv(void* this_, int how);
 extern "C" void fn_8036A65C(void* this_);
 extern "C" void fn_801F0E34(void* self, u32 msg, s32 flag);
+extern "C" void fn_8010DF58(void* this_);
+extern "C" void fn_803683AC(void* this_);
+extern "C" void fn_8036A894(void* this_);
+extern "C" void fn_8036AC58(void* this_, void* param);
+extern "C" void fn_80368660(void* this_);
+extern void* lbl_80474C48[];
 
 extern "C" u8 fn_8036B018(u8* this_) {
     s32 v = *(s32*)(this_ + 0x240);
@@ -33,7 +39,7 @@ extern "C" void* fn_8036C69C(void* this_, short how) {
         }
         *(void**)((char*)this_ + 0x314) = 0;
         fn_8036A65C(this_);
-        if (this_ != (void*)-0x318 && this_ != (void*)-0x33c) {
+        if ((s32)this_ != -0x318 && (s32)this_ != -0x33c) {
             *(void**)((char*)this_ + 0x33c) = (void*)lbl_8049CC34;
         }
         __dt__13Base_8010E074Fv(this_, 0);
