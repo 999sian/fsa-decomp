@@ -100,6 +100,13 @@ struct NaviVObj {
     virtual void vf8(void);
     virtual void vf9(void);
     virtual void vf10(void);
+    virtual void vf11(void);
+    virtual u32 vf12(void);
+    virtual void vf13(void);
+    virtual void vf14(void);
+    virtual void vf15(void);
+    virtual void vf16(void);
+    virtual u32 vf17(void);
 };
 extern "C" u32 fn_80197B4C(void* param_1) {
     u8* p = (u8*)param_1;
