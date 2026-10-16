@@ -15,6 +15,9 @@ extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
 
+extern "C" void fn_80029168(const char*, ...) {
+}
+
 extern "C" void fn_8002D2EC(char* p) {
     lbl_802FEDE0 |= 0x800;
     lbl_802FEDDC |= 0x2000;
