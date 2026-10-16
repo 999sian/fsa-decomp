@@ -65,16 +65,38 @@ extern "C" s32 fn_801C11F0(char* this_) {
     return result;
 }
 
+extern "C" s32 fn_801CD664(s32 n);
 extern "C" void fn_801C1224(char* this_, s32 param_2) {
-    char* p = this_;
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+    };
     s32 count = *(s32*)(this_ + 0xc);
+    char* p = this_;
     for (s32 i = 0; i < count; i++) {
         char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
         if (obj != 0 && (*(u32*)(obj + 0x230) & 0x10000) == 0) {
             *(s32*)(obj + 0x10c) = param_2;
-            (*(void (**)(char*))(*(char**)obj + 0x24))(obj);
+            ((VObj*)obj)->v09();
         }
         p += 4;
+    }
+}
+
+extern "C" void fn_801C12B8(char* this_) {
+    s32 idx = fn_801CD664(*(s32*)(this_ + 0xc));
+    s32 id = *(s32*)(this_ + idx * 4 + 0x10);
+    char* obj = (char*)fn_801F666C(fn_801F856C(), id);
+    if (obj != 0) {
+        *(u32*)(obj + 0x230) |= 0x10000;
     }
 }
 
@@ -113,7 +135,8 @@ extern "C" void fn_801C1440(char* this_, s32 param_2) {
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7440(void* p, s32 v);
 extern "C" u16 fn_801C14A8(char* this_, void* param_2) {
-    *(void**)(this_ + *(s32*)(this_ + 0xc) * 4 + 0x10) = param_2;
+    void** arr = (void**)(this_ + 0x10);
+    arr[*(s32*)(this_ + 0xc)] = param_2;
     *(s32*)(this_ + 0xc) += 1;
     *(u16*)(this_ + 0x4) += 1;
     if (*(u16*)(this_ + 0x4) == 1) {
