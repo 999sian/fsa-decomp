@@ -184,6 +184,11 @@ extern "C" void fn_80127E58(u8* self) {
     fn_801DBA5C((s32)(25.0f * *(f32*)(self + 0x144)), 5);
 }
 
+extern "C" void fn_801DBA1C(s32 v, s32 n);
+extern "C" void fn_80127E94(u8* self) {
+    fn_801DBA1C((s32)(25.0f * *(f32*)(self + 0x144)), 5);
+}
+
 extern "C" void fn_80127ED0(u8* self, u8* other) {
     f32 scale = 25.0f * *(f32*)(self + 0x144);
     fn_801DBA5C((s32)(*(f32*)(other + 0x60) * scale), 5);
