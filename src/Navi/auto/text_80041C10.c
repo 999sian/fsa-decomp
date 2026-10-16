@@ -3,6 +3,10 @@
 // .text 0x80041c10-0x8004dcf8 (82 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_8015AB1C(void*);
+extern "C" int fn_801167D0(s16* p, s32 a, s32 b);
+extern "C" int fn_8004DCDC(u32* p);
+extern char lbl_80246FB8[];
+extern char lbl_80247000[];
 extern "C" void fn_8004C614(void*);
 extern "C" void fn_8004C694(void*);
 
@@ -100,17 +104,18 @@ extern "C" void fn_8004B11C(void* param_1) {
 }
 
 extern "C" void* fn_8004B16C(void* param_1, s16 param_2) {
-    if (param_1) {
-        *(void**)param_1 = (void*)lbl_80246FDC;
-        if (param_1) {
-            *(void**)param_1 = (void*)lbl_80247000;
+    void* self = param_1;
+    if (self != nullptr) {
+        *(void**)self = (void*)lbl_80246FDC;
+        if (self != nullptr) {
+            *(void**)self = (void*)lbl_80247000;
         }
         fn_801303BC(param_1, 0);
         if (param_2 > 0) {
-            fn_8015AB1C(param_1);
+            fn_8015AB1C(self);
         }
     }
-    return param_1;
+    return self;
 }
 
 extern "C" void fn_8004B1DC(void* param_1, void* param_2, void* param_3, void* param_4) {
