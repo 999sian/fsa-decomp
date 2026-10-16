@@ -31,7 +31,9 @@ extern "C" int fn_801699C0(void) {
 extern void* lbl_802985C8[];
 extern void* lbl_80298600[];
 extern "C" void fn_8015AB1C(void* ptr);
-extern "C" BOOL fn_801699CC(void) {
+extern "C" BOOL fn_801699CC(void);
+extern "C" BOOL fn_801699CC(void)
+{
     return TRUE;
 }
 
@@ -69,6 +71,15 @@ extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_8016AD04(void) {
+}
+
+extern "C" void fn_8017311C(s32 p, s32 i, u8* src)
+{
+    u8* dst = (u8*)(p + i * 4);
+    dst[0x34] = src[0];
+    dst[0x35] = src[1];
+    dst[0x36] = src[2];
+    dst[0x37] = src[3];
 }
 
 extern "C" void fn_8017318C(void)
