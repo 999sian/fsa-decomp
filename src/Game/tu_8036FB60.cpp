@@ -13,6 +13,11 @@ extern "C" unsigned char __vt__4FGAL[];
 extern void* lbl_8053AF80;
 extern float lbl_80542E00;
 extern float lbl_80542E04;
+extern float lbl_80542E08;
+extern float lbl_80542DC4;
+extern float lbl_80542DCC;
+extern "C" void* fn_801F856C(void);
+extern "C" int Actor_CreateByID(void* mgr, unsigned int name, unsigned int id, void* pos, unsigned int arg5, int arg6, int arg7);
 void operator delete(void* p);
 extern "C" void fn_803704E8(void)
 {
