@@ -55,6 +55,10 @@ extern "C" int fn_8002F168(void) {
     return 0;
 }
 
+extern "C" void fn_8002F2E0(void* p) {
+    fn_80058740(1, p);
+}
+
 extern "C" void fn_80057C38(void);
 extern "C" void fn_80058740(int, void*);
 extern "C" int fn_80058C08(void);
