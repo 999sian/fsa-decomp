@@ -277,6 +277,20 @@ extern "C" u32 fn_80159E0C(void* p, u32 align) {
     return m & (b - off);
 }
 
+extern "C" void* fn_80159EEC(char* heap, void* ptr);
+extern "C" void* fn_8015A168(char* heap, void* ptr);
+extern "C" void* fn_80159E8C(void* ptr) {
+    void* ret;
+    if (lbl_802FF548 == 0) {
+        ret = 0;
+    } else if (*(void**)(lbl_802FF548 + 0x30) <= ptr && ptr < *(void**)(lbl_802FF548 + 0x34)) {
+        ret = fn_80159EEC(lbl_802FF548, ptr);
+    } else {
+        ret = fn_8015A168(lbl_802FF548, ptr);
+    }
+    return ret;
+}
+
 extern "C" int fn_8015A3E4(void* heap, u32 start, u32 size) {
     struct HeapObj {
         virtual void vf8(int);
