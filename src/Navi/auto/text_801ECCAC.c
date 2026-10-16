@@ -189,7 +189,7 @@ extern "C" void TRKPostInterruptEvent(void)
         switch (*(unsigned long*)(gTRKCPUState + 0x2f8) & 0xffff) {
         case 0xd00:
         case 0x700:
-            ((void (*)(unsigned long*, unsigned long))fn_801EE4C0)(&instr, *(unsigned long*)(gTRKCPUState + 0x80));
+            fn_801EE4C0(&instr, *(unsigned long*)(gTRKCPUState + 0x80));
             if (instr == 0xfe00000) {
                 type = 5;
             } else {
