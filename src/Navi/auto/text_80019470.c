@@ -47,7 +47,7 @@ extern "C" u32 fn_8001BF80(void*);
 extern "C" void* fn_8001C094(void*);
 extern "C" s32 fn_8001EB7C(void*, u8);
 extern "C" int fn_8002689C();
-extern "C" s32 fn_8001E958(void*, u16);
+extern "C" s32 fn_8001E958(void*, s32);
 extern "C" s32 fn_8001C6D0(void*);
 extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
 extern "C" void fn_8001C454(void*, int, int);
