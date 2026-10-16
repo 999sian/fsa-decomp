@@ -39,6 +39,7 @@ extern "C" u32 fn_8032D564(void* p, s32 i) { return lbl_804719D8[i]; }
 // first, then the tile type.
 struct RupyPt { f32 x, y; };
 extern const RupyPt lbl_80541D80;
+extern const u32 lbl_80541D84;
 extern "C" u8* fn_8020D58C();
 extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, u32 id, RupyPt* ext);
 extern "C" u16 fn_8022461C(void* pos, s32 room);
