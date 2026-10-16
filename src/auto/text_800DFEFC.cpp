@@ -6,14 +6,12 @@ u16 J3DMaterialFactory_v21::countUniqueMaterials()
 {
 	u16 count = 0;
 	u16 num = mMaterialNum;
-	if (num <= 0) {
-		return count;
+	if (num != 0) {
+		if (num > 8) {
+			for (; count < (u16)(num - 8); count += 8) {}
+		}
+		for (; count < num; count++) {}
 	}
-	if (num > 8) {
-		u16 lim = num - 8;
-		for (; count < lim; count += 8) {}
-	}
-	for (; count < num; count++) {}
 	return count;
 }
 
@@ -21,9 +19,9 @@ extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, i
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mMatColorIndex[no] != 0xffff) {
-		return *(u32*)&self->mColorData[initData->mMatColorIndex[no]];
+		return J3DGXColor(self->mColorData[initData->mMatColorIndex[no]]);
 	}
-	return J3DGXColor(0xffffffffU);
+	return J3DGXColor();
 }
 
 u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
