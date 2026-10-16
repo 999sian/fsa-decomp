@@ -5,7 +5,7 @@ extern "C" void fn_801CEBD0(void);
 
 extern "C" int fn_80210898(void)
 {
-	fn_801D4F64();
+	fn_801CEBD0();
 	return 0;
 }
 
