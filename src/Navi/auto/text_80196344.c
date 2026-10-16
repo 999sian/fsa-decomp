@@ -101,6 +101,8 @@ extern "C" void fn_80196440(void* self, void* a, void* b, void* c) {
     }
 }
 
+#pragma pop
+
 extern "C" s32 fn_801964C0(void* self) {
     s32 sum = 0;
     u16 i;
@@ -2432,7 +2434,7 @@ extern "C" BOOL fn_801A45B0(void)
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
     u8 a = src[1];
-    u8* dst = p + i * 8;
+    u8* dst = (u8*)((s32)p + i * 8);
     dst[0xf] = a;
     a = src[2];
     dst[0x10] = a;
