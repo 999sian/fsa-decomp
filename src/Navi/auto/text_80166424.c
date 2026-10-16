@@ -94,6 +94,49 @@ extern "C" void fn_80167CB8(void) {
     fn_80168280();
 }
 
+extern "C" void* fn_80167CD8(u8* param_1, u32* param_2, u32* param_3) {
+    u32* dst = param_2;
+    u32* src = param_3;
+    u32* end = *(u32**)(param_1 + 8);
+    if (src < end) {
+        u32 words = ((u32)end + 3 - (u32)src) >> 2;
+        for (u32 i = words >> 3; i != 0; i--) {
+            dst[0] = src[0];
+            dst[1] = src[1];
+            dst[2] = src[2];
+            dst[3] = src[3];
+            dst[4] = src[4];
+            dst[5] = src[5];
+            dst[6] = src[6];
+            dst[7] = src[7];
+            src += 8;
+            dst += 8;
+        }
+        for (u32 i = words & 7; i != 0; i--) {
+            *dst++ = *src++;
+        }
+    }
+    for (u32* p = dst; p != *(u32**)(param_1 + 8); p++) {
+    }
+    *(u32**)(param_1 + 8) = dst;
+    return param_2;
+}
+
+extern "C" void fn_80167D90(u8* param_1, u32 param_2, u32 param_3, u32* param_4) {
+    if (param_3 != 0) {
+        u32* p = (u32*)fn_80167E08();
+        if (p != *(u32**)(param_1 + 8)) {
+            u32 v = *param_4;
+            for (u32 i = param_3; i != 0; i--) {
+                if (p != nullptr) {
+                    *p = v;
+                }
+                p++;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80168E00(void)
 {
 }
