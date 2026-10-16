@@ -1178,7 +1178,7 @@ extern "C" BOOL fn_8013B138(void)
 extern "C" void fn_8013B140(VObj_8013B140* self, u32* p)
 {
     u32 v = *p;
-    ((VObj_801398CC*)0, self)->v6(&v);
+    self->v6(&v);
 }
 
 extern "C" void fn_80132C50(void*, int);
