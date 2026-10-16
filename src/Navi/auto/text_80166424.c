@@ -35,8 +35,8 @@ struct UnkVObj_801671B0 {
     virtual void vf2();
     virtual void vf3();
     virtual void vf4();
-    virtual void vf5();
-    virtual void vf6();
+    virtual u32 vf5();
+    virtual s32 vf6(u32, u32);
     virtual u32 vf7();
     virtual s32 vf8(u32, u32);
 };
@@ -100,12 +100,12 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
     return uVar1;
 }
 
-extern "C" s32 fn_801671B0(void* param_1, u32 param_2) {
-    u32 size = ((u32(*)(void*))(*(void***)param_1)[7])(param_1);
+extern "C" s32 fn_801671B0(UnkVObj_801671B0* param_1, u32 param_2) {
+    u32 size = param_1->vf7();
     u32 aligned = (param_2 + size - 1) & ~(param_2 - 1);
     s32 diff = aligned - size;
     if (diff != 0) {
-        if (((s32(*)(void*, u32, u32))(*(void***)param_1)[8])(param_1, aligned, 0) != diff) {
+        if (param_1->vf8(aligned, 0) != diff) {
             *((u8*)param_1 + 4) |= 1;
         }
     }
