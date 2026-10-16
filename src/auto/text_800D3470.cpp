@@ -987,6 +987,15 @@ extern "C" void fn_800D9778(u8* self) {
 	}
 }
 
+extern "C" void fn_800D9810(u8* p) {
+    u8 n = p[0x20];
+    for (u32 i = 0; i < n; i++) {
+        J3DGDWriteBPCmd(*(u32*)(p + 0x21));
+        J3DGDWriteBPCmd(*(u32*)(p + 0x25));
+        p += 8;
+    }
+}
+
 extern "C" void fn_800D9918(u8* self) {
     u32 count = self[0x20];
     u32 accumulator;
