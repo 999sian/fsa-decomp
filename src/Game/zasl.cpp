@@ -5,7 +5,7 @@
 #include "Game/ItemBase.h"
 
 extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
-extern void* lbl_8046A3AC;
+extern char lbl_8046A3AC[];
 extern const f32 lbl_8053F9E8;
 
 extern "C" void fn_801CE32C(void*);
@@ -43,6 +43,12 @@ extern "C" void* fn_8020C0A8(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8020C138(u8* this_) {
+    DrawRec rec;
+    rec.ids[2] = 4;
+    fn_801F06F0(this_, lbl_8046A3AC, *(u32*)(this_ + 0x280) + 0x2c9, &rec, 0, lbl_8053F9E8, lbl_8053F9E8);
 }
 
 extern "C" bool fn_8020C26C(void* p, void* a, void* b) {
