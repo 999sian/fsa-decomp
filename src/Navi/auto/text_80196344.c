@@ -517,7 +517,7 @@ u32 fn_80199A00(void) {
     return 0xfe;
 }
 
-u32 fn_80199A08(void) {
+extern "C" u32 fn_80199A08(void) {
     return 0x1f2;
 }
 
