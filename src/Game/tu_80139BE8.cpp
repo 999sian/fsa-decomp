@@ -37,6 +37,13 @@ extern "C" void fn_80139C5C(void) {
     fn_8038D4A8();
 }
 
+extern "C" void fn_80139C84(unsigned char* p) {
+    fn_8043DC98(lbl_8053AED0);
+    if (*(void**)(p + 0x2c) != 0) {
+        fn_8044B8EC(*(void**)(p + 0x2c));
+    }
+}
+
 extern "C" void fn_80139D3C(unsigned char* p) {
     if (lbl_8053AB10[0x39] == 0) {
         fn_8016DB60(*(void**)(p + 0x24));
