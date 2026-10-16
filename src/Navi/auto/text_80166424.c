@@ -1642,6 +1642,11 @@ extern "C" int fn_8017333C()
 	return 0;
 }
 
+extern "C" int fn_80173344()
+{
+	return 0;
+}
+
 extern "C" int fn_8017334C()
 {
 	return 0;
@@ -2137,13 +2142,13 @@ extern "C" void* fn_80176698(void* p_self, void* p_other, u8 b, u32 r6, u32 c, u
 extern "C" void* fn_80176848(void* p_self, u32 unused, u32 a, u32 b, u32 c)
 {
     u32* self = (u32*)p_self;
-    u8* sub = (u8*)p_self + 0xdc;
-    *(void**)p_self = lbl_80298C88;
+    u8* sub = (u8*)self + 0xdc;
+    self[0] = (u32)lbl_80298C88;
     fn_80166C70(sub);
-    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
+    fn_80166B58((u32*)(sub + 0xc), (u32)self);
     self[0x3e] = 0;
-    fn_801768C8(p_self, a, b, c);
-    return p_self;
+    fn_801768C8(self, c, b, a);
+    return self;
 }
 #pragma pop
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
