@@ -9,6 +9,17 @@ struct VObj_80178E10 {
 
 extern void* lbl_80286A1C[];
 extern f32 lbl_80301C30;
+extern f64 lbl_80301C58;
+extern f32 __psq_l(void* p, int off, int w, int gqr);
+static inline f32 s16ToF32(s16 v) {
+    union {
+        f64 d;
+        u32 w[2];
+    } u;
+    u.w[0] = 0x43300000;
+    u.w[1] = (u32)v ^ 0x80000000;
+    return (f32)(u.d - lbl_80301C58);
+}
 extern "C" void* fn_80174BA0(void* base, u32 offset);
 extern "C" void* fn_8018C278(void* base, u32 offset);
 extern "C" void* fn_8018C290(void* base, u32 offset);
