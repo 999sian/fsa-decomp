@@ -145,6 +145,12 @@ extern "C" void fn_8018901C(void) {
     fn_80177F0C();
 }
 
+extern "C" void fn_80181724(void* self, s32 param_2);
+extern void* lbl_802993CC[];
+extern "C" void fn_8018903C(void) {
+    fn_80178990();
+}
+
 extern "C" int fn_8018A064(void* self, s32* param_2) {
     s32 local_14 = -1;
     s32 local_10 = -1;
