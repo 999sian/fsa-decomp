@@ -21,6 +21,17 @@ extern void* lbl_80292558[];
 // .text 0x8011f23c-0x80135cf8 (427 functions). split_file divides it into the game's real files.
 
 extern void* lbl_80290ACC[];
+
+struct Unk80120880 {
+    void** vt;
+    s32 m4;
+    u16 m8;
+    u16 mA;
+    u32 mC;
+    f32 x0, y0, x1, y1;
+    s32 m20;
+    u32 m24;
+};
 extern "C" void* lbl_802FF364;
 extern "C" void* lbl_802FF368;
 extern "C" void* fn_801328F8(void* ptr, s16 param_2);
@@ -241,6 +252,24 @@ extern "C" void fn_80120704(void) {
         fn_8015AB1C(obj);
     }
     lbl_802FF340 = 0;
+}
+
+extern "C" void fn_80120880(u8* p, s32 x, s32 y, s32 w, s32 h, u32* q) {
+    f32 x0 = x;
+    f32 y0 = y;
+    f32 x1 = x + w;
+    f32 y1 = y + h;
+    *(void***)(p + 0x0) = lbl_80290ACC;
+    *(u32*)(p + 0xc) = *q;
+    *(f32*)(p + 0x10) = x0;
+    *(f32*)(p + 0x14) = y0;
+    *(f32*)(p + 0x18) = x1;
+    *(f32*)(p + 0x1c) = y1;
+    *(u32*)(p + 0x4) = 0;
+    *(u16*)(p + 0x8) = 0;
+    *(u16*)(p + 0xa) = 0;
+    *(u32*)(p + 0x24) = 0;
+    *(s32*)(p + 0x20) = -1;
 }
 
 extern "C" bool fn_80120ABC(u8* p, u16 v) {
