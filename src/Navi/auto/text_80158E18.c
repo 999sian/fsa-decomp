@@ -63,6 +63,22 @@ extern u32 lbl_802FF564;
 #pragma push
 #pragma use_lmw_stmw off
 #pragma dont_inline on
+extern "C" void fn_8015949C(int attr, u32 base, u8 stride)
+{
+    int idx;
+    if (attr == 0x19) {
+        idx = 1;
+    } else {
+        idx = attr - 9;
+    }
+    *(volatile u8*)0xCC008000 = 8;
+    *(volatile u8*)0xCC008000 = idx + 0xA0;
+    *(volatile u32*)0xCC008000 = base - 0x80000000;
+    *(volatile u8*)0xCC008000 = 8;
+    *(volatile u8*)0xCC008000 = idx + 0xB0;
+    *(volatile u32*)0xCC008000 = stride;
+}
+
 extern "C" int fn_80159AE4(char** outStart, int* outSize, void* arg) {
     char* lo = (char*)OSGetArenaLo();
     char* hi = (char*)OSGetArenaHi();
@@ -458,9 +474,14 @@ extern "C" int fn_8015CDC8(void) {
 }
 
 extern "C" int fn_8015CDF8(unsigned char* p) {
-    int result = 1;
+    int result;
+    unsigned int a;
     fn_801BE3A0(p + 0x18);
-    if (*(unsigned int*)(p + 0x6c) + (*(unsigned int*)(p + 0x70) - *(unsigned int*)(p + 0x30)) + (*(unsigned int*)(p + 0x34) - *(unsigned int*)(p + 0x74)) != *(unsigned int*)(p + 0x38)) {
+    a = *(unsigned int*)(p + 0x30);
+    result = 1;
+    a = *(unsigned int*)(p + 0x70) - a;
+    a += *(unsigned int*)(p + 0x34) - *(unsigned int*)(p + 0x74);
+    if (*(unsigned int*)(p + 0x6c) + a != *(unsigned int*)(p + 0x38)) {
         result = 0;
         fn_80124034(lbl_80297718);
     }
