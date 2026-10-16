@@ -50,6 +50,21 @@ extern "C" void fn_800579E0(void) {
 extern "C" void fn_800579F8(void) {
 }
 
+extern "C" void fn_800581CC(void) {
+    unsigned char* base = lbl_802C05B0;
+    if (base[0xa] == 1) {
+        s32 v = 1;
+        s32 old = base[0xb];
+        if (base[0xe] == 1) {
+            v = 2;
+        }
+        base[0xb] = v;
+        if ((unsigned char)v != old) {
+            fn_8005869C(0x8000, (unsigned char)v);
+        }
+    }
+}
+
 extern "C" void fn_800583D8(s32 idx);
 extern "C" void fn_80058628(void* a, s32 b, s32 c);
 extern "C" void fn_800582A0(s32 idx, s32 val) {
@@ -136,8 +151,8 @@ extern "C" void fn_8005869C(s32 param_1, s32 param_2) {
 }
 
 extern "C" s32 fn_80058740(s32, s32);
-extern "C" void fn_8005871C(s32 p) {
-    fn_80058740(p, 0);
+extern "C" s32 fn_8005871C(s32 p) {
+    return fn_80058740(p, 0);
 }
 
 extern "C" s32 fn_80058740(s32 param_1, s32 param_2) {
