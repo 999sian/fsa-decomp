@@ -66,7 +66,7 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
 }
 
 struct VObj {
-    virtual void v00(void);
+    virtual void v00(int);
     virtual void v04(void);
     virtual void v08(int);
 };
@@ -118,15 +118,14 @@ extern "C" void* fn_80119DD0(void)
 
 extern "C" void* fn_80119E5C(u8* self, s16 size)
 {
-    void* obj;
+    VObj* obj;
     if (self != 0) {
-        obj = *(void**)(self + 0x2c);
+        obj = *(VObj**)(self + 0x2c);
         if (obj != 0) {
-            ((void (*)(void*, int))(*(void***)obj)[2])(obj, 1);
+            obj->v08(1);
         }
-        *(void**)(self + 0x2c) = 0;
+        *(VObj**)(self + 0x2c) = 0;
         if (size > 0) {
-            void __dl__FPv(void* p);
             __dl__FPv(self);
         }
     }
