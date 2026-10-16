@@ -5,7 +5,7 @@
 
 extern u8* lbl_8053AB10;
 
-void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out);
+extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802DCDF4(char* p);
 
@@ -43,6 +43,17 @@ extern "C" bool fn_8030C210(u8* p, f32* v) {
     return ret;
 }
 
+extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
+    f32 pos[2];
+    fn_8030C5F0(p, r4, 1, 0, pos);
+    bool ret = false;
+    if (pos[0] >= (f32)(u32)(*(u32*)(p + 0x144) + 0xe) && pos[0] < (f32)(u32)(*(u32*)(p + 0x14c) - 0xe) &&
+        pos[1] >= (f32)(u32)(*(u32*)(p + 0x148) + 0xe) && pos[1] < (f32)(u32)(*(u32*)(p + 0x150) - 0xe)) {
+        ret = true;
+    }
+    return ret;
+}
+
 extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
     f32 hw = 0.5f * size;
     f32 x = pos[0];
@@ -60,18 +71,19 @@ extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
 }
 
 extern "C" void fn_8030C85C(u8* self) {
-    self[0x1e8] = 0;
-    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235c) != 0) {
-        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2360) = 0;
+    u8 zero = 0;
+    self[0x1e8] = zero;
+    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235c] != 0) {
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2360] = zero;
     }
-    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235d) != 0) {
-        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2361) = 0;
+    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235d] != 0) {
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2361] = zero;
     }
-    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235e) != 0) {
-        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2362) = 0;
+    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235e] != 0) {
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2362] = zero;
     }
-    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235f) != 0) {
-        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2363) = 0;
+    if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235f] != 0) {
+        ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2363] = zero;
     }
     fn_802DCDF4((char*)fn_802D6A9C());
     *(f32*)(self + 0x154) = *(f32*)(self + 0x190);
