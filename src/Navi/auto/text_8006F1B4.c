@@ -13,3 +13,7 @@ extern "C" void fn_8006F1B4(void) {
     *(s32*)(lbl_802C2E44 + 8) = 0;
     __register_global_object(lbl_802C2E44, (void*)fn_8006F16C, lbl_802C2E38);
 }
+typedef void (*fn_ptr)(void);
+const fn_ptr __ctors[] __attribute__((section(".ctors"))) = {
+	(fn_ptr)fn_8006F1B4
+};
