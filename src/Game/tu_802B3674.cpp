@@ -19,15 +19,19 @@ extern "C" void fn_802B3A3C(char* p) {
 }
 
 extern "C" void fn_802B3A48(char* p) {
-    fn_8016A3AC()[0x1ee] = 0;
-    if (*(void**)(p + 0x234) != NULL) {
-        fn_801EE434(*(void**)(p + 0x234));
+    char* q = fn_8016A3AC();
+    q[0x1ee] = 0;
+    void* e = *(void**)(p + 0x234);
+    if (e != NULL) {
+        fn_801EE434(e);
     }
-    if (*(void**)(p + 0x238) != NULL) {
-        fn_801EE434(*(void**)(p + 0x238));
+    e = *(void**)(p + 0x238);
+    if (e != NULL) {
+        fn_801EE434(e);
     }
-    if (*(void**)(p + 0x23c) != NULL) {
-        fn_801EE434(*(void**)(p + 0x23c));
+    e = *(void**)(p + 0x23c);
+    if (e != NULL) {
+        fn_801EE434(e);
     }
     p[0x11c] = 0;
 }
