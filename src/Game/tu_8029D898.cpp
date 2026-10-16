@@ -22,7 +22,7 @@ struct WaveSub : WaveSubBase {
     virtual void v9();
     virtual void v10();
     virtual void v11();
-    virtual void Release(s32 how);
+    virtual void release(s32 how);
 };
 
 struct WaveOwner {
