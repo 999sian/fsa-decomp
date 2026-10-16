@@ -2,6 +2,9 @@
 
 
 extern "C" char lbl_804B19E0[];
+extern "C" void fn_8044172C(void) {
+}
+
 extern "C" void fn_80441778(void* p) {
     *(void**)p = lbl_804B19E0;
     *(s16*)((u8*)p + 0xc) = 0;
