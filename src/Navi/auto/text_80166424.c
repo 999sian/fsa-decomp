@@ -353,9 +353,11 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    u8* p = (u8*)(p2 * 4) + (s32)p1;
-    p[0x16] = p3[0];
-    p[0x17] = p3[1];
+    u8* p = p1 + p2 * 4;
+    u8 a = p3[0];
+    u8 b = p3[1];
+    p[0x16] = a;
+    p[0x17] = b;
     p[0x18] = p3[2];
 }
 
@@ -621,6 +623,20 @@ extern "C" int fn_8017337C()
 
 extern "C" void fn_80173384(void)
 {
+}
+
+extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
+    Unk80174858Pair fallback;
+    fallback.x = lbl_80301AC0[0];
+    fallback.y = lbl_80301AC0[1];
+    u8* data = *(u8**)((u8*)ptr + 0xc);
+    if (data != nullptr && data[index * 0x128] == 1) {
+        Unk80174858Pair* entry = (Unk80174858Pair*)(data + index * 0x128 + subindex * 2 + 0x60);
+        out->x = entry->x;
+        out->y = entry->y;
+    } else {
+        *(u16*)out = *(u16*)&fallback;
+    }
 }
 
 extern "C" u16 lbl_80301ADE;
