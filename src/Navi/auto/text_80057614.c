@@ -38,6 +38,12 @@ extern "C" void fn_8005CAC8(void) {
     lbl_802FF128 = 0;
 }
 
+extern "C" void fn_8005CB14(void) {
+    if (lbl_802FF130 >= 0x20) {
+        return;
+    }
+    lbl_802FF130++;
+}
 
 extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
