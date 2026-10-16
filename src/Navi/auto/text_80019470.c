@@ -375,9 +375,9 @@ extern "C" u32 fn_8001A620(void) {
     return uVar2;
 }
 
-extern "C" void fn_8001E628(void);
-extern "C" void fn_8001A910(void) {
-    fn_8001E628();
+extern "C" s32 fn_8001E628(u32 param_1, s16 param_2, u32 param_3);
+extern "C" s32 fn_8001A910(u32 param_1, s16 param_2, u32 param_3) {
+    return fn_8001E628(param_1, param_2, param_3);
 }
 
 extern "C" void fn_8001DDA4(void);
