@@ -3,6 +3,20 @@
 // .text 0x80057614-0x800618fc (176 functions). split_file divides it into the game's real files.
 
 extern void* lbl_8027EC78[];
+extern void* lbl_80299A8C[];
+extern void* lbl_802044AC[];
+extern u8 lbl_8027D7C0[];
+extern u32 lbl_802FBA78;
+extern "C" void fn_801DA39C(s32, s32, s32, s32, s32);
+extern "C" void fn_801DA364(void);
+extern "C" void fn_801D9F18(s32, s32);
+extern "C" void fn_801DAC08(s32, void*, s32);
+extern "C" void fn_801DF2A4(void*, s32);
+extern "C" void fn_801DF344(s32);
+extern "C" void fn_801DE4F4(s32, void*);
+extern "C" void fn_801DF0BC(void*, s32);
+extern "C" void fn_801DEE10(s32);
+extern "C" void fn_801DEE3C(s32);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_8005845C(void);
 extern "C" void fn_8005867C(void) {
@@ -75,27 +89,25 @@ extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_8005E820(void* self) {
-    void* sub = (u8*)self + 8;
-    ((void (*)(void*, u8))(*(void***)sub)[0x24 / 4])(sub, *((u8*)self + 0x174));
+    ((void (*)(void*, u8))(*(void***)((u8*)self + 8))[0x24 / 4])((u8*)self + 8, *((u8*)self + 0x174));
     s16 x = *(s16*)((u8*)self + 0x170);
     s16 y = *(s16*)((u8*)self + 0x172);
-    ((void (*)(void*, s32, s32, s32, f32, f32))(*(void***)sub)[0xe4 / 4])(sub, 0, 0, 0, x, y);
+    ((void (*)(void*, s32, s32, s32, f32, f32))(*(void***)((u8*)self + 8))[0xe4 / 4])((u8*)self + 8, 0, 0, 0, x, y);
 }
 
 extern "C" void fn_8005E8B8(void* self, s32 a, s32 b, s32 c) {
-    void** vtbl = *(void***)self;
-    ((void (*)(void*, s32, s32, s32, s32))vtbl[0xe8 / 4])(self, 0, a, b, c);
+    void (**vtbl)(void*, s32, s32, s32, s32) = *(void (***)(void*, s32, s32, s32, s32))self;
+    vtbl[0xe8 / 4](self, 0, a, b, c);
 }
 
 extern "C" void fn_8005E8F8(void* self, u8 idx, f32 p1, f32 p2, s32 a, s32 b, s32 c) {
     if (idx < *((u8*)self + 0x110)) {
-        void* slot = *(void**)((u8*)self + idx * 4 + 0x100);
+        void* slot = *(void**)((u8*)self + (idx << 2) + 0x100);
         if (slot != nullptr) {
             u8* q = *(u8**)((u8*)slot + 0x20);
-            f32 x = (f32)*(u16*)(q + 2);
-            f32 y = (f32)*(u16*)(q + 4);
-            void** vtbl = *(void***)self;
-            ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))vtbl[0xec / 4])(self, a, b, c, p1, p2, x, y);
+            s32 y = *(u16*)(q + 4);
+            s32 x = *(u16*)(q + 2);
+            ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)self)[0xec / 4])(self, a, b, c, p1, p2, (f32)x, (f32)y);
         }
     }
 }
