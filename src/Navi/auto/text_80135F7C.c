@@ -842,6 +842,9 @@ extern "C" void fn_80139790(void* param_1, void* param_2) {
 extern "C" void fn_801397A8(void* param_1, void* param_2) {
     f32* p = *(f32**)((char*)param_2 + 8);
     *(f64*)((char*)param_1 + 0x68) = p[0];
+    s32 v = ((s32*)p)[1];
+    *(f32**)((char*)param_1 + 0x5c) = p + 2;
+    *(s32*)((char*)param_1 + 0x60) = v;
 }
 
 extern u8 lbl_80292CD8[];
