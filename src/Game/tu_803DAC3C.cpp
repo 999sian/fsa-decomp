@@ -9,6 +9,14 @@ extern const float lbl_80543610;
 extern const float lbl_80543604;
 }
 
+extern "C" int fn_803DAC3C(void)
+{
+    if (lbl_8053ADD0 != 0) {
+        return *(int*)((u8*)lbl_8053ADD0 + 0x68);
+    }
+    return 2;
+}
+
 extern "C" void fn_803DD19C(void)
 {
 }
