@@ -41,3 +41,19 @@ extern "C" void fn_80125BF4(u8* this_) {
     fn_8013CC50(*(u32*)(this_ + 4), &pos, 0x33a, 0, 0, 0, 0, 1, lbl_8053CA7C);
 }
 
+extern "C" void fn_80125C58(u8* this_, u8 flag) {
+    this_[0x231] = flag;
+    if (this_[0x231] != 0) {
+        switch (*(s32*)(this_ + 0x238)) {
+        case 1:
+            fn_801D22DC(this_ + 0x27c, 0, 0, 0);
+            break;
+        case 0:
+        default:
+            fn_801D22DC(this_ + 0x27c, 1, 0, 0);
+            break;
+        }
+        fn_801D1F14(this_ + 0x27c, lbl_8053CA70);
+    }
+}
+
