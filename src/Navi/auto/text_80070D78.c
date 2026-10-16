@@ -68,7 +68,7 @@ extern "C" BOOL fn_80071BD4(void)
 
 extern u8 lbl_802FCA30;
 extern "C" int fn_80071C14(u8* p) {
-    int iVar1 = fn_80020EA4(p + 0x244, (int)lbl_802FCA30);
+    int iVar1 = fn_80020EA4(p + 0x244, (int)&lbl_802FCA30);
     if (iVar1 == 4) {
         if ((*(u32*)(p + 0xf8) & 8) == 0) {
             if (p != nullptr) {
