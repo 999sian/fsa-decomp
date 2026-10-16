@@ -164,6 +164,20 @@ extern "C" void fn_80124110(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
 
+extern "C" s32 fn_801C5B30(void* param_1);
+extern "C" s32 fn_80125010(s32 param_1, s32* param_2) {
+    u8* r31 = *(u8**)param_2;
+    s32 r3 = fn_801C5B30(*(void**)(r31 + 0x28));
+    *(s32*)(r31 + 0x40) = r3;
+    if (*(s32*)(r31 + 0x40) == 0x80) {
+        param_2[5] = param_2[4];
+        param_2[6] = ((*(u32*)0x800000F8 >> 2) / 1000) * 15;
+    } else {
+        *(u8*)(r31 + 0x3C) = 1;
+    }
+    return *(s32*)(r31 + 0x40);
+}
+
 extern "C" void fn_80127DD4(void* param_1, u8* self) {
     f32 mtx[3][4];
     fn_80132450(*(s16*)(*(u8**)self + 0x4c) * 0xb6, *(s16*)(*(u8**)self + 0x4e) * 0xb6, *(s16*)(*(u8**)self + 0x50) * 0xb6, mtx);
