@@ -37,6 +37,7 @@ extern "C" void* fn_8001AC74(void*, void*);
 extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
+extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -206,7 +207,7 @@ extern "C" void fn_8001AA98(int param_1, int param_2) {
     int local[2];
     local[0] = param_1;
     local[1] = param_2;
-    fn_80115178(lbl_802FB9D8, (void*)fn_8011580C, local);
+    fn_80115178((void*)&lbl_802FB9D8, (void*)fn_8011580C, local);
 }
 
 extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void*);
