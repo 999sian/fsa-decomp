@@ -31,3 +31,33 @@ extern "C" void fn_8036E544(void* this_) {
 
 extern "C" void fn_8036E5E4(void) {
 }
+
+extern "C" void* fn_8036F880(void* this_, short how) {
+    if (this_) {
+        *(void**)this_ = lbl_804AE338;
+        char* p = (char*)this_;
+        int i = 0;
+        do {
+            if (*(void**)(p + 0x258)) {
+                void* base = fn_8013C824();
+                void* mgr = *(void**)((char*)base + 0xc);
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x258));
+                *(void**)(p + 0x258) = 0;
+            }
+            i++;
+            p += 4;
+        } while (i < 0x14);
+        if (*(void**)((char*)this_ + 0x2a8)) {
+            void* base = fn_8013C824();
+            void* mgr = *(void**)((char*)base + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)((char*)this_ + 0x2a8));
+            *(void**)((char*)this_ + 0x2a8) = 0;
+        }
+        __dt__5ActorFv(this_, 0);
+        if (how > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
