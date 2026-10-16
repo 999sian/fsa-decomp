@@ -7,6 +7,20 @@ extern "C" char lbl_8050EC80[];
 extern "C" u8* lbl_8053AAF8;
 extern "C" int fn_803B9A94(void* a, u32 b, int c, u32 d, int e, int f);
 extern "C" void fn_803C24BC(char* p);
+extern "C" s32 fn_803B9BDC(char* this_);
+extern "C" void fn_803BF004(char* this_);
+extern "C" void fn_803C579C(char* this_) {
+    s32 r = fn_803B9BDC(lbl_8051C1A0);
+    if (r == 2) {
+        *(u32*)(this_ + 0x84) = 0;
+        *(u32*)(this_ + 0x80) = 0x68;
+        *(u8*)(this_ + 0x112) = *(u8*)(this_ + 0x110);
+        *(u8*)(this_ + 0x110) = 0;
+    } else if (r == 1) {
+        fn_803BF004(this_);
+    }
+}
+
 extern "C" void fn_803CBE38(char* p) {
     int r;
     r = fn_803B9A94(lbl_8051C1A0, *(u32*)(p + 0x5c), 0x258, *(u32*)(p + 0x60), 0x1d4c, 0);
