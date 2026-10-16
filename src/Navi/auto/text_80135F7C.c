@@ -1374,7 +1374,7 @@ extern "C" s32 fn_8013BBF0(void* a, f32* b, void* c, u32 d) {
 
 #pragma dont_inline on
 extern "C" void fn_8013BC94(void* a, void* b, void* c, void* d, void* e) {
-    ((VObj_8013BC94*)a)->v9(c ? *(u32*)b : -1, d, e);
+    ((VObj_8013BC94*)a)->v7(c == NULL ? -1 : *(u32*)b, d, e);
 }
 #pragma dont_inline reset
 
