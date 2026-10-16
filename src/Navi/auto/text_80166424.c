@@ -49,6 +49,17 @@ struct UnkVObj_801671B0 {
     virtual s32 vf8(u32, u32);
 };
 
+extern "C" void fn_80166C08(void*, int);
+extern "C" void* fn_80166424(void* param_1, s16 param_2) {
+    if (param_1) {
+        fn_80166C08(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void* fn_80166B1C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
