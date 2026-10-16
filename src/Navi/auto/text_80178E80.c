@@ -1472,6 +1472,14 @@ extern "C" void fn_80187E64(u32* self, void* a, int b, int c) {
     ((VObj_80180980*)self)->vf118(fn_8017A4A8(a), b, c);
 }
 
+extern "C" u32 fn_80187F24(void* self) {
+    void* p = *(void**)((u8*)self + 0x168);
+    if (p == 0) {
+        return 0;
+    }
+    return *(u32*)((u8*)p + 0x28) & 0xff;
+}
+
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 extern "C" void fn_80188754(s32* self, s32 a) {
     s32 local_14;
@@ -1801,6 +1809,28 @@ extern "C" void fn_8018B748(void* self, void* src) {
     fn_8018B770(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void fn_8018B770(void* self, void* dst, void* src) {
+    u8 flag = ((u8*)src)[8];
+    *(s16*)((u8*)dst + 6) = *(s16*)((u8*)src + 10);
+    u16 a = *(u16*)((u8*)src + 0xc);
+    *(u8*)((u8*)dst + 4) = flag;
+    u16 b = *(u16*)((u8*)src + 0xe);
+    *(f32*)((u8*)dst + 8) = lbl_80301C30;
+    *(u16*)((u8*)dst + 0x10) = a;
+    u32 c = *(u32*)((u8*)src + 0x18);
+    *(u16*)((u8*)dst + 0x12) = b;
+    *(void**)((u8*)dst + 0x24) = fn_8018C290(src, c);
+    *(void**)((u8*)dst + 0x28) = fn_8018C290(src, *(u32*)((u8*)src + 0x1c));
+    *(void**)((u8*)dst + 0x14) = fn_8018C278(src, *(u32*)((u8*)src + 0x20));
+    *(void**)((u8*)dst + 0x18) = fn_8018C278(src, *(u32*)((u8*)src + 0x24));
+    *(void**)((u8*)dst + 0x1c) = fn_80174BA0(src, *(u32*)((u8*)src + 0x28));
+    *(void**)((u8*)dst + 0x20) = fn_80174BA0(src, *(u32*)((u8*)src + 0x2c));
+    *(void**)((u8*)dst + 0x2c) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x30));
+    *(void**)((u8*)dst + 0x30) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x34));
+    *(void**)((u8*)dst + 0x34) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x38));
+    *(void**)((u8*)dst + 0x38) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x3c));
+}
+
 extern u8 lbl_802994BC[];
 extern "C" void* fn_8018BAF0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -1952,6 +1982,68 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
     } else {
         u16 len = *(u16*)(table + param_2 * 4 + 2);
         *param_3 = (*(u8**)((u8*)self + 0x18))[base + len - 1];
+    }
+}
+
+extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
+    if (t < k[0]) {
+        return k[1];
+    }
+    if (hdr[2] == 0) {
+        u32 n = hdr[0];
+        if (k[(n - 1) * 3] <= t) {
+            return k[(n - 1) * 3 + 1];
+        }
+        while (n > 1) {
+            u32 half = n >> 1;
+            u32 idx = half * 3;
+            if (t >= k[idx]) {
+                k += idx;
+                n -= half;
+            } else {
+                n = half;
+            }
+        }
+        f32 dt = t - k[0];
+        f32 len = k[3] - k[0];
+        f32 u = dt / len;
+        f32 u2 = u * u;
+        f32 dv = k[1] - k[4];
+        f32 u2x = u + u;
+        f32 w = u2 - u;
+        f32 a = u2x * w - u2;
+        f32 m0 = k[2];
+        f32 m1 = k[5];
+        f32 c = a * dv + k[1];
+        f32 e = u * m0 - (m1 * w + (m0 * w + m0));
+        return c - dt * e;
+    } else {
+        u32 n = hdr[0];
+        if (k[(n - 1) * 4] <= t) {
+            return k[(n - 1) * 4 + 1];
+        }
+        while (n > 1) {
+            u32 half = n >> 1;
+            if (t >= k[half * 4]) {
+                k += half * 4;
+                n -= half;
+            } else {
+                n = half;
+            }
+        }
+        f32 dt = t - k[0];
+        f32 len = k[4] - k[0];
+        f32 u = dt / len;
+        f32 u2 = u * u;
+        f32 dv = k[1] - k[5];
+        f32 u2x = u + u;
+        f32 w = u2 - u;
+        f32 a = u2x * w - u2;
+        f32 m0 = k[3];
+        f32 m1 = k[6];
+        f32 c = a * dv + k[1];
+        f32 e = u * m0 - (m1 * w + (m0 * w + m0));
+        return c - dt * e;
     }
 }
 
