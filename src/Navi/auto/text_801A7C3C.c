@@ -42,41 +42,85 @@ extern "C" void* fn_801A8574(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void* fn_801ABB80(void* ptr) {
-    struct S {
-        void* vt; u8 b4; u8 b5; u16 h6; f32 f8; u32 wC; u32 w10;
-        u16 h14; u16 h16; u16 h18; u16 h1A; u32 w1C; u32 w20; u32 w24;
-        u8 pad28[8]; u8 o30[0x14]; u16 h44; u16 h46; u16 h48; u16 h4A;
-        u32 w4C; u32 w50; u32 w54; u32 w58; u8 pad5C[8]; u8 o64[0x14]; u32 w78;
-    };
-    S* p = (S*)ptr;
-    p->vt = lbl_8027F214;
-    p->b4 = 0;
-    p->b5 = 0;
-    p->h6 = 0;
-    p->f8 = lbl_80301D6C;
-    p->vt = lbl_8029B50C;
-    fn_8011935C(p->o30);
-    fn_8011935C(p->o64);
-    p->wC = 0;
-    p->h1A = 0;
-    p->h18 = 0;
-    p->h16 = 0;
-    p->h14 = 0;
-    p->w10 = 0;
-    p->w24 = 0;
-    p->w1C = 0;
-    p->w20 = 0;
-    p->h48 = 0;
-    p->h46 = 0;
-    p->h44 = 0;
-    p->h4A = 0;
-    p->w58 = 0;
-    p->w54 = 0;
-    p->w4C = 0;
-    p->w50 = 0;
-    p->w78 = 0;
+extern "C" void* fn_801ABB80(u8* p) {
+    f32 f = lbl_80301D6C;
+    *(void**)p = lbl_8027F214;
+    p[4] = 0;
+    p[5] = 0;
+    *(u16*)(p + 6) = 0;
+    *(f32*)(p + 8) = f;
+    *(void**)p = lbl_8029B50C;
+    fn_8011935C(p + 0x30);
+    fn_8011935C(p + 0x64);
+    *(u32*)(p + 0xc) = 0;
+    *(u16*)(p + 0x1a) = 0;
+    *(u16*)(p + 0x18) = 0;
+    *(u16*)(p + 0x16) = 0;
+    *(u16*)(p + 0x14) = 0;
+    *(u32*)(p + 0x10) = 0;
+    *(u32*)(p + 0x24) = 0;
+    *(u32*)(p + 0x1c) = 0;
+    *(u32*)(p + 0x20) = 0;
+    *(u16*)(p + 0x48) = 0;
+    *(u16*)(p + 0x46) = 0;
+    *(u16*)(p + 0x44) = 0;
+    *(u16*)(p + 0x4a) = 0;
+    *(u32*)(p + 0x58) = 0;
+    *(u32*)(p + 0x54) = 0;
+    *(u32*)(p + 0x4c) = 0;
+    *(u32*)(p + 0x50) = 0;
+    *(u32*)(p + 0x78) = 0;
     return p;
+}
+
+extern "C" f32 fn_801AD8D8(u16* hdr, f32 t, f32* k) {
+    if (t < k[0]) {
+        return k[1];
+    }
+    if (hdr[2] == 0) {
+        u32 n = hdr[0];
+        if (k[(n - 1) * 3] <= t) {
+            return k[(n - 1) * 3 + 1];
+        }
+        while (n > 1) {
+            u32 half = n >> 1;
+            u32 idx = half * 3;
+            if (t >= k[idx]) {
+                k += idx;
+                n -= half;
+            } else {
+                n = half;
+            }
+        }
+        f32 dt = t - k[0];
+        f32 u = dt / (k[3] - k[0]);
+        f32 u2 = u * u;
+        f32 w = u2 - u;
+        f32 a = ((u + u) * w - u2) * (k[1] - k[4]) + k[1];
+        f32 b = u * k[2] - (k[5] * w + (k[2] * w + k[2]));
+        return a - dt * b;
+    } else {
+        u32 n = hdr[0];
+        if (k[(n - 1) * 4] <= t) {
+            return k[(n - 1) * 4 + 1];
+        }
+        while (n > 1) {
+            u32 half = n >> 1;
+            if (t >= k[half * 4]) {
+                k += half * 4;
+                n -= half;
+            } else {
+                n = half;
+            }
+        }
+        f32 dt = t - k[0];
+        f32 u = dt / (k[4] - k[0]);
+        f32 u2 = u * u;
+        f32 w = u2 - u;
+        f32 a = ((u + u) * w - u2) * (k[1] - k[5]) + k[1];
+        f32 b = u * k[3] - (k[6] * w + (k[3] * w + k[3]));
+        return a - dt * b;
+    }
 }
 
 extern void* lbl_8029B430[];
@@ -448,8 +492,9 @@ extern "C" void* fn_801B37D8(void* base, u32 offset) {
 }
 
 extern "C" u8 fn_801B4B1C(u8* self, int idx) {
-    int off = (*(u16**)(self + 8))[idx] * 0x138;
-    u8 v = (*(u8**)(self + 4))[off + 7];
+    u8* t = *(u8**)(self + 4);
+    u32 off = (*(u16**)(self + 8))[idx] * 0x138 + 7;
+    u8 v = t[off];
     if (v != 0xff) {
         return (*(u8**)(self + 0x64))[v];
     }
@@ -483,12 +528,11 @@ extern "C" void* fn_801B4C14(u32* data) {
     void* fn_801B4D28(void*, u32*);
     void* fn_801B4CCC(void*, s16);
     u8 buf[12];
-    void* r;
     if (data[0] == 0x4a334431 && data[1] == 0x626c7331) {
         fn_801B4CB0(buf);
-        r = fn_801B4D28(buf, data);
+        data = (u32*)fn_801B4D28(buf, data);
         fn_801B4CCC(buf, -1);
-        return r;
+        return data;
     } else if (data[0] == 0x4a334432 && data[1] == 0x626c7332) {
         return 0;
     }
@@ -525,8 +569,10 @@ extern "C" void* fn_801B4D28(u8* self, u8* data) {
     u32 n = *(u32*)(data + 0xc);
     u8* e = data + 0x20;
     for (u32 i = 0; i < n; i++) {
-        if (*(u32*)e == 0x434c5331) {
+        switch (*(s32*)e) {
+        case 0x434c5331:
             fn_801B4DC4(self, e);
+            break;
         }
         e += *(u32*)(e + 4);
     }
@@ -825,6 +871,21 @@ extern "C" void* fn_801B8734(void* base, u32 offset) {
 extern "C" void* fn_801B874C(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" void* fn_801B9084(void* ptr, s16 param_2) {
+    extern void* lbl_8029BC68[];
+    extern void* lbl_8029BC7C[];
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029BC68;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029BC7C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" void fn_801B93F8(void* unused, void* dest, void* src);
