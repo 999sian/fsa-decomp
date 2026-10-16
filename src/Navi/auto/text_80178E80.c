@@ -173,6 +173,10 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
 }
 
+extern "C" void fn_8018A87C(void) {
+    fn_80177E84();
+}
+
 extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
 }
