@@ -1229,18 +1229,17 @@ inline s32 countSharingC(char* p) {
                     c++;
                 }
             } else {
-                s32 me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    return c;
-}
-inline s32 getModeC(char* p) {
+                                  if (S32(p, 0x4) == fn_8022F3DC(i)) {
+                      c++;
+                  }
+              }
+          } else if (i == S32(p, 0xd60)) {
+              c++;
+          }
+      }
+      return c;
+  }
+  inline s32 getModeC(char* p) {
     if (countSharingC(p) <= 1) {
         return 5;
     }
@@ -1274,80 +1273,7 @@ inline bool padActiveC(char* p) {
     return true;
 }
 BOOL fn_80245B74(char* p) {
-    bool ok;
-    s32 c;
-    s32 i;
-    s32 linked;
-    s32 me;
-    s32 mode;
-    s32 lk;
-    s32 k;
-    s32 j;
-    if (U8(p, 0xc80) == 0) {
-        ok = false;
-    } else if (U8(p, 0xcee) != 0) {
-        ok = false;
-    } else if (U8(p, 0x1215) != 0) {
-        ok = false;
-    } else if (U8(p, 0xca0) == 0) {
-        ok = false;
-    } else if (U8(p, 0xce9) == 0) {
-        ok = false;
-    } else {
-        ok = true;
-    }
-    if (!ok) {
-        return 0;
-    }
-    i = c = 0;
-    for (; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    if (c <= 1) {
-        mode = 5;
-    } else if (S32(p, 0xd60) >= 0) {
-        mode = fn_8022CAF8(S32(p, 0xd60));
-    } else {
-        mode = S32(p, 0x120c);
-    }
-    if (mode == 4) {
-        if (S32(p, 0xd60) >= 0) {
-            lk = fn_80234004(S32(p, 0xd60));
-        } else {
-            lk = S32(p, 0x1224);
-        }
-        if (S32(p, 0xd60) < 0) {
-            k = 0;
-        } else {
-            k = 0;
-            for (j = 0; j < S32(p, 0x4); j++) {
-                if (S32(p, 0xd60) == fn_8022F3DC(j)) {
-                    k++;
-                }
-            }
-            k++;
-        }
-        if (lk != k) {
-            return 0;
-        }
-    }
-    if (U8(p, 0x11ea) == 0) {
+    if (!padActiveC(p)) {
         return 0;
     }
     if (U8(p, 0x456) != 0) {
