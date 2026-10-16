@@ -1417,8 +1417,9 @@ extern "C" void fn_8001F5A8(void* param_1, f32* out) {
     }
     if (obj == 0) {
         f32 z = lbl_802FFCC0;
+        f32 o = lbl_802FFCC4;
         out[0] = z;
-        out[1] = lbl_802FFCC4;
+        out[1] = o;
         out[2] = z;
     }
     out[0] = *(f32*)(obj + 0xf0);
@@ -1553,6 +1554,10 @@ extern "C" void* fn_80020344(void* ptr, s16 param_2) {
 extern "C" void fn_80020380(void) {}
 
 extern "C" void fn_800204F0(void) {}
+
+extern "C" void fn_80020DA8(void* param_1) {
+    fn_800134B8(param_1, 0, 2);
+}
 
 extern "C" void fn_80020DD0(void* param_1) {
     fn_800134B8(param_1, 0, 1);
