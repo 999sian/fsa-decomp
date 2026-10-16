@@ -16,3 +16,6 @@ void fn_802BAA00(void* p);
 void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 void fn_801E9B54(void);
 }
+
+extern "C" void fn_801E9B54(void) {
+}
