@@ -1184,19 +1184,19 @@ extern "C" u8 fn_80172C4C(u8* self) {
 extern "C" void fn_80172C54(s32 param_1, s32 param_2, u8* param_3) {
     u8 uVar1;
     u8 uVar2;
-    param_1 = param_1 + param_2 * 8;
-    uVar2 = param_3[1];
-    uVar1 = param_3[2];
-    *(u8*)(param_1 + 0x40) = uVar2;
-    uVar2 = param_3[3];
-    *(u8*)(param_1 + 0x41) = uVar1;
-    uVar1 = param_3[5];
-    *(u8*)(param_1 + 0x42) = uVar2;
-    uVar2 = param_3[6];
-    *(u8*)(param_1 + 0x44) = uVar1;
-    uVar1 = param_3[7];
-    *(u8*)(param_1 + 0x45) = uVar2;
-    *(u8*)(param_1 + 0x46) = uVar1;
+    param_2 = param_1 + param_2 * 8;
+    uVar1 = param_3[1];
+    uVar2 = param_3[2];
+    *(u8*)(param_2 + 0x40) = uVar1;
+    uVar1 = param_3[3];
+    *(u8*)(param_2 + 0x41) = uVar2;
+    uVar2 = param_3[5];
+    *(u8*)(param_2 + 0x42) = uVar1;
+    uVar1 = param_3[6];
+    *(u8*)(param_2 + 0x44) = uVar2;
+    uVar2 = param_3[7];
+    *(u8*)(param_2 + 0x45) = uVar1;
+    *(u8*)(param_2 + 0x46) = uVar2;
 }
 
 extern "C" s32 fn_80172C90(s32 param_1, s32 param_2) {
@@ -1430,6 +1430,33 @@ extern "C" void fn_801744EC(u8* p, u8* s, u32 a, u32 b) {
         p[0] = ((u8)t[0] << 6) + ((u8)t[1] << 4) + ((u8)t[2] << 2) + (u8)t[3];
     } else {
         p[0] = ((u8)lbl_80301ACC[0] << 6) + ((u8)lbl_80301ACC[1] << 4) + ((u8)lbl_80301ACC[2] << 2) + (u8)lbl_80301ACC[3];
+    }
+}
+
+extern "C" void fn_80172264(void* p);
+extern "C" void fn_801721FC(void);
+extern "C" void* fn_801749F0(void* p, void* q);
+extern "C" u8 lbl_80301AB4[];
+extern "C" u8 lbl_80301AC8[];
+extern "C" u8 fn_80174588(u8* p, u32 n) {
+    u8* data = *(u8**)(p + 0xc);
+    if (data != nullptr && data[n * 0x128] == 1) {
+        return data[n * 0x128 + 1];
+    }
+    return 0;
+}
+
+extern "C" void fn_801745B8(u8* out, u8* p, u32 index, u32 subindex) {
+    u8 fallback[2];
+    fallback[0] = lbl_80301AB4[0];
+    fallback[1] = lbl_80301AB4[1];
+    u8* data = *(u8**)(p + 0xc);
+    if (data != nullptr && data[index * 0x128] == 1) {
+        u8* entry = data + index * 0x128 + subindex * 2 + 4;
+        out[0] = entry[0];
+        out[1] = entry[1];
+    } else {
+        *(u16*)out = *(u16*)fallback;
     }
 }
 
