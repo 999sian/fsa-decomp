@@ -27,3 +27,14 @@ extern "C" void fn_80390088(void) {
         fn_80416BD0(lbl_8053AE00);
     }
 }
+
+extern "C" void fn_804108B4(void*);
+extern "C" void fn_804170B0__10TU80414F6CFv(void*);
+extern "C" void fn_803900C8(void) {
+    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
+        fn_804108B4(lbl_8053ADF8);
+    } else {
+        fn_804170B0__10TU80414F6CFv(lbl_8053AE00);
+    }
+}
+
