@@ -56,20 +56,21 @@ extern "C" void fn_800A4BD4(u8* param_1) {
 extern "C" void fn_800A4C10(u8* param_1) {
     void* p = *(void**)(param_1 + 0xc);
     if (p != nullptr) {
-        ((void (*)(void*, s32))((*(void***)p)[0x8 / 4]))(p, 1);
+        ((void (*)(void*, s32))((*(void***)p)[2]))(p, 1);
     }
     p = *(void**)(param_1 + 0x158);
     if (p != nullptr) {
-        ((void (*)(void*, s32))((*(void***)p)[0x8 / 4]))(p, 1);
+        ((void (*)(void*, s32))((*(void***)p)[2]))(p, 1);
     }
     p = *(void**)(param_1 + 4);
-    ((void (*)(void*))((*(void***)p)[0x24 / 4]))(p);
-    if (*(s8*)(lbl_802C54FC + 4) >= 0) {
-        s32 n = *(s32*)(lbl_802C54FC + 8) - 1;
-        *(s32*)(lbl_802C54FC + 8) = n;
+    ((void (*)(void*))((*(void***)p)[9]))(p);
+    u8* g = (u8*)lbl_802C54FC;
+    if (*(s8*)(g + 4) >= 0) {
+        s32 n = *(s32*)(g + 8) - 1;
+        *(s32*)(g + 8) = n;
         if (n == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
-            *(s8*)(lbl_802C54FC + 4) = -1;
+            *(s8*)(g + 4) = -1;
         }
     }
 }
