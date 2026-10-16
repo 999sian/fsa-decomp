@@ -1278,6 +1278,9 @@ extern "C" void fn_801A4580(u8* p1, s32 i, u32* pv) {
 
 extern "C" u8* fn_801A4594(u8* p, s32 i) { return p + i * 4 + 10; }
 
+extern "C" void fn_801A45A8(void) {
+}
+
 extern "C" void fn_801A45AC(void) {
 }
 
