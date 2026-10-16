@@ -65,4 +65,17 @@ extern "C" s32 fn_801C11F0(char* this_) {
     return result;
 }
 
+extern "C" s32 fn_801C1314(u16* this_) {
+    s32 ret = 0;
+    if (*(s32*)((char*)this_ + 0x50) >= 0) {
+        if (((this_[0] & 0x40) == 0) && ((this_[0] & 0x80) == 0)) {
+            u16 id = this_[2];
+            if (id != 0 && *(s32*)((char*)this_ + 0xc) > 0 && this_[3] == id && this_[4] != id) {
+                ret = 1;
+            }
+        }
+    }
+    return ret;
+}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
