@@ -26,6 +26,7 @@ extern s8 lbl_802FEC18;
 extern s32 lbl_802FEC14;
 extern "C" void fn_8001C174(void*, void*, void*, int);
 extern "C" void* fn_8001C010(void);
+extern "C" u32 fn_8001F26C(u32, s16, u32, void*, u32);
 extern "C" void fn_8001C008(void*);
 extern "C" void fn_8001B9CC(void);
 extern "C" void* fn_8001BF80(void*);
