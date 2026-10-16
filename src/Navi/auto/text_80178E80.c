@@ -101,6 +101,28 @@ extern "C" void* fn_80178F28(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" void fn_801E0CC4(void* a, void* b);
+extern "C" void fn_80169B1C(void);
+extern "C" void fn_8015AB40(void* p);
+extern "C" void fn_80178F90(void* self) {
+    char* p = (char*)self;
+    fn_801E0CC4(*(void**)(p + 0x104), (void*)fn_80169B1C);
+    *(u16*)(p + 0x102) = 0;
+    *(void**)(p + 0x104) = 0;
+    fn_8015AB40(*(void**)(p + 0x108));
+    *(void**)(p + 0x108) = 0;
+    fn_8015AB40(*(void**)(p + 0x10c));
+    *(void**)(p + 0x10c) = 0;
+    if (*(void**)(p + 0x110) != 0) {
+        fn_8015AB40(*(void**)(*(char**)(p + 0x110) + 4));
+        DtorVObj_80178F90* o = *(DtorVObj_80178F90**)(p + 0x110);
+        if (o != 0) {
+            o->Destroy(1);
+        }
+        *(void**)(p + 0x110) = 0;
+    }
+}
+
 extern "C" int fn_80179174(int, int, int, void*);
 extern "C" int fn_80179144(int a, int b, int c, void* d) {
     if (d == 0) {
