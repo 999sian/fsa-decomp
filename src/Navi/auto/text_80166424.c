@@ -213,6 +213,10 @@ extern "C" void fn_80172ED0(u8* p, s32 i, u8 v) { *(p + i + 0x56) = v; }
 
 extern "C" u8 fn_80172EDC(u8* p, s32 i) { return *(p + i + 0x56); }
 
+extern "C" void fn_80172EE8(void* p, u8 v) {
+    *(u8*)((u8*)p + 0x32) = v;
+}
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
