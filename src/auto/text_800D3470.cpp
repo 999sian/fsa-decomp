@@ -1041,8 +1041,12 @@ extern "C" u32 fn_800DDA50(void) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDA5C(J3DPEBlock* this_, const J3DAlphaComp& alphaComp) {
-    this_->mAlphaComp = alphaComp;
+extern "C" void fn_800DDA5C(u8* this_, u8* src) {
+    *(u16*)(this_ + 0x4) = *(u16*)src;
+    u8 b2 = src[2];
+    u8 b3 = src[3];
+    *(u8*)(this_ + 0x6) = b2;
+    *(u8*)(this_ + 0x7) = b3;
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
