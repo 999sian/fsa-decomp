@@ -76,9 +76,9 @@ struct Obj80447C30 {
 extern "C" {
 extern void* lbl_804B1C20[];
 extern void* lbl_8053AF08;
-extern void* lbl_80490698;
-extern void* lbl_804AF86C;
-extern void* lbl_80529DEC;
+extern char lbl_80490698[];
+extern char lbl_804AF86C[];
+extern char lbl_80529DEC[];
 
 extern void* __nw__FUl(unsigned long size);
 extern void __ct__9J2DScreenFv();
