@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
 
 // ---- from src/Game/Ltzr_ctor_80340C60.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
@@ -34,11 +35,12 @@ extern "C" s32 fn_80340658(void) { return 0; }
 extern "C" s32 fn_80340660(void) { return 0; }
 
 extern "C" void fn_80340668(void* this_) {
-    f32 a = lbl_80542268;
     f32 b = lbl_805422AC;
+    f32 a = lbl_80542268;
     u8 hit = 0;
+    u8* flags = (u8*)this_;
     for (s32 i = 0; i < 4; i++) {
-        if (*((u8*)this_ + 0x2ac + i) != 0) {
+        if (flags[0x2ac + i] != 0) {
             f32 v[3];
             v[0] = a;
             v[1] = a;
@@ -49,7 +51,8 @@ extern "C" void fn_80340668(void* this_) {
     }
     if (hit == 1) {
         fn_801F0E34(this_, 0x50082, 0);
-        (*(void (**)(void*))(*(char**)this_ + 0xa4))(this_);
+        void** vt = *(void***)this_;
+        ((void (*)(void*))vt[41])(this_);
     }
 }
 
