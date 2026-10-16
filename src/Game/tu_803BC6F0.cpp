@@ -35,20 +35,15 @@ extern "C" u8 lbl_8050DB0C[];
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 extern "C" void fn_803BC6F0(char* this_, u32 a, f32 t);
 extern "C" void fn_803C6690(char* p) {
-    s16 start;
-    s16 dur;
-    s32 end;
+    s16 start = *(s16*)(lbl_8050DB0C + 0x1cc);
+    s16 dur = *(s16*)(lbl_8050DB0C + 0x1ce);
+    s32 end = start + dur;
     s32 i;
-    start = *(s16*)(lbl_8050DB0C + 0x1cc);
-    dur = *(s16*)(lbl_8050DB0C + 0x1ce);
-    end = start + dur;
     *(s16*)(p + 0xd8) += 1;
     if (*(s16*)(p + 0xd8) > start) {
-        char* q = p;
         for (i = 0; i < 3; i++) {
-            fn_80402940(*(void**)(q + 0x38), dur, *(f32*)(q + 0x70), 0.0f, 0);
-            fn_80402940(*(void**)(q + 0x44), dur, *(f32*)(q + 0x64), 0.0f, 0);
-            q += 4;
+            fn_80402940(*(void**)(p + 0x38 + i * 4), dur, *(f32*)(p + 0x70 + i * 4), 0.0f, 0);
+            fn_80402940(*(void**)(p + 0x44 + i * 4), dur, *(f32*)(p + 0x64 + i * 4), 0.0f, 0);
         }
         fn_803BC6F0(p, *(u32*)(p + 0xa4), 1.0f - (f32)(*(s16*)(p + 0xd8) - start) / (f32)dur);
     }
@@ -170,9 +165,19 @@ extern "C" void fn_803CC0D8(char* p) {
 }
 
 extern "C" void fn_803B9DDC(void* a);
-extern "C" void fn_803CC17C(char* p) {
-    if (fn_80309C4C(lbl_8053AD30, 1, 1) == 0) {
-        if (fn_80309C4C(lbl_8053AD30, 2, 1) == 0) {
+extern "C" void fn_803CC17C(u8* p) {
+    if (fn_80309C4C(lbl_8053AD30, 1, 1) != 0) {
+        if (p[0x114] != 0) {
+            p[0x114] = p[0x114] - 1;
+            fn_80458880(lbl_8053AF80, 0x26, -1);
+        }
+    } else {
+        if (fn_80309C4C(lbl_8053AD30, 2, 1) != 0) {
+            if (p[0x114] < 1) {
+                p[0x114] = p[0x114] + 1;
+                fn_80458880(lbl_8053AF80, 0x26, -1);
+            }
+        } else {
             if (fn_80309C4C(lbl_8053AD30, 0x100, 1) != 0) {
                 if (p[0x114] == 0) {
                     fn_803B9DDC(lbl_8051C1A0);
@@ -189,13 +194,7 @@ extern "C" void fn_803CC17C(char* p) {
                     fn_80458880(lbl_8053AF80, 0xc, -1);
                 }
             }
-        } else if (p[0x114] == 0) {
-            p[0x114] = 1;
-            fn_80458880(lbl_8053AF80, 0x26, -1);
         }
-    } else if (p[0x114] != 0) {
-        p[0x114] = p[0x114] - 1;
-        fn_80458880(lbl_8053AF80, 0x26, -1);
     }
 }
 
