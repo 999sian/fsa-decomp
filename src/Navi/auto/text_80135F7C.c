@@ -698,7 +698,7 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
 
 extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
     u32 out;
-    if (param_1->fn_15(&out, param_2, 0) == 0) {
+    if (param_1->fn_13(&out, param_2, 0) != 0) {
         return 0;
     }
     return out;
@@ -706,10 +706,10 @@ extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
 
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
-extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
+extern "C" void* fn_8013BEB0(NaviTracker* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029320C;
-        ((NaviTracker*)ptr)->fn_5();
+        ptr->fn_3();
         fn_80133C0C(ptr, 0);
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
