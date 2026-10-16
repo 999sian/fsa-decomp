@@ -48,12 +48,10 @@ extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
-extern "C" void fn_80019470(f32* d, f32* s, f32 w) {
-    f32 x = s[0];
-    f32 y = s[1];
-    d[0] = x;
-    d[1] = y;
-    d[2] = s[2];
+extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
+    d[0] = s->x;
+    d[1] = s->y;
+    d[2] = s->z;
     d[3] = w;
 }
 
@@ -333,12 +331,12 @@ extern "C" void* fn_8001AC84(void* param_1) {
     return *(void**)param_1;
 }
 
-extern "C" void fn_8001ACC4(void) {
+extern "C" s32 fn_8001ACC4(void) {
     if (lbl_802FEC18 == 0) {
         lbl_802FEC14 = 1;
         lbl_802FEC18 = 1;
     }
-    lbl_802FEC14 = lbl_802FEC14 + 1;
+    return lbl_802FEC14++;
 }
 
 extern "C" void fn_8001B1F8(void);
@@ -413,6 +411,31 @@ extern "C" s32 fn_8001B1DC(void* param_1) {
 extern "C" void fn_8001B494(void) {
     fn_8001B014((int)fn_8001B1F8, NULL);
 }
+
+extern "C" void* fn_801148BC(s32);
+extern "C" void fn_8001B0EC(void);
+extern "C" void fn_8001EB28(void*, void*, void*);
+extern "C" void fn_8001BFD0(void*);
+extern "C" void fn_8001BEC4(void*, void*);
+extern "C" s32 fn_8001B5B0(void* tag, void* data);
+extern "C" void fn_8001B564(void* tag);
+extern "C" void* fn_8001B4C0(void* param_1, void* param_2, void* param_3) {
+    u8* p = (u8*)fn_801148BC(-4);
+    if (p != NULL) {
+        fn_8001B5B0(p, p);
+        fn_8001EB28(p + 0x18, (void*)fn_8001B0EC, p);
+        *(void**)(p + 0x44) = param_1;
+        *(void**)(p + 0x34) = param_3;
+        *(s32*)(p + 0x3c) = ((s32 (*)(void))fn_8001ACC4)();
+        *(s32*)(p + 0x40) = 0;
+        *(u8*)(p + 0x15) = 0;
+        fn_8001BFD0(*(void**)(p + 0x44));
+        fn_8001BEC4(*(void**)(p + 0x44), p + 0x18);
+        fn_8001B564(p);
+    }
+    return p;
+}
+
 #pragma dont_inline reset
 
 extern "C" void fn_8001B564(void* tag) {
@@ -432,6 +455,8 @@ extern "C" void fn_8001B0B0(void);
 extern "C" void fn_8001B5D4(void) {
     fn_8001B0B0();
 }
+
+extern "C" void fn_8001B5F4(void* p) { fn_8001B1DC(*(void**)((char*)p + 0x14)); }
 
 extern "C" void fn_8001B494(void);
 extern "C" void fn_8001B63C(void) {
