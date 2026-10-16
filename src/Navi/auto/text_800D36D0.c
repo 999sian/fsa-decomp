@@ -124,12 +124,12 @@ extern "C" void fn_800D5D74(char* p) {
 }
 
 extern "C" void fn_800D61D0(char* p) {
-    if (p[0x138] != 0) {
-        p[0x138]--;
+    if (*(u8*)(p + 0x138) != 0) {
+        (*(u8*)(p + 0x138))--;
     } else {
-        fn_8002FB68(lbl_80231428[lbl_802C579C[0x1419]], p[0xfa]);
-        lbl_802FEE42 = p[0xfa];
-        p[0x138] = 0x3c;
+        fn_8002FB68(lbl_80231428[((u8*)lbl_802B7CA0)[0x1419]], *(u8*)(p + 0xfa));
+        lbl_802FEE42 = *(u8*)(p + 0xfa);
+        *(u8*)(p + 0x138) = 0x3c;
         p[0x130] = 0xf;
     }
 }
