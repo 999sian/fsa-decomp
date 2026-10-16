@@ -3,9 +3,9 @@ extern u32 lbl_802FF208;
 extern "C" int fn_80021994(void*);
 extern "C" int fn_8002185C(void*);
 extern char lbl_802BB0FC[];
-extern unsigned short lbl_802FD540[];
-extern unsigned short lbl_802FD544[];
-extern unsigned short lbl_802FD548[];
+extern unsigned short lbl_802FD540[2];
+extern unsigned short lbl_802FD544[2];
+extern unsigned short lbl_802FD548[2];
 extern void* lbl_80289A64[];
 extern void* lbl_8027EC78[];
 extern void* lbl_8028EFB0[];
@@ -47,6 +47,17 @@ extern "C" void* fn_800D3844(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" unsigned short fn_800D5324(void) {
+    u32 idx = (*(u32*)(lbl_802BB0FC + 0x40) >> 1) & 1;
+    if (fn_80021994(lbl_802BB0FC) != -1) {
+        return lbl_802FD544[idx];
+    }
+    if (fn_8002185C(lbl_802BB0FC) > 1) {
+        return lbl_802FD540[idx];
+    }
+    return lbl_802FD548[idx];
 }
 
 extern "C" void fn_800D54EC(char* p)
