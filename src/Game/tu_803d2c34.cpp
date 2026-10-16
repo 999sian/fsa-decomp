@@ -239,13 +239,13 @@ s32 CARDGetSerialNo(s32 chan, u64* serial);
 extern u8* lbl_8053AAF8;
 
 static inline void stampSave() {
-    lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
-    if (!(lbl_8050EC80.entries[lbl_8050EC80.idx].flags & 1)) {
-        lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 1;
-    }
-    if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
-        lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 2;
-    }
+lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
+if (!(lbl_8050EC80.entries[lbl_8050EC80.idx].flags & 1)) {
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 1;
+}
+if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 2;
+}
 }
 
 void MemCardMenu::fn_803D2C34() {
@@ -265,7 +265,15 @@ void MemCardMenu::fn_803D2C9C() {
     } else if (r == 1) {
         if (lbl_8050EC80.id == lbl_8051C1A0.id) {
             fn_803BADAC(&self->entries[lbl_8050EC80.idx]);
-            stampSave();
+            lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
+            u8* e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
+            if (!(e[0x85] & 1)) {
+                e[0x85] |= 1;
+            }
+            if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
+                e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
+                e[0x85] |= 2;
+            }
             self->f54 = 0x7e;
             self->f2177 = 0;
             self->f216d = 0x12;
