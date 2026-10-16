@@ -37,6 +37,7 @@ struct NaviRectHolder {
     NaviColor8 colors[4];
 };
 extern void* lbl_80299E68[];
+extern "C" void fn_801DF0BC(void*, s32);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80196344(void* self, void* a, s32 b) {
     *(void**)self = lbl_80299E68;
@@ -188,11 +189,21 @@ extern "C" void fn_80198298(u8* param_1) {
     fn_80193DFC((u32*)*(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x20));
 }
 
-extern "C" void fn_801985AC(u8* param_1) {
+extern "C" void fn_80198534(u8* param_1) {
     if ((*(u32*)(lbl_802EE470 + 0x34) & 0x40000000) == 0) {
+        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf1();
+    } else {
+        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf3();
+    }
+    fn_80198620(param_1);
+    fn_80198608(param_1);
+}
+
+extern "C" void fn_801985AC(u8* param_1) {
+    if (*(u32*)(lbl_802EE470 + 0x34) & 0x40000000) {
         ((NaviVObj*)*(void**)(param_1 + 0x28))->vf4();
     } else {
-        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf6();
+        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf2();
     }
 }
 
