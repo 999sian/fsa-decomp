@@ -1186,17 +1186,20 @@ extern "C" void fn_8006C5FC(s32 param_1) {
 extern s32 lbl_80280284[];
 #pragma push
 #pragma use_lmw_stmw off
-extern "C" void fn_8006C950(u8* p) {
-    s32 i;
-    s32 val;
-    p[0x318] = 0;
-    for (i = 0; i < 6; i++) {
-        val = lbl_80280284[i];
-        if (val >= 0) {
-            fn_80022438(*(void**)(p + 0x270 + i * 4), lbl_80280248, val, 0, lbl_80300460, lbl_8030046C, lbl_80300460, lbl_80300464);
-            p[0x318] |= 1 << i;
+extern "C" void fn_8006C950(u8* param_1) {
+    u8* p = param_1;
+    s32* tbl = lbl_80280284;
+    u32 i = 0;
+    param_1[0x318] = 0;
+    do {
+        if (*tbl >= 0) {
+            fn_80022438(*(void**)(p + 0x270), lbl_80280248, *tbl, 0, lbl_80300460, lbl_8030046C, lbl_80300460, lbl_80300464);
+            param_1[0x318] |= 1 << i;
         }
-    }
+        i++;
+        p += 4;
+        tbl++;
+    } while (i < 6);
 }
 #pragma pop
 
@@ -1239,7 +1242,7 @@ extern "C" u32 fn_8006CD98(void* param_1, u8 param_2) {
     if (*(s32*)(p + 0x2c8) > 4) {
         return 0;
     }
-    return (u32)((p[0x31a] & (1 << param_2)) == 0);
+    return (u32)__cntlzw(p[0x31a] & (1 << param_2)) >> 5;
 }
 
 extern "C" void fn_8006B15C(void);
