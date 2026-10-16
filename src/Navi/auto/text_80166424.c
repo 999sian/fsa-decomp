@@ -151,7 +151,7 @@ extern "C" void fn_80172ED0(u8* p, s32 i, u8 v) { *(p + i + 0x56) = v; }
 extern "C" u8 fn_80172EDC(u8* p, s32 i) { return *(p + i + 0x56); }
 
 extern "C" u32 fn_80172FF8(int param_1, u32 param_2) {
-    if (param_2 > 1) {
+    if (param_2 >= 2) {
         return 0;
     }
     return *(u32*)(param_1 + param_2 * 4 + 100);
@@ -174,6 +174,11 @@ extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
     p[8] = uVar0;
     p[9] = param_3[1];
     p[10] = param_3[2];
+}
+
+extern "C" BOOL fn_80173190(void)
+{
+    return TRUE;
 }
 
 extern "C" int fn_8017334C()
