@@ -570,6 +570,9 @@ extern "C" void* fn_801A3FEC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801A4048(void) {
+}
+
 extern "C" u32 fn_801A40EC(void) { return 0x54564232; }
 
 extern "C" void fn_801A40F8(u8* p, s32 i, u16 v) {
