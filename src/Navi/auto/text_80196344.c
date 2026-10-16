@@ -513,6 +513,11 @@ extern "C" void fn_80199280(void* param_1) {
     p[1] = 0;
 }
 
+extern "C" int fn_801999E0(void)
+{
+	return 0x22;
+}
+
 extern "C" s32 fn_801999E8(void) {
     return 0x2f;
 }
@@ -843,16 +848,10 @@ extern "C" void fn_8019DE38(int *param_1)
 {
 	typedef void (*fnptr)(void);
 	int *ptr = param_1;
-	int *vtable;
-	
-	vtable = (int *)(*ptr);
-	fnptr fn = (fnptr)(vtable[0x2c/4]);
+	fnptr fn = (fnptr)((int *)(*ptr))[0x2c/4];
 	fn();
-	
-	int *ptr2 = ptr;
-	ptr = ptr2;
-	vtable = (int *)(*ptr);
-	fn = (fnptr)(vtable[0x30/4]);
+
+	fn = (fnptr)((int *)(*ptr))[0x30/4];
 	fn();
 }
 
