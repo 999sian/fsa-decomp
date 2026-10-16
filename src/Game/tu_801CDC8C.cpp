@@ -127,6 +127,18 @@ extern "C" s32 fn_801CF0F4(u8* this_) {
     return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
 }
 
+extern "C" u8 fn_801CCB1C(const f32* pos, s32 layer);
+extern "C" u8 fn_801CFCF0(u8* this_, s32 idx);
+extern "C" s32 fn_801CF798(u8* this_, s32 idx, s32 dir);
+extern "C" s32 fn_801CD580(s32 exclude);
+extern "C" s32 fn_801CF720(u8* this_, s32 dir) {
+    s32 idx = fn_801CD580(dir);
+    if (fn_801CFCF0(this_, idx)) {
+        idx = fn_801CF798(this_, dir, idx);
+    }
+    return idx;
+}
+
 extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
     f32* rec = (f32*)(this_ + idx * 0xc + 0x1ac);
     return lbl_8053EFEC * JMAAtan2Radian(rec[0] - *(f32*)(this_ + 0xc), rec[1] - *(f32*)(this_ + 0x10));
