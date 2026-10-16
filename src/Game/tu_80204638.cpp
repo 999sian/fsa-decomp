@@ -42,7 +42,7 @@ extern "C" void* fn_80204638(void)
     return lbl_804CADE0;
 }
 
-extern "C" f32 __float_max;
+extern "C" int __float_max[];
 extern "C" const f32 lbl_8053F838;
 extern "C" const f32 lbl_8053F83C;
 extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y);
