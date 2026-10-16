@@ -8,6 +8,7 @@ extern "C" void fn_80458880(void* mgr, s32 id, s32 a);
 extern void* lbl_8053AEC0;
 extern "C" void fn_8043670C(void* p, s32 a);
 extern "C" void fn_80431A9C(void* mgr, s32 id, u8 v, s32 a);
+extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 extern "C" void fn_803E29C8(u8* param_1) {
     fn_8043670C(*(void**)(param_1 + 0x5c), 0);
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
