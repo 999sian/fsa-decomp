@@ -171,6 +171,11 @@ extern "C" void fn_80459508(char* this_) {
     ((JASAudioReseter*)*(void**)(this_ + 0x2c))->resume();
 }
 
+extern "C" void fn_804595E4(u8* this_, bool b) {
+    ((JASAudioReseter*)*(u32*)(this_ + 0x2c))->start(5, b);
+    this_[0x7c] = 1;
+}
+
 extern "C" void fn_80459624(char* self, f32* pos, Mtx mtx, int idx)
 {
     *(f32*)(self + 0x8) = pos[0];
