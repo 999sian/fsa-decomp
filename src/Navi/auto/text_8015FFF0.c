@@ -65,14 +65,17 @@ extern "C" s32 fn_80160A44(void) {
 extern "C" u16 fn_80160A78(void* a, char* p) {
     u8* r;
     if (p[0] == '/') {
-        r = (u8*)fn_80160D88(a, *++p ? p : 0, 0);
+        if (*++p == 0) {
+            p = NULL;
+        }
+        r = (u8*)fn_80160D88(a, p, 0);
     } else {
         r = (u8*)fn_80160D88(a, p, lbl_802FF5F8);
     }
-    if (r == NULL) {
-        return 0;
+    if (r != NULL) {
+        return *(u16*)(r + 0xa);
     }
-    return *(u16*)(r + 0xa);
+    return 0;
 }
 
 extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
