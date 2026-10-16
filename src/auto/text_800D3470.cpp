@@ -970,6 +970,19 @@ extern "C" void fn_800D9410(u8* this_) {
     }
 }
 
+extern "C" void fn_800D94A8(u8* p) {
+    u32 n = p[0x34];
+    for (u32 i = 0; i < n; i++) {
+        u32 v = *(u32*)(p + 0x35);
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+        v = *(u32*)(p + 0x39);
+        p += 8;
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+    }
+}
+
 extern "C" void fn_800D971C(u8* self) {
 	for (u32 i = 0; i < 4; i++) {
 		if (*(u16*)(self + 8 + i * 2) != 0xffff) {
