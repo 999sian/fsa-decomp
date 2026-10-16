@@ -1,4 +1,12 @@
 #include "types.h"
+extern u8 lbl_8029F8D8[];
+extern void* lbl_801F9650[];
+extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
+extern "C" void fn_8000C950(void* m, s32 a, s32 b, s32 c);
+extern "C" void fn_801C5D74(void* p, void* q);
+extern "C" int fn_800183AC(void* p, void* f, void* a);
+extern "C" int fn_800175B8(void* p);
+extern "C" int fn_80064430(u8* p);
 extern u8 lbl_802EE470[];
 extern "C" void fn_80041268(void* a, u8* b, int n);
 extern "C" void fn_8000EB8C(void* a, void* b, f32 c);
@@ -306,14 +314,17 @@ extern "C" int fn_801E10A0(void* p);
 extern "C" int fn_801E1070(void* p);
 extern "C" void fn_801E10DC(void* p, void* q);
 extern "C" int fn_80064630(u8* p, u32* src, void* arg) {
+    u32 a = src[0];
+    u32 b = src[1];
+    u32 c = src[2];
     if (fn_801E10A0(p + 0x258)) {
         if (fn_801E1070(p + 0x258)) {
             *(s8*)(p + 0x254) = -1;
             fn_801E10DC(p, arg);
         }
-        *(u32*)(p + 0x258) = src[0];
-        *(u32*)(p + 0x25c) = src[1];
-        *(u32*)(p + 0x260) = src[2];
+        *(u32*)(p + 0x258) = a;
+        *(u32*)(p + 0x25c) = b;
+        *(u32*)(p + 0x260) = c;
         *(s8*)(p + 0x254) = 0;
         fn_801E10DC(p, arg);
     }
@@ -390,7 +401,8 @@ extern "C" void* fn_80064CBC(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80064D18(void** p) {
-    p[0] = lbl_8027F6DC;
+    void* a = lbl_8027F6DC;
+    p[0] = a;
     p[1] = 0;
     p[0] = lbl_8027FB48;
     p[2] = 0;
