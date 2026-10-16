@@ -27,6 +27,10 @@ struct VObj_8003B920 {
 extern "C" void* fn_801E0D40(void* dst, void* src, s16 size, s16 count);
 extern "C" void fn_8000CEC4(void);
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_8003B920(VObj_8003B920* obj) {
+    obj->m8();
+}
+
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
