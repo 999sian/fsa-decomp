@@ -1,7 +1,7 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80030778-0x8003a014 (121 functions). split_file divides it into the game's real files.
 
-extern "C" void fn_80030B3C(void);
+extern "C" void fn_80030B3C(void*);
 extern "C" void fn_8002F228(int);
 extern "C" void fn_8002E3C4(void*, int);
 extern "C" void fn_8002A3CC(void*, void*, int, int);
@@ -31,8 +31,8 @@ extern "C" void fn_80030778(void* p) {
     fn_800302F0(3);
 }
 
-extern "C" void fn_800307E4(void) {
-    fn_80030B3C();
+extern "C" void fn_800307E4(void* p) {
+    fn_80030B3C(p);
 }
 
 extern "C" void fn_80030804(void* p) {
@@ -211,9 +211,10 @@ extern "C" void fn_80034B54(void) {
 }
 
 extern "C" void fn_80034B68(void* p) {
-    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x3c)) + *(int*)((char*)lbl_802BB0FC + 0x58);
+    char* base;
+    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x3c)) + *(int*)((base = lbl_802BB0FC) + 0x58);
     *(unsigned int*)((char*)p + 0x1a0) |= 0x2000;
-    *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 0xe;
+    *(unsigned int*)(base + 0x454) = 0xe;
 }
 
 extern "C" void fn_80034BBC(void* p) {
@@ -244,16 +245,17 @@ extern "C" void fn_80034C7C(void* p) {
     *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x40)) + *(int*)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x1a0) |= 0x20000;
     *(int*)((char*)p + 0x21c) = *(int*)((char*)lbl_802BB0FC + 0x58) + 0x1f4;
-    *(unsigned int*)((char*)p + 0x1a0) |= 0x40000;
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x400000;
     fn_8002A3CC(p, (char*)p + 0x1b4, 0x4c, 1);
     *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 0x11;
 }
 
 extern "C" void fn_80034D28(void* p) {
-    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x48)) + *(int*)((char*)lbl_802BB0FC + 0x58);
-    *(unsigned int*)((char*)p + 0x1a0) |= 0x4;
+    char* base = lbl_802BB0FC;
+    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x48)) + *(int*)(base + 0x58);
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x40000;
     fn_8002A3CC(p, (char*)p + 0x1a8, 0x4a, 1);
-    *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 0xe;
+    *(unsigned int*)(base + 0x454) = 0xe;
 }
 
 extern "C" void fn_80035410(void* p) {
