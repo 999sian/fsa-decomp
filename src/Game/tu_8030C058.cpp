@@ -2,6 +2,39 @@
 #include "dolphin/gx.h"
 #include "dolphin/mtx.h"
 
+struct Vec3f { f32 x, y, z; };
+
+static inline bool fn_8030C210_contains(u8* p, f32 x, f32 y) {
+    bool in = false;
+    if (x >= *(f32*)(p + 0x154) && y >= *(f32*)(p + 0x158) && x < *(f32*)(p + 0x15c) && y < *(f32*)(p + 0x160)) {
+        in = true;
+    }
+    return in;
+}
+
+extern "C" bool fn_8030C210(u8* p, f32* v) {
+    bool ret = false;
+    s32 n = *(s32*)(p + 0x7f0);
+    if (n < 0x80) {
+        f32 x = v[0];
+        f32 y = v[1];
+        bool in = false;
+        if (x >= *(f32*)(p + 0x154) && y >= *(f32*)(p + 0x158) && x < *(f32*)(p + 0x15c) && y < *(f32*)(p + 0x160)) {
+            in = true;
+        }
+        if (in) {
+            f32 y2 = v[1];
+            f32 z = v[2];
+            ret = true;
+            f32* d = (f32*)(p + n * 0xc + 0x1f0);
+            d[0] = x;
+            d[1] = y2;
+            d[2] = z;
+            (*(s32*)(p + 0x7f0))++;
+        }
+    }
+    return ret;
+}
 
 extern "C" void fn_8030DD20(u8* param_1, Mtx param_2) {
     Mtx sp8;
