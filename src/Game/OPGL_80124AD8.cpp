@@ -1,8 +1,22 @@
+#include "types.h"
+#include "Game/Actor.h"
 
+class OPGL : public Actor {
+public:
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void v24();
+    virtual void v25(s32);
+};
 
 extern "C" void fn_80124AD8(void* this_) {
+    register void** vtable = (void**)*(void**)this_;
     typedef void (*method_t)(void*, int);
-    ((method_t)(*(void***)this_)[0x6c / sizeof(void*)])(this_, 0x9);
+    register method_t method = (method_t)vtable[0x6c / sizeof(void*)];
+    method(this_, 0x9);
 }
 
 extern "C" void fn_80124B90(void* this_) {
