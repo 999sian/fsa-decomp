@@ -1169,6 +1169,14 @@ extern "C" void* fn_8013AFB8(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8013B0E4(VObj_8013B140* self, u32** pp, u32* out, void* arg)
+{
+    u32* p = *pp;
+    *pp = (u32*)((u8*)p + *p);
+    *out = *p;
+    self->v5(&p, arg);
+}
+
 extern "C" BOOL fn_8013B138(void);
 extern "C" BOOL fn_8013B138(void)
 {
