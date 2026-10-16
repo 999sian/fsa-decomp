@@ -1568,6 +1568,23 @@ extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     }
 }
 
+extern "C" void* fn_80184FA8(void* self, s16 param_2) {
+    if (self != nullptr) {
+        *(void**)self = lbl_80299244;
+        if (*((u8*)self + 0x198) != 0) {
+            VObj_8018939C* obj = *(VObj_8018939C**)((u8*)self + 0x168);
+            if (obj != nullptr) {
+                obj->v0(1);
+            }
+        }
+        fn_8017E1A4((u32*)self, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(self);
+        }
+    }
+    return self;
+}
+#pragma dont_inline reset
 extern "C" void fn_801851FC(u32* self, s32 a) {
     u8* p = (u8*)self;
     ((VObj_80180980*)self)->vf144(*(f32*)(p + 0x20), *(f32*)(p + 0x24), *(s16*)(p + 0x112), *(s16*)(p + 0x114), *(s16*)(p + 0x116), *(s16*)(p + 0x118), *(s16*)(p + 0x11a), *(s16*)(p + 0x11c), *(s16*)(p + 0x11e), *(s16*)(p + 0x120), a);
@@ -1575,11 +1592,11 @@ extern "C" void fn_801851FC(u32* self, s32 a) {
 
 extern "C" s32 fn_80185520(void* self, s32 a, s32 b) {
     void* obj = *(void**)((u8*)self + 0x168);
-    if (obj != nullptr) {
-        void** vt = *(void***)self;
-        return ((s32 (*)(void*, s32, s32, u8))vt[50])(self, a, b, (u8)*(u32*)((u8*)obj + 0x28));
+    if (obj == nullptr) {
+        return 0;
     }
-    return 0;
+    u8 flag = (u8)*(u32*)((u8*)obj + 0x28);
+    return ((s32 (*)(void*, s32, s32, u8))(*(void***)self)[50])(self, a, b, flag);
 }
 
 extern "C" u32 fn_80185568(VObj_80185DA4* self, u32 a, u32 b) {
@@ -1587,7 +1604,8 @@ extern "C" u32 fn_80185568(VObj_80185DA4* self, u32 a, u32 b) {
     if (p == NULL) {
         return 0;
     }
-    return self->v50(a, b, (u8)p[0x28]);
+    u32 n = *(u32*)(p + 0x28);
+    return self->v50(a, b, (u8)n);
 }
 
 extern "C" s32 fn_801855B0(u8* self) {
@@ -2731,6 +2749,28 @@ extern "C" void fn_80191BB8(u32* data, s32 index) {
     *(volatile u32*)0xCC008000 = data[8];
     *(volatile u32*)0xCC008000 = data[9];
     *(volatile u32*)0xCC008000 = data[10];
+    *(volatile u32*)0xCC008000 = *(u32*)&z2;
+}
+
+extern f32 lbl_80301C6C;
+extern "C" void fn_80191C50(u32* data, s32 index) {
+    f32 z0 = lbl_80301C6C;
+    f32 z1 = lbl_80301C6C;
+    f32 z2 = lbl_80301C6C;
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u16*)0xCC008000 = 0xB;
+    *(volatile u16*)0xCC008000 = (u16)(index << 2);
+    *(volatile u32*)0xCC008000 = data[0];
+    *(volatile u32*)0xCC008000 = data[1];
+    *(volatile u32*)0xCC008000 = data[2];
+    *(volatile u32*)0xCC008000 = *(u32*)&z0;
+    *(volatile u32*)0xCC008000 = data[3];
+    *(volatile u32*)0xCC008000 = data[4];
+    *(volatile u32*)0xCC008000 = data[5];
+    *(volatile u32*)0xCC008000 = *(u32*)&z1;
+    *(volatile u32*)0xCC008000 = data[6];
+    *(volatile u32*)0xCC008000 = data[7];
+    *(volatile u32*)0xCC008000 = data[8];
     *(volatile u32*)0xCC008000 = *(u32*)&z2;
 }
 
