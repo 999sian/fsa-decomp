@@ -870,6 +870,10 @@ extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
     dst[0xf] = param_3[3];
 }
 
+extern "C" int fn_801A4D60(int param_1, int param_2) {
+    return param_1 + param_2 * 4 + 0xc;
+}
+
 extern "C" void fn_801A4D74(u8* param_1, u8* param_2) {
     param_1[0x14] = param_2[0];
 }
