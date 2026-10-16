@@ -379,6 +379,17 @@ extern "C" u32 fn_8001A620(void) {
     return uVar2;
 }
 
+extern "C" s32 lbl_802FEC00;
+extern "C" unsigned int fn_8001BBCC(int param_1);
+extern "C" s32 fn_8001ABBC(void* param_1);
+extern "C" s32 fn_8001A650(void* param_1) {
+    if (*(s32*)((u8*)param_1 + 0x40) != 1) {
+        fn_8001ABBC((void*)fn_8001BBCC(*(int*)((u8*)param_1 + 0x54)));
+    }
+    lbl_802FEC00 = 0;
+    return 2;
+}
+
 extern "C" s32 fn_80019A6C(void);
 extern "C" s32 fn_8001A7E8(void* param_1) {
     if (*(void**)((u8*)param_1 + 0x64) != NULL && fn_80019A6C() == 0) {
