@@ -155,6 +155,10 @@ extern "C" void fn_80123F9C(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
 
+extern "C" void fn_80124110(void* p) {
+    fn_80123EC0((void*)&lbl_802FDDB0, p);
+}
+
 extern "C" void fn_801286CC(u8* param_1, u8* param_2) {
     u8* p = *(u8**)(param_1 + 4);
     u8* iVar2 = **(u8***)(p + 0x1c);
