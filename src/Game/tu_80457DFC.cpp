@@ -67,6 +67,8 @@ struct Unk80458F04 {
     Unk80458F04Sound* m84;
 };
 
+extern "C" const f32 lbl_80543EB0;
+extern "C" const f32 lbl_80543EB4;
 extern "C" void fn_80458744(void*, s32);
 extern "C" void fn_80457DFC(u8* this_, u8 v) {
     this_[0x6] = v;
