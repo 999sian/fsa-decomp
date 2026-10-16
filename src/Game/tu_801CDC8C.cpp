@@ -118,7 +118,9 @@ extern "C" void fn_801CE5D4(u8* this_) {
         ((ItemBase*)this_)->v31();
         *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
         if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
-            if (*(fn_802D6A9C() + 0x131df + *(u32*)(this_ + 0x4))) {
+            u32 base = *(u32*)(this_ + 0x4);
+            u8* p = fn_802D6A9C();
+            if (p[base + 0x131df]) {
                 ((ItemBase*)this_)->v30();
             } else {
                 *(f32*)(this_ + 0x14) = lbl_8053EFC4;
@@ -175,9 +177,7 @@ extern "C" int fn_801CECEC(void) { return 0; }
 
 #pragma fp_contract off
 extern "C" s32 fn_801CF0F4(u8* this_) {
-    f32 x = *(f32*)(this_ + 0x3c);
-    f32 y = *(f32*)(this_ + 0x40);
-    f32 a = JMAAtan2Radian(x, y);
+    f32 a = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
     return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
 }
 
