@@ -15,6 +15,9 @@ extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
 
+extern "C" void fn_80029118(const char*, ...) {
+}
+
 extern "C" void fn_80029168(const char*, ...) {
 }
 
