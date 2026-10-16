@@ -12,6 +12,14 @@ extern "C" char lbl_802BB0FC[];
 extern "C" int lbl_802FF0E4;
 extern "C" char lbl_802C050C[];
 extern "C" float lbl_803001FC;
+extern "C" void fn_8004FA30(void) {}
+
+extern "C" void fn_80052DEC(void)
+{
+	int base = *(int*)(lbl_802BB0FC + 0x58);
+	lbl_802FF0E4 = (int)(lbl_803001FC * *(float*)(lbl_802C050C + 0x38)) + base;
+}
+
 extern "C" void fn_80052E2C(void)
 {
 	lbl_802FF0E4 = *(int*)(lbl_802BB0FC + 0x58) + 1000;
@@ -26,12 +34,15 @@ extern "C" void fn_80052E44(void)
 
 extern "C" void fn_80052E5C(void)
 {
-	lbl_802FF0E4 = (int)(lbl_803001FC * *(float*)(lbl_802C050C + 0x3c)) + *(int*)(lbl_802BB0FC + 0x58);
+	int base = *(int*)(lbl_802BB0FC + 0x58);
+	lbl_802FF0E4 = (int)(lbl_803001FC * *(float*)(lbl_802C050C + 0x3c)) + base;
 }
 
 extern "C" void fn_8005556C(void* self, void* p) {
     fn_80021DDC(p);
 }
+
+void fn_80055C08(void) {}
 
 extern int lbl_802FF0E8;
 extern "C" void fn_80055C0C(void)
