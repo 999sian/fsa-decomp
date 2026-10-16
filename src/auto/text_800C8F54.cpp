@@ -329,15 +329,19 @@ extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
     __ct__11J3DTevStageFv(out);
 }
 
-extern u8 j3dDefaultTevSwapMode[];
+struct J3DTevSwapModeInfo {
+    u8 mRasSel; // _00
+    u8 mTexSel; // _01
+};
+extern J3DTevSwapModeInfo j3dDefaultTevSwapMode;
 extern u8 j3dDefaultTevSwapModeTable[];
 extern u32 j3dDefaultIndTexOrderNull;
 extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, const void* info);
 extern "C" void fn_800CB4C0(void* out, u8* e) {
     u8* p = (u8*)out;
     setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(out, e);
-    p[7] = (p[7] & ~0x0C) | (j3dDefaultTevSwapMode[1] << 2);
-    p[7] = (p[7] & ~0x03) | j3dDefaultTevSwapMode[0];
+    p[7] = (p[7] & ~0x0C) | (j3dDefaultTevSwapMode.mTexSel << 2);
+    p[7] = (p[7] & ~0x03) | j3dDefaultTevSwapMode.mRasSel;
 }
 
 extern "C" u8 j3dDefaultTevSwapModeTable[];
