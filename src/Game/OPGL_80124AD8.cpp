@@ -18,6 +18,40 @@ extern "C" void fn_80124AD8(void* p) {
     ((OPGL*)p)->v25(9);
 }
 
+extern "C" void fn_80124B08(void* this_) {
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v0a();
+        virtual void v0b();
+        virtual void v0c();
+        virtual void v0d();
+        virtual void v0e();
+        virtual void v0f();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual void v15();
+        virtual void v16();
+        virtual void v17();
+        virtual void v18();
+        virtual void v19(int);
+    };
+    if (fn_80122834(this_) && *(s32*)((char*)this_ + 0x33c) < 10) {
+        ((VObj*)this_)->v19(10);
+    }
+}
+
 extern "C" u8 fn_80122834(void*);
 extern "C" void fn_80124B60(void* this_) {
     struct VObj {
