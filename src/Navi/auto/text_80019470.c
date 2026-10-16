@@ -342,6 +342,10 @@ extern "C" int fn_8001A454(int param_1, int param_2, int param_3, int param_4) {
     return 1;
 }
 
+extern "C" u32 fn_8001A4AC(int param_1, int param_2, int param_3, int param_4) {
+    return fn_8001A828(0, 0, param_1, param_4, param_2, param_3) != -1;
+}
+
 extern "C" void fn_8001A59C(void) {}
 
 extern "C" s32 fn_800199A8(void);
