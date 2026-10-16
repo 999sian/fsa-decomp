@@ -1663,12 +1663,12 @@ extern "C" void fn_80187834(u8* self, u8 count) {
 extern "C" void fn_801878E4(u8* self, u8 count) {
     u8 i;
     for (i = 0; i < count; i++) {
-        if (i < 4) {
+        if ((u8)i < 4) {
             VObj_80187834* p = *(VObj_80187834**)(*(u8**)(self + 0x168) + 0x70);
-            p->vf4c(i, (u8)(0x1d - i * 4));
+            p->vf4c((u8)i, (u8)(0x1d - i * 4));
         } else {
             VObj_80187834* p = *(VObj_80187834**)(*(u8**)(self + 0x168) + 0x70);
-            p->vf4c(i, (u8)(0x1c - (i - 4) * 4));
+            p->vf4c((u8)i, (u8)(0x1c - (i - 4) * 4));
         }
     }
 }
