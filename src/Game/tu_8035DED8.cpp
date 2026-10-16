@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
 
 
 struct Unk8035DA78;
@@ -59,6 +60,58 @@ extern "C" void fn_8035DFE4(int param_1) {
     }
 }
 
+extern f32 lbl_80542990;
+extern f32 lbl_80542994;
+extern f32 lbl_80542998;
+extern f32 lbl_8054299C;
+extern "C" void fn_8035E070(int param_1) {
+    char* p = (char*)param_1;
+    if (*(int*)(p + 0x234) != 0) {
+        if (*(int*)(p + 0x234) == 1 && *(int*)(p + 0x238) == 0) {
+            fn_8035C1C4(p, 5, 0x9b);
+        }
+    } else {
+        if (*(int*)(p + 0x238) == 0) {
+            if (fn_8035C15C(p, 5) == 1) {
+                fn_8035C1C4(p, 5, 0x9b);
+            }
+            if (*(f32*)(p + 0xc) >= lbl_80542990) {
+                *(f32*)(p + 0xc) -= lbl_80542994;
+            } else {
+                *(f32*)(p + 0xc) = lbl_80542990;
+                fn_8035C1C4(p, 6, 0x9b);
+                *(int*)(p + 0x238) += 1;
+                *(int*)(p + 0x234) = 0x10;
+            }
+        } else if (*(int*)(p + 0x238) == 1) {
+            if (fn_8035C15C(p, 6) == 1) {
+                fn_8035C1C4(p, 6, 0x9b);
+            }
+            if (*(f32*)(p + 0x10) < lbl_80542998) {
+                *(f32*)(p + 0x10) += lbl_80542994;
+            } else {
+                *(f32*)(p + 0x10) = lbl_80542998;
+                fn_8035C1C4(p, 4, 0x9b);
+                *(int*)(p + 0x238) += 1;
+                *(int*)(p + 0x234) = 0x10;
+            }
+        } else {
+            if (fn_8035C15C(p, 4) == 1) {
+                fn_8035C1C4(p, 4, 0x9b);
+            }
+            if (*(f32*)(p + 0xc) < lbl_8054299C) {
+                *(f32*)(p + 0xc) += lbl_80542994;
+            } else {
+                *(f32*)(p + 0x10) = lbl_80542998;
+                fn_8035C1C4(p, 4, 0x9b);
+                *(int*)(p + 0x238) = 0;
+                *(int*)(p + 0x230) += 1;
+                *(int*)(p + 0x234) = 0x16f;
+            }
+        }
+    }
+}
+
 extern "C" void fn_8035E238(int param_1) {
     char* p = (char*)param_1;
     if (*(int*)(p + 0x244) == 0) {
@@ -106,6 +159,24 @@ extern "C" void fn_8035E394(int param_1) {
         *(int*)(p + 0x230) = 1;
         fn_8035C1C4(p, 0, 0x274);
         *(int*)(p + 0x238) = 0;
+    }
+}
+
+extern "C" char lbl_804727F8[];
+extern "C" char lbl_8047280C[];
+extern f32 lbl_805429A0;
+extern "C" void fn_801F06F0(void* this_, void* name, s32 id, DrawRec* rec, s32 n, f32 a, f32 b);
+extern "C" void fn_8035E3E4(u8* p) {
+    DrawRec rec;
+    if (*(s32*)(p + 0x230) < 3 || (*(s32*)(p + 0x230) == 3 && *(s32*)(p + 0x238) == 0)) {
+        rec.b25 = -1;
+    } else {
+        rec.b25 = 0;
+    }
+    if (*(s32*)(p + 0x240) == 0) {
+        fn_801F06F0(p, lbl_804727F8, *(s32*)(p + 0x250) + *(s32*)(p + 0x248), &rec, 7, lbl_805429A0, lbl_805429A0);
+    } else {
+        fn_801F06F0(p, lbl_8047280C, *(s32*)(p + 0x250) + *(s32*)(p + 0x248), &rec, 7, lbl_805429A0, lbl_805429A0);
     }
 }
 
