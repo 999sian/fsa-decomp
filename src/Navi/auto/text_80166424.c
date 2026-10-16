@@ -194,17 +194,12 @@ extern "C" u32 fn_80172FF8(int param_1, u32 param_2) {
     return p[0x64 / 4];
 }
 
-struct NaviArr6C {
-    u8 pad[0x6c];
-    u32 arr[2];
-};
-
 extern "C" u32 fn_80173018(int param_1, u32 param_2) {
     if (param_2 >= 2) {
         return 0;
     }
-    u32* p = (u32*)(param_1 + param_2 * 4);
-    return p[0x6c / 4];
+    u8* p = (u8*)param_1 + param_2 * 4;
+    return *(u32*)(p + 0x6c);
 }
 
 extern "C" unsigned int fn_80173060(void) {
@@ -245,15 +240,11 @@ extern "C" u8* fn_80173108(u8* p, s32 i)
 
 extern "C" void fn_8017311C(u8* p, s32 i, u8* src)
 {
-    u8 a = src[0];
-    u8 b = src[1];
     u8* dst = p + i * 4;
-    dst[0x34] = a;
-    u8 c = src[2];
-    dst[0x35] = b;
-    u8 d = src[3];
-    dst[0x36] = c;
-    dst[0x37] = d;
+    dst[0x34] = src[0];
+    dst[0x35] = src[1];
+    dst[0x36] = src[2];
+    dst[0x37] = src[3];
 }
 
 extern "C" void fn_8017318C(void)
