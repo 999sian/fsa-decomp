@@ -1,5 +1,6 @@
 #include "types.h"
 
+extern s32 lbl_8053AAF8;
 extern "C" void fn_802D9FF4(s32, s32, s32);
 extern "C" void fn_80136798(s32, s32, s32);
 extern "C" void fn_8011921C(void);
