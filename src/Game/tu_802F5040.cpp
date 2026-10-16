@@ -20,16 +20,16 @@ extern "C" f32 fn_802F5FF4(f32 x) {
     return a / (a - v);
 }
 
-extern "C" u16 fn_802F9908(u8* base, s32 idx, s32 off) {
-    u32 v;
+extern "C" u16 fn_802F9908(Tu802F5040Tbl* base, s32 idx, s32 off) {
+    s32 v;
     if (idx >= 0 && idx < 4) {
-        v = *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
+        v = *(u16*)(base->m_tbl[idx] + off * 2);
     } else if (idx >= 4 && idx < 8) {
-        v = *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
+        v = *(u16*)(base->m_tbl[idx] + off * 2);
     } else {
-        v = *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
+        v = *(u16*)(base->m_tbl[idx] + off * 2);
     }
-    return v;
+    return (u16)v;
 }
 
 extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
