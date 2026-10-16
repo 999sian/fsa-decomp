@@ -136,6 +136,19 @@ extern "C" u32 fn_800CBC48(void) {
     return 0x50454E4C;
 }
 
+extern "C" void** fn_800CBC54(void** param_1, short param_2) {
+    if (param_1 != NULL) {
+        *param_1 = lbl_8049AA38;
+        if (param_1 != NULL) {
+            *param_1 = __vt__10J3DPEBlock;
+        }
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_800CBCB0(void) {
 }
 
