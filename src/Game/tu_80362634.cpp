@@ -29,6 +29,17 @@ extern "C" void fn_80362B14(char* self) {
 
 extern "C" void fn_8036335C(void) {
 }
-struct Unk80365AB8;
-typedef void (Unk80365AB8::*Unk80365AB8Func)();
-extern Unk80365AB8Func lbl_804ADDE8[];
+
+extern "C" void fn_80363F7C(char* self) {
+    if (*(s32*)(self + 0x25c) == 0) {
+        *(s32*)(self + 0x268) = *(s32*)(self + 0x268) + 1;
+        if (*(s32*)(self + 0x268) > 5) {
+            *(s32*)(self + 0x268) = 0;
+        }
+        *(s32*)(self + 0x25c) = lbl_80474B88[*(s32*)(self + 0x268)];
+        *(s32*)(self + 0x264) = lbl_80474BA0[*(s32*)(self + 0x268)];
+        ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
+    }
+}
+
+
