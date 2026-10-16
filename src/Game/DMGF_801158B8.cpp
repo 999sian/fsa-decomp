@@ -21,6 +21,37 @@ extern "C" s32 fn_801162D8(char* p) {
     return *(s32*)(p + 0x230);
 }
 
+extern "C" void* fn_80116B08(char* p, s16 freeFlag) {
+    if (p != 0) {
+        *(void**)p = lbl_8049D940;
+        *(s32*)(p + 0x31c) = 0;
+        *(s32*)(p + 0x320) = 0;
+        *(s32*)(p + 0x324) = 0;
+        *(s32*)(p + 0x328) = 0;
+        *(s32*)(p + 0x32c) = 0;
+        fn_801EE434(*(void**)(p + 0x314));
+        *(s32*)(p + 0x314) = 0;
+        fn_801EE434(*(void**)(p + 0x318));
+        *(s32*)(p + 0x318) = 0;
+        dtor_801EB8CC(p + 0x2a8, -1);
+        if (p + 0x270 != 0) {
+            if (p + 0x294 != 0) {
+                *(void**)(p + 0x294) = lbl_8049CC34;
+            }
+        }
+        if (p + 0x238 != 0) {
+            if (p + 0x25c != 0) {
+                *(void**)(p + 0x25c) = lbl_8049CC34;
+            }
+        }
+        __dt__13Base_8010E074Fv(p, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void* fn_80116BE8(char* p) {
     fn_8010E074(p);
     *(void**)p = lbl_8049D940;
