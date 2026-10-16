@@ -162,6 +162,10 @@ extern "C" void fn_801729A4(int param_1, unsigned char param_2) {
     *(unsigned char*)(param_1 + 0x56) = param_2;
 }
 
+extern "C" unsigned char fn_801729AC(int param_1) {
+    return *(unsigned char*)(param_1 + 0x56);
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
