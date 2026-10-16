@@ -16,7 +16,58 @@ extern f32 lbl_8053C4BC;
 extern f32 lbl_8053C4F0;
 extern f32 lbl_8053C4F4;
 extern f32 lbl_8053C490;
-extern void* lbl_80539EE8[];
+extern void* lbl_80539EE8[2];
+extern "C" void fn_8010D55C(u8* this_) {
+    v01__5ActorFv(this_);
+    *(s32*)(this_ + 0x234) = *(s32*)(this_ + 0x90) & 0xf;
+    if (((*(s32*)(this_ + 0x90)) >> 4 & 0xf) == 1) {
+        *(f32*)(this_ + 0x260) = lbl_8053C4A4;
+        *(f32*)(this_ + 0x54) = *(f32*)(this_ + 0x260);
+        *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x260);
+        *(f32*)(this_ + 0x5c) = *(f32*)(this_ + 0x260);
+    }
+    *(s32*)(this_ + 0x258) = (*(s32*)(this_ + 0x90) >> 8) & 0xff;
+    *(s32*)(this_ + 0x25c) = (*(s32*)(this_ + 0x90) >> 16) & 0xff;
+    if (*(s32*)(this_ + 0x258) > 0 && lbl_8053C4A4 == *(f32*)(this_ + 0x260)) {
+        f32 a = lbl_8053C4F0;
+        f32 b = lbl_8053C4A0;
+        *(f32*)(this_ + 0x60) = a;
+        *(f32*)(this_ + 0x64) = a;
+        *(f32*)(this_ + 0x68) = b;
+        *(f32*)(this_ + 0x6c) = b;
+    } else {
+        f32 a = lbl_8053C4F4;
+        f32 b = lbl_8053C4BC;
+        *(f32*)(this_ + 0x60) = a;
+        *(f32*)(this_ + 0x64) = a;
+        *(f32*)(this_ + 0x68) = b;
+        *(f32*)(this_ + 0x6c) = b;
+    }
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x84) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x88) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x8c) = *(f32*)(this_ + 0x6c);
+    *(s32*)(this_ + 0x108) = 1000;
+    *(s32*)(this_ + 0xb8) = 1;
+    *(s32*)(this_ + 0xf8) = 2;
+    *(s32*)(this_ + 0xbc) = 3;
+    *(s32*)(this_ + 0x1a4) = 1;
+    *(s32*)(this_ + 0x118) = 2;
+    *(s32*)(this_ + 0x114) = 2;
+    *(s32*)(this_ + 0x240) = *(s32*)(this_ + 0x98);
+    *(s32*)(this_ + 0xb0) = 0xa040304;
+    fn_801D2608(this_ + 0x274, lbl_80539EE8, 2);
+    fn_801D22DC(this_ + 0x274, 0, 2, 0);
+    fn_801D1F14(this_ + 0x274, lbl_8053C490);
+    if (*(s32*)(this_ + 0x258) > 0) {
+        fn_8010C294(this_, 3);
+    }
+}
+
 extern "C" void* fn_8010D6F0(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
