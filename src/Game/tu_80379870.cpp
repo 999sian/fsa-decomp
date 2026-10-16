@@ -19,6 +19,11 @@ extern "C" u8 fn_803798D0(void* this_);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" void fn_80239914(f32* rect, s32 a, void* b);
 extern f32 lbl_80475340[];
+struct Quad {
+    f32 v[4];
+};
+extern "C" const Quad lbl_804752C0[4];
+extern "C" const Quad lbl_80475300[4];
 extern "C" void fn_80379A90(Actor* this_) {
     u8* self = (u8*)this_;
     Vec* pos = &this_->field_0C;
