@@ -104,6 +104,8 @@ struct Unk800DD148Obj {
 };
 
 struct Unk800DBF04Obj {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
