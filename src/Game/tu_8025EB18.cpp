@@ -413,6 +413,37 @@ extern "C" void fn_80264768(char* p) {
     p[0x458] = 0;
 }
 
+extern "C" void fn_802636D4(char* p) {
+    U8(p, 0x3fc)++;
+    if (U8(p, 0x3fc) < 8) {
+        U8(p, 0x3fd) = 0;
+    } else if (U8(p, 0x3fc) < 10) {
+        U8(p, 0x3fd) = 1;
+    } else {
+        U8(p, 0x3fd) = 2;
+        u8 carrying;
+        if (fn_80251AEC(p, 0x17)) {
+            if (U8(p, 0xd64) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4)
+                carrying = true;
+            else
+                carrying = false;
+        } else {
+            carrying = false;
+        }
+        if (carrying) {
+            u32 param = U32(p, 0x4) & 0xffff;
+            s32 id = S32(p, 0xd70);
+            void* pos = fn_8023E724(id);
+            void* mgr = fn_801F856C();
+            Actor_CreateByID(mgr, 0x5448434c, S32(p, 0x3b4), pos, id, -1, param);
+        }
+    }
+    VEC(p, 0x2f4) = lbl_8046B400[U8(p, 0x3fd) + S32(p, 0x3dc) * 3];
+    VEC(p, 0x2f4) += VEC(p, 0x8);
+    fn_8025EB18(p);
+    fn_80268B3C(p);
+}
+
 #undef S32
 #undef U8
 #undef U32
@@ -423,6 +454,37 @@ extern "C" void fn_80264768(char* p) {
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_802636D0(void) {
     return;
+}
+
+extern "C" void fn_802636D4(char* p) {
+    U8(p, 0x3fc)++;
+    if (U8(p, 0x3fc) < 8) {
+        U8(p, 0x3fd) = 0;
+    } else if (U8(p, 0x3fc) < 10) {
+        U8(p, 0x3fd) = 1;
+    } else {
+        U8(p, 0x3fd) = 2;
+        u8 carrying;
+        if (fn_80251AEC(p, 0x17)) {
+            if (U8(p, 0xd64) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4)
+                carrying = true;
+            else
+                carrying = false;
+        } else {
+            carrying = false;
+        }
+        if (carrying) {
+            u32 param = U32(p, 0x4) & 0xffff;
+            s32 id = S32(p, 0xd70);
+            void* pos = fn_8023E724(id);
+            void* mgr = fn_801F856C();
+            Actor_CreateByID(mgr, 0x5448434c, S32(p, 0x3b4), pos, id, -1, param);
+        }
+    }
+    VEC(p, 0x2f4) = lbl_8046B400[U8(p, 0x3fd) + S32(p, 0x3dc) * 3];
+    VEC(p, 0x2f4) += VEC(p, 0x8);
+    fn_8025EB18(p);
+    fn_80268B3C(p);
 }
 
 #endif
