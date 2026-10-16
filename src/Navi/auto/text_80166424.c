@@ -319,6 +319,7 @@ extern "C" void* fn_80167074(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+#pragma dont_inline reset
 
 extern "C" void fn_801670D0(UnkVObj_801670D0* self, u32 unused, s32 n)
 {
