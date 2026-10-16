@@ -77,11 +77,9 @@ extern "C" int fn_80180B60(u8* self, u8* src) {
     u8 a = src[0];
     u8 b = src[1];
     self[0x14c] = a;
-    a = src[2];
     self[0x14d] = b;
-    b = src[3];
-    self[0x14e] = a;
-    self[0x14f] = b;
+    self[0x14e] = src[2];
+    self[0x14f] = src[3];
     return 1;
 }
 
@@ -122,7 +120,7 @@ extern "C" void fn_80184C54(void) {
 extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     void* obj = *(void**)((u8*)self + 0x168);
     if (*(void**)((u8*)obj + 0x28) == 0) {
-        if (((s32 (*)(void*, void*))(*(void***)self)[0x9c / 4])(self, *(void**)&lbl_80301BF8) && param_3 != 0) {
+        if (((s32 (*)(void*, void*))(*(void***)self)[0x9c / 4])(self, lbl_80301BF8) && param_3 != 0) {
             register void* sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
             if (((s32 (*)(void*, s32))(*(void***)sub)[0xa4 / 4])(sub, 0) == 0) {
                 sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
