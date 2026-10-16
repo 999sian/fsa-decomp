@@ -82,6 +82,8 @@ struct J3DNBTScaleInfo {
     f32 mScale[3];
 };
 extern "C" J3DNBTScaleInfo j3dDefaultNBTScaleInfo;
+extern u32 j3dDefaultTexCoordInfo[];
+extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b);
 extern "C" char lbl_8049AA38[];
 extern "C" char __vt__10J3DPEBlock[];
 
@@ -199,36 +201,37 @@ extern "C" u32 calcSizeIndBlock__11J3DMaterialFi(int);
 extern "C" u32 calcSizePEBlock__11J3DMaterialFUlUl(u32, u32);
 extern "C" u32 fn_800CAD8C(u8* p, void* mat, s32 idx, u32 flags) {
     u32 size = 0;
-    if (mat == NULL) {
+    if (!mat) {
         size = 0x4c;
     }
     u32 ind = (flags & 0x03000000) != 0;
     size += calcSizeColorBlock__11J3DMaterialFUl(0x40000000);
     size += 0x134;
     size += calcSizeIndBlock__11J3DMaterialFi(ind);
-    size += calcSizePEBlock__11J3DMaterialFUlUl(0x10000000, *(u8*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c));
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x48) != 0xffff) {
+    u8* e = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
+    size += calcSizePEBlock__11J3DMaterialFUlUl(0x10000000, *e);
+    if (*(u16*)(e + 0x48) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4a) != 0xffff) {
+    if (*(u16*)(e + 0x4a) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4c) != 0xffff) {
+    if (*(u16*)(e + 0x4c) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4e) != 0xffff) {
+    if (*(u16*)(e + 0x4e) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x50) != 0xffff) {
+    if (*(u16*)(e + 0x50) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x52) != 0xffff) {
+    if (*(u16*)(e + 0x52) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x54) != 0xffff) {
+    if (*(u16*)(e + 0x54) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x56) != 0xffff) {
+    if (*(u16*)(e + 0x56) != 0xffff) {
         size += 0x94;
     }
     return size;
