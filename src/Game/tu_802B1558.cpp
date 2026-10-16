@@ -13,6 +13,32 @@ extern "C" char lbl_804A8578[];
 extern "C" void* lbl_8053ACA8;
 extern "C" u8 lbl_80529DEC[];
 extern "C" void __dl__FPv(void*);
+extern "C" void fn_802B1558(void) {
+    JUTXfb::getManager()->clearIndex();
+    fn_8008D8E4();
+    VIWaitForRetrace();
+    VIWaitForRetrace();
+    OSThread* thread = GXGetCurrentGXThread();
+    BOOL level = OSDisableInterrupts();
+    if (thread != OSGetCurrentThread()) {
+        OSCancelThread(thread);
+        GXSetCurrentGXThread();
+    }
+    GXFlush();
+    GXAbortFrame();
+    GXDrawDone();
+    OSRestoreInterrupts(level);
+    JUTVideo::destroyManager();
+    GXSetDrawDoneCallback(0);
+    VISetBlack(TRUE);
+    VIFlush();
+    VIWaitForRetrace();
+    while (*(s32*)(lbl_8051C1A0 + 0x1fcc) != 0) {
+        VIWaitForRetrace();
+    }
+    LCDisable();
+}
+
 extern "C" u32 fn_802B1D60(void) {
     u32 v = lbl_80529DEC[0x222];
     if (v > 3) {
