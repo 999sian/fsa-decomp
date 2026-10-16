@@ -7,6 +7,13 @@ extern "C" void fn_801C13D0(int);
 extern "C" OSThread* fn_801C027C(void);
 extern "C" void fn_801C05A0(OSThread* owner, OSPriority prio);
 extern "C" void fn_801C12E4(OSMutex* mutex);
+extern "C" void fn_801BE368(OSMutex* mutex)
+{
+    OSInitThreadQueue(&mutex->queue);
+    mutex->thread = nullptr;
+    mutex->count = 0;
+}
+
 extern "C" void fn_801BE3A0(OSMutex* mutex)
 {
 	BOOL enabled;
@@ -42,25 +49,24 @@ extern "C" void fn_801BE3A0(OSMutex* mutex)
 	OSRestoreInterrupts(enabled);
 }
 
-void fn_801BE544(int param_1)
+extern "C" void fn_801BE544(int param_1)
 {
     int iVar1;
     int iVar2;
 
-    iVar2 = *(int *)(param_1 + 0x2f4);
+    iVar2 = *(int*)(param_1 + 0x2f4);
     while (iVar2 != 0) {
-        iVar1 = *(int *)(iVar2 + 0x10);
+        iVar1 = *(int*)(iVar2 + 0x10);
         if (iVar1 == 0) {
-            *(int *)(param_1 + 0x2f8) = 0;
+            *(int*)(param_1 + 0x2f8) = 0;
+        } else {
+            *(int*)(iVar1 + 0x14) = 0;
         }
-        else {
-            *(int *)(iVar1 + 0x14) = 0;
-        }
-        *(int *)(param_1 + 0x2f4) = iVar1;
-        *(int *)(iVar2 + 0xc) = 0;
-        *(int *)(iVar2 + 8) = 0;
+        *(int*)(param_1 + 0x2f4) = iVar1;
+        *(int*)(iVar2 + 0xc) = 0;
+        *(int*)(iVar2 + 8) = 0;
         fn_801C13D0(iVar2);
-        iVar2 = *(int *)(param_1 + 0x2f4);
+        iVar2 = *(int*)(param_1 + 0x2f4);
     }
 }
 
@@ -136,5 +142,11 @@ extern "C" BOOL fn_801BE8BC(u32 param_1)
         iVar1 = *(u32*)(iVar1 + 0x10);
     }
     return TRUE;
+}
+
+extern s32 lbl_802FF790;
+extern "C" void fn_801BE940(void)
+{
+    lbl_802FF790 = 1;
 }
 
