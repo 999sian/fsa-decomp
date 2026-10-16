@@ -1098,8 +1098,12 @@ extern "C" void fn_8006BAE0(void* param_1) {
 
     s32 limit = *(s32*)((u8*)&lbl_802BB0FC + 0x58);
     s32 val = *(s32*)((u8*)param_1 + 0x2fc);
+    s32 flag = 0;
 
     if (val <= limit) {
+        flag = 1;
+    }
+    if (flag != 0) {
         fn_8006C5B0((s32)param_1, 4);
 
         void* ptr = &lbl_802BF814;
