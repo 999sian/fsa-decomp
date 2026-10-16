@@ -748,8 +748,10 @@ extern "C" void fn_801820F4(void) {
 extern "C" s32 fn_80184164(char* self, s32* a, s32* b) {
     char* p;
     s32 i;
-    if (*a == 0 && (u32)*b == 0xFFFFFFFF) {
-        return 1;
+    if (*a == 0) {
+        if (*b + 0x10000 == 0xFFFF) {
+            return 1;
+        }
     }
     p = self;
     for (i = 0; i < 4; i++) {
@@ -870,12 +872,12 @@ extern "C" void fn_8018485C(u8* self, u32 v) {
 }
 
 extern "C" u32 fn_80184B08(u8* self, u8 idx) {
-    u8* p;
+    u32 off;
     if (idx >= 4) {
         return 0;
     }
-    p = self + idx * 4;
-    return *(u32*)(p + 0x148);
+    off = idx << 2;
+    return *(u32*)(self + off + 0x148);
 }
 
 extern "C" void fn_80184B34(u8* self, u32* out) {
