@@ -38,8 +38,7 @@ struct HitRectTable {
 inline bool rectContains(const HitRect& r, const Vec2f* p) {
     bool in = false;
     f32 x = p->x;
-    f32 y = p->y;
-    if (x >= r.x0 && y >= r.y0 && x < r.x1 && y < r.y1) {
+    if (x >= r.x0 && p->y >= r.y0 && x < r.x1 && p->y < r.y1) {
         in = true;
     }
     return in;
