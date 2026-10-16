@@ -1,4 +1,7 @@
 #include "types.h"
+extern "C" u32 fn_80159E0C(void* p, u32 r4);
+extern "C" void* fn_80159BE0(u32 size, u32 r4, void* p);
+extern "C" void* fn_8015C89C(void* p, void* p2, u32 size, void* r6, void* r7);
 struct VObj_8003B920 {
     virtual void m0();
     virtual void m1();
