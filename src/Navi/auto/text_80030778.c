@@ -16,10 +16,10 @@ extern "C" void fn_800300C0(int, float, int, int, int);
 extern "C" void fn_8002F358(int, int);
 
 extern "C" void fn_80030778(void* p) {
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x400) = *(unsigned char*)((char*)p + 0xc);
     *(unsigned int*)((char*)lbl_802BB0FC + 0x444) &= 0xfffffff7;
     *(unsigned int*)((char*)lbl_802BB0FC + 0x450) &= 0xfffffff7;
     *(unsigned int*)((char*)lbl_802BB0FC + 0x45c) &= 0xfffffff7;
-    *(unsigned int*)((char*)lbl_802BB0FC + 0x400) = *(unsigned char*)((char*)p + 0xc);
     *(unsigned int*)((char*)lbl_802BB0FC + 0x468) &= 0xfffffff7;
     fn_80030250(2);
     fn_800302F0(3);
