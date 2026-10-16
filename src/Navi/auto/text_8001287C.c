@@ -67,6 +67,37 @@ extern "C" void fn_800129AC(u8* self) {
     *(u32*)(self + 0x1c) = 0;
 }
 
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" void fn_800129BC(s32 param_1, s32 param_2, s32 param_3) {
+    u32 uVar2;
+    BOOL uVar3;
+    fn_80120640(lbl_802FF340);
+    fn_80013B48();
+    fn_8011B978();
+    uVar2 = fn_801D9F00();
+    uVar3 = OSDisableInterrupts();
+    if (uVar2 != fn_801C027C()) {
+        OSCancelThread((void*)uVar2);
+        fn_801D9EB4();
+    }
+    fn_801DAFF4();
+    fn_801DB1BC();
+    fn_801DB478();
+    OSRestoreInterrupts(uVar3);
+    fn_801200F0();
+    fn_801DB70C(0);
+    fn_801CC8B4(1);
+    fn_801CC710();
+    fn_801CBA20();
+    LCDisable();
+    OSResetSystem(param_1, param_2, param_3);
+    do {
+        fn_801CBA20();
+    } while (true);
+}
+#pragma pop
+
 extern "C" void fn_80012A60(s32 param_1) {
     if (lbl_802FEBC0 == 0) {
         if (param_1 == -1) {
