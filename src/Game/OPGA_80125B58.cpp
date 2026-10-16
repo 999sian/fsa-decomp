@@ -113,20 +113,21 @@ extern "C" void fn_8012639C(u8* this_) {
     if (((OpgaVT*)this_)->v15() == 0 || ((OpgaVT*)this_)->v13()) {
         *(s32*)(this_ + 0x234) = 1;
         switch (*(s32*)(this_ + 0x234)) {
+        case 0:
+            *(u8*)(this_ + 0x230) = 0;
+            break;
         case 1:
             ((OpgaVT*)this_)->v12(0xff, 1);
             *(u8*)(this_ + 0x230) = 1;
             *(u8*)(this_ + 0x11d) = 1;
             *(s32*)(this_ + 0x23c) = -1;
             break;
-        case 0:
-            *(u8*)(this_ + 0x230) = 0;
-            break;
-        case 2:
-            if (*(s32*)(this_ + 0x240) > 0) {
-                fn_802D8050(fn_802D6A9C(), *(s32*)(this_ + 0x240), 1, 0xff);
+        case 2: {
+            s32 n = *(s32*)(this_ + 0x240);
+            if (n > 0) {
+                fn_802D8050(fn_802D6A9C(), n, 1, 0xff);
             }
-            break;
+        } break;
         }
     }
 }
