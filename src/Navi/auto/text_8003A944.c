@@ -65,6 +65,11 @@ extern "C" void fn_8003C19C(void* a, s32 n, void* p) {
     }
 }
 
+extern "C" void fn_8003C2A4(u8* p) {
+    p[4] = 0;
+    p[3] = 0;
+}
+
 extern "C" void fn_8003C2B4(u8* p, s16 a, s16 b, s16 c, s16 d, s16 e, s16 f, s16 g, s16 h, s16 i, s16 j, s16 k, s16 l, s16 m) {
     *(s16*)(p + 0x18) = a;
     *(s16*)(p + 0x1a) = b;
