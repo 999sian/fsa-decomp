@@ -105,3 +105,14 @@ extern "C" void* fn_80125878(void* self, short flag) {
     return self;
 }
 
+extern "C" void fn_801247C8(void*, char*, s32, s32);
+extern char lbl_80464E8C[];
+extern "C" void* fn_801258D8(void* self) {
+    fn_801247C8(self, lbl_80464E8C, 0x2e6, 1);
+    *(void***)self = lbl_8049E1D0;
+    *(s32*)((char*)self + 0x3c4) = 0;
+    *(s32*)((char*)self + 0x3c8) = 0;
+    *(s32*)((char*)self + 0x3cc) = 0;
+    return self;
+}
+
