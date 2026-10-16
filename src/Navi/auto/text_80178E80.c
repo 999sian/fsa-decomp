@@ -2229,10 +2229,8 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    void* a = lbl_80299504;
-    void* b = lbl_802994F0;
-    *(void**)ptr = a;
-    *(void**)ptr = b;
+    *(void**)ptr = lbl_80299504;
+    *(void**)ptr = lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
@@ -2518,6 +2516,11 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
         f32 e = u * m0 - (m1 * w + (m0 * w + m0));
         return c - dt * e;
     }
+}
+
+extern "C" void fn_8018E9EC(u32* p) {
+    p[0] = 0;
+    p[1] = 0;
 }
 
 extern "C" void fn_8015AB1C(void*);
