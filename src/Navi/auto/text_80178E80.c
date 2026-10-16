@@ -852,17 +852,18 @@ extern "C" void fn_80180A10(VObj_80180980* self) {
 extern "C" void fn_80180A48(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy0, f32 x1, f32 y1, f32 dx1, f32 dy1) {
     f32 a[4] = {x0, y0, x0 + dx0, y0 + dy0};
     f32 b[4] = {x1, y1, x1 + dx1, y1 + dy1};
-    self->vfF8(a, b);
+    self->vfF0(a, b);
 }
 
 extern "C" void fn_80180AAC(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy0, f32 x1, f32 y1) {
     f32 a[4];
     f32 b[4];
-    f32 dx = 0.0f;
-    f32 dy = 0.0f;
+    f32 dx;
+    f32 dy;
+    u16* q;
     u8* p = *(u8**)((u8*)self + 0x100);
     if (p != 0) {
-        u16* q = *(u16**)(p + 0x20);
+        q = *(u16**)(p + 0x20);
         dx = (f32)q[1];
         dy = (f32)q[2];
     }
@@ -874,11 +875,11 @@ extern "C" void fn_80180AAC(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy
     b[1] = y1;
     b[2] = x1 + dx;
     b[3] = y1 + dy;
-    self->vfF8(a, b);
+    self->vfF0(a, b);
 }
 
-extern "C" u8 fn_80180B58(u8* self) {
-    return self[0x110];
+extern "C" u8 fn_80180B58(VObj_80180980* self) {
+    return *((u8*)self + 0x110);
 }
 
 extern "C" int fn_80180B60(u8* self, u8* src) {
