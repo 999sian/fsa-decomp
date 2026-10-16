@@ -33,6 +33,12 @@ extern "C" void fn_803F2B48(u8* p) {
     *(s32*)(p + 0x1c4) = 5;
 }
 
+extern "C" void fn_803F2B5C(u8* p) {
+    *(s16*)(p + 0x240) = 0;
+    *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
+    *(s32*)(p + 0x1c4) = 4;
+}
+
 extern "C" void fn_803F32E8(u8* p) {
     *(s32*)(p + 0x210) = 0;
     *(s16*)(p + 0x240) = 0;
