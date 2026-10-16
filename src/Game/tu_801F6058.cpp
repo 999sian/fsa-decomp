@@ -171,7 +171,7 @@ struct Rank {
 
 extern "C" void fn_801F6068(Rank* this_) {
 	s32 n = 0;
-	s32 i; s32 best; s32 j;
+	s32 i; s32 j; s32 best; s32 k;
 	for (i = 0; i < 4; i++) {
 		if (*((u8*)lbl_8053AAF8 + 0x82) & (u8)(1 << i)) {
 			this_->score[i] = fn_80236228(i);
@@ -182,10 +182,10 @@ extern "C" void fn_801F6068(Rank* this_) {
 			this_->order[i] = 3;
 		}
 	}
-	for (i = 0; i < n - 1; i++) {
-		best = i;
-		s32 v = this_->score[i];
-		for (j = i + 1; j < n; j++) {
+	for (k = 0; k < n - 1; k++) {
+		best = k;
+		s32 v = this_->score[k];
+		for (j = k + 1; j < n; j++) {
 			if (v < this_->score[j]) {
 				this_->score[best] = this_->score[j];
 				this_->score[j] = v;
