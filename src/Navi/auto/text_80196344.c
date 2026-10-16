@@ -505,6 +505,12 @@ extern "C" void* fn_801A3614(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801A3670(int* param_1, u32 param_2) {
+    if (param_2 & 0x20000000) {
+        ((void (*)(int*))((void**)(*param_1))[7])(param_1);
+    }
+}
+
 extern "C" u32 fn_801A36A4(void) {
     return 0x50454647;
 }
