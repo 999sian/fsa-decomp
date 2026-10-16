@@ -6,6 +6,14 @@ extern "C" void fn_80360914(u8* p);
 extern "C" u8 __vt__4EOWL[];
 extern "C" void __dt__5ActorFv(void* p, s32 flag);
 extern "C" void __dl__FPv(void* p);
+class FsaState;
+typedef void (FsaState::*FsaStateFn)();
+struct FsaStateEntry {
+    FsaStateFn fn;
+};
+extern FsaStateEntry lbl_804ADA50[];
+extern "C" u8 fn_8035F3C0(u8* p);
+extern "C" void fn_8013CB44(u8* owner, u8* p, s32 a, s32 b, s32 c);
 extern "C" void* fn_8035F360(void* param_1, s16 param_2) {
   if (param_1 != 0) {
     *(u8**)param_1 = __vt__4EOWL;
