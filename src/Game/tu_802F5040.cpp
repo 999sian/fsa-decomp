@@ -49,6 +49,26 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
     }
 }
 
+extern "C" void fn_802FF2D8(u8* this_) {
+    s32 i;
+    u8* p;
+    u8* e;
+    p = this_;
+    for (i = 0; i < *(s32*)(this_ + 0xe424); i++) {
+        e = p + 0xd324;
+        if (*(u32*)(e + 0xc) != 0) {
+            fn_802F86CC((Tu802F5040Tbl*)this_, e, *(u32*)(e + 0xc), *(u32*)(e + 0x10), e + 0x1c, lbl_80541518, lbl_80541518);
+        } else if (*(u32*)(e + 0x14) != 0) {
+            fn_802F745C((Tu802F5040Tbl*)this_, e, *(u32*)(e + 0x14), e + 0x1c);
+        } else if (*(u32*)(e + 0x18) != 0) {
+            fn_802F6CF4((Tu802F5040Tbl*)this_, e, *(u32*)(e + 0x18), e + 0x1c);
+        }
+        p += 0x88;
+    }
+    *(s32*)(this_ + 0xe424) = 0;
+    fn_802FEE68((Tu802F5040Tbl*)this_);
+}
+
 extern "C" void fn_802FF3B0(u8* this_) {
     if (this_[0xe451] != 0 && *(u32*)((u8*)lbl_8053AAF8 + 0x4) != 0) {
         fn_802FA3FC(this_);
