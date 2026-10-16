@@ -1,6 +1,9 @@
 #include "types.h"
 #include "dolphin/gx.h"
 #include "dolphin/mtx.h"
+#include "JSystem/JUtility/JUTVideo.h"
+
+extern u8* lbl_8053AB10;
 
 struct Vec3f { f32 x, y, z; };
 
@@ -17,18 +20,13 @@ extern "C" bool fn_8030C210(u8* p, f32* v) {
     s32 n = *(s32*)(p + 0x7f0);
     if (n < 0x80) {
         f32 x = v[0];
-        f32 y = v[1];
-        bool in = false;
-        if (x >= *(f32*)(p + 0x154) && y >= *(f32*)(p + 0x158) && x < *(f32*)(p + 0x15c) && y < *(f32*)(p + 0x160)) {
-            in = true;
-        }
-        if (in) {
-            f32 y2 = v[1];
+        if (fn_8030C210_contains(p, x, v[1])) {
+            f32 y = v[1];
             f32 z = v[2];
             ret = true;
             f32* d = (f32*)(p + n * 0xc + 0x1f0);
             d[0] = x;
-            d[1] = y2;
+            d[1] = y;
             d[2] = z;
             (*(s32*)(p + 0x7f0))++;
         }
