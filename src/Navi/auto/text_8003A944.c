@@ -50,6 +50,7 @@ struct VObj_80041AC4 {
     virtual void m20();
     virtual void m21();
     virtual void vf60(s32 a, void* b);
+    virtual void m24();
     virtual void* vf68(s32 a);
 };
 extern "C" void fn_80017FEC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
