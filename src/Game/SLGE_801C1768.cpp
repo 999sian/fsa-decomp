@@ -57,6 +57,17 @@ extern "C" void fn_801C186C(u8* p)
     }
 }
 
+extern "C" void fn_801C1918(u8* this_) {
+    if (*(s32*)(this_ + 0x248) != 0xb) {
+        DrawRec rec;
+        *(s8*)&rec.b1d = -2;
+        void* res = *(void**)(this_ + 0x2d4);
+        if (*(s32*)(this_ + 4) < 8) {
+            fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, &rec);
+        }
+    }
+}
+
 extern "C" void* fn_801C231C(u8* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A4310;
