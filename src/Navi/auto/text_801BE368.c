@@ -1,7 +1,11 @@
 #include "dolphin/os/OSMutex.h"
 #include "dolphin/os.h"
+#include "dolphin/os/OSCache.h"
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801be368-0x801bf0c8 (21 functions). split_file divides it into the game's real files.
+
+void ICFlashInvalidate(void);
+void Reset(u32 resetCode);
 
 extern "C" void fn_801C13D0(int);
 extern "C" OSThread* fn_801C027C(void);
@@ -168,5 +172,48 @@ extern "C" void fn_801BEC88(u32* param_1, u32* param_2)
 {
     *param_1 = lbl_802FF788;
     *param_2 = lbl_802FF78C;
+}
+
+extern "C" void OSRegisterResetFunction(OSResetFunctionInfo* info)
+{
+    OSResetFunctionInfo* tmp;
+    OSResetFunctionInfo* iter;
+    OSResetFunctionInfo** tail;
+
+    for (iter = ResetFunctionQueue.head; iter && iter->priority <= info->priority; iter = iter->next) {
+        ;
+    }
+
+    if (iter == nullptr) {
+        tail = &ResetFunctionQueue.head + 1;
+        tmp = *tail;
+        if (tmp == nullptr) {
+            ResetFunctionQueue.head = info;
+        } else {
+            tmp->next = info;
+        }
+        info->prev = tmp;
+        info->next = nullptr;
+        *tail = info;
+        return;
+    }
+
+    info->next = iter;
+    tmp        = iter->prev;
+    iter->prev = info;
+    info->prev = tmp;
+    if (tmp == nullptr) {
+        ResetFunctionQueue.head = info;
+        return;
+    }
+    tmp->next = info;
+}
+
+extern "C" u32 OSGetResetCode(void)
+{
+    if (*(u8*)0x800030e2 == 0) {
+        return (*(u32*)0xcc003024 & ~7) >> 3;
+    }
+    return *(u32*)0x800030f0 | 0x80000000;
 }
 
