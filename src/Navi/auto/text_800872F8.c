@@ -131,6 +131,10 @@ extern "C" void fn_80088CF8(VObj_80088CF8* obj) {
     obj->m1();
 }
 
+extern "C" void fn_80088D24(VObj_80088CF8* obj) {
+    obj->m7();
+}
+
 extern "C" void fn_80119978(void*, int);
 extern char lbl_80283FC4[];
 extern "C" void* fn_80088D50(void* param_1, s16 param_2) {
