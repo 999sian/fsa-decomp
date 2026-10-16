@@ -976,6 +976,17 @@ extern "C" void fn_80171B08(u8* p, u32 bit, u8 flag) {
     }
 }
 
+extern "C" void fn_80171E5C(u8* p, u32 unused, u32 idx) {
+    u8* obj;
+    if (idx >= 8) {
+        return;
+    }
+    obj = ((u8**)(p + 0x16c))[idx];
+    if (obj != 0 && *(void**)(obj + 0x20) != 0) {
+        fn_801191F0(obj);
+    }
+}
+
 extern "C" u8 lbl_80301ADC;
 extern "C" void fn_801721F0(u8* p) {
     *p = lbl_80301ADC;
