@@ -135,7 +135,7 @@ struct VObj_80180980 {
     virtual void vfB4();
     virtual void vfB8();
     virtual void vfBC();
-    virtual void vfC0();
+    virtual void vfC0(int, int, int);
     virtual void vfC4(int, int);
     virtual void vfC8(int, int, int);
     virtual void vfCC(int, int);
@@ -657,7 +657,7 @@ extern "C" void fn_80180680(u32* self, int a) {
 }
 
 extern "C" void fn_801806B0(u32* self, int a, int b) {
-    ((VObj_80180980*)self)->vfC8(a, 0, b);
+    ((VObj_80180980*)self)->vfC4(a, b);
 }
 
 extern "C" void fn_801806E4(u32* self, int a) {
