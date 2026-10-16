@@ -60,6 +60,8 @@ public:
     virtual void v45();
     virtual void v46();
     virtual u8 v47();
+    virtual u8 v48();
+    virtual u8 v49();
 };
 
 struct CompanionSlots {
@@ -167,14 +169,16 @@ extern "C" void fn_80121ABC(u8* self) {
     lbl_8053AAA0 = 0;
     ((CompanionCalls*)self)->v29();
     if (self[0x332]) {
+        u8* p = self;
         GameLowVec position(*(GameLowVec*)(self + 0xC));
         position.x -= lbl_8053C9BC;
         CompanionSlots* slots = (CompanionSlots*)self;
-        for (s32 i = 0; i < slots->count; ++i) {
+        s32 i = 0;
+        for (; i < slots->count; i++) {
             position.x += lbl_8053C9B0;
-            slots->handles[i] = Actor_CreateByID(fn_801F856C(), 'LIMT',
+            *(s32*)(p + 0x364) = Actor_CreateByID(fn_801F856C(), 'LIMT',
                 *(u32*)(self + 4), &position, 0, -1, -1);
-            s32 handle = slots->handles[i];
+            s32 handle = *(s32*)(p + 0x364);
             if (handle < 0) {
                 break;
             }
@@ -182,6 +186,7 @@ extern "C" void fn_80121ABC(u8* self) {
             if (actor) {
                 actor[0x11D] = 0;
             }
+            p += 4;
         }
     }
 }
@@ -421,8 +426,7 @@ extern "C" void fn_80123D30(u8* self) {
 }
 
 extern "C" s32 fn_80123D88(u8* self) {
-    u8 flag = self[0x333];
-    if (flag) {
+    if (self[0x333]) {
         return 0;
     }
     s32 player = *(s32*)(self + 0x344);
