@@ -12,3 +12,19 @@ extern "C" Actor* fn_801291A0(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_8012952C(Actor* p, s32 state) {
+    switch (state) {
+    case 0:
+        break;
+    case 1:
+        *(s32*)((u8*)p + 0x23c) = -1;
+        *(s32*)((u8*)p + 0x238) = 0;
+        break;
+    case 2:
+        fn_80129200(p);
+        break;
+    }
+    *(s32*)((u8*)p + 0x230) = state;
+}
+
