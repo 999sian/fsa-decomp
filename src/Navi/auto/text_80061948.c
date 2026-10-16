@@ -962,7 +962,7 @@ extern "C" void fn_8006AF00(void) {
 }
 
 extern "C" int fn_8006AF20(void) {
-    fn_800636F4(0, (void*)0x1e258, 0x40);
+    fn_800636F4((s32)&lbl_802FC930, (u8*)lbl_802B7CA0 + 0x2200, 0x40);
     return 1;
 }
 
