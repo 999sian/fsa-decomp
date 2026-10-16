@@ -1089,7 +1089,7 @@ extern "C" void fn_801A4268(u8* param_1, int param_2, u8 param_3) {
 }
 
 extern "C" void fn_801A4274(u8* p, s32 i, u8* src) {
-    *(p + i + 0x57) = *src;
+    p[i + 0x57] = *src;
 }
 
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
