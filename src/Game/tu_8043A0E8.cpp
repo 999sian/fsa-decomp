@@ -74,6 +74,14 @@ extern "C" void fn_8043A608(void* param_1) {
     fn_8043A450(param_1, *(s32*)(lbl_80529DEC + 0x118), *(s32*)(lbl_80529DEC + 0x11c));
 }
 
+extern "C" void fn_8043D834(u8* self) {
+    if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
+        fn_8041E58C(*(void**)(self + 0x290));
+    } else {
+        fn_80425128(*(void**)(self + 0x294));
+    }
+}
+
 extern "C" void fn_8043D874(char* param_1) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
         fn_8041E708(*(void**)(param_1 + 0x290));
@@ -98,6 +106,11 @@ extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
 extern "C" void fn_8043EDE8(char* param_1, s32 param_2) {
     *(s32*)(param_1 + 0xe0) = param_2;
     *(s32*)(param_1 + 0xe4) = 0x1e;
+}
+
+extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
+    JGeometry::TVec3<f32> v = *self;
+    fn_8043E7CC(lbl_8053AED0, &v);
 }
 
 extern "C" void* fn_80440928(void) { return fn_8043DF8C(lbl_8053AED0); }
