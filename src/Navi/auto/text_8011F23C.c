@@ -421,6 +421,13 @@ extern "C" void fn_801290C4(void* p) {
 extern "C" void fn_801290EC(void) {
 }
 
+extern "C" void fn_801DF378(void* a, s32 b, s32 c);
+extern "C" void fn_801290F0(u8* self) {
+    u8 buf[0x38];
+    fn_801C5DA8(self + 0x1b4, 0, buf);
+    fn_801DF378(buf, 0x1e, 0);
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
@@ -1006,6 +1013,8 @@ extern "C" void* fn_80133510(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_8013356C(void) {}
 
 extern "C" void fn_801338F8(u8* p, void* unused, int i);
 extern "C" void fn_80133910(u8* p, void* unused, int i, f32* v);
