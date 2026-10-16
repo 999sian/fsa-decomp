@@ -226,6 +226,8 @@ extern "C" s32 fn_80172750(s32 p, s32 i)
     return p + i * 8 + 0x77;
 }
 
+extern "C" void fn_8017288C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
+
 extern "C" s32 fn_801728E0(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
