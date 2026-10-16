@@ -27,6 +27,10 @@ extern const f32 lbl_8053EFDC;
 extern const f32 lbl_8053F010;
 extern const f32 lbl_8053F014;
 extern const f32 lbl_8053EFF0;
+extern const f32 lbl_8053EFE0;
+extern const f32 lbl_8053EFE4;
+extern const f32 lbl_8053EFE8;
+extern int __float_epsilon[];
 extern "C" s32 fn_801CF720(u8* this_, s32 dir);
 extern "C" u8 fn_801CCB1C(const f32* pos, s32 layer);
 extern "C" u8 fn_801CFCF0(u8* this_, s32 idx);
@@ -82,9 +86,7 @@ extern "C" void fn_801CE010(u8* this_, f32* out) {
 extern "C" void fn_801CE0A4(ItemBase* this_) {
     if ((this_->m230 & 7) == 0) {
         this_->m24C++;
-        if (this_->m24C < 0) {
-            this_->m24C = 0;
-        }
+        this_->m24C = this_->m24C < 0 ? 0 : this_->m24C;
         this_->v34();
         this_->v35();
     }
@@ -211,7 +213,8 @@ extern "C" int fn_801CECEC(void) { return 0; }
 extern "C" s32 fn_801CF0F4(u8* this_) {
     f32 x = *(f32*)(this_ + 0x3c);
     f32 a = JMath::atanTable_.atan2_(x, *(f32*)(this_ + 0x40));
-    return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
+    s32 q = (s32)(a * lbl_8053EFEC);
+    return ClassifyBamAngleToQuadrant(q);
 }
 
 extern "C" bool fn_801CF144(u8* this_) {
@@ -247,6 +250,31 @@ extern "C" s32 fn_801CF720(u8* this_, s32 dir) {
     return idx;
 }
 
+extern "C" s32 fn_801CF798(u8* this_, s32 idx, s32 dir) {
+    s32 arr[4];
+    s32* p = arr;
+    if (0 != idx && 0 != dir) {
+        *p = 0;
+        p++;
+    }
+    if (1 != idx && 1 != dir) {
+        *p = 1;
+        p++;
+    }
+    if (2 != idx && 2 != dir) {
+        *p = 2;
+        p++;
+    }
+    if (3 != idx && 3 != dir) {
+        *p = 3;
+    }
+    s32 i = fn_801CD664(2);
+    if (fn_801CFCF0(this_, arr[i])) {
+        return arr[i];
+    }
+    return arr[1 - i];
+}
+
 extern "C" u8 fn_801CFD68(f32 v);
 extern const f32 lbl_8053EFFC;
 extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
@@ -272,12 +300,21 @@ extern "C" s32 fn_801D0020(u8* this_, f32* pos, s32 idx, u8 flag) {
     f32* rec = (f32*)(this_ + idx * 0xc + 0x1ac);
     f32 dx = rec[0] - pos[0];
     f32 dz = rec[1] - pos[1];
-    if (((__fabsf(dx) <= __fabsf(dz)) || flag != 0) && ((__fabsf(dz) < __fabsf(dx)) || flag != 1)) {
+    if (__fabsf(dx) > __fabsf(dz)) {
+        if (flag == 0) {
+            goto x_axis;
+        }
+        if (flag == 1) {
+            goto x_axis;
+        }
+    }
+    if (__fabsf(dx) <= __fabsf(dz) || flag != 1) {
         if (pos[1] < rec[1]) {
             return 2;
         }
         return 3;
     }
+x_axis:
     if (pos[0] < rec[0]) {
         return 0;
     }
@@ -285,16 +322,15 @@ extern "C" s32 fn_801D0020(u8* this_, f32* pos, s32 idx, u8 flag) {
 }
 
 extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
-    f32 x = *(f32*)(this_ + 0xc);
-    f32 y = *(f32*)(this_ + 0x10);
-    f32* rec = (f32*)(this_ + idx * 0xc + 0x1ac);
-    return JMAAtan2Radian(rec[0] - x, rec[1] - y) * lbl_8053EFEC;
+    Vec* rec = (Vec*)(this_ + idx * 0xc + 0x1ac);
+    Vec* self = (Vec*)(this_ + 0xc);
+    return JMAAtan2Radian(rec->x - self->x, rec->y - self->y) * lbl_8053EFEC;
 }
 
 extern "C" s16 fn_801D02E0(u8* this_, const Vec& pos) {
-    f32 dx = pos.x - *(f32*)(this_ + 0xc);
-    f32 dz = pos.y - *(f32*)(this_ + 0x10);
-    return JMAAtan2Radian(dx, dz) * lbl_8053EFEC;
+    f32 px = pos.x;
+    f32 py = pos.y;
+    return lbl_8053EFEC * JMAAtan2Radian(px - *(f32*)(this_ + 0xc), py - *(f32*)(this_ + 0x10));
 }
 
 extern "C" s32 fn_801D0D50(void* thisArg, s32 playerIdx, f32* point, f32 radius) {
