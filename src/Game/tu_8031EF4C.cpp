@@ -3,6 +3,20 @@
 
 extern "C" char lbl_804AB258[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
+struct Init48 {
+    u8 idx[0x10];
+    s32 w18;
+    s32 w1c;
+    s32 w20;
+    u8 b24[0xc];
+    s32 w30;
+    u8 b34[3];
+    s32 w38;
+    s32 w3c;
+    s32 w40;
+};
+extern s32 lbl_804AB248[];
+
 extern "C" Actor* fn_8031EF4C(Actor* param_1, s16 param_2)
 {
     if (param_1 != 0) {
