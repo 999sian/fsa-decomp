@@ -35,7 +35,12 @@ extern "C" void fn_801670D0(int, void*, int);
 extern "C" int fn_801792B4(void* param_1, int param_2) {
     u32 buf[8];
     fn_801670D0(param_2, buf, 0x20);
-    return (buf[0] == 0x5343524e && (buf[1] == 0x626c6f31 || buf[1] == 0x626c6f32)) ? 1 : 0;
+    if (buf[0] == 0x5343524e) {
+        if (buf[1] == 0x626c6f31 || buf[1] == 0x626c6f32) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 extern "C" void fn_8017A468(void) {
@@ -171,14 +176,14 @@ extern "C" void fn_80184C34(void) {
 extern "C" void fn_80184C54(void) {
 }
 
-extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
+extern "C" void fn_80184C58(UnkVObj_80184B60* self, void* unused, void* param_3) {
     void* obj = *(void**)((u8*)self + 0x168);
     if (*(void**)((u8*)obj + 0x28) == 0) {
-        if (((u8 (*)(void*, f32))(*(void***)self)[0x9c / 4])(self, lbl_80301BF8) && param_3 != 0) {
-            void* sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-            if (((void* (*)(void*, s32))(*(void***)sub)[0xa4 / 4])(sub, 0) == 0) {
-                sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-                ((void (*)(void*, s32, void*))(*(void***)sub)[0x98 / 4])(sub, 0, param_3);
+        if (self->v9C(lbl_80301BF8) && param_3 != 0) {
+            UnkVObj_80184B60* sub = *(UnkVObj_80184B60**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
+            if (sub->vA4(0) == 0) {
+                sub = *(UnkVObj_80184B60**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
+                sub->v98(0, param_3);
             }
         }
     }
@@ -213,8 +218,9 @@ extern "C" int fn_8018A4B4(void* param_1, s32* param_2, s32* param_3) {
     if (*param_2 == 0 && *param_3 == -1) {
         return 1;
     }
-    ((void (*)(void*))((*(void***)(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70)))[0x58 / 4]))(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
-    u8 c = ((u8 (*)(void*))((*(void***)(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70)))[0x18 / 4]))(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
+    void* obj = *(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70);
+    ((void (*)(void*))(*(void***)obj)[0x58 / 4])(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
+    u8 c = ((u8 (*)(void*))(*(void***)obj)[0x18 / 4])(*(void**)((u8*)*(void**)((u8*)param_1 + 0x138) + 0x70));
     if (c == 1) {
         return 0;
     }
