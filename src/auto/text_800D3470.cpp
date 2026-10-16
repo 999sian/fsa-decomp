@@ -735,10 +735,12 @@ extern "C" void fn_800D9020(u8* self) {
 extern "C" void fn_800D90B8(u8* p) {
     u8* e;
     u32 i;
+    u8 n;
     u8* f;
     u16* s;
     e = p;
-    for (i = 0; i < p[0xd0]; i += 2) {
+    n = p[0xd0];
+    for (i = 0; i < n; i += 2) {
         s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0x18] & 7, s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
         f = p + (i + 1) * 4;
@@ -976,18 +978,14 @@ extern "C" void fn_800D9FE4(int param_1, int param_2) {
 extern "C" void fn_800DA280(u8* this_, u32 flags) {
     if (flags & 0x08000000) {
         u8 stageNum = this_[4];
-        J3DGDSetIndTexMtx(GX_ITM_0, (Mtx3P)(this_ + 0x18), this_[0x30]);
+        ((J3DIndTexMtx*)(this_ + 0x18))->load(0);
         J3DGDSetIndTexCoordScale(GX_INDTEXSTAGE0, (GXIndTexScale)this_[0x6c], (GXIndTexScale)this_[0x6d], (GXIndTexScale)this_[0x70], (GXIndTexScale)this_[0x71]);
 
         unsigned short* entry = (unsigned short*)(&sTexCoordScaleTable__6J3DSys) + ((this_[6] & 7) * 4);
-        unsigned short scaleS = entry[0];
-        unsigned short scaleT = entry[1];
-        unsigned short biasS = entry[2];
-        unsigned short biasT = entry[3];
+        unsigned int lzS = __cntlzw(1 - entry[2]);
+        unsigned int lzT = __cntlzw(1 - entry[3]);
 
-        unsigned int lzS = __cntlzw(1 - biasS);
-        unsigned int lzT = __cntlzw(1 - biasT);
-        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(this_[5], scaleS, (unsigned char)(lzS >> 5), (unsigned char)0, scaleT, (unsigned char)(lzT >> 5), (unsigned char)0);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(this_[5], entry[0], (unsigned char)(lzS >> 5), (unsigned char)0, entry[1], (unsigned char)(lzT >> 5), (unsigned char)0);
 
         J3DGDSetIndTexOrder(stageNum, (GXTexCoordID)this_[5], (GXTexMapID)this_[6], (GXTexCoordID)this_[9], (GXTexMapID)this_[0xa], (GXTexCoordID)this_[0xd], (GXTexMapID)this_[0xe], (GXTexCoordID)this_[0x11], (GXTexMapID)this_[0x12]);
     }
@@ -1070,6 +1068,26 @@ extern "C" void fn_800DBC64(void* obj, u32 flags) {
     }
 }
 
+extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
+    *(u8*)(self + 0xc) = src->getColorChanNum();
+    u8* dst = self;
+    u32 i = 0;
+    for (; i < 2; i++) {
+        u8* c = src->getMatColor(i);
+        dst[4] = c[0];
+        dst[5] = c[1];
+        dst[6] = c[2];
+        dst[7] = c[3];
+        dst += 4;
+    }
+    i = 0;
+    dst = self;
+    for (; i < 4; i++) {
+        *(u16*)(dst + 0xe) = *src->getColorChan(i);
+        dst += 2;
+    }
+}
+
 extern "C" void fn_800DC574(u8* param_1, int* param_2) {
     *(u16*)(param_1 + 8) = (*(u16(**)(int*, int))(*(u8**)param_2 + 0x50))(param_2, 0);
     *(u32*)(param_1 + 0xa) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0x5c))(param_2, 0));
@@ -1081,6 +1099,22 @@ extern "C" void fn_800DC574(u8* param_1, int* param_2) {
     param_1[0x14] = p[6];
     param_1[0x15] = p[7];
     *(u32*)(param_1 + 0x18) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0xc4))(param_2, 0));
+}
+
+extern "C" void fn_800DD148(u8* this_, void* obj) {
+    void** vt = *(void***)obj;
+    u32 id = ((u32 (*)(void*))vt[9])(obj);
+    if (id == 0x5045464c || (id < 0x5045464c && id == 0x50454647)) {
+        u8* p = (u8*)((void* (*)(void*))vt[15])(obj);
+        *(u16*)(this_ + 0x4) = *(u16*)p;
+        this_[0x6] = p[2];
+        this_[0x7] = p[3];
+        u32* q = (u32*)((void* (*)(void*))vt[18])(obj);
+        *(u32*)(this_ + 0x8) = *q;
+        u16* r = (u16*)((void* (*)(void*))vt[21])(obj);
+        *(u16*)(this_ + 0xc) = *r;
+        this_[0xe] = ((u8 (*)(void*))vt[24])(obj);
+    }
 }
 
 extern "C" u32 fn_800DD89C() {
