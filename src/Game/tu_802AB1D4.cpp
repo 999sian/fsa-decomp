@@ -8,7 +8,7 @@ extern f32 lbl_80540898;
 struct Obj802AB9DC {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
-    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v8(); virtual void v9(); virtual void v10();
     virtual bool check();
 };
 
@@ -25,17 +25,15 @@ extern "C" void* fn_802AB1D4(void* p, s16 d) {
 
 extern "C" void fn_802AB234(void) {}
 
-extern "C" void fn_802AB9DC(char* self) {
-    typedef bool (*CheckFn)(char*);
-    f32 a = lbl_805408B0;
-    f32 b = lbl_80540898;
+extern "C" void fn_802AB9DC(Obj802AB9DC* obj) {
+    char* self = (char*)obj;
     *(u32*)(self + 0x234) = *(u32*)(self + 0x90) & 0x1f;
-    *(f32*)(self + 0x60) = a;
-    *(f32*)(self + 0x64) = a;
-    *(f32*)(self + 0x68) = b;
-    *(f32*)(self + 0x6c) = b;
+    *(f32*)(self + 0x60) = lbl_805408B0;
+    *(f32*)(self + 0x64) = lbl_805408B0;
+    *(f32*)(self + 0x68) = lbl_80540898;
+    *(f32*)(self + 0x6c) = lbl_80540898;
     *(u32*)(self + 0x230) = 0;
-    if ((*(CheckFn**)self)[0x34 / 4](self)) {
+    if (obj->check()) {
         *(u32*)(self + 0x230) = 4;
     }
 }
