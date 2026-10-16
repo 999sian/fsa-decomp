@@ -500,6 +500,13 @@ extern "C" void* fn_8009465C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800946B8(char* param_1) {
+    if (fn_800F39B4(*(void**)(param_1 + 0x278)) == 1) {
+        param_1[0x7e8] = 2;
+        fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x278) + 0x62));
+    }
+}
+
 extern void* lbl_80287888[];
 extern "C" void* fn_80094AFC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
