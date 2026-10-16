@@ -533,6 +533,22 @@ extern "C" int fn_8017337C()
 	return 0;
 }
 
+extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u16 value = *(u16*)(data + indices[index] * 0xe8 + 0xe2);
+    if (value != 0xffff) {
+        u8* entry = *(u8**)((u8*)ptr + 0x50) + (u16)value * 8;
+        out[0] = ((u8)entry[0] << 5 | (u8)entry[2] << 3) | entry[3];
+        ((u8*)out)[2] = entry[1];
+        ((u8*)out)[3] = entry[4];
+    } else {
+        out[0] = lbl_80301ADE;
+        ((u8*)out)[2] = 0;
+        ((u8*)out)[3] = 0;
+    }
+}
+
 extern "C" void* fn_80174A68(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
@@ -617,6 +633,44 @@ extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern u8 lbl_802FF694;
+extern void* lbl_802FF690;
+extern void* lbl_802FF698;
+extern void* lbl_802FF540;
+extern "C" void* fn_8015AAB0(void* a, void* p, int b);
+extern f32 lbl_80301AF8;
+extern "C" void* fn_80174E9C(void* param_1) {
+    void* old = lbl_802FF690;
+    if (lbl_802FF694 != 0) {
+        fn_8015AB1C(old);
+    }
+    lbl_802FF690 = fn_8015AAB0(param_1, lbl_802FF540, 0);
+    lbl_802FF698 = param_1;
+    lbl_802FF694 = 1;
+    return old;
+}
+
+extern "C" void fn_80174F08(u8* param_1) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual u32 v30(); virtual u32 v34();
+    };
+    if (*(Obj**)(param_1 + 4) != 0) {
+        *(f32*)(param_1 + 0x50) = (f32)(*(Obj**)(param_1 + 4))->v30();
+        *(f32*)(param_1 + 0x54) = (f32)(*(Obj**)(param_1 + 4))->v34();
+    }
+}
+
+extern "C" void fn_80174FA0(u8* param_1, f32 a, f32 b) {
+    *(f32*)(param_1 + 0x24) = a;
+    *(f32*)(param_1 + 0x28) = b;
+    *(f32*)(param_1 + 0x2c) = a;
+    *(f32*)(param_1 + 0x30) = b;
+    *(f32*)(param_1 + 0x34) = lbl_80301AF8;
 }
 
 extern "C" void fn_801789D0(int* param_1)
