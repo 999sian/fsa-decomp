@@ -50,13 +50,11 @@ struct VObj_800C8D90 {
 struct VObj_800C91A4 {
     virtual void v0();
     virtual void v1();
-    virtual void v2();
-    virtual void v3();
     virtual void SetPos(f32 x, f32 y);
+    virtual void v3();
+    virtual void v4();
     virtual void v5();
     virtual void v6();
-    virtual void v7();
-    virtual void v8();
     virtual void SetAlpha(s32 a);
 };
 extern f32 lbl_80300DE8;
