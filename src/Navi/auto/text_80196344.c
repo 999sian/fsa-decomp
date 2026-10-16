@@ -122,6 +122,25 @@ extern "C" void fn_80198B44(void* param_1) {
     }
 }
 
+extern "C" void fn_80198BA8(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(u32*)(p + 0x8) = 0;
+    *(u32*)(p + 0x4) = 0;
+    *(u32*)(p + 0xc) = 0;
+    *(u32*)(p + 0x10) = 1;
+    *(u16*)(p + 0x14) = 0xffff;
+    *(u32*)(p + 0x18) = 0;
+    *(u32*)(p + 0x20) = 0;
+    *(u32*)(p + 0x24) = 0;
+    *(u32*)(p + 0x28) = 0;
+    *(u32*)(p + 0x2c) = 0;
+    *(u32*)(p + 0x30) = 0;
+    *(u32*)(p + 0x34) = 0;
+    *(u32*)(p + 0x38) = 0;
+    *(u32*)(p + 0x3c) = 0;
+    *(u32*)(p + 0x48) = 0;
+}
+
 extern "C" void* fn_80198C70(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029AF34;
