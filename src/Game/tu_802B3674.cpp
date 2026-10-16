@@ -18,3 +18,20 @@ extern "C" void fn_802B3A3C(char* p) {
     *(s32*)(p + 0x2b8) = 0;
 }
 
+extern "C" void fn_802B3A48(char* p) {
+    fn_8016A3AC()[0x1ee] = 0;
+    if (*(void**)(p + 0x234) != NULL) {
+        fn_801EE434(*(void**)(p + 0x234));
+    }
+    if (*(void**)(p + 0x238) != NULL) {
+        fn_801EE434(*(void**)(p + 0x238));
+    }
+    if (*(void**)(p + 0x23c) != NULL) {
+        fn_801EE434(*(void**)(p + 0x23c));
+    }
+    p[0x11c] = 0;
+}
+
+extern "C" void fn_802B3AB4(void) {
+}
+
