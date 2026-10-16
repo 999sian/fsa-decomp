@@ -110,6 +110,17 @@ extern "C" s32 fn_80166680(u32 a, u32 b, u32 c, u32 d)
     fn_80166B1C(p, 1);
     return 1;
 }
+
+extern "C" void fn_80166728(void* a, u32 b, u32 c, u32 d)
+{
+    s32 r = fn_80166A54();
+    if (r == 1) {
+        fn_801667B4(a, b, c, d);
+    } else if (r == 2) {
+        fn_80166970(a, b, c, d);
+    }
+}
+
 #pragma use_lmw_stmw reset
 
 extern "C" u8* fn_80166ACC(u8* p)
