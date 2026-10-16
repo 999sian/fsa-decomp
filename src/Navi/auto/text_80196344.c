@@ -490,6 +490,19 @@ extern "C" int fn_80199A58() {
     return 0x1e;
 }
 
+extern "C" void fn_801A598C(u32, u32);
+extern "C" void fn_8019C924(int param_1) {
+    u8* p = (u8*)param_1;
+    u32 i = 0;
+    do {
+        if (*(u32*)(p + 0x38) != 0) {
+            fn_801A598C(*(u32*)(p + 0x38), i);
+        }
+        i++;
+        p += 4;
+    } while (i < 8);
+}
+
 extern "C" void fn_8019DE38(int *param_1)
 {
 	typedef void (*fnptr)(void);
@@ -621,6 +634,36 @@ extern "C" void fn_8019EB78(int param_1) {
         lbl_802FFA80[2] = (int)(out + 1);
         *out = w;
         param_1 += 4;
+    }
+}
+
+extern "C" void fn_8019EC20(int param_1) {
+    struct NaviPair8 {
+        u32 a;
+        u32 b;
+    };
+    NaviPair8 pair;
+    u32 i;
+    u8* p;
+    u32 val;
+    u32 b;
+    u32 a;
+
+    p = (u8*)param_1;
+    for (i = 0; i < 3; i++) {
+        a = *(u32*)(p + 0x98);
+        b = *(u32*)(p + 0x9c);
+        pair.a = a;
+        pair.b = b;
+        fn_80191388(i + 1, &pair);
+        p += 8;
+    }
+    i = 0;
+    p = (u8*)param_1;
+    for (; i < 4; i++) {
+        val = *(u32*)(p + 0xb8);
+        fn_80191220(i, &val);
+        p += 4;
     }
 }
 
