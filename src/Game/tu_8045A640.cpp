@@ -14,8 +14,8 @@ typedef struct {
     u32 id;
 } JAISoundID;
 
-extern void* getData__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
-extern u8 getTypeID__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
+extern "C" void* getData__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
+extern "C" u8 getTypeID__13JAUSoundTableCF10JAISoundID(void*, JAISoundID*);
 
 extern "C" void* fn_8045A640(void* this_, s16 freeFlag) {
     if (this_ != 0) {
