@@ -3,6 +3,16 @@
 extern "C" int fn_802486A0(void*);
 extern "C" int fn_80248778(void*);
 extern "C" int fn_80240888(void*);
+extern "C" void fn_80265D68(char* p)
+{
+    unsigned char v = *(unsigned char*)(p + 0xca0);
+    if (v >= 8) {
+        *(unsigned char*)(p + 0xca0) = v - 8;
+        return;
+    }
+    *(unsigned char*)(p + 0xca0) = 0;
+}
+
 extern "C" void fn_80267384(char* p)
 {
     if (fn_802486A0(p) == 4) {
