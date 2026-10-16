@@ -351,6 +351,24 @@ void J3DColorBlockAmbientOn::initialize()
 	mColorChanOffset = 0;
 }
 
+void J3DColorBlockLightOn::initialize()
+{
+	mColorChannelNum = 0;
+	for (int i = 0; i < 2; i++) {
+		GXColor c = j3dDefaultColInfo;
+		mMaterialColors[i] = *(J3DGXColor*)&c;
+	}
+	for (int i = 0; i < 2; i++) {
+		GXColor c = j3dDefaultAmbInfo;
+		mAmbientColors[i] = *(J3DGXColor*)&c;
+	}
+	for (int i = 0; i < 8; i++) {
+		mLights[i] = nullptr;
+	}
+	mMaterialColorOffset = 0;
+	mColorChannelOffset = 0;
+}
+
 extern "C" int fn_800D3E48(void) { return 0x69; }
 
 extern "C" int fn_800D3E50(void) { return 0x14f; }
