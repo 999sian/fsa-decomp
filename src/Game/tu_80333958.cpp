@@ -2,6 +2,10 @@
 
 
 extern "C" char lbl_804AB968[];
+extern "C" void fn_801F2B7C(void* this_, u32 a, u32 b, u32 c);
+extern "C" void fn_801F0E34(void* this_, u32 a, u32 b);
+extern "C" double __fabs(double x);
+extern const f32 lbl_80541F50;
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_80333958(Actor* p, s16 n)
 {
