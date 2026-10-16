@@ -85,6 +85,7 @@ extern "C" f64 fn_801E9FA0(f64 a, f64 b);
 extern "C" u32 lbl_80201F60[];
 extern "C" void fn_80136148(void* self, void* p, f32 x) {
     int v = 0;
+    u8* q = (u8*)self + 4;
     if (x >= 0.5f) {
         v = 1;
     }
@@ -162,6 +163,12 @@ extern "C" void fn_801364A4(void* param_1) {
 
 extern "C" u32 fn_80136A68(void) {
     return 2;
+}
+
+extern "C" void fn_80136A70(void* param_1) {
+    *(u32*)param_1 = 0;
+    *(u32*)((u8*)param_1 + 4) = 0;
+    *(u32*)((u8*)param_1 + 8) = 0;
 }
 
 extern "C" u32 fn_80136B14(void) {
@@ -353,6 +360,12 @@ extern "C" void* fn_80139A60(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80139DB0(void* param_1, void* param_2) {
+    if (param_2 != nullptr) {
+        ((void (*)(void*, s32))((void**)*(void**)((u8*)param_2 + 8))[2])(param_2, 1);
+    }
 }
 
 extern "C" void fn_80167880(void*, int);
