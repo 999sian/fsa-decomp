@@ -1567,6 +1567,19 @@ extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     }
 }
 
+extern "C" void fn_801851FC(u32* self, s32 a) {
+    u8* p = (u8*)self;
+    ((VObj_80180980*)self)->vf144(*(f32*)(p + 0x20), *(f32*)(p + 0x24), *(s16*)(p + 0x112), *(s16*)(p + 0x114), *(s16*)(p + 0x116), *(s16*)(p + 0x118), *(s16*)(p + 0x11a), *(s16*)(p + 0x11c), *(s16*)(p + 0x11e), *(s16*)(p + 0x120), a);
+}
+
+extern "C" s32 fn_80185520(void* self, s32 a, s32 b) {
+    void** vt = *(void***)self;
+    if (*(u32*)((u8*)self + 0x168) != 0) {
+        return ((s32 (*)(void*, s32, s32, u8))vt[50])(self, a, b, *(u8*)(*(u8**)((u8*)self + 0x168) + 0x28));
+    }
+    return 0;
+}
+
 extern "C" u32 fn_80185568(VObj_80185DA4* self, u32 a, u32 b) {
     u8* p = *(u8**)((u8*)self + 0x168);
     if (p == NULL) {
@@ -1576,12 +1589,11 @@ extern "C" u32 fn_80185568(VObj_80185DA4* self, u32 a, u32 b) {
 }
 
 extern "C" s32 fn_801855B0(u8* self) {
-    s32 unused;
     u8* p = *(u8**)(self + 0x168);
     if (p == NULL) {
         return 0;
     }
-    return (*(s32 (**)(void*, s32, u8))((u8*)*(void**)self + 0xd4))(self, unused, (u8)*(u32*)(p + 0x28));
+    return ((VObj_80187834*)self)->vfd4(*(u32*)(p + 0x28));
 }
 
 extern "C" s32 fn_801855F8(u8* self, void* p, s32 b, s32 c, f32 f) {
@@ -2120,9 +2132,8 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    void* a = lbl_802994F0;
     *(void**)ptr = lbl_80299504;
-    *(void**)ptr = a;
+    *(void**)ptr = lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
@@ -2336,6 +2347,89 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
     } else {
         u16 len = *(u16*)(table + param_2 * 4 + 2);
         *param_3 = (*(u8**)((u8*)self + 0x18))[base + len - 1];
+    }
+}
+
+extern f64 lbl_80301C58;
+extern f32 __psq_l(void* p, int off, int w, int gqr);
+extern "C" f32 fn_8018E63C(u16* hdr, s16* tbl, f32 key) {
+    u16 n;
+    s32 half;
+    s16* p;
+    f32 x0, x1, y0, y1, z0, z1;
+    f32 h, d, t, a, u, A, t2, q, r, s;
+
+    if (key < (f32)tbl[0]) {
+        return (f32)tbl[1];
+    }
+    p = tbl;
+    n = hdr[0];
+    if (hdr[2] == 0) {
+        if (key >= (f32)p[(n - 1) * 3]) {
+            return (f32)p[(n - 1) * 3 + 1];
+        }
+        while (n > 1) {
+            half = n >> 1;
+            if (key < (f32)p[half * 3]) {
+                n = half;
+            } else {
+                p += half * 3;
+                n -= half;
+            }
+        }
+        x0 = __psq_l(p, 0, 1, 5);
+        x1 = __psq_l(p, 6, 1, 5);
+        y0 = __psq_l(p, 2, 1, 5);
+        h = x1 - x0;
+        y1 = __psq_l(p, 8, 1, 5);
+        d = key - x0;
+        z1 = __psq_l(p, 0xa, 1, 5);
+        a = y1 - y0;
+        t = d / h;
+        z0 = __psq_l(p, 4, 1, 5);
+        u = z1 * h + y0;
+        A = a - h * z0;
+        t2 = t * t;
+        q = u - y1;
+        q = q - A;
+        r = t2 * q;
+        s = h * z0 + r;
+        s = s * t + y0;
+        s = A * t2 + s;
+        return s - r;
+    } else {
+        if (key >= (f32)p[(n - 1) * 4]) {
+            return (f32)p[(n - 1) * 4 + 1];
+        }
+        while (n > 1) {
+            half = n >> 1;
+            if (key < (f32)p[half * 4]) {
+                n = half;
+            } else {
+                p += half * 4;
+                n -= half;
+            }
+        }
+        x0 = __psq_l(p, 0, 1, 5);
+        x1 = __psq_l(p, 8, 1, 5);
+        y0 = __psq_l(p, 2, 1, 5);
+        h = x1 - x0;
+        y1 = __psq_l(p, 0xa, 1, 5);
+        d = key - x0;
+        z1 = __psq_l(p, 0xc, 1, 5);
+        a = y1 - y0;
+        t = d / h;
+        z0 = __psq_l(p, 6, 1, 5);
+        u = z1 * h + y0;
+        A = a - h * z0;
+        t2 = t * t;
+        q = u - y1;
+        q = q - A;
+        r = t2 * q;
+        s = h * z0 + r;
+        s = s * t + y0;
+        s = A * t2 + s;
+        return s - r;
     }
 }
 
