@@ -49,6 +49,53 @@ extern "C" void fn_802B8420(char* this_) {
     fn_801F0E34(this_, 0x40041, 0);
 }
 
+extern "C" char lbl_8046CB70[];
+extern "C" s32 lbl_8046CB60[];
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, void* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_802B848C(char* this_) {
+    if (*(s32*)(this_ + 0x230) != 0) {
+        u8 rec[0x3c];
+        *(s32*)(rec + 0x10) = -1;
+        *(s32*)(rec + 0x14) = -1;
+        for (s32 i = 0; (u8)i < 0x10; i += 8) {
+            rec[(u8)i] = i;
+            rec[(u8)(i + 1)] = i + 1;
+            rec[(u8)(i + 2)] = i + 2;
+            rec[(u8)(i + 3)] = i + 3;
+            rec[(u8)(i + 4)] = i + 4;
+            rec[(u8)(i + 5)] = i + 5;
+            rec[(u8)(i + 6)] = i + 6;
+            rec[(u8)(i + 7)] = i + 7;
+        }
+        *(s32*)(rec + 0x10) = -1;
+        rec[0x1c] = 0;
+        rec[0x1d] = 0;
+        *(s32*)(rec + 0x14) = 0;
+        *(s32*)(rec + 0x18) = 0;
+        rec[0x1e] = 0;
+        rec[0x1f] = 1;
+        rec[0x20] = 1;
+        rec[0x21] = 0;
+        rec[0x22] = 0;
+        rec[0x23] = 0;
+        rec[0x24] = 0;
+        rec[0x25] = 0;
+        rec[0x26] = 1;
+        *(s32*)(rec + 0x28) = 3;
+        rec[0x2c] = 1;
+        rec[0x2d] = 0;
+        rec[0x2e] = 0;
+        *(s32*)(rec + 0x30) = -1;
+        *(s32*)(rec + 0x34) = 0;
+        *(s32*)(rec + 0x38) = 2;
+        rec[0x1c] = 1;
+        rec[0x1d] = 1;
+        rec[0x13] = *(s32*)(this_ + 0x270);
+        *(s32*)(rec + 0x30) = 8;
+        fn_801F06F0(this_, lbl_8046CB70, lbl_8046CB60[*(s32*)(this_ + 0x24c)] + 0x466, rec, 7, lbl_80540ACC, lbl_80540ACC);
+    }
+}
+
 extern "C" void fn_802B8C44(u8* this_) {
     f32 f1 = lbl_80540ADC;
     f32 f0 = lbl_80540AE0;
