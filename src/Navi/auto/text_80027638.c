@@ -61,11 +61,12 @@ extern "C" int fn_8002F0A8(int param_1) {
 
 extern "C" int fn_8002F100(int param_1, int param_2) {
     extern void* lbl_80225C94[];
+    extern float lbl_802FFD10;
     void* obj = *(void**)(lbl_802BB0FC + 0xf0);
-    if (obj == 0) {
-        return -1;
+    if (obj != 0) {
+        return fn_8002E0AC(obj, 4, (int)lbl_80225C94[param_1], param_2, 0, 0, 1, lbl_802FFD10);
     }
-    return fn_8002E0AC(obj, 4, (int)lbl_80225C94[param_1], param_2, 0, 0, 1, 0.0f);
+    return -1;
 }
 
 extern "C" int fn_8002F168(void) {
