@@ -65,6 +65,12 @@ extern "C" void fn_8000E0F0(void* self, void* arg, f32 value) {
     fn_801B033C(arg, *(void**)((u8*)self + 8));
 }
 
+extern "C" void fn_801B05E0(void*, void*);
+extern "C" void fn_8000E414(void* self, void* arg, f32 value) {
+    *(f32*)(*(u8**)((u8*)self + 8) + 8) = value;
+    fn_801B05E0(arg, *(void**)((u8*)self + 8));
+}
+
 extern "C" void fn_8000EAE0(void* ptr, u32 value) {
     *(u32*)((char*)ptr + 4) = value;
 }
