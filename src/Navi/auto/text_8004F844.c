@@ -42,6 +42,9 @@ extern "C" void fn_8005556C(void* self, void* p) {
     fn_80021DDC(p);
 }
 
+extern "C" void fn_80055950(const char*, ...) {
+}
+
 extern "C" void fn_80055C08(void) {}
 
 extern int lbl_802FF0E8;
