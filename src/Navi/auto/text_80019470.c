@@ -1294,6 +1294,15 @@ extern "C" void fn_8001EA98(void* param_1, bool (*param_2)(void)) {
     fn_80114C5C(param_1, (void*)param_2, 0);
 }
 
+extern "C" int fn_8001EABC(void* p) {
+    struct Obj {
+        u8 pad[0x14];
+        int (*func)(u32);
+        u32 arg;
+    };
+    return ((Obj*)p)->func(((Obj*)p)->arg);
+}
+
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_8001EAE8(void* param_1, void* param_2) {
     cTg_Addition__FP15node_list_classP16create_tag_class(param_1, param_2);
