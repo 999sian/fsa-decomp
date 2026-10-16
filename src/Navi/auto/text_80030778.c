@@ -148,6 +148,19 @@ extern "C" void fn_80033448(void* p) {
     fn_800300C0(0x18, lbl_802FFD48, lbl_80244A88[*(unsigned char*)((char*)p + 0xef)], 0x2000, 0);
 }
 
+extern "C" void fn_800334C8(void* p) {
+    *(unsigned int*)((char*)p + 0xe8) |= 0x100000;
+    *(unsigned int*)((char*)p + 0xe8) &= 0xf7ffffff;
+    *(unsigned int*)((char*)p + 0xe8) |= 0x20000000;
+    fn_8002A3CC(p, (char*)p + 0xf0, 0x45, 1);
+    fn_8002A3CC(p, (char*)p + 0xfc, 0x46, 1);
+    if (!lbl_802FEE44) {
+        lbl_802FEE44 = 1;
+        lbl_802FEE43 |= 4;
+        lbl_802FEE30 |= 0x8000;
+    }
+}
+
 extern "C" void fn_800335B4(void* p) {
     *(unsigned int*)((char*)p + 0xe8) |= 0x20000000;
 }
