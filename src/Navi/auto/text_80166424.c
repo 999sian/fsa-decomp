@@ -831,6 +831,23 @@ extern "C" int fn_80170018(u8* p, void* src)
     return 1;
 }
 
+extern "C" int fn_801700CC(u8* p, void* obj)
+{
+    DtorVObj_80166424* old;
+    if (obj == 0) {
+        return 0;
+    }
+    if (p[0x121]) {
+        old = *(DtorVObj_80166424**)(p + 0x11c);
+        if (old != 0) {
+            old->Destroy(1);
+        }
+    }
+    *(void**)(p + 0x11c) = obj;
+    p[0x121] = 0;
+    return 1;
+}
+
 #pragma pop
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
