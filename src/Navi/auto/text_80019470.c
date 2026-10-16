@@ -70,10 +70,9 @@ extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void
 extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
     f32 x = s->x;
     f32 y = s->y;
-    f32 z;
     d[0] = x;
+    f32 z = s->z;
     d[1] = y;
-    z = s->z;
     d[2] = z;
     d[3] = w;
 }
@@ -1033,6 +1032,12 @@ extern "C" s32 fn_8001E958(void* param_1, s32 param_2) {
         return 1;
     }
     return 0;
+}
+
+extern "C" void fn_8001E9B0(void*);
+extern "C" void fn_8001E9B0(void* param_1) {
+    cTg_SingleCutFromTree((create_tag_class*)param_1);
+    ((s32*)param_1)[5] = -1;
 }
 
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
