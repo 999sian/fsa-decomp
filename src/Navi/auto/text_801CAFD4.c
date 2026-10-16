@@ -335,6 +335,17 @@ extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
 }
 
+extern "C" void fn_801D9BF8(u8* a, u8* b, u8* c, u8* d, u8* e)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0xc) = *(u16*)__cpReg;
+	*a = *(u32*)(gx + 0xc) & 1;
+	*b = (*(u32*)(gx + 0xc) >> 1) & 1;
+	*c = (*(u32*)(gx + 0xc) >> 2) & 1;
+	*d = (*(u32*)(gx + 0xc) >> 3) & 1;
+	*e = (*(u32*)(gx + 0xc) >> 4) & 1;
+}
+
 extern "C" void __GXFifoInit(void) {
     extern void fn_801D9640(void);
     extern void* fn_801C027C(void);
@@ -367,14 +378,16 @@ extern "C" void fn_801D9CFC(void)
 
 extern "C" void fn_801D9D20(u8 enable)
 {
-	u32 v;
+	u8 v;
+	u8* gx;
 	if (enable) {
 		v = 1;
 	} else {
 		v = 0;
 	}
-	*(u32*)(__GXData + 0x8) = __rlwimi(*(u32*)(__GXData + 0x8), v, 4, 27, 27);
-	__cpReg[1] = *(u32*)(__GXData + 0x8);
+	gx = __GXData;
+	*(u32*)(gx + 0x8) = __rlwimi(*(u32*)(gx + 0x8), v, 4, 27, 27);
+	__cpReg[1] = *(u32*)(gx + 0x8);
 }
 
 extern "C" void fn_801D9D54(u32 a, u8 b)
@@ -420,6 +433,17 @@ extern "C" void* fn_801D9F08(void)
 extern "C" void* fn_801D9F10(void)
 {
 	return lbl_802FFA4C;
+}
+
+extern "C" void fn_801DA364(void)
+{
+	register u8* gx = __GXData;
+	*(u32*)(gx + 0x14) = __rlwimi(*(u32*)(gx + 0x14), 1, 9, 21, 22);
+	*(u32*)(gx + 0x14) = 0;
+	*(u32*)(gx + 0x18) = 0;
+	*(u8*)(gx + 0x4d4) = 0;
+	*(u8*)(gx + 0x4d5) = 0;
+	*(u32*)(gx + (unsigned)0x5ac) |= 8;
 }
 
 extern "C" uint fn_801DD3D8(uint *param_1)
