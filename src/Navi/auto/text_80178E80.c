@@ -1,5 +1,6 @@
 #include "types.h"
 extern "C" void fn_801788C0(void);
+extern "C" void fn_80177F0C(void);
 
 
 
@@ -11,11 +12,18 @@ extern void* lbl_802FF6A0;
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" int fn_801792B4(void* param_1, int param_2) {
     u32 buf[8];
+    int result;
     fn_801670D0(param_2, buf, 0x20);
-    if (buf[0] == 0x5343524e && (buf[1] == 0x626c6f31 || buf[1] == 0x626c6f32)) {
-        return 1;
+    if (buf[0] == 0x5343524e) {
+        if (buf[1] == 0x626c6f31 || buf[1] == 0x626c6f32) {
+            result = 1;
+        } else {
+            result = 0;
+        }
+    } else {
+        result = 0;
     }
-    return 0;
+    return result;
 }
 
 extern "C" void fn_8017A468(void) {
