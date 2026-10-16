@@ -79,6 +79,24 @@ extern "C" void fn_8015949C(int attr, u32 base, u8 stride)
     *(volatile u32*)0xCC008000 = stride;
 }
 
+extern "C" void fn_80159750(float* m, int id) {
+    volatile unsigned char* fifo = (volatile unsigned char*)0xCC008000;
+    float f;
+    *(volatile unsigned char*)0xCC008000 = 0x10;
+    *(volatile unsigned short*)0xCC008000 = 8;
+    *(volatile unsigned short*)0xCC008000 = id * 3 + 0x400;
+    f = m[0]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&f;
+    { float g = m[1]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    { float g = m[2]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    { float g = m[4]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    { float g = m[5]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    { float g = m[6]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    { float g = m[8]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    { float g = m[9]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    { float g = m[10]; *(volatile unsigned int*)0xCC008000 = *(unsigned int*)&g; }
+    (void)fifo;
+}
+
 #pragma dont_inline on
 extern "C" void fn_8015980C(u32 a0, u32 a1, u32 a2, u32 a3, u32 a4, u32 b0, u32 b1, u32 b2, u32 b3) {
     u32 regA;
