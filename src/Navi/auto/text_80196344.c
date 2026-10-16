@@ -736,6 +736,8 @@ extern "C" BOOL fn_801A45B0(void)
     return TRUE;
 }
 
+extern "C" void fn_801A4644(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x18))[p2] = *p3; }
+
 extern "C" u8* fn_801A466C(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
