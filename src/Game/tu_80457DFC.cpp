@@ -12,7 +12,7 @@
 struct Unk804580DCTrack {
     virtual void v0();
     virtual void v1();
-    virtual void v2();
+    virtual Unk804580DCTrack* v2(u32 p);
     virtual void v3();
     virtual Unk804580DCTrack* v4(u32 p);
     char pad4[0x4C - 0x4];
