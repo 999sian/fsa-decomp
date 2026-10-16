@@ -11,6 +11,17 @@ extern const f32 lbl_805407A0;
 extern const f32 lbl_805407A4;
 extern const f32 lbl_805407B4;
 extern const f32 lbl_805407B8;
+extern "C" void* fn_802A40B8(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A7E58;
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_802A4118(u8* this_) {
     fn_801F06F0(this_, lbl_8046C640, 0x31, 0, 1, lbl_805407A0, lbl_805407A0);
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, 0x31, 0, 2, -1, 0, 0, 0);
