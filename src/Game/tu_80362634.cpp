@@ -1,6 +1,7 @@
 
 
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
