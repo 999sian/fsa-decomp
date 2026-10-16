@@ -356,6 +356,10 @@ extern "C" void* fn_80167404(void* ptr, s16 param_2) {
 
 extern "C" int fn_80167554(int p) { return *(int*)(p + 0xc); }
 
+extern "C" int fn_8016755C(int param_1) {
+  return *(int *)(param_1 + 0x10);
+}
+
 extern "C" void* fn_801679DC(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -1601,6 +1605,17 @@ extern "C" int fn_80173FC0(int p, int i)
 		return *(u8*)(*(int*)(p + 0x14) + b);
 	}
 	return 0;
+}
+
+extern u8 lbl_80301AD8;
+extern "C" void fn_80173FF8(u16* out, int p, int i, int j)
+{
+	u16 v = *(u16*)(*(int*)(p + 4) + (*(u16*)(*(int*)(p + 8) + i * 2)) * 0xe8 + 0xc + j * 2);
+	if (v != 0xffff) {
+		*out = *(u8*)(*(int*)(p + 0x18) + (u32)v * 4 + 1);
+		return;
+	}
+	*out = *(u8*)((u8*)&lbl_80301AD8 + 1);
 }
 
 extern "C" int fn_8017404C(int p, int i)
