@@ -3,7 +3,7 @@
 
 extern "C" s32 fn_802C8500(f32 a, f32 b, f32 c) {
     f32 d = a - b;
-    if (-c <= d && d <= c) {
+    if (d >= -c && d <= c) {
         return 1;
     }
     return 0;
