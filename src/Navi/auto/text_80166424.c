@@ -89,12 +89,11 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
 }
 
 extern "C" s32 fn_801671B0(void* param_1, u32 param_2) {
-    void** vtbl = *(void***)param_1;
-    u32 size = ((u32(*)(void*))vtbl[7])(param_1);
-    u32 aligned = (param_2 + size - 1) & ~(param_2 - 1);
+    u32 size = ((u32(*)(void*))(*(void***)param_1)[7])(param_1);
+    u32 aligned = (size + param_2 - 1) & ~(param_2 - 1);
     s32 diff = aligned - size;
     if (diff != 0) {
-        if (((s32(*)(void*, u32, u32))vtbl[8])(param_1, aligned, 0) != diff) {
+        if (((s32(*)(void*, u32, u32))(*(void***)param_1)[8])(param_1, aligned, 0) != diff) {
             *((u8*)param_1 + 4) |= 1;
         }
     }
@@ -108,25 +107,24 @@ extern "C" void fn_80167CB8(void) {
 }
 
 extern "C" void* fn_80167CD8(u8* param_1, u32* param_2, u32* param_3) {
-    u32* dst = param_2;
-    u32* src = param_3;
     u32* end = *(u32**)(param_1 + 8);
-    if (src < end) {
-        u32 words = ((u32)end + 3 - (u32)src) >> 2;
+    u32 words = ((u32)end + 3 - (u32)param_3) >> 2;
+    u32* dst = param_2;
+    if (param_3 < end) {
         for (u32 i = words >> 3; i != 0; i--) {
-            dst[0] = src[0];
-            dst[1] = src[1];
-            dst[2] = src[2];
-            dst[3] = src[3];
-            dst[4] = src[4];
-            dst[5] = src[5];
-            dst[6] = src[6];
-            dst[7] = src[7];
-            src += 8;
+            dst[0] = param_3[0];
+            dst[1] = param_3[1];
+            dst[2] = param_3[2];
+            dst[3] = param_3[3];
+            dst[4] = param_3[4];
+            dst[5] = param_3[5];
+            dst[6] = param_3[6];
+            dst[7] = param_3[7];
+            param_3 += 8;
             dst += 8;
         }
         for (u32 i = words & 7; i != 0; i--) {
-            *dst++ = *src++;
+            *dst++ = *param_3++;
         }
     }
     for (u32* p = dst; p != *(u32**)(param_1 + 8); p++) {
@@ -609,6 +607,11 @@ extern "C" void* fn_80174B10(void* base, u32 offset) {
 }
 
 extern "C" void* fn_80174B28(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
+extern "C" void* fn_80174B40(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
