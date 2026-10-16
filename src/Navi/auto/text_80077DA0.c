@@ -25,6 +25,29 @@ extern "C" void fn_80078364(void) {
     fn_80078414();
 }
 
+extern "C" u8 fn_8000D6F4(void* param_1);
+extern "C" BOOL fn_8007A190(void* param_1) {
+    char* p = (char*)param_1;
+    if (p[0x443] == 0) {
+        p[0x443] = p[0x443] + 1;
+    } else if (p[0x443] != -1) {
+        float* sample;
+        p[0x447] = fn_8000D6F4(p + 0x38c);
+        sample = *(float**)(p + 0x390);
+        if (sample[3] < 0.0f) {
+            if (*(float*)(p + 0x40c) < sample[4]) {
+                p[0x447] = 1;
+            }
+        } else if (sample[3] > 0.0f) {
+            if (*(float*)(p + 0x40c) > sample[4]) {
+                p[0x447] = 1;
+            }
+        }
+        *(float*)(p + 0x40c) = (*(float**)(p + 0x390))[4];
+    }
+    return TRUE;
+}
+
 extern "C" void fn_80078384(void);
 extern "C" void fn_8007BB2C(void) {
     fn_80078384();
