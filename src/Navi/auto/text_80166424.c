@@ -84,6 +84,26 @@ extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     return param_1;
 }
 
+#pragma use_lmw_stmw off
+extern "C" s32 fn_80166680(u32 a, u32 b, u32 c, u32 d)
+{
+    u8 buf[0x8];
+    u8* p = (u8*)fn_8015A9A8(0x4c, lbl_802FF540, -4);
+    if (p != nullptr) {
+        p = (u8*)fn_80166ACC(p);
+    }
+    *(u32*)(p + 0x4) = a;
+    *(u32*)(p + 0x8) = b;
+    *(u32*)(p + 0xc) = c;
+    *(u32*)(p + 0x10) = d;
+    *(u32*)(p + 0x14) = 0;
+    fn_801BDE1C(lbl_802982A0, p, 1);
+    fn_801BDEE4(p + 0x28, buf, 1);
+    fn_80166B1C(p, 1);
+    return 1;
+}
+#pragma use_lmw_stmw reset
+
 extern "C" u8* fn_80166ACC(u8* p)
 {
     fn_801BDDBC(p + 0x28, p + 0x48, 1);
