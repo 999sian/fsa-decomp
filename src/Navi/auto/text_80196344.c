@@ -498,6 +498,10 @@ extern "C" void fn_801A3C00(void* ptr, u32 value) {
 extern "C" void fn_801A3C08(void) {
 }
 
+extern "C" s32 fn_801A3CAC(void) {
+    return 0x54564234;
+}
+
 extern "C" void fn_801A3CB8(u8* p, s32 i, u16 v) {
     ((u16*)(p + 8))[i] = v;
 }
@@ -545,16 +549,16 @@ extern "C" u8 fn_801A3E64(u8* p) {
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
     u8* d = p + (i << 3);
     u8 a = src[1];
-    u8 b = src[2];
     d[0x22] = a;
-    u8 c = src[3];
+    u8 b = src[2];
     d[0x23] = b;
-    b = src[5];
+    u8 c = src[3];
     d[0x24] = c;
-    c = src[6];
+    b = src[5];
     d[0x26] = b;
-    b = src[7];
+    c = src[6];
     d[0x27] = c;
+    b = src[7];
     d[0x28] = b;
 }
 
@@ -582,7 +586,8 @@ extern "C" void fn_801A3F78(int param_1, int param_2, u8* param_3) {
 
 extern "C" void fn_801A3E64_unused_placeholder(void);
 extern "C" void fn_801A3F98(u8* p, s32 i, u32* pv) {
-    *((u32*)(p + (i << 2) + 0x80)) = *pv;
+    u32 v = *pv;
+    ((u32*)p)[i + 0x20] = v;
 }
 
 extern "C" void* fn_801A3FD4(void* p) {
