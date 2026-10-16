@@ -777,7 +777,7 @@ extern "C" void* fn_801392DC(void* ptr, s16 param_2) {
         *(void**)ptr = lbl_80292B94;
         if ((u32)ptr + 4 != 0) {
             if ((u32)ptr + 4 != 0) {
-                fn_80167BB0((void**)ptr + 1, 0);
+                fn_80167BB0((u8*)ptr + 4, 0);
             }
         }
         if (ptr != nullptr) {
@@ -830,6 +830,18 @@ extern "C" void fn_80139714(void* param_1, void* param_2) {
 
 extern "C" void fn_80139780(void* param_1, void* param_2) {
     *(f64*)((char*)param_1 + 0x20) = **(f32**)((char*)param_2 + 8);
+}
+
+extern "C" void fn_80139790(void* param_1, void* param_2) {
+    f32* p = *(f32**)((char*)param_2 + 8);
+    f32 y = p[1];
+    *(f64*)((char*)param_1 + 0x60) = p[0];
+    *(f64*)((char*)param_1 + 0x68) = y;
+}
+
+extern "C" void fn_801397A8(void* param_1, void* param_2) {
+    f32* p = *(f32**)((char*)param_2 + 8);
+    *(f64*)((char*)param_1 + 0x68) = p[0];
 }
 
 extern u8 lbl_80292CD8[];
