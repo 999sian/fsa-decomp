@@ -1,0 +1,10 @@
+#include "Game/Actor.h"
+
+
+extern void* lbl_804A9078[];
+extern const f32 lbl_80540E14;
+extern const f32 lbl_80540E18;
+extern const f32 lbl_80540E1C;
+extern "C" void __dt__5ActorFv(void* this_, int flag);
+extern "C" void __dl__FPv(void* p);
+extern "C" void fn_802CCF10(void) {}
