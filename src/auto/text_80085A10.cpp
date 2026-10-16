@@ -25,8 +25,7 @@ struct VirtualDtorObj {
 extern "C" void fn_80085B5C(char* p) {
     void* heap = *(void**)(*(char**)(p + 0x50) + 0xc);
     if (heap != 0) {
-        void (**vtbl)(char*, s32) = *(void (***)(char*, s32))p;
-        vtbl[2](p, -1);
+        ((VirtualDtorObj*)p)->~VirtualDtorObj();
         free__7JKRHeapFPvP7JKRHeap(p, heap);
     }
 }
