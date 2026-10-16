@@ -20,18 +20,14 @@ extern "C" void fn_8011D5F4(void) {
     fn_8010DF58();
 }
 
+extern char lbl_80539F20;
 extern "C" void fn_8011D77C(int param_1) {
     fn_8010DF98();
-    fn_801D2608((void*)(param_1 + 0x274), (void*)0x80539F20, (s32)1);
+    fn_801D2608((void*)(param_1 + 0x274), &lbl_80539F20, 1);
     fn_801D22DC((void*)(param_1 + 0x274), 0, 2, 0);
-    fn_801D1F14((void*)(param_1 + 0x274));
-    
-    register f32 f1, f0;
-    f1 = 0.5f;
-    f0 = -0.5f;
-    *(f32*)(param_1 + 0x258) = f0;
-    
-    fn_802D6A9C();
+    ((void (*)(void*, f32))fn_801D1F14)((void*)(param_1 + 0x274), 0.0f);
+    *(JGeometry::TVec3f*)(param_1 + 0x240) = *(JGeometry::TVec3f*)(param_1 + 0xc);
+    *(f32*)(param_1 + 0x258) = 284.0f;
     fn_802D7440(fn_802D6A9C(), 0);
 }
 
