@@ -2,6 +2,10 @@
 #include "JSystem/J3D/J3DAnmColor.h"
 #include "JSystem/JUtility/JUTNameTab.h"
 
+template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
+#include "JSystem/J3D/J3DAnmColor.h"
+#include "JSystem/JUtility/JUTNameTab.h"
+
 
 extern void* lbl_8049AE38[];
 extern void* lbl_8049AE24[];
