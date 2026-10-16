@@ -52,6 +52,9 @@ T* JSUConvertOffsetToPtr(const void* ptr, const void* offset)
     return (T*)((s32)ptr + (s32)offset);
 }
 
+extern "C" void* fn_800CBEC0(const void* base, const void* offset);
+extern "C" void* fn_800CBED8(const void* base, const void* offset);
+extern "C" void* fn_800CBEF0(const void* base, const void* offset);
 extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
 extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
 extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
