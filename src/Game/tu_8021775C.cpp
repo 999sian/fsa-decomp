@@ -25,6 +25,8 @@ extern "C" void fn_80217A30(void** p) {
     p[3] = 0;
 }
 
+extern "C" void* fn_8013CC50(u32, void*, u16, s32, f32, s32, s32, s32, s32);
+
 extern "C" void fn_80217A74(void** p)
 {
     fn_801EE434(p[0]);
