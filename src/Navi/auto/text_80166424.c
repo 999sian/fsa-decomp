@@ -192,13 +192,13 @@ extern "C" unsigned char fn_801729AC(int param_1) {
 }
 
 extern "C" void fn_801729B4(u8* p, s32 i, u8* src) {
-    u8* d = p + i * 8;
-    d[0x58] = src[1];
-    d[0x59] = src[2];
-    d[0x5a] = src[3];
-    d[0x5c] = src[5];
-    d[0x5d] = src[6];
-    d[0x5e] = src[7];
+    p += i * 8;
+    p[0x58] = src[1];
+    p[0x59] = src[2];
+    p[0x5a] = src[3];
+    p[0x5c] = src[5];
+    p[0x5d] = src[6];
+    p[0x5e] = src[7];
 }
 
 extern "C" s32 fn_801729F0(s32 p, s32 i) {
@@ -206,9 +206,10 @@ extern "C" s32 fn_801729F0(s32 p, s32 i) {
 }
 
 extern "C" void fn_80172A04(u8* p, s32 i, u8* src) {
-    u8* d = p + i * 8;
-    d[0x5e] = (d[0x5e] & ~0xC) | ((u8)src[1] << 2);
-    d[0x5e] = (d[0x5e] & ~0x3) | src[0];
+    p += i * 8;
+    u8 a = src[0];
+    p[0x5e] = (p[0x5e] & ~0xC) | (src[1] << 2);
+    p[0x5e] = (p[0x5e] & ~0x3) | a;
 }
 
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
@@ -286,16 +287,18 @@ extern "C" void fn_801730DC(u8* p, s32 i, s16* src)
 	s16 v1;
 	s16 v2;
 	s16 v3;
+	s32 off;
 	u8* q;
 
-	q = p + i * 8;
 	v0 = src[0];
-	*(s16*)(q + 0xc) = v0;
+	off = i * 8;
+	q = p + off;
 	v1 = src[1];
-	*(s16*)(q + 0xe) = v1;
+	*(s16*)(q + 0xc) = v0;
 	v2 = src[2];
-	*(s16*)(q + 0x10) = v2;
+	*(s16*)(q + 0xe) = v1;
 	v3 = src[3];
+	*(s16*)(q + 0x10) = v2;
 	*(s16*)(q + 0x12) = v3;
 }
 
@@ -377,29 +380,6 @@ extern "C" void* fn_80174BB8(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
-typedef void (*VFn_801780D4)(void*, unsigned char);
-typedef unsigned char (*VFn_80177F0C)(void*, void*);
-struct UnkVObj_80177F0C {
-    virtual void vf0();
-    virtual void vf1();
-    virtual void vf2();
-    virtual void vf3();
-    virtual void vf4();
-    virtual void vf5();
-    virtual void vf6(u8);
-    virtual void vf7();
-    virtual void vf8();
-    virtual void vf9();
-    virtual void vf10();
-    virtual void vf11();
-    virtual void vf12();
-    virtual void vf13();
-    virtual void vf14();
-    virtual void vf15();
-    virtual void vf16();
-    virtual void vf17();
-    virtual u8 vf18(void*);
-};
 extern "C" void fn_801780D4(char* self, u8 v)
 {
     char* n;
@@ -409,7 +389,7 @@ extern "C" void fn_801780D4(char* self, u8 v)
         n -= 0xc;
     }
     while (n != 0) {
-        (*(UnkVObj_80177F0C**)(n + 0xc))->vf6(v);
+        (*(UnkVObj_80166424**)(n + 0xc))->vf6(v);
         n = *(char**)(n + 0x18);
         if (n != 0) {
             n -= 0xc;
