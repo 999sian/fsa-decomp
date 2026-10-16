@@ -63,6 +63,16 @@ struct VObj_801398CC {
     virtual void v2(void*);
 };
 
+struct VObj_8013B140 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6(u32*);
+};
+
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 
@@ -910,6 +920,13 @@ extern "C" void fn_801397A8(void* param_1, void* param_2) {
 
 extern "C" void fn_801397C8(void* param_1, void* param_2) {
     fn_8013785C((u8*)param_1 + 0x18, (s32)(*(s32**)((u8*)param_2 + 8) + 1), **(s32**)((u8*)param_2 + 8));
+}
+
+extern "C" void fn_801397F8(void* param_1, void* param_2) {
+    u32* p = *(u32**)((u8*)param_2 + 8);
+    u32 v = *p;
+    u8* q = (u8*)param_1 + 0x18;
+    fn_80138368(q, (u32)(p + 1), v & 0xfffffff, v >> 0x1c);
 }
 
 extern u8 lbl_80292CD8[];
