@@ -76,10 +76,10 @@ void fn_80290D58(char* p) {
     if (!(u8)fn_80241E28(p, S32(p, 0xce0), &VEC(p, 0xcc8))) {
         VEC(p, 0xcbc) = VEC(p, 0x8);
         VEC(p, 0xd1c) = VEC(p, 0xcbc);
-        if (S32(p, 0xcf4) == 0x14 && S32(p, 0x3b4) >= 8) {
-            S32(p, 0xbd8) = 0x258;
-            U8(p, 0xbdc) = 1;
-        }
+    }
+    if (S32(p, 0xcf4) == 0x14 && S32(p, 0x3b4) >= 8) {
+        S32(p, 0xbd8) = 0x258;
+        U8(p, 0xbdc) = 1;
     }
     if ((u8)fn_80240D64(p)) {
         S32(p, 0x11f0) = 5;
@@ -296,6 +296,43 @@ void fn_802922D0(char* p) {
     U8(p, 0x3f9) = 0;
 }
 
+void fn_802922EC(char* p) {
+  U8(p, 0x3f8) = U8(p, 0x3f8) + 1;
+  if (U8(p, 0x3f8) < 0x7) {
+    U8(p, 0x3f9) = 4;
+  } else if (U8(p, 0x3f8) < 0xd) {
+    U8(p, 0x3f9) = 5;
+  } else if (U8(p, 0x3f8) < 0x13) {
+    U8(p, 0x3f9) = 6;
+  } else if (U8(p, 0x3f8) < 0x22) {
+    U8(p, 0x3f9) = 7;
+  } else if (U8(p, 0x3f8) < 0x28) {
+    U8(p, 0x3f9) = 4;
+  } else if (U8(p, 0x3f8) < 0x2e) {
+    U8(p, 0x3f9) = 5;
+  } else if (U8(p, 0x3f8) < 0x34) {
+    U8(p, 0x3f9) = 6;
+  } else if (U8(p, 0x3f8) < 0x43) {
+    U8(p, 0x3f9) = 7;
+  }
+  if (U8(p, 0x3f8) < 0x43) {
+    F32(p, 0xc) = F32(p, 0xc) - lbl_80540630;
+  } else {
+    U8(p, 0x124d) = 0;
+    if (fn_80251AEC(p, 0x29)) {
+      fn_80241454(p, 0);
+      if (S32(p, 0x3b4) < 8) {
+        VEC(p, 0xcb0) = VEC(p, 0x8);
+        F32(p, 0xcb8) = F32(p, 0x10);
+        S32(p, 0x3b4) = S32(p, 0xce4);
+        VEC(p, 0x8) = VEC(p, 0xcd4);
+        F32(p, 0x10) = F32(p, 0xcdc);
+      }
+      fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
+    }
+  }
+}
+
 void fn_80292454(char* p) {
     U8(p, 0x124d) = 1;
     U8(p, 0x458) = 0;
@@ -494,9 +531,9 @@ void fn_80293E8C(char* p) {
     fn_8024F0E8(p, 0x2002d);
     s32 cur = S32(p, 0x3b4);
     if (cur > 8 && S32(p, 0xce4) > 8) {
-        if (U8((char*)fn_802D6A9C() + 0x10000, cur + 0x31df) != 0) {
+        if (((char*)fn_802D6A9C() + 0x10000)[cur + 0x31df] != 0) {
             s32 other = S32(p, 0xce4);
-            if (U8((char*)fn_802D6A9C() + 0x10000, other + 0x31df) != 0 && S32(p, 0xce4) != S32(p, 0x3b4)) {
+            if (((char*)fn_802D6A9C() + 0x10000)[other + 0x31df] != 0 && S32(p, 0xce4) != S32(p, 0x3b4)) {
                 U8(p, 0x3fc) = 0x3a;
             }
         }
@@ -592,7 +629,7 @@ void fn_802953A0(char* p) {
     if (U8(p, 0x3fc) < 0x3c) {
         return;
     }
-    F32(p, 0x34c) -= lbl_8054060C;
+    F32(p, 0x34c) = F32(p, 0x34c) - lbl_8054060C;
     if (F32(p, 0x34c) < lbl_80540618) {
         F32(p, 0x34c) = lbl_80540618;
     }
