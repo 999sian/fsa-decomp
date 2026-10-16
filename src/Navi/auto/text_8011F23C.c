@@ -178,6 +178,17 @@ extern "C" s32 fn_80125010(s32 param_1, s32* param_2) {
     return *(s32*)(r31 + 0x40);
 }
 
+extern "C" s32 fn_8013F008(s32 a, void* b);
+extern "C" s32 fn_801401F4(s32 a, s32 b, void* c);
+extern "C" void fn_8012F6F8(void* a, s32 b, void* c);
+extern "C" s32 fn_80125098(s32 param_1, s32* param_2) {
+    u8* r31 = *(u8**)param_2;
+    s32 r3 = fn_8013F008(*(s32*)(r31 + 0x28), r31 + 0x44);
+    *(s32*)(r31 + 0x40) = r3;
+    r31[0x3C] = 1;
+    return *(s32*)(r31 + 0x40);
+}
+
 extern "C" void fn_80127DD4(void* param_1, u8* self) {
     f32 mtx[3][4];
     fn_80132450(*(s16*)(*(u8**)self + 0x4c) * 0xb6, *(s16*)(*(u8**)self + 0x4e) * 0xb6, *(s16*)(*(u8**)self + 0x50) * 0xb6, mtx);
