@@ -161,6 +161,10 @@ extern "C" void** fn_800CBDFC(void** param_1, short param_2) {
     return param_1;
 }
 
+extern "C" u32 fn_800CBE58(void) {
+    return 0x434c4e4c;
+}
+
 extern "C" void* fn_800CBEC0(const void* base, const void* offset) {
     if (offset == 0) {
         return 0;
