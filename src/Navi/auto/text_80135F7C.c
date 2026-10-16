@@ -222,6 +222,27 @@ extern "C" f64 fn_80137644(void* param_1, f64* param_2) {
     return 0.0;
 }
 
+extern "C" void fn_801377A0(void* param_1) {
+    *(void**)((u8*)param_1 + 0x0) = lbl_80292BB4;
+    *(f64*)((u8*)param_1 + 0x8) = *(f32*)&lbl_802FEAB0;
+    *(f64*)((u8*)param_1 + 0x10) = *(f64*)((u8*)param_1 + 0x8);
+    *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
+    *(u8*)((u8*)param_1 + 0x20) = 0;
+    *(u8*)((u8*)param_1 + 0x21) = 0;
+    *(f64*)((u8*)param_1 + 0x28) = *(f64*)((u8*)param_1 + 0x8);
+    *(f64*)((u8*)param_1 + 0x30) = *(f64*)((u8*)param_1 + 0x8);
+    *(s32*)((u8*)param_1 + 0x38) = 0;
+    *(s32*)((u8*)param_1 + 0x3c) = 0;
+    *(s32*)((u8*)param_1 + 0x40) = 0;
+    *(void**)((u8*)param_1 + 0x0) = lbl_80292A08;
+    *(s32*)((u8*)param_1 + 0x44) = 0;
+    *(s32*)((u8*)param_1 + 0x48) = 0;
+    *(s32*)((u8*)param_1 + 0x4c) = 0;
+    *(s32*)((u8*)param_1 + 0x50) = *(s32*)((u8*)param_1 + 0x4c);
+    *(s32*)((u8*)param_1 + 0x54) = *(s32*)((u8*)param_1 + 0x4c);
+    *(s32*)((u8*)param_1 + 0x58) = 0;
+}
+
 extern "C" int fn_80137824(void) {
     return 5;
 }
@@ -235,7 +256,7 @@ extern "C" void fn_8013785C(void* param_1, s32 param_2, s32 param_3) {
 }
 
 extern "C" void fn_8013788C(void* param_1) {
-    *(f64*)((u8*)param_1 + 0x8) = lbl_802FEAB0;
+    *(f64*)((u8*)param_1 + 0x8) = *(f32*)&lbl_802FEAB0;
     *(f64*)((u8*)param_1 + 0x10) = *(f64*)((u8*)param_1 + 0x8);
     *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
     *(u8*)((u8*)param_1 + 0x20) = 0;
@@ -290,20 +311,18 @@ extern "C" void fn_80138368(void* param_1, u32 param_2, u32 param_3, u32 param_4
     *(u32*)((u8*)param_1 + 0x60) = *(u32*)((u8*)param_1 + 0x50);
 }
 
-extern f32 lbl_802FEAB0;
 extern "C" void fn_801383B8(void* param_1) {
-    *(f64*)((u8*)param_1 + 0x8) = lbl_802FEAB0;
+    *(f64*)((u8*)param_1 + 0x8) = *(f32*)&lbl_802FEAB0;
     *(f64*)((u8*)param_1 + 0x10) = *(f64*)((u8*)param_1 + 0x8);
     *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
     *(u8*)((u8*)param_1 + 0x20) = 0;
     *(u8*)((u8*)param_1 + 0x21) = 0;
-    u32 v0 = 0;
-    *(u32*)((u8*)param_1 + 0x38) = v0;
-    *(u32*)((u8*)param_1 + 0x3c) = v0;
-    *(u32*)((u8*)param_1 + 0x40) = v0;
-    *(u32*)((u8*)param_1 + 0x44) = v0;
-    *(u32*)((u8*)param_1 + 0x48) = v0;
-    *(u32*)((u8*)param_1 + 0x4c) = v0;
+    *(u32*)((u8*)param_1 + 0x38) = 0;
+    *(u32*)((u8*)param_1 + 0x3c) = 0;
+    *(u32*)((u8*)param_1 + 0x40) = 0;
+    *(u32*)((u8*)param_1 + 0x44) = 0;
+    *(u32*)((u8*)param_1 + 0x48) = 0;
+    *(u32*)((u8*)param_1 + 0x4c) = 0;
     *(u32*)((u8*)param_1 + 0x50) = *(u32*)((u8*)param_1 + 0x48);
     *(u32*)((u8*)param_1 + 0x54) = *(u32*)((u8*)param_1 + 0x4c);
     *(u32*)((u8*)param_1 + 0x58) = *(u32*)((u8*)param_1 + 0x50);
