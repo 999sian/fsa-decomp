@@ -129,6 +129,23 @@ extern "C" void fn_801204E4(void) {
     lbl_802FF334 = 0;
 }
 
+extern "C" void fn_801CC840(void*);
+extern "C" void fn_801CC710(void);
+extern u8* lbl_802FF340;
+extern "C" void fn_801204F0(void) {
+    u8* p = lbl_802FF340;
+    if (p != NULL) {
+        lbl_802FF334 = 0;
+        if (*(s32*)(p + 0x10) == 1 && *(s32*)(p + 0x1c) == 1) {
+            *(s32*)(p + 0x1c) = 0;
+            if ((*(s16*)(p + 0x16) >= 0 ? ((void**)p)[*(s16*)(p + 0x16)] : NULL) != NULL) {
+                fn_801CC840(*(s16*)(p + 0x16) >= 0 ? ((void**)p)[*(s16*)(p + 0x16)] : NULL);
+                fn_801CC710();
+            }
+        }
+    }
+}
+
 extern "C" void fn_8012063C(void)
 {
 }
