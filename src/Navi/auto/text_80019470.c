@@ -462,7 +462,7 @@ extern "C" s32 fn_8001BF5C(void* self, void* p) {
 }
 
 extern "C" void* fn_8001BFF8(void) {
-    return lbl_802056AC;
+    return lbl_802056AC[0];
 }
 
 extern "C" void fn_80115178(void*, void*, void*);
