@@ -20,7 +20,7 @@ static void (*lbl_802FF8C4)(DVDCommandBlock*);
 static u8* IDShouldBe_802FF884;
 extern char lbl_802F7AC0[];
 extern char BB2_802F7AA0[];
-extern "C" void fn_801C76C8(u8 a, s32 b, void* cb);
+extern "C" BOOL fn_801C76C8(s32 a, u32 b, void* cb);
 extern "C" void fn_801C8E54(void);
 extern "C" void fn_801C8D70(void);
 extern "C" void fn_801C6FF4(void* a, s32 b, s32 c, void* cb);
@@ -80,6 +80,38 @@ extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
     v = a;
 }
 
+extern "C" DVDLowCallback fn_801C7834(void)
+{
+	DVDLowCallback callback;
+	((vu32*)0xCC006000)[1] = 0;
+	callback = Callback_802FF820;
+	WaitingCoverClose_802FF834 = FALSE;
+	Callback_802FF820 = NULL;
+	return callback;
+}
+
+extern "C" void __DVDLowSetWAType(u32 type, u32 location)
+{
+	BOOL enabled;
+	enabled = OSDisableInterrupts();
+	WorkAroundType_802FF83C = type;
+	WorkAroundSeekLocation_802FF840 = location;
+	OSRestoreInterrupts(enabled);
+}
+
+extern char lbl_802F7A60[];
+extern char AlarmForTimeout_802F7A38[];
+extern "C" BOOL fn_801C7894(u32 param_1)
+{
+	if (param_1 == (u32)lbl_802F7A60) {
+		return TRUE;
+	}
+	if (param_1 == (u32)AlarmForTimeout_802F7A38) {
+		return TRUE;
+	}
+	return FALSE;
+}
+
 extern "C" BOOL fn_801C7BF8(s32 entryNum, DVDFileInfo* fileInfo)
 {
 	if (entryNum >= 0 && (u32)entryNum < (u32)MaxEntryNum_802FF86C) {
@@ -131,6 +163,11 @@ extern "C" void fn_801C803C(s32 result, DVDFileInfo* fileInfo)
 extern "C" void fn_801C8184(void)
 {
 	fn_801C13D0(&__DVDThreadQueue);
+}
+
+extern "C" void fn_801C8478(void)
+{
+	fn_801C747C(fn_801C8554);
 }
 
 extern "C" void fn_801C87E8(u32 param_1)
