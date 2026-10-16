@@ -3,6 +3,9 @@
 #include "types.h"
 
 extern "C" void fn_8015AB1C(void* p);
+extern "C" s32 fn_80166A54(void);
+extern "C" void fn_801667B4(void* a, u32 b, u32 c, u32 d);
+extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d);
 
 typedef void VFn_80169B1C(u32*, int);
 struct UnkVObj_80166424 {
