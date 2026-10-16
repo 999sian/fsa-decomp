@@ -59,7 +59,7 @@ extern const f32 lbl_80543868;
 extern "C" s32 fn_8022F340(u32 player);
 
 extern "C" void fn_804023D0(PaneState* state, J2DPane* pane, u8 alpha) {
-    pane->setAlpha((u8)(s32)((f32)alpha * ((f32)state->pane->mAlpha / (f32)state->alpha)));
+    pane->setAlpha((f32)alpha * ((f32)state->pane->mAlpha / (f32)state->alpha));
 }
 
 extern "C" s32 fn_80402628(PaneState* state, s16 duration, u8 startAlpha, u8 endAlpha) {
