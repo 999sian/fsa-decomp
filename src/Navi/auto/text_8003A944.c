@@ -95,9 +95,9 @@ extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
 
 extern "C" void fn_8003CC68(void) {}
 
-extern "C" void fn_8003CC6C(void* param_1) {
-    fn_80047B58(lbl_802EE470, (char*)param_1 + 0x10);
-    fn_80047144(lbl_802EE470, (char*)param_1 + 0x10);
+extern "C" void fn_8003CC6C(int param_1) {
+    fn_80047B58(lbl_802EE470, (void*)(param_1 + 0x10));
+    fn_80047144(lbl_802EE470, (void*)(param_1 + 0x10));
 }
 
 extern "C" void* fn_8003CCB4(void* ptr, s16 param_2) {
