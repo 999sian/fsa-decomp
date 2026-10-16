@@ -13,3 +13,12 @@ extern "C" void fn_80443D5C(u8* p) {
         p[0x4d] = 4;
     }
 }
+
+extern "C" void fn_80444650(void* this_) {
+    char* p = (char*)this_;
+    if (*(u8*)(p + 0x4d) != 4) {
+        fn_8013B490(lbl_8053AB10);
+        ((J2DScreen*)*(void**)(p + 0x4))->draw(lbl_80543D78, lbl_80543D78, (const J2DGrafContext*)((void**)lbl_8053AB10)[4]);
+    }
+}
+
