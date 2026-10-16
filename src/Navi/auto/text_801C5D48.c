@@ -28,6 +28,7 @@ extern "C" void __DVDStoreErrorCode(u32 code);
 extern "C" BOOL DVDLowStopMotor(DVDLowCallback callback);
 extern "C" void fn_801C747C(void (*callback)(u32));
 extern "C" void fn_801C88E8(void);
+extern "C" void fn_801C8850(u32 param_1);
 
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 {
@@ -102,6 +103,25 @@ extern "C" void fn_801C803C(s32 result, DVDFileInfo* fileInfo)
 extern "C" void fn_801C8184(void)
 {
 	fn_801C13D0(&__DVDThreadQueue);
+}
+
+extern "C" void fn_801C8850(u32 param_1)
+{
+	if (param_1 == 0x10) {
+		executing_802FF880->state = -1;
+		__DVDStoreErrorCode(0x1234568);
+		DVDReset();
+		cbForStateError(0);
+	} else {
+		executing_802FF880->state = -1;
+		if ((param_1 & 2) == 0) {
+			__DVDStoreErrorCode(*(vu32*)0xCC006020);
+			DVDLowStopMotor(cbForStateError);
+		} else {
+			__DVDStoreErrorCode(0x1234567);
+			DVDLowStopMotor(cbForStateError);
+		}
+	}
 }
 
 extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
