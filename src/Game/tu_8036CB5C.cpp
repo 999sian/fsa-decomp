@@ -26,3 +26,15 @@ extern "C" Actor* fn_8036CB5C(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_8036CE58(Actor* this_) {
+    u8* p = (u8*)this_;
+    s32 id = *(s32*)(p + 0x24c) + 0x147;
+    if (*(s32*)(p + 4) < 8) {
+        SobResMgr* mgr = *(SobResMgr**)(lbl_8053AAF8 + 0xa4);
+        void* res = mgr->vf18('SOB ', lbl_80474EAC);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0x24, res, id, 0, lbl_80542CE4, lbl_80542CE4);
+    }
+    fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0x24, *(s32*)(p + 0x24c) + 0x147, 0, 1, -1, 0, 0, 0);
+}
+
