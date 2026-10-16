@@ -105,11 +105,11 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
         self[0] = (u32)lbl_80298644;
         u32* p = (u32*)self[0x1c];
         if (p != NULL) {
-            (*(VFn_80169B1C*)(p[0] + 0xb8))(p, 1);
+            ((void (*)(u32*, int))(*(u32**)p)[0x2e])(p, 1);
         }
         p = (u32*)self[0x1d];
         if (p != NULL) {
-            (*(VFn_80169B1C*)(p[0] + 0x34))(p, 1);
+            ((void (*)(u32*, int))(*(u32**)p)[0x0d])(p, 1);
         }
         fn_8015AB1C((void*)self[0x21]);
         fn_8016B170(self + 10, -1);
@@ -177,6 +177,19 @@ extern "C" s32 fn_8016BC8C(void* self, u32 param_2, void* param_3) {
         return 1;
     }
     return 0;
+}
+
+extern "C" int fn_801719B4(void* param_1, void* param_2) {
+    if (!param_2) {
+        return 0;
+    }
+    if (*(u8*)((u8*)param_1 + 0x1b1) != 0 && *(void**)((u8*)param_1 + 0x1ac) != 0) {
+        register void* obj = *(void**)((u8*)param_1 + 0x1ac);
+        (*(void (**)(void*, int))(*(u32*)obj + 8))(obj, 1);
+    }
+    *(u8*)((u8*)param_1 + (unsigned)0x1b1) = 0;
+    *(void**)((u8*)param_1 + 0x1ac) = param_2;
+    return 1;
 }
 
 extern "C" u32 fn_80172468(void)
@@ -497,6 +510,22 @@ extern "C" void* fn_80178424(u8* self)
     if (it == 0) return 0;
     if (p != 0) p -= 0xc;
     return *(void**)(p + 0xc);
+}
+
+extern "C" void fn_80178B74(void* param_1, void* param_2) {
+    (*(void (**)(void*))(*(u8**)param_1 + 0x8c))(param_1);
+    register u8* it = *(u8**)((u8*)param_1 + 0xdc);
+    if (it != NULL) {
+        it -= 0xc;
+    }
+    while (it != NULL) {
+        void* obj = *(void**)(it + 0xc);
+        (*(void (**)(void*, void*))(*(u8**)obj + 0x88))(obj, param_2);
+        it = *(u8**)(it + 0x18);
+        if (it != NULL) {
+            it -= 0xc;
+        }
+    }
 }
 
 extern "C" void fn_80178DA4(void* param_1)
