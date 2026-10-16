@@ -182,6 +182,12 @@ extern "C" s32 fn_801729F0(s32 p, s32 i) {
     return p + i * 8 + 0x57;
 }
 
+extern "C" void fn_80172A04(u8* p, s32 i, u8* src) {
+    u8* d = p + i * 8;
+    d[0x5e] = (d[0x5e] & ~0xC) | (src[1] << 2);
+    d[0x5e] = (d[0x5e] & ~0x3) | src[0];
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
@@ -355,6 +361,22 @@ extern "C" void fn_801780D4(char* self, unsigned char v)
         n = *(char**)(n + 0x18);
         n = n != 0 ? n - 0xc : 0;
     }
+}
+
+extern "C" void* fn_80178424(char* self)
+{
+    char* l = *(char**)(self + 0xdc);
+    char* n = l;
+    if (l != 0) {
+        n = l - 0xc;
+    }
+    if (n == 0) {
+        return 0;
+    }
+    if (l != 0) {
+        l -= 0xc;
+    }
+    return *(void**)(l + 0xc);
 }
 
 extern "C" void fn_80178DA4(void* param_1)
