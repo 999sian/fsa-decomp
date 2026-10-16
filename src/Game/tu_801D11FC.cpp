@@ -22,7 +22,7 @@ extern "C" u8 fn_801F320C(void* a, s32 x);
 extern "C" u8 fn_801F329C(void* a, s32 x);
 extern "C" u8 fn_801CF888(void* this_, void* a, void* b, s32 c);
 extern "C" void fn_801CD150(const JGeometry::TVec3<f32>* src, JGeometry::TVec3<f32>* dst);
-void fn_8022E114(int index, JGeometry::TVec3<f32>* a0);
+extern "C" void fn_8022E114(int index, JGeometry::TVec3<f32>* a0);
 extern "C" void fn_801D11FC(u8* this_)
 {
     s16 cur;
@@ -46,3 +46,33 @@ extern "C" void fn_801D11FC(u8* this_)
         *(s16*)(this_ + 0x33c) = lo;
     }
 }
+
+extern "C" u8 fn_801D183C(u8* this_, f32 radius) {
+    s32 result = 0;
+    JGeometry::TVec3<f32> v;
+    JGeometry::TVec3<f32> tmp;
+    JGeometry::TVec3<f32> pos;
+
+    if (*(s32*)(this_ + 0x338) >= 0 && *(s32*)(this_ + 0x338) < 4 && fn_801F320C(this_, *(s32*)(this_ + 0x338))) {
+        s32 idx = *(s32*)(this_ + 0x338);
+        fn_8022E114(idx, &pos);
+        if (fn_801F329C(this_, idx)) {
+            fn_801CD150(&pos, &tmp);
+            v.x = tmp.x;
+            v.y = tmp.y;
+            v.z = tmp.z;
+        } else {
+            v.x = pos.x;
+            v.y = pos.y;
+            v.z = pos.z;
+        }
+        if (lbl_8053F028 == radius ||
+            (v.x - *(f32*)(this_ + 0xc)) * (v.x - *(f32*)(this_ + 0xc)) + (v.y - *(f32*)(this_ + 0x10)) * (v.y - *(f32*)(this_ + 0x10)) <= radius * radius) {
+            if (!fn_801CF888(this_, this_ + 0xc, &v, *(s32*)(this_ + 4))) {
+                result = 1;
+            }
+        }
+    }
+    return result;
+}
+
