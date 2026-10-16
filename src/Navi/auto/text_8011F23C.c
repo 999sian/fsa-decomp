@@ -850,8 +850,8 @@ extern "C" int fn_80132978(void* param_1, void* param_2, f32* param_3) {
 extern char lbl_8029138C[];
 extern "C" void fn_8013AB60(void* self);
 extern "C" void fn_80139830(void* self);
-extern "C" void fn_80132B3C(void* self, void* table);
-extern "C" void fn_80132BBC(void* self, void* table);
+extern "C" void fn_80132B3C(void* self, f32 f, void* table);
+extern "C" void fn_80132BBC(void* self, f32 f, void* table);
 extern f32 lbl_803017B8;
 extern char lbl_802914AC[];
 extern char lbl_80201E40[];
