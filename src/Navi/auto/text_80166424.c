@@ -1594,6 +1594,15 @@ extern "C" void fn_80173F24(Rgba4_80166424* dst, u8* src, s32 i, s32 j) {
     *(u32*)dst = *(u32*)&d;
 }
 
+extern "C" int fn_80173FC0(int p, int i)
+{
+	u8 b = *(u8*)(*(int*)(p + 4) + (*(u16*)(*(int*)(p + 8) + i * 2)) * 0xe8 + 2);
+	if (b != 0xff) {
+		return *(u8*)(*(int*)(p + 0x14) + b);
+	}
+	return 0;
+}
+
 extern "C" u16 fn_80174224(u8* s, u32 a, u32 b) {
     u16 row = ((u16*)*(u8**)(s + 8))[a];
     u16* tbl = (u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x38);
