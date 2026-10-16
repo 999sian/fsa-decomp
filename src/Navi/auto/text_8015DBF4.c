@@ -50,10 +50,10 @@ extern u32 lbl_802FF5C0;
 extern u32 lbl_802FF5C4;
 extern u8 lbl_802979C8[];
 extern u8 lbl_802979D8[];
-void fn_801BDDBC(void* a, void* b, s32 c);
-void fn_801BDEE4(void* a, void* b, s32 c);
-void fn_8015F248(s32 a, u32 b, u32 c, u32 d, s32 e);
-void fn_8015F400(s32 a);
+extern "C" void fn_801BDDBC(void* a, void* b, s32 c);
+extern "C" void fn_801BDEE4(void* a, void* b, s32 c);
+extern "C" void fn_8015F248(s32 a, u32 b, u32 c, u32 d, s32 e);
+extern "C" void fn_8015F400(s32 a);
 
 extern "C" void* fn_8015DC9C(void* param_1, void* param_2, void* param_3, void* param_4, s32 param_5) {
     if (lbl_802FF5A0 == 0) {
@@ -83,5 +83,43 @@ extern "C" void* fn_8015DE54(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_8015DEE4(void) {
+    s32* msg;
+    s32 type;
+    s32 data;
+    fn_801BDDBC(&lbl_802979D8, &lbl_802979C8, 4);
+    while (true) {
+        while (true) {
+            fn_801BDEE4(&lbl_802979D8, &msg, 1);
+            type = msg[0];
+            data = msg[1];
+            fn_8015AB1C(msg);
+            if (type == 1) {
+                break;
+            }
+        }
+        fn_8015F400(data);
+    }
+}
+
+extern "C" u32 fn_8015E8FC(void) {
+    u32 tail = lbl_802FF5A8;
+    u32 head = lbl_802FF5A4;
+    u32 left = lbl_802FF5BC;
+    u32 size = tail - head;
+    lbl_802FF5C0 = tail - 0x19;
+    if (left < size) {
+        size = left;
+    }
+    fn_8015F248(1, lbl_802FF5C4 + lbl_802FF5B8, head, (size + 0x1f) & ~0x1f, 0);
+    left = lbl_802FF5BC - size;
+    lbl_802FF5B8 += size;
+    lbl_802FF5BC = left;
+    if (left == 0) {
+        lbl_802FF5C0 = head + size;
+    }
+    return head;
 }
 
