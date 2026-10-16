@@ -1291,6 +1291,10 @@ extern "C" void fn_80172F80(u8* p, s32 i, u8* src) {
     p[i + 0x58] = *src;
 }
 
+extern "C" s32 fn_80172F90(s32 p, s32 i) {
+    return p + i + 0x58;
+}
+
 extern "C" void fn_80172FA0(u8* p, s32 i, u32* src)
 {
 	((u32*)(p + 0x5c))[i] = *src;
