@@ -1467,18 +1467,18 @@ inline s32 countSharing6(char* p) {
                     c++;
                 }
             } else {
-                s32 me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    return c;
-}
-inline s32 getMode6(char* p) {
+                                  me = S32(p, 0x4);
+                  if (me == fn_8022F3DC(i)) {
+                      c++;
+                  }
+              }
+          } else if (i == S32(p, 0xd60)) {
+              c++;
+          }
+      }
+      return c;
+  }
+  inline s32 getMode6(char* p) {
     if (countSharing6(p) <= 1) {
         return 5;
     }
