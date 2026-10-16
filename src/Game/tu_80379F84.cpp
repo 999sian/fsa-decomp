@@ -13,6 +13,24 @@ extern "C" void fn_803D87C0(void* p);
 extern "C" void fn_803A97A0(void* p);
 extern "C" void fn_803B7E64(void* p);
 extern "C" void fn_803D8670(void* p);
+extern "C" void* fn_8037AA7C(void);
+extern "C" void fn_803A8F5C(void* p);
+extern "C" void fn_803B31AC(void* p);
+extern "C" void fn_803B7DCC(void* p);
+extern "C" void fn_803D8364(void);
+extern "C" void fn_803D82EC(void* p);
+extern void* lbl_8053AAF8;
+extern "C" BOOL fn_80379F84(void* this_) {
+    if (*((u8*)lbl_8053AAF8 + 0x7f) == 1 && *((u8*)lbl_8053AAF8 + 0x7e) == 1 && lbl_8053AD68 != 0 &&
+        *(void**)((u8*)this_ + 4) != 0) {
+        u8 v = *((u8*)lbl_8053ADA0 + 0x4c0);
+        if (v != 5 && v != 8 && v != 7 && v != 9) {
+            return TRUE;
+        }
+    }
+    return FALSE;
+}
+
 extern "C" u8 fn_8037A120(void) {
     if (*(void**)((u8*)lbl_8053AD68 + 4) != 0) {
         return *((u8*)lbl_8053ADA0 + 0x4c0);
