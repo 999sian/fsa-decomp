@@ -19,6 +19,9 @@ extern "C" void fn_801DEE10(s32);
 extern "C" void fn_801DEE3C(s32);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_8005845C(void);
+extern "C" void fn_80057868(void) {
+}
+
 extern "C" void fn_8005867C(void) {
     fn_8005845C();
 }
@@ -128,19 +131,29 @@ extern "C" void fn_8005F8A0(void) {
 }
 
 extern "C" void fn_8005FCEC(void* self) {
+    u8* base = lbl_8027D7C0;
     u32 buf[2];
     fn_801DA39C(0, 9, 1, 4, 0);
     fn_801DA364();
     fn_801D9F18(9, 2);
-    fn_801DAC08(9, lbl_8027D7C0 + 0x111c, 0xc);
+    fn_801DAC08(9, base + 0x111c, 0xc);
     fn_801DF2A4((u8*)self + 0x10, 0);
     fn_801DF344(0);
     buf[0] = lbl_802FBA78;
     fn_801DE4F4(1, buf);
-    fn_801DF0BC(lbl_8027D7C0 + 0x1240, 0x60);
-    fn_801DF0BC(lbl_8027D7C0 + 0x11e0, 0x40);
+    fn_801DF0BC(base + 0x1240, 0x60);
+    fn_801DF0BC(base + 0x11e0, 0x40);
     fn_801DEE10(1);
     fn_801DEE3C(0);
+}
+
+extern "C" void fn_8005FE84(void** p) {
+    p[0] = lbl_80299A8C;
+    p[1] = nullptr;
+    p[2] = nullptr;
+    p[3] = nullptr;
+    p[0] = lbl_802044AC;
+    p[4] = nullptr;
 }
 
 extern void* lbl_8027EB8C[];
