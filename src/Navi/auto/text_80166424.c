@@ -154,6 +154,14 @@ extern "C" void fn_801729A4(int param_1, u8 param_2) {
     *(u8*)(param_1 + 0x56) = param_2;
 }
 
+extern "C" s32 fn_80172CEC(s32 p, s32 i) {
+    return p + i + 0x78;
+}
+
+extern "C" void fn_80172CFC(s32 p, s32 i, u32* v) {
+    *(u32*)(p + i * 4 + 0x7c) = *v;
+}
+
 extern "C" s32 fn_80172D10(s32 p, s32 i) {
     return p + i * 4 + 0x7c;
 }
