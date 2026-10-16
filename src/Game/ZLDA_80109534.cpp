@@ -13,6 +13,8 @@ extern const f32 lbl_8053C400;
 extern const f32 lbl_8053C410;
 extern const f32 lbl_8053C414;
 extern const f32 lbl_8053C418;
+extern const f32 lbl_8053C3FC;
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" s32 fn_80109AE0(char* self, f32* out) {
     out[2] = lbl_8053C3E0;
     out[1] = lbl_8053C3E0;
