@@ -144,6 +144,15 @@ u8 J3DMaterialFactory_v21::newZCompLoc(int idx) const
 	return 0;
 }
 
+u8 J3DMaterialFactory_v21::newDither(int idx) const
+{
+	u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[7];
+	if (bVar1 != 0xff) {
+		return mDitherInfo[bVar1];
+	}
+	return 1;
+}
+
 extern "C" void* fn_800E1300(const void* base, const void* offset)
 {
 	if (offset == 0) {
