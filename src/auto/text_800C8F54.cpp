@@ -23,6 +23,13 @@ public:
 };
 extern J3DIndTexMtxInfo j3dDefaultIndTexMtxInfo;
 
+class J3DFogInfo {
+public:
+    J3DFogInfo& operator=(const J3DFogInfo&);
+    u8 _00[0x2c];
+};
+extern J3DFogInfo j3dDefaultFogInfo;
+
 class J3DMaterial;
 class J3DMaterialFactory {
 public:
@@ -390,6 +397,16 @@ extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
         return;
     }
     *out = *defp;
+}
+
+extern "C" J3DIndTexMtxInfo fn_800CB628(u8* param_2, s32 param_3, s32 param_4) {
+    J3DIndTexMtxInfo local;
+    local = j3dDefaultIndTexMtxInfo;
+    u8* pcVar1 = *(u8**)(param_2 + 0xc) + param_3 * 0x138;
+    if (*pcVar1 == 1) {
+        local = *(J3DIndTexMtxInfo*)(pcVar1 + param_4 * 0x1c + 0x14);
+    }
+    return local;
 }
 
 struct J3DIndTexCoordScaleInfo {
