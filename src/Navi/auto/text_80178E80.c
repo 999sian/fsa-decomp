@@ -1969,7 +1969,7 @@ extern "C" void* fn_8018EBDC(void* ptr, s16 param_2) {
 
 extern void* lbl_802997A4[];
 extern void* lbl_80286A1C[];
-extern u8 lbl_802FE624[];
+extern u8 lbl_802FE624[8];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_8018EC78(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -1987,8 +1987,8 @@ extern "C" void* fn_8018EC78(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" int fn_8018EE10(u16* self, u16 index) {
-    if (index < self[0] && index != 0xffff) {
+extern "C" int fn_8018EE10(unsigned short* self, unsigned short index) {
+    if (self[0] > index && index != 0xffff) {
         return (int)self + self[index + 1];
     }
     return 0;
