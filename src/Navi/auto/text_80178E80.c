@@ -143,7 +143,7 @@ struct VObj_80180980 {
     virtual void vfD4(int, int);
     virtual void vfD8(u8);
     virtual void vfDC(); virtual void vfE0(); virtual void vfE4(); virtual void vfE8(); virtual void vfEC();
-    virtual void vfF0(); virtual void vfF4(); virtual void vfF8(); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
+    virtual void vfF0(); virtual void vfF4(); virtual void vfF8(f32*, f32*); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf108(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf10C(f32, f32, f32, f32, f32, f32, f32, f32);
 };
@@ -620,6 +620,27 @@ extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     u8 buf[48];
     fn_801C5D48(buf);
     self->vf38(buf, x, y);
+}
+
+extern "C" u8 fn_8017FCEC(void* self);
+extern "C" u8 fn_8017FC54(void* self) {
+    u8 flags = 0;
+    if (fn_8017FCEC(self)) {
+        if (*(s16*)((u8*)self + 0x114) < *(s16*)((u8*)self + 0x120)) {
+            flags |= 1;
+        }
+        if (*(s16*)((u8*)self + 0x11e) < *(s16*)((u8*)self + 0x112)) {
+            flags |= 2;
+        }
+    } else {
+        if (*(s16*)((u8*)self + 0x11e) < *(s16*)((u8*)self + 0x112)) {
+            flags |= 2;
+        }
+        if (*(s16*)((u8*)self + 0x120) < *(s16*)((u8*)self + 0x114)) {
+            flags |= 1;
+        }
+    }
+    return flags;
 }
 
 extern "C" void fn_801801B8(void* self, s32 a, s32 b, s32 c, s32 d) {
