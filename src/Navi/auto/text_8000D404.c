@@ -134,18 +134,19 @@ extern "C" void fn_801A9A60(void* p);
 extern "C" void fn_801A9930(void* p);
 extern "C" u32 fn_8015C960(u32 p);
 extern "C" char lbl_80203E08[];
-extern "C" void fn_8000EBB8(u32* param_1) {
-    if (*(u32*)(param_1[1] + 0x1c) == 1 && *(u16*)(param_1[1] + 0x74) != 1) {
-        (*(void (**)(u32*))(*param_1 + 0x10))(param_1);
-        (*(void (**)(u32*))(*param_1 + 0x14))(param_1);
+extern "C" void fn_8000EBB8(NaviActor* param_1) {
+    u32* self = (u32*)param_1;
+    if (*(u32*)(self[1] + 0x1c) == 1 && *(u16*)(self[1] + 0x74) != 1) {
+        param_1->vf2();
+        param_1->vf3();
         fn_801A9E44(param_1);
-        (*(void (**)(u32*))(*param_1 + 0xc))(param_1);
+        param_1->vf1();
     } else {
         fn_801A9A60(param_1);
-        (*(void (**)(u32*))(*param_1 + 0x8))(param_1);
+        param_1->vf0();
         fn_801A9930(param_1);
     }
-    (*(void (**)(u32*))(*param_1 + 0x1c))(param_1);
+    param_1->vf5();
 }
 
 extern "C" void fn_8000EC78(u32* param_1) {
