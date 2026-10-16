@@ -1041,15 +1041,11 @@ extern "C" int fn_801A4154(int param_1, int param_2) {
 }
 
 extern "C" void fn_801A4168(u8* p, s32 i, s16* src) {
-    s16 a = src[0];
     u8* d = p + i * 8;
-    s16 b = src[1];
-    *(s16*)(d + 0x14) = a;
-    s16 c = src[2];
-    *(s16*)(d + 0x16) = b;
-    s16 e = src[3];
-    *(s16*)(d + 0x18) = c;
-    *(s16*)(d + 0x1a) = e;
+    *(s16*)(d + 0x14) = src[0];
+    *(s16*)(d + 0x16) = src[1];
+    *(s16*)(d + 0x18) = src[2];
+    *(s16*)(d + 0x1a) = src[3];
 }
 
 extern "C" s32 fn_801A41C0(s32 p, s32 i) {
@@ -1057,15 +1053,15 @@ extern "C" s32 fn_801A41C0(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A41D4(u8* p, s32 i, u8* src) {
+    u8* d = p + i * 4;
     u8 a = src[0];
+    d[0x45] = a;
     u8 b = src[1];
-    u8* d = p + (i << 2);
-    *(d + 0x45) = a;
+    d[0x46] = b;
     u8 c = src[2];
-    *(d + 0x46) = b;
+    d[0x47] = c;
     u8 e = src[3];
-    *(d + 0x47) = c;
-    *(d + 0x48) = e;
+    d[0x48] = e;
 }
 
 extern "C" int fn_801A422C(int param_1, int param_2) {
@@ -1269,13 +1265,26 @@ extern "C" void fn_801A48CC(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] =
 
 extern "C" void fn_801A48E0(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] = *p3; }
 
+extern "C" s32 fn_801A48F4(s32 p, s32 i) {
+    return p + i * 4 + 0x78;
+}
+
+extern "C" void fn_801A4908(s32 p, s32 i, s16* src) {
+    s16* d = (s16*)(p + i * 8 + 0x98);
+    d[0] = src[0];
+    d[1] = src[1];
+    d[2] = src[2];
+    d[3] = src[3];
+}
+
 extern "C" int fn_801A4960(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x98;
 }
 
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
+    u8 a = p3[0];
     u8* p = p1 + p2 * 4;
-    p[0xb8] = p3[0];
+    p[0xb8] = a;
     p[0xb9] = p3[1];
     p[0xba] = p3[2];
     p[0xbb] = p3[3];
