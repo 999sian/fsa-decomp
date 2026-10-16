@@ -168,6 +168,20 @@ extern "C" void fn_801364F4(void* param_1) {
     ((void (*)(void*, void*))*(void**)((u8*)param_1 + 0x18))((u8*)param_1 + 4, (u8*)param_1 + 0x20);
 }
 
+extern "C" f64 fn_80136528(void* param_1, u32* param_2) {
+    void** begin = *(void***)((u8*)param_1 + 4);
+    s32 count = 0;
+    if (begin != nullptr) {
+        count = (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
+    }
+    u32 idx = *param_2;
+    if (idx >= count) {
+        return 0.0;
+    }
+    void* elem = begin[idx];
+    return ((f64 (*)(void*))(*(void***)elem)[7])(elem);
+}
+
 extern "C" u32 fn_80136A68(void) {
     return 2;
 }
@@ -184,6 +198,11 @@ extern "C" u32 fn_80136B14(void) {
 
 extern "C" int fn_80136F18(void) {
     return 4;
+}
+
+extern "C" f32 fn_801375FC(void* param_1, u32* param_2) {
+    f32* table = *(f32**)((u8*)param_1 + 0x44);
+    return table[param_2[4]];
 }
 
 extern "C" int fn_80137824(void) {
