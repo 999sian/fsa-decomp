@@ -158,6 +158,10 @@ extern "C" void fn_801721F0(u8* p) {
     *p = lbl_80301ADC;
 }
 
+extern "C" void fn_80172464(void)
+{
+}
+
 extern "C" u32 fn_801725E4(void) { return 0x10; }
 
 extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
