@@ -11,7 +11,7 @@ extern "C" char lbl_804AD6F0[];
 extern "C" char lbl_804A5958[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" u8 fn_8035C15C(void* self, int a);
-extern float lbl_80542988;
+extern const f32 lbl_80542988;
 extern float lbl_8054298C;
 extern "C" Actor* fn_8035DED8(Actor* p, s16 n) {
     if (p != 0) {
@@ -23,6 +23,23 @@ extern "C" Actor* fn_8035DED8(Actor* p, s16 n) {
         if (n > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" void fn_8035DF48(Actor* a) {
+    char* p = (char*)a;
+    if (!(*(f32*)(p + 0x10) >= lbl_80542988)) {
+        if (fn_8035C15C(p, 6) == 1) {
+            fn_8035C1C4(p, 6, 0x9b);
+        }
+        *(f32*)(p + 0x10) += lbl_8054298C;
+    } else {
+        char* found = (char*)fn_801F666C(fn_801F856C(), *(int*)(p + 0x23c));
+        if (found != 0) {
+            *(int*)(found + 0x230) = 7;
+            *(int*)(found + 0x234) = 0;
+        }
+        *(u8*)(p + 0x11c) = 0;
+    }
 }
 
 extern "C" void fn_8035DFE4(int param_1) {
