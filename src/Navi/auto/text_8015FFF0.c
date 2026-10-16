@@ -48,6 +48,24 @@ extern "C" s32 fn_80160A44(void) {
     return *(s32*)(p + 0xc);
 }
 
+extern "C" u16 fn_80160A78(void* a, char* p) {
+    u8* r;
+    if (p[0] == '/') {
+        p++;
+        if (p[0] != 0) {
+            r = (u8*)fn_80160D88(a, p, 0);
+        } else {
+            r = (u8*)fn_80160D88(a, 0, 0);
+        }
+    } else {
+        r = (u8*)fn_80160D88(a, p, lbl_802FF5F8);
+    }
+    if (r == NULL) {
+        return 0;
+    }
+    return *(u16*)(r + 0xa);
+}
+
 extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80297CE8;
@@ -102,6 +120,9 @@ extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_801615C4(void);
+extern "C" void fn_80159C6C(void*, int);
+extern "C" void* fn_80160D88(void*, char*, void*);
 extern void fn_80166B70(void* p, int r4);
 extern void fn_8015D0B8(void* p, int r4);
 extern void fn_8015AB1C(void* p);
