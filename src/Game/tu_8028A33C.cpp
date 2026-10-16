@@ -7,8 +7,8 @@ extern "C" u8* lbl_8053AAF8;
 extern "C" u8* lbl_8053AB10;
 extern "C" f32 lbl_80540490;
 extern "C" const char lbl_8046C0E8[];
-extern "C" void fn_802F86CC(void*, void*, void*, u32, void*, f32, f32);
-extern "C" void fn_803075AC(u32, u32, void*, void*, int, int, int, u8, u32, int);
+extern "C" void fn_802F86CC(void*, void*, void*, s32, s32, f32, f32);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 
 class SobResMgr {
 public:
