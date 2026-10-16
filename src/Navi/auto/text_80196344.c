@@ -12,6 +12,7 @@ extern "C" void fn_801BC250(int, int);
 // .text 0x80196344-0x801a537c (574 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_801A7E24(int);
+extern "C" void fn_801A7D78(void* p);
 struct NaviRect16 { s16 x, y, w, h; };
 struct NaviColor8 { u8 r, g, b, a; };
 struct NaviRectHolder {
