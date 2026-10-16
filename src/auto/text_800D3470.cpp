@@ -1554,12 +1554,14 @@ extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
     if (src->getFog() != nullptr) {
         this_->mFog = *src->getFog();
     }
-    s32 type = src->getType();
-    if (type == JBT_PEFull || type == JBT_PEFogOff) {
+    switch (src->getType()) {
+    case 0x5045464c:
+    case 0x50454647:
         this_->mAlphaComp = *src->getAlphaComp();
         this_->mBlend = *src->getBlend();
         this_->mZMode = *src->getZMode();
         this_->mZCompLoc = src->getZCompLoc();
+        break;
     }
 }
 
