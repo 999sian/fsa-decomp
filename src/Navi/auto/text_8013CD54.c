@@ -31,6 +31,11 @@ extern "C" void* fn_8013CD6C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8013CFA4(void* param_1) {
+    VObj_8013D304* o = *(VObj_8013D304**)((u8*)param_1 + 0x60);
+    o->vf5(o->vf4() & 0xfffffffe);
+}
+
 extern "C" void fn_8013D064(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
     fn_8013BC94(*(void**)((u8*)param_1 + 0x60), param_3, param_4, param_5, param_6);
 }
