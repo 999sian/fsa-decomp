@@ -15,3 +15,14 @@ struct Vt802CEBC0 {
     virtual void m6();
     virtual void m7();
 };
+
+extern "C" void* fn_802CEB60(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A92D0;
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
+}
