@@ -219,9 +219,8 @@ extern "C" s32 fn_80390C38(Tu80390818* t) {
 }
 
 static inline u16 Tu80390818_read16(u8* p) {
-    u8 hi = p[0];
-    u8 lo = p[1];
-    u16 v = (hi << 8) | lo;
+    u16 v = p[1];
+    v |= p[0] << 8;
     return v;
 }
 
