@@ -65,8 +65,8 @@ extern "C" void fn_804023D0(PaneState* state, J2DPane* pane, u8 alpha) {
 extern "C" s32 fn_80402628(PaneState* state, s16 duration, u8 startAlpha, u8 endAlpha) {
     if (state->alphaFrame < duration - 1) {
         ++state->alphaFrame;
-        state->pane->setAlpha((u8)(s32)(((f32)state->alphaFrame / (f32)duration) *
-                                      (f32)(endAlpha - startAlpha) + (f32)startAlpha));
+        state->pane->setAlpha(((f32)state->alphaFrame / (f32)duration) *
+                                      (f32)(endAlpha - startAlpha) + (f32)startAlpha);
     } else {
         state->field22 = duration;
         state->pane->setAlpha(endAlpha);
