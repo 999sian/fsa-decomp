@@ -65,6 +65,8 @@ extern "C" void* fn_80210AB4(void* p)
 	return p;
 }
 
+static const signed char lbl_8053FAB8[4][2] = { { 0x13, -4 }, { -0x13, -4 }, { 4, 10 }, { -4, -0x1c } };
+
 extern "C" float fn_80210AF8(int i)
 {
 	static const signed char lbl_8053FAB8[4][2] = { { 0x13, -4 }, { -0x13, -4 }, { 4, 10 }, { -4, -0x1c } };
