@@ -13,6 +13,17 @@ extern void* lbl_80299A8C[];
 extern void* lbl_802BF110[];
 extern s64 lbl_802FFEC8;
 extern s16 lbl_802FEFB4[];
+struct VObj_8003B920 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+    virtual void m8();
+};
 extern "C" void* fn_801E0D40(void* dst, void* src, s16 size, s16 count);
 extern "C" void fn_8000CEC4(void);
 extern "C" void fn_8015AB1C(void* ptr);
