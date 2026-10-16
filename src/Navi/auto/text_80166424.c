@@ -806,6 +806,25 @@ extern "C" void fn_8016ED24(u8* p, int unused, u32 idx)
     }
 }
 
+#pragma use_lmw_stmw off
+extern "C" int fn_8016FD58(u8* p, u32 idx, void* val)
+{
+    int mask;
+    if (idx >= 8) {
+        return 0;
+    }
+    if (p[0x120] & (mask = 1 << idx)) {
+        fn_80118BD0(((void**)(p + 0xdc))[idx], 1);
+    }
+    ((void**)(p + 0xdc))[idx] = val;
+    p[0x120] &= ~mask;
+    fn_8015AB1C(((void**)(p + 0xfc))[idx]);
+    ((void**)(p + 0xfc))[idx] = 0;
+    ((u16*)(p + 4))[idx] = 0xFFFF;
+    return 1;
+}
+#pragma use_lmw_stmw reset
+
 extern "C" int fn_80170018(u8* p, void* src)
 {
     void* obj;
