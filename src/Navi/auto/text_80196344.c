@@ -369,6 +369,9 @@ extern "C" void fn_80198ED0()
 {
 }
 
+extern "C" void fn_80198EE0(void) {
+}
+
 extern "C" void fn_80198EE4(void) {}
 
 extern "C" void fn_80198EE8(void) {}
@@ -1865,11 +1868,12 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    u8* d = p + (i << 3);
-    *(s16*)(d + 0x42) = src[0];
-    *(s16*)(d + 0x44) = src[1];
-    *(s16*)(d + 0x46) = src[2];
-    *(s16*)(d + 0x48) = src[3];
+    struct Quad {
+        s16 a, b, c, d;
+    };
+    Quad* dst = (Quad*)(p + (i << 3) + 0x42);
+    Quad* s = (Quad*)src;
+    *dst = *s;
 }
 
 extern "C" s32 fn_801A3D80(s32 p, s32 i) {
@@ -2522,7 +2526,12 @@ extern "C" u32 fn_801A4C90(void) {
 }
 
 extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, NaviColor8* param_3) {
-    ((NaviColor8*)(param_1 + 4))[param_2] = *param_3;
+    u8* src = (u8*)param_3;
+    u8* dst = param_1 + param_2 * 4;
+    dst[4] = src[0];
+    dst[5] = src[1];
+    dst[6] = src[2];
+    dst[7] = src[3];
 }
 
 extern "C" int fn_801A4CF4(int param_1, int param_2) {
