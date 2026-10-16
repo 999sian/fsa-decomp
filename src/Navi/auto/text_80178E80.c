@@ -36,12 +36,59 @@ extern "C" void fn_80178990(void);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
 extern u8 lbl_80301BF8[];
+
+struct DtorVObj_80178F90 {
+    virtual void Destroy(int);
+};
+
+struct Quad_8017C0A8 {
+    u8 v[4];
+};
+
+struct VObj_8017C154 {
+    virtual void vf8();
+    virtual void vfC();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void vf18();
+    virtual void vf1C();
+    virtual void vf20();
+    virtual void vf24();
+    virtual void vf28();
+    virtual void vf2C();
+    virtual void vf30();
+    virtual void vf34();
+    virtual void vf38(void* buf, f32 x, f32 y);
+};
 extern void* lbl_80286A30[];
 extern void* lbl_80299634[];
 extern void* lbl_80299540[];
 extern void* lbl_80298D38[];
 extern "C" void fn_80178F90(void*);
 extern "C" void fn_80176FE8(void*, int);
+extern "C" void fn_80176698(void* self, s32 a, s32 b, s32 c, s32 d, u32 e, void* f);
+extern "C" void* fn_80178E80(void* self) {
+    f32 rect[6];
+    s32 unused;
+    rect[0] = 0.0f;
+    rect[1] = 0.0f;
+    rect[2] = 0.0f;
+    rect[3] = 0.0f;
+    rect[4] = 640.0f;
+    rect[5] = 480.0f;
+    fn_80176698(self, 0, 1, unused, 0, 0x726f6f74, &rect[2]);
+    *(void**)self = lbl_80298D38;
+    *(s32*)((u8*)self + 0x114) = -1;
+    *(u16*)((u8*)self + 0x4) = 0xffff;
+    *(u8*)((u8*)self + 0x100) = 0;
+    *(u16*)((u8*)self + 0x102) = 0;
+    *(s32*)((u8*)self + 0x104) = 0;
+    *(s32*)((u8*)self + 0x108) = 0;
+    *(s32*)((u8*)self + 0x10c) = 0;
+    *(s32*)((u8*)self + 0x110) = 0;
+    return self;
+}
+
 extern "C" void* fn_80178F28(void* p, s16 param_2) {
     if (p != nullptr) {
         *(void**)p = lbl_80298D38;
@@ -305,8 +352,8 @@ extern "C" u8 fn_80181CCC(char* self, u8 v) {
 }
 
 extern "C" int fn_80182058(char* self, void* v) {
-    void** o = *(void***)(self + 0x100);
-    if (o != 0 && ((void* (*)(void*))(*(void***)o)[15])(o) == v) {
+    UnkVObj_80181CCC* o = *(UnkVObj_80181CCC**)(self + 0x100);
+    if (o != 0 && o->vf3C() == v) {
         return 1;
     }
     return ((int (*)(char*, void*))fn_80177F0C)(self, v);
