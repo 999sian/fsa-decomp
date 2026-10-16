@@ -30,6 +30,8 @@ struct NaviTracker {
 
 struct It_80138B20 { void* p; };
 struct Tag_80138B20 {};
+struct It2_80138DA8 { void* a; void* b; };
+extern "C" void fn_80138E2C(void*, It2_80138DA8, It2_80138DA8, It2_80138DA8, void*, Tag_80138B20);
 extern "C" It_80138B20 fn_80138B7C(It_80138B20, It_80138B20, It_80138B20, void*, Tag_80138B20);
 
 struct VObj_801398CC {
@@ -683,9 +685,9 @@ extern "C" f64 fn_80138AF4(f64 a, f64 b) {
 
 void fn_80138B7C(void*, It_80138B20, It_80138B20, It_80138B20, void*, Tag_80138B20);
 extern "C" void fn_80138B7C(void*, It_80138B20, It_80138B20, It_80138B20, void*, Tag_80138B20);
-extern "C" void fn_80138B20(void* self, It_80138B20* a, It_80138B20* b, It_80138B20* c, void* d) {
+extern "C" It_80138B20 fn_80138B20(It_80138B20* a, It_80138B20* b, It_80138B20* c, void* d) {
     Tag_80138B20 t;
-    fn_80138B7C(self, *a, *b, *c, d, t);
+    return fn_80138B7C(*a, *b, *c, d, t);
 }
 
 extern void* lbl_80292974[];
