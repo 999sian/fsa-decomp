@@ -378,6 +378,8 @@ extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
 }
 
 struct J3DIndTexCoordScaleInfo {
+    void operator=(const J3DIndTexCoordScaleInfo& other) { *(u32*)this = *(u32*)&other; }
+
     u8 mScaleS; // _00
     u8 mScaleT; // _01
     u8 _02;
