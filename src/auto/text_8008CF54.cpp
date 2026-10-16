@@ -36,6 +36,11 @@ extern "C" u32 lbl_80499490[];
 extern "C" void remove__10JSUPtrListFP10JSUPtrLink(void *, void *);
 extern "C" void __dt__10JSUPtrLinkFv(void *, s16);
 extern "C" void __dt__11JKRDisposerFv(void *, s16);
+extern "C" void __ct__11JKRDisposerFv(void *);
+extern "C" void __ct__10JSUPtrLinkFPv(void *, void *);
+extern "C" void append__10JSUPtrListFP10JSUPtrLink(void *, void *);
+extern "C" void fn_8008D910(void *);
+extern "C" void fn_8008D538(void *);
 void operator delete(void *p);
 
 struct JUTGamePad {
