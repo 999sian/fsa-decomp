@@ -170,9 +170,6 @@ struct VObj_80180980 {
     virtual void vfF0(f32*, f32*); virtual void vfF4(); virtual void vfF8(f32*, f32*); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf108(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf10C(f32, f32, f32, f32, f32, f32, f32, f32);
-    virtual void vf110();
-    virtual void vf114();
-    virtual void vf118(void*, int, int);
 };
 
 struct VObj_80180920 {
@@ -704,9 +701,9 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
 
 #pragma push
 #pragma use_lmw_stmw off
-extern "C" void fn_8017EC94(u32* self, void* a, int b, int c) {
+extern "C" void fn_8017EC94(void* self, void* a, int b, int c) {
     void* r = fn_8017A4A8(a);
-    ((void (*)(void*, void*, int, int))(*(u32**)self)[70])(self, r, b, c);
+    ((void (*)(void*, void*, int, int))(*(void***)self)[70])(self, r, b, c);
 }
 #pragma pop
 extern "C" void fn_801C5D48(void* p);
