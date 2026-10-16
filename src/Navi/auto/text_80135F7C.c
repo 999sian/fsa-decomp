@@ -170,11 +170,13 @@ extern "C" void fn_801364F4(void* param_1) {
 
 extern "C" f64 fn_80136528(void* param_1, u32* param_2) {
     void** begin = *(void***)((u8*)param_1 + 4);
-    s32 count = 0;
-    if (begin != nullptr) {
+    u32 idx = *param_2;
+    s32 count;
+    if (begin == nullptr) {
+        count = 0;
+    } else {
         count = (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
     }
-    u32 idx = *param_2;
     if (idx >= count) {
         return 0.0;
     }
@@ -205,8 +207,30 @@ extern "C" f32 fn_801375FC(void* param_1, u32* param_2) {
     return table[param_2[4]];
 }
 
+#pragma fp_contract off
+extern "C" f64 fn_80137610(void* param_1, f64* param_2) {
+    f32* table = *(f32**)((u8*)param_1 + 0x44);
+    u32 idx = ((u32*)param_2)[4];
+    f64 d = param_2[0] - param_2[1];
+    f64 a = table[idx];
+    f64 b = table[idx + 1];
+    return a + (b - a) * d;
+}
+#pragma fp_contract reset
+extern "C" f64 fn_80137644(void* param_1, f64* param_2) {
+    return 0.0;
+}
+
 extern "C" int fn_80137824(void) {
     return 5;
+}
+
+extern "C" void fn_8013785C(void* param_1, s32 param_2, s32 param_3) {
+    *(s32*)((u8*)param_1 + 0x44) = param_2;
+    *(s32*)((u8*)param_1 + 0x48) = param_3;
+    *(s32*)((u8*)param_1 + 0x4c) = *(s32*)((u8*)param_1 + 0x44);
+    *(s32*)((u8*)param_1 + 0x50) = *(s32*)((u8*)param_1 + 0x44) + *(s32*)((u8*)param_1 + 0x48) * 8;
+    *(s32*)((u8*)param_1 + 0x54) = *(s32*)((u8*)param_1 + 0x4c);
 }
 
 extern "C" u32 fn_80138340(void) {
@@ -405,6 +429,31 @@ extern "C" void* fn_80139E0C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern void* lbl_80292D58[];
+extern void* lbl_80292EB4[];
+extern void* lbl_80292B94[];
+extern "C" u8 fn_8013A48C(void* p, u32 x);
+extern "C" void fn_80167BB0(void* p, u32 x);
+extern "C" void* fn_80167818(void* x);
+extern void* lbl_80292EC4[];
+extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
+    while (*c != *b && !fn_8013A48C((u8*)*b - 0xc, d)) {
+        *b = *(void**)*b;
+    }
+    *a = *b;
+}
+
+extern "C" void fn_8013A424(void** a, s32* b) {
+    void* r = fn_80167818(*a);
+    if (*b == 0) {
+        ((void**)b)[2] = 0;
+        ((void**)b)[3] = r;
+    } else {
+        ((void**)b)[2] = r;
+        ((void**)b)[3] = (u8*)r + ((*b + 3) & ~3);
+    }
 }
 
 extern void* lbl_80292F5C[];
