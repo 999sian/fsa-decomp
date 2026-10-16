@@ -44,7 +44,9 @@ public:
     size_t calcSizePatchedMaterial(J3DMaterial*, int, u32) const;
     size_t calcSizeLockedMaterial(J3DMaterial*, int, u32) const;
     u32 countUniqueMaterials();
-    J3DMaterial* create(J3DMaterial*, MaterialType, int, u32) const;
+          J3DMaterial* create(J3DMaterial*, MaterialType, int, u32) const;
+      void modifyPatchedCurrentMtx(J3DMaterial*, int) const;
+
 
     u16 mMaterialNum;    // _00
     void* mInitData;     // _04
@@ -188,6 +190,46 @@ size_t J3DMaterialFactory::calcSize(J3DMaterial* mat, MaterialType type, int idx
     case PATCHED:
         size = calcSizePatchedMaterial(mat, idx, flags);
         break;
+    }
+    return size;
+}
+
+extern "C" u32 calcSizeColorBlock__11J3DMaterialFUl(u32);
+extern "C" u32 calcSizeIndBlock__11J3DMaterialFi(int);
+extern "C" u32 calcSizePEBlock__11J3DMaterialFUlUl(u32, u32);
+extern "C" u32 fn_800CAD8C(u8* p, void* mat, s32 idx, u32 flags) {
+    u32 size = 0;
+    if (mat == NULL) {
+        size = 0x4c;
+    }
+    u32 ind = (flags & 0x03000000) != 0;
+    size += calcSizeColorBlock__11J3DMaterialFUl(0x40000000);
+    size += 0x134;
+    size += calcSizeIndBlock__11J3DMaterialFi(ind);
+    size += calcSizePEBlock__11J3DMaterialFUlUl(0x10000000, *(u8*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c));
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x48) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4a) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4c) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4e) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x50) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x52) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x54) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x56) != 0xffff) {
+        size += 0x94;
     }
     return size;
 }
@@ -429,6 +471,20 @@ extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no
     } else {
         *out = dflt;
     }
+}
+
+extern "C" J3DFogInfo fn_800CB8C8(u8* p, s32 idx)
+{
+    J3DFogInfo fog;
+    fog = j3dDefaultFogInfo;
+    u8* base = *(u8**)(p + 4);
+    u16 id = ((u16*)*(u8**)(p + 8))[idx];
+    u16 v = *(u16*)(base + id * 0x14c + 0x144);
+    if (v != 0xffff) {
+        J3DFogInfo tmp = ((J3DFogInfo*)*(u8**)(p + 0x5c))[v];
+        fog = tmp;
+    }
+    return fog;
 }
 
 extern unsigned int j3dDefaultBlendInfo;
