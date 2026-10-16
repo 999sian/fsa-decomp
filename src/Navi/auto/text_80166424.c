@@ -111,6 +111,8 @@ extern "C" void* fn_80167404(void* ptr, s16 param_2) {
 
 extern "C" int fn_80167554(int p) { return *(int*)(p + 0xc); }
 
+extern "C" int fn_80167810(int p) { return *(int*)(p + 0xc); }
+
 extern void* lbl_802911A0[];
 extern "C" void* fn_80167880(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -400,6 +402,14 @@ extern "C" int fn_80172B24(void) {
 
 extern "C" s32 fn_80172B80(s32 p, s32 i) {
     return p + i * 4 + 0xe;
+}
+
+extern "C" void fn_80172BD4(u8* param_1, s32 param_2, u8* param_3) {
+    u8* p = param_1 + param_2 * 4;
+    p[0x60] = param_3[0];
+    p[0x61] = param_3[1];
+    p[0x62] = param_3[2];
+    p[0x63] = param_3[3];
 }
 
 extern "C" s32 fn_80172C00(s32 param_1, s32 param_2) {
