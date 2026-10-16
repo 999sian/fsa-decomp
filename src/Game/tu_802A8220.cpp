@@ -48,16 +48,18 @@ extern "C" void fn_802A92FC(ActorExt* param_1)
     }
     param_1->m234 = 1;
     param_1->m238 = 0;
-    if (param_1->m240 == 0x78) {
+    switch (param_1->m240) {
+    case 0x28:
+        param_1->m238 = 1;
+        break;
+    case 0x78:
         param_1->m238 = 2;
-    } else if (param_1->m240 < 0x78) {
-        if (param_1->m240 == 0x28) {
-            param_1->m238 = 1;
-        }
-    } else if (param_1->m240 == 200) {
+        break;
+    case 200:
         param_1->m238 = 3;
+        break;
     }
-    if (param_1->m244 != 2 && param_1->m244 != 4 && param_1->m244 > 1 && param_1->m244 - 8 > 3 && param_1->m244 == 0xd) {
+    if (param_1->m244 == 2 || param_1->m244 == 4 || (u32)param_1->m244 <= 1 || (u32)param_1->m244 - 8 <= 3 || param_1->m244 == 0xd) {
         param_1->m24C = 0x28;
     }
 }
