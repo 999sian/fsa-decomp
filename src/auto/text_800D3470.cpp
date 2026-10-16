@@ -471,17 +471,15 @@ extern "C" void fn_800D7F78(void* p) {
 
 extern "C" void fn_800D800C(u8* self) {
     u8* p = self;
-    u32 i = 0;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0xd4);
     u8* start = __GDCurrentDL->pDisplayListData;
-    for (; i < 3; i++) {
+    for (u32 i = 0; i < 3; i++) {
         GXColorS10 c = *(GXColorS10*)(p + 0x98);
         J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
         p += 8;
     }
-    i = 0;
     p = self;
-    for (; i < 4; i++) {
+    for (u32 i = 0; i < 4; i++) {
         GXColor c = *(GXColor*)(p + 0xb8);
         J3DGDSetTevKColor(GXTevKColorID(i), c);
         p += 4;
@@ -618,17 +616,17 @@ extern "C" void fn_800D8A3C(void* p) {
 }
 
 extern "C" void fn_800D8AD0(u8* this_) {
-    u32 i = 0;
-    u8* p = this_;
     u8* base;
+    u8* p;
+    u32 i = 0;
 
+    p = this_;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x170);
     base = __GDCurrentDL->pDisplayListData;
     for (i = 0; i < 3; i++) {
         J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0xda));
         p += 8;
     }
-    i = 0;
     p = this_;
     for (i = 0; i < 4; i++) {
         J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0xfa));
@@ -2492,6 +2490,13 @@ struct UnkVtableTest8248 {
   u8 b : 2;
   u8 a : 2;
 };
+
+extern "C" void fn_800D9658(u8* p) {
+    u16* e = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0xd] & 7) * 8);
+    J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(p[0xc], e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
+    e = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0x11] & 7) * 8);
+    J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(p[0x10] & 7, e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
+}
 
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
