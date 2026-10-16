@@ -91,7 +91,7 @@ extern "C" void* fn_8002F198(void) {
         ret = obj + 0x594;
         obj[0x57e] = 0;
         obj[0x57f] = 1;
-        if (*(int*)(obj + 0x598) != 0) {
+        if (*(void**)(obj + 0x598) != 0) {
             ret = fn_80024BC8();
         }
     }
