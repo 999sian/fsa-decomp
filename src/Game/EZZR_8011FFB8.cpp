@@ -97,6 +97,13 @@ extern "C" s32 fn_80121040(void* p)
 	return 0;
 }
 
+extern "C" void fn_80121074(void* p)
+{
+	if (*(s32*)((u8*)p + 0x33c) != 0xf) {
+		fn_80124278(p);
+	}
+}
+
 extern "C" void fn_80124278(void*);
 extern "C" void fn_80124448(void*);
 extern "C" void fn_80131EC0(GateRegistry*, void*);
