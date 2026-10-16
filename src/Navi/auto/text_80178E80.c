@@ -488,7 +488,7 @@ extern "C" void fn_8017A488(void) {
 }
 
 extern "C" void* fn_8015FDA8(void*, void*);
-extern "C" void fn_8018ECE4(void*, void*);
+extern "C" int fn_8018ECE4(void*, void*);
 extern "C" void fn_8016A72C(void*);
 extern void* lbl_802FF6A0;
 #pragma dont_inline on
