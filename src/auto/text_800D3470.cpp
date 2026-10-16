@@ -718,17 +718,19 @@ extern "C" void fn_800D9E3C(void* p) {
     DCStoreRange(saved, (u32)(now - saved));
 }
 
+extern "C" u8 isTexNoReg__FPv(void*);
+extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
-    u32 i = 0;
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + param_2;
-    u8* start = __GDCurrentDL->pDisplayListData;
+    GDSetCurrOffset(param_2);
+    u8* start = GDGetCurrPointer();
     u8* cur = __GDCurrentDL->pDisplayListData;
+    u32 i = 0;
     while (true) {
         if (!isTexNoReg(cur)) break;
         loadTexNo(i, getTexNoReg(cur));
         i++;
     }
-    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+    DCStoreRange(start, GDGetCurrPointer() - start);
 }
 
 extern "C" void fn_800DB844(void* param_1) {
@@ -2002,16 +2004,8 @@ extern "C" void* fn_800DF280(void* self, short flag) {
     return self;
 }
 
-extern "C" void fn_800DF318(u8* p, s32 idx, const u8* src) {
-    u8* d = p + idx * 4;
-    register u8 a = src[0];
-    u8 b = src[1];
-    u8 c = src[2];
-    u8 e = src[3];
-    d[4] = a;
-    d[5] = b;
-    d[7] = e;
-    d[6] = c;
+extern "C" void fn_800DF318(GXColor* param_1, int param_2, const GXColor* param_3) {
+    param_1[param_2 + 1] = *param_3;
 }
 
 extern "C" u8* fn_800DF344(u8* self, int i) {
