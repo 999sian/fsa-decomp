@@ -506,6 +506,13 @@ extern "C" void fn_801D1CD4(void* p) {
 extern "C" void fn_801D1D68(void) {
 }
 
+extern "C" void fn_801C13D0(int);
+extern "C" void fn_801D1D6C(s32 chan) {
+    extern u8 lbl_802F7D60[];
+    u8* p = lbl_802F7D60 + chan * 0x110;
+    fn_801C13D0((int)(p + 0x8c));
+}
+
 extern "C" void fn_801D1F90(s32 chan) {
     extern u8 lbl_802F7D60[];
     u8* p = lbl_802F7D60 + chan * 0x110;
@@ -525,6 +532,54 @@ extern "C" void fn_801D1F90(s32 chan) {
             cb(chan, -3);
         }
     }
+}
+
+extern "C" void fn_801D2038(s32 chan) {
+    extern u8 lbl_802F7D60[];
+    u8* p = lbl_802F7D60 + chan * 0x110;
+    void (*cb)(s32, s32) = *(void (**)(s32, s32))(p + 0xdc);
+    if (cb != nullptr) {
+        *(void**)(p + 0xdc) = nullptr;
+        if (EXIProbe(chan)) {
+            cb(chan, 1);
+        } else {
+            cb(chan, -3);
+        }
+    }
+}
+
+extern "C" u16 fn_801BD4E0(void);
+extern "C" void OSRegisterVersion(const char*);
+extern "C" void fn_801D1360(void);
+extern "C" void OSInitAlarm(void);
+extern "C" void OSInitThreadQueue(void*);
+extern "C" void OSCreateAlarm(void*);
+extern "C" void fn_801D2C90(u32);
+extern "C" void OSRegisterResetFunction(void*);
+extern const char* lbl_802FEA28;
+extern u8 lbl_8029DCB0[];
+extern "C" void fn_801D2BDC(void)
+{
+    extern u8 lbl_802F7D60[];
+    extern u16 lbl_802FFA18;
+    u8* p = lbl_802F7D60;
+    int i;
+
+    if (*(u32*)(p + 0x10c) != 0 && *(u32*)(p + 0x21c) != 0) {
+        return;
+    }
+    lbl_802FFA18 = fn_801BD4E0();
+    OSRegisterVersion(lbl_802FEA28);
+    fn_801D1360();
+    OSInitAlarm();
+    for (i = 0; i < 2; i++) {
+        *(s32*)(p + 4) = -3;
+        OSInitThreadQueue(p + 0x8c);
+        OSCreateAlarm(p + 0xe0);
+        p += 0x110;
+    }
+    fn_801D2C90(0x80000000);
+    OSRegisterResetFunction(lbl_8029DCB0);
 }
 
 extern u16 lbl_802FFA18;
@@ -639,8 +694,8 @@ extern "C" u32 fn_801D6D80(u8* param_1, u8* param_2) {
 extern "C" s32 fn_801D782C(void* a);
 extern "C" void fn_801D2F34(s32 a);
 extern "C" s32 fn_801D72DC(void* a);
-extern "C" s32 fn_801D2CC8(s32 a, u32* b);
-extern "C" void fn_801D2D80(s32 a, s32 b);
+extern "C" s32 fn_801D2CC8(s32 chan, u8** pcard);
+extern "C" s32 fn_801D2D80(u8* card, s32 result);
 extern "C" void fn_801D7970(s32* param_1) {
     if (fn_801D782C(param_1) >= 0) {
         fn_801D2F34(*param_1);
