@@ -261,7 +261,8 @@ extern "C" void fn_80136148(void* self, void* p, f32 x) {
     if (x >= 0.5f) {
         v = 1;
     }
-    fn_801E10DC(p, 2, &v, 4);
+    PmfFunc_80136148* pmf = (PmfFunc_80136148*)((u8*)self + 4);
+    (((PmfObj_80136148*)p)->*(*pmf))(2, &v, 4);
 }
 
 extern "C" u32 fn_80136314(u32 i) {
