@@ -1,4 +1,7 @@
 #include "types.h"
+#include "stdarg.h"
+extern "C" void fn_801E4334(char* buf, u32 n, const void* fmt, va_list args);
+extern "C" void fn_80123628(void* p, char* s);
 
 extern "C" void fn_801DBA5C(s32 v, s32 n);
 extern "C" void fn_80132450(s16 a, s16 b, s16 c, void* out);
@@ -903,11 +906,12 @@ extern "C" void* fn_80132A3C(void* param_1) {
     fn_80139830((u8*)param_1 + 0x60);
     *((u8*)param_1 + 0x74) = 0;
     *((u8*)param_1 + 0x75) = 0;
+    f32 f = lbl_803017B8;
     local[0] = ((void**)lbl_80201E40)[0];
     local[1] = ((void**)lbl_80201E40)[1];
     local[2] = ((void**)lbl_80201E40)[2];
-    ((void (*)(void*, f32, void*))fn_80132B3C)(param_1, lbl_803017B8, local);
-    ((void (*)(void*, f32, void*))fn_80132BBC)(param_1, lbl_803017B8, local);
+    fn_80132B3C(param_1, f, local);
+    fn_80132BBC(param_1, lbl_803017B8, local);
     return param_1;
 }
 
