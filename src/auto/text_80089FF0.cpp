@@ -1,4 +1,5 @@
 #include "dolphin/os.h"
+#include "dolphin/base/PPCArch.h"
 #include "JSystem/JSupport/JSUList.h"
 #include "JSystem/JUtility/JUTException.h"
 #include "JSystem/JUtility/JUTConsole.h"
