@@ -148,6 +148,10 @@ extern "C" void* fn_80088D50(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_80088DB0(void* obj, float x, float y) {
+    fn_8011A194(obj, x, y, lbl_803009F8);
+}
+
 extern "C" void* fn_80088DD4(u8* p) {
     return *(void**)(p + 0x48);
 }
@@ -162,6 +166,10 @@ extern "C" u16 fn_80088DE8(u8* p) {
 
 extern "C" u16 fn_80088DF4(u8* p) {
     return *(u16*)(*(u8**)(p + 0x4c) + 0xe);
+}
+
+extern "C" u16 fn_80088E00(void* obj) {
+    return *(u16*)(*(char**)((char*)obj + 0x4c) + 0xa);
 }
 
 extern "C" void fn_80088ED4(void);
