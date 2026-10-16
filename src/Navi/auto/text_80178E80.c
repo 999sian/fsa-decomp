@@ -1967,6 +1967,24 @@ extern "C" void* fn_8018E9FC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern void* lbl_80299670[];
+void fn_8015AB1C(void* ptr);
+extern "C" void* fn_8018EA68(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80299670;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80299540;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80286A30;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_80299764[];
 extern "C" void* fn_8018EBDC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
