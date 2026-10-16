@@ -1,6 +1,6 @@
 
 
-extern "C" int fn_801699AC() {
+extern "C" int fn_801699A4() {
     return 0;
 }
 
