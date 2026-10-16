@@ -6,6 +6,12 @@ extern "C" void fn_801CE010(void*, void*);
 extern "C" void fn_8030C210(void*, void*);
 extern u8* lbl_8053AB10;
 extern f32 lbl_8053FC40;
+struct Vec3f {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" u8 fn_8022BA58(s32 room, f32* pos);
 extern "C" bool fn_8030C2A8(u8* p, f32* v);
@@ -38,6 +44,56 @@ extern "C" void fn_8021827C(u8* p) {
             if (in) {
                 fn_801CE010(p, buf);
                 fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), buf);
+            }
+        }
+    }
+}
+
+extern "C" void fn_8021835C(u8* p) {
+    bool ok = false;
+    if (*(s32*)(p + 0x248) == 1) {
+        f32 v[3];
+        f32 hi[3];
+        f32 lo[3];
+        fn_801CE010(p, v);
+        lo[0] = v[0];
+        lo[1] = v[1];
+        lo[2] = v[2];
+        hi[0] = v[0];
+        hi[1] = v[1];
+        hi[2] = v[2];
+        if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053FC40) {
+            lo[0] = lo[0] + *(f32*)(p + 0x60);
+            hi[0] = hi[0] + *(f32*)(p + 0x68);
+        }
+        if (fn_801CD2F8(*(s32*)(p + 4))) {
+            if (fn_8022BA58(*(s32*)(p + 4), lo) && fn_8022BA58(*(s32*)(p + 4), hi)) {
+                ok = true;
+            }
+        } else {
+            if (fn_8030C2A8(*(u8**)(lbl_8053AB10 + 0x24), lo) && fn_8030C2A8(*(u8**)(lbl_8053AB10 + 0x24), hi)) {
+                ok = true;
+            }
+        }
+        if (ok) {
+            u32 f = *(u32*)(p + 0x230);
+            if (!(f & 0x200000) && !(f & 0x4000)) {
+                if (!fn_801E1DE8(p)) {
+                    if (*(u32*)(p + 0x230) & 0x20000) {
+                        fn_801F0E34(p, 0x5001C, 0);
+                    } else {
+                        fn_801F0E34(p, 0x50018, 0);
+                    }
+                }
+                *(u32*)(p + 0x230) |= 0x200000;
+            }
+        } else {
+            u32 f = *(u32*)(p + 0x230);
+            if ((f & 0x200000) && !(f & 0x400000) && (f & 0x4000) && !(f & 0x80000) && *(s32*)(p + 0x2bc) >= 0) {
+                if (!fn_801E1DE8(p)) {
+                    fn_801F0E34(p, 0x5001B, 0);
+                }
+                *(u32*)(p + 0x230) |= 0x400000;
             }
         }
     }
