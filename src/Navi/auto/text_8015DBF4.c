@@ -40,3 +40,35 @@ extern "C" void* fn_8015DC48(void* param_1, s16 param_2) {
     return param_1;
 }
 
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" void* fn_8015DC9C(void* param_1, void* param_2, void* param_3, void* param_4, s32 param_5) {
+    if (lbl_802FF5A0 == 0) {
+        void* obj = fn_8015A9A8(0xa4, lbl_802FF540, 0);
+        if (obj != 0) {
+            obj = fn_8015DD38(obj, param_1, param_2, param_5);
+        }
+        lbl_802FF5A0 = obj;
+    }
+    fn_8015F67C(param_3);
+    fn_80166478(param_4);
+    fn_801C0EEC(*(void**)((u8*)lbl_802FF5A0 + 0x2c));
+    return lbl_802FF5A0;
+}
+#pragma pop
+extern "C" void* fn_8015DE54(void* param_1, s16 param_2) {
+    if (param_1) {
+        *(void**)param_1 = (void*)lbl_80297A5C;
+        lbl_802FF5A0 = 0;
+        void* obj = *(void**)((u8*)param_1 + 0x94);
+        if (obj) {
+            (*(VirtualMethod0*)((u8*)*(void**)obj + 8))(obj, 1);
+        }
+        fn_8015D29C(param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
