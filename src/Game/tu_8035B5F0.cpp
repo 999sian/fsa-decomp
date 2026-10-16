@@ -1,5 +1,15 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+struct FsaStateEntry;
+typedef void (FsaStateEntry::*FsaStateFn)();
+struct FsaStateEntry {
+    FsaStateFn fn;
+    u32 unk8;
+};
+extern FsaStateEntry lbl_804AD400[];
+extern "C" void fn_801F0E34(void* p, s32 a, s32 b);
+extern "C" void* lbl_8053AB10;
+
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern const f32 lbl_805428D8;
@@ -99,19 +109,39 @@ extern "C" u32 fn_8035C15C(u8 *param_1, s32 param_2) {
 }
 
 extern "C" void fn_8035C1C4(u8 *param_1, s32 param_2, u32 param_3) {
+  struct Entry {
+    s32 m_0;
+    u32 m_4;
+  };
   *(u32 *)(param_1 + 0x250) = param_3;
   *(u32 *)(param_1 + 0x244) = 0;
   *(u32 *)(param_1 + 0x24c) = 0;
   if (*(s32 *)(param_1 + 0x244) != 0) {
     return;
   }
-  u8 *base = (u8 *)lbl_804AD460[param_2];
-  if (*(s32 *)(base + *(s32 *)(param_1 + 0x24c) * 8) < 0) {
+  Entry *base = (Entry *)lbl_804AD460[param_2];
+  s32 idx = *(s32 *)(param_1 + 0x24c);
+  if (base[idx].m_0 < 0) {
     return;
   }
-  *(u32 *)(param_1 + 0x244) = *(u32 *)(base + *(s32 *)(param_1 + 0x24c) * 8 + 4);
-  *(u32 *)(param_1 + 0x248) = *(u32 *)(base + *(s32 *)(param_1 + 0x24c) * 8);
+  *(u32 *)(param_1 + 0x244) = base[idx].m_4;
+  *(u32 *)(param_1 + 0x248) = base[*(s32 *)(param_1 + 0x24c)].m_0;
   *(s32 *)(param_1 + 0x24c) = *(s32 *)(param_1 + 0x24c) + 1;
+}
+
+extern "C" void fn_801F06F0(void* mgr, u32* tbl, s32 id, void* buf, s32 a, s32 b, s32 c, f32 x, f32 y);
+extern "C" void fn_8035C230(u8* p) {
+    if (*(s32*)(p + 0x238) != 0) {
+        u8 idx[16];
+        s32 i;
+        for (i = 0; i < 16; i++) {
+            idx[i] = i;
+        }
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_805428EC;
+        f32 pair[2];
+        pair[0] = *(f32*)(p + 0xc);
+        pair[1] = *(f32*)(p + 0x10);
+    }
 }
 
 extern "C" void fn_8035C4B8(void) {}
