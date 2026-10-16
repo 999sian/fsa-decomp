@@ -43,6 +43,20 @@ public:
 
 extern volatile s32 lbl_8053BC70;
 
+template <typename T>
+T* JSUConvertOffsetToPtr(const void* ptr, const void* offset)
+{
+    if (offset == NULL) {
+        return NULL;
+    }
+    return (T*)((s32)ptr + (s32)offset);
+}
+
+extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
+extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
+extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
+extern "C" char __vt__11J3DMaterial[];
+
 struct J3DNBTScaleInfo {
     u8 mHasScale;
     f32 mScale[3];
@@ -158,9 +172,9 @@ extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
 
 extern u32 j3dDefaultTexCoordInfo;
 extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
-    u16 i = ((u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 0x28))[b];
-    if (i != 0xffff) {
-        *out = (*(u32**)(p + 0x28))[i];
+    u16* tbl = (u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 0x28);
+    if (tbl[b] != 0xffff) {
+        *out = (*(u32**)(p + 0x28))[tbl[b]];
         ((u16*)out)[2] = ((u8*)out)[2];
         return;
     }
