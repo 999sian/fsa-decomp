@@ -1345,6 +1345,10 @@ extern "C" BOOL fn_8001F25C(void) {
     return TRUE;
 }
 
+extern "C" BOOL fn_8001F264(void) {
+    return TRUE;
+}
+
 extern "C" void fn_8001F37C(void)
 {
     extern s32 fragmentID;
@@ -1514,11 +1518,11 @@ extern "C" void fn_8001F764(u8* param_1, f32* param_2) {
 }
 
 extern "C" void fn_8001F78C(u8* param_1, u8* param_2) {
-    u8 a = param_2[0];
     u8 b = param_2[1];
+    u8 a = param_2[0];
     param_1[0x20] = a;
-    u8 c = param_2[2];
     param_1[0x21] = b;
+    u8 c = param_2[2];
     u8 d = param_2[3];
     param_1[0x22] = c;
     param_1[0x23] = d;
