@@ -53,8 +53,43 @@ extern "C" DSError ddh_cc_pre_continue(void)
 	return DS_NoError;
 }
 
+void MWTRACE(u8, char*, ...);
+extern char lbl_80203220[];
+extern int lbl_802FFAC0;
+extern "C" void MWTRACE(u8, char*, ...);
+extern "C" void MWTRACE(u8 level, char* fmt, ...);
+extern "C" int ddh_cc_write(void* buf, int len)
+{
+	int iVar2;
+
+	if (lbl_802FFAC0 == 0) {
+		MWTRACE(8, lbl_80203220);
+		return -0x2711;
+	}
+	MWTRACE(8, lbl_80203220 + 0x14, buf, len);
+	while (len > 0) {
+		MWTRACE(1, lbl_80203220 + 0x40, len);
+		iVar2 = EXI2_WriteN(buf, len);
+		if (iVar2 == 0) {
+			break;
+		}
+		buf = (u8*)buf + iVar2;
+		len -= iVar2;
+	}
+	return 0;
+}
+
 extern "C" int ddh_cc_close()
 {
+	return 0;
+}
+
+extern "C" int ddh_cc_open()
+{
+	if (lbl_802FFAC0 != 0) {
+		return -0x2715;
+	}
+	lbl_802FFAC0 = 1;
 	return 0;
 }
 
