@@ -344,6 +344,11 @@ extern "C" void fn_80172474(int param_1, u8 param_2)
     *(u8*)(param_1 + 4) = param_2;
 }
 
+extern "C" u8 fn_8017247C(int param_1)
+{
+    return *(u8*)(param_1 + 4);
+}
+
 extern "C" s32 fn_80172640(s32 p, s32 i)
 {
 	return p + i * 4 + 0x16;
@@ -414,11 +419,16 @@ extern "C" s32 fn_80172B80(s32 p, s32 i) {
 }
 
 extern "C" void fn_80172BD4(u8* param_1, s32 param_2, u8* param_3) {
+    u8 uVar1;
+    u8 uVar2;
     u8* p = param_1 + param_2 * 4;
+    uVar1 = param_3[1];
     p[0x60] = param_3[0];
-    p[0x61] = param_3[1];
-    p[0x62] = param_3[2];
-    p[0x63] = param_3[3];
+    uVar2 = param_3[2];
+    p[0x61] = uVar1;
+    uVar1 = param_3[3];
+    p[0x62] = uVar2;
+    p[0x63] = uVar1;
 }
 
 extern "C" s32 fn_80172C00(s32 param_1, s32 param_2) {
