@@ -48,6 +48,10 @@ extern "C" void fn_8017A928(void) {
     fn_801788C0();
 }
 
+extern "C" u8 fn_80180B58(u8* self) {
+    return self[0x110];
+}
+
 extern "C" void fn_80176550(u32* self);
 extern "C" void fn_8018119C(u32* self, int a, int b, int c, int d, int e);
 extern u32 lbl_80299040[];
