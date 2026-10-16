@@ -169,9 +169,9 @@ extern "C" void fn_801F06F0(void* this_, void* name, s32 id, DrawRec* rec, s32 n
 extern "C" void fn_8035E3E4(u8* p) {
     DrawRec rec;
     if (*(s32*)(p + 0x230) < 3 || (*(s32*)(p + 0x230) == 3 && *(s32*)(p + 0x238) == 0)) {
-        rec.b25 = -1;
+        *(s8*)&rec.b1d = -1;
     } else {
-        rec.b25 = 0;
+        rec.b1d = 0;
     }
     if (*(s32*)(p + 0x240) == 0) {
         fn_801F06F0(p, lbl_804727F8, *(s32*)(p + 0x250) + *(s32*)(p + 0x248), &rec, 7, lbl_805429A0, lbl_805429A0);
