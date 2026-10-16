@@ -95,15 +95,23 @@ extern "C" void fn_800D54EC(char* p)
     }
 }
 
+extern "C" void fn_800D624C(char* param_1) {
+    if (*(u8*)(param_1 + 0x138) != 0) {
+        (*(u8*)(param_1 + 0x138))--;
+        return;
+    }
+    *(u32*)(lbl_802BB0FC + 0x104) |= 4;
+    param_1[0x130] = 0;
+}
+
 extern "C" void fn_800D6284(void) {
 }
 
 extern "C" void fn_800D6288(char* param_1) {
     if (*(u8*)(param_1 + 0xf8) != 0) {
         (*(s32*)(param_1 + 0xf4))++;
-        s16 n = *(s16*)(*(char**)(param_1 + 0xf0) + 6);
-        if (*(s32*)(param_1 + 0xf4) >= n) {
-            *(s32*)(param_1 + 0xf4) -= n;
+        if (*(s32*)(param_1 + 0xf4) >= *(s16*)(*(char**)(param_1 + 0xf0) + 6)) {
+            *(s32*)(param_1 + 0xf4) -= *(s16*)(*(char**)(param_1 + 0xf0) + 6);
         }
         *(f32*)(*(char**)(param_1 + 0xf0) + 8) = *(s32*)(param_1 + 0xf4);
         fn_8017A4F8(*(void**)(param_1 + 8));
