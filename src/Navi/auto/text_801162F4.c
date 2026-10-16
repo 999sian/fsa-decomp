@@ -11,6 +11,37 @@ extern "C" void fn_801162F4(void) {
     memset();
 }
 
+extern "C" f32 fn_80116314(f32* p, f32 target, f32 rate, f32 maxStep, f32 minStep) {
+    f32 cur = *p;
+    if (cur != target) {
+        f32 d = rate * (target - cur);
+        f32 negMin;
+        if (d >= minStep || d <= (negMin = -minStep)) {
+            if (d > maxStep) {
+                d = maxStep;
+            }
+            if (d < -maxStep) {
+                d = -maxStep;
+            }
+            *p += d;
+        } else if (d > lbl_80301470) {
+            if (d < minStep) {
+                *p = cur + minStep;
+                if (*p > target) {
+                    *p = target;
+                }
+            }
+        } else if (d > negMin) {
+            *p = cur + negMin;
+            if (*p < target) {
+                *p = target;
+            }
+        }
+    }
+    f32 r = __fabs(target - *p);
+    return r;
+}
+
 extern "C" int fn_801167D0(s16* p, s16 target, s16 step) {
     if (step != 0) {
         if (*p > target) {
@@ -25,6 +56,12 @@ extern "C" int fn_801167D0(s16* p, s16 target, s16 step) {
         return 1;
     }
     return 0;
+}
+
+extern "C" void fn_801168AC(void) {
+    extern void* lbl_802FDC98;
+    extern u8 lbl_802C5D58[];
+    lbl_802FDC98 = lbl_802C5D58;
 }
 
 extern "C" void fn_8011691C(unsigned short* param_1, unsigned short param_2);
