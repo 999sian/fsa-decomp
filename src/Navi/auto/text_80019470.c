@@ -911,7 +911,7 @@ extern "C" void* fn_80020304(void* ptr, s16 param_2) {
     return ptr;
 }
 
-void fn_80020340(void) {}
+extern "C" void fn_80020340(void) {}
 
 extern "C" void* fn_80020344(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
