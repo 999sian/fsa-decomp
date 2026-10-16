@@ -65,6 +65,19 @@ extern "C" s32 fn_801C11F0(char* this_) {
     return result;
 }
 
+extern "C" void fn_801C1224(char* this_, s32 param_2) {
+    char* p = this_;
+    s32 count = *(s32*)(this_ + 0xc);
+    for (s32 i = 0; i < count; i++) {
+        char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
+        if (obj != 0 && (*(u32*)(obj + 0x230) & 0x10000) == 0) {
+            *(s32*)(obj + 0x10c) = param_2;
+            (*(void (**)(char*))(*(char**)obj + 0x24))(obj);
+        }
+        p += 4;
+    }
+}
+
 extern "C" s32 fn_801C1314(u16* this_) {
     s32 ret = 0;
     if (*(s32*)((char*)this_ + 0x50) >= 0) {
@@ -76,6 +89,47 @@ extern "C" s32 fn_801C1314(u16* this_) {
         }
     }
     return ret;
+}
+
+extern "C" void fn_801C1440(char* this_, s32 param_2) {
+    s32* p = (s32*)(this_ + 0x10);
+    s32 i;
+    u8 found = 0;
+    if (*(s32*)(this_ + 0xc) <= 0) return;
+    for (i = 0; i < *(s32*)(this_ + 0xc); i++, p++) {
+        if (!found) {
+            if (param_2 == *p) {
+                found = 1;
+            }
+        } else {
+            p[-1] = *p;
+        }
+    }
+    if (found) {
+        *(s32*)(this_ + 0xc) = *(s32*)(this_ + 0xc) - 1;
+    }
+}
+
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* p, s32 v);
+extern "C" u16 fn_801C14A8(char* this_, void* param_2) {
+    *(void**)(this_ + *(s32*)(this_ + 0xc) * 4 + 0x10) = param_2;
+    *(s32*)(this_ + 0xc) += 1;
+    *(u16*)(this_ + 0x4) += 1;
+    if (*(u16*)(this_ + 0x4) == 1) {
+        fn_802D7440(fn_802D6A9C(), 0);
+    }
+    return *(u16*)(this_ + 0x4) - 1;
+}
+
+extern "C" void fn_801C151C(char* this_) {
+    *(u16*)(this_ + 0x0) = 0;
+    *(u16*)(this_ + 0x2) = 0;
+    *(u16*)(this_ + 0x4) = 0;
+    *(u16*)(this_ + 0x6) = 0;
+    *(u16*)(this_ + 0x8) = 0;
+    *(s32*)(this_ + 0xc) = 0;
+    *(s32*)(this_ + 0x50) = -1;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
