@@ -24,6 +24,29 @@ extern "C" s32 fn_80128B2C(char* p) {
     return *(s32*)(p + 0x230);
 }
 
+extern "C" void fn_80128B34(void* p) {
+    if (*(s32*)((u8*)fn_8011921C() + 4) == 0xc) {
+        s32 v = *(s32*)((u8*)fn_8011921C() + 8);
+        if (v == lbl_80464FC0[1]) {
+            fn_80128728(p, 1);
+        } else if (v == lbl_80464FC0[4]) {
+            fn_80128728(p, 4);
+        } else if (v == lbl_80464FC0[5]) {
+            fn_80128728(p, 5);
+        } else if (v == lbl_80464FC0[6]) {
+            fn_80128728(p, 6);
+        } else if (v == lbl_80464FC0[7]) {
+            fn_80128728(p, 7);
+        } else if (v == lbl_80464FC0[8]) {
+            fn_80128728(p, 8);
+        } else if (v == lbl_80464FC0[9]) {
+            fn_80128728(p, 9);
+        } else if (v == lbl_80464FC0[10]) {
+            fn_80128728(p, 10);
+        }
+    }
+}
+
 extern "C" void* lbl_8053AB10;
 extern "C" void* lbl_8053AF38;
 extern "C" void* lbl_8053AAF8;
