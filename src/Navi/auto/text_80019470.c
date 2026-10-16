@@ -75,7 +75,7 @@ extern "C" void fn_8001C930(void);
 extern void* lbl_802B7BD8;
 extern void* lbl_802B7C04;
 extern "C" void* fn_8001D540(void*, void*);
-extern "C" void fn_8001D57C(void*, void*);
+extern "C" s32 fn_8001D57C(void*, void*);
 extern "C" void* fn_8001AC74(void*, void*);
 extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
