@@ -14,7 +14,7 @@ struct NaviTracker {
     virtual void fn_10();
     virtual void fn_11();
     virtual void fn_12();
-    virtual void fn_13();
+    virtual s32 fn_13(u32*, u32, s32);
     virtual void fn_14();
     virtual s32 fn_15(u32*, u32, s32);
 };
@@ -202,22 +202,28 @@ extern "C" void fn_801364F4(void* param_1) {
 
 extern "C" f64 fn_80136528(void* param_1, u32* param_2) {
     void** begin = *(void***)((u8*)param_1 + 4);
-    s32 count = begin == nullptr ? 0 : (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
-    if (*param_2 >= count) {
+    u32 idx = *param_2;
+    s32 count;
+    if (begin == nullptr) {
+        count = 0;
+    } else {
+        count = (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
+    }
+    if (idx >= count) {
         return 0.0;
     }
-    void* elem = begin[*param_2];
+    void* elem = begin[idx];
     return ((f64 (*)(void*))(*(void***)elem)[7])(elem);
 }
 
 extern "C" void fn_80136700(void* param_1, f64 param_2, f64* param_3) {
     void** volatile end = *(void***)((u8*)param_1 + 8);
     void** volatile cur = *(void***)((u8*)param_1 + 4);
-    param_2 -= *param_3;
+    f64 d = param_2 - *param_3;
     while (cur != end) {
         void* elem = *cur;
         cur++;
-        ((void (*)(void*, f64))(*(void***)elem)[7])(elem, param_2);
+        ((void (*)(void*, f64))(*(void***)elem)[7])(elem, d);
     }
 }
 
@@ -567,10 +573,11 @@ extern "C" void* fn_801399E4(void* list, u32 index)
     Iter a;
     a.p = *(void***)((char*)list + 0xc);
     Iter b = a;
+    void** cur = b.p;
     for (; index != 0; index--) {
-        b.p = (void**)*b.p;
+        cur = (void**)*cur;
     }
-    return (char*)b.p - 0xc;
+    return (char*)cur - 0xc;
 }
 
 extern void* lbl_80292CAC[];
@@ -689,9 +696,9 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
     return param_1;
 }
 
-extern "C" u32 fn_8013BCDC(void* param_1, u32 param_2) {
+extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
     u32 out;
-    if (((s32 (*)(void*, u32*, u32, u32))(*(void***)param_1)[15])(param_1, &out, param_2, 0) == 0) {
+    if (param_1->fn_15(&out, param_2, 0) == 0) {
         return 0;
     }
     return out;
@@ -702,7 +709,7 @@ extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029320C;
-        ((void (*)(void*))(*(void***)ptr)[5])(ptr);
+        ((NaviTracker*)ptr)->fn_5();
         fn_80133C0C(ptr, 0);
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
@@ -712,9 +719,9 @@ extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_8013C0E4(void* param_1) {
-    void* piVar1 = *(void**)((u8*)param_1 + 0x128);
-    u32 uVar2 = ((u32 (*)(void*))(*(void***)piVar1)[6])(piVar1);
-    ((void (*)(void*, u32))(*(void***)piVar1)[7])(piVar1, uVar2 & 0xfffffffe);
+    NaviTracker* piVar1 = *(NaviTracker**)((u8*)param_1 + 0x128);
+    u32 uVar2 = piVar1->fn_6();
+    piVar1->fn_7(uVar2 & 0xfffffffe);
 }
 
 extern "C" void fn_8013C138(void* param_1, void* param_2) {
