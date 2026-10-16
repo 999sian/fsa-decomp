@@ -40,8 +40,8 @@ extern "C" void fn_801BD8C0(void* obj, const JGeometry::TVec3<f32>& pos, s32 ang
 extern const f32 lbl_8053EC70;
 
 static inline s16 ezmrGetSpeed(u8* this_) {
-    s16 v = *(s16*)(this_ + 0x2f8);
     s32 sw = *(s32*)(this_ + 0x2f0);
+    s16 v = *(s16*)(this_ + 0x2f8);
     if (sw != 0 && fn_802D800C(fn_802D6A9C(), sw)) {
         v = -v;
     }
@@ -60,10 +60,12 @@ extern "C" void fn_801BD198(u8* this_) {
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
     pos.x += (f32)*(s32*)(this_ + 0x2f4) * dx;
     pos.y += (f32)*(s32*)(this_ + 0x2f4) * dy;
+    u8* p = this_;
     for (s32 i = 0; i < *(s32*)(this_ + 0x2a8); i++) {
-        fn_801BD8C0(fn_801F666C(fn_801F856C(), *(s32*)(this_ + i * 4 + 0x2ac)), pos, *(s16*)(this_ + 0x2fc));
+        fn_801BD8C0(fn_801F666C(fn_801F856C(), *(s32*)(p + 0x2ac)), pos, *(s16*)(this_ + 0x2fc));
         pos.x += dx;
         pos.y += dy;
+        p += 4;
     }
 }
 
