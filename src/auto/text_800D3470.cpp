@@ -146,6 +146,10 @@ void J3DTexGenBlockBasic::initialize()
 	mTexMtxOffset = 0;
 }
 
+extern "C" void fn_800D36E0(u32* param_1) {
+    param_1[1] = 0;
+}
+
 extern "C" int fn_800D3E10(void) {
     return 0x22;
 }
