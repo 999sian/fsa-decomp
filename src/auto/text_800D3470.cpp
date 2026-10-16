@@ -280,6 +280,33 @@ struct Unk800DC574Src {
     virtual u32* m47(int) = 0;
 };
 
+struct Unk800DC164Src {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual void m14() = 0;
+    virtual void m15() = 0;
+    virtual u32 m16() = 0;
+    virtual void m17() = 0;
+    virtual u32* m18(int) = 0;
+    virtual void m19() = 0;
+    virtual void* m20(int) = 0;
+    virtual void m21() = 0;
+    virtual void m22() = 0;
+    virtual J3DNBTScaleInfo* m23() = 0;
+};
+
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
