@@ -182,6 +182,18 @@ extern "C" void* fn_8003C4F4(void) {
     return lbl_802BF188;
 }
 
+extern "C" void fn_8003CC68(void);
+extern "C" void* fn_8003CC2C(void* ptr, s16 param_2);
+extern "C" void* fn_8003CBB8(void* param_1) {
+    *(void**)param_1 = lbl_80299A8C;
+    *((s32*)param_1 + 1) = 0;
+    *((s32*)param_1 + 2) = 0;
+    *((s32*)param_1 + 3) = 0;
+    *(void**)param_1 = lbl_80246ABC;
+    fn_801E0DB8((char*)param_1 + 0x18, (void*)fn_8003CC68, (void*)fn_8003CC2C, 0x38, 0x64);
+    return param_1;
+}
+
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
