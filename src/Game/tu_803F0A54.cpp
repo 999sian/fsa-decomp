@@ -56,3 +56,7 @@ extern "C" void fn_803F3310(u8* p) {
     *(s32*)(p + 0x1c4) = 1;
 }
 
+extern "C" void fn_803F358C(u8* p) {
+    fn_80436668(*(void**)(p + 0x58));
+}
+
