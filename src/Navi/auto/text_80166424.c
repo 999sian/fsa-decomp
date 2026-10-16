@@ -111,6 +111,10 @@ extern "C" void* fn_80167404(void* ptr, s16 param_2) {
 
 extern "C" int fn_80167554(int p) { return *(int*)(p + 0xc); }
 
+extern "C" int fn_8016755C(int param_1) {
+  return *(int *)(param_1 + 0x10);
+}
+
 extern "C" int fn_80167810(int p) { return *(int*)(p + 0xc); }
 
 extern void* lbl_802911A0[];
