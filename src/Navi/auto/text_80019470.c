@@ -5,6 +5,10 @@ extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
+extern "C" int fn_8006347C(void*, void*, int, const char*, int, int);
+extern "C" void fn_800134B8(void*, int, int);
+extern u8 lbl_802B7CA0[];
+extern const char lbl_802061AC[];
 typedef struct {
     u8 r, g, b, a;
 } NaviColor;
@@ -1412,9 +1416,10 @@ extern "C" void fn_8001F5A8(void* param_1, f32* out) {
         obj = 0;
     }
     if (obj == 0) {
-        out[0] = lbl_802FFCC0;
+        f32 z = lbl_802FFCC0;
+        out[0] = z;
         out[1] = lbl_802FFCC4;
-        out[2] = lbl_802FFCC0;
+        out[2] = z;
     }
     out[0] = *(f32*)(obj + 0xf0);
     out[1] = *(f32*)(obj + 0xf4);
@@ -1422,8 +1427,10 @@ extern "C" void fn_8001F5A8(void* param_1, f32* out) {
 }
 
 extern "C" void fn_8001F610(u8* param_1, f32* in) {
-    struct V { f32 x, y, z; };
-    *(V*)(param_1 + 0x24) = *(V*)in;
+    f32* d = (f32*)(param_1 + 0x24);
+    d[0] = in[0];
+    d[1] = in[1];
+    d[2] = in[2];
     param_1[4] |= 0x20;
 }
 
@@ -1441,8 +1448,9 @@ extern "C" void fn_8001F638(void* param_1, f32* out) {
         obj = 0;
     }
     if (obj == 0) {
-        out[0] = lbl_802FFCC0;
-        out[1] = lbl_802FFCC0;
+        f32 z = lbl_802FFCC0;
+        out[0] = z;
+        out[1] = z;
         out[2] = lbl_802FFCC4;
     }
     out[0] = *(f32*)(obj + 0xe4);
@@ -1451,8 +1459,10 @@ extern "C" void fn_8001F638(void* param_1, f32* out) {
 }
 
 extern "C" void fn_8001F6A0(u8* param_1, f32* in) {
-    struct V { f32 x, y, z; };
-    *(V*)(param_1 + 0x30) = *(V*)in;
+    f32* d = (f32*)(param_1 + 0x30);
+    d[0] = in[0];
+    d[1] = in[1];
+    d[2] = in[2];
     param_1[4] |= 0x40;
 }
 
