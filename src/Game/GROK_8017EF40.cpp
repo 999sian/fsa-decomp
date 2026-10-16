@@ -19,8 +19,6 @@ struct ActorVt_grok {
     virtual void v5();
     virtual void v6();
     virtual void v7();
-    virtual void v8();
-    virtual void v9();
     virtual void setShadow(s32 type, f32 x, f32 y);
 };
 
