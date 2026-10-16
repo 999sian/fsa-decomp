@@ -60,6 +60,28 @@ extern "C" int TRKDoReset()
     return 0;
 }
 
+extern "C" int TRKDoDisconnect()
+{
+	struct {
+		u32 length;
+		u8 type;
+		u8 pad[3];
+		u8 flag;
+		u8 rest[0x40 - 9];
+	} msg;
+	u8 event[12];
+
+	lbl_802FA410[0] = 0;
+	memset(&msg, 0, 0x40);
+	msg.type = 0x80;
+	msg.length = 0x40;
+	msg.flag = 0;
+	TRKWriteUARTN(&msg, 0x40);
+	TRKConstructEvent(event, 1);
+	TRKPostEvent(event);
+	return 0;
+}
+
 extern "C" void* GetTRKConnected(void);
 extern void* lbl_802FA410[];
 extern "C" void* GetTRKConnected(void) {
