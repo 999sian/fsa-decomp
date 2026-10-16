@@ -18,10 +18,9 @@ extern "C" u8 fn_801EE3C0(u16 tile);
 extern "C" u8 fn_802E4C74(char* p, Blz2Vec* pos) {
     u8 hit = 0;
     for (s32 i = 0; i < 4; i++) {
-        Blz2Vec q;
-        q.x = pos->x + lbl_8046F148[i];
-        q.y = pos->y + lbl_8046F188[i];
-        q.z = pos->z;
+        f32 x = pos->x + lbl_8046F148[i];
+        f32 y = pos->y + lbl_8046F188[i];
+        Blz2Vec q(x, y, pos->z);
         if (fn_801EE3C0(fn_80226850(&q, *(u32*)(p + 0x4))) == 1) {
             hit = 1;
             break;
@@ -116,8 +115,9 @@ extern "C" void fn_802E4E6C(u8* self) {
                 fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x34c, 0, 0, 0, 0, 1);
                 fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x34d, 0, 0, 0, 0, 1);
                 fn_8013CC50(*(s32*)(self + 4), &pos, 1.0f, 0x54d, 1, 0, 0, 0, 1);
+                s32 tex = *(s32*)(self + 4);
                 Blz2Color c(0, 0, 0, 0x80);
-                fn_80158B5C(lbl_8053AB10->m2c, *(s32*)(self + 4), &pos, c, 32.0f);
+                fn_80158B5C(lbl_8053AB10->m2c, tex, &pos, c, 32.0f);
                 pos.y += 16.0f;
             }
             pos.y = *(f32*)(self + 0x10);
