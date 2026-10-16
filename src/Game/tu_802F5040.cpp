@@ -22,6 +22,10 @@ extern "C" f32 fn_802F5FF4(f32 x) {
     return a / (a - v);
 }
 
+extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 b, void* ptr, f32 f1, f32 f2);
+extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr);
+extern "C" void fn_802F6CF4(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr);
+extern "C" void fn_802FEE68(Tu802F5040Tbl* base);
 extern "C" u16 fn_802F9908(Tu802F5040Tbl* base, s32 idx, s32 off) {
     s32 v;
     if (idx >= 0 && idx < 4) {
