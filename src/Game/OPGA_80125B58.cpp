@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 struct OPGA_Vec {
     f32 x, y, z;
 };
@@ -33,3 +34,10 @@ extern "C" void* fn_80125B58(u8* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+extern "C" void fn_80125BF4(u8* this_) {
+    JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
+    pos.y += lbl_8053CA78;
+    fn_8013CC50(*(u32*)(this_ + 4), &pos, 0x33a, 0, 0, 0, 0, 1, lbl_8053CA7C);
+}
+
