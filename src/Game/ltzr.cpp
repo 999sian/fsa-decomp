@@ -63,6 +63,42 @@ extern "C" void fn_80340668(void* this_) {
     }
 }
 
+extern "C" u8 fn_80340734(void* this_) {
+    char* p = (char*)this_;
+    u8 found = 0;
+    if (*(s32*)(p + 0x90) & 1) {
+        for (s32 i = 0; i < 4; i++) {
+            if (fn_80233E40(i)) {
+                f32 dx = *(f32*)(p + 0xc) - fn_8023E724(i)[0];
+                f32 dy = *(f32*)(p + 0x10) - fn_8023E724(i)[1];
+                if (dx * dx + dy * dy < lbl_805422B0) {
+                    f32 angle = JMath::atanTable_.atan2_(dx, dy);
+                    u16 ang = (u16)(s32)(angle * lbl_8054228C);
+                    f32 v[3];
+                    v[1] = JMath::sincosTable_.cosShort(ang + 0x3000);
+                    v[0] = JMath::sincosTable_.sinShort(ang + 0x3000);
+                    v[2] = lbl_80542268;
+                    fn_8023DFF4(i, v);
+                    found = 1;
+                }
+            }
+        }
+        if (found) {
+            if (*(void**)(p + 0x2b8) == 0) {
+                *(void**)(p + 0x2b8) = fn_8013CC50(*(void**)(p + 4), p + 0xc, lbl_805422B4, 0x553, -1, -2, 0, 0, 1);
+            }
+        } else {
+            char* obj = *(char**)(p + 0x2b8);
+            if (obj != 0) {
+                *(u32*)(obj + 0xf4) |= 1;
+                *(s32*)(obj + 0x24) = 1;
+                *(void**)(p + 0x2b8) = 0;
+            }
+        }
+    }
+    return found;
+}
+
 extern "C" void fn_80340BC8(char* p) {
     p[0x2ac] = 0;
     p[0x2ad] = 0;
