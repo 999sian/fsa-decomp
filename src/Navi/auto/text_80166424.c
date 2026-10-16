@@ -52,6 +52,8 @@ extern "C" u32 lbl_8030238C;
 typedef void VFn_80169B1C(u32*, int);
 extern "C" void fn_80172264(void* p);
 extern "C" void* fn_801721FC(void* self);
+extern "C" char lbl_80202278[];
+extern "C" u8 lbl_80301AC8[2];
 extern "C" void* fn_801749F0(void* p, void* q);
 struct UnkVObj_80166424 {
     virtual void vf0();
