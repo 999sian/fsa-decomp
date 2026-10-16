@@ -46,6 +46,48 @@ extern "C" void* fn_80079EFC(void* this_) {
     return this_;
 }
 
+extern "C" void free__7JKRHeapFPvP7JKRHeap(void* ptr, void* heap);
+extern "C" void remove__10JSUPtrListFP10JSUPtrLink(char* list, u8* link);
+extern "C" void __dt__10JKRArchiveFv(void* this_, s32 deleteFlag);
+extern "C" void __dl__FPv(void* ptr);
+extern "C" void* fn_80079FE8(void* this_, s16 deleteFlag) {
+    extern char sVolumeList__13JKRFileLoader[];
+    u8* self = (u8*)this_;
+    if (self != nullptr) {
+        *(void**)self = lbl_80498BB0;
+        if (*(u8*)(self + 0x30) == 1) {
+            if (*(u8**)(self + 0x44) != nullptr) {
+                u8* fileEntry = *(u8**)(self + 0x4c);
+                for (u32 i = 0; i < *(u32*)(*(u8**)(self + 0x44) + 0x8); i++) {
+                    if (*(void**)(fileEntry + 0x10) != nullptr) {
+                        free__7JKRHeapFPvP7JKRHeap(*(void**)(fileEntry + 0x10), *(void**)(self + 0x38));
+                    }
+                    fileEntry += 0x14;
+                }
+                free__7JKRHeapFPvP7JKRHeap(*(void**)(self + 0x44), *(void**)(self + 0x38));
+                *(void**)(self + 0x44) = nullptr;
+            }
+            if (*(void**)(self + 0x50) != nullptr) {
+                free__7JKRHeapFPvP7JKRHeap(*(void**)(self + 0x50), nullptr);
+                *(void**)(self + 0x50) = nullptr;
+            }
+            if (*(JKRFile**)(self + 0x68) != nullptr) {
+                delete *(JKRFile**)(self + 0x68);
+            }
+            if (*(JKRFile**)(self + 0x64) != nullptr) {
+                delete *(JKRFile**)(self + 0x64);
+            }
+            remove__10JSUPtrListFP10JSUPtrLink(sVolumeList__13JKRFileLoader, self + 0x18);
+            *(u8*)(self + 0x30) = 0;
+        }
+        __dt__10JKRArchiveFv(this_, 0);
+        if (deleteFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 JKRFile::~JKRFile() {}
 
 extern "C" bool fn_8007A398(u8* this_, s32 entryNum);
@@ -181,25 +223,27 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, 
 
 extern "C" void* findPtrResource__10JKRArchiveCFPCv(void* this_, const void* resource);
 extern "C" u32 fn_8007AAF8(void* this_, const void* resource) {
-    if (*(u32*)((u8*)this_ + 0x50) != 0) {
-        u8* fileEntry = (u8*)findPtrResource__10JKRArchiveCFPCv(this_, resource);
-        if (fileEntry == nullptr) {
-            return 0xffffffff;
-        }
-        if ((*(u32*)(fileEntry + 0x4) >> 24 & 4) != 0) {
-            u32 expandSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, fileEntry);
-            if (expandSize != 0) {
-                return expandSize;
-            }
-            u8 buf[64];
-            u8* bufPtr = (u8*)(((u32)buf + 31) & ~31);
-            u8* block = *(u8**)((u8*)this_ + 0x64);
-            JKRAram::aramToMainRam(*(u32*)(fileEntry + 0x8) + *(u32*)(block + 0x14), bufPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, nullptr, -1, nullptr);
-            expandSize = (bufPtr[4] << 24) | (bufPtr[5] << 16) | (bufPtr[6] << 8) | bufPtr[7];
-            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, fileEntry, expandSize);
-            return expandSize;
-        }
+    u8* self = (u8*)this_;
+    if (*(u32*)(self + 0x50) == 0) {
+        return ((u32 (*)(void*, const void*))(*(void***)this_)[0x30 / 4])(this_, resource);
     }
-    return ((u32 (*)(void*, const void*))(*(void***)this_)[0x30 / 4])(this_, resource);
+    u8* fileEntry = (u8*)findPtrResource__10JKRArchiveCFPCv(this_, resource);
+    if (fileEntry == nullptr) {
+        return 0xffffffff;
+    }
+    if ((*(u32*)(fileEntry + 0x4) >> 24 & 4) == 0) {
+        return ((u32 (*)(void*, const void*))(*(void***)this_)[0x30 / 4])(this_, resource);
+    }
+    u32 expandSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, fileEntry);
+    if (expandSize != 0) {
+        return expandSize;
+    }
+    u8 buf[64];
+    u8* bufPtr = (u8*)(((u32)buf + 31) & ~31);
+    u8* block = *(u8**)(self + 0x64);
+    JKRAram::aramToMainRam(*(u32*)(fileEntry + 0x8) + *(u32*)(block + 0x14), bufPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, nullptr, -1, nullptr);
+    expandSize = (bufPtr[4] << 24) | (bufPtr[5] << 16) | (bufPtr[6] << 8) | bufPtr[7];
+    ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, fileEntry, expandSize);
+    return expandSize;
 }
 
