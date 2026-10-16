@@ -1548,16 +1548,16 @@ extern "C" void fn_80187E64(u32* self, void* a, int b, int c) {
     ((VObj_80180980*)self)->vf118(fn_8017A4A8(a), b, c);
 }
 
-extern "C" int fn_80187ECC(u8* self, u8 arg) {
+extern "C" int fn_80187ECC(u8* self, int arg) {
     u8* p = *(u8**)(self + 0x168);
     if (p == nullptr) {
         return 0;
     }
-    void** obj = *(void***)(p + 0x70);
+    VObj_80187ECC* obj = *(VObj_80187ECC**)(p + 0x70);
     if (obj == nullptr) {
         return 0;
     }
-    return ((int (*)(void*, u8))((void**)*obj)[0xa0 / 4])(obj, arg);
+    return obj->vfA0(arg);
 }
 
 extern "C" u32 fn_80187F24(void* self) {
@@ -1898,6 +1898,13 @@ extern "C" void fn_8018A5A8(s32* self, void* a) {
         *self = -1;
     } else {
         *self = local_18;
+    }
+}
+
+extern "C" void fn_8018A700(u8* self, void* obj) {
+    void* p = *(void**)(self + 0x138);
+    if (p != NULL) {
+        fn_8016A0B4(p, obj);
     }
 }
 
