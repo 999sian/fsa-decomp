@@ -2,6 +2,7 @@
 #include <JSystem/J2D/J2DScreen.h>
 
 
+extern "C" void* lbl_804B1B60[];
 extern const f32 lbl_80543D78;
 extern "C" void fn_8013B490(void*);
 extern "C" void fn_80402628(void*, s32, s32, u8);
