@@ -96,6 +96,25 @@ extern "C" u32 fn_80197B4C(void* param_1) {
     return (b + (a + c + 0x1f)) & ~0x1f;
 }
 
+extern "C" void fn_80198AEC(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(u32*)(p + 0x8) = 0;
+    *(u32*)(p + 0x4) = 0;
+    *(u32*)(p + 0xc) = 0;
+    *(u32*)(p + 0x10) = 1;
+    *(u16*)(p + 0x14) = 0xffff;
+    *(u32*)(p + 0x18) = 0;
+    *(u32*)(p + 0x20) = 0;
+    *(u32*)(p + 0x24) = 0;
+    *(u32*)(p + 0x28) = 0;
+    *(u32*)(p + 0x2c) = 0;
+    *(u32*)(p + 0x30) = 0;
+    *(u32*)(p + 0x34) = 0;
+    *(u32*)(p + 0x38) = 0;
+    *(u32*)(p + 0x3c) = 0;
+    *(u32*)(p + 0x48) = 0;
+}
+
 extern u8 lbl_802EE470[];
 extern "C" void fn_80198B44(void* param_1) {
     *(u32*)(lbl_802EE470 + 0x54) = *(u32*)((u8*)param_1 + 0x10);
