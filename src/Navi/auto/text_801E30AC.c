@@ -71,11 +71,7 @@ extern "C" int fn_801E3C54(unsigned char* s1, unsigned char* s2, unsigned int n)
         if (*++p1 == *++p2) {
             continue;
         }
-        if (*p1 < *p2) {
-            result = -1;
-        } else {
-            result = 1;
-        }
+        result = *p1 < *p2 ? -1 : 1;
         return result;
     }
     return 0;
@@ -84,7 +80,8 @@ extern "C" int fn_801E3C54(unsigned char* s1, unsigned char* s2, unsigned int n)
 extern "C" unsigned char* fn_801E3CD4(unsigned char* s, int c, unsigned int n) {
     unsigned char* p = s + n;
     unsigned char ch = c;
-    while (n--) {
+    unsigned int i = n + 1;
+    while (--i) {
         if (*--p == ch) {
             return p;
         }
@@ -425,7 +422,6 @@ extern "C" float fn_801EA228(void) {
     return (float)fn_801E9FC0();
 }
 
-extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c);
 #pragma dont_inline on
 extern "C" float fn_801EA24C(double x) {
     return (float)fn_801E9EE8(x);
