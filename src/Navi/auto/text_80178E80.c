@@ -253,6 +253,7 @@ extern "C" void fn_80178990(void);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
 extern "C" void fn_8018BB74(void* self, void* dst, void* src);
+extern "C" void fn_801801F4(void* self, void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
 extern "C" void fn_8018BC30(void* self, void* dst, void* src);
 extern "C" void fn_8018BFA4(void* self, void* dst, void* src);
@@ -1511,16 +1512,16 @@ extern "C" void* fn_8018C308(void* base, u32 offset) {
 
 extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
     f32 pos = *(f32*)((u8*)self + 0x8);
-    u16* entry = (u16*)(*(u8**)((u8*)self + 0x14) + param_2 * 4);
+    u8* table = *(u8**)((u8*)self + 0x14);
     u8* data = *(u8**)((u8*)self + 0x18);
-    if (pos >= 0.0f) {
-        if (pos < (f32)entry[0]) {
-            *param_3 = data[(s32)pos + entry[1]];
-        } else {
-            *param_3 = data[entry[0] + entry[1] - 1];
-        }
+    u16 base = *(u16*)(table + param_2 * 4);
+    u16 len = *(u16*)(table + param_2 * 4 + 2);
+    if (pos < 0.0f) {
+        *param_3 = data[len];
+    } else if (pos >= (f32)base) {
+        *param_3 = data[(s32)pos + len];
     } else {
-        *param_3 = data[entry[1]];
+        *param_3 = data[base + len - 1];
     }
 }
 
