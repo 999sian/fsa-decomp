@@ -1,5 +1,8 @@
 #include "types.h"
 extern u32 lbl_802FF208;
+extern void* lbl_80289A64[];
+extern void* lbl_8027EC78[];
+extern void* lbl_8028EFB0[];
 struct DtorVObj_800D64E4 { virtual void Destroy(int); };
 struct VObj_800D69D4 {
     virtual void v0();
