@@ -373,17 +373,31 @@ extern "C" void fn_8019900C(void)
 extern u32 lbl_80301CF8;
 extern u32 lbl_80301CFC;
 extern "C" void fn_80199078(void* param_1) {
-    struct Pack4 {
-        u8 b[4];
-    };
     u8* p = (u8*)param_1;
-    Pack4 a = *(Pack4*)&lbl_80301CF8;
-    Pack4 b = *(Pack4*)&lbl_80301CFC;
+    u32 a = lbl_80301CF8;
+    u32 b = lbl_80301CFC;
+    u32 tmp = a;
+    u8* t = (u8*)&tmp;
     p[0xc] = 0;
-    *(Pack4*)(p + 4) = a;
-    *(Pack4*)(p + 8) = a;
-    *(Pack4*)(p + 0x20) = b;
-    *(Pack4*)(p + 0x24) = b;
+    p[4] = t[0];
+    p[5] = t[1];
+    p[6] = t[2];
+    p[7] = t[3];
+    tmp = a;
+    p[8] = t[0];
+    p[9] = t[1];
+    p[0xa] = t[2];
+    p[0xb] = t[3];
+    tmp = b;
+    p[0x20] = t[0];
+    p[0x21] = t[1];
+    p[0x22] = t[2];
+    p[0x23] = t[3];
+    tmp = b;
+    p[0x24] = t[0];
+    p[0x25] = t[1];
+    p[0x26] = t[2];
+    p[0x27] = t[3];
     *(s32*)(p + 0x18) = 0;
     *(s32*)(p + 0x1c) = 0;
 }
@@ -981,6 +995,10 @@ extern "C" int fn_801A3DEC(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x62;
 }
 
+extern "C" void fn_801A3E0C(u8* p1, int p2, u8* p3) {
+    p1[p2 + 0x72] = *p3;
+}
+
 extern "C" void fn_801A3E34(u8* p, s32 i, u8* src) {
     p[i + 0x76] = *src;
 }
@@ -1277,8 +1295,9 @@ extern "C" BOOL fn_801A45B0(void)
     return TRUE;
 }
 
-extern "C" void fn_801A45B8(u8* p, u32 i, u8* src) {
-    u8* dst = p + i * 8;
+extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
+    u8* dst;
+    dst = p + i * 8;
     dst[0xf] = src[1];
     dst[0x10] = src[2];
     dst[0x11] = src[3];
