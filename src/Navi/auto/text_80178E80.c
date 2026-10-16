@@ -647,6 +647,14 @@ extern "C" s32 fn_8017FC54(void* self) {
     return flags;
 }
 
+extern "C" void fn_8017FD20(VObj_80180980* self, f32 a, f32 b, f32 c, f32 d) {
+    *(f32*)((char*)self + 0x124) = a;
+    *(f32*)((char*)self + 0x128) = b;
+    *(f32*)((char*)self + 0x12c) = c;
+    *(f32*)((char*)self + 0x130) = d;
+    fn_8017FD80();
+}
+
 extern "C" void fn_801801B8(void* self, s32 a, s32 b, s32 c, s32 d) {
     fn_801801F4(self, (u8*)self + 0x112, a, b, c, d);
 }
