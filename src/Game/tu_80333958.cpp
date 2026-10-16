@@ -1,4 +1,6 @@
-#include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+
+class Actor;
 
 
 extern "C" char lbl_804AB968[];
@@ -15,6 +17,97 @@ extern "C" Actor* fn_80333958(Actor* p, s16 n)
     if (n > 0) operator delete(p);
   }
   return p;
+}
+
+extern const f32 lbl_80541F38;
+extern "C" u16 fn_8022461C(Vec* pos, s32 room);
+extern "C" BOOL fn_803339B8(void* this_, s32 room, Vec* pos) {
+    char* p = (char*)this_;
+    Vec v = *pos;
+    switch (*(s32*)(p + 0x240)) {
+    case 0:
+        if (*(s32*)(p + 0x23c) != 0) {
+            v.y -= lbl_80541F38;
+        } else {
+            v.y -= lbl_80541F38;
+        }
+        break;
+    case 1:
+        if (*(s32*)(p + 0x23c) != 0) {
+            v.y += lbl_80541F38;
+        } else {
+            v.y += lbl_80541F38;
+        }
+        break;
+    case 2:
+        if (*(s32*)(p + 0x23c) != 0) {
+            v.x -= lbl_80541F38;
+        } else {
+            v.x -= lbl_80541F38;
+        }
+        break;
+    case 3:
+        if (*(s32*)(p + 0x23c) != 0) {
+            v.x += lbl_80541F38;
+        } else {
+            v.x += lbl_80541F38;
+        }
+        break;
+    }
+    s32 kind = (s16)fn_8022461C(&v, room);
+    switch (*(s32*)(p + 0x240)) {
+    case 0:
+        if (kind == 0x41) {
+            return 1;
+        }
+        break;
+    case 1:
+        if (kind == 0x40) {
+            return 1;
+        }
+        break;
+    case 2:
+        if (kind == 0x43) {
+            return 1;
+        }
+        break;
+    case 3:
+        if (kind == 0x42) {
+            return 1;
+        }
+        break;
+    }
+    return 0;
+}
+
+extern "C" void fn_80333E8C(void* this_) {
+    char* p = (char*)this_;
+    u32* vt;
+    u8 r;
+    fn_801F2B7C(this_, -0x64, -1, 1);
+    vt = *(u32**)p;
+    r = ((u8 (*)(void*))(vt[0x34 / 4]))(this_);
+    if (r != 0) {
+        return;
+    }
+    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
+    *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
+    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+    vt = *(u32**)p;
+    r = ((u8 (*)(void*, u32))(vt[0x4c / 4]))(this_, *(u32*)(p + 4));
+    if (r != 0 || *(s32*)(p + 0x244) > 0x258) {
+        *(u8*)(p + 0x11c) = 0;
+    }
+    *(s32*)(p + 0x234) -= (s32)(lbl_80541F50 + ((f32)__fabs(*(f32*)(p + 0x40)) + (f32)__fabs(*(f32*)(p + 0x3c))));
+    if (*(s32*)(p + 0x234) <= 15) {
+        *(s32*)(p + 0x238) = 1;
+        if (*(s32*)(p + 0x234) <= 0) {
+            *(s32*)(p + 0x234) = 0x1e;
+            *(s32*)(p + 0x238) = 0;
+            fn_801F0E34(this_, 0x30010, 0);
+        }
+    }
+    *(s32*)(p + 0x244) += 1;
 }
 
 extern const f32 lbl_80541F40;
