@@ -1134,6 +1134,10 @@ extern "C" u8 fn_801A51B4(int param_1)
     return *(u8*)(param_1 + 4);
 }
 
+extern "C" void fn_801A51BC(u8* p, s32 i, u32* pv) {
+    *((u32*)(p + (i << 2) + 0x5)) = *pv;
+}
+
 extern "C" int fn_801A5368()
 {
 	return 0;
