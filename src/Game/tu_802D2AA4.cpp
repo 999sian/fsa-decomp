@@ -34,3 +34,17 @@ extern "C" void fn_802D2D0C(void* this_) {
     fn_803075AC(*(void**)((char*)this_ + 0x198), *(s32*)((char*)this_ + 4), (char*)this_ + 0xc, 0x2b, 0, 2, -1, 1, 0, 0);
 }
 
+extern "C" void fn_802D2F18(char* p) {
+    *(f32*)(p + 0x60) = lbl_80540F24;
+    *(f32*)(p + 0x64) = lbl_80540F24;
+    *(f32*)(p + 0x68) = lbl_80540F28;
+    *(f32*)(p + 0x6c) = lbl_80540F28;
+    *(s32*)(p + 0x1a4) = 1;
+    *(s32*)(p + 0x230) = 0;
+    *(f32*)(p + 0x80) = lbl_80540F2C;
+    *(f32*)(p + 0x84) = lbl_80540F2C;
+    *(f32*)(p + 0x88) = lbl_80540F30;
+    *(f32*)(p + 0x8c) = lbl_80540F30;
+    *(s32*)(p + 0x234) = 0;
+}
+
