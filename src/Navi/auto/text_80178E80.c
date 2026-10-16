@@ -50,6 +50,14 @@ extern "C" void* fn_8017B7E4(void* self, s16 param_2) {
     return self;
 }
 
+extern "C" void fn_80177F0C(void);
+extern "C" void fn_80176550(void* self);
+extern "C" void fn_8018119C(void* self, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern char lbl_80299040[];
+extern "C" void fn_80180B88(void) {
+    fn_80177F0C();
+}
+
 extern "C" void fn_80178990(void);
 extern "C" void fn_8018903C(void) {
     fn_80178990();
