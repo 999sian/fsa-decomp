@@ -244,6 +244,13 @@ extern "C" void* fn_8016AD40(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_8016AD94(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
+}
+
 extern "C" int fn_8016B418()
 {
 	return 0;
