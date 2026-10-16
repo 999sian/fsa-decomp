@@ -141,6 +141,27 @@ extern "C" void fn_803CC490(char* p) {
     }
 }
 
+extern "C" void fn_803CE05C(char* p) {
+    if (fn_80309C4C(lbl_8053AD30, 0x1300, 1) != 0) {
+        if (*(u32*)(p + 0x7c) == 0x51) {
+            *(s32*)(p + 0x80) = 0x83;
+        } else if (*(u32*)(p + 0x7c) == 0x83) {
+            *(s32*)(p + 0x80) = 0x84;
+            p[0x112] = p[0x110];
+            p[0x110] = 0xf;
+        } else {
+            if (lbl_8053AAF8[0x7f] != 0) {
+                *(s32*)(p + 0x80) = 0x5c;
+            } else {
+                *(s32*)(p + 0x80) = 0x256;
+            }
+            p[0x112] = p[0x110];
+            p[0x110] = 3;
+        }
+        fn_80458880(lbl_8053AF80, 0xb, -1);
+    }
+}
+
 extern u32 lbl_8053ADB0;
 extern "C" s32 fn_803CE4B0(void) {
     if (lbl_8053ADB0 != 0) {
