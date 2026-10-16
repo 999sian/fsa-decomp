@@ -677,10 +677,14 @@ extern "C" int fn_8001BC10(int param_1) {
 
 #pragma dont_inline on
 extern "C" void* fn_8001BC68(void* param_1) {
-    if (*((u8*)param_1 + 0xc) == 2 && fn_8001EB7C(param_1, 1) != 1 && fn_8002689C() != 1) {
-        return fn_8001ACEC(param_1);
+    if (*((s8*)param_1 + 0xc) == 2) {
+        if (fn_8001EB7C(param_1, 1) != 1) {
+            if (fn_8002689C() != 1) {
+                return fn_8001ACEC(param_1);
+            }
+        }
     }
-    return 0;
+    return NULL;
 }
 extern "C" s32 fn_8001BCC8(void* param_1) {
     u8* p = (u8*)param_1;
