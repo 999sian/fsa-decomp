@@ -68,7 +68,7 @@ extern "C" BOOL fn_800710CC(void)
 extern u8 lbl_802FCA18;
 extern u16 lbl_802FED38;
 extern u8 lbl_802FF058;
-extern u32 lbl_802FF190;
+extern s32 lbl_802FF190;
 extern u32 lbl_802FF194;
 extern f32 lbl_8030054C;
 extern u8 lbl_802BB0FC[];
@@ -434,6 +434,14 @@ extern "C" BOOL fn_80075610(void);
 extern "C" BOOL fn_80075610(void)
 {
     return TRUE;
+}
+
+extern "C" void fn_80075618(void* p) {
+    if (lbl_802FF190 == 0) {
+        Entry_801F9BAC entry[1];
+        s32 idx = *(s32*)(lbl_802BB0FC + 0x424) * 12;
+        fn_80017FEC(10, 0, lbl_801F9BAC + idx, 0, 0, p, 0);
+    }
 }
 
 extern "C" void* fn_80075890(void* ptr, s16 param_2) {
