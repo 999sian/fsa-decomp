@@ -43,6 +43,7 @@ struct VObj_801843 {
     virtual void* vf94();
     virtual s32 vf98(u8);
     virtual void* vf9C();
+    virtual void* vfA0();
     virtual void* vfA4();
     virtual void* vfA8();
     virtual void* vfAC();
@@ -618,21 +619,23 @@ extern "C" void fn_80180950(void* self, int a, int b, int c) {
     ((VObj_80180920*)self)->vfC8(a, b, 0);
 }
 
-extern "C" void fn_80180980(VObj_80180980* self, int a) {
-    self->vfCC(a, 0);
+extern "C" void fn_80180980(void* self, int a) {
+    ((void (*)(void*, int, int))((void**)(*(void**)self))[0x33])(self, a, 0);
 }
 
-extern "C" void fn_801809B0(VObj_80180980* self, int a, int b) {
-    self->vfC8(a, b, 0);
+extern "C" void fn_801809B0(void* self, int a, int b) {
+    void** vtbl = *(void***)self;
+    ((void (*)(void*, int, int, int))vtbl[0x32])(self, a, b, 0);
 }
 
-extern "C" void fn_801809E0(VObj_80180980* self, int a) {
-    self->vfC4(a, 0);
+extern "C" void fn_801809E0(void* self, int a) {
+    void** vtbl = *(void***)self;
+    ((void (*)(void*, int, int))vtbl[0x31])(self, a, 0);
 }
 
-extern "C" void fn_80180A10(VObj_80180980* self) {
-    u8 n = ((u8*)self)[0x110];
-    self->vfD8((u8)(n - 1));
+extern "C" void fn_80180A10(u8* self) {
+    void** vtbl = *(void***)self;
+    ((void (*)(void*, u8))vtbl[0x36])(self, (u8)(self[0x110] - 1));
 }
 
 extern "C" int fn_80180B60(u8* self, u8* src) {
@@ -745,6 +748,22 @@ extern "C" int fn_80182058(char* self, void* v) {
 
 extern "C" void fn_801820F4(void) {
     fn_80177E84();
+}
+
+extern "C" s32 fn_80184164(char* self, s32* a, s32* b) {
+    char* p;
+    s32 i;
+    if (*a != 0 || *b != -1) {
+        p = self;
+        for (i = 0; i < 4; i++) {
+            VObj_80184164* obj = *(VObj_80184164**)(*(char**)(p + 0x148) + 0x70);
+            if (obj->v6() == 1) {
+                return 0;
+            }
+            p += 4;
+        }
+    }
+    return 1;
 }
 
 extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
