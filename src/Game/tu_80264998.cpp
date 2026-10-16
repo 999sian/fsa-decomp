@@ -377,6 +377,41 @@ extern "C" void fn_80267C6C(char* p)
     *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
 }
 
+extern "C" void fn_80267D30(char* p)
+{
+    unsigned char b;
+    int t = *(int*)(p + 0x3dc);
+    if (t == 0) {
+        b = *(unsigned char*)(p + 0x3fb);
+        if (b < 8) {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)((b & 7) + 0x8f);
+        } else {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)(b + 0x8f);
+        }
+    } else if (t == 1) {
+        b = *(unsigned char*)(p + 0x3fb);
+        if (b < 8) {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)(((b + 4) & 7) + 0x8f);
+        } else {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)(b + 0x93);
+        }
+    } else if (t == 2) {
+        b = *(unsigned char*)(p + 0x3fb);
+        if (b < 8) {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)(((b + 2) & 7) + 0x8f);
+        } else {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)(b + 0x97);
+        }
+    } else {
+        b = *(unsigned char*)(p + 0x3fb);
+        if (b < 8) {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)(((b + 6) & 7) + 0x8f);
+        } else {
+            *(unsigned short*)(p + 0x3c4) = (unsigned char)(b + 0x9b);
+        }
+    }
+}
+
 extern "C" void fn_80267E18(char* p)
 {
     int t;
