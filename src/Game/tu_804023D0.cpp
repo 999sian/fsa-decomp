@@ -63,6 +63,30 @@ extern "C" void fn_804023D0(PaneState* state, J2DPane* pane, u8 alpha) {
     pane->setAlpha((f32)alpha * ((f32)state->pane->mAlpha / (f32)state->alpha));
 }
 
+extern "C" s32 fn_8040245C(PaneState* state, s16 duration, u8 startAlpha, u8 endAlpha, u8 mode) {
+    state->alphaFrame++;
+    if (state->alphaFrame >= duration) {
+        state->alphaFrame = 0;
+    }
+    s16 half = duration / 2;
+    s32 frame = state->alphaFrame;
+    f32 dc = (f32)duration * lbl_80543868;
+    f32 t;
+    if (mode == 1) {
+        if (frame < half) {
+            t = (f32)(frame * frame) / (dc * dc);
+        } else {
+            s32 r = frame - half;
+            t = lbl_8054386C - (f32)(r * r) / (dc * dc);
+        }
+    } else {
+        s32 x = frame < half ? frame : duration - frame;
+        t = (f32)x / dc;
+    }
+    state->pane->setAlpha((s32)(t * (f32)(endAlpha - startAlpha) + (f32)startAlpha));
+    return 0;
+}
+
 extern "C" s32 fn_80402628(PaneState* state, s16 duration, u8 startAlpha, u8 endAlpha) {
     if (state->alphaFrame < duration - 1) {
         ++state->alphaFrame;
@@ -100,6 +124,36 @@ extern "C" s32 fn_80402940(PaneState* state, s16 index, u8 mode, f32 a, f32 b) {
         state->field22 = index;
         y = state->centerY + b - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
         x = state->pane->getBounds()->i.x;
+        state->pane->move(x, y);
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" s32 fn_80402B10(PaneState* state, s16 index, u8 mode, f32 a, f32 b) {
+    f32 t;
+    f32 x;
+    f32 y;
+
+    if (state->field20 < index - 1) {
+        state->field20++;
+        if (mode == 0) {
+            t = (f32)(state->field20 * state->field20) / (f32)(index * index);
+        } else if (mode == 1) {
+            t = (f32)state->field20 / (f32)index;
+        } else {
+            t = (f32)((index - state->field20) * (index - state->field20)) / (f32)(index * index);
+            f32 tmp = a;
+            a = b;
+            b = tmp;
+        }
+        x = state->centerX + (a + t * (b - a)) - lbl_80543868 * (state->pane->mBounds.f.x - state->pane->mBounds.i.x);
+        y = state->pane->getBounds()->i.y;
+        state->pane->move(x, y);
+    } else {
+        state->field20 = index;
+        x = state->centerX + b - lbl_80543868 * (state->pane->mBounds.f.x - state->pane->mBounds.i.x);
+        y = state->pane->getBounds()->i.y;
         state->pane->move(x, y);
         return 1;
     }
