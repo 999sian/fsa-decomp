@@ -47,6 +47,22 @@ extern "C" void fn_802BC88C(u8* p) {
     }
 }
 
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_801F06F0(void*, char*, s32, s32, s32, f32, f32);
+extern "C" char lbl_8046D430[];
+extern "C" f32 lbl_80540BB8;
+extern "C" void fn_802BC930(u8* p) {
+    if (*(s32*)(p + 0x240) != 6) {
+        s32 n = *(s32*)(p + 0x4);
+        if (n >= 8) {
+            fn_803075AC(*(void**)(p + 0x198), n, p + 0xc, (*(s32*)(p + 0x280) >> 1) + 0x109, 0, 2, -1, 0, 0, 0);
+        }
+    } else {
+        fn_801F06F0(p, lbl_8046D430, 0x18e, 0, 0, lbl_80540BB8, lbl_80540BB8);
+        fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 0x4), p + 0xc, 0x18e, 0, 2, -1, 0, 0, 0);
+    }
+}
+
 extern "C" Actor* fn_802BD1A8(Actor* a, s16 n) {
     if (a) {
         u8* p = (u8*)a;
