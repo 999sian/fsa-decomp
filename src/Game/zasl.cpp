@@ -11,7 +11,7 @@ extern "C" void fn_801D0ED0(void*);
 extern "C" bool fn_801CF144(void*);
 extern "C" s32 fn_801CF720(void*, s32);
 extern "C" s32 fn_801F6874(s32);
-extern "C" void fn_801D2608(void*, char*, s32);
+extern "C" void fn_801D2608(void*, void*, s32);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
 extern "C" void fn_801D1D60(void*);
 extern "C" void detach__5ActorFv(void*);
@@ -165,6 +165,61 @@ extern "C" void fn_8020C6E8(void* this_) {
         *(s32*)(p + 0x248) = 2;
     } else {
         *(u8*)(p + 0x2ac) = 0;
+    }
+}
+
+extern "C" void fn_8020C878(void* this_) {
+    char* p = (char*)this_;
+    fn_801D0ED0(this_);
+    if (*(u32*)(p + 0x90) & 1) {
+        *(u32*)(p + 0x230) |= 0x2000;
+    }
+    *(s32*)(p + 0xb0) = 0x31101;
+    if (*(s32*)(p + 0x98) == 3) {
+        if (fn_801CF144(this_)) {
+            *(s32*)(p + 0x98) = fn_801CF720(this_, 3);
+        }
+    }
+    *(s16*)(p + 0x2ae) = fn_801F6874(*(s32*)(p + 0x98));
+    *(u8*)(p + 0x194) = 1;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    s32 v = fn_801CD664(0x3d) + 0x28;
+    f32 f = lbl_8053F9F4;
+    *(s32*)(p + 0x250) = v;
+    *(f32*)(p + 0x254) = f;
+    *(f32*)(p + 0x258) = f;
+    fn_801D2608(p + 0x270, lbl_8053A178, 1);
+    fn_801D22DC(p + 0x270, 0, 2, 0);
+    fn_801D1D60(p + 0x270);
+    if (*(u32*)(p + 0x230) & 0x2000) {
+        if ((*(u8 (**)(void*, s32, void*))(*(s32*)this_ + 0x4c))(this_, *(s32*)(p + 4), p + 0xc)) {
+            detach__5ActorFv(this_);
+        } else {
+            s32 n = *(s32*)(p + 4);
+            u8* base = fn_802D6A9C();
+            f32* pf;
+            if (n < 8) {
+                pf = (f32*)(base + 0xcc);
+            } else {
+                pf = (f32*)(base + 0xdc);
+            }
+            f32 x = *(f32*)(p + 0xc);
+            f32 y = *(f32*)(p + 0x10);
+            bool bVar1 = false;
+            if (*(f32*)(p + 0x80) + x < pf[0]) {
+                if (*(f32*)(p + 0x84) + y < pf[1]) {
+                    if (*(f32*)(p + 0x88) + x < pf[2]) {
+                        if (*(f32*)(p + 0x8c) + y < pf[3]) {
+                            bVar1 = true;
+                        }
+                    }
+                }
+            }
+            if (!bVar1) {
+                detach__5ActorFv(this_);
+            }
+        }
     }
 }
 
