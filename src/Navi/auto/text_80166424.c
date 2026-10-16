@@ -566,6 +566,11 @@ extern "C" void* fn_80174B28(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_80174B40(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern "C" void fn_801789D0(int* param_1)
 {
 	int iVar1;
