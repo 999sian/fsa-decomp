@@ -402,12 +402,12 @@ extern "C" void fn_802D7D00(char* p, s32 index, s32 bit, u8 set) {
 
 extern "C" u8 fn_802D7E04(char*, s32 index) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    return ((RoomArrays*)p)->counters308[index];
+    return (p + index)[0x308];
 }
 
 extern "C" u8 fn_802D7E1C(char*, s32 index) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    return ((RoomArrays*)p)->values328[index];
+    return *(u8*)(p + index + 0x328);
 }
 
 extern "C" void fn_802D7E34(char*, s32 index) {
@@ -618,12 +618,11 @@ extern "C" bool fn_802DE7CC() {
 }
 
 extern "C" bool fn_802DE93C() {
-    struct H {
-        static char* get() { return *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C); }
-    };
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        if ((*(s32*)(H::get() + 4) == 4 && *(s32*)(H::get() + 8) == 0)
-            || (*(s32*)(H::get() + 4) == 7 && *(s32*)(H::get() + 8) == 2))
+        char* q = *(char**)(lbl_8053AAF8 + 4);
+        if (*(s32*)(*(char**)(q + 0xC) + 4) == 4 && *(s32*)(*(char**)(q + 0xC) + 8) == 0)
+            return true;
+        if (*(s32*)(*(char**)(q + 0xC) + 4) == 7 && *(s32*)(*(char**)(q + 0xC) + 8) == 2)
             return true;
         return false;
     }
