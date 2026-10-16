@@ -1,6 +1,15 @@
 // TU 0x8020c0a8-0x8020cca8 (actor ZASL).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
+
+extern "C" void fn_801CE32C(void*);
+extern "C" void fn_801CE5D4(void*);
+extern "C" u8* fn_802D6A9C(void);
+extern "C" bool fn_802265DC(void*, void*, s32);
+extern "C" u8* fn_8020D58C(void);
+extern "C" bool fn_8020D6AC(void*, void*, void*, u32, void*);
+extern "C" char lbl_8053F9E0;
 
 // ---- Zasl_ctor_8020CA34.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
@@ -31,6 +40,24 @@ extern "C" void* fn_8020C0A8(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_801CE32C(void*);
+extern "C" void fn_801CE5D4(void*);
+extern "C" u8* fn_802D6A9C(void);
+extern "C" bool fn_802265DC(void*, void*, s32);
+extern "C" u8* fn_8020D58C(void);
+extern "C" bool fn_8020D6AC(void*, void*, void*, u32, void*);
+extern "C" char lbl_8053F9E0;
+extern "C" void fn_8020C30C(void* p) {
+    if ((*(u32*)((char*)p + 0x230) & 7) == 0) {
+        fn_801CE32C(p);
+    } else {
+        s32 off = *(s32*)((char*)p + 4);
+        if (fn_802D6A9C()[off + 0x131df] != 0) {
+            fn_801CE5D4(p);
+        }
+    }
+}
+
 extern "C" void* fn_8020CA34(void* this_) {
     fn_801D0F40(this_);
     *(void**)this_ = lbl_804A5F40;
@@ -41,3 +68,4 @@ extern "C" void* fn_8020CA34(void* this_) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JMath/JMath.h"
