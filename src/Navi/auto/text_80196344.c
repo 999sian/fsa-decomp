@@ -736,6 +736,13 @@ extern "C" void fn_8019EC20(int param_1) {
     }
 }
 
+extern "C" void fn_8019EDAC(int param_1)
+{
+	if (*(unsigned short *)(param_1 + 8) != 0xffff) {
+		fn_801A605C(0, (void *)(param_1 + 8));
+	}
+}
+
 extern "C" void fn_8019EDE0(void) {
 }
 
