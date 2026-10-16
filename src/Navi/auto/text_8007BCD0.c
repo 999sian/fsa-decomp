@@ -14,6 +14,68 @@ extern "C" void fn_801C5D74(void* a, void* b);
 extern "C" void fn_8000CB28(void* a, s16 b);
 extern "C" void fn_8000CA54(void* a, s16 b);
 extern "C" void fn_8000CBFC(void* a, s16 b);
+extern "C" int fn_801E2F8C(int x);
+extern f64 lbl_80300810;
+extern f32 lbl_8030081C;
+extern f32 lbl_80300818;
+extern f32 lbl_803007D4;
+extern f32 lbl_80300820;
+extern f32 lbl_803007C8;
+extern f64 lbl_80300828;
+extern f64 lbl_80300830;
+extern f64 lbl_80300838;
+extern f32 lbl_802FEAB0;
+
+static inline f32 navi_sqrtf(f32 x)
+{
+    if (x > lbl_803007C8) {
+        f64 guess = __frsqrte((f64)x);
+        guess = lbl_80300828 * guess * (lbl_80300830 - guess * guess * x);
+        guess = lbl_80300828 * guess * (lbl_80300830 - guess * guess * x);
+        guess = lbl_80300828 * guess * (lbl_80300830 - guess * guess * x);
+        return (f32)(x * guess);
+    } else if (x < lbl_80300838) {
+        return lbl_802FEAB0;
+    } else {
+        int t;
+        u32 bits = *(u32*)&x;
+        switch (bits & 0x7f800000) {
+        case 0x7f800000:
+            t = (bits & 0x007fffff) ? 1 : 2;
+            break;
+        case 0:
+            t = (bits & 0x007fffff) ? 5 : 3;
+            break;
+        default:
+            t = 4;
+            break;
+        }
+        if (t == 1) {
+            return lbl_802FEAB0;
+        }
+        return x;
+    }
+}
+
+static inline f32 navi_angle(s32 d)
+{
+    f32 f;
+    if (fn_801E2F8C(d) > 0x7fff) {
+        if (d < 0) {
+            d += 0x10000;
+        } else {
+            d -= 0x10000;
+        }
+    }
+    if (fn_801E2F8C(d) < 0x2000) {
+        f = lbl_80300818 * ((f32)d / lbl_8030081C);
+    } else if (d < 0) {
+        f = lbl_803007D4;
+    } else {
+        f = lbl_80300818;
+    }
+    return lbl_80300820 * f;
+}
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8007bcd0-0x80080620 (44 functions). split_file divides it into the game's real files.
 
@@ -54,6 +116,34 @@ extern "C" void fn_8007C2BC(u8* p) {
     }
 }
 
+extern "C" BOOL fn_8007C374(u8* p, s32 mode)
+{
+    u8* w;
+    s32 off;
+    u8* obj;
+    s32 idx;
+    if (mode == 0) {
+        idx = *(u16*)(p + 0x14);
+        obj = *(u8**)(lbl_802EE470 + 0x38);
+        off = idx * 0x30;
+        w = *(u8**)(obj + 0x14);
+        fn_801C5D74(*(u8**)(*(u8**)(obj + 0x84) + 0xc) + off, lbl_802FDC98);
+        if (idx == (s8)w[0x310]) {
+            fn_8000CB28(lbl_802FDC98, -*(s16*)(w + 0x33a));
+            fn_8000CA54(lbl_802FDC98, -*(s16*)(w + 0x33c));
+            fn_8000CBFC(lbl_802FDC98, -*(s16*)(w + 0x33e));
+        }
+        if (idx == (s8)w[0x311]) {
+            fn_8000CA54(lbl_802FDC98, -*(s16*)(w + 0x342));
+            fn_8000CB28(lbl_802FDC98, *(s16*)(w + 0x340));
+            fn_8000CBFC(lbl_802FDC98, *(s16*)(w + 0x344));
+        }
+        fn_801C5D74(lbl_802FDC98, *(u8**)(*(u8**)(obj + 0x84) + 0xc) + off);
+        fn_801C5D74(lbl_802FDC98, lbl_802EE58C);
+    }
+    return TRUE;
+}
+
 extern "C" BOOL fn_8007C494(void);
 extern "C" BOOL fn_8007C494(void)
 {
@@ -62,8 +152,8 @@ extern "C" BOOL fn_8007C494(void)
 
 extern "C" void fn_8007C49C(u8* p, u8* q) {
     s32 off = 0;
-    u8* tbl = lbl_802EE470;
     u32 i = 0;
+    u8* tbl = lbl_802EE470;
     do {
         if (*(u16*)(p + off + 0x16)) {
             u8* r28 = *(u8**)(*(u8**)(tbl + 0x38) + 0x14);
@@ -88,8 +178,8 @@ extern u8 lbl_803007FC[];
 extern void* lbl_802FF0BC;
 extern "C" int fn_8004D308(void* a, s32 b, s32 c, void* d, void* e, void* f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern "C" void fn_8007C540(u8* p, u8* q) {
-    u8* tbl = lbl_802EE470;
     s32 off = 0;
+    u8* tbl = lbl_802EE470;
     u32 i = 0;
     do {
         if (*(u16*)(p + off + 0x16)) {
@@ -107,6 +197,26 @@ extern "C" void fn_8007C698(void);
 extern "C" void fn_8007C5E4(void) {
     fn_8007C698();
 }
+
+#pragma dont_inline on
+extern "C" int fn_8007C604(u8* p) {
+    int iVar1 = fn_80020EA4(p + 0x244, 0);
+    if (iVar1 == 4) {
+        if ((*(u32*)(p + 0xf8) & 8) == 0) {
+            if (p != nullptr) {
+                fn_8007BF68(p);
+            }
+            *(u32*)(p + 0xf8) |= 8;
+        }
+        if ((u8)fn_800183AC(p, (void*)fn_8007C5E4, 0x91d0)) {
+            iVar1 = fn_8007CEDC(p);
+        } else {
+            iVar1 = 5;
+        }
+    }
+    return iVar1;
+}
+#pragma dont_inline reset
 
 extern u8 lbl_8029F8D8[];
 extern u8 lbl_802FCBA0[];
