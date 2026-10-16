@@ -394,16 +394,16 @@ void J3DModel::calcNrmMtx()
 
 void J3DModel::calcBumpMtx()
 {
-	if (getModelData()->checkBumpFlag()) {
-		u32 bumpMtxIdx  = 0;
+	if (getModelData()->checkBumpFlag() == 1) {
+		s32 bumpMtxIdx  = 0;
 		u16 materialNum = getModelData()->getMaterialNum();
 
-		for (u16 i = 0; i < materialNum; i++) {
+		for (u16 i = 0; i < (u32)materialNum; i++) {
 			J3DMaterial* material = getModelData()->getMaterialNodePointer(i);
 			if (material->getNBTScale()->mHasScale == TRUE) {
 				material->getShape()->calcNBTScale(*material->getNBTScale()->getScale(), getNrmMtxPtr(), getBumpMtxPtr(bumpMtxIdx));
 				DCStoreRange(getBumpMtxPtr(bumpMtxIdx), mModelData->getDrawMtxNum() * sizeof(Mtx33));
-				bumpMtxIdx++;
+				bumpMtxIdx += 1;
 			}
 		}
 	}
