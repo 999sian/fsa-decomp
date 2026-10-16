@@ -423,7 +423,7 @@ extern "C" void fn_80172A3C(u8* p1, s32 p2, u8* p3) {
 }
 
 extern "C" s32 fn_80172A4C(s32 p1, s32 p2) {
-    return p1 + (p2 + 0xb8);
+    return p1 + p2 + 0xb8;
 }
 
 extern "C" void fn_80172A5C(u8* p1, s32 p2, u32* p3) {
