@@ -60,3 +60,14 @@ extern "C" void fn_803F358C(u8* p) {
     fn_80436668(*(void**)(p + 0x58));
 }
 
+extern "C" void fn_803F59A0(u8* p) {
+    if (fn_804366B8(*(void**)(p + 0x58))) {
+        if (p[0x25e] == 0) {
+            *(s32*)(p + 0x1cc) = 7;
+            p[0x25e] = 1;
+        }
+        *(s32*)(p + 0x1a8) = 0;
+        fn_80458880(lbl_8053AF80, 0xb, -1);
+    }
+}
+
