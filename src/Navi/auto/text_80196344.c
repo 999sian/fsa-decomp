@@ -993,6 +993,11 @@ extern "C" void fn_8019E634(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019E90C(NaviVObj* p) {
+    p->vf9();
+    p->vf10();
+}
+
 extern "C" void fn_8019EA14(int param_1) {
     u8* p = (u8*)param_1;
     u32 i = 0;
