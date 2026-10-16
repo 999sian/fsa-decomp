@@ -88,6 +88,8 @@ extern "C" void fn_801963D0(void* self) {
     *(u8*)(p + 0x48) = 0;
 }
 
+#pragma push
+#pragma use_lmw_stmw off
 extern "C" void fn_80196440(void* self, void* a, void* b, void* c) {
     u16 i;
     for (i = 0; i < *(u16*)((u8*)self + 0xa); i++) {
@@ -95,18 +97,7 @@ extern "C" void fn_80196440(void* self, void* a, void* b, void* c) {
         ((void (*)(void*, void*, void*, void*))((*(void***)obj)[7]))(obj, a, b, c);
     }
 }
-
-extern "C" s32 fn_801964C0(void* self) {
-    u16 count = *(u16*)((u8*)self + 0xa);
-    void** list = *(void***)((u8*)self + 0x38);
-    s32 sum = 0;
-    u16 i;
-    for (i = 0; i < count; i++) {
-        sum += ((s32 (*)(void*))((*(void***)list[i])[4]))(list[i]);
-    }
-    return sum;
-}
-
+#pragma pop
 extern "C" int fn_801979BC(int param_1) {
     int size = 0;
     switch (param_1) {
@@ -215,15 +206,13 @@ struct NaviVObj {
 };
 extern "C" u32 fn_80197B4C(void* param_1) {
     u8* p = (u8*)param_1;
-    u32 a;
-    u32 b;
+    u32 a = ((NaviVObj*)*(void**)(p + 0x28))->vf10();
+    u32 b = ((NaviVObj*)*(void**)(p + 0x24))->vf8();
     u32 c;
-    a = ((NaviVObj*)*(void**)(p + 0x28))->vf10();
-    b = ((NaviVObj*)*(void**)(p + 0x24))->vf8();
     a += ((NaviVObj*)*(void**)(p + 0x2c))->vf15();
     a += ((NaviVObj*)*(void**)(p + 0x30))->vf3();
     c = ((NaviVObj*)*(void**)(p + 0x34))->vf6();
-    return ((a + c) + 0x1f + b) & ~0x1f;
+    return (b + (a + c + 0x1f)) & ~0x1f;
 }
 
 extern "C" void fn_80198298(u8* param_1) {
@@ -235,7 +224,7 @@ extern "C" void fn_80198298(u8* param_1) {
     fn_80193DFC((u32*)*(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x20));
 }
 
-extern "C" void fn_80198534(u8* param_1, int p2) {
+extern "C" void fn_80198534(u8* param_1) {
     if (*(volatile u32*)(lbl_802EE470 + 0x34) & 0x40000000) {
         ((NaviVObj*)*(void**)(param_1 + 0x28))->vf3();
     } else {
@@ -245,8 +234,9 @@ extern "C" void fn_80198534(u8* param_1, int p2) {
     fn_80198608(param_1);
 }
 
-extern "C" void fn_801985AC(u8* param_1, int p2) {
-    if (*(volatile u32*)(lbl_802EE470 + 0x34) & 0x40000000) {
+extern "C" void fn_801985AC(u8* param_1) {
+    u32* flags = (u32*)(lbl_802EE470 + 0x34);
+    if (*flags & 0x40000000) {
         ((NaviVObj*)*(void**)(param_1 + 0x28))->vf4();
     } else {
         ((NaviVObj*)*(void**)(param_1 + 0x28))->vf2();
@@ -1963,9 +1953,12 @@ extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
 }
 
 extern "C" void fn_801A3AB0(s32 param_1, s32 param_2, u8* param_3) {
-    u8* p = (u8*)param_1 + param_2 * 8;
-    p[0x60] = (p[0x60] & ~0x0C) | ((param_3[1] & 0xFF) << 2);
-    p[0x60] = (p[0x60] & ~0x03) | param_3[0];
+    u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
+    u8* p = (u8*)(param_1 + param_2 * 8);
+    u8 x = p[0x60];
+    p[0x60] = (x & ~0x0C) | ((b1 & 0xFF) << 2);
+    p[0x60] = (p[0x60] & ~0x03) | b0;
 }
 
 extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
