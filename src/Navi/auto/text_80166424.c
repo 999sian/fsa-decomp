@@ -25,7 +25,7 @@ struct UnkVObj_80166424 {
     virtual u8 vf18(void*);
 };
 extern "C" void* lbl_80298644[];
-extern "C" u32 lbl_80298660;
+extern "C" u8 lbl_80298660[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8016B170(u32*, int);
 
@@ -88,16 +88,17 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
         self[0] = (u32)lbl_80298644;
         u32* p = (u32*)self[0x1c];
         if (p != NULL) {
-            (*(VFn_80169B1C*)(p[0] + 0xb8))(p, 1);
+            VFn_80169B1C* f = ((VFn_80169B1C**)*p)[0xb8 / 4];
+            f(p, 1);
         }
         p = (u32*)self[0x1d];
         if (p != NULL) {
-            (*(VFn_80169B1C*)(p[0] + 0x34))(p, 1);
+            ((VFn_80169B1C**)*p)[0x34 / 4](p, 1);
         }
         fn_8015AB1C((void*)self[0x21]);
         fn_8016B170(self + 10, -1);
         if ((u8*)self + 0x10 != NULL) {
-            self[9] = lbl_80298660;
+            self[9] = (u32)&lbl_80298660;
         }
         if (param_2 > 0) {
             fn_8015AB1C(self);
