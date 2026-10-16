@@ -390,6 +390,8 @@ extern "C" int fn_80198F20()
 	return 0;
 }
 
+extern "C" void fn_80198F28(void) {}
+
 extern "C" void fn_80198F2C(void) {}
 
 extern "C" void fn_80198F30(void) {}
