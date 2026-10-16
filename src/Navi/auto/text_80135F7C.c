@@ -627,6 +627,7 @@ extern "C" void fn_80138348(void* param_1, unsigned int param_2) {
     *(u32*)((u8*)param_1 + 8) = 0;
 }
 
+#pragma dont_inline on
 extern "C" void fn_80138368(void* param_1, u32 param_2, u32 param_3, u32 param_4) {
     u32 temp0, temp1, temp2;
     
