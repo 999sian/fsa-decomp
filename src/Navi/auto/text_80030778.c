@@ -10,6 +10,7 @@ extern unsigned char lbl_802FEE43;
 extern unsigned int lbl_802FEE30;
 extern int lbl_802FEDE4;
 extern float lbl_802FFD38;
+extern float lbl_802FFD44;
 extern "C" void fn_80030250(int);
 extern "C" void fn_800302F0(int);
 extern "C" void fn_800300C0(int, float, int, int, int);
