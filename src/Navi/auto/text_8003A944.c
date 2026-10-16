@@ -21,7 +21,7 @@ extern "C" void fn_801E41AC(void* dst, void* src, ...);
 extern "C" void fn_801E66C0(void* dst, void* src);
 extern "C" void fn_8003AA34(u32* p);
 struct VObj_8003A988 {
-    virtual void m0();
+    virtual void m0(s32 a);
     virtual void m1();
     virtual void m2(s32 a);
 };
