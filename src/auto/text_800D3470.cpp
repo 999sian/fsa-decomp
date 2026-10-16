@@ -102,8 +102,6 @@ struct Unk800DD148Obj {
 };
 
 struct Unk800DBF04Obj {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
@@ -722,6 +720,34 @@ extern "C" void fn_800D800C(u8* self) {
         p += 4;
     }
     DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
+extern "C" void fn_800D80DC(u8* p) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
+    u8* saved = __GDCurrentDL->pDisplayListData;
+    u8 count = p[0xd0];
+
+    u8* addr = p;
+    for (u32 i = 0; i < 8; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+        }
+        addr += 2;
+    }
+
+    u8* tev = p;
+    for (u32 i = 0; i < count; i += 2) {
+        u8* next = p + (i + 1) * 4;
+        J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
+        u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2((GXTexCoordID)(tev[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (next[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2((GXTexCoordID)(next[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        tev += 8;
+    }
+
+    u8* now = __GDCurrentDL->pDisplayListData;
+    DCStoreRange(saved, (u32)(now - saved));
 }
 
 struct Vtable800D8248;
