@@ -2,8 +2,6 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include "JSystem/JSupport/JSUList.h"
 
-inline void* operator new(unsigned long, void* p) throw() { return p; }
-
 extern JSUPtrList lbl_8052E894;
 extern char lbl_804BA1C4[];
 extern "C" void fn_8008CAEC(void);
