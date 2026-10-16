@@ -378,8 +378,8 @@ extern "C" int fn_8001BBBC(short* param_1) {
     return (int)*param_1;
 }
 
-extern "C" void fn_8001BBC4(unsigned short* param_1, unsigned short param_2) {
-    *param_1 = param_2;
+extern "C" void fn_8001BBC4(void* param_1, s16 param_2) {
+    *(s16*)param_1 = param_2;
 }
 
 extern "C" unsigned int fn_8001BBCC(int param_1) {
