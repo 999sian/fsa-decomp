@@ -46,10 +46,9 @@ extern s32 MaxEntryNum_802FF86C;
 extern "C" BOOL fn_801C7BF8(s32 entryNum, DVDFileInfo* fileInfo)
 {
 	if (entryNum >= 0 && entryNum < MaxEntryNum_802FF86C) {
-		u32* entry = (u32*)((u8*)FstStart_802FF864 + entryNum * 0xc);
-		if ((entry[0] & 0xff000000) == 0) {
-			fileInfo->startAddr = entry[1];
-			fileInfo->length = entry[2];
+		if ((*(u32*)(FstStart_802FF864 + entryNum * 0xc) & 0xff000000) == 0) {
+			fileInfo->startAddr = *(u32*)(FstStart_802FF864 + entryNum * 0xc + 4);
+			fileInfo->length = *(u32*)(FstStart_802FF864 + entryNum * 0xc + 8);
 			fileInfo->callback = NULL;
 			fileInfo->cb.state = 0;
 			return TRUE;
@@ -90,11 +89,10 @@ void DVDReset(void)
 	ResumeFromHere_802FF8A8 = 0;
 }
 
-extern "C" BOOL fn_801CA2DC(BOOL param_1)
-{
-	BOOL old = autoInvalidation_802FE9B4;
-	autoInvalidation_802FE9B4 = param_1;
-	return old;
+extern "C" u32 fn_801CA2DC(u32 param_1) {
+    u32 old = autoInvalidation_802FE9B4;
+    autoInvalidation_802FE9B4 = param_1;
+    return old;
 }
 
 extern "C" s32 fn_801CA5B8(DVDCommandBlock* block)
