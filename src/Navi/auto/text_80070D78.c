@@ -659,6 +659,19 @@ extern "C" void fn_80076890(u8* p)
 	fn_801C5D74(lbl_8029F8D8, *(u8**)(p + 0x35c) + 0x24);
 }
 
+extern void* lbl_80281428[];
+extern "C" void fn_80076A80(u8* p, void* a);
+extern "C" void fn_80076950(u8* p, s32 idx)
+{
+	s32* table;
+
+	*(s32*)(p + 0x3b8) = idx;
+	*(s32*)(p + 0x3bc) = 0;
+	table = (s32*)lbl_80281428[*(s32*)(p + 0x3b8)];
+	fn_80076A80(p, (void*)table[*(s32*)(p + 0x3bc) * 2]);
+	*(s32*)(p + 0x3c0) = table[*(s32*)(p + 0x3bc) * 2 + 1];
+}
+
 extern "C" void fn_80075B60(void);
 extern "C" void fn_80077B10(void) {
     fn_80075B60();
