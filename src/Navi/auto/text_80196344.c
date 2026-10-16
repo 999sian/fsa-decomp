@@ -241,6 +241,9 @@ extern "C" void fn_80198C1C(void* param_1) {
     }
 }
 
+extern "C" void fn_80198C6C(void) {
+}
+
 extern "C" void* fn_80198C70(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029AF34;
