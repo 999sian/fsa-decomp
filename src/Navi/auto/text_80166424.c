@@ -1698,10 +1698,10 @@ extern "C" void fn_80174084(u8* p, u8* s, u32 a, u32 b) {
 
 extern "C" u8 fn_801741E4(u8* p, s32 idx)
 {
-    u8* tbl = *(u8**)(p + 4);
     u16* ids = *(u16**)(p + 8);
-    s32 n = ids[idx] * 0xe8 + 1;
-    u8 v = tbl[n];
+    u8* tbl = *(u8**)(p + 4);
+    s32 n = ids[idx] * 0xe8;
+    u8 v = tbl[n + 1];
     if (v != 0xff) {
         u32* arr = *(u32**)(p + 0x30);
         return arr[v];
@@ -2054,7 +2054,6 @@ extern "C" void fn_80176610(void* p_self)
 {
     u32* self = (u32*)p_self;
     u8* b = (u8*)p_self;
-    f32 f0 = lbl_80301B24;
     f32 f1 = lbl_80301B20;
 
     *(u16*)(b + 0x4) = 0xffff;
@@ -2065,6 +2064,7 @@ extern "C" void fn_80176610(void* p_self)
     ((f32*)self)[0x32] = f1;
     b[0xb7] = 0;
     b[0xb6] = 0x7a;
+    f32 f0 = lbl_80301B24;
     ((f32*)self)[0x33] = f0;
     ((f32*)self)[0x34] = f0;
     b[0xb1] = 0;
@@ -2072,7 +2072,29 @@ extern "C" void fn_80176610(void* p_self)
     b[0xb4] = 1;
     b[0xb3] = 0xff;
     b[0xb5] = 0;
-    ((void (*)(void*))((u32**)self)[0][11])(p_self);
+    (*(void (***)(void*))p_self)[11](p_self);
+}
+
+extern "C" void fn_80176698(void* p_self, void* p_other, u8 b, u32 unused, u32 c, u32 d, f32* f)
+{
+    u32* self = (u32*)p_self;
+    u8* sub = (u8*)p_self + 0xdc;
+    *(void**)p_self = lbl_80298C88;
+    fn_80166C70(sub);
+    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
+    self[0x3e] = 0;
+    fn_80176728(p_self, p_other, b, unused, c, d, f);
+}
+
+extern "C" void fn_80176848(void* p_self, u32 unused, u32 a, u32 b, u32 c)
+{
+    u32* self = (u32*)p_self;
+    u8* sub = (u8*)p_self + 0xdc;
+    *(void**)p_self = lbl_80298C88;
+    fn_80166C70(sub);
+    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
+    self[0x3e] = 0;
+    fn_801768C8(p_self, a, b, c);
 }
 
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
@@ -2102,6 +2124,28 @@ extern "C" void fn_80177BF0(void* self, s8 flag, f32 a, f32 b, f32 c) {
     *(f32*)((char*)self + 0xc8) = b;
     *(s8*)((char*)self + 0xb6) = flag;
     fn_80177C20(self, c);
+}
+
+extern "C" void fn_80177C20(void* param_1, f32 v) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+        virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void vf2c();
+        u8 pad[0xb2];
+        s8 axis;
+        u8 pad2;
+        f32 x;
+        f32 y;
+        f32 z;
+    };
+    Obj* o = (Obj*)param_1;
+    if (o->axis == 'x') {
+        o->x = v;
+    } else if (o->axis == 'y') {
+        o->y = v;
+    } else {
+        o->z = v;
+    }
+    o->vf2c();
 }
 
 extern "C" f32 fn_80177C78(void* self) {
