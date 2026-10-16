@@ -1167,6 +1167,25 @@ extern "C" void fn_80188DE0(void* self, int a, int b, int c) {
     ((VObj_80180920*)self)->vfC8(a, b, 0);
 }
 
+extern "C" void fn_80188E40(void* self, int a, int b) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+        virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+        virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+        virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+        virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+        virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+        virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+        virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43();
+        virtual void v44(); virtual void v45(); virtual void v46(); virtual void v47();
+        virtual void vfC8(int, int, int);
+    };
+    ((Obj*)self)->vfC8(a, b, 0);
+}
+
 extern "C" void fn_80188FAC(void* self, u32 a) {
     ((VObj_80180868*)self)->v61((u8)a, a);
 }
@@ -1532,17 +1551,16 @@ extern "C" void* fn_8018C308(void* base, u32 offset) {
 extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
     f32 pos = *(f32*)((u8*)self + 0x8);
     u8* table = *(u8**)((u8*)self + 0x14);
-    u8* data = *(u8**)((u8*)self + 0x18);
     u16 base = *(u16*)(table + param_2 * 4);
     if (pos < 0.0f) {
         u16 len = *(u16*)(table + param_2 * 4 + 2);
-        *param_3 = data[len];
+        *param_3 = (*(u8**)((u8*)self + 0x18))[len];
     } else if (pos >= (f32)base) {
         u16 len = *(u16*)(table + param_2 * 4 + 2);
-        *param_3 = data[(s32)pos + len];
+        *param_3 = (*(u8**)((u8*)self + 0x18))[(s32)pos + len];
     } else {
         u16 len = *(u16*)(table + param_2 * 4 + 2);
-        *param_3 = data[base + len - 1];
+        *param_3 = (*(u8**)((u8*)self + 0x18))[base + len - 1];
     }
 }
 
