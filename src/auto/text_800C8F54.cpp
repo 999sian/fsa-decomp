@@ -340,9 +340,11 @@ extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, c
 extern "C" void fn_800CB4C0(void* out, u8* e) {
     u8* p = (u8*)out;
     setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(out, e);
-    const J3DTevSwapModeInfo& info = j3dDefaultTevSwapMode;
-    p[7] = (p[7] & ~0x0C) | (info.mTexSel << 2);
-    p[7] = (p[7] & ~0x03) | info.mRasSel;
+    u8 v = p[7];
+    v = (v & ~0x0C) | (j3dDefaultTevSwapMode.mTexSel << 2);
+    p[7] = v;
+    v = p[7];
+    p[7] = (v & ~0x03) | j3dDefaultTevSwapMode.mRasSel;
 }
 
 extern "C" u8 j3dDefaultTevSwapModeTable[];
@@ -390,10 +392,10 @@ struct J3DIndTexCoordScale : J3DIndTexCoordScaleInfo {
     J3DIndTexCoordScale() { *(J3DIndTexCoordScaleInfo*)this = j3dDefaultIndTexCoordScaleInfo; }
 };
 extern "C" void fn_800CB884(J3DIndTexCoordScaleInfo* out, u8* p, s32 idx, s32 no) {
-    J3DIndTexCoordScale dflt;
     u8* data = *(u8**)(p + 0xc) + idx * 0x138;
+    J3DIndTexCoordScale dflt;
     if (data[0] == 1) {
-        *out = ((J3DIndTexCoordScaleInfo*)(data + 0x68))[no];
+        *out = *(J3DIndTexCoordScaleInfo*)(data + (no * 4 + 0x68));
     } else {
         *out = dflt;
     }
