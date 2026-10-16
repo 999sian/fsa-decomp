@@ -1082,6 +1082,10 @@ extern "C" s32 fn_80172640(s32 p, s32 i) {
 
 extern "C" void fn_8017288C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
+extern "C" u16 fn_8017289C(u8* p, s32 i) {
+    return ((u16*)(p + 4))[i];
+}
+
 extern "C" unsigned short fn_801728B4(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
