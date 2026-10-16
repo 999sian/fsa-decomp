@@ -19,6 +19,12 @@ extern f32 lbl_802FEE74;
 extern f32 lbl_802FEE78;
 extern "C" void fn_801E41AC(void* dst, void* src, ...);
 extern "C" void fn_801E66C0(void* dst, void* src);
+extern "C" void fn_8003AA34(u32* p);
+struct VObj_8003A988 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2(s32 a);
+};
 extern "C" void* fn_800F0D64(void* p);
 extern u8 lbl_802BB0FC[];
 extern u8 lbl_802B7CA0[];
@@ -272,9 +278,9 @@ extern "C" f32 fn_8003C500(void) {
 }
 
 extern "C" void fn_8003C7DC(void) {
+    Color_8003C7DC color;
     f32 nearz = lbl_802FFDD0;
     u8* cam = *(u8**)(lbl_802B7CA0 + 0x16c0);
-    Color_8003C7DC color;
     f32 farz;
     int i;
     color.r = lbl_802FEFAC[0];
@@ -667,23 +673,22 @@ extern "C" void fn_800405C0(void) {
 extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     volatile union {
         s64 i;
-        double d;
-    } temp;
-    
-    double dconst = *(double*)&lbl_802FFEC8;
-    
-    temp.i = 0x4330000000000000LL | ((s32)param_1 ^ 0x80000000);
-    double d1 = temp.d - dconst;
-    d1 *= (double)factor;
-    
-    temp.i = 0x4330000000000000LL | ((s32)param_2 ^ 0x80000000);
-    double d2 = temp.d - dconst;
-    d2 *= (double)factor;
-    
-    temp.i = 0x4330000000000000LL | ((s32)param_3 ^ 0x80000000);
-    double d3 = temp.d - dconst;
-    d3 *= (double)factor;
-    
+        f64 d;
+    } t1, t2, t3;
+    f64 dconst = *(f64*)&lbl_802FFEC8;
+
+    t1.i = 0x4330000000000000LL | ((s32)param_1 ^ 0x80000000);
+    f32 d1 = t1.d - dconst;
+    d1 *= factor;
+
+    t2.i = 0x4330000000000000LL | ((s32)param_2 ^ 0x80000000);
+    f32 d2 = t2.d - dconst;
+    d2 *= factor;
+
+    t3.i = 0x4330000000000000LL | ((s32)param_3 ^ 0x80000000);
+    f32 d3 = t3.d - dconst;
+    d3 *= factor;
+
     lbl_802FEFB4[0] = (s16)(s32)d1;
     lbl_802FEFB4[1] = (s16)(s32)d2;
     lbl_802FEFB4[2] = (s16)(s32)d3;
