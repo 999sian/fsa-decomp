@@ -53,6 +53,14 @@ extern const f32 lbl_8053FD88;
 extern const f32 lbl_8053FD58;
 extern const f32 lbl_8053FD60;
 extern char* lbl_8053AB10;
+extern "C" void fn_801D01A0(void* self, f32 speed, void* dir, void* out);
+extern int __float_max[];
+extern const f32 lbl_8053FD68;
+extern const f32 lbl_8053FD6C;
+extern const f32 lbl_8053FD70;
+extern const f32 lbl_8053FD74;
+extern const f32 lbl_8053FD78;
+extern const f32 lbl_8053FD7C;
 
 extern "C" void fn_8021D734(char* p) {
     if (*(s32*)(p + 0x248) != 8) {
