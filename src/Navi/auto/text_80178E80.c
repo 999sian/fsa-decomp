@@ -39,6 +39,19 @@ extern "C" void fn_8017A4F8(void* self) {
     }
 }
 
+extern "C" void fn_8016A0B4(void* p, void* obj);
+extern "C" void fn_8017A56C(void* self, void* obj) {
+    u8* p = (u8*)self;
+    u8* q = (u8*)obj;
+    ((void (*)(void*, void*))(*(void***)obj)[0xc / 4])(obj, self);
+    for (u16 i = 0; i < *(u16*)(q + 0x18); i++) {
+        u16 idx = ((u16*)*(u8**)(q + 0x1c))[i];
+        if (idx < *(u16*)(p + 0x102)) {
+            fn_8016A0B4(*(u8**)(p + 0x104) + idx * 0x88, obj);
+        }
+    }
+}
+
 extern "C" void fn_80178990(void);
 extern "C" void fn_8017A908(void) {
     fn_80178990();
@@ -79,6 +92,15 @@ extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
 
 extern "C" int fn_80184B2C(unsigned char* self) {
     return *(int*)(self + 0x160);
+}
+
+extern "C" void fn_80184B34(unsigned char* self, unsigned int* dest) {
+    unsigned int* src = (unsigned int*)(self + 0x148);
+    dest[0] = src[0];
+    dest[1] = src[1];
+    dest[2] = src[2];
+    dest[3] = src[3];
+    dest[4] = *(unsigned int*)(self + 0x160);
 }
 
 extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
