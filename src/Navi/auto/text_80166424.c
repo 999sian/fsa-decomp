@@ -36,6 +36,11 @@ extern "C" int fn_801699C0(void) {
     return 0xFFFF;
 }
 
+extern "C" int fn_801699CC(void)
+{
+    return 1;
+}
+
 extern "C" int fn_801699D4()
 {
 	return 0;
