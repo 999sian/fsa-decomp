@@ -8,6 +8,7 @@ extern const u32 lbl_80472718[];
 extern const s16 lbl_80472748[];
 extern const f32 lbl_80542930;
 extern const f32 lbl_80542940;
+extern const f32 lbl_80542944;
 extern const f32 lbl_80542950;
 extern const f32 lbl_80542954;
 extern const f32 lbl_80542980;
