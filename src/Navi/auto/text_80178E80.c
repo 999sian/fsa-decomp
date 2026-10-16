@@ -237,6 +237,33 @@ extern "C" void fn_801788C0(void);
 extern "C" void fn_80178990(void);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
+extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
+extern "C" void fn_8018BC30(void* self, void* dst, void* src);
+
+struct VObj_80189C70 {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual s32 v24(s32 mode);
+};
+
+struct VObj_80189FDC {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+    virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+    virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+    virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+    virtual void v40(); virtual void v41(); virtual void v42();
+    virtual s32 vfAC(s32* a, s32* b);
+};
 extern u8 lbl_80301BF8[];
 
 struct VObj_80184164 {
@@ -290,13 +317,14 @@ extern "C" void fn_80176698(void* self, s32 a, s32 b, s32 c, s32 d, u32 e, void*
 extern "C" void* fn_80178E80(void* self) {
     f32 rect[6];
     s32 unused;
+    u32 tag = 0x726f6f74;
     rect[0] = 0.0f;
     rect[1] = 0.0f;
     rect[2] = 0.0f;
     rect[3] = 0.0f;
     rect[4] = 640.0f;
     rect[5] = 480.0f;
-    fn_80176698(self, 0, 1, unused, 0, 0x726f6f74, &rect[2]);
+    fn_80176698(self, 0, 1, unused, 0, tag, &rect[2]);
     *(void**)self = lbl_80298D38;
     *(s32*)((u8*)self + 0x114) = -1;
     *(u16*)((u8*)self + 0x4) = 0xffff;
@@ -1136,6 +1164,32 @@ extern "C" void fn_80189BD8(void* self, u32 param_2) {
     }
 }
 
+extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
+extern "C" void fn_80189C70(void* self, u8 flag) {
+    void* obj = *(void**)((u8*)self + 0x138);
+    void* sub = *(void**)((u8*)obj + 0x70);
+    s32 val = ((s32 (*)(void*, s32))(*(void***)sub)[0x60 / 4])(sub, 0);
+    if (flag == 0) {
+        fn_80189D14(self, val, 0);
+    } else {
+        fn_80189D14(self, val, 1);
+        sub = *(void**)((u8*)*(void**)((u8*)self + 0x138) + 0x70);
+        val = ((s32 (*)(void*, s32))(*(void***)sub)[0x60 / 4])(sub, 1);
+        fn_80189D14(self, val, 2);
+    }
+}
+
+extern "C" s32 fn_80189FDC(void* self, s32* param_2) {
+    s32 local_14 = -1;
+    s32 local_10 = -1;
+    if (fn_8018A318(self, &local_14, &local_10) == 0) {
+        return 0;
+    }
+    s32 local_c = *param_2;
+    s32 local_18 = local_10;
+    return ((s32 (*)(void*, s32*, s32*))(*(void***)self)[0xac / 4])(self, &local_c, &local_18);
+}
+
 extern "C" int fn_8018A064(void* self, s32* param_2) {
     s32 local_14 = -1;
     s32 local_10 = -1;
@@ -1146,8 +1200,7 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     long local_18;
     local_18 = *param_2;
     local_c = local_14;
-    void** vtbl = *(void***)self;
-    return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
+    return ((int (*)(void*, s32*, s32*))(*(void***)self)[0xac / 4])(self, &local_c, &local_18);
 }
 
 struct VObj_8018A4B4 {
@@ -1178,13 +1231,13 @@ struct VObj_8018A4B4 {
 
 extern "C" int fn_8018A4B4(u8* self, u32* p1, u32* p2) {
     VObj_8018A4B4* obj;
-    if (*p1 == 0 && *p2 + 0x10000 == 0xffff) {
+    if (*p1 == 0 && *p2 == 0xffffffff) {
         return 1;
     }
     obj = *(VObj_8018A4B4**)(*(u8**)(self + 0x138) + 0x70);
-    obj->v22();
+    obj->v20();
     obj = *(VObj_8018A4B4**)(*(u8**)(self + 0x138) + 0x70);
-    if ((u8)obj->v6() == 1) {
+    if (obj->v4() == 1) {
         return 0;
     }
     return 1;
