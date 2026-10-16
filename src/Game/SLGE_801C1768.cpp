@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 
 extern "C" char lbl_804A4310[];
 extern "C" char lbl_804A4808[];
@@ -25,9 +26,8 @@ extern "C" void fn_801C1768(u8* this_) {
     for (s32 i = 0; i < 5; i++, p++, kind++) {
         p[0xb0] = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, *kind, 0, 0, 0, 0, 1, lbl_8053EDC0);
     }
-    u16* kind2 = (u16*)&lbl_8053EDB8;
-    for (s32 i = 0; i < 4; i++, kind2++) {
-        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, *kind2, 0, 0, 0, 0, 1, lbl_8053EDC0);
+    for (s32 i = 0; i < 4; i++) {
+        fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, (&lbl_8053EDB8)[i], 0, 0, 0, 0, 1, lbl_8053EDC0);
     }
     fn_801EE434(*(void**)(this_ + 0x2b0));
     *(void**)(this_ + 0x2b0) = 0;
