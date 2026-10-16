@@ -10,6 +10,9 @@ extern void* lbl_8029B49C[];
 // .text 0x801a7c3c-0x801ba678 (389 functions). split_file divides it into the game's real files.
 
 extern void* lbl_8029B220[];
+extern "C" void* lbl_8029B50C[];
+extern "C" f32 lbl_80301D6C;
+extern "C" void fn_8011935C(void* p);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_801B075C(void* param_1);
 extern "C" int fn_801B2254(void* param_1, s32 param_2, s32 param_3, u16 param_4, void* param_5);
@@ -555,12 +558,16 @@ extern "C" void* fn_801B73C0(void* base, u32 offset) {
 
 extern "C" void* fn_801B7390(void* base, u32 offset);
 #pragma dont_inline on
-extern "C" int fn_801B78C0(u8* param_1, u8* param_2, u16 param_3) {
+extern "C" int fn_801B78C0(u8* param_1, u8* param_2, s32 param_3) {
     s32 ret = 0;
     s32 flags = (param_3 | *(u16*)(param_2 + 8)) & 0xf;
     switch (flags) {
     case 0:
+        ret = 4;
+        break;
     case 1:
+        ret = 4;
+        break;
     case 2:
         ret = 4;
         break;
