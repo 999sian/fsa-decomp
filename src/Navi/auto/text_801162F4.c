@@ -69,6 +69,12 @@ extern "C" void* fn_801168BC(unsigned short* param_1, unsigned short param_2) {
     return param_1;
 }
 
+extern "C" void fn_80116924(unsigned short* param_1, unsigned short param_2);
+extern "C" void* fn_801168EC(unsigned short* param_1, unsigned short param_2) {
+    fn_80116924(param_1, param_2);
+    return param_1;
+}
+
 extern "C" void fn_8011691C(unsigned short* param_1, unsigned short param_2) {
     *param_1 = param_2;
 }
