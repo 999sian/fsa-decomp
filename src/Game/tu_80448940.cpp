@@ -1,3 +1,4 @@
+#include "JSystem/J2D/J2DPane.h"
 
 
 extern "C" void fn_8013B490(void*);
@@ -7,8 +8,8 @@ struct J2DGrafContext;
 struct J2DScreen;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, float, float, const J2DGrafContext*);
 extern "C" void fn_80449070(void* self_) {
-    unsigned char* self = (unsigned char*)self_;
+    u8* self = (u8*)self_;
     fn_8013B490(lbl_8053AB10);
-    float f = lbl_80543DA8;
+    f32 f = lbl_80543DA8;
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
