@@ -18,7 +18,6 @@ extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_80543D40;
 struct Unk80442254Vt {
-    virtual ~Unk80442254Vt() {}
     virtual void m0() = 0;
     virtual void m1() = 0;
     virtual void m2() = 0;
@@ -50,8 +49,8 @@ extern f32 lbl_80543D40;
 extern f32 lbl_80543D44;
 extern "C" void fn_80402E08(void*, f32, f32);
 extern "C" void fn_80442254(char* this_, s32 param_2, s32 param_3) {
-    char* obj = *(char**)(*(char**)(this_ + 0x8) + 0x4);
-    (*(void (**)(void*, s32))(*(char**)obj + 0x24))(obj, 0);
+    Unk80442254Vt* obj = *(Unk80442254Vt**)(*(char**)(this_ + 0x8) + 0x4);
+    obj->m7(0);
     *(u16*)(*(char**)(this_ + 0x8) + 0x26) = 0;
     fn_80402E08(*(void**)(this_ + 0xc), lbl_80543D40, lbl_80543D44);
     *(u16*)(*(char**)(this_ + 0xc) + 0x22) = 0;
@@ -59,8 +58,8 @@ extern "C" void fn_80442254(char* this_, s32 param_2, s32 param_3) {
     *(s32*)(this_ + 0x14) = param_3 - 1;
     *(s32*)(this_ + 0x18) = 1;
     *(s32*)(this_ + 0x1c) = 0;
-    char* tb = *(char**)(this_ + 0x4);
-    char* str = (char*)(*(char* (**)(void*, s32, s32, u32, s32))(*(char**)tb + 0x3c))(tb, param_3 - 1, 0x54, 0x77743031, 0);
+    Unk80442254Vt* tb = *(Unk80442254Vt**)(this_ + 0x4);
+    char* str = (char*)tb->m13(param_3 - 1, 0x54, 0x77743031, 0);
     const char* text = ((J2DTextBox*)str)->getStringPtr();
     u32 f = ((s32)((u8*)lbl_8053AAF8)[0x83] >> (*(s32*)(this_ + 0x14) << 1)) & 3;
     if (f == 1) {
