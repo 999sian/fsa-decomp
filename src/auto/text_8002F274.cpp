@@ -12,9 +12,9 @@ void fn_80030380(short *param_1)
   } while (sVar1 < 0xb);
 }
 
-int fn_80030394(int param_1, int param_2)
+extern "C" int fn_80030394(int param_1, int param_2)
 {
-  if (param_2 == 0) {
+  if ((unsigned int)param_2 == 0) {
     return 0;
   }
   return param_1 + param_2;
@@ -28,7 +28,55 @@ int fn_800303AC(int param_1, int param_2)
   return param_1 + param_2;
 }
 
-int fn_800303C4(int param_1, int param_2)
+extern "C" void* fn_800303C4(const void* base, const void* offset)
+{
+  if (offset == 0) {
+    return 0;
+  }
+  return (void*)((int)base + (int)offset);
+}
+
+s32 fn_800303DC(s32 param_1, s32 param_2)
+{
+	if (param_2 == 0) {
+		return 0;
+	}
+	return param_1 + param_2;
+}
+
+s32 fn_800303F4(s32 param_1, s32 param_2)
+{
+	if (param_2 == 0) {
+		return 0;
+	}
+	return param_1 + param_2;
+}
+
+s32 fn_8003040C(s32 param_1, s32 param_2)
+{
+	if (param_2 == 0) {
+		return 0;
+	}
+	return param_1 + param_2;
+}
+
+s32 fn_80030424(s32 param_1, s32 param_2)
+{
+	if (param_2 == 0) {
+		return 0;
+	}
+	return param_1 + param_2;
+}
+
+int fn_8003043C(int param_1, int param_2)
+{
+  if (param_2 == 0) {
+    return 0;
+  }
+  return param_1 + param_2;
+}
+
+int fn_80030454(int param_1, int param_2)
 {
   if (param_2 == 0) {
     return 0;
