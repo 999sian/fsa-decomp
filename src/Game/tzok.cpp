@@ -192,9 +192,7 @@ extern "C" void fn_80205478(void* this_) {
     if (*(s32*)(p + 0x350) == 2) {
         fn_801D22A0(p + 0x270, *(s32*)(p + 0x98), 2);
     } else if (state == 0) {
-        if (*(s32*)(p + 0x278) >= 4) {
-            fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 2, 0);
-        } else if (*(s32*)(p + 0x278) >= 0) {
+        if (*(s32*)(p + 0x278) >= 0 && *(s32*)(p + 0x278) < 4) {
             fn_801D2264(p + 0x270, *(s32*)(p + 0x98), 2);
         } else {
             fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 2, 0);
@@ -210,7 +208,6 @@ extern "C" void fn_80205478(void* this_) {
 }
 
 struct TzokPt { f32 x, y; };
-struct TzokVec3 { f32 x, y, z; };
 extern TzokPt lbl_8053AC60;
 
 static inline f32 tzokDist2(TzokActor* p) {
