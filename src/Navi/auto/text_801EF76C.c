@@ -98,6 +98,19 @@ extern "C" int ddh_cc_shutdown()
 	return 0;
 }
 
+extern char lbl_802032D4[];
+extern char lbl_802032E8[];
+extern u8 lbl_802FA9B8[];
+extern "C" void fn_801EFCC0(void* a, void* b, int len);
+extern "C" DSError ddh_cc_initialize(vu8** param_1, AmcEXICallback param_2)
+{
+	MWTRACE(1, lbl_802032D4);
+	EXI2_Init(param_1, param_2);
+	MWTRACE(1, lbl_802032E8);
+	fn_801EFCC0(lbl_802FB1B8, lbl_802FA9B8, 0x800);
+	return DS_NoError;
+}
+
 extern "C" int fn_801EFD10(int param_1) {
   return *(int *)(param_1 + 0x10);
 }
