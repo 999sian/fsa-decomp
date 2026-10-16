@@ -33,7 +33,7 @@ extern "C" void fn_8001C2E4(void*, void*);
 extern "C" void fn_801155E0(void*, int);
 extern "C" void* fn_8001D630(void*, void*);
 extern void* lbl_802FEC48;
-extern "C" void fn_80115178(void*, void*, void*);
+extern "C" int fn_80115178(void*, void*, void*);
 extern "C" void fn_8011580C(void);
 extern char lbl_802FB9D8;
 extern "C" void cTg_AdditionToTree__FP21node_lists_tree_classiP16create_tag_class(void*, int, void*);
