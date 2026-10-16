@@ -549,7 +549,7 @@ extern "C" s32 fn_801808E8(void) {
 }
 
 extern "C" void fn_801808F0(void* self, int a, int b, int c) {
-    ((VObj_80180920*)self)->vfD0(a, b, *((u8*)self + 0x110));
+    ((VObj_80180920*)self)->vfC8(a, b, *((u8*)self + 0x110));
 }
 
 extern "C" void fn_80180920(void* self, int a, int b, int c) {
