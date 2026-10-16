@@ -1457,7 +1457,7 @@ extern "C" u8 fn_800DE208(int param_1)
 extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
 {
   u8 a = param_3[1];
-  u8* dst = param_1 + (param_2 << 3);
+  u8* dst = param_1 + param_2 * 8;
   dst[0x22] = a;
   dst[0x23] = param_3[2];
   dst[0x24] = param_3[3];
@@ -2103,8 +2103,8 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8 c0 = c[0];
     u8* p = self + i * 4;
+    u8 c0 = c[0];
     p[0xc] = c0;
     p[0xd] = c[1];
     p[0xe] = c[2];
