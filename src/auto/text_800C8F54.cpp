@@ -132,17 +132,30 @@ extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
     return 0;
 }
 
+extern u32 j3dDefaultTexCoordInfo;
+extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
+    u16 i = *(u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 0x28 + b * 2);
+    if (i != 0xffff) {
+        *out = (*(u32**)(p + 0x28))[i];
+        ((u16*)out)[2] = ((u8*)out)[2];
+        return;
+    }
+    *out = j3dDefaultTexCoordInfo;
+    ((u16*)out)[2] = ((u8*)out)[2];
+}
+
 extern "C" void* __nw__FUl(u32);
 extern "C" void __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(void*, const void*);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
-    u32 off = ids[idx] * 0x14c + 0x48 + b * 2;
+    u32 off = ids[idx] * 0x14c + 0x48;
+    u32 i = off + b * 2;
     void* ret = NULL;
-    if (*(u16*)(base + off) != 0xffff) {
+    if (*(u16*)(base + i) != 0xffff) {
         ret = __nw__FUl(0x94);
         if (ret != NULL) {
-            __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, *(u8**)(p + 0x30) + *(u16*)(base + off) * 0x64);
+            __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, *(u8**)(p + 0x30) + *(u16*)(base + i) * 0x64);
         }
     }
     return ret;
@@ -159,8 +172,9 @@ extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
 extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
     u32 off = ids[idx] * 0x14c + 0x84;
+    u32 i = off + b * 2;
     u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + off + b * 2);
+    u16 v = *(u16*)(base + i);
     if (v != 0xffff) {
         return (*(u16**)(p + 0x38))[v];
     }
@@ -171,8 +185,9 @@ extern unsigned int j3dDefaultTevOrderInfoNull;
 extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
     u32 off = ids[idx] * 0x14c + 0xbc;
+    u32 i = off + b * 2;
     u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + off + b * 2);
+    u16 v = *(u16*)(base + i);
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x40))[v];
         return;
@@ -186,26 +201,28 @@ extern u32 lbl_8053BC78;
 extern "C" void fn_800CB4C0(void* out, u8* e);
 extern "C" void __ct__11J3DTevStageFv(void* self);
 extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xdc + b * 2;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off);
+    u32 def[2] = {lbl_80543F08, lbl_80543F0C};
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xdc;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
     if (v != 0xffff) {
         u32* e = (u32*)(*(u8**)(p + 0x44) + v * 8);
         out[0] = e[0];
         out[1] = e[1];
         return;
     }
-    out[0] = lbl_80543F08;
-    out[1] = lbl_80543F0C;
+    out[0] = def[0];
+    out[1] = def[1];
 }
 
 extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b) {
+    u32 def = lbl_8053BC78;
     u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x94 + b * 2;
     u16 v = *(u16*)(*(u8**)(p + 4) + off);
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x48))[v];
         return;
     }
-    *out = lbl_8053BC78;
+    *out = def;
 }
 
 extern "C" u8 fn_800CB428(u8* p, s32 idx) {
@@ -219,13 +236,49 @@ extern "C" u8 fn_800CB428(u8* p, s32 idx) {
 }
 
 extern "C" void fn_800CB460(void* out, u8* p, s32 idx, s32 b) {
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xe4 + b * 2;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off);
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xe4;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
     if (v != 0xffff) {
         fn_800CB4C0(out, *(u8**)(p + 0x50) + v * 0x14);
         return;
     }
     __ct__11J3DTevStageFv(out);
+}
+
+extern "C" void fn_800CB4C0(void* out, u8* e) {
+    u8* p = (u8*)out;
+    *(u8*)(p + 7) = *(u8*)(p + 7);
+}
+
+extern "C" u8 j3dDefaultTevSwapModeTable[];
+extern "C" u32 j3dDefaultIndTexOrderNull;
+extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
+    u16* ids = *(u16**)(p + 8);
+    u8* base = *(u8**)(p + 4);
+    u16 v = *(u16*)(base + ids[idx] * 0x14c + 0x124 + stage * 2);
+    if (v != 0xffff) {
+        u8* e = *(u8**)(p + 0x58) + v * 4;
+        *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
+        return;
+    }
+    *out = 0;
+}
+
+extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
+    u8* e = *(u8**)(p + 0xc) + idx * 0x138;
+    if (e[0] == 1) {
+        return e[1];
+    }
+    return 0;
+}
+
+extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
+    u8* e = *(u8**)(p + 0xc) + idx * 0x138;
+    if (e[0] == 1) {
+        *out = *(u32*)(e + 4 + stage * 4);
+        return;
+    }
+    *out = j3dDefaultIndTexOrderNull;
 }
 
 extern unsigned int j3dDefaultBlendInfo;
