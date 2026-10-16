@@ -302,6 +302,15 @@ extern "C" void fn_8004CEC8(void* param_1, void* param_2, void* param_3) {
 
 extern "C" void fn_8004D298(void) {}
 
+extern "C" void fn_8004D29C(void* param_1, void* param_2, void* param_3) {
+    if (lbl_802FF0C0 != nullptr) {
+        fn_80192688(lbl_802EE470);
+        fn_8012FE90(lbl_802FF0C0, param_2, param_3);
+        fn_801DEE3C(0);
+        fn_801DE24C(0);
+    }
+}
+
 extern "C" void fn_8004D5C0(void) {}
 
 extern "C" void fn_8004D5C4(void) {}
