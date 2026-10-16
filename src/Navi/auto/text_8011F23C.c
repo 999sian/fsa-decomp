@@ -109,7 +109,7 @@ extern "C" void fn_801200F0(void)
 
 extern "C" void* fn_8012022C(void* param_1, s16 param_2) {
     if (param_1 != 0) {
-        *(void**)param_1 = (void*)&lbl_80290AB4;
+        *(void**)param_1 = lbl_80290AB4;
         fn_801CB248(*(void**)((u8*)param_1 + 0x1c));
         fn_801CB28C(*(void**)((u8*)param_1 + 0x20));
         if (param_2 > 0) {
