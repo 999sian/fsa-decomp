@@ -29,6 +29,16 @@ extern "C" void fn_8044148C(void) {
 extern "C" void fn_8044172C(void) {
 }
 
+extern "C" u8* fn_80441730(u8* param_1, s16 param_2) {
+    if (param_1 != 0) {
+        *(void**)param_1 = lbl_804B19E0;
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_80441778(void* p) {
     *(void**)p = lbl_804B19E0;
     *(s16*)((u8*)p + 0xc) = 0;
