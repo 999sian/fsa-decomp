@@ -25,6 +25,19 @@ extern "C" void fn_800CF370(void** p) {
     *p = lbl_8049AE38;
 }
 
+extern "C" void** fn_800CF38C(void** p, short del) {
+    if (p != 0) {
+        *p = &lbl_8049AE10;
+        if (p != 0) {
+            *p = &lbl_8049AE38;
+        }
+        if (del > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_800CF678(void*, void*, void*);
 extern "C" void fn_800CF734(void*, void*, void*);
 extern "C" void fn_800CF650(void** p, void* a) {
