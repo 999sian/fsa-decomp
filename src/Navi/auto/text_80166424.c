@@ -300,7 +300,7 @@ extern "C" void fn_8016AD08() {}
 
 extern "C" void fn_8016AD0C() {}
 
-extern u8 lbl_80202218[3];
+extern const u8 lbl_80202218[3];
 extern "C" void fn_8016AD10(u8* p) {
     p[0] = lbl_80202218[0];
     p[1] = lbl_80202218[1];
