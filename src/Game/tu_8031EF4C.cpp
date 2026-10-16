@@ -3,6 +3,15 @@
 
 extern "C" char lbl_804AB258[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
+struct SlotVirt6 {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual u32 v06(u32 a, char* b);
+};
 struct Init48 {
     u8 idx[0x10];
     s32 w18;
