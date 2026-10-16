@@ -318,6 +318,14 @@ extern "C" int fn_8015A3E4(void* heap, u32 start, u32 size) {
     return 0;
 }
 
+extern "C" void fn_8015A580(u32* dst, u32* src, u32 size) {
+    u32 n = (size + 3) >> 2;
+    while (n != 0) {
+        *dst++ = *src++;
+        n--;
+    }
+}
+
 extern "C" u8 fn_8015A644(u8* p, u8 v) {
     u8 old = p[0x68];
     p[0x68] = v;
