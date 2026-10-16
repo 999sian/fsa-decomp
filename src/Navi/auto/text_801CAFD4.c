@@ -730,24 +730,67 @@ extern "C" void fn_801DA364(void)
 extern "C" void fn_801DA878(void)
 {
 	u8* gx = __GXData;
-	volatile u8* wg = (volatile u8*)0xCC008000;
 	u8 i;
 	s32 off = 0;
 	for (i = 0; i < 8; i++) {
-		if (*(u8*)(gx + 0x5ab) & (1 << i)) {
-			*wg = 8;
-			*wg = i | 0x70;
-			*(volatile u32*)wg = *(u32*)((u32)gx + (u32)(off + 0x1c));
-			*wg = 8;
-			*wg = i | 0x80;
-			*(volatile u32*)wg = *(u32*)((u32)gx + (u32)(off + 0x3c));
-			*wg = 8;
-			*wg = i | 0x90;
-			*(volatile u32*)wg = *(u32*)((u32)gx + (u32)(off + 0x5c));
+		if (gx[0x5ab] & (1 << i)) {
+			*(volatile u8*)0xCC008000 = 8;
+			*(volatile u8*)0xCC008000 = i | 0x70;
+			*(volatile u32*)0xCC008000 = *(u32*)&gx[off + 0x1c];
+			*(volatile u8*)0xCC008000 = 8;
+			*(volatile u8*)0xCC008000 = i | 0x80;
+			*(volatile u32*)0xCC008000 = *(u32*)&gx[off + 0x3c];
+			*(volatile u8*)0xCC008000 = 8;
+			*(volatile u8*)0xCC008000 = i | 0x90;
+			*(volatile u32*)0xCC008000 = *(u32*)&gx[off + 0x5c];
 		}
 		off += 4;
 	}
-	*(u8*)(__GXData + 0x5ab) = 0;
+	__GXData[0x5ab] = 0;
+}
+
+void fn_801DA914(u32 fmt, s32 attr, s32* cnt, s32* type, u8* frac);
+void fn_801DAB94(u32 fmt, s32* list)
+{
+    s32 attr;
+    for (attr = 9; attr <= 0x14; attr++) {
+        list[0] = attr;
+        fn_801DA914(fmt, attr, &list[1], &list[2], (u8*)&list[3]);
+        list += 4;
+    }
+    list[0] = 0xff;
+}
+
+extern "C" void fn_801DAC08(s32 attr, void* base, u8 stride)
+{
+    s32 cpAttr;
+    s32 idx;
+    u32 phy;
+
+    if (attr == 0x19) {
+        attr = 10;
+    }
+    cpAttr = attr - 9;
+    phy = (u32)base & 0x3FFFFFFF;
+    *(volatile u8*)0xCC008000 = 8;
+    *(volatile u8*)0xCC008000 = cpAttr | 0xA0;
+    *(volatile u32*)0xCC008000 = phy;
+    idx = cpAttr - 12;
+    if (idx >= 0 && idx < 4) {
+        *(u32*)&__GXData[idx * 4 + 0x88] = phy;
+    }
+    *(volatile u8*)0xCC008000 = 8;
+    *(volatile u8*)0xCC008000 = cpAttr | 0xB0;
+    *(volatile u32*)0xCC008000 = stride;
+    idx = cpAttr - 12;
+    if (idx >= 0 && idx < 4) {
+        *(u32*)&__GXData[idx * 4 + 0x98] = stride;
+    }
+}
+
+extern "C" void fn_801DAC94(void)
+{
+    *(volatile u8*)0xCC008000 = 0x48;
 }
 
 extern "C" uint fn_801DD3D8(uint *param_1)
