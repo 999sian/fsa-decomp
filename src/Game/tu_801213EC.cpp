@@ -232,8 +232,8 @@ extern "C" s32 fn_80121E40(u8* self) {
     }
     *(f32*)(self + 0x44) -= lbl_8053C9E4;
     *(GameLowVec*)(self + 0xC) += *(GameLowVec*)(self + 0x3C);
-    if (*(f32*)(self + 0x14) <= lbl_8053C9B4) {
-        *(f32*)(self + 0x14) = lbl_8053C9B4;
+    if (*(f32*)(self + 0x14) <= 0.0f) {
+        *(f32*)(self + 0x14) = 0.0f;
         return 1;
     }
     return 0;
@@ -421,7 +421,8 @@ extern "C" void fn_80123D30(u8* self) {
 }
 
 extern "C" s32 fn_80123D88(u8* self) {
-    if (self[0x333]) {
+    u8 flag = self[0x333];
+    if (flag) {
         return 0;
     }
     s32 player = *(s32*)(self + 0x344);
