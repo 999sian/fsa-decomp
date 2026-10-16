@@ -17,6 +17,7 @@ struct StrideIter {
     f32* p;
     u32 stride;
 
+    StrideIter() {}
     StrideIter& operator++() { p += stride; return *this; }
     StrideIter& operator+=(s32 n) { p += stride * n; return *this; }
 };
@@ -833,7 +834,7 @@ extern "C" void fn_80139364(KeyIter* ret, KeyIter* first, KeyIter* last, f64* va
 }
 
 extern "C" StrideIter fn_801393E4(StrideIter first, StrideIter last, const f64& val) {
-    s32 len = StrideIter_distance(StrideIter(first), StrideIter(last));
+    s32 len = StrideIter_distance(first, last);
     while (len > 0) {
         s32 half = len / 2;
         StrideIter mid = first;
@@ -906,8 +907,7 @@ extern "C" void fn_801397A8(void* param_1, void* param_2) {
 }
 
 extern "C" void fn_801397C8(void* param_1, void* param_2) {
-    s32** pp = (s32**)((u8*)param_2 + 8);
-    fn_8013785C((u8*)param_1 + 0x18, (s32)(*pp + 1), **pp);
+    fn_8013785C((u8*)param_1 + 0x18, (s32)(*(s32**)((u8*)param_2 + 8) + 1), **(s32**)((u8*)param_2 + 8));
 }
 
 extern u8 lbl_80292CD8[];
