@@ -1882,6 +1882,10 @@ extern "C" void fn_800DF020(GXColor* param_1, int param_2, const GXColor* param_
     param_1[param_2 + 1] = *param_3;
 }
 
+extern "C" void fn_800DF04C(GXColor* param_1, int param_2, const GXColor* param_3) {
+    param_1[param_2 + 1] = *param_3;
+}
+
 extern "C" u8* fn_800DF078(u8* self, int i) {
     return self + i * 4 + 4;
 }
