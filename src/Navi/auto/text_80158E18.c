@@ -139,7 +139,7 @@ extern "C" void fn_80159D88(void* p) {
         virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
         virtual void v12(); virtual void v13(); virtual void v14();
     };
-    ((Obj*)p)->v14();
+    ((Obj*)p)->v13();
 }
 
 extern "C" void fn_80159DE0(void* p) {
