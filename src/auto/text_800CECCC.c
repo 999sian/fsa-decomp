@@ -71,6 +71,11 @@ extern "C" void fn_800CF8CC(void** self, void* data)
     fn_800CF8F4(self, self[1], data);
 }
 
+extern "C" void fn_800CF998(void*, unsigned char*, const unsigned char*);
+extern "C" void fn_800CF970(void** self, const unsigned char* data) {
+    fn_800CF998(self, (unsigned char*)self[1], data);
+}
+
 extern "C" void fn_800CFE04(void** self, void* data)
 {
     fn_800CFE2C(self, self[1], data);
