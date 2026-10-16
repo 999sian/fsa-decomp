@@ -98,6 +98,49 @@ extern "C" void fn_8015949C(int attr, u32 base, u8 stride)
     *(volatile u32*)0xCC008000 = stride;
 }
 
+extern "C" void fn_801594E0(unsigned int idx, unsigned char* c) {
+    *(volatile unsigned char*)0xCC008000 = 0x10;
+    *(volatile unsigned short*)0xCC008000 = 0;
+    *(volatile unsigned short*)0xCC008000 = 0x100C + (idx & 1);
+    *(volatile unsigned int*)0xCC008000 = (c[0] << 24) | (c[1] << 16) | (c[2] << 8) | c[3];
+}
+
+extern "C" void fn_80159528(int type, int src, int dst, int op, u8 a, u8 b, u8 c) {
+    u8 en = 0;
+    *(volatile u8*)0xCC008000 = 0x61;
+    if (type == 1 || type == 3) {
+        en = 1;
+    }
+    *(volatile u32*)0xCC008000 = en | ((type == 2) << 1) | (c << 2) | (a << 3) | (b << 4) | (dst << 5) | (src << 8) | ((type == 3) << 11) | (op << 12) | 0x41000000;
+}
+
+extern "C" void fn_801595B0(int id, unsigned char* p) {
+    u32 reg0 = p[0] | (p[3] << 12) | ((id * 2 + 0xe0) << 24);
+    u32 reg1 = p[2] | (p[1] << 12) | ((id * 2 + 0xe1) << 24);
+    *(volatile unsigned char*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg0;
+    *(volatile unsigned char*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg1;
+    *(volatile unsigned char*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg1;
+    *(volatile unsigned char*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg1;
+}
+
+extern "C" void fn_80159608(int id, short* p) {
+    u32 reg;
+    reg = (p[0] & 0x7ff) | ((p[3] & 0x7ff) << 12) | ((id * 2 + 0xe0) << 24);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg;
+    reg = (p[2] & 0x7ff) | ((p[1] & 0x7ff) << 12) | ((id * 2 + 0xe1) << 24);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg;
+}
+
 extern "C" void fn_80159750(float* m, int id) {
     volatile unsigned char* fifo = (volatile unsigned char*)0xCC008000;
     float f;
@@ -551,6 +594,17 @@ extern "C" void* fn_8015AE80(void* p, s16 param_2) {
         }
     }
     return p;
+}
+
+extern "C" void* fn_8015C634(u32);
+extern "C" void fn_8015C5D4(void*, void*);
+extern "C" void fn_8015B584(char* p, u32 addr) {
+    void* blk;
+    fn_801BE3A0(p + 0x18);
+    if (*(u32*)(p + 0x30) <= addr && addr <= *(u32*)(p + 0x34) && (blk = fn_8015C634(addr)) != 0) {
+        fn_8015C5D4(blk, p);
+    }
+    fn_801BE47C(p + 0x18);
 }
 
 extern "C" BOOL fn_8015C744(void* p, u32* a, u32* b) {
