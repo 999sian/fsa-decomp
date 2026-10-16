@@ -731,7 +731,7 @@ extern "C" void fn_8001BE84(void) {
 }
 
 extern "C" void fn_8001EB08(void);
-extern "C" void fn_8001BEA4(void) {
+extern "C" void fn_8001BEA4(void* param_1) {
     fn_8001EB08();
 }
 
@@ -1132,6 +1132,22 @@ extern "C" s32 fn_8001DC20(void) {
         return 3;
     }
     return ret;
+}
+
+extern "C" void fn_8001BFE0(void*);
+extern "C" s32 fn_8001DC84(void* param_1) {
+    fn_8001BFE0(*(void**)((u8*)param_1 + 0x50));
+    ((void (*)(void*))fn_8001BEA4)((u8*)param_1 + 0x14);
+    cTg_SingleCut((create_tag_class*)param_1);
+    void* p = *(void**)((u8*)param_1 + 0x3c);
+    if (p != NULL) {
+        void* q = *(void**)((u8*)p + 8);
+        if (q != NULL && fn_8001D540(q, param_1) == NULL) {
+            return 0;
+        }
+    }
+    fn_801148F4(param_1);
+    return 1;
 }
 
 extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
