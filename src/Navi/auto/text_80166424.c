@@ -106,6 +106,9 @@ extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8016AD04(void) {
+}
+
 extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
 }
