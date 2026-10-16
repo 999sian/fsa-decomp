@@ -26,22 +26,16 @@ extern "C" char* fn_80085BBC(char* p, u32 a2, void* a3, u32 a4, u32 a5, u32 a6, 
 extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(u32 size, int align, void* heap);
 extern "C" u32 getMaxAllocatableSize__7JKRHeapFi(void* heap, int align);
 extern "C" void* sRootHeap__7JKRHeap;
-extern "C" char* fn_80085BBC(char* p, u32 a2, void* a3, u32 a4, u32 a5, u32 a6, u32 a7, void* a8, u8 a9);
-extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(u32 size, int align, void* heap);
-extern "C" u32 getMaxAllocatableSize__7JKRHeapFi(void* heap, int align);
-extern "C" void* sRootHeap__7JKRHeap;
 extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5) {
+    char* result;
     u32 mask;
     u32 unit;
     u32 n;
     u32 aligned;
     u32 remain;
     u32 count;
-    u32 tmp;
     char* p;
     char* base;
-    char* end;
-    char* result;
 
     if (align == 0) {
         align = 4;
@@ -50,7 +44,8 @@ extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5
         minSize = align;
     }
     mask = ~(align - 1);
-    unit = (minSize + align - 1) & mask;
+    minSize = align + minSize;
+    unit = mask & (minSize - 1);
     if (heap == 0) {
         heap = sRootHeap__7JKRHeap;
     }
@@ -71,11 +66,9 @@ extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5
         free__7JKRHeapFPvP7JKRHeap(p, 0);
         return 0;
     }
-    end = p + size;
     result = p;
-    tmp = (u32)(base + (((n >> 3) + 3) & ~3)) + align;
-    aligned = (tmp - 1) & mask;
-    remain = (u32)end - aligned;
+    aligned = ((u32)base + (((n >> 3) + 3) & ~3) + align - 1) & mask;
+    remain = (u32)p + size - aligned;
     count = remain / unit;
     if (result != 0) {
         result = fn_80085BBC(p, (u32)base, (void*)aligned, unit, count, remain, align, heap, a5);
@@ -139,16 +132,19 @@ extern "C" void fn_80085CB8(char* p) {
         src = lbl_8053B770 + start;
         rem = 8 - start;
         if (start < 8) {
-            for (blocks = rem >> 3; blocks != 0; blocks--) {
-                *data |= src[0];
-                *data |= src[1];
-                *data |= src[2];
-                *data |= src[3];
-                *data |= src[4];
-                *data |= src[5];
-                *data |= src[6];
-                *data |= src[7];
-                src += 8;
+            blocks = rem >> 3;
+            if (blocks != 0) {
+                do {
+                    *data |= src[0];
+                    *data |= src[1];
+                    *data |= src[2];
+                    *data |= src[3];
+                    *data |= src[4];
+                    *data |= src[5];
+                    *data |= src[6];
+                    *data |= src[7];
+                    src += 8;
+                } while (--blocks != 0);
             }
             rem &= 7;
             if (rem != 0) {
