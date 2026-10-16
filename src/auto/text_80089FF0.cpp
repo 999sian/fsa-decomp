@@ -3,7 +3,6 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
-extern "C" unsigned int lbl_80557C4C;
 extern "C" void fn_8008A220(void);
 extern "C" void fn_8008A4C4(unsigned int param_1)
 {
