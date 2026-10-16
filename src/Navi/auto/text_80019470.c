@@ -89,8 +89,8 @@ extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
 }
 
 extern "C" void fn_80019490(f32* d, const f32* s) {
-    f32 y = s[1];
     f32 x = s[0];
+    f32 y = s[1];
     d[0] = x;
     f32 z = s[2];
     d[1] = y;
@@ -923,6 +923,10 @@ extern "C" void fn_8001C9FC(void) {
 
 extern "C" void fn_8001CA1C(void) {
     fn_8001B5D4();
+}
+
+extern "C" void fn_8001D084(char* self, char value) {
+    self[0xb2] = value;
 }
 
 extern "C" void fn_8001D434(void) {
