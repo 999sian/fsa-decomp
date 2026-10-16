@@ -2,6 +2,10 @@
 
 
 extern "C" char lbl_804ACC68[];
+extern u8* lbl_8053AAF8;
+extern f32 lbl_80542720;
+extern f32 lbl_80542724;
+extern f32 lbl_80542728;
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_803536C4(Actor* p, s16 n) {
     if (p) {
