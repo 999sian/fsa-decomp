@@ -42,6 +42,26 @@ end:
   }
 }
 
+extern "C" s32 lbl_804742A8[];
+extern "C" void fn_8021A570(u8* r, s32 active);
+extern "C" void fn_8035FF70(u8* param_1) {
+    if (*(u8*)(param_1 + 0x2b0) == 1) {
+        if (*(s32*)(param_1 + 0x270) == 0) {
+            fn_8021A570(param_1 + 0x2a0, 1);
+        } else if (*(s32*)(param_1 + 0x234) == 0) {
+            if (lbl_804742A8[*(s32*)(param_1 + 0x240) * 2] < 0) {
+                *(s32*)(param_1 + 0x240) = 0;
+            }
+            *(s32*)(param_1 + 0x234) = lbl_804742A8[*(s32*)(param_1 + 0x240) * 2 + 1];
+            *(s32*)(param_1 + 0x23c) = lbl_804742A8[*(s32*)(param_1 + 0x240) * 2];
+            *(s32*)(param_1 + 0x240) = *(s32*)(param_1 + 0x240) + 1;
+        }
+    }
+    if (*(s32*)(param_1 + 0x280) == 0) {
+        fn_80360914(param_1);
+    }
+}
+
 extern "C" void fn_803613D0(u8* param_1) {
   u8* e = *(u8**)(param_1 + 0x2b4);
   if (e != 0) {
