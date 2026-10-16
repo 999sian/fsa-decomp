@@ -8,3 +8,29 @@ extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_80349B14(void)
 {
 }
+
+extern "C" void fn_8034A380(Actor* param_1)
+{
+    *(u32*)((u8*)param_1 + 0x230) = 0;
+    *(u32*)((u8*)param_1 + 0x234) = 0;
+    *(s32*)((u8*)param_1 + 0x238) = -1;
+    *(s32*)((u8*)param_1 + 0x23c) = -1;
+    *(u32*)((u8*)param_1 + 0x278) = param_1->field_90 & 0xF;
+    *(u16*)((u8*)param_1 + 0x280) = 0;
+    *(u8*)((u8*)param_1 + 0x282) = 0;
+    *(s32*)((u8*)param_1 + 0x240) = -1;
+    *(s32*)((u8*)param_1 + 0x244) = -1;
+    *(s32*)((u8*)param_1 + 0x248) = -1;
+    *(s32*)((u8*)param_1 + 0x24c) = -1;
+    *(s32*)((u8*)param_1 + 0x250) = -1;
+    *(s32*)((u8*)param_1 + 0x254) = -1;
+    *(s32*)((u8*)param_1 + 0x258) = -1;
+    *(s32*)((u8*)param_1 + 0x25c) = -1;
+    *(s32*)((u8*)param_1 + 0x260) = -1;
+    *(s32*)((u8*)param_1 + 0x264) = -1;
+    *(s32*)((u8*)param_1 + 0x268) = -1;
+    *(s32*)((u8*)param_1 + 0x26c) = -1;
+    *(s32*)((u8*)param_1 + 0x270) = -1;
+    *(s32*)((u8*)param_1 + 0x274) = -1;
+}
+
