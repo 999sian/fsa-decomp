@@ -36,6 +36,19 @@ extern char* lbl_8053AB10;
 extern "C" s32 fn_80226BC4(JGeometry::TVec2<f32>* pos, s32 room);
 extern "C" void fn_802F9974(void* mgr, u32 room, s32 idx, u16 value);
 
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7970(void* p, s32 v);
+extern "C" void fn_80138B7C(void* p);
+extern "C" void* fn_8023E724(void* p);
+extern "C" u32 fn_802A0800(char* self, void* p3, u32 room);
+extern void* lbl_8053AAF8;
+extern "C" void fn_8029D898(void* a, s32 b) {
+    s32 v = *(s32*)((char*)fn_802D6A9C() + 0x34);
+    fn_802D7970(fn_802D6A9C(), b);
+    fn_80138B7C(lbl_8053AAF8);
+    fn_802D7970(fn_802D6A9C(), v);
+}
+
 extern "C" void fn_802A381C(void* self, JGeometry::TVec2<f32>* pos, u32 room, u16 value) {
     JGeometry::TVec2<f32> p = *pos;
     s32 r = fn_80226BC4(&p, room & 0xfe);
