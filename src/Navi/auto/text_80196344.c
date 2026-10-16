@@ -994,9 +994,10 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
     return p + i * 8 + 0x42;
 }
 
-extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
-    u8* d = (u8*)(p + i * 4);
-    d[0x62] = src[0];
+extern "C" void fn_801A3D94(s32 p, s32 i, u8* src) {
+    u8* d = (u8*)p + i * 4;
+    u8 a = src[0];
+    d[0x62] = a;
     d[0x63] = src[1];
     d[0x64] = src[2];
     d[0x65] = src[3];
@@ -1004,6 +1005,10 @@ extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
 
 extern "C" int fn_801A3DEC(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x62;
+}
+
+extern "C" void fn_801A3E00(u8* p, s32 i, u8 v) {
+    p[i + 0x72] = v;
 }
 
 extern "C" void fn_801A3E0C(u8* p1, int p2, u8* p3) {
