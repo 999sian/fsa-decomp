@@ -46,6 +46,40 @@ struct Unk802FF544 {
 };
 extern "C" void fn_80159DB4(void);
 extern u32 lbl_802FF540;
+extern "C" void* OSGetArenaLo(void);
+extern "C" void* OSGetArenaHi(void);
+extern "C" void OSSetArenaLo(void*);
+extern "C" void OSSetArenaHi(void*);
+extern "C" char* fn_801BBE50(char*, char*, void*);
+extern char* lbl_802FF554;
+extern char* lbl_802FF558;
+extern char* lbl_802FF55C;
+extern char* lbl_802FF560;
+extern u32 lbl_802FF564;
+#pragma push
+#pragma use_lmw_stmw off
+#pragma dont_inline on
+extern "C" int fn_80159AE4(char** outStart, int* outSize, void* arg) {
+    char* lo = (char*)OSGetArenaLo();
+    char* hi = (char*)OSGetArenaHi();
+    if (lo == hi) {
+        return 0;
+    }
+    lo = (char*)(((u32)fn_801BBE50(lo, hi, arg) + 0x1f) & ~0x1f);
+    hi = (char*)((u32)hi & ~0x1f);
+    lbl_802FF554 = (char*)0x80000000;
+    lbl_802FF558 = lo;
+    lbl_802FF55C = lo;
+    lbl_802FF560 = hi;
+    lbl_802FF564 = *(u32*)0x80000028;
+    OSSetArenaLo(hi);
+    OSSetArenaHi(hi);
+    *outStart = lo;
+    *outSize = hi - lo;
+    return 1;
+}
+#pragma pop
+
 extern "C" u32 fn_80159B94(u32 param_1) {
     u32 old = lbl_802FF540;
     lbl_802FF540 = param_1;
