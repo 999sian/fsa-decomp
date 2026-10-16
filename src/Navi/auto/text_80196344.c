@@ -32,6 +32,61 @@ extern "C" void* fn_80196388(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80197A94(u32 param_1, u32 param_2) {
+    u32 r5 = 0;
+    if (param_1 == 0) {
+        if (param_2 & 1) {
+            r5 = 4;
+        } else if (param_2 & 2) {
+            r5 = 4;
+        } else if (param_2 & 4) {
+            r5 = 4;
+        }
+    } else if (param_1 == 0x10000000) {
+        r5 = 0x40;
+    } else if (param_1 == 0x20000000) {
+        r5 = 0x10;
+    }
+    return r5;
+}
+
+extern "C" void fn_80197AFC(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(u32*)(p + 0x8) = 0;
+    *(u32*)(p + 0x4) = 0;
+    *(u32*)(p + 0xc) = 0;
+    *(u32*)(p + 0x10) = 1;
+    *(s16*)(p + 0x14) = 0xffff;
+    *(u32*)(p + 0x18) = 0;
+    *(u32*)(p + 0x20) = 0;
+    *(u32*)(p + 0x24) = 0;
+    *(u32*)(p + 0x28) = 0;
+    *(u32*)(p + 0x2c) = 0;
+    *(u32*)(p + 0x30) = 0;
+    *(u32*)(p + 0x34) = 0;
+    *(u32*)(p + 0x38) = 0;
+    *(u32*)(p + 0x3c) = 0;
+    *(u32*)(p + 0x48) = 0;
+}
+
+extern "C" u32 fn_80197B4C(void* param_1) {
+    u8* p = (u8*)param_1;
+    void* obj;
+    u32 a;
+    u32 b;
+    obj = *(void**)(p + 0x28);
+    a = ((u32 (*)(void*))((*(void***)obj)[0x30 / 4]))(obj);
+    obj = *(void**)(p + 0x24);
+    b = ((u32 (*)(void*))((*(void***)obj)[0x28 / 4]))(obj);
+    obj = *(void**)(p + 0x2c);
+    a += ((u32 (*)(void*))((*(void***)obj)[0x44 / 4]))(obj);
+    obj = *(void**)(p + 0x30);
+    a += ((u32 (*)(void*))((*(void***)obj)[0x14 / 4]))(obj);
+    obj = *(void**)(p + 0x34);
+    a += ((u32 (*)(void*))((*(void***)obj)[0x20 / 4]))(obj);
+    return (b + a + 0x1f) & ~0x1f;
+}
+
 extern u8 lbl_802EE470[];
 extern "C" void fn_80198B44(void* param_1) {
     *(u32*)(lbl_802EE470 + 0x54) = *(u32*)((u8*)param_1 + 0x10);
