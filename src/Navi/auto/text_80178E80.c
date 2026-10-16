@@ -132,6 +132,10 @@ extern "C" void* fn_80180BAC(u32* self) {
     return self;
 }
 
+extern "C" int fn_80181BA0(char* self) {
+    return *(int*)(self + 0x124);
+}
+
 extern "C" void fn_80184B34(u8* self, u32* out) {
     u32 a = *(u32*)(self + 0x148);
     u32 b = *(u32*)(self + 0x14c);
@@ -346,13 +350,12 @@ extern "C" void fn_8018BDC8(void* self, void* src) {
 
 extern "C" void* fn_8018C1E8(void* base, u32 offset);
 extern "C" void fn_8018BFA4(void* self, void* dst, void* src) {
-    f32 zero = lbl_80301C30;
     u8 flag = ((u8*)src)[8];
     *(s16*)((u8*)dst + 6) = *(s16*)((u8*)src + 10);
     u16 a = *(u16*)((u8*)src + 0xc);
     *(u8*)((u8*)dst + 4) = flag;
     u16 b = *(u16*)((u8*)src + 0xe);
-    *(f32*)((u8*)dst + 8) = zero;
+    *(f32*)((u8*)dst + 8) = lbl_80301C30;
     *(u16*)((u8*)dst + 0x10) = a;
     u32 c = *(u32*)((u8*)src + 0x10);
     *(u16*)((u8*)dst + 0x12) = b;
