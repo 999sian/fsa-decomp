@@ -1,4 +1,7 @@
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
+typedef JGeometry::TVec3<f32> YasiVec;
+extern const f32 lbl_80540F18;
 
 
 extern "C" void fn_801F132C(void* a, s32 b, s32 c, s32* d);
