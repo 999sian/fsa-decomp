@@ -515,9 +515,8 @@ extern "C" int fn_801A3544(int p) { return p + 4; }
 
 extern "C" void fn_801A7D78(void* p);
 extern "C" void fn_801A354C(u8* param_1, u16* param_2) {
-    u16 uVar0 = param_2[0];
     u8 uVar1 = *(u8*)(param_2 + 1);
-    *(u16*)(param_1 + 0x30) = uVar0;
+    *(u16*)(param_1 + 0x30) = param_2[0];
     u8 uVar2 = *((u8*)param_2 + 3);
     *(u8*)(param_1 + 0x32) = uVar1;
     *(u8*)(param_1 + 0x33) = uVar2;
@@ -560,9 +559,11 @@ extern "C" u32 fn_801A36A4(void) {
 }
 
 extern "C" void fn_801A36B0(int param_1, u8* param_2) {
+    u8 t = param_2[2];
     *(u16*)(param_1 + 4) = *(u16*)param_2;
-    *(u8*)(param_1 + 6) = param_2[2];
-    *(u8*)(param_1 + 7) = param_2[3];
+    u8 b = param_2[3];
+    *(u8*)(param_1 + 6) = t;
+    *(u8*)(param_1 + 7) = b;
 }
 
 extern "C" int fn_801A36E8(int p) { return p + 4; }
@@ -659,6 +660,11 @@ extern "C" void fn_801A394C(NaviRectHolder* p, s32 i, NaviColor8* src) {
 
 extern "C" s32 fn_801A39A4(s32 param_1, s32 param_2) {
     return param_1 + param_2 * 4 + 0xfa;
+}
+
+extern "C" void fn_801A39B8(int param_1, int param_2, u8 param_3) {
+    u32 addr = param_1 + param_2;
+    *(u8*)(addr + 0x10a) = param_3;
 }
 
 extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
