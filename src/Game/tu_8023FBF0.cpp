@@ -1229,9 +1229,8 @@ inline bool padActive3(char* p) {
                     c++;
                 }
             } else {
-                s32 me = S32(p, 0x4);
-                s32 other = fn_8022F3DC(i);
-                    if (me == other) {
+                                  s32 me = S32(p, 0x4);
+                    if (me == fn_8022F3DC(i)) {
                       c++;
                   }
               }
