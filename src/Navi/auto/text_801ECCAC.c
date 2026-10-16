@@ -74,6 +74,11 @@ extern "C" int TRKTargetStopped(void)
     return *(int*)(gTRKState + 0x98);
 }
 
+extern "C" int fn_801ED458(void)
+{
+    return *(int*)(gTRKCPUState + 0x80);
+}
+
 extern int lbl_8029F054[5];
 extern char lbl_802030F8[];
 extern unsigned char gTRKCPUState[];
