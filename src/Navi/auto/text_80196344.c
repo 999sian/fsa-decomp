@@ -1337,6 +1337,10 @@ extern "C" void fn_801A4704(void) { }
 
 extern "C" u32 fn_801A47A8(void) { return 0x54565054; }
 
+extern "C" void fn_801A47B4(u8* p, u8 v) {
+    p[0xd0] = v;
+}
+
 extern "C" void fn_801A47BC(u8* p, const u8* src) {
     p[0xd0] = src[0];
 }
