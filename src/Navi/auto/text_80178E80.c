@@ -2007,9 +2007,8 @@ extern "C" void fn_8019054C(u32 idx, u32 a, u32 b, u32 c) {
     *(*(u8**)&lbl_802FFA80[2])++ = w;
 }
 
-extern "C" s32 fn_801E6578(u32 a, s32 b);
-extern u8 lbl_802FE62C[];
-extern u8 lbl_802FE634[];
+extern u8 lbl_802FE62C[8];
+extern u8 lbl_802FE634[8];
 extern "C" void fn_801905F4(u32 idx, u32 addr) {
     extern int* lbl_802FFA80;
     u32 w = ((addr - 0x80000000) >> 5) | (lbl_802FE62C[idx] << 24);
