@@ -257,7 +257,7 @@ void fn_801729B4(u8* p, s32 idx, u8* src) {
     dst[0x5e] = src[7];
 }
 
-s32 fn_801729F0(s32 p, s32 i) {
+extern "C" s32 fn_801729F0(s32 p, s32 i) {
     return p + i * 8 + 0x57;
 }
 
