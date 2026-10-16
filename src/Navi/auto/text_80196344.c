@@ -241,6 +241,9 @@ extern "C" void fn_80198C1C(void* param_1) {
     }
 }
 
+extern "C" void fn_80198C68(void) {
+}
+
 extern "C" void fn_80198C6C(void) {
 }
 
