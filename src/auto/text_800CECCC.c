@@ -3,6 +3,7 @@
 #include "JSystem/JUtility/JUTNameTab.h"
 
 template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
+extern f32 lbl_8053BC80;
 
 
 extern float lbl_8053BC80;
@@ -140,7 +141,7 @@ extern "C" void fn_800D00F0(void* param_1, void* param_2, void* param_3) {
     const unsigned char* data = (const unsigned char*)param_3;
     *(short*)(anm + 6) = *(const short*)(data + 12);
     anm[4] = data[8];
-    *(float*)(anm + 8) = 0.0f;
+    *(float*)(anm + 8) = lbl_8053BC80;
     *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 14);
     *(unsigned short*)(anm + 0xc) = *(const unsigned short*)(data + 16);
     *(unsigned short*)(anm + 0xe) = *(const unsigned short*)(data + 18);
