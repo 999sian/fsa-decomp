@@ -45,7 +45,7 @@ extern "C" f32 lbl_805435B8;
 extern "C" f32 lbl_805435BC;
 extern "C" f32 lbl_805435C0;
 extern "C" void fn_803DA6B4(Tu803DA6B4Owner* this_) {
-    this_->mZ = lbl_805435B0;
+    this_->mZ = 0.0f;
     if (this_->m20 != 0) {
         this_->m1C++;
         if (this_->m1C <= 0x1a) {
