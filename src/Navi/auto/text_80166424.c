@@ -427,7 +427,7 @@ extern "C" s32 fn_80172A4C(s32 p1, s32 p2) {
 }
 
 extern "C" void fn_80172A5C(u8* p1, s32 p2, u32* p3) {
-    *(u32*)(p1 + p2 * 4 + 0xbc) = *p3;
+    ((u32*)(p1 + 0xbc))[p2] = *p3;
 }
 
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
