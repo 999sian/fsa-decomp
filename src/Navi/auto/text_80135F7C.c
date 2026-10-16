@@ -1,4 +1,11 @@
 #include "types.h"
+
+struct Obj_8013A024 {
+    u8 unk_0x0[0x8];
+    void* m_0x8;
+    u8 unk_0xc[0xc];
+    void* m_0x18;
+};
 extern "C" f32 fn_80137F4C(void* param_1);
 extern "C" f64 fn_80137F58(void* p, f32 x);
 extern "C" f64 fn_80137F88(void* p, f32 x);
@@ -1446,8 +1453,9 @@ extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
+        NaviTracker* t = (NaviTracker*)ptr;
         *(void**)ptr = lbl_8029320C;
-        ((NaviTracker*)ptr)->fn_3();
+        t->fn_3();
         fn_80133C0C(ptr, 0);
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
