@@ -51,6 +51,10 @@ extern "C" u8 fn_803006E8(u32 data) {
     return crc;
 }
 
+extern "C" void fn_803007A0(void) {
+    lbl_8053ACB8->vf0C();
+}
+
 extern "C" s32 fn_80301A88(void* this_) {
     return OSResumeThread(*(void**)((char*)this_ + 0x28));
 }
