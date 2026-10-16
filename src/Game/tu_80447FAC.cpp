@@ -1,5 +1,13 @@
 #include "types.h"
 #include "JSystem/J2D/J2DPane.h"
+
+extern "C" void __dl__FPv(void*);
+extern "C" u8 lbl_804B1C58[];
+extern "C" u32 lbl_8053AF10;
+
+struct fn_804484C8_Obj {
+    virtual void Release(int);
+};
 struct J2DScreen {
     u8 pad[0x100];
     u8 b100;
