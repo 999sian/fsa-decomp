@@ -70,6 +70,24 @@ extern "C" bool fn_802574CC(u8* p, const JGeometry::TBox2<f32>* bounds,
     return false;
 }
 
+extern "C" bool fn_802575B8(u8* p, const JGeometry::TBox2<f32>* bounds,
+                             s32 id, JGeometry::TVec2<f32>* center) {
+    for (s32 i = 0; i < 3; i++) {
+        if (S32(p, 0xb0c + i * 4) >= 0 && S32(p, 0xb4c + i * 4) == id) {
+            JGeometry::TBox2<f32>& box = BOX(p, 0x510 + i * 0x10);
+            JGeometry::TBox2<f32> overlap = box;
+            if (overlap.intersect(*bounds)) {
+                center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
+                center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
+                S32(p, 0xb80) = i;
+                return true;
+            }
+        }
+    }
+    S32(p, 0xb80) = -1;
+    return false;
+}
+
 extern "C" u8 fn_802577E0(u8* p) {
     if (fn_80270C88(p)) {
         return 0;
@@ -153,11 +171,12 @@ extern "C" void fn_8025819C(u8* p) {
 }
 
 extern "C" void fn_80258384(u8* p) {
-    s32 i = 0;
     u8* ids = p;
     u8* boxes = p;
-    for (; i < 3; i++, boxes += 0x10, ids += 4) {
-        s32 id = S32(ids, 0xb1c);
+    s32 i = 0;
+    s32 id;
+    while (i < 3) {
+        id = S32(ids, 0xb1c);
         if (id >= 0) {
             u8* actor = fn_801F666C(fn_801F856C(), id);
             if (!actor) {
@@ -170,6 +189,9 @@ extern "C" void fn_80258384(u8* p) {
                 BOX(boxes, 0x550).addPos(pos);
             }
         }
+        i++;
+        boxes += 0x10;
+        ids += 4;
     }
 }
 
@@ -246,6 +268,44 @@ extern "C" void fn_80258BBC(u8* p) {
     }
     U8(p, 0xb79) = 0;
     U8(p, 0x1204) = 0;
+}
+
+extern "C" void fn_8027EB04(void*);
+extern "C" void fn_8024F0E8(void*, s32);
+extern "C" u8 fn_8024B24C(void*);
+extern "C" s32 fn_802486A0(void*);
+extern "C" u8 Player_IsLinked(void*);
+extern "C" u8 fn_80243194(void*, s32);
+extern "C" void fn_8023E690(s32, void*);
+extern "C" void fn_8024BAEC(void*);
+extern "C" void fn_80259660(u8* p) {
+    U8(p, 0x458) = 0;
+    fn_8027EB04(p);
+    F32(p, 0x344) = lbl_805400C4;
+    F32(p, 0x348) = lbl_805400C4;
+    F32(p, 0x34c) = lbl_805400C4;
+    F32(p, 0x34c) = lbl_8054010C;
+    fn_8024F0E8(p, 0x10002);
+    F32(p, 0x368) = lbl_805400C4;
+    F32(p, 0x36c) = lbl_805400C4;
+    F32(p, 0x370) = lbl_805400C4;
+    U8(p, 0xb79) = 0;
+    U8(p, 0x1204) = 0;
+    if (fn_8024B24C(p)) {
+        if (fn_802486A0(p) == 5 && !Player_IsLinked(p)) {
+            for (s32 i = 0; i < 4; i++) {
+                if (fn_80243194(p, i) && i != S32(p, 0x4)) {
+                    fn_8023E690(i, p + 8);
+                }
+            }
+            fn_8024BAEC(p);
+        }
+    }
+    if (fn_8024B24C(p)) {
+        U8(p, 0x1204) = 1;
+    } else {
+        U8(p, 0x1204) = 0;
+    }
 }
 
 extern "C" void fn_80259778(u8* p) {
