@@ -117,6 +117,20 @@ struct VObj_80183C4C {
     virtual s32 vfA8(s32* a, s32* b);
 };
 
+struct VObj_80187ECC {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+    virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+    virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+    virtual void v36(); virtual void v37();
+    virtual int vfA0(u8 a);
+};
+
 struct VObj_801843 {
     virtual void* vf0();
     virtual void* vf4();
@@ -1560,9 +1574,11 @@ extern "C" s32 fn_80187F44(void* self, s32* param_2) {
     if (fn_801884B0((s32)self, &local_14, &local_10) == 0) {
         return 0;
     }
-    s32 local_c = *param_2;
-    s32 local_18 = local_10;
-    return ((s32 (*)(void*, s32*, s32*))(*(void***)self)[0x130 / 4])(self, &local_c, &local_18);
+    s32 local_c;
+    s32 local_18;
+    local_18 = local_10;
+    local_c = *param_2;
+    return ((VObj_80187FCC*)self)->vf130(&local_c, &local_18);
 }
 
 extern "C" s32 fn_80187FCC(void* self, s32* param_2) {
@@ -1575,7 +1591,7 @@ extern "C" s32 fn_80187FCC(void* self, s32* param_2) {
     s32 local_18;
     local_18 = *param_2;
     local_c = local_14;
-    return (*(s32 (**)(void*, s32*, s32*))((u8*)*(void**)self + 0x130))(self, &local_c, &local_18);
+    return ((VObj_80187FCC*)self)->vf130(&local_c, &local_18);
 }
 
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
@@ -1898,8 +1914,7 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    void* a = lbl_80299504;
-    *(void**)ptr = a;
+    *(void**)ptr = lbl_80299504;
     *(void**)ptr = lbl_802994F0;
 }
 
