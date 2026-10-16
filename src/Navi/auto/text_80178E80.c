@@ -222,6 +222,12 @@ extern "C" void fn_8015AB1C(void* p);
 extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
 extern u8 lbl_80301BF8[];
 
+struct VObj_80184164 {
+    virtual void v0(); virtual void v1(); virtual void v2();
+    virtual void v3(); virtual void v4(); virtual void v5();
+    virtual u8 v6();
+};
+
 struct DtorVObj_80178F90 {
     virtual void Destroy(int);
 };
