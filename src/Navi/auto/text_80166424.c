@@ -126,6 +126,8 @@ extern "C" void fn_801721F0(u8* p) {
 
 extern "C" u32 fn_801725E4(void) { return 0x10; }
 
+extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
+
 extern "C" unsigned short fn_80172614(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
