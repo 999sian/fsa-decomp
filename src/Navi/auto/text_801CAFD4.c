@@ -26,6 +26,9 @@ extern "C" void fn_801C4A28(void*);
 extern "C" BOOL EXIDeselect(s32 chan);
 extern "C" BOOL EXIUnlock(s32 chan);
 extern "C" BOOL EXIProbe(s32 chan);
+extern "C" BOOL EXISelect(s32 chan, u32 device, u32 frequency);
+extern "C" BOOL EXIImm(s32 chan, void* buf, s32 len, u32 type, void* callback);
+extern "C" BOOL EXISync(s32 chan);
 extern "C" void fn_801C4AF4(void*);
 extern "C" int fn_801C42F4(void);
 extern "C" void fn_801CDB9C(int);
@@ -336,7 +339,8 @@ extern "C" u32 fn_801CEF90(void) {
 }
 
 extern "C" void fn_801CEFA0(u32 param_1) {
-    *(vu32*)0xcc006c04 = (*(vu32*)0xcc006c04 & 0xffff00ff) | ((param_1 & 0xff) << 8);
+    u32* reg = (u32*)0xcc006c00;
+    reg[1] = (reg[1] & 0xffff00ff) | ((param_1 << 8) & 0xff00);
 }
 
 extern "C" u32 fn_801CEFBC(void) {
@@ -500,6 +504,27 @@ extern "C" void fn_801D1CD4(void* p) {
 }
 
 extern "C" void fn_801D1D68(void) {
+}
+
+extern "C" void fn_801D1F90(s32 chan) {
+    extern u8 lbl_802F7D60[];
+    u8* p = lbl_802F7D60 + chan * 0x110;
+    BOOL failed = !EXIDeselect(chan);
+    BOOL ok = FALSE;
+    void (*cb)(s32, s32);
+    EXIUnlock(chan);
+    cb = *(void (**)(s32, s32))(p + 0xc8);
+    if (cb != nullptr) {
+        *(void**)(p + 0xc8) = nullptr;
+        if (!failed && EXIProbe(chan)) {
+            ok = TRUE;
+        }
+        if (ok) {
+            cb(chan, 0);
+        } else {
+            cb(chan, -3);
+        }
+    }
 }
 
 extern "C" u32 fn_801D44FC(u8* param_1) {
