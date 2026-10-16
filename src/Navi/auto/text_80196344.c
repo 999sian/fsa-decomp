@@ -821,20 +821,14 @@ extern "C" u8* fn_801A482C(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A4840(u8* p1, int p2, u8* p3) {
+extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
     u8* p = p1 + p2 * 8;
-    u8 a = p3[1];
-    u8 b = p3[2];
-    u8 c = p3[3];
-    p[0x39] = a;
-    p[0x3a] = b;
-    p[0x3b] = c;
-    a = p3[5];
-    b = p3[6];
-    c = p3[7];
-    p[0x3d] = a;
-    p[0x3e] = b;
-    p[0x3f] = c;
+    p[0x39] = p3[1];
+    p[0x3a] = p3[2];
+    p[0x3b] = p3[3];
+    p[0x3d] = p3[5];
+    p[0x3e] = p3[6];
+    p[0x3f] = p3[7];
 }
 
 extern "C" void fn_801A48CC(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] = *p3; }
@@ -845,7 +839,7 @@ extern "C" int fn_801A4960(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x98;
 }
 
-extern "C" void fn_801A4974(u8* p1, int p2, u8* p3) {
+extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
     u8* p = p1 + p2 * 4;
     p[0xb8] = p3[0];
     p[0xb9] = p3[1];
@@ -1184,4 +1178,6 @@ extern "C" int fn_801A5368()
 {
 	return 0;
 }
-
+struct B4_801A4974 { u8 c[4]; };
+struct B3_801A4840 { u8 c[3]; };
+struct E_801A4840 { u8 x; B3_801A4840 rgb; };
