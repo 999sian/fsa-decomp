@@ -5,3 +5,10 @@ extern char lbl_802C5B20[];
 extern char lbl_802C5B2C[];
 extern "C" void fn_8010D144(void*);
 extern "C" void __register_global_object(void* object, void* destructor, void* regmem);
+
+extern "C" void fn_8010D18C(void) {
+    *(void**)lbl_802C5B2C = lbl_8028EB80;
+    lbl_802C5B2C[4] = -1;
+    *(int*)(lbl_802C5B2C + 8) = 0;
+    __register_global_object(lbl_802C5B2C, (void*)fn_8010D144, lbl_802C5B20);
+}
