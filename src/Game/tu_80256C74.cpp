@@ -141,21 +141,29 @@ extern "C" bool fn_80256F44(u8* p, const f32* bounds, s32 id, JGeometry::TVec2<f
     f32 y0 = F32(p, 0x5b4);
     f32 x1 = F32(p, 0x5b8);
     f32 y1 = F32(p, 0x5bc);
-    if (!(x0 <= bounds[0])) {
-        x0 = bounds[0];
+    f32 cx0 = x0;
+    f32 cy0 = y0;
+    f32 cx1 = x1;
+    f32 cy1 = y1;
+    if (x0 > bounds[0]) {
+        cx0 = bounds[0];
     }
-    if (!(y0 <= bounds[1])) {
-        y0 = bounds[1];
+    if (y0 > bounds[1]) {
+        cy0 = bounds[1];
     }
-    if (!(x1 >= bounds[2])) {
-        x1 = bounds[2];
+    if (x1 < bounds[2]) {
+        cx1 = bounds[2];
     }
-    if (!(y1 >= bounds[3])) {
-        y1 = bounds[3];
+    if (y1 < bounds[3]) {
+        cy1 = bounds[3];
     }
-    if (x0 <= x1 && y0 <= y1) {
-        center->x = lbl_805400C0 * (F32(p, 0x5b0) - F32(p, 0x5b8)) + F32(p, 0x5b8);
-        center->y = lbl_805400C0 * (F32(p, 0x5b4) - F32(p, 0x5bc)) + F32(p, 0x5bc);
+    bool ok = false;
+    if (cx0 <= cx1 && cy0 <= cy1) {
+        ok = true;
+    }
+    if (ok) {
+        center->x = lbl_805400C0 * (x0 - x1) + x1;
+        center->y = lbl_805400C0 * (y0 - y1) + y1;
         return true;
     }
     return false;
@@ -205,7 +213,8 @@ extern "C" bool fn_802575B8(u8* p, const JGeometry::TBox2<f32>* bounds,
         if (S32(ids, 0xb0c) >= 0 && S32(ids, 0xb4c) == id) {
             JGeometry::TBox2<f32> overlap = BOX(boxes, 0x510);
             if (overlap.intersect(*bounds)) {
-                JGeometry::TBox2<f32>& box = BOX(p + (i << 4), 0x510);
+                u8* base = p + i * 0x10;
+                JGeometry::TBox2<f32>& box = BOX(base, 0x510);
                 center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
                 center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
                 S32(p, 0xb80) = i;
@@ -313,6 +322,30 @@ extern "C" void fn_8025819C(u8* p) {
             S32(p, 0xb70) = S32(actor, 4);
             BOX(p, 0x5a0).set(BOX(actor, 0x60));
             BOX(p, 0x5a0).addPos(pos);
+        }
+    }
+}
+
+extern "C" void fn_8025825C(u8* p) {
+    s32 id = S32(p, 0xb38);
+    if (id < 0) {
+        U8(p, 0xb68) = 0;
+    } else {
+        u8* actor = fn_801F666C(fn_801F856C(), id);
+        if (!actor) {
+            U8(p, 0xb68) = 0;
+            S32(p, 0xb38) = -1;
+            S32(p, 0xb6c) = -1;
+        } else {
+            if (JMathInlineVEC::PSVECSquareMag(&V3(actor, 0x3c)) <= lbl_805400D8 * FLT_EPSILON) {
+                U8(p, 0xb68) = 0;
+            } else {
+                U8(p, 0xb68) = 1;
+            }
+            JGeometry::TVec2<f32> pos = V2(actor, 0xc);
+            S32(p, 0xb6c) = S32(actor, 4);
+            BOX(p, 0x590).set(BOX(actor, 0x60));
+            BOX(p, 0x590).addPos(pos);
         }
     }
 }
