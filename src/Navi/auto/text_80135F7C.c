@@ -18,7 +18,7 @@ struct VObj_8013BC94 {
     virtual void v4();
     virtual void v5();
     virtual void v6();
-    virtual void v7();
+    virtual void v7(u32, void*, void*);
     virtual void v8();
     virtual void v9(u32, void*, void*);
 };
@@ -1373,6 +1373,12 @@ extern "C" s32 fn_8013BBF0(void* a, f32* b, void* c, u32 d) {
 }
 
 #pragma dont_inline on
+extern "C" void fn_8013BC94(void* a, void* b, void* c, void* d, void* e) {
+    ((VObj_8013BC94*)a)->v9(c ? *(u32*)b : -1, d, e);
+}
+#pragma dont_inline reset
+
+#pragma dont_inline on
 extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
     u32 out;
     if (param_1->fn_13(&out, param_2, 0) != 0) {
@@ -1485,6 +1491,14 @@ extern "C" void fn_8013C4B0(void* param_1, s32 param_2, u32* param_3) {
     switch (param_2) {
     case 2:
         (*(VObj_8013C4B0**)((u8*)param_1 + 0x128))->v10(*param_3 != 0, *(u32*)((u8*)param_1 + 0x144), *(u32*)((u8*)param_1 + 0x148));
+        break;
+    }
+}
+
+extern "C" void fn_8013C508(void* a, void* b, void* c, void* d, void* e) {
+    switch ((s32)c) {
+    case 0x19:
+        fn_801E10DC(*(void**)((u8*)a + 0x128), *(int*)d, c, (int)d);
         break;
     }
 }
