@@ -365,6 +365,15 @@ extern "C" int fn_8015A3E4(void* heap, u32 start, u32 size) {
     return 0;
 }
 
+#pragma dont_inline on
+extern "C" void fn_8015A530(void* p) {
+    while (*(void**)((u8*)p + 0x5c) != 0) {
+        Unk8015AD64* obj = **(Unk8015AD64***)((u8*)p + 0x5c);
+        obj->vf08(-1);
+    }
+}
+#pragma dont_inline reset
+
 extern "C" void fn_8015A580(u32* dst, u32* src, u32 size) {
     u32 n = (size + 3) >> 2;
     while (n != 0) {
