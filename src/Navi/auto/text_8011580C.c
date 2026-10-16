@@ -85,12 +85,23 @@ extern "C" int fn_80115B18(Vec3f* a, Vec3f* b) {
 
 extern const float lbl_80301424;
 extern const float lbl_802FEAB8[];
-extern "C" int fn_80115B58(Vec3f* a) {
-    int ret = 0;
+
+static inline bool isSmall2(Vec3f* a) {
     bool ok = false;
+    if ((float)__fabs(a->x) < lbl_80301424 * lbl_802FEAB8[0] &&
+        (float)__fabs(a->y) < lbl_80301424 * lbl_802FEAB8[0]) {
+        ok = true;
+    }
+    return ok;
+}
+
+extern "C" int fn_80115B58(Vec3f* a) {
+    int ret;
+    unsigned char ok;
+    ok = ret = 0;
     if ((float)__fabs(a->x) < lbl_80301424 * lbl_802FEAB8[0]) {
         if ((float)__fabs(a->y) < lbl_80301424 * lbl_802FEAB8[0]) {
-            ok = true;
+            ok = 1;
         }
     }
     if (ok) {
