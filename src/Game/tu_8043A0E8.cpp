@@ -117,6 +117,14 @@ extern "C" f32 fn_8043D57C(u8* param_1) {
     return ret;
 }
 
+extern void* lbl_8053AB10;
+extern "C" void fn_8013B490(void* p);
+extern "C" void fn_8043D5F0(u8* param_1) {
+    fn_8013B490(lbl_8053AB10);
+    *(u8*)(*(u8**)(param_1 + 4) + 0x100) = 1;
+    (*(J2DScreen**)(param_1 + 4))->draw(lbl_80543C88, lbl_80543C88, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
+}
+
 extern "C" void fn_8043D834(u8* self) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
         fn_8041E58C(*(void**)(self + 0x290));
