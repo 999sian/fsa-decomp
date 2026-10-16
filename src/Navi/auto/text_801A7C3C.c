@@ -993,6 +993,35 @@ extern "C" void fn_801B6818(u8* a, u8* b) {
     }
     *(void**)(*(u8**)(a + 8) + 0x14) = blk;
 }
+
+extern "C" void fn_801B6B7C(u8* a, u8* b) {
+    void* fn_8015A90C(u32);
+    void* fn_801B7330(void*, u32);
+    void* fn_8018C2C0(void*, u32);
+    void* fn_8011939C(void*, void*);
+    extern void* lbl_8029BBB0[];
+    void* p;
+    u16 h = *(u16*)(b + 8);
+    void* q = fn_801B7330(b, *(u32*)(b + 0xc));
+    if (*(u32*)(b + 0x10) != 0) {
+        p = fn_8015A90C(0x10);
+        if (p != 0) {
+            p = fn_8011939C(p, fn_8018C2C0(b, *(u32*)(b + 0x10)));
+        }
+        *(void**)(*(u8**)(a + 8) + 0x18) = p;
+    } else {
+        *(void**)(*(u8**)(a + 8) + 0x18) = 0;
+    }
+    void* blk = fn_8015A90C(0xc);
+    if (blk != 0) {
+        *(void**)((u8*)blk + 8) = lbl_8029BBB0;
+        *(u16*)blk = h;
+        *(u16*)((u8*)blk + 2) = 0;
+        *(void**)((u8*)blk + 4) = q;
+    }
+    *(void**)(*(u8**)(a + 8) + 0x14) = blk;
+}
+
 #pragma pop
 extern "C" void fn_801B1E30(void* param_1, void* param_2, u16 param_3);
 extern "C" void fn_801B6F5C(u8* p, u32 flags) {
