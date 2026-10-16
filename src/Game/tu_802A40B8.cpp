@@ -1,0 +1,21 @@
+#include "types.h"
+
+
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void fn_801F06F0(void* this_, const void* name, s32 a, s32 b, s32 c, f32 f, f32 g);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+extern void* lbl_804A7E58[];
+extern const char lbl_8046C640[];
+extern const f32 lbl_805407A0;
+extern const f32 lbl_805407A4;
+extern const f32 lbl_805407B4;
+extern const f32 lbl_805407B8;
+extern "C" void fn_802A4404(u8* this_) {
+    *(f32*)(this_ + 0x60) = lbl_805407B4;
+    *(f32*)(this_ + 0x64) = lbl_805407B4;
+    *(f32*)(this_ + 0x68) = lbl_805407B8;
+    *(f32*)(this_ + 0x6c) = lbl_805407B8;
+    *(f32*)(this_ + 0x44) = lbl_805407A4;
+    *(s32*)(this_ + 0x230) = 0;
+}
