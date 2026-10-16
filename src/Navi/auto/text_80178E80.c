@@ -670,11 +670,6 @@ extern "C" void fn_8017D214(void) {}
 
 extern "C" void fn_8017DE68(u32* param_1) {
     extern f32 lbl_80301BA0;
-    extern f64 lbl_80301BA8;
-    union {
-        f64 d;
-        u32 w[2];
-    } cvt;
     f32 rect[4];
     u16* p;
     fn_8017DEFC(param_1);
@@ -682,11 +677,8 @@ extern "C" void fn_8017DE68(u32* param_1) {
         p = *(u16**)((u8*)param_1[0x40] + 0x20);
         rect[0] = lbl_80301BA0;
         rect[1] = lbl_80301BA0;
-        cvt.w[0] = 0x43300000;
-        cvt.w[1] = (u32)p[1] ^ 0x80000000;
-        rect[2] = cvt.d - lbl_80301BA8;
-        cvt.w[1] = (u32)p[2] ^ 0x80000000;
-        rect[3] = cvt.d - lbl_80301BA8;
+        rect[2] = (f32)p[1];
+        rect[3] = (f32)p[2];
         fn_80177728(param_1, rect);
     }
 }
@@ -712,13 +704,10 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
 
 #pragma push
 #pragma use_lmw_stmw off
-#pragma dont_inline on
 extern "C" void fn_8017EC94(u32* self, void* a, int b, int c) {
     void* r = fn_8017A4A8(a);
-    void (*vfn)(void*, void*, int, int) = (void (*)(void*, void*, int, int))((*(void***)self)[0x118 / 4]);
-    vfn(self, r, b, c);
+    ((void (*)(void*, void*, int, int))(*(u32**)self)[70])(self, r, b, c);
 }
-#pragma dont_inline reset
 #pragma pop
 extern "C" void fn_801C5D48(void* p);
 extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
@@ -764,9 +753,9 @@ extern "C" s32 fn_8017FC54(void* self) {
 
 extern "C" u8 fn_8017FCEC(void* self) {
     u8* p = (u8*)self;
-    s16 x = *(s16*)(p + 0x120);
+    s16 a = *(s16*)(p + 0x120);
     u8 r = 0;
-    if (*(s16*)(p + 0x116) == *(s16*)(p + 0x112) && *(s16*)(p + 0x118) == x) {
+    if (*(s16*)(p + 0x116) == *(s16*)(p + 0x112) && *(s16*)(p + 0x118) == a) {
         r = 1;
     }
     return r;
