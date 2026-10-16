@@ -81,6 +81,8 @@ struct VObj_8013BA1C {
     virtual u8 v12(u32, void*);
 };
 
+extern "C" void fn_80133000(void* a, void* b, void* c, void* d);
+
 struct Ptr_8013B368 { u32* p; };
 
 struct Chunk_8013B368 {
