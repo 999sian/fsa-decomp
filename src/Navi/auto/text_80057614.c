@@ -439,6 +439,20 @@ extern "C" void fn_80059290(void* p) {
     q[0x15] = 0;
 }
 
+extern "C" void fn_800592CC(void* p) {
+    if (p != nullptr && *((u8*)p + 0x12) != 0) {
+        if (*((u8*)p + 0x12) == 1) {
+            fn_80059338(p);
+        }
+        if (*((u8*)p + 0x12) == 2) {
+            fn_80059768(p);
+        }
+        if (*((u8*)p + 0x12) == 2) {
+            fn_80059B68(p);
+        }
+    }
+}
+
 extern "C" s32 fn_80059FE8(s32 mode, void* p) {
     s32 result;
     double v = fn_80059DA0(p);
