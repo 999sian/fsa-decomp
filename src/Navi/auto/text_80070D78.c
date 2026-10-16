@@ -36,6 +36,8 @@ struct VObj_800723CC {
 struct Entry_80281294 { u16 a; u16 b; f32 f; s16 c; s16 d; };
 extern Entry_80281294 lbl_80281294[];
 extern u16 lbl_802FCAD8[4];
+extern Entry_80281294 lbl_802812AC[];
+extern u16 lbl_802FCADC[4];
 extern char lbl_802B7CA0[];
 extern "C" void* fn_800638A4(void*, int, void*, int);
 extern "C" void fn_8000DABC(void*, void*, void*, int, int, s16, s16, f32);
