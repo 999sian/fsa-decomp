@@ -11,6 +11,11 @@ extern const f32 lbl_805407A0;
 extern const f32 lbl_805407A4;
 extern const f32 lbl_805407B4;
 extern const f32 lbl_805407B8;
+extern "C" void fn_802A4118(u8* this_) {
+    fn_801F06F0(this_, lbl_8046C640, 0x31, 0, 1, lbl_805407A0, lbl_805407A0);
+    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, 0x31, 0, 2, -1, 0, 0, 0);
+}
+
 extern "C" void fn_802A4404(u8* this_) {
     *(f32*)(this_ + 0x60) = lbl_805407B4;
     *(f32*)(this_ + 0x64) = lbl_805407B4;
