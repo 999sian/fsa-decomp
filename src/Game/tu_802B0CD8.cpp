@@ -10,6 +10,59 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D800C(void* mgr, u32 idx);
 extern "C" void* fn_8013CC50(u32 a, void* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern "C" void fn_801F0E34(void* this_, u32 a, s32 b);
+extern "C" void fn_802B0F9C(void* this_) {
+    char* p = (char*)this_;
+    s32 state = *(s32*)(p + 0x238);
+    switch (state) {
+    case 0: {
+        void* mgr = fn_802D6A9C();
+        u8 r = fn_802D800C(mgr, *(u32*)(p + 0x244));
+        if (r != 0 || *(u16*)(p + 0x94) != 0) {
+            *(u8*)(p + 0x248) = 1;
+            s32 mode = *(s32*)(p + 0x23c);
+            if (mode == 0 || mode == 2 || mode == 4) {
+                *(u32*)(p + 0x230) = (u32)fn_8013CC50(*(u32*)(p + 4), p + 0xc, 1.0f, 0xbd, 0, 0, 0, 0, 1);
+                if (*(s32*)(p + 0x23c) != 4) {
+                    *(u32*)(p + 0x234) = (u32)fn_8013CC50(*(u32*)(p + 4), p + 0xc, 1.0f, 0x54a, 0, 0, 0, 0, 1);
+                }
+            }
+            fn_801F0E34(this_, 0x30005, 0);
+            *(u32*)(p + 0xb0) = 0xc;
+            *(u32*)(p + 0x238) = 1;
+            *(u32*)(p + 0x24c) = 1;
+            *(u16*)(p + 0x94) = 0;
+        }
+        break;
+    }
+    case 1: {
+        s32 idx = *(s32*)(p + 0x244);
+        if (idx != 0) {
+            void* mgr = fn_802D6A9C();
+            u8 r = fn_802D800C(mgr, idx);
+            if (r == 0) {
+                char* h1 = *(char**)(p + 0x230);
+                if (h1 != 0) {
+                    *(u32*)(h1 + 0xf4) |= 1;
+                    *(u32*)(h1 + 0x24) = 1;
+                    *(char**)(p + 0x230) = 0;
+                }
+                char* h2 = *(char**)(p + 0x234);
+                if (h2 != 0) {
+                    *(u32*)(h2 + 0xf4) |= 1;
+                    *(u32*)(h2 + 0x24) = 1;
+                    *(char**)(p + 0x234) = 0;
+                }
+                *(u32*)(p + 0xb0) = 0xd;
+                *(u8*)(p + 0x248) = 0;
+                *(u32*)(p + 0x238) = 0;
+                *(u32*)(p + 0x24c) = 0;
+            }
+        }
+        break;
+    }
+    }
+}
+
 extern "C" void* fn_802B114C(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A8520;
