@@ -22,6 +22,9 @@ extern s32 lbl_802FC158;
 struct Vec3_8003C318 {
     f32 x, y, z;
 };
+extern u8 lbl_802BF188[];
+extern "C" void fn_80017FEC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern "C" void fn_80115914(Vec3_8003C318* out, f32 s);
 struct VObj_8003B920 {
     virtual void m0();
     virtual void m1();
@@ -54,12 +57,14 @@ extern u8 lbl_802464E8[];
 extern void* lbl_802FECC8;
 extern "C" void fn_8003B94C(void* a, s32 mode, void* p) {
     switch (mode) {
-    case 1:
-        fn_801E41AC(p, &lbl_802FC158, *(s32*)(lbl_802BB0FC + 0x3f8));
-        break;
     case 0:
         fn_801E41AC(p, &lbl_802FC158, fn_800F0D64(lbl_802B7CA0));
         break;
+    case 1:
+        fn_801E41AC(p, &lbl_802FC158, *(s32*)(lbl_802BB0FC + 0x3f8));
+        break;
+    default:
+        return;
     }
 }
 
@@ -79,7 +84,7 @@ extern "C" void fn_8003C19C(void* a, s32 n, void* p) {
 
 extern "C" void* fn_8003C1EC(void* a, s32 idx) {
     u8* p = (u8*)fn_80160564(0x524f4f54, lbl_802464E8, lbl_802FECC8) + 0x20;
-    return p + (*(s32*)(p + 4) + *(s32*)((p + (idx << 3)) + 0x10) + 8);
+    return p + *(s32*)(p + 4) + *(s32*)(p + (idx << 3) + 0x10) + 8;
 }
 
 extern "C" u16 fn_8003C250(void* a, char* p) {
