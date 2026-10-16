@@ -999,6 +999,10 @@ extern "C" void fn_801A3E0C(u8* p1, int p2, u8* p3) {
     p1[p2 + 0x72] = *p3;
 }
 
+extern "C" u8 fn_801A3E1C(u8* p1, int p2) {
+    return p1[p2 + 0x72];
+}
+
 extern "C" void fn_801A3E34(u8* p, s32 i, u8* src) {
     p[i + 0x76] = *src;
 }
