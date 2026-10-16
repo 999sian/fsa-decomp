@@ -1,6 +1,9 @@
 #include "types.h"
 
 extern "C" const float lbl_8053D628;
+extern "C" const float lbl_8053D63C;
+extern "C" void* lbl_8053AF80;
+extern "C" void fn_80457E04(u8* this_, u8 flag);
 extern "C" char lbl_804A03A8[];
 extern "C" char lbl_804661B0[];
 extern "C" char lbl_804661BC[];
