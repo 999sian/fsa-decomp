@@ -326,6 +326,8 @@ extern "C" u32 fn_8017D014(char* self, u8 idx, u8 flag) {
     return 0;
 }
 
+extern "C" void fn_8017D214(void) {}
+
 extern "C" void fn_801C5D48(void* p);
 extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     u8 buf[48];
