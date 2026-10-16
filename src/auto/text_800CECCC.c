@@ -22,6 +22,11 @@ extern "C" void fn_800CF370(void** p) {
     *p = lbl_8049AE38;
 }
 
+extern "C" void fn_800D00C8(void** self, void* data)
+{
+    fn_800D00F0(self, self[1], data);
+}
+
 extern "C" void fn_800D01DC(void** self, void* data)
 {
     fn_800D0204(self, self[1], data);
