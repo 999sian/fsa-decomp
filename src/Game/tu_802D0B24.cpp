@@ -39,18 +39,14 @@ extern "C" s32 fn_802D0BB0(void* this_, u32 param2, u32 param3) {
 }
 
 extern "C" void fn_802D1270(char* p) {
-    f32 a = lbl_80540EB8;
-    f32 b = lbl_80540EBC;
-    f32 c = lbl_80540EC0;
-    f32 d = lbl_80540EC4;
-    *(f32*)(p + 0x60) = a;
-    *(f32*)(p + 0x64) = a;
-    *(f32*)(p + 0x68) = b;
-    *(f32*)(p + 0x6c) = b;
-    *(f32*)(p + 0x80) = c;
-    *(f32*)(p + 0x84) = c;
-    *(f32*)(p + 0x88) = d;
-    *(f32*)(p + 0x8c) = d;
+    *(f32*)(p + 0x60) = lbl_80540EB8;
+    *(f32*)(p + 0x64) = lbl_80540EB8;
+    *(f32*)(p + 0x68) = lbl_80540EBC;
+    *(f32*)(p + 0x6c) = lbl_80540EBC;
+    *(f32*)(p + 0x80) = lbl_80540EC0;
+    *(f32*)(p + 0x84) = lbl_80540EC0;
+    *(f32*)(p + 0x88) = lbl_80540EC4;
+    *(f32*)(p + 0x8c) = lbl_80540EC4;
     *(s32*)(p + 0x230) = 0;
     *(u8*)(p + 0x234) = 0xff;
     *(u8*)(p + 0x235) = 0;
