@@ -64,17 +64,18 @@ extern "C" void fn_801963D0(void* self) {
     extern f32 lbl_80301CD8;
     extern u32 lbl_802FF6A8;
     u8* p = (u8*)self;
+    f32 zero = lbl_80301CD8;
     *(u32*)(p + 0x4) = 0;
     *(u16*)(p + 0x8) = 0xffff;
     *(u16*)(p + 0xa) = 0;
     *(u32*)(p + 0xc) = 0;
-    *(f32*)(p + 0x10) = lbl_80301CD8;
-    *(f32*)(p + 0x14) = lbl_80301CD8;
-    *(f32*)(p + 0x18) = lbl_80301CD8;
-    *(f32*)(p + 0x1c) = lbl_80301CD8;
-    *(f32*)(p + 0x20) = lbl_80301CD8;
-    *(f32*)(p + 0x24) = lbl_80301CD8;
-    *(f32*)(p + 0x28) = lbl_80301CD8;
+    *(f32*)(p + 0x10) = zero;
+    *(f32*)(p + 0x14) = zero;
+    *(f32*)(p + 0x18) = zero;
+    *(f32*)(p + 0x1c) = zero;
+    *(f32*)(p + 0x20) = zero;
+    *(f32*)(p + 0x24) = zero;
+    *(f32*)(p + 0x28) = zero;
     *(u32*)(p + 0x30) = 0;
     *(u32*)(p + 0x38) = 0;
     *(u32*)(p + 0x3c) = 0;
@@ -208,7 +209,7 @@ struct NaviVObj {
     virtual u32 vf12(void);
     virtual void vf13(void);
     virtual void vf14(void);
-    virtual void vf15(void);
+    virtual u32 vf15(void);
     virtual void vf16(void);
     virtual u32 vf17(void);
 };
@@ -2820,11 +2821,7 @@ extern "C" u32 fn_801A4E84(void) {
 }
 
 extern "C" void fn_801A4E90(u8* p, s32 i, GXColor* src) {
-    GXColor* dst = (GXColor*)(p + 0x20);
-    dst[i].r = src->r;
-    dst[i].g = src->g;
-    dst[i].b = src->b;
-    dst[i].a = src->a;
+    ((GXColor*)(p + 0x20))[i] = *src;
 }
 
 extern "C" u8* fn_801A4EE8(u8* p, s32 i) {
