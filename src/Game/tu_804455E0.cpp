@@ -12,6 +12,4 @@ extern "C" void fn_80445CDC(void* self_) {
     f32 f = lbl_80543D88;
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
-struct fn_804460AC_Obj {
-    virtual void Release(int);
-};
+
