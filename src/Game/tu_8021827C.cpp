@@ -1,0 +1,96 @@
+#include "types.h"
+
+
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_801CE010(void*, void*);
+extern "C" void fn_8030C210(void*, void*);
+extern u8* lbl_8053AB10;
+extern f32 lbl_8053FC40;
+extern "C" bool fn_801CD2F8(s32 id);
+extern "C" u8 fn_8022BA58(s32 room, f32* pos);
+extern "C" bool fn_8030C2A8(u8* p, f32* v);
+extern "C" s32 fn_801E1DE8(void* this_);
+extern "C" void fn_801F0E34(void* p, u32 id, s32 flag);
+extern "C" void fn_8021827C(u8* p) {
+    u8 buf[0x10];
+    if (*(s32*)(p + 0x248) != 0) {
+        s32 kind = *(s32*)(p + 4);
+        u8* mgr = fn_802D6A9C();
+        f32* b;
+        if (kind < 8) {
+            b = (f32*)(mgr + 0xcc);
+        } else {
+            b = (f32*)(mgr + 0xdc);
+        }
+        if (b[1] < *(f32*)(p + 0x10) && *(f32*)(p + 0x10) < b[3]) {
+            f32 hi = *(f32*)(p + 0xc);
+            f32 min = *(f32*)(p + 0x60);
+            f32 max = *(f32*)(p + 0x68);
+            f32 lo = hi;
+            if (max - min > lbl_8053FC40) {
+                lo = hi + min;
+                hi = hi + max;
+            }
+            bool in = false;
+            if (b[0] < lo && hi < b[2]) {
+                in = true;
+            }
+            if (in) {
+                fn_801CE010(p, buf);
+                fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), buf);
+            }
+        }
+    }
+}
+
+extern "C" bool fn_801CD2F8(s32 id);
+extern "C" u8 fn_8022B978(s32 room, f32* pos, u8 mode);
+extern "C" bool fn_8030C2A8(u8* p, f32* v);
+extern "C" u32 fn_80218538(u8* p) {
+    u32 ret = 0;
+    f32 pt[2][2];
+    f32 w[3];
+    f32 v[3];
+    f32 min = *(f32*)(p + 0x60);
+    f32 max = *(f32*)(p + 0x68);
+    f32 x = *(f32*)(p + 0xc);
+    f32 y = *(f32*)(p + 0x10);
+    pt[0][0] = x;
+    pt[0][1] = y;
+    pt[1][0] = x;
+    pt[1][1] = y;
+    if (max - min > lbl_8053FC40) {
+        pt[0][0] = x + min;
+        pt[1][0] = x + max;
+    }
+    min = *(f32*)(p + 0x64);
+    max = *(f32*)(p + 0x6c);
+    if (max - min > lbl_8053FC40) {
+        pt[0][1] = pt[0][1] + min;
+        pt[1][1] = pt[1][1] + max;
+    }
+    if (fn_801CD2F8(*(s32*)(p + 4))) {
+        if (fn_8022B978(*(s32*)(p + 4), pt[0], 0)) {
+            ret = 1;
+        }
+    } else {
+        bool ok = false;
+        u8* cam = *(u8**)(lbl_8053AB10 + 0x24);
+        v[0] = pt[0][0];
+        v[1] = pt[0][1];
+        v[2] = lbl_8053FC40;
+        if (fn_8030C2A8(cam, v)) {
+            w[0] = pt[1][0];
+            w[1] = pt[1][1];
+            w[2] = lbl_8053FC40;
+            if (fn_8030C2A8(cam, w)) {
+                ok = true;
+            }
+        }
+        if (ok) {
+            ret = 1;
+        }
+    }
+    return ret;
+}
+
