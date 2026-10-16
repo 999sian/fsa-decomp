@@ -4,6 +4,26 @@
 extern "C" void fn_801F0E34(void* this_, u32 a, u32 b);
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* base, s32 id);
+extern "C" void* fn_801F856C(void);
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern "C" void __dl__FPv(void* p);
+extern const f32 lbl_805429A8;
+extern const f32 lbl_805429AC;
+extern const f32 lbl_805429B0;
+extern char lbl_804AD858[];
+extern char lbl_804A5958[];
+extern "C" void fn_8035EA48(void* this_) {
+    char* p = (char*)this_;
+    if (*(s32*)(p + 0x234) == 0) {
+        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+        void* base = fn_801F856C();
+        void* found = fn_801F666C(base, *(s32*)(p + 0x23c));
+        if (found != 0) {
+            *(s32*)((char*)found + 0x230) = 3;
+        }
+    }
+}
+
 extern "C" void fn_8035EAA4(void* this_) {
     char* p = (char*)this_;
     if (*(s32*)(p + 0x234) == 0) {
