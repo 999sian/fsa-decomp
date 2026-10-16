@@ -87,6 +87,8 @@ extern "C" const f64 lbl_80543EB8;
 extern "C" s32 lbl_8053A26C;
 extern "C" f32 lbl_8053A268;
 extern "C" void fn_80458744(void*, s32);
+extern "C" f32 lbl_8053A260;
+extern "C" u32 lbl_8053A264;
 
 struct Unk80457E54Obj {
     virtual void v0();
@@ -126,7 +128,7 @@ extern "C" void fn_80457E54(u8* this_, u8 flag) {
         if (obj != NULL) {
             f32* p = (f32*)(*(void* (**)(void*))(*(char**)obj + 0x28))(obj);
             if (p != NULL) {
-                u32 n = lbl_8053A26C;
+                s32 n = lbl_8053A26C;
                 f32 v = lbl_8053A268;
                 if (n == 0) {
                     p[0] = v;
@@ -134,8 +136,9 @@ extern "C" void fn_80457E54(u8* this_, u8 flag) {
                     *(u32*)(p + 3) = 0;
                     p[2] = lbl_80543EB0;
                 } else {
+                    f32 d = v - p[0];
                     *(u32*)(p + 3) = n;
-                    p[1] = (v - p[0]) / (f32)((f64)*(u32*)(p + 3) - lbl_80543EB8);
+                    p[1] = d / (f32)((f64)*(u32*)(p + 3) - lbl_80543EB8);
                     p[2] = v;
                 }
             }
@@ -165,12 +168,13 @@ extern "C" void fn_80457F6C(u8* this_) {
 }
 
 extern "C" s32 fn_80457F80(u8* this_, u32* param_2, s8 param_3) {
+    s32 i;
     if (param_3 == -2) {
         JAISoundID soundID = *param_2;
         if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(soundID) != NULL) {
             return 0;
         }
-        s32 i = 0;
+        i = 0;
         do {
             JAISoundID loopID = *param_2;
             if (((JAISoundHandles*)*(void**)(this_ + 0x18))->getHandleSoundID(loopID) != NULL) {
@@ -185,7 +189,7 @@ extern "C" s32 fn_80457F80(u8* this_, u32* param_2, s8 param_3) {
             return 0;
         }
     } else {
-        s32 i = 0;
+        i = 0;
         do {
             JAISoundID loopID = *param_2;
             if (((JAISoundHandles*)*(void**)(this_ + 0x18))->getHandleSoundID(loopID) != NULL) {
