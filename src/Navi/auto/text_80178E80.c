@@ -14,16 +14,17 @@ extern "C" void fn_8017A468(void) {
 
 extern "C" void fn_8017A4A8(void* self) {
     if (fn_8015FDA8(self, 0) == 0) {
-        void* p = lbl_802FF6A0;
+        u32 p = (u32)lbl_802FF6A0;
         if (p != 0) {
-            fn_8018ECE4(p, self);
+            fn_8018ECE4((void*)p, self);
         }
     }
 }
 
 extern "C" void fn_8017A4F8(void* self) {
     u8* p = (u8*)self;
-    ((void (*)(void*, u32))(*(void***)p)[0x90 / 4])(self, *(u32*)(p + 0xf8));
+    void** vtbl = *(void***)self;
+    ((void (*)(void*, u32))vtbl[0x90 / 4])(self, *(u32*)(p + 0xf8));
     for (u16 i = 0; i < *(u16*)(p + 0x102); i++) {
         fn_8016A72C(*(u8**)(p + 0x104) + i * 0x88);
     }
@@ -67,6 +68,13 @@ extern "C" void fn_8018905C(void) {
 
 extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
+}
+
+extern "C" void fn_8018BFA4(void* unused, void* dest, void* src);
+extern "C" void fn_8018BDF0(void* unused, void* dest, void* src);
+extern "C" void fn_8018BD24(void* unused, void* dest, void* src);
+extern "C" void fn_8018BCFC(void* self, void* src) {
+    fn_8018BD24(self, *(void**)((u8*)self + 4), src);
 }
 
 extern void* lbl_80299504[];
