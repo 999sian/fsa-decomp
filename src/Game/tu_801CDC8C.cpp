@@ -177,7 +177,8 @@ extern "C" int fn_801CECEC(void) { return 0; }
 
 #pragma fp_contract off
 extern "C" s32 fn_801CF0F4(u8* this_) {
-    f32 a = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
+    f32 x = *(f32*)(this_ + 0x3c);
+    f32 a = JMath::atanTable_.atan2_(x, *(f32*)(this_ + 0x40));
     return ClassifyBamAngleToQuadrant((s32)(a * lbl_8053EFEC));
 }
 
@@ -212,6 +213,27 @@ extern "C" s32 fn_801CF720(u8* this_, s32 dir) {
         idx = fn_801CF798(this_, dir, idx);
     }
     return idx;
+}
+
+extern "C" u8 fn_801CFD68(f32 v);
+extern const f32 lbl_8053EFFC;
+extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
+    f32 v = lbl_8053EFFC;
+    switch (idx) {
+    case 0:
+        v += *(f32*)(this_ + 0x88);
+        break;
+    case 1:
+        v -= *(f32*)(this_ + 0x80);
+        break;
+    case 2:
+        v += *(f32*)(this_ + 0x8c);
+        break;
+    case 3:
+        v -= *(f32*)(this_ + 0x84);
+        break;
+    }
+    return fn_801CFD68(v);
 }
 
 extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
