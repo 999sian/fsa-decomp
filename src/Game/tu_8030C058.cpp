@@ -10,8 +10,8 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802DCDF4(char* p);
 
 struct Vec3f { f32 x, y, z; };
-struct Mtx34Blk { f32 m[12]; };
-struct Mtx44Blk { f32 m[16]; };
+struct Mtx34Blk { f32 m[3][4]; };
+struct Mtx44Blk { f32 m[4][4]; };
 
 extern "C" void GXSetZScaleOffset(f32 scale, f32 offset);
 
@@ -145,8 +145,7 @@ extern "C" void fn_8030C9E4(u8* self, f32* rect) {
     self[0x1e8] = 1;
     *(s32*)(self + 0x1ec) = 0x1e;
     self[0x7f5] = 0;
-    *(f32*)(self + 0x1d4) = lbl_805416EC;
-    *(f32*)(self + 0x1d8) = lbl_805416EC;
+    *(f32*)(self + 0x1d8) = *(f32*)(self + 0x1d4) = lbl_805416EC;
     fn_8030CD18(self, rect, lbl_804AA8E8 + *(s32*)(self + 0x174) * 0x24, 0, self + 0x1a0, self + 0x1b0);
     *(f32*)(self + 0x190) = rect[0];
     *(f32*)(self + 0x194) = rect[1];
@@ -173,6 +172,24 @@ extern "C" void fn_8030DD20(u8* param_1, Mtx param_2) {
 
 extern "C" void fn_8030DD68(void) {
     GXSetCurrentMtx(0x18);
+}
+
+extern "C" void fn_8030DFE8(u8* p, u8 flag) {
+    if (flag) {
+        *(Mtx34Blk*)(p + 0x74) = *(Mtx34Blk*)(p + 0x4);
+        *(Mtx44Blk*)(p + 0xa4) = *(Mtx44Blk*)(p + 0x34);
+    }
+    GXSetProjection((f32(*)[4])(p + 0xa4), GX_PERSPECTIVE);
+    GXLoadPosMtxImm((f32(*)[4])(p + 0x74), 0x18);
+    GXLoadNrmMtxImm((f32(*)[4])(p + 0x74), 0x18);
+    GXSetCurrentMtx(0x18);
+    s32 x = *(s32*)(p + 0x144);
+    s32 y = *(s32*)(p + 0x148);
+    s32 w = *(s32*)(p + 0x14c) - x;
+    s32 h = *(s32*)(p + 0x150) - y;
+    GXSetViewport(x, y, w, h, 0.0f, 1.0f);
+    GXSetScissor(x, y, w, h);
+    GXSetZScaleOffset(1.0f, 0.0f);
 }
 
 extern "C" void fn_8030E150(void) {
