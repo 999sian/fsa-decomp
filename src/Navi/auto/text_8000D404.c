@@ -398,6 +398,15 @@ extern "C" void fn_8000EF28(u32* p) {
     *p = lbl_80301D04;
 }
 
+extern "C" u8 lbl_80301D1C[2];
+extern "C" void* fn_8000F018(void* self) {
+    fn_8000F080(self, lbl_80202614);
+    u8* p = (u8*)self;
+    p[7] = (p[7] & ~0x0c) | ((u8)lbl_80301D1C[1] << 2);
+    p[7] = (p[7] & ~0x03) | lbl_80301D1C[0];
+    return self;
+}
+
 extern "C" void fn_8000F258(void) {}
 
 extern "C" void fn_8000F328(void) {}
@@ -658,11 +667,11 @@ extern "C" void* fn_80010428(void* ptr, s16 param_2) {
 
 extern "C" void fn_80010C28(void* self, f32 value) {
     u8* p = (u8*)self;
-    if (*(f32*)(p + 0x2c) < lbl_802FFB6C || value <= lbl_802FFB6C) {
+    if (*(f32*)(p + 0x2c) < lbl_802FFB6C || value > lbl_802FFB6C) {
         *(f32*)(p + 0x28) = lbl_802FFB68;
     } else {
-        *(f32*)(p + 0x28) = lbl_802FFB6C;
         *(f32*)(p + 0x30) = lbl_802FFB68 / value;
+        *(f32*)(p + 0x28) = lbl_802FFB6C;
     }
     *(f32*)(p + 0x2c) = *(f32*)(p + 0x28);
 }
@@ -675,9 +684,10 @@ extern "C" f32 lbl_802FFB6C;
 extern "C" void fn_80116840(void* p, f32 a, f32 b);
 extern "C" u8 fn_80010C6C(void* self) {
     u8* p = (u8*)self;
-    if (*(f32*)(p + 0x28) < lbl_802FFB68) {
+    f32 one = lbl_802FFB68;
+    if (*(f32*)(p + 0x28) < one) {
         *(f32*)(p + 0x2c) = *(f32*)(p + 0x28);
-        fn_80116840(p + 0x28, lbl_802FFB68, *(f32*)(p + 0x30));
+        fn_80116840(p + 0x28, one, *(f32*)(p + 0x30));
     }
     fn_801AA6F0(p + 0xc);
     u32 result = 1;
@@ -697,6 +707,29 @@ extern "C" void fn_80010DF0(void* self) {
         *(void**)((u8*)d + 0x54) = self;
         ((NaviActor*)*(void**)((u8*)self + 4))->vf2();
     }
+}
+
+extern void* lbl_8020469C[];
+extern "C" void* fn_80010E54(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8020469C;
+        if ((char*)ptr + (unsigned)0x18 != nullptr) {
+            *(void**)((char*)ptr + 0x18) = lbl_80204984;
+        }
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80204720;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_8020474C;
+                if (ptr != nullptr) {
+                    *(void**)ptr = lbl_80204948;
+                }
+            }
+        }
+        if (0 < param_2) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" void fn_8001154C(void)
