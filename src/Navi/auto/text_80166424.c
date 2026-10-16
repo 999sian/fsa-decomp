@@ -644,7 +644,7 @@ extern f32 lbl_80301AF8;
 extern "C" void* fn_80174E9C(void* param_1) {
     void* old = lbl_802FF690;
     if (lbl_802FF694 != 0) {
-        fn_8015AB1C(old);
+        fn_8015AB1C(lbl_802FF690);
     }
     lbl_802FF690 = fn_8015AAB0(param_1, lbl_802FF540, 0);
     lbl_802FF698 = param_1;
