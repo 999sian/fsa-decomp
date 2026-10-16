@@ -56,68 +56,49 @@ extern "C" s32 fn_8023CA88(void*);
 extern "C" void fn_801F06F0(Actor* p, void* a, s32 b, u8* buf, s32 c, f32 d, f32 e);
 extern "C" void fn_803075AC(void* a, void* b, void* c, s32 d, s32 e, s32 f, s32 g, u8 h, s32 i, s32 j);
 extern "C" void fn_8030EC18(Actor* p) {
-    u8 buf[16];
-    s32 w20;
-    s32 w24;
-    s32 w28;
-    u8 b2c;
-    u8 b2d;
-    u8 b2e;
-    u8 b2f;
-    u8 b30;
-    u8 b31;
-    u8 b32;
-    u8 b33;
-    u8 b34;
-    u8 b35;
-    u8 b36;
-    s32 w38;
-    u8 b3c;
-    u8 b3d;
-    u8 b3e;
-    s32 w40;
-    s32 w44;
-    s32 w48;
-    u8 i;
+    Unk8030EC18Buf buf;
+    s32 i;
 
-    if (*(s32*)((u8*)p + 0x230) < 8) {
-        for (i = 0; i < 0x10; i += 8) {
-            buf[i] = i;
-            buf[(u8)(i + 1)] = i + 1;
-            buf[(u8)(i + 2)] = i + 2;
-            buf[(u8)(i + 3)] = i + 3;
-            buf[(u8)(i + 4)] = i + 4;
-            buf[(u8)(i + 5)] = i + 5;
-            buf[(u8)(i + 6)] = i + 6;
-            buf[(u8)(i + 7)] = i + 7;
+    if (*(s32*)((u8*)p + 0x230) <= 7) {
+        buf.w20 = -1;
+        buf.w24 = -1;
+        for (i = 0; (u8)i < 0x10; i += 8) {
+            buf.idx[(u8)i] = i;
+            buf.idx[(u8)(i + 1)] = i + 1;
+            buf.idx[(u8)(i + 2)] = i + 2;
+            buf.idx[(u8)(i + 3)] = i + 3;
+            buf.idx[(u8)(i + 4)] = i + 4;
+            buf.idx[(u8)(i + 5)] = i + 5;
+            buf.idx[(u8)(i + 6)] = i + 6;
+            buf.idx[(u8)(i + 7)] = i + 7;
         }
-        w20 = -1;
-        w24 = 0;
-        w28 = 0;
-        b2c = 0;
-        b2d = 0;
-        b2e = 0;
-        b2f = 1;
-        b30 = 1;
-        b31 = 0;
-        b32 = 0;
-        b33 = 0;
-        b34 = 0;
-        b35 = 0;
-        b36 = 1;
-        w38 = 3;
-        b3c = 1;
-        b3d = 0;
-        b3e = 0;
-        w40 = -1;
-        w44 = 0;
-        w48 = 2;
+        buf.w20 = -1;
+        buf.w24 = 0;
+        buf.w28 = 0;
+        buf.b2c = 0;
+        buf.b2d = 0;
+        buf.b2e = 0;
+        buf.b2f = 1;
+        buf.b30 = 1;
+        buf.b31 = 0;
+        buf.b32 = 0;
+        buf.b33 = 0;
+        buf.b34 = 0;
+        buf.b35 = 0;
+        buf.b36 = 1;
+        buf.w38 = 3;
+        buf.b3c = 1;
+        buf.b3d = 0;
+        buf.b3e = 0;
+        buf.w40 = -1;
+        buf.w44 = 0;
+        buf.w48 = 2;
         if (*((u8*)p + 0xc4) != 0) {
-            b30 = 0;
-            b2d = fn_8023CB24(*(void**)((u8*)p + 0xc8)) + 1;
-            b2c = fn_8023CA88(*(void**)((u8*)p + 0xc8));
+            buf.b30 = 0;
+            buf.b2d = fn_8023CB24(*(void**)((u8*)p + 0xc8)) + 1;
+            buf.b2c = fn_8023CA88(*(void**)((u8*)p + 0xc8));
         }
-        fn_801F06F0(p, lbl_804713A8, *(s32*)((u8*)p + 0x24c) + 0x2ff, buf, 0, lbl_80541744, lbl_80541744);
+        fn_801F06F0(p, lbl_804713A8, *(s32*)((u8*)p + 0x24c) + 0x2ff, (u8*)&buf, 0, lbl_80541744, lbl_80541744);
         fn_803075AC(*(void**)((u8*)p + 0x198), *(void**)((u8*)p + 4), (u8*)p + 0xc, 0x2ff, 0, 2, -1, *((u8*)p + 0xc4), 0, 0);
     }
 }
