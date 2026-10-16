@@ -1,4 +1,6 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 
 extern "C" f32 lbl_80543C40;
