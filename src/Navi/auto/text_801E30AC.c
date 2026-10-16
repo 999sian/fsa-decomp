@@ -23,6 +23,37 @@ extern "C" void fn_801E419C(void) {
     __stdio_exit = (void*)fn_801E2238;
 }
 
+extern "C" char* fn_801E6704(char* dst, const char* src, unsigned long n) {
+    register unsigned char* q = (unsigned char*)dst - 1;
+    register const unsigned char* p = (const unsigned char*)src - 1;
+    volatile unsigned char zero = 0;
+
+    n++;
+
+    while (--n) {
+        if (!(*++q = *++p)) {
+            while (--n)
+                *++q = 0;
+            break;
+        }
+    }
+
+    return dst;
+}
+
+#pragma push
+#pragma optimization_level 0
+extern "C" unsigned long fn_801E6840(const char* str) {
+    register unsigned long len = -1;
+    register unsigned char* p = (unsigned char*)str - 1;
+
+    do {
+        len++;
+    } while (*++p);
+
+    return len;
+}
+#pragma pop
 extern "C" int fn_801E6DB0(FileFlags* file, int mode) {
     register int orientation;
     register int result;
@@ -175,17 +206,17 @@ extern "C" void fn_801EA338(void) {
 }
 
 extern "C" void fn_801EA358(unsigned char* param_1) {
-    unsigned char* r6 = param_1;
-    unsigned char r5 = *r6;
-    
-    while (r5 != 0) {
-        if ((signed char)r5 == -1) {
-            *r6 = 0xff;
+    register unsigned char* r6;
+    register signed char r5;
+    unsigned char out;
+
+    for (r6 = param_1; (r5 = *r6) != 0; r6++) {
+        if (r5 == -1) {
+            out = -1;
         } else {
-            *r6 = lbl_8029EC18[(unsigned char)r5];
+            out = lbl_8029EC18[(unsigned char)r5];
         }
-        r6++;
-        r5 = *r6;
+        *r6 = out;
     }
 }
 
