@@ -28,6 +28,8 @@ struct VObj_800BD938 {
     virtual void v9(s32);
 };
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern "C" void fn_800BCF88(void) {}
+
 extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7) {
     u8* p = (u8*)param_1;
     if (param_2 < 0) {
@@ -36,14 +38,15 @@ extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4,
     if (param_2 > param_5) {
         return 1;
     }
+    f32 d = param_4 - param_3;
     f32 t = fn_800BDD94(param_1, param_5, param_2);
-    VObj_800BD938* obj = *(VObj_800BD938**)(p + 0x24);
-    obj->v4(*(f32*)(p + 0x28), *(f32*)(p + 0x2c) + (param_3 + t * (param_4 - param_3)));
+    f32 m = t * d;
+    (*(VObj_800BD938**)(p + 0x24))->v4(*(f32*)(p + 0x28), *(f32*)(p + 0x2c) + (param_3 + m));
     if (param_7 == 2) {
         return 0;
     }
     if (param_7 == 1) {
-        obj->v9((s32)((f32)*(u8*)(p + 0x30) * (lbl_80300D04 - t)));
+        (*(VObj_800BD938**)(p + 0x24))->v9((s32)((f32)*(u8*)(p + 0x30) * (lbl_80300D04 - t)));
     }
     return 0;
 }
