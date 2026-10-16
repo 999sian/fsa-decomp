@@ -1,5 +1,6 @@
 #include "types.h"
 
+extern "C" char lbl_804A4310[];
 extern "C" char lbl_804A4808[];
 extern "C" char lbl_8049CC34[];
 extern "C" void fn_801EE434(void* p);
