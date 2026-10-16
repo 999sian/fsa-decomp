@@ -28,14 +28,16 @@ extern "C" u8 fn_8037A120(void) {
 
 extern "C" void fn_8037A664(u8* p) {
     if (*(void**)(p + 4) != 0) {
-        u8 v = *((u8*)lbl_8053ADA0 + 0x4c0);
-        if (v != 5 && v != 8 && v != 7) {
+        u32 v = *((u8*)lbl_8053ADA0 + 0x4c0);
+        u8 c = v;
+        if (c != 5 && c != 8 && c != 7) {
             fn_803A97A0(lbl_8053ADA0);
         }
     }
     if (*(void**)(p + 8) != 0) {
-        u8 v = *((u8*)lbl_8053ADA8 + 0x294);
-        if (v != 5 && v != 8 && v != 7) {
+        u32 v = *((u8*)lbl_8053ADA8 + 0x294);
+        u8 c = v;
+        if (c != 5 && c != 8 && c != 7) {
             fn_803B7E64(lbl_8053ADA8);
         }
     }
