@@ -157,9 +157,10 @@ extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
 }
 
 extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
+    u16* ids = *(u16**)(p + 8);
+    u32 off = ids[idx] * 0x14c + 0x84;
     u8* base = *(u8**)(p + 4);
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
-    u16 v = *(u16*)(base + off + 0x84 + b * 2);
+    u16 v = *(u16*)(base + off + b * 2);
     if (v != 0xffff) {
         return (*(u16**)(p + 0x38))[v];
     }
@@ -168,8 +169,10 @@ extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
 
 extern unsigned int j3dDefaultTevOrderInfoNull;
 extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xbc;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
+    u16* ids = *(u16**)(p + 8);
+    u32 off = ids[idx] * 0x14c + 0xbc;
+    u8* base = *(u8**)(p + 4);
+    u16 v = *(u16*)(base + off + b * 2);
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x40))[v];
         return;
@@ -206,9 +209,9 @@ extern "C" void fn_800CB3D0(u32* out, u8* p, s32 idx, s32 b) {
 }
 
 extern "C" u8 fn_800CB428(u8* p, s32 idx) {
-    u16 i = ((u16*)*(u8**)(p + 8))[idx];
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
     u8* base = *(u8**)(p + 4);
-    u8 v = base[i * 0x14c + 4];
+    u8 v = *(u8*)(base + off + 4);
     if (v != 0xff) {
         return (*(u8**)(p + 0x4c))[v];
     }
