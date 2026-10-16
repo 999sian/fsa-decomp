@@ -8,6 +8,8 @@ extern const float lbl_8053F6A4;
 extern const float lbl_8053F6A8;
 extern const float lbl_8053F6AC;
 extern const float lbl_8053F6B0;
+extern const float lbl_8053F678;
+extern "C" u16 fn_801CD664(s32);
 extern "C" char* dtor_801EB8CC(char* p, s16 freeFlag) {
     if (p != 0) {
         for (s32 i = 0; i < 7; i++) {
