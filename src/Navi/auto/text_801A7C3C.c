@@ -238,15 +238,14 @@ extern "C" void fn_801ACC40(u8* self, u16 idx, u16* out) {
 extern "C" void fn_801ACCF4(u8* self, u16 idx, u8* out) {
     s32 i = (s32)(lbl_80301D80 + *(f32*)(self + 8));
     u8* tbl = *(u8**)(self + 0x10);
-    u8* data = *(u8**)(self + 0x14);
     u16 count = *(u16*)(tbl + idx * 4);
-    u16 offs = *(u16*)(tbl + idx * 4 + 2);
+    u8* data = *(u8**)(self + 0x14);
     if (i < 0) {
-        *out = data[offs];
+        *out = data[*(u16*)(tbl + idx * 4 + 2)];
     } else if (i >= count) {
-        *out = data[count + offs - 1];
+        *out = data[count + *(u16*)(tbl + idx * 4 + 2) - 1];
     } else {
-        *out = data[i + offs];
+        *out = data[i + *(u16*)(tbl + idx * 4 + 2)];
     }
 }
 
