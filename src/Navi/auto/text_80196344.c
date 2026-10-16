@@ -101,8 +101,6 @@ extern "C" void fn_80196440(void* self, void* a, void* b, void* c) {
     }
 }
 
-#pragma push
-#pragma use_lmw_stmw off
 extern "C" s32 fn_801964C0(void* self) {
     s32 sum = 0;
     u16 i;
@@ -112,7 +110,6 @@ extern "C" s32 fn_801964C0(void* self) {
     }
     return sum;
 }
-#pragma pop
 
 #pragma pop
 extern "C" int fn_801979BC(int param_1) {
@@ -1874,8 +1871,8 @@ extern "C" void fn_801A37C4(int param_1) {
     u16 tmp;
     int i = 0;
     lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 4);
-    u32 start = lbl_802FFA80[2];
-    u32 p = ((volatile int*)lbl_802FFA80)[2];
+    u32 start = (*(int* volatile*)&lbl_802FFA80)[2];
+    u32 p = lbl_802FFA80[2];
     while (true) {
         if (!fn_801A602C(p)) {
             break;
@@ -2151,8 +2148,8 @@ extern "C" void fn_80191220(int, void*);
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
     u8* d = p + (i << 3);
     u8 a = src[1];
-    u8 b = src[2];
     d[0x22] = a;
+    u8 b = src[2];
     u8 c = src[3];
     d[0x23] = b;
     b = src[5];
@@ -2341,9 +2338,9 @@ extern "C" int fn_801A4324(int p1, int p2) {
 }
 
 extern "C" void fn_801A4338(u8* param_1, s32 param_2, u8* param_3) {
-    u8* p = param_1 + param_2 * 8;
     u8 b1 = param_3[1];
     u8 b0 = param_3[0];
+    u8* p = &param_1[param_2 * 8];
     p[0x3c] = (p[0x3c] & ~0x0c) | ((b1 & 0xff) << 2);
     p[0x3c] = (p[0x3c] & ~0x03) | b0;
 }
@@ -2435,14 +2432,19 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* dst;
-    dst = p + i * 8;
-    dst[0xf] = src[1];
-    dst[0x10] = src[2];
-    dst[0x11] = src[3];
-    dst[0x13] = src[5];
-    dst[0x14] = src[6];
-    dst[0x15] = src[7];
+    u8 a = src[1];
+    u8 b = src[2];
+    u8* dst = p + i * 8;
+    u8 c = src[3];
+    u8 d = src[5];
+    u8 e = src[6];
+    u8 f = src[7];
+    dst[0xf] = a;
+    dst[0x10] = b;
+    dst[0x11] = c;
+    dst[0x13] = d;
+    dst[0x14] = e;
+    dst[0x15] = f;
 }
 
 extern "C" s32 fn_801A4630(s32 p, s32 i) {
@@ -2538,7 +2540,8 @@ extern "C" u8* fn_801A482C(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
-    u8* p = p1 + 8 * p2;
+    p2 *= 8;
+    u8* p = p1 + p2;
     u8 a = p3[1];
     p[0x39] = a;
     p[0x3a] = p3[2];
