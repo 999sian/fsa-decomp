@@ -5,6 +5,8 @@
 #include "Game/ItemBase.h"
 
 extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern const char lbl_8046A3AC[];
+extern const f32 lbl_8053F9E8;
 
 extern "C" void fn_801CE32C(void*);
 extern "C" void fn_801CE5D4(void*);
