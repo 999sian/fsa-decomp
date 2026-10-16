@@ -1,8 +1,8 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
-extern "C" u32 fn_8011D4B4(int param_1) {
-    return (u32)(__cntlzw(9 - *(int*)(param_1 + 0x234)) >> 5);
+extern "C" u8 fn_8011D4B4(int param_1) {
+    return *(int*)(param_1 + 0x234) == 9;
 }
 
 extern "C" s32 fn_8011D4C8(char* p) {
