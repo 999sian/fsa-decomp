@@ -408,7 +408,7 @@ extern "C" void* fn_8001D76C(void* param_1) {
             return param_1;
         }
     }
-    register return nullptr;
+    return nullptr;
 }
 
 extern "C" u32 fn_8001D7EC(void* param_1) {
