@@ -69,6 +69,10 @@ extern "C" s32 fn_80172640(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
 
+extern "C" s32 fn_801728E0(s32 p, s32 i) {
+    return p + i * 4 + 0x16;
+}
+
 extern "C" void fn_80172974(u8* p, s32 i, u8 v) {
     p[i + 0xa8] = v;
 }
