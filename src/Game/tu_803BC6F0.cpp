@@ -1,5 +1,11 @@
 #include "types.h"
 
+extern "C" void* lbl_8053AD30;
+extern "C" void* lbl_8053AF80;
+extern "C" u32 fn_80309C4C(void* a, u32 b, int c);
+extern "C" void fn_80458880(void* a, int b, int c);
+extern "C" void fn_803C0018(char* p);
+
 
 extern "C" void OSResetSystem(int reset, unsigned long resetCode, int forceMenu);
 extern "C" char lbl_8051C1A0[];
