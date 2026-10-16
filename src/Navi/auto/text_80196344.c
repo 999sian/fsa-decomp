@@ -866,19 +866,9 @@ extern "C" void fn_8019DB60(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
-extern "C" void fn_8019DE38(int *param_1)
-{
-	typedef void (*fnptr)(void);
-	int *ptr = param_1;
-	int *vtable;
-	
-	vtable = (int *)(*ptr);
-	fnptr fn = (fnptr)(vtable[0x2c/4]);
-	fn();
-	
-	vtable = (int *)(*ptr);
-	fn = (fnptr)(vtable[0x30/4]);
-	fn();
+extern "C" void fn_8019DE38(NaviVObj* p) {
+    p->vf9();
+    p->vf10();
 }
 
 extern "C" void fn_8019DE84(int param_1)
