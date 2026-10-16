@@ -115,6 +115,31 @@ extern "C" u32 fn_80197B4C(void* param_1) {
     return (b + (a + c + 0x1f)) & ~0x1f;
 }
 
+extern "C" void* fn_8015A90C(u32 size);
+extern "C" int fn_80193B74(void* p, u32 v);
+extern "C" int fn_801989C4(u8* param_1, u32 param_2) {
+    u8* p;
+    int r;
+    if (*(u32*)(param_1 + 0x48) == 0) {
+        p = (u8*)fn_8015A90C(0x10);
+        if (p != 0) {
+            *(u32*)(p + 0x0) = 0;
+            *(u32*)(p + 0x4) = 0;
+            *(u32*)(p + 0x8) = 0;
+            *(u32*)(p + 0xc) = 0;
+        }
+        *(u8**)(param_1 + 0x48) = p;
+        if (*(u32*)(param_1 + 0x48) == 0) {
+            return 4;
+        }
+        r = fn_80193B74(*(u8**)(param_1 + 0x48), param_2);
+        if (r != 0) {
+            return r;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_80198AEC(void* param_1) {
     u8* p = (u8*)param_1;
     *(u32*)(p + 0x8) = 0;
