@@ -515,8 +515,8 @@ extern "C" int fn_801A3544(int p) { return p + 4; }
 
 extern "C" void fn_801A7D78(void* p);
 extern "C" void fn_801A354C(u8* param_1, u16* param_2) {
-    u8 uVar1 = *(u8*)(param_2 + 1);
     u16 uVar0 = param_2[0];
+    u8 uVar1 = *(u8*)(param_2 + 1);
     *(u16*)(param_1 + 0x30) = uVar0;
     u8 uVar2 = *((u8*)param_2 + 3);
     *(u8*)(param_1 + 0x32) = uVar1;
@@ -613,8 +613,8 @@ extern "C" u8 fn_801A602C(u32 p);
 extern "C" u16 fn_801A6050(u32 p);
 extern "C" void fn_801A36B0(int param_1, u8* param_2) {
     u16 h = *(u16*)param_2;
-    *(u16*)(param_1 + 4) = h;
     u8 t = param_2[2];
+    *(u16*)(param_1 + 4) = h;
     u8 b = param_2[3];
     *(u8*)(param_1 + 6) = t;
     *(u8*)(param_1 + 7) = b;
@@ -689,12 +689,12 @@ extern "C" void fn_801A37C4(int param_1) {
     int i = 0;
     lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 4);
     u32 start = lbl_802FFA80[2];
-    u32 p = lbl_802FFA80[2];
+    u32* p = lbl_802FFA80 + 2;
     while (true) {
-        if (!fn_801A602C(p)) {
+        if (!fn_801A602C((u32)p)) {
             break;
         }
-        tmp = fn_801A6050(p);
+        tmp = fn_801A6050((u32)p);
         fn_801A605C(i, &tmp);
         i++;
     }
@@ -749,9 +749,17 @@ extern "C" s32 fn_801A39A4(s32 param_1, s32 param_2) {
     return param_1 + param_2 * 4 + 0xfa;
 }
 
-extern "C" void fn_801A39B8(int param_1, int param_2, u8 param_3) {
-    u32 addr = param_1 + param_2;
-    *(u8*)(addr + 0x10a) = param_3;
+extern "C" void fn_801A39B8(u8* param_1, int param_2, u8 param_3) {
+    param_1 += param_2;
+    param_1[0x10a] = param_3;
+}
+
+extern "C" void fn_801A39C4(int param_1, int param_2, u8* param_3) {
+    *(u8*)(param_1 + param_2 + 0x10a) = *param_3;
+}
+
+extern "C" u8 fn_801A39D4(int param_1, int param_2) {
+    return *(u8*)(param_1 + param_2 + 0x10a);
 }
 
 extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
