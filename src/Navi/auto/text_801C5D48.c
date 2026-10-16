@@ -18,6 +18,10 @@ extern "C" void fn_801CA664(s32 result, DVDCommandBlock* block);
 extern "C" void fn_801C12E4(OSThreadQueue* queue);
 extern "C" void fn_801C13D0(OSThreadQueue* queue);
 extern OSThreadQueue __DVDThreadQueue;
+extern char lbl_802FE9A8[];
+extern char lbl_8029D308[];
+extern "C" void fn_80007AB8(const char*, int, const char*, ...);
+extern "C" BOOL fn_801C9D94(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, DVDCallback callback, s32 prio);
 
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 {
@@ -57,10 +61,22 @@ extern "C" BOOL fn_801C7BF8(s32 entryNum, DVDFileInfo* fileInfo)
 	return FALSE;
 }
 
-extern "C" void fn_801C803C(s32 result, DVDCommandBlock* block)
+extern "C" s32 fn_801CA5B8(DVDCommandBlock* block);
+extern "C" void fn_801C803C(s32 result, DVDFileInfo* fileInfo);
+extern "C" BOOL fn_801C7D34(DVDCommandBlock* block)
 {
-	if (block->callback != NULL) {
-		block->callback(result, block);
+	fn_801CA5B8(block);
+	return TRUE;
+}
+
+extern "C" void fn_80007AB8(const char*, int, const char*, ...);
+extern char lbl_802FE9A8[];
+extern char lbl_8029D308[];
+extern "C" BOOL fn_801C9D94(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, DVDCallback callback, s32 prio);
+extern "C" void fn_801C803C(s32 result, DVDFileInfo* fileInfo)
+{
+	if (fileInfo->callback != NULL) {
+		fileInfo->callback(result, fileInfo);
 	}
 }
 
