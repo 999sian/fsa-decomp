@@ -119,6 +119,12 @@ extern "C" void* fn_8012022C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_801DB3E0(void);
+extern "C" void fn_801204BC(void) {
+    lbl_802FF334 = 1;
+    fn_801DB3E0();
+}
+
 extern "C" void fn_801204E4(void) {
     lbl_802FF334 = 0;
 }
