@@ -1472,6 +1472,14 @@ extern "C" void fn_8013C2C0(void* param_1, s32 param_2, void** param_3) {
     *(void**)((u8*)param_1 + 0x130) = *param_3;
 }
 
+extern "C" void fn_8013C2D4(void* param_1, s32 param_2, u32 param_3) {
+    switch (param_2) {
+    case 0x18:
+        *(u32*)((u8*)param_1 + 0x138) = fn_8013BCDC((NaviTracker*)*(void**)((u8*)param_1 + 0x124), param_3);
+        break;
+    }
+}
+
 extern "C" void fn_8013C318(void* param_1, s32 param_2, u32* param_3) {
     switch (param_2) {
     case 0x18:
@@ -1480,6 +1488,30 @@ extern "C" void fn_8013C318(void* param_1, s32 param_2, u32* param_3) {
     case 0x19:
         *(u32*)((u8*)param_1 + 0x13c) = *param_3;
         break;
+    }
+}
+
+extern "C" void fn_8013C374(void* param_1, s32 param_2, u32* param_3) {
+    switch (param_2) {
+    case 2: {
+        u8 b = (u8)((0 - *param_3 | *param_3) >> 31);
+        if (*(u8*)((u8*)param_1 + 0x140) != b) {
+            *(u8*)((u8*)param_1 + 0x140) = b;
+            switch (*(s32*)((u8*)param_1 + 0x134)) {
+            case 1: {
+                u32 a = 0;
+                s32 c = -1;
+                if (b != 0) {
+                    a = *(u32*)((u8*)param_1 + 0x138);
+                    c = *(s32*)((u8*)param_1 + 0x13c);
+                }
+                (*(VObj_8013C374**)((u8*)param_1 + 0x128))->v9(a, c);
+                break;
+            }
+            }
+        }
+        break;
+    }
     }
 }
 
