@@ -35,6 +35,7 @@ typedef BOOL (StateObj_80073ECC::*StateFunc_80073ECC)(int);
 struct StateObj_80073ECC {
     u8 pad[0x2e4];
     s8 m_state;
+    u8 pad2[0xb];
     StateFunc_80073ECC m_func;
 };
 
