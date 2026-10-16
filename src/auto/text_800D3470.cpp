@@ -1013,7 +1013,7 @@ extern "C" void fn_800DDB70(void* param_1)
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* pStart = GDGetCurrPointer();
-  void* pCurr = *(void* volatile*)&__GDCurrentDL->pDisplayListData;
+  void* pCurr = (*(GDCurrentDL* volatile*)&__GDCurrentDL)->pDisplayListData;
   for (;;) {
     if (!isTexNoReg(pCurr)) break;
     u16 texNo = getTexNoReg(pCurr);
