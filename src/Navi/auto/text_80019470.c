@@ -966,6 +966,15 @@ extern "C" void fn_8001E69C(void* param_1) {
     cTg_IsUse__FP16create_tag_class(param_1);
 }
 
+extern "C" s32 fn_8001E958(void* param_1, s32 param_2) {
+    extern char lbl_802FB9F0;
+    if (cTg_AdditionToTree((node_lists_tree_class*)&lbl_802FB9F0, param_2, (create_tag_class*)param_1)) {
+        *(s32*)((u8*)param_1 + 0x14) = param_2;
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_8001EAE8(void* param_1, void* param_2) {
     cTg_Addition__FP15node_list_classP16create_tag_class(param_1, param_2);
