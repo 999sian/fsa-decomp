@@ -31,6 +31,7 @@ extern "C" void fn_80448334(void* p);
 extern "C" void fn_8044AFD8(void* p);
 extern "C" void fn_804490B8(void* p);
 extern "C" void fn_804479A0(void* p);
+extern "C" u8 fn_80402940(void* p, s32 a, f32 x, f32 y, s32 b);
 extern "C" void fn_80446DB0(void* p);
 extern "C" void fn_804263A8(void* p);
 extern "C" void fn_80443688(s32 p);
