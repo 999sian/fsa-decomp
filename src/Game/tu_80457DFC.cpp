@@ -1,4 +1,16 @@
 #include "JSystem/JAudio/Interface/JAISoundParams.h"
+#include "JSystem/JAudio/Interface/JAISound.h"
+
+struct Unk80458F9C {
+    char pad0[0x58];
+    u32 m58;
+    u32 m5C;
+    u32 m60;
+    s32 m64;
+    u8 m68;
+    char pad69[0x80 - 0x69];
+    JAISound* m80;
+};
 
 struct Unk80458F04Sound {
     char pad[0x18];
