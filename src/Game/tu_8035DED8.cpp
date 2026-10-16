@@ -27,7 +27,7 @@ extern "C" Actor* fn_8035DED8(Actor* p, s16 n) {
 
 extern "C" void fn_8035DF48(Actor* a) {
     char* p = (char*)a;
-    if (!(*(f32*)(p + 0x10) >= lbl_80542988)) {
+    if (*(f32*)(p + 0x10) < lbl_80542988) {
         if (fn_8035C15C(p, 6) == 1) {
             fn_8035C1C4(p, 6, 0x9b);
         }
