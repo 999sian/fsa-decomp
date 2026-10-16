@@ -66,6 +66,24 @@ extern "C" BOOL fn_800710CC(void)
 extern u8 lbl_802FCA18;
 extern u16 lbl_802FED38;
 extern u8 lbl_802FF058;
+extern u32 lbl_802FF190;
+extern u8 lbl_802BB0FC[];
+extern u8 lbl_802C4E74[];
+extern u8 lbl_802EE470[];
+extern u8 lbl_802EE58C[];
+extern void* lbl_802FDC98;
+struct Entry_801F9BAC { f32 x; f32 y; f32 z; };
+extern Entry_801F9BAC lbl_801F9BAC[];
+extern "C" void fn_800636F4(void*, void*, s32);
+extern "C" void fn_80058B64(s32);
+extern "C" void fn_80017FEC(s32, s32, void*, s32, s32, void*, s32);
+extern "C" void fn_8000CB28(void*, s16);
+extern "C" void fn_8002F358(s32, s32);
+extern "C" void fn_80073AD8(u8*);
+extern "C" void fn_800187B0(u8*);
+extern "C" void fn_80018804(u8*, s32);
+extern "C" void fn_80073F80(u8*, s32);
+extern "C" void fn_80073DDC(u8*);
 extern "C" int fn_8007110C(u8* p) {
     int iVar1 = fn_80020EA4(p + 0x244, (int)&lbl_802FCA18);
     if (iVar1 == 4) {
