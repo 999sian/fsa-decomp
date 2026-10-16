@@ -722,7 +722,7 @@ extern "C" void fn_80180714(u32* self, int a, int b) {
 }
 
 extern "C" void fn_80180748(void* self, int a) {
-    ((VObj_80180980*)self)->vfD4(a, *((u8*)self + 0x110));
+    ((VObj_80180980*)self)->vfCC(a, *((u8*)self + 0x110));
 }
 
 extern "C" void fn_80180778(void* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
