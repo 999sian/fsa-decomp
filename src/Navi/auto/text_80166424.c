@@ -123,15 +123,16 @@ extern "C" u32 fn_80172468(void)
 
 extern "C" void fn_801724B4(u8* p, s32 i, f32* src)
 {
-    f32* dst = (f32*)(p + i * 0x1c + 0x10);
+    u8 d = *((u8*)src + 0x18);
+    f32* dst = (f32*)(p + i * 0x1c);
 
-    dst[0] = src[0];
-    dst[1] = src[1];
-    dst[2] = src[2];
-    dst[3] = src[3];
-    dst[4] = src[4];
-    dst[5] = src[5];
-    *(u8*)(p + i * 0x1c + 0x28) = *((u8*)src + 0x18);
+    dst[4] = src[0];
+    dst[5] = src[1];
+    dst[6] = src[2];
+    dst[7] = src[3];
+    dst[8] = src[4];
+    dst[9] = src[5];
+    *(u8*)((u8*)dst + 0x28) = d;
 }
 
 extern "C" s32 fn_80172750(s32 p, s32 i)
