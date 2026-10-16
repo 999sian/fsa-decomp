@@ -22,6 +22,15 @@ extern "C" void fn_80444590(u8* p) {
     }
 }
 
+extern "C" void fn_804445E0(u8* p) {
+    u8* obj = *(u8**)(p + 0xc);
+    fn_80402628(obj, 0x10, 0, obj[0x28]);
+    if (fn_80402940(*(void**)(p + 8), 0x10, 0, lbl_80543D84, lbl_80543D80)) {
+        *(s16*)(*(u8**)(p + 8) + 0x22) = 0;
+        p[0x4d] = 1;
+    }
+}
+
 extern "C" void fn_80444650(void* this_) {
     char* p = (char*)this_;
     if (*(u8*)(p + 0x4d) != 4) {
