@@ -37,15 +37,45 @@ extern "C" void fn_8003B920(VObj_8003B920* obj) {
     obj->m8();
 }
 
+extern "C" void fn_8003B94C(void* a, s32 mode, void* p) {
+    if (mode == 1) {
+        fn_801E41AC(p, &lbl_802FC158, *(s32*)(lbl_802BB0FC + 0x3f8));
+    } else if (mode == 0) {
+        void* x = fn_800F0D64(lbl_802B7CA0);
+        fn_801E41AC(p, &lbl_802FC158, (s32)x);
+    }
+}
+
 extern s32 lbl_802FC144;
 extern "C" void fn_801E41AC(void* dst, void* src, s32 n);
 extern "C" void fn_801E66C0(void* dst, void* src);
 extern "C" void fn_8003C19C(void* a, s32 n, void* p) {
-    char buf[24];
+    char buf[20];
     if (n > 0) {
         fn_801E41AC(buf, &lbl_802FC144, n);
         fn_801E66C0(p, buf);
     }
+}
+
+extern "C" void fn_8003C2B4(u8* p, s16 a, s16 b, s16 c, s16 d, s16 e, s16 f, s16 g, s16 h, s16 i, s16 j, s16 k, s16 l, s16 m) {
+    *(s16*)(p + 0x18) = a;
+    *(s16*)(p + 0x1a) = b;
+    *(s16*)(p + 0x1c) = c;
+    *(s16*)(p + 0xc) = d;
+    *(s16*)(p + 0xe) = e;
+    *(s16*)(p + 0x10) = f;
+    *(s16*)(p + 0x12) = g;
+    *(s16*)(p + 0x14) = h;
+    *(s16*)(p + 0x16) = i;
+    *(s16*)(p + 0x6) = j;
+    *(s16*)(p + 0x8) = k;
+    *(s16*)(p + 0xa) = l;
+    *(s16*)(p + 0x24) = m;
+    *(s16*)(p + 0x26) = m;
+    *(s16*)(p + 0x28) = m;
+    *(s16*)(p + 0x1e) = m;
+    *(s16*)(p + 0x20) = m;
+    *(s16*)(p + 0x22) = m;
 }
 
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
