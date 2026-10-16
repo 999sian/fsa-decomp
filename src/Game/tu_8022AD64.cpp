@@ -193,7 +193,7 @@ static inline int linkTarget2(int i) {
     if (!isEnabled2(i)) return -1;
     return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
 }
-static inline u8 isLinked3(int i) {
+static inline int isLinked3(int i) {
     if (lbl_8053AC90 == NULL) return 0;
     if (!fn_8023F264(i)) return 0;
     return Player_IsLinked(lbl_8053AC90->players[i]);
