@@ -37,6 +37,21 @@ extern "C" void fn_80193CE0(u32* p)
     lbl_802FFA80 = (u32)lbl_802EE618;
 }
 
+extern "C" void fn_80193D9C(u32* p)
+{
+    extern u32 lbl_802FF6B0;
+    extern u32 lbl_802FFA80;
+    extern u8 lbl_802EE618[];
+    extern u32 OSDisableInterrupts(void);
+    extern void fn_801DFFF0(void*, u32, u32);
+    u32 tmp = p[0];
+    p[0] = p[1];
+    p[1] = tmp;
+    lbl_802FF6B0 = OSDisableInterrupts();
+    fn_801DFFF0(lbl_802EE618, p[0], p[3]);
+    lbl_802FFA80 = (u32)lbl_802EE618;
+}
+
 extern "C" BOOL fn_80193E38(void);
 extern "C" BOOL fn_80193E38(void)
 {
