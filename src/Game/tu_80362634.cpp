@@ -15,6 +15,8 @@ extern "C" const s32 lbl_80474BA0[];
 struct Unk80365AB8;
 typedef void (Unk80365AB8::*Unk80365AB8Func)();
 extern Unk80365AB8Func lbl_804ADDE8[];
+extern Unk80365AB8Func lbl_804ADC38[];
+extern "C" f32 lbl_80542BD4;
 
 extern "C" void fn_80362634(char* self) {
     if (*(void**)(self + 0x300) != NULL) {
