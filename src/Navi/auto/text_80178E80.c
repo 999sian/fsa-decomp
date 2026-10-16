@@ -748,10 +748,8 @@ extern "C" void fn_801820F4(void) {
 extern "C" s32 fn_80184164(char* self, s32* a, s32* b) {
     char* p;
     s32 i;
-    if (*a == 0) {
-        if (*b + 0x10000 == 0xFFFF) {
-            return 1;
-        }
+    if (*a == 0 && (u32)*b == 0xFFFFFFFF) {
+        return 1;
     }
     p = self;
     for (i = 0; i < 4; i++) {
@@ -774,6 +772,18 @@ extern "C" void fn_801841FC(s32* self, s32 a) {
         *self = 0;
     } else {
         *self = local_14;
+    }
+}
+
+extern "C" void fn_8018425C(s32* self, s32 a) {
+    s32 local_14;
+    s32 local_18;
+    local_14 = -1;
+    local_18 = -1;
+    if (!(fn_80183FC8(a, &local_14, &local_18) & 0xff)) {
+        *self = -1;
+    } else {
+        *self = local_18;
     }
 }
 
@@ -858,13 +868,13 @@ extern "C" void fn_80184770(u8* self, void* obj) {
 
 extern "C" s32 fn_80184800(u8* self, u8 idx) {
     u8 i;
-    u32 v = *(u32*)(self + idx * 4 + 0x148);
+    u32 off = idx << 2;
     for (i = 0; i < idx; i++) {
-        if (*(u32*)(self + i * 4 + 0x148) == v) {
+        if (*(u32*)(self + (i << 2) + 0x148) == *(u32*)(self + off + 0x148)) {
             return 0;
         }
     }
-    return v != 0;
+    return *(u32*)(self + off + 0x148) != 0;
 }
 
 extern "C" void fn_8018485C(u8* self, u32 v) {
@@ -872,12 +882,12 @@ extern "C" void fn_8018485C(u8* self, u32 v) {
 }
 
 extern "C" u32 fn_80184B08(u8* self, u8 idx) {
-    u32 off;
+    u32* p;
     if (idx >= 4) {
         return 0;
     }
-    off = idx << 2;
-    return *(u32*)(self + off + 0x148);
+    p = (u32*)self + idx;
+    return p[0x52];
 }
 
 extern "C" void fn_80184B34(u8* self, u32* out) {
