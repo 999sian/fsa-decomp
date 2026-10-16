@@ -65,10 +65,10 @@ extern "C" void fn_80365220(char* this_) {
         *(s32*)(this_ + 0x248) = 0x40;
         *(s32*)(this_ + 0x238) += 1;
     }
-    if (*(u32*)(this_ + 0x238) & 1) {
-        *(f32*)(this_ + 0x10) -= lbl_80542BD4;
-    } else {
+    if (!(*(u32*)(this_ + 0x238) & 1)) {
         *(f32*)(this_ + 0x10) += lbl_80542BD4;
+    } else {
+        *(f32*)(this_ + 0x10) -= lbl_80542BD4;
     }
 }
 
