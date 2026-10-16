@@ -1169,6 +1169,25 @@ extern "C" s32 fn_8001DD00(void* param_1) {
     return 1;
 }
 
+extern "C" u8* lbl_80205758[4];
+
+extern "C" s32 fn_8001E628(u32 param_1, s16 param_2, u32 param_3) {
+    u8* node = lbl_80205758[0];
+    while (node != 0) {
+        u8* p = *(u8**)(node + 0xc);
+        if (*(s32*)(p + 0x40) == 2 && *(u32*)(p + 0x44) == param_1) {
+            if (*(s32*)(p + 0x54) == -2) {
+                *(s16*)(p + 0x58) = param_2;
+                *(u32*)(p + 0x5c) = param_3;
+                return 1;
+            }
+            return 0;
+        }
+        node = node != 0 ? *(u8**)(node + 8) : 0;
+    }
+    return 0;
+}
+
 extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
 extern "C" void fn_8001E69C(void* param_1) {
     cTg_IsUse__FP16create_tag_class(param_1);
