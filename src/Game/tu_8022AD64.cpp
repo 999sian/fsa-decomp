@@ -1049,10 +1049,8 @@ int fn_80230AD4(int index)
 int fn_80230B70(int index)
 {
     if (lbl_8053AC90 == NULL) return 2;
-    if (isPlayerEnabled(index)) {
-        return *(int*)((u8*)lbl_8053AC90->players[index] + 0x3e8);
-    }
-    return 2;
+    if (isPlayerEnabled(index) == 0) return 2;
+    return *(int*)((u8*)lbl_8053AC90->players[index] + 0x3e8);
 }
 
 void fn_80230BF4(int index, int value)
