@@ -3,6 +3,8 @@ extern u8* lbl_802FB9B8;
 extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
+extern "C" int fn_8001A24C(void* param_1);
+
 extern "C" s32 fn_8001D5F4(void*, void*);
 
 extern "C" s32 fn_8001D5B8(void*, void*);
@@ -194,6 +196,14 @@ extern "C" s32 fn_80019980(void) {
     }
     return 0;
 }
+
+extern "C" s32 fn_800199A8(void) {
+    if (lbl_802FB9B8 != NULL) {
+        return fn_8001A24C(lbl_802FB9B8);
+    }
+    return 0;
+}
+
 #pragma dont_inline reset
 
 extern "C" void fn_80019AE0(void) {
