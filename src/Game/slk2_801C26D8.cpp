@@ -88,7 +88,7 @@ extern "C" int fn_801C5340(void) { return 0; }
 extern "C" u8 fn_801C5348(void* this_, f32 r) {
     u8 result = 0;
     char* p = (char*)this_;
-    s32 idx = ((s32 (*)(void*, f32, void*))fn_801D05F8)(this_, lbl_8053EE08, p + 0xc);
+    s32 idx = fn_801D05F8(this_, lbl_8053EE08, p + 0xc);
     if (idx >= 0) {
         if (fn_801D0D50(this_, idx, p + 0xc, r)) {
             result = 1;
