@@ -100,10 +100,9 @@ extern "C" void OSCancelThread(void* thread);
 extern "C" void LCDisable(void);
 extern "C" void OSResetSystem(BOOL reset, u32 resetCode, BOOL forceMenu);
 extern "C" void* fn_80012D28(void* param_1) {
-    u8 auStack_88[0x88];
-    u32 uVar1 = fn_801C027C();
-    fn_8015D1F4(auStack_88, uVar1, 0);
-    fn_8015D29C(auStack_88, -1);
+    u8 auStack_80[0x80];
+    fn_8015D1F4(auStack_80, fn_801C027C(), 0);
+    fn_8015D29C(auStack_80, -1);
     fn_80159BA4(0);
     fn_80012E50(param_1);
     return nullptr;
