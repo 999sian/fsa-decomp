@@ -9,6 +9,14 @@ extern "C" f64 fn_80137610(void* param_1, f64* param_2);
 extern "C" f64 fn_80137644(void* param_1, f64* param_2);
 extern "C" void fn_801376D0(void* param_1, void* param_2);
 
+struct KeyIter {
+    f32* p;
+};
+
+static inline s32 KeyIter_distance(KeyIter first, KeyIter last) {
+    return (s32*)last.p - (s32*)first.p;
+}
+
 struct NaviTracker {
     virtual void fn_0();
     virtual void fn_1();
@@ -788,6 +796,26 @@ extern "C" void* fn_801392DC(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80139364(f32** ret, f32** first, f32** last, f64* val) {
+    f32* l = *last;
+    f32* f = *first;
+    f32** pl = &l;
+    f32** pf = &f;
+    s32 len = (u32)((s32*)*pl - (s32*)*pf) >> 1;
+    f64 v = *val;
+    while (len > 0) {
+        s32 half = len / 2;
+        f32* mid = *first + half * 2;
+        if (!(v < *mid)) {
+            *first = mid + 2;
+            len = len - (half + 1);
+        } else {
+            len = half;
+        }
+    }
+    *ret = *first;
 }
 
 extern "C" void fn_801396C0(u32* dst, u32* src) {
