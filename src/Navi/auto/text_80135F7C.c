@@ -1145,6 +1145,8 @@ extern "C" void fn_8013A424(void** a, u32* b) {
     }
 }
 
+extern "C" void fn_8013A86C(void) {}
+
 extern void* lbl_80292F5C[];
 extern "C" void* fn_8013AF0C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -1224,10 +1226,11 @@ extern "C" void fn_8013B368(u32** src, u8* dst)
     }
 }
 
-extern "C" void fn_8013B3B4(void** src, Chunk_8013B368* dst)
+extern "C" void fn_8013B3B4(u32** src, Chunk_8013B368* dst)
 {
     u32 size;
-    u8* p = (u8*)fn_80167818(*src, &size, dst, 0);
+    u32* s = *src;
+    u8* p = (u8*)fn_80167818(s, &size, dst, 0);
     dst->size = size;
     if (size == 0) {
         dst->data = 0;
