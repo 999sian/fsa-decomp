@@ -83,13 +83,16 @@ extern "C" u8 fn_802577E0(u8* p) {
 }
 
 extern "C" void fn_80257FF4(u8* p) {
-    for (s32 i = 0; i < 2; i++, p += 4) {
-        s32 id = S32(p, 0xb30);
+    s32 i = 0;
+    s32 id;
+    for (; i < 2; i++) {
+        id = S32(p, 0xb30);
         if (id >= 0) {
             if (!fn_801F666C(fn_801F856C(), id)) {
                 S32(p, 0xb30) = -1;
             }
         }
+        p += 4;
     }
 }
 
