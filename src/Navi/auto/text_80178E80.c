@@ -12,7 +12,7 @@ extern "C" int fn_801792B4(void* param_1, int param_2) {
             return 1;
         }
     }
-    register return 0;
+    return 0;
 }
 
 extern "C" void fn_8017A488(void) {
