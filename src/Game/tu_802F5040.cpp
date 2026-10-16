@@ -45,6 +45,7 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
 
 extern "C" void fn_802FA3FC(void* mgr);
 extern void* lbl_8053AAF8;
+extern "C" void fn_802FA3FC(void* mgr);
 extern "C" void fn_802FF548(void* mgr) {
     fn_802FF798(mgr);
 }
