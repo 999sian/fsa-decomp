@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/Actor.h"
 
 extern "C" void fn_8010DF58(void* this_);
 extern "C" void fn_8010DF78(void* this_);
