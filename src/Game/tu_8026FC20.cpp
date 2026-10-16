@@ -758,7 +758,11 @@ bool fn_80272768(char* p, const f32* box, s32 room, s32 id) {
     if (!fn_80250D30(p)) {
         return 0;
     }
-    BOOL in = inBox2(box, F32(p, 0x8) + lbl_8046BD68[S32(p, 0x3dc)].x, F32(p, 0xc) + lbl_8046BD68[S32(p, 0x3dc)].y);
+    f32 x = F32(p, 0x8);
+    f32 y = F32(p, 0xc);
+    x += lbl_8046BD68[S32(p, 0x3dc)].x;
+    y += lbl_8046BD68[S32(p, 0x3dc)].y;
+    BOOL in = inBox2(box, x, y);
     if (!(u8)in) {
         return 0;
     }
@@ -780,7 +784,9 @@ bool fn_802728AC(char* p, const f32* box, s32 room, s32 id) {
     if (!fn_8024FEFC(p)) {
         return 0;
     }
-    BOOL in = inBox2(box, F32(p, 0x8) + lbl_8046BD48[S32(p, 0x3dc)].x, F32(p, 0xc) + lbl_8046BD48[S32(p, 0x3dc)].y);
+    f32 x = F32(p, 0x8) + lbl_8046BD48[S32(p, 0x3dc)].x;
+    f32 y = F32(p, 0xc) + lbl_8046BD48[S32(p, 0x3dc)].y;
+    BOOL in = inBox2(box, x, y);
     if (!(u8)in) {
         return 0;
     }
@@ -790,7 +796,39 @@ bool fn_802728AC(char* p, const f32* box, s32 room, s32 id) {
     return 1;
 }
 bool fn_802729F0(char* p, s32 id) {
-    for (int i = 0; i < 0x50; i++) {
+    for (int i = 0; i < 0x48; i += 9) {
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
+        if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
+            return 1;
+        }
+        p += 4;
         if (S32(p, 0xef0) >= 0 && S32(p, 0xef0) == id) {
             return 1;
         }
