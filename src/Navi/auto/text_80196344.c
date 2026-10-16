@@ -111,7 +111,6 @@ extern "C" s32 fn_801964C0(void* self) {
     return sum;
 }
 
-#pragma pop
 extern "C" int fn_801979BC(int param_1) {
     int size = 0;
     switch (param_1) {
@@ -2433,18 +2432,18 @@ extern "C" BOOL fn_801A45B0(void)
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
     u8 a = src[1];
-    u8 b = src[2];
     u8* dst = p + i * 8;
-    u8 c = src[3];
-    u8 d = src[5];
-    u8 e = src[6];
-    u8 f = src[7];
     dst[0xf] = a;
-    dst[0x10] = b;
-    dst[0x11] = c;
-    dst[0x13] = d;
-    dst[0x14] = e;
-    dst[0x15] = f;
+    a = src[2];
+    dst[0x10] = a;
+    a = src[3];
+    dst[0x11] = a;
+    a = src[5];
+    dst[0x13] = a;
+    a = src[6];
+    dst[0x14] = a;
+    a = src[7];
+    dst[0x15] = a;
 }
 
 extern "C" s32 fn_801A4630(s32 p, s32 i) {
