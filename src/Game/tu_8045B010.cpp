@@ -2,7 +2,7 @@
 
 extern "C" void fn_8045A640(void*);
 extern "C" void fn_8045ABC8(void*);
-extern "C" void* fn_8045AD64(void*);
+extern "C" void fn_8045AD64(void*);
 extern "C" void __ct__14WaveControllerFlll(void*, long, long, long);
 extern "C" unsigned char lbl_804B20F8[];
 #pragma mark fn_8045B010
