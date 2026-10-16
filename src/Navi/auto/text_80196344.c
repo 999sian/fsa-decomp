@@ -1737,6 +1737,10 @@ extern "C" void fn_801A51F8(s32 p, s32 i, s32 v) {
     fn_801A7D54(p + i * 0x1c + 0x18, v);
 }
 
+extern "C" void fn_801A522C(s32 p, s32 i, s32 v) {
+    fn_801A7D54(p + i * 0x1c + 0x18, v);
+}
+
 extern "C" s32 fn_801A5260(s32 p, s32 i) {
     return p + i * 0x1c + 0x18;
 }
