@@ -154,6 +154,20 @@ extern "C" s32 fn_8001A310(void* param_1) {
     return ret;
 }
 
+#pragma dont_inline on
+#pragma dont_inline reset
+extern "C" void fn_8001A370(u8* param_1) {
+    if (*(s8*)(param_1 + 0xc) == 0) {
+        *(void**)(param_1 + 0x1ac) = *(void**)(*(u8**)(param_1 + 0x10) + 0x20);
+        fn_8001A99C(param_1 + 0x1b0, param_1);
+        fn_8001A970(param_1 + 0x1b0);
+        if (*(u32*)(param_1 + 0xac) != 0) {
+            *(u32*)(param_1 + 0xb0) = **(u32**)(param_1 + 0xac);
+        }
+    }
+    fn_8001D630(*(void**)(param_1 + 0x1ac), param_1);
+}
+
 extern "C" void fn_80114C94(void*, void*, void*);
 extern "C" void fn_8011583C();
 extern "C" void fn_8001E89C();
@@ -167,12 +181,13 @@ extern "C" void fn_8001A3E4(int param_1, void* param_2) {
     fn_80114C94(lbl_80205620, (void*)fn_8011583C, local);
 }
 
+#pragma dont_inline on
+#pragma dont_inline reset
 extern "C" void fn_8001A424(s16 param_1) {
     s16 local[1];
     local[0] = param_1;
     fn_8001A3E4((int)fn_8001E89C, local);
 }
-
 extern "C" int fn_8001A454(int param_1, int param_2, int param_3, int param_4) {
     u32 r = fn_8001A828(2, param_1, param_2, 0, param_3, param_4);
     if (r == 0xFFFFFFFF) {
