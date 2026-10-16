@@ -788,6 +788,8 @@ extern "C" int fn_801A46F8()
 
 extern "C" void fn_801A4700(void) { }
 
+extern "C" void fn_801A4704(void) { }
+
 extern "C" void fn_801A47D0(u8* p, s32 i, u16 v) {
     ((u16*)(p + 8))[i] = v;
 }
