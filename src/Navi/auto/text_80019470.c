@@ -1428,8 +1428,12 @@ extern "C" void fn_8001F5A8(void* param_1, f32* out) {
 }
 
 extern "C" void fn_8001F610(u8* param_1, f32* in) {
-    struct V { f32 x, y, z; };
-    *(V*)(param_1 + 0x24) = *(V*)in;
+    f32 x = in[0];
+    f32 y = in[1];
+    *(f32*)(param_1 + 0x24) = x;
+    f32 z = in[2];
+    *(f32*)(param_1 + 0x28) = y;
+    *(f32*)(param_1 + 0x2c) = z;
     param_1[4] |= 0x20;
 }
 
@@ -1447,8 +1451,8 @@ extern "C" void fn_8001F638(void* param_1, f32* out) {
         obj = 0;
     }
     if (obj == 0) {
-        f32 z = lbl_802FFCC0;
         f32 o = lbl_802FFCC4;
+        f32 z = lbl_802FFCC0;
         out[0] = z;
         out[1] = z;
         out[2] = o;
@@ -1459,8 +1463,10 @@ extern "C" void fn_8001F638(void* param_1, f32* out) {
 }
 
 extern "C" void fn_8001F6A0(u8* param_1, f32* in) {
-    struct V { f32 x, y, z; };
-    *(V*)(param_1 + 0x30) = *(V*)in;
+    f32* d = (f32*)(param_1 + 0x30);
+    d[0] = in[0];
+    d[1] = in[1];
+    d[2] = in[2];
     param_1[4] |= 0x40;
 }
 
@@ -1481,6 +1487,11 @@ extern "C" f32 fn_8001F6C8(void) {
         return lbl_802FFCC0;
     }
     return lbl_802FFCD0 * (f32)*(s16*)(obj + 0xfc);
+}
+
+extern "C" void fn_8001F73C(u8* param_1, f32 param_2) {
+    *(f32*)(param_1 + 0x3c) = param_2;
+    param_1[4] |= 0x80;
 }
 
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
