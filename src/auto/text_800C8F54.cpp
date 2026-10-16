@@ -15,6 +15,14 @@ struct J3DMaterialDLBlock {
     void* mStringTableOffset;       // _20
 };
 
+class J3DIndTexMtxInfo {
+public:
+    J3DIndTexMtxInfo& operator=(const J3DIndTexMtxInfo&);
+    f32 mMtx[2][3]; // _00
+    s8 mScaleExp;   // _18
+};
+extern J3DIndTexMtxInfo j3dDefaultIndTexMtxInfo;
+
 class J3DMaterial;
 class J3DMaterialFactory {
 public:
@@ -358,10 +366,10 @@ extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u16 v = *(u16*)(*(u8**)(p + 4) + (ids[idx] * 0x14c + 0x124 + stage * 2));
     if (v != 0xffff) {
         J3DTevSwapModeTableInfo* e = (J3DTevSwapModeTableInfo*)(*(u8**)(p + 0x58) + v * 4);
-        *out = e->mR * 0x40 + e->mG * 0x10 + e->mB * 4 + e->mA;
+        *out = (e->mG * 0x10 + e->mB * 4 + e->mA) + e->mR * 0x40;
         return;
     }
-    *out = j3dDefaultTevSwapModeTable.mR * 0x40 + j3dDefaultTevSwapModeTable.mG * 0x10 + j3dDefaultTevSwapModeTable.mB * 4 + j3dDefaultTevSwapModeTable.mA;
+    *out = (j3dDefaultTevSwapModeTable.mG * 0x10 + j3dDefaultTevSwapModeTable.mB * 4 + j3dDefaultTevSwapModeTable.mA) + j3dDefaultTevSwapModeTable.mR * 0x40;
 }
 
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
@@ -374,9 +382,9 @@ extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
 }
 
 extern "C" void fn_800CB5E4(u32* out, u8* p, s32 idx, s32 stage) {
-    u8* e = *(u8**)(p + 0xc) + idx * 0x138;
     u32 def = j3dDefaultIndTexOrderNull;
     u32* defp = &def;
+    u8* e = *(u8**)(p + 0xc) + idx * 0x138;
     if (e[0] == 1) {
         *out = *(u32*)(e + stage * 4 + 4);
         return;
