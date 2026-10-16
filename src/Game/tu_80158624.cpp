@@ -36,3 +36,29 @@ extern "C" char* fn_80159484(char* p, s16 param_2) {
     return p;
 }
 
+extern "C" char* fn_801594E8(char* p, void* heap) {
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void* v04(u32, void*);
+    };
+    char* tex;
+    VObj* sub;
+    void* uVar2;
+
+    *(char**)p = lbl_804A0160;
+    *(s32*)(p + 0x4) = -1;
+    tex = (char*)__nw__FUlP7JKRHeapi(0x40, heap, 0);
+    if (tex != 0) {
+        sub = *(VObj**)(lbl_8053AAF8 + 0xa4);
+        uVar2 = sub->v04(0x3f3f3f3f, lbl_80465E28);
+        *(s32*)(tex + 0x28) = 0;
+        storeTIMG__10JUTTextureFPC7ResTIMGUc(tex, uVar2, 0);
+        *(u8*)(tex + 0x3b) = *(u8*)(tex + 0x3b) & 2;
+    }
+    *(char**)(p + 0x8) = tex;
+    return p;
+}
+
