@@ -1,5 +1,23 @@
 #include "Game/Actor.h"
 
+struct Tu80343Random {
+    u32 seed;
+    f32 get_ufloat_1() {
+        union {
+            f32 f;
+            u32 s;
+        } out;
+        seed = seed * 0x19660d + 0x3c6ef35f;
+        out.s = (seed >> 9) | 0x3f800000;
+        return out.f - 1.0f;
+    }
+};
+struct Tu80343Game {
+    u8 pad[0xb4];
+    Tu80343Random rnd;
+};
+extern Tu80343Game* lbl_8053AAF8;
+
 
 extern "C" char __vt__4BEEE[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
