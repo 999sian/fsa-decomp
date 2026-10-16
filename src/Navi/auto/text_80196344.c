@@ -513,6 +513,10 @@ extern "C" void fn_80199280(void* param_1) {
     p[1] = 0;
 }
 
+extern "C" s32 fn_801999E8(void) {
+    return 0x2f;
+}
+
 extern "C" s32 fn_801999F0(void) {
     return 0x26f;
 }
