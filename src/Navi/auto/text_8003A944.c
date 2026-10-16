@@ -31,6 +31,17 @@ extern "C" void fn_8003B920(VObj_8003B920* obj) {
     obj->m8();
 }
 
+extern s32 lbl_802FC144;
+extern "C" void fn_801E41AC(void* dst, void* src, s32 n);
+extern "C" void fn_801E66C0(void* dst, void* src);
+extern "C" void fn_8003C19C(void* a, s32 n, void* p) {
+    char buf[24];
+    if (n > 0) {
+        fn_801E41AC(buf, &lbl_802FC144, n);
+        fn_801E66C0(p, buf);
+    }
+}
+
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
