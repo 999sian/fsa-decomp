@@ -1148,6 +1148,11 @@ extern "C" void fn_80172474(int param_1, u8 param_2)
     *(u8*)(param_1 + 4) = param_2;
 }
 
+extern "C" u8 fn_8017247C(int param_1)
+{
+    return *(u8*)(param_1 + 4);
+}
+
 extern "C" u32 fn_801725E4(void) { return 0x10; }
 
 extern "C" void fn_801725EC(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
@@ -2025,9 +2030,9 @@ extern "C" void fn_80176294(void* param_1)
 extern "C" void fn_80166C70(void* p);
 extern "C" void* fn_80176550(void* param_1)
 {
-	u8* sub;
+	u8* sub = (u8*)param_1 + 0xdc;
 	u8* self = (u8*)param_1;
-	sub = self + 0xdc;
+	f32 c;
 	*(void**)self = (void*)lbl_80298C88;
 	fn_80166C70(sub);
 	fn_80166B58((u32*)(sub + 0xc), (u32)self);
@@ -2038,10 +2043,11 @@ extern "C" void* fn_80176550(void* param_1)
 	*(u32*)(self + 0x10) = 0;
 	*(u32*)(self + 0x1c) = 0;
 	*(u32*)(self + 0x18) = 0;
-	*(f32*)(self + 0x20) = lbl_80301B20;
-	*(f32*)(self + 0x24) = lbl_80301B20;
-	*(f32*)(self + 0x28) = lbl_80301B20;
-	*(f32*)(self + 0x2c) = lbl_80301B20;
+	c = lbl_80301B20;
+	*(f32*)(self + 0x20) = c;
+	*(f32*)(self + 0x24) = c;
+	*(f32*)(self + 0x28) = c;
+	*(f32*)(self + 0x2c) = c;
 	fn_80176610(self);
 	fn_80176E24(self, 0);
 	((UnkVObj_80166424*)self)->vf9();
