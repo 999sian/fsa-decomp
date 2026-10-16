@@ -127,6 +127,22 @@ extern "C" void* fn_8005F864(void* ptr, s16 param_2) {
 extern "C" void fn_8005F8A0(void) {
 }
 
+extern "C" void fn_8005FCEC(void* self) {
+    u32 buf[2];
+    fn_801DA39C(0, 9, 1, 4, 0);
+    fn_801DA364();
+    fn_801D9F18(9, 2);
+    fn_801DAC08(9, lbl_8027D7C0 + 0x111c, 0xc);
+    fn_801DF2A4((u8*)self + 0x10, 0);
+    fn_801DF344(0);
+    buf[0] = lbl_802FBA78;
+    fn_801DE4F4(1, buf);
+    fn_801DF0BC(lbl_8027D7C0 + 0x1240, 0x60);
+    fn_801DF0BC(lbl_8027D7C0 + 0x11e0, 0x40);
+    fn_801DEE10(1);
+    fn_801DEE3C(0);
+}
+
 extern void* lbl_8027EB8C[];
 extern void* lbl_80299A8C[];
 extern "C" void* fn_80061490(void* ptr, s16 param_2) {
