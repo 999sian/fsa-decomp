@@ -681,6 +681,10 @@ extern "C" void fn_801B70D8(void) {
     return;
 }
 
+extern "C" void fn_801B70DC(void) {
+    return;
+}
+
 extern "C" int fn_801B70E8()
 {
 	return 0;
