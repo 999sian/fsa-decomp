@@ -8,6 +8,11 @@ extern "C" void __dt__5ActorFv(void* this_, s16 freeFlag);
 extern "C" void* fn_8013CC50(u32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
 extern "C" void fn_801D1F14(void*, f32);
+class Actor {
+public:
+    void v01();
+};
+
 extern "C" void fn_801D2608(void*, void*, s32);
 extern "C" void* fn_802D6A9C();
 extern "C" void fn_802D8050(void*, s32, s32, s32);
