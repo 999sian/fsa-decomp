@@ -339,6 +339,39 @@ extern "C" s32 fn_8012285C(u8* self) {
     return fn_8022EA0C(player);
 }
 
+void fn_8022FEB8(void*, s32, void*, s32, s32);
+s32 fn_8022FD8C(void*);
+u8 fn_802300EC(void);
+u8 fn_8038AD24(s32, u16, void*, s32, GameLowVec, s32);
+extern "C" void fn_8022FEB8(void*, s32, void*, s32, s32);
+extern "C" s32 fn_8022FD8C(void*);
+extern "C" u8 fn_802300EC(void);
+extern "C" u8 fn_8038AD24(s32, u16, void*, s32, GameLowVec, s32);
+extern "C" s32 fn_80122898(u8* self, s32 msg) {
+    JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(self + 0x60);
+    box.addPos(*(JGeometry::TVec2<f32>*)(self + 0xC));
+    GameLowVec position(*(GameLowVec*)(self + 0xC));
+    position.y -= lbl_8053C9C0;
+    fn_8022FEB8(&box, *(s32*)(self + 4), *(void**)(self + 0x198), 1, 0);
+    s32 slot = fn_8022FD8C(*(void**)(self + 0x198));
+    if (slot < 0 || slot >= 4) {
+        *(s32*)(self + 0x34C) = -1;
+        return -1;
+    }
+    if (!fn_802300EC()) {
+        *(s32*)(self + 0x34C) = -1;
+        return -1;
+    }
+    void* room = *(void**)(self + 0x198);
+    s32 player = *(s32*)(self + 4);
+    if (fn_8038AD24(slot, (u16)msg, room, player, position, 0x28)) {
+        *(s32*)(self + 0x34C) = slot;
+        return slot;
+    }
+    *(s32*)(self + 0x34C) = -1;
+    return -1;
+}
+
 extern "C" u8 fn_801229E4(u8* self) {
     JGeometry::TVec2<f32> position;
     JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(self + 0x60);
@@ -378,7 +411,7 @@ extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   }
   *out = sel;
   f32 v = lbl_8053C9B4;
-  if (((CompanionCalls*)self)->v49()) {
+  if (((CompanionCalls*)self)->v47()) {
     v = lbl_8053C9BC;
   }
   switch (fn_80230CFC(*out)) {
@@ -417,6 +450,34 @@ extern "C" void fn_80122D38(u8* self, f32* x, f32* y, s32* player) {
     case 1: *x = lbl_8053C9C0 + offset; *y = lbl_8053C9B0; break;
     case 2: *x = lbl_8053C9B0; *y = lbl_8053C9B8 - offset; break;
     case 3: *x = lbl_8053C9B0; *y = lbl_8053C9C0 + offset; break;
+    }
+}
+
+extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
+    f32 f31 = lbl_8053C9B4;
+    f32 f30;
+
+    if (((CompanionCalls*)self)->v49()) {
+        f31 = lbl_8053C9BC;
+    }
+    f30 = lbl_8053C9C4 * (f32)(fn_8022E970(*player) - 1) - lbl_8053C9C4;
+    switch (fn_80230CFC(*player)) {
+    case 0:
+        *x = lbl_8053C9B8;
+        *y = lbl_8053C9BC * f30 + f31;
+        break;
+    case 1:
+        *x = lbl_8053C9BC;
+        *y = lbl_8053C9BC * f30 + f31;
+        break;
+    case 2:
+        *x = lbl_8053C9B8;
+        *y = lbl_8053C9BC * f30 + f31;
+        break;
+    case 3:
+        *x = lbl_8053C9B8;
+        *y = lbl_8053C9BC * f30 + f31;
+        break;
     }
 }
 
