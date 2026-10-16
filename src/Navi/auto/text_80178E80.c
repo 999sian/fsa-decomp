@@ -841,6 +841,19 @@ extern "C" void fn_801846E0(u8* self, void* obj) {
     }
 }
 
+extern "C" void fn_8016A530(void* p, void* obj);
+extern "C" void fn_80184770(u8* self, void* obj) {
+    u8 i;
+    for (i = 0; i < 4; i++) {
+        if ((u8)fn_80184800(self, i)) {
+            fn_8016A530(*(void**)(self + i * 4 + 0x148), obj);
+        }
+    }
+    if (*(void**)(self + 0x160) != 0) {
+        fn_8016A530(*(void**)(self + 0x160), obj);
+    }
+}
+
 extern "C" s32 fn_80184800(u8* self, u8 idx) {
     u8 i;
     u32 v = *(u32*)(self + idx * 4 + 0x148);
