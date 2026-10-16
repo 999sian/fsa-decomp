@@ -721,8 +721,7 @@ extern "C" void* fn_8013BEB0(NaviTracker* ptr, s16 param_2) {
 
 extern "C" void fn_8013C0E4(void* param_1) {
     NaviTracker* piVar1 = *(NaviTracker**)((u8*)param_1 + 0x128);
-    u32 uVar2 = piVar1->fn_6();
-    piVar1->fn_7(uVar2 & 0xfffffffe);
+    piVar1->fn_5(piVar1->fn_4() & 0xfffffffe);
 }
 
 extern "C" void fn_8013C138(void* param_1, void* param_2) {
