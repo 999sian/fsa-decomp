@@ -4,7 +4,6 @@ struct FsaStateEntry;
 typedef void (FsaStateEntry::*FsaStateFn)();
 struct FsaStateEntry {
     FsaStateFn fn;
-    u32 unk8;
 };
 extern FsaStateEntry lbl_804AD400[];
 extern "C" void fn_801F0E34(void* p, s32 a, s32 b);
@@ -142,6 +141,39 @@ extern "C" void fn_8035C230(u8* p) {
         pair[0] = *(f32*)(p + 0xc);
         pair[1] = *(f32*)(p + 0x10);
     }
+}
+
+extern "C" void fn_8035C3A8(u8* p) {
+    f32 a = *(f32*)(p + 0x240);
+    f32 b = *(f32*)(p + 0x254);
+    f32 c = *(f32*)(p + 0x23c);
+    *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x24) + 0x179) = 1;
+    u8* s = *(u8**)((u8*)lbl_8053AB10 + 0x24);
+    if (s[0x7f5] == 0) {
+        s[0x7f4] = 1;
+        *(s32*)(s + 0x7f8) = 5;
+        *(f32*)(s + 0x808) = c;
+        *(f32*)(s + 0x80c) = a - b;
+        *(f32*)(s + 0x810) = c;
+        *(f32*)(s + 0x814) = a + b;
+        s[0x7f6] = 0;
+    }
+    *(s32*)(p + 0x274) += 1;
+    if (*(s32*)(p + 0x260) != 0) {
+        *(s32*)(p + 0x260) -= 1;
+    }
+    if (*(s32*)(p + 0x268) != 0) {
+        *(s32*)(p + 0x268) -= 1;
+    }
+    s32 t = *(s32*)(p + 0x270);
+    if (t > 0) {
+        *(s32*)(p + 0x270) = t - 1;
+    } else if (t == 0) {
+        *(s32*)(p + 0x270) = -1;
+        fn_801F0E34(p, 0x30086, 0);
+    }
+    FsaStateEntry* e = &lbl_804AD400[*(s32*)(p + 0x230)];
+    (((FsaStateEntry*)p)->*e->fn)();
 }
 
 extern "C" void fn_8035C4B8(void) {}
