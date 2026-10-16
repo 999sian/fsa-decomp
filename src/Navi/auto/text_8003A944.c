@@ -41,6 +41,8 @@ extern "C" void* fn_8003CD98(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8003CDD4(void) {}
+
 extern "C" void* fn_8003CE80(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
