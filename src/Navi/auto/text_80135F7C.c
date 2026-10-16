@@ -1372,6 +1372,7 @@ extern "C" s32 fn_8013BBF0(void* a, f32* b, void* c, u32 d) {
     return 1;
 }
 
+#pragma dont_inline on
 extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
     u32 out;
     if (param_1->fn_13(&out, param_2, 0) != 0) {
@@ -1379,6 +1380,7 @@ extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
     }
     return out;
 }
+#pragma dont_inline reset
 
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
