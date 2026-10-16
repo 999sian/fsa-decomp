@@ -132,6 +132,43 @@ void fn_80281A18(char* p) {
     }
 }
 
+extern const f32 lbl_8046BE78[];
+u8 fn_80240670(char*);
+void* fn_80246B10(char*, s32);
+s32 fn_80230CFC(s32);
+s32 Player_GetLinkTargetIndex(char*);
+void fn_80281D50(char* p) {
+    U8(p, 0x458) = 0;
+    if ((u8)fn_80240670(p)) {
+        s32 idx = fn_80230CFC(Player_GetLinkTargetIndex(p));
+        S32(p, 0x3dc) = idx;
+        S32(p, 0x3e8) = idx;
+    } else if (fn_80246B10(p, 2)) {
+        S32(p, 0x3dc) = 0;
+        S32(p, 0x3e8) = 0;
+    } else if (fn_80246B10(p, 1)) {
+        S32(p, 0x3dc) = 1;
+        S32(p, 0x3e8) = 1;
+    } else if (fn_80246B10(p, 8)) {
+        S32(p, 0x3dc) = 3;
+        S32(p, 0x3e8) = 3;
+    } else if (fn_80246B10(p, 4)) {
+        S32(p, 0x3dc) = 2;
+        S32(p, 0x3e8) = 2;
+    }
+    {
+        const f32* v = &lbl_8046BE78[S32(p, 0x3dc) * 3];
+        F32(p, 0x344) = v[0];
+        F32(p, 0x348) = v[1];
+        F32(p, 0x34c) = v[2];
+    }
+    fn_8024F0E8(p, 0x1000c);
+    F32(p, 0x368) = lbl_80540360;
+    F32(p, 0x36c) = lbl_80540360;
+    F32(p, 0x370) = lbl_80540360;
+    U8(p, 0x11d8) = 0;
+}
+
 void fn_80281E84(char* p) {
     F32(p, 0xc84) = lbl_8054036C;
     F32(p, 0xc88) = lbl_8054036C;
@@ -172,7 +209,7 @@ void fn_802828A8(char* p) {
     void* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd8c));
     if (actor != NULL) {
         area = S32(p, 0x3b4);
-        if (*((u8*)((u8*)fn_802D6A9C() + 0x10000) + 0x31df + area) != 0) {
+        if (*((u8*)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0) {
             f32 speed = -fn_801080B8(actor);
             F32(p, 0x374) = lbl_80540360;
             F32(p, 0x378) = speed;
@@ -298,7 +335,7 @@ void fn_80284328(char* p) {
 
 void fn_8028434C(char* p) {
     VEC(p, 8).add(VEC(p, 8), VEC(p, 0x344));
-    F32(p, 0x34c) -= lbl_80540398;
+    F32(p, 0x34c) = F32(p, 0x34c) - lbl_80540398;
     if (F32(p, 0x34c) < lbl_80540404) F32(p, 0x34c) = lbl_80540404;
     if (F32(p, 0x34c) < lbl_80540360 && F32(p, 0x10) <= lbl_80540360) {
         F32(p, 0x10) = lbl_80540360;
