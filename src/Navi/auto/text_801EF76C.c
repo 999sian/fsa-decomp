@@ -4,9 +4,23 @@
 #include "sdk/Dolphin/AmcExi2Stubs.h"
 #include "sdk/PowerPC_EABI_Support/MetroTRK/trkenum.h"
 
+extern "C" void fn_801F04CC(void);
+extern "C" void fn_801F0140(void);
+extern "C" void fn_801F013C(void);
+extern "C" int fn_801F0430(void);
+extern "C" int fn_801F03A4(void* buf, int len);
+extern "C" void fn_801EFBB8(void* a, void* buf, int len);
+extern u8 lbl_802FB6D8[];
+
 DSError ddh_cc_initinterrupts(void)
 {
 	EXI2_EnableInterrupts();
+	return DS_NoError;
+}
+
+DSError ddh_cc_post_stop(void)
+{
+	EXI2_Reserve();
 	return DS_NoError;
 }
 
