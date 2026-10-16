@@ -71,9 +71,9 @@ struct Unk800DD148Obj {
     virtual u16* m19() = 0;
     virtual void m20() = 0;
     virtual u16* m21() = 0;
-    virtual void m22() = 0;
+    virtual u8 m22() = 0;
     virtual void m23() = 0;
-    virtual u8 m24() = 0;
+    virtual void m24() = 0;
 };
 
 struct Unk800DDA5C {
@@ -1828,11 +1828,11 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  u8* e = &param_1[param_2 * 8];
+  u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
   e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
-  e[0x28] = b0 | (e[0x28] & ~0x3);
+  e[0x28] = (e[0x28] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
