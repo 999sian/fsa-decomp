@@ -1,6 +1,66 @@
 
 
 #include "types.h"
+struct VObj_8005E8B8 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void v24();
+    virtual void v25();
+    virtual void v26();
+    virtual void v27();
+    virtual void v28();
+    virtual void v29();
+    virtual void v30();
+    virtual void v31();
+    virtual void v32();
+    virtual void v33();
+    virtual void v34();
+    virtual void v35();
+    virtual void v36();
+    virtual void v37();
+    virtual void v38();
+    virtual void v39();
+    virtual void v40();
+    virtual void v41();
+    virtual void v42();
+    virtual void v43();
+    virtual void v44();
+    virtual void v45();
+    virtual void v46();
+    virtual void v47();
+    virtual void v48();
+    virtual void v49();
+    virtual void v50();
+    virtual void v51();
+    virtual void v52();
+    virtual void v53();
+    virtual void v54();
+    virtual void v55();
+    virtual void v56(s32, s32, s32, s32);
+};
+
 struct VObj_80185520 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
     virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
@@ -1998,6 +2058,10 @@ extern "C" void fn_80188ED4(u32* self, int a, int b) {
     ((VObj_80180980*)self)->vfC0(a, 0, b);
 }
 
+extern "C" void fn_80188F08(void* self, s32 a, s32 b, s32 c) {
+    ((VObj_8005E8B8*)self)->v56(0, a, b, c);
+}
+
 extern "C" void fn_80188F48(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy0, f32 x1, f32 y1, f32 dx1, f32 dy1) {
     f32 a[4];
     f32 b[4];
@@ -2243,11 +2307,9 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    void** p = (void**)ptr;
-    void* a = lbl_80299504;
-    void* b = lbl_802994F0;
-    *p = a;
-    *p = b;
+    u32 a = (u32)lbl_80299504;
+    *(u32*)ptr = a;
+    *(u32*)ptr = (u32)lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
