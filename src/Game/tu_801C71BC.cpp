@@ -13,22 +13,18 @@ extern "C" u8 fn_800FD894(void* ring, s32 id, u8* buf, s32 n);
 extern "C" s32 fn_801CD664(s32 n);
 
 extern "C" void fn_801C7EE4(char* this_) {
-    f32 d;
-    s32 id;
     TndrG* g;
+    s32 id;
     if (*(u32*)(this_ + 0x230) & 0x2000000) {
         return;
     }
-    if (!fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
+    if (!(u8)fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
         return;
     }
     id = *(s32*)(this_ + 0x4);
     g = fn_802D6A9C();
-    d = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x330);
-    if (g->arr[id] == 0 || __fabsf(d) <= lbl_8053EEC8) {
-        if (!fn_801CF888(this_, this_ + 0xc, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
-            return;
-        }
+    if (!(g->arr[id] != 0 && __fabsf(*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x330)) > lbl_8053EEC8) && !fn_801CF888(this_, this_ + 0xc, this_ + 0x32c, *(s32*)(this_ + 0x4))) {
+        return;
     }
     *(u32*)(this_ + 0x230) |= 0x400000;
 }
