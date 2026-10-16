@@ -17,6 +17,7 @@ void fn_802BAA00(void* p);
 void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 void fn_801E9B54(void);
 void fn_801E8C74(void* a, s32 b);
+s32 fn_801EA8C0(u8* param_1, u8* param_2);
 void qsort(void* base, size_t nmemb, size_t size, s32 (*compar)(void*, void*));
 }
 
