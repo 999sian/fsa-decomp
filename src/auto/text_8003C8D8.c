@@ -11,5 +11,9 @@ public:
     ~JAIAudience();
 };
 
+extern "C" void* fn_8003CBC0(char* p) {
+    return *(void**)(p + 0x50);
+}
+
 void fn_8003D260(void) {
 }
