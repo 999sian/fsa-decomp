@@ -143,6 +143,24 @@ extern "C" u32 fn_800CBDF0(void) {
     return 0x54474E4C;
 }
 
+extern "C" char lbl_8049ABFC[];
+extern "C" char __vt__13J3DColorBlock[];
+extern "C" void __dl__FPv(void*);
+extern "C" char lbl_8049AB90[];
+extern "C" char __vt__14J3DTexGenBlock[];
+extern "C" void** fn_800CBDFC(void** param_1, short param_2) {
+    if (param_1 != NULL) {
+        *param_1 = lbl_8049AB90;
+        if (param_1 != NULL) {
+            *param_1 = __vt__14J3DTexGenBlock;
+        }
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void* fn_800CBED8(const void* base, const void* offset) {
     if (offset == 0) {
         return 0;
