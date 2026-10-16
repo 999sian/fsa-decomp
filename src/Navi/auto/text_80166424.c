@@ -73,6 +73,10 @@ extern "C" u8 fn_80172980(u8* p, s32 i) {
     return p[i + 0xa8];
 }
 
+extern "C" s32 fn_80172D10(s32 p, s32 i) {
+    return p + i * 4 + 0x7c;
+}
+
 extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
 
 extern "C" u32 fn_80173018(int param_1, u32 param_2) {
