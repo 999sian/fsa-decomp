@@ -472,6 +472,20 @@ extern "C" void* fn_8000F5E4(void)
 	return lbl_802FEBA8;
 }
 
+extern "C" void* fn_8000F5EC(void* a, void* b) {
+    bool ok = false;
+    if (lbl_802FEBAC == nullptr || a == nullptr) {
+        ok = true;
+    }
+    if (!ok) {
+        fn_8011FD18(fn_8011FD10(), lbl_80203B9C, 0x6fa, lbl_802FB810, lbl_80203E4C);
+        fn_80007AB8(lbl_80203B9C, 0x6fa, lbl_802FB814);
+    }
+    lbl_802FEBAC = fn_8015AC80(a, b, 1);
+    *((u8*)lbl_802FEBAC + 0x6c) = 1;
+    return lbl_802FEBAC;
+}
+
 extern "C" void* lbl_802FEBAC;
 extern "C" void* fn_8000F6A0(void)
 {
