@@ -26,6 +26,32 @@ extern "C" s32 fn_8011D4C8(char* p) {
     return *(s32*)(p + 0x234);
 }
 
+extern s32 lbl_80464BBC[];
+extern "C" void* fn_8011921C(void);
+extern "C" void fn_8011D1B8(void* p, s32 n);
+extern "C" void fn_8011D4D0(void* param_1) {
+    if (*(s32*)((char*)fn_8011921C() + 4) == 0x11) {
+        s32 v = *(s32*)((char*)fn_8011921C() + 8);
+        if (v == lbl_80464BBC[2]) {
+            fn_8011D1B8(param_1, 2);
+        } else if (v == lbl_80464BBC[3]) {
+            fn_8011D1B8(param_1, 3);
+        } else if (v == lbl_80464BBC[4]) {
+            fn_8011D1B8(param_1, 4);
+        } else if (v == lbl_80464BBC[5]) {
+            fn_8011D1B8(param_1, 5);
+        } else if (v == lbl_80464BBC[6]) {
+            fn_8011D1B8(param_1, 6);
+        } else if (v == lbl_80464BBC[7]) {
+            fn_8011D1B8(param_1, 7);
+        } else if (v == lbl_80464BBC[8]) {
+            fn_8011D1B8(param_1, 8);
+        } else if (v == lbl_80464BBC[9]) {
+            fn_8011D1B8(param_1, 9);
+        }
+    }
+}
+
 extern "C" void fn_8010DF58(void);
 extern "C" void fn_8010DF98(void);
 extern "C" void fn_801D2608(void* p, void* a, s32 b);
