@@ -38,6 +38,13 @@ extern "C" BOOL fn_800A3038(void)
     return TRUE;
 }
 
+extern "C" void fn_800A4718(u8* param_1) {
+    s32 r = fn_80020384((char*)lbl_802B7CA0 + 0x1388, 0);
+    if (r == 1) {
+        *(u8*)(param_1 + 0x19a) = 7;
+    }
+}
+
 extern "C" void fn_800A4764(void) {
 }
 
