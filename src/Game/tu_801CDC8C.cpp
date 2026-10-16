@@ -1,6 +1,5 @@
 // Game TU 801CDC8C-801D11FC (unnamed). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
-#include <math.h>
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
@@ -344,11 +343,44 @@ extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
         dx *= scale;
         dz *= scale;
     }
+    out[0] = dx;
+    out[1] = dz;
+#pragma fp_contract off
     f32 ddx = rec[0] - *(f32*)(this_ + 0xc);
     f32 ddz = rec[1] - *(f32*)(this_ + 0x10);
     f32 dist = ddx * ddx + ddz * ddz;
+#pragma fp_contract on
+    if (dist > lbl_8053EFC4) {
+        dist = __frsqrte(dist) * dist;
+    }
+    if (dist < maxLen) {
+        maxLen = dist;
+    }
+    out[0] *= maxLen;
+    out[1] *= maxLen;
+}
+#pragma fp_contract off
+extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
+    f32 dx = pos[0] - *(f32*)(this_ + 0xc);
+    f32 dz = pos[1] - *(f32*)(this_ + 0x10);
+    f32 lenSq = dx * dx + dz * dz;
+    if (lenSq <= lbl_8053EFE0 * *(f32*)__float_epsilon) {
+    } else {
+        f32 scale;
+        if (lenSq <= lbl_8053EFC4) {
+            scale = lenSq;
+        } else {
+            f32 y = __frsqrte(lenSq);
+            scale = lbl_8053EFE4 * y * (lbl_8053EFE8 - lenSq * (y * y));
+        }
+        dx *= scale;
+        dz *= scale;
+    }
     out[0] = dx;
     out[1] = dz;
+    f32 ddx = pos[0] - *(f32*)(this_ + 0xc);
+    f32 ddz = pos[1] - *(f32*)(this_ + 0x10);
+    f32 dist = ddx * ddx + ddz * ddz;
     if (dist > lbl_8053EFC4) {
         dist = dist * __frsqrte(dist);
     }
@@ -358,6 +390,7 @@ extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
     out[0] *= maxLen;
     out[1] *= maxLen;
 }
+
 #pragma fp_contract off
 extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
     Vec* rec = (Vec*)(this_ + idx * 0xc + 0x1ac);
