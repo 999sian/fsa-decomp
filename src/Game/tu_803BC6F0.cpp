@@ -46,3 +46,23 @@ extern "C" void fn_803CC048(char* p) {
     }
 }
 
+extern "C" char lbl_80529DEC[];
+extern "C" int fn_803B9C5C(void* a);
+extern "C" void fn_803CC0D8(char* p) {
+    int r = fn_803B9C5C(lbl_8051C1A0);
+    if (r == 1) {
+        *(s32*)(p + 0x80) = 0x55;
+        p[0x112] = p[0x110];
+        p[0x110] = 0xe;
+        p[0x113] = 0;
+        lbl_80529DEC[0x24c] = 0;
+        *(s32*)(p + 0xb0) = 0x5a;
+    } else if (r == 2) {
+        *(s32*)(p + 0x80) = 0x56;
+        p[0x112] = p[0x110];
+        p[0x110] = 0;
+        p[0x113] = 0;
+        lbl_80529DEC[0x24c] = 0;
+    }
+}
+
