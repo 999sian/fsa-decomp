@@ -513,6 +513,15 @@ extern "C" void fn_80199280(void* param_1) {
     p[1] = 0;
 }
 
+extern "C" void fn_801999B4(u8 *p)
+{
+	*(u16 *)(p + 0x30) = 0xffff;
+	*(u16 *)(p + 0x38) = 0xffff;
+	p[0x3a] = 0xff;
+	p[0x3b] = 1;
+	*(u32 *)(p + 0x3c) = 0;
+}
+
 extern "C" int fn_801999E0(void)
 {
 	return 0x22;
