@@ -12,6 +12,9 @@ extern "C" void fn_801667B4(void* a, u32 b, u32 c, u32 d);
 extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d);
 
 typedef void VFn_80169B1C(u32*, int);
+extern "C" void fn_80172264(void* p);
+extern "C" void fn_801721FC(void);
+extern "C" void* fn_801749F0(void* p, void* q);
 struct UnkVObj_80166424 {
     virtual void vf0();
     virtual void vf1();
@@ -1181,10 +1184,10 @@ extern "C" u8 fn_80172C4C(u8* self) {
     return *(u8*)(self + 0x3e);
 }
 
-extern "C" void fn_80172C54(s32 param_1, s32 param_2, u8* param_3) {
+extern "C" void fn_80172C54(u8* param_1, s32 param_2, u8* param_3) {
     u8 uVar1;
     u8 uVar2;
-    param_2 = param_1 + param_2 * 8;
+    param_2 = (s32)param_1 + param_2 * 8;
     uVar1 = param_3[1];
     uVar2 = param_3[2];
     *(u8*)(param_2 + 0x40) = uVar1;
@@ -1489,6 +1492,14 @@ extern "C" void fn_801748C0(u16* out, void* ptr, u32 index) {
         ((u8*)out)[2] = 0;
         ((u8*)out)[3] = 0;
     }
+}
+
+extern "C" void* fn_801749F0(void* param_1, void* q) {
+    fn_80172264(param_1);
+    u8* p = (u8*)param_1;
+    p[7] = (p[7] & 0xf3) | (lbl_80301AC8[1] << 2);
+    p[7] = (p[7] & 0xfc) | lbl_80301AC8[0];
+    return param_1;
 }
 
 extern "C" void* fn_80174A50(void* base, u32 offset) {
