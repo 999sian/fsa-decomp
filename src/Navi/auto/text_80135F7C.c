@@ -28,6 +28,9 @@ struct NaviTracker {
     virtual s32 fn_15(u32*, u32, s32);
 };
 
+struct It_80138B20 { void* p; };
+struct Tag_80138B20 {};
+
 struct VObj_801398CC {
     virtual void v0();
     virtual void v1();
@@ -551,6 +554,29 @@ extern "C" f64 fn_80137F88(void* p, f32 x) {
     f64 b = t * (u * dx);
     f64 a = dx * uu;
     return b * 0.0 + (a * 0.0 + (h1 * q[-1] + h2 * q[1]));
+}
+
+extern "C" void fn_801382A8(void* param_1) {
+    *(void**)param_1 = lbl_80292BB4;
+    *(f64*)((u8*)param_1 + 0x8) = lbl_802FEAB0[0];
+    *(f64*)((u8*)param_1 + 0x10) = *(f64*)((u8*)param_1 + 0x8);
+    *(f64*)((u8*)param_1 + 0x18) = *(f64*)((u8*)param_1 + 0x8);
+    *(u8*)((u8*)param_1 + 0x20) = 0;
+    *(u8*)((u8*)param_1 + 0x21) = 0;
+    *(f64*)((u8*)param_1 + 0x28) = *(f64*)((u8*)param_1 + 0x8);
+    *(f64*)((u8*)param_1 + 0x30) = *(f64*)((u8*)param_1 + 0x8);
+    *(u32*)((u8*)param_1 + 0x38) = 0;
+    *(u32*)((u8*)param_1 + 0x3c) = 0;
+    *(void**)param_1 = lbl_80292974;
+    *(u32*)((u8*)param_1 + 0x40) = 0;
+    *(u32*)((u8*)param_1 + 0x44) = 0;
+    *(u32*)((u8*)param_1 + 0x48) = 0;
+    *(u32*)((u8*)param_1 + 0x4c) = 0;
+    *(u32*)((u8*)param_1 + 0x50) = *(u32*)((u8*)param_1 + 0x48);
+    *(u32*)((u8*)param_1 + 0x54) = *(u32*)((u8*)param_1 + 0x4c);
+    *(u32*)((u8*)param_1 + 0x58) = *(u32*)((u8*)param_1 + 0x50);
+    *(u32*)((u8*)param_1 + 0x5c) = *(u32*)((u8*)param_1 + 0x4c);
+    *(u32*)((u8*)param_1 + 0x60) = *(u32*)((u8*)param_1 + 0x50);
 }
 
 extern "C" u32 fn_80138340(void) {
