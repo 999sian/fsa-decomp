@@ -426,7 +426,7 @@ extern "C" void* fn_8001B4C0(void* param_1, void* param_2, void* param_3) {
         fn_8001EB28(p + 0x18, (void*)fn_8001B0EC, p);
         *(void**)(p + 0x44) = param_1;
         *(void**)(p + 0x34) = param_3;
-        *(s32*)(p + 0x3c) = ((s32 (*)(void))fn_8001ACC4)();
+        *(s32*)(p + 0x3c) = fn_8001ACC4();
         *(s32*)(p + 0x40) = 0;
         *(u8*)(p + 0x15) = 0;
         fn_8001BFD0(*(void**)(p + 0x44));
