@@ -8,15 +8,14 @@ struct Tu802F5040Tbl {
     u8* m_tbl[8];
 };
 
+extern "C" void fn_802FA3FC(void* mgr);
 extern "C" void fn_802FF798(void* mgr);
 extern void* lbl_8053AAF8;
 extern "C" f32 fn_802F5FF4(f32 x) {
     f32 a = lbl_805414FC;
-    f32 v;
+    f32 v = lbl_80541500;
     if (x >= lbl_80541500) {
         v = x;
-    } else {
-        v = lbl_80541500;
     }
     return a / (a - v);
 }
