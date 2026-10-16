@@ -1572,6 +1572,14 @@ extern "C" s32 fn_801A4B74(s32 p, s32 i) {
     return p + i * 6 + 8;
 }
 
+extern "C" void fn_801A4B88(u8* p1, int p2, u32 p3) {
+    *(u32*)(p1 + p2 * 4 + 0x38) = p3;
+}
+
+extern "C" u32 fn_801A4B98(u8* p1, int p2) {
+    return *(u32*)(p1 + p2 * 4 + 0x38);
+}
+
 extern "C" u32 fn_801A4BA8(void* param_1) {
     return *(u32*)((u8*)param_1 + 0x58);
 }
@@ -1662,6 +1670,10 @@ extern "C" void fn_801A4D90(u8* p, s32 i, u16* pv) {
 
 extern "C" void fn_801A4DA4(u8* p, s32 i, u16* pv) {
     ((u16*)(p + 0x16))[i] = *pv;
+}
+
+extern "C" s32 fn_801A4DB8(s32 p, s32 i) {
+    return p + i * 2 + 0x16;
 }
 
 extern "C" void* fn_801A4E10(u8* p) {
