@@ -643,6 +643,13 @@ extern "C" void* fn_80139E0C(void* param_1, s16 param_2) {
 
 extern "C" int fn_801E3C54(const void*, const void*, u32);
 extern "C" char lbl_80301880[4];
+extern void* lbl_80292D58[];
+extern void* lbl_80292EC4[];
+extern void* lbl_80292974[];
+extern void* lbl_80292EB4[];
+extern void* lbl_80292B94[];
+extern "C" u8 fn_8013A48C(void* p, u32 x);
+extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" BOOL fn_80139E6C(void* param_1, u8** param_2, u32* param_3) {
     u8* p = *param_2;
     *param_2 = p + 0x10;
