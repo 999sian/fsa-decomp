@@ -30,19 +30,19 @@ extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
 
     u32 i;
 
-    JUTException::sConsole->print("-------------------------------- TRACE\n");
+    JUTException::sConsole->print(lbl_8045E878 + 0x150);
     u32* stackPointer = (u32*)this_->mStackPointer;
-    JUTException::sConsole->print_f("Address:   BackChain   LR save\n");
+    JUTException::sConsole->print_f(lbl_8045E878 + 0x178);
 
     for (i = 0; (stackPointer != nullptr) && (stackPointer != (u32*)0xFFFFFFFF) && (i++ < 0x10);)
     {
         if (i > this_->mTraceSuppress)
         {
-            JUTException::sConsole->print("Suppress trace.\n");
+            JUTException::sConsole->print(lbl_8045E878 + 0x198);
             return;
         }
 
-        JUTException::sConsole->print_f("%08X:  %08X    %08X\n", stackPointer, stackPointer[0], stackPointer[1]);
+        JUTException::sConsole->print_f(lbl_8045E878 + 0x1ac, stackPointer, stackPointer[0], stackPointer[1]);
         fn_8008AFBC(this_, stackPointer[1], false);
         JUTConsoleManager::sManager->drawDirect(true);
         fn_8008C308(this_->mPrintWaitTime1);
@@ -125,9 +125,9 @@ extern "C" void fn_8008C494(char* param_1) {
 }
 
 extern "C" u8 fn_8008C608(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9);
-extern "C" u32** lbl_8052E894;
+extern JSUPtrList lbl_8052E894;
 extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9) {
-    char buf[112];
+    char buf[80];
 
     if (param_1 != 0) {
         strcpy(buf, param_1);
@@ -135,8 +135,9 @@ extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4
         if (fn_8008C608(buf, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9) == 1) {
             return 1;
         }
-    } else if (lbl_8052E894 != 0) {
-        if (fn_8008C608((char*)**lbl_8052E894, param_2, -1, param_4, param_5, param_6, param_7, param_8, param_9) == 1) {
+    } else {
+        JSUPtrLink* link = lbl_8052E894.getFirstLink();
+        if (link != 0 && fn_8008C608(*(char**)link->getObjectPtr(), param_2, -1, param_4, param_5, param_6, param_7, param_8, param_9) == 1) {
             return 1;
         }
     }
