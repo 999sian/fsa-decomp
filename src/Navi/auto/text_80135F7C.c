@@ -464,9 +464,9 @@ extern "C" void* fn_80139A60(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void fn_80139DB0(void* param_1, void* param_2) {
+extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
     if (param_2 != nullptr) {
-        (*(void (**)(void*, s32))((u8*)*(void**)((u8*)param_2 + 8) + 8))(param_2, 1);
+        param_2->fn_0(1);
     }
 }
 
