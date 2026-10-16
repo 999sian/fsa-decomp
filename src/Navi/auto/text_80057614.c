@@ -25,7 +25,7 @@ extern "C" void fn_801DF0BC(void*, s32);
 extern "C" void fn_801DEE10(s32);
 extern "C" void fn_801DEE3C(s32);
 extern "C" void fn_8015AB1C(void* ptr);
-extern "C" void fn_8005845C(void);
+extern "C" void fn_8005845C(void*, s32, s32, f32, s32, s32);
 extern "C" void fn_8005C424(void);
 extern "C" void fn_8005B454(s32, s32, s32);
 extern "C" s32 fn_80058DB8(s32);
@@ -48,8 +48,16 @@ extern "C" void fn_800579E0(void) {
 extern "C" void fn_800579F8(void) {
 }
 
-extern "C" void fn_8005867C(void) {
-    fn_8005845C();
+extern "C" void fn_80058628(void* a, s32 b, s32 c) {
+    fn_8005845C(a, b, c, 0.0f, -1, -1);
+}
+
+extern "C" void fn_80058654(void* a, s32 b, s32 c, f32 d) {
+    fn_8005845C(a, b, c, d, -1, -1);
+}
+
+extern "C" void fn_8005867C(void* a, s32 b, s32 c, f32 d, s32 e, s32 f) {
+    fn_8005845C(a, b, c, d, e, f);
 }
 
 extern "C" void fn_8005869C(s32 param_1, s32 param_2) {
