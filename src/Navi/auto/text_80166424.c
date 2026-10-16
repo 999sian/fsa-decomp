@@ -656,7 +656,7 @@ extern "C" void fn_80174F08(u8* param_1) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
         virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
-        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v8(); virtual void v9();
         virtual u32 v30(); virtual u32 v34();
     };
     if (*(Obj**)(param_1 + 4) != 0) {
@@ -667,10 +667,11 @@ extern "C" void fn_80174F08(u8* param_1) {
 
 extern "C" void fn_80174FA0(u8* param_1, f32 a, f32 b) {
     *(f32*)(param_1 + 0x24) = a;
+    f32 c = lbl_80301AF8;
     *(f32*)(param_1 + 0x28) = b;
     *(f32*)(param_1 + 0x2c) = a;
     *(f32*)(param_1 + 0x30) = b;
-    *(f32*)(param_1 + 0x34) = lbl_80301AF8;
+    *(f32*)(param_1 + 0x34) = c;
 }
 
 extern "C" void fn_801789D0(int* param_1)
