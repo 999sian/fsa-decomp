@@ -4,6 +4,12 @@
 #include "types.h"
 
 extern volatile s32 lbl_8053BC70;
+
+struct J3DNBTScaleInfo {
+    u8 mHasScale;
+    f32 mScale[3];
+};
+extern "C" J3DNBTScaleInfo j3dDefaultNBTScaleInfo;
 extern "C" char lbl_8049AA38[];
 extern "C" char __vt__10J3DPEBlock[];
 
@@ -73,6 +79,18 @@ extern "C" void fn_800CBA88(unsigned int* out, void* self, int idx) {
         return;
     }
     *out = j3dDefaultBlendInfo;
+}
+
+extern unsigned short j3dDefaultZModeID;
+extern "C" void fn_800CBACC(unsigned short* out, void* self, int idx) {
+    unsigned char* p = (unsigned char*)self;
+    unsigned char i = (*(unsigned char**)(p + 4))[(*(unsigned short**)(p + 8))[idx] * 0x14c + 6];
+    if (i != 0xff) {
+        unsigned char* z = *(unsigned char**)(p + 0x68) + i * 4;
+        *out = z[0] * 16 + z[1] * 2 + z[2];
+        return;
+    }
+    *out = j3dDefaultZModeID;
 }
 
 extern "C" unsigned char fn_800CBB2C(void* self, int idx) {
