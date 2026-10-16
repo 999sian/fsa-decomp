@@ -405,6 +405,11 @@ extern "C" BOOL fn_80173190(void)
     return TRUE;
 }
 
+extern "C" int fn_8017332C()
+{
+	return 0;
+}
+
 extern "C" int fn_8017334C()
 {
 	return 0;
