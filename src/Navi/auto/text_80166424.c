@@ -32,6 +32,10 @@ extern "C" int fn_801699B4(void) {
     return 0xFFFF;
 }
 
+extern "C" int fn_801699C0(void) {
+    return 0xFFFF;
+}
+
 extern "C" int fn_801699D4()
 {
 	return 0;
@@ -147,7 +151,7 @@ extern "C" u32 fn_80172FF8(int param_1, u32 param_2) {
 }
 
 extern "C" u32 fn_80173018(int param_1, u32 param_2) {
-    if (param_2 > 1) {
+    if (param_2 >= 2) {
         return 0;
     }
     return *(u32*)(param_1 + param_2 * 4 + 0x6c);
