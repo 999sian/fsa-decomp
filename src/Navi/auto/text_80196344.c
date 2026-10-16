@@ -28,6 +28,7 @@ struct NaviRectHolder {
     NaviRect16 rects[4];
     NaviColor8 colors[4];
 };
+struct NaviHdr4 { u16 h; u8 t; u8 b; };
 extern void* lbl_80299E68[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80196388(void* ptr, s16 param_2) {
@@ -2478,8 +2479,7 @@ extern "C" u32 fn_801A4C90(void) {
 }
 
 extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, NaviColor8* param_3) {
-    NaviColor8* dst = &((NaviColor8*)(param_1 + 4))[param_2];
-    *dst = *param_3;
+    ((NaviColor8*)(param_1 + 4))[param_2] = *param_3;
 }
 
 extern "C" int fn_801A4CF4(int param_1, int param_2) {
