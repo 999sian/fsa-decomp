@@ -6,6 +6,14 @@ extern "C" void fn_8022FE80(int, int, int, int, int);
 extern "C" unsigned char fn_80388EEC(int);
 extern "C" unsigned char fn_80230534(int);
 extern "C" void fn_8022CA6C(int, int, int);
+extern "C" void fn_8023077C(void);
+extern "C" void fn_80458FF0(void*, int, int, int);
+extern "C" void __dt__5ActorFv(void*, int);
+extern "C" unsigned char __vt__4FGAL[];
+extern void* lbl_8053AF80;
+extern float lbl_80542E00;
+extern float lbl_80542E04;
+void operator delete(void* p);
 extern "C" void fn_803704E8(void)
 {
 	fn_803721F4();
