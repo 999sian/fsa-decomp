@@ -1515,6 +1515,11 @@ extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
 
+extern "C" BOOL fn_8017306C(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_80173074(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_80173084(u8* p, s32 i) {
