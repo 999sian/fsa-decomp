@@ -43,6 +43,32 @@ extern "C" void* fn_80196388(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_801979BC(int param_1) {
+    int size = 0;
+    switch (param_1) {
+    case 0:
+        size = 0x20;
+        break;
+    case 0x40000000:
+        size = 0x4c;
+        break;
+    case (int)0x80000000:
+        size = 0x28;
+        break;
+    }
+    return size;
+}
+
+extern "C" int fn_80197A0C(int param_1) {
+    switch (param_1) {
+    case 0:
+        return 0x6c;
+    case 0x8000000:
+        return 0x6c;
+    }
+    return 0x6c;
+}
+
 extern "C" int fn_80197A38(int param_1) {
     int size = 0;
     if (param_1 <= 1) {
