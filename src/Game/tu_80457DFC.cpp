@@ -38,6 +38,10 @@ struct Unk80458F04 {
 };
 
 extern "C" void fn_80458744(void*, s32);
+extern "C" void fn_80457DFC(u8* this_, u8 v) {
+    this_[0x6] = v;
+}
+
 extern "C" void fn_80457E04(u8* this_, u8 flag) {
     if (this_[0x8c] == 0 && this_[0x8b] == 0) {
         if (flag) {
