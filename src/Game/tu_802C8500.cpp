@@ -11,6 +11,35 @@ extern "C" s32 fn_802C8500(f32 a, f32 b, f32 c) {
 
 extern "C" void fn_802C89F8(void) {}
 
+extern "C" void* fn_802D6A9C(void);
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern "C" s32 fn_80226BC4(f32* pos, u32 id);
+extern "C" s32 fn_802D4C10(void* mgr, u32 id, u16 idx);
+extern "C" void fn_802D7D00(void* mgr, u32 id, s32 idx, s32 flag);
+extern char lbl_804A8E40[];
+extern "C" u8* fn_802C8E60(u8* p, s16 n) {
+    if (p != NULL) {
+        *(void**)p = lbl_804A8E40;
+        if (*(s32*)(p + 0x23c) == 2) {
+            f32 pos[2];
+            f32 y = *(f32*)(p + 0x10);
+            f32 x = *(f32*)(p + 0xc);
+            pos[0] = x;
+            pos[1] = y;
+            s32 idx = fn_80226BC4(pos, *(u32*)(p + 0x4));
+            s32 slot = fn_802D4C10(fn_802D6A9C(), *(u32*)(p + 0x4), (u16)idx);
+            if (slot != -1) {
+                fn_802D7D00(fn_802D6A9C(), *(u32*)(p + 0x4), slot, 0);
+            }
+        }
+        __dt__5ActorFv(p, 0);
+        if (n > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_802C9284(u8* p) {
     *(u32*)(p + 0x234) = *(u32*)(p + 0x90) & 0x3ff;
     *(u32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 16) & 0xf;
