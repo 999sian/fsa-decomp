@@ -203,9 +203,9 @@ extern "C" BOOL fn_80072918(s8* p)
     return TRUE;
 }
 
-extern "C" void fn_800724D4(void);
-extern "C" void fn_80072A5C(void) {
-    fn_800724D4();
+extern "C" int fn_800724D4(u8* p);
+extern "C" void fn_80072A5C(u8* p) {
+    fn_800724D4(p);
 }
 
 extern "C" BOOL fn_80072A7C(void);
