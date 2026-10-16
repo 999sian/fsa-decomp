@@ -1464,6 +1464,14 @@ extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
     p[0xbb] = p3[3];
 }
 
+extern "C" s32 fn_801A49CC(s32 p, s32 i) {
+    return p + (i * 4 + 0xb8);
+}
+
+extern "C" void fn_801A49E0(u8* p, s32 i, u8 v) {
+    p[i + 0xc8] = v;
+}
+
 extern "C" void* fn_801A4A08(void* p) {
     return *(void**)((char*)p + 4);
 }
