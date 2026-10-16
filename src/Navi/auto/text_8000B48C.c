@@ -54,17 +54,17 @@ extern "C" void fn_8000BF1C(void)
 	fn_8000B928(lbl_802FF548);
 }
 
-extern "C" void fn_8000C8A4(f32 matrix[3][4], short param_2, short param_3, short param_4) {
+extern "C" void fn_8000C8A4(f32 matrix[3][4], s32 param_2, s32 param_3, s32 param_4) {
     f32 m[3][4];
-    if (param_4 != 0) {
+    if ((short)param_4 != 0) {
         fn_8000CBA4(m, param_4);
         fn_801C5DA8(matrix, m, matrix);
     }
-    if (param_3 != 0) {
+    if ((short)param_3 != 0) {
         fn_8000CAD0(m, param_3);
         fn_801C5DA8(matrix, m, matrix);
     }
-    if (param_2 != 0) {
+    if ((short)param_2 != 0) {
         fn_8000C9FC(m, param_2);
         fn_801C5DA8(matrix, m, matrix);
     }
