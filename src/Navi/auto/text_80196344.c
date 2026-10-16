@@ -813,11 +813,11 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A38E0(u8* p, s32 i, s16* src) {
-    u8* base = p + (i << 3);
-    *(s16*)(base + 0xda) = src[0];
-    *(s16*)(base + 0xdc) = src[1];
-    *(s16*)(base + 0xde) = src[2];
-    *(s16*)(base + 0xe0) = src[3];
+    s16* d = (s16*)(p + (i << 3) + 0xda);
+    d[0] = src[0];
+    d[1] = src[1];
+    d[2] = src[2];
+    d[3] = src[3];
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
