@@ -197,6 +197,15 @@ extern "C" s32 fn_801250DC(s32 param_1, s32* param_2) {
     return *(s32*)(r31 + 0x40);
 }
 
+extern "C" s32 fn_8014034C(s32 a, s32 b, void* c);
+extern "C" s32 fn_80125124(s32 param_1, s32* param_2) {
+    u8* r31 = *(u8**)param_2;
+    s32 r3 = fn_8014034C(*(s32*)(r31 + 0x28), *(s32*)(r31 + 0x48), r31 + 0x44);
+    *(s32*)(r31 + 0x40) = r3;
+    r31[0x3C] = 1;
+    return *(s32*)(r31 + 0x40);
+}
+
 extern "C" s32 fn_8013EF14(s32 a, void* b);
 extern "C" s32 fn_8012516C(s32 param_1, s32* param_2) {
     u8* r31 = *(u8**)param_2;
