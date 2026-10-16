@@ -3,6 +3,8 @@
 extern "C" int fn_802486A0(void*);
 extern "C" int fn_80248778(void*);
 extern "C" int fn_80240888(void*);
+extern "C" char fn_8025F448(char* p);
+extern "C" int fn_8023DE58(void);
 extern "C" void fn_80265D68(char* p)
 {
     unsigned char v = *(unsigned char*)(p + 0xca0);
