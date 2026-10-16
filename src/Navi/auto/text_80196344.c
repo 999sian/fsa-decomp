@@ -2080,6 +2080,21 @@ extern "C" s32 fn_801A529C(s32 p, s32 i) {
     return p + i * 4 + 0x6c;
 }
 
+extern "C" void* fn_801A52B0(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = lbl_8029AE0C;
+        fn_801E0D40((u8*)param_1 + 0x6c, &fn_8000EE0C, 4, 4);
+        fn_801E0D40((u8*)param_1 + 0x18, &fn_8000EE4C, 0x1c, 3);
+        if (param_1 != nullptr) {
+            *(void**)param_1 = lbl_8029A078;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_801A534C(void) {}
 
 extern "C" void fn_801A5350(void) {}
