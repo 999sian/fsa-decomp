@@ -13,6 +13,17 @@ extern const f32 lbl_80540F24;
 extern const f32 lbl_80540F28;
 extern const f32 lbl_80540F2C;
 extern const f32 lbl_80540F30;
+extern "C" void* fn_802D2AA4(void* this_, short how) {
+    if (this_) {
+        *(void**)this_ = lbl_804A9480;
+        __dt__5ActorFv(this_, 0);
+        if (how > 0) {
+            operator delete(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_802D2B04(void* this_, s32 b, s32 c) {
     fn_801F132C(this_, b, c, (s32*)((char*)this_ + 0x234));
 }
