@@ -1933,6 +1933,9 @@ extern "C" void fn_801A535C(void) {
 extern "C" void fn_801A5360(void) {
 }
 
+extern "C" void fn_801A5364(void) {
+}
+
 extern "C" int fn_801A5368()
 {
 	return 0;
