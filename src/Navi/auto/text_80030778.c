@@ -203,6 +203,10 @@ extern "C" void fn_800336F0(void* p) {
     fn_80033ADC((char*)p + 0xe0, p);
 }
 
+extern "C" void fn_80034B54(void) {
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 4;
+}
+
 extern "C" void fn_80035410(void* p) {
     *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
     *(unsigned int*)((char*)p + 0x220) = 0x4;
