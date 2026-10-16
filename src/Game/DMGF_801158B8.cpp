@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JGeometry.h"
 #include "std/math.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" char lbl_8049D940[];
 extern f32 lbl_8053C6D0;
@@ -20,8 +21,6 @@ extern "C" void dtor_801EB8CC(void*, s32);
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" s32 fn_80115A7C(char* p) {
-    f32 maxSq = lbl_8053C6D0;
-    f32 maxDist = lbl_8053C6DC;
     JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> b;
     for (s32 i = 0; i < 4; i++) {
@@ -31,8 +30,8 @@ extern "C" s32 fn_80115A7C(char* p) {
         f32 dx = a.x - *(f32*)(p + 0xc);
         f32 dy = a.y - *(f32*)(p + 0x10);
         f32 d2 = dx * dx + dy * dy;
-        if (d2 > maxSq) {
-            if (std::sqrtf(d2) <= maxDist) {
+        if (d2 > lbl_8053C6D0) {
+            if (d2 * __frsqrte(d2) <= lbl_8053C6DC) {
                 fn_80230498(i, &a, *(s32*)(p + 0x280) + 0x3b5, (s32)lbl_8053C6E0, -0x80, -0x80, 1);
             } else {
                 fn_8023DFF4(i, &a);
