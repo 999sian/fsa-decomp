@@ -46,3 +46,15 @@ extern "C" void fn_803711F0(char* self)
 	}
 }
 
+extern "C" void* fn_80372AA0(void* self, short flag)
+{
+	if (self) {
+		*(void**)self = __vt__4FGAL;
+		__dt__5ActorFv(self, 0);
+		if (flag > 0) {
+			operator delete(self);
+		}
+	}
+	return self;
+}
+
