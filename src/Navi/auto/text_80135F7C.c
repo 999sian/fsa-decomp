@@ -352,6 +352,9 @@ extern "C" void fn_80136F9C(u8* p) {
     }
 }
 
+extern "C" f32 fn_801375FC(void* param_1, u32* param_2);
+extern "C" f64 fn_80137610(void* param_1, f64* param_2);
+extern "C" f64 fn_80137644(void* param_1, f64* param_2);
 extern "C" void fn_801376D0(void* param_1, void* param_2);
 extern "C" f32 fn_801375FC(void* param_1, u32* param_2) {
     f32* table = *(f32**)((u8*)param_1 + 0x44);
