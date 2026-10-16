@@ -778,6 +778,18 @@ extern "C" void fn_8019F520(int param_1) {
     }
 }
 
+extern "C" void fn_8019F6BC(int param_1) {
+    u8* p = (u8*)param_1;
+    u32 i = 0;
+    do {
+        if (*(u16*)(p + 8) != 0xffff) {
+            fn_801A605C(i, p + 8);
+        }
+        i++;
+        p += 2;
+    } while (i < 8);
+}
+
 extern "C" void fn_8019F718(int param_1) {
     u32 pair[2];
     u32 word;
