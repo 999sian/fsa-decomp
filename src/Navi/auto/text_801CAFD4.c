@@ -579,7 +579,7 @@ extern "C" s32 fn_801D53C0(void* param_1) {
 }
 
 extern "C" s32 fn_801D544C(void* self, void* out, void* cb);
-extern "C" void fn_801D1D6C(void);
+extern "C" void fn_801D1D6C(s32 chan);
 extern "C" void fn_801D59DC(void* param_1) {
     s32 pad;
     void* local;
