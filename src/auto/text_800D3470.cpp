@@ -1373,9 +1373,10 @@ extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
 }
 
 extern "C" void fn_800DBDB0(u8* self, Unk800DBCCCSrc* src) {
+    u32 i;
     *(u8*)(self + 0xc) = src->getColorChanNum();
     u8* dst = self;
-    for (u32 i = 0; i < 2; i++) {
+    for (i = 0; i < 2; i++) {
         u8* c = src->getMatColor(i);
         dst[4] = c[0];
         dst[5] = c[1];
@@ -1383,13 +1384,11 @@ extern "C" void fn_800DBDB0(u8* self, Unk800DBCCCSrc* src) {
         dst[7] = c[3];
         dst += 4;
     }
-    u32 i;
     for (i = 0, dst = self; i < 4; i++) {
         *(u16*)(dst + 0xe) = *src->getColorChan(i);
         dst += 2;
     }
-    dst = self;
-    for (i = 0; i < 2; i++) {
+    for (i = 0, dst = self; i < 2; i++) {
         if (src->m15(i) != 0) {
             u8* c = src->m15(i);
             dst[0x20] = c[0];
@@ -1497,7 +1496,7 @@ extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
     if (src->getFog() != nullptr) {
         this_->mFog = *src->getFog();
     }
-    JBlockType type = src->getType();
+    s32 type = src->getType();
     if (type == JBT_PEFull || type == JBT_PEFogOff) {
         this_->mAlphaComp = *src->getAlphaComp();
         this_->mBlend = *src->getBlend();
