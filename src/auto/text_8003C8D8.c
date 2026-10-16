@@ -61,5 +61,18 @@ extern "C" void* fn_8003CE04(char* p, int i) {
     return 0;
 }
 
+extern "C" void* lbl_80495518[];
+extern "C" void __dt__10JAIAudibleFv(void*, short);
+extern "C" void** fn_8003D200(void** p, short del) {
+    if (p != 0) {
+        *p = lbl_80495518;
+        __dt__10JAIAudibleFv(p, 0);
+        if (del > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
 void fn_8003D260(void) {
 }
