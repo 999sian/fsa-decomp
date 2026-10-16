@@ -69,7 +69,18 @@ extern "C" void fn_80172974(u8* p, s32 i, u8 v) {
     p[i + 0xa8] = v;
 }
 
+extern "C" u8 fn_80172980(u8* p, s32 i) {
+    return p[i + 0xa8];
+}
+
 extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
+
+extern "C" u32 fn_80173018(int param_1, u32 param_2) {
+    if (param_2 > 1) {
+        return 0;
+    }
+    return *(u32*)(param_1 + param_2 * 4 + 0x6c);
+}
 
 extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
     param_1 = param_1 + param_2 * 4;
