@@ -18,3 +18,15 @@ extern char lbl_8052EB58[];
 extern char lbl_8052EB98[];
 extern char lbl_804BA4A4[];
 extern OSTime lbl_8053A948;
+
+extern "C" void fn_8008E594(void)
+{
+    __ct__10JSUPtrListFb(lbl_8052E8A0, 0);
+    __register_global_object(lbl_8052E8A0, (void*)fn_8008E750, lbl_804BA498);
+    __construct_array(lbl_8052EA58, (void*)fn_8008E714, NULL, 0x30, 4);
+    __construct_array(lbl_8052EB18, (void*)fn_8008E6F8, NULL, 0x10, 4);
+    __construct_array(lbl_8052EB58, (void*)fn_8008E6F8, NULL, 0x10, 4);
+    lbl_8053A948 = (OSTime)(OS_TIMER_CLOCK / 60) * 30;
+    __ct__10JSUPtrListFb(lbl_8052EB98, 0);
+    __register_global_object(lbl_8052EB98, (void*)fn_8008E6A4, lbl_804BA4A4);
+}
