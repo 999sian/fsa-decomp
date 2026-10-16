@@ -154,8 +154,6 @@ extern "C" s32 fn_8001A310(void* param_1) {
     return ret;
 }
 
-#pragma dont_inline on
-#pragma dont_inline reset
 extern "C" void fn_8001A370(u8* param_1) {
     if (*(s8*)(param_1 + 0xc) == 0) {
         *(void**)(param_1 + 0x1ac) = *(void**)(*(u8**)(param_1 + 0x10) + 0x20);
