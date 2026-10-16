@@ -45,19 +45,32 @@ extern "C" int fn_801E30E8(int param_1) {
 
 #pragma pop
 extern "C" unsigned char fn_801E3124(unsigned int param_1) {
-    return lbl_8029EA18[param_1 & 0xff] & 0x80;
+    return lbl_8029EA18[(unsigned char)param_1] & 0x80;
 }
 
 extern "C" unsigned char fn_801E3140(unsigned int param_1) {
-    return lbl_8029EA18[param_1 & 0xff] & 6;
+    unsigned char* p = lbl_8029EA18 + (unsigned char)param_1;
+    return *p & 6;
 }
 
 extern "C" unsigned char fn_801E315C(unsigned int param_1) {
-    return lbl_8029EA18[param_1 & 0xff] & 0x10;
+    unsigned char* p = lbl_8029EA18 + (unsigned char)param_1;
+    return *p & 0x10;
+}
+
+extern "C" unsigned char fn_801E3178(unsigned int param_1) {
+    unsigned char* p = lbl_8029EA18 + (unsigned char)param_1;
+    return *p & 0xc0;
 }
 
 extern "C" void fn_801E419C(void) {
     __stdio_exit = (void*)fn_801E2238;
+}
+
+extern "C" unsigned int lbl_802FEAA8;
+extern "C" unsigned int fn_801E63D0(void) {
+    lbl_802FEAA8 = lbl_802FEAA8 * 0x41c64e6d + 0x3039;
+    return (lbl_802FEAA8 >> 16) & 0x7fff;
 }
 
 extern "C" char* fn_801E6704(char* dst, const char* src, unsigned long n) {
