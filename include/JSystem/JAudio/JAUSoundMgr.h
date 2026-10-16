@@ -9,11 +9,7 @@
 class JAUSoundMgr : public JAISoundStarter {
 public:
     JAUSoundMgr();
-#ifdef JAUSOUNDMGR_DTOR_OUT_OF_LINE
-    ~JAUSoundMgr();
-#else
     ~JAUSoundMgr() {}
-#endif
 
     bool startSound(JAISoundID soundID, JAISoundHandle *handlePtr, const JGeometry::TVec3f *pos);
     void calc();
