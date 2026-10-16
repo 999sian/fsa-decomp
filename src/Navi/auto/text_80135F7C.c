@@ -351,9 +351,46 @@ extern "C" void fn_80136F50(void* p) {
 }
 
 extern "C" void fn_80136F9C(u8* p) {
-    s8 k = p[0x20];
-    if (k == 2) {
-        return;
+    switch (*(s8*)(p + 0x20)) {
+    case 0:
+    default:
+        *(f64*)(p + 0x28) = 0.0;
+        *(f64*)(p + 0x30) = 1.0;
+        break;
+    case 1:
+        *(f64*)(p + 0x28) = 0.0;
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    case 2:
+        *(f64*)(p + 0x28) = *(f64*)(p + 0x8);
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    case 3:
+        *(f64*)(p + 0x28) = *(f64*)(p + 0x10);
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    case 4:
+        *(f64*)(p + 0x28) = 0.5 * (*(f64*)(p + 0x8) + *(f64*)(p + 0x10));
+        *(f64*)(p + 0x30) = -1.0;
+        break;
+    }
+    switch (*(s32*)(p + 0x40)) {
+    case 0:
+    default:
+        *(void**)(p + 0x58) = (void*)fn_801375FC;
+        break;
+    case 1:
+        *(void**)(p + 0x58) = (void*)fn_80137610;
+        break;
+    case 2:
+        *(void**)(p + 0x58) = (void*)fn_80137644;
+        break;
+    case 3:
+        *(void**)(p + 0x58) = (void*)fn_801376D0;
+        if (*(u32*)(p + 0x48) == 2) {
+            *(void**)(p + 0x58) = (void*)fn_80137610;
+        }
+        break;
     }
 }
 
