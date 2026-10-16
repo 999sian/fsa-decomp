@@ -1253,19 +1253,20 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 }
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
+    int off = param_2 << 3;
     u8 v1 = param_3[1];
-    param_1 = param_1 + param_2 * 8;
+    u8 *dst = (u8 *)(param_1 + off);
     u8 v2 = param_3[2];
-    *(u8 *)(param_1 + 0x5a) = v1;
+    dst[0x5a] = v1;
     u8 v3 = param_3[3];
-    *(u8 *)(param_1 + 0x5b) = v2;
+    dst[0x5b] = v2;
     u8 v5 = param_3[5];
-    *(u8 *)(param_1 + 0x5c) = v3;
+    dst[0x5c] = v3;
     u8 v6 = param_3[6];
-    *(u8 *)(param_1 + 0x5e) = v5;
+    dst[0x5e] = v5;
     u8 v7 = param_3[7];
-    *(u8 *)(param_1 + 0x5f) = v6;
-    *(u8 *)(param_1 + 0x60) = v7;
+    dst[0x5f] = v6;
+    dst[0x60] = v7;
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
@@ -1451,16 +1452,21 @@ extern "C" u8 fn_800DE208(int param_1)
   return *(u8*)(param_1 + 0x20);
 }
 
-extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  u8* dst = param_1 + (param_2 << 3);
-  u8 b1 = param_3[1];
-  dst[0x22] = b1;
-  dst[0x23] = param_3[2];
-  dst[0x24] = param_3[3];
-  dst[0x26] = param_3[5];
-  dst[0x27] = param_3[6];
-  dst[0x28] = param_3[7];
+  u8* d = (u8*)(param_1 + param_2 * 8);
+  u8 a = param_3[1];
+  u8 b = param_3[2];
+  u8 c = param_3[3];
+  d[0x22] = a;
+  d[0x23] = b;
+  d[0x24] = c;
+  a = param_3[5];
+  b = param_3[6];
+  c = param_3[7];
+  d[0x26] = a;
+  d[0x27] = b;
+  d[0x28] = c;
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -1477,12 +1483,9 @@ struct fn_800DE29C_Bits2 {
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
   u8* e = param_1 + param_2 * 8;
-  u8 b1 = param_3[1];
   u8 b0 = param_3[0];
-  u8 v = e[0x28];
-  e[0x28] = (b1 << 2) | (v & ~0xC);
-  v = e[0x28];
-  e[0x28] = b0 | (v & ~0x3);
+  e[0x28] = (param_3[1] << 2) | (e[0x28] & ~0xC);
+  e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -1756,13 +1759,12 @@ extern "C" u32 fn_800DE954() {
 
 extern "C" void fn_800DE95C(u8* this_, s32 idx, const u8* src) {
     u8* p = this_ + idx * 8;
-    u8* s = (u8*)src;
-    *(p + 0xf) = s[1];
-    *(p + 0x10) = s[2];
-    *(p + 0x11) = s[3];
-    *(p + 0x13) = s[5];
-    *(p + 0x14) = s[6];
-    *(p + 0x15) = s[7];
+    p[0xf] = src[1];
+    p[0x10] = src[2];
+    p[0x11] = src[3];
+    p[0x13] = src[5];
+    p[0x14] = src[6];
+    p[0x15] = src[7];
 }
 
 extern "C" u8* fn_800DE9D4(u8* this_, s32 idx) {
@@ -2436,3 +2438,6 @@ extern "C" void fn_800D95B0(u8* p)
     }
 }
 #endif
+struct Rgb3_800DE210 {
+    u8 r, g, b;
+};
