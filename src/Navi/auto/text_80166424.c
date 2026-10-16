@@ -51,6 +51,11 @@ extern "C" int fn_801699DC()
 	return 0;
 }
 
+extern "C" int fn_801699E4()
+{
+	return 0;
+}
+
 extern "C" int fn_801699EC()
 {
 	return 0;
