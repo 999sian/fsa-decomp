@@ -88,6 +88,12 @@ extern "C" u32 fn_80166D3C(void** param_1, void* param_2) {
     return uVar1;
 }
 
+extern "C" void fn_80168280(void);
+extern "C" void* fn_80167E08(void);
+extern "C" void fn_80167CB8(void) {
+    fn_80168280();
+}
+
 extern "C" void fn_80168E00(void)
 {
 }
