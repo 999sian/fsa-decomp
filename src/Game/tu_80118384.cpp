@@ -9,6 +9,23 @@ extern "C" void fn_80118384(u8* self)
     self[0] = 0;
 }
 
+extern "C" void fn_801183BC(u8* self)
+{
+    extern u8 lbl_8053AA91;
+    extern u8 lbl_804BC504[];
+    extern u8 lbl_804BC4F8[];
+    extern f32 lbl_8053C798;
+    extern void fn_80119E5C(void);
+    self[1] = 0;
+    if (lbl_8053AA91 == 0) {
+        lbl_804BC504[0] = 0;
+        lbl_804BC504[1] = 0;
+        lbl_804BC504[2] = 0;
+        lbl_8053AA91 = 1;
+    }
+    lbl_804BC504[1] = 0;
+}
+
 extern "C" void fn_8011888C(u8* self, u32 val)
 {
     u32 local = val;
@@ -48,10 +65,25 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
     }
 }
 
+struct VObj {
+    virtual void v00(void);
+    virtual void v04(void);
+    virtual void v08(int);
+};
+
 extern "C" void fn_80119468(u32 a, u32 b, s32 c)
 {
     void fn_80119998(u32 a, u32 b, u32 c, s32 d, u32 e, u32 f, u32 g, u32 h);
-    u32 v = (c == 2 || c > 1 || c < 0) ? 0x46 : 0x23;
+    u32 v;
+    switch (c) {
+    case 0:
+    case 1:
+        v = 0x23;
+        break;
+    default:
+        v = 0x46;
+        break;
+    }
     fn_80119998(a, v, 0, c, 0, 2, 0, b);
 }
 
@@ -80,5 +112,22 @@ extern "C" void fn_80119D48(u8* self)
 extern "C" void* fn_80119DD0(void)
 {
     return 0;
+}
+
+extern "C" void* fn_80119E5C(u8* self, s16 size)
+{
+    void* obj;
+    if (self != 0) {
+        obj = *(void**)(self + 0x2c);
+        if (obj != 0) {
+            ((void (*)(void*, int))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x2c) = 0;
+        if (size > 0) {
+            void __dl__FPv(void* p);
+            __dl__FPv(self);
+        }
+    }
+    return self;
 }
 
