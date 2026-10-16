@@ -708,6 +708,12 @@ extern "C" void* fn_8001BFF8(void) {
     return lbl_802056AC[0];
 }
 
+#pragma dont_inline on
+extern "C" void fn_8001C008(void* p) {
+    lbl_802FEC20 = p;
+}
+#pragma dont_inline reset
+
 extern "C" void fn_80115178(void*, void*, void*);
 extern "C" void fn_8011580C(void);
 #pragma push
