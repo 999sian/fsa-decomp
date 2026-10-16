@@ -40,6 +40,23 @@ struct J2DScreenVt {
     virtual u32 m13(u32, u32, u32) = 0;
 };
 
+struct J2DScreenVt2 {
+    virtual ~J2DScreenVt2();
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual u32 m12(u32, u32, u32) = 0;
+};
+
 extern "C" {
 extern char lbl_80490DA8[];
 extern void* lbl_80529DEC[];
@@ -82,10 +99,10 @@ extern "C" void* fn_8044A4D4(void** param_1) {
     param_1[1] = new J2DScreen();
     setPriority__9J2DScreenFPCcUlP10JKRArchive((J2DScreen*)param_1[1], lbl_80490DA8, 0x1100000, lbl_80529DEC[4]);
     param_1[2] = new VObj2();
-    u32 r = (*(u32 (**)(void*, u32, u32, u32))(*(u8**)param_1[1] + 0x3c))(param_1[1], 0x4e0000, 0x4e6461, 0x74613030);
+    u32 r = ((J2DScreenVt*)param_1[1])->m13(0x4e0000, 0x4e6461, 0x74613030);
     fn_80402F04(param_1[2], r);
     param_1[3] = new VObj2();
-    r = (*(u32 (**)(void*, u32, u32, u32))(*(u8**)param_1[1] + 0x3c))(param_1[1], 0x4e0000, 0x4e6461, 0x74613031);
+    r = ((J2DScreenVt*)param_1[1])->m13(0x4e0000, 0x4e6461, 0x74613031);
     fn_80402F04(param_1[3], r);
     ((u8*)param_1)[0x10] = 0;
     ((u8*)param_1)[0x11] = 0;
