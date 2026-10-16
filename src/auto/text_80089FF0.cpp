@@ -4,10 +4,11 @@
 
 extern JKRHeap* sSystemHeap;
 
-JKRHeap* fn_8008C484(JKRHeap* this_ptr)
+extern "C" void* lbl_8053A904;
+extern "C" void* fn_8008C484(void* param_1)
 {
-    JKRHeap* old = sSystemHeap;
-    sSystemHeap = this_ptr;
+    void* old = lbl_8053A904;
+    lbl_8053A904 = param_1;
     return old;
 }
 
