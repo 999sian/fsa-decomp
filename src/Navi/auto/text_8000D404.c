@@ -11,6 +11,13 @@ extern "C" void fn_801A9A60(void*);
 extern "C" void fn_801A9930(void*);
 extern "C" void fn_80159528(int, int, int, int, int, int, int);
 extern "C" int* lbl_802FF6E0;
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void*, const char*, int, const char*, const char*, ...);
+extern "C" void fn_80007AB8(const char*, int, const char*, ...);
+extern "C" char lbl_80203B9C[];
+extern "C" char lbl_802FB810[3];
+extern "C" char lbl_802FB814[5];
+extern "C" float lbl_802FFB6C;
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8000d404-0x80012630 (157 functions). split_file divides it into the game's real files.
@@ -27,6 +34,29 @@ extern "C" void* fn_8000D440(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" void fn_801B016C(void*, void*);
+extern "C" void fn_801B0240(void*, void*);
+extern "C" void fn_801AA6F0(void*);
+extern "C" char lbl_80203BC4[];
+extern "C" u8 fn_8000D6F4(void* self) {
+    if (*(void**)((u8*)self + 4) == nullptr) {
+        fn_8011FD18(fn_8011FD10(), lbl_80203B9C, 0x16e, lbl_802FB810, lbl_80203BC4);
+        fn_80007AB8(lbl_80203B9C, 0x16e, lbl_802FB814);
+    }
+    void* p = *(void**)((u8*)self + 4);
+    fn_801AA6F0(p);
+    u8 result = 1;
+    if ((*(u8*)((u8*)p + 5) & 1) == 0 && *(f32*)((u8*)p + 0xc) != lbl_802FFB6C) {
+        result = 0;
+    }
+    return result;
+}
+
+extern "C" void fn_8000DA88(void* self, void* arg, f32 value) {
+    *(f32*)(*(u8**)((u8*)self + 8) + 8) = value;
+    fn_801B016C(arg, *(void**)((u8*)self + 8));
 }
 
 extern "C" void fn_8000EAE0(void* ptr, u32 value) {
@@ -300,6 +330,10 @@ extern "C" void fn_8000EECC(u32* p) {
 extern "C" u32 lbl_80301D08;
 extern "C" void fn_8000EF10(u32* p) {
     *p = lbl_80301D08;
+}
+
+extern "C" void fn_8000EF1C(u8* p) {
+    *p = lbl_80301D30;
 }
 
 extern "C" u32 lbl_80301D04;
@@ -688,13 +722,13 @@ extern "C" void fn_80012198(void* param_1)
 {
 	char buffer[0x20];
 	
-	int result = (*(unsigned int (*)(void))*(void**)((char*)(*(void**)param_1) + 0x10))();
+	unsigned int result = (*(unsigned int (*)(void))*(void**)((char*)(*(void**)param_1) + 0x10))();
 	
 	if (result) {
 		unsigned short val = *(unsigned short*)((char*)lbl_802FF704 + 0x14);
 		void* ptr2 = (*(void* (*)(void*, void*))*(void**)((char*)(*(void**)param_1) + 0x10))(param_1, (void*)lbl_802FF704);
-		fn_801AF744(buffer);
 		(*(void (*)(void*, unsigned short, void*))*(void**)((char*)(*(void**)ptr2) + 0x10))(ptr2, val, buffer);
+		fn_801AF744(buffer);
 	} else {
 		fn_801AF744((void*)((char*)lbl_802FF704 + 0x18));
 	}
