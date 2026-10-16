@@ -239,12 +239,13 @@ s32 CARDGetSerialNo(s32 chan, u64* serial);
 extern u8* lbl_8053AAF8;
 
 static inline void stampSave() {
-lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
-if (!(lbl_8050EC80.entries[lbl_8050EC80.idx].flags & 1)) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 1;
+SaveEntry* e = lbl_8050EC80.entries + lbl_8050EC80.idx;
+e->time = OSGetTime();
+if (!(e->flags & 1)) {
+e->flags |= 1;
 }
-if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 2;
+if (e->f8 & 1) {
+e->flags |= 2;
 }
 }
 
