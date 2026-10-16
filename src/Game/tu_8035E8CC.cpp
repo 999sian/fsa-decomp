@@ -94,6 +94,7 @@ extern "C" void fn_8035EAA4(void* this_) {
 extern const f32 lbl_805429B4;
 extern const f32 lbl_805429B8;
 extern const f32 lbl_805429BC;
+extern const f32 lbl_805429CC;
 extern const f32 lbl_805429D0;
 extern const f32 lbl_805429D4;
 extern "C" void fn_8035EB18(void* this_) {
