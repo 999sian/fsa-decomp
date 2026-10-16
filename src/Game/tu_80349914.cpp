@@ -34,3 +34,26 @@ extern "C" void fn_8034A380(Actor* param_1)
     *(s32*)((u8*)param_1 + 0x274) = -1;
 }
 
+extern "C" Actor* fn_8034A3E8(Actor* param_1, s16 param_2)
+{
+    if (param_1 != 0) {
+        u32* slot = (u32*)param_1;
+        s32 i = 0;
+        *(void**)param_1 = lbl_804AC810;
+        do {
+            u32 r = fn_801F856C();
+            u32 h = fn_801F666C(r, slot[0x90]);
+            if (h != 0) {
+                ((Actor*)h)->detach();
+            }
+            i++;
+            slot++;
+        } while (i < 0xe);
+        __dt__5ActorFv(param_1, 0);
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+
