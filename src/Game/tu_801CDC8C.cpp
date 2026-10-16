@@ -173,28 +173,29 @@ extern "C" u16 fn_802265FC(f32* pos, s32 room);
 extern "C" void fn_801CE800(u8* this_) {
     f32 pos[2];
     f32 out[2];
-    bool bVar1 = false;
-    if (*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) <= lbl_8053EFC4) {
+    if (!(*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > lbl_8053EFC4)) {
         return;
     }
-    if (*(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) <= lbl_8053EFC4) {
+    if (!(*(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > lbl_8053EFC4)) {
         return;
     }
     pos[0] = *(f32*)(this_ + 0xc);
     pos[1] = *(f32*)(this_ + 0x8c) + (*(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14));
-    s32 r = fn_802265FC(pos, *(s32*)(this_ + 0x4));
-    if (r == 1) {
-        bVar1 = true;
-    } else if (r > 1) {
-        if (r >= 3) {
-            bVar1 = true;
-        }
-    } else if (r == 0) {
+    bool bVar1 = false;
+    switch (fn_802265FC(pos, *(s32*)(this_ + 0x4))) {
+    case 0:
         if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
             bVar1 = true;
         }
-    } else {
+        break;
+    case 1:
         bVar1 = true;
+        break;
+    case 2:
+        break;
+    default:
+        bVar1 = true;
+        break;
     }
     if (bVar1) {
         fn_801CCD34(pos, out);
@@ -244,6 +245,32 @@ extern "C" u8 fn_801CEB78(u8* this_) {
     u8 result = 0;
     if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053EFC4 && *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053EFC4) {
         result = fn_801F2FAC(this_);
+    }
+    return result;
+}
+
+extern "C" u8 fn_801CEBD0(u8* this_) {
+    u8 result = 0;
+    if (*(f32*)(this_ + 0x68) - *(f32*)(this_ + 0x60) > lbl_8053EFC4 && *(f32*)(this_ + 0x6c) - *(f32*)(this_ + 0x64) > lbl_8053EFC4) {
+        for (s32 i = 0; i < 4; i++) {
+            f32 pos[2];
+            s32 out;
+            if (i == fn_801F285C(this_, pos, &out, 0, i)) {
+                fn_8023B6CC(i);
+                fn_802379E4(i, this_ + 0xc);
+                if (out == 1 && fn_801EAC20(this_ + 0x1dc, i)) {
+                    f32 vec[3];
+                    vec[0] = pos[0];
+                    vec[1] = pos[1];
+                    vec[2] = lbl_8053EFC4;
+                    fn_801CB538(*(u32*)(this_ + 0x4), vec, 0, 0);
+                    result = 1;
+                }
+            }
+        }
+        if (result) {
+            fn_801F0E34(this_, (void*)0x400d1, 0);
+        }
     }
     return result;
 }
