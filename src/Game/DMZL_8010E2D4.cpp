@@ -30,15 +30,47 @@ extern "C" void fn_80110198(u8* this_) {
     }
 }
 
+extern "C" void fn_80111CC0(u8* this_) {
+    fn_8010DF78(this_);
+    switch (*(s32*)(this_ + 0x234)) {
+    case 0:
+    case 1:
+        fn_80110E9C(this_);
+        break;
+    case 2:
+        fn_8011093C(this_);
+        break;
+    }
+    fn_801D1C18(this_ + 0x2f4);
+    fn_801D1C18(this_ + 0x32c);
+    if (this_[0x230] != 0) {
+        fn_8010F4DC(this_);
+    }
+}
+
+extern "C" void fn_8010F478(u8* this_, s32 param_2) {
+    switch (*(s32*)(this_ + 0x234)) {
+    case 0:
+    case 1:
+        fn_8010E7E8(this_, param_2);
+        break;
+    case 2:
+        fn_8010E2D4(this_, param_2);
+        break;
+    }
+    *(s32*)(this_ + 0x238) = param_2;
+}
+
 extern "C" void fn_8010F9F0(u8* p) {
     switch (*(s32*)(p + 0x234)) {
     case 0:
-        break;
     case 1:
         fn_8010E7E8(p, 0x31);
         break;
     case 2:
         fn_8010E2D4(p, 0x31);
+        break;
+    case 3:
         break;
     }
     *(s32*)(p + 0x238) = 0x31;
