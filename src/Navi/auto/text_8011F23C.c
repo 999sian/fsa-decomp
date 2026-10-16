@@ -1202,6 +1202,8 @@ extern "C" void fn_80133570(void) {}
 
 extern "C" void fn_80133574(void) {}
 
+extern "C" void fn_80133578(void) {}
+
 extern "C" void fn_801338F8(u8* p, void* unused, int i);
 extern "C" void fn_80133910(u8* p, void* unused, int i, f32* v);
 extern "C" void fn_8013393C(u8* p, void* unused, int i, f32* v);
