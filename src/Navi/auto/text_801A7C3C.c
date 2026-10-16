@@ -914,6 +914,9 @@ extern "C" void* fn_801B90FC(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_801B93F8(void* unused, void* dest, void* src);
+extern "C" void* fn_8018C260(void* base, u32 offset);
+extern "C" void* fn_8018C2D8(void* base, u32 offset);
+extern "C" void* fn_8018C2F0(void* base, u32 offset);
 extern "C" void fn_801B93D0(void* self, void* src) {
     fn_801B93F8(self, *(void**)((u8*)self + 4), src);
 }
