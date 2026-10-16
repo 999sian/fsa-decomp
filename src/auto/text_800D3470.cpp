@@ -154,6 +154,10 @@ extern "C" u32 fn_800D3E18(void) {
     return 0x2f;
 }
 
+extern "C" u32 fn_800D3E20(void) {
+    return 0x26f;
+}
+
 extern "C" int fn_800D3E28(void) { return 0x1a8; }
 
 extern "C" int fn_800D3E30(void) { return 0xfe; }
