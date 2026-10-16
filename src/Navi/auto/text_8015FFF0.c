@@ -6,6 +6,7 @@ extern "C" int fn_801C7D34(void*);
 extern "C" void fn_80166FC4(void*, void*);
 extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
 extern "C" char lbl_802EE2EC[];
+extern "C" char lbl_802EE2D4[];
 extern "C" char lbl_802981A8[];
 extern "C" char lbl_802981B8[];
 extern "C" char lbl_802FE368[4];
