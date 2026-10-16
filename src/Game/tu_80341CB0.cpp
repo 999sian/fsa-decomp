@@ -11,10 +11,8 @@ extern "C" void fn_80341CB0(s32 id, f32* pos) {
 }
 
 extern "C" char lbl_804AC588[];
-extern "C" void* lbl_8053AAF8;
 extern "C" void fn_801EE434(void* obj);
 extern "C" void fn_80138B7C(void* mgr);
-extern "C" void fn_8034335C(s32 a, void* b);
 extern "C" void __dt__5ActorFv(Actor* self, s32 flag);
 extern "C" Actor* fn_803437B0(Actor* p, s16 n) {
     if (p != NULL) {
