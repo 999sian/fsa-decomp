@@ -90,6 +90,15 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 	return J3DTevOrder();
 }
 
+u8 J3DMaterialFactory_v21::newTevStageNum(int idx) const
+{
+    u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[4];
+    if (bVar1 != 0xff) {
+        return mTevStageNums[bVar1];
+    }
+    return 0xff;
+}
+
 J3DZMode J3DMaterialFactory_v21::newZMode(int idx) const
 {
     u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[6];
