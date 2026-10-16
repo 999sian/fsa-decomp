@@ -6,6 +6,11 @@ extern "C" int fn_80115564(void*);
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
 
+struct Quat4 {
+    f32 x, y, z, w;
+    Quat4(const Vec& v, f32 w_) : x(v.x), y(v.y), z(v.z), w(w_) {}
+};
+
 extern "C" s32 fn_8001D5F4(void*, void*);
 
 extern "C" s32 fn_8001D5B8(void*, void*);
