@@ -838,8 +838,8 @@ extern "C" void fn_801A3F78(int param_1, int param_2, u8* param_3) {
     *(u8*)(param_1 + 0x7a) = *param_3;
 }
 
-extern "C" s32 fn_801A3F88(s32 a, s32 b) {
-    return b + 0x7a + a;
+extern "C" s32 fn_801A3F88(s32 p, s32 i) {
+    return p + i + 0x7a;
 }
 
 extern "C" void fn_801A3E64_unused_placeholder(void);
