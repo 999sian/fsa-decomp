@@ -1901,11 +1901,15 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 }
 
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8* p = &self[i * 4];
-    p[0xc] = c[0];
-    p[0xd] = c[1];
-    p[0xe] = c[2];
-    p[0xf] = c[3];
+    u8 c0 = c[0];
+    u8* p = self + i * 4;
+    u8 c1 = c[1];
+    u8 c2 = c[2];
+    u8 c3 = c[3];
+    p[0xc] = c0;
+    p[0xd] = c1;
+    p[0xe] = c2;
+    p[0xf] = c3;
 }
 
 extern "C" u32* fn_800DF0E4(Unk800DE4D0* p, int i) {
