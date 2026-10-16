@@ -9,3 +9,7 @@ struct VObj_802D {
     virtual void m6();
     virtual void m7();
 };
+
+extern "C" void fn_802D14DC(VObj_802D* p) {
+    p->m7();
+}
