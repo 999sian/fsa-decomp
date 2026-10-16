@@ -478,6 +478,16 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
     return self;
 }
 
+extern "C" void* fn_8016ABEC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80298600;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_80298B14[];
 extern "C" void* fn_8016AC34(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
