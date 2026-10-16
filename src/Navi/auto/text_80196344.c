@@ -490,6 +490,31 @@ extern "C" int fn_80199A58() {
     return 0x1e;
 }
 
+extern "C" void fn_8019C764(int param_1)
+{
+	extern int* lbl_802FFA80;
+	extern void fn_801A598C(u32, u32);
+	int base = lbl_802FFA80[0];
+	int sum = base + *(int *)(param_1 + 0x58);
+	lbl_802FFA80[2] = sum;
+	int saved = lbl_802FFA80[2];
+
+	int p = param_1;
+	int q = param_1;
+	unsigned int i = 0;
+	do {
+		if (*(u32 *)(p + 0x38) != 0 && *(unsigned char *)(q + 10) != 0x3c) {
+			fn_801A598C(*(u32 *)(p + 0x38), i);
+		}
+		i++;
+		p += 4;
+		q += 6;
+	} while (i < 4);
+
+	int final = lbl_802FFA80[2];
+	fn_801BC250(saved, final - saved);
+}
+
 extern "C" void fn_8019C810(int param_1)
 {
 	extern int* lbl_802FFA80;
