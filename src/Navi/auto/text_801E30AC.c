@@ -30,6 +30,27 @@ extern "C" int fn_801E6EBC(volatile int a, void* buf, unsigned long* len, volati
     return 0;
 }
 
+extern const double lbl_80302260;
+extern const double lbl_80302268;
+extern const double lbl_80302270;
+extern const double lbl_80302278;
+extern const double lbl_80302280;
+extern const double lbl_80302288;
+extern const double lbl_80302290;
+extern "C" double fn_801E9270(double x, double y, int iy) {
+    double z, r, v;
+    int ix;
+    ix = (*(int*)&x) & 0x7fffffff;
+    if (ix < 0x3e400000) {
+        if ((int)x == 0) return x;
+    }
+    z = x * x;
+    v = z * x;
+    r = lbl_80302260 + z * (lbl_80302268 + z * (lbl_80302270 + z * (lbl_80302278 + lbl_80302280 * z)));
+    if (iy == 0) return x + v * (lbl_80302288 + z * r);
+    else return x - ((z * (lbl_80302290 * y - v * r) - y) - lbl_80302288 * v);
+}
+
 extern "C" double fn_801E9880(double x, double y) {
     *(unsigned int*)&x = (*(unsigned int*)&x & 0x7fffffff) | (*(unsigned int*)&y & 0x80000000);
     return x;
