@@ -11,8 +11,14 @@ extern "C" BOOL fn_804560D0(void* unused, u8** p) {
 }
 
 extern "C" void fn_80456120(u8* p) {
+    struct VObj {
+        u32 a;
+        u32 b;
+        virtual void v0();
+        virtual void v1();
+    };
     p[0x31] = 0;
-    ((VFn*)*(void**)(p + 8))[3](p);
+    ((VObj*)p)->v1();
 }
 
 extern "C" void fn_80456154(u8* p) {
