@@ -1,5 +1,7 @@
 
 
+#include "types.h"
+
 extern "C" {
 extern void* lbl_8053ADD0;
 extern const float lbl_8054360C;
