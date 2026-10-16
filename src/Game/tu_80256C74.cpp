@@ -36,7 +36,130 @@ extern const f32 lbl_805400C4;
 extern const f32 lbl_805400CC;
 extern const f32 lbl_805400D0;
 extern const f32 lbl_805400D4;
+extern const f32 lbl_805400D8;
 extern const f32 lbl_8054010C;
+
+extern "C" u8 GetBusyLocked(void*);
+extern "C" u8 fn_802413F0(void*);
+extern "C" bool fn_80256C74(u8* p, const f32* bounds, s32 id) {
+    if (GetBusyLocked(p)) {
+        return false;
+    }
+    if (Player_GetField_0x454(p)) {
+        return false;
+    }
+    if (!fn_80270A8C(p)) {
+        return false;
+    }
+    if (U8(p, 0xba4) == 0) {
+        return false;
+    }
+    if (!fn_802413F0(p)) {
+        return false;
+    }
+    if (id != S32(p, 0x3b4)) {
+        return false;
+    }
+    f32 x0 = F32(p, 0x5dc);
+    f32 y0 = F32(p, 0x5e0);
+    f32 x1 = F32(p, 0x5e4);
+    f32 y1 = F32(p, 0x5e8);
+    if (!(x0 <= bounds[0])) {
+        x0 = bounds[0];
+    }
+    if (!(y0 <= bounds[1])) {
+        y0 = bounds[1];
+    }
+    if (!(x1 >= bounds[2])) {
+        x1 = bounds[2];
+    }
+    if (!(y1 >= bounds[3])) {
+        y1 = bounds[3];
+    }
+    bool ok = false;
+    if (x1 < x0 && y1 < y0) {
+        ok = true;
+    }
+    return ok;
+}
+
+extern "C" bool fn_80256DCC(u8* p, const f32* bounds, s32 id, f32* out) {
+    if (GetBusyLocked(p)) {
+        return false;
+    }
+    if (Player_GetField_0x454(p)) {
+        return false;
+    }
+    if (U8(p, 0xb9e) == 0) {
+        return false;
+    }
+    if (!fn_802413F0(p)) {
+        return false;
+    }
+    if (id != S32(p, 0x3b4)) {
+        return false;
+    }
+    f32 minX = F32(p, 0x5cc);
+    f32 minY = F32(p, 0x5d0);
+    f32 maxX = F32(p, 0x5d4);
+    f32 maxY = F32(p, 0x5d8);
+    minX = minX <= bounds[0] ? minX : bounds[0];
+    minY = minY <= bounds[1] ? minY : bounds[1];
+    maxX = maxX >= bounds[2] ? maxX : bounds[2];
+    maxY = maxY >= bounds[3] ? maxY : bounds[3];
+    bool hit = false;
+    if (maxX >= minX || maxY >= minY) {
+        hit = false;
+    } else {
+        hit = true;
+    }
+    if (hit) {
+        out[0] = lbl_805400C0 * (F32(p, 0x5cc) - F32(p, 0x5d4)) + F32(p, 0x5d4);
+        out[1] = lbl_805400C0 * (F32(p, 0x5d0) - F32(p, 0x5d8)) + F32(p, 0x5d8);
+        return true;
+    }
+    return false;
+}
+
+extern "C" bool fn_80256F44(u8* p, const f32* bounds, s32 id, JGeometry::TVec2<f32>* center) {
+    if (GetBusyLocked(p)) {
+        return false;
+    }
+    if (Player_GetField_0x454(p)) {
+        return false;
+    }
+    if (!fn_802413F0(p)) {
+        return false;
+    }
+    if (id != S32(p, 0x3b4)) {
+        return false;
+    }
+    if (U8(p, 0xb99) == 0) {
+        return false;
+    }
+    f32 x0 = F32(p, 0x5b0);
+    f32 y0 = F32(p, 0x5b4);
+    f32 x1 = F32(p, 0x5b8);
+    f32 y1 = F32(p, 0x5bc);
+    if (!(x0 <= bounds[0])) {
+        x0 = bounds[0];
+    }
+    if (!(y0 <= bounds[1])) {
+        y0 = bounds[1];
+    }
+    if (!(x1 >= bounds[2])) {
+        x1 = bounds[2];
+    }
+    if (!(y1 >= bounds[3])) {
+        y1 = bounds[3];
+    }
+    if (x0 <= x1 && y0 <= y1) {
+        center->x = lbl_805400C0 * (F32(p, 0x5b0) - F32(p, 0x5b8)) + F32(p, 0x5b8);
+        center->y = lbl_805400C0 * (F32(p, 0x5b4) - F32(p, 0x5bc)) + F32(p, 0x5bc);
+        return true;
+    }
+    return false;
+}
 
 extern "C" bool fn_802573E0(u8* p, const JGeometry::TBox2<f32>* bounds,
                              s32 id, JGeometry::TVec2<f32>* center) {
@@ -76,11 +199,13 @@ extern "C" bool fn_802574CC(u8* p, const JGeometry::TBox2<f32>* bounds,
 
 extern "C" bool fn_802575B8(u8* p, const JGeometry::TBox2<f32>* bounds,
                              s32 id, JGeometry::TVec2<f32>* center) {
-    for (s32 i = 0; i < 3; i++) {
-        if (S32(p, 0xb0c + i * 4) >= 0 && S32(p, 0xb4c + i * 4) == id) {
-            JGeometry::TBox2<f32>& box = BOX(p, 0x510 + i * 0x10);
-            JGeometry::TBox2<f32> overlap = box;
+    u8* ids = p;
+    u8* boxes = p;
+    for (s32 i = 0; i < 3; i++, ids += 4, boxes += 0x10) {
+        if (S32(ids, 0xb0c) >= 0 && S32(ids, 0xb4c) == id) {
+            JGeometry::TBox2<f32> overlap = BOX(boxes, 0x510);
             if (overlap.intersect(*bounds)) {
+                JGeometry::TBox2<f32>& box = BOX(p + (i << 4), 0x510);
                 center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
                 center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
                 S32(p, 0xb80) = i;
@@ -457,12 +582,10 @@ extern "C" void fn_8025B22C(u8* p) {
     if (U8(p, 0x3fa) == 6) {
         if (fn_802415CC(p) >= 2) {
             u32 owner = U32(p, 0x4);
-            void* mgr = fn_801F856C();
-            S32(p, 0xb18) = Actor_CreateByID(mgr, 0x424F4D45, S32(p, 0x3b4), p + 0x8, ((U32(p, 0x3e8) & 7) << 4) | (owner & 3) | 0x100, -1, owner);
+            S32(p, 0xb18) = Actor_CreateByID(fn_801F856C(), 0x424F4D45, S32(p, 0x3b4), p + 0x8, ((U32(p, 0x3e8) & 7) << 4) | (owner & 3) | 0x100, -1, owner);
         } else {
             u32 owner = U32(p, 0x4);
-            void* mgr = fn_801F856C();
-            S32(p, 0xb18) = Actor_CreateByID(mgr, 0x424F4D45, S32(p, 0x3b4), p + 0x8, ((U32(p, 0x3e8) & 7) << 4) | (owner & 3), -1, owner);
+            S32(p, 0xb18) = Actor_CreateByID(fn_801F856C(), 0x424F4D45, S32(p, 0x3b4), p + 0x8, ((U32(p, 0x3e8) & 7) << 4) | (owner & 3), -1, owner);
         }
     } else if (U8(p, 0x3fa) == 0x10) {
         fn_80251AEC(p, 0);
@@ -642,3 +765,39 @@ extern "C" void fn_8025D9FC(u8* p) {
     S32(p, 0xbac) = 0;
     S32(p, 0xba8) = 0;
 }
+
+extern "C" void fn_8027221C(void*, s32);
+extern "C" u32 fn_80246B10(void*, u32);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" s32 Player_GetLinkTargetIndex(void*);
+extern "C" const JGeometry::TVec3<f32> lbl_8046AF00[];
+extern "C" void fn_8025E79C(u8* p) {
+    fn_8027221C(p, 6);
+    U8(p, 0x458) = 1;
+    if (!Player_IsLinked(p) || fn_802486A0(p) == 4) {
+        if (fn_80246B10(p, 2)) {
+            S32(p, 0x3dc) = 0;
+            S32(p, 0x3e8) = 0;
+        } else if (fn_80246B10(p, 1)) {
+            S32(p, 0x3dc) = 1;
+            S32(p, 0x3e8) = 1;
+        } else if (fn_80246B10(p, 8)) {
+            S32(p, 0x3dc) = 3;
+            S32(p, 0x3e8) = 3;
+        } else if (fn_80246B10(p, 4)) {
+            S32(p, 0x3dc) = 2;
+            S32(p, 0x3e8) = 2;
+        }
+    } else {
+        s32 v = fn_80230CFC(Player_GetLinkTargetIndex(p));
+        S32(p, 0x3dc) = v;
+        S32(p, 0x3e8) = v;
+    }
+    s32 idx = S32(p, 0x3dc);
+    JGeometry::TVec3<f32> d = lbl_8046AF00[idx];
+    S32(p, 0xba8) = 0;
+    U8(p, 0x3fa) = 0;
+    S32(p, 0xbac) = 0;
+    V3(p, 8) += d;
+}
+
