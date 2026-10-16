@@ -11,6 +11,13 @@ extern "C" void fn_802179EC(void** p) {
     p[5] = 0;
 }
 
+extern "C" void fn_80217A30(void** p) {
+    fn_801EE434(p[2]);
+    fn_801EE434(p[3]);
+    p[2] = 0;
+    p[3] = 0;
+}
+
 extern "C" void** dtor_80217F80(void** p, s16 flag) {
     if (p != 0) {
         fn_801EE434(p[0]);
