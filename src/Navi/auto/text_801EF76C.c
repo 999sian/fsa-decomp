@@ -19,7 +19,29 @@ extern "C" DSError ddh_cc_initinterrupts(void)
 	return DS_NoError;
 }
 
-DSError ddh_cc_post_stop(void)
+extern "C" int ddh_cc_peek(void)
+{
+	int iVar1;
+	int iVar2;
+	u8 auStack_808[2056];
+
+	iVar1 = EXI2_Poll();
+	if (iVar1 == 0) {
+		iVar1 = 0;
+	}
+	else {
+		iVar2 = EXI2_ReadN(auStack_808, iVar1);
+		if (iVar2 == 0) {
+			fn_801EFBB8(lbl_802FB1B8, auStack_808, iVar1);
+		}
+		else {
+			iVar1 = -0x2719;
+		}
+	}
+	return iVar1;
+}
+
+extern "C" DSError ddh_cc_post_stop(void)
 {
 	EXI2_Reserve();
 	return DS_NoError;
