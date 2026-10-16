@@ -44,8 +44,8 @@ static inline s32 clampSeq(AnmSeqCtrl* this_, s32 f) {
 
 static inline void calcSeq(AnmSeqCtrl* this_) {
     f32 frame = this_->mCtrl.mFrame;
-    s32 idx = 0;
     s32 start = 0;
+    s32 idx = 0;
     for (SeqEntry* e = this_->mSeqs[this_->mCurSeq]; e->mFrame >= 0; e++, idx++) {
         s32 prev = start;
         start += e->_2;
@@ -84,7 +84,21 @@ extern "C" void fn_801D1C18(AnmSeqCtrl* this_) {
             this_->_20 = 0;
         } else {
             this_->mCtrl.update();
-            calcSeq(this_);
+            f32 frame = this_->mCtrl.mFrame;
+            s32 start = 0;
+            s32 idx = start;
+            SeqEntry* seq = this_->mSeqs[this_->mCurSeq];
+            for (SeqEntry* e = seq; e->mFrame >= 0; e++, idx++) {
+                s32 next = start + e->_2;
+                if ((f32)start <= frame && frame < (f32)next) {
+                    this_->_10 = clampSeq(this_, e->mFrame);
+                    this_->_1C = idx;
+                    return;
+                }
+                start = next;
+            }
+            this_->_10 = clampSeq(this_, seq->mFrame);
+            this_->_1C = 0;
         }
     }
 }
@@ -142,7 +156,15 @@ extern "C" BOOL fn_801D217C(AnmSeqCtrl* this_) {
 }
 
 extern "C" BOOL fn_801D21F0(AnmSeqCtrl* this_) {
-    return isEndStop(this_);
+    u8 state = this_->mCtrl.mState;
+    BOOL result = FALSE;
+    if ((state & 1)
+        || (this_->mCtrl.mAttr == 0 && this_->mCtrl.mRate == 0.0f
+            && this_->mCtrl.mFrame > (f32)this_->mCurFrame - 0.002f))
+    {
+        result = TRUE;
+    }
+    return result;
 }
 
 extern "C" void fn_801D22DC(AnmSeqCtrl* this_, s32 seqIndex, s32 mode, bool keepFrame) {
