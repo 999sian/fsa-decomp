@@ -37,6 +37,8 @@ extern "C" void fn_80115914(Vec3f* out, void* a) {
     *out = v;
 }
 
+extern const float lbl_80301424;
+
 extern "C" void fn_80115960(Vec3f* out, void* a, void* b) {
     Vec3f v;
     fn_801C69EC(a, b, &v);
@@ -58,5 +60,19 @@ extern "C" void fn_801159E0(Vec3f* out, void* a) {
         v = lbl_802C5C94;
     }
     *out = v;
+}
+
+extern const float lbl_80301424;
+extern const float lbl_802FEAB8;
+extern "C" int fn_80115B58(Vec3f* a) {
+    int ret = 0;
+    bool ok = false;
+    if ((float)__fabs(a->x) < lbl_80301424 * lbl_802FEAB8 && (float)__fabs(a->y) < lbl_80301424 * lbl_802FEAB8) {
+        ok = true;
+    }
+    if (ok && (float)__fabs(a->z) < lbl_80301424 * lbl_802FEAB8) {
+        ret = 1;
+    }
+    return ret;
 }
 
