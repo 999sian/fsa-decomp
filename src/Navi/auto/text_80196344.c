@@ -579,12 +579,74 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
-extern "C" void fn_801A188C(void* p, u32 flags) {
+extern "C" void fn_8019F520(int param_1) {
+    extern int* lbl_802FFA80;
+    u32 n = *(u8*)(param_1 + 0x20);
+    u32 i = 0;
+    u8* p = (u8*)param_1;
+    if (n == 0) {
+        return;
+    }
+    do {
+        u32 w = *(u32*)(p + 0x80) | ((i + 0x10) << 24);
+        u8* out;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = 0x61;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 24;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 16;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 8;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w;
+        i++;
+        p += 4;
+    } while (--n != 0);
+}
+
+extern "C" void fn_8019F8B8(int param_1) {
+    extern int* lbl_802FFA80;
+    u32 n = *(u8*)(param_1 + 0x58);
+    u32 i = 0;
+    u8* p = (u8*)param_1;
+    if (n == 0) {
+        return;
+    }
+    do {
+        u32 w = *(u32*)(p + 0x130) | ((i + 0x10) << 24);
+        u8* out;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = 0x61;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 24;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 16;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w >> 8;
+        out = (u8*)lbl_802FFA80[2];
+        lbl_802FFA80[2] = (int)(out + 1);
+        *out = w;
+        i++;
+        p += 4;
+    } while (--n != 0);
+}
+
+extern "C" void fn_801A188C(NaviVObj* p, u32 flags) {
     if (flags & 0x10000000) {
-        ((NaviVFunc)(*(void***)p)[0x18 / 4])(p);
+        p->vf4();
     }
     if (flags & 0x20000000) {
-        ((NaviVFunc)(*(void***)p)[0x1c / 4])(p);
+        p->vf5();
     }
 }
 
@@ -1058,9 +1120,11 @@ extern "C" u8 fn_801A3E64(u8* p) {
     return p[0x20];
 }
 
-extern "C" void fn_801A3E6C(u8* p, u32 i, u8* src) {
-    u8 a = src[1];
+extern "C" void fn_80191388(int, void*);
+extern "C" void fn_80191220(int, void*);
+extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
     u8* d = p + (i << 3);
+    u8 a = src[1];
     u8 b = src[2];
     d[0x22] = a;
     u8 c = src[3];
@@ -1080,8 +1144,8 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
 
 extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
     u8* p = param_1 + param_2 * 8;
-    u8 b1 = param_3[1];
     u8 b0 = param_3[0];
+    u8 b1 = param_3[1];
     p[0x28] = (p[0x28] & ~0x0c) | ((b1 & 0xff) << 2);
     p[0x28] = (p[0x28] & ~0x03) | b0;
 }
