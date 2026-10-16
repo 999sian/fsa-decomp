@@ -5,7 +5,7 @@
 
 extern "C" void fn_801C13D0(int);
 extern "C" OSThread* fn_801C027C(void);
-extern "C" void fn_801C05A0(OSThread* owner, void* param);
+extern "C" void fn_801C05A0(OSThread* owner, OSPriority prio);
 extern "C" void fn_801C12E4(OSMutex* mutex);
 extern "C" void fn_801BE3A0(OSMutex* mutex)
 {
@@ -35,7 +35,7 @@ extern "C" void fn_801BE3A0(OSMutex* mutex)
 			break;
 		}
 		thread->mutex = mutex;
-		fn_801C05A0(mutex->thread, thread->val);
+		fn_801C05A0(mutex->thread, thread->priority);
 		fn_801C12E4(mutex);
 		thread->mutex = nullptr;
 	}
