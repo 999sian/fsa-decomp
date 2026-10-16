@@ -1363,6 +1363,10 @@ extern "C" u32 fn_80184B08(u8* self, u8 idx) {
     return p[0x52];
 }
 
+extern "C" u32 fn_80184B2C(u8* self) {
+    return *(u32*)(self + 0x160);
+}
+
 extern "C" void fn_80184B34(u8* self, u32* out) {
     u32 a = *(u32*)(self + 0x148);
     u32 b = *(u32*)(self + 0x14c);
