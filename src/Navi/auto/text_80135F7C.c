@@ -65,6 +65,22 @@ struct VObj_801398CC {
     virtual void v4(void*);
 };
 
+struct VObj_8013BA1C {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual u8 v12(u32, void*);
+};
+
 struct Ptr_8013B368 { u32* p; };
 
 struct Chunk_8013B368 {
