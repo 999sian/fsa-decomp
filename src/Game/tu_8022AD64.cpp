@@ -163,6 +163,47 @@ void fn_80457F6C(void*);
 int fn_80242624(Player*, const JGeometry::TVec3<f32>&);
 int GetPtrField_0x4(Player*);
 
+static inline u8 pIsLinked(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int pLinkTarget(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isPlayerEnabled(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+extern "C" u8 Player_GetCapabilityFlag(Player* p);
+extern "C" u8 fn_8023F264(int idx);
+extern "C" int fn_80241964(Player*);
+static inline u8 isEnabled2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (i < 0) return 0;
+    if (i >= 4) return 0;
+    if (lbl_8053AC90->players[i] == NULL) return 0;
+    return Player_GetCapabilityFlag(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked2(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isEnabled2(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget2(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!isEnabled2(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+static inline u8 isLinked3(int i) {
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!fn_8023F264(i)) return 0;
+    return Player_IsLinked(lbl_8053AC90->players[i]);
+}
+static inline int linkTarget3(int i) {
+    if (lbl_8053AC90 == NULL) return -1;
+    if (!fn_8023F264(i)) return -1;
+    return Player_GetLinkTargetIndex(lbl_8053AC90->players[i]);
+}
+
 void fn_8022AD64()
 {
     fn_80138B7C(lbl_8053AAF8);
