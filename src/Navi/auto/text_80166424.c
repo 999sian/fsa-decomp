@@ -168,12 +168,11 @@ extern "C" u8* fn_80172A4C(u8* p, s32 i) {
 }
 
 extern "C" s32 fn_80172AD4(s32 p, u32 i) {
+    s32 ret = 0;
     if (i < 8) {
-        i = i * 4;
-        p = p + i;
-        return *(s32*)(p + 0xfc);
+        ret = *(s32*)(p + i * 4 + 0xfc);
     }
-    return 0;
+    return ret;
 }
 
 extern "C" s32 fn_80172B18(void) {
@@ -182,6 +181,10 @@ extern "C" s32 fn_80172B18(void) {
 
 extern "C" s32 fn_80172B80(s32 p, s32 i) {
     return p + i * 4 + 0xe;
+}
+
+extern "C" s32 fn_80172C90(s32 p, s32 i) {
+    return p + i * 8 + 0x3f;
 }
 
 extern "C" void fn_80172CA4(s32 p, s32 i, u8* param_3) {
