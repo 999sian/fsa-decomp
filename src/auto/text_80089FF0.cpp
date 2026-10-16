@@ -2,6 +2,8 @@
 #include "JSystem/JSupport/JSUList.h"
 #include "JSystem/JUtility/JUTException.h"
 #include "JSystem/JUtility/JUTConsole.h"
+#include "JSystem/JUtility/JUTDirectPrint.h"
+#include "JSystem/JUtility/JUTExternalFB.h"
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
@@ -28,6 +30,35 @@ extern "C" void fn_8008C308(s32 param_1) {
             elapsed = __div2i(OSGetTime() - start, *(u32*)0x800000f8 / 4 / 1000);
         } while (elapsed < param_1);
     }
+}
+
+extern "C" void fn_8008C390(JUTException* this_)
+{
+    GXRenderModeObj* renderMode = &GXNtsc480Int;
+    void* end = (void*)OSGetArenaHi();
+    u16 width = ALIGN_NEXT(renderMode->fbWidth, 16);
+    u16 height = renderMode->xfbHeight;
+    u32 pixel_count = width * height;
+    u32 size = pixel_count * 2;
+
+    void* begin = (void*)ALIGN_PREV((u32)end - size, 32);
+    void* object = (void*)ALIGN_PREV((s32)begin - sizeof(JUTExternalFB), 32);
+    new (object) JUTExternalFB(renderMode, GX_GM_1_7, begin, size);
+
+    this_->mDirectPrint->changeFrameBuffer(begin, renderMode->fbWidth, renderMode->efbHeight);
+    VIConfigure(renderMode);
+    VISetNextFrameBuffer(begin);
+    VISetBlack(FALSE);
+    VIFlush();
+    VIFlush();
+
+    for (int i = 0; i < 3; i++) {
+        u32 retraceCount = VIGetRetraceCount();
+        do {
+        } while (retraceCount == VIGetRetraceCount());
+    }
+
+    this_->mFrameMemory = (JUTExternalFB*)object;
 }
 
 extern "C" unsigned int lbl_8053A904;
@@ -59,6 +90,25 @@ extern "C" void fn_8008C494(char* param_1) {
         }
         lbl_8054BBDC.append((JSUPtrLink*)(entry + 1));
     }
+}
+
+extern "C" u8 fn_8008C608(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9);
+extern "C" u32** lbl_8052E894;
+extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9) {
+    char buf[112];
+
+    if (param_1 != 0) {
+        strcpy(buf, param_1);
+        strcat(buf, ".map");
+        if (fn_8008C608(buf, param_2, param_3, param_4, param_5, param_6, param_7, param_8, param_9) == 1) {
+            return 1;
+        }
+    } else if (lbl_8052E894 != 0) {
+        if (fn_8008C608((char*)**lbl_8052E894, param_2, -1, param_4, param_5, param_6, param_7, param_8, param_9) == 1) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 void JUTException::createConsole(void* console_buffer, u32 console_buffer_size)
