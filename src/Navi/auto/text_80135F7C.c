@@ -183,13 +183,13 @@ extern "C" void fn_801364F4(void* param_1) {
 
 extern "C" f64 fn_80136528(void* param_1, u32* param_2) {
     void** begin = *(void***)((u8*)param_1 + 4);
+    u32 idx = *param_2;
     s32 count;
     if (begin == nullptr) {
         count = 0;
     } else {
         count = (s32)(*(u32*)((u8*)param_1 + 8) - (u32)begin) / 4;
     }
-    u32 idx = *param_2;
     if (idx >= count) {
         return 0.0;
     }
@@ -200,11 +200,11 @@ extern "C" f64 fn_80136528(void* param_1, u32* param_2) {
 extern "C" void fn_80136700(void* param_1, f64 param_2, f64* param_3) {
     void** volatile end = *(void***)((u8*)param_1 + 8);
     void** volatile cur = *(void***)((u8*)param_1 + 4);
-    f64 d = param_2 - *param_3;
+    param_2 -= *param_3;
     while (cur != end) {
         void* elem = *cur;
         cur++;
-        ((void (*)(void*, f64))(*(void***)elem)[7])(elem, d);
+        ((void (*)(void*, f64))(*(void***)elem)[7])(elem, param_2);
     }
 }
 
@@ -300,8 +300,7 @@ extern "C" f64 fn_80137610(void* param_1, f64* param_2) {
     u32 idx = ((u32*)param_2)[4];
     f64 a = table[idx];
     f64 b = table[idx + 1];
-    f64 d = param_2[0] - param_2[1];
-    return a + (b - a) * d;
+    return a + (b - a) * (param_2[0] - param_2[1]);
 }
 #pragma fp_contract reset
 extern "C" f64 fn_80137644(void* param_1, f64* param_2) {
@@ -544,6 +543,23 @@ extern "C" void fn_80139780(void* param_1, void* param_2) {
     *(f64*)((char*)param_1 + 0x20) = **(f32**)((char*)param_2 + 8);
 }
 
+extern "C" void* fn_801399E4(void* list, u32 index)
+{
+    void** start;
+    void** cur;
+    if (index >= *(u32*)((char*)list + 0x8)) {
+        return 0;
+    }
+    start = *(void***)((char*)list + 0xc);
+    cur = start;
+    void*** p1 = &start;
+    void*** p2 = &cur;
+    for (; index != 0; index--) {
+        *p2 = (void**)**p2;
+    }
+    return (char*)*p2 - 0xc;
+}
+
 extern void* lbl_80292CAC[];
 extern "C" void* fn_80139A60(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -658,6 +674,14 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" u32 fn_8013BCDC(void* param_1, u32 param_2) {
+    u32 out;
+    if (((s32 (*)(void*, u32*, u32, u32))(*(void***)param_1)[15])(param_1, &out, param_2, 0) == 0) {
+        return 0;
+    }
+    return out;
 }
 
 extern void* lbl_8029320C[];
