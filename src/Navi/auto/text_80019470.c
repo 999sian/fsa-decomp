@@ -425,7 +425,6 @@ extern "C" void fn_8001BF5C(void* self, void* p) {
 
 extern "C" void fn_80115178(void*, void*, void*);
 extern "C" void fn_8011580C(void);
-extern char lbl_802FEC38[];
 #pragma push
 #pragma dont_inline on
 extern "C" void fn_8001C2C0(void* param_1) {
