@@ -41,9 +41,8 @@ struct VObj_801843 {
     virtual void* vf8C();
     virtual void* vf90();
     virtual void* vf94();
-    virtual void* vf98();
+    virtual s32 vf98(u8);
     virtual void* vf9C();
-    virtual void* vfA0(u8);
     virtual void* vfA4();
     virtual void* vfA8();
     virtual void* vfAC();
