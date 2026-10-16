@@ -67,6 +67,7 @@ struct Tbl4_8017D014 {
 
 extern "C" void fn_801C5D48(void* p);
 extern u8 lbl_802022C8[];
+extern u8 lbl_802022D8[];
 extern void* lbl_80286A30[];
 extern void* lbl_80299634[];
 extern void* lbl_80299540[];
