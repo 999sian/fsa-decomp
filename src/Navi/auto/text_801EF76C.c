@@ -13,7 +13,7 @@ extern "C" void fn_801EFBB8(void* a, void* buf, int len);
 extern u8 lbl_802FB6D8[];
 extern u8 lbl_802FB1B8[];
 
-DSError ddh_cc_initinterrupts(void)
+extern "C" DSError ddh_cc_initinterrupts(void)
 {
 	EXI2_EnableInterrupts();
 	return DS_NoError;
