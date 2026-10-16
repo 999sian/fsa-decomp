@@ -62,6 +62,26 @@ extern "C" void fn_800129AC(u8* self) {
     *(u32*)(self + 0x1c) = 0;
 }
 
+extern "C" void fn_80012A60(s32 param_1) {
+    if (lbl_802FEBC0 == 0) {
+        if (param_1 == -1) {
+            fn_8011B978();
+            fn_8011C280(0xf0000000);
+        } else if (lbl_802FEBC8 != 0) {
+            lbl_802FF2E9 = 0;
+            lbl_802FF2D4 = fn_80012A60;
+            lbl_802FF2D8 = 0;
+            return;
+        } else {
+            lbl_802FB900 = param_1;
+            lbl_802FEBC8 = 1;
+            fn_8011B978();
+            fn_8011C280(0xf0000000);
+        }
+        lbl_802FEBC0 = 1;
+    }
+}
+
 extern "C" s32 lbl_802FEBC0;
 extern "C" s32 lbl_802FEBD0;
 extern "C" s32 lbl_802FED88;
