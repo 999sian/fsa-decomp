@@ -5,6 +5,10 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 
 
+struct Slot0 {
+    virtual void slot0(s32 arg);
+};
+
 extern "C" void* fn_8013C824(void);
 extern "C" void* lbl_804B17A0[];
 extern "C" void* lbl_8053AEC8;
