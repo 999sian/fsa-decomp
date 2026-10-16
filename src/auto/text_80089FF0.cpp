@@ -21,28 +21,30 @@ extern "C" void fn_8008A4C4(unsigned int param_1)
 }
 
 extern "C" void fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2);
+extern "C" JUTConsole* lbl_8053A914;
 extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
 {
-    if (!JUTException::sConsole)
+    char* base = lbl_8045E878;
+    if (!lbl_8053A914)
     {
         return;
     }
 
     u32 i;
 
-    JUTException::sConsole->print(lbl_8045E878 + 0x150);
+    lbl_8053A914->print(base + 0x150);
     u32* stackPointer = (u32*)this_->mStackPointer;
-    JUTException::sConsole->print_f(lbl_8045E878 + 0x178);
+    lbl_8053A914->print_f(base + 0x178);
 
     for (i = 0; (stackPointer != nullptr) && (stackPointer != (u32*)0xFFFFFFFF) && (i++ < 0x10);)
     {
         if (i > this_->mTraceSuppress)
         {
-            JUTException::sConsole->print(lbl_8045E878 + 0x198);
+            lbl_8053A914->print(base + 0x198);
             return;
         }
 
-        JUTException::sConsole->print_f(lbl_8045E878 + 0x1ac, stackPointer, stackPointer[0], stackPointer[1]);
+        lbl_8053A914->print_f(base + 0x1ac, stackPointer, stackPointer[0], stackPointer[1]);
         fn_8008AFBC(this_, stackPointer[1], false);
         JUTConsoleManager::sManager->drawDirect(true);
         fn_8008C308(this_->mPrintWaitTime1);
