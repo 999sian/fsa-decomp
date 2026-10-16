@@ -174,3 +174,10 @@ extern "C" void fn_8000D318(void) {
     fn_801C5DA8(lbl_8029F8D8, m, lbl_8029F8D8);
 }
 
+extern "C" void fn_801C622C(void*);
+extern "C" void fn_8000D350(void) {
+    f32 m[3][4];
+    fn_801C622C(m);
+    fn_801C5DA8(lbl_8029F8D8, m, lbl_8029F8D8);
+}
+
