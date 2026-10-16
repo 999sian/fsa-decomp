@@ -11,8 +11,7 @@ struct VObj_80185520 {
     virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
     virtual void v35(); virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
     virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43(); virtual void v44();
-    virtual void v45(); virtual void v46(); virtual void v47(); virtual void v48(); virtual void v49();
-    virtual s32 vfc8(s32 a, s32 b, u8 c);
+    virtual void v45(); virtual void v46(); virtual void v47(); virtual s32 vfc8(s32 a, s32 b, u8 c); virtual void v49();
 };
 struct VObj_80178E10 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -1620,8 +1619,7 @@ extern "C" s32 fn_80185520(void* self, s32 a, s32 b) {
     if (obj == nullptr) {
         return 0;
     }
-    u8 flag = (u8)*(u32*)((u8*)obj + 0x28);
-    return ((s32 (*)(void*, s32, s32, u8))(*(void***)self)[50])(self, a, b, flag);
+    return ((VObj_80185520*)self)->vfc8(a, b, (u8)*(u32*)((u8*)obj + 0x28));
 }
 
 extern "C" u32 fn_80185568(VObj_80185DA4* self, u32 a, u32 b) {
