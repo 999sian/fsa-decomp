@@ -545,7 +545,7 @@ extern "C" BOOL fn_80075AA4(u8* p, s32 param_2) {
         u32 off = *(u16*)(p + 0x14) * 0x30;
         u8* r29 = *(u8**)(obj + 0x14);
         fn_801C5D74(*(u8**)(*(u8**)(obj + 0x84) + 0xc) + off, lbl_802FDC98);
-        fn_8000CB28(lbl_802FDC98, (s16)*(s32*)(r29 + 0x3f6));
+        fn_8000CB28(lbl_802FDC98, (s32)*(s16*)(r29 + 0x3f8));
         fn_801C5D74(lbl_802FDC98, *(u8**)(*(u8**)(obj + 0x84) + 0xc) + off);
         fn_801C5D74(lbl_802FDC98, lbl_802EE58C);
     }
