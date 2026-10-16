@@ -13,6 +13,12 @@ struct Vtable800D8248 {
 };
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
+
+struct Unk800DDA5C {
+    u16 a;
+    u8 b;
+    u8 c;
+};
 #include "JSystem/J3D/J3DSys.h"
 #include "dolphin/gd.h"
 #include "JSystem/J3D/J3DTevBlock.h"
@@ -723,8 +729,8 @@ extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
     u32 i = 0;
     GDSetCurrOffset(param_2);
-    u8* start = GDGetCurrPointer();
     u8* cur = GDGetCurrPointer();
+    u8* start = GDGetCurrPointer();
     for (;;) {
         if (!isTexNoReg__FPv(cur)) {
             break;
@@ -1482,11 +1488,11 @@ extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
     u8 val0 = param_3[0];
     u8 val1 = param_3[1];
     int offset = param_1 + param_2 * 8;
-    
+
     u8 byte = *(u8*)(offset + 0x3c);
-    byte = (byte & 0xfc) | (val1 << 2);
+    byte = (byte & 0xf3) | (val1 << 2);
     *(u8*)(offset + 0x3c) = byte;
-    
+
     byte = *(u8*)(offset + 0x3c);
     byte = (byte & 0xfc) | val0;
     *(u8*)(offset + 0x3c) = byte;
