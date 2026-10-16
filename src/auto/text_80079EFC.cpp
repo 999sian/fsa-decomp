@@ -109,7 +109,8 @@ extern "C" void* fn_8007A6CC(u8* this_, u8* entry, u32* pSize) {
         }
         *(void**)(entry + 0x10) = data;
         if (compression == 2) {
-            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, entry, *pSize);
+            u32 expandSize = *pSize;
+            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, entry, expandSize);
         }
     } else if (compression == 2) {
         *pSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, entry);
@@ -177,5 +178,29 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, 
     }
     JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DECOMPRESS, alignedDstLength, NULL, -1, &result);
     return result;
+}
+
+extern "C" void* findPtrResource__10JKRArchiveCFPCv(void* this_, const void* resource);
+extern "C" u32 fn_8007AAF8(void* this_, const void* resource) {
+    if (*(u32*)((u8*)this_ + 0x50) != 0) {
+        u8* fileEntry = (u8*)findPtrResource__10JKRArchiveCFPCv(this_, resource);
+        if (fileEntry == nullptr) {
+            return 0xffffffff;
+        }
+        if ((*(u32*)(fileEntry + 0x4) >> 24 & 4) != 0) {
+            u32 expandSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, fileEntry);
+            if (expandSize != 0) {
+                return expandSize;
+            }
+            u8 buf[64];
+            u8* bufPtr = (u8*)(((u32)buf + 31) & ~31);
+            u8* block = *(u8**)((u8*)this_ + 0x64);
+            JKRAram::aramToMainRam(*(u32*)(fileEntry + 0x8) + *(u32*)(block + 0x14), bufPtr, 0x20, EXPAND_SWITCH_DEFAULT, 0, nullptr, -1, nullptr);
+            expandSize = (bufPtr[4] << 24) | (bufPtr[5] << 16) | (bufPtr[6] << 8) | bufPtr[7];
+            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, fileEntry, expandSize);
+            return expandSize;
+        }
+    }
+    return ((u32 (*)(void*, const void*))(*(void***)this_)[0x30 / 4])(this_, resource);
 }
 
