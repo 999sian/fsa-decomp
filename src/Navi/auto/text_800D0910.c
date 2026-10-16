@@ -1,4 +1,17 @@
 #include "types.h"
+struct VObjLerp {
+    virtual void v0();
+    virtual void v1();
+    virtual void v4(f32, f32);
+    virtual void v3();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v9(s32);
+    virtual void v8();
+    virtual void v10();
+};
+
 struct VObj_800D02D8 {
     virtual void v0();
     virtual void v1();
@@ -54,6 +67,27 @@ extern "C" s32 fn_800D2FE8(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 f
         f32 a = p[idx + 0x38];
         o = *(VObj_800D02D8**)(q + 0x28);
         o->SetAlpha((s32)(a * r));
+    }
+    return 0;
+}
+
+extern "C" s32 fn_800D3120(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode) {
+    if (a < 0) {
+        return 0;
+    }
+    if (a > b) {
+        return 1;
+    }
+    f32 t = fn_800D332C(p, b, a, c, x, y);
+    VObjLerp* o = *(VObjLerp**)(p + 0x14);
+    f32 d = t * (y - x);
+    o->v4(*(f32*)(p + 0x1c) + (x + d), *(f32*)(p + 0x20));
+    if (mode != 2) {
+        if (mode == 1) {
+            t = lbl_80300F98 - t;
+        }
+        o = *(VObjLerp**)(p + 0x14);
+        o->v9((s32)((f32)p[0x18] * t));
     }
     return 0;
 }
