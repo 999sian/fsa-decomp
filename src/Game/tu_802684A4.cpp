@@ -37,7 +37,9 @@ struct HitRectTable {
 
 inline bool rectContains(const HitRect& r, const Vec2f* p) {
     bool in = false;
-    if (p->x >= r.x0 && p->y >= r.y0 && p->x < r.x1 && p->y < r.y1) {
+    f32 x = p->x;
+    f32 y = p->y;
+    if (x >= r.x0 && y >= r.y0 && x < r.x1 && y < r.y1) {
         in = true;
     }
     return in;
@@ -45,7 +47,7 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
 
 extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     for (s32 i = 0; i < 80; i++) {
-        if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], (const Vec2f*)p)) {
+        if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
             t->hits[i] = t->ids[i];
             return 1;
         }
@@ -88,7 +90,8 @@ struct Obj8026942C {
 
 extern "C" void fn_8026942C(Obj8026942C* o, s32 idx, JGeometry::TVec3<f32>* out) {
     out->x = lbl_8046BA88[idx].x;
-    out->y = lbl_8046BA88[idx].y;
+    f32 y = lbl_8046BA88[idx].y;
+    out->y = y;
     out->z = lbl_8046BA88[idx].z;
     out->add(*(JGeometry::TVec3<f32>*)(o->player + 8));
 }
