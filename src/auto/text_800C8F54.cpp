@@ -96,6 +96,8 @@ extern "C" void** fn_800CBCE8(void** param_1, short param_2) {
     return param_1;
 }
 
+extern "C" void fn_800CBD44(void) {}
+
 extern "C" void fn_800CBD48(void) {}
 
 extern "C" void fn_800CBD4C(void) {}
