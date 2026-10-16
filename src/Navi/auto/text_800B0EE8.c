@@ -19,6 +19,8 @@ extern unsigned char lbl_802313EC[];
 extern char lbl_802B7CA0[];
 extern u32 lbl_802BB0FC[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_800B4454(void) {}
+
 extern "C" unsigned char fn_800B51E8(void* self, int i) {
     return lbl_802313EC[i];
 }
@@ -28,10 +30,10 @@ extern "C" void fn_800B96CC(u8* p) {
 }
 
 extern "C" void fn_800B96D8(char* p) {
-    if (*(u8*)(*(char**)(p + 0x1b0) + (short)0xb0) != 0 || *(u8*)(*(char**)(p + 0x1b4) + 0xb0) != 0) {
-        register char* q = *(char**)(p + 0x1b8);
+    if (*(u8*)(*(char**)(p + 0x1b0) + 0xb0) != 0 || *(u8*)(*(char**)(p + 0x1b4) + 0xb0) != 0) {
         *(s32*)(p + 0x1bc) += 1;
-        register u32 c = *(s32*)(p + 0x1bc);
+        char* q = *(char**)(p + 0x1b8);
+        s32 c = *(s32*)(p + 0x1bc);
         if (c >= *(s16*)(q + 6)) {
             *(s32*)(p + 0x1bc) = c - *(s16*)(q + 6);
         }
