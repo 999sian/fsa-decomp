@@ -1,3 +1,8 @@
+#include "types.h"
+
+extern f32 lbl_80301470;  // SDA label
+extern f32 lbl_80301498;  // SDA label
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801162f4-0x8011695c (12 functions). split_file divides it into the game's real files.
 
