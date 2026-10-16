@@ -38,8 +38,7 @@ extern "C" f32 fn_80116314(f32* p, f32 target, f32 rate, f32 maxStep, f32 minSte
             }
         }
     }
-    f32 r = __fabs(target - *p);
-    return r;
+    return __fabs(target - *p);
 }
 
 extern "C" int fn_801167D0(s16* p, s16 target, s16 step) {
@@ -65,8 +64,8 @@ extern "C" void fn_801168AC(void) {
 }
 
 extern "C" void fn_8011691C(unsigned short* param_1, unsigned short param_2);
-extern "C" void* fn_801168BC(void* param_1) {
-fn_8011691C((unsigned short*)param_1, 0);
+extern "C" void* fn_801168BC(unsigned short* param_1, unsigned short param_2) {
+    fn_8011691C(param_1, param_2);
     return param_1;
 }
 
