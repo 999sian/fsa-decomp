@@ -528,6 +528,19 @@ extern "C" int fn_8016D0F4(u8* p, void* obj)
     return 1;
 }
 
+extern "C" void fn_8016D24C(u8* p, u8 n, u8 flag)
+{
+    u8 top = p[0x78] & 0x80;
+    p[0x78] &= 0x7f;
+    if (flag) {
+        int mask = (1 << n) - 1;
+        p[0x78] = (p[0x78] & mask) | ((p[0x78] & ~mask) << 1);
+    } else {
+        p[0x78] = (p[0x78] & ((1 << n) - 1)) | ((int)(p[0x78] & ~((1 << (n + 1)) - 1)) >> 1);
+    }
+    p[0x78] |= top;
+}
+
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
         return 0;
