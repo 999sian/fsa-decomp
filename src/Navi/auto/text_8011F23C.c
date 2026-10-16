@@ -195,6 +195,12 @@ extern "C" void fn_8012063C(void)
 {
 }
 
+extern "C" void fn_80120640(void* self) {
+    *(s16*)((u8*)self + 0x14) = -1;
+    *(s16*)((u8*)self + 0x16) = -1;
+    *(s16*)((u8*)self + 0x18) = -1;
+}
+
 extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80290ACC;
