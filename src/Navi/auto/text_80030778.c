@@ -71,7 +71,7 @@ extern "C" void fn_8003092C(void* p) {
     if (*(unsigned char*)((char*)p + 0x32) == 0) {
         *(unsigned int*)((char*)p + 0x8) |= 0x2000000;
     } else {
-        ((void (*)(void*))fn_80030B3C)(p);
+        fn_80030B3C(p);
     }
 }
 
