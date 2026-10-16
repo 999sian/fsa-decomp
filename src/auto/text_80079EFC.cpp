@@ -84,6 +84,41 @@ extern "C" bool fn_8007A198(u8* this_, s32 entryNum, s32 mountDirection) {
     return 1;
 }
 
+extern "C" void* fn_8007A6CC(u8* this_, u8* entry, u32* pSize) {
+    u32 sizeptr;
+    u8* data;
+    if (pSize == nullptr) {
+        pSize = &sizeptr;
+    }
+    u32 flag = *(u32*)(entry + 0x4);
+    int compression;
+    if ((flag >> 24 & 4) == 0) {
+        compression = 0;
+    } else if (flag >> 24 & 0x80) {
+        compression = 2;
+    } else {
+        compression = 1;
+    }
+
+    if (*(void**)(entry + 0x10) == nullptr) {
+        u8* block = *(u8**)(this_ + 0x64);
+        u32 size = JKRAramArchive::fetchResource_subroutine(*(u32*)(entry + 0x8) + *(u32*)(block + 0x14), *(u32*)(entry + 0xc), *(JKRHeap**)(this_ + 0x38), compression, &data);
+        *pSize = size;
+        if (size == 0) {
+            return nullptr;
+        }
+        *(void**)(entry + 0x10) = data;
+        if (compression == 2) {
+            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, entry, *pSize);
+        }
+    } else if (compression == 2) {
+        *pSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, entry);
+    } else {
+        *pSize = *(u32*)(entry + 0xc);
+    }
+    return *(void**)(entry + 0x10);
+}
+
 extern "C" void* fn_8007A7F0(void* this_, void* data, u32 compressedSize, void* entry, u32* pSize) {
     u8* fileEntry = (u8*)entry;
     u32 fileSize = *(u32*)(fileEntry + 0xc);
