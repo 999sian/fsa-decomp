@@ -77,6 +77,10 @@ extern "C" void fn_8018BCFC(void* self, void* src) {
     fn_8018BD24(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void fn_8018BDC8(void* self, void* src) {
+    fn_8018BDF0(self, *(void**)((u8*)self + 4), src);
+}
+
 extern "C" void fn_8018BF7C(void* self, void* src) {
     fn_8018BFA4(self, *(void**)((u8*)self + 4), src);
 }
