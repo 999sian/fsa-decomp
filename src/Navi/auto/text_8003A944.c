@@ -50,6 +50,8 @@ extern "C" void* fn_8003CE80(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8003CEBC(void) {}
+
 extern "C" void fn_80040120(void) {
     extern void* lbl_802BF0E8[];
     register void* obj1 = lbl_802BF0E8[1];
