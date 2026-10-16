@@ -1,4 +1,11 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
+
+extern const f32 lbl_80543C88;
+extern const f32 lbl_80543CC4;
+extern const f32 lbl_80543CC8;
+extern const f32 lbl_80543CE8;
+extern const f32 lbl_80543CEC;
 
 
 extern void* lbl_8053AED0;
