@@ -156,6 +156,16 @@ extern "C" u32 fn_8001A5F0(void) {
     return uVar2;
 }
 
+extern "C" s32 fn_8001994C(void);
+extern "C" u32 fn_8001A620(void) {
+    s32 iVar1 = fn_8001994C();
+    u32 uVar2 = 0;
+    if (iVar1 == 1) {
+        uVar2 = 2;
+    }
+    return uVar2;
+}
+
 extern "C" void fn_8001E628(void);
 extern "C" void fn_8001A910(void) {
     fn_8001E628();
