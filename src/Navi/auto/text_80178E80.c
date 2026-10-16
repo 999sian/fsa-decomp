@@ -1188,7 +1188,7 @@ extern "C" void fn_80189BD8(void* self, u32 param_2) {
         if (obj != nullptr) {
             VObj_80189BD8* sub = *(VObj_80189BD8**)((u8*)obj + 0x70);
             if (sub != nullptr) {
-                sub->v37();
+                sub->v35();
             }
         }
     }
@@ -1239,10 +1239,8 @@ extern "C" s32 fn_80189FDC(void* self, s32* param_2) {
     if (fn_8018A318(self, &local_14, &local_10) == 0) {
         return 0;
     }
-    s32 local_c;
-    long local_18;
-    local_18 = local_10;
-    local_c = *param_2;
+    s32 local_18 = local_10;
+    s32 local_c = *param_2;
     return ((VObj_80189FDC*)self)->vfAC(&local_c, &local_18);
 }
 
