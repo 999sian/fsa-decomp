@@ -1396,6 +1396,10 @@ extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     }
 }
 
+extern "C" void fn_80187E64(u32* self, void* a, int b, int c) {
+    ((VObj_80180980*)self)->vf118(fn_8017A4A8(a), b, c);
+}
+
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 extern "C" void fn_80188754(s32* self, s32 a) {
     s32 local_14;
