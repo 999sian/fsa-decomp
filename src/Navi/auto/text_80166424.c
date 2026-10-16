@@ -243,7 +243,7 @@ extern "C" void fn_801729A4(int param_1, u8 param_2) {
     *(u8*)(param_1 + 0x56) = param_2;
 }
 
-u8 fn_801729AC(void* p) {
+extern "C" u8 fn_801729AC(void* p) {
     return *(u8*)((u8*)p + 0x56);
 }
 
