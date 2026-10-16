@@ -822,9 +822,17 @@ extern "C" int fn_8001C490(void* param_1, int param_2, int param_3) {
     fn_8001C008(param_1);
     local[0] = param_2;
     local[1] = param_3;
-    result = ((int (*)(void*, void*, void*))fn_80115178)((u8*)param_1 + 0x10, (void*)fn_8011580C, local);
+    result = fn_80115178((u8*)param_1 + 0x10, (void*)fn_8011580C, local);
     fn_8001C008(temp);
     return result;
+}
+
+extern "C" void* fn_801151EC(void*, void*, void*);
+extern "C" void* fn_8001C518(void* param_1, void* param_2, void* param_3) {
+    void* local[2];
+    local[0] = param_2;
+    local[1] = param_3;
+    return fn_801151EC((u8*)param_1 + 0x10, (void*)fn_8011583C, local);
 }
 
 extern "C" void fn_8001EC90(void);
