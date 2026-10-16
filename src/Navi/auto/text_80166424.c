@@ -37,6 +37,10 @@ extern "C" void fn_80166B58(u32* param_1, u32 param_2)
 	param_1[3] = 0;
 }
 
+extern "C" void fn_80168E00(void)
+{
+}
+
 extern "C" int fn_8016997C()
 {
 	return 0;
