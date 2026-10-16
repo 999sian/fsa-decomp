@@ -370,6 +370,22 @@ extern "C" void* fn_801ADAB0(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_801ADB24(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029B2C4;
+        if ((s32)ptr + 0x1c != 0) {
+            ((void**)(ptr))[7] = lbl_80286A4C;
+        }
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8027F214;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" u32 fn_801ADB98(void) {
     return 2;
 }
