@@ -13,3 +13,8 @@ extern "C" void fn_802B39E8(char* p) {
         *(void**)(p + 0x23c) = NULL;
     }
 }
+
+extern "C" void fn_802B3A3C(char* p) {
+    *(s32*)(p + 0x2b8) = 0;
+}
+
