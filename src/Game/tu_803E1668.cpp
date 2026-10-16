@@ -25,6 +25,18 @@ extern "C" void fn_803E3548(u8* param_1) {
     *(s32*)(param_1 + 0x1d4) = 10;
 }
 
+extern "C" void fn_803E3C00(u8* param_1) {
+    s32 n = *(s32*)(param_1 + 0x1bc);
+    if (n == 0) {
+        fn_80431A9C(lbl_8053AEC0, 0xa9, (u8)(n + 1), 0);
+    } else {
+        fn_80431A9C(lbl_8053AEC0, 0xc4, (u8)(n + 1), 0);
+    }
+    param_1[0x26c] = 0;
+    *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
+    *(s32*)(param_1 + 0x1d4) = 8;
+}
+
 extern "C" void fn_803E3C80(u8* param_1) {
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
     *(s32*)(param_1 + 0x1d4) = 7;
