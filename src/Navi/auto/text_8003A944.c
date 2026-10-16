@@ -23,7 +23,7 @@ struct Vec3_8003C318 {
     f32 x, y, z;
 };
 extern u8 lbl_802BF188[];
-extern u8 lbl_802FF04C[];
+extern s16 lbl_802FF04C;
 extern "C" void fn_80043FCC(void* a, void* b, void* c, void* d);
 extern "C" void fn_80043518(void* a, void* b, void* c, void* d);
 struct VObj_80041AC4 {
