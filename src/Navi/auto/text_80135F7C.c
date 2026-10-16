@@ -455,6 +455,8 @@ extern "C" void fn_801383B8(void* param_1) {
     *(u32*)((u8*)param_1 + 0x60) = *(u32*)((u8*)param_1 + 0x50);
 }
 
+extern "C" void fn_80138AB4(void) {}
+
 extern void* lbl_80292974[];
 extern "C" void* fn_80139110(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
