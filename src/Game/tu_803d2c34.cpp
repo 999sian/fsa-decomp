@@ -240,17 +240,11 @@ extern u8* lbl_8053AAF8;
 
 static inline void stampSave() {
 lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
-{
-SaveEntry* e = &lbl_8050EC80.entries[lbl_8050EC80.idx];
-if (!(e->flags & 1)) {
-e->flags |= 1;
+if (!(lbl_8050EC80.entries[lbl_8050EC80.idx].flags & 1)) {
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 1;
 }
-}
-{
-SaveEntry* e = &lbl_8050EC80.entries[lbl_8050EC80.idx];
-if (e->f8 & 1) {
-e->flags |= 2;
-}
+if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 2;
 }
 }
 
