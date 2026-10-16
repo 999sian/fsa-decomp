@@ -5,6 +5,32 @@ extern "C" void __ct__10J2DPictureFPC7ResTIMG(void* self, const void* res);
 extern u8* lbl_8053AAF8;
 extern u32 lbl_80539F10;
 
+namespace JGadget {
+namespace vector {
+u32 extend_default(u32, u32, u32);
+}
+}
+
+struct StaticVec {
+    u8 m_00;
+    u8 m_01;
+    u8 m_02;
+    s32 m_04;
+    s32 m_08;
+    u8 m_0c;
+    s32 m_10;
+    s32 m_14;
+    s32 m_18;
+    void* m_1c;
+};
+
+extern "C" StaticVec lbl_804BC540;
+extern "C" char lbl_804BC534[];
+extern "C" s8 lbl_8053AA92;
+extern "C" u8 lbl_8053AA90;
+extern "C" void fn_801192AC(void* p);
+extern "C" void __register_global_object(void* obj, void (*dtor)(void*), void* handle);
+
 extern "C" void fn_80118384(u8* self)
 {
     void fn_801F856C(void);
