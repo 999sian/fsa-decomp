@@ -1570,6 +1570,7 @@ extern "C" void fn_80187B04(u8* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, 
         *(f32*)(self + 0x18c) = f;
         *(f32*)(self + 0x190) = g;
         *(f32*)(self + 0x194) = h;
+        fn_80187388(self, *(u32*)(*(u8**)(self + 0x168) + 0x28));
     }
 }
 
