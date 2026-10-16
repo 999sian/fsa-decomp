@@ -39,6 +39,10 @@ void* fn_8013CC50(s32, void*, s32, s32, s32, s32, s32, s32, f32);
 void fn_802BAA00(void*);
 void fn_802D79E8(void*, s32, s32, f32, f32);
 void fn_802F601C(void*, void*, s32, s32, f32, f32);
+s32 fn_802486A0(char*);
+s32 fn_8022F3DC(s32);
+void fn_802384BC(s32);
+u32 fn_8022461C(char*, s32);
 
 void fn_8027EDDC(char* p) {
     if (U8(p, 0x3fc) < 8) U8(p, 0x3fd) = 0;
