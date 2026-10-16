@@ -1202,6 +1202,11 @@ extern "C" u16 fn_8017289C(u8* p, s32 i) {
     return ((u16*)(p + 4))[i];
 }
 
+extern "C" void fn_801728AC(void* param_1, s16 param_2)
+{
+	*(s16*)((u8*)param_1 + 0x14) = param_2;
+}
+
 extern "C" unsigned short fn_801728B4(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
