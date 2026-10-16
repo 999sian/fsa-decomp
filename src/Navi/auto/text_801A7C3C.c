@@ -1,4 +1,6 @@
 #include "types.h"
+
+struct Blk_801A7D54 { u8 b[0x19]; };
 extern void* lbl_8029BBBC[];
 
 extern "C" void* lbl_8029B5AC[];
