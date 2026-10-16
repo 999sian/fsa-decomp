@@ -33,6 +33,8 @@ struct VObj_80178E10 {
 extern "C" s32 fn_80166A54(void);
 extern "C" void fn_801667B4(void* a, u32 b, u32 c, u32 d);
 extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d);
+extern "C" void fn_80176728(void* self, void* other, u8 b, u32 unused, u32 c, u32 d, f32* f);
+extern "C" void fn_801768C8(void* self, u32 a, u32 b, u32 c);
 struct Rgba4_80166424 {
     u8 r;
     u8 g;
