@@ -539,8 +539,8 @@ void fn_80285668(char* p) {
 
 bool fn_80275D9C(char*);
 void fn_8027FA08(char*, f32*);
-s32 fn_8022C5EC(s32, s32);
-s32 fn_8022C52C(s32, s32);
+u32 fn_8022C5EC(s32, s32);
+u32 fn_8022C52C(s32, s32);
 f32 fn_8022C6AC(s32);
 f32 fn_8022CFE8(s32);
 s32 fn_8023DE58(s32);
@@ -559,7 +559,7 @@ void fn_80285690(char* p) {
             fn_80251AEC(p, 3);
         } else if (fn_8022C6AC(Player_GetLinkTargetIndex(p)) == lbl_80540360 && fn_8022CFE8(S32(p, 4)) > lbl_80540360) {
             linkIdx = S32(p, 0x3b4);
-            if (fn_8023DE58(Player_GetLinkTargetIndex(p)) == linkIdx) {
+            if (linkIdx == fn_8023DE58(Player_GetLinkTargetIndex(p))) {
                 fn_80251AEC(p, 3);
             }
         }
