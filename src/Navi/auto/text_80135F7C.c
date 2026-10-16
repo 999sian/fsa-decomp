@@ -649,6 +649,7 @@ extern "C" void fn_80138368(void* param_1, u32 param_2, u32 param_3, u32 param_4
     *(u32*)((u8*)param_1 + 0x5c) = *(u32*)((u8*)param_1 + 0x4c);
     *(u32*)((u8*)param_1 + 0x60) = *(u32*)((u8*)param_1 + 0x50);
 }
+#pragma dont_inline reset
 
 extern "C" void fn_801383B8(void* param_1) {
     *(f64*)((u8*)param_1 + 0x8) = *(f32*)&lbl_802FEAB0;
@@ -1156,6 +1157,12 @@ extern "C" BOOL fn_8013B138(void);
 extern "C" BOOL fn_8013B138(void)
 {
     return TRUE;
+}
+
+extern "C" void fn_8013B140(void (***self)(void*, u32*), u32* p)
+{
+    u32 v = *p;
+    (*self)[7](self, &v);
 }
 
 extern "C" void fn_80132C50(void*, int);
