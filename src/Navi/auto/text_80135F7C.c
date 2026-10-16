@@ -93,6 +93,7 @@ struct VObj_8013BA1C {
 };
 
 extern "C" void fn_80133000(void* a, void* b, void* c, void* d);
+extern "C" void fn_801C5DA8(void*, void*, void*);
 
 struct Ptr_8013B368 { u32* p; };
 
