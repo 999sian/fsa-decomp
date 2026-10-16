@@ -1948,6 +1948,25 @@ extern "C" void fn_80174FA0(void* param_1, f32 param_2, f32 param_3)
 	*(f32*)((u8*)param_1 + 0x34) = lbl_80301AF8;
 }
 
+extern "C" void fn_80176294(void* param_1)
+{
+	u8* p = (u8*)param_1;
+	*(u8*)(p + 0x8) = *(u8*)(p + 0x40);
+	*(u8*)(p + 0x9) = *(u8*)(p + 0x41);
+	*(u8*)(p + 0xa) = *(u8*)(p + 0x42);
+	*(u8*)(p + 0xb) = *(u8*)(p + 0x43);
+	*(u8*)(p + 0xc) = *(u8*)(p + 0x44);
+	*(u8*)(p + 0xd) = *(u8*)(p + 0x45);
+	*(u8*)(p + 0xe) = *(u8*)(p + 0x46);
+	*(u8*)(p + 0xf) = *(u8*)(p + 0x47);
+	*(f32*)(p + 0x10) = *(f32*)(p + 0x48);
+	*(f32*)(p + 0x14) = *(f32*)(p + 0x4c);
+	*(u8*)(p + 0x22) = *(u8*)(p + 0x5a);
+	*(s16*)(p + 0x20) = *(s16*)(p + 0x58);
+	*(f32*)(p + 0x18) = *(f32*)(p + 0x50);
+	*(f32*)(p + 0x1c) = *(f32*)(p + 0x54);
+}
+
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
     f32 rect[4];
     rect[0] = a;
