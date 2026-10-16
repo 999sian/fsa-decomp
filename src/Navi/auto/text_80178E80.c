@@ -803,7 +803,7 @@ extern "C" void fn_80180950(void* self, int a, int b, int c) {
 }
 
 extern "C" void fn_80180980(VObj_80180980* self, int a) {
-    self->vfCC(a, 0);
+    self->vfC4(a, 0);
 }
 
 extern "C" void fn_801809B0(void* self, int a, int b) {
