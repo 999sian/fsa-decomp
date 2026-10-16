@@ -72,6 +72,16 @@ extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" u8* fn_80166ACC(u8* p)
+{
+    fn_801BDDBC(p + 0x28, p + 0x48, 1);
+    *(u32*)(p + 0x14) = 0;
+    *(u32*)(p + 0x1c) = 0;
+    *(u8**)(p + 0x18) = p;
+    *(u32*)(p + 0x20) = 0;
+    return p;
+}
+
 extern "C" void* fn_80166B1C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -146,11 +156,24 @@ extern "C" void* fn_80167074(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void fn_801670D0(UnkVObj_801671B0* self, s32 n)
+extern "C" void fn_801670D0(UnkVObj_801671B0* self, u32 unused, s32 n)
 {
     if ((s32)self->vf5() != n) {
         *((u8*)self + 4) |= 1;
     }
+}
+
+extern "C" s32 fn_80167128(UnkVObj_80167128* self, s32 n)
+{
+    s32 i;
+    u8 buf[8];
+    for (i = 0; i < n; i++) {
+        if (self->vf5(buf, 1) != 1) {
+            *((u8*)self + 4) |= 1;
+            break;
+        }
+    }
+    return i;
 }
 
 extern "C" s32 fn_801671B0(UnkVObj_801671B0* param_1, u32 param_2) {
