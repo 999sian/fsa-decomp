@@ -1,5 +1,10 @@
 #include "Game/Actor.h"
 
+struct Color4 {
+    Color4(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
+    u8 r, g, b, a;
+};
+
 
 extern "C" char lbl_804A8588[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
