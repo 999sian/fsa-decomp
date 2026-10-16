@@ -45,10 +45,6 @@ int J3DModel::entryModelData(J3DModelData* pModelData, u32 mdlFlags, u32 mtxNum)
 	mModelData = pModelData;
 	mMtxBuffer = new J3DMtxBuffer();
 
-	if (mMtxBuffer == nullptr) {
-		return JET_OutOfMemory;
-	}
-
 	ret = mMtxBuffer->create(pModelData, mtxNum);
 	if (ret != JET_Success) {
 		return ret;
@@ -237,8 +233,7 @@ void J3DModel::calcDiffTexMtx()
 		materialNode->calcDiffTexMtx(getAnmMtx(materialNode->getJoint()->getJntNo()));
 	}
 
-	u16 shapeNum = getModelData()->getShapeNum();
-	for (u16 i = 0; i < shapeNum; i++) {
+	for (u16 i = 0; i < getModelData()->getShapeNum(); i++) {
 		J3DShapePacket* shapePacket = getShapePacket(i);
 		J3DTexGenBlock* texGenBlock = mModelData->getShapeNodePointer(i)->getMaterial()->getTexGenBlock();
 
