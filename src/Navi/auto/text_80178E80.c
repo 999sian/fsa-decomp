@@ -623,19 +623,17 @@ extern "C" void fn_80180980(VObj_80180980* self, int a) {
     self->vfCC(a, 0);
 }
 
-extern "C" void fn_801809B0(void* self, int a, int b) {
-    void** vtbl = *(void***)self;
-    ((void (*)(void*, int, int, int))vtbl[0x32])(self, a, b, 0);
+extern "C" void fn_801809B0(VObj_80180980* self, int a, int b) {
+    self->vfC8(a, b, 0);
 }
 
-extern "C" void fn_801809E0(void* self, int a) {
-    void** vtbl = *(void***)self;
-    ((void (*)(void*, int, int))vtbl[0x31])(self, a, 0);
+extern "C" void fn_801809E0(VObj_80180980* self, int a) {
+    self->vfC4(a, 0);
 }
 
-extern "C" void fn_80180A10(u8* self) {
-    void** vtbl = *(void***)self;
-    ((void (*)(void*, u8))vtbl[0x36])(self, (u8)(self[0x110] - 1));
+extern "C" void fn_80180A10(VObj_80180980* self) {
+    u8 n = ((u8*)self)[0x110];
+    self->vfD8((u8)(n - 1));
 }
 
 extern "C" int fn_80180B60(u8* self, u8* src) {
@@ -753,15 +751,16 @@ extern "C" void fn_801820F4(void) {
 extern "C" s32 fn_80184164(char* self, s32* a, s32* b) {
     char* p;
     s32 i;
-    if (*a != 0 || *b != -1) {
-        p = self;
-        for (i = 0; i < 4; i++) {
-            VObj_80184164* obj = *(VObj_80184164**)(*(char**)(p + 0x148) + 0x70);
-            if (obj->v6() == 1) {
-                return 0;
-            }
-            p += 4;
+    if (*a == 0 && *b == -1) {
+        return 1;
+    }
+    p = self;
+    for (i = 0; i < 4; i++) {
+        VObj_80184164* obj = *(VObj_80184164**)(*(char**)(p + 0x148) + 0x70);
+        if (obj->v6() == 1) {
+            return 0;
         }
+        p += 4;
     }
     return 1;
 }
@@ -786,12 +785,12 @@ extern "C" void fn_801843B8(void* self) {
     }
 }
 
-extern "C" s32 fn_801843D0(void* self, int a, u8 b) {
+extern "C" s32 fn_801843D0(void* self, int a, int b) {
     VObj_801843* p = (VObj_801843*)((VObj_801843*)self)->vfB8();
     if (p != 0) {
         void* q = *(void**)((u8*)p + 0x70);
         if (q != 0) {
-            return ((VObj_801843*)q)->vf98(b);
+            return ((VObj_801843*)q)->vf98((u8)b);
         }
     }
     return 0;
