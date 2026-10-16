@@ -5,9 +5,30 @@ extern u8* lbl_8053AF80;
 typedef void (*VFn)(void*);
 typedef u32 (*VFnArg)(void*, void*);
 extern "C" BOOL fn_804560D0(void* unused, u8** p) {
+    struct VObj {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2();
+        virtual void v3();
+        virtual void v4();
+        virtual void v5();
+        virtual void v6();
+        virtual void v7();
+        virtual void v8();
+        virtual void v9();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual void v15();
+        virtual void v16();
+        virtual void v17();
+        virtual s32 v18(u32*);
+    };
     u32 v = *(u32*)(*p + 0x18);
-    void* obj = *(void**)(lbl_8053AF80 + 0x40);
-    return (((VFnArg*)*(void**)obj)[0x14](obj, &v) & 0x8000) == 0;
+    VObj* obj = *(VObj**)(lbl_8053AF80 + 0x40);
+    return (obj->v18(&v) & 0x8000) == 0;
 }
 
 extern "C" void fn_80456120(u8* p) {
