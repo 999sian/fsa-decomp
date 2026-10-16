@@ -38,3 +38,31 @@ extern "C" void fn_8028A39C(Actor* this_) {
     fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0x24, *(s32*)(p + 0x23c) + 0x147, 0, 1, -1, 0, 0, 0);
 }
 
+extern "C" f32 lbl_805404B8;
+extern "C" f32 lbl_80540498;
+extern "C" f32 lbl_80540494;
+extern "C" void fn_8028A894(Actor* p) {
+    p->field_60 = -8.0f;
+    p->field_64 = -8.0f;
+    p->field_68 = 8.0f;
+    p->field_6C = 8.0f;
+    p->field_7C.y = 0.0f;
+    p->field_7C.z = 0.0f;
+    p->field_88 = 0.0f;
+    p->field_8C = 0.0f;
+    p->field_108 = 0;
+    *(s32*)((u8*)p + 0x23c) = 0;
+    *(u8*)((u8*)p + 0x240) = p->v11();
+    if (*(u8*)((u8*)p + 0x240)) {
+        *(f32*)((u8*)p + 0x244) = 8.0f;
+        p->field_0C.y = p->field_24.y + *(f32*)((u8*)p + 0x244);
+    } else {
+        *(f32*)((u8*)p + 0x244) = 0.0f;
+    }
+    p->field_3C.x = 0.0f;
+    p->field_3C.y = 0.0f;
+    p->field_3C.z = 0.0f;
+    *(s32*)((u8*)p + 0x248) = 0;
+    *(s32*)((u8*)p + 0x24c) = -1;
+}
+
