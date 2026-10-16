@@ -239,6 +239,28 @@ extern "C" void fn_800D6394(int* param_1, u32 param_2)
   }
 }
 
+extern "C" void fn_800D6404(void* param) {
+    GDOverflowCheck(lbl_80539E10);
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0c);
+
+    u32 val1 = *(u32*)((char*)param + 4);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+
+    u32 val2 = *(u32*)((char*)param + 8);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+}
+
 extern "C" void fn_800D6CEC(void* r3, u32 r4) {
     if ((r4 >> 8) & 0xf) {
         (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
