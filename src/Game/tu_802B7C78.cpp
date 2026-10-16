@@ -8,6 +8,17 @@ extern "C" void fn_802D9FBC(void);
 extern "C" void* fn_8013CC50(u32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801F0E34(void*, u32, s32);
 extern f32 lbl_80540ACC;
+struct ActorSlot9 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void slot9();
+};
+
 extern "C" Actor* fn_802B7C78(Actor* p, s16 n) {
     if (p) {
         *(void**)p = lbl_804A886C;
