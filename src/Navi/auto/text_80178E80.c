@@ -2735,3 +2735,9 @@ extern "C" void fn_80191E7C(u32 a, s16 b, u16 c) {
     *(volatile u16*)0xCC008000 = (u16)(b * 0xc) | 0xb000;
 }
 
+extern "C" void fn_80191EA0(u32 a, s16 b, u16 c) {
+    *(volatile u8*)0xCC008000 = 0x28;
+    *(volatile u16*)0xCC008000 = c;
+    *(volatile u16*)0xCC008000 = (u16)(b * 9 + 0x400) | 0x8000;
+}
+
