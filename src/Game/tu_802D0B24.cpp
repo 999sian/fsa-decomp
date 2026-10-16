@@ -1,5 +1,55 @@
 #include "JSystem/JGeometry/Vec.h"
 
+struct YasiDrawKey {
+    s32 a, b;
+    YasiDrawKey() { a = -1; b = -1; }
+};
+struct YasiDrawParam {
+    u8 map[16];
+    YasiDrawKey key;
+    s32 c;
+    u8 palette;
+    u8 color;
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;
+    u8 f2c, f2d, f2e;
+    s32 g;
+    s32 h;
+    s32 i;
+
+    YasiDrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+extern const char lbl_8046E058[];
+extern "C" s32 fn_8023CB24(s32 holder);
+extern "C" s32 fn_8023CA88(s32 holder);
+extern "C" s32 fn_801F02BC(void* p, const char* name, s32 id, void* param, s32 a, s32 b, s32 c, f32 f1, f32 f2);
+extern "C" const f32 lbl_80540EAC;
+
 struct Vtable802D0B84 {
     virtual void m0();
     virtual void m1();
