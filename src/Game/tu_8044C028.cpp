@@ -35,9 +35,7 @@ extern "C" void* fn_8044C1CC(void** this_, s16 param_2) {
         s32 i = 0;
         *this_ = lbl_804B1D20;
         do {
-            if (p[1] != nullptr) {
-                (*(void (***)(void*, s32))p[1])[2](p[1], 1);
-            }
+            delete (RupyDeletable*)p[1];
             i++;
             p++;
             *p = nullptr;
