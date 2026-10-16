@@ -224,7 +224,7 @@ extern "C" void* fn_8015ABF8(void* p) {
     return ((void**)p)[2];
 }
 
-extern "C" void fn_80159AE4(char** start, int* size, void* arg);
+extern "C" int fn_80159AE4(char** start, int* size, void* arg);
 extern void* lbl_802975C4[];
 extern "C" void fn_801598A4(void* p);
 extern "C" void fn_8015C518(void* p, int a, int b, int c, int d, int e);
