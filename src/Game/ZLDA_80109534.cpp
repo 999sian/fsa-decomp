@@ -61,6 +61,51 @@ extern "C" s32 fn_80109AE0(char* self, f32* out) {
     return 0;
 }
 
+extern "C" void v01__5ActorFv(void* this_);
+extern "C" void fn_801D2608(u8* a, const char* b, s32 c);
+extern "C" void fn_801D22DC(u8* a, s32 b, s32 c, s32 d);
+extern "C" void fn_801D1F14(u8* a, f32 b);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* a, s32 b);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" const char lbl_8049CEA8[];
+extern "C" const char lbl_8049CE70[];
+extern "C" const f32 lbl_8053C3E0;
+extern "C" const f32 lbl_8053C43C;
+extern "C" const f32 lbl_8053C440;
+extern "C" void fn_8010AE10(u8* this_) {
+    v01__5ActorFv(this_);
+    *(s32*)(this_ + 0x320) = *(s32*)(this_ + 0x90) & 0x1f;
+    *(s32*)(this_ + 0x324) = (*(s32*)(this_ + 0x90) >> 4) & 0x1f;
+    *(s32*)(this_ + 0x2fc) = (*(s32*)(this_ + 0x90) >> 8) & 0xff;
+    *(f32*)(this_ + 0x60) = lbl_8053C43C;
+    *(f32*)(this_ + 0x64) = lbl_8053C43C;
+    *(f32*)(this_ + 0x68) = lbl_8053C440;
+    *(f32*)(this_ + 0x6C) = lbl_8053C440;
+    *(f32*)(this_ + 0x70) = lbl_8053C43C;
+    *(f32*)(this_ + 0x74) = lbl_8053C43C;
+    *(f32*)(this_ + 0x78) = lbl_8053C440;
+    *(f32*)(this_ + 0x7C) = lbl_8053C440;
+    *(f32*)(this_ + 0x80) = lbl_8053C43C;
+    *(f32*)(this_ + 0x84) = lbl_8053C43C;
+    *(f32*)(this_ + 0x88) = lbl_8053C440;
+    *(f32*)(this_ + 0x8C) = lbl_8053C440;
+    *(s32*)(this_ + 0x108) = 4;
+    *(s32*)(this_ + 0xB8) = 2;
+    *(u8*)(this_ + 0x11E) = 1;
+    if (*(s32*)(this_ + 0x320) == 0) {
+        fn_801D2608(this_ + 0x33C, lbl_8049CEA8, 0xe);
+    } else {
+        fn_801D2608(this_ + 0x33C, lbl_8049CE70, 0xe);
+    }
+    fn_801D22DC(this_ + 0x33C, 2, 2, 0);
+    fn_801D1F14(this_ + 0x33C, lbl_8053C3E0);
+    fn_802D7440(fn_802D6A9C(), 0);
+    s32 id = Actor_CreateByID(fn_801F856C(), 0x4C494D54, *(u32*)(this_ + 4), this_ + 0xC, 0, -1, -1);
+    *(s32*)(this_ + 0x310) = id;
+}
+
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* p);
 extern "C" void __ct__5ActorFv(void* this_);
