@@ -46,4 +46,7 @@ extern "C" void fn_80363F7C(char* self) {
     ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
 }
 
+extern "C" void fn_80365AB8(Unk80365AB8* self) {
+    (self->*lbl_804ADDE8[*(s32*)((u8*)self + 0x234)])();
+}
 
