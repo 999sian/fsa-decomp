@@ -702,6 +702,11 @@ extern "C" void fn_8017A85C(void) {
     fn_80178B74();
 }
 
+extern "C" void fn_80178AEC(void);
+extern "C" void fn_8017A87C(void) {
+    fn_80178AEC();
+}
+
 extern "C" int fn_8017A8CC(void) {
     return 8;
 }
@@ -2229,8 +2234,11 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    *(void**)ptr = lbl_80299504;
-    *(void**)ptr = lbl_802994F0;
+    void** p = (void**)ptr;
+    void* a = lbl_80299504;
+    void* b = lbl_802994F0;
+    *p = a;
+    *p = b;
 }
 
 extern "C" void fn_80178990(void);
