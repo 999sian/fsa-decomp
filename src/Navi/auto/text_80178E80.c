@@ -748,16 +748,15 @@ extern "C" void fn_801820F4(void) {
 extern "C" s32 fn_80184164(char* self, s32* a, s32* b) {
     char* p;
     s32 i;
-    if (*a == 0 && *b == -1) {
-        return 1;
-    }
-    p = self;
-    for (i = 0; i < 4; i++) {
-        VObj_80184164* obj = *(VObj_80184164**)(*(char**)(p + 0x148) + 0x70);
-        if (obj->v4() == 1) {
-            return 0;
+    if (*a != 0 || (u32)*b != 0xFFFFFFFF) {
+        p = self;
+        for (i = 0; i < 4; i++) {
+            VObj_80184164* obj = *(VObj_80184164**)(*(char**)(p + 0x148) + 0x70);
+            if (obj->v4() == 1) {
+                return 0;
+            }
+            p += 4;
         }
-        p += 4;
     }
     return 1;
 }
@@ -808,7 +807,7 @@ extern "C" s32 fn_80184800(u8* self, u8 idx);
 extern "C" void fn_801845C0(u8* self, void* obj) {
     u8 i;
     for (i = 0; i < 4; i++) {
-        if (fn_80184800(self, i)) {
+        if ((u8)fn_80184800(self, i)) {
             fn_8016A0B4(*(void**)(self + i * 4 + 0x148), obj);
         }
     }
