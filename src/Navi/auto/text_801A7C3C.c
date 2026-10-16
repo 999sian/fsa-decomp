@@ -553,6 +553,10 @@ extern "C" void* fn_801B73C0(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" int fn_801B798C(u8* param_1, u8* param_2) {
+    return (*(u16*)(param_2 + 8) - *(u16*)(param_1 + 0x1a)) * 2;
+}
+
 extern "C" int fn_801B7A8C(u8* param_1, u8* param_2, void* param_3) {
     u8 buf[0x28];
     s32 total = 0;
@@ -594,7 +598,7 @@ extern "C" int fn_801B7B5C(void* param_1, u8* param_2, void* param_3) {
     }
     total += count * 4;
     for (s32 i = 0; (u16)i < count; i++) {
-        total += fn_801B2254(buf, 0, 0, (u16)i, param_3);
+        total += fn_801B2254(buf, 0, 0, i, param_3);
     }
     return total;
 }
@@ -617,7 +621,7 @@ extern "C" int fn_801B7C18(void* param_1, u8* param_2, void* param_3) {
     }
     total += count * 4;
     for (s32 i = 0; (u16)i < count; i++) {
-        total += fn_801B2254(buf, 0, 2, (u16)i, param_3);
+        total += fn_801B2254(buf, 0, 2, i, param_3);
     }
     return total;
 }
