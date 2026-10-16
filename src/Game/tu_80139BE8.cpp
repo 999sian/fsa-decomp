@@ -5,6 +5,24 @@ extern "C" void fn_8043D8B4(void*);
 extern "C" void fn_8016DB60(void*);
 extern void* lbl_8053AED0;
 extern unsigned char* lbl_8053AB10;
+extern "C" void fn_801F857C(void*);
+extern "C" void fn_8030361C(void);
+extern "C" void fn_8038D454(void);
+extern "C" void* fn_8011921C(void);
+extern "C" void fn_801184F0(void*, int);
+extern unsigned char lbl_8053ACD0;
+extern "C" void fn_80139BE8(unsigned char* p) {
+    fn_801F857C(*(void**)(p + 8));
+    lbl_8053ACD0 = 0;
+    fn_8030361C();
+    fn_8038D454();
+    fn_801184F0(fn_8011921C(), 1);
+    (*(unsigned char**)(lbl_8053AB10 + 0x20))[0x235c] = 0;
+    (*(unsigned char**)(lbl_8053AB10 + 0x20))[0x235d] = 0;
+    (*(unsigned char**)(lbl_8053AB10 + 0x20))[0x235e] = 0;
+    (*(unsigned char**)(lbl_8053AB10 + 0x20))[0x235f] = 0;
+}
+
 extern "C" void fn_80139D3C(unsigned char* p) {
     if (lbl_8053AB10[0x39] == 0) {
         fn_8016DB60(*(void**)(p + 0x24));
