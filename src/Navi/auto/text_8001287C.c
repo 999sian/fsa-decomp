@@ -57,6 +57,11 @@ extern "C" void fn_801DB70C(s32 a);
 extern "C" void fn_801CC8B4(s32 a);
 extern "C" void fn_801CC710(void);
 extern "C" void fn_801CBA20(void);
+extern "C" BOOL OSDisableInterrupts(void);
+extern "C" void OSRestoreInterrupts(BOOL level);
+extern "C" void OSCancelThread(void* thread);
+extern "C" void LCDisable(void);
+extern "C" void OSResetSystem(BOOL reset, u32 resetCode, BOOL forceMenu);
 extern "C" void fn_800129AC(u8* self) {
     self[0x18] = 0;
     *(u32*)(self + 0x1c) = 0;
