@@ -10,6 +10,12 @@ extern "C" void fn_803E3C80(u8* param_1) {
     *(s32*)(param_1 + 0x1d4) = 7;
 }
 
+extern "C" void fn_803E3C94(u8* param_1) {
+    *(s16*)(param_1 + 0x254) = 0;
+    *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
+    *(s32*)(param_1 + 0x1d4) = 6;
+}
+
 extern "C" void fn_803E4610(u8* param_1) {
     *(s32*)(param_1 + 0x1e0) = 0;
     *(s16*)(param_1 + 0x254) = 0;
