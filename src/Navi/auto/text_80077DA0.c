@@ -9,7 +9,7 @@ extern "C" void fn_800127A0(void* param_1);
 extern void* lbl_80281950[];
 extern void* lbl_8028216C[];
 extern void* lbl_80281904[];
-extern char lbl_802FCB30[];
+extern s32 lbl_802FCB30;
 extern char lbl_802B7CA0[];
 extern char lbl_802BB0FC[];
 extern char lbl_802C4F3C[];
@@ -88,7 +88,7 @@ extern "C" void fn_800636F4(void* param_1, void* param_2, s32 param_3);
 extern "C" void fn_800127A0(void* param_1);
 extern "C" BOOL fn_8007BB4C(void) {
     *(s32*)((char*)lbl_802BB0FC + 0x38) = 0;
-    fn_800636F4(lbl_802FCB30, lbl_802B7CA0 + 0x2200, 0x40);
+    fn_800636F4((void*)&lbl_802FCB30, lbl_802B7CA0 + 0x2200, 0x40);
     if (lbl_802C4F3C[4] >= 0) {
         if (--*(s32*)(lbl_802C4F3C + 8) == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
