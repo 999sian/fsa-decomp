@@ -268,7 +268,7 @@ extern "C" unsigned int fn_80172FF8(unsigned char* self, unsigned int idx) {
     if (idx >= 2) {
         return 0;
     }
-    return *(unsigned int*)(self + idx * 4 + 0x64);
+    return ((unsigned int*)(self + 0x64))[idx];
 }
 
 extern "C" unsigned int fn_80173018(unsigned char* self, unsigned int idx) {
