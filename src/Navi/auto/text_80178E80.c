@@ -19,6 +19,17 @@ extern "C" void fn_8017A4A8(void* self) {
     }
 }
 
+extern "C" u32 fn_8015FDA8(void* self, int flag);
+extern "C" void fn_8018ECE4(u32 a, void* b);
+extern u32 lbl_802FF6A0;
+extern "C" void fn_8017A4F8(void* self) {
+    u8* p = (u8*)self;
+    ((void (*)(void*, u32))(*(void***)p)[0x90 / 4])(self, *(u32*)(p + 0xf8));
+    for (u16 i = 0; i < *(u16*)(p + 0x102); i++) {
+        fn_8016A72C(*(u8**)(p + 0x104) + i * 0x88);
+    }
+}
+
 extern "C" void fn_80178990(void);
 extern "C" void fn_8017A908(void) {
     fn_80178990();
