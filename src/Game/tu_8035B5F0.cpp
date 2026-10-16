@@ -5,12 +5,11 @@ extern u32 lbl_804AD3A0[48];
 extern const f32 lbl_805428E8;
 extern const f32 lbl_805428EC;
 extern u32 *lbl_804AD460[];
-void fn_8035BE00(u8 *param_1) {
+extern "C" void fn_8035BE00(u8 *param_1) {
   f32 v = *(f32 *)(param_1 + 0x254);
-  if (v <= lbl_805428E8) {
-    return;
+  if (v > lbl_805428E8) {
+    *(f32 *)(param_1 + 0x254) = v - lbl_805428EC;
   }
-  *(f32 *)(param_1 + 0x254) = v - lbl_805428EC;
 }
 
 extern "C" void fn_8035BE20(void) {
