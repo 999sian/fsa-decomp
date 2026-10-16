@@ -1554,6 +1554,10 @@ extern "C" void fn_80020380(void) {}
 
 extern "C" void fn_800204F0(void) {}
 
+extern "C" void fn_80020DD0(void* param_1) {
+    fn_800134B8(param_1, 0, 1);
+}
+
 extern "C" int fn_80020DF8(void* param_1) {
     int ret = fn_8006347C(param_1, lbl_802B7CA0 + 0x2200, 0x40, lbl_802061AC, 0, 0);
     if (ret == 0) {
