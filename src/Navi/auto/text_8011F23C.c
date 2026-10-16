@@ -60,6 +60,16 @@ extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8011F668(u8* p, void* buf, s16 w, s16 h)
+{
+    *(void**)(p + 0x0) = buf;
+    *(void**)(p + 0x14) = buf;
+    *(s16*)(p + 0x4) = w;
+    *(s16*)(p + 0x6) = h;
+    *(u16*)(p + 0x8) = (u16)(((u16)w + 0xf) & 0xfff0);
+    *(u32*)(p + 0xc) = *(u16*)(p + 0x8) * *(u16*)(p + 0x6) * 2;
+}
+
 extern "C" void fn_8011FA0C(void)
 {
 }
