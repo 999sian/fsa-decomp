@@ -132,11 +132,11 @@ extern "C" bool fn_802D6AC4(char* p, s32 bit) {
 extern "C" void fn_802D6B24(char* p, s32 bit, u8 set) {
     s32 word = bit / 32;
     s32 shift = bit % 32;
-    u32* flags = (u32*)(p + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + 0xFD68);
-    if (set)
-        flags[word] |= 1U << shift;
-    else
-        flags[word] &= (1U << shift) ^ 0xFFFFFFFF;
+    if (set) {
+        ((RoomArrays*)p)->flagsFD68[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][word] |= 1U << shift;
+    } else {
+        ((RoomArrays*)p)->flagsFD68[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][word] &= (1U << shift) ^ 0xFFFFFFFF;
+    }
 }
 
 extern "C" void fn_802D6BC8(char*, u8 value) {
@@ -169,7 +169,9 @@ extern "C" void fn_802D7310(char* p, s32 bit, u8 set) {
 }
 
 extern "C" bool fn_802D7384(char* p, s32 bit) {
-    return (((RoomArrays*)p)->flags12F68[bit / 32] & (1U << (bit % 32))) != 0;
+    s32 word = bit / 32;
+    s32 shift = bit % 32;
+    return (((u32*)(p + 0x12F68))[word] & (1U << shift)) != 0;
 }
 
 extern "C" void fn_802D73CC(char* p, s32 bit, u8 set) {
@@ -216,19 +218,27 @@ extern "C" void fn_802D752C(char*, u8 value) {
 }
 
 extern "C" u8 fn_802D7544(char* p, s32 index) {
-    if (index >= 0 && index < 256)
-        return ((RoomArrays*)p)->values9968[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index];
+    if (index >= 0 && index < 256) {
+        char* base = p + 0x10000;
+        char* rowp = base + *(s32*)(p + 0x18) * 0xa00;
+        char* colp = rowp + *(s32*)(p + 0x14) * 0x100;
+        return *((u8*)(colp + index) - 0x6698);
+    }
     return 0;
 }
 
 extern "C" void fn_802D7584(char* p, s32 index, u8 value) {
-    if (index >= 0 && index < 256)
-        ((RoomArrays*)p)->values9968[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] = value;
+    if (index >= 0 && index < 256) {
+        char* rowp = p + 0x9968 + *(s32*)(p + 0x18) * 0xa00;
+        char* colp = rowp + *(s32*)(p + 0x14) * 0x100;
+        colp[index] = value;
+    }
 }
 
 extern "C" bool fn_802D75BC(char* p, s32 bit) {
-    u32* flags = (u32*)(p + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + 0x6768);
-    return (flags[bit / 32] & (1U << (bit % 32))) != 0;
+    s32 word = bit / 32;
+    u32* flags = ((RoomArrays*)p)->flags6768[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)];
+    return (flags[word] & (1U << (bit % 32))) != 0;
 }
 
 extern "C" void fn_802D7618(char* p, s32 bit) {
@@ -426,8 +436,8 @@ extern "C" void fn_802D7E34(char*, s32 index) {
 
 extern "C" u8 fn_802D7E5C(char*, u8 index, s32 bit) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    char* e = (char*)((RoomMaskEntry*)(p + index * 0x320));
-    return ((s64)(s32)(1U << bit) & *(u64*)(e + 0x3C8)) != 0;
+    u64 mask = *(u64*)(p + index * 0x320 + 0x3C8);
+    return ((s64)(s32)(1U << bit) & mask) != 0;
 }
 
 extern "C" void fn_802D7EB0(char*, u8 index, s32 bit, u8 set) {
@@ -658,10 +668,11 @@ extern "C" bool fn_802DE9A0() {
 
 extern "C" bool fn_802DEA34() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        char* root = *(char**)(lbl_8053AAF8 + 4);
+        char* p = *(char**)(root + 0x0C);
         if (*(s32*)(p + 4) == 6 && *(s32*)(p + 8) == 0)
             return true;
-        p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        p = *(char**)(root + 0x0C);
         if (*(s32*)(p + 4) == 6 && *(s32*)(p + 8) == 1)
             return true;
         if (*(s32*)(p + 4) == 6 && *(s32*)(p + 8) == 3)
@@ -673,10 +684,11 @@ extern "C" bool fn_802DEA34() {
 
 extern "C" bool fn_802DEABC() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        char* root = *(char**)(lbl_8053AAF8 + 4);
+        char* p = *(char**)(root + 0x0C);
         if (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 0)
             return true;
-        p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        p = *(char**)(root + 0x0C);
         if (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 2)
             return true;
         return false;
@@ -699,8 +711,12 @@ extern "C" bool fn_802DEB58() {
 extern "C" bool fn_802DEBA0() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) == 0)
         return false;
-    char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    if ((*(s32*)(p + 4) == 9 && *(s32*)(p + 8) == 3) || *(s32*)(p + 4) >= 13)
+    char* root = *(char**)(lbl_8053AAF8 + 4);
+    char* p = *(char**)(root + 0x0C);
+    if (*(s32*)(p + 4) == 9 && *(s32*)(p + 8) == 3)
+        return true;
+    p = *(char**)(root + 0x0C);
+    if (*(s32*)(p + 4) >= 13)
         return true;
     return false;
 }
@@ -733,8 +749,8 @@ extern "C" u32 fn_802DED40(s32 index, s32 digit) {
     char* root = *(char**)(lbl_8053AAF8 + 4);
     char* p = *(char**)(root + 0x0C);
     u64 mask = (u64)15 << shift;
-    char* base = *(char**)(root + 0x0C);
-    u64 value = ((RoomArrays*)base)->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index];
+    RoomArrays* rooms = *(RoomArrays**)(root + 0x0C);
+    u64 value = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index];
     return (value & mask) >> shift;
 }
 
