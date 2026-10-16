@@ -920,8 +920,8 @@ extern "C" void fn_800D8884(u8* p) {
     u32 i;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
-    saved = __GDCurrentDL->pDisplayListData;
     n = p[0x20];
+    saved = __GDCurrentDL->pDisplayListData;
 
     addr = p;
     for (i = 0; i < 8; i++) {
@@ -983,19 +983,18 @@ extern "C" void fn_800D8AD0(u8* this_) {
 }
 
 extern "C" void fn_800D8BA0(u8* p) {
-    u32 i;
     u8* addr = p;
     u8* saved;
-    u8 n;
     u8* q;
     u8* r;
+    u8 n;
     u16* s;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
-    saved = __GDCurrentDL->pDisplayListData;
     n = p[0x58];
+    saved = __GDCurrentDL->pDisplayListData;
 
-    for (i = 0; i < 8; i++) {
+    for (u32 i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
             loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
         }
@@ -1003,7 +1002,7 @@ extern "C" void fn_800D8BA0(u8* p) {
     }
 
     q = p;
-    for (i = 0; i < n; i += 2) {
+    for (u32 i = 0; i < n; i += 2) {
         r = p + (i + 1) * 4;
         J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)q[0x18], (GXTexMapID)q[0x19], (GXChannelID)q[0x1a], (GXTexCoordID)r[0x18], (GXTexMapID)r[0x19], (GXChannelID)r[0x1a]);
         s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (q[0x19] & 7) * 8);
@@ -1562,7 +1561,7 @@ extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
 
     u8* out;
     u32 i;
-    for (i = 0, out = param_1; i < 2; i++) {
+    for (out = param_1, i = 0; i < 2; i++) {
         u8* src = param_2->m14(i);
         out[4] = src[0];
         out[5] = src[1];
@@ -1571,13 +1570,13 @@ extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
         out += 4;
     }
 
-    for (i = 0, out = param_1; i < 4; i++) {
+    for (out = param_1, i = 0; i < 4; i++) {
         u16* src = param_2->m23(i);
         *(u16*)(out + 0x16) = *src;
         out += 2;
     }
 
-    for (i = 0, out = param_1; i < 2; i++) {
+    for (out = param_1, i = 0; i < 2; i++) {
         if (param_2->m17(i) != 0) {
             u8* src = param_2->m17(i);
             out[0xc] = src[0];
@@ -1700,38 +1699,35 @@ extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
     u8* gen = this_;
     u8* p = this_;
     for (u32 i = 0; i < 8; i++) {
-        J3DTexMtx* obj = *(J3DTexMtx**)(p + 0x38);
-        if (obj != nullptr) {
-            u32 type = obj->getTexMtxInfo().mInfo & 0x3f;
-            *(u16*)(gen + 0xc) = gen[0xa];
-            switch (type) {
+        if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
+            switch ((*(J3DTexMtx**)(p + 0x38))->getTexMtxInfo().mInfo & 0x3f) {
             case 0:
-                obj->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 1:
                 if (j3dSys.mFlags & 4) {
-                    obj->calc(j3dDefaultMtx);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 } else {
-                    obj->calc(mtx);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(mtx);
                 }
                 break;
             case 2:
-                obj->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 3:
                 if (j3dSys.mFlags & 8) {
-                    obj->calc(j3dDefaultMtx);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 } else {
                     Mtx m;
                     PSMTXCopy(mtx, m);
                     m[0][3] = 0.0f;
                     m[1][3] = 0.0f;
                     m[2][3] = 0.0f;
-                    obj->calc(m);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
                 }
                 break;
             default:
-                obj->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             }
         }
@@ -1742,33 +1738,32 @@ extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
 
 extern "C" void calcPostTexMtx__9J3DTexMtxFPA4_Cf(void*, const Mtx);
 extern "C" void fn_800DD644(u8* this_) {
-    int i;
-    u8* stage = this_;
     u8* tex = this_;
+    u8* stage = this_;
+    int i;
     for (i = 0; i < 8; i++) {
-        void* mtx = *(void**)(tex + 0x38);
-        if (mtx != NULL) {
-            u8 type = *((u8*)mtx + 1) & 0x3f;
+        if (*(void**)(tex + 0x38) != NULL) {
+            u8 type = *((u8*)*(void**)(tex + 0x38) + 1) & 0x3f;
             *(u16*)(stage + 0xc) = stage[0xa];
             switch (type) {
             case 1:
             case 6:
             case 7:
                 *(u16*)(stage + 0xc) = 0x1e;
-                calcPostTexMtx__9J3DTexMtxFPA4_Cf(mtx, j3dDefaultMtx);
+                calcPostTexMtx__9J3DTexMtxFPA4_Cf(*(void**)(tex + 0x38), j3dDefaultMtx);
                 break;
             case 2:
             case 8: {
                 Mtx m;
                 PSMTXInverse(j3dSys.mViewMtx, m);
                 *(u16*)(stage + 0xc) = 0;
-                calcPostTexMtx__9J3DTexMtxFPA4_Cf(mtx, m);
+                calcPostTexMtx__9J3DTexMtxFPA4_Cf(*(void**)(tex + 0x38), m);
                 break;
             }
             case 3:
             case 9:
                 *(u16*)(stage + 0xc) = 0;
-                calcPostTexMtx__9J3DTexMtxFPA4_Cf(mtx, j3dDefaultMtx);
+                calcPostTexMtx__9J3DTexMtxFPA4_Cf(*(void**)(tex + 0x38), j3dDefaultMtx);
                 break;
             case 5:
             case 10:
@@ -1779,12 +1774,12 @@ extern "C" void fn_800DD644(u8* this_) {
                 m[1][3] = 0.0f;
                 m[2][3] = 0.0f;
                 *(u16*)(stage + 0xc) = 0x1e;
-                calcPostTexMtx__9J3DTexMtxFPA4_Cf(mtx, m);
+                calcPostTexMtx__9J3DTexMtxFPA4_Cf(*(void**)(tex + 0x38), m);
                 break;
             }
             default:
                 *(u16*)(stage + 0xc) = 0x3c;
-                calcPostTexMtx__9J3DTexMtxFPA4_Cf(mtx, j3dDefaultMtx);
+                calcPostTexMtx__9J3DTexMtxFPA4_Cf(*(void**)(tex + 0x38), j3dDefaultMtx);
                 break;
             }
         }
