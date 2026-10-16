@@ -16,6 +16,13 @@ static void (*lbl_802FF8C4)(DVDCommandBlock*);
 static u8* IDShouldBe_802FF884;
 extern char lbl_802F7AC0[];
 extern char BB2_802F7AA0[];
+extern "C" void fn_801C76C8(u8 a, s32 b, void* cb);
+extern "C" void fn_801C8E54(void);
+extern "C" void fn_801C8D70(void);
+extern "C" void fn_801C6FF4(void* a, s32 b, s32 c, void* cb);
+extern "C" void fn_801C9060(DVDCommandBlock* block);
+extern "C" void fn_801C8554(void);
+extern "C" void fn_801C8C24(DVDCommandBlock* block);
 
 void DVDLowReset(void);
 extern "C" BOOL fn_801CA33C(DVDCommandBlock* block, DVDCBCallback callback);
