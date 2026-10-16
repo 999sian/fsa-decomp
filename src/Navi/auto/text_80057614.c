@@ -166,6 +166,9 @@ extern "C" void fn_8005FE84(void** p) {
     p[4] = nullptr;
 }
 
+extern "C" void fn_8006081C(void) {
+}
+
 extern void* lbl_8027EB8C[];
 extern void* lbl_80299A8C[];
 extern "C" void* fn_80061490(void* ptr, s16 param_2) {
