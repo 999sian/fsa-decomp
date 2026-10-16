@@ -916,6 +916,23 @@ extern "C" void fn_80170574(u8* p, int unused, u32 idx) {
     }
 }
 
+extern "C" int fn_80171640(u8* p, u32 idx, void* val)
+{
+    int mask;
+    if (idx >= 8) {
+        return 0;
+    }
+    if (p[0x1b0] & (mask = 1 << idx)) {
+        fn_80118BD0(((void**)(p + 0x16c))[idx], 1);
+    }
+    ((void**)(p + 0x16c))[idx] = val;
+    p[0x1b0] &= ~mask;
+    fn_8015AB1C(((void**)(p + 0x18c))[idx]);
+    ((void**)(p + 0x18c))[idx] = 0;
+    ((u16*)(p + 4))[idx] = 0xFFFF;
+    return 1;
+}
+
 #pragma pop
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
