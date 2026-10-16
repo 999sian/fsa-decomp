@@ -42,6 +42,8 @@ extern "C" s32 fn_800C9D0C(void) {
 extern "C" void fn_800C9D14(void) {
 }
 
+extern "C" void fn_800C9D18(void) {}
+
 extern "C" s32 lbl_8053BC74;
 extern "C" void fn_800C9D1C(void) {
 }
