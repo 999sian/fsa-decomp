@@ -73,11 +73,22 @@ extern "C" u8 fn_80172980(u8* p, s32 i) {
     return p[i + 0xa8];
 }
 
+extern "C" void fn_8017298C(u8* p, s32 i, u8 v) {
+    p[i + 0xb0] = v;
+}
+
 extern "C" s32 fn_80172D10(s32 p, s32 i) {
     return p + i * 4 + 0x7c;
 }
 
 extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
+
+extern "C" u32 fn_80172FF8(int param_1, u32 param_2) {
+    if (param_2 > 1) {
+        return 0;
+    }
+    return *(u32*)(param_1 + param_2 * 4 + 100);
+}
 
 extern "C" u32 fn_80173018(int param_1, u32 param_2) {
     if (param_2 > 1) {
