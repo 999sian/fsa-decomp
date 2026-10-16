@@ -1,5 +1,15 @@
 #include "types.h"
 struct DtorVObj_800D64E4 { virtual void Destroy(int); };
+struct VObj_800D69D4 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(int);
+};
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
