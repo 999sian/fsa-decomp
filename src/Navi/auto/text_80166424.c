@@ -1420,6 +1420,8 @@ extern "C" u16 fn_80172DE0(u8* p, s32 i) {
     return ((u16*)(p + 4))[i];
 }
 
+extern "C" u16 fn_80172DF8(u8* p) { return *(u16*)(p + 8); }
+
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
 
 extern "C" u8 fn_80172EC4(u8* p, s32 i) { return *(p + i + 0x54); }
