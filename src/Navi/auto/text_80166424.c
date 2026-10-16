@@ -470,8 +470,7 @@ extern "C" u8 fn_80177F0C(u8* self, void* arg)
     u8* it = *(u8**)(self + 0xdc);
     if (it != 0) it -= 0xc;
     while (it != 0) {
-        void* obj = *(void**)(it + 0xc);
-        if (((u8 (*)(void*, void*))(*(void***)obj)[20])(obj, arg)) return 1;
+        if ((*(Obj80178**)(it + 0xc))->check(arg)) return 1;
         it = *(u8**)(it + 0x18);
         if (it != 0) it -= 0xc;
     }
