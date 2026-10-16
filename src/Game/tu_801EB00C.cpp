@@ -8,6 +8,19 @@ extern const float lbl_8053F6A4;
 extern const float lbl_8053F6A8;
 extern const float lbl_8053F6AC;
 extern const float lbl_8053F6B0;
+extern "C" char* dtor_801EB8CC(char* p, s16 freeFlag) {
+    if (p != 0) {
+        for (s32 i = 0; i < 7; i++) {
+            fn_801EE434(*(void**)(p + 0x34 + i * 4));
+        }
+        fn_801EE434(*(void**)(p + 0x50));
+        if (freeFlag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_801EBA14(char* p) {
     *(s32*)(p + 0x0) = 1;
     *(s32*)(p + 0x4) = 1;
