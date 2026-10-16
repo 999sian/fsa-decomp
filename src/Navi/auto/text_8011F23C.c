@@ -28,6 +28,10 @@ extern "C" void fn_80168E04(void* p);
 extern "C" void fn_801688F0(void* p, u32* a, u32* b, u32* c, u32* d);
 extern "C" void fn_80168A38(void* p, void* rect);
 
+struct Color32 {
+    u8 r, g, b, a;
+};
+
 struct Unk80168Base {
     void** vt;
     u8 pad[0xDC];
@@ -285,6 +289,22 @@ extern "C" void fn_80120880(Unk80120880* p, s32 x, s32 y, s32 w, s32 h, u32* q) 
     p->mA = 0;
     p->m24 = 0;
     p->m20 = -1;
+}
+
+extern "C" void fn_80120A2C(u8* p) {
+    if (*(u8*)(p + 0xf) != 0) {
+        Unk80168 obj;
+        u32 a, b, c, d;
+        u32 col;
+        col = *(u32*)(p + 0xc);
+        d = col;
+        c = col;
+        b = col;
+        a = col;
+        fn_801688F0(&obj, &a, &b, &c, &d);
+        fn_80168A38(&obj, p + 0x10);
+        (void)&col;
+    }
 }
 
 extern "C" bool fn_80120ABC(u8* p, u16 v) {
