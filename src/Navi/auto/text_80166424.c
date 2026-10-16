@@ -100,6 +100,11 @@ extern "C" void fn_8016AD08(void) {
 extern "C" void fn_8016AD0C(void) {
 }
 
+extern "C" u32 fn_80172468(void)
+{
+    return 0x49424c46;
+}
+
 extern "C" s32 fn_80172640(s32 p, s32 i)
 {
 	return p + i * 4 + 0x16;
