@@ -476,6 +476,11 @@ extern "C" void fn_8001B63C(void) {
     fn_8001B494();
 }
 
+extern "C" int fn_8001B73C(void* tag, void* data) {
+    cTg_Create__FP16create_tag_classPv(tag, data);
+    return 1;
+}
+
 extern "C" u32 fn_8001B65C(void);
 extern "C" void fn_8001B760(void) {
     fn_8001B65C();
