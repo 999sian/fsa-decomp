@@ -44,8 +44,8 @@ static inline s32 clampSeq(AnmSeqCtrl* this_, s32 f) {
 
 static inline void calcSeq(AnmSeqCtrl* this_) {
     f32 frame = this_->mCtrl.mFrame;
-    s32 idx = 0;
     s32 start = 0;
+    s32 idx = start;
     for (SeqEntry* e = this_->mSeqs[this_->mCurSeq]; e->mFrame >= 0; e++, idx++) {
         s32 prev = start;
         start += e->_2;
@@ -86,7 +86,7 @@ extern "C" void fn_801D1C18(AnmSeqCtrl* this_) {
             this_->mCtrl.update();
             f32 frame = this_->mCtrl.mFrame;
             s32 start = 0;
-            s32 idx = start;
+            s32 idx = 0;
             SeqEntry* seq = this_->mSeqs[this_->mCurSeq];
             for (SeqEntry* e = seq; e->mFrame >= 0; e++, idx++) {
                 s32 next = start + e->_2;
