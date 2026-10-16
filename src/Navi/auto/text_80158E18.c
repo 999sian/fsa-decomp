@@ -724,7 +724,7 @@ extern "C" long fn_8015BAE8(char* p) {
 extern "C" void fn_8015BB50(char* p, char* q) {
     char* tail;
     if (q == 0) {
-        fn_8011C9EC(lbl_80297240, 0x620, (const char*)&lbl_802FE168, lbl_80297250);
+        fn_8011C9EC(lbl_80297240, 0x620, &lbl_802FE168, lbl_80297250);
     }
     tail = *(char**)(p + 0x84);
     *(u16*)q = 0x484d;
