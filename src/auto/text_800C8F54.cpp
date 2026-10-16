@@ -64,17 +64,14 @@ extern "C" s32 fn_800CAEC8(int param_1, u32 param_2) {
 }
 
 extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4) {
-    int p2_4 = *(int *)(param_2 + 4);
-    int p2_8 = *(int *)(param_2 + 8);
-    int p2_10 = *(int *)(param_2 + 0x10);
-    s32 default_val = lbl_8053BC70;
-    ushort idx1 = *(ushort *)(p2_8 + param_3 * 2);
-    ushort uVar1 = *(ushort *)(p2_4 + idx1 * 0x14c + 8 + param_4 * 2);
-    
-    if (uVar1 != 0xffff) {
-        *param_1 = *(int *)(p2_10 + ((uint)uVar1 << 2));
+    u8* p = (u8*)param_2;
+    s32 def[1];
+    def[0] = lbl_8053BC70;
+    u16 i = ((u16*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[param_3] * 0x14c + 8))[param_4];
+    if (i != 0xffff) {
+        *param_1 = (*(s32**)(p + 0x10))[i];
     } else {
-        *param_1 = default_val;
+        *param_1 = def[0];
     }
 }
 
@@ -122,6 +119,17 @@ extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
     return 0xffff;
 }
 
+extern unsigned int j3dDefaultTevOrderInfoNull;
+extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xbc;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
+    if (v != 0xffff) {
+        *out = (*(u32**)(p + 0x40))[v];
+        return;
+    }
+    *out = j3dDefaultTevOrderInfoNull;
+}
+
 extern unsigned int j3dDefaultBlendInfo;
 extern "C" void fn_800CBA88(unsigned int* out, void* self, int idx) {
     unsigned char* p = (unsigned char*)self;
@@ -134,6 +142,7 @@ extern "C" void fn_800CBA88(unsigned int* out, void* self, int idx) {
 }
 
 extern unsigned short j3dDefaultZModeID;
+extern unsigned int j3dDefaultTevOrderInfoNull;
 extern "C" void fn_800CBACC(unsigned short* out, void* self, int idx) {
     unsigned char* p = (unsigned char*)self;
     unsigned char i = *(unsigned char*)(*(unsigned char**)(p + 4) + (*(unsigned short**)(p + 8))[idx] * 0x14c + 6);
