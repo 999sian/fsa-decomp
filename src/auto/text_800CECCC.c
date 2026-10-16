@@ -31,6 +31,10 @@ extern "C" void fn_800CF650(void** p, void* a) {
     fn_800CF678(p, p[1], a);
 }
 
+extern "C" void fn_800CF70C(void** p, void* a) {
+    fn_800CF734(p, p[1], a);
+}
+
 extern "C" void fn_800CF800(void** self, void* data)
 {
     fn_800CF828(self, self[1], data);
