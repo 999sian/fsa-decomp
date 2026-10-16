@@ -1031,6 +1031,10 @@ extern "C" void fn_80172C44(u8* self, u8 v) {
     *(u8*)(self + 0x3e) = v;
 }
 
+extern "C" u8 fn_80172C4C(u8* self) {
+    return *(u8*)(self + 0x3e);
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
