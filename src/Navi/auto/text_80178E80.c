@@ -743,7 +743,7 @@ extern "C" void fn_8017E9DC(u32* self, u32 a) {
 }
 
 extern "C" void fn_8017EB2C(u32* self, void* a, int b) {
-    ((VObj_8017EB2C*)self)->v68(fn_8017A4A8(a), (void*)0, b);
+    ((VObj_8017EB2C*)self)->v66(fn_8017A4A8(a), b);
 }
 
 #pragma push
