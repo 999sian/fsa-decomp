@@ -616,7 +616,8 @@ extern "C" void fn_801A36B0(int param_1, u8* param_2) {
     u8 t = param_2[2];
     *(u16*)(param_1 + 4) = h;
     *(u8*)(param_1 + 6) = t;
-    *(u8*)(param_1 + 7) = param_2[3];
+    u8 b = param_2[3];
+    *(u8*)(param_1 + 7) = b;
 }
 
 extern "C" int fn_801A36E8(int p) { return p + 4; }
@@ -761,8 +762,8 @@ extern "C" u8 fn_801A39D4(int param_1, int param_2) {
     return *(u8*)(param_1 + param_2 + 0x10a);
 }
 
-extern "C" void fn_801A39E0(int param_1, int param_2, u8 param_3) {
-    *(u8*)(param_1 + param_2 + 0x11a) = param_3;
+extern "C" void fn_801A39E0(u8* p1, int p2, u8 p3) {
+    p1[p2 + 0x11a] = p3;
 }
 
 extern "C" void fn_801A39EC(u8* p1, int p2, u8* p3) {
