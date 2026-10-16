@@ -44,6 +44,7 @@ struct JUTFader
     JGeometry::TBox2f mViewBox; // _14 - ortho box to render within
     int mEStatus;               // _24 - ???
     EStatus _28;                // _28 - ???
+    EStatus mNextStatus;        // _2C - status to switch to when the countdown ends
 };
 
 #endif
