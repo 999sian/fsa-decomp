@@ -113,9 +113,9 @@ extern "C" void fn_802D2D84(char* p) {
                 fn_802A381C(lbl_8053AC98, (YasiVec*)(p + 0xc), *(s32*)(p + 0x4), 0x92);
             }
         }
-        (*(void (**)(char*))(*(s32*)p + 0x24))(p);
+        ((YasiVT*)p)->breakUp();
     } else if (fn_801F2B7C(p, 0, *(s32*)(p + 0xc8), 5) || fn_801F2B20(p, 0)) {
-        (*(void (**)(char*))(*(s32*)p + 0x24))(p);
+        ((YasiVT*)p)->breakUp();
     }
 }
 
