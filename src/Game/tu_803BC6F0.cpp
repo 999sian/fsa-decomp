@@ -35,14 +35,11 @@ extern "C" u8 lbl_8050DB0C[];
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 extern "C" void fn_803BC6F0(char* this_, u32 a, f32 t);
 extern "C" void fn_803C6690(char* p) {
-    s16 start;
-    s16 dur;
-    s32 end;
+    s16 start = *(s16*)(lbl_8050DB0C + 0x1cc);
+    s16 dur = *(s16*)(lbl_8050DB0C + 0x1ce);
+    s32 end = start + dur;
     s32 i;
     char* q;
-    start = *(s16*)(lbl_8050DB0C + 0x1cc);
-    dur = *(s16*)(lbl_8050DB0C + 0x1ce);
-    end = start + dur;
     *(s16*)(p + 0xd8) += 1;
     if (*(s16*)(p + 0xd8) > start) {
         q = p;
@@ -121,10 +118,10 @@ extern "C" void fn_803CBF0C(char* p) {
             *(u8*)(p + 0x110) = 0x10;
             fn_80458880(lbl_8053AF80, 0xb, -1);
         } else {
-            if (*(u8*)((u8*)lbl_8053AAF8 + 0x7f) == 0) {
-                *(s32*)(p + 0x80) = 0x256;
-            } else {
+            if (*(u8*)((u8*)lbl_8053AAF8 + 0x7f) != 0) {
                 *(s32*)(p + 0x80) = 0x5c;
+            } else {
+                *(s32*)(p + 0x80) = 0x256;
             }
             *(u8*)(p + 0x112) = *(u8*)(p + 0x110);
             *(u8*)(p + 0x110) = 3;
