@@ -1,4 +1,11 @@
 #include "types.h"
+#include "Game/Actor.h"
+
+extern "C" void* fn_801F856C(void);
+extern "C" u8* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 fn_8022FE80(s32 a, void* b, s32 c, s32 d, s32 e);
+extern "C" u8 fn_8038BD08(s32 a, u16 id, void* b, Vec* pos, s32 c);
+extern "C" void fn_80125C58(void* p, s32 x);
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void v01__5ActorFv(void* this_);
@@ -15,6 +22,29 @@ extern "C" void* fn_80130310(void* this_, short how) {
         }
     }
     return this_;
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7884(void* mgr, u32 tag, s32 id);
+extern "C" u8* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 fn_801F78F4(void* mgr, u32 tag, s32 idx);
+extern const f32 lbl_8053CC90;
+extern "C" void fn_80130C18(char* p) {
+    s32 idx = fn_801F7884(fn_801F856C(), 0x4f504741, *(s32*)(p + 4));
+    while (idx != -1) {
+        u8* actor = fn_801F666C(fn_801F856C(), idx);
+        if (actor != 0) {
+            if (*(s32*)(actor + 0x238) == 1) {
+                *(s32*)(p + 0x238) = *(s32*)(actor + 0x198);
+            } else {
+                *(s32*)(p + 0x234) = *(s32*)(actor + 0x198);
+            }
+            idx = fn_801F78F4(fn_801F856C(), 0x4f504741, idx);
+        }
+    }
+    u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
+    *(Vec*)(p + 0xc) = *(Vec*)(actor + 0xc);
+    *(f32*)(p + 0x10) += lbl_8053CC90;
 }
 
 extern "C" void fn_80130CEC(char* p) {
