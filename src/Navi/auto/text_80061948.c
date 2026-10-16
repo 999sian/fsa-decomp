@@ -741,6 +741,25 @@ extern "C" void fn_80067FE8(void) {
     fn_800680A4();
 }
 
+#pragma dont_inline on
+extern "C" int fn_80068008(u8* p) {
+    if ((*(u32*)(p + 0xf8) & 8) == 0) {
+        if (p != nullptr) {
+            fn_800175B8(p);
+            *(void**)(p + 0x250) = lbl_8027F6DC;
+            *(u32*)(p + 0x254) = 0;
+            *(void**)(p + 0x250) = lbl_8027FDCC;
+            *(u32*)(p + 0x25c) = 0;
+        }
+        *(u32*)(p + 0xf8) |= 8;
+    }
+    if ((u8)fn_800183AC(p, (void*)fn_80067FE8, 0)) {
+        return fn_80068190(p);
+    }
+    return 5;
+}
+#pragma dont_inline reset
+
 extern "C" void fn_8000C8A4(void* m, s32 a, s32 b, s32 c);
 extern "C" void fn_800682B0(u8* p) {
     u8* q = *(u8**)(p + 0x24c);
