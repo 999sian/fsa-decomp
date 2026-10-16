@@ -54,10 +54,13 @@ extern "C" bool fn_80210A6C(char* p)
 	return r;
 }
 
+extern "C" void fn_801CEBD0(void);
+extern "C" void* fn_801D0F40(void* this_);
+extern void* lbl_804A61C8[];
 extern "C" void* fn_80210AB4(void* p)
 {
-	fn_801D72D4(p);
-	*(void***)p = lbl_804C3128;
+	fn_801D0F40(p);
+	*(void***)p = lbl_804A61C8;
 	*(float*)((char*)p + 0x2a8) = 0.0f;
 	return p;
 }
