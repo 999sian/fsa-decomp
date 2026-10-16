@@ -4,6 +4,19 @@
 extern void* lbl_8053AB10;
 extern f32 lbl_8053DDC8;
 extern "C" u8 fn_8030C2A8(void* mgr, f32* vec);
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+
+struct ActorVt_tu8017C01C {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void setShadow(s32 type, f32 x, f32 y);
+};
 
 extern "C" void fn_8017EAB4(void* thisPtr) {
     *(u32*)((char*)thisPtr + 0xf4) |= 1;
