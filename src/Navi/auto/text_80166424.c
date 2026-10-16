@@ -386,14 +386,14 @@ extern "C" int fn_8016BD94(u8* p, void* src)
 
 extern "C" int fn_8016BE50(u8* p, void* obj)
 {
-    void* old;
+    DtorVObj_80166424* old;
     if (obj == 0) {
         return 0;
     }
     if (p[0x5c] & 0x80) {
-        old = *(void**)(p + 0x58);
+        old = *(DtorVObj_80166424**)(p + 0x58);
         if (old != 0) {
-            (*(void (**)(void*, int))(*(u8**)old + 8))(old, 1);
+            old->Destroy(1);
         }
     }
     *(void**)(p + 0x58) = obj;
