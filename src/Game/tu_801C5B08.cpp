@@ -10,9 +10,9 @@ struct Unk801C5B08 {
     u8 unk_33E[0x590 - 0x33E];
     s32 field_590;
 };
-s16 fn_801D0280(void* p, s32 idx);
-u8 fn_801CC9F8(void* p, s32 idx);
-u8* fn_802D6A9C(void);
+extern "C" s16 fn_801D0280(void* p, s32 idx);
+extern "C" u8 fn_801CC9F8(void* p, s32 idx);
+extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_801C6784(void* p) {
     Unk801C5B08* self = (Unk801C5B08*)p;
     s32 off = self->field_04;
