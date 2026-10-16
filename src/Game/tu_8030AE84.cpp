@@ -45,3 +45,16 @@ extern "C" u8* fn_8030BDB0(u8* p, s16 del)
     return p;
 }
 
+extern "C" void fn_8030BDF8(u8* p)
+{
+    *(u8**)p = lbl_804AA8D8;
+    *(int*)(p + 0x28c) = 0;
+    *(int*)(p + 0x2b4) = -1;
+    *(int*)(p + 0x2b0) = -1;
+    *(int*)(p + 0x288) = -1;
+    *(s16*)(p + 0x2b8) = 0;
+    *(s16*)(p + 0x2ba) = 0;
+    *(u8*)(p + 0x2bc) = 0xff;
+    *(u8*)(p + 0x284) = 0;
+}
+
