@@ -32,14 +32,13 @@ extern "C" u16 fn_802F9908(u8* base, s32 idx, s32 off) {
     return v;
 }
 
-extern "C" void fn_802F9974(u8* base, s32 idx, s32 off, u16 val) {
-    u8** tbl = (u8**)(base + 0x28);
+extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
     if (idx >= 0 && idx < 4) {
-        *(u16*)(tbl[idx] + off * 2) = val;
+        *(u16*)(base->m_tbl[idx] + off * 2) = val;
     } else if (idx >= 4 && idx < 8) {
-        *(u16*)(tbl[idx] + off * 2) = val;
+        *(u16*)(base->m_tbl[idx] + off * 2) = val;
     } else {
-        *(u16*)(tbl[idx] + off * 2) = val;
+        *(u16*)(base->m_tbl[idx] + off * 2) = val;
     }
 }
 
