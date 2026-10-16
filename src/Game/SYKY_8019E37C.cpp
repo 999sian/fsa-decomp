@@ -1,9 +1,47 @@
 #include "types.h"
+#include "Game/ItemBase.h"
 
 extern "C" void fn_80458880(void*, s32, s32);
 extern const f32 lbl_8053E4A4;
 extern const f32 lbl_8053E4A8;
 extern void* lbl_8053AF80;
+extern "C" void fn_801F02BC(void* p, f32 a, f32 b, const char* s, s32 x, s32 y, s32 z, s32 w, s32 v);
+extern "C" u8 fn_8022F478(s32 i);
+extern "C" s32 fn_8022F340(u32 p);
+extern "C" void fn_8019E480(u8* p);
+extern "C" void fn_8019E7A4(void);
+extern s32 lbl_804C6330[];
+extern void* lbl_8053AF10;
+extern const f32 lbl_8053E460;
+extern const char lbl_80468480[];
+extern "C" void fn_8019E37C(u8* p) {
+    s32 state = *(s32*)(p + 0x268);
+    switch (state) {
+    case 0: {
+        s32 i;
+        fn_801F02BC(p, lbl_8053E460, lbl_8053E460, lbl_80468480, *(s32*)(p + 0x264) + 0x1ab, 0, 0, 0, 0);
+        if (p[0x28c] != 0) {
+            for (i = 0; i < 4; i++) {
+                if (!fn_8022F478(i)) {
+                    s32 idx = fn_8022F340(i);
+                    ((u8*)lbl_8053AF10)[0x2c] |= (u8)(1 << idx);
+                    ((u8*)lbl_8053AF10)[idx + 0x28] = (u8)(10 - lbl_804C6330[idx]);
+                }
+            }
+        }
+        break;
+    }
+    case 1:
+    case 2:
+    case 4:
+        fn_8019E480(p);
+        break;
+    case 3:
+        fn_8019E7A4();
+        break;
+    }
+}
+
 extern "C" void fn_8019EE04(u8* p) {
     if (*(s32*)(p + 0x268) == 3 && *(s32*)(p + 0x230) != 0xf) {
         *(f32*)(p + 0x290) = lbl_8053E4A4;
