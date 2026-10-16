@@ -957,6 +957,11 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019E5E8(NaviVObj* p) {
+    p->vf9();
+    p->vf10();
+}
+
 extern "C" void fn_8019E634(int param_1)
 {
 	extern int* lbl_802FFA80;
