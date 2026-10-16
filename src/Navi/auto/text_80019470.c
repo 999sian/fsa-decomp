@@ -553,7 +553,7 @@ extern "C" void fn_8001B494(void) {
 
 extern "C" void* fn_801148BC(s32);
 extern "C" void fn_8001B0EC(void*);
-extern "C" void fn_8001EB28(void*, void*, void*);
+extern "C" int fn_8001EB28(void*, void*, void*);
 extern "C" void fn_8001BFD0(void*);
 extern "C" void fn_8001BEC4(void*, void*);
 extern "C" s32 fn_8001B5B0(void* tag, void* data);
