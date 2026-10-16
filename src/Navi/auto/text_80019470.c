@@ -1150,6 +1150,25 @@ extern "C" s32 fn_8001DC84(void* param_1) {
     return 1;
 }
 
+extern "C" s32 fn_8001DD00(void* param_1) {
+    void* p = *(void**)((u8*)param_1 + 0x3c);
+    if (p != NULL && (s32)fn_8001D540(*(void**)((u8*)p + 4), param_1) == 0) {
+        return 0;
+    }
+    fn_8001BFE0(*(void**)((u8*)param_1 + 0x50));
+    fn_8001BEA4((u8*)param_1 + 0x14);
+    cTg_SingleCut((create_tag_class*)param_1);
+    p = *(void**)((u8*)param_1 + 0x3c);
+    if (p != NULL) {
+        void* q = *(void**)((u8*)p + 8);
+        if (q != NULL && (s32)fn_8001D540(q, param_1) == 0) {
+            return 0;
+        }
+    }
+    fn_801148F4(param_1);
+    return 1;
+}
+
 extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
 extern "C" void fn_8001E69C(void* param_1) {
     cTg_IsUse__FP16create_tag_class(param_1);
