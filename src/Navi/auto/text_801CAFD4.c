@@ -3,6 +3,10 @@
 
 #include <types.h>
 extern void* lbl_802FFA4C;
+extern "C" s32 fn_801D61F8(void* self);
+extern "C" s32 fn_801D4C78(void* self);
+extern "C" s32 fn_801D4EFC(void* self, s32 a);
+extern "C" s32 fn_801D513C(void* self, s32 a);
 extern "C" void fn_801D2F34(s32 a);
 extern void* lbl_802FF9B4;
 extern void* lbl_802FF9B0;
@@ -472,6 +476,29 @@ extern "C" void fn_801D1D68(void) {
 
 extern "C" s32 fn_801D4864(int param_1) {
     return *(s32 *)(param_1 + 0x84);
+}
+
+extern "C" s32 fn_801D61F8(void* self);
+extern "C" s32 fn_801E3C54(const void*, const void*, u32);
+extern "C" u8 lbl_802F7F80[];
+extern "C" s32 fn_801D4C78(void* self);
+extern "C" s32 fn_801D4EFC(void* self, s32 a);
+extern "C" s32 fn_801D513C(void* self, s32 a);
+extern "C" s32 fn_801D53C0(void* param_1) {
+    s32 iVar1 = fn_801D4C78(param_1);
+    if (iVar1 >= 0) {
+        s32 iVar2 = fn_801D4EFC(param_1, 0);
+        s32 iVar3 = fn_801D513C(param_1, 0);
+        iVar1 = iVar2 + iVar3;
+        if (iVar1 == 1) {
+            iVar1 = -6;
+        } else if (iVar1 < 1 && iVar1 >= 0) {
+            iVar1 = 0;
+        } else {
+            iVar1 = -6;
+        }
+    }
+    return iVar1;
 }
 
 extern "C" s32 fn_801D544C(void* self, void* out, void* cb);
