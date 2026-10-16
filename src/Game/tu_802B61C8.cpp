@@ -1,5 +1,7 @@
 #include "types.h"
-#include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
+
+class Actor;
 
 
 extern "C" void fn_801F06F0(void* actor, const char* file, s32 idx, s32 a, s32 b, f32 sx, f32 sy);
@@ -22,6 +24,22 @@ extern "C" Actor* fn_802B61C8(Actor* this_, s16 n) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_802B6228(char* p) {
+    if (*(s32*)(p + 0x4) >= 8) {
+        Vec* src = (Vec*)(p + 0xc);
+        Vec pos = *src;
+        pos.z = lbl_80540A38;
+        Actor_CreateByID(fn_801F856C((Actor*)p), 0x4b4d5249, *(s32*)(p + 0x4), &pos, 0, -1, -1);
+    } else if (*(f32*)(p + 0x14) < lbl_80540A38 && fn_8022461C((Vec*)(p + 0xc)) == 0xd) {
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80540A3C, 0x3d0, 0, 1, 0, 0, 1);
+    } else {
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80540A3C, 0x8c, 1, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_80540A3C, 0x8d, 1, 0, 0, 0, 1);
+    }
+    fn_801F0E34((Actor*)p, 0x30003, 0);
+    *(u8*)(p + 0x11c) = 0;
 }
 
 extern "C" void fn_802B6358(void* this_) {
