@@ -5,6 +5,8 @@
 
 extern "C" void fn_801C13D0(int);
 extern "C" OSThread* fn_801C027C(void);
+extern "C" void fn_801C05A0(OSThread* owner, void* param);
+extern "C" void fn_801C12E4(OSMutex* mutex);
 void fn_801BE544(int param_1)
 {
     int iVar1;
@@ -25,6 +27,38 @@ void fn_801BE544(int param_1)
         fn_801C13D0(iVar2);
         iVar2 = *(int *)(param_1 + 0x2f4);
     }
+}
+
+extern "C" void fn_801C12E4(OSMutex* mutex);
+extern "C" void fn_801C05A0(OSThread* owner, void* param);
+extern "C" BOOL fn_801BE5B4(OSMutex* mutex)
+{
+	BOOL enabled;
+	OSThread* thread;
+	BOOL locked;
+
+	enabled = OSDisableInterrupts();
+	thread = fn_801C027C();
+	if (mutex->thread == nullptr) {
+		mutex->thread = thread;
+		mutex->count++;
+		if (thread->queueMutex.tail == nullptr) {
+			thread->queueMutex.head = mutex;
+		} else {
+			thread->queueMutex.tail->link.next = mutex;
+		}
+		mutex->link.prev = thread->queueMutex.tail;
+		mutex->link.next = nullptr;
+		thread->queueMutex.tail = mutex;
+		locked = TRUE;
+	} else if (mutex->thread == thread) {
+		mutex->count++;
+		locked = TRUE;
+	} else {
+		locked = FALSE;
+	}
+	OSRestoreInterrupts(enabled);
+	return locked;
 }
 
 extern "C" void fn_801BE670(OSThreadQueue* queue)
