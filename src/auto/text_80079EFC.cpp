@@ -109,8 +109,7 @@ extern "C" void* fn_8007A6CC(u8* this_, u8* entry, u32* pSize) {
         }
         *(void**)(entry + 0x10) = data;
         if (compression == 2) {
-            u32 expandSize = *pSize;
-            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, entry, expandSize);
+            ((void (*)(void*, void*, u32))(*(void***)this_)[0x48 / 4])(this_, entry, *pSize);
         }
     } else if (compression == 2) {
         *pSize = ((u32 (*)(void*, void*))(*(void***)this_)[0x4c / 4])(this_, entry);
