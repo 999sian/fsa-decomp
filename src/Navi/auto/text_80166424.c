@@ -174,6 +174,39 @@ extern "C" void fn_8016AD04(void) {
 extern "C" void fn_8016AD08(void) {
 }
 
+struct ListNode;
+extern "C" void fn_801719B4_dummy(void);
+extern "C" int fn_801719B4(void* param_1, void* param_2) {
+    if (param_2 == 0) {
+        return 0;
+    }
+    if (*(u8*)((u8*)param_1 + 0x1b1) != 0) {
+        void* obj = *(void**)((u8*)param_1 + 0x1ac);
+        if (obj != 0) {
+            void (*fn)(void*, int) = *(void (**)(void*, int))((u8*)*(void**)obj + 8);
+            fn(obj, 1);
+        }
+    }
+    *(void**)((u8*)param_1 + 0x1ac) = param_2;
+    *(u8*)((u8*)param_1 + 0x1b1) = 0;
+    return 1;
+}
+
+extern "C" void fn_80171B08(u8* param_1, u8 param_2, u8 param_3) {
+    s32 mask;
+    s32 b;
+    if (param_3) {
+        mask = (1 << param_2) - 1;
+        b = param_1[0x1b0];
+        param_1[0x1b0] = (b & mask) | ((b & ~mask) << 1);
+    } else {
+        s32 mask2 = (1 << (param_2 + 1)) - 1;
+        mask = (1 << param_2) - 1;
+        b = param_1[0x1b0];
+        param_1[0x1b0] = (b & mask) | ((b & ~mask2) >> 1);
+    }
+}
+
 extern "C" void fn_801191F0(void* param_1);
 extern "C" void fn_80171E5C(void* param_1, int param_2, u32 param_3)
 {
@@ -334,16 +367,12 @@ extern "C" s32 fn_80172B80(s32 p, s32 i) {
     return p + i * 4 + 0xe;
 }
 
-extern "C" void fn_80172B94(u8* p, s32 i, s16* v) {
-    s16* d = (s16*)(p + i * 8);
-    s16 a = v[0];
-    s16 b = v[1];
-    s16 c = v[2];
-    s16 e = v[3];
-    d[15] = a;
-    d[16] = b;
-    d[17] = c;
-    d[18] = e;
+extern "C" void fn_80172B94(u8* p, s32 i, S16Quad* v) {
+    S16Quad* d = (S16Quad*)(p + 0x1e) + i;
+    d->v[0] = v->v[0];
+    d->v[1] = v->v[1];
+    d->v[2] = v->v[2];
+    d->v[3] = v->v[3];
 }
 
 extern "C" s32 fn_80172BC0(s32 p, s32 i) {
