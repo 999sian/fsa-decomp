@@ -1,5 +1,16 @@
 
 
+#include "types.h"
+
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+extern "C" void* fn_804032E8(u32 type, const char* name);
+extern "C" void fn_802F745C(void* mgr, void* pos, void* tex, void* prm);
+extern "C" void* lbl_8053AB10;
+extern "C" const char lbl_80474C10[];
+extern "C" const s32 lbl_80474B88[];
+extern "C" const s32 lbl_80474BA0[];
+
 extern "C" void fn_8036335C(void) {
 }
 struct Unk80365AB8;
