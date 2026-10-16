@@ -425,6 +425,12 @@ extern "C" void fn_80168E00(void)
 {
 }
 
+extern "C" BOOL fn_801694D8(void);
+extern "C" BOOL fn_801694D8(void)
+{
+    return TRUE;
+}
+
 extern "C" void fn_801DE01C(u8 a, u8 b, u8 c);
 extern "C" void fn_8016991C(u8* p, s32 x)
 {
