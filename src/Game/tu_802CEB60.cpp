@@ -35,3 +35,27 @@ extern "C" void fn_802CEBEC(void* this_, void* b, void* c) {
     fn_801F132C(this_, b, c, (char*)this_ + 0x23c);
 }
 
+s32 fn_8013CC50(s32 a, char* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern "C" s32 fn_8013CC50(s32 a, char* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern "C" void fn_802CFABC(char* p) {
+    *(s32*)(p + 0x230) = *(s32*)(p + 0x90) & 0xf;
+    *(s32*)(p + 0x234) = (*(s32*)(p + 0x90) >> 0x10) & 0xf;
+    *(s32*)(p + 0x238) = (*(s32*)(p + 0x90) >> 0x14) & 0xf;
+    *(u8*)(p + 0x244) = 0xff;
+    *(f32*)(p + 0x60) = -4.0f;
+    *(f32*)(p + 0x64) = -4.0f;
+    *(f32*)(p + 0x68) = 4.0f;
+    *(f32*)(p + 0x6c) = 4.0f;
+    *(f32*)(p + 0x80) = -4.0f;
+    *(f32*)(p + 0x84) = -4.0f;
+    *(f32*)(p + 0x88) = 4.0f;
+    *(f32*)(p + 0x8c) = 4.0f;
+    *(s32*)(p + 0x23c) = 0;
+    *(u8*)(p + 0x245) = 0;
+    if (*(s32*)(p + 0x238) == 2) {
+        fn_8013CC50(*(s32*)(p + 4), p + 0xc, 1.0f, 0x3d1, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(p + 4), p + 0xc, 1.0f, 0x3d2, 0, 0, 0, 0, 1);
+        *(s32*)(p + 0x240) = 0x1e;
+    }
+}
+
