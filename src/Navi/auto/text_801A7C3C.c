@@ -537,8 +537,7 @@ extern "C" void* fn_801ADDC8(void* ptr, s16 param_2) {
     return ptr;
 }
 
-s32 fn_801ADE34(void)
-{
+extern "C" s32 fn_801ADE34(void) {
     return 0xe;
 }
 
