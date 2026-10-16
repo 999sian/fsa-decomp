@@ -961,6 +961,21 @@ extern "C" int fn_801719B4(u8* p, DtorVObj_80166424* obj) {
     return 1;
 }
 
+extern "C" void fn_801191F0(void* p);
+extern "C" void fn_80171B08(u8* p, u32 bit, u8 flag) {
+    if (flag != 0) {
+        u32 mask = (1 << (u8)bit) - 1;
+        u8 v = p[0x1b0];
+        p[0x1b0] = (v & mask) | ((v & ~mask) << 1);
+        return;
+    }
+    {
+        u32 mask = (1 << ((u8)bit + 1)) - 1;
+        u8 v = p[0x1b0];
+        p[0x1b0] = (v & ((1 << (u8)bit) - 1)) | ((s32)(v & ~mask) >> 1);
+    }
+}
+
 extern "C" u8 lbl_80301ADC;
 extern "C" void fn_801721F0(u8* p) {
     *p = lbl_80301ADC;
