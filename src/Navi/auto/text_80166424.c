@@ -1,5 +1,28 @@
 #include "types.h"
 
+class Obj80178 {
+public:
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void setFlag(u8);
+    virtual void v24();
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual void v34();
+    virtual void v38();
+    virtual void v3C();
+    virtual void v40();
+    virtual void v44();
+    virtual void v48();
+    virtual void v4C();
+    virtual u8 check(void*);
+};
+
 
 extern "C" void fn_80168280(void);
 extern "C" void fn_80166C70(void*);
