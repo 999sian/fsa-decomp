@@ -5,6 +5,11 @@ extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
+struct fn_8001C88C_tag {
+    int w[6];
+    short h[2];
+};
+extern "C" fn_8001C88C_tag lbl_802056D0;
 
 struct Quat4 {
     f32 x, y, z, w;
