@@ -163,7 +163,7 @@ static inline void twtgUpdateDir(char* p, JGeometry::TVec3f& v, f32& dist) {
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
         s32 room;
-        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) != room)) {
+        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), room != fn_8023DE58(*(s32*)(p + 0x254)))) {
             fn_801EE558(p, &v, &dist, 0);
         } else {
             fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
@@ -489,10 +489,11 @@ extern "C" void fn_803146DC(char* p) {
     s32 slot;
     if (*(s32*)(p + 0x234) == 0) {
         switch (*(s32*)(p + 0x238)) {
-        case 0:
+        case 0: {
             fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
             slot = fn_8022FD8C(*(void**)(p + 0x198));
-            if (slot >= 0 && fn_802300EC()) {
+            s32 cmp = fn_8023DE58(*(s32*)(p + 4));
+            if (cmp == *(s32*)(p + 4) && slot >= 0 && fn_802300EC()) {
                 void* room = *(void**)(p + 0x198);
                 s32 player = *(s32*)(p + 4);
                 if (fn_8038AD24(slot, 0x481, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {
@@ -502,6 +503,7 @@ extern "C" void fn_803146DC(char* p) {
                 }
             }
             break;
+        }
         case 1:
         case 2:
         case 3:
