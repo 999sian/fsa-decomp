@@ -741,6 +741,8 @@ extern "C" void* fn_80096AFC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80096BB0(void) {}
+
 extern void* lbl_802886F8[];
 extern "C" void* fn_80096D8C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
