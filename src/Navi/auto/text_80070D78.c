@@ -712,3 +712,18 @@ extern "C" BOOL fn_80077CFC(void)
 {
     return TRUE;
 }
+
+extern "C" void* fn_80077D04(void* ptr, s16 param_2)
+{
+	if (ptr != nullptr) {
+		*(void**)ptr = lbl_8028192C;
+		if ((u8*)ptr + (u32)0xc != nullptr) {
+			*(void**)((u8*)ptr + 0xc) = lbl_80281904;
+		}
+		if (param_2 > 0) {
+			fn_8015AB1C(ptr);
+		}
+	}
+	return ptr;
+}
+
