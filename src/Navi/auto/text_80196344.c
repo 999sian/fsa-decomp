@@ -769,6 +769,10 @@ extern "C" void fn_801A39EC(u8* p1, int p2, u8* p3) {
     p1[p2 + 0x11a] = *p3;
 }
 
+extern "C" u8 fn_801A39FC(u8* p1, int p2) {
+    return p1[p2 + 0x11a];
+}
+
 extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
     param_1[param_2 + 0x12a] = *param_3;
 }
