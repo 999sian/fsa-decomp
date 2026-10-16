@@ -135,6 +135,15 @@ J3DZMode J3DMaterialFactory_v21::newZMode(int idx) const
     return J3DZMode();
 }
 
+u8 J3DMaterialFactory_v21::newZCompLoc(int idx) const
+{
+	u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[5];
+	if (bVar1 != 0xff) {
+		return mZCompareInfo[bVar1];
+	}
+	return 0;
+}
+
 extern "C" void* fn_800E1300(const void* base, const void* offset)
 {
 	if (offset == 0) {
