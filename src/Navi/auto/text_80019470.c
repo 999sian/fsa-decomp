@@ -293,6 +293,19 @@ extern "C" s32 fn_8001AB1C(void* tag, void* data) {
     return 1;
 }
 
+extern "C" void fn_8001AB40(void) {
+    cTr_Create__FP21node_lists_tree_classP15node_list_classi((void*)&lbl_802FB9D8, (void*)&lbl_802B4C38, 1000);
+}
+
+extern "C" s32 fn_8001AB70(void* p) {
+    if (p != NULL) {
+        fn_8001D4F8(p, 1);
+        fn_8001D4F8(p, 2);
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" void* fn_8001AC84(void* param_1) {
     if (lbl_802FEC10 == 0) {
         lbl_802FEC0C = 0x09130000;
