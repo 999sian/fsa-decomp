@@ -347,7 +347,7 @@ extern "C" void fn_80041AC4(void* self) {
     s16* p = (s16*)obj->vf68(0);
     if (p != 0) {
         *(s16*)(lbl_802FF04C + 6) = p[3];
-        obj->vf60(0, lbl_802FF04C);
+        obj->vf60(0, &lbl_802FF04C);
     }
 }
 
