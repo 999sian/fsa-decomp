@@ -7,6 +7,7 @@ extern "C" void fn_80177E84(void);
 extern "C" u32 fn_8015FDA8(void* self, int flag);
 extern "C" void fn_8018ECE4(void* a, void* b);
 extern "C" void fn_8016A72C(void* p);
+extern "C" u8 fn_8018A318(void* self, s32* a, s32* b);
 extern void* lbl_802FF6A0;
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" int fn_801792B4(void* param_1, int param_2) {
@@ -92,8 +93,7 @@ extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
     rect[1] = (f32)(double)y;
     rect[2] = x + w;
     rect[3] = y + h;
-    void (**vt)(void*, f32*) = *(void (***)(void*, f32*))self;
-    vt[0x94 / 4](self, rect);
+    ((void (*)(void*, f32*, s32, s32))(*(void***)self)[0x94 / 4])(self, rect, 0, 0);
 }
 
 extern "C" void fn_80177F0C(void);
