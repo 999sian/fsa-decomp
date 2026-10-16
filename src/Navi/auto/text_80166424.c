@@ -203,6 +203,11 @@ extern "C" int fn_80173354()
 	return 0;
 }
 
+extern "C" int fn_80173374()
+{
+	return 0;
+}
+
 extern "C" void* fn_80174B70(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
