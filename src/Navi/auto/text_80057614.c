@@ -46,6 +46,9 @@ extern "C" void fn_8005A480(void) {}
 
 extern "C" void fn_8005B450(void) {}
 
+extern "C" void fn_8005C330(const char*, ...) {
+}
+
 extern "C" void* lbl_802FF118;
 extern "C" void* fn_8005C498(void)
 {
