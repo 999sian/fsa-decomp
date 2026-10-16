@@ -62,6 +62,31 @@ extern "C" bool fn_8025EE34(char* p, s32 id) {
     return S32(p, 0xd68) == id;
 }
 
+extern "C" bool fn_8025EE48(char* p, s32 id) {
+    bool ok;
+    if ((u8)fn_80270A8C(p))
+        return false;
+    if ((u8)(U8(p, 0xd64) == 1) == 1)
+        return false;
+    if (((S32(p, 0xd70) < 0 || S32(p, 0xd70) >= 4) && S32(p, 0xd68) < 0) || U8(p, 0xd64) != 0)
+        ok = true;
+    else
+        ok = false;
+    if (!ok)
+        return false;
+    if (Player_GetField_0xce8(p))
+        return false;
+    if (fn_80241230(p))
+        return false;
+    if (Player_GetField_0x454(p))
+        return false;
+    if (S32(p, 0xd68) < 0 && fn_80251AEC(p, 0x19)) {
+        S32(p, 0xd68) = id;
+        return true;
+    }
+    return false;
+}
+
 extern "C" bool fn_8025EF68(char* p, s32 id) {
     if (S32(p, 0xd88) == id)
         return true;
@@ -166,29 +191,30 @@ extern "C" int fn_8025F684(char* p) {
 
 extern "C" bool fn_8025FCC8(char* p) {
     s32 state = S32(p, 0x1244);
-    if (state != 0x11 && (u32)(state - 0x12) > 4 && state != 0x18 && (u32)(state - 0x1b) > 2) {
-        if (U8(p, 0xd64) == 1) {
-            bool carrying = S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
-            if (!carrying && (u32)(state - 0x20) < 6) {
+    if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2) {
+        return false;
+    }
+    if (U8(p, 0xd64) == 1) {
+        bool carrying = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+        if (!carrying && (u32)(state - 0x20) <= 5) {
+            return false;
+        }
+    }
+    if (S32(p, 0xd6c) == 0x4b455930 && (u32)(state - 0x1e) <= 1) {
+        return false;
+    }
+    if (U8(p, 0xd64) == 1) {
+        bool carrying = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+        if (!carrying) {
+            if (state == 0x4c) {
+                return false;
+            }
+            if (state == 0x4d) {
                 return false;
             }
         }
-        if (S32(p, 0xd6c) != 0x4b455930 || (u32)(state - 0x1e) > 1) {
-            if (U8(p, 0xd64) == 1) {
-                bool carrying = S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
-                if (!carrying) {
-                    if (state == 0x4c) {
-                        return false;
-                    }
-                    if (state == 0x4d) {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
     }
-    return false;
+    return true;
 }
 
 extern "C" char* fn_8023E7B0(s32);
@@ -198,19 +224,22 @@ extern "C" bool fn_8025FDD0(char* p, JGeometry::TVec3<f32>* v) {
     *(JGeometry::TVec3<f32>*)(p + 0x8) = *(JGeometry::TVec3<f32>*)fn_8023E7B0(S32(p, 0xd70));
     s32 idx = fn_8023DE58(S32(p, 0xd70));
     char* r = fn_802D6A9C();
-    f32* o = (f32*)(r + (idx < 8 ? 0xcc : 0xdc));
+    f32* o = idx < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
     f32 ox = o[0];
     f32 oy = o[1];
     s32 idx2 = S32(p, 0x3b4);
     r = fn_802D6A9C();
-    o = (f32*)(r + (idx2 < 8 ? 0xcc : 0xdc));
-    F32(p, 0x8) += o[0] - ox;
-    F32(p, 0xc) += o[1] - oy;
+    o = idx2 < 8 ? (f32*)(r + 0xcc) : (f32*)(r + 0xdc);
+    f32 x = o[0];
+    f32 y = o[1];
+    bool ok = true;
+    F32(p, 0x8) += x - ox;
+    *(JGeometry::TVec3<f32>*)(p + 0xd78) = *v;
+    F32(p, 0xc) += y - oy;
     S32(p, 0xd70) = -1;
     S32(p, 0xd58) = 5;
-    *(JGeometry::TVec3<f32>*)(p + 0xd78) = *v;
     F32(p, 0xd80) = v->z;
-    return true;
+    return ok;
 }
 
 extern "C" bool fn_8025FEDC(char* p) {
@@ -394,4 +423,14 @@ extern "C" void fn_80264768(char* p) {
 extern "C" void fn_802636D0(void) {
     return;
 }
+
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void* fn_8023E724(s32);
+extern JGeometry::TVec3<f32> lbl_8046B400[];
+extern "C" void fn_802636D4(char* p) {
+    U8(p, 0x3fc)++;
+    fn_8025EB18(p);
+    fn_80268B3C(p);
+}
+
 #endif
