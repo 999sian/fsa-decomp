@@ -2,6 +2,19 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
+struct TWEVParam {
+    u8 buf[16];
+    s32 a;
+    s32 b;
+    s32 c;
+    u8 d[11];
+    s32 e;
+    u8 f[3];
+    s32 g;
+    s32 h;
+    s32 i;
+};
+
 // ---- from Game/fn_80103F28_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
