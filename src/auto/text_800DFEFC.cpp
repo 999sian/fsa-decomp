@@ -2,6 +2,15 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
+u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
+{
+    u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[2];
+    if (bVar1 != 0xff) {
+        return mNumColorChans[bVar1];
+    }
+    return 0;
+}
+
 extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
@@ -13,8 +22,8 @@ extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, 
 
 extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, int no)
 {
-	J3DTexMtx* texMtx = NULL;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	J3DTexMtx* texMtx = NULL;
 	if (initData->mTexMatrixIndex[no] != 0xffff) {
 		texMtx = new J3DTexMtx(self->mTexMtxInfo[initData->mTexMatrixIndex[no]]);
 	}
