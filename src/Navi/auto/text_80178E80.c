@@ -228,6 +228,19 @@ extern "C" void* fn_80180BAC(u32* self) {
     return self;
 }
 
+extern "C" void* fn_80180C24(u32* self, int a, int b, int c) {
+    fn_80176550(self);
+    *(void**)self = lbl_80299040;
+    self[0x40] = 0;
+    self[0x41] = -1;
+    self[0x42] = -1;
+    self[0x49] = 0;
+    self[0x4a] = -1;
+    self[0x4b] = -1;
+    fn_801813CC(self, a, b, c);
+    return self;
+}
+
 extern "C" void fn_80176848(void*);
 #pragma push
 #pragma use_lmw_stmw off
@@ -243,9 +256,44 @@ extern "C" void* fn_80181108(u32* self, s32 p1, s32 p2, s32 p3, s32 p4, s32 a, s
     fn_8018119C(self, a, b, c, d, e);
     return self;
 }
+
+extern "C" void fn_801817BC(char* self, void** obj) {
+    if (obj != 0) {
+        if (*(u8*)(self + 0x131) != 0) {
+            void** cur = *(void***)(self + 0x100);
+            if (cur != 0) {
+                ((void (*)(void*, int))(*(void***)cur)[2])(cur, 1);
+            }
+        }
+        *(void***)(self + 0x100) = obj;
+        *(u8*)(self + 0x131) = 0;
+    }
+}
+
 #pragma pop
 extern "C" int fn_80181BA0(char* self) {
     return *(int*)(self + 0x124);
+}
+
+extern "C" u8 fn_80181CCC(char* self, u8 v) {
+    char* p = *(char**)(self + 0xec);
+    if (p == 0) {
+        return 0;
+    }
+    void** o = *(void***)(p + 0xc);
+    if (((u16 (*)(void*))(*(void***)o)[3])(o) != 0x11) {
+        return 0;
+    }
+    *(u8*)(self + 0xb5) = v;
+    return v;
+}
+
+extern "C" int fn_80182058(char* self, void* v) {
+    void** o = *(void***)(self + 0x100);
+    if (o != 0 && ((void* (*)(void*))(*(void***)o)[15])(o) == v) {
+        return 1;
+    }
+    return ((int (*)(char*, void*))fn_80177F0C)(self, v);
 }
 
 extern "C" void fn_801820F4(void) {
