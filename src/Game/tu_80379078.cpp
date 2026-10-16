@@ -7,6 +7,10 @@ struct LimtDrawParam {
         for (u8 i = 0; i < 16; i++) {
             mIdx[i] = i;
         }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
         mMtx = 0;
         m4C = 0;
         m4D = 0;
@@ -51,6 +55,43 @@ extern "C" void* fn_80379078(void* param_1, short param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" u32 fn_804032E8(u32 tag, const char* name);
+extern "C" void fn_802F745C(void* mgr, void* pos, void* tex, LimtDrawParam* prm);
+extern "C" u8* lbl_8053AB10;
+extern "C" const char* lbl_804AE8E0[];
+extern "C" f32 __float_epsilon;
+extern "C" void fn_803790D8(u8* this_) {
+    LimtDrawParam prm;
+    Vec* v = (Vec*)(this_ + 0x54);
+    f32 lenSq = v->x * v->x + v->y * v->y + v->z * v->z;
+    if (lenSq > 32.0f * __float_epsilon) {
+        f32 mtx[3][4];
+        mtx[0][3] = 0.0f;
+        mtx[1][3] = 0.0f;
+        mtx[2][3] = 0.0f;
+        mtx[0][0] = v->x;
+        mtx[0][1] = 0.0f;
+        mtx[0][2] = 0.0f;
+        mtx[1][0] = 0.0f;
+        mtx[1][1] = v->y;
+        mtx[1][2] = 0.0f;
+        mtx[2][0] = 0.0f;
+        mtx[2][1] = 0.0f;
+        mtx[2][2] = v->z;
+        prm.mMtx = mtx;
+    }
+    Vec pos;
+    Vec* a = (Vec*)(this_ + 0xc);
+    pos.x = a->x;
+    pos.y = a->y;
+    pos.z = a->z;
+    pos.x = a->x + 8.0f;
+    u32 tex = fn_804032E8(0x54494D47, lbl_804AE8E0[this_[0x241]]);
+    if (*(s32*)(this_ + 4) < 8) {
+        fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, (void*)tex, &prm);
+    }
 }
 
 extern "C" void* fn_802D6A9C(void);
