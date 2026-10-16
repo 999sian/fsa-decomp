@@ -168,6 +168,20 @@ extern "C" unsigned char fn_801729AC(int param_1) {
     return *(unsigned char*)(param_1 + 0x56);
 }
 
+extern "C" void fn_801729B4(u8* p, s32 i, u8* src) {
+    u8* d = p + i * 8;
+    d[0x58] = src[1];
+    d[0x59] = src[2];
+    d[0x5a] = src[3];
+    d[0x5c] = src[5];
+    d[0x5d] = src[6];
+    d[0x5e] = src[7];
+}
+
+extern "C" s32 fn_801729F0(s32 p, s32 i) {
+    return p + i * 8 + 0x57;
+}
+
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
