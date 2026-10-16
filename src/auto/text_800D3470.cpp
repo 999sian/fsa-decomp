@@ -14,6 +14,9 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 
+static inline void setBits2_3(u8* p, u8 v) { *p = (*p & ~0xC) | (v << 2); }
+static inline void setBits0_1(u8* p, u8 v) { *p = (*p & ~0x3) | v; }
+
 struct Unk800DE29CBits {
     u8 pad : 4;
     u8 hi : 2;
@@ -1275,8 +1278,9 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
+    u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
     param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
@@ -1451,15 +1455,14 @@ extern "C" u8 fn_800DE208(int param_1)
   return *(u8*)(param_1 + 0x20);
 }
 
-extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
 {
-  int offset = param_1 + param_2 * 8;
-  *(u8*)(offset + 0x22) = param_3[1];
-  *(u8*)(offset + 0x23) = param_3[2];
-  *(u8*)(offset + 0x24) = param_3[3];
-  *(u8*)(offset + 0x26) = param_3[5];
-  *(u8*)(offset + 0x27) = param_3[6];
-  *(u8*)(offset + 0x28) = param_3[7];
+  param_1[param_2 * 8 + 0x22] = param_3[1];
+  param_1[param_2 * 8 + 0x23] = param_3[2];
+  param_1[param_2 * 8 + 0x24] = param_3[3];
+  param_1[param_2 * 8 + 0x26] = param_3[5];
+  param_1[param_2 * 8 + 0x27] = param_3[6];
+  param_1[param_2 * 8 + 0x28] = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
