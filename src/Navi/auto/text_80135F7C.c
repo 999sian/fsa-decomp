@@ -329,6 +329,10 @@ extern "C" void fn_80136A70(void* param_1) {
     *(u32*)((u8*)param_1 + 8) = 0;
 }
 
+extern "C" void fn_80136A84(void* p) {
+    *(f64*)((u8*)p + 0x8) = *(f32*)&lbl_802FEAB0;
+}
+
 extern "C" void fn_80136A94(void) {}
 
 extern "C" u32 fn_80136B14(void) {
