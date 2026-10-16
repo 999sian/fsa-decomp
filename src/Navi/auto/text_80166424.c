@@ -161,9 +161,10 @@ extern "C" void* fn_80167074(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void fn_801670D0(UnkVObj_801671B0* self, u32 unused, s32 n)
+extern "C" void fn_801670D0(UnkVObj_801670D0* self, u32 unused, s32 n)
 {
-    if ((s32)self->vf5() != n) {
+    s32 v = self->vf5();
+    if (v != n) {
         *((u8*)self + 4) |= 1;
     }
 }
