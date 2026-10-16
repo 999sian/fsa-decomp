@@ -26,3 +26,8 @@ extern "C" void* fn_802CEB60(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+extern "C" void fn_802CEBC0(Vt802CEBC0* p) {
+    p->m7();
+}
+
