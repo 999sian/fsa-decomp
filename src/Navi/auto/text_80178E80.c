@@ -2386,6 +2386,11 @@ extern "C" void* fn_8018C200(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" void* fn_8018C218(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
 extern "C" void* fn_8018C230(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
