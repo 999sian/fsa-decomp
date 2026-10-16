@@ -390,6 +390,10 @@ extern "C" int fn_80198F20()
 	return 0;
 }
 
+void fn_80198F30(void) {}
+
+void fn_80198F34(void) {}
+
 extern "C" u32 fn_80198F38(void) {
     return 0x49424C4E;
 }
@@ -407,6 +411,8 @@ extern "C" void* fn_80198F44(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_80198FA0(void) {}
 
 extern "C" void fn_80198FA4(void) {}
 
@@ -1621,7 +1627,7 @@ extern "C" void fn_801A37C4(int param_1) {
     int i = 0;
     lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 4);
     u32 start = lbl_802FFA80[2];
-    u32 p = lbl_802FFA80[2];
+    u32 p = *(volatile u32*)&lbl_802FFA80[2];
     while (true) {
         if (!fn_801A602C(p)) {
             break;
@@ -1668,9 +1674,8 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
-    u8 r = src[0];
     u8* base = p + i * 4;
-    base[0xfa] = r;
+    base[0xfa] = src[0];
     base[0xfb] = src[1];
     base[0xfc] = src[2];
     base[0xfd] = src[3];
