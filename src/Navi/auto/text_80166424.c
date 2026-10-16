@@ -1700,8 +1700,8 @@ extern "C" u8 fn_801741E4(u8* p, s32 idx)
 {
     u16* ids = *(u16**)(p + 8);
     u8* tbl = *(u8**)(p + 4);
-    s32 n = ids[idx] * 0xe8;
-    u8 v = tbl[n + 1];
+    s32 n = ids[idx] * 0xe8 + 1;
+    u8 v = tbl[n];
     if (v != 0xff) {
         u32* arr = *(u32**)(p + 0x30);
         return arr[v];
@@ -2075,13 +2075,13 @@ extern "C" void fn_80176610(void* p_self)
     (*(void (***)(void*))p_self)[11](p_self);
 }
 
-extern "C" void fn_80176698(void* p_self, void* p_other, u8 b, u32 unused, u32 c, u32 d, f32* f)
+extern "C" void fn_80176698(void* p_self, void* p_other, u8 b, u32 r6, u32 c, u32 d, f32* f)
 {
+    u32 unused;
     u32* self = (u32*)p_self;
-    u8* sub = (u8*)p_self + 0xdc;
     *(void**)p_self = lbl_80298C88;
-    fn_80166C70(sub);
-    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
+    fn_80166C70((u8*)p_self + 0xdc);
+    fn_80166B58((u32*)((u8*)p_self + 0xe8), (u32)p_self);
     self[0x3e] = 0;
     fn_80176728(p_self, p_other, b, unused, c, d, f);
 }
@@ -2089,10 +2089,9 @@ extern "C" void fn_80176698(void* p_self, void* p_other, u8 b, u32 unused, u32 c
 extern "C" void fn_80176848(void* p_self, u32 unused, u32 a, u32 b, u32 c)
 {
     u32* self = (u32*)p_self;
-    u8* sub = (u8*)p_self + 0xdc;
     *(void**)p_self = lbl_80298C88;
-    fn_80166C70(sub);
-    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
+    fn_80166C70((u8*)p_self + 0xdc);
+    fn_80166B58((u32*)((u8*)p_self + 0xe8), (u32)p_self);
     self[0x3e] = 0;
     fn_801768C8(p_self, a, b, c);
 }
@@ -2173,6 +2172,36 @@ extern "C" void fn_80177CA8(void* self, f32* r) {
     if (p[17] <= t[1]) p[17] = t[1];
     if (p[18] >= t[2]) p[18] = t[2];
     if (p[19] >= t[3]) p[19] = t[3];
+}
+
+extern "C" void* fn_80177D24(char* self, u64 id)
+{
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+        virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+        virtual void v10(); virtual void v11(); virtual void v12();
+        virtual void* vf3c(u64 id);
+    };
+    char* n;
+    void* r;
+    if (id == *(u64*)(self + 0x10)) {
+        return self;
+    }
+    n = *(char**)(self + 0xdc);
+    if (n != 0) {
+        n -= 0xc;
+    }
+    while (n != 0) {
+        r = (*(Obj**)(n + 0xc))->vf3c(id);
+        if (r != 0) {
+            return r;
+        }
+        n = *(char**)(n + 0x18);
+        if (n != 0) {
+            n -= 0xc;
+        }
+    }
+    return 0;
 }
 
 extern "C" u8 fn_80177F0C(char* self, void* arg)
