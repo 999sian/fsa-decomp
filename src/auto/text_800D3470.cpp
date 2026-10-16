@@ -2004,6 +2004,10 @@ extern "C" void* fn_800DF280(void* self, short flag) {
     return self;
 }
 
+extern "C" void fn_800DF2EC(GXColor* param_1, int param_2, const GXColor* param_3) {
+    param_1[param_2 + 1] = *param_3;
+}
+
 extern "C" void fn_800DF318(GXColor* param_1, int param_2, const GXColor* param_3) {
     param_1[param_2 + 1] = *param_3;
 }
