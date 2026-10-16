@@ -34,12 +34,12 @@ extern "C" void** fn_8003CAB0(void** p, short del) {
 
 extern "C" void** fn_8003CB40(void** p, short del) {
     if (p != 0) {
-        *p = &lbl_804954F8;
+        *p = lbl_804954F8;
         if (p != 0) {
-            *p = &lbl_80495480;
+            *p = lbl_80495480;
             if (p != 0) {
-                *p = &lbl_80495450;
-                ((JAIAudience*)p)->~JAIAudience();
+                *p = lbl_80495450;
+                __dt__11JAIAudienceFv(p, 0);
             }
         }
         if (del > 0) {
