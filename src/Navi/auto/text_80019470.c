@@ -409,6 +409,11 @@ extern "C" void fn_8001B054(int param_1, void* param_2) {
     fn_80114C94(lbl_80205648, (void*)fn_8011583C, local);
 }
 
+extern u8 lbl_80205658[];
+extern "C" bool fn_8001B094(void* a, int* b) {
+    return *b == *(int*)(*(u8**)((u8*)a + 0xc) + 0x3c);
+}
+
 extern "C" s32 fn_8001B1DC(void* param_1) {
     if (param_1 != NULL) {
         return *(s8*)((u8*)param_1 + 0x14);
@@ -474,6 +479,11 @@ extern "C" void fn_8001B618(void* p) { fn_8001B0EC(*(void**)((char*)p + 0x14)); 
 extern "C" void fn_8001B494(void);
 extern "C" void fn_8001B63C(void) {
     fn_8001B494();
+}
+
+extern "C" void fn_8001B674(void* tag) {
+    *(s16*)((u8*)tag + 0x18) = 1;
+    cTg_Addition__FP15node_list_classP16create_tag_class(lbl_80205658, tag);
 }
 
 extern "C" int fn_8001B73C(void* tag, void* data) {
