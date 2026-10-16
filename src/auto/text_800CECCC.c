@@ -68,27 +68,27 @@ extern "C" void** fn_800CF38C(void** p, short del) {
 }
 
 extern "C" void fn_800CF678(void*, void*, void*);
-extern "C" void fn_800CF734(void*, void*, void*);
+extern "C" void fn_800CF734(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800CF650(void** p, void* a) {
     fn_800CF678(p, p[1], a);
 }
 
 extern "C" void fn_800CF70C(void** p, void* a) {
-    fn_800CF734(p, p[1], a);
+    fn_800CF734(p, (unsigned char*)p[1], (const unsigned char*)a);
 }
 
-extern "C" void fn_800CF734(void* param_1, void* anm, void* data) {
-    *(short*)((unsigned char*)anm + 6) = *(const short*)((const unsigned char*)data + 12);
-    *(J3DAnmColorFullTable**)((unsigned char*)anm + 0x3c) = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(data, (void*)*(const unsigned int*)((const unsigned char*)data + 0x18));
-    ((unsigned char*)anm)[4] = ((const unsigned char*)data)[8];
-    *(unsigned short*)((unsigned char*)anm + 0x14) = *(const unsigned short*)((const unsigned char*)data + 14);
-    *(float*)((unsigned char*)anm + 8) = 0.0f;
-    *(void**)((unsigned char*)anm + 0x2c) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)((const unsigned char*)data + 0x24));
-    *(void**)((unsigned char*)anm + 0x30) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)((const unsigned char*)data + 0x28));
-    *(void**)((unsigned char*)anm + 0x34) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)((const unsigned char*)data + 0x2c));
-    *(void**)((unsigned char*)anm + 0x38) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)((const unsigned char*)data + 0x30));
-    *(void**)((unsigned char*)anm + 0x18) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)((const unsigned char*)data + 0x1c));
-    ((JUTNameTab*)((unsigned char*)anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)((const unsigned char*)data + 0x20)));
+extern "C" void fn_800CF734(void* param_1, unsigned char* anm, const unsigned char* data) {
+    anm[4] = data[8];
+    *(short*)(anm + 6) = *(const short*)(data + 12);
+    *(float*)(anm + 8) = 0.0f;
+    *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 14);
+    *(J3DAnmColorFullTable**)(anm + 0x3c) = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(data, (void*)*(const unsigned int*)(data + 0x18));
+    *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)(data + 0x24));
+    *(void**)(anm + 0x30) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)(data + 0x28));
+    *(void**)(anm + 0x34) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)(data + 0x2c));
+    *(void**)(anm + 0x38) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)(data + 0x30));
+    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x1c));
+    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x20)));
 }
 
 extern "C" void fn_800CF800(void** self, void* data)
