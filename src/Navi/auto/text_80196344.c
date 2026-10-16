@@ -139,12 +139,12 @@ struct NaviVObj {
     virtual void vf2(void);
     virtual void vf3(void);
     virtual void vf4(void);
-    virtual void vf5(void);
+    virtual u32 vf5(void);
     virtual void vf6(void);
     virtual void vf7(void);
-    virtual void vf8(void);
+    virtual u32 vf8(void);
     virtual void vf9(void);
-    virtual void vf10(void);
+    virtual u32 vf10(void);
     virtual void vf11(void);
     virtual u32 vf12(void);
     virtual void vf13(void);
@@ -170,6 +170,23 @@ extern "C" u32 fn_80197B4C(void* param_1) {
     obj = *(void**)(p + 0x34);
     c = (*(NaviVFunc**)obj)[0x20 / 4](obj);
     return (b + (a + c + 0x1f)) & ~0x1f;
+}
+
+extern "C" void fn_80198298(u8* param_1) {
+    *(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x34) = *(u32*)(param_1 + 0x20);
+    fn_80193D9C((u32*)*(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x20));
+    ((NaviVObj*)*(void**)(param_1 + 0x2c))->vf10();
+    ((NaviVObj*)*(void**)(param_1 + 0x24))->vf4();
+    ((NaviVObj*)*(void**)(param_1 + 0x28))->vf8();
+    fn_80193DFC((u32*)*(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x20));
+}
+
+extern "C" void fn_801985AC(u8* param_1) {
+    if ((*(u32*)(lbl_802EE470 + 0x34) & 0x40000000) == 0) {
+        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf4();
+    } else {
+        ((NaviVObj*)*(void**)(param_1 + 0x28))->vf6();
+    }
 }
 
 extern "C" void fn_80198608(u8* param_1) {
