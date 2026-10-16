@@ -97,8 +97,8 @@ extern "C" void fn_8011B8F8(void) {
             lbl_802FF2EC = -1;
             if (fn != NULL) {
                 fn(-1, lbl_802FF2D8);
+                lbl_802FF2E8 = 0;
             }
-            lbl_802FF2E8 = 0;
         }
     }
 }
@@ -123,5 +123,13 @@ extern "C" void fn_8011B9A4(void* param_1) {
     *(s32*)(p + 0x24) = 0;
     *(s32*)(p + 0x28) = 0;
     *(s32*)(p + 0x2c) = 0;
+}
+
+extern "C" void fn_8011BB70(void* param_1) {
+    f32 v = lbl_80301540;
+    *(f32*)((char*)param_1 + 0x0) = v;
+    *(f32*)((char*)param_1 + 0x4) = v;
+    *(f32*)((char*)param_1 + 0x8) = v;
+    *(s16*)((char*)param_1 + 0xc) = 0;
 }
 
