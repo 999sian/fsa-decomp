@@ -1155,7 +1155,7 @@ struct VObj_8018A4B4 {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
+    virtual u8 v4();
     virtual void v5();
     virtual u8 v6();
     virtual void v7();
@@ -1176,15 +1176,15 @@ struct VObj_8018A4B4 {
     virtual void v22();
 };
 
-extern "C" int fn_8018A4B4(u8* self, s32* p1, s32* p2) {
-    u8* obj;
-    if (*p1 == 0 && *p2 == -1) {
+extern "C" int fn_8018A4B4(u8* self, u32* p1, u32* p2) {
+    VObj_8018A4B4* obj;
+    if (*p1 == 0 && *p2 + 0x10000 == 0xffff) {
         return 1;
     }
-    obj = *(u8**)(*(u8**)(self + 0x138) + 0x70);
-    (*(void (**)(void*))(*(u32*)obj + 0x58))(obj);
-    obj = *(u8**)(*(u8**)(self + 0x138) + 0x70);
-    if ((*(u8 (**)(void*))(*(u32*)obj + 0x18))(obj) == 1) {
+    obj = *(VObj_8018A4B4**)(*(u8**)(self + 0x138) + 0x70);
+    obj->v22();
+    obj = *(VObj_8018A4B4**)(*(u8**)(self + 0x138) + 0x70);
+    if ((u8)obj->v6() == 1) {
         return 0;
     }
     return 1;
