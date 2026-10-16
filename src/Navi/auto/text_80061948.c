@@ -43,6 +43,10 @@ extern "C" void fn_801AFE98(void*, void*);
 extern "C" void fn_8000EBB8(void*);
 extern "C" void fn_80022438(void*, s32, u16, u16);
 extern u8 lbl_802FF17C;
+extern s32 lbl_802FF170;
+extern s32 lbl_802FC910;
+extern "C" int fn_80068190(u8* p);
+extern "C" int fn_801E2F8C(s32 v);
 extern u16 lbl_80280080[];
 extern u16 lbl_802FC94C[];
 extern int lbl_802FC930;  // SDA label
@@ -809,17 +813,18 @@ extern "C" BOOL fn_80068A40(void)
 extern "C" void* fn_80068A48(void* p) {
     *(void**)p = lbl_802474D0;
     fn_801E0DB8((u8*)p + 4, fn_80068AD0, fn_8004F154, 0x24, 8);
-    f32 f0 = lbl_803003D0;
+    f32 f3 = lbl_803003D0;
     *(u8*)((u8*)p + 0x13c) = 0;
     f32* f = (f32*)p;
-    f[0x49] = f0;
     f32 f2 = lbl_803003D4;
-    f[0x4a] = f0;
+    f[0x49] = f3;
     f32 f1 = lbl_803003D8;
-    f[0x4b] = f0;
+    f[0x4a] = f3;
+    f32 f0 = lbl_803003DC;
+    f[0x4b] = f3;
     f[0x4c] = f2;
     f[0x4d] = f1;
-    f[0x4e] = lbl_803003DC;
+    f[0x4e] = f0;
     return p;
 }
 
