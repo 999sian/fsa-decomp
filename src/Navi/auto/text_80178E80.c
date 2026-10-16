@@ -9,6 +9,7 @@ extern "C" void fn_8017B07C(u32* self, int a, int b, int c);
 extern void* lbl_80298DF0[];
 
 extern "C" void fn_80177F0C(void);
+extern "C" void fn_801813CC(u32*, int, int, int);
 extern "C" void fn_80177E84(void);
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_8016A0B4(void* p, void* obj);
