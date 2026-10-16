@@ -30,9 +30,8 @@ extern "C" void fn_8017A468(void) {
 
 extern "C" void fn_8017A4A8(void* self) {
     if (fn_8015FDA8(self, 0) == 0) {
-        u32 p = (u32)lbl_802FF6A0;
-        if (p != 0) {
-            fn_8018ECE4((void*)p, self);
+        if ((u32)lbl_802FF6A0 != 0) {
+            fn_8018ECE4((void*)lbl_802FF6A0, self);
         }
     }
 }
@@ -81,6 +80,9 @@ extern "C" void fn_80184C14(void) {
 extern "C" void fn_801788C0(void);
 extern "C" void fn_80184C34(void) {
     fn_801788C0();
+}
+
+extern "C" void fn_80184C54(void) {
 }
 
 extern "C" void fn_8018901C(void) {
