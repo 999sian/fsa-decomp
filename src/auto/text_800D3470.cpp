@@ -723,11 +723,11 @@ extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
     GDSetCurrOffset(param_2);
     u8* start = GDGetCurrPointer();
-    u8* cur = __GDCurrentDL->pDisplayListData;
+    u8* cur = GDGetCurrPointer();
     u32 i = 0;
-    while (true) {
-        if (!isTexNoReg(cur)) break;
-        loadTexNo(i, getTexNoReg(cur));
+    while (isTexNoReg__FPv(cur)) {
+        u16 texNo = getTexNoReg__FPv(cur);
+        loadTexNo__FUlRCUs(i, &texNo);
         i++;
     }
     DCStoreRange(start, GDGetCurrPointer() - start);
@@ -2175,4 +2175,9 @@ struct Unk800DDA5C {
     u16 a;
     u8 b;
     u8 c;
+};
+struct fn_800DE29C_Bits {
+  u8 hi : 4;
+  u8 b : 2;
+  u8 a : 2;
 };
