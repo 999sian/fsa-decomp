@@ -10,6 +10,8 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802DCDF4(char* p);
 
 struct Vec3f { f32 x, y, z; };
+struct Mtx34Blk { f32 m[12]; };
+struct Mtx44Blk { f32 m[16]; };
 
 static inline bool fn_8030C210_contains(u8* p, f32 x, f32 y) {
     bool in = false;
