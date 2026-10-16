@@ -40,15 +40,6 @@ struct KeyIter {
 
 extern char lbl_802911A0[];
 extern char lbl_80292C80[];
-struct NaviBase_80139DEC {
-    void* m_vtbl;
-    NaviBase_80139DEC() { m_vtbl = lbl_802911A0; }
-};
-struct NaviDerived_80139DEC : NaviBase_80139DEC {
-    u32 m_0x4;
-    NaviDerived_80139DEC(u32 v) { m_vtbl = lbl_80292C80; m_0x4 = v; }
-};
-inline void* operator new(unsigned long, void* p) { return p; }
 
 struct StrideIter {
     f32* p;
