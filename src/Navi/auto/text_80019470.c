@@ -1319,6 +1319,12 @@ extern "C" int fn_8001EB28(void* p, void* a, void* b) {
     return 1;
 }
 
+extern "C" s32 fn_8001EB7C(void* p, u8 mask) {
+    u32 v = mask & ((u8*)p)[0xb];
+    u32 ne = ((v - mask) | (mask - v)) >> 31;
+    return (u32)__cntlzw(ne) >> 5;
+}
+
 extern "C" int fn_8001EF94(u8* p) {
     int (*fn)(u32, u32) = *(int (**)(u32, u32))(p + 0x58);
     if (fn != NULL && fn(*(u32*)(p + 0x40), *(u32*)(p + 0x5c)) == 0) {
