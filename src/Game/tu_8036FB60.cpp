@@ -19,6 +19,29 @@ extern "C" void fn_803704E8(void)
 	fn_803721F4();
 }
 
+extern "C" void fn_803706AC(char* self)
+{
+	fn_803703C8(self);
+	fn_8023077C();
+	fn_8022FE80(0, *(int*)(self + 0x4), *(int*)(self + 0x198), 1, 0);
+	if (fn_80388EEC(0)) {
+		int n = *(int*)(self + 0x394);
+		if (n >= 4) {
+			if (n == 4) {
+				*(int*)(self + 0x230) = 9;
+				*(int*)(self + 0x368) = 0x106;
+			} else {
+				*(int*)(self + 0x230) = 10;
+				*(int*)(self + 0x368) = 0x104;
+			}
+			fn_80458FF0(lbl_8053AF80, 0x100000b, 0, 0);
+		} else {
+			*(int*)(self + 0x230) = 6;
+			*(int*)(self + 0x240) = 0x1e;
+		}
+	}
+}
+
 extern "C" void fn_803703C8(void*);
 extern "C" void fn_80370C18(void* this_)
 {
