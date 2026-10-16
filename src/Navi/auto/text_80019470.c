@@ -88,6 +88,12 @@ extern "C" void fn_80019834(void* param_1) {
     fn_8001D630(*(void**)((u8*)self + 0xc0), self);
 }
 
+extern "C" s32 fn_80019CFC(u8* p) {
+    fn_8001C008(*(void**)(p + 0x24));
+    *(u32*)(p + 0x14) = fn_8001F26C((u32)fn_8001C010(), *(s16*)(p + 0x10), 0, 0, 0);
+    return 2;
+}
+
 extern "C" void fn_801155C0(void*, s32);
 extern "C" void fn_8011526C(void*, void*);
 extern u8 lbl_80205580[];
