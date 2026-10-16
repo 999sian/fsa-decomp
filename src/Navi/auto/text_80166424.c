@@ -180,6 +180,11 @@ extern "C" void fn_8016AD08(void) {
 extern "C" void fn_8016AD0C(void) {
 }
 
+extern "C" int fn_8016B418()
+{
+	return 0;
+}
+
 extern "C" s32 fn_8016BC8C(void* self, u32 param_2, void* param_3) {
     u8* p = (u8*)self;
     if (param_2 == 0) {
