@@ -145,6 +145,21 @@ extern "C" void fn_803CC490(char* p) {
     }
 }
 
+extern "C" void fn_803CC53C(char* p) {
+    u64 serial;
+    fn_803B93E8(lbl_8050EC80, *(void**)(p + 0x5c), *(void**)(p + 0x60), 0);
+    fn_803BACF8(*(void**)(p + 0x5c), 0);
+    fn_803B93E8(lbl_8050EC80, *(void**)(p + 0x5c), *(void**)(p + 0x60), 1);
+    fn_803BACF8(*(void**)(p + 0x5c), 1);
+    fn_803B93E8(lbl_8050EC80, *(void**)(p + 0x5c), *(void**)(p + 0x60), 2);
+    fn_803BACF8(*(void**)(p + 0x5c), 2);
+    fn_803B9D54(lbl_8051C1A0, *(void**)(p + 0x5c), 0x258, *(void**)(p + 0x60), 0x1d4c, 0);
+    p[0x112] = p[0x110];
+    p[0x110] = 9;
+    CARDGetSerialNo(((u8*)lbl_8051C1A0)[0x1ff4], &serial);
+    *(u64*)(lbl_8051C1A0 + 0x1ff8) = serial;
+}
+
 extern "C" void fn_803CE05C(char* p) {
     if (fn_80309C4C(lbl_8053AD30, 0x1300, 1) != 0) {
         if (*(u32*)(p + 0x7c) == 0x51) {
