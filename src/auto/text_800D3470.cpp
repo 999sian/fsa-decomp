@@ -409,15 +409,13 @@ void J3DTevBlock4::initialize()
 	mKAlphaSels[1] = 0x1c;
 	mKAlphaSels[2] = 0x1c;
 	mKAlphaSels[3] = 0x1c;
-	J3DGXColorS10 color = j3dDefaultTevColor;
-	mColors[0] = color;
-	mColors[1] = color;
-	mColors[2] = color;
-	GXColor kcolor = j3dDefaultTevKColor;
-	mKColors[0] = kcolor;
-	mKColors[1] = kcolor;
-	mKColors[2] = kcolor;
-	mKColors[3] = kcolor;
+	mColors[0] = j3dDefaultTevColor;
+	mColors[1] = j3dDefaultTevColor;
+	mColors[2] = j3dDefaultTevColor;
+	mKColors[0] = *(u32*)&j3dDefaultTevKColor;
+	mKColors[1] = *(u32*)&j3dDefaultTevKColor;
+	mKColors[2] = *(u32*)&j3dDefaultTevKColor;
+	mKColors[3] = *(u32*)&j3dDefaultTevKColor;
 	mTexNoOffset = 0;
 	mRegOffset = 0;
 }
@@ -840,6 +838,24 @@ extern "C" void fn_800D84A8(u8* this_) {
         J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)&kcol);
     }
     DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
+}
+
+extern "C" void fn_800D8578(u8* p) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
+    u8* saved = __GDCurrentDL->pDisplayListData;
+    u8* addr = p;
+    for (u32 i = 0; i < 2; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+        }
+        addr += 2;
+    }
+    J3DGDSetTevOrder((GXTevStageID)0, (GXTexCoordID)p[0xc], (GXTexMapID)p[0xd], (GXChannelID)p[0xe], (GXTexCoordID)p[0x10], (GXTexMapID)p[0x11], (GXChannelID)p[0x12]);
+    u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0xd] & 7) * 8);
+    J3DGDSetTexCoordScale2((GXTexCoordID)p[0xc], s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+    s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0x11] & 7) * 8);
+    J3DGDSetTexCoordScale2((GXTexCoordID)(p[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+    DCStoreRange(saved, (u32)(__GDCurrentDL->pDisplayListData - saved));
 }
 
 extern "C" void fn_800D86D4(Vtable800D8248* p) {
@@ -1532,14 +1548,15 @@ extern "C" void fn_800DBDB0(u8* self, Unk800DBCCCSrc* src) {
 extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
     param_1[0x14] = param_2->m20();
 
+    u32 i = 0;
     u8* out = param_1;
-    u32 i;
-    for (i = 0; i < 2; i++) {
+    while (i < 2) {
         u8* src = param_2->m14(i);
         out[4] = src[0];
         out[5] = src[1];
         out[6] = src[2];
         out[7] = src[3];
+        i++;
         out += 4;
     }
 
