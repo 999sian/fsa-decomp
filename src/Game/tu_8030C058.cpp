@@ -4,6 +4,8 @@
 #include "JSystem/JUtility/JUTVideo.h"
 
 extern u8* lbl_8053AB10;
+
+void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802DCDF4(char* p);
 
@@ -55,6 +57,31 @@ extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
     *(f32*)(obj + 0x188) = x + hw;
     *(f32*)(obj + 0x18c) = y + hh;
     obj[0x17e] = 1;
+}
+
+extern "C" void fn_8030C85C(u8* self) {
+    self[0x1e8] = 0;
+    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235c) != 0) {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2360) = 0;
+    }
+    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235d) != 0) {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2361) = 0;
+    }
+    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235e) != 0) {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2362) = 0;
+    }
+    if (*(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x235f) != 0) {
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2363) = 0;
+    }
+    fn_802DCDF4((char*)fn_802D6A9C());
+    *(f32*)(self + 0x154) = *(f32*)(self + 0x190);
+    *(f32*)(self + 0x158) = *(f32*)(self + 0x194);
+    *(f32*)(self + 0x15c) = *(f32*)(self + 0x198);
+    *(f32*)(self + 0x160) = *(f32*)(self + 0x19c);
+    *(f32*)(self + 0x1b8) = 0.0f;
+    *(f32*)(self + 0x1b4) = 0.0f;
+    *(f32*)(self + 0x1c0) = 0.0f;
+    *(f32*)(self + 0x1bc) = 0.0f;
 }
 
 extern "C" void fn_8030C928(u8* self, f32* rect) {
