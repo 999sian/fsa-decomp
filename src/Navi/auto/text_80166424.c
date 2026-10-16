@@ -1095,7 +1095,7 @@ extern "C" void fn_801727E4(void* self, int a, int b) {
         virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
         virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
         virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
-        virtual void v28(); virtual void v29(); virtual void v30();
+        virtual void v28();
         virtual void vf7C(int, int, int);
     };
     ((Obj*)self)->vf7C(a, b, 0);
@@ -1486,13 +1486,14 @@ extern "C" void fn_80173384(void)
 }
 
 extern u32 lbl_80301AF0;
-extern "C" void fn_80173F24(u32* dst, u8* src, s32 i, s32 j) {
+extern "C" u32 lbl_80301AF0;
+extern "C" void fn_80173F24(Rgba4_80166424* dst, u8* src, s32 i, s32 j) {
     u16 v = ((u16*)*(u8**)(src + 8))[i];
     u16 w = *(u16*)(*(u8**)(src + 4) + v * 0xe8 + 8 + j * 2);
     if (w == 0xffff) {
-        *dst = lbl_80301AF0;
+        *dst = *(Rgba4_80166424*)&lbl_80301AF0;
     } else {
-        *dst = ((u32*)*(u8**)(src + 0x10))[w];
+        *dst = ((Rgba4_80166424*)*(u8**)(src + 0x10))[w];
     }
 }
 
