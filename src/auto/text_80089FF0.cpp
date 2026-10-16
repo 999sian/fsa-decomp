@@ -29,10 +29,11 @@ extern "C" void fn_8008C308(s32 param_1) {
     }
 }
 
+extern "C" unsigned int lbl_8053A904;
 extern "C" unsigned int fn_8008C484(unsigned int value)
 {
-    unsigned int old = lbl_80557C4C;
-    lbl_80557C4C = value;
+    unsigned int old = lbl_8053A904;
+    lbl_8053A904 = value;
     return old;
 }
 
