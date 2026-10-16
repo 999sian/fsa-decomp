@@ -35,11 +35,11 @@ extern "C" BOOL fn_80180B60(u8* self, u8* src) {
     u8 b = src[1];
     u8 a = src[0];
     self[0x14C] = a;
+    u8 c = src[2];
     self[0x14D] = b;
-    a = src[2];
-    b = src[3];
-    self[0x14E] = a;
-    self[0x14F] = b;
+    u8 d = src[3];
+    self[0x14E] = c;
+    self[0x14F] = d;
     return 1;
 }
 
@@ -72,10 +72,10 @@ extern "C" int fn_801820CC(int param_1)
 }
 
 extern "C" int fn_80184B08(u8* self, u8 idx) {
-    if (idx < 4) {
-        return *(int*)(self + idx * 4 + 0x148);
+    if (idx >= 4) {
+        return 0;
     }
-    return 0;
+    return *(int*)(self + (idx << 2) + 0x148);
 }
 
 extern "C" int fn_80184B2C(u8* self) {
@@ -122,6 +122,14 @@ extern "C" void fn_80184C58(void* self, void* unused, s32 param_3) {
             }
         }
     }
+}
+
+extern "C" void fn_80188814(u8* param_1, u8 param_2) {
+    *(u8*)(param_1 + 0xb2) = param_2;
+    void* p = *(void**)(param_1 + 0x168);
+    if (p == nullptr) return;
+    if (((u32)p + 0x10) == 0) return;
+    *(u8*)((u8*)p + 0x3) = param_2;
 }
 
 extern "C" void fn_8018901C(void) {
