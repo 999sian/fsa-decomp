@@ -112,9 +112,10 @@ extern "C" void fn_800D01DC(void** self, void* data)
 }
 
 void fn_800D0298(void* self, void* res, void* data);
-void fn_800D0270(void* self, void* data)
+extern "C" void fn_800D0298(void*, void*, void*);
+extern "C" void fn_800D0270(void** self, void* data)
 {
-    fn_800D0298(self, *(void**)((char*)self + 4), data);
+    fn_800D0298(self, self[1], data);
 }
 
 extern "C" void* fn_800D05BC(void* param_1, short param_2)
