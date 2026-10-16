@@ -18,7 +18,9 @@ struct VObj_8013BC94 {
     virtual void v4();
     virtual void v5();
     virtual void v6();
-    virtual void v7(u32, void*, void*);
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(u32, void*, void*);
 };
 
 struct KeyIter {
@@ -1456,6 +1458,20 @@ extern "C" void fn_8013C3FC(void* param_1, s32 param_2, void** param_3) {
         return;
     }
     *(void**)((u8*)param_1 + 0x134) = *param_3;
+}
+
+extern "C" void fn_8013C410(void* param_1, s32 param_2, u32 param_3) {
+    if (param_2 == 0x18) {
+        *(u32*)((u8*)param_1 + 0x144) = fn_8013BCDC((NaviTracker*)*(void**)((u8*)param_1 + 0x124), param_3);
+    }
+}
+
+extern "C" void fn_8013C454(void* param_1, s32 param_2, u32* param_3) {
+    if (param_2 == 0x19) {
+        *(u32*)((u8*)param_1 + 0x148) = *param_3;
+    } else if (param_2 == 0x18) {
+        *(u32*)((u8*)param_1 + 0x148) = fn_8013BD28(*(void**)((u8*)param_1 + 0x138), param_3);
+    }
 }
 
 extern "C" void fn_8013C4B0(void* param_1, s32 param_2, u32* param_3) {
