@@ -18,6 +18,9 @@ public:
 };
 
 extern "C" void fn_80123394(void*);
+extern "C" void fn_80124278(void*);
+extern "C" void fn_80124448(void*);
+extern "C" void fn_80131EC0(GateRegistry*, void*);
 extern "C" void fn_8011FFCC(void* p) {
 }
 
