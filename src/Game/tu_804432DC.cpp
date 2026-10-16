@@ -32,6 +32,14 @@ extern "C" void fn_804435B8(void* this_) {
     *(u8*)(p + 0x15) = 1;
 }
 
+extern "C" void fn_804435E4(void* this_) {
+    char* p = (char*)this_;
+    if (*(u8*)(p + 0x15) != 3) {
+        fn_8013B490(lbl_8053AB10);
+        draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x4), lbl_80543D60, lbl_80543D60, ((void**)lbl_8053AB10)[4]);
+    }
+}
+
 extern "C" void fn_8013B490(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 extern "C" void* lbl_8053AB10;
