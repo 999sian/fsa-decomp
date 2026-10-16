@@ -46,3 +46,29 @@ extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
 	idle = issueCommand(1, block);
 	return idle;
 }
+
+BOOL fn_801CA33C(DVDCommandBlock* block, DVDCBCallback callback);
+void fn_801CA664(s32 result, DVDCommandBlock* block);
+void fn_801C12E4(OSThreadQueue* queue);
+extern OSThreadQueue __DVDThreadQueue;
+extern "C" s32 fn_801CA5B8(DVDCommandBlock* block)
+{
+	BOOL level;
+
+	if (fn_801CA33C(block, fn_801CA664) == 0) {
+		return -1;
+	}
+
+	level = OSDisableInterrupts();
+	while (1 < block->state + 1U && block->state != 10 && (block->state != 3 || (1 < block->command - 4U && block->command != 13 && block->command != 15))) {
+		fn_801C12E4(&__DVDThreadQueue);
+	}
+	OSRestoreInterrupts(level);
+	return 0;
+}
+
+extern "C" u32 fn_801CA688(void)
+{
+	return 0x80000000;
+}
+
