@@ -1028,10 +1028,3 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
-typedef struct { u16 count; u16 offset; } Key_801ABEA8;
-typedef struct {
-    u8 pad0[8];
-    f32 frame;
-    f32* values;
-    Key_801ABEA8* keys;
-} Anim_801ABEA8;
