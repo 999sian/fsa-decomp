@@ -105,3 +105,6 @@ extern "C" void fn_8035EB18(void* this_) {
     }
 }
 
+extern "C" void fn_8035EE30(void) {
+}
+
