@@ -10,8 +10,8 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802DCDF4(char* p);
 
 struct Vec3f { f32 x, y, z; };
-struct Mtx34Blk { f32 m[3][4]; };
-struct Mtx44Blk { f32 m[4][4]; };
+struct Mtx34Blk { f32 m[3][4]; } __attribute__((aligned(8)));
+struct Mtx44Blk { f32 m[4][4]; } __attribute__((aligned(8)));
 
 extern "C" void GXSetZScaleOffset(f32 scale, f32 offset);
 
@@ -176,10 +176,10 @@ extern "C" void fn_8030DD68(void) {
 
 extern "C" void fn_8030DFE8(u8* p, u8 flag) {
     if (flag) {
-        *(Mtx34Blk*)(p + 0x74) = *(Mtx34Blk*)(p + 0x4);
-        *(Mtx44Blk*)(p + 0xa4) = *(Mtx44Blk*)(p + 0x34);
+        PSMTXCopy((f32(*)[4])(p + 0x4), (f32(*)[4])(p + 0x74));
+        PSMTXCopy((f32(*)[4])(p + 0x34), (f32(*)[4])(p + 0xa4));
     }
-    GXSetProjection((f32(*)[4])(p + 0xa4), GX_PERSPECTIVE);
+    GXSetProjection((f32(*)[4])(p + 0xa4), GX_ORTHOGRAPHIC);
     GXLoadPosMtxImm((f32(*)[4])(p + 0x74), 0x18);
     GXLoadNrmMtxImm((f32(*)[4])(p + 0x74), 0x18);
     GXSetCurrentMtx(0x18);
