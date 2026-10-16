@@ -10,9 +10,6 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802DCDF4(char* p);
 
 struct Vec3f { f32 x, y, z; };
-struct Mtx34Blk { f32 m[3][4]; } __attribute__((aligned(8)));
-struct Mtx44Blk { f32 m[4][4]; } __attribute__((aligned(8)));
-
 extern "C" void GXSetZScaleOffset(f32 scale, f32 offset);
 
 static inline bool fn_8030C210_contains(u8* p, f32 x, f32 y) {
@@ -60,10 +57,14 @@ extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
 
 extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out) {
     if (flag != 0) {
-        f32 x0 = (f32)*(u32*)(p + 0x144);
-        f32 y0 = (f32)*(u32*)(p + 0x148);
-        f32 xs = (f32)(*(u32*)(p + 0x14c) - *(u32*)(p + 0x144));
-        f32 ys = (f32)(*(u32*)(p + 0x150) - *(u32*)(p + 0x148));
+        u32 a = *(u32*)(p + 0x144);
+        u32 b = *(u32*)(p + 0x148);
+        u32 c = *(u32*)(p + 0x14c);
+        u32 d = *(u32*)(p + 0x150);
+        f32 x0 = (f32)a;
+        f32 y0 = (f32)b;
+        f32 xs = (f32)(c - a);
+        f32 ys = (f32)(d - b);
         out[0] = *(f32*)(p + 0x164) + (in[0] - x0) * (*(f32*)(p + 0x16c) - *(f32*)(p + 0x164)) / xs;
         out[1] = *(f32*)(p + 0x168) + (in[1] - y0) * (*(f32*)(p + 0x170) - *(f32*)(p + 0x168)) / ys;
         out[2] = 0.0f;
