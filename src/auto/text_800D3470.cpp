@@ -320,6 +320,40 @@ extern "C" void fn_800D6B04(void* p) {
     DCStoreRange(dlStart, (u32)(dlEnd - dlStart));
 }
 
+extern "C" void fn_800D6B94(u8* this_) {
+    u8* p = this_;
+    u8* q = this_;
+    u32 i = 0;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x58);
+    u8* start = __GDCurrentDL->pDisplayListData;
+    do {
+        if (*(void**)(q + 0x38) != 0 && p[0xa] != 0x3c) {
+            load__9J3DTexMtxCFUl(*(void**)(q + 0x38), i);
+        }
+        i++;
+        p += 6;
+        q += 4;
+    } while (i < 4);
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
+extern "C" void fn_800D6C40(u8* this_) {
+    u8* p = this_;
+    u8* q = this_;
+    u32 i = 0;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x58);
+    u8* start = __GDCurrentDL->pDisplayListData;
+    do {
+        if (*(void**)(q + 0x38) != 0 && p[0xa] != 0x3c) {
+            load__9J3DTexMtxCFUl(*(void**)(q + 0x38), i);
+        }
+        i++;
+        p += 6;
+        q += 4;
+    } while (i < 8);
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
 extern "C" void fn_800D6CEC(void* r3, u32 r4) {
     if ((r4 >> 8) & 0xf) {
         (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
@@ -371,11 +405,14 @@ extern "C" void fn_800D8248(Vtable800D8248* p) {
 }
 
 extern "C" void fn_800D8294(void* p) {
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
+    __GDCurrentDL->pDisplayListData = (u8*)__GDCurrentDL->begin + *(u32*)((u8*)p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
-    if (*(u16*)((u8*)p + 8) != 0xffff) {
-        loadTexNo(0, *reinterpret_cast<const u16*>((u8*)p + 8));
+
+    u8* addr = (u8*)p;
+    if (*(u16*)(addr + 8) != 0xffff) {
+        loadTexNo__FUlRCUs(0, (u16*)(addr + 8));
     }
+
     u8* now = __GDCurrentDL->pDisplayListData;
     DCStoreRange(saved, (u32)(now - saved));
 }
@@ -552,6 +589,20 @@ extern "C" void fn_800D93B4(void* param_1) {
             loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
         }
         addr += 2;
+    }
+}
+
+extern "C" void fn_800D9410(u8* this_) {
+    u8* p = this_;
+    u32 i;
+    for (i = 0; i < 3; i++) {
+        GXColorS10 c = *(GXColorS10*)(p + 0x14);
+        J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
+        p += 8;
+    }
+    u32 k = *(u32*)(this_ + 0x45);
+    for (i = 0; i < 4; i++) {
+        J3DGDSetTevKColor(GXTevKColorID(i), *(GXColor*)&k);
     }
 }
 
@@ -926,13 +977,14 @@ extern "C" void fn_800DDB70(void* param_1)
 {
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
-  void* pStart = GDGetCurrPointer();
-  void* pCurr = GDGetCurrPointer();
-  while (isTexNoReg(pCurr)) {
-    u16 texNo = getTexNoReg(pCurr);
-    loadTexNo(i++, texNo);
+  u8* pStart = __GDCurrentDL->pDisplayListData;
+  u8* pCurr = __GDCurrentDL->pDisplayListData;
+  while (true) {
+    if (!isTexNoReg(pCurr)) break;
+    loadTexNo(i, getTexNoReg(pCurr));
+    i++;
   }
-  DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
+  DCStoreRange(pStart, __GDCurrentDL->pDisplayListData - pStart);
 }
 
 extern "C" u32 fn_800DDC10() {
