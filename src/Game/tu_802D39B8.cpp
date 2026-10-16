@@ -603,7 +603,7 @@ extern "C" bool fn_802DE764(s32 a, s32 b, s32 c) {
         return false;
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     if (a == *(s32*)(p + 4) && b == *(s32*)(p + 8)
-        && c == ((RoomArrays*)p)->roomNumbers[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)])
+        && c == (u8)(p + *(s32*)(p + 0x18) * 10)[*(s32*)(p + 0x14) + 0x60])
         return true;
     return false;
 }
@@ -618,10 +618,12 @@ extern "C" bool fn_802DE7CC() {
 }
 
 extern "C" bool fn_802DE93C() {
+    struct H {
+        static char* get() { return *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C); }
+    };
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-        if ((*(s32*)(p + 4) == 4 && *(s32*)(p + 8) == 0)
-            || (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 2))
+        if ((*(s32*)(H::get() + 4) == 4 && *(s32*)(H::get() + 8) == 0)
+            || (*(s32*)(H::get() + 4) == 7 && *(s32*)(H::get() + 8) == 2))
             return true;
         return false;
     }
@@ -630,9 +632,10 @@ extern "C" bool fn_802DE93C() {
 
 extern "C" bool fn_802DE9A0() {
     if (*(u8*)(lbl_8053AAF8 + 0x7F) != 0) {
-        char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-        if ((*(s32*)(p + 4) == 2 && *(s32*)(p + 8) == 3)
-            || (*(s32*)(p + 4) == 7 && *(s32*)(p + 8) == 1))
+        char* q = *(char**)(lbl_8053AAF8 + 4);
+        if (*(s32*)(*(char**)(q + 0xC) + 4) == 2 && *(s32*)(*(char**)(q + 0xC) + 8) == 3)
+            return true;
+        if (*(s32*)(*(char**)(q + 0xC) + 4) == 7 && *(s32*)(*(char**)(q + 0xC) + 8) == 1)
             return true;
         return false;
     }
