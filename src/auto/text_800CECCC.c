@@ -14,9 +14,8 @@ extern "C" void fn_800CF828(void*, void*, void*);
 extern "C" void fn_800D0204(void*, void*, void*);
 extern "C" void fn_800D00F0(void*, void*, void*);
 extern "C" void fn_800CFEF0(void*, void*, void*);
-extern "C" void fn_800CF2B0(void*** p) {
-    void** a = lbl_8049AE38;
-    *p = a;
+extern "C" void fn_800CF2B0(void** p) {
+    *p = lbl_8049AE38;
     *p = lbl_8049AE24;
 }
 
@@ -119,6 +118,17 @@ extern "C" void fn_800D00C8(void** self, void* data)
 extern "C" void fn_800D01DC(void** self, void* data)
 {
     fn_800D0204(self, self[1], data);
+}
+
+extern "C" void* fn_800D06B8(const void* ptr, const void* offset);
+extern "C" void fn_800D0204(void* param_1, void* anmp, void* datap) {
+    unsigned char* anm = (unsigned char*)anmp;
+    const unsigned char* data = (const unsigned char*)datap;
+    *(short*)(anm + 6) = *(const short*)(data + 10);
+    anm[4] = data[8];
+    *(float*)(anm + 8) = 0.0f;
+    *(void**)(anm + 0x10) = fn_800D06B8(data, (void*)*(const unsigned int*)(data + 0x10));
+    *(float**)(anm + 0xc) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x14));
 }
 
 void fn_800D0298(void* self, void* res, void* data);
