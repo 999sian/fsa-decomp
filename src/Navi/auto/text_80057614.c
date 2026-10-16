@@ -24,6 +24,9 @@ extern "C" void fn_801DEE10(s32);
 extern "C" void fn_801DEE3C(s32);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_8005845C(void);
+extern "C" void fn_8005C424(void);
+extern "C" void fn_8005C460(void);
+extern "C" s32 fn_80059190(s32 idx);
 extern "C" void fn_80057868(void) {
 }
 
