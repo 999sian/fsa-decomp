@@ -98,6 +98,15 @@ extern "C" void fn_8043CEA0(u8* self) {
     self[0x10b] = 3;
 }
 
+extern "C" f32 fn_8043D514(u8* param_1) {
+    f32 ret = lbl_80543C88;
+    if (param_1[0x10b] != 0 && param_1[0x10c] == 1) {
+        J2DPane* pane = *(J2DPane**)(*(u8**)(param_1 + 0x64) + 4);
+        ret = (lbl_80543CE8 * (lbl_80543CEC - (pane->getBounds()->i.y - lbl_80543CC8))) / lbl_80543CC4;
+    }
+    return ret;
+}
+
 extern "C" void fn_8043D834(u8* self) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
         fn_8041E58C(*(void**)(self + 0x290));
@@ -106,8 +115,9 @@ extern "C" void fn_8043D834(u8* self) {
     }
 }
 
-extern "C" void fn_8043D874(char* param_1) {
-    if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
+extern "C" void fn_8043D874(u8* param_1) {
+    u8* game = (u8*)lbl_8053AAF8;
+    if (game[0x7f] != 0) {
         fn_8041E708(*(void**)(param_1 + 0x290));
     } else {
         fn_80425234(*(void**)(param_1 + 0x294));
@@ -117,10 +127,14 @@ extern "C" void fn_8043D874(char* param_1) {
 extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
     f32 a = lbl_80543CFC;
     f32 b = lbl_80543CF8;
-    f32 left = (x - a) - r;
-    f32 right = r + (a + x);
-    f32 bottom = (y - b) - r;
-    f32 top = r + (b + y);
+    f32 dx = x - a;
+    f32 dy = y - b;
+    f32 sx = a + x;
+    f32 left = dx - r;
+    f32 sy = b + y;
+    f32 bottom = dy - r;
+    f32 right = r + sx;
+    f32 top = r + sy;
     if (px >= left && px <= right && py >= bottom && py <= top) {
         return 0;
     }
@@ -133,7 +147,10 @@ extern "C" void fn_8043EDE8(char* param_1, s32 param_2) {
 }
 
 extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
-    JGeometry::TVec3<f32> v(*self);
+    JGeometry::TVec3<f32> v;
+    v.x = self->x;
+    v.y = self->y;
+    v.z = self->z;
     fn_8043E7CC(lbl_8053AED0, &v);
 }
 
