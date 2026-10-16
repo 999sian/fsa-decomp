@@ -50,6 +50,7 @@ extern "C" int fn_8002689C();
 extern "C" s32 fn_8001E958(void*, u16);
 extern "C" s32 fn_8001C6D0(void*);
 extern "C" s32 cTg_IsUse__FP16create_tag_class(void*);
+extern "C" void fn_8001C454(void*, int, int);
 extern "C" void fn_8001EDEC(void*, void*, void*, void*, void*);
 extern "C" void fn_8001C930(void);
 extern void* lbl_802B7BD8;
