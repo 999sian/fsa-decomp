@@ -1235,6 +1235,11 @@ extern "C" void fn_80172EF8(u8* param_1, s32 param_2, u8* param_3) {
     p[0x3a] = f;
 }
 
+extern "C" s32 fn_80172F34(s32 p, s32 i)
+{
+    return p + i * 8 + 0x33;
+}
+
 extern "C" void fn_80172FA0(u8* p, s32 i, u32* src)
 {
 	((u32*)(p + 0x5c))[i] = *src;
