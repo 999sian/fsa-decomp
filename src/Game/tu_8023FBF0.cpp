@@ -1106,13 +1106,12 @@ BOOL fn_802454C0(char* p) {
         ok2 = false;
     } else {
         s32 mode;
-        s32 d;
         s32 e;
         s32 i;
         s32 c;
+        s32 d;
         c = 0;
-        i = c;
-        for (; i < 4; i++) {
+        for (i = c; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
@@ -1511,6 +1510,7 @@ inline bool padActive6(char* p) {
     }
     return true;
 }
+inline s32 countSharing6(char* p);
 f32 fn_80246F28(char* p) {
     return !padActive6(p) ? 0.0f : fn_80309D90(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
 }
