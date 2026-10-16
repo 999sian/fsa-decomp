@@ -1753,6 +1753,10 @@ extern "C" void fn_801A5288(u8* p, s32 i, u32* pv) {
     *((u32*)(p + (i << 2) + 0x6c)) = *pv;
 }
 
+extern "C" s32 fn_801A529C(s32 p, s32 i) {
+    return p + i * 4 + 0x6c;
+}
+
 extern "C" void fn_801A534C(void) {}
 
 extern "C" void fn_801A5350(void) {}
