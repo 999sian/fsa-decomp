@@ -1321,6 +1321,10 @@ extern "C" void fn_80188DE0(void* self, int a, int b, int c) {
     ((VObj_80180920*)self)->vfC8(a, b, 0);
 }
 
+extern "C" void fn_80188E10(VObj_80180980* self, int a) {
+    self->vfC4(a, 0);
+}
+
 extern "C" void fn_80188E40(void* self, int a, int b) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
