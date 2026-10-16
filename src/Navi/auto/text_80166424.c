@@ -560,6 +560,17 @@ extern "C" void* fn_80174BB8(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern void* lbl_80298C5C[];
+extern "C" void* fn_80174C64(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80298C5C;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" u8 fn_80177F0C(u8* self, void* arg)
 {
     u8* it = *(u8**)(self + 0xdc);
