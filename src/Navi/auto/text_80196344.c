@@ -492,6 +492,10 @@ extern "C" int fn_80199A58() {
     return 0x1e;
 }
 
+extern "C" s32 fn_80199A60(void) {
+    return 0x55;
+}
+
 extern "C" void fn_8019ACF0(NaviVObj* p) {
     p->vf4();
     p->vf5();
