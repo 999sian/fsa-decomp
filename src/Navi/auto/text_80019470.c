@@ -907,6 +907,10 @@ extern "C" void fn_8001C984(void) {
     fn_8001EC90();
 }
 
+extern "C" void fn_8001C9A4(int param_1) {
+    fn_8001C454(fn_8001BFF8(), param_1, 0);
+}
+
 extern "C" void* fn_8001BC68(void* param_1);
 extern "C" void fn_8001C9DC(void* param_1) {
     fn_8001BC68(param_1);
