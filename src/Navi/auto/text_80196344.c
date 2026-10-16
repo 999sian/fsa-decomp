@@ -1021,6 +1021,10 @@ extern "C" s32 fn_801A5018(s32 p, s32 i) {
     return p + i * 2 + 0xe;
 }
 
+extern "C" void fn_801A502C(u8* p, u8 v) {
+    p[0x16] = v;
+}
+
 extern "C" u8 fn_801A5040(int param_1)
 {
     return *(u8*)(param_1 + 0x16);
