@@ -1,5 +1,10 @@
 
 
+struct GXColor_CC {
+    unsigned char r, g, b, a;
+    GXColor_CC(unsigned char r_, unsigned char g_, unsigned char b_, unsigned char a_) : r(r_), g(g_), b(b_), a(a_) {}
+};
+
 extern "C" char lbl_804A9020[];
 extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(void*, int);
