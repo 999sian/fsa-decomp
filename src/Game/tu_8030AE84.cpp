@@ -33,3 +33,15 @@ extern "C" void fn_8030BD3C(u8* p, int id)
     *(int*)(p + 0x29c) = 0;
 }
 
+extern u8 lbl_804AA8D8[];
+extern "C" u8* fn_8030BDB0(u8* p, s16 del)
+{
+    if (p != 0) {
+        *(u8**)p = lbl_804AA8D8;
+        if (del > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
