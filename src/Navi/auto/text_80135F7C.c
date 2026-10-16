@@ -16,6 +16,8 @@ struct KeyIter {
 struct StrideIter {
     f32* p;
     u32 stride;
+
+    StrideIter(const StrideIter& o) : p(o.p), stride(o.stride) {}
 };
 
 static inline s32 KeyIter_distance(KeyIter first, KeyIter last) {
@@ -819,6 +821,23 @@ extern "C" void fn_80139364(KeyIter* ret, KeyIter* first, KeyIter* last, f64* va
         }
     }
     *ret = *first;
+}
+
+extern "C" StrideIter fn_801393E4(StrideIter first, StrideIter last, const f64& val) {
+    s32 len = (s32)((last.p - first.p) / last.stride);
+    while (len > 0) {
+        s32 half = len / 2;
+        StrideIter mid = first;
+        mid.p += mid.stride * half;
+        if (val < *mid.p) {
+            len = half;
+        } else {
+            mid.p += mid.stride;
+            first = mid;
+            len = len - (half + 1);
+        }
+    }
+    return first;
 }
 
 extern "C" void fn_801396C0(u32* dst, u32* src) {
