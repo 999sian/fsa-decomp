@@ -62,6 +62,11 @@ extern "C" void fn_801159E0(Vec3f* out, void* a) {
     *out = v;
 }
 
+extern "C" void fn_80115A74(Vec3f* out, Vec3f* a) {
+    fn_801C692C(a, a);
+    *out = *a;
+}
+
 extern const float lbl_80301424;
 extern const float lbl_802FEAB8;
 extern "C" int fn_80115B58(Vec3f* a) {
