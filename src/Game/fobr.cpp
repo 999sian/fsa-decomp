@@ -1,6 +1,8 @@
 // TU 0x8020b354-0x8020c0a8 (actor FOBR).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
 
 // ---- Fobr_ctor_8020BE40.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
