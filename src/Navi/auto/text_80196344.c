@@ -836,7 +836,7 @@ extern "C" void fn_801A48CC(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] =
 extern "C" void fn_801A48E0(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] = *p3; }
 
 extern "C" int fn_801A4960(int param_1, int param_2) {
-    return param_1 + (param_2 * 8 + 0x98);
+    return param_1 + param_2 * 8 + 0x98;
 }
 
 extern "C" void fn_801A4974(u8* p1, int p2, u8* p3) {
