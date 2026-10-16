@@ -72,6 +72,12 @@ extern "C" void* fn_8016ABEC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80118BD0(void* p, s32 n);
+extern u8 lbl_80202218[];
+extern "C" u32 fn_8016AC94(void) {
+    return 0x49424C4E;
+}
+
 extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_802985C8;
