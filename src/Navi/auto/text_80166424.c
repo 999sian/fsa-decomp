@@ -1312,6 +1312,10 @@ extern "C" void fn_80172A84(void* self, int a, int b) {
     ((Obj*)self)->vf7C(a, b, 0);
 }
 
+extern "C" s32 fn_80172B18(void) {
+    return 0x54564234;
+}
+
 extern "C" int fn_80172B24(void) {
     return 4;
 }
