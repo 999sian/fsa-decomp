@@ -108,3 +108,26 @@ extern "C" fn_80440F30_Self* fn_80440F30(fn_80440F30_Self* self, s16 flag)
     return self;
 }
 
+extern u8 lbl_804AF86C[];
+extern u8 lbl_80529DEC[];
+extern char lbl_8048FAE0[];
+extern "C" void fn_80402F04(void*, void*);
+extern "C" u8* fn_80440FDC(u8* self)
+{
+    *(u8**)self = lbl_804B1988;
+    lbl_8053AED8 = self;
+    J2DScreen* screen = new J2DScreen();
+    *(J2DScreen**)(self + 4) = screen;
+    (*(J2DScreen**)(self + 4))->setPriority(lbl_8048FAE0, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x20));
+    void** obj = (void**)operator new(0x2c);
+    if (obj != NULL) {
+        *obj = lbl_804AF86C;
+    }
+    *(void***)(self + 8) = obj;
+    fn_80402F04(*(void**)(self + 8), (*(fn_80440C6C_Obj**)(self + 4))->find(0x4E646174613031ULL));
+    for (int i = 0; i < 7; i++) {
+        self[0xc + i] = (*(fn_80440C6C_Obj**)(self + 4))->find(lbl_8048FAA8[i])[0xb2];
+    }
+    return self;
+}
+
