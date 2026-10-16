@@ -20,4 +20,6 @@ fn_8011691C((unsigned short*)param_1, 0);
 extern "C" void fn_8011691C(unsigned short* param_1, unsigned short param_2) {
     *param_1 = param_2;
 }
-
+extern "C" u8 lbl_802C5D58[];
+extern "C" void* lbl_802FDC98;
+extern "C" f32 lbl_80301470;
