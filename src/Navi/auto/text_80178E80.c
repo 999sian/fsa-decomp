@@ -109,8 +109,29 @@ extern "C" void* fn_80180BAC(u32* self) {
     return self;
 }
 
+extern "C" void fn_80184B34(u8* self, u32* out) {
+    out[0] = *(u32*)(self + 0x148);
+    out[1] = *(u32*)(self + 0x14c);
+    out[2] = *(u32*)(self + 0x150);
+    out[3] = *(u32*)(self + 0x154);
+    out[4] = *(u32*)(self + 0x160);
+}
+
+extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
+    f32 rect[4];
+    rect[0] = x;
+    rect[1] = y;
+    rect[2] = x + w;
+    rect[3] = y + h;
+    ((void (*)(void*, f32*))(*(void***)self)[0x94 / 4])(self, rect);
+}
+
 extern "C" void fn_80184BF4(void) {
     fn_80177F0C();
+}
+
+extern "C" void fn_80184C14(void) {
+    fn_80178990();
 }
 
 extern "C" void fn_80184C34(void) {
@@ -161,7 +182,8 @@ extern "C" void* fn_8018939C(void* self, s16 param_2) {
         if (*((u8*)self + 0x140) != 0) {
             void* obj = *(void**)((u8*)self + 0x138);
             if (obj != nullptr) {
-                ((void (*)(void*, s32))(*(void***)obj)[0x8 / 4])(obj, 1);
+                void** vtbl = *(void***)obj;
+                ((void (*)(void*, s32))vtbl[0x8 / 4])(obj, 1);
             }
         }
         fn_80181724(self, 0);
@@ -172,7 +194,7 @@ extern "C" void* fn_8018939C(void* self, s16 param_2) {
     return self;
 }
 
-extern "C" void fn_80189BD8(void* self, s32 param_2) {
+extern "C" void fn_80189BD8(void* self, u32 param_2) {
     if (param_2 != 0) {
         void* obj = *(void**)((u8*)self + 0x138);
         if (obj != nullptr) {
@@ -196,6 +218,20 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     local_c = local_14;
     void** vtbl = *(void***)self;
     return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
+}
+
+extern "C" int fn_8018A4B4(u8* self, s32* p1, s32* p2) {
+    u8* obj;
+    if (*p1 == 0 && *p2 == -1) {
+        return 1;
+    }
+    obj = *(u8**)(*(u8**)(self + 0x138) + 0x70);
+    (*(void (**)(void*))(*(u32*)obj + 0x58))(obj);
+    obj = *(u8**)(*(u8**)(self + 0x138) + 0x70);
+    if ((*(u8 (**)(void*))(*(u32*)obj + 0x18))(obj) == 1) {
+        return 0;
+    }
+    return 1;
 }
 
 extern "C" void fn_8018A87C(void) {
