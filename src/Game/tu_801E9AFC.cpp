@@ -67,6 +67,11 @@ extern "C" void fn_801E9C00(s16 param_1, f32* param_2) {
     param_2[1] = param_2[1] * pt[1] + fx * pt[0];
 }
 
+extern "C" void fn_801EA304(u8* param_1) {
+    GXLoadTlut((GXTlutObj*)(param_1 + 0x160), 0);
+    GXLoadTexObj((GXTexObj*)(param_1 + 0x114), GX_TEXMAP0);
+}
+
 extern "C" void fn_801EA344(u8* param_1) {
     GXLoadTlut((GXTlutObj*)(param_1 + 0x154), 0);
     GXLoadTexObj((GXTexObj*)(param_1 + 0xf4), GX_TEXMAP0);
