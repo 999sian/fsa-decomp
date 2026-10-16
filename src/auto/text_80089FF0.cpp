@@ -9,6 +9,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 
 extern "C" void fn_8008A220(u16 param_1, OSContext* param_2, u32 param_3, u32 param_4);
+extern "C" void fn_8008A4C4(unsigned int param_1);
 extern "C" unsigned int lbl_8053A904;
 extern "C" u32 lbl_8053A918;
 extern "C" u32 lbl_8053A91C;
@@ -16,6 +17,60 @@ extern "C" u8 lbl_804BA1B0[];
 extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
+JUTException* JUTException::create(JUTDirectPrint* directPrint)
+{
+    if (sErrorManager == nullptr) {
+        sErrorManager = new (JKRGetSystemHeap(), 0) JUTException(directPrint);
+        sErrorManager->resume();
+    }
+    return sErrorManager;
+}
+
+extern "C" void fn_8008C390(JUTException* this_);
+extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2, u32 param_3, u32 param_4);
+extern "C" void fn_8008A100(JUTException* this_)
+{
+    extern JUTException* lbl_8053A900;
+
+    PPCMtmsr(PPCMfmsr() & ~0x900);
+    OSInitMessageQueue(&lbl_80499390, 0, 1);
+    while (true)
+    {
+        OSMessage message;
+        OSReceiveMessage(&lbl_80499390, &message, 1);
+        VISetPreRetraceCallback(0);
+        VISetPostRetraceCallback(0);
+        u16 error = *(u16*)((u8*)message + 4);
+        JUTErrorHandler callback = *(JUTErrorHandler*)message;
+        OSContext* context = *(OSContext**)((u8*)message + 8);
+        u32 dsisr = *(u32*)((u8*)message + 0xc);
+        u32 dar = *(u32*)((u8*)message + 0x10);
+
+        if (error < OS_ERROR_MAX)
+        {
+            this_->mStackPointer = context->gpr[1];
+        }
+
+        this_->mFrameMemory = (JUTExternalFB*)VIGetCurrentFrameBuffer();
+        if (this_->mFrameMemory == 0)
+        {
+            fn_8008C390(lbl_8053A900);
+        }
+        lbl_8053A900->mDirectPrint->changeFrameBuffer(this_->mFrameMemory);
+
+        if (callback)
+        {
+            callback(error, context, dsisr, dar);
+        }
+
+        OSDisableInterrupts();
+
+        this_->mFrameMemory = (JUTExternalFB*)VIGetCurrentFrameBuffer();
+        lbl_8053A900->mDirectPrint->changeFrameBuffer(this_->mFrameMemory);
+        fn_8008BE24(lbl_8053A900, error, context, dsisr, dar);
+    }
+}
+
 extern "C" void fn_8008A220(u16 param_1, OSContext* param_2, u32 param_3, u32 param_4)
 {
     lbl_8053A918 = PPCMfmsr();
