@@ -73,6 +73,27 @@ extern "C" unsigned int fn_801E63D0(void) {
     return (lbl_802FEAA8 >> 16) & 0x7fff;
 }
 
+extern "C" char* fn_801E64A4(char* str, int c) {
+    register char* p = str - 1;
+    register unsigned char target = c;
+    register unsigned char ch;
+    register char* result;
+
+    ch = *++p;
+    while (ch != 0) {
+        if (ch == target) {
+            return p;
+        }
+        ch = *++p;
+    }
+    if (target == 0) {
+        result = p;
+    } else {
+        result = 0;
+    }
+    return result;
+}
+
 extern "C" char* fn_801E6704(char* dst, const char* src, unsigned long n) {
     register unsigned char* q = (unsigned char*)dst - 1;
     register const unsigned char* p = (const unsigned char*)src - 1;
