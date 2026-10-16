@@ -34,6 +34,33 @@ extern "C" void fn_801C186C(u8* p)
     }
 }
 
+extern "C" void* fn_801C231C(u8* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A4310;
+        fn_801EE434(*(void**)(this_ + 0x2b0));
+        for (s32 i = 0; i < 3; i++) {
+            fn_801EE434(*(void**)(this_ + 0x2b4 + i * 4));
+        }
+        for (s32 i = 0; i < 5; i++) {
+            fn_801EE434(*(void**)(this_ + 0x2c0 + i * 4));
+        }
+        fn_8021FAB8(this_ + 0x3f8, -1);
+        if (this_ != 0) {
+            *(void**)this_ = lbl_804A4808;
+            if (this_ + 0x270 != 0) {
+                if (this_ + 0x294 != 0) {
+                    *(void**)(this_ + 0x294) = lbl_8049CC34;
+                }
+            }
+            __dt__5ActorFv(this_, 0);
+        }
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_801D0F40(u8* this_);
 extern "C" u8* fn_8021C5B0(u8* this_);
 extern "C" void fn_8021FB44(char* p);
