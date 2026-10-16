@@ -231,6 +231,19 @@ extern "C" void fn_8015AD64(Unk8015AD64* p) {
     }
 }
 
+extern "C" char* fn_8015ADE8(char* p, char* param_2, int param_3, int param_4, void* param_5) {
+    fn_801598A4(p);
+    *(void**)p = lbl_802975C4;
+    p[0x6c] = 0;
+    *(u8*)(p + 0x6d) = 0xff;
+    *(char**)(p + 0x78) = param_2;
+    *(char**)(p + 0x7c) = *(char**)(p + 0x78);
+    fn_8015C518(*(char**)(p + 0x78), 0, 0, param_3 - 0x10, 0, 0);
+    *(u32*)(p + 0x80) = 0;
+    *(u32*)(p + 0x84) = 0;
+    return p;
+}
+
 extern void* lbl_802975C4[];
 extern "C" void fn_8015A530(void*);
 extern "C" void fn_801599D0(void*, int);
