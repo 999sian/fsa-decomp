@@ -433,6 +433,17 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" void fn_801BE3A0(void*);
+extern "C" void fn_801BE47C(void*);
+extern "C" void fn_8015A48C(void*);
+extern "C" void fn_80124034(const char* fmt, ...);
+extern char lbl_802976B8[];
+extern char lbl_80297718[];
+extern "C" int fn_8015CD98(void) {
+    fn_80124034(lbl_802976B8);
+    return -1;
+}
+
 extern "C" BOOL fn_8015CFE4(void* p, u32* a, u32* b) {
     BOOL r = 1;
     if (a[1] != b[1]) {
