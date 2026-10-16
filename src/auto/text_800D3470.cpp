@@ -76,6 +76,33 @@ struct Unk800DD148Obj {
     virtual void m24() = 0;
 };
 
+struct Unk800DBF04Obj {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual u8* m14(int) = 0;
+    virtual void m15() = 0;
+    virtual void m16() = 0;
+    virtual u8* m17(int) = 0;
+    virtual void m18() = 0;
+    virtual void m19() = 0;
+    virtual u8 m20() = 0;
+    virtual void m21() = 0;
+    virtual void m22() = 0;
+    virtual u16* m23(int) = 0;
+};
+
 struct Unk800DDA5C {
     u16 a;
     u8 b;
@@ -1342,6 +1369,35 @@ extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
     for (i = 0, dst = self; i < 4; i++) {
         *(u16*)(dst + 0xe) = *src->getColorChan(i);
         dst += 2;
+    }
+}
+
+extern "C" void fn_800DBDB0(u8* self, Unk800DBCCCSrc* src) {
+    *(u8*)(self + 0xc) = src->getColorChanNum();
+    u8* dst = self;
+    for (u32 i = 0; i < 2; i++) {
+        u8* c = src->getMatColor(i);
+        dst[4] = c[0];
+        dst[5] = c[1];
+        dst[6] = c[2];
+        dst[7] = c[3];
+        dst += 4;
+    }
+    u32 i;
+    for (i = 0, dst = self; i < 4; i++) {
+        *(u16*)(dst + 0xe) = *src->getColorChan(i);
+        dst += 2;
+    }
+    dst = self;
+    for (i = 0; i < 2; i++) {
+        if (src->m15(i) != 0) {
+            u8* c = src->m15(i);
+            dst[0x20] = c[0];
+            dst[0x21] = c[1];
+            dst[0x22] = c[2];
+            dst[0x23] = c[3];
+        }
+        dst += 4;
     }
 }
 
