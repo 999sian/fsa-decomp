@@ -91,6 +91,10 @@ extern "C" void fn_8016AD04(void) {
 extern "C" void fn_8016AD08(void) {
 }
 
+extern "C" unsigned int fn_80173060(void) {
+    return 0x54564231;
+}
+
 extern "C" void fn_801730DC(s16 (*p)[4], s32 i, s16* src)
 {
 	s16 a = src[0];
