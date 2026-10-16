@@ -19,6 +19,7 @@ struct VObj_800D02D8 {
     virtual void SetAlpha(s32 a);
 };
 extern f32 lbl_80300F48;
+extern f64 lbl_80300F58;
 extern "C" f32 fn_800D0570(u8* p, s32 idx, s32 t, s32 b, f32 from, f32 to);
 
 struct VObjLerp {
