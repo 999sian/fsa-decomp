@@ -8,6 +8,28 @@ extern "C" void __dt__5ActorFv(void* this_, s16 freeFlag);
 extern "C" void* fn_8013CC50(u32 id, void* pos, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801D22DC(void*, s32, s32, s32);
 extern "C" void fn_801D1F14(void*, f32);
+extern "C" void fn_801D2608(void*, void*, s32);
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D8050(void*, s32, s32, s32);
+
+struct OpgaVT {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12(u32 a, u32 b);
+    virtual u8 v13();
+    virtual void v14();
+    virtual int v15();
+};
 void operator delete(void* p);
 extern "C" void* __vt__4OPGA[];
 extern void* lbl_8049CC34[];
