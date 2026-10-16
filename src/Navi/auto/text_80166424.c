@@ -1436,10 +1436,60 @@ extern "C" void fn_80173384(void)
 {
 }
 
+extern "C" u8 lbl_80301AB0[4];
+extern "C" void fn_801742AC(u8* p, u8* s, u32 a, u32 b) {
+    u16 row = ((u16*)*(u8**)(s + 8))[a];
+    u16* tbl = (u16*)(*(u8**)(s + 4) + row * 0xe8 + 0x72);
+    u16 idx = tbl[b];
+    if (idx != 0xffff) {
+        u8* t = *(u8**)(s + 0x34) + idx * 4;
+        p[0] = t[0];
+        p[1] = t[1];
+        p[2] = t[2];
+    } else {
+        p[0] = lbl_80301AB0[0];
+        p[1] = lbl_80301AB0[1];
+        p[2] = lbl_80301AB0[2];
+    }
+}
+
+extern "C" void fn_80174320(s16* out, u8* p, u32 index, u32 subindex) {
+    s16 fallback[4];
+    u16* table = *(u16**)(p + 8);
+    u8* base = *(u8**)(p + 4);
+    *(u32*)fallback = lbl_80302388;
+    *(u32*)(fallback + 2) = lbl_8030238C;
+    u16 uVar1 = *(u16*)(base + (table[index] * 0xe8 + 0x92 + subindex * 2));
+    if (uVar1 != 0xffff) {
+        s16* entry = (s16*)(*(u8**)(p + 0x38) + uVar1 * 8);
+        out[0] = entry[0];
+        out[1] = entry[1];
+        out[2] = entry[2];
+        out[3] = entry[3];
+    } else {
+        out[0] = fallback[0];
+        out[1] = fallback[1];
+        out[2] = fallback[2];
+        out[3] = fallback[3];
+    }
+}
+
+extern "C" void fn_801743B8(u32* out, u8* p, u32 index, u32 subindex) {
+    u16* table = *(u16**)(p + 8);
+    u8* base = *(u8**)(p + 4);
+    u16 uVar1 = *(u16*)(base + (table[index] * 0xe8 + 0x4a + subindex * 2));
+    if (uVar1 != 0xffff) {
+        *out = *(u32*)(*(u8**)(p + 0x3c) + (u16)uVar1 * 4);
+    } else {
+        *out = lbl_80301AF4;
+    }
+}
+
 extern "C" u8 fn_80174454(u8* param_1, u32 param_2) {
-    u16* table = *(u16**)(param_1 + 8);
     u8* base = *(u8**)(param_1 + 4);
-    u8 bVar1 = base[table[param_2] * 0xe8 + 4];
+    u16* table = *(u16**)(param_1 + 8);
+    u32 off = table[param_2] * 0xe8;
+    u8 bVar1 = base[off + 4];
     if (bVar1 != 0xff) {
         return (*(u8**)(param_1 + 0x40))[bVar1];
     }
