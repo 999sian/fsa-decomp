@@ -59,6 +59,31 @@ extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
     d[3] = w;
 }
 
+extern "C" void fn_80019490(f32* d, const f32* s) {
+    d[0] = s[0];
+    d[1] = s[1];
+    d[2] = s[2];
+    d[3] = s[3];
+    d[4] = s[4];
+    d[5] = s[5];
+}
+
+extern "C" void fn_800194C4(f32* d, const Vec* a, const Vec* b) {
+    f32 z;
+    f32 x = a->x;
+    f32 y = a->y;
+    d[0] = x;
+    z = a->z;
+    d[1] = y;
+    d[2] = z;
+    x = b->x;
+    y = b->y;
+    d[3] = x;
+    z = b->z;
+    d[4] = y;
+    d[5] = z;
+}
+
 extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -68,6 +93,10 @@ extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
 
 extern "C" void fn_80019534(void* param_1) {
     fn_8001C2E4(*(void**)((u8*)param_1 + 0x224), param_1);
+}
+
+extern "C" void fn_8001955C(void* param_1) {
+    fn_8001D57C(*(void**)((u8*)param_1 + 0x224), param_1);
 }
 
 extern "C" void fn_8001978C(void) {
