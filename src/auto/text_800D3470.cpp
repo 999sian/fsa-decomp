@@ -469,6 +469,26 @@ extern "C" void fn_800D7F78(void* p) {
     DCStoreRange(saved, (u32)(now - saved));
 }
 
+extern "C" void fn_800D800C(u8* self) {
+    u8* p = self;
+    u32 i = 0;
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0xd4);
+    u8* start = __GDCurrentDL->pDisplayListData;
+    for (; i < 3; i++) {
+        GXColorS10 c = *(GXColorS10*)(p + 0x98);
+        J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
+        p += 8;
+    }
+    i = 0;
+    p = self;
+    for (; i < 4; i++) {
+        GXColor c = *(GXColor*)(p + 0xb8);
+        J3DGDSetTevKColor(GXTevKColorID(i), c);
+        p += 4;
+    }
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
 struct Vtable800D8248;
 extern "C" void fn_800D8248(Vtable800D8248* p) {
     p->m9();
@@ -512,25 +532,24 @@ extern "C" void fn_800D8414(void* param_1) {
 }
 
 extern "C" void fn_800D84A8(u8* this_) {
+    u32 col[2];
     u32 kcol;
-    GXColorS10 col;
     u8* base;
+    u32 i;
     u8* p;
-    s32 i;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x68);
     base = __GDCurrentDL->pDisplayListData;
-    p = this_;
     for (i = 0; i < 3; i++) {
-        col = *(GXColorS10*)(p + 0x14);
-        J3DGDSetTevColorS10((GXTevRegID)(i + 1), col);
-        p += 8;
+        p = this_ + i * 8;
+        col[0] = *(u32*)(p + 0x14);
+        col[1] = *(u32*)(p + 0x18);
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)col);
     }
-    p = this_;
     for (i = 0; i < 4; i++) {
+        p = this_ + i * 4;
         kcol = *(u32*)(p + 0x45);
         J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)&kcol);
-        p += 4;
     }
     DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
 }
@@ -557,16 +576,22 @@ extern "C" void fn_800D8720(void* param_1) {
 }
 
 extern "C" void fn_800D87B4(u8* self) {
-    u32 i;
+    u32 i = 0;
+    u8* p = self;
+    u8* start;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0x90);
-    u8* start = __GDCurrentDL->pDisplayListData;
-    for (i = 0; i < 3; i++) {
-        GXColorS10 c = *(GXColorS10*)(self + 0x42 + i * 8);
+    start = __GDCurrentDL->pDisplayListData;
+    for (; i < 3; i++) {
+        GXColorS10 c = *(GXColorS10*)(p + 0x42);
         J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
+        p += 8;
     }
-    for (i = 0; i < 4; i++) {
-        GXColor c = *(GXColor*)(self + 0x62 + i * 4);
+    i = 0;
+    p = self;
+    for (; i < 4; i++) {
+        GXColor c = *(GXColor*)(p + 0x62);
         J3DGDSetTevKColor(GXTevKColorID(i), c);
+        p += 4;
     }
     DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
 }
@@ -593,15 +618,19 @@ extern "C" void fn_800D8A3C(void* p) {
 }
 
 extern "C" void fn_800D8AD0(u8* this_) {
+    u32 i = 0;
     u8* p = this_;
+    u8* base;
+
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x170);
-    u8* base = __GDCurrentDL->pDisplayListData;
-    for (u32 i = 0; i < 3; i++) {
+    base = __GDCurrentDL->pDisplayListData;
+    for (i = 0; i < 3; i++) {
         J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0xda));
         p += 8;
     }
+    i = 0;
     p = this_;
-    for (u32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0xfa));
         p += 4;
     }
@@ -985,6 +1014,19 @@ extern "C" void fn_800DBC64(void* obj, u32 flags) {
         FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x1c);
         fn(obj);
     }
+}
+
+extern "C" void fn_800DC574(u8* param_1, int* param_2) {
+    *(u16*)(param_1 + 8) = (*(u16(**)(int*, int))(*(u8**)param_2 + 0x50))(param_2, 0);
+    *(u32*)(param_1 + 0xa) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0x5c))(param_2, 0));
+    u8* p = (*(u8*(**)(int*, int))(*(u8**)param_2 + 0xa4))(param_2, 0);
+    param_1[0xf] = p[1];
+    param_1[0x10] = p[2];
+    param_1[0x11] = p[3];
+    param_1[0x13] = p[5];
+    param_1[0x14] = p[6];
+    param_1[0x15] = p[7];
+    *(u32*)(param_1 + 0x18) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0xc4))(param_2, 0));
 }
 
 extern "C" u32 fn_800DD89C() {
@@ -2498,10 +2540,6 @@ extern "C" void fn_800D95B0(u8* p)
         J3DGDWriteBPCmd(*(u32*)(p + 0x60) | ((i + 0x10) << 24));
         p += 4;
     }
-}
-
-extern "C" void fn_800D9658(void* p) {
-    return;
 }
 
 #endif
