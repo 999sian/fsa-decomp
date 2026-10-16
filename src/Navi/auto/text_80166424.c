@@ -1,5 +1,7 @@
 
 
+#include "types.h"
+
 extern "C" u32* fn_80169B1C(u32* self, short param_2)
 {
     if (self != NULL) {
