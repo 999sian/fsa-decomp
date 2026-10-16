@@ -166,22 +166,21 @@ extern "C" f32 fn_801ABF3C(Anim_801ABF3C* self, u16 idx)
     }
 }
 
-extern "C" void* fn_801ABFC0(u8* p) {
+extern "C" void fn_801ABFC0(u8* p) {
     f32 f = lbl_80301D6C;
     *(void**)p = lbl_8027F214;
     p[4] = 0;
     p[5] = 0;
-    *(u16*)(p + 6) = 0;
+    *(s16*)(p + 6) = 0;
     *(f32*)(p + 8) = f;
     *(void**)p = lbl_8029B430;
-    *(u16*)(p + 0xc) = 0;
-    *(u16*)(p + 0xe) = 0;
-    *(u32*)(p + 0x10) = 0;
-    *(u32*)(p + 0x14) = 0;
+    *(s16*)(p + 0xc) = 0;
+    *(s16*)(p + 0xe) = 0;
+    *(s32*)(p + 0x10) = 0;
+    *(s32*)(p + 0x14) = 0;
     *(void**)p = lbl_8029B41C;
-    *(u32*)(p + 0x18) = 0;
-    *(u32*)(p + 0x1c) = 0;
-    return p;
+    *(s32*)(p + 0x18) = 0;
+    *(s32*)(p + 0x1c) = 0;
 }
 
 extern "C" int fn_801194B4(void*, unsigned short);
@@ -236,16 +235,15 @@ extern "C" void fn_801ACC40(u8* self, u16 idx, u16* out) {
 }
 
 extern "C" void fn_801ACCF4(u8* self, u16 idx, u8* out) {
+    u16* tbl = *(u16**)(self + 0x10);
+    s32 count = tbl[idx * 2];
     s32 i = (s32)(lbl_80301D80 + *(f32*)(self + 8));
-    u8* tbl = *(u8**)(self + 0x10);
-    u16 count = *(u16*)(tbl + idx * 4);
-    u8* data = *(u8**)(self + 0x14);
     if (i < 0) {
-        *out = data[*(u16*)(tbl + idx * 4 + 2)];
+        *out = (*(u8**)(self + 0x14))[tbl[idx * 2 + 1]];
     } else if (i >= count) {
-        *out = data[count + *(u16*)(tbl + idx * 4 + 2) - 1];
+        *out = (*(u8**)(self + 0x14))[count + tbl[idx * 2 + 1] - 1];
     } else {
-        *out = data[i + *(u16*)(tbl + idx * 4 + 2)];
+        *out = (*(u8**)(self + 0x14))[i + tbl[idx * 2 + 1]];
     }
 }
 
@@ -344,6 +342,24 @@ extern void* lbl_8027F214[];
 extern "C" void* fn_801ADA54(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029B430;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8027F214;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
+extern void* lbl_80286A4C[];
+extern "C" void fn_8015AB1C(void* p);
+extern "C" void* fn_801ADAB0(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029B388;
+        if ((s32)ptr + 0x1c != 0) {
+            ((void**)(ptr))[7] = lbl_80286A4C;
+        }
         if (ptr != nullptr) {
             *(void**)ptr = lbl_8027F214;
         }
