@@ -16,9 +16,3 @@ extern "C" void fn_801C6784(void* p) {
         *(s16*)((char*)p + 0x33c) = fn_801D0280(p, *(s32*)((char*)p + 0x590));
     }
 }
-struct Unk801C6784 {
-    u8 unk_00[0x4];
-    s32 field_04;
-    u8 unk_08[0x4];
-    f32 field_0C;
-};
