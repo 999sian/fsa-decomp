@@ -65,6 +65,8 @@ struct VObj_801398CC {
     virtual void v4(void*);
 };
 
+struct Ptr_8013B368 { u32* p; };
+
 struct Chunk_8013B368 {
     u8 type;
     u32 size;
@@ -1200,13 +1202,12 @@ extern "C" void fn_8013B140(VObj_8013B140* self, u32* p)
 
 extern "C" void fn_8013B368(u32** src, u8* dst)
 {
-    u32* p;
+    u32* p = *src;
     u32 hdr;
     u32 size;
     u8 type;
     *(u32*)(dst + 8) = 0;
     *(u32*)(dst + 0xc) = 0;
-    p = *src;
     hdr = *p;
     type = hdr >> 24;
     size = hdr & 0xffffff;
@@ -1220,6 +1221,20 @@ extern "C" void fn_8013B368(u32** src, u8* dst)
             *(u8**)(dst + 8) = data;
             *(u8**)(dst + 0xc) = data + size;
         }
+    }
+}
+
+extern "C" void fn_8013B3B4(void** src, Chunk_8013B368* dst)
+{
+    u32 size;
+    u8* p = (u8*)fn_80167818(*src, &size, dst, 0);
+    dst->size = size;
+    if (size == 0) {
+        dst->data = 0;
+        dst->end = p;
+    } else {
+        dst->data = p;
+        dst->end = p + ((size + 3) & ~3);
     }
 }
 
@@ -1241,8 +1256,8 @@ extern "C" void fn_801C5DA8(void* a, void* b, void* c);
 extern "C" void fn_801C5E74(void* a, void* b);
 extern "C" void fn_80133000(void* a, void* b, void* c, void* d);
 extern "C" s32 fn_8013BAB4(void* a, f32* b, void* c, u32 d) {
-    u8 pos[48];
     u8 out[48];
+    u8 pos[48];
     if (c == nullptr) {
         return 0;
     }
@@ -1255,9 +1270,9 @@ extern "C" s32 fn_8013BAB4(void* a, f32* b, void* c, u32 d) {
 }
 
 extern "C" s32 fn_8013BB4C(void* a, u8* b, void* c, u32 d) {
-    u8 pos[48];
-    u8 tmp[48];
     u8 out[48];
+    u8 tmp[48];
+    u8 pos[48];
     if (c == nullptr) {
         return 0;
     }
@@ -1271,9 +1286,9 @@ extern "C" s32 fn_8013BB4C(void* a, u8* b, void* c, u32 d) {
 }
 
 extern "C" s32 fn_8013BBF0(void* a, f32* b, void* c, u32 d) {
-    u8 pos[48];
-    u8 tmp[48];
     u8 out[48];
+    u8 tmp[48];
+    u8 pos[48];
     if (c == nullptr) {
         return 0;
     }
@@ -1296,10 +1311,10 @@ extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
 
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
-extern "C" void* fn_8013BEB0(NaviTracker* ptr, s16 param_2) {
+extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029320C;
-        ptr->fn_3();
+        ((NaviTracker*)ptr)->fn_3();
         fn_80133C0C(ptr, 0);
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
