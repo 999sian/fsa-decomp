@@ -15,6 +15,8 @@ struct TWEVParam {
     s32 i;
 };
 
+extern char lbl_80463BD0[];
+
 // ---- from Game/fn_80103F28_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
