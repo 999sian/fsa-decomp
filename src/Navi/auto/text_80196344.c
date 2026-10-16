@@ -612,6 +612,35 @@ extern "C" void fn_8019BF64(NaviVObj* p, u32 flags) {
     }
 }
 
+extern "C" void fn_8019BFD4(int param_1)
+{
+	extern int* lbl_802FFA80;
+	extern int lbl_802FE708;
+	extern void fn_801E012C(void);
+	u32 w;
+
+	if ((u32)(lbl_802FFA80[2] + lbl_802FE708) > (u32)lbl_802FFA80[3]) {
+		fn_801E012C();
+	}
+	*(*(u8**)&lbl_802FFA80[2])++ = 0x10;
+	*(*(u8**)&lbl_802FFA80[2])++ = 0;
+	*(*(u8**)&lbl_802FFA80[2])++ = 1;
+	*(*(u8**)&lbl_802FFA80[2])++ = 0x10;
+	*(*(u8**)&lbl_802FFA80[2])++ = 0xc;
+
+	w = *(u32*)(param_1 + 4);
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+	*(*(u8**)&lbl_802FFA80[2])++ = w;
+
+	w = *(u32*)(param_1 + 8);
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+	*(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+	*(*(u8**)&lbl_802FFA80[2])++ = w;
+}
+
 extern "C" void fn_8019C584(int param_1)
 {
 	extern int* lbl_802FFA80;
