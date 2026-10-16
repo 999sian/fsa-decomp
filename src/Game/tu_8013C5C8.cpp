@@ -100,7 +100,7 @@ extern "C" void fn_8013F588(void) {
 }
 
 extern "C" void fn_8013F6BC(void) {
-    u8* g = lbl_8053AB10; u8* sub = (u8*)*(void**)(g + 0x28); u8* d = (u8*)*(void**)(g + 0x24); PSMTXCopy(d + 0xe4, (u8*)*(void**)((u8*)*(void**)(sub + 0xc) + 0x20) + 0x184);
+    PSMTXCopy((u8*)*(void**)(lbl_8053AB10 + 0x24) + 0xe4, (u8*)*(void**)((u8*)*(void**)((u8*)*(void**)(lbl_8053AB10 + 0x28) + 0xc) + 0x20) + 0x184);
 }
 
 extern "C" void* fn_8013F6F8(void* this_, s16 freeFlag) {
@@ -128,8 +128,8 @@ struct Vec3_ { f32 x, y, z; };inline f32 addPI(f32 a) { return a + 3.1415927f; }
 extern "C" void fn_8010F668(f32 (*m)[4], Vec3_* axis, f32 rad);
 extern "C" void JPASetRMtxfromMtx__FPA4_CfPA4_f(f32 (*src)[4], void* dst);
 
-extern "C" bool fn_8013CAA4(u8* this_, f32 angle) {
-    u8 ret = 0;
+extern "C" u8 fn_8013CAA4(u8* this_, f32 angle) {
+    int ret = 0;
     if (this_ != 0) {
     f32 m[3][4];
     Vec3_ axis;
@@ -139,7 +139,7 @@ extern "C" bool fn_8013CAA4(u8* this_, f32 angle) {
     axis.x = 0.0f;
     axis.y = 1.0f;
     axis.z = 1.0f;
-    fn_8010F668(m, &axis, addPI(angle));
+    fn_8010F668(m, &axis, kPI + angle);
     m[0][0] *= -1.0f;
     m[0][1] *= -1.0f;
     m[0][2] *= -1.0f;
@@ -161,8 +161,8 @@ public:
     static JUTVideo* sManager;
     u32 _0;
     RenderMode_* mRenderMode;
-    u16 getFbWidth() const { return mRenderMode->fbWidth; }
-    u16 getEfbHeight() const { return mRenderMode->efbHeight; }
+    s32 getFbWidth() const { return mRenderMode->fbWidth; }
+    s32 getEfbHeight() const { return mRenderMode->efbHeight; }
 };
 struct DrawInfo_ {
     DrawInfo_() {
@@ -176,13 +176,14 @@ struct DrawInfo_ {
 
 extern "C" void fn_8013DB2C(u8* this_) {
     if (fn_80134CC8(lbl_8053AAF8)) {
-        DrawInfo_ info;
-        fn_8013B490(lbl_8053AB10);
-        DrawInfo_ info2;
-        PSMTXCopy((u8*)*(void**)(lbl_8053AB10 + 0x10) + 0x80, info.mCamMtx);
-        info.setOrtho(0.0f, JUTVideo::sManager->getEfbHeight(), 0.0f, JUTVideo::sManager->getFbWidth());
-        draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), &info, 4);
+        return;
     }
+    DrawInfo_ info;
+    fn_8013B490(lbl_8053AB10);
+    DrawInfo_ info2;
+    PSMTXCopy((u8*)*(void**)(lbl_8053AB10 + 0x10) + 0x80, info.mCamMtx);
+    info.setOrtho(0.0f, JUTVideo::sManager->getEfbHeight(), 0.0f, JUTVideo::sManager->getFbWidth());
+    draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), &info, 4);
 }
 
 struct MtxS_ { f32 m[3][4]; };
