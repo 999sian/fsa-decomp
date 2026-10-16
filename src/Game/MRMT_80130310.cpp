@@ -13,6 +13,20 @@ void operator delete(void* p);
 extern "C" char lbl_8049EA88[];
 extern const f32 lbl_8053CC94;
 extern const f32 lbl_8053CC98;
+extern const f32 lbl_8053CC78;
+extern const f32 lbl_8053CC7C;
+extern const f32 lbl_8053CC80;
+extern const f32 lbl_8053CC84;
+
+namespace JMath {
+template <int length, typename T>
+struct TAtanTable;
+template <>
+struct TAtanTable<1024, f32> {
+    f32 atan2_(f32, f32) const;
+};
+extern const TAtanTable<1024, f32> atanTable_;
+}
 extern "C" void* fn_80130310(void* this_, short how) {
     if (this_) {
         *(void**)this_ = lbl_8049EA88;
@@ -22,6 +36,48 @@ extern "C" void* fn_80130310(void* this_, short how) {
         }
     }
     return this_;
+}
+
+extern "C" s32 fn_8013056C(char* p, u16 id, s32 mode, s32 val) {
+    u8* actor;
+    Vec pos;
+    s32 which = *(s32*)(p + 0x238);
+    if (mode == 1) {
+        which = *(s32*)(p + 0x234);
+    }
+    fn_8022FE80(0, *(void**)(p + 4), which, 1, 0);
+    pos = *(Vec*)(p + 0xc);
+    if (fn_8038BD08(0, id, *(void**)(p + 4), &pos, 0x22) != 0) {
+        switch (mode) {
+        case 0:
+            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234));
+            if (actor != 0) {
+                *(s32*)(actor + 0x98) = val;
+                fn_80125C58(actor, 1);
+            }
+            break;
+        case 1:
+            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
+            if (actor != 0) {
+                *(s32*)(actor + 0x98) = val;
+                fn_80125C58(actor, 1);
+            }
+            break;
+        case 2:
+            actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
+            if (actor != 0) {
+                *(s32*)(actor + 0x98) = val;
+                fn_80125C58(actor, 1);
+                actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x234));
+                if (actor != 0) {
+                    *(s32*)(actor + 0x98) = val;
+                }
+            }
+            break;
+        }
+        return 0;
+    }
+    return -1;
 }
 
 extern "C" void* fn_801F856C(void);
