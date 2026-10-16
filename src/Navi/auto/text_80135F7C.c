@@ -1295,14 +1295,14 @@ extern "C" s32 fn_8013BAB4(void* a, f32* b, VObj_8013BA1C* c, u32 d) {
     return 1;
 }
 
-extern "C" s32 fn_8013BB4C(void* a, u8* b, void* c, u32 d) {
+extern "C" s32 fn_8013BB4C(void* a, u8* b, VObj_8013BA1C* c, u32 d) {
     u8 out[48];
     u8 tmp[48];
     u8 pos[48];
     if (c == nullptr) {
         return 0;
     }
-    if (!((u8 (*)(void*, u32, void*))(*(void***)c)[14])(c, d, out)) {
+    if (!c->v12(d, out)) {
         return 0;
     }
     fn_80133000(tmp, b + 0x18, b + 0xc, b);
