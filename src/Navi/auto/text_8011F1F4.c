@@ -7,3 +7,8 @@ void fn_80166BD0(void*, int);
 void fn_8011F23C(void);
 void __register_global_object(void*, void*, void*);
 }
+
+extern "C" void fn_8011F1F4(void) {
+    fn_80166BD0(lbl_802C6170, 0);
+    __register_global_object(lbl_802C6170, (void*)fn_8011F23C, lbl_802C6164);
+}
