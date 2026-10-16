@@ -53,12 +53,6 @@ extern "C" void fn_80217874(char* this_, f32 t) {
     fn_8013CB44(*(void**)(this_ + 0xc), &a, 1, 1, 1);
 }
 
-struct Vec3f {
-    f32 x;
-    f32 y;
-    f32 z;
-};
-
 extern "C" void fn_8021798C(void** p) {
     fn_8013CB44(p[0], (u8*)p[6] + 0xc, 1, 1, 1);
     fn_8013CB44(p[1], (u8*)p[6] + 0xc, 1, 1, 1);
