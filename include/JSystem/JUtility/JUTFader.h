@@ -41,10 +41,9 @@ struct JUTFader
     bool mResetting;            // _0C - probably exclusive to mkdd, holds true when starting the fadeout for reset, sets back to false when fading in
     u8 _0D[3];                  // padding
     JUtility::TColor mColor;    // _10 - color of fade
-    JGeometry::TBox2f mViewBox; // _14 - ortho box to render within
-    int mEStatus;               // _24 - ???
-    EStatus _28;                // _28 - ???
-    EStatus mNextStatus;        // _2C - status to switch to when the countdown ends
+    u8 _14[0xC];                // _14 - ortho box to render within (TBox2f?)
+    int mEStatus;               // _20 - countdown before the next status is applied
+    EStatus mNextStatus;        // _24 - status to switch to when the countdown ends
 };
 
 #endif
