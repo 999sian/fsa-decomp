@@ -803,8 +803,10 @@ extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
 
 extern "C" void fn_801A3AB0(s32 param_1, s32 param_2, u8* param_3) {
     u8* p = (u8*)(param_1 + param_2 * 8);
-    p[0x60] = (p[0x60] & 0xF3) | (param_3[1] << 2);
-    p[0x60] = (p[0x60] & 0xFC) | param_3[0];
+    u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
+    p[0x60] = (p[0x60] & 0xF3) | ((b1 << 2) & 0xFC);
+    p[0x60] = (p[0x60] & 0xFC) | b0;
 }
 
 extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
