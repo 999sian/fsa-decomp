@@ -111,8 +111,7 @@ extern "C" void fn_8035C1C4(u8 *param_1, s32 param_2, u32 param_3) {
   *(s32 *)(param_1 + 0x24c) = *(s32 *)(param_1 + 0x24c) + 1;
 }
 
-extern "C" void fn_8035C4B8(void) {
-}
+extern "C" void fn_8035C4B8(void) {}
 
 void fn_8035C650(void) {
   u32 *src = lbl_804AD3A0;
