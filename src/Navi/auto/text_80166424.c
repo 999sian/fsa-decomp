@@ -325,6 +325,10 @@ extern "C" void fn_80172B5C(s32 p, s32 i, u8* src) {
     dst[0x10] = src[2];
 }
 
+extern "C" s32 fn_80172B80(s32 p, s32 i) {
+    return p + i * 4 + 0xe;
+}
+
 extern "C" s32 fn_80172BC0(s32 p, s32 i) {
     i = i * 8;
     return p + (i + 0x1e);
