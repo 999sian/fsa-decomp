@@ -47,3 +47,6 @@ extern void* lbl_8053AAF8;
 extern "C" void fn_802FF548(void* mgr) {
     fn_802FF798(mgr);
 }
+
+extern "C" void fn_803003A8(void) {}
+
