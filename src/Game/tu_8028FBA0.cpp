@@ -40,6 +40,7 @@ s32 fn_8024EFA0(char*, u8);
 void fn_8024F0E8(char*, s32);
 bool fn_80251AEC(char*, s32);
 int fn_8025F684(char*);
+void fn_803037D4(s32, s32);
 bool Player_IsLinked(char*);
 bool fn_80290070(char*, s32, const JGeometry::TVec3<f32>*, const JGeometry::TVec3<f32>*, s32);
 void* fn_802D6A9C(void);
