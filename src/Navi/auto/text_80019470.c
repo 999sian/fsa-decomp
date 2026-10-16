@@ -188,6 +188,14 @@ extern "C" s32 fn_8001994C(void) {
     return 0;
 }
 
+extern "C" s32 fn_80019980(void) {
+    if (lbl_802FB9B8 != NULL && *(u16*)(lbl_802FB9B8 + 4) == 1) {
+        return 1;
+    }
+    return 0;
+}
+#pragma dont_inline reset
+
 extern "C" void fn_80019AE0(void) {
 }
 
