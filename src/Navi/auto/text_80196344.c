@@ -115,6 +115,9 @@ extern "C" void fn_80198AEC(void* param_1) {
     *(u32*)(p + 0x48) = 0;
 }
 
+extern "C" void fn_80198B3C(void) {
+}
+
 extern "C" void fn_80198B40(void) {
 }
 
