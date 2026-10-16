@@ -89,6 +89,20 @@ extern "C" void fn_80177CA8(u8* a, u8* b);
 extern "C" u8 fn_80185B00(void* self, s32 b);
 extern "C" void fn_801857C8(void* self, f32 f, s32 b);
 
+struct VObj_801855B0 {
+    virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
+    virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29();
+    virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
+    virtual void v35(); virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+    virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43(); virtual void v44();
+    virtual void v45(); virtual void v46(); virtual void v47(); virtual void v48(); virtual void v49();
+    virtual void v50(); virtual s32 vfd4(s32 a, u8 b);
+};
+
 struct VObj_80187834 {
     virtual void v2(); virtual void v3(); virtual void v4();
     virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
@@ -1575,12 +1589,12 @@ extern "C" u32 fn_80185568(VObj_80185DA4* self, u32 a, u32 b) {
     return self->v50(a, b, (u8)p[0x28]);
 }
 
-extern "C" s32 fn_801855B0(u8* self) {
+extern "C" s32 fn_801855B0(u8* self, s32 a) {
     u8* p = *(u8**)(self + 0x168);
     if (p == NULL) {
         return 0;
     }
-    return ((VObj_80187834*)self)->vfd4(*(u32*)(p + 0x28));
+    return (*(s32 (**)(void*, s32, u8))((u8*)*(void**)self + 0xd4))(self, a, *(u32*)(p + 0x28));
 }
 
 extern "C" s32 fn_801855F8(u8* self, void* p, s32 b, s32 c, f32 f) {
@@ -2365,8 +2379,10 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
         f32 u2x = u + u;
         f32 w = u2 - u;
         f32 a = u2x * w - u2;
+        f32 m0 = k[2];
+        f32 m1 = k[5];
         f32 c = a * dv + k[1];
-        f32 e = u * k[2] - (k[5] * w + (k[2] * w + k[2]));
+        f32 e = u * m0 - (m1 * w + (m0 * w + m0));
         return c - dt * e;
     } else {
         u32 n = hdr[0];
@@ -2390,8 +2406,10 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
         f32 u2x = u + u;
         f32 w = u2 - u;
         f32 a = u2x * w - u2;
+        f32 m0 = k[3];
+        f32 m1 = k[6];
         f32 c = a * dv + k[1];
-        f32 e = u * k[3] - (k[6] * w + (k[3] * w + k[3]));
+        f32 e = u * m0 - (m1 * w + (m0 * w + m0));
         return c - dt * e;
     }
 }
