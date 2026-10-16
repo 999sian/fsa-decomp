@@ -1041,11 +1041,11 @@ extern "C" u32 fn_800DDA50(void) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    u16 w = *(u16*)src;
-    *(u16*)(this_ + 0x4) = w;
-    *(u8*)(this_ + 0x6) = src[2];
-    *(u8*)(this_ + 0x7) = src[3];
+extern "C" void fn_800DDA5C(u8* this_, const J3DAlphaComp* src) {
+    J3DAlphaComp* dst = (J3DAlphaComp*)(this_ + 4);
+    dst->mAlphaCmpID = src->mAlphaCmpID;
+    dst->mRef0 = src->mRef0;
+    dst->mRef1 = src->mRef1;
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
@@ -1455,15 +1455,14 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
 {
-  struct Elem { u8 m0; u8 r0; u8 g0; u8 b0; u8 m4; u8 r1; u8 g1; u8 b1; };
-  Elem* e = (Elem*)(param_1 + 0x21) + param_2;
-  Elem* src = (Elem*)param_3;
-  e->r0 = src->r0;
-  e->g0 = src->g0;
-  e->b0 = src->b0;
-  e->r1 = src->r1;
-  e->g1 = src->g1;
-  e->b1 = src->b1;
+  u8 a = param_3[1];
+  u8* dst = param_1 + (param_2 << 3);
+  dst[0x22] = a;
+  dst[0x23] = param_3[2];
+  dst[0x24] = param_3[3];
+  dst[0x26] = param_3[5];
+  dst[0x27] = param_3[6];
+  dst[0x28] = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -1480,12 +1479,10 @@ struct fn_800DE29C_Bits2 {
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
   u8* e = param_1 + param_2 * 8;
-  u8 b0 = param_3[0];
   u8 b1 = param_3[1];
-  u8 v = e[0x28];
-  e[0x28] = (b1 << 2) | (v & ~0xC);
-  v = e[0x28];
-  e[0x28] = b0 | (v & ~0x3);
+  u8 b0 = param_3[0];
+  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
+  e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -1635,7 +1632,7 @@ extern "C" u8 fn_800DE648(int param_1) {
     return *(u8*)(param_1 + 0x34);
 }
 
-extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
+extern "C" void fn_800DE650(u8* this_, u32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
     u8 t;
     t = src[0].g; p[0x36] = t;
