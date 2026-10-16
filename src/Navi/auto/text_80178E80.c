@@ -274,15 +274,15 @@ extern "C" void* fn_80181108(u32* self, s32 p1, s32 p2, s32 p3, s32 p4, s32 a, s
     return self;
 }
 
-extern "C" void fn_801817BC(char* self, void** obj) {
+extern "C" void fn_801817BC(char* self, UnkVObj_80181CCC* obj) {
     if (obj != 0) {
         if (*(u8*)(self + 0x131) != 0) {
-            void** cur = *(void***)(self + 0x100);
+            UnkVObj_80181CCC* cur = *(UnkVObj_80181CCC**)(self + 0x100);
             if (cur != 0) {
-                ((void (*)(void*, int))(*(void***)cur)[2])(cur, 1);
+                cur->vf8(1);
             }
         }
-        *(void***)(self + 0x100) = obj;
+        *(UnkVObj_80181CCC**)(self + 0x100) = obj;
         *(u8*)(self + 0x131) = 0;
     }
 }
