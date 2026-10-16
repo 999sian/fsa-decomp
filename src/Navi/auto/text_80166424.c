@@ -634,6 +634,19 @@ extern "C" int fn_8016E85C(u8* p, void* obj)
     return 1;
 }
 
+extern "C" void fn_8016E9B4(u8* p, u8 n, u8 flag)
+{
+    u8 top = p[0xb0] & 0x80;
+    p[0xb0] &= 0x7f;
+    if (flag) {
+        int mask = (1 << n) - 1;
+        p[0xb0] = (p[0xb0] & mask) | ((p[0xb0] & ~mask) << 1);
+    } else {
+        p[0xb0] = (p[0xb0] & ((1 << n) - 1)) | ((int)(p[0xb0] & ~((1 << (n + 1)) - 1)) >> 1);
+    }
+    p[0xb0] |= top;
+}
+
 #pragma pop
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
