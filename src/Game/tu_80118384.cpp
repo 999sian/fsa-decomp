@@ -21,3 +21,21 @@ extern "C" u32* fn_801188E0(u8* self, u32 p, void* q)
     return *(u32**)(self + 4) + idx;
 }
 
+extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
+{
+    u32* fn_801189B0(void);
+    if (count != 0) {
+        u32* dst = fn_801189B0();
+        if (dst != *(u32**)(self + 8)) {
+            u32 val = *(u32*)src;
+            while (count != 0) {
+                if (dst != 0) {
+                    *dst = val;
+                }
+                dst++;
+                count--;
+            }
+        }
+    }
+}
+
