@@ -6,8 +6,6 @@ struct ActorSlot5 {
     virtual void v0();
     virtual void v1();
     virtual void v2();
-    virtual void v3();
-    virtual void v4();
     virtual void slot5();
 };
 extern "C" const f32 lbl_80540E40;
@@ -26,6 +24,7 @@ extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
 }
 
 extern "C" void fn_802CE7A8(char* p) {
+    f32 f;
     *(u32*)(p + 0x234) = *(u32*)(p + 0x90) & 0xfff;
     *(u32*)(p + 0x23c) = (*(u32*)(p + 0x90) >> 12) & 0xf;
     *(u32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 16) & 0xf;
@@ -46,29 +45,34 @@ extern "C" void fn_802CE7A8(char* p) {
     } else {
         *(s32*)(p + 0x230) = 0;
     }
-    *(f32*)(p + 0x24c) = lbl_80540E40;
-    *(f32*)(p + 0x250) = lbl_80540E40;
-    *(f32*)(p + 0x254) = lbl_80540E40;
+    f = lbl_80540E40;
+    *(f32*)(p + 0x24c) = f;
+    *(f32*)(p + 0x250) = f;
+    *(f32*)(p + 0x254) = f;
     *(s16*)(p + 0x248) = 0;
     if (*(s32*)(p + 0x234) == 0x1b) {
-        *(f32*)(p + 0x24c) = lbl_80540E44;
-        *(f32*)(p + 0x250) = lbl_80540E44;
-        *(f32*)(p + 0x254) = lbl_80540E44;
+        f = lbl_80540E44;
+        *(f32*)(p + 0x24c) = f;
+        *(f32*)(p + 0x250) = f;
+        *(f32*)(p + 0x254) = f;
         *(s16*)(p + 0x248) = 0x4000;
     } else if (*(s32*)(p + 0x234) == 0x1c) {
-        *(f32*)(p + 0x24c) = lbl_80540E44;
-        *(f32*)(p + 0x250) = lbl_80540E44;
-        *(f32*)(p + 0x254) = lbl_80540E44;
+        f = lbl_80540E44;
+        *(f32*)(p + 0x24c) = f;
+        *(f32*)(p + 0x250) = f;
+        *(f32*)(p + 0x254) = f;
         *(s16*)(p + 0x248) = -0x4000;
     } else if (*(s32*)(p + 0x234) == 0x1d) {
-        *(f32*)(p + 0x24c) = lbl_80540E44;
-        *(f32*)(p + 0x250) = lbl_80540E44;
-        *(f32*)(p + 0x254) = lbl_80540E44;
+        f = lbl_80540E44;
+        *(f32*)(p + 0x24c) = f;
+        *(f32*)(p + 0x250) = f;
+        *(f32*)(p + 0x254) = f;
         *(s16*)(p + 0x248) = -0x8000;
     } else if (*(s32*)(p + 0x234) == 0x1e) {
-        *(f32*)(p + 0x24c) = lbl_80540E44;
-        *(f32*)(p + 0x250) = lbl_80540E44;
-        *(f32*)(p + 0x254) = lbl_80540E44;
+        f = lbl_80540E44;
+        *(f32*)(p + 0x24c) = f;
+        *(f32*)(p + 0x250) = f;
+        *(f32*)(p + 0x254) = f;
         *(s16*)(p + 0x248) = 0;
     }
     ((ActorSlot5*)p)->slot5();
