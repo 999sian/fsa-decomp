@@ -41,5 +41,24 @@ extern "C" void fn_8002D39C(char* p) {
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
 }
 
+extern "C" int fn_8002F168(void) {
+    char* obj = *(char**)(lbl_802BB0FC + 0xf0);
+    if (obj != 0 && obj[0x57e] != 0) {
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" void fn_80057C38(void);
+extern "C" void fn_80058740(int, void*);
+extern "C" int fn_80058C08(void);
+extern "C" void fn_80058628(int, void*, int);
+extern "C" void fn_80058654(int, void*, int, float);
+extern "C" int lbl_802FEE28;
+extern "C" void fn_8002F308(void) {
+    fn_80057C38();
+    lbl_802FEE28 = 0;
+}
+
 extern "C" void fn_80030664(void) {}
 
