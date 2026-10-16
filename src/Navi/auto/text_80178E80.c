@@ -1,3 +1,4 @@
+#include "types.h"
 
 
 extern "C" void fn_80177E84(void);
@@ -24,14 +25,28 @@ extern "C" void fn_8017A908(void) {
 }
 
 extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
-    if (idx < 4) {
-        return *(int*)(self + (idx << 2) + 0x148);
+    unsigned char* p;
+    if (idx >= 4) {
+        return 0;
     }
-    return 0;
+    p = self + (idx << 2);
+    return *(int*)(p + 0x148);
 }
 
 extern "C" void fn_80178990(void);
 extern "C" void fn_8018903C(void) {
     fn_80178990();
+}
+
+extern void* lbl_80299504[];
+extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void* fn_8018C1A0(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80299504;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
