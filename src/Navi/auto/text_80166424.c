@@ -209,6 +209,12 @@ extern "C" void fn_80168E00(void)
 {
 }
 
+extern "C" void fn_801DE01C(u8 a, u8 b, u8 c);
+extern "C" void fn_8016991C(u8* p, u8 x)
+{
+    fn_801DE01C(x, p[0], p[1]);
+}
+
 extern "C" int fn_8016997C()
 {
 	return 0;
@@ -343,6 +349,13 @@ extern "C" void fn_8016AD10(u8* p) {
     p[0] = lbl_80202218[0];
     p[1] = lbl_80202218[1];
     p[2] = lbl_80202218[2];
+}
+
+extern "C" void* fn_8016AD40(void* ptr, s16 param_2) {
+    if (ptr != nullptr && param_2 > 0) {
+        fn_8015AB1C(ptr);
+    }
+    return ptr;
 }
 
 extern u8 lbl_80301AC0[2];
