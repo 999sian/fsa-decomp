@@ -102,6 +102,9 @@ extern "C" unsigned char fn_800CBB2C(void* self, int idx) {
     return 0;
 }
 
+extern "C" void fn_800CBC44(void) {
+}
+
 extern "C" u32 fn_800CBC48(void) {
     return 0x50454E4C;
 }
