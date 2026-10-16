@@ -643,6 +643,19 @@ void fn_8022CD48(int index)
     if (isPlayerEnabled(index)) fn_80248FF0(lbl_8053AC90->players[index]);
 }
 
+void ClearBusyLocked(Player*);
+void fn_8022CDD4(int index)
+{
+    if (lbl_8053AC90 == NULL) return;
+    if (isPlayerEnabled(index)) {
+        for (int i = 0; i < 4; i++) {
+            if (isPlayerEnabled(i) && (index == i || fn_8022E438(index, i))) {
+                ClearBusyLocked(lbl_8053AC90->players[i]);
+            }
+        }
+    }
+}
+
 void fn_8022CF08(int owner)
 {
     if (lbl_8053AC90 == NULL) return;
