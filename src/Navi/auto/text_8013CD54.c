@@ -1,4 +1,23 @@
 #include "types.h"
+struct NaviTracker {
+    virtual void fn_0();
+    virtual void fn_1();
+    virtual void fn_2();
+    virtual void fn_3(s32);
+    virtual u32 fn_4();
+    virtual void fn_5(u32);
+    virtual u32 fn_6();
+    virtual void fn_7(u32);
+    virtual void fn_8();
+    virtual void fn_9();
+    virtual void fn_10();
+    virtual void fn_11();
+    virtual void fn_12();
+    virtual s32 fn_13(u32*, u32, s32);
+    virtual void fn_14();
+    virtual s32 fn_15(u32*, u32, s32);
+};
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8013cd54-0x8013d9a4 (28 functions). split_file divides it into the game's real files.
 
@@ -47,6 +66,20 @@ extern "C" void* fn_8013CD6C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern void* lbl_802933B4[];
+extern "C" void* fn_8013414C(void* ptr, s16 param_2);
+extern "C" void* fn_8013CE9C(void* ptr, s16 param_2) {
+    if (ptr) {
+        *(void**)ptr = lbl_802933B4;
+        ((NaviTracker*)ptr)->fn_3(0);
+        fn_8013414C(ptr, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" void fn_8013CFA4(void* param_1) {
