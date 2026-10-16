@@ -86,6 +86,11 @@ extern "C" void fn_800CF970(void** self, const unsigned char* data) {
     fn_800CF998(self, (unsigned char*)self[1], data);
 }
 
+extern "C" void fn_800CFA2C(void** self, void* res, const void* data);
+extern "C" void fn_800CFA04(void** self, const void* data) {
+    fn_800CFA2C(self, self[1], data);
+}
+
 extern "C" void fn_800CFE04(void** self, void* data)
 {
     fn_800CFE2C(self, self[1], data);
@@ -104,6 +109,12 @@ extern "C" void fn_800D00C8(void** self, void* data)
 extern "C" void fn_800D01DC(void** self, void* data)
 {
     fn_800D0204(self, self[1], data);
+}
+
+void fn_800D0298(void* self, void* res, void* data);
+void fn_800D0270(void* self, void* data)
+{
+    fn_800D0298(self, *(void**)((char*)self + 4), data);
 }
 
 extern "C" void* fn_800D05BC(void* param_1, short param_2)
