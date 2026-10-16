@@ -6,7 +6,42 @@ extern "C" void fn_801E9310(int param);
 extern "C" int fn_801E7F88(void* param);
 extern unsigned char lbl_8029EC18[];
 
+struct FileFlags {
+    unsigned char pad[4];
+    unsigned short unk0 : 7;
+    unsigned short type : 3;
+    unsigned short orient : 2;
+    unsigned short unk1 : 4;
+};
+
 extern "C" void fn_801E6F54(void);
+extern "C" int fn_801E6DB0(unsigned char* file, int mode) {
+    int orientation;
+    int result;
+
+    if (file == 0 || ((*(unsigned short*)(file + 4) >> 6) & 7) == 0) {
+        return 0;
+    }
+    orientation = (file[5] >> 4) & 3;
+    switch (orientation) {
+    case 0:
+        if (mode > 0) {
+            file[5] = (file[5] & ~0x30) | 0x20;
+        } else if (mode < 0) {
+            file[5] = (file[5] & ~0x30) | 0x10;
+        }
+        result = mode;
+        break;
+    case 1:
+        result = -1;
+        break;
+    case 2:
+        result = 1;
+        break;
+    }
+    return result;
+}
+
 extern "C" int fn_801E6EB4()
 {
 	return 0;
