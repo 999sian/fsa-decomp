@@ -4,6 +4,8 @@
 
 extern "C" void fn_8008D8E4(void);
 extern "C" void LCDisable(void);
+extern "C" OSThread* GXGetCurrentGXThread(void);
+extern "C" void GXSetCurrentGXThread(void);
 extern "C" char lbl_8051C1A0[];
 
 
