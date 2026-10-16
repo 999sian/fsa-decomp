@@ -18,7 +18,13 @@ struct StrideIter {
     u32 stride;
 
     StrideIter(const StrideIter& o) : p(o.p), stride(o.stride) {}
+    StrideIter& operator++() { p += stride; return *this; }
+    StrideIter& operator+=(s32 n) { p += stride * n; return *this; }
 };
+
+static inline s32 StrideIter_distance(StrideIter first, StrideIter last) {
+    return (last.p - first.p) / last.stride;
+}
 
 static inline s32 KeyIter_distance(KeyIter first, KeyIter last) {
     return (s32*)last.p - (s32*)first.p;
