@@ -558,8 +558,10 @@ void fn_80285690(char* p) {
         } else if (fn_8022C52C(Player_GetLinkTargetIndex(p), 0x40) && fn_8022C6AC(S32(p, 4)) != lbl_80540360) {
             fn_80251AEC(p, 3);
         } else if (fn_8022C6AC(Player_GetLinkTargetIndex(p)) == lbl_80540360 && fn_8022CFE8(S32(p, 4)) > lbl_80540360) {
+            s32 idx;
             linkIdx = S32(p, 0x3b4);
-            if (linkIdx == fn_8023DE58(Player_GetLinkTargetIndex(p))) {
+            idx = fn_8023DE58(Player_GetLinkTargetIndex(p));
+            if (idx == linkIdx) {
                 fn_80251AEC(p, 3);
             }
         }
