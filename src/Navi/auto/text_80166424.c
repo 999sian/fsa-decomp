@@ -184,6 +184,12 @@ extern "C" s32 fn_80172B80(s32 p, s32 i) {
     return p + i * 4 + 0xe;
 }
 
+extern "C" void fn_80172CA4(s32 p, s32 i, u8* param_3) {
+    u8* item = (u8*)p + i * 8;
+    item[0x46] = (item[0x46] & 0xf3) | (param_3[1] << 2);
+    item[0x46] = (item[0x46] & 0xfc) | param_3[0];
+}
+
 extern "C" void fn_80172CDC(u8* p1, int p2, u8* p3) {
     p1[p2 + 0x78] = *p3;
 }
@@ -194,10 +200,6 @@ extern "C" s32 fn_80172CEC(s32 p, s32 i) {
 
 extern "C" s32 fn_80172D10(s32 p, s32 i) {
     return p + (i << 2) + 0x7c;
-}
-
-extern "C" u32 fn_80172DBC(void) {
-    return 0x54564232;
 }
 
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
