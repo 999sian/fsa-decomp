@@ -33,6 +33,12 @@ struct VObj_800723CC {
     virtual void v2();
 };
 
+struct Entry_80281294 { u16 a; u16 b; f32 f; s16 c; s16 d; };
+extern Entry_80281294 lbl_80281294[];
+extern u16 lbl_802FCAD8[4];
+extern char lbl_802B7CA0[];
+extern "C" void* fn_800638A4(void*, int, void*, int);
+extern "C" void fn_8000DABC(void*, void*, void*, int, int, s16, s16, f32);
 extern void* lbl_80281904[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80070D98(void);
@@ -343,11 +349,16 @@ extern "C" BOOL fn_800738DC(u8* self, s32 idx)
 {
     if (*(s32*)(self + 0x2c8) != idx) {
         Entry_80281230* e;
+        f32 f0, f1;
+        u16 k;
         *(s32*)(self + 0x2c8) = idx;
         e = &lbl_80281230[idx];
+        f0 = e->f0;
+        f1 = e->f1;
         *(u16*)(self + 0x2de) = e->a;
+        k = lbl_802FCAD0[*(u16*)(self + 0x2de)];
         *(u8*)(self + 0x2e7) = 0;
-        fn_80022438(*(void**)(self + 0x258), lbl_802FCAA8, lbl_802FCAD0[*(u16*)(self + 0x2de)], e->b, e->f0, e->f1, e->f2, e->f3);
+        fn_80022438(*(void**)(self + 0x258), lbl_802FCAA8, k, e->b, f0, f1, e->f2, e->f3);
     }
     return 0;
 }
