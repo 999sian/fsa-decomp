@@ -79,6 +79,7 @@ extern "C" s32 fn_80402628(PaneState* state, s16 duration, u8 startAlpha, u8 end
 extern "C" s32 fn_80402940(PaneState* state, s16 index, u8 mode, f32 a, f32 b) {
     f32 t;
     f32 y;
+    f32 x;
 
     if (state->field22 < index - 1) {
         state->field22++;
@@ -93,13 +94,16 @@ extern "C" s32 fn_80402940(PaneState* state, s16 index, u8 mode, f32 a, f32 b) {
             b = tmp;
         }
         y = state->centerY + (a + t * (b - a)) - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
-        state->pane->move(state->pane->getBounds()->i.x, y);
-        return 0;
+        x = state->pane->getBounds()->i.x;
+        state->pane->move(x, y);
+    } else {
+        state->field22 = index;
+        y = state->centerY + b - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
+        x = state->pane->getBounds()->i.x;
+        state->pane->move(x, y);
+        return 1;
     }
-    state->field22 = index;
-    y = state->centerY + b - lbl_80543868 * (state->pane->mBounds.f.y - state->pane->mBounds.i.y);
-    state->pane->move(state->pane->getBounds()->i.x, y);
-    return 1;
+    return 0;
 }
 
 extern "C" void fn_80402CE0(PaneState* state, f32 sx, f32 sy) {
