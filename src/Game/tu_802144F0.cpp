@@ -12,6 +12,7 @@ extern "C" f32 fn_802F5E9C(void*, const f32*);
 extern "C" void fn_8013CB44(void* a, JGeometry::TVec3f* b, s32 c, s32 d, s32 e);
 extern const f32 lbl_8053FBBC;
 extern const f32 lbl_8053FBC0;
+extern char* lbl_8053AB10;
 extern "C" void* fn_8013C824();
 extern "C" void fn_800EC240(void* table, s32 id);
 extern "C" void fn_801CDC8C(void* this_, s32 event);
