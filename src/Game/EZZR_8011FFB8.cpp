@@ -97,6 +97,20 @@ extern "C" s32 fn_80121040(void* p)
 	return 0;
 }
 
+extern "C" void fn_80124278(void*);
+extern "C" void fn_80124448(void*);
+extern "C" void fn_80131EC0(GateRegistry*, void*);
+extern "C" void fn_801210A0(void* p)
+{
+	fn_80124448(p);
+	u32 flags = *(u32*)((u8*)p + 0x90);
+	if ((flags >> 2) & 1) {
+		*(u32*)((u8*)p + 0x344) = (flags >> 3) & 0xf;
+		fn_80131EC0(fn_80131F0C(), p);
+		((EZZR*)p)->v25(7);
+	}
+}
+
 extern u8 lbl_8049DF78[];
 extern "C" void fn_80124740(void*, s32);
 extern "C" void* fn_80121104(void* p, s16 flag) {
