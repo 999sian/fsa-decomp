@@ -335,6 +335,36 @@ extern "C" void* fn_801CF704(void) {
     return lbl_802FF9B4;
 }
 
+extern "C" void fn_801D1078(void) {
+}
+
+extern const char* lbl_802FEA18;
+extern int lbl_802FF9F4;
+extern int lbl_802FF9D8;
+extern int lbl_802FF9D0;
+extern int lbl_802FF9F0;
+extern int lbl_802FF9E0;
+extern int lbl_802FF9E4;
+extern int lbl_802FF9E8;
+extern int lbl_802FF9EC;
+extern "C" void OSRegisterVersion(const char* id);
+extern "C" void fn_801CF49C(void (*fn)(void));
+extern "C" void fn_801D107C(void);
+extern "C" void fn_801D1148(void) {
+    if (lbl_802FF9F4 != 1) {
+        OSRegisterVersion(lbl_802FEA18);
+        lbl_802FF9D8 = 0;
+        lbl_802FF9D0 = 0;
+        lbl_802FF9F0 = 0x1000;
+        fn_801CF49C(fn_801D107C);
+        lbl_802FF9E0 = 0;
+        lbl_802FF9E4 = 0;
+        lbl_802FF9E8 = 0;
+        lbl_802FF9EC = 0;
+        lbl_802FF9F4 = 1;
+    }
+}
+
 extern "C" u16 fn_801D1324(void) {
     return (*(vu16*)0xcc005004 >> 15) & 1;
 }
@@ -348,11 +378,12 @@ extern "C" void fn_801D1AA8(void* p);
 extern "C" void fn_801D1C34(void* p);
 extern void* lbl_802FFA10;
 extern "C" void* fn_801D1424(void* param_1) {
-    u32 interrupt_state = OSDisableInterrupts();
+    BOOL enabled;
+    enabled = OSDisableInterrupts();
     fn_801D1C34(param_1);
     *(u32*)param_1 = 0;
     *(u32*)((u8*)param_1 + 8) = 1;
-    OSRestoreInterrupts(interrupt_state);
+    OSRestoreInterrupts(enabled);
     if (param_1 == lbl_802FFA10) {
         fn_801D1AA8(param_1);
     }
