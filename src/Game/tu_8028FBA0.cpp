@@ -24,6 +24,7 @@ extern const f32 lbl_80540618;
 extern const f32 lbl_8054061C;
 extern const f32 lbl_80540620;
 extern const f32 lbl_80540644;
+extern const f64 lbl_80540638;
 
 void* fn_8013CC50(s32, void*, s32, s32, s32, s32, void*, s32, f32);
 void fn_801F349C(Actor*, u32, f32*);
