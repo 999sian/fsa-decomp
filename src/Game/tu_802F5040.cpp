@@ -9,6 +9,7 @@ extern "C" f32 lbl_80541518;
 
 extern void* lbl_8053AB10;
 extern void* sManager__8JUTVideo;
+extern "C" void fn_802FC80C(u8* this_);
 
 struct Tu802F5040Tbl {
     u8 pad0[0x28];
@@ -25,19 +26,19 @@ extern "C" f32 lbl_80541518;
 extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
     f32 z = pos[2];
     if (*(s32*)(this_ + 0xc21c) > 0) {
-        f32 lo_x = *(f32*)(this_ + 0x2368);
         f32 x = pos[0];
+        f32 lo_x = *(f32*)(this_ + 0x2368);
         if (x >= lo_x && x < (f32)*(s32*)(this_ + 0x2380) * lbl_80541510 + lo_x) {
-            f32 lo_y = *(f32*)(this_ + 0x236c);
             f32 y = pos[1];
+            f32 lo_y = *(f32*)(this_ + 0x236c);
             if (y >= lo_y && y < (f32)*(s32*)(this_ + 0x2384) * lbl_80541510 + lo_y) {
                 f32 scale = lbl_80541514;
                 s32 ix = (s32)((x - lo_x) * scale);
                 s32 iy = (s32)((y - lo_y) * scale);
                 f32 fx = scale * ((x - lo_x) - lbl_80541510 * (f32)ix);
                 f32 fy = scale * ((y - lo_y) - lbl_80541510 * (f32)iy);
-                u8* p = this_ + *(s32*)(this_ + 0x2388) * 4;
-                u8* tbl = *(u8**)(p + 0x100);
+                u8** slot = (u8**)(this_ + *(s32*)(this_ + 0x2388) * 4);
+                u8* tbl = slot[0x100 / 4];
                 u8* cell = tbl + iy * 0x30c + ix * 0xc;
                 f32 a = *(f32*)(cell + 0x8);
                 f32 b = *(f32*)(cell + 0x14);
