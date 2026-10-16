@@ -372,6 +372,10 @@ extern "C" s32 fn_80172B80(s32 p, s32 i) {
     return p + i * 4 + 0xe;
 }
 
+extern "C" s32 fn_80172C00(s32 param_1, s32 param_2) {
+    return param_1 + param_2 * 4 + 0x60;
+}
+
 extern "C" void fn_80172C54(u8* p1, int p2, u8* p3) {
     u8 v1;
     u8 v2;
