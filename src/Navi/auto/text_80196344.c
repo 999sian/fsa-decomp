@@ -513,7 +513,7 @@ extern "C" void fn_80199280(void* param_1) {
     p[1] = 0;
 }
 
-u32 fn_80199A00(void) {
+extern "C" u32 fn_80199A00(void) {
     return 0xfe;
 }
 
