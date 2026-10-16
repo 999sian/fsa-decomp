@@ -835,6 +835,21 @@ extern "C" void* fn_8001C518(void* param_1, void* param_2, void* param_3) {
     return fn_801151EC((u8*)param_1 + 0x10, (void*)fn_8011583C, local);
 }
 
+extern "C" unsigned int fn_8001C554(void* param_1, int* param_2) {
+    void* local[2];
+    u8* node;
+    unsigned int ret;
+    local[0] = param_1;
+    local[1] = param_2;
+    for (node = (u8*)fn_8001BFF8(); node != 0; node = *(u8**)(node + 8)) {
+        ret = (unsigned int)fn_801151EC(node + 0x10, (void*)fn_8011583C, local);
+        if (ret != 0) {
+            return ret;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_8001EC90(void);
 extern "C" void fn_8001C984(void) {
     fn_8001EC90();
