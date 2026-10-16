@@ -1948,6 +1948,17 @@ extern "C" void fn_80177970(void* self, f32 a, f32 b) {
     fn_80177728(self, rect);
 }
 
+extern "C" void fn_801779C4(void* self, f32 a, f32 b) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+        virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8();
+        virtual void vf2c();
+    };
+    *(f32*)((char*)self + 0xd4) += a;
+    *(f32*)((char*)self + 0xd8) += b;
+    ((Obj*)self)->vf2c();
+}
+
 extern "C" u8 fn_80177F0C(char* self, void* arg)
 {
     char* n = *(char**)(self + 0xdc);
