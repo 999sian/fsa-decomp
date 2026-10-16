@@ -1261,6 +1261,10 @@ extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
     p[0x3f] = p3[7];
 }
 
+extern "C" s32 fn_801A48B8(s32 p, s32 i) {
+    return p + i * 8 + 0x38;
+}
+
 extern "C" void fn_801A48CC(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] = *p3; }
 
 extern "C" void fn_801A48E0(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x78))[p2] = *p3; }
