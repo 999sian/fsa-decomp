@@ -76,7 +76,7 @@ struct Fn8043ABCC_Obj {
     virtual void v65();
     virtual void v66();
     virtual void v67();
-    virtual void v68(u32 a, s32 b);
+    virtual void v68(void* a, s32 b);
 };
 
 extern const f32 lbl_80543C88;
@@ -279,6 +279,87 @@ extern "C" void fn_8043D874(u8* param_1) {
     } else {
         fn_80425234(*(void**)(param_1 + 0x294));
     }
+}
+
+extern "C" void fn_8043DB58(u8* param_1) {
+	struct VObj {
+		virtual void v00();
+		virtual void v01();
+		virtual void v02();
+		virtual void v03();
+		virtual void v04();
+		virtual void v05();
+		virtual void v06();
+		virtual void v07();
+		virtual void v08();
+		virtual void v09();
+		virtual void v10();
+		virtual void v11();
+		virtual void v12();
+		virtual void v13();
+		virtual void v14();
+		virtual void v15();
+		virtual void v16();
+		virtual void v17();
+		virtual void v18();
+		virtual void v19();
+		virtual void v20();
+		virtual void v21();
+		virtual void v22();
+		virtual void v23();
+		virtual void v24();
+		virtual void v25();
+		virtual void v26();
+		virtual void v27();
+		virtual void v28();
+		virtual void v29();
+		virtual void v30();
+		virtual void v31();
+		virtual void v32();
+		virtual void v33();
+		virtual void v34();
+		virtual void v35();
+		virtual void v36();
+		virtual void v37();
+		virtual void v38();
+		virtual void v39();
+		virtual void v40();
+		virtual void v41();
+		virtual void v42();
+		virtual void v43();
+		virtual void v44();
+		virtual void v45();
+		virtual void v46();
+		virtual void v47();
+		virtual void v48();
+		virtual void v49();
+		virtual void v50();
+		virtual void v51();
+		virtual void v52();
+		virtual void v53();
+		virtual void v54();
+		virtual void v55();
+		virtual void v56();
+		virtual void v57(s32 a, f32 b, s32 c, f32 d, s32 e);
+	};
+	fn_8013B490(lbl_8053AB10);
+	switch (param_1[0x256]) {
+	case 0:
+		((VObj*)*(void**)(param_1 + 0x14))->v57(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+		break;
+	case 1:
+		((VObj*)*(void**)(param_1 + 0x18))->v57(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+		break;
+	case 2:
+		((VObj*)*(void**)(param_1 + 0x1c))->v57(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+		break;
+	case 3:
+		((VObj*)*(void**)(param_1 + 0x20))->v57(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+		break;
+	case 4:
+		((VObj*)*(void**)(param_1 + 0x24))->v57(0, lbl_80543CF0, 0, lbl_80543CF4, 0);
+		break;
+	}
 }
 
 extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
