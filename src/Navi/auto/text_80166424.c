@@ -136,6 +136,13 @@ extern "C" void* fn_80167074(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801670D0(UnkVObj_801671B0* self, s32 n)
+{
+    if ((s32)self->vf5() != n) {
+        *((u8*)self + 4) |= 1;
+    }
+}
+
 extern "C" s32 fn_801671B0(UnkVObj_801671B0* param_1, u32 param_2) {
     u32 size = param_1->vf5();
     u32 aligned = param_2 + size;
@@ -584,6 +591,32 @@ extern "C" int fn_8016E4E0(u8* p, u32 idx, void* val)
     ((u16*)(p + 4))[idx] = 0xFFFF;
     return 1;
 }
+
+extern "C" int fn_8016E7A0(u8* p, void* src)
+{
+    void* obj;
+    DtorVObj_80166424* old;
+    if (src == 0) {
+        return 0;
+    }
+    obj = fn_8015A90C(0x70);
+    if (obj != 0) {
+        obj = fn_80119904(obj, src, 0);
+    }
+    if (obj == 0) {
+        return 0;
+    }
+    if (p[0xb0] & 0x80) {
+        old = *(DtorVObj_80166424**)(p + 0xac);
+        if (old != 0) {
+            old->Destroy(1);
+        }
+    }
+    *(void**)(p + 0xac) = obj;
+    p[0xb0] = (p[0xb0] & 0x7f) | 0x80;
+    return 1;
+}
+
 #pragma pop
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
