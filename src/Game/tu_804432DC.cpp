@@ -131,14 +131,18 @@ extern "C" void* fn_80443760(void* this_) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 8) = obj;
-    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x50740000, 0x50746573, 0x746d6170));
+    u32 c = 0x746d6170;
+    u32 b = 0x50746573;
+    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x50740000, b, c));
 
     obj = __nw__FUl(0x2c);
     if (obj != 0) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 12) = obj;
-    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x500000, 0x506d61, 0x7074656e));
+    u32 e = 0x7074656e;
+    u32 d = 0x506d61;
+    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x500000, d, e));
 
     self[0x14] = 0;
     *(s16*)(self + 0x10) = 0;
