@@ -12,6 +12,9 @@ extern const f32 lbl_805429AC;
 extern const f32 lbl_805429B0;
 extern char lbl_804AD858[];
 extern char lbl_804A5958[];
+extern "C" void fn_80234810();
+extern "C" void fn_802382D0(u32 a, u32 b);
+extern "C" void fn_8023077C();
 extern "C" void* fn_8035E8CC(void* p, short f) {
     if (p) {
         *(void**)p = lbl_804AD858;
