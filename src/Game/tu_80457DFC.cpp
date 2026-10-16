@@ -31,7 +31,7 @@ struct Unk80458408Obj {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
+    virtual Unk80458408Obj* v4();
     virtual void v5();
     virtual Unk80458408Obj* v6();
     virtual void v7();
@@ -124,6 +124,27 @@ extern "C" u32 fn_804580DC(char* this_, u8 idx) {
         }
     }
     return 0;
+}
+
+extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
+    Unk80458408Obj* obj = *(Unk80458408Obj**)(this_ + 0x80);
+    if (obj != NULL && param_2 == 0x100001a) {
+        Unk80458408Obj* bank = obj->v6();
+        if (bank != NULL) {
+            BOOL enabled = OSDisableInterrupts();
+            for (s32 i = 0; i < 0x10; i++) {
+                JASTrack* track = bank->v9(i);
+                if (track != NULL) {
+                    if (param_3 == 0) {
+                        track->mute((i == 2 || i == 7) ? FALSE : TRUE);
+                    } else {
+                        track->mute(i == 2 ? TRUE : FALSE);
+                    }
+                }
+            }
+            OSRestoreInterrupts(enabled);
+        }
+    }
 }
 
 extern "C" void fn_80458658(u8* this_, bool flag) {
