@@ -853,6 +853,29 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019E634(int param_1)
+{
+	extern int* lbl_802FFA80;
+	int base = lbl_802FFA80[0];
+	int sum = base + *(int *)(param_1 + 4);
+	lbl_802FFA80[2] = sum;
+	int saved = lbl_802FFA80[2];
+	
+	int ptr = param_1;
+	unsigned int i = 0;
+	do {
+		unsigned short check = *(unsigned short *)(ptr + 8);
+		if (check != 0xffff) {
+			fn_801A605C((int)i, (void *)(ptr + 8));
+		}
+		i++;
+		ptr += 2;
+	} while (i < 8);
+	
+	int final = lbl_802FFA80[2];
+	fn_801BC250(saved, final - saved);
+}
+
 extern "C" void fn_8019EA14(int param_1) {
     u8* p = (u8*)param_1;
     u32 i = 0;
