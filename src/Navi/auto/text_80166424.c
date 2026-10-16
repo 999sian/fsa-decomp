@@ -200,6 +200,7 @@ extern "C" void* fn_80166B1C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+#pragma dont_inline on
 extern "C" void fn_80166B58(u32* param_1, u32 param_2)
 {
 	param_1[1] = 0;
@@ -1979,11 +1980,12 @@ extern "C" void fn_80176294(void* param_1)
 	*(f32*)(p + 0x1c) = *(f32*)(p + 0x54);
 }
 
+extern "C" void fn_80166C70(void* p);
 extern "C" void* fn_80176550(void* param_1)
 {
 	u8* self = (u8*)param_1;
 	u8* sub = self + 0xdc;
-	f32 c = lbl_80301B20;
+	f32 c;
 	*(void**)self = (void*)lbl_80298C88;
 	fn_80166C70(sub);
 	fn_80166B58((u32*)(sub + 0xc), (u32)self);
@@ -1994,6 +1996,7 @@ extern "C" void* fn_80176550(void* param_1)
 	*(u32*)(self + 0x10) = 0;
 	*(u32*)(self + 0x1c) = 0;
 	*(u32*)(self + 0x18) = 0;
+	c = lbl_80301B20;
 	*(f32*)(self + 0x20) = c;
 	*(f32*)(self + 0x24) = c;
 	*(f32*)(self + 0x28) = c;
