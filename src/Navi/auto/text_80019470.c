@@ -48,8 +48,12 @@ extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
-extern "C" void fn_80019470(f32* d, Vec* s, f32 w) {
-    *(Vec*)d = *s;
+extern "C" void fn_80019470(f32* d, f32* s, f32 w) {
+    f32 x = s[0];
+    f32 y = s[1];
+    d[0] = x;
+    d[1] = y;
+    d[2] = s[2];
     d[3] = w;
 }
 
@@ -301,7 +305,7 @@ extern "C" s32 fn_8001AB1C(void* tag, void* data) {
 }
 
 extern "C" void fn_8001AB40(void) {
-    cTr_Create__FP21node_lists_tree_classP15node_list_classi((void*)&lbl_802FB9D8, (void*)&lbl_802B4C38, 1000);
+    cTr_Create__FP21node_lists_tree_classP15node_list_classi((void*)&lbl_802FB9D8, lbl_802B4C38, 1000);
 }
 
 extern "C" s32 fn_8001AB70(void* p) {
