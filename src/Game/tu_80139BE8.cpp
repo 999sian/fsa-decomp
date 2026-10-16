@@ -3,8 +3,6 @@
 class VObj {
 public:
     virtual void v00();
-    virtual void v04();
-    virtual void v08();
     virtual void v0C();
 };
 
@@ -93,8 +91,7 @@ extern unsigned char lbl_80529DEC[];
 extern "C" void fn_8013A1A4(unsigned char* p) {
     fn_8016EDB0(*(void**)(p + 0x24));
     fn_801F8E4C(*(void**)(p + 8));
-    void* obj = *(void**)(p + 0xc);
-    ((void (**)(void*))(*(void**)obj))[3](obj);
+    ((VObj*)*(void**)(p + 0xc))->v0C();
     if (lbl_8053AAF8[0x7e] == 1) {
         fn_8023F088();
     }
