@@ -343,14 +343,6 @@ extern "C" s32 fn_8012285C(u8* self) {
     return fn_8022EA0C(player);
 }
 
-void fn_8022FEB8(void*, s32, void*, s32, s32);
-s32 fn_8022FD8C(void*);
-u8 fn_802300EC(void);
-u8 fn_8038AD24(s32, u16, void*, s32, GameLowVec, s32);
-extern "C" void fn_8022FEB8(void*, s32, void*, s32, s32);
-extern "C" s32 fn_8022FD8C(void*);
-extern "C" u8 fn_802300EC(void);
-extern "C" u8 fn_8038AD24(s32, u16, void*, s32, GameLowVec, s32);
 extern "C" s32 fn_80122898(u8* self, s32 msg) {
     JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(self + 0x60);
     box.addPos(*(JGeometry::TVec2<f32>*)(self + 0xC));
@@ -405,15 +397,20 @@ extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   *a = lbl_8053C9B4;
   *b = lbl_8053C9B4;
   s32 idx = *out;
-  s32 sel = idx;
+  s32 sel;
   if (idx >= 0) {
     if (idx < 4) {
+      sel = idx;
       for (s32 i = 0; i < 4; ++i) {
         if (fn_8022E438(i, idx)) {
           sel = i;
         }
       }
+    } else {
+      sel = idx;
     }
+  } else {
+    sel = idx;
   }
   *out = sel;
   f32 v = lbl_8053C9B4;
@@ -460,10 +457,10 @@ extern "C" void fn_80122D38(u8* self, f32* x, f32* y, s32* player) {
 }
 
 extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
-    f32 t;
     f32 offset = lbl_8053C9B4;
+    f32 t;
 
-    if (((CompanionCalls*)self)->v47()) {
+    if (((CompanionCalls*)self)->v49()) {
         offset = lbl_8053C9BC;
     }
     t = lbl_8053C9C4 * (f32)(fn_8022E970(*player) - 1) - lbl_8053C9C4;
