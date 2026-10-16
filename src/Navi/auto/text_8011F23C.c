@@ -191,6 +191,12 @@ extern "C" void fn_80128FD8(void** param_1) {
     obj[0x111] = (*(u8**)info)[0x20];
 }
 
+extern "C" void fn_8012906C(void** param_1) {
+    u8* obj = (u8*)*param_1;
+    u8* info = *(u8**)((u8*)param_1[1] + 0x1c);
+    obj[0x111] = (*(u8**)info)[0x20];
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
