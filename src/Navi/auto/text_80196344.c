@@ -501,6 +501,11 @@ extern "C" void fn_8019ACF0(NaviVObj* p) {
     p->vf4();
 }
 
+extern "C" void fn_8019B320(NaviVObj* p) {
+    p->vf3();
+    p->vf4();
+}
+
 extern "C" void fn_8019B97C(NaviVObj* p, u32 flags) {
     if (flags & 1) {
         p->vf6();
