@@ -34,6 +34,52 @@ extern s32 lbl_8053AB48;
 extern s32 lbl_80539F68;
 }
 
+extern "C" void fn_8015394C(Actor* actor)
+{
+    s32 i;
+    s32* slot;
+    u16 state;
+
+    lbl_8053AB44 = 1;
+    *(s32*)((u8*)actor + 0xB8) = 1;
+    if (*(s32*)((u8*)actor + 0x108) <= 0) {
+        s32 id = *(s32*)((u8*)actor + 0x2A4);
+        if (id >= 0) {
+            Actor* target = fn_801F666C(fn_801F856C(), id);
+            if (target != NULL) {
+                *(s32*)((u8*)target + 0x290) = -1;
+            }
+        }
+    }
+    state = *(u16*)((u8*)actor + 0x94);
+    if (state >= 6 && state <= 9) {
+        s32 id = *(s32*)((u8*)actor + 0x2A4);
+        if (id >= 0) {
+            Actor* target = fn_801F666C(fn_801F856C(), id);
+            if (target != NULL) {
+                *(s32*)((u8*)target + 0x290) = -1;
+            }
+        }
+    }
+    slot = lbl_804BF850;
+    for (i = 0; i < 4; i++) {
+        if (*slot == *(s32*)((u8*)actor + 0x198)) {
+            *slot = -1;
+            *(s32*)((u8*)actor + 0xBC) = 2;
+        }
+        slot++;
+    }
+    if (*(s32*)((u8*)actor + 0x284) != 0) {
+        if (lbl_8053AB48 == 0) {
+            lbl_80539F68 = 0;
+        }
+        lbl_8053AB48 += 2;
+        if (lbl_8053AB48 > 200) {
+            lbl_8053AB48 = 200;
+        }
+    }
+}
+
 extern "C" s32 fn_80154248(u32 type, u32 owner, const Vec* position, u32 parameter)
 {
     return fn_801F8544(fn_801F856C(), type, owner, position, parameter);
