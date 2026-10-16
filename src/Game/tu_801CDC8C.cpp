@@ -76,7 +76,7 @@ extern "C" void fn_801CE010(u8* this_, f32* out) {
     out[2] = lbl_8053EFC4;
     f32 lim = lbl_8053EFC8 + r[1];
     f32 y = out[1];
-    out[1] = (f32)__fsel(lim - y, lim, y);
+    out[1] = __fsel(lim - y, lim, y);
 }
 
 extern "C" void fn_801CE0A4(ItemBase* this_) {
@@ -90,6 +90,15 @@ extern "C" void fn_801CE0A4(ItemBase* this_) {
     }
 }
 
+extern "C" void fn_801CE2BC(ItemBase* this_) {
+    this_->m24C++;
+    if (this_->m24C < 0) {
+        this_->m24C = 0;
+    }
+    this_->v34();
+    this_->v35();
+}
+
 extern "C" void fn_801CE4BC(u8* this_) {
     fn_801D1C18(this_ + 0x270);
 }
@@ -97,6 +106,29 @@ extern "C" void fn_801CE4BC(u8* this_) {
 extern "C" void fn_801CE4E0(void) {}
 
 extern "C" void fn_801CE4E4(void) {}
+
+extern "C" void fn_801CE4E8(ItemBase* this_) {
+    u8* p = (u8*)this_;
+    switch (*(s32*)(p + 0x98)) {
+    case 0:
+        *(f32*)(p + 0x3c) = *(f32*)(p + 0x254);
+        *(f32*)(p + 0x40) = lbl_8053EFC4;
+        break;
+    case 1:
+        *(f32*)(p + 0x3c) = -*(f32*)(p + 0x254);
+        *(f32*)(p + 0x40) = lbl_8053EFC4;
+        break;
+    case 2:
+        *(f32*)(p + 0x3c) = lbl_8053EFC4;
+        *(f32*)(p + 0x40) = *(f32*)(p + 0x254);
+        break;
+    case 3:
+        *(f32*)(p + 0x3c) = lbl_8053EFC4;
+        *(f32*)(p + 0x40) = -*(f32*)(p + 0x254);
+        break;
+    }
+    this_->v31();
+}
 
 extern "C" void fn_801CE594(u8* this_) {
     if (*(s32*)(this_ + 0xd8) > 0 && *(s32*)(this_ + 0xf8) == 2) {
@@ -236,13 +268,33 @@ extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
     return fn_801CFD68(v);
 }
 
-extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
+extern "C" s32 fn_801D0020(u8* this_, f32* pos, s32 idx, u8 flag) {
     f32* rec = (f32*)(this_ + idx * 0xc + 0x1ac);
-    return lbl_8053EFEC * JMAAtan2Radian(rec[0] - *(f32*)(this_ + 0xc), rec[1] - *(f32*)(this_ + 0x10));
+    f32 dx = rec[0] - pos[0];
+    f32 dz = rec[1] - pos[1];
+    if (((__fabsf(dx) <= __fabsf(dz)) || flag != 0) && ((__fabsf(dz) < __fabsf(dx)) || flag != 1)) {
+        if (pos[1] < rec[1]) {
+            return 2;
+        }
+        return 3;
+    }
+    if (pos[0] < rec[0]) {
+        return 0;
+    }
+    return 1;
+}
+
+extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
+    f32 x = *(f32*)(this_ + 0xc);
+    f32 y = *(f32*)(this_ + 0x10);
+    f32* rec = (f32*)(this_ + idx * 0xc + 0x1ac);
+    return JMAAtan2Radian(rec[0] - x, rec[1] - y) * lbl_8053EFEC;
 }
 
 extern "C" s16 fn_801D02E0(u8* this_, const Vec& pos) {
-    return lbl_8053EFEC * JMAAtan2Radian(pos.x - *(f32*)(this_ + 0xc), pos.y - *(f32*)(this_ + 0x10));
+    f32 dx = pos.x - *(f32*)(this_ + 0xc);
+    f32 dz = pos.y - *(f32*)(this_ + 0x10);
+    return JMAAtan2Radian(dx, dz) * lbl_8053EFEC;
 }
 
 extern "C" s32 fn_801D0D50(void* thisArg, s32 playerIdx, f32* point, f32 radius) {
