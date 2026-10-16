@@ -148,6 +148,10 @@ extern "C" void fn_80033448(void* p) {
     fn_800300C0(0x18, lbl_802FFD48, lbl_80244A88[*(unsigned char*)((char*)p + 0xef)], 0x2000, 0);
 }
 
+extern "C" void fn_800335B4(void* p) {
+    *(unsigned int*)((char*)p + 0xe8) |= 0x20000000;
+}
+
 extern "C" void fn_800335C4(void* p) {
     *(unsigned int*)((char*)p + 0xe8) |= 0x200000;
     *(unsigned int*)((char*)p + 0xe8) |= 0x10000000;
