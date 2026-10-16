@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/J2D/J2DPane.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 extern const f32 lbl_80543C88;
 extern const f32 lbl_80543CC4;
@@ -103,6 +104,15 @@ extern "C" f32 fn_8043D514(u8* param_1) {
     if (param_1[0x10b] != 0 && param_1[0x10c] == 1) {
         J2DPane* pane = *(J2DPane**)(*(u8**)(param_1 + 0x64) + 4);
         ret = (lbl_80543CE8 * (lbl_80543CEC - (pane->getBounds()->i.y - lbl_80543CC8))) / lbl_80543CC4;
+    }
+    return ret;
+}
+
+extern "C" f32 fn_8043D57C(u8* param_1) {
+    f32 ret = lbl_80543C88;
+    if (param_1[0x10b] != 0 && param_1[0x10c] == 0) {
+        J2DPane* pane = *(J2DPane**)(*(u8**)(param_1 + 0x40) + 4);
+        ret = (lbl_80543CE8 * (lbl_80543CC4 - (pane->getBounds()->i.y - *(f32*)(*(u8**)(param_1 + 0x40) + 0xc)))) / lbl_80543CC4;
     }
     return ret;
 }
