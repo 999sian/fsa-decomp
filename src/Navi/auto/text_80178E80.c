@@ -303,6 +303,11 @@ extern "C" void fn_8018B634(void* self, void* src) {
     fn_8018B65C(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void fn_8018B770(void* self, void* dst, void* src);
+extern "C" void fn_8018B748(void* self, void* src) {
+    fn_8018B770(self, *(void**)((u8*)self + 4), src);
+}
+
 extern f32 lbl_80301C30;
 extern "C" void* fn_80174B40(void* base, u32 offset);
 extern "C" void fn_8018BDF0(void* self, void* dst, void* src);
