@@ -83,12 +83,17 @@ extern "C" void fn_80127958(void* this_) {
     if (*(u32*)(p + 0x90) & 1) {
         *(u8*)(p + 0x258) = 1;
     }
+    void* tbl = &lbl_8049E400;
+    f32 q3 = lbl_8053CAA0;
+    f32 q2 = lbl_8053CAD4;
+    f32 q1 = lbl_8053CABC;
+    f32 q0 = lbl_8053CAD0;
     *(s32*)(p + 0x234) = (*(u32*)(p + 0x90) >> 22) & 0x1f;
     *(s32*)(p + 0x238) = (*(u32*)(p + 0x90) >> 8) & 0xff;
-    *(f32*)(p + 0x60) = lbl_8053CAD0;
-    *(f32*)(p + 0x64) = lbl_8053CABC;
-    *(f32*)(p + 0x68) = lbl_8053CAD4;
-    *(f32*)(p + 0x6c) = lbl_8053CAA0;
+    *(f32*)(p + 0x60) = q0;
+    *(f32*)(p + 0x64) = q1;
+    *(f32*)(p + 0x68) = q2;
+    *(f32*)(p + 0x6c) = q3;
     *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
     *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
     *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
@@ -97,7 +102,7 @@ extern "C" void fn_80127958(void* this_) {
     *(f32*)(p + 0x84) = *(f32*)(p + 0x64);
     *(f32*)(p + 0x88) = *(f32*)(p + 0x68);
     *(f32*)(p + 0x8c) = *(f32*)(p + 0x6c);
-    fn_801D2608(p + 0x27c, &lbl_8049E400, 9);
+    fn_801D2608(p + 0x27c, tbl, 9);
     fn_801D22DC(p + 0x27c, 6, 2, 0);
     fn_801D1F14(p + 0x27c, lbl_8053CAA8);
     *(u8*)(p + 0x2b6) = 0;
@@ -106,7 +111,8 @@ extern "C" void fn_80127958(void* this_) {
     *(u8*)(p + 0x11d) = 0;
     fn_80128398(fn_801283E8(), this_);
     if (*(s32*)(p + 0x234) > 0) {
-        if (!((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
+        void** vt = *(void***)this_;
+        if (!((u8 (*)(void*))vt[13])(this_)) {
             void* mgr = fn_802D6A9C();
             if (fn_802D800C(mgr, *(s32*)(p + 0x234))) {
                 fn_80126A4C(this_, 1);
@@ -165,6 +171,4 @@ extern "C" void* fn_80127B48(void* this_) {
     *(s32*)(p + 0x380) = 0;
     return this_;
 }
-struct FZRA_Quad {
-    f32 a, b, c, d;
-};
+
