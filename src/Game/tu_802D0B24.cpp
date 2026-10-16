@@ -30,8 +30,8 @@ extern "C" void* fn_802D0B24(void* p, s16 flags) {
     return p;
 }
 
-extern "C" void fn_802D0B84(void* p) {
-    (*(void (***)(void*))p)[9](p);
+extern "C" void fn_802D0B84(Vtable802D0B84* p) {
+    p->m7();
 }
 
 extern "C" s32 fn_802D0BB0(void* this_, u32 param2, u32 param3) {
