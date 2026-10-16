@@ -30,6 +30,12 @@ extern "C" int fn_8017D1EC()
 	return 0;
 }
 
+extern "C" void fn_80176550(void* self);
+extern "C" void fn_8018119C(void* self, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u32 lbl_80299040[];
+extern "C" void fn_80180BA8(void) {
+}
+
 extern "C" int fn_801820CC(int param_1)
 {
     return *(int*)(param_1 + 0x100);
@@ -37,7 +43,8 @@ extern "C" int fn_801820CC(int param_1)
 
 extern "C" int fn_80184B08(u8* self, u8 idx) {
     if (idx < 4) {
-        return *(int*)(self + idx * 4 + 0x148);
+        int* p = (int*)(self + (idx << 2));
+        return p[0x148 / 4];
     }
     return 0;
 }
@@ -47,14 +54,19 @@ extern "C" int fn_80184B2C(u8* self) {
 }
 
 extern "C" void fn_80184B34(u8* self, u32* dest) {
-    dest[0] = *(u32*)(self + 0x148);
-    dest[1] = *(u32*)(self + 0x14c);
-    dest[2] = *(u32*)(self + 0x150);
-    dest[3] = *(u32*)(self + 0x154);
-    dest[4] = *(u32*)(self + 0x160);
+    u32 b = *(u32*)(self + 0x14c);
+    u32 a = *(u32*)(self + 0x148);
+    dest[0] = a;
+    u32 c = *(u32*)(self + 0x150);
+    dest[1] = b;
+    u32 d = *(u32*)(self + 0x154);
+    dest[2] = c;
+    u32 e = *(u32*)(self + 0x160);
+    dest[3] = d;
+    dest[4] = e;
 }
 
-extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
+extern "C" void fn_80184B60(void* self, f64 x, f64 y, f64 w, f64 h) {
     f32 rect[4];
     rect[0] = x;
     rect[1] = y;
@@ -76,13 +88,13 @@ extern "C" void fn_80184C34(void) {
 extern "C" void fn_80184C54(void) {
 }
 
+extern f32 lbl_80301BF8;
 extern "C" void fn_80184C58(void* self, void* unused, s32 param_3) {
     if (*(s32*)((u8*)*(void**)((u8*)self + 0x168) + 0x28) == 0) {
-        u8 ok = ((u8 (*)(void*))(*(void***)self)[0x9c / 4])(self);
+        u8 ok = ((u8 (*)(void*, f32))(*(void***)self)[0x9c / 4])(self, lbl_80301BF8);
         if (ok != 0 && param_3 != 0) {
-            void* obj = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-            if (((s32 (*)(void*, s32))(*(void***)obj)[0xa4 / 4])(obj, 0) == 0) {
-                ((void (*)(void*, s32, s32))(*(void***)obj)[0x98 / 4])(obj, 0, param_3);
+            if (((s32 (*)(void*, s32))(*(void***)*(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70))[0xa4 / 4])(*(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70), 0) == 0) {
+                ((void (*)(void*, s32, s32))(*(void***)*(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70))[0x98 / 4])(*(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70), 0, param_3);
             }
         }
     }
