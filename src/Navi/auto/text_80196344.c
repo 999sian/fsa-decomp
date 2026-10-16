@@ -390,6 +390,8 @@ extern "C" int fn_80198F20()
 	return 0;
 }
 
+extern "C" void fn_80198F2C(void) {}
+
 extern "C" void fn_80198F30(void) {}
 
 extern "C" void fn_80198F34(void) {}
@@ -1674,8 +1676,10 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
-    u8* base = p + i * 4;
-    base[0xfa] = src[0];
+    s32 off = i * 4;
+    u8 r = src[0];
+    u8* base = p + off;
+    base[0xfa] = r;
     base[0xfb] = src[1];
     base[0xfc] = src[2];
     base[0xfd] = src[3];
