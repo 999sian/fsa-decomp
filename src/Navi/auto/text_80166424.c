@@ -1248,6 +1248,10 @@ extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
 
 extern "C" void fn_80172DD0(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
+extern "C" u16 fn_80172DE0(u8* p, s32 i) {
+    return ((u16*)(p + 4))[i];
+}
+
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
 
 extern "C" u8 fn_80172EC4(u8* p, s32 i) { return *(p + i + 0x54); }
