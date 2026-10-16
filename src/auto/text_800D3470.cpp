@@ -137,6 +137,10 @@ void J3DTexGenBlockPatched::initialize()
 	mTexMtxOffset = 0;
 }
 
+extern "C" int fn_800D3E10(void) {
+    return 0x22;
+}
+
 extern "C" int fn_800D3E28(void) { return 0x1a8; }
 
 extern "C" int fn_800D3E30(void) { return 0xfe; }
@@ -924,11 +928,9 @@ extern "C" void fn_800DDB70(void* param_1)
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
   void* pStart = GDGetCurrPointer();
   void* pCurr = GDGetCurrPointer();
-  for (;;) {
-    if (!isTexNoReg(pCurr)) break;
+  while (isTexNoReg(pCurr)) {
     u16 texNo = getTexNoReg(pCurr);
-    loadTexNo(i, texNo);
-    i++;
+    loadTexNo(i++, texNo);
   }
   DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
 }
