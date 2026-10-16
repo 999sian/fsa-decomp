@@ -4,6 +4,9 @@
 
 extern u8 lbl_802C05F0[];
 extern "C" double fn_80059DA0(void*);
+extern "C" void fn_80059338(void*);
+extern "C" void fn_80059768(void*);
+extern "C" void fn_80059B68(void*);
 extern const double lbl_803002B0;
 extern "C" unsigned char lbl_802C05B0[];
 extern "C" void fn_8005869C(s32 param_1, s32 param_2);
