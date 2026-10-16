@@ -17,6 +17,7 @@ extern "C" void* fn_80379870(void* this_, s16 freeFlag) {
 
 extern "C" u8 fn_803798D0(void* this_);
 extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" void* fn_801F856C(void);
 extern "C" void fn_80239914(f32* rect, s32 a, void* b);
 extern f32 lbl_80475340[];
 struct Quad {
@@ -60,6 +61,48 @@ extern "C" void fn_80379A90(Actor* this_) {
             rect[1] += pos->y;
             rect[3] += pos->y;
             fn_80239914(rect, *(s32*)(self + 0x4), *(void**)(self + 0x198));
+        }
+    }
+}
+
+extern "C" void fn_80379BD8(Actor* this_) {
+    u8* self = (u8*)this_;
+    u32 w = *(u32*)(self + 0x90);
+    u32 idx = w & 3;
+    *(s32*)(self + 0x230) = (w >> 22) & 0x1f;
+    switch (*(s32*)(self + 0x230)) {
+    case 0: {
+        u32 off = (idx << 4) & 0xff0;
+        *(f32*)(self + 0x60) = *(f32*)((u8*)lbl_804752C0 + off);
+        *(f32*)(self + 0x64) = *(f32*)((u8*)lbl_804752C0 + off + 4);
+        *(f32*)(self + 0x68) = *(f32*)((u8*)lbl_804752C0 + off + 8);
+        *(f32*)(self + 0x6c) = *(f32*)((u8*)lbl_804752C0 + off + 12);
+        break;
+    }
+    case 1: {
+        u32 off = (idx << 4) & 0xff0;
+        *(f32*)(self + 0x60) = *(f32*)((u8*)lbl_80475300 + off);
+        *(f32*)(self + 0x64) = *(f32*)((u8*)lbl_80475300 + off + 4);
+        *(f32*)(self + 0x68) = *(f32*)((u8*)lbl_80475300 + off + 8);
+        *(f32*)(self + 0x6c) = *(f32*)((u8*)lbl_80475300 + off + 12);
+        break;
+    }
+    }
+    *(f32*)(self + 0x3c) = 0.0f;
+    *(f32*)(self + 0x40) = 0.0f;
+    *(f32*)(self + 0x44) = 0.0f;
+    *(f32*)(self + 0x80) = *(f32*)(self + 0x60);
+    *(f32*)(self + 0x84) = *(f32*)(self + 0x64);
+    *(f32*)(self + 0x88) = *(f32*)(self + 0x68);
+    *(f32*)(self + 0x8c) = *(f32*)(self + 0x6c);
+    *(u32*)(self + 0x234) = *(u32*)(self + 0x90) >> 27;
+    if (*(s32*)(self + 0x230) == 1) {
+        *(f32*)(self + 0xc) = (f32)(((s32)*(f32*)(self + 0xc) / 16) * 16 + 8);
+        *(f32*)(self + 0x10) = (f32)(((s32)*(f32*)(self + 0x10) / 16) * 16 + 8);
+        if (idx < 2) {
+            *(f32*)(self + 0xc) += 8.0f;
+        } else {
+            *(f32*)(self + 0x10) += 8.0f;
         }
     }
 }
