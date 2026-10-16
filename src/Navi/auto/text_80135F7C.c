@@ -9,6 +9,17 @@ extern "C" f64 fn_80137610(void* param_1, f64* param_2);
 extern "C" f64 fn_80137644(void* param_1, f64* param_2);
 extern "C" void fn_801376D0(void* param_1, void* param_2);
 
+struct VObj_8013BC94 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(void*, void*);
+};
+
 struct KeyIter {
     f32* p;
 };
