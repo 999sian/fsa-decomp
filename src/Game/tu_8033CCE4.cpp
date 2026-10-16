@@ -41,6 +41,17 @@ struct UnkObj8033D264 {
     int unk198;
 };
 
+extern "C" void* fn_8033CCE4(void* p, s16 n) {
+    if (p != NULL) {
+        *(void**)p = lbl_804AC2D8;
+        __dt__5ActorFv(p, 0);
+        if (n > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
 extern "C" bool fn_8033D264(UnkObj8033D264* self, u8 dir) {
     f32 zero = lbl_805421B0;
     bool result = false;
