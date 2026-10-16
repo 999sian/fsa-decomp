@@ -51,9 +51,14 @@ extern "C" void fn_8013D304(void* param_1) {
 }
 
 extern "C" void fn_8013D358(void* param_1, void* param_2) {
-    void* v = *(void**)((u8*)param_2 + 0x14);
+    void* v;
+    v = *(void**)((u8*)param_2 + 0x14);
     fn_8013D5DC(param_1, v);
     fn_8013D7E0(param_1, v);
     (*(VObj_8013D304**)((u8*)param_1 + 0x100))->vf3();
+}
+
+extern "C" void fn_8013D3B4(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
+    fn_8013BC94(*(void**)((u8*)param_1 + 0x100), param_3, param_4, param_5, param_6);
 }
 
