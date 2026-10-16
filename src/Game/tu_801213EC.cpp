@@ -87,6 +87,7 @@ void fn_801F0E34(void*, u32, s32);
 void fn_801D22DC(void*, s32, s32, s32);
 void fn_801D1F14(void*, f32);
 s32 fn_8022EA0C(s32);
+s32 fn_8022E970(s32);
 s32 fn_8023AE34(const f32*, u32, f32*);
 s32 fn_8023AB94(const f32*, u32, f32*);
 s32 fn_80230CFC(s32);
