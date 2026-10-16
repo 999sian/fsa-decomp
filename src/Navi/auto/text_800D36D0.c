@@ -1,4 +1,12 @@
 #include "types.h"
+extern f32 lbl_80300FE8;
+extern char lbl_802C579C[];
+extern char lbl_802B7CA0[];
+extern u32 lbl_80231428[];
+extern u8 lbl_802FEE42;
+extern "C" int fn_800D6700(void*, s16, u8, s32, s32, f32, f32, f32, f32);
+extern "C" int fn_800D6A94(void*, s16, u8, s32, s32, f32, f32);
+extern "C" void fn_8002FB68(u32, u8);
 extern u32 lbl_802FF208;
 extern "C" int fn_80021994(void*);
 extern "C" int fn_8002185C(void*);
