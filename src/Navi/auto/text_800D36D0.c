@@ -92,6 +92,10 @@ extern "C" void fn_800D54EC(char* p)
     }
 }
 
+extern "C" void fn_800D6308(NaviState_800D6308* p) {
+    (p->*lbl_802899D4[((u8*)p)[0x137]])();
+}
+
 extern "C" void* fn_8015A90C(unsigned long);
 extern "C" void fn_8010D1DC(void*);
 extern "C" void fn_800C5444(void*, int);
