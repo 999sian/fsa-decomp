@@ -170,7 +170,7 @@ struct VObj_80180980 {
     virtual void vfF0(f32*, f32*); virtual void vfF4(); virtual void vfF8(f32*, f32*); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf108(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf10C(f32, f32, f32, f32, f32, f32, f32, f32);
-    virtual void vf110(); virtual void vf114(); virtual void vf118(); virtual void vf11C(); virtual void vf120(); virtual void vf124(); virtual void vf128(); virtual void vf12C(); virtual void vf130(); virtual void vf134(); virtual void vf138(); virtual void vf13C(); virtual void vf140();
+    virtual void vf118(); virtual void vf11C(); virtual void vf120(); virtual void vf124(); virtual void vf128(); virtual void vf12C(); virtual void vf130(); virtual void vf134(); virtual void vf138(); virtual void vf13C(); virtual void vf140();
     virtual void vf144(f32, f32, s16, s16, s16, s16, s16, s16, s16, s32, s32);
 };
 
@@ -743,8 +743,7 @@ extern "C" void fn_8017ED64(VObj_8017ED64* self, f32 x, f32 y) {
 extern "C" void fn_8017EDD0(u32* self, s32 a) {
     u8* p = (u8*)self;
     if (*(u32*)(p + 0x100) != 0 && *(u8*)(p + 0x110) != 0) {
-        void (*vfn)(void*, f32, f32, s16, s16, s16, s16, s16, s16, s16, s32, s32) = (void (*)(void*, f32, f32, s16, s16, s16, s16, s16, s16, s16, s32, s32))((*(void***)self)[0x144 / 4]);
-        vfn(self, *(f32*)(p + 0x20), *(f32*)(p + 0x24), *(s16*)(p + 0x112), *(s16*)(p + 0x114), *(s16*)(p + 0x116), *(s16*)(p + 0x118), *(s16*)(p + 0x11a), *(s16*)(p + 0x11c), *(s16*)(p + 0x11e), *(s16*)(p + 0x120), a);
+        ((VObj_80180980*)self)->vf144(*(f32*)(p + 0x20), *(f32*)(p + 0x24), *(s16*)(p + 0x112), *(s16*)(p + 0x114), *(s16*)(p + 0x116), *(s16*)(p + 0x118), *(s16*)(p + 0x11a), *(s16*)(p + 0x11c), *(s16*)(p + 0x11e), *(s16*)(p + 0x120), a);
     }
 }
 
