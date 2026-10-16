@@ -116,10 +116,4 @@ extern "C" void fn_8013A884(const unsigned char* src) {
     dst[6] = src[2];
     dst[7] = src[3];
 }
-class VObj {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0C();
-};
+
