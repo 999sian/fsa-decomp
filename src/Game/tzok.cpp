@@ -2,6 +2,11 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 
+extern "C" bool fn_801CD2F8(s32 id);
+extern "C" u8 fn_802046FC(void* base, void* a, void* b);
+extern "C" u8 fn_801F2618(u8* p, u8* q, u8 c);
+extern "C" u8 lbl_8053EFC0;
+
 // ---- fn_802064E0.cpp ----
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802D7F40(void* record, s32 roomIdx);
@@ -96,6 +101,74 @@ extern "C" void fn_80204D6C(TzokActor* self) {
     }
 }
 
+extern "C" void* fn_80230CFC(void* a);
+extern "C" s16 fn_801F6874(void* a);
+extern "C" f32* fn_8023E7B0(void* a);
+extern "C" s32 fn_8023DE58(void* a);
+extern "C" u8 fn_8022F514(void* a);
+extern "C" void* fn_8022F3DC(void* a);
+extern "C" f32* fn_8023E724(void* a);
+extern "C" void fn_801CE32C(void);
+extern f32 lbl_8053F860;
+extern "C" void fn_80204DAC(void* this_) {
+    char* p = (char*)this_;
+    if (*(s32*)(p + 0x248) == 3) {
+        if (p[0xc4] != 0) {
+            *(void**)(p + 0x98) = fn_80230CFC(*(void**)(p + 0xc8));
+            *(s16*)(p + 0x33c) = fn_801F6874(*(void**)(p + 0x98));
+            f32* src = fn_8023E7B0(*(void**)(p + 0xc8));
+            *(f32*)(p + 0xc) = src[0];
+            *(f32*)(p + 0x10) = src[1];
+            *(f32*)(p + 0x14) = src[2];
+            *(f32*)(p + 0x3c) = lbl_8053F860;
+            *(f32*)(p + 0x40) = lbl_8053F860;
+            *(f32*)(p + 0x44) = lbl_8053F860;
+            if (*(s32*)(p + 4) != fn_8023DE58(*(void**)(p + 0xc8))) {
+                *(s32*)(p + 4) = fn_8023DE58(*(void**)(p + 0xc8));
+                *(s32*)(p + 0x2a8) = 0;
+                void* obj = *(void**)(p + 0xc8);
+                if (fn_8022F514(obj)) {
+                    obj = fn_8022F3DC(obj);
+                }
+                f32* pos = fn_8023E724(obj);
+                *(f32*)(p + 0x32c) = pos[0];
+                *(f32*)(p + 0x330) = pos[1];
+                *(f32*)(p + 0x334) = pos[2];
+            }
+        }
+    } else if ((*(u32*)(p + 0x230) & 7) == 0) {
+        fn_801CE32C();
+    }
+}
+
+extern "C" void fn_801D22A0(void* obj, s32 a, s32 b);
+extern "C" void fn_801D2264(void* obj, s32 a, s32 b);
+extern "C" void fn_801D22DC(void* obj, s32 a, s32 b, s32 c);
+extern "C" void fn_801CE4BC(void* this_);
+extern "C" void fn_80205478(void* this_) {
+    char* p = (char*)this_;
+    s32 state = *(s32*)(p + 0x248);
+    if (state == 5 || state == 7) {
+        return;
+    }
+    if (*(s32*)(p + 0x350) == 2) {
+        fn_801D22A0(p + 0x270, *(s32*)(p + 0x98), 2);
+    } else if (state == 0) {
+        if (*(s32*)(p + 0x278) < 4 && *(s32*)(p + 0x278) >= 0) {
+            fn_801D2264(p + 0x270, *(s32*)(p + 0x98), 2);
+        } else {
+            fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 2, 0);
+        }
+    } else if (*(s32*)(p + 0x278) < 4 && *(s32*)(p + 0x278) >= 0) {
+        fn_801D22DC(p + 0x270, *(s32*)(p + 0x98) + 4, 2, 0);
+    } else if (*(s32*)(p + 0x350) == 0) {
+        fn_801D22A0(p + 0x270, *(s32*)(p + 0x98) + 4, 2);
+    } else {
+        fn_801D2264(p + 0x270, *(s32*)(p + 0x98) + 4, 2);
+    }
+    fn_801CE4BC(this_);
+}
+
 struct TzokPt { f32 x, y; };
 extern TzokPt lbl_8053AC60;
 
@@ -166,6 +239,39 @@ extern "C" BOOL fn_8020609C(TzokActor* self) {
         }
     }
     return r;
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7274(void* pool, s32 param, void* out, s32 exceptId);
+extern "C" u8 fn_801CF888(void* this_, void* a, void* b, s32 c);
+extern "C" void qsort(void* base, size_t nmemb, size_t size, s32 (*compar)(void*, void*));
+extern "C" s32 fn_802063FC(u8* this_) {
+    TzokPt pt;
+    TzokActor* list[1024];
+    s32 count;
+    s32 n;
+    s32 i;
+    s32 result;
+    TzokActor** p;
+
+    pt.x = *(f32*)(this_ + 0xc);
+    pt.y = *(f32*)(this_ + 0x10);
+    count = fn_801F7274(fn_801F856C(), *(s32*)(this_ + 4), list, -1);
+    if (count >= 2) {
+        lbl_8053AC60 = pt;
+        qsort(list, count, 4, (s32 (*)(void*, void*))fn_802068A0);
+    }
+    p = list;
+    result = -1;
+    n = count > 20 ? 20 : count;
+    for (i = 0; i < n; i++) {
+        if (fn_801CF888(this_, &pt, &(*p)->mX, *(s32*)(this_ + 4)) == 0) {
+            result = *(s32*)((u8*)*p + 0x198);
+            break;
+        }
+        p++;
+    }
+    return result;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
