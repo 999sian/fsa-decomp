@@ -29,7 +29,7 @@ extern "C" void* fn_8036C69C(void* this_, short how) {
         *(void**)this_ = (void*)lbl_804AE088;
         Sub8036C69C* sub = *(Sub8036C69C**)((char*)this_ + 0x314);
         if (sub) {
-            sub->v2(1);
+            sub->v0(1);
         }
         *(void**)((char*)this_ + 0x314) = 0;
         fn_8036A65C(this_);
