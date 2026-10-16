@@ -174,6 +174,8 @@ extern "C" s32 fn_80172CEC(s32 p, s32 i) {
     return p + i + 0x78;
 }
 
+extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
