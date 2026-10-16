@@ -57,15 +57,19 @@ extern "C" void fn_80119468(u32 a, u32 b, s32 c)
 
 extern "C" void fn_80119958(u8* self)
 {
-    *(u32*)(self + 0x0) = 0;
+    self[0] = 0;
+    self[1] = 0;
+    self[2] = 0;
     *(u32*)(self + 0x4) = 0;
     *(u32*)(self + 0x8) = 0;
     *(u32*)(self + 0xc) = 0;
-    *(u32*)(self + 0x10) = 0;
+    *(f32*)(self + 0x14) = 0.0f;
+    *(f32*)(self + 0x18) = 0.0f;
     *(u32*)(self + 0x1c) = 0;
     *(u32*)(self + 0x20) = 0;
     *(u32*)(self + 0x24) = 0;
     *(u32*)(self + 0x28) = 0;
+    *(u32*)(self + 0x10) = 0;
 }
 
 extern "C" void fn_80119D48(u8* self)
