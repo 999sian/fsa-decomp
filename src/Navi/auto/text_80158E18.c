@@ -711,8 +711,9 @@ extern "C" long fn_8015BA84(char* p) {
 
 extern "C" long fn_8015BAE8(char* p) {
     char* n;
-    long sum = 0;
+    long sum;
     fn_801BE3A0(p + 0x18);
+    sum = 0;
     for (n = *(char**)(p + 0x80); n != 0; n = *(char**)(n + 0xc)) {
         sum += *(long*)(n + 4) + 0x10;
     }
