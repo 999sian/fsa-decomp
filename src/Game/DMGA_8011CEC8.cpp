@@ -1,6 +1,23 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
+extern char lbl_8049DD68[];
+extern char lbl_8049CC34[];
+extern "C" void __dt__13Base_8010E074Fv(void* p, s32 n);
+extern "C" char* fn_8011CEC8(char* p, s16 n) {
+    if (p != 0) {
+        *(char**)p = lbl_8049DD68;
+        if (p + 0x274 != 0 && p + 0x298 != 0) {
+            *(char**)(p + 0x298) = lbl_8049CC34;
+        }
+        __dt__13Base_8010E074Fv(p, 0);
+        if (n > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
 extern "C" u8 fn_8011D4B4(int param_1) {
     return *(int*)(param_1 + 0x234) == 9;
 }
