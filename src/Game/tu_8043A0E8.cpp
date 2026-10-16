@@ -23,6 +23,16 @@ extern "C" void fn_80425234(void* p);
 extern "C" void fn_8043E7CC(void* game, void* v);
 extern "C" void fn_8041E58C(void* p);
 extern "C" void fn_80425128(void* p);
+extern "C" void fn_8041FC2C(void* p);
+extern "C" void fn_8044A06C(void);
+extern "C" void fn_80445D24(void);
+extern "C" void fn_80448334(void);
+extern "C" void fn_8044AFD8(void);
+extern "C" void fn_804490B8(void);
+extern "C" void fn_804479A0(void);
+extern "C" void fn_80446DB0(void);
+extern "C" void fn_804263A8(void* p);
+extern "C" void fn_80443688(void* p);
 extern "C" void fn_8043A0E8(u8 param_1) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0 && (*(u32*)(lbl_8050EC80 + 0x28 + 0xc8 * *(s32*)(lbl_8050EC80 + 0x10)) & 1) == 0 &&
         *(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 0) {
@@ -112,7 +122,8 @@ extern "C" f32 fn_8043D57C(u8* param_1) {
     f32 ret = lbl_80543C88;
     if (param_1[0x10b] != 0 && param_1[0x10c] == 0) {
         J2DPane* pane = *(J2DPane**)(*(u8**)(param_1 + 0x40) + 4);
-        ret = (lbl_80543CE8 * (lbl_80543CC4 - (pane->getBounds()->i.y - *(f32*)(*(u8**)(param_1 + 0x40) + 0xc)))) / lbl_80543CC4;
+        f32 dy = pane->getBounds()->i.y - *(f32*)(*(u8**)(param_1 + 0x40) + 0xc);
+        ret = (lbl_80543CE8 * (lbl_80543CC4 - dy)) / lbl_80543CC4;
     }
     return ret;
 }
