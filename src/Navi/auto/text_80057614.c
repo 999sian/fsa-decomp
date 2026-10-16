@@ -243,7 +243,6 @@ extern "C" void fn_80058D00(void) {
     } while (i < 0x10);
 }
 
-extern "C" void fn_800595FC(void);
 extern "C" void fn_80058D50(void) {
     fn_800595FC();
 }
