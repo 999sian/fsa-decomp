@@ -64,7 +64,6 @@ struct VObj_801398CC {
 };
 
 struct VObj_8013B140 {
-    virtual void v0();
     virtual void v1();
     virtual void v2();
     virtual void v3();
@@ -1176,10 +1175,10 @@ extern "C" BOOL fn_8013B138(void)
     return TRUE;
 }
 
-extern "C" void fn_8013B140(void (***self)(void*, u32*), u32* p)
+extern "C" void fn_8013B140(VObj_8013B140* self, u32* p)
 {
     u32 v = *p;
-    (*self)[7](self, &v);
+    ((VObj_801398CC*)0, self)->v6(&v);
 }
 
 extern "C" void fn_80132C50(void*, int);
