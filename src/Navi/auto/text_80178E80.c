@@ -16,6 +16,9 @@ extern "C" s32 fn_801786BC(s32 a, f32 b);
 extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
 
 extern "C" void fn_801C5DA8(u32 a, u8* b, u8* c);
+extern u8 lbl_802994F0[];
+extern u8 lbl_80299504[];
+extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 extern "C" void fn_801DF2A4(u8* a, s32 b);
 struct Vec4F {
     f32 x, y, z, w;
