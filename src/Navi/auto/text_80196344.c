@@ -28,6 +28,8 @@ struct NaviColor8 { u8 r, g, b, a; };
 struct NaviBytes4 { u8 b[4]; };
 struct NaviBits2x2 { u8 hi : 4; u8 a : 2; u8 b : 2; u8 pad[7]; };
 extern u8 lbl_802EE470[];
+extern "C" void fn_80193CB4(void* p);
+extern "C" void fn_801A6238(void);
 extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
