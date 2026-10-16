@@ -228,6 +228,22 @@ extern "C" void fn_8015AD64(Unk8015AD64* p) {
     }
 }
 
+extern void* lbl_802975C4[];
+extern "C" void fn_8015A530(void*);
+extern "C" void fn_801599D0(void*, int);
+extern "C" void fn_8015AB1C(void* p);
+extern "C" void* fn_8015AE80(void* p, s16 param_2) {
+    if (p != nullptr) {
+        *(void**)p = lbl_802975C4;
+        fn_8015A530(p);
+        fn_801599D0(p, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_8015D030(void) {
     fn_80159DB4();
 }
