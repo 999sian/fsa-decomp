@@ -451,10 +451,11 @@ extern "C" void fn_801780D4(u8* self, u8 flag)
 extern "C" void* fn_80178424(u8* self)
 {
     u8* p = *(u8**)(self + 0xdc);
-    u8* it = p ? p - 0xc : 0;
+    u8* it = p;
+    if (p != 0) it = p - 0xc;
     if (it == 0) return 0;
-    it = p ? p - 0xc : 0;
-    return *(void**)(it + 0xc);
+    if (p != 0) p -= 0xc;
+    return *(void**)(p + 0xc);
 }
 
 extern "C" void fn_80178DA4(void* param_1)
