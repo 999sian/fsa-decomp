@@ -18,6 +18,8 @@ struct Obj8033D264 {
 
 extern "C" {
 extern f32 lbl_805421B0;
+extern char lbl_804AC2D8[];
+void __dt__5ActorFv(void*, s32);
 extern JGeometry::TVec3f lbl_80471E28[];
 bool fn_801F2618(void*, JGeometry::TVec3f*, int);
 bool fn_8023B0F4(int, f32*, int, f32, int);
