@@ -639,6 +639,9 @@ extern "C" void fn_8015B674(char* p) {
     }
     fn_801BE47C(p + 0x18);
 }
+
+extern "C" void fn_8015B704(void) {}
+
 #pragma pop
 
 #pragma pop
