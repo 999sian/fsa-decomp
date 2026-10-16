@@ -232,7 +232,8 @@ struct Tu6CECUtil {
         if (x <= lbl_8053F150)
             return x;
         f32 y = __frsqrte(x);
-        return lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
+        y = lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
+        return y;
     }
 };
 static inline f32 tu6cec_invSqrt(f32 x) { return Tu6CECUtil::inv_sqrt(x); }
