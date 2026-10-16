@@ -2758,7 +2758,7 @@ extern "C" void fn_80191C50(u32* data, s32 index) {
 
 extern "C" void fn_80191CE8(u32 p1, u32 p2, s32 p3, u32 p4, s32 p5) {
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = *((u8*)&lbl_802FE644 + p1) << 24 | (p3 + 3) << 18 | (p2 >> 5) | (p3 + 3) << 15;
+    *(volatile u32*)0xCC008000 = *((u8*)&lbl_802FE644 + p1) << 24 | (p3 + 3) << 18 | ((p2 >> 5) | (p3 + 3) << 15);
     if (p5 == 3) {
         return;
     }
@@ -2766,7 +2766,7 @@ extern "C" void fn_80191CE8(u32 p1, u32 p2, s32 p3, u32 p4, s32 p5) {
         return;
     }
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = *((u8*)&lbl_802FE64C + p1) << 24 | (p5 + 3) << 18 | (p4 >> 5) | (p5 + 3) << 15;
+    *(volatile u32*)0xCC008000 = *((u8*)&lbl_802FE64C + p1) << 24 | (p5 + 3) << 18 | ((p4 >> 5) | (p5 + 3) << 15);
 }
 
 extern "C" void fn_80191E7C(u32 a, s16 b, u16 c) {
