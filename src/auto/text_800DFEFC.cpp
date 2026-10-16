@@ -6,23 +6,24 @@ u16 J3DMaterialFactory_v21::countUniqueMaterials()
 {
 	u16 count = 0;
 	u16 num = mMaterialNum;
-	if (num == 0) {
-		return 0;
+	if (num <= 0) {
+		return count;
 	}
 	if (num > 8) {
-		for (; count < (u16)(num - 8); count += 8) {}
+		u16 lim = num - 8;
+		for (; count < lim; count += 8) {}
 	}
 	for (; count < num; count++) {}
 	return count;
 }
 
-extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
+extern "C" GXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mMatColorIndex[no] != 0xffff) {
-		return J3DGXColor(self->mColorData[initData->mMatColorIndex[no]]);
+		return self->mColorData[initData->mMatColorIndex[no]];
 	}
-	return j3dDefaultColInfo;
+	return J3DGXColor(0xffffffffU);
 }
 
 u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
@@ -90,6 +91,24 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 	return J3DTevOrder();
 }
 
+extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no)
+{
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mTevColorIndex[no] != 0xffff) {
+		return J3DGXColorS10(self->mTevColors[initData->mTevColorIndex[no]]);
+	}
+	return j3dDefaultTevColor;
+}
+
+extern "C" J3DGXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
+{
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mTevKColorIndex[no] != 0xffff) {
+		return J3DGXColor(self->mTevKColors[initData->mTevKColorIndex[no]]);
+	}
+	return j3dDefaultTevKColor;
+}
+
 u8 J3DMaterialFactory_v21::newTevStageNum(int idx) const
 {
     u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[4];
@@ -124,6 +143,15 @@ J3DAlphaComp J3DMaterialFactory_v21::newAlphaComp(int idx) const
         return J3DAlphaComp(mAlphaCompInfo[initData->mAlphaCompareIndex]);
     }
     return J3DAlphaComp(0xffff);
+}
+
+extern "C" J3DBlend fn_800E1144(const J3DMaterialFactory_v21* self, int idx)
+{
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mBlendModeIndex != 0xffff) {
+		return J3DBlend(self->mBlendInfo[initData->mBlendModeIndex]);
+	}
+	return J3DBlend();
 }
 
 J3DZMode J3DMaterialFactory_v21::newZMode(int idx) const
