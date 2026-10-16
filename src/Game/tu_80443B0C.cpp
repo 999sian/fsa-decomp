@@ -41,6 +41,16 @@ extern "C" void fn_80444650(void* this_) {
 }
 
 struct T804446A4;
+struct Slot0 {
+    virtual void slot0(s32 arg);
+};
+
+struct T80444A24 {
+    u8 pad0[0x10];
+    Slot0* a[6];
+    Slot0* b[2];
+};
+
 typedef void (T804446A4::*PMF804446A4)();
 extern PMF804446A4 lbl_804B1B30[];
 extern "C" bool fn_804446A4(T804446A4* this_) {
