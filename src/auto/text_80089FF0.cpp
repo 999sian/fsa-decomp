@@ -16,6 +16,29 @@ extern "C" u8 lbl_804BA1B0[];
 extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
+extern "C" void fn_8008A220(u16 param_1, OSContext* param_2, u32 param_3, u32 param_4)
+{
+    lbl_8053A918 = PPCMfmsr();
+    lbl_8053A91C = *(u32*)((u8*)param_2 + 0x194);
+    OSFillFPUContext(param_2);
+    OSSetErrorHandler(param_1, 0);
+    if (param_1 == 0xf) {
+        OSProtectRange(0, 0, 0, 3);
+        OSProtectRange(1, 0, 0, 3);
+        OSProtectRange(2, 0, 0, 3);
+        OSProtectRange(3, 0, 0, 3);
+    }
+    u8* msg = lbl_804BA1B0;
+    *(u32*)(msg + 0) = lbl_8053A904;
+    *(u16*)(msg + 4) = param_1;
+    *(u32*)(msg + 8) = (u32)param_2;
+    *(u32*)(msg + 12) = param_3;
+    *(u32*)(msg + 16) = param_4;
+    OSSendMessage(&lbl_80499390, msg, 1);
+    OSEnableScheduler();
+    OSYieldThread();
+}
+
 extern "C" void fn_8008A4C4(unsigned int param_1)
 {
     __OSFpscrEnableBits = param_1;
