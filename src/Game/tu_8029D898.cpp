@@ -25,7 +25,12 @@ struct WaveSub : WaveSubBase {
     virtual void Release(s32 how);
 };
 
-extern void* lbl_804A7C98[];
+struct WaveOwner {
+    void* vtbl;
+    void* mpSub;
+};
+
+extern void* lbl_804A7C98;
 extern void* lbl_8053AC98;
 extern char* lbl_8053AB10;
 extern "C" s32 fn_80226BC4(JGeometry::TVec2<f32>* pos, s32 room);
