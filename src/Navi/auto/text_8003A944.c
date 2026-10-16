@@ -133,6 +133,11 @@ extern "C" void* fn_8003CE80(void* ptr, s16 param_2) {
 
 extern "C" void fn_8003CEBC(void) {}
 
+extern "C" void fn_80045AB8(void* dst, void* src);
+extern "C" void fn_8003CEC0(void* param_1) {
+    fn_80045AB8(lbl_802EE470, (char*)param_1 + 0x10);
+}
+
 extern "C" void fn_80040120(void) {
     extern void* lbl_802BF0E8[];
     register void* obj1 = lbl_802BF0E8[1];
