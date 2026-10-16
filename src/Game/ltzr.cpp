@@ -18,6 +18,13 @@ extern const f32 lbl_80542268;
 extern const f32 lbl_805422AC;
 extern const f32 lbl_80542288;
 extern const f32 lbl_8054227C;
+extern const f32 lbl_8054228C;
+extern const f32 lbl_805422B0;
+extern const f32 lbl_805422B4;
+extern "C" u8 fn_80233E40(s32);
+extern "C" f32* fn_8023E724(s32);
+extern "C" void fn_8023DFF4(s32, f32*);
+extern "C" void* fn_8013CC50(void*, void*, f32, s32, s32, s32, s32, s32, s32);
 
 extern "C" void* fn_8033F9A0(void* this_, s16 flag) {
     if (this_ != 0) {
