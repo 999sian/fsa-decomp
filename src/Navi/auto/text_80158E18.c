@@ -56,6 +56,10 @@ extern "C" u32 fn_80159BA4(u32 param_1) {
     return old;
 }
 
+extern "C" void fn_80159BB4(VObj_8003B920* obj) {
+    obj->m6();
+}
+
 extern "C" void fn_80159CB4(VObj_8003B920* obj) {
     obj->m8();
 }
