@@ -68,6 +68,10 @@ extern "C" void fn_8018905C(void) {
     fn_801788C0();
 }
 
+extern "C" void fn_8018A8C0(void) {
+    fn_801788C0();
+}
+
 extern void* lbl_802994F0[];
 extern "C" void* fn_8018B098(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
