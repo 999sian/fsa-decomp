@@ -202,12 +202,14 @@ extern "C" s32 fn_80121DB0(u8* self) {
 
 #pragma fp_contract off
 extern "C" f32 fn_80121DC8(u8* self, s32 player) {
-    JGeometry::TVec3<f32> pos = *fn_8023E724(player);
+    GameLowVec pos;
+    pos = *fn_8023E724(player);
     f32 x = pos.x - *(f32*)(self + 0xC);
     f32 y = pos.y - *(f32*)(self + 0x10);
     f32 distance = x * x + y * y;
     if (distance > lbl_8053C9B4) {
-        distance = __frsqrte(distance) * distance;
+        f32 inv = __frsqrte(distance);
+        distance = inv * distance;
     }
     return distance;
 }
@@ -322,7 +324,7 @@ extern "C" s32 fn_80122834(u8* self) {
 }
 
 extern "C" s32 fn_8012285C(u8* self) {
-    s32 player = *(s32*)(self + 0x344);
+    s32 player = ((s32*)self)[0x344 / 4];
     if (player < 0 || player >= 4) {
         return -1;
     }
@@ -330,9 +332,9 @@ extern "C" s32 fn_8012285C(u8* self) {
 }
 
 extern "C" u8 fn_801229E4(u8* self) {
+    JGeometry::TVec2<f32> position;
     JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(self + 0x60);
     box.addPos(*(JGeometry::TVec2<f32>*)(self + 0xC));
-    JGeometry::TVec2<f32> position;
     position.set(lbl_8053C9B4, lbl_8053C9B4);
     if (fn_8023AE34((f32*)&box, *(u32*)(self + 4), (f32*)&position) >= 0) {
         return 1;
@@ -384,7 +386,10 @@ extern "C" void fn_80123AB4(u8* self, s32 arg1, s32 arg2, f32 distance) {
     fn_801EEC98(self, *(s32*)(self + 0x198), &result, &direction,
         &nearDistance, &otherDistance, arg1, arg2);
     s32 selectedDirection = direction;
-    if (selectedDirection < 0 || nearDistance > distance) {
+    if (selectedDirection < 0) {
+        return;
+    }
+    if (nearDistance > distance) {
         return;
     }
     if (selectedDirection < 0) {
