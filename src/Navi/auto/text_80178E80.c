@@ -42,7 +42,7 @@ struct VObj_8017EB2C {
     virtual void v50(); virtual void v51(); virtual void v52(); virtual void v53(); virtual void v54();
     virtual void v55(); virtual void v56(); virtual void v57(); virtual void v58(); virtual void v59();
     virtual void v60(); virtual void v61(); virtual void v62(); virtual void v63(); virtual void v64();
-    virtual void v65(); virtual void v66(); virtual void v67();
+    virtual void v65(); virtual void v66(void* a, int b); virtual void v67();
     virtual void v68(void* a, void* b, int c);
 };
 
@@ -743,7 +743,7 @@ extern "C" void fn_8017E9DC(u32* self, u32 a) {
 }
 
 extern "C" void fn_8017EB2C(u32* self, void* a, int b) {
-    ((void (*)(void*, void*, int))(*(u32**)self)[68])(self, fn_8017A4A8(a), b);
+    ((VObj_8017EB2C*)self)->v68(fn_8017A4A8(a), (void*)0, b);
 }
 
 #pragma push
