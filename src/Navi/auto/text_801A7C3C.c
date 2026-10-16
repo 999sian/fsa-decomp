@@ -677,6 +677,10 @@ extern "C" void* fn_801B7090(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801B70D8(void) {
+    return;
+}
+
 extern "C" int fn_801B70E8()
 {
 	return 0;
