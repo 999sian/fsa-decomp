@@ -145,6 +145,13 @@ extern "C" void fn_80128718(u8* self) {
     *(s16*)(self + 0x214) = 0;
 }
 
+extern "C" void fn_80128724(u8* param_1, u8* param_2) {
+    u8* iVar1 = **(u8***)(*(u8**)(param_1 + 4) + 0x1c);
+    s32 uVar2 = (s32)*(s16*)(iVar1 + 0x24) + 1;
+    s32 iVar3 = (s32)(*(f32*)(param_2 + 0x84) * (f32)uVar2) + (*(u8*)(param_2 + 0x95) & *(u8*)(iVar1 + 0x2f));
+    *(s16*)(param_1 + 0x214) = iVar3 % uVar2;
+}
+
 extern "C" void fn_80128794(u8* self) {
     *(s16*)(self + 0x214) = 0;
 }
