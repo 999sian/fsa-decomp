@@ -14,6 +14,7 @@ extern "C" void fn_8011583C(void* self, void** cb) {
 extern "C" void fn_801C68C8(void*, void*, Vec3f*);
 extern "C" void fn_801C6910(void*, Vec3f*);
 extern "C" void fn_80115960(Vec3f* out, void* a, void* b);
+extern "C" void fn_801C69EC(void*, void*, Vec3f*);
 extern "C" float fn_801C6970(void*);
 extern "C" void fn_801C692C(void*, Vec3f*);
 extern const Vec3f lbl_802C5C94;
@@ -36,7 +37,9 @@ extern "C" void fn_80115914(Vec3f* out, void* a) {
     *out = v;
 }
 
-extern "C" void fn_801159B4(void* self) {
+extern "C" Vec3f* fn_801159B4(Vec3f* out, void* a, void* b) {
+    fn_80115960(out, a, b);
+    return out;
 }
 
 extern const float lbl_8030141C;
