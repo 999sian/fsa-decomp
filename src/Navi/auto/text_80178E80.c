@@ -837,6 +837,7 @@ extern "C" void fn_801842BC(u8* self, u8 v) {
             p[3] = v;
         }
     }
+    q = self + 8;
     p = *(u8**)(self + 0x150);
     if (p != 0) {
         p = p + 0x10;
@@ -844,7 +845,6 @@ extern "C" void fn_801842BC(u8* self, u8 v) {
             p[3] = v;
         }
     }
-    q = self + 8;
     p = *(u8**)(q + 0x14c);
     if (p != 0) {
         p = p + 0x10;
@@ -864,10 +864,9 @@ extern "C" void fn_801842BC(u8* self, u8 v) {
 }
 
 extern "C" void fn_801780D4(char* self, u8 v);
-extern "C" void fn_80184340(u8* self, u8 v) {
+extern "C" void fn_80184340(char* self, u8 v) {
     u8* p;
-    u8* q;
-    q = self + 8;
+    char* q;
     self[0xb1] = v;
     p = *(u8**)(self + 0x148);
     if (p != 0) {
@@ -877,6 +876,7 @@ extern "C" void fn_80184340(u8* self, u8 v) {
     if (p != 0) {
         p[0x22] = v;
     }
+    q = self + 8;
     p = *(u8**)(self + 0x150);
     if (p != 0) {
         p[0x22] = v;
@@ -889,7 +889,7 @@ extern "C" void fn_80184340(u8* self, u8 v) {
     if (p != 0) {
         p[0x22] = v;
     }
-    fn_801780D4((char*)self, v);
+    fn_801780D4(self, v);
 }
 
 extern "C" void fn_801843B8(void* self) {
@@ -1149,6 +1149,32 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     void** vtbl = *(void***)self;
     return ((int (*)(void*, s32*, s32*))vtbl[0xac / 4])(self, &local_c, &local_18);
 }
+
+struct VObj_8018A4B4 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual u8 v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+};
 
 extern "C" int fn_8018A4B4(u8* self, s32* p1, s32* p2) {
     u8* obj;
