@@ -1,5 +1,7 @@
 #include "types.h"
 
+struct S16Quad { s16 v[4]; };
+
 extern "C" void fn_80178C9C(void*, void*);
 
 
@@ -333,11 +335,15 @@ extern "C" s32 fn_80172B80(s32 p, s32 i) {
 }
 
 extern "C" void fn_80172B94(u8* p, s32 i, s16* v) {
-    s16* d = (s16*)(p + i * 8 + 0x1e);
-    d[0] = v[0];
-    d[1] = v[1];
-    d[2] = v[2];
-    d[3] = v[3];
+    s16* d = (s16*)(p + i * 8);
+    s16 a = v[0];
+    s16 b = v[1];
+    s16 c = v[2];
+    s16 e = v[3];
+    d[15] = a;
+    d[16] = b;
+    d[17] = c;
+    d[18] = e;
 }
 
 extern "C" s32 fn_80172BC0(s32 p, s32 i) {
