@@ -26,6 +26,15 @@ extern "C" void* fn_8011C5B4(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern f32 lbl_80301540;
+extern "C" void fn_8011C608(void* param_1) {
+    f32 v = lbl_80301540;
+    *(f32*)((char*)param_1 + 0x0) = v;
+    *(f32*)((char*)param_1 + 0x4) = v;
+    *(f32*)((char*)param_1 + 0x8) = v;
+    *(s16*)((char*)param_1 + 0xc) = 0;
+}
+
 extern "C" void fn_8011C624(void* param_1) {
     char* p = (char*)param_1;
     *(s32*)(p + 0x0) = 0;
