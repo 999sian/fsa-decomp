@@ -8,8 +8,6 @@ struct Tu803DA6B4Sub {
 struct Tu803DA6B4Pane {
     virtual void v00();
     virtual void v04();
-    virtual void v08();
-    virtual void v0C();
     virtual void move(f32 x, f32 y);
     virtual void v14();
     virtual void v18();
