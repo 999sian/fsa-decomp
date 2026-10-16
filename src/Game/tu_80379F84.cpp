@@ -44,6 +44,35 @@ extern "C" u8 fn_8037A120(void) {
     return 0;
 }
 
+extern "C" void fn_8037A580(u8* p) {
+    if (*(void**)(p + 4) != 0) {
+        u32 v = *((u8*)lbl_8053ADA0 + 0x4c0);
+        u8 c = v;
+        if (c != 5 && c != 8 && c != 7) {
+            fn_803A8F5C(lbl_8053ADA0);
+        } else {
+            fn_8037AA7C();
+            fn_803B31AC(lbl_8053ADA0);
+        }
+    }
+    if (*(void**)(p + 8) != 0) {
+        u32 v = *((u8*)lbl_8053ADA8 + 0x294);
+        u8 c = v;
+        if (c == 5 || c == 8 || c == 7) {
+            fn_8037AA7C();
+            fn_803B7DCC(lbl_8053ADA8);
+        }
+    }
+    if (*(void**)(p + 0xc) != 0) {
+        u32 v = *((u8*)lbl_8053ADC0 + 0x76);
+        u8 c = v;
+        if (c == 2 || c == 8 || c == 7) {
+            fn_803D8364();
+            fn_803D82EC(lbl_8053ADC0);
+        }
+    }
+}
+
 extern "C" void fn_8037A664(u8* p) {
     if (*(void**)(p + 4) != 0) {
         u32 v = *((u8*)lbl_8053ADA0 + 0x4c0);
