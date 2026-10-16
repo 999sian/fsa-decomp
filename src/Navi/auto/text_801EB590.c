@@ -21,6 +21,13 @@ extern "C" int TRKDoVersions()
 extern "C" void memset(void* dst, int val, u32 n);
 extern "C" void TRKWriteUARTN(void* data, u32 size);
 extern "C" void fn_801EEE08();
+extern "C" int TRKTargetStopped();
+extern "C" int TRKTargetContinue();
+extern "C" int usr_puts_serial(const char* msg);
+extern "C" int fn_801ED220();
+extern "C" void fn_801EF5A0(int);
+extern char lbl_80202E14[];
+extern char lbl_80202DE0[];
 extern "C" int TRKDoOverride()
 {
     struct {
@@ -110,5 +117,27 @@ extern "C" void* GetTRKConnected(void);
 extern void* lbl_802FA410[];
 extern "C" void* GetTRKConnected(void) {
     return lbl_802FA410[0];
+}
+
+extern "C" int TRKTargetStopped(void);
+extern "C" int TRKTargetContinue(void);
+extern "C" int fn_801ED220(void);
+extern "C" void fn_801EF5A0(int);
+extern "C" int usr_puts_serial(const char* msg);
+extern char lbl_80202E14[];
+extern char lbl_80202DE0[];
+extern "C" void fn_801EC4B8(u8* param_1, int param_2)
+{
+	int i;
+	u8* p;
+	p = param_1;
+	for (i = 0; i < param_2; i++) {
+		MWTRACE(8, lbl_80202FBC, *p);
+		if (i % 16 == 15) {
+			MWTRACE(8, lbl_80202FC4);
+		}
+		p++;
+	}
+	MWTRACE(8, lbl_80202FC4);
 }
 
