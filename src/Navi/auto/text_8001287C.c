@@ -75,6 +75,10 @@ extern "C" void fn_80012D84(s32 prio) {
     fn_801C0EEC(&p->thread);
 }
 
+extern "C" void fn_80012DE0(void) {
+    fn_801C1174(lbl_802A05C0);
+}
+
 extern "C" char lbl_80204E88[];
 extern "C" void* fn_80012E08(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
