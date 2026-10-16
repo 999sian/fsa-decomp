@@ -11,6 +11,27 @@ extern const f32 lbl_8053FCD4;
 extern "C" f32 lbl_8053FCC8;
 extern "C" void fn_8021B1AC(void* this_);
 extern "C" void fn_8021AFB8(void* this_);
+extern "C" void fn_801F06F0(void* this_, void* table, u32 id, void* data, f32 f1, f32 f2, s32 mode);
+extern "C" void fn_801EF830(u32 id, void* pos, void* rec, u32 mask, void* tbl, u32 c, u32 d);
+extern u8 lbl_8046A660[];
+extern "C" void fn_8021AF28(void* this_) {
+    char* p = (char*)this_;
+    *(f32*)(p + 0x10) += lbl_8053FCC8;
+    if (fn_80219E04(this_)) {
+        fn_8021B1AC(this_);
+    } else {
+        s32 s = *(s32*)(p + 0x248);
+        if (s < 0xb) {
+            if (s >= 4 && s < 6) {
+                fn_8021AFB8(this_);
+            }
+        } else if (s < 0xd) {
+            fn_8021AFB8(this_);
+        }
+    }
+    *(f32*)(p + 0x10) -= lbl_8053FCC8;
+}
+
 extern "C" void fn_8021B548(void* this_) {
     char* p = (char*)this_;
     char cVar2 = 0;
