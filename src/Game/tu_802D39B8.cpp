@@ -12,11 +12,6 @@ struct RoomMaskEntry {
     u8 pad08[0x318];
 };
 
-struct RoomMaskSlot {
-    u8 pad00[0x3C8];
-    u64 flags;
-};
-
 struct RoomArrays {
     u8 pad00[0x60];
     u8 roomNumbers[10][10];
@@ -424,7 +419,7 @@ extern "C" void fn_802D7E34(char*, s32 index) {
 
 extern "C" u8 fn_802D7E5C(char*, u8 index, s32 bit) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    char* e = p + index * 0x320;
+    char* e = (char*)((RoomMaskEntry*)(p + index * 0x320));
     return ((s64)(s32)(1U << bit) & *(u64*)(e + 0x3C8)) != 0;
 }
 
@@ -442,7 +437,9 @@ extern "C" void fn_802D7EB0(char*, u8 index, s32 bit, u8 set) {
 
 extern "C" bool fn_802D7F40(char* p, s32 bit) {
     char* base = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    return ((1U << bit) & *(u32*)(base + *(s32*)(p + 4) * 16 + *(s32*)(p + 8) * 4 + 0x348)) != 0;
+    char* row = base + *(s32*)(p + 4) * 16;
+    u32 flags = *(u32*)(row + *(s32*)(p + 8) * 4 + 0x348);
+    return ((1U << bit) & flags) != 0;
 }
 
 extern "C" void fn_802D7F84(char* p, s32 bit, u8 set) {
