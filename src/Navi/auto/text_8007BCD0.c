@@ -1,4 +1,9 @@
 #include "types.h"
+extern "C" int fn_80020EA4(void* p, int x);
+extern "C" void fn_8007BF68(u8* p);
+extern "C" int fn_800183AC(void* p, void* f, s32 a);
+extern "C" int fn_8007CEDC(u8* p);
+extern "C" int fn_8004D308(void* a, s32 b, s32 c, void* d, void* e, void* f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern u8 lbl_802EE470[];
 extern u8 lbl_802FCBA0[];
 extern u8 lbl_803007FC[];
@@ -22,6 +27,23 @@ extern "C" BOOL fn_8007C494(void);
 extern "C" BOOL fn_8007C494(void)
 {
     return TRUE;
+}
+
+extern "C" void fn_8007C49C(u8* p, u8* q) {
+    s32 off = 0;
+    u8* tbl = lbl_802EE470;
+    u32 i = 0;
+    do {
+        if (*(u16*)(p + off + 0x16)) {
+            u8* r28 = *(u8**)(*(u8**)(tbl + 0x38) + 0x14);
+            u8* obj0 = *(u8**)(q + 0x28);
+            u8* obj = ((u8* (*)(u8*, s32))*(void**)(*(u8**)obj0 + 0x50))(obj0, i);
+            *(f32*)(obj + 0x1c) = *(f32*)(obj + 0x1c) - *(f32*)(r28 + 0x414);
+            *(f32*)(obj + 0x20) = *(f32*)(obj + 0x20) + *(f32*)(r28 + 0x418);
+        }
+        i++;
+        off += 8;
+    } while (i < 8);
 }
 
 extern "C" int fn_80020EA4(void* p, int x);
