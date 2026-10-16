@@ -79,9 +79,7 @@ extern "C" void fn_801C2960(u8* this_) {
         }
         break;
     case 0x21:
-        if (!fn_8021D020(this_)) {
-            fn_801C3B7C(this_, 0x1b);
-        } else {
+        if (fn_8021D020(this_)) {
             switch (*(s32*)(this_ + 0x564)) {
             case 0:
                 if (!(*(u32*)(this_ + 0x230) & 0x10000)) {
@@ -102,6 +100,8 @@ extern "C" void fn_801C2960(u8* this_) {
                 fn_801C3B7C(this_, 0x29);
                 break;
             }
+        } else {
+            fn_801C3B7C(this_, 0x1b);
         }
         break;
     }
@@ -209,6 +209,55 @@ extern "C" void* fn_801C5680(void* this_, s16 freeFlag) {
             __dl__FPv(this_);
         }
     }
+    return this_;
+}
+
+extern "C" void* fn_801C573C(void* this_) {
+    char* p = (char*)this_;
+    fn_801D1974(this_);
+    *(void**)p = lbl_804A43E8;
+    Slk2_ResetFlags7(p + 0x358);
+    Slk2_InitVtablePairRecord(p + 0x4ec);
+    Slk2_ResetBlock0x0(p + 0x524);
+    fn_80217128(p + 0x528);
+    fn_80218A8C(p + 0x540);
+    ResetFlagBlock3c_Zero(p + 0x548);
+    fn_80217484(p + 0x550);
+    *(u8*)(p + 0x55c) = 0;
+    *(s32*)(p + 0x560) = 4;
+    *(u8*)(p + 0x55d) = 0;
+    *(u8*)(p + 0x55e) = 0;
+    *(s32*)(p + 0x564) = 0;
+    *(s32*)(p + 0x568) = lbl_8046A748;
+    *(s32*)(p + 0x56c) = 0;
+    *(f32*)(p + 0x570) = lbl_8053EE08;
+    *(f32*)(p + 0x574) = lbl_8053EE08;
+    *(f32*)(p + 0x578) = lbl_8053EE08;
+    *(s32*)(p + 0x57c) = 0;
+    *(f32*)(p + 0x580) = lbl_8053EE08;
+    *(f32*)(p + 0x584) = lbl_8053EE08;
+    *(f32*)(p + 0x588) = lbl_8053EE08;
+    *(s32*)(p + 0x58c) = 0;
+    *(s32*)(p + 0x590) = -1;
+    *(u8*)(p + 0x594) = 0;
+    *(u8*)(p + 0x595) = 0;
+    *(u8*)(p + 0x596) = 0;
+    *(u8*)(p + 0x597) = 0;
+    *(u8*)(p + 0x598) = 0;
+    *(u8*)(p + 0x599) = 0;
+    *(u8*)(p + 0x59a) = 0;
+    *(u8*)(p + 0x59b) = 0;
+    *(u8*)(p + 0x59c) = 0;
+    *(u16*)(p + 0x59e) = 0;
+    *(u16*)(p + 0x5a0) = 0;
+    *(u16*)(p + 0x5a2) = 0;
+    *(f32*)(p + 0x5a4) = lbl_8053EE08;
+    *(f32*)(p + 0x5a8) = lbl_8053EE08;
+    *(f32*)(p + 0x5ac) = lbl_8053EE08;
+    *(f32*)(p + 0x5b0) = lbl_8053EE08;
+    *(void**)(p + 0x520) = this_;
+    *(void**)(p + 0x528) = this_;
+    *(void**)(p + 0x540) = this_;
     return this_;
 }
 
