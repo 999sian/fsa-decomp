@@ -492,6 +492,20 @@ extern "C" int fn_80199A58() {
     return 0x1e;
 }
 
+extern "C" void fn_8019ACF0(NaviVObj* p) {
+    p->vf4();
+    p->vf5();
+}
+
+extern "C" void fn_8019B97C(NaviVObj* p, u32 flags) {
+    if (flags & 1) {
+        p->vf6();
+    }
+    if (flags & 2) {
+        p->vf7();
+    }
+}
+
 extern "C" void fn_8019C62C(int param_1)
 {
 	extern int* lbl_802FFA80;
