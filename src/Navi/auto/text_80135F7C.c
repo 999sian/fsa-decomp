@@ -1,6 +1,7 @@
 #include "types.h"
 
 extern f32 lbl_802FEAB0[];
+extern char lbl_802911A0[];
 extern void* lbl_80292A08[];
 extern "C" void fn_8013BC94(void* a, void* b, void* c, void* d, void* e);
 extern "C" void fn_8013C544(void* a, void* b);
@@ -547,6 +548,12 @@ extern "C" void* fn_8013B42C(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_8013C138(void* param_1, void* param_2) {
+    fn_8013C544(param_1, *(void**)((u8*)param_2 + 0x14));
+    void* obj = *(void**)((u8*)param_1 + 0x128);
+    ((void (*)(void*))(*(void***)obj)[5])(obj);
 }
 
 extern "C" void fn_8013C17C(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
