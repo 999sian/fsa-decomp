@@ -360,6 +360,10 @@ extern "C" void fn_80173300(void)
 {
 }
 
+extern "C" void fn_80173304(void)
+{
+}
+
 extern "C" void fn_80173310(void)
 {
 }
