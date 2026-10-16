@@ -116,6 +116,11 @@ extern "C" void fn_8016AD04(void) {
 extern "C" void fn_8016AD08(void) {
 }
 
+extern "C" u32 fn_80172468(void)
+{
+    return 0x49424c46;
+}
+
 extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
 }
