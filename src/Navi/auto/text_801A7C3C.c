@@ -553,6 +553,11 @@ extern "C" void* fn_801B73C0(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" int fn_801B797C(u8* param_1, u8* param_2) {
+    *(u16*)(param_1 + 0x1a) = *(u16*)(param_2 + 8);
+    return 0;
+}
+
 extern "C" int fn_801B798C(u8* param_1, u8* param_2) {
     return (*(u16*)(param_2 + 8) - *(u16*)(param_1 + 0x1a)) * 2;
 }
