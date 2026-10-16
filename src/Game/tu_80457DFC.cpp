@@ -223,3 +223,8 @@ extern "C" u8 fn_8045A0D8()
     return *(u8*)(lbl_8053AAF8 + 0x96);
 }
 
+extern "C" void fn_8045A0E4(int count)
+{
+    JASPoolAllocObject<JASPoolObj3_FSA>::memPool_.JASGenericMemPool::newMemPool(0x40, count);
+}
+
