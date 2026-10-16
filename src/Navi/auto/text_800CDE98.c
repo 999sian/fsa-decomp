@@ -24,11 +24,13 @@ extern "C" f32 fn_800D0570(u8* p, s32 idx, s32 t, s32 b, f32 from, f32 to);
 struct VObjLerp {
     virtual void v0();
     virtual void v1();
-    virtual void v4(f32, f32);
+    virtual void v2();
     virtual void v3();
+    virtual void v4(f32, f32);
     virtual void v5();
     virtual void v6();
     virtual void v7();
+    virtual void v8();
     virtual void v9(s32);
 };
 
