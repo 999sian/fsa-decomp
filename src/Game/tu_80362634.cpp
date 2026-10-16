@@ -19,6 +19,13 @@ extern "C" void fn_80362634(char* self) {
     }
 }
 
+extern "C" void fn_80362B14(char* self) {
+    void* tex = fn_804032E8(0x54494d47, lbl_80474C10);
+    if (*(s32*)(self + 4) < 8) {
+        fn_802F745C(*(void**)((char*)lbl_8053AB10 + 0x20), self + 0xc, tex, NULL);
+    }
+}
+
 extern "C" void fn_8036335C(void) {
 }
 struct Unk80365AB8;
