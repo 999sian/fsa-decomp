@@ -18,3 +18,12 @@ extern "C" void* fn_802B1EB4(void* p, s16 n) {
     return p;
 }
 
+extern "C" void fn_802B1EFC(u8* p) {
+    *(char**)p = lbl_804A8578;
+    lbl_8053ACA8 = p;
+    p[4] = 0;
+    p[5] = 0;
+    p[6] = 0;
+    p[7] = 0xff;
+}
+
