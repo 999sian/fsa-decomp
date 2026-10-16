@@ -83,7 +83,24 @@ struct Unk80458F04 {
 
 extern "C" const f32 lbl_80543EB0;
 extern "C" const f32 lbl_80543EB4;
+extern "C" const f64 lbl_80543EB8;
+extern "C" s32 lbl_8053A26C;
+extern "C" f32 lbl_8053A268;
 extern "C" void fn_80458744(void*, s32);
+
+struct Unk80457E54Obj {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual f32* v10();
+};
 extern "C" void fn_80457DFC(u8* this_, u8 v) {
     this_[0x6] = v;
 }
@@ -98,6 +115,46 @@ extern "C" void fn_80457E04(u8* this_, u8 flag) {
     }
 }
 
+extern "C" const f64 lbl_80543EB8;
+extern "C" s32 lbl_8053A26C;
+extern "C" f32 lbl_8053A268;
+extern "C" void fn_80457E54(u8* this_, u8 flag) {
+    this_[0x8c] = flag;
+    if (flag) {
+        fn_80458744(this_, 2);
+        void* obj = *(void**)(this_ + 0x80);
+        if (obj != NULL) {
+            f32* p = (f32*)(*(void* (**)(void*))(*(char**)obj + 0x28))(obj);
+            if (p != NULL) {
+                u32 n = lbl_8053A26C;
+                f32 v = lbl_8053A268;
+                if (n == 0) {
+                    p[0] = v;
+                    p[1] = lbl_80543EB0;
+                    *(u32*)(p + 3) = 0;
+                    p[2] = lbl_80543EB0;
+                } else {
+                    *(u32*)(p + 3) = n;
+                    p[1] = (v - p[0]) / (f32)((f64)*(u32*)(p + 3) - lbl_80543EB8);
+                    p[2] = v;
+                }
+            }
+        }
+    } else {
+        fn_80458744(this_, 0);
+        void* obj = *(void**)(this_ + 0x80);
+        if (obj != NULL) {
+            f32* p = (f32*)(*(void* (**)(void*))(*(char**)obj + 0x28))(obj);
+            if (p != NULL) {
+                p[0] = lbl_80543EB4;
+                p[1] = lbl_80543EB0;
+                *(u32*)(p + 3) = 0;
+                p[2] = lbl_80543EB0;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80457F60(u8* this_) {
     this_[0x74] = 1;
 }
@@ -105,6 +162,40 @@ extern "C" void fn_80457F60(u8* this_) {
 extern "C" void fn_80457F6C(u8* this_) {
     this_[0x74] = 0;
     this_[0x6d] = 0xb4;
+}
+
+extern "C" s32 fn_80457F80(u8* this_, u32* param_2, s8 param_3) {
+    if (param_3 == -2) {
+        JAISoundID soundID = *param_2;
+        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(soundID) != NULL) {
+            return 0;
+        }
+        s32 i = 0;
+        do {
+            JAISoundID loopID = *param_2;
+            if (((JAISoundHandles*)*(void**)(this_ + 0x18))->getHandleSoundID(loopID) != NULL) {
+                return 0;
+            }
+            this_ += 4;
+            i++;
+        } while (i < 4);
+    } else if (param_3 == -1) {
+        JAISoundID soundID = *param_2;
+        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(soundID) != NULL) {
+            return 0;
+        }
+    } else {
+        s32 i = 0;
+        do {
+            JAISoundID loopID = *param_2;
+            if (((JAISoundHandles*)*(void**)(this_ + 0x18))->getHandleSoundID(loopID) != NULL) {
+                return 0;
+            }
+            this_ += 4;
+            i++;
+        } while (i < 4);
+    }
+    return 1;
 }
 
 extern "C" void fn_80458090(char* this_) {
