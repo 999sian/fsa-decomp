@@ -1263,4 +1263,8 @@ extern "C" int fn_80020F94()
 {
 	return 0;
 }
-
+struct fn_8001C88C_tag {
+    int w[6];
+    short h[2];
+};
+extern "C" fn_8001C88C_tag lbl_802056D0;
