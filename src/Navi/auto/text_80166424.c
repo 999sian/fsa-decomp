@@ -1096,11 +1096,11 @@ extern "C" void fn_80172A5C(u8* p1, s32 p2, u32* p3) {
 extern "C" void fn_80172B2C(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" void fn_80172B94(u8* self, s32 idx, s16* src) {
-    s16* dst = (s16*)(self + idx * 8);
-    dst[0xf] = src[0];
-    dst[0x10] = src[1];
-    dst[0x11] = src[2];
-    dst[0x12] = src[3];
+    s16* p = (s16*)(self + (idx << 3));
+    p[0xf] = src[0];
+    p[0x10] = src[1];
+    p[0x11] = src[2];
+    p[0x12] = src[3];
 }
 
 extern "C" s32 fn_80172BC0(s32 param_1, s32 param_2) {
@@ -1125,6 +1125,20 @@ extern "C" void fn_80172C44(u8* self, u8 v) {
 
 extern "C" u8 fn_80172C4C(u8* self) {
     return *(u8*)(self + 0x3e);
+}
+
+extern "C" void fn_80172C54(u8* param_1, s32 param_2, u8* param_3) {
+    u8* p = param_1 + param_2 * 8;
+    p[0x40] = param_3[1];
+    p[0x41] = param_3[2];
+    p[0x42] = param_3[3];
+    p[0x44] = param_3[5];
+    p[0x45] = param_3[6];
+    p[0x46] = param_3[7];
+}
+
+extern "C" s32 fn_80172C90(s32 param_1, s32 param_2) {
+    return param_1 + param_2 * 8 + 0x3f;
 }
 
 extern "C" void fn_80172CDC(u8* p, s32 i, u8* src) {
