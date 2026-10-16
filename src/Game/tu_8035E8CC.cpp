@@ -87,3 +87,21 @@ extern "C" void fn_8035EAA4(void* this_) {
         *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
     }
 }
+
+extern const f32 lbl_805429B4;
+extern const f32 lbl_805429B8;
+extern const f32 lbl_805429BC;
+extern const f32 lbl_805429D0;
+extern const f32 lbl_805429D4;
+extern "C" void fn_8035EB18(void* this_) {
+    char* p = (char*)this_;
+    if (*(s32*)(p + 0x234) == 0) {
+        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + lbl_805429B4;
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - lbl_805429B8;
+        *(s32*)(p + 0x234) = 0x10e;
+        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+    } else if (*(s32*)(p + 0x234) == 10) {
+        fn_801F0E34(this_, 0x30088, 0);
+    }
+}
+
