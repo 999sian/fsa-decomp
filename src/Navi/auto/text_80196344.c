@@ -369,6 +369,10 @@ extern "C" void fn_80198ED0()
 {
 }
 
+extern "C" void fn_80198EF8(void) {
+    return;
+}
+
 extern "C" void fn_80198EFC(void) {}
 
 extern "C" void fn_80198F00(void) {}
@@ -1465,11 +1469,11 @@ extern "C" void fn_801A3520(void* param_1) {
 extern "C" int fn_801A3544(int p) { return p + 4; }
 
 extern "C" void fn_801A7D78(void* p);
-extern "C" void fn_801A354C(u8* param_1, u8* param_2) {
-    u16 uVar0 = *(u16*)param_2;
-    u8 uVar1 = param_2[2];
+extern "C" void fn_801A354C(u8* param_1, NaviSrc4* param_2) {
+    u16 uVar0 = param_2->a;
+    u8 uVar1 = param_2->b;
     *(u16*)(param_1 + 0x30) = uVar0;
-    u8 uVar2 = param_2[3];
+    u8 uVar2 = param_2->c;
     *(u8*)(param_1 + 0x32) = uVar1;
     *(u8*)(param_1 + 0x33) = uVar2;
 }
