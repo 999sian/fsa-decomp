@@ -13,10 +13,7 @@ extern "C" void fn_802FF798(void* mgr);
 extern void* lbl_8053AAF8;
 extern "C" f32 fn_802F5FF4(f32 x) {
     f32 a = lbl_805414FC;
-    f32 v = lbl_80541500;
-    if (x >= lbl_80541500) {
-        v = x;
-    }
+    f32 v = (x >= lbl_80541500) ? x : lbl_80541500;
     return a / (a - v);
 }
 
@@ -39,6 +36,12 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
         *(u16*)(base->m_tbl[idx] + off * 2) = val;
     } else {
         *(u16*)(base->m_tbl[idx] + off * 2) = val;
+    }
+}
+
+extern "C" void fn_802FF3B0(u8* this_) {
+    if (this_[0xe451] != 0 && *(u32*)((u8*)lbl_8053AAF8 + 0x4) != 0) {
+        fn_802FA3FC(this_);
     }
 }
 
