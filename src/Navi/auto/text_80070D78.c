@@ -459,6 +459,20 @@ extern "C" BOOL fn_80073A1C(u8* self, int idx)
     fn_8000DABC(self + 0x268, *(u8**)(*(u8**)(self + 0x24c) + 4) + 0x58, r, 1, e->b, e->c, e->d, f);
 }
 
+extern "C" BOOL fn_80073ECC(StateObj_80073ECC* self, StateFunc_80073ECC* func, int arg)
+{
+    if (self->m_func) {
+        if (self->m_func) {
+            self->m_state = -1;
+            (self->*self->m_func)(arg);
+        }
+        self->m_func = *func;
+        self->m_state = 0;
+        (self->*self->m_func)(arg);
+    }
+    return TRUE;
+}
+
 extern "C" void fn_80072D8C(void);
 extern "C" void fn_80075550(void) {
     fn_80072D8C();
