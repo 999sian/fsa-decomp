@@ -324,6 +324,7 @@ public:
     virtual void v94(f32* rect);
     virtual void v98(s32, void*);
     virtual u8 v9C(f32);
+    virtual void vA0();
     virtual void* vA4(s32);
 };
 extern "C" void fn_80177F0C(void);
