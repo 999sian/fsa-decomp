@@ -27,6 +27,8 @@ void fn_800C9CFC(void)
 {
 }
 
+extern "C" void fn_800C9D00(void) {}
+
 extern "C" void fn_800C9D04(void) {
 }
 
@@ -72,6 +74,35 @@ extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4)
     } else {
         *param_1 = default_val;
     }
+}
+
+extern "C" u8 fn_800CAF38(u8* p, s32 idx) {
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
+    u8 b = (*(u8**)(p + 4))[off + 2];
+    if (b != 0xff) {
+        return (*(u8**)(p + 0x14))[b];
+    }
+    return 0;
+}
+
+extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
+    u16* ids = *(u16**)(p + 8);
+    u8* base = *(u8**)(p + 4);
+    u16 v = *(u16*)(base + ids[a] * 0x14c + 0x14 + b * 2);
+    if (v == 0xffff) {
+        *out = lbl_8053BC74;
+    } else {
+        *out = (*(s32**)(p + 0x1c))[v];
+    }
+}
+
+extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
+    u8 b = (*(u8**)(p + 4))[off + 3];
+    if (b != 0xff) {
+        return (*(u8**)(p + 0x24))[b];
+    }
+    return 0;
 }
 
 extern unsigned int j3dDefaultBlendInfo;
