@@ -1,4 +1,5 @@
 #include "types.h"
+extern f32 lbl_80300FD8;
 extern f32 lbl_80300FE8;
 extern char lbl_802C579C[];
 extern char lbl_802B7CA0[];
