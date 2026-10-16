@@ -23,6 +23,9 @@ s32 fn_802416C4(void*);
 s32 fn_80241794(void*);
 u8 fn_80251AEC(void*, s32);
 void fn_802BAA00(void*);
+s32 fn_802415CC(void*);
+void fn_80268B3C(void*);
+s32 Actor_CreateByID(void* mgr, u32 fourCC, u32 owner, void* pos, u32 param, s32 a, s32 b);
 s32 fn_8026FC20(void*);
 }
 
