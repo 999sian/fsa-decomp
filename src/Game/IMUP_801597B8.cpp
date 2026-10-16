@@ -22,8 +22,8 @@ extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* p);
 extern void* lbl_804A01D0[];
-extern "C" void fn_801597C0(void* this_) {
-    ((void (**)(void*))(*(void***)this_))[9](this_);
+extern "C" void fn_801597C0(FSAVirtBase* p) {
+    p->m7();
 }
 
 extern "C" void* fn_8015B420(char* this_, short how) {
