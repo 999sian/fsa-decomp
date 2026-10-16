@@ -638,6 +638,25 @@ extern "C" u32 fn_8017D148(void) {
     return 0x11;
 }
 
+extern "C" void fn_8017D150(void* param_1, f32 a, f32 b, f32 c, f32 d) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+        virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+        virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+        virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+        virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
+        virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29();
+        virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
+        virtual void vf94(f32* rect);
+    };
+    f32 rect[4];
+    rect[0] = a;
+    rect[1] = b;
+    rect[2] = a + c;
+    rect[3] = b + d;
+    ((Obj*)param_1)->vf94(rect);
+}
+
 extern "C" void fn_8017D214(void) {}
 
 extern "C" void fn_801C5D48(void* p);
@@ -866,22 +885,22 @@ extern "C" void fn_80180A48(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy
 extern "C" void fn_80180AAC(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy0, f32 x1, f32 y1) {
     f32 a[4];
     f32 b[4];
-    f32 dx = 0.0f;
-    f32 dy = 0.0f;
+    f32 dx;
+    f32 dy;
     u8* p = *(u8**)((u8*)self + 0x100);
+    a[2] = x0 + dx0;
+    a[3] = y0 + dy0;
+    b[0] = x1;
+    b[1] = y1;
     if (p != 0) {
         u16* q = *(u16**)(p + 0x20);
         dx = (s32)q[1];
         dy = (s32)q[2];
     }
-    a[0] = x0;
-    a[1] = y0;
-    a[2] = x0 + dx0;
-    a[3] = y0 + dy0;
-    b[0] = x1;
-    b[1] = y1;
     b[2] = x1 + dx;
     b[3] = y1 + dy;
+    a[0] = x0;
+    a[1] = y0;
     self->vfF0(a, b);
 }
 
