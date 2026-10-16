@@ -8,6 +8,14 @@ struct GXColor_CC {
 extern "C" char lbl_804A9020[];
 extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(void*, int);
+extern "C" char* lbl_8053AB10;
+extern "C" void fn_80158B5C(void*, unsigned long, void*, GXColor_CC, float);
+extern "C" void fn_802CC1C4(void* this_) {
+    unsigned long id = *(unsigned long*)((char*)this_ + 0x4);
+    GXColor_CC c(0, 0, 0, 0x80);
+    fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), id, (char*)this_ + 0xc, c, 70.0f);
+}
+
 extern "C" void* fn_802CCA10(void* this_, short freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
