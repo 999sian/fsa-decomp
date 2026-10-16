@@ -11,7 +11,7 @@ extern const f32 lbl_80543CFC;
 extern const f32 lbl_80543CF8;
 extern "C" void fn_8041E708(void* p);
 extern "C" void fn_80425234(void* p);
-extern "C" void fn_8043A0E8(s8 param_1) {
+extern "C" void fn_8043A0E8(u8 param_1) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0 && (*(u32*)(lbl_8050EC80 + 0x28 + 0xc8 * *(s32*)(lbl_8050EC80 + 0x10)) & 1) == 0 &&
         *(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 0) {
         if (param_1 == 0) {
