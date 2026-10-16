@@ -404,8 +404,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 me;
     s32 linked;
+    s32 me;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -1359,7 +1359,21 @@ BOOL fn_80246464(char* p) {
     }
     return PADF(fn_80309D24, 0x200) != 0;
 }
-PAD_GATED2(802466B4, fn_80309D6C, 0x200)
+BOOL fn_802466B4(char* p) {
+    if (!padActive5(p)) {
+        return 0;
+    }
+    if (fn_8022B244()) {
+        return 0;
+    }
+    if (U8(p, 0x456) != 0) {
+        return 0;
+    }
+    if (S32(p, 0x11f0) > 0) {
+        return 0;
+    }
+    return PADF(fn_80309D6C, 0x200) != 0;
+}
 #define PAD_BTN(addr, fn) \
     u32 fn_##addr(char* p, u32 mask) { \
         return !padActive(p) ? 0 : fn(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask); \
