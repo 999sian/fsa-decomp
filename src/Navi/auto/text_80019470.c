@@ -1,6 +1,8 @@
 #include "types.h"
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
+extern "C" s32 fn_8001D5F4(void*, void*);
+
 extern "C" s32 fn_8001D5B8(void*, void*);
 extern "C" void fn_8001AAFC(void*);
 extern "C" void fn_8001D66C(void*, void*);
@@ -61,14 +63,28 @@ extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
     d[3] = w;
 }
 
-extern "C" void fn_80019490(Vec* d, const Vec* s) {
+extern "C" void fn_80019490(f32* d, const f32* s) {
     d[0] = s[0];
     d[1] = s[1];
+    d[2] = s[2];
+    d[3] = s[3];
+    d[4] = s[4];
+    d[5] = s[5];
 }
 
-extern "C" void fn_800194C4(Vec* d, const Vec* a, const Vec* b) {
-    *d = *a;
-    d[1] = *b;
+extern "C" void fn_800194C4(f32* d, const f32* a, const f32* b) {
+    f32 x = a[0];
+    f32 y = a[1];
+    d[0] = x;
+    f32 z = a[2];
+    d[1] = y;
+    f32 bx = b[0];
+    d[2] = z;
+    f32 by = b[1];
+    d[3] = bx;
+    f32 bz = b[2];
+    d[4] = by;
+    d[5] = bz;
 }
 
 extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
@@ -89,6 +105,15 @@ extern "C" void fn_8001955C(void* param_1) {
 extern "C" s32 fn_80019584(void* param_1) {
     s32 iVar1;
     iVar1 = fn_8001D5B8(*(void**)((u8*)param_1 + 0x224), param_1);
+    if (iVar1 == 1) {
+        fn_8001AAFC((u8*)param_1 + 0x210);
+    }
+    return iVar1;
+}
+
+extern "C" s32 fn_800195D8(void* param_1) {
+    s32 iVar1;
+    iVar1 = fn_8001D5F4(*(void**)((u8*)param_1 + 0x224), param_1);
     if (iVar1 == 1) {
         fn_8001AAFC((u8*)param_1 + 0x210);
     }
