@@ -1894,7 +1894,7 @@ extern "C" void fn_8017448C(u8* p, u8* s, u32 a, u32 b) {
     if (idx != 0xffff) {
         fn_801749F0(p, *(u8**)(s + 0x44) + idx * 0x14);
     } else {
-        ((void* (*)(void*))fn_801721FC)(p);
+        fn_801721FC(p);
     }
 }
 
