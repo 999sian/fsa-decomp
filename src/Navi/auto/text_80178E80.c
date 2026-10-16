@@ -20,6 +20,11 @@ extern "C" int fn_801820CC(int param_1)
     return *(int*)(param_1 + 0x100);
 }
 
+extern "C" void fn_8018B384(void* unused, void* dest, void* src);
+extern "C" void fn_8018B35C(void* self, void* src) {
+    fn_8018B384(self, *(void**)((u8*)self + 4), src);
+}
+
 extern void* lbl_80299504[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void* fn_8018C1A0(void* ptr, s16 param_2) {
