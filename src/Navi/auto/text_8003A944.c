@@ -98,6 +98,29 @@ extern "C" void fn_8003C34C(f32* out, u8* obj) {
     out[2] = *(f32*)(obj + 0x410);
 }
 
+extern "C" void fn_8003C368(u8* p, u8 a, u8 b) {
+    memset(p, 0, 0xb0);
+    p[0xa9] = a;
+    p[0xa5] = p[0xa9];
+    p[0xa6] = p[0xa9];
+    p[0xaa] = b;
+    p[0xa4] = 1;
+    p[0xac] = 0x7b;
+    *(s16*)(p + 0x80) = 0;
+    *(s16*)(p + 0x82) = 0;
+    *(s16*)(p + 0x84) = 0;
+    *(s16*)(p + 0x86) = 0xff;
+    p[0x88] = 0xff;
+    p[0x89] = 0xff;
+    p[0x8a] = 0xff;
+    p[0x8b] = 0xff;
+    *(s16*)(p + 0x96) = 0xff;
+    p[0x8c] = 0;
+    p[0x8d] = 0;
+    p[0x8e] = 0;
+    p[0x8f] = 0;
+}
+
 extern "C" void* fn_8003CC2C(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
