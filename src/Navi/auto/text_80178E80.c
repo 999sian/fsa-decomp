@@ -35,15 +35,7 @@ extern "C" void fn_801670D0(int, void*, int);
 extern "C" int fn_801792B4(void* param_1, int param_2) {
     u32 buf[8];
     fn_801670D0(param_2, buf, 0x20);
-    if (buf[0] == 0x5343524e) {
-        if (buf[1] == 0x626c6f31) {
-            return 1;
-        }
-        if (buf[1] == 0x626c6f32) {
-            return 1;
-        }
-    }
-    return 0;
+    return (buf[0] == 0x5343524e && (buf[1] == 0x626c6f31 || buf[1] == 0x626c6f32)) ? 1 : 0;
 }
 
 extern "C" void fn_8017A468(void) {
