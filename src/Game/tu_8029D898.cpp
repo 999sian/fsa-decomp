@@ -35,6 +35,9 @@ extern "C" s32 fn_80226BC4(JGeometry::TVec2<f32>* pos, s32 room);
 extern "C" void fn_802F9974(void* mgr, u32 room, s32 idx, u16 value);
 
 extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D782C(void* mgr, s32 v);
+extern "C" s32 fn_802D4C10(void* mgr, u32 room, u16 v);
+extern "C" void fn_802D7D00(void* mgr, u32 room, s32 idx, s32 v);
 extern "C" void fn_802D7970(void* p, s32 v);
 extern "C" void fn_80138B7C(void* p);
 extern "C" void* fn_8023E724(void* p);
