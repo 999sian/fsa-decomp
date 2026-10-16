@@ -288,6 +288,11 @@ extern "C" void* fn_8018B098(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8018C048(void* unused, void* dest, void* src);
+extern "C" void fn_8018C020(void* self, void* src) {
+    fn_8018C048(self, *(void**)((u8*)self + 4), src);
+}
+
 extern "C" void* fn_8018C144(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80299540;
