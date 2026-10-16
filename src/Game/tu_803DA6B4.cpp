@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 struct Tu803DA6B4Sub {
     virtual void v00(s32 how);
