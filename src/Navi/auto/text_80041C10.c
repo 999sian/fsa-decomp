@@ -359,6 +359,21 @@ extern "C" void fn_8004D49C(void* param_1, u8* param_2) {
     *(u32*)(param_2 + 0xc0) = (s16)uVar2 | (local_c << 16 | (s16)uVar1 << 8);
 }
 
+extern char lbl_80246D84[];
+extern "C" void* fn_8004D550(void** param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        param_1[0] = (void*)lbl_80246D84;
+        if (param_1 != nullptr) {
+            param_1[0] = (void*)lbl_80247000;
+            fn_801303BC(param_1, 0);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_8004D5C0(void) {}
 
 extern "C" void fn_8004D5C4(void) {}
