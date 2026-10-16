@@ -16,6 +16,18 @@ struct VObj {
     virtual ~VObj();
 };
 
+struct VObj2 {
+    virtual ~VObj2();
+    u8 pad[0x28];
+};
+
+extern "C" {
+extern char lbl_80490DA8[];
+extern void* lbl_80529DEC[];
+extern void setPriority__9J2DScreenFPCcUlP10JKRArchive(J2DScreen*, const char*, u32, void*);
+extern void fn_80402F04(void*, u32);
+}
+
 extern "C" void fn_8013B490(void*);
 extern u8* lbl_8053AB10;
 extern f32 lbl_80543DB0;
