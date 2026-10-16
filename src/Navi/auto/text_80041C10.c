@@ -18,6 +18,7 @@ extern "C" void fn_80192688(void*);
 extern "C" void fn_801DEE3C(s32);
 extern "C" void fn_801DE24C(s32);
 extern "C" void fn_801DE3E0(s32, s32, s32, s32, s32);
+extern "C" void fn_8004D298(void);
 extern "C" void* fn_80041C10(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
