@@ -16,6 +16,7 @@ void DVDLowReset(void);
 extern "C" BOOL fn_801CA33C(DVDCommandBlock* block, DVDCBCallback callback);
 extern "C" void fn_801CA664(s32 result, DVDCommandBlock* block);
 extern "C" void fn_801C12E4(OSThreadQueue* queue);
+extern "C" void fn_801C13D0(OSThreadQueue* queue);
 extern OSThreadQueue __DVDThreadQueue;
 
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
@@ -54,10 +55,10 @@ extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
 void DVDReset(void)
 {
 	DVDLowReset();
-	__DIRegs[DI_STATUS]       = 42;
+	__DIRegs[DI_STATUS] = 42;
 	__DIRegs[DI_COVER_STATUS] = __DIRegs[DI_COVER_STATUS];
-	ResetRequired_802FF8B8    = FALSE;
-	ResumeFromHere_802FF8A8   = 0;
+	ResetRequired_802FF8B8 = FALSE;
+	ResumeFromHere_802FF8A8 = 0;
 }
 
 extern "C" BOOL fn_801CA2DC(BOOL param_1)
@@ -70,13 +71,21 @@ extern "C" BOOL fn_801CA2DC(BOOL param_1)
 extern "C" s32 fn_801CA5B8(DVDCommandBlock* block)
 {
 	BOOL level;
+	s32 state;
 
 	if (fn_801CA33C(block, fn_801CA664) == 0) {
 		return -1;
 	}
 
 	level = OSDisableInterrupts();
-	while (1 < block->state + 1U && block->state != 10 && (block->state != 3 || (1 < block->command - 4U && block->command != 13 && block->command != 15))) {
+	while (TRUE) {
+		state = block->state;
+		if (state + 1U <= 1 || state == 10) {
+			break;
+		}
+		if (state == 3 && (block->command - 4U <= 1 || block->command == 13 || block->command == 15)) {
+			break;
+		}
 		fn_801C12E4(&__DVDThreadQueue);
 	}
 	OSRestoreInterrupts(level);
