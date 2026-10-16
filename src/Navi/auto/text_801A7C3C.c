@@ -236,15 +236,17 @@ extern "C" void fn_801ACC40(u8* self, u16 idx, u16* out) {
 }
 
 extern "C" void fn_801ACCF4(u8* self, u16 idx, u8* out) {
-    s32 i = (s32)(*(f32*)(self + 8) + lbl_80301D80);
-    u16* e = (u16*)(*(u8**)(self + 0x10) + idx * 4);
+    s32 i = (s32)(lbl_80301D80 + *(f32*)(self + 8));
+    u8* tbl = *(u8**)(self + 0x10);
     u8* data = *(u8**)(self + 0x14);
+    u16 count = *(u16*)(tbl + idx * 4);
+    u16 offs = *(u16*)(tbl + idx * 4 + 2);
     if (i < 0) {
-        *out = data[e[1]];
-    } else if (i < e[0]) {
-        *out = data[i + e[1]];
+        *out = data[offs];
+    } else if (i >= count) {
+        *out = data[count + offs - 1];
     } else {
-        *out = data[e[0] + e[1] - 1];
+        *out = data[i + offs];
     }
 }
 
@@ -254,6 +256,21 @@ extern "C" void fn_801ACD84(char* self, char* other)
     unsigned short i;
     for (i = 0; i < *(unsigned short*)(self + 0x16); i++) {
         a = *(int*)(other + 0xc);
+        int r = fn_80119414(a, fn_801194B4(self + 0x1c, i));
+        if (r != -1) {
+            (*(unsigned short**)(self + 0x18))[i] = r;
+        } else {
+            (*(unsigned short**)(self + 0x18))[i] = 0xffff;
+        }
+    }
+}
+
+extern "C" void fn_801ACE2C(char* self, char* other)
+{
+    unsigned short i;
+    int a;
+    for (i = 0; i < *(unsigned short*)(self + 0x16); i++) {
+        a = *(int*)(other + 0x64);
         int r = fn_80119414(a, fn_801194B4(self + 0x1c, i));
         if (r != -1) {
             (*(unsigned short**)(self + 0x18))[i] = r;
