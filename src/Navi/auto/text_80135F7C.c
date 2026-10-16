@@ -1463,15 +1463,17 @@ extern "C" void fn_8013C3FC(void* param_1, s32 param_2, void** param_3) {
 }
 
 extern "C" void fn_8013C410(void* param_1, s32 param_2, u32 param_3) {
-    if (param_2 == 0x18) {
+    switch (param_2) {
+    case 0x18:
         *(u32*)((u8*)param_1 + 0x144) = fn_8013BCDC((NaviTracker*)*(void**)((u8*)param_1 + 0x124), param_3);
+        break;
     }
 }
 
 extern "C" void fn_8013C454(void* param_1, s32 param_2, u32* param_3) {
     if (param_2 == 0x19) {
         *(u32*)((u8*)param_1 + 0x148) = *param_3;
-    } else if (param_2 == 0x18) {
+    } else if (param_2 < 0x19 && param_2 > 0x17) {
         *(u32*)((u8*)param_1 + 0x148) = fn_8013BD28(*(void**)((u8*)param_1 + 0x138), param_3);
     }
 }
