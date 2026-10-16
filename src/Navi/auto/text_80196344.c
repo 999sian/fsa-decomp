@@ -95,6 +95,7 @@ struct NaviVObj {
     virtual void vf7(void);
     virtual void vf8(void);
     virtual void vf9(void);
+    virtual void vf10(void);
 };
 extern "C" u32 fn_80197B4C(void* param_1) {
     u8* p = (u8*)param_1;
@@ -2416,8 +2417,8 @@ extern "C" u32 fn_801A4C90(void) {
     return 0x434c4f4e;
 }
 
-extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, NaviColor8 param_3) {
-    ((NaviColor8*)(param_1 + 4))[param_2] = param_3;
+extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, NaviColor8* param_3) {
+    ((NaviColor8*)(param_1 + 4))[param_2] = *param_3;
 }
 
 extern "C" int fn_801A4CF4(int param_1, int param_2) {
