@@ -17,9 +17,9 @@ extern "C" Actor* fn_802B214C(Actor* param_1, s16 param_2)
 
 extern "C" u8 fn_802B21AC(Actor* param_1, int param_2, f32* param_3)
 {
-    u8 ret = param_1->Actor::v17(param_2, param_3);
-    if (ret == 0) {
+    int ret = param_1->Actor::v17(param_2, param_3);
+    if ((u8)ret == 0) {
         *((u8*)param_1 + 0x27c) = 0;
     }
-    return ret;
+    return (u8)ret;
 }
