@@ -11,6 +11,10 @@ extern const f32 lbl_80543CFC;
 extern const f32 lbl_80543CF8;
 extern "C" void fn_8041E708(void* p);
 extern "C" void fn_80425234(void* p);
+extern "C" void fn_8043A608(void* param_1) {
+    fn_8043A450(param_1, *(s32*)(lbl_80529DEC + 0x118), *(s32*)(lbl_80529DEC + 0x11c));
+}
+
 extern "C" void fn_8043D874(char* param_1) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
         fn_8041E708(*(void**)(param_1 + 0x290));
