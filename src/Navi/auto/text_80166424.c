@@ -1405,6 +1405,10 @@ extern "C" void fn_80172D24(void* self, int a, int b) {
 
 extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
 
+extern "C" int fn_80172DC8(void) {
+    return 2;
+}
+
 extern "C" void fn_80172DD0(u8* p, s32 i, u16 v) { ((u16*)(p + 4))[i] = v; }
 
 extern "C" u16 fn_80172DE0(u8* p, s32 i) {
@@ -2102,12 +2106,11 @@ extern "C" void fn_80176610(void* p_self)
 #pragma use_lmw_stmw off
 extern "C" void* fn_80176698(void* p_self, void* p_other, u8 b, u32 r6, u32 c, u32 d, f32* f)
 {
-    u32* self = (u32*)p_self;
     u8* sub = (u8*)p_self + 0xdc;
     *(void**)p_self = lbl_80298C88;
     fn_80166C70(sub);
     fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
-    self[0x3e] = 0;
+    ((u32*)p_self)[0x3e] = 0;
     fn_80176728(p_self, p_other, b, r6, c, d, f);
     return p_self;
 }
