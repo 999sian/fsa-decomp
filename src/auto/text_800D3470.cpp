@@ -1783,8 +1783,8 @@ extern "C" void fn_800DD644(u8* this_) {
                 break;
             }
         }
-        stage += 6;
         tex += 4;
+        stage += 6;
     }
 }
 
