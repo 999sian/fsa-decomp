@@ -369,6 +369,8 @@ extern "C" void fn_80198ED0()
 {
 }
 
+extern "C" void fn_80198EEC(void) {}
+
 extern "C" void fn_80198EF0(void) {
     return;
 }
@@ -1651,7 +1653,7 @@ extern "C" void fn_801A37C4(int param_1) {
     u16 tmp;
     int i = 0;
     lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 4);
-    u32 start = lbl_802FFA80[2];
+    u32 start = *(volatile u32*)&lbl_802FFA80[2];
     u32 p = *(volatile u32*)&lbl_802FFA80[2];
     while (true) {
         if (!fn_801A602C(p)) {
