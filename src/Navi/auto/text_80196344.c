@@ -513,6 +513,10 @@ extern "C" void fn_80199280(void* param_1) {
     p[1] = 0;
 }
 
+extern "C" s32 fn_801999F8(void) {
+    return 0x1a8;
+}
+
 extern "C" u32 fn_80199A00(void) {
     return 0xfe;
 }
@@ -2381,7 +2385,15 @@ extern "C" u32 fn_801A4C90(void) {
 }
 
 extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, NaviColor8* param_3) {
-    ((NaviColor8*)(param_1 + 4))[param_2] = *param_3;
+    u8* dst = param_1 + param_2 * 4;
+    u8 r = ((u8*)param_3)[0];
+    u8 g = ((u8*)param_3)[1];
+    u8 b = ((u8*)param_3)[2];
+    u8 a = ((u8*)param_3)[3];
+    dst[4] = r;
+    dst[5] = g;
+    dst[6] = b;
+    dst[7] = a;
 }
 
 extern "C" int fn_801A4CF4(int param_1, int param_2) {
