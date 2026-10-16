@@ -14,8 +14,9 @@ extern "C" void fn_801162F4(void) {
 extern "C" f32 fn_80116314(f32* p, f32 target, f32 rate, f32 maxStep, f32 minStep) {
     f32 cur = *p;
     if (cur != target) {
+        f32 negMin;
         f32 d = rate * (target - cur);
-        if (d >= minStep || d <= -minStep) {
+        if (d >= minStep || d <= (negMin = -minStep)) {
             if (d > maxStep) {
                 d = maxStep;
             }
@@ -30,14 +31,15 @@ extern "C" f32 fn_80116314(f32* p, f32 target, f32 rate, f32 maxStep, f32 minSte
                     *p = target;
                 }
             }
-        } else if (d > -minStep) {
-            *p = cur + -minStep;
+        } else if (d > negMin) {
+            *p = cur + negMin;
             if (*p < target) {
                 *p = target;
             }
         }
     }
-    return __fabs(target - *p);
+    f64 diff = __fabs(target - *p);
+    return diff;
 }
 
 extern "C" int fn_801167D0(s16* p, s16 target, s16 step) {
