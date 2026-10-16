@@ -14,6 +14,10 @@ extern "C" u8 lbl_80529DEC[];
 extern "C" void* lbl_8053ACA8;
 extern "C" s32 lbl_8053ADE0;
 extern "C" s8 lbl_8053ADE4;
+extern "C" void* lbl_8053ADD8;
+extern "C" void* lbl_8053AF80;
+extern "C" void fn_80400DC4(s32, s32);
+extern "C" void fn_804595E4(void*, s32);
 extern "C" void fn_80401518(s32 param_1) {
     s32 status;
     s32 status2;
