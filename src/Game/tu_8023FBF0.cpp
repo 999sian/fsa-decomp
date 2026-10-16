@@ -1382,7 +1382,9 @@ BOOL fn_802466B4(char* p) {
     f32 fn_##addr(char* p) { \
         return !padActive(p) ? 0.0f : fn(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); \
     }
-PAD_BTN(80246904, fn_80309A78)
+u32 fn_80246904(char* p, u32 mask) {
+    return !padActive5(p) ? 0 : fn_80309A78(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)), mask);
+}
 PAD_BTN(80246B10, fn_80309D24)
 PAD_BTN(80246D1C, fn_80309D6C)
 inline s32 countSharing6(char* p) {
