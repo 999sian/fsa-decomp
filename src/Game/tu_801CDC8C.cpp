@@ -172,12 +172,24 @@ extern "C" s32 fn_801CF0F4(u8* this_) {
 }
 
 extern "C" bool fn_801CF144(u8* this_) {
-    Vec3f pos = { *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14) - lbl_8053EFF0, lbl_8053EFC4 };
+    f32 pos[3];
     bool result = false;
-    if (fn_801CCB1C((const f32*)&pos, *(s32*)(this_ + 0x4))) {
+    f32 y = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14) - lbl_8053EFF0;
+    pos[0] = *(f32*)(this_ + 0xc);
+    pos[1] = y;
+    pos[2] = lbl_8053EFC4;
+    if (fn_801CCB1C(pos, *(s32*)(this_ + 0x4))) {
         result = true;
     }
     return result;
+}
+
+extern "C" s32 fn_801CF6B8(u8* this_) {
+    s32 idx = fn_801CD664(4);
+    if (fn_801CFCF0(this_, idx)) {
+        idx = fn_801CF720(this_, idx);
+    }
+    return idx;
 }
 
 extern "C" u8 fn_801CCB1C(const f32* pos, s32 layer);
