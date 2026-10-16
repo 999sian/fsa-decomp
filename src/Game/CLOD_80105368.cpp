@@ -7,6 +7,10 @@ extern "C" void v06__5ActorFv(void* this_);
 extern "C" void fn_802F745C(void* mgr, JGeometry::TVec3f* pos, s32 id, void* out);
 extern char* lbl_8053AB10;
 extern const f32 lbl_8053C23C;
+extern "C" void __ct__5ActorFv(void* this_);
+extern "C" void fn_801D267C(void* anim);
+extern void* lbl_8049CBE0[];
+extern const f32 lbl_8053C228;
 
 extern "C" void fn_80105654(char* p) {
     v06__5ActorFv(p);
