@@ -8,7 +8,7 @@ extern "C" void fn_803DD1A0(void)
 {
 }
 
-void fn_803DD3DC(void)
+extern "C" void fn_803DD3DC(void)
 {
 }
 
