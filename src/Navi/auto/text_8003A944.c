@@ -163,7 +163,7 @@ extern "C" void fn_800404E8(void) {
     extern void* lbl_802BF0F4[];
     if (lbl_802BF0F4[3] != nullptr) {
         register void** vtable = *(void***)lbl_802BF0F4[3];
-        void (*fn)(void*, s16) = (void (*)((uInt)void*, s16))vtable[4];
+        void (*fn)(void*, s16) = (void (*)(void*, s16))vtable[4];
         fn(lbl_802BF0F4[3], 1);
     }
     lbl_802BF0F4[3] = nullptr;
