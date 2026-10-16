@@ -601,6 +601,10 @@ extern "C" u16 fn_801A411C(u8* p, s32 i) {
     return ((u16*)(p + 8))[i];
 }
 
+extern "C" void fn_801A412C(u8* p, s32 i, u32* pv) {
+    *((u32*)(p + (i << 2) + 0xc)) = *pv;
+}
+
 extern "C" int fn_801A4154(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0xc;
 }
