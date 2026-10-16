@@ -192,6 +192,8 @@ extern "C" void fn_800CBDD0(void) {}
 
 extern "C" void fn_800CBDD4(void) {}
 
+extern "C" void fn_800CBDD8(void) {}
+
 extern "C" void fn_800CBDDC(void) {
 }
 
