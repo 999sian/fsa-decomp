@@ -691,6 +691,23 @@ extern "C" void fn_8019F8B8(int param_1) {
     }
 }
 
+extern "C" void fn_8019FC0C(void* param_1, s32 param_2) {
+    extern u32* lbl_802FFA80;
+    s32 i = 0;
+    u32 start;
+    u32 cur;
+    u16 val;
+    lbl_802FFA80[2] = lbl_802FFA80[0] + param_2;
+    start = lbl_802FFA80[2];
+    cur = lbl_802FFA80[2];
+    while (fn_801A602C(cur)) {
+        val = fn_801A6050(cur);
+        fn_801A605C(i, &val);
+        i++;
+    }
+    fn_801BC250(start, lbl_802FFA80[2] - start);
+}
+
 extern "C" void fn_801A188C(NaviVObj* p, u32 flags) {
     if (flags & 0x10000000) {
         p->vf4();
@@ -1987,6 +2004,14 @@ extern "C" void* fn_801A50DC(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_801E0D40(void*, void*, int, int);
+extern void* lbl_8029AE0C[];
+extern "C" void fn_8000EE0C(void);
+extern "C" void fn_8000EE4C(void);
+extern "C" u32 fn_801A5138(void) {
+    return 0x50454f50;
 }
 
 extern void* lbl_8029AD68[];
