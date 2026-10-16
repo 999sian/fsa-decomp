@@ -297,3 +297,6 @@ extern "C" void fn_80178E5C(void* param_1)
 {
 }
 
+extern "C" void fn_80178E60(void) {
+}
+
