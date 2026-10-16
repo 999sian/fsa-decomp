@@ -7,6 +7,7 @@ extern u8 lbl_8026D4BC[];
 extern "C" void fn_800592CC(void* p);
 extern "C" void fn_80059290(void* p);
 extern "C" s32 fn_80058D70(s32 idx);
+extern "C" void fn_80058E5C(s32 idx, s32* a, s32* b);
 extern void* lbl_8027EC78[];
 extern void* lbl_80299A8C[];
 extern void* lbl_802044AC[];
@@ -50,6 +51,20 @@ extern "C" void fn_8005867C(void) {
 extern "C" void fn_80058740(void*, int);
 extern "C" void fn_8005871C(void* p) {
     fn_80058740(p, 0);
+}
+
+extern "C" s32 fn_8005887C(s32 param_1) {
+    u8* p = lbl_8026D4BC + param_1 * 0xc;
+    s32 r;
+    u32 v = *(u32*)(p + 4);
+    if (fn_80058D70(param_1) == 0) {
+        return 0;
+    }
+    r = lbl_8027D340[p[0]] + (s32)((60.0 * (f64)v) / 1000000.0);
+    if (v == 1000000) {
+        r = 1000000;
+    }
+    return r;
 }
 
 extern "C" s32 fn_80058930(s32 idx) {
