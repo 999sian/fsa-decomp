@@ -48,6 +48,7 @@ void fn_80301D54(s32);
 bool fn_80303750(s32);
 bool fn_80301CD0(char*);
 void fn_8030BD3C(void*, s32);
+void fn_803037D4(s32, s32);
 void fn_8045815C(void*, s32);
 
 bool fn_8028FBA0(char* p) {
