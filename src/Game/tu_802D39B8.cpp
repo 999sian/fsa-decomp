@@ -132,11 +132,11 @@ extern "C" bool fn_802D6AC4(char* p, s32 bit) {
 extern "C" void fn_802D6B24(char* p, s32 bit, u8 set) {
     s32 word = bit / 32;
     s32 shift = bit % 32;
-    if (set) {
-        ((RoomArrays*)p)->flagsFD68[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][word] |= 1U << shift;
-    } else {
-        ((RoomArrays*)p)->flagsFD68[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][word] &= (1U << shift) ^ 0xFFFFFFFF;
-    }
+    u32* flags = (u32*)(p + *(s32*)(p + 0x18) * 0x500 + *(s32*)(p + 0x14) * 0x80 + 0xFD68);
+    if (set)
+        flags[word] |= 1U << shift;
+    else
+        flags[word] &= (1U << shift) ^ 0xFFFFFFFF;
 }
 
 extern "C" void fn_802D6BC8(char*, u8 value) {
@@ -232,12 +232,10 @@ extern "C" bool fn_802D75BC(char* p, s32 bit) {
 }
 
 extern "C" void fn_802D7618(char* p, s32 bit) {
-    s32 word = bit / 32;
     char* q = p + *(s32*)(p + 0x18) * 0x500;
-    char* s = q + *(s32*)(p + 0x14) * 0x80;
-    s += word * 4;
-    u32 mask = 1U << (bit % 32);
-    *(u32*)(s + 0x6768) = *(u32*)(s + 0x6768) | mask;
+    q += *(s32*)(p + 0x14) * 0x80;
+    q += (bit / 32) * 4;
+    *(u32*)(q + 0x6768) |= 1U << (bit % 32);
 }
 
 extern "C" void fn_802D766C(char* p, u8 value, s32 index) {
@@ -249,16 +247,16 @@ extern "C" void fn_802D766C(char* p, u8 value, s32 index) {
 
 extern "C" bool fn_802D76A8(char* p, s32 bit) {
     char* q = p + *(s32*)(p + 0x18) * 0x500;
-    char* r = q + *(s32*)(p + 0x14) * 0x80;
-    char* s = r + (bit / 32) * 4;
-    return (*(u32*)(s + 0x3548) & (1U << (bit % 32))) != 0;
+    q += *(s32*)(p + 0x14) * 0x80;
+    q += (bit / 32) * 4;
+    return (*(u32*)(q + 0x3548) & (1U << (bit % 32))) != 0;
 }
 
 extern "C" void fn_802D7704(char* p, s32 bit, u8 value, s32 index) {
     char* q = p + *(s32*)(p + 0x18) * 0x500;
-    char* r = q + *(s32*)(p + 0x14) * 0x80;
-    char* s = r + (bit / 32) * 4;
-    *(u32*)(s + 0x3548) |= 1U << (bit % 32);
+    q += *(s32*)(p + 0x14) * 0x80;
+    q += (bit / 32) * 4;
+    *(u32*)(q + 0x3548) |= 1U << (bit % 32);
     if (value != 0) {
         index = index < 8 ? 0 : index - 7;
         ++((s32*)(p + 0x6748))[index];
@@ -381,20 +379,20 @@ extern "C" void fn_802D79E8(char* p, s32 index, u8 value, f32 a, f32 b) {
 
 extern "C" u64 fn_802D7AC4(char* p, s32 index) {
     if (index < 8) {
-        char* base = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-        return ((RoomArrays*)base)->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][0];
+        RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        return rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][0];
     }
-    char* base = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    return ((RoomArrays*)base)->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index - 7];
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    return rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index - 7];
 }
 
 extern "C" u32 fn_802D7B34(char* p, s32 index, s32 digit) {
     index = index < 8 ? 0 : index - 7;
     s32 shift = 60 - digit * 4;
     u64 mask = (u64)15 << shift;
-    char* base = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    u64 value = ((RoomArrays*)base)->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index];
-    return (value & mask) >> shift;
+    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+    u64 value = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index];
+    return (mask & value) >> shift;
 }
 
 extern "C" void fn_802D7D00(char* p, s32 index, s32 bit, u8 set) {
