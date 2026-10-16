@@ -332,6 +332,7 @@ extern "C" void fn_8000EF10(u32* p) {
     *p = lbl_80301D08;
 }
 
+extern "C" u8 lbl_80301D30;
 extern "C" void fn_8000EF1C(u8* p) {
     *p = lbl_80301D30;
 }
