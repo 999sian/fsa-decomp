@@ -2,6 +2,7 @@
 // .text 0x801cafd4-0x801e0c34 (354 functions). split_file divides it into the game's real files.
 
 #include <types.h>
+extern "C" u8 lbl_802F7D60[];
 extern void* lbl_802FFA4C;
 extern "C" s32 fn_801D61F8(void* self);
 extern "C" s32 fn_801D4C78(void* self);
@@ -536,14 +537,15 @@ extern "C" void fn_801D1F90(s32 chan) {
 
 extern "C" void fn_801D2038(s32 chan) {
     extern u8 lbl_802F7D60[];
+    u32 padding[2];
     u8* p = lbl_802F7D60 + chan * 0x110;
-    void (*cb)(s32, s32) = *(void (**)(s32, s32))(p + 0xdc);
+    void* cb = *(void**)(p + 0xdc);
     if (cb != nullptr) {
         *(void**)(p + 0xdc) = nullptr;
         if (EXIProbe(chan)) {
-            cb(chan, 1);
+            ((void (*)(s32, s32))cb)(chan, 1);
         } else {
-            cb(chan, -3);
+            ((void (*)(s32, s32))cb)(chan, -3);
         }
     }
 }
@@ -585,6 +587,43 @@ extern "C" void fn_801D2BDC(void)
 extern u16 lbl_802FFA18;
 extern "C" u16 fn_801D2C88(void) {
     return lbl_802FFA18;
+}
+
+extern "C" s32 fn_801D2CC8(s32 chan, u8** pcard)
+{
+    extern u8 lbl_802F7D60[];
+    u8* card = lbl_802F7D60 + chan * 0x110;
+    BOOL enabled;
+    s32 result;
+
+    if (chan < 0 || chan >= 2 || *(u32*)(card + 0x10c) == 0) {
+        return -128;
+    }
+    enabled = OSDisableInterrupts();
+    if (*(s32*)(card + 0) == 0) {
+        result = -3;
+    } else if (*(s32*)(card + 4) == -1) {
+        result = -1;
+    } else {
+        *(s32*)(card + 4) = -1;
+        *(u32*)(card + 0xd0) = 0;
+        *pcard = card;
+        result = 0;
+    }
+    OSRestoreInterrupts(enabled);
+    return result;
+}
+
+extern "C" s32 fn_801D2D80(u8* card, s32 result)
+{
+    BOOL enabled = OSDisableInterrupts();
+    if (*(s32*)(card + 0) != 0) {
+        *(s32*)(card + 4) = result;
+    } else if (*(s32*)(card + 4) == -1) {
+        *(s32*)(card + 4) = result;
+    }
+    OSRestoreInterrupts(enabled);
+    return result;
 }
 
 extern "C" u32 fn_801D44FC(u8* param_1) {
