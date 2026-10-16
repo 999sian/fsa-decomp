@@ -58,6 +58,54 @@ extern "C" void fn_80187144(ActorVt_fgn2* this_) {
     this_->setShadow(*(s8*)((char*)this_ + 0x2ee), 8.0f, -16.0f);
 }
 
+extern "C" s32 fn_8022EA0C(u16 idx);
+extern "C" u8 fn_8023F264(s32 idx);
+extern "C" s32 fn_8023DE58(s32 idx);
+extern "C" u8 fn_80230188(s32 idx);
+extern "C" u8 fn_80236B50(s32 idx);
+extern "C" u8 fn_8022DCD8(s32 idx);
+extern s32 lbl_8053AB78;
+extern const f32 lbl_8053DFF4;
+extern const f32 lbl_8053E050;
+extern "C" u16 fn_80189DEC(char* this_) {
+    s32 cur = fn_8022EA0C(*(u16*)(this_ + 0x94));
+    s32 i;
+    s32 cand;
+    s32 ok = 0;
+    f32 f;
+    u32 bits;
+    char* rng;
+    if (cur < 0) {
+        cur = 0;
+    }
+    if (fn_8023F264(cur) != 0) {
+        s32 h = *(s32*)(this_ + 0x4);
+        ok = h == fn_8023DE58(cur) && fn_80230188(cur) == 0 && fn_80236B50(cur) == 0;
+    }
+    if (!ok || lbl_8053AB78 == 1) {
+        rng = lbl_8053AAF8;
+        *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+        bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+        f = *(f32*)&bits;
+        cand = (s32)(lbl_8053E050 * (f - lbl_8053DFF4));
+        for (i = 0; i < 4; i++) {
+            if (cand != cur && fn_8023F264(cand) != 0) {
+                s32 h = *(s32*)(this_ + 0x4);
+                if (h == fn_8023DE58(cand) && fn_8022EA0C(cand) == cand && fn_80230188(cand) == 0 && fn_80236B50(cand) == 0 && fn_8022DCD8(cand) == 0) {
+                    *(s16*)(this_ + 0x94) = cand;
+                    if (lbl_8053AB78 == 1) {
+                        *(s32*)(this_ + 0x27c) = *(u16*)(this_ + 0x94);
+                    }
+                    return *(u16*)(this_ + 0x94);
+                }
+            }
+            cand = (cand + 1) & 3;
+        }
+    }
+    *(s16*)(this_ + 0x94) = cur;
+    return *(u16*)(this_ + 0x94);
+}
+
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
