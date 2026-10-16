@@ -63,3 +63,11 @@ extern "C" void fn_803CC0D8(char* p) {
     }
 }
 
+extern u32 lbl_8053ADB0;
+extern "C" s32 fn_803CE4B0(void) {
+    if (lbl_8053ADB0 != 0) {
+        return *(s32*)(lbl_8053ADB0 + 0x1a8);
+    }
+    return 3;
+}
+
