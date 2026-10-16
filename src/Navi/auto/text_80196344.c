@@ -589,6 +589,10 @@ extern "C" void fn_801A42AC(int p1, int p2, u8* p3) {
     d[0x3c] = p3[7];
 }
 
+extern "C" int fn_801A4324(int p1, int p2) {
+    return p1 + p2 * 8 + 0x35;
+}
+
 extern "C" void fn_801A43A8(u8* p1, int p2, u8* p3) {
     p1[p2 + 0x59] = *p3;
 }
