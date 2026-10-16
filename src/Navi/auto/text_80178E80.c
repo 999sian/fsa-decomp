@@ -575,8 +575,7 @@ extern "C" void fn_80180714(u32* self, int a, int b) {
 
 extern "C" void* fn_80180814(void* self, u8 idx) {
     if (idx < 4) {
-        u8* p = (u8*)self + idx * 4;
-        return *(void**)(p + 0x100);
+        return ((void**)((u8*)self + 0x100))[idx];
     }
     return NULL;
 }
