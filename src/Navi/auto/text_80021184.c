@@ -5,3 +5,6 @@ extern "C" void fn_8011526C(void);
 extern "C" void fn_80021220(void) {
     fn_8011526C();
 }
+
+extern "C" void fn_80022434(void) {}
+
