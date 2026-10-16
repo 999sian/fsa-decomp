@@ -240,11 +240,17 @@ extern u8* lbl_8053AAF8;
 
 static inline void stampSave() {
 lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
-if (!(lbl_8050EC80.entries[lbl_8050EC80.idx].flags & 1)) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 1;
+{
+SaveEntry* e = &lbl_8050EC80.entries[lbl_8050EC80.idx];
+if (!(e->flags & 1)) {
+e->flags |= 1;
 }
-if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 2;
+}
+{
+SaveEntry* e = &lbl_8050EC80.entries[lbl_8050EC80.idx];
+if (e->f8 & 1) {
+e->flags |= 2;
+}
 }
 }
 
@@ -271,8 +277,7 @@ void MemCardMenu::fn_803D2C9C() {
                 e[0x85] |= 1;
             }
             if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
-                e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
-                e[0x85] |= 2;
+                ((u8*)&lbl_8050EC80)[lbl_8050EC80.idx * 0xc8 + 0x85] |= 2;
             }
             self->f54 = 0x7e;
             self->f2177 = 0;
