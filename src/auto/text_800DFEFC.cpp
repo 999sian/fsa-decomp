@@ -11,6 +11,15 @@ u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
     return 0;
 }
 
+u32 J3DMaterialFactory_v21::newTexGenNum(int idx) const
+{
+    u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[3];
+    if (bVar1 != 0xff) {
+        return mTexGenNums[bVar1];
+    }
+    return 0;
+}
+
 extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
