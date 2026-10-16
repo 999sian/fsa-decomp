@@ -427,6 +427,21 @@ extern "C" void fn_80059290(void* p) {
 
 extern "C" void fn_8005A480(void) {}
 
+extern "C" void fn_80059338(void*);
+extern "C" void fn_80059768(void*);
+extern "C" void fn_80059B68(void*);
+extern "C" double fn_80059DA0(void*);
+extern const double lbl_803002B0;
+extern u8 lbl_802C0770[];
+extern "C" void fn_8005ABF0(void*);
+extern "C" void fn_8005A484(void) {
+    s32 i = 0;
+    do {
+        fn_8005ABF0(&lbl_802C0770[i * 0x2c]);
+        i++;
+    } while (i < 0x10);
+}
+
 extern "C" void fn_8005B450(void) {}
 
 extern "C" void fn_8005C330(const char*, ...) {
