@@ -172,12 +172,18 @@ extern "C" unsigned char fn_801729AC(int param_1) {
 
 extern "C" void fn_801729B4(u8* p, s32 i, u8* src) {
     u8* d = p + i * 8;
-    d[0x58] = src[1];
-    d[0x59] = src[2];
-    d[0x5a] = src[3];
-    d[0x5c] = src[5];
-    d[0x5d] = src[6];
-    d[0x5e] = src[7];
+    u8 a = src[1];
+    u8 b = src[2];
+    u8 c = src[3];
+    u8 e = src[5];
+    u8 f = src[6];
+    u8 g = src[7];
+    d[0x58] = a;
+    d[0x59] = b;
+    d[0x5a] = c;
+    d[0x5c] = e;
+    d[0x5d] = f;
+    d[0x5e] = g;
 }
 
 extern "C" s32 fn_801729F0(s32 p, s32 i) {
@@ -213,6 +219,11 @@ extern "C" u8 fn_80172EC4(u8* p, s32 i) { return *(p + i + 0x54); }
 extern "C" void fn_80172ED0(u8* p, s32 i, u8 v) { *(p + i + 0x56) = v; }
 
 extern "C" u8 fn_80172EDC(u8* p, s32 i) { return *(p + i + 0x56); }
+
+extern "C" void fn_80172FA0(u8* p, s32 i, u32* src)
+{
+	((u32*)(p + 0x5c))[i] = *src;
+}
 
 extern "C" s32 fn_80172FB4(s32 p, s32 i)
 {
