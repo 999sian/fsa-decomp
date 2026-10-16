@@ -374,28 +374,30 @@ extern u32 lbl_80301CF8;
 extern u32 lbl_80301CFC;
 extern "C" void fn_80199078(void* param_1) {
     u8* p = (u8*)param_1;
-    u32 local_c = lbl_80301CF8;
-    u32 local_8 = lbl_80301CFC;
-    u8* b = (u8*)&local_c;
-    u8* c = (u8*)&local_8;
+    u32 a = lbl_80301CF8;
+    u32 b = lbl_80301CFC;
+    u32 tmp = a;
+    u8* t = (u8*)&tmp;
     p[0xc] = 0;
-    p[4] = b[0];
-    p[5] = b[1];
-    p[6] = b[2];
-    p[7] = b[3];
-    local_c = lbl_80301CF8;
-    p[8] = b[0];
-    p[9] = b[1];
-    p[0xa] = b[2];
-    p[0xb] = b[3];
-    p[0x20] = c[0];
-    p[0x21] = c[1];
-    p[0x22] = c[2];
-    p[0x23] = c[3];
-    p[0x24] = c[0];
-    p[0x25] = c[1];
-    p[0x26] = c[2];
-    p[0x27] = c[3];
+    p[4] = t[0];
+    p[5] = t[1];
+    p[6] = t[2];
+    p[7] = t[3];
+    tmp = a;
+    p[8] = t[0];
+    p[9] = t[1];
+    p[0xa] = t[2];
+    p[0xb] = t[3];
+    tmp = b;
+    p[0x20] = t[0];
+    p[0x21] = t[1];
+    p[0x22] = t[2];
+    p[0x23] = t[3];
+    tmp = b;
+    p[0x24] = t[0];
+    p[0x25] = t[1];
+    p[0x26] = t[2];
+    p[0x27] = t[3];
     *(s32*)(p + 0x18) = 0;
     *(s32*)(p + 0x1c) = 0;
 }
@@ -1013,14 +1015,20 @@ extern "C" u8 fn_801A3E64(u8* p) {
     return p[0x20];
 }
 
-extern "C" void fn_801A3E6C(u8* p, int i, u8* src) {
-    u8* d = p + i * 8;
-    d[0x22] = src[1];
-    d[0x23] = src[2];
-    d[0x24] = src[3];
-    d[0x26] = src[5];
-    d[0x27] = src[6];
-    d[0x28] = src[7];
+extern "C" void fn_801A3E6C(u8* p, u32 i, u8* src) {
+    u8 a = src[1];
+    u8* d = p + (i << 3);
+    u8 b = src[2];
+    d[0x22] = a;
+    u8 c = src[3];
+    d[0x23] = b;
+    b = src[5];
+    d[0x24] = c;
+    c = src[6];
+    d[0x26] = b;
+    b = src[7];
+    d[0x27] = c;
+    d[0x28] = b;
 }
 
 extern "C" int fn_801A3EE4(int param_1, int param_2) {
@@ -1552,11 +1560,15 @@ extern "C" u32 fn_801A4E84(void) {
 }
 
 extern "C" void fn_801A4E90(u8* p, s32 i, u8* src) {
+    u8 a = src[0];
+    u8 b = src[1];
     u8* dst = p + i * 4;
-    dst[0x20] = src[0];
-    dst[0x21] = src[1];
-    dst[0x22] = src[2];
-    dst[0x23] = src[3];
+    dst[0x20] = a;
+    u8 c = src[2];
+    dst[0x21] = b;
+    u8 d = src[3];
+    dst[0x22] = c;
+    dst[0x23] = d;
 }
 
 extern "C" u8* fn_801A4EE8(u8* p, s32 i) {
