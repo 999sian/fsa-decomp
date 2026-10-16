@@ -1,6 +1,8 @@
 
 
 #include "types.h"
+extern "C" void fn_80177F0C(void);
+
 
 class UnkVObj_80184B60 {
 public:
@@ -14,6 +16,10 @@ extern "C" void fn_80118BD0(void* p, s32 flag);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" void fn_80176FE8(void* self, s32 flag);
 extern char lbl_80298DF0[];
+
+extern "C" void fn_8017A488(void) {
+    fn_80177F0C();
+}
 
 extern "C" void fn_8017A6CC(void* self, UnkVObj_80184B60* obj) {
     u16 count;
