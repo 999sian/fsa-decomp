@@ -95,6 +95,7 @@ struct RailRing {
 };
 
 extern f32 lbl_8053C0B0;
+extern f32 lbl_8053C0D8;
 
 extern "C" void fn_800FD498(void) {}
 extern "C" void fn_800FD49C(void) {}
@@ -185,20 +186,21 @@ static inline u32 railLoopMode(RailRing* ring, u8 n) {
 }
 
 extern "C" void fn_800FD818(RailRing* ring, s8 step) {
-    s32 idx = ring->mCur + step;
-    u32 mode = railLoopMode(ring, ring->mSize);
+    u8 size = ring->mSize;
+    u32 mode = railLoopMode(ring, size);
+    s32 idx = step + ring->mCur;
     if ((s16)idx < 0) {
         if (mode == 1) {
-            ring->mCur = ring->mSize + idx;
+            ring->mCur = size + idx;
         } else {
             ring->mCur = 0;
         }
-    } else if ((s16)idx >= ring->mSize) {
-        idx -= ring->mSize;
+    } else if ((s16)idx >= size) {
+        idx -= size;
         if (mode == 1) {
             ring->mCur = idx;
         } else {
-            ring->mCur = ring->mSize - 1;
+            ring->mCur = size - 1;
         }
     } else {
         ring->mCur = idx;
