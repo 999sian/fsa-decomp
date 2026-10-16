@@ -4,6 +4,11 @@ extern "C" char lbl_8049D940[];
 extern "C" void fn_8010E074(void*);
 extern "C" void fn_801D267C(void*);
 extern "C" void fn_801EB950(void*);
+extern "C" char lbl_8049CC34[];
+extern "C" void fn_801EE434(void*);
+extern "C" void dtor_801EB8CC(void*, s32);
+extern "C" void __dt__13Base_8010E074Fv(void*, s32);
+extern "C" void __dl__FPv(void*);
 extern "C" s32 fn_801162B8(char* p) {
     switch (*(s32*)(p + 0x230)) {
     case 11:
