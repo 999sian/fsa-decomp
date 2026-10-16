@@ -34,3 +34,15 @@ extern "C" void fn_8013D064(void* param_1, void* param_2, void* param_3, void* p
     fn_8013BC94(*(void**)((u8*)param_1 + 0x60), param_3, param_4, param_5, param_6);
 }
 
+extern "C" void fn_8013D1D4(void* param_1) {
+    Entry_802C67C4* e;
+    for (e = lbl_802C67C4; e->id != -1; e++) {
+        *(void**)(*(u8**)((u8*)param_1 + 4) + e->id * 0x14 + 0x10) = e ? (void*)e : (void*)lbl_802FF378;
+    }
+}
+
+extern "C" void fn_8013D304(void* param_1) {
+    VObj_8013D304* o = *(VObj_8013D304**)((u8*)param_1 + 0x100);
+    o->vf5(o->vf4() & 0xfffffffe);
+}
+
