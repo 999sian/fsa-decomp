@@ -1038,24 +1038,39 @@ extern "C" void fn_801DAFF4(void)
 	PPCSync();
 }
 
+extern "C" void fn_801DB478(void) {
+    int interrupt_state = OSDisableInterrupts();
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = 0x45000002;
+    fn_801DAFF4();
+    lbl_802FFA70 = 0;
+    OSRestoreInterrupts(interrupt_state);
+    interrupt_state = OSDisableInterrupts();
+    while (lbl_802FFA70 == 0) {
+        fn_801C12E4((int)lbl_802FFA74);
+    }
+    OSRestoreInterrupts(interrupt_state);
+}
+#pragma dont_inline reset
 extern u8 lbl_802FFA70;
 extern u8 lbl_802FFA74[];
 extern "C" void fn_801DB4F8(void) {
+    u8* gx = __GXData;
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = *(u32*)(__GXData + 0x1dc);
-    *(u16*)(__GXData + 2) = 0;
+    *(volatile u32*)0xCC008000 = *(u32*)(gx + 0x1dc);
+    *(u16*)(gx + 2) = 0;
 }
 
 extern void* __peReg;
-extern "C" void fn_801DB51C(u16 a, u16 b) {
-    u16 val = (a << 8) | (b & 0xff);
-    *(u16*)((u8*)__peReg + 6) = val;
+extern "C" void fn_801DB51C(s32 a, s32 b) {
+    *(u16*)((u8*)__peReg + 6) = (u16)((a << 8) | (u8)b);
 }
 
-extern "C" void fn_801DB530(u16 a) {
-    u16 val = 0;
-    val = (val & ~3) | (a & 3);
-    val = val | 4;
+extern "C" void fn_801DB530(s32 a) {
+    u32 val = 0;
+    val |= a & 3;
+    u32 flag = 1;
+    val |= flag << 2;
     *(u16*)((u8*)__peReg + 8) = val;
 }
 
