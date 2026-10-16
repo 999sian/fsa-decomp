@@ -83,7 +83,8 @@ extern "C" void fn_800C8D48(u8* param_1) {
 }
 
 extern "C" void fn_800C8D90(u8* param_1) {
-    (*(VObj_800C8D90**)(param_1 + 0x70))->v2(*(f32*)(param_1 + 0x74) + 0.5f * param_1[0x7c], *(f32*)(param_1 + 0x78));
+    f32 off = 0.5f * param_1[0x7c];
+    (*(VObj_800C8D90**)(param_1 + 0x70))->v2(*(f32*)(param_1 + 0x74) + off, *(f32*)(param_1 + 0x78));
 }
 
 extern "C" void fn_800C8DF4(u8* param_1) {
