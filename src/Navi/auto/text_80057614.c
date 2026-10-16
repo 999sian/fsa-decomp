@@ -42,6 +42,8 @@ extern "C" void fn_80058D50(void) {
     fn_800595FC();
 }
 
+extern "C" void fn_8005A480(void) {}
+
 extern "C" void* lbl_802FF118;
 extern "C" void* fn_8005C498(void)
 {
