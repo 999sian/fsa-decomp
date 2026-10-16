@@ -4,7 +4,6 @@ struct FsaStateEntry;
 typedef void (FsaStateEntry::*FsaStateFn)();
 struct FsaStateEntry {
     FsaStateFn fn;
-    u32 unk8;
 };
 extern FsaStateEntry lbl_804AD400[];
 extern "C" void fn_801F0E34(void* p, s32 a, s32 b);
