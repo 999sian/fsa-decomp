@@ -258,29 +258,6 @@ struct UnkDCF8 {
     u8 m_c;
     u8 m_d;
 };
-struct Unk800DC058Src {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
-    virtual void m2() = 0;
-    virtual void m3() = 0;
-    virtual void m4() = 0;
-    virtual void m5() = 0;
-    virtual void m6() = 0;
-    virtual void m7() = 0;
-    virtual void m8() = 0;
-    virtual void m9() = 0;
-    virtual void m10() = 0;
-    virtual void m11() = 0;
-    virtual void m12() = 0;
-    virtual void m13() = 0;
-    virtual void m14() = 0;
-    virtual void m15() = 0;
-    virtual u32 m16() = 0;
-    virtual void m17() = 0;
-    virtual u32* m18(u32) = 0;
-    virtual void m19() = 0;
-    virtual u8* m20(u32) = 0;
-};
 
 struct Unk800DC058Vt {
     virtual void m0() = 0;
@@ -431,9 +408,9 @@ void J3DTevBlock4::initialize()
 	mKAlphaSels[1] = 0x1c;
 	mKAlphaSels[2] = 0x1c;
 	mKAlphaSels[3] = 0x1c;
-	mColors[0] = *(J3DGXColorS10*)&j3dDefaultTevColor;
-	mColors[1] = *(J3DGXColorS10*)&j3dDefaultTevColor;
-	mColors[2] = *(J3DGXColorS10*)&j3dDefaultTevColor;
+	*(u64*)&mColors[0] = *(u64*)&j3dDefaultTevColor;
+	*(u64*)&mColors[1] = *(u64*)&j3dDefaultTevColor;
+	*(u64*)&mColors[2] = *(u64*)&j3dDefaultTevColor;
 	u32 kcolor = *(u32*)&j3dDefaultTevKColor;
 	mKColors[0] = kcolor;
 	mKColors[1] = kcolor;
@@ -1715,9 +1692,10 @@ extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
 }
 
 extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
+    u32 i = 0;
     u8* p = this_;
     u8* gen = this_;
-    for (u32 i = 0; i < 8; i++) {
+    for (; i < 8; i++) {
         if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
             *(u16*)(gen + 0xc) = gen[0xa];
             switch ((*(J3DTexMtx**)(p + 0x38))->getTexMtxInfo().mInfo & 0x3f) {
@@ -1725,25 +1703,25 @@ extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
                 (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 1:
-                if (j3dSys.mFlags & 4) {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
-                } else {
+                if ((j3dSys.mFlags & 4) == 0) {
                     (*(J3DTexMtx**)(p + 0x38))->calc(mtx);
+                } else {
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 }
                 break;
             case 2:
                 (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 3:
-                if (j3dSys.mFlags & 8) {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
-                } else {
+                if ((j3dSys.mFlags & 8) == 0) {
                     Mtx m;
                     PSMTXCopy(mtx, m);
                     m[0][3] = 0.0f;
                     m[1][3] = 0.0f;
                     m[2][3] = 0.0f;
                     (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                } else {
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
                 }
                 break;
             default:
