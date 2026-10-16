@@ -1193,6 +1193,22 @@ extern "C" void fn_801B9B94(void* self, void* src) {
     fn_801B9BBC(self, *(void**)((u8*)self + 4), src);
 }
 
+extern "C" void* fn_8018C308(void* base, u32 offset);
+extern "C" void fn_801B9BBC(void* unused, void* dest, void* src) {
+    extern f32 lbl_80301DF0;
+    u8* dst = (u8*)dest;
+    u8* s = (u8*)src;
+    *(u16*)(dst + 0x1e) = *(u16*)(s + 0xc);
+    *(s16*)(dst + 6) = *(s16*)(s + 0xa);
+    *(u8*)(dst + 4) = *(u8*)(s + 8);
+    *(u32*)(dst + 0x20) = *(u8*)(s + 9);
+    *(f32*)(dst + 8) = lbl_80301DF0;
+    *(void**)(dst + 0x24) = fn_8018C308(s, *(u32*)(s + 0x14));
+    *(void**)(dst + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x18));
+    *(void**)(dst + 0x10) = fn_8018C2D8(s, *(u32*)(s + 0x1c));
+    *(void**)(dst + 0x14) = fn_8018C2F0(s, *(u32*)(s + 0x20));
+}
+
 extern "C" void fn_801B9C80(void* unused, void* dest, void* src);
 extern "C" void fn_801B9C58(void* self, void* src) {
     fn_801B9C80(self, *(void**)((u8*)self + 4), src);
@@ -1256,3 +1272,4 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
+struct Blk_801A7D54 { u8 b[0x19]; };
