@@ -113,6 +113,16 @@ extern "C" void fn_8003CCF4(void* param_1) {
     fn_8004816C(lbl_802EE470, (char*)param_1 + 0x10);
 }
 
+extern "C" void* fn_8003CD24(void* param_1) {
+    *(void**)param_1 = lbl_80299A8C;
+    *((s32*)param_1 + 1) = 0;
+    *((s32*)param_1 + 2) = 0;
+    *((s32*)param_1 + 3) = 0;
+    *(void**)param_1 = lbl_80246A54;
+    fn_801E0DB8((char*)param_1 + 0x20, (void*)fn_8003CDD4, (void*)fn_8003CD98, 0x2c, 0x64);
+    return param_1;
+}
+
 extern "C" void* fn_8003CD98(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
