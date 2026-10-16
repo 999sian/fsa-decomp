@@ -42,10 +42,11 @@ extern "C" bool fn_802573E0(u8* p, const JGeometry::TBox2<f32>* bounds,
     if (S32(p, 0xb6c) != id) {
         return false;
     }
-    JGeometry::TBox2<f32> overlap = BOX(p, 0x590);
+    JGeometry::TBox2<f32>& box = BOX(p, 0x590);
+    JGeometry::TBox2<f32> overlap = box;
     if (overlap.intersect(*bounds)) {
-        center->x = lbl_805400C0 * (BOX(p, 0x590).i.x - BOX(p, 0x590).f.x) + BOX(p, 0x590).f.x;
-        center->y = lbl_805400C0 * (BOX(p, 0x590).i.y - BOX(p, 0x590).f.y) + BOX(p, 0x590).f.y;
+        center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
+        center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
         return true;
     }
     return false;
@@ -59,8 +60,7 @@ extern "C" bool fn_802574CC(u8* p, const JGeometry::TBox2<f32>* bounds,
     if (S32(p, 0xb58) != id) {
         return false;
     }
-    JGeometry::TBox2<f32> overlap = BOX(p, 0x540);
-    if (overlap.intersect(*bounds)) {
+    if (BOX(p, 0x540).intersect(*bounds)) {
         center->x = lbl_805400C0 * (BOX(p, 0x540).i.x - BOX(p, 0x540).f.x) + BOX(p, 0x540).f.x;
         center->y = lbl_805400C0 * (BOX(p, 0x540).i.y - BOX(p, 0x540).f.y) + BOX(p, 0x540).f.y;
         return true;
