@@ -83,15 +83,12 @@ extern "C" void fn_80120F38(int param_1)
 
 extern "C" s32 fn_80121040(void* p)
 {
-	s32 val = *(s32*)((u8*)p + 0x33c);
-	if (val == 7) {
-		return 0;
-	}
-	if (val < 7) {
-		if (val > 6) {
-			return 1;
-		}
-	} else if (val < 0xd) {
+	switch (*(s32*)((u8*)p + 0x33c)) {
+	case 7:
+	case 9:
+	case 10:
+	case 11:
+	case 12:
 		return 1;
 	}
 	return 0;
