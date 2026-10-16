@@ -38,6 +38,20 @@ extern "C" void fn_803C92B8(char* p) {
     }
 }
 
+extern "C" void fn_803C0A34(char* p);
+extern "C" void fn_803CE4CC(char* p);
+extern "C" void fn_803C9F14(char* this_) {
+    s32 r = fn_803B9BDC(lbl_8051C1A0);
+    if (r == 2) {
+        *(u32*)(this_ + 0x84) = 0;
+        *(u32*)(this_ + 0x80) = 0x69;
+        *(u8*)(this_ + 0x112) = *(u8*)(this_ + 0x110);
+        *(u8*)(this_ + 0x110) = 0;
+    } else if (r == 1) {
+        fn_803C0A34(this_);
+    }
+}
+
 extern "C" void fn_803CBE38(char* p) {
     int r;
     r = fn_803B9A94(lbl_8051C1A0, *(u32*)(p + 0x5c), 0x258, *(u32*)(p + 0x60), 0x1d4c, 0);
