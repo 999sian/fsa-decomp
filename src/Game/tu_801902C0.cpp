@@ -6,3 +6,5 @@ extern "C" void fn_80191E04(void) {}
 
 extern "C" void fn_80191E08(void) {}
 
+extern "C" void fn_80191E0C(void) {}
+
