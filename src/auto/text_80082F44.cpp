@@ -1,8 +1,5 @@
 #include "JSystem/JKernel/JKRFileFinder.h"
 #include "JSystem/JKernel/JKRArchive.h"
-// Code of main that had no source file yet: decomp.wtf gave it this one.
-// split_file divides it into the game's real files (file_status shows its range).
-
 extern char lbl_80498E38[];
 extern char lbl_80498E48[];
 JKRArcFinder::JKRArcFinder(JKRArchive *archive, long startindex, long entries) : JKRFileFinder()
