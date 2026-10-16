@@ -25,6 +25,15 @@ extern "C" void fn_8010BAA0(void*);
 extern "C" u8 fn_8010B8D4(void*);
 extern "C" void fn_800C55B8(void*, u8);
 extern "C" u8 fn_800BC8A4(void*);
+extern "C" u8 fn_800F39B4(void*);
+extern "C" void fn_800F3D84(void*);
+extern "C" void fn_800F2CD4(void*);
+extern "C" void fn_800F3888(void*);
+extern "C" void fn_800C5548(void*);
+extern "C" void* fn_8015A90C(u32);
+extern void* lbl_802869B4[];
+extern void* lbl_8028C578[];
+extern void* lbl_8027EC78[];
 struct Obj_8009287C {
     u8 pad[0x7e8];
     u8 state;
