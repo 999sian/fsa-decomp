@@ -10,9 +10,6 @@ extern void fn_8008665C(void*, u32);
 
 extern u8 g_bit_mask_table[8];
 extern s32 fn_8008668C(int);
-extern void fn_80085F0C(void);
-extern void fn_800861C4(int, int);
-extern void fn_8008603C(int, int);
 extern "C" void fn_80085F0C(void);
 extern "C" void fn_800861C4(int, u32);
 extern "C" void fn_8008603C(int, u32);
