@@ -90,6 +90,41 @@ extern "C" void fn_80111D44(u8* this_) {
     *(Vec*)(this_ + 0x2d0) = tmp;
 }
 
+extern "C" void* fn_80111F74(char* p, s16 freeFlag) {
+    if (p != 0) {
+        *(void**)p = lbl_8049D208;
+        fn_801EE434(*(void**)(p + 0x364));
+        *(s32*)(p + 0x364) = 0;
+        fn_801EE434(*(void**)(p + 0x368));
+        *(s32*)(p + 0x368) = 0;
+        fn_801EE434(*(void**)(p + 0x36c));
+        *(s32*)(p + 0x36c) = 0;
+        for (s32 i = 0; i < 4; i++) {
+            fn_801EE434(*(void**)(p + 0x370 + i * 4));
+            *(s32*)(p + 0x370 + i * 4) = 0;
+            if (i < 2) {
+                fn_801EE434(*(void**)(p + 0x380 + i * 4));
+                *(s32*)(p + 0x380 + i * 4) = 0;
+            }
+        }
+        if (p + 0x32c != 0) {
+            if (p + 0x350 != 0) {
+                *(void**)(p + 0x350) = lbl_8049CC34;
+            }
+        }
+        if (p + 0x2f4 != 0) {
+            if (p + 0x318 != 0) {
+                *(void**)(p + 0x318) = lbl_8049CC34;
+            }
+        }
+        __dt__13Base_8010E074Fv(p, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_8010F478(u8* this_, s32 param_2) {
     switch (*(s32*)(this_ + 0x234)) {
     case 0:
