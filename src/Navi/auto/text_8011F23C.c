@@ -161,6 +161,17 @@ extern "C" void fn_80124110(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
 
+extern "C" void fn_80127E54(void) {
+}
+
+extern "C" void fn_801DBA5C(s32 v, s32 n);
+extern "C" void fn_80132450(s16 a, s16 b, s16 c, void* out);
+extern "C" void fn_801C5DA8(void* a, void* b, void* c);
+extern "C" void fn_801C6684(void* a, void* b, void* c);
+extern "C" void fn_80127E58(u8* self) {
+    fn_801DBA5C((s32)(lbl_80301680 * *(f32*)(self + 0x144)), 5);
+}
+
 extern "C" void fn_801286CC(u8* param_1, u8* param_2) {
     u8* p = *(u8**)(param_1 + 4);
     u8* iVar2 = **(u8***)(p + 0x1c);
