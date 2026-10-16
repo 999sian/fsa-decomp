@@ -489,6 +489,11 @@ extern "C" int fn_8016997C()
 	return 0;
 }
 
+extern "C" int fn_80169984()
+{
+	return 0;
+}
+
 extern "C" int fn_8016998C()
 {
 	return 0;
@@ -2105,6 +2110,7 @@ extern "C" void fn_80176610(void* p_self)
 {
     u32* self = (u32*)p_self;
     u8* b = (u8*)p_self;
+    f32 f0 = lbl_80301B24;
     f32 f1 = lbl_80301B20;
 
     *(u16*)(b + 0x4) = 0xffff;
@@ -2115,7 +2121,6 @@ extern "C" void fn_80176610(void* p_self)
     ((f32*)self)[0x32] = f1;
     b[0xb7] = 0;
     b[0xb6] = 0x7a;
-    f32 f0 = lbl_80301B24;
     ((f32*)self)[0x33] = f0;
     ((f32*)self)[0x34] = f0;
     b[0xb1] = 0;
@@ -2123,34 +2128,36 @@ extern "C" void fn_80176610(void* p_self)
     b[0xb4] = 1;
     b[0xb3] = 0xff;
     b[0xb5] = 0;
-    (*(void (***)(void*))p_self)[11](p_self);
+    ((void (*)(void*))((u32**)self)[0][11])(p_self);
 }
 
 #pragma push
 #pragma use_lmw_stmw off
 extern "C" void* fn_80176698(void* p_self, void* p_other, u8 b, u32 r6, u32 c, u32 d, f32* f)
 {
+    u32 unused;
     u32* self = (u32*)p_self;
-    u8* sub = (u8*)self + 0xdc;
-    self[0] = (u32)lbl_80298C88;
+    u8* sub = (u8*)p_self + 0xdc;
+    *(void**)p_self = lbl_80298C88;
     fn_80166C70(sub);
-    fn_80166B58((u32*)(sub + 0xc), (u32)self);
+    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
     self[0x3e] = 0;
-    fn_80176728(self, p_other, b, r6, c, d, f);
-    return self;
+    fn_80176728(p_self, p_other, b, unused, c, d, f);
+    return p_self;
 }
+#pragma use_lmw_stmw off
 extern "C" void* fn_80176848(void* p_self, u32 unused, u32 a, u32 b, u32 c)
 {
     u32* self = (u32*)p_self;
-    u8* sub = (u8*)self + 0xdc;
-    self[0] = (u32)lbl_80298C88;
+    u8* sub = (u8*)p_self + 0xdc;
+    *(void**)p_self = lbl_80298C88;
     fn_80166C70(sub);
-    fn_80166B58((u32*)(sub + 0xc), (u32)self);
+    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
     self[0x3e] = 0;
-    fn_801768C8(self, c, b, a);
-    return self;
+    fn_801768C8(p_self, a, b, c);
+    return p_self;
 }
-#pragma pop
+#pragma use_lmw_stmw on
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
     f32 w = *(f32*)((char*)self + 0x28) - *(f32*)((char*)self + 0x20);
     f32 h = *(f32*)((char*)self + 0x2c) - *(f32*)((char*)self + 0x24);
