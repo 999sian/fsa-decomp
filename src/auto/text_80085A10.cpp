@@ -17,6 +17,31 @@ extern "C" char lbl_80498FB8[];
 extern "C" void dispose__7JKRHeapFv(void* param_1);
 extern "C" void __dt__7JKRHeapFv(void* param_1, s32 param_2);
 extern "C" void __dl__FPv(void* param_1);
+extern "C" void free__7JKRHeapFPvP7JKRHeap(void* p, void* heap);
+extern "C" void fn_80085B5C(char* p) {
+    void* heap = *(void**)(*(char**)(p + 0x50) + 0xc);
+    if (heap != 0) {
+        (*(void (***)(char*, s32))p)[2](p, -1);
+        free__7JKRHeapFPvP7JKRHeap(p, heap);
+    }
+}
+
+extern "C" void __ct__7JKRHeapFPvUlP7JKRHeapb(char* p, void* start, u32 size, void* parent, u8 errorFlag);
+extern "C" void fn_80085CB8(char* p);
+extern "C" char* fn_80085BBC(char* p, u32 a2, void* a3, u32 a4, u32 a5, u32 a6, u32 a7, void* a8, u8 a9) {
+    __ct__7JKRHeapFPvUlP7JKRHeapb(p, a3, a4 * a5, a8, a9);
+    *(void**)p = lbl_80498FB8;
+    *(u32*)(p + 0x6c) = a4;
+    *(u32*)(p + 0x70) = a5;
+    *(u32*)(p + 0x74) = a7;
+    *(u32*)(p + 0x78) = a2;
+    *(void**)(p + 0x7c) = a3;
+    *(u8*)(p + 0x84) = 1;
+    fn_80085CB8(p);
+    *(u32*)(p + 0x80) = *(u32*)(p + 0x6c) * *(u32*)(p + 0x70);
+    return p;
+}
+
 extern "C" void* fn_80085C50(void* param_1, s16 param_2) {
     if (param_1 != 0) {
         *(char**)param_1 = lbl_80498FB8;
