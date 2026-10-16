@@ -222,6 +222,38 @@ void fn_80292124(char* p) {
     }
 }
 
+void fn_80292198(char* p) {
+  U8(p, 0x3f8) = U8(p, 0x3f8) + 1;
+  if (U8(p, 0x3f8) >= 0x18) {
+    U8(p, 0x3f8) = 0;
+  }
+  U8(p, 0x3f9) = U8(p, 0x3f8) / 6;
+  if (U8(p, 0x3fc) == 2) {
+    fn_80241454(p, 1);
+  }
+  if (U8(p, 0x3fc) < 0x3c) {
+    U8(p, 0x3fc) = U8(p, 0x3fc) + 1;
+  }
+  if (S32(p, 0xce4) != S32(p, 0xce0) && (u8)fn_80240670(p) == 0 && fn_80303750(S32(p, 0x4))) {
+    return;
+  }
+  if (U8(p, 0x3fc) >= 0x3c) {
+    if (U8(p, 0x3fb) == 0) {
+      if (U8(p, 0x400) != 0) {
+        U8(p, 0x400) = U8(p, 0x400) - 1;
+      } else {
+        U8(p, 0x124d) = 0;
+        if (fn_80251AEC(p, 0x4a) && S32(p, 0xce4) >= 8) {
+          fn_803037D4(S32(p, 0x4), 0xd);
+        }
+      }
+    } else {
+      U8(p, 0x3fb) = 0;
+      U8(p, 0x400) = 8;
+    }
+  }
+}
+
 void fn_802922D0(char* p) {
     U8(p, 0x124d) = 1;
     U8(p, 0x458) = 0;
@@ -252,10 +284,12 @@ void fn_802924AC(char* p) {
         if (U8(p, 0x3fc) < 0x5c) {
             F32(p, 0xc) = F32(p, 0xc) + lbl_80540638;
             U8(p, 0x3fc)++;
-        } else if (U8(p, 0x3fc) >= 0x5c) {
+        } else {
             U8(p, 0x124d) = 0;
-            if ((u8)fn_80251AEC(p, 0x4b) && S32(p, 0xce4) >= 8) {
-                fn_803037D4(S32(p, 0x4), 0xd);
+            if ((u8)fn_80251AEC(p, 0x4b)) {
+                if (S32(p, 0xce4) >= 8) {
+                    fn_803037D4(S32(p, 0x4), 0xd);
+                }
             }
         }
     }
