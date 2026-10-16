@@ -557,7 +557,7 @@ extern "C" void fn_80180920(void* self, int a, int b, int c) {
 }
 
 extern "C" void fn_80180950(void* self, int a, int b, int c) {
-    ((VObj_80180920*)self)->vfD0(a, b, 0);
+    ((VObj_80180920*)self)->vfC8(a, b, 0);
 }
 
 extern "C" void fn_80180980(VObj_80180980* self, int a) {
