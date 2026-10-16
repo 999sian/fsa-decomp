@@ -87,7 +87,10 @@ extern "C" void fn_800CBACC(unsigned short* out, void* self, int idx) {
     unsigned char i = *(unsigned char*)(*(unsigned char**)(p + 4) + (*(unsigned short**)(p + 8))[idx] * 0x14c + 6);
     if (i != 0xff) {
         unsigned char* z = *(unsigned char**)(p + 0x68) + i * 4;
-        *out = z[1] * 2 + (z[0] * 16 + z[2]);
+        unsigned char a = z[0];
+        unsigned char b = z[1];
+        unsigned char c = z[2];
+        *out = b * 2 + (a * 16 + c);
         return;
     }
     *out = j3dDefaultZModeID;
@@ -100,6 +103,16 @@ extern "C" unsigned char fn_800CBB2C(void* self, int idx) {
         return (*(unsigned char**)(p + 0x6c))[i];
     }
     return 0;
+}
+
+extern "C" u8 fn_800CBB64(u8* param_1, s32 param_2) {
+    u8 bVar1;
+
+    bVar1 = *(u8*)(*(u8**)(param_1 + 4) + (u32)*(u16*)(*(u8**)(param_1 + 8) + param_2 * 2) * 0x14c + 7);
+    if (bVar1 != 0xff) {
+        return *(u8*)(*(u8**)(param_1 + 0x70) + bVar1);
+    }
+    return 1;
 }
 
 extern "C" void fn_800CBC44(void) {
