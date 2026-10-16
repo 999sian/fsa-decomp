@@ -446,10 +446,12 @@ extern "C" void* fn_80064D40(void* ptr, s16 param_2) {
 
 extern "C" void fn_80064DC4(void** p) {
     void* a = lbl_8027F6DC;
+    void* b = lbl_8027F6D0;
+    void* z = 0;
     p[0] = a;
-    p[1] = 0;
-    p[0] = lbl_8027F6D0;
-    p[3] = 0;
+    p[1] = z;
+    p[0] = b;
+    p[3] = z;
 }
 
 extern "C" void fn_80064FB0(void);
