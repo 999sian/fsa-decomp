@@ -869,6 +869,19 @@ extern "C" void fn_800D9918(u8* self) {
     }
 }
 
+extern "C" void fn_800D99C0(u8* p) {
+    u8* e = p;
+    u32 n = p[0x20];
+    for (u32 i = 0; i < n; i += 2) {
+        u16* t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[0x11] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0x10] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
+        u8* f = p + (i + 1) * 4;
+        t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (f[0x11] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(f[0x10] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
+        e += 8;
+    }
+}
+
 extern "C" void fn_800D9AAC(u8* self) {
     for (u32 i = 0; i < 8; i++) {
         if (*(u16*)(self + 8 + i * 2) != 0xffff) {
