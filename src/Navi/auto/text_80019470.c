@@ -215,6 +215,32 @@ extern "C" void fn_8001AAFC(void) {
     ((void (*)(void))cTg_SingleCutFromTree__FP16create_tag_class)();
 }
 
+extern "C" void fn_801148F4(void*);
+extern "C" int fn_8001AF58(void* param_1) {
+    switch ((int)fn_8001D630(*(void**)((u8*)param_1 + 0xa8), param_1)) {
+    case 2:
+    case 4:
+        if (*(void**)((u8*)param_1 + 0xac) != 0) {
+            fn_801148F4(*(void**)((u8*)param_1 + 0xac));
+            *(void**)((u8*)param_1 + 0xac) = 0;
+        }
+        *((u8*)param_1 + 0xd) = 2;
+        return 2;
+    case 0:
+    case 1:
+        *((u8*)param_1 + 0xc) = 1;
+        *((u8*)param_1 + 0xd) = 0;
+        return 0;
+    case 3:
+        *((u8*)param_1 + 0xd) = 3;
+        return 3;
+    case 5:
+    default:
+        *((u8*)param_1 + 0xd) = 5;
+        return 5;
+    }
+}
+
 extern "C" void fn_80114C5C(void*, void*, void*);
 extern u8 lbl_80205648[];
 extern "C" void fn_8001B014(int param_1, void* param_2) {
