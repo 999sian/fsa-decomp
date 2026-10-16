@@ -110,11 +110,16 @@ extern "C" void* fn_80180BAC(u32* self) {
 }
 
 extern "C" void fn_80184B34(u8* self, u32* out) {
-    out[0] = *(u32*)(self + 0x148);
-    out[1] = *(u32*)(self + 0x14c);
-    out[2] = *(u32*)(self + 0x150);
-    out[3] = *(u32*)(self + 0x154);
-    out[4] = *(u32*)(self + 0x160);
+    u32 a = *(u32*)(self + 0x148);
+    u32 b = *(u32*)(self + 0x14c);
+    out[0] = a;
+    a = *(u32*)(self + 0x150);
+    out[1] = b;
+    b = *(u32*)(self + 0x154);
+    out[2] = a;
+    a = *(u32*)(self + 0x160);
+    out[3] = b;
+    out[4] = a;
 }
 
 extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
@@ -144,9 +149,9 @@ extern "C" void fn_80184C54(void) {
 extern "C" void fn_80184C58(void* self, void* unused, void* param_3) {
     void* obj = *(void**)((u8*)self + 0x168);
     if (*(void**)((u8*)obj + 0x28) == 0) {
-        if (((s32 (*)(void*, void*))(*(void***)self)[0x9c / 4])(self, lbl_80301BF8) && param_3 != 0) {
-            register void* sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
-            if (((s32 (*)(void*, s32))(*(void***)sub)[0xa4 / 4])(sub, 0) == 0) {
+        if (((u8 (*)(void*, f32))(*(void***)self)[0x9c / 4])(self, *(f32*)&lbl_80301BF8) && param_3 != 0) {
+            void* sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
+            if (((void* (*)(void*, s32))(*(void***)sub)[0xa4 / 4])(sub, 0) == 0) {
                 sub = *(void**)((u8*)*(void**)((u8*)self + 0x168) + 0x70);
                 ((void (*)(void*, s32, void*))(*(void***)sub)[0x98 / 4])(sub, 0, param_3);
             }
