@@ -11,6 +11,11 @@ static DVDCommandBlock* executing_802FF880;
 static volatile BOOL PauseFlag_802FF88C = FALSE;
 static volatile BOOL ResetRequired_802FF8B8;
 static vu32 ResumeFromHere_802FF8A8;
+static u32 lbl_802FF8B4;
+static void (*lbl_802FF8C4)(DVDCommandBlock*);
+static u8* IDShouldBe_802FF884;
+extern char lbl_802F7AC0[];
+extern char BB2_802F7AA0[];
 
 void DVDLowReset(void);
 extern "C" BOOL fn_801CA33C(DVDCommandBlock* block, DVDCBCallback callback);
@@ -56,10 +61,12 @@ extern u8* FstStart_802FF864;
 extern s32 MaxEntryNum_802FF86C;
 extern "C" BOOL fn_801C7BF8(s32 entryNum, DVDFileInfo* fileInfo)
 {
-	if (entryNum >= 0 && entryNum < MaxEntryNum_802FF86C) {
-		if ((*(u32*)(FstStart_802FF864 + entryNum * 0xc) & 0xff000000) == 0) {
-			fileInfo->startAddr = *(u32*)(FstStart_802FF864 + entryNum * 0xc + 4);
-			fileInfo->length = *(u32*)(FstStart_802FF864 + entryNum * 0xc + 8);
+	if (entryNum >= 0 && (u32)entryNum < (u32)MaxEntryNum_802FF86C) {
+		u32* entry = (u32*)(FstStart_802FF864 + entryNum * 0xc);
+		BOOL isDir = (entry[0] & 0xff000000) != 0;
+		if (!isDir) {
+			fileInfo->startAddr = entry[1];
+			fileInfo->length = entry[2];
 			fileInfo->callback = NULL;
 			fileInfo->cb.state = 0;
 			return TRUE;
@@ -105,6 +112,20 @@ extern "C" void fn_801C8184(void)
 	fn_801C13D0(&__DVDThreadQueue);
 }
 
+extern "C" void fn_801C87E8(u32 param_1)
+{
+	if (param_1 == 0x10) {
+		executing_802FF880->state = -1;
+		__DVDStoreErrorCode(0x1234568);
+		DVDReset();
+		cbForStateError(0);
+	} else if (param_1 & 1) {
+		fn_801C88E8();
+	} else {
+		fn_801C747C(fn_801C8850);
+	}
+}
+
 extern "C" void fn_801C8850(u32 param_1)
 {
 	if (param_1 == 0x10) {
@@ -114,11 +135,11 @@ extern "C" void fn_801C8850(u32 param_1)
 		cbForStateError(0);
 	} else {
 		executing_802FF880->state = -1;
-		if ((param_1 & 2) == 0) {
-			__DVDStoreErrorCode(*(vu32*)0xCC006020);
+		if (param_1 & 2) {
+			__DVDStoreErrorCode(0x1234567);
 			DVDLowStopMotor(cbForStateError);
 		} else {
-			__DVDStoreErrorCode(0x1234567);
+			__DVDStoreErrorCode(((vu32*)0xCC006000)[8]);
 			DVDLowStopMotor(cbForStateError);
 		}
 	}
