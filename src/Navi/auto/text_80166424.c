@@ -125,6 +125,11 @@ extern "C" void fn_801729A4(s32 p, u8 v)
 	*(u8*)(p + 0x56) = v;
 }
 
+extern "C" u8 fn_801729AC(s32 p)
+{
+	return *(u8*)(p + 0x56);
+}
+
 extern "C" s32 fn_801729F0(s32 p, s32 i) {
     return p + i * 8 + 0x57;
 }
