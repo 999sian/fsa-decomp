@@ -576,6 +576,13 @@ extern "C" int fn_8005CB7C(int param_1) {
     return 0;
 }
 
+extern "C" void fn_8005CC20(void* self, f32 a, f32 b, f32 c, f32 d) {
+    *(f32*)((u8*)self + 0x18) = a;
+    *(f32*)((u8*)self + 0x1c) = b;
+    *(f32*)((u8*)self + 0x20) = c;
+    *(f32*)((u8*)self + 0x24) = d;
+}
+
 extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027EC78;
