@@ -41,3 +41,5 @@ extern "C" void fn_8002D39C(char* p) {
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
 }
 
+extern "C" void fn_80030664(void) {}
+
