@@ -21,7 +21,7 @@ struct Unk800DE210 {
 struct Unk800DE6DCStage {
     u8 pad[7];
     u8 mSwap;
-    void setTexSel(u8 sel) { mSwap = (mSwap & ~0x0c) | (sel << 2); }
+    void setTexSel(int sel) { mSwap = (mSwap & ~0x0c) | (sel << 2); }
     void setRasSel(u8 sel) { mSwap = (mSwap & ~0x03) | sel; }
     void setSwapModeInfo(const u8* info) {
         setTexSel(info[1]);
@@ -1598,12 +1598,8 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x35;
 }
 
-extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
-    u8* p = (u8*)(param_1 + param_2 * 8);
-    u8 val1 = param_3[1];
-    u8 val0 = param_3[0];
-    p[0x3c] = (p[0x3c] & ~0x0c) | (val1 << 2);
-    p[0x3c] = (p[0x3c] & ~0x03) | val0;
+extern "C" void fn_800DE6DC(Unk800DE6DC* param_1, int param_2, const u8* param_3) {
+    param_1->mStage[param_2].setSwapModeInfo(param_3);
 }
 
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
