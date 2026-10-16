@@ -67,6 +67,20 @@ extern "C" char __vt__10J3DPEBlock[];
 
 #include <types.h>
 
+u32 J3DMaterialFactory::countUniqueMaterials()
+{
+    u32 count = 0;
+    s32 max = -1;
+    for (u16 i = 0; i < mMaterialNum; i++) {
+        u16 id = mMatRemapTable[i];
+        if (max < id) {
+            max = id;
+            count++;
+        }
+    }
+    return count;
+}
+
 extern "C" void fn_800C9CF4(void)
 {
 }
