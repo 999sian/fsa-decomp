@@ -14,6 +14,9 @@ extern void* lbl_802FF9B0;
 extern void* lbl_802FF9C0;
 extern void* lbl_802FF9C8;
 extern void* lbl_802FF9C4;
+extern void* __peReg;
+extern u8 lbl_802FFA70;
+extern u8 lbl_802FFA74[];
 extern u8* __GXData;
 extern volatile u16* __cpReg;
 
@@ -634,6 +637,36 @@ extern "C" s32 fn_801D2D80(u8* card, s32 result)
     return result;
 }
 
+extern "C" s32 fn_801D28AC(s32 chan, void* cb);
+extern "C" s32 fn_801D29E0(s32 chan, void* cb);
+extern "C" void fn_801D427C(void);
+extern "C" void fn_801D43BC(void);
+extern "C" s32 fn_801D4358(s32 chan, u32 a, u32 b, u32 c, u32 d)
+{
+	u8* card = lbl_802F7D60 + chan * 0x110;
+	if (*(s32*)card == 0) {
+		return -3;
+	}
+	*(u32*)(card + 0xd4) = d;
+	*(u32*)(card + 0xac) = b >> 9;
+	*(u32*)(card + 0xb0) = a;
+	*(u32*)(card + 0xb4) = c;
+	return fn_801D28AC(chan, (void*)fn_801D427C);
+}
+
+extern "C" s32 fn_801D4498(s32 chan, u32 a, u32 b, u32 c, u32 d)
+{
+	u8* card = lbl_802F7D60 + chan * 0x110;
+	if (*(s32*)card == 0) {
+		return -3;
+	}
+	*(u32*)(card + 0xd4) = d;
+	*(u32*)(card + 0xac) = b >> 7;
+	*(u32*)(card + 0xb0) = a;
+	*(u32*)(card + 0xb4) = c;
+	return fn_801D29E0(chan, (void*)fn_801D43BC);
+}
+
 extern "C" u32 fn_801D44FC(u8* param_1) {
     return *(u32*)(param_1 + 0x88);
 }
@@ -1003,6 +1036,27 @@ extern "C" void fn_801DAFF4(void)
 	*(volatile u32*)0xCC008000 = 0;
 	*(volatile u32*)0xCC008000 = 0;
 	PPCSync();
+}
+
+extern u8 lbl_802FFA70;
+extern u8 lbl_802FFA74[];
+extern "C" void fn_801DB4F8(void) {
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(__GXData + 0x1dc);
+    *(u16*)(__GXData + 2) = 0;
+}
+
+extern void* __peReg;
+extern "C" void fn_801DB51C(u16 a, u16 b) {
+    u16 val = (a << 8) | (b & 0xff);
+    *(u16*)((u8*)__peReg + 6) = val;
+}
+
+extern "C" void fn_801DB530(u16 a) {
+    u16 val = 0;
+    val = (val & ~3) | (a & 3);
+    val = val | 4;
+    *(u16*)((u8*)__peReg + 8) = val;
 }
 
 extern "C" uint fn_801DD3D8(uint *param_1)
