@@ -599,6 +599,13 @@ extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
     self->vf38(buf, x, y);
 }
 
+extern "C" u8 fn_80180648(s32 a, void* b, u8 c) {
+    if (*(u16*)((u8*)b + 0xa) > 0x100) {
+        return (c & 3) + 0x10;
+    }
+    return c;
+}
+
 extern "C" void fn_8018067C(void) {}
 
 extern "C" void fn_80180680(u32* self, int a) {
@@ -1167,14 +1174,14 @@ extern "C" void fn_80189BD8(void* self, u32 param_2) {
 extern "C" void fn_80189D14(void* self, s32 value, s32 mode);
 extern "C" void fn_80189C70(void* self, u8 flag) {
     void* obj = *(void**)((u8*)self + 0x138);
-    void* sub = *(void**)((u8*)obj + 0x70);
-    s32 val = ((s32 (*)(void*, s32))(*(void***)sub)[0x60 / 4])(sub, 0);
+    VObj_80189C70* sub = *(VObj_80189C70**)((u8*)obj + 0x70);
+    s32 val = sub->v24(0);
     if (flag == 0) {
         fn_80189D14(self, val, 0);
     } else {
         fn_80189D14(self, val, 1);
-        sub = *(void**)((u8*)*(void**)((u8*)self + 0x138) + 0x70);
-        val = ((s32 (*)(void*, s32))(*(void***)sub)[0x60 / 4])(sub, 1);
+        sub = *(VObj_80189C70**)((u8*)*(void**)((u8*)self + 0x138) + 0x70);
+        val = sub->v24(1);
         fn_80189D14(self, val, 2);
     }
 }
@@ -1185,9 +1192,11 @@ extern "C" s32 fn_80189FDC(void* self, s32* param_2) {
     if (fn_8018A318(self, &local_14, &local_10) == 0) {
         return 0;
     }
-    s32 local_c = *param_2;
-    s32 local_18 = local_10;
-    return ((s32 (*)(void*, s32*, s32*))(*(void***)self)[0xac / 4])(self, &local_c, &local_18);
+    s32 local_c;
+    s32 local_18;
+    local_18 = local_10;
+    local_c = *param_2;
+    return ((VObj_80189FDC*)self)->vfAC(&local_c, &local_18);
 }
 
 extern "C" int fn_8018A064(void* self, s32* param_2) {
@@ -1200,7 +1209,7 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
     long local_18;
     local_18 = *param_2;
     local_c = local_14;
-    return ((int (*)(void*, s32*, s32*))(*(void***)self)[0xac / 4])(self, &local_c, &local_18);
+    return ((VObj_80189FDC*)self)->vfAC(&local_c, &local_18);
 }
 
 struct VObj_8018A4B4 {
@@ -1305,6 +1314,10 @@ extern "C" void* fn_8018BAF0(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_8018BC08(void* self, void* src) {
+    fn_8018BC30(self, *(void**)((u8*)self + 4), src);
 }
 
 extern "C" void fn_8018BB74(void* self, void* dst, void* src);
