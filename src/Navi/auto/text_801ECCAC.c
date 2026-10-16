@@ -127,3 +127,81 @@ extern "C" int fn_801ED520(unsigned long count, int stepOver)
     return result;
 }
 
+extern unsigned char gTRKExceptionStatus_8029F044[];
+extern "C" void* memset(void*, int, unsigned long);
+extern "C" void fn_801EE4C0(unsigned long*, unsigned long = 0);
+extern "C" int TRKAppendBuffer_ui8(void*, const void*, int);
+extern "C" void fn_801ED5CC(void* buffer)
+{
+    struct {
+        unsigned long msgLength;
+        unsigned char command;
+        unsigned long pc;
+        unsigned long instruction;
+        unsigned long exceptionID;
+        unsigned char pad[0x40 - 0x14];
+    } msg;
+    unsigned long instr;
+
+    memset(&msg, 0, sizeof(msg));
+    msg.msgLength = sizeof(msg);
+    msg.command = 0x91;
+    msg.pc = *(unsigned long*)gTRKExceptionStatus_8029F044;
+    fn_801EE4C0(&instr);
+    msg.instruction = instr;
+    msg.exceptionID = *(unsigned short*)(gTRKExceptionStatus_8029F044 + 8);
+    TRKAppendBuffer_ui8(buffer, &msg, sizeof(msg));
+}
+
+extern "C" void fn_801ED650(void* buffer)
+{
+    struct {
+        unsigned long msgLength;
+        unsigned char command;
+        unsigned long pc;
+        unsigned long instruction;
+        unsigned long exceptionID;
+        unsigned char pad[0x40 - 0x14];
+    } msg;
+    unsigned long instr;
+
+    memset(&msg, 0, sizeof(msg));
+    msg.msgLength = sizeof(msg);
+    msg.command = 0x90;
+    msg.pc = *(unsigned long*)(gTRKCPUState + 0x80);
+    fn_801EE4C0(&instr);
+    msg.instruction = instr;
+    msg.exceptionID = *(unsigned long*)(gTRKCPUState + 0x2f8) & 0xffff;
+    TRKAppendBuffer_ui8(buffer, &msg, sizeof(msg));
+}
+
+extern "C" void TRKConstructEvent(void*, int);
+extern "C" void TRKPostEvent(void*);
+extern "C" void TRKPostInterruptEvent(void)
+{
+    unsigned long instr;
+    unsigned char event[0xc];
+    int type;
+
+    if (*(int*)(gTRKState + 0x9c) != 0) {
+        *(int*)(gTRKState + 0x9c) = 0;
+    } else {
+        switch (*(unsigned long*)(gTRKCPUState + 0x2f8) & 0xffff) {
+        case 0xd00:
+        case 0x700:
+            ((void (*)(unsigned long*, unsigned long))fn_801EE4C0)(&instr, *(unsigned long*)(gTRKCPUState + 0x80));
+            if (instr == 0xfe00000) {
+                type = 5;
+            } else {
+                type = 3;
+            }
+            break;
+        default:
+            type = 4;
+            break;
+        }
+        TRKConstructEvent(event, type);
+        TRKPostEvent(event);
+    }
+}
+
