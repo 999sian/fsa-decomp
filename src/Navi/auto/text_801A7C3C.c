@@ -553,6 +553,24 @@ extern "C" void* fn_801B73C0(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" int fn_801B7A8C(u8* param_1, u8* param_2, void* param_3) {
+    u8 buf[0x28];
+    s32 total = 0;
+    fn_801B7F68(buf);
+    u32 count = *(u16*)(param_2 + 8);
+    if (*(void**)(param_2 + 0x14) != nullptr) {
+        total = 0x10;
+    }
+    total += count * 4;
+    total += fn_801B864C(buf);
+    for (u16* psVar4 = *(u16**)(param_1 + 0x14); *psVar4 != 0; psVar4 += 2) {
+        if (*psVar4 == 0x12) {
+            total += fn_801B85B8(buf, psVar4[1], param_3);
+        }
+    }
+    return total;
+}
+
 extern "C" void fn_801B075C(void* param_1);
 extern "C" int fn_801B2254(void* param_1, s32 param_2, s32 param_3, u16 param_4, void* param_5);
 extern "C" void fn_801B7F68(void* param_1);
@@ -569,14 +587,14 @@ extern "C" int fn_801B7B40(void* param_1, u8* param_2) {
 extern "C" int fn_801B7B5C(void* param_1, u8* param_2, void* param_3) {
     u8 buf[0x88];
     s32 total = 0;
-    u16 count = *(u16*)(param_2 + 8);
+    u32 count = *(u16*)(param_2 + 8);
     fn_801B075C(buf);
     if (*(void**)(param_2 + 0x14) != nullptr) {
         total = 0x10;
     }
     total += count * 4;
-    for (u16 i = 0; i < count; i++) {
-        total += fn_801B2254(buf, 0, 0, i, param_3);
+    for (s32 i = 0; (u16)i < count; i++) {
+        total += fn_801B2254(buf, 0, 0, (u16)i, param_3);
     }
     return total;
 }
@@ -592,14 +610,14 @@ extern "C" int fn_801B7BFC(void* param_1, u8* param_2) {
 extern "C" int fn_801B7C18(void* param_1, u8* param_2, void* param_3) {
     u8 buf[0x88];
     s32 total = 0;
-    u16 count = *(u16*)(param_2 + 8);
+    u32 count = *(u16*)(param_2 + 8);
     fn_801B075C(buf);
     if (*(void**)(param_2 + 0x14) != nullptr) {
         total = 0x10;
     }
     total += count * 4;
-    for (u16 i = 0; i < count; i++) {
-        total += fn_801B2254(buf, 0, 2, i, param_3);
+    for (s32 i = 0; (u16)i < count; i++) {
+        total += fn_801B2254(buf, 0, 2, (u16)i, param_3);
     }
     return total;
 }
