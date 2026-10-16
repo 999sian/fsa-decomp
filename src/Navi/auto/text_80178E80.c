@@ -52,6 +52,11 @@ extern "C" int fn_80184B2C(unsigned char* self) {
     return *(int*)(self + 0x160);
 }
 
+extern "C" void fn_80177F0C(void);
+extern "C" void fn_80184BF4(void) {
+    fn_80177F0C();
+}
+
 extern "C" void fn_801788C0(void);
 extern "C" void fn_80184C34(void) {
     fn_801788C0();
