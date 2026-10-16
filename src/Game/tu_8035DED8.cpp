@@ -1,3 +1,4 @@
+#include "Game/Actor.h"
 
 
 struct Unk8035DA78;
@@ -6,6 +7,24 @@ extern Unk8035DA78Func lbl_804AD6A8[];
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, int id);
 extern "C" void fn_8035C1C4(void* self, int a, int b);
+extern "C" char lbl_804AD6F0[];
+extern "C" char lbl_804A5958[];
+extern "C" void __dt__5ActorFv(Actor*, s32);
+extern "C" u8 fn_8035C15C(void* self, int a);
+extern float lbl_80542988;
+extern float lbl_8054298C;
+extern "C" Actor* fn_8035DED8(Actor* p, s16 n) {
+    if (p != 0) {
+        *(void**)p = lbl_804AD6F0;
+        if (p != 0) {
+            *(void**)p = lbl_804A5958;
+            __dt__5ActorFv(p, 0);
+        }
+        if (n > 0) operator delete(p);
+    }
+    return p;
+}
+
 extern "C" void fn_8035DFE4(int param_1) {
     char* p = (char*)param_1;
     if (*(int*)(p + 0x234) == 0) {
