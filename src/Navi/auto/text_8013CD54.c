@@ -111,7 +111,7 @@ extern "C" void fn_801336CC(void* a, void* b, void* c);
 extern "C" void* fn_8013D15C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_802934A8;
-        ((NaviTracker*)ptr)->fn_5(0);
+        ((NaviTracker*)ptr)->fn_3(0);
         fn_801343E4(ptr, 0);
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
