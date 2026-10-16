@@ -719,6 +719,9 @@ extern "C" void fn_80132830(void)
     return;
 }
 
+extern "C" void fn_80132834(void) {
+}
+
 extern "C" float fn_8013284C(void) {
     return lbl_803017A0;
 }
