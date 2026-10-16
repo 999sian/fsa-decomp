@@ -32,7 +32,7 @@ bool fn_80083018(void* param_1) {
     return *(u8*)(self + 0x10);
 }
 
-void* fn_800830C4(void* param_1, s16 param_2) {
+extern "C" void* fn_800830C4(void* param_1, s16 param_2) {
     if (param_1 != NULL) {
         *(char**)((char*)param_1 + 0xc) = lbl_80498E48;
         if (param_1 != NULL) {
