@@ -1984,6 +1984,14 @@ extern "C" void fn_8018A784(u8* self, void* obj) {
     }
 }
 
+extern "C" void fn_8018A840(VObj_80178E10* self, u8 flag) {
+    int mode = 0;
+    if (flag) {
+        mode = 2;
+    }
+    self->vf20(mode);
+}
+
 extern "C" void fn_8018A87C(void) {
     fn_80177E84();
 }
