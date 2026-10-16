@@ -325,10 +325,29 @@ extern "C" u32 fn_8017D014(char* self, u8 idx, u8 flag) {
     tbl.v[1] = *(u32*)(self + 0x104);
     tbl.v[2] = *(u32*)(self + 0x108);
     tbl.v[3] = *(u32*)(self + 0x10c);
+    u32 result = 0;
     if (idx < 4 && flag == 0) {
-        return tbl.v[idx];
+        result = tbl.v[idx];
     }
-    return 0;
+    return result;
+}
+
+extern "C" u32 fn_8017D090(char* self, u32 id) {
+    Tbl5_8017D090 tbl = *(Tbl5_8017D090*)lbl_802022D8;
+    tbl.v[0] = *(u32*)(self + 0x100);
+    tbl.v[1] = *(u32*)(self + 0x104);
+    tbl.v[2] = *(u32*)(self + 0x108);
+    tbl.v[3] = *(u32*)(self + 0x10c);
+    tbl.v[4] = *(u32*)(self + 0x110);
+    u8 i = 0;
+    while (i < 5) {
+        u32 p = tbl.v[i];
+        if (p != 0 && *(u32*)(p + 0x20) == id) {
+            return 1;
+        }
+        i++;
+    }
+    return fn_80177E84();
 }
 
 extern "C" u32 fn_8017D148(void) {
@@ -345,6 +364,22 @@ extern "C" void fn_8017ECFC(VObj_8017C154* self, f32 x, f32 y) {
 }
 
 extern "C" void fn_8018067C(void) {}
+
+extern "C" s32 fn_801808E8(void) {
+    return 0x12;
+}
+
+extern "C" void fn_801808F0(void* self, int a, int b, int c) {
+    (*(void (**)(void*, int, int, int))(*(int*)self + 0xd0))(self, a, b, *((u8*)self + 0x110));
+}
+
+extern "C" void fn_80180920(void* self, int a, int b, int c) {
+    (*(void (**)(void*, int, int, int))(*(int*)self + 0xd4))(self, a, 0, c);
+}
+
+extern "C" void fn_80180950(void* self, int a, int b, int c) {
+    (*(void (**)(void*, int, int, int))(*(int*)self + 0xd0))(self, a, b, 0);
+}
 
 extern "C" int fn_80180B60(u8* self, u8* src) {
     u8 a = src[0];
