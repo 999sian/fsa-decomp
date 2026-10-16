@@ -53,6 +53,9 @@ extern "C" void fn_8005871C(void* p) {
     fn_80058740(p, 0);
 }
 
+extern "C" s32 fn_801E6840(s32);
+extern "C" s32 fn_801E6510(s32, void*, s32);
+extern u32 lbl_802FC724;
 extern "C" s32 fn_8005887C(s32 param_1) {
     u8* p;
     s32 r;
@@ -201,8 +204,8 @@ extern "C" s32 fn_80058D70(s32 idx) {
 }
 
 extern "C" void fn_800590D0(s32 param_1, s32* param_2, s32* param_3) {
-    s32 local_18;
     s32 local_14;
+    s32 local_18;
     fn_80058E5C(param_1, &local_14, &local_18);
     if (*param_2 == -1) {
         *param_2 = local_14;
