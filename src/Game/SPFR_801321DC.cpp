@@ -21,6 +21,55 @@ extern "C" s32 fn_80132AE0(char* p) {
     return 0;
 }
 
+extern "C" void fn_8010DF98(void);
+extern "C" void fn_801D2608(void* a, void* b, s32 c);
+extern "C" void fn_801D22DC(void* a, s32 b, s32 c, s32 d);
+extern "C" void fn_801D1F14(void* a, f32 b);
+extern "C" s32 fn_8013CC50(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, f32 i);
+extern "C" void fn_80132454(char* a, s32 b);
+extern char lbl_8049EB80[];
+extern f32 lbl_8053CD28;
+extern f32 lbl_8053CD08;
+extern f32 lbl_8053CCF0;
+extern f32 lbl_8053CD00;
+extern "C" void fn_801334CC(char* p) {
+    struct Vec3f {
+        f32 x;
+        f32 y;
+        f32 z;
+    } pos;
+    f32 a = lbl_8053CD28;
+    f32 b = lbl_8053CD08;
+    fn_8010DF98();
+    *(s32*)(p + 0x238) = *(s32*)(p + 0x90) & 1;
+    *(s32*)(p + 0x248) = (*(u32*)(p + 0x90) >> 22) & 0x1f;
+    *(f32*)(p + 0x60) = a;
+    *(f32*)(p + 0x64) = a;
+    *(f32*)(p + 0x68) = b;
+    *(f32*)(p + 0x6c) = b;
+    *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
+    *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
+    *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
+    *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
+    *(f32*)(p + 0x80) = *(f32*)(p + 0x60);
+    *(f32*)(p + 0x84) = *(f32*)(p + 0x64);
+    *(f32*)(p + 0x88) = *(f32*)(p + 0x68);
+    *(f32*)(p + 0x8c) = *(f32*)(p + 0x6c);
+    fn_801D2608(p + 0x250, lbl_8049EB80, 3);
+    fn_801D22DC(p + 0x250, 0, 2, 0);
+    fn_801D1F14(p + 0x250, lbl_8053CCF0);
+    *(f32*)(p + 0x14) = b;
+    *(u8*)(p + 0x11d) = 0;
+    if (*(s32*)(p + 0x238) == 1) {
+        if ((*(s32(**)(char*))(*(char**)p + 0x34))(p)) {
+            *(u8*)(p + 0x11d) = 1;
+            pos = *(struct Vec3f*)(p + 0xc);
+            *(s32*)(p + 0x288) = fn_8013CC50(*(void**)(p + 0x4), &pos, 0x184, 0, -1, 0, 0, 1, lbl_8053CD00);
+        }
+    }
+    fn_80132454(p, 2);
+}
+
 extern "C" void* fn_80133624(char* p, s16 flag) {
     if (p != 0) {
         *(void**)p = lbl_8049EB8C;
@@ -52,4 +101,50 @@ extern "C" void* fn_801336B4(char* p) {
     *(void**)(p + 0x288) = 0;
     return p;
 }
+struct SPFR_DrawKey {
+    s32 a, b;
+    SPFR_DrawKey() { a = -1; b = -1; }
+};
+struct SPFR_DrawParam {
+    u8 map[16];
+    SPFR_DrawKey key;
+    s32 c;
+    u8 palette;
+    u8 color;
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;
+    u8 f2c, f2d, f2e;
+    s32 g;
+    s32 h;
+    s32 i;
 
+    SPFR_DrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+extern const char lbl_80465270[];
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, SPFR_DrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern "C" void fn_8010DF58(void);
