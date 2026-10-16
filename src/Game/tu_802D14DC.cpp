@@ -13,3 +13,9 @@ struct VObj_802D {
 extern "C" void fn_802D14DC(VObj_802D* p) {
     p->m7();
 }
+
+extern "C" void fn_801F132C(void*, int, int, void*);
+extern "C" void fn_802D1508(char* this_, int a, int b) {
+    fn_801F132C(this_, a, b, this_ + 0x248);
+}
+
