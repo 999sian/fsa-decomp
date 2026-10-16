@@ -419,6 +419,13 @@ extern "C" void fn_8001AA34(void* param_1) {
     fn_8001D5F4(*(void**)((u8*)param_1 + 0xc0), param_1);
 }
 
+extern "C" void fn_8001AA5C(void* param_1) {
+    void* src = *(void**)((u8*)param_1 + 0x10);
+    *(u32*)((u8*)param_1 + 0xc0) = *(u32*)((u8*)src + 0x24);
+    *(u8*)((u8*)param_1 + 0xc4) = *(u8*)((u8*)src + 0x28);
+    fn_8001D630(*(void**)((u8*)param_1 + 0xc0), param_1);
+}
+
 extern "C" void fn_8001AA98(int param_1, int param_2) {
     int local[2];
     local[0] = param_1;
