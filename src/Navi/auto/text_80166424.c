@@ -274,7 +274,9 @@ extern "C" s32 fn_80172AD4(s32 p, u32 i) {
     if (i >= 8) {
         return 0;
     }
-    return ((s32*)p)[i + 63];
+    i = i * 4;
+    p = p + i;
+    return *(s32*)(p + 0xfc);
 }
 
 extern "C" s32 fn_80172B18(void) {
