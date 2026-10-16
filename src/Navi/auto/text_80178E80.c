@@ -2,6 +2,11 @@
 
 #include "types.h"
 extern void* lbl_80286A1C[];
+extern f32 lbl_80301C30;
+extern "C" void* fn_80174BA0(void* base, u32 offset);
+extern "C" void* fn_8018C278(void* base, u32 offset);
+extern "C" void* fn_8018C290(void* base, u32 offset);
+extern "C" void* fn_8018C2D8(void* base, u32 offset);
 
 
 extern "C" void fn_8017FD80(void);
