@@ -88,7 +88,7 @@ extern "C" bool fn_8025F448(char* p) {
 }
 
 extern "C" bool fn_8025F484(char* p) {
-    if ((u8)(p[0xd64] == 1) == 1) {
+    if ((u8)(U8(p, 0xd64) == 1) == 1) {
         s32 id = S32(p, 0xd68);
         if (id >= 0) {
             char* actor = fn_801F666C(fn_801F856C(), id);
@@ -261,6 +261,9 @@ extern "C" void fn_802632A4(void) {}
 
 extern "C" void fn_802635C8(char* p) {
     p[0x458] = 0;
+}
+
+extern "C" void fn_802635D4(void) {
 }
 
 extern "C" void fn_802635D8(char* p) {
