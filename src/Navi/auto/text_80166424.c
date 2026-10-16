@@ -1,6 +1,23 @@
 
 
 #include "types.h"
+
+struct VObj_80174F08 {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6();
+    virtual void vf7();
+    virtual void vf8();
+    virtual void vf9();
+    virtual void vf10();
+    virtual void vf11();
+    virtual s32 vf12();
+    virtual s32 vf13();
+};
 extern void* lbl_8029839C[];
 
 extern void* lbl_80298390[];
@@ -2006,7 +2023,7 @@ extern "C" void* fn_80176550(void* param_1)
 	*(f32*)(self + 0x2c) = c;
 	fn_80176610(self);
 	fn_80176E24(self, 0);
-	((UnkVObj_80166424*)self)->vf11();
+	((UnkVObj_80166424*)self)->vf9();
 	return self;
 }
 
@@ -2019,12 +2036,12 @@ extern "C" void fn_80176610(void* p_self)
     f32 f0 = lbl_80301B24;
     f32 f1 = lbl_80301B20;
 
+    *(u16*)(b + 0x4) = 0xffff;
     ((f32*)self)[0x2e] = f1;
     ((f32*)self)[0x2f] = f1;
     ((f32*)self)[0x30] = f1;
     ((f32*)self)[0x31] = f1;
     ((f32*)self)[0x32] = f1;
-    *(u16*)(b + 0x4) = 0xffff;
     b[0xb7] = 0;
     b[0xb6] = 0x7a;
     ((f32*)self)[0x33] = f0;
@@ -2034,7 +2051,7 @@ extern "C" void fn_80176610(void* p_self)
     b[0xb4] = 1;
     b[0xb3] = 0xff;
     b[0xb5] = 0;
-    (*(void (***)(void*))p_self)[11](p_self);
+    ((void (*)(void*))((u32**)self)[0][11])(p_self);
 }
 
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
