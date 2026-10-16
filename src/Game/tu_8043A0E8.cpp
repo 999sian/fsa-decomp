@@ -91,3 +91,6 @@ extern "C" void fn_8043EDE8(char* param_1, s32 param_2) {
 }
 
 extern "C" void* fn_80440928(void) { return fn_8043DF8C(lbl_8053AED0); }
+extern "C" void fn_8043E7CC(void* game, void* v);
+extern "C" void fn_8041E58C(void* p);
+extern "C" void fn_80425128(void* p);
