@@ -7,6 +7,10 @@ struct Slot0 {
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B1AE8[];
 extern s32 lbl_8053AEF0;
+extern "C" void* lbl_8053AB10;
+extern "C" f32 lbl_80543D60;
+extern "C" void fn_8013B490(void* p);
+extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 extern "C" void fn_80443494(void* this_) {
     char* p = (char*)this_;
     s32 v = *(s16*)(p + 0x12);
