@@ -1,4 +1,6 @@
 #include "types.h"
+extern u8* lbl_802FB9B8;
+extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
 extern "C" s32 fn_8001D5F4(void*, void*);
