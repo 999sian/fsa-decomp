@@ -33,12 +33,12 @@ extern "C" void fn_8017A908(void) {
 }
 
 extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
-    unsigned char* p;
+    int* p;
     if (idx >= 4) {
         return 0;
     }
-    p = self + (idx << 2);
-    return *(int*)(p + 0x148);
+    p = (int*)(self + (idx << 2));
+    return p[0x148 / 4];
 }
 
 extern "C" void fn_80178990(void);
@@ -64,6 +64,11 @@ extern "C" void* fn_8018C200(void* base, u32 offset) {
 }
 
 extern "C" void* fn_8018C260(void* base, u32 offset) {
+    if (offset == 0) return nullptr;
+    return (u8*)base + offset;
+}
+
+extern "C" void* fn_8018C278(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
