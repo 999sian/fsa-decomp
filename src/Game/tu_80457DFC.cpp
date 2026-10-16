@@ -1,5 +1,6 @@
 #include "JSystem/JAudio/Interface/JAISoundParams.h"
 #include "JSystem/JAudio/Interface/JAISound.h"
+#include "JSystem/JAudio/System/JASDriver.h"
 
 struct Unk80458F9C {
     char pad0[0x58];
@@ -61,5 +62,13 @@ extern "C" void fn_80458F9C(Unk80458F9C* self, u32 fadeout)
     self->m58 = 0;
     self->m5C = 0;
     self->m60 = 0;
+}
+
+extern "C" const f32 lbl_80543EB0;
+extern "C" void* lbl_8053AF80;
+extern "C" char* lbl_8053AAF8;
+extern "C" void fn_804594E4(void* self, u32 mode)
+{
+    JASDriver::setOutputMode(mode);
 }
 
