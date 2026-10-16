@@ -272,6 +272,12 @@ extern "C" void* fn_800CBF38(const void* base, const void* offset)
     return (void*)((int)base + (int)offset);
 }
 
+extern "C" void* fn_800CBF50(const void* base, const void* offset)
+{
+    if (offset == 0) return 0;
+    return (void*)((int)base + (int)offset);
+}
+
 extern "C" void* fn_800CBF68(const void* base, const void* offset) {
     if (offset == 0) {
         return 0;
