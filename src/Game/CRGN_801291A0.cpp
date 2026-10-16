@@ -98,7 +98,7 @@ struct CRGNState {
     s32 count244;
     s32 list248[10];
     s32 list270[4];
-    u8 pad280[0x284 - 0x280];
+    u32 flags280;
 };
 
 extern s32 lbl_80465000[];
