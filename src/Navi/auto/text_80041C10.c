@@ -301,6 +301,11 @@ extern "C" void fn_8004CEC8(void* param_1, void* param_2, void* param_3) {
     *(float*)((char*)param_3 + 0x20) = arr1[2];
 }
 
+extern "C" void fn_8004D270(void) {
+    fn_8012FDE0(lbl_802FF0C0);
+    fn_8004D298();
+}
+
 extern "C" void fn_8004D298(void) {}
 
 extern "C" void fn_8004D29C(void* param_1, void* param_2, void* param_3) {
