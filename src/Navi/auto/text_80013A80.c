@@ -52,6 +52,11 @@ extern "C" void fn_80013B90(void) {
     }
 }
 
+extern "C" void fn_801C0EEC(void*);
+extern "C" void fn_80013BEC(void) {
+    fn_801C0EEC(lbl_802A2140);
+}
+
 extern "C" void fn_80013C14(void* self, void* p) {
     fn_80013F24(p);
 }
