@@ -161,6 +161,13 @@ extern "C" void** fn_800CBDFC(void** param_1, short param_2) {
     return param_1;
 }
 
+extern "C" void* fn_800CBEC0(const void* base, const void* offset) {
+    if (offset == 0) {
+        return 0;
+    }
+    return (void*)((unsigned int)base + (unsigned int)offset);
+}
+
 extern "C" void* fn_800CBED8(const void* base, const void* offset) {
     if (offset == 0) {
         return 0;
