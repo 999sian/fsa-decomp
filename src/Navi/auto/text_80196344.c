@@ -30,6 +30,7 @@ extern u8 lbl_802EE470[];
 extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
+extern "C" void fn_80198608(u8* p);
 struct NaviRectHolder {
     u8 unk_0x0[0xda];
     NaviRect16 rects[4];
