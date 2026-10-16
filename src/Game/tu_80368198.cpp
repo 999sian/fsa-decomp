@@ -3,7 +3,7 @@
 #include "types.h"
 
 struct Sub8036C69C {
-    virtual void v0();
+    virtual void v0(int);
     virtual void v1();
     virtual void v2(int);
 };
