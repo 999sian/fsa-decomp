@@ -1,3 +1,4 @@
+#include "types.h"
 struct Vec3f_802D { float x, y, z; };
 struct VObj_802D {
     virtual void m0();
@@ -46,5 +47,33 @@ extern "C" void* fn_802D26F8(void* this_, short freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" int fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_802D27A8(void* this_) {
+    char* p = (char*)this_;
+
+    *(u32*)(p + 0x240) = *(u32*)(p + 0x90) & 0x7f;
+    *(u32*)(p + 0x234) = (*(u32*)(p + 0x90) >> 7) & 0x1f;
+    *(u32*)(p + 0x238) = 0;
+    *(u32*)(p + 0x23c) = 0;
+    *(f32*)(p + 0x60) = -8.0f;
+    *(f32*)(p + 0x64) = -8.0f;
+    *(f32*)(p + 0x68) = 8.0f;
+    *(f32*)(p + 0x6c) = 8.0f;
+    *(f32*)(p + 0x80) = -4.0f;
+    *(f32*)(p + 0x84) = -4.0f;
+    *(f32*)(p + 0x88) = 4.0f;
+    *(f32*)(p + 0x8c) = 4.0f;
+    *(u8*)(p + 0x254) = 0xff;
+    *(s16*)(p + 0x94) = 0;
+    *(u32*)(p + 0x248) = 0;
+    *(u32*)(p + 0x24c) = 0;
+    *(u32*)(p + 0x230) = 0;
+    *(u32*)(p + 0x244) = 0;
+    if (*(s32*)(p + 0x234) == 1) {
+        *(s32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 1.0f, 0x1a8, 0, 0, 0, 0, 1);
+    }
+    *(s32*)(p + 0x250) = 4;
 }
 
