@@ -23,6 +23,55 @@ extern "C" void fn_8017C01C(ActorVt_tu8017C01C* this_) {
     this_->setShadow(*(s8*)((char*)this_ + 0x2ba), 8.0f, -16.0f);
 }
 
+extern "C" void fn_801EE434(void* handle);
+extern "C" void fn_8022ADCC(void);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* mgr, s32 v);
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern "C" void __dl__FPv(void* p);
+extern char lbl_804A1318[];
+extern f32 lbl_8053DD5C;
+extern "C" void* fn_8017E640(char* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A1318;
+        void** p = (void**)this_;
+        s32 h;
+        for (int i = 0; i < 4; i++) {
+            fn_801EE434(p[0xaf]);
+            fn_801EE434(p[0xb3]);
+            p++;
+        }
+        fn_801EE434(((void**)this_)[0xb7]);
+        if (*(u32*)(this_ + 0x90) == 0) {
+            u8* q = *(u8**)((char*)lbl_8053AB10 + 0x2c);
+            q[4] = 0xff;
+            q[5] = 0xff;
+            q[6] = 0xff;
+            q[7] = 0;
+            fn_802D7440(fn_802D6A9C(), 1);
+            fn_8022ADCC();
+        }
+        if (*(u32*)(this_ + 0x90) == 10) {
+            h = *(s32*)(this_ + 0x274);
+            if (h >= 0) {
+                u8* c = (u8*)fn_801F666C(fn_801F856C(), h);
+                if (c != 0 && *(u8*)(c + 0x11c) == 1) {
+                    *(f32*)(c + 0x28c) = lbl_8053DD5C;
+                    *(s32*)(c + 0x278) = 0;
+                    *(s32*)(this_ + 0x274) = -1;
+                }
+            }
+        }
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_8017EAB4(void* thisPtr) {
     *(u32*)((char*)thisPtr + 0xf4) |= 1;
     *(u32*)((char*)thisPtr + 0x24) = 1;
