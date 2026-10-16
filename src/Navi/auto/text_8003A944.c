@@ -48,24 +48,40 @@ extern "C" void fn_8003B920(VObj_8003B920* obj) {
     obj->m8();
 }
 
+extern "C" void* fn_80160564(u32 tag, void* name, void* data);
+extern u8 lbl_80246678[];
+extern u8 lbl_802464E8[];
+extern void* lbl_802FECC8;
 extern "C" void fn_8003B94C(void* a, s32 mode, void* p) {
-    if (mode == 1) {
-        fn_801E41AC(p, &lbl_802FC158, *(s32*)(lbl_802BB0FC + 0x3f8));
-    } else if (mode == 0) {
+    switch (mode) {
+    case 0: {
         void* x = fn_800F0D64(lbl_802B7CA0);
         fn_801E41AC(p, &lbl_802FC158, (s32)x);
+        break;
+    }
+    case 1:
+        fn_801E41AC(p, &lbl_802FC158, *(s32*)(lbl_802BB0FC + 0x3f8));
+        break;
     }
 }
 
+extern "C" u32 fn_8003BCA4(void* a, u16 idx) {
+    u8* p = (u8*)fn_80160564(0x524f4f54, lbl_80246678, lbl_802FECC8);
+    return *(u32*)(p + idx * 4 + 0x2c);
+}
+
 extern s32 lbl_802FC144;
-extern "C" void fn_801E41AC(void* dst, void* src, s32 n);
-extern "C" void fn_801E66C0(void* dst, void* src);
 extern "C" void fn_8003C19C(void* a, s32 n, void* p) {
-    char buf[20];
+    char buf[16];
     if (n > 0) {
         fn_801E41AC(buf, &lbl_802FC144, n);
         fn_801E66C0(p, buf);
     }
+}
+
+extern "C" void* fn_8003C1EC(void* a, s32 idx) {
+    u8* p = (u8*)fn_80160564(0x524f4f54, lbl_802464E8, lbl_802FECC8) + 0x20;
+    return p + *(s32*)(p + 4) + *(s32*)(p + (idx << 3) + 0x10) + 8;
 }
 
 extern "C" void fn_8003C2A4(u8* p) {
@@ -96,9 +112,8 @@ extern "C" void fn_8003C2B4(u8* p, s16 a, s16 b, s16 c, s16 d, s16 e, s16 f, s16
 
 extern "C" void* memset(void* dst, int c, unsigned long n);
 extern "C" void fn_8003C34C(f32* out, u8* obj);
-extern "C" void fn_8003C318(f32* out) {
-    f32* p = out;
-    fn_8003C34C(p, lbl_802BB0FC);
+extern "C" void fn_8003C318(Vec3_8003C318* out) {
+    fn_8003C34C(&out->x, lbl_802BB0FC);
 }
 
 extern "C" void fn_8003C34C(f32* out, u8* obj) {
