@@ -5,6 +5,39 @@ extern "C" void fn_8021F914(int* p, int v) {
     p[0] = v;
 }
 
+extern "C" void* fn_8013C824();
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+extern "C" void fn_8021F924(int* this_) {
+    void** p = (void**)this_;
+    for (int i = 0; i < 3; i++) {
+        if (p[0xd]) {
+            void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, p[0xd]);
+            p[0xd] = 0;
+        }
+        p++;
+    }
+    this_[1] = 0;
+    this_[0] = 0;
+}
+
+extern "C" int* fn_8021FAB8(int* this_, short n) {
+    if (this_) {
+        int* p = this_;
+        for (int i = 0; i < 3; i++) {
+            if (p[0xd]) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), (void*)p[0xd]);
+                p[0xd] = 0;
+            }
+            p++;
+        }
+        this_[1] = 0;
+        this_[0] = 0;
+        if (n > 0) operator delete(this_);
+    }
+    return this_;
+}
+
 extern "C" const float lbl_8053FDD8;
 extern "C" const float lbl_8053FDDC;
 extern "C" void fn_8021FB44(char* p) {
