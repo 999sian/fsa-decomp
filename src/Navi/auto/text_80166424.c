@@ -867,6 +867,17 @@ extern "C" int fn_801700CC(u8* p, void* obj)
     return 1;
 }
 
+extern "C" void fn_80170574(u8* p, int unused, u32 idx) {
+    u8* obj;
+    if (idx >= 8) {
+        return;
+    }
+    obj = ((u8**)(p + 0xdc))[idx];
+    if (obj != 0 && *(void**)(obj + 0x20) != 0) {
+        fn_801191F0(obj);
+    }
+}
+
 #pragma pop
 extern "C" int fn_801719B4(void* param_1, void* param_2) {
     if (param_2 == 0) {
