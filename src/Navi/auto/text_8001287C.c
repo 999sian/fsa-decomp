@@ -31,6 +31,36 @@ extern "C" void* fn_80012970(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801C027C(void);
+extern "C" void fn_8015D1F4(void* p, s32 a, s32 b);
+extern "C" void fn_8015D29C(void* p, s32 a);
+extern "C" void fn_80159BA4(s32 a);
+extern "C" void fn_80012E50(void* p);
+extern "C" void fn_8011B978(void);
+extern "C" void fn_8011C280(u32 a);
+extern "C" s32 lbl_802FEBC8;
+extern "C" s32 lbl_802FB900;
+extern "C" u8 lbl_802FF2E9;
+extern "C" void (*lbl_802FF2D4)(s32);
+extern "C" s32 lbl_802FF2D8;
+extern "C" s32 lbl_802FF340;
+extern "C" void fn_80120640(s32 a);
+extern "C" void fn_80013B48(void);
+extern "C" u32 fn_801D9F00(void);
+extern "C" void fn_801D9EB4(void);
+extern "C" void fn_801DAFF4(void);
+extern "C" void fn_801DB1BC(void);
+extern "C" void fn_801DB478(void);
+extern "C" void fn_801200F0(void);
+extern "C" void fn_801DB70C(s32 a);
+extern "C" void fn_801CC8B4(s32 a);
+extern "C" void fn_801CC710(void);
+extern "C" void fn_801CBA20(void);
+extern "C" void fn_800129AC(u8* self) {
+    self[0x18] = 0;
+    *(u32*)(self + 0x1c) = 0;
+}
+
 extern "C" s32 lbl_802FEBC0;
 extern "C" s32 lbl_802FEBD0;
 extern "C" s32 lbl_802FED88;
@@ -41,19 +71,18 @@ extern "C" void fn_8001A454(void*, s32, s32, s32);
 extern "C" void fn_8001A4F4(s32, s32);
 extern "C" void fn_801C1174(void*);
 extern "C" BOOL fn_80012AE8(void* self) {
-    if (lbl_802FEBC0 == 0) {
-        return 0;
-    }
-    if (lbl_802B7CA0[0x344c] == 0) {
-        fn_8002F330(0x1e);
-        lbl_802FEBD0 = 0x3c;
-        if (fn_80019930() == 0) {
-            fn_8001A454(self, 1, 0, 0x12c);
-            fn_8001A4F4(1, 0);
+    if (lbl_802FEBC0 != 0) {
+        if (lbl_802B7CA0[0x344c] == 0) {
+            fn_8002F330(0x1e);
+            lbl_802FEBD0 = 0x3c;
+            if (fn_80019930() == 0) {
+                fn_8001A454(self, 1, 0, 0x12c);
+                fn_8001A4F4(1, 0);
+            }
+            lbl_802FED88 = 0;
+            lbl_802B7CA0[0x344c] = 1;
+            return 1;
         }
-        lbl_802FED88 = 0;
-        lbl_802B7CA0[0x344c] = 1;
-        return 1;
     }
     return 0;
 }
