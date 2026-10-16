@@ -2,6 +2,10 @@
 
 #include "types.h"
 
+extern "C" void fn_8017FD80(void);
+extern "C" void fn_8017FED0(void);
+extern "C" s32 fn_801786BC(s32 a, f32 b);
+
 extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
 
 struct VObj_8018939C {
