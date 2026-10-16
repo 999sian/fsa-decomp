@@ -70,6 +70,12 @@ extern "C" DSError gdev_cc_post_stop(void)
 	return DS_NoError;
 }
 
+extern "C" DSError gdev_cc_pre_continue(void)
+{
+	fn_801F013C();
+	return DS_NoError;
+}
+
 extern "C" int gdev_cc_close()
 {
 	return 0;
