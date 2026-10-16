@@ -1,4 +1,6 @@
 #include "types.h"
+#include "JSystem/JAudio/Interface/JAISound.h"
+#include "JSystem/JAudio/Interface/JAISoundParams.h"
 
 
 extern u8* lbl_8053AF80;
@@ -66,6 +68,52 @@ extern "C" void fn_80456154(u8* p) {
     }
     if (p[0x51] != 0) {
         p[0x51]--;
+    }
+}
+
+extern "C" void* fn_80456334(u8* p, JAISoundID id, u32 x);
+extern "C" void fn_804561D8(u8* p, JAISoundID id, u8 mode, u32 x, u8 y) {
+    f32 pan;
+    f32 vol;
+    void** snd;
+
+    p[0x44] = y;
+    snd = (void**)fn_80456334(p, id, x);
+    if (*snd == NULL) {
+        return;
+    }
+    switch (mode) {
+    case 0:
+    case 1:
+        pan = 0.5f;
+        vol = 0.4f;
+        break;
+    case 2:
+        pan = 1.0f;
+        vol = 0.4f;
+        break;
+    case 3:
+        pan = 0.0f;
+        vol = 0.4f;
+        break;
+    case 4:
+    default:
+        pan = 0.5f;
+        vol = 0.0f;
+        break;
+    }
+    ((JAISoundParamsMove*)((u8*)*snd + 0x48))->movePan(pan, 0);
+    if (y != 0) {
+        ((JAISoundParamsMove*)((u8*)*snd + 0x48))->moveVolume(1.0f, 0);
+    } else {
+        ((JAISoundParamsMove*)((u8*)*snd + 0x48))->moveVolume(vol, 0);
+    }
+    if (p[0x44] != 1) {
+        if (lbl_8053AF80[6] == 1) {
+            ((JAISoundParamsMove*)((u8*)*snd + 0x48))->moveVolume(0.35f, 0);
+        } else {
+            ((JAISoundParamsMove*)((u8*)*snd + 0x48))->moveVolume(vol, 0);
+        }
     }
 }
 
