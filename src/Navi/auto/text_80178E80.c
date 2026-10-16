@@ -1,4 +1,23 @@
 #include "types.h"
+
+// Placeholder view of an unknown polymorphic class: virtual slots by vtable offset (0x08 + 4 * index).
+class UnkVObj_80184B60 {
+public:
+    virtual void v08(); virtual void v0C(); virtual void v10(); virtual void v14();
+    virtual void v18(); virtual void v1C(); virtual void v20(); virtual void v24();
+    virtual void v28(); virtual void v2C(); virtual void v30(); virtual void v34();
+    virtual void v38(); virtual void v3C(); virtual void v40(); virtual void v44();
+    virtual void v48(); virtual void v4C(); virtual void v50(); virtual void v54();
+    virtual void v58(); virtual void v5C(); virtual void v60(); virtual void v64();
+    virtual void v68(); virtual void v6C(); virtual void v70(); virtual void v74();
+    virtual void v78(); virtual void v7C(); virtual void v80(); virtual void v84();
+    virtual void v88(); virtual void v8C(); virtual void v90();
+    virtual void v94(f32* rect);
+    virtual void v98(s32, void*);
+    virtual u8 v9C(f32);
+    virtual void vA0();
+    virtual void* vA4(s32);
+};
 extern void* lbl_802994BC[];
 extern void* lbl_80299504[];
 extern "C" void fn_8015AB1C(void* ptr);
