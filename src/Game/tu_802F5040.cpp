@@ -3,37 +3,44 @@
 extern "C" f32 lbl_80541500;
 extern "C" f32 lbl_805414FC;
 
+struct Tu802F5040Tbl {
+    u8 pad0[0x28];
+    u8* m_tbl[8];
+};
+
 extern "C" void fn_802FF798(void* mgr);
 extern "C" f32 fn_802F5FF4(f32 x) {
+    f32 a = lbl_805414FC;
     f32 v;
-    if (x >= lbl_80541500) {
-        v = x;
-    } else {
+    if (x < lbl_80541500) {
         v = lbl_80541500;
+    } else {
+        v = x;
     }
-    return lbl_805414FC / (lbl_805414FC - v);
+    return a / (a - v);
 }
 
 extern "C" u16 fn_802F9908(u8* base, s32 idx, s32 off) {
+    u32 v;
     if (idx >= 0 && idx < 4) {
-        return *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
+        v = *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
+    } else if (idx >= 4 && idx < 8) {
+        v = *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
+    } else {
+        v = *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
     }
-    if (idx >= 4 && idx < 8) {
-        return *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
-    }
-    return *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2);
+    return v;
 }
 
 extern "C" void fn_802F9974(u8* base, s32 idx, s32 off, u16 val) {
+    u8** tbl = (u8**)(base + 0x28);
     if (idx >= 0 && idx < 4) {
-        *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2) = val;
-        return;
+        *(u16*)(tbl[idx] + off * 2) = val;
+    } else if (idx >= 4 && idx < 8) {
+        *(u16*)(tbl[idx] + off * 2) = val;
+    } else {
+        *(u16*)(tbl[idx] + off * 2) = val;
     }
-    if (idx >= 4 && idx < 8) {
-        *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2) = val;
-        return;
-    }
-    *(u16*)(*(u8**)(base + idx * 4 + 0x28) + off * 2) = val;
 }
 
 extern "C" void fn_802FF548(void* mgr) {
