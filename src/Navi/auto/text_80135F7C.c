@@ -1148,10 +1148,10 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
 }
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    void* derived = lbl_80292C80;
-    void* base = lbl_802911A0;
-    param_1[0] = base;
-    param_1[0] = derived;
+    u32 base = (u32)lbl_802911A0;
+    u32 derived = (u32)lbl_80292C80;
+    *(u32*)param_1 = base;
+    *(u32*)param_1 = derived;
     ((u32*)param_1)[1] = param_2;
 }
 
@@ -1194,23 +1194,24 @@ extern "C" BOOL fn_80139E6C(void* param_1, u8** param_2, u32* param_3) {
     return n <= 0x100;
 }
 
-extern "C" void* fn_8013A024(void* ptr, s16 param_2) {
-    if (ptr != nullptr) {
-        *(void**)((u8*)ptr + 8) = lbl_80292D58;
-        if ((u8*)ptr + 0x18 != nullptr) {
-            *(void**)((u8*)ptr + 0x18) = lbl_80292974;
-            fn_8013635C((u8*)ptr + 0x18, 0);
+#pragma dont_inline on
+extern "C" void* fn_8013A024(struct Obj_8013A024* obj, s16 param_2) {
+    if (obj != nullptr) {
+        obj->m_0x8 = lbl_80292D58;
+        if (&obj->m_0x18 != nullptr) {
+            obj->m_0x18 = lbl_80292974;
+            fn_8013635C(&obj->m_0x18, 0);
         }
-        if (ptr != nullptr) {
-            *(void**)((u8*)ptr + 8) = lbl_80292EC4;
+        if (obj != nullptr) {
+            obj->m_0x8 = lbl_80292EC4;
         }
         if (param_2 > 0) {
-            fn_8015AB1C(ptr);
+            fn_8015AB1C(obj);
         }
     }
-    return ptr;
+    return obj;
 }
-
+#pragma dont_inline reset
 extern "C" void* fn_8013A2E0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)((u8*)ptr + 8) = lbl_80292EB4;
@@ -1453,9 +1454,9 @@ extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 extern "C" void* fn_8013BEB0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
-        NaviTracker* t = (NaviTracker*)ptr;
-        *(void**)ptr = lbl_8029320C;
-        t->fn_3();
+        void* vt = lbl_8029320C;
+        *(void**)ptr = vt;
+        ((NaviTracker*)ptr)->fn_3();
         fn_80133C0C(ptr, 0);
         if (param_2 > 0) {
             fn_8015AB1C(ptr);
