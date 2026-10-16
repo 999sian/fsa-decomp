@@ -1166,6 +1166,8 @@ extern "C" void fn_801A5288(u8* p, s32 i, u32* pv) {
 
 extern "C" void fn_801A534C(void) {}
 
+extern "C" void fn_801A5350(void) {}
+
 extern "C" int fn_801A5368()
 {
 	return 0;
