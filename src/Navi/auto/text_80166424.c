@@ -244,6 +244,11 @@ extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
     p[10] = param_3[2];
 }
 
+extern "C" s32 fn_801730C8(s32 p, s32 i)
+{
+	return p + i * 4 + 8;
+}
+
 extern "C" void fn_801730DC(u8* p, s32 i, s16* src)
 {
 	s16 v0;
