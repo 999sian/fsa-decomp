@@ -114,6 +114,15 @@ extern "C" BOOL fn_80058B18(s32 param_1) {
     return result == 0;
 }
 
+extern "C" void fn_80058B64(s32 param_1) {
+    fn_8005C424();
+    fn_8005B6CC(1, param_1, 0);
+    if (fn_80058DB8(param_1) != 0) {
+        fn_8005B6CC(1, param_1, 1);
+    }
+    fn_8005C460();
+}
+
 extern "C" void fn_80058BC4(void) {
     fn_8005C424();
     fn_8005B6CC(1, -1, 0);
