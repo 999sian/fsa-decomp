@@ -14,8 +14,6 @@ struct J2DScreenVt {
     virtual void m10(void);
     virtual void m11(void);
     virtual void m12(void);
-    virtual void m13(void);
-    virtual void m14(void);
     virtual void* m15(u32, u32, u32);
 };
 
@@ -133,15 +131,14 @@ extern "C" void* fn_80443760(void* this_) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 8) = obj;
-    typedef void* (*SlotFn)(void*, u32, u32, u32);
-    fn_80402F04(*(void**)(self + 8), ((SlotFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), 0x50740000, 0x50746573, 0x746d6170));
+    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x50740000, 0x50746573, 0x746d6170));
 
     obj = __nw__FUl(0x2c);
     if (obj != 0) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 12) = obj;
-    fn_80402F04(*(void**)(self + 12), ((SlotFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), 0x500000, 0x506d61, 0x7074656e));
+    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x500000, 0x506d61, 0x7074656e));
 
     self[0x14] = 0;
     *(s16*)(self + 0x10) = 0;
