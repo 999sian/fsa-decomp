@@ -4,9 +4,9 @@
 extern "C" void fn_801CEBD0(void* actor);
 extern "C" s32 fn_801CD950(f32* value, f32 target, f32 step);
 extern "C" void fn_801CEBD0(void*);
-extern "C" int fn_80210898(void)
+extern "C" int fn_80210898(void* actor)
 {
-	fn_801CEBD0(NULL);
+	fn_801CEBD0(actor);
 	return 0;
 }
 
