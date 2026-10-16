@@ -1,4 +1,7 @@
 #include "types.h"
+extern void* lbl_80299540[];
+extern void* lbl_80286A30[];
+
 extern void* lbl_80299504[];
 extern "C" void fn_8015AB1C(void* ptr);
 
@@ -102,6 +105,19 @@ extern "C" void fn_8018BF7C(void* self, void* src) {
 extern "C" void fn_8018C048(void* unused, void* dest, void* src);
 extern "C" void fn_8018C020(void* self, void* src) {
     fn_8018C048(self, *(void**)((u8*)self + 4), src);
+}
+
+extern "C" void* fn_8018C144(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80299540;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80286A30;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern void* lbl_80299504[];
