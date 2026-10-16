@@ -172,6 +172,20 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
     f32 dx = record[0] - point[0];
     return dx * dx + dz * dz;
 }
+
+extern "C" void fn_801D0E58(char* p) {
+    f32 v[2];
+    fn_801CCD34((f32*)(p + 0xc), v);
+    *(f32*)(p + 0xc) = v[0];
+    *(f32*)(p + 0x10) = v[1];
+    *(f32*)(p + 0x18) = *(f32*)(p + 0xc);
+    *(f32*)(p + 0x1c) = *(f32*)(p + 0x10);
+    *(f32*)(p + 0x20) = *(f32*)(p + 0x14);
+    *(f32*)(p + 0x24) = *(f32*)(p + 0xc);
+    *(f32*)(p + 0x28) = *(f32*)(p + 0x10);
+    *(f32*)(p + 0x2c) = *(f32*)(p + 0x14);
+}
+
 #pragma fp_contract reset
 
 extern "C" void fn_801D0ECC(void) {}
