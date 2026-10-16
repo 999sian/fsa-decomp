@@ -10,6 +10,11 @@ public:
     static JASBank* createBank(const void*, JKRHeap*);
 };
 
+JASBank* JASBNKParser::createBank(const void* stream, JKRHeap* heap)
+{
+    return fn_8002F294(stream, heap);
+}
+
 void fn_80030380(short *param_1)
 {
   short sVar1;
