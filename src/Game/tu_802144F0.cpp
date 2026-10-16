@@ -6,6 +6,12 @@
 // ---- fn_80214900.cpp ----
 extern "C" void* SpatialRegistry_GetBase();
 extern "C" void* fn_801F666C(void* base, s32 id);
+extern "C" void* fn_801F856C(void);
+extern "C" u8 fn_801CD2F8(void* p);
+extern "C" f32 fn_802F5E9C(void*, const f32*);
+extern "C" void fn_8013CB44(void* a, JGeometry::TVec3f* b, s32 c, s32 d, s32 e);
+extern const f32 lbl_8053FBBC;
+extern const f32 lbl_8053FBC0;
 extern "C" void* fn_8013C824();
 extern "C" void fn_800EC240(void* table, s32 id);
 extern "C" void fn_801CDC8C(void* this_, s32 event);
@@ -170,16 +176,17 @@ void fn_802146A4(u8* this_) {
     if (*(u32*)(o + 0x524) & 0x400) {
         f = 1;
     }
-    fn_8013CC50(lbl_8053FBA4, cbOwner(o), cbPos(o), 0x416, 0, f - 1, 0, 0, 1);
-    fn_8013CC50(lbl_8053FBA4, cbOwner(*(u8**)(this_ + 0x34)), cbPos(*(u8**)(this_ + 0x34)), 0x417, 0, f, 0, 0, 1);
+    fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), o + 0xc, 0x416, 0, f - 1, 0, 0, 1);
+    o = *(u8**)(this_ + 0x34);
+    fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), o + 0xc, 0x417, 0, f, 0, 0, 1);
 }
 
 void fn_80214E50(u8* this_) {
     if (*(u8**)(this_ + 0) == 0) {
         JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(*(u8**)(this_ + 0x34) + 0xc));
         pos.y += -24.0f;
-        s32 hi = 0;
         s32 lo = 1;
+        s32 hi = 0;
         if (pos.z > 0.0f) {
             hi = lo;
             lo = 0;
@@ -201,22 +208,23 @@ void fn_80214E50(u8* this_) {
     }
 }
 
-void* dtor_80214F9C(u8* this_, s16 flag) {
-    if (this_ != 0) {
-        cleanup(this_);
-        if (this_ + 0x1c != 0) {
-            *(void**)(this_ + 0x1c) = (void*)lbl_804A64A8;
-            __dt__19JPAParticleCallBackFv(this_ + 0x1c, 0);
+void* dtor_80214F9C(void* this_, s16 flag) {
+    u8* p = (u8*)this_;
+    if (p != 0) {
+        cleanup(p);
+        if (p + 0x1c != 0) {
+            *(void**)(p + 0x1c) = (void*)lbl_804A64A8;
+            __dt__19JPAParticleCallBackFv(p + 0x1c, 0);
         }
-        if (this_ + 0x4 != 0) {
-            *(void**)(this_ + 0x4) = (void*)lbl_804A64A8;
-            __dt__19JPAParticleCallBackFv(this_ + 0x4, 0);
+        if (p + 0x4 != 0) {
+            *(void**)(p + 0x4) = (void*)lbl_804A64A8;
+            __dt__19JPAParticleCallBackFv(p + 0x4, 0);
         }
         if (flag > 0) {
-            __dl__FPv(this_);
+            __dl__FPv(p);
         }
     }
-    return this_;
+    return p;
 }
 
 void* dtor_802150FC(void* this_, s16 flag) {
