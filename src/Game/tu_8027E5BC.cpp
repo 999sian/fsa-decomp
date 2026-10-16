@@ -221,7 +221,9 @@ void fn_80282A24(char* p) {
 }
 
 void fn_80282AA8(char* p) {
-    if (S32(p, 0x1244) == 15 || S32(p, 0x1244) == 16) return;
+    s32 st = S32(p, 0x1244);
+    if (st == 15) return;
+    if (st == 16) return;
     S32(p, 0xbe4) = 0;
     U8(p, 0xbe8) = 0;
 }
