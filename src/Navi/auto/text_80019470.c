@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Navi/SSystem/c_tag.h"
 extern "C" void fn_8001D66C(void*, void*);
 extern "C" void fn_800126C4(void*);
 extern "C" void fn_8001A950(void);
@@ -450,8 +451,18 @@ extern "C" void fn_8001BEA4(void) {
     fn_8001EB08();
 }
 
+extern void* lbl_802056AC[];
+extern "C" int fn_8001EABC(void);
+extern "C" u32 fn_8001BEE8(void) {
+    return fn_8001EABC() == 1;
+}
+
 extern "C" s32 fn_8001BF5C(void* self, void* p) {
     return cTg_SingleCutFromTree__FP16create_tag_class(p);
+}
+
+extern "C" void* fn_8001BFF8(void) {
+    return lbl_802056AC;
 }
 
 extern "C" void fn_80115178(void*, void*, void*);
