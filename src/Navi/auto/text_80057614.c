@@ -57,6 +57,16 @@ extern "C" void fn_8005CB2C(int param_1) {
     }
 }
 
+extern "C" int fn_8005CB7C(int param_1) {
+    if (param_1 == 0xd4) {
+        return 0;
+    }
+    if (param_1 == 0xd3) {
+        return 0;
+    }
+    return 1;
+}
+
 extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027EC78;
