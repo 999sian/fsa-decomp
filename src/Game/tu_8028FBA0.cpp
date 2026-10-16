@@ -45,6 +45,7 @@ bool fn_80290070(char*, s32, const JGeometry::TVec3<f32>*, const JGeometry::TVec
 void* fn_802D6A9C(void);
 void fn_80301D54(s32);
 bool fn_80303750(s32);
+bool fn_80301CD0(char*);
 void fn_8030BD3C(void*, s32);
 void fn_8045815C(void*, s32);
 
@@ -117,6 +118,41 @@ void fn_80291B64(char* p) {
     F32(p, 0x344) = lbl_805405B4;
     F32(p, 0x348) = lbl_805405B4;
     F32(p, 0x34c) = lbl_8054061C;
+}
+
+void fn_80291B8C(char* p) {
+    U8(p, 0x3fc)++;
+    if (U8(p, 0x3fc) < 0x3c) {
+        return;
+    }
+    F32(p, 0x10) += lbl_8054061C;
+    if (F32(p, 0x10) > lbl_80540620) {
+        if (S32(p, 0x3b4) < 8) {
+            VEC(p, 0xcb0) = VEC(p, 0x8);
+        }
+        U8(p, 0x124d) = 0;
+        if (fn_80251AEC(p, 0x2b)) {
+            fn_80241454(p, 0);
+            S32(p, 0x3b4) = S32(p, 0xce4);
+            VEC(p, 0x8) = VEC(p, 0xcd4);
+            F32(p, 0x10) = lbl_805405B4;
+            fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
+        }
+    }
+    u8 state = (U8(p, 0x3fc) >> 2) & 3;
+    if (state == 0) {
+        S32(p, 0x3dc) = 2;
+        S32(p, 0x3e8) = 2;
+    } else if (state == 1) {
+        S32(p, 0x3dc) = 1;
+        S32(p, 0x3e8) = 1;
+    } else if (state == 2) {
+        S32(p, 0x3dc) = 3;
+        S32(p, 0x3e8) = 3;
+    } else {
+        S32(p, 0x3dc) = 0;
+        S32(p, 0x3e8) = 0;
+    }
 }
 
 void fn_80291CB8(char* p) {
@@ -330,6 +366,38 @@ void fn_80295334(char* p) {
     S32(p, 0x3dc) = 2;
     S32(p, 0x3e8) = 2;
     F32(p, 0x10) = lbl_805405B4;
+}
+
+void fn_803037D4(s32, s32);
+void fn_802953A0(char* p) {
+    if (U8(p, 0x3fc) < 0x3c) {
+        U8(p, 0x3fc)++;
+        return;
+    }
+    if (S32(p, 0xce4) != S32(p, 0xce0) && (u8)fn_80240670(p) == 0 && fn_80303750(S32(p, 0x4))) {
+        return;
+    }
+    if (U8(p, 0x3fc) < 0x3c) {
+        return;
+    }
+    F32(p, 0x34c) -= lbl_8054060C;
+    if (F32(p, 0x34c) < lbl_80540618) {
+        F32(p, 0x34c) = lbl_80540618;
+    }
+    VEC(p, 0x8) += VEC(p, 0x344);
+    if (F32(p, 0x10) < lbl_805405B4) {
+        F32(p, 0x10) = lbl_805405B4;
+    }
+    U8(p, 0x124d) = 0;
+    bool r;
+    if (fn_8024189C(p) <= 0) {
+        r = fn_80251AEC(p, 0x33);
+    } else {
+        r = fn_80251AEC(p, 0);
+    }
+    if (r) {
+        fn_803037D4(S32(p, 0x4), 0xd);
+    }
 }
 
 void fn_802954B8(char* p) {
