@@ -759,6 +759,24 @@ extern "C" void fn_80068804(u8* p) {
     fn_80068008(p);
 }
 
+extern "C" int fn_80068190(u8* p);
+extern "C" void fn_80068AD0(void* p);
+extern "C" void* fn_8004F154(void* ptr, s16 param_2);
+extern void* lbl_802474D0[];
+extern f32 lbl_803003D0;
+extern f32 lbl_803003D4;
+extern f32 lbl_803003D8;
+extern f32 lbl_803003DC;
+extern "C" BOOL fn_80068824(u8* p) {
+    u8* obj = *(u8**)(p + 0x264);
+    if (obj != nullptr) {
+        *(u32*)(obj + 0xf4) |= 1;
+        *(s32*)(obj + 0x24) = 1;
+        *(void**)(p + 0x264) = nullptr;
+    }
+    return TRUE;
+}
+
 extern "C" BOOL fn_80068A40(void);
 extern "C" BOOL fn_80068A40(void)
 {
