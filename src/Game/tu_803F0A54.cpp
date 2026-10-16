@@ -3,6 +3,10 @@
 extern "C" void fn_8043670C(void* p, s32 a);
 extern "C" void fn_80431A9C(void* p, s32 a, u8 b, s32 c);
 extern void* lbl_8053AEC0;
+extern void* lbl_8053AF80;
+extern "C" void fn_80436668(void* p);
+extern "C" s32 fn_804366B8(void* p);
+extern "C" void fn_80458880(void* p, s32 a, s32 b);
 
 extern "C" void fn_803F1C18(u8* p) {
     fn_8043670C(*(void**)(p + 0x58), 1);
