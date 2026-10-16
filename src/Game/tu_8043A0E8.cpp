@@ -74,6 +74,29 @@ extern "C" void fn_8043A608(void* param_1) {
     fn_8043A450(param_1, *(s32*)(lbl_80529DEC + 0x118), *(s32*)(lbl_80529DEC + 0x11c));
 }
 
+extern "C" void fn_8043CEA0(u8* self) {
+    *(s16*)(self + 0x104) = *(s16*)(self + 0x104) - 1;
+    if (*(s32*)(lbl_8053AAF8 + 0x4c) != 7) {
+        *(s16*)(self + 0x104) = 0;
+    }
+    if (*(s16*)(self + 0x104) > 0) {
+        return;
+    }
+    *(s16*)(*(u8**)(self + 0x40) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x44) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x48) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x4c) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x50) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x54) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x58) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x5c) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x60) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x64) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x68) + 0x22) = 0;
+    *(s16*)(*(u8**)(self + 0x6c) + 0x22) = 0;
+    self[0x10b] = 3;
+}
+
 extern "C" void fn_8043D834(u8* self) {
     if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
         fn_8041E58C(*(void**)(self + 0x290));
