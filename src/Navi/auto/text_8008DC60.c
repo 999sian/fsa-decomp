@@ -688,6 +688,8 @@ extern "C" void* fn_800957BC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80095FEC(void) {}
+
 extern void* lbl_8028B750[];
 extern "C" void* fn_8009672C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
