@@ -80,6 +80,21 @@ extern "C" void* fn_801ABB80(u8* p) {
     return p;
 }
 
+extern f32 lbl_80301D80;
+extern "C" f32 lbl_80301D80;
+extern "C" f32 fn_801ABEA8(Anim_801ABEA8* self, u16 idx)
+{
+    s32 frame = self->frame + lbl_80301D80;
+    s32 count = self->keys[idx].count;
+    if (self->frame < lbl_80301D6C) {
+        return self->values[self->keys[idx].offset];
+    }
+    if (frame >= count) {
+        return self->values[count + self->keys[idx].offset - 1];
+    }
+    return self->values[frame + self->keys[idx].offset];
+}
+
 extern "C" f32 fn_801AD8D8(u16* hdr, f32 t, f32* k) {
     if (t < k[0]) {
         return k[1];
@@ -621,6 +636,20 @@ extern "C" void* fn_801B5128(void* base, u32 offset) {
 extern "C" void* fn_801B5140(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern void* lbl_8029BA14[];
+extern "C" void* fn_801B6FD8(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_8029BA14;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_8029BBBC;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern void* lbl_8029B9B0[];
