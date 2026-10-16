@@ -201,11 +201,14 @@ extern "C" void fn_801729A4(int param_1, u8 param_2) {
 }
 
 extern "C" s32 fn_80172AD4(s32 p, u32 i) {
+    struct Tmp {
+        s32 pad[63];
+        s32 val[8];
+    };
     if (i >= 8) {
         return 0;
     }
-    s32* arr = (s32*)(p + i * 4);
-    return *(s32*)((u8*)arr + 0xfc);
+    return ((Tmp*)p)->val[i];
 }
 
 extern "C" s32 fn_80172B18(void) {
