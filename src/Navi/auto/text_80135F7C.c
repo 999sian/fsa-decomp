@@ -5,8 +5,8 @@ struct NaviTracker {
     virtual void fn_1();
     virtual void fn_2();
     virtual void fn_3();
-    virtual void fn_4();
-    virtual void fn_5();
+    virtual u32 fn_4();
+    virtual void fn_5(u32);
     virtual u32 fn_6();
     virtual void fn_7(u32);
     virtual void fn_8();
@@ -707,13 +707,14 @@ extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
 extern void* lbl_8029320C[];
 extern "C" void* fn_80133C0C(void* ptr, s16 param_2);
 extern "C" void* fn_8013BEB0(NaviTracker* ptr, s16 param_2) {
-    if (ptr != nullptr) {
-        *(void**)ptr = lbl_8029320C;
-        ptr->fn_3();
-        fn_80133C0C(ptr, 0);
-        if (param_2 > 0) {
-            fn_8015AB1C(ptr);
-        }
+    if (ptr == nullptr) {
+        return nullptr;
+    }
+    *(void**)ptr = lbl_8029320C;
+    ptr->fn_3();
+    fn_80133C0C(ptr, 0);
+    if (param_2 > 0) {
+        fn_8015AB1C(ptr);
     }
     return ptr;
 }
