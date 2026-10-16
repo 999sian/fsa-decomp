@@ -741,6 +741,39 @@ extern "C" void fn_8015BB50(char* p, char* q) {
     *(char**)(q + 0xc) = 0;
 }
 
+extern "C" void fn_8015BBEC(u8* list, u8* node, u8* prev, u8* next) {
+    if (prev != 0) {
+        *(u8**)(prev + 0xc) = node;
+        *(u8**)(node + 0x8) = prev;
+    } else {
+        *(u8**)(list + 0x78) = node;
+        *(u8**)(node + 0x8) = 0;
+    }
+    if (next != 0) {
+        *(u8**)(next + 0x8) = node;
+        *(u8**)(node + 0xc) = next;
+    } else {
+        *(u8**)(list + 0x7c) = node;
+        *(u8**)(node + 0xc) = 0;
+    }
+    *(u16*)node = 0;
+}
+
+extern "C" void fn_8015BC38(u8* list, u8* node) {
+    u8* prev = *(u8**)(node + 0x8);
+    u8* next = *(u8**)(node + 0xc);
+    if (prev == 0) {
+        *(u8**)(list + 0x78) = next;
+    } else {
+        *(u8**)(prev + 0xc) = next;
+    }
+    if (next == 0) {
+        *(u8**)(list + 0x7c) = prev;
+        return;
+    }
+    *(u8**)(next + 0x8) = prev;
+}
+
 #pragma pop
 
 #pragma pop
