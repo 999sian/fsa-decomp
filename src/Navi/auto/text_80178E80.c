@@ -1272,6 +1272,11 @@ extern "C" int fn_80182058(char* self, void* v) {
     return ((int (*)(char*, void*))fn_80177F0C)(self, v);
 }
 
+extern "C" int fn_801820EC()
+{
+	return 0;
+}
+
 extern "C" void fn_801820F4(void) {
     fn_80177E84();
 }
