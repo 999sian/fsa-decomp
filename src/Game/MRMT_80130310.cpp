@@ -26,6 +26,12 @@ struct TAtanTable<1024, f32> {
     f32 atan2_(f32, f32) const;
 };
 extern const TAtanTable<1024, f32> atanTable_;
+
+struct TSinCosPair {
+    f32 first;
+    f32 second;
+};
+extern const TSinCosPair sincosTable_[2048] __attribute__((aligned(32)));
 }
 extern "C" void* fn_80130310(void* this_, short how) {
     if (this_) {
