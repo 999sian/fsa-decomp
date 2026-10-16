@@ -1,6 +1,8 @@
 
 
 #include "types.h"
+extern void* lbl_80286A1C[];
+
 
 extern "C" void fn_8017FD80(void);
 extern "C" void fn_8017FED0(void);
@@ -1948,6 +1950,23 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
     }
 }
 
+extern void* lbl_80299764[];
+extern "C" void* fn_8018EBDC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80299764;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80286A1C;
+            if (ptr != nullptr) {
+                *(void**)ptr = lbl_80286A30;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern void* lbl_802997A4[];
 extern void* lbl_80286A1C[];
 extern u8 lbl_802FE624[];
@@ -1966,5 +1985,22 @@ extern "C" void* fn_8018EC78(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" int fn_8018EE10(u16* self, u16 index) {
+    if (index < self[0] && index != 0xffff) {
+        return (int)self + self[index + 1];
+    }
+    return 0;
+}
+
+extern "C" void fn_8019054C(u32 idx, u32 a, u32 b, u32 c) {
+    extern int* lbl_802FFA80;
+    u32 w = ((a & 0xffff) - 1) | (((b & 0xffff) - 1) << 10) | (c << 20) | (lbl_802FE624[idx] << 24);
+    *(*(u8**)&lbl_802FFA80[2])++ = 0x61;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+    *(*(u8**)&lbl_802FFA80[2])++ = w;
 }
 
