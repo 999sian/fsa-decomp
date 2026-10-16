@@ -925,14 +925,15 @@ extern "C" void fn_800D9CA8(void* param_1) {
 }
 
 extern "C" void fn_800D9D50(u8* p) {
-    u8 n = p[0x58];
+    u32 n = p[0x58];
+    u8* e = p;
     for (u32 i = 0; i < n; i += 2) {
-        u8* e = p + 0x18 + i * 4;
-        u16* t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[1] & 7) * 8);
-        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
-        e += 4;
-        t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[1] & 7) * 8);
-        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
+        u16* t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0x18] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
+        u8* f = p + (i + 1) * 4;
+        t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (f[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(f[0x18] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
+        e += 8;
     }
 }
 
@@ -1099,8 +1100,7 @@ extern "C" void fn_800DBC64(void* obj, u32 flags) {
 extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
     *(u8*)(self + 0xc) = src->getColorChanNum();
     u8* dst = self;
-    u32 i = 0;
-    for (; i < 2; i++) {
+    for (u32 i = 0; i < 2; i++) {
         u8* c = src->getMatColor(i);
         dst[4] = c[0];
         dst[5] = c[1];
@@ -1108,9 +1108,8 @@ extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
         dst[7] = c[3];
         dst += 4;
     }
-    i = 0;
-    dst = self;
-    for (; i < 4; i++) {
+    u32 i;
+    for (i = 0, dst = self; i < 4; i++) {
         *(u16*)(dst + 0xe) = *src->getColorChan(i);
         dst += 2;
     }
