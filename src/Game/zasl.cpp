@@ -40,6 +40,23 @@ extern "C" void* fn_8020C0A8(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" bool fn_8020C26C(void* p, void* a, void* b) {
+    bool ret;
+    void* l = 0;
+    if ((*(u32*)((char*)p + 0x230) & 7) != 0) {
+        l = &lbl_8053F9E0;
+    }
+    ret = true;
+    if (!fn_802265DC(b, a, 0)) {
+        u32 v = *(u32*)((char*)p + 0x198);
+        u8* m = fn_8020D58C();
+        if (!fn_8020D6AC(m + m[1] * 0x784 + 4, a, b, v, l)) {
+            ret = false;
+        }
+    }
+    return ret;
+}
+
 extern "C" void fn_801CE32C(void*);
 extern "C" void fn_801CE5D4(void*);
 extern "C" u8* fn_802D6A9C(void);
@@ -52,10 +69,18 @@ extern "C" void fn_8020C30C(void* p) {
         fn_801CE32C(p);
     } else {
         s32 off = *(s32*)((char*)p + 4);
-        if (fn_802D6A9C()[off + 0x131df] != 0) {
+        u8* base = fn_802D6A9C();
+        if (*(u8*)((u32)base + 0x10000 + off + 0x31df) != 0) {
             fn_801CE5D4(p);
         }
     }
+}
+
+extern "C" void fn_8020C374(void* p) {
+    char* c = (char*)p;
+    *(f32*)(c + 0x3c) = JMASinShort(*(s16*)(c + 0x2ae)) * *(f32*)(c + 0x254);
+    *(f32*)(c + 0x40) = JMACosShort(*(s16*)(c + 0x2ae)) * *(f32*)(c + 0x254);
+    (*(void (**)(void*))(*(char**)p + 0x84))(p);
 }
 
 extern "C" void* fn_8020CA34(void* this_) {
