@@ -25,13 +25,13 @@ extern "C" void fn_8043E7CC(void* game, void* v);
 extern "C" void fn_8041E58C(void* p);
 extern "C" void fn_80425128(void* p);
 extern "C" void fn_8041FC2C(void* p);
-extern "C" void fn_8044A06C(void);
-extern "C" void fn_80445D24(void);
-extern "C" void fn_80448334(void);
-extern "C" void fn_8044AFD8(void);
-extern "C" void fn_804490B8(void);
-extern "C" void fn_804479A0(void);
-extern "C" void fn_80446DB0(void);
+extern "C" void fn_8044A06C(...);
+extern "C" void fn_80445D24(...);
+extern "C" void fn_80448334(...);
+extern "C" void fn_8044AFD8(...);
+extern "C" void fn_804490B8(...);
+extern "C" void fn_804479A0(...);
+extern "C" void fn_80446DB0(...);
 extern "C" void fn_804263A8(void* p);
 extern "C" void fn_80443688(s32 p);
 extern "C" void fn_8043A0E8(u8 param_1) {
@@ -174,6 +174,41 @@ extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
 extern "C" void fn_8043EDE8(char* param_1, s32 param_2) {
     *(s32*)(param_1 + 0xe0) = param_2;
     *(s32*)(param_1 + 0xe4) = 0x1e;
+}
+
+extern "C" void fn_8043EDF8(u8* param_1) {
+    param_1[0xdd] = 0;
+    param_1[0xdc] = 0;
+    param_1[0x255] = 0;
+    if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
+        fn_8041FC2C(*(void**)(param_1 + 0x290));
+        if (*(void**)(param_1 + 0x2b0) != NULL) {
+            fn_8044A06C();
+        }
+        if (*(void**)(param_1 + 0x29c) != NULL) {
+            fn_80445D24();
+        }
+        if (*(void**)(param_1 + 0x2a8) != NULL) {
+            fn_80448334();
+        }
+        if (*(void**)(param_1 + 0x2b4) != NULL) {
+            fn_8044AFD8();
+        }
+        if (*(void**)(param_1 + 0x2ac) != NULL) {
+            fn_804490B8();
+        }
+        if (*(void**)(param_1 + 0x2a4) != NULL) {
+            fn_804479A0();
+        }
+        if (*(void**)(param_1 + 0x2a0) != NULL) {
+            fn_80446DB0();
+        }
+    } else {
+        fn_804263A8(*(void**)(param_1 + 0x294));
+    }
+    if (*(void**)(param_1 + 0x298) != NULL) {
+        fn_80443688(lbl_8053AEF0);
+    }
 }
 
 extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
