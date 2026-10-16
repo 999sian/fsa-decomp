@@ -129,7 +129,7 @@ extern "C" int fn_801ED520(unsigned long count, int stepOver)
 
 extern unsigned char gTRKExceptionStatus_8029F044[];
 extern "C" void* memset(void*, int, unsigned long);
-extern "C" void fn_801EE4C0(unsigned long*, unsigned long = 0);
+extern "C" int fn_801EE4C0(unsigned long*, unsigned long = 0);
 extern "C" int TRKAppendBuffer_ui8(void*, const void*, int);
 extern "C" void fn_801ED5CC(void* buffer)
 {
