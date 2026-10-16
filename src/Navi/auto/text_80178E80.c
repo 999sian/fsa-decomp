@@ -55,10 +55,9 @@ extern "C" int fn_801792B4(void* param_1, int param_2) {
 
 extern "C" void fn_80118BD0(void* p, s32 x);
 extern "C" int fn_80177D24(void);
-extern "C" int fn_80179E80(u32 param_1, s64 param_2) {
+extern "C" int fn_80179E80(s64 param_1, s64 param_2) {
     int result = 0;
-    u32 zero = 0;
-    if (param_2 != zero) {
+    if (param_2 != result) {
         result = fn_80177D24();
     }
     return result;
@@ -186,6 +185,13 @@ extern "C" void* fn_8017B7E4(u32* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_801C5D48(void* p);
+extern "C" void fn_8017ECFC(void* self, f32 a, f32 b) {
+    u8 buf[0x38];
+    fn_801C5D48(buf);
+    ((void (*)(void*, void*, f32, f32))((*(void***)self)[0x38 / 4]))(self, buf, a, b);
+}
+
 extern "C" int fn_80180B60(u8* self, u8* src) {
     u8 a = src[0];
     u8 b = src[1];
@@ -221,6 +227,22 @@ extern "C" void* fn_80180BAC(u32* self) {
     return self;
 }
 
+extern "C" void fn_80176848(void*);
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" void* fn_80181108(u32* self, s32 p1, s32 p2, s32 p3, s32 p4, s32 a, s32 b, s32 c, s32 d, s32 e) {
+    fn_80176848(self);
+    *(void**)self = lbl_80299040;
+    self[0x40] = 0;
+    self[0x41] = -1;
+    self[0x42] = -1;
+    self[0x49] = 0;
+    self[0x4a] = -1;
+    self[0x4b] = -1;
+    fn_8018119C(self, a, b, c, d, e);
+    return self;
+}
+#pragma pop
 extern "C" int fn_80181BA0(char* self) {
     return *(int*)(self + 0x124);
 }
