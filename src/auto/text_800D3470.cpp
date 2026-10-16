@@ -306,8 +306,6 @@ struct Unk800DC574Src {
 };
 
 struct Unk800DC164Src {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
@@ -1360,6 +1358,21 @@ extern "C" void fn_800DC058(u8* self, Unk800DC058Src* src) {
         }
         dst += 4;
     }
+}
+
+extern "C" void fn_800DC164(u8* this_, Unk800DC164Src* src)
+{
+    *(u32*)(this_ + 4) = src->m16();
+    for (int i = 0; i < 4; i++) {
+        *(u32*)(this_ + 8 + i * 6) = *src->m18(i);
+    }
+    for (int i = 0; i < 4; i++) {
+        if (src->m20(i) != nullptr && *(void**)(this_ + 0x38 + i * 4) != nullptr) {
+            memcpy(*(void**)(this_ + 0x38 + i * 4), src->m20(i), 0x94);
+            DCStoreRange(*(void**)(this_ + 0x38 + i * 4), 0x94);
+        }
+    }
+    *(J3DNBTScaleInfo*)(this_ + 0x5c) = *src->m23();
 }
 
 extern "C" void fn_800DC290(u8* p, Unk800DC164Src* src) {
