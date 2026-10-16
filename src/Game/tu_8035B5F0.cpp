@@ -37,6 +37,47 @@ extern "C" void* fn_8035B5F0(void* this_, s16 flag) {
     return this_;
 }
 
+extern "C" void* fn_80119DD0(void);
+extern "C" void fn_80119998(void* a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern const f32 lbl_805428D0;
+extern const f32 lbl_805428D4;
+extern "C" void fn_8035B650(u8* p) {
+    if (*(s32*)(p + 0x234) == 0) {
+        fn_80119998(fn_80119DD0(), 0x96, 0, 1, 0, 0, 0xfa, 0);
+        *(s32*)(p + 0x234) += 1;
+        *(s32*)(p + 0x260) = 0x11c;
+    } else if (*(s32*)(p + 0x260) == 0) {
+        u8* obj = *(u8**)(p + 0x298);
+        if (obj != 0) {
+            *(u32*)(obj + 0xf4) |= 0x100;
+            *(u32*)(p + 0x298) = 0;
+        }
+        obj = *(u8**)(p + 0x29c);
+        if (obj != 0) {
+            *(u32*)(obj + 0xf4) |= 0x100;
+            *(u32*)(p + 0x29c) = 0;
+        }
+        obj = *(u8**)(p + 0x2a0);
+        if (obj != 0) {
+            *(u32*)(obj + 0xf4) |= 0x100;
+            *(u32*)(p + 0x2a0) = 0;
+        }
+        *(u8*)(p + 0x11c) = 0;
+    } else if (*(s32*)(p + 0x260) == 1) {
+        f32 pos[3];
+        s32 i;
+        Actor_CreateByID(fn_801F856C(), 0x454e444d, *(u32*)(p + 0x4), p + 0xc, 0, -1, -1);
+        pos[0] = lbl_805428D0;
+        pos[1] = lbl_805428D0;
+        pos[2] = lbl_805428D4;
+        for (i = 0; i < 4; i++) {
+            fn_80230498(i, pos, 0, 0xff, -0x80, -0x80, 1);
+        }
+    }
+}
+
 extern "C" void fn_8035B7A8(u8* p) {
     if (*(s32*)(p + 0x234) != 0) {
         void* base = fn_801F856C();
@@ -144,8 +185,10 @@ extern "C" void fn_8035C230(u8* p) {
 }
 
 extern "C" void fn_8035C3A8(u8* p) {
-    f32 a = *(f32*)(p + 0x240);
     f32 b = *(f32*)(p + 0x254);
+    f32 a = *(f32*)(p + 0x240);
+    f32 sum = a + b;
+    f32 diff = a - b;
     f32 c = *(f32*)(p + 0x23c);
     *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x24) + 0x179) = 1;
     u8* s = *(u8**)((u8*)lbl_8053AB10 + 0x24);
@@ -153,9 +196,9 @@ extern "C" void fn_8035C3A8(u8* p) {
         s[0x7f4] = 1;
         *(s32*)(s + 0x7f8) = 5;
         *(f32*)(s + 0x808) = c;
-        *(f32*)(s + 0x80c) = a - b;
+        *(f32*)(s + 0x80c) = diff;
         *(f32*)(s + 0x810) = c;
-        *(f32*)(s + 0x814) = a + b;
+        *(f32*)(s + 0x814) = sum;
         s[0x7f6] = 0;
     }
     *(s32*)(p + 0x274) += 1;
