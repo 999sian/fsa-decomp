@@ -4,6 +4,7 @@ extern "C" void fn_80191388(int, void*);
 extern "C" void fn_80191220(int, void*);
 extern "C" void* lbl_8029AA18[];
 extern void* lbl_8029A0D4[];
+extern u32 lbl_80301CF8;
 
 extern "C" void* lbl_8029AF34[];
 extern void* lbl_8029A150[];
