@@ -188,14 +188,17 @@ extern u8 lbl_80301AD0[];
 extern u8 lbl_80301AD4;
 extern "C" void fn_801720B8(u8* param_1)
 {
-    *(u16*)param_1 = lbl_80301ADE;
+    u16 id = lbl_80301ADE;
+    u8* src = lbl_80301AD0;
+    u8 last = lbl_80301AD4;
+    *(u16*)param_1 = id;
     param_1[2] = 0;
     param_1[3] = 0;
-    param_1[4] = lbl_80301AD0[0];
-    param_1[5] = lbl_80301AD0[1];
-    param_1[6] = lbl_80301AD0[2];
-    param_1[7] = lbl_80301AD0[3];
-    param_1[8] = lbl_80301AD4;
+    param_1[4] = src[0];
+    param_1[5] = src[1];
+    param_1[6] = src[2];
+    param_1[7] = src[3];
+    param_1[8] = last;
 }
 
 extern "C" u32 fn_80172468(void)
@@ -217,6 +220,10 @@ extern "C" void fn_801724B4(u8* p, s32 i, f32* src)
     *(u8*)((u8*)dst + 0x28) = d;
 }
 
+s32 fn_80172640(s32 p, s32 i) {
+    return p + i * 4 + 0x16;
+}
+
 extern "C" s32 fn_80172750(s32 p, s32 i)
 {
     return p + i * 8 + 0x77;
@@ -236,6 +243,33 @@ extern "C" void fn_801729A4(int param_1, u8 param_2) {
     *(u8*)(param_1 + 0x56) = param_2;
 }
 
+u8 fn_801729AC(void* p) {
+    return *(u8*)((u8*)p + 0x56);
+}
+
+void fn_801729B4(u8* p, s32 idx, u8* src) {
+    u8* dst = p + idx * 8;
+    dst[0x58] = src[1];
+    dst[0x59] = src[2];
+    dst[0x5a] = src[3];
+    dst[0x5c] = src[5];
+    dst[0x5d] = src[6];
+    dst[0x5e] = src[7];
+}
+
+s32 fn_801729F0(s32 p, s32 i) {
+    return p + i * 8 + 0x57;
+}
+
+extern "C" s32 fn_80172AB4(s32 p, u32 i) {
+    if (i >= 8) {
+        return 0;
+    }
+    i = i * 4;
+    p = p + i;
+    return *(s32*)(p + 0xdc);
+}
+
 extern "C" s32 fn_80172AD4(s32 p, u32 i) {
     if (i >= 8) {
         return 0;
@@ -249,14 +283,13 @@ extern "C" s32 fn_80172B18(void) {
 
 extern "C" void fn_80172B5C(s32 p, s32 i, u8* src) {
     u8 a = src[0];
-    u8 b;
+    i = i * 4;
+    u8 b = src[1];
     u8 c;
-    i = p + i * 4;
-    b = src[1];
-    *(u8*)(i + 0xe) = a;
+    *(u8*)(p + i + 0xe) = a;
     c = src[2];
-    *(u8*)(i + 0xf) = b;
-    *(u8*)(i + 0x10) = c;
+    *(u8*)(p + i + 0xf) = b;
+    *(u8*)(p + i + 0x10) = c;
 }
 
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
@@ -300,10 +333,10 @@ extern "C" unsigned int fn_80173060(void) {
 }
 
 extern "C" void fn_801730A4(unsigned char* self, int idx, unsigned char* src) {
-    unsigned char* p = self + idx * 4 + 8;
-    p[0] = src[0];
-    p[1] = src[1];
-    p[2] = src[2];
+    unsigned char* p = self + idx * 4;
+    p[8] = src[0];
+    p[9] = src[1];
+    p[10] = src[2];
 }
 
 extern "C" u8 fn_80173180(int param_1, int param_2)
