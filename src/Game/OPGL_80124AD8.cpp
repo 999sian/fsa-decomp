@@ -17,9 +17,8 @@ extern "C" void fn_80124AD8(void* p) {
 }
 
 extern "C" void fn_80124B90(void* this_) {
-    register void** vtable = (void**)*(void**)this_;
     typedef void (*method_t)(void*, int);
-    register method_t method = (method_t)vtable[0x6c / sizeof(void*)];
+    method_t method = (method_t)(*(void***)this_)[27];
     method(this_, 0x5);
 }
 
@@ -90,5 +89,19 @@ extern float lbl_8053CA6C;
 extern "C" void fn_80125858(void* s)
 {
   fn_80124448(s);
+}
+
+extern void* lbl_8049E1D0[];
+extern "C" void fn_80124740(void*, short);
+extern "C" void __dl__FPv(void*);
+extern "C" void* fn_80125878(void* self, short flag) {
+    if (self) {
+        *(void***)self = lbl_8049E1D0;
+        fn_80124740(self, 0);
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
 }
 
