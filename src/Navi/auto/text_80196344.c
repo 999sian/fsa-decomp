@@ -208,6 +208,9 @@ extern "C" void fn_80198B60(void* param_1) {
     }
 }
 
+extern "C" void fn_80198BA4(void) {
+}
+
 extern "C" void fn_80198BA8(void* param_1) {
     u8* p = (u8*)param_1;
     *(u32*)(p + 0x8) = 0;
