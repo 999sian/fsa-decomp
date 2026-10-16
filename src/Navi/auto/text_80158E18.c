@@ -315,6 +315,7 @@ extern "C" u8 fn_8015C780(u8* p) {
 
 extern "C" void* fn_8015C788(u32 size, void* heap, void* arg) {
     void* p;
+    void* q;
     if (heap == NULL) {
         heap = lbl_802FF548;
     }
@@ -326,10 +327,11 @@ extern "C" void* fn_8015C788(u32 size, void* heap, void* arg) {
         return NULL;
     }
     p = fn_80159BE0(size, 0x10, heap);
+    q = (u8*)p + 0x80;
     if (p == NULL) {
         return NULL;
     }
-    return fn_8015C89C(p, (u8*)p + 0x80, size - 0x80, heap, arg);
+    return fn_8015C89C(p, q, size - 0x80, heap, arg);
 }
 
 extern void* lbl_802977D0[];
@@ -343,6 +345,17 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
         }
     }
     return p;
+}
+
+extern "C" BOOL fn_8015CFE4(void* p, u32* a, u32* b) {
+    BOOL r = 1;
+    if (a[1] != b[1]) {
+        r = 0;
+    }
+    if (a[0] == b[0]) {
+        return r;
+    }
+    return 0;
 }
 
 extern "C" void fn_8015D030(void) {
