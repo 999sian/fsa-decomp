@@ -264,8 +264,31 @@ extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
 }
 
+extern "C" unsigned int fn_80172FF8(unsigned char* self, unsigned int idx) {
+    if (idx >= 2) {
+        return 0;
+    }
+    return *(unsigned int*)(self + idx * 4 + 0x64);
+}
+
+extern "C" unsigned int fn_80173018(unsigned char* self, unsigned int idx) {
+    if (idx >= 2) {
+        return 0;
+    }
+    return ((unsigned int*)(self + 0x6c))[idx];
+}
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
+}
+
+extern "C" void fn_801730A4(unsigned char* self, int idx, unsigned char* src) {
+    unsigned char a = src[0];
+    unsigned char b = src[1];
+    unsigned char c = src[2];
+    self[idx * 4 + 8] = a;
+    self[idx * 4 + 9] = b;
+    self[idx * 4 + 10] = c;
 }
 
 extern "C" u8 fn_80173180(int param_1, int param_2)
