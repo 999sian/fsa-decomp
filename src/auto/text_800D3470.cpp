@@ -721,11 +721,14 @@ extern "C" void fn_800D9E3C(void* p) {
 extern "C" u8 isTexNoReg__FPv(void*);
 extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
+    u32 i = 0;
     GDSetCurrOffset(param_2);
     u8* start = GDGetCurrPointer();
     u8* cur = GDGetCurrPointer();
-    u32 i = 0;
-    while (isTexNoReg__FPv(cur)) {
+    for (;;) {
+        if (!isTexNoReg__FPv(cur)) {
+            break;
+        }
         u16 texNo = getTexNoReg__FPv(cur);
         loadTexNo__FUlRCUs(i, &texNo);
         i++;
@@ -2170,13 +2173,7 @@ extern "C" unsigned long fn_800DF6D0(void) {
 
 struct UnkVtableTest8248 {
     int x;
-};
-struct Unk800DDA5C {
-    u16 a;
-    u8 b;
-    u8 c;
-};
-struct fn_800DE29C_Bits {
+};struct fn_800DE29C_Bits {
   u8 hi : 4;
   u8 b : 2;
   u8 a : 2;
