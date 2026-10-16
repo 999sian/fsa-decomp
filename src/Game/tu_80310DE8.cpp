@@ -42,3 +42,11 @@ extern "C" void fn_80310E98(void* this_) {
     }
 }
 
+extern "C" void fn_80310F50(void* this_, s32 p2, s32 p3, s32 p4) {
+    fn_802A3884(lbl_8053AC98, (u8*)this_ + 0xc, 0, *(u32*)((u8*)this_ + 4), 0x30);
+    *(s32*)((u8*)this_ + 0x234) = p2;
+    *(s32*)((u8*)this_ + 0x238) = p3;
+    *(s32*)((u8*)this_ + 0x23c) = p4;
+    *(s32*)((u8*)this_ + 0x230) = 1;
+}
+
