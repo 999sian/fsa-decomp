@@ -1,6 +1,7 @@
 
 
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct Sub8036C69C {
     virtual void v0(int);
@@ -73,8 +74,10 @@ extern "C" void* fn_8036C69C(void* this_, short how) {
         }
         *(void**)((char*)this_ + 0x314) = 0;
         fn_8036A65C(this_);
-        if ((s32)this_ != -0x318 && (s32)this_ != -0x33c) {
-            *(void**)((char*)this_ + 0x33c) = (void*)lbl_8049CC34;
+        if ((char*)this_ + 0x318 != 0) {
+            if ((char*)this_ + 0x33c != 0) {
+                *(void**)((char*)this_ + 0x33c) = (void*)lbl_8049CC34;
+            }
         }
         __dt__13Base_8010E074Fv(this_, 0);
         if (how > 0) {
