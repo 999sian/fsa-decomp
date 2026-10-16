@@ -100,6 +100,8 @@ extern "C" void fn_800636F4(void*, void*, s32);
 extern "C" void fn_80058B64(s32);
 extern "C" void fn_80017FEC(s32, s32, void*, s32, s32, void*, s32);
 extern "C" void fn_8000CB28(void*, s16);
+extern "C" void fn_8000CA54(void*, s16);
+extern "C" void fn_8000CBFC(void*, s16);
 extern "C" void fn_8002F358(s32, s32);
 extern "C" void fn_80073AD8(u8*);
 extern "C" void fn_800187B0(u8*);
