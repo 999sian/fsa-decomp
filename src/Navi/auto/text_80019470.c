@@ -6,6 +6,9 @@ extern "C" int fn_80115564(void*);
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
 typedef struct {
+    u8 r, g, b, a;
+} NaviColor;
+typedef struct {
     int unk_0x0;
     int unk_0x4;
     int unk_0x8;
@@ -927,6 +930,19 @@ extern "C" void fn_8001CA1C(void) {
 
 extern "C" void fn_8001D084(char* self, char value) {
     self[0xb2] = value;
+}
+
+extern "C" int fn_8001D08C(char* self, char* color) {
+    char r, g, b, a;
+    r = color[0];
+    g = color[1];
+    b = color[2];
+    a = color[3];
+    self[0x12c] = r;
+    self[0x12d] = g;
+    self[0x12e] = b;
+    self[0x12f] = a;
+    return 1;
 }
 
 extern "C" void fn_8001D434(void) {
