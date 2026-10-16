@@ -12,11 +12,38 @@ extern "C" u8 fn_802DEBF8(void);
 extern "C" void fn_80458FF0(void* obj, u32 id, s32 a, s32 b);
 extern void* lbl_8053AF80;
 extern "C" void fn_802B3674(void) {
-    s32 mode = *(s32*)((char*)lbl_8053AF80 + 0x60);
+    u32 mode = *(u32*)((char*)lbl_8053AF80 + 0x60);
     u8 busy = fn_802DEBF8();
     if (busy == 0 && mode != 0 && mode != 0x1000021 && mode != 0x1000009 && mode - 0x1000018 > 1 && mode != 0x1000001 && mode != 0x100000d && mode != 0x1000007 && mode != 0x100002e && mode != 0x1000029 && mode != 0x1000024 && mode != 0x100000e) {
         fn_80458FF0(lbl_8053AF80, 0x100000e, 0, 0);
     }
+}
+
+extern "C" void fn_802B394C(char* p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 mode) {
+    *(s32*)(p + 0x240) = mode;
+    if (mode == 9) {
+        *(s32*)(p + 0x2e0) = a;
+        *(s32*)(p + 0x2e4) = b;
+        *(s32*)(p + 0x2e8) = c;
+        *(s32*)(p + 0x2ec) = d;
+        *(s32*)(p + 0x310) = e;
+        return;
+    }
+    *(s32*)(p + 0x2f0) = a;
+    *(s32*)(p + 0x2f4) = b;
+    *(s32*)(p + 0x2f8) = c;
+    *(s32*)(p + 0x2ec) = d;
+    *(s32*)(p + 0x314) = e;
+    s32 diff = *(s32*)(p + 0x2f0) - *(s32*)(p + 0x2e0);
+    *(s32*)(p + 0x318) = (diff >> 2) + (diff < 0 && (diff & 3) != 0);
+    diff = *(s32*)(p + 0x2f4) - *(s32*)(p + 0x2e4);
+    *(s32*)(p + 0x31c) = (diff >> 2) + (diff < 0 && (diff & 3) != 0);
+    diff = *(s32*)(p + 0x2f8) - *(s32*)(p + 0x2e8);
+    *(s32*)(p + 0x320) = (diff >> 2) + (diff < 0 && (diff & 3) != 0);
+    if (*(s32*)(p + 0x310) >= *(s32*)(p + 0x314)) {
+        return;
+    }
+    *(s32*)(p + 0x240) = 0xc;
 }
 
 extern "C" void fn_802B39E8(char* p) {
