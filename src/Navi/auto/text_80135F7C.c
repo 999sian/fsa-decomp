@@ -611,7 +611,7 @@ extern "C" void fn_801398CC(u8* p) {
     while (*(u32*)(p + 8) != 0) {
         node = *(u8**)(head + 4) - 0xc;
         fn_80167A44(it, p + 8, node + 0xc);
-        (*(void (**)(void*, void*))(**(u8***)(p + 4) + 0x10))(*(void**)(p + 4), node);
+        (*(VObj_801398CC**)(p + 4))->v2(node);
     }
 }
 
