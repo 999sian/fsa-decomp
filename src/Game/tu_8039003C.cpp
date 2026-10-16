@@ -39,9 +39,13 @@ extern "C" void fn_803900C8(void) {
 }
 
 extern "C" void fn_804111C4(void*);
-extern "C" void fn_80390108(void) {
-    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
-        fn_804111C4(lbl_8053ADF8);
+extern void* lbl_80557E40;
+extern void* lbl_80558260;
+extern "C" void fn_80444988(void*);
+extern "C" void fn_80390108(void)
+{
+    if (*((u8*)lbl_80557E40 + 0x7f) != 0) {
+        fn_80444988(lbl_80558260);
     }
 }
 
