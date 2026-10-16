@@ -651,6 +651,18 @@ extern "C" char fn_8015B708(char* p, char v) {
     return old;
 }
 
+extern "C" long fn_8015B91C(char* p, unsigned long addr) {
+    char* n;
+    fn_801BE3A0(p + 0x18);
+    n = (char*)fn_8015C634(addr);
+    if (n == 0 || addr < *(unsigned long*)(p + 0x30) || *(unsigned long*)(p + 0x34) < addr) {
+        fn_801BE47C(p + 0x18);
+        return -1;
+    }
+    fn_801BE47C(p + 0x18);
+    return *(long*)(n + 4);
+}
+
 #pragma pop
 
 #pragma pop
