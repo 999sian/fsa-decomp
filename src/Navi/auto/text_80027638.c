@@ -5,3 +5,12 @@ extern "C" void fn_8002A410(void);
 extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
+
+extern "C" char lbl_802BB0FC[];
+extern "C" unsigned int lbl_802FEDDC;
+extern "C" unsigned int lbl_802FEDE0;
+extern "C" void fn_8002D354(char* p) {
+    lbl_802FEDE0 |= 0x1000;
+    *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
+}
+
