@@ -153,8 +153,7 @@ extern "C" void* fn_80403244(u32 type, const char* name) {
 }
 
 extern "C" s32 fn_80403284(const char* name) {
-    void* resource = lbl_80529DEC.archive10->getResource(0x3F3F3F3F, name);
-    return lbl_80529DEC.archive10->getResSize(resource);
+    return lbl_80529DEC.archive10->getResSize(lbl_80529DEC.archive10->getResource(0x3F3F3F3F, name));
 }
 
 extern "C" void* fn_804032E8(u32 type, const char* name) {
