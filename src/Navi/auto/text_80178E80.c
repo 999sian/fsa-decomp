@@ -763,6 +763,21 @@ extern "C" s32 fn_80184164(char* self, s32* a, s32* b) {
 }
 
 extern "C" u8 fn_80183FC8(s32 a, s32* b, s32* c);
+
+struct VObj_80183C4C {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+    virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+    virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+    virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+    virtual void v40(); virtual void v41();
+    virtual s32 vfA8(s32* a, s32* b);
+};
 extern "C" void fn_801841FC(s32* self, s32 a) {
     s32 local_14;
     s32 local_18;
@@ -785,6 +800,79 @@ extern "C" void fn_8018425C(s32* self, s32 a) {
     } else {
         *self = local_18;
     }
+}
+
+extern "C" void fn_801842BC(u8* self, u8 v) {
+    u8* p;
+    u8* q;
+    self[0xb2] = v;
+    p = *(u8**)(self + 0x148);
+    if (p != 0) {
+        p = p + 0x10;
+        if (p != 0) {
+            p[3] = v;
+        }
+    }
+    p = *(u8**)(self + 0x14c);
+    if (p != 0) {
+        p = p + 0x10;
+        if (p != 0) {
+            p[3] = v;
+        }
+    }
+    p = *(u8**)(self + 0x150);
+    if (p != 0) {
+        p = p + 0x10;
+        if (p != 0) {
+            p[3] = v;
+        }
+    }
+    q = self + 8;
+    p = *(u8**)(q + 0x14c);
+    if (p != 0) {
+        p = p + 0x10;
+        if (p != 0) {
+            p[3] = v;
+        }
+    }
+    p = *(u8**)(self + 0x160);
+    if (p == 0) {
+        return;
+    }
+    p = p + 0x10;
+    if (p == 0) {
+        return;
+    }
+    p[3] = v;
+}
+
+extern "C" void fn_801780D4(char* self, u8 v);
+extern "C" void fn_80184340(u8* self, u8 v) {
+    u8* p;
+    u8* q;
+    q = self + 8;
+    self[0xb1] = v;
+    p = *(u8**)(self + 0x148);
+    if (p != 0) {
+        p[0x22] = v;
+    }
+    p = *(u8**)(self + 0x14c);
+    if (p != 0) {
+        p[0x22] = v;
+    }
+    p = *(u8**)(self + 0x150);
+    if (p != 0) {
+        p[0x22] = v;
+    }
+    p = *(u8**)(q + 0x14c);
+    if (p != 0) {
+        p[0x22] = v;
+    }
+    p = *(u8**)(self + 0x160);
+    if (p != 0) {
+        p[0x22] = v;
+    }
+    fn_801780D4((char*)self, v);
 }
 
 extern "C" void fn_801843B8(void* self) {
@@ -868,13 +956,12 @@ extern "C" void fn_80184770(u8* self, void* obj) {
 
 extern "C" s32 fn_80184800(u8* self, u8 idx) {
     u8 i;
-    u32 off = idx << 2;
     for (i = 0; i < idx; i++) {
-        if (*(u32*)(self + (i << 2) + 0x148) == *(u32*)(self + off + 0x148)) {
+        if (*(u32*)(self + (i << 2) + 0x148) == *(u32*)(self + (idx << 2) + 0x148)) {
             return 0;
         }
     }
-    return *(u32*)(self + off + 0x148) != 0;
+    return *(u32*)(self + (idx << 2) + 0x148) != 0;
 }
 
 extern "C" void fn_8018485C(u8* self, u32 v) {
