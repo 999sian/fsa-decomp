@@ -66,3 +66,17 @@ extern "C" Actor* fn_801688AC(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_80168E78(char* this_) {
+    SwbmDrawParam prm;
+    prm.reset();
+    prm.m60 = 0x11;
+    s32 id = *(s32*)(this_ + 0x250) + 0x69;
+    if (*(s32*)(this_ + 4) < 8) {
+        void* res = (*(SwbmResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_80466350);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, 1.0f, 1.0f, &prm);
+    }
+    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x250) + 0x69, 0, 2,
+                -1, 0, 0, 0);
+}
+
