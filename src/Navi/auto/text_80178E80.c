@@ -297,8 +297,7 @@ extern "C" u8 fn_80181CCC(char* self, u8 v) {
     if (p == 0) {
         return 0;
     }
-    void** o = *(void***)(p + 0xc);
-    if (((u16 (*)(void*))(*(void***)o)[3])(o) != 0x11) {
+    if ((*(UnkVObj_80181CCC**)(p + 0xc))->vfC() != 0x11) {
         return 0;
     }
     *(u8*)(self + 0xb5) = v;
