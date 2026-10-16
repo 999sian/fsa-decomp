@@ -11,6 +11,22 @@ extern "C" void fn_801162F4(void) {
     memset();
 }
 
+extern "C" int fn_801167D0(s16* p, s16 target, s16 step) {
+    if (step != 0) {
+        if (*p > target) {
+            step = -step;
+        }
+        *p += step;
+        if (step * (*p - target) >= 0) {
+            *p = target;
+            return 1;
+        }
+    } else if (*p == target) {
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" void fn_8011691C(unsigned short* param_1, unsigned short param_2);
 extern "C" void* fn_801168BC(void* param_1) {
 fn_8011691C((unsigned short*)param_1, 0);
