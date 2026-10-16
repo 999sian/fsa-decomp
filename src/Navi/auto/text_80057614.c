@@ -34,8 +34,7 @@ extern "C" void* fn_8005C4A0(void)
 extern int lbl_802FF128;
 extern int lbl_802FF12C;
 extern int lbl_802FF130;
-void fn_8005CAC8(void)
-{
+extern "C" void fn_8005CAC8(void) {
     lbl_802FF128 = 0;
 }
 
