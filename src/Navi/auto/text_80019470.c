@@ -5,10 +5,10 @@ extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
-struct fn_8001C88C_tag {
+typedef struct {
     int w[6];
     short h[2];
-};
+} fn_8001C88C_tag;
 extern "C" fn_8001C88C_tag lbl_802056D0;
 
 struct Quat4 {
@@ -869,6 +869,18 @@ extern "C" s32 fn_8001C6D0(void* param_1) {
         return 1;
     }
     return 0;
+}
+
+extern "C" void* fn_8001C018(void*);
+extern "C" bool fn_8001C88C(fn_8001C88C_tag* tag, void* a, void* b) {
+    *tag = lbl_802056D0;
+    cTg_Create__FP16create_tag_classPv(tag, b);
+    void* r = fn_8001C018(a);
+    if (r != 0) {
+        tag->w[5] = (int)r;
+        return true;
+    }
+    return false;
 }
 
 extern "C" void fn_8001EC90(void);
