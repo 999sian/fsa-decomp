@@ -22,3 +22,62 @@ extern "C" void* fn_8029B75C(void* this_, s16 freeFlag) {
 extern "C" void fn_8029B7BC(void) {
 }
 
+extern "C" void fn_8029B95C(void* this_) {
+    f32* v = (f32*)((u8*)this_ + 0x60);
+    u32 w = *(u32*)((u8*)this_ + 0x90);
+    switch ((w >> 17) & 3) {
+    case 0: {
+        s32 n = 1;
+        s32 m = (w >> 12) & 0x1f;
+        if (m != 0) {
+            n = m;
+        }
+        v[0] = -15.0f;
+        v[1] = 0.0f;
+        v[2] = 0.0f;
+        v[3] = 16.0f * (f32)n;
+        break;
+    }
+    case 1: {
+        s32 n = 1;
+        s32 m = (w >> 12) & 0x1f;
+        if (m != 0) {
+            n = m;
+        }
+        v[0] = 16.0f;
+        v[1] = 0.0f;
+        v[2] = 31.0f;
+        v[3] = 16.0f * (f32)n;
+        break;
+    }
+    case 2: {
+        s32 n = 1;
+        s32 m = (w >> 12) & 0x1f;
+        if (m != 0) {
+            n = m;
+        }
+        v[0] = 0.0f;
+        v[1] = -15.0f;
+        v[2] = 16.0f * (f32)n;
+        v[3] = 0.0f;
+        break;
+    }
+    case 3: {
+        s32 n = 1;
+        s32 m = (w >> 12) & 0x1f;
+        if (m != 0) {
+            n = m;
+        }
+        v[0] = 0.0f;
+        v[1] = 16.0f;
+        v[2] = 16.0f * (f32)n;
+        v[3] = 31.0f;
+        break;
+    }
+    }
+    v[8] = v[0];
+    v[9] = v[1];
+    v[10] = v[2];
+    v[11] = v[3];
+}
+
