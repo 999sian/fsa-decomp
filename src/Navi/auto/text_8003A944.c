@@ -49,8 +49,6 @@ struct VObj_80041AC4 {
     virtual void m19();
     virtual void m20();
     virtual void m21();
-    virtual void m22();
-    virtual void m23();
     virtual void vf60(s32 a, void* b);
     virtual void* vf68(s32 a);
 };
