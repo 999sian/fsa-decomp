@@ -52,8 +52,7 @@ extern "C" s32 fn_80160A44(void) {
 extern "C" u16 fn_80160A78(void* a, char* p) {
     u8* r;
     if (p[0] == '/') {
-        p++;
-        if (p[0] != 0) {
+        if (*++p != 0) {
             r = (u8*)fn_80160D88(a, p, 0);
         } else {
             r = (u8*)fn_80160D88(a, 0, 0);
@@ -106,6 +105,15 @@ extern "C" u8* fn_801618C8(u8* p, void* a, void* b) {
     fn_80166D3C(lbl_802EE2D4, p + 0x18);
     p[0x30] = 1;
     return p;
+}
+
+extern "C" BOOL fn_80161CE0(void) {
+    u8* p = (u8*)fn_801615C4();
+    if (p == NULL) {
+        return 0;
+    }
+    *(u32*)(p + 0x10) = 0;
+    return 1;
 }
 
 extern "C" void fn_8015D0B8(void*, int);
