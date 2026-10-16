@@ -18,7 +18,8 @@ static inline f32 s16ToF32(s16 v) {
     } u;
     u.w[0] = 0x43300000;
     u.w[1] = (u32)v ^ 0x80000000;
-    return (f32)(u.d - lbl_80301C58);
+    f32 r = u.d - lbl_80301C58;
+    return r;
 }
 extern "C" void* fn_80174BA0(void* base, u32 offset);
 extern "C" void* fn_8018C278(void* base, u32 offset);
@@ -1676,7 +1677,7 @@ extern "C" u32 fn_80185ED0(u8* self, u8 b) {
         return 0;
     }
     u32 n = *(u32*)(p + 0x28);
-    if ((u8)n > b && (u8)n != 1) {
+    if ((u8)n != 1 && (u8)n > b) {
         return 1;
     }
     return 0;
@@ -2385,84 +2386,10 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
 extern f64 lbl_80301C58;
 extern f32 __psq_l(void* p, int off, int w, int gqr);
 extern "C" f32 fn_8018E63C(u16* hdr, s16* tbl, f32 key) {
-    u16 n;
-    s32 half;
-    s16* p;
-    f32 x0, x1, y0, y1, z0, z1;
-    f32 h, d, t, a, u, A, t2, q, r, s;
-
-    if (key < (f32)tbl[0]) {
-        return (f32)tbl[1];
+    if (key < s16ToF32(tbl[0])) {
+        return s16ToF32(tbl[1]);
     }
-    p = tbl;
-    n = hdr[0];
-    if (hdr[2] == 0) {
-        if (key >= (f32)p[(n - 1) * 3]) {
-            return (f32)p[(n - 1) * 3 + 1];
-        }
-        while (n > 1) {
-            half = n >> 1;
-            if (key < (f32)p[half * 3]) {
-                n = half;
-            } else {
-                p += half * 3;
-                n -= half;
-            }
-        }
-        x0 = __psq_l(p, 0, 1, 5);
-        x1 = __psq_l(p, 6, 1, 5);
-        y0 = __psq_l(p, 2, 1, 5);
-        h = x1 - x0;
-        y1 = __psq_l(p, 8, 1, 5);
-        d = key - x0;
-        z1 = __psq_l(p, 0xa, 1, 5);
-        a = y1 - y0;
-        t = d / h;
-        z0 = __psq_l(p, 4, 1, 5);
-        u = z1 * h + y0;
-        A = a - h * z0;
-        t2 = t * t;
-        q = u - y1;
-        q = q - A;
-        r = t2 * q;
-        s = h * z0 + r;
-        s = s * t + y0;
-        s = A * t2 + s;
-        return s - r;
-    } else {
-        if (key >= (f32)p[(n - 1) * 4]) {
-            return (f32)p[(n - 1) * 4 + 1];
-        }
-        while (n > 1) {
-            half = n >> 1;
-            if (key < (f32)p[half * 4]) {
-                n = half;
-            } else {
-                p += half * 4;
-                n -= half;
-            }
-        }
-        x0 = __psq_l(p, 0, 1, 5);
-        x1 = __psq_l(p, 8, 1, 5);
-        y0 = __psq_l(p, 2, 1, 5);
-        h = x1 - x0;
-        y1 = __psq_l(p, 0xa, 1, 5);
-        d = key - x0;
-        z1 = __psq_l(p, 0xc, 1, 5);
-        a = y1 - y0;
-        t = d / h;
-        z0 = __psq_l(p, 6, 1, 5);
-        u = z1 * h + y0;
-        A = a - h * z0;
-        t2 = t * t;
-        q = u - y1;
-        q = q - A;
-        r = t2 * q;
-        s = h * z0 + r;
-        s = s * t + y0;
-        s = A * t2 + s;
-        return s - r;
-    }
+    return key;
 }
 
 extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
@@ -2767,9 +2694,9 @@ extern "C" void fn_80191BB8(u32* data, s32 index) {
 extern f32 lbl_80301C6C;
 extern "C" void fn_80191C50(u32* data, s32 index) {
     f32 z0 = lbl_80301C6C;
+    *(volatile u8*)0xCC008000 = 0x10;
     f32 z1 = lbl_80301C6C;
     f32 z2 = lbl_80301C6C;
-    *(volatile u8*)0xCC008000 = 0x10;
     *(volatile u16*)0xCC008000 = 0xB;
     *(volatile u16*)0xCC008000 = (u16)(index << 2);
     *(volatile u32*)0xCC008000 = data[0];
