@@ -18,10 +18,15 @@ extern "C" void dispose__7JKRHeapFv(void* param_1);
 extern "C" void __dt__7JKRHeapFv(void* param_1, s32 param_2);
 extern "C" void __dl__FPv(void* param_1);
 extern "C" void free__7JKRHeapFPvP7JKRHeap(void* p, void* heap);
+struct VirtualDtorObj {
+    virtual ~VirtualDtorObj();
+};
+
 extern "C" void fn_80085B5C(char* p) {
     void* heap = *(void**)(*(char**)(p + 0x50) + 0xc);
     if (heap != 0) {
-        (*(void (***)(char*, s32))p)[2](p, -1);
+        void (**vtbl)(char*, s32) = *(void (***)(char*, s32))p;
+        vtbl[2](p, -1);
         free__7JKRHeapFPvP7JKRHeap(p, heap);
     }
 }
