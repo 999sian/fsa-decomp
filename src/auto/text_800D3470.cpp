@@ -1584,13 +1584,17 @@ extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
         out += 4;
     }
 
-    for (out = param_1, i = 0; i < 4; i++) {
+    i = 0;
+    out = param_1;
+    for (; i < 4; i++) {
         u16* src = param_2->m23(i);
         *(u16*)(out + 0x16) = *src;
         out += 2;
     }
 
-    for (out = param_1, i = 0; i < 2; i++) {
+    i = 0;
+    out = param_1;
+    for (; i < 2; i++) {
         if (param_2->m17(i) != 0) {
             u8* src = param_2->m17(i);
             out[0xc] = src[0];
@@ -1602,17 +1606,17 @@ extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
     }
 }
 
-extern "C" void fn_800DC058(u8* self, Unk800DC058Src* src) {
-    *(u32*)(self + 4) = src->m16();
+extern "C" void fn_800DC058(u8* self, Unk800DC058Vt* src) {
+    *(u32*)(self + 4) = src->m14();
     u8* dst = self;
     for (u32 i = 0; i < 8; i++) {
-        *(u32*)(dst + 8) = *src->m18(i);
+        *(u32*)(dst + 8) = *src->m16(i);
         dst += 6;
     }
     dst = self;
     for (u32 i = 0; i < 8; i++) {
-        if (src->m20(i) != 0 && *(void**)(dst + 0x38) != 0) {
-            memcpy(*(void**)(dst + 0x38), src->m20(i), 0x94);
+        if (src->m18(i) != 0 && *(void**)(dst + 0x38) != 0) {
+            memcpy(*(void**)(dst + 0x38), src->m18(i), 0x94);
             DCStoreRange(*(void**)(dst + 0x38), 0x94);
         }
         dst += 4;
