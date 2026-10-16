@@ -217,5 +217,3 @@ extern "C" void fn_8003FBA4(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     lbl_802FEFB4[1] = (s16)(s32)d2;
     lbl_802FEFB4[2] = (s16)(s32)d3;
 }
-32)d3;
-}
