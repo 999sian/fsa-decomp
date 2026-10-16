@@ -29,10 +29,18 @@ extern "C" void fn_8012A8C0(char* this_) {
     struct Box {
         Vec2 min, max;
     };
-    s32 i = 0;
     char* p = this_;
-    Box box = {{*(f32*)(this_ + 0x60), *(f32*)(this_ + 0x64)}, {*(f32*)(this_ + 0x68), *(f32*)(this_ + 0x6c)}};
-    Box orig = {{*(f32*)(this_ + 0x60), *(f32*)(this_ + 0x64)}, {*(f32*)(this_ + 0x68), *(f32*)(this_ + 0x6c)}};
+    s32 i = 0;
+    Box box;
+    Box orig;
+    box.min.x = *(f32*)(this_ + 0x60);
+    orig.min.x = box.min.x;
+    box.min.y = *(f32*)(this_ + 0x64);
+    orig.min.y = box.min.y;
+    box.max.x = *(f32*)(this_ + 0x68);
+    orig.max.x = box.max.x;
+    box.max.y = *(f32*)(this_ + 0x6c);
+    orig.max.y = box.max.y;
     do {
         box.min.x += *(f32*)(p + 0x25c);
         box.min.y += *(f32*)(p + 0x260);
