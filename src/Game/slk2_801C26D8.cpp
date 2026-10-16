@@ -12,6 +12,9 @@ extern "C" void* fn_801C0D70();
 extern "C" void fn_801C1374(void* subRecord, s32 flag);
 extern "C" void fn_801F4F28(void* this_);
 extern "C" void fn_801C3B7C(void* this_, s32 state);
+extern "C" char fn_8021D020(void* this_);
+extern "C" void fn_8021CDE4(void* this_, s32 state);
+extern "C" void fn_80214AF8(void* this_);
 extern "C" u8 fn_801C11F0(void* rec);
 extern "C" s32 fn_801D05F8(void* this_, f32 r, void* pos);
 extern "C" u8 fn_801D0D50(void* this_, s32 idx, void* pos, f32 r);
@@ -69,6 +72,32 @@ extern "C" void fn_801C2D40(u8* this_) {
     if (*(f32*)(this_ + 0x44) < min) {
         *(f32*)(this_ + 0x44) = min;
     }
+}
+
+extern "C" void fn_801CE2BC(void* this_);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 c);
+extern "C" void fn_80214578(void* this_);
+extern "C" void fn_801C2D84(u8* this_) {
+  fn_801CE2BC(this_);
+  if (*(u8*)(this_ + 0x59c) != 0) {
+    *(u8*)(this_ + 0x59c) = *(u8*)(this_ + 0x59c) - 1;
+  }
+  if (*(s32*)(this_ + 0x564) == 3 && *(u16*)(this_ + 0x59e) != 0) {
+    s32 s = *(s32*)(this_ + 0x248);
+    switch (s) {
+    case 0x2e:
+    case 0x10:
+      *(u16*)(this_ + 0x59e) = *(u16*)(this_ + 0x59e) - 1;
+      break;
+    }
+  }
+  if (*(s32*)(this_ + 0x248) < 0x27 && *(s32*)(this_ + 0x248) >= 0x24) {
+    if (*(s32*)(this_ + 0x340) == 9 && *(u8*)(this_ + 0x34d) == 0 && *(s32*)(this_ + 0x350) == 5) {
+      fn_801F0E34(this_, 0x400c4, 0);
+      fn_801F0E34(this_, 0x400c5, 0);
+      fn_80214578(this_ + 0x4ec);
+    }
+  }
 }
 
 extern "C" void fn_800FE8C0(u8*);
