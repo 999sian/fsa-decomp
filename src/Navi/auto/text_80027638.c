@@ -70,7 +70,7 @@ extern "C" int fn_8002F100(int param_1, int param_2) {
 }
 
 extern "C" int fn_8002F168(void) {
-    char* obj = *(char**)(lbl_802BB0FC + 0xf0);
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
     if (obj != 0 && obj[0x57e] != 0) {
         return 1;
     }
