@@ -2,6 +2,14 @@
 // split_file divides it into the game's real files (file_status shows its range).
 #include <JSystem/JSupport.h>
 
+class JKRHeap;
+class JASBank;
+extern "C" JASBank* fn_8002F294(const void*, JKRHeap*);
+class JASBNKParser {
+public:
+    static JASBank* createBank(const void*, JKRHeap*);
+};
+
 void fn_80030380(short *param_1)
 {
   short sVar1;
