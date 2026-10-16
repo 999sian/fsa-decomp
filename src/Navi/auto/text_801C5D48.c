@@ -21,7 +21,7 @@ extern "C" void fn_801C8E54(void);
 extern "C" void fn_801C8D70(void);
 extern "C" void fn_801C6FF4(void* a, s32 b, s32 c, void* cb);
 extern "C" void fn_801C9060(DVDCommandBlock* block);
-extern "C" void fn_801C8554(void);
+extern "C" void fn_801C8554(u32 result);
 extern "C" void fn_801C8C24(DVDCommandBlock* block);
 
 void DVDLowReset(void);
@@ -150,6 +150,22 @@ extern "C" void fn_801C8850(u32 param_1)
 			DVDLowStopMotor(cbForStateError);
 		}
 	}
+}
+
+extern "C" void fn_801C8B48(void) {
+    fn_801C76C8(((u8*)IDShouldBe_802FF884)[8], 10, fn_801C8E54);
+}
+
+extern "C" void fn_801C8C24(DVDCommandBlock* block) {
+    fn_801C6FF4(BB2_802F7AA0, 0x20, 0x420, fn_801C8D70);
+}
+
+extern "C" void AlarmHandler(void) {
+    DVDReset();
+    DCInvalidateRange(lbl_802F7AC0, 0x20);
+    DVDCommandBlock* block = executing_802FF880;
+    lbl_802FF8C4 = fn_801C9060;
+    fn_801C9060(block);
 }
 
 extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
