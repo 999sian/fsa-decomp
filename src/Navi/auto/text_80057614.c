@@ -670,8 +670,7 @@ extern "C" void fn_8005E820(void* self) {
 }
 
 extern "C" void fn_8005E8B8(void* self, s32 a, s32 b, s32 c) {
-    void (*fn)(void*, s32, s32, s32, s32) = (void (*)(void*, s32, s32, s32, s32))(**(void****)self)[0xe8 / 4];
-    fn(self, 0, a, b, c);
+    ((VObj_8005E8B8*)self)->v56(0, a, b, c);
 }
 
 extern "C" void fn_8005E8F8(void* self, u8 idx, f32 p1, f32 p2, s32 a, s32 b, s32 c) {
