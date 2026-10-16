@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "JSystem/J2D/J2DPane.h"
 
 extern const f32 lbl_80543C88;
@@ -132,7 +133,7 @@ extern "C" void fn_8043EDE8(char* param_1, s32 param_2) {
 }
 
 extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
-    JGeometry::TVec3<f32> v = *self;
+    JGeometry::TVec3<f32> v(*self);
     fn_8043E7CC(lbl_8053AED0, &v);
 }
 
