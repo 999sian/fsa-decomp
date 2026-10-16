@@ -149,7 +149,7 @@ extern "C" void* fn_80088D50(void* param_1, s16 param_2) {
 }
 
 extern "C" void fn_80088DB0(void* obj, float x, float y) {
-    fn_8011A194(obj, x, y, lbl_803009F8);
+    fn_8011A194(obj, x, y, 12.0f);
 }
 
 extern "C" void* fn_80088DD4(u8* p) {
