@@ -23,10 +23,8 @@ extern "C" void fn_8017A468(void) {
 }
 
 extern "C" void fn_8017A4A8(void* self) {
-    if (fn_8015FDA8(self, 0) == 0) {
-        if ((u32)lbl_802FF6A0 != 0) {
-            fn_8018ECE4((void*)lbl_802FF6A0, self);
-        }
+    if (fn_8015FDA8(self, 0) == 0 && lbl_802FF6A0 != 0) {
+        fn_8018ECE4(lbl_802FF6A0, self);
     }
 }
 
@@ -175,6 +173,10 @@ extern "C" int fn_8018A064(void* self, s32* param_2) {
 
 extern "C" void fn_8018A87C(void) {
     fn_80177E84();
+}
+
+extern "C" void fn_8018A8A0(void) {
+    fn_80178990();
 }
 
 extern "C" void fn_8018A8C0(void) {
