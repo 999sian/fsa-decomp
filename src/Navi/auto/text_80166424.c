@@ -1208,10 +1208,9 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    u8* p = p1 + p2 * 4;
-    p[0x16] = p3[0];
-    p[0x17] = p3[1];
-    p[0x18] = p3[2];
+    p1[p2 * 4 + 0x16] = p3[0];
+    p1[p2 * 4 + 0x17] = p3[1];
+    p1[p2 * 4 + 0x18] = p3[2];
 }
 
 extern "C" s32 fn_80172640(s32 p, s32 i) {
@@ -1231,6 +1230,10 @@ extern "C" void fn_801727E4(void* self, int a, int b) {
         virtual void vf7C(int, int, int);
     };
     ((Obj*)self)->vf7C(a, b, 0);
+}
+
+extern "C" u32 fn_80172854(u8* param_1) {
+    return *(u32*)(param_1 + 0x1ac);
 }
 
 extern "C" int fn_80172884(void) {
