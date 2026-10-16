@@ -41,6 +41,10 @@ extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
     return p[0x148 / 4];
 }
 
+extern "C" int fn_80184B2C(unsigned char* self) {
+    return *(int*)(self + 0x160);
+}
+
 extern "C" void fn_801788C0(void);
 extern "C" void fn_80184C34(void) {
     fn_801788C0();
