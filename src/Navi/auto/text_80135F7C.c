@@ -713,7 +713,7 @@ extern void* lbl_80292EB4[];
 extern void* lbl_80292B94[];
 extern "C" u8 fn_8013A48C(void* p, u32 x);
 extern "C" void fn_80167BB0(void* p, u32 x);
-extern "C" void* fn_80167818(void* x);
+extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
     while (*c != *b && !fn_8013A48C((u8*)*b - 0xc, d)) {
@@ -723,7 +723,7 @@ extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
 }
 
 extern "C" void fn_8013A424(void** a, s32* b) {
-    void* r = fn_80167818(*a);
+    void* r = fn_80167818(*a, b, b + 1, 0);
     if (*b == 0) {
         ((void**)b)[2] = 0;
         ((void**)b)[3] = r;
