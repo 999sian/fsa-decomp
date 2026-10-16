@@ -43,6 +43,24 @@ extern "C" void* fn_800D63D4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" unsigned char fn_8010EA18(void*);
+extern "C" void fn_801103DC(void*);
+extern char lbl_802BB0FC[];
+extern "C" void fn_800D64E4(char* p) {
+    if (fn_8010EA18(*(void**)(p + 0x20)) == 1) {
+        if (*(void**)(p + 0x20) != 0) {
+            fn_801103DC(*(void**)(p + 0x20));
+            DtorVObj_800D64E4* o = *(DtorVObj_800D64E4**)(p + 0x20);
+            if (o != 0) {
+                o->Destroy(1);
+            }
+            *(void**)(p + 0x20) = 0;
+        }
+        *(unsigned int*)(lbl_802BB0FC + 0xf8) |= 0x400;
+        *(unsigned char*)(p + 0x130) = 0;
+    }
+}
+
 extern void* lbl_80283F48[];
 extern "C" void* fn_800D6574(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
