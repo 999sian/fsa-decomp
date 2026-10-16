@@ -593,9 +593,11 @@ extern "C" u8 fn_80428448() {
     lbl_8053AEA4 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->fbWidth - lbl_8052BEC0[0]) >> 1;
     lbl_8053AEA8 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->efbHeight - lbl_8052BEC0[1]) >> 1;
     fn_804291F0((u8*)lbl_8053AEAC);
-    u32 r = 0;
+    s32 r;
     if (lbl_8052BECC[3] != 1) {
         r = OSGetTick() % lbl_8052BECC[3];
+    } else {
+        r = 0;
     }
     lbl_8053AEB0 = r;
     if (!((u8 (*)(s32, s32))fn_80428AC8)(0, 0)) {
@@ -1560,7 +1562,7 @@ extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
         if (lbl_8052AAD0.audioExist) {
             while (lbl_8052AAD0.mD8 < 0) {
                 readBuffer = (THPReadBuffer*)fn_8042E674();
-                if ((u32)(lbl_8052AAD0.initReadFrame + readBuffer->frameNumber) % (u32)lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
+                if ((lbl_8052AAD0.initReadFrame + readBuffer->frameNumber) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
                     !(lbl_8052AAD0.playFlag & 1)) {
                     fn_8042E64C(readBuffer);
                 }
@@ -1689,8 +1691,7 @@ extern "C" void fn_8042AE74(ReadThreadObj* t, u32) {
         fn_8042E70C((u32)readBuffer);
         offset += size;
         size = fn_8042AF54(readBuffer);
-        s32 frame = readFrame + lbl_8052AAD0.initReadFrame;
-        if (frame % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+        if ((readFrame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
             if (lbl_8052AAD0.playFlag & 1) {
                 offset = lbl_8052AAD0.header.movieDataOffsets;
             } else {
@@ -1776,6 +1777,34 @@ extern "C" u8 fn_8042B148() {
     fn_8042B1A8();
     lbl_8053AE78 = 1;
     return 1;
+}
+
+extern "C" void fn_8042CC50(u32 param_1, u32 param_2, u32 param_3)
+{
+    u16 uVar2;
+    u16 uVar1;
+
+    *(u32*)(lbl_8053AE74 + 0x6b0) = param_1;
+    *(u32*)(lbl_8053AE74 + 0x6b4) = param_2;
+    *(u32*)(lbl_8053AE74 + 0x6b8) = param_3;
+    uVar2 = *(u16*)(lbl_8053AE74 + 0x698);
+    uVar1 = *(u16*)(lbl_8053AE74 + 0x694);
+    fn_8042CD38();
+    fn_8042CD64();
+    if (*(u16*)(lbl_8053AE74 + 0x692) == 0x200 && uVar1 == 0x1c0) {
+        for (; uVar2 < uVar1; uVar2 += 0x10) {
+            fn_8042C9F8();
+        }
+    } else if (*(u16*)(lbl_8053AE74 + 0x692) == 0x280 && uVar1 == 0x1e0) {
+        for (; uVar2 < uVar1; uVar2 += 0x10) {
+            fn_8042C79C();
+        }
+    } else {
+        for (; uVar2 < uVar1; uVar2 += 0x10) {
+            fn_8042B1DC();
+        }
+    }
+    fn_8042CD24();
 }
 
 extern u8* lbl_8053AE74;
