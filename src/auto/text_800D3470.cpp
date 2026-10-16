@@ -280,6 +280,25 @@ extern "C" void fn_800D69B4(void* p) {
     }
 }
 
+extern "C" void fn_800D6A5C(void* p) {
+    u8* mtx = (u8*)p;
+    u8* gen = (u8*)p;
+    u32 i = 0;
+    *(u32*)((u8*)p + 0x58) = (u8*)__GDCurrentDL->pDisplayListData - (u8*)__GDCurrentDL->begin;
+    for (; i < 8; i++) {
+        void* obj = *(void**)(mtx + 0x38);
+        if (obj != 0 && *(u8*)(gen + 0xa) != 0x3c) {
+            load__9J3DTexMtxCFUl(obj, i);
+        }
+        mtx += 4;
+        gen += 6;
+    }
+    u32 val = *(u32*)((u8*)p + 4);
+    if (val != 0) {
+        loadTexCoordGens__FUlP11J3DTexCoord(val, (u8*)p + 8);
+    }
+}
+
 extern "C" void fn_800D6CEC(void* r3, u32 r4) {
     if ((r4 >> 8) & 0xf) {
         (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
