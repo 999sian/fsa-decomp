@@ -380,6 +380,24 @@ extern "C" void* fn_80174BB8(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" u8 fn_80177F0C(char* self, void* arg)
+{
+    char* n = *(char**)(self + 0xdc);
+    if (n != 0) {
+        n -= 0xc;
+    }
+    while (n != 0) {
+        if ((*(UnkVObj_80166424**)(n + 0xc))->vf18(arg)) {
+            return 1;
+        }
+        n = *(char**)(n + 0x18);
+        if (n != 0) {
+            n -= 0xc;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_801780D4(char* self, u8 v)
 {
     char* n;
