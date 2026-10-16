@@ -18,7 +18,7 @@ extern "C" void fn_8001A970(void*);
 extern u8 lbl_8029FDB4[];
 extern "C" int fn_800636A0(void*, void*, int);
 extern "C" unsigned int fn_8001C554(void*, int*);
-extern "C" void fn_8001E8B4(void);
+extern "C" void* fn_8001E8B4(void* param_1, u32* param_2);
 extern u8 lbl_802B7CA0[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80019470-0x80021014 (291 functions). split_file divides it into the game's real files.
@@ -64,10 +64,12 @@ extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
 extern "C" void fn_80019470(f32* d, const Vec* s, f32 w) {
     f32 x = s->x;
-    f32 y = s->y;
+    f32 y;
     d[0] = x;
+    y = s->y;
+    f32 z = s->z;
     d[1] = y;
-    d[2] = s->z;
+    d[2] = z;
     d[3] = w;
 }
 
