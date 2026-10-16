@@ -5,6 +5,20 @@ extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 extern "C" char* fn_8016A3AC(void);
 extern "C" void fn_801EE434(void*);
+extern "C" u8 fn_802DEBF8(void);
+extern "C" void fn_80458FF0(void* obj, u32 id, s32 a, s32 b);
+extern void* lbl_8053AF80;
+extern "C" u8 fn_802DEBF8(void);
+extern "C" void fn_80458FF0(void* obj, u32 id, s32 a, s32 b);
+extern void* lbl_8053AF80;
+extern "C" void fn_802B3674(void) {
+    s32 mode = *(s32*)((char*)lbl_8053AF80 + 0x60);
+    u8 busy = fn_802DEBF8();
+    if (busy == 0 && mode != 0 && mode != 0x1000021 && mode != 0x1000009 && mode - 0x1000018 > 1 && mode != 0x1000001 && mode != 0x100000d && mode != 0x1000007 && mode != 0x100002e && mode != 0x1000029 && mode != 0x1000024 && mode != 0x100000e) {
+        fn_80458FF0(lbl_8053AF80, 0x100000e, 0, 0);
+    }
+}
+
 extern "C" void fn_802B39E8(char* p) {
     *(s32*)(p + 0x290) = 0;
     if (*(void**)(p + 0x23c) != NULL) {
