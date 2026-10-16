@@ -934,16 +934,19 @@ extern "C" int fn_80171640(u8* p, u32 idx, void* val)
 }
 
 #pragma pop
-extern "C" int fn_801719B4(void* param_1, void* param_2) {
-    if (param_2 == 0) {
+extern "C" int fn_801719B4(u8* p, DtorVObj_80166424* obj) {
+    DtorVObj_80166424* old;
+    if (obj == 0) {
         return 0;
     }
-    if (*(u8*)((u8*)param_1 + 0x1b1) != 0 && *(void**)((u8*)param_1 + 0x1ac) != 0) {
-        void* obj = *(void**)((u8*)param_1 + 0x1ac);
-        (*(void (**)(void*, int))(*(u32*)obj + 8))(obj, 1);
+    if (p[0x1b1]) {
+        old = *(DtorVObj_80166424**)(p + 0x1ac);
+        if (old != 0) {
+            old->Destroy(1);
+        }
     }
-    *(u8*)((u8*)param_1 + 0x1b1) = 0;
-    *(void**)((u8*)param_1 + 0x1ac) = param_2;
+    *(void**)(p + 0x1ac) = obj;
+    p[0x1b1] = 0;
     return 1;
 }
 
