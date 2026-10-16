@@ -12,6 +12,18 @@ extern "C" int fn_80058A28(int x);
 extern "C" void fn_80057C38(int x);
 extern "C" void fn_8001A454(int a, int b, int c);
 extern u8 lbl_802B7CA0[];
+struct VObj_80088CF8 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7();
+};
+extern "C" void fn_8011A194(void* obj, float x, float y, float z);
+extern "C" float lbl_803009F8;
 extern "C" int fn_80087348(void* param_1) {
     int ret = fn_800636A0(param_1, lbl_802B7CA0 + 0x2200, 0x40);
     if (ret < 0) {
