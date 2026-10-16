@@ -3,7 +3,7 @@
 extern "C" int fn_802486A0(void*);
 extern "C" int fn_80248778(void*);
 extern "C" int fn_80240888(void*);
-extern "C" char fn_8025F448(char* p);
+extern "C" unsigned char fn_8025F448(char* p);
 extern "C" int fn_8023DE58(void);
 extern "C" void fn_80265D68(char* p)
 {
@@ -23,6 +23,43 @@ extern "C" void fn_80265D8C(char* p)
         return;
     }
     *(unsigned char*)(p + 0xca0) = 0xff;
+}
+
+extern "C" void fn_80265DB0(char* p)
+{
+    unsigned short v;
+    if (*(unsigned short*)(p + 0x3c4) == 0x122) {
+        *(unsigned char*)(p + 0xca1) = 0;
+        return;
+    }
+    v = *(unsigned short*)(p + 0x3c4);
+    if (v >= 0xb7 && v < 0xbd) {
+        *(unsigned char*)(p + 0xca1) = 0;
+        return;
+    }
+    if (*(int*)(p + 0x3b4) > 8) {
+        *(unsigned char*)(p + 0xca1) = 0;
+        return;
+    }
+    if (*(int*)(p + 0x3b4) == 8) {
+        *(unsigned char*)(p + 0xca1) = 0xff;
+        return;
+    }
+    if (fn_8025F448(p) != 0) {
+        if (*(int*)(p + 0xd70) < 0 || fn_8023DE58() != 8) {
+            if (*(unsigned char*)(p + 0xca1) >= 8) {
+                *(unsigned char*)(p + 0xca1) -= 8;
+                return;
+            }
+            *(unsigned char*)(p + 0xca1) = 0;
+            return;
+        }
+    }
+    if (*(unsigned char*)(p + 0xca1) <= 0xf7) {
+        *(unsigned char*)(p + 0xca1) += 8;
+        return;
+    }
+    *(unsigned char*)(p + 0xca1) = 0xff;
 }
 
 extern "C" void fn_80267018(char* p)
