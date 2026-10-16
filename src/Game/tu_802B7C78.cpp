@@ -31,7 +31,7 @@ extern "C" Actor* fn_802B7C78(Actor* p, s16 n) {
 extern "C" void fn_802B7CD8(void* this_) {
     fn_802D6A9C();
     fn_802D9FBC();
-    (*(void (**)(void*))(*(char**)this_ + 0x24))(this_);
+    ((ActorSlot9*)this_)->slot9();
 }
 
 extern "C" void fn_802B8420(char* this_) {
