@@ -433,6 +433,9 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" void fn_8015CD94(void) {
+}
+
 extern "C" void fn_801BE3A0(void*);
 extern "C" void fn_801BE47C(void*);
 extern "C" void fn_8015A48C(void*);
