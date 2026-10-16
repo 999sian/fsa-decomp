@@ -4,6 +4,8 @@
 #include "types.h"
 
 extern volatile s32 lbl_8053BC70;
+extern "C" char lbl_8049AA38[];
+extern "C" char __vt__10J3DPEBlock[];
 
 #include <types.h>
 
