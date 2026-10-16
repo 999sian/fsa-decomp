@@ -147,6 +147,10 @@ extern "C" u8 fn_80172998(int param_1, int param_2) {
     return *(u8*)(param_1 + param_2 + 0xb0);
 }
 
+extern "C" void fn_801729A4(int param_1, u8 param_2) {
+    *(u8*)(param_1 + 0x56) = param_2;
+}
+
 extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
 }
