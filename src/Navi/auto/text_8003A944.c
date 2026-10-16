@@ -15,6 +15,8 @@ extern s64 lbl_802FFEC8;
 extern s16 lbl_802FEFB4[];
 extern u8 lbl_802FEF6C[8];
 extern u8 lbl_802FEF74[4];
+extern f32 lbl_802FEE74;
+extern f32 lbl_802FEE78;
 extern "C" void fn_801E41AC(void* dst, void* src, ...);
 extern "C" void fn_801E66C0(void* dst, void* src);
 extern "C" void* fn_800F0D64(void* p);
