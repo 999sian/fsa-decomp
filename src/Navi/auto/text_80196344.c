@@ -723,6 +723,10 @@ extern "C" void fn_801A456C(u8* p1, s32 i, u32* pv) {
     *((u32*)(p1 + (i << 2) + 0xa)) = *pv;
 }
 
+extern "C" void fn_801A4580(u8* p1, s32 i, u32* pv) {
+    *((u32*)(p1 + (i << 2) + 0xa)) = *pv;
+}
+
 extern "C" u8* fn_801A4594(u8* p, s32 i) { return p + i * 4 + 10; }
 
 extern "C" BOOL fn_801A45B0(void);
