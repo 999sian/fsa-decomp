@@ -137,6 +137,25 @@ extern "C" void fn_8017A928(void) {
     fn_801788C0();
 }
 
+extern "C" void* fn_8017AA68(u32* self, int a, int b, int c) {
+    fn_80176550(self);
+    *(void**)self = lbl_80298DF0;
+    self[0x40] = 0;
+    self[0x41] = 0;
+    self[0x42] = 0;
+    self[0x43] = 0;
+    self[0x44] = 0;
+    self[0x49] = 0;
+    self[0x4a] = -1;
+    self[0x4b] = -1;
+    self[0x4c] = -1;
+    self[0x4d] = -1;
+    self[0x4e] = -1;
+    self[0x4f] = -1;
+    fn_8017B07C(self, a, b, c);
+    return self;
+}
+
 extern "C" int fn_80180B60(u8* self, u8* src) {
     u8 a = src[0];
     u8 b = src[1];
