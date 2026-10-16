@@ -33,12 +33,12 @@ extern "C" void fn_8017A908(void) {
 }
 
 extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
-    int* p;
+    unsigned char* p;
     if (idx >= 4) {
         return 0;
     }
-    p = (int*)(self + (idx << 2));
-    return p[0x148 / 4];
+    p = self + (idx << 2);
+    return *(int*)(p + 0x148);
 }
 
 extern "C" int fn_80184B2C(unsigned char* self) {
@@ -53,6 +53,10 @@ extern "C" void fn_80184C34(void) {
 extern "C" void fn_80178990(void);
 extern "C" void fn_8018903C(void) {
     fn_80178990();
+}
+
+extern "C" void fn_8018905C(void) {
+    fn_801788C0();
 }
 
 extern void* lbl_80299504[];
