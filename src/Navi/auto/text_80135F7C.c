@@ -23,7 +23,9 @@ struct StrideIter {
 };
 
 static inline s32 StrideIter_distance(StrideIter first, StrideIter last) {
-    return (last.p - first.p) / last.stride;
+    StrideIter* f = &first;
+    StrideIter* l = &last;
+    return (l->p - f->p) / l->stride;
 }
 
 static inline s32 KeyIter_distance(KeyIter first, KeyIter last) {
@@ -837,11 +839,11 @@ extern "C" StrideIter fn_801393E4(StrideIter first, StrideIter last, const f64& 
         s32 half = len / 2;
         StrideIter mid = first;
         mid += half;
-        if (val < *mid.p) {
-            len = half;
-        } else {
+        if (!(val < *mid.p)) {
             first = ++mid;
             len = len - half - 1;
+        } else {
+            len = half;
         }
     }
     return first;
@@ -906,7 +908,7 @@ extern "C" void fn_801397A8(void* param_1, void* param_2) {
 
 extern "C" void fn_801397C8(void* param_1, void* param_2) {
     s32* p = *(s32**)((u8*)param_2 + 8);
-    fn_8013785C((u8*)param_1 + 0x18, (s32)(p + 1), *p);
+    fn_8013785C((u8*)param_1 + 0x18, (s32)p + 4, *p);
 }
 
 extern u8 lbl_80292CD8[];
