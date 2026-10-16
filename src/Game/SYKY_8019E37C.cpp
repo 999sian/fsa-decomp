@@ -9,7 +9,7 @@ extern "C" void fn_801F02BC(void* p, f32 a, f32 b, const char* s, s32 x, s32 y, 
 extern "C" u8 fn_8022F478(s32 i);
 extern "C" s32 fn_8022F340(u32 p);
 extern "C" void fn_8019E480(u8* p);
-extern "C" void fn_8019E7A4(u8* p = 0);
+extern "C" void fn_8019E7A4(u8* p);
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern const f32 lbl_8053E464;
 extern const char lbl_80468494[];
