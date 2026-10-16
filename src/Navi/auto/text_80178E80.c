@@ -1,4 +1,6 @@
 #include "types.h"
+extern "C" void fn_801788C0(void);
+
 
 
 extern "C" void fn_80177E84(void);
@@ -30,6 +32,10 @@ extern "C" void fn_8017A4F8(void* self) {
 extern "C" void fn_80178990(void);
 extern "C" void fn_8017A908(void) {
     fn_80178990();
+}
+
+extern "C" void fn_8017A928(void) {
+    fn_801788C0();
 }
 
 extern "C" int fn_80184B08(unsigned char* self, unsigned char idx) {
