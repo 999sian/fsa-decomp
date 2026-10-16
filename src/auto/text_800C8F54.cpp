@@ -64,6 +64,26 @@ extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4)
     }
 }
 
+extern unsigned int j3dDefaultBlendInfo;
+extern "C" void fn_800CBA88(unsigned int* out, void* self, int idx) {
+    unsigned char* p = (unsigned char*)self;
+    unsigned short i = *(unsigned short*)(*(unsigned char**)(p + 4) + (*(unsigned short**)(p + 8))[idx] * 0x14c + 0x148);
+    if (i != 0xffff) {
+        *out = (*(unsigned int**)(p + 0x64))[i];
+        return;
+    }
+    *out = j3dDefaultBlendInfo;
+}
+
+extern "C" unsigned char fn_800CBB2C(void* self, int idx) {
+    unsigned char* p = (unsigned char*)self;
+    unsigned char i = (*(unsigned char**)(p + 4))[(*(unsigned short**)(p + 8))[idx] * 0x14c + 5];
+    if (i != 0xff) {
+        return (*(unsigned char**)(p + 0x6c))[i];
+    }
+    return 0;
+}
+
 extern "C" u32 fn_800CBC48(void) {
     return 0x50454E4C;
 }
