@@ -31,6 +31,40 @@ extern "C" void* fn_80012970(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" s32 lbl_802FEBC0;
+extern "C" s32 lbl_802FEBD0;
+extern "C" s32 lbl_802FED88;
+extern "C" u8 lbl_802B7CA0[];
+extern "C" void fn_8002F330(s32);
+extern "C" BOOL fn_80019930(void);
+extern "C" void fn_8001A454(void*, s32, s32, s32);
+extern "C" void fn_8001A4F4(s32, s32);
+extern "C" void fn_801C1174(void*);
+extern "C" BOOL fn_80012AE8(void* self) {
+    if (lbl_802FEBC0 == 0) {
+        return 0;
+    }
+    if (lbl_802B7CA0[0x344c] == 0) {
+        fn_8002F330(0x1e);
+        lbl_802FEBD0 = 0x3c;
+        if (fn_80019930() == 0) {
+            fn_8001A454(self, 1, 0, 0x12c);
+            fn_8001A4F4(1, 0);
+        }
+        lbl_802FED88 = 0;
+        lbl_802B7CA0[0x344c] = 1;
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" int fn_80012D0C(int* p) {
+    if (*p != 0) {
+        *p = *p - 1;
+    }
+    return *p;
+}
+
 extern "C" int fn_801C0884(void*, void*, void*, void*, u32, s32, u16);
 extern "C" int fn_801C0EEC(void*);
 extern "C" void* fn_80012D28(void*);
