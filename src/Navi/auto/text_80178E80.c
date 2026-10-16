@@ -1,6 +1,12 @@
 
 
 #include "types.h"
+struct VObj_80178E10 {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5();
+    virtual void vf20(int mode);
+};
+
 extern void* lbl_80286A1C[];
 extern f32 lbl_80301C30;
 extern "C" void* fn_80174BA0(void* base, u32 offset);
@@ -1489,6 +1495,14 @@ extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
     ((void (*)(void*, f32*))(*(void***)self)[0x94 / 4])(self, rect);
 }
 
+extern "C" void fn_80184BB8(VObj_80178E10* self, u8 flag) {
+    int mode = 0;
+    if (flag) {
+        mode = 2;
+    }
+    self->vf20(mode);
+}
+
 extern "C" void fn_80184BF4(void) {
     fn_80177F0C();
 }
@@ -1983,8 +1997,9 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
+    void* a = lbl_802994F0;
     *(void**)ptr = lbl_80299504;
-    *(void**)ptr = lbl_802994F0;
+    *(void**)ptr = a;
 }
 
 extern "C" void fn_80178990(void);
