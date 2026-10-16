@@ -184,3 +184,14 @@ extern "C" int gdev_cc_shutdown()
 	return 0;
 }
 
+extern "C" void fn_801EFCC0(void* p, void* buf, int len);
+#pragma dont_inline on
+extern "C" DSError gdev_cc_initialize(void* param_1, void* param_2)
+{
+	MWTRACE(1, lbl_802033B4);
+	fn_801F0520(param_1, param_2);
+	MWTRACE(1, lbl_802033C8);
+	fn_801EFCC0(lbl_802FB6D8, lbl_802FB1D8, 0x500);
+	return DS_NoError;
+}
+#pragma dont_inline reset
