@@ -413,6 +413,8 @@ extern "C" int fn_80198FC0()
 	return 0;
 }
 
+extern "C" void fn_80198FC8(void) {}
+
 extern "C" void fn_80198FCC(void) {}
 
 extern "C" void fn_80198FD0(void) {}
