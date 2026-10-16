@@ -653,6 +653,17 @@ extern "C" void* fn_80010428(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80010C28(void* self, f32 value) {
+    u8* p = (u8*)self;
+    if (*(f32*)(p + 0x2c) < lbl_802FFB6C || value <= lbl_802FFB6C) {
+        *(f32*)(p + 0x28) = lbl_802FFB68;
+    } else {
+        *(f32*)(p + 0x28) = lbl_802FFB6C;
+        *(f32*)(p + 0x30) = lbl_802FFB68 / value;
+    }
+    *(f32*)(p + 0x2c) = *(f32*)(p + 0x28);
+}
+
 extern "C" u8 lbl_80301D1C[];
 extern "C" char lbl_80202614[];
 extern "C" void fn_8000F080(void* self, char* param_2);
@@ -681,7 +692,7 @@ extern "C" void fn_80010DF0(void* self) {
         void* b = *(void**)((u8*)*(void**)((u8*)self + 4) + 4);
         void* d = **(void***)((u8*)b + 0x28);
         *(void**)((u8*)d + 0x54) = self;
-        ((NaviActor*)*(void**)((u8*)self + 4))->vf4();
+        ((NaviActor*)*(void**)((u8*)self + 4))->vf2();
     }
 }
 
