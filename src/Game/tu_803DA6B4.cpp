@@ -8,13 +8,12 @@ struct Tu803DA6B4Sub {
 struct Tu803DA6B4Pane {
     virtual void v00();
     virtual void v04();
-    virtual void v08();
-    virtual void v0C();
     virtual void move(f32 x, f32 y);
     virtual void v14();
     virtual void v18();
     virtual void v1C();
     virtual void v20();
+    virtual void v24();
     virtual void setAlpha(s32 alpha);
 };
 
@@ -50,7 +49,7 @@ extern "C" void fn_803DA6B4(Tu803DA6B4Owner* this_) {
     this_->mZ = lbl_805435B0;
     if (this_->m20 != 0) {
         this_->m1C++;
-        if (this_->m1C < 0x1b) {
+        if (this_->m1C <= 0x1a) {
             s32 d;
             if (this_->m1C < 13) {
                 d = 13 - this_->m1C;
@@ -65,9 +64,9 @@ extern "C" void fn_803DA6B4(Tu803DA6B4Owner* this_) {
             }
         }
         if (this_->m21 != 1) {
-            this_->mpPane1->move(this_->mX, this_->mY + lbl_804774A0[this_->m21]);
-            this_->mpPane0->setAlpha((s32)((f32)this_->mAlpha0 * this_->mZ));
-            this_->mpPane1->setAlpha((s32)((f32)this_->mAlpha1 * this_->mZ));
+            ((Tu803DA6B4Pane*)this_->mpPane1)->move(this_->mX, this_->mY + lbl_804774A0[this_->m21]);
+            ((Tu803DA6B4Pane*)this_->mpPane0)->setAlpha((s32)((f32)this_->mAlpha0 * this_->mZ));
+            ((Tu803DA6B4Pane*)this_->mpPane1)->setAlpha((s32)((f32)this_->mAlpha1 * this_->mZ));
             fn_8013B490(lbl_8053AB10);
             ((J2DScreen*)this_->mpSub)->draw(lbl_805435B0, lbl_805435B0, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
         }
