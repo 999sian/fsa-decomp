@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry.h"
+#include "std/math.h"
 
 extern "C" char lbl_8049D940[];
 extern f32 lbl_8053C6D0;
@@ -52,10 +53,10 @@ extern "C" void fn_801169E8(char* p) {
     *(f32*)(p + 0x14) = lbl_8053C704;
     *(f32*)(p + 0x3c) = *(f32*)(p + 0x40) = *(f32*)(p + 0x44) = lbl_8053C6D0;
     *(u8*)(p + 0x11d) = 0;
-    fn_801D2608(p + 0x238, &lbl_80539F08, 1);
+    fn_801D2608(p + 0x238, (void*)lbl_80539F08, 1);
     fn_801D22DC(p + 0x238, 0, 2, 0);
     fn_801D1F14(p + 0x238, lbl_8053C6D0);
-    fn_801D2608(p + 0x270, &lbl_80539F08, 1);
+    fn_801D2608(p + 0x270, (void*)lbl_80539F08, 1);
     fn_801D22DC(p + 0x270, 0, 2, 0);
     fn_801D1F14(p + 0x270, lbl_8053C6D0);
     *(JGeometry::TVec3<f32>*)(p + 0x308) = *(JGeometry::TVec3<f32>*)(p + 0xc);
