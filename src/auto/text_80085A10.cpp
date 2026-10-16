@@ -184,3 +184,15 @@ extern "C" u32 fn_80086A48(void) {
     return 0x554e4954;
 }
 
+extern "C" char __vt__10JSUIosBase[];
+extern "C" void __dl__FPv(void* p);
+extern "C" char* __dt__10JSUIosBaseFv(char* p, s16 flag) {
+    if (p != 0) {
+        *(void**)p = __vt__10JSUIosBase;
+        if (flag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
