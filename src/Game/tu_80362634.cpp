@@ -52,3 +52,15 @@ extern "C" void fn_80365AB8(Unk80365AB8* self) {
     (self->*lbl_804ADDE8[*(s32*)((u8*)self + 0x234)])();
 }
 
+extern "C" void fn_80365AF0(Unk80365AB8* self) {
+    if (*(s8*)((u8*)self + 0x230) == 0) {
+        if (*(s32*)((u8*)self + 0x248) != 0) {
+            *(s32*)((u8*)self + 0x248) -= 1;
+        }
+        if (*(s32*)((u8*)self + 0x25c) != 0) {
+            *(s32*)((u8*)self + 0x25c) -= 1;
+        }
+        (self->*lbl_804ADC38[*(s32*)((u8*)self + 0x234)])();
+    }
+}
+
