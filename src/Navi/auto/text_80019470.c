@@ -297,7 +297,7 @@ extern "C" void fn_8001A370(u8* param_1) {
 
 extern "C" void fn_80114C94(void*, void*, void*);
 extern "C" void fn_8011583C();
-extern "C" void fn_8001E89C();
+extern "C" void* fn_8001E89C(void* param_1, s16* param_2);
 extern "C" int fn_8001A828(int, int, int, int, int, int);
 extern u8 lbl_80205620[];
 extern int lbl_802FB9C0;
@@ -677,16 +677,12 @@ extern "C" int fn_8001BC10(int param_1) {
 
 #pragma dont_inline on
 extern "C" void* fn_8001BC68(void* param_1) {
-    if (*((s8*)param_1 + 0xc) == 2) {
-        if (fn_8001EB7C(param_1, 1) != 1) {
-            if (fn_8002689C() != 1) {
-                return fn_8001ACEC(param_1);
-            }
-        }
+    void* result = NULL;
+    if (*((u8*)param_1 + 0xc) == 2 && fn_8001EB7C(param_1, 1) != 1 && fn_8002689C() != 1) {
+        result = fn_8001ACEC(param_1);
     }
-    return NULL;
+    return result;
 }
-
 extern "C" s32 fn_8001BCC8(void* param_1) {
     u8* p = (u8*)param_1;
     u8* tag = *(u8**)(*(u8**)(p + 0x2c) + 0x18);
