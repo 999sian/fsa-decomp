@@ -1494,6 +1494,11 @@ extern "C" void fn_8001F73C(u8* param_1, f32 param_2) {
     param_1[4] |= 0x80;
 }
 
+extern "C" void fn_8001F750(u8* param_1, u32 param_2) {
+    *(u32*)(param_1 + 8) = param_2;
+    param_1[4] |= 1;
+}
+
 extern "C" void fn_8001F7F0(int param_1, f32* param_2) {
     f32 t0, t1, t2;
     t0 = param_2[0], t1 = param_2[1];
