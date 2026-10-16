@@ -2,7 +2,7 @@
 extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
 extern char lbl_80297240[];
 extern char lbl_80297250[];
-extern char lbl_802FE168[];
+extern char lbl_802FE168;
 extern "C" u32 fn_80159E0C(void* p, u32 r4);
 extern "C" void* fn_80159BE0(u32 size, u32 r4, void* p);
 extern "C" void* fn_8015C89C(void* p, void* p2, u32 size, void* r6, void* r7);
@@ -719,6 +719,26 @@ extern "C" long fn_8015BAE8(char* p) {
     }
     fn_801BE47C(p + 0x18);
     return sum;
+}
+
+extern "C" void fn_8015BB50(char* p, char* q) {
+    char* tail;
+    if (q == 0) {
+        fn_8011C9EC(lbl_80297240, 0x620, (const char*)&lbl_802FE168, lbl_80297250);
+    }
+    tail = *(char**)(p + 0x84);
+    *(u16*)q = 0x484d;
+    if (tail != 0) {
+        *(char**)(tail + 0xc) = q;
+        *(char**)(q + 8) = tail;
+    } else {
+        *(char**)(q + 8) = 0;
+    }
+    *(char**)(p + 0x84) = q;
+    if (*(char**)(p + 0x80) == 0) {
+        *(char**)(p + 0x80) = q;
+    }
+    *(char**)(q + 0xc) = 0;
 }
 
 #pragma pop
