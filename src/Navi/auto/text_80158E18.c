@@ -5,6 +5,9 @@
 extern void* lbl_8029796C[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80159C6C(void*, int);
+struct Unk8015AD64 {
+    virtual void vf08(int);
+};
 struct Unk802FF544 {
     virtual void vf08();
     virtual void vf0C();
