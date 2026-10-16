@@ -12,6 +12,24 @@ extern "C" int fn_801E6EB4()
 	return 0;
 }
 
+extern "C" unsigned int OSGetConsoleType(void);
+extern "C" int fn_801E6E60(void);
+extern "C" int WriteUARTN(void*, unsigned long);
+extern "C" void fn_801EF5AC(int, void*, unsigned long*, int);
+extern "C" int fn_801E6EBC(volatile int a, void* buf, unsigned long* len, volatile int d) {
+    if ((OSGetConsoleType() & 0x20000000) == 0) {
+        if (fn_801E6E60() != 0) {
+            return 1;
+        }
+        if (WriteUARTN(buf, *len) != 0) {
+            *len = 0;
+            return 1;
+        }
+    }
+    fn_801EF5AC(a, buf, len, d);
+    return 0;
+}
+
 extern "C" double fn_801E9880(double x, double y) {
     *(unsigned int*)&x = (*(unsigned int*)&x & 0x7fffffff) | (*(unsigned int*)&y & 0x80000000);
     return x;
