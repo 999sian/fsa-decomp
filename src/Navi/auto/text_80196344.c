@@ -182,9 +182,9 @@ extern "C" u32 fn_80197B4C(void* param_1) {
 extern "C" void fn_80198298(u8* param_1) {
     *(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x34) = *(u32*)(param_1 + 0x20);
     fn_80193D9C((u32*)*(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x20));
-    ((NaviVObj*)*(void**)(param_1 + 0x2c))->vf10();
-    ((NaviVObj*)*(void**)(param_1 + 0x24))->vf4();
-    ((NaviVObj*)*(void**)(param_1 + 0x28))->vf8();
+    ((NaviVObj*)*(void**)(param_1 + 0x2c))->vf8();
+    ((NaviVObj*)*(void**)(param_1 + 0x24))->vf2();
+    ((NaviVObj*)*(void**)(param_1 + 0x28))->vf6();
     fn_80193DFC((u32*)*(u32*)(*(u8**)(lbl_802EE470 + 0x3c) + 0x20));
 }
 
