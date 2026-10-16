@@ -1591,18 +1591,8 @@ extern "C" u32 fn_800DE954() {
 
 extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
     u8* p = this_ + idx * 8;
-    u8 a = src[1];
-    p[0xf] = a;
-    u8 b = src[2];
-    p[0x10] = b;
-    u8 c = src[3];
-    p[0x11] = c;
-    u8 d = src[5];
-    p[0x13] = d;
-    u8 e = src[6];
-    p[0x14] = e;
-    u8 f = src[7];
-    p[0x15] = f;
+    *(Unk800DE210*)(p + 0xf) = *(Unk800DE210*)(src + 1);
+    *(Unk800DE210*)(p + 0x13) = *(Unk800DE210*)(src + 5);
 }
 
 extern "C" u8* fn_800DE9D4(u8* this_, s32 idx) {
