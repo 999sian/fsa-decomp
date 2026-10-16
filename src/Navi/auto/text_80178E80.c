@@ -1988,10 +1988,13 @@ extern "C" void* fn_8018EC78(void* ptr, s16 param_2) {
 }
 
 extern "C" int fn_8018EE10(unsigned short* self, unsigned short index) {
-    if (self[0] > index && index != 0xffff) {
-        return (int)self + self[index + 1];
+    if (self[0] <= index) {
+        return 0;
     }
-    return 0;
+    if (index == 0xffff) {
+        return 0;
+    }
+    return (int)self + self[index + 1];
 }
 
 extern "C" void fn_8019054C(u32 idx, u32 a, u32 b, u32 c) {
@@ -2002,5 +2005,46 @@ extern "C" void fn_8019054C(u32 idx, u32 a, u32 b, u32 c) {
     *(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
     *(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
     *(*(u8**)&lbl_802FFA80[2])++ = w;
+}
+
+extern "C" s32 fn_801E6578(u32 a, s32 b);
+extern u8 lbl_802FE62C[];
+extern u8 lbl_802FE634[];
+extern "C" void fn_801905F4(u32 idx, u32 addr) {
+    extern int* lbl_802FFA80;
+    u32 w = ((addr - 0x80000000) >> 5) | (lbl_802FE62C[idx] << 24);
+    *(*(u8**)&lbl_802FFA80[2])++ = 0x61;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+    *(*(u8**)&lbl_802FFA80[2])++ = w;
+}
+
+extern "C" void fn_80190758(u32 idx, u32 addr, u32 c) {
+    extern int* lbl_802FFA80;
+    u32 w = ((addr - 0x80000) >> 9) | (c << 10) | (lbl_802FE634[idx] << 24);
+    *(*(u8**)&lbl_802FFA80[2])++ = 0x61;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+    *(*(u8**)&lbl_802FFA80[2])++ = w;
+}
+
+extern "C" void fn_80191A60(u32* data, s32 index) {
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u16*)0xCC008000 = 0xB;
+    *(volatile u16*)0xCC008000 = (u16)(index << 2);
+    *(volatile u32*)0xCC008000 = data[0];
+    *(volatile u32*)0xCC008000 = data[1];
+    *(volatile u32*)0xCC008000 = data[2];
+    *(volatile u32*)0xCC008000 = data[3];
+    *(volatile u32*)0xCC008000 = data[4];
+    *(volatile u32*)0xCC008000 = data[5];
+    *(volatile u32*)0xCC008000 = data[6];
+    *(volatile u32*)0xCC008000 = data[7];
+    *(volatile u32*)0xCC008000 = data[8];
+    *(volatile u32*)0xCC008000 = data[9];
+    *(volatile u32*)0xCC008000 = data[10];
+    *(volatile u32*)0xCC008000 = data[11];
 }
 
