@@ -210,9 +210,9 @@ extern "C" void fn_80168E00(void)
 }
 
 extern "C" void fn_801DE01C(u8 a, u8 b, u8 c);
-extern "C" void fn_8016991C(u8* p, u8 x)
+extern "C" void fn_8016991C(u8* p, s32 x)
 {
-    fn_801DE01C(x, p[0], p[1]);
+    fn_801DE01C((u8)x, p[0], p[1]);
 }
 
 extern "C" int fn_8016997C()
