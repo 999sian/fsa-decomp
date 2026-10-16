@@ -1389,6 +1389,10 @@ extern "C" void* fn_8018BAF0(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8018BB4C(void* self, void* src) {
+    fn_8018BB74(self, *(void**)((u8*)self + 4), src);
+}
+
 extern "C" void fn_8018BC08(void* self, void* src) {
     fn_8018BC30(self, *(void**)((u8*)self + 4), src);
 }
