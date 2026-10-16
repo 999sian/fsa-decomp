@@ -51,6 +51,8 @@ extern "C" void fn_80103814(void* param_1) {
     }
 }
 
+extern "C" void fn_801074D4(void) {}
+
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
     fn_8015FDA8(a, b);
 }
