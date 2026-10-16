@@ -2836,3 +2836,16 @@ extern "C" void fn_801926E4(void) {
     fn_801DBB28(0);
 }
 
+extern "C" void fn_80192730(void* p) {
+    fn_801DCCDC(4, 0, 0, 1, 0, 0, 2);
+    fn_801DCCDC(5, 0, 0, 1, 0, 0, 2);
+    s32 a = lbl_802FE658;
+    fn_801DCAC0(4, &a);
+    s32 b = lbl_802FE658;
+    fn_801DCAC0(5, &b);
+    s32 c = lbl_802FE65C;
+    fn_801DCBB0(4, &c);
+    s32 d = lbl_802FE65C;
+    fn_801DCBB0(5, &d);
+}
+
