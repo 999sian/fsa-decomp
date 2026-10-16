@@ -51,6 +51,16 @@ struct UnkVObj_801671B0 {
     virtual s32 vf8(u32, u32);
 };
 
+struct UnkVObj_80167128 {
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual u32 vf5(void*, u32);
+};
+
+extern "C" void fn_801BDDBC(void*, void*, int);
 extern "C" void fn_80166C08(void*, int);
 extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     if (param_1) {
