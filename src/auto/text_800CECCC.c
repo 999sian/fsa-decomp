@@ -86,6 +86,16 @@ extern "C" void fn_800CF970(void** self, const unsigned char* data) {
     fn_800CF998(self, (unsigned char*)self[1], data);
 }
 
+extern "C" void* fn_800D06D0(const void* ptr, const void* offset);
+template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
+extern "C" void fn_800CF998(void* param_1, unsigned char* anm, const unsigned char* data) {
+    *(short*)(anm + 6) = *(const short*)(data + 10);
+    anm[4] = data[8];
+    *(float*)(anm + 8) = 0.0f;
+    *(void**)(anm + 0x10) = fn_800D06D0(data, (void*)*(const unsigned int*)(data + 0x10));
+    *(float**)(anm + 0xc) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x14));
+}
+
 extern "C" void fn_800CFA2C(void** self, void* res, const void* data);
 extern "C" void fn_800CFA04(void** self, const void* data) {
     fn_800CFA2C(self, self[1], data);
