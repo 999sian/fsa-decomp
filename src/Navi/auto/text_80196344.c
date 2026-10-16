@@ -503,6 +503,14 @@ extern "C" void fn_8019C924(int param_1) {
     } while (i < 8);
 }
 
+extern "C" void fn_801A5454(u32, void*);
+extern "C" void fn_8019C97C(int param_1) {
+    u8* p = (u8*)param_1;
+    if (*(u32*)(p + 4) != 0) {
+        fn_801A5454(*(u32*)(p + 4), p + 8);
+    }
+}
+
 extern "C" void fn_8019DE38(int *param_1)
 {
 	typedef void (*fnptr)(void);
