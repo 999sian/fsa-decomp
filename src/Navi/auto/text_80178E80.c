@@ -80,6 +80,20 @@ extern "C" void fn_8017A56C(void* self, void* obj) {
     }
 }
 
+extern "C" void fn_8016A1F8(void* p, void* obj);
+extern "C" void fn_8017A610(void* self, void* obj) {
+    u16 count;
+    u16 i;
+    ((void (*)(void*, void*))(*(void***)obj)[3])(obj, self);
+    count = *(u16*)((u8*)obj + 0x14) / 3;
+    for (i = 0; i < count; i++) {
+        u16 idx = ((u16*)*(u8**)((u8*)obj + 0x34))[i];
+        if (idx < *(u16*)((u8*)self + 0x102)) {
+            fn_8016A1F8(*(u8**)((u8*)self + 0x104) + idx * 0x88, obj);
+        }
+    }
+}
+
 extern "C" void fn_80178990(void);
 extern "C" void fn_8017A908(void) {
     fn_80178990();
@@ -135,7 +149,7 @@ extern "C" void fn_80184B34(unsigned char* self, unsigned int* dest) {
     dest[4] = *(unsigned int*)(self + 0x160);
 }
 
-extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
+extern "C" void fn_80184B60(UnkVObj_80184B60* self, f32 x, f32 y, f32 w, f32 h) {
     volatile f32 p[2];
     f32 rect[4];
     p[0] = x;
@@ -144,8 +158,7 @@ extern "C" void fn_80184B60(void* self, f32 x, f32 y, f32 w, f32 h) {
     rect[1] = (f32)(double)y;
     rect[2] = x + w;
     rect[3] = y + h;
-    void (**vt)(void*, f32*) = *(void (***)(void*, f32*))self;
-    vt[0x94 / 4](self, rect);
+    self->v94(rect);
 }
 
 extern "C" void fn_80177F0C(void);
