@@ -1,6 +1,25 @@
 #include "JSystem/JAudio/Interface/JAISoundParams.h"
 #include "JSystem/JAudio/Interface/JAISound.h"
 #include "JSystem/JAudio/System/JASDriver.h"
+#include "JSystem/JAudio/JAUSectionHeap.h"
+#include "JSystem/JAudio/JAUSoundMgr.h"
+#include "JSystem/JAudio/System/JASAudioReseter.h"
+
+struct Unk804580DCTrack {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual Unk804580DCTrack* v4(u32 p);
+    char pad4[0x4C - 0x4];
+    s32 m4C;
+};
+
+struct Unk804580DCBank {
+    char padEC[0xEC];
+    Unk804580DCTrack** mEC;
+    u32 mF0;
+};
 
 struct Unk80458F9C {
     char pad0[0x58];
