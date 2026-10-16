@@ -16,6 +16,10 @@ extern "C" void __dt__13Base_8010E074Fv(void* this_, int how);
 extern "C" void fn_8036A65C(void* this_);
 extern "C" void fn_801F0E34(void* self, u32 msg, s32 flag);
 
+extern "C" s32 fn_8036C8F4(void* this_) {
+    return *(s32*)((char*)this_ + 0x240);
+}
+
 void fn_8036C8FC(void)
 {
   extern void __ct__17JASGenericMemPoolFv(void);
