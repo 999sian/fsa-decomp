@@ -379,6 +379,13 @@ extern "C" u32 fn_801D1334(void) {
     return (p[2] << 16) | p[3];
 }
 
+extern void* lbl_802FFA0C;
+extern void* lbl_802FFA14;
+extern "C" void fn_801D134C(u32 a) {
+    *(vu16*)0xcc005000 = a >> 16;
+    *(vu16*)0xcc005002 = a;
+}
+
 extern "C" void fn_801D1AA8(void* p);
 extern "C" void fn_801D1C34(void* p);
 extern void* lbl_802FFA10;
@@ -396,6 +403,67 @@ extern "C" void* fn_801D1424(void* param_1) {
 }
 
 extern "C" void fn_801D1494(const char* fmt, ...) {
+}
+
+extern "C" void fn_801D1C34(void* p) {
+    u8* node = (u8*)p;
+    if (lbl_802FFA10 == 0) {
+        lbl_802FFA14 = p;
+        lbl_802FFA0C = p;
+        lbl_802FFA10 = p;
+        *(void**)(node + 0x3c) = 0;
+        *(void**)(node + 0x38) = 0;
+        return;
+    }
+    u8* cur = (u8*)lbl_802FFA10;
+    while (cur != 0) {
+        if (*(u32*)(node + 4) < *(u32*)(cur + 4)) {
+            *(void**)(node + 0x3c) = *(void**)(cur + 0x3c);
+            *(void**)(cur + 0x3c) = p;
+            *(void**)(node + 0x38) = cur;
+            if (*(void**)(node + 0x3c) != 0) {
+                *(void**)(*(u8**)(node + 0x3c) + 0x38) = p;
+            } else {
+                lbl_802FFA10 = p;
+            }
+            return;
+        }
+        cur = *(u8**)(cur + 0x38);
+    }
+    *(void**)((u8*)lbl_802FFA0C + 0x38) = p;
+    *(void**)(node + 0x38) = 0;
+    *(void**)(node + 0x3c) = lbl_802FFA0C;
+    lbl_802FFA0C = p;
+}
+
+extern "C" void fn_801D1CD4(void* p) {
+    u8* node = (u8*)p;
+    *(u32*)(node + 8) = 0;
+    *(u32*)node = 3;
+    if (lbl_802FFA10 == p) {
+        void* next = *(void**)(node + 0x38);
+        if (next != 0) {
+            lbl_802FFA10 = next;
+            *(void**)((u8*)next + 0x3c) = 0;
+            return;
+        }
+        lbl_802FFA14 = 0;
+        lbl_802FFA0C = 0;
+        lbl_802FFA10 = 0;
+        return;
+    }
+    if (lbl_802FFA0C == p) {
+        lbl_802FFA0C = *(void**)(node + 0x3c);
+        *(void**)(*(u8**)(node + 0x3c) + 0x38) = 0;
+        lbl_802FFA14 = lbl_802FFA10;
+        return;
+    }
+    lbl_802FFA14 = *(void**)(node + 0x38);
+    *(void**)(*(u8**)(node + 0x3c) + 0x38) = *(void**)(node + 0x38);
+    *(void**)(*(u8**)(node + 0x38) + 0x3c) = *(void**)(node + 0x3c);
+}
+
+extern "C" void fn_801D1D68(void) {
 }
 
 extern "C" s32 fn_801D782C(void* a);
