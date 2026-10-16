@@ -32,7 +32,7 @@ extern "C" void* fn_8001C010(void);
 extern "C" u32 fn_8001F26C(u32, s16, u32, void*, u32);
 extern "C" void fn_8001C008(void*);
 extern "C" void fn_8001B9CC(void);
-extern "C" void* fn_8001BF80(void*);
+extern "C" u32 fn_8001BF80(void*);
 extern "C" void* fn_8001C094(void*);
 extern "C" void fn_8001EB7C(void*, u8);
 extern "C" void fn_8001EDEC(void*, void*, void*, void*, void*);
