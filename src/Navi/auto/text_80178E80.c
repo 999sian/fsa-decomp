@@ -949,22 +949,18 @@ extern "C" void fn_80180A48(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy
 extern "C" void fn_80180AAC(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy0, f32 x1, f32 y1) {
     f32 a[4];
     f32 b[4];
-    f32 dx = 0.0f;
-    f32 dy = 0.0f;
     u8* p = *(u8**)((u8*)self + 0x100);
     if (p != 0) {
         u16* q = *(u16**)(p + 0x20);
-        dx = (s32)q[1];
-        dy = (s32)q[2];
+        a[0] = x0;
+        a[1] = y0;
+        a[2] = x0 + dx0;
+        a[3] = y0 + dy0;
+        b[0] = x1;
+        b[1] = y1;
+        b[2] = x1 + (s32)q[1];
+        b[3] = y1 + (s32)q[2];
     }
-    a[0] = x0;
-    a[1] = y0;
-    a[2] = x0 + dx0;
-    a[3] = y0 + dy0;
-    b[0] = x1;
-    b[1] = y1;
-    b[2] = x1 + dx;
-    b[3] = y1 + dy;
     self->vfF0(a, b);
 }
 
@@ -1451,6 +1447,10 @@ extern "C" void fn_80188E70(void* self, int a) {
         virtual void vfC4(int, int);
     };
     ((Obj*)self)->vfC4(a, 0);
+}
+
+extern "C" void fn_80188EA0(u32* self, int a, int b) {
+    ((VObj_80180980*)self)->vfC8(a, 0, b);
 }
 
 extern "C" void fn_80188ED4(u32* self, int a, int b) {
