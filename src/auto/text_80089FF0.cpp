@@ -9,6 +9,11 @@
 // split_file divides it into the game's real files (file_status shows its range).
 
 extern "C" void fn_8008A220(u16 param_1, OSContext* param_2, u32 param_3, u32 param_4);
+extern "C" unsigned int lbl_8053A904;
+extern "C" u32 lbl_8053A918;
+extern "C" u32 lbl_8053A91C;
+extern "C" u8 lbl_804BA1B0[];
+extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
 extern "C" void fn_8008A4C4(unsigned int param_1)
