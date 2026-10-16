@@ -108,6 +108,18 @@ struct Unk80457E54Obj {
     virtual void v9();
     virtual f32* v10();
 };
+
+struct Unk80457E54Vt {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual f32* v8();
+};
 extern "C" void fn_80457DFC(u8* this_, u8 v) {
     this_[0x6] = v;
 }
@@ -131,7 +143,7 @@ extern "C" void fn_80457E54(u8* this_, u8 flag) {
         fn_80458744(this_, 2);
         void* obj = *(void**)(this_ + 0x80);
         if (obj != NULL) {
-            f32* p = (f32*)(*(void* (**)(void*))(*(char**)obj + 0x28))(obj);
+            f32* p = (*(f32* (**)(void*))(*(char**)obj + 0x28))(obj);
             if (p != NULL) {
                 u32 n = lbl_8053A26C;
                 f32 v = lbl_8053A268;
@@ -143,7 +155,7 @@ extern "C" void fn_80457E54(u8* this_, u8 flag) {
                 } else {
                     f32 d = v - p[0];
                     *(u32*)(p + 3) = n;
-                    f32 e = (f64)*(u32*)(p + 3) - lbl_80543EB8;
+                    f32 e = (f32)*(u32*)(p + 3);
                     p[1] = d / e;
                     p[2] = v;
                 }
@@ -153,7 +165,7 @@ extern "C" void fn_80457E54(u8* this_, u8 flag) {
         fn_80458744(this_, 0);
         void* obj = *(void**)(this_ + 0x80);
         if (obj != NULL) {
-            f32* p = (f32*)(*(void* (**)(void*))(*(char**)obj + 0x28))(obj);
+            f32* p = (*(f32* (**)(void*))(*(char**)obj + 0x28))(obj);
             if (p != NULL) {
                 p[0] = lbl_80543EB4;
                 p[1] = lbl_80543EB0;
@@ -251,9 +263,9 @@ extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
 }
 
 extern "C" void fn_80458508(u8* this_, u8 mode) {
-    void* obj = *(void**)(this_ + 0x80);
+    Unk80457E54Obj* obj = *(Unk80457E54Obj**)(this_ + 0x80);
     if (obj != NULL) {
-        f32* p = (f32*)(*(void* (**)(void*))(*(char**)obj + 0x28))(obj);
+        f32* p = obj->v10();
         if (p != NULL) {
             switch (mode) {
             case 1: {
@@ -266,9 +278,14 @@ extern "C" void fn_80458508(u8* this_, u8 mode) {
                     p[2] = lbl_80543EB0;
                 } else {
                     f32 d = v - p[0];
+                    union {
+                        f64 f;
+                        u32 w[2];
+                    } conv;
+                    conv.w[0] = 0x43300000;
                     *(u32*)(p + 3) = n;
-                    f32 e = (f64)*(u32*)(p + 3) - lbl_80543EB8;
-                    p[1] = d / e;
+                    conv.w[1] = *(u32*)(p + 3);
+                    p[1] = d / (f32)(conv.f - lbl_80543EB8);
                     p[2] = v;
                 }
                 break;
@@ -283,9 +300,14 @@ extern "C" void fn_80458508(u8* this_, u8 mode) {
                     p[2] = lbl_80543EB0;
                 } else {
                     f32 d = v - p[0];
+                    union {
+                        f64 f;
+                        u32 w[2];
+                    } conv;
+                    conv.w[0] = 0x43300000;
                     *(u32*)(p + 3) = n;
-                    f32 e = (f64)*(u32*)(p + 3) - lbl_80543EB8;
-                    p[1] = d / e;
+                    conv.w[1] = *(u32*)(p + 3);
+                    p[1] = d / (f32)(conv.f - lbl_80543EB8);
                     p[2] = v;
                 }
                 break;
@@ -321,6 +343,103 @@ extern "C" void fn_80458658(u8* this_, bool flag) {
 extern "C" void fn_8045873C(u8* this_, u8 v) {
     this_[0x69] = v;
 }
+
+#pragma dont_inline on
+extern "C" void fn_80458744(void* this_, s32 mode) {
+    f32 a;
+    f32 b;
+    f32 c;
+    char* self = (char*)this_;
+
+    switch (mode) {
+    case 0:
+        a = lbl_804B1E60[0];
+        b = lbl_804B1E60[1];
+        c = lbl_804B1E60[2];
+        break;
+    case 1:
+        a = lbl_804B1E84[0];
+        b = lbl_804B1E84[1];
+        c = lbl_804B1E84[2];
+        break;
+    case 2:
+        a = lbl_804B1EA8[0];
+        b = lbl_804B1EA8[1];
+        c = lbl_804B1EA8[2];
+        break;
+    case 3:
+        switch (*(s32*)(self + 0x58)) {
+        case 0x1000000:
+        case 0x1000003:
+        case 0x1000008:
+        case 0x1000009:
+        case 0x100000A:
+        case 0x100000B:
+        case 0x100000E:
+        case 0x1000010:
+        case 0x1000011:
+        case 0x1000012:
+        case 0x1000013:
+        case 0x1000014:
+        case 0x1000015:
+        case 0x1000016:
+            a = lbl_804B1ECC[0];
+            b = lbl_804B1ECC[1];
+            c = lbl_804B1ECC[2];
+            break;
+        case 0x1000001:
+        case 0x1000002:
+        case 0x1000004:
+        case 0x1000005:
+        case 0x1000006:
+        case 0x1000007:
+        case 0x100000C:
+        case 0x100000D:
+        case 0x100000F:
+        case 0x1000017:
+        case 0x1000018:
+        case 0x1000019:
+        case 0x100001A:
+        case 0x100001B:
+        case 0x100001C:
+        case 0x100001D:
+        case 0x100001E:
+        case 0x100001F:
+        case 0x1000020:
+        case 0x1000021:
+        case 0x1000022:
+        case 0x1000023:
+        case 0x1000024:
+        case 0x1000025:
+        case 0x1000026:
+        case 0x1000027:
+        case 0x1000028:
+        case 0x1000029:
+        case 0x100002A:
+        case 0x100002B:
+        case 0x100002C:
+        case 0x100002D:
+        case 0x100002E:
+        case 0x100002F:
+        case 0x1000030:
+        default:
+            return;
+        }
+        break;
+    default:
+        return;
+    }
+    *(f32*)(self + 0x4c) = a;
+    *(f32*)(self + 0x50) = b;
+    if (*(char**)(self + 0x80) != NULL) {
+        ((JAISoundParamsMove*)(*(char**)(self + 0x80) + 0x48))->moveVolume(*(f32*)(self + 0x4c) * *(f32*)(self + 0x54), lbl_8053A258);
+    }
+    if (*(char**)(self + 0x84) != NULL) {
+        ((JAISoundParamsMove*)(*(char**)(self + 0x84) + 0x48))->moveVolume(*(f32*)(self + 0x50), lbl_8053A258);
+    }
+    ((JAISoundParamsMove*)(*(char**)(self + 0x34) + 0x1c))->moveVolume(c, 0);
+}
+#pragma dont_inline reset
 
 extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
 {
