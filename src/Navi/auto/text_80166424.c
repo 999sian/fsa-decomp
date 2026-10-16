@@ -286,3 +286,8 @@ extern "C" void fn_80178DB0(void* param_1) {
 
 extern "C" u32 fn_80178E08(void) { return 0x10; }
 
+extern "C" int fn_80178E4C(int param_1) {
+    *(u8*)(param_1 + 0xb5) = 0;
+    return 0;
+}
+
