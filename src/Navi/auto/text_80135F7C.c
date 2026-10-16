@@ -1472,6 +1472,17 @@ extern "C" void fn_8013C2C0(void* param_1, s32 param_2, void** param_3) {
     *(void**)((u8*)param_1 + 0x130) = *param_3;
 }
 
+extern "C" void fn_8013C318(void* param_1, s32 param_2, u32* param_3) {
+    switch (param_2) {
+    case 0x18:
+        *(u32*)((u8*)param_1 + 0x13c) = fn_8013BD28(*(void**)((u8*)param_1 + 0x138), param_3);
+        break;
+    case 0x19:
+        *(u32*)((u8*)param_1 + 0x13c) = *param_3;
+        break;
+    }
+}
+
 extern "C" void fn_8013C3FC(void* param_1, s32 param_2, void** param_3) {
     if (param_2 != 2) {
         return;
