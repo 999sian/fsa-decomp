@@ -331,6 +331,10 @@ extern "C" u32 fn_8017D014(char* self, u8 idx, u8 flag) {
     return 0;
 }
 
+extern "C" u32 fn_8017D148(void) {
+    return 0x11;
+}
+
 extern "C" void fn_8017D214(void) {}
 
 extern "C" void fn_801C5D48(void* p);
