@@ -48,6 +48,30 @@ extern "C" void fn_80363F7C(char* self) {
     ((JGeometry::TVec3<f32>*)(self + 0xc))->add(*(JGeometry::TVec3<f32>*)(self + 0x3c));
 }
 
+extern "C" void fn_80364F00(char* this_) {
+    if (*(s32*)(this_ + 0x25c) != 0) {
+        return;
+    }
+    *(s32*)(this_ + 0x268) += 1;
+    if (*(char*)(*(char**)(this_ + 0x270) + *(s32*)(this_ + 0x268)) < 0) {
+        *(s32*)(this_ + 0x268) = 0;
+    }
+    *(s32*)(this_ + 0x25c) = *(char*)(*(char**)(this_ + 0x270) + *(s32*)(this_ + 0x268));
+    *(s32*)(this_ + 0x264) = *(char*)(*(char**)(this_ + 0x274) + *(s32*)(this_ + 0x268));
+}
+
+extern "C" void fn_80365220(char* this_) {
+    if (*(s32*)(this_ + 0x248) == 0) {
+        *(s32*)(this_ + 0x248) = 0x40;
+        *(s32*)(this_ + 0x238) += 1;
+    }
+    if (*(u32*)(this_ + 0x238) & 1) {
+        *(f32*)(this_ + 0x10) -= lbl_80542BD4;
+    } else {
+        *(f32*)(this_ + 0x10) += lbl_80542BD4;
+    }
+}
+
 extern "C" void fn_80365AB8(Unk80365AB8* self) {
     (self->*lbl_804ADDE8[*(s32*)((u8*)self + 0x234)])();
 }
