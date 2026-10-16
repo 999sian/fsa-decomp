@@ -79,8 +79,7 @@ extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4)
 }
 
 extern "C" u8 fn_800CAF38(u8* p, s32 idx) {
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
-    u8 b = (*(u8**)(p + 4))[off + 2];
+    u8 b = *(u8*)(*(u8**)(p + 4) + (*(u16**)(p + 8))[idx] * 0x14c + 2);
     if (b != 0xff) {
         return (*(u8**)(p + 0x14))[b];
     }
@@ -105,6 +104,22 @@ extern "C" u8 fn_800CB15C(u8* p, s32 idx) {
         return (*(u8**)(p + 0x24))[b];
     }
     return 0;
+}
+
+extern "C" u8 fn_800CB28C(u8* p, s32 idx) {
+    u8 b = (*(u8**)(p + 4))[((u16*)*(u8**)(p + 8))[idx] * 0x14c + 1];
+    if (b != 0xff) {
+        return (*(u32**)(p + 0x3c))[b];
+    }
+    return 0xff;
+}
+
+extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
+    u16 v = *(u16*)((*(u8**)(p + 4)) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x84 + b * 2);
+    if (v != 0xffff) {
+        return (*(u16**)(p + 0x38))[v];
+    }
+    return 0xffff;
 }
 
 extern unsigned int j3dDefaultBlendInfo;
