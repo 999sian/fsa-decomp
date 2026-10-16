@@ -70,6 +70,16 @@ extern "C" char __vt__10J3DPEBlock[];
 
 #include <types.h>
 
+J3DMaterialFactory::J3DMaterialFactory(const J3DMaterialDLBlock& block)
+{
+    mMaterialNum = block.mEntries;
+    mInitData = NULL;
+    mDisplayLists = fn_800CBEF0(&block, block.mPacketOffset);
+    mPatchInfo = fn_800CBED8(&block, block.mSubPacketLocationOffset);
+    mCurrMtxInfo = fn_800CBEC0(&block, block.mMatrixIndexOffset);
+    mPEModes = JSUConvertOffsetToPtr<u8>(&block, block.mPixelEngineModesOffset);
+}
+
 u32 J3DMaterialFactory::countUniqueMaterials()
 {
     u32 count = 0;
