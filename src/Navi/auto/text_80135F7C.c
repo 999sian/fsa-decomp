@@ -1,6 +1,6 @@
 #include "types.h"
 
-extern f32 lbl_802FEAB0;
+extern f32 lbl_802FEAB0[];
 extern void* lbl_80292A08[];
 extern void fn_80167CD8(void*, u32, u32);
 extern void* lbl_802985C8[];
