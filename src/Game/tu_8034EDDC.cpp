@@ -11,7 +11,7 @@ void operator delete(void* p);
 extern "C" Actor* fn_8034EDDC(Actor* self, s16 flag) {
     if (self != 0) {
         *(u8**)self = lbl_804ACA00;
-        self->Actor::~Actor();
+        __dt__5ActorFv(self, 0);
         if (flag > 0) {
             operator delete(self);
         }
