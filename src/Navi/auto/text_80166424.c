@@ -47,3 +47,8 @@ extern "C" int fn_801699EC()
 	return 0;
 }
 
+extern "C" int fn_8017334C()
+{
+	return 0;
+}
+
