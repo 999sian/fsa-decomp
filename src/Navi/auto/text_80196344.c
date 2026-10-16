@@ -497,8 +497,8 @@ extern "C" s32 fn_80199A60(void) {
 }
 
 extern "C" void fn_8019ACF0(NaviVObj* p) {
+    p->vf3();
     p->vf4();
-    p->vf5();
 }
 
 extern "C" void fn_8019B97C(NaviVObj* p, u32 flags) {
