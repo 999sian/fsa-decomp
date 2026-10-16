@@ -1,7 +1,7 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
-#include "types.h"
+#include "dolphin/os.h"
 
 extern "C" void __ct__10JSUPtrListFb(void* self, bool doInitialize);
 extern "C" void* __register_global_object(void* object, void* destructor, void* registration);
@@ -17,5 +17,4 @@ extern char lbl_8052EB18[];
 extern char lbl_8052EB58[];
 extern char lbl_8052EB98[];
 extern char lbl_804BA4A4[];
-extern "C" u32 lbl_8053A948;
-extern "C" u32 lbl_8053A94C;
+extern OSTime lbl_8053A948;
