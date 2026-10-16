@@ -165,6 +165,30 @@ struct UnkDCF8 {
     u8 m_c;
     u8 m_d;
 };
+struct Unk800DBCCCSrc {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual u8* getMatColor(u32) = 0;
+    virtual void m13() = 0;
+    virtual void m14() = 0;
+    virtual void m15() = 0;
+    virtual void m16() = 0;
+    virtual void m17() = 0;
+    virtual u8 getColorChanNum() = 0;
+    virtual void m19() = 0;
+    virtual void m20() = 0;
+    virtual u16* getColorChan(u32) = 0;
+};
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
@@ -616,19 +640,15 @@ extern "C" void fn_800D8A3C(void* p) {
 }
 
 extern "C" void fn_800D8AD0(u8* this_) {
-    u32 i = 0;
-    u8* p;
-    u8* base;
-
-    p = this_;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x170);
-    base = __GDCurrentDL->pDisplayListData;
-    for (i = 0; i < 3; i++) {
+    u8* base = __GDCurrentDL->pDisplayListData;
+    u8* p = this_;
+    for (u32 i = 0; i < 3; i++) {
         J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0xda));
         p += 8;
     }
     p = this_;
-    for (i = 0; i < 4; i++) {
+    for (u32 i = 0; i < 4; i++) {
         J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(p + 0xfa));
         p += 4;
     }
@@ -709,6 +729,22 @@ extern "C" void fn_800D9020(u8* self) {
     }
     for (u32 i = 0; i < 4; i++) {
         J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)(self + 0xb8 + i * 4));
+    }
+}
+
+extern "C" void fn_800D90B8(u8* p) {
+    u8* e;
+    u32 i;
+    u8* f;
+    u16* s;
+    e = p;
+    for (i = 0; i < p[0xd0]; i += 2) {
+        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0x18] & 7, s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        f = p + (i + 1) * 4;
+        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (f[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(f[0x18] & 7, s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        e += 8;
     }
 }
 
@@ -935,6 +971,26 @@ extern "C" void fn_800D9FE4(int param_1, int param_2) {
         i++;
     }
     DCStoreRange(start, GDGetCurrPointer() - start);
+}
+
+extern "C" void fn_800DA280(u8* this_, u32 flags) {
+    if (flags & 0x08000000) {
+        u8 stageNum = this_[4];
+        J3DGDSetIndTexMtx(GX_ITM_0, (Mtx3P)(this_ + 0x18), this_[0x30]);
+        J3DGDSetIndTexCoordScale(GX_INDTEXSTAGE0, (GXIndTexScale)this_[0x6c], (GXIndTexScale)this_[0x6d], (GXIndTexScale)this_[0x70], (GXIndTexScale)this_[0x71]);
+
+        unsigned short* entry = (unsigned short*)(&sTexCoordScaleTable__6J3DSys) + ((this_[6] & 7) * 4);
+        unsigned short scaleS = entry[0];
+        unsigned short scaleT = entry[1];
+        unsigned short biasS = entry[2];
+        unsigned short biasT = entry[3];
+
+        unsigned int lzS = __cntlzw(1 - biasS);
+        unsigned int lzT = __cntlzw(1 - biasT);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(this_[5], scaleS, (unsigned char)(lzS >> 5), (unsigned char)0, scaleT, (unsigned char)(lzT >> 5), (unsigned char)0);
+
+        J3DGDSetIndTexOrder(stageNum, (GXTexCoordID)this_[5], (GXTexMapID)this_[6], (GXTexCoordID)this_[9], (GXTexMapID)this_[0xa], (GXTexCoordID)this_[0xd], (GXTexMapID)this_[0xe], (GXTexCoordID)this_[0x11], (GXTexMapID)this_[0x12]);
+    }
 }
 
 extern "C" void fn_800DB844(void* param_1) {
@@ -1373,10 +1429,9 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8 b1 = param_3[1];
-    u8* p = param_1 + param_2 * 8;
-    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
-    p[0x60] = (p[0x60] & ~0x3) | param_3[0];
+    u8 b0 = param_3[0];
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
