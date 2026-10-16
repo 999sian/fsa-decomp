@@ -709,21 +709,23 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
 #pragma push
 #pragma use_lmw_stmw off
 extern "C" void fn_8017E65C(u32* self, void* a, f32 f, int b, int c) {
-    ((void (*)(void*, void*, f32, int, int))(*(u32**)self)[50])(self, fn_8017A4A8(a), f, b, c);
+    void* p = fn_8017A4A8(a);
+    ((void (*)(void*, void*, f32, int, int))(*(u32**)self)[50])(self, p, f, b, c);
 }
 #pragma pop
 extern "C" void fn_8017E9DC(u32* self, u32 a) {
     u8 i;
     for (i = 0; i < *((u8*)self + 0x110); i++) {
-        if (self[0x40 + i] == a) {
+        if (a == self[0x40 + i]) {
             break;
         }
     }
-    ((void (*)(void*, int))(*(u32**)self)[54])(self, i);
+    ((void (*)(void*, u8))(*(u32**)self)[54])(self, i);
 }
 
 extern "C" void fn_8017EB2C(u32* self, void* a, int b) {
-    ((void (*)(void*, void*, int))(*(u32**)self)[68])(self, fn_8017A4A8(a), b);
+    void* p = fn_8017A4A8(a);
+    ((void (*)(void*, void*, int))(*(u32**)self)[68])(self, p, b);
 }
 
 #pragma push
