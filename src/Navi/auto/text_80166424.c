@@ -77,6 +77,8 @@ extern "C" void fn_8017298C(u8* p, s32 i, u8 v) {
     p[i + 0xb0] = v;
 }
 
+extern "C" void fn_80172CFC(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x7c))[p2] = *p3; }
+
 extern "C" s32 fn_80172D10(s32 p, s32 i) {
     return p + i * 4 + 0x7c;
 }
