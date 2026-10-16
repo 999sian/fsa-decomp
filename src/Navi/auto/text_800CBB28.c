@@ -26,9 +26,27 @@ struct VObj_800CC1C4 {
     virtual void v6();
     virtual void SetAlpha(s32 a);
 };
-extern "C" f32 fn_800CC3D8(void* self, u8 n, s16 i);
+extern "C" f32 fn_800CC3D8(void* self, s32 n, s32 i);
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" s32 fn_800CC1C4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
+    if (i < 0) {
+        return 0;
+    }
+    if (i > n) {
+        return 1;
+    }
+    f32 t = fn_800CC3D8(self, n, i);
+    (*(VObj_800CC1C4**)(self + 0x14))->SetPos(*(f32*)(self + 0x1c), *(f32*)(self + 0x20) + (from + t * (to - from)));
+    if (mode != 2) {
+        if (mode == 1) {
+            t = lbl_80300EA4 - t;
+        }
+        (*(VObj_800CC1C4**)(self + 0x14))->SetAlpha((s32)((f32)*(u8*)(self + 0x18) * t));
+    }
+    return 0;
+}
+
 extern "C" void fn_800CC39C(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
