@@ -44,6 +44,34 @@ extern "C" u8 fn_80206C18(u8* p) {
     return ret;
 }
 
+extern "C" s32 fn_801F285C(u8* a, f32* b, u32* c, u32 e, s32 d);
+extern "C" u32 fn_801F37AC(u8* a, u32 x, void* p, u32 d, u32 buf, s32 i);
+extern "C" u32 fn_8023B6CC(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" void fn_80205E0C(u8* p, s32 type);
+extern "C" u8 fn_80206EFC(u8* p) {
+    u8 ret = 0;
+    s32 i;
+    u32 buf;
+
+    if (p[0xc4] == 0 && *(s32*)(p + 0x248) != 3 && *(s32*)(p + 0x248) != 4 &&
+        *(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053F8AC &&
+        *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053F8AC) {
+        for (i = 0; i < 4; i++) {
+            if (i == fn_801F285C(p, 0, &buf, 1, i)) {
+                fn_8023B6CC(i);
+                if ((u8)fn_801F37AC(p, 0, fn_8023E724(i), 0, buf, i)) {
+                    ret = 1;
+                }
+            }
+        }
+        if (ret) {
+            fn_80205E0C(p, 7);
+        }
+    }
+    return ret;
+}
+
 extern "C" u8 fn_80207004(u8* p) {
     u8 ret = 0;
     if (p[0xc4] == 0 && *(s32*)(p + 0x248) != 3 && *(s32*)(p + 0x248) != 4 &&
