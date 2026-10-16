@@ -21,6 +21,7 @@ extern void* lbl_802FEC48;
 extern "C" void fn_80115178(void*, void*, void*);
 extern "C" void fn_8011580C(void);
 extern char lbl_802FB9D8;
+extern "C" void cTg_AdditionToTree__FP21node_lists_tree_classiP16create_tag_class(void*, int, void*);
 extern u32 lbl_802FBA08;
 extern "C" void* fn_8001AC84(void*);
 extern s8 lbl_802FEC10;
@@ -46,6 +47,16 @@ extern "C" void* fn_8001BFBC(void*);
 extern "C" void* fn_8001C518(void*, void*, void*);
 extern "C" void __unregister_fragment(int);
 extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void*);
+extern "C" void fn_80019470(f32* d, f32* s, f32 w) {
+    f32 x = s[0];
+    f32 y = s[1];
+    f32 z = s[2];
+    d[0] = x;
+    d[1] = y;
+    d[2] = z;
+    d[3] = w;
+}
+
 extern "C" void* fn_800194F8(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
