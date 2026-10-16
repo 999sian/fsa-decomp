@@ -645,7 +645,7 @@ extern "C" void fn_801A43B8(u8* p1, int p2, u8* p3) {
     p1[p2 + 0x59] = *p3;
 }
 
-extern "C" void fn_801A43D8(int p1, int p2, u32* p3) { *(u32*)(p1 + p2 * 4 + 0x60) = *p3; }
+extern "C" void fn_801A43D8(u8* p1, int p2, u32* p3) { ((u32*)(p1 + 0x60))[p2] = *p3; }
 
 extern "C" void* fn_801A4414(void* p) {
     return *(void**)((char*)p + 4);
