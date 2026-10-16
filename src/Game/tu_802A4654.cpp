@@ -12,6 +12,13 @@ extern "C" void fn_8030C210(void*, void*);
 extern "C" u8* lbl_8053AB10;
 extern "C" const s32 lbl_8046C658[][4];
 extern "C" const s32 lbl_8046C6C8[][4];
+struct Unk802A4654 {
+    u8 pad00[0xc];
+    JGeometry::TVec3f mPos; // 0x0c
+    u8 pad18[0x234 - 0x18];
+    s32 m234;
+};
+
 extern "C" void fn_802A4654(void* this_) {
     f32 x = *(f32*)((u8*)this_ + 0xc);
     f32 y = *(f32*)((u8*)this_ + 0x10);
