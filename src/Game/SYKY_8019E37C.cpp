@@ -45,6 +45,27 @@ extern "C" void fn_8019E37C(u8* p) {
     }
 }
 
+extern "C" void fn_8019E7A4(u8* p) {
+    DrawRec rec;
+    f32 vec[4][3];
+    f32 zero = lbl_8053E464;
+    vec[1][0] = zero;
+    vec[2][1] = zero;
+    vec[3][2] = zero;
+    f32 s = *(f32*)(p + 0x290);
+    vec[0][0] = s;
+    vec[0][1] = zero;
+    vec[0][2] = zero;
+    vec[1][1] = zero;
+    vec[1][2] = s;
+    vec[2][0] = zero;
+    vec[2][2] = zero;
+    vec[3][0] = zero;
+    vec[3][1] = s;
+    rec.w18 = vec;
+    fn_801F06F0(p, lbl_80468494, *(s32*)(p + 0x264) + 8, &rec, 0, lbl_8053E460, lbl_8053E460);
+}
+
 extern "C" void fn_8019EE04(u8* p) {
     if (*(s32*)(p + 0x268) == 3 && *(s32*)(p + 0x230) != 0xf) {
         *(f32*)(p + 0x290) = lbl_8053E4A4;
