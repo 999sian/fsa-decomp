@@ -35,6 +35,10 @@ extern "C" void fn_8005B6CC(s32, s32, s32);
 extern "C" void fn_8005C460(void);
 extern "C" s32 fn_80059190(s32 idx);
 extern "C" void fn_800595FC(void);
+extern "C" void fn_80057614(u8* p) {
+    *(u32*)(p + 0xf6c) = 0;
+}
+
 extern "C" void fn_80057868(void) {
 }
 
@@ -57,6 +61,13 @@ extern "C" s32 fn_801E6840(s32);
 extern "C" s32 fn_801E6510(s32, void*, s32);
 extern u32 lbl_802FC724;
 extern "C" s32 fn_8005887C(s32 param_1) {
+    extern f64 lbl_80300238;
+    extern f64 lbl_80300240;
+    extern f64 lbl_80300248;
+    union {
+        f64 d;
+        u32 w[2];
+    } u;
     u8* p;
     s32 r;
     u32 v;
@@ -65,7 +76,10 @@ extern "C" s32 fn_8005887C(s32 param_1) {
     }
     p = lbl_8026D4BC + param_1 * 0xc;
     v = *(u32*)(p + 4);
-    r = lbl_8027D340[p[0]] + (s32)((60.0 * (f64)v) / 1000000.0);
+    u.w[0] = 0x43300000;
+    u.w[1] = v ^ 0x80000000;
+    r = lbl_8027D340[p[0]];
+    r += (s32)((lbl_80300238 * (u.d - lbl_80300248)) / lbl_80300240);
     if (v == 1000000) {
         r = 1000000;
     }
