@@ -82,6 +82,9 @@ void fn_8030C85C(void*);
 void fn_8030C928(void*, const f32*);
 void fn_802D8328(char*, u8, u8);
 void fn_802D8D50(char*, u8);
+void* fn_8023E724(s32);
+s32 fn_8023CBC0();
+s32 fn_80230498(s32, const Vec3f*, s32, s32, s32, s32, s32);
 u8 fn_802DCE5C(char*, s32);
 }
 
@@ -756,13 +759,15 @@ extern "C" void fn_802DA788(char* p) {
         *(u8*)(base + 0x131DE) = 0;
         fn_8013C8CC(fn_8013C824());
         s32 i = 0;
-        *(u8*)(p + 0xC9) = 0;
+        *(u8*)(p + 0xC9) = i;
         const f32* t = lbl_8046E148;
         do {
             f32 v[3];
-            v[0] = t[0] + *(f32*)(p + 0xCC);
-            v[1] = t[1] + *(f32*)(p + 0xD0);
+            v[0] = t[0];
+            v[1] = t[1];
             v[2] = t[2];
+            v[0] = v[0] + *(f32*)(p + 0xCC);
+            v[1] = v[1] + *(f32*)(p + 0xD0);
             fn_8023F1D4(i, v, 2, 0, 0);
             i++;
             t += 3;
