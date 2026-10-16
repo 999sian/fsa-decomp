@@ -37,7 +37,8 @@ extern "C" u8 fn_8036B018(u8* this_) {
 }
 
 extern "C" void fn_8036C250(char* self) {
-    Vec3f saved = *(Vec3f*)(self + 0xc);
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(self + 0xc);
+    JGeometry::TVec3<f32> saved = *pos;
     if (*(s32*)(self + 0x23c) == 5 && *(s32*)(self + 0x240) >= 0x24 && *(s32*)(self + 0x240) != 0x26) {
         fn_803683AC(self);
     } else {
@@ -48,7 +49,7 @@ extern "C" void fn_8036C250(char* self) {
         }
         fn_80368660(self);
     }
-    *(Vec3f*)(self + 0xc) = saved;
+    *pos = saved;
 }
 
 extern "C" void fn_8036C300(Unk8036C300* this_) {
@@ -69,13 +70,13 @@ extern "C" void* fn_8036C69C(void* this_, short how) {
     if (this_) {
         *(void**)this_ = (void*)lbl_804AE088;
         Sub8036C69C* sub = *(Sub8036C69C**)((char*)this_ + 0x314);
-        if (sub) {
+        if (sub && (void*)sub != 0) {
             sub->v0(1);
         }
         *(void**)((char*)this_ + 0x314) = 0;
         fn_8036A65C(this_);
-        if ((char*)this_ + 0x318 != 0) {
-            if ((char*)this_ + 0x33c != 0) {
+        if ((s32)this_ + 0x318 != 0) {
+            if ((s32)this_ + 0x33c != 0) {
                 *(void**)((char*)this_ + 0x33c) = (void*)lbl_8049CC34;
             }
         }
