@@ -1211,6 +1211,25 @@ extern "C" void* fn_8013A024(struct Obj_8013A024* obj, s16 param_2) {
     }
     return obj;
 }
+
+extern void* lbl_80292DA4[];
+extern "C" void* fn_8013A0B0(struct Obj_8013A024* obj, s16 param_2) {
+    if (obj != nullptr) {
+        obj->m_0x8 = lbl_80292DA4;
+        if (&obj->m_0x18 != nullptr) {
+            obj->m_0x18 = lbl_80292A08;
+            fn_8013635C(&obj->m_0x18, 0);
+        }
+        if (obj != nullptr) {
+            obj->m_0x8 = lbl_80292EC4;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(obj);
+        }
+    }
+    return obj;
+}
+
 #pragma dont_inline reset
 extern "C" void* fn_8013A2E0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
