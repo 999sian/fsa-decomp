@@ -193,7 +193,7 @@ extern "C" s32 fn_80172CEC(s32 p, s32 i) {
 }
 
 extern "C" s32 fn_80172D10(s32 p, s32 i) {
-    return p + (i * 4 + 0x7c);
+    return p + (i << 2) + 0x7c;
 }
 
 extern "C" u8* fn_80172E24(u8* p, s32 i) { return p + i * 4 + 10; }
