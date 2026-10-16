@@ -41,7 +41,7 @@ extern "C" void fn_8000DDAC(void*, void*, s32);
 extern "C" void fn_80010CE4(void*);
 extern "C" void fn_801AFE98(void*, void*);
 extern "C" void fn_8000EBB8(void*);
-extern "C" void fn_80022438(void*, s32, u16, u16);
+extern "C" void fn_80022438(void*, void*, s32, s32, f32, f32, f32, f32);
 extern u8 lbl_802FF17C;
 extern s32 lbl_802FF170;
 extern s32 lbl_802FC910;
