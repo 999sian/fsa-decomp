@@ -2062,3 +2062,18 @@ extern "C" void fn_80191AE0(u32* data, s32 index) {
     *(volatile u32*)0xCC008000 = data[10];
 }
 
+extern "C" void fn_80191B4C(u32* data, s32 index) {
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u16*)0xCC008000 = 0x8;
+    *(volatile u16*)0xCC008000 = (u16)(index * 3 + 0x400);
+    *(volatile u32*)0xCC008000 = data[0];
+    *(volatile u32*)0xCC008000 = data[1];
+    *(volatile u32*)0xCC008000 = data[2];
+    *(volatile u32*)0xCC008000 = data[3];
+    *(volatile u32*)0xCC008000 = data[4];
+    *(volatile u32*)0xCC008000 = data[5];
+    *(volatile u32*)0xCC008000 = data[6];
+    *(volatile u32*)0xCC008000 = data[7];
+    *(volatile u32*)0xCC008000 = data[8];
+}
+
