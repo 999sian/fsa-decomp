@@ -2003,6 +2003,33 @@ extern "C" void* fn_80176550(void* param_1)
 	return self;
 }
 
+extern f32 lbl_80301B20;
+extern f32 lbl_80301B24;
+extern "C" void fn_80176610(void* p_self)
+{
+    u32* self = (u32*)p_self;
+    u8* b = (u8*)p_self;
+    f32 f1 = lbl_80301B20;
+    f32 f0 = lbl_80301B24;
+
+    *(u16*)(b + 0x4) = 0xffff;
+    ((f32*)self)[0x2e] = f1;
+    ((f32*)self)[0x2f] = f1;
+    ((f32*)self)[0x30] = f1;
+    ((f32*)self)[0x31] = f1;
+    ((f32*)self)[0x32] = f1;
+    b[0xb7] = 0;
+    b[0xb6] = 0x7a;
+    ((f32*)self)[0x33] = f0;
+    ((f32*)self)[0x34] = f0;
+    b[0xb1] = 0;
+    b[0xb2] = 0xff;
+    b[0xb4] = 1;
+    b[0xb3] = 0xff;
+    b[0xb5] = 0;
+    ((void (*)(void*))((u32**)self)[0][11])(p_self);
+}
+
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
     f32 w = *(f32*)((char*)self + 0x28) - *(f32*)((char*)self + 0x20);
     f32 h = *(f32*)((char*)self + 0x2c) - *(f32*)((char*)self + 0x24);
@@ -2040,6 +2067,23 @@ extern "C" f32 fn_80177C78(void* self) {
         return *(f32*)((char*)self + 0xbc);
     }
     return *(f32*)((char*)self + 0xc0);
+}
+
+extern "C" void fn_80177CA8(void* self, f32* r) {
+    f32* p = (f32*)self;
+    f32 t[4];
+    t[0] = r[0];
+    t[1] = r[1];
+    t[2] = r[2];
+    t[3] = r[3];
+    t[0] += p[12];
+    t[2] += p[12];
+    t[1] += p[13];
+    t[3] += p[13];
+    if (p[16] <= t[0]) p[16] = t[0];
+    if (p[17] <= t[1]) p[17] = t[1];
+    if (p[18] >= t[2]) p[18] = t[2];
+    if (p[19] >= t[3]) p[19] = t[3];
 }
 
 extern "C" u8 fn_80177F0C(char* self, void* arg)
