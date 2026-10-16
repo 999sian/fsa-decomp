@@ -5,6 +5,10 @@
 extern void* lbl_80284C98[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_8008BE64(void);
+extern char lbl_802BB0FC[];
+extern char lbl_801FDAC8[];
+extern f32 lbl_802C53E4[];
+extern "C" void fn_8008D820(void* p, s32 n);
 extern void* lbl_8024751C[];
 extern "C" void fn_8008BE14(void* p);
 extern "C" void fn_8008BE14(void* p) {
@@ -47,6 +51,19 @@ extern "C" BOOL fn_8008D5B4(void);
 extern "C" BOOL fn_8008D5B4(void)
 {
     return TRUE;
+}
+
+extern char lbl_802BB0FC[];
+extern char lbl_801FDAC8[];
+extern f32 lbl_802C53E4[];
+extern "C" void fn_8008D820(void* p, s32 n);
+extern "C" void fn_8008DA68(void* p) {
+    s32 idx = *(s32*)(lbl_802BB0FC + 0x424);
+    u32* src = (u32*)(lbl_801FDAC8 + idx * 12);
+    u32* dst = (u32*)p;
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
 }
 
 extern "C" void* fn_8008DAD8(void* ptr, s16 param_2) {
