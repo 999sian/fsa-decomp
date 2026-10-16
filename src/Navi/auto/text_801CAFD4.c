@@ -3,6 +3,7 @@
 
 #include <types.h>
 extern void* lbl_802FFA4C;
+extern "C" void fn_801D2F34(s32 a);
 extern void* lbl_802FF9B4;
 extern void* lbl_802FF9B0;
 extern void* lbl_802FF9C0;
@@ -382,8 +383,9 @@ extern "C" u32 fn_801D1334(void) {
 extern void* lbl_802FFA0C;
 extern void* lbl_802FFA14;
 extern "C" void fn_801D134C(u32 a) {
-    *(vu16*)0xcc005000 = (u16)(a >> 16);
-    *(vu16*)0xcc005002 = (u16)a;
+    vu16* reg = (vu16*)0xcc005000;
+    reg[0] = (u16)(a >> 16);
+    reg[1] = (u16)a;
 }
 
 extern "C" void fn_801D1AA8(void* p);
@@ -466,6 +468,30 @@ extern "C" void fn_801D1CD4(void* p) {
 }
 
 extern "C" void fn_801D1D68(void) {
+}
+
+extern "C" u32 fn_801D6D18(char* self, char* param_2) {
+    char* pcVar3 = self + 8;
+    s32 lVar4 = 0x20;
+    char cVar1;
+    char cVar2;
+    do {
+        lVar4 = lVar4 - 1;
+        if (lVar4 < 0) {
+            if (*param_2 == '\0') {
+                return 1;
+            }
+            return 0;
+        }
+        cVar1 = *pcVar3;
+        pcVar3 = pcVar3 + 1;
+        cVar2 = *param_2;
+        param_2 = param_2 + 1;
+        if (cVar1 != cVar2) {
+            return 0;
+        }
+    } while (cVar2 != '\0');
+    return 1;
 }
 
 extern "C" s32 fn_801D782C(void* a);
