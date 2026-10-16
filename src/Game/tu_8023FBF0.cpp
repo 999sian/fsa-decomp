@@ -1466,7 +1466,7 @@ inline s32 countSharing6(char* p) {
                     c++;
                 }
             } else {
-                u32 me = S32(p, 0x4);
+                s32 me = S32(p, 0x4);
                 if (me == fn_8022F3DC(i)) {
                     c++;
                 }
