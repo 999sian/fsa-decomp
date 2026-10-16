@@ -34,6 +34,8 @@ extern "C" void* fn_801E0D40(void* dst, void* src, s16 size, s16 count);
 extern "C" void fn_8000CEC4(void);
 extern "C" void fn_8015AB1C(void* ptr);
 extern u8 lbl_802EE470[];
+extern "C" void fn_8003CDD4(void);
+extern "C" void* fn_8003CD98(void* ptr, s16 param_2);
 extern "C" void fn_8004816C(void* dst, void* src);
 extern "C" void fn_80047B58(void* dst, void* src);
 extern "C" void fn_80047144(void* dst, void* src);
