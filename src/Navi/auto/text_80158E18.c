@@ -18,6 +18,25 @@ struct VObj_8003B920 {
     virtual void m8();
 };
 
+struct VObj_80159E0C {
+virtual void m0();
+virtual void m1();
+virtual void m2();
+virtual void m3();
+virtual void m4();
+virtual void m5();
+virtual void m6();
+virtual void m7();
+virtual void m8();
+virtual void m9();
+virtual void m10();
+virtual void m11();
+virtual void m12();
+virtual void m13();
+virtual u32 m14();
+virtual u32 m15();
+};
+
 struct VObj_80088CF8 {
     virtual void m0();
     virtual void m1();
