@@ -357,33 +357,6 @@ struct Unk800DC574Src {
     virtual u32* m47(int) = 0;
 };
 
-struct Unk800DC164Src {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
-    virtual void m2() = 0;
-    virtual void m3() = 0;
-    virtual void m4() = 0;
-    virtual void m5() = 0;
-    virtual void m6() = 0;
-    virtual void m7() = 0;
-    virtual void m8() = 0;
-    virtual void m9() = 0;
-    virtual void m10() = 0;
-    virtual void m11() = 0;
-    virtual void m12() = 0;
-    virtual void m13() = 0;
-    virtual void m14() = 0;
-    virtual void m15() = 0;
-    virtual u32 m16() = 0;
-    virtual void m17() = 0;
-    virtual u32* m18(int) = 0;
-    virtual void m19() = 0;
-    virtual void* m20(int) = 0;
-    virtual void m21() = 0;
-    virtual void m22() = 0;
-    virtual J3DNBTScaleInfo* m23() = 0;
-};
-
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
@@ -911,13 +884,13 @@ extern "C" void fn_800D87B4(u8* self) {
 }
 
 extern "C" void fn_800D8884(u8* p) {
-    u8* addr;
-    u8* saved;
-    u8 n;
-    u8* q;
-    u8* r;
     u16* s;
+    u8* r;
+    u8* q;
     u32 i;
+    u8 n;
+    u8* saved;
+    u8* addr;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
     saved = __GDCurrentDL->pDisplayListData;
@@ -1570,13 +1543,13 @@ extern "C" void fn_800DBF04(u8* param_1, Unk800DBF04Obj* param_2) {
         out += 4;
     }
 
-    for (out = param_1, i = 0; i < 4; i++) {
+    for (i = 0, out = param_1; i < 4; i++) {
         u16* src = param_2->m23(i);
         *(u16*)(out + 0x16) = *src;
         out += 2;
     }
 
-    for (out = param_1, i = 0; i < 2; i++) {
+    for (i = 0, out = param_1; i < 2; i++) {
         if (param_2->m17(i) != 0) {
             u8* src = param_2->m17(i);
             out[0xc] = src[0];
@@ -1802,8 +1775,8 @@ extern "C" void fn_800DD644(u8* this_) {
 }
 
 extern "C" void fn_800DD784(u8* this_) {
-    u8* q = this_;
     u8* p = this_;
+    u8* q = this_;
     for (s32 i = 0; i < 8; i++) {
         if (*(J3DTexMtx**)(q + 0x38) != nullptr) {
             u32 type = (*(J3DTexMtx**)(q + 0x38))->getTexMtxInfo().mInfo & 0x3f;
