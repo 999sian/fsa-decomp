@@ -1,5 +1,6 @@
 #include "types.h"
 extern void* lbl_802FEBA0;
+extern void* lbl_802FEBA4;
 
 extern void* lbl_80299A8C[];
 
