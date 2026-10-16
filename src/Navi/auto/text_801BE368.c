@@ -7,6 +7,14 @@ extern "C" void fn_801C13D0(int);
 extern "C" OSThread* fn_801C027C(void);
 extern "C" void fn_801C05A0(OSThread* owner, OSPriority prio);
 extern "C" void fn_801C12E4(OSMutex* mutex);
+
+static u32 lbl_802FF788;
+static u32 lbl_802FF78C;
+static struct {
+    OSResetFunctionInfo* head;
+    OSResetFunctionInfo* tail;
+} ResetFunctionQueue;
+
 extern "C" void fn_801BE368(OSMutex* mutex)
 {
     OSInitThreadQueue(&mutex->queue);
