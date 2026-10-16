@@ -370,6 +370,36 @@ extern "C" void fn_8019900C(void)
 {
 }
 
+extern u32 lbl_80301CF8;
+extern u32 lbl_80301CFC;
+extern "C" void fn_80199078(void* param_1) {
+    u8* p = (u8*)param_1;
+    u32 local_c = lbl_80301CF8;
+    u32 local_8 = lbl_80301CFC;
+    u8* b = (u8*)&local_c;
+    u8* c = (u8*)&local_8;
+    p[0xc] = 0;
+    p[4] = b[0];
+    p[5] = b[1];
+    p[6] = b[2];
+    p[7] = b[3];
+    local_c = lbl_80301CF8;
+    p[8] = b[0];
+    p[9] = b[1];
+    p[0xa] = b[2];
+    p[0xb] = b[3];
+    p[0x20] = c[0];
+    p[0x21] = c[1];
+    p[0x22] = c[2];
+    p[0x23] = c[3];
+    p[0x24] = c[0];
+    p[0x25] = c[1];
+    p[0x26] = c[2];
+    p[0x27] = c[3];
+    *(s32*)(p + 0x18) = 0;
+    *(s32*)(p + 0x1c) = 0;
+}
+
 extern "C" int fn_80199A28() {
     return 0x244;
 }
@@ -920,6 +950,10 @@ extern "C" int fn_801A3DEC(int param_1, int param_2) {
     return param_1 + param_2 * 4 + 0x62;
 }
 
+extern "C" u8 fn_801A3E44(u8* p, s32 i) {
+    return p[i + 0x76];
+}
+
 extern "C" void fn_801A3E50(u8* p, u8 v) {
     p[0x20] = v;
 }
@@ -933,19 +967,13 @@ extern "C" u8 fn_801A3E64(u8* p) {
 }
 
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
-    u8 a = src[1];
-    u8 b = src[2];
     u8* d = p + (i << 3);
-    d[0x22] = a;
-    u8 c = src[3];
-    d[0x23] = b;
-    b = src[5];
-    d[0x24] = c;
-    c = src[6];
-    d[0x26] = b;
-    b = src[7];
-    d[0x27] = c;
-    d[0x28] = b;
+    d[0x22] = src[1];
+    d[0x23] = src[2];
+    d[0x24] = src[3];
+    d[0x26] = src[5];
+    d[0x27] = src[6];
+    d[0x28] = src[7];
 }
 
 extern "C" int fn_801A3EE4(int param_1, int param_2) {
@@ -1274,11 +1302,11 @@ extern "C" s32 fn_801A48F4(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A4908(s32 p, s32 i, s16* src) {
-    s16* d = (s16*)(p + i * 8 + 0x98);
-    d[0] = src[0];
-    d[1] = src[1];
-    d[2] = src[2];
-    d[3] = src[3];
+    s32 d = p + i * 8;
+    *(s16*)(d + 0x98) = src[0];
+    *(s16*)(d + 0x9a) = src[1];
+    *(s16*)(d + 0x9c) = src[2];
+    *(s16*)(d + 0x9e) = src[3];
 }
 
 extern "C" int fn_801A4960(int param_1, int param_2) {
