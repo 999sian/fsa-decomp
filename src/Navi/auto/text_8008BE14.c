@@ -33,6 +33,15 @@ extern "C" BOOL fn_8008C0A4(char* p) {
     return TRUE;
 }
 
+extern u8 lbl_802FCEC8;
+extern "C" void fn_800636F4(void*, void*, s32);
+extern char lbl_802B7CA0[];
+extern "C" int fn_8008C24C(void)
+{
+    fn_800636F4(&lbl_802FCEC8, lbl_802B7CA0 + 0x2200, 0x40);
+    return 1;
+}
+
 extern "C" BOOL fn_8008C4D4(void);
 extern "C" BOOL fn_8008C4D4(void)
 {
