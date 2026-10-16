@@ -828,6 +828,7 @@ extern "C" void fn_8017DE68(u32* param_1) {
 
 #pragma push
 #pragma use_lmw_stmw off
+#pragma dont_inline on
 extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
     extern void* lbl_80298ED8[];
     s32 i;
@@ -1677,7 +1678,7 @@ extern "C" u32 fn_80185ED0(u8* self, u8 b) {
         return 0;
     }
     u32 n = *(u32*)(p + 0x28);
-    if ((u8)n != 1 && (u8)n > b) {
+    if ((u8)n > b && (u8)n != 1) {
         return 1;
     }
     return 0;
@@ -2386,10 +2387,8 @@ extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
 extern f64 lbl_80301C58;
 extern f32 __psq_l(void* p, int off, int w, int gqr);
 extern "C" f32 fn_8018E63C(u16* hdr, s16* tbl, f32 key) {
-    if (key < s16ToF32(tbl[0])) {
-        return s16ToF32(tbl[1]);
-    }
-    return key;
+    f64 b = lbl_80301C58;
+    return key + (f32)b;
 }
 
 extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
@@ -2694,9 +2693,9 @@ extern "C" void fn_80191BB8(u32* data, s32 index) {
 extern f32 lbl_80301C6C;
 extern "C" void fn_80191C50(u32* data, s32 index) {
     f32 z0 = lbl_80301C6C;
-    *(volatile u8*)0xCC008000 = 0x10;
     f32 z1 = lbl_80301C6C;
     f32 z2 = lbl_80301C6C;
+    *(volatile u8*)0xCC008000 = 0x10;
     *(volatile u16*)0xCC008000 = 0xB;
     *(volatile u16*)0xCC008000 = (u16)(index << 2);
     *(volatile u32*)0xCC008000 = data[0];
