@@ -3,6 +3,20 @@
 
 #include "types.h"
 
+class J3DMaterial;
+class J3DMaterialFactory {
+public:
+    enum MaterialType {
+        NORMAL = 0,
+        LOCKED = 1,
+        PATCHED = 2,
+    };
+    size_t calcSize(J3DMaterial*, MaterialType, int, u32) const;
+    size_t calcSizeNormalMaterial(J3DMaterial*, int, u32) const;
+    size_t calcSizePatchedMaterial(J3DMaterial*, int, u32) const;
+    size_t calcSizeLockedMaterial(J3DMaterial*, int, u32) const;
+};
+
 extern volatile s32 lbl_8053BC70;
 
 struct J3DNBTScaleInfo {
