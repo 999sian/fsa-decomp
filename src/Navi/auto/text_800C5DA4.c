@@ -20,6 +20,51 @@ extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" int fn_800C91A4(void*, int, s16, u8, int, f32, f32, int);
 extern "C" int fn_800C93F4(void*, s16, u8, int);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" s32 fn_80020384(void*, s32);
+extern "C" s32 fn_8002F6BC(void);
+extern "C" s32 fn_80058A88(s32);
+extern "C" void fn_801CA690(void);
+extern s32 lbl_802FEBC0;
+struct VObj_800C8D90 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(f32, f32);
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(u8);
+};
+extern "C" void fn_800C8B30(void* param_1)
+{
+    char* base = lbl_802C567C;
+    int local_18[2];
+    int i = 0;
+    
+    do {
+        s16 val = *(s16*)((char*)param_1 + 0x86);
+        u8 byte_val = (u8)base[0x24];
+        f32 fval = *(f32*)(base + 0x20);
+        f32 fval2 = lbl_80300DD4;
+        local_18[i] = fn_800C91A4(param_1, i, val, byte_val, 0, fval, fval2, 0);
+        i++;
+    } while (i < 2);
+    
+    s16 val = *(s16*)((char*)param_1 + 0x86);
+    u8 byte_val = (u8)base[0x1e];
+    int result = fn_800C93F4(param_1, val, byte_val, 0);
+    
+    *(s16*)((char*)param_1 + 0x86) = val + 1;
+    
+    if (result == 1 && local_18[0] == 1 && local_18[1] == 1) {
+        *(u8*)((char*)param_1 + 0x8d) = 2;
+        *(s16*)((char*)param_1 + 0x86) = 0;
+        *(u8*)((char*)param_1 + 0x40) ^= 1;
+        *(u8*)((char*)param_1 + 0x8b) = 8;
+        *(u8*)((char*)param_1 + 0x88) = 0x13;
+    }
+}
+
 extern "C" void fn_800C9510(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
