@@ -50,3 +50,16 @@ extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
         self->m84->mMove.moveVolume(self->m50, 0);
     }
 }
+
+extern "C" void fn_80458F9C(Unk80458F9C* self, u32 fadeout)
+{
+    if (self->m80 != 0) {
+        self->m80->stop(fadeout);
+    }
+    self->m68 = 0;
+    self->m64 = -1;
+    self->m58 = 0;
+    self->m5C = 0;
+    self->m60 = 0;
+}
+
