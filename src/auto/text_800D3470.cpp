@@ -1043,8 +1043,10 @@ extern "C" u32 fn_800DDA50(void) {
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, const J3DAlphaComp* src) {
     J3DAlphaComp* dst = (J3DAlphaComp*)(this_ + 4);
-    dst->mAlphaCmpID = src->mAlphaCmpID;
-    dst->mRef0 = src->mRef0;
+    u16 id = src->mAlphaCmpID;
+    u8 ref0 = src->mRef0;
+    dst->mAlphaCmpID = id;
+    dst->mRef0 = ref0;
     dst->mRef1 = src->mRef1;
 }
 #else
@@ -1258,19 +1260,18 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
     u8 v1 = param_3[1];
-    u32 off = param_2 << 3;
+    param_1 = param_1 + param_2 * 8;
     u8 v2 = param_3[2];
-    u8 *dst = (u8 *)(param_1 + off);
-    dst[0x5a] = v1;
+    *(u8 *)(param_1 + 0x5a) = v1;
     u8 v3 = param_3[3];
-    dst[0x5b] = v2;
+    *(u8 *)(param_1 + 0x5b) = v2;
     u8 v5 = param_3[5];
-    dst[0x5c] = v3;
+    *(u8 *)(param_1 + 0x5c) = v3;
     u8 v6 = param_3[6];
-    dst[0x5e] = v5;
+    *(u8 *)(param_1 + 0x5e) = v5;
     u8 v7 = param_3[7];
-    dst[0x5f] = v6;
-    dst[0x60] = v7;
+    *(u8 *)(param_1 + 0x5f) = v6;
+    *(u8 *)(param_1 + 0x60) = v7;
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
@@ -1477,10 +1478,10 @@ struct fn_800DE29C_Bits2 {
   u8 a : 2;
 };
 
-extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE29C(u8* param_1, int param_2, const u8* param_3)
 {
   u8* e = param_1 + param_2 * 8;
-  u8 b1 = param_3[1];
+  int b1 = param_3[1];
   u8 b0 = param_3[0];
   e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
   e[0x28] = b0 | (e[0x28] & ~0x3);
@@ -2094,9 +2095,8 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8 c0 = c[0];
     u8* p = self + i * 4;
-    p[0xc] = c0;
+    p[0xc] = c[0];
     p[0xd] = c[1];
     p[0xe] = c[2];
     p[0xf] = c[3];
@@ -2104,7 +2104,7 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
     u8 c0 = c[0];
-    u8* p = self + i * 4;
+    u8* p = self + (i << 2);
     p[0xc] = c0;
     p[0xd] = c[1];
     p[0xe] = c[2];
