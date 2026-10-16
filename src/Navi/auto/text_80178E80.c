@@ -1547,6 +1547,13 @@ extern "C" void fn_80188928(u8* self, void* obj) {
     }
 }
 
+extern "C" void fn_80188954(u8* self, void* obj) {
+    void* p = *(void**)(self + 0x168);
+    if (p != nullptr) {
+        fn_8016A1F8(p, obj);
+    }
+}
+
 extern "C" void fn_80188980(u8* self, void* obj) {
     void* p = *(void**)(self + 0x168);
     if (p != nullptr) {
