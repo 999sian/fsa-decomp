@@ -7,6 +7,20 @@ extern "C" void fn_80168280(void);
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80166C70(void* param_1);
 extern "C" u8 fn_80166FC4(void*);
+extern "C" void* fn_80166C08(void* param_1, s16 param_2) {
+    if (param_1) {
+        u8* node = *(u8**)param_1;
+        for (u32 i = 0; i < *(u32*)((u8*)param_1 + 8); i++) {
+            *(u32*)(node + 4) = 0;
+            node = *(u8**)(node + 0xc);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_80166C70(void* param_1) {
     *(u32*)param_1 = 0;
     *(u32*)((u8*)param_1 + 4) = 0;
@@ -15,10 +29,8 @@ extern "C" void fn_80166C70(void* param_1) {
 
 extern "C" void fn_80166C70(void* param_1);
 extern "C" u8 fn_80166C84(u8* list, u8* node) {
-    u8 ok;
-    if (*(void**)(node + 4) == 0) {
-        ok = 1;
-    } else {
+    u8 ok = *(void**)(node + 4) == 0;
+    if (!(u8)(*(void**)(node + 4) == 0)) {
         ok = fn_80166FC4(*(void**)(node + 4));
     }
     if (ok) {
@@ -157,7 +169,8 @@ extern "C" void fn_801191F0(void* param_1);
 extern "C" void fn_80171E5C(void* param_1, int param_2, u32 param_3)
 {
     if (param_3 < 8) {
-        void* p = *(void**)((u8*)param_1 + param_3 * 4 + 0x16c);
+        u8* base = (u8*)param_1 + param_3 * 4;
+        void* p = *(void**)(base + 0x16c);
         if (p != NULL && *(void**)((u8*)p + 0x20) != NULL) {
             fn_801191F0(p);
         }
@@ -214,16 +227,13 @@ extern "C" s32 fn_80172B18(void) {
 }
 
 extern "C" void fn_80172B5C(s32 p, s32 i, u8* src) {
-    u8 a;
-    u8 b;
-    u8 c;
-    p = p + i * 4;
-    a = src[0];
-    b = src[1];
-    *(u8*)(p + 0xe) = a;
-    c = src[2];
-    *(u8*)(p + 0xf) = b;
-    *(u8*)(p + 0x10) = c;
+    u8 a = src[0];
+    u8* dst = (u8*)(p + i * 4);
+    u8 b = src[1];
+    dst[0xe] = a;
+    u8 c = src[2];
+    dst[0xf] = b;
+    dst[0x10] = c;
 }
 
 extern "C" s32 fn_80172CEC(s32 p, s32 i) {
