@@ -1,5 +1,10 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern const f32 lbl_805428D8;
+extern const f32 lbl_805428DC;
+
 
 extern u32 lbl_804AD3A0[48];
 extern const f32 lbl_805428E8;
