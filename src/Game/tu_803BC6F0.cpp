@@ -15,6 +15,10 @@ extern "C" int fn_803B9A94(void* a, u32 b, int c, u32 d, int e, int f);
 extern "C" void fn_803C24BC(char* p);
 extern "C" s32 fn_803B9BDC(char* this_);
 extern "C" void fn_803BF004(char* this_);
+extern "C" void fn_803B93E8(void* a, void* b, void* c, s32 d);
+extern "C" void fn_803BACF8(void* a, u8 b);
+extern "C" void fn_803B9D54(void* a, void* b, u32 c, void* d, u32 e, s32 f);
+extern "C" s32 CARDGetSerialNo(s32 chan, u64* serial);
 extern "C" void fn_803C579C(char* this_) {
     s32 r = fn_803B9BDC(lbl_8051C1A0);
     if (r == 2) {
