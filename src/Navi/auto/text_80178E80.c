@@ -2774,3 +2774,12 @@ extern "C" void fn_80192688(void* p) {
     fn_80192D84(p);
 }
 
+extern "C" void fn_801926E4(void) {
+    fn_801DCCA0(0);
+    fn_801DAF24(1);
+    fn_801DEA4C(1);
+    fn_801DE24C(0);
+    fn_801DBAE4(2);
+    fn_801DBB28(0);
+}
+
