@@ -310,21 +310,28 @@ extern "C" void* fn_800643E8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800645A8(u8* p) {
+    u8* q = *(u8**)(p + 0x24c);
+    *(f32*)(q + 0x18) = *(f32*)(p + 0x144);
+    *(f32*)(q + 0x1c) = *(f32*)(p + 0x148);
+    *(f32*)(q + 0x20) = *(f32*)(p + 0x14c);
+    fn_801C61AC(lbl_8029F8D8, *(f32*)(p + 0x128), *(f32*)(p + 0x12c), *(f32*)(p + 0x130));
+    fn_8000C950(lbl_8029F8D8, *(s16*)(p + 0x13c), *(s16*)(p + 0x13e), *(s16*)(p + 0x140));
+    fn_801C5D74(lbl_8029F8D8, *(u8**)(p + 0x24c) + 0x24);
+}
+
 extern "C" int fn_801E10A0(void* p);
 extern "C" int fn_801E1070(void* p);
 extern "C" void fn_801E10DC(void* p, void* q);
 extern "C" int fn_80064630(u8* p, u32* src, void* arg) {
-    u32 a = src[0];
-    u32 b = src[1];
-    u32 c = src[2];
     if (fn_801E10A0(p + 0x258)) {
         if (fn_801E1070(p + 0x258)) {
             *(s8*)(p + 0x254) = -1;
             fn_801E10DC(p, arg);
         }
-        *(u32*)(p + 0x258) = a;
-        *(u32*)(p + 0x25c) = b;
-        *(u32*)(p + 0x260) = c;
+        *(u32*)(p + 0x258) = src[0];
+        *(u32*)(p + 0x25c) = src[1];
+        *(u32*)(p + 0x260) = src[2];
         *(s8*)(p + 0x254) = 0;
         fn_801E10DC(p, arg);
     }
