@@ -619,6 +619,28 @@ extern "C" void fn_8015B5F8(char* p) {
     *(int*)(p + 0x84) = 0;
     fn_801BE47C(p + 0x18);
 }
+
+#pragma push
+#pragma dont_inline on
+extern "C" void fn_8015B674(char* p) {
+    char* n;
+    char* next;
+    fn_801BE3A0(p + 0x18);
+    n = *(char**)(p + 0x80);
+    while (n != 0) {
+        if (*(unsigned char*)(n + 2) & 0x80) {
+            fn_8015A3E4(p, (unsigned long)(n + 0x10), *(unsigned long*)(n + 4));
+            next = *(char**)(n + 0xc);
+            fn_8015C5D4(n, p);
+            n = next;
+        } else {
+            n = *(char**)(n + 0xc);
+        }
+    }
+    fn_801BE47C(p + 0x18);
+}
+#pragma pop
+
 #pragma pop
 extern "C" BOOL fn_8015C744(void* p, u32* a, u32* b) {
     BOOL r = 1;
