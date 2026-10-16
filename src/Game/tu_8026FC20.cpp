@@ -784,8 +784,10 @@ bool fn_802728AC(char* p, const f32* box, s32 room, s32 id) {
     if (!fn_8024FEFC(p)) {
         return 0;
     }
-    f32 x = F32(p, 0x8) + lbl_8046BD48[S32(p, 0x3dc)].x;
-    f32 y = F32(p, 0xc) + lbl_8046BD48[S32(p, 0x3dc)].y;
+    f32 x = F32(p, 0x8);
+    f32 y = F32(p, 0xc);
+    x += lbl_8046BD48[S32(p, 0x3dc)].x;
+    y += lbl_8046BD48[S32(p, 0x3dc)].y;
     BOOL in = inBox2(box, x, y);
     if (!(u8)in) {
         return 0;
