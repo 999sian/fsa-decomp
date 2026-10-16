@@ -1214,6 +1214,11 @@ extern "C" void fn_80172EE8(u8* p, u8 v) {
     p[0x32] = v;
 }
 
+extern "C" u8 fn_80172EF0(u8* p)
+{
+    return p[0x32];
+}
+
 extern "C" void fn_80172EF8(u8* param_1, s32 param_2, u8* param_3) {
     u8* p = param_1 + param_2 * 8;
     u8 a = param_3[1];
