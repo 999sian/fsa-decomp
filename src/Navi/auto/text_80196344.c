@@ -432,6 +432,10 @@ extern "C" void fn_801A34FC(void* param_1) {
     fn_801A7D78((u8*)param_1 + 4);
 }
 
+extern "C" void fn_801A3520(void* param_1) {
+    fn_801A7D78((u8*)param_1 + 4);
+}
+
 extern "C" int fn_801A3544(int p) { return p + 4; }
 
 extern "C" void fn_801A7D78(void* p);
