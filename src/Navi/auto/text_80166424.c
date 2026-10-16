@@ -1984,10 +1984,9 @@ extern "C" void* fn_80174E9C(void* param_1) {
 
 extern "C" void fn_80174F08(u8* p)
 {
-    VObj_80174F08* obj = *(VObj_80174F08**)(p + 4);
-    if (obj != 0) {
-        *(f32*)(p + 0x50) = (f32)obj->vf12();
-        *(f32*)(p + 0x54) = (f32)obj->vf13();
+    if (*(VObj_80174F08**)(p + 4) != 0) {
+        *(f32*)(p + 0x50) = (f32)(*(VObj_80174F08**)(p + 4))->vf10();
+        *(f32*)(p + 0x54) = (f32)(*(VObj_80174F08**)(p + 4))->vf11();
     }
 }
 
