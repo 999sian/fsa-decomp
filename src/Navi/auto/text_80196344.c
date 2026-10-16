@@ -513,6 +513,18 @@ extern "C" void fn_80199280(void* param_1) {
     p[1] = 0;
 }
 
+u32 fn_80199A00(void) {
+    return 0xfe;
+}
+
+u32 fn_80199A08(void) {
+    return 0x1f2;
+}
+
+extern "C" u32 fn_80199A10(void) {
+    return 0x230;
+}
+
 extern "C" int fn_80199A18(void)
 {
 	return 0x69;
@@ -1231,7 +1243,7 @@ extern "C" void fn_8019FA54(int param_1)
 	do {
 		unsigned short check = *(unsigned short *)(ptr + 8);
 		if (check != 0xffff) {
-			lbl_802FFA80[2] = lbl_802FFA80[0] + off + *(int *)(param_1 + 4);
+			lbl_802FFA80[2] = (*(int *)(param_1 + 4)) + (lbl_802FFA80[0] + off);
 			fn_801A6214((int)i, (void *)(ptr + 8));
 			off += 0x14;
 			if (*(u8*)(*(u8**)(*(u8**)(lbl_802EE470 + 0x58) + 4) + *(unsigned short *)(ptr + 8) * 0x20 + 8) == 1) {
