@@ -167,6 +167,13 @@ extern "C" void fn_80019834(void* param_1) {
     fn_8001D630(*(void**)((u8*)self + 0xc0), self);
 }
 
+extern "C" s32 fn_80019930(void) {
+    if (lbl_802FB9B8 != NULL) {
+        return *(s32*)(lbl_802FB9B8 + 8);
+    }
+    return 0;
+}
+
 extern "C" void fn_80019AE0(void) {
 }
 
