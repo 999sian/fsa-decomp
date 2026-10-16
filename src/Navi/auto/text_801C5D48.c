@@ -13,6 +13,10 @@ static volatile BOOL ResetRequired_802FF8B8;
 static vu32 ResumeFromHere_802FF8A8;
 
 void DVDLowReset(void);
+BOOL fn_801CA33C(DVDCommandBlock* block, DVDCBCallback callback);
+void fn_801CA664(s32 result, DVDCommandBlock* block);
+void fn_801C12E4(OSThreadQueue* queue);
+extern OSThreadQueue __DVDThreadQueue;
 
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 {
