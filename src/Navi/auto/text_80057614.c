@@ -67,6 +67,17 @@ extern "C" void fn_800581CC(void) {
     }
 }
 
+extern "C" void fn_80058230(void) {
+    s32 i = 0;
+    do {
+        s32 id = i + 0x8000;
+        if (lbl_802C05B0[i * 4 + 0xa] != 0 && fn_8005871C(id) == 0) {
+            fn_800583D8(i);
+        }
+        i++;
+    } while (i < 2);
+}
+
 extern "C" void fn_800583D8(s32 idx);
 extern "C" void fn_80058628(void* a, s32 b, s32 c);
 extern "C" void fn_800582A0(s32 idx, s32 val) {
