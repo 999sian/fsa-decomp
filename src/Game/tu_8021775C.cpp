@@ -1,10 +1,63 @@
 #include "types.h"
+#include "Game/Actor.h"
 
 
 extern "C" void fn_801EE434(void*);
 extern "C" void __dl__FPv(void*);
 extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
 extern const f32 lbl_8053FC38;
+
+extern const f32 __float_epsilon;
+extern "C" void fn_8021775C(void** p, f32 t) {
+    Vec target = *(Vec*)((u8*)p[6] + 0x600);
+    Vec cur = *(Vec*)((u8*)p[6] + 0x60c);
+    if (t < __float_epsilon) {
+        cur.x = target.x;
+    } else {
+        cur.x = cur.x + (target.x - cur.x) * (1.0f / t);
+    }
+    if (t < __float_epsilon) {
+        cur.y = target.y;
+    } else {
+        cur.y = cur.y + (target.y - cur.y) * (1.0f / t);
+    }
+    if (t < __float_epsilon) {
+        cur.z = target.z;
+    } else {
+        cur.z = cur.z + (target.z - cur.z) * (1.0f / t);
+    }
+    fn_8013CB44(p[4], &cur, 1, 1, 1);
+    fn_8013CB44(p[5], &cur, 1, 1, 1);
+}
+
+extern "C" void fn_80217874(char* this_, f32 t) {
+    Vec a = *(Vec*)(*(char**)(this_ + 0x18) + 0xc);
+    Vec b = *(Vec*)(*(char**)(this_ + 0x18) + 0x60c);
+
+    if (t < __float_epsilon) {
+        a.x = b.x;
+    } else {
+        a.x = (1.0f / t) * (b.x - a.x) + a.x;
+    }
+    if (t < __float_epsilon) {
+        a.y = b.y;
+    } else {
+        a.y = (1.0f / t) * (b.y - a.y) + a.y;
+    }
+    if (t < __float_epsilon) {
+        a.z = b.z;
+    } else {
+        a.z = (1.0f / t) * (b.z - a.z) + a.z;
+    }
+    fn_8013CB44(*(void**)(this_ + 8), &a, 1, 1, 1);
+    fn_8013CB44(*(void**)(this_ + 0xc), &a, 1, 1, 1);
+}
+
+struct Vec3f {
+    f32 x;
+    f32 y;
+    f32 z;
+};
 
 extern "C" void fn_8021798C(void** p) {
     fn_8013CB44(p[0], (u8*)p[6] + 0xc, 1, 1, 1);
@@ -79,31 +132,34 @@ extern "C" void fn_80217AB8(u8* p) {
 }
 
 extern "C" void fn_80217BC8(void** p) {
-    u8* base;
     if (p[2] == 0) {
-        base = (u8*)p[6];
-        p[2] = fn_8013CC50(*(u32*)(base + 4), base + 0xc, 0x22f, 1, lbl_8053FC38, 1, 0, 0, 1);
+        u8* obj = (u8*)p[6];
+        u8* sub = obj + 0xc;
+        p[2] = fn_8013CC50(*(u32*)(obj + 4), sub, 0x22f, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[2];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
             *(f32*)(r + 0x98) = tbl[0];
             *(f32*)(r + 0x9c) = tbl[1];
             *(f32*)(r + 0xa0) = tbl[2];
+            f32 y = tbl[1];
             *(f32*)(r + 0xb0) = tbl[0];
-            *(f32*)(r + 0xb4) = tbl[1];
+            *(f32*)(r + 0xb4) = y;
         }
     }
     if (p[3] == 0) {
-        base = (u8*)p[6];
-        p[3] = fn_8013CC50(*(u32*)(base + 4), base + 0xc, 0x230, 1, lbl_8053FC38, 1, 0, 0, 1);
+        u8* obj = (u8*)p[6];
+        u8* sub = obj + 0xc;
+        p[3] = fn_8013CC50(*(u32*)(obj + 4), sub, 0x230, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[3];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
             *(f32*)(r + 0x98) = tbl[0];
             *(f32*)(r + 0x9c) = tbl[1];
             *(f32*)(r + 0xa0) = tbl[2];
+            f32 y = tbl[1];
             *(f32*)(r + 0xb0) = tbl[0];
-            *(f32*)(r + 0xb4) = tbl[1];
+            *(f32*)(r + 0xb4) = y;
         }
     }
 }
