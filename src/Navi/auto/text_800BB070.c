@@ -20,8 +20,6 @@ extern "C" f32 fn_800BDD94(void*, u8, s32);
 struct VObj_800BD938 {
     virtual void d0();
     virtual void d1();
-    virtual void v2();
-    virtual void v3();
     virtual void v4(f32, f32);
     virtual void v5();
     virtual void v6();
