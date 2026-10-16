@@ -62,6 +62,10 @@ extern "C" void fn_800CAEE0(s32 *param_1, int param_2, int param_3, int param_4)
     }
 }
 
+extern "C" u32 fn_800CBCDC(void) {
+    return 0x54564E4C;
+}
+
 extern "C" void fn_800CBD4C(void) {}
 
 extern "C" void fn_800CBD50(void) {}
