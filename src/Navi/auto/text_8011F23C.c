@@ -167,6 +167,24 @@ extern "C" void fn_80120578(void* arg)
     fn_801BDE1C((u8*)lbl_802FF328 + 0x38, fn_801CC930(), 0);
 }
 
+extern "C" void fn_801CBEE8(s32* p);
+extern "C" void fn_801CBA20(void);
+extern "C" void fn_801205C4(u8* param_1, s32* param_2)
+{
+    s32* cur = *(s32**)(param_1 + 4);
+    if (cur != 0 && *param_2 != *cur) {
+        *(u8*)(param_1 + 0x2c) = 1;
+        *(s32*)(param_1 + 0x30) = 4;
+    }
+    *(s32**)(param_1 + 4) = param_2;
+    fn_801CBEE8(*(s32**)(param_1 + 4));
+    fn_801CC710();
+    if (*(u8*)(param_1 + 0x2c) != 0) {
+        fn_801CBA20();
+        fn_801CBA20();
+    }
+}
+
 extern "C" void fn_8012063C(void)
 {
 }
