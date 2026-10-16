@@ -225,6 +225,24 @@ extern "C" u8* fn_80120654(void* param_1, void* param_2) {
     }
     return lbl_802FF340;
 }
+
+extern "C" void fn_80120704(void) {
+    s32 i;
+    void** p;
+    u8* obj;
+    if ((obj = lbl_802FF340) != 0) {
+        for (i = 0, p = (void**)obj; i < 3; i++) {
+            if (obj[i + 0xc] != 0 && *p != 0) {
+                fn_8015AB1C(*p);
+            }
+            p++;
+        }
+        lbl_802FF340 = 0;
+        fn_8015AB1C(obj);
+    }
+    lbl_802FF340 = 0;
+}
+
 #pragma pop
 extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
