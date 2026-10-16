@@ -1,5 +1,7 @@
 
 
+#include "types.h"
+
 class UnkVObj_80184B60 {
 public:
     virtual void vfn0(void* self);
