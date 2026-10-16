@@ -52,6 +52,19 @@ extern "C" void fn_801C27F0(void* this_) {
     ((Actor*)this_)->Actor::v07();
 }
 
+extern const f32 lbl_8053EFB8;
+extern const f32 lbl_8053EFBC;
+extern "C" void fn_801C2D40(u8* this_) {
+    if (*(s32*)(this_ + 0xd8) > 0 && *(s32*)(this_ + 0xf8) == 2) {
+        return;
+    }
+    f32 min = -lbl_8053EFBC;
+    *(f32*)(this_ + 0x44) += lbl_8053EFB8;
+    if (*(f32*)(this_ + 0x44) < min) {
+        *(f32*)(this_ + 0x44) = min;
+    }
+}
+
 extern "C" int fn_801C5340(void) { return 0; }
 
 extern "C" bool fn_801C53C4(void* thisObj) {
