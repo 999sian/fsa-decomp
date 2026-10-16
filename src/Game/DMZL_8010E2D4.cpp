@@ -17,6 +17,33 @@ extern "C" void* fn_8010FA84(u8* this_) {
 #endif
 }
 
+extern "C" void fn_80110198(u8* this_) {
+    fn_8010DF58(this_);
+    if (this_[0x230] == 0) {
+        if (*(s32*)(this_ + 0x2fc) >= 0x13) {
+            fn_8010F7EC(this_, 0x21b);
+        } else if (*(s32*)(this_ + 0x2fc) >= 0xf) {
+            fn_8010F7EC(this_, 0x274);
+        } else {
+            fn_8010F7EC(this_, 0x9b);
+        }
+    }
+}
+
+extern "C" void fn_8010F9F0(u8* p) {
+    switch (*(s32*)(p + 0x234)) {
+    case 0:
+        break;
+    case 1:
+        fn_8010E7E8(p, 0x31);
+        break;
+    case 2:
+        fn_8010E2D4(p, 0x31);
+        break;
+    }
+    *(s32*)(p + 0x238) = 0x31;
+}
+
 extern "C" s32 fn_8010FA54(u8* this_) {
 #if defined(VERSION_G4SP01)
     switch (*(s32*)(this_ + 0x23c)) {
