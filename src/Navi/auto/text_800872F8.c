@@ -24,6 +24,16 @@ struct VObj_80088CF8 {
 };
 extern "C" void fn_8011A194(void* obj, float x, float y, float z);
 extern "C" float lbl_803009F8;
+extern "C" int fn_8006347C(void*, void*, int, const char*, int, int);
+extern const char lbl_80283C88[];
+extern "C" int fn_800872F8(void* param_1) {
+    int ret = fn_8006347C(param_1, lbl_802B7CA0 + 0x2200, 0x40, lbl_80283C88, 0, 0);
+    if (ret == 0) {
+        return 5;
+    }
+    return 2;
+}
+
 extern "C" int fn_80087348(void* param_1) {
     int ret = fn_800636A0(param_1, lbl_802B7CA0 + 0x2200, 0x40);
     if (ret < 0) {
