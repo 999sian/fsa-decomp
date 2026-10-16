@@ -124,7 +124,7 @@ extern "C" int fn_8008F378()
 	return 0;
 }
 
-void fn_80090D44(void) {}
+extern "C" void fn_80090D44(void) {}
 
 void fn_80090D48(void) {}
 
