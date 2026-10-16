@@ -75,6 +75,23 @@ extern "C" void fn_800C8CD8(u8* param_1) {
     }
 }
 
+extern "C" void fn_800C8D48(u8* param_1) {
+    s32 r = fn_80020384(lbl_802B7CA0 + 0x1388, 0);
+    if (r == 1) {
+        param_1[0x88] = 0x15;
+    }
+}
+
+extern "C" void fn_800C8D90(u8* param_1) {
+    (*(VObj_800C8D90**)(param_1 + 0x70))->v2(*(f32*)(param_1 + 0x74) + 0.5f * param_1[0x7c], *(f32*)(param_1 + 0x78));
+}
+
+extern "C" void fn_800C8DF4(u8* param_1) {
+    param_1[0x7d] = 0;
+    param_1[0x7e] = 1;
+    (*(VObj_800C8D90**)(param_1 + 0x70))->v7(lbl_802C567C[0x27]);
+}
+
 extern "C" void fn_800C9510(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
