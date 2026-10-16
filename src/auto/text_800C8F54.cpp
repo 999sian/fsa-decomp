@@ -188,6 +188,8 @@ extern "C" u32 fn_800CBDF0(void) {
 
 extern "C" char lbl_8049ABFC[];
 extern "C" char __vt__13J3DColorBlock[];
+extern "C" char lbl_8049AA38[];
+extern "C" char __vt__10J3DPEBlock[];
 extern "C" void __dl__FPv(void*);
 extern "C" char lbl_8049AB90[];
 extern "C" char __vt__14J3DTexGenBlock[];
