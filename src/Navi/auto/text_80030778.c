@@ -14,6 +14,9 @@ extern "C" void fn_80030250(int);
 extern "C" void fn_800302F0(int);
 extern "C" void fn_800300C0(int, float, int, int, int);
 extern "C" void fn_8002F358(int, int);
+extern "C" void fn_80033ADC(void*, void*);
+extern float lbl_802FFD48;
+extern int lbl_80244A88[];
 
 extern "C" void fn_80030778(void* p) {
     *(unsigned int*)((char*)lbl_802BB0FC + 0x400) = *(unsigned char*)((char*)p + 0xc);
