@@ -150,15 +150,15 @@ extern "C" s32 fn_80121428() { return 1; }
 extern "C" s32 fn_80121430() { return 0; }
 
 extern "C" s32 fn_801216D0(void*, s32 player) {
-    if (!fn_8023E98C(player)) {
-        return -1;
-    }
-    for (s32 i = 0; i < 4; ++i) {
-        if (fn_8023ED8C(i) && player == fn_8023ECF0(i) && fn_8022D75C(i)) {
-            return i;
-        }
-    }
+  if (!fn_8023E98C(player)) {
     return -1;
+  }
+  for (s32 i = 0; i < 4; ++i) {
+    if (fn_8023ED8C(i) && player == fn_8023ECF0(i) && fn_8022D75C(i)) {
+      return i;
+    }
+  }
+  return -1;
 }
 
 extern "C" void fn_80121764(u8* self) {
@@ -395,7 +395,41 @@ extern "C" void fn_80122A9C(u8* self, f32* x, f32* y, s32* player) {
 
 extern "C" u8 fn_8022E438(s32, s32);
 extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
-  *a = 0.0f;
+  *a = lbl_8053C9B4;
+  *b = lbl_8053C9B4;
+  s32 idx = *out;
+  s32 sel;
+  if (idx < 0) {
+    sel = idx;
+  } else if (idx < 4) {
+    sel = idx;
+    for (s32 i = 0; i < 4; ++i) {
+      if (fn_8022E438(i, idx)) {
+        sel = i;
+      }
+    }
+  } else {
+    sel = idx;
+  }
+  *out = sel;
+  f32 v = lbl_8053C9B4;
+  if (((CompanionCalls*)self)->v49()) {
+    v = lbl_8053C9BC;
+  }
+  switch (fn_80230CFC(*out)) {
+    case 0:
+      *a = -v;
+      break;
+    case 1:
+      *a = v;
+      break;
+    case 2:
+      *b = -v;
+      break;
+    case 3:
+      *b = v;
+      break;
+  }
 }
 
 extern "C" void fn_80122CAC(u8* self, f32* x, f32* y, s32* player) {
@@ -422,13 +456,13 @@ extern "C" void fn_80122D38(u8* self, f32* x, f32* y, s32* player) {
 }
 
 extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
-    f32 t;
     f32 offset = lbl_8053C9B4;
+    f32 t;
 
-    if (((CompanionCalls*)self)->v49()) {
+    if (((CompanionCalls*)self)->v47()) {
         offset = lbl_8053C9BC;
     }
-    t = (f32)(fn_8022E970(*player) - 1) * lbl_8053C9C4 - lbl_8053C9C4;
+    t = lbl_8053C9C4 * (f32)(fn_8022E970(*player) - 1) - lbl_8053C9C4;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = lbl_8053C9B8;
