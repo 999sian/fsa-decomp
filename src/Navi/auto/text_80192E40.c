@@ -139,6 +139,8 @@ extern "C" void* fn_80195F3C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80195FA8(void) { return 0x534D4242; }
+
 extern void* lbl_80299DA8[];
 extern "C" void* fn_80195FB4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
