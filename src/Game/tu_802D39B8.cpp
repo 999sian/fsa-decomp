@@ -64,10 +64,6 @@ extern const f32 lbl_80541124;
 extern const f32 lbl_80541160;
 extern const f32 lbl_80541164;
 
-struct Vec3f {
-    f32 x, y, z;
-};
-
 extern "C" {
 int sprintf(char*, const char*, ...);
 void __dl__FPv(void*);
@@ -200,29 +196,29 @@ extern "C" bool fn_802D49A8(char* p, s32 x, u16 value) {
 
 extern "C" bool fn_802D4ADC(char* p, s32 x, u16 v) {
     s32 base = x < 8 ? 0 : x - 7;
-    RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     s32 i;
     for (i = 0; i < 0x40; i++) {
-        if (v == rooms->values2948[base][i]) {
-            break;
-        }
-    }
-    if (i < 0x40) {
-        u64 mask = 1;
-        for (;;) {
-            if (i == 0) {
-                break;
+        if (v == (*(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C))->values2948[base][i]) {
+            if (i >= 0x40) {
+                return false;
             }
-            mask <<= 1;
-            i--;
+            u64 mask = 1;
+            for (;;) {
+                if (i == 0) {
+                    break;
+                }
+                mask <<= 1;
+                i--;
+            }
+            RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+            u64 word;
+            if (x < 8) {
+                word = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][0];
+            } else {
+                word = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][x - 7];
+            }
+            return (mask & word) != 0;
         }
-        u64 word;
-        if (x < 8) {
-            word = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][0];
-        } else {
-            word = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][x - 7];
-        }
-        return (mask & word) != 0;
     }
     return false;
 }
@@ -277,12 +273,12 @@ extern "C" void fn_802D6BF8(char*, u8 value) {
 }
 
 extern const f32 lbl_80541120;
-extern "C" void fn_802D6C10(char*, f32* pos, s32 id) {
-    char* rooms = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+extern "C" void fn_802D6C10(char* unused, f32* pos, u32 id) {
     s32 off4 = 0;
     s32 off8 = 0;
-    for (s32 i = 0; i < 8; i++) {
-        if (id == *(s32*)(rooms + off4 + 0x13188)) {
+    for (u32 i = 0; i < 8; i++) {
+        char* rooms = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
+        if (id == *(u32*)(rooms + off4 + 0x13188)) {
             f32* pair = (f32*)(rooms + off8 + 0x13148);
             bool bVar5 = false;
             f32 eps = lbl_80541120 * FLT_EPSILON;
@@ -302,13 +298,15 @@ extern "C" void fn_802D6C10(char*, f32* pos, s32 id) {
                 }
             }
             if (bVar5) {
-                f32* dst = (f32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + i * 8 + 0x130E8);
+                off4 = (s32)i * 4;
+                off8 = (s32)i * 8;
+                f32* dst = (f32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + off8 + 0x130E8);
                 dst[0] = lbl_8054111C;
                 dst[1] = lbl_8054111C;
-                *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + i * 4 + 0x13128) = -1;
+                *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + off4 + 0x13128) = -1;
                 pair[0] = lbl_8054111C;
                 pair[1] = lbl_8054111C;
-                *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + i * 4 + 0x13188) = -1;
+                *(s32*)(*(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C) + off4 + 0x13188) = -1;
                 return;
             }
         }
@@ -757,13 +755,13 @@ extern "C" u8 fn_802DA630(char* p) {
     if (flag == 0) {
         f32 offset;
         s32 i;
-        Vec3f v;
+        JGeometry::TVec3<f32> v;
         void* e;
         s32 count;
 
         offset = *(s32*)(p + 0x2C) > 0 ? lbl_80541160 : lbl_80541164;
         for (i = 0; i < 4; i++) {
-            v = *(Vec3f*)fn_8023E724(i);
+            v = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
             v.x += offset;
             fn_80230498(i, &v, (u16)fn_8023CBC0(), 0xff, -0x80, -0x80, 1);
         }
@@ -771,9 +769,9 @@ extern "C" u8 fn_802DA630(char* p) {
         for (i = 0; i < count; i++) {
             e = *(void**)((char*)fn_801F856C() + i * 4 + 8);
             if (e != NULL && *(s32*)((char*)e + 0x1A0) == 0x4F53494E && *(s32*)((char*)e + 0x230) == 2) {
-                v = *(Vec3f*)((char*)e + 0xC);
+                v = *(JGeometry::TVec3<f32>*)((char*)e + 0xC);
                 v.x += offset;
-                *(Vec3f*)((char*)e + 0xC) = v;
+                *(JGeometry::TVec3<f32>*)((char*)e + 0xC) = v;
                 break;
             }
         }
