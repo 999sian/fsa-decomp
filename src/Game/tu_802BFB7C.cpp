@@ -15,3 +15,17 @@ extern "C" void* fn_802BFB7C(void* p, s16 flags) {
     }
     return p;
 }
+
+extern "C" void fn_802C0EE0(char* p) {
+    f32 z = lbl_80540C40;
+    *(f32*)(p + 0x44) = z;
+    *(f32*)(p + 0x40) = z;
+    *(f32*)(p + 0x3c) = z;
+    *(s32*)(p + 0x248) = 0;
+    if (*(s32*)(p + 0x254) < 0xb4) {
+        *(s32*)(p + 0x254) = 0xb4;
+    }
+    *(s32*)(p + 0x24c) = 0xff;
+    *(s32*)(p + 0x250) = 1;
+}
+
