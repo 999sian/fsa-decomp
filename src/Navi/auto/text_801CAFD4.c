@@ -527,6 +527,11 @@ extern "C" void fn_801D1F90(s32 chan) {
     }
 }
 
+extern u16 lbl_802FFA18;
+extern "C" u16 fn_801D2C88(void) {
+    return lbl_802FFA18;
+}
+
 extern "C" u32 fn_801D44FC(u8* param_1) {
     return *(u32*)(param_1 + 0x88);
 }
