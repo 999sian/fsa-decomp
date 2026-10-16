@@ -25,6 +25,18 @@ extern "C" s32 fn_8002F6BC(void);
 extern "C" s32 fn_80058A88(s32);
 extern "C" void fn_801CA690(void);
 extern s32 lbl_802FEBC0;
+struct VObj_800C954C {
+    virtual void v0(int);
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+};
+extern char lbl_8029FDB4[];
+extern "C" void fn_800127A0(void*);
 struct VObj_800C8D90 {
     virtual void v0();
     virtual void v1();
