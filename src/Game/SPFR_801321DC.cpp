@@ -21,3 +21,39 @@ extern "C" s32 fn_80132AE0(char* p) {
     return 0;
 }
 
+extern "C" void* fn_80133624(char* p, s16 flag) {
+    if (p != 0) {
+        *(void**)p = lbl_8049EB8C;
+        fn_801EE434(*(void**)(p + 0x288));
+        *(void**)(p + 0x288) = 0;
+        char* sub = p + 0x250;
+        if (sub != 0) {
+            char* s2 = sub + 0x24;
+            if (s2 != 0) {
+                *(void**)s2 = lbl_8049CC34;
+            }
+        }
+        __dt__13Base_8010E074Fv(p, 0);
+        if (flag > 0) {
+            operator delete(p);
+        }
+    }
+    return p;
+}
+
+extern "C" void* fn_801336B4(char* p) {
+    fn_8010E074(p);
+    *(void**)p = lbl_8049EB8C;
+    p[0x230] = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = -1;
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    fn_801D267C(p + 0x250);
+    *(void**)(p + 0x288) = 0;
+    return p;
+}
+
