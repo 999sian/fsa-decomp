@@ -4,6 +4,8 @@
 extern "C" void fn_801EE434(void*);
 extern "C" void __dl__FPv(void*);
 extern "C" void fn_8013CB44(void*, void*, s32, s32, s32);
+extern const f32 lbl_8053FC38;
+
 extern "C" void fn_8021798C(void** p) {
     fn_8013CB44(p[0], (u8*)p[6] + 0xc, 1, 1, 1);
     fn_8013CB44(p[1], (u8*)p[6] + 0xc, 1, 1, 1);
