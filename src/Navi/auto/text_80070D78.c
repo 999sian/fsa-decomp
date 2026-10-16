@@ -7,6 +7,9 @@ extern "C" void fn_801C61AC(void*, f32, f32, f32);
 extern "C" void fn_8000C8A4(void*, s16, s16, s16);
 extern "C" void fn_80115D38(s16*, s16, int, int);
 extern "C" void fn_801C5D74(void*, void*);
+extern "C" int fn_80020EA4(void* p, int x);
+extern "C" int fn_800183AC(void* p, void* f, void* a);
+extern "C" int fn_800175B8(void* p);
 
 struct StateObj_80072080;
 typedef BOOL (StateObj_80072080::*StateFunc_80072080)(int);
@@ -242,6 +245,37 @@ extern "C" BOOL fn_80072CD8(void);
 extern "C" BOOL fn_80072CD8(void)
 {
     return TRUE;
+}
+
+extern void* lbl_8024756C[];
+extern f32 lbl_80300548;
+extern f32 lbl_8030054C;
+extern f32 lbl_80300550;
+extern f32 lbl_80300554;
+extern f32 lbl_80300558;
+extern f32 lbl_8030055C;
+extern f32 lbl_80300560;
+extern "C" void fn_80072CE0(void* p) {
+    *(void**)p = lbl_8024756C;
+    ((f32*)p)[1] = lbl_80300548;
+    ((f32*)p)[2] = lbl_80300548;
+    ((f32*)p)[3] = lbl_80300548;
+    ((f32*)p)[4] = lbl_8030054C;
+    ((f32*)p)[5] = lbl_8030054C;
+    ((f32*)p)[6] = lbl_8030054C;
+    ((f32*)p)[7] = lbl_80300550;
+    ((f32*)p)[8] = lbl_80300554;
+    ((f32*)p)[9] = lbl_80300558;
+    ((f32*)p)[10] = lbl_8030055C;
+    ((f32*)p)[11] = lbl_80300560;
+    ((s16*)p)[24] = 0x3c;
+    ((s16*)p)[25] = 0xf0;
+    ((s16*)p)[26] = 0x15cc;
+    ((s16*)p)[27] = 0x3c;
+    ((s16*)p)[28] = 0x6800;
+    ((u8*)p)[0x3a] = 0;
+    ((u8*)p)[0x3b] = 0;
+    ((u8*)p)[0x3c] = 0;
 }
 
 extern "C" void fn_80072E68(void);
