@@ -307,6 +307,12 @@ extern "C" s32 fn_8001B1DC(void* param_1) {
     return 0;
 }
 
+#pragma dont_inline on
+extern "C" void fn_8001B494(void) {
+    fn_8001B014((int)fn_8001B1F8, NULL);
+}
+#pragma dont_inline reset
+
 extern "C" void fn_8001B564(void* tag) {
     cTg_Addition__FP15node_list_classP16create_tag_class(lbl_80205648, tag);
 }
