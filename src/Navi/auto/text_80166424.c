@@ -1161,6 +1161,11 @@ extern "C" u16 fn_801725FC(u8* p, s32 i) {
     return ((u16*)(p + 4))[i];
 }
 
+extern "C" void fn_8017260C(void* param_1, s16 param_2)
+{
+	*(s16*)((u8*)param_1 + 0x14) = param_2;
+}
+
 extern "C" unsigned short fn_80172614(int param_1) {
     return *(unsigned short*)(param_1 + 0x14);
 }
@@ -2030,9 +2035,9 @@ extern "C" void fn_80176294(void* param_1)
 extern "C" void fn_80166C70(void* p);
 extern "C" void* fn_80176550(void* param_1)
 {
-	u8* sub = (u8*)param_1 + 0xdc;
+	u8* sub;
 	u8* self = (u8*)param_1;
-	f32 c;
+	sub = self + 0xdc;
 	*(void**)self = (void*)lbl_80298C88;
 	fn_80166C70(sub);
 	fn_80166B58((u32*)(sub + 0xc), (u32)self);
@@ -2043,11 +2048,10 @@ extern "C" void* fn_80176550(void* param_1)
 	*(u32*)(self + 0x10) = 0;
 	*(u32*)(self + 0x1c) = 0;
 	*(u32*)(self + 0x18) = 0;
-	c = lbl_80301B20;
-	*(f32*)(self + 0x20) = c;
-	*(f32*)(self + 0x24) = c;
-	*(f32*)(self + 0x28) = c;
-	*(f32*)(self + 0x2c) = c;
+	*(f32*)(self + 0x20) = lbl_80301B20;
+	*(f32*)(self + 0x24) = lbl_80301B20;
+	*(f32*)(self + 0x28) = lbl_80301B20;
+	*(f32*)(self + 0x2c) = lbl_80301B20;
 	fn_80176610(self);
 	fn_80176E24(self, 0);
 	((UnkVObj_80166424*)self)->vf9();
@@ -2083,24 +2087,27 @@ extern "C" void fn_80176610(void* p_self)
 
 #pragma push
 #pragma use_lmw_stmw off
-extern "C" void fn_80176698(void* p_self, void* p_other, u8 b, u32 r6, u32 c, u32 d, f32* f)
+extern "C" void* fn_80176698(void* p_self, void* p_other, u8 b, u32 r6, u32 c, u32 d, f32* f)
 {
-    u32 unused;
     u32* self = (u32*)p_self;
+    u8* sub = (u8*)p_self + 0xdc;
     *(void**)p_self = lbl_80298C88;
-    fn_80166C70((u8*)p_self + 0xdc);
-    fn_80166B58((u32*)((u8*)p_self + 0xe8), (u32)p_self);
+    fn_80166C70(sub);
+    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
     self[0x3e] = 0;
-    fn_80176728(p_self, p_other, b, unused, c, d, f);
+    fn_80176728(p_self, p_other, b, r6, c, d, f);
+    return p_self;
 }
-extern "C" void fn_80176848(void* p_self, u32 unused, u32 a, u32 b, u32 c)
+extern "C" void* fn_80176848(void* p_self, u32 unused, u32 a, u32 b, u32 c)
 {
     u32* self = (u32*)p_self;
+    u8* sub = (u8*)p_self + 0xdc;
     *(void**)p_self = lbl_80298C88;
-    fn_80166C70((u8*)p_self + 0xdc);
-    fn_80166B58((u32*)((u8*)p_self + 0xe8), (u32)p_self);
+    fn_80166C70(sub);
+    fn_80166B58((u32*)(sub + 0xc), (u32)p_self);
     self[0x3e] = 0;
     fn_801768C8(p_self, a, b, c);
+    return p_self;
 }
 #pragma pop
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
