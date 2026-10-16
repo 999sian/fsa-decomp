@@ -85,9 +85,9 @@ size_t J3DMaterialFactory::calcSize(J3DMaterial* mat, MaterialType type, int idx
     return size;
 }
 
-extern "C" s32 fn_800CAEC8(int param_1, u32 param_2) {
+extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags) {
     s32 result = 0;
-    if (param_2 == 0) {
+    if (mat == 0) {
         result = 100;
     }
     return result + 0x10;
