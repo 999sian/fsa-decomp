@@ -167,7 +167,7 @@ struct VObj_80180980 {
     virtual void vfD4(int, int);
     virtual void vfD8(u8);
     virtual void vfDC(); virtual void vfE0(); virtual void vfE4(); virtual void vfE8(); virtual void vfEC();
-    virtual void vfF0(); virtual void vfF4(); virtual void vfF8(f32*, f32*); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
+    virtual void vfF0(f32*, f32*); virtual void vfF4(); virtual void vfF8(f32*, f32*); virtual void vfFC(); virtual void vf100(f32, f32, f32, f32, f32, f32, f32, f32); virtual void vf104(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf108(f32, f32, f32, f32, f32, f32, f32, f32);
     virtual void vf10C(f32, f32, f32, f32, f32, f32, f32, f32);
 };
