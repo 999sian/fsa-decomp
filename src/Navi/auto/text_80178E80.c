@@ -820,6 +820,11 @@ extern "C" void fn_8017D198(void* param_1, void* param_2) {
     *(u32*)param_1 = *(u32*)((u8*)param_2 + 0x13c);
 }
 
+extern "C" int fn_8017D1E4()
+{
+	return 0;
+}
+
 extern "C" void fn_8017D214(void) {}
 
 extern "C" void fn_8017DE68(u32* param_1) {
