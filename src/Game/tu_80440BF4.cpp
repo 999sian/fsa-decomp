@@ -18,7 +18,7 @@ struct fn_80440C6C_Owner { void* vt; fn_80440C6C_Obj* obj; };
 struct fn_80440E0C_Pane {
 virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
 virtual void v4(); virtual void v5(); virtual void v6();
-virtual void setAlpha(u8);
+virtual void setAlpha(int);
 };
 extern u64 lbl_8048FAA8[];
 
@@ -67,6 +67,15 @@ extern "C" void fn_80440D78(fn_80440C6C_Owner* self, void* arg)
     u8* p = self->obj->find(0x5062613034ULL);
     p[0xb0] = true;
     ((fn_80440CE4_Obj*)self->obj->find(0x5062613032ULL))->set(arg, 0);
+}
+
+extern "C" void fn_80440E0C(u8* self, f32 scale)
+{
+    for (int i = 0; i < 7; i++) {
+        fn_80440E0C_Pane* p = (fn_80440E0C_Pane*)(*(fn_80440C6C_Obj**)(self + 4))->find(lbl_8048FAA8[i]);
+        f32 a = self[0xc + i];
+        p->setAlpha((int)(a * scale));
+    }
 }
 
 extern "C" void fn_80440EE8(fn_80440EE8_Owner* self)
