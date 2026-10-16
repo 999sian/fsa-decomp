@@ -1,7 +1,6 @@
 #include "types.h"
 struct J2DScreen {
-    u8 pad[0x100];
-    u8 b100;
+    u8 pad[0x118];
 };
 
 
