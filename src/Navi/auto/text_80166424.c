@@ -97,6 +97,9 @@ extern "C" void fn_8016AD04(void) {
 extern "C" void fn_8016AD08(void) {
 }
 
+extern "C" void fn_8016AD0C(void) {
+}
+
 extern "C" s32 fn_80172640(s32 p, s32 i)
 {
 	return p + i * 4 + 0x16;
