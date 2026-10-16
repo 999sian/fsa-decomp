@@ -26,7 +26,7 @@ extern "C" void fn_802049E0(u8* param_1, u8* param_2) {
 }
 
 extern "C" void fn_80204A20(u8* param_1, u8* param_2) {
-    u8** slot = (u8**)(param_1 + param_2[0x34a] * 8 + 4);
+    u8** slot = (u8**)(param_1 + ((u32)param_2[0x34a] & 0xff) * 8 + 4);
     if (slot[0] == 0) {
         slot[0] = param_2;
         if (slot[1] != 0 && fn_80204D44(slot[1])) {
