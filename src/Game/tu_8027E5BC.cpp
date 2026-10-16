@@ -258,6 +258,9 @@ void fn_80283848(char* p) {
     }
 }
 
+void fn_80283944(void) {
+}
+
 void fn_80283CEC(char* p) {
     U8(p, 0x124d) = 1;
     U8(p, 0x458) = 0;
