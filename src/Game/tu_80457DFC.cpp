@@ -72,3 +72,25 @@ extern "C" void fn_804594E4(void* self, u32 mode)
     JASDriver::setOutputMode(mode);
 }
 
+extern "C" void fn_8045A080(char* self)
+{
+    *(u32*)(self + 0x80) = 0;
+    *(u32*)(self + 0x84) = 0;
+    lbl_8053AF80 = self;
+    *(u32*)(self + 0x30) = 0;
+    *(u32*)(self + 0x34) = 0;
+    *(u32*)(self + 0x38) = 0;
+    *(u32*)(self + 0x0) = 0;
+    *(u8*)(self + 0x6b) = 0;
+    *(u32*)(self + 0x70) = 0;
+    *(u8*)(self + 0x6c) = 0;
+    *(u8*)(self + 0x6d) = 0;
+    *(u8*)(self + 0x74) = 0;
+    *(u8*)(self + 0x4) = 0;
+    *(u8*)(self + 0x5) = 1;
+    *(u8*)(self + 0x6) = 0;
+    *(f32*)(self + 0x8) = lbl_80543EB0;
+    *(f32*)(self + 0xc) = lbl_80543EB0;
+    *(f32*)(self + 0x10) = lbl_80543EB0;
+}
+
