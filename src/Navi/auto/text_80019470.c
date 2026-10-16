@@ -1312,6 +1312,13 @@ extern "C" void fn_8001EB08(void) {
     cTg_SingleCut__FP16create_tag_class();
 }
 
+extern "C" int fn_8001EB28(void* p, void* a, void* b) {
+    cTg_Create__FP16create_tag_classPv(p, p);
+    *(void**)((u8*)p + 0x14) = a;
+    *(void**)((u8*)p + 0x18) = b;
+    return 1;
+}
+
 extern "C" int fn_8001EF94(u8* p) {
     int (*fn)(u32, u32) = *(int (**)(u32, u32))(p + 0x58);
     if (fn != NULL && fn(*(u32*)(p + 0x40), *(u32*)(p + 0x5c)) == 0) {
