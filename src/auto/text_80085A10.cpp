@@ -115,6 +115,17 @@ extern "C" u8 fn_800866D4(int param_1, u32 param_2) {
     return (u8)((-(s32)res | res) >> 31);
 }
 
+extern "C" int fn_80086A18(void* param_1, u32* param_2, u32* param_3) {
+    int result = 1;
+    if (param_2[1] != param_3[1]) {
+        result = 0;
+    }
+    if (param_2[0] != param_3[0]) {
+        return 0;
+    }
+    return result;
+}
+
 extern "C" u32 fn_80086A48(void) {
     return 0x554e4954;
 }
