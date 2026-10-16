@@ -138,6 +138,38 @@ extern "C" void fn_80047B58(void* dst, void* src);
 extern "C" void fn_80047144(void* dst, void* src);
 extern "C" void fn_80042638(void* dst, void* src, void* src2);
 extern "C" void* fn_801E0DB8(void* dst, void* src, void* src2, s16 size, s16 count);
+extern "C" u32* fn_8003A944(u32* param_1) {
+    fn_8003AA34(param_1);
+    param_1[0] = 0;
+    param_1[1] = 0;
+    param_1[2] = 0;
+    param_1[3] = 0;
+    return param_1;
+}
+
+extern "C" u8* fn_8003A988(u8* param_1, s16 param_2) {
+    VObj_8003A988* obj;
+
+    if (param_1 != 0) {
+        obj = *(VObj_8003A988**)(param_1 + 0x34);
+        if (obj != 0) {
+            obj->m2(1);
+        }
+        obj = *(VObj_8003A988**)(param_1 + 0x38);
+        if (obj != 0) {
+            obj->m2(1);
+        }
+        obj = *(VObj_8003A988**)(param_1 + 0x3c);
+        if (obj != 0) {
+            obj->m2(1);
+        }
+        if (0 < param_2) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_8003ABDC(u32* param_1, u32 param_2, u32 param_3, u32 param_4, u32 param_5) {
     param_1[0] = param_2;
     param_1[1] = param_3;
