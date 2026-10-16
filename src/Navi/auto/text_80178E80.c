@@ -1514,7 +1514,7 @@ extern "C" void fn_80186B6C(u8* self, u32 a, u32 b) {
     if (p != NULL) {
         VObj_80186B6C* sub = *(VObj_80186B6C**)((u8*)p + 0x70);
         if (sub != NULL) {
-            sub->v4(a, (u8)b);
+            sub->v2(a, (u8)b);
         }
     }
 }
