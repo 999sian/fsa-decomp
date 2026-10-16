@@ -1,7 +1,8 @@
 #include "types.h"
 
 extern void* lbl_804B2098;
-extern void* lbl_80543ED8;
+extern f32 lbl_80543ED8;
+extern f64 lbl_80543EE0;
 extern void* lbl_80543F0C;
 extern void* lbl_80495470;
 extern void** sInstance__33JASGlobalInstance__12JAISoundInfo;
@@ -48,6 +49,42 @@ extern "C" s32 fn_8045A6F4(void) {
 extern "C" void fn_8045A6FC(void) {
 }
 
+extern "C" u16 fn_8045ABC8(void* param_1, u8* param_2) {
+    JAISoundID soundID;
+    soundID = *(JAISoundID*)param_2;
+    void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)param_1 + 0xc), &soundID);
+
+    JAISoundID typeSoundID = *(JAISoundID*)param_2;
+    u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)param_1 + 0xc), &typeSoundID);
+
+    if (data == 0 || (typeID & 0xff) != 0x10) {
+        return 0xffff;
+    }
+
+    JAISoundID flagSoundID = *(JAISoundID*)param_2;
+    u32 flags = (*(u32 (**)(void*, JAISoundID*))(*(char**)param_1 + 0x50))(param_1, &flagSoundID);
+    u16 result = 0xf0;
+    if ((flags & 1) == 0) {
+        result = 0x8f0;
+    }
+    if ((flags & 2) == 0) {
+        result += 0x400;
+    }
+    if ((flags & 4) == 0) {
+        result += 0x200;
+    }
+    if ((flags & 0x20) != 0) {
+        result += 0x100;
+    }
+    if ((flags & 0x800000) != 0) {
+        result += 1;
+    }
+    if (param_2[1] == 6) {
+        result &= 0xff7f;
+    }
+    return result;
+}
+
 extern "C" u32 fn_8045ACDC(void* param_1, u8* param_2) {
     u8 val = param_2[0];
     if (val == 0x1) {
@@ -68,5 +105,23 @@ extern "C" s32 fn_8045AD30(void* param_1, u8* param_2) {
     } else {
         return -1;
     }
+}
+
+extern "C" u16 fn_8045AD64(int param_1, u32 param_2_val) {
+    void* table = *(void**)((char*)param_1 + 0xc);
+    JAISoundID soundID;
+    soundID.id = param_2_val;
+    
+    void* result = getData__13JAUSoundTableCF10JAISoundID(table, &soundID);
+    
+    if (result == 0) {
+        return 0xffff;
+    }
+    
+    u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(table, &soundID);
+    if ((typeID & 0xff) == 0x11) {
+        return *(u16*)((char*)result + 0xa);
+    }
+    return 0xffff;
 }
 
