@@ -487,8 +487,7 @@ extern "C" void fn_8001B674(void* tag) {
 }
 
 extern "C" s32 fn_8001B6AC(void* tag, int (*func)(void*)) {
-    s16 cnt = *(s16*)((u8*)tag + 0x18);
-    if (cnt <= 0) {
+    if (*(s16*)((u8*)tag + 0x18) <= 0) {
         cTg_SingleCut__FP16create_tag_class();
         if (func(*(void**)((u8*)tag + 0xc)) == 0) {
             *(s16*)((u8*)tag + 0x18) = 1;
@@ -497,7 +496,7 @@ extern "C" s32 fn_8001B6AC(void* tag, int (*func)(void*)) {
         }
         return 1;
     }
-    *(s16*)((u8*)tag + 0x18) = cnt - 1;
+    (*(s16*)((u8*)tag + 0x18))--;
     return 0;
 }
 
@@ -572,11 +571,8 @@ extern "C" void fn_8001BEA4(void) {
 
 extern void* lbl_802056AC[];
 extern "C" int fn_8001EABC(void);
-extern "C" u32 fn_8001BEE8(void) {
-    s32 r = 1 - fn_8001EABC();
-    u32 n;
-    asm_cntlzw: ;
-    return 0;
+extern "C" bool fn_8001BEE8(void) {
+    return fn_8001EABC() == 1;
 }
 
 extern "C" void fn_8001BF14(void* param_1, s32 param_2, void* param_3, s32 param_4) {
