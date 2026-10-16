@@ -6,6 +6,7 @@ extern "C" void fn_801E9310(int param);
 extern "C" int fn_801E7F88(void* param);
 extern unsigned char lbl_8029EC18[];
 extern unsigned char lbl_8029EA18[];
+extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c);
 
 struct FileFlags {
     unsigned char pad[4];
