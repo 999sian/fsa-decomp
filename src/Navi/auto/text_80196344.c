@@ -586,6 +586,45 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019019C(u8, u16, int, int, u16, int, int);
+extern "C" u16 lbl_802EE5D4[][4];
+extern "C" void fn_8019EF54(int param_1) {
+    u16* e = lbl_802EE5D4[*(u8*)(param_1 + 0xb) & 7];
+    fn_8019019C(*(u8*)(param_1 + 0xa), e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
+}
+
+extern "C" void fn_8019EFBC(int param_1) {
+    u32 i;
+    u8* p = (u8*)param_1;
+    for (i = 0; i < 2; i++) {
+        if (*(u16*)(p + 8) != 0xffff) {
+            fn_801A605C(i, p + 8);
+        }
+        p += 2;
+    }
+}
+
+extern "C" void fn_8019F018(int param_1) {
+    u32 i;
+    u8* p;
+    u32 pair[2];
+    u32 val;
+
+    p = (u8*)param_1;
+    for (i = 0; i < 3; i++) {
+        pair[0] = *(u32*)(p + 0x14);
+        pair[1] = *(u32*)(p + 0x18);
+        fn_80191388(i + 1, pair);
+        p += 8;
+    }
+    p = (u8*)param_1;
+    for (i = 0; i < 4; i++) {
+        val = *(u32*)(p + 0x45);
+        fn_80191220(i, &val);
+        p += 4;
+    }
+}
+
 extern "C" void fn_8019F1B8(int param_1) {
     extern int* lbl_802FFA80;
     u8 n = *(u8*)(param_1 + 0x34);
@@ -619,7 +658,8 @@ extern "C" void fn_8019F520(int param_1) {
     u32 i;
     u8* p = (u8*)param_1;
     for (i = 0; i < n; i++) {
-        u32 w = *(u32*)(p + 0x80) | ((i + 0x10) << 24);
+        u32 w = *(u32*)(p + 0x80);
+        w |= (i + 0x10) << 24;
         u8* out;
         out = (u8*)lbl_802FFA80[2];
         lbl_802FFA80[2] = (int)(out + 1);
@@ -666,8 +706,8 @@ extern "C" void fn_8019F718(int param_1) {
 
 extern "C" void fn_8019F8B8(int param_1) {
     extern int* lbl_802FFA80;
+    u32 i = 0;
     u8 n = *(u8*)(param_1 + 0x58);
-    u32 i;
     u8* p = (u8*)param_1;
     for (i = 0; i < n; i++) {
         u32 w = *(u32*)(p + 0x130) | ((i + 0x10) << 24);
@@ -694,13 +734,16 @@ extern "C" void fn_8019F8B8(int param_1) {
 extern "C" void fn_8019FC0C(void* param_1, s32 param_2) {
     extern u32* lbl_802FFA80;
     s32 i = 0;
-    u32 start;
     u32 cur;
+    u32 start;
     u16 val;
     lbl_802FFA80[2] = lbl_802FFA80[0] + param_2;
     start = lbl_802FFA80[2];
     cur = lbl_802FFA80[2];
-    while (fn_801A602C(cur)) {
+    while (true) {
+        if (!fn_801A602C(cur)) {
+            break;
+        }
         val = fn_801A6050(cur);
         fn_801A605C(i, &val);
         i++;
