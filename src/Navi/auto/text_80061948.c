@@ -451,8 +451,7 @@ extern "C" void* fn_80064CBC(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80064D18(void** p) {
-    void* a = lbl_8027F6DC;
-    p[0] = a;
+    p[0] = lbl_8027F6DC;
     p[1] = 0;
     p[0] = lbl_8027FB48;
     p[2] = 0;
@@ -485,6 +484,13 @@ extern "C" void fn_80064DC4(void** p) {
 extern "C" void fn_80064FB0(void);
 extern "C" void fn_80064DEC(void) {
     fn_80064FB0();
+}
+
+extern "C" void fn_8006686C(void);
+extern "C" u8 fn_8000D6F4(void* self);
+extern "C" s32 fn_80065DA0(void) {
+    fn_8006686C();
+    return 4;
 }
 
 extern "C" void fn_80064E0C(void);
