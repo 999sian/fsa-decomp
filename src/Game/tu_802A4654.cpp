@@ -59,9 +59,4 @@ extern "C" void* fn_802A64E8(void* this_, short how) {
     }
     return this_;
 }
-struct Unk802A4654 {
-    u8 pad00[0xc];
-    JGeometry::TVec3f mPos; // 0x0c
-    u8 pad18[0x234 - 0x18];
-    s32 m234;
-};
+
