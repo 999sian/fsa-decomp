@@ -20,6 +20,7 @@ extern "C" void fn_8030E150(void) {
 
 extern u8 lbl_804AA9E4[];
 void __dl__FPv(void* p);
+extern "C" void __dl__FPv(void* p);
 extern "C" u32* fn_8030E6D0(u32* param_1, s16 param_2) {
     if (param_1 != NULL) {
         *param_1 = (u32)lbl_804AA9E4;
