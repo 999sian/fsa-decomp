@@ -367,6 +367,10 @@ extern "C" void fn_801A36F0(int param_1, u32* param_2) {
     *(u32*)(param_1 + 8) = *param_2;
 }
 
+extern "C" void fn_801A36FC(int param_1, u32* param_2) {
+    *(u32*)(param_1 + 8) = *param_2;
+}
+
 extern "C" void fn_801A3710(int param_1, u16* param_2) {
     *(u16*)(param_1 + 0xc) = *param_2;
 }
