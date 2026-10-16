@@ -1,3 +1,6 @@
+extern void* lbl_80557E40;
+extern void* lbl_80558260;
+
 
 
 typedef unsigned char u8;
@@ -20,11 +23,15 @@ extern "C" int fn_8039003C(void) {
     return 6;
 }
 
-extern "C" void fn_80390088(void) {
-    if (*(u8*)(lbl_8053AAF8 + 0x7f)) {
-        fn_8040F480(lbl_8053ADF8);
+extern void* lbl_80558268;
+extern "C" void fn_8044A28C(void*);
+extern "C" void fn_8044C994(void*);
+extern "C" void fn_80390088(void)
+{
+    if (*((u8*)lbl_80557E40 + 0x7f) != 0) {
+        fn_8044A28C(lbl_80558260);
     } else {
-        fn_80416BD0(lbl_8053AE00);
+        fn_8044C994(lbl_80558268);
     }
 }
 
