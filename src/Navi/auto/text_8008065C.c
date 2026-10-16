@@ -46,3 +46,21 @@ extern "C" BOOL fn_80086878(void)
     return TRUE;
 }
 
+extern void* lbl_80283AF0[];
+extern void* lbl_80281904[];
+extern "C" void* fn_80086880(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = lbl_80283AF0;
+        if ((s32)param_1 + 0x38 != 0) {
+            *(void**)((char*)param_1 + 0x38) = lbl_80283B18;
+        }
+        if ((s32)param_1 + 0xc != 0) {
+            *(void**)((char*)param_1 + 0xc) = lbl_80281904;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
