@@ -1,4 +1,3 @@
-#include "Game/Actor.h"
 #include "types.h"
 
 extern void* lbl_804ACB40[];
