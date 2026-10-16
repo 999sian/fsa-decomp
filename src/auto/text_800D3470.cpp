@@ -831,6 +831,15 @@ extern "C" void fn_800D8E14(u8* self) {
     }
 }
 
+extern "C" void fn_800D8E70(u8* p) {
+    u8 n = p[0xd0];
+    for (u32 i = 0; i < n; i++) {
+        J3DGDWriteBPCmd(*(u32*)(p + 0x38));
+        J3DGDWriteBPCmd(*(u32*)(p + 0x3c));
+        p += 8;
+    }
+}
+
 extern "C" void fn_800D8F78(u8* self) {
     u8 count = *(u8*)(self + 0xd0);
     if (count == 0) return;
@@ -1983,9 +1992,9 @@ extern "C" u8 fn_800DE648(int param_1) {
     return *(u8*)(param_1 + 0x34);
 }
 
-extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
+extern "C" void fn_800DE650(u8* this_, u32 idx, GXColor* src) {
+    u8* p = this_ + idx * 8;
     u8 t;
-    u8* p = &this_[idx * 8];
     t = src[0].g; p[0x36] = t;
     t = src[0].b; p[0x37] = t;
     t = src[0].a; p[0x38] = t;
