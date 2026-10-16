@@ -130,6 +130,10 @@ extern "C" s32 fn_80172640(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
 
+extern "C" unsigned short fn_801728B4(int param_1) {
+    return *(unsigned short*)(param_1 + 0x14);
+}
+
 extern "C" s32 fn_801728E0(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
@@ -203,12 +207,16 @@ extern "C" void fn_801730A4(u8* param_1, int param_2, u8* param_3) {
 
 extern "C" void fn_801730DC(u8* p, u32 i, s16* src)
 {
-	s16* dst = (s16*)(p + (i << 3));
+	s16 v0 = src[0];
+	s16 v1 = src[1];
+	s16 v2 = src[2];
+	s16 v3 = src[3];
 
-	dst[6] = src[0];
-	dst[7] = src[1];
-	dst[8] = src[2];
-	dst[9] = src[3];
+	p = p + (i << 3);
+	*(s16*)(p + 0xc) = v0;
+	*(s16*)(p + 0xe) = v1;
+	*(s16*)(p + 0x10) = v2;
+	*(s16*)(p + 0x12) = v3;
 }
 
 extern "C" u8* fn_80173108(u8* p, s32 i)
@@ -216,16 +224,16 @@ extern "C" u8* fn_80173108(u8* p, s32 i)
     return p + i * 8 + 0xc;
 }
 
-extern "C" void fn_8017311C(u8* p, u32 i, u8* src)
+extern "C" void fn_8017311C(u8* p, s32 i, u8* src)
 {
+    u8* dst = p + (i << 2);
     u8 a = src[0];
-    u8* dst = p + i * 4;
-    u8 b = src[1];
     dst[0x34] = a;
-    u8 c = src[2];
+    u8 b = src[1];
     dst[0x35] = b;
-    u8 d = src[3];
+    u8 c = src[2];
     dst[0x36] = c;
+    u8 d = src[3];
     dst[0x37] = d;
 }
 
