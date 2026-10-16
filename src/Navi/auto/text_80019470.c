@@ -197,7 +197,7 @@ extern "C" void fn_8001B63C(void) {
     fn_8001B494();
 }
 
-extern "C" void fn_8001B65C(void);
+extern "C" u32 fn_8001B65C(void);
 extern "C" void fn_8001B760(void) {
     fn_8001B65C();
 }
