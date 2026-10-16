@@ -156,3 +156,14 @@ extern "C" void fn_8013D3E8(void* param_1, s32 param_2, void* param_3) {
     }
 }
 
+extern "C" void fn_8013D42C(void* param_1, s32 param_2, u32* param_3) {
+    switch (param_2) {
+    case 0x18:
+        *(void**)((u8*)param_1 + 0x10c) = fn_8013BD28(*(void**)((u8*)param_1 + 0x108), param_3);
+        break;
+    case 0x19:
+        *(u32*)((u8*)param_1 + 0x10c) = *param_3;
+        break;
+    }
+}
+
