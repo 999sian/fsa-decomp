@@ -50,3 +50,5 @@ extern "C" void fn_802FF548(void* mgr) {
 
 extern "C" void fn_803003A8(void) {}
 
+extern "C" void fn_803004C0(void) {}
+
