@@ -153,15 +153,15 @@ extern "C" u8* fn_8003A988(u8* param_1, s16 param_2) {
     if (param_1 != 0) {
         obj = *(VObj_8003A988**)(param_1 + 0x34);
         if (obj != 0) {
-            obj->m2(1);
+            obj->m0(1);
         }
         obj = *(VObj_8003A988**)(param_1 + 0x38);
         if (obj != 0) {
-            obj->m2(1);
+            obj->m0(1);
         }
         obj = *(VObj_8003A988**)(param_1 + 0x3c);
         if (obj != 0) {
-            obj->m2(1);
+            obj->m0(1);
         }
         if (0 < param_2) {
             fn_8015AB1C(param_1);
