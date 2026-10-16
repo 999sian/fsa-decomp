@@ -3,6 +3,8 @@
 #include "types.h"
 
 extern "C" const f32 lbl_8053B2CC;
+extern "C" const f64 lbl_8053B2E0;
+extern "C" void* lbl_8049552C[];
 
 extern "C" void* lbl_804954D8[];
 extern "C" void* lbl_804954F8[];
