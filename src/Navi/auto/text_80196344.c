@@ -520,6 +520,10 @@ extern "C" void* fn_801A3FD4(void* p) {
 
 extern "C" u32 fn_801A3FDC(u8* p) { return *(u32*)(p + 0x90); }
 
+extern "C" void fn_801A3FE4(int param_1, u32 param_2) {
+    *(u32*)(param_1 + 0x90) = param_2;
+}
+
 extern void* lbl_8029A4F8[];
 extern "C" void* fn_801A3FEC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
