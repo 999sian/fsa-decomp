@@ -5,6 +5,10 @@
 #include "JSystem/JParticle/JPAEmitter.h"
 
 
+extern "C" void* fn_8013C824(void);
+extern "C" void* lbl_804B17A0[];
+extern "C" void* lbl_8053AEC8;
+extern "C" void __dl__FPv(void* p);
 extern "C" f32 lbl_80543C40;
 extern "C" f32 lbl_80543C44;
 extern "C" void fn_80438E10(u8* p, u8 flag)
