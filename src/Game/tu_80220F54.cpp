@@ -314,31 +314,33 @@ extern "C" void fn_80221670(void* this_) {
 }
 
 struct ItemFl { u8 pad[0x230]; u32 flags; };
+static inline BOOL isDone(char* p) { return (((ItemFl*)p)->flags & 0x2000) != 0; }
 
 extern "C" void fn_802216E8(char* this_, s32 n) {
-    if (!(((ItemFl*)this_)->flags & 0x2000)) {
-        switch (*(u8*)(this_ + 0x2ac)) {
-        case 0:
-            if (*(s32*)(this_ + 0x24c) >= n) {
-                *(u32*)(this_ + 0x230) |= 0x2000;
-            }
-            break;
-        case 1:
-            if (fn_801D05F8(this_, this_ + 0xc, lbl_8053FE8C) >= 0) {
-                *(u32*)(this_ + 0x230) |= 0x2000;
-            }
-            break;
-        case 2:
-            if (fn_801D05F8(this_, this_ + 0xc, lbl_8053FE90) >= 0) {
-                *(u32*)(this_ + 0x230) |= 0x2000;
-            }
-            break;
-        case 3:
-            if (*(s32*)(this_ + 0x24c) >= *(u8*)(this_ + 0x2ad)) {
-                *(u32*)(this_ + 0x230) |= 0x2000;
-            }
-            break;
+    if (*(u32*)(this_ + 0x230) & 0x2000) {
+        return;
+    }
+    switch (*(u8*)(this_ + 0x2ac)) {
+    case 0:
+        if (*(s32*)(this_ + 0x24c) >= n) {
+            *(s32*)(this_ + 0x230) |= 0x2000;
         }
+        break;
+    case 1:
+        if (fn_801D05F8(this_, this_ + 0xc, lbl_8053FE8C) >= 0) {
+            *(s32*)(this_ + 0x230) |= 0x2000;
+        }
+        break;
+    case 2:
+        if (fn_801D05F8(this_, this_ + 0xc, lbl_8053FE90) >= 0) {
+            *(s32*)(this_ + 0x230) |= 0x2000;
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x24c) >= *(u8*)(this_ + 0x2ad)) {
+            *(s32*)(this_ + 0x230) |= 0x2000;
+        }
+        break;
     }
 }
 
