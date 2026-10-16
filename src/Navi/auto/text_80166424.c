@@ -36,6 +36,10 @@ extern "C" void* lbl_80298644[];
 extern "C" u8 lbl_80298660[];
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8016B170(u32*, int);
+extern "C" void fn_8015D29C(void*, int);
+extern "C" void* fn_8015D13C(void*, int, int, void*);
+extern "C" void fn_801C0EEC(void*);
+extern "C" u8 lbl_80298304[];
 
 struct Unk80174858Pair {
     u8 x;
