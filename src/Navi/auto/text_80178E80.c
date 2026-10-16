@@ -195,6 +195,14 @@ extern "C" void fn_80184C58(UnkVObj_80184B60* self, void* unused, void* param_3)
     unused = obj;
 }
 
+extern "C" void fn_80188814(u8* param_1, u8 param_2) {
+    *(u8*)(param_1 + 0xb2) = param_2;
+    register void* p = *(void**)(param_1 + 0x168);
+    if (p == nullptr) return;
+    if (((u32)p + 0x10) == 0) return;
+    *(u8*)((u8*)p + 0x3) = (int)param_2;
+}
+
 extern "C" void fn_8018901C(void) {
     fn_80177F0C();
 }
@@ -270,6 +278,11 @@ extern "C" void* fn_8018BAF0(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_8018BB74(void* unused, void* dest, void* src);
+extern "C" void fn_8018BB4C(void* self, void* src) {
+    fn_8018BB74(self, *(void**)((u8*)self + 4), src);
 }
 
 extern "C" void fn_8018BFA4(void* unused, void* dest, void* src);
