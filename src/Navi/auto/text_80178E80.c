@@ -188,7 +188,7 @@ struct VObj_80180868 {
     virtual void v48(); virtual void v49(); virtual void v50(); virtual void v51();
     virtual void v52(); virtual void v53(); virtual void v54(); virtual void v55();
     virtual void v56(); virtual void v57(); virtual void v58(); virtual void v59();
-    virtual void v60(); virtual void v61(); virtual void v62(); virtual void v63(u8, u32);
+    virtual void v60(); virtual void v61(u8, u32); virtual void v62(); virtual void v63(u8, u32);
 };
 extern "C" void fn_8017B07C(u32* self, int a, int b, int c);
 extern void* lbl_80298DF0[];
@@ -762,22 +762,22 @@ extern "C" void fn_801843B8(void* self) {
 }
 
 extern "C" s32 fn_801843D0(void* self, int a, u8 b) {
-    void* p = (*(void* (**)(void*))(*(int*)self + 0xc0))(self);
+    VObj_801843* p = (VObj_801843*)((VObj_801843*)self)->vfB8();
     if (p != 0) {
         void* q = *(void**)((u8*)p + 0x70);
         if (q != 0) {
-            return (*(s32 (**)(void*, u8))(*(int*)q + 0xa0))(q, b);
+            return ((VObj_801843*)q)->vf98(b);
         }
     }
     return 0;
 }
 
 extern "C" s32 fn_80184438(void* self, int b) {
-    void* p = (*(void* (**)(void*))(*(int*)self + 0xc4))(self);
+    VObj_801843* p = (VObj_801843*)((VObj_801843*)self)->vfBC();
     if (p != 0) {
         void* q = *(void**)((u8*)p + 0x70);
         if (q != 0) {
-            return (*(s32 (**)(void*, u8))(*(int*)q + 0xa0))(q, (u8)b);
+            return ((VObj_801843*)q)->vf98((u8)b);
         }
     }
     return 0;
