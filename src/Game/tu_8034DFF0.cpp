@@ -9,6 +9,30 @@ struct YnswVirt {
 extern const f32 lbl_805425CC;
 extern const f32 lbl_805425D0;
 extern const f32 lbl_805425D4;
+extern const f32 lbl_805425C0;
+extern char* lbl_8053AAF8;
+extern char* lbl_8053AB10;
+extern char lbl_80472210[];
+extern "C" void fn_802F86CC(u32, char*, u32, s32, f32, f32, void*);
+extern "C" void fn_80307AC8(s32, s32, char*, s32, s32, s32, s32);
+
+struct SlotVirt6 {
+    virtual void v00(); virtual void v01(); virtual void v02();
+    virtual void v03(); virtual void v04(); virtual void v05();
+    virtual u32 v06(u32 a, char* b);
+};
+struct Init48 {
+    u8 idx[0x10];
+    s32 w18;
+    s32 w1c;
+    s32 w20;
+    u8 b24[0xb];
+    s32 w30;
+    u8 b34[3];
+    s32 w38;
+    s32 w3c;
+    s32 w40;
+};
 
 
 extern "C" char __vt__4YNSW[];
