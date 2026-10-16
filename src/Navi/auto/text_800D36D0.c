@@ -95,6 +95,21 @@ extern "C" void fn_800D54EC(char* p)
     }
 }
 
+extern "C" void fn_800D6284(void) {
+}
+
+extern "C" void fn_800D6288(char* param_1) {
+    if (*(u8*)(param_1 + 0xf8) != 0) {
+        (*(s32*)(param_1 + 0xf4))++;
+        s16 n = *(s16*)(*(char**)(param_1 + 0xf0) + 6);
+        if (*(s32*)(param_1 + 0xf4) >= n) {
+            *(s32*)(param_1 + 0xf4) -= n;
+        }
+        *(f32*)(*(char**)(param_1 + 0xf0) + 8) = *(s32*)(param_1 + 0xf4);
+        fn_8017A4F8(*(void**)(param_1 + 8));
+    }
+}
+
 extern "C" void fn_800D6308(NaviState_800D6308* p) {
     (p->*lbl_802899D4[((u8*)p)[0x137]])();
 }
