@@ -5,6 +5,11 @@ extern void* lbl_8053AB10;
 extern f32 lbl_8053DDC8;
 extern "C" u8 fn_8030C2A8(void* mgr, f32* vec);
 
+extern "C" void fn_8017EAB4(void* thisPtr) {
+    *(u32*)((char*)thisPtr + 0xf4) |= 1;
+    *(u32*)((char*)thisPtr + 0x24) = 1;
+}
+
 extern "C" void fn_8017EACC(void* thisPtr, u8 a, u8 b, u8 c) {
     *(u8*)((char*)thisPtr + 0xbc) = a;
     *(u8*)((char*)thisPtr + 0xbd) = b;
