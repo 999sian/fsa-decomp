@@ -90,6 +90,22 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
     return self;
 }
 
+extern void* lbl_802985C8[];
+extern void* lbl_80298600[];
+extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void* fn_8016ACA0(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_802985C8;
+        if (ptr != nullptr) {
+            *(void**)ptr = lbl_80298600;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" int fn_80172EA4(int p, int index) {
     return p + index * 4 + 0x44;
 }
