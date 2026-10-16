@@ -253,8 +253,8 @@ extern "C" bool fn_80120ABC(u8* p, u16 v) {
     return r;
 }
 
-extern "C" BOOL fn_80120AEC(u8* p, u16 v) {
-    BOOL r = *(s32*)(p + 4) == 1;
+extern "C" bool fn_80120AEC(u8* p, u16 v) {
+    bool r = *(s32*)(p + 4) == 1;
     if (r) {
         *(s32*)(p + 4) = 3;
         *(u16*)(p + 0xa) = 0;
