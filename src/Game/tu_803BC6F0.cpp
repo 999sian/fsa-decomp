@@ -14,10 +14,7 @@ extern "C" void fn_803CBE38(char* p) {
         if (r == 1) {
             lbl_8053AAF8[0xff] = 1;
             fn_803C24BC(p);
-            u32 a = *(u32*)(lbl_8051C1A0 + 0x1ff8);
-            u32 b = *(u32*)(lbl_8051C1A0 + 0x1ffc);
-            *(u32*)(lbl_8050EC80 + 8) = a;
-            *(u32*)(lbl_8050EC80 + 12) = b;
+            *(u64*)(lbl_8050EC80 + 8) = *(u64*)(lbl_8051C1A0 + 0x1ff8);
         } else if (r == 2) {
             p[0x112] = p[0x110];
             p[0x110] = 1;
