@@ -40,12 +40,14 @@ extern "C" void fn_801159B4(void* self) {
     fn_80115960(self);
 }
 
+extern const float lbl_8030141C;
 extern "C" void fn_801159E0(Vec3f* out, void* a) {
     Vec3f v;
-    if (fn_801C6970(a) < 0.0f) {
-        v = lbl_802C5C94;
-    } else {
+    bool small = fn_801C6970(a) < lbl_8030141C;
+    if (!small) {
         fn_801C692C(a, &v);
+    } else {
+        v = lbl_802C5C94;
     }
     *out = v;
 }
