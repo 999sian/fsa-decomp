@@ -716,7 +716,7 @@ extern "C" void fn_800D9E3C(void* p) {
 
     for (i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
-            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + byteCount + *(u32*)((u8*)p + 4);
+            __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + (*(u32*)((u8*)p + 4) + byteCount);
             patchTexNo_PtrToIdx(i, *(const u16*)(addr + 8));
             byteCount += 0x14;
             if (((u8*)(*(u32*)((u8*)j3dSys.mTexture + 4)))[(*(u16*)(addr + 8) << 5) + 8] == 1) {
@@ -1495,8 +1495,8 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
-    int offset = param_1 + param_2 * 8;
     u8 val1 = param_3[1];
+    int offset = param_1 + param_2 * 8;
     u8 val0 = param_3[0];
 
     u8 byte = *(u8*)(offset + 0x3c);
