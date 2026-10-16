@@ -759,6 +759,22 @@ extern "C" void fn_800D91A4(u8* self) {
 extern "C" void fn_800D91D8(void) {
 }
 
+extern "C" void fn_800D91DC(void* param) {
+    u32 val1 = *(u32*)((char*)param + 0xe);
+    __GDWrite(0x61);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+
+    u32 val2 = *(u32*)((char*)param + 0x12);
+    __GDWrite(0x61);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+}
+
 extern "C" void fn_800D92CC(u8* self) {
     u32 value = *(u32*)(self + 0x18);
     u32 combined = value | 0x10000000;
@@ -905,6 +921,18 @@ extern "C" void fn_800D9CA8(void* param_1) {
         dl = (u8*)(gd[2]);
         *dl = combined & 0xff;
         gd[2]++;
+    }
+}
+
+extern "C" void fn_800D9D50(u8* p) {
+    u8 n = p[0x58];
+    for (u32 i = 0; i < n; i += 2) {
+        u8* e = p + 0x18 + i * 4;
+        u16* t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[1] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
+        e += 4;
+        t = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (e[1] & 7) * 8);
+        J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(e[0] & 7, t[0], t[2] == 1, 0, t[1], t[3] == 1, 0);
     }
 }
 
@@ -1089,16 +1117,17 @@ extern "C" void fn_800DBCCC(u8* self, Unk800DBCCCSrc* src) {
 }
 
 extern "C" void fn_800DC574(u8* param_1, int* param_2) {
-    *(u16*)(param_1 + 8) = (*(u16(**)(int*, int))(*(u8**)param_2 + 0x50))(param_2, 0);
-    *(u32*)(param_1 + 0xa) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0x5c))(param_2, 0));
-    u8* p = (*(u8*(**)(int*, int))(*(u8**)param_2 + 0xa4))(param_2, 0);
+    int* obj = param_2;
+    *(u16*)(param_1 + 8) = (*(u16(**)(int*, int))(*(u8**)obj + 0x50))(obj, 0);
+    *(u32*)(param_1 + 0xa) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)obj + 0x5c))(obj, 0));
+    u8* p = (*(u8*(**)(int*, int))(*(u8**)obj + 0xa4))(obj, 0);
     param_1[0xf] = p[1];
     param_1[0x10] = p[2];
     param_1[0x11] = p[3];
     param_1[0x13] = p[5];
     param_1[0x14] = p[6];
     param_1[0x15] = p[7];
-    *(u32*)(param_1 + 0x18) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)param_2 + 0xc4))(param_2, 0));
+    *(u32*)(param_1 + 0x18) = *(u32*)((*(u32*(**)(int*, int))(*(u8**)obj + 0xc4))(obj, 0));
 }
 
 extern "C" void fn_800DD148(u8* this_, void* obj) {
