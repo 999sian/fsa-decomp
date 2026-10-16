@@ -447,6 +447,23 @@ extern "C" int fn_8015CD98(void) {
     return -1;
 }
 
+extern char lbl_802976E8[];
+extern "C" int fn_8015CDC8(void) {
+    fn_80124034(lbl_802976E8);
+    return -1;
+}
+
+extern "C" int fn_8015CDF8(unsigned char* p) {
+    int result = 1;
+    fn_801BE3A0(p + 0x18);
+    if (*(unsigned int*)(p + 0x6c) + (*(unsigned int*)(p + 0x70) - *(unsigned int*)(p + 0x30)) + (*(unsigned int*)(p + 0x34) - *(unsigned int*)(p + 0x74)) != *(unsigned int*)(p + 0x38)) {
+        result = 0;
+        fn_80124034(lbl_80297718);
+    }
+    fn_801BE47C(p + 0x18);
+    return result;
+}
+
 extern "C" BOOL fn_8015CFE4(void* p, u32* a, u32* b) {
     BOOL r = 1;
     if (a[1] != b[1]) {
