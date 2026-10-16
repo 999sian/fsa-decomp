@@ -219,8 +219,8 @@ extern "C" void fn_8001AA98(int param_1, int param_2) {
 }
 
 extern "C" void cTg_SingleCutFromTree__FP16create_tag_class(void*);
-extern "C" void fn_8001AAFC(void) {
-    ((void (*)(void))cTg_SingleCutFromTree__FP16create_tag_class)();
+extern "C" void fn_8001AAFC(void* tag) {
+    cTg_SingleCutFromTree__FP16create_tag_class(tag);
 }
 
 extern "C" void* fn_8001AC84(void* param_1) {
