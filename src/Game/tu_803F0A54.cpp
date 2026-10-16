@@ -21,3 +21,8 @@ extern "C" void fn_803F32E8(u8* p) {
     *(s32*)(p + 0x1c4) = 2;
 }
 
+extern "C" void fn_803F3310(u8* p) {
+    *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
+    *(s32*)(p + 0x1c4) = 1;
+}
+
