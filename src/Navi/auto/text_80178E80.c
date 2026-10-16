@@ -5,6 +5,7 @@
 extern "C" void fn_80177F0C(void);
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_8016A0B4(void* p, void* obj);
+extern u8 lbl_80301BF8[];
 extern "C" u8 fn_8018A318(void* self, s32* param_2, s32* param_3);
 extern "C" void fn_801788C0(void);
 extern "C" int fn_801792B4(void* param_1, int param_2) {
