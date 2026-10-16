@@ -1561,6 +1561,13 @@ extern "C" void fn_80188980(u8* self, void* obj) {
     }
 }
 
+extern "C" void fn_801889AC(u8* self, void* obj) {
+    void* p = *(void**)(self + 0x168);
+    if (p != nullptr) {
+        fn_8016A530(p, obj);
+    }
+}
+
 extern "C" void fn_80188DB0(void* self, int a, int b, int c) {
     ((VObj_80180920*)self)->vfCC(a, 0, c);
 }
