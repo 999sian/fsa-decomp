@@ -1039,9 +1039,9 @@ extern "C" void fn_800DDB70(void* param_1)
 {
   u32 i = 0;
   __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 4);
-  void* pStart = (*(GDCurrentDL* volatile*)&__GDCurrentDL)->pDisplayListData;
-  void* pCurr = (*(GDCurrentDL* volatile*)&__GDCurrentDL)->pDisplayListData;
+  void* pStart = GDGetCurrPointer();
   for (;;) {
+    void* pCurr = GDGetCurrPointer();
     if (!isTexNoReg(pCurr)) break;
     u16 texNo = getTexNoReg(pCurr);
     loadTexNo(i, texNo);
@@ -1339,21 +1339,15 @@ extern "C" u8 fn_800DE208(int param_1)
   return *(u8*)(param_1 + 0x20);
 }
 
-extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  u8* dst = param_1 + param_2 * 8;
-  u8 a = param_3[1];
-  u8 b = param_3[2];
-  u8 c = param_3[3];
-  u8 d = param_3[5];
-  u8 e = param_3[6];
-  u8 f = param_3[7];
-  dst[0x22] = a;
-  dst[0x23] = b;
-  dst[0x24] = c;
-  dst[0x26] = d;
-  dst[0x27] = e;
-  dst[0x28] = f;
+  int offset = param_1 + param_2 * 8;
+  *(u8*)(offset + 0x22) = param_3[1];
+  *(u8*)(offset + 0x23) = param_3[2];
+  *(u8*)(offset + 0x24) = param_3[3];
+  *(u8*)(offset + 0x26) = param_3[5];
+  *(u8*)(offset + 0x27) = param_3[6];
+  *(u8*)(offset + 0x28) = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -1524,11 +1518,17 @@ extern "C" int fn_800DE6C8(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DE6DC(int param_1, int param_2, u8* param_3) {
-    u8* e = (u8*)param_1 + (param_2 << 3);
-    u8 b1 = param_3[1];
-    u8 b0 = param_3[0];
-    e[0x3c] = (e[0x3c] & ~0x0c) | (b1 << 2);
-    e[0x3c] = (e[0x3c] & ~0x03) | b0;
+    u8 val0 = param_3[0];
+    u8 val1 = param_3[1];
+    int offset = param_1 + param_2 * 8;
+
+    u8 byte = *(u8*)(offset + 0x3c);
+    byte = (byte & ~0x0c) | (val1 << 2);
+    *(u8*)(offset + 0x3c) = byte;
+
+    byte = *(u8*)(offset + 0x3c);
+    byte = (byte & ~0x03) | val0;
+    *(u8*)(offset + 0x3c) = byte;
 }
 
 extern "C" void fn_800DE74C(u8* this_, u32 idx, const u8* src) {
@@ -1617,8 +1617,12 @@ extern "C" u32 fn_800DE954() {
 
 extern "C" void fn_800DE95C(u8* this_, s32 idx, u8* src) {
     u8* p = this_ + idx * 8;
-    *(Unk800DE210*)(p + 0xf) = *(Unk800DE210*)(src + 1);
-    *(Unk800DE210*)(p + 0x13) = *(Unk800DE210*)(src + 5);
+    p[0xf] = src[1];
+    p[0x10] = src[2];
+    p[0x11] = src[3];
+    p[0x13] = src[5];
+    p[0x14] = src[6];
+    p[0x15] = src[7];
 }
 
 extern "C" u8* fn_800DE9D4(u8* this_, s32 idx) {
