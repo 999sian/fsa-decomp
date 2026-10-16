@@ -7,7 +7,7 @@ extern void* lbl_8049AE4C[];
 extern void* lbl_8049AE5C[];
 extern void* __vt__10J3DAnmBase[];
 extern void* __vt__15J3DAnmTransform[];
-extern void __dl__FPv(void*);
+extern "C" void __dl__FPv(void*);
 extern "C" void fn_800CFE2C(void*, void*, void*);
 extern "C" void fn_800CF8F4(void*, void*, void*);
 extern "C" void fn_800CF828(void*, void*, void*);
