@@ -38,6 +38,7 @@ extern "C" void fn_80159BA4(s32 a);
 extern "C" void fn_80012E50(void* p);
 extern "C" void fn_8011B978(void);
 extern "C" void fn_8011C280(u32 a);
+extern "C" s32 lbl_802FEBC0;
 extern "C" s32 lbl_802FEBC8;
 extern "C" s32 lbl_802FB900;
 extern "C" u8 lbl_802FF2E9;
