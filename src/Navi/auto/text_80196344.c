@@ -1706,6 +1706,16 @@ extern "C" void fn_801A354C(u8* param_1, struct NaviSrc4* param_2) {
     dst->c = c;
 }
 
+extern "C" void fn_801A3568(u8* param_1, struct NaviSrc4* param_2) {
+    struct NaviSrc4* dst = (struct NaviSrc4*)(param_1 + 0x30);
+    u16 a = *(volatile u16*)&param_2->a;
+    u8 b = *(volatile u8*)&param_2->b;
+    dst->a = a;
+    u8 c = *(volatile u8*)&param_2->c;
+    dst->b = b;
+    dst->c = c;
+}
+
 extern "C" void* fn_801A3584(void* param_1) {
     return (u8*)param_1 + 0x30;
 }
