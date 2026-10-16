@@ -110,6 +110,19 @@ struct VObj_8013C4B0 {
     virtual void v10(BOOL, u32, u32);
 };
 
+struct VObj_8013C374 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(u32, u32);
+};
+
 struct Ptr_8013B368 { u32* p; };
 
 struct Chunk_8013B368 {
@@ -1085,8 +1098,8 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
 }
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    char* base = lbl_802911A0;
-    char* derived = lbl_80292C80;
+    void* derived = lbl_80292C80;
+    void* base = lbl_802911A0;
     param_1[0] = base;
     param_1[0] = derived;
     ((u32*)param_1)[1] = param_2;
