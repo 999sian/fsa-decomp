@@ -186,6 +186,10 @@ extern "C" void fn_8001A950(void) {
     cTg_SingleCut__FP16create_tag_class();
 }
 
+extern "C" void fn_8001A970(void* tag) {
+    cTg_Addition__FP15node_list_classP16create_tag_class(lbl_80205620, tag);
+}
+
 extern "C" void cTg_Create__FP16create_tag_classPv(void*, void*);
 extern "C" void fn_8001A99C(void* param_1, void* param_2) {
     cTg_Create__FP16create_tag_classPv(param_1, param_2);
