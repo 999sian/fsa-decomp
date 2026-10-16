@@ -23,6 +23,20 @@ extern "C" void fn_80139BE8(unsigned char* p) {
     (*(unsigned char**)(lbl_8053AB10 + 0x20))[0x235f] = 0;
 }
 
+extern "C" void fn_8043D5F0(void*);
+extern "C" void fn_8038D4A8(void);
+extern "C" void fn_8043DC98(void*);
+extern "C" void fn_8044B8EC(void*);
+extern "C" void fn_8013B438(void*);
+extern "C" void fn_8023F2BC(void);
+extern "C" void fn_801F8658(void*);
+extern "C" void fn_801902D0(void*);
+extern "C" void fn_8016DA6C(void*);
+extern "C" void fn_80139C5C(void) {
+    fn_8043D5F0(lbl_8053AED0);
+    fn_8038D4A8();
+}
+
 extern "C" void fn_80139D3C(unsigned char* p) {
     if (lbl_8053AB10[0x39] == 0) {
         fn_8016DB60(*(void**)(p + 0x24));
