@@ -606,6 +606,15 @@ extern "C" void fn_80093A70(u8* p) {
     }
 }
 
+extern "C" void* fn_800164D0(void* p);
+extern "C" void fn_80093B30(u8* p) {
+    *(s32*)(p + 0x2828) = (s32)fn_800164D0(lbl_802AE880);
+    if (*(s32*)(p + 0x2828) != 0) {
+        fn_800CA7C4(*(void**)(p + 0x280));
+        p[0x282c] = 9;
+    }
+}
+
 extern "C" void fn_80093D90(u8* p) {
     *(s32*)(p + 0x2828) = (s32)fn_80016320(lbl_802AE880);
     if (*(s32*)(p + 0x2828) != 0) {
