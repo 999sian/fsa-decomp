@@ -141,9 +141,9 @@ extern "C" void fn_8004AF7C(void* param_1, void* param_2) {
     void* obj = param_2;
     if (*(u8*)((char*)param_1 + 0x12) == 0 && (*(u8*)((char*)param_1 + 0x10) & 2) == 0) {
         void* src = *(void**)((char*)param_1 + 0x8);
-        f32 x = *(f32*)((char*)src + 0x0);
-        f32 y = *(f32*)((char*)src + 0x4);
         f32 z = *(f32*)((char*)src + 0x8);
+        f32 y = *(f32*)((char*)src + 0x4);
+        f32 x = *(f32*)((char*)src + 0x0);
         *(f32*)((char*)obj + 0xa4) = x;
         *(f32*)((char*)obj + 0xa8) = y;
         *(f32*)((char*)obj + 0xac) = z;
@@ -157,8 +157,8 @@ extern "C" void fn_8004AF7C(void* param_1, void* param_2) {
         cond = 1;
     }
     if (cond) {
-        register void* vtable = *(void**)param_1;
-        (*(void(**)(void*))((char*)vtable + 0x20))(param_1);
+        void** vtable = *(void***)param_1;
+        ((void(*)(void*))vtable[8])(param_1);
     }
     if ((*(u8*)((char*)param_1 + 0x10) & 1) != 0) {
         s16 local[1];
@@ -359,7 +359,7 @@ extern "C" void* fn_8004C970(void* param_1) {
     return (void*)((char*)base + value * 0xc4);
 }
 
-extern "C" unsigned char fn_8004CA1C(void* p) {
+extern "C" int fn_8004CA1C(void* p) {
     extern char lbl_80246BC0[];
     extern char* lbl_802FF0A0;
     extern unsigned char lbl_802FF0A4;
