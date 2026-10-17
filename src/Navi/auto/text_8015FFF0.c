@@ -528,25 +528,22 @@ extern "C" void* fn_80161518(void* self, void* name) {
 extern "C" char* fn_80161710(u16* p, char* s, s8 term) {
     s32 i = 0;
     s32 v;
-    s8 c;
     p[0] = 0;
-    c = *s;
-    while (c != 0 && c != term) {
-        v = fn_801E30E8(c);
+    while (*s != 0 && *s != term) {
+        v = fn_801E30E8(*s);
         p[0] = v + p[0] * 3;
         if (i < 0x100) {
             ((u8*)p)[i + 4] = v;
             i++;
         }
         s++;
-        c = *s;
     }
     p[1] = i;
-    ((u8*)p + i)[4] = 0;
-    if (c == 0) {
-        return 0;
+    ((u8*)p)[i + 4] = 0;
+    if (*s != 0) {
+        return s + 1;
     }
-    return s + 1;
+    return 0;
 }
 #pragma use_lmw_stmw reset
 #pragma dont_inline reset
