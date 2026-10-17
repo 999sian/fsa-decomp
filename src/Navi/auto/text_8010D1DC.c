@@ -35,6 +35,19 @@ extern "C" void fn_8010EC3C(NaviState_8010D1DC* p) {
     (p->*lbl_8028EF1C[((u8*)p)[0xcf]])();
 }
 
+extern u8 lbl_802C5B44[];
+extern "C" s32 fn_8011024C(u8* p, s16 t, u8 a, s32 b, s32 c);
+extern "C" s32 fn_8010FEDC(u8* p, s16 t, u8 a, s32 b, s32 c, f32 x, f32 y);
+extern "C" void fn_8010F570(u8* p) {
+    s32 r1 = fn_8011024C(p, *(s16*)(p + 0xcc), lbl_802C5B44[0x19], 0, 1);
+    s32 r2 = fn_8010FEDC(p, *(s16*)(p + 0xcc), lbl_802C5B44[0x18], 0, 1, lbl_803012EC, *(f32*)(lbl_802C5B44 + 0x14));
+    *(s16*)(p + 0xcc) += 1;
+    if (r1 == 1 && r2 == 1) {
+        *(s16*)(p + 0xcc) = 0;
+        p[0xcf] = 5;
+    }
+}
+
 extern "C" void fn_8010F818(void)
 {
 }
