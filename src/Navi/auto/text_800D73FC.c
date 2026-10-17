@@ -21,16 +21,24 @@ extern f32 lbl_80301058;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
 extern "C" int fn_8002F0A8(int);
+struct NaviSlot_802C04D0 {
+    u32 bit;
+    u32 unk4;
+    u32 id;
+};
+extern NaviSlot_802C04D0 lbl_802C04D0[];
+extern "C" u32 lbl_8028A8D8[];
+extern "C" int fn_80057530(int id);
+extern "C" s32 fn_800EE044(void);
 extern "C" void fn_8002F458(s32 a, s32 b);
 extern "C" void fn_800E7F50(void*, s32, s32, s32);
 extern char lbl_802C57D4[];
 extern "C" void fn_800EBD88(char* p);
 extern "C" BOOL fn_800DDA6C(void* p, u8* src) {
     u8* c = (u8*)p;
-    u8 a;
-    u8 b;
-    b = src[1];
-    c[0x128] = src[0];
+    u8 a = src[0];
+    u8 b = src[1];
+    c[0x128] = a;
     a = src[2];
     c[0x129] = b;
     b = src[3];
@@ -168,6 +176,61 @@ extern "C" void fn_800E8B24(u8* p) {
     } else {
         p[0x4c4] = 0;
         p[0xa76] = 0x35;
+    }
+}
+
+extern "C" void fn_800E927C(u8* p);
+extern "C" s32 fn_800EE044(void);
+extern "C" void fn_800E9098(u8* p) {
+    if (p[0xb14] != 0) {
+        p[0xb14]--;
+        return;
+    }
+    if (p[0x4e9] != 0) {
+        u8* obj = *(u8**)(p + 0x4a8 + p[0x4e9] * 4);
+        obj[0xb0] = 0;
+    }
+    *(u8*)(*(u8**)(p + 0x4a4) + 0xb0) = 1;
+    *(u8*)(*(u8**)(p + 0x4b8) + 0xb0) = 1;
+    p[0x4c4] = 1;
+    *(u32*)(p + 0x4c0) = 0;
+    *(u8*)(*(u8**)(p + 0x4ac + p[0x4e8] * 4) + 0xb0) = 1;
+    p[0x4d0] = 1;
+    *(u32*)(p + 0x4cc) = 0;
+    *(u32*)(lbl_802BB0FC + 0x100) |= 0x2000;
+    p[0xa76] = 0;
+}
+
+extern "C" void fn_800E927C(u8* p) {
+    u32* obj = *(u32**)(p + 0xb18);
+    if (obj != 0) {
+        obj[0xf4 / 4] |= 1;
+        obj[0x24 / 4] = 1;
+        *(u32*)(p + 0xb18) = 0;
+    }
+    obj = *(u32**)(p + 0xb1c);
+    if (obj != 0) {
+        obj[0xf4 / 4] |= 1;
+        obj[0x24 / 4] = 1;
+        *(u32*)(p + 0xb1c) = 0;
+    }
+    obj = *(u32**)(p + 0xb20);
+    if (obj != 0) {
+        obj[0xf4 / 4] |= 1;
+        obj[0x24 / 4] = 1;
+        *(u32*)(p + 0xb20) = 0;
+    }
+    obj = *(u32**)(p + 0xb24);
+    if (obj != 0) {
+        obj[0xf4 / 4] |= 1;
+        obj[0x24 / 4] = 1;
+        *(u32*)(p + 0xb24) = 0;
+    }
+    obj = *(u32**)(p + 0xb28);
+    if (obj != 0) {
+        obj[0xf4 / 4] |= 1;
+        obj[0x24 / 4] = 1;
+        *(u32*)(p + 0xb28) = 0;
     }
 }
 
