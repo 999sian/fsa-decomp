@@ -41,6 +41,10 @@ extern const f32 lbl_8053C28C;
 extern const f32 lbl_8053C290;
 extern const f32 lbl_8053C294;
 extern const f32 lbl_8053C298;
+extern const f32 lbl_8053C270;
+extern const f32 lbl_8053C274;
+extern const f32 lbl_8053C27C;
+extern const f32 lbl_8053C280;
 
 extern "C" void fn_8010666C(u8* this_) {
     v01__5ActorFv(this_);
