@@ -45,6 +45,52 @@ extern "C" void __dt__5ActorFv(Actor*, s16);
 extern "C" void __dl__FPv(void*);
 extern u8 lbl_8049FCA0[];
 extern const f32 lbl_8053D268;
+extern "C" s32 fn_801535B4(Actor* actor)
+{
+    s32 room = *(s32*)((u8*)actor + 0x4);
+    s16 angle;
+    u16 result;
+
+    if (*(u8*)((u8*)fn_802D6A9C() + room + 0x131DF)) {
+        return 0;
+    }
+    if (*(s32*)((u8*)actor + 0x230) == 0xE) {
+        return 1;
+    }
+    if (*(f32*)((u8*)actor + 0x14) > lbl_8053D288) {
+        return 0;
+    }
+    *(f32*)((u8*)actor + 0x2B8) = *(f32*)((u8*)actor + 0xC);
+    *(f32*)((u8*)actor + 0x2BC) = *(f32*)((u8*)actor + 0x10);
+    *(f32*)((u8*)actor + 0x2C0) = *(f32*)((u8*)actor + 0x14);
+    *(f32*)((u8*)actor + 0x2B8) = (f32)((s32)*(f32*)((u8*)actor + 0x2B8) & 0xFFF8);
+    *(f32*)((u8*)actor + 0x2BC) = (f32)((s32)*(f32*)((u8*)actor + 0x2BC) & 0xFFF8);
+    angle = fn_801F6874(*(s32*)((u8*)actor + 0x98));
+    *(f32*)((u8*)actor + 0x2B8) = lbl_8053D314 * *(f32*)(sincosTable___5JMath + ((u32)(s32)angle >> 2 & 0x3FF8)) + *(f32*)((u8*)actor + 0x2B8);
+    angle = fn_801F6874(*(s32*)((u8*)actor + 0x98));
+    *(f32*)((u8*)actor + 0x2BC) = lbl_8053D314 * *(f32*)(sincosTable___5JMath + ((u32)(s32)angle >> 2 & 0x3FF8) + 4) + *(f32*)((u8*)actor + 0x2BC);
+    result = fn_8022461C((u8*)actor + 0x2B8, *(s32*)((u8*)actor + 0x4));
+    if ((u32)(result - 2) < 2 || result == 0xE) {
+        *(s32*)((u8*)actor + 0x250) = 10000;
+        *(s32*)((u8*)actor + 0x108) = 200;
+        *(s32*)((u8*)actor + 0x280) = 0;
+        if (result == 0xE && fn_802DE9A0() == 1) {
+            *(s32*)((u8*)actor + 0x280) = 1;
+        }
+        *(f32*)((u8*)actor + 0x44) = lbl_8053D258;
+        *(f32*)((u8*)actor + 0x40) = lbl_8053D258;
+        *(f32*)((u8*)actor + 0x3C) = lbl_8053D258;
+        *(f32*)((u8*)actor + 0x2B4) = lbl_8053D258;
+        *(f32*)((u8*)actor + 0x2B0) = lbl_8053D258;
+        *(f32*)((u8*)actor + 0x2AC) = lbl_8053D258;
+        *(s32*)((u8*)actor + 0xD8) = 0;
+        *(s32*)((u8*)actor + 0xDC) = 0;
+        *(s32*)((u8*)actor + 0x230) = 0xD;
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" Actor* fn_801537A0(Actor* actor, s16 del)
 {
     s32 i;
@@ -152,8 +198,8 @@ extern "C" s32 fn_80154310(u32 type, u32 owner, const Vec* position, u32 paramet
 
 extern "C" f32 fn_8015436C(f32 value)
 {
-    volatile f32 result = __fabs(value);
-    return result;
+    f64 result = __fabs((f64)value);
+    return (f32)result;
 }
 
 extern "C" f32 fn_80154378(f32 value)
