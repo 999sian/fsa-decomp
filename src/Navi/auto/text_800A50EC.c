@@ -42,6 +42,29 @@ extern "C" void fn_800AC8CC(u8* p);
 extern "C" void fn_800A923C(u8* p, s32 x);
 extern "C" void fn_800AD488(u8* p, u8 a, s32 b);
 extern "C" s32 fn_800A91C8(u8* p, s32 mode, f32 a, f32 b);
+extern "C" void fn_800A77B8(u8*);
+extern "C" void fn_800A53D8(u8*);
+extern "C" void fn_8002F228(s32);
+extern u8 lbl_802FEE3F;
+extern "C" void fn_800A5338(u8* p)
+{
+    fn_800A77B8(p);
+    fn_800A53D8(p);
+    (*(u8**)(p + 0xb0))[0xb0] = 1;
+    (*(u8**)(p + 0x50))[0xb0] = 1;
+    (*(u8**)(p + 0xfc))[0xb0] = 1;
+    (*(u8**)(p + 0x60))[0xb0] = 1;
+    (*(u8**)(p + 0x148))[0xb0] = 1;
+    (*(u8**)(p + 0x70))[0xb0] = 1;
+    *(s32*)(p + 0x3e0) = *(s16*)(lbl_802C5524 + 0x6a);
+    p[0x3dd] = 0;
+    p[0x3ac] = 0;
+    if (lbl_802FEE3F == 0) {
+        fn_8002F228(0x25);
+        lbl_802FEE3F = 1;
+    }
+}
+
 extern "C" void fn_800A77A0(u32* param_1, u8* param_2) {
     *param_1 = *(u32*)(param_2 + 0x148);
 }
@@ -267,6 +290,13 @@ extern "C" void fn_800AC8CC(u8* p) {
     p[0x3ae] = 0;
     p[0x3af] = 1;
     (*(VObj_800A1A64**)(p + 0x384))->v7(lbl_802C5524[0x5d]);
+}
+
+extern "C" void fn_800AC9FC(u8* p) {
+    VObj_800A1A64* o = *(VObj_800A1A64**)(p + 0x384);
+    f32 y = *(f32*)(p + 0x380);
+    f32 d = lbl_80300C20 * (f32)p[0x3b3];
+    o->v2(*(f32*)(p + 0x37c) + d, y);
 }
 
 extern "C" u32 fn_800AD744(void* param_1, u8* param_2, u8* param_3) {
