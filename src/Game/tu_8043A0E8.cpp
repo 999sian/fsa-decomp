@@ -28,6 +28,8 @@ extern const f32 lbl_80543C90;
 extern u8 lbl_8050DB0C[];
 extern u8 lbl_80529DEC[];
 extern void* lbl_8053AED0;
+extern "C" void fn_8013B490(void* p);
+extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 
 struct Fn8043ABCC_Obj {
     virtual void v02();
