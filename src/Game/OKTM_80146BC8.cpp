@@ -20,6 +20,8 @@ struct Tmp16 {
 
 class ResMgr {
 public:
+    virtual void vf00();
+    virtual void vf04();
     virtual void vf08();
     virtual void vf0C();
     virtual void vf10();
@@ -59,8 +61,8 @@ extern "C" void fn_80146C28(char* this_) {
             Tmp16* cp = &cpy;
             *cp = *(Tmp16*)((u8*)mgr + 0xcc);
             Vec* p = (Vec*)(this_ + 0xc);
-            pos.x = p->x + *(f32*)&cp->a;
-            pos.y = p->y + *(f32*)&cp->b;
+            pos.x = p->x + cp->x;
+            pos.y = p->y + cp->y;
             pos.z = p->z;
             fn_801EF574(lbl_80465BD8, 0x25, &pos, &rec);
             fn_801F02BC(this_, lbl_80465BEC, 0x317, &rec, 1, 0, 0, 1.0f, 1.0f);
