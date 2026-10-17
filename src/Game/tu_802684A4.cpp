@@ -16,6 +16,17 @@ extern "C" void* Actor_CreateByID(void*, u32, s32, JGeometry::TVec3<f32>*, s32, 
 extern "C" void* fn_801F666C(void*, void*);
 extern JGeometry::TVec3<f32> lbl_8046B998[];
 extern void* lbl_804A71A8[];
+extern JGeometry::TVec3<f32> lbl_8046BAE8[];
+extern "C" u8 fn_80240B84(void*);
+extern "C" u8 fn_8025F448(void*);
+extern "C" u8 fn_8025F590(void*);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" s32 fn_8026FC20(void*);
+extern "C" u8 fn_802DCD0C(void*);
+extern "C" void fn_80269574(u8*);
+extern "C" void fn_8026B81C(u8*, u16);
+extern "C" void fn_8026C350(u8*, u16);
+extern "C" void fn_8026E1E0(u8*);
 
 struct Vec2f {
     void set(const Vec2f& o) {
