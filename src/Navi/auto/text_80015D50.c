@@ -3,6 +3,9 @@
 // .text 0x80015d50-0x80016924 (21 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_8015AB1C(void*);
+extern "C" BOOL fn_801BE5B4(void*);
+extern "C" void fn_801BE47C(void*);
+extern "C" void fn_801BE764(void*);
 extern "C" void* fn_80015D50(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
