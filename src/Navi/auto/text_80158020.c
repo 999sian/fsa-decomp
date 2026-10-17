@@ -31,17 +31,3 @@ extern "C" u32 fn_80158020(s32 idx) {
         return *(u32*)(p + 0x20) - (*(u32*)(p + 0x78) >> 1);
     }
 }
-#include "types.h"
-
-extern "C" u8* lbl_802FF4BC;
-
-static inline u32 fn_80158020_calc(s32 idx) {
-    u8* p = lbl_802FF4BC + idx * 0xf4;
-    u32 t = *(u32*)(p + 0x20);
-    u32 r = ((t - *(u32*)(p + 0x78) * 2) >> 4) * 14;
-    u32 lo = t & 0xf;
-    if (lo >= 2) {
-        r += lo - 2;
-    }
-    return r;
-}
