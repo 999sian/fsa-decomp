@@ -269,6 +269,109 @@ extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsis
     }
 }
 
+extern "C" void fn_8008B214(JUTException* this_, u32* param_2)
+{
+    char* base = lbl_8045E878;
+    bool found = false;
+
+    if (lbl_8053A914 != nullptr)
+    {
+        lbl_8053A914->print(base + 0x3bc);
+        for (s32 i = 0; i < 0x1f; i++)
+        {
+            u32 addr = param_2[i];
+            if (addr > 0x7fffffff && addr < 0x83000000)
+            {
+                found = true;
+                lbl_8053A914->print_f(base + 0x3e8, i, addr);
+                u32 flag = 1;
+                bool ok = false;
+                if (addr >= 0x80000000 && addr <= 0x82ffffff)
+                {
+                    char name[0x20];
+                    u32 sectionBase = 0;
+                    s32 sectionIndex = 0;
+                    u32 sectionOffset = 0;
+                    char* mapName = nullptr;
+                    u32* module;
+                    if (addr != 0)
+                    {
+                        for (module = *(u32**)0x800030c8; module != nullptr && !ok; module = (u32*)module[1])
+                        {
+                            u32* section = (u32*)module[4];
+                            for (s32 j = 0; j < (s32)module[3]; j++)
+                            {
+                                u32 start = section[0] & 0xfffffffe;
+                                if (section[1] != 0 && start <= addr && addr < start + section[1])
+                                {
+                                    sectionBase = *module;
+                                    sectionIndex = j;
+                                    sectionOffset = addr - start;
+                                    mapName = (char*)module[5];
+                                    ok = true;
+                                    break;
+                                }
+                                section += 2;
+                            }
+                        }
+                    }
+                    if (ok)
+                    {
+                        char* p = mapName;
+                        char* last = mapName;
+                        for (; *p != 0; p++)
+                        {
+                            if (*p == '\\')
+                            {
+                                last = p;
+                            }
+                        }
+                        if (*last == '\\')
+                        {
+                            last++;
+                        }
+                        s32 n = 0;
+                        char* out = name;
+                        while (*last != 0 && n < 0x20 && *last != '.')
+                        {
+                            n++;
+                            *out++ = *last++;
+                        }
+                        *out = 0;
+                        lbl_8053A914->print_f(base + 0x3a4, 0, name, sectionOffset, sectionIndex);
+                        flag = 0;
+                    }
+                    if (lbl_8052E894.getFirstLink() != nullptr)
+                    {
+                        if (ok)
+                        {
+                            ok = fn_8008C528(name, sectionOffset, sectionIndex, 0, 0, 0, 0x100, 1, flag) == 1;
+                        }
+                        else
+                        {
+                            ok = fn_8008C528(nullptr, addr, -1, 0, 0, 0, 0x100, 1, flag) == 1;
+                        }
+                    }
+                    else
+                    {
+                        ok = false;
+                    }
+                }
+                if (!ok)
+                {
+                    lbl_8053A914->print(base + 0x3f8);
+                }
+                JUTConsoleManager::sManager->drawDirect(true);
+                fn_8008C308(this_->mPrintWaitTime1);
+            }
+        }
+        if (!found)
+        {
+            lbl_8053A914->print(base + 0x40c);
+        }
+    }
+}
+
 extern "C" s64 __div2i(s64 num, s64 den);
 extern "C" OSTime OSGetTime(void);
 extern "C" void fn_8008C308(s32 param_1) {
@@ -414,4 +517,42 @@ extern "C" void* fn_8008CA44(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+static BOOL FindModuleSection(u32 addr, u32* moduleId, s32* sectionIndex, u32* sectionOffset, char** mapName)
+{
+    u32* module;
 
+    if (addr == 0)
+    {
+        return FALSE;
+    }
+    for (module = *(u32**)0x800030c8; module != nullptr; module = (u32*)module[1])
+    {
+        u32* section = (u32*)module[4];
+        for (s32 j = 0; j < (s32)module[3]; j++)
+        {
+            u32 start = section[0] & 0xfffffffe;
+            if (section[1] != 0 && start <= addr && addr < start + section[1])
+            {
+                if (moduleId)
+                {
+                    *moduleId = *module;
+                }
+                if (sectionIndex)
+                {
+                    *sectionIndex = j;
+                }
+                if (sectionOffset)
+                {
+                    *sectionOffset = addr - start;
+                }
+                if (mapName)
+                {
+                    *mapName = (char*)module[5];
+                }
+                return TRUE;
+            }
+            section += 2;
+        }
+    }
+    return FALSE;
+}
