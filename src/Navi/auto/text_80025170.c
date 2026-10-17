@@ -45,6 +45,17 @@ extern "C" void fn_80021220(void*, s32);
 
 extern "C" void fn_8015AB1C(void*);
 extern "C" int fn_800254CC(u8* param_1);
+extern "C" void* fn_80025170(u8* p, s16 n) {
+    if (p != 0) {
+        fn_800251D8(p);
+        fn_801E0D40(p + 0x40, (void*)fn_80026E54, 0xd4, 4);
+        if (n > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_800251D8(u8* param_1) {
     u8* p = param_1;
     s32 i = 0;
