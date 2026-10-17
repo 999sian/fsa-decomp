@@ -70,7 +70,7 @@ extern "C" u32 fn_8015EE10(char* p) {
     char* n;
     u32 max = 0;
     fn_801BE3A0(p + 0x18);
-    for (n = *(char**)lbl_802EE28C; n != 0; n = *(char**)(n + 0xc)) {
+    for (n = (char*)lbl_802EE28C[0]; n != 0; n = *(char**)(n + 0xc)) {
         u32 v = *(u32*)(*(char**)n + 0x1c);
         if (v > max) {
             max = v;
@@ -80,8 +80,6 @@ extern "C" u32 fn_8015EE10(char* p) {
     return max;
 }
 
-extern "C" int fn_8015F0BC(void* param_1, u32 size, u8 flag, char* p);
-extern "C" int fn_8015F16C(void* param_1, u32 size, u8 flag, char* p);
 extern "C" long fn_8015EE88(char* p) {
     char* n;
     long sum = 0;
