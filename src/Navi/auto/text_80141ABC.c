@@ -20,9 +20,9 @@ void fn_80141ABC(int* param_1)
     }
     param_1[0] = (int)lbl_802FF3A8;
     if (lbl_802FF3A8 != 0) {
-        lbl_802FF3A8[1] = (int)param_1;
+        ((int*)lbl_802FF3A8)[1] = (int)param_1;
     }
     param_1[1] = 0;
-    lbl_802FF3A8 = param_1;
+    lbl_802FF3A8 = (int*)param_1;
     *((char*)param_1 + 8) = 2;
 }
