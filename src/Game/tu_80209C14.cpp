@@ -598,12 +598,14 @@ extern "C" void* fn_8020B0B8(char* this_) {
 // Keep regional definitions that were present before source-tree consolidation.
 #if !defined(VERSION_G4SJ01)
 extern "C" void fn_8020AE2C(void* param_1) {
-    f32 f0 = *(f32*)((u8*)param_1 + 0xc);
     f32 f1 = *(f32*)((u8*)param_1 + 0x24);
-    f32 f2 = *(f32*)((u8*)param_1 + 0x10);
+    f32 f0 = *(f32*)((u8*)param_1 + 0xc);
     f32 f3 = *(f32*)((u8*)param_1 + 0x28);
-    *(f32*)((u8*)param_1 + 0x2c0) = f1 - f0;
-    *(f32*)((u8*)param_1 + 0x2c4) = f3 - f2;
+    f32 f2 = *(f32*)((u8*)param_1 + 0x10);
+    f32 diff1 = f1 - f0;
+    f32 diff2 = f3 - f2;
+    *(f32*)((u8*)param_1 + 0x2c0) = diff1;
+    *(f32*)((u8*)param_1 + 0x2c4) = diff2;
 }
 #endif
 #if defined(VERSION_G4SJ01)
