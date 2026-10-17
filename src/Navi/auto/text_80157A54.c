@@ -7,3 +7,9 @@ extern "C" u8 fn_80157A74(int idx)
 {
     return *(lbl_802FF4BC + idx * 0xf4 + 0x9c);
 }
+
+extern "C" u8 fn_80157A88(int idx)
+{
+    return *(lbl_802FF4BC + idx * 0xf4 + 0x90);
+}
+
