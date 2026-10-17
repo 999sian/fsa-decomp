@@ -826,10 +826,10 @@ BOOL fn_80240670(char* p) {
         return 1;
     }
     s32 c = 0;
-    s32 me = S32(p, 0x4);
+    s32 me0 = S32(p, 0x4);
     s32 i = c;
     for (; i < 4; i++) {
-        if (i == me) {
+        if (i == me0) {
             c++;
         } else if (fn_8022F514(i)) {
             s32 linked = S32(p, 0xd60);
@@ -838,8 +838,8 @@ BOOL fn_80240670(char* p) {
                     c++;
                 }
             } else {
-                s32 me2 = S32(p, 0x4);
-                if (me2 == fn_8022F3DC(i)) {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
                     c++;
                 }
             }
@@ -859,29 +859,8 @@ BOOL fn_80240670(char* p) {
         }
     }
     if (mode == 4) {
-        s32 idx;
-        s32 rank;
-        s32 linked = S32(p, 0xd60);
-        if (linked >= 0) {
-            idx = fn_80234004(linked);
-        } else {
-            idx = S32(p, 0x1224);
-        }
-        linked = S32(p, 0xd60);
-        if (linked < 0) {
-            rank = 0;
-        } else {
-            s32 cnt = 0;
-            s32 j = 0;
-            s32 n = S32(p, 0x4);
-            for (; j < n; j++) {
-                if (linked == fn_8022F3DC(j)) {
-                    cnt++;
-                }
-            }
-            rank = cnt + 1;
-        }
-        return idx != rank;
+        s32 v = linkIdx(p);
+        return v != linkRank(p);
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
@@ -969,8 +948,10 @@ bool fn_80240DCC(char* p) {
     if (!isShrinking(p)) {
         bool a = false;
         bool b = false;
-        if (inOtherRoom(p) && !fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 1)) {
-            b = true;
+        if (inOtherRoom(p)) {
+            if (!fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 1)) {
+                b = true;
+            }
         }
         if (b) {
             bool c = true;
@@ -1182,7 +1163,7 @@ void fn_80241B44(char* p, f32* out) {
 }
 
 u32 fn_80241BA0(char* p, s32 room, f32* rect, u8 mode) {
-    if (room < 8) {
+    if (8 > room) {
         if (mode == 1) {
             {
                 JGeometry::TVec3<f32> pt(rect[0], rect[1], lbl_80540034);
@@ -1232,10 +1213,10 @@ u32 fn_80241BA0(char* p, s32 room, f32* rect, u8 mode) {
         }
     }
     f32 buf[4];
-    f32 a = rect[0];
-    f32 b = rect[1];
     f32 c = rect[2];
+    f32 a = rect[0];
     f32 d = rect[3];
+    f32 b = rect[1];
     buf[0] = a;
     buf[1] = b;
     buf[2] = c;
@@ -1309,33 +1290,9 @@ void fn_80242940(char* p) {
     if (U8(p, 0x454) == 0) {
         if (isBusy(p)) {
             if (S32(p, 0xbe4) > 0) {
-                bool done = true;
                 S32(p, 0xbe4) = S32(p, 0xbe4) - 1;
-                if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) || S32(p, 0xd60) >= 0) {
-                    s32 mode = getMode(p);
-                    if (mode == 4) {
-                        s32 target;
-                        s32 n = 0;
-                        s32 i;
-                        if (S32(p, 0xd60) >= 0) {
-                            target = fn_80234004(S32(p, 0xd60));
-                        } else {
-                            target = S32(p, 0x1224);
-                        }
-                        if (S32(p, 0xd60) >= 0) {
-                            for (i = 0; i < S32(p, 0x4); i++) {
-                                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
-                                    n++;
-                                }
-                            }
-                            n++;
-                        }
-                        done = n != target;
-                    } else {
-                        done = S32(p, 0xd60) >= 0;
-                    }
-                }
-                if (!done && S32(p, 0xbe4) > 0 && S32(p, 0xbe4) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
+                u8 owner = isLinkOwner3(p);
+                if (!owner && S32(p, 0xbe4) > 0 && S32(p, 0xbe4) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
                     fn_803037D4(S32(p, 0x4), 2);
                 }
             }
@@ -3011,7 +2968,7 @@ void fn_8024CA20(char* p) {
 
 void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
     if (S32(p, 0xd50) <= 0 && (S32(p, 0xd44) < 0 || S32(p, 0xd44) == a3) && S32(p, 0xd3c) < 0) {
-        if (!isLinkOwner(p) && a2 == S32(p, 0x3b4) && !fn_8025F448(p) && U8(p, 0xce8) == 0) {
+        if (!(u8)isLinkOwner(p) && a2 == S32(p, 0x3b4) && !fn_8025F448(p) && U8(p, 0xce8) == 0) {
             if (U8(p, 0x454) == 0) {
                 bool bVar1 = false;
                 if (S32(p, 0x1240) == 0xb || S32(p, 0x1244) == 0xb) {
@@ -3519,8 +3476,8 @@ int fn_80250ACC(char* p) {
         }
     }
 
-    c = 0;
-    i = c;
+    i = 0;
+    c = i;
     for (; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -4084,6 +4041,76 @@ char* fn_80255AC0(char* p, s16 del) {
     }
     return p;
 }
+
+extern "C" void __construct_array(void* p, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void __ct__Q29JGeometry8TVec3_f_Fv();
+extern "C" void fn_8018E890(void);
+extern "C" void fn_8045B46C(void* self, s32 a, void* b, s32 c, s32 d);
+extern "C" void fn_8030BDF8(void);
+extern "C" void fn_8026F9E8(void* o, void* p);
+extern "C" void* __nw__FUl(u32 size);
+extern "C" char __vt__19JPAParticleCallBack[];
+extern "C" char __vt__18JPAEmitterCallBack[];
+extern "C" void* __ct__6PlayerFi(u8* p, s32 idx) {
+    void* obj;
+    PTR(p, 0x0) = lbl_804A6F38;
+    __construct_array(p + 0x38, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0x31);
+    __construct_array(p + 0x4e0, (void*)fn_8018E890, 0, 0x10, 3);
+    __construct_array(p + 0x510, (void*)fn_8018E890, 0, 0x10, 3);
+    __construct_array(p + 0x550, (void*)fn_8018E890, 0, 0x10, 3);
+    __construct_array(p + 0x5fc, (void*)fn_8018E890, 0, 0x10, 0x50);
+    PTR(p, 0x1278) = __vt__19JPAParticleCallBack;
+    PTR(p, 0x1278) = lbl_804A64A8;
+    U8(p, 0x1288) = 0;
+    PTR(p, 0x1290) = __vt__19JPAParticleCallBack;
+    PTR(p, 0x1290) = lbl_804A64A8;
+    U8(p, 0x12a0) = 0;
+    PTR(p, 0x12d0) = __vt__19JPAParticleCallBack;
+    PTR(p, 0x12d0) = lbl_804A64A8;
+    U8(p, 0x12e0) = 0;
+    PTR(p, 0x12e8) = __vt__19JPAParticleCallBack;
+    PTR(p, 0x12e8) = lbl_804A64A8;
+    U8(p, 0x12f8) = 0;
+    PTR(p, 0x130c) = __vt__19JPAParticleCallBack;
+    PTR(p, 0x130c) = lbl_804A64A8;
+    U8(p, 0x131c) = 0;
+    PTR(p, 0x1330) = __vt__19JPAParticleCallBack;
+    PTR(p, 0x1330) = lbl_804A64A8;
+    U8(p, 0x1340) = 0;
+    PTR(p, 0x1398) = __vt__18JPAEmitterCallBack;
+    PTR(p, 0x1398) = lbl_8049F140;
+    S32(p, 0x13a4) = 0;
+    PTR(p, 0x13a8) = __vt__18JPAEmitterCallBack;
+    PTR(p, 0x13a8) = lbl_8049F140;
+    S32(p, 0x13b4) = 0;
+    S32(p, 0x4) = idx;
+    F32(p, 0x1258) = lbl_80540034;
+    F32(p, 0x125c) = lbl_80540034;
+    F32(p, 0x1260) = lbl_80540034;
+    obj = __nw__FUl(0x60);
+    if (obj) {
+        fn_8045B46C(obj, (char)idx, p + 0x1258, 0, 8);
+    }
+    PTR(p, 0x1250) = obj;
+    obj = __nw__FUl(0x60);
+    if (obj) {
+        fn_8045B46C(obj, (char)idx, 0, 0, 8);
+    }
+    PTR(p, 0x1254) = obj;
+    obj = __nw__FUl(0x2c0);
+    if (obj) {
+        fn_8030BDF8();
+    }
+    PTR(p, 0xbec) = obj;
+    obj = __nw__FUl(0xc0);
+    if (obj) {
+        fn_8026F9E8(obj, p);
+    }
+    PTR(p, 0xbf0) = obj;
+    U8(p, 0xcac) = 0;
+    return p;
+}
+
 } // extern "C"
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
