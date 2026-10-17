@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 801A0710-801A35AC (TENN). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "Game/ItemBase.h"
 
 // from src/Game/fn_801A0710.cpp
 extern "C" void fn_801A0910(void* this_);
