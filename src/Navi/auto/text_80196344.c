@@ -1898,6 +1898,15 @@ extern "C" void fn_801A36B0(int param_1, u8* param_2) {
     *(u8*)(param_1 + 7) = b;
 }
 
+extern "C" void fn_801A36CC(int param_1, u8* param_2) {
+    u16 h = *(volatile u16*)param_2;
+    u8 t = *(volatile u8*)(param_2 + 2);
+    *(u16*)(param_1 + 4) = h;
+    u8 b = *(volatile u8*)(param_2 + 3);
+    *(u8*)(param_1 + 6) = t;
+    *(u8*)(param_1 + 7) = b;
+}
+
 extern "C" int fn_801A36E8(int p) { return p + 4; }
 
 extern "C" void fn_801A36F0(int param_1, u32* param_2) {
