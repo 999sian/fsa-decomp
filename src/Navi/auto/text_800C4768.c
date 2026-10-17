@@ -14,6 +14,7 @@ struct VObj_800A1A64 {
 extern "C" void fn_800C55C8(u8* p);
 class NaviState_800C4768;
 extern void (NaviState_800C4768::*lbl_80288294[])();
+void fn_8002F358(s32 a, s32 b);
 
 extern void* lbl_80288450[];
 extern "C" void fn_8015AB1C(void* ptr);
@@ -46,6 +47,21 @@ extern "C" void fn_800C4B04(u8* p) {
 }
 
 extern "C" void fn_800C4B50(void) {}
+
+extern "C" void fn_800C4B54(u8* p) {
+    u8* d = lbl_802C565C;
+    f32 f = *(f32*)(d + 0x10);
+    s32 iVar1 = fn_800C56A0(p, p[0x38], d[0xc], 0, lbl_80300D8C, f);
+    p[0x38]++;
+    if (iVar1 == 1) {
+        p[0x38] = 0;
+        fn_800C5648(p);
+        if (p[0x36]) {
+            p[0x35] = 1;
+        }
+        p[0x37] = 0;
+    }
+}
 
 extern "C" void fn_800C4C88(u8* param_1) {
     s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, 0.0f, *(f32*)(lbl_802C565C + 0x10));
@@ -229,14 +245,17 @@ extern "C" void fn_800C576C(u8* p) {
 extern "C" void fn_800C57A8(u8* param_1) {
     void* obj = *(void**)(param_1 + 0x2c);
     if (obj != 0) {
-        (*(void (**)(void*, s32))(*(u8**)obj + 0x8))(obj, 1);
+        u32 vt = *(u32*)obj;
+        ((void (*)(void*, s32))(*(u32*)(vt + 0x8)))(obj, 1);
     }
     obj = *(void**)(param_1 + 0x8);
     if (obj != 0) {
-        (*(void (**)(void*, s32))(*(u8**)obj + 0x8))(obj, 1);
+        u32 vt = *(u32*)obj;
+        ((void (*)(void*, s32))(*(u32*)(vt + 0x8)))(obj, 1);
     }
     obj = *(void**)(param_1 + 0xc);
-    (*(void (**)(void*))(*(u8**)obj + 0x24))(obj);
+    u32 vt = *(u32*)obj;
+    ((void (*)(void*))(*(u32*)(vt + 0x24)))(obj);
 }
 
 extern "C" void fn_800C5A4C(void* param_1) {
