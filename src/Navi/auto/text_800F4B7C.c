@@ -173,6 +173,21 @@ extern "C" void fn_800FFBCC(NaviState_800FFBCC* p) {
     (p->*lbl_8028DD1C[((u8*)p)[0xee]])();
 }
 
+extern "C" void fn_800FFFBC(u8* p) {
+    if (fn_8002F87C() == 0 && fn_801081D0((char*)p) == 1) {
+        fn_800F4D3C(p);
+        fn_801080E8(p);
+        p[0x193] = 1;
+        ((u8*)(*(void**)(p + 0xd4)))[0xb0] = 1;
+        fn_8002F7C0((void*)6, 0);
+        *(s16*)(p + 0x528) = 0x10e;
+        p[0xf2] = 2;
+        p[0x188] = 0;
+        p[0x194] = 1;
+        p[0x189] = 1;
+    }
+}
+
 extern "C" void fn_80100054(void* param_1) {
     u16 t = *(u16*)((u8*)param_1 + 0x528);
     *(u16*)((u8*)param_1 + 0x528) = t - 1;
