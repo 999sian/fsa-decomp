@@ -1,4 +1,5 @@
 #include "JSystem/J3D/J3DMaterialFactory.h"
+#include "JSystem/JSupport.h"
 
 extern "C" void* fn_800E1300(const void* base, const void* offset);
 extern "C" void* fn_800CC040(const void* base, const void* offset);
