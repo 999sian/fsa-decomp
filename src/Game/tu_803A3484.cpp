@@ -52,7 +52,8 @@ extern "C" void fn_803A5380(u8* this_) {
     }
     *(s32*)(this_ + 0x154) = 1;
     this_[0x14c] = 0;
-    *(f32*)(this_ + 0x4c) = *(f32*)(this_ + 0x50) = lbl_805432E0;
+    *(f32*)(this_ + 0x50) = lbl_805432E0;
+    *(f32*)(this_ + 0x4c) = lbl_805432E0;
     *(s16*)(this_ + 0x6e) = 0;
     *(s16*)(this_ + 0x72) = 0;
     *(s16*)(this_ + 0x7a) = 0;
@@ -190,4 +191,173 @@ extern "C" u8* fn_803A56C4(u8* p, s16 n) {
     }
     return p;
 }
+
+extern "C" u32 lbl_804AF7D8[][3];
+extern "C" u8* sCurrentHeap__7JKRHeap;
+extern "C" void fn_8016FDE0(void);
+extern "C" void fn_80428030(void);
+extern "C" void* __nw__FUl(u32 size);
+extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void __ct__9J2DScreenFv(void* self);
+extern "C" void __ct__10J2DPictureFPC7ResTIMG(void* self, const void* res);
+extern "C" void __ct__14WaveControllerFlll(void* self, s32 a, s32 b, s32 c);
+extern "C" void getTotalFreeSize__7JKRHeapFv(void* heap);
+extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* self, const char* name, u32 a, void* archive);
+extern "C" void* getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader(const char* name, void* loader);
+extern "C" void* load__20J2DAnmLoaderDataBaseFPCv(const void* res);
+extern "C" void* fn_80403204(u32 type, const char* name);
+extern "C" void* fn_80403244(u32 type, const char* name);
+extern "C" void* fn_804030C4(u32 type, const char* name);
+extern "C" void* create__12JKRSolidHeapFUlP7JKRHeapb(u32 size, void* parent, s32 align);
+extern "C" void becomeCurrentHeap__7JKRHeapFv(void* heap);
+extern "C" void adjustSize__12JKRSolidHeapFv(void* heap);
+extern "C" void fn_8016A3BC(void* archive, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f, void* heap, void* p0, void* p1, u32 g, void* p2, u32 h);
+extern "C" u8* fn_803A59E0(u8* this_) {
+    char* names = lbl_80475F58;
+    *(void**)this_ = lbl_804AF820;
+    __construct_array(this_ + 0x90, (void*)fn_8016FDE0, NULL, 0x1c, 4);
+    getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
+    lbl_8053AD88 = this_;
+    void* obj = __nw__FUl(0x118);
+    if (obj != NULL) {
+        __ct__9J2DScreenFv(obj);
+    }
+    *(void**)(this_ + 0x4) = obj;
+    u8* tbl = lbl_80529DEC;
+    setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(this_ + 0x4), names + 0x164, 0x1100000, *(void**)(tbl + 0x24));
+    *(void**)(this_ + 0x24) = load__20J2DAnmLoaderDataBaseFPCv(getGlbResource__13JKRFileLoaderFPCcP13JKRFileLoader(names + 0x170, *(void**)(tbl + 0x24)));
+    void* scr = *(void**)(this_ + 0x4);
+    ((void (*)(void*, void*))(*(void***)scr)[27])(scr, *(void**)(this_ + 0x24));
+    scr = *(void**)(this_ + 0x4);
+    void* pane = ((void* (*)(void*, u32, u32, u32))(*(void***)scr)[15])(scr, 0x6d610000, 0x5063, 0x6d61726b);
+    *((u8*)pane + 0xb0) = 0;
+    scr = *(void**)(this_ + 0x4);
+    pane = ((void* (*)(void*, u32, u32, u32))(*(void***)scr)[15])(scr, 0x70720000, 0x70727373, 0x74727431);
+    this_[0x14e] = *((u8*)pane + 0xb2);
+    scr = *(void**)(this_ + 0x4);
+    pane = ((void* (*)(void*, u32, u32, u32))(*(void***)scr)[15])(scr, 0x74720000, 0x70727373, 0x74727432);
+    this_[0x14f] = *((u8*)pane + 0xb2);
+
+    void* res = fn_80403204(0x54494d47, names + 0x17c);
+    obj = __nw__FUl(0x168);
+    if (obj != NULL) {
+        __ct__10J2DPictureFPC7ResTIMG(obj, res);
+    }
+    *(void**)(this_ + 0x8) = obj;
+    obj = __nw__FUl(0x1c);
+    if (obj != NULL) {
+        fn_80428030();
+    }
+    *(void**)(this_ + 0x48) = obj;
+    res = fn_80403244(0x54494d47, names + 0x190);
+    obj = __nw__FUl(0x168);
+    if (obj != NULL) {
+        __ct__10J2DPictureFPC7ResTIMG(obj, res);
+    }
+    *(void**)(this_ + 0xc) = obj;
+    res = fn_80403244(0x54494d47, names + 0x1a8);
+    obj = __nw__FUl(0x168);
+    if (obj != NULL) {
+        __ct__10J2DPictureFPC7ResTIMG(obj, res);
+    }
+    *(void**)(this_ + 0x10) = obj;
+    res = fn_80403244(0x54494d47, names + 0x1c0);
+    obj = __nw__FUl(0x168);
+    if (obj != NULL) {
+        __ct__10J2DPictureFPC7ResTIMG(obj, res);
+    }
+    *(void**)(this_ + 0x14) = obj;
+    res = fn_80403244(0x54494d47, names + 0x1d4);
+    obj = __nw__FUl(0x168);
+    if (obj != NULL) {
+        __ct__10J2DPictureFPC7ResTIMG(obj, res);
+    }
+    *(void**)(this_ + 0x18) = obj;
+    res = fn_80403244(0x54494d47, names + 0x1e8);
+    obj = __nw__FUl(0x168);
+    if (obj != NULL) {
+        __ct__10J2DPictureFPC7ResTIMG(obj, res);
+    }
+    *(void**)(this_ + 0x1c) = obj;
+    res = fn_804030C4(0x54494d47, names + 0x1fc);
+    obj = __nw__FUl(0x168);
+    if (obj != NULL) {
+        __ct__10J2DPictureFPC7ResTIMG(obj, res);
+    }
+    *(void**)(this_ + 0x20) = obj;
+
+    u8 zero[4] = {0, 0, 0, 0};
+    u8 col[4] = {0x08, 0x18, 0x28, 0xff};
+    u8 zeroCopy[4];
+    u8 colCopy[4];
+    *(u32*)zeroCopy = *(u32*)zero;
+    *(u32*)colCopy = *(u32*)col;
+    scr = *(void**)(this_ + 0x20);
+    ((void (*)(void*, void*, void*))(*(void***)scr)[76])(scr, colCopy, zeroCopy);
+
+    if (tbl[0x249] != 0) {
+        *(s16*)(this_ + 0x68) = 0;
+    } else {
+        *(s16*)(this_ + 0x68) = 0xff;
+    }
+    this_[0x150] = 0;
+    u8* oldHeap = sCurrentHeap__7JKRHeap;
+    u8* heap = (u8*)create__12JKRSolidHeapFUlP7JKRHeapb(0x80000, oldHeap, 0);
+    *(u8**)(this_ + 0x100) = heap;
+    becomeCurrentHeap__7JKRHeapFv(heap);
+
+    void** base = (void**)this_;
+    for (s32 i = 0; i < 6; i++) {
+        fn_8016A3BC(*(void**)(tbl + 0x24), lbl_804AF7D8[i][0], lbl_804AF7D8[i][1], 0, lbl_804AF7D8[i][2], 0, 0x10240000, heap, &base[0x41 + i], &base[0x47 + i], 0, &base[0x4d + i], 0);
+        if (base[0x47 + i] != NULL) {
+            *(f32*)((u8*)base[0x47 + i] + 0x8) = lbl_805432E0;
+        }
+        if (base[0x4d + i] != NULL) {
+            *(f32*)((u8*)base[0x4d + i] + 0x8) = lbl_805432E0;
+        }
+    }
+    adjustSize__12JKRSolidHeapFv(*(void**)(this_ + 0x100));
+    becomeCurrentHeap__7JKRHeapFv(oldHeap);
+
+    for (s32 i = 0; i < 4; i++) {
+        void* wc = __nw__FUl(0x5c);
+        if (wc != NULL) {
+            __ct__14WaveControllerFlll(wc, 0, 0, 8);
+        }
+        *(void**)(this_ + 0xa8 + i * 0x1c) = wc;
+    }
+
+    this_[0x14c] = 0;
+    *(f32*)(this_ + 0x50) = lbl_805432E0;
+    *(f32*)(this_ + 0x4c) = lbl_805432E0;
+    *(s16*)(this_ + 0x6e) = 0;
+    *(s16*)(this_ + 0x72) = 0;
+    *(s16*)(this_ + 0x7a) = 0;
+    *(s16*)(this_ + 0x7e) = 0;
+    this_[0x14d] = 0;
+    *(s16*)(this_ + 0x74) = 0;
+    *(s16*)(this_ + 0x76) = 0;
+    *(s16*)(this_ + 0x78) = 0;
+    *(u32*)(this_ + 0x58) = 0;
+    *(u32*)(this_ + 0x60) = 0;
+    *(u32*)(this_ + 0x64) = 0;
+    *(s16*)(this_ + 0x6c) = 0;
+    *(u32*)(this_ + 0x5c) = 0;
+    *(s16*)(this_ + 0x7c) = 0;
+    *(s16*)(this_ + 0x80) = 0;
+    *(s16*)(this_ + 0x82) = 0x3c;
+    *(u32*)(this_ + 0x28) = 0;
+    *(u32*)(this_ + 0x2c) = 0;
+    *(u32*)(this_ + 0x30) = 0;
+    *(u32*)(this_ + 0x34) = 0;
+    *(u32*)(this_ + 0x38) = 0;
+    *(u32*)(this_ + 0x3c) = 0;
+    *(u32*)(this_ + 0x40) = 0;
+    *(u32*)(this_ + 0x44) = 0;
+    *(u8*)(*(u8**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
+    tbl[0x250] = 0;
+    return this_;
+}
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
