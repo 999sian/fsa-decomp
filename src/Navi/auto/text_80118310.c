@@ -33,7 +33,7 @@ extern "C" void fn_8011AC74(void*, s32, s32, u16, u16);
 extern void* lbl_802FF328;
 extern void* lbl_802FF2B0;
 extern void* lbl_802FF544;
-extern "C" void fn_8011C3C8(u32);
+extern "C" BOOL fn_8011C3C8(u32);
 extern "C" u16 fn_801194E4(void* param_1, char* param_2);
 extern "C" int fn_801E6578(void* a, void* b);
 extern u32* lbl_802C5FBC[];
