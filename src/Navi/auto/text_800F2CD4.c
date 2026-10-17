@@ -31,20 +31,20 @@ typedef void (NaviState_800F3D84::*NaviStateFn_800F3D84)();
 extern NaviStateFn_800F3D84 lbl_8028C538[];
 extern "C" void fn_800F3730(u8* p) {
     s32 i;
-    u8* tbl = lbl_802C5A54;
     *(s16*)(p + 0x5c) = 0;
     *(u8*)(*(u8**)(p + 0x4c) + 0xb0) = 0;
-    fn_800F4458(p, *(s16*)(p + 0x5c), tbl[0x14], 0, 0, *(f32*)(tbl + 0x10), lbl_80301198);
+    fn_800F4458(p, *(s16*)(p + 0x5c), lbl_802C5A54[0x14], 0, 0, *(f32*)(lbl_802C5A54 + 0x10), lbl_80301198);
     for (i = 0; i < 2; i++) {
-        fn_800F4570(p, i, *(s16*)(p + 0x5c), tbl[0x1c], 0, 0, *(f32*)(tbl + 0x18), lbl_80301198);
+        fn_800F4570(p, i, *(s16*)(p + 0x5c), lbl_802C5A54[0x1c], 0, 0, *(f32*)(lbl_802C5A54 + 0x18), lbl_80301198);
     }
 }
 
 extern "C" void fn_800F37D8(u8* p) {
     p[0x58] = 0;
     fn_800F42C4();
+    u32 v;
     s32 id = fn_80181BA0(*(void**)(p + 0x24));
-    u32 v = 0x3cd;
+    v = 0x3cd;
     if (p[0x63] != 0) {
         v = 0x289;
     }
