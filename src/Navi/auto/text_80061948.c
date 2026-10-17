@@ -476,7 +476,7 @@ struct Unk8027FC14 {
     u32 c;
 };
 extern struct Unk8027FC14 lbl_8027FC14;
-extern "C" int fn_801E10A0(void* p);
+extern "C" int fn_801E10A0(void* p, void* q = 0);
 extern "C" int fn_801E1070(void* p);
 extern "C" void fn_801E10DC(void* p, void* q);
 extern "C" int fn_80064630(u8* p, u32* src, void* arg) {
@@ -1242,6 +1242,48 @@ extern "C" u8 fn_8006B030(u8* param_1) {
         *param_1 = val;
     }
     return *param_1;
+}
+
+extern u8 lbl_80247484[];
+extern f32 lbl_80300438;
+extern f32 lbl_8030043C;
+extern f32 lbl_80300440;
+extern f32 lbl_80300444;
+extern f32 lbl_80300448;
+extern f32 lbl_8030044C;
+extern f32 lbl_80300450;
+extern "C" void fn_8006B04C(u8* p) {
+    *(void**)(p + 0x0) = lbl_80247484;
+    *(f32*)(p + 0x4) = lbl_80300438;
+    *(f32*)(p + 0x8) = lbl_8030043C;
+    *(f32*)(p + 0xc) = lbl_80300440;
+    *(f32*)(p + 0x10) = lbl_80300444;
+    *(f32*)(p + 0x14) = lbl_80300444;
+    *(f32*)(p + 0x18) = lbl_80300448;
+    *(s16*)(p + 0x1c) = 0;
+    *(s16*)(p + 0x1e) = 0;
+    *(s16*)(p + 0x20) = 0;
+    *(s16*)(p + 0x3c) = 0x32;
+    *(s16*)(p + 0x3e) = 0x400;
+    *(s16*)(p + 0x40) = 0x10;
+    *(s16*)(p + 0x42) = 7;
+    *(s16*)(p + 0x44) = 0x78;
+    *(s16*)(p + 0x48) = 0x300;
+    *(u8*)(p + 0x4a) = 0;
+    *(u8*)(p + 0x4b) = 0;
+    *(u8*)(p + 0x4c) = 0;
+    *(u8*)(p + 0x4d) = 0;
+    *(s16*)(p + 0x46) = 0;
+    *(f32*)(p + 0x30) = lbl_8030044C;
+    *(s16*)(p + 0x36) = 0xb;
+    *(s16*)(p + 0x38) = 7;
+    *(s16*)(p + 0x34) = 7;
+    *(s16*)(p + 0x3a) = 8;
+    *(f32*)(p + 0x24) = lbl_80300450;
+    *(f32*)(p + 0x28) = *(s16*)(p + 0x42);
+    *(f32*)(p + 0x2c) = lbl_80300448;
+    *(u8*)(p + 0x4e) = 0;
+    *(u8*)(p + 0x4f) = 0;
 }
 
 extern "C" void fn_8006B240(void);
