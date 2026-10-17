@@ -7,6 +7,11 @@ struct VObj_800A1A64 {
     virtual void v4();
     virtual void v5();
 };
+struct VObj_800B95E4 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(f32 x, f32 y);
+};
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800b0ee8-0x800bace4 (71 functions). split_file divides it into the game's real files.
