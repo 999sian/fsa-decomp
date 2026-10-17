@@ -1236,6 +1236,25 @@ extern "C" void* fn_801B0A74(void* a, void* b, s32 sel, void* c, void* d) {
     return b;
 }
 
+extern "C" s32 fn_801B2670(void* a, u32 b) {
+    s32 r = 0;
+    if (b == 0) {
+        r = 100;
+    }
+    return r + 0x10;
+}
+
+extern u32 lbl_80301DD8;
+extern "C" void fn_801B2688(u32* out, u8* p, s32 a, s32 b) {
+    u16 idx = ((u16*)*(u8**)(p + 8))[a];
+    u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 8 + b * 2);
+    if (v == 0xffff) {
+        *out = lbl_80301DD8;
+    } else {
+        *out = ((u32*)*(u8**)(p + 0x10))[v];
+    }
+}
+
 extern void* lbl_8029B650[];
 extern void* lbl_80299F88[];
 extern "C" void* fn_801B339C(void* ptr, s16 param_2) {
