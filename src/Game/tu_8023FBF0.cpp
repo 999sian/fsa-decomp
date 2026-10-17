@@ -394,6 +394,7 @@ extern f32 lbl_80540078;
 BOOL fn_80225EF4(JGeometry::TVec3<f32>* pos, s32 room);
 f32 fn_8022C82C(s32 index);
 f32 fn_8022C76C(s32 index);
+extern "C" u32 fn_802265FC(JGeometry::TVec2<f32>*, s32);
 s32 fn_8023725C(s32);
 void fn_8023764C(s32, s32);
 s32 fn_80230E1C(s32, u8);
