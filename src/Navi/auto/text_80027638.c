@@ -642,5 +642,19 @@ extern "C" void fn_8002FA80(int a, int b, int c, int d) {
     extern int lbl_80227898[];
     fn_8002F100(lbl_80227898[*(int*)(lbl_802BB0FC + 0x420)], (a << 24) + (b << 16) + (c << 8) + d);
 }
+
+extern "C" int fn_80021994(void);
+extern "C" void fn_8002FAD4(int a) {
+    extern void* lbl_80225C94[];
+    extern int lbl_802278A8[];
+    extern float lbl_802FFD10;
+    int v = a << 24;
+    void* obj = *(void**)(lbl_802BB0FC + 0xf0);
+    if (obj != 0) {
+        int r = fn_80021994();
+        fn_8002E0AC(obj, 4, (int)lbl_80225C94[lbl_802278A8[*(int*)(lbl_802BB0FC + 0x420)]], v, r, 0, 1, lbl_802FFD10);
+    }
+}
+
 #pragma dont_inline reset
 extern "C" void fn_80030664(void) {}
