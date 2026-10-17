@@ -24,6 +24,7 @@ extern "C" s32 lbl_8049F318[];
 extern "C" void* lbl_80465B50;
 extern "C" void fn_801F0E34(Actor* this_, s32 id, s32 flag);
 extern "C" s32 lbl_8049F2B8[];
+extern "C" const f32 sincosTable___5JMath[];
 
 /* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
 static inline f32 poohRand01() {
