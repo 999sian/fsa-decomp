@@ -25,6 +25,20 @@ extern "C" void* fn_8015EF38(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern u8 lbl_80297AB0[];
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" void* fn_8015EF8C(u8* p, u32 a, u32 b, u32 c, u8 d, u8 e) {
+    *(void**)p = lbl_80297AB0;
+    fn_80166B58(p + 4, p);
+    *(u32*)(p + 0x14) = a;
+    *(u32*)(p + 0x18) = b;
+    *(u32*)(p + 0x1c) = c;
+    *(u8*)(p + 0x20) = d;
+    *(u8*)(p + 0x21) = e;
+    return p;
+}
+#pragma pop
 extern "C" void fn_8015F228(void) {
     fn_8015F400();
 }
