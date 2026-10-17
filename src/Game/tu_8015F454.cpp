@@ -10,6 +10,10 @@ extern "C" char lbl_804A03A8[];
 extern "C" char lbl_804661B0[];
 extern "C" char lbl_804661BC[];
 extern "C" void* lbl_8053AAF8;
+extern "C" void* lbl_8053AB10;
+extern "C" void fn_8013B490(void* this_);
+extern "C" void fn_8013B1E8(void* this_);
+extern "C" void load__10JUTTextureF11_GXTexMapID(u8* self, s32 id);
 struct FsaResMgr {
     virtual ~FsaResMgr() {}
     virtual void* slot2() { return 0; }
