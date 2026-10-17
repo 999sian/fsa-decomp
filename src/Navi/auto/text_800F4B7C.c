@@ -132,6 +132,14 @@ extern "C" BOOL fn_800FFBC4(void)
     return TRUE;
 }
 
+struct NaviState_800FFBCC;
+typedef void (NaviState_800FFBCC::*NaviStateFn_800FFBCC)();
+extern NaviStateFn_800FFBCC lbl_8028DD1C[];
+extern "C" void fn_800FFBCC(NaviState_800FFBCC* p) {
+    ((u8*)p)[0xf2] = 0;
+    (p->*lbl_8028DD1C[((u8*)p)[0xee]])();
+}
+
 extern "C" void fn_80102714(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
