@@ -32,6 +32,7 @@ extern u8 lbl_804A59B0[];
 extern f32 lbl_8053F89C;
 extern f32 lbl_8053F8A0;
 extern f32 lbl_8053F8A4;
+extern f32 lbl_8053F860;
 extern "C" f32 lbl_8053F870;
 extern "C" f32 lbl_8053F878;
 extern "C" f32 lbl_8053F890;
