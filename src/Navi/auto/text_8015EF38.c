@@ -29,6 +29,26 @@ extern "C" void fn_8015F228(void) {
     fn_8015F400();
 }
 
+extern "C" void fn_8015F478(u8* p) {
+    if (*(s32*)(p + 0x40) == 1) {
+        DCInvalidateRange(*(void**)(p + 0x4c), *(u32*)(p + 0x44));
+    }
+    if (*(s32*)(p + 0x60) != 0) {
+        if (*(s32*)(p + 0x60) == 2) {
+            fn_80166650(*(void**)(p + 0x64));
+        }
+    } else {
+        void (*fn)(void*) = *(void (**)(void*))(p + 0x58);
+        if (fn) {
+            fn(p);
+        } else if (*(void**)(p + 0x5c)) {
+            fn_801BDE1C(*(void**)(p + 0x5c), p, 0);
+        } else {
+            fn_801BDE1C(p + 0x68, p, 0);
+        }
+    }
+}
+
 extern "C" void fn_80166B58(void*, void*);
 extern "C" void fn_801BDDBC(void*, void*, int);
 extern "C" void fn_80159C6C(void*, int);
