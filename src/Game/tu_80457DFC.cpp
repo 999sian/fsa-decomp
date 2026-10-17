@@ -258,9 +258,12 @@ extern "C" void fn_80458090(char* this_) {
 extern "C" u32 fn_804580DC(char* this_, u8 idx) {
     Unk804580DCBank* bank = *(Unk804580DCBank**)(this_ + 0x44);
     if (bank != NULL) {
-        Unk804580DCTrack* track = NULL;
-        if (idx < bank->mF0) {
-            track = bank->mEC[idx];
+        Unk804580DCTrack* track;
+        u32 i = idx;
+        if (i >= bank->mF0) {
+            track = NULL;
+        } else {
+            track = bank->mEC[i];
         }
         if (track != NULL && track->v2(0)->m4C == 2) {
             return 1;
@@ -524,6 +527,192 @@ extern "C" void fn_80458744(void* this_, s32 mode) {
     }
     ((JAISoundParamsMove*)(*(char**)(self + 0x34) + 0x1c))->moveVolume(c, 0);
 }
+
+extern "C" void fn_80458880(u8* this_, s32 id, s8 mode) {
+    if (mode >= 4) {
+        return;
+    }
+    if (id == 0x48 && this_[0x6a] == 0) {
+        this_[0x6a] = 1;
+    }
+    if (id == 0xc) {
+        ((JAISeMgr*)*(void**)(this_ + 0x34))->stop(1);
+    }
+    if (id < 0x28) {
+        if (id < 0x12) {
+            if (id == 8) {
+                mode = -1;
+            } else if (id > 8) {
+                if (id >= 0xb) {
+                    mode = -1;
+                }
+            } else if (id < 4 && id >= 0) {
+                mode = -1;
+            }
+        } else if (id == 0x1e) {
+        } else if (id < 0x1e) {
+            if (id >= 0x1d) {
+                mode = -1;
+            }
+        } else if (id < 0x26) {
+            mode = -1;
+        }
+    } else if (id == 0x4e) {
+    } else if (id < 0x4e) {
+        if (id != 0x38 && (id > 0x38 || id != 0x2d)) {
+            mode = -1;
+        }
+    } else if (id != 0x51 && id < 0x63) {
+        mode = -1;
+    }
+
+    if (id == 0x38 || id == 0x57) {
+        if (this_[4] != 0) {
+            return;
+        }
+        if (this_[5] == 1 && *(void**)(this_ + 0x84) != NULL) {
+            if (id == ((Unk80458F04Sound*)*(void**)(this_ + 0x84))->mID) {
+                return;
+            }
+            JAISoundID sid = id;
+            ((Unk80458880Mgr*)*(void**)(this_ + 0x30))->v3(&sid, (Unk80458F04Sound**)(this_ + 0x84), 0);
+            if (*(void**)(this_ + 0x84) != NULL) {
+                ((Unk80458F04Sound*)*(void**)(this_ + 0x84))->mMove.moveVolume(*(f32*)(this_ + 0x50), 0);
+            }
+            return;
+        }
+    } else if (id < 0x38) {
+        if (id == 10) {
+            if (this_[0x6c] != 0) {
+                return;
+            }
+            this_[0x6c] = 3;
+        } else if (id == 3) {
+            if (this_[0x74] != 0) {
+                return;
+            }
+            if (this_[0x6d] != 0) {
+                return;
+            }
+            JAISoundID s0 = 3;
+            if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s0) != NULL) {
+                return;
+            }
+            JAISoundID s1 = 0x42;
+            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(s1, 0);
+            JAISoundID s2 = 0x41;
+            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(s2, 0);
+        }
+    } else if (id == 0x42) {
+        if (this_[0x74] != 0) {
+            return;
+        }
+        if (this_[0x6d] != 0) {
+            return;
+        }
+        JAISoundID s0 = 3;
+        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s0) != NULL) {
+            return;
+        }
+        JAISoundID s1 = 0x41;
+        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s1) != NULL) {
+            return;
+        }
+        JAISoundID s2 = 0x42;
+        if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s2) != NULL) {
+            return;
+        }
+    } else if (id < 0x42) {
+        if (id > 0x40) {
+            JAISoundID s0 = 3;
+            if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s0) != NULL) {
+                return;
+            }
+            JAISoundID s1 = 0x41;
+            if (((JAISoundHandles*)*(void**)(this_ + 0x14))->getHandleSoundID(s1) != NULL) {
+                return;
+            }
+            JAISoundID s2 = 0x42;
+            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(s2, 0);
+        }
+    }
+
+    if (mode < 0) {
+        if (id != 0xe && id != 0x1f && id != 0x36 && id != 0x54 && id != 0x55 && id != 0x4f &&
+            id != 0x50) {
+            JAISoundID sid = id;
+            ((JAUSoundObject*)*(void**)(this_ + 0x14))->stopSound(sid, 0);
+        }
+        JAUSoundObject* obj = *(JAUSoundObject**)(this_ + 0x14);
+        JAISoundID s0 = 0x13;
+        obj->stopSound(s0, 0);
+        JAISoundID s1 = 0x14;
+        obj->stopSound(s1, 0);
+        JAISoundID s2 = 0x15;
+        obj->stopSound(s2, 0);
+        JAISoundID s3 = 0x16;
+        obj->stopSound(s3, 0);
+        JAISoundID s4 = 0x17;
+        obj->stopSound(s4, 0);
+        JAISoundID s5 = 0x18;
+        obj->stopSound(s5, 0);
+        JAISoundID s6 = 0x19;
+        obj->stopSound(s6, 0);
+        JAISoundID s7 = 0x1a;
+        obj->stopSound(s7, 0);
+        JAISoundID s8 = 0x1b;
+        obj->stopSound(s8, 0);
+        JAISoundID s9 = 0x1c;
+        obj->stopSound(s9, 0);
+        JAISoundID sid = id;
+        void** vt = *(void***)((u8*)obj + 8);
+        ((void* (*)(void*, JAISoundID*))vt[5])(obj, &sid);
+    } else {
+        if (id != 0xe && id != 0x1f && id != 0x36 && id != 0x54 && id != 0x55 && id != 0x4f &&
+            id != 0x50) {
+            JAISoundID sid = id;
+            ((JAUSoundObject*)*(void**)(this_ + mode * 4 + 0x18))->stopSound(sid, 0);
+        }
+        JAUSoundObject* obj = *(JAUSoundObject**)(this_ + mode * 4 + 0x18);
+        JAISoundID s0 = 0x13;
+        obj->stopSound(s0, 0);
+        JAISoundID s1 = 0x14;
+        obj->stopSound(s1, 0);
+        JAISoundID s2 = 0x15;
+        obj->stopSound(s2, 0);
+        JAISoundID s3 = 0x16;
+        obj->stopSound(s3, 0);
+        JAISoundID s4 = 0x17;
+        obj->stopSound(s4, 0);
+        JAISoundID s5 = 0x18;
+        obj->stopSound(s5, 0);
+        JAISoundID s6 = 0x19;
+        obj->stopSound(s6, 0);
+        JAISoundID s7 = 0x1a;
+        obj->stopSound(s7, 0);
+        JAISoundID s8 = 0x1b;
+        obj->stopSound(s8, 0);
+        JAISoundID s9 = 0x1c;
+        obj->stopSound(s9, 0);
+        JAISoundID sid = id;
+        void** vt = *(void***)((u8*)obj + 8);
+        Unk80458F04Sound** piVar3 = (Unk80458F04Sound**)((void* (*)(void*, JAISoundID*))vt[5])(obj, &sid);
+        if (piVar3 != NULL && *piVar3 != NULL) {
+            f32 pan = lbl_80543EC4;
+            if (mode >= 0 && mode < this_[5]) {
+                if (this_[5] > 1 && this_[5] < 5) {
+                    if (mode == 0 || mode == 2) {
+                        pan = lbl_80543EC8;
+                    } else if (mode == 1 || mode == 3) {
+                        pan = lbl_80543ECC;
+                    }
+                }
+            }
+            (*piVar3)->mMove.movePan(pan, 0);
+        }
+    }
+}
+
 #pragma dont_inline reset
 
 extern "C" void fn_80458F04(Unk80458F04* self, u32 id)
