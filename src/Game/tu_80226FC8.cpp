@@ -1,4 +1,5 @@
 #include "types.h"
+#include "sdk/stl/float.h"
 
 
 extern "C" void fn_801EE434(void* p);
