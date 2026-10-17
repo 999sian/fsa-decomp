@@ -1006,10 +1006,7 @@ extern "C" void* fn_803FC904(u8* param_1, s16 param_2) {
         p = param_1;
         for (int i = 0; i < 4; i++, p += 4) {
             if (*(void**)(p + 0x78) != 0) {
-                void* o = *(void**)(p + 0x78);
-                typedef void (*Destroy)(void*, s32);
-                Destroy* vtable = *(Destroy**)((u8*)o + 8);
-                vtable[12](o, 1);
+                ((T803FC904Late*)*(void**)(p + 0x78))->v30(1);
             }
             *(void**)(p + 0x78) = 0;
         }
