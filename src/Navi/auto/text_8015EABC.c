@@ -26,6 +26,8 @@ extern "C" void fn_801BE3A0(void*);
 extern "C" void fn_801BE47C(void*);
 extern "C" int fn_8015ED10(char* p, u32 size);
 extern "C" int fn_8015ED98(char* p, u32 size);
+extern "C" int fn_8015F0BC(void* param_1, u32 size, u8 flag, char* p);
+extern "C" int fn_8015F16C(void* param_1, u32 size, u8 flag, char* p);
 extern "C" void* fn_8015EBE8(void* param_1, s16 param_2) {
     struct Obj {
         virtual void Release(int);
