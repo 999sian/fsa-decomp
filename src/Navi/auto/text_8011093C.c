@@ -16,6 +16,21 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301358;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
+struct NaviState_8011093C;
+typedef void (NaviState_8011093C::*NaviStateFn_8011093C)();
+extern NaviStateFn_8011093C lbl_8028F100[];
+extern "C" void fn_80060820(f32 a);
+extern "C" void fn_8002F308(s32 a);
+extern "C" void fn_8002F228(s32 a);
+extern "C" s32 fn_8002F2E0(s32 a);
+extern "C" s32 fn_8011171C(u8* self, s16 a, u8 b, u32 c, u32 d);
+extern f32 lbl_8030134C;
+extern u8 lbl_802C5B7C[];
+extern void* lbl_802FF278;
+extern "C" void fn_80111170(NaviState_8011093C* p) {
+    (p->*lbl_8028F100[((u8*)p)[0x118]])();
+}
+
 extern "C" void fn_80111248(u8* self) {
     if (self[0x11c] != 0) {
         self[0x11c]--;
