@@ -22,6 +22,7 @@ extern "C" int lbl_802FEE28;
 extern "C" char lbl_802BB0FC[];
 extern "C" unsigned int lbl_8022797C[];
 extern float lbl_802FFD10;
+extern "C" unsigned char lbl_8022F534[];
 struct S_801F9280 {
     int v[7];
 };
@@ -740,3 +741,19 @@ extern "C" int fn_80030638(int param_1) {
 
 #pragma dont_inline reset
 extern "C" void fn_80030664(void) {}
+
+extern "C" unsigned char* fn_800306DC(int param_1) {
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    int i;
+    if (obj == 0) {
+        return 0;
+    }
+    for (i = 0; i < 8; i++) {
+        int v = *(int*)(obj + i * 0x3c + 0x384);
+        if (v != 0 && v == param_1) {
+            return obj + i * 0x3c + 0x384;
+        }
+    }
+    return 0;
+}
+
