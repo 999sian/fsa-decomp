@@ -7,7 +7,6 @@ extern "C" void fn_801EE434(void*);
 extern "C" const f32 lbl_805409A0;
 extern "C" const f32 lbl_805409A4;
 extern "C" const f32 lbl_80540990;
-void fn_80158B5C(void* a, void* b, void* c, void* d);
 extern f32 lbl_80540994;
 extern f32 lbl_80540998;
 extern f32 lbl_8054099C;
@@ -20,6 +19,7 @@ extern "C" void fn_802B055C(char* p) {
     struct Col4 {
         u8 r, g, b, a;
     } col = {0, 0, 0, 0x80};
+    struct Col4 tmp = col;
 
     if (*(s32*)(p + 0x254) == 0) {
         if (*(f32*)(p + 0x258) > lbl_80540990) {
@@ -41,7 +41,7 @@ extern "C" void fn_802B055C(char* p) {
     vec.x = *(f32*)(p + 0xc) + lbl_8054099C;
     vec.y = *(f32*)(p + 0x10) + lbl_8054099C;
     vec.z = lbl_80540990;
-    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), &vec, &col);
+    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), &vec, &tmp);
 }
 
 extern "C" void* fn_802B0998(void* this_, s16 freeFlag) {
