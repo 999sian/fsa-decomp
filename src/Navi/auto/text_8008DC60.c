@@ -877,6 +877,11 @@ extern "C" void fn_80098354(char* param_1) {
     }
 }
 
+extern "C" void fn_80098394(char* param_1, f32 param_2, f32 param_3) {
+    VObj_80098354* obj = (VObj_80098354*)param_1;
+    obj->v16(param_2, param_3, -*(f32*)(param_1 + 0x20), -*(f32*)(param_1 + 0x24));
+}
+
 extern "C" void fn_80098918(char* param_1) {
     if (*(s32*)(lbl_802BB0FC + 0x44) == 0xc && *(u8*)(param_1 + 0x7b2) == 0) {
         char* p = lbl_802C545C;
