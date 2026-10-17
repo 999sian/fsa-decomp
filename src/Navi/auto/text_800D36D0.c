@@ -1,6 +1,18 @@
 #include "types.h"
 extern f32 lbl_80300FD8;
 extern f32 lbl_80300FE8;
+struct VObj_800BD938 {
+    virtual void d0();
+    virtual void d1();
+    virtual void v4(f32, f32);
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(s32);
+};
+extern "C" float fn_800D6DE8(char*, u8, short);
+extern float lbl_80300FDC;
 extern char lbl_802C579C[];
 extern char lbl_802B7CA0[];
 extern u32 lbl_80231428[];
