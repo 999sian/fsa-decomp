@@ -254,7 +254,7 @@ extern "C" void fn_8008A50C(JUTException* this_, OSContext* context)
     }
 }
 
-extern "C" void fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2);
+extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2);
 extern "C" JUTConsole* lbl_8053A914;
 extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
 {
