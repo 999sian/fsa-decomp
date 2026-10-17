@@ -20,16 +20,30 @@ extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" void fn_801C26D8(void);
 extern "C" u16 lbl_80469424[];
 extern "C" u16 lbl_8053EDB8;
+extern "C" u16 lbl_8053EDB0[];
+extern "C" u16 lbl_80469418[];
+extern "C" char lbl_80469430[];
+extern "C" char* lbl_8053AC20;
+extern "C" char lbl_8053AC24;
+extern "C" void fn_8021C2B4(void* p);
+extern "C" s32 fn_8021F4B0(void* p);
+extern "C" void fn_8021F914(void* p, s32 n);
+extern "C" void fn_8021F924(void* p);
+extern "C" void fn_8021F9AC(void* p, f32* v);
+extern "C" void* fn_8013C824(void);
+extern "C" s32 fn_801F7884(void* mgr, u32 name, u32 room);
+extern "C" void fn_8010F9F0(void);
+extern "C" void fn_8022ADCC(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern "C" f32 lbl_8053EDC0;
 extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, u32 a, u32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
 extern "C" void fn_801C1768(u8* this_) {
-    u16* kind = lbl_80469424;
-    void** p = (void**)this_;
-    for (s32 i = 0; i < 5; i++, p++, kind++) {
-        p[0xb0] = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, *kind, 0, 0, 0, 0, 1, lbl_8053EDC0);
+    s32 i;
+    for (i = 0; i < 5; i++) {
+        ((void**)this_)[0xb0 + i] = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80469424[i], 0, 0, 0, 0, 1, lbl_8053EDC0);
     }
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, (&lbl_8053EDB8)[i], 0, 0, 0, 0, 1, lbl_8053EDC0);
     }
     fn_801EE434(*(void**)(this_ + 0x2b0));
