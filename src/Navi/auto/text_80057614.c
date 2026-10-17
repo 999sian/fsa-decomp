@@ -117,6 +117,18 @@ extern "C" void fn_800579E0(void) {
 extern "C" void fn_800579F8(void) {
 }
 
+extern u8 lbl_802FF0F8;
+extern u32 lbl_802FF0FC;
+extern "C" BOOL OSDisableInterrupts(void);
+extern "C" void fn_80057F74(u8* p);
+extern "C" void fn_80057D38(void) {
+    u8 n = lbl_802FF0F8;
+    lbl_802FF0F8 = n + 1;
+    if (n == 0) {
+        lbl_802FF0FC = OSDisableInterrupts();
+    }
+}
+
 extern "C" void fn_80057F74(u8* p) {
     if (p == nullptr) {
         return;
