@@ -1163,6 +1163,15 @@ extern "C" void* fn_80096D8C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80096DE8(u8* p) {
+    if (fn_80096F0C(p) == 1) {
+        if (fn_800C6E38(*(void**)(p + 0x27c)) == 1) {
+            fn_800C55B8(*(void**)(p + 0x284), *(*(u8**)(p + 0x27c) + 0x8d));
+            p[0x2a5] = 3;
+        }
+    }
+}
+
 extern "C" void fn_800C719C(void* p);
 extern "C" void fn_80096E48(char* param_1) {
     fn_800C719C(*(void**)(param_1 + 0x27c));
