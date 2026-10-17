@@ -387,10 +387,6 @@ extern "C" void fn_803703C8(void*);
 extern "C" void fn_8036FDAC(void* self);
 extern "C" char lbl_8050C840[];
 extern s8 lbl_8053AD60;
-extern f32 lbl_80542DC0;
-extern f32 lbl_80542DC8;
-extern f32 lbl_80542DD0;
-extern f32 lbl_80542DD4;
 extern "C" void fn_80370C18(void* this_)
 {
 	char* p = (char*)this_;
