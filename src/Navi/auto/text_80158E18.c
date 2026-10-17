@@ -800,7 +800,7 @@ extern "C" u8* fn_8015C538(u8* p, u32 size, u8 a, u8 b, u8 c, u8 d) {
     p[3] = a;
     p[2] = b;
     if (*(u32*)(p + 4) >= size + 0x10) {
-        n = size + p;
+        n = (u8*)(size + (u32)p);
         n[0x13] = c;
         n[0x12] = d;
         *(u32*)(n + 0x14) = *(u32*)(p + 4) - (size + 0x10);
@@ -908,6 +908,30 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
         }
     }
     return p;
+}
+
+extern "C" int fn_8015CA24(char* param_1, u32 param_2, s32 param_3) {
+    int r;
+    s32 n;
+    fn_801BE3A0(param_1 + 0x18);
+    if (param_2 < 4) {
+        param_2 = 4;
+    }
+    if (param_3 < 0) {
+        n = 4;
+        if (-param_3 > 3) {
+            n = -param_3;
+        }
+        r = fn_8015CBAC(param_1, param_2, n);
+    } else {
+        n = 4;
+        if (param_3 > 3) {
+            n = param_3;
+        }
+        r = fn_8015CAD4(param_1, param_2, n);
+    }
+    fn_801BE47C(param_1 + 0x18);
+    return r;
 }
 
 extern "C" void fn_8015CD08(unsigned char* p) {
