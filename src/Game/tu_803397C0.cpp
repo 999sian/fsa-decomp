@@ -1,5 +1,4 @@
 #include "Game/Actor.h"
-#include "Game/SinitPoolChain.h"
 
 
 extern "C" char lbl_804AC100[];
@@ -95,6 +94,143 @@ extern "C" void fn_8033B9D8(u8* self) {
     }
     if (best != 0) {
         *(s32*)(self + 0x274) = *(s32*)(self + 0x244) - best;
+    }
+}
+
+extern "C" void fn_802D9C4C(void);
+extern "C" void fn_8033BAC8(u8* self) {
+    *(u32*)(self + 0x244) = *(u32*)(self + 0x90) & 0x7ff;
+    *(u32*)(self + 0x250) = (*(u32*)(self + 0x90) >> 11) & 0x1f;
+    *(u32*)(self + 0x24c) = (*(u32*)(self + 0x90) >> 16) & 0xf;
+    *(u32*)(self + 0x254) = (*(u32*)(self + 0x90) >> 20) & 0xf;
+    *(u32*)(self + 0x264) = ((*(u32*)(self + 0x90) >> 24) & 7) * 5 + 0xf;
+    *(u32*)(self + 0x108) = 0;
+    *(f32*)(self + 0x284) = 0.0f;
+    *(f32*)(self + 0x280) = 0.0f;
+    *(f32*)(self + 0x27c) = 0.0f;
+    *(f32*)(self + 0x44) = 0.0f;
+    *(f32*)(self + 0x40) = 0.0f;
+    *(f32*)(self + 0x3c) = 0.0f;
+    *(u16*)(self + 0x234) = 0;
+    *(u32*)(self + 0x260) = 0;
+    *(u32*)(self + 0x288) = 0;
+    *(u32*)(self + 0x238) = 0;
+    *(u32*)(self + 0x23c) = 5;
+    *(u16*)(self + 0x25a) = 0;
+    *(u32*)(self + 0x240) = 0x8000;
+    *(u8*)(self + 0x258) = 0;
+    *(u32*)(self + 0x114) = 1;
+    *(u32*)(self + 0x268) = 1;
+    *(u32*)(self + 0x270) = *(u32*)(self + 0x244) * 0x3c + 0x3c;
+    *(u32*)(self + 0x248) = *(u32*)(self + 0x244);
+    *(u8*)(self + 0x278) = 0;
+    *(u32*)(self + 0x26c) = 0xfff;
+    *(u32*)(self + 0x274) = 0;
+    if (*(s32*)(self + 0x250) == 0) {
+        *(u32*)(self + 0x230) = 0;
+    } else {
+        *(u32*)(self + 0x230) = 4;
+    }
+    switch (*(u32*)(self + 0x24c)) {
+    case 0:
+    case 5:
+        *(f32*)(self + 0xc) += 8.0f;
+        *(f32*)(self + 0x10) += 8.0f;
+        *(f32*)(self + 0x80) = 8.0f;
+        *(f32*)(self + 0x84) = 8.0f;
+        *(f32*)(self + 0x88) = 0.0f;
+        *(f32*)(self + 0x8c) = 0.0f;
+        *(f32*)(self + 0x60) = 8.0f;
+        *(f32*)(self + 0x64) = 8.0f;
+        *(f32*)(self + 0x68) = 0.0f;
+        *(f32*)(self + 0x6c) = 0.0f;
+        *(u16*)(self + 0x25c) = 0x1000;
+        *(u32*)(self + 0x114) = 2;
+        break;
+    case 1:
+        *(f32*)(self + 0x80) = -7.0f;
+        *(f32*)(self + 0x84) = -7.0f;
+        *(f32*)(self + 0x88) = 7.0f;
+        *(f32*)(self + 0x8c) = 7.0f;
+        *(f32*)(self + 0x60) = -7.0f;
+        *(f32*)(self + 0x64) = -7.0f;
+        *(f32*)(self + 0x68) = 7.0f;
+        *(f32*)(self + 0x6c) = 7.0f;
+        *(u16*)(self + 0x25c) = 0x1000;
+        *(u32*)(self + 0x114) = 2;
+        break;
+    case 2:
+        *(f32*)(self + 0x10) += 16.0f;
+        *(f32*)(self + 0x80) = -30.0f;
+        *(f32*)(self + 0x84) = -30.0f;
+        *(f32*)(self + 0x88) = 30.0f;
+        *(f32*)(self + 0x8c) = 30.0f;
+        *(f32*)(self + 0x60) = -30.0f;
+        *(f32*)(self + 0x64) = -30.0f;
+        *(f32*)(self + 0x68) = 30.0f;
+        *(f32*)(self + 0x6c) = 30.0f;
+        *(u16*)(self + 0x25c) = 0x800;
+        fn_802D6A9C();
+        fn_802D9C4C();
+        *(void**)(self + 0x288) = fn_802D6A9C();
+        *(u32*)(self + 0x114) = 2;
+        break;
+    case 3:
+        *(f32*)(self + 0x80) = -40.0f;
+        *(f32*)(self + 0x84) = -40.0f;
+        *(f32*)(self + 0x88) = 40.0f;
+        *(f32*)(self + 0x8c) = 40.0f;
+        *(f32*)(self + 0x60) = -40.0f;
+        *(f32*)(self + 0x64) = -40.0f;
+        *(f32*)(self + 0x68) = 40.0f;
+        *(f32*)(self + 0x6c) = 40.0f;
+        *(u16*)(self + 0x25c) = 0x400;
+        fn_802D6A9C();
+        fn_802D9C4C();
+        *(void**)(self + 0x288) = fn_802D6A9C();
+        *(u32*)(self + 0x114) = 4;
+        *(u32*)(self + 0x268) = 2;
+        break;
+    case 4:
+        *(f32*)(self + 0x80) = -7.0f;
+        *(f32*)(self + 0x84) = -7.0f;
+        *(f32*)(self + 0x88) = 7.0f;
+        *(f32*)(self + 0x8c) = 7.0f;
+        *(f32*)(self + 0x60) = -7.0f;
+        *(f32*)(self + 0x64) = -7.0f;
+        *(f32*)(self + 0x68) = 7.0f;
+        *(f32*)(self + 0x6c) = 7.0f;
+        *(u16*)(self + 0x25c) = 0x800;
+        *(u32*)(self + 0x114) = 4;
+        break;
+    case 6:
+        *(f32*)(self + 0x80) = -7.0f;
+        *(f32*)(self + 0x84) = -7.0f;
+        *(f32*)(self + 0x88) = 7.0f;
+        *(f32*)(self + 0x8c) = 7.0f;
+        *(f32*)(self + 0x60) = -14.0f;
+        *(f32*)(self + 0x64) = -14.0f;
+        *(f32*)(self + 0x68) = 14.0f;
+        *(f32*)(self + 0x6c) = 14.0f;
+        *(u16*)(self + 0x25c) = 0x800;
+        *(u32*)(self + 0x114) = 4;
+        break;
+    case 7:
+    case 8:
+    case 9:
+        *(f32*)(self + 0xc) += 8.0f;
+        *(f32*)(self + 0x10) += 8.0f;
+        *(f32*)(self + 0x80) = -7.0f;
+        *(f32*)(self + 0x84) = -7.0f;
+        *(f32*)(self + 0x88) = 7.0f;
+        *(f32*)(self + 0x8c) = 7.0f;
+        *(f32*)(self + 0x60) = -7.0f;
+        *(f32*)(self + 0x64) = -7.0f;
+        *(f32*)(self + 0x68) = 7.0f;
+        *(f32*)(self + 0x6c) = 7.0f;
+        *(u16*)(self + 0x25c) = 0x800;
+        *(u32*)(self + 0x114) = 2;
+        break;
     }
 }
 
