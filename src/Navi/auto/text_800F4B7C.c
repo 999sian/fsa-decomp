@@ -469,6 +469,16 @@ extern "C" void fn_80101A98(void* param_1) {
     }
 }
 
+extern "C" void fn_80101B38(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x528) != 0) {
+        *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
+        return;
+    }
+    *(u16*)((u8*)param_1 + 0x528) = 8;
+    *(u8*)((u8*)param_1 + 0xf2) = 2;
+    *(u8*)((u8*)param_1 + 0x189) = 0x2f;
+}
+
 extern "C" void fn_801020C0(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
