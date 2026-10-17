@@ -117,30 +117,32 @@ extern "C" void fn_80425F24(u8* this_) {
 extern "C" void* fn_80426AD4(void* this_, s16 how) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804B146C;
-        u8* p = (u8*)this_;
+        ReleaseSlot((void**)((u8*)this_ + 0x4c));
+        ReleaseSlot((void**)((u8*)this_ + 0xf0));
+        ReleaseSlot((void**)((u8*)this_ + 0x4));
 
-        ReleaseSlot((void**)(p + 0x4c));
-        ReleaseSlot((void**)(p + 0xf0));
-        ReleaseSlot((void**)(p + 0x4));
-
+        void** slot = (void**)this_;
         for (s32 i = 0; i < 4; i++) {
-            ReleaseSlot((void**)(p + 0x8 + i * 4));
-            ReleaseSlot((void**)(p + 0x2c + i * 4));
+            ReleaseSlot(slot + 2);
+            ReleaseSlot(slot + 11);
+            slot++;
         }
 
-        ReleaseSlot((void**)(p + 0x18));
+        ReleaseSlot((void**)((u8*)this_ + 0x18));
 
+        void** base = (void**)this_;
         for (s32 i = 0; i < 4; i++) {
-            ReleaseSlot((void**)(p + 0x50 + i * 4));
-            ReleaseSlot((void**)(p + 0x60 + i * 4));
-            ReleaseSlot((void**)(p + 0x70 + i * 4));
-            ReleaseSlot((void**)(p + 0x80 + i * 4));
-            ReleaseSlot((void**)(p + 0x90 + i * 4));
-            ReleaseSlot((void**)(p + 0xa0 + i * 4));
-            ReleaseSlot((void**)(p + 0xb0 + i * 4));
-            ReleaseSlot((void**)(p + 0xc0 + i * 4));
-            ReleaseSlot((void**)(p + 0xd0 + i * 4));
-            ReleaseSlot((void**)(p + 0xe0 + i * 4));
+            ReleaseSlot(base + 20);
+            ReleaseSlot(base + 24);
+            ReleaseSlot(base + 28);
+            ReleaseSlot(base + 32);
+            ReleaseSlot(base + 36);
+            ReleaseSlot(base + 40);
+            ReleaseSlot(base + 44);
+            ReleaseSlot(base + 48);
+            ReleaseSlot(base + 52);
+            ReleaseSlot(base + 56);
+            base++;
         }
 
         if (how > 0) {
