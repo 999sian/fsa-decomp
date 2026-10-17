@@ -132,6 +132,12 @@ extern u32 j3dDefaultTexCoordInfo[];
 extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b);
 extern "C" char lbl_8049AA38[];
 extern "C" char __vt__10J3DPEBlock[];
+extern "C" u32 calcSizeColorBlock__11J3DMaterialFUl(u32);
+extern "C" u32 calcSizeTexGenBlock__11J3DMaterialFUl(u32);
+extern "C" u32 calcSizeTevBlock__11J3DMaterialFi(int);
+extern "C" u32 calcSizeIndBlock__11J3DMaterialFi(int);
+extern "C" u32 calcSizePEBlock__11J3DMaterialFUlUl(u32, u32);
+extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags);
 
 #include <types.h>
 
