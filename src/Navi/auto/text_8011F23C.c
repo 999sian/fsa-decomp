@@ -1080,7 +1080,8 @@ extern "C" f32 fn_80132264(void* param_1, u8* param_2) {
 }
 
 extern "C" f32 fn_80132284(void* param_1, u8* param_2) {
-    return lbl_80301788 * *(f32*)((u8*)param_1 + 0x64) * *(f32*)(*(u8**)(*(u8**)(param_2 + 0xe4) + 0x20) + 0x148);
+    f32 v = lbl_80301788 * *(f32*)((u8*)param_1 + 0x64);
+    return v * *(f32*)(*(u8**)(*(u8**)(param_2 + 0xe4) + 0x20) + 0x148);
 }
 
 extern "C" void fn_801323DC(u32 param_1, u32 param_2, f32* param_3) {
