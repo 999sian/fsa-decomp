@@ -215,6 +215,11 @@ extern "C" void* fn_80193E60(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80193FFC(u32* p) {
+    u32* q = (u32*)p[8];
+    fn_801DF0BC(q[0], q[2]);
+}
+
 extern "C" void fn_80194028(void** p) {
     extern void* lbl_80299A64[];
     extern void* lbl_80299A78[];
@@ -326,7 +331,7 @@ extern "C" void fn_8019552C(u8* p) {
 
 extern "C" void fn_80195588(u8* p, s32 x, NaviEntry36* src, NaviEntry36* dst) {
     u16 idx = *(u16*)(p + 4);
-    dst[idx] = src[idx];
+    *(NaviEntry36*)&dst[idx] = *(NaviEntry36*)&src[idx];
     fn_801937C8(&dst[idx], x);
 }
 
