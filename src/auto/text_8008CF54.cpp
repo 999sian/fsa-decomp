@@ -27,6 +27,7 @@ extern "C" void fn_8008E364(u32);
 extern "C" u32 fn_8008E4A4(u32);
 extern "C" void fn_8008DF30(int, int);
 extern "C" void PADControlMotor(int, int);
+extern "C" BOOL PADRecalibrate(u32);
 extern "C" int OSGetResetSwitchState(void);
 extern "C" u8 lbl_8053A950;
 extern "C" u8 lbl_8053A951;
@@ -79,6 +80,7 @@ struct JUTGamePad {
 };
 
 extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
+    s32 id = param_2;
     __ct__11JKRDisposerFv(this_);
     *(u32*)this_ = (u32)lbl_80499490;
     fn_8008D910(this_ + 0x18);
@@ -87,9 +89,9 @@ extern "C" void* fn_8008CF54(u8* this_, s32 param_2) {
     fn_8008DE64((u32*)(this_ + 0x68), (int)this_);
     __ct__10JSUPtrLinkFPv(this_ + 0x80, this_);
     this_[0x98] = 0;
-    *(s16*)(this_ + 0x7c) = (s16)param_2;
+    *(s16*)(this_ + 0x7c) = (s16)id;
     if (*(s16*)(this_ + 0x7c) >= 0) {
-        lbl_8053A924[param_2]++;
+        lbl_8053A924[id]++;
         fn_8008D0D4();
     }
     append__10JSUPtrListFP10JSUPtrLink((void*)lbl_8052E8A0, this_ + 0x80);
