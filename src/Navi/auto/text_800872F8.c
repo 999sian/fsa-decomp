@@ -163,6 +163,16 @@ extern "C" s32 fn_80087A68(void* param_1) {
     return 1;
 }
 
+extern "C" int fn_80088080(void* param_1) {
+    register s8 byte = *(s8*)((u8*)param_1 + 0x1d4);
+    if (!byte) {
+        *(u8*)((u8*)param_1 + 0x1d4) = byte + 1;
+    } else if (byte != -1) {
+        fn_8001A454(3, 0, 5);
+    }
+    return 1;
+}
+
 extern "C" s32 fn_80088384(u8* param_1) {
     if (fn_80012B90() != 0) {
         VObj_80088954* p = *(VObj_80088954**)(param_1 + 0x1cc);
