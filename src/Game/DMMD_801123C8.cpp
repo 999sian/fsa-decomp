@@ -2,6 +2,7 @@
 #include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 #include "dolphin/mtx.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void fn_8010E074(u8* this_);
 extern "C" void fn_801D267C(u8* p);
@@ -301,7 +302,7 @@ extern "C" void* fn_801F666C(void* a, void* b);
 extern "C" void fn_80113358(u8* self) {
     void* p = fn_801F666C(fn_801F856C(), fn_801F7A08(fn_801F856C(), 0x444d474c));
     if (p != 0) {
-        *(Vec*)(self + 0x254) = *(Vec*)((u8*)p + 0xc);
+        JGeometry::setTVec3f((f32*)((u8*)p + 0xc), (f32*)(self + 0x254));
     }
 }
 
