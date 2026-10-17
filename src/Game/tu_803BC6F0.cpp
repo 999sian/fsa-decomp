@@ -65,6 +65,23 @@ extern "C" void fn_80402628(void* a, s16 b, u8 c, s32 d);
 extern "C" void fn_804023D0(void* a, void* b, u8 c);
 extern "C" void fn_803B9D54(void* a, void* b, u32 c, void* d, u32 e, s32 f);
 extern "C" s32 CARDGetSerialNo(s32 chan, u64* serial);
+extern "C" void fn_803CE4CC(char* p);
+extern "C" void fn_80402E08(void* a, f32 b, f32 c);
+extern "C" char* getStringPtr__10J2DTextBoxCFv(void* this_);
+extern "C" f32 lbl_80543494;
+
+struct PaneVt9 {
+    void* v0;
+    void* v1;
+    void* v2;
+    void* v3;
+    void* v4;
+    void* v5;
+    void* v6;
+    void* v7;
+    void* v8;
+    void (*v9)(void* a, s32 b);
+};
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
 extern "C" void fn_803C1054(u8* p) {
     s32 i;
@@ -227,10 +244,10 @@ extern "C" void fn_8040245C(void* a, s32 b, s32 c, u8 d, s32 e);
 extern "C" f32 lbl_805434A4;
 extern "C" f32 lbl_805434A8;
 extern "C" void fn_803C7CA0(u8* p) {
-    s32 t;
     s32 i;
-    f32 f30;
     f32 f31;
+    f32 f30;
+    s16 t;
     if (fn_80309C4C(lbl_8053AD30, 1, 1) != 0) {
         if (p[0x114] != 0) {
             p[0x114] = p[0x114] - 1;
@@ -261,27 +278,27 @@ extern "C" void fn_803C7CA0(u8* p) {
     }
     if (p[0x110] == 0x1b) {
         t = *(s16*)(p + 0xda);
-        f30 = lbl_80543458;
+        f31 = lbl_80543458;
         if (t != 0) {
             if (t < 5) {
-                f30 = lbl_805434A4 * (f32)(t * t) / lbl_805434A8;
+                f31 = lbl_805434A4 * (f32)(t * t) / lbl_805434A8;
                 *(s16*)(p + 0xda) = t + 1;
             } else if (t < 10) {
-                f30 = lbl_805434A4 * (f32)((10 - t) * (10 - t)) / lbl_805434A8;
+                f31 = lbl_805434A4 * (f32)((10 - t) * (10 - t)) / lbl_805434A8;
                 *(s16*)(p + 0xda) = t + 1;
             } else {
                 *(s16*)(p + 0xda) = 0;
             }
         }
-        f31 = lbl_80543458;
+        f30 = lbl_80543458;
         for (i = 0; i < 2; i++) {
-            if (f31 != f30 && i == p[0x114]) {
-                fn_80402E08(*(void**)(p + 0x24 + i * 4), f31, f30);
+            if (f30 != f31 && i == p[0x114]) {
+                fn_80402E08(*(void**)(p + 0x24 + i * 4), f30, f31);
             } else {
                 fn_80402E08(*(void**)(p + 0x24 + i * 4), lbl_80543458, lbl_80543458);
             }
         }
-        fn_80402E08(*(void**)(p + 0x34), *(f32*)(*(u8**)(p + 0x24 + p[0x114] * 4) + 8) - *(f32*)(*(u8**)(p + 0x24) + 8), f30);
+        fn_80402E08(*(void**)(p + 0x34), *(f32*)(*(u8**)(p + p[0x114] * 4 + 0x24) + 8) - *(f32*)(*(u8**)(p + 0x24) + 8), f31);
         fn_8040245C(*(void**)(p + 0x34), 0x3c, 0, *(u8*)(*(u8**)(p + 0x34) + 0x28), 1);
         {
             void* obj = *(void**)(p + 0x8);
