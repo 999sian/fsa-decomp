@@ -24,8 +24,8 @@ static inline f32 sqrt_guard(f32 x) {
 extern "C" f32 sqrtf(f32 x);
 extern "C" int fn_8022EA0C(int);
 extern "C" int fn_8023DE58(int);
-extern "C" u8 fn_80234950(int id = 0);
-extern "C" u8 fn_80234ECC(int id = 0);
+extern "C" u8 fn_80234950(int id);
+extern "C" u8 fn_80234ECC(int id);
 extern "C" u8* fn_802D6A9C(void);
 extern "C" f32* fn_8023E724(int);
 extern "C" void fn_8030B97C(u8*);
@@ -196,7 +196,7 @@ extern "C" void fn_8030B774(u8* p) {
             dx = (f32)(x - *(int*)(p + 0x290));
             d2 = dx * dx + dy * dy;
             if (sqrt_guard(d2) > 16.0f) {
-                if (d2 > 32.0f * FLT_EPSILON) {
+                if (!(d2 <= 32.0f * FLT_EPSILON)) {
                     f32 inv = rsqrt_guard(d2);
                     dx *= inv;
                     dy *= inv;
