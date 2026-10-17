@@ -1,6 +1,13 @@
 #include "types.h"
 #include "Game/Actor.h"
 
+typedef f32 Mtx[3][4];
+typedef struct MtxBox {
+    Mtx m;
+} MtxBox;
+extern "C" void PSMTXTrans(Mtx m, f32 xT, f32 yT, f32 zT);
+extern "C" void PSMTXConcat(const Mtx a, const Mtx b, Mtx ab);
+
 extern "C" void fn_8010DF58(void* this_);
 extern "C" void fn_8010DF78(void* this_);
 extern "C" void fn_8010F7EC(void*, s32);
