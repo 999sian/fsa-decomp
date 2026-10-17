@@ -44,6 +44,15 @@ extern const f32 lbl_8053CA90;
 extern const f32 lbl_8053CA94;
 extern void* lbl_8049E330[];
 extern void* lbl_8049E340[];
+extern u8 lbl_80464EE8[];
+extern u8 lbl_80464EFC[];
+extern void* lbl_8053AAF8;
+extern void* lbl_8053AB10;
+extern const f32 lbl_8053CA80;
+extern const f32 lbl_8053CA84;
+extern const f32 lbl_8053CA88;
+extern "C" void fn_801F02BC(void*, void*, s32, void*, s32, f32, f32, s32, s32);
+extern "C" void fn_802F86CC(void*, void*, s32, void*, f32, f32, s32);
 extern "C" void* fn_80125B58(u8* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = __vt__4OPGA;
