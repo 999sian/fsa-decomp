@@ -403,4 +403,3 @@ extern "C" void* fn_80109C74(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-extern "C" s32 fn_8002F87C(void);
