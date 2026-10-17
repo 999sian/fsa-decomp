@@ -1,8 +1,8 @@
 #include "types.h"
 extern "C" s32 fn_800F0C44(void* a, void* b, u8 c);
 extern "C" void* fn_8011FD10(void);
-extern "C" void fn_8011FD18(void* a, void* b, s32 c, void* d, void* e);
-extern "C" void fn_80007AB8(void* a, s32 b, void* c);
+extern "C" void fn_8011FD18(void* a, void* b, s32 c, void* d, void* e, ...);
+extern "C" void fn_80007AB8(void* a, s32 b, void* c, ...);
 extern "C" void* fn_80016320(void* a);
 extern "C" void fn_8002F544(s32 a);
 extern "C" void fn_80017248(u8* base, u8 idx);
