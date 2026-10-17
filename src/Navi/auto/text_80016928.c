@@ -19,6 +19,82 @@ extern "C" void fn_80019790(void);
 extern "C" void fn_8001AB40(void);
 extern "C" void fn_8001A4AC(s32, s32, s32, s32);
 extern "C" u8 fn_800126C8(void*, void*, void*);
+extern "C" void fn_801D7F2C(u8 param_1, u32 param_2, void* param_3);
+extern u8 lbl_802AE880[];
+
+
+extern "C" u32 fn_8001719C(u8* param_1)
+{
+    u8* p = param_1;
+    u32 nsum = 0;
+    u32 sum = 0;
+    s32 i;
+    u8 b;
+
+    for (i = 0x164; i != 0; i--) {
+        b = p[0];
+        sum += b;
+        nsum += ~b;
+        b = p[1];
+        sum += b;
+        nsum += ~b;
+        b = p[2];
+        sum += b;
+        nsum += ~b;
+        b = p[3];
+        sum += b;
+        nsum += ~b;
+        b = p[4];
+        sum += b;
+        nsum += ~b;
+        b = p[5];
+        sum += b;
+        nsum += ~b;
+        b = p[6];
+        sum += b;
+        nsum += ~b;
+        p += 7;
+    }
+    return ((nsum ^ *(u32*)(param_1 + 0x9c0)) | (sum ^ *(u32*)(param_1 + 0x9bc))) == 0;
+}
+
+extern "C" void fn_80017248(u8* base, u8 idx)
+{
+    u8* q = base + idx * 0x9c4 + 0x258;
+    u8* p = q;
+    u32 nsum = 0;
+    u32 sum = 0;
+    s32 i;
+    u8 b;
+
+    for (i = 0x164; i != 0; i--) {
+        b = p[0];
+        sum += b;
+        nsum += ~b;
+        b = p[1];
+        sum += b;
+        nsum += ~b;
+        b = p[2];
+        sum += b;
+        nsum += ~b;
+        b = p[3];
+        sum += b;
+        nsum += ~b;
+        b = p[4];
+        sum += b;
+        nsum += ~b;
+        b = p[5];
+        sum += b;
+        nsum += ~b;
+        b = p[6];
+        sum += b;
+        nsum += ~b;
+        p += 7;
+    }
+    *(u32*)(q + 0x9c0) = nsum;
+    *(u32*)(q + 0x9bc) = sum;
+}
+
 extern "C" void fn_80017468(void)
 {
     fn_8001A53C();
