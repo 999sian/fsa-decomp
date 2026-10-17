@@ -1,4 +1,5 @@
 #include "types.h"
+#include "dolphin/os/OSFastCast.h"
 extern "C" int fn_8015CAD4(void* p, u32 r4, s32 r5);
 extern "C" int fn_8015CBAC(void* p, u32 r4, s32 r5);
 extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
@@ -476,7 +477,6 @@ extern "C" u32 fn_80159E0C(void* p, u32 align) {
 
 extern "C" void* fn_80159EEC(char* heap, void* ptr);
 extern "C" void* fn_8015A168(char* heap, void* ptr);
-#pragma push
 #pragma dont_inline on
 extern "C" void* fn_80159E8C(void* ptr) {
     void* ret;
@@ -1274,6 +1274,23 @@ extern "C" void* fn_8015D4A0(void* heap) {
     }
     lbl_802FF584 = (u32)p;
     return p;
+}
+
+extern "C" void fn_801BDEE4(void* p, void* out, u32 count);
+extern "C" void fn_801BDE1C(u32 a, void* b, u32 c);
+extern "C" void fn_8015D978(u8* p) {
+    u32* ev;
+    OSInitFastCast();
+    for (;;) {
+        fn_801BDEE4(p + 0x30, &ev, 1);
+        if (ev[0] != 0) {
+            ((void (*)(u32))ev[0])(ev[1]);
+            if (*(u32*)(p + 0x94) != 0) {
+                fn_801BDE1C(*(u32*)(p + 0x94), (void*)ev[2], 0);
+            }
+        }
+        ev[0] = 0;
+    }
 }
 
 extern "C" int fn_8015DA14()
