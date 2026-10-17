@@ -38,6 +38,7 @@ extern s32 lbl_8053AF80;
 extern char lbl_80477898[];
 extern void* lbl_8053ACA8;
 extern u8 lbl_80529DEC[];
+extern u8 lbl_8050DB0C[];
 u8 fn_80457F80(s32, u32*, s32);
 void OSSetSaveRegion(void*, void*);
 void OSSetBootDol(u32);
@@ -253,54 +254,64 @@ extern "C" void fn_803DD93C(void* self_)
 }
 
 extern "C" void fn_803DF2B4(u8* self) {
-    u8 a = 0;
-    u8 b = 0;
-    u8 c = 0;
+    u8* q;
+    u8 a;
+    u8 b;
+    u8 c;
     s32 i;
     s32 k;
     s32 n;
+    s32 j;
     f32 f30;
-    s16 cnt;
 
     *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
-    cnt = *(s16*)(self + 0x9c);
-    if (cnt > 0) {
-        for (i = 0; i < 2; i++) {
-            a = fn_80402B10(*(void**)(self + 0x34 + i * 4), 0x14, lbl_80543614, 0, lbl_80543604);
-            fn_80402B10(*(void**)(self + 0x44 + i * 4), 0x14, lbl_80543614, 0, lbl_80543604);
-            n = cnt - i * 3;
-            if (n > 20) {
-                n = 20;
+    a = 0;
+    b = 0;
+    c = 0;
+    q = self;
+    k = 0;
+    for (i = 0; i < 2; i++, q += 4, k += 3) {
+        if (*(s16*)(self + 0x9c) <= k) {
+            break;
+        }
+        a = fn_80402B10(*(void**)(q + 0x34), 0x14, lbl_80543614, 0, lbl_80543604);
+        fn_80402B10(*(void**)(q + 0x44), 0x14, lbl_80543614, 0, lbl_80543604);
+        n = *(s16*)(self + 0x9c) - k;
+        if (n > 20) {
+            n = 20;
+        }
+        f30 = (f32)(n * n) / lbl_80543618;
+        switch (i) {
+        case 0:
+            for (j = 0; j < 17; j++) {
+                J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[56 + j]);
+                pane->setAlpha((u8)(f30 * (f32)self[0xdb + j]));
             }
-            f30 = (f32)(n * n) / lbl_80543618;
-            if (i == 0) {
-                for (k = 0; k < 17; k++) {
-                    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[56 + k]);
-                    pane->setAlpha((u8)(f30 * (f32)self[0xdb + k]));
-                }
-                break;
+            goto done;
+        case 1:
+            for (j = 0; j < 20; j++) {
+                J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[73 + j]);
+                pane->setAlpha((u8)(f30 * (f32)self[0xec + j]));
             }
-            for (k = 0; k < 20; k++) {
-                J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[73 + k]);
-                pane->setAlpha((u8)(f30 * (f32)self[0xec + k]));
-            }
+            break;
         }
     }
-    if (cnt > 15) {
+done:
+    if (*(s16*)(self + 0x9c) > 15) {
         b = fn_80402940(*(void**)(self + 0x30), 0xf, lbl_8054361C, 0, lbl_80543604);
-        n = cnt - 15;
+        n = *(s16*)(self + 0x9c) - 15;
         if (n > 15) {
             n = 15;
         }
         f30 = (f32)(n * n) / lbl_80543624;
-        for (k = 0; k < 6; k++) {
-            J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[50 + k]);
-            pane->setAlpha((u8)(f30 * (f32)self[0xd5 + k]));
+        for (j = 0; j < 6; j++) {
+            J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search(lbl_804774C8[50 + j]);
+            pane->setAlpha((u8)(f30 * (f32)self[0xd5 + j]));
         }
     }
-    if (cnt > 20) {
+    if (*(s16*)(self + 0x9c) > 20) {
         c = fn_80402940(*(void**)(self + 0x5c), 0x19, lbl_8054362C, 0, lbl_80543604);
-        n = cnt - 20;
+        n = *(s16*)(self + 0x9c) - 20;
         if (n > 25) {
             n = 25;
         }
