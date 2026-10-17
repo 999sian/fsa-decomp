@@ -105,6 +105,9 @@ extern "C" void* fn_801942E4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801949C8(void) {
+}
+
 extern void* lbl_80299CF8[];
 extern "C" void* fn_80195EB8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
