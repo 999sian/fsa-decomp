@@ -1053,6 +1053,18 @@ extern "C" void fn_8015C83C(Unk8015AD64* p) {
     }
 }
 
+extern "C" void fn_80166FC4(void* a, void* b);
+extern "C" void fn_80166B70(void* a, u32 b);
+extern "C" void* fn_8015C89C(void* p, void* p2, u32 size, void* r6, void* r7) {
+    fn_801598A4(p);
+    *(void**)p = lbl_802977D0;
+    *(u32*)((u8*)p + 0x6c) = *(u32*)((u8*)p + 0x38);
+    *(u32*)((u8*)p + 0x70) = *(u32*)((u8*)p + 0x30);
+    *(u32*)((u8*)p + 0x74) = *(u32*)((u8*)p + 0x34);
+    *(u32*)((u8*)p + 0x78) = 0;
+    return p;
+}
+
 extern void* lbl_802977D0[];
 extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     if (p != nullptr) {
