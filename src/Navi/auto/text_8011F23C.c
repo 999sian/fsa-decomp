@@ -405,6 +405,11 @@ extern "C" void fn_80124110(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
 
+extern "C" void fn_80124E44(void* p, void** v)
+{
+	*(u32*)((u8*)*v + 0x40) = 0;
+}
+
 extern "C" s32 fn_801C5B30(void* param_1);
 extern "C" s32 fn_80125010(s32 param_1, s32* param_2) {
     u8* r31 = *(u8**)param_2;
