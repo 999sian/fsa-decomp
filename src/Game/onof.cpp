@@ -98,6 +98,8 @@ struct OnofActor : Actor {
     /* 0x244 */ s32 field_244;
     /* 0x248 */ s32 field_248;
     /* 0x24c */ s32 field_24C;
+    /* 0x250 */ u8 field_250[4];
+    /* 0x254 */ s32 field_254;
 };
 
 extern void* lbl_8053AAF8;
