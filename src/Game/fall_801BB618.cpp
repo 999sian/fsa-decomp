@@ -224,7 +224,7 @@ static inline u8 fallAlpha(char* this_) {
         break;
     default: {
         f32 t = *(f32*)(this_ + 0x14);
-        t = (t - lbl_8053EC00) * lbl_8053EC04;
+        t = lbl_8053EC04 * (t - lbl_8053EC00);
         if (t > lbl_8053EC08) {
             t = lbl_8053EC08;
         } else if (t < lbl_8053EC0C) {
@@ -375,8 +375,10 @@ extern "C" void fn_801BC9DC(char* this_) {
         }
         u32 px = ((*(u32*)(this_ + 0x90) >> 16) & 0x3f) * 8;
         u32 py = ((*(u32*)(this_ + 0x90) >> 8) & 0x3f) * 8;
-        *(f32*)(this_ + 0x2b0) = lbl_8053EC3C + ((f32)px + ox);
-        *(f32*)(this_ + 0x2b4) = lbl_8053EC3C + ((f32)py + oy);
+        f32 fx = (f32)px + ox;
+        f32 fy = (f32)py + oy;
+        *(f32*)(this_ + 0x2b0) = lbl_8053EC3C + fx;
+        *(f32*)(this_ + 0x2b4) = lbl_8053EC3C + fy;
     }
     f32 hi = lbl_8053EC68;
     f32 lo = lbl_8053EC08;
