@@ -334,7 +334,7 @@ extern "C" void fn_800863C0(void* param_1) {
     s32 byte_idx = idx / 8;
     u32 bit_pos = idx & 7;
     u8* data = *(u8**)((u8*)param_1 + 0x78);
-    u8 mask = g_bit_mask_table[bit_pos];
+    u8 mask = lbl_8053B770[bit_pos];
     u8 old_byte = data[byte_idx];
     u8 new_byte = old_byte & (mask ^ 0xff);
     data[byte_idx] = new_byte;
