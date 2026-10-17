@@ -286,7 +286,7 @@ extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx
 
 
 
-extern "C" GXColor fn_800E0DF8_old(const J3DMaterialFactory_v21* self, int idx, int no)
+extern "C" GXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	GXColor defaultColor = j3dDefaultTevKColor;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
