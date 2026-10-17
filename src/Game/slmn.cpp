@@ -249,6 +249,18 @@ extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
 extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
+static inline u8 slmnAnyPlayerNear(char* this_, f32 r) {
+    u8 found = FALSE;
+    s32 j;
+    for (j = 0; j < 4; j++) {
+        if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
+            found = TRUE;
+            break;
+        }
+    }
+    return found;
+}
+
 extern "C" void fn_80207F14(char* this_) {
     fn_80207A60(this_);
     switch (*(s32*)(this_ + 0x248)) {
@@ -257,7 +269,10 @@ extern "C" void fn_80207F14(char* this_) {
     case 3:
         break;
     case 0: {
-        u8 go; f32 r; s32 j; s32 bit; s32 i;
+        f32 r;
+        u8 go;
+        s32 j;
+        s32 i;
         go = FALSE;
         r = lbl_8053F8E4 * *(u8*)(this_ + 0x344);
         switch (*(s32*)(this_ + 0x340)) {
@@ -265,7 +280,7 @@ extern "C" void fn_80207F14(char* this_) {
             go = TRUE;
             break;
         case 1:
-            for (j = 0; j < 4; j++) {
+            for (j = go; j < 4; j++) {
                 if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
                     go = TRUE;
                     break;
@@ -273,8 +288,8 @@ extern "C" void fn_80207F14(char* this_) {
             }
             break;
         case 2:
-            for (i = 0; i < 4; i++) {
-                bit = 1 << i;
+            for (i = go; i < 4; i++) {
+                s32 bit = 1 << i;
                 if (*(u8*)(this_ + 0x345) & bit) {
                     if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
                         go = TRUE;
@@ -381,9 +396,9 @@ extern "C" void fn_80208520(char* this_, f32* out, f32* step) {
         step[0] = lbl_8053F8E4;
         step[1] = lbl_8053F8E0;
     }
+    f32 pos[3];
     f32 c[2];
     slmnCenter((Slmn*)this_, c);
-    f32 pos[3];
     slmnCenter((Slmn*)this_, pos);
     slmnPickDir(this_, pos);
     s32 d = fn_801CD354();
@@ -421,14 +436,17 @@ extern "C" void fn_80208244(char* this_, s32 state) {
         *(s32*)(this_ + 0x250) = fn_801CD664(0x79) + 0x3c;
         break;
     case 3: {
+        s32 dir;
+        u8 n;
+        Slmn* s;
         slmnCenter((Slmn*)this_, pos);
-        s32 dir = slmnPickDir(this_, pos);
-        u8 n = fn_801CD664(3) + 1;
+        dir = slmnPickDir(this_, pos);
+        n = fn_801CD664(3) + 1;
         *(u8*)(this_ + 0x34a) += n;
+        s = (Slmn*)this_;
         for (i = 0; i < 4; i++) {
-            SlmnPart* part = (SlmnPart*)(this_ + 0x2b0) + i;
-            if (!part->inactive && !part->dead) {
-                void* a = fn_801F666C(fn_801F856C(), part->id);
+            if (!s->parts[i].inactive && !s->parts[i].dead) {
+                void* a = fn_801F666C(fn_801F856C(), s->parts[i].id);
                 if (a != 0) {
                     fn_80209D20(a, dir, n);
                 }
@@ -437,11 +455,12 @@ extern "C" void fn_80208244(char* this_, s32 state) {
         break;
     }
     case 4: {
+        Slmn* s;
         fn_80208520(this_, at, step);
+        s = (Slmn*)this_;
         for (i = 0; i < 4; i++) {
-            SlmnPart* part = (SlmnPart*)(this_ + 0x2b0) + i;
-            if (!part->inactive && !part->dead) {
-                void* a = fn_801F666C(fn_801F856C(), part->id);
+            if (!s->parts[i].inactive && !s->parts[i].dead) {
+                void* a = fn_801F666C(fn_801F856C(), s->parts[i].id);
                 if (a != 0) {
                     fn_80209CF4(a, at);
                 }
