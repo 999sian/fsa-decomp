@@ -527,6 +527,17 @@ extern "C" void fn_80092FE4(char* param_1) {
     }
 }
 
+extern "C" u8 fn_8010B8D4(void* p);
+extern "C" void fn_8009336C(char* param_1)
+{
+    if (fn_8010B8D4(*(void**)(param_1 + 0x29c)) == 1) {
+        char* p = *(char**)(param_1 + 0x268);
+        p[0x3d2] = 0;
+        p[0x3ac] = p[0x3db];
+        param_1[0x7e8] = 3;
+    }
+}
+
 extern "C" void fn_800CA434(void* a, u16 b, s32 c);
 extern "C" void fn_800937C0(u8* p) {
     u8* q = *(u8**)(p + 0x280);
