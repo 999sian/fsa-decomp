@@ -84,3 +84,6 @@ extern "C" void* fn_80324570(char* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+
+
