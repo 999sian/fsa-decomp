@@ -28,6 +28,7 @@ extern "C" f32 lbl_8053F9A0;
 extern "C" f32 lbl_8053F9A4;
 extern "C" f32 lbl_8053F9A8;
 extern "C" f32 lbl_8053F988;
+extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801D22DC(u8* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801D22A0(u8* p, s32 a, s32 b);
 extern "C" void fn_801F0E34(u8* p, s32 a, s32 b);
