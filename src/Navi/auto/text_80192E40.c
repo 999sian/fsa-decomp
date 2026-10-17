@@ -125,6 +125,8 @@ extern "C" void* fn_80195EB8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80195F24(void) { return 0x534D5942; }
+
 extern "C" void fn_80195F30(void) {}
 
 extern "C" u16 fn_80195F34(u8* p) { return *(u16*)(p + 4); }
