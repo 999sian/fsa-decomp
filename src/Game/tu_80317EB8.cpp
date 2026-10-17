@@ -1,6 +1,7 @@
 #include "Game/Actor.h"
 
 struct Tu80317Rect { f32 x0, y0, x1, y1; };
+struct Tu80317Vec2 { f32 x, y; };
 struct Tu80317Vec3 { f32 x, y, z; };
 
 
@@ -19,6 +20,58 @@ extern "C" Actor* fn_80317EB8(Actor* param_1, s16 param_2)
         }
     }
     return param_1;
+}
+
+extern "C" void fn_80239914(void*, s32, s32);
+extern "C" void fn_8022FEB8(void*, s32, s32, s32, s32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" u8 fn_802300EC(void);
+extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
+extern "C" void fn_8022FF8C(s32, void*, s32, s32, s32, s32);
+extern "C" u8 fn_80388CAC(s32, s32);
+extern "C" void fn_80318B84(Actor* this_)
+{
+    u8* self = (u8*)this_;
+    Tu80317Rect rect;
+    s32 r;
+
+    rect = *(Tu80317Rect*)(self + 0x60);
+    rect.x0 += *(f32*)(self + 0xc);
+    rect.y0 += *(f32*)(self + 0x10);
+    rect.x1 += *(f32*)(self + 0xc);
+    rect.y1 += *(f32*)(self + 0x10);
+    fn_80239914(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198));
+
+    rect = *(Tu80317Rect*)(self + 0x248);
+    rect.x0 += *(f32*)(self + 0xc);
+    rect.y0 += *(f32*)(self + 0x10);
+    rect.x1 += *(f32*)(self + 0xc);
+    rect.y1 += *(f32*)(self + 0x10);
+
+    if (*(s32*)(self + 0x230) != 1) {
+        fn_8022FEB8(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        r = fn_8022FD8C(*(s32*)(self + 0x198));
+        if (r >= 0 && fn_802300EC()) {
+            Tu80317Vec3 vec = *(Tu80317Vec3*)(self + 0xc);
+            if (fn_8038C678(r, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 4), &vec, 0x10)) {
+                *(s32*)(self + 0x234) = r;
+                *(s32*)(self + 0x230) = 1;
+            }
+        }
+    } else {
+        fn_8022FF8C(*(s32*)(self + 0x234), &rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(self + 0x234), *(s32*)(self + 0x198))) {
+            *(s32*)(self + 0x234) = -1;
+            *(s32*)(self + 0x230) = 0;
+        }
+    }
+
+    *(s32*)(self + 0x260) = *(s32*)(self + 0x260) + 1;
+    if ((*(s32*)(self + 0x25c) == 0 && *(s32*)(self + 0x260) >= 0x10) ||
+        (*(s32*)(self + 0x25c) == 1 && *(s32*)(self + 0x260) >= 0x32)) {
+        *(s32*)(self + 0x260) = 0;
+        *(s32*)(self + 0x25c) ^= 1;
+    }
 }
 
 extern "C" void fn_80319870(Actor* this_)
