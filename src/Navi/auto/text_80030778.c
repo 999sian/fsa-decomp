@@ -492,7 +492,9 @@ extern "C" void fn_80037038(void* p) {
 }
 
 extern "C" void fn_800375D8(void* p) {
-    fn_800300C0(0x18, lbl_802FFD48, lbl_80244A88[*(unsigned char*)((char*)p + 0x253)], 0x2000, 0);
+    int* tbl = lbl_80244A88;
+    float f = lbl_802FFD48;
+    fn_800300C0(0x18, f, tbl[*(unsigned char*)((char*)p + 0x253)], 0x2000, 0);
 }
 
 extern "C" void fn_8003761C(void* p) {
@@ -561,5 +563,46 @@ extern "C" void fn_80037844(void* p) {
 extern "C" void fn_80037868(void* p) {
     *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
     *(unsigned int*)((char*)p + 0x2ec) = 6;
+}
+
+extern "C" void fn_80037880(void* p) {
+    *(unsigned int*)((char*)p + 0x8) = 0;
+    *(unsigned char*)((char*)p + 0xc) = 0;
+    *(unsigned char*)((char*)p + 0xd) = 0;
+    *(unsigned int*)((char*)p + 0x28) = 0;
+    *(unsigned int*)((char*)p + 0x38) = 0;
+    *(unsigned int*)((char*)p + 0x48) = 0;
+    *(unsigned int*)((char*)p + 0x58) = 0;
+    *(unsigned char*)((char*)p + 0xc1) = 0;
+    *(unsigned char*)((char*)p + 0xb8) = 0;
+    *(unsigned int*)((char*)p + 0x78) = 0;
+    *(unsigned int*)((char*)p + 0x2c) = 0;
+    *(unsigned int*)((char*)p + 0x3c) = 0;
+    *(unsigned int*)((char*)p + 0x4c) = 0;
+    *(unsigned int*)((char*)p + 0x5c) = 0;
+    *(unsigned char*)((char*)p + 0xc2) = 0;
+    *(unsigned char*)((char*)p + 0xb9) = 0;
+    *(unsigned int*)((char*)p + 0x7c) = 0;
+    *(unsigned int*)((char*)p + 0x30) = 0;
+    *(unsigned int*)((char*)p + 0x40) = 0;
+    *(unsigned int*)((char*)p + 0x50) = 0;
+    *(unsigned int*)((char*)p + 0x60) = 0;
+    *(unsigned char*)((char*)p + 0xc3) = 0;
+    *(unsigned char*)((char*)p + 0xba) = 0;
+    *(unsigned int*)((char*)p + 0x80) = 0;
+    *(unsigned int*)((char*)p + 0x34) = 0;
+    *(unsigned int*)((char*)p + 0x44) = 0;
+    *(unsigned int*)((char*)p + 0x54) = 0;
+    *(unsigned int*)((char*)p + 0x64) = 0;
+    *(unsigned char*)((char*)p + 0xc4) = 0;
+    *(unsigned char*)((char*)p + 0xbb) = 0;
+    *(unsigned int*)((char*)p + 0x84) = 0;
+    *(unsigned char*)((char*)p + 0xbe) = 0;
+    *(unsigned char*)((char*)p + 0xc0) = 0;
+    *(unsigned int*)((char*)lbl_802BB0FC + 0x12c) = 0;
+    if (*(unsigned char*)((char*)lbl_802BB0FC + 0xee) == 0) {
+        return;
+    }
+    *(unsigned short*)((char*)p + 0xb4) = lbl_802272D4[*(unsigned int*)((char*)lbl_802BB0FC + 0x70)];
 }
 
