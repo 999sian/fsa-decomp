@@ -1,4 +1,6 @@
 #include "types.h"
+extern "C" int fn_8015CAD4(void* p, u32 r4, s32 r5);
+extern "C" int fn_8015CBAC(void* p, u32 r4, s32 r5);
 extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
 extern char lbl_80297240[];
 extern char lbl_80297250[];
@@ -798,7 +800,7 @@ extern "C" u8* fn_8015C538(u8* p, u32 size, u8 a, u8 b, u8 c, u8 d) {
     p[3] = a;
     p[2] = b;
     if (*(u32*)(p + 4) >= size + 0x10) {
-        n = p + size;
+        n = size + p;
         n[0x13] = c;
         n[0x12] = d;
         *(u32*)(n + 0x14) = *(u32*)(p + 4) - (size + 0x10);
