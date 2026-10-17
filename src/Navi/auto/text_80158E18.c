@@ -98,6 +98,8 @@ struct Unk802FF544 {
 };
 extern "C" void fn_80159DB4(void);
 extern u32 lbl_802FF540;
+extern char lbl_802979A4[];
+extern u32 lbl_802FF580;
 extern "C" void* OSGetArenaLo(void);
 extern "C" void* OSGetArenaHi(void);
 extern "C" void OSSetArenaLo(void*);
