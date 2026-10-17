@@ -12,6 +12,11 @@ extern "C" u8* lbl_8053AB10;
 extern "C" void fn_801F06F0(void* a, const char* name, s32 id, void* rec, s32 p5, f32 f6, f32 f7);
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_80158B5C(void*, s32, void*, void*, f32);
+extern "C" u8* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(u8* a, s32 b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_8022461C(s32 a, s32 b);
+extern "C" s32 fn_80226850(s32 a, s32 b);
+extern "C" u8* fn_802D6A9C(void);
 
 struct Rec {
     u32 w00;
