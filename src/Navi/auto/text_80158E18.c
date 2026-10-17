@@ -422,6 +422,8 @@ extern "C" void fn_80159CE0(void* p) {
     }
 }
 
+#pragma pop
+
 extern "C" void fn_80159D30(void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
