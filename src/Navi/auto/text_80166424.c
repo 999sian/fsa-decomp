@@ -1183,7 +1183,8 @@ extern "C" void fn_801721F0(u8* p) {
 }
 
 extern "C" void* fn_801721FC(void* self) {
-    ((void (*)(void*, char*))fn_80172264)(self, lbl_80202278);
+    void fn_80172264(void* p, char* q);
+    fn_80172264(self, lbl_80202278);
     u8* p = (u8*)self;
     p[7] = (p[7] & ~0x0c) | (((u8)lbl_80301AC8[1]) << 2);
     p[7] = (p[7] & ~3) | lbl_80301AC8[0];
