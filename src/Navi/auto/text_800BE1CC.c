@@ -32,6 +32,19 @@ extern "C" s32 fn_8002F168(void* p);
 extern u8 lbl_80287F74[];
 extern u8 lbl_802313EC[];
 extern "C" u8 fn_800F0E14(void* p, u8 b);
+extern "C" void fn_800C1440(u8* p) {
+    if (*(s16*)(p + 0x21e) == 0) {
+        fn_8002F458(0x9a, 0);
+    }
+    s32 r = fn_800C3570(p, *(s16*)(p + 0x21e), lbl_802C562C[0x14], *(f32*)(lbl_802C562C + 0xc), lbl_80300D34, 0, 0);
+    *(s16*)(p + 0x21e) = *(s16*)(p + 0x21e) + 1;
+    if (r == 1) {
+        *(s16*)(p + 0x21e) = 0;
+        *(u16*)(p + 0x220) = lbl_802C562C[0x19];
+        p[0x212] = 1;
+    }
+}
+
 extern "C" void fn_800C2364(u8* p) {
     fn_8002F358(0x8e, 0);
     *(*(u8**)(p + 0x194) + 0xb0) = 1;
