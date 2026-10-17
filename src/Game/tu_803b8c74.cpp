@@ -60,8 +60,7 @@ static inline BOOL EC80NibbleBit(s32 idx, s32 n, u32 bit) {
 	if (n < 0 || n > 7) {
 		return FALSE;
 	}
-	u32 flags = lbl_8050EC80[idx].flags28;
-	return (flags & ((u32)1 << (n * 4 + bit))) != 0;
+	return (lbl_8050EC80[idx].flags28 & (1 << (n * 4 + bit))) != 0;
 }
 
 extern "C" {
