@@ -13,7 +13,7 @@ extern "C" void fn_801497B0(void);
 extern u8 lbl_802D75A8[];
 extern volatile u32 lbl_802FF410;
 extern volatile u32 lbl_802FF40C;
-extern u32* lbl_802FF41C;
+extern u32* volatile lbl_802FF41C;
 extern "C" u32 fn_801497C0(u32 id) {
     u8* entry;
     lbl_802FF410 = (id >> 6) & 0x3ff;
