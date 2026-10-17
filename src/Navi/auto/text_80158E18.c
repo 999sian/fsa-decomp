@@ -1151,6 +1151,15 @@ extern "C" int fn_8015CDF8(unsigned char* p) {
     return result;
 }
 
+extern "C" void fn_8015CF88(void* p, u32* r4, u32 r5) {
+    r4[5] = r5;
+    u32 n = fn_80159DE0(p);
+    r4[0] = *(u32*)((u8*)p + 0x38) - n;
+    u32 t = *(u32*)((u8*)p + 0x70);
+    t += *(u32*)((u8*)p + 0x74) * 3;
+    r4[1] = t;
+}
+
 extern "C" BOOL fn_8015CFE4(void* p, u32* a, u32* b) {
     BOOL r = 1;
     if (a[1] != b[1]) {
