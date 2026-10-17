@@ -1,5 +1,4 @@
 #include "Game/esd/types.h"
-#include "Game/SinitPoolChain.h"
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_801F856C(void);
