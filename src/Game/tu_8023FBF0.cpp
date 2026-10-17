@@ -143,9 +143,9 @@ inline s32 countSharing(const char* p) {
 }
 
 inline s32 countSharingH(const char* p) {
-s32 i;
-s32 c;
 s32 linked;
+s32 c;
+s32 i;
 c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
@@ -3698,6 +3698,7 @@ bool fn_8025197C(char* p, u8 all) {
     }
     return 0;
 }
+#pragma dummy_marker
 bool fn_80251AEC(char* p, s32 st) {
     if (!fn_80251BFC(p, st)) {
         return 0;
