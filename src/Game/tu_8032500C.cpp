@@ -81,6 +81,53 @@ extern "C" void fn_803261B0(u8* p) {
     *(s32*)(p + 0x230) = 3;
 }
 
+extern "C" void fn_80326208(Actor* a) {
+    s32 bits;
+    s32 i;
+    s32 sVar;
+
+    a->field_3C.x = 0.0f;
+    a->field_3C.y = 0.0f;
+    a->field_3C.z = 0.0f;
+    a->field_0C.z = 0.0f;
+    a->field_B0 = 0;
+    a->field_60 = -16.0f;
+    a->field_64 = -16.0f;
+    a->field_68 = 16.0f;
+    a->field_6C = 16.0f;
+    fn_802D79E8(fn_802D6A9C(), a->field_04, 0, 4.0f, 0.0f);
+    fn_80134DE4(lbl_8053AAF8, 1, 0);
+    if (((u8*)lbl_8053AAF8)[0x7f] == 0 || ((s32)a->field_90 & 0xf) == 4 || ((s32)a->field_90 & 0xf) == 3) {
+        bits = fn_801F2B7C(a, a->field_114, -1, 1);
+    } else {
+        bits = fn_801F2B7C(a, 0, -1, 1);
+    }
+    *(s32*)((u8*)a + 0x250) = 0;
+    *(u32*)((u8*)a + 0x238) = lbl_804AB440[*(s32*)((u8*)a + 0x250)];
+    fn_801F2B20(a, 5);
+    if (bits > 0) {
+        i = 0;
+        do {
+            if (((bits >> i) & 1) != 0) {
+                fn_80236074(i, 100, 0);
+            }
+            i++;
+        } while (i < 4);
+    }
+    fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x59, 1, 1, 0, 0, 1);
+    fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x5a, 1, 1, 0, 0, 1);
+    fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x5b, 1, 1, 0, 0, 1);
+    fn_801F0E34(a, 0x30001, 0);
+    sVar = (u16)fn_8022461C(reinterpret_cast<s32>(&a->field_0C), a->field_04);
+    if (sVar == 0x39 || sVar == 0xd || sVar == 0x3b) {
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f3, -1, 1, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f4, 0, 0, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f5, 0, 0, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f6, 0, 0, 0, 0, 1);
+        fn_801F0E34(a, 0x30022, 0);
+    }
+}
+
 void fn_8032686C(void) {
 }
 
