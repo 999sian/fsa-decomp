@@ -146,6 +146,25 @@ extern "C" void fn_80090D44(void) {}
 
 extern "C" void fn_80090D48(void) {}
 
+extern char lbl_802C545C[];
+extern f32 lbl_80300AF8;
+extern "C" void fn_800A15D8(void*, s32, s32, f32, f32, u8, f32, f32, s32, s32);
+#pragma use_lmw_stmw off
+extern "C" void fn_80090D4C(u8* p) {
+    s32 i;
+    *(s16*)(p + 0x7fa) = 0;
+    for (i = 0; i < 4; i++) {
+        fn_800A15D8(p, i, *(s16*)(p + 0x7fa), lbl_80300AF0, lbl_80300AF0, lbl_80300AF8, lbl_80300AF0, lbl_802C545C[0x4c], 0, 2);
+        p[i + 0x875] = 0xff;
+        p[i + 0x491] = 0;
+        p[i + 0x499] = 0;
+        *(s32*)(p + i * 4 + 0x348) = 0;
+        *(s32*)(p + i * 4 + 0x358) = 0;
+    }
+    p[0x874] = 0;
+    *(s32*)(p + 0x860) = 0;
+    *(s32*)(p + 0x864) = 0;
+}
 extern "C" void* fn_80091918(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80286B38;
