@@ -1516,6 +1516,8 @@ extern "C" void fn_80172D24(void* self, int a, int b) {
     ((Obj*)self)->vf7C(a, b, 0);
 }
 
+extern "C" s32 fn_80172D94(u8* p) { return *(s32*)(p + 0xac); }
+
 extern "C" u32 fn_80172DBC(void) { return 0x54564232; }
 
 extern "C" int fn_80172DC8(void) {
