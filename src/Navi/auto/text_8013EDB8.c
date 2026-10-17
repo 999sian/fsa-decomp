@@ -18,6 +18,19 @@ extern "C" s32 fn_8013F21C(s32 idx);
 extern "C" void fn_8013F400(s32 idx, s32 r);
 extern "C" void fn_801408CC(void* p);
 extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
+extern "C" void fn_8013EDB8(s32 idx) {
+    u8* b = lbl_802C6A80 + (idx << 8);
+    if (*(s32*)(b + 0x20) != 0) {
+        return;
+    }
+    if (b[5] == 0 && b[6] == 4) {
+        u8* p = *(u8**)(b + 0x14);
+        *p = b[7] & 0x3a;
+    } else {
+        *(s32*)(b + 0x20) = 1;
+    }
+}
+
 void fn_8013EE0C(void)
 {
     s32 i = 0;
@@ -37,6 +50,17 @@ void fn_8013EE0C(void)
     fn_801D1360();
     lbl_802FF388 = 0;
     OSRegisterResetFunction(lbl_80293868);
+}
+
+extern "C" s32 fn_8013EEB0(s32 idx, s32 a, s32 b) {
+    u8* p = lbl_802C6A80 + (idx << 8);
+    if (*(s32*)(p + 0x1c) == 0) {
+        p[0] = 0;
+        *(s32*)(p + 0x14) = a;
+        *(s32*)(p + 0x1c) = b;
+        return fn_801406B0(idx, 1, 3, fn_8013EDB8);
+    }
+    return 2;
 }
 
 extern "C" s32 fn_8013EF14(s32 idx, s32 param_2) {
@@ -84,6 +108,24 @@ extern "C" s32 fn_8013F008(s32 idx, s32 param_2) {
 
 extern "C" s32 fn_8013F098(void) {
     return lbl_802FF388 = 1;
+}
+
+extern "C" void fn_8013F358(s32 idx, s32 r) {
+    u8* base = lbl_802C6A80 + (idx << 8);
+    u8* p = base + 0x40;
+    if (r == 0) {
+        r = fn_8013EFA4(idx, *(s32*)(p + 0x10), (s32)fn_8013F400);
+    }
+    if (r != 0) {
+        *(s32*)(p + 0x2c) = 0;
+        *(s32*)(p + 0x28) = 0;
+        void (*cb)(s32, s32) = *(void (**)(s32, s32))(p + 0x14);
+        if (cb != 0) {
+            *(s32*)(p + 0x14) = 0;
+            cb(idx, r);
+        }
+    }
+    *(s32*)(base + 0x20) = r;
 }
 
 extern "C" void fn_8013F5A0(s32 idx, s32 param_2) {
@@ -138,13 +180,11 @@ extern "C" void fn_80140128(s32 idx) {
 
 s64 fn_80140724(s32 idx, s64 value)
 {
+    s32* p = (s32*)((u8*)lbl_802C6A80 + idx * 0x100 + 0x30);
     s64 prev;
 
-    prev = *(s64*)((u8*)lbl_802C6A80 + idx * 0x100 + 0x30);
-    *(s64*)((u8*)lbl_802C6A80 + idx * 0x100 + 0x30) = value;
+    prev = *(s64*)p;
+    p[1] = (s32)value;
+    p[0] = (s32)(value >> 32);
     return prev;
 }
-extern char lbl_80293C28[];
-extern char lbl_80293C34[];
-extern "C" void fn_80007AB8(const char*, int, const char*, ...);
-extern "C" void fn_8013F620(s32, s32);
