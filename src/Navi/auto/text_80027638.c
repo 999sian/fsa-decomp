@@ -91,6 +91,11 @@ extern "C" void fn_80027C98(void) {
     lbl_802FEDDC |= 0x4000;
 }
 
+extern "C" void fn_80027CA8(void) {
+    extern unsigned int lbl_802FEDDC;
+    lbl_802FEDDC &= 0xffffbfff;
+}
+
 extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
