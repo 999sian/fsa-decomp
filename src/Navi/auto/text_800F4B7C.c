@@ -194,6 +194,29 @@ extern "C" void fn_80104240(u8* p) {
     fn_8010428C(p);
 }
 
+extern "C" void fn_8010428C(void* self) {
+    u8* p = (u8*)self;
+    u8* q = p + ((p[0x256] ^ 1) * 4);
+    fn_8003ABDC(*(void**)(p + 0x60), *(u32*)(q + 0x24c), 0, 0, 0);
+    q = p + ((p[0x256] ^ 1) * 4);
+    fn_8003ABF0(*(void**)(p + 0x60), *(u32*)(q + 0x240), 0, *(u32*)(q + 0x238), 0, lbl_8028D6E4[p[0x257]], 1, 1);
+}
+
+extern "C" void fn_801043FC(u8* p) {
+    if (*(u32*)(p + 0x238) != 0) {
+        if (*(u32*)(p + 0x23c) == 0) {
+        } else if ((s8)p[0x45a] == 4 && p[0x259] != 0) {
+            s32 r = fn_801093D4(p, p[0x25a], ((u8*)lbl_802C5A84)[0x61], 0);
+            p[0x25a]++;
+            if (r == 1) {
+                p[0x25a] = 0;
+                p[0x259] = 0;
+                p[0x256] ^= 1;
+            }
+        }
+    }
+}
+
 extern "C" void fn_801074D4(void) {}
 
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
