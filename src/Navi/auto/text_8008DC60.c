@@ -1246,6 +1246,23 @@ extern "C" void fn_800A0294(u8* p) {
     }
 }
 
+extern "C" void fn_800A02DC(char* p) {
+    if (*(void**)(p + 0x2b8) != 0) {
+        fn_800D3274(*(u8**)(p + 0x2b8));
+        DtorVObj_800A0008* o = *(DtorVObj_800A0008**)(p + 0x2b8);
+        if (o != 0) {
+            o->Destroy(1);
+        }
+        *(void**)(p + 0x2b8) = 0;
+    }
+    if (*(s32*)(lbl_802BB0FC + 0x44) == 0xd) {
+        *(u8*)(p + 0x7e0) = 6;
+    } else {
+        *(u8*)(p + 0x7e0) = 5;
+    }
+    *(u8*)(p + 0x2bc) = 3;
+}
+
 extern "C" void* fn_800A036C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80288EDC;
