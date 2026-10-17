@@ -15,6 +15,10 @@ struct NaviSlot2C { NaviEnt14 e[2]; s16 cur; s16 next; };
 extern u8 lbl_802BC618[];
 extern u8 lbl_802BBD28[];
 extern u8 lbl_802BC548[];
+extern u8 lbl_802FBDC0;
+extern u8 lbl_802FBDC8;
+extern "C" void fn_80021240(void*, void*, void*);
+extern "C" void fn_800274C8(void*);
 
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_800254CC(void);
@@ -207,8 +211,7 @@ extern "C" int fn_80026848(u8 i) {
 
 extern "C" void fn_80026870(u8 i) {
     u8* p = lbl_802BC548 + i * 0x34;
-    p += *(s16*)(p + 0x30) * 0x18;
-    *(int*)(p + 0x14) = 0;
+    *(int*)(p + *(s16*)(p + 0x30) * 0x18 + 0x14) = 0;
 }
 
 extern "C" int fn_8002689C()
