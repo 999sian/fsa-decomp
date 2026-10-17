@@ -19,7 +19,7 @@ extern "C" void* fn_801F666C(void* m, s32 i);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_801F349C(Actor* a, u32 x, f32* p);
 extern "C" void fn_802F86CC(void*, void*, void*, s32, void*, f32, f32);
-extern "C" void fn_80307AC8(u32, u32, void*, void*, s32, u32, s32);
+extern "C" void fn_80307AC8(u32, u32, void*, s32, s32, u32, s32);
 extern "C" void PSMTXIdentity(f32 (*m)[4]);
 extern "C" double sin(double x);
 extern "C" double cos(double x);
