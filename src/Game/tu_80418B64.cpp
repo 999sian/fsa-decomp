@@ -66,6 +66,21 @@ static inline void SetPaneVisible(u8* screen, u64 name, u8 vis) {
     pane[0xb0] = vis;
 }
 
+static inline void SetPaneVisibleOfSub(u8* self, u64 name, u8 vis) {
+    SetPaneVisible(*(u8**)(self + 4), name, vis);
+}
+
+static inline u8* FindPaneOfSub(u8* self, u64 name) {
+    u8* sub = *(u8**)(self + 4);
+    return ((SearchByName)(*(void***)sub)[15])(sub, name);
+}
+
+typedef void (*PaneFloatsFn)(u8* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h);
+
+static inline void PaneSetFloats(u8* pane, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
+    ((PaneFloatsFn)(*(void***)pane)[65])(pane, a, b, c, d, e, f, g, h);
+}
+
 extern "C" s32 fn_80418B64(u8* self) {
     f32 buf[3];
     fn_8022EA0C(0);
@@ -497,6 +512,109 @@ extern "C" void fn_8041F5FC(void* this_) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(p + 0x18), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
     if (*(void**)(p + 0x50) != 0) {
         fn_8044148C();
+    }
+}
+
+extern "C" void fn_8041A868(u8* self, s32 x);
+extern "C" void fn_8041C67C(u8* self);
+extern "C" void fn_80418D08(u8* self, s32 i, s32 j);
+extern "C" void fn_8043A608(u8* x);
+extern "C" void fn_8044172C(u8* x);
+extern "C" void fn_8041FC2C(u8* self) {
+    u8* tbl;
+    u8* lbl;
+    u8* p;
+    u8* q;
+    s32 i;
+    f32 f;
+
+    tbl = (u8*)lbl_8048D320;
+    lbl = (u8*)lbl_80529DEC;
+    f = lbl_80543A00;
+
+    i = 0;
+    fn_8041E3B4(self, i);
+    *(u32*)(lbl + 0xd8) = fn_80237774(i);
+    *(u32*)(lbl + 0xe8) = fn_80236100(i);
+    *(u32*)(lbl + 0x108) = fn_802375B0(i);
+
+    p = self;
+    q = self;
+    for (; i < 4; i++, p += 4, q += 2) {
+        *(u32*)(p + 0x188) = 0x180;
+        *(u32*)(p + 0x198) = 0;
+        *(u32*)(p + 0x1a8) = 0;
+        *(u32*)(p + 0x1b8) = 0;
+        *(f32*)(p + 0xf8) = f;
+        *(f32*)(p + 0x108) = f;
+        *(f32*)(p + 0x118) = f;
+        *(f32*)(p + 0x128) = f;
+        *(f32*)(p + 0x138) = f;
+        *(f32*)(p + 0x148) = f;
+        *(f32*)(p + 0x158) = f;
+        *(f32*)(p + 0x168) = f;
+        self[0x285 + i] = i;
+        self[0x281 + i] = 0xff;
+        *(u16*)(q + 0x23c) = 0;
+        *(u32*)(p + 0x1c8) = 0;
+        *(u32*)(p + 0x1d8) = 0;
+        *(u32*)(p + 0x1e8) = 0;
+        *(u32*)(p + 0x1f8) = 0;
+        *(u16*)(q + 0x21a) = 0;
+        *(u16*)(q + 0x224) = 0;
+        *(u16*)(q + 0x22c) = 0;
+        *(u32*)(p + 0x208) = 0;
+        *(u16*)(q + 0x234) = 0;
+    }
+    *(s16*)(self + 0x222) = -1;
+
+    if (lbl_8053AAF8[0x7e] == 0) {
+        SetPaneVisible(*(u8**)(self + 4), 0x004E646174613133ULL, 1);
+        SetPaneVisible(*(u8**)(self + 4), 0x506870316E693032ULL, 0);
+        SetPaneVisible(*(u8**)(self + 4), 0x5068317069696233ULL, 1);
+        SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0x398), 0);
+        SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0x3a0), 0);
+        SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0x3a8), 0);
+        SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0x3b0), 0);
+        SetPaneVisible(*(u8**)(self + 4), 0x004E646174613136ULL, (lbl_8053AAF8[0x83] & 3) == 2);
+
+        for (i = 0; i < 4; i++) {
+            SetPaneVisible(*(u8**)(self + 0x18), *(u64*)(tbl + 0xae0 + 8 * i), 0);
+            SetPaneVisible(*(u8**)(self + 0x18), *(u64*)(tbl + 0xb20 + 8 * i), 0);
+            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xb40 + 8 * i), 0);
+            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xb60 + 8 * i), 0);
+            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xb80 + 8 * i), 0);
+            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xbc0 + 8 * i), 0);
+            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xbe0 + 8 * i), 0);
+            SetPaneVisible(*(u8**)(self + 4), *(u64*)(tbl + 0xc00 + 8 * i), 0);
+        }
+        fn_8041A868(self, 1);
+    } else {
+        fn_8041C67C(self);
+    }
+
+    if (self[0x291] != 0) {
+        for (i = 0; i < 4; i++) {
+            if (lbl_8053AAF8[0x82] & (1 << i)) {
+                fn_80418D08(self, i, 1);
+            }
+        }
+    }
+    self[0x28a] = 0xf;
+    self[0x28b] = 0xf;
+    self[0x289] = 0xf;
+    self[0x28c] = 0;
+    self[0x28d] = 0;
+    self[0x28e] = 0;
+    *(s32*)(self + 0x178) = -2;
+    *(s32*)(self + 0x17c) = -2;
+    *(s32*)(self + 0x180) = -2;
+    *(s32*)(self + 0x184) = -2;
+    if (*(s32*)(lbl + 0x118) < 8 && *(s32*)(lbl + 0x11c) < 4) {
+        fn_8043A608(lbl_8053AED0);
+    }
+    if (*(u8**)(self + 0x50) != 0) {
+        fn_8044172C(*(u8**)(self + 0x50));
     }
 }
 
