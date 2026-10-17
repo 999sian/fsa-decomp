@@ -1151,8 +1151,8 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
 }
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    u32 base = (u32)lbl_802911A0;
     u32 derived = (u32)lbl_80292C80;
+    u32 base = (u32)lbl_802911A0;
     *(u32*)param_1 = base;
     *(u32*)param_1 = derived;
     ((u32*)param_1)[1] = param_2;
@@ -1348,6 +1348,8 @@ extern "C" void fn_8013A878(void) {}
 
 extern "C" void fn_8013A87C(void) {}
 
+extern char lbl_802911A0[];
+extern char lbl_80292F24[];
 extern void* lbl_80292F5C[];
 extern "C" void* fn_8013AF0C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
