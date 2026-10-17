@@ -1,6 +1,21 @@
 #include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 
+struct FsaVObjX {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void v2(void);
+    virtual void v3(void);
+    virtual void v4(void);
+    virtual void v5(void);
+    virtual void v6(void);
+    virtual void v7(void);
+    virtual void v8(void);
+    virtual void v9(void);
+    virtual void v10(void);
+    virtual u8 v11(void* p);
+};
+
 
 extern "C" void __dt__5ActorFv(void* p, int f);
 extern void* lbl_804A5B28[];
