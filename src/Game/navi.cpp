@@ -52,6 +52,7 @@ extern const f32 lbl_8053FD64;
 extern const f32 lbl_8053FD88;
 extern const f32 lbl_8053FD58;
 extern const f32 lbl_8053FD60;
+extern const f32 lbl_8053FD5C;
 extern char* lbl_8053AB10;
 extern "C" void fn_801D01A0(void* self, f32 speed, void* dir, void* out);
 extern int __float_max[];
@@ -134,6 +135,45 @@ extern "C" void fn_8021DA20(char* p) {
     case 9:
         *(f32*)(p + 0x40) = lbl_8053FD7C;
         break;
+    }
+}
+
+extern "C" void fn_801CE0A4(void* this_);
+extern "C" void fn_8013CB44(void* obj, void* pos, s32 a, s32 b, s32 c);
+extern const f32 lbl_8053FD80;
+extern const f32 lbl_8053FD84;
+extern const f32 lbl_8053FD5C;
+extern "C" void fn_8021DB24(char* p) {
+    f32 f;
+    s32 flag;
+    fn_801CE0A4(p);
+    if (*(s32*)(p + 0x248) == 9) {
+        f = *(f32*)(p + 0x14) - lbl_8053FD80;
+        f = f * lbl_8053FD84;
+        if (f > lbl_8053FD5C) {
+            f = lbl_8053FD5C;
+        } else if (f < lbl_8053FD58) {
+            f = lbl_8053FD58;
+        }
+        *(f32*)(p + 0x2b8) = lbl_8053FD88 * f;
+    } else {
+        *(f32*)(p + 0x2b8) = lbl_8053FD88;
+    }
+    flag = 0;
+    if (*(s32*)(p + 0x248) == 9) {
+        flag = 1;
+    }
+    fn_8013CB44(*(void**)(p + 0x2d0), p + 0xc, 0, -1, flag);
+    flag = 0;
+    if (*(s32*)(p + 0x248) == 9) {
+        flag = 1;
+    }
+    fn_8013CB44(*(void**)(p + 0x2d4), p + 0xc, 0, -1, flag);
+    if (*(void**)(p + 0x2d0) != 0) {
+        *(char*)(*(char**)(p + 0x2d0) + 0xbb) = (char)(s32)*(f32*)(p + 0x2b8);
+    }
+    if (*(void**)(p + 0x2d4) != 0) {
+        *(char*)(*(char**)(p + 0x2d4) + 0xbb) = (char)(s32)*(f32*)(p + 0x2b8);
     }
 }
 
