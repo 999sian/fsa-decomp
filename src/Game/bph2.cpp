@@ -15,6 +15,8 @@ void fn_8018E964(void* thisPtr, f32 a, f32 b) { *(f32*)((char*)thisPtr + 0x0) = 
 extern void* lbl_8053AAF8;
 extern "C" void* fn_80138A30(void* game);
 extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_8018E30C(char* this_, s32 state);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 p);
 extern "C" void fn_802D8050(void* mgr, void* a, void* b, void* c);
 extern "C" bool fn_802D800C(void* mgr, void* a);
 
@@ -151,6 +153,89 @@ extern "C" s32 fn_8018DA6C(char* this_) {
         *(f32*)(this_ + 0x284) = lbl_8053E140;
     }
     return 0;
+}
+
+extern "C" void fn_8018E30C(char* this_, s32 state) {
+    f32 pos[3];
+    void* p;
+
+    pos[0] = *(f32*)(this_ + 0xc);
+    pos[1] = *(f32*)(this_ + 0x10);
+    pos[2] = *(f32*)(this_ + 0x14);
+    pos[0] = pos[0] - lbl_8053E190;
+    if (*(s32*)(this_ + 0x26c) != 1 && state >= 0 && *(s32*)(this_ + 0x268) != state) {
+        *(s32*)(this_ + 0x268) = state;
+        *(u8*)(this_ + 0x27a) = 0;
+        *(s32*)(this_ + 0x234) = 0;
+        *(s32*)(this_ + 0x264) = 0;
+        switch (*(s32*)(this_ + 0x268)) {
+        case 0:
+            *(s32*)(this_ + 0x270) = 0;
+            break;
+        case 1:
+        case 10:
+            fn_801F0E34(this_, 0x4004C, 0);
+            *(s32*)(this_ + 0x270) = 6;
+            break;
+        case 2:
+            p = *(void**)(this_ + 0x328);
+            if (p != 0) {
+                *(u32*)((char*)p + 0xf4) |= 1;
+                *(s32*)((char*)p + 0x24) = 1;
+            }
+            p = *(void**)(this_ + 0x32c);
+            if (p != 0) {
+                *(u32*)((char*)p + 0xf4) |= 1;
+                *(s32*)((char*)p + 0x24) = 1;
+            }
+            pos[1] = pos[1] + lbl_8053E1C4;
+            *(void**)(this_ + 0x328) = fn_8013CC50(*(s32*)(this_ + 0x4), pos, lbl_8053E0D0, 0x54, 1, 2, 0, 0, 1);
+            *(void**)(this_ + 0x32c) = fn_8013CC50(*(s32*)(this_ + 0x4), pos, lbl_8053E0D0, 0x55, 1, 2, 0, 0, 1);
+            *(s32*)(this_ + 0x270) = 0xe;
+            break;
+        case 3:
+        case 5:
+        case 11:
+            *(s32*)(this_ + 0x270) = 0x12;
+            break;
+        case 4:
+        case 6:
+            p = *(void**)(this_ + 0x328);
+            if (p != 0) {
+                *(u32*)((char*)p + 0xf4) |= 1;
+                *(s32*)((char*)p + 0x24) = 1;
+            }
+            p = *(void**)(this_ + 0x32c);
+            if (p != 0) {
+                *(u32*)((char*)p + 0xf4) |= 1;
+                *(s32*)((char*)p + 0x24) = 1;
+            }
+            pos[1] = pos[1] + lbl_8053E128;
+            if (*(s32*)(this_ + 0x268) == 4) {
+                *(void**)(this_ + 0x328) = fn_8013CC50(*(s32*)(this_ + 0x4), pos, lbl_8053E0D0, 0x52, 1, 2, 0, 0, 1);
+                *(void**)(this_ + 0x32c) = 0;
+            } else {
+                *(void**)(this_ + 0x328) = fn_8013CC50(*(s32*)(this_ + 0x4), pos, lbl_8053E0D0, 0x50, 1, 2, 0, 0, 1);
+                *(void**)(this_ + 0x32c) = fn_8013CC50(*(s32*)(this_ + 0x4), pos, lbl_8053E0D0, 0x51, 1, 2, 0, 0, 1);
+            }
+            *(s32*)(this_ + 0x270) = 0x1a;
+            break;
+        case 7:
+        case 9:
+            *(s32*)(this_ + 0x270) = 0x1e;
+            break;
+        case 8:
+            *(s32*)(this_ + 0x270) = 0x34;
+            break;
+        case 12:
+            *(s32*)(this_ + 0x270) = 0x3b;
+            break;
+        case 13:
+            *(s32*)(this_ + 0x270) = 0x47;
+            break;
+        }
+        *(s32*)(this_ + 0x234) = lbl_804A1B70[*(s32*)(this_ + 0x270) + *(s32*)(this_ + 0x264)];
+    }
 }
 
 extern "C" void fn_8018E5E4(char* this_) {
