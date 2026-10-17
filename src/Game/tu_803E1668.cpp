@@ -254,6 +254,7 @@ extern "C" void fn_803ED5B4(u8* param_1) {
 }
 
 extern "C" void fn_803ED604(u8* p) {
+    s32 n;
     if (*(s16*)(p + 0x254) != 0) {
         *(s16*)(p + 0x254) += 1;
         if (*(s16*)(p + 0x254) > 10) {
@@ -264,7 +265,8 @@ extern "C" void fn_803ED604(u8* p) {
     if (*(s32*)(p + 0x220) >= 0x1e) {
         *(s32*)(p + 0x220) = 0;
     }
-    if (*(s32*)(p + 0x1bc) > 0 && *(s32*)(p + 0x1d0) != *(s32*)(p + 0x1bc) + 1) {
+    n = *(s32*)(p + 0x1bc);
+    if (*(s32*)(p + 0x1d0) != n + 1 && n > 0) {
         p[0x26c] = 0xff;
         (((T803ED83C*)p)->*lbl_804B0754[5])();
     } else {
