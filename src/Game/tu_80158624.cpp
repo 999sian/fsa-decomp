@@ -58,12 +58,6 @@ extern "C" void fn_80158B3C(char* p) {
     *(u8*)(p + 0xc) = 0xff;
 }
 
-static inline void GXColor4u8(u8 r, u8 g, u8 b, u8 a) {
-    *(volatile u8*)0xCC008000 = r;
-    *(volatile u8*)0xCC008000 = g;
-    *(volatile u8*)0xCC008000 = b;
-    *(volatile u8*)0xCC008000 = a;
-}
 
 extern "C" char* lbl_8053AB10;
 extern "C" void fn_8013B438(char* p);
