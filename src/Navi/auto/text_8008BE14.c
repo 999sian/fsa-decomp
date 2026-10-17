@@ -17,9 +17,9 @@ extern "C" void fn_8000EBB8(void* a);
 extern s16 lbl_802FF04C[3];
 extern char lbl_802B7CA0[];
 extern char lbl_80284B68[];
-extern char lbl_802FCEF8[];
-extern char lbl_802FCF00[];
-extern char lbl_802FCF04[];
+extern char lbl_802FCEF8[8];
+extern char lbl_802FCF00[4];
+extern char lbl_802FCF04[8];
 extern "C" void* fn_800638A4(const char* name, s32 a, void* b, s32 c);
 extern "C" void* fn_80011CF4(void* res, s32 a, u32 flags);
 extern "C" void* fn_8011FD10(void);
@@ -129,6 +129,21 @@ extern "C" BOOL fn_8008C4D4(void)
 extern "C" s32 fn_8008C5F4(u8* self);
 extern "C" void fn_8008C4DC(u8* self) {
     fn_8008C5F4(self);
+}
+
+extern "C" s32 fn_8008C5F4(u8* self) {
+    char* str = lbl_80284B68;
+    void* res = fn_800638A4(lbl_802FCEF8, 10, lbl_802B7CA0 + 0x2200, 0x40);
+    if (res == NULL) {
+        fn_8011FD18(fn_8011FD10(), str + 0x18, 0x15b, lbl_802FCF00, str + 0x28);
+        fn_80007AB8(str + 0x18, 0x15b, lbl_802FCF04);
+    }
+    *(void**)(self + 0x24c) = fn_80011CF4(res, 0, 0x11000022);
+    if (*(void**)(self + 0x24c) == NULL) {
+        fn_8011FD18(fn_8011FD10(), str + 0x18, 0x161, lbl_802FCF00, str + 0x38);
+        fn_80007AB8(str + 0x18, 0x161, lbl_802FCF04);
+    }
+    return 1;
 }
 
 extern "C" s32 fn_8008CB14(u8* self) {
