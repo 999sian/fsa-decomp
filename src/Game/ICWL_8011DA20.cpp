@@ -49,7 +49,7 @@ extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* 
 extern "C" void* fn_8020D58C(void);
 extern "C" void fn_8020D7D0(void* entry, u32 handle);
 extern "C" s32 fn_801CD950(void* value, f32 target, f32 step);
-extern "C" s32 fn_8013CC50(u32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+extern "C" s32 fn_8013CC50(u32 room, f32 scale, void* pos, u32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801D1C18(void* p);
 extern "C" void fn_8011E4FC(u8* this_) {
     v01__5ActorFv(this_);
