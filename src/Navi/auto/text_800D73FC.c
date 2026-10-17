@@ -232,6 +232,14 @@ extern "C" void fn_800EAFA8(void* p) {
     *(u8*)((u8*)p + 0xa76) = 0;
 }
 
+extern "C" s32 fn_8002F168(u8* p);
+extern "C" void fn_800EAFCC(u8* p) {
+    if (fn_8002F168(p) != 1) {
+        *(u16*)(p + 0xa9c) = (u8)lbl_802C57D4[0x95];
+        p[0xa76] = 0x49;
+    }
+}
+
 extern "C" void fn_800EBD88(char* p) {
     p[0xb11] = 2;
     p[0xb14] = 10;
