@@ -22,8 +22,11 @@ static inline void writeChanCtrl(u16 x) {
     *(u32*)attnTbl = lbl_8053BCC8;
     u8 attn = attnTbl[(x >> 9) & 3];
     u32 diffuse = (x >> 7) & 3;
+    if (attn == GX_AF_SPEC) {
+        diffuse = GX_DF_NONE;
+    }
     u32 lightMask = ((x >> 2) & 0x0F) | ((x >> 11) & 0x0F) << 4;
-    __GDWriteU32((x & 3) | (x >> 6 & 1) << 6 | (lightMask & 0x0F) << 2 | ((attn == GX_AF_SPEC) ? GX_DF_NONE : diffuse) << 7 | (attn != GX_AF_NONE) << 9 |
+    __GDWriteU32((x & 3) | (x >> 6 & 1) << 6 | (lightMask & 0x0F) << 2 | diffuse << 7 | (attn != GX_AF_NONE) << 9 |
                  (attn != GX_AF_SPEC) << 10 | (lightMask >> 4) << 11);
 }
 struct Hdr_800DDA5C { u16 w; u8 b2; u8 b3; };
@@ -672,6 +675,160 @@ extern "C" int fn_800D3E88(void) { return 0x1e; }
 
 extern "C" int fn_800D3E90(void) { return 0x55; }
 
+extern "C" u32 lbl_8053A9F8;
+extern "C" void fn_800D3E98(void* param) {
+    GDOverflowCheck(lbl_8053A9F8);
+    *(s32*)((char*)param + 0x18) = GDGetCurrOffset();
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0c);
+
+    u32 val1 = *(u32*)((char*)param + 4);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+
+    u32 val2 = *(u32*)((char*)param + 8);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+
+    *(s32*)((char*)param + 0x1c) = GDGetCurrOffset();
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x03);
+    __GDWrite(0x10);
+    __GDWrite(0x0e);
+
+    writeChanCtrl(*(u16*)((char*)param + 0xe));
+    writeChanCtrl(*(u16*)((char*)param + 0x12));
+    writeChanCtrl(*(u16*)((char*)param + 0x10));
+    writeChanCtrl(*(u16*)((char*)param + 0x14));
+}
+
+extern "C" u32 lbl_8053A9FC;
+extern "C" void fn_800D43F0(void* param) {
+    GDOverflowCheck(lbl_8053A9FC);
+    *(s32*)((char*)param + 0x18) = GDGetCurrOffset();
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0c);
+
+    u32 val1 = *(u32*)((char*)param + 4);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+
+    u32 val2 = *(u32*)((char*)param + 8);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0a);
+
+    u32 val3 = *(u32*)((char*)param + 0x20);
+    __GDWrite((u8)(val3 >> 24));
+    __GDWrite((u8)(val3 >> 16));
+    __GDWrite((u8)(val3 >> 8));
+    __GDWrite((u8)val3);
+
+    u32 val4 = *(u32*)((char*)param + 0x24);
+    __GDWrite((u8)(val4 >> 24));
+    __GDWrite((u8)(val4 >> 16));
+    __GDWrite((u8)(val4 >> 8));
+    __GDWrite((u8)val4);
+
+    *(s32*)((char*)param + 0x1c) = GDGetCurrOffset();
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x03);
+    __GDWrite(0x10);
+    __GDWrite(0x0e);
+
+    writeChanCtrl(*(u16*)((char*)param + 0xe));
+    writeChanCtrl(*(u16*)((char*)param + 0x12));
+    writeChanCtrl(*(u16*)((char*)param + 0x10));
+    writeChanCtrl(*(u16*)((char*)param + 0x14));
+}
+
+extern "C" void fn_800D4A70(u8* p) {
+    GDOverflowCheck(lbl_8053A9FC);
+    *(s32*)(p + 0x44) = GDGetCurrOffset();
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0c);
+
+    u32 val1 = *(u32*)(p + 4);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+
+    u32 val2 = *(u32*)(p + 8);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0a);
+
+    u32 val3 = *(u32*)(p + 0xc);
+    __GDWrite((u8)(val3 >> 24));
+    __GDWrite((u8)(val3 >> 16));
+    __GDWrite((u8)(val3 >> 8));
+    __GDWrite((u8)val3);
+
+    u32 val4 = *(u32*)(p + 0x10);
+    __GDWrite((u8)(val4 >> 24));
+    __GDWrite((u8)(val4 >> 16));
+    __GDWrite((u8)(val4 >> 8));
+    __GDWrite((u8)val4);
+
+    *(s32*)(p + 0x48) = GDGetCurrOffset();
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x03);
+    __GDWrite(0x10);
+    __GDWrite(0x0e);
+
+    writeChanCtrl(*(u16*)(p + 0x16));
+    writeChanCtrl(*(u16*)(p + 0x1a));
+    writeChanCtrl(*(u16*)(p + 0x18));
+    writeChanCtrl(*(u16*)(p + 0x1c));
+
+    for (int i = 0; i < 8; i++) {
+        J3DLightObj* light = *(J3DLightObj**)(p + 0x20);
+        if (light != NULL) {
+            light->load(i);
+        }
+        p += 4;
+    }
+}
+
 extern "C" void fn_800D5120(Vtable800D8248* obj)
 {
   obj->m3();
@@ -992,6 +1149,146 @@ extern "C" void fn_800D6DE0(u8* p) {
     v = *(u32*)(p + 0x18) | 0x10000000;
     __GDWrite(0x61);
     __GDWriteU32(v);
+}
+
+extern "C" void fn_800D7020(u8* p) {
+    u8 count = p[0x34];
+    s32 off;
+    u8* addr;
+    u32 i;
+    *(u32*)(p + 4) = GDGetCurrOffset();
+    for (i = 0, addr = p; i < 2; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+        }
+        addr += 2;
+    }
+    J3DGDSetTevOrder((GXTevStageID)0, (GXTexCoordID)p[0xc], (GXTexMapID)p[0xd], (GXChannelID)p[0xe], (GXTexCoordID)p[0x10], (GXTexMapID)p[0x11], (GXChannelID)p[0x12]);
+    u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0xd] & 7) * 8);
+    J3DGDSetTexCoordScale2((GXTexCoordID)p[0xc], s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+    s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[0x11] & 7) * 8);
+    J3DGDSetTexCoordScale2((GXTexCoordID)(p[0x10] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+    *(u32*)(p + 0x68) = GDGetCurrOffset();
+    for (i = 0, addr = p; i < 3; i++) {
+        GXColorS10 c = *(GXColorS10*)(addr + 0x14);
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), c);
+        addr += 8;
+    }
+    for (i = 0, addr = p; i < 4; i++) {
+        GXColor c = *(GXColor*)(addr + 0x45);
+        J3DGDSetTevKColor((GXTevKColorID)i, c);
+        addr += 4;
+    }
+    u8* a = p;
+    u8* b = p;
+    for (i = 0; i < count; i++) {
+        u32 tag = (i + 0x10) << 24;
+        u32 v = *(u32*)(a + 0x35);
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+        v = *(u32*)(a + 0x39);
+        a += 8;
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+        v = *(u32*)(b + 0x60) | tag;
+        b += 4;
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+    }
+    off = 0;
+    for (i = 0; i < 4; i++) {
+        u32 sw = p[0x59 + i] * 4;
+        u8 p58 = p[0x58];
+        u8 p56 = p[0x56];
+        u8 t1 = j3dTevSwapTableTable[sw + 1];
+        u8 t0 = j3dTevSwapTableTable[sw];
+        u8 p57 = p[0x57];
+        u8 p55 = p[0x55];
+        u32 w = (p55 << 4) | t0 | (t1 << 2);
+        w = w | (p57 << 9) | (p56 << 14);
+        __GDWrite(0x61);
+        __GDWriteU32(((off / 2 + 0xf6) << 24) | (p58 << 19) | w);
+        sw = p[0x59 + i] * 4;
+        u8 t3 = j3dTevSwapTableTable[sw + 3];
+        u8 q58 = p[0x58];
+        u8 q56 = p[0x56];
+        u8 q57 = p[0x57];
+        u8 t2 = j3dTevSwapTableTable[sw + 2];
+        u8 q55 = p[0x55];
+        w = (q55 << 4) | t2 | (t3 << 2) | (q57 << 9) | (q56 << 14) | (q58 << 19);
+        __GDWrite(0x61);
+        __GDWriteU32((((off + 2) / 2 + 0xf6) << 24) | w);
+        off += 4;
+    }
+}
+
+extern "C" void fn_800D7A4C(u8* p) {
+    u8* addr = p;
+    u32 i = 0;
+    u32 j;
+    u8 count = p[0x58];
+    u8* tev;
+    *(u32*)(p + 4) = GDGetCurrOffset();
+    for (; i < 8; i++) {
+        if (*(u16*)(addr + 8) != 0xffff) {
+            loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
+        }
+        addr += 2;
+    }
+    tev = p;
+    for (j = 0; j < count; j += 2) {
+        u8* next = p + (j + 1) * 4;
+        J3DGDSetTevOrder((GXTevStageID)j, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
+        u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2((GXTexCoordID)(tev[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (next[0x19] & 7) * 8);
+        J3DGDSetTexCoordScale2((GXTexCoordID)(next[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+        tev += 8;
+    }
+    *(u32*)(p + 0x170) = GDGetCurrOffset();
+    addr = p;
+    for (i = 0; i < 3; i++) {
+        GXColorS10 c = *(GXColorS10*)(addr + 0xda);
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), c);
+        addr += 8;
+    }
+    addr = p;
+    for (i = 0; i < 4; i++) {
+        GXColor c = *(GXColor*)(addr + 0xfa);
+        J3DGDSetTevKColor((GXTevKColorID)i, c);
+        addr += 4;
+    }
+    u8* a = p;
+    u8* b = p;
+    for (i = 0; i < count; i++) {
+        u32 tag = (i + 0x10) << 24;
+        u32 v = *(u32*)(a + 0x59);
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+        v = *(u32*)(a + 0x5d);
+        a += 8;
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+        v = *(u32*)(b + 0x130) | tag;
+        b += 4;
+        __GDWrite(0x61);
+        __GDWriteU32(v);
+    }
+    for (i = 0; i < 4; i++) {
+        s32 off = i * 4;
+        u8* s = p + off;
+        u32 sw = p[0x12a + i] * 4;
+        u8 t0 = j3dTevSwapTableTable[sw];
+        u8 t1 = j3dTevSwapTableTable[sw + 1];
+        u32 w = (s[0x10a] << 4) | t0 | (t1 << 2) | (s[0x11a] << 9) | (s[0x10b] << 14) | (s[0x11b] << 19);
+        __GDWrite(0x61);
+        __GDWriteU32((((off / 2) + 0xf6) << 24) | w);
+        u8 t2 = j3dTevSwapTableTable[sw + 2];
+        u8 t3 = j3dTevSwapTableTable[sw + 3];
+        w = (s[0x10c] << 4) | t2 | (t3 << 2) | (s[0x11c] << 9) | (s[0x10d] << 14) | (s[0x11d] << 19);
+        __GDWrite(0x61);
+        __GDWriteU32((((off + 2) / 2 + 0xf6) << 24) | w);
+    }
 }
 
 extern "C" void fn_800D7F78(void* p) {
@@ -1742,6 +2039,30 @@ extern "C" void fn_800DA280(u8* this_, u32 flags) {
     }
 }
 
+extern "C" void fn_800DABCC(u8* p) {
+    GDOverflowCheck(0x1e);
+    u16 alphaID = *(u16*)(p + 4);
+    u32 comp0 = j3dAlphaCmpTable[alphaID * 3];
+    u32 op = j3dAlphaCmpTable[alphaID * 3 + 1];
+    u32 comp1 = j3dAlphaCmpTable[alphaID * 3 + 2];
+    u32 alpha = p[7] << 8 | p[6] | comp0 << 16 | comp1 << 19 | op << 22;
+    u8 p8 = p[8];
+    __GDWrite(0x61);
+    __GDWriteU32(0xF3000000 | alpha);
+    __GDWrite(0x61);
+    __GDWriteU32(0xFE00FFE7);
+    __GDWrite(0x61);
+    __GDWriteU32(0x41000000 | p[11] << 12 | p[10] << 5 | p[9] << 8 | p[15] << 2 | (p8 == 2) << 1 | (p8 == 1 || p8 == 3) | (p8 == 3) << 11);
+    u16 zID = *(u16*)(p + 0xc);
+    u32 zMode = j3dZModeTable[zID * 3] | j3dZModeTable[zID * 3 + 1] << 1 | j3dZModeTable[zID * 3 + 2] << 4;
+    __GDWrite(0x61);
+    __GDWriteU32(0x40000000 | zMode);
+    __GDWrite(0x61);
+    __GDWriteU32(0xFE000040);
+    __GDWrite(0x61);
+    __GDWriteU32(0x43000000 | p[14] << 6);
+}
+
 extern u8 j3dZModeTable[96];
 extern "C" void fn_800DB068(u8* p) {
     s32 a;
@@ -1774,6 +2095,33 @@ extern "C" void fn_800DB068(u8* p) {
     idx = *(u16*)(p + 0xc) * 3;
     v = 0x40000000 | (j3dZModeTable[idx + 2] << 4) | (j3dZModeTable[idx + 1] << 1) | j3dZModeTable[idx];
     __GDWriteU32(v);
+}
+
+extern "C" void fn_800DB360(u8* p) {
+    *(u32*)(p + 0x3c) = GDGetCurrOffset();
+    GDOverflowCheck(0x55);
+    J3DGDSetFog((GXFogType)p[4], *(f32*)(p + 8), *(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14), *(GXColor*)(p + 0x18));
+    J3DGDSetFogRangeAdj(p[5], *(u16*)(p + 6), (GXFogAdjTable*)(p + 0x1c));
+    u16 alphaID = *(u16*)(p + 0x30);
+    u32 comp0 = j3dAlphaCmpTable[alphaID * 3];
+    u32 op = j3dAlphaCmpTable[alphaID * 3 + 1];
+    u32 comp1 = j3dAlphaCmpTable[alphaID * 3 + 2];
+    u32 alpha = p[0x33] << 8 | p[0x32] | comp0 << 16 | comp1 << 19 | op << 22;
+    __GDWrite(0x61);
+    __GDWriteU32(0xF3000000 | alpha);
+    __GDWrite(0x61);
+    __GDWriteU32(0xFE00FFE7);
+    __GDWrite(0x61);
+    u8 p8 = p[0x34];
+    __GDWriteU32(0x41000000 | p[0x37] << 12 | p[0x36] << 5 | p[0x35] << 8 | p[0x3b] << 2 | (p8 == 2) << 1 | (p8 == 1 || p8 == 3) | (p8 == 3) << 11);
+    u16 zID = *(u16*)(p + 0x38);
+    u32 zMode = j3dZModeTable[zID * 3] | j3dZModeTable[zID * 3 + 1] << 1 | j3dZModeTable[zID * 3 + 2] << 4;
+    __GDWrite(0x61);
+    __GDWriteU32(0x40000000 | zMode);
+    __GDWrite(0x61);
+    __GDWriteU32(0xFE000040);
+    __GDWrite(0x61);
+    __GDWriteU32(0x43000000 | p[0x3a] << 6);
 }
 
 extern "C" void fn_800DB844(void* param_1) {
@@ -2090,6 +2438,79 @@ extern "C" void fn_800DC64C(u8* p, Unk800DC64CSrc* src) {
     }
     for (u32 i = 0; i < 4; i++) {
         p[0x59 + i] = *src->m46(i);
+    }
+}
+
+extern "C" void fn_800DC934(u8* this_, Unk800DC64CSrc* src) {
+    this_[0x20] = src->m38();
+    *(s16*)(this_ + 0x8) = src->m20(0);
+    *(s16*)(this_ + 0xa) = src->m20(1);
+    *(s16*)(this_ + 0xc) = src->m20(2);
+    *(s16*)(this_ + 0xe) = src->m20(3);
+    u8* p = src->m41(0);
+    this_[0x22] = p[1];
+    this_[0x23] = p[2];
+    this_[0x24] = p[3];
+    this_[0x26] = p[5];
+    this_[0x27] = p[6];
+    this_[0x28] = p[7];
+    p = src->m41(1);
+    this_[0x2a] = p[1];
+    this_[0x2b] = p[2];
+    this_[0x2c] = p[3];
+    this_[0x2e] = p[5];
+    this_[0x2f] = p[6];
+    this_[0x30] = p[7];
+    p = src->m41(2);
+    this_[0x32] = p[1];
+    this_[0x33] = p[2];
+    this_[0x34] = p[3];
+    this_[0x36] = p[5];
+    this_[0x37] = p[6];
+    this_[0x38] = p[7];
+    p = src->m41(3);
+    this_[0x3a] = p[1];
+    this_[0x3b] = p[2];
+    this_[0x3c] = p[3];
+    this_[0x3e] = p[5];
+    this_[0x3f] = p[6];
+    this_[0x40] = p[7];
+    *(u32*)(this_ + 0x80) = *src->m49(0);
+    *(u32*)(this_ + 0x84) = *src->m49(1);
+    *(u32*)(this_ + 0x88) = *src->m49(2);
+    *(u32*)(this_ + 0x8c) = *src->m49(3);
+    *(u32*)(this_ + 0x10) = *src->m23(0);
+    *(u32*)(this_ + 0x14) = *src->m23(1);
+    *(u32*)(this_ + 0x18) = *src->m23(2);
+    *(u32*)(this_ + 0x1c) = *src->m23(3);
+    this_[0x72] = src->m32(0);
+    this_[0x73] = src->m32(1);
+    this_[0x74] = src->m32(2);
+    this_[0x75] = src->m32(3);
+    this_[0x76] = src->m35(0);
+    this_[0x77] = src->m35(1);
+    this_[0x78] = src->m35(2);
+    this_[0x79] = src->m35(3);
+    u8* dst = this_;
+    for (u32 i = 0; i < 4; i++) {
+        s16* s = src->m26(i);
+        *(s16*)(dst + 0x42) = s[0];
+        *(s16*)(dst + 0x44) = s[1];
+        *(s16*)(dst + 0x46) = s[2];
+        *(s16*)(dst + 0x48) = s[3];
+        dst += 8;
+    }
+    dst = this_;
+    for (u32 i = 0; i < 4; i++) {
+        u8* s = src->m29(i);
+        dst[0x62] = s[0];
+        dst[0x63] = s[1];
+        dst[0x64] = s[2];
+        dst[0x65] = s[3];
+        dst += 4;
+    }
+    for (u32 i = 0; i < 4; i++) {
+        this_[0x7a + i] = *src->m46(i);
     }
 }
 
