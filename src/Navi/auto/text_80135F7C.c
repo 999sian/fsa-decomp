@@ -42,6 +42,14 @@ inline bool iterNe2_8013A388(Iter_8013A388 x, Iter_8013A388 y) {
     Iter_8013A388 ty = y;
     return iterNe_8013A388(tx, ty);
 }
+struct ListIter_8013AE14 {
+    void* node;
+    ListIter_8013AE14() {}
+    ListIter_8013AE14(void* n) : node(n) {}
+    ListIter_8013AE14(const ListIter_8013AE14& o) : node(o.node) {}
+};
+inline bool operator==(ListIter_8013AE14 a, ListIter_8013AE14 b) { return a.node == b.node; }
+inline bool operator!=(ListIter_8013AE14 a, ListIter_8013AE14 b) { return !(a == b); }
 inline Iter_8013A388 iterCopy_8013A388(Iter_8013A388 x) { Iter_8013A388 t = x; return t; }
 inline bool iterNe3_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return iterNe_8013A388(x, y); }
 
@@ -1499,6 +1507,7 @@ extern "C" void fn_8013A878(void) {}
 extern "C" void fn_8013A87C(void) {}
 
 extern "C" u8 fn_8013A634(void* p, void* q);
+#pragma use_lmw_stmw off
 extern "C" u8 fn_8013AE14(void* param_1, void* param_2)
 {
     *(u32*)((u8*)param_1 + 0x54) = *(u32*)((u8*)param_1 + 0x40);
@@ -1509,13 +1518,13 @@ extern "C" u8 fn_8013AE14(void* param_1, void* param_2)
     end.node = (u8*)param_1 + 0x14;
     Iter_8013A388 b0;
     b0.node = *(void**)((u8*)param_1 + 0x14);
-    Iter_8013A388 e2 = end;
-    Iter_8013A388 b2 = b0;
-    Iter_8013A388 cur = b2;
-    Iter_8013A388 last = e2;
-    while (iterNe2_8013A388(cur, last)) {
-        u8* node = (u8*)cur.node;
-        cur.node = *(void**)node;
+    Iter_8013A388 last = iterCopy_8013A388(iterCopy_8013A388(end));
+    Iter_8013A388 cur = iterCopy_8013A388(iterCopy_8013A388(b0));
+    Iter_8013A388* pcur = &cur;
+    Iter_8013A388* plast = &last;
+    while (iterNe2_8013A388(*pcur, *plast)) {
+        u8* node = (u8*)pcur->node;
+        pcur->node = *(void**)node;
         u8* obj = node - 0xc;
         u8 r = 0;
         if (fn_8013A634(obj, param_2) || result) {
@@ -1528,7 +1537,7 @@ extern "C" u8 fn_8013AE14(void* param_1, void* param_2)
     *(u32*)((u8*)param_1 + 0x1c) = andMask | (orMask << 16);
     return result;
 }
-
+#pragma use_lmw_stmw reset
 extern char lbl_802911A0[];
 extern char lbl_80292F24[];
 extern void* lbl_80292F5C[];
@@ -2079,16 +2088,19 @@ extern "C" void fn_8013C508(void* a, void* b, void* c, void* d, void* e) {
 extern "C" u32 fn_80136314(u32 i);
 extern "C" void fn_8013C838(void* a, void* b, f32 x) {
     void* q = (u8*)b + *(s32*)((u8*)a + 8);
-    u32 w = *(u32*)((u8*)q - 1);
-    f32 t = fn_801E10DC(*(void**)((u8*)b + 0x128), q, x);
+    s32 w = *(s32*)((u8*)q - 1);
+    PmfObj_8013C838* obj = *(PmfObj_8013C838**)((u8*)b + 0x128);
+    f32 t = (obj->*(*(PmfFunc_8013C838*)((u8*)a + 0x24)))(q, x);
     f32 s = x;
-    if (((w >> 8) & 0xff) == 1) {
+    switch ((w >> 8) & 0xff) {
+    case 1:
         s = t - x;
+        break;
     }
     if (t > 0.0f) {
         s = ((f64 (*)(f32, f32))fn_80136314(w & 0xff))(s, t);
     }
-    fn_801E10DC(*(void**)((u8*)b + 0x128), s);
+    (obj->*(*(PmfFunc2_8013C838*)((u8*)a + 0xc)))(s);
 }
 
 extern "C" void fn_80133414(void*, int);
