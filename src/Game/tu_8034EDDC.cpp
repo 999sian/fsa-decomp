@@ -35,6 +35,7 @@ extern "C" void Actor_CreateByID(void* mgr, u32 id, s32 kind, void* pos, s32 a, 
 extern const f32 lbl_805425F0;
 extern const f32 lbl_805425D8;
 extern "C" void fn_803511F0(u8* self);
+extern "C" double sqrt(double);
 extern const f32 lbl_80542608;
 extern "C" s16 fn_8022461C(s32);
 extern "C" s32 fn_80350274(s32 param_1, s32 param_2, s32 param_3) {
@@ -56,6 +57,7 @@ extern "C" s32 fn_80350530(u8* self) {
         f32* p;
         f32 dx;
         f32 dy;
+        f32 d2;
         if (fn_8022F514(i) == 1 && fn_8022CAF8(i) == 5) {
             continue;
         }
@@ -63,15 +65,17 @@ extern "C" s32 fn_80350530(u8* self) {
         y = *(f32*)(self + 0x10);
         r2 = lbl_80542618;
         if (prev != 0) {
-            r2 = lbl_8054261C + (f32)*(u32*)(self + 0x260);
+            r2 = lbl_8054261C + (f32)*(s32*)(self + 0x260);
             r2 = r2 * r2;
         }
         p = (f32*)fn_8023E724(i);
         dx = x - p[0];
         dy = y - p[1];
-        if (dx * dx + dy * dy < r2) {
+        d2 = dx * dx;
+        d2 = d2 + dy * dy;
+        if (d2 < r2) {
             p = (f32*)fn_8023E724(i);
-            if (lbl_805425D8 == p[2]) {
+            if (p[2] == lbl_805425D8) {
                 if (prev == 0) {
                     fn_801F0E34(self, 0x30009, 0);
                     *(s32*)(self + 0x27c) = 0;
@@ -81,10 +85,7 @@ extern "C" s32 fn_80350530(u8* self) {
                     }
                 }
                 *(s32*)(self + 0x270) = 1;
-                if (*(s32*)(self + 0x244) > 0) {
-                    return -1;
-                }
-                return *(s32*)(self + 0x268);
+                return *(s32*)(self + 0x244) > 0 ? -1 : *(s32*)(self + 0x268);
             }
         }
     }
