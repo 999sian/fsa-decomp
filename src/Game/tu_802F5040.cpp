@@ -45,7 +45,6 @@ extern u8 lbl_8053ACF0[4];
 extern u8 lbl_80506D88[];
 extern u8 lbl_80506D98[];
 extern void* lbl_8053AAF8;
-extern "C" f32 lbl_80541508;
 extern "C" f32 lbl_80541510;
 extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
@@ -132,11 +131,12 @@ extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
 }
 
 extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
-    u32 len;
     u8* base;
+    u8* s;
+    u8* d;
     u32 i;
+    u32 len;
     s32 n;
-    u8* p;
     if (size == 0) {
         s32 r;
         if (JKRDecomp::checkCompressed(src)) {
@@ -153,8 +153,7 @@ extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
     } else {
         len = size;
     }
-    p = this_ + idx * 4;
-    dst += *(u32*)(p + 0x88);
+    dst += *(u32*)(this_ + idx * 4 + 0x88);
     if (JKRDecomp::checkCompressed(src)) {
         JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
         base = *(u8**)(this_ + 0xf8);
@@ -165,22 +164,25 @@ extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
     i = 0;
     if (len != 0) {
         if (len > 8) {
-            n = (len - 8 + 7) >> 3;
-            do {
-                dst[i] = (base[i] >> 4) | (base[i] << 4);
-                dst[i + 1] = (base[i + 1] >> 4) | (base[i + 1] << 4);
-                dst[i + 2] = (base[i + 2] >> 4) | (base[i + 2] << 4);
-                dst[i + 3] = (base[i + 3] >> 4) | (base[i + 3] << 4);
-                dst[i + 4] = (base[i + 4] >> 4) | (base[i + 4] << 4);
-                dst[i + 5] = (base[i + 5] >> 4) | (base[i + 5] << 4);
-                dst[i + 6] = (base[i + 6] >> 4) | (base[i + 6] << 4);
-                dst[i + 7] = (base[i + 7] >> 4) | (base[i + 7] << 4);
+            for (n = len - 8; n > 0; n -= 8) {
+                s = base + i;
+                d = dst + i;
+                d[0] = (s[0] >> 4) | (s[0] << 4);
+                d[1] = (s[1] >> 4) | (s[1] << 4);
+                d[2] = (s[2] >> 4) | (s[2] << 4);
+                d[3] = (s[3] >> 4) | (s[3] << 4);
+                d[4] = (s[4] >> 4) | (s[4] << 4);
+                d[5] = (s[5] >> 4) | (s[5] << 4);
+                d[6] = (s[6] >> 4) | (s[6] << 4);
+                d[7] = (s[7] >> 4) | (s[7] << 4);
                 i += 8;
-            } while (--n != 0);
+            }
         }
-        while (i < len) {
-            dst[i] = (base[i] >> 4) | (base[i] << 4);
-            i++;
+        s = base + i;
+        d = dst + i;
+        for (n = len - i; n > 0; n--) {
+            u8 b = *s++;
+            *d++ = (b >> 4) | (b << 4);
         }
     }
     DCFlushRange(dst, len);
@@ -273,6 +275,50 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
       } while (--k != 0);
     }
   }
+}
+
+extern "C" void fn_802FF0EC(u8* p) {
+    bool bVar2 = false;
+    s32* piVar8 = (s32*)lbl_80506D98;
+    s32* piVar7 = (s32*)lbl_80506D88;
+    s32 iVar10 = 0;
+    u8* pbVar9 = lbl_8053ACF0;
+    u8* iVar5 = p;
+    u8* iVar6 = p;
+    do {
+        if (p[iVar10 + 0x148] != 0 && *(s32*)((u8*)lbl_8053AAF8 + 0x4c) != 0xc) {
+            if (p[0x214] != 0) {
+                s32 iVar1 = *(s32*)(p + 0x230);
+                if (iVar10 == iVar1 || iVar1 == -1) {
+                    fn_80432750(*(void**)(p + 0xfc), (-1 - iVar1) == 0, (f32)*(s32*)(p + 0x21c), (f32)*(s32*)(p + 0x220), (f32)*(s32*)(p + 0x224), (f32)*(s32*)(p + 0x228));
+                    bVar2 = true;
+                }
+            }
+            u8 bVar11 = 0;
+            s32 uVar12 = 0xff;
+            if (fn_80301D30(iVar10) == 1) {
+                bVar11 = *pbVar9 >> 1;
+            } else if (fn_80301D30(iVar10) == 2) {
+                if (AnimTable_IsField0xe0LessThan3(lbl_8053AD30, fn_8030AAF4(iVar10)) != 0 || *piVar7 == *piVar8) {
+                    uVar12 = (0x10 - *pbVar9) * 0x10;
+                    if (uVar12 > 0xff) {
+                        uVar12 = 0xff;
+                    }
+                }
+            }
+            fn_802FB69C(p, iVar10, *(s32*)(iVar5 + 0x11c), iVar6 + 0x150, iVar6 + 0x190, p[iVar10 + 0x210], bVar11, (u8)uVar12);
+        }
+        iVar10++;
+        piVar8++;
+        piVar7++;
+        iVar6 += 0x10;
+        iVar5 += 4;
+        pbVar9++;
+    } while (iVar10 < 4);
+    if (bVar2) {
+        fn_80432638(*(void**)(p + 0xfc));
+    }
+    p[0xbf98] = 0;
 }
 
 extern "C" void fn_802FF2D8(u8* this_) {
