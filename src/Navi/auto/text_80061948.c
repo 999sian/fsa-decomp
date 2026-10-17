@@ -58,6 +58,8 @@ extern f64 lbl_80300470;  // SDA label
 extern void fn_8002F358(int, int);
 extern f32 lbl_80300468; // SDA label
 extern f32 lbl_80300460; // SDA label
+extern "C" int fn_80020EA4(void* a, void* b);
+extern "C" int fn_8006A1D0(u8* p);
 extern f32 lbl_80300448; // SDA label
 extern f32 lbl_80300464; // SDA label
 extern s32 lbl_802802A8[];
@@ -476,12 +478,11 @@ extern u8 lbl_802804C0[];
 extern u8 lbl_80280418[];
 extern f32 lbl_80300478;
 extern "C" void fn_80064D18(void** p) {
-    void* vt = lbl_8027F6DC;
-    p[0] = vt;
-    p[1] = 0;
-    vt = lbl_8027FB48;
-    p[0] = vt;
-    p[2] = 0;
+    void* z = 0;
+    p[0] = lbl_8027F6DC;
+    p[1] = z;
+    p[0] = lbl_8027FB48;
+    p[2] = z;
 }
 
 extern void* lbl_8027FB70[];
