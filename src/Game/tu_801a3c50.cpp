@@ -56,6 +56,82 @@ extern "C" void fn_801A3C50(u8* this_, s32 id) {
     Saya_setTarget(this_, id);
 }
 
+extern "C" void PSMTXScale(f32 (*m)[4], f32 x, f32 y, f32 z);
+extern "C" void PSMTXTrans(f32 (*m)[4], f32 x, f32 y, f32 z);
+extern "C" void fn_801A3CFC(u8* this_) {
+    struct Cfg {
+        u8 tbl[16];
+        u8 m10, m11, m12, m13, m14, m15, m16, m17;
+        void* p18;
+        u8 b1c0, b1c1, b1c2, b1c3, b1c4, b1c5, b1c6, b1c7, b1c8, b1c9, b1c10;
+        s32 w28;
+        u8 b2c0, b2c1, b2c2;
+        s32 w30;
+        s32 w34;
+        s32 w38;
+    };
+    Cfg cfg;
+    u8 i;
+
+    *(s32*)&cfg.m10 = -1;
+    *(s32*)&cfg.m14 = -1;
+    for (i = 0; i < 16; i++) {
+        cfg.tbl[i] = i;
+    }
+    *(s32*)&cfg.m10 = -1;
+    *(s32*)&cfg.m14 = 0;
+    cfg.p18 = 0;
+    cfg.b1c0 = 0;
+    cfg.b1c1 = 0;
+    cfg.b1c2 = 0;
+    cfg.b1c3 = 1;
+    cfg.b1c4 = 1;
+    cfg.b1c5 = 0;
+    cfg.b1c6 = 0;
+    cfg.b1c7 = 0;
+    cfg.b1c8 = 0;
+    cfg.b1c9 = 0;
+    cfg.b1c10 = 1;
+    cfg.w28 = 3;
+    cfg.b2c0 = 1;
+    cfg.b2c1 = 0;
+    cfg.b2c2 = 0;
+    cfg.w30 = -1;
+    cfg.w34 = 0;
+    cfg.w38 = 2;
+
+    if (lbl_8053ABC8 == 0) {
+        lbl_8053ABC8 = 1;
+    }
+    *(Cfg*)(this_ + 0x120) = cfg;
+    if (*(s32*)(this_ + 0xA0) >= 0 && lbl_8053E5D0 != *(f32*)(this_ + 0x48)) {
+        cfg.w30 = 8;
+        PSMTXScale((f32(*)[4])lbl_804C6640, *(f32*)(this_ + 0x48), *(f32*)(this_ + 0x4C), *(f32*)(this_ + 0x4C));
+        *(f32*)(lbl_804C6640 + 0xC) = lbl_8053E5D4;
+        *(f32*)(lbl_804C6640 + 0x1C) = lbl_8053E5D4;
+        *(f32*)(lbl_804C6640 + 0x2C) = lbl_8053E5D4;
+        cfg.p18 = lbl_804C6640;
+        *(Cfg*)(this_ + 0x120) = cfg;
+    } else {
+        if (*(s32*)(this_ + 0xA4) != 0) {
+            PSMTXTrans((f32(*)[4])lbl_804C6640, 0.0f, 0.0f, 0.0f);
+            if (*(s32*)(this_ + 0xA4) < 100) {
+                if ((*(s32*)(this_ + 0xA4) & 2) == 0) {
+                    *(f32*)(lbl_804C6640 + 0xC) = lbl_8053E5D0;
+                    *(f32*)(lbl_804C6640 + 0x1C) = lbl_8053E5D4;
+                    *(f32*)(lbl_804C6640 + 0x2C) = lbl_8053E5D4;
+                } else {
+                    *(f32*)(lbl_804C6640 + 0xC) = lbl_8053E5D8;
+                    *(f32*)(lbl_804C6640 + 0x1C) = lbl_8053E5D4;
+                    *(f32*)(lbl_804C6640 + 0x2C) = lbl_8053E5D4;
+                }
+            }
+            cfg.p18 = lbl_804C6640;
+            *(Cfg*)(this_ + 0x120) = cfg;
+        }
+    }
+}
+
 // from src/Game/Saya_ForceState1_801A46FC.cpp
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* base, u32 id);
