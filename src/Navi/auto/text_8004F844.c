@@ -6,6 +6,9 @@ extern void* lbl_80222428[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80249D24[];
 extern "C" void fn_80021DDC(void* p);
+extern void* lbl_80247684[];
+extern "C" void fn_8004F77C(void);
+extern "C" void fn_801E0D40(void* dst, void* fn, s32 size, s32 count);
 extern char lbl_802BB0FC[];
 extern int lbl_802FF0E4;
 extern "C" char lbl_802BB0FC[];
@@ -247,6 +250,27 @@ extern "C" BOOL fn_80057324(void* p, u16 id) {
         return TRUE;
     }
     return FALSE;
+}
+
+extern "C" int fn_80057488(u32 mask) {
+    u32* bits = (u32*)(lbl_80247690 + 0x2590);
+    f32* fs = (f32*)(lbl_80247690 + 0x2600);
+    s16* vals = (s16*)(lbl_80247690 + 0x262c);
+    u32* flags = (u32*)(lbl_80247690 + 0x25d4);
+    s16* ids = (s16*)(lbl_80247690 + 0x25bc);
+    int n = 0;
+    for (int i = 0; i < 11; i++) {
+        if (mask & (1 << *bits)) {
+            fn_800300C0(*ids, *flags, *vals, 0, *fs);
+            vals++;
+            n++;
+        }
+        fs++;
+        flags++;
+        ids++;
+        bits++;
+    }
+    return n;
 }
 
 extern "C" void* fn_8005757C(void* ptr, s16 param_2) {
