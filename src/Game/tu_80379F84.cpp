@@ -155,20 +155,26 @@ extern "C" void* fn_8037A768(void* this_, short flag) {
         getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
         lbl_80529DEC[0x242] = 0;
         VObj* p1 = *(VObj**)((u8*)this_ + 0x4);
-        if (p1 != 0 && p1 != 0) {
-            p1->v00(1);
+        if (p1 != 0) {
+            if (p1 != 0) {
+                p1->v00(1);
+            }
+            *(void**)((u8*)this_ + 0x4) = 0;
         }
-        *(void**)((u8*)this_ + 0x4) = 0;
         VObj* p2 = *(VObj**)((u8*)this_ + 0x8);
-        if (p2 != 0 && p2 != 0) {
-            p2->v00(1);
+        if (p2 != 0) {
+            if (p2 != 0) {
+                p2->v00(1);
+            }
+            *(void**)((u8*)this_ + 0x8) = 0;
         }
-        *(void**)((u8*)this_ + 0x8) = 0;
         VObj* p3 = *(VObj**)((u8*)this_ + 0xc);
-        if (p3 != 0 && p3 != 0) {
-            p3->v00(1);
+        if (p3 != 0) {
+            if (p3 != 0) {
+                p3->v00(1);
+            }
+            *(void**)((u8*)this_ + 0xc) = 0;
         }
-        *(void**)((u8*)this_ + 0xc) = 0;
         getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
         VObj* p4 = *(VObj**)((u8*)this_ + 0x10);
         if (p4 != 0) {
