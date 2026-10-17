@@ -557,7 +557,7 @@ extern "C" void fn_8009388C(char* param_1) {
 extern "C" void fn_800939C8(u8* p) {
     u8* q = *(u8**)(p + 0x280);
     if (q[0x159] == 2) {
-        if (q[0x158] ^ 1) {
+        if ((u8)(q[0x158] ^ 1)) {
             fn_800CA434(q, 0x242, 0);
             *(u8*)(p + 0x282c) = 7;
         } else {
