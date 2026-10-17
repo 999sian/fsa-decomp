@@ -1526,7 +1526,7 @@ extern "C" void fn_800DA080(u8* p) {
     u8 num = p[4];
     u8* q = p;
     for (u32 i = 0; i < num; i++) {
-        J3DGDSetIndTexMtx((GXIndTexMtxID)(i + 1), (f32(*)[3])(q + 0x18), (s8)q[0x30]);
+        J3DGDSetIndTexMtx((GXIndTexMtxID)(i + 1), (f32(*)[3])(q + 0x18), *(s8*)(q + 0x30));
         q += 0x1c;
     }
     q = p;
@@ -1765,6 +1765,52 @@ extern "C" void fn_800DC290(u8* p, Unk800DC290Src* src) {
         }
     }
     *(J3DNBTScaleInfo*)(p + 0x5c) = *src->m23();
+}
+
+extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
+    u32 i;
+    u8* q;
+    s16* s;
+
+    *(u8*)(p + 0xd0) = src->m38();
+
+    q = p;
+    for (i = 0; i < 8; i++) {
+        *(s16*)(q + 8) = src->m20(i);
+        q += 2;
+    }
+
+    q = p;
+    for (i = 0; i < 4; i++) {
+        s = src->m26(i);
+        *(s16*)(q + 0x98) = s[0];
+        *(s16*)(q + 0x9a) = s[1];
+        *(s16*)(q + 0x9c) = s[2];
+        *(s16*)(q + 0x9e) = s[3];
+        q += 8;
+    }
+
+    q = p;
+    for (i = 0; i < 4; i++) {
+        u8* b = src->m29(i);
+        *(u8*)(q + 0xb8) = b[0];
+        *(u8*)(q + 0xb9) = b[1];
+        *(u8*)(q + 0xba) = b[2];
+        *(u8*)(q + 0xbb) = b[3];
+        q += 4;
+    }
+
+    q = p;
+    for (i = 0; i < 8; i++) {
+        u8* b = src->m41(i);
+        *(u8*)(q + 0x39) = b[1];
+        *(u8*)(q + 0x3a) = b[2];
+        *(u8*)(q + 0x3b) = b[3];
+        *(u8*)(q + 0x3d) = b[5];
+        *(u8*)(q + 0x3e) = b[6];
+        *(u8*)(q + 0x3f) = b[7];
+        q += 8;
+    }
 }
 
 extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
