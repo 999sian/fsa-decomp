@@ -29,6 +29,8 @@ extern "C" u8 fn_80388CAC(s32, s32);
 extern "C" u8 fn_8038AD24(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_802D6A9C(void);
 extern "C" u8 fn_802D7F40(s32, s32);
+extern "C" s32 lbl_804AAF58[];
+extern "C" s32 lbl_804AAF70[];
 extern "C" u8 fn_802D800C(s32, s32);
 extern "C" s32 lbl_804AAF88[];
 extern "C" s32 lbl_804AAFA0[];
