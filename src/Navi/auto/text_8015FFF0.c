@@ -124,7 +124,6 @@ extern "C" void* fn_80160220(s32 id, void* owner) {
 
 extern "C" BOOL fn_80160464(void* self, char* p) {
     void* r;
-    BOOL found;
     if (*p == '/') {
         p++;
         if (*p == 0) {
@@ -134,12 +133,11 @@ extern "C" BOOL fn_80160464(void* self, char* p) {
     } else {
         r = fn_80160D88(self, p, lbl_802FF5F8);
     }
-    found = r != NULL;
-    if (found) {
+    if (r != NULL) {
         lbl_802FF5F0 = self;
         lbl_802FF5F8 = (void*)(((s32)r - *(s32*)((u8*)self + 0x48)) / 16);
     }
-    return found;
+    return r != NULL;
 }
 
 extern "C" int fn_80160564(void* a, void* b, void* p) {
@@ -277,7 +275,7 @@ extern "C" int fn_8016086C(void* self, void* a, void* b, char* p) {
     };
     void* r;
     int out;
-    if (p[0] == '/') {
+    if (*p == '/') {
         r = fn_801611A8(self, p + 1, 0);
     } else {
         r = fn_801611A8(self, p, lbl_802FF5F8);
@@ -412,6 +410,16 @@ extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+
+extern "C" u32 fn_80160D3C(void* self, u16* p, u32 off, u16 id) {
+    u32 r;
+    if (*p != id) {
+        return 0;
+    }
+    r = fn_801E6578((u8*)(*(u32*)((u8*)self + 0x54)) + off, p + 2);
+    return r == 0;
+}
+
 #pragma dont_inline reset
 
 extern "C" void fn_80161678(u16* p, void* s);
@@ -603,21 +611,22 @@ extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
 extern "C" s32 fn_80162724(void* p, u32 a, u32 b, u32 c, s32 mode) {
     u32 out;
     u32 w;
+    u32 h;
+    h = c & ~0x1f;
     w = (a + 0x1f) & ~0x1f;
-    c = c & ~0x1f;
     switch (mode) {
     case 0:
-        if (w > c) {
-            w = c;
+        if (w > h) {
+            w = h;
         }
-        fn_8015E1F4(p, b, w, 0, c, 0, -1, &out);
+        fn_8015E1F4(p, b, w, 0, h, 0, -1, &out);
         return out;
     case 1:
     case 2:
-        fn_8015E1F4(p, b, w, 1, c, 0, -1, &out);
+        fn_8015E1F4(p, b, w, 1, h, 0, -1, &out);
         return out;
     default:
-        fn_8011C9EC(lbl_80297E28, 0x28f, lbl_802FE2E0, lbl_80297E3C);
+        fn_8011C9EC(lbl_80297E28, 0x28f, "%s", lbl_80297E3C);
         return 0;
     }
 }
