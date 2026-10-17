@@ -22,10 +22,10 @@ extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
 extern "C" void* sManager__8JUTVideo;
 extern "C" void* lbl_8053AF80;
-extern "C" f32 lbl_8053CAE0;
-extern "C" f32 lbl_8053CAE4;
-extern "C" f32 lbl_8053CAE8;
-extern "C" f32 lbl_8053CAEC;
+extern "C" const f32 lbl_8053CAE0;
+extern "C" const f32 lbl_8053CAE4;
+extern "C" const f32 lbl_8053CAE8;
+extern "C" const f32 lbl_8053CAEC;
 
 extern "C" void* fn_8011921C(void);
 extern "C" void fn_80128728(void* p, s32 x);
