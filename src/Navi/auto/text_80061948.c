@@ -1163,6 +1163,23 @@ extern "C" bool fn_8006A72C(void* param_1, void* param_2, u8* param_3, void* par
     }
     return true;
 }
+
+extern "C" void fn_8006A924(StateObj8006A924* self, s32 param) {
+    if (!self->m_func) {
+        StateFunc8006A924 f = lbl_802800FC;
+        if (self->m_func != f) {
+            if (self->m_func) {
+                self->m_27c = -1;
+                (self->*self->m_func)(0);
+            }
+            self->m_func = f;
+            self->m_27c = 0;
+            (self->*self->m_func)(0);
+        }
+    }
+    (self->*self->m_func)(param);
+}
+
 #pragma pop
 extern "C" int fn_80069DE0(u8* p);
 extern "C" void fn_8006AF00(u8* p) {
