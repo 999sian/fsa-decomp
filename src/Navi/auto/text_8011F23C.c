@@ -1635,6 +1635,14 @@ extern "C" void fn_8012D7F8(u8* p, u8* a, u8* b) {
     fn_801C6684(a + 0x78, out, out);
 }
 
+extern "C" void fn_8012DA68(u8* p, u8* a, u8* b) {
+    JGeometry::TVec3f* out = (JGeometry::TVec3f*)(p + 0x10);
+    out->sub(*(JGeometry::TVec3f*)(b + 0x10), *(JGeometry::TVec3f*)(a + 0x108));
+    fn_801C6684(a + 0x78, out, out);
+    f32 f = *(f32*)(*(u8**)b + 0x2c);
+    *(f32*)(p + 0x1c) = f * f;
+}
+
 extern "C" void fn_8012EF18(void*, void*);
 extern "C" void* fn_8012EEE0(void* ptr, void* param_2, void* param_3) {
     *(void**)ptr = param_2;
