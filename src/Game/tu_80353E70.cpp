@@ -1,5 +1,6 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" char __vt__4TUGF[];
@@ -22,6 +23,20 @@ extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec,
 extern s32 lbl_80472288[];
 extern const char lbl_80472298[];
 extern f32 lbl_80542750;
+extern "C" void fn_801EBA14(void* p);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_801EB710(void* a, s32 b, void* c);
+extern "C" void fn_8018330C(s32* p);
+extern f32 lbl_80542734;
+extern f32 lbl_80542738;
+extern f32 lbl_8054273C;
+extern f32 lbl_80542768;
+extern f32 lbl_8054276C;
+extern f32 lbl_80542770;
+extern f32 lbl_80542774;
+extern f32 lbl_80542778;
+extern f32 lbl_8054277C;
+extern f32 lbl_80542780;
 extern "C" void fn_80353EE0(void* this_) {
     DrawRec rec;
     rec.b2d = 1;
@@ -30,4 +45,6 @@ extern "C" void fn_80353EE0(void* this_) {
     rec.w30 = 8;
     fn_801F06F0(this_, lbl_80472298, lbl_80472288[*(s32*)((char*)this_ + 0x2c8)] + 0x466, &rec, 7, lbl_80542750, lbl_80542750);
 }
+
+extern "C" void fn_80354820(void) {}
 
