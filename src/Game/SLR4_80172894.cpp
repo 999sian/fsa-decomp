@@ -64,6 +64,8 @@ struct PukuResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
+    virtual void v4();
+    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 struct PukuGameRes {
@@ -690,9 +692,11 @@ extern "C" void fn_80175024(void* this_) {
 
 extern "C" void fn_801752D8(void* this_) {
     char* p = (char*)this_;
+    s32 n;
+    s16 rot;
+    s32 cnt = 0;
+    s32 i;
     if (*(s32*)(p + 0x4) >= 8 && *(s32*)(p + 0x23c) == 1 && *(s32*)(lbl_80529DEC + 0x118) == 6) {
-        s32 cnt = 0;
-        s32 i;
         for (i = 0; i < 4; i++) {
             s32 id = *(s32*)(p + 0x2c0 + i * 4);
             if (id < 0) {
@@ -712,8 +716,8 @@ extern "C" void fn_801752D8(void* this_) {
             }
         }
         if (*(s32*)(p + 0x260) == 0 && cnt == 4 && *(s32*)(p + 0x4) == fn_8023DE58(0)) {
-            s32 n = 0;
-            s16 rot = 0;
+            n = 0;
+            rot = 0;
             for (i = 0; i < 4; i++) {
                 s32 id = Actor_CreateByID(fn_801F856C(), 0x4b455448, *(u32*)(p + 0x4), p + 0xc, 4, -1, -1);
                 *(s32*)(p + 0x2c0 + i * 4) = id;
