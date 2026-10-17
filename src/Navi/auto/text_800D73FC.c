@@ -210,6 +210,17 @@ extern "C" void fn_800E79EC(u8* p) {
     }
 }
 
+extern "C" void fn_800E7A5C(u8* p) {
+    if (*(u16*)(p + 0xa9c) != 0) {
+        *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
+    } else {
+        fn_8002F358(0xf3, 0);
+        p[0x4f4] = 0;
+        *(u16*)(p + 0xa9c) = *(s16*)(lbl_802C57D4 + 0x60);
+        p[0xa76] = 0x22;
+    }
+}
+
 extern "C" void fn_800E7B7C(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
         *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
