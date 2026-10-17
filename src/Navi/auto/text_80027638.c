@@ -96,6 +96,26 @@ extern "C" void fn_80027CA8(void) {
     lbl_802FEDDC &= 0xffffbfff;
 }
 
+extern "C" void fn_80027CB8(void) {
+    extern unsigned char lbl_802FEE34;
+    extern unsigned char lbl_802FEE41;
+    extern unsigned char lbl_802FEE42;
+    unsigned int flags;
+
+    if (fn_800218C4(lbl_802BB0FC) == 0 || lbl_802FEE34 != 0) {
+        flags = *(unsigned int*)(lbl_802BB0FC + 0x4c);
+        *(unsigned int*)(lbl_802BB0FC + 0x4c) = flags & ~1;
+        *(unsigned int*)(lbl_802BB0FC + 0x4c) = flags & ~3;
+    }
+    if ((*(unsigned int*)(lbl_802BB0FC + 0x4c) & 1) == 0) {
+        *(int*)(lbl_802BB0FC + 0xf4) = 0;
+    }
+    if ((*(unsigned int*)(lbl_802BB0FC + 0x4c) & 2) == 0) {
+        *(int*)(lbl_802BB0FC + 0x7c) = 0;
+        *(int*)(lbl_802BB0FC + 0x80) = 0;
+    }
+}
+
 extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
