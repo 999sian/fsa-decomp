@@ -65,6 +65,7 @@ extern "C" void fn_80119A04(void*);
 extern "C" void fn_80119A28(void*);
 extern u8 lbl_802900DC[];
 extern u8 lbl_80283F48[];
+extern "C" void fn_801193D8(u8* self, u16* table);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80118310-0x8011c4b8 (86 functions). split_file divides it into the game's real files.
@@ -172,6 +173,19 @@ extern "C" void fn_801192D8(char* param_1, u8 param_2, u8 param_3, u8 param_4, u
     *(u16*)(param_1 + 0x14) = param_5;
     *(u32*)(param_1 + 0x10) = param_6;
     fn_801DD5E0(param_1, *(u32*)(param_1 + 0x10), *(u8*)(param_1 + 0xd), *(u16*)(param_1 + 0x14));
+}
+
+extern "C" void fn_801DD618(void* p, u32 id);
+extern void* lbl_80286A4C[];
+extern char lbl_80290040[];
+extern char lbl_80290050[];
+extern "C" void fn_80007AB8(const char*, int, const char*, ...);
+extern "C" int fn_80119318(u8* self) {
+    s32 r = *(u16*)(self + 0x14) != 0;
+    if (r) {
+        fn_801DD618(self, self[0xc]);
+    }
+    return r;
 }
 
 extern "C" void fn_801193D8(u8* self, u16* table) {
@@ -340,13 +354,13 @@ extern "C" s32 fn_8011A7C8(void);
 extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
     s32 t = fn_8011A7C8();
     u32** list = *(u32***)(param_1 + 0x54);
-    s32 n = *(u16*)(param_1 + 0x60);
-    u32** cur = list;
-    s32 i = 0;
+    u32 i;
+    u16 n;
     param_3[0] = 0;
+    n = *(u16*)(param_1 + 0x60);
     param_3[1] = (u8)*(u16*)(*(u8**)(param_1 + 0x4c) + 0xe);
-    for (; n > 0; n--, i++, cur++) {
-        u8* e = (u8*)*cur;
+    for (i = 0; i < n; i++) {
+        u8* e = (u8*)list[i];
         if (t >= *(u16*)(e + 8) && t <= *(u16*)(e + 10)) {
             u8* d = (u8*)list[i] + 0xc + (t - *(u16*)(e + 8)) * 2;
             param_3[0] = d[0];
