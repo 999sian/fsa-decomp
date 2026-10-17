@@ -655,8 +655,8 @@ extern "C" void fn_8025825C(u8* p) {
 extern "C" void fn_80258384(u8* p) {
     u8* ids = p;
     u8* boxes = p;
-    s32 i = 0;
     s32 id;
+    s32 i = 0;
     while (i < 3) {
         id = S32(ids, 0xb1c);
         if (id >= 0) {
@@ -672,8 +672,8 @@ extern "C" void fn_80258384(u8* p) {
             }
         }
         i++;
-        boxes += 0x10;
         ids += 4;
+        boxes += 0x10;
     }
 }
 
