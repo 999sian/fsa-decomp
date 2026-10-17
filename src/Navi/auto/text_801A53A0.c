@@ -120,6 +120,19 @@ extern "C" u32* fn_801A7344(u32* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" BOOL fn_801A78EC(u8* param_1, u8* param_2) {
+    *(u32*)(param_2 + 4) = 0;
+    *(u32*)(param_2 + 8) = 0;
+    u8* p = *(u8**)(param_2 + 0x2c);
+    *(u32*)(p + 4) = 0;
+    *(u32*)(p + 8) = 0;
+    if (*(u32*)(param_1 + 0x20) != 0) {
+        fn_80193E40(*(u32*)(param_1 + 0x20), param_2);
+        return TRUE;
+    }
+    return FALSE;
+}
+
 extern "C" BOOL fn_801A7990(u32** param_1, u32* param_2) {
     param_2[1] = 0;
     param_2[2] = 0;
