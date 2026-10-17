@@ -429,7 +429,7 @@ extern "C" u8 fn_8013CAA4(u8* this_, f32 angle) {
     axis.x = 0.0f;
     axis.y = 1.0f;
     axis.z = 1.0f;
-    fn_8010F668(m, &axis, kPI + angle);
+    fn_8010F668(m, &axis, angle + kPI);
     m[0][0] *= -1.0f;
     m[0][1] *= -1.0f;
     m[0][2] *= -1.0f;
@@ -478,6 +478,7 @@ extern "C" void fn_8013DB2C(u8* this_) {
 
 struct MtxS_ { f32 m[3][4]; };
 struct DrawInfoPOD_ { MtxS_ cam; MtxS_ prj; };
+struct Vec3S_ { f32 x, y, z; };
 extern "C" void fn_8013B438(void*);
 
 extern "C" void fn_8013D908(u8* this_) {
