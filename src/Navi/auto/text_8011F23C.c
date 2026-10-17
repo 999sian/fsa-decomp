@@ -1107,6 +1107,15 @@ extern "C" void fn_801298D4(f32* param_1, f32 param_2, f32 param_3) {
     param_1[11] = zero;
 }
 
+extern "C" void fn_80129970(f32* p, f32 a, f32 b) {
+    p[0] *= a;
+    p[4] *= a;
+    p[8] *= a;
+    p[1] *= b;
+    p[5] *= b;
+    p[9] *= b;
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
