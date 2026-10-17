@@ -7,6 +7,16 @@
 
 extern "C" s16 lbl_8048C95C[];
 
+struct Tu80406ResMgr {
+	virtual void v0();
+	virtual void v1();
+	virtual void v2();
+	virtual void v3();
+	virtual void v4();
+	virtual void v5();
+	virtual void* get(u32 type, const char* name);
+};
+
 // ---- from src/Game/Table_GetSelfIndexedBit87.cpp ----
 // fn_804149C0(void) - same lbl_8050EC80 global table as
 // fn_803B8C90 (Game/stub_803b8c74.cpp): reads row 0's own
