@@ -28,6 +28,63 @@ f32 m25C;
     s16 m270;
 };
 
+extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
+extern "C" u8 fn_8035C15C(char* p, s32 x);
+extern "C" void fn_8035C1C4(char* p, s32 x, u32 y);
+extern "C" void* fn_801F856C(void);
+extern "C" char* fn_801F666C(void* a, u32 b);
+extern const u32 lbl_80472730[];
+extern const f32 lbl_80542910;
+extern const f32 lbl_80542914;
+extern const f32 lbl_80542918;
+extern const f32 lbl_8054291C;
+extern const f32 lbl_80542920;
+extern const f32 lbl_80542924;
+extern const f32 lbl_80542928;
+extern const f32 lbl_8054292C;
+extern "C" void fn_8035C940(char* p) {
+    if (*(u32*)(p + 0x274) != 0) {
+        fn_8013CB44(*(void**)(p + 0x274), p + 0xc, -1, -1, 1);
+    }
+    if (*(u32*)(p + 0x278) != 0) {
+        fn_8013CB44(*(void**)(p + 0x278), p + 0xc, -1, -1, 1);
+    }
+    if (fn_8035C15C(p, 10) == 1) {
+        fn_8035C1C4(p, 10, lbl_80472730[*(u32*)(p + 0x90) & 7]);
+    }
+    if (*(s32*)(p + 0x234) == 0) {
+        *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + lbl_80542910;
+        if (*(f32*)(p + 0x14) >= lbl_80542914) {
+            if ((*(u32*)(p + 0x90) & 7) == 0) {
+                char* b = fn_801F666C(fn_801F856C(), *(u32*)(p + 0x23c));
+                if (b != 0) {
+                    *(s32*)(b + 0x230) = 5;
+                    if (*(s32*)(b + 0x230) == 5) {
+                        *(f32*)(b + 0x258) = (lbl_80542918 - *(f32*)(b + 0x240)) / lbl_8054291C;
+                        *(f32*)(b + 0x25c) = (*(f32*)(b + 0x254) - lbl_80542920) / lbl_8054291C;
+                    } else {
+                        *(f32*)(b + 0x258) = (lbl_80542924 - *(f32*)(b + 0x240)) / lbl_8054291C;
+                        *(f32*)(b + 0x25c) = (*(f32*)(b + 0x254) - lbl_8054292C) / lbl_8054291C;
+                    }
+                }
+            }
+            if (*(u32*)(p + 0x274) != 0) {
+                char* q = *(char**)(p + 0x274);
+                *(u32*)(q + 0xf4) |= 1;
+                *(s32*)(q + 0x24) = 1;
+                *(s32*)(p + 0x274) = 0;
+            }
+            if (*(u32*)(p + 0x278) != 0) {
+                char* q = *(char**)(p + 0x278);
+                *(u32*)(q + 0xf4) |= 1;
+                *(s32*)(q + 0x24) = 1;
+                *(s32*)(p + 0x278) = 0;
+            }
+            *(u8*)(p + 0x11c) = 0;
+        }
+    }
+}
+
 extern "C" Vec fn_8035CD00(Unk8035CD00* p) {
     s16 old = p->m260;
     p->m260 += 0x400;
@@ -64,6 +121,25 @@ extern "C" JGeometry::TVec3<f32> fn_8035CDC0(char* p) {
         }
     }
     return v;
+}
+
+extern "C" JGeometry::TVec3<f32> fn_8035CE78(Unk8035CD00* p) {
+    if (p->m25C > lbl_80542940) {
+        p->m25C -= lbl_80542944;
+    }
+    s16 old = p->m260;
+    p->m260 += 0x140;
+    JGeometry::TVec3<f32> pos;
+    pos.z = p->m14;
+    pos.y = p->m25C * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].first + p->m268;
+    pos.x = p->m258 * JMath::sincosTable_.mTable[(u16)p->m260 >> 5].second + p->m264;
+    JGeometry::TVec3<f32> ret = pos;
+    if (p->m260 >= 0x4000 && old < 0x4000) {
+        p->m270 |= 1;
+    } else if ((u16)p->m260 >= 0xC000 && (u16)old < 0xC000) {
+        p->m270 |= 2;
+    }
+    return ret;
 }
 
 extern "C" void fn_8035D6C4(char* p) {
