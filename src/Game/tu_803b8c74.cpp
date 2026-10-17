@@ -67,7 +67,7 @@ static inline BOOL EC80NibbleBitCur(s32 n, u32 bit) {
 	if (n < 0 || n > 7) {
 		return FALSE;
 	}
-	return (*(u32*)((u8*)lbl_8050EC80 + 0x28 + 0xc8 * *(s32*)((u8*)lbl_8050EC80 + 0x10)) & (1 << (n * 4 + bit))) != 0;
+	return (*(u32*)((u8*)lbl_8050EC80 + *(s32*)((u8*)lbl_8050EC80 + 0x10) * 0xc8 + 0x28) & (1 << (n * 4 + bit))) != 0;
 }
 
 extern "C" {
