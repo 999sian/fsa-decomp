@@ -17,7 +17,8 @@ struct Unk801C5B08 {
     u8 unk_250[0x338 - 0x250];
     s32 field_338;
     s16 field_33C;
-    u8 unk_33E[0x524 - 0x33E];
+    u8 unk_33E[0x358 - 0x33E];
+    u8 field_358[0x524 - 0x358];
     u32 field_524;
     u8 unk_528[0x590 - 0x528];
     s32 field_590;
