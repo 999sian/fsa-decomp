@@ -82,6 +82,8 @@ extern "C" void* fn_800F7E40(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_800FFB98(void* p) { *(s16*)((u8*)p + 0xec) = 0; }
+
 extern "C" BOOL fn_800FFBBC(void)
 {
     return TRUE;
