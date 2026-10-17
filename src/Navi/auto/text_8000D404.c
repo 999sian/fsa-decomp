@@ -742,6 +742,26 @@ extern "C" void fn_80011588(void)
 	fn_80159528(0, 0, 0, 0, 1, 0, 1);
 }
 
+extern "C" char lbl_80203F60[];
+extern "C" void fn_801DF0BC(void* p, s32 size);
+extern "C" void fn_801969C8(void* p);
+extern "C" void fn_80194830(void* p);
+extern "C" void fn_800115C4(void* param_1) {
+    void* iVar1;
+    void* r31;
+
+    fn_801DF0BC(lbl_80203F60, 0x80);
+    iVar1 = *(void**)((u8*)*(void**)((u8*)param_1 + 0x10) + 4);
+    r31 = *(void**)((u8*)((void**)*(void**)((u8*)iVar1 + 0x28))[*(u16*)((u8*)param_1 + 0x14)] + 0x58);
+    lbl_802FF6E0 = nullptr;
+    fn_801969C8(**(void***)((u8*)iVar1 + 0x80));
+    for (; r31 != nullptr; r31 = *(void**)((u8*)r31 + 4)) {
+        fn_80194830((u8*)*(void**)((u8*)*(void**)((u8*)param_1 + 0x10) + 0xc4) + *(u16*)((u8*)*(void**)((u8*)r31 + 8) + 8) * 0x3c);
+    }
+    lbl_802FF6E0 = nullptr;
+    fn_80159528(0, 0, 0, 0, 1, 0, 1);
+}
+
 extern "C" void fn_80011688(void) {}
 
 extern "C" void fn_80011B24(void* param_1)
