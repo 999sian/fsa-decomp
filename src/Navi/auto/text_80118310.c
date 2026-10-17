@@ -353,27 +353,27 @@ extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
 }
 
 extern "C" u32 fn_8011A700(void* param_1) {
-    u8* q = *(u8**)((u8*)param_1 + 0x58);
+    VObj_8011A74C* p = (VObj_8011A74C*)param_1;
+    u8* q = *(u8**)((u8*)p + 0x58);
     if (q != 0) {
         q = *(u8**)q;
         if (q != 0) {
             return *(u16*)(q + 0xc);
         }
     }
-    void** vt = *(void***)param_1;
-    return ((u32 (*)(void*))vt[10])(param_1);
+    return p->v8();
 }
 
 extern "C" u32 fn_8011A74C(void* param_1) {
-    u8* q = *(u8**)((u8*)param_1 + 0x58);
+    VObj_8011A74C* p = (VObj_8011A74C*)param_1;
+    u8* q = *(u8**)((u8*)p + 0x58);
     if (q != 0) {
         q = *(u8**)q;
         if (q != 0) {
             return *(u16*)(q + 0xe);
         }
     }
-    void** vt = *(void***)param_1;
-    return ((u32 (*)(void*))vt[9])(param_1);
+    return p->v7();
 }
 
 extern "C" void fn_8011A798(void* param_1, void* param_2) {
