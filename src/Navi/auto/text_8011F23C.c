@@ -170,6 +170,34 @@ extern "C" void fn_80166C08(void*, int);
 extern "C" void fn_80166FC4(void* a, void* b);
 extern "C" void fn_80166C84(void* a, void* b);
 extern "C" void fn_80130404(void* a, void* b, s32 c);
+class Unk80133ABCList {
+public:
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual void vf5();
+    virtual void vf6(void* owner, u32 n);
+};
+class Unk80133ABCObj {
+public:
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2(void* list, f32 v);
+};
+struct Unk80133ABCElem {
+    f32 m0;
+    s32 m4;
+    void (*m8)(void* elem, f32 v);
+    Unk80133ABCObj* m10;
+    f32 mC;
+};
+struct Unk80133ABCArr {
+    Unk80133ABCList* m0;
+    Unk80133ABCElem* m4;
+    s32 m8;
+};
 extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
@@ -243,10 +271,10 @@ extern "C" void fn_8011FA10(void) {
     if (v != 0 && lbl_802FDD88 == 1) {
         u8* p = (u8*)lbl_802FF310;
         u32 tw;
-        u32 cw;
+        Color32 t;
         Color32 c;
-        u32 t;
-        t = *(u32*)(p + 0x18);
+        u32 cw;
+        t = *(Color32*)(p + 0x18);
         c.r = 0xff;
         c.g = 0xc8;
         c.b = 0xc8;
@@ -255,7 +283,7 @@ extern "C" void fn_8011FA10(void) {
         fn_8011F848(p, (NaviRGB8*)&cw);
         fn_8011F6A0(p, (void*)0x10, (void*)0x10, lbl_802C6448);
         fn_8011F6A0(p, (void*)0x10, (void*)0x18, lbl_802C6488);
-        tw = t;
+        tw = *(u32*)&t;
         fn_8011F848(p, (NaviRGB8*)&tw);
     }
 }
