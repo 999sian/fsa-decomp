@@ -17,8 +17,6 @@ struct Tu80333958ResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 
@@ -97,6 +95,86 @@ extern "C" BOOL fn_803339B8(void* this_, s32 room, JGeometry::TVec3f* pos) {
         break;
     }
     return 0;
+}
+
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, void* rec);
+extern "C" s32 fn_80307AC8(u32 caller, s32 room, void* pos, s32 id, s32 on, s32 b, s32 target);
+extern "C" void fn_80333B64(void* this_) {
+    char* p = (char*)this_;
+    u8 rec[0x3c];
+
+    *(s32*)(rec + 0x10) = -1;
+    *(s32*)(rec + 0x14) = -1;
+    for (u32 i = 0; (u8)i < 0x10; i += 8) {
+        rec[(u8)(i + 0)] = (u8)(i + 0);
+        rec[(u8)(i + 1)] = (u8)(i + 1);
+        rec[(u8)(i + 2)] = (u8)(i + 2);
+        rec[(u8)(i + 3)] = (u8)(i + 3);
+        rec[(u8)(i + 4)] = (u8)(i + 4);
+        rec[(u8)(i + 5)] = (u8)(i + 5);
+        rec[(u8)(i + 6)] = (u8)(i + 6);
+        rec[(u8)(i + 7)] = (u8)(i + 7);
+    }
+    rec[0x1d] = 0;
+    *(s32*)(rec + 0x10) = -1;
+    *(s32*)(rec + 0x14) = 0;
+    *(s32*)(rec + 0x18) = 0;
+    rec[0x1c] = 0;
+    rec[0x1e] = 0;
+    rec[0x1f] = 1;
+    rec[0x20] = 1;
+    rec[0x21] = 0;
+    rec[0x22] = 0;
+    rec[0x23] = 0;
+    rec[0x24] = 0;
+    rec[0x25] = 0;
+    rec[0x26] = 1;
+    *(s32*)(rec + 0x28) = 3;
+    rec[0x2c] = 1;
+    rec[0x2d] = 0;
+    rec[0x2e] = 0;
+    *(s32*)(rec + 0x30) = -1;
+    *(s32*)(rec + 0x34) = 0;
+    *(s32*)(rec + 0x38) = 2;
+    rec[0x1d] = -1;
+
+    if (*(s32*)(p + 0x23c) == 0) {
+        Vec pos;
+        s32 id;
+        void* res;
+
+        pos.y = *(f32*)(p + 0x10) + lbl_80541F3C;
+        pos.x = *(f32*)(p + 0xc);
+        pos.z = lbl_80541F40;
+        if (*(s32*)(p + 4) < 8) {
+            res = ((Tu80333958ResMgr*)*(u8**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, lbl_80471A90);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, res, 0, lbl_80541F44, lbl_80541F44, rec);
+        }
+        id = *(s32*)(p + 0x238) + 0x25;
+        if (*(s32*)(p + 4) < 8) {
+            res = ((Tu80333958ResMgr*)*(u8**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, lbl_80471AA0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_80541F44, lbl_80541F44, 0);
+        }
+        fn_80307AC8(*(u32*)(p + 0x198), *(s32*)(p + 4), p + 0xc, id, 0, 0, -1);
+    } else {
+        Vec pos;
+        s32 id;
+        void* res;
+
+        pos.y = *(f32*)(p + 0x10) + lbl_80541F48;
+        pos.x = *(f32*)(p + 0xc);
+        pos.z = lbl_80541F40;
+        if (*(s32*)(p + 4) < 8) {
+            res = ((Tu80333958ResMgr*)*(u8**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, lbl_80471A90);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, res, 3, lbl_80541F4C, lbl_80541F44, rec);
+        }
+        id = *(s32*)(p + 0x238) + 0x27;
+        if (*(s32*)(p + 4) < 8) {
+            res = ((Tu80333958ResMgr*)*(u8**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, lbl_80471AA0);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_80541F44, lbl_80541F44, 0);
+        }
+        fn_80307AC8(*(u32*)(p + 0x198), *(s32*)(p + 4), p + 0xc, id, 0, 0, -1);
+    }
 }
 
 extern "C" void fn_80333E8C(void* this_) {
