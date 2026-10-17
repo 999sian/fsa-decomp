@@ -29,7 +29,7 @@ struct FsaSlots {
     virtual void v6(void);
     virtual void v7(s32);
     virtual void v8(void);
-    virtual void v9(s32);
+    virtual void v9(void);
     virtual void v10(void);
     virtual void v11(void);
     virtual void v12(void);
@@ -121,6 +121,76 @@ extern "C" void fn_803D82EC(u8* param_1) {
     obj->v7(param_1[0x77]);
     obj = *(FsaSlots**)(param_1 + 0x1c);
     obj->v57(0, 0, 0, lbl_80543534, lbl_80543534, lbl_80543568, lbl_8054356C);
+}
+
+extern "C" f32 lbl_80543548;
+extern "C" f32 lbl_80543570;
+extern "C" f32 lbl_80543574;
+extern "C" f32 lbl_80543578;
+extern "C" f32 lbl_8054357C;
+extern "C" f32 lbl_80543580;
+extern "C" f32 lbl_80543584;
+extern "C" f32 lbl_80543588;
+extern "C" void fn_804316EC(void*);
+extern "C" void fn_80440EE8(void*);
+extern "C" void fn_803D8364(u8* param_1) {
+    f32 f31;
+    f32 f30;
+    s32 k;
+    s32 t;
+
+    if (param_1[0x7f] == 1 || (u8)(param_1[0x7f] - 2) <= 1 || param_1[0x7f] == 4) {
+        f31 = lbl_80543534;
+        if (*(s16*)(param_1 + 0x6e) > 0) {
+            if (*(s16*)(param_1 + 0x6e) == 1) {
+                *(s16*)(param_1 + 0x6c) = 0x1e;
+            }
+            t = *(s16*)(param_1 + 0x6e);
+            k = t < 5 ? t : 10 - t;
+            f31 = lbl_80543570 * (f32)(k * k) / lbl_80543574;
+            if (t < 10) {
+                *(s16*)(param_1 + 0x6e) += 1;
+            } else {
+                *(s16*)(param_1 + 0x6e) = 0;
+            }
+        }
+        *(s16*)(param_1 + 0x6c) += 1;
+        if (*(s16*)(param_1 + 0x6c) >= 0x3c) {
+            *(s16*)(param_1 + 0x6c) = 0;
+        }
+
+        if (param_1[0x7f] == 2 || param_1[0x7f] == 3 || param_1[0x7f] == 4) {
+            (*(FsaSlots**)(param_1 + 0x20))->v7(param_1[0x81]);
+            (*(FsaSlots**)(param_1 + 0x20))->v57(0, 0, 0, lbl_80543578, lbl_80543578, lbl_8054357C, lbl_80543580);
+            fn_804316EC(lbl_8053AEC0);
+            f30 = lbl_80543584;
+        } else {
+            t = *(s16*)(param_1 + 0x6c);
+            if (t < 30) {
+                f30 = lbl_80543584 * ((f32)(t * t) / lbl_80543588);
+            } else {
+                k = t - 30;
+                f30 = lbl_80543584 * (lbl_80543548 - (f32)(k * k) / lbl_80543588);
+            }
+            if (param_1[0x79] == 0) {
+                fn_80402E08(*(void**)(param_1 + 0x2c), lbl_80543534, f31);
+                fn_80402E08(*(void**)(param_1 + 0x24), lbl_80543534, f31);
+                fn_80402E08(*(void**)(param_1 + 0x28), lbl_80543534, lbl_80543534);
+            } else {
+                fn_80402E08(*(void**)(param_1 + 0x2c), *(f32*)(*(u8**)(param_1 + 0x28) + 8) - *(f32*)(*(u8**)(param_1 + 0x24) + 8), f31);
+                fn_80402E08(*(void**)(param_1 + 0x24), lbl_80543534, lbl_80543534);
+                fn_80402E08(*(void**)(param_1 + 0x28), lbl_80543534, f31);
+            }
+            if (lbl_80543534 == f31) {
+                if (param_1[0x79] != param_1[0x78]) {
+                    param_1[0x79] = param_1[0x78];
+                    (*(FsaSlots**)(*(u8**)(param_1 + 0x2c) + 4))->v7((s32)f30);
+                }
+            }
+        }
+        ((FsaSlots*)(*(FsaNode**)(param_1 + 4))->v15(0x5061636375723031ULL))->v7((s32)f30);
+        fn_80440EE8(lbl_8053AED8);
+    }
 }
 
 extern "C" void fn_803D8670(u8* param_1) {
