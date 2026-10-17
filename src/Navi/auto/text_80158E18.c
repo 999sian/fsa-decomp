@@ -1084,14 +1084,14 @@ extern "C" void fn_8015CC7C(void) {
     fn_80124034(lbl_80297690);
 }
 
-extern "C" void fn_8015CCA8(void* p) {
-    fn_801BE3A0((u8*)p + 0x18);
+extern "C" void fn_8015CCA8(char* p) {
+    fn_801BE3A0(p + 0x18);
     fn_80159CE0(p);
-    *(u32*)((u8*)p + 0x6c) = *(u32*)((u8*)p + 0x38);
-    *(u32*)((u8*)p + 0x70) = *(u32*)((u8*)p + 0x30);
-    *(u32*)((u8*)p + 0x74) = *(u32*)((u8*)p + 0x34);
-    *(u32*)((u8*)p + 0x78) = 0;
-    fn_801BE47C((u8*)p + 0x18);
+    *(int*)(p + 0x6c) = *(int*)(p + 0x38);
+    *(int*)(p + 0x70) = *(int*)(p + 0x30);
+    *(int*)(p + 0x74) = *(int*)(p + 0x34);
+    *(int*)(p + 0x78) = 0;
+    fn_801BE47C(p + 0x18);
 }
 
 extern "C" void fn_8015CD08(unsigned char* p) {
