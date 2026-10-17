@@ -19,6 +19,7 @@ struct Slot_80174620 {
     u8 active;
     u8 pad[0xb];
     Rec_80174620 recs[10];
+    u8 pad2[4];
 };
 struct Owner_80174620 {
     u8 pad[0xc];
