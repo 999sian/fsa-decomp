@@ -10,6 +10,8 @@ extern void* lbl_802FF328;
 extern void* lbl_802FF2B0;
 extern void* lbl_802FF544;
 extern "C" void fn_8011C3C8(u32);
+extern "C" u16 fn_801194E4(void* param_1, char* param_2);
+extern "C" int fn_801E6578(void* a, void* b);
 extern u32* lbl_802C5FBC[];
 extern "C" BOOL OSGetResetSwitchState(void);
 extern f32 lbl_80301540;
@@ -315,31 +317,32 @@ extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
 }
 
 extern "C" u32 fn_8011A700(void* param_1) {
-    u8* p = (u8*)param_1;
-    u8* q = *(u8**)(p + 0x58);
+    u8* q = *(u8**)((u8*)param_1 + 0x58);
     if (q != 0) {
         q = *(u8**)q;
         if (q != 0) {
             return *(u16*)(q + 0xc);
         }
     }
-    return ((u32 (*)(void*))(((void**)*(void**)p)[10]))(p);
+    void** vt = *(void***)param_1;
+    return ((u32 (*)(void*))vt[10])(param_1);
 }
 
 extern "C" u32 fn_8011A74C(void* param_1) {
-    u8* p = (u8*)param_1;
-    u8* q = *(u8**)(p + 0x58);
+    u8* q = *(u8**)((u8*)param_1 + 0x58);
     if (q != 0) {
         q = *(u8**)q;
         if (q != 0) {
             return *(u16*)(q + 0xe);
         }
     }
-    return ((u32 (*)(void*))(((void**)*(void**)p)[9]))(p);
+    void** vt = *(void***)param_1;
+    return ((u32 (*)(void*))vt[9])(param_1);
 }
 
 extern "C" void fn_8011A798(void* param_1, void* param_2) {
-    ((void (*)(void*))(*(void**)(*(void**)((u8*)param_1 + 0x6c))))(param_2);
+    void* obj = *(void**)((u8*)param_1 + 0x6c);
+    ((void (*)(void*))(*(void**)obj))(param_2);
 }
 
 extern "C" int fn_8011AB38()
