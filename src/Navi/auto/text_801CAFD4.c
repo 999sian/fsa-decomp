@@ -23,6 +23,8 @@ extern "C" void fn_801CD620(void);
 extern u8 lbl_802F7D20[];
 extern void* lbl_802FF9B4;
 extern void* lbl_802FF9B0;
+extern "C" u32 OSGetTick(void);
+extern u32 lbl_802FEA30;
 extern void* lbl_802FF9C0;
 extern void* lbl_802FF9C8;
 extern void* lbl_802FF9C4;
@@ -508,6 +510,24 @@ extern "C" void fn_801D134C(u32 a) {
     vu16* reg = (vu16*)0xcc005000;
     reg[0] = (u16)(a >> 16);
     reg[1] = (u16)a;
+}
+
+extern "C" void fn_801D1360(void) {
+    fn_801D1494((const char*)(lbl_8029DAA8 + 0x48), (u8*)(lbl_8029DAA8 + 0x68), (u8*)(lbl_8029DAA8 + 0x74));
+    if (lbl_802FF9F8 != 1) {
+        OSRegisterVersion((const char*)lbl_802FEA20);
+        int state = OSDisableInterrupts();
+        __OSSetInterruptHandler(7, fn_801D14E4);
+        __OSUnmaskInterrupts(0x1000000);
+        *(volatile u16*)0xcc00500a = (*(volatile u16*)0xcc00500a & 0xff57) | 0x800;
+        *(volatile u16*)0xcc00500a = *(volatile u16*)0xcc00500a & 0xff53;
+        lbl_802FFA08 = 0;
+        lbl_802FFA14 = 0;
+        lbl_802FFA0C = 0;
+        lbl_802FFA10 = 0;
+        lbl_802FF9F8 = 1;
+        OSRestoreInterrupts(state);
+    }
 }
 
 extern "C" void fn_801D1AA8(void* p);
