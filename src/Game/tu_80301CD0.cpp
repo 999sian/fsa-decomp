@@ -22,9 +22,16 @@ struct Elem28_80301CD0 {
     Elem28_80301CD0();
     s32 f0;
     s32 f4;
-    u8 pad8[4];
+    s32 f8;
     s32 fc;
-    u8 pad10[0x24 - 0x10];
+    f32 f10;
+    f32 f14;
+    u8 pad18[4];
+    s32 f1c;
+    u8 f20;
+    u8 f21;
+    u8 f22;
+    u8 f23;
     u8 f24;
     u8 f25;
     u8 pad26[2];
@@ -346,6 +353,77 @@ extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id) {
         lbl_80504A28[i] = 0;
     }
     return 1;
+}
+
+extern "C" void fn_80304D64() {
+    Elem28_80301CD0* p3 = lbl_80504A38[0];
+    Elem28_80301CD0* p4 = lbl_80505438[0];
+    for (s32 i = 0; i < 4; i++) {
+        Elem28_80301CD0* e = p3;
+        for (s32 j = 0; j < 4; j++) {
+            if (e->f25 == 1) {
+                e->f24 = 0;
+                e->f25 = 0;
+                e->f4 = -1;
+            } else if (e->f24 == 1 && e->f0 < 5) {
+                e->f0++;
+            }
+            e++;
+            if (e->f25 == 1) {
+                e->f24 = 0;
+                e->f25 = 0;
+                e->f4 = -1;
+            } else if (e->f24 == 1 && e->f0 < 5) {
+                e->f0++;
+            }
+            e++;
+            if (e->f25 == 1) {
+                e->f24 = 0;
+                e->f25 = 0;
+                e->f4 = -1;
+            } else if (e->f24 == 1 && e->f0 < 5) {
+                e->f0++;
+            }
+            e++;
+            if (e->f25 == 1) {
+                e->f24 = 0;
+                e->f25 = 0;
+                e->f4 = -1;
+            } else if (e->f24 == 1 && e->f0 < 5) {
+                e->f0++;
+            }
+            e++;
+        }
+        e = p4;
+        for (s32 j = 0; j < 20; j++) {
+            if (e->f25 == 1 && e->f0 == 0) {
+                e->f24 = 0;
+                e->f25 = 0;
+                e->f4 = -1;
+                e->fc = -1;
+            } else if (e->f25 == 1) {
+                e->fc = -1;
+                e->f0 = 0;
+            } else if (e->f24 == 1 && e->f0 < 5) {
+                e->f0++;
+            }
+            e++;
+            if (e->f25 == 1 && e->f0 == 0) {
+                e->f24 = 0;
+                e->f25 = 0;
+                e->f4 = -1;
+                e->fc = -1;
+            } else if (e->f25 == 1) {
+                e->fc = -1;
+                e->f0 = 0;
+            } else if (e->f24 == 1 && e->f0 < 5) {
+                e->f0++;
+            }
+            e++;
+        }
+        p3 += 16;
+        p4 += 40;
+    }
 }
 
 extern u8 lbl_80506DE8[];
