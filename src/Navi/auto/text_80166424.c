@@ -174,6 +174,34 @@ extern "C" void* fn_80166528(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8015F228(void* a);
+extern "C" void fn_80166728(void* a, u32 b, u32 c, u32 d);
+extern "C" u8 lbl_80298290[];
+extern "C" void fn_80166588(void) {
+    void* sp8;
+    u8* self;
+    u8* base;
+    fn_801BDDBC(lbl_802982A0, lbl_80298290, 4);
+    base = lbl_802982A0;
+    fn_801BDEE4(base, &sp8, 1);
+    self = (u8*)sp8;
+    fn_80166728(*(void**)(self + 0x4), *(u32*)(self + 0x8), *(u32*)(self + 0xc), *(u32*)(self + 0x10));
+    if (*(s32*)(self + 0x20) != 0) {
+        if (*(s32*)(self + 0x20) == 1) {
+            fn_8015F228(*(void**)(self + 0x24));
+        }
+    } else {
+        void (*fn)(void*) = *(void (**)(void*))(self + 0x14);
+        if (fn) {
+            fn(self);
+        } else if (*(void**)(self + 0x1c)) {
+            fn_801BDE1C(*(void**)(self + 0x1c), (void*)1, 0);
+        } else {
+            fn_801BDE1C(self + 0x28, (void*)1, 0);
+        }
+    }
+}
+
 extern "C" void fn_80166650(void* p)
 {
     fn_801BDE1C(lbl_802982A0, p, 1);
@@ -889,6 +917,36 @@ extern "C" int fn_8016BE50(u8* p, void* obj)
     }
     *(void**)(p + 0x58) = obj;
     p[0x5c] &= 0x7f;
+    return 1;
+}
+
+extern "C" void fn_80119240(void* p, u32 a, u32 b);
+extern "C" void fn_80118F5C(void* a, void* b);
+extern "C" s32 fn_8016BED0(u8* self, u32 a, u32 c)
+{
+    if (a != 0) {
+        return 0;
+    }
+    if (c != 0) {
+        if (*(void**)(self + 0x54) == nullptr) {
+            void* p = fn_8015A90C(0x18);
+            if (p != nullptr) {
+                fn_80119240(p, 0, c);
+            }
+            *(void**)(self + 0x54) = p;
+            if (*(void**)(self + 0x54) == nullptr) {
+                return 0;
+            }
+        } else {
+            fn_80119240(*(void**)(self + 0x54), 0, c);
+        }
+        if (*(void**)(self + 0x50) != nullptr) {
+            fn_80118F5C(*(void**)(self + 0x50), *(void**)(self + 0x54));
+        }
+    } else {
+        fn_8015AB1C(*(void**)(self + 0x54));
+        *(void**)(self + 0x54) = nullptr;
+    }
     return 1;
 }
 
