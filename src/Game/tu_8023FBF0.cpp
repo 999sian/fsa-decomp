@@ -391,6 +391,8 @@ s32 fn_80230E1C(s32, u8);
 u8 fn_8025F448(char*);
 u8 fn_8024F63C(char*);
 u8 fn_80250D30(char*);
+u8 fn_80250090(char*);
+u8 fn_80250FD4(char*);
 u8 fn_802729F0(char*, s32);
 u8 fn_8024FEBC(char*);
 s32 fn_8024FF6C(char*);
@@ -2265,6 +2267,51 @@ BOOL fn_8024C4C4(char* p, s32 id) {
     }
     return 1;
 }
+
+BOOL fn_8024C5A0(char* p, s32 id) {
+    bool flag = true;
+    if (((u8)(1 << S32(p, 0x4)) & U8(lbl_8053AAF8, 0x82)) != 0 || S32(p, 0xd60) >= 0) {
+        if (getModeH(p) == 4) {
+            s32 linked = S32(p, 0xd60);
+            s32 y = linked >= 0 ? fn_80234004(linked) : S32(p, 0x1224);
+            s32 x = 0;
+            if (linked >= 0) {
+                s32 c = 0;
+                for (s32 i = 0; i < S32(p, 0x4); i++) {
+                    if (linked == fn_8022F3DC(i)) {
+                        c++;
+                    }
+                }
+                x = c + 1;
+            }
+            flag = ((u32)((x - y) | (y - x))) >> 31;
+        } else {
+            flag = (((u32)S32(p, 0xd60)) >> 31) ^ 1;
+        }
+    }
+    BOOL r = 0;
+    if (!flag) {
+        if (U8(p, 0x1216) == 1) {
+            r = 0;
+        } else if (U8(p, 0xd4c) == 1) {
+            r = 0;
+        } else if (S32(p, 0xd44) == id) {
+            r = 1;
+        }
+    }
+    if (!r) {
+        return 0;
+    }
+    U8(p, 0xd4c) = 1;
+    char* a = getActor(id);
+    if (a == NULL || F32(a, 0xc) < F32(p, 0x8)) {
+        Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x18, -1, -1);
+    } else {
+        Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 0x1c, -1, -1);
+    }
+    return 1;
+}
+
 BOOL fn_8024C828(char* p, s32 a) {
     if ((u8)isLinkOwner3(p)) {
         return 0;
@@ -2415,6 +2462,18 @@ BOOL fn_8024E060(char* p) {
     }
     return U8(p, 0x1216) != 1;
 }
+
+void fn_8024E0A0(char* this_) {
+    s32 timer = *(s32*)(this_ + 0x1264) + 1;
+    *(s32*)(this_ + 0x1264) = timer;
+    if (*(s32*)(this_ + 0x1264) >= 0x3C) {
+        *(s32*)(this_ + 0x1264) = 0;
+        char* g = (char*)lbl_8053AAF8;
+        if (g[0x7F] != 0) {
+        }
+    }
+}
+
 void fn_8024E344(char* p) {
     if (S32(p, 0x3b4) < 8) {
         fn_8024E694(p, (s32)(20.0f * gameRnd()) + 0x32, 0);
