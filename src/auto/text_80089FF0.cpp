@@ -65,6 +65,7 @@ JUTException* JUTException::create(JUTDirectPrint* directPrint)
 
 extern "C" void fn_8008C390(JUTException* this_);
 extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2, u32 param_3, u32 param_4);
+extern "C" void fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2);
 extern "C" void fn_8008A100(JUTException* this_)
 {
     extern JUTException* lbl_8053A900;
