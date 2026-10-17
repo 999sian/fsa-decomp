@@ -18,7 +18,8 @@ extern const f32 lbl_805401F4;
 extern const f32 lbl_80540200;
 
 static f32 fnDist(char* p, Vec* dst) {
-    JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), dst);
+    Vec pos = *(Vec*)(p + 8);
+    JMathInlineVEC::PSVECSubtract(&pos, (Vec*)(p + 0x14), dst);
     return PSVECMag(dst);
 }
 
@@ -38,25 +39,21 @@ extern "C" void fn_80264998(char* p)
 extern "C" void fn_80265AE4(char* p)
 {
     Vec d;
-    if (*(unsigned short*)(p + 0x3c4) == *(unsigned short*)(p + 0x3c6)) {
-        JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), &d);
-        if (PSVECMag(&d) <= lbl_80540200) {
-            goto step2;
+    if (*(unsigned short*)(p + 0x3c4) != *(unsigned short*)(p + 0x3c6) ||
+        fnDist(p, &d) > lbl_80540200) {
+        *(int*)(p + 0x3d0) = *(int*)(p + 0x3d0) + 1;
+        if (*(int*)(p + 0x3d0) >= 0x10) {
+            *(int*)(p + 0x3d0) = 0;
         }
-    }
-    *(int*)(p + 0x3d0) = *(int*)(p + 0x3d0) + 1;
-    if (*(int*)(p + 0x3d0) < 0x10) {
         *(int*)(p + 0x3cc) = 8;
-    } else {
-        *(int*)(p + 0x3d0) = 0;
-        *(int*)(p + 0x3cc) = 8;
+        goto machine;
     }
-step2:
     if (*(int*)(p + 0x3cc) > 0) {
         *(int*)(p + 0x3cc) = *(int*)(p + 0x3cc) - 1;
-    } else {
-        *(int*)(p + 0x3d0) = 0;
+        goto machine;
     }
+    *(int*)(p + 0x3d0) = 0;
+machine:
     {
         int t = *(int*)(p + 0x3d0);
         if (t < 4) {
@@ -90,13 +87,12 @@ step2:
         if (*(unsigned short*)(p + 0x3c4) != *(unsigned short*)(p + 0x3c6)) {
             goto show;
         }
-        JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), &d);
-        if (PSVECMag(&d) <= lbl_80540200) {
+        if (fnDist(p, &d) <= lbl_80540200) {
             goto hide;
         }
-    } else {
-        goto hide;
+        goto show;
     }
+    goto hide;
 show:
     if (*(int*)(p + 0x1384) != 0) {
         fn_8013CB44((void*)*(int*)(p + 0x1384), p + 8, 0, 0, 1);
