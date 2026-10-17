@@ -772,6 +772,10 @@ extern "C" void fn_80128914(void)
 	fn_801DACA4(0, 1, 4, 0x3c, 0, 0x7d);
 }
 
+extern "C" void fn_8012894C(void) {
+    fn_801DACA4(0, 1, 4, 0x1e, 0, 0x7d);
+}
+
 extern "C" void fn_80128EE8(u8* a, u8* b) {
     u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
     b[0x94] = info[2][(u8)((*(s16*)(b + 0x80) + (b[0x95] & info[0][0x30])) % info[0][0x1f])];
