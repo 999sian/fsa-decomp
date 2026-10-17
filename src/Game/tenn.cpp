@@ -9,6 +9,21 @@ extern const f32 lbl_8053E4F0;
 extern const f32 lbl_8053E4F4;
 extern const f32 lbl_8053E4F8;
 extern const f32 lbl_8053E4FC;
+extern const f32 lbl_8053E504;
+extern const f32 lbl_8053E53C;
+extern const f32 lbl_8053E554;
+extern const f32 lbl_8053E594;
+extern const f32 lbl_8053E598;
+extern const f32 lbl_8053E59C;
+extern const f32 lbl_8053E5A0;
+extern const f32 lbl_8053E5A4;
+extern const f32 lbl_8053E5A8;
+extern const f32 lbl_8053E5AC;
+extern s32 lbl_804A2B90[];
+extern s32 lbl_8053ABC0;
+extern u8 lbl_8053ABC4;
+extern u8 lbl_8053ABC5;
+extern f32 lbl_8053A0F8;
 
 // from src/Game/fn_801A0710.cpp
 extern "C" void fn_801A0910(void* this_);
