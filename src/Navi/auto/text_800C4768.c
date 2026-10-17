@@ -63,6 +63,24 @@ extern "C" void fn_800C4B54(u8* p) {
     }
 }
 
+extern "C" void fn_800C4BDC(u8* p) {
+    s32 iVar1;
+
+    if (p[0x38] == 0 && p[0x35] == 1) {
+        fn_8002F358(0x2e, 0);
+    }
+    iVar1 = fn_800C56A0(p, p[0x38], lbl_802C565C[0xc], 1, *(f32*)(lbl_802C565C + 0x10), lbl_80300D8C);
+    p[0x38]++;
+    if (iVar1 == 1) {
+        if (p[0x35] == 1) {
+            p[0x34] = 1;
+            p[0x35] = 0;
+        }
+        p[0x38] = 0;
+        p[0x37] = 0;
+    }
+}
+
 extern "C" void fn_800C4C88(u8* param_1) {
     s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, 0.0f, *(f32*)(lbl_802C565C + 0x10));
     param_1[0x38]++;
