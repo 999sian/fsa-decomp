@@ -193,12 +193,6 @@ extern "C" void fn_803ED83C(u8* p) {
         }
     }
 }
-extern "C" void fn_8013B490(void* p);
-extern "C" void* lbl_8053AB10;
-extern "C" void* lbl_8053AED8;
-extern "C" void* fn_804030C4(u32 tag, const char* name);
-extern "C" void fn_80440D78(void* p, void* r);
-extern "C" void fn_80440CE4(void* p, void* r);
 class Pane803EDA2C {
 public:
     virtual void v08(); virtual void v0C(); virtual void v10(); virtual void v14();
