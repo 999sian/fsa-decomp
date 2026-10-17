@@ -24,6 +24,14 @@ extern "C" void fn_800E7F50(void*, s32, s32, s32);
 extern char lbl_802C57D4[];
 extern "C" void fn_800E38B8(void) {}
 
+extern "C" void fn_800E3F28(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
+        *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0xa76) = 0x14;
+}
+
 extern "C" void fn_800EA848(u8* p) {
     if (p[0xb14] != 0) {
         p[0xb14]--;
