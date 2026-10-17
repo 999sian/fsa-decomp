@@ -1452,20 +1452,21 @@ extern "C" void fn_801D9F18(s32, s32);
 extern "C" void fn_801DB8C4(s32, s32, s32);
 extern "C" void fn_80129914(f32* m, f32 s, f32 c) {
     f32 one = lbl_80301694;
-    f32 b = lbl_803016AC * s;
+    f32 zero = lbl_80301698;
     f32 a = lbl_803016A8 * (one - c);
+    f32 b = lbl_803016AC * s;
     m[0] = a + c;
     m[1] = a - b;
     m[2] = a + b;
-    m[3] = lbl_80301698;
+    m[3] = zero;
     m[4] = a + b;
     m[5] = a + c;
     m[6] = a - b;
-    m[7] = lbl_80301698;
+    m[7] = zero;
     m[8] = a - b;
     m[9] = a + b;
     m[10] = a + c;
-    m[11] = lbl_80301698;
+    m[11] = zero;
 }
 
 extern "C" void fn_80129970(f32* p, f32 a, f32 b) {
@@ -1539,6 +1540,24 @@ extern "C" void fn_8012B8B4(u8* p, void* arg) {
     }
 }
 
+extern "C" void fn_8012BE48(u8* p, u8* q) {
+    f32 r = *(f32*)(p + 0x1fc);
+    u8* b;
+    u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
+    b = *(u8**)a;
+    if (r < *(f32*)(b + 0xc)) {
+        f32 t = r * *(f32*)(a + 0x10);
+        *(f32*)(q + 0x64) = *(f32*)(q + 0x68) * (t + *(f32*)(b + 0x1c));
+        return;
+    }
+    if (r > *(f32*)(b + 0x10)) {
+        f32 t = (r - *(f32*)(b + 0x10)) * *(f32*)(a + 0x18);
+        *(f32*)(q + 0x64) = *(f32*)(q + 0x68) * (lbl_803016B8 + t);
+        return;
+    }
+    *(f32*)(q + 0x64) = *(f32*)(q + 0x68);
+}
+
 extern "C" void fn_8012BEC0(void* a, f32* p) {
     p[0x64 / 4] = p[0x60 / 4];
 }
@@ -1550,9 +1569,8 @@ extern "C" void fn_8012BECC(int param_1, int param_2) {
 extern f32 lbl_803016B8;
 extern f32 lbl_803016C8;
 extern "C" void fn_8012BED8(u8* p, u8* q) {
+    u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
     s16 v = *(s16*)(q + 0x80);
-    u8* b = *(u8**)(p + 4);
-    u8* a = *(u8**)(b + 0x20);
     s16 d = *(s16*)(*(u8**)a + 0x28);
     *(f32*)(p + 0x1fc) = (f32)(v - (v / d) * d) / (f32)d;
 }
@@ -1854,6 +1872,19 @@ extern "C" s32 fn_80130AE8(u8* p) {
         *(s16*)(p + 0x104) = v + 1;
     }
     return 0;
+}
+
+extern "C" void fn_801C622C(f32 (*)[4], f32, f32, f32);
+extern "C" void fn_801C6630(f32 (*)[4], void*, void*);
+extern "C" void fn_80130BC4(void* a, JGeometry::TVec3f* out) {
+    u8* self = (u8*)a;
+    f32 m[3][4];
+    fn_801C622C(m, *(f32*)(self + 0x98), *(f32*)(self + 0x9c), *(f32*)(self + 0xa0));
+    fn_801C5DA8(self + 0x68, m, m);
+    m[0][3] = *(f32*)(self + 0xa4);
+    m[1][3] = *(f32*)(self + 0xa8);
+    m[2][3] = *(f32*)(self + 0xac);
+    fn_801C6630(m, self + 0xc, out);
 }
 
 extern "C" u32 fn_80130C44(u8* param_1)
