@@ -913,7 +913,9 @@ extern "C" u32 fn_8015D020(u8* p) {
     return *(u32*)(p + 0x6c);
 }
 
-extern "C" u32 fn_8015D028(u8* p) { return *(u32*)(p + 0x70); }
+extern "C" u32 fn_8015D028(u8* p) {
+    return *(u32*)(p + 0x70);
+}
 
 extern "C" void fn_8015D030(void) {
     fn_80159DB4();
