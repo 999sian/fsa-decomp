@@ -954,10 +954,14 @@ extern f32 lbl_80301228;
 extern f32 lbl_8030122C;
 extern f32 lbl_80301238;
 extern "C" void fn_8010449C(u8* param_1) {
+    struct VObj_800F4B7CSlot2 {
+        virtual void v0();
+        virtual void v1();
+        virtual void v2(f32 a, f32 b);
+    };
     f32 x = lbl_80301228 * (f32)param_1[0x1e0];
     f32 y = lbl_8030122C * (f32)param_1[0x1e1];
-    VObj_800F4B7CListener* obj = (VObj_800F4B7CListener*)*(void**)(param_1 + 0x1d4);
-    obj->v4(*(f32*)(param_1 + 0x1d8) + x, *(f32*)(param_1 + 0x1dc) + y);
+    ((VObj_800F4B7CSlot2*)*(void**)(param_1 + 0x1d4))->v2(*(f32*)(param_1 + 0x1d8) + x, *(f32*)(param_1 + 0x1dc) + y);
 }
 
 extern "C" void fn_80104520(u8* param_1) {
@@ -1111,6 +1115,20 @@ extern "C" void fn_80105204(u8* p) {
         *(u8*)(*(u32*)(p + 0x1bc) + 0xb0) = 1;
         p[0xf2] = 2;
         p[0xee] = 8;
+    }
+}
+
+extern "C" void fn_80106000(u8* p) {
+    s32 r1;
+    u8* base = (u8*)lbl_802C5A84;
+    u8* self = p;
+    r1 = fn_80108C38(self, *(s16*)(self + 0xec), base[0x3c], 0, 1, lbl_80301204, *(f32*)(base + 0x40));
+    s32 r2 = fn_80108D50(self, *(s16*)(self + 0xec), base[0x3c], 0, 1, lbl_80301204, *(f32*)(lbl_802C5A84 + 0x44));
+    *(s16*)(self + 0xec) += 1;
+    if (r1 == 1 && r2 == 1) {
+        *(s16*)(self + 0xec) = 0;
+        self[0x40f] = 0;
+        self[0xee] = 0x1a;
     }
 }
 
