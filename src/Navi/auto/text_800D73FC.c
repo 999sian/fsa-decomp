@@ -154,6 +154,14 @@ extern "C" void fn_800EAFA8(void* p) {
     *(u8*)((u8*)p + 0xa76) = 0;
 }
 
+extern "C" void fn_800EBD88(char* p) {
+    p[0xb11] = 2;
+    p[0xb14] = 10;
+    *(unsigned char*)(*(char**)(p + 0x9e8) + 0xb0) = 1;
+    p[0xa00] = lbl_802C57D4[0x80];
+    p[0xa01] = 0;
+}
+
 extern "C" void fn_800EC0E4(void* param_1) {
     if (*(u8*)((u8*)param_1 + 0xb14) != 0) {
         *(u8*)((u8*)param_1 + 0xb14) = *(u8*)((u8*)param_1 + 0xb14) - 1;
