@@ -25,7 +25,7 @@ struct StateObj_800274C8 {
     StateFunc_800274C8 m_func;
     u8 pad2[4];
     s16 m_unk[4];
-    u8 pad3[0x3];
+    u8 pad3;
     s8 m_state;
 };
 struct NaviSlot34 { NaviEnt18 e[2]; s16 cur; s16 next; };
