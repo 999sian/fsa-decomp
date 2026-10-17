@@ -91,19 +91,20 @@ extern "C" void fn_801115C4(u8* self) {
 }
 
 extern "C" void fn_80111648(u8* p) {
-    if (p[0x11c] == 0) {
+    if (p[0x11c] != 0) {
+        p[0x11c]--;
+    } else {
         (*(VObj_801116EC**)(p + 0x110))->m7(0xff);
         (*(u8**)(p + 0x14))[0xb0] = 0;
         p[0x11d] = 1;
         lbl_802FF140 = 0;
         p[0x11c] = 0x1e;
+        u8 t = p[0x11c];
         VObj_801116EC* obj = *(VObj_801116EC**)((u8*)lbl_802FF278 + 4);
         if (obj != 0) {
-            obj->m1(p[0x11c]);
+            obj->m1(t);
         }
         p[0x118] = 5;
-    } else {
-        p[0x11c]--;
     }
 }
 
@@ -120,17 +121,17 @@ extern "C" void fn_80111718(void)
 {
 }
 
-extern "C" s32 fn_8011171C(u8* self, s16 a, u8 b, u32 c, u32 mode) {
+extern "C" s32 fn_8011171C(u8* self, s16 a, u8 b, u32 c, u32 d) {
     f32 f;
     if (a < 0) {
         return 0;
     }
-    if (a > b) {
+    if (a > (u8)b) {
         return 1;
     }
     f = fn_801118D8(self, b, a);
-    if (mode != 2) {
-        if (mode == 1) {
+    if ((s32)d != 2) {
+        if ((s32)d == 1) {
             f = lbl_80301340 - f;
         }
         (*(VObj_801116EC**)(self + 0x110))->m7((int)((float)self[0x114] * f));
