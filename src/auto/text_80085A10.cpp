@@ -11,7 +11,7 @@ extern void fn_8008665C(void*, u32);
 extern u8 g_bit_mask_table[8];
 extern s32 fn_8008668C(int);
 extern "C" void fn_80085F0C(void);
-extern "C" void fn_800861C4(int, u32);
+extern "C" s32 fn_800861C4(int, u32);
 extern "C" s32 fn_8008603C(int, u32);
 extern "C" char lbl_80498FB8[];
 extern "C" void dispose__7JKRHeapFv(void* param_1);
@@ -204,6 +204,68 @@ extern "C" void fn_80085FF4(int param_1, s32 param_2, u32 param_3) {
     } else {
         fn_800861C4(param_1, param_3);
     }
+}
+
+extern "C" s32 fn_8008603C(int param_1, u32 param_2) {
+    u8 inRun = 0;
+    s32 runStart = -1;
+    s32 result = -1;
+    s32 best = ~-(u32)(param_2 == 0) & 0xffff;
+    u32* base = *(u32**)(param_1 + 0x78);
+    u32* end = (u32*)((u8*)base + ((*(u32*)(param_1 + 0x70) + 0x1f) >> 3 & ~3));
+    u32* p;
+    s32 count;
+
+    for (p = base; p <= end; p++) {
+        u32 word = (p == end) ? 0xffffffff : *p;
+        if (word == 0) {
+            if (!inRun) {
+                runStart = ((s32)p - (s32)base) / 4 * 32;
+                count = 0;
+                inRun = 1;
+            }
+            count += 0x20;
+        } else if (word != 0xffffffff || inRun) {
+            s32 bit;
+            for (bit = 0; bit < 32; bit++) {
+                if (word & (0x80000000U >> bit)) {
+                    if (inRun) {
+                        if (param_2 == 0) {
+                            if (best < count) {
+                                best = count;
+                                result = runStart;
+                            }
+                        } else {
+                            if (count == param_2) {
+                                return runStart;
+                            }
+                            if (param_2 < count) {
+                                if (*(u8*)(param_1 + 0x84) == 1) {
+                                    return runStart;
+                                }
+                                if (count < best) {
+                                    best = count;
+                                    result = runStart;
+                                }
+                            }
+                        }
+                        inRun = 0;
+                    }
+                } else {
+                    if (!inRun) {
+                        runStart = bit + ((s32)p - (s32)base) / 4 * 32;
+                        count = 0;
+                        inRun = 1;
+                    }
+                    count++;
+                }
+            }
+        }
+    }
+    if (param_2 == 0) {
+        return best;
+    }
+    return result;
 }
 
 extern "C" void fn_800863C0(void* param_1) {
