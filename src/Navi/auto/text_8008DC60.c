@@ -1213,13 +1213,13 @@ extern "C" void fn_80096E48(char* param_1) {
 
 extern "C" void fn_80096EA0(u8* p) {
     if (fn_800C6FD4(*(void**)(p + 0x27c))) {
-        switch (*(*(u8**)(p + 0x27c) + 0x8c)) {
-            case 2:
-                p[0x282f] = 1;
-                p[0x282c] = 0;
-                p[0x85c] = 0;
-                p[0x2a5] = 1;
-                break;
+        u8 s = *(*(u8**)(p + 0x27c) + 0x8c);
+        if (s == 2) {
+            p[0x282f] = 1;
+            p[0x282c] = 0;
+            p[0x85c] = 0;
+            p[0x2a5] = 1;
+        } else if (s > 2) {
         }
     }
 }
