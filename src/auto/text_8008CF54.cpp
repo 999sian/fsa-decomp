@@ -66,6 +66,12 @@ extern "C" void fn_8008DADC(u32 *);
 extern "C" void fn_8008DE64(u32 *, int);
 extern "C" void fn_8008D0D4(void);
 extern "C" void fn_8008D148(int);
+extern "C" void fn_8008DFA0(u32 *param_1, s16 param_2);
+extern "C" void fn_8008E530(int param_1, int param_2, u32 param_3);
+extern "C" s64 OSGetTime(void);
+extern "C" u32 lbl_8052EB98;
+extern "C" u32 lbl_80539DA8;
+extern "C" u32 lbl_80539DAC;
 void operator delete(void *p);
 
 struct JUTGamePad {
