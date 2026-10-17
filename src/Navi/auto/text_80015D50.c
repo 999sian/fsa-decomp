@@ -10,6 +10,16 @@ extern "C" void fn_80016814(void*);
 extern "C" s32 fn_801D703C(u8, void*, void*);
 extern "C" void fn_801D7158(void*);
 extern u8 lbl_80204FA8[];
+extern "C" void fn_801D2BDC(void);
+extern "C" void fn_801BE368(void*);
+extern "C" void fn_801BE670(void*);
+extern "C" void fn_801C027C(void);
+extern "C" s32 fn_801C1594(void);
+extern "C" void fn_801C0884(void*, void*, s32, void*, u32, s32, s32);
+extern "C" void fn_801C0EEC(void*);
+extern "C" void fn_800168D0(void);
+extern u8 lbl_802A4560[];
+extern u8 lbl_802A3560[];
 extern "C" void* fn_80015D50(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -57,5 +67,18 @@ extern "C" void fn_80016618(void* param_1) {
     u8* p = (u8*)param_1;
     fn_801D647C(p[0x1fa4]);
     *(s32*)(p + 0x1fac) = 0;
+}
+
+extern "C" BOOL fn_80016730(void* param_1) {
+    u8 auStack_28[0x20];
+    u32 iVar1;
+    iVar1 = fn_801D703C(((u8*)param_1)[0x1fa4], lbl_80204FA8, auStack_28);
+    if (iVar1 == 0) {
+        fn_801D7158(auStack_28);
+        return TRUE;
+    } else {
+        fn_80016814(param_1);
+        return FALSE;
+    }
 }
 
