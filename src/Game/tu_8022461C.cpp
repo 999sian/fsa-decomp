@@ -16,15 +16,113 @@ extern const f32 lbl_8053FF50;
 // fn_801CE800's fn_802265FC (extab_801ce800.s) - both sit in the same
 // 0x80226xxx cluster.
 extern "C" s32 fn_802260DC(void* this_);
-extern "C" s32 fn_802252F4(void* this_);
+extern "C" BOOL fn_802252F4(f32* pos, s32 room);
 
-extern "C" s32 fn_802255F4(void* this_) {
-    return fn_802252F4(this_);
+extern "C" s32 fn_802255F4(f32* pos, s32 room) {
+return fn_802252F4(pos, room);
 }
 
+extern const u16 lbl_8046AADC[];
+extern "C" BOOL fn_80225614(f32* pos, s32 room) {
+    struct Rect {
+        f32 x0, y0, x1, y1;
+    };
+    u8* g = fn_802D6A9C();
+    const Rect r = *(Rect*)((room < 8) ? g + 0xcc : g + 0xdc);
+    f32 px = pos[0];
+    f32 x0 = r.x0;
+    u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
+    u16 tile;
+    if (!in) {
+        tile = 0xf;
+    } else {
+        s32 x = px - x0;
+        s32 y = pos[1] - r.y0;
+        if (x < 0) {
+            x = 0;
+        } else if (x >= 0x200) {
+            x = 0x1ff;
+        }
+        if (y < 0) {
+            y = 0;
+        } else if (y >= 0x200) {
+            y = 0x1ff;
+        }
+        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+                           ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
+    }
+    u16 kind = lbl_8046CB88[tile];
+    u16 k = kind;
+    if (fn_802D6A9C()[room + 0x131df] != 0) {
+        if (kind == 0) {
+            k = 2;
+        } else if (kind == 0x61) {
+            k = 0;
+        }
+    } else if (kind == 0xe && lbl_8053AAF8[0x7f] != 0) {
+        if ((*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) ||
+            (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3 &&
+             *(u8*)(*(s32*)(fn_802D6A9C() + 0x14) + (s32)fn_802D6A9C() + *(s32*)(fn_802D6A9C() + 0x18) * 10 + 0x60) == 0x10 &&
+             pos[1] > lbl_8053FF50)) {
+            k = 0x51;
+        }
+    }
+    const u16* p = lbl_8046AADC;
+    if (k == *p) return TRUE;
+    if (k == *++p) return TRUE;
+    if (k == *++p) return TRUE;
+    if (k == *++p) return TRUE;
+    if (k == *++p) return TRUE;
+    return FALSE;
+}
 
 extern "C" s32 fn_802265DC(void* this_) {
     return fn_802260DC(this_);
+}
+
+extern "C" u32 fn_802265FC(f32* pos, s32 room) {
+    struct Rect {
+        f32 x0, y0, x1, y1;
+    };
+    u8* g = fn_802D6A9C();
+    Rect r = *(Rect*)((room < 8) ? g + 0xcc : g + 0xdc);
+    u8 in = (pos[0] >= r.x0 && pos[1] >= r.y0 && pos[0] < r.x1 && pos[1] < r.y1);
+    if (!in) {
+        return 0xf;
+    }
+    s32 x = pos[0] - r.x0;
+    s32 y = pos[1] - r.y0;
+    if (x < 0) {
+        x = 0;
+    } else if (x >= 0x200) {
+        x = 0x1ff;
+    }
+    if (y < 0) {
+        y = 0;
+    } else if (y >= 0x200) {
+        y = 0x1ff;
+    }
+    u16 tile = lbl_8046CB88[fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff];
+    if (fn_802D6A9C()[room + 0x131df] == 0) {
+        if (tile == 0xe && lbl_8053AAF8[0x7f] != 0) {
+            if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
+                return 0x51;
+            }
+            if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 3) {
+                s32 base = *(s32*)(fn_802D6A9C() + 0x14);
+                u8* g2 = fn_802D6A9C();
+                u8* h = fn_802D6A9C();
+                if (h[base + *(s32*)(g2 + 0x18) * 10 + 0x60] == 0x10 && pos[1] > lbl_8053FF50) {
+                    return 0x51;
+                }
+            }
+        }
+        return tile;
+    }
+    if (tile != 0) {
+        return tile == 0x61 ? 0 : tile;
+    }
+    return 2;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
