@@ -90,6 +90,16 @@ struct Unk80458F04Sound {
     JAISoundParamsMove mMove;
 };
 
+struct Unk8045A3D8Src {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual JASSoundParams* v3(s32 idx);
+    char pad4[0x10 - 0x4];
+    u8 m10;
+    u8 m11;
+};
+
 struct Unk80458880Mgr {
     virtual void v0();
     virtual void v1();
@@ -998,10 +1008,10 @@ extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" void __register_global_object(void*, void (*)(void*), void*);
 extern "C" void fn_8045A114(void) {
-    char* base = lbl_8052DBE0;
+    char* base = &lbl_8052DBE0[0];
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
-        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0);
         __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
     }
     if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
