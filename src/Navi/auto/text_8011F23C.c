@@ -403,7 +403,7 @@ extern "C" void* fn_80120B20(void* ptr, s16 param_2) {
 
 extern "C" void fn_80120C98(void) {
     void* p = lbl_802FF348;
-    if (p != NULL) {
+    if (p != NULL && p != NULL) {
         lbl_802FF348 = NULL;
         fn_8015AB1C(p);
     }
