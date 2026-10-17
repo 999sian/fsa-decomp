@@ -1704,7 +1704,6 @@ inline s32 countSharing6(char* p) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
-            me = S32(p, 0x4);
             if ((linked = S32(p, 0xd60)) >= 0) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
