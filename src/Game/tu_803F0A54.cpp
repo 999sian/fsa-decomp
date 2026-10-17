@@ -8,6 +8,7 @@ extern "C" void fn_80436668(void* p);
 extern "C" s32 fn_804366B8(void* p);
 extern "C" void fn_80458880(void* p, s32 a, s32 b);
 extern "C" u8* lbl_8053AAF8;
+extern const f32 lbl_8054372C;
 extern const f32 lbl_80543768;
 extern const f32 lbl_80543770;
 extern const f32 lbl_80543774;
