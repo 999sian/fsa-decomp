@@ -11,6 +11,14 @@ extern "C" u32 fn_8022EA0C(s32 idx);
 extern "C" s32 fn_8023DE58(s32 idx);
 extern "C" f32* fn_8023E724(s32 idx);
 extern "C" void fn_80238548(s32 idx, s32 a, f32* pos, s32 b);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* p, s32 x);
+extern "C" void fn_801F0E34(void* p, u32 a, s32 b);
+extern "C" void fn_800FA6B0(void* p);
+extern "C" void fn_80458F9C(void* p, s32 x);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern void* lbl_8053AF80;
 
 // ---- from Game/fn_800F7FCC_dtor.cpp
 
