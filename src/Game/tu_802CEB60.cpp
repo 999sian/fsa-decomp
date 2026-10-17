@@ -1,5 +1,4 @@
 #include "types.h"
-#include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 
 void operator delete(void* p);
