@@ -542,6 +542,60 @@ extern "C" void* fn_8013BE60(void* this_, s16 flag) {
     return this_;
 }
 
+extern void* lbl_8053AD78;
+extern "C" void* fn_802FFDEC(void* p, JKRHeap* heap);
+extern "C" void* fn_8030E718(void* p);
+extern "C" void* fn_8013F3E4(void* p, JKRHeap* heap);
+extern "C" void* fn_801594E8(void* p, JKRHeap* heap);
+extern "C" void* fn_801602E8(void* p, JKRHeap* heap);
+extern "C" void* fn_804030C4(u32 type, const char* name);
+extern char lbl_80465970[];
+extern "C" void* fn_8013BFEC(u8* this_, JKRHeap* heap) {
+    *(void**)this_ = lbl_8049F108;
+    heap->getTotalFreeSize();
+    lbl_8053AB10 = this_;
+    *(JKRSolidHeap**)(this_ + 0x4) = JKRSolidHeap::create(0xffffffff, heap, false);
+    (*(JKRSolidHeap**)(this_ + 0x4))->becomeCurrentHeap();
+    *(J3DDrawBuffer**)(this_ + 0x8) = new (*(JKRSolidHeap**)(this_ + 0x4), 0) J3DDrawBuffer(0x80);
+    *(J3DDrawBuffer**)(this_ + 0xc) = new (*(JKRSolidHeap**)(this_ + 0x4), 0) J3DDrawBuffer(0x80);
+    (*(JKRSolidHeap**)(this_ + 0x4))->adjustSize();
+    heap->becomeCurrentHeap();
+    *(J2DOrthoGraph**)(this_ + 0x10) = new (heap, 0) J2DOrthoGraph(0.0f, 0.0f, (f32)(s32)JUTVideo::getManager()->getFbWidth(), (f32)(s32)JUTVideo::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
+    *(J2DOrthoGraph**)(this_ + 0x14) = new (heap, 0) J2DOrthoGraph(0.0f, 0.0f, (f32)(s32)JUTVideo::getManager()->getFbWidth(), (f32)(s32)JUTVideo::getManager()->getEfbHeight(), -10000.0f, 10000.0f);
+    JUTFont* font = *(JUTFont**)((char*)lbl_8053AD78 + 0x154);
+    *(J2DPrint**)(this_ + 0x18) = new (heap, 0) J2DPrint(font, 0.0f, (f32)(s32)font->getHeight());
+    *(JUTTexture**)(this_ + 0x34) = new (heap, 0) JUTTexture((int)JUTVideo::getManager()->getFbWidth(), (int)JUTVideo::getManager()->getEfbHeight(), GX_TF_RGB565);
+    void* p = operator new(0xe464, heap, 0);
+    if (p != 0) {
+        p = fn_802FFDEC(p, heap);
+    }
+    *(void**)(this_ + 0x20) = p;
+    p = operator new(0x85c, heap, 0);
+    if (p != 0) {
+        p = fn_8030E718(p);
+    }
+    *(void**)(this_ + 0x24) = p;
+    p = operator new(0x411c, heap, 0);
+    if (p != 0) {
+        p = fn_8013F3E4(p, heap);
+    }
+    *(void**)(this_ + 0x28) = p;
+    p = operator new(0x10, heap, 0);
+    if (p != 0) {
+        p = fn_801594E8(p, heap);
+    }
+    *(void**)(this_ + 0x2c) = p;
+    p = operator new(0x298, heap, 0);
+    if (p != 0) {
+        p = fn_801602E8(p, heap);
+    }
+    *(void**)(this_ + 0x30) = p;
+    void* img = fn_804030C4('TIMG', lbl_80465970);
+    *(J2DPicture**)(this_ + 0x1c) = new (heap, 0) J2DPicture((const ResTIMG*)img);
+    (*(J2DPicture**)(this_ + 0x1c))->setBlackWhite(JUtility::TColor(0xff), JUtility::TColor(0));
+    return this_;
+}
+
 extern "C" u32* fn_8013C394() {
     return (u32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x144);
 }
