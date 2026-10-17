@@ -88,6 +88,11 @@ extern "C" BOOL fn_8011AB40(void)
     return TRUE;
 }
 
+extern "C" void fn_8011B1F8(u8* p) {
+    p[0x98] = 0;
+    p[0xa8] = 1;
+}
+
 extern "C" void fn_8011B8F8(void) {
     if (lbl_802FF2E9 == 0) {
         if (OSGetResetSwitchState() != 0) {
