@@ -23,6 +23,23 @@ extern void* lbl_80299E38[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80299A78[];
 extern void* lbl_80299A8C[];
+extern "C" void fn_80192EA8(u32* p, u32* src) {
+    p[0] = (u32)src;
+    p[1] = src[6];
+    p[3] = src[7];
+    p[5] = src[9];
+    p[2] = 0;
+    p[4] = 0;
+    p[6] = 0;
+    p[7] = src[6];
+    p[9] = src[7];
+    p[8] = 0;
+    p[10] = 0;
+    p[11] = p[1];
+    p[12] = p[3];
+    p[13] = p[5];
+}
+
 extern "C" void* fn_80192F60(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
