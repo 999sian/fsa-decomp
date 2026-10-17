@@ -203,3 +203,13 @@ template <>
 JASMemPool<JAISeq> JASPoolAllocObject<JAISeq>::memPool_;
 template <>
 JASMemPool<JAISe> JASPoolAllocObject<JAISe>::memPool_;
+static inline void GXPosition3f32(f32 x, f32 y, f32 z) {
+    *(volatile f32*)0xCC008000 = x;
+    *(volatile f32*)0xCC008000 = y;
+    *(volatile f32*)0xCC008000 = z;
+}
+
+static inline void GXTexCoord2f32(f32 s, f32 t) {
+    *(volatile f32*)0xCC008000 = s;
+    *(volatile f32*)0xCC008000 = t;
+}
