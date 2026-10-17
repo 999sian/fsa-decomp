@@ -211,6 +211,24 @@ extern "C" void fn_8040F16C(u8* self) {
 struct J2DGrafContext;
 enum J2DRotateAxis { J2DROTATE_Z = 'z' };
 struct J2DPane {
+	virtual void v08(); virtual void v0c();
+	virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1c();
+	virtual void v20(); virtual void v24(); virtual void v28(); virtual void v2c();
+	virtual void v30(); virtual void v34(); virtual void v38(); virtual void v3c();
+	virtual void v40(); virtual void v44(); virtual void v48(); virtual void v4c();
+	virtual void v50(); virtual void v54(); virtual void v58(); virtual void v5c();
+	virtual void v60(); virtual void v64(); virtual void v68(); virtual void v6c();
+	virtual void v70(); virtual void v74(); virtual void v78(); virtual void v7c();
+	virtual void v80(); virtual void v84(); virtual void v88(); virtual void v8c();
+	virtual void v90(); virtual void v94(); virtual void v98(); virtual void v9c();
+	virtual void va0(); virtual void va4(); virtual void va8(); virtual void vac();
+	virtual void vb0(); virtual void vb4(); virtual void vb8(); virtual void vbc();
+	virtual void vc0(); virtual void vc4(); virtual void vc8(); virtual void vcc();
+	virtual void vd0(); virtual void vd4(); virtual void vd8(); virtual void vdc();
+	virtual void ve0(); virtual void ve4(); virtual void ve8(); virtual void vec();
+	virtual void vf0(); virtual void vf4(); virtual void vf8(); virtual void vfc();
+	virtual void v100();
+	virtual void setBlendRatio(f32, f32, f32, f32, f32, f32, f32, f32); // 0x104
 	void rotate(f32, f32, J2DRotateAxis, f32);
 };
 struct J2DScreen {
@@ -266,6 +284,51 @@ extern "C" void fn_80408F38(u8* self, f32 scale) {
 		Pane408* p = (*(Screen408**)(self + 0x14))->search(lbl_8048C5D0[i]);
 		f32 a = self[0x642 + i];
 		p->setAlpha((int)(a * scale));
+	}
+}
+
+extern "C" void fn_80409014(u8* self) {
+	(*(s16*)(self + 0x422))++;
+	if (*(s16*)(self + 0x422) >= 15) {
+		*(s16*)(self + 0x422) = 0;
+		if (*(u8*)(*(u8**)(*(u8**)(self + 0x228) + 4) + 0xb0)) {
+			*(u8*)(*(u8**)(*(u8**)(self + 0x228) + 4) + 0xb0) = 0;
+			*(u8*)(*(u8**)(*(u8**)(self + 0x22c) + 4) + 0xb0) = 1;
+			*(u8*)(*(u8**)(*(u8**)(self + 0x230) + 4) + 0xb0) = 0;
+			*(u8*)(*(u8**)(*(u8**)(self + 0x234) + 4) + 0xb0) = 1;
+		} else {
+			*(u8*)(*(u8**)(*(u8**)(self + 0x228) + 4) + 0xb0) = 1;
+			*(u8*)(*(u8**)(*(u8**)(self + 0x22c) + 4) + 0xb0) = 0;
+			*(u8*)(*(u8**)(*(u8**)(self + 0x230) + 4) + 0xb0) = 1;
+			*(u8*)(*(u8**)(*(u8**)(self + 0x234) + 4) + 0xb0) = 0;
+		}
+	}
+	J2DPane* pane = *(J2DPane**)(*(u8**)(self + 0x23c) + 4);
+	(*(s16*)(self + 0x420))++;
+	if (*(s16*)(self + 0x420) >= 180) {
+		*(s16*)(self + 0x420) = 0;
+	}
+	s16 c = *(s16*)(self + 0x420);
+	u32* vt = *(u32**)pane;
+	if (c < 45) {
+		f32 t = (f32)(c * c) / 2025.0f;
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 90.0f);
+	} else if (c < 90) {
+		s32 j = c - 45;
+		f32 t = (f32)(j * j) / 2025.0f;
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 90.0f);
+	} else if (c < 135) {
+		s32 j = c - 90;
+		f32 t = (f32)(j * j) / 2025.0f;
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 270.0f);
+	} else {
+		s32 j = c - 135;
+		f32 t = (f32)(j * j) / 2025.0f;
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 270.0f);
 	}
 }
 
