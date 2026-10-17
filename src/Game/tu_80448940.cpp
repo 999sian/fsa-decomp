@@ -10,7 +10,7 @@ struct J2DScreen;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, float, float, const J2DGrafContext*);
 extern "C" u8 lbl_80490940[];
 extern "C" u8 lbl_80490B00[];
-extern "C" u32 lbl_804B1C68;
+extern "C" u8 lbl_804B1C68[];
 extern "C" void* fn_804030C4(u32, u32);
 struct fn_80449494_Obj {
     virtual void Release(int);
@@ -21,6 +21,60 @@ extern "C" void fn_80449070(void* self_) {
     fn_8013B490(lbl_8053AB10);
     f32 f = lbl_80543DA8;
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
+extern "C" void fn_804490B8(void* self_) {
+    u8* self = (u8*)self_;
+    u8* base = lbl_80490940;
+    u8* entry = base;
+    void* handle;
+    J2DPane* pane;
+    int i;
+
+    for (i = 0; i < 4; i++) {
+        self[0x32] &= ~(1 << i);
+        handle = fn_804030C4(0x54494D47, *(u32*)&lbl_804B1C68);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x48));
+        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x50));
+        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x58));
+        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x60));
+        ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+        entry += 0x70;
+    }
+
+    self[0x32] &= 0xEF;
+    handle = fn_804030C4(0x54494D47, *(u32*)&lbl_804B1C68);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x20));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x28));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x30));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x38));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x40));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x48));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x50));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x58));
+    ((void (*)(void*, void*, int))(*(void***)pane)[68])(pane, handle, 0);
+
+    entry = base;
+    for (i = 0; i < 4; i++) {
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x30));
+        ((u8*)pane)[0xb0] = 0;
+        pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(entry + 0x68));
+        ((u8*)pane)[0xb0] = 0;
+        entry += 0x70;
+    }
+
+    pane = (*(J2DScreen**)(self + 4))->search(*(u64*)(lbl_80490B00 + 0x60));
+    ((u8*)pane)[0xb0] = 0;
 }
 
 extern "C" void __dl__FPv(void*);
