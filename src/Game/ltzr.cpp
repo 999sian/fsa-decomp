@@ -3,6 +3,7 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "Game/ItemBase.h"
 
 // ---- from src/Game/Ltzr_ctor_80340C60.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
@@ -35,6 +36,31 @@ extern "C" void* fn_8033F9A0(void* this_, s16 flag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8033FC4C(Mtx m, f32* scale, f32* rot, f32* trans) {
+    f32 sx = sin(rot[0]);
+    f32 sy = sin(rot[1]);
+    f32 sz = sin(rot[2]);
+    f32 cx = cos(rot[0]);
+    f32 cy = cos(rot[1]);
+    f32 cz = cos(rot[2]);
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 cxcz = cx * cz;
+    f32 sxsz = sx * sz;
+    m[0][0] = scale[0] * (cy * cz);
+    m[1][0] = scale[0] * (cy * sz);
+    m[2][0] = scale[0] * -sy;
+    m[0][1] = scale[1] * (sxsy * cz - cxsz);
+    m[1][1] = scale[1] * (sxsy * sz + cxcz);
+    m[2][1] = scale[1] * (sx * cy);
+    m[0][2] = scale[2] * (cxcz * sy + sxsz);
+    m[1][2] = scale[2] * (cxsz * sy - sx * cz);
+    m[2][2] = scale[2] * (cx * cy);
+    m[0][3] = trans[0];
+    m[1][3] = trans[1];
+    m[2][3] = trans[2];
 }
 
 extern "C" s32 fn_80340650(void) { return 0; }
