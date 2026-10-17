@@ -626,6 +626,61 @@ extern "C" s16 fn_801D02E0(u8* this_, const Vec& pos) {
     return lbl_8053EFEC * JMAAtan2Radian(px - *(f32*)(this_ + 0xc), py - *(f32*)(this_ + 0x10));
 }
 
+extern "C" u8 fn_801CCFE4(u32 id);
+extern "C" u32 fn_801F320C(u8* this_, u32 id);
+extern "C" s32 fn_8023DE58(s32 id);
+extern "C" s32 fn_8022CAF8(s32 id);
+extern "C" u8 fn_8022F514(s32 id);
+extern "C" s32 fn_801D0B44(u8* this_, u32 id) {
+    s32 result = 0;
+    if (fn_801CCFE4(id)) {
+        s32 ok = 0;
+        switch (*(s32*)(this_ + 0x1a0)) {
+        case 0x4b45504f:
+        case 0x464c4f52:
+        case 0x46424745:
+        case 0x46414c4c:
+        case 0x48524d4e:
+        case 0x54494e4b:
+        case 0x534c4b32:
+        case 0x4e415649:
+        case 0x545a4f4b: {
+            s32 room = *(s32*)(this_ + 4);
+            s32 roomId = fn_8023DE58(id);
+            if (roomId == room) {
+                ok = 1;
+            }
+            break;
+        }
+        default:
+            ok = fn_801F320C(this_, id);
+            break;
+        }
+        if ((u8)ok) {
+            switch (*(s32*)(this_ + 0x1a0)) {
+            case 0x4e415649:
+            case 0x48524d4e:
+            case 0x464c4f52:
+            case 0x46414c4c:
+            case 0x4b45504f:
+            case 0x544e4452:
+            case 0x54494e4b:
+            case 0x545a4f4b:
+                if (fn_8022CAF8(id) == 4) {
+                    result = 1;
+                } else if (!fn_8022F514(id)) {
+                    result = 1;
+                }
+                break;
+            default:
+                result = 1;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
 extern "C" s32 fn_801D0D50(void* thisArg, s32 playerIdx, f32* point, f32 radius) {
     u8* p = (u8*)thisArg;
     f32 radiusSq = radius * radius;
