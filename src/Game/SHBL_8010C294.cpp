@@ -101,9 +101,10 @@ extern "C" void fn_801D267C(void* p);
 extern "C" u8* fn_8010D7A0(u8* this_) {
     __ct__5ActorFv(this_);
     *(void**)this_ = lbl_8049D020;
-    f32 b = lbl_8053C490;
+    f32 b;
     f32 a = lbl_8053C4D4;
     *(u16*)(this_ + 0x230) = 0;
+    b = lbl_8053C490;
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23c) = -1;
