@@ -17,6 +17,7 @@ extern "C" const f32 lbl_80542884;
 extern "C" const f32 lbl_8054288C;
 extern "C" u8* lbl_8053AC98;
 extern "C" const u16 lbl_80542868[];
+extern "C" const f32 lbl_80542870;
 struct Vec8035A860 {
     f32 x, y, z;
     Vec8035A860& operator-=(const Vec8035A860& o) {
