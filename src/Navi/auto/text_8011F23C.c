@@ -368,6 +368,14 @@ extern "C" void fn_80123928(void* p, const void* fmt, va_list args) {
     fn_80123628(p, buf);
 }
 
+extern "C" s32 fn_80123A4C(u8* p) {
+    s32 n = *(s32*)(p + 0x38) - *(s32*)(p + 0x34);
+    if (n >= 0) {
+        return n;
+    }
+    return n + *(s32*)(p + 0x24);
+}
+
 extern "C" s32 fn_80123A70(u8* p) {
     s32 n = *(s32*)(p + 0x30) - *(s32*)(p + 0x34);
     if (n >= 0) {
