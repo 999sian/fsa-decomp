@@ -40,6 +40,9 @@ extern "C" void fn_80118B58(void*, int, int);
 
 extern "C" void fn_8015AB40(void*);
 extern "C" void fn_801196E0(void*);
+extern "C" void fn_80118E24(void* a, void* b, void* c, u8 d);
+extern "C" void fn_80119004(void* p);
+extern "C" void fn_801190F4(void* p, u8 v);
 extern "C" void fn_8011972C(void* p, u8* src);
 extern "C" u8 fn_80119AD4(void*);
 extern "C" void fn_80119A04(void*);
@@ -119,19 +122,22 @@ extern "C" void fn_801193D8(u8* self, u16* table) {
 }
 
 extern "C" int fn_801E6578(void* a, void* b);
+extern "C" u16 fn_801194E4(void* param_1, char* param_2);
 extern "C" void* fn_801194B4(u8* self, u16 idx) {
+    u8* table = *(u8**)(self + 4);
     if (idx < *(u16*)(self + 0xc)) {
-        u8* table = *(u8**)(self + 4);
-        return table + *(u16*)(table + idx * 4 + 6);
+        u8* e = table + idx * 4;
+        return table + *(u16*)(e + 6);
     }
     return NULL;
 }
 
 extern "C" u16 fn_801194E4(void* param_1, char* param_2) {
-    u16 hash = 0;
+    s32 hash = 0;
     while (*param_2 != 0) {
-        hash = (s8)*param_2 + hash * 3;
+        s8 c = *param_2;
         param_2++;
+        hash = c + hash * 3;
     }
     return hash;
 }
@@ -301,7 +307,10 @@ extern "C" void* fn_8011AC24(void* p, void* v) {
 }
 
 extern "C" void fn_8011AC3C(void* param_1) {
-    fn_8011AC74(param_1, 0, 0, *(u16*)(*(u8**)((u8*)lbl_802FF328 + 4) + 4), *(u16*)(*(u8**)((u8*)lbl_802FF328 + 4) + 6));
+    u8* p = *(u8**)((u8*)lbl_802FF328 + 4);
+    u16 b = *(u16*)(p + 6);
+    u16 a = *(u16*)(p + 4);
+    fn_8011AC74(param_1, 0, 0, a, b);
 }
 
 extern "C" void* fn_8011B0D8(u8* p, s16 del) {
