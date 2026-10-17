@@ -347,6 +347,11 @@ extern "C" int fn_80122FB0(int param_1, int param_2)
 	return (param_1 + 2) * param_2 + 0x6c;
 }
 
+extern "C" u32 fn_80122FC0(u32 param_1, u32 param_2)
+{
+	return (param_1 - 0x6c) / (param_2 + 2);
+}
+
 extern "C" void fn_80123EA0(void* p)
 {
 	lbl_802FF364 = p;
