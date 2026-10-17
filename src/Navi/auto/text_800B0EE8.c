@@ -69,6 +69,36 @@ extern "C" void fn_800B10D4(u8* p);
 extern "C" void fn_800B4D64(u8* p);
 extern "C" void fn_800B48F8(u8* p);
 extern "C" void fn_800B4E7C(u8* p);
+extern "C" void fn_800B0EE8(u8* p) {
+    *(void**)p = lbl_802FEC84;
+    u8 v = (u8)lbl_802B7CA0[0x3fc] & 0xf;
+    if (v >= 12) {
+        v = 0;
+    }
+    p[0x387] = v % 4;
+    p[0x388] = v / 4;
+    p[0x386] = 0;
+    p[0x60] = 0;
+    p[0x3a0] = 0;
+    p[0x3a1] = 0;
+    p[0x385] = 1;
+    p[0x384] = 0;
+    p[0x39a] = 0;
+    fn_800B15E0(p);
+    fn_800B10D4(p);
+    fn_800B4D64(p);
+    fn_800B48F8(p);
+    fn_800B4E7C(p);
+    fn_800B95E4(p);
+    p[0x39d] = 0;
+    if (p[0x39b] != 0 && p[0x39c] != 0) {
+        p[0x39d] = 1;
+    }
+    p[0x3a3] = 0;
+    *(u32*)(p + 0x378) = 0;
+    p[0x3a2] = 0;
+}
+
 extern "C" void fn_800B0FE8(u8* p) {
     p[0x3a0] = 0;
     p[0x3a1] = 0;
