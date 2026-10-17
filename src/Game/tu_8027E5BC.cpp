@@ -159,6 +159,64 @@ void fn_8027F854(char* p, JGeometry::TVec3<f32>* out, s32 i) {
     }
 }
 
+void fn_802808E8(char* p, f32 f) {
+    JGeometry::TVec3<f32> tmp;
+    f32 a = f;
+    f32 b = f;
+    if (U8(p, 0x1216) != 0) {
+        return;
+    }
+    if (JMathInlineVEC::PSVECSquareMag(&VEC(p, 0x35c)) > lbl_8054035C * FLT_EPSILON) {
+        a = lbl_80540360;
+        b = lbl_80540360;
+    }
+    if (U8(p, 0x3c1)) {
+        a = lbl_80540360;
+    }
+    if (U8(p, 0x3c2)) {
+        b = lbl_80540360;
+    }
+    u32 kind = fn_8022461C(p + 8, S32(p, 0x3b4));
+    if ((u16)(kind - 0x2c) <= 2 || (u16)kind == 0x2f) {
+        b *= lbl_8054037C;
+    }
+    if (fn_8022B244(p) && fn_802416C4(p) == 5) {
+        a *= lbl_805403A0;
+        b *= lbl_805403A0;
+    }
+    F32(p, 0x38c) = a;
+    F32(p, 0x390) = b;
+    if (a * a + b * b <= lbl_8054035C * FLT_EPSILON) {
+        return;
+    }
+    if (U8(PTR(p, 0xbf0), 0xb7)) {
+        return;
+    }
+    if (fn_80246B10(p, 0x40)) {
+        F32(p, 0x368) = lbl_80540360;
+        F32(p, 0x36c) = lbl_80540360;
+        return;
+    }
+    F32(p, 0x8) += a * fn_8022C82C(S32(p, 0x4));
+    s32 area = S32(p, 0x3b4);
+    if (*((u8*)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0) {
+        if (fn_8022C76C(S32(p, 0x4)) > lbl_80540360) {
+            s32 i;
+            for (i = 0; i < 8; i++) {
+                fn_8024B298(p, i, &tmp);
+                tmp.y += b * -fn_8022C76C(S32(p, 0x4));
+                if ((u16)fn_8022461C((char*)&tmp, area) != 2) {
+                    F32(p, 0xc) += b * -fn_8022C76C(S32(p, 0x4));
+                    return;
+                }
+            }
+            F32(p, 0x36c) = lbl_80540360;
+            return;
+        }
+    }
+    F32(p, 0xc) += b * -fn_8022C76C(S32(p, 0x4));
+}
+
 void fn_80280DD8(char* p) {
     void* emitter = PTR(p, 0x1350);
     if (emitter != NULL) {
@@ -688,8 +746,7 @@ s32 fn_8023DE58(s32);
 void fn_802808E8(char*, f32);
 void fn_8027EEB4(char*);
 void fn_80261480(char*);
-s32 fn_80248778(char*);
-s32 fn_80240888(char*);
+extern "C" s32 fn_80240888(char* p);
 f32 fn_80246F28(char*);
 void fn_8027E7E0(char*);
 extern const f32 lbl_80540378;
