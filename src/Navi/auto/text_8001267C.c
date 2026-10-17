@@ -50,3 +50,13 @@ extern "C" s32 fn_800126C8(Table_800126C8* self, const void* src, u32 key) {
     return -1;
 }
 
+extern "C" void fn_800127A0(Table_800126C8* self, s8 idx) {
+    if (idx >= 0) {
+        if (self->entries[idx].key == 0) {
+            fn_800074C0(lbl_80204A4C, &self->entries[idx]);
+        } else {
+            self->entries[idx].key = 0;
+        }
+    }
+}
+
