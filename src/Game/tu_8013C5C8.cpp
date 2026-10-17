@@ -108,6 +108,36 @@ extern "C" s32 fn_8013D5B0(void* this_) {
     return fn_800EC188(*(void**)((char*)this_ + 0xc));
 }
 
+extern "C" void __sinit_tu_8013C5C8_cpp_8013D6E4(u8* this_) {
+    if (fn_80134CC8(lbl_8053AAF8)) {
+        return;
+    }
+    struct SinitPOD_ {
+        f32 cam[3][4];
+        f32 prj[3][4];
+    };
+    SinitPOD_ src;
+    src = *(SinitPOD_*)(*(u8**)(lbl_8053AB10 + 0x24) + 0xe4);
+    f32 info[2][3][4];
+    PSMTXIdentity(info[0]);
+    PSMTXIdentity(info[1]);
+    fn_8013B438(lbl_8053AB10);
+    draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), &src, 0);
+    draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), &src, 3);
+    capture__10JUTTextureFii9_GXTexFmtbUc(*(void**)(lbl_8053AB10 + 0x34), 0, 0, **(u8**)(*(u8**)(lbl_8053AB10 + 0x34) + 0x20), 0, 0);
+    fn_8013B490(lbl_8053AB10);
+    f32 info2[2][3][4];
+    PSMTXIdentity(info2[0]);
+    PSMTXIdentity(info2[1]);
+    PSMTXCopy(*(u8**)(lbl_8053AB10 + 0x10) + 0x80, info[0]);
+    u8* mode = *(u8**)((u8*)sManager__8JUTVideo + 4);
+    C_MTXLightOrtho(info[1], 0.0f, (f32)*(s16*)(mode + 6), 0.0f, (f32)*(s16*)(mode + 4), 0.5f, 0.5f, 0.5f, 0.5f);
+    draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), info, 5);
+    fn_8013B438(lbl_8053AB10);
+    GXSetAlphaUpdate(0);
+    draw__17JPAEmitterManagerFPC11JPADrawInfoUc(*(void**)(this_ + 0xc), &src, 1);
+}
+
 extern "C" u8 fn_80134CC8(void*);
 extern "C" void fn_8013B438(void*);
 extern "C" void fn_8013B490(void*);
@@ -271,7 +301,11 @@ extern "C" void fn_8013F5B0(void* this_, u8* p) {
 }
 
 extern "C" void fn_8013F6BC(void) {
-    PSMTXCopy((u8*)*(void**)(lbl_8053AB10 + 0x24) + 0xe4, (u8*)*(void**)((u8*)*(void**)((u8*)*(void**)(lbl_8053AB10 + 0x28) + 0xc) + 0x20) + 0x184);
+    u8* p = lbl_8053AB10;
+    u8* src = (u8*)*(void**)(p + 0x28);
+    src = (u8*)*(void**)(src + 0xc);
+    src = (u8*)*(void**)(src + 0x20) + 0x184;
+    PSMTXCopy((u8*)*(void**)(p + 0x24) + 0xe4, src);
 }
 
 extern "C" void* fn_8013F6F8(void* this_, s16 freeFlag) {
