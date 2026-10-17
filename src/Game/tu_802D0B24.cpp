@@ -80,6 +80,29 @@ extern "C" const f32 lbl_80540EB8;
 extern "C" const f32 lbl_80540EBC;
 extern "C" const f32 lbl_80540EC0;
 extern "C" const f32 lbl_80540EC4;
+extern "C" const f32 lbl_80540EB0;
+extern "C" const f32 lbl_80540EB4;
+extern char* lbl_8053AAF8;
+extern void* lbl_8053AC98;
+struct YasiVT {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void breakUp();
+};
+extern "C" YasiVec* fn_8023E7B0(s32 holder);
+extern "C" s32 fn_8023DE58(s32 holder);
+extern "C" u8 fn_8023BCD4(s32 holder);
+extern "C" char* fn_802D6A9C(void);
+extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" u16 fn_80226850(YasiVec* pos, u32 room);
+extern "C" void fn_802A381C(void* mgr, YasiVec* pos, u32 room, s32 id);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 holder, s32 b);
+extern "C" u8 fn_801F2B20(void* this_, s32 a);
 extern "C" void* fn_802D0B24(void* p, s16 flags) {
     if (p != 0) {
         *(void**)p = lbl_804A93D0;
