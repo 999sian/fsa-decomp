@@ -18,7 +18,6 @@ struct Rect16 {
 };
 struct Bits_801A3EF8 { u8 pad[0x28]; u8 hi : 4; u8 b1 : 2; u8 b0 : 2; u8 pad2[7]; };
 struct Bits_801A4338 { u8 pad[0x3c]; u8 hi : 4; u8 b1 : 2; u8 b0 : 2; u8 pad2[3]; };
-struct Colors_801A4E90 { u8 pad[0x20]; GXColor col[8]; };
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80196344-0x801a537c (574 functions). split_file divides it into the game's real files.
