@@ -9,6 +9,10 @@ extern "C" unsigned char fn_8022C9AC(int a);
 extern "C" void fn_80230EB8(int a, int b);
 extern "C" const int lbl_8046C400[][6];
 extern float lbl_80540760;
+extern float lbl_8054075C;
+extern "C" float* fn_8023E724(int i);
+extern "C" unsigned char* fn_802D6A9C(void);
+extern "C" void fn_801F0D20(void* this_, int a);
 
 struct Vec {
     float x, y, z;
