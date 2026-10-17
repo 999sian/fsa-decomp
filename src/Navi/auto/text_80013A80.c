@@ -30,7 +30,12 @@ extern "C" void fn_80015A00(void* p);
 extern "C" void fn_800265F0(u8 param_1);
 extern void* lbl_802FF370;
 extern u32 lbl_802FB958;
-extern u32 lbl_80204EBC[3];
+struct Unk80204EBC {
+    u32 a;
+    u32 b;
+    u32 c;
+};
+extern struct Unk80204EBC lbl_80204EBC;
 extern "C" s32 fn_80124A50(void* mgr, u8 id, void* buf);
 extern "C" void fn_80124AAC(void* mgr, u8 id, void (*cb)(void*, void*), void* p);
 extern "C" void fn_80124820(void* mgr, u8 id, void (*cb)(void*, void*), void* p);
@@ -235,8 +240,7 @@ extern "C" void fn_80014260(void* p) {
         }
         fn_80015A40(self);
     } else {
-        u32 tbl[3] = {lbl_80204EBC[0], lbl_80204EBC[1], lbl_80204EBC[2]};
-        fn_8001533C(self, tbl, 0);
+        fn_8001533C(self, &lbl_80204EBC, 0);
     }
 }
 
