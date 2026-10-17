@@ -75,6 +75,15 @@ extern "C" void fn_800827C4(u8* p)
 	fn_801C5D74(lbl_8029F8D8, *(u8**)(*(u8**)(p + 0x358) + 4) + 0x24);
 }
 
+extern "C" s32 fn_80083584(u8* p) {
+    if (*(s8*)(p + 0x462) == 0) {
+        (*(s8*)(p + 0x462))++;
+    } else if (*(s8*)(p + 0x462) != -1) {
+        fn_8000D6F4(p + 0x394);
+    }
+    return 1;
+}
+
 extern "C" void fn_80081328(void);
 extern "C" void fn_80086710(void) {
     fn_80081328();
