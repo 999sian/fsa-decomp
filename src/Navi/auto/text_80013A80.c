@@ -188,14 +188,13 @@ extern "C" void fn_80013F24(void* p) {
 }
 
 extern "C" void fn_80013FC0(void* p) {
-    Unk80013DA0* self = (Unk80013DA0*)p;
     s32 r;
     struct Unk80204EA4 tbl;
-    if (fn_80124900(lbl_802FF370, self->unk50, &r) == 0) {
-        fn_80124AAC(lbl_802FF370, self->unk50, fn_80013C5C, self);
+    if (fn_80124900(lbl_802FF370, ((Unk80013DA0*)p)->unk50, &r) == 0) {
+        fn_80124AAC(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013C5C, p);
     } else {
         tbl = lbl_80204EB0;
-        fn_8001533C(self, &tbl, 0);
+        fn_8001533C(p, &tbl, 0);
     }
 }
 
