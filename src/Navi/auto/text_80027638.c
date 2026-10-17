@@ -113,10 +113,10 @@ extern "C" void fn_80027CB8(void) {
     }
 }
 
-extern "C" void fn_8002A410(void);
+extern "C" void fn_8002A410(unsigned char* p);
 
-extern "C" void fn_80027D4C(void) {
-    fn_8002A410();
+extern "C" void fn_80027D4C(unsigned char* p) {
+    fn_8002A410(p);
 }
 
 extern "C" void fn_80029118(const char*, ...) {
