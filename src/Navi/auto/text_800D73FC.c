@@ -23,6 +23,7 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301058;
 extern "C" f32* fn_80177B10(void* p);
+extern "C" void fn_800E6770(u8* p);
 extern "C" int fn_8004D308(void* a, s32 b, s32 c, void* d, void* e, void* f, s32 g, s32 h, s32 i, s32 j, s32 k);
 extern void* lbl_802FF0BC;
 extern f32 lbl_803010EC;
@@ -69,9 +70,10 @@ extern "C" void fn_800E29CC(u8* p) {
 
 extern "C" void fn_800E347C(u8* p) {
     s32 i;
+    u32 flags = *(u32*)(lbl_802B7CA0 + 0x3448);
     for (i = 0; i < 4; i++) {
         p[0xa78 + i] = 0xff;
-        if (*(u32*)(lbl_802B7CA0 + 0x3448) & (1 << i)) {
+        if (flags & (1 << i)) {
             p[0xa78 + i] = fn_80057530(i);
         }
     }
