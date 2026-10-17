@@ -1,55 +1,13 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
-class JKRHeap {
-public:
-    int getFreeSize();
-};
+#include "JSystem/JAudio/System/JASBank.h"
+#include "JSystem/JAudio/System/JASDrumSet.h"
+#include "JSystem/JAudio/System/JASCalc.h"
 
 class JASBNKParser {
 public:
     static void* createBank(const void*, JKRHeap*);
-};
-
-class JASInstParam {
-public:
-    JASInstParam() {
-        mVolume = 1.0f;
-        mPitch = 1.0f;
-        mFxMix = 0.0f;
-        mPan = 0.5f;
-        mDolby = 0.0f;
-        _14 = 0;
-        _18 = 0;
-        _1c = 0;
-        _20 = 0;
-        _24 = 0;
-        _26 = 0;
-    }
-
-    float mVolume;
-    float mFxMix;
-    float mPitch;
-    float mPan;
-    float mDolby;
-    unsigned long _14;
-    unsigned long _18;
-    void** _1c;
-    unsigned long _20;
-    unsigned char _24;
-    unsigned short _26;
-};
-
-class JASInst {
-public:
-    virtual ~JASInst();
-    virtual bool getParam(int, int, JASInstParam*) const;
-    virtual unsigned long getType() const;
-};
-
-class JASBasicBank {
-public:
-    JASInst* getInst(int) const;
 };
 
 extern JKRHeap* JASDram;
@@ -82,8 +40,11 @@ extern "C" void* fn_8002F294(const void* data, JKRHeap* heap) {
 }
 
 extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key) {
-    for (int i = 0; i < 0x80; i++) {
-        char* p = fn_80030454(data, *(unsigned long*)(data + 0x20 + i * 4 + 4));
+    char* p;
+    unsigned long* off = (unsigned long*)(data + 0x20);
+    int i = 0;
+    for (; i < 0x80; i++, off++) {
+        p = fn_80030454(data, off[1]);
         if (p != 0) {
             for (int j = 0; j < 2; j++, p += 4) {
                 if (fn_8003043C(data, *(unsigned long*)(p + 0x10)) == key) {
