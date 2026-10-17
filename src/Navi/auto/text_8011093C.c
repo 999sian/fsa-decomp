@@ -140,10 +140,11 @@ extern "C" s32 fn_8011171C(u8* self, s16 a, u8 b, u32 c, u32 d) {
 }
 
 extern "C" void fn_801117DC(u8* p) {
-    char* base = lbl_802B7CA0 + 0x1424;
     if (p[0x11d] == 0) {
+        char* base = lbl_802B7CA0 + 0x1424;
         fn_80060794(base, base + 0xb4, base + 0xb8, p + 8);
     } else {
+        char* base = lbl_802B7CA0 + 0x1424;
         fn_80060794(base, base + 0x204, base + 0x208, p + 8);
     }
 }
