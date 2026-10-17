@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" void fn_8000D6F4(void*);
 extern "C" void fn_801C5D74(void* p, void* q);
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
