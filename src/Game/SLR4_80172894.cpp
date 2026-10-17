@@ -244,6 +244,7 @@ extern void* lbl_804A0B90[];
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 void __dl__FPv(void*);
 extern "C" void fn_80138B7C(void* mgr);
+extern "C" void __dl__FPv(void*);
 extern "C" void* fn_80174600(void* this_, s16 flag) {
     char* p = (char*)this_;
     if (this_ != 0) {
