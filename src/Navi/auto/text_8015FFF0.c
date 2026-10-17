@@ -279,6 +279,7 @@ extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+#pragma dont_inline reset
 
 extern "C" void fn_80161678(u16* p, void* s);
 extern "C" int fn_801E6578(void* a, void* b);
