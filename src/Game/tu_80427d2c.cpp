@@ -565,8 +565,8 @@ extern "C" s32 fn_8042829C() {
         case 0:
             return 0;
         case 1:
-            lbl_8052AAD0.internalState = 0;
             lbl_8052AAD0.state = 1;
+            lbl_8052AAD0.internalState = 0;
             lbl_8052AAD0.dispTextureSet = 0;
             lbl_8052AAD0.playAudioBuffer = 0;
             lbl_8052AAD0.mF0 = 0;
