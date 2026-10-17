@@ -13,6 +13,15 @@ extern "C" void* fn_80015D50(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80016170(void* param_1) {
+    u8* p = (u8*)param_1;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        *(s32*)(p + 0x1fa8) = 3;
+        fn_801BE47C(p + 0x1fb0);
+        fn_801BE764(p + 0x1fc8);
+    }
+}
+
 extern "C" void fn_801BE47C(void*);
 extern "C" BOOL fn_801BE5B4(void*);
 extern "C" s32 fn_800164D0(void* param_1) {
