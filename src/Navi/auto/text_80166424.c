@@ -2,6 +2,9 @@
 
 #include "types.h"
 
+extern void* lbl_802988A8[];
+extern "C" void fn_80118BD0(void* p, int b);
+
 struct RGB8_8017261C { u8 r, g, b; };
 struct Color4_8017261C { u8 r, g, b, a; };
 struct Entry_8017261C { u8 pad[0x16]; Color4_8017261C colors[1]; };
@@ -1033,7 +1036,6 @@ extern "C" int fn_8016CEB4(u8* p, u32 idx, void* val)
 }
 
 extern "C" int fn_8016CF64(u8* p, u32 idx) {
-    void (*fn)(u8*, u8, u32);
     if (idx >= 2) {
         return 0;
     }
@@ -1049,8 +1051,7 @@ extern "C" int fn_8016CF64(u8* p, u32 idx) {
     *(void**)(p + 0x68) = 0;
     *(void**)(p + 0x70) = 0;
     *(u16*)(p + 6) = 0xFFFF;
-    fn = (void (*)(u8*, u8, u32))(((void**)(*(void**)p))[0xac / 4]);
-    fn(p, (u8)idx, 0);
+    ((void (*)(void*, u32, u32, u32))(*(void***)p)[0xac / 4])(p, (u8)idx, 0, 0);
     return 1;
 }
 
@@ -1101,28 +1102,31 @@ extern "C" int fn_8016D0F4(u8* p, void* obj)
 #pragma use_lmw_stmw off
 extern "C" s32 fn_8016D174(u8* self, u32 a, u32 c)
 {
+    u8* slot;
+
     if (a >= 2) {
         return 0;
     }
+    slot = self + a * 4;
     if (c != 0) {
-        if (*(void**)(self + a * 4 + 0x6c) == nullptr) {
+        if (*(void**)(slot + 0x6c) == nullptr) {
             void* p = fn_8015A90C(0x18);
             if (p != nullptr) {
                 fn_80119240(p, a, c);
             }
-            *(void**)(self + a * 4 + 0x6c) = p;
-            if (*(void**)(self + a * 4 + 0x6c) == nullptr) {
+            *(void**)(slot + 0x6c) = p;
+            if (*(void**)(slot + 0x6c) == nullptr) {
                 return 0;
             }
         } else {
-            fn_80119240(*(void**)(self + a * 4 + 0x6c), 0, c);
+            fn_80119240(*(void**)(slot + 0x6c), 0, c);
         }
-        if (*(void**)(self + a * 4 + 0x64) != nullptr) {
-            fn_80118F5C(*(void**)(self + a * 4 + 0x64), *(void**)(self + a * 4 + 0x6c));
+        if (*(void**)(slot + 0x64) != nullptr) {
+            fn_80118F5C(*(void**)(slot + 0x64), *(void**)(slot + 0x6c));
         }
     } else {
-        fn_8015AB1C(*(void**)(self + a * 4 + 0x6c));
-        *(void**)(self + a * 4 + 0x6c) = nullptr;
+        fn_8015AB1C(*(void**)(slot + 0x6c));
+        *(void**)(slot + 0x6c) = nullptr;
     }
     return 1;
 }
