@@ -2,3 +2,8 @@
 // .text 0x80147740-0x8014780c (2 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_80147808(void) {}
+typedef struct {
+    unsigned char unk0[8];
+    unsigned char unk8;
+    unsigned char unk9[0x64 - 9];
+} Unk802D5CA8;
