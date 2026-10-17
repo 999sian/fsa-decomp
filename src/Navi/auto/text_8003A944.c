@@ -28,7 +28,7 @@ struct VObj_8003A988 {
 struct VObj_800402B4 {
     virtual void m0();
     virtual void m1();
-    virtual void m2();
+    virtual void m2(s16 a);
     virtual void m3();
     virtual void m4(s16 a);
 };
@@ -634,10 +634,8 @@ extern "C" void* fn_80040230(void* param_1, s16 param_2) {
 
 extern "C" void fn_800402B4(void) {
     extern void* lbl_802BF110[];
-    register void* obj = lbl_802BF110[2];
-    if (obj != nullptr) {
-        void (*dtor)(void*, s16) = (void (*)(void*, s16)) * (void**)((*(void***)obj)[4]);
-        dtor(obj, 1);
+    if (lbl_802BF110[2] != nullptr) {
+        ((VObj_800402B4*)lbl_802BF110[2])->m4(1);
     }
     lbl_802BF110[2] = nullptr;
 }
