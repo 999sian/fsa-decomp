@@ -170,6 +170,24 @@ extern "C" void fn_80100A08(void* param_1) {
     *(u8*)((u8*)param_1 + 0x189) = 0x10;
 }
 
+extern "C" void fn_80100A3C(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x528) != 0) {
+        *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0x188) = 0;
+    if (*(u16*)((u8*)param_1 + 0x18c) != 0) {
+        fn_8002F458((void*)0xad, 0);
+        fn_8002F7C0((void*)0x8, 0);
+        *(u32*)((u8*)param_1 + 0x124) = 0;
+        *(u8*)((u8*)*(void**)((u8*)param_1 + 0x110) + 0xb0) = 1;
+        *(u16*)((u8*)param_1 + 0x528) = 8;
+        *(u8*)((u8*)param_1 + 0xf2) = 0xe;
+        *(u8*)((u8*)param_1 + 0x188) = 1;
+        *(u8*)((u8*)param_1 + 0x189) = 0x11;
+    }
+}
+
 extern "C" void fn_80101004(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
