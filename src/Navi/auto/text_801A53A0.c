@@ -40,6 +40,14 @@ extern "C" void fn_801A53A0(u8* param_1, u32 param_2) {
     fn_8018F890(mask, *(f32*)(param_1 + 0xc), *(f32*)(param_1 + 0x10), *(f32*)(param_1 + 0x14));
 }
 
+extern "C" void fn_801A598C(u8* param_1, s32 param_2) {
+    if (*(u32*)(lbl_802EE470 + 0x34) & 0x40000000) {
+        fn_801A670C(param_1, param_2);
+    } else {
+        fn_801A66A8(param_1, param_2);
+    }
+}
+
 extern "C" void fn_801A59C8(void) {
     fn_801A59E8();
 }
@@ -70,15 +78,16 @@ extern "C" void fn_801A6238(u8* param_1) {
 }
 
 extern "C" void fn_801A6664(void) {
-    s32 i;
+    s32 i = 0;
     u8* p = lbl_802F0408;
-    for (i = 0; i < 0x100; i++) {
+    do {
         p[0] = i >> 6;
         p[1] = (i >> 4) & 3;
         p[2] = (i >> 2) & 3;
         p[3] = i & 3;
+        i++;
         p += 4;
-    }
+    } while (i < 0x100);
 }
 
 extern "C" void fn_801A66A8(u8* param_1, s32 param_2) {
