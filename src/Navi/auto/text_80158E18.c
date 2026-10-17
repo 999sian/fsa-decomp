@@ -575,7 +575,7 @@ extern "C" int fn_8015A958(int a, int b) {
     return 0;
 }
 
-extern "C" int fn_8015A9A8(int a, void* p) {
+extern "C" int fn_8015A9A8(int a, void* p, int c) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
         virtual void v4(); virtual void v5(); virtual void v6();
