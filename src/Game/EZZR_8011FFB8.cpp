@@ -80,8 +80,8 @@ extern "C" void fn_80120F38(int param_1)
     if ((*(unsigned int *)(param_1 + 0x90) & 1) != 0) {
         *(u8 *)(param_1 + 0x3c4) = 1;
     }
-    *(unsigned int *)(param_1 + 0x35c) = (*(unsigned int *)(param_1 + 0x90) >> 16) & 0xff;
-    *(unsigned int *)(param_1 + 0x3d0) = (*(unsigned int *)(param_1 + 0x90) >> 8) & 0xff;
+    *(unsigned int *)(param_1 + 0x35c) = (*(unsigned int *)(param_1 + 0x90) >> 8) & 0xff;
+    *(unsigned int *)(param_1 + 0x3d0) = (*(unsigned int *)(param_1 + 0x90) >> 16) & 0xff;
 }
 
 extern "C" s32 fn_80121040(void* p)
