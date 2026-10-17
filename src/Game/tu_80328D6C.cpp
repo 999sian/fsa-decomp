@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JGeometry/Box.h"
 
 struct Actor;
 
@@ -52,51 +53,47 @@ extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D79E8(void* mgr, s32 room, s32 zero, f32 a, f32 b);
 extern "C" s32 fn_801F0E34(Actor* a, u32 code, u32 z);
 extern "C" void fn_80328E7C(Actor* this_) {
-    u8* p = (u8*)this_;
-    f32* pos = (f32*)(p + 0xC);
-    f32* vel = (f32*)(p + 0x3C);
-    f32 rect[4];
-    f32 out[2];
-    u8 blocked;
+    BOOL blocked;
     s32 i;
     u8 done = 0;
+    u8* p = (u8*)this_;
+    Vec* pos = (Vec*)(p + 0xC);
+    Vec* vel = (Vec*)(p + 0x3C);
+    f32 rect[4];
+    f32 out[2];
 
     rect[0] = *(f32*)(p + 0x60);
     rect[1] = *(f32*)(p + 0x64);
     rect[2] = *(f32*)(p + 0x68);
     rect[3] = *(f32*)(p + 0x6C);
-    rect[0] += pos[0];
-    rect[1] += pos[1];
-    rect[2] += pos[0];
-    rect[3] += pos[1];
+    rect[0] = rect[0] + pos->x;
+    rect[1] = rect[1] + pos->y;
+    rect[2] = rect[2] + pos->x;
+    rect[3] = rect[3] + pos->y;
     p[0x238] = 0;
     p[0x239] = 0;
     p[0x23A] = 0;
     p[0x23B] = 0;
-    pos[0] += vel[0];
-    pos[1] += vel[1];
-    pos[2] += vel[2];
+    JMathInlineVEC::PSVECAdd(pos, vel, pos);
     blocked = fn_801F2618(this_, 0, 0);
     for (i = 0; i < 4; i++) {
-        if (fn_8023F264(i)) {
-            if (!fn_8023EA28(i)) {
-                if (((f32*)fn_8023E724(i))[1] > pos[1]) {
-                    if (pos[0] - lbl_80541CE4 < ((f32*)fn_8023E724(i))[0]) {
-                        if (lbl_80541CE4 + pos[0] > ((f32*)fn_8023E724(i))[0]) {
-                            if (*(s32*)(p + 0x230) == 1 && !blocked) {
-                                if (fn_8023B190(i, rect, *(s32*)(p + 0x4))) {
-                                    out[0] = lbl_80541CE8 * (rect[0] - rect[2]) + rect[2];
-                                    out[1] = lbl_80541CE8 * (rect[1] - rect[3]) + rect[3];
-                                    fn_80238548(i, *(s32*)(p + 0x114), out, 0x14);
-                                    if (!done) {
-                                        done = 1;
-                                        fn_802399D8(i, rect, *(s32*)(p + 0x4), *(s32*)(p + 0x198));
-                                        p[0x238 + i] = fn_80239718(i, *(s32*)(p + 0x198));
-                                        if (*(s32*)(p + 0x230) == 0) {
-                                            if (pos[0] - lbl_80541CEC < ((f32*)fn_8023E724(i))[0]) {
-                                                if (lbl_80541CEC + pos[0] > ((f32*)fn_8023E724(i))[0]) {
-                                                    *(s32*)(p + 0x230) = 1;
-                                                }
+        if (fn_8023F264(i) && !fn_8023EA28(i)) {
+            if (((f32*)fn_8023E724(i))[1] > pos->y) {
+                if (pos->x - lbl_80541CE4 < ((f32*)fn_8023E724(i))[0]) {
+                    if (lbl_80541CE4 + pos->x > ((f32*)fn_8023E724(i))[0]) {
+                        if (*(s32*)(p + 0x230) == 1 && !blocked) {
+                            if (fn_8023B190(i, rect, *(s32*)(p + 0x4))) {
+                                out[0] = lbl_80541CE8 * (rect[0] - rect[2]) + rect[2];
+                                out[1] = lbl_80541CE8 * (rect[1] - rect[3]) + rect[3];
+                                fn_80238548(i, *(s32*)(p + 0x114), out, 0x14);
+                                if (!done) {
+                                    done = 1;
+                                    fn_802399D8(i, rect, *(s32*)(p + 0x4), *(s32*)(p + 0x198));
+                                    p[0x238 + i] = fn_80239718(i, *(s32*)(p + 0x198));
+                                    if (*(s32*)(p + 0x230) == 0) {
+                                        if (pos->x - lbl_80541CEC < ((f32*)fn_8023E724(i))[0]) {
+                                            if (lbl_80541CEC + pos->x > ((f32*)fn_8023E724(i))[0]) {
+                                                *(s32*)(p + 0x230) = 1;
                                             }
                                         }
                                     }
@@ -127,8 +124,8 @@ extern "C" void fn_80328E7C(Actor* this_) {
         }
         break;
     case 2:
-        if (pos[1] <= *(f32*)(p + 0x240)) {
-            pos[1] = *(f32*)(p + 0x240);
+        if (pos->y <= *(f32*)(p + 0x240)) {
+            pos->y = *(f32*)(p + 0x240);
             *(s32*)(p + 0x230) = 0;
         }
         break;
@@ -136,13 +133,13 @@ extern "C" void fn_80328E7C(Actor* this_) {
         break;
     }
     if (*(s32*)(p + 0x230) == 1) {
-        if (vel[1] < lbl_80541CF8) {
-            vel[1] = vel[1] + lbl_80541CFC;
+        if (vel->y < lbl_80541CF8) {
+            vel->y = vel->y + lbl_80541CFC;
         }
     } else if (*(s32*)(p + 0x230) == 3) {
-        vel[1] = lbl_80541D00;
+        vel->y = lbl_80541D00;
     } else {
-        vel[1] = lbl_80541CF4;
+        vel->y = lbl_80541CF4;
     }
 }
 
