@@ -31,6 +31,38 @@ struct Mtx34_8011395C {
     float m[3][4];
 };
 
+union EffWord {
+    u32 w;
+    u8 b[4];
+};
+
+struct EffArgs {
+    u8 order[0x10];
+    EffWord f10;
+    EffWord f14;
+    void* ptr;
+    u8 b1c;
+    u8 b1d;
+    u8 b1e;
+    u8 b1f;
+    u8 b20;
+    u8 b21;
+    u8 b22;
+    u8 b23;
+    u8 b24;
+    u8 b25;
+    u8 b26;
+    u8 pad27;
+    u32 w28;
+    u8 b2c;
+    u8 b2d;
+    u8 b2e;
+    u8 pad2f;
+    s32 x30;
+    s32 x34;
+    s32 x38;
+};
+
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SP01) || defined(VERSION_G4SE01)
 extern "C" int fn_80113788(char* self) {
@@ -44,14 +76,7 @@ extern "C" f32 lbl_8053C6A0;
 extern "C" void fn_80113790(char* self) {
     u8 buf[0x40];
     f32 mtx[3][4];
-    struct P {
-        f32 x;
-        f32 y;
-    };
-    struct V {
-        P xy;
-        f32 z;
-    } vec;
+    Vec3_80113B54 vec;
     s32 i;
 
     if (*(s32*)(self + 0x248) > 0) {
@@ -105,8 +130,7 @@ extern "C" void fn_80113790(char* self) {
         *(f32(**)[4])(buf + 0x18) = mtx;
         *(s8*)(buf + 0x1d) = -1;
         buf[0x2d] = 1;
-        vec.z = *(f32*)(self + 0x14);
-        vec.xy = *(P*)(self + 0xc);
+        vec = *(Vec3_80113B54*)(self + 0xc);
         vec.z = lbl_8053C69C;
         if (*(s32*)(self + 4) < 8) {
             fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &vec, *(s32*)(self + 0x260), buf);
@@ -285,6 +309,60 @@ extern "C" int fn_80113E98(char* self) {
     }
     return 0;
 }
+
+extern "C" void fn_80114860(char* this_) {
+    s32 v = *(s32*)((u8*)fn_8011921C() + 8);
+    if (*(s32*)(this_ + 0x238) == 0) {
+        if (v == lbl_8046486C[2]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 2);
+        } else if (v == lbl_8046486C[3]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 3);
+        } else if (v == lbl_8046486C[4]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 4);
+        } else if (v == lbl_8046486C[5]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 5);
+        } else if (v == lbl_8046486C[6]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 6);
+        } else if (v == lbl_8046486C[7]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 7);
+        } else if (v == lbl_8046486C[9]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 9);
+        } else if (v == lbl_8046486C[11]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 11);
+        } else if (v == lbl_8046486C[12]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 12);
+        } else if (v == lbl_8046486C[13]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 13);
+        } else if (v == lbl_8046486C[14]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 14);
+        } else if (v == lbl_8046486C[15]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 15);
+        } else if (v == lbl_8046486C[16]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 16);
+        } else if (v == lbl_8046486C[17]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 17);
+        }
+    } else {
+        if (v == lbl_8046486C[2]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 2);
+        } else if (v == lbl_8046486C[3]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 3);
+        } else if (v == lbl_8046486C[4]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 4);
+        } else if (v == lbl_8046486C[5]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 5);
+        } else if (v == lbl_8046486C[6]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 6);
+        } else if (v == lbl_8046486C[7]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 7);
+        } else if (v == lbl_8046486C[9]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 9);
+        } else if (v == lbl_8046486C[10]) {
+            ((void (*)(char*, s32))(*(void***)this_)[24])(this_, 10);
+        }
+    }
+}
+
 #endif
 
 extern "C" void fn_8010DF58(char*);
@@ -316,7 +394,8 @@ extern "C" void fn_802D7440(s32 a);
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_80539F00;
 extern "C" void fn_80115248(char* self) {
-    f32 vec[5][3];
+    Vec3_80113B54 vec[5];
+    Vec3_80113B54 tmp[4];
     fn_8010DF98(self);
     *(u32*)(self + 0x238) = *(u32*)(self + 0x90) & 0xff;
     *(u32*)(self + 0x244) = (*(u32*)(self + 0x90) >> 22) & 0x1f;
@@ -325,30 +404,34 @@ extern "C" void fn_80115248(char* self) {
     *(s32*)(self + 0x260) = vfn(obj, 0x3f3f3f3f, lbl_80539F00);
     fn_801D2608(self + 0x264, lbl_8049D820, 7);
     s32 st = *(s32*)(self + 0x238);
-    if (st > 5 || st < 0) {
+    if (st == 6 || st > 6) {
         fn_801D22DC(self + 0x264, 6, 2, 0);
-    } else {
+    } else if (st >= 0) {
         fn_801D22DC(self + 0x264, 4, 2, 0);
+    } else {
+        fn_801D22DC(self + 0x264, 6, 2, 0);
     }
     fn_801D1F14(self + 0x264);
+    tmp[0].z = lbl_8053C69C;
     *(f32*)(self + 0x10) = *(f32*)(self + 0x10) - lbl_8053C67C;
-    vec[0][0] = *(f32*)(self + 0xc);
-    vec[0][1] = *(f32*)(self + 0x10);
-    vec[0][2] = *(f32*)(self + 0x14);
-    vec[1][0] = *(f32*)(self + 0x24) - lbl_8053C698;
-    vec[1][1] = *(f32*)(self + 0x28) - lbl_8053C684;
-    vec[1][2] = lbl_8053C69C;
-    vec[2][0] = *(f32*)(self + 0x24) + lbl_8053C698;
-    vec[2][1] = *(f32*)(self + 0x28) - lbl_8053C684;
-    vec[2][2] = lbl_8053C69C;
-    vec[3][0] = *(f32*)(self + 0x24) - lbl_8053C698;
-    vec[3][1] = *(f32*)(self + 0x28) + lbl_8053C684;
-    vec[3][2] = lbl_8053C69C;
-    vec[4][0] = *(f32*)(self + 0x24) + lbl_8053C698;
-    vec[4][1] = *(f32*)(self + 0x28) + lbl_8053C684;
-    vec[4][2] = lbl_8053C69C;
+    vec[0] = *(Vec3_80113B54*)(self + 0xc);
+    tmp[1].z = lbl_8053C69C;
+    tmp[2].z = lbl_8053C69C;
+    tmp[3].z = lbl_8053C69C;
+    tmp[0].x = *(f32*)(self + 0x24) - lbl_8053C698;
+    tmp[0].y = *(f32*)(self + 0x28) - lbl_8053C684;
+    tmp[1].x = *(f32*)(self + 0x24) + lbl_8053C698;
+    tmp[1].y = *(f32*)(self + 0x28) - lbl_8053C684;
+    tmp[2].x = *(f32*)(self + 0x24) - lbl_8053C698;
+    tmp[2].y = *(f32*)(self + 0x28) + lbl_8053C684;
+    tmp[3].x = *(f32*)(self + 0x24) + lbl_8053C698;
+    tmp[3].y = *(f32*)(self + 0x28) + lbl_8053C684;
+    vec[1] = tmp[0];
+    vec[2] = tmp[1];
+    vec[3] = tmp[2];
+    vec[4] = tmp[3];
     for (s32 i = 0; i < 5; i++) {
-        *(s32*)(self + 0x2d0 + i * 4) = fn_8013CC50(*(void**)(self + 0x4), vec[i], lbl_804648E8[i], 0, lbl_8053C690, lbl_804648F4[i], 0, 0, 1);
+        *(s32*)(self + 0x2d0 + i * 4) = fn_8013CC50(*(void**)(self + 0x4), &vec[i], lbl_804648E8[i], 0, lbl_8053C690, lbl_804648F4[i], 0, 0, 1);
     }
     fn_802D6A9C();
     fn_802D7440(0);
