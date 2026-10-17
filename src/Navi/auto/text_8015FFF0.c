@@ -484,8 +484,8 @@ extern "C" u32 fn_80161B94(u8* a, u8* b, u32* out) {
 }
 
 extern "C" void fn_80161C90(u8* p) {
-    u32 i;
     u8* x;
+    u32 i;
     if (*(u32*)(p + 0x44) == 0) {
         return;
     }
