@@ -16,6 +16,8 @@ public:
     virtual void s2C();
     virtual void s30();
     virtual u8 v13();
+    virtual void s38();
+    virtual void s3C();
     virtual void s40();
     virtual void s44();
     virtual void s48();
