@@ -3,6 +3,9 @@
 // .text 0x80057614-0x800618fc (176 functions). split_file divides it into the game's real files.
 
 extern u8 lbl_802C05F0[];
+extern char lbl_8027D36C[];
+extern char lbl_8027D49C[];
+extern "C" void fn_8005C330(const char*, ...);
 extern u8 lbl_802FF0F8;
 extern u32 lbl_802FF0FC;
 extern s32 lbl_802FF104;
@@ -1420,10 +1423,11 @@ extern "C" void fn_80060E18(u8* p) {
     }
 }
 
-void fn_80060EF0(void* param_1) {
+extern "C" void fn_80060EF0(void* param_1) {
     u8* p = (u8*)param_1 + 8;
     s32 i;
     s32 j;
+    s32 end = 0x1a;
     u32* w;
     for (i = 0; i < 8; i++) {
         if (p[0] == 1) {
@@ -1440,7 +1444,7 @@ void fn_80060EF0(void* param_1) {
         w[12] = 0; w[13] = 0; w[14] = 0; w[15] = 0;
         w[16] = 0; w[17] = 0; w[18] = 0; w[19] = 0;
         w[20] = 0; w[21] = 0; w[22] = 0; w[23] = 0;
-        for (j = 24; j < 26; j++) {
+        for (j = 24; j < end; j++) {
             w[j] = 0;
         }
         p += 0x110;
