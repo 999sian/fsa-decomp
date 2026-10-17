@@ -11,6 +11,7 @@ extern "C" void fn_80164484(void* buf);
 extern "C" s32 fn_801C806C(void* param_1, void* param_2, u32 param_3, u32 param_4, s32 param_5);
 extern "C" s32 fn_801CBA20(void);
 extern "C" void DCInvalidateRange(void* addr, u32 nBytes);
+extern u8 lbl_802FE390;
 extern u32 lbl_802FF600;
 extern u32 lbl_802FF604;
 extern u32 lbl_802FF614;
