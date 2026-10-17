@@ -29,6 +29,37 @@ extern "C" void* fn_80165600(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" s32 fn_80165654(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f) {
+    u8 buf[0x118];
+    s32 result;
+    fn_80164484(buf);
+    if (fn_80164728(buf, a) != 0) {
+        result = fn_801656F8(buf, b, c, d, e, f);
+        fn_801645A8(buf, -1);
+        return result;
+    }
+    fn_801645A8(buf, -1);
+    return 0;
+}
+#pragma use_lmw_stmw on
+
+extern "C" s32 fn_801656F8(void* a, u32 b, u32 c, u32 d, u32 e, u32 f) {
+    s32 result;
+    void* obj = fn_8016579C(a, (void*)b, c, 0, d, e, f);
+    fn_80165C24(obj, 0);
+    if (*(s32*)((u8*)obj + 0x48) < 0) {
+        fn_80165D44(obj, 1);
+        return 0;
+    }
+    if (b != 0) {
+        fn_80165D44(obj, 1);
+        return -1;
+    }
+    result = *(s32*)((u8*)obj + 0x30);
+    fn_80165D44(obj, 1);
+    return result;
+}
+
 extern "C" void* fn_8015A9A8(int, void*, int);
 extern "C" void* lbl_802FF540;
 extern "C" void* fn_80165D04(void* p);
@@ -79,6 +110,16 @@ extern "C" void* fn_80165BB4(void** param_1, s16 param_2) {
             fn_8015AB1C(param_1);
         }
     }
+    return param_1;
+}
+
+extern "C" void fn_80166B58(void* param_1, void* param_2);
+extern "C" void fn_80166B70(void* param_1, s32 param_2);
+extern "C" void fn_8015AB1C(void* param_1);
+extern "C" void* fn_80165D04(void* param_1) {
+    fn_80166B58(param_1, param_1);
+    *(s32*)((u8*)param_1 + 0x48) = 0;
+    *(u8*)((u8*)param_1 + 0x4c) = 0;
     return param_1;
 }
 
