@@ -78,6 +78,8 @@ struct DrawObj {
 
 
 extern f32 lbl_805430C8;
+extern f32 lbl_805430B8;
+extern f32 lbl_805430C4;
 class J2DTextBox {
 public:
     char* getStringPtr() const;
