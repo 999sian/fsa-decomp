@@ -3,6 +3,7 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "std/math.h"
 
 // ---- from src/Game/Table_GetSelfIndexedBit87.cpp ----
 // fn_804149C0(void) - same lbl_8050EC80 global table as
@@ -291,25 +292,24 @@ extern "C" void fn_80409014(u8* self) {
 		*(s16*)(self + 0x420) = 0;
 	}
 	s16 c = *(s16*)(self + 0x420);
-	u32* vt = *(u32**)pane;
 	if (c < 45) {
 		f32 t = (f32)(c * c) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 90.0f);
 	} else if (c < 90) {
 		s32 j = c - 45;
 		f32 t = (f32)(j * j) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 90.0f);
 	} else if (c < 135) {
 		s32 j = c - 90;
 		f32 t = (f32)(j * j) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, 1.0f - t, t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 270.0f);
 	} else {
 		s32 j = c - 135;
 		f32 t = (f32)(j * j) / 2025.0f;
-		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))vt[0x104 / 4])(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
+		((void (*)(void*, f32, f32, f32, f32, f32, f32, f32, f32))(*(u32*)(*(u32*)pane + 0x104)))(pane, t, 1.0f - t, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f, 1.0f);
 		pane->rotate(*(f32*)(*(u8**)(self + 0x23c) + 0x18) * 0.5f, *(f32*)(*(u8**)(self + 0x23c) + 0x1c) * 0.5f, J2DROTATE_Z, 270.0f);
 	}
 }
