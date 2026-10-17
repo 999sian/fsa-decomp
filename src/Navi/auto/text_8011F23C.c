@@ -887,6 +887,11 @@ extern "C" void* fn_801303BC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_80130C44(u8* param_1)
+{
+    return *(u32*)(*(u32*)(*(u32*)(param_1 + 0xe4) + 0x20) + 0x40);
+}
+
 extern void* lbl_802470EC[];
 extern "C" void* fn_80130CB8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
