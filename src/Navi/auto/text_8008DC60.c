@@ -63,11 +63,6 @@ extern f32 lbl_802FEAB0[];
 extern f32 lbl_802F0BC0[];
 extern f32 lbl_80300AF0;
 
-static inline f32 navi_signed_800A1774(f32 x)
-{
-    return lbl_80300B38 * x - lbl_80300B20;
-}
-
 #pragma fp_contract off
 static inline f32 navi_sqrtf_800A1774(f32 x)
 {
@@ -2441,10 +2436,13 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
         result = t;
         break;
     case 3: {
-        f32 bias = lbl_80300B20;
+        f32 temp;
         f32 threshold = lbl_80300B38;
-        f32 v = threshold * t - bias;
-        result = threshold * v - bias;
+        f32 bias = lbl_80300B20;
+        temp = threshold * t;
+        temp = temp - bias;
+        temp = threshold * temp;
+        result = temp - bias;
         break;
     }
     case 4: {
