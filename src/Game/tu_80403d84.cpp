@@ -363,8 +363,7 @@ extern "C" void fn_8040E720(E720* self) {
 		for (int i = 0; i < 3; i++) {
 			if (self->emitters[i]) {
 				if (self->emitters[i]->isEnd()) {
-					(*(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc))->forceDeleteEmitter(self->emitters[i]);
-					self->emitters[i] = 0;
+					killEmitter(&self->emitters[i]);
 					n++;
 				}
 			} else {
@@ -417,9 +416,9 @@ extern "C" void fn_80405B10(T5B10* self, s32 key) {
 		if (self->f38c & (1 << (self->f340 * 4 + j))) n++;
 	}
 	if (n == 1) return;
-	if (self->f34c < n - 1 && key == ((u8*)t->next)[self->f340 * 2 + self->f34c]) {
+	if (self->f34c < n - 1 && key == *((u8*)t->next + self->f340 * 2 + self->f34c)) {
 		self->f34c++;
-		self->f348 = ((s32*)t->vals)[self->f340 * 3 + self->f34c];
+		self->f348 = *(s32*)((u8*)t->vals + self->f340 * 12 + self->f34c * 4);
 		if (self->f65e == 1) {
 			self->p120->f22 = 0;
 			self->p120->f26 = 0;
@@ -428,9 +427,9 @@ extern "C" void fn_80405B10(T5B10* self, s32 key) {
 		}
 		fn_80458880(lbl_8053AF80, 0x26, -1);
 	}
-	if (self->f34c > 0 && key == ((u8*)t->prev + self->f340 * 2)[self->f34c - 1]) {
+	if (self->f34c > 0 && key == *((u8*)t->prev + self->f340 * 2 + self->f34c - 1)) {
 		self->f34c--;
-		self->f348 = ((s32*)t->vals)[self->f340 * 3 + self->f34c];
+		self->f348 = *(s32*)((u8*)t->vals + self->f340 * 12 + self->f34c * 4);
 		if (self->f65e == 1) {
 			self->p120->f22 = 0;
 			self->p120->f26 = 0;
@@ -441,7 +440,7 @@ extern "C" void fn_80405B10(T5B10* self, s32 key) {
 	}
 }
 
-static inline bool checkRowBit(u32 idx, int p, int j) {
+static inline int checkRowBit(u32 idx, int p, int j) {
 	if (p < 0 || p > 7) return false;
 	if (j < 0 || j > 3) return false;
 	return (*(u32*)((u8*)&lbl_8050EC80[idx] + 0x28) & (1 << (p * 4 + j))) != 0;
@@ -450,9 +449,8 @@ static inline bool checkRowBit(u32 idx, int p, int j) {
 extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out) {
 	int n = 0;
 	int lim;
-	u32 idx = lbl_8050EC80[0].selfIndex;
 	for (int j = 0; j < 4; j++) {
-		if (checkRowBit(idx, p, j)) n++;
+		if (checkRowBit(lbl_8050EC80[0].selfIndex, p, j)) n++;
 	}
 	if (p == 7) {
 		if (n <= 1) n--;
