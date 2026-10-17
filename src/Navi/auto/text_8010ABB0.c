@@ -111,6 +111,13 @@ extern "C" void fn_8010BD90(u8* param_1) {
     }
 }
 
+extern "C" void fn_8010BDDC(u8* param_1) {
+    if (fn_8002F6BC(param_1) == 0) {
+        param_1[0x9c] = 1;
+        param_1[0x9a] = 8;
+    }
+}
+
 extern "C" void fn_8010C0EC(u8* param_1) {
     s32 iVar1 = fn_8010C6D8(param_1, *(s16*)(param_1 + 0x98), lbl_802C5AFC[0x14], 0);
     (*(s16*)(param_1 + 0x98))++;
