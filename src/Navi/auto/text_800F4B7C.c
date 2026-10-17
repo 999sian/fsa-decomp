@@ -710,7 +710,7 @@ extern "C" void fn_80106540(char* p) {
 }
 
 extern "C" void fn_80106904(u8* p) {
-    s32 r = fn_80108B20(p, *(s16*)(p + 0xec), lbl_802C5A84[0x60], 0, 1, lbl_80301204, *(f32*)(lbl_802C5A84 + 0x5c));
+    s32 r = fn_80108B20(p, *(s16*)(p + 0xec), lbl_802C5A84[0x60], 0, 1, 0.0f, *(f32*)(lbl_802C5A84 + 0x5c));
     (*(s16*)(p + 0xec))++;
     if (r == 1) {
         *(s16*)(p + 0xec) = 0;
