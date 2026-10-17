@@ -448,6 +448,5 @@ struct FsaVObjX {
     virtual void v8(void);
     virtual void v9(void);
     virtual void v10(void);
-    virtual void v11(void);
-    virtual u8 v12(void);
+    virtual u8 v11(void* p);
 };
