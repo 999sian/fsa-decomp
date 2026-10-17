@@ -698,6 +698,17 @@ extern "C" void fn_80030250(int param_1) {
     }
 }
 
+extern unsigned char lbl_802313EC[];
+extern "C" int fn_80030390(unsigned char c) {
+    int i;
+    for (i = 0; i < 12; i++) {
+        if (lbl_802313EC[i] == c) {
+            return i;
+        }
+    }
+    return 0;
+}
+
 extern "C" unsigned char* fn_800298BC(unsigned char* self, int id);
 extern "C" int fn_80030588(int param_1) {
     unsigned char* obj;
@@ -742,16 +753,25 @@ extern "C" int fn_80030638(int param_1) {
 #pragma dont_inline reset
 extern "C" void fn_80030664(void) {}
 
+extern "C" int fn_80030668(int param_1) {
+    void* obj = *(void**)(lbl_802BB0FC + 0xf0);
+    if (obj != 0) {
+        return fn_800294AC((int)obj, (int)(lbl_8022F534 + *(int*)(lbl_802BB0FC + 0x420) * 0x1c), lbl_802FFD10, 0xf, 0, 0, param_1, 0, 0, 1);
+    }
+    return 0;
+}
+
 extern "C" unsigned char* fn_800306DC(int param_1) {
     unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    unsigned char* p;
     int i;
-    if (obj == 0) {
-        return 0;
-    }
-    for (i = 0; i < 8; i++) {
-        int v = *(int*)(obj + i * 0x3c + 0x384);
-        if (v != 0 && v == param_1) {
-            return obj + i * 0x3c + 0x384;
+    if (obj != 0) {
+        p = obj;
+        for (i = 0; i < 8; i++) {
+            if (*(int*)(p + 0x384) != 0 && *(int*)(p + 0x384) == param_1) {
+                return p + 0x384;
+            }
+            p += 0x3c;
         }
     }
     return 0;
