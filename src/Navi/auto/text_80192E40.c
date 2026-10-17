@@ -70,10 +70,13 @@ extern "C" void* fn_80192F60(void* ptr, s16 param_2) {
 
 extern "C" void fn_80192F9C(u32* p) {
     extern u8 lbl_802EE470[];
-    u8* q = lbl_802EE470;
-    *(u32*)(q + 0x10c) = p[11];
-    *(u32*)(q + 0x110) = p[12];
-    *(u32*)(q + 0x114) = p[13];
+    u32* q = (u32*)(lbl_802EE470 + 0x10c);
+    u32 a = p[11];
+    u32 b = p[12];
+    u32 c = p[13];
+    q[0] = a;
+    q[1] = b;
+    q[2] = c;
 }
 
 extern "C" void fn_80192FC0(void* p) {
@@ -107,6 +110,11 @@ extern "C" void fn_80193C94(u32* p, u32 a, u32 b) {
     p[0] = a;
     p[1] = p[0];
     p[2] = b;
+}
+
+extern "C" void fn_80193CB4(u32* p) {
+    fn_801DF0BC(p[0], p[2]);
+    return;
 }
 
 extern "C" void fn_80193CE0(u32* p)
