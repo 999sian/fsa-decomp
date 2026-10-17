@@ -470,6 +470,12 @@ extern "C" void fn_800645A8(u8* p) {
     fn_801C5D74(lbl_8029F8D8, *(u8**)(p + 0x24c) + 0x24);
 }
 
+struct Unk8027FC14 {
+    u32 a;
+    u32 b;
+    u32 c;
+};
+extern struct Unk8027FC14 lbl_8027FC14;
 extern "C" int fn_801E10A0(void* p);
 extern "C" int fn_801E1070(void* p);
 extern "C" void fn_801E10DC(void* p, void* q);
