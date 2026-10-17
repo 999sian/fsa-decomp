@@ -40,6 +40,16 @@ extern "C" s32 fn_80124900(void* mgr, u8 id, void* buf);
 extern "C" void fn_801248B8(void* mgr, u8 id, void (*cb)(void*, void*), void* p);
 extern "C" void fn_80015A40(void* self);
 extern "C" void fn_8001533C(void* self, void* tbl, s32 x);
+extern "C" s32 fn_80124868(void* mgr, u8 id, void* buf);
+extern "C" void fn_8012495C(void* mgr, u8 id, void* q, void (*cb)(void*, void*), void* p);
+extern "C" s32 fn_801249A8(void* mgr, u8 id, void* buf);
+struct Unk80204EA4 {
+    u32 a;
+    u32 b;
+    u32 c;
+};
+extern struct Unk80204EA4 lbl_80204EA4;
+extern struct Unk80204EA4 lbl_80204EB0;
 
 struct Unk80013DA0 {
     u8 pad[0x20];
@@ -173,8 +183,8 @@ extern "C" void fn_80014160(void* p) {
 }
 
 extern "C" void fn_800141EC(void* p) {
-    Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
+    Unk80013DA0* self = (Unk80013DA0*)p;
     if (fn_80124A50(lbl_802FF370, self->unk50, buf) == 0) {
         fn_80124AAC(lbl_802FF370, self->unk50, fn_80013CEC, self);
     } else {
@@ -185,8 +195,7 @@ extern "C" void fn_800141EC(void* p) {
 extern "C" void fn_80014260(void* p) {
     Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
-    u32 tbl[3] = {lbl_80204EBC[0], lbl_80204EBC[1], lbl_80204EBC[2]};
-    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == '0') {
+    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == 0x30) {
         if (self->unk20 == 1) {
             self->unk54 = 1;
         } else {
@@ -194,7 +203,23 @@ extern "C" void fn_80014260(void* p) {
         }
         fn_80015A40(self);
     } else {
+        u32 tbl[3] = {lbl_80204EBC[0], lbl_80204EBC[1], lbl_80204EBC[2]};
         fn_8001533C(self, tbl, 0);
+    }
+}
+
+extern "C" void fn_80014308(void* p) {
+    Unk80013DA0* self = (Unk80013DA0*)p;
+    u8 buf[4];
+    if (fn_80124900(lbl_802FF370, self->unk50, buf) != 0) {
+        fn_80014390(self);
+    } else {
+        self->unk58++;
+        if (self->unk58 > 0x3c) {
+            fn_80014390(self);
+        } else {
+            fn_801248B8(lbl_802FF370, self->unk50, fn_80013D10, self);
+        }
     }
 }
 
