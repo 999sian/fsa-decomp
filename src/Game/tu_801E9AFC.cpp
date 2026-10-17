@@ -10,6 +10,7 @@ extern const f32 lbl_8053F664;
 extern s8 lbl_8053AC50;
 extern u8 lbl_804CA358[];
 extern u8 lbl_80469C78[];
+extern const char* lbl_804A5610[];
 extern f32 sincosTable___5JMath[];
 
 void* fn_801F856C(void);
