@@ -1123,6 +1123,15 @@ extern "C" void fn_80129970(f32* p, f32 a, f32 b) {
     p[9] *= b;
 }
 
+extern "C" void fn_801299BC(f32* p, f32 a, f32 b) {
+    p[0] *= a;
+    p[4] *= a;
+    p[8] *= a;
+    p[2] *= b;
+    p[6] *= b;
+    p[10] *= b;
+}
+
 extern "C" void* fn_8012A804(void* p) {
     return *(void**)((char*)p + 4);
 }
