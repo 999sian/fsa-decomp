@@ -171,6 +171,18 @@ extern "C" J3DMaterial* fn_800CA7F0(const J3DMaterialFactory* self, J3DMaterial*
 extern "C" J3DMaterial* fn_800C92E8(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
 extern "C" J3DMaterial* fn_800C9D20(const J3DMaterialFactory* self, J3DMaterial* material, int idx, u32 flags);
 extern "C" char __vt__11J3DMaterial[];
+extern "C" char __vt__17J3DLockedMaterial[];
+extern "C" char __vt__13J3DColorBlock[];
+extern "C" char lbl_8049ABFC[];
+extern "C" char __vt__14J3DTexGenBlock[];
+extern "C" char lbl_8049AB90[];
+extern "C" char __vt__11J3DTevBlock[];
+extern "C" char lbl_8049AAB4[];
+extern "C" void fn_800D36E0(void* tev);
+extern "C" char __vt__11J3DIndBlock[];
+extern "C" char __vt__15J3DIndBlockNull[];
+extern "C" char __vt__10J3DPEBlock[];
+extern "C" char lbl_8049AA38[];
 
 struct J3DNBTScaleInfo {
     u8 mHasScale;
