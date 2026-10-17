@@ -1316,8 +1316,12 @@ extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
-    while (*c != *b && !fn_8013A48C((u8*)*b - 0xc, d)) {
+    void* arr[2];
+    arr[0] = *c;
+    arr[1] = *b;
+    while (arr[0] != arr[1] && !fn_8013A48C((u8*)*b - 0xc, d)) {
         *b = *(void**)*b;
+        arr[1] = *b;
     }
     *a = *b;
 }
@@ -1337,6 +1341,8 @@ extern "C" void fn_8013A424(void** a, u32* b) {
 extern "C" void fn_8013A86C(void) {}
 
 extern "C" void fn_8013A870(void) {}
+
+extern "C" void fn_8013A874(void) {}
 
 extern void* lbl_80292F5C[];
 extern "C" void* fn_8013AF0C(void* ptr, s16 param_2) {
