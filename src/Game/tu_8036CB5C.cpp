@@ -1,5 +1,19 @@
 #include "Game/Actor.h"
 
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
+extern "C" f64 __ps_add(f64 a, f64 b);
+
+/* paired-single Vec add, same code as JMathInlineVEC::PSVECAdd */
+static inline void PSVECAdd(const Vec* a, const Vec* b, Vec* d) {
+    f64 axy = __psq_l((void*)a, 0, 0, 0);
+    f64 bxy = __psq_l((void*)b, 0, 0, 0);
+    f64 az = __psq_l((void*)a, 8, 1, 0);
+    f64 bz = __psq_l((void*)b, 8, 1, 0);
+    __psq_st(__ps_add(axy, bxy), (void*)d, 0, 0, 0);
+    __psq_st(__ps_add(az, bz), (void*)d, 8, 1, 0);
+}
+
 
 extern "C" char lbl_804AE230[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -57,6 +71,36 @@ extern "C" void fn_8036CE58(Actor* this_) {
     fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 4), p + 0x24, *(s32*)(p + 0x24c) + 0x147, 0, 1, -1, 0, 0, 0);
 }
 
+extern "C" void fn_8036CF1C(Actor* this_) {
+    u8* p = (u8*)this_;
+    f32 box[4];
+    f32 dx;
+    s32 hit;
+
+    box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+    box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+    box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
+    box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+    *(f32*)(p + 0x3c) = lbl_80542CD8;
+    *(f32*)(p + 0x40) = lbl_80542CD8;
+    *(f32*)(p + 0x44) = lbl_80542CD8;
+
+    if (*(s32*)(p + 0x258) > 0) {
+        *(s32*)(p + 0x258) -= 1;
+        fn_8036CBBC(this_);
+        hit = fn_80239470(box, *(u32*)(p + 4), *(void**)(p + 0x198));
+        if (hit >= 0) {
+            fn_80239914(box, *(u32*)(p + 4), *(void**)(p + 0x198));
+            dx = *(f32*)(p + 0xc) - *(f32*)fn_8023E724(hit);
+        }
+    }
+
+    if (*(u8*)(p + 0x250) != 0) {
+        *(f32*)(p + 0x254) = lbl_80542CE0;
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x28) + *(f32*)(p + 0x254);
+    }
+}
+
 extern "C" f32 lbl_80542CD8;
 extern "C" f32 lbl_80542CE0;
 extern "C" f32 lbl_80542CF4;
@@ -71,17 +115,10 @@ extern "C" void fn_8036D3D8(Actor* this_) {
     if (((*(u32*)(p + 0x90) >> 4) & 3) == 0) {
         for (i = 0; i < 3; i++) {
             Vec base = *(Vec*)(p + 0xC);
-            Vec off;
-            Vec pos;
-            u32 flags;
+            Vec off = {lbl_80542CF4 * (f32)(i + 1), lbl_80542CD8, lbl_80542CD8};
+            Vec pos = {base.x + off.x, base.y + off.y, base.z + off.z};
+            u32 flags = (*(u32*)(p + 0x90) & 0xF800000F) | ((i + 1) << 4);
 
-            off.x = lbl_80542CF4 * (f32)(i + 1);
-            off.y = lbl_80542CD8;
-            off.z = lbl_80542CD8;
-            pos.x = base.x + off.x;
-            pos.y = base.y + off.y;
-            pos.z = base.z + off.z;
-            flags = (*(u32*)(p + 0x90) & 0xF800000F) | ((i + 1) << 4);
             *(s32*)(p + 0x234 + i * 4) = -1;
             *(s32*)(p + 0x234 + i * 4) = Actor_CreateByID(fn_801F856C(), 0x50535732, *(s32*)(p + 4), &pos, flags, -1, -1);
             if (*(s32*)(p + 0x234 + i * 4) >= 0) {
