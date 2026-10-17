@@ -19,6 +19,9 @@ extern u8 lbl_802EE20C[];
 extern char lbl_8029765C[];
 extern char lbl_80297690[];
 extern char lbl_802979B8[];
+extern "C" int fn_801C0288(void* p);
+extern "C" void fn_801C0E4C(void* p);
+extern "C" void OSCancelThread(void* p);
 extern char lbl_8029783C[];
 extern void* lbl_802977D0[];
 extern "C" void* fn_8015D050(void* p);
@@ -1096,6 +1099,26 @@ extern "C" int fn_8015CA24(char* param_1, u32 param_2, s32 param_3) {
     }
     fn_801BE47C(param_1 + 0x18);
     return r;
+}
+
+extern "C" int fn_8015CBAC(void* p, u32 r4, s32 r5) {
+    s32 iVar6 = r5;
+    u32 uVar5 = 0;
+    u32 uVar2 = (r4 + 3) & ~3;
+    u32 iVar1 = *(u32*)((u8*)p + 0x74);
+    u32 uVar3 = ~(iVar6 - 1) & iVar1 - uVar2;
+    u32 uVar4 = iVar1 - uVar3;
+    if (uVar4 <= *(u32*)((u8*)p + 0x6c)) {
+        *(u32*)((u8*)p + 0x74) = iVar1 - uVar4;
+        *(u32*)((u8*)p + 0x6c) = *(u32*)((u8*)p + 0x6c) - uVar4;
+        uVar5 = uVar3;
+    } else {
+        fn_80124034(lbl_8029765C);
+        if (*((u8*)p + 0x68) == 1 && lbl_802FF54C != 0) {
+            ((void (*)(void*, u32, s32))lbl_802FF54C)(p, uVar2, iVar6);
+        }
+    }
+    return uVar5;
 }
 
 extern "C" void fn_8015CC7C(void) {
