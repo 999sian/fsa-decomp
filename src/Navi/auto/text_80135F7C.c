@@ -1163,12 +1163,11 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
 }
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    void* vt[2];
-    vt[0] = lbl_802911A0;
-    vt[1] = lbl_80292C80;
-    param_1[0] = vt[0];
-    param_1[0] = vt[1];
-    param_1[1] = (void*)param_2;
+    u32 base = (u32)lbl_802911A0;
+    u32 derived = (u32)lbl_80292C80;
+    *(u32*)param_1 = base;
+    *(u32*)param_1 = derived;
+    ((u32*)param_1)[1] = param_2;
 }
 
 extern "C" void fn_80167880(void*, int);
@@ -1729,3 +1728,4 @@ extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+inline bool iterNeRef_8013A388(const Iter_8013A388& x, const Iter_8013A388& y) { return x.node != y.node; }
