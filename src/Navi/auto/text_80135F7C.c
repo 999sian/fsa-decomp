@@ -1327,6 +1327,8 @@ extern "C" u8 fn_8013A48C(void* p, u32 x);
 extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
+inline bool iterNeRef_8013A388(const Iter_8013A388& x, const Iter_8013A388& y) { return x.node != y.node; }
+
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
     while (iterNe_8013A388(*(Iter_8013A388*)c, *(Iter_8013A388*)b) && !fn_8013A48C((u8*)*b - 0xc, d)) {
         *b = *(void**)*b;
