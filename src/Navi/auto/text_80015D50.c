@@ -17,7 +17,7 @@ extern "C" u32 fn_801C027C(void);
 extern "C" s32 fn_801C1594(void);
 extern "C" void fn_801C0884(void*, void*, s32, void*, u32, s32, s32);
 extern "C" void fn_801C0EEC(void*);
-extern "C" void fn_800168D0(void);
+extern "C" u32 fn_800168D0(void);
 extern u8 lbl_802A4560[];
 extern u8 lbl_802A3560[];
 extern "C" void fn_801BE3A0(void*);
