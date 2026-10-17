@@ -1,6 +1,10 @@
 #include "types.h"
 #include "math.h"
 extern void* lbl_80289A14[];
+extern "C" char lbl_802C545C[];
+extern "C" char lbl_802BB0FC[];
+extern f32 lbl_80300B20;
+extern "C" f32 fn_800A1774(void*, u8, u8, s32);
 
 extern void* lbl_80283F48[];
 extern void* lbl_802886F8[];
