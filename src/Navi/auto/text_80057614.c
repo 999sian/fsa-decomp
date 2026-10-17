@@ -194,6 +194,19 @@ extern "C" void fn_80057AE0(s32 param_1) {
     }
 }
 
+extern "C" void fn_80057B24(void) {
+    if (lbl_802FF100 != 0) {
+        fn_8005C424();
+        fn_80057DF0();
+        fn_8005CB14();
+        fn_80058CB0();
+        fn_8005A480();
+        fn_8005B450();
+        fn_8005C460();
+        fn_8005C3CC();
+    }
+}
+
 extern "C" void fn_80057B6C(void) {
     fn_8005C424();
     fn_80057EE0();
