@@ -129,8 +129,7 @@ extern "C" void fn_80394690(MsgDraw* w) {
             if (cur > max) {
                 c2 = 0;
             }
-            cur = c2;
-            u8 alpha = (u8)(255.0f * (f32)(max - cur) / (f32)max);
+            u8 alpha = (u8)(255.0f * (f32)(max - c2) / (f32)max);
             snprintf(tmp, 0x1e, "\x1b" "CC[%08x]\x1b" "GM[0]", (w->col1 & 0xffffff00) | alpha);
             strcat(buf1, tmp);
             strcat(buf1, w->suffix);
@@ -166,10 +165,10 @@ struct MsgPop {
 extern "C" void fn_80395480(MsgPop* self, J2DPane* pane) {
     s16* dur = (s16*)(lbl_8050DB0C + 0x286);
     s32 t0 = dur[0];
-    s32 t1 = dur[0] + dur[1];
-    s32 t2 = dur[0] + dur[1] + dur[2];
-    s32 t3 = dur[0] + dur[1] + dur[2] + dur[3];
-    s32 t4 = dur[0] + dur[1] + dur[2] + dur[3] + dur[4];
+    s32 t1 = t0 + dur[1];
+    s32 t2 = t1 + dur[2];
+    s32 t3 = t2 + dur[3];
+    s32 t4 = t3 + dur[4];
     self->timer++;
     if (pane->getAlpha() < self->alpha) {
         if (self->timer == 10) {
@@ -236,10 +235,10 @@ struct MsgPop2 {
 extern "C" void fn_80395834(MsgPop2* self, J2DPane* pane) {
     s16* dur = (s16*)(lbl_8050DB0C + 0x286);
     s32 t0 = dur[0];
-    s32 t1 = dur[0] + dur[1];
-    s32 t2 = dur[0] + dur[1] + dur[2];
-    s32 t3 = dur[0] + dur[1] + dur[2] + dur[3];
-    s32 t4 = dur[0] + dur[1] + dur[2] + dur[3] + dur[4];
+    s32 t1 = t0 + dur[1];
+    s32 t2 = t1 + dur[2];
+    s32 t3 = t2 + dur[3];
+    s32 t4 = t3 + dur[4];
     self->timer++;
     if (pane->getAlpha() < self->alpha) {
         if (self->timer == 10) {
@@ -854,11 +853,11 @@ extern "C" void fn_80398EF4(MsgMeasure* m, s32 a, s32 b) {
         a = 99;
     }
     s32 d = a / 10;
-    a -= d * 10;
+    s32 e = a % 10;
     if (d > 0) {
         msgMeasureChar(m, d + '0', ratio, 3.0f);
     }
-    msgMeasureChar(m, a + '0', ratio, 3.0f);
+    msgMeasureChar(m, e + '0', ratio, 3.0f);
     msgMeasureChar(m, '\'', ratio, 3.0f);
     if (b > 99) {
         b = 99;
@@ -1122,7 +1121,8 @@ extern "C" void fn_8039FB6C(MsgProc* p, const void* entry, const char* text) {
     p->layout->m154 = -1;
     p->m2d6 = 1;
     p->m70 = p->m2bc;
-    p->setInfo(p->layout->m190, p->layout->m192, p->layout->m178, p->layout->m17c);
+    l = p->layout;
+    p->setInfo(l->m190, l->m192, l->m178, l->m17c);
     s32 t = *(s32*)((char*)lbl_8053AD78 + 0x44);
     p->setTime(t);
     p->proc.setBegin_messageEntryText(p->res, entry, text);
@@ -1544,3 +1544,11 @@ void fn_803A3228(s32 a, s32 b, s32 c) { fn_8043D874(lbl_8053AED0, a, b, c); }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+
+// Keep regional definitions that were present before source-tree consolidation.
+#if defined(VERSION_G4SJ01)
+extern "C" void fn_802C2CD0(int param_1) {
+    *(u8*)(*(u32*)(param_1 + 0x264)) = 0;
+    *(u8*)(*(u32*)(param_1 + 0x268)) = 0;
+}
+#endif
