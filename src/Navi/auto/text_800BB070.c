@@ -1,4 +1,8 @@
 #include "types.h"
+
+struct NaviColor {
+    u8 r, g, b, a;
+};
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
