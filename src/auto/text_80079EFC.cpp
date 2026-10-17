@@ -132,6 +132,31 @@ extern "C" bool fn_8007A198(u8* this_, s32 entryNum, s32 mountDirection) {
     return 1;
 }
 
+extern "C" void fn_8007A298(u8* this_) {
+    if (sCurrentVolume__13JKRFileLoader == this_) {
+        sCurrentVolume__13JKRFileLoader = nullptr;
+    }
+    if (*(u8**)(this_ + 0x44) != nullptr) {
+        u8* fileEntry = *(u8**)(this_ + 0x4c);
+        for (u32 i = 0; i < *(u32*)(*(u8**)(this_ + 0x44) + 0x8); i++) {
+            if (*(void**)(fileEntry + 0x10) != nullptr) {
+                free__7JKRHeapFPvP7JKRHeap(*(void**)(fileEntry + 0x10), *(void**)(this_ + 0x38));
+            }
+            fileEntry += 0x14;
+        }
+        free__7JKRHeapFPvP7JKRHeap(*(void**)(this_ + 0x44), *(void**)(this_ + 0x38));
+        *(void**)(this_ + 0x44) = nullptr;
+    }
+    if (*(JKRFile**)(this_ + 0x68) != nullptr) {
+        delete *(JKRFile**)(this_ + 0x68);
+    }
+    if (*(JKRFile**)(this_ + 0x64) != nullptr) {
+        delete *(JKRFile**)(this_ + 0x64);
+    }
+    remove__10JSUPtrListFP10JSUPtrLink(sVolumeList__13JKRFileLoader, this_ + 0x18);
+    *(u8*)(this_ + 0x30) = 0;
+}
+
 extern "C" void* __nw__FUlP7JKRHeapi(u32 size, void* heap, s32 align);
 extern "C" void* __ct__10JKRDvdFileFl(void* this_, s32 entryNum);
 extern "C" void* sSystemHeap__7JKRHeap;
