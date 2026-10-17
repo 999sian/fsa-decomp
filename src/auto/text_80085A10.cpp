@@ -25,7 +25,7 @@ struct VirtualSlotObj {
     virtual void v00();
     virtual void v01();
     virtual void v02();
-    virtual void v03();
+    virtual u32 v03();
     virtual void v04();
     virtual u32 v05();
 };
@@ -512,13 +512,14 @@ extern "C" void JUTReportConsole_f(const char*, ...);
 extern "C" void OSLockMutex(void* mutex);
 extern "C" void OSUnlockMutex(void* mutex);
 extern "C" void JUTReportConsole_f(const char* fmt, ...);
-extern "C" u32 fn_80086890(u8* self_) {
-    u32 result = (*(u32 (**)(u8*))(*(u8**)self_ + 0x14))(self_);
-    OSLockMutex(self_ + 0x18);
-    u32 a = *(u32*)(self_ + 0x38);
-    u32 b = *(u32*)(self_ + 0x80);
-    JUTReportConsole_f(lbl_8045E854, (f32)(a - b) / (f32)a * 100.0f);
-    OSUnlockMutex(self_ + 0x18);
+extern "C" u32 fn_80086890(void* self_) {
+    u32 result = reinterpret_cast<VirtualSlotObj*>(self_)->v05();
+    u8* p = (u8*)self_;
+    OSLockMutex(p + 0x18);
+    u32 total = *(u32*)(p + 0x38);
+    u32 used = *(u32*)(p + 0x80);
+    JUTReportConsole_f(lbl_8045E854, (f32)(total - used) / (f32)total * lbl_8053B778);
+    OSUnlockMutex(p + 0x18);
     return result;
 }
 
