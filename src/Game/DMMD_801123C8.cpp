@@ -82,6 +82,103 @@ extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
     }
 }
 
+extern "C" void fn_80112654(u8* this_, s32 n) {
+    extern s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+    extern void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+    extern void fn_801D1F14(void* p, f32 f);
+    extern const f32 lbl_8053C648;
+
+    switch (n) {
+    case 0:
+        *(s32*)(this_ + 0x298) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(0, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+    case 1:
+        *(s32*)(this_ + 0x29c) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(1, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        fn_801D22DC(this_ + 0x260, 0xa, 0, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        break;
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(2, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(3, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(4, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        *(s32*)(this_ + 0x2a0) = fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, fn_801123C8(5, *(s32*)(this_ + 0x234)), 0, 0, 0, 0, 1);
+        break;
+    case 6:
+        fn_801D22DC(this_ + 0x260, 0x8, 0x2, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        break;
+    case 7: {
+        u8* e;
+        e = *(u8**)(this_ + 0x298);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+            *(s32*)(this_ + 0x298) = 0;
+        }
+        e = *(u8**)(this_ + 0x29c);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+            *(s32*)(this_ + 0x29c) = 0;
+        }
+        e = *(u8**)(this_ + 0x2a0);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(s32*)(e + 0x24) = 1;
+            *(s32*)(this_ + 0x2a0) = 0;
+        }
+        fn_801D22DC(this_ + 0x260, 0xb, 0, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        break;
+    }
+    case 8: {
+        Vec v;
+        v = *(Vec*)(this_ + 0xc);
+        v.y += lbl_8053C648;
+        fn_8013CC50(*(s32*)(this_ + 0x4), &v, lbl_8053C644, 0x33b, 0, 0, 0, 0, 1);
+        break;
+    }
+    case 9:
+        switch (*(s32*)(this_ + 0x234)) {
+        case 0:
+        case 1:
+            fn_801D22DC(this_ + 0x260, 1, 2, 0);
+            break;
+        case 2:
+        case 3:
+            fn_801D22DC(this_ + 0x260, 3, 2, 0);
+            break;
+        case 4:
+        case 5:
+            fn_801D22DC(this_ + 0x260, 2, 2, 0);
+            break;
+        }
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        break;
+    case 10:
+        fn_801D22DC(this_ + 0x260, 3, 2, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        break;
+    case 11:
+        fn_801D22DC(this_ + 0x260, 6, 0, 0);
+        fn_801D1F14(this_ + 0x260, lbl_8053C628);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc1, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc2, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc3, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 0x4), this_ + 0xc, lbl_8053C644, 0xc4, 0, 0, 0, 0, 1);
+        break;
+    case 12:
+    case 13:
+    case 14:
+    case 15:
+        break;
+    }
+    this_[0x230] = 1;
+    *(s32*)(this_ + 0x238) = n;
+}
+
 extern "C" void fn_80112AE8(u8* this_) {
     Mtx m1;
     Mtx m2;
@@ -196,6 +293,29 @@ extern "C" void fn_80112E68(u8* this_) {
         DrawRec rec;
         fn_801F06F0(this_, lbl_804647B0, id + *(s32*)(this_ + 0x270), &rec, 7, lbl_8053C644, lbl_8053C644);
     }
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" void* fn_801F7A08(void* a, u32 b);
+extern "C" void* fn_801F666C(void* a, void* b);
+extern "C" void fn_80113358(u8* self) {
+    void* p = fn_801F666C(fn_801F856C(), fn_801F7A08(fn_801F856C(), 0x444d474c));
+    if (p != 0) {
+        *(Vec*)(self + 0x254) = *(Vec*)((u8*)p + 0xc);
+    }
+}
+
+extern "C" void fn_8010DF98(u8* this_);
+extern "C" void fn_801D2608(void* p, void* a, s32 n);
+extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801D1F14(void* p, f32 f);
+extern u8 lbl_8049D710[];
+extern "C" void fn_801133C0(u8* this_) {
+    fn_8010DF98(this_);
+    *(u32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0x1f;
+    fn_801D2608(this_ + 0x260, lbl_8049D710, 0xc);
+    fn_801D22DC(this_ + 0x260, 5, 2, 0);
+    fn_801D1F14(this_ + 0x260, lbl_8053C628);
 }
 
 extern "C" void fn_8010E074(u8* this_);
