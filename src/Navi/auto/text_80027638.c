@@ -13,7 +13,8 @@ struct S_Slot3C {
 };
 
 extern "C" void fn_80057C38(void);
-extern "C" void fn_80058740(int, void*);
+extern "C" int fn_80058740(int, void*);
+extern "C" int fn_8005887C(void*);
 extern "C" int fn_80058C08(void);
 extern "C" void fn_80058628(int, void*, int);
 extern "C" void fn_80058654(int, void*, int, float);
@@ -195,6 +196,28 @@ extern "C" unsigned char* fn_800298BC(unsigned char* self, int id) {
         if (v != 0 && v == id) {
             return self + i * 0x3c + 0x384;
         }
+    }
+    return 0;
+}
+
+extern "C" int fn_8002A2B8(unsigned char* p, int id) {
+    int i;
+    int j = 0;
+    for (i = 0; i < 2; i++) {
+        if (*(int*)(p + 0x384) != 0 && p[0x3bd] == 1 && *(int*)(p + 0x398) == id) {
+            return 1;
+        }
+        if (*(int*)(p + 0x3c0) != 0 && p[0x3f9] == 1 && *(int*)(p + 0x3d4) == id) {
+            return 1;
+        }
+        if (*(int*)(p + 0x3fc) != 0 && p[0x435] == 1 && *(int*)(p + 0x410) == id) {
+            return 1;
+        }
+        if (*(int*)(p + 0x438) != 0 && p[0x471] == 1 && *(int*)(p + 0x44c) == id) {
+            return 1;
+        }
+        p += 0xf0;
+        j += 3;
     }
     return 0;
 }
@@ -792,7 +815,7 @@ extern "C" void fn_80030664(void) {}
 extern "C" int fn_80030668(int param_1) {
     void* obj = *(void**)(lbl_802BB0FC + 0xf0);
     if (obj != 0) {
-        return fn_800294AC((int)obj, (int)(lbl_8022F534 + *(int*)(lbl_802BB0FC + 0x420) * 0x1c), lbl_802FFD10, 0xf, 0, 0, param_1, 0, 0, 1);
+        return fn_800294AC((int)obj, (int)(lbl_8022F534 + *(int*)(lbl_802BB0FC + 0x420) * 0x1c), 0xf, 0, 0, param_1, 0, 0, lbl_802FFD10, 1);
     }
     return 0;
 }
