@@ -142,6 +142,15 @@ extern "C" unsigned char* fn_800298BC(unsigned char* self, int id) {
     return 0;
 }
 
+extern "C" void fn_8002A3CC(void* self_, void* node_, int a, int b);
+extern "C" int fn_8002A388(unsigned char* self, int a, int b) {
+    if (*(int*)(self + 0x6e8) != 0) {
+        return 0;
+    }
+    fn_8002A3CC(self, self + 0x6e4, a, b);
+    return 1;
+}
+
 extern "C" void fn_8002A3CC(void* self_, void* node_, int a, int b) {
     unsigned char* self = (unsigned char*)self_;
     unsigned char* next;
@@ -181,15 +190,11 @@ extern "C" void fn_8002A410(unsigned char* p) {
 }
 
 extern "C" int fn_8002B620(unsigned char* self, unsigned char idx, unsigned char val) {
+    int i;
     unsigned char* p = self + idx * 8;
-    if (p[0x840] == val) return 1;
-    if (p[0x841] == val) return 1;
-    if (p[0x842] == val) return 1;
-    if (p[0x843] == val) return 1;
-    if (p[0x844] == val) return 1;
-    if (p[0x845] == val) return 1;
-    if (p[0x846] == val) return 1;
-    if (p[0x847] == val) return 1;
+    for (i = 0; i < 8; i++) {
+        if (p[0x840 + i] == val) return 1;
+    }
     return 0;
 }
 
@@ -232,6 +237,14 @@ extern "C" void fn_8002D250(int a, int b, int slot, unsigned char v, int e) {
     unsigned char buf[4] = {0, 0, 0, 0};
     buf[slot] = v;
     fn_8002EF5C(b, buf[0], buf[1], buf[2], buf[3], e, 0);
+}
+
+extern "C" void fn_8002D2A8(char* p) {
+    lbl_802FEDE0 |= 0x800;
+    if (lbl_802BB0FC[0xee] != 0) {
+        lbl_802FEDDC |= 0x2000;
+    }
+    *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
 }
 
 extern "C" void fn_8002D2EC(char* p) {
