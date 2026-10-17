@@ -323,12 +323,12 @@ extern "C" s32 fn_8035AE9C(u8* self, void* obj) {
     return 0;
 }
 
-extern "C" u32 lbl_8053A1B8[];
+extern "C" u32 lbl_8053A1B8[2];
+extern "C" u32 lbl_8053A1B8[2];
 extern "C" void fn_8035B0E0(u8* self) {
-    u8* resource = *(u8**)(lbl_8053AAF8 + 0xa4);
-    *(void**)(self + 0x234) = ((void* (*)(void*, u32, u32))(*(void***)(resource))[6])(resource, 0x3f3f3f3f, lbl_8053A1B8[*(u32*)(self + 0x90) & 0x7f]);
+    *(void**)(self + 0x234) = (*(ResMgr8035B0E0**)(lbl_8053AAF8 + 0xa4))->vf18(0x3f3f3f3f, lbl_8053A1B8[*(u32*)(self + 0x90) & 0x7f]);
     u16* size = *(u16**)(self + 0x234);
-    int w = size[1], h = size[2];
+    u16 w = size[1], h = size[2];
     *(f32*)(self + 0x60) = -w / 2;
     *(f32*)(self + 0x64) = -h / 2;
     *(f32*)(self + 0x68) = w / 2;
