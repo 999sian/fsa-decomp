@@ -1,7 +1,11 @@
 #include "types.h"
 
 extern "C" void* fn_801F856C(void);
-extern "C" void Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, s32 a, s32 b, s32 c);
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, s32 a, s32 b, s32 c);
+extern "C" void* fn_801F666C(void* base, s32 id);
+extern "C" s32 fn_8023DE58(s32 a);
+extern u8 lbl_80529DEC[];
+extern const f32 lbl_8053DB4C;
 extern "C" void v07__5ActorFv(void* this_);
 extern "C" void fn_80172894(void* this_) {
     char* p = (char*)this_;
