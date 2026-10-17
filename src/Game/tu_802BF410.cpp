@@ -10,6 +10,12 @@ struct ActorSlots {
     virtual void v3();
     virtual void v4();
     virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual s32 v11();
 };
 
 extern "C" Actor* fn_802BF410(Actor* p, s16 n) {
