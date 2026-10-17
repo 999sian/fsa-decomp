@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 typedef struct {
     u32 a;
@@ -124,13 +125,13 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
 
 extern "C" void fn_80193604(f32* p, f32* out) {
     extern u8 lbl_802F0BC0[];
-    u8* t = lbl_802F0BC0 + ((*(s16*)(p + 2) >> 2) & 0x3FF8);
-    f32 b = (p[4] - 0.5f) + p[1];
-    f32 a = p[3] - 0.5f;
-    f32 c = *(f32*)(t + 4);
-    f32 s = *(f32*)t;
+    u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
+    f32 s = *(f32*)(lbl_802F0BC0 + idx);
+    f32 c = *(f32*)(lbl_802F0BC0 + idx + 4);
     f32 x = p[0];
     f32 y = p[1];
+    f32 a = p[3] - 0.5f;
+    f32 b = (p[4] - 0.5f) + y;
     out[0] = x * c;
     out[1] = y * s;
     out[2] = 0.5f + (a * c - s * b);
@@ -147,13 +148,13 @@ extern "C" void fn_80193604(f32* p, f32* out) {
 #pragma fp_contract off
 extern "C" void fn_801936B4(f32* p, f32* out) {
     extern u8 lbl_802F0BC0[];
-    u8* t = lbl_802F0BC0 + ((*(s16*)(p + 2) >> 2) & 0x3FF8);
+    u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
+    f32 s = *(f32*)(lbl_802F0BC0 + idx);
+    f32 c = *(f32*)(lbl_802F0BC0 + idx + 4);
     f32 x = p[0];
     f32 y = p[1];
-    f32 b = (p[4] - 0.5f) + y;
     f32 a = p[3] - 0.5f;
-    f32 c = *(f32*)(t + 4);
-    f32 s = *(f32*)t;
+    f32 b = (p[4] - 0.5f) + y;
     out[0] = x * c;
     out[1] = y * s;
     out[3] = 0.5f + (a * c - s * b);
@@ -337,8 +338,27 @@ extern "C" int fn_80193EBC(u8* p, u32 n) {
         a[3] = (n + 0x1f) & ~0x1f;
         a[0] = (u32)fn_8015AA60(a[3], 0x20);
         a[1] = (u32)fn_8015AA60(a[3], 0x20);
+        r = a[2] = 0;
+    }
+    return r;
+}
+
+extern "C" int fn_80193F60(u8* p, u32 n) {
+    u32* a;
+    int r;
+    a = (u32*)fn_8015A90C(0x10);
+    if (a != 0) {
+        a[0] = 0;
+        a[1] = 0;
         a[2] = 0;
-        r = 0;
+        a[3] = 0;
+    }
+    *(u32**)(p + 0x20) = a;
+    a = *(u32**)(p + 0x20);
+    if (a == 0) {
+        r = 4;
+    } else {
+        r = fn_80193BD4(a, n);
     }
     return r;
 }
@@ -587,7 +607,7 @@ extern "C" void fn_801951A0(u32* p, u32 param_2, u32 param_3) {
         fn_80194BB0(buf);
     }
     fn_80191A60(buf, param_2 * 3);
-    ((void (*)(u32*, u32, u32, u8*))(*(u32**)p)[9])(p, param_2, param_3, buf);
+    ((void (*)(u32*, u32, u32, u8*))((u32*)*p)[9])(p, param_2, param_3, buf);
 }
 
 extern "C" void fn_8019552C(u8* p) {
