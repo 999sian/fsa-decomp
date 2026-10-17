@@ -15,8 +15,6 @@ struct FsaVObj {
     virtual void v4(void);
     virtual void v5(void);
     virtual void v6(void);
-    virtual void v7(void);
-    virtual void v8(void);
     virtual void v9(u8 b);
     virtual void v10(void);
     virtual void v11(void);
@@ -85,10 +83,10 @@ extern "C" void fn_8013A884(u32* color);
 extern "C" void fn_803B7DCC(u8* this_) {
     if (*(s32*)(lbl_80529DEC + 0x118) != 8 || *(s32*)(lbl_80529DEC + 0x11c) != 3) {
         fn_8013B490(lbl_8053AB10);
-        FsaObj* obj = *(FsaObj**)(this_ + 4);
-        obj->vtbl->fn24(obj, this_[0x296]);
-        obj = *(FsaObj**)(this_ + 4);
-        obj->vtbl->fnEC(obj, 0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
+        FsaVObj* obj = *(FsaVObj**)(this_ + 4);
+        obj->v9(this_[0x296]);
+        obj = *(FsaVObj**)(this_ + 4);
+        obj->v59(0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
     }
 }
 
