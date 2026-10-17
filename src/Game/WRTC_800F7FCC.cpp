@@ -2,6 +2,16 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
+extern f32 lbl_8053BFA0;
+extern f32 lbl_8053BFA4;
+extern f32 lbl_8053BFA8;
+extern f32 lbl_8053BFB8;
+extern "C" u8 fn_8023F264(s32 idx);
+extern "C" u32 fn_8022EA0C(s32 idx);
+extern "C" s32 fn_8023DE58(s32 idx);
+extern "C" f32* fn_8023E724(s32 idx);
+extern "C" void fn_80238548(s32 idx, s32 a, f32* pos, s32 b);
+
 // ---- from Game/fn_800F7FCC_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -123,6 +133,11 @@ extern "C" void fn_800F8A30(void* this_) {
 }
 
 extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
+extern f32 lbl_8053BFAC;
+extern f32 lbl_8053BFF4;
+extern f32 lbl_8053C054;
+extern f32 lbl_8053C058;
+extern f32 lbl_8053C05C;
 extern "C" void fn_800FA944(char* this_) {
     u32 st = *(u32*)(this_ + 0xb0);
     if (st == 4 || st == 0x12) {
