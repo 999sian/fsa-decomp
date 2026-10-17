@@ -66,4 +66,3 @@ extern "C" void fn_803738DC(Actor* this_) {
 
 extern "C" void fn_803739B4(void) {
 }
-#include "Game/SinitPoolChain.h"
