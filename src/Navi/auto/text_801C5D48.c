@@ -75,7 +75,6 @@ extern "C" BOOL fn_801CAC6C(void* a, DVDDiskID* b);
 extern "C" void fn_801C8B7C(DVDCommandBlock* block);
 extern "C" s32 fn_801E3C54(void* a, void* b, s32 c);
 extern "C" void fn_801C8C5C(u32 intType);
-extern "C" void fn_801C8B48(void);
 
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 {
@@ -573,6 +572,7 @@ extern "C" void fn_801C8C24(DVDCommandBlock* block) {
     fn_801C6FF4(BB2_802F7AA0, 0x20, 0x420, fn_801C8D70);
 }
 
+#pragma dont_inline on
 extern "C" void fn_801C8D70(u32 param_1)
 {
 	if (param_1 == 0x10) {
@@ -592,7 +592,7 @@ extern "C" void fn_801C8D70(u32 param_1)
 		fn_801C747C(fn_801C8554);
 	}
 }
-
+#pragma dont_inline reset
 extern "C" void AlarmHandler(void) {
     DVDReset();
     DCInvalidateRange(lbl_802F7AC0, 0x20);
@@ -782,5 +782,62 @@ extern "C" s32 fn_801CA5B8(DVDCommandBlock* block)
 extern "C" u32 fn_801CA688(void)
 {
 	return 0x80000000;
+}
+
+extern "C" BOOL fn_801CA690(void) {
+    BOOL enabled;
+    BOOL result;
+    s32 state;
+    u32 coverReg;
+
+    enabled = OSDisableInterrupts();
+
+    if (FatalErrorFlag_802FF898) {
+        state = -1;
+    } else if (PausingFlag_802FF890) {
+        state = 8;
+    } else {
+        if (executing_802FF880 == nullptr) {
+            state = 0;
+        } else if (executing_802FF880 == &DummyCommandBlock_802F7AE0) {
+            state = 0;
+        } else {
+            state = executing_802FF880->state;
+        }
+    }
+
+    switch (state) {
+    case 1:
+    case 9:
+    case 10:
+    case 2:
+        result = TRUE;
+        break;
+
+    case -1:
+    case 11:
+    case 7:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+        result = FALSE;
+        break;
+
+    case 0:
+    case 8:
+        coverReg = __DIRegs[1];
+        if (((coverReg >> 2) & 1) || (coverReg & 1)) {
+            result = FALSE;
+        } else if (ResumeFromHere_802FF8A8 != 0) {
+            result = FALSE;
+        } else {
+            result = TRUE;
+        }
+    }
+
+    OSRestoreInterrupts(enabled);
+
+    return result;
 }
 
