@@ -130,6 +130,10 @@ extern "C" void* fn_80174BA0(void* base, u32 offset);
 extern "C" void* fn_8018C278(void* base, u32 offset);
 extern "C" void* fn_8018C290(void* base, u32 offset);
 extern "C" void* fn_8018C2D8(void* base, u32 offset);
+extern "C" void* fn_8018C248(void* base, u32 offset);
+extern "C" void* fn_80174B40(void* base, u32 offset);
+extern "C" void* fn_8018C2C0(void* base, u32 offset);
+extern "C" void fn_801193D8(void* dst, void* src);
 
 
 extern "C" void fn_8017FD80(void);
@@ -1199,6 +1203,44 @@ extern "C" u32 fn_80180514(void* self, u32 a) {
         }
     }
     return fn_80177E84();
+}
+
+extern "C" u8 fn_80180578(u8* self, u8 skip)
+{
+    u8 i;
+    u8 j;
+    u8 mask;
+    u8* e;
+    u8* p;
+    u8 v;
+    s32 t;
+
+    mask = 0;
+    for (i = 0; i < *(u8*)(self + 0x110); i++) {
+        if (i != skip) {
+            e = ((u8**)(self + 0x100))[i];
+            if (e != NULL) {
+                p = *(u8**)(e + 0x20);
+                if (p != NULL && p[8] != 0) {
+                    v = e[0x3A];
+                    t = 0;
+                    if ((s32)v >= 0x10) {
+                        t = 0x10;
+                    }
+                    t = (u8)(v - t);
+                    if ((u8)t < 4) {
+                        mask |= 1 << t;
+                    }
+                }
+            }
+        }
+    }
+    for (j = 0; j < 4; j++) {
+        if (!(mask & (1 << j))) {
+            return j;
+        }
+    }
+    return 0;
 }
 
 extern "C" u8 fn_80180648(s32 a, void* b, u32 c) {
@@ -2744,9 +2786,8 @@ extern "C" u32 fn_8018DD64(u8* p, u32 param_2) {
 }
 
 extern "C" u32 fn_8018DE28(NaviAnm_8018DE28* self, u16 idx) {
-    NaviAnmEnt_8018DE28* entries = self->entries;
     u16 v;
-    if (entries == 0) {
+    if (self->entries == 0) {
         return 0;
     }
     f32 frame = self->frame;
@@ -2754,12 +2795,11 @@ extern "C" u32 fn_8018DE28(NaviAnm_8018DE28* self, u16 idx) {
     if (frame < 0.0f) {
         v = self->values[self->table[idx].offset];
     } else if (frame >= count) {
-        s32 i = count + self->table[idx].offset;
-        v = self->values[i - 1];
+        v = self->values[(u32)(count + self->table[idx].offset) - 1];
     } else {
         v = self->values[(s32)frame + self->table[idx].offset];
     }
-    return entries[v].value;
+    return self->entries[v].value;
 }
 
 extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
