@@ -60,6 +60,14 @@ extern "C" void fn_8000DABC(void*, void*, void*, int, int, s16, s16, f32);
 extern void* lbl_80281904[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" bool fn_80070D98(u8* self);
+extern "C" void* fn_800639B4(void*, void*, void*, s32);
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void*, void*, s32, void*, void*, ...);
+extern "C" void fn_80007AB8(void*, s32, void*, ...);
+extern "C" void* fn_80011CF4(void*, u32, u32);
+extern char lbl_80280CF8[];
+extern u8 lbl_802FCA20;
+extern u8 lbl_802FCA24;
 extern void* lbl_8027F6DC[];
 extern void* lbl_8027FDCC[];
 extern "C" void fn_80070D78(u8* self) {
