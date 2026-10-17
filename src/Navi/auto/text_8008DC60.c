@@ -1191,6 +1191,10 @@ extern "C" void fn_800A010C(void* p) {
     *(u8*)((u8*)p + 0x2ac) = 0;
 }
 
+extern "C" void fn_800A0130(NaviState_8009FE50* p) {
+    (p->*lbl_80286874[((u8*)p)[0x2bc]])();
+}
+
 extern void* lbl_802893EC[];
 extern "C" void* fn_800A0238(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
