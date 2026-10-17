@@ -127,7 +127,7 @@ extern "C" s32 fn_80165C24(void* p, s32 n) {
     fn_801BE3A0(owner + 0x34);
     void* h = *(void**)((u8*)p + 0x50);
     if (h != nullptr) {
-        s32 r = fn_8015FAD8(h, n);
+        u32 r = fn_8015FAD8(h, n);
         *(s32*)((u8*)p + 0x48) = -(r == 0);
         if (n != 0 && r == 0) {
             fn_801BE47C(owner + 0x34);
