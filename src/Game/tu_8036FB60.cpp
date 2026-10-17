@@ -711,6 +711,63 @@ extern "C" void fn_8037251C(char* self)
 	(((FSAObj*)self)->*lbl_804AE420[*(s32*)(self + 0x230)])(box);
 }
 
+extern "C" void fn_803727D0(char* self)
+{
+	struct VObj { virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03(); virtual void v04(); virtual void v05(); virtual void v06(); virtual void v07(); virtual void v08(); virtual void v09(); virtual void v10(); virtual u8 v11(); };
+	if (*(u8*)((char*)lbl_8053AAF8 + 0x7e) != 0) {
+		fn_8036FDAC(self);
+		return;
+	}
+	*(s32*)(self + 0x238) = 0x50;
+	if (!lbl_8053AD60) {
+		((JGeometry::TVec3<f32>*)lbl_8050C840)[0] = JGeometry::TVec3<f32>(0.0f, 0.0f, 0.0f);
+		((JGeometry::TVec3<f32>*)lbl_8050C840)[1] = JGeometry::TVec3<f32>(16.0f, 0.0f, 0.0f);
+		((JGeometry::TVec3<f32>*)lbl_8050C840)[2] = JGeometry::TVec3<f32>(32.0f, 0.0f, 0.0f);
+		((JGeometry::TVec3<f32>*)lbl_8050C840)[3] = JGeometry::TVec3<f32>(48.0f, 0.0f, 0.0f);
+		lbl_8053AD60 = 1;
+	}
+	if (((VObj*)self)->v11()) {
+		*(s32*)(self + 0x230) = 0xb;
+	} else {
+		*(s32*)(self + 0x230) = 0;
+	}
+	*(s32*)(self + 0x234) = 1;
+	for (s32 i = 0; i < 4; i++) {
+		*(JGeometry::TVec3<f32>*)(self + 0x2c4 + i * 0xc) = *(JGeometry::TVec3<f32>*)(self + 0xc) + ((JGeometry::TVec3<f32>*)lbl_8050C840)[i];
+		*(JGeometry::TVec3<f32>*)(self + 0x294 + i * 0xc) = *(JGeometry::TVec3<f32>*)(self + 0x2c4 + i * 0xc);
+		((JGeometry::TVec3<f32>*)(self + 0x2f4 + i * 0xc))->zero();
+		*(s32*)(self + 0x350 + i * 4) = 0x38b;
+		*(s32*)(self + 0x330 + i * 4) = 0;
+		*(s32*)(self + 0x340 + i * 4) = 1;
+	}
+	*(JGeometry::TVec3<f32>*)(self + 0x3c) = *(JGeometry::TVec3<f32>*)(self + 0x2f4);
+	*(s32*)(self + 0x360) = 8;
+	*(s32*)(self + 0x364) = 0;
+	*(JGeometry::TVec3<f32>*)(self + 0x324) = *(JGeometry::TVec3<f32>*)(self + 0x294);
+	*(s32*)(self + 0x368) = 0x106;
+	*(s32*)(self + 0x36c) = 0x10;
+	*(s32*)(self + 0x370) = 0;
+	*(s32*)(self + 0x394) = 0;
+	*(u8*)(self + 0x398) = 1;
+	*(u8*)(self + 0x399) = 0;
+	*(f32*)(self + 0x60) = -8.0f;
+	*(f32*)(self + 0x64) = -8.0f;
+	*(f32*)(self + 0x68) = 8.0f;
+	*(f32*)(self + 0x6c) = 8.0f;
+	*(s32*)(self + 0x3a0) = -1;
+	*(s32*)(self + 0x3a4) = 0;
+	*(u8*)(self + 0x3a8) = 0;
+	*(s32*)(self + 0x3ac) = 0;
+	((JGeometry::TVec3<f32>*)(self + 0x244))->zero();
+	((JGeometry::TVec3<f32>*)(self + 0x250))->zero();
+	*(f32*)(self + 0x25c) = 0.0f;
+	*(f32*)(self + 0x260) = 0.0f;
+	for (s32 i = 0; i < 4; i++) {
+		*(s32*)(self + 0x374 + i * 4) = 0;
+		*(s32*)(self + 0x384 + i * 4) = 0;
+	}
+}
+
 extern "C" void* fn_80372AA0(void* self, short flag)
 {
 	if (self) {
