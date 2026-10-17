@@ -6,6 +6,14 @@ extern u8 lbl_802C05F0[];
 extern char lbl_8027D36C[];
 extern char lbl_8027D49C[];
 extern "C" void fn_8005C330(const char*, ...);
+
+inline BOOL fn_8005A74C_isBadPtr(void* p) {
+    if (((u32)p & 0xF0000000) != 0x80000000) {
+        fn_8005C330((const char*)1, lbl_8027D36C, lbl_8027D49C, p);
+        return TRUE;
+    }
+    return FALSE;
+}
 extern u8 lbl_802FF0F8;
 extern u32 lbl_802FF0FC;
 extern s32 lbl_802FF104;
@@ -1502,29 +1510,19 @@ extern "C" void fn_80060E18(u8* p) {
     }
 }
 
+extern "C" void* memset(void* s, int c, unsigned long n);
 extern "C" void fn_80060EF0(void* param_1) {
     u8* p = (u8*)param_1 + 8;
     s32 i;
-    s32 j;
-    u32* w;
     for (i = 0; i < 8; i++) {
         if (p[0] == 1) {
             p[0] = 2;
         } else {
             p[0] = 0;
-            p[1] = -1;
+            ((s8*)p)[1] = -1;
         }
         p[3] = 0;
-        w = (u32*)p;
-        w[42] = 0; w[43] = 0; w[44] = 0; w[45] = 0;
-        w[46] = 0; w[47] = 0; w[48] = 0; w[49] = 0;
-        w[50] = 0; w[51] = 0; w[52] = 0; w[53] = 0;
-        w[54] = 0; w[55] = 0; w[56] = 0; w[57] = 0;
-        w[58] = 0; w[59] = 0; w[60] = 0; w[61] = 0;
-        w[62] = 0; w[63] = 0; w[64] = 0; w[65] = 0;
-        for (j = 24; j < 26; j++) {
-            w[42 + j] = 0;
-        }
+        memset(p + 0xa8, 0, 0x68);
         p += 0x110;
     }
 }
