@@ -475,14 +475,15 @@ extern "C" void fn_8011A798(u8* param_1, s32 param_2) {
 
 extern "C" s32 fn_8011AAF4(s32 param_1, u32 param_2, u16* param_3) {
     s32 iVar2 = (param_2 & 0xff) - 0x40;
-    u16 uVar1 = 0x31c;
+    s32 iVar3 = (param_2 >> 8) & 0xff;
     if (iVar2 >= 0x40) {
         iVar2 -= 1;
     }
+    u16 uVar1 = 0x31c;
     if (param_3 != 0) {
         uVar1 = *param_3;
     }
-    return iVar2 + (((param_2 >> 8) & 0xff) - 0x88) * 0xbc - 0x5e + uVar1;
+    return iVar2 + (iVar3 - 0x88) * 0xbc - 0x5e + uVar1;
 }
 
 extern "C" int fn_8011AB38()
