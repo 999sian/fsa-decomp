@@ -14,7 +14,7 @@ extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec,
 extern const f32 lbl_8053E464;
 extern const char lbl_80468494[];
 extern s32 lbl_804C6330[];
-extern u8 lbl_8053ABB8[];
+extern u8 lbl_8053ABB8[4];
 struct SykyVT { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual u8 v11(); virtual u8 v12(); };
 extern void* lbl_8053AF10;
 extern const f32 lbl_8053E460;
