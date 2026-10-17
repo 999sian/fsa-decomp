@@ -2003,6 +2003,15 @@ extern "C" u8 fn_801B42B4(u8* p, s32 a) {
     return 0;
 }
 
+extern "C" u8 fn_801B4480(u8* p, s32 a) {
+    u16 idx = ((u16*)*(u8**)(p + 8))[a];
+    u8 v = *(u8*)(*(u8**)(p + 4) + idx * 0x138 + 3);
+    if (v != 0xff) {
+        return (*(u8**)(p + 0x18))[v];
+    }
+    return 0;
+}
+
 extern "C" void fn_801B4638(u32* out, u8* p, s32 a, s32 b) {
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
     u8* e = *(u8**)(p + 4) + idx * 0x138 + 0xa8;
