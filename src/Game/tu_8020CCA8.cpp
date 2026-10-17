@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" const f32 lbl_8053FA0C;
 extern "C" u16 fn_8022461C(void* p, u32 b);
@@ -16,6 +17,34 @@ extern "C" const f32 lbl_8053FA14;
 extern "C" void fn_8020CF7C(u8* o) {
     u8* pos = o + 0xc;
     fn_8013CC50(lbl_8053FA08, *(u32*)(o + 4), pos, 0x48d, 0, 0, 0, 0, 1);
+}
+
+extern "C" void fn_8020CFC4(u8* o) {
+    u16 r = fn_8022461C(o + 0xc, *(u32*)(o + 4));
+    switch (r) {
+    case 0xd:
+        fn_8013CC50(lbl_8053FA0C, *(u32*)(o + 4), o + 0xc, 0x3d0, 0, 1, 0, 0, 1);
+        fn_8013CC50(lbl_8053FA08, *(u32*)(o + 4), o + 0xc, 0x15b, 0, 1, 0, 0, 1);
+        fn_8013CC50(lbl_8053FA08, *(u32*)(o + 4), o + 0xc, 0x15c, -1, 0, 0, 0, 1);
+        fn_801F0E34(o, 0x30022, 0);
+        break;
+    case 0xe:
+        if (fn_801CD2F8(*(u32*)(o + 4))) {
+            fn_801F0E34(o, 0x4003e, 0);
+        } else {
+            fn_8013CC50(lbl_8053FA08, *(u32*)(o + 4), o + 0xc, 0x2a9, -1, 0, 0, 0, 1);
+            fn_8013CC50(lbl_8053FA08, *(u32*)(o + 4), o + 0xc, 0x2aa, 0, 1, 0, 0, 1);
+            if (fn_802DEB58()) {
+                fn_801F0E34(o, 0x30022, 0);
+            } else {
+                fn_801F0E34(o, 0x5005f, 0);
+            }
+        }
+        break;
+    default:
+        fn_801F0E34(o, 0x4003e, 0);
+        break;
+    }
 }
 
 extern const f32 lbl_8053FA08;
