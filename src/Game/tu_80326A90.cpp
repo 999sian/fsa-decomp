@@ -1,6 +1,23 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
+namespace JMath {
+template <int length, typename T>
+struct TAtanTable {
+	T atan2_(T, T) const;
+	T atan_(T) const;
+	T mTable[length];
+};
+extern const TAtanTable<1024, f32> atanTable_;
+}
+extern "C" f32 sincosTable___5JMath[];
+extern "C" void fn_801F71A4(f32* v, f32 target, f32 rate, f32 limit);
+extern "C" s32 fn_8023AF14(f32* box, s32 room, f32 f, s32 flag);
+extern "C" f32* fn_8023E724(s32 i);
+extern "C" void fn_8023C830(s32 i);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+
 
 extern "C" char lbl_804AB4C0[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
