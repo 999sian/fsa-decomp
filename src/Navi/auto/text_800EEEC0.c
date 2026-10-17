@@ -146,6 +146,21 @@ extern "C" void fn_800EF694(u8* p) {
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
 }
 
+extern "C" void fn_800EF6D0(u8* p) {
+    VObj_800EF6D0A* a = *(VObj_800EF6D0A**)(p + 0xc);
+    if (a != nullptr) {
+        a->v0(1);
+    }
+    (*(VObj_800EF6D0B**)(p + 4))->v7();
+    s8 idx = *(s8*)(lbl_802C587C + 4);
+    if (idx >= 0) {
+        if (--*(s32*)(lbl_802C587C + 8) == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4, idx);
+            *(s8*)(lbl_802C587C + 4) = -1;
+        }
+    }
+}
+
 extern "C" void fn_800EFADC(void* param_1) {
     VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
     obj->v3();
