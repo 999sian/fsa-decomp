@@ -9,3 +9,21 @@ extern "C" void* fn_80015D50(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" void fn_801BE47C(void*);
+extern "C" BOOL fn_801BE5B4(void*);
+extern "C" s32 fn_800164D0(void* param_1) {
+    u8* p = (u8*)param_1;
+    s32 result = 0;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        if (*(s32*)(p + 0x1fac) == 5) {
+            *(s32*)(p + 0x1fac) = 2;
+            result = 1;
+        } else {
+            result = 2;
+        }
+        fn_801BE47C(p + 0x1fb0);
+    }
+    return result;
+}
+
