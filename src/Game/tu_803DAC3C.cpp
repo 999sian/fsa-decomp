@@ -5,6 +5,26 @@
 #include "dolphin/dvd/dvdfs.h"
 #include "JSystem/J2D/J2DScreen.h"
 
+class FsaSceneMgr {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1C();
+    virtual void v20();
+    virtual void v24(s32);
+    virtual void v28();
+    virtual void v2C();
+    virtual void v30();
+    virtual void v34();
+    virtual void v38();
+    virtual FsaSceneMgr* v3C(u32, s32, u32);
+};
+
 struct FsaDisposable {
     virtual void v0(void);
     virtual void v1(void);
@@ -65,38 +85,38 @@ extern "C" void fn_803DCCA4(u8* self)
             *(s32*)(self + 0x90) = 0;
         }
         if (self[0x9e] != 0 && self[0x9f] != 0) {
-            void* obj = *(void**)(self + 0x8);
-            ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3031);
-            ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, 0);
-            obj = *(void**)(self + 0x8);
-            ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3032);
-            ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, 0);
+            void* mgr = *(void**)(self + 0x8);
+            void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3031);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+            mgr = *(void**)(self + 0x8);
+            r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3032);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
         }
         if (self[0x9e] != 1 && self[0x9f] != 1) {
-            void* obj = *(void**)(self + 0x8);
-            ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3131);
-            ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, 0);
-            obj = *(void**)(self + 0x8);
-            ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3132);
-            ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, 0);
+            void* mgr = *(void**)(self + 0x8);
+            void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3131);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+            mgr = *(void**)(self + 0x8);
+            r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3132);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
         }
         if (*(s32*)(self + 0x84) != 2) {
             switch (self[0x9e]) {
             case 0: {
-                void* obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3031);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11a] * f31));
-                obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3032);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11b] * f31));
+                void* mgr = *(void**)(self + 0x8);
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3031);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11a] * f31));
+                mgr = *(void**)(self + 0x8);
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3032);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11b] * f31));
             } break;
             case 1: {
-                void* obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3131);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11c] * f31));
-                obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3132);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11d] * f31));
+                void* mgr = *(void**)(self + 0x8);
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3131);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11c] * f31));
+                mgr = *(void**)(self + 0x8);
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3132);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11d] * f31));
             } break;
             }
         }
@@ -104,20 +124,20 @@ extern "C" void fn_803DCCA4(u8* self)
         if (*(s32*)(self + 0x84) != 1 || self[0x9e] != self[0x9f]) {
             switch (self[0x9f]) {
             case 0: {
-                void* obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3031);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11a] * f31));
-                obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3032);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11b] * f31));
+                void* mgr = *(void**)(self + 0x8);
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3031);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11a] * f31));
+                mgr = *(void**)(self + 0x8);
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3032);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11b] * f31));
             } break;
             case 1: {
-                void* obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3131);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11c] * f31));
-                obj = *(void**)(self + 0x8);
-                ((void (*)(void*, void*, s32, s32))((*(void***)obj)[0x3c / 4]))(obj, (void*)0x696d0000, 0x50, 0x696d3132);
-                ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)((f32)self[0x11d] * f31));
+                void* mgr = *(void**)(self + 0x8);
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3131);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11c] * f31));
+                mgr = *(void**)(self + 0x8);
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3132);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11d] * f31));
             } break;
             }
         }
