@@ -600,6 +600,28 @@ extern "C" s32 fn_80167618(Self_80167618* self, void* buf, s32 len) {
     return result;
 }
 
+extern "C" s32 fn_801676F8(Self_80167618* self, s32 arg1, s32 mode) {
+    s32 old = self->pos;
+    switch (mode) {
+    case 0:
+        self->pos = arg1;
+        break;
+    case 2:
+        self->pos = self->stream->vf5() - arg1;
+        break;
+    case 1:
+        self->pos = old + arg1;
+        break;
+    }
+    if ((s32)self->pos < 0) {
+        self->pos = 0;
+    }
+    if ((s32)self->pos > (s32)self->stream->vf5()) {
+        self->pos = self->stream->vf5();
+    }
+    return (s32)self->pos - old;
+}
+
 extern "C" int fn_80167810(int p) { return *(int*)(p + 0xc); }
 
 extern void* lbl_802911A0[];
