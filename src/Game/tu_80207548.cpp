@@ -68,9 +68,7 @@ struct Entry_80207548 {
         m04 = 1;
         m08 = a;
         m0C = b;
-        m10[0] = pos[0];
-        m10[1] = pos[1];
-        m10[2] = pos[2];
+                  *(V3_80207548*)m10 = *(const V3_80207548*)pos;
         m1C = c;
     }
 };
@@ -124,9 +122,9 @@ extern "C" void fn_80207830(char* p, u16 idx, s32 a, s32 b, f32* pos, s32 c) {
     for (int i = 0; i < 4; i++) {
         if (i != idx) {
             if (o->entries[i].m04 != 0) {
-                allSet = false;
-            } else {
                 noneSet = false;
+            } else {
+                allSet = false;
             }
         }
     }
