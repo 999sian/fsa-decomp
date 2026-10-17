@@ -31,6 +31,8 @@ extern const f64 lbl_8053D2F8;
 extern const f64 lbl_8053D300;
 extern const f64 lbl_8053D308;
 extern const f32 lbl_8053D310;
+extern const f32 lbl_8053D288;
+extern const f32 lbl_8053D314;
 extern s32 lbl_804BF850[];
 extern s32 lbl_8053AB44;
 extern s32 lbl_8053AB48;
