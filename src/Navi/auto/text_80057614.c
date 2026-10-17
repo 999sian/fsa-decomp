@@ -34,6 +34,15 @@ extern "C" void fn_8005A484(void);
 extern s32 lbl_80249DA0[];
 extern u8 lbl_802FF100;
 extern u8 lbl_802FF101;
+extern s32 lbl_802FF10C;
+extern s32 lbl_802FF110;
+extern s32 lbl_802FF114;
+extern u8 lbl_802C2D30[];
+extern u8 lbl_8027D790[];
+extern "C" void fn_801BFEBC(void* param_1, void* param_2);
+extern "C" void fn_801BFEE8(void* param_1);
+extern "C" void fn_801BFF24(void* param_1);
+extern "C" void fn_801BFFF0(void* param_1);
 extern u8 lbl_802FC720[4];
 extern "C" void fn_80057DF0(void);
 extern "C" void fn_8005C3CC(void);
@@ -765,6 +774,20 @@ extern "C" void fn_8005B400(void) {
 }
 
 extern "C" void fn_8005B450(void) {}
+
+extern "C" u8 fn_8005BAB4(s32 idx) {
+    u8* base = lbl_8026D4BC;
+    s32 off = idx * 0xc;
+    int t;
+    if (!fn_80058D70(idx)) {
+        return 1;
+    }
+    t = base[off];
+    if (t >= 4) {
+        return 1;
+    }
+    return lbl_802FC71C[t];
+}
 
 extern "C" void fn_8005C330(const char*, ...) {
 }
