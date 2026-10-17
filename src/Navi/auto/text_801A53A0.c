@@ -20,9 +20,8 @@ extern "C" u16 fn_801A6050(void* param_1) {
     return *(u32*)((u8*)param_1 + 1);
 }
 
-extern "C" void fn_801A6214(void* param_1, u16* param_2) {
-    u16 v = *param_2;
-    fn_80190684(param_1, v);
+extern "C" void fn_801A6214(void* param_1, void* param_2) {
+    fn_80190684(param_1, *(u16*)param_2);
 }
 
 extern "C" void fn_801A6238(u8* param_1) {
