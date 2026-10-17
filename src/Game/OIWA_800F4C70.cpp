@@ -28,12 +28,20 @@ extern "C" void* fn_800F659C(void* this_, s16 freeFlag) {
 extern "C" u32 fn_8022461C(void* p);
 extern "C" u8 fn_802265DC(void* a, void* b, u32 c);
 
-extern "C" u8 fn_800F51D8(void* this_, void* a, void* b) {
-    s32 kind = (u16)fn_8022461C(b);
+static inline u8 fn_800F51D8_helper(void* other, void* obj) {
+    s32 kind = (u16)fn_8022461C(obj);
     if (kind == 3 || kind == 14 || kind == 2) {
         return 0;
     }
-    return fn_802265DC(b, a, 0);
+    return fn_802265DC(obj, other, 0);
+}
+
+extern "C" u8 fn_800F51D8(void* this_, void* a, void* b) {
+    s32 kind = (u16)fn_8022461C(a);
+    if (kind == 3 || kind == 14 || kind == 2) {
+        return 0;
+    }
+    return fn_802265DC(a, b, 0);
 }
 
 struct OiwaRandom {
