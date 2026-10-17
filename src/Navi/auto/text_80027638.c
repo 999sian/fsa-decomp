@@ -22,6 +22,10 @@ extern "C" int lbl_802FEE28;
 extern "C" char lbl_802BB0FC[];
 extern "C" unsigned int lbl_8022797C[];
 extern float lbl_802FFD10;
+struct S_801F9280 {
+    int v[7];
+};
+extern "C" struct S_801F9280 lbl_801F9280;
 extern "C" unsigned int lbl_802FEDDC;
 extern "C" unsigned int lbl_802FEDE0;
 extern "C" void fn_800278EC(char* p) {
@@ -170,8 +174,7 @@ extern "C" int fn_80029794(int a, int b, int c) {
             return 1;
         }
     }
-    float f = lbl_802FFD10;
-    return fn_800294AC(a, b, f, c, 0, 0, *(int*)(b + 8), 0, 0, 0);
+    return fn_800294AC(a, b, c, lbl_802FFD10, 0, 0, *(int*)(b + 8), 0, 0, 0);
 }
 
 extern "C" unsigned char* fn_800298BC(unsigned char* self, int id) {
@@ -687,7 +690,7 @@ extern "C" void fn_80030250(int param_1) {
 extern "C" unsigned char* fn_800298BC(unsigned char* self, int id);
 extern "C" int fn_80030588(int param_1) {
     unsigned char* obj;
-    int* idp;
+    unsigned char* p;
     int i;
     int k;
     int id;
@@ -700,23 +703,27 @@ extern "C" int fn_80030588(int param_1) {
     if (obj == 0) {
         return 0;
     }
-    idp = (int*)obj;
     for (k = 0; k < 3; k++) {
-        unsigned char* elem = obj;
-        unsigned char* p = 0;
-        id = idp[455];
+        id = *(int*)(obj + k * 4 + 0x71c);
+        p = 0;
         for (i = 0; i < 8; i++) {
-            v = *(int*)(elem + 0x384);
+            v = *(int*)(obj + i * 0x3c + 0x384);
             if (v != 0 && v == id) {
                 p = obj + i * 0x3c + 0x384;
                 break;
             }
-            elem += 0x3c;
         }
         if (p != 0) {
             return 1;
         }
-        idp++;
+    }
+    return 0;
+}
+
+extern "C" signed char fn_80030638(int param_1) {
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    if (obj != 0) {
+        return (signed char)obj[param_1 + 0xc69];
     }
     return 0;
 }
