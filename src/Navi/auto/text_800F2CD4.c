@@ -32,7 +32,6 @@ extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_800F39E8(void);
 extern "C" void fn_800F3B20(void);
-extern "C" void fn_800F42C4(void);
 extern "C" int fn_8002F6BC(void);
 extern "C" void fn_8002F9B4(void);
 extern "C" int fn_80181BA0(void* self);
