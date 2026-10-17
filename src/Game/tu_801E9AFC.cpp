@@ -1,6 +1,8 @@
 #include "types.h"
 #include <dolphin/gx.h>
 struct JMathSinCos { f32 sin; f32 cos; };
+struct FsaSlotEntry { void* actor; u8 kind; s32 id; };
+struct FsaSlot { FsaSlotEntry entries[8]; s32 count; s32 unk64[4]; s32 unk74; };
 extern "C" {
 extern const f32 lbl_8053F65C;
 extern const f32 lbl_8053F660;
@@ -81,6 +83,7 @@ extern "C" void fn_801EA108(u8* param_1, f32* pos, s16 angle, f32 z) {
     f32 oy = lbl_8053F66C;
     f32 cx, cy, t;
     s32 a;
+    JMathSinCos* tbl = (JMathSinCos*)sincosTable___5JMath;
 
     if (angle < 0) {
         t = u0;
@@ -90,16 +93,16 @@ extern "C" void fn_801EA108(u8* param_1, f32* pos, s16 angle, f32 z) {
         oy = -oy;
     }
     a = -angle;
-    cx = pos[0] + (oy * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - ox * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]);
-    cy = pos[1] + (oy * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + ox * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1]);
+    cx = pos[0] + (oy * tbl[(a >> 5) & 0x7ff].cos - ox * tbl[(a >> 5) & 0x7ff].sin);
+    cy = pos[1] + (oy * tbl[(a >> 5) & 0x7ff].sin + ox * tbl[(a >> 5) & 0x7ff].cos);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
-    GXPosition3f32(cx + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXPosition3f32(cx + (lbl_8053F670 * tbl[(a >> 5) & 0x7ff].cos - lbl_8053F670 * tbl[(a >> 5) & 0x7ff].sin), z + (cy + (lbl_8053F670 * tbl[(a >> 5) & 0x7ff].sin + lbl_8053F670 * tbl[(a >> 5) & 0x7ff].cos)), z);
     GXTexCoord2f32(u0, lbl_8053F660);
-    GXPosition3f32(cx + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXPosition3f32(cx + (lbl_8053F664 * tbl[(a >> 5) & 0x7ff].cos - lbl_8053F670 * tbl[(a >> 5) & 0x7ff].sin), z + (cy + (lbl_8053F664 * tbl[(a >> 5) & 0x7ff].sin + lbl_8053F670 * tbl[(a >> 5) & 0x7ff].cos)), z);
     GXTexCoord2f32(u1, lbl_8053F660);
-    GXPosition3f32(cx + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXPosition3f32(cx + (lbl_8053F664 * tbl[(a >> 5) & 0x7ff].cos - lbl_8053F664 * tbl[(a >> 5) & 0x7ff].sin), z + (cy + (lbl_8053F664 * tbl[(a >> 5) & 0x7ff].sin + lbl_8053F664 * tbl[(a >> 5) & 0x7ff].cos)), z);
     GXTexCoord2f32(u1, lbl_8053F668);
-    GXPosition3f32(cx + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXPosition3f32(cx + (lbl_8053F670 * tbl[(a >> 5) & 0x7ff].cos - lbl_8053F664 * tbl[(a >> 5) & 0x7ff].sin), z + (cy + (lbl_8053F670 * tbl[(a >> 5) & 0x7ff].sin + lbl_8053F664 * tbl[(a >> 5) & 0x7ff].cos)), z);
     GXTexCoord2f32(u0, lbl_8053F668);
 }
 
