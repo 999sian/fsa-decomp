@@ -124,6 +124,11 @@ extern "C" BOOL fn_800FFBC4(void)
     return TRUE;
 }
 
+extern "C" void fn_80102BA4(u8* p) {
+    p[0xf0] = 1;
+    p[0xee] = 0x22;
+}
+
 extern "C" s32 fn_8002F87C(void);
 extern "C" u8 fn_801081D0(char*);
 extern "C" void fn_800FE858(char*);
@@ -232,13 +237,15 @@ extern "C" void fn_8010428C(void* self) {
 }
 
 extern "C" void fn_801043FC(u8* p) {
-    if (*(u32*)(p + 0x238) != 0 && *(u32*)(p + 0x23c) != 0 && (s8)p[0x45a] == 4 && p[0x259] != 0) {
-        s32 r = fn_801093D4(p, p[0x25a], ((u8*)lbl_802C5A84)[0x61], 0);
-        p[0x25a]++;
-        if (r == 1) {
-            p[0x25a] = 0;
-            p[0x259] = 0;
-            p[0x256] ^= 1;
+    if (*(u32*)(p + 0x238) != 0 && *(u32*)(p + 0x23c) != 0) {
+        if ((s8)p[0x45a] == 4 && p[0x259] != 0) {
+            s32 r = fn_801093D4(p, p[0x25a], ((u8*)lbl_802C5A84)[0x61], 0);
+            p[0x25a]++;
+            if (r == 1) {
+                p[0x25a] = 0;
+                p[0x259] = 0;
+                p[0x256] ^= 1;
+            }
         }
     }
 }
