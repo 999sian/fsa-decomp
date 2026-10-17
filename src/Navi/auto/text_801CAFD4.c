@@ -732,7 +732,9 @@ extern "C" void fn_801D59DC(void* param_1) {
 }
 
 extern "C" void fn_801D6398(void* param_1) {
-    if (fn_801D61F8(param_1) >= 0) {
+    if (fn_801D61F8(param_1) < 0) {
+        ;
+    } else {
         fn_801D2F34((s32)param_1);
     }
 }
@@ -784,11 +786,9 @@ extern "C" s32 fn_801D2CC8(s32 chan, u8** pcard);
 extern "C" s32 fn_801D2D80(u8* card, s32 result);
 extern "C" void fn_801D7970(s32* param_1, s32 param_2, s32 param_3, s32 param_4) {
     s32 fn_801D782C(s32* a, s32 b, s32 c, s32 d, void (*e)(s32));
-    s32 r = fn_801D782C(param_1, param_2, param_3, param_4, fn_801D1D6C);
-    if (r < 0) {
-        return;
+    if (fn_801D782C(param_1, param_2, param_3, param_4, fn_801D1D6C) >= 0) {
+        fn_801D2F34(*param_1);
     }
-    fn_801D2F34(*param_1);
 }
 
 extern "C" void fn_801D9850(void* base, u32 hi, u32 lo);
@@ -1433,6 +1433,21 @@ extern "C" u32 fn_801DD408(int param_1)
     return *(u32*)(param_1 + 0x18);
 }
 
+extern "C" void fn_801DD58C(void* a, u32 b)
+{
+	void* r = (*(void* (**)(void))(__GXData + 0x4c8))();
+	fn_801DD410(a, r, b);
+}
+
+extern "C" void fn_801DD5E0(u32* p, u32 a, u32 b, u16 c)
+{
+	p[0] = 0;
+	p[0] = __rlwimi(p[0], b, 10, 20, 21);
+	p[1] = __rlwimi(p[1], a, 27, 11, 31);
+	p[1] = __rlwimi(p[1], 0x64, 24, 0, 7);
+	*(u16*)(p + 2) = c;
+}
+
 extern "C" void fn_801DD410(void* a, void* b, u32 c);
 extern "C" void __GXFlushTextureState(void);
 extern "C" void fn_801DD618(u32* p, u32 id)
@@ -1448,5 +1463,91 @@ extern "C" void fn_801DD618(u32* p, u32 id)
 	r[1] = p[0];
 	r[2] = p[1];
 	r[3] = p[2];
+}
+
+extern "C" void GXInitTlutRegion(u32* p, u32 a, u32 b) {
+    *p = 0;
+    *p = __rlwimi(*p, a - 0x80000, 23, 22, 31);
+    *p = __rlwimi(*p, b, 10, 11, 21);
+    *p = __rlwimi(*p, 0x65, 24, 0, 7);
+}
+
+extern "C" void fn_801DD7DC(void) {
+    u32 hi = 0x66000000;
+    __GXFlushTextureState();
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = hi + 0x1000;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = hi + 0x1100;
+    __GXFlushTextureState();
+}
+
+extern "C" u32 fn_801DD824(u32 param_1) {
+    u8* p = __GXData;
+    u32 old = *(u32*)(p += 0x4c8);
+    *(u32*)p = param_1;
+    return old;
+}
+
+extern "C" u32 fn_801DD838(u32 param_1) {
+    u32* p = (u32*)__GXData;
+    u32 old = *(p += 0x4cc / 4);
+    *p = param_1;
+    return old;
+}
+
+extern "C" void fn_801DD84C(u32 param_1, u32 param_2, s32 param_3, s32 param_4) {
+    u8* gx = __GXData;
+    *(u32*)(gx + 0x594) = (*(u32*)(gx + 0x594) & ~(1 << param_1)) | ((param_2 & 0xff) << param_1);
+    if ((param_2 & 0xff) == 0) {
+        return;
+    }
+    u8* b = gx + param_1 * 4;
+    *(u32*)(b + 0xb8) = ((param_3 - 1) & 0xffff) | (*(u32*)(b + 0xb8) & 0xffff0000);
+    *(u32*)(b + 0xd8) = ((param_4 - 1) & 0xffff) | (*(u32*)(b + 0xd8) & 0xffff0000);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(b + 0xb8);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(b + 0xd8);
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DD8C8(s32 param_1, s32 param_2) {
+    u8* gx = __GXData;
+    u8* a = gx + param_1 * 4;
+    u8* b = gx + param_2 * 4;
+    u32 v = *(u32*)(a + 0x514);
+    *(u32*)(b + 0xb8) = (v & 0x3ff) | (*(u32*)(b + 0xb8) & 0xffff0000);
+    *(u32*)(b + 0xd8) = ((v >> 10) & 0x3ff) | (*(u32*)(b + 0xd8) & 0xffff0000);
+    u32 w = *(u32*)(a + 0x534);
+    *(u32*)(b + 0xb8) = (((w & 3) == 1) << 16) | (*(u32*)(b + 0xb8) & 0xfffeffff);
+    *(u32*)(b + 0xd8) = ((((w >> 2) & 3) == 1) << 16) | (*(u32*)(b + 0xd8) & 0xfffeffff);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(b + 0xb8);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(b + 0xd8);
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DDE38(int param_1, u32 param_2, u32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9, u32 param_10) {
+    u32 r11 = __rlwimi(0, param_2, 0, 30, 31);
+    r11 = __rlwimi(r11, param_3, 2, 28, 29);
+    r11 = __rlwimi(r11, param_4, 4, 25, 27);
+    r11 = __rlwimi(r11, param_10, 7, 23, 24);
+    r11 = __rlwimi(r11, param_5, 9, 19, 22);
+    r11 = __rlwimi(r11, param_6, 13, 16, 18);
+    r11 = __rlwimi(r11, param_7, 16, 13, 15);
+    r11 = __rlwimi(r11, param_9, 19, 12, 12);
+    *(volatile u8*)0xCC008000 = 0x61;
+    r11 = __rlwimi(r11, param_8, 20, 11, 11);
+    r11 = __rlwimi(r11, param_1 + 0x10, 24, 0, 7);
+    *(volatile u32*)0xCC008000 = r11;
+    *(u16*)(__GXData + 2) = 0;
+}
+
+extern "C" void fn_801DE24C(u8 param_1) {
+    u32* gx = (u32*)__GXData;
+    gx[0x204 / 4] = __rlwimi(gx[0x204 / 4], param_1, 16, 13, 15);
+    gx[0x5ac / 4] |= 6;
 }
 
