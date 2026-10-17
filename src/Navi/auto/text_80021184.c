@@ -17,6 +17,17 @@ extern "C" void fn_80021220(void) {
     fn_8011526C();
 }
 
+extern "C" s32 fn_8002185C(void) {
+    s32 count = 0;
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (*(u32*)(lbl_802B7CA0 + 0x3440) & (1 << i)) {
+            count++;
+        }
+    }
+    return count;
+}
+
 extern "C" s32 fn_800218C4(void) {
     s32 count = 0;
     s32 i;
@@ -127,13 +138,14 @@ extern "C" s32 fn_80021C6C(u8* param_1, u8 param_2) {
             u8 uVar2;
             s32 r;
             for (uVar2 = 0; uVar2 < 4; uVar2++) {
-                if ((mask & (1 << uVar2)) != 0) {
+                if ((u8)(mask & (1 << uVar2)) != 0) {
+                    r = uVar2;
                     goto found;
                 }
             }
             r = -1;
 found:
-            uVar3 = (u8)r;
+            uVar3 = r;
         }
         if (uVar3 == param_2) {
             count++;
