@@ -983,7 +983,6 @@ extern "C" void fn_8005C4A8(u8 flag, s32** bufs)
 }
 
 extern "C" void fn_8005C710(void) {
-    fn_801473F8(0, (void*)fn_8005C4A8, lbl_802C2D60, 0xff, 0, (void*)fn_8005C5DC, lbl_802C2D60, 0xff);
 }
 
 extern int lbl_802FF128;
@@ -1180,8 +1179,7 @@ extern "C" void fn_800609E8(void) {
     if (lbl_802FF140 == 0) {
         return;
     }
-    f32 v = lbl_802FF144;
-    v = v + lbl_802FF148;
+    f32 v = lbl_802FF144 + lbl_802FF148;
     lbl_802FF144 = v;
     if (v < lbl_803002D0) {
         lbl_802FF144 = lbl_803002D0;
@@ -1189,8 +1187,8 @@ extern "C" void fn_800609E8(void) {
         lbl_802FF144 = lbl_803002F4;
         lbl_802FF140 = 0;
     }
-    f32 a = lbl_80300338 * lbl_802FF144;
     u8* obj = lbl_802C2D7C;
+    f32 a = lbl_80300338 * lbl_802FF144;
     *(f32*)(obj + 0x34) = a;
     *(f32*)(obj + 0x38) = lbl_80300340 * a;
     u8* base = lbl_802B7CA0;
@@ -1221,10 +1219,10 @@ extern "C" s32 fn_800613EC(void* self, s32 val) {
         fn_8011FD18(fn_8011FD10(), lbl_8027EA6C, 0x111b, "%s", "mModelNum < MODE");
         fn_80007AB8(lbl_8027EA6C, 0x111b, "Halt");
     }
-    u8 idx = base[3];
+    u32 idx = base[3];
     base[3] = idx + 1;
-    s32* slot = (s32*)(base + (idx << 2));
-    slot[0x2a] = val;
+    u8* p = base + ((idx & 0xff) << 2);
+    *(s32*)(p + 0xa8) = val;
     return 1;
 }
 
