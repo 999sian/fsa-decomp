@@ -419,6 +419,30 @@ extern "C" int fn_800724D4(u8* p) {
     }
     return 5;
 }
+
+extern StateFunc_80072080 lbl_80280FDC;
+extern StateFunc_80072080 lbl_80280FE8;
+extern "C" BOOL fn_80072864(StateObj_80072080* self, StateFunc_80072080* func, int arg);
+extern "C" void fn_800727C8(u8* p);
+extern "C" int fn_800726DC(u8* p) {
+    fn_801C5D74(lbl_80203B38, p + 0x264);
+    if (*(u32*)(p + 0xb0) == 1) {
+        StateFunc_80072080 f = lbl_80280FDC;
+        fn_80072864((StateObj_80072080*)p, &f, 0);
+    } else {
+        StateFunc_80072080 f = lbl_80280FE8;
+        fn_80072864((StateObj_80072080*)p, &f, 0);
+    }
+    fn_800727C8(p);
+    *(f32*)(lbl_802BF814 + 0xc0) = *(f32*)(p + 0x100);
+    *(f32*)(lbl_802BF814 + 0xc4) = *(f32*)(p + 0x104);
+    *(f32*)(lbl_802BF814 + 0xc8) = *(f32*)(p + 0x108);
+    *(f32*)(lbl_802BF814 + 0xcc) = *(f32*)(p + 0x144);
+    *(f32*)(lbl_802BF814 + 0xd0) = *(f32*)(p + 0x148);
+    *(f32*)(lbl_802BF814 + 0xd4) = *(f32*)(p + 0x14c);
+    return 4;
+}
+
 #pragma dont_inline reset
 
 extern "C" void fn_800727C8(u8* p) {
@@ -696,8 +720,9 @@ extern "C" void fn_801E10DC(void* self, s32 arg);
 extern u8 lbl_802812C4[];
 extern "C" void fn_80073F80(u8* p, s32 arg) {
     StateObj_80073ECC* self = (StateObj_80073ECC*)p;
-    StateFunc_80073ECC func = *(StateFunc_80073ECC*)lbl_802812C4;
+    StateFunc_80073ECC func;
     if (fn_801E1070(&self->m_func) == 0) {
+        func = *(StateFunc_80073ECC*)lbl_802812C4;
         if (fn_801E10A0(&self->m_func, &func) != 0) {
             if (fn_801E1070(&self->m_func) != 0) {
                 self->m_state = -1;
