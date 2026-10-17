@@ -782,22 +782,22 @@ extern "C" void fn_8009388C(char* param_1) {
 extern "C" void* memset(void* p, s32 c, u32 n);
 extern "C" void fn_800F0D04(void* a, void* b, s32 c);
 extern "C" void fn_80017248(void* p, s32 v);
-extern "C" void fn_800938DC(void* p) {
-    if (*(unsigned char*)(*(char**)((char*)p + 0x280) + 0x159) == 2) {
-        if ((unsigned char)(*(unsigned char*)(*(char**)((char*)p + 0x280) + 0x158) ^ 1)) {
-            memset((void*)((s32)p + 0x883), 0, 0x258);
-            fn_800F0D04(lbl_802B7CA0, (void*)((s32)p + 0x883), 0);
-            fn_80017248((void*)((s32)p + 0x883), 0);
-            fn_800F0D04(lbl_802B7CA0, (void*)((s32)p + 0x883), 1);
-            fn_80017248((void*)((s32)p + 0x883), 1);
-            fn_800F0D04(lbl_802B7CA0, (void*)((s32)p + 0x883), 2);
-            fn_80017248((void*)((s32)p + 0x883), 2);
-            *(unsigned char*)((char*)lbl_802B7CA0 + 0x1372) = 1;
-            fn_800A5338(*(void**)((char*)p + 0x268));
-            *(unsigned char*)((char*)p + 0x7e8) = 2;
-            *(unsigned char*)((char*)p + 0x85c) = 1;
+extern "C" void fn_800938DC(u8* p) {
+    if ((*(u8**)(p + 0x280))[0x159] == 2) {
+        if ((u8)((*(u8**)(p + 0x280))[0x158] ^ 1)) {
+            memset(p + 0x883, 0, 0x258);
+            fn_800F0D04(lbl_802B7CA0, p + 0x883, 0);
+            fn_80017248(p + 0x883, 0);
+            fn_800F0D04(lbl_802B7CA0, p + 0x883, 1);
+            fn_80017248(p + 0x883, 1);
+            fn_800F0D04(lbl_802B7CA0, p + 0x883, 2);
+            fn_80017248(p + 0x883, 2);
+            *(u8*)(lbl_802B7CA0 + 0x1372) = 1;
+            fn_800A5338(*(void**)(p + 0x268));
+            p[0x7e8] = 2;
+            p[0x85c] = 1;
         } else {
-            *(unsigned char*)((char*)p + 0x282c) = 0;
+            p[0x282c] = 0;
         }
     }
 }
@@ -1803,7 +1803,7 @@ extern "C" void fn_8009C1BC(u8* p) {
         f32 d = *(f32*)(q + 0x3c) - a;
         d *= t;
         f32 v = a + d;
-        VObj_80098918* obj = *(VObj_80098918**)(p + idx * 4 + 0x64c);
+        VObj_80098918* obj = (VObj_80098918*)((NaviObjTbl_80097EB0*)p)->objs[idx];
         *(f32*)((char*)obj + 0xcc) = v;
         *(f32*)((char*)obj + 0xd0) = v;
         obj->v9();
@@ -1878,22 +1878,20 @@ extern "C" s32 fn_8009D0D8(s16* param_1) {
 extern "C" void fn_8009D2F0(u8* p) {
     if (((u8*)lbl_802BB0FC)[0xee] != 0) {
         if (p[0x70c] != 0) {
-            u8* obj = *(u8**)(p + 0x704);
             *(s32*)(p + 0x708) = *(s32*)(p + 0x708) + 1;
-            s16 sVar1 = *(s16*)(obj + 6);
+            s16 sVar1 = *(s16*)(*(u8**)(p + 0x704) + 6);
             if (*(s32*)(p + 0x708) >= sVar1) {
                 *(s32*)(p + 0x708) = *(s32*)(p + 0x708) - sVar1;
             }
-            *(f32*)(obj + 8) = (f32)*(s32*)(p + 0x708);
+            *(f32*)(*(u8**)(p + 0x704) + 8) = (f32)*(s32*)(p + 0x708);
         }
         if (p[0x718] != 0) {
-            u8* obj = *(u8**)(p + 0x710);
             *(s32*)(p + 0x714) = *(s32*)(p + 0x714) + 1;
-            s16 sVar1 = *(s16*)(obj + 6);
+            s16 sVar1 = *(s16*)(*(u8**)(p + 0x710) + 6);
             if (*(s32*)(p + 0x714) >= sVar1) {
                 *(s32*)(p + 0x714) = *(s32*)(p + 0x714) - sVar1;
             }
-            *(f32*)(obj + 8) = (f32)*(s32*)(p + 0x714);
+            *(f32*)(*(u8**)(p + 0x710) + 8) = (f32)*(s32*)(p + 0x714);
         }
         fn_8017A4F8(*(void**)(p + 0x250));
     }
@@ -1910,6 +1908,27 @@ extern "C" void fn_8009D3E0(u8* p) {
     }
     *(f32*)(*(u8**)(p + 0x584) + 8) = (f32)*(s32*)(p + 0x588);
     fn_8017A4F8(*(void**)(p + 0x250));
+}
+
+extern "C" void fn_8009D454(u8* p) {
+    if (*(s32*)(lbl_802BB0FC + 0x44) == 0xc && p[0x754] != 0) {
+        s32 n;
+        (*(s32*)(p + 0x748))++;
+        n = *(s16*)(*(u8**)(p + 0x744) + 6);
+        if (n <= *(s32*)(p + 0x748)) {
+            *(s32*)(p + 0x748) = n;
+            p[0x754] = 0;
+            *(*(u8**)(p + 0x740) + 0xb0) = 0;
+        }
+        *(f32*)(*(u8**)(p + 0x744) + 8) = *(s32*)(p + 0x748);
+        (*(s32*)(p + 0x750))++;
+        n = *(s16*)(*(u8**)(p + 0x74c) + 6);
+        if (n <= *(s32*)(p + 0x750)) {
+            *(s32*)(p + 0x750) -= n;
+        }
+        *(f32*)(*(u8**)(p + 0x74c) + 8) = *(s32*)(p + 0x750);
+        fn_8017A4F8(*(void**)(p + 0x250));
+    }
 }
 
 extern "C" void fn_8009D544(char* p) {
