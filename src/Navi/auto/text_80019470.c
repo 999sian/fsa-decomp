@@ -318,11 +318,11 @@ extern "C" s32 fn_80019AE4(void* param_1) {
 }
 
 extern "C" s32 fn_80019B40(void* param_1) {
-    s16 sVar1;
+    s32 sVar1;
     fn_80115590(param_1);
     sVar1 = *(s16*)((u8*)param_1 + 0x2);
     *(s16*)((u8*)param_1 + 0x2) = sVar1 - 1;
-    return ((sVar1 | ~-sVar1) >> 31) & 2;
+    return (sVar1 <= 0) ? 2 : 0;
 }
 
 extern "C" void fn_801155C0(void*, s32);
@@ -976,8 +976,8 @@ extern "C" void fn_8001C148(char* p) {
 extern "C" void fn_8011580C(void);
 #pragma push
 #pragma dont_inline on
-extern "C" void fn_8001C2C0(void* param_1) {
-    fn_8001BBBC((short*)((u8*)param_1 + 0xbe));
+extern "C" int fn_8001C2C0(void* param_1) {
+    return fn_8001BBBC((short*)((u8*)param_1 + 0xbe));
 }
 
 extern "C" void fn_8001C2E4(void* param_1, void* param_2) {
