@@ -154,6 +154,12 @@ extern "C" u8* lbl_8053AAF8;
 struct T803ED83C;
 typedef void (T803ED83C::*PMF803ED83C)();
 extern PMF803ED83C lbl_804B08BC[];
+extern "C" void fn_8013B490(void* p);
+extern "C" void* lbl_8053AB10;
+extern "C" void* lbl_8053AED8;
+extern "C" void* fn_804030C4(u32 tag, const char* name);
+extern "C" void fn_80440D78(void* p, void* r);
+extern "C" void fn_80440CE4(void* p, void* r);
 extern "C" void fn_803ED83C(u8* p) {
     s32 i;
 
