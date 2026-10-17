@@ -605,6 +605,105 @@ extern "C" void fn_80267E18(char* p)
     *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
 }
 
+extern "C" void fn_80267ECC(char* p)
+{
+    int t;
+    if (*(unsigned char*)(p + 0x3fb) >= 8) {
+        if (fn_802486A0(p) == 4) {
+            int a = fn_80248778(p);
+            int b = fn_80240888(p);
+            if (b != a) {
+                t = *(int*)(p + 0x3dc);
+                if (t == 0) {
+                    *(short*)(p + 0x3c4) = 0x1bf;
+                } else if (t == 1) {
+                    *(short*)(p + 0x3c4) = 0x1c1;
+                } else if (t == 2) {
+                    *(short*)(p + 0x3c4) = 0x1c3;
+                } else {
+                    *(short*)(p + 0x3c4) = 0x1c3;
+                }
+                return;
+            }
+        }
+        t = *(int*)(p + 0x3dc);
+        if (t == 0) {
+            *(short*)(p + 0x3c4) = 0x3c;
+        } else if (t == 1) {
+            *(short*)(p + 0x3c4) = 0x3d;
+        } else if (t == 2) {
+            *(short*)(p + 0x3c4) = 0x3e;
+        } else {
+            *(short*)(p + 0x3c4) = 0x3f;
+        }
+    } else {
+        switch (*(int*)(p + 0x45c)) {
+        case 0:
+            t = *(int*)(p + 0x3dc);
+            if (t == 0) {
+                *(short*)(p + 0x3c4) = 0x20;
+            } else if (t == 1) {
+                *(short*)(p + 0x3c4) = 0x27;
+            } else if (t == 2) {
+                *(short*)(p + 0x3c4) = 0x2e;
+            } else {
+                *(short*)(p + 0x3c4) = 0x35;
+            }
+            break;
+        case 1:
+            t = *(int*)(p + 0x3dc);
+            if (t == 0) {
+                *(short*)(p + 0x3c4) = 0x232;
+            } else if (t == 1) {
+                *(short*)(p + 0x3c4) = 0x23a;
+            } else if (t == 2) {
+                *(short*)(p + 0x3c4) = 0x242;
+            } else {
+                *(short*)(p + 0x3c4) = 0x24a;
+            }
+            break;
+        case 2:
+            t = *(int*)(p + 0x3dc);
+            if (t == 0) {
+                *(short*)(p + 0x3c4) = 0x252;
+            } else if (t == 1) {
+                *(short*)(p + 0x3c4) = 0x256;
+            } else if (t == 2) {
+                *(short*)(p + 0x3c4) = 0x25a;
+            } else {
+                *(short*)(p + 0x3c4) = 0x25e;
+            }
+            break;
+        case 3:
+            t = *(int*)(p + 0x3dc);
+            if (t == 0) {
+                *(short*)(p + 0x3c4) = 0x27a;
+            } else if (t == 1) {
+                *(short*)(p + 0x3c4) = 0x27e;
+            } else if (t == 2) {
+                *(short*)(p + 0x3c4) = 0x282;
+            } else {
+                *(short*)(p + 0x3c4) = 0x286;
+            }
+            break;
+        case 4:
+            t = *(int*)(p + 0x3dc);
+            if (t == 0) {
+                *(short*)(p + 0x3c4) = 0x262;
+            } else if (t == 1) {
+                *(short*)(p + 0x3c4) = 0x268;
+            } else if (t == 2) {
+                *(short*)(p + 0x3c4) = 0x26e;
+            } else {
+                *(short*)(p + 0x3c4) = 0x274;
+            }
+            *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+            return;
+        }
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3fb);
+    }
+}
+
 extern "C" void fn_80268194(char* p)
 {
     if (fn_802486A0(p) == 4) {
@@ -634,5 +733,9 @@ extern "C" void fn_80268194(char* p)
     } else {
         *(short*)(p + 0x3c4) = 0x3f;
     }
+}
+
+extern "C" void fn_80268280(void)
+{
 }
 
