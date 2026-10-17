@@ -151,6 +151,14 @@ extern "C" void fn_80026758(void) {
     ((u8*)&lbl_802FEDA4)[3] = 0;
 }
 
+extern "C" void fn_80026774(void) {
+    u32* p = (u32*)lbl_802BBD28;
+    p[0] = 0;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = 0;
+}
+
 extern "C" int fn_8002689C()
 {
 	return 0;
