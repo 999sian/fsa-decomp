@@ -235,9 +235,9 @@ extern "C" BOOL fn_8008CF88(void* self, Arg_8008CF88* arg, s32 n) {
     return TRUE;
 }
 
-extern "C" void fn_8008C4FC(void);
-extern "C" void fn_8008D420(void) {
-    fn_8008C4FC();
+extern "C" int fn_8008C4FC(u8* p);
+extern "C" void fn_8008D420(u8* p) {
+    fn_8008C4FC(p);
 }
 
 extern "C" void fn_8008C994(void);
@@ -287,22 +287,18 @@ extern "C" void fn_8008D6F8(f32* p) {
 }
 
 extern "C" void fn_8008D72C(f32* p, s32 idx) {
+    s32 n = idx - 1;
     s16 s[2];
     f32 v[3];
-    f32 w[3];
-    s32 n = idx - 1;
     char* e = (char*)lbl_802BB0FC + ((n % 10) % 10) * 12;
     s16 a = *(s16*)(e + 0x2d6);
-    s[0] = *(s16*)(e + 0x2d4);
+    s16 b = *(s16*)(e + 0x2d4);
     s[1] = a;
+    s[0] = b;
     fn_8008D5BC(v, s);
-    w[0] = v[0];
-    w[1] = v[1];
-    w[2] = v[2];
     p[0] = v[0];
     p[1] = v[1];
-    w[2] = v[2] + (f32)a * *(f32*)((char*)lbl_802C5408 + 0x24);
-    p[2] = w[2];
+    p[2] = v[2] + (f32)a * *(f32*)((char*)lbl_802C5408 + 0x24);
 }
 
 extern "C" void fn_8008D938(void* p) {
@@ -310,10 +306,11 @@ extern "C" void fn_8008D938(void* p) {
 }
 
 extern "C" void fn_8008D974(f32* p) {
+    struct V3 { f32 x, y, z; };
     s32 n = *(s32*)(lbl_802BB0FC + 0x3f0);
     s16 s[2];
-    f32 v[3];
-    f32 t[3];
+    V3 v;
+    V3 t;
     s16 x, y;
     char* e = (char*)lbl_802BB0FC + ((n % 10) % 10) * 12;
     s16 a = *(s16*)(e + 0x2d4);
@@ -327,13 +324,9 @@ extern "C" void fn_8008D974(f32* p) {
     }
     s[0] = x;
     s[1] = y;
-    fn_8008D5BC(v, s);
-    t[0] = v[0];
-    p[0] = v[0];
-    p[1] = v[1];
-    p[2] = v[2];
-    t[1] = v[1];
-    t[2] = v[2];
+    fn_8008D5BC((f32*)&v, s);
+    t = v;
+    *(V3*)p = t;
 }
 
 extern char lbl_802BB0FC[];
