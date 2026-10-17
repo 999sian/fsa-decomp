@@ -62,7 +62,7 @@ extern "C" void fn_80265E88(char* p);
 extern "C" void fn_80285E58(char* p) {
     char* q;
     if (*(s32*)(p + 0x11f4) > 0) {
-        *(s32*)(p + 0x11f4) = *(s32*)(p + 0x11f4) - 1;
+        (*(s32*)(p + 0x11f4))--;
         q = p;
         for (int i = 0; i < 5; i++) {
             *(s32*)(q + 0xdb0) = -1;
@@ -106,15 +106,40 @@ extern "C" void fn_80285E58(char* p) {
     fn_8024CA20(p);
 }
 
+extern "C" void fn_80285F44(char* p) {
+    s32 kind;
+
+    if (fn_802413F0() && fn_80241E28(p, *(s32*)(p + 0x3b8), p + 0x14)) {
+        if (Player_IsLinked(p) && !fn_80234E30(Player_GetLinkTargetIndex(p))) {
+            if (fn_80270A8C(p)) {
+                *(s32*)(p + 0x448) = 4;
+                return;
+            }
+        } else {
+            *(s32*)(p + 0x448) = 4;
+            return;
+        }
+    }
+    if (*(f32*)(p + 0x10) <= lbl_80540410 && lbl_80540410 < *(f32*)(p + 0x1c)) {
+        ;
+    }
+}
+
 extern "C" void fn_80286688(u8* p) {
-    s32 ok = *(s32*)((u8*)lbl_8053AAF8 + 0x4c) != 0xb;
-    if (ok && *((u8*)lbl_8053AAF8 + 0x7e) == 0 &&
-        (*((u8*)lbl_8053AAF8 + 0x82) & ((1 << *(u32*)(p + 4)) & 0xff)) != 0) {
+    void* pad;
+    s32 ok = *(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xb;
+    if (ok != 0) {
+        return;
+    }
+    if (*((u8*)lbl_8053AAF8 + 0x7e) != 0) {
+        return;
+    }
+    if ((*((u8*)lbl_8053AAF8 + 0x82) & ((1 << *(u32*)(p + 4)) & 0xff)) != 0) {
         fn_8024064C(p);
         if (fn_8023DE58(p) < 8) {
             p[0x13b8] = 0;
         } else {
-            void* pad = fn_8008E328(fn_8030AAF4(*(s32*)(p + 0x11ec)));
+            pad = fn_8008E328(fn_8030AAF4(*(s32*)(p + 0x11ec)));
             if (fn_80247534(p) == 0 && pad != 0 && (*(u32*)((u8*)pad + 0x1c) & 0x10) != 0) {
                 if (p[0x13b8] == 1) {
                     p[0x13b8] = 0;
@@ -230,4 +255,4 @@ extern "C" void fn_80286E10(u8* p) {
         fn_80248004((char*)p, 4, 1);
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
