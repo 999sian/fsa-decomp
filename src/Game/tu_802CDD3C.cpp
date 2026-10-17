@@ -21,7 +21,10 @@ extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 
 static inline void fn_802CE508_spawn(char* this_) {
     if (*(s32*)(this_ + 0x4) >= 8) {
-        Vec v = {lbl_80540E38 + *(f32*)(this_ + 0xc), lbl_80540E38 + *(f32*)(this_ + 0x10), lbl_80540E34};
+        Vec v;
+        v.x = lbl_80540E38 + *(f32*)(this_ + 0xc);
+        v.z = lbl_80540E34;
+        v.y = lbl_80540E38 + *(f32*)(this_ + 0x10);
         Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), &v, 0, -1, -1);
     } else {
         fn_8013CC50(*(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), this_ + 0xc, lbl_80540E3C, 0x564, 0, 0, 0, 0, 1);
