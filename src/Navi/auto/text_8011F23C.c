@@ -391,6 +391,7 @@ extern "C" void fn_801CC8B4(s32 a);
 extern "C" void fn_801CC710(void);
 extern "C" void fn_801DB70C(void* a);
 extern "C" void fn_801BDDBC(void* p, void* data, s32 count);
+extern "C" u32 fn_801CC930(void);
 typedef void (*VirtualMethod0)(void*, s16);
 extern "C" void fn_80120090(u8 param_1) {
     lbl_802FDD88 = param_1;
@@ -566,24 +567,24 @@ extern "C" void fn_8012092C(Unk8012092C* p) {
     switch (p->m4) {
     case 1:
         break;
-    case 0:
-        p->mF = 0xFF;
-    default:
-        goto call;
     case 2: {
         u16 t = p->mA + 1;
         p->mA = t;
         p->mF = (u8)(0xFF - ((s32)(t * 0xFF) / (s32)p->m8));
-        if (t >= p->m8) {
+        if ((u16)p->mA >= (u16)p->m8) {
             p->m4 = 1;
         }
         goto call;
     }
+    case 0:
+        p->mF = 0xFF;
+    default:
+        goto call;
     case 3: {
         u16 t = p->mA + 1;
         p->mA = t;
         p->mF = (u8)((s32)(t * 0xFF) / (s32)p->m8);
-        if (t >= p->m8) {
+        if ((u16)p->mA >= (u16)p->m8) {
             p->m4 = 0;
         }
         goto call;
@@ -2137,16 +2138,15 @@ extern "C" void fn_8012C500(void** param_1, void* param_2) {
 
 extern "C" void fn_8012C508(u8* param_1)
 {
-    u8** data;
-    u8* p = param_1;
-    data = *(u8***)(*(u8**)(p + 4) + 0x28);
+    u8* obj = *(u8**)(param_1 + 4);
+    u8** data = *(u8***)(obj + 0x28);
     if (*(u32*)(*data + 8) & 1) {
         fn_801DACA4(1, 1, 4, 0x3c, 0, 0x7d);
-        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(p + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(p + 4) + 0x38) + (u8)(*(s8*)(*data + 0x25)) * 2)) * 4) + 4, 2);
+        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(param_1 + 8) + 8) + (*(u16*)(*(u8**)(obj + 0x38) + (u8)(*(s8*)(*data + 0x25)) * 2)) * 4) + 4, 2);
     }
     if (*(u32*)(*data + 8) & 0x100) {
         fn_801DACA4(2, 1, 4, 0x3c, 0, 0x7d);
-        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(p + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(p + 4) + 0x38) + (u8)(*(s8*)(*data + 0x26)) * 2)) * 4) + 4, 3);
+        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(param_1 + 8) + 8) + (*(u16*)(*(u8**)(obj + 0x38) + (u8)(*(s8*)(*data + 0x26)) * 2)) * 4) + 4, 3);
     }
 }
 
