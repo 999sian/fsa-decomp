@@ -72,10 +72,10 @@ extern "C" void fn_800E347C(u8* p) {
 }
 
 extern "C" s32 fn_800E3638(void* param_1, s32 param_2) {
-    s32 i;
-    u32 flags = *(u32*)(lbl_802B7CA0 + 0x3448);
     NaviSlot_802C04D0* s = lbl_802C04D0;
-    for (i = 0; i < 4; i++, s++) {
+    u32 flags = *(u32*)(lbl_802B7CA0 + 0x3448);
+    s32 i;
+    for (i = 0; i < 4; s++, i++) {
         if (flags & (1 << s->bit)) {
             if (param_2 == s->id) {
                 return lbl_802C04D0[i].bit;
@@ -177,6 +177,19 @@ extern "C" void fn_800E47B4(u8* p) {
     p[0xa76] = 0x1e;
 }
 
+extern "C" s32 fn_800306DC(s32);
+extern "C" void fn_800E4828(u8* p) {
+    if (fn_800306DC(*(s32*)(p + 0xb50)) == 0) {
+        if (*(u16*)(p + 0xa9c) == 0) {
+            p[0xb11] = 2;
+            *(u16*)(p + 0xa9c) = 10;
+            p[0xa76] = 0x1f;
+        } else {
+            *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
+        }
+    }
+}
+
 extern "C" void fn_80130974(void*);
 extern "C" void fn_800E5458(u8* p) {
     if (*(u8**)(p + 0xb38) != 0) {
@@ -239,7 +252,7 @@ extern "C" void fn_800E7A5C(u8* p) {
     }
 }
 
-void fn_800E7AC8(u8* p)
+extern "C" void fn_800E7AC8(u8* p)
 {
     s16 n;
     (*(u16*)(p + 0xa9c))--;
