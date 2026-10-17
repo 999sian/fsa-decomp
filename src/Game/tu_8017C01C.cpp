@@ -4,6 +4,7 @@
 
 extern void* lbl_8053AB10;
 extern f32 lbl_8053DDC8;
+extern f32 lbl_8053DD28;
 extern "C" u8 fn_8030C2A8(void* mgr, f32* vec);
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
@@ -238,8 +239,8 @@ extern "C" u32 fn_8017EB1C(f32 value) {
 }
 
 extern "C" u8 fn_8017EB44(const f32* pos) {
-    void* base = *(void**)lbl_8053AB10;
-    u8 done = 0;
+    void* base = lbl_8053AB10;
+    s32 done = 0;
     void* p = *(void**)((char*)base + 0x24);
     
     if (*(u8*)((char*)p + 0x7f5) == 0) {
@@ -271,19 +272,23 @@ extern "C" void fn_8017EC5C(JGeometry::TBox2<f32>* box, f32 x0, f32 y0, f32 x1, 
 }
 
 extern "C" u8 fn_8017EC70(const f32* pos, f32 val) {
+    s32 ret = 0;
     void* p = *(void**)((char*)lbl_8053AB10 + 0x24);
     if (*(u8*)((char*)p + 0x840) == 0) {
-        *(u8*)((char*)p + 0x840) = 1;
-        *(f32*)((char*)p + 0x844) = pos[0];
-        *(f32*)((char*)p + 0x84c) = pos[0];
-        *(f32*)((char*)p + 0x848) = pos[1];
-        *(f32*)((char*)p + 0x850) = pos[1];
+        f32 x = pos[0];
+        ret = 1;
+        *(u8*)((char*)p + 0x840) = ret;
+        f32 y = pos[1];
+        *(f32*)((char*)p + 0x84c) = x;
+        f32 c = lbl_8053DDC8;
+        *(f32*)((char*)p + 0x844) = x;
+        *(f32*)((char*)p + 0x850) = y;
+        *(f32*)((char*)p + 0x848) = y;
         *(f32*)((char*)p + 0x854) = val;
-        *(f32*)((char*)p + 0x1d4) = lbl_8053DDC8;
-        *(f32*)((char*)p + 0x1d8) = lbl_8053DDC8;
-        return 1;
+        *(f32*)((char*)p + 0x1d4) = c;
+        *(f32*)((char*)p + 0x1d8) = c;
     }
-    return 0;
+    return (u8)ret;
 }
 
 extern "C" u8 fn_8017ECC0(void) {
