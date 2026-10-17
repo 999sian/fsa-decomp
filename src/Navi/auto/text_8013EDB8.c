@@ -70,6 +70,8 @@ extern "C" s32 fn_8013EEB0(s32 idx, s32 a, s32 b) {
     return fn_801406B0(idx, 1, 3, fn_8013EDB8);
 }
 
+#pragma dont_inline reset
+
 extern "C" s32 fn_8013EF14(s32 idx, s32 param_2) {
     u8* s = lbl_802C6A80 + (idx << 8);
     s32 r;
