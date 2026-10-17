@@ -497,9 +497,9 @@ extern "C" void fn_80104914(void* param_1) {
     }
 }
 
-extern "C" s32 fn_80107EB0(void);
-extern "C" u8 fn_801049C8(void) {
-    s32 i = fn_80107EB0();
+extern "C" s32 fn_80107EB0(u8* p);
+extern "C" u8 fn_801049C8(u8* p) {
+    s32 i = fn_80107EB0(p);
     return ((u8*)lbl_802B7CA0 + i)[0x3ec];
 }
 
