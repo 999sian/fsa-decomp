@@ -1489,7 +1489,7 @@ extern "C" u32 fn_8006CD98(void* param_1, u8 param_2) {
     return (u32)__cntlzw(p[0x31a] & (1 << param_2)) >> 5;
 }
 
-extern "C" void fn_8006B15C(void);
+extern "C" int fn_8006B15C(void);
 extern "C" void fn_8006CDCC(void) {
     fn_8006B15C();
 }
