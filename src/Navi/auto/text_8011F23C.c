@@ -1856,6 +1856,18 @@ extern "C" void* fn_8012F62C(u8* self, s32 param_2) {
     return self;
 }
 
+extern "C" void fn_80118BD0(void* a, s32 b);
+extern "C" void* fn_8012F694(u8* self, s16 param_2) {
+    if (self != nullptr) {
+        *(void**)self = lbl_8029116C;
+        fn_80118BD0(self + 4, -1);
+        if (param_2 > 0) {
+            fn_8015AB1C(self);
+        }
+    }
+    return self;
+}
+
 extern "C" void fn_8012F738(void* p);
 extern "C" void* fn_8012F6F8(void* a, s32 b, void* c) {
     if (b == 0x322d3130) {
