@@ -16,6 +16,17 @@ extern "C" u32 fn_80237774(s32 i);
 extern "C" u8 fn_8022F514(s32 i);
 extern "C" s32 fn_8022F3DC(s32 i);
 extern "C" u32 fn_80236100(s32 i);
+extern "C" void __dl__FPv(void* this_);
+extern void* lbl_804B146C[];
+
+// Releases the owned object in a member slot: virtual slot 2 with freeFlag=1, then clears the slot.
+static inline void ReleaseSlot(void** slot) {
+    void* obj = *slot;
+    if (obj != 0) {
+        ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        *slot = 0;
+    }
+}
 extern "C" void fn_80425128(u8* this_) {
     s32 i;
     s32 j;
