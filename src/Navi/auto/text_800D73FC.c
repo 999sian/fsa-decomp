@@ -7,6 +7,17 @@ extern "C" s32 fn_800ED0E8(void*, s32, u8, s32, s32, f32, f32);
 extern "C" void fn_800E53A0(u8* p);
 extern "C" char lbl_802B7CA0[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
+struct VObj_800D73FC {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(int);
+};
+extern "C" f32 fn_800EE11C(u8* p, u8 a, s16 b);
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
@@ -528,6 +539,26 @@ extern "C" void fn_800E7D44(void* p) {
     }
     *(u8*)((u8*)p + 0xa76) = 0;
     *(u32*)(lbl_802BB0FC + 0x100) |= 0x8000;
+}
+
+extern "C" void fn_800E8640(u8* p) {
+    if (p[0x854] != 0) {
+        *(s32*)(p + 0x848) = *(s32*)(p + 0x848) + 1;
+        u8* a = *(u8**)(p + 0x844);
+        s32 n = *(s32*)(p + 0x848);
+        if (n >= *(s16*)(a + 6)) {
+            *(s32*)(p + 0x848) = n - *(s16*)(a + 6);
+        }
+        *(f32*)(*(u8**)(p + 0x844) + 8) = (f32)*(s32*)(p + 0x848);
+        *(s32*)(p + 0x850) = *(s32*)(p + 0x850) + 1;
+        u8* b = *(u8**)(p + 0x84c);
+        s32 m = *(s32*)(p + 0x850);
+        if (m >= *(s16*)(b + 6)) {
+            *(s32*)(p + 0x850) = m - *(s16*)(b + 6);
+        }
+        *(f32*)(*(u8**)(p + 0x84c) + 8) = (f32)*(s32*)(p + 0x850);
+        fn_8017A4F8(*(void**)(p + 0x1c));
+    }
 }
 
 extern "C" void fn_800E88D0(u8* p) {
