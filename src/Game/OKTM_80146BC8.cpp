@@ -49,22 +49,28 @@ extern u8* lbl_8053AB10;
 extern "C" void fn_80146C28(char* this_) {
     DrawRec rec;
     Vec pos;
+    Tmp16 cpy;
 
     *(u8*)((u8*)&rec + 0x13) = *(s32*)(this_ + 0x248);
     switch (*(s32*)(this_ + 0x90)) {
     case 0:
         if (*(s32*)(this_ + 0x4) == 8) {
             void* mgr = fn_802D6A9C();
-            Tmp16 cpy = *(Tmp16*)((u8*)mgr + 0xcc);
+            Tmp16* cp = &cpy;
+            *cp = *(Tmp16*)((u8*)mgr + 0xcc);
             Vec* p = (Vec*)(this_ + 0xc);
-            pos.x = p->x + cpy.x;
-            pos.y = p->y + cpy.y;
+            pos.x = p->x + *(f32*)&cp->a;
+            pos.y = p->y + *(f32*)&cp->b;
             pos.z = p->z;
             fn_801EF574(lbl_80465BD8, 0x25, &pos, &rec);
             fn_801F02BC(this_, lbl_80465BEC, 0x317, &rec, 1, 0, 0, 1.0f, 1.0f);
         } else {
             fn_801F02BC(this_, lbl_80465BD8, 0x25, &rec, 1, 0, 0, 1.0f, 1.0f);
         }
+        break;
+    case 4:
+        rec.w30 = 0x11;
+        fn_801F06F0(this_, lbl_80465BD8, *(s32*)(this_ + 0x24c) + 0xe5, &rec, -1, 1.0f, 1.0f);
         break;
     case 1:
     case 5: {
@@ -80,10 +86,6 @@ extern "C" void fn_80146C28(char* this_) {
         break;
     case 3:
         fn_801F02BC(this_, lbl_80465BEC, 0x1ba, 0, 0, 0, 0, 1.0f, 1.0f);
-        break;
-    case 4:
-        rec.w30 = 0x11;
-        fn_801F06F0(this_, lbl_80465BD8, *(s32*)(this_ + 0x24c) + 0xe5, &rec, -1, 1.0f, 1.0f);
         break;
     }
 }
