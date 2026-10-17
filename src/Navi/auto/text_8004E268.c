@@ -4,6 +4,13 @@
 
 extern void* lbl_80247174[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_801DE4F4(s32, void*);
+extern "C" void fn_8004E268(void* param_1) {
+    s32 local[1];
+    local[0] = *(s32*)((u8*)param_1 + 4);
+    fn_801DE4F4(2, local);
+}
+
 extern "C" void fn_8004E298(void) {}
 
 extern char lbl_80247000[];
