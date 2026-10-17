@@ -81,6 +81,17 @@ extern f32 lbl_80300F88;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_8015FDA8(void*, void*);
+extern "C" unsigned char lbl_802C5774[];
+extern "C" void fn_800D1E44(u8* p) {
+    u8* tbl = lbl_802C5774;
+    s32 i;
+    p[0x26d] = 0;
+    for (i = 0; i < 4; i++) {
+        fn_800D2FE8(p, i, p[0x26d], tbl[0x11], 0, 0, *(f32*)(tbl + 0xc), lbl_80300F88);
+    }
+    fn_800D3120(p, p[0x26d], lbl_802C5774[0x12], *(f32*)(lbl_802C5774 + 0x14), lbl_80300F88, 0, 0);
+}
+
 extern "C" void fn_800D2F3C(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
