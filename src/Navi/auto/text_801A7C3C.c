@@ -1316,7 +1316,7 @@ extern "C" void fn_801B293C(u32* out, u8* p, s32 a, s32 b) {
         *(u16*)(out + 1) = *(u8*)((u8*)out + 2);
         return;
     }
-    out[0] = lbl_80202574;
+    out[0] = 0;
     *(u16*)(out + 1) = *(u8*)((u8*)out + 2);
 }
 
