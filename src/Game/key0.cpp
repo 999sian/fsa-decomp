@@ -76,8 +76,8 @@ extern "C" s32 fn_8023EF50(s32 player);
 
 static inline void key0RecordDrop(char* p) {
     u32 id = *(u32*)(p + 0x238);
-    Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
     Key0Pt pos(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+    Key0Pt key(*(f32*)(p + 0x230), *(f32*)(p + 0x234));
     u32 packed = (*(u32*)(p + 0x23c) << 30) | (*(u8*)(p + 0x2b5) << 29) |
                  ((*(u32*)(p + 0x280) << 24) & 0x1f000000) | ((*(u16*)(p + 0x2a8) << 8) & 0xffff00) |
                  (*(u32*)(p + 0x4) & 0xff);
@@ -86,10 +86,13 @@ static inline void key0RecordDrop(char* p) {
 
 extern "C" void fn_802C1674(char* p) {
     if (*(s32*)(p + 0x240) == 4 && *(u8*)(p + 0xc4) == 0) {
-        if (*(u8*)(p + 0x2af) == 0) {
-        } else {
+        if (*(u8*)(p + 0x2af) != 0) {
             if (*(u16*)(p + 0x2a8) != 0xffff) {
-                key0RecordDrop(p);
+                u32 packed = (*(u32*)(p + 0x23c) << 30) | (*(u8*)(p + 0x2b5) << 29) |
+                             ((*(u32*)(p + 0x280) << 24) & 0x1f000000) | ((*(u16*)(p + 0x2a8) << 8) & 0xffff00) |
+                             (*(u32*)(p + 0x4) & 0xff);
+                fn_802D6D70(fn_802D6A9C(), Key0Pt(*(f32*)(p + 0xc), *(f32*)(p + 0x10)),
+                            Key0Pt(*(f32*)(p + 0x230), *(f32*)(p + 0x234)), packed, *(u32*)(p + 0x238));
                 *(u16*)(p + 0x2a8) = 0xffff;
                 *(u8*)(p + 0x2af) = 0;
             }
