@@ -184,6 +184,18 @@ extern "C" void fn_80100054(void* param_1) {
     }
 }
 
+extern "C" void fn_801000D8(void* param_1) {
+    if (*(s16*)((u8*)param_1 + 0xec) == 0) {
+        fn_8002F458((void*)0x9a, 0);
+    }
+    s32 iVar1 = fn_801086F8(param_1, *(s16*)((u8*)param_1 + 0xec), *(u8*)(lbl_802C5A84 + 0x10), 0, 0, *(f32*)(lbl_802C5A84 + 0xc), lbl_80301204);
+    *(s16*)((u8*)param_1 + 0xec) = *(s16*)((u8*)param_1 + 0xec) + 1;
+    if (iVar1 == 1) {
+        *(s16*)((u8*)param_1 + 0xec) = 0;
+        *(u8*)((u8*)param_1 + 0x189) = 3;
+    }
+}
+
 extern "C" void fn_80100164(void* param_1) {
     if (fn_8002F87C() != 0) {
         if (*(u16*)((u8*)param_1 + 0x18c) != 0) {
