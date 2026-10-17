@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 struct Unk801C5B08 {
     u8 unk_00[0x4];
