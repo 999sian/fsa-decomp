@@ -13,7 +13,7 @@ typedef struct {
 extern u32 lbl_802FF6B8;
 extern NaviEntry12 lbl_80299AD0[];
 extern "C" void fn_801937C8(void* e, s32 idx);
-extern "C" s32 fn_801E10DC(void* p, s32 idx, NaviEntry12 tmp);
+extern "C" void fn_801E10DC(void* p, s32 idx, NaviEntry12 tmp);
 extern void* lbl_80299E10[];
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -460,6 +460,7 @@ extern u32 lbl_802FF6D0;
 extern "C" int fn_801945C4(u8* p, u32 param_2) {
     u32* a;
     s32 r;
+    s32 ret;
     *(u32*)(p + 0x34) = param_2;
     r = fn_80194350(p);
     a = (u32*)fn_8015A90C(0x10);
@@ -472,13 +473,17 @@ extern "C" int fn_801945C4(u8* p, u32 param_2) {
     *(u32**)(p + 0x20) = a;
     a = *(u32**)(p + 0x20);
     if (a == 0) {
-        r = 4;
+        ret = 4;
     } else {
         a[3] = (r + 0x1f) & ~0x1f;
         a[0] = (u32)fn_8015AA60(a[3], 0x20);
         a[1] = (u32)fn_8015AA60(a[3], 0x20);
         a[2] = 0;
-        r = 0;
+        ret = 0;
+    }
+    r = 0;
+    if (ret != 0) {
+        r = ret;
     }
     return r;
 }
