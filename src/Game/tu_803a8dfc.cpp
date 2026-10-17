@@ -303,12 +303,13 @@ extern "C" void fn_803AC154(Menu_Join* p) {
     if (p->m4c8 == 0xff || done) {
         s32 best = 0;
         s32 tot[4];
+        s32 t;
         p->m4c8 = 0xff;
         for (s32 i = 0; i < p->count; i++) {
             tot[i] = p->a320[i] + p->a340[i] + p->a350[i] + p->a360[i] + p->a370[i] - p->a380[i] + p->a3a0[i] + p->a3b0[i];
         }
         for (s32 j = 0; j < p->count; j++) {
-            s32 t = tot[j];
+            t = tot[j];
             if (best < t) {
                 p->m4c8 = 0;
                 best = t;
@@ -394,9 +395,8 @@ extern "C" void fn_803ABCEC(Menu_Slide* p) {
                 p->state[i] = 0xbd;
             }
         }
-        GameResult* g = (GameResult*)lbl_80529DEC;
-        s32 mode = g->mode;
-        s32 sub = g->sub;
+        s32 sub = ((GameResult*)lbl_80529DEC)->sub;
+        s32 mode = ((GameResult*)lbl_80529DEC)->mode;
         s32 k = sub;
         switch (mode) {
         case 0:
@@ -420,18 +420,18 @@ extern "C" void fn_803ABCEC(Menu_Slide* p) {
             break;
         }
         if (p->m4c8 == 0) {
-            g->wins[p->ids[0]]++;
-            g->winMask = 0;
-            g->winMask = 1 << p->ids[0];
-            if (mode >= 0 && mode < 8 && k >= 0 && k < 3) {
-                g->winner[mode][k] = p->ids[0];
+            ((GameResult*)lbl_80529DEC)->wins[p->ids[0]]++;
+            ((GameResult*)lbl_80529DEC)->winMask = 0;
+            ((GameResult*)lbl_80529DEC)->winMask = 1 << p->ids[0];
+            if (((GameResult*)lbl_80529DEC)->mode >= 0 && ((GameResult*)lbl_80529DEC)->mode < 8 && k >= 0 && k < 3) {
+                ((GameResult*)lbl_80529DEC)->winner[((GameResult*)lbl_80529DEC)->mode][k] = p->ids[0];
             }
             if (p->m4c8 != 0xff) {
                 fn_80458880(lbl_8053AF80, 0x11, -1);
             }
         } else {
             if (mode >= 0 && mode < 8 && sub >= 0 && sub < 3) {
-                g->winner[mode][sub] = 0xff;
+                ((GameResult*)lbl_80529DEC)->winner[mode][sub] = 0xff;
             }
             fn_80458880(lbl_8053AF80, 0x2b, -1);
         }
@@ -1813,19 +1813,27 @@ extern IntroTags lbl_80476208;
 
 // NONMATCHING (97.5%): register allocation of the timing locals.
 extern "C" void fn_803B03E8(Menu_Intro* p) {
-    IntroTags* tbl = &lbl_80476208;
-    s32 t0 = *(s16*)(lbl_8050DB0C + 0x260);
-    s32 t1 = *(s16*)(lbl_8050DB0C + 0x262);
-    s32 start = *(s16*)(lbl_8050DB0C + 0x264);
-    s32 dur = *(s16*)(lbl_8050DB0C + 0x266);
-    s32 gap = *(s16*)(lbl_8050DB0C + 0x268);
-    s32 total = start + dur + gap * (p->count - 1);
+    IntroTags* tbl;
+    s32 t1;
+    s32 start;
+    s32 dur;
+    s32 gap;
+    s32 t0;
+    s32 total;
+    s32 d;
+    gap = *(s16*)(lbl_8050DB0C + 0x268);
+    start = *(s16*)(lbl_8050DB0C + 0x264);
+    dur = *(s16*)(lbl_8050DB0C + 0x266);
+    t0 = *(s16*)(lbl_8050DB0C + 0x260);
+    t1 = *(s16*)(lbl_8050DB0C + 0x262);
+    tbl = &lbl_80476208;
+    total = start + dur + gap * (p->count - 1);
     if (total < t0 + t1) {
         total = t0 + t1;
     }
     p->timer++;
     if (p->timer > t0 && p->timer <= t0 + t1) {
-        s32 d = p->timer - t0;
+        d = p->timer - t0;
         f32 x = p->screens[p->cur]->search('Pmmwk02')->getBounds()->i.x;
         f32 y = 200.0f * ((f32)(d * d) / (f32)(t1 * t1));
         p->screens[p->cur]->search('Pmmwk02')->move(x, p->y41c - y);
@@ -1870,24 +1878,29 @@ extern "C" void fn_803B03E8(Menu_Intro* p) {
 
 // NONMATCHING (99.5%): register allocation in the slide loops.
 extern "C" void fn_803B0FD4(Menu_Intro* p) {
-    p->timer++;
     s32 end;
-    s32 t1 = *(s16*)(lbl_8050DB0C + 0x25a);
-    s32 t2 = *(s16*)(lbl_8050DB0C + 0x25c);
-    s32 dist = *(s16*)(lbl_8050DB0C + 0x25e);
+    s32 t1;
+    s32 t2;
+    s32 dist;
+    f32 off;
+    f32 x;
+    p->timer++;
+    t1 = *(s16*)(lbl_8050DB0C + 0x25a);
+    t2 = *(s16*)(lbl_8050DB0C + 0x25c);
+    dist = *(s16*)(lbl_8050DB0C + 0x25e);
     end = t1 + t2;
     if (p->timer <= end) {
         if (p->timer <= t1) {
-            f32 off = (f32)dist * ((f32)(p->timer * p->timer) / (f32)(t1 * t1));
+            off = (f32)dist * ((f32)(p->timer * p->timer) / (f32)(t1 * t1));
             for (s32 i = 0; i < p->count; i++) {
-                f32 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
+                x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
                 p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, p->y424 + off);
             }
-        } else if (p->timer <= end) {
+        } else {
             s32 d = p->timer - t1;
-            f32 off = ((f32)dist + 40.0f) * ((f32)(d * d) / (f32)(t2 * t2));
+            off = ((f32)dist + 40.0f) * ((f32)(d * d) / (f32)(t2 * t2));
             for (s32 i = 0; i < p->count; i++) {
-                f32 x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
+                x = p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->getBounds()->i.x;
                 p->screens[p->cur]->search(lbl_804762D0[i].tag[1])->move(x, (p->y424 + (f32)dist) - off);
                 f32 a = 1.0f - (f32)(p->timer - t1) / (f32)t2;
                 if (p->cur < 2) {
