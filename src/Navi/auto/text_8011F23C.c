@@ -438,6 +438,17 @@ extern "C" void fn_8012413C(void* p) {
     *(u8*)(c + 0x830) = 0;
 }
 
+extern "C" void* fn_80124160(void* p, s16 n) {
+    u8* c = (u8*)p;
+    if (c != NULL) {
+        c[0x830] = 0;
+        if (n > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_80124E44(void* p, void** v)
 {
 	*(u32*)((u8*)*v + 0x40) = 0;
