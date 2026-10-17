@@ -23,6 +23,12 @@ struct UnkObj {
     UnkVtbl* vt;
 };
 
+struct UnkBlock {
+    u8 unk000[0x198];
+    u8 unk198[0xc];
+    u8 unk1a4;
+};
+
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801E0D40(void*, void*, s32, s32);
 extern "C" char lbl_80204AC4[];
