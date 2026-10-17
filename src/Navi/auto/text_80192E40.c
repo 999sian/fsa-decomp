@@ -13,7 +13,7 @@ typedef struct {
 extern u32 lbl_802FF6B8;
 extern NaviEntry12 lbl_80299AD0[];
 extern "C" void fn_801937C8(void* e, s32 idx);
-extern "C" void fn_801E10DC(void* p, s32 idx, NaviEntry12* tmp);
+extern "C" void fn_801E10DC(void* p, s32 idx, ...);
 extern void* lbl_80299E10[];
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -115,6 +115,78 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" void fn_80193604(f32* p, f32* out) {
+    extern f32 lbl_802F0BC0[][2];
+    s16 angle = *(s16*)(p + 2);
+    f32 s = lbl_802F0BC0[(angle >> 5) & 0x7FF][0];
+    f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
+    f32 x = p[0];
+    f32 y = p[1];
+    f32 a = p[3] - 0.5f;
+    f32 b = (p[4] - 0.5f) + y;
+    out[0] = x * c;
+    out[1] = y * s;
+    out[2] = 0.5f + (a * c - s * b);
+    out[3] = 0.0f;
+    out[4] = -x * s;
+    out[5] = y * c;
+    out[6] = 0.5f + (-a * s - c * b);
+    out[7] = 0.0f;
+    out[8] = 0.0f;
+    out[9] = 0.0f;
+    out[10] = 1.0f;
+    out[11] = 0.0f;
+}
+
+extern "C" void fn_801936B4(f32* p, f32* out) {
+    extern f32 lbl_802F0BC0[][2];
+    s16 angle = *(s16*)(p + 2);
+    f32 s = lbl_802F0BC0[(angle >> 5) & 0x7FF][0];
+    f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
+    f32 x = p[0];
+    f32 y = p[1];
+    f32 a = p[3] - 0.5f;
+    f32 b = (p[4] - 0.5f) + y;
+    out[0] = x * c;
+    out[1] = y * s;
+    out[2] = 0.0f;
+    out[3] = 0.5f + (a * c - s * b);
+    out[4] = -x * s;
+    out[5] = y * c;
+    out[6] = 0.0f;
+    out[7] = 0.5f + (-a * s - c * b);
+    out[8] = 0.0f;
+    out[9] = 0.0f;
+    out[10] = 1.0f;
+    out[11] = 0.0f;
+}
+
+extern "C" void fn_80193764(f32* a, f32* b) {
+    a[0] *= b[0];
+    a[1] *= b[1];
+    a[2] *= b[2];
+    a[4] *= b[0];
+    a[5] *= b[1];
+    a[6] *= b[2];
+    a[8] *= b[0];
+    a[9] *= b[1];
+    a[10] *= b[2];
+}
+
+extern "C" void fn_801937C8(void* e, s32 idx) {
+    f32* a = (f32*)e;
+    f32* b = (f32*)idx;
+    a[0] *= b[0];
+    a[1] *= b[1];
+    a[2] *= b[2];
+    a[3] *= b[0];
+    a[4] *= b[1];
+    a[5] *= b[2];
+    a[6] *= b[0];
+    a[7] *= b[1];
+    a[8] *= b[2];
 }
 
 extern "C" void fn_801DF0BC(u32 a, u32 b);
@@ -303,6 +375,36 @@ extern "C" u32 fn_80194174(u32* p) {
     return q[2];
 }
 
+extern "C" u32 fn_801941D4(u32* p, u32* q) {
+    u32 r = 0;
+    u32 a = p[13];
+    if (a != q[13]) {
+        return r;
+    }
+    if (a >> 31) {
+        return r;
+    }
+    return 1;
+}
+
+extern "C" void fn_8019428C(u32* p) {
+    extern void* lbl_80299A2C[];
+    p[0] = (u32)lbl_80299A8C;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = 0;
+    p[0] = (u32)lbl_80299A78;
+    p[4] = 0;
+    p[8] = 0;
+    p[9] = 0;
+    p[0] = (u32)lbl_80299A2C;
+    p[10] = 0;
+    p[11] = 0;
+    p[12] = 0;
+    p[13] = 0;
+    p[14] = 0;
+}
+
 extern "C" void* lbl_80299A2C[];
 extern "C" void* fn_801942E4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -331,7 +433,7 @@ extern "C" void fn_8019552C(u8* p) {
 
 extern "C" void fn_80195588(u8* p, s32 x, NaviEntry36* src, NaviEntry36* dst) {
     u16 idx = *(u16*)(p + 4);
-    *(NaviEntry36*)&dst[idx] = *(NaviEntry36*)&src[idx];
+    dst[idx] = src[idx];
     fn_801937C8(&dst[idx], x);
 }
 
