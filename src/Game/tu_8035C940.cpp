@@ -38,6 +38,10 @@ f32 m25C;
 extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
 extern "C" u8 fn_8035C15C(char* p, s32 x);
 extern "C" void fn_8035C1C4(char* p, s32 x, u32 y);
+extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void fn_801F0E34(void* this_, s32 id, s32 arg);
+extern const f32 lbl_80542968;
+extern const f32 lbl_8054296C;
 extern "C" void* fn_801F856C(void);
 extern "C" char* fn_801F666C(void* a, u32 b);
 extern const u32 lbl_80472730[];
@@ -345,6 +349,56 @@ extern "C" void* fn_8035D6F4(u8* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8035D7BC(char* this_) {
+    char* base = (char*)lbl_80472718;
+    char* p = this_;
+    s32 state = *(s32*)(p + 0x240);
+    if (state == 0) {
+        fn_801F06F0(p, base + 0xa4, lbl_80542954, lbl_80542954,
+                    *(s32*)(p + 0x250) + *(s32*)(p + 0x248), 0, 7);
+    } else if (state == 1) {
+        fn_801F06F0(p, base + 0xb8, lbl_80542954, lbl_80542954,
+                    *(s32*)(p + 0x250) + *(s32*)(p + 0x248), 0, 7);
+    } else if (state == 2) {
+        JGeometry::TVec3<f32> saved = *(JGeometry::TVec3<f32>*)(p + 0xc);
+        DrawRec rec;
+        if (*(s8*)(p + 0x272) != 0) {
+            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+            *(f32*)(p + 0x14) = lbl_80542930;
+            rec.b1d = -1;
+        }
+        fn_801F06F0(p, base + 0xcc, lbl_80542954, lbl_80542954,
+                    *(s32*)(p + 0x250) + *(s32*)(p + 0x248), &rec, -1);
+        *(JGeometry::TVec3<f32>*)(p + 0xc) = saved;
+        f32 s = (lbl_80542974 - (*(f32*)(p + 0x14) - lbl_80542970)) * lbl_80542978;
+        f32 m[3][4];
+        m[0][0] = s;
+        m[0][1] = lbl_80542930;
+        m[0][2] = lbl_80542930;
+        m[0][3] = lbl_80542930;
+        m[1][0] = lbl_80542930;
+        m[1][1] = s;
+        m[1][2] = lbl_80542930;
+        m[1][3] = lbl_80542930;
+        m[2][0] = lbl_80542930;
+        m[2][1] = lbl_80542930;
+        m[2][2] = s;
+        m[2][3] = lbl_80542930;
+        rec.w18 = m;
+        rec.b1d = 0;
+        f32 z = *(f32*)(p + 0x14);
+        if (z < lbl_8054297C) {
+            ((u8*)&rec.w10)[3] = (u8)(lbl_8054297C - z);
+        } else {
+            ((u8*)&rec.w10)[3] = 0;
+        }
+        s32 frame = *(s32*)(p + 0x250) + *(s32*)(p + 0x248);
+        if (*(u32*)(p + 0x138) == 0) {
+            fn_801EF830(*(s32*)(p + 4), p + 0xc, &rec, 0x407, base + 0xcc, frame, 0);
+        }
+    }
 }
 
 struct Unk8035DA78;
