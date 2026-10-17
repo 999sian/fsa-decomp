@@ -1,5 +1,15 @@
 #include "types.h"
 
+typedef struct { f32 x, y; } Vec2f_7C90;
+typedef struct {
+    u8 a, b;
+    Vec2f_7C90 c;
+    f32 d;
+    Vec2f_7C90 e;
+    u32 f;
+    Vec2f_7C90 g[9];
+} Unk7C90;
+
 struct Ent_801B2C08 {
     u8 pad[0xe4];
     u16 idx[52];
