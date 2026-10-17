@@ -70,6 +70,11 @@ extern "C" void fn_800085E0(void) {}
 
 extern "C" void fn_800085E4(void) {}
 
+extern u8 lbl_802FEB60;
+extern "C" void fn_80008F6C(void) {
+    fn_801C13D0(&lbl_802FEB60);
+}
+
 extern "C" u32 fn_8000A1AC(void) {
     u32 value = fn_800095BC(lbl_802FEB4C, lbl_802FEB50, lbl_802FB7B1, lbl_802FB7B2, lbl_802FB7B0);
     DCFlushRange(lbl_802FEB50, lbl_802FEB54);
