@@ -11,6 +11,19 @@ extern const f32 lbl_805425B0;
 extern const f32 lbl_804721C8[];
 extern "C" f32 PSVECDistance(const Vec* a, const Vec* b);
 extern "C" Vec* fn_8023E724(s32 idx);
+extern "C" u8 fn_8023F264(s32 idx);
+extern "C" u8 fn_8023EA28(s32 idx);
+extern "C" u8 fn_8023B0F4(s32 idx, f32* rect, s32 room, f32 f, s32 zero);
+extern "C" s32 fn_80138A30(void* mgr);
+extern "C" s32 fn_8022CAF8(s32 idx);
+extern "C" void fn_801F0E34(Actor* self, s32 soundId, s32 flag);
+extern "C" u8 fn_8023077C(void);
+extern "C" void fn_80230498(s32 idx, Vec* v, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_8022FFC4(s32 idx, Vec* v);
+extern "C" void fn_80230FD0(s32 idx, s32 id);
+extern "C" void fn_801F0D20(Actor* self, s32 id);
+extern "C" u8 fn_80230534(s32 idx);
+extern "C" s32 lbl_804721D4[];
 
 enum YnswConstants {
     FOURCC_SOB           = 0x534F4220, // 'SOB ' (Sprite Object Binary resource type)
@@ -133,6 +146,50 @@ extern "C" Actor* fn_8034DFF0(Actor* p, s16 freeFlag) {
         if (freeFlag > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" void fn_8034E050(YnswActor* this_) {
+    u8 used[4];
+    Vec pos[4];
+    Vec tmp;
+    Vec target;
+    s32 i;
+    s32 j;
+    s32 k;
+    s32 nearest;
+    f32 minDist;
+    f32 offX;
+    f32 offZ;
+
+    for (i = 0; i < 4; i++) {
+        used[i] = 0;
+        pos[i] = *fn_8023E724(i);
+    }
+    nearest = -1;
+    minDist = lbl_805425B0;
+    k = 0;
+    for (j = 0; j < 2; j++) {
+        offX = lbl_805425A4 * (f32)j + lbl_805425A0;
+        offZ = lbl_805425AC * (f32)j + lbl_805425A8;
+        tmp = this_->field_0C;
+        tmp.x += offX;
+        tmp.y += lbl_805425A4 * (f32)k + lbl_805425A0;
+        for (i = 0; i < 4; i++) {
+            if (used[i] == 0) {
+                f32 d = PSVECDistance(&tmp, &pos[i]);
+                if (minDist > d) {
+                    minDist = d;
+                    nearest = i;
+                }
+            }
+        }
+        target = this_->field_0C;
+        target.x += offZ;
+        target.y += (lbl_805425AC * (f32)k + lbl_805425A8) + lbl_804721C8[this_->mAnimFrame];
+        this_->mPlayerPos[nearest] = target;
+        used[nearest] = 1;
+        k++;
+    }
 }
 
 extern "C" void Ynsw_Draw(YnswActor* this_) {
