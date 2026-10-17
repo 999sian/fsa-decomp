@@ -6,6 +6,10 @@
 extern "C" s32 fn_8022F340();
 extern "C" s32 fn_8030AAF4(s32 i);
 extern "C" u8 fn_8030A308(void* pad, s32 i);
+extern "C" s32 fn_8022EA0C(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u32 fn_8023D9B0(void*, s32);
+extern "C" u8 fn_8023D4F8(void*, s32);
 extern void* lbl_8053AD30;
 extern u8 lbl_8053ACD4[4];
 extern u8 lbl_8053ACE0[4];
