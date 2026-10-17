@@ -10,6 +10,8 @@ u8* fn_801F856C(void);
 void fn_802FA160(int, int, int, int, int, int);
 int fn_802D6A9C(void);
 void fn_802D7920(int, int);
+extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
+extern "C" void fn_801F0D20(void* this_, s32 id);
 
 extern "C" Actor* fn_802AABFC(Actor* param_1, s16 param_2)
 {
