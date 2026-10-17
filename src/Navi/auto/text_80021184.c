@@ -3,6 +3,14 @@
 // .text 0x80021184-0x800226e8 (25 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_8011526C(void);
+extern "C" void fn_800632A8(void*, s32);
+extern "C" void fn_8006058C(void*, s32);
+extern "C" void fn_80020304(void);
+extern "C" void fn_80020344(void);
+extern "C" void fn_801E0D40(void*, void*, s32, s32);
+extern "C" void fn_8015AB1C(void*);
+extern "C" void* fn_800638A4(void*, void*, void*, s32);
+extern "C" void fn_80010A58(void*, void*, void*, f32, f32, f32, f32);
 extern u8 lbl_802B7CA0[];
 extern u8 lbl_802BB0FC[];
 extern "C" void fn_80021220(void) {
@@ -79,6 +87,26 @@ extern "C" void fn_80021A98(void* param_1, u8* param_2, char* param_3, s32 param
         fn_801E66C0(param_3, lbl_802FBCB4);
     } else {
         fn_801E66C0(param_3, table[param_2[1]]);
+    }
+}
+
+extern "C" void fn_80021B4C(void* param_1, char* param_2, u16* param_3, s32 param_4) {
+    char** table = param_4 == 0 ? lbl_80206200 : lbl_8020631C;
+    s32 i;
+    for (i = 0; i < 2; i++) {
+        char** p = table;
+        char cVar3 = 0;
+        s32 n = 0x47;
+        do {
+            if (*(u16*)*p == *param_3) {
+                break;
+            }
+            p++;
+            cVar3++;
+        } while (--n != 0);
+        *param_2 = cVar3;
+        param_3++;
+        param_2++;
     }
 }
 
