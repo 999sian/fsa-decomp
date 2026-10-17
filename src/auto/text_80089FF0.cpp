@@ -10,6 +10,8 @@
 
 extern "C" JUTConsole* lbl_8053A914;
 extern "C" char lbl_8045E934[];
+extern "C" BOOL fn_8008C528(char* param_1, u32 param_2, s32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9);
+extern JSUPtrList lbl_8052E894;
 extern "C" u8 lbl_804BA1D0[];
 extern "C" void fn_8008A220(u16 param_1, OSContext* param_2, u32 param_3, u32 param_4);
 extern "C" void fn_8008A4C4(unsigned int param_1);
@@ -201,6 +203,69 @@ extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
         JUTConsoleManager::sManager->drawDirect(true);
         fn_8008C308(this_->mPrintWaitTime1);
         stackPointer = (u32*)stackPointer[0];
+    }
+}
+
+extern "C" char lbl_8053B86C[];
+extern "C" char lbl_8053B874[];
+extern "C" const char* lbl_804993D0[];
+extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsisr, u32 dar)
+{
+    char* base = lbl_8045E878;
+
+    if (lbl_8053A914 != nullptr) {
+        if (error < 0x11) {
+            lbl_8053A914->print_f(base + 0x1c4, lbl_804993D0[error]);
+        } else {
+            lbl_8053A914->print_f(base + 0x1e4);
+        }
+        if (error == 0x10) {
+            u32 bits = lbl_8053A91C & (((lbl_8053A91C & 0xf8) << 22) | 0x1f80700);
+            if (bits & 0x20000000) {
+                lbl_8053A914->print_f(base + 0x1f4);
+                if (lbl_8053A91C & 0x1000000) {
+                    lbl_8053A914->print_f(lbl_8053B86C);
+                }
+                if (lbl_8053A91C & 0x800000) {
+                    lbl_8053A914->print_f(base + 0x210);
+                }
+                if (lbl_8053A91C & 0x400000) {
+                    lbl_8053A914->print_f(base + 0x228);
+                }
+                if (lbl_8053A91C & 0x200000) {
+                    lbl_8053A914->print_f(lbl_8053B874);
+                }
+                if (lbl_8053A91C & 0x100000) {
+                    lbl_8053A914->print_f(base + 0x240);
+                }
+                if (lbl_8053A91C & 0x80000) {
+                    lbl_8053A914->print_f(base + 0x250);
+                }
+                if (lbl_8053A91C & 0x800) {
+                    lbl_8053A914->print_f(base + 0x264);
+                }
+                if (lbl_8053A91C & 0x400) {
+                    lbl_8053A914->print_f(base + 0x278);
+                }
+                if (lbl_8053A91C & 0x200) {
+                    lbl_8053A914->print_f(base + 0x290);
+                }
+            }
+            if (bits & 0x10000000) {
+                lbl_8053A914->print_f(base + 0x2ac);
+            }
+            if (bits & 0x8000000) {
+                lbl_8053A914->print_f(base + 0x2bc);
+            }
+            if (bits & 0x4000000) {
+                lbl_8053A914->print_f(base + 0x2d0);
+            }
+            if (bits & 0x2000000) {
+                lbl_8053A914->print_f(base + 0x2e8);
+            }
+        }
+        lbl_8053A914->print_f(base + 0x300, *(u32*)((u8*)context + 0x198), *(u32*)((u8*)context + 0x19c));
+        lbl_8053A914->print_f(base + 0x31c, dsisr, dar);
     }
 }
 
