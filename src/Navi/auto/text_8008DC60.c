@@ -154,7 +154,7 @@ extern "C" void fn_80090D4C(u8* p) {
     s32 i;
     *(s16*)(p + 0x7fa) = 0;
     for (i = 0; i < 4; i++) {
-        fn_800A15D8(p, i, *(s16*)(p + 0x7fa), lbl_80300AF0, lbl_80300AF0, lbl_80300AF8, lbl_80300AF0, lbl_802C545C[0x4c], 0, 2);
+        fn_800A15D8(p, i, *(s16*)(p + 0x7fa), lbl_80300AF0, lbl_80300AF0, *(u8*)(lbl_802C545C + 0x4c), lbl_80300AF8, lbl_80300AF0, 0, 2);
         p[i + 0x875] = 0xff;
         p[i + 0x491] = 0;
         p[i + 0x499] = 0;
