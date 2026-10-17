@@ -1022,6 +1022,24 @@ extern "C" void fn_8017D1F4(void) {
 
 extern "C" void fn_8017D214(void) {}
 
+extern "C" void fn_8017DA6C(u8* self, s32 a, s32 b, s32 c);
+extern "C" void fn_801E0DB8(void* self, void* a, void* b, s32 size, s32 count);
+extern "C" void fn_80092F7C(s32* p);
+extern "C" void fn_8018067C(void);
+extern "C" u8* fn_8017D2D0(u8* self, s32 a, s32 b, s32 c) {
+    fn_80176550(self);
+    *(void**)self = lbl_80298ED8;
+    fn_801E0DB8(self + 0x112, (void*)fn_8018067C, 0, 4, 4);
+    *(s32*)(self + 0x144) = 0;
+    *(s32*)(self + 0x148) = -1;
+    *(s32*)(self + 0x14c) = -1;
+    fn_801E0DB8(self + 0x150, (void*)fn_80092F7C, 0, 4, 4);
+    *(s32*)(self + 0x160) = -1;
+    *(s32*)(self + 0x164) = -1;
+    fn_8017DA6C(self, a, b, c);
+    return self;
+}
+
 extern "C" void fn_8017DE68(u32* param_1) {
     extern f32 lbl_80301BA0;
     f32 rect[4];
