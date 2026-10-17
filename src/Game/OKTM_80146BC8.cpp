@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
 
 extern "C" void* fn_8020D58C(void);
 extern "C" u8 fn_8020D6AC(void* entry, s32 a, void* b, s32 d, s32 e);
