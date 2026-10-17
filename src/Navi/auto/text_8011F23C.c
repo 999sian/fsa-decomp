@@ -429,6 +429,15 @@ extern "C" void fn_80124110(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
 }
 
+extern "C" void fn_8012413C(void* p) {
+    u8* c = (u8*)p;
+    *(s32*)(c + 0x828) = 0;
+    *(s32*)(c + 0x82c) = 0;
+    *(s32*)(c + 0x824) = 0;
+    *(u32*)(c + 0x820) = ((u32)c + 0x1f) & ~0x1f;
+    *(u8*)(c + 0x830) = 0;
+}
+
 extern "C" void fn_80124E44(void* p, void** v)
 {
 	*(u32*)((u8*)*v + 0x40) = 0;
