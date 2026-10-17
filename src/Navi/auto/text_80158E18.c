@@ -12,6 +12,9 @@ extern "C" void fn_801BE3A0(void*);
 extern "C" void fn_801BE47C(void*);
 extern "C" void fn_8015A48C(void*);
 extern "C" void fn_80124034(const char* fmt, ...);
+extern "C" void fn_801BDDBC(void* p, void* data, u32 count);
+extern "C" void fn_80166C84(void* p, void* p2);
+extern u8 lbl_802EE20C[];
 struct VObj_8003B920 {
     virtual void m0();
     virtual void m1();
