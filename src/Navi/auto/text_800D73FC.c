@@ -22,6 +22,7 @@ extern "C" int fn_8002F0A8(int);
 extern "C" void fn_8002F458(s32 a, s32 b);
 extern "C" void fn_800E7F50(void*, s32, s32, s32);
 extern char lbl_802C57D4[];
+extern "C" void fn_800EBD88(char* p);
 extern "C" BOOL fn_800DDA6C(void* p, u8* src) {
     u8* c = (u8*)p;
     u8 a;
