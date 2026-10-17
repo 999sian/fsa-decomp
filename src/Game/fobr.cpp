@@ -3,6 +3,7 @@
 #include "types.h"
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
+struct FobrVec { f32 x, y, z; };
 
 // ---- Fobr_ctor_8020BE40.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
@@ -160,6 +161,8 @@ extern "C" void fn_8020BD00(void* this_) {
     s32 kind;
     char* record;
     f32* r;
+    f32 sumX;
+    f32 sumY;
 
     fn_801D0ED0(this_);
     *(f32*)(p + 0x60) = lbl_8053F9B8;
@@ -189,8 +192,10 @@ extern "C" void fn_8020BD00(void* this_) {
     kind = *(s32*)(p + 0x4);
     record = (char*)fn_802D6A9C();
     r = (f32*)((kind < 8) ? (record + 0xcc) : (record + 0xdc));
-    *(f32*)(p + 0xc) = lbl_8053F9DC * (r[0] + r[2]);
-    *(f32*)(p + 0x10) = lbl_8053F9DC * (r[1] + r[3]);
+    sumX = r[0] + r[2];
+    sumY = r[1] + r[3];
+    *(f32*)(p + 0xc) = lbl_8053F9DC * sumX;
+    *(f32*)(p + 0x10) = lbl_8053F9DC * sumY;
     *(f32*)(p + 0x14) = lbl_8053F9C4;
 }
 
