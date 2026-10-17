@@ -4,6 +4,7 @@
 
 extern "C" void fn_8011C280(int);
 extern "C" void fn_8011C3C8(u32);
+extern u32* lbl_802C5FBC[];
 extern "C" BOOL OSGetResetSwitchState(void);
 extern f32 lbl_80301540;
 extern u8 lbl_802FF2E8;
