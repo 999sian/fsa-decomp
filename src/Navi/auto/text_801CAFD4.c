@@ -6,6 +6,7 @@ typedef struct {
     u32 a;
     u32 b;
 } Pair81FC;
+extern "C" s32 fn_801D28AC(s32 chan, void* cb);
 #include <Dolphin/mtx.h>
 extern "C" void* __OSSetInterruptHandler(s32 interrupt, void (*handler)(void*, void*));
 extern "C" void OSInitThreadQueue(void* queue);
@@ -455,6 +456,36 @@ extern "C" u32 fn_801CED8C(void) {
     return *reg & 1;
 }
 
+extern "C" void fn_801CED9C(u32 rate) {
+    int enabled;
+    u32 state;
+    u32 left;
+    u32 right;
+    u32 sampleRate;
+
+    if (rate == fn_801CEE7C()) {
+        return;
+    }
+    *(vu32*)0xCC006C00 &= ~0x40;
+    if (rate == 0) {
+        left = fn_801CEF90();
+        right = fn_801CEFBC();
+        state = *(vu32*)0xCC006C00 & 1;
+        sampleRate = fn_801CEF64();
+        fn_801CEF74(0);
+        fn_801CEFA0(0);
+        enabled = OSDisableInterrupts();
+        fn_801CF2B8();
+        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~0x20) | 0x20;
+        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~2) | (sampleRate << 1);
+        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~1) | state;
+        *(vu32*)0xCC006C00 |= 0x40;
+        OSRestoreInterrupts(enabled);
+        fn_801CEF74(left);
+        fn_801CEFA0(right);
+    }
+}
+
 extern "C" BOOL fn_801CEE7C(void) {
     return ((*(vu32*)0xcc006c00 >> 6) & 1) ^ 1;
 }
@@ -729,25 +760,22 @@ extern "C" void fn_801D1D6C(s32 chan) {
 extern "C" void* EXISetExiCallback(s32 chan, void* callback);
 extern "C" void fn_801BB7E0(void* p);
 extern "C" void fn_801D1DA0(s32 chan) {
-    void* cb;
+    void (*cb)(s32, s32);
     u8* p = lbl_802F7D60 + chan * 0x110;
-    void* zero = NULL;
     if (*(s32*)p != 0) {
-        *(void**)p = zero;
+        *(s32*)p = 0;
         EXISetExiCallback(chan, NULL);
         fn_801BB7E0(p + 0xe0);
-        cb = *(void**)(p + 0xcc);
-        if (cb != NULL) {
-            *(void**)(p + 0xcc) = zero;
-            ((void (*)(s32, s32))cb)(chan, -3);
+        if ((cb = *(void (**)(s32, s32))(p + 0xcc)) != NULL) {
+            *(void**)(p + 0xcc) = NULL;
+            cb(chan, -3);
         }
         if (*(s32*)(p + 4) != -1) {
             *(s32*)(p + 4) = -3;
         }
-        cb = *(void**)(p + 0xc4);
-        if (cb != NULL && *(s32*)(p + 0x24) >= 7) {
-            *(void**)(p + 0xc4) = zero;
-            ((void (*)(s32, s32))cb)(chan, -3);
+        if ((cb = *(void (**)(s32, s32))(p + 0xc4)) != NULL && *(s32*)(p + 0x24) >= 7) {
+            *(void**)(p + 0xc4) = NULL;
+            cb(chan, -3);
         }
     }
 }
@@ -791,9 +819,11 @@ extern "C" void fn_801D2038(s32 chan) {
 extern "C" s32 fn_801D26F8(s32 chan, s32 a, s32 b);
 extern "C" BOOL EXIImmEx(s32 chan, void* buf, s32 len, u32 type);
 extern "C" s32 fn_801D2AFC(s32 chan, s32 arg, void* cb) {
-    u8* card = lbl_802F7D60 + chan * 0x110;
+    u8* card;
     s32 result;
+    u32 dummy[2];
 
+    card = lbl_802F7D60 + chan * 0x110;
     card[0x94] = 0xF1;
     card[0x95] = ((u32)arg >> 17) & 0x7F;
     card[0x96] = ((u32)arg >> 9) & 0xFF;
@@ -2190,6 +2220,7 @@ extern "C" void fn_801DDE38(int param_1, u32 param_2, u32 param_3, u32 param_4, 
 
 extern "C" void fn_801DE160(s32 arg0, s32 arg1, s32 arg2) {
     u8* gx;
+    u8* p;
     s32 r4 = arg1;
     s32 r5 = arg2;
 
@@ -2202,7 +2233,7 @@ extern "C" void fn_801DE160(s32 arg0, s32 arg1, s32 arg2) {
     switch (arg0) {
     case 0:
         gx = __GXData;
-        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x7) | (r5 & 0x7);
+        *(u32*)(gx + 0x120) = (r5 & 0x7) | (*(u32*)(gx + 0x120) & ~0x7);
         *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x38) | ((r4 << 3) & 0x38);
         break;
     case 1:
@@ -2221,10 +2252,11 @@ extern "C" void fn_801DE160(s32 arg0, s32 arg1, s32 arg2) {
         *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0xE00000) | ((r4 << 21) & 0xE00000);
         break;
     }
+    p = __GXData;
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = *(u32*)(__GXData + 0x120);
-    *(u32*)(__GXData + 0x5ac) |= 3;
-    *(u16*)(__GXData + 0x2) = 0;
+    *(volatile u32*)0xCC008000 = *(u32*)(p + 0x120);
+    *(u32*)(p + 0x5ac) |= 3;
+    *(u16*)(p + 0x2) = 0;
 }
 
 extern "C" void fn_801DE24C(u8 param_1) {
