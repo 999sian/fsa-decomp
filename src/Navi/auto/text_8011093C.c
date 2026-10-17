@@ -31,6 +31,25 @@ extern u8 lbl_802FF140;
 extern f32 lbl_80301340;
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" f32 fn_801118D8(u8* self, u8 b, s16 a);
+struct Unk802C5B7C {
+    u8 pad0[4];
+    s8 unk4;
+    u8 pad5[3];
+    u32 unk8;
+};
+struct VObj_80111840A {
+    virtual void v0(s32);
+};
+struct VObj_80111840B {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+};
 struct VObj_801116EC {
     virtual void m0();
     virtual void m1(s32 a);
