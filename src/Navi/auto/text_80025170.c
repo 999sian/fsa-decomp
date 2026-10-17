@@ -81,9 +81,9 @@ extern "C" void fn_8002544C(u8* param_1) {
     fn_800254CC(param_1);
 }
 
-extern "C" void fn_80025570(void);
-extern "C" void fn_8002546C(void) {
-    fn_80025570();
+extern "C" s32 fn_80025570(u8* param_1);
+extern "C" void fn_8002546C(u8* param_1) {
+    fn_80025570(param_1);
 }
 
 extern "C" int fn_8002566C(u8* param_1);
