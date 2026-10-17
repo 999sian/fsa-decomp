@@ -186,6 +186,13 @@ extern "C" void fn_800AC1B4(u8* p)
     p[0x3ac] = 0;
 }
 
+extern "C" void fn_800AC1E8(u8* p)
+{
+    *(u8*)(*(u8**)(p + 0x384) + 0xb0) = 1;
+    p[0x3da] = 2;
+    p[0x3ac] = 4;
+}
+
 extern "C" void fn_800AC654(void) {}
 
 extern "C" u32 fn_800AD744(void* param_1, u8* param_2, u8* param_3) {
