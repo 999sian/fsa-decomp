@@ -39,6 +39,41 @@ struct BTBZ_Vec {
     f32 x, y, z;
 };
 
+// Inlined state setter: writes the state at +0x234, then runs that state's entry code.
+static inline void BTBZ_setState(u8* this_, s32 s) {
+    *(s32*)(this_ + 0x234) = s;
+    switch (s) {
+    case 0:
+        if (*(u8**)(this_ + 0x23C) != 0) {
+            *(u32*)(*(u8**)(this_ + 0x23C) + 0xF4) |= 1;
+        }
+        break;
+    case 1:
+        if (*(u8**)(this_ + 0x23C) != 0) {
+            *(u32*)(*(u8**)(this_ + 0x23C) + 0xF4) &= ~1;
+        }
+        *(s32*)(this_ + 0x238) = 0;
+        {
+            void* a = fn_801F7A08(fn_801F856C(), 0x53574556);
+            if (fn_801F666C(fn_801F856C(), a) != 0) {
+                fn_802B39E8();
+            }
+        }
+        break;
+    case 2: {
+        BTBZ_Vec v;
+        u8* q = *(u8**)(lbl_8053AB10 + 0x24);
+        v.x = -*(f32*)(q + 0x10);
+        v.y = -*(f32*)(q + 0x20);
+        v.z = 0.0f;
+        fn_801F0E34(this_, 0x30036, 0);
+        fn_8013CC50(*(s32*)(this_ + 4), &v, 0x1BC, 2, 2, 0, 0, 1, lbl_8053CC24);
+        *(s32*)(this_ + 0x238) = 0;
+        break;
+    }
+    }
+}
+
 // ---- fn_8012D6E8: init (spawns effect 0x58 at the room centre)
 extern "C" void fn_8012D6E8(u8* this_) {
     v01__5ActorFv(this_);
