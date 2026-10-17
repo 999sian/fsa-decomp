@@ -14,6 +14,12 @@ extern const f32 lbl_80542950;
 extern const f32 lbl_80542954;
 extern const f32 lbl_80542980;
 extern const f32 lbl_80542984;
+extern const f32 lbl_80542970;
+extern const f32 lbl_80542974;
+extern const f32 lbl_80542978;
+extern const f32 lbl_8054297C;
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_801EF830(s32 room, void* pos, DrawRec* rec, s32 mask, void* name, s32 id, s32 e);
 
 struct Unk8035CD00 {
     u8 pad0[0x14];
