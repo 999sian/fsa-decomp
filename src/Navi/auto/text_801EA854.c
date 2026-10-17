@@ -17,12 +17,10 @@ extern "C" int fn_801EA854(void* param_1) {
 
 extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) {
     int ret;
-    unsigned int n;
+    unsigned int n = 1;
     int i;
     int err;
-
     for (i = 0, err = 0; err == 0 && i < param_3; i++) {
-        n = 1;
         ret = 0;
         unsigned int remaining = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
         if (n > remaining) {
