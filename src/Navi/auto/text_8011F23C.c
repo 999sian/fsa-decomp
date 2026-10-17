@@ -1068,7 +1068,7 @@ extern "C" BOOL fn_801321E4(void* param_1, void* param_2) {
     u32 bits[2];
     bits[0] = 0x43300000;
     bits[1] = (u32)(*(s16*)((u8*)param_1 + 0x82) - 1) ^ 0x80000000;
-    f32 fn = *(f64*)bits - lbl_80301778;
+    f32 fn = (f32)(*(f64*)bits - lbl_80301778);
     s32 q = (s32)(fn * *(f32*)(obj + 0x3c));
     s32 a = *(s16*)((u8*)param_1 + 0x80) - q;
     if (a >= 0) {
@@ -1108,6 +1108,12 @@ extern "C" void fn_801323DC(u32 param_1, u32 param_2, f32* param_3) {
     param_3[9] = zero;
     param_3[7] = zero;
     param_3[3] = zero;
+}
+
+extern "C" void fn_80132524(void* a, void* b, void* c, void* d);
+extern "C" void fn_801324FC(void* a, void* b, void* c) {
+    struct Vec3f buf;
+    fn_80132524(a, b, &buf, c);
 }
 
 extern "C" void* fn_80132778(void* param_1, s16 param_2) {
