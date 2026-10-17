@@ -162,6 +162,7 @@ extern f32 lbl_80301CA0;
 extern f32 lbl_80301CA4;
 extern f32 lbl_80301CA8;
 extern u8 lbl_80299860[];
+extern void* lbl_80298ED8[];
 
 struct VObj_80185DA4 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -2706,23 +2707,23 @@ extern "C" u32 fn_8018DD64(u8* p, u32 param_2) {
     return *(u32*)(base + n * 8);
 }
 
-extern "C" u32 fn_8018DE28(u8* self, u16 idx) {
+extern "C" u32 fn_8018DE28(NaviAnm_8018DE28* self, u16 idx) {
+    NaviAnmEnt_8018DE28* entries = self->entries;
     u16 v;
-    u8* entries = *(u8**)(self + 0x30);
     if (entries == 0) {
         return 0;
     }
-    f32 frame = *(f32*)(self + 0x8);
-    u8* tbl = *(u8**)(self + 0x14);
-    u16 count = *(u16*)(tbl + idx * 8);
+    f32 frame = self->frame;
+    u16 count = self->table[idx].count;
     if (frame < 0.0f) {
-        v = (*(u16**)(self + 0x10))[*(u16*)(tbl + idx * 8 + 2)];
+        v = self->values[self->table[idx].offset];
     } else if (frame >= count) {
-        v = (*(u16**)(self + 0x10))[count + *(u16*)(tbl + idx * 8 + 2) - 1];
+        s32 i = count + self->table[idx].offset;
+        v = self->values[i - 1];
     } else {
-        v = (*(u16**)(self + 0x10))[(s32)frame + *(u16*)(tbl + idx * 8 + 2)];
+        v = self->values[(s32)frame + self->table[idx].offset];
     }
-    return *(u32*)(entries + v * 8 + 4);
+    return entries[v].value;
 }
 
 extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
@@ -2941,6 +2942,28 @@ extern "C" int fn_8018ECE4(void* self, void* arg) {
             return (int)node[0];
         }
         node = (void**)node[2];
+    }
+    return 0;
+}
+
+extern "C" void* fn_8018ED48(NaviNode_8018ED48** arg0, VObj_8018ED48* arg1) {
+    u8 sp8;
+    u8 spC[256];
+    NaviNode_8018ED48* node;
+
+    arg1->v2(1);
+    fn_801670D0((int)arg1, &sp8, 1);
+    if (sp8 == 0) {
+        return 0;
+    }
+    fn_801670D0((int)arg1, spC, sp8);
+    spC[sp8] = 0;
+    node = *arg0;
+    while (node != nullptr) {
+        if (fn_801E6578(node->unk4, spC) == 0) {
+            return node->unk0;
+        }
+        node = node->unk8;
     }
     return 0;
 }
