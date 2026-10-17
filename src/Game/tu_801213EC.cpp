@@ -14,6 +14,35 @@ extern "C" void v01__5ActorFv(void* this_);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7440(void* p, s32 x);
 
+// Actor slot 23 call with a result and one argument.
+class ActorSlot23Calls {
+public:
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual s32 v23(u8* other);
+};
+
 namespace {
 // Call-only vtable view for the two companion slots at 0x7C and 0xC4.
 // This does not define an Actor layout or construct companion objects.
@@ -451,6 +480,154 @@ extern "C" void fn_801220C4(u8* self) {
     fn_801F0E34(self, 0x400ED, 0);
 }
 
+extern "C" void fn_80122148(u8* self) {
+    s32 idx;
+    s32 i;
+    s32 slot;
+    s32 player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    if (idx < 0) {
+        return;
+    }
+    player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    slot = idx;
+    for (i = 0; i < 4; i++) {
+        if (idx == fn_8023ECF0(i)) {
+            slot = i;
+            break;
+        }
+    }
+    if (fn_80234E30(slot) || fn_80235448(idx)) {
+        self[0x11d] = 0;
+    } else {
+        player = *(s32*)(self + 0x344);
+        if (player < 0 || player >= 4) {
+            idx = -1;
+        } else {
+            idx = fn_8022EA0C(player);
+        }
+        if (fn_8023BCD4(idx)) {
+            self[0x11d] = 1;
+        } else {
+            self[0x11d] = 0;
+        }
+    }
+    self[0x331] = 0;
+    player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    GameLowVec pos = *fn_8023E724(idx);
+    player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    s32 slot2 = idx;
+    s32 k = -1;
+    if (fn_8023E98C(slot2)) {
+        for (k = 0; k < 4; k++) {
+            if (fn_8023ED8C(k) && slot2 == fn_8023ECF0(k) && fn_8022D75C(k)) {
+                break;
+            }
+        }
+        if (k == 4) {
+            k = -1;
+        }
+    }
+    if (k >= 0) {
+        player = *(s32*)(self + 0x344);
+        if (player < 0 || player >= 4) {
+            idx = -1;
+        } else {
+            idx = fn_8022EA0C(player);
+        }
+        if (k != idx) {
+            pos.z = fn_8023E724(k)->z;
+        }
+    }
+    player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    *(s32*)(self + 0x98) = fn_80230CFC(idx);
+    switch (*(s32*)(self + 0x98)) {
+    case 0:
+        pos.x -= lbl_8053C9BC;
+        break;
+    case 1:
+        pos.x += lbl_8053C9BC;
+        break;
+    case 2:
+        pos.y -= lbl_8053C9BC;
+        break;
+    case 3:
+        pos.y += lbl_8053C9BC;
+        break;
+    }
+    *(f32*)(self + 0x37c) = lbl_8053C9C4;
+    player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    s32 slot3 = idx;
+    player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    s32 n = fn_8023E10C(idx);
+    if (fn_8023DE58(slot3) == n) {
+        *(f32*)(self + 0xc) = pos.x;
+        *(f32*)(self + 0x10) = pos.y;
+        *(f32*)(self + 0x14) = pos.z;
+    } else {
+        fn_801CD950((f32*)(self + 0xc), pos.x, 2.0f);
+        fn_801CD950((f32*)(self + 0x10), pos.y, 2.0f);
+    }
+    player = *(s32*)(self + 0x344);
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    n = fn_80230CFC(idx);
+    if (n < 0) {
+        return;
+    }
+    *(s32*)(self + 0x374) += 1;
+    if (*(s32*)(self + 0x374) >= 10) {
+        *(s32*)(self + 0x374) = 10;
+    }
+    if (*(s32*)(self + 0x374) < 10) {
+        return;
+    }
+    *(s32*)(self + 0x374) = 0;
+    *(s32*)(self + 0x98) = n;
+    if (n == *(s32*)(self + 0x238)) {
+        return;
+    }
+    fn_801D22DC(self + 0x230, n, 2, 0);
+    fn_801D1F14(self + 0x230, lbl_8053C9B4);
+}
+
 extern "C" void fn_80122548(u8* self) {
     s32 player = *(s32*)(self + 0x344);
     s32 idx;
@@ -567,7 +744,7 @@ extern "C" s32 fn_80122834(u8* self) {
 }
 
 extern "C" s32 fn_8012285C(u8* self) {
-    s32 player = ((s32*)self)[0x344 / 4];
+    s32 player = *(s32*)(self + 0x344);
     if (player < 0 || player >= 4) {
         return -1;
     }
@@ -601,9 +778,10 @@ extern "C" s32 fn_80122898(u8* self, s32 msg) {
 
 extern "C" u8 fn_801229E4(u8* self) {
     JGeometry::TVec2<f32> position;
+    f32 c = lbl_8053C9B4;
     JGeometry::TBox2<f32> box = *(JGeometry::TBox2<f32>*)(self + 0x60);
     box.addPos(*(JGeometry::TVec2<f32>*)(self + 0xC));
-    position.set(lbl_8053C9B4, lbl_8053C9B4);
+    position.set(c, c);
     if (fn_8023AE34((f32*)&box, *(u32*)(self + 4), (f32*)&position) >= 0) {
         return 1;
     }
@@ -627,19 +805,17 @@ extern "C" u8 fn_8022E438(s32, s32);
 extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   *a = lbl_8053C9B4;
   *b = lbl_8053C9B4;
-  s32 idx = *out;
   s32 sel;
-  if (idx < 0 || idx < 4) {
-    if (idx < 0) {
-      sel = idx;
-    }
-    for (s32 i = 0; i < 4; ++i) {
+  s32 i;
+  s32 idx = *out;
+  if (idx < 0 || idx >= 4) {
+    sel = idx;
+  } else {
+    for (i = 0; i < 4; ++i) {
       if (fn_8022E438(i, idx)) {
         sel = i;
       }
     }
-  } else {
-    sel = idx;
   }
   *out = sel;
   f32 v = lbl_8053C9B4;
@@ -688,11 +864,17 @@ extern "C" void fn_80122D38(u8* self, f32* x, f32* y, s32* player) {
 extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
     f32 offset = lbl_8053C9B4;
     f32 t;
+    union {
+        f64 d;
+        u32 w[2];
+    } u;
 
     if (((CompanionCalls*)self)->v47()) {
         offset = lbl_8053C9BC;
     }
-    t = lbl_8053C9C4 * (f32)(fn_8022E970(*player) - 1) - lbl_8053C9C4;
+    u.w[0] = 0x43300000;
+    u.w[1] = (fn_8022E970(*player) - 1) ^ 0x80000000;
+    t = lbl_8053C9C4 * (f32)(u.d - lbl_8053C9D0) - lbl_8053C9C4;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = lbl_8053C9B8;
@@ -709,6 +891,40 @@ extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
     case 3:
         *x = lbl_8053C9B8;
         *y = lbl_8053C9BC * t + offset;
+        break;
+    }
+}
+
+extern "C" void fn_80122F6C(u8* self, f32* x, f32* y, s32* player) {
+    f32 offset = lbl_8053C9B4;
+    f32 t;
+    union {
+        f64 d;
+        u32 w[2];
+    } u;
+
+    if (((CompanionCalls*)self)->v47()) {
+        offset = lbl_8053C9BC;
+    }
+    u.w[1] = (fn_8022E970(*player) - 1) ^ 0x80000000;
+    u.w[0] = 0x43300000;
+    t = lbl_8053C9C4 * (f32)(u.d - lbl_8053C9D0) - lbl_8053C9C4;
+    switch (fn_80230CFC(*player)) {
+    case 0:
+        *x = lbl_8053C9BC * t + offset;
+        *y = lbl_8053C9BC;
+        break;
+    case 1:
+        *x = lbl_8053C9BC * t + offset;
+        *y = lbl_8053C9BC;
+        break;
+    case 2:
+        *x = lbl_8053C9BC * t + offset;
+        *y = lbl_8053C9B8;
+        break;
+    case 3:
+        *x = lbl_8053C9BC * t + offset;
+        *y = lbl_8053C9BC;
         break;
     }
 }
