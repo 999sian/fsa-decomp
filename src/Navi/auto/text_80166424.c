@@ -1742,6 +1742,8 @@ extern "C" void fn_8017331C(void) {}
 
 extern "C" void fn_80173320(void) {}
 
+extern "C" void fn_80173324(void) {}
+
 extern "C" int fn_8017332C()
 {
 	return 0;
