@@ -9,6 +9,9 @@ struct J2DScreen {
 extern "C" void fn_804316EC(void*);
 extern void* lbl_8053AEC0;
 extern void* lbl_8053AF40;
+extern f32 lbl_80543DF8;
+extern f32 lbl_80543DFC;
+extern "C" void fn_80402E08(void*, f32, f32);
 
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
