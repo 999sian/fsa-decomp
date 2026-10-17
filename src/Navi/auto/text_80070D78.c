@@ -548,6 +548,28 @@ extern "C" BOOL fn_80073ECC(StateObj_80073ECC* self, StateFunc_80073ECC* func, i
     return TRUE;
 }
 
+extern "C" BOOL fn_800745A8(u8* param_1) {
+    s8 state = *(s8*)(param_1 + 0x2e4);
+    if (state == 0) {
+        fn_800737CC(param_1, 3);
+        *(s16*)(param_1 + 0x2fc) = *(s16*)(lbl_802BF814 + 0x986);
+        *(s8*)(param_1 + 0x2e4) = *(s8*)(param_1 + 0x2e4) + 1;
+    } else if (state != -1) {
+        if (state == 1) {
+            if (fn_80015CA4(param_1 + 0x2fc) == 0) {
+                *(f32*)(param_1 + 0x234) = *(f32*)(lbl_802BF814 + 0x978);
+                *(s16*)(param_1 + 0x2fc) = *(s16*)(lbl_802BF814 + 0x982);
+                *(s8*)(param_1 + 0x2e4) = *(s8*)(param_1 + 0x2e4) + 1;
+            }
+        } else {
+            if (fn_80015CA4(param_1 + 0x2fc) == 0) {
+                fn_80017FCC(param_1);
+            }
+        }
+    }
+    return 1;
+}
+
 extern "C" void fn_80072D8C(void);
 extern "C" void fn_80075550(void) {
     fn_80072D8C();
