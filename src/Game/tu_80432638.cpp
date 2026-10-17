@@ -2,6 +2,7 @@
 #include "JSystem/J2D/J2DScreen.h"
 #include "JSystem/J2D/J2DPane.h"
 #include "JSystem/J2D/J2DGrafContext.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" void* fn_802D6A9C(void);
@@ -90,4 +91,5 @@ extern "C" void* fn_804337B0(void* this_, s16 how) {
 	}
 	return this_;
 }
+
 
