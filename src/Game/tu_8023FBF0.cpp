@@ -716,7 +716,60 @@ void fn_802408C8(char* p, s32 a, const JGeometry::TVec3<f32>& v) {
 }
 u8 fn_80233EDC(s32);
 bool fn_80240B84(char* p) {
-    if ((u8)isLinkOwner3(p)) {
+    s32 me;
+    s32 linked;
+    s32 c;
+    s32 i;
+    s32 mode;
+    s32 idx;
+    s32 rank;
+    c = 0;
+    me = S32(p, 0x4);
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    if (c <= 1) {
+        mode = 5;
+    } else if (S32(p, 0xd60) >= 0) {
+        mode = fn_8022CAF8(S32(p, 0xd60));
+    } else {
+        mode = S32(p, 0x120c);
+    }
+    if (mode == 4) {
+        if (S32(p, 0xd60) >= 0) {
+            idx = fn_80234004(S32(p, 0xd60));
+        } else {
+            idx = S32(p, 0x1224);
+        }
+        linked = S32(p, 0xd60);
+        rank = 0;
+        if (linked >= 0) {
+            for (i = 0; i < S32(p, 0x4); i++) {
+                if (linked == fn_8022F3DC(i)) {
+                    rank++;
+                }
+            }
+        }
+        if (idx != rank + 1) {
+            return fn_80233EDC(fn_8022EA0C(S32(p, 0x4)));
+        }
+    } else if (!(S32(p, 0xd60) < 0)) {
         return fn_80233EDC(fn_8022EA0C(S32(p, 0x4)));
     }
     bool r = 0;
@@ -2034,7 +2087,7 @@ BOOL fn_8024C4C4(char* p, s32 id) {
     return 1;
 }
 BOOL fn_8024C828(char* p, s32 a) {
-    if ((u8)isLinkOwner(p)) {
+    if ((u8)isLinkOwner3(p)) {
         return 0;
     }
     if (U8(p, 0x1216) == 1) {
