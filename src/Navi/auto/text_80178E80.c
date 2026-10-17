@@ -118,6 +118,12 @@ struct VObj_80185E08 {
     virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
     virtual void v35(); virtual void v36(); virtual void v37(); virtual u32 v38(u8 a);
 };
+struct VObj_8017A770 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3(void* a);
+};
 struct VObj_80178E10 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5();
@@ -1099,7 +1105,36 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
     }
     return param_1;
 }
-#pragma pop
+
+extern "C" void* fn_8015A90C(u32 size);
+#pragma use_lmw_stmw off
+extern "C" s32 fn_8017E248(u8* self, u8 count) {
+    u8 i;
+    u8* obj;
+    s32 off;
+
+    for (i = 0; i < count; i++) {
+        if (i >= 4) {
+            return 0;
+        }
+        off = (i << 2) + 0x100;
+        if (*(u32*)(self + off) == 0) {
+            obj = (u8*)fn_8015A90C(0x40);
+            if (obj != NULL) {
+                obj[0x3b] = obj[0x3b] & 2;
+                *(u32*)(obj + 0x28) = 0;
+                *(u32*)(obj + 0x20) = 0;
+            }
+            *(u8**)(self + off) = obj;
+            if (*(u32*)(self + off) == 0) {
+                return 0;
+            }
+        }
+        self[0x111] |= 1 << i;
+    }
+    return 1;
+}
+#pragma use_lmw_stmw reset
 
 #pragma push
 #pragma use_lmw_stmw off
@@ -2143,6 +2178,34 @@ extern "C" s32 fn_80187FCC(void* self, s32* param_2) {
     return ((VObj_80187FCC*)self)->vf130(&local_c, &local_18);
 }
 
+extern "C" s32 fn_80188678(u8* self, u32* a, s32* b) {
+    u8* n;
+    struct VObj_80188678* o;
+    u8 mode;
+    u8 r;
+    u8 var;
+    if (*a == 0 && (u32)(*b + 0x10000) == 0xffff) {
+        return 1;
+    }
+    n = *(u8**)(self + 0x168);
+    o = *(struct VObj_80188678**)(n + 0x70);
+    mode = *(u32*)(n + 0x28);
+    o->v20(n);
+    o = *(struct VObj_80188678**)(*(u8**)(self + 0x168) + 0x70);
+    r = o->v4();
+    if (r == 0x10) {
+        return 1;
+    }
+    if (r == 1) {
+        return 0;
+    }
+    var = 2;
+    if (mode != 1) {
+        var = mode + 2;
+    }
+    return var <= r;
+}
+
 extern "C" u8 fn_801884B0(s32 a, s32* b, s32* c);
 extern "C" void fn_80188754(s32* self, s32 a) {
     s32 local_14;
@@ -2546,10 +2609,9 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    void* a = lbl_80299504;
-    void* b = lbl_802994F0;
-    *(void**)ptr = a;
-    *(void**)ptr = b;
+    u32* p = (u32*)ptr;
+    *p = (u32)lbl_80299504;
+    *p = (u32)lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
@@ -2822,12 +2884,13 @@ extern "C" u32 fn_8018DD64(u8* p, u32 param_2) {
 }
 
 extern "C" u32 fn_8018DE28(NaviAnm_8018DE28* self, u16 idx) {
-    u16 v;
     if (self->entries == 0) {
         return 0;
+    } else {
+        u16 v;
+        self->getIdx(idx, &v);
+        return self->entries[v].value;
     }
-    self->getIdx(idx, &v);
-    return self->entries[v].value;
 }
 
 extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
