@@ -225,7 +225,6 @@ extern "C" void fn_80217DE8(void** p) {
 
 extern "C" void* fn_8013CC50(u32, void*, u16, s32, f32, s32, s32, s32, s32);
 extern u16 lbl_8046A5A0[];
-extern f32 lbl_804CD838[];
 extern const f32 lbl_8053FC38;
 extern "C" void fn_80217ED4(u8* self) {
     s32 i = 0;
