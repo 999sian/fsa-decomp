@@ -29,11 +29,20 @@ extern char lbl_8045E878[];
 static int fpKind(f32 value)
 {
     u32 bits = *(u32*)&value;
+    s32 exp = bits & 0x7f800000;
     int kind;
-    if ((bits & 0x7f800000) == 0x7f800000) {
-        kind = (bits & 0x7fffff) ? 1 : 2;
-    } else if ((bits & 0x7f800000) < 0x7f800000 && (bits & 0x7f800000) == 0) {
-        kind = (bits & 0x7fffff) ? 5 : 3;
+    if (exp == 0x7f800000) {
+        if ((bits & 0x7fffff) == 0) {
+            kind = 2;
+        } else {
+            kind = 1;
+        }
+    } else if (exp < 0x7f800000 && exp == 0) {
+        if ((bits & 0x7fffff) == 0) {
+            kind = 3;
+        } else {
+            kind = 5;
+        }
     } else {
         kind = 4;
     }
