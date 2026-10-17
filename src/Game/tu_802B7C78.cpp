@@ -1,3 +1,4 @@
+#include <math.h>
 #include "Game/Actor.h"
 
 
@@ -58,6 +59,59 @@ extern "C" void fn_802B7CD8(void* this_) {
     fn_802D6A9C();
     fn_802D9FBC();
     ((ActorSlot9*)this_)->slot9();
+}
+
+extern "C" void fn_802B7D1C(char* this_, s32 idx, s32 mode) {
+    Vec tgt;
+    s32 dxi;
+    f32 len2;
+    s32 r28;
+    s32 r29;
+
+    tgt = *(Vec*)fn_8023E724(*(s32*)(this_ + 0x298));
+    dxi = (s32)fabs(*(f32*)(this_ + 0xc) - tgt.x);
+    if (dxi < 40) {
+        *(s32*)(this_ + 0x250) = 1;
+        goto norm;
+    }
+    if (*(f32*)(this_ + 0xc) < tgt.x) {
+        *(s32*)(this_ + 0x250) = 2;
+        goto norm;
+    }
+    *(s32*)(this_ + 0x250) = 4;
+    fn_801F0E34(this_, 0x40040, 0);
+    if (*(s32*)(this_ + 4) != fn_8023DE58(*(s32*)(this_ + 0x298))) {
+        *(s32*)(this_ + 0x244) = 0xb4;
+        *(s32*)(this_ + 0x230) = 3;
+        *(s32*)(this_ + 0x250) = 0;
+        *(Vec*)(this_ + 0x234) = *(Vec*)(this_ + 0xc);
+        *(f32*)(this_ + 0x23c) = *(f32*)(this_ + 0x14);
+        return;
+    }
+    {
+        Vec t2 = *(Vec*)fn_8023E724(*(s32*)(this_ + 0x298));
+        *(f32*)(this_ + 0x284) = t2.x - *(f32*)(this_ + 0xc);
+        *(f32*)(this_ + 0x288) = t2.y - *(f32*)(this_ + 0x10);
+    }
+    len2 = *(f32*)(this_ + 0x284) * *(f32*)(this_ + 0x284) + *(f32*)(this_ + 0x288) * *(f32*)(this_ + 0x288);
+    if (len2 <= lbl_80540AB8 * __float_epsilon) {
+        goto tail;
+    }
+    if (len2 <= lbl_80540ABC) {
+        goto after_norm;
+    }
+    goto tail;
+
+norm:
+    {
+        f32 inv = lbl_80540AC0 * __frsqrte(len2) * (lbl_80540AC4 - len2 * __frsqrte(len2) * __frsqrte(len2));
+        *(f32*)(this_ + 0x284) *= inv;
+        *(f32*)(this_ + 0x288) *= inv;
+    }
+after_norm:
+    r29 = 0x12;
+    tail:
+    r28 = 0;
 }
 
 extern "C" void fn_802B8420(char* this_) {
