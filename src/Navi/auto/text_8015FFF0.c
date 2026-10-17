@@ -554,6 +554,24 @@ extern "C" void* fn_80162A70(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" u8 fn_80162CAC(void*, void*);
+extern "C" char lbl_80298054[];
+extern "C" u8* fn_80162AD0(u8* p, void* a, void* b) {
+    u8 ok;
+    fn_80160C34(p, a, 3);
+    *(void**)p = lbl_80298054;
+    *(void**)(p + 0x60) = b;
+    ok = fn_80162CAC(p, a);
+    if (!ok) {
+        return p;
+    }
+    *(u32*)(p + 0x2c) = 0x52415243;
+    *(int*)(p + 0x28) = *(int*)(p + 0x54) + *(int*)(*(u8**)(p + 0x48) + 4);
+    fn_80166D3C(lbl_802EE2D4, p + 0x18);
+    p[0x30] = 1;
+    return p;
+}
+
 extern "C" void* fn_801615C4(void);
 extern "C" void fn_80159C6C(void*, int);
 extern "C" void* fn_80160D88(void*, char*, void*);
