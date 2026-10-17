@@ -131,6 +131,23 @@ extern "C" BOOL fn_800FFBC4(void)
     return TRUE;
 }
 
+extern "C" void fn_801027DC(void* param_1) {
+    if (fn_8002F87C() != 0) {
+        if (*(u16*)((u8*)param_1 + 0x18c) != 0) {
+            fn_8002F458((void*)0xad, 0);
+            *(u8*)((u8*)param_1 + 0xf2) = 9;
+            *(u8*)((u8*)param_1 + 0x188) = 1;
+            fn_8002F7C0((void*)0xd, 0);
+            *(u8*)((u8*)param_1 + 0x189) = 0x49;
+        }
+    } else {
+        *(u16*)((u8*)param_1 + 0x528) = 8;
+        *(u8*)((u8*)param_1 + 0xf2) = 0xb;
+        *(u8*)((u8*)param_1 + 0x188) = 1;
+        *(u8*)((u8*)param_1 + 0x189) = 0x46;
+    }
+}
+
 extern "C" void fn_80102870(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
