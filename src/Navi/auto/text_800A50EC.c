@@ -41,6 +41,16 @@ extern "C" void fn_800AA390(u8* p)
     }
 }
 
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
+extern "C" void fn_800AA43C(u8* p)
+{
+    u8* base = *(u8**)(p + 0x3ec) + 0x258;
+    memcpy(base + p[0x3b6] * 0x9c4, base + p[0x3b5] * 0x9c4, 0x9c4);
+    fn_80017248(*(u8**)(p + 0x3ec), p[0x3b6]);
+    fn_800161C0(lbl_802AE880, *(void**)(p + 0x3ec), 0x1fa4, 0);
+    p[0x3ac] = 0x11;
+}
+
 extern "C" void fn_800AA92C(u8* p)
 {
     s32 r1 = fn_800AEE04(p, *(s16*)(p + 0x3d8), lbl_802C5524[0x58], 1);
