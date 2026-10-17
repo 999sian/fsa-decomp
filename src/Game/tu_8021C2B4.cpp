@@ -1,6 +1,5 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
-#include "Game/SinitPoolChain.h"
 
 
 extern f32 lbl_8053FCFC;
