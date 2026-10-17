@@ -2,7 +2,7 @@
 
 struct Tu80317Rect { f32 x0, y0, x1, y1; };
 struct Tu80317Vec2 { f32 x, y; };
-struct Tu80317Vec3 { f32 x, y, z; };
+struct Tu80317Vec3 { Tu80317Vec2 xy; f32 z; };
 
 
 extern "C" void* fn_801F856C(void);
@@ -42,7 +42,8 @@ extern "C" void fn_80318B84(Actor* this_)
     rect.y1 += *(f32*)(self + 0x10);
     fn_80239914(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198));
 
-    rect = *(Tu80317Rect*)(self + 0x248);
+    *(u64*)&rect = *(u64*)(self + 0x248);
+    *((u64*)&rect + 1) = *(u64*)(self + 0x250);
     rect.x0 += *(f32*)(self + 0xc);
     rect.y0 += *(f32*)(self + 0x10);
     rect.x1 += *(f32*)(self + 0xc);
@@ -52,7 +53,9 @@ extern "C" void fn_80318B84(Actor* this_)
         fn_8022FEB8(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         r = fn_8022FD8C(*(s32*)(self + 0x198));
         if (r >= 0 && fn_802300EC()) {
-            Tu80317Vec3 vec = *(Tu80317Vec3*)(self + 0xc);
+            Tu80317Vec3 vec;
+            *(Tu80317Vec2*)&vec = *(Tu80317Vec2*)(self + 0xc);
+            vec.z = *(f32*)(self + 0x14);
             if (fn_8038C678(r, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 4), &vec, 0x10)) {
                 *(s32*)(self + 0x234) = r;
                 *(s32*)(self + 0x230) = 1;
