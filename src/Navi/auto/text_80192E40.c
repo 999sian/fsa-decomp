@@ -30,6 +30,15 @@ extern "C" void fn_80194830(u32* a);
 extern "C" void* fn_8015AA60(u32 size, u32 align);
 extern "C" void* fn_8015A90C(u32 size);
 extern u32 lbl_802FF6E0;
+struct VObj_801941F8 {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+    virtual void vf3(void);
+    virtual void vf4(void);
+    virtual void vf5(void);
+    virtual void vf6(void);
+};
 extern "C" void fn_80192E40(u32* p) {
     p[0] = 0;
     p[1] = 0;
@@ -534,7 +543,8 @@ extern "C" s32 fn_801941D4(u32* p, u32* q) {
 extern "C" void fn_801941F8(u32* p) {
     u32* it;
     void* obj = (void*)p[12];
-    (*(void (***)(void*))obj)[6](obj);
+    void** vt = *(void***)obj;
+    ((void (*)(void*))vt[6])(obj);
     fn_801DF0BC(*(u32*)p[8], ((u32*)p[8])[2]);
     it = (u32*)p[11];
     fn_801969C8(((u32*)p[11])[10]);
