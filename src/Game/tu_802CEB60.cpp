@@ -14,7 +14,7 @@ extern "C" u8 fn_802DEBF8();
 extern "C" s32 fn_801CD664(s32 range);
 extern "C" void fn_802CEC10(char* p);
 BOOL fn_802CF598(char* p);
-extern "C" void* fn_801F856C();
+void* fn_801F856C();
 void fn_801F0E34(void* a, u32 code, u32 z);
 s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 
