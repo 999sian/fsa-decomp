@@ -76,4 +76,4 @@ extern "C" void fn_802BF7CC(Actor* this_) {
         ((ActorSlots*)this_)->v3();
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
