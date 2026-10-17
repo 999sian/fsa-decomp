@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 80187144-8018A8D8 (FGN2). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "Game/ItemBase.h"
 
 // from src/Game/stub_8018a6a0.cpp
 extern void* lbl_8053AF80[2];
@@ -69,38 +70,34 @@ extern const f32 lbl_8053DFF4;
 extern const f32 lbl_8053E050;
 extern "C" u16 fn_80189DEC(char* this_) {
     s32 cur = fn_8022EA0C(*(u16*)(this_ + 0x94));
-    s32 cand;
+    s32 h;
     s32 i;
+    s32 cand;
     f32 f;
     u32 bits;
     char* rng;
     if (cur < 0) {
         cur = 0;
     }
-    if (fn_8023F264(cur) != 0) {
-        s32 h = *(s32*)(this_ + 0x4);
-        if (h == fn_8023DE58(cur) && fn_80230188(cur) == 0 && fn_80236B50(cur) == 0 && lbl_8053AB78 != 1) {
-            *(s16*)(this_ + 0x94) = cur;
-            return *(u16*)(this_ + 0x94);
-        }
-    }
-    rng = lbl_8053AAF8;
-    *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
-    bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
-    f = *(f32*)&bits;
-    cand = (s32)(lbl_8053E050 * (f - lbl_8053DFF4));
-    for (i = 0; i < 4; i++) {
-        if (cand != cur && fn_8023F264(cand) != 0) {
-            s32 h = *(s32*)(this_ + 0x4);
-            if (h == fn_8023DE58(cand) && fn_8022EA0C(cand) == cand && fn_80230188(cand) == 0 && fn_80236B50(cand) == 0 && fn_8022DCD8(cand) == 0) {
-                *(s16*)(this_ + 0x94) = cand;
-                if (lbl_8053AB78 == 1) {
-                    *(s32*)(this_ + 0x27c) = *(u16*)(this_ + 0x94);
+    if (fn_8023F264(cur) == 0 || (h = *(s32*)(this_ + 0x4)) != fn_8023DE58(cur) || fn_80230188(cur) != 0 || fn_80236B50(cur) != 0 || lbl_8053AB78 == 1) {
+        rng = lbl_8053AAF8;
+        *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+        bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+        f = *(f32*)&bits;
+        cand = (s32)(lbl_8053E050 * (f - lbl_8053DFF4));
+        for (i = 0; i < 4; i++) {
+            if (cand != cur && fn_8023F264(cand) != 0) {
+                h = *(s32*)(this_ + 0x4);
+                if (h == fn_8023DE58(cand) && fn_8022EA0C(cand) == cand && fn_80230188(cand) == 0 && fn_80236B50(cand) == 0 && fn_8022DCD8(cand) == 0) {
+                    *(s16*)(this_ + 0x94) = cand;
+                    if (lbl_8053AB78 == 1) {
+                        *(s32*)(this_ + 0x27c) = *(u16*)(this_ + 0x94);
+                    }
+                    return *(u16*)(this_ + 0x94);
                 }
-                return *(u16*)(this_ + 0x94);
             }
+            cand = (cand + 1) & 3;
         }
-        cand = (cand + 1) & 3;
     }
     *(s16*)(this_ + 0x94) = cur;
     return *(u16*)(this_ + 0x94);
