@@ -42,7 +42,7 @@ struct BTBZ_Vec {
 // Inlined state setter: writes the state at +0x234, then runs that state's entry code.
 static inline void BTBZ_setState(u8* this_, s32 s) {
     *(s32*)(this_ + 0x234) = s;
-    switch (s) {
+    switch (*(s32*)(this_ + 0x234)) {
     case 0:
         if (*(u8**)(this_ + 0x23C) != 0) {
             *(u32*)(*(u8**)(this_ + 0x23C) + 0xF4) |= 1;
@@ -75,6 +75,58 @@ static inline void BTBZ_setState(u8* this_, s32 s) {
 }
 
 // ---- fn_8012D6E8: init (spawns effect 0x58 at the room centre)
+extern "C" void fn_8012CF5C(u8* this_) {
+    v03__5ActorFv(this_);
+    switch (*(s32*)(this_ + 0x234)) {
+    case 0:
+        if (((s32 (*)(u8*))(*(void**)(*(u8**)this_ + 0x3C)))(this_) == 0) {
+            BTBZ_setState(this_, 1);
+        } else if (((u8 (*)(u8*))(*(void**)(*(u8**)this_ + 0x34)))(this_)) {
+            BTBZ_setState(this_, 1);
+            if (*(u8*)(this_ + 0x231) != 0) {
+                fn_801F0D20(this_, 6);
+            }
+        }
+        break;
+    case 1:
+        if (((s32 (*)(u8*))(*(void**)(*(u8**)this_ + 0x3C)))(this_) > 0 &&
+            !((u8 (*)(u8*))(*(void**)(*(u8**)this_ + 0x34)))(this_)) {
+            BTBZ_setState(this_, 0);
+        }
+        fn_801F0E34(this_, 0x30032, 0);
+        {
+            s32 limit = 300;
+            *(s32*)(this_ + 0x238) += 1;
+            if (*(u8*)(this_ + 0x230) != 0) {
+                limit = 1000;
+            }
+            if (limit <= *(s32*)(this_ + 0x238)) {
+                BTBZ_setState(this_, 2);
+            }
+        }
+        break;
+    case 2: {
+        fn_801F0E34(this_, 0x30032, 0);
+        for (s32 i = 0; i < 4; i++) {
+            if (*(s32*)(this_ + 4) == fn_8023DE58(i) && fn_8023F264(i) && !fn_80230188(i) &&
+                !fn_8022F478(i) && !fn_80236D14(i)) {
+                f32* pf = (f32*)fn_8023E724(i);
+                f32 pos[2];
+                pos[0] = pf[0] + lbl_8053CC2C;
+                pos[1] = pf[1] - lbl_8053CC2C;
+                fn_80238548(i, 1, pos, 1);
+            }
+            lbl_80529DEC[0x239] |= (u8)(1 << i);
+        }
+        *(s32*)(this_ + 0x238) += 1;
+        if (*(s32*)(this_ + 0x238) > 0xA9) {
+            BTBZ_setState(this_, 1);
+        }
+        break;
+    }
+    }
+}
+
 extern "C" void fn_8012D6E8(u8* this_) {
     v01__5ActorFv(this_);
     *(u8*)(this_ + 0x230) = *(u32*)(this_ + 0x90) & 1;
