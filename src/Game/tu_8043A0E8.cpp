@@ -4,6 +4,7 @@
 #include "JSystem/J2D/J2DScreen.h"
 
 extern "C" const char* lbl_804B1900[];
+extern "C" const char* lbl_804B1820[];
 extern "C" void* fn_804030C4(u32 type, const char* name);
 extern "C" void* fn_804032E8(u32 type, const char* name);
 
@@ -359,6 +360,48 @@ extern "C" void fn_8043D5F0(u8* param_1) {
     fn_8013B490(lbl_8053AB10);
     *(u8*)(*(u8**)(param_1 + 4) + 0x100) = 1;
     (*(J2DScreen**)(param_1 + 4))->draw(lbl_80543C88, lbl_80543C88, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
+}
+
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D46D8(void* mgr, u32 a, u32 id, u32 b);
+extern "C" void fn_80383E2C(u32 id, char* buf);
+extern "C" void fn_80458880(void* p, u32 a, s32 b);
+extern void* lbl_8053AF80;
+extern "C" s32 fn_8043D67C(u8* param_1, s32 param_2, u32 param_3, u32 param_4) {
+    u8 bit;
+    char name[8];
+    if (param_1[0x10a] != 0) {
+        return 0;
+    }
+    if (param_2 == 0x199) {
+        if (fn_802D46D8(fn_802D6A9C(), 0, param_2, 0) == 1) {
+            return 0;
+        }
+        fn_802D46D8(fn_802D6A9C(), 0, param_2, 1);
+    } else if (param_2 == 0x1b5) {
+        bit = 1 << param_3;
+        if (param_1[0xde] & bit) {
+            return 0;
+        }
+        param_1[0xde] |= bit;
+    }
+    fn_80383E2C(param_2, name);
+    if (name[0] == '*') {
+        if (fn_802D46D8(fn_802D6A9C(), 0, param_2, 0) == 1) {
+            return 0;
+        }
+        fn_802D46D8(fn_802D6A9C(), 0, param_2, 1);
+    }
+    param_1[0x10a] = 1;
+    *(u32*)(param_1 + 0xfc) = param_3 + 1;
+    *(s32*)(param_1 + 0xe8) = param_2;
+    *(u32*)(param_1 + 0x100) = param_4;
+    if (param_2 == 0x1a8 || (param_2 >= 0x18f && param_2 < 0x191) || (param_2 >= 0x195 && param_2 < 0x199)) {
+        fn_80458880(lbl_8053AF80, 0x40, -1);
+    } else if (param_2 != 0x23f) {
+        fn_80458880(lbl_8053AF80, 0x39, -1);
+    }
+    return 1;
 }
 
 extern "C" void fn_8043D834(u8* self) {
