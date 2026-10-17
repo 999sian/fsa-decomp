@@ -29,30 +29,36 @@ extern char lbl_8045E878[];
 static int fpKind(f32 value)
 {
     u32 bits = *(u32*)&value;
+    int kind;
     if ((bits & 0x7f800000) == 0x7f800000) {
-        return (bits & 0x7fffff) ? 1 : 2;
+        kind = (bits & 0x7fffff) ? 1 : 2;
+    } else if ((bits & 0x7f800000) < 0x7f800000 && (bits & 0x7f800000) == 0) {
+        kind = (bits & 0x7fffff) ? 5 : 3;
+    } else {
+        kind = 4;
     }
-    if ((bits & 0x7f800000) == 0) {
-        return (bits & 0x7fffff) ? 5 : 3;
-    }
-    return 4;
+    return kind;
 }
 
 static void showFloat(f32 value, int col)
 {
-    if (fpKind(value) == 1) {
+    int kind = fpKind(value);
+    if (kind == 1) {
         lbl_8053A914->print_f(lbl_8045E878 + 0xd4, col);
-    } else if (fpKind(value) == 2) {
-        u8 sign = *(u8*)&value;
-        if (sign & 0x80) {
-            lbl_8053A914->print_f(lbl_8045E878 + 0xe8, col);
-        } else {
-            lbl_8053A914->print_f(lbl_8045E878 + 0xf8, col);
-        }
-    } else if (value == 0.0f) {
-        lbl_8053A914->print_f(lbl_8045E878 + 0x108, col);
     } else {
-        lbl_8053A914->print_f(lbl_8045E878 + 0x11c, col, value);
+        kind = fpKind(value);
+        if (kind == 2) {
+            u8 sign = *(u8*)&value;
+            if (sign & 0x80) {
+                lbl_8053A914->print_f(lbl_8045E878 + 0xe8, col);
+            } else {
+                lbl_8053A914->print_f(lbl_8045E878 + 0xf8, col);
+            }
+        } else if (value == 0.0f) {
+            lbl_8053A914->print_f(lbl_8045E878 + 0x108, col);
+        } else {
+            lbl_8053A914->print_f(lbl_8045E878 + 0x11c, col, value);
+        }
     }
 }
 extern "C" void* __nw__FUlP7JKRHeapi(size_t size, JKRHeap* heap, int align);
