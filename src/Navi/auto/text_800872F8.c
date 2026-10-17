@@ -163,6 +163,14 @@ extern "C" s32 fn_80087A68(void* param_1) {
     return 1;
 }
 
+extern "C" s32 fn_80088504(u8* param_1) {
+    fn_8005E990(*(void**)(param_1 + 0x1cc), 0x50, 0xd0);
+    u8* base = lbl_802B7CA0 + 0x1424;
+    fn_80060794(base, base + 0x204, base + 0x208, *(void**)(param_1 + 0x1cc));
+    fn_8001AA98(fn_8001C984, 0);
+    return 1;
+}
+
 extern "C" BOOL fn_8008856C(void);
 extern "C" BOOL fn_8008856C(void)
 {
