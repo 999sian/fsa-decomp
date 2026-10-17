@@ -24,6 +24,7 @@ extern u8 lbl_802FEE42;
 extern "C" int fn_800D6700(void*, s16, u8, s32, s32, f32, f32, f32, f32);
 extern "C" int fn_800D6A94(void*, s16, u8, s32, s32, f32, f32);
 extern "C" void fn_8002FB68(u32, u8);
+extern "C" void fn_8002F458(s32, s32);
 extern u32 lbl_802FF208;
 extern "C" int fn_80021994(void*);
 extern "C" int fn_8002185C(void*);
@@ -186,6 +187,26 @@ extern "C" void fn_800D5690(void* param_1) {
     if (r == 1) {
         *(s16*)(p + 0x134) = 0;
         p[0x130] = 0;
+    }
+}
+
+extern "C" void fn_800D5704(char* p) {
+    if (*(u8*)(p + 0x138) != 0) {
+        p[0x138]--;
+        return;
+    }
+    {
+        char* q = lbl_802C579C;
+        s32 r = fn_800D6700(p, *(s16*)(p + 0x134), q[0xc], 0, 0, lbl_80300FD8, lbl_80300FD8, *(f32*)(q + 0x10), lbl_80300FD8);
+        (*(s16*)(p + 0x134))++;
+        if (r == 1) {
+            *(s16*)(p + 0x134) = 0;
+            char* s = p + ((*(u8*)(p + 0x5e) ^ 1) * 8);
+            fn_8003ABDC(*(void**)(p + 0xc), *(u32*)(s + 0x70), *(u32*)(s + 0x74), 0, 0);
+            s = p + ((*(u8*)(p + 0x5e) ^ 1) * 4);
+            fn_8003ABF0(*(void**)(p + 0xc), *(u32*)(s + 0x60), 0, *(u32*)(s + 0x54), 0, 0x3d7, 1, 0);
+            p[0x130] = 8;
+        }
     }
 }
 
@@ -382,7 +403,8 @@ extern "C" int fn_800D6904(void* param_1, s16 param_2, u8 param_3, s32 param_4, 
         if (param_5 == 1) {
             f = lbl_80300FDC - f;
         }
-        ((VObj_800BD938*)((void**)(p + p[0x5e] * 4))[0x15])->v9((s32)(f * (f32)p[p[0x5e] + 0x5c]));
+        u8* q = p + p[0x5e] * 4;
+        ((VObj_800BD938*)*(void**)(q + 0x54))->v9((s32)(f * (f32)p[p[0x5e] + 0x5c]));
     }
     return 0;
 }
@@ -421,13 +443,13 @@ extern "C" void fn_800D6C70(char* p) {
         obj->d0(1);
     }
     (*(VObj_800D6C70**)(p + 0x10))->d7();
-    char* q = lbl_802C579C;
-    if (q[0x4] >= 0) {
-        s32 n = *(s32*)(q + 0x8) - 1;
-        *(s32*)(q + 0x8) = n;
+    s32 flag = *(s8*)(lbl_802C579C + 0x4);
+    if (flag >= 0) {
+        s32 n = *(s32*)(lbl_802C579C + 0x8) - 1;
+        *(s32*)(lbl_802C579C + 0x8) = n;
         if (n == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
-            q[0x4] = -1;
+            lbl_802C579C[0x4] = -1;
         }
     }
 }
