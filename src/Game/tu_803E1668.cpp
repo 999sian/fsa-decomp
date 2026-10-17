@@ -10,6 +10,10 @@ typedef void (Tu803E1668Obj::*Tu803E1668Fn)();
 
 
 extern void* lbl_8053AF80;
+extern "C" u8* lbl_8053AAF8;
+extern "C" void* lbl_8053AD30;
+extern "C" s32 fn_8030AAF4(s32 i);
+extern "C" u8 fn_8030A308(void* a, s32 b);
 extern "C" int fn_804366B8(void* p);
 extern "C" void fn_80436668(void* p);
 extern "C" void fn_80458880(void* mgr, s32 id, s32 a);
