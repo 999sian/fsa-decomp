@@ -21,6 +21,7 @@ typedef void (Unk80365AB8::*Unk80365AB8Func)();
 extern Unk80365AB8Func lbl_804ADDE8[];
 extern Unk80365AB8Func lbl_804ADC38[];
 extern "C" f32 lbl_80542BD4;
+extern "C" f32 lbl_80542B0C;
 extern "C" f32 lbl_80542BC4;
 extern "C" f32 lbl_80542B8C;
 extern "C" f32 lbl_80542BC8;
