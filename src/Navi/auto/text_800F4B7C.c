@@ -2,7 +2,7 @@
 extern char lbl_802C5A84[];
 extern "C" s32 fn_80108928(void* self, s16 a, u8 b, f32 c, s32 d, s32 e, f32 f, f32 g, f32 h);
 extern "C" void fn_80106CBC(void* self);
-extern "C" void fn_8002F458(void* a, s32 b);
+
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
