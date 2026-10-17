@@ -134,3 +134,67 @@ extern "C" void fn_80356A24(char* this_) {
         }
     }
 }
+
+extern "C" void fn_803573C4(char* this_) {
+    union { f32 f; u32 s; } out;
+    u8* g;
+    *(s32*)(this_ + 0x230) = 0;
+    *(s32*)(this_ + 0xb0) = 0;
+    *(f32*)(this_ + 0x3c) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    *(s32*)(this_ + 0x108) = 10000;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(JGeometry::TVec3f*)(this_ + 0x26c) = *(JGeometry::TVec3f*)(this_ + 0x24);
+    g = lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    out.s = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0xc) + (f32)((s32)(7.0f * (out.f - 1.0f)) - 3);
+    g = lbl_8053AAF8;
+    *(u32*)(g + 0xb4) = *(u32*)(g + 0xb4) * 0x19660d + 0x3c6ef35f;
+    out.s = (*(u32*)(g + 0xb4) >> 9) | 0x3f800000;
+    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + (f32)((s32)(7.0f * (out.f - 1.0f)) - 3);
+    *(JGeometry::TVec3f*)(this_ + 0x24) = *(JGeometry::TVec3f*)(this_ + 0xc);
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 3;
+    *(s32*)(this_ + 0x258) = (*(u32*)(this_ + 0x90) >> 22) & 7;
+    if ((*(u32*)(this_ + 0x90) >> 25) & 1) {
+        *(s32*)(this_ + 0x258) = -*(s32*)(this_ + 0x258);
+    }
+    *(f32*)(this_ + 0x278) = *(f32*)(this_ + 0x24) + 16.0f * (f32)*(s32*)(this_ + 0x258);
+    *(s32*)(this_ + 0x25c) = (*(u32*)(this_ + 0x90) >> 18) & 7;
+    if ((*(u32*)(this_ + 0x90) >> 21) & 1) {
+        *(s32*)(this_ + 0x25c) = -*(s32*)(this_ + 0x25c);
+    }
+    *(f32*)(this_ + 0x27c) = *(f32*)(this_ + 0x28) + 16.0f * (f32)*(s32*)(this_ + 0x25c);
+    *(f32*)(this_ + 0x280) = 0.0f;
+    *(s32*)(this_ + 0x24c) = -1;
+    *(s32*)(this_ + 0x264) = (*(u32*)(this_ + 0x90) & 0xfff) + 0x12b;
+    *(s32*)(this_ + 0x250) = (*(u32*)(this_ + 0x90) >> 12) & 0xf;
+    *(s32*)(this_ + 0x240) = 0;
+    *(f32*)(this_ + 0x260) = 0.0f;
+    *(s32*)(this_ + 0x254) = 1;
+    *(u8*)(this_ + 0x268) = (*(u32*)(this_ + 0x90) >> 26) & 1;
+    if (*(u8*)(this_ + 0x268) == 1) {
+        *(s32*)(this_ + 0x230) = 2;
+        *(s32*)(this_ + 0x254) = 0;
+        if (fn_801F6758(this_ + 0x278, *(u32*)(this_ + 4), 0.0f) == 0) {
+            *(s32*)(this_ + 0x230) = 1;
+            *(JGeometry::TVec3f*)(this_ + 0xc) = *(JGeometry::TVec3f*)(this_ + 0x278);
+        }
+    }
+    fn_8035680C((u8*)this_);
+    *(f32*)(this_ + 0x80) = -8.0f;
+    *(f32*)(this_ + 0x84) = -8.0f;
+    *(f32*)(this_ + 0x88) = 8.0f;
+    *(f32*)(this_ + 0x8c) = 8.0f;
+    *(f32*)(this_ + 0x60) = -8.0f;
+    *(f32*)(this_ + 0x64) = -8.0f;
+    *(f32*)(this_ + 0x68) = 8.0f;
+    *(f32*)(this_ + 0x6c) = 8.0f;
+    *(s32*)(this_ + 0x234) = *(s32*)(*(char**)(lbl_80472390 + *(s32*)(this_ + 0x250) * 16));
+    *(u8*)(this_ + 0x194) = 1;
+}
+
