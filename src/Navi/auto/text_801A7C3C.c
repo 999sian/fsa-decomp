@@ -1351,7 +1351,8 @@ extern "C" u16 fn_801B2A74(u8* p, s32 a, s32 b) {
 
 extern "C" void fn_801B2ABC(u32* out, u8* p, s32 a, s32 b) {
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
-    u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 0xbc + b * 2);
+    u8* e = *(u8**)(p + 4) + idx * 0x14c + 0xbc;
+    u16 v = *(u16*)(e + b * 2);
     if (v != 0xffff) {
         out[0] = ((u32*)*(u8**)(p + 0x40))[v];
         return;
