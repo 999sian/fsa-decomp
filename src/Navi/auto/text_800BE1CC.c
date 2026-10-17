@@ -27,6 +27,8 @@ struct VObj_800C36D8 {
     virtual void v7(int);
 };
 extern "C" f32 fn_800C4104(void* p, u8 b, s16 idx);
+extern "C" int fn_800C36D8(char* p, short idx, u8 n, int a, int b);
+extern "C" void fn_800C157C(char* p);
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
 extern u8 lbl_802BB0FC[];
