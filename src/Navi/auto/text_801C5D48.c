@@ -142,6 +142,33 @@ extern "C" void fn_801C65A8(float *m, float y0, float y1, float x0, float x1, fl
     m[10] = 0.0f;
     m[11] = 1.0f;
 }
+
+extern f32 lbl_80301E58;
+extern f32 lbl_80301E60;
+extern f32 lbl_80301E64;
+extern f32 lbl_80301E68;
+extern f32 lbl_80301E6C;
+extern "C" void fn_801C6760(float* m, double a, double b, double c, double d) {
+    float t = lbl_80301E58 / fn_801EA24C(lbl_80301E6C * (lbl_80301E68 * (float)a));
+    float u = lbl_80301E58 / (float)(d - c);
+    m[0] = t / (float)b;
+    m[1] = lbl_80301E60;
+    m[2] = lbl_80301E60;
+    m[3] = lbl_80301E60;
+    m[4] = lbl_80301E60;
+    m[5] = t;
+    m[6] = lbl_80301E60;
+    m[7] = lbl_80301E60;
+    m[8] = lbl_80301E60;
+    m[9] = lbl_80301E60;
+    m[10] = -(float)c * u;
+    m[11] = u * -((float)d * (float)c);
+    m[12] = lbl_80301E60;
+    m[13] = lbl_80301E60;
+    m[14] = lbl_80301E64;
+    m[15] = lbl_80301E60;
+}
+
 #pragma fp_contract reset
 extern "C" void fn_801C6830(f32* m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
 {
@@ -522,7 +549,9 @@ extern "C" void AlarmHandler(void) {
 static s32 CurrCommand_802FF89C;
 extern "C" void fn_801C8F94(void)
 {
+	char* base = BB2_802F7AA0;
 	DVDCommandBlock* old;
+	DVDCBCallback callback;
 
 	switch (CurrCommand_802FF89C) {
 	case 4:
@@ -531,18 +560,47 @@ extern "C" void fn_801C8F94(void)
 	case 15:
 		__DVDClearWaitingQueue();
 		old = executing_802FF880;
-		executing_802FF880 = (DVDCommandBlock*)(BB2_802F7AA0 + 0x40);
-		if (old->callback) {
-			(old->callback)(-4, old);
+		executing_802FF880 = (DVDCommandBlock*)(base + 0x40);
+		callback = old->callback;
+		if (callback != nullptr) {
+			callback(-4, old);
 		}
 		stateReady();
 		break;
 	default:
 		DVDReset();
-		OSCreateAlarm((OSAlarm*)(BB2_802F7AA0 + 0x70));
-		OSSetAlarm((OSAlarm*)(BB2_802F7AA0 + 0x70), OSMillisecondsToTicks(1150), (OSAlarmHandler)AlarmHandler);
+		OSCreateAlarm((OSAlarm*)(base + 0x70));
+		OSSetAlarm((OSAlarm*)(base + 0x70), OSMillisecondsToTicks(1150), (OSAlarmHandler)AlarmHandler);
 		break;
 	}
+}
+
+BOOL fn_801C9D94(DVDCommandBlock* block, void* addr, s32 length, s32 offset, DVDCBCallback callback, s32 prio) {
+    BOOL level;
+    BOOL result;
+
+    block->command = 1;
+    block->addr = addr;
+    block->length = length;
+    block->offset = offset;
+    block->transferredSize = 0;
+    block->callback = callback;
+
+    if (autoInvalidation_802FE9B4 && (block->command == 1 || block->command == 4 || block->command == 5 || block->command == 14)) {
+        DCInvalidateRange(block->addr, block->length);
+    }
+
+    level = OSDisableInterrupts();
+
+    block->state = 2;
+    result = __DVDPushWaitingQueue(prio, block);
+
+    if ((executing_802FF880 == nullptr) && (PauseFlag_802FF88C == FALSE)) {
+        stateReady();
+    }
+
+    OSRestoreInterrupts(level);
+    return result;
 }
 
 extern "C" BOOL DVDReadAbsAsyncForBS(DVDCommandBlock* block, void* addr, s32 length, s32 offset, DVDCBCallback callback)
@@ -559,6 +617,35 @@ extern "C" BOOL DVDReadAbsAsyncForBS(DVDCommandBlock* block, void* addr, s32 len
     return idle;
 }
 
+static BOOL issueCommand(s32 prio, DVDCommandBlock* block);
+extern "C" BOOL DVDReadDiskID(DVDCommandBlock* block, DVDDiskID* diskID, DVDCBCallback callback)
+{
+	BOOL level;
+	BOOL result;
+
+	block->command = 5;
+	block->addr = diskID;
+	block->length = 0x20;
+	block->offset = 0;
+	block->transferredSize = 0;
+	block->callback = callback;
+
+	if (autoInvalidation_802FE9B4 && (block->command == 1 || block->command == 4 || block->command == 5 || block->command == 14)) {
+		DCInvalidateRange(block->addr, block->length);
+	}
+
+	level = OSDisableInterrupts();
+	block->state = 2;
+	result = __DVDPushWaitingQueue(2, block);
+
+	if ((executing_802FF880 == nullptr) && (PauseFlag_802FF88C == FALSE)) {
+		stateReady();
+	}
+
+	OSRestoreInterrupts(level);
+	return result;
+}
+
 extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
 {
 	BOOL idle;
@@ -567,6 +654,21 @@ extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
 	block->callback = callback;
 
 	idle = issueCommand(1, block);
+	return idle;
+}
+
+BOOL DVDInquiryAsync(DVDCommandBlock* block, DVDDriveInfo* info, DVDCBCallback callback)
+{
+	BOOL idle;
+
+	block->command         = 14;
+	block->addr            = (void*)info;
+	block->length          = sizeof(DVDDriveInfo);
+	block->transferredSize = 0;
+	block->callback        = callback;
+
+	idle = issueCommand(2, block);
+
 	return idle;
 }
 
