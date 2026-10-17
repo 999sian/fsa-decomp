@@ -1,4 +1,63 @@
 #include "types.h"
+#include "Game/Actor.h"
+
+struct SwbmDrawParam {
+    SwbmDrawParam() : m40(-1), m44(-1) {
+        for (u8 i = 0; i < 16; i++) {
+            mIdx[i] = i;
+        }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
+        mMtx = NULL;
+        m4C = 0;
+        m4D = 0;
+        m4E = 0;
+        m4F = 1;
+        m50 = 1;
+        m51 = 0;
+        m52 = 0;
+        m53 = 0;
+        m54 = 0;
+        m55 = 0;
+        m56 = 1;
+        m58 = 3;
+        m5C = 1;
+        m5D = 0;
+        m5E = 0;
+        m60 = -1;
+        m64 = 0;
+        m68 = 2;
+    }
+    u8 mIdx[16];
+    s32 m40;
+    s32 m44;
+    f32 (*mMtx)[4];
+    u8 m4C, m4D, m4E, m4F, m50, m51, m52, m53, m54, m55, m56;
+    s32 m58;
+    u8 m5C, m5D, m5E;
+    s32 m60;
+    s32 m64;
+    s32 m68;
+};
+
+struct SwbmResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void* getRes(u32 type, const char* name);
+};
+
+extern "C" void fn_8010DF58(void);
+extern "C" void fn_801EF830(s32 room, void* pos, SwbmDrawParam* prm, s32 a, void* name, s32 id, s32 e);
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, SwbmDrawParam* prm);
+extern u8* lbl_8053AAF8;
+extern u8* lbl_8053AB10;
+extern char lbl_80464AC0[];
+extern f32 lbl_8053C754;
+extern f32 lbl_8053C78C;
 
 extern "C" char lbl_8049DA0C[];
 extern "C" char lbl_8049CC34[];
