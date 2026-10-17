@@ -40,15 +40,27 @@ extern "C" void fn_800BB1B4(u8* param_1) {
     }
 }
 
+extern "C" int fn_800BB6C0(u8* p, u32* q) {
+    *(u32*)(p + 0x13c) = *q;
+    return 1;
+}
+
+extern "C" int fn_800BB6E8(u8* p, u32* q) {
+    *(u32*)(p + 0x138) = *q;
+    return 1;
+}
+
 extern "C" void fn_801E10DC(void* p, void* q);
 extern "C" void fn_800BD3BC(void* p);
 extern "C" void fn_8017A4F8(void* p);
-extern u8 lbl_80287A60[];
-extern "C" void fn_800BC984(u8* p) {
-    p[0xe4] = 0;
-    fn_801E10DC(p, lbl_80287A60 + p[0xd4] * 12);
+struct NaviState_800BC984;
+typedef void (NaviState_800BC984::*NaviStateFn_800BC984)();
+extern NaviStateFn_800BC984 lbl_80287A60[];
+extern "C" void fn_800BC984(NaviState_800BC984* p) {
+    ((u8*)p)[0xe4] = 0;
+    (p->*lbl_80287A60[((u8*)p)[0xd4]])();
     fn_800BD3BC(p);
-    fn_8017A4F8(*(void**)(p + 8));
+    fn_8017A4F8(*(void**)((u8*)p + 8));
 }
 
 extern "C" void fn_800BD00C(u8* p);
