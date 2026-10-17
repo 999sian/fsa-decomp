@@ -25,34 +25,55 @@ static inline u32 calcCardChecksum(u8* data) {
     return (sum << 16) | inv;
 }
 extern "C" void fn_803BACF8(u8* param_1, u8 param_2) {
-    u32 sum = 0;
-    u32 inv = 0;
-    s32 i = 0x18;
-    u8* base = param_1 + param_2 * 200;
-    u8* p = base;
+    u8* p;
+    u8* base;
+    u32 inv;
+    u32 sum;
+    s32 i;
 
-    do {
-        sum += p[0]; inv += ~p[0];
-        sum += p[1]; inv += ~p[1];
-        sum += p[2]; inv += ~p[2];
-        sum += p[3]; inv += ~p[3];
-        sum += p[4]; inv += ~p[4];
-        sum += p[5]; inv += ~p[5];
-        sum += p[6]; inv += ~p[6];
-        sum += p[7]; inv += ~p[7];
+    base = param_1 + param_2 * 200;
+    p = base;
+    sum = 0;
+    inv = 0;
+
+    for (i = 0x18; i > 0; i--) {
+        u8 b = p[0];
+        sum += b;
+        inv += ~b;
+        b = p[1];
+        sum += b;
+        inv += ~b;
+        b = p[2];
+        sum += b;
+        inv += ~b;
+        b = p[3];
+        sum += b;
+        inv += ~b;
+        b = p[4];
+        sum += b;
+        inv += ~b;
+        b = p[5];
+        sum += b;
+        inv += ~b;
+        b = p[6];
+        sum += b;
+        inv += ~b;
+        b = p[7];
+        sum += b;
+        inv += ~b;
         p += 8;
-    } while (--i != 0);
+    }
     *(u32*)(base + 0xc4) = inv;
     *(u32*)(base + 0xc0) = sum;
 }
 
 extern "C" u32 fn_803BADAC(u8* param_1) {
-    u32 sum = 0;
     u32 inv = 0;
-    s32 i = 0x18;
+    u32 sum = 0;
     u8* p = param_1;
+    s32 i;
 
-    do {
+    for (i = 0; i < 0x18; i++) {
         sum += p[0]; inv += ~p[0];
         sum += p[1]; inv += ~p[1];
         sum += p[2]; inv += ~p[2];
@@ -62,7 +83,7 @@ extern "C" u32 fn_803BADAC(u8* param_1) {
         sum += p[6]; inv += ~p[6];
         sum += p[7]; inv += ~p[7];
         p += 8;
-    } while (--i != 0);
+    }
     return ((sum ^ *(u32*)(param_1 + 0xc0)) | (inv ^ *(u32*)(param_1 + 0xc4))) == 0;
 }
 
@@ -198,5 +219,85 @@ extern "C" s32 fn_803BBF08(CARDFileInfo* fileInfo, void* src, s32 unused, s32 si
     tailStat.iconSpeed &= 0xfff;
     CARDSetStatus(lbl_8051C1A0[0x1ff4], fileInfo->fileNo, &tailStat);
     return result;
+}
+
+extern "C" void __ct__17JASGenericMemPoolFv(void*);
+extern "C" void __register_global_object(void*, void (*)(void*), void*);
+extern "C" void __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv(void*);
+extern "C" void __dt__35JASMemPool_MultiThreaded_8JASTrackFv(void*);
+extern "C" void __dt__38JASMemPool_MultiThreaded_10JASChannelFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj3_FSAFv(void*);
+extern "C" void __dt__29JASMemPool_15JASPoolObj4_FSAFv(void*);
+extern "C" void __dt__22JASMemPool_9JAIStreamFv(void*);
+extern "C" void __dt__27JASMemPool_13JAISoundChildFv(void*);
+extern "C" void __dt__19JASMemPool_6JAISeqFv(void*);
+extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
+extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
+extern "C" char __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr;
+extern "C" char memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack[];
+extern "C" char __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack;
+extern "C" char memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel[];
+extern "C" char __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel;
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj3_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA;
+extern "C" char memPool___37JASPoolAllocObject_15JASPoolObj4_FSA[];
+extern "C" char __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA;
+extern "C" char memPool___30JASPoolAllocObject_9JAIStream[];
+extern "C" char __init__memPool___30JASPoolAllocObject_9JAIStream;
+extern "C" char memPool___35JASPoolAllocObject_13JAISoundChild[];
+extern "C" char __init__memPool___35JASPoolAllocObject_13JAISoundChild;
+extern "C" char memPool___27JASPoolAllocObject_6JAISeq[];
+extern "C" char __init__memPool___27JASPoolAllocObject_6JAISeq;
+extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
+extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
+extern "C" void fn_803BC4C8(void) {
+    static u8 pad[0x9aac];
+    static u32 c0[3], c1[3], c2[3], c3[3], c4[3], c5[3], c6[3], c7[3], c8[3];
+    (void)pad;
+    if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, c0);
+        __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
+    }
+    if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, c1);
+        __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
+    }
+    if (__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, c2);
+        __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, c3);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, c4);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
+    }
+    if (__init__memPool___30JASPoolAllocObject_9JAIStream == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, c5);
+        __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
+    }
+    if (__init__memPool___35JASPoolAllocObject_13JAISoundChild == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, c6);
+        __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
+    }
+    if (__init__memPool___27JASPoolAllocObject_6JAISeq == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, c7);
+        __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
+    }
+    if (__init__memPool___26JASPoolAllocObject_5JAISe == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, c8);
+        __init__memPool___26JASPoolAllocObject_5JAISe = 1;
+    }
 }
 
