@@ -58,10 +58,8 @@ struct PoohSinCos {
 
 /* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
 static inline f32 poohRand01() {
-    union { f32 f; u32 s; } out;
-    ((PoohGame*)lbl_8053AAF8)->rnd.seed = ((PoohGame*)lbl_8053AAF8)->rnd.seed * 0x19660d + 0x3c6ef35f;
-    out.s = (((PoohGame*)lbl_8053AAF8)->rnd.seed >> 9) | 0x3f800000;
-    return out.f - lbl_8053CF30;
+    PoohGame* g = (PoohGame*)lbl_8053AAF8;
+    return g->rnd.get_ufloat_1();
 }
 extern "C" void fn_80142684(Actor* this_) {
     struct {
@@ -169,7 +167,7 @@ extern "C" void fn_80143330(Actor* this_) {
     *(s32*)(p + 0x254) = 0;
     *(s32*)(p + 0x258) = 0;
     *(f32*)(p + 0x270) = lbl_8053CF40;
-    *(s32*)(p + 0x23c) = (s32)(lbl_8053CF60 * ((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1()) + 60;
+    *(s32*)(p + 0x23c) = (s32)(lbl_8053CF60 * poohRand01()) + 60;
     *(s32*)(p + 0x234) = 0;
     *(s32*)(p + 0xb0) = 0;
     *(f32*)(p + 0x260) = *(f32*)(p + 0xc);
@@ -180,8 +178,8 @@ extern "C" void fn_80143330(Actor* this_) {
     case 6:
         *(f32*)(p + 0x270) = lbl_8053CF34;
     case 2:
-        *(s32*)(p + 0x248) = (s32)((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1();
-        *(s32*)(p + 0x238) = (s32)(lbl_8053CF58 * ((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1()) + 150;
+        *(s32*)(p + 0x248) = (s32)poohRand01();
+        *(s32*)(p + 0x238) = (s32)(lbl_8053CF58 * poohRand01()) + 150;
         if (*(u16*)(p + 0x94) == 2) {
             *(s32*)(p + 0xb0) = 0x201;
         }
