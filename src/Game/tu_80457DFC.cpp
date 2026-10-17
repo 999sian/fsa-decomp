@@ -12,6 +12,7 @@
 #include "JSystem/JAudio/System/JASWaveArcLoader.h"
 #include "JSystem/JAudio/System/JASDsp.h"
 #include "JSystem/JAudio/System/JASAudioReseter.h"
+#include "JSystem/JAudio/JAUSoundObject.h"
 
 extern "C" void* lbl_804B2074[];
 extern "C" void* lbl_804954D8[];
