@@ -197,7 +197,7 @@ extern "C" void fn_8019DC5C(char* this_) {
             case 1:
                 id = *(s32*)(actor + 4);
                 fn_801EE4F0(actor);
-                fn_8013CC50(id, actor + 0xc, 0x35c, 1, 1, 0, 0, 1);
+                fn_8013CC50(id, actor + 0xc, lbl_8053E440, 0x35c, 1, 1, 0, 0, 1);
                 *(u8*)(actor + 0x11c) = 0;
                 break;
             case 0:
