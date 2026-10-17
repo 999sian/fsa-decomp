@@ -526,9 +526,9 @@ extern "C" void fn_80124DAC(OSAlarm* alarm, OSContext* ctx) {
 }
 
 extern "C" void fn_80124DD0(void* a, void* b, OSTime tick) {
-    OSAlarm alarm;
-    BOOL level;
     volatile u32 saved;
+    BOOL level;
+    OSAlarm alarm;
 
     OSCreateAlarm(&alarm);
     saved = fn_801C027C();
@@ -694,7 +694,8 @@ extern "C" void fn_801DE4F4(s32, void*);
 extern "C" void fn_80128620(char* p) {
     u32 a = *(u32*)(*(char**)p + 0x100);
     s32 m = *(s16*)(**(char***)(*(char**)(p + 4) + 0x1c) + 0x24) + 1;
-    *(s16*)(p + 0x214) = a - m * (a / m);
+    u32 q = a / m;
+    *(s16*)(p + 0x214) = a - q * m;
 }
 
 extern "C" void fn_80128650(char* p, char* q) {
