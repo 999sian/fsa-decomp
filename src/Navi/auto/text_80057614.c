@@ -167,6 +167,10 @@ extern "C" void fn_800579CC(void) {
 extern "C" void fn_800579E0(void) {
 }
 
+extern "C" void fn_800579E4(void) {
+    *(s32*)(lbl_802BB0FC + 0x44) = 0x12;
+}
+
 extern "C" void fn_800579F8(void) {
 }
 
