@@ -63,6 +63,11 @@ extern f32 lbl_802FEAB0[];
 extern f32 lbl_802F0BC0[];
 extern f32 lbl_80300AF0;
 
+static inline f32 navi_signed_800A1774(f32 x)
+{
+    return lbl_80300B38 * x - lbl_80300B20;
+}
+
 static inline f32 navi_sqrtf_800A1774(f32 x)
 {
     f32 r;
@@ -2434,7 +2439,8 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
         result = t;
         break;
     case 3:
-        result = lbl_80300B38 * (lbl_80300B38 * t - lbl_80300B20) - lbl_80300B20;
+        t = lbl_80300B38 * t - lbl_80300B20;
+        result = lbl_80300B38 * t - lbl_80300B20;
         break;
     case 4: {
         f32 val = *(f32*)((u8*)lbl_802F0BC0 + (((u32)(s32)(lbl_80300AFC * (lbl_80300B70 * t)) >> 2) & 0x3FF8));
