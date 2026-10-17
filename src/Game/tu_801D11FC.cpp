@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+#include "Game/SinitPoolChain.h"
 
 struct fn_801D1974_obj {
     void* vtbl;
