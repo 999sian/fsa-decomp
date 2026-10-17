@@ -345,6 +345,9 @@ u8 fn_804149C0(void) {
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "Game/ItemBase.h"
+#include "dolphin/gx.h"
+#include "JSystem/JUtility/JUTVideo.h"
 
 struct Pane408 {
 	virtual void v08(); virtual void v0c();
@@ -846,6 +849,32 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 	}
 }
 
+extern "C" void fn_8013B414(void* obj, f32* box, s32 flag);
+extern "C" void fn_802F86CC(void* obj, f32* pos, void* res, s32 id, DrawRec* rec, f32 sx, f32 sy);
+extern "C" s32 lbl_8048CB58[];
+extern "C" u8 lbl_8048CC2C[];
+extern u8* lbl_8053AAF8;
+extern "C" void fn_80406F68(u8* self, f32 a, f32 b) {
+	DrawRec rec;
+	f32 box[4] = {0.0f, 0.0f, 256.0f, 192.0f};
+	s32 st = *(s32*)(self + 0x380);
+	s32 seg = (st % 40) / 10;
+
+	fn_8013B414(lbl_8053AB10, box, 1);
+	_GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
+	f32 px = a * (256.0f / mode->fbWidth);
+	f32 py = b * (192.0f / mode->efbHeight) - 5.0f;
+
+	GXSetTevDirect(GX_TEVSTAGE0);
+	GXSetTevDirect(GX_TEVSTAGE1);
+	GXSetTevDirect(GX_TEVSTAGE2);
+	GXSetTevDirect(GX_TEVSTAGE3);
+
+	f32 vec[3] = {px, py + JMASinShort((s16)(st << 11)), 0.0f};
+	rec.ids[2] = 2;
+	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), vec, lbl_8053AAF8, 0xc6, &rec, 1.0f, 1.0f);
+}
+
 extern "C" u32 lbl_8048C2B8[];
 extern "C" f32 lbl_805438F8;
 extern "C" f32 lbl_805438FC;
@@ -1001,3 +1030,12 @@ extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out) {
 	if (a > n || a == *out) return TRUE;
 	return FALSE;
 }
+struct Tu80406ResMgr {
+	virtual void v0();
+	virtual void v1();
+	virtual void v2();
+	virtual void v3();
+	virtual void v4();
+	virtual void v5();
+	virtual void* get(u32 type, const char* name);
+};
