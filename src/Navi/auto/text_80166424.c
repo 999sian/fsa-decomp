@@ -1080,8 +1080,7 @@ extern "C" s32 fn_8016C774(void* self, u8 count) {
                 return 0;
             }
         }
-        u8 bit = 1 << i;
-        *(u8*)((u8*)self + 0x78) = *(u8*)((u8*)self + 0x78) | bit;
+        *(u8*)((u8*)self + 0x78) = *(u8*)((u8*)self + 0x78) | (1 << i);
         i++;
     }
     return 1;
@@ -1595,16 +1594,16 @@ extern "C" void* fn_801706E4(u8* self, s16 param_2)
 }
 
 extern "C" s32 fn_80170D0C(u8* self, u8 count) {
-    u8 i;
+    s32 i;
 
-    for (i = 0; i < count; i++) {
+    for (i = 0; (u8)i < count; i++) {
         s32 off;
         u8* obj;
 
-        if (i >= 8) {
+        if ((u8)i >= 8) {
             return 0;
         }
-        off = (i * 4) + 0x16c;
+        off = ((u8)i * 4) + 0x16c;
         if (*(void**)(self + off) == nullptr) {
             obj = (u8*)fn_8015A90C(0x40);
             if (obj != nullptr) {
@@ -1616,7 +1615,7 @@ extern "C" s32 fn_80170D0C(u8* self, u8 count) {
             if (*(void**)(self + off) == nullptr) {
                 return 0;
             }
-            self[0x1b0] = self[0x1b0] | (1 << i);
+            self[0x1b0] = self[0x1b0] | (1 << (u8)i);
         }
     }
     return 1;
@@ -2888,7 +2887,41 @@ extern "C" void* fn_80176848(void* p_self, u32 unused, u32 a, u32 b, u32 c)
     fn_801768C8(p_self, a, b, c);
     return p_self;
 }
-#pragma use_lmw_stmw on
+
+#pragma dont_inline on
+extern "C" void* fn_80176FE8(u8* self, s16 param_2) {
+    if (self) {
+        *(void**)self = (void*)lbl_80298C88;
+        u8* p = *(u8**)(self + 0xdc);
+        if (p) {
+            p -= 0xc;
+        }
+        while (p) {
+            u8* next = *(u8**)(p + 0x18);
+            if (next) {
+                next -= 0xc;
+            }
+            VObj_8016C34C* child = *(VObj_8016C34C**)(p + 0xc);
+            p = next;
+            if (child) {
+                child->v0(1);
+            }
+        }
+        if (self + 0xdc) {
+            if (self + 0xe8) {
+                fn_80166B70(self + 0xe8, 0);
+            }
+            if (self + 0xdc) {
+                fn_80166C08(self + 0xdc, 0);
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(self);
+        }
+    }
+    return self;
+}
+#pragma dont_inline reset
 extern "C" void fn_80177970(void* self, f32 a, f32 b) {
     f32 w = *(f32*)((char*)self + 0x28) - *(f32*)((char*)self + 0x20);
     f32 h = *(f32*)((char*)self + 0x2c) - *(f32*)((char*)self + 0x24);
@@ -2909,6 +2942,25 @@ extern "C" void fn_801779C4(void* self, f32 a, f32 b) {
     *(f32*)((char*)self + 0xd4) += a;
     *(f32*)((char*)self + 0xd8) += b;
     ((Obj*)self)->vf2c();
+}
+
+extern "C" f32 lbl_802EE358[];
+extern "C" void* fn_80178494(void* self, u32 v, f32 a, f32 b, f32 c, f32 d, f32 e);
+extern "C" void* fn_80177B10(void* self) {
+    u32 v;
+    f32* lbl = lbl_802EE358;
+    v = *(u32*)((u8*)self + 0x28);
+    *(u32*)&lbl[0] = *(u32*)((u8*)self + 0x20);
+    *(u32*)&lbl[1] = *(u32*)((u8*)self + 0x24);
+    *(u32*)&lbl[2] = v;
+    *(u32*)&lbl[3] = *(u32*)((u8*)self + 0x2c);
+    lbl[0] = lbl[0] + *(f32*)((u8*)self + 0xd4);
+    lbl[1] = lbl[1] + *(f32*)((u8*)self + 0xd8);
+    lbl[2] = lbl[2] + *(f32*)((u8*)self + 0xd4);
+    lbl[3] = lbl[3] + *(f32*)((u8*)self + 0xd8);
+    if (fn_80178494(self, v, lbl[2], lbl[1], lbl[0], *(f32*)((u8*)self + 0xd4), *(f32*)((u8*)self + 0xd8)) != nullptr) {
+    }
+    return lbl;
 }
 
 extern "C" void fn_80177BF0(void* self, s8 flag, f32 a, f32 b, f32 c) {
