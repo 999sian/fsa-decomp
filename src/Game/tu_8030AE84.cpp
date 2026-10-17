@@ -3,6 +3,7 @@
 
 extern "C" f32 sqrtf(f32 x);
 
+extern "C" f32 sqrtf(f32 x);
 extern "C" int fn_8022EA0C(int);
 extern "C" int fn_8023DE58(int);
 extern "C" u8 fn_80234950(int id = 0);
