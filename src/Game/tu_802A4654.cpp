@@ -1,5 +1,18 @@
 #include "types.h"
 #include "JSystem/JParticle/JPAEmitter.h"
+#include "Game/ItemBase.h"
+
+extern "C" void fn_802F86CC(void*, void*, void*, s32, f32, f32, DrawRec*);
+
+struct Unk802A4780ResMgr {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void* vf18(u32 type, const char* name);
+};
 
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -65,5 +78,102 @@ extern "C" void* fn_802A64E8(void* this_, short how) {
         }
     }
     return this_;
+}
+
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D752C(void*, s32);
+extern "C" void fn_802D7440(void*, s32);
+extern "C" void fn_8022ADE4(void);
+extern "C" s32 fn_80236228(s32);
+extern "C" u8* lbl_8053AAF8;
+extern "C" f32 lbl_805407D0;
+extern "C" f32 lbl_805407E0;
+extern "C" f32 lbl_805407E4;
+extern "C" f32 lbl_805407E8;
+extern "C" void fn_802A6600(void* this_) {
+    u8* self = (u8*)this_;
+    s32 total = 0;
+    s32 i;
+    u32 flags;
+
+    *(f32*)(self + 0x60) = -3.0f;
+    *(f32*)(self + 0x64) = -3.0f;
+    *(f32*)(self + 0x68) = 3.0f;
+    *(f32*)(self + 0x6c) = 3.0f;
+    *(s32*)(self + 0x230) = 0;
+    *(f32*)(self + 0x44) = 0.0f;
+    *(s32*)(self + 0x24c) = 9;
+    *(s32*)(self + 0x250) = 0;
+    *(s32*)(self + 0x2a4) = -1;
+    *(s32*)(self + 0x254) = -1;
+    *(s32*)(self + 0x2b4) = 0;
+    *(s32*)(self + 0x2c4) = 0;
+    *(s32*)(self + 0x2d4) = 0;
+    *(s32*)(self + 0x2e4) = 0;
+    *(s32*)(self + 0x2f4) = 0;
+    *(f32*)(self + 0x264) = 0.0f;
+    *(f32*)(self + 0x268) = 0.0f;
+    *(f32*)(self + 0x26c) = 0.0f;
+    *(s32*)(self + 0x2a8) = -1;
+    *(s32*)(self + 0x258) = -1;
+    *(s32*)(self + 0x2b8) = 0;
+    *(s32*)(self + 0x2c8) = 0;
+    *(s32*)(self + 0x2d8) = 0;
+    *(s32*)(self + 0x2e8) = 0;
+    *(s32*)(self + 0x2f8) = 0;
+    *(f32*)(self + 0x270) = 0.0f;
+    *(f32*)(self + 0x274) = 0.0f;
+    *(f32*)(self + 0x278) = 0.0f;
+    *(s32*)(self + 0x2ac) = -1;
+    *(s32*)(self + 0x25c) = -1;
+    *(s32*)(self + 0x2bc) = 0;
+    *(s32*)(self + 0x2cc) = 0;
+    *(s32*)(self + 0x2dc) = 0;
+    *(s32*)(self + 0x2ec) = 0;
+    *(s32*)(self + 0x2fc) = 0;
+    *(f32*)(self + 0x27c) = 0.0f;
+    *(f32*)(self + 0x280) = 0.0f;
+    *(f32*)(self + 0x284) = 0.0f;
+    *(s32*)(self + 0x2b0) = -1;
+    *(s32*)(self + 0x260) = -1;
+    *(s32*)(self + 0x2c0) = 0;
+    *(s32*)(self + 0x2d0) = 0;
+    *(s32*)(self + 0x2e0) = 0;
+    *(s32*)(self + 0x2f0) = 0;
+    *(s32*)(self + 0x300) = 0;
+    *(f32*)(self + 0x288) = 0.0f;
+    *(f32*)(self + 0x28c) = 0.0f;
+    *(f32*)(self + 0x290) = 0.0f;
+    *(s32*)(self + 0x304) = 0;
+    *(s32*)(self + 0x30c) = 0;
+    *(u8*)(self + 0x310) = 1;
+    *(u32*)(self + 0x238) = *(u32*)(self + 0x90) & 0x1f;
+    *(u32*)(self + 0x23c) = (*(u32*)(self + 0x90) >> 17) & 0x1f;
+    *(u32*)(self + 0x240) = (*(u32*)(self + 0x90) >> 22) & 0x1f;
+    *(u32*)(self + 0x234) = (*(u32*)(self + 0x90) >> 12) & 0x1f;
+    flags = *(u32*)(self + 0x90);
+    if ((flags >> 7) & 1) {
+        *(f32*)(self + 0xc) = *(f32*)(self + 0xc) + lbl_805407E8;
+    }
+    flags = (flags >> 7) & 0x1f;
+    if (flags & 2) {
+        *(f32*)(self + 0x10) = *(f32*)(self + 0x10) + lbl_805407E8;
+    }
+    fn_802D752C(fn_802D6A9C(), 1);
+    fn_802D7440(fn_802D6A9C(), 0);
+    fn_8022ADE4();
+    total = 0;
+    for (i = 0; i < 4; i++) {
+        if ((lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0) {
+            total += fn_80236228(i);
+        }
+    }
+    *(s32*)(self + 0x314) = 0;
+    *(s32*)(self + 0x318) = 0;
+    *(s32*)(self + 0x31c) = 1;
+    while (total >= 1000) {
+        total -= 1000;
+        *(s32*)(self + 0x314) += 1;
+    }
 }
 
