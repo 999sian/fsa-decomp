@@ -2183,11 +2183,10 @@ extern "C" u32 fn_800DDA50(void) {
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
+    u8* s = src + 2;
     *(u16*)(this_ + 0x4) = w;
-    u8 b2 = src[2];
-    u8 b3 = src[3];
-    this_[0x6] = b2;
-    this_[0x7] = b3;
+    this_[0x6] = s[0];
+    this_[0x7] = s[1];
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
