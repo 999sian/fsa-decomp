@@ -2184,9 +2184,10 @@ extern "C" u32 fn_800DDA50(void) {
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
     u8 b2 = src[2];
+    u8 b3 = src[3];
     *(u16*)(this_ + 0x4) = w;
     this_[0x6] = b2;
-    this_[0x7] = src[3];
+    this_[0x7] = b3;
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
@@ -2623,7 +2624,8 @@ extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
   u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
-  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
+  u8 v = e[0x28];
+  e[0x28] = (b1 << 2) | (v & ~0xC);
   e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
