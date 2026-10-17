@@ -3,7 +3,6 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry.h"
-#include "sdk/stl/math.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
