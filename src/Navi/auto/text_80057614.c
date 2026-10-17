@@ -726,18 +726,19 @@ extern char lbl_8027D36C[];
 extern char lbl_8027D510[];
 extern "C" void fn_8005C330(const char*, ...);
 extern "C" int fn_8005AD7C(u32 p) {
-    int bad;
+    bool bad = false;
     if ((p & 0xF0000000) != 0x80000000) {
         fn_8005C330((const char*)1, lbl_8027D36C, lbl_8027D510, p);
-        bad = 1;
-    } else {
-        bad = 0;
+        bad = true;
     }
     if (bad) {
         return 0;
     }
-    int n = *(s32*)(p + 0x14);
-    return n >= 1;
+    s32 n = *(s32*)(p + 0x14);
+    if (n >= 1) {
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void fn_8005B450(void) {}
@@ -838,10 +839,10 @@ extern "C" void fn_8005CB2C(int param_1) {
 }
 
 extern "C" int fn_8005CB7C(int param_1) {
-    if (param_1 != 0xd4 && param_1 != 0xd3) {
-        return 1;
+    if (param_1 == 0xd4 || param_1 == 0xd3) {
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 extern "C" void fn_8005CC04(void* self, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f) {
