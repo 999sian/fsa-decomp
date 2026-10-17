@@ -91,10 +91,58 @@ extern "C" float fn_801EA270(f32 x);
 extern "C" float fn_801EA294(f32 x);
 extern "C" void fn_801C5FDC(void* dst, s32 axis, f32 x, f32 y);
 extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
+    volatile f64 pad[2];
     f32 a = fn_801EA270(v);
     f32 b = fn_801EA294(v);
-    f64 pad;
     fn_801C5FDC(dst, axis, a, b);
+}
+
+#pragma fp_contract off
+extern "C" void fn_801C65A8(float *m, float y0, float y1, float x0, float x1, float sx, float sy, float ox, float oy)
+{
+    float tmp;
+
+    tmp = 1.0f / (x1 - x0);
+    m[0] = (2.0f * tmp * sx);
+    m[1] = 0.0f;
+    m[2] = 0.0f;
+    m[3] = ((-(x1 + x0) * tmp) * sx) + ox;
+
+    tmp = 1.0f / (y0 - y1);
+    m[4] = 0.0f;
+    m[5] = (2.0f * tmp) * sy;
+    m[6] = 0.0f;
+    m[7] = ((-(y0 + y1) * tmp) * sy) + oy;
+
+    m[8] = 0.0f;
+    m[9] = 0.0f;
+    m[10] = 0.0f;
+    m[11] = 1.0f;
+}
+#pragma fp_contract reset
+extern "C" void fn_801C6830(f32* m, f32 t, f32 b, f32 l, f32 r, f32 n, f32 f)
+{
+	f32 tmp;
+
+	tmp = 1.0f / (r - l);
+	m[0] = 2.0f * tmp;
+	m[1] = 0.0f;
+	m[2] = 0.0f;
+	m[3] = -(r + l) * tmp;
+	tmp = 1.0f / (t - b);
+	m[4] = 0.0f;
+	m[5] = 2.0f * tmp;
+	m[6] = 0.0f;
+	m[7] = -(t + b) * tmp;
+	tmp = 1.0f / (f - n);
+	m[8] = 0.0f;
+	m[9] = 0.0f;
+	m[10] = -2.0f * tmp;
+	m[11] = -f * tmp;
+	m[12] = 0.0f;
+	m[13] = 0.0f;
+	m[14] = 0.0f;
+	m[15] = 1.0f;
 }
 
 extern "C" f32 fn_801C6A28(const Vec* vec1, const Vec* vec2)
@@ -103,6 +151,26 @@ extern "C" f32 fn_801C6A28(const Vec* vec1, const Vec* vec2)
     f32 dy = vec1->y - vec2->y;
     f32 dz = vec1->z - vec2->z;
     return dx * dx + dy * dy + dz * dz;
+}
+
+extern "C" void __DVDInitWA(void)
+{
+	NextCommandNumber_802FF85C = 0;
+	CommandList_802F79D0[0].type = -1;
+	__DVDLowSetWAType(0, 0);
+	OSInitAlarm();
+}
+
+extern "C" void fn_801C6D70(void)
+{
+	DVDWACommand* cmd = &CommandList_802F79D0[NextCommandNumber_802FF85C];
+	if (cmd->type == 1) {
+		NextCommandNumber_802FF85C++;
+		fn_801C6E64(cmd->arg0, cmd->arg1, cmd->arg2, cmd->arg3);
+	} else if (cmd->type == 2) {
+		NextCommandNumber_802FF85C++;
+		fn_801C728C(cmd->arg2, cmd->arg3);
+	}
 }
 
 extern "C" BOOL DVDLowWaitCoverClose(DVDLowCallback cb)
@@ -114,6 +182,28 @@ extern "C" BOOL DVDLowWaitCoverClose(DVDLowCallback cb)
 	WaitingCoverClose_802FF834 = TRUE;
 	StopAtNextInt_802FF818 = FALSE;
 	di[1] = 2;
+	return TRUE;
+}
+
+extern "C" BOOL fn_801C734C(u32 param_1, DVDLowCallback cb)
+{
+	vu32* di;
+	OSAlarm* alarm;
+	u32 timeout;
+
+	Callback_802FF820 = cb;
+	StopAtNextInt_802FF818 = FALSE;
+	di = (vu32*)0xCC006000;
+	di[2] = 0xA8000040;
+	di[3] = 0;
+	di[4] = 0x20;
+	di[5] = param_1;
+	di[6] = 0x20;
+	di[7] = 3;
+	alarm = (OSAlarm*)AlarmForTimeout_802F7A38;
+	timeout = (*(u32*)0x800000F8 >> 2) * 10;
+	OSCreateAlarm(alarm);
+	OSSetAlarm(alarm, timeout, AlarmHandlerForTimeout);
 	return TRUE;
 }
 
@@ -273,6 +363,8 @@ extern "C" void fn_801C8184(void)
 {
 	fn_801C13D0(&__DVDThreadQueue);
 }
+
+extern "C" void fn_801C81A8(void) {}
 
 extern "C" void fn_801C8478(void)
 {
