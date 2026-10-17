@@ -163,10 +163,10 @@ static inline void twtgUpdateDir(char* p, JGeometry::TVec3f& v, f32& dist) {
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
         s32 room;
-        if (*(s32*)(p + 0x254) >= 0 && (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) == room)) {
-            fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
-        } else {
+        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) != room)) {
             fn_801EE558(p, &v, &dist, 0);
+        } else {
+            fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
         }
         if (dist < lbl_80541880) {
             f32 ang = JMAAtan2Radian(-v.x, -v.y);
@@ -295,7 +295,7 @@ extern "C" void fn_803142E4(char* p) {
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
             s32 n = fn_80138A30(lbl_8053AAF8);
             f32 r = ((TwtgRandom*)(lbl_8053AAF8 + 0xb4))->get();
-            s32 i = (s32)(r * n) & 3;
+            s32 i = (s32)((f32)n * r) & 3;
             fn_803894BC(*(s32*)(p + 0x254), i + 1);
             if (twtgAsk(p, 0x4da)) {
                 fn_8043D874(lbl_8053AED0, i, 300, 0);
