@@ -188,7 +188,7 @@ struct J3DModel
     Mtx &getWeightAnmMtx(int i) { return mMtxBuffer->getWeightAnmMtx(i); }
     Mtx &getBaseTRMtx() { return mPosMtx; }
     void setBaseTRMtx(Mtx m) { PSMTXCopy(m, mPosMtx); }
-    u32 getMtxCalcMode() const { return mFlags & J3DMODEL_SkinPosCpu; }
+    u32 getMtxCalcMode() const { return mFlags & 0x3; }
     J3DVertexBuffer *getVertexBuffer() const { return (J3DVertexBuffer *)&mVertexBuffer; }
     J3DMatPacket *getMatPacket(u16 idx) const { return &mMatPackets[idx]; }
     J3DShapePacket *getShapePacket(u16 idx) const { return &mShapePackets[idx]; }
