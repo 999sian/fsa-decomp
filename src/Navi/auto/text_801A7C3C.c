@@ -1249,10 +1249,10 @@ extern "C" void fn_801B2688(u32* out, u8* p, s32 a, s32 b) {
     u32 def = lbl_80301DD8;
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
     u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 8 + b * 2);
-    if (v == 0xffff) {
-        *out = def;
-    } else {
+    if (v != 0xffff) {
         *out = ((u32*)*(u8**)(p + 0x10))[v];
+    } else {
+        *out = def;
     }
 }
 
@@ -1305,6 +1305,8 @@ extern "C" void fn_801B349C(void) {}
 extern "C" void fn_801B34A0(void) {}
 
 extern "C" void fn_801B34A4(void) {}
+
+extern "C" void fn_801B34A8(void) {}
 
 extern void* lbl_8029B800[];
 extern void* lbl_8029A0D4[];
