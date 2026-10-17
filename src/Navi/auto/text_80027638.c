@@ -161,17 +161,15 @@ extern "C" void fn_800291B8(const char*, ...) {
 extern "C" void fn_80029208(const char*, ...) {
 }
 
-extern "C" int fn_800294AC(int, int, int, float, int, int, int, int, int, int);
+extern "C" int fn_800294AC(int, int, float, int, int, int, int, int, int, int);
 extern "C" int fn_80029794(int a, int b, int c) {
     if ((lbl_802FEDDC & 0x200) && *(int*)(b + 8) != 0x9e) {
-        switch (*(int*)(b + 0x18)) {
-        case 0:
-        case 2:
-        case 4:
+        int s = *(int*)(b + 0x18);
+        if (s == 2 || s == 4 || s == 0) {
             return 1;
         }
     }
-    return fn_800294AC(a, b, c, 0, 0, *(int*)(b + 8), 0, 0, lbl_802FFD10, 0);
+    return fn_800294AC(a, b, c, lbl_802FFD10, 0, 0, *(int*)(b + 8), 0, 0, 0);
 }
 
 extern "C" unsigned char* fn_800298BC(unsigned char* self, int id) {
