@@ -1,6 +1,7 @@
 
 
 #include "Game/SinitPoolChain.h"
+#include "Game/Actor.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void __dl__FPv(void* p);
@@ -83,7 +84,7 @@ extern "C" int fn_8037845C(void* param_1) {
     } else if (p[0x91] == 0 && fn_80230534(0)) {
         p[0x92] = -1;
         fn_801F0D20(param_1, 3);
-        (*(void (**)(void*, int, int))(*(int*)param_1 + 0x30))(param_1, 0xff, 1);
+        ((Actor*)param_1)->v10(0xff, 1);
         detach__5ActorFv(param_1);
     }
     return 1;
@@ -99,44 +100,51 @@ extern "C" int fn_80378680(char* p) {
     float y0 = *(float*)(p + 0x64) + *(float*)(p + 0x10);
     float x1 = *(float*)(p + 0x68) + *(float*)(p + 0xc);
     float y1 = *(float*)(p + 0x6c) + *(float*)(p + 0x10);
-    int id = fn_801F78F4(fn_801F856C(), 0x48424D42, -1);
-    if (id < 0) {
-        return 0;
-    }
-    char* obj = (char*)fn_801F666C(fn_801F856C(), id);
-    if (obj != 0 && *(int*)(p + 4) == *(int*)(obj + 4)) {
-        float ox0 = *(float*)(obj + 0x60) + *(float*)(obj + 0xc);
-        float oy0 = *(float*)(obj + 0x64) + *(float*)(obj + 0x10);
-        float ox1 = *(float*)(obj + 0x68) + *(float*)(obj + 0xc);
-        float oy1 = *(float*)(obj + 0x6c) + *(float*)(obj + 0x10);
-        if (ox0 > x0) {
-            ox0 = x0;
+    int idx = -1;
+    for (;;) {
+        idx = fn_801F78F4(fn_801F856C(), 0x48424D42, idx);
+        if (idx < 0) {
+            break;
         }
-        if (oy0 > y0) {
-            oy0 = y0;
-        }
-        if (ox1 < x1) {
-            ox1 = x1;
-        }
-        if (oy1 < y1) {
-            oy1 = y1;
-        }
-        unsigned char hit = 0;
-        if (ox1 < ox0 && oy1 < oy0) {
-            hit = 1;
-        }
-        if (hit) {
-            Vec3f v = *(Vec3f*)(obj + 0x3c);
-            if (v.x == 0.0f && v.y == 0.0f) {
-                Vec3f pos = *(Vec3f*)(obj + 0xc);
-                if (pos.y > *(float*)(p + 0x10)) {
-                    pos.y = *(float*)(p + 0x10) + 16.0f;
-                } else {
-                    pos.y = *(float*)(p + 0x10) - 16.0f;
-                }
-                *(Vec3f*)(obj + 0xc) = pos;
+        char* obj = (char*)fn_801F666C(fn_801F856C(), idx);
+        if (obj != 0 && *(int*)(p + 4) == *(int*)(obj + 4)) {
+            float ox0 = *(float*)(obj + 0x60) + *(float*)(obj + 0xc);
+            float oy0 = *(float*)(obj + 0x64) + *(float*)(obj + 0x10);
+            float ox1 = *(float*)(obj + 0x68) + *(float*)(obj + 0xc);
+            float oy1 = *(float*)(obj + 0x6c) + *(float*)(obj + 0x10);
+            if (ox0 <= x0) {
             } else {
-                *(int*)(obj + 0x108) = 0;
+                ox0 = x0;
+            }
+            if (oy0 <= y0) {
+            } else {
+                oy0 = y0;
+            }
+            if (ox1 >= x1) {
+            } else {
+                ox1 = x1;
+            }
+            if (oy1 >= y1) {
+            } else {
+                oy1 = y1;
+            }
+            unsigned char hit = 0;
+            if (!(ox1 >= ox0) && !(oy1 >= oy0)) {
+                hit = 1;
+            }
+            if (hit) {
+                Vec3f v = *(Vec3f*)(obj + 0x3c);
+                if (v.x == 0.0f && v.y == 0.0f) {
+                    Vec3f pos = *(Vec3f*)(obj + 0xc);
+                    if (pos.y > *(float*)(p + 0x10)) {
+                        pos.y = *(float*)(p + 0x10) + 16.0f;
+                    } else {
+                        pos.y = *(float*)(p + 0x10) - 16.0f;
+                    }
+                    *(Vec3f*)(obj + 0xc) = pos;
+                } else {
+                    *(int*)(obj + 0x108) = 0;
+                }
             }
         }
     }
@@ -183,6 +191,94 @@ extern "C" int fn_80378880(void* param_1) {
         }
     }
     return flags == 0xF;
+}
+
+extern "C" void fn_80378A24(void* param_1) {
+    struct Box {
+        f32 x0;
+        f32 y0;
+        f32 x1;
+        f32 y1;
+    };
+    char* p = (char*)param_1;
+    Box box;
+    char* q;
+    unsigned char* r;
+    int handle;
+    int i;
+    int n;
+    int state;
+
+    if ((unsigned char)fn_8037845C(param_1) != 1) {
+        box = *(Box*)(p + 0x60);
+        box.x0 += *(f32*)(p + 0xc);
+        box.x1 += *(f32*)(p + 0xc);
+        box.y0 += *(f32*)(p + 0x10);
+        box.y1 += *(f32*)(p + 0x10);
+        fn_80239914(&box, *(int*)(p + 0x4), *(int*)(p + 0x198));
+        handle = *(int*)(p + 0x198);
+        r = (unsigned char*)fn_8020D58C();
+        fn_8020D7D0(r + r[0] * 0x784 + 4, handle);
+        fn_80378680(p);
+        state = *(int*)(p + 0x234);
+        switch (state) {
+        case 0:
+            *(f32*)(p + 0x60) = lbl_80542FE0;
+            *(f32*)(p + 0x64) = lbl_80542FE4;
+            *(f32*)(p + 0x68) = lbl_80542FE8;
+            *(f32*)(p + 0x6c) = lbl_80542FDC;
+            if ((unsigned char)fn_80378880(p) == 1) {
+                if (*(int*)(p + 0x230) == 0) {
+                    *(int*)(p + 0x230) = fn_8013CC50(*(int*)(p + 0x4), p + 0xc, lbl_80542FD8, 0x456, 0, 1, 0, 0, 1);
+                }
+                *(f32*)(p + 0x238) = *(f32*)(p + 0x238) - lbl_80542FEC;
+                if (*(f32*)(p + 0x238) < lbl_80542FF0) {
+                    *(int*)(p + 0x234) = 1;
+                }
+                fn_801F0E34(p, 0x50087, 0);
+            } else if (*(int*)(p + 0x230) != 0) {
+                fn_801EE434(*(void**)(p + 0x230));
+                *(int*)(p + 0x230) = 0;
+            }
+            break;
+        case 1:
+            fn_801F0E34(p, 0x50087, 0);
+            *(f32*)(p + 0x23c) = *(f32*)(p + 0x23c) - lbl_80542FF8;
+            if (*(f32*)(p + 0x23c) < lbl_80543000) {
+                *(f32*)(p + 0x23c) = lbl_80543000;
+            }
+            *(f32*)(p + 0x238) = *(f32*)(p + 0x238) - lbl_80542FEC;
+            if (*(f32*)(p + 0x238) < lbl_80542FEC) {
+                *(f32*)(p + 0x238) = lbl_80543000;
+                if (fn_8023077C()) {
+                    *(int*)(p + 0x244) = 0x32;
+                    *(int*)(p + 0x248) = 4;
+                    *(int*)(p + 0x24c) = 0;
+                    for (i = 0; i < 4; i++) {
+                        fn_80230498(i, fn_8023E724(i), 0xe8, 0xff, -0x80, -0x80, 1);
+                    }
+                }
+                if (*(int*)(p + 0x230) != 0) {
+                    fn_801EE434(*(void**)(p + 0x230));
+                    *(int*)(p + 0x230) = 0;
+                }
+            }
+            break;
+        }
+        *(f32*)(p + 0x54) = *(f32*)(p + 0x23c);
+        *(f32*)(p + 0x58) = lbl_80542FD8;
+        *(f32*)(p + 0x5c) = *(f32*)(p + 0x238);
+        n = 100 - (int)(lbl_80543004 * *(f32*)(p + 0x238));
+        q = (char*)fn_801902C0();
+        if (*(int*)(q + 0x7e0) != 0 && *(unsigned char*)(q + 0x7ec) == 0) {
+            *(f32*)(q + 0x7d0) = *(f32*)(p + 0xc);
+            *(f32*)(q + 0x7d4) = *(f32*)(p + 0x10);
+            *(f32*)(q + 0x7d8) = *(f32*)(p + 0x14);
+            *(int*)(q + 0x7dc) = n;
+            *(unsigned char*)(q + 0x7ec) = 1;
+        }
+        *(unsigned char*)(p + 0x251) = 1;
+    }
 }
 
 extern "C" void* fn_80378D18(void* param_1, short param_2) {
