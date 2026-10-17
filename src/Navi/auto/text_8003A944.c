@@ -444,19 +444,12 @@ extern "C" void fn_8003CEC0(void* param_1) {
 
 extern "C" void fn_80040120(void) {
     extern void* lbl_802BF0E8[];
-    register void* obj1 = lbl_802BF0E8[1];
-    if (obj1 != nullptr) {
-        register void** vtable = *(void***)obj1;
-        void (*dtor)(void*, s16) = (void (*)(void*, s16))vtable[4];
-        dtor(obj1, 1);
+    if (lbl_802BF0E8[1] != nullptr) {
+        ((VObj_800402B4*)lbl_802BF0E8[1])->m2(1);
     }
     lbl_802BF0E8[1] = nullptr;
-    
-    register void* obj2 = lbl_802BF0E8[2];
-    if (obj2 != nullptr) {
-        register void** vtable = *(void***)obj2;
-        void (*dtor)(void*, s16) = (void (*)(void*, s16))vtable[4];
-        dtor(obj2, 1);
+    if (lbl_802BF0E8[2] != nullptr) {
+        ((VObj_800402B4*)lbl_802BF0E8[2])->m2(1);
     }
     lbl_802BF0E8[2] = nullptr;
 }
