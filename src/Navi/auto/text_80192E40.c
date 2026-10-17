@@ -102,6 +102,13 @@ extern "C" u32 fn_80193C2C(u32* p) {
     return 0;
 }
 
+extern "C" void fn_80193C94(u32* p, u32 a, u32 b) {
+    p[3] = (b + 0x1f) & ~0x1f;
+    p[0] = a;
+    p[1] = p[0];
+    p[2] = b;
+}
+
 extern "C" void fn_80193CE0(u32* p)
 {
     extern u32 lbl_802FF6B0;
