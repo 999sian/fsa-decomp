@@ -15,11 +15,6 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void fn_801EF830(s32 a, void* b, void* c, s32 d, void* e, s32 f, s32 g);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, s32 d, void* e, f32 f1, f32 f2);
 
-struct Vec2_80113B54 {
-    f32 x;
-    f32 y;
-};
-
 struct Vec3_80113B54 {
     f32 x;
     f32 y;
