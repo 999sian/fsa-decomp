@@ -65,9 +65,9 @@ extern "C" void fn_801EFD34(void* this_, u32 id, void* param, s32 n, f32 a, f32 
 extern "C" void fn_80103348(void* this_) {
     char* p = (char*)this_;
     char* names = lbl_80463BD0;
-    TWEVParam param;
-    TWEVMtx mtx;
     f32 savedPos[3];
+    TWEVMtx mtx;
+    TWEVParam param;
     s32 i;
     f32 ang;
 
@@ -113,6 +113,9 @@ extern "C" void fn_80103348(void* this_) {
     *(f32*)(p + 0xc) = *(f32*)(p + 0x238);
     *(f32*)(p + 0x10) = *(f32*)(p + 0x23c);
     *(f32*)(p + 0x14) = *(f32*)(p + 0x240);
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
     ang = *(s32*)(p + 0x264) / lbl_8053C1D4;
     fn_80103348_rotMtx(mtx, lbl_8053C1D0, ang, lbl_8053C1D0);
     param.c = mtx;
@@ -123,6 +126,9 @@ extern "C" void fn_80103348(void* this_) {
     *(f32*)(p + 0xc) = *(f32*)(p + 0x244);
     *(f32*)(p + 0x10) = *(f32*)(p + 0x248);
     *(f32*)(p + 0x14) = *(f32*)(p + 0x24c);
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
     ang = *(s32*)(p + 0x268) / lbl_8053C1D4;
     fn_80103348_rotMtx(mtx, lbl_8053C1D0, ang, lbl_8053C1D0);
     param.c = mtx;
@@ -132,6 +138,9 @@ extern "C" void fn_80103348(void* this_) {
     *(f32*)(p + 0xc) = *(f32*)(p + 0x250);
     *(f32*)(p + 0x10) = *(f32*)(p + 0x254);
     *(f32*)(p + 0x14) = *(f32*)(p + 0x258);
+    mtx[0][3] = 0.0f;
+    mtx[1][3] = 0.0f;
+    mtx[2][3] = 0.0f;
     ang = *(s32*)(p + 0x26c) / lbl_8053C1D4;
     fn_80103348_rotMtx(mtx, lbl_8053C1D0, ang, lbl_8053C1D0);
     param.c = mtx;
@@ -190,6 +199,8 @@ extern "C" void fn_80103914(void* this_) {
             u32 id = fn_804032E8(0x54494d47, lbl_80463BD0);
             fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
         }
+        break;
+    case 2:
         break;
     }
 }
