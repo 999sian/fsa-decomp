@@ -12,7 +12,8 @@ struct CRGNState {
     u32 flags90;
     u8 pad94[0x234 - 0x94];
     u32 field234;
-    u8 pad238[0x240 - 0x238];
+    s32 field238;
+    u8 pad23c[0x240 - 0x23c];
     s32 count240;
     s32 count244;
     s32 list248[10];
