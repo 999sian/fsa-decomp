@@ -722,24 +722,25 @@ extern "C" void fn_801D1D6C(s32 chan) {
 extern "C" void* EXISetExiCallback(s32 chan, void* callback);
 extern "C" void fn_801BB7E0(void* p);
 extern "C" void fn_801D1DA0(s32 chan) {
-    void (*cb)(s32, s32);
+    void* cb;
     u8* p = lbl_802F7D60 + chan * 0x110;
+    void* zero = NULL;
     if (*(s32*)p != 0) {
-        *(s32*)p = 0;
+        *(void**)p = zero;
         EXISetExiCallback(chan, NULL);
         fn_801BB7E0(p + 0xe0);
-        cb = *(void (**)(s32, s32))(p + 0xcc);
+        cb = *(void**)(p + 0xcc);
         if (cb != NULL) {
-            *(void**)(p + 0xcc) = NULL;
-            cb(chan, -3);
+            *(void**)(p + 0xcc) = zero;
+            ((void (*)(s32, s32))cb)(chan, -3);
         }
         if (*(s32*)(p + 4) != -1) {
             *(s32*)(p + 4) = -3;
         }
-        cb = *(void (**)(s32, s32))(p + 0xc4);
+        cb = *(void**)(p + 0xc4);
         if (cb != NULL && *(s32*)(p + 0x24) >= 7) {
-            *(void**)(p + 0xc4) = NULL;
-            cb(chan, -3);
+            *(void**)(p + 0xc4) = zero;
+            ((void (*)(s32, s32))cb)(chan, -3);
         }
     }
 }
@@ -892,7 +893,7 @@ extern "C" s32 fn_801D32CC(void) {
 
 extern "C" s32 fn_801D28AC(s32 chan, void* cb);
 extern "C" s32 fn_801D29E0(s32 chan, void* cb);
-extern "C" void fn_801D427C(void);
+extern "C" void fn_801D427C(s32 chan, s32 arg);
 extern "C" void fn_801D43BC(void);
 extern "C" s32 fn_801D4358(s32 chan, u32 a, u32 b, u32 c, u32 d)
 {
@@ -2150,6 +2151,45 @@ extern "C" void fn_801DDE38(int param_1, u32 param_2, u32 param_3, u32 param_4, 
     r11 = __rlwimi(r11, param_1 + 0x10, 24, 0, 7);
     *(volatile u32*)0xCC008000 = r11;
     *(u16*)(__GXData + 2) = 0;
+}
+
+extern "C" void fn_801DE160(s32 arg0, s32 arg1, s32 arg2) {
+    u8* gx;
+    s32 r4 = arg1;
+    s32 r5 = arg2;
+
+    if (r5 == 0xFF) {
+        r5 = 0;
+    }
+    if (r4 == 0xFF) {
+        r4 = 0;
+    }
+    switch (arg0) {
+    case 0:
+        gx = __GXData;
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x7) | (r5 & 0x7);
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x38) | ((r4 << 3) & 0x38);
+        break;
+    case 1:
+        gx = __GXData;
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x1C0) | ((r5 << 6) & 0x1C0);
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0xE00) | ((r4 << 9) & 0xE00);
+        break;
+    case 2:
+        gx = __GXData;
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x7000) | ((r5 << 12) & 0x7000);
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x38000) | ((r4 << 15) & 0x38000);
+        break;
+    case 3:
+        gx = __GXData;
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0x1C0000) | ((r5 << 18) & 0x1C0000);
+        *(u32*)(gx + 0x120) = (*(u32*)(gx + 0x120) & ~0xE00000) | ((r4 << 21) & 0xE00000);
+        break;
+    }
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(__GXData + 0x120);
+    *(u32*)(__GXData + 0x5ac) |= 3;
+    *(u16*)(__GXData + 0x2) = 0;
 }
 
 extern "C" void fn_801DE24C(u8 param_1) {
