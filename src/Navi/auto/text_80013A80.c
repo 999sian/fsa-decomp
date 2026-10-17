@@ -36,7 +36,8 @@ struct Unk80013DA0 {
     u32 b0 : 2;
     u32 b1 : 15;
     u32 b2 : 15;
-    u8 pad28[0x50 - 0x28];
+    u32 unk28;
+    u8 pad2c[0x50 - 0x2c];
     u8 unk50;
     u8 unk51;
     u8 unk52;
