@@ -267,7 +267,8 @@ extern "C" void fn_8003C2B4(u8* p, s16 a, s16 b, s16 c, s16 d, s16 e, s16 f, s16
 extern "C" void* memset(void* dst, int c, unsigned long n);
 extern "C" f32* fn_8003C34C(f32* out, u8* obj);
 extern "C" f32* fn_8003C318(f32* out) {
-    return fn_8003C34C(out, lbl_802BB0FC);
+    fn_8003C34C(out, lbl_802BB0FC);
+    return out;
 }
 
 extern "C" f32* fn_8003C34C(f32* out, u8* obj) {
@@ -323,9 +324,9 @@ extern "C" f32 fn_8003C500(void) {
 }
 
 extern "C" void fn_8003C7DC(void) {
-    Color_8003C7DC color;
     f32 nearz = lbl_802FFDD0;
     u8* cam = *(u8**)(lbl_802B7CA0 + 0x16c0);
+    Color_8003C7DC color;
     f32 farz;
     int i;
     color.r = lbl_802FEFAC[0];
@@ -813,4 +814,13 @@ extern "C" void fn_80040084(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     lbl_802FEFF4[1] = (s16)(s32)d2;
     lbl_802FEFF4[2] = (s16)(s32)d3;
 }
-
+extern "C" void fn_80041190(s32 arg);
+extern void (*lbl_802FF05C)(s32);
+extern s8 lbl_802FF060;
+extern s16 lbl_802FF062;
+extern s16 lbl_802FF064;
+extern s16 lbl_802FF066;
+extern s16 lbl_802FF068;
+extern f32 lbl_802FF06C;
+extern f32 lbl_802FF070;
+extern f32 lbl_802FEF5C;
