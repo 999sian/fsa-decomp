@@ -41,6 +41,9 @@ struct EC80Row {
 extern "C" extern EC80Row lbl_8050EC80[16];
 extern "C" extern u8* lbl_8053AAF8;
 extern "C" char lbl_80529DEC[];
+extern "C" u8 lbl_8050DB0C[];
+extern u8 lbl_80543880[];
+extern u8 lbl_80543888[];
 
 static inline s32 EC80Bit28(s32 idx, s32 shift) {
 	if (idx < 0 || idx > 7) return 0;
@@ -881,19 +884,23 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 	if (self) {
 		*(u8**)self = lbl_804B1288;
 		fn_8042EB14(lbl_8053AEC4);
-		u8* q = self;
-		for (s32 i = 0; i < 4; i++, q += 4) {
-			if (*(void**)(q + 0x2cc)) killEmitter((JPABaseEmitter**)(q + 0x2cc));
-			if (*(void**)(q + 0x2dc)) killEmitter((JPABaseEmitter**)(q + 0x2dc));
-			if (*(void**)(q + 0x2f8)) {
-				stopEmitter(*(void**)(q + 0x2f8));
-				*(void**)(q + 0x2f8) = 0;
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 4; i++, p += 4) {
+				if (*(void**)(p + 0x2cc)) killEmitter((JPABaseEmitter**)(p + 0x2cc));
+				if (*(void**)(p + 0x2dc)) killEmitter((JPABaseEmitter**)(p + 0x2dc));
+				if (*(void**)(p + 0x2f8)) {
+					stopEmitter(*(void**)(p + 0x2f8));
+					*(void**)(p + 0x2f8) = 0;
+				}
 			}
 		}
-		q = self;
-		for (s32 i = 0; i < 3; i++, q += 4) {
-			if (*(void**)(q + 0x2ec)) (*(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc))->forceDeleteEmitter(*(JPABaseEmitter**)(q + 0x2ec));
-			*(void**)(q + 0x2ec) = 0;
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 3; i++, p += 4) {
+				if (*(void**)(p + 0x2ec)) forceDelSlot((JPABaseEmitter**)(p + 0x2ec));
+				*(void**)(p + 0x2ec) = 0;
+			}
 		}
 		if (*(void**)(self + 0x308)) {
 			stopEmitter(*(void**)(self + 0x308));
@@ -911,59 +918,79 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 		delSlot(self + 0x10);
 		delSlot(self + 0x14);
 		delSlot(self + 0x18);
-		u8* r = self;
-		for (s32 i = 0; i < 8; i++, r += 0x14) {
-			u8* p = r;
-			for (s32 j = 0; j < 3; j++, p += 4) {
-				delSlot(p + 0x28);
+		{
+			u8* r = self;
+			for (s32 i = 0; i < 8; i++, r += 0x14) {
+				u8* p = r;
+				for (s32 j = 0; j < 3; j++, p += 4) {
+					delSlot(p + 0x28);
+				}
 			}
 		}
-		q = self;
-		for (s32 i = 0; i < 0xf; i++, q += 4) {
-			delSlot(q + 0x278);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 0xf; i++, p += 4) {
+				delSlot(p + 0x278);
+			}
 		}
 		delSlot(self + 0xc8);
 		delSlot(self + 0xcc);
 		delSlot(self + 0xd0);
-		q = self;
-		for (s32 i = 0; i < 0x12; i++, q += 4) {
-			delSlot(q + 0xd4);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 0x12; i++, p += 4) {
+				delSlot(p + 0xd4);
+			}
 		}
 		delSlot(self + 0x11c);
-		q = self;
-		for (s32 i = 0; i < 2; i++, q += 4) {
-			delSlot(q + 0x120);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 2; i++, p += 4) {
+				delSlot(p + 0x120);
+			}
 		}
-		q = self;
-		for (s32 i = 0; i < 0x20; i++, q += 4) {
-			delSlot(q + 0x128);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 0x20; i++, p += 4) {
+				delSlot(p + 0x128);
+			}
 		}
-		q = self;
-		for (s32 i = 0; i < 0x18; i++, q += 4) {
-			delSlot(q + 0x1a8);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 0x18; i++, p += 4) {
+				delSlot(p + 0x1a8);
+			}
 		}
-		q = self;
-		for (s32 i = 0; i < 8; i++, q += 4) {
-			delSlot(q + 0x208);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 8; i++, p += 4) {
+				delSlot(p + 0x208);
+			}
 		}
-		r = self;
-		for (s32 i = 0; i < 2; i++, r += 8) {
-			u8* p = r;
-			for (s32 j = 0; j < 2; j++, p += 4) {
-				delSlot(p + 0x228);
+		{
+			u8* r = self;
+			for (s32 i = 0; i < 2; i++, r += 8) {
+				u8* p = r;
+				for (s32 j = 0; j < 2; j++, p += 4) {
+					delSlot(p + 0x228);
+				}
 			}
 		}
 		delSlot(self + 0x238);
 		delSlot(self + 0x23c);
-		q = self;
-		for (s32 i = 0; i < 0xc; i++, q += 4) {
-			delSlot(q + 0x240);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 0xc; i++, p += 4) {
+				delSlot(p + 0x240);
+			}
 		}
 		delSlot(self + 0x270);
 		delSlot(self + 0x274);
-		q = self;
-		for (s32 i = 0; i < 4; i++, q += 4) {
-			delSlot2(q + 0x2b8);
+		{
+			u8* p = self;
+			for (s32 i = 0; i < 4; i++, p += 4) {
+				delSlot2(p + 0x2b8);
+			}
 		}
 		delSlot2(self + 0x2c8);
 		lbl_8053ADF8 = 0;
