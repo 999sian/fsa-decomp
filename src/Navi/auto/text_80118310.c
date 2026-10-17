@@ -14,7 +14,20 @@ struct VObj_8011A74C {
     virtual void v6(void);
     virtual u32 v7(void);
     virtual u32 v8(void);
+    virtual void v9(void* a, void* c);
+    virtual void v10(void);
+    virtual void v11(void);
+    virtual void v12(void);
+    virtual void v13(void);
+    virtual void v14(void);
+    virtual void v15(s32 a, void* b);
 };
+extern "C" void fn_8011C3AC(void* param_1, s32 a, s32 b, s32 c);
+extern "C" void fn_8011BF04(void* a, void* b);
+extern u8 lbl_802C5FC8[];
+extern u8 lbl_802C5FF8[];
+extern s32 lbl_802FF2E0;
+extern u32 lbl_802FF2E4;
 extern "C" s32 fn_8011A7C8(void);
 extern "C" void* fn_8015A90C(u32);
 extern "C" void fn_8011AC74(void*, s32, s32, u16, u16);
@@ -646,5 +659,16 @@ extern "C" void fn_8011C3AC(void* param_1, s32 a, s32 b, s32 c) {
     p[9] = a;
     p[10] = b;
     p[11] = c;
+}
+
+extern "C" void fn_8011C454(u8* p, s32 idx, u32 n) {
+    if (idx >= 0 && n >= *(u32*)(p + 0x1c)) {
+        *(u8*)(p + 0x11) = 1;
+        *(u8*)(p + idx + 0x48) = 1;
+        void (*cb)(s32, u8*, u32) = *(void (**)(s32, u8*, u32))(p + 0x4c);
+        if (cb != 0) {
+            cb(idx, p, *(u32*)(p + 0x50));
+        }
+    }
 }
 
