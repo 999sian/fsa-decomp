@@ -51,6 +51,10 @@ extern const f32 lbl_8053E480;
 extern const f32 lbl_8053E484;
 extern const f32 lbl_8053E488;
 extern void* lbl_8053AAF8;
+extern const f32 lbl_8053E468;
+extern void* lbl_8053AB10;
+extern "C" void fn_802F86CC(void* this_, Vec* pos, s32 a, s32 id, f32 x, f32 y, DrawRec* rec);
+struct SykyObjVT { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual s32 v6(s32 kind, const char* name); };
 
 /* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
 static inline f32 sykyRand01() {
