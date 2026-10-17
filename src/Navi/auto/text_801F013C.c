@@ -4,3 +4,8 @@
 extern "C" void fn_801F013C(void)
 {
 }
+
+extern "C" void fn_801F0140(void)
+{
+}
+
