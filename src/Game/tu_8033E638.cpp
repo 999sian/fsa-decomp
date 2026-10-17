@@ -1,5 +1,11 @@
 #include "Game/Actor.h"
 
+extern "C" const float lbl_80542210;
+extern "C" const float lbl_8054221C;
+extern "C" const float lbl_80542224;
+extern "C" const float lbl_8054222C;
+extern "C" const float lbl_80542238;
+
 
 extern "C" char lbl_804AC330[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
