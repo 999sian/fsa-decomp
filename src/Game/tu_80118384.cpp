@@ -1,6 +1,8 @@
 #include "types.h"
 
 extern "C" void* fn_80119E5C(u8* self, s16 size);
+extern "C" void fn_801F856C(void);
+extern "C" void fn_801F6884(void);
 extern "C" void __register_global_object(void* obj, void (*dtor)(void*), void* handle);
 
 extern "C" void* __nw__FUl(u32 size);
@@ -133,6 +135,53 @@ extern "C" u8** fn_8011871C(u8* self, u8** param_2, u32 param_3)
     return it;
 }
 
+extern "C" void fn_80118798(u8* self, u8* param_2)
+{
+    s32 key = *(s32*)(param_2 + 0x198);
+    volatile s32 b = key;
+    volatile s32 a = key;
+    u8** it;
+    u8** end;
+    u8** src;
+    u8** dst;
+    u32 count;
+    u32 n;
+
+    end = *(u8***)(self + 0x14);
+    for (it = *(u8***)(self + 0x10); it != end && key != *(s32*)(*it + 0x198); it++) {
+    }
+    if (it == end) {
+        return;
+    }
+    dst = it;
+    src = it + 1;
+    count = ((u32)end + 3 - (u32)src) >> 2;
+    if (src < end) {
+        if ((n = count >> 3) != 0) {
+            do {
+                dst[0] = src[0];
+                dst[1] = src[1];
+                dst[2] = src[2];
+                dst[3] = src[3];
+                dst[4] = src[4];
+                dst[5] = src[5];
+                dst[6] = src[6];
+                dst[7] = src[7];
+                src += 8;
+                dst += 8;
+            } while (--n != 0);
+        }
+        n = count & 7;
+        while (n != 0) {
+            *dst++ = *src++;
+            n--;
+        }
+    }
+    for (it = dst; it != *(u8***)(self + 0x14); it++) {
+    }
+    *(u8***)(self + 0x14) = dst;
+}
+
 extern "C" void fn_8011888C(u8* self, u32 val)
 {
     u32 local = val;
@@ -170,6 +219,63 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
             }
         }
     }
+}
+
+extern "C" void fn_801190E4(u8* self)
+{
+    void __dl__FPv(void* p);
+    u8** volatile b;
+    u8* volatile a;
+    u8** begin;
+    u8** end;
+    u8** src;
+    u8** dst;
+    u8** it;
+    u8** buf;
+    u32 count;
+    u32 n;
+
+    if (*(u32*)(self + 0x18) >= 0x14) {
+        return;
+    }
+    if ((buf = (u8**)__nw__FUl(0x50)) == 0) {
+        return;
+    }
+    end = *(u8***)(self + 0x14);
+    src = *(u8***)(self + 0x10);
+    a = self + 0xc;
+    dst = buf;
+    count = ((u32)end + 3 - (u32)src) >> 2;
+    b = buf;
+    if (src < end) {
+        if ((n = count >> 3) != 0) {
+            do {
+                dst[0] = src[0];
+                dst[1] = src[1];
+                dst[2] = src[2];
+                dst[3] = src[3];
+                dst[4] = src[4];
+                dst[5] = src[5];
+                dst[6] = src[6];
+                dst[7] = src[7];
+                src += 8;
+                dst += 8;
+            } while (--n != 0);
+        }
+        n = count & 7;
+        while (n != 0) {
+            *dst++ = *src++;
+            n--;
+        }
+    }
+    begin = *(u8***)(self + 0x10);
+    b = begin;
+    for (it = begin; it != *(u8***)(self + 0x14); it++) {
+    }
+    *(u8***)(self + 0x14) = buf + (((int)*(u8***)(self + 0x14) - (int)*(u8***)(self + 0x10)) / 4);
+    *(u8***)(self + 0x10) = buf;
+    *(u32*)(self + 0x18) = 0x14;
+    __dl__FPv(begin);
 }
 
 extern "C" void* fn_8011921C(void)
@@ -214,6 +320,42 @@ extern "C" void fn_80119468(u32 a, u32 b, s32 c)
         break;
     }
     fn_80119998(a, v, 0, c, 0, 2, 0, b);
+}
+
+extern "C" void fn_8013B490(u32 a);
+extern u32 lbl_8053AB10;
+extern const f32 lbl_8053C798;
+extern u8* sManager__8JUTVideo;
+extern "C" void fn_801194C4(u8* self) {
+    if (self[0] != 0 && *(s32*)(self + 0x24) != 2 && lbl_8053C798 != *(f32*)(self + 0x14)) {
+        fn_8013B490(lbl_8053AB10);
+        switch (*(s32*)(self + 0x24)) {
+        case 1:
+            {
+                s32 lo[2];
+                s32 hi[2];
+                lo[1] = 0;
+                hi[1] = -1;
+                lo[0] = 0;
+                hi[0] = -1;
+                ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x2c))[76])(*(void**)(self + 0x2c), &hi[1], &lo[1]);
+            }
+            break;
+        default:
+            {
+                s32 lo[2];
+                s32 hi[2];
+                lo[1] = 0;
+                hi[1] = 0xff;
+                lo[0] = 0;
+                hi[0] = 0xff;
+                ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x2c))[76])(*(void**)(self + 0x2c), &hi[1], &lo[1]);
+            }
+            break;
+        }
+        ((void (*)(void*, s32))(*(void***)*(void**)(self + 0x2c))[9])(*(void**)(self + 0x2c), (s32)*(f32*)(self + 0x14));
+        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)*(void**)(self + 0x2c))[59])(*(void**)(self + 0x2c), 0, 0, 0, lbl_8053C798, lbl_8053C798, (f32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 4), (f32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6));
+    }
 }
 
 extern "C" void fn_80119958(u8* self)
