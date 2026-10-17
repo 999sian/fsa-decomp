@@ -143,11 +143,12 @@ struct Der_801ABFC0 : Mid_801ABFC0 {
     s32 x1c;
 };
 inline void initBase_801ABFC0(Base_801ABFC0* b) {
+    f32 f = lbl_80301D6C;
     b->vt = lbl_8027F214;
     b->b4 = 0;
     b->b5 = 0;
     b->h6 = 0;
-    b->f8 = lbl_80301D6C;
+    b->f8 = f;
 }
 inline void initMid_801ABFC0(Mid_801ABFC0* m) {
     initBase_801ABFC0(m);
@@ -338,8 +339,9 @@ extern "C" void OSRestoreInterrupts(s32 level);
 extern "C" void fn_801DFFF0(void* a, u32 b, u32 c);
 extern "C" void fn_801A8440(u8* self) {
     u8 buf[16];
-    u8* p;
     u16 n;
+    u8* p;
+    u8* ent;
     u16 i;
     extern s8 lbl_802FF6FC;
     extern s32 lbl_802FF6F8;
@@ -354,9 +356,10 @@ extern "C" void fn_801A8440(u8* self) {
     n = *(u16*)(self + 0x5c);
     p = buf;
     for (i = 0; i < n; i++) {
-        u8* ent = ((u8**)*(u32*)(self + 0x60))[i];
-        u32* s = *(u32**)(ent + 0x48);
+        u32* s;
         void* obj;
+        ent = ((u8**)*(u32*)(self + 0x60))[i];
+        s = *(u32**)(ent + 0x48);
         fn_801DFFF0(buf, s[0], s[2]);
         lbl_802FFA80 = (u32)p;
         obj = *(void**)(ent + 0x2c);
@@ -713,24 +716,11 @@ extern "C" f32 fn_801ABF3C(Anim_801ABF3C* self, u16 idx)
     }
 }
 
-extern "C" void fn_801ABFC0(u8* p) {
-    void* vt0 = lbl_8027F214;
-    void* vt1 = lbl_8029B430;
-    void* vt2 = lbl_8029B41C;
-    f32 f = lbl_80301D6C;
-    *(void**)p = vt0;
-    p[4] = 0;
-    p[5] = 0;
-    *(s16*)(p + 6) = 0;
-    *(f32*)(p + 8) = f;
-    *(void**)p = vt1;
-    *(s16*)(p + 0xc) = 0;
-    *(s16*)(p + 0xe) = 0;
-    *(s32*)(p + 0x10) = 0;
-    *(s32*)(p + 0x14) = 0;
-    *(void**)p = vt2;
-    *(s32*)(p + 0x18) = 0;
-    *(s32*)(p + 0x1c) = 0;
+extern "C" void fn_801ABFC0(Der_801ABFC0* p) {
+    initMid_801ABFC0(p);
+    p->vt = lbl_8029B41C;
+    p->x18 = 0;
+    p->x1c = 0;
 }
 
 extern "C" int fn_801194B4(void*, unsigned short);
@@ -1781,8 +1771,8 @@ extern "C" void fn_801B2D70(Blk_801A7D54* dst, u8* self, s32 idx, s32 j) {
     u8* e;
     u32* d;
     u32* s;
-    u32 a;
     u32 b;
+    u32 a;
     fn_801A7D54(&tmp, &lbl_802025F8);
     e = *(u8**)(self + 0xc) + idx * 0x138;
     if (e[0] == 1) {
@@ -1794,14 +1784,14 @@ extern "C" void fn_801B2D70(Blk_801A7D54* dst, u8* self, s32 idx, s32 j) {
         b = s[1];
         d[0] = a;
         d[1] = b;
+        b = s[4];
+        a = s[5];
+        d[4] = b;
+        d[5] = a;
         a = s[2];
         b = s[3];
         d[2] = a;
         d[3] = b;
-        a = s[4];
-        b = s[5];
-        d[4] = a;
-        d[5] = b;
         d[6] = s[6];
     }
 }
@@ -3018,11 +3008,14 @@ extern "C" void fn_801B94B4(void* unused, void* dest, void* src) {
     void fn_801193D8(void*, void*);
     extern f32 lbl_80301DF0;
     f32 f = lbl_80301DF0;
-    ((u8*)dest)[4] = ((u8*)src)[8];
+    u8 b = *((u8*)src + 8);
+    u32 w = *(u32*)((u8*)src + 0x18);
+    u16 h = *(u16*)((u8*)src + 0xe);
     *(s16*)((u8*)dest + 6) = *(s16*)((u8*)src + 0xc);
-    *(u16*)((u8*)dest + 0x14) = *(u16*)((u8*)src + 0xe);
+    ((u8*)dest)[4] = b;
     *(f32*)((u8*)dest + 8) = f;
-    *(void**)((u8*)dest + 0x3c) = fn_8018C248(src, *(u32*)((u8*)src + 0x18));
+    *(u16*)((u8*)dest + 0x14) = h;
+    *(void**)((u8*)dest + 0x3c) = fn_8018C248(src, w);
     *(void**)((u8*)dest + 0x2c) = fn_80174B40(src, *(u32*)((u8*)src + 0x24));
     *(void**)((u8*)dest + 0x30) = fn_80174B40(src, *(u32*)((u8*)src + 0x28));
     *(void**)((u8*)dest + 0x34) = fn_80174B40(src, *(u32*)((u8*)src + 0x2c));
@@ -3244,3 +3237,22 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
+
+extern "C" u8 lbl_802F0BC0[];
+extern "C" void fn_801BA428(s16 arg0, s16 arg1, s16 arg2, f32* out) {
+    f32 xa, ya, xb, yb, xc, yc;
+    u32 a = ((u16)(arg0 / 2) >> 5) * 8;
+    u32 b = ((u16)(arg1 / 2) >> 5) * 8;
+    u32 c = ((arg2 / 2) >> 2) & 0x3FF8;
+    xa = *(f32*)(lbl_802F0BC0 + a);
+    ya = *(f32*)(lbl_802F0BC0 + a + 4);
+    xb = *(f32*)(lbl_802F0BC0 + b);
+    yb = *(f32*)(lbl_802F0BC0 + b + 4);
+    xc = *(f32*)(lbl_802F0BC0 + c);
+    yc = *(f32*)(lbl_802F0BC0 + c + 4);
+    out[3] = ya * (yb * yc) + xa * (xb * xc);
+    out[0] = xa * (yb * yc) - ya * (xb * xc);
+    out[1] = yc * (ya * xb) + xc * (xa * yb);
+    out[2] = xc * (ya * yb) - yc * (xa * xb);
+}
+
