@@ -71,7 +71,7 @@ static inline void Rusa_CalcPush(char* p, const JGeometry::TVec3f* v, JGeometry:
                 out->normalize();
                                                     f32 f = d - lbl_8053FB04;
                   f32 m = *(f32*)(p + 0x3a4);
-                  out->scale(__fsel(f - m, m, f));
+                  out->scale((f32)__fsel(f - m, m, f));
             }
         }
     }
