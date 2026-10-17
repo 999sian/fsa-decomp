@@ -7,6 +7,11 @@ struct VObj_8013B620 {
     virtual void v3(void* a);
 };
 
+struct VObj_8013B7B8 {
+    virtual void v0();
+    virtual void v1(void* a);
+};
+
 struct Iter_8013A388 {
     void* node;
 };
@@ -1441,7 +1446,7 @@ extern "C" void* fn_8013AFB8(void* param_1, s16 param_2) {
 
 extern "C" char lbl_80301890[4];
 typedef BOOL (*fn_8013B018_cb)(void*, u8**, u32);
-extern "C" BOOL fn_8013B018(void* obj, u8** param_2, u32* param_3, u32 param_4) {
+extern "C" BOOL fn_8013B018(Parser_8013B018* obj, u8** param_2, u32* param_3, u32 param_4) {
     u8* p = *param_2;
     *param_2 = p + 0x20;
     *param_3 = *(u32*)(p + 0xc);
@@ -1455,10 +1460,10 @@ extern "C" BOOL fn_8013B018(void* obj, u8** param_2, u32* param_3, u32 param_4) 
     if (ver < 1) {
         return FALSE;
     }
-    if (ver > 3) {
+    if ((u16)(ver + 0) > 3) {
         return FALSE;
     }
-    return (*(fn_8013B018_cb*)(*(u8**)obj + 0x14))(obj, &p, param_4);
+    return obj->parse(&p, param_4);
 }
 
 extern "C" void fn_8013B0E4(VObj_8013B140* self, u32** pp, u32* out, void* arg)
@@ -1560,6 +1565,85 @@ extern "C" void* fn_8013B620(void* param_1, void* param_2, void* param_3) {
     return r30;
 }
 
+extern "C" void* fn_8013D098(void* param_1, void* param_2, void* param_3);
+extern "C" void* fn_80134440(void* param_1, void* param_2, void* param_3);
+extern "C" void* fn_8013B6EC(void* param_1, void* param_2, void* param_3) {
+    void* obj;
+    void* result;
+    obj = fn_8015A90C(0x120);
+    if (obj != 0) {
+        obj = fn_8013D098(obj, param_3, param_2);
+    }
+    if (obj == 0) {
+        return 0;
+    }
+    result = fn_8015A90C(0x38);
+    if (result != 0) {
+        result = fn_80134440(result, param_1, obj);
+    }
+    if (result != 0) {
+        VObj_8013B6EC* v = *(VObj_8013B6EC**)((u8*)result + 0x34);
+        if (v != 0) {
+            v->v3(result);
+        }
+    }
+    return result;
+}
+
+extern "C" void* fn_8013CDFC(void* p, void* a, void* b);
+extern "C" void* fn_801341A8(void* p, void* a, void* b);
+extern "C" void* fn_8013B7B8(void* param_1, void* param_2, void* param_3) {
+    void* obj;
+    void* result;
+    obj = fn_8015A90C(0x64);
+    if (obj != 0) {
+        obj = fn_8013CDFC(obj, param_3, param_2);
+    }
+    if (obj == 0) {
+        return 0;
+    }
+    result = fn_8015A90C(0x38);
+    if (result != 0) {
+        result = fn_801341A8(result, param_1, obj);
+    }
+    if (result == 0) {
+        result = 0;
+    } else {
+        VObj_8013B620* v = *(VObj_8013B620**)((u8*)result + 0x34);
+        if (v != 0) {
+            v->v3(result);
+        }
+    }
+    return result;
+}
+
+extern "C" void* fn_8013E3A4(void* self, void* a, void* b);
+extern "C" void* fn_80134B98(void* p, void* a, void* b);
+extern "C" void* fn_8013B884(void* p1, void* p2, void* p3) {
+    void* r31;
+    void* r30;
+    void* vt;
+    r31 = fn_8015A90C(0x11c);
+    if (r31 != 0) {
+        r31 = fn_8013E3A4(r31, p3, p2);
+    }
+    if (r31 == 0) {
+        return 0;
+    }
+    r30 = fn_8015A90C(0x38);
+    if (r30 != 0) {
+        r30 = fn_80134B98(r30, p1, r31);
+    }
+    if (r30 == 0) {
+        return 0;
+    }
+    vt = *(void**)((u8*)r30 + 0x34);
+    if (vt != 0) {
+        ((VObj_8013B620*)vt)->v3(r30);
+    }
+    return r30;
+}
+
 extern "C" s32 fn_8013BA1C(void* a, u8* b, VObj_8013BA1C* c, u32 d) {
     u8 out[48];
     u8 tmp[48];
@@ -1641,6 +1725,33 @@ extern "C" u32 fn_8013BCDC(NaviTracker* param_1, u32 param_2) {
     }
     return out;
 }
+
+extern void* lbl_8029260C[];
+extern void* lbl_8029259C[];
+extern "C" void fn_8013CD54(void);
+extern "C" void fn_801E0DB8(void* p, void* f, u32 a, u32 b, u32 c);
+extern "C" void* fn_8013BDE8(void* param_1, void* param_2, void* param_3) {
+    u32* self = (u32*)param_1;
+    void* p = param_1;
+    *(void**)p = lbl_8029260C;
+    self[1] = (u32)((u8*)p + 0xc);
+    self[2] = 0xe;
+    fn_801E0DB8((u8*)p + 0xc, fn_8013CD54, 0, 0x14, 0xe);
+    *(void**)p = lbl_8029259C;
+    *(void**)p = lbl_8029320C;
+    self[0x49] = (u32)param_2;
+    self[0x4a] = (u32)param_3;
+    self[0x4b] = 0;
+    self[0x4c] = 0;
+    self[0x4d] = 0;
+    self[0x4e] = 0;
+    self[0x4f] = -1;
+    *(u8*)(self + 0x50) = 0;
+    self[0x51] = 0;
+    self[0x52] = -1;
+    return param_1;
+}
+
 #pragma dont_inline reset
 
 extern void* lbl_8029320C[];
