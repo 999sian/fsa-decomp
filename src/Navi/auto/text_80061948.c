@@ -3,6 +3,7 @@
 extern u8 lbl_8029F8D8[];
 extern u8 lbl_8029B5D0[];
 extern u8 lbl_8027F308[];
+extern "C" void fn_801AE124(void* p);
 extern void* lbl_801F9650[];
 extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
 extern "C" void fn_8000C950(void* m, s32 a, s32 b, s32 c);
