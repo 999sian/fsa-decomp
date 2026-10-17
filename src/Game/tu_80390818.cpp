@@ -79,7 +79,8 @@ struct Tu80390818 {
     u8 m25;
     u16 m26;
     u16 m28;
-    u8 pad2A[0x30 - 0x2A];
+    u8 pad2A[0x2C - 0x2A];
+    s32 m2C;
     s32 m30;
     s32 m34;
     s32 m38;
