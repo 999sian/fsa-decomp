@@ -515,6 +515,12 @@ extern "C" BOOL fn_801694D8(void)
     return TRUE;
 }
 
+extern "C" void fn_801DF378(unsigned char*, int, unsigned char);
+extern "C" void fn_801694E0(unsigned char *param_1, int param_2)
+{
+	fn_801DF378(param_1 + 0x24, param_2 * 3 + 0x1e, *param_1);
+}
+
 extern "C" void fn_801DE01C(u8 a, u8 b, u8 c);
 extern "C" void fn_8016991C(u8* p, s32 x)
 {
