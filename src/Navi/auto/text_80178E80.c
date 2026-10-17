@@ -201,6 +201,14 @@ struct VObj_80186B6C {
     virtual void v4(u32 a, u8 b);
 };
 
+struct VObj_80188678 {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual u8 v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(void* n);
+};
 struct VObj_801878E4 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
@@ -1221,17 +1229,16 @@ extern "C" u8 fn_80180578(u8* self, u8 skip)
     u8 i;
     u8 j;
     u8 mask;
+    u8 ret;
+    s32 t;
+    u8 v;
     u8* e;
     u8* p;
-    u8 v;
-    s32 t;
-    u32 idx;
 
     mask = 0;
     for (i = 0; i < *(u8*)(self + 0x110); i++) {
         if (i != skip) {
-            idx = (u32)(u8)(i << 2);
-            e = *(u8**)(self + (idx + 0x100));
+            e = *(u8**)(self + (((i * 4) & 0x3FC) + 0x100));
             if (e != NULL) {
                 p = *(u8**)(e + 0x20);
                 if (p != NULL && p[8] != 0) {
@@ -1248,12 +1255,14 @@ extern "C" u8 fn_80180578(u8* self, u8 skip)
             }
         }
     }
+    ret = 0;
     for (j = 0; j < 4; j++) {
         if (!(mask & (1 << j))) {
-            return j;
+            ret = j;
+            break;
         }
     }
-    return 0;
+    return ret;
 }
 
 extern "C" u8 fn_80180648(s32 a, void* b, u32 c) {
@@ -1550,8 +1559,8 @@ extern "C" void fn_801820F4(void) {
 extern "C" void fn_80182114(void) {}
 
 extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
-    u8 buf[56];
     f32 pos[4];
+    u8 buf[56];
     pos[0] = *(f32*)(self + 0x20);
     pos[1] = *(f32*)(self + 0x24);
     pos[2] = *(f32*)(self + 0x28);
@@ -1559,8 +1568,8 @@ extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     pos[0] += f1;
     pos[1] += f2;
     pos[2] += f1;
-    pos[3] += f2;
     fn_801C5DA8(param_2, self + 0x80, buf);
+    pos[3] += f2;
     fn_801DF2A4(buf, 0);
     fn_80182764(self, pos, self + 0x114);
     fn_80177CA8(self, self + 0x114);
@@ -2817,15 +2826,7 @@ extern "C" u32 fn_8018DE28(NaviAnm_8018DE28* self, u16 idx) {
     if (self->entries == 0) {
         return 0;
     }
-    f32 frame = self->frame;
-    u16 count = self->table[idx].count;
-    if (frame < 0.0f) {
-        v = self->values[self->table[idx].offset];
-    } else if (frame >= count) {
-        v = self->values[(u32)(count + self->table[idx].offset) - 1];
-    } else {
-        v = self->values[(s32)frame + self->table[idx].offset];
-    }
+    self->getIdx(idx, &v);
     return self->entries[v].value;
 }
 
