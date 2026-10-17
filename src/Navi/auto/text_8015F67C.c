@@ -142,3 +142,51 @@ extern "C" void* fn_8015FC28(u32* param_1)
     return param_1;
 }
 
+extern "C" void* fn_8015FC80(u8* p, s16 del) {
+    if (p != 0) {
+        *(void**)p = lbl_80297C10;
+        if (lbl_802FF5F0 == p) {
+            lbl_802FF5F0 = 0;
+        }
+        if (p + 0x18) {
+            fn_80166B70(p + 0x18, 0);
+        }
+        fn_8015D0B8(p, 0);
+        if (del > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
+extern "C" void fn_8015FD0C(u8* p) {
+    s32 n = *(s32*)(p + 0x34);
+    if (n != 0) {
+        n--;
+        *(s32*)(p + 0x34) = n;
+        if (n == 0 && p != 0) {
+            ((void (*)(void*, s32))(*(void***)p)[2])(p, 1);
+        }
+    }
+}
+
+extern "C" u32 fn_8015FD5C(u32 param_1) {
+    u32 local = param_1;
+    void* obj = fn_8015FE40(&local);
+    if (obj == 0) {
+        return 0;
+    }
+    return ((u32 (*)(void*, u32))(*(void***)obj)[5])(obj, local);
+}
+
+extern "C" s32 fn_8015FDA8(u32 param_1, void* param_2) {
+    s32 ret = 0;
+    void** node;
+    if (param_2 != 0) {
+        return ((s32 (*)(void*, s32, u32))(*(void***)param_2)[6])(param_2, 0, param_1);
+    }
+    for (node = *(void***)lbl_802FF540; node != 0; node = (void**)node[3]) {
+    }
+    return ret;
+}
+
