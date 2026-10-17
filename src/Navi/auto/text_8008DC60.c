@@ -965,6 +965,17 @@ extern "C" void fn_8009E960(void) {
 extern "C" void fn_8009EAD4(void) {
 }
 
+extern "C" void fn_8009EB24(u8* p) {
+    if ((lbl_802FEDD8 & 4) == 0) {
+        return;
+    }
+    p[0x7fe] = 0;
+    s32 idx = *(s32*)((u8*)lbl_802BB0FC + 0x3f0);
+    *(u16*)((u8*)lbl_802BB0FC + ((idx % 10) % 10) * 12 + 0x2dc) |= 1;
+    p[0x7ff] = 0;
+    p[0x800] = 1;
+}
+
 extern NaviStateFunc_8009E6F0 lbl_8028661C[];
 extern "C" void fn_8009EBA0(NaviState_8009E6F0* p) {
     (p->*lbl_8028661C[((u8*)p)[0x800]])();
