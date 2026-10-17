@@ -17,6 +17,21 @@ extern "C" u32 fn_801CD664(s32 id);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* reg, s32 id);
 extern "C" s32 fn_801F8544(void* reg, u32 id, s32 room, void* pos, s32 kind);
+extern "C" s16 fn_801F6874(void* a);
+extern "C" void* fn_80204638(void);
+extern "C" u8 fn_802D7F40(void* record, s32 roomIdx);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802072E4(void* this_);
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" void fn_801D2608(void* base, void* table, s32 n);
+extern "C" void fn_801D22DC(void* obj, s32 a, s32 b, s32 c);
+extern "C" void fn_801D1D60(void* base);
+extern "C" void fn_80204A20(void* base, void* this_);
+extern "C" void fn_80204834(void);
+extern u8 lbl_804A59B0[];
+extern f32 lbl_8053F89C;
+extern f32 lbl_8053F8A0;
+extern f32 lbl_8053F8A4;
 extern "C" f32 lbl_8053F870;
 extern "C" f32 lbl_8053F878;
 extern "C" f32 lbl_8053F890;
@@ -150,8 +165,9 @@ extern "C" void fn_80204DAC(void* this_) {
             *(void**)(p + 0x98) = fn_80230CFC(*(void**)(p + 0xc8));
             *(s16*)(p + 0x33c) = fn_801F6874(*(void**)(p + 0x98));
             TzokVec3* src = (TzokVec3*)fn_8023E7B0(*(void**)(p + 0xc8));
+            f32 x = src->x;
             f32 zero = lbl_8053F860;
-            *(f32*)(p + 0xc) = src->x;
+            *(f32*)(p + 0xc) = x;
             *(f32*)(p + 0x10) = src->y;
             *(f32*)(p + 0x14) = src->z;
             *(f32*)(p + 0x3c) = zero;
@@ -524,13 +540,15 @@ static inline TzokRect* tzokRoomRect(s32 room) {
 
 extern "C" BOOL fn_8020609C(TzokActor* self) {
     s32 room;
-    BOOL r = FALSE;
+    BOOL r;
+    r = FALSE;
     if (self->m94 == 1 && !fn_801CD2F8(self->mRoom)) {
         room = self->mRoom;
         u8* cfg = (u8*)fn_802D6A9C();
         f32* rect = (f32*)(room < 8 ? cfg + 0xcc : cfg + 0xdc);
+        f32 x = self->mX;
         bool inside = false;
-        if (self->mX >= rect[0] && self->mY >= rect[1] && self->mX < rect[2] && self->mY < rect[3]) {
+        if (x >= rect[0] && self->mY >= rect[1] && x < rect[2] && self->mY < rect[3]) {
             inside = true;
         }
         if (!inside) {
