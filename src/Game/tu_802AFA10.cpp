@@ -36,6 +36,68 @@ extern "C" Actor* fn_802AFA10(Actor* p, s16 n) {
 	return p;
 }
 
+extern "C" void fn_802AFA70(char* this_) {
+    Init48 s;
+    s32 i;
+    s.w18 = -1;
+    s.w1c = -1;
+    for (i = 0; (u8)i < 0x10; i += 8) {
+        s.idx[(u8)i] = i;
+        s.idx[(u8)(i + 1)] = i + 1;
+        s.idx[(u8)(i + 2)] = i + 2;
+        s.idx[(u8)(i + 3)] = i + 3;
+        s.idx[(u8)(i + 4)] = i + 4;
+        s.idx[(u8)(i + 5)] = i + 5;
+        s.idx[(u8)(i + 6)] = i + 6;
+        s.idx[(u8)(i + 7)] = i + 7;
+    }
+    s.w18 = -1;
+    s.w1c = 0;
+    s.w20 = 0;
+    s.b24[0] = 0;
+    s.b24[1] = 0;
+    s.b24[2] = 0;
+    s.b24[3] = 1;
+    s.b24[4] = 1;
+    s.b24[5] = 0;
+    s.b24[6] = 0;
+    s.b24[7] = 0;
+    s.b24[8] = 0;
+    s.b24[9] = 0;
+    s.b24[10] = 1;
+    s.w30 = 3;
+    s.b34[0] = 1;
+    s.b34[1] = 0;
+    s.b34[2] = 0;
+    s.w38 = -1;
+    s.w3c = 0;
+    s.w40 = 2;
+    s.b24[1] = -3;
+    switch (*(s32*)(this_ + 0x244)) {
+    case 0:
+        *((u8*)&s.w18 + 3) = 0x60;
+        s32 iVar1 = *(s32*)(this_ + 0x240) + 0x10;
+        if (*(s32*)(this_ + 0x4) < 8) {
+            u32 uVar2 = ((SlotVirt6*)*(char**)(lbl_8053AAF8 + 0xa4))->v06(0x534f4220, lbl_8046CA68);
+            fn_802F86CC(*(u32*)(lbl_8053AB10 + 0x20), this_ + 0xc, uVar2, iVar1, lbl_80540970, lbl_80540970, &s);
+        }
+        fn_80307AC8(*(s32*)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, *(s32*)(this_ + 0x240) + 0x10, 0, 0, -1);
+        break;
+    case 1:
+    case 3:
+        if (*(s32*)(this_ + 0x250) != 0) {
+            *((u8*)&s.w18 + 3) = *(s32*)(this_ + 0x254);
+            s32 iVar1 = *(s32*)(this_ + 0x240) + 0x10;
+            if (*(s32*)(this_ + 0x4) < 8) {
+                u32 uVar2 = ((SlotVirt6*)*(char**)(lbl_8053AAF8 + 0xa4))->v06(0x534f4220, lbl_8046CA68);
+                fn_802F86CC(*(u32*)(lbl_8053AB10 + 0x20), this_ + 0xc, uVar2, iVar1, lbl_80540970, lbl_80540970, &s);
+            }
+            fn_80307AC8(*(s32*)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, *(s32*)(this_ + 0x240) + 0x10, 0, 0, -1);
+        }
+        break;
+    }
+}
+
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802B0194(u8* this_) {
 	s32 id;
