@@ -6,6 +6,7 @@
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AB6D8[];
+extern const f32 lbl_80541D88;
 extern const f32 lbl_80541D90;
 extern const f32 lbl_80541D98;
 extern const f32 lbl_80541D9C;
