@@ -1553,8 +1553,9 @@ extern "C" void fn_8012B8B4(u8* p, void* arg) {
 
 extern "C" void fn_8012BDD0(u8* p, u8* q) {
     f32 r = *(f32*)(p + 0x1fc);
+    u8* b;
     u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
-    u8* b = *(u8**)a;
+    b = *(u8**)a;
     if (r < *(f32*)(b + 0xc)) {
         f32 t = r * *(f32*)(a + 0xc);
         *(f32*)(q + 0x60) = *(f32*)(q + 0x68) * (t + *(f32*)(b + 0x14));
