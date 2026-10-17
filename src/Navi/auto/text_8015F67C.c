@@ -24,6 +24,8 @@ extern "C" void fn_8015D0B8(void*, int);
 extern char lbl_80297C10[];
 extern void* lbl_802FF5F0;
 extern "C" void fn_8015FBC0(u8* param_1);
+extern "C" void fn_801BDDBC(void*, void*, int);
+extern "C" void fn_801BDE1C(void*, void*, int);
 extern u32 lbl_802FF5E4;
 extern u32 lbl_802FF5E8;
 extern u32 lbl_802FF5EC;
