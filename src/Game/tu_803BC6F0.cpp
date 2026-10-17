@@ -1,5 +1,18 @@
 #include "types.h"
 
+struct VtSlot9 {
+    void* v0;
+    void* v1;
+    void* v2;
+    void* v3;
+    void* v4;
+    void* v5;
+    void* v6;
+    void* v7;
+    void* v8;
+    void (*v9)(void* a, s32 b);
+};
+
 extern "C" void* lbl_8053AD30;
 extern "C" void* lbl_8053AF80;
 extern "C" u32 fn_80309C4C(void* a, u32 b, int c);
