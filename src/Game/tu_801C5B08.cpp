@@ -32,7 +32,7 @@ extern "C" u8 fn_801CC9F8(void* p, s32 idx);
 extern "C" u8* fn_802D6A9C(void);
 extern "C" int fn_801C5340(void);
 extern "C" void fn_801C3B7C(void* p, s32 state);
-extern "C" s32 fn_801D05F8(void* p, void* pos);
+extern "C" s32 fn_801D05F8(void* p, void* pos, f32 radius);
 extern "C" void fn_801C6260(void* p);
 extern "C" u8 fn_801D0DD4(void* p);
 extern "C" s32 fn_801CD664(s32 n);
