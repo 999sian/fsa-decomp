@@ -53,8 +53,8 @@ extern "C" void fn_801DBCAC(s32, s32, s32, s32);
 extern "C" void fn_801DC5E8(void*, u8);
 extern "C" void fn_801DB4F8(void);
 extern "C" void* fn_8011FD10(void);
-extern "C" void fn_8011FD18(void*, void*, s32, char*, char*);
-extern "C" void fn_80007AB8(void*, s32, char*);
+extern "C" void fn_8011FD18(void*, void*, s32, ...);
+extern "C" void fn_80007AB8(void*, s32, ...);
 extern "C" void fn_80089634(void* p, s32 n);
 extern "C" void fn_80058B64(s32 a);
 extern "C" void fn_80057EE0(void);
@@ -879,7 +879,8 @@ extern "C" void fn_8005C380(void) {
 }
 
 extern "C" void fn_8005C3CC(void) {
-    lbl_802FF110 = *(s32*)(lbl_802C2D30 + 0x8);
+    s32 t = *(s32*)(lbl_802C2D30 + 0x8);
+    lbl_802FF110 = t;
     lbl_802FF114 = *(s32*)(lbl_802C2D30 + 0xc);
     fn_801BFFF0(lbl_802C2D30);
     if (lbl_802FF10C != 0) {
