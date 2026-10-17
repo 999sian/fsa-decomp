@@ -985,6 +985,35 @@ extern "C" void fn_8016C1F4(u8* p, int unused, u32 idx)
     }
 }
 
+extern "C" void* lbl_80298980[];
+extern "C" void* lbl_80298B14[];
+extern "C" void* fn_8016C34C(void* self, s16 param_2) {
+    if (self != nullptr) {
+        *(void**)self = lbl_80298980;
+        if (*((u8*)self + 0x78) & 1) {
+            fn_80118BD0(*(void**)((u8*)self + 0x64), 1);
+        }
+        if (*((u8*)self + 0x78) & 2) {
+            fn_80118BD0(*(void**)((u8*)self + 0x68), 1);
+        }
+        fn_8015AB1C(*(void**)((u8*)self + 0x6c));
+        fn_8015AB1C(*(void**)((u8*)self + 0x70));
+        if (*((u8*)self + 0x78) & 0x80) {
+            VObj_8016C34C* obj = *(VObj_8016C34C**)((u8*)self + 0x74);
+            if (obj != nullptr) {
+                obj->v0(1);
+            }
+        }
+        if (self != nullptr) {
+            *(void**)self = lbl_80298B14;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(self);
+        }
+    }
+    return self;
+}
+
 #pragma use_lmw_stmw off
 extern "C" int fn_8016CEB4(u8* p, u32 idx, void* val)
 {
