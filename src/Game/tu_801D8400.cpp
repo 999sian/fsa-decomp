@@ -335,8 +335,8 @@ extern "C" void fn_801D85B0(char* p) {
         if (*(s32*)(p + 0x248) == 0xc) {
             t84PickTarget(p);
             bool left = false;
-            f32 x = *(f32*)(p + 0xc);
             f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
+            f32 x = *(f32*)(p + 0xc);
             if (x < tx || (x == tx && (*(u32*)(p + 0x230) & 0x2000))) {
                 left = true;
             }
@@ -349,8 +349,8 @@ extern "C" void fn_801D85B0(char* p) {
             t84PickTarget(p);
             bool turn = false;
             bool left = false;
-            f32 x = *(f32*)(p + 0xc);
             f32 tx = ((JGeometry::TVec2<f32>*)(p + 0x2d4))[*(u8*)(p + 0x334)].x;
+            f32 x = *(f32*)(p + 0xc);
             if (x < tx || (x == tx && (*(u32*)(p + 0x230) & 0x2000))) {
                 left = true;
             }
@@ -645,11 +645,11 @@ static inline s16 t84FaceAngle(char* p) {
 }
 
 static inline s32 t84FindPlayer(char* p) {
-    s32 found = -1;
     JGeometry::TVec3<f32> v;
     t84FrontPos(p, &v);
     s16 ang = t84FaceAngle(p);
     s32 pl = fn_801D0338(p, &v, ang);
+    s32 found = -1;
     if (pl >= 0) {
         f32 dy = fn_8023E724(pl)->y - v.y;
         f32 a = JMAAtan2Radian(fn_8023E724(pl)->x - v.x, dy);
