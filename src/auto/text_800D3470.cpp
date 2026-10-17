@@ -1420,17 +1420,17 @@ extern "C" void fn_800D8414(void* param_1) {
 }
 
 extern "C" void fn_800D84A8(u8* this_) {
-    u8* p;
     u8* base;
+    u8* p;
     u32 i;
 
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x68);
     i = 0;
     p = this_;
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x68);
-    base = __GDCurrentDL->pDisplayListData;
     for (; i < 3; i++, p += 8) {
         J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0x14));
     }
+    base = __GDCurrentDL->pDisplayListData;
     i = 0;
     p = this_;
     for (; i < 4; i++, p += 4) {
@@ -1480,8 +1480,8 @@ extern "C" void fn_800D8720(void* param_1) {
 }
 
 extern "C" void fn_800D87B4(u8* self) {
-    u32 i = 0;
     u8* p = self;
+    u32 i = 0;
     u8* start;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0x90);
     start = __GDCurrentDL->pDisplayListData;
@@ -4297,20 +4297,6 @@ extern "C" void fn_800DF0B8(u8* self, int i, const u8* c) {
     self[(i << 2) + 0xd] = c[1];
     self[(i << 2) + 0xe] = c[2];
     self[(i << 2) + 0xf] = c[3];
-}
-
-extern "C" void fn_800D95B0(u8* p)
-{
-    u8 n = p[0x34];
-    for (u32 i = 0; i < n; i++) {
-        u32 val = *(u32*)(p + 0x60) | ((i + 0x10) << 24);
-        __GDWrite(0x61);
-        __GDWrite((u8)(val >> 24));
-        __GDWrite((u8)(val >> 16));
-        __GDWrite((u8)(val >> 8));
-        __GDWrite((u8)val);
-        p += 4;
-    }
 }
 
 #endif
