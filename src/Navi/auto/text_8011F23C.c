@@ -485,6 +485,16 @@ extern "C" BOOL fn_801241A4(void* p, void* arg) {
     return 1;
 }
 
+extern "C" void fn_8012424C(void* p) {
+    u8* c = (u8*)p;
+    if (c[0x830] != 0) {
+        BOOL state = OSEnableInterrupts();
+        fn_801C7D34(c + 0x834);
+        OSRestoreInterrupts(state);
+        c[0x830] = 0;
+    }
+}
+
 extern "C" s32 fn_80124AF4(void* a, s32 idx, u8* out) {
     u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
     if (*(u32*)(e + 0x24) != 7) {
