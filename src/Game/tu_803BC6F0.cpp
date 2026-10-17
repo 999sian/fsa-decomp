@@ -875,8 +875,7 @@ extern "C" u8* fn_803CFFBC(u8* p, s16 flags) {
 
         {
             void* obj = *(void**)(lbl_80529DEC + 0x30);
-            void (*fn3)(void*) = (*(DtorVt**)obj)->v3;
-            fn3(obj);
+            ((DtorVt*)obj)->v3(obj);
         }
         lbl_8053ADB0 = 0;
         if (flags > 0) {
