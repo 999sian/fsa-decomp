@@ -6,6 +6,12 @@ struct S_8002EEEC {
     unsigned short b;
 };
 
+struct S_Slot3C {
+    unsigned char unk_0x00[0x14];
+    int state;
+    unsigned char unk_0x18[0x24];
+};
+
 extern "C" void fn_80057C38(void);
 extern "C" void fn_80058740(int, void*);
 extern "C" int fn_80058C08(void);
@@ -122,6 +128,25 @@ extern "C" void fn_8002A410(unsigned char* p);
 
 extern "C" void fn_80027D4C(unsigned char* p) {
     fn_8002A410(p);
+}
+
+extern "C" int fn_800290BC(unsigned char* p, int idx) {
+    unsigned char* e = p + idx * 0x3c + 0x384;
+    switch (*(int*)(e + 0x14)) {
+    case 1:
+    case 2:
+        if (p[0x57e] != 0) {
+            return 0;
+        }
+        break;
+    case 3:
+    case 4:
+        if (p[0x586] != 0) {
+            return 0;
+        }
+        break;
+    }
+    return 1;
 }
 
 extern "C" void fn_80029118(const char*, ...) {
@@ -355,6 +380,16 @@ extern "C" void fn_8002E3C4(char* p, int idx) {
         e[2] = 1;
         e[3] = 3;
     }
+}
+
+extern "C" void fn_8002EEEC(unsigned char a, unsigned short b) {
+    S_8002EEEC s;
+    S_8002EEEC t;
+    s.a = a;
+    s.b = b;
+    *(int*)(lbl_802BB0FC + 0x4c) |= 2;
+    t = s;
+    *(S_8002EEEC*)(lbl_802BB0FC + 0x7c) = t;
 }
 
 extern "C" int fn_8002E0AC(void* obj, int a, int b, int c, int d, int e, int f, float g);
