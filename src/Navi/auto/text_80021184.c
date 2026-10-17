@@ -20,6 +20,17 @@ extern "C" s32 fn_800218C4(void) {
     return count;
 }
 
+extern "C" s32 fn_8002192C(void) {
+    s32 count = 0;
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (*(u32*)(lbl_802B7CA0 + 0x3448) & (1 << i)) {
+            count++;
+        }
+    }
+    return count;
+}
+
 extern u8 lbl_802B7CA0[];
 extern char* lbl_8020631C[];
 extern char* lbl_80206200[];
