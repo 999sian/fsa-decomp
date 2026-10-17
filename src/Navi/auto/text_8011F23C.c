@@ -385,6 +385,12 @@ extern "C" u32 fn_80122FC0(u32 param_1, u32 param_2)
 	return (param_1 - 0x6c) / (param_2 + 2);
 }
 
+extern "C" void fn_8012359C(void* p, const void* fmt, ...) {
+    va_list args;
+    va_start(args, fmt);
+    fn_80123928(p, fmt, args);
+}
+
 extern "C" void fn_80123928(void* p, const void* fmt, va_list args) {
     char buf[0x400];
     fn_801E4334(buf, 0x400, fmt, args);
