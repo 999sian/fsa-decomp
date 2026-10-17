@@ -30,6 +30,7 @@ extern const f32 lbl_80543790;
 extern const f32 lbl_805437AC;
 extern "C" void fn_80440EE8(void* p);
 extern void* lbl_8053AED8;
+extern void* lbl_8053AB10;
 struct T803FC46C;
 typedef void (T803FC46C::*PMF803FC46C)();
 extern PMF803FC46C lbl_804B0BDC[];
