@@ -690,6 +690,9 @@ extern "C" s32 fn_80123E9C(u8* self, s32 arg, f32* data) {
 void v01__5ActorFv(void*);
 void* fn_802D6A9C(void);
 void fn_802D7440(void*, s32);
+extern "C" void v01__5ActorFv(void*);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void*, s32);
 extern "C" void fn_80124448(u8* self) {
     v01__5ActorFv(self);
     lbl_80539F30 = *(s32*)(self + 0x198);
