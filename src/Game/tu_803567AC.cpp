@@ -122,13 +122,3 @@ extern "C" void fn_80356A24(char* this_) {
         }
     }
 }
-extern "C" u8* lbl_8053AAF8;
-extern "C" u8 fn_801F6758(void* pos, u32 room, f32 r);
-
-static f32 tu803567AC_rnd() {
-    union { f32 f; u32 s; } out;
-    u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
-    *seed = *seed * 0x19660d + 0x3c6ef35f;
-    out.s = (*seed >> 9) | 0x3f800000;
-    return out.f - 1.0f;
-}
