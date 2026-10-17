@@ -23,6 +23,10 @@ extern f32 lbl_80542DF0;
 extern s32 lbl_80474F30[];
 extern s32 lbl_80474F40[];
 
+struct FSAPoolBlock {
+	u32 mWord[36];
+};
+
 
 extern "C" void fn_803721F4(void);
 extern "C" u8 fn_8023ED8C(int);
@@ -269,6 +273,70 @@ extern "C" void fn_803706AC(char* self)
 			*(int*)(self + 0x230) = 6;
 			*(int*)(self + 0x240) = 0x1e;
 		}
+	}
+}
+
+extern "C" void fn_80370764(char* self)
+{
+	fn_803703C8(self);
+	for (int i = 0; i < 4; i++) {
+		if (fn_8023ED8C(i)) {
+			fn_80230C6C(i);
+		}
+	}
+	for (int i = 0; i < 4; i++) {
+		if (fn_8023E854(i)) {
+			JGeometry::TVec3<f32>* p = fn_8023E724(0);
+			JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
+			JGeometry::TVec3<f32> d = tgt - *p;
+			if (PSVECMag((Vec*)&d) > lbl_80542DF0) {
+				fn_8023DFF4(0, &d);
+			}
+			break;
+		}
+	}
+	if (fn_8022CAF8(0) == 4) {
+		fn_8022CA6C(0, 5, 0);
+	}
+	*(s32*)(self + 0x23c) += 1;
+	((void (*)(char*))fn_803721F4)(self);
+	JGeometry::TVec3<f32> pos;
+	{
+		JGeometry::TVec3<f32>* p = fn_8023E724(0);
+		JGeometry::TVec3<f32> tgt(lbl_80542DE8, lbl_80542DEC, lbl_80542DC4);
+		pos = tgt - *p;
+		if (PSVECMag((Vec*)&pos) > lbl_80542DF0) {
+			fn_8023DFF4(0, &pos);
+		}
+	}
+	if (fn_802341D0(0)) {
+		if (*(u8*)(self + 0x398) != 0 && *(s32*)(self + 0x240) == 0) {
+			if (fn_8022CAF8(0) == lbl_80474F30[*(s32*)(self + 0x394)]) {
+				if (((u8 (*)(int))fn_802300EC)(0)) {
+					pos = JGeometry::TVec3<f32>((f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f, (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f, 0.0f);
+					fn_8022FE80(0, *(int*)(self + 0x4), *(int*)(self + 0x198), 1, 0);
+					s32 msg;
+					s32 n = *(s32*)(self + 0x394);
+					if (n < 3) {
+						*(s32*)(self + 0x394) = n + 1;
+						msg = lbl_80474F40[n];
+					} else if (*(s32*)(self + 0x23c) < 0x168) {
+						*(s32*)(self + 0x394) = 4;
+						msg = 0x509;
+					} else {
+						*(s32*)(self + 0x394) = 5;
+						msg = 0x50a;
+					}
+					JGeometry::TVec3<f32> copy(pos);
+					if (fn_8038BD08(0, msg, *(u32*)(self + 0x4), &copy, 0x22)) {
+						fn_8023077C();
+						*(s32*)(self + 0x230) = 8;
+					}
+				}
+			}
+		}
+	} else {
+		*(s32*)(self + 0x240) = 2;
 	}
 }
 
