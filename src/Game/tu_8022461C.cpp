@@ -9,6 +9,8 @@ extern char* lbl_8053AB10;
 extern char* lbl_8053AAF8;
 extern const u16 lbl_8046CB88[];
 extern const f32 lbl_8053FF50;
+extern const u16 lbl_8046AAB0[];
+extern char lbl_80529DEC[];
 
 // ---- fn_802265DC.cpp ----
 // fn_802265DC - trivial thin wrapper: tail-calls not-yet-seen fn_802260DC
