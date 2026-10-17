@@ -2,6 +2,16 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
 
+extern "C" u8 fn_802DEBA0(void);
+
+class WaveController {
+public:
+    WaveController(s32 a, s32 b, s32 c);
+    ~WaveController();
+private:
+    unsigned char pad[0x5c];
+};
+
 extern "C" void fn_801F0E34(void* this_, u32 code, u32 z);
 extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 
@@ -51,9 +61,7 @@ extern "C" void fn_802E0AB8(void* this_) {
     }
     s32 state = *(s32*)(p + 0x240);
     if (state == 1) {
-    } else if (state > 1) {
-        return;
-    } else if (state >= 0 && ((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
+    } else if (state >= 0 && state < 1 && ((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
         switch (*(s32*)(p + 0x250)) {
         case 0:
             *(void**)(p + 0x234) = PrtcSpawn(p, 0x188, *(s32*)(p + 0x254));
