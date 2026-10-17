@@ -1,6 +1,12 @@
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
 
+extern "C" u16 fn_80226850(s32 a, s32 b);
+extern "C" void* fn_802D6A9C(void);
+extern f32 lbl_80540BE0;
+extern f32 lbl_80540BE4;
+extern f32 lbl_80540BE8;
+
 
 extern "C" char lbl_804A8AC8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -26,15 +32,10 @@ extern f32 lbl_80540BE8;
 extern "C" void fn_802BDCC0(void);
 extern "C" void fn_802BE008(u8* param_1)
 {
-    union {
-        f64 f;
-        u32 w[2];
-    } conv;
     s32 t;
     s32 a;
     s32 b;
     f32 scale;
-    f32 x;
 
     *(s32*)(param_1 + 0x230) = 0;
     *(u32*)(param_1 + 0x234) = *(u32*)(param_1 + 0x90) & 0x1f;
@@ -64,19 +65,10 @@ extern "C" void fn_802BE008(u8* param_1)
     scale = lbl_80540BE8;
     a = *(s32*)(param_1 + 0x258);
     b = *(s32*)(param_1 + 0x25c);
-    conv.w[0] = 0x43300000;
-    conv.w[1] = (u32)(-a) ^ 0x80000000;
-    x = conv.f - lbl_80540BF8;
-    *(f32*)(param_1 + 0x23c) = scale * x;
-    conv.w[1] = (u32)(-b) ^ 0x80000000;
-    x = conv.f - lbl_80540BF8;
-    *(f32*)(param_1 + 0x240) = scale * x;
-    conv.w[1] = (u32)a ^ 0x80000000;
-    x = conv.f - lbl_80540BF8;
-    *(f32*)(param_1 + 0x244) = scale * x;
-    conv.w[1] = (u32)b ^ 0x80000000;
-    x = conv.f - lbl_80540BF8;
-    *(f32*)(param_1 + 0x248) = scale * x;
+    *(f32*)(param_1 + 0x23c) = scale * (f32)(-a);
+    *(f32*)(param_1 + 0x240) = scale * (f32)(-b);
+    *(f32*)(param_1 + 0x244) = scale * (f32)a;
+    *(f32*)(param_1 + 0x248) = scale * (f32)b;
     *(f32*)(param_1 + 0x23c) = *(f32*)(param_1 + 0x23c) + *(f32*)(param_1 + 0xc);
     *(f32*)(param_1 + 0x240) = *(f32*)(param_1 + 0x240) + *(f32*)(param_1 + 0x10);
     *(f32*)(param_1 + 0x244) = *(f32*)(param_1 + 0x244) + *(f32*)(param_1 + 0xc);
