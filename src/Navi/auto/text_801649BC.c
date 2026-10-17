@@ -8,6 +8,15 @@ typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80166C08(void*, int);
 extern "C" void fn_80164484(void* buf);
+extern "C" s32 fn_801C806C(void* param_1, void* param_2, u32 param_3, u32 param_4, s32 param_5);
+extern "C" s32 fn_801CBA20(void);
+extern "C" void DCInvalidateRange(void* addr, u32 nBytes);
+extern u32 lbl_802FF600;
+extern u32 lbl_802FF604;
+extern u32 lbl_802FF614;
+extern u32 lbl_802FF618;
+extern u32 lbl_802FF61C;
+extern u32 lbl_802FF620;
 extern "C" u8 fn_80164728(void* buf, s32 p);
 extern "C" void fn_801645A8(void* buf, s32 p);
 extern "C" s32 fn_80164ACC(void* buf, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5, s32 p6, s32 p7, s32 p8);
@@ -20,6 +29,19 @@ extern "C" void* fn_801649BC(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" s32 fn_80164A10(s32 p0, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5, s32 p6, s32 p7, s32 p8) {
+    u8 buf[288];
+    fn_80164484(buf);
+    if (fn_80164728(buf, p0) == 0) {
+        fn_801645A8(buf, -1);
+        return 0;
+    } else {
+        s32 result = fn_80164ACC(buf, p1, p2, p3, p4, p5, p6, p7, p8);
+        fn_801645A8(buf, -1);
+        return result;
+    }
 }
 
 extern u8 lbl_802FE390;
