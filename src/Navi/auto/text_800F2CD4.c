@@ -15,6 +15,18 @@ extern void* lbl_8028C5D0[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301198;
+extern u8 lbl_802C5A54[];
+
+struct VObj_800F4328 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(u8 mode);
+};
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_800F39E8(void);
