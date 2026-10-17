@@ -35,6 +35,43 @@ struct VObj_800A1A64 {
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800d0910-0x800d3600 (24 functions). split_file divides it into the game's real files.
 
+extern f32 lbl_80300F88;
+extern f32 lbl_802FEAB0;
+extern f64 lbl_80300FA8;
+extern f64 lbl_80300FB0;
+extern f64 lbl_80300FB8;
+
+static inline f32 navi_sqrtf(f32 x)
+{
+    if (x > lbl_80300F88) {
+        f64 guess = __frsqrte((f64)x);
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
+        return (f32)(x * guess);
+    } else if (x < lbl_80300FB8) {
+        return lbl_802FEAB0;
+    } else {
+        int t;
+        u32 bits = *(u32*)&x;
+        switch (bits & 0x7f800000) {
+        case 0x7f800000:
+            t = (bits & 0x007fffff) ? 1 : 2;
+            break;
+        case 0:
+            t = (bits & 0x007fffff) ? 5 : 3;
+            break;
+        default:
+            t = 4;
+            break;
+        }
+        if (t == 1) {
+            return lbl_802FEAB0;
+        }
+        return x;
+    }
+}
+
 extern void* lbl_80289490[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
