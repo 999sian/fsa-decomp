@@ -42,8 +42,8 @@ extern "C" extern EC80Row lbl_8050EC80[16];
 extern "C" extern u8* lbl_8053AAF8;
 extern "C" char lbl_80529DEC[];
 extern "C" u8 lbl_8050DB0C[];
-extern u8 lbl_80543880[];
-extern u8 lbl_80543888[];
+extern u8 lbl_80543880[8];
+extern u8 lbl_80543888[8];
 
 static inline s32 EC80Bit28(s32 idx, s32 shift) {
 	if (idx < 0 || idx > 7) return 0;
@@ -619,7 +619,7 @@ extern "C" void fn_80409450(void* p) {
 			bits &= *(u32*)((char*)row + 0x28);
 			bits = (-bits | bits) >> 31;
 		}
-		if (bits != 0) {
+		if ((s32)bits != 0) {
 			*(u8*)(lbl_80529DEC + 0x254) = 1;
 		} else {
 			*(u8*)(lbl_80529DEC + 0x254) = 0;
@@ -698,44 +698,46 @@ extern "C" void fn_8042EDAC(void*, s32, s32);
 extern "C" u8* getBounds__7J2DPaneFv(void*);
 extern u64 lbl_8048C4F8[];
 extern "C" void fn_8040B93C(u8* self) {
+	Slots208* sl = (Slots208*)self;
 	if (fn_804446A4(*(void**)(self + 4))) {
 		if ((*(u8**)(self + 4))[0x4c] == 0) {
 			*(s32*)(self + 0x380) = 0;
 			*(s16*)(self + 0x428) = 0;
 			{
-				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
+				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				(*(u8**)(x + 4))[0xb0] = 1;
 			}
 			{
-				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
+				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				u8* y = *(u8**)(x + 4);
 				(*(void (**)(void*, u8))(*(u8**)y + 0x24))(y, x[0x28]);
 			}
 			{
-				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
+				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				*(f32*)(self + 0x3b8) = *(f32*)(x + 0xc) - 400.0f;
 			}
 			f32 t;
 			{
-				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
+				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				t = *(f32*)(self + 0x3b8) - *(f32*)(x + 0xc);
 				fn_80402E08(x, 0.0f, t);
 			}
 			{
-				u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
+				u8* x = sl->slot[*(s32*)(self + 0x340)];
 				u8* y = *(u8**)(x + 4);
 				*(f32*)(self + 0x3ac) = (*(f32*)(y + 0x28) - *(f32*)(y + 0x20)) * 0.5f + *(f32*)(y + 0x30);
 			}
 			{
-				u8* y = *(u8**)(*(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208) + 4);
+				u8* y = *(u8**)(sl->slot[*(s32*)(self + 0x340)] + 4);
 				u8* b = getBounds__7J2DPaneFv((*(Screen408**)(self + 0x10))->search(lbl_8048C4F8[*(s32*)(self + 0x340)]));
-				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * 0.5f + (*(f32*)(self + 0x3b8) + *(f32*)(b + 4)));
+				f32 a = *(f32*)(self + 0x3b8) + *(f32*)(b + 4);
+				*(f32*)(self + 0x3b0) = t + ((*(f32*)(y + 0x2c) - *(f32*)(y + 0x24)) * 0.5f + a);
 			}
 			if (self[0x662] == 0) {
 				*(s32*)(self + 0x350) = 0x11;
 			} else {
 				{
-					u8* x = *(u8**)(self + (*(s32*)(self + 0x340) << 2) + 0x208);
+					u8* x = sl->slot[*(s32*)(self + 0x340)];
 					fn_80402E08(x, 0.0f, 0.0f);
 				}
 				u8* rec = (u8*)lbl_8050EC80 + *(s32*)((u8*)lbl_8050EC80 + 0x10) * 0xc8;
