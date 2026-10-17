@@ -63,6 +63,28 @@ struct VObj_800C91A4 {
 extern f32 lbl_80300DE8;
 extern f64 lbl_80300DE0;
 extern "C" f32 fn_800C95E4(u8* p, s32 max, s32 t, s32 b, f32 from, f32 to);
+extern "C" void fn_800C81A8(u8* p) {
+    char* base = lbl_802C567C;
+    s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), base[0x1e], 0);
+    (*(s16*)(p + 0x86))++;
+    if (r == 1 && fn_8002F6BC() == 0) {
+        *(s16*)(p + 0x86) = 0;
+        p[0x40] ^= 1;
+        p[0x8b] = base[0x2b];
+        p[0x88] = 0xb;
+    }
+}
+
+extern "C" void fn_800C8234(u8* p) {
+    if (p[0x8b] != 0) {
+        p[0x8b]--;
+    } else {
+        p[0x8d] = 2;
+        p[0x8b] = 8;
+        p[0x88] = 0xc;
+    }
+}
+
 extern "C" void fn_800C8A98(u8* p) {
     char* base = lbl_802C567C;
     s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), base[0x1e], 0);
@@ -194,10 +216,12 @@ extern "C" void fn_800C954C(u8* p) {
     }
     (*(VObj_800C954C**)(p + 0x10))->v7();
     char* base = lbl_802C567C;
-    if (*(s8*)(base + 4) >= 0) {
-        if (--*(s32*)(base + 8) == 0) {
+    if (base[4] >= 0) {
+        s32 n = *(s32*)(base + 8) - 1;
+        *(s32*)(base + 8) = n;
+        if (n == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
-            *(s8*)(base + 4) = -1;
+            base[4] = -1;
         }
     }
 }
