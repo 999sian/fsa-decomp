@@ -1,4 +1,12 @@
 #include "types.h"
+class ResMgr8035B0E0 {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void* vf18(u32, u32);
+};
 #include "JSystem/JGeometry/Vec.h"
 
 struct Actor;
@@ -206,9 +214,9 @@ extern "C" void fn_8035A860(u8* self, void* obj, f32 speed) {
 extern "C" u8* lbl_8053AAF8;
 extern "C" s32 fn_8022CAF8(s32);
 extern "C" void fn_8035AA54(u8* self) {
-    u8 bVar5 = 0;
-    u8 bVar3 = 0;
     u8 bVar2 = 0;
+    u8 bVar5 = 0;
+    s32 bVar3 = 0;
     u8 bVar4;
     if (*(s8*)(self + 0x246) != 0) {
         if (*(s8*)(self + 0x247) != 0) {
@@ -259,7 +267,7 @@ extern "C" void fn_8035AA54(u8* self) {
         }
         *(s16*)(self + 0x23a) = (s16)*(f32*)(self + 0x240);
     } else {
-        *(s16*)(self + 0x23a) = (s16)(-(0.01f * (f32)*(s16*)(self + 0x230) - -(0.1f * (f32)*(s16*)(self + 0x238))) / 15.0f);
+        *(s16*)(self + 0x23a) = (s16)((-(0.1f * (f32)*(s16*)(self + 0x238)) - 0.01f * (f32)*(s16*)(self + 0x230)) / 15.0f);
     }
     *(s16*)(self + 0x238) += *(s16*)(self + 0x23a);
     if (bVar3) {
@@ -313,5 +321,41 @@ extern "C" s32 fn_8035AE9C(u8* self, void* obj) {
         }
     }
     return 0;
+}
+
+extern "C" u32 lbl_8053A1B8[];
+extern "C" void fn_8035B0E0(u8* self) {
+    u8* resource = *(u8**)(lbl_8053AAF8 + 0xa4);
+    *(void**)(self + 0x234) = ((void* (*)(void*, u32, u32))(*(void***)(resource))[6])(resource, 0x3f3f3f3f, lbl_8053A1B8[*(u32*)(self + 0x90) & 0x7f]);
+    u16* size = *(u16**)(self + 0x234);
+    int w = size[1], h = size[2];
+    *(f32*)(self + 0x60) = -w / 2;
+    *(f32*)(self + 0x64) = -h / 2;
+    *(f32*)(self + 0x68) = w / 2;
+    *(f32*)(self + 0x6c) = h / 2;
+    *(s32*)(self + 0x108) = 0;
+    *(s16*)(self + 0x230) = 0;
+    *(s16*)(self + 0x238) = 0;
+    *(s16*)(self + 0x23a) = 0;
+    *(s16*)(self + 0x23c) = 0;
+    *(s16*)(self + 0x23e) = 24;
+    *(f32*)(self + 0x240) = lbl_8054286C;
+    self[0x244] = 0; self[0x245] = 0; self[0x24e] = 0;
+    for (int i=0;i<4;i++) {self[0x246+i]=0; self[0x24a+i]=0;}
+    *(s32*)(self+0x250)=0;
+    *(s32*)(self+0x26c)=0;
+    for (int i=0;i<8;i++) *(s32*)(self+0x25c+i*4)=0;
+    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(self+0xc) + JGeometry::TVec3f(*(f32*)(self+0x60),*(f32*)(self+0x64),lbl_8054286C);
+    JGeometry::TVec3f start = pos;
+    u16 idx = lbl_80542868[0];
+    *(s32*)(self+0x258)=0;
+    for(int x=0;x<6;x++) {
+        for(int y=0;y<6;y++) {
+            fn_802A381C(lbl_8053AC98,(Vec8035A860*)&pos,*(s32*)(self+4),idx);
+            pos.y += lbl_80542870;
+        }
+        pos.y = start.y;
+        pos.x += lbl_80542870;
+    }
 }
 
