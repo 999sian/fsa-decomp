@@ -315,6 +315,7 @@ struct Unk800DDA5C {
 #include "JSystem/J3D/J3DInd.h"
 #include "JSystem/J3D/J3DTexMtx.h"
 #include "JSystem/J3D/J3DTransform.h"
+#include "JSystem/J3D/J3DGD.h"
 extern "C" char __vt__13J3DTevBlock16[];
 extern "C" char __vt__11J3DTevBlock[];
 extern "C" char __vt__22J3DColorBlockAmbientOn[];
@@ -1317,7 +1318,7 @@ extern "C" void fn_800D7F78(void* p) {
 extern "C" void fn_800D800C(u8* self) {
     u8* p = self;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0xd4);
-    u32 start = (u32)__GDCurrentDL->pDisplayListData;
+    u8* start = __GDCurrentDL->pDisplayListData;
     for (u32 i = 0; i < 3; i++) {
         GXColorS10 c = *(GXColorS10*)(p + 0x98);
         J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
@@ -1329,7 +1330,7 @@ extern "C" void fn_800D800C(u8* self) {
         J3DGDSetTevKColor(GXTevKColorID(i), c);
         p += 4;
     }
-    DCStoreRange((void*)start, __GDCurrentDL->pDisplayListData - (u8*)start);
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
 }
 
 extern "C" void fn_800D80DC(u8* p) {
@@ -1419,24 +1420,22 @@ extern "C" void fn_800D8414(void* param_1) {
 }
 
 extern "C" void fn_800D84A8(u8* this_) {
-    u32 col[2];
-    u32 kcol;
+    u8* p;
     u8* base;
     u32 i;
-    u8* p;
 
+    i = 0;
+    p = this_;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(this_ + 0x68);
     base = __GDCurrentDL->pDisplayListData;
-    for (i = 0; i < 3; i++) {
-        p = this_ + i * 8;
-        col[0] = *(u32*)(p + 0x14);
-        col[1] = *(u32*)(p + 0x18);
-        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)col);
+    for (; i < 3; i++, p += 8) {
+        J3DGDSetTevColorS10((GXTevRegID)(i + 1), *(GXColorS10*)(p + 0x14));
     }
-    for (i = 0; i < 4; i++) {
-        p = this_ + i * 4;
-        kcol = *(u32*)(p + 0x45);
-        J3DGDSetTevKColor((GXTevKColorID)i, *(GXColor*)&kcol);
+    i = 0;
+    p = this_;
+    for (; i < 4; i++, p += 4) {
+        GXColor kcol = *(GXColor*)(p + 0x45);
+        J3DGDSetTevKColor((GXTevKColorID)i, kcol);
     }
     DCStoreRange(base, __GDCurrentDL->pDisplayListData - base);
 }
@@ -1612,21 +1611,21 @@ extern "C" void fn_800D8D0C(Vtable800D8248* p) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800D8D58(Vtable800D8248* obj, u32 flags) {
-    if ((flags >> 16) & 0xf) {
-        obj->m3();
+extern "C" void fn_800D8D58(int* param_1, u32 param_4) {
+    if ((param_4 >> 0x10) & 0xf) {
+        (*(void(**)(void))(*(int*)param_1 + 0x14))();
     }
-    if (flags & 0x4000000) {
-        obj->m5();
+    if (param_4 & 0x04000000) {
+        (*(void(**)(int*))(*(int*)param_1 + 0x1c))(param_1);
     }
-    if ((flags >> 20) & 0xf) {
-        obj->m6();
-        if (flags & 0x8000000) {
-            obj->m7();
+    if ((param_4 >> 0x14) & 0xf) {
+        (*(void(**)(int*))(*(int*)param_1 + 0x20))(param_1);
+        if (param_4 & 0x08000000) {
+            (*(void(**)(int*))(*(int*)param_1 + 0x24))(param_1);
         }
     }
-    if (flags & 0x1000000) {
-        obj->m4();
+    if (param_4 & 0x01000000) {
+        (*(void(**)(int*))(*(int*)param_1 + 0x18))(param_1);
     }
 }
 #else
@@ -1879,37 +1878,15 @@ extern "C" void fn_800D9BA0(u8* p) {
 
 extern "C" void fn_800D9CA8(void* param_1) {
     u8 count = *(u8*)((u8*)param_1 + 0x58);
-    if (count == 0) {
-        return;
-    }
-    
-    u32* gd = (u32*)&__GDCurrentDL;
-    
-    for (u32 i = 0; i < count; i++) {
-        u32 val = *(u32*)((u8*)param_1 + 0x4 + i * 4);
-        u8* dl = (u8*)(gd[2]);
-        
-        u8 high_nibble = (i + 0x10) & 0xff;
-        u32 combined = val | (high_nibble << 24);
-        
-        *dl = 0x61;
-        gd[2]++;
-        
-        dl = (u8*)(gd[2]);
-        *dl = (combined >> 24) & 0xff;
-        gd[2]++;
-        
-        dl = (u8*)(gd[2]);
-        *dl = (combined >> 16) & 0xff;
-        gd[2]++;
-        
-        dl = (u8*)(gd[2]);
-        *dl = (combined >> 8) & 0xff;
-        gd[2]++;
-        
-        dl = (u8*)(gd[2]);
-        *dl = combined & 0xff;
-        gd[2]++;
+    u8* p = (u8*)param_1;
+    u32 combined;
+    u32 i = 0;
+    for (; i < count;) {
+        combined = *(u32*)(p + 0x130) | ((i + 0x10) << 24);
+        p += 4;
+        i++;
+        __GDWrite(0x61);
+        __GDWriteU32(combined);
     }
 }
 
@@ -1985,8 +1962,8 @@ extern "C" void fn_800D9FE4(int param_1, int param_2) {
     u8* start;
     u32 i = 0;
     GDSetCurrOffset(param_2);
-    start = GDGetCurrPointer();
     cur = GDGetCurrPointer();
+    start = GDGetCurrPointer();
     while (true) {
         if (!isTexNoReg(cur)) break;
         u16 tex_no = getTexNoReg(cur);
@@ -4326,7 +4303,12 @@ extern "C" void fn_800D95B0(u8* p)
 {
     u8 n = p[0x34];
     for (u32 i = 0; i < n; i++) {
-        J3DGDWriteBPCmd(*(u32*)(p + 0x60) | ((i + 0x10) << 24));
+        u32 val = *(u32*)(p + 0x60) | ((i + 0x10) << 24);
+        __GDWrite(0x61);
+        __GDWrite((u8)(val >> 24));
+        __GDWrite((u8)(val >> 16));
+        __GDWrite((u8)(val >> 8));
+        __GDWrite((u8)val);
         p += 4;
     }
 }
