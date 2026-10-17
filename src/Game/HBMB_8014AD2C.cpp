@@ -34,6 +34,55 @@ extern "C" void fn_801EE434(void* p);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* a, s32 b);
 extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
+extern "C" BOOL fn_8014AD2C(u8* this_, s32 b, s32 c) {
+    s32 sub;
+    s32 kind;
+
+    kind = (u16)fn_8022461C(c, b);
+    sub = (u16)fn_80226850(c, b);
+    if ((u32)(kind - 0x10) <= 7 || (sub >= 0x140 && sub <= 0x15f)) {
+        *(s32*)(this_ + 0x264) = 1;
+        return 0;
+    }
+    if (kind == 3) {
+        *(s32*)(this_ + 0x264) = 0;
+        return 0;
+    }
+    if (kind == 0xe) {
+        *(s32*)(this_ + 0x264) = 0;
+        return 0;
+    }
+    if (kind == 0xd || kind == 0x3b) {
+        *(s32*)(this_ + 0x264) = 0;
+        return 0;
+    }
+    if (kind != 0x0 && kind != 0x4 && kind != 0x5 && kind != 0x6 && kind != 0x7 && kind != 0x2 && kind != 0x50 &&
+        kind != 0xc && kind != 0x27 && kind != 0x28 && kind != 0x29 && kind != 0x2a && kind != 0x2b && kind != 0x2c &&
+        kind != 0x2d && kind != 0x2e && kind != 0x2f && kind != 0x20 && kind != 0x39 && kind != 0x3a && kind != 0x4c &&
+        kind != 0x4d && kind != 0x4e && kind != 0x4f && kind != 0x24 && kind != 0x23) {
+        if (fn_80226850(c, b) == 0x3a || fn_80226850(c, b) == 0x3d) {
+            *(s32*)(this_ + 0x264) = 0;
+            return 0;
+        }
+        if (kind == 0x25) {
+            if (*(s32*)(this_ + 0x264) == 0 && ((u8*)fn_802D6A9C())[0x171] == 0) {
+                return 1;
+            }
+            return 0;
+        }
+        if (kind == 0x26) {
+            if (*(s32*)(this_ + 0x264) == 0 && ((u8*)fn_802D6A9C())[0x171] == 1) {
+                return 1;
+            }
+            return 0;
+        }
+        if (*(s32*)(this_ + 0x264) == 0 && (kind != 0x22 || ((u8*)fn_802D6A9C())[0x170] == 1)) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 extern "C" void* fn_8014CF28(u32* this_, s16 freeFlag) {
     if (this_ != 0) {
         u32* p = this_;
@@ -71,6 +120,17 @@ extern "C" f32 lbl_8053D12C;
 extern "C" f32 lbl_8053D160;
 extern "C" f32 lbl_8053D178;
 extern "C" f32 lbl_8053D198;
+extern "C" f32 lbl_8053D130;
+extern "C" f32 lbl_8053D138;
+extern "C" f32 lbl_8053D144;
+extern "C" f32 lbl_8053D16C;
+extern "C" f32 lbl_8053D170;
+extern "C" f32 lbl_8053D174;
+extern "C" f32 lbl_8053D19C;
+extern "C" f32 lbl_8053D1A0;
+extern "C" u8* lbl_8053AAF8;
+extern "C" s32 lbl_8049F760[];
+extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" BOOL fn_8014D6DC(u8* this_) {
     f32 pos[2];
     f32 x;
