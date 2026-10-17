@@ -1415,6 +1415,8 @@ extern "C" u16 fn_80172B3C(u8* p, s32 i) {
     return ((u16*)(p + 4))[i];
 }
 
+extern "C" void fn_80172B4C(u8* p, u16 v) { *(u16*)(p + 0xc) = v; }
+
 extern "C" s32 fn_80172B80(s32 p, s32 i)
 {
     return p + i * 4 + 0xe;
