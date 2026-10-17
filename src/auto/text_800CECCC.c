@@ -596,6 +596,34 @@ extern "C" void fn_800D0424(void** self, const void* data) {
     fn_800D044C(self, self[1], data);
 }
 
+extern "C" void fn_800D044C(void** self, void* res, const void* data) {
+#define anm ((J3DAnmVtxColorKey*)res)
+#define src ((const J3DAnmVtxColorKeyData*)data)
+    anm->mMaxFrame = src->mTotalFrameCount;
+    anm->mAttribute = src->mAttribute;
+    anm->mCurrentFrame = 0.0f;
+    anm->mAnmTableNum[0] = src->mAnmTableNum[0];
+    anm->mAnmTableNum[1] = src->mAnmTableNum[1];
+    anm->mTable[0] = JSUConvertOffsetToPtr<J3DAnmColorKeyTable>(src, (void*)src->mTableOffsets[0]);
+    anm->mTable[1] = JSUConvertOffsetToPtr<J3DAnmColorKeyTable>(src, (void*)src->mTableOffsets[1]);
+    anm->mAnmVtxColorIndexData[0] = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(src, (void*)src->mVtxColoIndexDataOffset[0]);
+    anm->mAnmVtxColorIndexData[1] = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(src, (void*)src->mVtxColoIndexDataOffset[1]);
+    void* ptr28 = JSUConvertOffsetToPtr<u16>(src, (void*)src->mVtxColorIndexPointerOffset[0]);
+    void* ptr2c = JSUConvertOffsetToPtr<u16>(src, (void*)src->mVtxColorIndexPointerOffset[1]);
+    for (s32 i = 0; i < anm->mAnmTableNum[0]; i++) {
+        anm->mAnmVtxColorIndexData[0][i].mData = (void*)((s32)ptr28 + (s32)anm->mAnmVtxColorIndexData[0][i].mData * 2);
+    }
+    for (s32 i = 0; i < anm->mAnmTableNum[1]; i++) {
+        anm->mAnmVtxColorIndexData[1][i].mData = (void*)((s32)ptr2c + (s32)anm->mAnmVtxColorIndexData[1][i].mData * 2);
+    }
+    anm->mRedVals = JSUConvertOffsetToPtr<s16>(src, (void*)src->mRValOffset);
+    anm->mGreenVals = JSUConvertOffsetToPtr<s16>(src, (void*)src->mGValOffset);
+    anm->mBlueVals = JSUConvertOffsetToPtr<s16>(src, (void*)src->mBValOffset);
+    anm->mAlphaVals = JSUConvertOffsetToPtr<s16>(src, (void*)src->mAValOffset);
+#undef anm
+#undef src
+}
+
 extern "C" void* fn_800D05BC(void* param_1, short param_2)
 {
     if (param_1 != 0) {
