@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void* lbl_8053AAF8;
 extern "C" void fn_802D6A9C(void);
@@ -13,19 +14,29 @@ extern "C" void* fn_801902C0(void) {
 
 extern "C" void fn_801914C4(u8* p) {
     bool f = false;
-    {
-        u8* g = (u8*)lbl_8053AAF8;
-        s32 t;
-        if (g[0x7f] == 0) {
-            t = *(s32*)(g + 0x4c);
-            if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb || t == 0xc) {
-                f = true;
-            }
-        } else {
-            t = *(s32*)(g + 0x4c);
-            if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb) {
-                f = true;
-            }
+    u8* g = (u8*)lbl_8053AAF8;
+    if (g[0x7f] != 0) {
+        switch (*(s32*)(g + 0x4c)) {
+        case 7:
+        case 8:
+        case 9:
+        case 0x16:
+        case 0xa:
+        case 0xb:
+            f = true;
+            break;
+        }
+    } else {
+        switch (*(s32*)(g + 0x4c)) {
+        case 7:
+        case 8:
+        case 9:
+        case 0x16:
+        case 0xa:
+        case 0xb:
+        case 0xc:
+            f = true;
+            break;
         }
     }
     if (f) {
@@ -34,19 +45,23 @@ extern "C" void fn_801914C4(u8* p) {
             goto end;
         }
     }
-    {
-        u8* g = (u8*)lbl_8053AAF8;
-        if (g[0x94] != 0 || g[0x96] != 0) {
+    g = (u8*)lbl_8053AAF8;
+    if (g[0x94] != 0 || g[0x96] != 0) {
+        goto end;
+    }
+    if (g[0x7f] != 0) {
+        bool b;
+        if (fn_80239D38()) {
             goto end;
         }
-        if (g[0x7f] != 0) {
-            if (fn_80239D38()) {
-                goto end;
-            }
-            g = (u8*)lbl_8053AAF8;
-            if (*(s32*)(g + 0x4c) == 0xb || g[0x88] == 2) {
-                goto end;
-            }
+        g = (u8*)lbl_8053AAF8;
+        if (*(s32*)(g + 0x4c) == 0xb) {
+            b = true;
+        } else {
+            b = (g[0x88] == 2);
+        }
+        if (b) {
+            goto end;
         }
     }
     if (lbl_80529DEC[0x240] == 0 && lbl_8053AEC8[0x5d] == 0) {
