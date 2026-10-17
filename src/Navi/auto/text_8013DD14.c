@@ -28,6 +28,31 @@ struct NaviTracker {
 struct Entry_802C67C4 { s32 unk0; s32 id; u8 pad[0x18]; };
 struct Slot_8013D1D4 { u8 pad[0x10]; void* ptr; };
 
+struct NaviTracker_8013DF04 {
+    virtual void fn_0();
+    virtual void fn_1();
+    virtual void fn_2();
+    virtual void fn_3();
+    virtual u32 fn_4();
+    virtual void fn_5(u32);
+    virtual void fn_6();
+    virtual void fn_7();
+    virtual void fn_8();
+    virtual void fn_9();
+    virtual void fn_10();
+    virtual void fn_11();
+    virtual void fn_12();
+    virtual void fn_13();
+    virtual void fn_14();
+    virtual void fn_15();
+    virtual void fn_16();
+    virtual void fn_17();
+    virtual void fn_18();
+    virtual void* fn_19();
+};
+struct Entry_8013DF04 { s32 unk0; s32 id; u8 pad[0xc]; f32 (NaviTracker_8013DF04::*fn)(); };
+struct Slot_8013DF04 { u8 pad[4]; s32 unk4; void* func; f32 value; };
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8013dd14-0x8013e0ec (9 functions). split_file divides it into the game's real files.
 
