@@ -106,6 +106,119 @@ extern "C" s32 fn_8020A0E8(u8* this_) {
     return 0;
 }
 
+extern f32 lbl_8053F96C;
+void fn_801F317C(char* this_, u8* buf);
+s32 fn_8023AE34(u8* buf, u32 id, f32* pos);
+s32 fn_8023AA18(u8* buf, u32 id, f32* pos);
+s32 fn_8023AC74(u8* buf, u32 id, f32* pos);
+s32 fn_8023AD54(u8* buf, u32 id, f32* pos);
+u8 fn_801CC820(s32 id, f32* v);
+void fn_801CC538(s32 id, f32* pos, f32* buf, s32* out);
+void fn_801CC640(s32 id, s32* out, f32* v);
+u8 fn_801EAC20(char* this_, s32 id);
+u8 fn_801EAC54(char* this_, s32 id);
+void fn_801CB538(u32 id, f32* p, s32 a, s32 b);
+extern "C" void fn_801F317C(char* this_, u8* buf);
+extern "C" s32 fn_8023AE34(u8* buf, u32 id, f32* pos);
+extern "C" s32 fn_8023AA18(u8* buf, u32 id, f32* pos);
+extern "C" s32 fn_8023AC74(u8* buf, u32 id, f32* pos);
+extern "C" s32 fn_8023AD54(u8* buf, u32 id, f32* pos);
+extern "C" u8 fn_801CC820(s32 id, f32* v);
+extern "C" void fn_801CC538(s32 id, f32* pos, f32* buf, s32* out);
+extern "C" void fn_801CC640(s32 id, s32* out, f32* v);
+extern "C" u8 fn_801EAC20(char* this_, s32 id);
+extern "C" u8 fn_801EAC54(char* this_, s32 id);
+extern "C" void fn_801CB538(u32 id, f32* p, s32 a, s32 b);
+extern "C" u8 fn_8020A11C(char* this_) {
+    s32 n;
+    f32 pos[2];
+    f32 p3[3];
+    u8 bufC[24];
+    s32 id;
+    u8 hit;
+    u8 wall;
+    u8 r;
+
+    if (*(f32*)(this_ + 0x78) - *(f32*)(this_ + 0x70) <= lbl_8053F964 ||
+        *(f32*)(this_ + 0x7c) - *(f32*)(this_ + 0x74) <= lbl_8053F964) {
+        return 0;
+    }
+    n = -1;
+    hit = 0;
+    wall = 0;
+
+    fn_801F317C(this_, bufC);
+    id = fn_8023AE34(bufC, *(u32*)(this_ + 0x4), pos);
+    if (id >= 0) {
+        hit = fn_801CC820(id, 0);
+    } else {
+        id = fn_8023AA18(bufC, *(u32*)(this_ + 0x4), pos);
+        if (id >= 0) {
+            wall = 1;
+        } else {
+            id = fn_8023AC74(bufC, *(u32*)(this_ + 0x4), pos);
+            if (id >= 0) {
+                fn_801CC538(id, pos, 0, &n);
+            } else {
+                id = fn_8023AD54(bufC, *(u32*)(this_ + 0x4), pos);
+                if (id >= 0) {
+                    fn_801CC640(id, &n, 0);
+                }
+            }
+        }
+    }
+    r = 0;
+    if (id >= 0) {
+        if (wall) {
+            if (fn_801EAC20(this_ + 0x1dc, id)) {
+                r = 1;
+            }
+        } else if (hit || (n >= 0 && fn_801EAC54(this_ + 0x1dc, n))) {
+            r = 1;
+        }
+    }
+    if (r) {
+        p3[0] = pos[0];
+        p3[1] = pos[1];
+        p3[2] = lbl_8053F96C;
+        fn_801CB538(*(u32*)(this_ + 0x4), p3, 0, 0);
+    }
+    return r;
+}
+
+extern "C" void fn_8020A2C0(void* this_) {
+    char* p = (char*)this_;
+    switch (*(s32*)(p + 0x248)) {
+    case 0:
+        *(f32*)(p + 0x44) += lbl_8053F970 * lbl_8053EFB8;
+        break;
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+        switch (*(s32*)(p + 0x278)) {
+        case 2:
+        case 6:
+            *(f32*)(p + 0x3c) = *(f32*)(p + 0x2b4);
+            *(f32*)(p + 0x40) = *(f32*)(p + 0x2b8);
+            break;
+        default:
+            *(f32*)(p + 0x40) = *(f32*)(p + 0x3c) = lbl_8053F964;
+            break;
+        }
+        *(f32*)(p + 0x44) += lbl_8053EFB8;
+        break;
+    default:
+        *(f32*)(p + 0x40) = *(f32*)(p + 0x3c) = lbl_8053F964;
+        ((ItemBase*)this_)->v31();
+        break;
+    }
+}
 
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
@@ -138,5 +251,7 @@ extern "C" void* fn_8020B0B8(char* this_) {
     *(f32*)(this_ + 0x2cc) = lbl_8053F964;
     return this_;
 }
+
+static void fn_8020B130(void) {}
 
 #endif
