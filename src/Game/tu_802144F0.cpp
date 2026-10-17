@@ -78,6 +78,50 @@ extern "C" void fn_80214994(void* this_)
 	}
 }
 
+extern "C" void fn_80214AF8(void* this_)
+{
+	char* p = (char*)this_;
+	s32 id = *(s32*)(p + 0x30);
+	if (id >= 0) {
+		char* found = (char*)fn_801F666C(fn_801F856C(), id);
+		if (found != 0) {
+			*(u8*)(found + 0x11c) = 0;
+		}
+		*(s32*)(p + 0x30) = -1;
+	}
+	if (*(void**)(p + 0x18) != 0) {
+		forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x18));
+		*(void**)(p + 0x18) = 0;
+	}
+	fn_801CDC8C(*(void**)(p + 0x34), 0x4000E);
+
+	JGeometry::TVec3f v;
+	char* q = *(char**)(p + 0x34);
+
+	v = *(JGeometry::TVec3f*)(q + 0xc);
+	v.y += lbl_8053FBBC;
+	if (fn_801CD2F8(*(void**)(q + 0x4))) {
+		*(s32*)(p + 0x30) = Actor_CreateByID(fn_801F856C(), 'SLEF', *(u32*)(*(char**)(p + 0x34) + 0x4), &v, 0, -1, -1);
+	} else {
+		s32 a = 0;
+		s32 b = 1;
+		if (v.z > lbl_8053FBC0) {
+			a = b;
+			b = 0;
+		}
+		s32 lim = (a << 10) + (b << 7);
+		f32 x = v.x;
+		f32 y = v.y + lim;
+		f32 z = v.z + lim;
+		f32 w = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), &v.x);
+		*(f32*)(p + 0x20) = x;
+		*(f32*)(p + 0x24) = y;
+		*(f32*)(p + 0x28) = z + (w - v.z);
+		*(u8**)(p + 0x18) = fn_8013CC50(lbl_8053FBD0, *(u32*)(*(char**)(p + 0x34) + 0x4), &v, 0x565, 0, 1, 0, (s32)(p + 0x1c), 1);
+	}
+	fn_801F0E34(*(void**)(p + 0x34), 0x4000E, 0);
+}
+
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* em);
 extern "C" void fn_80214CE4(u8* this_) {
     if (*(u8**)(this_ + 0) != 0) {
@@ -261,8 +305,6 @@ void fn_802146A4(u8* this_) {
 
 extern "C" u8* fn_801C0D70(void* o);
 extern "C" void fn_801CDCD0(u8* o, u32 owner, void* pos, s32 id);
-extern const u16 lbl_8053FB90[];
-extern const u16 lbl_8053FB98[];
 extern const u16 lbl_8053FB90[3];
 extern const u16 lbl_8053FB98[3];
 extern "C" void fn_80214740(u8* this_, u32 owner, void* pos, u8 flag) {
