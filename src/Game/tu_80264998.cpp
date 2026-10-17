@@ -2,6 +2,7 @@
 
 #include "Game/SinitPoolChain.h"
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/Inline.h"
 
 
@@ -38,9 +39,10 @@ extern "C" void fn_80264998(char* p)
 
 extern "C" void fn_80265AE4(char* p)
 {
-    Vec d;
+    Vec d1;
+    Vec d2;
     if (*(unsigned short*)(p + 0x3c4) != *(unsigned short*)(p + 0x3c6) ||
-        fnDist(p, &d) > lbl_80540200) {
+        fnDist(p, &d1) > lbl_80540200) {
         *(int*)(p + 0x3d0) = *(int*)(p + 0x3d0) + 1;
         if (*(int*)(p + 0x3d0) >= 0x10) {
             *(int*)(p + 0x3d0) = 0;
@@ -50,9 +52,9 @@ extern "C" void fn_80265AE4(char* p)
     }
     if (*(int*)(p + 0x3cc) > 0) {
         *(int*)(p + 0x3cc) = *(int*)(p + 0x3cc) - 1;
-        goto machine;
+    } else {
+        *(int*)(p + 0x3d0) = 0;
     }
-    *(int*)(p + 0x3d0) = 0;
 machine:
     {
         int t = *(int*)(p + 0x3d0);
@@ -84,21 +86,19 @@ machine:
     }
     if (*(f32*)(p + 0x10) <= lbl_805401F0 &&
         fn_8022461C(p + 8, *(int*)(p + 0x3b4)) == 0x39) {
-        if (*(unsigned short*)(p + 0x3c4) != *(unsigned short*)(p + 0x3c6)) {
+        if (*(unsigned short*)(p + 0x3c4) != *(unsigned short*)(p + 0x3c6) ||
+            fnDist(p, &d2) > lbl_80540200) {
             goto show;
         }
-        if (fnDist(p, &d) <= lbl_80540200) {
-            goto hide;
-        }
-        goto show;
+        goto hide;
     }
     goto hide;
 show:
-    if (*(int*)(p + 0x1384) != 0) {
-        fn_8013CB44((void*)*(int*)(p + 0x1384), p + 8, 0, 0, 1);
-    } else {
+    if (*(unsigned int*)(p + 0x1384) == 0) {
         *(int*)(p + 0x1384) = fn_8013CC50(*(int*)(p + 0x3b4), p + 8, 0x4d2, 0, 0, 0, 0, 1,
                                           lbl_805401F4);
+    } else {
+        fn_8013CB44((void*)*(unsigned int*)(p + 0x1384), p + 8, 0, 0, 1);
     }
     goto end;
 hide:
