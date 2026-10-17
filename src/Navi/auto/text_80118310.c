@@ -164,8 +164,8 @@ extern "C" void fn_801193D8(u8* self, u16* table) {
 extern "C" int fn_801E6578(void* a, void* b);
 extern "C" u16 fn_801194E4(void* param_1, char* param_2);
 extern "C" void* fn_801194B4(u8* self, u16 idx) {
-    u8* table = *(u8**)(self + 4);
     if (idx < *(u16*)(self + 0xc)) {
+        u8* table = *(u8**)(self + 4);
         u8* e = table + idx * 4;
         return table + *(u16*)(e + 6);
     }
@@ -175,9 +175,7 @@ extern "C" void* fn_801194B4(u8* self, u16 idx) {
 extern "C" u16 fn_801194E4(void* param_1, char* param_2) {
     s32 hash = 0;
     while (*param_2 != 0) {
-        s8 c = *param_2;
-        param_2++;
-        hash = c + hash * 3;
+        hash = hash * 3 + *param_2++;
     }
     return hash;
 }
@@ -300,13 +298,13 @@ extern "C" s32 fn_8011A7C8(void);
 extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
     s32 t = fn_8011A7C8();
     u32** list = *(u32***)(param_1 + 0x54);
-    u32 i;
-    u16 n;
+    s32 n = *(u16*)(param_1 + 0x60);
+    u32** cur = list;
+    s32 i = 0;
     param_3[0] = 0;
-    n = *(u16*)(param_1 + 0x60);
     param_3[1] = (u8)*(u16*)(*(u8**)(param_1 + 0x4c) + 0xe);
-    for (i = 0; i < n; i++) {
-        u8* e = (u8*)list[i];
+    for (; n > 0; n--, i++, cur++) {
+        u8* e = (u8*)*cur;
         if (t >= *(u16*)(e + 8) && t <= *(u16*)(e + 10)) {
             u8* d = (u8*)list[i] + 0xc + (t - *(u16*)(e + 8)) * 2;
             param_3[0] = d[0];
@@ -314,6 +312,34 @@ extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
             return;
         }
     }
+}
+
+extern "C" u32 fn_8011A700(void* param_1) {
+    u8* p = (u8*)param_1;
+    u8* q = *(u8**)(p + 0x58);
+    if (q != 0) {
+        q = *(u8**)q;
+        if (q != 0) {
+            return *(u16*)(q + 0xc);
+        }
+    }
+    return ((u32 (*)(void*))(((void**)*(void**)p)[10]))(p);
+}
+
+extern "C" u32 fn_8011A74C(void* param_1) {
+    u8* p = (u8*)param_1;
+    u8* q = *(u8**)(p + 0x58);
+    if (q != 0) {
+        q = *(u8**)q;
+        if (q != 0) {
+            return *(u16*)(q + 0xe);
+        }
+    }
+    return ((u32 (*)(void*))(((void**)*(void**)p)[9]))(p);
+}
+
+extern "C" void fn_8011A798(void* param_1, void* param_2) {
+    ((void (*)(void*))(*(void**)(*(void**)((u8*)param_1 + 0x6c))))(param_2);
 }
 
 extern "C" int fn_8011AB38()
