@@ -5,7 +5,11 @@ struct Iter_8013A388 {
 };
 inline bool iterEq_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return x.node == y.node; }
 inline bool iterNe_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return !iterEq_8013A388(x, y); }
-inline bool iterNe2_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return iterNe_8013A388(x, y); }
+inline bool iterNe2_8013A388(Iter_8013A388 x, Iter_8013A388 y) {
+    Iter_8013A388 tx = x;
+    Iter_8013A388 ty = y;
+    return iterNe_8013A388(tx, ty);
+}
 
 struct Obj_8013A024 {
     u8 unk_0x0[0x8];
@@ -1323,8 +1327,11 @@ extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
-    while (iterNe_8013A388(*(Iter_8013A388*)c, *(Iter_8013A388*)b) && !fn_8013A48C((u8*)*b - 0xc, d)) {
+    Iter_8013A388 ib = *(Iter_8013A388*)b;
+    Iter_8013A388 ic = *(Iter_8013A388*)c;
+    while (iterNe_8013A388(ib, ic) && !fn_8013A48C((u8*)*b - 0xc, d)) {
         *b = *(void**)*b;
+        ib = *(Iter_8013A388*)b;
     }
     *a = *b;
 }
