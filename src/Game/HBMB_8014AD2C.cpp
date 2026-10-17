@@ -17,6 +17,20 @@ extern "C" void fn_801F0E34(void* a, s32 b, s32 c);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D79E8(void* mgr, u32 room, s32 b, f32 x, f32 y);
+extern "C" void fn_80134DE4(void* game, s32 a, s32 b);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+extern "C" u8 fn_8029EDB8(void* mgr, void* pos, s32 a, u32 room, void* out);
+extern "C" void fn_8014D868(u8* this_, f32* pos);
+extern "C" void* lbl_8053AC98;
+extern "C" f32 lbl_8053D134;
+extern "C" f32 lbl_8053D17C;
+extern "C" f32 lbl_8053D180;
+extern "C" f32 lbl_8053D184;
+extern "C" f32 lbl_8053D188;
+extern "C" f32 lbl_8053D1A4;
+extern "C" f64 lbl_8053D1A8;
 
 static inline f64 sqrtStep(f64 tmpd, f32 mag) {
     return tmpd * 0.5 * (3.0 - mag * (tmpd * tmpd));
@@ -112,6 +126,138 @@ extern "C" void* fn_8014CF28(u32* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8014CFBC(u8* this_) {
+    struct VObj {
+        virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03(); virtual void v04();
+        virtual void v05(); virtual void v06(); virtual void v07(); virtual void v08(); virtual void v09();
+        virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+        virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+        virtual void v20(); virtual void v21();
+    };
+    s32 room;
+
+    *(f32*)(this_ + 0x60) = -7.0f;
+    *(f32*)(this_ + 0x64) = -7.0f;
+    *(f32*)(this_ + 0x68) = 7.0f;
+    *(f32*)(this_ + 0x6c) = 7.0f;
+    *(f32*)(this_ + 0x80) = -7.0f;
+    *(f32*)(this_ + 0x84) = -7.0f;
+    *(f32*)(this_ + 0x88) = 7.0f;
+    *(f32*)(this_ + 0x8c) = 7.0f;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = 0;
+    *(s32*)(this_ + 0x254) = 0;
+    *(s32*)(this_ + 0x258) = 0;
+    *(s32*)(this_ + 0x25c) = 0;
+    *(s32*)(this_ + 0x260) = 0;
+    *(s32*)(this_ + 0x264) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x108) = 2;
+    *(s32*)(this_ + 0x26c) = 0;
+    *(u8*)(this_ + 0x280) = 0;
+    *(f32*)(this_ + 0x27c) = 1.0f;
+    *(s32*)(this_ + 0x290) = 0;
+    *(s32*)(this_ + 0x294) = 0;
+    *(s32*)(this_ + 0x298) = 0;
+    *(f32*)(this_ + 0x274) = 1.0f;
+    *(s32*)(this_ + 0x268) = -1;
+    *(s32*)(this_ + 0xb0) = 0x53308;
+    *(u32*)(this_ + 0x270) = (*(u32*)(this_ + 0x90) >> 8) & 1;
+    *(u32*)(this_ + 0x90) = *(u32*)(this_ + 0x90) & 0xff;
+    *(u16*)(this_ + 0x94) = 0;
+    *(s32*)(this_ + 0x260) = -1;
+    *(f32*)(this_ + 0x278) = 0.0f;
+    switch (*(u32*)(this_ + 0x90)) {
+    case 10:
+        *(s32*)(this_ + 0x248) = 0x14;
+    case 0:
+    case 8:
+        *(s32*)(this_ + 0x238) = 0x12c;
+        *(s32*)(this_ + 0x230) = 2;
+        *(s32*)(this_ + 0xb0) = 0x73308;
+        room = *(s32*)(this_ + 4);
+        if (((u8*)fn_802D6A9C())[0x131df + room] != 0) {
+            *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14);
+            *(f32*)(this_ + 0x14) = 0.0f;
+            *(f32*)(this_ + 0x44) = 0.0f;
+        }
+        if (*(u32*)(this_ + 0x90) == 8) {
+            *(f32*)(this_ + 0x60) = -13.0f;
+            *(f32*)(this_ + 0x64) = -13.0f;
+            *(f32*)(this_ + 0x68) = 13.0f;
+            *(f32*)(this_ + 0x6c) = 13.0f;
+            *(f32*)(this_ + 0x274) = 2.0f;
+        }
+        if (*(s32*)(this_ + 0x294) == 0) {
+            *(s32*)(this_ + 0x294) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, *(f32*)(this_ + 0x274), 0x66, 0, 0, 0, 0, 0);
+        }
+        if (*(s32*)(this_ + 0x298) == 0) {
+            *(s32*)(this_ + 0x298) = fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, *(f32*)(this_ + 0x274), 0x67, 0, 0, 0, 0, 0);
+        }
+        break;
+    case 1:
+        *(f32*)(this_ + 0x60) = 0.0f;
+        *(f32*)(this_ + 0x64) = 0.0f;
+        *(f32*)(this_ + 0x68) = 0.0f;
+        *(f32*)(this_ + 0x6c) = 0.0f;
+        *(f32*)(this_ + 0x274) = 0.0f;
+        *(s32*)(this_ + 0xb0) = 0;
+        *(s32*)(this_ + 0x230) = 9;
+        break;
+    case 2:
+        *(f32*)(this_ + 0x274) = 0.0f;
+    case 4:
+        if (lbl_8053AAF8[0x7f] == 0) {
+            *(u8*)(this_ + 0x11f) = 1;
+            *(f32*)(this_ + 0x60) = -10.0f;
+            *(f32*)(this_ + 0x64) = -10.0f;
+            *(f32*)(this_ + 0x68) = 10.0f;
+            *(f32*)(this_ + 0x6c) = 10.0f;
+            *(s32*)(this_ + 0xb0) = 0x53303;
+            *(s32*)(this_ + 0x230) = 10;
+        } else {
+            ((VObj*)lbl_8053AAF8)->v19();
+        }
+        break;
+    case 7:
+    case 11:
+    case 12:
+    case 13:
+        *(s32*)(this_ + 0x24c) = 2;
+        *(f32*)(this_ + 0x274) = 1.0f;
+        if (*(s32*)(this_ + 0x90) == 13) {
+            *(f32*)(this_ + 0x274) = 2.0f;
+            *(f32*)(this_ + 0x27c) = 2.0f;
+        }
+        fn_801F0E34(this_, 0x30001, 0);
+        *(s32*)(this_ + 0x234) = lbl_8049F760[*(s32*)(this_ + 0x24c)];
+        *(s32*)(this_ + 0x230) = 4;
+        break;
+    default:
+    case 5:
+    case 6:
+        *(s32*)(this_ + 0x240) = 0x32;
+    case 3:
+    case 9:
+        *(s32*)(this_ + 0x240) = 0x32;
+        if (*(u32*)(this_ + 0x90) == 9) {
+            *(f32*)(this_ + 0x60) = -13.0f;
+            *(f32*)(this_ + 0x64) = -13.0f;
+            *(f32*)(this_ + 0x68) = 13.0f;
+            *(f32*)(this_ + 0x6c) = 13.0f;
+            *(f32*)(this_ + 0x274) = 2.0f;
+        }
+        *(s32*)(this_ + 0xb0) = 0x73308;
+        *(s32*)(this_ + 0x230) = 0;
+        break;
+    }
 }
 
 extern "C" void fn_8014D304(u8* this_) {
