@@ -39,6 +39,16 @@ struct Vec3_8003C318 {
 };
 extern u8 lbl_802BF188[];
 extern s16 lbl_802FF04C;
+extern "C" void fn_80041190(s32 arg);
+extern void (*lbl_802FF05C)(s32);
+extern s8 lbl_802FF060;
+extern s16 lbl_802FF062;
+extern s16 lbl_802FF064;
+extern s16 lbl_802FF066;
+extern s16 lbl_802FF068;
+extern f32 lbl_802FF06C;
+extern f32 lbl_802FF070;
+extern f32 lbl_802FEF5C;
 extern "C" void fn_80043FCC(void* a, void* b, void* c, void* d);
 extern "C" void fn_80043518(void* a, void* b, void* c, void* d);
 struct VObj_80041AC4 {
