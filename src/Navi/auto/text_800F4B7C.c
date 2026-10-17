@@ -73,6 +73,22 @@ extern char lbl_802C5A84[];
 
 extern void* lbl_8028E960[];
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" s32 fn_8002F6BC(void* p);
+extern "C" s32 fn_80108030(void* p);
+extern "C" void fn_8002F358(s32 a, s32 b);
+extern "C" void fn_8002F198(void);
+extern "C" void fn_80030418(s32 a, s32 b);
+extern "C" void fn_801099E8(void* self, u8 b, s16 a);
+struct VObj_801096BC {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(s32 a);
+};
 extern char lbl_802B7CA0[];
 extern char lbl_802BB0FC[];
 extern f32 lbl_80301204;
