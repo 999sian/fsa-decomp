@@ -30,6 +30,12 @@ extern "C" char lbl_80204AEC[];
 extern "C" char lbl_80204AF8[];
 extern "C" char lbl_802FB908[];
 extern "C" char lbl_802FB90C[];
+extern "C" u32 fn_8000F6A0(void);
+extern "C" u32 fn_8016028C(u32, u32, u32, u32);
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void*, void*, s32, void*, void*);
+extern "C" void fn_80007AB8(void*, s32, void*);
+extern "C" u32 fn_8016076C(u32, u16);
 extern "C" void* fn_80012970(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
