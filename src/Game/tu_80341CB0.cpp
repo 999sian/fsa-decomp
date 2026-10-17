@@ -28,6 +28,45 @@ extern "C" void fn_80341CB0(s32 id, f32* pos) {
     Actor_CreateByID(fn_801F856C(), 0x42424D42, id, pos, 0x30000, -1, -1);
 }
 
+extern "C" void fn_8034335C(Actor* p, s32 room, f32* pos) {
+    u8 flags[4];
+    s32 i;
+
+    fn_802D79E8(fn_802D6A9C(), room, 0, 1.0f, 0.0f);
+    fn_80134DE4(lbl_8053AAF8, 3, 0);
+    flags[0] = 0;
+    flags[1] = 0;
+    flags[2] = 0;
+    flags[3] = 0;
+    for (i = 0; i < 4; i++) {
+        if (fn_8022D75C(i) == 1 && fn_80234ECC(i) == 0) {
+            flags[i] = 1;
+            if (fn_8023ED8C(i) == 1) {
+                flags[fn_8023ECF0(i)] = 1;
+            }
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        if (fn_8023F264(i) != 0 && fn_8022F478(i) == 0) {
+            if (fn_8023DE58(i) < 8) {
+                if (fn_80230188(i) == 0 && fn_8022B7C4(i) == 0 && fn_802349EC(i) == 0 && flags[i] == 0) {
+                    fn_80238548(i, 0x20, pos, 0x13);
+                }
+            }
+        }
+    }
+    if (room < 8) {
+        fn_802F601C(*(void**)((u8*)lbl_8053AB10 + 0x20), pos, 1.0f, 1.0f, 6, 0);
+    }
+    fn_8013CC50(room, pos, 0x33, 1, 1, 0, 0, 1, 1.0f);
+    fn_8013CC50(room, pos, 0x34, 1, 1, 0, 0, 1, 1.0f);
+    fn_8013CC50(room, pos, 0x35, 1, 1, 0, 0, 1, 1.0f);
+    fn_8013CC50(room, pos, 0x36, 1, 1, 0, 0, 1, 1.0f);
+    fn_8013CC50(room, pos, 0x37, 1, 1, 0, 0, 1, 1.0f);
+    fn_8013CC50(room, pos, 0x38, 1, 1, 0, 0, 1, 1.0f);
+    fn_801F0E34(p, 0x30001, 0);
+}
+
 extern "C" void fn_803435F8(Actor* p) {
     *(u32*)((u8*)p + 0x244) = *(u32*)((u8*)p + 0x90) & 0xfff;
     *(u32*)((u8*)p + 0x118) = 0x80;
