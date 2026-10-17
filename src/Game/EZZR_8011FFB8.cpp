@@ -154,3 +154,54 @@ extern "C" s32 fn_8011FFC0(void)
 }
 
 extern "C" void fn_8011FFC8(void) {}
+class JASGenericMemPool {
+public:
+    JASGenericMemPool();
+    ~JASGenericMemPool();
+};
+
+template <typename T>
+class JASMemPool_MultiThreaded : public JASGenericMemPool {
+public:
+    ~JASMemPool_MultiThreaded();
+};
+
+template <typename T>
+class JASMemPool : public JASGenericMemPool {
+public:
+    ~JASMemPool();
+};
+
+template <typename T>
+class JASPoolAllocObject_MultiThreaded {
+public:
+    static JASMemPool_MultiThreaded<T> memPool_;
+};
+
+template <typename T>
+class JASPoolAllocObject {
+public:
+    static JASMemPool<T> memPool_;
+};
+
+class JASTrack {
+public:
+    class TChannelMgr;
+};
+class JASChannel;
+class JAIStream;
+class JAISoundChild;
+class JAISeq;
+class JAISe;
+class JASPoolObj3_FSA;
+class JASPoolObj4_FSA;
+
+template <> JASMemPool_MultiThreaded<JASTrack::TChannelMgr> JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>::memPool_;
+template <> JASMemPool_MultiThreaded<JASTrack> JASPoolAllocObject_MultiThreaded<JASTrack>::memPool_;
+template <> JASMemPool_MultiThreaded<JASChannel> JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_;
+template <> JASMemPool<JASPoolObj3_FSA> JASPoolAllocObject<JASPoolObj3_FSA>::memPool_;
+template <> JASMemPool<JASPoolObj4_FSA> JASPoolAllocObject<JASPoolObj4_FSA>::memPool_;
+template <> JASMemPool<JAIStream> JASPoolAllocObject<JAIStream>::memPool_;
+template <> JASMemPool<JAISoundChild> JASPoolAllocObject<JAISoundChild>::memPool_;
+template <> JASMemPool<JAISeq> JASPoolAllocObject<JAISeq>::memPool_;
+template <> JASMemPool<JAISe> JASPoolAllocObject<JAISe>::memPool_;
