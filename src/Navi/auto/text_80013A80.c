@@ -3,6 +3,12 @@
 // .text 0x80013a80-0x80015cc0 (55 functions). split_file divides it into the game's real files.
 
 extern void* lbl_80204F9C[];
+struct StateObj_80015A40;
+typedef void (StateObj_80015A40::*StateFunc_80015A40)(s32);
+struct StateObj_80015A40 {
+    u8 pad[0x64];
+    StateFunc_80015A40 m_func;
+};
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80013F24(void* p);
 extern "C" void* fn_801C027C(void);
@@ -104,6 +110,24 @@ struct Unk80013DA0 {
     s8 unkA8;
 };
 extern "C" void fn_80014390(Unk80013DA0* self);
+extern "C" void fn_80013A80(void)
+{
+    u8* base = lbl_802A2140;
+    s64 time;
+    s32 n;
+
+    if (lbl_802FEBE0 == 0) {
+        time = OSGetTime();
+        fn_801C027C();
+        n = fn_801C1594();
+        fn_801C0884(&base[0], fn_80013B90, 0, base + 0x320 + 0x1000, 0x1000, n - 3, 1);
+        fn_801C0EEC(&base[0]);
+        OSCreateAlarm(base + 0x1320);
+        fn_801BB764(base + 0x1320, 0x80000000, (u32)(time >> 32), (u32)time, 0, *(u32*)0x800000F8 >> 2, fn_80013BEC);
+        lbl_802FEBE0 = 1;
+    }
+}
+
 extern "C" void fn_80013B48(void) {
     if (lbl_802FEBE0) {
         OSCancelThread(lbl_802A2140);
@@ -337,6 +361,31 @@ extern "C" s32 fn_80015574(s8* p) {
         p[0x5e]++;
     }
     return 1;
+}
+
+extern struct Unk80204EA4 lbl_80204F58;
+extern "C" s32 fn_801E10A0(void* p, void* q);
+extern "C" s32 fn_801E1070(void* p);
+extern "C" void fn_801E10DC(void* p, void* q);
+extern "C" void fn_80015A40(void* p) {
+    struct Unk80204EA4 tbl;
+    u8* self = (u8*)p;
+    tbl = lbl_80204F58;
+    if (fn_801E10A0(self + 0x64, &tbl) != 0) {
+        if (fn_801E1070(self + 0x64) != 0) {
+            self[0xa8] = -1;
+            fn_801E10DC(p, 0);
+        }
+        *(struct Unk80204EA4*)(self + 0x64) = tbl;
+        self[0xa8] = 0;
+        *(u16*)(self + 0x88) = 0;
+        *(u16*)(self + 0x8a) = 0;
+        *(u16*)(self + 0x8c) = 0;
+        *(u16*)(self + 0x8e) = 0;
+        *(f32*)(self + 0x90) = 0.0f;
+        fn_801E10DC(p, 0);
+    }
+    self[0xab] = 1;
 }
 
 extern "C" void fn_80015C24(void) {
