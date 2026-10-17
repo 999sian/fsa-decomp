@@ -3,6 +3,7 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry.h"
+#include "sdk/stl/math.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -267,6 +268,8 @@ struct BogfBody {
 };
 
 extern "C" u8* fn_801D686C(u8* this_) {
+    s32 i;
+    s32 off = 0;
     fn_801D0F40(this_);
     *(void**)this_ = lbl_804A4958;
     __construct_array(this_ + 0x2a8, (void*)fn_801D6A88, NULL, 0x18, 4);
@@ -279,42 +282,46 @@ extern "C" u8* fn_801D686C(u8* this_) {
     fn_801E4B0C(this_ + 0x554);
     fn_801E6AB8(this_ + 0x568);
     *(s32*)(this_ + 0x5b0) = -1;
-    *(s32*)(this_ + 0x5b4) = 0;
-    *(s32*)(this_ + 0x5b8) = 0;
+    *(s32*)(this_ + 0x5b4) = off;
+    *(s32*)(this_ + 0x5b8) = off;
     *(f32*)(this_ + 0x5bc) = lbl_8053F0C8;
     *(f32*)(this_ + 0x5c0) = lbl_8053F0C8;
     *(f32*)(this_ + 0x5c4) = lbl_8053F0C8;
     *(f32*)(this_ + 0x5c8) = lbl_8053F0C8;
-    this_[0x5cc] = 0;
-    this_[0x5cd] = 0;
-    this_[0x5ce] = 0;
-    this_[0x5cf] = 0;
-    this_[0x5d0] = 0;
-    this_[0x5d1] = 0;
-    *(s16*)(this_ + 0x5d2) = 0;
-    *(s16*)(this_ + 0x5d4) = 0;
-    *(s32*)(this_ + 0x5d8) = 0;
-    *(s32*)(this_ + 0x5dc) = 0;
+    this_[0x5cc] = off;
+    this_[0x5cd] = off;
+    this_[0x5ce] = off;
+    this_[0x5cf] = off;
+    this_[0x5d0] = off;
+    this_[0x5d1] = off;
+    *(s16*)(this_ + 0x5d2) = off;
+    *(s16*)(this_ + 0x5d4) = off;
+    *(s32*)(this_ + 0x5d8) = off;
+    *(s32*)(this_ + 0x5dc) = off;
     *(f32*)(this_ + 0x5e0) = lbl_8053F0C8;
     *(f32*)(this_ + 0x5e4) = lbl_8053F0C8;
-    this_[0x5e8] = 0;
-    this_[0x5e9] = 0;
+    this_[0x5e8] = off;
+    this_[0x5e9] = off;
     *(f32*)(this_ + 0x5ec) = lbl_8053F0C8;
     *(f32*)(this_ + 0x5f0) = lbl_8053F0C8;
     *(f32*)(this_ + 0x5f4) = lbl_8053F0C8;
     *(f32*)(this_ + 0x5f8) = lbl_8053F0C8;
-    *(s32*)(this_ + 0x5fc) = 0;
+    *(s32*)(this_ + 0x5fc) = off;
     *(f32*)(this_ + 0x600) = lbl_8053F0C8;
     *(f32*)(this_ + 0x604) = lbl_8053F0C8;
     *(f32*)(this_ + 0x608) = lbl_8053F0C8;
     *(f32*)(this_ + 0x60c) = lbl_8053F0C8;
     *(f32*)(this_ + 0x610) = lbl_8053F0C8;
     *(f32*)(this_ + 0x614) = lbl_8053F0C8;
-    for (s32 i = 0; i < 4; i++) {
-        fn_801D789C(this_ + 0x2a8 + i * 0x18);
+    for (i = 0; i < 4; i++) {
+        fn_801D789C(this_ + (off + 0x2a8));
+        off += 0x18;
     }
-    for (s32 i = 0; i < 16; i++) {
-        fn_801D7874(this_ + 0x308 + i * 0x14);
+    i = 0;
+    off = i;
+    for (; i < 16; i++) {
+        fn_801D7874(this_ + (off + 0x308));
+        off += 0x14;
     }
     *(u8**)(this_ + 0x460) = this_;
     return this_;
@@ -357,9 +364,10 @@ extern "C" void fn_801D63D0(u8* this_) {
             BogfRupy* rupy = (BogfRupy*)fn_801F666C(fn_801F856C(), id);
             if (rupy != NULL) {
                 JGeometry::TVec3<f32> v;
-                v.set(lbl_8053F134 * (lbl_8053F138 * lbl_8053AAF8->rnd.get_ufloat_1() - lbl_8053F0D8),
-                      lbl_8053F134 * (lbl_8053F138 * lbl_8053AAF8->rnd.get_ufloat_1() - lbl_8053F0D8),
-                      lbl_8053F0FC * lbl_8053AAF8->rnd.get_ufloat_1() + lbl_8053F0FC);
+                f32 z = lbl_8053F0FC * lbl_8053AAF8->rnd.get_ufloat_1() + lbl_8053F0FC;
+                f32 y = lbl_8053F134 * (lbl_8053F138 * lbl_8053AAF8->rnd.get_ufloat_1() - lbl_8053F0D8);
+                f32 x = lbl_8053F134 * (lbl_8053F138 * lbl_8053AAF8->rnd.get_ufloat_1() - lbl_8053F0D8);
+                v.set(x, y, z);
                 rupy->mVel = v;
             }
         }
@@ -461,9 +469,11 @@ extern "C" void fn_801D4C70(u8* this_) {
     }
     if (this_[0x5d1] != 0) {
         s16 ang = *(s16*)(this_ + 0x5d2);
-        JGeometry::TVec2<f32> v(lbl_8053F0E4 * JMASSin(ang), lbl_8053F0E4 * JMASCos(ang));
-        *(f32*)(this_ + 0x3c) = v.x;
-        *(f32*)(this_ + 0x40) = v.y;
+        f32 k = lbl_8053F0E4;
+        f32 s = JMASSin(ang);
+        f32 c = JMASCos(ang);
+        *(f32*)(this_ + 0x3c) = k * s;
+        *(f32*)(this_ + 0x40) = k * c;
         return;
     }
     JGeometry::TVec2<f32> vel(lbl_8053F0C8, lbl_8053F0C8);
@@ -526,7 +536,7 @@ extern "C" void fn_801D47DC(u8* this_) {
     }
     JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14), lbl_8053F0C8);
     f32 lim = lbl_8053F0CC + rect[1];
-    pos.y = __fsel(lim - pos.y, lim, pos.y);
+    pos.y = (lim - pos.y >= 0.0f) ? lim : pos.y;
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
     case 0x17:
