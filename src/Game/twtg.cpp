@@ -162,8 +162,8 @@ extern "C" void fn_8013665C(void* game, s32 a, s32 b);
 static inline void twtgUpdateDir(char* p, JGeometry::TVec3f& v, f32& dist) {
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
-        s32 room = *(s32*)(p + 0x4);
-        if (*(s32*)(p + 0x254) < 0 || fn_8023DE58(*(s32*)(p + 0x254)) != room) {
+        s32 room;
+        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) != room)) {
             fn_801EE558(p, &v, &dist, 0);
         } else {
             fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
