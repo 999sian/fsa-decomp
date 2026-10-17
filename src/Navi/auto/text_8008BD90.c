@@ -24,3 +24,4 @@ extern "C" void fn_8008BD90(void) {
     *(f32*)(lbl_802C5394 + 16) = lbl_80300A4C;
     __register_global_object(lbl_802C5394, (void*)fn_8008BD48, lbl_802C5388);
 }
+__declspec(section ".ctors") void (*lbl_801F0C70)(void) = fn_8008BD90;
