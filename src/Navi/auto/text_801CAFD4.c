@@ -1404,6 +1404,11 @@ extern "C" s32 fn_801DD3C0(u32* param_1) {
     return ((param_1[2] >> 10) & 0x3ff) + 1;
 }
 
+extern "C" u32 fn_801DD3D0(u8* p)
+{
+	return *(u32*)(p + 0x14);
+}
+
 #pragma dont_inline reset
 extern "C" uint fn_801DD3D8(uint *param_1)
 {
