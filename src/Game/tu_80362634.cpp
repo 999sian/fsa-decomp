@@ -248,6 +248,57 @@ extern "C" void fn_80362B74(char* self) {
 extern "C" void fn_8036335C(void) {
 }
 
+extern "C" const f32 lbl_8050C088[];
+extern "C" const s32 lbl_804745B8[];
+extern "C" f32 lbl_80542B6C;
+extern "C" int __float_epsilon[];
+extern "C" void fn_80363664(char* self) {
+    if (*(s32*)(self + 0x248) == 0) {
+        if (!(JMathInlineVEC::PSVECSquareMag((Vec*)(self + 0x3c)) <= lbl_80542B6C * *(f32*)__float_epsilon)) {
+            s32 prev = *(s32*)(self + 0x26c);
+            do {
+                const f32* v;
+                *(s32*)(self + 0x23c) = fn_801CD664(4);
+                v = &lbl_8050C088[*(s32*)(self + 0x23c) * 3];
+                *(f32*)(self + 0x3c) = v[0];
+                *(f32*)(self + 0x40) = v[1];
+                *(f32*)(self + 0x44) = v[2];
+                *(s32*)(self + 0x248) = fn_801CD664(0x14) + 0x1e;
+                *(s32*)(self + 0x26c) = lbl_804745B8[*(s32*)(self + 0x23c) + 0x14];
+            } while (*(s32*)(self + 0x26c) == prev);
+        } else {
+            f32 zero = lbl_80542B0C;
+            *(f32*)(self + 0x44) = zero;
+            *(f32*)(self + 0x40) = zero;
+            *(f32*)(self + 0x3c) = zero;
+            *(s32*)(self + 0x248) = fn_801CD664(0xa) + 0xf;
+            *(s32*)(self + 0x264) = 0;
+        }
+    }
+    if (JMathInlineVEC::PSVECSquareMag((Vec*)(self + 0x3c)) <= lbl_80542B6C * *(f32*)__float_epsilon) {
+        return;
+    }
+    if (fn_801F2618(self, 0, 0)) {
+        f32 zero = lbl_80542B0C;
+        *(f32*)(self + 0x44) = zero;
+        *(f32*)(self + 0x40) = zero;
+        *(f32*)(self + 0x3c) = zero;
+        *(s32*)(self + 0x248) = fn_801CD664(0xa) + 0xf;
+        *(s32*)(self + 0x264) = 0;
+        return;
+    }
+    JMathInlineVEC::PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
+    if (*(s32*)(self + 0x25c) != 0) {
+        return;
+    }
+    *(s32*)(self + 0x268) += 1;
+    if (*(s8*)(*(s8**)(self + 0x270) + *(s32*)(self + 0x268)) < 0) {
+        *(s32*)(self + 0x268) = 0;
+    }
+    *(s32*)(self + 0x25c) = *(s8*)(*(s8**)(self + 0x270) + *(s32*)(self + 0x268));
+    *(s32*)(self + 0x264) = *(s8*)(*(s8**)(self + 0x274) + *(s32*)(self + 0x268));
+}
+
 extern "C" void fn_80363F7C(char* self) {
     if (*(s32*)(self + 0x25c) == 0) {
         *(s32*)(self + 0x268) = *(s32*)(self + 0x268) + 1;
