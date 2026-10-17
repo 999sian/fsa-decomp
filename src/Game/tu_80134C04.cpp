@@ -4,7 +4,7 @@
 
 extern "C" void fn_80139BE8(void* p);
 struct TuVtable7 {
-    virtual void v0();
+    virtual void v0(s32 flags);
     virtual void v1();
     virtual void v2(s32 flags);
 };
@@ -148,6 +148,57 @@ extern "C" void fn_80134FE0(u8* this_, u8 v) {
         fn_80458658(lbl_8053AF80, this_[0x94]);
     } else {
         this_[0x95] = 1;
+    }
+}
+
+extern "C" void fn_801352F4(char* this_, s32 which) {
+    switch (which) {
+    case 1:
+        if (*(TuVtable7**)(this_ + 0x20) != 0) {
+            (*(TuVtable7**)(this_ + 0x20))->v2(1);
+            *(void**)(this_ + 0x20) = 0;
+        }
+        break;
+    case 2:
+    case 5:
+        if (*(TuVtable7**)(this_ + 0x28) != 0) {
+            (*(TuVtable7**)(this_ + 0x28))->v2(1);
+            *(void**)(this_ + 0x28) = 0;
+        }
+        break;
+    case 3:
+        if (*(TuVtable7**)(this_ + 0x24) != 0) {
+            (*(TuVtable7**)(this_ + 0x24))->v2(1);
+            *(void**)(this_ + 0x24) = 0;
+        }
+        break;
+    case 4:
+        if (*(TuVtable7**)(this_ + 0x2c) != 0) {
+            (*(TuVtable7**)(this_ + 0x2c))->v2(1);
+            *(void**)(this_ + 0x2c) = 0;
+        }
+        break;
+    case 6:
+        if (*(TuVtable7**)(this_ + 0x30) != 0) {
+            (*(TuVtable7**)(this_ + 0x30))->v2(1);
+            *(void**)(this_ + 0x30) = 0;
+        }
+        break;
+    case 7:
+        if (*(void**)(this_ + 4) != 0) {
+            fn_80139BE8(*(void**)(this_ + 4));
+            if (*(TuVtable7**)(this_ + 4) != 0) {
+                (*(TuVtable7**)(this_ + 4))->v2(1);
+            }
+            *(void**)(this_ + 4) = 0;
+        }
+        break;
+    case 12:
+        if (*(TuVtable7**)(this_ + 0x1c) != 0) {
+            (*(TuVtable7**)(this_ + 0x1c))->v2(1);
+            *(void**)(this_ + 0x1c) = 0;
+        }
+        break;
     }
 }
 
@@ -439,7 +490,7 @@ extern "C" void fn_80138C9C(char* this_) {
     *(s32*)(this_ + 0x60) = 0;
     *(s32*)(this_ + 0x64) = 0;
     *(s32*)(this_ + 0x68) = 0;
-    *(u32*)(this_ + 0xb4) = 0x12D5DA0;
+    *(s32*)(this_ + 0xb4) = 19750304;
     *(s32*)(this_ + 0x70) = 0;
     this_[0x80] = 0;
     this_[0x81] = 0;
