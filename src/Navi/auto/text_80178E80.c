@@ -2948,21 +2948,9 @@ extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
 }
 
-inline void* operator new(unsigned long, void* p) { return p; }
-
-struct Base_8018B07C {
-    void* vt;
-    Base_8018B07C() { vt = lbl_80299504; }
-};
-
-struct Obj_8018B07C : Base_8018B07C {
-    Obj_8018B07C() { vt = lbl_802994F0; }
-};
-
-extern "C" void* fn_8018B07C(void* ptr) {
+extern "C" void fn_8018B07C(void* ptr) {
     *(void**)ptr = lbl_80299504;
     *(void**)ptr = lbl_802994F0;
-    return ptr;
 }
 
 extern "C" void fn_80178990(void);
