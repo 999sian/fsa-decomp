@@ -21,6 +21,7 @@ extern "C" void fn_8015AB1C(void* p);
 extern "C" s32 fn_801C7C6C(void* a, void* b);
 extern "C" void fn_801C7D34(void* p);
 #include "dolphin/os/OSFastCast.h"
+#include "dolphin/os/OSAlarm.h"
 extern "C" void fn_8013A57C(void);
 extern "C" void* fn_80139950(void*, void*, void*);
 extern "C" void fn_801334AC();
@@ -510,8 +511,11 @@ extern "C" s32 fn_80124AF4(void* a, s32 idx, u8* out) {
 }
 
 extern "C" void fn_801C0EEC(void*);
-extern "C" void fn_80124DAC(void* p) {
-    fn_801C0EEC(*(void**)((u8*)p + 0x28));
+extern "C" u32 fn_801C027C(void);
+extern "C" void fn_801C1174(void* p);
+extern "C" BOOL OSDisableInterrupts(void);
+extern "C" void fn_80124DAC(OSAlarm* alarm, OSContext* ctx) {
+    fn_801C0EEC(*(void**)((u8*)alarm + 0x28));
 }
 
 extern "C" void fn_80124E44(void* p, void** v)
