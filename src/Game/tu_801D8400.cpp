@@ -306,14 +306,14 @@ struct T84List {
 
 static inline void t84PickTarget(char* p) {
     if (*(u8*)(p + 0x33f) == 3) {
-                                    s32 l[12];
-        s32 n = 1;
-          l[0] = 1;
-          l[n++] = 2;
-          l[n++] = 5;
-          l[n++] = 6;
-          l[n++] = 9;
-          l[n++] = 10;
+                                            s32 l[12];
+        s32 n = 0;
+        l[n++] = 1;
+        l[n++] = 2;
+        l[n++] = 5;
+        l[n++] = 6;
+        l[n++] = 9;
+        l[n++] = 10;
           if (n > 0) {
               *(u8*)(p + 0x334) = l[fn_801CD664(n)];
           } else {
@@ -416,27 +416,28 @@ inline void t84Row(char* p, s32 n, f32 x, f32 y) {
 struct T84 { u8 pad[0x2d4]; JGeometry::TVec2<f32> mTbl[12]; };
 
 extern "C" void fn_801DA124(char* p) {
-    fn_801D0ED0(p);
-    *(f32*)(p + 0x60) = lbl_8053F1D8;
-    *(f32*)(p + 0x64) = lbl_8053F1D8;
-    *(f32*)(p + 0x68) = lbl_8053F1DC;
-    *(f32*)(p + 0x6c) = lbl_8053F1DC;
-    *(f32*)(p + 0x70) = *(f32*)(p + 0x60);
-    *(f32*)(p + 0x74) = *(f32*)(p + 0x64);
-    *(f32*)(p + 0x78) = *(f32*)(p + 0x68);
-    *(f32*)(p + 0x7c) = *(f32*)(p + 0x6c);
-    *(f32*)(p + 0x80) = lbl_8053F1D8;
-    *(f32*)(p + 0x84) = lbl_8053F1D8;
-    *(f32*)(p + 0x88) = lbl_8053F1DC;
-    *(f32*)(p + 0x8c) = lbl_8053F1DC;
-    *(s32*)(p + 0xb0) = 0x40004;
-    *(s32*)(p + 0x98) = 2;
-    *(u32*)(p + 0x230) |= 0x2a0;
-    *(s32*)(p + 0x108) = 0x8c;
-    *(s32*)(p + 0x244) = *(s32*)(p + 0x108);
-    *(s32*)(p + 0x114) = 0;
-    *(u8*)(p + 0x196) = 1;
-    s32 room = *(s32*)(p + 4);
+    char* a = p;
+    fn_801D0ED0(a);
+    *(f32*)(a + 0x60) = lbl_8053F1D8;
+    *(f32*)(a + 0x64) = lbl_8053F1D8;
+    *(f32*)(a + 0x68) = lbl_8053F1DC;
+    *(f32*)(a + 0x6c) = lbl_8053F1DC;
+    *(f32*)(a + 0x70) = *(f32*)(a + 0x60);
+    *(f32*)(a + 0x74) = *(f32*)(a + 0x64);
+    *(f32*)(a + 0x78) = *(f32*)(a + 0x68);
+    *(f32*)(a + 0x7c) = *(f32*)(a + 0x6c);
+    *(f32*)(a + 0x80) = lbl_8053F1D8;
+    *(f32*)(a + 0x84) = lbl_8053F1D8;
+    *(f32*)(a + 0x88) = lbl_8053F1DC;
+    *(f32*)(a + 0x8c) = lbl_8053F1DC;
+    *(s32*)(a + 0xb0) = 0x40004;
+    *(s32*)(a + 0x98) = 2;
+    *(u32*)(a + 0x230) |= 0x2a0;
+    *(s32*)(a + 0x108) = 0x8c;
+    *(s32*)(a + 0x244) = *(s32*)(a + 0x108);
+    *(s32*)(a + 0x114) = 0;
+    *(u8*)(a + 0x196) = 1;
+    s32 room = *(s32*)(a + 4);
     char* game = (char*)fn_802D6A9C();
     char* area;
     if (room < 8) {
@@ -444,33 +445,33 @@ extern "C" void fn_801DA124(char* p) {
     } else {
         area = game + 0xdc;
     }
-    JGeometry::TVec2<f32> v(*(f32*)(p + 0xc), *(f32*)(p + 0x10));
+    JGeometry::TVec2<f32> v(*(f32*)(a + 0xc), *(f32*)(a + 0x10));
     while (v.y < *(f32*)(area + 0xc)) {
         JGeometry::TVec3<f32> pos(v.x, v.y, lbl_8053F1CC);
-        if (((T84Slot19*)p)->v17(*(u32*)(p + 4), &pos)) {
+        if (((T84Slot19*)a)->v17(*(u32*)(a + 4), &pos)) {
             fn_801CCCC4(&v);
             v.y += lbl_8053F228;
             break;
         }
         v.y += lbl_8053F1F8;
     }
-    *(f32*)(p + 0x2d0) = v.y;
-    f32 x0 = *(f32*)(p + 0x24) - lbl_8053F22C;
-    f32 y = lbl_8053F1E4 + *(f32*)(p + 0x28);
-    f32 dy = lbl_8053F1E8 * ((*(f32*)(p + 0x2d0) - lbl_8053F230) - y);
-    t84Row(p, 0, x0, y);
+    *(f32*)(a + 0x2d0) = v.y;
+    f32 x0 = *(f32*)(a + 0x24) - lbl_8053F22C;
+    f32 y = lbl_8053F1E4 + *(f32*)(a + 0x28);
+    f32 dy = lbl_8053F1E8 * ((*(f32*)(a + 0x2d0) - lbl_8053F230) - y);
+    t84Row(a, 0, x0, y);
     y += dy;
-    t84Row(p, 4, x0, y);
+    t84Row(a, 4, x0, y);
     y += dy;
-    t84Row(p, 8, x0, y);
-    *(s32*)(p + 0x248) = 0;
-    *(s32*)(p + 0x24c) = 0;
-    *(s32*)(p + 0x250) = -1;
-    *(f32*)(p + 0x254) = lbl_8053F1CC;
-    *(f32*)(p + 0x258) = lbl_8053F1CC;
-    fn_801DA9E8(p + 0x2a8, 0, 2);
-    fn_801E63D8(p);
-    fn_801DAF44(fn_801DAC6C(), *(u32*)(p + 0x198));
+    t84Row(a, 8, x0, y);
+    *(s32*)(a + 0x248) = 0;
+    *(s32*)(a + 0x24c) = 0;
+    *(s32*)(a + 0x250) = -1;
+    *(f32*)(a + 0x254) = lbl_8053F1CC;
+    *(f32*)(a + 0x258) = lbl_8053F1CC;
+    fn_801DA9E8(a + 0x2a8, 0, 2);
+    fn_801E63D8(a);
+    fn_801DAF44(fn_801DAC6C(), *(u32*)(a + 0x198));
     fn_802D7440(fn_802D6A9C(), 0);
 }
 
@@ -706,8 +707,8 @@ extern "C" BOOL fn_801D95F4(char* p) {
     if (id >= 0) {
         char* a = fn_801F666C(fn_801F856C(), id);
         if (a != NULL) {
-            s32 pl = t84FindPlayer(p);
             JGeometry::TVec2<f32> dir;
+            s32 pl = t84FindPlayer(p);
             if (pl >= 0) {
                 dir.y = fn_8023E724(pl)->y - pos.y;
                 dir.x = fn_8023E724(pl)->x - pos.x;
