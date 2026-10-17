@@ -25,6 +25,8 @@ extern const f32 lbl_80543CCC;
 extern const f64 lbl_80543C98;
 extern const f32 lbl_80543C8C;
 extern const f32 lbl_80543C90;
+extern const f32 lbl_80543CB8;
+extern const f32 lbl_80543CBC;
 extern u8 lbl_8050DB0C[];
 extern u8 lbl_80529DEC[];
 extern void* lbl_8053AED0;
