@@ -6,7 +6,7 @@ struct TWEVParam {
     u8 buf[16];
     s32 a;
     s32 b;
-    s32 c;
+    void* c;
     u8 d[11];
     s32 e;
     u8 f[3];
@@ -26,6 +26,60 @@ extern "C" void __dt__5ActorFv(void* this_, int flag);
 #endif
 extern "C" void fn_801EE434(void* handle);
 extern void* lbl_8049CA40[];
+
+extern "C" void fn_80103348(void* this_);
+extern "C" u32 fn_804032E8(u32 tag, void* name);
+extern "C" void fn_801EFD34(void* this_, u32 id, void* param, s32 n, f32 a, f32 b, f32 c);
+extern "C" void fn_80103914(void* this_) {
+    char* p = (char*)this_;
+    s32 mode = *(s32*)(p + 0x234);
+    switch (mode) {
+    case 0:
+        fn_80103348(this_);
+        break;
+    case 1:
+        if (*(s32*)(p + 0x230) == 2) {
+            TWEVParam param;
+            s32 i;
+            param.a = -1;
+            param.b = -1;
+            for (i = 0; (u8)i < 16; i += 8) {
+                param.buf[(u8)i] = i;
+                param.buf[(u8)(i + 1)] = i + 1;
+                param.buf[(u8)(i + 2)] = i + 2;
+                param.buf[(u8)(i + 3)] = i + 3;
+                param.buf[(u8)(i + 4)] = i + 4;
+                param.buf[(u8)(i + 5)] = i + 5;
+                param.buf[(u8)(i + 6)] = i + 6;
+                param.buf[(u8)(i + 7)] = i + 7;
+            }
+            param.a = -1;
+            param.b = 0;
+            param.c = 0;
+            param.d[0] = 0;
+            param.d[1] = 0;
+            param.d[2] = 0;
+            param.d[3] = 1;
+            param.d[4] = 1;
+            param.d[5] = 0;
+            param.d[6] = 0;
+            param.d[7] = 0;
+            param.d[8] = 0;
+            param.d[9] = 0;
+            param.d[10] = 1;
+            param.e = 3;
+            param.f[0] = 1;
+            param.f[1] = 0;
+            param.f[2] = 0;
+            param.g = -1;
+            param.h = 0;
+            param.i = 2;
+            u32 id = fn_804032E8(0x54494d47, lbl_80463BD0);
+            fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
+        }
+        break;
+    }
+}
 
 extern "C" void* fn_80103F28(void* this_, s16 freeFlag) {
     if (this_ != 0) {
