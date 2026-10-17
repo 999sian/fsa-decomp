@@ -83,6 +83,8 @@ extern s8 lbl_802FEC18;
 extern s32 lbl_802FEC14;
 extern "C" void fn_8001C174(void*, void*, void*, int);
 extern "C" void* fn_8001C010(void);
+extern "C" void fn_8001BFE0(void*);
+extern "C" void fn_8001BEA4(void*);
 extern "C" u32 fn_8001F26C(u32, s16, u32, void*, u32);
 extern "C" void fn_8001C008(void*);
 extern "C" s32 fn_8001B9CC(void);
@@ -1489,19 +1491,9 @@ extern "C" s32 fn_8001C730(void* param_1, u32 param_2, u16 param_3, u16 param_4)
 extern "C" s32 fn_8001E8CC(void* param_1, s32 param_2);
 extern "C" void fn_8001BEA4(void* param_1);
 extern "C" s32 fn_8001E710(void) {
-    u8* p = NULL;
+    u8* p;
     create_tag_class* tag;
-    while (true) {
-        tag = (create_tag_class*)cTg_GetFirst(&lbl_802B7C80);
-        if (tag != NULL) {
-            p = (u8*)tag->mpTagData + 0x68;
-            fn_8001BEA4(p + 0x14);
-        } else {
-            p = NULL;
-        }
-        if (p == NULL) {
-            break;
-        }
+    while ((tag = (create_tag_class*)cTg_GetFirst(&lbl_802B7C80)) != NULL ? (p = (u8*)tag->mpTagData + 0x68, fn_8001BEA4(p + 0x14), true) : (p = NULL, false)) {
         u8* q = *(u8**)(p + 0xc);
         if (fn_8001C730(q + 0x18, *(u32*)(p + 0x30), *(u16*)(p + 0x34), *(u16*)(p + 0x36)) != 1) {
             return 0;
