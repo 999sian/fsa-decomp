@@ -39,6 +39,8 @@ void fn_8028414C(char*);
 u16 fn_802265FC(JGeometry::TVec3<f32>*, s32);
 }
 extern f32 lbl_80540150;
+extern f32 lbl_80540154;
+extern f32 lbl_80540180;
 extern JGeometry::TVec3<f32> lbl_8046B400[];
 extern char* lbl_8053AAF8;
 extern JGeometry::TVec3<f32> lbl_8046B490[20];
