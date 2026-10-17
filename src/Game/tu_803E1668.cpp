@@ -20,6 +20,8 @@ extern "C" f32* getBounds__7J2DPaneFv(void* this_);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* this_, f32 x, f32 y, void* ctx);
 extern "C" void fn_80440EE8(void* p);
 extern "C" void fn_80402E08(void* p, f32 a, f32 b);
+extern "C" void* lbl_8053AB10;
+extern "C" void* lbl_8053AED8;
 
 class J2DGrafContext;
 class J2DScreen {
