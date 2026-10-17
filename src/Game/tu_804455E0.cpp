@@ -23,6 +23,13 @@ extern "C" void fn_8013B490(void*);
 extern u8* lbl_8053AB10;
 extern f32 lbl_80543D88;
 struct J2DGrafContext;
+typedef void (*fn_80445D24_VFn)(void*, void*, int);
+extern "C" void* fn_804030C4(u32, u32);
+extern "C" u32 lbl_804B1B78[];
+extern "C" u32 lbl_804B1BA0[];
+static inline void SetAnimation(J2DPane* pane, void* anm) {
+    ((fn_80445D24_VFn*)*(void**)pane)[0x110 / 4](pane, anm, 0);
+}
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
 struct fn_804460AC_Obj {
     virtual void Release(int);
@@ -76,5 +83,48 @@ extern "C" void* fn_804460AC(void* param_1, short param_2) {
     }
 
     return result;
+}
+
+extern "C" void* fn_804461D0(void* self_) {
+    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
+    self->vt = lbl_804B1BB0;
+    lbl_8053AEF8 = (u8*)self;
+    self->screen = new J2DScreen();
+    self->screen->setPriority(lbl_80490020, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x10));
+    for (int i = 0; i < 4; i++) {
+        u64* row = &lbl_8048FC08[i * 24];
+        void* obj = operator new(0x2c);
+        if (obj != 0) {
+            *(void**)obj = lbl_804AF86C;
+        }
+        self->a[i] = obj;
+        fn_80402F04(self->a[i], self->screen->search(row[1]));
+        obj = operator new(0x2c);
+        if (obj != 0) {
+            *(void**)obj = lbl_804AF86C;
+        }
+        self->b[i] = obj;
+        fn_80402F04(self->b[i], self->screen->search(row[8]));
+        obj = operator new(0x2c);
+        if (obj != 0) {
+            *(void**)obj = lbl_804AF86C;
+        }
+        self->c[i] = obj;
+        fn_80402F04(self->c[i], self->screen->search(row[23]));
+    }
+    self->d[0] = 0;
+    self->e[0] = 0;
+    self->f[0] = 1;
+    self->d[1] = 0;
+    self->e[1] = 0;
+    self->f[1] = 1;
+    self->d[2] = 0;
+    self->e[2] = 0;
+    self->f[2] = 1;
+    self->d[3] = 0;
+    self->e[3] = 0;
+    self->f[3] = 1;
+    self->g = 0;
+    return self_;
 }
 
