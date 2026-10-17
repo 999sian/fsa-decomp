@@ -1,6 +1,18 @@
 #include "types.h"
 #include <math.h>
 
+extern "C" f32 lbl_8053D130;
+extern "C" f32 lbl_8053D138;
+extern "C" f32 lbl_8053D144;
+extern "C" f32 lbl_8053D16C;
+extern "C" f32 lbl_8053D170;
+extern "C" f32 lbl_8053D174;
+extern "C" f32 lbl_8053D19C;
+extern "C" f32 lbl_8053D1A0;
+extern "C" u8* lbl_8053AAF8;
+extern "C" s32 lbl_8049F760[];
+extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" void fn_801F0E34(void* a, s32 b, s32 c);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
