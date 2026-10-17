@@ -100,7 +100,11 @@ struct Tu80390818 {
 };
 
 struct Tu80390818_Mgr {
-    u8 pad0[0xED];
+    u8 pad0[0x44];
+    s32 m44;
+    u8 pad48[0xE9 - 0x48];
+    u8 mE9;
+    u8 padEA[0xED - 0xEA];
     u8 mED;
     u8 padEE[0x110 - 0xEE];
     s32 m110;
