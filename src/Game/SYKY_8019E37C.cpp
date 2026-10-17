@@ -15,7 +15,7 @@ extern const f32 lbl_8053E464;
 extern const char lbl_80468494[];
 extern s32 lbl_804C6330[];
 extern u8 lbl_8053ABB8[];
-struct SykyVT { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual u8 v12(); };
+struct SykyVT { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual u8 v11(); virtual u8 v12(); };
 extern void* lbl_8053AF10;
 extern const f32 lbl_8053E460;
 extern const char lbl_80468480[];
@@ -112,5 +112,80 @@ extern "C" void* fn_801A024C(u8* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern const f32 lbl_8053E4E0;
+extern const f32 lbl_8053E4B4;
+extern const f32 lbl_8053E4E4;
+extern const f32 lbl_8053E47C;
+extern const f32 lbl_8053E4E8;
+extern "C" void fn_801A033C(u8* p) {
+    *(f32*)(p + 0x60) = lbl_8053E4E0;
+    *(f32*)(p + 0x64) = lbl_8053E4E0;
+    *(f32*)(p + 0x68) = lbl_8053E4B4;
+    *(f32*)(p + 0x6c) = lbl_8053E4B4;
+    *(f32*)(p + 0x80) = lbl_8053E4E0;
+    *(f32*)(p + 0x84) = lbl_8053E4E0;
+    *(f32*)(p + 0x88) = lbl_8053E4B4;
+    *(f32*)(p + 0x8c) = lbl_8053E4B4;
+    *(f32*)(p + 0x70) = lbl_8053E4E4;
+    *(f32*)(p + 0x74) = lbl_8053E4E4;
+    *(f32*)(p + 0x78) = lbl_8053E47C;
+    *(f32*)(p + 0x7c) = lbl_8053E47C;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = 0;
+    *(s32*)(p + 0x254) = 0;
+    *(s32*)(p + 0x258) = 0;
+    *(s32*)(p + 0x25c) = 0;
+    *(s32*)(p + 0x260) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x98) = 2;
+    *(s32*)(p + 0x264) = 0;
+    *(f32*)(p + 0x290) = lbl_8053E460;
+    *(f32*)(p + 0x294) = lbl_8053E464;
+    *(f32*)(p + 0x298) = lbl_8053E4E8;
+    p[0x28c] = 0;
+    *(f32*)(p + 0x2a8) = lbl_8053E464;
+    *(f32*)(p + 0x2a4) = lbl_8053E464;
+    *(f32*)(p + 0x2a0) = lbl_8053E464;
+    *(f32*)(p + 0x44) = lbl_8053E464;
+    *(f32*)(p + 0x40) = lbl_8053E464;
+    *(f32*)(p + 0x3c) = lbl_8053E464;
+    *(f32*)(p + 0x29c) = *(f32*)(p + 0x10);
+    *(s32*)(p + 0x268) = *(u32*)(p + 0x90) & 0xf;
+    switch (*(s32*)(p + 0x268)) {
+    case 0:
+        lbl_8053ABB8[0] = 0;
+        lbl_804C6330[0] = 0;
+        lbl_8053ABB8[1] = 0;
+        lbl_804C6330[1] = 0;
+        lbl_8053ABB8[2] = 0;
+        lbl_804C6330[2] = 0;
+        lbl_8053ABB8[3] = 0;
+        lbl_804C6330[3] = 0;
+        *(s32*)(p + 0xb0) = 0xa040004;
+        if (((SykyVT*)p)->v12()) {
+            *(s32*)(p + 0x230) = 6;
+        } else {
+            *(s32*)(p + 0x230) = 0;
+        }
+        break;
+    case 1:
+    case 2:
+        *(s32*)(p + 0x230) = 9;
+        break;
+    case 3:
+        *(s32*)(p + 0x108) = 10000;
+        *(s32*)(p + 0xb0) = 0xf;
+        *(s32*)(p + 0x230) = 0xe;
+        break;
+    case 4:
+        *(s32*)(p + 0x230) = 0xb;
+        break;
+    }
 }
 
