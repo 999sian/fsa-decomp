@@ -3,6 +3,16 @@
 // .text 0x80157a54-0x80157ac4 (5 functions). split_file divides it into the game's real files.
 
 extern "C" u8* lbl_802FF4BC;
+
+struct Unk802FF4BC {
+    u8 pad0[0x70];
+    u16 unk70;
+    u8 pad72[0x94 - 0x72];
+    u32 unk94;
+    u32 unk98;
+    u8 pad9c[0xf4 - 0x9c];
+};
+
 extern "C" void fn_80157A54(int idx, u32 a, u32 b)
 {
     *(u32*)(lbl_802FF4BC + idx * 0xf4 + 0x94) = a;
