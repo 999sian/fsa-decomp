@@ -1308,6 +1308,8 @@ extern "C" void fn_801B34A4(void) {}
 
 extern "C" void fn_801B34A8(void) {}
 
+extern "C" void fn_801B34AC(void) {}
+
 extern void* lbl_8029B800[];
 extern void* lbl_8029A0D4[];
 extern "C" void* fn_801B34BC(void* ptr, s16 param_2) {
