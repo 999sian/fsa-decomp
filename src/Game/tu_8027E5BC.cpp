@@ -69,6 +69,36 @@ void fn_8027F16C(char* p) {
         fn_802416FC(p, 0x180);
 }
 
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 i);
+extern "C" s32 fn_8022E8D4(s32 i);
+extern "C" s32 fn_80248778(char* p);
+extern const f32 lbl_8046BF98[][4][2];
+extern const f32 lbl_8046C018[][4][2];
+void fn_8027F854(char* p, JGeometry::TVec3<f32>* out, s32 i) {
+    JGeometry::TVec3<f32>* v = fn_8023E724(i);
+    out->x = v->x;
+    out->y = v->y;
+    out->z = v->z;
+    switch (fn_802486A0(p)) {
+    case 3:
+        out->x += lbl_8046BF98[i][S32(p, 0x4)][0];
+        out->y += lbl_8046BF98[i][S32(p, 0x4)][1];
+        break;
+    case 2:
+        out->x += lbl_8046C018[i][S32(p, 0x4)][0];
+        out->y += lbl_8046C018[i][S32(p, 0x4)][1];
+        break;
+    case 0:
+        out->x += lbl_80540368 * (f32)(fn_80248778(p) - fn_8022E8D4(i));
+        break;
+    case 1:
+        out->y += lbl_80540368 * (f32)(fn_80248778(p) - fn_8022E8D4(i));
+        break;
+    case 5:
+        break;
+    }
+}
+
 void fn_80280DD8(char* p) {
     void* emitter = PTR(p, 0x1350);
     if (emitter != NULL) {
@@ -579,6 +609,40 @@ void fn_802857C8(char* p) {
         U8(p, 0x3f9) = U8(p, 0x438);
     }
     U8(p, 0x458) = 0;
+}
+
+void fn_8027E7E0(char*);
+u8 fn_8023EA28(s32);
+u8 fn_802300EC(s32);
+u8 fn_8023B0F4(s32, void*, s32, f32, s32);
+s32 Actor_CreateByID(void*, u32, u32, void*, u32, s32, s32);
+void fn_802857F0(char* p) {
+    if (lbl_80540360 < F32(p, 0x10) && U8(p, 0x434) == 0) {
+        F32(p, 0x10) = lbl_80540360;
+    }
+    u16 state = (u16)fn_8022461C(p + 8, S32(p, 0x3b4));
+    if (state == 3 || state == 0xe || state == 0x3a) {
+        fn_8013CC50(S32(p, 0x3b4), p + 8, 0x503, 1, 1, 0, 0, 1, lbl_8054036C);
+        S32(p, 0x3b4) = 0;
+        F32(p, 8) = F32(p, 0x2c4);
+        F32(p, 0xc) = F32(p, 0x2c8);
+        F32(p, 0x10) = F32(p, 0x2cc);
+        fn_8013CC50(S32(p, 0x3b4), p + 8, 0x503, 1, 1, 0, 0, 1, lbl_8054036C);
+    }
+    fn_8027E7E0(p);
+    fn_80268B3C(p);
+    for (s32 i = 0; i < 4; i++) {
+        if (i != S32(p, 4) && (U8(lbl_8053AAF8, 0x82) & (u8)(1 << i)) && !fn_8023EA28(i) && fn_802300EC(i) && fn_8023B0F4(i, p + 0x4c0, S32(p, 0x3b4), lbl_8054036C, 0) && S32(p, 0xd60) < 0) {
+            S32(p, 0xd60) = i;
+            if (fn_80251AEC(p, 0)) {
+                S32(p, 0x11ec) = i;
+                void* mgr = fn_801F856C();
+                Actor_CreateByID(mgr, 0x54534e4f, S32(p, 0x3b4), p + 8, i & 3, -1, S32(p, 4));
+                return;
+            }
+            S32(p, 0xd60) = -1;
+        }
+    }
 }
 
 void fn_802859B8(char* p) { U8(p, 0x458) = 0; }
