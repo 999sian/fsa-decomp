@@ -1,5 +1,9 @@
 #include "Game/Actor.h"
 
+extern "C" void* lbl_8053AAF8;
+extern "C" u8 lbl_8046CAD0[];
+extern "C" void fn_801EFD34(Actor* p, void* obj, f32 x, f32 y, f32 z, void* buf, s32 n);
+
 
 extern "C" char lbl_804A87A8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
