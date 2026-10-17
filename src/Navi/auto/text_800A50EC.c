@@ -4,7 +4,7 @@ struct VObj_800A1A64 {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
+    virtual void v4(f32 x, f32 y);
     virtual void v5();
 };
 
