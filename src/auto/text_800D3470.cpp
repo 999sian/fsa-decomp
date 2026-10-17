@@ -16,7 +16,7 @@ struct Vtable800D8248 {
 #include "JSystem/J3D/J3DTypes.h"
 extern "C" u32 lbl_80539E10;
 extern "C" u32 lbl_80539E18;
-static const u32 lbl_8053BCC8 = 0x02000201;
+extern "C" u32 lbl_8053BCC8;
 static inline void writeChanCtrl(u16 x) {
     u8 attnTbl[4];
     *(u32*)attnTbl = lbl_8053BCC8;
