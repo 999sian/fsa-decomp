@@ -884,23 +884,19 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 	if (self) {
 		*(u8**)self = lbl_804B1288;
 		fn_8042EB14(lbl_8053AEC4);
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 4; i++, p += 4) {
-				if (*(void**)(p + 0x2cc)) killEmitter((JPABaseEmitter**)(p + 0x2cc));
-				if (*(void**)(p + 0x2dc)) killEmitter((JPABaseEmitter**)(p + 0x2dc));
-				if (*(void**)(p + 0x2f8)) {
-					stopEmitter(*(void**)(p + 0x2f8));
-					*(void**)(p + 0x2f8) = 0;
-				}
+		u8* q = self;
+		for (s32 i = 0; i < 4; i++, q += 4) {
+			if (*(void**)(q + 0x2cc)) killEmitter((JPABaseEmitter**)(q + 0x2cc));
+			if (*(void**)(q + 0x2dc)) killEmitter((JPABaseEmitter**)(q + 0x2dc));
+			if (*(void**)(q + 0x2f8)) {
+				stopEmitter(*(void**)(q + 0x2f8));
+				*(void**)(q + 0x2f8) = 0;
 			}
 		}
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 3; i++, p += 4) {
-				if (*(void**)(p + 0x2ec)) forceDelSlot((JPABaseEmitter**)(p + 0x2ec));
-				*(void**)(p + 0x2ec) = 0;
-			}
+		q = self;
+		for (s32 i = 0; i < 3; i++, q += 4) {
+			if (*(void**)(q + 0x2ec)) (*(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc))->forceDeleteEmitter(*(JPABaseEmitter**)(q + 0x2ec));
+			*(void**)(q + 0x2ec) = 0;
 		}
 		if (*(void**)(self + 0x308)) {
 			stopEmitter(*(void**)(self + 0x308));
@@ -918,79 +914,59 @@ extern "C" u8* fn_80411C48(u8* self, s16 del) {
 		delSlot(self + 0x10);
 		delSlot(self + 0x14);
 		delSlot(self + 0x18);
-		{
-			u8* r = self;
-			for (s32 i = 0; i < 8; i++, r += 0x14) {
-				u8* p = r;
-				for (s32 j = 0; j < 3; j++, p += 4) {
-					delSlot(p + 0x28);
-				}
+		u8* r = self;
+		for (s32 i = 0; i < 8; i++, r += 0x14) {
+			u8* p = r;
+			for (s32 j = 0; j < 3; j++, p += 4) {
+				delSlot(p + 0x28);
 			}
 		}
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 0xf; i++, p += 4) {
-				delSlot(p + 0x278);
-			}
+		q = self;
+		for (s32 i = 0; i < 0xf; i++, q += 4) {
+			delSlot(q + 0x278);
 		}
 		delSlot(self + 0xc8);
 		delSlot(self + 0xcc);
 		delSlot(self + 0xd0);
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 0x12; i++, p += 4) {
-				delSlot(p + 0xd4);
-			}
+		q = self;
+		for (s32 i = 0; i < 0x12; i++, q += 4) {
+			delSlot(q + 0xd4);
 		}
 		delSlot(self + 0x11c);
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 2; i++, p += 4) {
-				delSlot(p + 0x120);
-			}
+		q = self;
+		for (s32 i = 0; i < 2; i++, q += 4) {
+			delSlot(q + 0x120);
 		}
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 0x20; i++, p += 4) {
-				delSlot(p + 0x128);
-			}
+		q = self;
+		for (s32 i = 0; i < 0x20; i++, q += 4) {
+			delSlot(q + 0x128);
 		}
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 0x18; i++, p += 4) {
-				delSlot(p + 0x1a8);
-			}
+		q = self;
+		for (s32 i = 0; i < 0x18; i++, q += 4) {
+			delSlot(q + 0x1a8);
 		}
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 8; i++, p += 4) {
-				delSlot(p + 0x208);
-			}
+		q = self;
+		for (s32 i = 0; i < 8; i++, q += 4) {
+			delSlot(q + 0x208);
 		}
-		{
-			u8* r = self;
-			for (s32 i = 0; i < 2; i++, r += 8) {
-				u8* p = r;
-				for (s32 j = 0; j < 2; j++, p += 4) {
-					delSlot(p + 0x228);
-				}
+		r = self;
+		for (s32 i = 0; i < 2; i++, r += 8) {
+			u8* p = r;
+			for (s32 j = 0; j < 2; j++, p += 4) {
+				delSlot(p + 0x228);
 			}
 		}
 		delSlot(self + 0x238);
 		delSlot(self + 0x23c);
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 0xc; i++, p += 4) {
-				delSlot(p + 0x240);
-			}
+		q = self;
+		for (s32 i = 0; i < 0xc; i++, q += 4) {
+			delSlot(q + 0x240);
 		}
 		delSlot(self + 0x270);
 		delSlot(self + 0x274);
-		{
-			u8* p = self;
-			for (s32 i = 0; i < 4; i++, p += 4) {
-				delSlot2(p + 0x2b8);
-			}
+		q = self;
+		for (s32 i = 0; i < 4; i++, q += 4) {
+			delSlot2(q + 0x2b8);
 		}
 		delSlot2(self + 0x2c8);
 		lbl_8053ADF8 = 0;
@@ -1041,7 +1017,68 @@ struct T5B10 {
 	u8 f65e;
 };
 
-extern "C" void fn_804054B8(T5B10* self) {}
+extern "C" void fn_804054B8(T5B10* self) {
+	Tbl8048C1F8* t = &lbl_8048C1F8;
+	if (!self->scr->search(0x4E646174613130ULL)->f0b0) {
+		self->scr->search(0x4E646174613130ULL)->f0b0 = 1;
+		self->scr->search(0x4E646174613130ULL)->v10(self->f394, self->f398);
+		self->f424 = 0;
+		u64* e = (u64*)((u8*)t + 0x420);
+		for (int i = 0; i < 4; i++, e += 2) {
+			self->scr->search(e[0])->f0b0 = 0;
+			self->scr->search(e[1])->f0b0 = 0;
+		}
+		s32 n = 0;
+		if (self->f38c & (1 << (self->f340 * 4))) n = 1;
+		if (self->f38c & (1 << (self->f340 * 4 + 1))) n++;
+		if (self->f38c & (1 << (self->f340 * 4 + 2))) n++;
+		if (self->f38c & (1 << (self->f340 * 4 + 3))) n++;
+		if (n > 1) {
+			if (fn_804045F8(self, self->f340)) {
+				if ((self->f340 <= 5 || self->f340 == 6) && !(self->f38c & (1 << (self->f340 * 4 + 1)))) {
+					if (self->f34c == 0) {
+						self->scr->search(t->names[lbl_80543880[self->f340]][0])->f0b0 = 1;
+					}
+					if (self->f34c == 2) {
+						self->scr->search(t->names[lbl_80543888[self->f340]][0])->f0b0 = 1;
+					}
+				} else if (self->f34c < n - 1) {
+					self->scr->search(t->names[((u8*)t)[0x714 + self->f340 * 3 + self->f34c]][0])->f0b0 = 1;
+					if (self->f34c > 0) {
+						self->scr->search(t->names[((u8*)t)[0x72c + self->f340 * 3 + self->f34c - 1]][0])->f0b0 = 1;
+					}
+				} else {
+					if (n - 1 == 4 && self->f34c < 2) {
+						self->scr->search(t->names[t->next[self->f340][self->f34c]][0])->f0b0 = 1;
+					}
+					if (self->f34c > 0) {
+						self->scr->search(t->names[t->prev[self->f340][self->f34c - 1]][0])->f0b0 = 1;
+					}
+				}
+			}
+		}
+	}
+	if (++self->f424 >= 15) {
+		self->f424 = 0;
+		u64* e = (u64*)((u8*)t + 0x420);
+		for (int i = 0; i < 4; i++, e += 2) {
+			if (self->scr->search(e[0])->f0b0) {
+				self->scr->search(e[0])->f0b0 = 0;
+				self->scr->search(e[1])->f0b0 = 1;
+			} else if (self->scr->search(e[1])->f0b0) {
+				self->scr->search(e[0])->f0b0 = 1;
+				self->scr->search(e[1])->f0b0 = 0;
+			}
+		}
+	}
+	u8* p = (u8*)self;
+	s16* q = (s16*)(lbl_8050DB0C + 0x274);
+	u64* e = (u64*)((u8*)t + 0x420);
+	for (int i = 0; i < 4; i++, e += 2, q += 2, p += 8) {
+		self->scr->search(e[0])->v10(*(f32*)(p + 0x3bc) + (f32)q[0], *(f32*)(p + 0x3dc) + (f32)q[1]);
+		self->scr->search(e[1])->v10(*(f32*)(p + 0x3c0) + (f32)q[0], *(f32*)(p + 0x3e0) + (f32)q[1]);
+	}
+}
 
 extern "C" void fn_80405B10(T5B10* self, s32 key) {
 	Tbl8048C1F8* t = &lbl_8048C1F8;
