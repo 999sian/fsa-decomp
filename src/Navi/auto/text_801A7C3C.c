@@ -149,6 +149,11 @@ extern "C" void fn_801A7D54(Blk_801A7D54* dst, Blk_801A7D54* src) {
     *dst = *src;
 }
 
+extern "C" void fn_801A7E24(u8* dst, u8* src) {
+    typedef struct { u8 b; f32 x, y, z; } S;
+    *(S*)dst = *(S*)src;
+}
+
 extern "C" void fn_801A833C(void* p);
 extern "C" void fn_801AFB98(void* p);
 extern "C" void* lbl_802FF708;
@@ -169,6 +174,13 @@ extern "C" void fn_80192E40(void*);
 
 extern "C" void fn_801A833C(void* p) {
     lbl_802FF700 = p;
+}
+
+extern "C" void fn_801A83A8(u8* p) {
+    *(u32*)(p + 4) = 0;
+    *(u32*)(p + 8) = 0;
+    *(u16*)(p + 0xc) = 0;
+    *(u16*)(p + 0xe) = 0;
 }
 
 extern "C" u8* fn_801A83C0(u8* p) {
