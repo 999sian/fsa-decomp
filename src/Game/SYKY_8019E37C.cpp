@@ -15,6 +15,7 @@ struct SykyVec {
     }
 };
 
+struct SykyAfState { u8 pad[0x28]; u8 arr[4]; u8 flags; };
 extern "C" void fn_80458880(void*, s32, s32);
 extern const f32 lbl_8053E4A4;
 extern const f32 lbl_8053E4A8;
@@ -74,8 +75,9 @@ extern "C" void fn_8019E37C(u8* p) {
             for (i = 0; i < 4; i++) {
                 if (!fn_8022F478(i)) {
                     s32 idx = fn_8022F340(i);
-                    ((u8*)lbl_8053AF10)[0x2c] |= (u8)(1 << idx);
-                    ((u8*)lbl_8053AF10)[idx + 0x28] = (u8)(10 - lbl_804C6330[idx]);
+                    s32 off = idx + 0x28;
+                    ((u8*)lbl_8053AF10)[0x2c] |= (u8)(1u << idx);
+                    ((u8*)lbl_8053AF10)[off] = (u8)(10 - lbl_804C6330[idx]);
                 }
             }
         }
@@ -89,6 +91,52 @@ extern "C" void fn_8019E37C(u8* p) {
     case 3:
         fn_8019E7A4(p);
         break;
+    }
+}
+
+extern "C" void fn_8019E480(u8* p) {
+    DrawRec rec;
+    f32 vec[4][3];
+    s32 id = 0;
+    vec[1][0] = lbl_8053E464;
+    vec[2][1] = lbl_8053E464;
+    vec[3][2] = lbl_8053E464;
+    f32 scale = *(f32*)(p + 0x290);
+    f32 ang = *(f32*)(p + 0x294) / lbl_8053E468;
+    f32 sx = sin(lbl_8053E464);
+    f32 sy = sin(ang);
+    f32 sz = sin(lbl_8053E464);
+    f32 cx = cos(lbl_8053E464);
+    f32 cy = cos(ang);
+    f32 cz = cos(lbl_8053E464);
+    vec[0][0] = scale * (cy * cz);
+    vec[0][1] = scale * ((sx * sy) * cz - cx * sz);
+    vec[0][2] = scale * ((cx * cz) * sy + sx * sz);
+    vec[1][1] = scale * (cy * sz);
+    vec[1][2] = scale * ((sx * sy) * sz + cx * cz);
+    vec[2][0] = scale * ((cx * sz) * sy - sx * cz);
+    vec[2][2] = scale * -sy;
+    vec[3][0] = scale * (sx * cy);
+    vec[3][1] = scale * (cx * cy);
+    rec.w18 = vec;
+    switch (*(s32*)(p + 0x268)) {
+    case 1:
+        id = 9;
+        break;
+    case 2:
+        id = 0x1d;
+        break;
+    case 4:
+        id = 0xd;
+        rec.w30 = 0x11;
+        break;
+    }
+    *((u8*)&rec.w10 + 3) = (u8)*(f32*)(p + 0x298);
+    if (*(s32*)(p + 4) < 8) {
+        id += *(s32*)(p + 0x264);
+        SykyObjVT* obj = *(SykyObjVT**)((u8*)lbl_8053AAF8 + 0xa4);
+        s32 kind = obj->v6(0x534F4220, lbl_80468480);
+        fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), (Vec*)(p + 0xc), kind, id, lbl_8053E460, lbl_8053E460, &rec);
     }
 }
 
