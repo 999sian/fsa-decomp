@@ -394,8 +394,9 @@ extern "C" void fn_803ABCEC(Menu_Slide* p) {
                 p->state[i] = 0xbd;
             }
         }
-        s32 sub = ((GameResult*)lbl_80529DEC)->sub;
-        s32 mode = ((GameResult*)lbl_80529DEC)->mode;
+        GameResult* g = (GameResult*)lbl_80529DEC;
+        s32 mode = g->mode;
+        s32 sub = g->sub;
         s32 k = sub;
         switch (mode) {
         case 0:
@@ -419,18 +420,18 @@ extern "C" void fn_803ABCEC(Menu_Slide* p) {
             break;
         }
         if (p->m4c8 == 0) {
-            ((GameResult*)lbl_80529DEC)->wins[p->ids[0]]++;
-            ((GameResult*)lbl_80529DEC)->winMask = 0;
-            ((GameResult*)lbl_80529DEC)->winMask = 1 << p->ids[0];
-            if (((GameResult*)lbl_80529DEC)->mode >= 0 && ((GameResult*)lbl_80529DEC)->mode < 8 && k >= 0 && k < 3) {
-                ((GameResult*)lbl_80529DEC)->winner[((GameResult*)lbl_80529DEC)->mode][k] = p->ids[0];
+            g->wins[p->ids[0]]++;
+            g->winMask = 0;
+            g->winMask = 1 << p->ids[0];
+            if (mode >= 0 && mode < 8 && k >= 0 && k < 3) {
+                g->winner[mode][k] = p->ids[0];
             }
             if (p->m4c8 != 0xff) {
                 fn_80458880(lbl_8053AF80, 0x11, -1);
             }
         } else {
             if (mode >= 0 && mode < 8 && sub >= 0 && sub < 3) {
-                ((GameResult*)lbl_80529DEC)->winner[mode][sub] = 0xff;
+                g->winner[mode][sub] = 0xff;
             }
             fn_80458880(lbl_8053AF80, 0x2b, -1);
         }
@@ -1588,9 +1589,6 @@ static const s32 lbl_80476398[3] = {300, 150, 0};
 static const s32 lbl_80543378[2] = {150, 0};
 
 extern "C" void fn_803AFCF0(Menu_Rank* p) {
-    static const s32 tbl0[4] = {300, 150, 50, 0};
-    static const s32 tbl1[3] = {300, 150, 0};
-    static const s32 tbl2[2] = {150, 0};
     s32 done = 0;
     s32 n = 0;
     u8 any = 0;
@@ -1624,13 +1622,13 @@ extern "C" void fn_803AFCF0(Menu_Rank* p) {
                     } else {
                         switch (p->cur) {
                         case 0:
-                            p->target[i] = tbl0[placed];
+                            p->target[i] = lbl_80476388[placed];
                             break;
                         case 1:
-                            p->target[i] = tbl1[placed];
+                            p->target[i] = lbl_80476398[placed];
                             break;
                         case 2:
-                            p->target[i] = tbl2[placed];
+                            p->target[i] = lbl_80543378[placed];
                             break;
                         }
                     }
@@ -1658,8 +1656,9 @@ extern "C" void fn_803AFCF0(Menu_Rank* p) {
         }
     }
     if (done >= p->count) {
+        s32 t;
         for (s32 j = 0; j < p->count; j++) {
-            s32 t = p->target[j];
+            t = p->target[j];
             if (best < t) {
                 p->m4c8 = 0;
                 best = t;
