@@ -1785,12 +1785,35 @@ extern "C" void fn_8012F588(u32* p, u32 v)
 	p[1] = v + 0xc;
 }
 
+extern "C" void fn_8012F598(void** p, f32 t) {
+    u8* obj = (u8*)p[0];
+    if (obj[0xb] != 0) {
+        f32* arr = (f32*)p[1];
+        s32 idx = obj[9] - 1;
+        s32 a = (s32)t;
+        s32 b = (s32)arr[idx];
+        s32 q = (a / (b + 1)) * (b + 1);
+        t = t - (f32)q;
+    }
+    fn_801326B0(obj[9], p[1]);
+}
+
 extern "C" void fn_8012F738(void* p);
 extern "C" void* fn_8012F6F8(void* a, s32 b, void* c) {
     if (b == 0x322d3130) {
         fn_8012F738(a);
     }
     return a;
+}
+
+extern "C" void fn_80130974(void* p);
+extern "C" void fn_80166FC4(void* a, void* b);
+extern "C" void fn_80166D3C(void* a, void* b);
+extern "C" void fn_80130090(void** param_1, u8* param_2) {
+    fn_80130974(param_2);
+    *(u32*)(param_2 + 0xf4) |= 0x300;
+    fn_80166FC4((u8*)*param_1 + param_2[0x112] * 0xc, param_2 + 0x58);
+    fn_80166D3C(param_1 + 1, param_2 + 0x58);
 }
 
 extern "C" void fn_801300FC(u8* p, u32 v, u8 i) {
@@ -1878,14 +1901,20 @@ extern "C" s32 fn_80130AE8(u8* p) {
 extern "C" void fn_801C622C(f32 (*)[4], f32, f32, f32);
 extern "C" void fn_801C6630(f32 (*)[4], void*, void*);
 extern "C" void fn_80130BC4(void* a, JGeometry::TVec3f* out) {
+    u8* self = (u8*)a;
     f32 m[3][4];
-    fn_801C622C(m, *(f32*)((u8*)a + 0x98), *(f32*)((u8*)a + 0x9c), *(f32*)((u8*)a + 0xa0));
-    fn_801C5DA8((u8*)a + 0x68, m, m);
-    JGeometry::TVec3f* t = (JGeometry::TVec3f*)((u8*)a + 0xa4);
-    m[0][3] = t->x;
-    m[1][3] = t->y;
-    m[2][3] = t->z;
-    fn_801C6630(m, (u8*)a + 0xc, out);
+    fn_801C622C(m, *(f32*)(self + 0x98), *(f32*)(self + 0x9c), *(f32*)(self + 0xa0));
+    fn_801C5DA8(self + 0x68, m, m);
+    f32 z;
+    f32 y;
+    f32 x;
+    x = *(f32*)(self + 0xa4);
+    y = *(f32*)(self + 0xa8);
+    z = *(f32*)(self + 0xac);
+    m[0][3] = x;
+    m[1][3] = y;
+    m[2][3] = z;
+    fn_801C6630(m, self + 0xc, out);
 }
 
 extern "C" u32 fn_80130C44(u8* param_1)
