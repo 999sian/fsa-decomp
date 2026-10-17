@@ -143,6 +143,13 @@ extern "C" void fn_800D1E44(u8* p) {
     fn_800D3120(p, p[0x26d], lbl_802C5774[0x12], *(f32*)(lbl_802C5774 + 0x14), lbl_80300F88, 0, 0);
 }
 
+struct NaviState_800D1EE8;
+typedef void (NaviState_800D1EE8::*NaviStateFn_800D1EE8)();
+extern NaviStateFn_800D1EE8 lbl_80289394[];
+extern "C" void fn_800D1EE8(NaviState_800D1EE8* p) {
+    (p->*lbl_80289394[((u8*)p)[0x264]])();
+}
+
 extern "C" void fn_800D2F3C(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
