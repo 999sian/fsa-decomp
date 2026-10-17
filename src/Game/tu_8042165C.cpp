@@ -49,6 +49,11 @@ extern "C" u32 fn_8030AAF4(s32 i);
 extern "C" s32 fn_80309D24(u8* a, u32 b, s32 c);
 extern "C" u32 fn_802373EC(s32 i);
 extern "C" s32 fn_8023725C(s32 i);
+extern "C" u8 fn_8022C8EC(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" u8 fn_8043DF24(u8* obj, f32 x, f32 y, f32 px, f32 py, f32 r);
+extern "C" void fn_8030C5F0(void* a, void* b, s32 c, s32 d, f32* out);
 
 typedef u8* (*PairCallFn)(u8* self, u32 a, u32 b);
 
@@ -72,60 +77,61 @@ static inline void ReleaseSlot(void** slot) {
     *slot = 0;
 }
 extern "C" void fn_80421A34(u8* this_, s32 i, u8 flag) {
+    u8* base = lbl_8048E1B8;
     s32 j;
     u8 bit = 1 << i;
-    f32* fv = (f32*)(this_ + 0x118);
-    f32 old = fv[i];
+    s32 off = i * 4;
+    f32 old = *(f32*)(this_ + off + 0x118);
 
     if (!(this_[0x25d] & bit)) {
-        if (old > 0.0f) {
-            fv[i] = old - 0.1f;
+        if (old > lbl_80543A40) {
+            *(f32*)(this_ + off + 0x118) = old - lbl_80543A44;
         } else {
-            fv[i] = 0.0f;
+            *(f32*)(this_ + off + 0x118) = lbl_80543A40;
         }
         (*(u8**)(lbl_8053AB10 + 0x20))[0x217 + i] = 1;
     } else {
-        u32* table = (u32*)lbl_80529DEC;
+        s32* table = (s32*)lbl_80529DEC;
         if (table[0x36 + i] == 0) {
-            if (old > 0.6f) {
-                fv[i] = old - 0.1f;
-                if (fv[i] > 0.6f) {
-                    fv[i] = 0.6f;
+            if (old > lbl_80543A48) {
+                *(f32*)(this_ + off + 0x118) = old - lbl_80543A44;
+                if (*(f32*)(this_ + off + 0x118) <= lbl_80543A48) {
+                    *(f32*)(this_ + off + 0x118) = lbl_80543A48;
                 }
-            } else if (old < 0.6f) {
-                fv[i] = old + 0.1f;
-                if (fv[i] < 0.6f) {
-                    fv[i] = 0.6f;
+            } else if (old < lbl_80543A48) {
+                *(f32*)(this_ + off + 0x118) = old + lbl_80543A44;
+                if (*(f32*)(this_ + off + 0x118) >= lbl_80543A48) {
+                    *(f32*)(this_ + off + 0x118) = lbl_80543A48;
                 }
             }
         } else {
-            if (old < 1.0f) {
-                fv[i] = old + 0.1f;
+            if (old < lbl_80543A4C) {
+                *(f32*)(this_ + off + 0x118) = old + lbl_80543A44;
             } else {
-                fv[i] = 1.0f;
+                *(f32*)(this_ + off + 0x118) = lbl_80543A4C;
             }
         }
     }
 
-    if (fv[i] != old || flag) {
-        u8* p = this_ + i * 4;
-        u64* a = (u64*)(lbl_8048E1B8 + 0xc68);
-        u64* b = (u64*)(lbl_8048E1B8 + 0xce8);
-        u64* c = (u64*)(lbl_8048E1B8 + 0xca8);
-        u64* d = (u64*)(lbl_8048E1B8 + 0xd28);
+    if (*(f32*)(this_ + off + 0x118) != old || flag) {
+        u8* p = this_ + off;
+        u64* a = (u64*)(base + 0xc68);
+        u64* b = (u64*)(base + 0xce8);
+        u64* c = (u64*)(base + 0xca8);
+        u64* d = (u64*)(base + 0xd28);
         for (j = 0; j < 8; j++) {
-            (*(SubObj**)(p + 0x8))->w13(*a)->w07((s32)((f32)this_[0x21c] * fv[i]));
-            (*(SubObj**)(p + 0x8))->w13(*b)->w07((s32)((f32)this_[0x21d] * fv[i]));
-            (*(SubObj**)(p + 0x8))->w13(*c)->w07((s32)((f32)this_[0x21e] * fv[i]));
-            (*(SubObj**)(p + 0x8))->w13(*d)->w07((s32)((f32)this_[0x21f] * fv[i]));
+            (*(SubObj**)(p + 0x8))->w13(*a)->w07((s32)((f32)this_[0x21c] * *(f32*)(p + 0x118)));
+            (*(SubObj**)(p + 0x8))->w13(*b)->w07((s32)((f32)this_[0x21d] * *(f32*)(p + 0x118)));
+            (*(SubObj**)(p + 0x8))->w13(*c)->w07((s32)((f32)this_[0x21e] * *(f32*)(p + 0x118)));
+            (*(SubObj**)(p + 0x8))->w13(*d)->w07((s32)((f32)this_[0x21f] * *(f32*)(p + 0x118)));
             a++;
             b++;
             c++;
             d++;
         }
-        u64* e = (u64*)(lbl_8048E1B8 + 0xfa0);
+        u64* e = (u64*)(base + 0xfa0);
         for (j = 0; j < 6; j++) {
-            (*(SubObj**)(p + 0x2c))->w13(*e)->w07((s32)((f32)this_[0x247 + j] * fv[i]));
+            (*(SubObj**)(p + 0x2c))->w13(*e)->w07((s32)((f32)this_[0x247 + j] * *(f32*)(p + 0x118)));
             e++;
         }
     }
