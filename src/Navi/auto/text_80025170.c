@@ -32,7 +32,7 @@ extern u32 lbl_802262BC[];
 extern u8 lbl_8029FDB4[];
 extern u8 lbl_802A354C[];
 extern u32 lbl_802FED94;
-extern "C" void fn_801E41AC(void*, void*, s32, u8, u32);
+extern "C" void fn_801E41AC(void* dst, void* src, ...);
 extern "C" u32 fn_800137B8(void*, s32, s32);
 extern "C" void fn_80159C6C(void*, s32);
 extern "C" void fn_800252B4(void);
@@ -95,13 +95,12 @@ extern "C" void fn_80025878(u8* p) {
 }
 
 extern "C" void fn_8002611C(u8 i) {
-    u8* p = lbl_802BE378;
+    u8* p = lbl_802BE378 + i * 0x204;
     u16* w;
     s32 n = 8;
-    p += i * 0x204;
     p[0x202] = 0;
     p[0x203] = 0;
-    *(u16*)(p + 0x200) = 0;
+    *(s16*)(p + 0x200) = 0;
     w = (u16*)p;
     do {
         w[0] = 0;
