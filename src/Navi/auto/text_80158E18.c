@@ -450,15 +450,15 @@ extern "C" void fn_80159D88(void* p) {
     ((Obj*)p)->v13();
 }
 
-extern "C" void fn_80159DE0(void* p) {
+extern "C" u32 fn_80159DE0(void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
         virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
         virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
         virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
-        virtual void v16();
+        virtual u32 v16();
     };
-    ((Obj*)p)->v16();
+    return ((Obj*)p)->v16();
 }
 
 extern "C" u32 fn_80159E0C(void* p, u32 align) {
