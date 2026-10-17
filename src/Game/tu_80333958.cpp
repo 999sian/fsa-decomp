@@ -17,8 +17,6 @@ struct Tu80333958ResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 
@@ -145,8 +143,8 @@ extern "C" void fn_80333B64(void* this_) {
         s32 id;
         void* res;
 
-        pos.y = *(f32*)(p + 0x10) + lbl_80541F3C;
         pos.x = *(f32*)(p + 0xc);
+        pos.y = lbl_80541F3C + *(f32*)(p + 0x10);
         pos.z = lbl_80541F40;
         if (*(s32*)(p + 4) < 8) {
             res = ((Tu80333958ResMgr*)*(u8**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, lbl_80471A90);
@@ -163,8 +161,8 @@ extern "C" void fn_80333B64(void* this_) {
         s32 id;
         void* res;
 
-        pos.y = *(f32*)(p + 0x10) + lbl_80541F48;
         pos.x = *(f32*)(p + 0xc);
+        pos.y = lbl_80541F48 + *(f32*)(p + 0x10);
         pos.z = lbl_80541F40;
         if (*(s32*)(p + 4) < 8) {
             res = ((Tu80333958ResMgr*)*(u8**)(lbl_8053AAF8 + 0xa4))->get(0x534f4220, lbl_80471A90);
