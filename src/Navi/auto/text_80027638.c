@@ -11,6 +11,80 @@ extern "C" int lbl_802FEE28;
 extern "C" char lbl_802BB0FC[];
 extern "C" unsigned int lbl_802FEDDC;
 extern "C" unsigned int lbl_802FEDE0;
+extern "C" void fn_800278EC(char* p) {
+    extern unsigned int lbl_802FEDD8;
+    extern unsigned int lbl_802FEDDC;
+    extern unsigned int lbl_802FEDE0;
+    extern unsigned int lbl_802FEDE4;
+    extern unsigned int lbl_802FEDEC;
+    extern unsigned int lbl_802FEDF0;
+    extern unsigned int lbl_802FEDF4;
+    extern unsigned int lbl_802FEDFC;
+    extern int lbl_802FEE04;
+    extern int lbl_802FEE08;
+    extern unsigned int lbl_802FEE0C;
+    extern int lbl_802FEE10;
+    extern unsigned int lbl_802FEE14;
+    extern unsigned int lbl_802FEE18;
+    extern unsigned int lbl_802FEE1C;
+    extern unsigned int lbl_802FEE24;
+    extern unsigned int lbl_802FEE2C;
+    extern unsigned int lbl_802FEE30;
+    extern unsigned int lbl_802FEE48;
+    extern unsigned char lbl_802FEE35;
+    extern unsigned char lbl_802FEE36;
+    extern unsigned char lbl_802FEE37;
+    extern unsigned char lbl_802FEE3C;
+    extern unsigned char lbl_802FEE3D;
+    extern unsigned char lbl_802FEE3E;
+    extern unsigned char lbl_802FEE3F;
+    extern unsigned char lbl_802FEE40;
+    extern unsigned char lbl_802FEE41;
+    extern unsigned char lbl_802FEE42;
+    extern unsigned char lbl_802FEE43;
+    extern unsigned char lbl_802FEE44;
+    extern unsigned char lbl_802FEE45;
+
+    *(int*)(p + 0x7c4) = -1;
+    lbl_802FEDD8 = 0;
+    lbl_802FEDE4 = 6;
+    lbl_802FEDEC = 0;
+    lbl_802FEDF0 = 0;
+    lbl_802FEDF4 = 0;
+    lbl_802FEDFC = 0;
+    lbl_802FEE04 = -1;
+    lbl_802FEE08 = -1;
+    lbl_802FEE0C = 0x27;
+    lbl_802FEDDC = 0;
+    lbl_802FEDE0 = 0;
+    lbl_802FEE10 = 0x708;
+    lbl_802FEE35 = 0;
+    lbl_802FEE14 = 0x4b0;
+    lbl_802FEE18 = 0;
+    lbl_802FEE1C = 0;
+    lbl_802FEE36 = 0;
+    lbl_802FEE37 = 0;
+    lbl_802FEE45 = 0;
+    lbl_802FEE24 = 0;
+    lbl_802FEE3C = 0;
+    lbl_802FEE3D = 0;
+    lbl_802FEE3E = 0;
+    lbl_802FEE28 = 0;
+    lbl_802FEE3F = 0;
+    lbl_802FEE2C = 0;
+    lbl_802FEE30 = 0;
+    lbl_802FEE40 = 0;
+    lbl_802FEE41 = 0;
+    lbl_802FEE42 = 0xff;
+    lbl_802FEE43 = 0;
+    lbl_802FEE44 = 0;
+    lbl_802FEE48 = 0;
+    *(int*)(p + 0x7c8) = 0x100;
+    *(int*)(p + 0x7cc) = 0x100;
+    *(int*)(p + 0x7d0) = 0x100;
+    *(int*)(p + 0x7d4) = 0x100;
+}
+
 extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
@@ -183,16 +257,15 @@ extern "C" void fn_8002F500(void* p) {
 
 extern "C" void* fn_8002F6BC(void) {
     extern int lbl_802FEE04;
-    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
-    unsigned char* p;
     int i;
-    int want;
+    unsigned char* p;
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
     if (obj != 0 && lbl_802FEE04 > 0) {
-        want = lbl_802FEE04;
         p = obj;
+        i = 0;
         for (i = 0; i < 8; i++) {
             int id = *(int*)(p + 0x384);
-            if (id != 0 && id == want) {
+            if (id != 0 && id == lbl_802FEE04) {
                 return obj + 0x384 + i * 0x3c;
             }
             p += 0x3c;
@@ -212,6 +285,27 @@ extern "C" void fn_8002F72C(void) {
     }
     for (i = 0; i < 8; i++) {
         fn_80058A28(buf[i]);
+    }
+}
+
+extern "C" void fn_8002F7C0(int param_1) {
+    extern float lbl_802FFD14;
+    extern unsigned int lbl_802FC710;
+    extern int lbl_802FEE10;
+    extern char lbl_802BEF44[];
+    extern char lbl_8023023C[];
+    unsigned int seed = lbl_802FC710 * 0x19660d + 0x3c6ef35f;
+    int x = (int)(lbl_802FFD14 * *(float*)(lbl_802BEF44 + 0xfc));
+    int y = (int)(lbl_802FFD14 * *(float*)(lbl_802BEF44 + 0xf8));
+    unsigned int r = seed & 0x7fff;
+    int v;
+    lbl_802FC710 = seed;
+    lbl_802FEE10 = y + (int)(((unsigned int)x * r) >> 15);
+    v = *(int*)(lbl_8023023C + param_1 * 16 + *(int*)(lbl_802BB0FC + 0x420) * 4);
+    if (v > 0) {
+        fn_8002F0A8(v);
+    } else {
+        fn_8002F100(-v, 0);
     }
 }
 
