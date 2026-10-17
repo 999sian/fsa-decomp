@@ -213,7 +213,7 @@ extern "C" s32 fn_8015FDA8(u32 param_1, void* param_2) {
 
 extern "C" int fn_801E6578(void* a, void* b);
 extern "C" void* fn_8015FECC(void* a, int b);
-extern char lbl_802EE2D4[];
+extern void** lbl_802EE2D4;
 extern "C" void* fn_8015FE40(void* param_1) {
     char buf[0x110];
     void** node;
@@ -224,7 +224,7 @@ extern "C" void* fn_8015FE40(void* param_1) {
         return lbl_802FF5F0;
     }
     *(void**)param_1 = fn_8015FECC(buf, 0x101);
-    for (node = *(void***)lbl_802EE2D4; node != 0; node = (void**)node[3]) {
+    for (node = (void**)lbl_802EE2D4; node != 0; node = (void**)node[3]) {
         if (fn_801E6578(buf, ((void**)node[0])[0x28 / 4]) == 0) {
             return node[0];
         }
