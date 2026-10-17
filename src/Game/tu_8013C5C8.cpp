@@ -97,8 +97,6 @@ extern "C" s32 fn_8013D5B0(void* this_) {
     return fn_800EC188(*(void**)((char*)this_ + 0xc));
 }
 
-#include "JSystem/JAudio/JASFakeMatchFSA.h"
-
 extern "C" u8 fn_80134CC8(void*);
 extern "C" void fn_8013B438(void*);
 extern "C" void fn_8013B490(void*);
@@ -108,6 +106,8 @@ extern "C" void draw__17JPAEmitterManagerFPC11JPADrawInfoUc(void*, const void*, 
 extern "C" void capture__10JUTTextureFii9_GXTexFmtbUc(void*, s32, s32, u8, u8, u8);
 extern "C" void GXSetAlphaUpdate(u8);
 extern "C" u8* sManager__8JUTVideo;
+
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern u8* lbl_8053AB10;
 extern "C" u8 fn_80134CC8(void*);
