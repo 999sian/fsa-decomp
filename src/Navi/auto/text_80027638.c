@@ -86,6 +86,11 @@ extern "C" void fn_800278EC(char* p) {
     *(int*)(p + 0x7d4) = 0x100;
 }
 
+extern "C" void fn_80027C98(void) {
+    extern unsigned int lbl_802FEDDC;
+    lbl_802FEDDC |= 0x4000;
+}
+
 extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
