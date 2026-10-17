@@ -167,11 +167,12 @@ extern "C" void fn_800578E8(void) {
 
 extern "C" void fn_8005796C(void* p) {
     if (*(s32*)(lbl_802BB0FC + 0x44) == 8) {
-        s32* q;
-        s32 v;
         fn_80089634(p, 3);
-        for (q = (s32*)lbl_80249DA0; (v = *q) != 0; q++) {
+        s32* q = (s32*)lbl_80249DA0;
+        s32 v;
+        while ((v = *q) != 0) {
             fn_80058B64(v);
+            q++;
         }
     }
 }
@@ -740,6 +741,19 @@ extern "C" BOOL fn_8005AD7C(u32 p) {
     return *(s32*)(p + 0x14) >= 1;
 }
 
+extern char lbl_8027D550[];
+extern "C" void fn_8005AEFC(void*);
+extern "C" u32 fn_8005B2C8(void* a, u32 b, void* c, u32 d, void* e) {
+    if (b + d < 0x4d0) {
+        return 0;
+    }
+    if (b + d > 0x9a0) {
+        fn_8005C330((const char*)1, lbl_8027D550);
+    }
+    fn_8005AEFC(e);
+    return 0x4d0;
+}
+
 extern "C" void fn_8005B450(void) {}
 
 extern "C" void fn_8005C330(const char*, ...) {
@@ -846,6 +860,7 @@ extern "C" int fn_8005CB7C(int param_1) {
 
 extern "C" s32 fn_8005CB9C(s32 param_1, s32 param_2) {
     s32 bVar1;
+    s32 lvl;
     s32 v;
     if (param_1 == 0xd4 || param_1 == 0xd3) {
         bVar1 = 0;
@@ -858,8 +873,10 @@ extern "C" s32 fn_8005CB9C(s32 param_1, s32 param_2) {
     if (param_2 <= 0) {
         return param_2;
     }
+    lvl = lbl_802FF130;
     if (lbl_802FF12C != 0) {
-        v = param_2 * (0x21 - lbl_802FF130) / 32;
+        lvl = 0x21 - lvl;
+        v = param_2 * lvl / 32;
         if (v != 0) {
             return v;
         }
@@ -959,6 +976,15 @@ extern "C" void fn_8005FE84(void** p) {
 
 extern "C" void fn_8005FEB4(u8* self) {
     *self = 0;
+}
+
+extern "C" BOOL fn_80060794(void* param_1, u32* param_2, u32* param_3, u32 param_4) {
+    if (*param_2 < *param_3) {
+        *(u32*)*param_2 = param_4;
+        *param_2 += 4;
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void fn_8006081C(void) {
