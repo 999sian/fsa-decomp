@@ -101,8 +101,6 @@ extern "C" f32 lbl_8054349C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
 struct KeyObjVt {
-    virtual void v0();
-    virtual void v1();
     virtual void v2();
     virtual void v3();
     virtual void v4();
@@ -520,21 +518,21 @@ extern "C" void fn_803BF698(u8* p) {
         v = 0x116;
     }
     *(u32*)(p + 0x84) = v;
-    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), v, 0x0000005466743031ULL);
+    r = ((KeyObjVt*)*(void**)(p + 0x8))->v15(v, 0x0000005466743031ULL);
     fn_803832BC(getStringPtr__10J2DTextBoxCFv(r), *(u32*)(p + 0x84), 0, 0, 0);
     if (*(u32*)(p + 0x84) == 0x60 || *(u32*)(p + 0x84) == 0x64) {
         *(u32*)(p + 0xb0) = 0x5a;
     }
     fn_80402E08(*(void**)(p + 0x50), lbl_80543494, lbl_80543458);
     *(u16*)(*(u8**)(p + 0x50) + 0x20) = 0;
-    stopPane(*(void**)(*(u8**)(p + 0x50) + 0x4));
-    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723031ULL);
+    ((PaneObjVt*)*(void**)(*(u8**)(p + 0x50) + 0x4))->v9(0);
+    r = ((KeyObjVt*)*(void**)(p + 0x8))->v15(0x500000, 0x0050666375723031ULL);
     fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
-    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723032ULL);
+    r = ((KeyObjVt*)*(void**)(p + 0x8))->v15(0x500000, 0x0050666375723032ULL);
     fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
-    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723033ULL);
+    r = ((KeyObjVt*)*(void**)(p + 0x8))->v15(0x500000, 0x0050666375723033ULL);
     fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
-    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723034ULL);
+    r = ((KeyObjVt*)*(void**)(p + 0x8))->v15(0x500000, 0x0050666375723034ULL);
     fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
     *(u16*)(*(u8**)(p + 0x38) + 0x20) = 0;
     *(u16*)(*(u8**)(p + 0x38) + 0x22) = 0;
@@ -554,8 +552,8 @@ extern "C" void fn_803BF698(u8* p) {
     *(u16*)(*(u8**)(p + 0x4c) + 0x20) = 0;
     *(u16*)(*(u8**)(p + 0x4c) + 0x22) = 0;
     *(u16*)(*(u8**)(p + 0x4c) + 0x26) = 0;
-    stopPane(*(void**)(*(u8**)(p + 0x34) + 0x4));
-    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x50610000, 0x5061636375723031ULL);
+    ((PaneObjVt*)*(void**)(*(u8**)(p + 0x34) + 0x4))->v9(0);
+    r = ((KeyObjVt*)*(void**)(p + 0x8))->v15(0x50610000, 0x5061636375723031ULL);
     fn_804023D0(*(void**)(p + 0x34), r, *(u8*)(*(u8**)(p + 0x34) + 0x28));
     if ((u8)(1 << *(u32*)(p + 0xa4)) & p[0x115]) {
         *(u16*)(*(u8**)(p + 0x20) + 0x20) = 0;
