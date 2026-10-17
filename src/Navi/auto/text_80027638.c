@@ -537,4 +537,7 @@ extern "C" int fn_8002F87C(void) {
 }
 
 extern "C" void fn_80030664(void) {}
-
+struct S_8002EEEC {
+    unsigned char a;
+    unsigned short b;
+};
