@@ -19,7 +19,7 @@ extern "C" void* fn_8015EABC(void* param_1, s16 param_2) {
 }
 
 extern "C" char lbl_80297A94[];
-extern "C" void* lbl_802EE28C;
+extern "C" void* lbl_802EE28C[];
 extern "C" void fn_8015D0B8(void*, int);
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801BE3A0(void*);
