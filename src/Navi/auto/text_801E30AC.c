@@ -3,6 +3,11 @@
 
 #include <stdarg.h>
 
+extern "C" unsigned char lbl_8029E7B0[];
+extern "C" int fn_801E4650(void* fn, void* lock, void* a, void* b);
+extern "C" void* fn_801E45E8(void* param_1, void* param_2, unsigned long param_3);
+extern "C" int fn_801E6DB0(struct FileFlags* file, int mode);
+
 extern "C" void __begin_critical_region(int);
 extern "C" void __end_critical_region(int);
 extern "C" double fn_801E997C(void);
@@ -155,6 +160,35 @@ extern "C" void fn_801E3B3C(unsigned char* p1, unsigned short p2) {
     fn_801E3B6C(s.a, s.b);
 }
 
+extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c) {
+    unsigned char tbl[4] = {0x00, 0x00, 0xc0, 0xe0};
+    unsigned char* p;
+    int n;
+
+    if (s == 0) {
+        return 0;
+    }
+    if (c < 0x80) {
+        n = 1;
+    } else if (c < 0x800) {
+        n = 2;
+    } else {
+        n = 3;
+    }
+    p = s + n;
+    switch (n) {
+    case 3:
+        *--p = (c & 0x3f) | 0x80;
+        c >>= 6;
+    case 2:
+        *--p = (c & 0x3f) | 0x80;
+        c >>= 6;
+    case 1:
+        *--p = c | tbl[n];
+    }
+    return n;
+}
+
 extern "C" int fn_801E3C54(unsigned char* s1, unsigned char* s2, unsigned int n) {
     unsigned char* p1 = s1 - 1;
     unsigned char* p2 = s2 - 1;
@@ -224,6 +258,8 @@ extern "C" void fn_801E3F48(unsigned char* dst, const unsigned char* src, unsign
     unsigned long b;
     unsigned long a;
     unsigned long i;
+    unsigned long* d;
+    unsigned long* w;
 
     i = -(unsigned long)dst & 3;
     src--;
@@ -235,28 +271,28 @@ extern "C" void fn_801E3F48(unsigned char* dst, const unsigned char* src, unsign
         } while (--i != 0);
     }
     i = n >> 3;
-    src++;
-    sh = (unsigned long)src & 3;
+    sh = ((unsigned long)src + 1) & 3;
     shl = sh << 3;
     shr = 32 - shl;
-    dst -= 3;
-    src -= sh;
-    a = *(unsigned long*)src;
+    d = (unsigned long*)(dst - 3);
+    w = (unsigned long*)((unsigned char*)src - sh + 1);
+    a = w[0];
     do {
-        b = *((unsigned long*)src + 1);
-        *((unsigned long*)dst + 1) = (a << shl) | (b >> shr);
-        src += 8;
-        a = *(unsigned long*)src;
-        *((unsigned long*)dst + 2) = (b << shl) | (a >> shr);
-        dst += 8;
+        b = w[1];
+        d[1] = (a << shl) | (b >> shr);
+        w += 2;
+        a = w[0];
+        d[2] = (b << shl) | (a >> shr);
+        d += 2;
     } while (--i != 0);
     if (n & 4) {
-        src += 4;
-        b = *(unsigned long*)src;
-        *((unsigned long*)dst + 1) = (a << shl) | (b >> shr);
-        dst += 4;
+        w += 1;
+        b = w[0];
+        d[1] = (a << shl) | (b >> shr);
+        d += 1;
     }
-    src += sh;
+    dst = (unsigned char*)d + 3;
+    src = (const unsigned char*)w + sh - 1;
     i = n & 3;
     if (i != 0) {
         do {
