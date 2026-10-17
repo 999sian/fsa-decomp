@@ -1,5 +1,12 @@
 #include "types.h"
 extern u8* lbl_802FB9B8;
+extern u8 lbl_802FB9BC[4];
+extern char lbl_80205548[];
+extern char lbl_80205560[];
+extern "C" s32 fn_80019DF0(void);
+extern "C" s32 fn_8001A1C8(void);
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FF30(void*, const char*, int, void*, void*, ...);
 extern void* lbl_802FEC20;
 extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
@@ -201,6 +208,14 @@ extern "C" void fn_80019834(void* param_1) {
     fn_8001D630(*(void**)((u8*)self + 0xc0), self);
 }
 
+extern "C" s32 fn_8001989C(void) {
+    if (lbl_802FB9B8 != NULL) {
+        fn_8001BBCC(*(int*)(*(u8**)(lbl_802FB9B8 + 0x20) + 0xc8));
+        return fn_8001ABBC(0);
+    }
+    return 0;
+}
+
 extern "C" s32 fn_800198DC(u8* self) {
     return (*(u8*)(self + 0xc4) & 0x3f) == 2;
 }
@@ -242,6 +257,17 @@ extern "C" s32 fn_800199A8(void) {
         return fn_8001A24C(lbl_802FB9B8);
     }
     return 0;
+}
+
+extern "C" s32 fn_800199DC(s32 param_1, s32 param_2) {
+    s32 r;
+    if (lbl_802FB9B8 == NULL) {
+        r = (s32)fn_80019D4C(lbl_802B4C10, param_1, param_2);
+        lbl_802FB9B8 = (u8*)r;
+    } else {
+        r = 0;
+    }
+    return r;
 }
 
 #pragma dont_inline reset
