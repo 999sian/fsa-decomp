@@ -4,6 +4,10 @@ struct BPOHEntry {
     u32 w[3];
 };
 
+struct BPOHBytes {
+    u8 b[12];
+};
+
 struct BPOHV {
     virtual void v0();
     virtual void v1();
@@ -45,8 +49,9 @@ extern u8 lbl_804661E0[];
 extern "C" void fn_80161F98(char* this_, s32 arg, s32 param3) {
     if (*(s32*)(this_ + 0x2ec) != arg) {
         if (*(s32*)(this_ + 0x2ec) < 0) {
+            BPOHEntry tmp = *(BPOHEntry*)(lbl_804661E0 + arg * 12);
             for (s32 i = 0; i < 12; i++) {
-                this_[0x2f4 + i] = lbl_804661E0[arg * 12 + i];
+                this_[0x2f4 + i] = ((u8*)&tmp)[i];
             }
         }
         *(s32*)(this_ + 0x2ec) = arg;
