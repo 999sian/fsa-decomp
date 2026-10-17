@@ -1,6 +1,10 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 
+extern "C" void fn_8011B878(u8* this_, s32 id);
+extern "C" void* fn_8011921C(void);
+extern "C" u32 lbl_80464AF8[];
+
 extern "C" char lbl_8049DB90[];
 extern "C" f32 lbl_8053C7D8;
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
