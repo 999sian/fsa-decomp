@@ -2,6 +2,21 @@
 
 
 extern "C" s32 OSResumeThread(void* subObj);
+extern "C" void* DVDGetCurrentDiskID(void);
+extern "C" void GBAInit(void);
+extern "C" u32 OSGetTick(void);
+extern "C" void OSInitMessageQueue(void* queue, void* msgs, s32 count);
+extern "C" void OSCreateThread(void* thread, void* (*start)(void*), void* arg, void* stack, u32 size, s32 prio, u32 attr);
+extern "C" void* memset(void* dst, s32 c, u32 n);
+extern "C" void* fn_80300A8C(void* p);
+extern "C" void* fn_80300E1C(void* p);
+extern u8 lbl_804D6AB8[];
+extern u8 lbl_804711F0[];
+extern u8 lbl_80529DEC[];
+extern u8* lbl_8053ACBC;
+extern u8* lbl_8053ACC0;
+extern u8* lbl_8053ACC4;
+extern u32 lbl_8053ACC8;
 
 class Unk8053ACB8 {
 public:
