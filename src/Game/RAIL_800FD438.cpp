@@ -148,6 +148,7 @@ extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* 
 extern f32 lbl_8053C0B0;
 extern f32 lbl_8053C0D8;
 static inline s32 railGetId(RailRing* ring, u8 i);
+static inline u32 railLoopMode(RailRing* ring, u8 n);
 
 extern f32 lbl_8053C0B4;
 extern f32 lbl_8053C0C0;
@@ -159,12 +160,12 @@ extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
     f32 dy = node->mPos.y - pos->y;
     f32 d2 = dx * dx + dy * dy;
     f32 dist;
-    if (d2 > lbl_8053C0B8) {
+    if (d2 <= lbl_8053C0B8) {
+        dist = d2;
+    } else {
         f32 guess = (f32)__frsqrte(d2);
         guess = lbl_8053C0B4 * guess * (lbl_8053C0C0 - guess * guess * d2);
         dist = d2 * guess;
-    } else {
-        dist = d2;
     }
     if (dist < lbl_8053C0D4) {
         u8 cur = ring->mCur;
