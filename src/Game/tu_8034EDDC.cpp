@@ -1,7 +1,7 @@
 #include "types.h"
 
 extern "C" void fn_801F0E34(void* self, u32 id, s32 b);
-extern "C" s32 fn_8022F514(s32);
+extern "C" u8 fn_8022F514(s32);
 extern "C" s32 fn_8022CAF8(s32);
 extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8022F3DC(s32);
@@ -42,6 +42,55 @@ extern "C" s32 fn_80350274(s32 param_1, s32 param_2, s32 param_3) {
         return 0;
     }
     return 1;
+}
+
+extern "C" s32 fn_80350530(u8* self) {
+    s32 i;
+    s32 prev = *(s32*)(self + 0x270);
+    *(s32*)(self + 0x270) = 0;
+    for (i = 0; i < 4; i++) {
+        f32 x;
+        f32 y;
+        f32 r2;
+        f32* p;
+        f32 dx;
+        f32 dy;
+        if (fn_8022F514(i) == 1 && fn_8022CAF8(i) == 5) {
+            continue;
+        }
+        x = *(f32*)(self + 0xc);
+        y = *(f32*)(self + 0x10);
+        r2 = lbl_80542618;
+        if (prev != 0) {
+            r2 = lbl_8054261C + (f32)*(s32*)(self + 0x260);
+            r2 = r2 * r2;
+        }
+        p = (f32*)fn_8023E724(i);
+        dx = x - p[0];
+        dy = y - p[1];
+        if (dx * dx + dy * dy < r2) {
+            p = (f32*)fn_8023E724(i);
+            if (p[2] == lbl_805425D8) {
+                if (prev == 0) {
+                    fn_801F0E34(self, 0x30009, 0);
+                    *(s32*)(self + 0x27c) = 0;
+                    *(s32*)(self + 0x274) = i;
+                    if (fn_8022F514(i) == 1) {
+                        *(s32*)(self + 0x274) = fn_8022F3DC(i);
+                    }
+                }
+                *(s32*)(self + 0x270) = 1;
+                if (*(s32*)(self + 0x244) > 0) {
+                    return -1;
+                }
+                return *(s32*)(self + 0x268);
+            }
+        }
+    }
+    *(s32*)(self + 0x27c) = 0;
+    *(s32*)(self + 0x274) = -1;
+    *(s32*)(self + 0x244) = 0;
+    return -1;
 }
 
 extern "C" u32 fn_8013CC50(u32 owner, void* pos, u16 id, s32 a, f32 f, s32 b, s32 c, s32 d, s32 e);
