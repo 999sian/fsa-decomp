@@ -30,7 +30,7 @@ extern "C" void fn_80013B90(void);
 extern "C" void fn_80013BEC(void);
 extern "C" void fn_801C0EEC(void* p);
 extern "C" void fn_801C0884(void* base, void* fn, s32 a, void* p, u32 size, s32 n, s32 c);
-extern "C" void fn_801BB764(void* alarm, u32 a, u32 hi, u32 lo, u32 b, u32 c, void* handler);
+extern "C" void fn_801BB764(void* alarm, u32 a, ...);
 extern u8 lbl_802A3460[];
 extern u8 lbl_802FEBE0;
 extern f32 lbl_802FFBB8;
@@ -367,25 +367,26 @@ extern struct Unk80204EA4 lbl_80204F58;
 extern "C" s32 fn_801E10A0(void* p, void* q);
 extern "C" s32 fn_801E1070(void* p);
 extern "C" void fn_801E10DC(void* p, void* q);
+extern "C" f32 lbl_802FFBBC;
 extern "C" void fn_80015A40(void* p) {
     struct Unk80204EA4 tbl;
-    u8* self = (u8*)p;
+    StateObj_80015A40* self = (StateObj_80015A40*)p;
     tbl = lbl_80204F58;
-    if (fn_801E10A0(self + 0x64, &tbl) != 0) {
-        if (fn_801E1070(self + 0x64) != 0) {
-            self[0xa8] = -1;
-            fn_801E10DC(p, 0);
+    if (fn_801E10A0(&self->m_func, &tbl) != 0) {
+        if (fn_801E1070(&self->m_func) != 0) {
+            ((u8*)p)[0xa8] = -1;
+            (self->*self->m_func)(0);
         }
-        *(struct Unk80204EA4*)(self + 0x64) = tbl;
-        self[0xa8] = 0;
-        *(u16*)(self + 0x88) = 0;
-        *(u16*)(self + 0x8a) = 0;
-        *(u16*)(self + 0x8c) = 0;
-        *(u16*)(self + 0x8e) = 0;
-        *(f32*)(self + 0x90) = 0.0f;
-        fn_801E10DC(p, 0);
+        *(struct Unk80204EA4*)(&self->m_func) = tbl;
+        ((u8*)p)[0xa8] = 0;
+        *(u16*)((u8*)p + 0x88) = 0;
+        *(u16*)((u8*)p + 0x8a) = 0;
+        *(u16*)((u8*)p + 0x8c) = 0;
+        *(u16*)((u8*)p + 0x8e) = 0;
+        *(f32*)((u8*)p + 0x90) = lbl_802FFBBC;
+        (self->*self->m_func)(0);
     }
-    self[0xab] = 1;
+    ((u8*)p)[0xab] = 1;
 }
 
 extern "C" void fn_80015C24(void) {
