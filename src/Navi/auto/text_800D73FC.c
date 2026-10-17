@@ -4,6 +4,7 @@ extern "C" s32 fn_800EE044(void);
 extern "C" void fn_8002F358(s32, s32);
 extern "C" void fn_8017A4F8(void* p);
 extern "C" s32 fn_800ED0E8(void*, s32, u8, s32, s32, f32, f32);
+extern "C" void fn_800E53A0(u8* p);
 extern "C" char lbl_802B7CA0[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
 struct VObj_800A1A64 {
