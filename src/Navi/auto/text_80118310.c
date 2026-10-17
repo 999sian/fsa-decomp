@@ -110,6 +110,21 @@ extern "C" void fn_80118AB4(char *param_1, char *param_2, int param_3, int param
     fn_80118B58(param_1, param_3, param_4);
 }
 
+extern "C" void fn_80118DF0(void* a, void* b, u8* c) {
+    fn_80118E24(a, b, c, c != 0 ? c[0xc] : 0);
+}
+
+extern "C" void fn_80118F5C(u8* p, void* b) {
+    if (*(u8*)(*(u8**)(p + 0x20) + 8) != 0) {
+        if (b == 0 && *(void**)(p + 0x28) != 0) {
+            *(void**)(p + 0x2c) = *(void**)(p + 0x28);
+        } else {
+            *(void**)(p + 0x2c) = b;
+        }
+        fn_801190F4(p, (*(u8**)(p + 0x2c))[0xc]);
+    }
+}
+
 extern "C" void fn_801193D8(u8* self, u16* table) {
     *(u16**)(self + 4) = table;
     if (table != NULL) {
@@ -254,6 +269,26 @@ extern "C" BOOL fn_80119A54(void* param_1) {
         return FALSE;
     }
     return TRUE;
+}
+
+extern "C" s32 fn_8011A7C8(void);
+extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
+    s32 t = fn_8011A7C8();
+    u32** list = *(u32***)(param_1 + 0x54);
+    u32 i;
+    u16 n;
+    param_3[0] = 0;
+    n = *(u16*)(param_1 + 0x60);
+    param_3[1] = (u8)*(u16*)(*(u8**)(param_1 + 0x4c) + 0xe);
+    for (i = 0; i < n; i++) {
+        u8* e = (u8*)list[i];
+        if (t >= *(u16*)(e + 8) && t <= *(u16*)(e + 10)) {
+            u8* d = (u8*)list[i] + 0xc + (t - *(u16*)(e + 8)) * 2;
+            param_3[0] = d[0];
+            param_3[1] = d[1];
+            return;
+        }
+    }
 }
 
 extern "C" int fn_8011AB38()
