@@ -1,5 +1,23 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+
+extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
+extern "C" void* fn_8011871C(void* a, s32 b, s32 c);
+extern "C" void fn_8030C7C4(void* mgr, f32* pos, f32 f);
+extern u8* lbl_8053AB10;
+extern f32 lbl_8053C860;
+extern f32 lbl_8053C864;
+extern f32 lbl_8053C868;
+extern f32 lbl_8053C86C;
+extern f32 lbl_8053C870;
+extern f32 lbl_8053C874;
+extern f32 lbl_8053C878;
+extern f32 lbl_8053C87C;
+extern f32 lbl_8053C880;
+extern f32 lbl_8053C884;
+extern f64 lbl_8053C888;
+extern int __float_epsilon[];
+extern s32 lbl_80464BBC[];
 #include "JSystem/JGeometry/Vec.h"
 
 extern char lbl_8049DD68[];
