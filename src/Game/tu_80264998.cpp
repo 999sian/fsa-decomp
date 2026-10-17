@@ -1,5 +1,7 @@
 
 
+#include "Game/SinitPoolChain.h"
+
 extern "C" int fn_802486A0(void*);
 extern "C" int fn_80248778(void*);
 extern "C" int fn_80240888(void*);
