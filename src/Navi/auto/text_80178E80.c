@@ -555,7 +555,7 @@ struct VObj_80180980 {
     virtual void vfC4(int, int);
     virtual void vfC8(int, int, int);
     virtual void vfCC(int, int);
-    virtual void vfD0();
+    virtual void vfD0(u8);
     virtual void vfD4(int, int);
     virtual void vfD8(u8);
     virtual void vfDC(); virtual void vfE0(); virtual void vfE4(); virtual void vfE8(); virtual void vfEC();
@@ -886,18 +886,19 @@ extern "C" u32 fn_8017A074(void* a, void* self, u32 flags) {
     s32 temp_r29 = spC;
     ((VObj_8017A074*)self)->v2(4);
     fn_801670D0((int)self, &sp8, 4);
-    fn_80167354(self, temp_r31 + sp8, 0);
-    temp_r29 -= sp8;
-    u32 r30;
+    s32 temp_r30 = sp8;
+    fn_80167354(self, temp_r31 + temp_r30, 0);
+    temp_r29 -= temp_r30;
+    u32 result;
     if (flags & 0x1F0000) {
-        r30 = fn_8015AA14(temp_r29);
+        result = fn_8015AA14(temp_r29);
     } else {
-        r30 = fn_8015AA60(temp_r29, -4);
+        result = fn_8015AA60(temp_r29, -4);
     }
-    if (r30 != 0) {
-        fn_801670D0((int)self, (void*)r30, temp_r29);
+    if (result != 0) {
+        fn_801670D0((int)self, (void*)result, temp_r29);
     }
-    return r30;
+    return result;
 }
 #pragma use_lmw_stmw reset
 extern "C" void fn_8017A468(void) {
