@@ -24,6 +24,16 @@ extern "C" void* fn_80335A7C(void* this_, s16 freeFlag) {
 extern "C" void* lbl_8053AAF8;
 extern "C" f32 lbl_80542020;
 extern "C" f32 lbl_80541FF8;
+
+static inline f32 rand01(void) {
+    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *s = *s * 0x19660du + 0x3c6ef35fu;
+    u32 a = (*s >> 9) | 0x3f800000u;
+    return *(f32*)&a - 1.0f;
+}
+
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void* fn_801F856C(void);
 extern "C" void fn_80335D4C(void* this_) {
     u8* p = (u8*)this_;
     u32 seed;
