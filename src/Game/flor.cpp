@@ -94,6 +94,14 @@ extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* 
 extern const f32 lbl_8053FA58;
 extern const f32 lbl_8053FA68;
 extern const f32 lbl_8053FA6C;
+extern "C" void fn_8020EB08(char* this_);
+extern const f32 lbl_8053FA28;
+extern const f32 lbl_8053FA2C;
+extern const f32 lbl_8053FA54;
+extern const f32 lbl_8053FA5C;
+extern const f32 lbl_8053FA60;
+extern const f32 lbl_8053FA64;
+extern const f32 lbl_8053FA70;
 
 extern "C" u8 fn_8020DF4C(char* this_) {
     u8 r = 0;
