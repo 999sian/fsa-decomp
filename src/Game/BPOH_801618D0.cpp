@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 struct BPOHV {
     virtual void v0();
     virtual void v1();
@@ -51,4 +52,6 @@ extern "C" void* fn_80164118(char* this_, s16 freeFlag) {
     }
     return this_;
 }
+
+void __sinit_BPOH_801618D0_cpp(void) {}
 
