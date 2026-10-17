@@ -15,6 +15,12 @@ extern "C" void fn_80124034(const char* fmt, ...);
 extern "C" void fn_801BDDBC(void* p, void* data, u32 count);
 extern "C" void fn_80166C84(void* p, void* p2);
 extern u8 lbl_802EE20C[];
+extern char lbl_80297690[];
+extern char lbl_802979B8[];
+extern "C" void fn_8015D050(void* p);
+extern "C" void fn_80166B58(void* a, void* b);
+extern "C" void fn_8015D3E4(void* p, u32 a, u32 b, u32 c);
+extern "C" void fn_8015D374(u8* p, void* r4, u32 r5);
 struct VObj_8003B920 {
     virtual void m0();
     virtual void m1();
@@ -92,129 +98,133 @@ extern u32 lbl_802FF564;
 #pragma use_lmw_stmw off
 #pragma dont_inline on
 extern "C" void fn_80158E18(u32* p) {
+    u32 mode = 0;
+    u32 cnt0 = 0;
+    u32 cnt1 = 0;
+    u32 w0 = 0;
+    u32 flags = 0;
+    u32 w1 = 1;
+    u32 w2 = 0;
+    u32 f10 = 0;
+    u32 f11 = 0;
+    u32 f12 = 0;
+    u32 f31 = 0;
+    u32 f30 = 0;
+    u32 f29 = 0;
+    u32 f28 = 0;
+    u32 f27 = 0;
+    u32 f26 = 0;
+    u32 f25 = 0;
     u32 cmd;
-    u32 tmp;
-    u32 bits = 0;
-    u32 a = 0;
-    u32 b = 1;
-    u32 c = 0;
-    u32 d = 0;
-    u32 e = 0;
-    u32 f = 0;
-    u32 g = 0;
-    u32 h = 0;
-    u32 k = 0;
-    u32 s25 = 0;
-    u32 s26 = 0;
-    u32 s27 = 0;
-    u32 s28 = 0;
-    u32 s29 = 0;
-    u32 s30 = 0;
-    u32 s31 = 0;
 
-    cmd = p[0];
-    while (cmd != 0xff) {
+    while ((cmd = p[0]) != 0xff) {
         switch (cmd) {
         case 0:
-            a = p[1];
+            w0 = p[1];
             break;
         case 1:
-            bits = (bits & ~1) | p[1];
+            flags = (flags & ~1) | p[1];
             break;
         case 2:
-            bits = (bits & ~2) | (p[1] << 1);
+            flags = (flags & ~2) | (p[1] << 1);
             break;
         case 3:
-            bits = (bits & ~4) | (p[1] << 2);
+            flags = (flags & ~4) | (p[1] << 2);
             break;
         case 4:
-            bits = (bits & ~8) | (p[1] << 3);
+            flags = (flags & ~8) | (p[1] << 3);
             break;
         case 5:
-            bits = (bits & ~0x10) | (p[1] << 4);
+            flags = (flags & ~16) | (p[1] << 4);
             break;
         case 6:
-            bits = (bits & ~0x20) | (p[1] << 5);
+            flags = (flags & ~32) | (p[1] << 5);
             break;
         case 7:
-            bits = (bits & ~0x40) | (p[1] << 6);
+            flags = (flags & ~64) | (p[1] << 6);
             break;
         case 8:
-            bits = (bits & ~0x80) | (p[1] << 7);
+            flags = (flags & ~128) | (p[1] << 7);
             break;
         case 9:
-            b = p[1];
+            w1 = p[1];
             break;
-        case 10:
-            tmp = p[1];
-            if (tmp != 0) {
-                c = tmp;
-                d = 1;
+        case 10: {
+            u32 d = p[1];
+            if (d != 0) {
+                w2 = d;
+                mode = 1;
             }
             break;
-        case 11:
-            tmp = p[1];
-            if (tmp != 0) {
-                c = tmp;
-                d = 2;
+        }
+        case 11: {
+            u32 d = p[1];
+            if (d != 0) {
+                w2 = d;
+                mode = 2;
             }
             break;
+        }
         case 12:
-            e = p[1];
-            g += (e != 0);
+            f10 = p[1];
+            cnt0 += f10 != 0;
             break;
         case 13:
-            f = p[1];
-            g += (f != 0);
+            f11 = p[1];
+            cnt0 += f11 != 0;
             break;
         case 14:
-            k = p[1];
-            h += (k != 0);
+            f12 = p[1];
+            cnt1 += f12 != 0;
             break;
         case 15:
-            s31 = p[1];
-            h += (s31 != 0);
+            f31 = p[1];
+            cnt1 += f31 != 0;
             break;
         case 16:
-            s30 = p[1];
-            h += (s30 != 0);
+            f30 = p[1];
+            cnt1 += f30 != 0;
             break;
         case 17:
-            s29 = p[1];
-            h += (s29 != 0);
+            f29 = p[1];
+            cnt1 += f29 != 0;
             break;
         case 18:
-            s28 = p[1];
-            h += (s28 != 0);
+            f28 = p[1];
+            cnt1 += f28 != 0;
             break;
         case 19:
-            s27 = p[1];
-            h += (s27 != 0);
+            f27 = p[1];
+            cnt1 += f27 != 0;
             break;
         case 20:
-            s26 = p[1];
-            h += (s26 != 0);
+            f26 = p[1];
+            cnt1 += f26 != 0;
             break;
         case 21:
-            s25 = p[1];
-            h += (s25 != 0);
+            f25 = p[1];
+            cnt1 += f25 != 0;
+            break;
+        case 22:
+        case 23:
+        case 24:
+        case 25:
             break;
         }
         p += 2;
-        cmd = p[0];
     }
 
-    a |= bits << 1;
-    *(volatile u8*)0xCC008000 = 0x08;
+    w0 |= flags << 1;
+    *(volatile u8*)0xCC008000 = 8;
     *(volatile u8*)0xCC008000 = 0x50;
-    *(volatile u32*)0xCC008000 = (f << 15) | (e << 13) | (c << 11) | (b << 9) | a;
-    *(volatile u8*)0xCC008000 = 0x08;
+    *(volatile u32*)0xCC008000 = (f11 << 15) | (f10 << 13) | (w2 << 11) | (w1 << 9) | w0;
+    *(volatile u8*)0xCC008000 = 8;
     *(volatile u8*)0xCC008000 = 0x60;
-    *(volatile u32*)0xCC008000 = (s25 << 14) | (s26 << 12) | (s27 << 10) | (s28 << 8) | (s29 << 6) | (s30 << 4) | (s31 << 2) | k;
+    *(volatile u32*)0xCC008000 = (f25 << 14) | (f26 << 12) | (f27 << 10) | (f28 << 8) | (f29 << 6) | (f30 << 4) | (f31 << 2) | f12;
     *(volatile u8*)0xCC008000 = 0x10;
     *(volatile u16*)0xCC008000 = 0;
     *(volatile u16*)0xCC008000 = 0x1008;
-    *(volatile u32*)0xCC008000 = (h << 4) | g | (d << 2);
+    *(volatile u32*)0xCC008000 = (cnt1 << 4) | cnt0 | (mode << 2);
 }
 
 extern "C" void fn_8015949C(int attr, u32 base, u8 stride)
