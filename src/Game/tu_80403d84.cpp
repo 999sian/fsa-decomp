@@ -24,6 +24,24 @@ struct EC80Row {
 extern "C" extern EC80Row lbl_8050EC80[16];
 extern "C" extern u8* lbl_8053AAF8;
 
+// Pane pair of a 0x14-byte entry at self + 0x28 (one per row, 8 rows).
+struct PaneRef {
+	u8 pad0[4];
+	void* pane; // 0x4
+	f32 x;      // 0x8
+	f32 y;      // 0xc
+	u8 pad10[8];
+	f32 w;      // 0x18
+	f32 h;      // 0x1c
+};
+
+struct PaneEntry {
+	PaneRef* x; // 0x0
+	PaneRef* z; // 0x4
+	PaneRef* y; // 0x8
+	u8 pad[8];
+};
+
 // Owner object of this TU (layout partially known).
 struct Obj240 {
 	u8 pad[0x22];
@@ -195,12 +213,12 @@ extern "C" void fn_8040E298(u8* self) {
 }
 
 extern "C" void fn_8040E3A0(u8* self) {
-	f32 speed = 3.4f + (f32)*(s16*)(lbl_8050DB0C + 0x2ba) / 100.0f;
 	s32 idx = *(s32*)(self + 0x340) * 4 + *(s32*)(self + 0x348);
 	f32 tx = lbl_8048C95C[idx * 2];
-	f32 tz = lbl_8048C95C[idx * 2 + 1];
 	f32 dx = tx - *(f32*)(self + 0x394);
+	f32 tz = lbl_8048C95C[idx * 2 + 1];
 	f32 dz = tz - *(f32*)(self + 0x398);
+	f32 speed = 3.4f + (f32)*(s16*)(lbl_8050DB0C + 0x2ba) / 100.0f;
 	f32 dist = std::sqrtf(dx * dx + dz * dz);
 
 	if (*(u8*)(self + 0x664)) {
@@ -208,9 +226,9 @@ extern "C" void fn_8040E3A0(u8* self) {
 			*(s16*)(self + 0x42c) = 0;
 			*(s32*)(self + 0x350) = 9;
 		} else {
-			u32 id = 0x20064;
 			*(f32*)(self + 0x394) += speed * dx / dist;
 			*(f32*)(self + 0x398) += speed * dz / dist;
+			u32 id = 0x20064;
 			(*(SoundHolder**)(self + 0x2b8))->play(&id);
 		}
 	} else {
@@ -220,9 +238,9 @@ extern "C" void fn_8040E3A0(u8* self) {
 			*(s16*)(self + 0x42c) = 0;
 			*(s32*)(self + 0x350) = 9;
 		} else {
-			u32 id = 0x20064;
 			*(f32*)(self + 0x394) += speed * dx / dist;
 			*(f32*)(self + 0x398) += speed * dz / dist;
+			u32 id = 0x20064;
 			(*(SoundHolder**)(self + 0x2b8))->play(&id);
 		}
 	}
