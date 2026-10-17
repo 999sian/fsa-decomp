@@ -47,6 +47,29 @@ extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 
+static bool fn_80364340_isBadPos(Vec* p) {
+    if (p->x < lbl_80542B20) {
+    } else if (p->x > lbl_80542B24) {
+        return true;
+    }
+    if (p->y < lbl_80542B28) {
+    } else if (p->y > lbl_80542B2C) {
+        return true;
+    }
+    if (p->x + p->y < lbl_80542B30) {
+        return true;
+    }
+    if (p->x > lbl_80542B34 && p->y < lbl_80542B38) {
+        return true;
+    }
+    Vec v1 = {lbl_80542B3C, lbl_80542B38, lbl_80542B0C};
+    if (PSVECDistance(p, &v1) < lbl_80542B40) {
+        return true;
+    }
+    Vec v2 = {lbl_80542B44, lbl_80542B48, lbl_80542B0C};
+    return PSVECDistance(p, &v2) < lbl_80542B40;
+}
+
 
 extern "C" const s32 lbl_80474A98[];
 extern "C" const s32 lbl_80474AD8[];
@@ -60,6 +83,7 @@ extern "C" void fn_80362634(char* self) {
 }
 
 extern "C" void fn_80362680(char* self) {
+    const char* names = (const char*)lbl_80474320;
     struct {
         u8 unk_0x0[16];
         s32 unk_0x10;
@@ -79,13 +103,13 @@ extern "C" void fn_80362680(char* self) {
         s32 unk_0x34;
         s32 unk_0x38;
     } p;
-    f32 vecs[12];
-    u8 i;
+    f32 mtx[3][4];
+    s32 i;
 
     p.unk_0x10 = -1;
     p.unk_0x14 = -1;
-    for (i = 0; i < 0x10; i += 8) {
-        p.unk_0x0[i] = i;
+    for (i = 0; (u8)i < 0x10; i += 8) {
+        p.unk_0x0[(u8)i] = i;
         p.unk_0x0[(u8)(i + 1)] = i + 1;
         p.unk_0x0[(u8)(i + 2)] = i + 2;
         p.unk_0x0[(u8)(i + 3)] = i + 3;
@@ -129,26 +153,26 @@ extern "C" void fn_80362680(char* self) {
         }
     }
     if (*(u8*)(self + 0x278) == 1) {
-        vecs[0] = lbl_80542B5C;
-        vecs[1] = lbl_80542B0C;
-        vecs[2] = lbl_80542B0C;
-        vecs[3] = lbl_80542B0C;
-        vecs[4] = lbl_80542B0C;
-        vecs[5] = lbl_80542B10;
-        vecs[6] = lbl_80542B0C;
-        vecs[7] = lbl_80542B0C;
-        vecs[8] = lbl_80542B0C;
-        vecs[9] = lbl_80542B0C;
-        vecs[10] = lbl_80542B10;
-        vecs[11] = lbl_80542B0C;
-        p.unk_0x18 = vecs;
+        p.unk_0x18 = mtx;
+        mtx[0][3] = lbl_80542B0C;
+        mtx[1][3] = lbl_80542B0C;
+        mtx[2][3] = lbl_80542B0C;
+        mtx[0][0] = lbl_80542B5C;
+        mtx[0][1] = lbl_80542B0C;
+        mtx[0][2] = lbl_80542B0C;
+        mtx[1][0] = lbl_80542B0C;
+        mtx[1][1] = lbl_80542B10;
+        mtx[1][2] = lbl_80542B0C;
+        mtx[2][0] = lbl_80542B0C;
+        mtx[2][1] = lbl_80542B0C;
+        mtx[2][2] = lbl_80542B10;
     }
     if (*(s32*)(self + 0x258) == 0) {
-        fn_801F06F0(self, (const char*)lbl_80474320 + 0x8b4, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
+        fn_801F06F0(self, names + 0x8b4, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
     } else if (*(s32*)(self + 0x258) == 1) {
-        fn_801F06F0(self, (const char*)lbl_80474320 + 0x8c8, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
+        fn_801F06F0(self, names + 0x8c8, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
     } else if (*(s32*)(self + 0x258) == 2) {
-        fn_801F06F0(self, (const char*)lbl_80474320 + 0x8dc, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
+        fn_801F06F0(self, names + 0x8dc, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
     }
 }
 
@@ -224,33 +248,35 @@ extern "C" void fn_80364340(char* self) {
         ((JGeometry::TVec3<f32>*)(self + 0xc))->add(offs);
         f32 x = *(f32*)(self + 0xc);
         f32 y = *(f32*)(self + 0x10);
-        bool hit = false;
-        if (x >= lbl_80542B20 && x > lbl_80542B24) {
-            hit = true;
-        } else if (y >= lbl_80542B28 && y > lbl_80542B2C) {
-            hit = true;
+        u8 hit = 0;
+        if (!(x < lbl_80542B20) && x > lbl_80542B24) {
+            hit = 1;
+        } else if (!(y < lbl_80542B28) && y > lbl_80542B2C) {
+            hit = 1;
         } else if (x + y < lbl_80542B30) {
-            hit = true;
+            hit = 1;
         } else if (x > lbl_80542B34 && y < lbl_80542B38) {
-            hit = true;
+            hit = 1;
         } else {
             Vec v1 = {lbl_80542B3C, lbl_80542B38, lbl_80542B0C};
             Vec v2 = {lbl_80542B44, lbl_80542B48, lbl_80542B0C};
             if (PSVECDistance((Vec*)(self + 0xc), &v1) < lbl_80542B40) {
-                hit = true;
+                hit = 1;
             } else if (PSVECDistance((Vec*)(self + 0xc), &v2) < lbl_80542B40) {
-                hit = true;
+                hit = 1;
             }
         }
-        *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
-        if (!hit) {
-            *(s32*)(self + 0x248) = fn_801CD664(0x32) + 0x3c;
-            offs.z = lbl_80542B4C;
-            JGeometry::TVec3<f32> spawn(saved);
-            spawn.add(offs);
-            u32 type = fn_801CD664(8) | 0x250000;
-            Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)&spawn, type, -1, -1);
+        if (hit) {
+            *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
+            return;
         }
+        *(s32*)(self + 0x248) = fn_801CD664(0x32) + 0x3c;
+        *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
+        offs.z = lbl_80542B4C;
+        JGeometry::TVec3<f32> spawn(saved);
+        spawn.add(offs);
+        u32 type = fn_801CD664(8) | 0x250000;
+        Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)&spawn, type, -1, -1);
     }
 }
 
