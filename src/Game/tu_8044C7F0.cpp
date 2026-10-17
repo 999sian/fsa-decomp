@@ -68,23 +68,6 @@ extern "C" void fn_8044C7F0(u8* self) {
     }
 }
 
-struct UlPane {
-    virtual void v08();
-    virtual void v0c();
-    virtual void move(f32, f32);
-    virtual void v14();
-    virtual void v18();
-    virtual void v1c();
-    virtual void v20();
-    virtual void setAlpha(u32);
-    virtual void v28();
-    virtual void v2c();
-    virtual void v30();
-    virtual void v34();
-    virtual void v38();
-    virtual UlPane* search(u32, u32, u32);
-};
-
 extern "C" u8 fn_8044CB00(u8* p) { return p[0x140]; }
 
 extern "C" u8 fn_8044D290(u8* p) { return p[0x140]; }
