@@ -57,6 +57,31 @@ struct MsgEntry_80301CD0 {
 };
 
 extern u8 lbl_8053AD20[4];
+extern u8 lbl_80541618[4];
+
+struct Slot_80301CD0 {
+    u8 id;
+    u8 f1;
+    u8 f2;
+    u8 type : 3;
+    u8 pad3 : 2;
+    u8 idHi : 2;
+    u8 flag : 1;
+};
+
+struct Hdr_80301CD0 {
+    u8 f0;
+    u8 f1;
+    u8 pad2_7 : 1;
+    u8 side : 1;
+    u8 pad2_5 : 1;
+    u8 count : 3;
+    u8 player : 2;
+    u8 pad3 : 6;
+    u8 kind : 2;
+    u8 pad4[0x18 - 4];
+    Slot_80301CD0 slots[19];
+};
 
 extern "C" u8 fn_80301CD0(void* p) {
     s32 i = fn_8022F340();
@@ -319,7 +344,8 @@ extern "C" void fn_80308D0C() {
 }
 
 extern "C" void fn_80308E90() {
-    for (s32 i = 0; i < 4; i++) {
+    s32 i;
+    for (i = 0; i < 4; i++) {
         for (int j = 0; j < 16; j++) {
             lbl_80504A38[i][j].f24 = 0;
             lbl_80504A38[i][j].f25 = 0;
