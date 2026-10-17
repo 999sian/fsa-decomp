@@ -4,6 +4,10 @@ struct Vec {
     float x, y, z;
 };
 
+struct Vec2 {
+    float x, y;
+};
+
 extern "C" void fn_8022CA6C(int a, int b, int c);
 extern "C" void fn_8022CDD4(int a);
 extern "C" void fn_80134FE0(void* p, int b);
@@ -40,7 +44,7 @@ extern "C" unsigned char* fn_802D6A9C(void);
 extern "C" int* fn_801F856C(void);
 extern float lbl_8054075C;
 extern "C" void fn_8029CFF8(void* this_) {
-    float* p;
+    Vec* p;
     int i;
     int n;
     int count;
@@ -51,10 +55,8 @@ extern "C" void fn_8029CFF8(void* this_) {
         return;
     }
     fn_8022CF08(*(int*)((char*)this_ + 0x90) & 3);
-    p = fn_8023E724(*(int*)((char*)this_ + 0x90) & 3);
-    *(float*)((char*)this_ + 0xc) = p[0];
-    *(float*)((char*)this_ + 0x10) = p[1];
-    *(float*)((char*)this_ + 0x14) = p[2];
+    p = (Vec*)fn_8023E724(*(int*)((char*)this_ + 0x90) & 3);
+    *(Vec*)((char*)this_ + 0xc) = *p;
     *(float*)((char*)this_ + 0x14) += lbl_8054075C;
     *(int*)((char*)this_ + 0x108) = 0;
     *(int*)((char*)this_ + 0x234) = 1;
@@ -74,7 +76,7 @@ extern "C" void fn_8029CFF8(void* this_) {
     }
     if (n == 0) {
         *(unsigned char*)((char*)this_ + 0x24c) = 1;
-        if (fn_802D6A9C()[*(int*)((char*)this_ + 4) + 0x131df] != 0) {
+        if (*(unsigned char*)(*(char**)((char*)this_ + 4) + (int)fn_802D6A9C() + 0x131df) != 0) {
             *(int*)((char*)this_ + 0x230) = 0x3f;
         } else {
             *(int*)((char*)this_ + 0x230) = 0x3d;
@@ -84,7 +86,7 @@ extern "C" void fn_8029CFF8(void* this_) {
         }
     } else {
         *(unsigned char*)((char*)this_ + 0x24c) = 0;
-        if (fn_802D6A9C()[*(int*)((char*)this_ + 4) + 0x131df] != 0) {
+        if (*(unsigned char*)(*(char**)((char*)this_ + 4) + (int)fn_802D6A9C() + 0x131df) != 0) {
             *(int*)((char*)this_ + 0x230) = 0x44;
         } else {
             *(int*)((char*)this_ + 0x230) = 0x43;
@@ -95,10 +97,10 @@ extern "C" void fn_8029CFF8(void* this_) {
     }
     *(int*)((char*)this_ + 0x250) = 0;
     *(int*)((char*)this_ + 0x254) = 0;
-    count = fn_801F856C()[0x1008 / 4];
+    count = *(int*)((char*)fn_801F856C() + 0x1008);
     j = 0;
     for (i = 0; i < count; i++) {
-        a = (void*)fn_801F856C()[(j + 8) / 4];
+        a = *(void**)((char*)fn_801F856C() + j + 8);
         if (a != 0 && *(int*)((char*)a + 0x1a0) == 0x4647414c && *(unsigned char*)((char*)a + 0x11c) == 1) {
             *(void**)((char*)this_ + 0x254) = a;
         }
