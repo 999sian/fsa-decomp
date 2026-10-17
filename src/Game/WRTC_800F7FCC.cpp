@@ -42,6 +42,9 @@ extern f32 lbl_8053BFCC;
 extern f32 lbl_8053C054;
 extern f32 lbl_8053C058;
 extern f32 lbl_8053C05C;
+extern "C" const f32 lbl_8049C634[];
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
 
 // ---- from Game/fn_800F7FCC_dtor.cpp
 
