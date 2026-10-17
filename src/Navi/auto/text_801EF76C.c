@@ -60,6 +60,8 @@ extern "C" DSError ddh_cc_pre_continue(void)
 
 extern char lbl_80203220[];
 extern int lbl_802FFAC0;
+extern char lbl_8020327C[];
+extern char lbl_802032A4[];
 extern "C" void MWTRACE(u8, char*, ...);
 extern "C" void MWTRACE(u8 level, char* fmt, ...);
 extern "C" int ddh_cc_write(void* buf, int len)
