@@ -32,8 +32,7 @@ extern "C" void fn_800C5444(u8* p, s32 n);
 extern "C" void fn_800C4B50(void) {}
 
 extern "C" void fn_800C4C88(u8* param_1) {
-    u8* p = lbl_802C565C;
-    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], p[0xc], 0, lbl_80300D8C, *(f32*)(p + 0x10));
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, 0.0f, *(f32*)(lbl_802C565C + 0x10));
     param_1[0x38]++;
     if (iVar1 == 1) {
         param_1[0x38] = 0;
