@@ -1,4 +1,6 @@
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 struct FsaStateEntry;
 typedef void (FsaStateEntry::*FsaStateFn)();
