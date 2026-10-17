@@ -42,6 +42,51 @@ extern void* lbl_8053AED0;
 extern u8 lbl_8050EC80[];
 extern u8* lbl_8053AAF8;
 
+extern "C" u8 fn_8022F514(s32 idx);
+extern "C" s32 fn_8022F3DC(s32 idx);
+extern "C" u32 fn_8023CBC0(s32 v);
+extern "C" u8 fn_8022E438(s32 idx, s32 other);
+extern "C" void* fn_8023E724(s32 idx);
+extern "C" void fn_80230498(s32 idx, void* vec, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8 fn_802308E0(s32 idx);
+extern "C" void fn_8021BFA8(void* p);
+
+static inline void Hrmn_stepSub(u8* p, s32 a2, s32 a3) {
+    s32 idx = a2;
+    if (fn_8022F514(a2)) {
+        idx = fn_8022F3DC(a2);
+    }
+    u16 cnt = (u16)fn_8023CBC0(idx);
+    f32 f31 = 16.0f * (17.5f + (f32)a3);
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_8022E438(i, a2)) {
+            Vec tmp = *(Vec*)fn_8023E724(a2);
+            if (a3 >= 0 && p[2] != 30) {
+                u8* m = (u8*)fn_802D6A9C();
+                f32 c = (f32)p[2];
+                f32 ty = *(f32*)(m + 0xd0) + f31;
+                f32 tx = 32.0f + *(f32*)(m + 0xcc);
+                if (c >= FLT_EPSILON) {
+                    tmp.x = tmp.x + (1.0f / c) * (tx - tmp.x);
+                }
+                if (c >= FLT_EPSILON) {
+                    tmp.y = tmp.y + (1.0f / c) * (ty - tmp.y);
+                } else {
+                    tmp.y = ty;
+                }
+                if (c >= FLT_EPSILON) {
+                    tmp.z = tmp.z + (1.0f / c) * (0.0f - tmp.z);
+                } else {
+                    tmp.z = 0.0f;
+                }
+                fn_80230498(i, &tmp, *(s32*)(p + 4) + 0x33a, 0xff, -0x80, -0x80, 1);
+            } else {
+                fn_80230498(i, &tmp, cnt, 0xff, -0x80, -0x80, 1);
+            }
+        }
+    }
+}
+
 struct HrmnEntry {
     s32 mA;       // 0x00
     s32 mId;      // 0x04
