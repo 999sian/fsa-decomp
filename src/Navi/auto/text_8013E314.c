@@ -26,6 +26,10 @@ extern "C" void fn_8013E374(void* param_1, void* param_2) {
     (((PmfObj_8013E374*)*(void**)((u8*)param_2 + 0x88))->*(*pmf))();
 }
 
+extern "C" void fn_8013E9E4(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
+    fn_8013BC94(*(void**)((u8*)param_1 + 0x114), param_3, param_4, param_5, param_6);
+}
+
 struct PmfObj_8013E374;
 typedef void (PmfObj_8013E374::*PmfFunc_8013E374)();
 extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
