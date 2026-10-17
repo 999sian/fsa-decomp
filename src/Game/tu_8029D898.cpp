@@ -9,7 +9,6 @@ private:
     unsigned char pad[0x5c];
 };
 
-struct FSAPoolSlot { u8 pad[0xc]; };
 struct WaveSubBase { u8 pad[8]; };
 struct WaveSub : WaveSubBase {
     virtual void v0();
@@ -579,7 +578,7 @@ extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void fn_802A3E94(void) {
-    char* base = lbl_804D0968;
+    char* base = lbl_804D0968 + 0x0;
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x0);
