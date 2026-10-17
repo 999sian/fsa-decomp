@@ -54,11 +54,11 @@ extern "C" void fn_800F3730(u8* p) {
     }
 }
 
-extern "C" void fn_800F42C4(void);
+extern "C" void fn_800F42C4(u8* p);
 
 extern "C" void fn_800F37D8(u8* p) {
     p[0x58] = 0;
-    fn_800F42C4();
+    fn_800F42C4(p);
     u32 v;
     s32 id = fn_80181BA0(*(void**)(p + 0x24));
     v = 0x3cd;
