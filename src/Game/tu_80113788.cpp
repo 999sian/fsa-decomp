@@ -9,6 +9,11 @@ extern "C" f32 lbl_8053C69C;
 extern "C" u16 lbl_804648E8[];
 extern "C" u32 lbl_804648F4[];
 extern "C" char lbl_8049D820[];
+extern "C" char lbl_80464968[];
+extern "C" char lbl_8046497C[];
+extern "C" void* lbl_8053AAF8;
+extern "C" void fn_801EF830(s32 a, void* b, void* c, s32 d, void* e, s32 f, s32 g);
+extern "C" void fn_802F86CC(void* a, void* b, void* c, s32 d, void* e, f32 f1, f32 f2);
 
 struct Vec3_80113B54 {
     f32 x;
