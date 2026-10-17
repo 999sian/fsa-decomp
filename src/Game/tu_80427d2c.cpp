@@ -26,6 +26,13 @@ extern void* lbl_8053AE28;
 extern void* lbl_8053AE34;
 extern u8 lbl_8048F270[64];
 
+extern u32 lbl_8053AE60;
+extern u32 lbl_8053AE44;
+extern u8* lbl_8053AE64;
+extern "C" void fn_8042C39C(u8* info, s16* block);
+extern "C" void fn_8042B8DC(void* block, s32 off);
+extern "C" void fn_8042B430(void* block, s32 off);
+
 struct Obj8042E1E4 { u8 pad[0x1c]; u16 m1C; u8 pad2[2]; u32 m20; };
 
 // ---- from src/Game/Dtor_lbl804B15D0_80427F60.cpp ----
@@ -2264,6 +2271,90 @@ extern "C" void fn_8042DA10() {
     lbl_8052AAB8[3] = p + 0x180;
     lbl_8052AAB8[4] = p + 0x200;
     lbl_8052AAB8[5] = p + 0x280;
+}
+
+extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
+    u8* pcVar2;
+    u8* pbVar3;
+    u8 bVar1;
+    u8 bVar4;
+    u8 cVar6;
+    u32 p;
+
+    if (data != NULL) {
+        if (p1 != NULL && p2 != NULL && p3 != NULL) {
+            if (p4 != NULL) {
+                if ((PPCMfhid2() & 0x10000000) != 0) {
+                    if (lbl_8053AE78 != 0) {
+                        lbl_8053AE70 = (u32)p4;
+                        p = ((u32)p4 + 0x1f) & ~0x1f;
+                        lbl_8053AE74 = (u8*)p;
+                        lbl_8053AE70 = p + 0x6bc;
+                        DCZeroRange((void*)p, 0x6bc);
+                        *(u32*)(lbl_8053AE74 + 0x6a4) = 0x21;
+                        *(u16*)(lbl_8053AE74 + 0x698) = 0;
+                        *(u8**)(lbl_8053AE74 + 0x69c) = data;
+                        bVar4 = 0;
+                        do {
+                            pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
+                            *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + 1;
+                            if (*pcVar2 != 0xff) {
+                                return 3;
+                            }
+                            while (**(u8**)(lbl_8053AE74 + 0x69c) == 0xff) {
+                                *(u8**)(lbl_8053AE74 + 0x69c) = *(u8**)(lbl_8053AE74 + 0x69c) + 1;
+                            }
+                            pbVar3 = *(u8**)(lbl_8053AE74 + 0x69c);
+                            *(u8**)(lbl_8053AE74 + 0x69c) = pbVar3 + 1;
+                            bVar1 = *pbVar3;
+                            if (bVar1 < 0xd8) {
+                                if (bVar1 == 0xc4) {
+                                    cVar6 = fn_8042D20C();
+                                } else if (bVar1 == 0xc0) {
+                                    cVar6 = fn_8042D8D4();
+                                } else {
+                                    return 0xb;
+                                }
+                                if (cVar6 != 0) {
+                                    return cVar6;
+                                }
+                            } else if (bVar1 <= 0xdf) {
+                                if (bVar1 == 0xdd) {
+                                    fn_8042CF9C();
+                                } else if (bVar1 == 0xdb) {
+                                    cVar6 = fn_8042D3E4();
+                                    if (cVar6 != 0) {
+                                        return cVar6;
+                                    }
+                                } else if (bVar1 == 0xda) {
+                                    cVar6 = fn_8042D7B8();
+                                    if (cVar6 != 0) {
+                                        return cVar6;
+                                    }
+                                    bVar4 = 1;
+                                } else if (bVar1 != 0xd8) {
+                                    return 0xb;
+                                }
+                            } else if (bVar1 <= 0xef || bVar1 == 0xfe) {
+                                pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
+                                *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
+                            } else {
+                                return 0xb;
+                            }
+                        } while (!bVar4);
+                        fn_8042DA10();
+                        fn_8042CC50((u32)p1, (u32)p2, (u32)p3);
+                        return 0;
+                    }
+                    return 0x1d;
+                }
+                return 0x1c;
+            }
+            return 0x1a;
+        }
+        return 0x1b;
+    }
+    return 0x19;
 }
 
 struct BitReader { u8* p; s32 w4; u8 b8; u8 b9; };
