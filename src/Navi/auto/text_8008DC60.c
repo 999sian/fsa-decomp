@@ -69,22 +69,24 @@ static inline f32 navi_sqrtf_800A1774(f32 x)
     if (x > lbl_80300AF0) {
         f64 magic3 = lbl_80300B58;
         f64 magic2 = lbl_80300B60;
+        f64 temp;
+        f64 temp2;
         f64 res_d = __frsqrte(x);
-        f64 temp = res_d * res_d;
-        res_d = magic3 * res_d;
-        temp = (f64)x * temp;
-        temp = magic2 - temp;
-        res_d = res_d * temp;
         temp = res_d * res_d;
-        res_d = magic3 * res_d;
+        temp2 = magic3 * res_d;
         temp = (f64)x * temp;
         temp = magic2 - temp;
-        res_d = res_d * temp;
+        res_d = temp2 * temp;
         temp = res_d * res_d;
-        res_d = magic3 * res_d;
+        temp2 = magic3 * res_d;
         temp = (f64)x * temp;
         temp = magic2 - temp;
-        res_d = res_d * temp;
+        res_d = temp2 * temp;
+        temp = res_d * res_d;
+        temp2 = magic3 * res_d;
+        temp = (f64)x * temp;
+        temp = magic2 - temp;
+        res_d = temp2 * temp;
         r = (f32)((f64)x * res_d);
     } else if (x < lbl_80300B68) {
         r = lbl_802FEAB0[0];
@@ -2449,10 +2451,10 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
     case 3: {
         f32 threshold = lbl_80300B38;
         f32 bias = lbl_80300B20;
-        f32 temp = threshold * t;
-        temp = temp - bias;
-        temp = threshold * temp;
-        result = temp - bias;
+        result = threshold * t;
+        result = result - bias;
+        result = threshold * result;
+        result = result - bias;
         break;
     }
     case 4: {
