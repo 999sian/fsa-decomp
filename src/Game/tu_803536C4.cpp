@@ -6,6 +6,8 @@ struct FsaResourceManager {
     virtual void v01();
     virtual void v02();
     virtual void v03();
+    virtual void v04();
+    virtual void v05();
     virtual void* getResource(u32 fourccType, const char* fileName); // slot 6 (+0x18)
 };
 
