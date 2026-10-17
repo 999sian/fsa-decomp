@@ -2,6 +2,7 @@
 
 extern "C" void fn_8017A4F8(void* p);
 extern "C" void fn_800127A0(void* p);
+extern f64 lbl_80300F90;
 
 struct VObj_800D3274 {
     virtual void v0(s32 mode);
@@ -167,11 +168,12 @@ extern "C" void fn_800D1EE8(NaviState_800D1EE8* p) {
 extern "C" void fn_800D2DC8(u8* p) {
     if (p[0x265] != 0) {
         *(s32*)(p + 0x260) = *(s32*)(p + 0x260) + 1;
-        s16 t = *(s16*)(*(u8**)(p + 0x25c) + 6);
+        u8* q = *(u8**)(p + 0x25c);
+        s16 t = *(s16*)(q + 6);
         if (*(s32*)(p + 0x260) >= t) {
             *(s32*)(p + 0x260) = *(s32*)(p + 0x260) - t;
         }
-        *(f32*)(*(u8**)(p + 0x25c) + 8) = (f32)*(s32*)(p + 0x260);
+        *(f32*)(q + 8) = (f32)*(s32*)(p + 0x260);
         fn_8017A4F8(*(void**)(p + 0xc));
     }
 }
@@ -242,6 +244,26 @@ extern "C" s32 fn_800D3120(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode) {
 extern "C" void fn_800D3238(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
+}
+
+extern "C" void fn_800D3274(u8* p) {
+    VObj_800D3274* o = *(VObj_800D3274**)(p + 0x134);
+    if (o != 0) {
+        o->v0(1);
+    }
+    o = *(VObj_800D3274**)(p + 0xc);
+    if (o != 0) {
+        o->v0(1);
+    }
+    o = *(VObj_800D3274**)(p + 0x4);
+    o->v7();
+    if (((s8*)lbl_802C5774)[4] >= 0) {
+        *(s32*)((u8*)lbl_802C5774 + 8) = *(s32*)((u8*)lbl_802C5774 + 8) - 1;
+        if (*(s32*)((u8*)lbl_802C5774 + 8) == 0) {
+            fn_800127A0((u8*)lbl_8029FDB4 + 4);
+            ((s8*)lbl_802C5774)[4] = -1;
+        }
+    }
 }
 
 extern char lbl_802F0BC0[];
