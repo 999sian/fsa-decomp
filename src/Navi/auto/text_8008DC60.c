@@ -67,27 +67,11 @@ static inline f32 navi_sqrtf_800A1774(f32 x)
 {
     f32 r;
     if (x > lbl_80300AF0) {
-        f64 magic3 = lbl_80300B58;
-        f64 magic2 = lbl_80300B60;
-        f64 temp;
-        f64 temp2;
-        f64 res_d = __frsqrte(x);
-        temp = res_d * res_d;
-        temp2 = magic3 * res_d;
-        temp = (f64)x * temp;
-        temp = magic2 - temp;
-        res_d = temp2 * temp;
-        temp = res_d * res_d;
-        temp2 = magic3 * res_d;
-        temp = (f64)x * temp;
-        temp = magic2 - temp;
-        res_d = temp2 * temp;
-        temp = res_d * res_d;
-        temp2 = magic3 * res_d;
-        temp = (f64)x * temp;
-        temp = magic2 - temp;
-        res_d = temp2 * temp;
-        r = (f32)((f64)x * res_d);
+        f64 guess = __frsqrte((f64)x);
+        guess = lbl_80300B58 * guess * (lbl_80300B60 - guess * guess * x);
+        guess = lbl_80300B58 * guess * (lbl_80300B60 - guess * guess * x);
+        guess = lbl_80300B58 * guess * (lbl_80300B60 - guess * guess * x);
+        r = (f32)(x * guess);
     } else if (x < lbl_80300B68) {
         r = lbl_802FEAB0[0];
     } else if (fpclassify(x) == 1) {
@@ -2425,6 +2409,7 @@ extern "C" void fn_800A1748(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((char*)param_1 + 0x25c));
 }
 
+#pragma fp_contract off
 extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
 {
     f32 t;
@@ -2448,15 +2433,9 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
     default:
         result = t;
         break;
-    case 3: {
-        f32 threshold = lbl_80300B38;
-        f32 bias = lbl_80300B20;
-        result = threshold * t;
-        result = result - bias;
-        result = threshold * result;
-        result = result - bias;
+    case 3:
+        result = lbl_80300B38 * (lbl_80300B38 * t - lbl_80300B20) - lbl_80300B20;
         break;
-    }
     case 4: {
         f32 val = *(f32*)((u8*)lbl_802F0BC0 + (((u32)(s32)(lbl_80300AFC * (lbl_80300B70 * t)) >> 2) & 0x3FF8));
         result = val * val;
@@ -2470,7 +2449,7 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
     }
     return result;
 }
-
+#pragma fp_contract reset
 extern f32 lbl_80300B20;
 extern f64 lbl_80300B00;
 extern f64 lbl_80300B58;
