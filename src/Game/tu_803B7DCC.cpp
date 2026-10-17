@@ -59,6 +59,23 @@ struct FsaVObj {
     virtual void v57(void);
     virtual void v58(void);
     virtual void v59(s32 a, s32 b, s32 c, f32 d, f32 e, f32 f, f32 g);
+    virtual void v60(void);
+    virtual void v61(void);
+    virtual void v62(void);
+    virtual void v63(void);
+    virtual void v64(void);
+    virtual void v65(void);
+    virtual void v66(void);
+    virtual void v67(void);
+    virtual void v68(void);
+    virtual void v69(void);
+    virtual void v70(void);
+    virtual void v71(void);
+    virtual void v72(void);
+    virtual void v73(void);
+    virtual void v74(void);
+    virtual void v75(void);
+    virtual void v76(u32* a, u32* b);
 };
 
 extern "C" void fn_8013B490(void* this_);
