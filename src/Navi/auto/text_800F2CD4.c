@@ -55,6 +55,8 @@ extern "C" void fn_800F3730(u8* p) {
     }
 }
 
+extern "C" void fn_800F42C4(void);
+
 extern "C" void fn_800F37D8(u8* p) {
     p[0x58] = 0;
     fn_800F42C4();
