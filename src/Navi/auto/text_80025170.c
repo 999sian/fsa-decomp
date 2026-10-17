@@ -23,7 +23,7 @@ extern u8 lbl_802BC618[];
 extern u8 lbl_802BBD28[];
 extern u8 lbl_802BC548[];
 extern u8 lbl_802BE378[];
-extern u8 lbl_802FBDB8[];
+extern char lbl_802FBDB8[6];
 extern u8 lbl_802FBDC0;
 extern u8 lbl_802FBDC8;
 extern "C" void fn_80021240(void*, void*, void*);
@@ -123,7 +123,7 @@ extern "C" int fn_8002566C(u8* param_1) {
     u8 r = lbl_802B7CA0[0x1419];
     do {
         if (slot[4] == 0) {
-            fn_801E41AC(buf, lbl_80226394, (s32)&lbl_802FBDB8, r, *table);
+            fn_801E41AC(buf, lbl_80226394, lbl_802FBDB8, r, *table);
             slot[4] = fn_800137B8(buf, 0, 0);
         }
         i++;
