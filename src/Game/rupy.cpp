@@ -17,6 +17,22 @@ extern "C" u8 fn_802DE9A0(void);
 extern "C" u8 fn_802DEB58(void);
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 flag);
 extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern void* lbl_8053AAF8;
+extern const f32 lbl_80541DA8;
+extern const f32 lbl_80541DAC;
+extern const f32 lbl_80541DB0;
+extern const f32 lbl_80541DB4;
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_801F0D20(void* this_, s32 a);
+extern "C" u8 fn_802DEBA0(void);
+
+// Fast LCG at lbl_8053AAF8+0xB4; returns a value in [0,1).
+static inline f32 rupyRand01() {
+    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *s = *s * 0x19660du + 0x3c6ef35fu;
+    u32 a = (*s >> 9) | 0x3f800000u;
+    return *(f32*)&a - lbl_80541D90;
+}
 
 extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
     if (this_ != 0) {
