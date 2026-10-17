@@ -1,5 +1,22 @@
 #include "types.h"
 #include "math.h"
+extern void* lbl_80286BA8[];
+extern f32 lbl_80300AB0;
+extern f32 lbl_80300AB4;
+extern f32 lbl_80300AB8;
+extern f32 lbl_80300ABC;
+extern f32 lbl_80300AC0;
+extern f32 lbl_80300AC4;
+extern f32 lbl_80300AC8;
+extern f32 lbl_80300ACC;
+extern f32 lbl_80300AD0;
+extern f32 lbl_80300AD4;
+extern f32 lbl_80300AD8;
+extern f32 lbl_80300ADC;
+extern f32 lbl_80300AE0;
+extern f32 lbl_80300AE4;
+extern f32 lbl_80300AE8;
+extern f32 lbl_80300AEC;
 extern "C" s32 fn_80096F0C(void* p);
 extern "C" u8 fn_800C6E38(void* p);
 extern "C" u8 fn_800C6FD4(void* p);
