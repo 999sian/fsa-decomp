@@ -180,17 +180,18 @@ extern "C" void fn_80193764(f32* a, f32* b) {
     a[10] *= b[2];
 }
 
+extern "C" f32 __psq_l(void* p, int off, int w, int gqr);
+extern "C" void __psq_st(f32 v, void* p, int off, int w, int gqr);
+extern "C" f32 __ps_mul(f32 a, f32 b);
 extern "C" void fn_801937C8(void* e, s32 idx) {
     f32* a = (f32*)e;
     f32* b = (f32*)idx;
-    a[0] *= b[0];
-    a[1] *= b[1];
+    f32 bxy = __psq_l(b, 0, 0, 0);
+    __psq_st(__ps_mul(__psq_l(a, 0, 0, 0), bxy), a, 0, 0, 0);
     a[2] *= b[2];
-    a[3] *= b[0];
-    a[4] *= b[1];
+    __psq_st(__ps_mul(__psq_l(a + 3, 0, 0, 0), bxy), a + 3, 0, 0, 0);
     a[5] *= b[2];
-    a[6] *= b[0];
-    a[7] *= b[1];
+    __psq_st(__ps_mul(__psq_l(a + 6, 0, 0, 0), bxy), a + 6, 0, 0, 0);
     a[8] *= b[2];
 }
 
@@ -547,7 +548,7 @@ extern "C" void fn_80194AAC(u32 param_1, s32 param_2, s32 param_3) {
 
 extern "C" void fn_80194B0C(u32 param_1, s32 param_2) {
     fn_80191E7C((u32*)lbl_802EE470);
-    fn_80191AE0(((u32*)((u32*)lbl_802EE470)[16])[12], param_2 * 3);
+    fn_80191AE0(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), param_2 * 3);
 }
 
 extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
