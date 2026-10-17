@@ -27,3 +27,10 @@ extern "C" s32 fn_800164D0(void* param_1) {
     return result;
 }
 
+extern "C" void fn_801D647C(u8);
+extern "C" void fn_80016618(void* param_1) {
+    u8* p = (u8*)param_1;
+    fn_801D647C(p[0x1fa4]);
+    *(s32*)(p + 0x1fac) = 0;
+}
+
