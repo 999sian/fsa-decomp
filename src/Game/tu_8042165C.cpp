@@ -63,6 +63,18 @@ static inline u8* CallPair(u8* this_, u32 a, u32 b) {
     return ((PairCallFn)(*(void***)sub)[15])(sub, a, b);
 }
 
+extern u64 lbl_8048F158[];
+extern u32 lbl_804B1434[];
+extern "C" s32 fn_802366CC(void);
+extern "C" u32 fn_804030C4(u32 tag, u32 id);
+
+typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
+
+// Virtual slot 68 of an object returned by SubObj::w13: calls (u32, 0).
+static inline void CallSlot68(u8* obj, u32 s) {
+    ((Slot68Fn)(*(void***)obj)[68])(obj, s, 0);
+}
+
 // Virtual slot 2 of an owned sub-object: destroy(freeFlag).
 struct DtorSlot2 {
     virtual void destroy(s32 freeFlag);
@@ -76,6 +88,92 @@ static inline void ReleaseSlot(void** slot) {
     }
     *slot = 0;
 }
+extern "C" void fn_8042165C(u8* this_) {
+    u8* base = lbl_8048E1B8;
+    s32 j;
+    s32 i;
+    f32 pos[2];
+
+    *(u16*)(this_ + 0x1f0) = 0;
+    *(u16*)(this_ + 0x1f2) = 0;
+    *(u16*)(this_ + 0x1f4) = 0;
+    *(u16*)(this_ + 0x1f6) = 0;
+    for (i = 0; i < 4; i++) {
+        u32 mask = 1 << i;
+        if ((lbl_8053AAF8[0x82] & (u8)mask) != 0 && !fn_8022C8EC(i)) {
+            u16 bit = mask;
+            if (i != 0) *(u16*)(this_ + 0x1f0) |= bit;
+            if (i != 1) *(u16*)(this_ + 0x1f2) |= bit;
+            if (i != 2) *(u16*)(this_ + 0x1f4) |= bit;
+            if (i != 3) *(u16*)(this_ + 0x1f6) |= bit;
+            if (fn_8023DE58(i) < 8) {
+                f32* xs;
+                f32* ys;
+                fn_8030C5F0(*(void**)(lbl_8053AB10 + 0x24), fn_8023E724(i), 0, 0, pos);
+                xs = (f32*)(base + 0xfd0);
+                ys = (f32*)(base + 0xff8);
+                for (j = 0; j < 10; j++) {
+                    if (!fn_8043DF24(lbl_8053AED0, xs[j], ys[j], pos[0], pos[1], lbl_80543A40)) {
+                        u16 b = 1 << j;
+                        *(u16*)(this_ + 0x1f0) |= b;
+                        *(u16*)(this_ + 0x1f2) |= b;
+                        *(u16*)(this_ + 0x1f4) |= b;
+                        *(u16*)(this_ + 0x1f6) |= b;
+                    }
+                }
+            }
+        }
+        if (this_[0x24d + i] != 0xff) {
+            if (i != 0) *(u16*)(this_ + 0x1f0) |= (u16)(1 << this_[0x24d + i]);
+            if (i != 1) *(u16*)(this_ + 0x1f2) |= (u16)(1 << this_[0x24d + i]);
+            if (i != 2) *(u16*)(this_ + 0x1f4) |= (u16)(1 << this_[0x24d + i]);
+            if (i != 3) *(u16*)(this_ + 0x1f6) |= (u16)(1 << this_[0x24d + i]);
+        }
+    }
+
+    {
+        u8* flags = this_;
+        u8* timers = this_;
+        u8* row = base + 0x1020;
+        for (i = 0; i < 4; i++) {
+            if ((lbl_8053AAF8[0x82] & (u8)(1 << i)) != 0 && !fn_8022C8EC(i) && fn_8023DE58(i) < 8) {
+                u8* p = row;
+                for (j = 0; j < 10; j++) {
+                    if (((u16)(1 << *p) & *(u16*)(flags + 0x1f0)) == 0) {
+                        if (this_[i + 0x251] != row[j] && this_[i + 0x24d] == 0xff) {
+                            this_[i + 0x24d] = row[j];
+                            *(s32*)(timers + 0x198) = 0;
+                            *(u16*)(this_ + 0x1f0) |= (u16)(1 << this_[i + 0x24d]);
+                            *(u16*)(this_ + 0x1f2) |= (u16)(1 << this_[i + 0x24d]);
+                            *(u16*)(this_ + 0x1f4) |= (u16)(1 << this_[i + 0x24d]);
+                            *(u16*)(this_ + 0x1f6) |= (u16)(1 << this_[i + 0x24d]);
+                        }
+                        break;
+                    }
+                    p++;
+                }
+                if (this_[i + 0x24d] == 0xff) {
+                    if (*(s32*)(timers + 0x198) != 0) {
+                        *(s32*)(timers + 0x198) = *(s32*)(timers + 0x198) + 1;
+                        if (*(s32*)(timers + 0x198) > 0x77) {
+                            *(s32*)(timers + 0x198) = 0;
+                        }
+                    }
+                } else {
+                    *(s32*)(timers + 0x198) = *(s32*)(timers + 0x198) + 1;
+                    if (*(s32*)(timers + 0x198) > 0x3b) {
+                        this_[i + 0x251] = this_[i + 0x24d];
+                        this_[i + 0x24d] = 0xff;
+                    }
+                }
+            }
+            flags += 2;
+            timers += 4;
+            row += 10;
+        }
+    }
+}
+
 extern "C" void fn_80421A34(u8* this_, s32 i, u8 flag) {
     u8* base = lbl_8048E1B8;
     s32 j;
