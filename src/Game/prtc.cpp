@@ -30,7 +30,7 @@ struct NotifyTarget : NonPolyBase {
     virtual void v2();
     virtual void v3();
     virtual void v4();
-    virtual void v5();
+    virtual void v5(void* arg);
     virtual void v6();
     virtual void v7();
     virtual void v8();
