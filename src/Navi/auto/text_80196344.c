@@ -42,6 +42,10 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_80198608(u8* p);
+struct NaviRectHolder98 {
+    u8 unk_0x0[0x98];
+    NaviRect16 rects[4];
+};
 struct NaviRectHolder {
     u8 unk_0x0[0xda];
     NaviRect16 rects[4];
@@ -1689,7 +1693,7 @@ extern "C" void fn_8019FA54(int param_1)
 	do {
 		unsigned short check = *(unsigned short *)(ptr + 8);
 		if (check != 0xffff) {
-			lbl_802FFA80[2] = (*(int *)(param_1 + 4)) + (lbl_802FFA80[0] + off);
+			lbl_802FFA80[2] = lbl_802FFA80[0] + off + *(int *)(param_1 + 4);
 			fn_801A6214((int)i, (void *)(ptr + 8));
 			off += 0x14;
 			if (*(u8*)(*(u8**)(*(u8**)(lbl_802EE470 + 0x58) + 4) + *(unsigned short *)(ptr + 8) * 0x20 + 8) == 1) {
@@ -1703,7 +1707,6 @@ extern "C" void fn_8019FA54(int param_1)
 	int final = lbl_802FFA80[2];
 	fn_801BC250(saved, final - saved);
 }
-#pragma use_lmw_stmw on
 extern "C" void fn_8019FC0C(void* param_1, s32 param_2) {
     extern u32* lbl_802FFA80;
     u32 start;
@@ -2231,11 +2234,8 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
-    u8* d = (u8*)(p + i * 4);
-    d[0x62] = src[0];
-    d[0x63] = src[1];
-    d[0x64] = src[2];
-    d[0x65] = src[3];
+    typedef struct { u8 r, g, b, a; } Col;
+    ((Col*)(p + 0x62))[i] = *(Col*)src;
 }
 
 extern "C" int fn_801A3DEC(int param_1, int param_2) {
@@ -2720,14 +2720,16 @@ struct C801A4840 { u8 r, g, b; };
 struct Q801A4840 { u8 b0; C801A4840 c1; u8 b4; C801A4840 c5; };
 struct R801A4840 { u8 pad[0x38]; Q801A4840 e[1]; };
 extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
-    u8 a = p3[1];
-    u8* p = p1 + p2 * 8;
-    p[0x39] = a;
-    p[0x3a] = p3[2];
-    p[0x3b] = p3[3];
-    p[0x3d] = p3[5];
-    p[0x3e] = p3[6];
-    p[0x3f] = p3[7];
+    typedef struct { u8 a, r, g, b; } Col;
+    typedef struct { Col c[2]; } Ent;
+    Ent* e = (Ent*)(p1 + 0x38) + p2;
+    const Ent* s = (const Ent*)p3;
+    e->c[0].r = s->c[0].r;
+    e->c[0].g = s->c[0].g;
+    e->c[0].b = s->c[0].b;
+    e->c[1].r = s->c[1].r;
+    e->c[1].g = s->c[1].g;
+    e->c[1].b = s->c[1].b;
 }
 
 extern "C" s32 fn_801A48B8(s32 p, s32 i) {
@@ -2743,7 +2745,8 @@ extern "C" s32 fn_801A48F4(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A4908(u8* p, int i, NaviRect16* src) {
-    ((NaviRect16*)(p + 0x98))[i] = *src;
+    NaviRect16* d = (NaviRect16*)(p + (i << 3) + 0x98);
+    *d = *src;
 }
 
 extern "C" int fn_801A4960(int param_1, int param_2) {
