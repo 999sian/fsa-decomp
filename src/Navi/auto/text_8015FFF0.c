@@ -509,6 +509,22 @@ extern "C" BOOL fn_80161CE0(void) {
     return 1;
 }
 
+extern "C" u32 fn_80161DF4(void* param_1, u8* param_2) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual u32 v10(u8* b);
+    };
+    u8* p = (u8*)fn_801615C4();
+    if (p == NULL) {
+        return -1;
+    }
+    if (((*(u32*)(p + 0x4)) >> 24 & 4) == 0) {
+        return ((Obj*)param_1)->v10(param_2);
+    }
+    return (u32)param_2[4] << 24 | (u32)param_2[5] << 16 | (u32)param_2[6] << 8 | (u32)param_2[7];
+}
+
 extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
     u8 ok;
     fn_80160C34(p, a, 2);
