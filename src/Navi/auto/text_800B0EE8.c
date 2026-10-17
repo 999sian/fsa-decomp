@@ -59,6 +59,36 @@ extern "C" void fn_800B9588(u8* p);
 extern "C" void fn_800B96D8(char* p);
 extern "C" void fn_8017A4F8(void* p);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_800B10D4(u8* p);
+extern "C" void fn_800B4D64(u8* p);
+extern "C" void fn_800B48F8(u8* p);
+extern "C" void fn_800B4E7C(u8* p);
+extern "C" void fn_800B0FE8(u8* p) {
+    p[0x3a0] = 0;
+    p[0x3a1] = 0;
+    if (p[0x39a] != 0) {
+        u8 v = (u8)lbl_802B7CA0[0x3fc] & 0xf;
+        if (v >= 12) {
+            v = 0;
+        }
+        p[0x387] = v % 4;
+        p[0x388] = v / 4;
+        p[0x39a] = 0;
+    }
+    fn_800B10D4(p);
+    fn_800B4D64(p);
+    fn_800B95E4(p);
+    fn_800B48F8(p);
+    fn_800B4E7C(p);
+    p[0x39d] = 0;
+    if (p[0x39b] != 0 && p[0x39c] != 0) {
+        p[0x39d] = 1;
+    }
+    p[0x3a3] = 0;
+    *(u32*)(p + 0x378) = 0;
+    p[0x3a2] = 0;
+}
+
 extern "C" void fn_800B4454(void) {}
 
 extern "C" unsigned char fn_800B51E8(void* self, int i) {
@@ -134,6 +164,23 @@ extern "C" void fn_800B699C(u8* p) {
     p[0x39d] = 0;
     *(u8*)(*(u8**)(p + 0x30) + 0xb0) = 1;
     *(s32*)(p + 0x378) = 4;
+}
+
+extern "C" void fn_800B6D90(u8* p) {
+    s32 idx = p[0x387] + p[0x388] * 4;
+    if ((u16)(*(u16*)(lbl_802B7CA0 + 0xc) & (1 << lbl_802313EC[idx])) != 0) {
+        p[0x384] = 0;
+        fn_8002F544(lbl_80287510[idx]);
+        *(u32*)(p + 0x394) = 0;
+    } else {
+        p[0x384] = 1;
+    }
+    fn_800B73D8(p);
+    fn_800B95E4(p);
+    fn_800B6F18(p);
+    if (p[0x38a] == 0) {
+        p[0x38a] = 1;
+    }
 }
 
 extern "C" void fn_800B6E5C(u8* p) {
