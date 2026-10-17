@@ -1558,3 +1558,6 @@ extern "C" void fn_801DE270(int param_1) {
     fn_801DDE38(param_1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
+extern "C" void fn_801DE2B8(void) {
+}
+
