@@ -105,72 +105,55 @@ extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, cons
 extern "C" void fn_80447618(void* self_) {
     u8* self = (u8*)self_;
     u8* params = (u8*)(lbl_80490410);
-    typedef void* (*VFunc)(void*, void*, void*);
+    typedef void* (*VFunc)(void*, unsigned long long);
     typedef void (*VFunc2)(void*, void*, int);
+#define GET(o) ((VFunc)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + (o)))
+#define SETTEX(r, t) ((VFunc2)((*(void***)(r))[68]))((r), (t), 0)
+    void** p = (void**)self;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 4; i++, params += 0x70, p++) {
         if (i < 2) {
-            fn_80402E08(*(void**)(self + 8 + i * 4), lbl_80543D98, fn_8043D514(lbl_8053AED0));
-            fn_80402E08(*(void**)(self + 0x18 + i * 4), lbl_80543D98, fn_8043D514(lbl_8053AED0));
+            fn_80402E08(p[2], lbl_80543D98, fn_8043D514(lbl_8053AED0));
+            fn_80402E08(p[6], lbl_80543D98, fn_8043D514(lbl_8053AED0));
         } else {
-            fn_80402E08(*(void**)(self + 8 + i * 4), lbl_80543D98, fn_8043D57C(lbl_8053AED0));
-            fn_80402E08(*(void**)(self + 0x18 + i * 4), lbl_80543D98, fn_8043D57C(lbl_8053AED0));
+            fn_80402E08(p[2], lbl_80543D98, fn_8043D57C(lbl_8053AED0));
+            fn_80402E08(p[6], lbl_80543D98, fn_8043D57C(lbl_8053AED0));
         }
 
-        u8 flag = self[0x2c];
-        u8 bit = 1 << i;
-
-        if ((flag & bit) == 0) {
-            VFunc method = (VFunc)((*(void***)(*(void**)(self + 4)))[15]);
-            void* res = method(*(void**)(self + 4), *(void**)(params + 0x30 + i * 0x70), *(void**)(params + 0x34 + i * 0x70));
-            if (((u8*)res)[0xb0] != 0) {
-                res = method(*(void**)(self + 4), *(void**)(params + 0x30 + i * 0x70), *(void**)(params + 0x34 + i * 0x70));
-                ((u8*)res)[0xb0] = 0;
-                res = method(*(void**)(self + 4), *(void**)(params + 0x68 + i * 0x70), *(void**)(params + 0x6c + i * 0x70));
-                ((u8*)res)[0xb0] = 0;
+        if (self[0x2c] & (u8)(1 << i)) {
+            if (((u8*)GET(0x30))[0xb0] == 0) {
+                ((u8*)GET(0x30))[0xb0] = 1;
+                ((u8*)GET(0x68))[0xb0] = 1;
             }
         } else {
-            VFunc method = (VFunc)((*(void***)(*(void**)(self + 4)))[15]);
-            void* res = method(*(void**)(self + 4), *(void**)(params + 0x30 + i * 0x70), *(void**)(params + 0x34 + i * 0x70));
-            if (((u8*)res)[0xb0] == 0) {
-                res = method(*(void**)(self + 4), *(void**)(params + 0x30 + i * 0x70), *(void**)(params + 0x34 + i * 0x70));
-                ((u8*)res)[0xb0] = 1;
-                res = method(*(void**)(self + 4), *(void**)(params + 0x68 + i * 0x70), *(void**)(params + 0x6c + i * 0x70));
-                ((u8*)res)[0xb0] = 1;
+            if (((u8*)GET(0x30))[0xb0] != 0) {
+                ((u8*)GET(0x30))[0xb0] = 0;
+                ((u8*)GET(0x68))[0xb0] = 0;
             }
         }
 
-        VFunc method = (VFunc)((*(void***)(*(void**)(self + 4)))[15]);
-        void* res = method(*(void**)(self + 4), *(void**)(params + 0x30 + i * 0x70), *(void**)(params + 0x34 + i * 0x70));
-        if (((u8*)res)[0xb0] != 0) {
-            if (self[0x28 + i] > 0x64) {
-                self[0x28 + i] = 0x63;
+        if (((u8*)GET(0x30))[0xb0] != 0) {
+            if (self[0x28 + i] >= 100) {
+                self[0x28 + i] = 99;
             }
-            u8 val = self[0x28 + i];
-            u8 div = val / 10;
-            u8 mod = val % 10;
-
-            void* c1 = fn_804030C4(0x54494d47, lbl_804B1BF8[div]);
-            res = method(*(void**)(self + 4), *(void**)(params + 0x48 + i * 0x70), *(void**)(params + 0x4c + i * 0x70));
-            VFunc2 method2 = (VFunc2)((*(void***)res)[68]);
-            method2(res, c1, 0);
-
-            res = method(*(void**)(self + 4), *(void**)(params + 0x50 + i * 0x70), *(void**)(params + 0x54 + i * 0x70));
-            method2 = (VFunc2)((*(void***)res)[68]);
-            method2(res, c1, 0);
-
-            void* c2 = fn_804030C4(0x54494d47, lbl_804B1BF8[mod]);
-            res = method(*(void**)(self + 4), *(void**)(params + 0x58 + i * 0x70), *(void**)(params + 0x5c + i * 0x70));
-            method2 = (VFunc2)((*(void***)res)[68]);
-            method2(res, c2, 0);
-
-            res = method(*(void**)(self + 4), *(void**)(params + 0x60 + i * 0x70), *(void**)(params + 0x64 + i * 0x70));
-            method2 = (VFunc2)((*(void***)res)[68]);
-            method2(res, c2, 0);
+            int val = self[0x28 + i];
+            int mod = val % 10;
+            void* t = fn_804030C4(0x54494d47, lbl_804B1BF8[val / 10]);
+            void* r = GET(0x48);
+            SETTEX(r, t);
+            r = GET(0x50);
+            SETTEX(r, t);
+            t = fn_804030C4(0x54494d47, lbl_804B1BF8[mod]);
+            r = GET(0x58);
+            SETTEX(r, t);
+            r = GET(0x60);
+            SETTEX(r, t);
         }
     }
 
     self[0x2c] = 0;
+#undef GET
+#undef SETTEX
 }
 
 extern "C" void fn_80447958(void* self_) {
@@ -185,13 +168,12 @@ extern "C" void fn_804479A0(Obj80447C30* self)
     for (int i = 0; i < 4; i++) {
         self->f2c &= ~(u8)(1 << i);
         void* res = fn_804030C4('TIMG', lbl_804B1BF8[0]);
-        TagEntry* e = &lbl_80490410[i];
-        self->screen->search(*(u64*)(e->pad2 + 0x10))->changeTexture(res, 0);
-        self->screen->search(*(u64*)(e->pad2 + 0x18))->changeTexture(res, 0);
-        self->screen->search(*(u64*)(e->pad2 + 0x20))->changeTexture(res, 0);
-        self->screen->search(*(u64*)(e->pad2 + 0x28))->changeTexture(res, 0);
-        self->screen->search(e->tag0)->mVisible = 0;
-        self->screen->search(e->tag1)->mVisible = 0;
+        self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x10))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x18))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x20))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x28))->changeTexture(res, 0);
+        self->screen->search(lbl_80490410[i].tag0)->mVisible = 0;
+        self->screen->search(lbl_80490410[i].tag1)->mVisible = 0;
     }
 }
 
@@ -242,8 +224,8 @@ extern "C" Obj80447C30* fn_80447C30(Obj80447C30* self) {
         PaneCtrl* p = (PaneCtrl*)operator new(0x2c);
         if (p) p->vt = &lbl_804AF86C;
         self->a[i] = p;
-        u64 tag0 = lbl_80490410[i].tag0;
-        fn_80402F04(self->a[i], self->screen->search(tag0));
+                  u64 tag0 = lbl_80490410[i].tag0;
+          fn_80402F04(self->a[i], self->screen->search(tag0));
         p = (PaneCtrl*)operator new(0x2c);
         if (p) p->vt = &lbl_804AF86C;
         self->b[i] = p;
