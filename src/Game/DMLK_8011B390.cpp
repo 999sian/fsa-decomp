@@ -1,5 +1,5 @@
 #include "types.h"
-#include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8049DB90[];
 extern "C" f32 lbl_8053C7D8;
