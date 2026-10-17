@@ -528,7 +528,7 @@ extern "C" void fn_80124DAC(OSAlarm* alarm, OSContext* ctx) {
 extern "C" void fn_80124DD0(void* a, void* b, OSTime tick) {
     OSAlarm alarm;
     BOOL level;
-    u32 saved;
+    volatile u32 saved;
 
     OSCreateAlarm(&alarm);
     saved = fn_801C027C();
@@ -671,9 +671,9 @@ extern "C" void fn_80128548(char* p, char* q) {
     u32 c = *(u32*)(q + 0x90);
     u8* b = (u8*)&c;
     u32 out;
-    b[0] = (b[0] * (obj[0xbc] + 1)) >> 8;
-    b[1] = (b[1] * (obj[0xbd] + 1)) >> 8;
-    b[2] = (b[2] * (obj[0xbe] + 1)) >> 8;
+    b[0] = (((u32)b[0] * (obj[0xbc] + 1)) >> 8) & 0xff;
+    b[1] = (((u32)b[1] * (obj[0xbd] + 1)) >> 8) & 0xff;
+    b[2] = (((u32)b[2] * (obj[0xbe] + 1)) >> 8) & 0xff;
     out = c;
     fn_801DE4F4(2, &out);
 }
@@ -694,20 +694,19 @@ extern "C" void fn_801DE4F4(s32, void*);
 extern "C" void fn_80128620(char* p) {
     u32 a = *(u32*)(*(char**)p + 0x100);
     s32 m = *(s16*)(**(char***)(*(char**)(p + 4) + 0x1c) + 0x24) + 1;
-    *(s16*)(p + 0x214) = a - (a / m) * m;
+    *(s16*)(p + 0x214) = a - m * (a / m);
 }
 
 extern "C" void fn_80128650(char* p, char* q) {
     char* info = **(char***)(*(char**)(p + 4) + 0x1c);
     s32 a = *(s16*)(q + 0x80) + (*(u8*)(q + 0x95) & *(u8*)(info + 0x2f));
     s32 m = *(s16*)(info + 0x24) + 1;
-    *(s16*)(p + 0x214) = a - (a / m) * m;
+    *(s16*)(p + 0x214) = a - m * (a / m);
 }
 
 extern "C" void fn_8012868C(char* p) {
-    char* obj = *(char**)p;
     char* info = **(char***)(*(char**)(p + 4) + 0x1c);
-    u32 a = *(u32*)(obj + 0x100);
+    u32 a = *(u32*)(*(char**)p + 0x100);
     s16 m = *(s16*)(info + 0x24);
     u32 q = a / m;
     s32 r = a - q * m;
