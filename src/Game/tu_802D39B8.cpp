@@ -64,6 +64,7 @@ extern const f32 lbl_80541124;
 extern const f32 lbl_80541160;
 extern const f32 lbl_80541164;
 extern void* lbl_8053AF80;
+extern const f32 lbl_8053A1A8;
 
 extern "C" {
 int sprintf(char*, const char*, ...);
@@ -802,27 +803,23 @@ extern "C" void fn_802D9CD8(char* p) {
     fn_802D3D48(p);
     for (s32 i = 0; i < 10; i++) {
         for (s32 j = 0; j < 10; j++) {
-            for (s32 k = 0; k < 0x80;) {
+            for (s32 k = 0; k < 0x80; k += 0x10) {
                 RoomArrays* base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x3548 + k + i * 0x500 + j * 0x80) = 0;
+                *(u32*)((u8*)base->flags3548[i][j] + k) = 0;
                 base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x6768 + k + i * 0x500 + j * 0x80) = 0;
-                k += 4;
+                *(u32*)((u8*)base->flags6768[i][j] + k) = 0;
                 base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x3548 + k + i * 0x500 + j * 0x80) = 0;
+                *(u32*)((u8*)base->flags3548[i][j] + k + 4) = 0;
                 base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x6768 + k + i * 0x500 + j * 0x80) = 0;
-                k += 4;
+                *(u32*)((u8*)base->flags6768[i][j] + k + 4) = 0;
                 base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x3548 + k + i * 0x500 + j * 0x80) = 0;
+                *(u32*)((u8*)base->flags3548[i][j] + k + 8) = 0;
                 base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x6768 + k + i * 0x500 + j * 0x80) = 0;
-                k += 4;
+                *(u32*)((u8*)base->flags6768[i][j] + k + 8) = 0;
                 base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x3548 + k + i * 0x500 + j * 0x80) = 0;
+                *(u32*)((u8*)base->flags3548[i][j] + k + 0xC) = 0;
                 base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-                *(u32*)((u8*)base + 0x6768 + k + i * 0x500 + j * 0x80) = 0;
-                k += 4;
+                *(u32*)((u8*)base->flags6768[i][j] + k + 0xC) = 0;
             }
             for (s32 k = 0; k < 256; k += 8) {
                 RoomArrays* base = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
