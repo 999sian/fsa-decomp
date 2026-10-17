@@ -2,6 +2,16 @@
 
 extern u32* lbl_802FF46C;
 
+struct Unk8014Node {
+    Unk8014Node* next;
+    Unk8014Node* prev;
+    u32 id;
+    u32 val;
+};
+
+extern u32 lbl_802FF468;
+extern Unk8014Node* lbl_802FF470;
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8014dcb0-0x8014def0 (4 functions). split_file divides it into the game's real files.
 
