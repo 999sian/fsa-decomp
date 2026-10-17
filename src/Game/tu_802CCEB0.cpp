@@ -45,6 +45,4 @@ extern "C" void fn_802CDA70(Actor* this_) {
     }
 }
 
-void fn_802CDB18(void) {}
-
 
