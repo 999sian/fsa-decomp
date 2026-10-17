@@ -394,8 +394,8 @@ extern "C" void fn_803ABCEC(Menu_Slide* p) {
                 p->state[i] = 0xbd;
             }
         }
-        s32 mode = ((GameResult*)lbl_80529DEC)->mode;
         s32 sub = ((GameResult*)lbl_80529DEC)->sub;
+        s32 mode = ((GameResult*)lbl_80529DEC)->mode;
         s32 k = sub;
         switch (mode) {
         case 0:
@@ -1257,8 +1257,9 @@ extern "C" void fn_803AE810(Menu_Rank* p) {
         }
     }
     if (done >= p->count) {
+        s32 t;
         for (s32 j = 0; j < p->count; j++) {
-            s32 t = p->target[j];
+            t = p->target[j];
             if (best < t) {
                 p->m4c8 = 0;
                 best = t;
