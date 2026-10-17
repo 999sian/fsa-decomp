@@ -1065,7 +1065,7 @@ extern "C" void fn_8016AD08() {}
 
 extern "C" void fn_8016AD0C() {}
 
-extern const u8 lbl_80202218[3];
+extern const u8 lbl_80202218[32];
 extern "C" void fn_8016AD10(u8* p) {
     p[0] = lbl_80202218[0];
     p[1] = lbl_80202218[1];
@@ -1101,17 +1101,73 @@ extern "C" void fn_8016AE10(u8* p) {
 extern "C" void fn_8016AE28(void) {
 }
 
+extern "C" void fn_801DCBB0(s32, s32*);
+extern "C" void fn_801DCCA0(u8);
+extern "C" void fn_801DCCDC(s32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_801DBAE4(u8);
+extern "C" s32 lbl_80202298[4];
+extern "C" void fn_8016AED8(void* arg0) {
+    u8* self = (u8*)arg0;
+    s32 sp8;
+    s32 spC[4];
+    s32* r30;
+    u16* q;
+    u32* r31;
+    s32 i;
+    s32 j;
+
+    i = 0;
+    r31 = (u32*)arg0;
+    do {
+        sp8 = *r31;
+        fn_801DCBB0(i + 4, &sp8);
+        i++;
+        r31++;
+    } while (i < 2);
+    fn_801DCCA0(self[8]);
+    q = (u16*)arg0;
+    r30 = spC;
+    j = 0;
+    spC[0] = lbl_80202298[0];
+    spC[1] = lbl_80202298[1];
+    spC[2] = lbl_80202298[2];
+    spC[3] = lbl_80202298[3];
+    while (j < (s32)(self[8] * 2)) {
+        fn_801DCCDC(*r30, 0, 0, q[5] & 1, 0, 0, 2);
+        q++;
+        r30++;
+        j++;
+    }
+    fn_801DBAE4(self[0x12]);
+}
+
 extern "C" void fn_8016AFCC(void* p) {
     Blk_8016AFCC* b = (Blk_8016AFCC*)p;
     b->w0 = 0;
-    b->s[0].c = *(RGB8_8017261C*)lbl_80202218;
-    b->s[1].c = *(RGB8_8017261C*)lbl_80202218;
-    b->s[2].c = *(RGB8_8017261C*)lbl_80202218;
-    b->s[3].c = *(RGB8_8017261C*)lbl_80202218;
-    b->s[4].c = *(RGB8_8017261C*)lbl_80202218;
-    b->s[5].c = *(RGB8_8017261C*)lbl_80202218;
-    b->s[6].c = *(RGB8_8017261C*)lbl_80202218;
-    b->s[7].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[0].c.r = lbl_80202218[0];
+    b->s[0].c.g = lbl_80202218[1];
+    b->s[0].c.b = lbl_80202218[2];
+    b->s[1].c.r = lbl_80202218[0];
+    b->s[1].c.g = lbl_80202218[1];
+    b->s[1].c.b = lbl_80202218[2];
+    b->s[2].c.r = lbl_80202218[0];
+    b->s[2].c.g = lbl_80202218[1];
+    b->s[2].c.b = lbl_80202218[2];
+    b->s[3].c.r = lbl_80202218[0];
+    b->s[3].c.g = lbl_80202218[1];
+    b->s[3].c.b = lbl_80202218[2];
+    b->s[4].c.r = lbl_80202218[0];
+    b->s[4].c.g = lbl_80202218[1];
+    b->s[4].c.b = lbl_80202218[2];
+    b->s[5].c.r = lbl_80202218[0];
+    b->s[5].c.g = lbl_80202218[1];
+    b->s[5].c.b = lbl_80202218[2];
+    b->s[6].c.r = lbl_80202218[0];
+    b->s[6].c.g = lbl_80202218[1];
+    b->s[6].c.b = lbl_80202218[2];
+    b->s[7].c.r = lbl_80202218[0];
+    b->s[7].c.g = lbl_80202218[1];
+    b->s[7].c.b = lbl_80202218[2];
     b->tail[0] = 0;
     b->tail[1] = 0;
     b->tail[2] = 0;
@@ -2851,7 +2907,7 @@ extern "C" void fn_801745B8(u8* out, u8* p, u32 index, u32 subindex) {
 }
 
 extern "C" Rec_80174620 fn_80174620(Owner_80174620* owner, int slot, int idx) {
-    Rec_80174620 def = lbl_8020225C;
+    Rec_80174620 def = {0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 1};
     Slot_80174620* slots = owner->slots;
     if (slots != nullptr) {
         Slot_80174620* s = &slots[slot];
