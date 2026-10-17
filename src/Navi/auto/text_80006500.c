@@ -70,6 +70,11 @@ extern "C" void fn_800085E0(void) {}
 
 extern "C" void fn_800085E4(void) {}
 
+extern "C" int fn_800085E8(void) {
+    fn_8006069C(lbl_802B7CA0 + 0x1424);
+    return 1;
+}
+
 extern u8 lbl_802FEB60;
 extern "C" void fn_80008F6C(void) {
     fn_801C13D0(&lbl_802FEB60);
