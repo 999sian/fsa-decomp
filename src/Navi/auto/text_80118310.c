@@ -614,6 +614,15 @@ extern "C" void fn_8011AC3C(void* param_1) {
     fn_8011AC74(param_1, 0, 0, p[2], p[3]);
 }
 
+extern "C" void fn_801197E4(void* p, s32 a, s32 b, s32 c, f32 d, f32 e, f32 f, f32 g);
+#pragma use_lmw_stmw off
+extern "C" void fn_8011ADE8(u8* param_1, s32 param_2, s32 param_3, s32 param_4, s32 param_5) {
+    VObj_8011A74C* obj = *(VObj_8011A74C**)(param_1 + 4);
+    f32 f7 = (f32)(s32)obj->v7();
+    f32 f8 = (f32)(s32)obj->v8();
+    fn_801197E4(obj, param_5, param_4, 1, (f32)param_2, (f32)param_3, f8, f7);
+}
+#pragma use_lmw_stmw reset
 extern "C" void fn_8015D050(void*);
 extern "C" void fn_8011B9A4(void*);
 extern "C" void fn_8011BB70(void*);
