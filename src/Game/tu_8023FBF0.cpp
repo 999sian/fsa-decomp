@@ -143,10 +143,10 @@ inline s32 countSharing(const char* p) {
 }
 
 inline s32 countSharingH(const char* p) {
-    s32 i;
-    s32 c;
-    s32 linked;
-    c = 0;
+s32 linked;
+s32 c;
+s32 i;
+c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -912,9 +912,13 @@ BOOL fn_80240D8C(char* p) { STATE_OR2(p, 0x1244, 0x38, 0x13); }
 BOOL fn_80240DAC(char* p) { STATE_OR2(p, 0x1240, 0x38, 0x13); }
 bool fn_80240DCC(char* p) {
     bool r = true;
-    if (!isShrinking(p)) {
+    bool s = false;
+    if (S32(p, 0x1240) == 0x49 || S32(p, 0x1244) == 0x49) {
+        s = true;
+    }
+    if (!s) {
         bool a = false;
-        bool b = false;
+        bool b = a;
         if (inOtherRoom(p)) {
             if (!fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 1)) {
                 b = true;
@@ -2339,7 +2343,7 @@ void fn_80248604(char* p) {
         return;
     }
     PlayerTrail* t = (PlayerTrail*)p;
-    int i = 0;
+    s32 i = 0;
     for (; i < 0x31; i++) {
         t->pos[i].x = t->x;
         t->pos[i].y = t->y;
@@ -2396,7 +2400,8 @@ s32 fn_80248778(const char* p) {
     return c + 1;
 }
 s32 fn_802487FC(const char* p) {
-    if (getModeH(p) == 4) {
+    s32 mode = getModeH(p);
+    if (mode == 4) {
         return 1;
     }
     return countSharingH(p);
@@ -3035,14 +3040,15 @@ void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
 
 BOOL fn_8024D058(char* p, u8 on) {
     if (on) {
-        U8(p, 0x454) = 0;
+        int zero = 0;
+        U8(p, 0x454) = zero;
         if (U8(p, 0x1216) == 0) {
             if (U8(p, 0x454) != 0) {
                 fn_8024B2E0(p);
             } else {
-                u32 i;
+                int i;
                 char* q = p;
-                for (i = 0; i < 0x31; i++) {
+                for (i = zero; i < 0x31; i++) {
                     F32(q, 0x38) = F32(p, 0x8);
                     F32(q, 0x3c) = F32(p, 0xc);
                     F32(q, 0x40) = F32(p, 0x10);
@@ -3610,31 +3616,33 @@ u8 fn_80250FD4(char* p) {
 
     if (S32(p, 0x1240) == 0x1a) {
         if (S32(p, 0x3dc) == 0) {
-            f = !padActive6(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            f = !padActive(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
             if (f > 0.0f) {
-                return 1;
+                goto ret1;
             }
         }
         if (S32(p, 0x3dc) == 1) {
-            f = !padActive6(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            f = !padActive(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
             if (f < 0.0f) {
-                return 1;
+                goto ret1;
             }
         }
         if (S32(p, 0x3dc) == 2) {
-            f = !padActive6(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            f = !padActive(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
             if (f < 0.0f) {
-                return 1;
+                goto ret1;
             }
         }
         if (S32(p, 0x3dc) == 3) {
-            f = !padActive6(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+            f = !padActive(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
             if (f > 0.0f) {
-                return 1;
+                goto ret1;
             }
         }
     }
     return 0;
+ret1:
+    return 1;
 }
 
 BOOL fn_802517E4(char* p) { return S32(p, 0x1240) == 0x1a; }
@@ -3676,8 +3684,8 @@ BOOL fn_8025190C(char* p, u8 v) {
 }
 u8 fn_8025196C(char* p, s32 i) { return btn(p, i); }
 bool fn_8025197C(char* p, u8 all) {
-    s32 i;
     char* s = (char*)PTR(p, 0xbf0);
+    s32 i;
     for (i = 0; i < 8; i++) {
         if (!all && i >= 4) {
             return 0;
