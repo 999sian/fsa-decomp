@@ -150,8 +150,9 @@ extern "C" int fn_8008C4FC(u8* p) {
             if (p != nullptr) {
                 fn_800175B8(p);
                 fn_801E0DB8(p + 0x250, (void*)fn_80011688, (void*)fn_8000CEC4, 0xc, 9);
-                *(Arg_8008CF88*)(p + 0x2e4) = lbl_802026C0;
-                *(Arg_8008CF88*)(p + 0x2f0) = lbl_802026C0;
+                Arg_8008CF88 a = lbl_802026C0;
+                *(Arg_8008CF88*)(p + 0x2e4) = a;
+                *(Arg_8008CF88*)(p + 0x2f0) = a;
                 lbl_802FF1E8 = lbl_80300A7C;
                 lbl_802FF1EC = 0;
             }
@@ -287,7 +288,7 @@ extern "C" int fn_8008D4DC(char* p) {
             v = (u8)*(s16*)(lbl_802C5408 + 0x2e);
             elem = ((char**)*(char**)(obj + 0x60))[i];
             o = *(char**)(elem + 0x34);
-            r = ((char*(*)(char*))(*(void**)(*(char**)o + 0x3c)))(o);
+            r = ((char*(*)(char*))((*(void***)o)[0xf]))(o);
             r[2] = v;
         }
         fn_8000EBB8(*(void**)(p + 0x24c));
@@ -363,16 +364,17 @@ extern char lbl_802BB0FC[];
 extern char lbl_801FDAC8[];
 extern f32 lbl_802C53E4[];
 extern "C" void fn_8008D820(void* p, s32 n);
-struct Rec8008DA68 { u32 a, b, c; };
+struct Rec8008DA68 {
+    u32 a, b, c;
+    Rec8008DA68() {}
+    Rec8008DA68(const Rec8008DA68& o) { a = o.a; b = o.b; c = o.c; }
+};
 
 extern "C" void fn_8008DA68(Rec8008DA68* p) {
     Rec8008DA68* src = &((Rec8008DA68*)lbl_801FDAC8)[*(s32*)(lbl_802BB0FC + 0x424)];
-    u32 a = src->a;
-    u32 b = src->b;
-    p->a = a;
-    u32 c = src->c;
-    p->b = b;
-    p->c = c;
+    p->a = src->a;
+    p->b = src->b;
+    p->c = src->c;
 }
 
 extern "C" void* fn_8008DAD8(void* ptr, s16 param_2) {
