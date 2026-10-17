@@ -6,7 +6,7 @@ extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_8015D29C(void*, int);
 extern char lbl_80297BD4[];
 extern "C" void fn_801BDDBC(void*, void*, int);
-extern "C" void fn_801BDEE4(void*, void*, int);
+extern "C" int fn_801BDEE4(void*, void*, int);
 extern "C" void fn_8015F814(void);
 extern "C" void* fn_8015D13C(void*, int, int, void*);
 extern "C" void fn_801C0EEC(void*);
@@ -206,7 +206,7 @@ extern "C" void* fn_8015FE40(void* param_1) {
         return lbl_802FF5F0;
     }
     *(void**)param_1 = fn_8015FECC(buf, 0x101);
-    for (node = (void**)lbl_802EE2D4; node != 0; node = (void**)node[3]) {
+    for (node = *(void***)lbl_802EE2D4; node != 0; node = (void**)node[3]) {
         if (fn_801E6578(buf, ((void**)node[0])[0x28 / 4]) == 0) {
             return node[0];
         }
