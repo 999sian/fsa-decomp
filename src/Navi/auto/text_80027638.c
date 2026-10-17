@@ -131,6 +131,17 @@ extern "C" void fn_800291B8(const char*, ...) {
 extern "C" void fn_80029208(const char*, ...) {
 }
 
+extern "C" unsigned char* fn_800298BC(unsigned char* self, int id) {
+    int i;
+    for (i = 0; i < 8; i++) {
+        int v = *(int*)(self + i * 0x3c + 0x384);
+        if (v != 0 && v == id) {
+            return self + i * 0x3c + 0x384;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_8002A3CC(void* self_, void* node_, int a, int b) {
     unsigned char* self = (unsigned char*)self_;
     unsigned char* next;
@@ -180,6 +191,15 @@ extern "C" int fn_8002B620(unsigned char* self, unsigned char idx, unsigned char
     if (p[0x846] == val) return 1;
     if (p[0x847] == val) return 1;
     return 0;
+}
+
+extern "C" unsigned char fn_8002B7B0(unsigned char* self, unsigned char idx, int slot, unsigned char val) {
+    if (val < 7 || val >= 0x14 || val == 0xe) {
+        val = 0;
+    }
+    (self + idx * 8)[slot + 0x840] = (lbl_802BB0FC + idx * 0x4c)[slot + 0x1d8];
+    (lbl_802BB0FC + idx * 0x4c)[slot + 0x1d8] = val;
+    return val;
 }
 
 extern "C" void fn_8002BC84(void) {
