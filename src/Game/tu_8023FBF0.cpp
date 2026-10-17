@@ -586,8 +586,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 linked;
     s32 me;
+    s32 linked;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -825,7 +825,38 @@ BOOL fn_80240670(char* p) {
     if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
         return 1;
     }
-    if (getMode(p) == 4) {
+    s32 c = 0;
+    for (s32 i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    s32 mode;
+    if (c <= 1) {
+        mode = 5;
+    } else {
+        s32 linked = S32(p, 0xd60);
+        if (linked >= 0) {
+            mode = fn_8022CAF8(linked);
+        } else {
+            mode = S32(p, 0x120c);
+        }
+    }
+    if (mode == 4) {
         s32 v = linkIdx(p);
         return v != linkRank(p);
     }
@@ -3212,8 +3243,8 @@ void fn_8024E500(char* p) {
     if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && getItem(p) != 0) {
         s32 idx = S32(p, 0x4);
         s32 item = getItem(p);
-        s32 lvl = getItemLevel(p) << 22;
-        Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | (lvl | (idx << 17)), -1, -1);
+        s32 lvl = getItemLevel(p);
+        Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | ((idx << 17) | (lvl << 22)), -1, -1);
         setItem(p, 0, 1);
     }
 }
