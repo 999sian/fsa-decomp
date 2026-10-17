@@ -28,7 +28,6 @@ struct Tu8020F80CResMgr {
     virtual void v2();
     virtual void v3();
     virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 
@@ -55,7 +54,7 @@ extern "C" void fn_8020F80C(void* self, char* p)
         }
         rec.b1c = 0;
         rec.b1d = 0;
-        if (*(s32*)(this_ + 0x138) == 0) {
+        if (*(u32*)(this_ + 0x138) == 0) {
             fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, &rec, 0, lbl_8046A448, 0, 0);
         }
         mode = 0;
@@ -78,7 +77,9 @@ extern "C" void fn_8020F80C(void* self, char* p)
             mtx[2][2] = -1.0f;
             rec.w18 = mtx;
             mode = 2;
-            *(f32*)(this_ + 0x14) -= lbl_8046A238[*(s32*)(this_ + 0x350)].f;
+            f32 y = *(f32*)(this_ + 0x14);
+            y -= lbl_8046A238[*(s32*)(this_ + 0x350)].f;
+            *(f32*)(this_ + 0x14) = y;
         }
     }
     if (*(s32*)(this_ + 4) < 8) {
