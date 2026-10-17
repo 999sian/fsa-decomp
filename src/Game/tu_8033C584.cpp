@@ -1,6 +1,24 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
+
+namespace JMath {
+template <int length, typename T>
+struct TAtanTable {
+    T atan2_(T, T) const;
+    T mTable[length];
+};
+struct TSinCosPair {
+    f32 first;
+    f32 second;
+};
+struct TSinCosTable {
+    TSinCosPair mTable[2048];
+};
+extern const TAtanTable<1024, f32> atanTable_;
+extern const TSinCosTable sincosTable_;
+}
 
 extern "C" char lbl_804AC250[];
 extern "C" void fn_801EE434(void* handle);
@@ -49,8 +67,8 @@ extern "C" void fn_8033C968(u8* this_) {
     *(u32*)(this_ + 0x238) = 0xb4;
     *(u16*)(this_ + 0x244) = 0;
     *(u32*)(this_ + 0x230) = 0;
-    *(void**)(this_ + 0x254) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x183, 0, 0, 0, 0, 1, lbl_80542178);
-    *(void**)(this_ + 0x258) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x184, 0, 0, 0, 0, 1, lbl_80542178);
+    *(void**)(this_ + 0x254) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x183, 0, 0, 0, 0, 1, 1.0f);
+    *(void**)(this_ + 0x258) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x184, 0, 0, 0, 0, 1, 1.0f);
 }
 
 extern "C" Actor* fn_8033CA4C(Actor* param_1, s16 param_2)
