@@ -39,8 +39,6 @@ public:
     virtual void v04();
     virtual void v08();
     virtual void v0C();
-    virtual void v10();
-    virtual void v14();
     virtual void* v18(u32 type, const char* name);
 };
 extern const f32 lbl_80541F70;
@@ -92,6 +90,79 @@ extern "C" s32 fn_80334378(Actor* a) {
     fn_801F349C(a, idx, pos);
 done:
     return i;
+}
+
+extern "C" void fn_80334488(Actor* a) {
+    u8* p = (u8*)a;
+    if (*(s32*)(p + 0x230) == 5) {
+        return;
+    }
+    DrawRec rB;
+    DrawRec rA;
+    f32 vA[3];
+    f32 vB[3];
+    f32 mtx[3][4];
+    f32 s;
+    f32 cb;
+    f32 ca;
+    f32 sa;
+    f32 sb;
+    f32 sc;
+    f32 cc;
+    PSMTXIdentity(mtx);
+    rB.b1d = -1;
+    if (*(s32*)(p + 0x230) == 7) {
+        s = *(f32*)(p + 0x240);
+        sa = sin(lbl_80541F70);
+        sb = sin(lbl_80541F70);
+        sc = sin(lbl_80541F70);
+        ca = cos(lbl_80541F70);
+        cb = cos(lbl_80541F70);
+        cc = cos(lbl_80541F70);
+        mtx[0][0] = s * (cb * cc);
+        mtx[1][0] = s * (cb * sc);
+        mtx[2][0] = s * -sb;
+        mtx[0][1] = s * ((sa * sb) * cc - ca * sc);
+        mtx[1][1] = s * ((sa * sb) * sc + ca * cc);
+        mtx[2][1] = s * (sa * cb);
+        mtx[0][2] = s * ((ca * cc) * sb + sa * sc);
+        mtx[1][2] = s * ((ca * sc) * sb - sa * cc);
+        mtx[2][2] = s * (ca * cb);
+        rA.w18 = mtx;
+    }
+    if (*(s32*)(p + 0x250) == 0) {
+        if (*(s32*)(p + 0x230) != 7) {
+            vA[1] = lbl_80541F80 + *(f32*)(p + 0x10);
+            vA[0] = *(f32*)(p + 0xc);
+            vA[2] = lbl_80541F70;
+            if (*(s32*)(p + 4) < 8) {
+                void* obj = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->v18('SOB ', lbl_80471AB8);
+                fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), vA, obj, 0, &rB, lbl_80541F84, lbl_80541F84);
+            }
+        }
+        s32 id = *(s32*)(p + 0x24c) + 0x25;
+        if (*(s32*)(p + 4) < 8) {
+            void* obj = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->v18('SOB ', lbl_80471AC8);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, obj, id, &rA, lbl_80541F84, lbl_80541F84);
+        }
+        fn_80307AC8(*(u32*)(p + 0x198), *(u32*)(p + 4), p + 0xc, *(s32*)(p + 0x24c) + 0x25, 0, 0, -1);
+    } else {
+        if (*(s32*)(p + 0x230) != 7) {
+            vB[1] = lbl_80541F88 + *(f32*)(p + 0x10);
+            vB[0] = *(f32*)(p + 0xc);
+            vB[2] = lbl_80541F70;
+            if (*(s32*)(p + 4) < 8) {
+                void* obj = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->v18('SOB ', lbl_80471AB8);
+                fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), vB, obj, 3, &rB, lbl_80541F8C, lbl_80541F84);
+            }
+        }
+        s32 id = *(s32*)(p + 0x24c) + 0x27;
+        if (*(s32*)(p + 4) < 8) {
+            void* obj = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->v18('SOB ', lbl_80471AC8);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), p + 0xc, obj, id, &rA, lbl_80541F84, lbl_80541F84);
+        }
+        fn_80307AC8(*(u32*)(p + 0x198), *(u32*)(p + 4), p + 0xc, *(s32*)(p + 0x24c) + 0x27, 0, 0, -1);
+    }
 }
 
 extern "C" u16 fn_8022461C(s32 a);
