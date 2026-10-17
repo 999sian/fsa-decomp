@@ -143,6 +143,7 @@ extern "C" char* fn_801594E8(char* p, void* heap) {
     *(char**)(p + 0x8) = tex;
     return p;
 }
+
 struct JASGenericMemPool {
     JASGenericMemPool();
     ~JASGenericMemPool();
