@@ -37,7 +37,6 @@ extern "C" void fn_801E9C00(s16 angle, f32* out);
 extern f32 lbl_8053F604;
 extern f32 lbl_8053F608;
 extern f32 lbl_8053F60C;
-extern f32 lbl_8053F610;
 extern f32 lbl_8053F640;
 extern f32 lbl_8053F644;
 extern "C" void fn_801E8C74(char* p, s32 a) {
@@ -235,8 +234,6 @@ extern "C" void fn_801E9224(char* p) {
     f32 rem = 0.5f;
     rem = rem >= 0.0f ? rem : 0.0f;
     u8 done = 0;
-    f32 uA;
-    f32 uB;
     while (rem > 0.0f) {
         s32 ti = (s32)*(f32*)(p + 0x3b4);
         u8 seg = *(u8*)(p + 0x3b0);
@@ -281,16 +278,15 @@ extern "C" void fn_801E9224(char* p) {
                 p3x = *(f32*)(q + 0x2c0);
                 p3y = *(f32*)(q + 0x2c4);
             }
-            uA = 0.0625f * (f32)(u8)ti;
-            ay = fn_801CD6D8(p0y, p1y, p2y, p3y, uA);
-            ax = fn_801CD6D8(p0x, p1x, p2x, p3x, uA);
+            f32 u = 0.0625f * (f32)(u8)ti;
+            ay = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
+            ax = fn_801CD6D8(p0x, p1x, p2x, p3x, u);
             break;
         }
         }
 
         seg = *(u8*)(p + 0x3b0);
-        s32 tj = (s32)*(f32*)(p + 0x3b4);
-        u8 next = (u8)(tj + 1);
+        u8 next = (u8)((s32)*(f32*)(p + 0x3b4) + 1);
         if (next >= 16) {
             if (seg < *(u8*)(p + 0x2ad) - 2) {
                 seg++;
@@ -341,9 +337,9 @@ extern "C" void fn_801E9224(char* p) {
                 p3x = *(f32*)(q + 0x2c0);
                 p3y = *(f32*)(q + 0x2c4);
             }
-            uB = 0.0625f * (f32)next;
-            by = fn_801CD6D8(p0y, p1y, p2y, p3y, uB);
-            bx = fn_801CD6D8(p0x, p1x, p2x, p3x, uB);
+            f32 u = 0.0625f * (f32)next;
+            by = fn_801CD6D8(p0y, p1y, p2y, p3y, u);
+            bx = fn_801CD6D8(p0x, p1x, p2x, p3x, u);
             break;
         }
         }
