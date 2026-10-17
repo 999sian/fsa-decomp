@@ -115,13 +115,7 @@ extern "C" void* fn_8011074C(void* ptr, s16 param_2) {
         }
     }
     return ptr;
-}
-struct VObj_8010F81C {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2(f32, f32);
-};
-struct VObj_8010FD00 {
+}struct VObj_8010FD00 {
     virtual void v0();
     virtual void v1();
     virtual void v2(f32, f32);
