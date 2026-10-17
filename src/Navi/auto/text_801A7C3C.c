@@ -3018,3 +3018,4 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
+struct Unk801B425C { u32 v; };
