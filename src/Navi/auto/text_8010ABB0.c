@@ -27,6 +27,8 @@ extern u8 lbl_802C5AFC[];
 extern "C" s32 fn_8010C6D8(void* p, s16 a, u8 b, s32 c);
 extern "C" void fn_8010C1F0(u8* p);
 extern "C" void fn_8010C18C(u8* param_1);
+extern "C" s32 fn_80020384(void* p, s32 a);
+extern "C" void fn_8002F544(s32 a);
 struct VObj_8010C1F0 {
     virtual void v0();
     virtual void v1();
