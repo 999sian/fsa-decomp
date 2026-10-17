@@ -129,6 +129,21 @@ extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_8011F290(void)
+{
+	u8* iVar1 = (u8*)lbl_802FF310;
+	if (iVar1 == 0) {
+		iVar1 = (u8*)fn_8015A90C(0x2c);
+		if (iVar1 != 0) {
+			*(s32*)(iVar1 + 0x18) = -1;
+			fn_8011F668(iVar1, 0, 0, 0);
+			fn_8011F878(iVar1, 0xff, 0xff, 0xff);
+		}
+		lbl_802FF310 = iVar1;
+	}
+	return lbl_802FF310;
+}
+
 extern "C" void fn_8011F668(u8* p, void* buf, s16 w, s16 h)
 {
     *(void**)(p + 0x0) = buf;
