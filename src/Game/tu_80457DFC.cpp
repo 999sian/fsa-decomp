@@ -9,6 +9,8 @@
 #include "JSystem/JAudio/JAUSectionHeap.h"
 #include "JSystem/JAudio/JAUSoundMgr.h"
 #include "JSystem/JAudio/JAUAudience.h"
+#include "JSystem/JAudio/System/JASWaveArcLoader.h"
+#include "JSystem/JAudio/System/JASDsp.h"
 #include "JSystem/JAudio/System/JASAudioReseter.h"
 
 extern "C" void* lbl_804B2074[];
