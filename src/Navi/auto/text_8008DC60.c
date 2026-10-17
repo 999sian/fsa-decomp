@@ -45,6 +45,19 @@ struct Obj_8009287C {
 };
 typedef void (Obj_8009287C::*StateFn_8009287C)();
 extern StateFn_8009287C lbl_80285C30[];
+struct VObj_80098918 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+};
+
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
@@ -776,6 +789,28 @@ extern "C" void* fn_800970F8(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80098918(char* param_1) {
+    if (*(s32*)(lbl_802BB0FC + 0x44) == 0xc && *(u8*)(param_1 + 0x7b2) == 0) {
+        char* p = lbl_802C545C;
+        f32 t = fn_800A1774(param_1, *(u8*)(p + 0x2c), *(u8*)(param_1 + 0x7b4), 2);
+        if (*(u8*)(param_1 + 0x7b5) == 0) {
+            t = lbl_80300B20 - t;
+        }
+        char* obj = *(char**)(param_1 + 0x2d0);
+        f32 a = *(f32*)(lbl_802C545C + 0x34);
+        f32 v = a + (*(f32*)(lbl_802C545C + 0x30) - a) * t;
+        *(f32*)(obj + 0xcc) = v;
+        *(f32*)(obj + 0xd0) = v;
+        (*(void (**)(void*))(*(char**)obj + 0x2c))(obj);
+        if (*(u8*)(param_1 + 0x7b4) == 0) {
+            *(u8*)(param_1 + 0x7b4) = *(u8*)(p + 0x2c);
+            *(u8*)(param_1 + 0x7b5) ^= 1;
+        } else {
+            *(u8*)(param_1 + 0x7b4) -= 1;
+        }
+    }
 }
 
 extern "C" void fn_8009E6F0(NaviState_8009E6F0* p);
