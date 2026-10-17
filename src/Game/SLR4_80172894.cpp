@@ -12,6 +12,16 @@ struct Vec3f {
 };
 
 extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern f32 lbl_804A0AD8[];
+extern Box4 lbl_804A0B10[];
+extern const f32 lbl_8053DAC0;
+extern const f32 lbl_8053DAC8;
+extern "C" s32 fn_801F285C(void* this_, s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_801EF510(void* this_);
+extern "C" u8 fn_80235448(void);
+extern "C" u8 fn_80237948(s32 idx, f32* pos);
+extern "C" void fn_80230FD0(s32 idx, s32 id);
+extern "C" s32 fn_8013CC50(u32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
 extern "C" void* fn_802D6A9C(void);
 extern Box4 lbl_804A0A58[];
 extern const f32 lbl_8053DB48;
@@ -39,6 +49,56 @@ extern "C" void fn_80172894(void* this_) {
         Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), p + 0xc, 0, -1, -1);
     }
     v07__5ActorFv(this_);
+}
+
+extern "C" void fn_80172900(void* this_) {
+    char* p = (char*)this_;
+    DrawRec rec;
+    f32 mtx[3][4];
+    Vec3f v;
+    BOOL bVar1 = 0;
+
+    mtx[0][3] = lbl_8053DAB8;
+    mtx[1][3] = lbl_8053DAB8;
+    mtx[2][3] = lbl_8053DAB8;
+    if (lbl_8053AB60 != 1) {
+        s32 mode = *(u32*)(p + 0x90) & 0xff;
+        if (mode == 7 || mode == 8) {
+            fn_80172BC8(this_);
+        } else {
+            rec.ids[1] = *(u8*)(p + 0x234);
+            if (*(s32*)(p + 0x230) == 6 && *(s32*)(p + 0x264) >= 3) {
+                rec.w30 = 0x11;
+            }
+            if (*(s32*)(p + 0x4) < 8) {
+                fn_801F02BC(this_, lbl_80466808, *(s32*)(p + 0x280) + 0x226, &rec, 7, 0, 0, lbl_8053DAC0, lbl_8053DAC0);
+            } else {
+                if (*(s32*)(p + 0x23c) == 1) {
+                    bVar1 = 1;
+                    mtx[0][0] = lbl_8053DABC;
+                    mtx[0][1] = lbl_8053DAB8;
+                    mtx[0][2] = lbl_8053DAB8;
+                    mtx[1][0] = lbl_8053DAB8;
+                    mtx[1][1] = lbl_8053DABC;
+                    mtx[1][2] = lbl_8053DAB8;
+                    mtx[2][0] = lbl_8053DAB8;
+                    mtx[2][1] = lbl_8053DAB8;
+                    mtx[2][2] = lbl_8053DABC;
+                    rec.w18 = mtx;
+                }
+                {
+                    Box4 box = *(Box4*)((char*)fn_802D6A9C() + 0xcc);
+                    v.x = *(f32*)(p + 0xc) + box.a;
+                    v.y = *(f32*)(p + 0x10) + box.b;
+                    v.z = *(f32*)(p + 0x14);
+                }
+                if ((*(u32*)(p + 0x90) & 0xff) != 6) {
+                    fn_801EF574(lbl_80466808, (void*)(*(s32*)(p + 0x280) + 0x226), (f32*)&v, &rec);
+                }
+                fn_803075AC(*(void**)(p + 0x198), *(s32*)(p + 0x4), p + 0xc, *(s32*)(p + 0x280) + 0x318, bVar1, 2, -1, 0, 0, 0);
+            }
+        }
+    }
 }
 
 extern "C" void fn_80174220(void* this_) {
