@@ -31,6 +31,10 @@ extern "C" void fn_80402E08(void* p, f32 a, f32 b);
 extern "C" void* lbl_8053AB10;
 extern "C" void* lbl_8053AED8;
 
+extern "C" void* fn_804031C4(u32 type, void* name);
+extern "C" void fn_803832BC(char* s, s32 a, s32 b, s32 c, s32 d);
+extern "C" char* getStringPtr__10J2DTextBoxCFv(void* this_);
+
 class J2DGrafContext;
 class J2DScreen {
 public:
@@ -150,6 +154,125 @@ extern "C" void fn_803E3C94(u8* param_1) {
     *(s16*)(param_1 + 0x254) = 0;
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
     *(s32*)(param_1 + 0x1d4) = 6;
+}
+
+extern "C" void* fn_804031C4(u32 type, void* name);
+extern "C" void fn_803832BC(char* s, s32 a, s32 b, s32 c, s32 d);
+extern "C" char* getStringPtr__10J2DTextBoxCFv(void* this_);
+extern "C" void fn_803E3CB0(u8* p) {
+    u8* base = lbl_80477970;
+    s32 i;
+    s32 j;
+    u8* q;
+    u8* tA;
+    u8* tB;
+    u8* tC;
+    u8* b;
+    if (*(s32*)(p + 0x1bc) == 1) {
+        void* g = fn_804031C4(0x54494d47, base + 0xfec);
+        void* t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3032ULL);
+        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+        t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3031ULL);
+        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+    } else if (*(s32*)(p + 0x1bc) == 2) {
+        void* g = fn_804031C4(0x54494d47, base + 0x1000);
+        void* t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3032ULL);
+        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+        t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3031ULL);
+        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+    } else {
+        void* g = fn_804031C4(0x54494d47, base + 0x1014);
+        void* t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3032ULL);
+        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+        t = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50746e3031ULL);
+        ((void (**)(void*, void*, s32))*(void**)t)[68](t, g, 0);
+    }
+    {
+        char* s1 = getStringPtr__10J2DTextBoxCFv(((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x54746b673031ULL));
+        char* s2 = getStringPtr__10J2DTextBoxCFv(((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x54746b673032ULL));
+        fn_803832BC(s1, 0x3e, 0, 0, 0);
+        fn_803832BC(s2, 0x3e, 0, 0, 0);
+    }
+    {
+        void* o;
+        *(f32*)(p + 0xa0) = -300.0f;
+        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x4e646174613033ULL);
+        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0x98), *(f32*)(p + 0x9c) + *(f32*)(p + 0xa0));
+        *(f32*)(p + 0xac) = -100.0f;
+        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x4e646174613035ULL);
+        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xa4), *(f32*)(p + 0xa8) + *(f32*)(p + 0xac));
+        *(f32*)(p + 0xb8) = -200.0f;
+        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x4e646174613036ULL);
+        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xb0), *(f32*)(p + 0xb4) + *(f32*)(p + 0xb8));
+        *(f32*)(p + 0xbc) = -200.0f;
+        fn_80402E08(*(void**)(p + 0x78), 0.0f, *(f32*)(p + 0xbc));
+        *(f32*)(p + 0xe0) = 200.0f;
+        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3032ULL);
+        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xc0), *(f32*)(p + 0xd0) + *(f32*)(p + 0xe0));
+        *(f32*)(p + 0xe4) = 200.0f;
+        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3132ULL);
+        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xc4), *(f32*)(p + 0xd4) + *(f32*)(p + 0xe4));
+        *(f32*)(p + 0xe8) = 200.0f;
+        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3232ULL);
+        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xc8), *(f32*)(p + 0xd8) + *(f32*)(p + 0xe8));
+        *(f32*)(p + 0xec) = 200.0f;
+        o = ((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), 0x50706c6c626b3332ULL);
+        ((void (**)(void*, f32, f32))*(void**)o)[4](o, *(f32*)(p + 0xcc), *(f32*)(p + 0xdc) + *(f32*)(p + 0xec));
+    }
+    tA = base + 0x840;
+    tB = base + 0x8e0;
+    tC = base + 0x8c0;
+    q = p;
+    for (i = 0; i < 4; i++) {
+        if (i <= *(s32*)(p + 0x1bc)) {
+            u8* a = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tA);
+            a[0xb0] = 1;
+            b = tB + 0x10;
+            for (j = 2; j < 4; j++) {
+                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)b);
+                c[0xb0] = 1;
+                b += 8;
+            }
+            {
+                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tC);
+                ((void (**)(void*, s32))*(void**)c)[9](c, 0xff);
+            }
+            *(s32*)(q + 0x230) = *(s16*)(*(u8**)(q + 0x38) + 6);
+            *(s32*)(q + 0x240) = *(s16*)(*(u8**)(q + 0x48) + 6);
+        } else {
+            u8* a = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tA);
+            a[0xb0] = 0;
+            b = tB + 0x10;
+            for (j = 2; j < 4; j++) {
+                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)b);
+                c[0xb0] = 0;
+                b += 8;
+            }
+            {
+                u8* c = (u8*)((void* (**)(void*, u64))*(void**)*(void**)(p + 8))[15](*(void**)(p + 8), *(u64*)tC);
+                ((void (**)(void*, s32))*(void**)c)[9](c, 0x80);
+            }
+            *(s32*)(q + 0x230) = 0;
+            *(s32*)(q + 0x240) = 0;
+        }
+        tA += 8;
+        tB += 0x20;
+        tC += 8;
+        q += 4;
+    }
+    *(s16*)(p + 0x254) = 0;
+    *(s16*)(p + 0x25e) = 0;
+    *(s16*)(p + 0x25c) = 0;
+    p[0x26b] = 0;
+    *(s16*)(p + 0x250) = -1;
+    *(s16*)(p + 0x252) = -1;
+    *(s16*)(p + 0x262) = 0;
+    *(s32*)(p + 0x220) = 0;
+    *(s32*)(p + 0x224) = 0;
+    *(s32*)(p + 0x228) = 0;
+    *(s32*)(p + 0x22c) = 0;
+    *(s32*)(p + 0x1d8) = *(s32*)(p + 0x1d4);
+    *(s32*)(p + 0x1d4) = 5;
 }
 
 extern "C" void fn_803E4308(u8* param_1) {
@@ -273,6 +396,69 @@ extern "C" void fn_803E4650(u8* p) {
         }
     }
     draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x10), 0.0f, 0.0f, *(void**)((u8*)lbl_8053AB10 + 0x10));
+    fn_80440EE8(lbl_8053AED8);
+}
+
+extern "C" void fn_803E64A0(u8* p) {
+    s32 i;
+    s32 k;
+    s32 n;
+    s32 st;
+    f32 u;
+    f32 f30;
+    f32 f31;
+    f32 off;
+    f32 h;
+    s32* tA = (s32*)(lbl_80477970 + 0xea8);
+    s32* tB = (s32*)(lbl_80477970 + 0xec8);
+    s32* tC = (s32*)(lbl_80477970 + 0xee8);
+    Screen803E4650* scr = (Screen803E4650*)*(void**)(p + 4);
+    Pane803E4650* pane;
+
+    st = *(s32*)(p + 0x1d4);
+    n = *(s32*)(p + 0x1e0);
+    if (n < 30) {
+        if (n < 15) {
+            u = (f32)(n * n) / 225.0f;
+        } else {
+            u = (f32)((n - 15) * (n - 15)) / 225.0f;
+        }
+        f30 = 230.0f * u;
+    } else {
+        n -= 30;
+        u = 1.0f - (f32)(n * n) / 900.0f;
+        f30 = u * (f32)p[0x268];
+    }
+    k = 0;
+    if (st == 3 || (st == 4 && *(s16*)(p + 0x254) <= 10)) {
+        k = *(s16*)(p + 0x254);
+        if (k >= 5) {
+            k = 10 - k;
+        }
+    }
+    f31 = 80.0f * u;
+    off = (5.0f * (f32)(k * k)) / 25.0f;
+    for (i = 0; i < 4; i++, tA += 2, tB += 2, tC += 2) {
+        if (i == *(s32*)(p + 0x1bc)) {
+            if (i == 0) {
+                pane = scr->v3C(0x50736375, 0x726f3032);
+                h = getBounds__7J2DPaneFv(pane)[0];
+                pane = scr->v3C(0x50736375, 0x726f3032);
+                pane->v10(h, *(f32*)(p + 0x1a0) + off);
+            } else {
+                pane = scr->v3C(tA[0], tA[1]);
+                h = getBounds__7J2DPaneFv(pane)[1];
+                pane = scr->v3C(tA[0], tA[1]);
+                pane->v10(h, *(f32*)(p + 0x110 + i * 4) + off);
+            }
+        } else {
+            pane = scr->v3C(tB[0], tB[1]);
+            h = getBounds__7J2DPaneFv(pane)[0];
+            pane = scr->v3C(tB[0], tB[1]);
+            pane->v10(h, *(f32*)(p + 0x110 + i * 4));
+        }
+    }
+    draw__9J2DScreenFffPC14J2DGrafContext(scr, 0.0f, 0.0f, *(void**)((u8*)lbl_8053AB10 + 0x10));
     fn_80440EE8(lbl_8053AED8);
 }
 
