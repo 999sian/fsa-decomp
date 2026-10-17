@@ -42,6 +42,10 @@ extern "C" void fn_8010EC3C(NaviState_8010D1DC* p) {
 }
 
 extern u8 lbl_802C5B44[];
+extern u8 lbl_8029FDB4[];
+extern f32 lbl_80301310;
+extern "C" void* fn_80177B10(void* p);
+extern "C" void fn_800127A0(void* p);
 extern "C" s32 fn_8011024C(u8* p, s16 t, u8 a, s32 b, s32 c);
 extern "C" s32 fn_8010FEDC(u8* p, s16 t, u8 a, s32 b, s32 c, f32 x, f32 y);
 extern "C" void fn_8010F570(u8* p) {
