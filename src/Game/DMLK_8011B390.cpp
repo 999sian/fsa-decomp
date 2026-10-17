@@ -132,8 +132,8 @@ extern "C" u8* lbl_8053AAF8;
 extern "C" u8* lbl_8053AB10;
 extern "C" f32 lbl_8053C7F8;
 extern "C" void fn_8011C118(u8* this_) {
-    u8 buf[0x3c];
     s32 i;
+    u8 buf[0x3c];
 
     fn_8010DF58(this_);
     *(s32*)(buf + 0x10) = -1;
