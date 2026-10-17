@@ -218,6 +218,15 @@ extern "C" void fn_80101004(void* param_1) {
     *(u8*)((u8*)param_1 + 0x189) = 0x17;
 }
 
+extern "C" void fn_80101038(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x528) != 0) {
+        *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0x188) = 0;
+    *(u8*)((u8*)param_1 + 0x189) = 0x18;
+}
+
 extern "C" void fn_801019C0(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
@@ -609,9 +618,10 @@ extern "C" void fn_80106540(char* p) {
 
 extern "C" void fn_80106978(void* param_1) {
     s32 iVar1;
-    u8* base = (u8*)lbl_802C5A84;
     f32 f = lbl_80301204;
-    iVar1 = fn_80108928(param_1, *(s16*)((u8*)param_1 + 0xec), base[0x3c], f, 0, 0, f, *(f32*)(base + 0x38), f);
+    u8* base = (u8*)lbl_802C5A84;
+    s16 a = *(s16*)((u8*)param_1 + 0xec);
+    iVar1 = fn_80108928(param_1, a, base[0x3c], f, 0, 0, f, *(f32*)(base + 0x38), f);
     *(s16*)((u8*)param_1 + 0xec) = *(s16*)((u8*)param_1 + 0xec) + 1;
     if (iVar1 == 1) {
         *(s16*)((u8*)param_1 + 0xec) = 0;
