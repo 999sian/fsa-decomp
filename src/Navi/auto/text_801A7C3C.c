@@ -1258,6 +1258,10 @@ extern "C" void fn_801B2688(u32* out, u8* p, s32 a, s32 b) {
 
 extern "C" void fn_801B338C(void) {}
 
+extern "C" u32 fn_801B3390(void) {
+    return 0x50454e4c;
+}
+
 extern void* lbl_8029B650[];
 extern void* lbl_80299F88[];
 extern "C" void* fn_801B339C(void* ptr, s16 param_2) {
@@ -1459,6 +1463,22 @@ extern "C" void* fn_801B37C0(void* base, u32 offset) {
 extern "C" void* fn_801B37D8(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" void fn_801B49C0(u16* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u16 value = *(u16*)(data + indices[index] * 0x138 + 0x132);
+    if (value != 0xffff) {
+        u8* entry = *(u8**)((u8*)ptr + 0x54) + value * 8;
+        out[0] = (u8)entry[0] << 5 | (u8)entry[2] << 3 | entry[3];
+        ((u8*)out)[2] = entry[1];
+        ((u8*)out)[3] = entry[4];
+        return;
+    }
+    out[0] = 0xffff;
+    ((u8*)out)[2] = 0;
+    ((u8*)out)[3] = 0;
 }
 
 extern "C" u8 fn_801B4AE4(u8* p, s32 i) {
@@ -2188,6 +2208,8 @@ extern "C" void fn_801B96F0(void* self, void* src) {
 }
 
 extern "C" void* fn_801BA410(void* base, u32 offset);
+extern "C" u16 lbl_80301D34;
+extern "C" u32 lbl_80301D24;
 extern "C" void fn_801B9718(void* unused, void* dest, void* src) {
     u8* d = (u8*)dest;
     u8* s = (u8*)src;
