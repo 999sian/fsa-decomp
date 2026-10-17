@@ -2645,7 +2645,7 @@ extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
   u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
-  u8 b0 = param_3[0];
+  u8 b0 = *param_3;
   e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
   e[0x28] = b0 | (e[0x28] & ~0x3);
 }
@@ -3274,7 +3274,9 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    ((GXColor*)(self + 0xc))[i] = *(const GXColor*)c;
+    u8* p = self + i * 4;
+    GXColor c0 = *(const GXColor*)c;
+    ((GXColor*)(p + 0xc))[0] = c0;
 }
 #endif
 
