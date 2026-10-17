@@ -131,6 +131,25 @@ extern "C" void fn_800291B8(const char*, ...) {
 extern "C" void fn_80029208(const char*, ...) {
 }
 
+extern "C" void fn_8002A3CC(void* self_, void* node_, int a, int b) {
+    unsigned char* self = (unsigned char*)self_;
+    unsigned char* next;
+    unsigned int* node = (unsigned int*)node_;
+    node[0] = a;
+    node[1] = b;
+    node[2] = 0;
+    next = *(unsigned char**)(self + 0x6e0);
+    if (next != 0) {
+        self = next;
+        while ((next = *(unsigned char**)(self + 0x8)) != 0) {
+            self = next;
+        }
+        *(unsigned int**)(self + 0x8) = node;
+        return;
+    }
+    *(unsigned int**)(self + 0x6e0) = node;
+}
+
 extern "C" int lbl_80227384[3];
 extern "C" void fn_8002A4A4(unsigned char* p, int v);
 extern "C" void fn_8002A410(unsigned char* p) {
@@ -148,6 +167,19 @@ extern "C" void fn_8002A410(unsigned char* p) {
             }
         }
     }
+}
+
+extern "C" int fn_8002B620(unsigned char* self, unsigned char idx, unsigned char val) {
+    unsigned char* p = self + idx * 8;
+    if (p[0x840] == val) return 1;
+    if (p[0x841] == val) return 1;
+    if (p[0x842] == val) return 1;
+    if (p[0x843] == val) return 1;
+    if (p[0x844] == val) return 1;
+    if (p[0x845] == val) return 1;
+    if (p[0x846] == val) return 1;
+    if (p[0x847] == val) return 1;
+    return 0;
 }
 
 extern "C" void fn_8002BC84(void) {
