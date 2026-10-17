@@ -143,8 +143,8 @@ struct Der_801ABFC0 : Mid_801ABFC0 {
     s32 x1c;
 };
 inline void initBase_801ABFC0(Base_801ABFC0* b) {
-    f32 f = lbl_80301D6C;
     b->vt = lbl_8027F214;
+    f32 f = lbl_80301D6C;
     b->b4 = 0;
     b->b5 = 0;
     b->h6 = 0;
@@ -339,8 +339,8 @@ extern "C" void OSRestoreInterrupts(s32 level);
 extern "C" void fn_801DFFF0(void* a, u32 b, u32 c);
 extern "C" void fn_801A8440(u8* self) {
     u8 buf[16];
-    u16 n;
     u8* p;
+    u16 n;
     u8* ent;
     u16 i;
     extern s8 lbl_802FF6FC;
@@ -353,8 +353,8 @@ extern "C" void fn_801A8440(u8* self) {
         lbl_802FF6FC = 1;
     }
     OSDisableScheduler();
-    n = *(u16*)(self + 0x5c);
     p = buf;
+    n = *(u16*)(self + 0x5c);
     for (i = 0; i < n; i++) {
         u32* s;
         void* obj;
@@ -1784,14 +1784,14 @@ extern "C" void fn_801B2D70(Blk_801A7D54* dst, u8* self, s32 idx, s32 j) {
         b = s[1];
         d[0] = a;
         d[1] = b;
-        b = s[4];
-        a = s[5];
-        d[4] = b;
-        d[5] = a;
-        a = s[2];
-        b = s[3];
-        d[2] = a;
-        d[3] = b;
+        b = s[2];
+        a = s[3];
+        d[2] = b;
+        d[3] = a;
+        a = s[4];
+        b = s[5];
+        d[4] = a;
+        d[5] = b;
         d[6] = s[6];
     }
 }
@@ -3009,10 +3009,10 @@ extern "C" void fn_801B94B4(void* unused, void* dest, void* src) {
     extern f32 lbl_80301DF0;
     f32 f = lbl_80301DF0;
     u8 b = *((u8*)src + 8);
-    u32 w = *(u32*)((u8*)src + 0x18);
-    u16 h = *(u16*)((u8*)src + 0xe);
     *(s16*)((u8*)dest + 6) = *(s16*)((u8*)src + 0xc);
+    u32 w = *(u32*)((u8*)src + 0x18);
     ((u8*)dest)[4] = b;
+    u16 h = *(u16*)((u8*)src + 0xe);
     *(f32*)((u8*)dest + 8) = f;
     *(u16*)((u8*)dest + 0x14) = h;
     *(void**)((u8*)dest + 0x3c) = fn_8018C248(src, w);
@@ -3239,6 +3239,7 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
 }
 
 extern "C" u8 lbl_802F0BC0[];
+#pragma fp_contract off
 extern "C" void fn_801BA428(s16 arg0, s16 arg1, s16 arg2, f32* out) {
     f32 xa, ya, xb, yb, xc, yc;
     u32 a = ((u16)(arg0 / 2) >> 5) * 8;
@@ -3255,4 +3256,4 @@ extern "C" void fn_801BA428(s16 arg0, s16 arg1, s16 arg2, f32* out) {
     out[1] = yc * (ya * xb) + xc * (xa * yb);
     out[2] = xc * (ya * yb) - yc * (xa * xb);
 }
-
+#pragma fp_contract reset
