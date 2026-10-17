@@ -155,9 +155,10 @@ struct GnefObj {
     s32 m260[2];
 };
 extern "C" void fn_802EE704(GnefObj* this_) {
+    GnefActor* a;
     s32 count = fn_801F856C()->mCount;
     for (s32 i = 0; i < count; i++) {
-        GnefActor* a = fn_801F856C()->mActors[i];
+        a = fn_801F856C()->mActors[i];
         if (a != 0 && a->mName == 'WARP' && this_->m25C == a->v3C()) {
             JGeometry::TVec3f pos = a->mPos;
             pos.x = this_->x;
@@ -167,10 +168,9 @@ extern "C" void fn_802EE704(GnefObj* this_) {
     }
     s32 n = 0;
     for (s32 j = 0; j < count; j++) {
-        GnefActor* a = fn_801F856C()->mActors[j];
+        a = fn_801F856C()->mActors[j];
         if (a != 0 && a->mName == 'SLR4') {
-            this_->m260[n] = j;
-            n++;
+            this_->m260[n++] = j;
             fn_802EEA24(1);
             if (n >= 2) {
                 break;
@@ -203,7 +203,7 @@ extern const f32 lbl_80541418;
 
 static inline f32 gnefSqrt(f32 x) {
     if (x > lbl_80541400) {
-        f64 y = __frsqrte(x);
+        f32 y = __frsqrte(x);
         f32 t = y * x;
         return (lbl_80541408 - t * y) * t * lbl_8054140C;
     }
