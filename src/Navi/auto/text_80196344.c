@@ -27,6 +27,7 @@ extern "C" void fn_801A7D78(void* p);
 struct NaviSrc4 { u16 a; u8 b, c; };
 struct NaviRect16 { s16 x, y, w, h; };
 struct NaviColor8 { u8 r, g, b, a; };
+struct NaviColorArr_801A4C9C { u32 unk0; NaviColor8 colors[1]; };
 struct NaviBytes4 { u8 b[4]; };
 struct NaviBits2x2 { u8 hi : 4; u8 a : 2; u8 b : 2; u8 pad[7]; };
 extern u8 lbl_802EE470[];
