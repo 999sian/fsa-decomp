@@ -1,6 +1,8 @@
 #include "Game/esd/types.h"
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/ItemBase.h"
+#include "dolphin/mtx.h"
 
 
 extern "C" void fn_802A3948(void* mgr, void* pos, s32 player, u32 room, s32 id);
@@ -50,6 +52,31 @@ extern "C" void fn_80310F50(void* this_, s32 p2, s32 p3, s32 p4) {
     *(s32*)((u8*)this_ + 0x238) = p3;
     *(s32*)((u8*)this_ + 0x23c) = p4;
     *(s32*)((u8*)this_ + 0x230) = 1;
+}
+
+extern "C" void fn_801F06F0(void* this_, void* p, s32 id, u8* ids, s32 flag, f32 a, f32 b);
+extern "C" void fn_803075AC(void* a, void* b, void* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern "C" char lbl_80471438[];
+extern "C" f32 lbl_80541798;
+extern "C" f32 lbl_8054179C;
+extern "C" void fn_80310FC8(u8* this_) {
+    if (*(s32*)(this_ + 0x230) >= 2) {
+        Vec saved = *(Vec*)(this_ + 0xc);
+        *(Vec*)(this_ + 0xc) = *(Vec*)(this_ + 0x248);
+        Mtx mtx;
+        DrawRec rec;
+        if (*(s32*)(this_ + 0x238) == 4) {
+            PSMTXScale(mtx, lbl_80541798, lbl_80541798, lbl_80541798);
+            rec.w18 = mtx;
+            fn_801F06F0(this_, lbl_80471438 + 0x28, 0x45a, rec.ids, -1, lbl_8054179C, lbl_8054179C);
+            fn_803075AC(*(void**)(this_ + 0x198), *(void**)(this_ + 4), this_ + 0xc, 0x11, 1, 2, -1, 1, 0, 0);
+        } else {
+            s32 id = ((s32*)(lbl_80471438 + 0x14))[*(s32*)(this_ + 0x238)];
+            fn_801F06F0(this_, lbl_80471438 + 0x3c, id, rec.ids, -1, lbl_8054179C, lbl_8054179C);
+            fn_803075AC(*(void**)(this_ + 0x198), *(void**)(this_ + 4), this_ + 0xc, id, 0, 2, -1, 1, 0, 0);
+        }
+        *(Vec*)(this_ + 0xc) = saved;
+    }
 }
 
 extern "C" f32 lbl_805417AC;
