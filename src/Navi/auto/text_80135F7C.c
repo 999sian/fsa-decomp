@@ -1339,6 +1339,17 @@ extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
     *a = *b;
 }
 
+extern void* lbl_80293028[];
+extern "C" void* fn_8013A5EC(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)((u8*)ptr + 8) = lbl_80293028;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void fn_8013A424(void** a, u32* b) {
     void* r = fn_80167818(a[0], b, b + 1, 0);
     u32 n = *b;
