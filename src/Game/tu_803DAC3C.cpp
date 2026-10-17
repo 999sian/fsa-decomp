@@ -5,6 +5,13 @@
 #include "dolphin/dvd/dvdfs.h"
 #include "JSystem/J2D/J2DScreen.h"
 
+struct FsaDisposable {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void del(s32);
+    virtual void v3(void);
+};
+
 extern "C" {
 extern void* lbl_8053ADD0;
 extern const float lbl_8054360C;
@@ -270,5 +277,150 @@ extern "C" void fn_803DF810(u8* self) {
         fn_80427D94(*(SeqVoice**)(self + 0x64));
         self[0xa0] = 0;
     }
+}
+
+extern "C" void fn_803DF9E8(void* self_) {
+    u8* self = (u8*)self_;
+    *(s32*)(self + 0x88) = 0;
+    *(s32*)(self + 0x8c) = 0;
+    *(s32*)(self + 0x90) = 0;
+    *(s16*)(self + 0x9c) = 0;
+    *(f32*)(self + 0x7c) = lbl_80543604;
+    *(f32*)(self + 0x78) = lbl_80543604;
+    *(s16*)(self + 0x9a) = 0;
+    *(s16*)(self + 0x98) = 0x3c;
+    self[0xa1] = 0;
+    for (s32 i = 0; i < 2; i++) {
+        void* a = *(void**)(self + 0x34 + i * 4);
+        *(u8*)(*(u8**)((u8*)a + 4) + 0xb0) = 1;
+        fn_80402E08(a, lbl_80543614, lbl_80543604);
+        *(s16*)((u8*)*(void**)(self + 0x34 + i * 4) + 0x20) = 0;
+        void* b = *(void**)(self + 0x44 + i * 4);
+        *(u8*)(*(u8**)((u8*)b + 4) + 0xb0) = 1;
+        fn_80402E08(b, lbl_80543614, lbl_80543604);
+        *(s16*)((u8*)*(void**)(self + 0x44 + i * 4) + 0x20) = 0;
+    }
+    *(u8*)(*(u8**)(*(u8**)(self + 0x30) + 4) + 0xb0) = 1;
+    fn_80402E08(*(void**)(self + 0x30), lbl_80543614, lbl_8054361C);
+    *(s16*)((u8*)*(void**)(self + 0x30) + 0x22) = 0;
+    fn_80402E08(*(void**)(self + 0x5c), lbl_80543604, lbl_8054362C);
+    *(s16*)((u8*)*(void**)(self + 0x5c) + 0x22) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x40) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x14) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x18) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x1c) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x20) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x24) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x28) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x2c) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x50) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x54) + 4) + 0xb0) = 0;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x58) + 4) + 0xb0) = 0;
+    void* mgr = *(void**)(self + 0x8);
+    void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, *(void**)(self + 0x5c), 0x50, 0x696d3031);
+    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+    mgr = *(void**)(self + 0x8);
+    r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3032);
+    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+    mgr = *(void**)(self + 0x8);
+    r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3131);
+    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+    mgr = *(void**)(self + 0x8);
+    r = ((void* (*)(void*, void*, s32, s32))((*(void***)mgr)[0x3c / 4]))(mgr, (void*)0x696d0000, 0x50, 0x696d3132);
+    ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+    *(s32*)(self + 0x84) = 0;
+    *(s32*)(self + 0x68) = 2;
+}
+
+extern "C" void* lbl_804B0688;
+extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
+void __dl__FPv(void*);
+extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
+    void* obj;
+    s32 i;
+
+    if (self != 0) {
+        *(void**)self = &lbl_804B0688;
+        getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 8));
+        if (self[0xa0] == 2) {
+            fn_80427D94(*(SeqVoice**)(self + 0x64));
+            self[0xa0] = 0;
+        }
+        obj = *(void**)(self + 0x60);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x60) = 0;
+        obj = *(void**)(self + 0x64);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x64) = 0;
+        obj = *(void**)(self + 0x4);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x4) = 0;
+        obj = *(void**)(self + 0x8);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x8) = 0;
+        for (i = 0; i < 7; i++) {
+            obj = *(void**)(self + 0x14 + i * 4);
+            if (obj != 0) {
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            }
+            *(void**)(self + 0x14 + i * 4) = 0;
+        }
+        obj = *(void**)(self + 0x30);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x30) = 0;
+        for (i = 0; i < 2; i++) {
+            obj = *(void**)(self + 0x34 + i * 4);
+            if (obj != 0) {
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            }
+            *(void**)(self + 0x34 + i * 4) = 0;
+        }
+        obj = *(void**)(self + 0x40);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x40) = 0;
+        for (i = 0; i < 2; i++) {
+            obj = *(void**)(self + 0x44 + i * 4);
+            if (obj != 0) {
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            }
+            *(void**)(self + 0x44 + i * 4) = 0;
+        }
+        for (i = 0; i < 2; i++) {
+            obj = *(void**)(self + 0x50 + i * 4);
+            if (obj != 0) {
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            }
+            *(void**)(self + 0x50 + i * 4) = 0;
+        }
+        obj = *(void**)(self + 0x58);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x58) = 0;
+        obj = *(void**)(self + 0x10);
+        if (obj != 0) {
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(self + 0x10) = 0;
+        obj = *(void**)(lbl_80529DEC + 0x2c);
+        ((void (*)(void))(*(void***)obj)[3])();
+        lbl_8053ADD0 = 0;
+        if (param_2 > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
 }
 
