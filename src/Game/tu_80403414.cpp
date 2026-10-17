@@ -50,7 +50,8 @@ extern "C" void fn_804034D4(s32 i, s32 v) {
 // ---- fn_80403680: reset ----
 struct T34Vec { f32 x, y, z; };
 struct T34Mgr {
-    u8 pad0[0x64];
+    u8 pad0[4];
+    s32 m4[24];
     s32 m64;
     s32 m68[4];
     s32 m78[4];
