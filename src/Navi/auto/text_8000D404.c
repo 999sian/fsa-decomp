@@ -801,7 +801,7 @@ extern "C" void fn_8001168C(void* param_1) {
     fn_801DA39C(0, 9, 1, 4, 0);
     fn_801DA39C(0, 10, 0, 1, 6);
     fn_801DAC08(10, lbl_802FB81C, 3);
-    if (*(s32*)((u8*)param_1 + 0xc) != 0) {
+    if (*(u32*)((u8*)param_1 + 0xc) != 0) {
         fn_801DF0BC(lbl_802040A0, 0x80);
     } else {
         fn_801DF0BC(lbl_80204000, 0x80);
