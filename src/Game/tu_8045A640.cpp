@@ -6,7 +6,7 @@ extern f32 lbl_80543ED8;
 extern f64 lbl_80543EE0;
 extern void* lbl_80543F0C;
 extern char lbl_80495470[];
-extern void** sInstance__33JASGlobalInstance__12JAISoundInfo;
+extern void* sInstance__33JASGlobalInstance__12JAISoundInfo;
 extern void __dt__16JAIStreamDataMgrFv(void*, int);
 extern void __dt__12JAISoundInfoFv(void*, int);
 extern void __dl__FPv(void*);
@@ -30,8 +30,8 @@ extern "C" void* fn_8045A640(void* this_, s16 freeFlag) {
         if (p + 0x4 != 0) {
             *(void**)(p + 0x4) = (void*)lbl_80495470;
             if (p + 0x4 != 0) {
-                if ((void*)(p + 0x4) == *sInstance__33JASGlobalInstance__12JAISoundInfo) {
-                    *sInstance__33JASGlobalInstance__12JAISoundInfo = 0;
+                if ((void*)(p + 0x4) == (void*)sInstance__33JASGlobalInstance__12JAISoundInfo) {
+                    sInstance__33JASGlobalInstance__12JAISoundInfo = 0;
                 }
             }
         }
@@ -73,26 +73,26 @@ extern "C" void fn_8045A700(void* this_, JAISoundID* param_2, void* param_3) {
     }
 }
 
-extern "C" void fn_8045A81C(void* this_, JAISoundID* param_2, s32 param_3) {
+extern "C" void fn_8045A81C(void* this_, JAISoundID* param_2, void* param_3) {
     if (param_3 != 0) {
-        param_3 += 0x10;
         u32 id = param_2->id;
+        param_3 = (char*)param_3 + 0x10;
+        JAISoundID typeSoundID;
         JAISoundID soundID;
         soundID.id = id;
         void* data = getData__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &soundID);
-        JAISoundID typeSoundID;
         typeSoundID.id = id;
         u8 typeID = getTypeID__13JAUSoundTableCF10JAISoundID(*(void**)((char*)this_ + 0xc), &typeSoundID);
         if (data != 0) {
             switch (typeID) {
             case 0x10:
-                *(f32*)(param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
+                *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
                 break;
             case 0x12:
-                *(f32*)(param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
+                *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
                 break;
             case 0x11:
-                *(f32*)(param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
+                *(f32*)((char*)param_3 + 0x3c) = ((u8*)data)[2] / lbl_80543ED8;
                 break;
             }
         }
