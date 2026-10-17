@@ -28,7 +28,6 @@ extern "C" char lbl_8046D920[];
 extern "C" char* lbl_8053AB10;
 extern "C" char sincosTable___5JMath[];
 extern "C" const f32 lbl_80540E30;
-extern "C" const u8 lbl_80540E28[];
 
 static inline void fn_802CDD9C_draw(char* this_, void* pos, u32 tex, void* rec)
 {
@@ -54,10 +53,13 @@ extern "C" void fn_802CDD9C(char* this_)
 {
     Vec v;
     f32 mtx[3][4];
-    DrawRec rec;
     u32 tex;
 
     if (*(s32*)(this_ + 0x230) == 1) {
+        DrawRec rec;
+        rec.b1c = lbl_80540E28[*(s32*)(this_ + 0x238)];
+        rec.b1d = lbl_80540E28[*(s32*)(this_ + 0x23c)];
+        rec.b24 = 1;
         if (*(s32*)(this_ + 0x234) >= 0x1b && *(s32*)(this_ + 0x234) <= 0x1e) {
             s16 ang = *(s16*)(this_ + 0x248);
             f32 sx = *(f32*)(this_ + 0x24c);
@@ -79,6 +81,26 @@ extern "C" void fn_802CDD9C(char* this_)
             mtx[2][0] = sx * -s;
             mtx[2][1] = sy * (c * s0);
             mtx[2][2] = sz * (c * c0);
+        } else if (*(s32*)(this_ + 0x234) == 0x15) {
+            rec.b2d = 1;
+        } else {
+            rec.b21 = 1;
+            rec.b23 = 1;
+        }
+
+        if (*(s32*)(this_ + 0x234) == 0x22) {
+            if ((u8)((Actor*)this_)->v11() == 1) {
+                tex = fn_804032E8(0x54494d47, lbl_8046D920 + 0x608);
+            } else {
+                tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234)]);
+            }
+            fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+        } else {
+            tex = fn_804032E8(0x54494d47, lbl_804A90F0[*(s32*)(this_ + 0x234)]);
+            fn_802CDD9C_draw(this_, this_ + 0xc, tex, &rec);
+            rec = DrawRec();
+            rec.b1c = lbl_80540E28[*(s32*)(this_ + 0x238)] + 1;
+            rec.b1d = lbl_80540E28[*(s32*)(this_ + 0x23c)];
         }
     }
 }
