@@ -81,9 +81,9 @@ extern "C" s32 fn_80114138(u8* p) {
     return 1;
 }
 
-extern "C" void fn_801123B4(void);
-extern "C" void fn_801143FC(void) {
-    fn_801123B4();
+extern "C" BOOL fn_801123B4(u8* p);
+extern "C" void fn_801143FC(u8* p) {
+    fn_801123B4(p);
 }
 
 extern "C" BOOL fn_8011441C(void);
