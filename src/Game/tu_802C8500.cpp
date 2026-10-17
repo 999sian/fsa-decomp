@@ -25,6 +25,16 @@ extern "C" u8* fn_801F666C(void* mgr, s32 idx);
 extern "C" u8 fn_802C1970(u8* p, s32 room, void* pos);
 extern "C" void fn_802C2B64(u8* p);
 extern const f32 lbl_80540D58;
+extern const f32 lbl_80540D5C;
+extern const f32 lbl_80540D68;
+extern const f32 lbl_80540D6C;
+extern u8* lbl_8053AB10;
+extern u8* lbl_8053AC98;
+extern "C" s32 fn_8023AF14(f32* box, u32 room, s32 flag, f32 z);
+extern "C" u16 fn_80226998(f32* pos, u32 room);
+extern "C" void fn_802A3884(u8* mgr, f32* pos, s32 flag, u32 room, u16 n);
+extern "C" void fn_802A3948(u8* mgr, f32* pos, s32 flag, u32 room, u32 anim);
+extern "C" void fn_802F9974(void* mgr, s32 room, s32 id, u16 frame);
 
 extern "C" s32 fn_802C8500(f32 a, f32 b, f32 c) {
     f32 d = a - b;
