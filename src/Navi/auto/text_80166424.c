@@ -24,10 +24,6 @@ extern "C" void fn_80118BD0(void* p, int b);
 struct Rec_80174620 {
     f32 a, b, c, d, e, f;
     u8 g;
-    Rec_80174620() {}
-    Rec_80174620(const Rec_80174620& o) {
-        a = o.a; b = o.b; c = o.c; d = o.d; e = o.e; f = o.f; g = o.g;
-    }
 };
 struct Slot_80174620 {
     u8 active;
@@ -697,29 +693,28 @@ extern "C" void* fn_801679DC(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80167A94(List_80167A94* self, u32* arg1) {
-    Link_80167A94 tmp;
-    u32 n;
+    List_80167A94 tmp;
     Link_80167A94* cur;
     Link_80167A94* nx;
     Link_80167A94* target;
 
     target = (Link_80167A94*)*arg1;
-    tmp.next = &tmp;
-    tmp.prev = &tmp;
-    n = 0;
+    tmp.head.next = &tmp.head;
+    tmp.head.prev = &tmp.head;
+    tmp.count = 0;
     cur = self->head.next;
     while (cur != &self->head) {
         if (cur == target) {
             nx = cur->next;
-            if (cur != &tmp && nx != &tmp) {
+            if (cur != &tmp.head && nx != &tmp.head) {
                 nx->prev = cur->prev;
                 cur->prev->next = nx;
                 self->count -= 1;
-                cur->next = &tmp;
-                cur->prev = tmp.prev;
-                tmp.prev->next = cur;
-                tmp.prev = cur;
-                n += 1;
+                cur->next = &tmp.head;
+                cur->prev = tmp.head.prev;
+                tmp.head.prev->next = cur;
+                tmp.head.prev = cur;
+                tmp.count += 1;
             }
             cur = nx;
         } else {
@@ -1104,6 +1099,27 @@ extern "C" void fn_8016AE10(u8* p) {
 }
 
 extern "C" void fn_8016AE28(void) {
+}
+
+extern "C" void fn_8016AFCC(void* p) {
+    Blk_8016AFCC* b = (Blk_8016AFCC*)p;
+    b->w0 = 0;
+    b->s[0].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[1].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[2].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[3].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[4].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[5].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[6].c = *(RGB8_8017261C*)lbl_80202218;
+    b->s[7].c = *(RGB8_8017261C*)lbl_80202218;
+    b->tail[0] = 0;
+    b->tail[1] = 0;
+    b->tail[2] = 0;
+    b->tail[3] = 0;
+    b->tail[4] = 0;
+    b->tail[5] = 0;
+    b->tail[6] = 0;
+    b->tail[7] = 0;
 }
 
 extern "C" int fn_8016B410()
@@ -3359,6 +3375,30 @@ extern "C" void fn_801780D4(char* self, u8 v)
             n -= 0xc;
         }
     }
+}
+
+extern f32 lbl_80301B38;
+extern "C" void fn_8017814C(void* p, s32 arg1) {
+    VObj_8017814C* self = (VObj_8017814C*)p;
+    s32 temp_r0;
+    u32 temp_r0_2;
+    *(u8*)((u8*)self + 0xb7) = arg1;
+    *(u8*)((u8*)self + 0xb6) = 0x7A;
+    *(f32*)((u8*)self + 0xc4) = lbl_80301B20;
+    temp_r0 = arg1 % 3;
+    if (temp_r0 == 1) {
+        *(f32*)((u8*)self + 0xc4) = (*(f32*)((u8*)self + 0x28) - *(f32*)((u8*)self + 0x20)) * lbl_80301B38;
+    } else if (temp_r0 == 2) {
+        *(f32*)((u8*)self + 0xc4) = *(f32*)((u8*)self + 0x28) - *(f32*)((u8*)self + 0x20);
+    }
+    *(f32*)((u8*)self + 0xc8) = lbl_80301B20;
+    temp_r0_2 = arg1 / 3;
+    if ((s32)temp_r0_2 == 1) {
+        *(f32*)((u8*)self + 0xc8) = (*(f32*)((u8*)self + 0x2c) - *(f32*)((u8*)self + 0x24)) * lbl_80301B38;
+    } else if ((s32)temp_r0_2 == 2) {
+        *(f32*)((u8*)self + 0xc8) = *(f32*)((u8*)self + 0x2c) - *(f32*)((u8*)self + 0x24);
+    }
+    self->v9();
 }
 
 extern "C" void* fn_80178424(char* self)
