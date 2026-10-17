@@ -595,7 +595,7 @@ extern "C" void AlarmHandler(void) {
     fn_801C9060(block);
 }
 
-static s32 CurrCommand_802FF89C;
+s32 CurrCommand_802FF89C;
 extern "C" void fn_801C8F94(void)
 {
 	char* base = BB2_802F7AA0;
