@@ -151,6 +151,61 @@ extern "C" void fn_802C1DFC(char* p) {
     *(u8*)(p + 0x11c) = 0;
 }
 
+extern "C" void fn_801F02BC(void* p, void* lbl, s32 idx, DrawRec* rec, s32 n, s32 zero, u8 flag, f32 a, f32 b);
+extern "C" s32 fn_8023CB24(s32 id);
+extern "C" s32 fn_8023CA88(s32 id);
+extern char lbl_8046D580[];
+extern "C" void fn_802C1EC4(char* p) {
+    if (*(s32*)(p + 0x27c) != 8 && *(u8*)(p + 0x2b4) != 0 && *(s32*)(p + 0x280) < 0x10 && *(s32*)(p + 0x240) >= 2) {
+        DrawRec rec;
+        ((u8*)&rec.w10)[3] = *(u8*)(p + 0x2ad);
+        s32 st = *(s32*)(p + 0x294);
+        if (st >= 0x2bd4) {
+            if (st & 2) {
+                ((u8*)&rec.w10)[3] = 0;
+            }
+        } else if (st >= 0x2b20) {
+            if (st & 4) {
+                ((u8*)&rec.w10)[3] = 0;
+            }
+        } else if (st >= 0x2aa8) {
+            if (st & 8) {
+                ((u8*)&rec.w10)[3] = 0;
+            }
+        } else if (st >= 0x2a30) {
+            if (st & 0x10) {
+                ((u8*)&rec.w10)[3] = 0;
+            }
+        }
+        if (*(u8*)(p + 0xc4) != 0) {
+            rec.b20 = 0;
+            rec.b1d = fn_8023CB24(*(s32*)(p + 0xc8)) + 1;
+            rec.b1c = fn_8023CA88(*(s32*)(p + 0xc8));
+        } else {
+            rec.b1c = *(u8*)(p + 0x2ac);
+        }
+        s32 iVar2 = *(s32*)(p + 0x280);
+        if (*(s8*)(p + 0x2ac) != 0) {
+            iVar2 += 10;
+        }
+        rec.b2d = 1;
+        u8 c4 = *(u8*)(p + 0xc4);
+        s32 flag = c4;
+        if (*(s32*)(p + 0x240) == 7 || *(s32*)(p + 0x240) == 10 || (*(s32*)(p + 0x27c) == 2 && c4 == 0)) {
+            flag = 1;
+            rec.b1d = 7;
+        }
+        s32 n = 7;
+        if (*(u8*)(p + 0xc4) != 0) {
+            n = -1;
+        }
+        fn_801F02BC(p, lbl_8046D580, iVar2 + 0x2d, &rec, n, 0, flag, lbl_80540C7C, lbl_80540C7C);
+        if (*(s32*)(p + 0x240) == 7) {
+            *(u8*)(p + 0xc4) = 0;
+        }
+    }
+}
+
 extern "C" s32 fn_801F78F4(void* mgr, u32 id, s32 prev);
 extern "C" u8* fn_801F666C(void* mgr, s32 idx);
 extern f32 lbl_80540C80;
