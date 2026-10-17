@@ -2,6 +2,20 @@
 
 
 extern "C" char lbl_804AC100[];
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern u8* lbl_8053AAF8;
+extern const f32 lbl_805420E8;
+extern const f32 lbl_805420EC;
+extern const f32 lbl_805420F0;
+extern const f32 lbl_805420F4;
+extern const f32 lbl_805420F8;
+
+static f32 fn_80339820_rnd() {
+    u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*seed >> 9) | 0x3f800000;
+    return *(f32*)&bits - lbl_805420EC;
+}
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_803397C0(Actor* p, s16 n) {
     if (p != 0) {
