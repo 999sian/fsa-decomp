@@ -224,3 +224,41 @@ extern "C" void fn_803ED83C(u8* p) {
     }
 }
 
+extern "C" void fn_803EDA2C(u8* p) {
+    fn_8013B490(lbl_8053AB10);
+    (*(J2DScreen**)(p + 0x14))->draw(0.0f, 0.0f, *(const J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
+    if (*(s32*)(p + 0x1d4) != 0xf) {
+        (((T803ED83C*)p)->*lbl_804B0A24[*(s32*)(p + 0x1d4)])();
+    } else {
+        (((T803ED83C*)p)->*lbl_804B0A24[*(s32*)(p + 0x1d8)])();
+    }
+    if (p[0x26e] != 0) {
+        switch (p[0x26e]) {
+        case 1:
+            if (p[0x26d] >= 0xf5) {
+                if (*(s32*)(p + 0x1dc) == 9) {
+                    fn_80440D78(lbl_8053AED8, fn_804030C4(0x54494d47, lbl_80478920));
+                    fn_80440CE4(lbl_8053AED8, fn_804030C4(0x54494d47, lbl_80478934));
+                }
+                p[0x26d] = 0xff;
+                p[0x26e] = 2;
+                (((T803ED83C*)p)->*lbl_804B0754[*(s32*)(p + 0x1dc)])();
+            } else {
+                p[0x26d] += 10;
+            }
+            break;
+        case 2:
+            if (p[0x26d] <= 10) {
+                p[0x26d] = 0;
+                p[0x26e] = 0;
+            } else {
+                p[0x26d] -= 10;
+            }
+            break;
+        }
+        fn_8013B490(lbl_8053AB10);
+        (*(Pane803EDA2C**)(p + 0x60))->setAlpha(p[0x26d]);
+        (*(Pane803EDA2C**)(p + 0x60))->vEC(0, 0.0f, 0.0f, 0, 0, 800.0f, 600.0f);
+    }
+}
+
