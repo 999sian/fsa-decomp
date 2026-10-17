@@ -18,6 +18,8 @@ extern f32 lbl_80301058;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
 extern "C" int fn_8002F0A8(int);
+extern "C" void fn_8002F458(s32 a, s32 b);
+extern "C" void fn_800E7F50(void*, s32, s32, s32);
 extern char lbl_802C57D4[];
 extern "C" void fn_800E38B8(void) {}
 
