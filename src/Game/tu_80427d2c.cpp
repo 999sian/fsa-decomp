@@ -24,6 +24,20 @@ extern "C" void fn_8042CD24();
 extern "C" s32 fn_8042BF54(u8* info, void* h);
 extern void* lbl_8053AE28;
 extern void* lbl_8053AE34;
+
+static inline void THPHuffFill(s32 off, s32 idx, s32 dst) {
+    u8* base = lbl_8053AE74;
+    s32 j;
+    base[0x300 + off + idx] = 0xff;
+    for (j = 0; j < 5; j++) {
+        u32 shifted = (u32)idx >> (4 - j);
+        if ((s32)shifted <= *(s32*)(base + off + j * 4 + 0x348)) {
+            base[0x300 + dst] = *(u8*)(*(s32*)(base + off + j * 4 + 0x390) + *(s32*)(base + off + 0x340) + shifted);
+            base[0x320 + dst] = j + 1;
+            break;
+        }
+    }
+}
 extern u8 lbl_8048F270[64];
 
 extern u32 lbl_8053AE60;
@@ -2307,37 +2321,40 @@ extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
                             pbVar3 = *(u8**)(lbl_8053AE74 + 0x69c);
                             *(u8**)(lbl_8053AE74 + 0x69c) = pbVar3 + 1;
                             bVar1 = *pbVar3;
-                            if (bVar1 < 0xd8) {
-                                if (bVar1 == 0xc4) {
-                                    cVar6 = fn_8042D20C();
-                                } else if (bVar1 == 0xc0) {
-                                    cVar6 = fn_8042D8D4();
+                            if (bVar1 > 0xd7) {
+                                if (bVar1 >= 0xd8 && bVar1 <= 0xdf) {
+                                    if (bVar1 == 0xdd) {
+                                        fn_8042CF9C();
+                                    } else if (bVar1 == 0xdb) {
+                                        cVar6 = fn_8042D3E4();
+                                        if (cVar6 != 0) {
+                                            return cVar6;
+                                        }
+                                    } else if (bVar1 == 0xda) {
+                                        cVar6 = fn_8042D7B8();
+                                        if (cVar6 != 0) {
+                                            return cVar6;
+                                        }
+                                        bVar4 = 1;
+                                    } else if (bVar1 != 0xd8) {
+                                        return 0xb;
+                                    }
+                                } else if (bVar1 <= 0xef || bVar1 == 0xfe) {
+                                    pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
+                                    *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
                                 } else {
                                     return 0xb;
                                 }
+                            } else if (bVar1 == 0xc4) {
+                                cVar6 = fn_8042D20C();
                                 if (cVar6 != 0) {
                                     return cVar6;
                                 }
-                            } else if (bVar1 <= 0xdf) {
-                                if (bVar1 == 0xdd) {
-                                    fn_8042CF9C();
-                                } else if (bVar1 == 0xdb) {
-                                    cVar6 = fn_8042D3E4();
-                                    if (cVar6 != 0) {
-                                        return cVar6;
-                                    }
-                                } else if (bVar1 == 0xda) {
-                                    cVar6 = fn_8042D7B8();
-                                    if (cVar6 != 0) {
-                                        return cVar6;
-                                    }
-                                    bVar4 = 1;
-                                } else if (bVar1 != 0xd8) {
-                                    return 0xb;
+                            } else if (bVar1 == 0xc0) {
+                                cVar6 = fn_8042D8D4();
+                                if (cVar6 != 0) {
+                                    return cVar6;
                                 }
-                            } else if (bVar1 <= 0xef || bVar1 == 0xfe) {
-                                pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
-                                *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
                             } else {
                                 return 0xb;
                             }
