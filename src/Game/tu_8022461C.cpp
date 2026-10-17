@@ -3,6 +3,13 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
+extern "C" u8* fn_802D6A9C(void);
+extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 idx);
+extern char* lbl_8053AB10;
+extern char* lbl_8053AAF8;
+extern const u16 lbl_8046CB88[];
+extern const f32 lbl_8053FF50;
+
 // ---- fn_802265DC.cpp ----
 // fn_802265DC - trivial thin wrapper: tail-calls not-yet-seen fn_802260DC
 // with its arguments unchanged and returns its result. Sibling of
