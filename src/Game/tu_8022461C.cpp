@@ -26,6 +26,8 @@ struct TileRect { f32 x0, y0, x1, y1; };
 extern "C" u8* fn_802D6A9C(void);
 extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 idx);
 extern char* lbl_8053AB10;
+extern char* lbl_8053AAF8;
+extern const u16 lbl_8046CB88[];
 
 static inline s32 tileClamp(s32 v) {
     if (v < 0) {
