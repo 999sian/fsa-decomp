@@ -205,34 +205,31 @@ extern "C" const f32 lbl_8053CB10;
 extern "C" const f32 lbl_8053CB14;
 extern "C" const f32 lbl_8053CB18;
 extern "C" void fn_80128CCC(char* p) {
+    f32 f0, f1, f2, f3, f4;
     fn_8010DF78(p);
-    f32 f0 = lbl_8053CAF8;
+    f0 = lbl_8053CAF8;
     *(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x24) + 0x179) = 1;
-    f32 f1 = *(f32*)(p + 0x10);
+    f1 = *(f32*)(p + 0x10);
     u8* obj = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-    f32 f3 = f0 + f1;
-    f32 f4 = *(f32*)(p + 0xc);
-    f32 f2 = f1 - f0;
+    f3 = f0 + f1;
+    f4 = *(f32*)(p + 0xc);
+    f2 = f1 - f0;
     if (obj[0x840] == 0) {
         obj[0x840] = 1;
-        f32 f5 = lbl_8053CAE8;
         *(f32*)(obj + 0x844) = f4;
-        f32 f6 = lbl_8053CAFC;
         *(f32*)(obj + 0x848) = f2;
         *(f32*)(obj + 0x84c) = f4;
         *(f32*)(obj + 0x850) = f3;
-        *(f32*)(obj + 0x854) = f5;
-        *(f32*)(obj + 0x1d4) = f6;
-        *(f32*)(obj + 0x1d8) = f6;
+        *(f32*)(obj + 0x854) = lbl_8053CAE8;
+        *(f32*)(obj + 0x1d4) = lbl_8053CAFC;
+        *(f32*)(obj + 0x1d8) = lbl_8053CAFC;
     }
     s32 v = *(s32*)(p + 0x230);
     if (v <= 9) {
         u8* obj2 = *(u8**)((u8*)lbl_8053AB10 + 0x30);
         if (obj2[0x284] == 0) {
-            u8 one = 1;
-            f32 f5 = lbl_8053CB00;
-            obj2[0x284] = one;
-            *(f32*)(obj2 + 0x28c) = f5;
+            obj2[0x284] = 1;
+            *(f32*)(obj2 + 0x28c) = lbl_8053CB00;
         }
     }
     v = *(s32*)(p + 0x230);
