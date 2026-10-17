@@ -45,6 +45,10 @@ extern "C" void fn_80025824(void* p) {
     fn_80021240(p, &lbl_802FBDC0, p);
 }
 
+extern "C" void fn_8002584C(u8* p) {
+    fn_80021240(p + 8, &lbl_802FBDC8, p);
+}
+
 extern "C" void fn_80026448(u8 i) {
     u8* p = lbl_802BBD38 + i * 0x204;
     (*(s16*)(p + 0x200))++;
