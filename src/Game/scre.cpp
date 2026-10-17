@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JUtility/TColor.h"
 
 class RupyNum {
