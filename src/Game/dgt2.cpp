@@ -2,6 +2,11 @@
 // TU 8018EB94-801902C0 (DGT2). Remaining functions are not yet decompiled.
 #include "types.h"
 
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
+extern void* lbl_8053AAF8;
+extern s32 lbl_8053AB88;
+
 // from src/Game/fn_8018FB24_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
