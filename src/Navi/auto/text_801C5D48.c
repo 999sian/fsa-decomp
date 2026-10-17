@@ -72,6 +72,7 @@ extern "C" BOOL fn_801CAC6C(void* a, DVDDiskID* b);
 extern "C" void fn_801C8B7C(DVDCommandBlock* block);
 extern "C" s32 fn_801E3C54(void* a, void* b, s32 c);
 extern "C" void fn_801C8C5C(u32 intType);
+extern "C" void fn_801C8B48(void);
 
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 {
@@ -577,13 +578,13 @@ extern "C" void fn_801C8D70(u32 param_1)
 		DVDReset();
 		cbForStateError(0);
 	} else if (param_1 & 1) {
-		u32* base = (u32*)BB2_802F7AA0;
+		u32* p = (u32*)(BB2_802F7AA0 + 8);
 		lbl_802FF8C4 = fn_801C8278;
 		lbl_802FF8B4 = 0;
-		if (*(u32*)(bootInfo_802FF888 + 0x3c) < base[2]) {
-			fn_80007AB8("dvd.c", 0x28a, lbl_8029D3C4);
+		if (*(u32*)(bootInfo_802FF888 + 0x3c) < *p) {
+			fn_80007AB8(lbl_802FE9BC, 0x28a, lbl_8029D3C4);
 		}
-		fn_801C6FF4((void*)*(u32*)(bootInfo_802FF888 + 0x38), (base[2] + 0x1f) & ~0x1f, base[1], fn_801C830C);
+		fn_801C6FF4((void*)*(u32*)(bootInfo_802FF888 + 0x38), (*p + 0x1f) & ~0x1f, *(u32*)(BB2_802F7AA0 + 4), fn_801C830C);
 	} else {
 		fn_801C747C(fn_801C8554);
 	}
