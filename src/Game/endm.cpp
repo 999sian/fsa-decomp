@@ -1,6 +1,11 @@
 // TU 0x802e9428-0x802eb21c (actor ENDM).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JMath/JMath.h"
+
+extern char* lbl_8053AB10;
+extern "C" void fn_8030C7C4(void* mgr, f32* pos, f32 f);
 
 // ---- Endm_dtor_802E9428.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int how);
@@ -49,9 +54,8 @@ extern "C" void* fn_802D6A9C(void);
 // fn_802E9884 - ENDM: screen-edge check of the scroll position.
 extern "C" void fn_802D9CB0(void* rec);
 extern "C" u8 fn_802E9884(char* p, f32* pos) {
-    s32 ym = (s32)pos[1] % 384;
     s32 xm = (s32)pos[0] % 512;
-    ym -= 30;
+    s32 ym = (s32)pos[1] % 384 - 30;
     if (*(u8*)(p + 0x297) == 0) {
         u8 d = **(u8**)(p + 0x290);
         if (d == 0xff) {
