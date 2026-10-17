@@ -25,6 +25,36 @@ extern const f32 lbl_80541DB4;
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_801F0D20(void* this_, s32 a);
 extern "C" u8 fn_802DEBA0(void);
+extern const f32 lbl_80541D8C;
+extern const f32 lbl_80541D94;
+extern void* lbl_8053AED0;
+extern const u32 lbl_804719D8[];
+extern "C" u8 fn_8023B0F4(s32 idx, void* box, u32 room, s32 a, f32 f);
+extern "C" u8 fn_80230188(s32 idx);
+extern "C" u8 fn_80234ECC(s32 idx);
+extern "C" u8 fn_8023EA28(s32 idx);
+extern "C" u8 fn_80236B50(s32 idx);
+extern "C" u8 fn_8023B9CC(s32 d, void* rect, u32 room, void* out8, u32 e);
+extern "C" u8 fn_8023B848(s32 d, void* rect, u32 room, void* out8);
+extern "C" u8 fn_80234C5C(s32 idx);
+extern "C" u8 fn_8022B7C4(s32 idx);
+extern "C" u8 fn_8022F514(s32 idx);
+extern "C" s32 fn_8022F3DC(s32 idx);
+extern "C" u8 fn_802D7F40(void* rec, u32 sw);
+extern "C" void fn_802D7F84(void* rec, u32 sw, s32 on);
+extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
+extern "C" void fn_8043D874(void* mgr, s32 idx, u32 id, s32 flag);
+extern "C" void fn_80230FD0(s32 idx, s32 id);
+extern "C" void fn_802362C4(s32 idx, u32 id);
+extern "C" u8 fn_8023ED8C(s32 idx);
+extern "C" u8 fn_8023EBB8(s32 idx);
+extern "C" u8 fn_80233DA4(s32 idx);
+extern "C" u8 fn_802308E0(s32 idx);
+extern "C" void* fn_8023E724(s32 idx);
+extern "C" u8 fn_80233E40(s32 idx);
+extern "C" void fn_80230498(s32 idx, void* vec, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void detach__5ActorFv(void* this_);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 room, void* pos, u32 param, s32 a, s32 b);
 
 // Fast LCG at lbl_8053AAF8+0xB4; returns a value in [0,1).
 static inline f32 rupyRand01() {
@@ -205,6 +235,54 @@ extern "C" s32 fn_8032B3F8(void* this_) {
         }
     }
     return 1;
+}
+
+extern "C" s32 fn_8023A51C(s32 idx);
+extern "C" s32 fn_8023DE58(s32 idx);
+extern "C" void* fn_8023A478(s32 idx);
+extern "C" s32 fn_8030C2A8(void* a, void* b);
+extern "C" s32 fn_8023A240(void);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F8544(void* table, s32 kind, s32 room, void* pos, s32 flags);
+extern "C" void* fn_801F666C(void* table, s32 idx);
+extern "C" void detach__5ActorFv(void* this_);
+extern const f32 lbl_80541DB8;
+extern const f32 lbl_80541DBC;
+extern void* lbl_8053AB10;
+extern "C" void fn_8032BB90(char* this_) {
+    s32 i = 0;
+    do {
+        if (fn_8023A51C(i) == 1 && *(s32*)(this_ + 0x4) == fn_8023DE58(i)) {
+            f32* pos = (f32*)fn_8023A478(i);
+            f32 dx = pos[0] - *(f32*)(this_ + 0xc);
+            f32 dz = pos[1] - *(f32*)(this_ + 0x10);
+            if (dx * dx + dz * dz <= lbl_80541DB8 && fn_8030C2A8(*(void**)((char*)lbl_8053AB10 + 0x24), this_ + 0xc) == 1) {
+                *(f32*)(this_ + 0x14) = lbl_80541DBC;
+                s32 kind;
+                if (*(s32*)(this_ + 0x230) == 7 || *(s32*)(this_ + 0x248) != 0) {
+                    s32 steps;
+                    s32 room = *(s32*)(this_ + 0x4);
+                    s32 mode;
+                    if (*(s32*)(this_ + 0x248) == 0) {
+                        *(u32*)(this_ + 0x268) |= 0x2000000;
+                        u16 k = *(u16*)(this_ + 0x94);
+                        if (k == 0x1d || k == 0x1e) {
+                            steps = fn_8023A240();
+                        } else if (k < 4 || k > 7) {
+                            steps = k - 8;
+                        } else {
+                            steps = k - 4;
+                        }
+                    }
+                    kind = 0;
+                    (void)room;
+                    (void)steps;
+                }
+                break;
+            }
+        }
+        i++;
+    } while (i < 4);
 }
 
 // RUPY: small helpers.
