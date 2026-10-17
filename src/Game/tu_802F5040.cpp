@@ -307,6 +307,12 @@ extern "C" f32 fn_802F5FF4(f32 x) {
 
 #include "JSystem/JMath/JMath.h"
 extern f64 __frsqrte(f64);
+
+static inline void Tu802F5040_setVec(f32* dst, f32 x, f32 y, f32 z) {
+    dst[0] = x;
+    dst[1] = y;
+    dst[2] = z;
+}
 extern "C" void fn_802F601C(u8* this_, f32* src, s32 type, f32* src2, f32 f1, f32 f2) {
     u8* p;
     s32 best;
@@ -395,20 +401,12 @@ extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
     struct Quad {
         s32 v[4];
     };
-    struct Blk {
-        f32 v[12];
-    };
-    u8 ret = 0;
+    BOOL ret = FALSE;
     s32 n = *(s32*)(self + 0xe424);
     if (n < 0x20) {
         u8* e = self + n * 0x88 + 0xd324;
         u8 i;
-        f32 x = pos->x;
-        f32 y = pos->y;
-        f32 z = pos->z;
-        *(f32*)(e + 0x0) = x;
-        *(f32*)(e + 0x4) = y;
-        *(f32*)(e + 0x8) = z;
+        *(Vec*)e = *pos;
         *(s32*)(e + 0xc) = a;
         *(s32*)(e + 0x10) = b;
         *(s32*)(e + 0x14) = c;
@@ -444,19 +442,12 @@ extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
             *(s32*)(e + 0x54) = *(s32*)(src + 0x38);
             e[0x3e] = 0;
             if (*(u8**)(src + 0x18) != NULL) {
-                *(Blk*)(e + 0x58) = *(Blk*)*(u8**)(src + 0x18);
+                JMath::gekko_ps_copy12(e + 0x58, *(u8**)(src + 0x18));
                 *(u8**)(e + 0x34) = e + 0x58;
             }
         } else {
-            for (i = 0; i < 0x10; i += 8) {
-                e[(u8)(i + 0) + 0x1c] = i + 0;
-                e[(u8)(i + 1) + 0x1c] = i + 1;
-                e[(u8)(i + 2) + 0x1c] = i + 2;
-                e[(u8)(i + 3) + 0x1c] = i + 3;
-                e[(u8)(i + 4) + 0x1c] = i + 4;
-                e[(u8)(i + 5) + 0x1c] = i + 5;
-                e[(u8)(i + 6) + 0x1c] = i + 6;
-                e[(u8)(i + 7) + 0x1c] = i + 7;
+            for (i = 0; i < 0x10; i++) {
+                e[i + 0x1c] = i;
             }
             *(s32*)(e + 0x2c) = -1;
             *(s32*)(e + 0x30) = 0;
@@ -480,9 +471,9 @@ extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
             *(s32*)(e + 0x50) = 0;
             *(s32*)(e + 0x54) = 2;
         }
-        ret = 1;
+        ret = TRUE;
+        *(s32*)(self + 0xe424) = *(s32*)(self + 0xe424) + 1;
     }
-    *(s32*)(self + 0xe424) = *(s32*)(self + 0xe424) + 1;
     return ret;
 }
 
@@ -1332,40 +1323,26 @@ extern "C" void fn_802FC80C(u8* this_) {
 extern "C" void fn_802FEE68(Tu802F5040Tbl* base) {
     u8* p;
     s32 i;
-    MtxPtr orig;
-    union {
-        f64 d;
-        u32 w[2];
-    } u;
     f32 ratio;
-    f32 n;
-    f32 t;
-    Mtx m;
-    s32 j;
     f32 s;
     f32 v;
+    MtxPtr orig;
+    Mtx m;
+    s32 j;
 
     i = 0xff;
     p = (u8*)base + 0x9b64;
     do {
         if (*(s32*)(p + 0x2398) > 0) {
-            u.w[0] = 0x43300000;
-            u.w[1] = *(s32*)(p + 0x2398) ^ 0x80000000;
-            n = u.d - lbl_80541508;
-            u.w[1] = *(s32*)(p + 0x239c) ^ 0x80000000;
-            ratio = n / (u.d - lbl_80541508);
+            ratio = (f32)*(s32*)(p + 0x2398) / (f32)*(s32*)(p + 0x239c);
             p[0x23d0] = p[0x242c];
             p[0x23d1] = p[0x242d];
             p[0x23d2] = p[0x242e];
-            u.w[1] = p[0x242f];
-            t = u.d - lbl_80541558;
-            p[0x23d3] = (u8)(int)(t * ratio);
+            p[0x23d3] = (u8)(int)((f32)p[0x242f] * ratio);
             p[0x23d4] = p[0x2430];
             p[0x23d5] = p[0x2431];
             p[0x23d6] = p[0x2432];
-            u.w[1] = p[0x2433];
-            t = u.d - lbl_80541558;
-            p[0x23d7] = (u8)(int)(t * ratio);
+            p[0x23d7] = (u8)(int)((f32)p[0x2433] * ratio);
             v = *(f32*)(p + 0x23a0);
             if (lbl_80541518 != v) {
                 orig = *(MtxPtr*)(p + 0x23d8);
