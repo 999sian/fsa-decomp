@@ -272,7 +272,7 @@ extern "C" void fn_80086438(u8* param_1) {
 extern "C" void fn_8008657C() {
 }
 
-void fn_80086580(void) {
+extern "C" void fn_80086580() {
 }
 
 extern "C" s32 fn_80086584(void) {
