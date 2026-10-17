@@ -332,6 +332,25 @@ extern "C" void fn_80063E60(void* param_1, void* param_2) {
     }
 }
 
+extern u8 lbl_8027F308[];
+extern "C" void* fn_80063EB4(void* p, s16 param_2) {
+    if (p != 0) {
+        *(void**)p = lbl_8027F308;
+        if (p != 0) {
+            *(void**)p = lbl_8029B5D0;
+            fn_801E0D40((u8*)p + 0xd4, (void*)&fn_80062E28, 8, 4);
+            fn_801E0D40((u8*)p + 0xb4, (void*)&fn_80062E7C, 8, 4);
+            fn_801E0D40((u8*)p + 0x54, (void*)&fn_80062ED0, 0xc, 8);
+            fn_801E0D40((u8*)p + 0x14, (void*)&fn_80062F3C, 8, 8);
+            fn_801E0D40((u8*)p + 0x4, (void*)&fn_80062F90, 8, 2);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_80063F94(void) {
     u8* ptr = (u8*)&lbl_801F9320;
     for (int i = 0; i < 0x1d; i++) {
@@ -1377,18 +1396,19 @@ typedef void (*VFn_vi)(void*, s32);
 typedef void (*VFn_v)(void*);
 typedef u8* (*VFn_pi)(void*, s32);
 extern "C" void fn_8006CC5C(u8* p) {
+    u16 num;
+    u8* model;
+    UnkVObj6CC5C* obj;
     s32 i;
+    u16 j;
     for (i = 0; i <= 5; i++) {
-        u8* model = *(u8**)(*(u8**)(*(u8**)(p + 0x270 + i * 4) + 4) + 4);
-        u16 num = *(u16*)(model + 0x5c);
-        u16 j;
+        model = *(u8**)(*(u8**)(*(u8**)(p + 0x270 + i * 4) + 4) + 4);
+        num = *(u16*)(model + 0x5c);
         for (j = 0; j < num; j++) {
-            u8* obj = (*(u8***)(model + 0x60))[j];
-            void* a = *(void**)(obj + 0x24);
-            (*(VFn_vi*)(*(u8**)a + 0x6c))(a, 0);
-            (*(VFn_v*)(*(u8**)obj + 0x2c))(obj);
-            void* b = *(void**)(obj + 0x2c);
-            u8* r = (*(VFn_pi*)(*(u8**)b + 0x74))(b, 2);
+            obj = (*(UnkVObj6CC5C***)(model + 0x60))[j];
+            (*(UnkVObj6CC5C**)((u8*)obj + 0x24))->v25(0);
+            obj->v9();
+            u8* r = (*(UnkVObj6CC5C**)((u8*)obj + 0x2c))->v27(2);
             r[3] = ((u8*)lbl_802BF814)[0x20c + i];
         }
     }
