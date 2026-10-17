@@ -116,6 +116,67 @@ extern "C" void fn_802670CC(char* p)
     *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
 }
 
+extern "C" void fn_802671C8(char* p)
+{
+    int t;
+    int r;
+    int s;
+    if (fn_802486A0(p) == 4) {
+        r = fn_80248778(p);
+        t = fn_80240888(p);
+        if (t != r) {
+            t = *(int*)(p + 0x3dc);
+            if (t == 0) {
+                *(unsigned short*)(p + 0x3c4) = 0x1bf;
+            } else if (t == 1) {
+                *(unsigned short*)(p + 0x3c4) = 0x1c1;
+            } else if (t == 2) {
+                *(unsigned short*)(p + 0x3c4) = 0x1c3;
+            } else {
+                *(unsigned short*)(p + 0x3c4) = 0x1c3;
+            }
+            return;
+        }
+    }
+    s = *(unsigned char*)(p + 0x3fb);
+    switch (s) {
+    case 0:
+        t = *(int*)(p + 0x3dc);
+        if (t == 0) {
+            *(unsigned short*)(p + 0x3c4) = 0x1e8;
+        } else if (t == 1) {
+            *(unsigned short*)(p + 0x3c4) = 0x1ec;
+        } else if (t == 2) {
+            *(unsigned short*)(p + 0x3c4) = 0x1f0;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0x1f4;
+        }
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 1:
+        *(unsigned short*)(p + 0x3c4) = 0x1f8;
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 2:
+        t = *(int*)(p + 0x3dc);
+        if (t == 0) {
+            *(unsigned short*)(p + 0x3c4) = 0x1fc;
+        } else if (t == 1) {
+            *(unsigned short*)(p + 0x3c4) = 0x200;
+        } else if (t == 2) {
+            *(unsigned short*)(p + 0x3c4) = 0x204;
+        } else {
+            *(unsigned short*)(p + 0x3c4) = 0x208;
+        }
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    case 3:
+        *(unsigned short*)(p + 0x3c4) = 0x358;
+        *(unsigned short*)(p + 0x3c4) += *(unsigned char*)(p + 0x3f9);
+        break;
+    }
+}
+
 extern "C" void fn_80267384(char* p)
 {
     if (fn_802486A0(p) == 4) {
