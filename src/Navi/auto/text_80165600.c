@@ -44,8 +44,8 @@ extern "C" s32 fn_80165654(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f) {
 #pragma use_lmw_stmw on
 
 extern "C" s32 fn_801656F8(void* a, u32 b, u32 c, u32 d, u32 e, u32 f) {
-    s32 result;
     void* obj = fn_8016579C(a, (void*)b, c, 0, d, e, f);
+    s32 result;
     fn_80165C24(obj, 0);
     if (*(s32*)((u8*)obj + 0x48) < 0) {
         fn_80165D44(obj, 1);
