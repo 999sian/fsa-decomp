@@ -1550,8 +1550,8 @@ extern "C" void fn_801820F4(void) {
 extern "C" void fn_80182114(void) {}
 
 extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
-    f32 pos[4];
     u8 buf[56];
+    f32 pos[4];
     pos[0] = *(f32*)(self + 0x20);
     pos[1] = *(f32*)(self + 0x24);
     pos[2] = *(f32*)(self + 0x28);
@@ -1560,8 +1560,8 @@ extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     pos[1] += f2;
     pos[2] += f1;
     pos[3] += f2;
-    fn_801DF2A4(buf, 0);
     fn_801C5DA8(param_2, self + 0x80, buf);
+    fn_801DF2A4(buf, 0);
     fn_80182764(self, pos, self + 0x114);
     fn_80177CA8(self, self + 0x114);
 }
