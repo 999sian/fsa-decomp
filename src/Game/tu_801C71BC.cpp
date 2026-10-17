@@ -552,10 +552,3 @@ extern "C" u8 fn_801C976C(char* this_) {
 }
 
 void __sinit_tu_801C71BC_cpp(void) {}
-extern "C" f32 lbl_8053EECC;
-extern "C" f32 lbl_8053EED0;
-extern "C" f32 lbl_8053EED8;
-extern "C" f32 lbl_8053EEDC;
-extern "C" f32 lbl_8053EEE0;
-extern "C" f32 lbl_8053EEE4;
-extern "C" void* lbl_8053AC98;
