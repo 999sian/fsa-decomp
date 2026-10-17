@@ -148,4 +148,4 @@ extern "C" void fn_8031F97C(Actor* this_) {
         *(f32*)(p + 0x6c) = 4.0f;
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
