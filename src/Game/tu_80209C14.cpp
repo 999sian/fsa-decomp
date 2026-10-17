@@ -580,6 +580,10 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
     *(s32*)(this_ + 0x248) = state;
 }
 
+extern "C" void* fn_8020B0B8(char* this_) {
+    return this_;
+}
+
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_8020AE2C(void* param_1) {
