@@ -870,7 +870,7 @@ extern "C" u32 fn_8005B2C8(void* a, u32 b, void* c, u32 d, void* e) {
 }
 
 extern u8 lbl_802C0A30[];
-extern "C" void fn_8005BB28(void*);
+extern "C" void fn_8005BB28(u8* p);
 extern "C" void fn_8005B400(void) {
     s32 i = 0;
     do {
@@ -961,7 +961,7 @@ extern "C" s32 fn_8005C1F0(s32 idx) {
     if (idx < 0x2e) {
         return 3;
     }
-    return 5 - ((u32)idx < 0x128) + (idx >> 31);
+    return idx >= 0x128 ? 5 : 4;
 }
 
 extern "C" void fn_8005C330(const char*, ...) {
@@ -1104,6 +1104,7 @@ extern "C" int fn_8005CB7C(int param_1) {
 
 extern "C" s32 fn_8005CB9C(s32 param_1, s32 param_2) {
     s32 bVar1;
+    s32 flag;
     s32 lvl;
     s32 v;
     if (param_1 == 0xd4 || param_1 == 0xd3) {
@@ -1117,10 +1118,10 @@ extern "C" s32 fn_8005CB9C(s32 param_1, s32 param_2) {
     if (param_2 <= 0) {
         return param_2;
     }
+    flag = lbl_802FF12C;
     lvl = lbl_802FF130;
-    if (lbl_802FF12C != 0) {
-        lvl = 0x21 - lvl;
-        v = param_2 * lvl / 32;
+    if (flag != 0) {
+        v = param_2 * (0x21 - lvl) / 32;
         if (v != 0) {
             return v;
         }
