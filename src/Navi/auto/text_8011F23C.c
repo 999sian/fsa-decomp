@@ -1120,15 +1120,16 @@ extern "C" void fn_80127FF4(char* p) {
     fn_801DE4F4(2, &out);
 }
 
-extern "C" void fn_80128190(char* p, char* q) {
+extern "C" void fn_80128190(char* p, u8* q) {
     u8* obj = *(u8**)p;
     u32 c = *(u32*)(obj + 0x108);
     u8* b = (u8*)&c;
     u32 out;
-    b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
-    b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
+    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
+    b[3] = (((u32)b[3] * (q[0x96] + 1)) >> 8) & 0xff;
     b[2] = (((u32)b[2] * (obj[0xba] + 1)) >> 8) & 0xff;
-    b[3] = (((((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff) * ((u32)q[0x96] + 1) >> 8) & 0xff;
+    b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
+    b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
     out = c;
     fn_801DE4F4(1, &out);
 }
@@ -1684,6 +1685,18 @@ extern "C" void fn_8012BF3C(u8* p, u8* q) {
 extern "C" void fn_8012BFA0(u8* p, u8* q) {
     u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
     s16 d = *(s16*)(*(u8**)a + 0x28);
+    s16 v = *(s16*)(q + 0x80);
+    s32 quo = v / d;
+    f32 r = (f32)(v - quo * d) / (f32)d;
+    f32 t1 = lbl_803016C8 * r;
+    f32 t2 = lbl_803016B8 - t1;
+    f32 t3 = (f32)(quo & 1) * t2;
+    *(f32*)(p + 0x1fc) = r + t3;
+}
+
+extern "C" void fn_8012C034(u8* p, u8* q) {
+    u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
+    s16 d = *(s16*)(*(u8**)a + 0x2a);
     s16 v = *(s16*)(q + 0x80);
     s32 quo = v / d;
     f32 r = (f32)(v - quo * d) / (f32)d;
