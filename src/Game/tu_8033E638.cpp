@@ -120,8 +120,6 @@ struct FsaVirtBase {
     virtual void v10();
     virtual void v11();
     virtual void v12();
-    virtual void v13();
-    virtual void v14();
     virtual s32 v15();
 };
 
@@ -144,8 +142,7 @@ extern "C" void fn_8033F0E8(u8* this_) {
     *(f32*)(this_ + 0x240) = lbl_8054221C;
     *(s32*)(this_ + 0x230) = 0;
 
-    s32 (*vfn)(u8*) = (s32 (*)(u8*))(*(void***)this_)[15];
-    if (vfn(this_) > 0) {
+    if (((FsaVirtBase*)this_)->v15() > 0) {
         *(s32*)(this_ + 0x230) = 2;
         *(f32*)(this_ + 0x240) = lbl_80542210;
     }
