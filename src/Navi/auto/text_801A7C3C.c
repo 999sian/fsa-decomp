@@ -135,17 +135,19 @@ extern "C" void* fn_801AA678(void* ptr, s16 param_2) {
 
 extern "C" void fn_801AA6C0(u8* p, s16 param_2) {
     p[4] = 2;
+    f32 a = lbl_80301D68;
     p[5] = 0;
+    f32 b = lbl_80301D6C;
     *(s16*)(p + 6) = 0;
     *(s16*)(p + 8) = param_2;
     *(s16*)(p + 0xa) = 0;
-    *(f32*)(p + 0xc) = lbl_80301D68;
-    *(f32*)(p + 0x10) = lbl_80301D6C;
+    *(f32*)(p + 0xc) = a;
+    *(f32*)(p + 0x10) = b;
 }
 
 extern "C" void fn_801AAB64(u8* p, s16 param_2, void* param_3, void* param_4, void* param_5) {
-    f32 f = lbl_80301D6C;
     *(void**)p = lbl_8027F214;
+    f32 f = lbl_80301D6C;
     p[4] = 0;
     p[5] = 0;
     *(s16*)(p + 6) = param_2;
@@ -1135,6 +1137,11 @@ extern "C" void fn_801B70DC(void) {
     return;
 }
 
+extern "C" void fn_80197AFC(void* param_1);
+extern "C" void fn_801C5D74(void* p, void* q);
+extern "C" void fn_801B70E4(void) {
+}
+
 extern "C" int fn_801B70E8()
 {
 	return 0;
@@ -1231,6 +1238,19 @@ extern "C" void* fn_801B73A8(void* base, u32 offset) {
 extern "C" void* fn_801B73C0(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" u16 fn_801B73D8(void* unused, u8* param_2) {
+    u32 n = *(u32*)(param_2 + 0xc);
+    u8* p = param_2 + 0x20;
+    while (n != 0) {
+        if (*(u32*)p == 0x4D415433) {
+            return *(u16*)(p + 8);
+        }
+        p += *(u32*)(p + 4);
+        n--;
+    }
+    return 0;
 }
 
 extern "C" void* fn_801B7390(void* base, u32 offset);
@@ -1355,6 +1375,19 @@ extern "C" void* fn_801B7D90(void** param_1, u8* param_2) {
 extern "C" void* fn_801B7F50(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" void* fn_8015A90C(u32 size);
+extern "C" void* fn_80196344(void* self, void* a, s32 b);
+extern "C" void* fn_801B8420(u8* param_1, u32 param_2, u32 param_3) {
+    u8* base = *(u8**)param_1;
+    u8* table = *(u8**)(param_1 + 4);
+    u8* p = *(u8**)(param_1 + 0x18) + *(u16*)(base + *(u16*)(table + param_2 * 2) * 0x28 + 8) * 8 + param_3 * 8;
+    void* r = fn_8015A90C(0xc);
+    if (r != nullptr) {
+        r = fn_80196344(r, *(u8**)(param_1 + 0x10) + ((u32*)p)[1], ((s32*)p)[0]);
+    }
+    return r;
 }
 
 extern "C" int fn_801B865C(unsigned char** self, unsigned int flags, int idx)
