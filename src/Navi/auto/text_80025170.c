@@ -134,11 +134,16 @@ extern "C" void fn_80025878(u8* p) {
     }
 }
 
-extern "C" u8 fn_80025DE4(void) {
-    u8 r = 0;
-    s32 i = 0;
-    u8* e = lbl_8029F408;
-    u8 flags = 0;
+extern "C" s32 fn_80025DE4(void) {
+    s32 r = 0;
+    s32 i;
+    s8* p = (s8*)lbl_8029F408;
+    for (i = 0; i < 4; i++) {
+        if (p[0x48] == 0) {
+            r |= 1 << i;
+        }
+        p += 0x50;
+    }
     return r;
 }
 
