@@ -26,6 +26,7 @@ extern const float lbl_80543614;
 extern const float lbl_8054361C;
 extern const float lbl_8054362C;
 extern const float lbl_80543618;
+extern const float lbl_80543620;
 extern const float lbl_80543624;
 extern const float lbl_80543630;
 extern u64 lbl_804774C8[];
@@ -483,24 +484,24 @@ extern "C" void fn_803DEC44(u8* self)
         } else {
             *(s16*)(self + 0x9c) = 0;
             for (i = 0; i < 2; i++) {
-                fn_80402E08(*(void**)(self + 0x34 + i * 4), lbl_80543604, lbl_80543604);
+                fn_80402E08(*(void**)(self + 0x34 + i * 4), 0.0f, 0.0f);
                 *(s16*)(*(u8**)(self + 0x34 + i * 4) + 0x20) = 0;
                 *(s16*)(*(u8**)(self + 0x34 + i * 4) + 0x22) = 0;
-                fn_80402E08(*(void**)(self + 0x44 + i * 4), lbl_80543604, lbl_80543604);
+                fn_80402E08(*(void**)(self + 0x44 + i * 4), 0.0f, 0.0f);
                 *(s16*)(*(u8**)(self + 0x44 + i * 4) + 0x20) = 0;
                 *(s16*)(*(u8**)(self + 0x44 + i * 4) + 0x22) = 0;
             }
-            fn_80402E08(*(void**)(self + 0x30), lbl_80543604, lbl_80543604);
+            fn_80402E08(*(void**)(self + 0x30), 0.0f, 0.0f);
             *(s16*)(*(u8**)(self + 0x30) + 0x22) = 0;
             *(u8*)(*(u8**)(*(u8**)(self + 0x40) + 4) + 0xb0) = 0;
             for (i = 0; i < 7; i++) {
                 *(u8*)(*(u8**)(*(u8**)(self + 0x14 + i * 4) + 4) + 0xb0) = 1;
-                fn_80402E08(*(void**)(self + 0x14 + i * 4), lbl_80543614, lbl_80543604);
+                fn_80402E08(*(void**)(self + 0x14 + i * 4), lbl_80543614, 0.0f);
                 *(s16*)(*(u8**)(self + 0x14 + i * 4) + 0x20) = 0;
             }
             for (i = 0; i < 2; i++) {
                 *(u8*)(*(u8**)(*(u8**)(self + 0x50 + i * 4) + 4) + 0xb0) = 1;
-                fn_80402E08(*(void**)(self + 0x50 + i * 4), lbl_80543604, lbl_8054361C);
+                fn_80402E08(*(void**)(self + 0x50 + i * 4), 0.0f, lbl_8054361C);
                 *(s16*)(*(u8**)(self + 0x50 + i * 4) + 0x22) = 0;
             }
             switch (self[0x9e]) {
