@@ -288,6 +288,38 @@ static BOOL searchSection(u32 addr, u32* id, u32* index, u32* offset, char** nam
     return FALSE;
 }
 
+static bool searchPartialModule(u32 addr, u32* id, u32* index, u32* offset, char** name)
+{
+    if (addr == 0) {
+        return false;
+    }
+    OSModuleInfo* module = *(OSModuleInfo**)0x800030C8;
+    for (; module != nullptr; module = module->link.next) {
+        OSSectionInfo* section = (OSSectionInfo*)module->sectionInfoOffset;
+        for (u32 i = 0; i < module->numSections; i++, section++) {
+            if (section->size != 0) {
+                u32 base = OS_SECTIONINFO_OFFSET(section->offset);
+                if (base <= addr && addr < base + section->size) {
+                    if (id != nullptr) {
+                        *id = module->id;
+                    }
+                    if (index != nullptr) {
+                        *index = i;
+                    }
+                    if (offset != nullptr) {
+                        *offset = addr - base;
+                    }
+                    if (name != nullptr) {
+                        *name = (char*)module->nameOffset;
+                    }
+                    return true;
+                }
+            }
+        }
+    }
+    return false;
+}
+
 extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2);
 extern "C" JUTConsole* lbl_8053A914;
 extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
@@ -381,6 +413,58 @@ extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsis
         lbl_8053A914->print_f(base + 0x300, *(u32*)((u8*)context + 0x198), *(u32*)((u8*)context + 0x19c));
         lbl_8053A914->print_f(base + 0x31c, dsisr, dar);
     }
+}
+
+extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2)
+{
+    if (param_1 >= 0x80000000 && param_1 <= 0x82FFFFFF) {
+        BOOL found = FALSE;
+        char* name;
+        u32 id;
+        u32 index;
+        u32 offset;
+        u32 x14;
+        u32 x10;
+        char work[0x100];
+        char buf[0x20];
+        const char* prefix = param_2 ? (const char*)&lbl_8053B868 : (const char*)&lbl_8053B87C;
+        if (param_1 != 0) {
+            found = searchSection(param_1, &id, &index, &offset, &name);
+        }
+        if (found) {
+            char* p = name;
+            char* base = name;
+            for (; *p != '\\0'; p++) {
+                if (*p == '\\\\') {
+                    base = p;
+                }
+            }
+            if (*base == '\\\\') {
+                base++;
+            }
+            u32 i = 0;
+            while (*base != '\\0' && i < 0x20 && *base != '.') {
+                buf[i] = *base;
+                i++;
+                base++;
+            }
+            buf[i] = '\\0';
+            lbl_8053A914->print_f(lbl_8045EC1C, prefix, buf, offset, index);
+            param_2 = false;
+        }
+        if (lbl_8052E894.getFirstLink() != nullptr) {
+            BOOL ret;
+            if (found) {
+                ret = fn_8008C528(buf, offset, index, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
+            } else {
+                ret = fn_8008C528(nullptr, param_1, -1, (u32)&x14, (u32)&x10, (u32)work, 0x100, 1, param_2);
+            }
+            if (ret == 1) {
+                return 1;
+            }
+        }
+    }
+    return 0;
 }
 
 extern "C" void fn_8008B214(JUTException* this_, u32* param_2)
