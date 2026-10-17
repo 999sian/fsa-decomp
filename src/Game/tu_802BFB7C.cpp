@@ -65,6 +65,53 @@ extern "C" void* fn_802BFB7C(void* p, s16 flags) {
     return p;
 }
 
+extern "C" s32 fn_802BFBDC(char* p, s32 a, s32 b) {
+    u8* base;
+    u8* mgr;
+    s32 handle;
+    s32 type;
+    s32 kind;
+
+    if (*(s32*)(p + 0x258) == 0) {
+        handle = *(s32*)(p + 0x198);
+        base = fn_8020D58C();
+        if (fn_8020D6AC(base + base[1] * 0x784 + 4, a, b, handle, 0)) {
+            return 1;
+        }
+        type = (u16)fn_8022461C(b, a);
+        kind = (u16)fn_80226850(b, a);
+        if (kind == 0x230 || kind == 0x231) {
+            return 0;
+        }
+        if ((u32)(kind - 0x19e) <= 1 || (u32)(kind - 0x350) <= 1 || (u32)(kind - 0x342) <= 1 || (u32)(kind - 0x345) <= 1 || (u32)(kind - 0x355) <= 1 || (u32)(kind - 0x2ee) <= 1 || (u32)(kind - 0x2fe) <= 1 || (u32)(kind - 0x338) <= 1 || (u32)(kind - 0x32a) <= 1 || (u32)(kind - 0x32d) <= 1 || (u32)(kind - 0x33d) <= 1 || (u32)(kind - 0x2ce) <= 1 || (u32)(kind - 0x2de) <= 1 || (u32)(kind - 0x3b0) <= 1 || (u32)(kind - 0x3a2) <= 1 || (u32)(kind - 0x3a5) <= 1 || kind == 0x3b6 || (u32)(kind - 0x398) <= 1 || (u32)(kind - 0x38a) <= 1 || kind == 0x39d || (u32)(kind - 0x38d) <= 1 || kind == 0x39e) {
+            return 1;
+        }
+        if (type != 0 && type != 4 && type != 5 && type != 6 && type != 7 && type != 2 && type != 3 && type != 0x50 && type != 0xe && type != 0xc && type != 0x2c && type != 0x2d && type != 0x2e && type != 0x2f && type != 0x20 && type != 0xd && type != 0x39 && type != 0x3a && type != 0x3b && type != 0x4c && type != 0x4d && type != 0x4e && type != 0x4f && type != 0x24) {
+            if ((u32)(type - 0x10) <= 2 || type == 0x13) {
+                *(s32*)(p + 0x258) = 0x78;
+                return 0;
+            }
+            if ((u16)fn_80226850(b, a) == 0x3a || (u16)fn_80226850(b, a) == 0x3d) {
+                return 0;
+            }
+            if (type == 0x25) {
+                mgr = fn_802D6A9C();
+                return mgr[0x171] == 0;
+            }
+            if (type == 0x26) {
+                mgr = fn_802D6A9C();
+                return mgr[0x171] == 1;
+            }
+            if (type != 0x22 || fn_802D6A9C()[0x170] == 1) {
+                return 1;
+            }
+        }
+    } else {
+        *(s32*)(p + 0x258) = *(s32*)(p + 0x258) - 1;
+    }
+    return 0;
+}
+
 extern "C" u32 fn_8022F514(s32 a);
 extern "C" s32 fn_8022F3DC(s32 a);
 extern "C" BOOL fn_802308E0(s32 a);
