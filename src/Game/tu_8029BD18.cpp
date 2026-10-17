@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+#include "Game/Actor.h"
 
 extern "C" void fn_801F06F0(void* this_, void* name, s32 a, s32 b, s32 c, f32 x, f32 y);
 extern f32 lbl_80540710;
