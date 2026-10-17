@@ -30,6 +30,7 @@ extern "C" s32 fn_8013CC50(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, 
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern u8* lbl_8053AAF8;
 extern void* lbl_8053AD70;
+extern f32 lbl_8053CCF0;
 extern f32 lbl_8053CCF4;
 extern f32 lbl_8053CCF8;
 extern f32 lbl_8053CCFC;
