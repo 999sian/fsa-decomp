@@ -55,6 +55,7 @@ extern "C" u8 fn_80233E40(s32 idx);
 extern "C" void fn_80230498(s32 idx, void* vec, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void detach__5ActorFv(void* this_);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 room, void* pos, u32 param, s32 a, s32 b);
+extern "C" void* fn_801F856C(void);
 struct RupyVec3 {
     f32 x, y, z;
 };
