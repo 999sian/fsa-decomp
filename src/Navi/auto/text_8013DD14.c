@@ -107,4 +107,27 @@ extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
 extern "C" void fn_8013E0B8(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
     fn_8013BC94(*(void**)((u8*)param_1 + 0x88), param_3, param_4, param_5, param_6);
 }
-
+struct NaviTracker_8013DF04 {
+    virtual void fn_0();
+    virtual void fn_1();
+    virtual void fn_2();
+    virtual void fn_3();
+    virtual u32 fn_4();
+    virtual void fn_5(u32);
+    virtual void fn_6();
+    virtual void fn_7();
+    virtual void fn_8();
+    virtual void fn_9();
+    virtual void fn_10();
+    virtual void fn_11();
+    virtual void fn_12();
+    virtual void fn_13();
+    virtual void fn_14();
+    virtual void fn_15();
+    virtual void fn_16();
+    virtual void fn_17();
+    virtual void fn_18();
+    virtual void* fn_19();
+};
+struct Entry_8013DF04 { s32 unk0; s32 id; u8 pad[0xc]; f32 (NaviTracker_8013DF04::*fn)(); };
+struct Slot_8013DF04 { u8 pad[4]; s32 unk4; void* func; f32 value; };
