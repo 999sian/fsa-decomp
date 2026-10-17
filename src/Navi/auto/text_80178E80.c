@@ -148,6 +148,12 @@ struct VObj_8017A770 {
     virtual void v2();
     virtual void v3(void* a);
 };
+struct NaviHdr_80179314 { u32 magic; u32 size; u16 x; u16 y; u32 w; };
+struct VObj_80179314 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(s32 a);
+};
 struct VObj_80178E10 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5();
@@ -2178,13 +2184,12 @@ extern "C" void* fn_80184FA8(void* self, s16 param_2) {
 }
 
 extern "C" s32 fn_80185038(u8* self, u8 arg1) {
-    u32 buf[12];
     VObj_80185038* o = *(VObj_80185038**)(*(u8**)(self + 0x168) + 0x70);
     if (o->v37() == 0) {
         return 0;
     }
-    u8 n = arg1;
-    u8 i;
+    u32 n = arg1;
+    u32 i;
     for (i = 0; i < n; i++) {
         NaviPose_80185038 pose;
         pose.f[0] = lbl_80202238.f[0];
@@ -2197,7 +2202,7 @@ extern "C" s32 fn_80185038(u8* self, u8 arg1) {
         pose.f[5] = lbl_80202238.f[5];
         pose.f[6] = lbl_80202238.f[6];
         pose.f[7] = lbl_80202238.f[7];
-        fn_8016B200(*(u8**)(self + 0x168) + 0x28, i, (u8*)&pose, lbl_80202238.f[6], lbl_80202238.f[5], lbl_80202238.f[4], lbl_80202238.f[3], lbl_80202238.f[2], lbl_80202238.f[1], lbl_80202238.f[0]);
+        fn_8016B200(*(u8**)(self + 0x168) + 0x28, (u8)i, (u8*)&pose, lbl_80202238.f[6], lbl_80202238.f[5], lbl_80202238.f[4], lbl_80202238.f[3], lbl_80202238.f[2], lbl_80202238.f[1], lbl_80202238.f[0]);
     }
     return 1;
 }
