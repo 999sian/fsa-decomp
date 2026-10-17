@@ -32,6 +32,34 @@ extern u8 lbl_802C587C[];
 struct NaviState_800EF384;
 typedef void (NaviState_800EF384::*NaviStateFn_800EF384)();
 extern NaviStateFn_800EF384 lbl_8028B874[];
+extern "C" void fn_800EF1AC(u8* p)
+{
+	f32 f31;
+	f32 f30;
+	f32 x;
+	u8* b;
+	u8* a;
+
+	f30 = *(f32*)(*(u8**)(p + 0x18) + 0x28) - *(f32*)(*(u8**)(p + 0x18) + 0x20);
+	f31 = fn_80177B10(*(void**)(p + 0x18))[1];
+	x = fn_80177B10(*(void**)(p + 0x14))[0] - f30;
+	((VObj_800EF2A8*)*(void**)(p + 0x18))->v2(x, f31);
+	*(f32*)(p + 0x2c) = fn_80177B10(*(void**)(p + 0x14))[2];
+	a = *(u8**)(p + 0x18);
+	b = *(u8**)(p + 0x14);
+	*(f32*)(p + 0x30) = (*(f32*)(b + 0x28) - *(f32*)(b + 0x20)) + (*(f32*)(a + 0x28) - *(f32*)(a + 0x20));
+	p[0x34] = 0;
+	*(s32*)(p + 0x40) = -1;
+	*(s32*)(p + 0x44) = -1;
+	*(s32*)(p + 0x48) = -1;
+	*(s32*)(p + 0x4c) = -1;
+	(*(u8**)(p + 0x1c))[0xb0] = 0;
+	(*(u8**)(p + 0x20))[0xb0] = 0;
+	p[0x50] = 0;
+	p[0x52] = 0;
+	p[0x51] = 1;
+}
+
 extern "C" void fn_800EF2A8(u8* p)
 {
 	f32 f31;
