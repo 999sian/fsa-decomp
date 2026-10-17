@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" void* fn_801148BC(s32);
 extern u8* lbl_802FB9B8;
 extern u8 lbl_802FB9BC[4];
 extern char lbl_80205548[];
@@ -1457,6 +1458,35 @@ extern "C" s32 fn_8001E6BC(void* param_1) {
     return 1;
 }
 
+extern node_list_class lbl_802B7C80;
+extern "C" s32 fn_8001C730(void* param_1, u32 param_2, u16 param_3, u16 param_4);
+extern "C" s32 fn_8001E8CC(void* param_1, s32 param_2);
+extern "C" void fn_8001BEA4(void* param_1);
+extern "C" s32 fn_8001E710(void) {
+    u8* p;
+    while (true) {
+        create_tag_class* tag = (create_tag_class*)cTg_GetFirst(&lbl_802B7C80);
+        if (tag != NULL) {
+            p = (u8*)tag->mpTagData + 0x68;
+            fn_8001BEA4(p + 0x14);
+        } else {
+            p = NULL;
+        }
+        if (p == NULL) {
+            break;
+        }
+        u8* q = *(u8**)(p + 0xc);
+        if (fn_8001C730(q + 0x18, *(u32*)(p + 0x30), *(u16*)(p + 0x34), *(u16*)(p + 0x36)) != 1) {
+            return 0;
+        }
+        fn_8001E8CC(q + 0x34, *(u16*)(p + 0x3c));
+        *(u32*)(p + 0x38) = *(u32*)(p + 0x30);
+        *(u16*)(p + 0x3c) = *(u16*)(p + 0x34);
+        *(u16*)(p + 0x3e) = *(u16*)(p + 0x36);
+    }
+    return 1;
+}
+
 extern "C" s32 fn_8001E7D8(void* param_1, void* param_2, u32 param_3, u16 param_4, u16 param_5) {
     s32 ok;
     if (param_3 < 0xfffffffe && param_4 < 0xfffe && param_5 < 0xfffe) {
@@ -1866,6 +1896,32 @@ extern "C" void* fn_8001FE38(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern u8 lbl_80205BB0[];
+extern u8 lbl_802FBA68[];
+extern "C" void* fn_800200E4(s16 a, s8 b) {
+    u8* p = lbl_80205BB0;
+    s32 i;
+    for (i = 0; i < 13; i++) {
+        if (*(s16*)(p + 8) == a && *(s8*)(p + 0xa) == b) {
+            return p;
+        }
+        if (*(s16*)(p + 0x14) == a && *(s8*)(p + 0x16) == b) {
+            return p + 0xc;
+        }
+        if (*(s16*)(p + 0x20) == a && *(s8*)(p + 0x22) == b) {
+            return p + 0x18;
+        }
+        if (*(s16*)(p + 0x2c) == a && *(s8*)(p + 0x2e) == b) {
+            return p + 0x24;
+        }
+        if (*(s16*)(p + 0x38) == a && *(s8*)(p + 0x3a) == b) {
+            return p + 0x30;
+        }
+        p += 0x3c;
+    }
+    return lbl_802FBA68;
 }
 
 extern "C" void fn_8015AB1C(void*);
