@@ -1,7 +1,7 @@
 #include "types.h"
 struct VObj_800A1A64 {
-    virtual void v0();
-    virtual void v1();
+    virtual void v0(s32 b);
+ virtual void v1();
     virtual void v2(s32 b);
     virtual void v3();
     virtual void v4();
@@ -67,6 +67,30 @@ extern "C" void fn_8010CF1C(u8* p) {
 extern "C" void fn_8010CFE0(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
+}
+
+extern "C" void fn_8010D01C(u8* p) {
+    VObj_800A1A64* obj;
+    obj = *(VObj_800A1A64**)(p + 0x18);
+    if (obj != nullptr) {
+        obj->v2(1);
+    }
+    obj = *(VObj_800A1A64**)(p + 0x1c);
+    if (obj != nullptr) {
+        obj->v2(1);
+    }
+    obj = *(VObj_800A1A64**)(p + 0x8);
+    if (obj != nullptr) {
+        obj->v2(1);
+    }
+    if (lbl_802C5B2C[4] >= 0) {
+        s32 n = *(s32*)(lbl_802C5B2C + 8) - 1;
+        *(s32*)(lbl_802C5B2C + 8) = n;
+        if (n == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            lbl_802C5B2C[4] = -1;
+        }
+    }
 }
 
 extern "C" void fn_8010D0E0(void* param_1) {
