@@ -5,6 +5,8 @@ typedef struct NaviColor4 { u8 r, g, b, a; } NaviColor4;
 extern void* lbl_80289A14[];
 extern "C" char lbl_802C545C[];
 extern "C" char lbl_802BB0FC[];
+extern "C" char lbl_802864E4[];
+extern "C" void fn_801E10DC(void* p, void* q);
 extern f32 lbl_80300B20;
 extern "C" f32 fn_800A1774(void*, u8, u8, s32);
 extern "C" void fn_800D1EE8(void* p);
