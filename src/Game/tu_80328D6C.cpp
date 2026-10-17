@@ -1,6 +1,5 @@
 #include "types.h"
 #include "JSystem/JMath/Inline.h"
-#include "JSystem/JGeometry/Box.h"
 
 struct Actor;
 
@@ -62,14 +61,10 @@ extern "C" void fn_80328E7C(Actor* this_) {
     f32 rect[4];
     f32 out[2];
 
-    rect[0] = *(f32*)(p + 0x60);
-    rect[1] = *(f32*)(p + 0x64);
-    rect[2] = *(f32*)(p + 0x68);
-    rect[3] = *(f32*)(p + 0x6C);
-    rect[0] = rect[0] + pos->x;
-    rect[1] = rect[1] + pos->y;
-    rect[2] = rect[2] + pos->x;
-    rect[3] = rect[3] + pos->y;
+    rect[0] = *(f32*)(p + 0x60) + pos->x;
+    rect[1] = *(f32*)(p + 0x64) + pos->y;
+    rect[2] = *(f32*)(p + 0x68) + pos->x;
+    rect[3] = *(f32*)(p + 0x6C) + pos->y;
     p[0x238] = 0;
     p[0x239] = 0;
     p[0x23A] = 0;
