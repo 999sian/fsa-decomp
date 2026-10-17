@@ -5,6 +5,8 @@
 struct RGB8_8017261C { u8 r, g, b; };
 struct Color4_8017261C { u8 r, g, b, a; };
 struct Entry_8017261C { u8 pad[0x16]; Color4_8017261C colors[1]; };
+struct E1_8017261C { u8 a; RGB8_8017261C c; };
+struct S1_8017261C { u8 pad[0x15]; E1_8017261C e[1]; };
 
 struct VObj_80174F08 {
     virtual void vf0();
@@ -1263,10 +1265,9 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    u8* p = p1 + p2 * 4;
-    p[0x16] = p3[0];
-    p[0x17] = p3[1];
-    p[0x18] = p3[2];
+    p1[p2 * 4 + 0x16] = p3[0];
+    p1[p2 * 4 + 0x17] = p3[1];
+    p1[p2 * 4 + 0x18] = p3[2];
 }
 
 extern "C" s32 fn_80172640(s32 p, s32 i) {
