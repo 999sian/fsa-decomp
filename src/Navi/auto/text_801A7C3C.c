@@ -179,6 +179,23 @@ extern "C" void* fn_801A85BC(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_801A8654(u32* p) {
+    p[0] = 0;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = 0;
+    p[4] = 0;
+    p[5] = 0;
+    p[6] = 0;
+    p[7] = 0;
+    p[8] = 0;
+    p[9] = 0;
+    p[10] = 0;
+    p[11] = 1;
+    p[12] = 0;
+    p[13] = 0;
+}
+
 extern "C" u32 fn_801A881C(u8* p1, u8* p2) {
     if (*(u16*)(p2 + 0x2e) != 0) {
         *(void**)(p1 + 8) = fn_8015AA14(*(u16*)(p2 + 0x2e));
