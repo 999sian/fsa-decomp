@@ -712,6 +712,13 @@ extern "C" void fn_8005A688(void* a, f32 f, int b, int c, int d) {
     }
 }
 
+extern "C" void fn_8005A6F4(void* a) {
+    void* p = fn_8005AE08(a);
+    if (p != 0) {
+        fn_8005ABF0(p);
+    }
+}
+
 extern "C" void fn_8005B450(void) {}
 
 extern "C" void fn_8005C330(const char*, ...) {
