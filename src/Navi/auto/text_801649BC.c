@@ -7,6 +7,10 @@ typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80166C08(void*, int);
+extern "C" void fn_80164484(void* buf);
+extern "C" u8 fn_80164728(void* buf, s32 p);
+extern "C" void fn_801645A8(void* buf, s32 p);
+extern "C" s32 fn_80164ACC(void* buf, s32 p1, s32 p2, s32 p3, s32 p4, s32 p5, s32 p6, s32 p7, s32 p8);
 typedef void (*VirtualMethod0)(void*, s16);
 extern "C" void* fn_801649BC(void* param_1, s16 param_2) {
     if (param_1) {
