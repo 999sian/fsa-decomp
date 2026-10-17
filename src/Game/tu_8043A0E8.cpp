@@ -570,8 +570,7 @@ extern "C" f32 fn_8043D514(u8* param_1) {
     f32 ret = lbl_80543C88;
     if (param_1[0x10b] != 0 && param_1[0x10c] == 1) {
         J2DPane* pane = *(J2DPane**)(*(u8**)(param_1 + 0x64) + 4);
-        f32 dy = pane->getBounds()->i.y - lbl_80543CC8;
-        ret = (lbl_80543CE8 * (lbl_80543CEC - dy)) / lbl_80543CC4;
+        ret = ((lbl_80543CEC - (pane->getBounds()->i.y - lbl_80543CC8)) * lbl_80543CE8) / lbl_80543CC4;
     }
     return ret;
 }
@@ -1306,4 +1305,4 @@ extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
     fn_8043E7CC(lbl_8053AED0, &v);
 }
 
-extern "C" void* fn_80440928(void) { return fn_8043DF8C(lbl_8053AED0); }
+extern "C" void* fn_80440928(f32 a, f32 b) { return fn_8043DF8C(lbl_8053AED0); }
