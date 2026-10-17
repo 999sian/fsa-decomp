@@ -33,6 +33,53 @@ extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" char lbl_8049D208[];
 extern "C" char lbl_8049CC34[];
+extern char lbl_8046464C[];
+extern char lbl_80464660[];
+extern const f32 lbl_8053C560;
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
+
+struct SwbmDrawParam {
+    SwbmDrawParam() : m40(-1), m44(-1) {
+        for (u8 i = 0; i < 16; i++) {
+            mIdx[i] = i;
+        }
+    }
+    void reset() {
+        m40 = -1;
+        m44 = 0;
+        mMtx = NULL;
+        m4C = 0;
+        m4D = 0;
+        m4E = 0;
+        m4F = 1;
+        m50 = 1;
+        m51 = 0;
+        m52 = 0;
+        m53 = 0;
+        m54 = 0;
+        m55 = 0;
+        m56 = 1;
+        m58 = 3;
+        m5C = 1;
+        m5D = 0;
+        m5E = 0;
+        m60 = -1;
+        m64 = 0;
+        m68 = 2;
+    }
+    u8 mIdx[16];
+    s32 m40;
+    s32 m44;
+    f32 (*mMtx)[4];
+    u8 m4C, m4D, m4E, m4F, m50, m51, m52, m53, m54, m55, m56;
+    s32 m58;
+    u8 m5C, m5D, m5E;
+    s32 m60;
+    s32 m64;
+    s32 m68;
+};
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 idx, SwbmDrawParam* prm, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 
 extern "C" void* fn_8010FA84(u8* this_) {
 #if defined(VERSION_G4SP01)
