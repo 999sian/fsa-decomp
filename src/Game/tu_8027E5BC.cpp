@@ -115,6 +115,32 @@ void fn_8027E5BC(char* p, f32 f) {
     }
 }
 
+void fn_8027EB04(char* p) {
+    if (!fn_80241230() && !fn_802412A4(p) && !U8(p, 0x1214)) {
+        if (fn_802486A0(p) != 4 && Player_IsLinked(p)) {
+            if (fn_8022D75C(Player_GetLinkTargetIndex(p))) {
+                return;
+            }
+        }
+        if (fn_802486A0(p) == 3 && fn_80248970(p) >= 2) {
+            s32 base = S32(p, 0x3b4);
+            if (U8(fn_802D6A9C(), base + 0x131df) != 0) {
+                S32(p, 0x3dc) = lbl_8046C0B8[S32(p, 4)];
+                S32(p, 0x3e8) = lbl_8046C0B8[S32(p, 4)];
+                return;
+            }
+            S32(p, 0x3dc) = lbl_8046C0C8[S32(p, 4)];
+            S32(p, 0x3e8) = lbl_8046C0C8[S32(p, 4)];
+            return;
+        }
+        if (Player_IsLinked(p) && fn_802486A0(p) != 5 && fn_802486A0(p) != 4) {
+            S32(p, 0x3dc) = fn_80230CFC(Player_GetLinkTargetIndex(p));
+            S32(p, 0x3e8) = fn_80230B70(Player_GetLinkTargetIndex(p));
+            return;
+        }
+    }
+}
+
 void fn_8027EDDC(char* p) {
     if (U8(p, 0x3fc) < 8) U8(p, 0x3fd) = 0;
     else if (U8(p, 0x3fc) < 16) U8(p, 0x3fd) = 1;
@@ -372,6 +398,7 @@ bool fn_802466B4(char*);
 bool fn_802DEBF8();
 void fn_80281A90(char* p) {
     s32 area;
+    s32 base;
     if (U8(p, 0x3fa) >= 5) {
         if (fn_802466B4(p)) {
             if (!fn_802DEBF8() && fn_80251AEC(p, 9)) {
@@ -382,7 +409,8 @@ void fn_80281A90(char* p) {
     F32(p, 0x8) += F32(p, 0x344);
     F32(p, 0x8) += fn_8022C82C(S32(p, 0x4));
     area = S32(p, 0x3b4);
-    if (*((u8*)((char*)fn_802D6A9C() + 0x10000) + area + 0x31df) == 0 || (u16)fn_8022461C(p + 8, S32(p, 0x3b4)) != 2) {
+    base = (s32)fn_802D6A9C();
+    if (*((u8*)(base + 0x10000 + area + 0x31df)) == 0 || (u16)fn_8022461C(p + 8, S32(p, 0x3b4)) != 2) {
         F32(p, 0xc) += F32(p, 0x348);
         F32(p, 0xc) -= fn_8022C76C(S32(p, 0x4));
     }
