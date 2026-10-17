@@ -101,6 +101,18 @@ extern "C" void fn_80119A04(void* param_1) {
     fn_8015AB40(*(void**)((u8*)param_1 + 0x50));
 }
 
+extern "C" void fn_80119A28(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(u32*)(p + 0x48) = 0;
+    *(u32*)(p + 0x50) = 0;
+    *(u32*)(p + 0x54) = 0;
+    *(u32*)(p + 0x58) = 0;
+    *(u32*)(p + 0x5c) = 0;
+    *(u32*)(p + 0x1c) = 0;
+    *(u32*)(p + 0x20) = 0;
+    *(s32*)(p + 0x44) = -1;
+}
+
 extern "C" int fn_8011AB38()
 {
 	return 0;
