@@ -28,11 +28,8 @@ extern "C" Vec8035A860* fn_8023E724(void*);
 extern "C" void fn_8022BE24(void*, Vec8035A860*);
 extern "C" unsigned char sincosTable___5JMath[];
 extern "C" void fn_8035A860(u8* self, void* obj, f32 speed) {
-    Vec8035A860 pos = *fn_8023E724(obj);
-    Vec8035A860 d;
-    d.x = pos.x - *(f32*)(self + 0xc);
-    d.y = pos.y - *(f32*)(self + 0x10);
-    d.z = pos.z - *(f32*)(self + 0x14);
+    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)fn_8023E724(obj);
+    JGeometry::TVec3f d = pos - *(JGeometry::TVec3f*)(self + 0xc);
     d.z = 0.0f;
     bool inside = false;
     if (d.x >= *(f32*)(self + 0x60) + 10.0f && d.y >= *(f32*)(self + 0x64)
@@ -52,11 +49,11 @@ extern "C" void fn_8035A860(u8* self, void* obj, f32 speed) {
             if ((f32)*(s16*)(self + 0x230) * speed >= 0.0f) r = 1.0f + s;
             else r = 1.0f - s;
         }
-        Vec8035A860 sc;
+        JGeometry::TVec3f sc;
         sc.x = r;
         sc.y = 1.0f;
         sc.z = r;
-        fn_8022BE24(obj, &sc);
+        fn_8022BE24(obj, (Vec8035A860*)&sc);
     }
 }
 
