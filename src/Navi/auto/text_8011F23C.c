@@ -14,6 +14,9 @@ extern "C" void fn_80123928(void* p, const void* fmt, va_list args);
 extern "C" void* fn_8015A9A8(int, void*, int);
 extern void* lbl_802FF544;
 extern void* lbl_802FF360;
+extern "C" void fn_8013AF98(void* a, void* b);
+extern "C" void fn_80139DEC(void* a, void* b);
+extern char lbl_80291450[];
 
 extern "C" void fn_801DBA5C(s32 v, s32 n);
 extern "C" void fn_80132450(s16 a, s16 b, s16 c, void* out);
@@ -1046,7 +1049,8 @@ extern "C" void fn_80128984(void) {
 extern "C" void fn_80128D4C(u8* a)
 {
     u8* p = *(u8**)(*(u8**)(a + 4) + 0x1c);
-    u16 idx = (*(u16**)(*(u8**)(a + 4) + 0x38))[(*(u8**)p)[0x20]];
+    u8 n = (*(u8**)p)[0x20];
+    u16 idx = (*(u16**)(*(u8**)(a + 4) + 0x38))[n];
     fn_801191F0((*(u8***)(*(u8**)(a + 8) + 8))[idx] + 4, 0);
 }
 
