@@ -120,17 +120,6 @@ extern "C" f32 lbl_8053D12C;
 extern "C" f32 lbl_8053D160;
 extern "C" f32 lbl_8053D178;
 extern "C" f32 lbl_8053D198;
-extern "C" f32 lbl_8053D130;
-extern "C" f32 lbl_8053D138;
-extern "C" f32 lbl_8053D144;
-extern "C" f32 lbl_8053D16C;
-extern "C" f32 lbl_8053D170;
-extern "C" f32 lbl_8053D174;
-extern "C" f32 lbl_8053D19C;
-extern "C" f32 lbl_8053D1A0;
-extern "C" u8* lbl_8053AAF8;
-extern "C" s32 lbl_8049F760[];
-extern "C" s32 fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" BOOL fn_8014D6DC(u8* this_) {
     f32 pos[2];
     f32 x;
