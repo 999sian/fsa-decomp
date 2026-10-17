@@ -50,6 +50,13 @@ extern "C" void PSMTXMultVec(void* m, void* src, void* dst);
 extern "C" double sin(double x);
 extern "C" double cos(double x);
 
+static inline void GXColor4u8(u8 r, u8 g, u8 b, u8 a) {
+    *(volatile u8*)0xCC008000 = r;
+    *(volatile u8*)0xCC008000 = g;
+    *(volatile u8*)0xCC008000 = b;
+    *(volatile u8*)0xCC008000 = a;
+}
+
 extern "C" void fn_80158B3C(char* p) {
     *(u8*)(p + 0x4) = 0xff;
     *(u8*)(p + 0x5) = 0xff;
