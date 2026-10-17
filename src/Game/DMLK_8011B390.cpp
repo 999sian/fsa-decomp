@@ -23,6 +23,64 @@ extern "C" s32 fn_8011BDE4(u8* this_) {
 #endif
 }
 
+extern "C" void fn_8010DF58(u8* this_);
+extern "C" void fn_801EF830(s32 a, u8* b, u8* c, s32 d, char* e, u8* f, s32 g);
+extern "C" void fn_802F86CC(void* a, u8* b, void* c, s32 d, f32 e, f32 f, void* g);
+extern "C" void fn_803075AC(void* a, s32 b, u8* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern "C" char lbl_80464B84[];
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8* lbl_8053AB10;
+extern "C" f32 lbl_8053C7F8;
+extern "C" void fn_8011C118(u8* this_) {
+    u8 buf[0x3c];
+    u8 i;
+
+    fn_8010DF58(this_);
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = -1;
+    for (i = 0; i < 0x10; i += 8) {
+        buf[(u8)(i + 0)] = (u8)(i + 0);
+        buf[(u8)(i + 1)] = (u8)(i + 1);
+        buf[(u8)(i + 2)] = (u8)(i + 2);
+        buf[(u8)(i + 3)] = (u8)(i + 3);
+        buf[(u8)(i + 4)] = (u8)(i + 4);
+        buf[(u8)(i + 5)] = (u8)(i + 5);
+        buf[(u8)(i + 6)] = (u8)(i + 6);
+        buf[(u8)(i + 7)] = (u8)(i + 7);
+    }
+    buf[0x2e] = 0;
+    *(s32*)(buf + 0x10) = -1;
+    *(s32*)(buf + 0x14) = 0;
+    *(s32*)(buf + 0x18) = 0;
+    buf[0x1c] = 0;
+    buf[0x1d] = 0;
+    buf[0x1e] = 0;
+    buf[0x1f] = 1;
+    buf[0x20] = 1;
+    buf[0x21] = 0;
+    buf[0x22] = 0;
+    buf[0x23] = 0;
+    buf[0x24] = 0;
+    buf[0x25] = 0;
+    buf[0x26] = 1;
+    *(s32*)(buf + 0x28) = 3;
+    buf[0x2c] = 1;
+    buf[0x2d] = 0;
+    *(s32*)(buf + 0x30) = -1;
+    *(s32*)(buf + 0x34) = 0;
+    *(s32*)(buf + 0x38) = 2;
+    buf[0x2e] = 0x40;
+
+    if (*(s32*)(this_ + 0x138) == 0) {
+        fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, buf, 7, lbl_80464B84, *(u8**)(this_ + 0x280), 0);
+    }
+    if (*(s32*)(this_ + 4) < 8) {
+        void* res = (*(DMLKResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_80464B84);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, *(s32*)(this_ + 0x280), lbl_8053C7F8, lbl_8053C7F8, 0);
+    }
+    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x280), 0, 1, -1, 0, 0, 0);
+}
+
 extern "C" void fn_8010DF98(u8* this_);
 extern "C" void fn_8011B878(u8* this_, s32 id);
 extern "C" void fn_800FEB78(u8* this_, s32 flag);
@@ -102,3 +160,4 @@ extern "C" s32 fn_8011BDAC(u8* self) {
     }
 }
 #endif
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
