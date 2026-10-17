@@ -399,13 +399,14 @@ extern "C" s32 fn_801941D4(u32* p, u32* q) {
 }
 
 extern "C" void fn_801941F8(u32* p) {
-    void* obj = (void*)p[12];
+    u32* node;
     u32* it;
+    void* obj = (void*)p[12];
     ((void (*)(void*))(*(void***)obj)[6])(obj);
     fn_801DF0BC(*(u32*)p[8], ((u32*)p[8])[2]);
-    it = (u32*)p[11];
-    fn_801969C8(it[10]);
-    for (; it != nullptr; it = (u32*)it[1]) {
+    node = (u32*)p[11];
+    fn_801969C8(node[10]);
+    for (it = node; it != nullptr; it = (u32*)it[1]) {
         if (it[8] != 0) {
             fn_801DF0BC(*(u32*)it[8], ((u32*)it[8])[2]);
         }
@@ -453,8 +454,23 @@ extern "C" void fn_801949C8(void) {
 }
 
 extern NaviEntry12 lbl_8029B128[];
+extern u16 lbl_802EE628[];
+extern u8 lbl_802EE470[];
 extern "C" void fn_801949CC(s32 param_1, u8* p) {
     fn_801E10DC(p, param_1, lbl_8029B128[*(u32*)(p + 0xc)]);
+}
+
+extern "C" void fn_80194A2C(void) {
+    lbl_802EE628[9] = 0xffff;
+    lbl_802EE628[8] = 0xffff;
+    lbl_802EE628[7] = 0xffff;
+    lbl_802EE628[6] = 0xffff;
+    lbl_802EE628[5] = 0xffff;
+    lbl_802EE628[4] = 0xffff;
+    lbl_802EE628[3] = 0xffff;
+    lbl_802EE628[2] = 0xffff;
+    lbl_802EE628[1] = 0xffff;
+    lbl_802EE628[0] = 0xffff;
 }
 
 extern "C" void fn_8019552C(u8* p) {
