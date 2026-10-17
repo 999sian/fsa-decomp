@@ -7,6 +7,12 @@ extern "C" const char* lbl_804B1900[];
 extern "C" const char* lbl_804B1820[];
 extern "C" void* fn_804030C4(u32 type, const char* name);
 extern "C" void* fn_804032E8(u32 type, const char* name);
+extern "C" void fn_803837A4(u8* dst, u32 a, f32 b, u32 c, u32 d);
+extern "C" void fn_8030C5F0(void* a, void* b, u32 c, u32 d, void* out);
+extern "C" void fn_80402E08(void* p, f32 a, f32 b);
+extern const f32 lbl_80543CC0;
+extern const f32 lbl_80543CCC;
+extern const f64 lbl_80543C98;
 
 struct Fn8043ABCC_Obj {
     virtual void v02();
@@ -411,25 +417,23 @@ extern "C" u8 fn_802D46D8(void* mgr, u32 a, u32 id, u32 b);
 extern "C" void fn_80383E2C(u32 id, char* buf);
 extern "C" void fn_80458880(void* p, u32 a, s32 b);
 extern void* lbl_8053AF80;
-extern "C" s32 fn_8043D67C(u8* param_1, s32 param_2, u32 param_3, u32 param_4) {
-    u8 flags;
-    u8 bit;
+extern "C" s32 fn_8043D67C(u8* param_1, u32 param_2, u32 param_3, u32 param_4) {
+    s32 bit;
     char name[8];
     if (param_1[0x10a] != 0) {
         return 0;
     }
-    if ((u32)param_2 == 0x199) {
+    if (param_2 == 0x199) {
         if (fn_802D46D8(fn_802D6A9C(), 0, param_2, 0) == 1) {
             return 0;
         }
         fn_802D46D8(fn_802D6A9C(), 0, param_2, 1);
-    } else if ((u32)param_2 == 0x1b5) {
-        flags = param_1[0xde];
-        bit = 1 << param_3;
-        if ((flags & bit) != 0) {
+    } else if (param_2 == 0x1b5) {
+        bit = (u8)(1 << param_3);
+        if (param_1[0xde] & bit) {
             return 0;
         }
-        param_1[0xde] = flags | bit;
+        param_1[0xde] |= bit;
     }
     fn_80383E2C(param_2, name);
     if (name[0] == '*') {
@@ -440,7 +444,7 @@ extern "C" s32 fn_8043D67C(u8* param_1, s32 param_2, u32 param_3, u32 param_4) {
     }
     param_1[0x10a] = 1;
     *(u32*)(param_1 + 0xfc) = param_3 + 1;
-    *(s32*)(param_1 + 0xe8) = param_2;
+    *(u32*)(param_1 + 0xe8) = param_2;
     *(u32*)(param_1 + 0x100) = param_4;
     switch (param_2) {
     case 0x18f:
@@ -475,6 +479,89 @@ extern "C" void fn_8043D874(u8* param_1) {
         fn_8041E708(*(void**)(param_1 + 0x290));
     } else {
         fn_80425234(*(void**)(param_1 + 0x294));
+    }
+}
+
+extern "C" s32 fn_8022EA0C(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 i);
+extern "C" s32 fn_80237810(s32 i);
+extern "C" s32 fn_802373EC(s32 i);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" void fn_804408F0(JGeometry::TVec3<f32>* v);
+extern "C" u8 fn_8037E4BC(void);
+extern "C" void fn_804257E4(void* p);
+extern "C" void fn_8041EDB0(void* p);
+extern "C" void fn_8044998C(void* p);
+extern "C" void fn_804455E0(void* p);
+extern "C" void fn_80447FAC(void* p);
+extern "C" void fn_8044A828(void* p);
+extern "C" void fn_80448940(void* p);
+extern "C" void fn_80447618(void* p);
+extern "C" void fn_804465B8(void* p);
+extern "C" void fn_8044C038(void* p);
+extern "C" void fn_80443638(void* p);
+extern "C" void reset__7RupyNumFv(void* p);
+extern "C" void fn_8043D8B4(u8* self) {
+    s32 i;
+    s32* p;
+    s32 k;
+    if (((u8*)lbl_8053AAF8)[0x7e] == 0) {
+        i = 0;
+        p = (s32*)lbl_80529DEC;
+        do {
+            if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << i)) {
+                k = fn_8022EA0C(i);
+                if (fn_8023DE58(k) < 8) {
+                    JGeometry::TVec3<f32> tmp = *fn_8023E724(k);
+                    fn_804408F0(&tmp);
+                }
+                p[50] = fn_80237810(i);
+                p[62] = fn_802373EC(i);
+            }
+            i++;
+            p++;
+        } while (i < 4);
+    } else {
+        k = 0;
+        p = (s32*)lbl_80529DEC;
+        do {
+            if (fn_8023F264(k) && fn_8023DE58(k) < 8) {
+                JGeometry::TVec3<f32> tmp = *fn_8023E724(k);
+                fn_804408F0(&tmp);
+            }
+            if (((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << k)) {
+                p[50] = fn_80237810(k);
+                p[62] = fn_802373EC(k);
+            }
+            k++;
+            p++;
+        } while (k < 4);
+    }
+    if (((u8*)lbl_8053AAF8)[0x7e] != 0 && fn_8037E4BC()) {
+        ((u8*)lbl_8053AED0)[0xdc] |= 4;
+        ((u8*)lbl_8053AED0)[0xdc] |= 8;
+    }
+    if (((u8*)lbl_8053AAF8)[0x7f] != 0) {
+        fn_8041EDB0(*(void**)(self + 0x290));
+        if (*(void**)(self + 0x2b0) != 0) fn_8044998C(*(void**)(self + 0x2b0));
+        if (*(void**)(self + 0x29c) != 0) fn_804455E0(*(void**)(self + 0x29c));
+        if (*(void**)(self + 0x2a8) != 0) fn_80447FAC(*(void**)(self + 0x2a8));
+        if (*(void**)(self + 0x2b4) != 0) fn_8044A828(*(void**)(self + 0x2b4));
+        if (*(void**)(self + 0x2ac) != 0) fn_80448940(*(void**)(self + 0x2ac));
+        if (*(void**)(self + 0x2a4) != 0) fn_80447618(*(void**)(self + 0x2a4));
+        if (*(void**)(self + 0x2a0) != 0) fn_804465B8(*(void**)(self + 0x2a0));
+        if (*(void**)(self + 0x2b8) != 0) fn_8044C038(*(void**)(self + 0x2b8));
+    } else {
+        fn_804257E4(*(void**)(self + 0x294));
+    }
+    if (*(void**)(self + 0x2bc) != 0) reset__7RupyNumFv(*(void**)(self + 0x2bc));
+    self[0x255] = 0;
+    if (*(void**)(self + 0x298) != 0) fn_80443638((void*)lbl_8053AEF0);
+    if (((u8*)lbl_8053AAF8)[0x85] != 0) {
+        self[0x257] = 1;
+    } else {
+        self[0x257] = 0;
     }
 }
 
@@ -557,6 +644,150 @@ extern "C" void fn_8043DB58(u8* param_1) {
 			break;
 		}
 	}
+}
+
+extern u8 lbl_8050DB0C[];
+extern "C" void fn_8041F720(void* p);
+extern "C" void fn_8044A024(void* p);
+extern "C" void fn_80445CDC(void* p);
+extern "C" void fn_804482EC(void* p);
+extern "C" void fn_8044AF90(void* p);
+extern "C" void fn_80449070(void* p);
+extern "C" void fn_80447958(void* p);
+extern "C" void fn_80446D68(void* p);
+extern "C" void fn_8044C14C(void* p);
+extern "C" void fn_80425F6C(void* p);
+extern "C" void fn_8043BB84(u8* p);
+extern "C" void fn_8043ACE4(u8* p);
+extern "C" void fn_8043A638(u8* p);
+extern "C" void fn_804435E4(void* p);
+extern "C" void draw__7RupyNumFv(void* p);
+extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
+extern const f64 lbl_80543C98;
+extern "C" void fn_8043DC98(u8* param_1) {
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual void v15();
+        virtual void v16();
+        virtual void v17();
+        virtual void v18();
+        virtual void v19();
+        virtual void v20();
+        virtual void v21();
+        virtual void v22();
+        virtual void v23();
+        virtual void v24();
+        virtual void v25();
+        virtual void v26();
+        virtual void v27();
+        virtual void v28();
+        virtual void v29();
+        virtual void v30();
+        virtual void v31();
+        virtual void v32();
+        virtual void v33();
+        virtual void v34();
+        virtual void v35();
+        virtual void v36();
+        virtual void v37();
+        virtual void v38();
+        virtual void v39();
+        virtual void v40();
+        virtual void v41();
+        virtual void v42();
+        virtual void v43();
+        virtual void v44();
+        virtual void v45();
+        virtual void v46();
+        virtual void v47();
+        virtual void v48();
+        virtual void v49();
+        virtual void v50();
+        virtual void v51();
+        virtual void v52();
+        virtual void v53();
+        virtual void v54();
+        virtual void v55();
+        virtual void v56();
+        virtual void v57();
+        virtual void v58();
+        virtual void v59(s32, f32, s32, f32, s32, f32, f32);
+    };
+    typedef void* (*VFn15)(void*, u32, u32, u32);
+    typedef void (*VFn4)(void*, f32, f32);
+    u8* game = (u8*)lbl_8053AAF8;
+    if (game[0x7f] != 0) {
+        fn_8041F720(*(void**)(param_1 + 0x290));
+        if (*(void**)(param_1 + 0x2b0) != NULL) {
+            fn_8044A024(*(void**)(param_1 + 0x2b0));
+        }
+        if (*(void**)(param_1 + 0x29c) != NULL) {
+            fn_80445CDC(*(void**)(param_1 + 0x29c));
+        }
+        if (*(void**)(param_1 + 0x2a8) != NULL) {
+            fn_804482EC(*(void**)(param_1 + 0x2a8));
+        }
+        if (*(void**)(param_1 + 0x2b4) != NULL) {
+            fn_8044AF90(*(void**)(param_1 + 0x2b4));
+        }
+        if (*(void**)(param_1 + 0x2ac) != NULL) {
+            fn_80449070(*(void**)(param_1 + 0x2ac));
+        }
+        if (*(void**)(param_1 + 0x2a4) != NULL) {
+            fn_80447958(*(void**)(param_1 + 0x2a4));
+        }
+        if (*(void**)(param_1 + 0x2a0) != NULL) {
+            fn_80446D68(*(void**)(param_1 + 0x2a0));
+        }
+        if (*(void**)(param_1 + 0x2b8) != NULL) {
+            fn_8044C14C(*(void**)(param_1 + 0x2b8));
+        }
+    } else {
+        fn_80425F6C(*(void**)(param_1 + 0x294));
+    }
+    if (*(void**)(param_1 + 0x2bc) != NULL) {
+        draw__7RupyNumFv(*(void**)(param_1 + 0x2bc));
+    }
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x01;
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x02;
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x04;
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x08;
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x01;
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x02;
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x04;
+    ((u8*)lbl_8053AED0)[0xdc] &= ~0x08;
+    fn_8013B490(lbl_8053AB10);
+    fn_8043BB84(param_1);
+    fn_8043ACE4(param_1);
+    fn_8043A638(param_1);
+    if (*(void**)(param_1 + 0x10) != NULL && *(u8*)(param_1 + 0x254) != 0) {
+        ((VObj*)*(void**)(param_1 + 0x10))->v59(0, *(f32*)(param_1 + 0x1c0), 0, *(f32*)(param_1 + 0x1c4), 0, *(f32*)(param_1 + 0x1c8), *(f32*)(param_1 + 0x1cc));
+        *(u8*)(param_1 + 0x254) = 0;
+    }
+    if (*(u32*)(param_1 + 0x298) != 0) {
+        fn_804435E4((void*)lbl_8053AEF0);
+    }
+    if (*(u8*)(param_1 + 0x257) != 0) {
+        fn_8013B490(lbl_8053AB10);
+        void* screen = *(void**)(param_1 + 0xc);
+        void* pane = ((VFn15)(*(void***)screen)[15])(screen, 0x4E0000, 0x4E6461, 0x74613035);
+        ((VFn4)(*(void***)pane)[4])(pane, *(f32*)(param_1 + 0x110) + (f32)*(s16*)(lbl_8050DB0C + 0x2a2), *(f32*)(param_1 + 0x114) + (f32)*(s16*)(lbl_8050DB0C + 0x2a4));
+        draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(param_1 + 0xc), lbl_80543C88, lbl_80543C88, *(void**)((u8*)lbl_8053AB10 + 0x10));
+    }
 }
 
 extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
