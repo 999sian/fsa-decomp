@@ -129,10 +129,9 @@ extern "C" bool fn_8025EE34(char* p, s32 id) {
 
 extern "C" bool fn_8025EE48(char* p, s32 id) {
     bool ok;
-    u32 busy = U8(p, 0xd64) == 1;
     if ((u8)fn_80270A8C(p))
         return false;
-    if (busy)
+    if ((u8)(U8(p, 0xd64) == 1) == 1)
         return false;
     if (((S32(p, 0xd70) < 0 || S32(p, 0xd70) >= 4) && S32(p, 0xd68) < 0) || U8(p, 0xd64) != 0)
         ok = true;
@@ -339,8 +338,9 @@ extern "C" bool fn_8025FCC8(char* p) {
     if (state == 0x11 || (u32)(state - 0x12) <= 4 || state == 0x18 || (u32)(state - 0x1b) <= 2) {
         return false;
     }
-    if (U8(p, 0xd64) == 1) {
-        bool carrying = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+    u8 flag = U8(p, 0xd64);
+    if ((u8)(flag == 1)) {
+        bool carrying = (u8)(flag == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
         if (!carrying && (u32)(state - 0x20) <= 5) {
             return false;
         }
@@ -348,15 +348,10 @@ extern "C" bool fn_8025FCC8(char* p) {
     if (S32(p, 0xd6c) == 0x4b455930 && (u32)(state - 0x1e) <= 1) {
         return false;
     }
-    if (U8(p, 0xd64) == 1) {
-        bool carrying = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
-        if (!carrying) {
-            if (state == 0x4c) {
-                return false;
-            }
-            if (state == 0x4d) {
-                return false;
-            }
+    if (flag == 1) {
+        bool carrying = (u8)(flag == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
+        if (!carrying && (state == 0x4c || state == 0x4d)) {
+            return false;
         }
     }
     return true;
@@ -495,15 +490,14 @@ extern "C" void fn_8026152C(char* p, u8 flag) {
     u8 inX = 0;
     u8 inY = 0;
     u8 inZ = 0;
-    f32 eps = *(f32*)__float_epsilon * lbl_8054017C;
     f32 d = F32(p, 0x8) - F32(p, 0x14);
-    if (-eps <= d && d <= eps) {
+    if (-(lbl_8054017C * *(f32*)__float_epsilon) <= d && d <= lbl_8054017C * *(f32*)__float_epsilon) {
         inX = 1;
     }
     if (inX) {
         inX = 0;
         d = F32(p, 0xc) - F32(p, 0x18);
-        if (-eps <= d && d <= eps) {
+        if (-(lbl_8054017C * *(f32*)__float_epsilon) <= d && d <= lbl_8054017C * *(f32*)__float_epsilon) {
             inX = 1;
         }
         if (inX) {
@@ -513,7 +507,7 @@ extern "C" void fn_8026152C(char* p, u8 flag) {
     if (inY) {
         inY = 0;
         d = F32(p, 0x10) - F32(p, 0x1c);
-        if (-eps <= d && d <= eps) {
+        if (-(lbl_8054017C * *(f32*)__float_epsilon) <= d && d <= lbl_8054017C * *(f32*)__float_epsilon) {
             inY = 1;
         }
         if (inY) {
@@ -521,24 +515,26 @@ extern "C" void fn_8026152C(char* p, u8 flag) {
         }
     }
     if (inZ) {
-        if (VEC(p, 0x368).squared() <= lbl_8054017C * *(f32*)__float_epsilon) {
+        if (JMathInlineVEC::PSVECSquareMag(&VEC(p, 0x368)) <= lbl_8054017C * *(f32*)__float_epsilon) {
             U8(p, 0x3f8) = 0;
             goto done;
         }
     }
     U8(p, 0x3f8)++;
-    if (flag == 0) {
+    if (flag != 0) {
+        if (U8(p, 0x3f8) >= 0x30) {
+            U8(p, 0x3f8) = 0;
+        }
+    } else {
         if (U8(p, 0x3f8) >= 0x18) {
             U8(p, 0x3f8) = 0;
         }
-    } else if (U8(p, 0x3f8) >= 0x30) {
-        U8(p, 0x3f8) = 0;
     }
 done:
-    if (flag == 0) {
-        U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 3 + S32(p, 0x3dc) * 8];
-    } else {
+    if (flag != 0) {
         U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 6 + S32(p, 0x3dc) * 8];
+    } else {
+        U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 3 + S32(p, 0x3dc) * 8];
     }
     s32 idx = U8(p, 0x3f9) * 5;
     F32(p, 0x2f4) = ((f32*)lbl_8046B7B0)[idx] + F32(p, 0x8);
@@ -806,8 +802,8 @@ extern "C" void fn_802636D4(char* p) {
         }
     }
     const JGeometry::TVec3<f32>& pos = lbl_8046B400[S32(p, 0x3dc) * 3 + U8(p, 0x3fd)];
-    f32 x = pos.x;
     f32 y = pos.y;
+    f32 x = pos.x;
     F32(p, 0x2f4) = x;
     f32 z = pos.z;
     F32(p, 0x2f8) = y;
@@ -859,3 +855,4 @@ extern "C" void fn_802636D4(char* p) {
 }
 
 #endif
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
