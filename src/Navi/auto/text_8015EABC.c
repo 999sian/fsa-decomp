@@ -80,8 +80,8 @@ extern "C" u32 fn_8015EE10(char* p) {
     return max;
 }
 
-extern "C" void* fn_8015F0BC(void* param_1, u32 size, u8 flag, char* p);
-extern "C" void* fn_8015F16C(void* param_1, u32 size, u8 flag, char* p);
+extern "C" int fn_8015F0BC(void* param_1, u32 size, u8 flag, char* p);
+extern "C" int fn_8015F16C(void* param_1, u32 size, u8 flag, char* p);
 extern "C" long fn_8015EE88(char* p) {
     char* n;
     long sum = 0;
