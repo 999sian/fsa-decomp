@@ -22,6 +22,8 @@ void fn_80196E00(void) {
 	p[0xdc] |= 0x10;
 }
 
+
+
 }
 
 
@@ -130,37 +132,11 @@ extern "C" void fn_80196020(char* this_, s32 idx) {
         return;
     }
     if (*(s32*)(this_ + 0x268) < 0) {
-        u8* h;
-        h = *(u8**)(this_ + 0x328);
-        if (h != 0) {
-            *(u32*)(h + 0xf4) |= 1;
-            *(s32*)(h + 0x24) = 1;
-            *(u8**)(this_ + 0x328) = 0;
-        }
-        h = *(u8**)(this_ + 0x32c);
-        if (h != 0) {
-            *(u32*)(h + 0xf4) |= 1;
-            *(s32*)(h + 0x24) = 1;
-            *(u8**)(this_ + 0x32c) = 0;
-        }
-        h = *(u8**)(this_ + 0x330);
-        if (h != 0) {
-            *(u32*)(h + 0xf4) |= 1;
-            *(s32*)(h + 0x24) = 1;
-            *(u8**)(this_ + 0x330) = 0;
-        }
-        h = *(u8**)(this_ + 0x334);
-        if (h != 0) {
-            *(u32*)(h + 0xf4) |= 1;
-            *(s32*)(h + 0x24) = 1;
-            *(u8**)(this_ + 0x334) = 0;
-        }
-        h = *(u8**)(this_ + 0x338);
-        if (h != 0) {
-            *(u32*)(h + 0xf4) |= 1;
-            *(s32*)(h + 0x24) = 1;
-            *(u8**)(this_ + 0x338) = 0;
-        }
+        gnonReleaseHandle((u8**)(this_ + 0x328));
+        gnonReleaseHandle((u8**)(this_ + 0x32c));
+        gnonReleaseHandle((u8**)(this_ + 0x330));
+        gnonReleaseHandle((u8**)(this_ + 0x334));
+        gnonReleaseHandle((u8**)(this_ + 0x338));
         *(s32*)(this_ + 0x328) = fn_8013CC50(*(u32*)(this_ + 4), fn_8023E724(idx), 0x2a6, 0, 0, 0, 0, 1, lbl_8053E298);
         *(s32*)(this_ + 0x32c) = fn_8013CC50(*(u32*)(this_ + 4), fn_8023E724(idx), 0x2a7, 0, 0, 0, 0, 1, lbl_8053E298);
     }
