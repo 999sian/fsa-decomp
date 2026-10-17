@@ -28,6 +28,15 @@ extern "C" f32 lbl_80542568;
 extern "C" f32 lbl_8054255C;
 extern "C" f32 lbl_8054256C;
 extern "C" void* lbl_80542510;
+extern "C" f32 lbl_80542538;
+extern "C" f32 lbl_8054253C;
+extern "C" f32 lbl_80542540;
+extern "C" f32 lbl_80542544;
+extern "C" f32 lbl_80542548;
+extern "C" f32 lbl_80542550;
+extern "C" f32 lbl_80542554;
+extern "C" int fn_8023EA28(int idx);
+extern "C" void fn_802314D8(s32 idx, Vec v);
 namespace JMath {
     template <int N, typename T>
     class TAtanTable {
@@ -149,6 +158,85 @@ extern "C" void fn_8034C358(void) {
     u8* p = (u8*)fn_801F666C(mgr, list[n]);
     if (p != 0) {
         p[0x2a3] = 1;
+    }
+}
+
+extern "C" void fn_8034C464(Actor* self) {
+    u8* p = (u8*)self;
+    Vec d;
+    f32 len;
+    s32 i;
+    u16 ang;
+
+    *(s32*)(p + 0x230) = 0;
+    *(s32*)(p + 0xb0) = 0x1000;
+    *(f32*)(p + 0x3c) = 0.0f;
+    *(f32*)(p + 0x40) = 0.0f;
+    *(f32*)(p + 0x44) = 0.0f;
+    *(s32*)(p + 0x108) = 10000;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x2c0) = 0;
+    *(s32*)(p + 0x244) = *(u32*)(p + 0x90) & 0xf;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = (*(u32*)(p + 0x90) >> 4) & 0xff;
+    *(s32*)(p + 0x270) = 0;
+    *(s32*)(p + 0x250) = 0x3c;
+    *(s32*)(p + 0x254) = -1;
+    *(s32*)(p + 0x258) = 0;
+    *(s32*)(p + 0x25c) = 0;
+    p[0x28f] = 0;
+    p[0x28c] = 0;
+    p[0x28d] = 0;
+    p[0x28e] = 0;
+    for (i = 0; i < 4; i++) {
+        Vec tmp;
+        *(s32*)(p + 0x274 + i * 4) = 0;
+        p[0x284 + i] = 0;
+        *(s32*)(p + 0x260 + i * 4) = -1;
+        p[0x288 + i] = 0;
+        tmp = *(Vec*)fn_8023E724(i);
+        *(Vec*)(p + 0x290 + i * 12) = tmp;
+    }
+    *(f32*)(p + 0xc) = (f32)((s32)*(f32*)(p + 0xc) / 16) * 16.0f + 8.0f;
+    *(f32*)(p + 0x10) = (f32)((s32)*(f32*)(p + 0x10) / 16) * 16.0f + 8.0f;
+    fn_801EE558(self, &d, &len, 0);
+    if (len < 100.0f) {
+        ang = (u16)(10430.4f * JMath::atanTable_.atan2_(-d.x, -d.y));
+        if (ang >= 0x2000 && ang < 0xe000) {
+            if (ang >= 0x2000 && ang < 0x6000) {
+                *(s32*)(p + 0x23c) = 1;
+            } else if (ang >= 0x6000 && ang <= 0xa000) {
+                *(s32*)(p + 0x23c) = 2;
+            } else {
+                *(s32*)(p + 0x23c) = 0;
+            }
+        } else {
+            *(s32*)(p + 0x23c) = 3;
+        }
+    } else {
+        if (*(s32*)(p + 0x230) == 0xd) {
+            *(s32*)(p + 0x23c) = 1;
+        } else {
+            *(s32*)(p + 0x23c) = 2;
+        }
+    }
+    *(f32*)(p + 0x60) = -8.0f;
+    *(f32*)(p + 0x64) = -8.0f;
+    *(f32*)(p + 0x68) = 8.0f;
+    *(f32*)(p + 0x6c) = 8.0f;
+    switch (*(s32*)(p + 0x244)) {
+    case 0:
+        *(void**)(p + 0x234) = *(void**)lbl_804720E8;
+        *(s32*)(p + 0x2c0) = 0x423;
+        break;
+    case 1:
+        *(void**)(p + 0x234) = lbl_80542510;
+        *(s32*)(p + 0x2c0) = 0x427;
+        break;
+    }
+    if ((u8)self->v11() == 1) {
+        *(s32*)(p + 0x230) = 0xb;
     }
 }
 
