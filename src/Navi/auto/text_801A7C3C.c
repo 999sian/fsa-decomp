@@ -139,6 +139,14 @@ extern "C" void fn_801A833C(void* p) {
     lbl_802FF700 = p;
 }
 
+extern "C" void fn_801A8538(u8* p) {
+    if (*(u32*)(p + 8) & 0x20) {
+        *(u32*)(lbl_802EE470 + 0x34) |= 0x40000000;
+    } else {
+        *(u32*)(lbl_802EE470 + 0x34) &= ~0x40000000;
+    }
+}
+
 extern "C" void* fn_801A8574(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029B220;
@@ -2444,8 +2452,9 @@ extern "C" u32 lbl_80301D24;
 extern "C" void fn_801B9718(void* unused, void* dest, void* src) {
     u8* d = (u8*)dest;
     u8* s = (u8*)src;
+    u8 b = s[8];
     *(s16*)(d + 6) = *(s16*)(s + 0xa);
-    d[4] = s[8];
+    d[4] = b;
     *(f32*)(d + 8) = 0.0f;
     *(void**)(d + 0x10) = fn_801BA410(s, *(u32*)(s + 0x10));
     *(void**)(d + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x14));
