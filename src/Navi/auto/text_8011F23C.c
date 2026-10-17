@@ -620,6 +620,10 @@ extern "C" void fn_8012BEC0(void* a, f32* p) {
     p[0x64 / 4] = p[0x60 / 4];
 }
 
+extern "C" void fn_8012BECC(int param_1, int param_2) {
+    *(f32 *)(param_1 + 0x1fc) = *(f32 *)(param_2 + 0x84);
+}
+
 extern "C" void* fn_8012C240(void* ptr, void* param_2) {
     *(void**)ptr = param_2;
     fn_8012C274(ptr);
