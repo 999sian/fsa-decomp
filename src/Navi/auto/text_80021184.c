@@ -146,6 +146,30 @@ extern "C" void fn_80021BB8(void* param_1, u16 param_2, void* param_3, s32 param
     fn_801E6768(param_3, lbl_80206450[index]);
 }
 
+extern "C" s32 fn_80021C00(void* param_1, u16 param_2, s32 param_3) {
+    u16 uVar1;
+    uVar1 = param_2;
+    if (uVar1 < 2000) {
+        return 0;
+    }
+    if (uVar1 < 3000) {
+        return 1;
+    }
+    if (uVar1 < 4000) {
+        return 2;
+    }
+    if (uVar1 < 6000) {
+        return 3;
+    }
+    if (uVar1 < 8000) {
+        return 4;
+    }
+    if (uVar1 < 10000) {
+        return 5;
+    }
+    return 6;
+}
+
 extern u8 lbl_802BB0FC[];
 extern char* lbl_8020631C[];
 extern char* lbl_80206200[];
@@ -188,6 +212,23 @@ extern "C" s32 fn_80021D04(void) {
         }
     }
     return -1;
+}
+
+extern "C" u8 fn_80021D5C(void) {
+    u8 ret = 0;
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if (*(u32*)(lbl_802B7CA0 + 0x3444) & (1 << i)) {
+            ret = (u8)((u8)ret | (1 << i));
+        }
+    }
+    return ret;
+}
+
+extern "C" s32 fn_80021DDC(s32 param_1) {
+    return *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1b0) + *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1a8) +
+           *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1c8) + *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1cc) +
+           *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1ac);
 }
 
 extern "C" void fn_80022434(void) {}
