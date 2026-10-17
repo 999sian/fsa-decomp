@@ -50,6 +50,7 @@ f32 fn_8022C82C(s32);
 f32 fn_8022C76C(s32);
 void fn_8024B298(char*, s32, void*);
 s32 fn_802416C4(char*);
+void* fn_80246B10(char*, s32);
 
 extern const f32 lbl_80540348, lbl_8054034C;
 extern const f32 lbl_80540368;
