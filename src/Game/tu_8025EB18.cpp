@@ -129,9 +129,10 @@ extern "C" bool fn_8025EE34(char* p, s32 id) {
 
 extern "C" bool fn_8025EE48(char* p, s32 id) {
     bool ok;
+    u32 busy = U8(p, 0xd64) == 1;
     if ((u8)fn_80270A8C(p))
         return false;
-    if ((u8)(U8(p, 0xd64) == 1) == 1)
+    if (busy)
         return false;
     if (((S32(p, 0xd70) < 0 || S32(p, 0xd70) >= 4) && S32(p, 0xd68) < 0) || U8(p, 0xd64) != 0)
         ok = true;
@@ -364,7 +365,7 @@ extern "C" bool fn_8025FCC8(char* p) {
 extern "C" char* fn_8023E7B0(s32);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" char* fn_802D6A9C();
-extern "C" bool fn_8025FDD0(char* p, JGeometry::TVec3<f32>* v) {
+extern "C" bool fn_8025FDD0(char* p, const JGeometry::TVec3<f32>* v) {
     *(JGeometry::TVec3<f32>*)(p + 0x8) = *(JGeometry::TVec3<f32>*)fn_8023E7B0(S32(p, 0xd70));
     s32 idx = fn_8023DE58(S32(p, 0xd70));
     char* r = fn_802D6A9C();
@@ -794,17 +795,19 @@ extern "C" void fn_802636D4(char* p) {
             else
                 carrying = false;
             if (carrying) {
-                u32 param = U32(p, 0x4) & 0xffff;
-                s32 id = S32(p, 0xd70);
-                void* pos = fn_8023E724(id);
-                void* mgr = fn_801F856C();
-                Actor_CreateByID(mgr, 0x5448434c, S32(p, 0x3b4), pos, id, -1, param);
+                void* pos;
+                u32 param;
+                s32 id;
+                param = U32(p, 0x4) & 0xffff;
+                id = S32(p, 0xd70);
+                pos = fn_8023E724(id);
+                Actor_CreateByID(fn_801F856C(), 0x5448434c, S32(p, 0x3b4), pos, id, -1, param);
             }
         }
     }
     const JGeometry::TVec3<f32>& pos = lbl_8046B400[S32(p, 0x3dc) * 3 + U8(p, 0x3fd)];
-    f32 y = pos.y;
     f32 x = pos.x;
+    f32 y = pos.y;
     F32(p, 0x2f4) = x;
     f32 z = pos.z;
     F32(p, 0x2f8) = y;
