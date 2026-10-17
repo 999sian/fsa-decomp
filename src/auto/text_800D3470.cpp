@@ -3490,7 +3490,8 @@ extern "C" u8 fn_800DE600(int param_1, int param_2)
 
 extern "C" void fn_800DE60C(int param_1, int param_2, u8 param_3)
 {
-  u8* ptr = (u8*)(param_1 + param_2);
+  u8* ptr = (u8*)param_1;
+  ptr = ptr + param_2;
   ptr[0x57] = param_3;
 }
 
