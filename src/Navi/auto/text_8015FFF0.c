@@ -304,6 +304,20 @@ extern "C" u8 fn_801646B0(u8* p, u32 r4) {
     return p[0x18];
 }
 
+extern u32 fn_801C7BF8(u32 r4, void* p);
+extern "C" u8 fn_80164728(u8* p, u32 r4) {
+    if (p[0x18] == 0) {
+        u32 result = fn_801C7BF8(r4, p + 0x5c);
+        p[0x18] = (result != 0);
+        
+        if (p[0x18] != 0) {
+            fn_80166C84((u32)lbl_802EE2EC, p + 0xe4);
+            fn_801CA1E4(p + 0x5c);
+        }
+    }
+    return p[0x18];
+}
+
 extern "C" void fn_801647A0(u8* p) {
     if (p[0x18]) {
         if (fn_801C7D34(p + 0x5c)) {
