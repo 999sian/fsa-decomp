@@ -1065,6 +1065,13 @@ extern "C" void* fn_8009FDBC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8009FE30(void* param_1) {
+    if (*(s32*)(lbl_802BB0FC + 0xf4) != 0x31) {
+        return;
+    }
+    *((u8*)param_1 + 0x2b4) = 0;
+}
+
 extern void* lbl_80289110[];
 extern "C" void* fn_8009FF64(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
