@@ -1238,7 +1238,7 @@ extern "C" void* fn_801B0A74(void* a, void* b, s32 sel, void* c, void* d) {
     return b;
 }
 
-extern "C" s32 fn_801B2670(void* a, u32 b) {
+extern "C" s32 fn_801B2670(void* a, u32 b, u16 c, void* d) {
     s32 r = 0;
     if (b == 0) {
         r = 100;
