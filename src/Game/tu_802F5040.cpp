@@ -18,6 +18,8 @@ extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
 
 extern void* lbl_8053AB10;
+extern "C" void fn_8013B3CC(void* mgr, void* mtx);
+extern "C" void fn_8013B3F0(void* mgr);
 extern void* sManager__8JUTVideo;
 extern "C" void fn_802FC80C(u8* this_);
 
@@ -467,16 +469,21 @@ extern "C" void fn_802FF568(u8* this_) {
     u8* g;
     s32 i;
     u8* p;
-    bool f;
+    u8 f;
 
     fn_802FDDD4(this_);
     g = (u8*)lbl_8053AAF8;
+    f = 0;
     if (g[0x7f] != 0) {
         s32 t = *(s32*)(g + 0x4c);
-        f = t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb;
+        if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb) {
+            f = 1;
+        }
     } else {
         s32 t = *(s32*)(g + 0x4c);
-        f = t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb || t == 0xc;
+        if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb || t == 0xc) {
+            f = 1;
+        }
     }
     if (f == 1) {
         fn_802FCE74(this_);
