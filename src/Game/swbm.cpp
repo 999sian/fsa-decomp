@@ -14,6 +14,19 @@ extern "C" u8 fn_8020D6AC(void* entry, s32 a, s32 b, void* d, const char* e);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+struct SinCos {
+    f32 first;
+    f32 second;
+};
+extern "C" SinCos sincosTable___5JMath[];
+extern void* lbl_8053AC98;
+extern s32 lbl_804A10A0[];
+extern s32 lbl_804A1100[];
+extern f32 lbl_8053DC78;
+extern f32 lbl_8053DC7C;
+extern f32 lbl_8053DC80;
+extern f32 lbl_8053DC84;
+extern f32 lbl_8053DC88;
 
 // SWBM destructor
 extern "C" void* fn_8017A44C(char* this_, s16 freeFlag) {
@@ -134,6 +147,69 @@ extern "C" void fn_8017A4AC(char* this_) {
     }
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x254) + 0x12d, 0, 2,
                 -1, 0, 0, 0);
+}
+
+extern "C" s32 fn_8017AAF8(char* this_, s32 p1, s32 p2) {
+    void* handle;
+    s32 id;
+    s32 kind;
+    s32 sub;
+    u8* base;
+    handle = *(void**)(this_ + 0x198);
+    base = (u8*)fn_8020D58C();
+    id = p1;
+    if (fn_8020D6AC(base + base[1] * 0x784 + 4, p1, p2, handle, lbl_80466880) == 1) {
+        return 1;
+    }
+    kind = (u16)fn_8022461C(p2, p1);
+    sub = (u16)fn_80226850(p2, p1);
+    if ((u32)(kind - 0x10) <= 7 || (sub >= 0x140 && sub <= 0x15f)) {
+        *(s32*)(this_ + 0x238) = 0;
+        *(u8*)(this_ + 0x234) = 1;
+        return 0;
+    }
+    if ((u32)(sub - 0x230) <= 1 || sub == 0x234) {
+        *(u8*)(this_ + 0x234) = 0;
+        return 0;
+    }
+    if (kind != 0x0 && kind != 0x4 && kind != 0x5 && kind != 0x6 && kind != 0x7 && kind != 0x2 && kind != 0x3 && kind != 0x50 && kind != 0xe && kind != 0xc && kind != 0x27 && kind != 0x28 && kind != 0x29 && kind != 0x2a && kind != 0x2b && kind != 0x2c && kind != 0x2d && kind != 0x2e && kind != 0x2f && kind != 0x20 && kind != 0xd && kind != 0x39 && kind != 0x3a && kind != 0x3b && kind != 0x4c && kind != 0x4d && kind != 0x4e && kind != 0x4f && kind != 0x24) {
+        if ((u16)fn_80226850(p2, id) == 0x3a || (u16)fn_80226850(p2, id) == 0x3d) {
+            *(u8*)(this_ + 0x234) = 0;
+            return 0;
+        }
+        if (sub == 0x14) {
+            *(u8*)(this_ + 0x234) = 0;
+            return 0;
+        }
+        if (kind == 0x25) {
+            if (*(u8*)(this_ + 0x234) == 0 && ((u8*)fn_802D6A9C())[0x171] == 0) {
+                return 1;
+            }
+            *(u8*)(this_ + 0x234) = 0;
+            return 0;
+        }
+        if (kind == 0x26) {
+            if (*(u8*)(this_ + 0x234) == 0 && ((u8*)fn_802D6A9C())[0x171] == 1) {
+                return 1;
+            }
+            *(u8*)(this_ + 0x234) = 0;
+            return 0;
+        }
+        if (*(u8*)(this_ + 0x234) == 0 && (kind != 0x22 || ((u8*)fn_802D6A9C())[0x170] == 1)) {
+            return 1;
+        }
+        if (*(u8*)(this_ + 0x234) == 1) {
+            return 0;
+        }
+    }
+    if (*(u8*)(this_ + 0x234) == 1) {
+        *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) + 1;
+        if (*(s32*)(this_ + 0x238) > 0xb) {
+            *(s32*)(this_ + 0x238) = 0;
+            *(u8*)(this_ + 0x234) = 0;
+        }
+    }
+    return 0;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
