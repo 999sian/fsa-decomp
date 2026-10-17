@@ -1,5 +1,5 @@
 #include "types.h"
-#include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/SinitPoolChain.h"
 
 struct SwbmDrawParam {
@@ -232,8 +232,8 @@ extern "C" void fn_80117F34(char* p) {
     fn_801D22DC(p + 0x250, 0, 2, 0);
     fn_801D1F14(p + 0x250, lbl_8053C75C);
     Box4 box = *(Box4*)((char*)fn_802D6A9C() + 0xCC);
-    pos[0] = (box.a - box.c) * lbl_8053C750 + box.c;
-    pos[1] = (box.b - box.d) * lbl_8053C750 + box.d;
+    pos[0] = lbl_8053C750 * (box.a - box.c) + box.c;
+    pos[1] = lbl_8053C750 * (box.b - box.d) + box.d;
     pos[2] = lbl_8053C75C;
     *(void**)(p + 0x2a8) = fn_8013CC50(*(s32*)(p + 4), pos, 0x33e, 0, 0, 0, 0, 1, lbl_8053C754);
 }
