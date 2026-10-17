@@ -1,6 +1,7 @@
 #include "types.h"
 #include "JSystem/JKernel/JKRDecomp.h"
 #include <dolphin/mtx.h>
+#include "JSystem/JMath/Inline.h"
 
 extern "C" s32 checkCompressed__9JKRDecompFPUc(u8*);
 extern "C" void decode__9JKRDecompFPUcPUcUlUl(u8*, u8*, u32, u32);
@@ -55,6 +56,86 @@ extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
 extern "C" f32 fn_802F5FF4(f32 x);
 extern "C" void fn_8013B1E8(void* mgr);
+extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
+    f32 t;
+    s32 a;
+    s32 b;
+    s32 i;
+    s32 small;
+    BOOL zpos;
+    Mtx m;
+    f32 s;
+    u32 c;
+
+    if (ent != NULL) {
+        zpos = FALSE;
+        if (*(u8*)(*(u8**)((u8*)lbl_8053AB10 + 0x20) + 0xe461) && ent[0x20]) {
+            zpos = pos[2] > lbl_805414F8;
+        }
+        a = (s8)ent[0x1c];
+        b = (s8)ent[0x1d];
+        if (zpos && a < 1) {
+            a += 1;
+            b -= 1;
+        }
+        t = (f32)((a << 10) + (b << 7));
+    } else {
+        t = lbl_805414F8;
+    }
+
+    small = 0;
+    if (ent != NULL && *(void**)(ent + 0x18) != NULL) {
+        small = ent[0x25] != 0;
+    } else if (pos[2] == lbl_805414F8 || (ent != NULL && ent[0x1f] == 0)) {
+        small = 1;
+    }
+
+    if (small == 0) {
+        if (ent != NULL && *(void**)(ent + 0x18) != NULL) {
+            PSMTXCopy(*(MtxPtr*)(ent + 0x18), m);
+        } else {
+            PSMTXIdentity(m);
+        }
+        if (pos[2] != lbl_805414F8 && (ent == NULL || ent[0x1f] != 0)) {
+            s = fn_802F5FF4(pos[2]);
+            for (i = 0; i < 12; i++) {
+                ((f32*)m)[i] *= s;
+            }
+        }
+        m[0][3] += pos[0];
+        m[1][3] += pos[1] + t;
+        m[2][3] += pos[2] + t;
+        fn_8013B3CC(lbl_8053AB10, m);
+        out[0] = lbl_805414F8;
+        out[1] = lbl_805414F8;
+        out[2] = lbl_805414F8;
+    } else {
+        fn_8013B3F0(lbl_8053AB10);
+        out[0] = pos[0];
+        out[1] = pos[1] + t;
+        out[2] = pos[2] + t;
+    }
+    fn_8013B1E8(lbl_8053AB10);
+
+    if (ent != NULL && *(s32*)(ent + 0x34) == 1) {
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
+    } else if (ent != NULL && *(s32*)(ent + 0x34) == 2) {
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_DSTALPHA, GX_BL_INVDSTALPHA, GX_LO_NOOP);
+    } else {
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
+    }
+    if (ent != NULL) {
+        c = *(u32*)(ent + 0x10);
+        GXSetTevColor(GX_TEVREG1, *(GXColor*)&c);
+        c = *(u32*)(ent + 0x14);
+        GXSetTevColor(GX_TEVREG2, *(GXColor*)&c);
+        GXSetZMode(ent[0x26], GX_LEQUAL, ent[0x2c]);
+    }
+    if (ent != NULL && ent[0x2d] != 0) {
+        GXSetAlphaUpdate(GX_TRUE);
+    }
+}
+
 extern "C" void fn_802F5570(u8* this_, f32* src, u8* ent, f32* outPos, u8** outEnt, MtxPtr mtx, u8* dst) {
     if (ent == NULL || *(s32*)(ent + 0x38) == 2) {
         if (fn_802F58A8(this_, src, mtx) != 0 && ent != NULL) {
@@ -901,6 +982,119 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
       } while (--k != 0);
     }
   }
+}
+
+extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff, u32 size, u8 flag) {
+    u8* base;
+    u8* d;
+    u8* s;
+    u32 i;
+    u32 len;
+    u16 keep;
+    u16 v;
+    if (size == 0) {
+        s32 r;
+        if (JKRDecomp::checkCompressed(src)) {
+            r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
+        } else {
+            void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
+            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
+        }
+        if (r < 0) {
+            len = 0x200;
+        } else {
+            len = r;
+        }
+    } else {
+        len = size;
+    }
+    if (JKRDecomp::checkCompressed(src)) {
+        JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
+        base = *(u8**)(this_ + 0xf8);
+    } else {
+        base = src;
+    }
+    base += srcOff;
+    d = *(u8**)(this_ + idx * 4 + 0xc) + dstOff;
+    s = base;
+    for (i = 0; i < len; i += 2) {
+        v = 0;
+        if (i == 0 || (i & 0x1f) != 0) {
+            u32 w = s[0] | (s[1] << 8);
+            u16 c = ((w & 0x1f) << 10) | (w & 0x3e0) | ((w >> 10) & 0x1f) | 0x8000;
+            if (i == 0) {
+                keep = c;
+            } else {
+                v = c;
+            }
+        }
+        d[i] = v >> 8;
+        d[i + 1] = v;
+        s += 2;
+    }
+    *(u16*)(this_ + idx * 2 + 0x114) = keep;
+    {
+        u8* t = *(u8**)(this_ + idx * 4 + 0xc);
+        u16 w = (t[0x1b0] << 8) | t[0x1b1];
+        u16 x = 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        t[0x1b0] = x >> 8;
+        t[0x1b1] = x;
+    }
+    {
+        u8* t = *(u8**)(this_ + idx * 4 + 0xc);
+        u16 w = (t[0x1b2] << 8) | t[0x1b3];
+        u16 x = 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        t[0x1b2] = x >> 8;
+        t[0x1b3] = x;
+    }
+    {
+        u8* t = *(u8**)(this_ + idx * 4 + 0xc);
+        u16 w = (t[0x1b4] << 8) | t[0x1b5];
+        u16 x = 0x4000 | ((w >> 2) & 0xf0) | ((w >> 1) & 0xf);
+        t[0x1b4] = x >> 8;
+        t[0x1b5] = x;
+    }
+    s = *(u8**)(this_ + idx * 4 + 0xc) + dstOff;
+    d = *(u8**)(this_ + idx * 4 + 0x18) + dstOff;
+    for (i = 0; i < len; i += 2) {
+        u16 w = (s[i] << 8) | s[i + 1];
+        v = w;
+        if (w & 0x8000) {
+            s32 r;
+            u8 a;
+            u8 b;
+            u8 c;
+            r = (s32)((f32)((w >> 10) & 0x1f) * lbl_80541518 + lbl_805414F8);
+            if (r < 0) {
+                r = 0;
+            } else if (r > 0x1f) {
+                r = 0x1f;
+            }
+            a = r;
+            r = (s32)((f32)((w >> 5) & 0x1f) * lbl_80541518 + lbl_805414F8);
+            if (r < 0) {
+                r = 0;
+            } else if (r > 0x1f) {
+                r = 0x1f;
+            }
+            b = r;
+            r = (s32)((f32)(w & 0x1f) * lbl_80541518 + lbl_805414F8);
+            if (r < 0) {
+                r = 0;
+            } else if (r > 0x1f) {
+                r = 0x1f;
+            }
+            c = r;
+            if (flag != 0) {
+                v = 0x8000 | (c << 10) | (a << 5) | b;
+            } else {
+                v = 0x8000 | (a << 10) | (b << 5) | c;
+            }
+        }
+        d[i] = v >> 8;
+        d[i + 1] = v;
+    }
+    DCFlushRange(d, len);
 }
 
 extern "C" void fn_802FF0EC(u8* p) {
