@@ -16,7 +16,7 @@ extern "C" u8 fn_800BC784(void* p);
 extern "C" void fn_800C55B8(void* p, u8 v);
 class NaviState_8008DC60 {
 public:
-    virtual void v0();
+    void v0();
 };
 extern void (NaviState_8008DC60::*lbl_8028635C[])();
 extern "C" void fn_800CAB58(void* p);
