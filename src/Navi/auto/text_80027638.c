@@ -792,15 +792,15 @@ extern "C" void fn_80030664(void) {}
 extern "C" int fn_80030668(int param_1) {
     void* obj = *(void**)(lbl_802BB0FC + 0xf0);
     if (obj != 0) {
-        return fn_800294AC((int)obj, (int)(lbl_8022F534 + *(int*)(lbl_802BB0FC + 0x420) * 0x1c), 0xf, 0, 0, param_1, 0, 0, lbl_802FFD10, 1);
+        return fn_800294AC((int)obj, (int)(lbl_8022F534 + *(int*)(lbl_802BB0FC + 0x420) * 0x1c), lbl_802FFD10, 0xf, 0, 0, param_1, 0, 0, 1);
     }
     return 0;
 }
 
 extern "C" unsigned char* fn_800306DC(int param_1) {
-    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
-    unsigned char* p;
     int i;
+    unsigned char* p;
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
     if (obj != 0) {
         p = obj;
         for (i = 0; i < 8; i++) {
@@ -810,6 +810,7 @@ extern "C" unsigned char* fn_800306DC(int param_1) {
             }
             p += 0x3c;
         }
+        return 0;
     }
     return 0;
 }
