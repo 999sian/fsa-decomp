@@ -28,23 +28,24 @@ extern "C" Actor* fn_8032500C(Actor* p, s16 n) {
 
 extern "C" void fn_8032506C(Actor* a) {
     u8* p = (u8*)a;
+    TVec3fAdd* pos = (TVec3fAdd*)&a->field_0C;
+    TVec3fAdd* vel = (TVec3fAdd*)&a->field_3C;
     f32 out[3];
     u8 r;
 
     if (((u8*)fn_802D6A9C())[a->field_04 + 0x131df] == 0) {
-        a->field_0C.x += a->field_3C.x;
-        a->field_0C.y += a->field_3C.y;
-        a->field_0C.z += a->field_3C.z;
+        *pos += *vel;
         r = fn_801F2618(a, out, 0);
-        if (r == 1) {
-            if (out[0] != 0.0f) {
-                if (p[0x275] != 0) {
-                    a->field_3C.x = a->field_3C.x * 0.5;
-                    a->field_3C.y = -a->field_3C.x;
-                    p[0x275] = 0;
-                } else {
-                    a->field_3C.x = -a->field_3C.x;
-                }
+        if (r != 1) {
+            return;
+        }
+        if (out[0] != 0.0f) {
+            if (p[0x275] != 0) {
+                a->field_3C.x = a->field_3C.x * 0.5;
+                a->field_3C.y = -a->field_3C.x;
+                p[0x275] = 0;
+            } else {
+                a->field_3C.x = -a->field_3C.x;
             }
         }
     }
@@ -55,6 +56,13 @@ extern "C" u8 fn_8020D6AC(void* entry, s32 a, f32* b, s32 d, s32 e);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_8022F9E4(s32 a, s32 b, s32 c, s32 d);
+extern "C" u8 fn_8023F264(s32 a);
+extern "C" u8 fn_80239C00(s32 a, f32* b, s32 c);
+extern "C" s32 fn_801A4F5C(s32 a, f32* b, f32* c);
+extern "C" u8 fn_801F305C(Actor* a);
+extern "C" void* fn_8023E7B0(s32 a);
+extern "C" s32 fn_8023DE58(s32 a);
 extern "C" void fn_802D79E8(void* a, s32 b, s32 c, f32 d, f32 e);
 extern "C" void fn_80134DE4(void* a, s32 b, s32 c);
 extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, s32 d);
