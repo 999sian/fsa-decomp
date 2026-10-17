@@ -241,6 +241,15 @@ extern "C" void fn_800EAFCC(u8* p) {
     }
 }
 
+extern "C" void fn_800EB6E0(char* p) {
+    if (*(u16*)(p + 0xa9c) != 0) {
+        *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
+    } else {
+        fn_800EBD88(p);
+        p[0xa76] = 0x4a;
+    }
+}
+
 extern "C" void fn_800EBD88(char* p) {
     p[0xb11] = 2;
     p[0xb14] = 10;
