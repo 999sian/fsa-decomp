@@ -53,6 +53,26 @@ extern "C" int fn_80115564(unsigned char* param_1) {
     return 0;
 }
 
+extern "C" unsigned char* fn_80115590(unsigned char* param_1) {
+    struct Flags {
+        unsigned char b7 : 1;
+        unsigned char b6 : 1;
+        unsigned char rest : 6;
+    };
+    Flags* f = (Flags*)param_1;
+    f->b7 = 0;
+    f->b6 = 1;
+    f->rest = 0;
+    return param_1;
+}
+
 extern "C" void fn_801155C0(unsigned char* param_1, int param_2) {
     fn_801155E0(param_1, param_2);
 }
+
+extern "C" void fn_801155E0(unsigned char* param_1, int param_2) {
+    *param_1 = (*param_1 & ~0x80) | ((1 << 7) & 0x80);
+    *param_1 = (*param_1 & ~0x40) | ((0 << 6) & 0x40);
+    *param_1 = (*param_1 & ~0x3f) | (param_2 & 0x3f);
+}
+
