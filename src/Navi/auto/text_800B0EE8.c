@@ -106,6 +106,21 @@ extern "C" void fn_800B8420(u8* p) {
 
 extern "C" void fn_800B8634(void) {}
 
+extern "C" void fn_800B8638(u8* p) {
+    *(s32*)(p + 0x394) = *(s16*)(lbl_802C55A4 + 0x36);
+    p[0x38a] = 0;
+    fn_800B9570(p);
+    p[0x3a2] = 2;
+    if (p[0x60] == 1) {
+        (*(u8**)(p + 0x30))[0xb0] = 0;
+        (*(u8**)(p + 0x3c))[0xb0] = 1;
+    } else {
+        (*(u8**)(p + 0x30))[0xb0] = 1;
+        (*(u8**)(p + 0x3c))[0xb0] = 0;
+    }
+    *(u32*)(p + 0x378) = 4;
+}
+
 extern "C" void fn_800B9570(u8* param_1) {
     *(u8*)(*(u8**)(param_1 + 0x30) + 0xb0) = 1;
     *(u32*)(param_1 + 0x5c) = 0;
