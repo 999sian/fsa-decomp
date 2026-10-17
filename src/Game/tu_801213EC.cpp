@@ -38,8 +38,8 @@ public:
     virtual void v18();
     virtual void v19();
     virtual void v20();
-    virtual void v21();
-    virtual void v22();
+    virtual s32 v21(u8* other);
+    virtual s32 v22(u8* other);
     virtual s32 v23(u8* other);
 };
 
@@ -808,14 +808,17 @@ extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   s32 sel;
   s32 i;
   s32 idx = *out;
-  if (idx < 0 || idx >= 4) {
-    sel = idx;
-  } else {
+  if (idx < 0 || idx < 4) {
+    if (idx < 0) {
+      sel = idx;
+    }
     for (i = 0; i < 4; ++i) {
       if (fn_8022E438(i, idx)) {
         sel = i;
       }
     }
+  } else {
+    sel = idx;
   }
   *out = sel;
   f32 v = lbl_8053C9B4;
@@ -864,6 +867,7 @@ extern "C" void fn_80122D38(u8* self, f32* x, f32* y, s32* player) {
 extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
     f32 offset = lbl_8053C9B4;
     f32 t;
+    f32 n;
     union {
         f64 d;
         u32 w[2];
@@ -872,9 +876,10 @@ extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
     if (((CompanionCalls*)self)->v47()) {
         offset = lbl_8053C9BC;
     }
-    u.w[0] = 0x43300000;
     u.w[1] = (fn_8022E970(*player) - 1) ^ 0x80000000;
-    t = lbl_8053C9C4 * (f32)(u.d - lbl_8053C9D0) - lbl_8053C9C4;
+    u.w[0] = 0x43300000;
+    n = (f32)(u.d - lbl_8053C9D0);
+    t = lbl_8053C9C4 * n - lbl_8053C9C4;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = lbl_8053C9B8;
@@ -898,6 +903,7 @@ extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
 extern "C" void fn_80122F6C(u8* self, f32* x, f32* y, s32* player) {
     f32 offset = lbl_8053C9B4;
     f32 t;
+    f32 n;
     union {
         f64 d;
         u32 w[2];
@@ -908,7 +914,8 @@ extern "C" void fn_80122F6C(u8* self, f32* x, f32* y, s32* player) {
     }
     u.w[1] = (fn_8022E970(*player) - 1) ^ 0x80000000;
     u.w[0] = 0x43300000;
-    t = lbl_8053C9C4 * (f32)(u.d - lbl_8053C9D0) - lbl_8053C9C4;
+    t = (f32)(u.d - lbl_8053C9D0);
+    t = lbl_8053C9C4 * t - lbl_8053C9C4;
     switch (fn_80230CFC(*player)) {
     case 0:
         *x = lbl_8053C9BC * t + offset;
@@ -1241,7 +1248,7 @@ extern "C" s32 fn_80124600(u8* self) {
                 return 3;
             }
             actor[0x334] = 1;
-            return ((s32 (**)(u8*, u8*))(*(void***)actor))[23](actor, self);
+            return ((ActorSlot23Calls*)actor)->v23(self);
         }
     }
     flag = 0;
@@ -1250,7 +1257,7 @@ extern "C" s32 fn_80124600(u8* self) {
         if (p != 0 && *(s32*)(p + 0x1a0) == 0x46415a52) {
             s32 r;
             p[0x334] = 1;
-            r = ((s32 (**)(u8*, u8*))(*(void***)p))[23](p, self);
+            r = ((ActorSlot23Calls*)p)->v23(self);
             switch (r) {
             case 1:
                 return 1;
