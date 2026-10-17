@@ -323,10 +323,8 @@ void fn_802922EC(char* p) {
       fn_80241454(p, 0);
       if (S32(p, 0x3b4) < 8) {
         VEC(p, 0xcb0) = VEC(p, 0x8);
-        F32(p, 0xcb8) = F32(p, 0x10);
         S32(p, 0x3b4) = S32(p, 0xce4);
         VEC(p, 0x8) = VEC(p, 0xcd4);
-        F32(p, 0x10) = F32(p, 0xcdc);
       }
       fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
     }
@@ -464,6 +462,52 @@ void fn_802932BC(char* p) {
     }
 }
 
+extern "C" void fn_8030C210(void* cam, JGeometry::TVec3<f32>* pos);
+extern u8* lbl_8053AB10;
+extern f32 lbl_80540640;
+void fn_80293398(char* p) {
+    if (S32(p, 0x3b4) < 8) {
+        JGeometry::TVec3<f32> pos = VEC(p, 0x8);
+        pos.y -= lbl_80540640;
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &pos);
+    }
+    U8(p, 0x3fc)++;
+    if (U8(p, 0x3fc) >= 0x3c || S32(p, 0xcf4) == 0x1f) {
+        F32(p, 0x10) += lbl_8054061C;
+        if (F32(p, 0x10) > lbl_80540620) {
+            if (S32(p, 0x3b4) < 8) {
+                VEC(p, 0xcb0) = VEC(p, 0x8);
+            }
+            U8(p, 0x124d) = 0;
+            if (fn_80251AEC(p, 0x23)) {
+                fn_80241454(p, 0);
+                S32(p, 0x3b4) = S32(p, 0xce4);
+                VEC(p, 0x8) = VEC(p, 0xcd4);
+                F32(p, 0x10) = lbl_805405B4;
+                fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
+            }
+        }
+    }
+    s32 state = (U8(p, 0x3fc) >> 2) & 3;
+    if (state == 0) {
+        S32(p, 0x3dc) = 2;
+        S32(p, 0x3e8) = 2;
+    } else if (state == 1) {
+        S32(p, 0x3dc) = 1;
+        S32(p, 0x3e8) = 1;
+    } else if (state == 2) {
+        S32(p, 0x3dc) = 3;
+        S32(p, 0x3e8) = 3;
+    } else {
+        S32(p, 0x3dc) = 0;
+        S32(p, 0x3e8) = 0;
+    }
+    F32(p, 0x2f4) = F32(p, 0x8);
+    F32(p, 0x2f8) = F32(p, 0xc);
+    F32(p, 0x2fc) = F32(p, 0x10);
+    F32(p, 0x2fc) += lbl_805405A8;
+}
+
 void fn_80293534(char* p) {
     U8(p, 0x124d) = 1;
     F32(p, 0x10) = lbl_805405B4;
@@ -482,11 +526,7 @@ void fn_80293760(char* p) {
 void fn_80293774(char* p) {
     if (U8(p, 0x3fc) == 0x3c) {
         if (S32(p, 0xcf4) != 0x1d) {
-            if (S32(p, 0x3b4) >= 8) {
-                if (S32(p, 0xce4) < 8) {
-                    fn_8024EFA0(p, 0);
-                }
-            } else {
+            if (S32(p, 0x3b4) < 8) {
                 JGeometry::TVec3<f32> pos;
                 pos.x = F32(p, 0x8);
                 pos.y = F32(p, 0xc);
@@ -494,6 +534,8 @@ void fn_80293774(char* p) {
                 pos.y += lbl_80540614;
                 pos.z += lbl_805405A8;
                 fn_8013CC50(S32(p, 0x3b4), &pos, 0x17d, 1, 0, 0, NULL, 1, lbl_80540600);
+            } else if (S32(p, 0xce4) < 8) {
+                fn_8024EFA0(p, 0);
             }
         }
         U8(p, 0x3fd) = 0;
@@ -505,7 +547,6 @@ void fn_80293774(char* p) {
         if (fn_80251AEC(p, 0x21)) {
             S32(p, 0x3b4) = S32(p, 0xce4);
             VEC(p, 0x8) = VEC(p, 0xcd4);
-            F32(p, 0x10) = F32(p, 0xcdc);
             fn_8030BD3C(PTR(p, 0xbec), S32(p, 0x4));
         }
     }
@@ -534,9 +575,9 @@ void fn_80293E8C(char* p) {
     fn_8024F0E8(p, 0x2002d);
     s32 cur = S32(p, 0x3b4);
     if (cur > 8 && S32(p, 0xce4) > 8) {
-        if (U8(fn_802D6A9C(), cur + 0x131df) != 0) {
+        if (U8((char*)fn_802D6A9C() + 0x10000, 0x31df + cur) != 0) {
             s32 other = S32(p, 0xce4);
-            if (U8(fn_802D6A9C(), other + 0x131df) != 0 && S32(p, 0xce4) != S32(p, 0x3b4)) {
+            if (U8((char*)fn_802D6A9C() + 0x10000, 0x31df + other) != 0 && S32(p, 0xce4) != S32(p, 0x3b4)) {
                 U8(p, 0x3fc) = 0x3a;
             }
         }
@@ -632,10 +673,10 @@ void fn_802953A0(char* p) {
     if (U8(p, 0x3fc) < 0x3c) {
         return;
     }
-    f32 min = lbl_80540618;
-    F32(p, 0x34c) = F32(p, 0x34c) - lbl_8054060C;
-    if (F32(p, 0x34c) < min) {
-        F32(p, 0x34c) = min;
+    f32 v = F32(p, 0x34c) - lbl_8054060C;
+    F32(p, 0x34c) = v;
+    if (F32(p, 0x34c) < lbl_80540618) {
+        F32(p, 0x34c) = lbl_80540618;
     }
     VEC(p, 0x8) += VEC(p, 0x344);
     if (F32(p, 0x10) < lbl_805405B4) {
