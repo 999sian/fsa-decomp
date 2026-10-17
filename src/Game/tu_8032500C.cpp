@@ -56,6 +56,8 @@ extern "C" u8 fn_8020D6AC(void* entry, s32 a, f32* b, s32 d, s32 e);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+extern "C" void* lbl_8053AC98;
+extern "C" void fn_8029EDB8(void*, void*, s32, s32, void*);
 extern "C" u8 fn_8022F9E4(s32 a, s32 b, s32 c, s32 d);
 extern "C" u8 fn_8023F264(s32 a);
 extern "C" u8 fn_80239C00(s32 a, f32* b, s32 c);
