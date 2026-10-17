@@ -1,6 +1,7 @@
 // Player-state methods, 0x8028FBA0-0x802957CC.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define U32(p, o) (*(u32*)((char*)(p) + (o)))
@@ -870,9 +871,9 @@ void fn_80293900(char* p) {
   U8(p, 0x3fc)++;
   fn_80241454(p, 1);
   {
-    f32 z = lbl_805405B4;
-    f32 c = lbl_8054061C;
     f32 t = F32(p, 0x10);
+    f32 c = lbl_8054061C;
+    f32 z = lbl_805405B4;
     t = t - c;
     F32(p, 0x10) = t;
     if (!(F32(p, 0x10) <= z)) {
@@ -1052,13 +1053,14 @@ void fn_80294374(char* p) {
 }
 
 extern int __float_epsilon[];
-void fn_8027E5BC(char*);
+extern const f32 lbl_80540648;
+void fn_8027E5BC(char*, f32);
 void fn_80265D68(char*);
 void fn_80268B3C(char*);
 void fn_8026152C(char*, s32);
 void fn_8027EE84(char*);
 void fn_802948C0(char* p) {
-    fn_8027E5BC(p);
+    fn_8027E5BC(p, lbl_80540648);
     U8(p, 0x3fc)++;
     JGeometry::TVec3<f32> diff = VEC(p, 0x3a4) - VEC(p, 0x8);
     if (!(diff.squared() <= lbl_80540614 * *(f32*)__float_epsilon)) {
@@ -1377,4 +1379,9 @@ void fn_80295584(char* p) {
     S32(p, 0x3dc) = 2;
     S32(p, 0x3e8) = 2;
 }
+
+void fn_802955A8(void)
+{
+}
+
 }
