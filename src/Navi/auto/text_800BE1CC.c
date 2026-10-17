@@ -32,6 +32,31 @@ extern "C" s32 fn_8002F168(void* p);
 extern u8 lbl_80287F74[];
 extern u8 lbl_802313EC[];
 extern "C" u8 fn_800F0E14(void* p, u8 b);
+extern u8 lbl_8029FDB4[];
+extern u8 lbl_80287BD8[];
+extern u32 lbl_802FEC90;
+extern "C" u8 fn_800126C8(void* a, void* b, void* c);
+extern "C" void fn_800BE284(u8* p);
+extern "C" void fn_800BE2E0(u8* p);
+extern "C" void fn_800BF404(u8* p);
+extern "C" void fn_800BFCD8(u8* p);
+extern "C" void fn_800C07D0(u8* p);
+extern "C" void fn_800C1108(u8* p);
+extern "C" void fn_800C11D4(u8* p) {
+    u8* row = p;
+    for (s32 i = 0; i < 0xc; i++) {
+        u8 c = fn_800F0E14(lbl_802B7CA0, lbl_802313EC[i]);
+        if (lbl_802313EC[i] == lbl_802B7CA0[0x1419]) {
+            p[0x210] = c - p[0x223];
+            c = p[0x223];
+        }
+        if (c != 0) {
+            *(u8*)(*(u32*)(row + 0x68) + 0xb0) = 1;
+        }
+        row += 4;
+    }
+}
+
 extern "C" void fn_800C1440(u8* p) {
     if (*(s16*)(p + 0x21e) == 0) {
         fn_8002F458(0x9a, 0);
