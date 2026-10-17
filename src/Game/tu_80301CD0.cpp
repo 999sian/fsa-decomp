@@ -12,6 +12,12 @@ extern u8 lbl_8053ACE0[4];
 extern u8 lbl_8053ACE8[4];
 extern u8 lbl_8053ACEC[4];
 extern u8 lbl_8053ACF0[4];
+extern u8 lbl_8053ACF4[4];
+extern u8 lbl_8053ACF8[4];
+struct Game_80301CD0;
+extern Game_80301CD0* lbl_8053AAF8;
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D7804(void* mgr, u32 id, u32 flags);
 struct Elem28_80301CD0 {
     Elem28_80301CD0();
     s32 f0;
@@ -316,7 +322,7 @@ extern "C" s32 fn_803066F0(void* p, s32 idx, s32 max) {
                 continue;
             }
             u8* g = (u8*)lbl_8053AAF8;
-            if ((isMode11_803066F0(g) || g[0x88] != 0) && e->f23 == 0) {
+            if (((u8)(*(s32*)(g + 0x4c) == 11) || g[0x88] != 0) && e->f23 == 0) {
                 e->f25 = 1;
                 continue;
             }
