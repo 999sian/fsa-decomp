@@ -29,6 +29,25 @@ struct Unk801C5B08 {
 extern "C" s16 fn_801D0280(void* p, s32 idx);
 extern "C" u8 fn_801CC9F8(void* p, s32 idx);
 extern "C" u8* fn_802D6A9C(void);
+extern "C" int fn_801C5340(void);
+extern "C" void fn_801C3B7C(void* p, s32 state);
+extern "C" s32 fn_801D05F8(void* p, void* pos);
+extern "C" void fn_801C6260(void* p);
+extern "C" u8 fn_801D0DD4(void* p);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" void* GetCurrentSlotPtr(void* p);
+extern "C" u8 fn_800FE2E4(void* slot, void* pos, s32 room);
+extern "C" void fn_800FE294(void* out, void* slot, s32 room);
+extern "C" u8 fn_800FD5E8(void* slot, s32 room);
+extern "C" s16 fn_801D02E0(void* p, void* pos);
+extern void* lbl_8053AAF8;
+extern f32 lbl_8053EE68;
+extern f32 lbl_8053EE6C;
+extern f32 lbl_8053EE70;
+extern f32 lbl_8053EE74;
+extern f32 lbl_8053EE78;
+extern f32 lbl_8053EE7C;
+extern f32 lbl_8053EE80;
 extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern u8* fn_802D6A9C(void);
     extern u8 fn_801CC9F8(void*, s32);
@@ -45,16 +64,18 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern f32 lbl_8053EE90;
     extern f32 lbl_8053EE94;
 
-    u8 cVar6 = fn_802D6A9C()[0x10000 + *(s32*)(this_ + 4) + 0x31df];
+    s32 off = *(s32*)(this_ + 4);
+    u8* base = fn_802D6A9C();
+    u8 cVar6 = base[0x10000 + off + 0x31df];
     if (flag != 0) {
         *(u8*)(this_ + 0x595) = 0;
-        if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) != 0) {
+        if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, off) != 0) {
             fn_801D11FC(this_);
         } else {
             s32 k = *(s32*)(this_ + 0x98);
             if (k == 1) {
                 *(s16*)(this_ + 0x33c) = 0x4000;
-            } else if (k < 1 && -1 < k) {
+            } else if (k == 0) {
                 *(s16*)(this_ + 0x33c) = -0x4000;
             } else {
                 f32 r = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
@@ -74,7 +95,7 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
             *(u8*)(this_ + 0x595) = 0;
             *(u8*)(this_ + 0x596) = fn_801CD664(0x15) + 0x14;
             pf = (f32*)(this_ + state * 0xc + 0x1ac);
-            if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, *(s32*)(this_ + 4)) != 0) {
+            if (cVar6 == 0 || fn_801CC9F8(this_ + 0xc, off) != 0) {
                 dx = *(f32*)(this_ + 0xc) - pf[0];
                 dy = *(f32*)(this_ + 0x10) - pf[1];
                 a = *(s16*)(this_ + 0x33c);
@@ -85,8 +106,8 @@ extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
                 fn_801CD930(this_ + 0x33c, a, 0xaaa);
             } else {
                 a = *(s16*)(this_ + 0x33c);
-                if (lbl_8053EE78 * (f32)(a + 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) != 1) {
-                    if (lbl_8053EE78 * (f32)(a - 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, *(s32*)(this_ + 4)) != 1) {
+                if (lbl_8053EE78 * (f32)(a + 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, off) != 1) {
+                    if (lbl_8053EE78 * (f32)(a - 0x4000) >= lbl_8053EE80 || fn_801CFA70(this_, this_ + 0xc, pf, off) != 1) {
                         f32 r1 = ((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1();
                         if (r1 >= lbl_8053EE7C) {
                             if (*(f32*)(this_ + 0xc) >= pf[0]) {
