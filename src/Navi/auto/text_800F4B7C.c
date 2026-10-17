@@ -373,6 +373,16 @@ extern "C" void fn_80101788(void* param_1) {
     *(u8*)((u8*)param_1 + 0x189) = 0x28;
 }
 
+extern "C" void fn_80101900(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x528) != 0) {
+        *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0xf2) = 2;
+    *(u16*)((u8*)param_1 + 0x528) = 8;
+    *(u8*)((u8*)param_1 + 0x189) = 0x2a;
+}
+
 extern "C" void fn_80101934(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
