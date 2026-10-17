@@ -32,11 +32,60 @@ extern const f64 lbl_8053D300;
 extern const f64 lbl_8053D308;
 extern const f32 lbl_8053D310;
 extern const f32 lbl_8053D288;
+extern u8 sincosTable___5JMath[];
 extern const f32 lbl_8053D314;
 extern s32 lbl_804BF850[];
 extern s32 lbl_8053AB44;
 extern s32 lbl_8053AB48;
 extern s32 lbl_80539F68;
+}
+
+extern "C" void fn_8013CC50(u32, const Vec*, s32, s32, s32, s32, s32, s32, f32);
+extern "C" void __dt__5ActorFv(Actor*, s16);
+extern "C" void __dl__FPv(void*);
+extern u8 lbl_8049FCA0[];
+extern const f32 lbl_8053D268;
+extern "C" Actor* fn_801537A0(Actor* actor, s16 del)
+{
+    s32 i;
+    s32* slot;
+
+    if (actor != NULL) {
+        *(void**)actor = lbl_8049FCA0;
+        if (*(s32*)((u8*)actor + 0x108) <= 0) {
+            s32 mode = *(s32*)((u8*)actor + 0x288);
+            if (mode == 1 || mode == 3) {
+                if (mode == 1) {
+                    fn_801F8544(fn_801F856C(), 0x52555059, *(u32*)((u8*)actor + 0x4), (Vec*)((u8*)actor + 0xC), 0x30004);
+                    fn_8013CC50(*(u32*)((u8*)actor + 0x4), (Vec*)((u8*)actor + 0xC), 0x3D9, 0, 1, 0, 0, 1, lbl_8053D25C);
+                } else {
+                    fn_801F8544(fn_801F856C(), 0x52555059, *(u32*)((u8*)actor + 0x4), (Vec*)((u8*)actor + 0xC), 0x30008);
+                    fn_8013CC50(*(u32*)((u8*)actor + 0x4), (Vec*)((u8*)actor + 0xC), 0x3D9, 0, 1, 0, 0, 1, lbl_8053D268);
+                }
+            }
+        }
+        {
+            s32 id = *(s32*)((u8*)actor + 0x2A4);
+            if (id >= 0) {
+                Actor* target = fn_801F666C(fn_801F856C(), id);
+                if (target != NULL) {
+                    *(s32*)((u8*)target + 0x290) = -1;
+                }
+            }
+        }
+        slot = lbl_804BF850;
+        for (i = 0; i < 4; i++) {
+            if (*slot == *(s32*)((u8*)actor + 0x198)) {
+                *slot = -1;
+            }
+            slot++;
+        }
+        __dt__5ActorFv(actor, 0);
+        if (del > 0) {
+            __dl__FPv(actor);
+        }
+    }
+    return actor;
 }
 
 extern "C" void fn_8015394C(Actor* actor)
