@@ -37,6 +37,9 @@ struct VObj_800C954C {
 };
 extern char lbl_8029FDB4[];
 extern "C" void fn_800127A0(void*);
+extern "C" void fn_800C8D48(u8* param_1, s32 param_2);
+extern "C" void fn_800C8D90(u8* param_1);
+extern "C" void fn_800C8DF4(u8* param_1);
 struct VObj_800C8D90 {
     virtual void v0();
     virtual void v1();
@@ -157,12 +160,10 @@ extern "C" void fn_800C954C(u8* p) {
     }
     (*(VObj_800C954C**)(p + 0x10))->v7();
     char* base = lbl_802C567C;
-    if (base[4] >= 0) {
-        s32 n = *(s32*)(base + 8) - 1;
-        *(s32*)(base + 8) = n;
-        if (n == 0) {
+    if (*(s8*)(base + 4) >= 0) {
+        if (--*(s32*)(base + 8) == 0) {
             fn_800127A0(lbl_8029FDB4 + 4);
-            base[4] = -1;
+            *(s8*)(base + 4) = -1;
         }
     }
 }
