@@ -12,6 +12,8 @@ extern "C" int fn_801F03A4(void* buf, int len);
 extern "C" void fn_801EFBB8(void* a, void* buf, int len);
 extern u8 lbl_802FB6D8[];
 extern u8 lbl_802FB1B8[];
+extern int lbl_802FFAC8;
+extern "C" int fn_801F0144(void* buf, int len);
 
 extern "C" DSError ddh_cc_initinterrupts(void)
 {
