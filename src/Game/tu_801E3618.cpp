@@ -19,6 +19,7 @@ extern "C" f32 lbl_8053F524;
 extern "C" f64 lbl_8053F528;
 extern "C" char* fn_802D6A9C();
 extern "C" u8 fn_801CD2F8(void* obj);
+extern "C" s32 fn_801CC29C(const f32* a, const f32* b, f32* out);
 extern "C" s32 fn_801F2B7C(u8* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
 extern "C" void fn_801D5D84(char* this_, s32 a);
@@ -93,6 +94,74 @@ extern "C" s32 fn_801E3A4C(u8* p) {
         if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053F530 &&
             *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053F530) {
             ret = fn_801F2B7C(p, *(s32*)(p + 0x114), -1, 1);
+        }
+    }
+    return ret;
+}
+
+extern "C" u8 fn_801E4094(char* this_) {
+    u8 ret = 0;
+    s32 state = *(s32*)(this_ + 0x248);
+    u8 ok = 1;
+    if (state < 9) {
+        if (state != 5 && (state >= 5 || state >= 0)) {
+            ok = 0;
+        }
+    } else if (state < 0x1b) {
+        if (state >= 0x15) {
+            ok = 0;
+        }
+    }
+    if (ok && !(*(u32*)(this_ + 0x230) & 0x2000)) {
+        f32 x1 = *(f32*)(this_ + 0x60);
+        f32 x2 = *(f32*)(this_ + 0x68);
+        if (x2 - x1 > lbl_8053F530) {
+            f32 y2 = *(f32*)(this_ + 0x6c);
+            f32 y1 = *(f32*)(this_ + 0x64);
+            if (y2 - y1 > lbl_8053F530) {
+                *(f32*)(this_ + 0x60) *= lbl_8053F54C;
+                *(f32*)(this_ + 0x64) *= lbl_8053F54C;
+                *(f32*)(this_ + 0x68) *= lbl_8053F54C;
+                *(f32*)(this_ + 0x6c) *= lbl_8053F54C;
+                s32 id = fn_801F82CC(fn_801F856C(), this_, *(u8*)(this_ + 0x195), lbl_8053F550);
+                *(f32*)(this_ + 0x60) = x1;
+                *(f32*)(this_ + 0x64) = y1;
+                *(f32*)(this_ + 0x68) = x2;
+                *(f32*)(this_ + 0x6c) = y2;
+                if (id >= 0 && id != *(s32*)(this_ + 0x198)) {
+                    char* obj = fn_801F666C(fn_801F856C(), id);
+                    if (obj != 0 && *(u32*)(obj + 0x1a0) == 0x48424D42 && *(u16*)(obj + 0x94) == 1) {
+                        JGeometry::TVec3f d(*(JGeometry::TVec3f*)(this_ + 0xc));
+                        d.sub(*(JGeometry::TVec3f*)(obj + 0x3c));
+                        ret = fn_801F37AC(this_, 0, &d, 2, *(s32*)(obj + 0x168), *(s32*)(obj + 0x110));
+                        if (ret) {
+                            f32 zero = lbl_8053F530;
+                            *(u8*)(obj + 0x164) = 1;
+                            *(s32*)(this_ + 0xf8) = 0;
+                            *(f32*)(this_ + 0x3c) = zero;
+                            *(f32*)(this_ + 0x40) = zero;
+                            *(f32*)(this_ + 0x44) = zero;
+                            *(s32*)(this_ + 0xd8) = 0xb4;
+                            *(s32*)(this_ + 0xdc) = 0xb4;
+                            *(f32*)(this_ + 0x254) = zero;
+                            fn_801D63D0(this_);
+                            fn_801F0E34(this_, 0x40005, 0);
+                            fn_801E4D54(this_);
+                            fn_80217A74(this_ + 0x448);
+                            f32 out[2];
+                            f32 pt[2];
+                            fn_801F3128(this_, out);
+                            pt[0] = out[0] - *(f32*)(obj + 0xc);
+                            pt[1] = out[1] - (*(f32*)(obj + 0x10) - *(f32*)(obj + 0x14));
+                            fn_801D6D38(this_ + 0x52c, pt);
+                            *(u8*)(this_ + 0x5cd) += 1;
+                            if (*(u8*)(this_ + 0x5cd) >= *(u8*)(this_ + 0x5cc)) {
+                                fn_801D5D84(this_, 6);
+                            }
+                        }
+                    }
+                }
+            }
         }
     }
     return ret;
