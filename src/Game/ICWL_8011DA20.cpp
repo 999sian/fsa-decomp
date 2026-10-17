@@ -109,3 +109,6 @@ extern "C" void* fn_8011E6E0(char* p) {
     *(s32*)(p + 0x27c) = 0;
     return p;
 }
+
+void __sinit_ICWL_8011DA20_cpp(void) {}
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
