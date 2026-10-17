@@ -27,14 +27,12 @@ extern "C" void fn_8013EDB8(s32 idx) {
     if (*(s32*)(b + 0x20) != 0) {
         return;
     }
-    if (b[5] == 0) {
-        if (b[6] == 4) {
-            u8* p = *(u8**)(b + 0x14);
-            *p = b[7] & 0x3a;
-            return;
-        }
+    if (b[5] != 0 || b[6] != 4) {
+        *(s32*)(b + 0x20) = 1;
+    } else {
+        u8* p = *(u8**)(b + 0x14);
+        *p = b[7] & 0x3a;
     }
-    *(s32*)(b + 0x20) = 1;
 }
 
 void fn_8013EE0C(void)
@@ -204,6 +202,19 @@ extern "C" void fn_80140288(s32 idx) {
         return;
     }
     **(u8**)(s + 0x14) = s[5] & 0x3a;
+}
+
+extern "C" s32 fn_801402B8(s32 idx, void* param_2, s32 param_3, s32 param_4) {
+    u8* s = lbl_802C6A80 + (idx << 8);
+    if (*(u32*)(s + 0x1c) != 0) {
+        return 2;
+    }
+    s[0] = 0x15;
+    memcpy(s + 1, param_2, 4);
+    *(void**)(s + 0x18) = param_2;
+    *(s32*)(s + 0x14) = param_3;
+    *(s32*)(s + 0x1c) = param_4;
+    return fn_801406B0(idx, 5, 1, fn_80140288);
 }
 
 extern "C" s64 fn_80140724(s32 idx, s64 value)
