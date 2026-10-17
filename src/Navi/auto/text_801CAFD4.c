@@ -779,10 +779,13 @@ extern "C" void fn_801D2F34(s32 a);
 extern "C" s32 fn_801D72DC(void* a);
 extern "C" s32 fn_801D2CC8(s32 chan, u8** pcard);
 extern "C" s32 fn_801D2D80(u8* card, s32 result);
-extern "C" void fn_801D7970(s32* param_1) {
-    if (fn_801D782C(param_1) >= 0) {
-        fn_801D2F34(*param_1);
+extern "C" void fn_801D7970(s32* param_1, s32 param_2, s32 param_3, s32 param_4) {
+    s32 fn_801D782C(s32* a, s32 b, s32 c, s32 d, void (*e)(s32));
+    s32 r = fn_801D782C(param_1, param_2, param_3, param_4, fn_801D1D6C);
+    if (r < 0) {
+        return;
     }
+    fn_801D2F34(*param_1);
 }
 
 extern "C" void fn_801D9850(void* base, u32 hi, u32 lo);
@@ -1098,13 +1101,12 @@ extern "C" void fn_801DB5CC(s32 a) {
 }
 
 extern "C" void fn_801DB5E4(u8 a, u8 b) {
-    u32 reg = 0;
-    u32 reg2;
-    reg = __rlwimi(reg, b, 0, 24, 31);
-    reg2 = reg;
-    reg2 = __rlwimi(reg2, a, 8, 23, 23);
-    u16* pe = (u16*)__peReg;
-    pe[2] = reg2;
+    u32 val = 0;
+    u32 x;
+    val = __rlwimi(val, b, 0, 24, 31);
+    x = val;
+    x = __rlwimi(x, a, 8, 23, 23);
+    *(u16*)((u8*)__peReg + 4) = x;
 }
 
 extern "C" void fn_801DB608(u8 a) {
@@ -1139,7 +1141,7 @@ extern "C" void fn_801DB684(void* param_1, void* param_2) {
 }
 
 extern void* lbl_802FFA6C;
-extern "C" void fn_801DB750(int param_1, void* param_2) {
+extern "C" void fn_801DB750(void* param_1, void* param_2) {
     u32 padding[2];
     char context[720];
     u32 val;
@@ -1158,6 +1160,105 @@ extern "C" void fn_801DB750(int param_1, void* param_2) {
     fn_801C13D0((int)&lbl_802FFA74);
 }
 
+extern "C" void __GXPEInit(void) {
+    u16* pe;
+    u32 val;
+
+    __OSSetInterruptHandler(0x12, fn_801DB684);
+    __OSSetInterruptHandler(0x13, fn_801DB750);
+    OSInitThreadQueue(&lbl_802FFA74);
+    __OSUnmaskInterrupts(0x2000);
+    __OSUnmaskInterrupts(0x1000);
+    pe = (u16*)__peReg;
+    val = pe[5];
+    val = __rlwimi(val, 1, 2, 29, 29);
+    val = __rlwimi(val, 1, 3, 28, 28);
+    val = __rlwimi(val, 1, 0, 31, 31);
+    val = __rlwimi(val, 1, 1, 30, 30);
+    pe[5] = val;
+}
+
+extern "C" void fn_801DD968(void);
+extern "C" void fn_801DE2B8(void);
+extern "C" void fn_801DBB5C(void);
+extern "C" void fn_801DA184(void);
+extern "C" void fn_801DA240(void);
+#pragma dont_inline on
+extern "C" void fn_801DB844(void) {
+    u32 flags = *(u32*)(__GXData + 0x5ac);
+    if (flags & 1) {
+        fn_801DD968();
+    }
+    if (flags & 2) {
+        fn_801DE2B8();
+    }
+    if (flags & 4) {
+        fn_801DBB5C();
+    }
+    if (flags & 8) {
+        fn_801DA184();
+    }
+    if (flags & 0x10) {
+        fn_801DA878();
+    }
+    if (flags & 0x18) {
+        fn_801DA240();
+    }
+    *(u32*)(__GXData + 0x5ac) = 0;
+}
+
+extern "C" void fn_801DBB80(u32 left, u32 top, u32 width, u32 height)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x1e0) = 0;
+	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), (u16)left, 0, 22, 31);
+	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), (u16)top, 10, 12, 21);
+	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), 0x49, 24, 0, 7);
+	*(u32*)(gx + 0x1e4) = 0;
+	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), (u16)width - 1, 0, 22, 31);
+	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), (u16)height - 1, 10, 12, 21);
+	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), 0x4a, 24, 0, 7);
+}
+
+extern "C" void fn_801DBBFC(u16 left, u16 top, u16 width, u16 height)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x1f0) = 0;
+	*(u32*)(gx + 0x1f0) = __rlwimi(*(u32*)(gx + 0x1f0), left, 0, 22, 31);
+	*(u32*)(gx + 0x1f0) = __rlwimi(*(u32*)(gx + 0x1f0), top, 10, 12, 21);
+	*(u32*)(gx + 0x1f0) = __rlwimi(*(u32*)(gx + 0x1f0), 0x49, 24, 0, 7);
+	*(u32*)(gx + 0x1f4) = 0;
+	*(u32*)(gx + 0x1f4) = __rlwimi(*(u32*)(gx + 0x1f4), width - 1, 0, 22, 31);
+	*(u32*)(gx + 0x1f4) = __rlwimi(*(u32*)(gx + 0x1f4), height - 1, 10, 12, 21);
+	*(u32*)(gx + 0x1f4) = __rlwimi(*(u32*)(gx + 0x1f4), 0x4a, 24, 0, 7);
+}
+
+extern "C" void fn_801DBC78(u16 param_1)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x1e8) = 0;
+	*(u32*)(gx + 0x1e8) = __rlwimi(*(u32*)(gx + 0x1e8), (s32)((param_1 & 0x7fff) << 1) >> 5, 0, 22, 31);
+	*(u32*)(gx + 0x1e8) = __rlwimi(*(u32*)(gx + 0x1e8), 0x4d, 24, 0, 7);
+}
+
+extern "C" void fn_801DBDDC(u32 param_1) {
+    u8* gx = __GXData;
+    u32 v = *(u32*)(gx + 0x1ec);
+    *(u32*)(gx + 0x1ec) = (v & 0xffffcfff) | ((param_1 & 3) << 12);
+    v = *(u32*)(gx + 0x1fc);
+    *(u32*)(gx + 0x1fc) = (v & 0xffffcfff) | ((0 & 3) << 12);
+}
+
+extern "C" void fn_801DBE00(u32 param_1) {
+    u32 a = (param_1 & 1) == 1;
+    u32 b = (param_1 & 2) == 2;
+    *(u32*)(__GXData + 0x1ec) = (*(u32*)(__GXData + 0x1ec) & 0xfffffffe) | a;
+    *(u32*)(__GXData + 0x1ec) = (*(u32*)(__GXData + 0x1ec) & 0xfffffffd) | (b << 1);
+    *(u32*)(__GXData + 0x1fc) = (*(u32*)(__GXData + 0x1fc) & 0xfffffffe) | a;
+    *(u32*)(__GXData + 0x1fc) = (*(u32*)(__GXData + 0x1fc) & 0xfffffffd) | (b << 1);
+}
+
+#pragma dont_inline reset
 extern "C" uint fn_801DD3D8(uint *param_1)
 {
   return *param_1 & 3;
@@ -1180,3 +1281,4 @@ extern "C" u32 fn_801DD408(int param_1)
 {
     return *(u32*)(param_1 + 0x18);
 }
+extern f32 lbl_80301EC0;
