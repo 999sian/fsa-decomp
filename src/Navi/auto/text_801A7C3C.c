@@ -625,6 +625,10 @@ extern "C" void* fn_801ADE48(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" s32 fn_801ADEB4(void) {
+    return 0xd;
+}
+
 extern void* lbl_8029B49C[];
 extern "C" void* fn_801ADEBC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
