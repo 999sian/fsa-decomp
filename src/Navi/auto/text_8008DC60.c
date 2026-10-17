@@ -149,6 +149,8 @@ extern "C" void fn_80090D48(void) {}
 extern char lbl_802C545C[];
 extern f32 lbl_80300AF8;
 extern "C" void fn_800A15D8(void*, s32, s32, f32, f32, u8, f32, f32, s32, s32);
+extern void* lbl_80286B04[];
+extern void* lbl_802880BC[];
 #pragma use_lmw_stmw off
 extern "C" void fn_80090D4C(u8* p) {
     s32 i;
