@@ -12,7 +12,7 @@ extern "C" J3DBlend fn_800E1144(const J3DMaterialFactory_v21* self, int idx);
 extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, int no);
-extern "C" GXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no);
+extern "C" J3DGXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" J3DColorChan fn_800E09F0(const J3DMaterialFactory_v21* self, int idx, int no);
@@ -274,18 +274,14 @@ extern "C" u32 lbl_80543F10;
 extern "C" u32 lbl_80543F14;
 extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no)
 {
-	u32 defaultLo = lbl_80543F10;
-	u32 defaultHi = lbl_80543F14;
+	u32 defaultColor[2];
+	defaultColor[0] = lbl_80543F10;
+	defaultColor[1] = lbl_80543F14;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mTevColorIndex[no] != 0xffff) {
-		J3DGXColorS10 color;
-		*(u64*)&color = *(u64*)&self->mTevColors[initData->mTevColorIndex[no]];
-		return color;
+		return *(J3DGXColorS10*)&self->mTevColors[initData->mTevColorIndex[no]];
 	}
-	J3DGXColorS10 color;
-	*(u32*)&color = defaultLo;
-	*((u32*)&color + 1) = defaultHi;
-	return color;
+	return *(J3DGXColorS10*)defaultColor;
 }
 
 extern "C" GXColor fn_800E0DF8_old(const J3DMaterialFactory_v21* self, int idx, int no)
