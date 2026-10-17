@@ -68,11 +68,6 @@ struct FsaVObj {
     virtual void v59(s32 a, s32 b, s32 c, f32 d, f32 e, f32 f, f32 g);
 };
 
-struct FsaObj {
-    FsaObjVtbl* vtbl;
-};
-
-
 extern "C" void fn_8013B490(void* this_);
 extern u8 lbl_80529DEC[];
 extern void* lbl_8053AB10;
