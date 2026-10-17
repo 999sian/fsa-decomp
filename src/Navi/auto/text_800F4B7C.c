@@ -998,6 +998,17 @@ extern "C" void fn_80106540(char* p) {
     *(unsigned char*)(p + 0x409) = 0;
 }
 
+extern "C" void fn_80106780(u8* p) {
+    s32 r = fn_80108928(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0.0f, 0, 1, 0.0f, 0.0f, *(f32*)(lbl_802C5A84 + 0x38));
+    (*(s16*)(p + 0xec))++;
+    if (r == 1) {
+        *(s16*)(p + 0xec) = 0;
+        fn_801071C4(p);
+        p[0x458] = 1;
+        p[0xee] = 0x1c;
+    }
+}
+
 extern "C" void fn_80106808(u8* p) {
     s32 r = fn_80108B20(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x60), 0, 0, *(f32*)(lbl_802C5A84 + 0x5c), 0.0f);
     (*(s16*)(p + 0xec))++;
