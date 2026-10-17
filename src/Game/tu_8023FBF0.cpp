@@ -787,8 +787,41 @@ BOOL fn_80240F14(char* p) { return S32(p, 0x1240) == 0x41 ? 1 : 0; }
 
 s32 fn_8023513C(s32);
 s32 fn_80240F28(char* p) {
-    if (getMode3(p) == 5) {
-        if ((u8)isLinkOwner(p)) {
+    s32 mode;
+    s32 n = S32(p, 0x4);
+    s32 c = 0;
+    s32 i = c;
+    for (; i < 4; i++) {
+        if (i == n) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            s32 linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                s32 me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    if (c <= 1) {
+        mode = 5;
+    } else {
+        s32 linked = S32(p, 0xd60);
+        if (linked >= 0) {
+            mode = fn_8022CAF8(linked);
+        } else {
+            mode = S32(p, 0x120c);
+        }
+    }
+    if (mode == 5) {
+        if ((u8)isLinkOwner3(p)) {
             return fn_8023513C(fn_8022EA0C(S32(p, 0x4)));
         }
     }
@@ -973,6 +1006,69 @@ void fn_80241B44(char* p, f32* out) {
         fn_8030AE84(PTR(p, 0xbec), out);
     }
 }
+
+u32 fn_80241BA0(char* p, s32 room, f32* rect, u8 mode) {
+    if (room < 8) {
+        if (mode == 1) {
+            {
+                JGeometry::TVec3<f32> pt(rect[0], rect[1], lbl_80540034);
+                if (fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt)) {
+                    return 1;
+                }
+            }
+            {
+                JGeometry::TVec3<f32> pt(rect[0], rect[3], lbl_80540034);
+                if (fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt)) {
+                    return 1;
+                }
+            }
+            {
+                JGeometry::TVec3<f32> pt(rect[2], rect[1], lbl_80540034);
+                if (fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt)) {
+                    return 1;
+                }
+            }
+            {
+                JGeometry::TVec3<f32> pt(rect[2], rect[3], lbl_80540034);
+                return fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt) != 0;
+            }
+        } else {
+            {
+                JGeometry::TVec3<f32> pt(rect[0], rect[1], lbl_80540034);
+                if (!fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt)) {
+                    return 0;
+                }
+            }
+            {
+                JGeometry::TVec3<f32> pt(rect[0], rect[3], lbl_80540034);
+                if (!fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt)) {
+                    return 0;
+                }
+            }
+            {
+                JGeometry::TVec3<f32> pt(rect[2], rect[1], lbl_80540034);
+                if (!fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt)) {
+                    return 0;
+                }
+            }
+            {
+                JGeometry::TVec3<f32> pt(rect[2], rect[3], lbl_80540034);
+                return fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &pt) != 0;
+            }
+        }
+    }
+    f32 buf[4];
+    f32 a = rect[0];
+    f32 b = rect[1];
+    f32 c = rect[2];
+    f32 d = rect[3];
+    buf[0] = a;
+    buf[1] = b;
+    buf[2] = c;
+    buf[3] = d;
+    return fn_8030AF10(PTR(p, 0xbec), room, buf);
+}
+
 void fn_80241DD0(char* p, s32 room, const JGeometry::TVec3<f32>& v) {
     if (room < 8) {
         fn_8030C2A8(PTR(lbl_8053AB10, 0x24), &v);
@@ -1034,6 +1130,54 @@ BOOL fn_80242704(char* p, s32 v) {
     }
     return 0;
 }
+
+void fn_80242940(char* p) {
+    if (U8(p, 0x454) == 0) {
+        s32 s = S32(p, 0x1240);
+        bool busy = false;
+        if (s == 0x4a || s == 0x4b) {
+            busy = true;
+        }
+        if (busy) {
+            if (S32(p, 0xbe4) > 0) {
+                bool done = true;
+                S32(p, 0xbe4) = S32(p, 0xbe4) - 1;
+                if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) || S32(p, 0xd60) >= 0) {
+                    s32 mode = getMode(p);
+                    if (mode == 4) {
+                        s32 target;
+                        s32 n = 0;
+                        s32 i;
+                        if (S32(p, 0xd60) < 0) {
+                            target = S32(p, 0x1224);
+                        } else {
+                            target = fn_80234004(S32(p, 0xd60));
+                            for (i = 0; i < S32(p, 0x4); i++) {
+                                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
+                                    n++;
+                                }
+                            }
+                            n++;
+                        }
+                        done = n != target;
+                    } else {
+                        done = S32(p, 0xd60) >= 0;
+                    }
+                }
+                if (!done && S32(p, 0xbe4) > 0 && S32(p, 0xbe4) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
+                    fn_803037D4(S32(p, 0x4), 2);
+                }
+            }
+            if (U8(p, 0xbe8) != 0 && S32(p, 0xbe4) <= 0 && S32(p, 0x3b4) >= 8) {
+                fn_8028FC2C(p);
+            }
+            if (S32(p, 0x3b4) < 8 && S32(p, 0xbe4) > 0) {
+                S32(p, 0xbe4) = 0;
+            }
+        }
+    }
+}
+
 void fn_80242BC0(char* p) {
     if (U8(p, 0x454) != 0) {
         return;
@@ -1189,12 +1333,12 @@ BOOL fn_802454C0(char* p) {
         ok2 = false;
     } else {
         s32 mode;
-        s32 e;
-        s32 i;
-        s32 c;
         s32 d;
-        c = 0;
-        for (i = c; i < 4; i++) {
+        s32 e;
+        int i;
+        int c;
+        i = c = 0;
+        while (i < 4) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
@@ -1212,6 +1356,7 @@ BOOL fn_802454C0(char* p) {
             } else if (i == S32(p, 0xd60)) {
                 c++;
             }
+            i++;
         }
         if (c <= 1) {
             mode = 5;
@@ -1299,7 +1444,7 @@ inline bool padActive3(char* p) {
     }
     return true;
 }
-  inline s32 countSharingC(char* p) { s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { s32 linked = S32(p, 0xd60); if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else { s32 me = S32(p, 0x4);
+  inline s32 countSharingC(char* p) { s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { s32 me = S32(p, 0x4); s32 linked = S32(p, 0xd60); if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else {
                         if (me == fn_8022F3DC(i)) {
                       c++;
                   }
@@ -2181,12 +2326,11 @@ void fn_8024CA20(char* p) {
 
 void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
     if (S32(p, 0xd50) <= 0 && (S32(p, 0xd44) < 0 || S32(p, 0xd44) == a3) && S32(p, 0xd3c) < 0) {
-        s32 linked;
-        s32 me;
+        s32 iVar4;
         s32 c;
         s32 i;
-        s32 iVar4;
         s32 cnt;
+        s32 l;
         u32 uVar5;
         u8 uVar8 = 1;
         if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) != 0 || S32(p, 0xd60) >= 0) {
@@ -2195,13 +2339,13 @@ void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
                 if (i == S32(p, 0x4)) {
                     c++;
                 } else if (fn_8022F514(i)) {
-                    linked = S32(p, 0xd60);
+                    s32 linked = S32(p, 0xd60);
                     if (linked >= 0) {
                         if (linked == fn_8022F3DC(i)) {
                             c++;
                         }
                     } else {
-                        me = S32(p, 0x4);
+                        s32 me = S32(p, 0x4);
                         if (me == fn_8022F3DC(i)) {
                             c++;
                         }
@@ -2210,7 +2354,7 @@ void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
                     c++;
                 }
             }
-            if (c < 2) {
+            if (c <= 1) {
                 iVar4 = 5;
             } else if (S32(p, 0xd60) < 0) {
                 iVar4 = S32(p, 0x120c);
@@ -2224,18 +2368,18 @@ void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
                     uVar5 = fn_80234004(S32(p, 0xd60));
                 }
                 if (S32(p, 0xd60) < 0) {
-                    cnt = 0;
+                    l = 0;
                 } else {
-                    linked = S32(p, 0xd60);
                     cnt = 0;
                     for (i = 0; i < S32(p, 0x4); i++) {
+                        s32 linked = S32(p, 0xd60);
                         if (linked == fn_8022F3DC(i)) {
                             cnt++;
                         }
                     }
-                    cnt++;
+                    l = cnt + 1;
                 }
-                uVar8 = ((u32)(cnt - uVar5) | (u32)(uVar5 - cnt)) >> 31;
+                uVar8 = ((u32)(l - uVar5) | (u32)(uVar5 - l)) >> 31;
             } else {
                 uVar8 = ((u32)S32(p, 0xd60) >> 31) ^ 1;
             }
@@ -2580,11 +2724,33 @@ u8 fn_80250030(char* p, s32 v) {
 int fn_80250ACC(char* p) {
     s32 s;
     s32 s2;
-    s32 expected;
+    s32 linked;
     s32 cnt;
     s32 i;
+    s32 c;
+    s32 me;
 
-    if (countSharingH(p) <= 1) {
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                me = S32(p, 0x4);
+                if (me == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    if (c <= 1) {
         s = 5;
     } else if (S32(p, 0xd60) < 0) {
         s = S32(p, 0x120c);
@@ -2598,22 +2764,43 @@ int fn_80250ACC(char* p) {
             s2 = fn_80234004(S32(p, 0xd60));
         }
         if (S32(p, 0xd60) < 0) {
-            expected = 0;
+            cnt = 0;
         } else {
             cnt = 0;
             for (i = 0; i < S32(p, 0x4); i++) {
-                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
+                linked = S32(p, 0xd60);
+                if (linked == fn_8022F3DC(i)) {
                     cnt++;
                 }
             }
-            expected = cnt + 1;
+            cnt++;
         }
-        if (s2 != expected) {
+        if (s2 != cnt) {
             return 0;
         }
     }
 
-    if (countSharingH(p) <= 1) {
+    c = 0;
+    for (i = 0; i < 4; i++) {
+        if (i == S32(p, 0x4)) {
+            c++;
+        } else if (fn_8022F514(i)) {
+            linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            } else {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
+                    c++;
+                }
+            }
+        } else if (i == S32(p, 0xd60)) {
+            c++;
+        }
+    }
+    if (c <= 1) {
         s = 5;
     } else if (S32(p, 0xd60) < 0) {
         s = S32(p, 0x120c);
