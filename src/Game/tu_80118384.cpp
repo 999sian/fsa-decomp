@@ -48,16 +48,26 @@ extern "C" void fn_80118384(u8* self)
 
 extern "C" void fn_801183BC(u8* self)
 {
-    extern u8 lbl_8053AA91;
+    extern s8 lbl_8053AA91;
     extern u8 lbl_804BC504[];
     extern u8 lbl_804BC4F8[];
     extern f32 lbl_8053C798;
-    extern void fn_80119E5C(void);
     self[1] = 0;
     if (lbl_8053AA91 == 0) {
         lbl_804BC504[0] = 0;
         lbl_804BC504[1] = 0;
         lbl_804BC504[2] = 0;
+        *(u32*)(lbl_804BC504 + 0x8) = 0;
+        *(u32*)(lbl_804BC504 + 0xc) = 0;
+        *(u32*)(lbl_804BC504 + 0x10) = 0;
+        *(f32*)(lbl_804BC504 + 0x14) = lbl_8053C798;
+        *(f32*)(lbl_804BC504 + 0x18) = lbl_8053C798;
+        *(u32*)(lbl_804BC504 + 0x1c) = 0;
+        *(u32*)(lbl_804BC504 + 0x20) = 0;
+        *(u32*)(lbl_804BC504 + 0x24) = 0;
+        *(u32*)(lbl_804BC504 + 0x28) = 0;
+        *(u32*)(lbl_804BC504 + 0x2c) = 0;
+        __register_global_object(lbl_804BC504, (void (*)(void*))fn_80119E5C, lbl_804BC4F8);
         lbl_8053AA91 = 1;
     }
     lbl_804BC504[1] = 0;
@@ -193,9 +203,7 @@ extern "C" BOOL fn_801186B0(u8* self, u32 param)
 extern "C" u8** fn_8011871C(u8* self, u8** param_2, u32 param_3)
 {
     u8** begin = *(u8***)(self + 0x10);
-    u8** end;
     u32 count;
-    u8** it;
     if (begin == 0) {
         count = 0;
     } else {
@@ -204,18 +212,17 @@ extern "C" u8** fn_8011871C(u8* self, u8** param_2, u32 param_3)
     if (count == 0) {
         return *(u8***)(self + 0x14);
     }
-    end = *(u8***)(self + 0x14);
-    if (param_2 == end) {
-        return end;
+    if (param_2 == *(u8***)(self + 0x14)) {
+        return *(u8***)(self + 0x14);
     }
-    volatile u32 a = param_3;
     volatile u32 b = param_3;
-    it = param_2;
-    while (it != end) {
+    volatile u32 a = param_3;
+    u8** it = param_2;
+    u8** end = *(u8***)(self + 0x14);
+    for (; it != end; it++) {
         if (param_3 == *(u32*)(*it + 0x1a0)) {
             break;
         }
-        it++;
     }
     return it;
 }
@@ -788,11 +795,10 @@ extern "C" void fn_80119D48(u8* self)
         virtual void v0c(void);
         virtual void* v10(u32 a, u32 b);
     };
-    u8* pic;
-    void* res;
     if (*(u32*)(self + 0x2c) == 0) {
-        res = ((VObj*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->v10(0x3f3f3f3f, lbl_80539F10);
-        pic = (u8*)__nw__FUl(0x168);
+        VObj* obj = *(VObj**)((u8*)lbl_8053AAF8 + 0xa4);
+        void* res = obj->v10(0x3f3f3f3f, lbl_80539F10);
+        u8* pic = (u8*)__nw__FUl(0x168);
         if (pic != 0) {
             __ct__10J2DPictureFPC7ResTIMG(pic, res);
         }
