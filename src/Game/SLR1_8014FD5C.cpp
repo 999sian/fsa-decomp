@@ -16,6 +16,9 @@ s32 Actor_CreateByID(void* pool, u32 type, u32 owner, const Vec* position,
 Actor* fn_801F666C(void* pool, s32 id);
 u8 fn_801F2618(Actor* actor, f32* output, u32 flags);
 void* fn_802D6A9C();
+s16 fn_801F6874(u32 dir);
+u16 fn_8022461C(void* pos, s32 room);
+u8 fn_802DE9A0(void);
 u8 fn_802DCD0C(void* room);
 u8 fn_8030C210(void* camera, const Vec* position);
 
