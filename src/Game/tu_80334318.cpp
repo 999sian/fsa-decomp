@@ -18,6 +18,30 @@ extern "C" s32 fn_801F78F4(void* m, u32 code, s32 i);
 extern "C" void* fn_801F666C(void* m, s32 i);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_801F349C(Actor* a, u32 x, f32* p);
+extern "C" void fn_802F86CC(void*, void*, void*, s32, void*, f32, f32);
+extern "C" void fn_80307AC8(u32, u32, void*, void*, s32, u32, s32);
+extern "C" void PSMTXIdentity(f32 (*m)[4]);
+extern "C" double sin(double x);
+extern "C" double cos(double x);
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8* lbl_8053AB10;
+extern "C" char lbl_80471AB8[];
+extern "C" char lbl_80471AC8[];
+extern const f32 lbl_80541F80;
+extern const f32 lbl_80541F84;
+extern const f32 lbl_80541F88;
+extern const f32 lbl_80541F8C;
+
+class ResMgr {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual void v10();
+    virtual void v14();
+    virtual void* v18(u32 type, const char* name);
+};
 extern const f32 lbl_80541F70;
 extern const f32 lbl_80541F74;
 extern const f32 lbl_80541F84;
