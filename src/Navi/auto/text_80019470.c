@@ -272,8 +272,8 @@ extern "C" s32 fn_800199DC(s16 param_1, u16 param_2) {
 
 extern "C" void fn_80019A24(void) {
     if (lbl_802FB9B8 != NULL) {
-        s32 iVar1 = fn_80019DF0();
-        if (iVar1 < 6 && iVar1 > 2) {
+        s32 iVar1 = fn_80019DF0(lbl_802FB9B8);
+        if (iVar1 < 6 && iVar1 >= 3) {
             lbl_802FB9B8 = NULL;
         }
     }
@@ -285,7 +285,7 @@ extern "C" s32 fn_80019A6C(void) {
     if (lbl_802FB9B8 == NULL) {
         return 1;
     }
-    iVar1 = fn_8001A1C8();
+    iVar1 = fn_8001A1C8(lbl_802FB9B8);
     if (iVar1 == 1) {
         lbl_802FB9B8 = NULL;
         uVar2 = fn_8011FD10();
