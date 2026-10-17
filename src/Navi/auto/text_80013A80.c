@@ -80,6 +80,9 @@ struct Unk80204EA4 {
 extern struct Unk80204EA4 lbl_80204EA4;
 extern struct Unk80204EA4 lbl_80204EB0;
 extern struct Unk80204EA4 lbl_80204EC8;
+extern "C" s32 fn_801E1070(void* p);
+extern "C" s32 fn_801E10A0(void* p, void* q);
+extern "C" void fn_801E10DC(void* p, void* q);
 struct StateObj_80014790;
 typedef void (StateObj_80014790::*StateFunc_80014790)(s32);
 struct StateObj_80014790 {
