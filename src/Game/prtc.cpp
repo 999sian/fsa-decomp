@@ -7,8 +7,8 @@ extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s
 
 static inline void* PrtcSpawn(char* p, s32 id, s32 a) {
     f32 pos[3];
-    pos[0] = *(f32*)(p + 0xc) + *(f32*)(p + 0x244);
     pos[1] = *(f32*)(p + 0x10) + *(f32*)(p + 0x248);
+    pos[0] = *(f32*)(p + 0xc) + *(f32*)(p + 0x244);
     pos[2] = 0.0f;
     return fn_8013CC50(*(s32*)(p + 4), pos, id, a, 0, 0, 0, 1, 1.0f);
 }
@@ -33,6 +33,55 @@ extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s
 extern "C" {
 
 void Prtc_EmptyHook(void) {}
+
+extern "C" void fn_802E0AB8(void* this_) {
+    char* p = (char*)this_;
+    if (*(s32*)(p + 0x250) <= 1) {
+        fn_801F0E34(this_, 0x30033, 0);
+    }
+    s32 state = *(s32*)(p + 0x240);
+    if (state == 1) {
+    } else if (state >= 0 && state < 1 && ((u8 (*)(void*))(*(void***)this_)[13])(this_)) {
+        switch (*(s32*)(p + 0x250)) {
+        case 0:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x188, *(s32*)(p + 0x254));
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0x189, *(s32*)(p + 0x254));
+            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x18a, *(s32*)(p + 0x254));
+            break;
+        case 1:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x18b, *(s32*)(p + 0x254));
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0x18c, *(s32*)(p + 0x254));
+            *(void**)(p + 0x23c) = PrtcSpawn(p, 0x18d, *(s32*)(p + 0x254));
+            break;
+        case 2:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x552, *(s32*)(p + 0x254));
+            break;
+        case 3:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x17e, *(s32*)(p + 0x254));
+            break;
+        case 4:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x17f, *(s32*)(p + 0x254));
+            break;
+        case 5:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x180, *(s32*)(p + 0x254));
+            break;
+        case 6:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x6e, *(s32*)(p + 0x254));
+            break;
+        case 7:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0xa9, -1);
+            *(void**)(p + 0x238) = PrtcSpawn(p, 0xaa, *(s32*)(p + 0x254));
+            break;
+        case 8:
+            *(void**)(p + 0x234) = PrtcSpawn(p, 0x6f, *(s32*)(p + 0x254));
+            *(s32*)(p + 0x240) = 1;
+            return;
+        }
+    } else {
+        return;
+    }
+    PrtcNotify(p);
+}
 
 }
 
