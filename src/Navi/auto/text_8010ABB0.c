@@ -47,6 +47,11 @@ extern "C" void fn_8010B634(u8* p) {
     p[0x9c] = 0;
 }
 
+extern "C" void fn_8010BAA0(NaviState_8010ABB0* p) {
+    ((u8*)p)[0x9d] = 0;
+    (p->*lbl_8028EA24[((u8*)p)[0x9a]])();
+}
+
 extern "C" void fn_8010BD6C(u8* param_1) {
     if (param_1[0x9b] != 0) {
         param_1[0x9b]--;
