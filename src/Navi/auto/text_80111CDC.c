@@ -47,8 +47,13 @@ extern "C" BOOL fn_80112488(StateObj_80112488* self, StateFunc_80112488* func, i
             (self->*self->m_func)(arg);
         }
         self->m_func = *func;
-        self->m_unk304[0] = 0;
         self->m_state = 0;
+        self->m_unk304[0] = 0;
+        self->m_unk304[1] = 0;
+        self->m_unk304[2] = 0;
+        self->m_unk304[3] = 0;
+        self->m_unk30c[0] = 0.0f;
+        self->m_unk30c[1] = 0.0f;
         (self->*self->m_func)(arg);
     }
     return TRUE;
