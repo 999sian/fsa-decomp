@@ -12,6 +12,7 @@ struct VObj_800A1A64 {
 // .text 0x800d73fc-0x800ee3f0 (167 functions). split_file divides it into the game's real files.
 
 extern void* lbl_8028B80C[];
+extern "C" char lbl_802BB0FC[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301058;
