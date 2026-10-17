@@ -90,6 +90,17 @@ extern "C" u8 lbl_8050DB0C[];
 extern "C" f32 lbl_8054349C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
+struct Clr {
+    u8 r, g, b, a;
+};
+
+struct ColorVt {
+    void* v[15];
+    void* (*v15)(void* self, u32 a, u64 b);
+    void* v16[60];
+    void (*v76)(void* self, void* a, void* b);
+};
+
 struct TextBoxVt15 {
     void* v[15];
     void* (*v15)(void* a, u64 b);
@@ -122,100 +133,96 @@ static inline void stopPane(void* obj) {
 }
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
 extern "C" void fn_803BDD44(u8* p, s32 idx) {
-    u8* tbl;
     s32 off;
     void* q;
-    u32 c0, c4, c8, cc;
     u32 v08, v0c, v10, v14, v18, v1c, v20, v24, v28, v2c, v30, v34, v38, v3c, v40, v44;
     u32 v48, v4c, v50, v54, v58, v5c, v60, v64, v68, v6c, v70, v74, v78, v7c, v80, v84;
-    u32 v88, v8c, v90, v94, v98, v9c, va0, va4, va8, vb0, vb4, vb8, vbc;
+    u32 v88, v8c, v90, v94, v98, v9c, va0, va4, va8, vb0, vb4, vb8, vbc, vc0, vc4, vc8, vcc;
 
-    tbl = lbl_804765D0;
     off = idx * 8;
+    vc8 = *(u32*)(p + 0xe8);
+    vcc = *(u32*)(p + 0xfc);
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), idx, *(u32*)(lbl_804765D0 + 0x5d8 + off), *(u32*)(lbl_804765D0 + 0x5dc + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &vcc, &vc8);
 
-    c8 = *(u32*)(p + 0xe8);
-    cc = *(u32*)(p + 0xfc);
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), idx, *(u32*)(tbl + 0x5d8 + off), *(u32*)(tbl + 0x5dc + off));
-    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &cc, &c8);
-
-    c0 = *(u32*)(p + 0xec);
-    c4 = *(u32*)(p + 0x100);
-    v80 = c0;
-    v7c = c4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c4, *(u32*)(tbl + 0x5c0 + off), *(u32*)(tbl + 0x5c4 + off));
+    vc0 = *(u32*)(p + 0xec);
+    v80 = vc0;
+    v7c = *(u32*)(p + 0x100);
+    vc4 = v7c;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc4, *(u32*)(lbl_804765D0 + 0x5c0 + off), *(u32*)(lbl_804765D0 + 0x5c4 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v7c, &v80);
 
-    v88 = c0;
-    v84 = c4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c0, *(u32*)(tbl + 0x5a8 + off), *(u32*)(tbl + 0x5ac + off));
+    v88 = vc0;
+    v84 = vc4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc0, *(u32*)(lbl_804765D0 + 0x5a8 + off), *(u32*)(lbl_804765D0 + 0x5ac + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v84, &v88);
 
-    v90 = c0;
-    v8c = c4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c0, *(u32*)(tbl + 0x590 + off), *(u32*)(tbl + 0x594 + off));
+    v90 = vc0;
+    v8c = vc4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc0, *(u32*)(lbl_804765D0 + 0x590 + off), *(u32*)(lbl_804765D0 + 0x594 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v8c, &v90);
 
-    v98 = c0;
-    v94 = c4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c0, *(u32*)(tbl + 0x578 + off), *(u32*)(tbl + 0x57c + off));
+    v98 = vc0;
+    v94 = vc4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vc0, *(u32*)(lbl_804765D0 + 0x578 + off), *(u32*)(lbl_804765D0 + 0x57c + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v94, &v98);
 
-    va4 = c0;
-    ((u8*)&va0)[0] = ((u8*)&c4)[0];
-    ((u8*)&va0)[1] = ((u8*)&c4)[1];
-    ((u8*)&va0)[2] = ((u8*)&c4)[2];
+    va4 = vc0;
+    ((u8*)&va0)[0] = ((u8*)&vc4)[0];
+    ((u8*)&va0)[1] = ((u8*)&vc4)[1];
+    ((u8*)&va0)[2] = ((u8*)&vc4)[2];
     ((u8*)&va0)[3] = 0xff;
     v9c = va0;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&c4)[2], *(u32*)(tbl + 0x560 + off), *(u32*)(tbl + 0x564 + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&vc4)[2], *(u32*)(lbl_804765D0 + 0x560 + off), *(u32*)(lbl_804765D0 + 0x564 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v9c, &va4);
 
     vb8 = *(u32*)(p + 0xf0);
     vbc = *(u32*)(p + 0x104);
     v58 = vb8;
     v54 = vbc;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vbc, *(u32*)(tbl + 0x548 + off), *(u32*)(tbl + 0x54c + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vbc, *(u32*)(lbl_804765D0 + 0x548 + off), *(u32*)(lbl_804765D0 + 0x54c + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v54, &v58);
 
     v60 = vb8;
     v5c = vbc;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x530 + off), *(u32*)(tbl + 0x534 + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(lbl_804765D0 + 0x530 + off), *(u32*)(lbl_804765D0 + 0x534 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v5c, &v60);
 
     v68 = vb8;
     v64 = vbc;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x518 + off), *(u32*)(tbl + 0x51c + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(lbl_804765D0 + 0x518 + off), *(u32*)(lbl_804765D0 + 0x51c + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v64, &v68);
 
     v70 = vb8;
     v6c = vbc;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x500 + off), *(u32*)(tbl + 0x504 + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(lbl_804765D0 + 0x500 + off), *(u32*)(lbl_804765D0 + 0x504 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v6c, &v70);
 
     v78 = vb8;
     v74 = vbc;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x4e8 + off), *(u32*)(tbl + 0x4ec + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(lbl_804765D0 + 0x4e8 + off), *(u32*)(lbl_804765D0 + 0x4ec + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v74, &v78);
 
     vb0 = *(u32*)(p + 0xf4);
     vb4 = *(u32*)(p + 0x108);
     v2c = vb0;
     v28 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, *(u32*)(tbl + 0x6c8 + off), *(u32*)(tbl + 0x6cc + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, *(u32*)(lbl_804765D0 + 0x6c8 + off), *(u32*)(lbl_804765D0 + 0x6cc + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v28, &v2c);
 
     v34 = vb0;
     v30 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(tbl + 0x6b0 + off), *(u32*)(tbl + 0x6b4 + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(lbl_804765D0 + 0x6b0 + off), *(u32*)(lbl_804765D0 + 0x6b4 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v30, &v34);
 
     v3c = vb0;
     v38 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(tbl + 0x698 + off), *(u32*)(tbl + 0x69c + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(lbl_804765D0 + 0x698 + off), *(u32*)(lbl_804765D0 + 0x69c + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v38, &v3c);
 
     v44 = vb0;
     v40 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(tbl + 0x680 + off), *(u32*)(tbl + 0x684 + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(lbl_804765D0 + 0x680 + off), *(u32*)(lbl_804765D0 + 0x684 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v40, &v44);
 
     ((u8*)&v4c)[0] = ((u8*)&vb4)[0];
@@ -224,29 +231,29 @@ extern "C" void fn_803BDD44(u8* p, s32 idx) {
     ((u8*)&v4c)[3] = 0xff;
     v48 = v4c;
     v50 = vb0;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&vb4)[2], *(u32*)(tbl + 0x668 + off), *(u32*)(tbl + 0x66c + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&vb4)[2], *(u32*)(lbl_804765D0 + 0x668 + off), *(u32*)(lbl_804765D0 + 0x66c + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v48, &v50);
 
     va8 = *(u32*)(p + 0xf8);
     vb4 = *(u32*)(p + 0x10c);
     v0c = va8;
     v08 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, *(u32*)(tbl + 0x650 + off), *(u32*)(tbl + 0x654 + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, *(u32*)(lbl_804765D0 + 0x650 + off), *(u32*)(lbl_804765D0 + 0x654 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v08, &v0c);
 
     v14 = va8;
     v10 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(tbl + 0x638 + off), *(u32*)(tbl + 0x63c + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(lbl_804765D0 + 0x638 + off), *(u32*)(lbl_804765D0 + 0x63c + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v10, &v14);
 
     v1c = va8;
     v18 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(tbl + 0x620 + off), *(u32*)(tbl + 0x624 + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(lbl_804765D0 + 0x620 + off), *(u32*)(lbl_804765D0 + 0x624 + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v18, &v1c);
 
     v24 = va8;
     v20 = vb4;
-    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(tbl + 0x608 + off), *(u32*)(tbl + 0x60c + off));
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(lbl_804765D0 + 0x608 + off), *(u32*)(lbl_804765D0 + 0x60c + off));
     ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v20, &v24);
 }
 
@@ -555,6 +562,55 @@ extern "C" void fn_803C21A8(u8* this_) {
     *(u16*)(this_ + 0xda) = 0;
     this_[0x112] = this_[0x110];
     this_[0x110] = 6;
+}
+
+extern u8 lbl_804765D0[];
+typedef void* (*KeyGetFn)(void* self, u64 key);
+typedef void (*Fn5Fn)(void* a, s16 b, s32 c, f32 d, f32 e);
+extern "C" void fn_803C3904(u8* this_) {
+    s32 order[3];
+    s32* ord;
+    s32 k;
+    s32 off;
+    s32 idx;
+    u8* obj;
+    u8* sub;
+    s16 a = *(s16*)(lbl_8050DB0C + 0x200);
+    s16 b = *(s16*)(lbl_8050DB0C + 0x202);
+    s16 c = *(s16*)(lbl_8050DB0C + 0x1fe);
+    s16 total = a + b + c;
+
+    ord = order;
+    if (*(s32*)(this_ + 0xa4) != 0) {
+        *ord++ = 0;
+    }
+    if (*(s32*)(this_ + 0xa4) != 1) {
+        *ord++ = 1;
+    }
+    if (*(s32*)(this_ + 0xa4) != 2) {
+        *ord = 2;
+    }
+    *(s16*)(this_ + 0xd8) = *(s16*)(this_ + 0xd8) + 1;
+
+    k = 0;
+    off = 0;
+    ord = order;
+    do {
+        if (c + off < *(s16*)(this_ + 0xd8)) {
+            idx = *ord;
+            obj = *(u8**)(this_ + 0x38 + idx * 4);
+            ((Fn5Fn)fn_80402B10)(obj, a, 0, lbl_80543498, lbl_80543458);
+            fn_80402628(obj, a, 0, obj[0x28]);
+            sub = *(u8**)(this_ + 8);
+            idx = *ord;
+            ((KeyGetFn)(*(void***)sub)[15])(sub, *(u64*)(lbl_804765D0 + 0x780 + idx * 8));
+        }
+        off += b;
+        ord++;
+        k++;
+    } while (k < 2);
+    fn_80402940(this_, a, 0, 0.0f, 0.0f);
+    *(s16*)(this_ + 0xd8) = total;
 }
 
 extern "C" f32 lbl_805434A4;
