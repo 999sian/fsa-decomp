@@ -132,7 +132,7 @@ extern "C" s32 fn_8008CB14(u8* self) {
             switch (lbl_802FEDE4) {
             case 1: {
                 Arg_8008CF88 b = lbl_80284BD8;
-                fn_8008CF88(self, &b, 0);
+                fn_8008CF88((StateObj_8008CF88*)self, &b, 0);
                 break;
             }
             }
