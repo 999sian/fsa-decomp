@@ -552,8 +552,8 @@ extern "C" void fn_80194B0C(u32 param_1, s32 param_2) {
 }
 
 extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
-    fn_80191A60((u8*)((u32*)((u32*)lbl_802EE470)[16])[12], param_2 * 3);
-    fn_80191AE0(((u32*)((u32*)lbl_802EE470)[16])[12], param_2 * 3);
+    fn_80191A60((u8*)(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30)), param_2 * 3);
+    fn_80191AE0(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), param_2 * 3);
 }
 
 extern "C" void fn_801951A0(u32* p, u32 param_2, u32 param_3) {
