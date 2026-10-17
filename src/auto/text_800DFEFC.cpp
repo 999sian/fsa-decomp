@@ -33,6 +33,15 @@ u8 J3DMaterialFactory_v21::newColorChanNum(int idx) const
     return 0;
 }
 
+extern "C" J3DColorChan fn_800E09F0(const J3DMaterialFactory_v21* self, int idx, int no)
+{
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mColorChanControlIndex[no] != 0xffff) {
+		return J3DColorChan(self->mColorChanInfo[initData->mColorChanControlIndex[no]]);
+	}
+	return J3DColorChan();
+}
+
 u32 J3DMaterialFactory_v21::newTexGenNum(int idx) const
 {
     u8 bVar1 = ((u8*)&mInitData[mMatRemapTable[idx]])[3];
@@ -53,8 +62,8 @@ extern "C" J3DTexCoord fn_800E0BBC(const J3DMaterialFactory_v21* self, int idx, 
 
 extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, int no)
 {
-	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	J3DTexMtx* texMtx = NULL;
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mTexMatrixIndex[no] != 0xffff) {
 		texMtx = new J3DTexMtx(self->mTexMtxInfo[initData->mTexMatrixIndex[no]]);
 	}
@@ -98,13 +107,14 @@ extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx
 	return j3dDefaultTevColor;
 }
 
-extern "C" J3DGXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
+extern "C" GXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
 {
+	GXColor defaultColor = j3dDefaultTevKColor;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mTevKColorIndex[no] != 0xffff) {
-		return J3DGXColor(self->mTevKColors[initData->mTevKColorIndex[no]]);
+		return self->mTevKColors[initData->mTevKColorIndex[no]];
 	}
-	return j3dDefaultTevKColor;
+	return defaultColor;
 }
 
 u8 J3DMaterialFactory_v21::newTevStageNum(int idx) const
@@ -132,6 +142,18 @@ J3DTevSwapModeTable J3DMaterialFactory_v21::newTevSwapModeTable(int idx, int sta
         return J3DTevSwapModeTable(mTevSwapModeTableInfo[initData->mTevSwapModeTableIndex[stage]]);
     }
     return J3DTevSwapModeTable(j3dDefaultTevSwapModeTable);
+}
+
+extern "C" J3DFogInfo fn_800E0F84(const J3DMaterialFactory_v21* self, int idx)
+{
+	J3DFogInfo fog;
+	fog = j3dDefaultFogInfo;
+	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
+	if (initData->mFogInfoIndex != 0xffff) {
+		J3DFogInfo tmp = self->mFogInfo[initData->mFogInfoIndex];
+		fog = tmp;
+	}
+	return fog;
 }
 
 J3DAlphaComp J3DMaterialFactory_v21::newAlphaComp(int idx) const
