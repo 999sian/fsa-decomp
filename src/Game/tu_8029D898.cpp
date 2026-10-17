@@ -43,7 +43,7 @@ public:
     void detach();
 };
 extern "C" void* fn_801F856C(void);
-extern "C" void* fn_801F666C(void*, s32);
+extern "C" void* fn_801F666C(void*, void*);
 extern "C" void fn_802D782C(void* mgr, s32 v);
 extern "C" s32 fn_802D4C10(void* mgr, u32 room, u16 v);
 extern "C" void fn_802D7D00(void* mgr, u32 room, s32 idx, s32 v);
