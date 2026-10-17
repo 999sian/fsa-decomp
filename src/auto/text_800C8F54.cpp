@@ -67,6 +67,42 @@ public:
 };
 extern J3DFogInfo j3dDefaultFogInfo;
 
+struct J3DColorChanInfo {
+    u8 mEnable;    // _00
+    u8 mMatSrc;    // _01
+    u8 mLightMask; // _02
+    u8 mDiffuseFn; // _03
+    u8 mAttnFn;    // _04
+    u8 mAmbSrc;    // _05
+};
+extern J3DColorChanInfo j3dDefaultColorChanInfo;
+
+struct J3DColorChan {
+    u16 mChanCtrl;
+
+    J3DColorChan() { mChanCtrl = 0; }
+    J3DColorChan(u16 id) { mChanCtrl = id; }
+    J3DColorChan(const J3DColorChanInfo& info)
+    {
+        u32 reg = 0;
+        reg = reg & ~0x0002 | info.mEnable << 1;
+        reg = reg & ~0x0001 | info.mMatSrc;
+        reg = reg & ~0x0040 | info.mAmbSrc << 6;
+        reg = reg & ~0x0004 | (info.mLightMask & 0x01) << 2;
+        reg = reg & ~0x0008 | (info.mLightMask & 0x02) << 3;
+        reg = reg & ~0x0010 | (info.mLightMask & 0x04) << 4;
+        reg = reg & ~0x0020 | (info.mLightMask & 0x08) << 5;
+        reg = reg & ~0x0800 | (info.mLightMask & 0x10) << 11;
+        reg = reg & ~0x1000 | (info.mLightMask & 0x20) << 12;
+        reg = reg & ~0x2000 | (info.mLightMask & 0x40) << 13;
+        reg = reg & ~0x4000 | (info.mLightMask & 0x80) << 14;
+        reg = reg & ~0x0180 | info.mDiffuseFn << 7;
+        reg = reg & ~0x0200 | (info.mAttnFn != 0) << 9;
+        reg = reg & ~0x0400 | (info.mAttnFn != 1) << 10;
+        mChanCtrl = reg;
+    }
+};
+
 struct J3DIndTevStageInfo {
     u8 mIndStage;  // _00
     u8 mIndFormat; // _01
@@ -574,8 +610,8 @@ extern "C" u32 calcSizeColorBlock__11J3DMaterialFUl(u32);
 extern "C" u32 calcSizeIndBlock__11J3DMaterialFi(int);
 extern "C" u32 calcSizePEBlock__11J3DMaterialFUlUl(u32, u32);
 extern "C" u32 fn_800CAD8C(u8* p, void* mat, s32 idx, u32 flags) {
-    u32 size = mat == NULL ? 0x4c : 0;
     u32 ind = (flags & 0x03000000) != 0;
+    u32 size = mat == NULL ? 0x4c : 0;
     size += calcSizeColorBlock__11J3DMaterialFUl(0x40000000);
     size += 0x134;
     size += calcSizeIndBlock__11J3DMaterialFi(ind);
@@ -670,16 +706,16 @@ extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b) {
 extern "C" void* __nw__FUl(u32);
 extern "C" void __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(void*, const void*);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
-    u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
+    u16* ids = *(u16**)(p + 8);
     u32 off = ids[idx] * 0x14c + 0x48;
     off += b * 2;
-    void* ret = NULL;
-    if (*(u16*)(base + off) != 0xffff) {
-        ret = __nw__FUl(0x94);
-        if (ret != NULL) {
-            __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, *(u8**)(p + 0x30) + *(u16*)(base + off) * 0x64);
-        }
+    if (*(u16*)(base + off) == 0xffff) {
+        return NULL;
+    }
+    void* ret = __nw__FUl(0x94);
+    if (ret != NULL) {
+        __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(ret, *(u8**)(p + 0x30) + *(u16*)(base + off) * 0x64);
     }
     return ret;
 }
@@ -792,8 +828,7 @@ extern "C" void fn_800CB4C0(void* out, u8* e) {
 
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u16* ids = *(u16**)(p + 8);
-    u8* base = *(u8**)(p + 4);
-    u16 v = *(u16*)(base + ids[idx] * 0x14c + 0x124 + stage * 2);
+    u16 v = *(u16*)(*(u8**)(p + 4) + ids[idx] * 0x14c + 0x124 + stage * 2);
     if (v != 0xffff) {
         u8* e = *(u8**)(p + 0x58) + v * 4;
         *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
@@ -827,9 +862,8 @@ extern "C" J3DIndTexMtxInfo fn_800CB628(u8* param_2, s32 param_3, s32 param_4) {
     J3DIndTexMtxInfo local;
     local = j3dDefaultIndTexMtxInfo;
     u8* pcVar1 = *(u8**)(param_2 + 0xc) + param_3 * 0x138;
-    J3DIndTexMtxInfo* p = (J3DIndTexMtxInfo*)(pcVar1 + param_4 * 0x1c + 0x14);
     if (*pcVar1 == 1) {
-        return *p;
+        local = *(J3DIndTexMtxInfo*)(pcVar1 + param_4 * 0x1c + 0x14);
     }
     return local;
 }
@@ -872,9 +906,7 @@ extern "C" J3DFogInfo fn_800CB8C8(u8* p, s32 idx)
 {
     J3DFogInfo fog;
     fog = j3dDefaultFogInfo;
-    u8* base = *(u8**)(p + 4);
-    u16 id = ((u16*)*(u8**)(p + 8))[idx];
-    u16 v = *(u16*)(base + id * 0x14c + 0x144);
+    u16 v = *(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x144);
     if (v != 0xffff) {
         J3DFogInfo tmp = ((J3DFogInfo*)*(u8**)(p + 0x5c))[v];
         fog = tmp;
@@ -943,11 +975,10 @@ extern "C" u8 fn_800CBB64(u8* param_1, s32 param_2) {
 }
 
 extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) {
-    J3DNBTScaleInfo local;
-    u32 uVar4;
+    J3DNBTScale local;
+    u16 uVar4;
     u8* puVar5;
 
-    local = j3dDefaultNBTScaleInfo;
     uVar4 = *(u16*)(*(u8**)(param_2 + 4) + (u32)*(u16*)(*(u8**)(param_2 + 8) + param_3 * 2) * 0x14c + 0x14a);
     if (uVar4 != 0xffff) {
         puVar5 = *(u8**)(param_2 + 0x74) + (uVar4 << 4);
