@@ -43,6 +43,33 @@ extern "C" void* fn_80022920(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8002295C(void* self) {
+    u8* p = (u8*)self;
+    *(s16*)(p + 0) = 0;
+    *(s16*)(p + 2) = 0;
+    *(s32*)(p + 8) = 0;
+    *(s32*)(p + 4) = 0;
+    *(s32*)(p + 0x30) = 0;
+    p[0x47] = 0;
+    p[0x34] = 0;
+    p[0x35] = 0;
+    p[0x36] = 0;
+    p[0x37] = 0;
+    p[0x38] = 0;
+    p[0x39] = 0;
+    p[0x3a] = 0;
+    p[0x3b] = 0;
+    p[0x3c] = 0;
+    p[0x3d] = 0;
+    p[0x3e] = 0;
+    p[0x3f] = 0;
+    p[0x40] = 0;
+    p[0x41] = 0;
+    p[0x42] = 0;
+    p[0x43] = 0;
+    *(s32*)(p + 0x2c) = 0;
+}
+
 extern "C" void* fn_80022CA8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80222428;
