@@ -47,7 +47,7 @@ extern "C" void fn_801C8D70(u32 param_1);
 extern "C" void fn_801C8278(DVDCommandBlock* block);
 extern "C" void fn_801C830C(void);
 extern char lbl_8029D3C4[];
-extern char lbl_802FE9BC[];
+extern char lbl_802FE9BC[6];
 extern "C" void fn_801C6FF4(void* a, s32 b, s32 c, void* cb);
 extern "C" void fn_801C9060(DVDCommandBlock* block);
 extern "C" void fn_801C8554(u32 result);
@@ -563,7 +563,34 @@ extern "C" void fn_801C8850(u32 param_1)
 	}
 }
 
+extern "C" void fn_801C8B48(DVDCommandBlock* block);
 #pragma dont_inline on
+extern "C" void fn_801C8A68(void) {
+    char* base = BB2_802F7AA0;
+
+    switch (CurrCommand_802FF89C) {
+    case 3:
+        if (fn_801CAC6C(base + 0x20, executing_802FF880->id) != 0) {
+            memcpy(IDShouldBe_802FF884, base + 0x20, 0x20);
+            executing_802FF880->state = 1;
+            DCInvalidateRange(base, 0x20);
+            lbl_802FF8C4 = fn_801C8B7C;
+            fn_801C8B7C(executing_802FF880);
+        } else {
+            DVDLowStopMotor(fn_801C8C5C);
+        }
+        break;
+    default:
+        if (fn_801E3C54(base + 0x20, IDShouldBe_802FF884, 0x20) != 0) {
+            DVDLowStopMotor(fn_801C8C5C);
+        } else {
+            lbl_802FF8C4 = fn_801C8B48;
+            fn_801C8B48(executing_802FF880);
+        }
+        break;
+    }
+}
+#pragma dont_inline reset
 extern "C" void fn_801C8B48(DVDCommandBlock* block) {
     fn_801C76C8(((u8*)IDShouldBe_802FF884)[8], 10, fn_801C8E54);
 }
@@ -581,13 +608,13 @@ extern "C" void fn_801C8D70(u32 param_1)
 		DVDReset();
 		cbForStateError(0);
 	} else if (param_1 & 1) {
-		u32* p = (u32*)(BB2_802F7AA0 + 8);
+		u32* base = (u32*)BB2_802F7AA0;
 		lbl_802FF8C4 = fn_801C8278;
 		lbl_802FF8B4 = 0;
-		if (*(u32*)(bootInfo_802FF888 + 0x3c) < *p) {
+		if (*(u32*)(bootInfo_802FF888 + 0x3c) < base[2]) {
 			fn_80007AB8(lbl_802FE9BC, 0x28a, lbl_8029D3C4);
 		}
-		fn_801C6FF4((void*)*(u32*)(bootInfo_802FF888 + 0x38), (*p + 0x1f) & ~0x1f, *(u32*)(BB2_802F7AA0 + 4), fn_801C830C);
+		fn_801C6FF4((void*)*(u32*)(bootInfo_802FF888 + 0x38), (base[2] + 0x1f) & ~0x1f, base[1], fn_801C830C);
 	} else {
 		fn_801C747C(fn_801C8554);
 	}
