@@ -3,6 +3,14 @@
 #include "types.h"
 
 extern "C" void fn_80139BE8(void* p);
+extern "C" void* fn_8013A538(void* p, void* heap);
+extern "C" void fn_8013A1A4(void* p);
+extern "C" void* fn_8037A8D4(void* p);
+extern "C" void* fn_803A59E0(void* p);
+extern "C" void* fn_803DFF40(void* p);
+extern "C" void* fn_803D0264(void* p);
+extern "C" void* fn_803A8884(void* p);
+extern "C" void* fn_8039027C(void* p);
 struct TuVtable7 {
     virtual void v0(s32 flags);
     virtual void v1();
@@ -153,50 +161,50 @@ extern "C" void fn_80134FE0(u8* this_, u8 v) {
 
 extern "C" void fn_801352F4(char* this_, s32 which) {
     switch (which) {
-    case 1:
-        if (*(TuVtable7**)(this_ + 0x20) != 0) {
-            (*(TuVtable7**)(this_ + 0x20))->v2(1);
-            *(void**)(this_ + 0x20) = 0;
-        }
-        break;
-    case 2:
-    case 5:
-        if (*(TuVtable7**)(this_ + 0x28) != 0) {
-            (*(TuVtable7**)(this_ + 0x28))->v2(1);
-            *(void**)(this_ + 0x28) = 0;
-        }
-        break;
-    case 3:
-        if (*(TuVtable7**)(this_ + 0x24) != 0) {
-            (*(TuVtable7**)(this_ + 0x24))->v2(1);
-            *(void**)(this_ + 0x24) = 0;
-        }
-        break;
-    case 4:
-        if (*(TuVtable7**)(this_ + 0x2c) != 0) {
-            (*(TuVtable7**)(this_ + 0x2c))->v2(1);
-            *(void**)(this_ + 0x2c) = 0;
-        }
-        break;
-    case 6:
-        if (*(TuVtable7**)(this_ + 0x30) != 0) {
-            (*(TuVtable7**)(this_ + 0x30))->v2(1);
-            *(void**)(this_ + 0x30) = 0;
-        }
-        break;
     case 7:
         if (*(void**)(this_ + 4) != 0) {
             fn_80139BE8(*(void**)(this_ + 4));
             if (*(TuVtable7**)(this_ + 4) != 0) {
-                (*(TuVtable7**)(this_ + 4))->v2(1);
+                (*(TuVtable7**)(this_ + 4))->v0(1);
             }
             *(void**)(this_ + 4) = 0;
         }
         break;
     case 12:
         if (*(TuVtable7**)(this_ + 0x1c) != 0) {
-            (*(TuVtable7**)(this_ + 0x1c))->v2(1);
+            (*(TuVtable7**)(this_ + 0x1c))->v0(1);
             *(void**)(this_ + 0x1c) = 0;
+        }
+        break;
+    case 1:
+        if (*(TuVtable7**)(this_ + 0x20) != 0) {
+            (*(TuVtable7**)(this_ + 0x20))->v0(1);
+            *(void**)(this_ + 0x20) = 0;
+        }
+        break;
+    case 2:
+    case 5:
+        if (*(TuVtable7**)(this_ + 0x28) != 0) {
+            (*(TuVtable7**)(this_ + 0x28))->v0(1);
+            *(void**)(this_ + 0x28) = 0;
+        }
+        break;
+    case 3:
+        if (*(TuVtable7**)(this_ + 0x24) != 0) {
+            (*(TuVtable7**)(this_ + 0x24))->v0(1);
+            *(void**)(this_ + 0x24) = 0;
+        }
+        break;
+    case 4:
+        if (*(TuVtable7**)(this_ + 0x2c) != 0) {
+            (*(TuVtable7**)(this_ + 0x2c))->v0(1);
+            *(void**)(this_ + 0x2c) = 0;
+        }
+        break;
+    case 6:
+        if (*(TuVtable7**)(this_ + 0x30) != 0) {
+            (*(TuVtable7**)(this_ + 0x30))->v0(1);
+            *(void**)(this_ + 0x30) = 0;
         }
         break;
     }
