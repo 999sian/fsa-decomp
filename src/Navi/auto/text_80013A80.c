@@ -216,6 +216,19 @@ extern "C" void fn_8001404C(void* p) {
     }
 }
 
+extern "C" void fn_800140D0(void* p) {
+    u8 buf[4];
+    if (fn_801249A8(lbl_802FF370, ((Unk80013DA0*)p)->unk50, buf) == 0) {
+        if (*(u32*)((u8*)p + 0x2c) == lbl_802FB958) {
+            fn_80124AAC(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013CA4, p);
+        } else {
+            fn_80014390((Unk80013DA0*)p);
+        }
+    } else {
+        fn_80124820(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013C14, p);
+    }
+}
+
 extern "C" void fn_80014160(void* p) {
     Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
