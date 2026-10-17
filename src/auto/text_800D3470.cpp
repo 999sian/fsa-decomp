@@ -15,6 +15,7 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 extern "C" u32 lbl_80539E10;
+struct Hdr_800DDA5C { u16 w; u8 b2; u8 b3; };
 struct Col3_800DDDD0 { u8 r, g, b; };
 struct Col4_800DDDD0 { u8 a; Col3_800DDDD0 c; };
 struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
@@ -2419,9 +2420,15 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8 b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
+    struct Entry {
+        u8 pad : 4;
+        u8 hi : 2;
+        u8 lo : 2;
+        u8 rest[7];
+    };
+    Entry* e = (Entry*)(param_1 + 0x60) + param_2;
+    e->hi = param_3[1];
+    e->lo = param_3[0];
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -2623,8 +2630,9 @@ extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
   u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
-  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
-  e[0x28] = b0 | (e[0x28] & ~0x3);
+  u8 v = e[0x28];
+  e[0x28] = (b1 << 2) | (v & ~0xC);
+  e[0x28] = (e[0x28] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
