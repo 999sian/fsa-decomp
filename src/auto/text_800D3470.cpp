@@ -1105,10 +1105,10 @@ extern "C" void fn_800D6C40(u8* this_) {
 
 extern "C" void fn_800D6CEC(void* r3, u32 r4) {
     if ((r4 >> 8) & 0xf) {
-        ((void(**)(void*))(*(void***)r3))[0xa](r3);
+        (*(void(**)(void*))(*(u8**)r3 + 0x28))(r3);
         
         if (r4 & (1 << 12)) {
-            ((void(**)(void*))(*(void***)r3))[0xb](r3);
+            (*(void(**)(void*))(*(u8**)r3 + 0x2c))(r3);
         }
     }
 }
@@ -2188,10 +2188,10 @@ extern "C" void fn_800DB8F4(void* param_1) {
 
 extern "C" void fn_800DBC64(void* obj, u32 flags) {
     if (flags & 0x10000000) {
-        typedef void (*FuncPtr)(void);
+        typedef void (*FuncPtr)(void*);
         void* vtable = *(void**)obj;
         FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x18);
-        fn();
+        fn(obj);
     }
     if (flags & 0x20000000) {
         typedef void (*FuncPtr)(void*);
@@ -4228,9 +4228,11 @@ extern "C" u32 fn_800DF4BC(void) {
 }
 
 extern "C" void* fn_800DF4C8(void* param_1, short param_2) {
-    if (param_1 != nullptr) {
-        *(void**)param_1 = &__vt__13J3DPEBlockOpa;
-        *(void**)param_1 = &__vt__10J3DPEBlock;
+    if (param_1) {
+        *(void**)param_1 = __vt__13J3DPEBlockOpa;
+        if (param_1) {
+            *(void**)param_1 = __vt__10J3DPEBlock;
+        }
         if (param_2 > 0) {
             __dl__FPv(param_1);
         }
