@@ -547,7 +547,7 @@ extern "C" void fn_801B8C98(u8* this_, u8 hitWall) {
             fn_801CC350(this_ + 0x264, this_ + 0x3c);
             fn_801F0E34(this_, 0x4003c, 0);
         } else {
-            s32 hit = this_[0x240];
+            u32 hit = this_[0x240];
             if (hit != 0) {
             pl = pameFirstPlayer(hit);
             f32 ny = *(f32*)(this_ + 0x10) - fn_8023E724(pl)[1];
