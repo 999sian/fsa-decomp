@@ -96,3 +96,6 @@ extern "C" void fn_801752D8(void* this_) {
     }
 }
 
+void __sinit_SLR4_80172894_cpp(void) {
+}
+
