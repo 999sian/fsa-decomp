@@ -594,7 +594,8 @@ extern "C" void fn_8011B4C0(u8* param_1) {
 }
 
 extern "C" void fn_8011B568(u8* param_1, s32 param_2, s64 param_3) {
-    if (param_3 >= (s64)(((u64)lbl_802FF2E0 << 32) | lbl_802FF2E4)) {
+    s64 t = *(s64*)&lbl_802FF2E0;
+    if (param_3 >= t) {
         void (*fn)(s32, s32) = lbl_802FF2D4;
         lbl_802FF2E9 = 1;
         lbl_802FF2EC = *(s16*)(param_1 + 0x7c);
