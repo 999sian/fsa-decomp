@@ -29,6 +29,7 @@ extern "C" f32 lbl_8053F9A4;
 extern "C" f32 lbl_8053F9A8;
 extern "C" f32 lbl_8053F988;
 extern "C" u8 sincosTable___5JMath[];
+extern "C" u8 sincosTable___5JMath[];
 extern "C" void fn_801D22DC(u8* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801D22A0(u8* p, s32 a, s32 b);
 extern "C" void fn_801F0E34(u8* p, s32 a, s32 b);
@@ -235,6 +236,122 @@ extern "C" void fn_8020A2C0(void* this_) {
         ((ItemBase*)this_)->v31();
         break;
     }
+}
+
+extern "C" void fn_8020AA78(u8* this_, s32 state) {
+    s16 ang;
+    s32 idx;
+
+    if (*(u32*)(this_ + 0x230) & 0x2000) {
+        if (state < 0xb) {
+            if (state != 8) {
+                return;
+            }
+        } else if (state >= 0xd) {
+            return;
+        }
+    }
+    switch (state) {
+    case 0:
+    case 3:
+    case 12:
+        break;
+    case 1: {
+        fn_801D22DC(this_ + 0x270, 1, 0, 0);
+        f32 zero = lbl_8053F964;
+        *(f32*)(this_ + 0x2b4) = zero;
+        *(f32*)(this_ + 0x2b8) = zero;
+        *(f32*)(this_ + 0x2bc) = zero;
+        break;
+    }
+    case 2:
+        fn_801D22DC(this_ + 0x270, 4, 0, 0);
+        break;
+    case 4:
+        fn_801D22DC(this_ + 0x270, 8, 0, 0);
+        break;
+    case 5: {
+        fn_801D22DC(this_ + 0x270, 1, 0, 0);
+        f32 k = lbl_8053F988;
+        *(f32*)(this_ + 0x2b4) = k * *(f32*)(this_ + 0x2c0);
+        *(f32*)(this_ + 0x2b8) = k * *(f32*)(this_ + 0x2c4);
+        *(f32*)(this_ + 0x2bc) = lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8);
+        break;
+    }
+    case 6:
+        fn_801D22A0(this_ + 0x270, 5, 2);
+        break;
+    case 7: {
+        *(u32*)(this_ + 0x230) &= ~0x4000;
+        *(s32*)(this_ + 0x98) = *(s32*)(this_ + 0x2ac);
+        fn_801D22DC(this_ + 0x270, 1, 0, 0);
+        f32 zero = lbl_8053F964;
+        *(f32*)(this_ + 0x2b4) = zero;
+        *(f32*)(this_ + 0x2b8) = zero;
+        switch (*(s32*)(this_ + 0x98)) {
+        case 0:
+            *(f32*)(this_ + 0x2b4) = lbl_8053F994;
+            *(f32*)(this_ + 0x2b8) = zero;
+            break;
+        case 1:
+            *(f32*)(this_ + 0x2b4) = lbl_8053F998;
+            *(f32*)(this_ + 0x2b8) = zero;
+            break;
+        case 2:
+            *(f32*)(this_ + 0x2b4) = zero;
+            *(f32*)(this_ + 0x2b8) = lbl_8053F994;
+            break;
+        case 3:
+            *(f32*)(this_ + 0x2b4) = zero;
+            *(f32*)(this_ + 0x2b8) = lbl_8053F998;
+            break;
+        }
+        *(f32*)(this_ + 0x2bc) = lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8);
+        *(u8*)(this_ + 0x2b1) = *(u8*)(this_ + 0x2b0);
+        if (*(u8*)(this_ + 0x2b1) < 1) {
+            *(u8*)(this_ + 0x2b1) = 1;
+        }
+        break;
+    }
+    case 8: {
+        *(u32*)(this_ + 0x230) &= ~0x2000;
+        fn_801D22DC(this_ + 0x270, 1, 0, 0);
+        if (fn_801D05F8(this_, this_ + 0xC, lbl_8053F964) < 0) {
+            ang = fn_801CD664(0x10000);
+        } else {
+            ang = fn_801D0280(this_) - 0x8000;
+        }
+        *(f32*)(this_ + 0x2b4) = *(f32*)(sincosTable___5JMath + ((((s32)ang >> 2) & 0x3FF8))) * lbl_8053F99C;
+        *(f32*)(this_ + 0x2b8) = *(f32*)(sincosTable___5JMath + ((((s32)ang >> 2) & 0x3FF8) + 4)) * lbl_8053F99C;
+        *(f32*)(this_ + 0x2bc) = lbl_8053F98C * (lbl_8053F990 * -lbl_8053EFB8);
+        *(u8*)(this_ + 0x2b1) = 3;
+        break;
+    }
+    case 9:
+        *(u32*)(this_ + 0x230) &= ~0x8000;
+        fn_801D22DC(this_ + 0x270, 1, 0, 0);
+        *(f32*)(this_ + 0x2b4) = lbl_8053F9A0 * (*(f32*)(this_ + 0x2c8) - *(f32*)(this_ + 0xC));
+        *(f32*)(this_ + 0x2b8) = lbl_8053F9A0 * (*(f32*)(this_ + 0x2cc) - *(f32*)(this_ + 0x10));
+        *(f32*)(this_ + 0x2bc) = lbl_8053F98C * (lbl_8053F9A4 * -lbl_8053EFB8);
+        break;
+    case 10:
+        fn_801D22DC(this_ + 0x270, 4, 0, 0);
+        break;
+    case 11:
+        fn_801D22DC(this_ + 0x270, 9, 0, 0);
+        fn_801F0E34(this_, 0x50038, 0);
+        *(f32*)(this_ + 0x60) = lbl_8053F968;
+        *(f32*)(this_ + 0x64) = lbl_8053F968;
+        *(f32*)(this_ + 0x68) = lbl_8053F9A8;
+        *(f32*)(this_ + 0x6C) = lbl_8053F9A8;
+        *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+        *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+        *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+        *(f32*)(this_ + 0x7C) = *(f32*)(this_ + 0x6C);
+        break;
+    }
+    *(s32*)(this_ + 0x24C) = 0;
+    *(s32*)(this_ + 0x248) = state;
 }
 
 // Keep regional definitions that were present before source-tree consolidation.
