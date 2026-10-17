@@ -1281,6 +1281,10 @@ extern "C" void fn_801B33F8(void) {}
 
 extern "C" void fn_801B33FC(void) {}
 
+extern "C" u32 fn_801B3424(void) {
+    return 0x54564e4c;
+}
+
 extern void* lbl_8029B6F4[];
 extern void* lbl_8029AE58[];
 extern "C" void* fn_801B3430(void* ptr, s16 param_2) {
