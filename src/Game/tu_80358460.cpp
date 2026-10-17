@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct Actor;
 
@@ -142,12 +143,10 @@ extern "C" s32 fn_8035AE9C(u8* self, void* obj) {
     Vec8035A860* pos;
     f32 dy;
     u8 flag;
-    u8 hit;
     s32 i;
-    s32 v;
     if (fn_8022D75C(obj)) return 0;
     if (fn_80230188(obj)) return 0;
-    v = *(s32*)(self + 4);
+    s32 v = *(s32*)(self + 4);
     if (fn_8023DE58(obj) != v) return 0;
     if (fn_8023E724(obj)->z > 0.0f) {
         fn_8022DF48(obj);
@@ -157,16 +156,13 @@ extern "C" s32 fn_8035AE9C(u8* self, void* obj) {
         if (*(s16*)(self + 0x230) >= 0x3c00 && *(s16*)(self + 0x230) <= 0x4400) return 0;
         if (*(s16*)(self + 0x230) <= -0x3c00 && *(s16*)(self + 0x230) >= -0x4400) return 0;
         fn_8022E088(obj, i, &d);
-        hit = 0;
         d.x -= *(f32*)(self + 0xc);
         d.y -= *(f32*)(self + 0x10);
-        d.z -= *(f32*)(self + 0x14);
         d.z = 0.0f;
         f32 c = __fabsf(*(f32*)(sincosTable___5JMath + ((u16)*(s16*)(self + 0x230) >> 5) * 8 + 4));
-        if (d.x < *(f32*)(self + 0x60) && d.y < *(f32*)(self + 0x64) * c && d.x < *(f32*)(self + 0x68) && d.y < *(f32*)(self + 0x6c) * c) {
-            hit = 1;
-        }
-        if (hit) {
+        f32 f2 = *(f32*)(self + 0x64) * c;
+        f32 f3 = *(f32*)(self + 0x6c) * c;
+        if (!(d.x >= *(f32*)(self + 0x60)) && !(d.y >= f2) && !(d.x >= *(f32*)(self + 0x68)) && !(d.y >= f3)) {
             fn_8022DF48(obj);
             pos = fn_8023E724(obj);
             flag = *(u8*)(self + 0x24e);
