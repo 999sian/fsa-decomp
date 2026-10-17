@@ -305,7 +305,7 @@ extern "C" f32 fn_802F5FF4(f32 x) {
     return a / (a - v);
 }
 
-extern f32 __float_epsilon;
+#include "JSystem/JMath/JMath.h"
 extern f64 __frsqrte(f64);
 extern "C" void fn_802F601C(u8* this_, f32* src, s32 type, f32* src2, f32 f1, f32 f2) {
     u8* p;
@@ -491,9 +491,9 @@ extern "C" u8 fn_802F654C(u8* self, f32* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
     s32 n = *(s32*)(self + 0xd320);
     if (n < 0x20) {
         u8* e = self + n * 0x88 + 0xc220;
-        f32 x = pos[0];
-        f32 y = pos[1];
         f32 z = pos[2];
+        f32 y = pos[1];
+        f32 x = pos[0];
         *(f32*)(e + 0x0) = x;
         *(f32*)(e + 0x4) = y;
         *(f32*)(e + 0x8) = z;
@@ -535,7 +535,7 @@ extern "C" u8 fn_802F654C(u8* self, f32* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
             *(s32*)(e + 0x54) = *(s32*)(src + 0x38);
             e[0x3d] = 0;
             if (*(void**)(src + 0x18) != NULL) {
-                PSMTXCopy(*(MtxPtr*)(src + 0x18), (MtxPtr)(e + 0x58));
+                *(Tu802F5040Mtx*)(e + 0x58) = *(Tu802F5040Mtx*)(*(u8**)(src + 0x18));
                 *(void**)(e + 0x34) = e + 0x58;
             }
         } else {
@@ -1146,15 +1146,14 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
 }
 
 extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
-    u32 len;
-    u8* e;
-    u8* q;
-    u8* p;
-    s32 n;
-    u32 i;
-    u8* d;
-    u8* s;
     u8* base;
+    u8* s;
+    u8* d;
+    u32 i;
+    u32 len;
+    s32 n;
+    u8* p;
+    u8* q;
     if (size == 0) {
         s32 r;
         if (JKRDecomp::checkCompressed(src)) {
@@ -1171,8 +1170,7 @@ extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 siz
     } else {
         len = size;
     }
-    e = this_ + idx * 4;
-    dst += ((u32*)e)[1];
+    dst += *(u32*)(this_ + idx * 4 + 0x4);
     if (JKRDecomp::checkCompressed(src)) {
         JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
         base = *(u8**)(this_ + 0xf8);
