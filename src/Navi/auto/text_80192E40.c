@@ -193,6 +193,14 @@ extern "C" void fn_801937C8(void* e, s32 idx) {
     a[8] *= b[2];
 }
 
+extern "C" u32 fn_80193B74(u32* p, u32 n) {
+    p[3] = (n + 0x1f) & ~0x1f;
+    p[0] = (u32)fn_8015AA60(p[3], 0x20);
+    p[1] = (u32)fn_8015AA60(p[3], 0x20);
+    p[2] = 0;
+    return 0;
+}
+
 extern "C" void fn_801DF0BC(u32 a, u32 b);
 extern "C" void* memcpy(void* dst, const void* src, u32 n);
 extern "C" void* fn_8015AA60(u32 size, u32 align);
@@ -379,16 +387,32 @@ extern "C" u32 fn_80194174(u32* p) {
     return q[2];
 }
 
-extern "C" u32 fn_801941D4(u32* p, u32* q) {
-    u32 r = 0;
-    u32 a = p[13];
+extern "C" s32 fn_801941D4(u32* p, u32* q) {
+    s32 r = 0;
+    s32 a = p[13];
     if (a != q[13]) {
         return r;
     }
-    if (a >> 31) {
+    if (a < 0) {
         return r;
     }
     return 1;
+}
+
+extern "C" void fn_801941F8(u32* p) {
+    void* obj = (void*)p[12];
+    u32* it;
+    ((void (*)(void*))(*(void***)obj)[6])(obj);
+    fn_801DF0BC(*(u32*)p[8], ((u32*)p[8])[2]);
+    it = (u32*)p[11];
+    fn_801969C8(it[10]);
+    for (; it != nullptr; it = (u32*)it[1]) {
+        if (it[8] != 0) {
+            fn_801DF0BC(*(u32*)it[8], ((u32*)it[8])[2]);
+        }
+        fn_80194830(it);
+    }
+    lbl_802FF6E0 = 0;
 }
 
 extern "C" void fn_8019428C(u32* p) {
