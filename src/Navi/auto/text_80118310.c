@@ -338,15 +338,17 @@ extern "C" void fn_80119780(void* p, u8* a, u8* b) {
     d[0x1b] = b3;
 }
 
-extern "C" BOOL fn_80119A54(void* param_1);
+extern "C" BOOL fn_80119A54(void* param_1, void* param_2, void* param_3);
+#pragma dont_inline on
 extern "C" void* fn_80119904(void* p, void* a, void* b) {
     fn_801196B4(p);
     *(void**)p = lbl_802900DC;
     fn_80119A28(p);
     fn_801196E0(p);
-    ((void (*)(void*, void*, void*))fn_80119A54)(p, a, b);
+    fn_80119A54(p, a, b);
     return p;
 }
+#pragma dont_inline reset
 
 extern "C" void* fn_80119978(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
@@ -382,7 +384,7 @@ extern "C" void fn_80119A28(void* param_1) {
     *(s32*)(p + 0x44) = -1;
 }
 
-extern "C" BOOL fn_80119A54(void* param_1) {
+extern "C" BOOL fn_80119A54(void* param_1, void* param_2, void* param_3) {
     if (fn_80119AD4(param_1) == 0) {
         fn_8015AB40(*(void**)((u8*)param_1 + 0x50));
         *(u32*)((u8*)param_1 + 0x48) = 0;
