@@ -1,5 +1,6 @@
 #include "types.h"
 extern char lbl_802C5A84[];
+extern "C" s32 fn_801086F8(void* self, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f);
 extern char lbl_8029FDB4[];
 extern char lbl_8028D72C[];
 extern "C" void fn_800127A0(void* p);
