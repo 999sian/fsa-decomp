@@ -391,8 +391,6 @@ struct VObj_8017E65C {
     virtual void vfB4();
     virtual void vfB8();
     virtual void vfBC();
-    virtual void vfC0();
-    virtual void vfC4();
     virtual void vfC8(void*, f32, int, int);
 };
 
@@ -1021,8 +1019,7 @@ extern "C" void* fn_8017E1A4(u32* param_1, s16 param_2) {
 #pragma push
 #pragma use_lmw_stmw off
 extern "C" void fn_8017E65C(u32* self, void* a, f32 f, int b, int c) {
-    void* p = fn_8017A4A8(a);
-    ((void (*)(void*, void*, f32, int, int))(*(u32**)self)[50])(self, p, f, b, c);
+    ((VObj_8017E65C*)self)->vfC8(fn_8017A4A8(a), f, b, c);
 }
 #pragma pop
 extern "C" void fn_8017E9DC(u32* self, u32 a) {
