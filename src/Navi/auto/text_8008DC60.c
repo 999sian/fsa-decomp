@@ -108,6 +108,10 @@ extern "C" void* fn_8015A90C(u32);
 extern void* lbl_802869B4[];
 extern void* lbl_8028C578[];
 extern void* lbl_8027EC78[];
+extern void* lbl_80286948[];
+extern void* lbl_802893EC[];
+extern "C" void fn_800D0910(void*);
+extern "C" void fn_801E0DB8(void* arr, void* ctor, void* dtor, u32 size, u32 n);
 struct Obj_8009287C {
     u8 pad[0x7e8];
     u8 state;
@@ -1465,6 +1469,22 @@ extern "C" void fn_80097154(u8* self) {
     }
 }
 
+extern "C" void fn_80097EB0(u8* p, s32 idx, s16 x, s16 y);
+extern "C" void fn_80097DE8(u8* p) {
+    s32 i;
+    if (*(s32*)(lbl_802BB0FC + 0x44) != 0xa) {
+        for (i = 0; i < 0xa; i++) {
+            char* e = lbl_802BB0FC + (i % 10) * 0xc;
+            if (*(u16*)(e + 0x2dc) & 2) {
+                *(u16*)(e + 0x2dc) &= 0xfffd;
+                if (*(u8*)(e + 0x2de) >= *(s32*)(lbl_802BB0FC + 0x3f0)) {
+                    fn_80097EB0(p, i, *(s16*)(e + 0x2d8), *(s16*)(e + 0x2da));
+                }
+            }
+        }
+    }
+}
+
 extern "C" void fn_80098354(char* param_1) {
     if (*(void**)(param_1 + 0xec) != nullptr) {
         VObj_80098354* obj = (VObj_80098354*)param_1;
@@ -1567,19 +1587,20 @@ extern "C" s32 fn_8009B220(void* p);
 extern "C" s32 fn_8009B8B4(void* p);
 extern "C" void fn_8009B154(u8* p) {
     s32 a = fn_8009B574();
-    s32 b = fn_8009B220(p);
-    s32 c = fn_8009B8B4(p);
-    if ((a | b | c) == 0) {
+    a |= fn_8009B220(p);
+    if ((fn_8009B8B4(p) | a) != 0) {
+        if (p[0x718] == 0) {
+            void* obj = *(void**)(p + 0x700);
+            ((void (*)(void*, void*))(*(void***)obj)[25])(obj, *(void**)(p + 0x710));
+            *(s32*)(p + 0x714) = 0;
+            p[0x718] = 1;
+        }
+    } else {
         if (p[0x718] == 1) {
             *(s32*)(p + 0x714) = 0;
             *(f32*)(*(u8**)(p + 0x710) + 8) = (f32)*(s32*)(p + 0x714);
             p[0x718] = 0;
         }
-    } else if (p[0x718] == 0) {
-        void* obj = *(void**)(p + 0x700);
-        ((void (*)(void*, void*))(*(void***)obj)[25])(obj, *(void**)(p + 0x710));
-        *(s32*)(p + 0x714) = 0;
-        p[0x718] = 1;
     }
 }
 
