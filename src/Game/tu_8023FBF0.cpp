@@ -143,8 +143,8 @@ inline s32 countSharing(const char* p) {
 }
 
 inline s32 countSharingH(const char* p) {
-s32 linked;
 s32 c;
+s32 linked;
 s32 i;
 c = 0;
     for (i = 0; i < 4; i++) {
@@ -912,13 +912,9 @@ BOOL fn_80240D8C(char* p) { STATE_OR2(p, 0x1244, 0x38, 0x13); }
 BOOL fn_80240DAC(char* p) { STATE_OR2(p, 0x1240, 0x38, 0x13); }
 bool fn_80240DCC(char* p) {
     bool r = true;
-    bool s = false;
-    if (S32(p, 0x1240) == 0x49 || S32(p, 0x1244) == 0x49) {
-        s = true;
-    }
-    if (!s) {
+    if (!isShrinking(p)) {
         bool a = false;
-        bool b = a;
+        bool b = false;
         if (inOtherRoom(p)) {
             if (!fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 1)) {
                 b = true;
@@ -3683,16 +3679,17 @@ BOOL fn_8025190C(char* p, u8 v) {
 }
 u8 fn_8025196C(char* p, s32 i) { return btn(p, i); }
 bool fn_8025197C(char* p, u8 all) {
-    char* s = (char*)PTR(p, 0xbf0);
+    u8* s = (u8*)PTR(p, 0xbf0);
     s32 i;
     for (i = 0; i < 8; i++) {
+        s32 idx = i + 0x48;
         if (!all && i >= 4) {
             return 0;
         }
         if (U8(s, 0xb4) == 1 && (i == 2 || i == 4 || i == 5)) {
             continue;
         }
-        if (U8(s, 0x48 + i) == 1) {
+        if (U8(s, idx) == 1) {
             return 1;
         }
     }
