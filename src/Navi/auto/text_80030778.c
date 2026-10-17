@@ -694,7 +694,7 @@ extern "C" void fn_80039A3C(int* p, int x, short* q) {
         }
         e += 4;
     }
-    fn_80039CB8(p, x, cnt);
+    fn_80039CB8(p, x, cnt, n);
 }
 
 extern "C" int fn_80039AF0(void* p, int x, int idx) {
