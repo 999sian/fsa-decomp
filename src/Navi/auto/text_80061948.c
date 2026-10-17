@@ -95,7 +95,7 @@ extern "C" u8* fn_80061968(u8* p, s16 n) {
             *(u32*)(p + 0x10) = 0;
         } else if (*(u32*)(p + 0x14) != 0) {
             if (*(void**)(p + 0x1c) != 0) {
-                
+                fn_8000FA24(*(void**)(p + 0x1c));
                 *(u32*)(p + 0x1c) = 0;
             }
             if (*(u32*)(p + 0x20) != 0) {
@@ -1107,6 +1107,30 @@ extern "C" void fn_8006A668(u8* param_1) {
     fn_8000D6F4(param_1 + 0x250);
 }
 
+extern "C" void* fn_800638A4(void* a, void* b, void* c, s32 n);
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void* a, const char* file, s32 line, s32 b, ...);
+extern "C" void fn_80007AB8(const char* file, s32 line, s32 b, ...);
+extern "C" int fn_8000DABC(void* a, u8* b, void* c, s32 d, s32 e, s32 f, s32 g, f32 h);
+extern char lbl_80280014[];
+extern char lbl_80280074[];
+extern char lbl_802FC938;
+extern char lbl_802FC93C;
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" bool fn_8006A72C(void* param_1, void* param_2, u8* param_3, void* param_4, s32 param_5, s32 param_6, s32 param_7, s32 param_8, f32 param_9) {
+    void* r = fn_800638A4(&lbl_802FC930, param_4, (u8*)lbl_802B7CA0 + 0x2200, 0x40);
+    if (r == 0) {
+        void* uVar2 = fn_8011FD10();
+        fn_8011FD18(uVar2, lbl_80280014, 0x26c, (s32)&lbl_802FC938, lbl_80280074);
+        fn_80007AB8(lbl_80280014, 0x26c, (s32)&lbl_802FC93C);
+    }
+    if (fn_8000DABC(param_2, param_3 + 0x58, r, param_5, param_6, param_7, param_8, param_9) == 0) {
+        return false;
+    }
+    return true;
+}
+#pragma pop
 extern "C" int fn_80069DE0(u8* p);
 extern "C" void fn_8006AF00(u8* p) {
     fn_80069DE0(p);
