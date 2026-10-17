@@ -23,6 +23,7 @@ extern u8 lbl_802BC618[];
 extern u8 lbl_802BBD28[];
 extern u8 lbl_802BC548[];
 extern u8 lbl_802BE378[];
+extern u8 lbl_802FBDB8;
 extern u8 lbl_802FBDC0;
 extern u8 lbl_802FBDC8;
 extern "C" void fn_80021240(void*, void*, void*);
