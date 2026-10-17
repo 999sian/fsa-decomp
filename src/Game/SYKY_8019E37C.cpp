@@ -55,7 +55,7 @@ extern void* lbl_8053AAF8;
 /* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
 static inline f32 sykyRand01() {
     u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    *s = *s * 0x19660du + 0x3c6ef35fu;
+    *s = 0x19660du * *s + 0x3c6ef35fu;
     u32 a = (*s >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_8053E460;
 }
@@ -107,6 +107,59 @@ extern "C" void fn_8019E7A4(u8* p) {
     vec[3][1] = s;
     rec.w18 = vec;
     fn_801F06F0(p, lbl_80468494, *(s32*)(p + 0x264) + 8, &rec, 0, lbl_8053E460, lbl_8053E460);
+}
+
+extern "C" void fn_8019E910(u8* p) {
+    switch (*(s32*)(p + 0x268)) {
+    case 0:
+        fn_8019F3AC(p);
+        break;
+    case 1:
+    case 2:
+        fn_8019EE74(p);
+        break;
+    case 3:
+        fn_8019EC04(p);
+        break;
+    case 4:
+        fn_801F71A4(p + 0x3c, *(f32*)(p + 0x2a0), lbl_8053E46C, lbl_8053E460);
+        fn_801F71A4(p + 0x40, *(f32*)(p + 0x2a4), lbl_8053E46C, lbl_8053E460);
+        JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), (Vec*)(p + 0x3c), (Vec*)(p + 0xc));
+        if (!(*(s32*)(p + 0x198) & 1)) {
+            *(f32*)(p + 0x294) += lbl_8053E470;
+        } else {
+            *(f32*)(p + 0x294) -= lbl_8053E470;
+        }
+        switch (*(s32*)(p + 0x230)) {
+        case 11:
+            *(f32*)(p + 0x2a0) = lbl_8053E474 - lbl_8053E478 * sykyRand01();
+            *(f32*)(p + 0x2a4) = lbl_8053E474 - lbl_8053E478 * sykyRand01();
+            *(f32*)(p + 0x44) = lbl_8053E47C + lbl_8053E480 * sykyRand01();
+            *(f32*)(p + 0x290) = lbl_8053E484 + lbl_8053E46C * sykyRand01();
+            *(s32*)(p + 0x230) = 0xc;
+            break;
+        case 12:
+            *(f32*)(p + 0x44) -= lbl_8053E460;
+            if (*(f32*)(p + 0x14) <= lbl_8053E464) {
+                *(f32*)(p + 0x14) = lbl_8053E464;
+                *(f32*)(p + 0x44) = lbl_8053E474 + lbl_8053E488 * sykyRand01();
+                *(s32*)(p + 0x230) = 0xd;
+            }
+            break;
+        case 13:
+            *(f32*)(p + 0x44) -= lbl_8053E460;
+            if (*(f32*)(p + 0x14) <= lbl_8053E464) {
+                *(f32*)(p + 0x14) = lbl_8053E464;
+                *(u8*)(p + 0x11c) = 0;
+            }
+            break;
+        }
+        fn_801F71A4(p + 0x298, lbl_8053E460, lbl_8053E46C, lbl_8053E480);
+        if (*(f32*)(p + 0x298) < lbl_8053E460) {
+            *(u8*)(p + 0x11c) = 0;
+        }
+        break;
+    }
 }
 
 extern "C" void fn_8019EC04(u8* p) {
