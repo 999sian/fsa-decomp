@@ -2968,14 +2968,16 @@ extern "C" void* fn_8018ED48(NaviNode_8018ED48** arg0, VObj_8018ED48* arg1) {
     u8 sp8;
     u8 spC[256];
     NaviNode_8018ED48* node;
+    u8 n;
 
     arg1->v2(1);
     fn_801670D0((int)arg1, &sp8, 1);
-    if (sp8 == 0) {
+    n = sp8;
+    if (n == 0) {
         return 0;
     }
-    fn_801670D0((int)arg1, spC, sp8);
-    spC[sp8] = 0;
+    fn_801670D0((int)arg1, spC, n);
+    spC[n] = 0;
     node = *arg0;
     while (node != nullptr) {
         if (fn_801E6578(node->unk4, spC) == 0) {
