@@ -18,7 +18,6 @@ extern "C" s32 fn_8022F3DC(s32 i);
 extern "C" u32 fn_80236100(s32 i);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B146C[];
-extern u8 lbl_8048E1B8[];
 
 // Sub-object whose virtual slots 9 and 15 are called by fn_80421A34.
 struct SubObj {
@@ -69,16 +68,75 @@ static inline void ReleaseSlot(void** slot) {
     }
     *slot = 0;
 }
-extern "C" void fn_80423DF0(u8* this_, s32 i) {
+extern "C" void fn_80421A34(u8* this_, s32 i, u8 flag) {
     s32 j;
-    u32* pair2;
-    u32* pair;
-    u8* tbl = lbl_8048E1B8;
-    u32 bit = 1 << i;
-    u8 mask = bit;
-    s32 idx = -1;
+    u8 bit = 1 << i;
+    f32* fv = (f32*)(this_ + 0x118);
+    f32 old = fv[i];
 
-    if ((this_[0x259] & mask) == 0 && !fn_80230188(i)) {
+    if (!(this_[0x25d] & bit)) {
+        if (old > 0.0f) {
+            fv[i] = old - 0.1f;
+        } else {
+            fv[i] = 0.0f;
+        }
+        (*(u8**)(lbl_8053AB10 + 0x20))[0x217 + i] = 1;
+    } else {
+        u32* table = (u32*)lbl_80529DEC;
+        if (table[0x36 + i] == 0) {
+            if (old > 0.6f) {
+                fv[i] = old - 0.1f;
+                if (fv[i] > 0.6f) {
+                    fv[i] = 0.6f;
+                }
+            } else if (old < 0.6f) {
+                fv[i] = old + 0.1f;
+                if (fv[i] < 0.6f) {
+                    fv[i] = 0.6f;
+                }
+            }
+        } else {
+            if (old < 1.0f) {
+                fv[i] = old + 0.1f;
+            } else {
+                fv[i] = 1.0f;
+            }
+        }
+    }
+
+    if (fv[i] != old || flag) {
+        u8* p = this_ + i * 4;
+        u64* a = (u64*)(lbl_8048E1B8 + 0xc68);
+        u64* b = (u64*)(lbl_8048E1B8 + 0xce8);
+        u64* c = (u64*)(lbl_8048E1B8 + 0xca8);
+        u64* d = (u64*)(lbl_8048E1B8 + 0xd28);
+        for (j = 0; j < 8; j++) {
+            (*(SubObj**)(p + 0x8))->w13(*a)->w07((s32)((f32)this_[0x21c] * fv[i]));
+            (*(SubObj**)(p + 0x8))->w13(*b)->w07((s32)((f32)this_[0x21d] * fv[i]));
+            (*(SubObj**)(p + 0x8))->w13(*c)->w07((s32)((f32)this_[0x21e] * fv[i]));
+            (*(SubObj**)(p + 0x8))->w13(*d)->w07((s32)((f32)this_[0x21f] * fv[i]));
+            a++;
+            b++;
+            c++;
+            d++;
+        }
+        u64* e = (u64*)(lbl_8048E1B8 + 0xfa0);
+        for (j = 0; j < 6; j++) {
+            (*(SubObj**)(p + 0x2c))->w13(*e)->w07((s32)((f32)this_[0x247 + j] * fv[i]));
+            e++;
+        }
+    }
+}
+
+extern "C" void fn_80423DF0(u8* this_, s32 i) {
+    s32 idx = -1;
+    u8 mask = 1 << i;
+    u8* tbl = lbl_8048E1B8;
+    s32 j;
+    u32* pair;
+    u32* pair2;
+
+    if (!((s32)(this_[0x259] & mask) != 0) && !fn_80230188(i)) {
         fn_8022EA0C(i);
         if (fn_8023BE0C() && !(lbl_8053AED0[0x255] & mask)) {
             this_[0x259] |= mask;
