@@ -11,7 +11,7 @@ struct VObj_800A1A64 {
 struct VObj_800EF2A8 {
  virtual void v0();
  virtual void v1();
- virtual void v2();
+ virtual void v2(f32 x, f32 y);
  virtual void v3();
  virtual void v4(f32 x, f32 y);
 };
@@ -32,6 +32,24 @@ extern u8 lbl_802C587C[];
 struct NaviState_800EF384;
 typedef void (NaviState_800EF384::*NaviStateFn_800EF384)();
 extern NaviStateFn_800EF384 lbl_8028B874[];
+extern "C" void fn_800EF2A8(u8* p)
+{
+	f32 f31;
+	f32 f30;
+	f32* b;
+
+	f30 = *(f32*)(*(u8**)(p + 0x18) + 0x28) - *(f32*)(*(u8**)(p + 0x18) + 0x20);
+	f31 = fn_80177B10(*(void**)(p + 0x18))[1];
+	b = fn_80177B10(*(void**)(p + 0x14));
+	((VObj_800EF2A8*)*(void**)(p + 0x18))->v4(b[0] - f30, f31);
+	b = fn_80177B10(*(void**)(p + 0x14));
+	*(f32*)(p + 0x2c) = b[2];
+	*(f32*)(p + 0x30) = (*(f32*)(*(u8**)(p + 0x18) + 0x28) - *(f32*)(*(u8**)(p + 0x18) + 0x20)) + (*(f32*)(*(u8**)(p + 0x14) + 0x28) - *(f32*)(*(u8**)(p + 0x14) + 0x20));
+	p[0x34] = 0;
+	p[0x51] = 0;
+	p[0x52] = 0;
+}
+
 extern "C" void fn_800EF378(u8* param_1, u32 param_2, u32 param_3) {
     *(u32*)(param_1 + 0x40) = param_2;
     *(u32*)(param_1 + 0x44) = param_3;
