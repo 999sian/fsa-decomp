@@ -21,7 +21,7 @@ struct VObj_80098354 {
     virtual void v12();
     virtual void v13();
     virtual void v14(f32, f32);
-    virtual void v15();
+    virtual void v15(f32, f32);
     virtual void v16();
     virtual void v17(f32, f32);
 };
@@ -873,7 +873,7 @@ extern "C" void* fn_800970F8(void* ptr, s16 param_2) {
 extern "C" void fn_80098354(char* param_1) {
     if (*(void**)(param_1 + 0xec) != nullptr) {
         VObj_80098354* obj = (VObj_80098354*)param_1;
-        obj->v17(*(f32*)(param_1 + 0xd4), *(f32*)(param_1 + 0xd8));
+        obj->v14(*(f32*)(param_1 + 0xd4), *(f32*)(param_1 + 0xd8));
     }
 }
 
