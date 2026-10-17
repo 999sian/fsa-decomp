@@ -72,10 +72,10 @@ extern "C" void fn_800CD304(u8* self) {
 }
 
 extern "C" void fn_800CD3C4(u8* self) {
-    u8* tbl = lbl_802C5714;
     s32 iVar1;
 
     if (self[0x9a] != 0) {
+        u8* tbl = lbl_802C5714;
         iVar1 = fn_800CD8E4(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 0, *(f32*)(tbl + 0x1c), lbl_80300EF0);
         *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
         if (iVar1 == 1) {
