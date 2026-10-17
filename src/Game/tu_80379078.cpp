@@ -46,6 +46,15 @@ struct LimtDrawParam {
 extern "C" char lbl_804AE8F4[];
 extern "C" void __dt__5ActorFv(void* p, int flag);
 extern "C" void __dl__FPv(void*);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7584(void* p, s32 room, s32 v);
+extern "C" void fn_80239914(void* box, s32 room, s32 handle);
+extern "C" void* fn_8020D58C(void);
+extern "C" void fn_8020D7D0(void* p, s32 handle);
+extern "C" s32 fn_80239108(s32 handle);
+extern "C" s32 fn_80238BC4(s32 handle);
+extern "C" void fn_80238E08(s32 handle);
+extern "C" void fn_801F0E34(u8* this_, s32 a, s32 b);
 extern "C" void* fn_80379078(void* param_1, short param_2) {
     if (param_1 != 0) {
         *(void**)param_1 = lbl_804AE8F4;
