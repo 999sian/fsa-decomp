@@ -3,6 +3,39 @@
 #include "types.h"
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
+
+union FobrWord {
+    u32 w;
+    u8 b[4];
+};
+
+struct FobrArgs {
+    u8 order[0x10];
+    FobrWord f10;
+    FobrWord f14;
+    void* ptr;
+    u8 b1c, b1d, b1e, b1f, b20, b21, b22, b23, b24, b25, b26;
+    u8 pad0;
+    u32 w28;
+    u8 b2c, b2d, b2e;
+    u8 pad1;
+    u32 x30, x34, x38;
+};
+
+class FobrResMgr {
+public:
+    virtual void e0();
+    virtual void e1();
+    virtual void e2();
+    virtual void e3();
+    virtual u32 load(u32 a, void* b);
+};
+
+extern "C" void fn_801F06F0(u8* this_, void* lbl, s32 idx, void* args, u32 mask, f32 a, f32 b);
+extern "C" void fn_801EF830(s32 idx, f32* pos, void* args, u32 mask, void* lbl, u32 p6, u8* p7);
+extern "C" void fn_802F86CC(void* mgr, f32* pos, void* name, u32 id, void* args, f32 a, f32 b);
+extern char lbl_8046A384[];
+extern void* lbl_8053AB10;
 struct FobrVec { f32 x, y, z; };
 
 // ---- Fobr_ctor_8020BE40.cpp ----
@@ -118,6 +151,67 @@ extern "C" s32 fn_8020B848(u8* this_) {
         }
     }
     return 0;
+}
+
+extern "C" void fn_801F317C(void*, void*);
+extern "C" s32 fn_8023AE34(void*, s32, void*);
+extern "C" s32 fn_8023AC74(void*, s32, void*);
+extern "C" s32 fn_8023AD54(void*, s32, void*);
+extern "C" u8 fn_801CC820(s32, FobrVec*);
+extern "C" u8 fn_801CC538(s32, void*, FobrVec*, s32);
+extern "C" void fn_801CC640(s32, s32, FobrVec*);
+extern "C" s32 fn_8020BA58(u8* this_) {
+    if (*(f32*)(this_ + 0x78) - *(f32*)(this_ + 0x70) <= lbl_8053F9C4 ||
+        *(f32*)(this_ + 0x7C) - *(f32*)(this_ + 0x74) <= lbl_8053F9C4) {
+        return 0;
+    }
+    u8 buf8[0x2c];
+    u8 buf34[0x10];
+    FobrVec ofs;
+    FobrVec tgt;
+    ofs.x = lbl_8053F9C4;
+    ofs.y = lbl_8053F9C4;
+    ofs.z = lbl_8053F9C4;
+    u8 hasOfs = 0;
+    u8 hasTgt = 0;
+    fn_801F317C(this_, buf34);
+    s32 player = fn_8023AE34(buf34, *(s32*)(this_ + 0x4), buf8);
+    if (player >= 0) {
+        hasOfs = fn_801CC820(player, &ofs);
+    } else {
+        player = fn_8023AC74(buf34, *(s32*)(this_ + 0x4), buf8);
+        if (player >= 0) {
+            hasTgt = fn_801CC538(player, buf8, &tgt, 0);
+        } else {
+            player = fn_8023AD54(buf34, *(s32*)(this_ + 0x4), buf8);
+            if (player >= 0) {
+                fn_801CC640(player, 0, &ofs);
+            }
+        }
+    }
+    s32 ret = 0;
+    if (player >= 0) {
+        ret = 1;
+        void* actor = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
+        if (actor != 0) {
+            FobrVec pos = *(FobrVec*)fn_8023E724(player);
+            u32 flag = 0;
+            if (hasTgt) {
+                pos = tgt;
+            } else {
+                FobrVec d;
+                d.x = *(f32*)(this_ + 0xc) - ofs.x;
+                d.y = *(f32*)(this_ + 0x10) - ofs.y;
+                d.z = *(f32*)(this_ + 0x14) - ofs.z;
+                pos = d;
+                if (hasOfs) {
+                    flag = 3;
+                }
+            }
+            fn_80207830(actor, *(u16*)(this_ + 0x94), player, 4, &pos, flag);
+        }
+    }
+    return ret;
 }
 
 extern "C" void fn_8020BC2C() {
