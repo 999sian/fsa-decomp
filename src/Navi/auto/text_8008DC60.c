@@ -12,6 +12,8 @@ extern "C" f32 fn_800A1774(void*, u8, u8, s32);
 extern "C" void fn_800D1EE8(void* p);
 struct DtorVObj_800A0008 { virtual void Destroy(int); };
 extern "C" void fn_800D3274(u8* p);
+extern "C" u8 fn_800BC784(void* p);
+extern "C" void fn_800C55B8(void* p, u8 v);
 extern "C" void fn_800C6CA4(void* p);
 extern "C" char lbl_802AE880[];
 extern "C" void* fn_80016320(void* p);
