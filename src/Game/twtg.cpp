@@ -230,6 +230,16 @@ extern "C" void fn_803894BC(s32 slot, s32 v);
 extern "C" u8 fn_803865B8(s32 slot);
 extern void* lbl_8053AED0;
 extern "C" void fn_8043D874(void* mgr, s32 k, s32 a, s32 b);
+extern u8 lbl_8053ABF8;
+extern "C" void fn_8022FE80(s32 slot, s32 player, void* room, s32 a, s32 b);
+extern "C" void fn_8013670C(char* game, s32 msg);
+extern "C" s32 fn_8037EFB4(s32 slot);
+extern "C" void fn_80384C58(s32 slot, void* room);
+extern "C" u8 fn_8023EA28(s32 slot);
+extern "C" u8 fn_8022F478(s32 slot);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32 slot);
+extern "C" void fn_80230BF4(s32 slot, s32 v);
+extern "C" void fn_80230498(s32 slot, JGeometry::TVec3f* v, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 static inline u8 twtgPlayerFlag(s32 i) {
     char* rec = (char*)fn_802D6A9C();
@@ -271,9 +281,10 @@ extern "C" void fn_80313D7C(char* p) {
     b.min.y += *(f32*)(p + 0x10);
     b.max.x += *(f32*)(p + 0xc);
     b.max.y += *(f32*)(p + 0x10);
+    s32 n;
     s32 slot;
     if (*(s32*)(p + 0x234) == 0) {
-        s32 n = fn_80138A30(lbl_8053AAF8);
+        n = fn_80138A30(lbl_8053AAF8);
         switch (*(s32*)(p + 0x238)) {
         case 0:
             fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
@@ -669,7 +680,6 @@ extern "C" void fn_80314B1C(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
     f32 dist;
-    s32 n;
     s32 slot;
     s32 k;
     twtgUpdateDir(p, v, dist);
@@ -682,7 +692,7 @@ extern "C" void fn_80314B1C(char* p) {
     b.max.x += *(f32*)(p + 0xc);
     b.max.y += *(f32*)(p + 0x10);
     if (*(s32*)(p + 0x234) == 0) {
-        n = fn_80138A30(lbl_8053AAF8);
+        s32 n = fn_80138A30(lbl_8053AAF8);
         switch (*(s32*)(p + 0x238)) {
         case 0:
             fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
