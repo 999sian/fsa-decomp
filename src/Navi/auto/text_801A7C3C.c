@@ -1268,6 +1268,26 @@ extern "C" u8 fn_801B26E0(u8* p, s32 a) {
     return 0;
 }
 
+extern "C" void fn_801B28AC(u32* out, u8* p, s32 a, s32 b) {
+    u32 def = lbl_80301DDC;
+    u16 idx = ((u16*)*(u8**)(p + 8))[a];
+    u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 0x14 + b * 2);
+    if (v != 0xffff) {
+        *out = ((u32*)*(u8**)(p + 0x1c))[v];
+    } else {
+        *out = def;
+    }
+}
+
+extern "C" u8 fn_801B2904(u8* p, s32 a) {
+    u16 idx = ((u16*)*(u8**)(p + 8))[a];
+    u8 v = *(u8*)(*(u8**)(p + 4) + idx * 0x14c + 3);
+    if (v != 0xff) {
+        return ((u8*)*(u8**)(p + 0x24))[v];
+    }
+    return 0;
+}
+
 extern "C" void fn_801B338C(void) {}
 
 extern "C" u32 fn_801B3390(void) {
