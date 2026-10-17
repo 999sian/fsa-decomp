@@ -165,6 +165,10 @@ extern "C" void fn_801A7C3C(Struct_801A7C3C* dst, const Struct_801A7C3C* src) {
     *dst = *src;
 }
 
+extern "C" void fn_801A7C90(void* a, void* b) {
+    *(Unk7C90*)a = *(Unk7C90*)b;
+}
+
 extern f32 lbl_80301D4C;
 extern f32 lbl_80301D48;
 extern "C" void fn_801A7D0C(f32* dst, f32* src)
@@ -1979,7 +1983,7 @@ extern "C" u16 fn_801B39D0(u16* p) {
     u16 n = *p;
     u16 i = 0;
     if (n == 0) {
-        return i;
+        return 0;
     }
     if (n > 8) {
         for (; i < (u16)(n - 8); i += 8) {
@@ -1988,6 +1992,17 @@ extern "C" u16 fn_801B39D0(u16* p) {
     for (; i < n; i++) {
     }
     return i;
+}
+
+extern "C" void fn_801B4638(u32* out, u8* p, s32 a, s32 b) {
+    u16 idx = ((u16*)*(u8**)(p + 8))[a];
+    u8* e = *(u8**)(p + 4) + idx * 0x138 + 0xa8;
+    u16 v = *(u16*)(e + b * 2);
+    if (v != 0xffff) {
+        out[0] = ((u32*)*(u8**)(p + 0x34))[v];
+        return;
+    }
+    out[0] = lbl_80301D04;
 }
 
 extern "C" u8 fn_801B474C(u8* s, u32 a) {
