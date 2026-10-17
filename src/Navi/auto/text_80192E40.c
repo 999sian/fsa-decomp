@@ -123,51 +123,51 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80193604(f32* p, f32* out) {
-    extern f32 lbl_802F0BC0[][2];
-    s16 angle = *(s16*)(p + 2);
-    f32 s = lbl_802F0BC0[(angle >> 5) & 0x7FF][0];
-    f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
+    extern u8 lbl_802F0BC0[];
+    u8* t = lbl_802F0BC0 + ((*(s16*)(p + 2) >> 2) & 0x3FF8);
+    f32 b = (p[4] - 0.5f) + p[1];
+    f32 a = p[3] - 0.5f;
+    f32 c = *(f32*)(t + 4);
+    f32 s = *(f32*)t;
     f32 x = p[0];
     f32 y = p[1];
-    f32 a = p[3] - 0.5f;
-    f32 b = (p[4] - 0.5f) + y;
     out[0] = x * c;
     out[1] = y * s;
     out[2] = 0.5f + (a * c - s * b);
-    out[3] = 0.0f;
     out[4] = -x * s;
     out[5] = y * c;
     out[6] = 0.5f + (-a * s - c * b);
-    out[7] = 0.0f;
-    out[8] = 0.0f;
-    out[9] = 0.0f;
     out[10] = 1.0f;
     out[11] = 0.0f;
+    out[9] = 0.0f;
+    out[8] = 0.0f;
+    out[7] = 0.0f;
+    out[3] = 0.0f;
 }
-
+#pragma fp_contract off
 extern "C" void fn_801936B4(f32* p, f32* out) {
-    extern f32 lbl_802F0BC0[][2];
-    s16 angle = *(s16*)(p + 2);
-    f32 s = lbl_802F0BC0[(angle >> 5) & 0x7FF][0];
-    f32 c = lbl_802F0BC0[(angle >> 5) & 0x7FF][1];
+    extern u8 lbl_802F0BC0[];
+    u8* t = lbl_802F0BC0 + ((*(s16*)(p + 2) >> 2) & 0x3FF8);
     f32 x = p[0];
     f32 y = p[1];
-    f32 a = p[3] - 0.5f;
     f32 b = (p[4] - 0.5f) + y;
+    f32 a = p[3] - 0.5f;
+    f32 c = *(f32*)(t + 4);
+    f32 s = *(f32*)t;
     out[0] = x * c;
     out[1] = y * s;
-    out[2] = 0.0f;
     out[3] = 0.5f + (a * c - s * b);
     out[4] = -x * s;
     out[5] = y * c;
-    out[6] = 0.0f;
     out[7] = 0.5f + (-a * s - c * b);
-    out[8] = 0.0f;
-    out[9] = 0.0f;
-    out[10] = 1.0f;
     out[11] = 0.0f;
+    out[9] = 0.0f;
+    out[8] = 0.0f;
+    out[6] = 0.0f;
+    out[2] = 0.0f;
+    out[10] = 1.0f;
 }
-
+#pragma fp_contract reset
 extern "C" void fn_80193764(f32* a, f32* b) {
     a[0] *= b[0];
     a[1] *= b[1];
@@ -198,6 +198,14 @@ extern "C" u32 fn_80193B74(u32* p, u32 n) {
     p[3] = (n + 0x1f) & ~0x1f;
     p[0] = (u32)fn_8015AA60(p[3], 0x20);
     p[1] = (u32)fn_8015AA60(p[3], 0x20);
+    p[2] = 0;
+    return 0;
+}
+
+extern "C" u32 fn_80193BD4(u32* p, u32 n) {
+    p[3] = (n + 0x1f) & ~0x1f;
+    p[0] = (u32)fn_8015AA60(p[3], 0x20);
+    p[1] = p[0];
     p[2] = 0;
     return 0;
 }
@@ -539,14 +547,12 @@ extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
 
 extern "C" void fn_801951A0(u32* p, u32 param_2, u32 param_3) {
     u8 buf[72];
-    u32* vt;
     fn_801C5DA8(((u32*)((u32*)lbl_802EE470)[16])[12], (u8*)((u32*)lbl_802EE470)[65] + (u16)param_3 * 0x30, buf);
     if (lbl_802FF6D0 != 0) {
         fn_80194BB0(buf);
     }
     fn_80191A60(buf, param_2 * 3);
-    vt = *(u32**)p;
-    ((void (*)(u32*, u32, u32, u8*))vt[9])(p, param_2, param_3, buf);
+    ((void (*)(u32*, u32, u32, u8*))(*(u32**)p)[9])(p, param_2, param_3, buf);
 }
 
 extern "C" void fn_8019552C(u8* p) {
