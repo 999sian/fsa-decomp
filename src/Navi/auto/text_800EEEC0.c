@@ -29,6 +29,20 @@ extern "C" void fn_800EF378(u8* param_1, u32 param_2, u32 param_3) {
 
 extern "C" void fn_800EF3D0(void) {}
 
+extern "C" void fn_800EF450(u8* param_1) {
+    if (param_1[0x51] == 1) {
+        param_1[0x52] = 0;
+    } else {
+        s32 r = fn_800EF768(param_1, param_1[0x50], lbl_802C587C[0xc], 1);
+        param_1[0x50]++;
+        if (r == 1) {
+            param_1[0x50] = 0;
+            param_1[0x51] = 1;
+            param_1[0x52] = 0;
+        }
+    }
+}
+
 extern "C" void fn_800EF4D0(u8* param_1, u8 param_2) {
     if (param_2 != 0) {
         param_1[0x52] = param_2;
