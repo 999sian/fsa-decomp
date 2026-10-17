@@ -21,8 +21,6 @@ extern void* lbl_804B146C[];
 
 // Virtual slot 2 of an owned sub-object: destroy(freeFlag).
 struct DtorSlot2 {
-    virtual void slot0();
-    virtual void slot1();
     virtual void destroy(s32 freeFlag);
 };
 
@@ -119,32 +117,30 @@ extern "C" void fn_80425F24(u8* this_) {
 extern "C" void* fn_80426AD4(void* this_, s16 how) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804B146C;
-        ReleaseSlot((void**)((u8*)this_ + 0x4c));
-        ReleaseSlot((void**)((u8*)this_ + 0xf0));
-        ReleaseSlot((void**)((u8*)this_ + 0x4));
+        u8* p = (u8*)this_;
 
-        void** slot = (void**)this_;
+        ReleaseSlot((void**)(p + 0x4c));
+        ReleaseSlot((void**)(p + 0xf0));
+        ReleaseSlot((void**)(p + 0x4));
+
         for (s32 i = 0; i < 4; i++) {
-            ReleaseSlot(slot + 2);
-            ReleaseSlot(slot + 11);
-            slot++;
+            ReleaseSlot((void**)(p + 0x8 + i * 4));
+            ReleaseSlot((void**)(p + 0x2c + i * 4));
         }
 
-        ReleaseSlot((void**)((u8*)this_ + 0x18));
+        ReleaseSlot((void**)(p + 0x18));
 
-        slot = (void**)this_;
         for (s32 i = 0; i < 4; i++) {
-            ReleaseSlot(slot + 20);
-            ReleaseSlot(slot + 24);
-            ReleaseSlot(slot + 28);
-            ReleaseSlot(slot + 32);
-            ReleaseSlot(slot + 36);
-            ReleaseSlot(slot + 40);
-            ReleaseSlot(slot + 44);
-            ReleaseSlot(slot + 48);
-            ReleaseSlot(slot + 52);
-            ReleaseSlot(slot + 56);
-            slot++;
+            ReleaseSlot((void**)(p + 0x50 + i * 4));
+            ReleaseSlot((void**)(p + 0x60 + i * 4));
+            ReleaseSlot((void**)(p + 0x70 + i * 4));
+            ReleaseSlot((void**)(p + 0x80 + i * 4));
+            ReleaseSlot((void**)(p + 0x90 + i * 4));
+            ReleaseSlot((void**)(p + 0xa0 + i * 4));
+            ReleaseSlot((void**)(p + 0xb0 + i * 4));
+            ReleaseSlot((void**)(p + 0xc0 + i * 4));
+            ReleaseSlot((void**)(p + 0xd0 + i * 4));
+            ReleaseSlot((void**)(p + 0xe0 + i * 4));
         }
 
         if (how > 0) {
