@@ -52,6 +52,18 @@ void fn_80402628(void* p, int a, int b, int c);
 void fn_8013B490(void* p);
 f32 fn_803832BC(char* s, s32 a, s32 b, s32 c, s32 d);
 extern T8042_Grc* lbl_8053AB10;
+extern char lbl_8048F390[];
+extern "C" char lbl_80543B3C;
+extern "C" char lbl_80543B44;
+extern "C" char lbl_80543B4C;
+extern "C" char lbl_80543B54;
+extern "C" char lbl_80543B5C;
+extern "C" char lbl_80543B64;
+extern "C" char lbl_80543B6C;
+extern "C" char lbl_80543B74;
+extern "C" char lbl_80543B7C;
+extern "C" char lbl_80543B84;
+extern "C" char lbl_80543B8C;
 
 void fn_8042EB14(T8042EB14* self) {
     self->timer = 0;
