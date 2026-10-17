@@ -1664,7 +1664,7 @@ inline bool padActive6(char* p) {
 }
 inline s32 countSharing6(char* p);
 f32 fn_80246F28(char* p) {
-    return !padActive6(p) ? 0.0f : fn_80309D90(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+    return !padActive5(p) ? 0.0f : fn_80309D90(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
 }
 f32 fn_8024712C(char* p) {
     return !padActive5(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
