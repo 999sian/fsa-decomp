@@ -48,6 +48,48 @@ extern "C" void fn_80158E88(void) {
     GXSetChanMatColor(4, &c4);
 }
 
+extern "C" void fn_80159330(char* p) {
+    s32 kind = *(s32*)(lbl_8053AAF8 + 0x4c);
+    u8 flag = 0;
+    if (kind == 0xc) {
+        return;
+    }
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) == 0) {
+        switch (kind) {
+        case 7:
+        case 8:
+        case 9:
+        case 0x16:
+        case 0xa:
+        case 0xb:
+        case 0xc:
+            flag = 1;
+            break;
+        }
+    } else {
+        switch (kind) {
+        case 7:
+        case 8:
+        case 9:
+        case 0x16:
+        case 0xa:
+        case 0xb:
+            flag = 1;
+            break;
+        }
+    }
+    if (flag) {
+        if (fn_802DCD0C(fn_802D6A9C())) {
+            goto end;
+        }
+    }
+    if (*(u8*)(lbl_8053AAF8 + 0x94) == 0 && *(u8*)(lbl_8053AAF8 + 0x96) == 0) {
+        *(u8*)(p + 0xd) = 0;
+    }
+end:
+    *(u8*)(p + 0xe) = 0xff;
+}
+
 extern "C" void fn_8015945C(char* p) {
     *(u8*)(p + 0x4) = 0xff;
     *(u8*)(p + 0x5) = 0xff;
@@ -101,4 +143,62 @@ extern "C" char* fn_801594E8(char* p, void* heap) {
     *(char**)(p + 0x8) = tex;
     return p;
 }
+struct JASGenericMemPool {
+    JASGenericMemPool();
+    ~JASGenericMemPool();
 
+    void* mRunner;
+    int mFreeMemCount;
+    int mTotalMemCount;
+    u32 mUsedMemCount;
+};
+
+template <typename T>
+struct JASMemPool : public JASGenericMemPool {
+    JASMemPool<T>() : JASGenericMemPool() {}
+    ~JASMemPool<T>() {}
+};
+
+template <typename T>
+struct JASMemPool_MultiThreaded : public JASGenericMemPool {};
+
+class JASTrack {
+public:
+    class TChannelMgr;
+};
+class JASChannel;
+class JAIStream;
+class JAISoundChild;
+class JAISeq;
+class JAISe;
+class JASPoolObj3_FSA;
+class JASPoolObj4_FSA;
+
+template <typename T>
+struct JASPoolAllocObject {
+    static JASMemPool<T> memPool_;
+};
+
+template <typename T>
+struct JASPoolAllocObject_MultiThreaded {
+    static JASMemPool_MultiThreaded<T> memPool_;
+};
+
+template <>
+JASMemPool_MultiThreaded<JASTrack::TChannelMgr> JASPoolAllocObject_MultiThreaded<JASTrack::TChannelMgr>::memPool_;
+template <>
+JASMemPool_MultiThreaded<JASTrack> JASPoolAllocObject_MultiThreaded<JASTrack>::memPool_;
+template <>
+JASMemPool_MultiThreaded<JASChannel> JASPoolAllocObject_MultiThreaded<JASChannel>::memPool_;
+template <>
+JASMemPool<JASPoolObj3_FSA> JASPoolAllocObject<JASPoolObj3_FSA>::memPool_;
+template <>
+JASMemPool<JASPoolObj4_FSA> JASPoolAllocObject<JASPoolObj4_FSA>::memPool_;
+template <>
+JASMemPool<JAIStream> JASPoolAllocObject<JAIStream>::memPool_;
+template <>
+JASMemPool<JAISoundChild> JASPoolAllocObject<JAISoundChild>::memPool_;
+template <>
+JASMemPool<JAISeq> JASPoolAllocObject<JAISeq>::memPool_;
+template <>
+JASMemPool<JAISe> JASPoolAllocObject<JAISe>::memPool_;
