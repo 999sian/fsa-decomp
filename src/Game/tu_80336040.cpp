@@ -8,15 +8,14 @@ extern "C" char lbl_804ABA90[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_801EE434(void* handle);
 extern "C" int fn_80230CFC(int index);
-extern "C" int fn_80230498(int index, const void* pos, s32 a1, u8 a2, u8 a3, u8 a4, u8 a5);
+extern "C" int fn_80230498(int index, const void* pos, s32 a1, u8 a2, s8 a3, s8 a4, u8 a5);
 extern "C" const JGeometry::TVec3<f32> lbl_80471AE0[4][4];
 extern "C" s32 fn_80336040(Actor* self) {
     u8* p = (u8*)self;
-    s32 ret = 0;
     s32 slot;
     s32 idx;
+    s32 ret = 0;
 
-    ret = 0;
     *(s32*)(p + 0x26c) = *(s32*)(p + 0x26c) + 1;
     if (*(s32*)(p + 0x26c) < 8) {
         *(s32*)(p + 0x260) = 0;
@@ -63,11 +62,9 @@ extern "C" s32 fn_80336040(Actor* self) {
         ret = 1;
     }
 
-    Vec pos = *(Vec*)(p + 0xc);
-    Vec sum;
-    sum.x = pos.x + lbl_80471AE0[idx][slot].x;
-    sum.y = pos.y + lbl_80471AE0[idx][slot].y;
-    sum.z = pos.z + lbl_80471AE0[idx][slot].z;
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
+    JGeometry::TVec3<f32> off = lbl_80471AE0[idx][slot];
+    JGeometry::TVec3<f32> sum = pos + off;
     fn_80230498(*(s32*)(p + 0x24c), &pos, *(s32*)(p + 0x270), 0xff, 0x80, 0x80, 1);
     fn_80230498(*(s32*)(p + 0x250), &sum, *(s32*)(p + 0x274), 0xff, 0x80, 0x80, 1);
     return ret;
