@@ -26,6 +26,7 @@ extern "C" void fn_80239914(void* box, u32 a, u32 b);
 extern "C" void fn_801D1C18(void* p);
 extern "C" void fn_8030C210(void* a, void* b);
 extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_8013CC50(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, f32 i);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern u8* lbl_8053AAF8;
 extern void* lbl_8053AD70;
