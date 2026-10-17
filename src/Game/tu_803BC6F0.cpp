@@ -40,15 +40,12 @@ struct DtorVt {
 };
 
 struct DtorBase {
-    virtual void v0() = 0;
-    virtual void v1() = 0;
-    virtual void v2(s32 b) = 0;
-    virtual void v3() = 0;
+    virtual void del(s32 b) = 0;
 };
 
 static inline void releaseSlot(void* obj) {
     if (obj != 0) {
-        ((DtorBase*)obj)->v2(1);
+        ((DtorBase*)obj)->del(1);
     }
 }
 
