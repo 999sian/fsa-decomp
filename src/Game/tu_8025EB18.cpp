@@ -38,9 +38,9 @@ void* fn_8023E724(s32);
 void fn_8028414C(char*);
 u16 fn_802265FC(JGeometry::TVec3<f32>*, s32);
 }
-extern f32 lbl_80540150;
-extern f32 lbl_80540154;
-extern f32 lbl_80540180;
+extern const f32 lbl_80540150;
+extern const f32 lbl_80540154;
+extern const f32 lbl_80540180;
 extern JGeometry::TVec3<f32> lbl_8046B400[];
 extern char* lbl_8053AAF8;
 extern JGeometry::TVec3<f32> lbl_8046B490[20];
@@ -435,6 +435,62 @@ extern "C" void fn_80262B6C(char* p) {
 
 extern "C" void fn_80262B8C(char* p) {
     fn_80283D2C(p);
+}
+
+extern "C" void fn_80263078(char* p) {
+    JGeometry::TVec3<f32> pos;
+    fn_8028414C(p);
+    if (U32(p, 0xd6c) == 0x4E495741 && U8(p, 0x441) == 0) {
+        char* a = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+        if (a != NULL && U8(a, 0x2a1) == 1) {
+            s32 n = 2;
+            pos.x = F32(p, 0x8);
+            pos.y = F32(p, 0xc);
+            do {
+                if (F32(p, 0x344) > lbl_80540150) {
+                    pos.x += lbl_80540154;
+                } else {
+                    pos.x -= lbl_80540154;
+                }
+                s32 id = S32(p, 0x3b4);
+                char* base = fn_802D6A9C();
+                if (id < 8) {
+                    base += 0xcc;
+                } else {
+                    base += 0xdc;
+                }
+                if (pos.x >= F32(base, 0) || pos.y >= F32(base, 4) || pos.x >= F32(base, 8) ||
+                    pos.y >= F32(base, 0xc)) {
+                    break;
+                }
+                u16 r = fn_802265FC(&pos, S32(p, 0x3b4));
+                if (r >= 0x10 && r <= 0x17) {
+                    n--;
+                }
+            } while (n > 0);
+            if (n == 0) {
+                if (F32(p, 0x344) > lbl_80540150) {
+                    pos.x += lbl_80540154;
+                } else {
+                    pos.x -= lbl_80540154;
+                }
+                F32(p, 0x324) = pos.x;
+                F32(p, 0x328) = pos.y;
+                F32(p, 0x34c) = lbl_80540180;
+            } else {
+                F32(p, 0x34c) = lbl_80540180;
+                F32(p, 0x10) = F32(p, 0x328) - F32(p, 0xc);
+                F32(p, 0xc) = F32(p, 0x328);
+            }
+            if (F32(p, 0x344) > lbl_80540150) {
+                S32(p, 0x3dc) = 0;
+                S32(p, 0x3e8) = 0;
+            } else if (F32(p, 0x344) < lbl_80540150) {
+                S32(p, 0x3dc) = 1;
+                S32(p, 0x3e8) = 1;
+            }
+        }
+    }
 }
 
 extern "C" void fn_802632A4(void) {}
