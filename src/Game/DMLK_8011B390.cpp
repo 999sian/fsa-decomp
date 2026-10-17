@@ -5,6 +5,16 @@ extern "C" f32 lbl_8053C7D8;
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void fn_8010E074(u8*);
 
+struct DMLKResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* getRes(s32 type, char* name);
+};
+
 extern "C" s32 fn_8011BDE4(u8* this_) {
 #if defined(VERSION_G4SP01)
     return *(s32*)(this_ + 0x23c);
