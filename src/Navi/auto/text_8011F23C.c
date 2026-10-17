@@ -207,6 +207,7 @@ extern "C" void fn_8011F668(u8* p, void* buf, s16 w, s16 h)
 
 extern u8 lbl_802FDD78[8];
 extern "C" void fn_8011F6CC(void* a, void* b, void* c, void* d, void* e, ...);
+#pragma dont_inline on
 extern "C" void fn_8011F6A0(void* a, void* b, void* c, void* e) {
     fn_8011F6CC(a, b, c, lbl_802FDD78, e);
 }
@@ -214,11 +215,48 @@ extern "C" void fn_8011F6A0(void* a, void* b, void* c, void* e) {
 extern "C" void fn_8011F848(void* p, NaviRGB8* c) {
     fn_8011F878(p, c->r, c->g, c->b);
 }
+#pragma dont_inline reset
 
 extern "C" void fn_8011FA0C(void)
 {
 }
 
+#pragma dont_inline on
+extern "C" void fn_8011FA10(void) {
+    extern u32 lbl_802FF318;
+    extern u8 lbl_802FDD88;
+    extern char lbl_802C6448[];
+    extern char lbl_802C6488[];
+    extern void* lbl_802FF310;
+    u32 v = 0;
+    if (lbl_802FF318 != 0) {
+        if (lbl_802FF318 + 0x10000 != 0xffff) {
+            lbl_802FF318--;
+        }
+        v = lbl_802FF318;
+        if (v < 5) {
+            v = 0;
+        }
+    }
+    if (v != 0 && lbl_802FDD88 == 1) {
+        u8* p = (u8*)lbl_802FF310;
+        Color32 t = *(Color32*)(p + 0x18);
+        Color32 c;
+        Color32 c2;
+        Color32 t2;
+        c.r = 0xff;
+        c.g = 0xc8;
+        c.b = 0xc8;
+        c.a = 0xff;
+        c2 = c;
+        fn_8011F848(p, (NaviRGB8*)&c2);
+        fn_8011F6A0(p, (void*)0x10, (void*)0x10, lbl_802C6448);
+        fn_8011F6A0(p, (void*)0x10, (void*)0x18, lbl_802C6488);
+        t2 = t;
+        fn_8011F848(p, (NaviRGB8*)&t2);
+    }
+}
+#pragma dont_inline reset
 extern "C" void* lbl_802FDD84;
 extern "C" void* fn_8011FD10(void)
 {
@@ -1016,8 +1054,8 @@ extern "C" void fn_80124DAC(OSAlarm* alarm, OSContext* ctx) {
 
 extern "C" void fn_80124DD0(void* a, void* b, OSTime tick) {
     OSAlarm alarm;
+    register BOOL level;
     volatile u32 saved;
-    BOOL level;
 
     OSCreateAlarm(&alarm);
     saved = fn_801C027C();
@@ -1110,7 +1148,7 @@ extern "C" u8* fn_801251B0(u8* self, s32 param_2, s32 param_3) {
     return self;
 }
 
-extern "C" s32 fn_80125208(u8* self, u16 param_2) {
+extern "C" s32 fn_80125208(u8* self, s32 param_2) {
     u16 n = *(u16*)(self + 0xe);
     s32* list = *(s32**)(self + 0x4);
     u16 i = 0;
@@ -2008,6 +2046,36 @@ extern "C" void fn_8012DA68(u8* p, u8* a, u8* b) {
     *(f32*)(p + 0x1c) = f * f;
 }
 
+extern const f32 lbl_80301710;
+extern const f32 lbl_80301714;
+extern "C" void fn_8012EA6C(void* a, void* b, u8* p2, u8* p3) {
+    f32 var_f3;
+    f32 f2;
+    u8* p;
+    u32 flags;
+    f32 t;
+
+    if (!(*(u32*)(p3 + 0x7c) & 4)) {
+        f2 = *(f32*)(p3 + 0x84);
+        p = *(u8**)p2;
+        flags = *(u32*)(p + 8) >> 16;
+        var_f3 = lbl_80301710;
+        if ((flags & 8) && f2 < *(f32*)(p + 0x38)) {
+            var_f3 = lbl_80301714;
+        } else if ((flags & 0x10) && f2 < *(f32*)(p + 0x3c)) {
+            var_f3 = lbl_80301714;
+        } else if ((flags & 0x40) && f2 < *(f32*)(p + 0x34)) {
+            var_f3 = (*(f32*)(p + 0x3c) - f2) * *(f32*)(p2 + 0xc);
+        } else if ((flags & 0x20) && f2 < *(f32*)(p + 0x30)) {
+            var_f3 = (f2 - *(f32*)(p + 0x38)) * *(f32*)(p2 + 8);
+        }
+        t = (lbl_80301710 - *(f32*)(p2 + 0x28)) * var_f3;
+        *(f32*)(p3 + 0x74) = *(f32*)(p3 + 0x74) * (lbl_80301710 - t);
+        return;
+    }
+    *(f32*)(p3 + 0x74) = *(f32*)(p3 + 0x74) * *(f32*)(p2 + 0x28);
+}
+
 extern "C" void fn_8012EF18(void*, void*);
 extern "C" void* fn_8012EEE0(void* ptr, void* param_2, void* param_3) {
     *(void**)ptr = param_2;
@@ -2203,6 +2271,41 @@ extern "C" void* fn_8012F6F8(void* a, s32 b, void* c) {
     return a;
 }
 
+#pragma use_lmw_stmw off
+#pragma dont_inline on
+extern "C" void* fn_8012FCFC(u8* self, Vec3f* pos, s32 arg2, u8 arg3, u8 arg4, s32 arg5, s32 arg6)
+{
+    u8* obj;
+    u8* list;
+    s32 r;
+    f32 z;
+    f32 y;
+    f32 x;
+
+    r = fn_80125208(*(u8**)(*(u8**)(self + 0x1c) + ((arg4 * 4) & 0x3FC)), arg2);
+    if (r != 0 && *(u32*)(self + 0xc) != 0) {
+        list = *(u8**)(self + 0x4);
+        fn_80166FC4(self + 0x4, list);
+        fn_80166C84(*(u8**)self + arg3 * 0xc, list);
+        obj = *(u8**)list;
+        fn_80130404(obj, self, r);
+        x = pos->x;
+        *(u8**)(obj + 0xE0) = self + 0x10;
+        y = pos->y;
+        *(s32*)(obj + 0xEC) = arg5;
+        z = pos->z;
+        *(s32*)(obj + 0xF0) = arg6;
+        *(u8*)(obj + 0x112) = arg3;
+        *(u8*)(obj + 0x113) = arg4;
+        *(f32*)(obj + 0xA4) = x;
+        *(f32*)(obj + 0xA8) = y;
+        *(f32*)(obj + 0xAC) = z;
+        return obj;
+    }
+    return NULL;
+}
+#pragma dont_inline reset
+#pragma use_lmw_stmw reset
 extern "C" void fn_8012FDE0(u8* p)
 {
     u8* node;
