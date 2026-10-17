@@ -62,6 +62,10 @@ extern "C" BOOL DVDLowStopMotor(DVDLowCallback callback);
 extern "C" void fn_801C747C(void (*callback)(u32));
 extern "C" void fn_801C88E8(void);
 extern "C" void fn_801C8850(u32 param_1);
+extern "C" s32 fn_801CAC6C(void* a, s32 b);
+extern "C" void fn_801C8B7C(DVDCommandBlock* block);
+extern "C" s32 fn_801E3C54(void* a, void* b, s32 c);
+extern "C" void fn_801C8C5C(u32 intType);
 
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block)
 {
@@ -148,10 +152,10 @@ extern f32 lbl_80301E60;
 extern f32 lbl_80301E64;
 extern f32 lbl_80301E68;
 extern f32 lbl_80301E6C;
-extern "C" void fn_801C6760(float* m, double a, double b, double c, double d) {
-    float t = lbl_80301E58 / fn_801EA24C(lbl_80301E6C * (lbl_80301E68 * (float)a));
-    float u = lbl_80301E58 / (float)(d - c);
-    m[0] = t / (float)b;
+extern "C" void fn_801C6760(float* m, float a, float b, float c, float d) {
+    float t = lbl_80301E58 / fn_801EA24C(lbl_80301E6C * (lbl_80301E68 * a));
+    float u = lbl_80301E58 / (d - c);
+    m[0] = t / b;
     m[1] = lbl_80301E60;
     m[2] = lbl_80301E60;
     m[3] = lbl_80301E60;
@@ -161,8 +165,8 @@ extern "C" void fn_801C6760(float* m, double a, double b, double c, double d) {
     m[7] = lbl_80301E60;
     m[8] = lbl_80301E60;
     m[9] = lbl_80301E60;
-    m[10] = -(float)c * u;
-    m[11] = u * -((float)d * (float)c);
+    m[10] = -c * u;
+    m[11] = u * -(d * c);
     m[12] = lbl_80301E60;
     m[13] = lbl_80301E60;
     m[14] = lbl_80301E64;
@@ -620,30 +624,13 @@ extern "C" BOOL DVDReadAbsAsyncForBS(DVDCommandBlock* block, void* addr, s32 len
 static BOOL issueCommand(s32 prio, DVDCommandBlock* block);
 extern "C" BOOL DVDReadDiskID(DVDCommandBlock* block, DVDDiskID* diskID, DVDCBCallback callback)
 {
-	BOOL level;
-	BOOL result;
-
 	block->command = 5;
 	block->addr = diskID;
 	block->length = 0x20;
 	block->offset = 0;
 	block->transferredSize = 0;
 	block->callback = callback;
-
-	if (autoInvalidation_802FE9B4 && (block->command == 1 || block->command == 4 || block->command == 5 || block->command == 14)) {
-		DCInvalidateRange(block->addr, block->length);
-	}
-
-	level = OSDisableInterrupts();
-	block->state = 2;
-	result = __DVDPushWaitingQueue(2, block);
-
-	if ((executing_802FF880 == nullptr) && (PauseFlag_802FF88C == FALSE)) {
-		stateReady();
-	}
-
-	OSRestoreInterrupts(level);
-	return result;
+	return issueCommand(2, block);
 }
 
 extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
