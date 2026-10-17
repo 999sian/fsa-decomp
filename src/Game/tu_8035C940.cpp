@@ -1,6 +1,7 @@
 #include "JSystem/JMath/JMath.h"
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry.h"
+#include "Game/ItemBase.h"
 
 struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
@@ -85,6 +86,43 @@ extern "C" void fn_8035C940(char* p) {
     }
 }
 
+extern const f32 lbl_80542934;
+extern const u32 lbl_804727A4[];
+f32 JMAFastVECMag(const Vec* v);
+extern "C" void fn_8035CAF8(char* p)
+{
+    if (*(u32*)(p + 0x274) != 0) {
+        fn_8013CB44(*(void**)(p + 0x274), p + 0xc, -1, -1, 1);
+    }
+    if (*(u32*)(p + 0x278) != 0) {
+        fn_8013CB44(*(void**)(p + 0x278), p + 0xc, -1, -1, 1);
+    }
+    if (fn_8035C15C(p, 10) == 1) {
+        Unk8035CD00* q = (Unk8035CD00*)p;
+        fn_8035C1C4(p, 10, lbl_80472730[*(u32*)(p + 0x90) & 7]);
+        s16 ang = q->m260;
+        f32 z = q->m14;
+        f32 y = q->m25C * sincosTable___5JMath[(u16)ang >> 5].sin + q->m268;
+        f32 x = q->m258 * sincosTable___5JMath[(u16)ang >> 5].cos + q->m264;
+        JGeometry::TVec3<f32> pos(x, y, z);
+        JGeometry::TVec3<f32> cur = pos;
+        Vec v;
+        v.x = cur.x - *(f32*)(p + 0xc);
+        v.y = cur.y - *(f32*)(p + 0x10);
+        v.z = lbl_80542930;
+        f32 mag = JMAFastVECMag(&v);
+        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + v.x * *(f32*)(p + 0x254) / mag;
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + v.y * *(f32*)(p + 0x254) / mag;
+        if (fabs(*(f32*)(p + 0xc) - pos.x) + fabs(*(f32*)(p + 0x10) - pos.y) < lbl_80542934) {
+            *(f32*)(p + 0x254) = lbl_80542930;
+            *(f32*)(p + 0xc) = pos.x;
+            *(f32*)(p + 0x10) = pos.y;
+            *(s32*)(p + 0x234) = lbl_804727A4[*(u32*)(p + 0x90) & 7] + 0x50;
+            *(s32*)(p + 0x230) = 5;
+        }
+    }
+}
+
 extern "C" Vec fn_8035CD00(Unk8035CD00* p) {
     s16 old = p->m260;
     p->m260 += 0x400;
@@ -140,6 +178,129 @@ extern "C" JGeometry::TVec3<f32> fn_8035CE78(Unk8035CD00* p) {
         p->m270 |= 2;
     }
     return ret;
+}
+
+typedef Vec (Unk8035CD00::*Unk8035CD00Func)();
+extern Unk8035CD00Func lbl_804AD594[];
+extern const f32 lbl_80542948;
+extern const f32 lbl_8054294C;
+extern const f32 lbl_80542958;
+extern const f32 lbl_8054295C;
+extern const f32 lbl_80542960;
+extern const f32 lbl_80542964;
+extern const s16 lbl_80472798[];
+extern "C" void fn_8035CF50(Unk8035CD00* self) {
+    char* p = (char*)self;
+    Vec d;
+    Vec v;
+    Vec w;
+    f32 mag;
+    s16 prev;
+
+    if (*(f32*)(p + 0x10) < lbl_80542948) {
+        f32 diff = *(f32*)(p + 0x10) - *(f32*)(p + 0x14);
+        if (diff < lbl_8054294C) {
+            *(s8*)(p + 0x272) = -2;
+        } else if (diff < lbl_80542924) {
+            *(s8*)(p + 0x272) = -1;
+        } else {
+            *(s8*)(p + 0x272) = 0;
+        }
+    } else {
+        *(s8*)(p + 0x272) = 0;
+    }
+    if (*(u32*)(p + 0x274) != 0) {
+        fn_8013CB44(*(void**)(p + 0x274), p + 0xc, -1, -1, 1);
+    }
+    if (*(u32*)(p + 0x278) != 0) {
+        fn_8013CB44(*(void**)(p + 0x278), p + 0xc, -1, -1, 1);
+    }
+    if (fn_8035C15C(p, 10) == 1) {
+        fn_8035C1C4(p, 10, lbl_80472730[*(u32*)(p + 0x90) & 7]);
+    }
+    if ((*(s16*)(p + 0x270) & 0xc000) == 0xc000) {
+        if (*(f32*)(p + 0x268) < lbl_80542950) {
+            *(f32*)(p + 0x268) = *(f32*)(p + 0x268) + lbl_80542954;
+        }
+    } else {
+        if (*(f32*)(p + 0x254) < lbl_80542958) {
+            *(f32*)(p + 0x254) = *(f32*)(p + 0x254) + lbl_8054295C;
+        }
+        if (*(f32*)(p + 0x268) > lbl_80542960) {
+            *(f32*)(p + 0x268) = *(f32*)(p + 0x268) - lbl_80542964;
+        }
+    }
+    prev = *(s16*)(p + 0x260);
+    w = (self->*lbl_804AD594[*(s16*)(p + 0x270) & 3])();
+    v = w;
+    d.x = v.x - *(f32*)(p + 0xc);
+    d.y = v.y - *(f32*)(p + 0x10);
+    d.z = lbl_80542930;
+    mag = JMAFastVECMag(&d);
+    *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + d.x * *(f32*)(p + 0x254) / mag;
+    *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + d.y * *(f32*)(p + 0x254) / mag;
+    if ((*(s16*)(p + 0x270) & 0xc000) == 0xc000) {
+        s16 tbl = lbl_80472798[*(u32*)(p + 0x90) & 7];
+        if ((u16)*(s16*)(p + 0x260) >= (u16)tbl && (u16)prev < (u16)tbl) {
+            *(s32*)(p + 0x230) = 4;
+            *(s16*)(p + 0x260) = lbl_80472798[*(u32*)(p + 0x90) & 7];
+            *(s8*)(p + 0x272) = 0;
+        }
+    }
+}
+
+extern "C" u8 fn_8035C15C(char* p, s32 id);
+extern "C" void fn_8035C1C4(char* p, s32 id, u32 arg);
+extern "C" u32 fn_801CD664(s32 id);
+extern const u32 lbl_80472780[];
+extern "C" void fn_8035D4B8(char* p) {
+    s32 state = *(s32*)(p + 0x238);
+    if (state == 0) {
+        if (fn_8035C15C(p, 7) == 1) {
+            fn_8035C1C4(p, 7, lbl_80472718[*(u32*)(p + 0x90) & 7]);
+        }
+    } else if (state == 1) {
+        if (fn_8035C15C(p, 9) == 1) {
+            *(s32*)(p + 0x24c) = 0;
+            *(s32*)(p + 0x238) = 2;
+        }
+    } else if (state == 2) {
+        if (fn_8035C15C(p, 8) == 1) {
+            fn_8035C1C4(p, 8, lbl_80472718[*(u32*)(p + 0x90) & 7]);
+        }
+    } else if (state == 3) {
+        s32 t = *(s32*)(p + 0x248);
+        if (t < 0x14) {
+            *(s32*)(p + 0x248) = 0x14;
+            *(s32*)(p + 0x244) = 9;
+        } else if (*(s32*)(p + 0x244) == 0) {
+            if (t == 0x14) {
+                *(s32*)(p + 0x248) = 0x18;
+                *(s32*)(p + 0x244) = 0x3c;
+            } else if (t == 0x18) {
+                *(s32*)(p + 0x248) = 0x19;
+                *(s32*)(p + 0x244) = 3;
+            } else {
+                *(s32*)(p + 0x248) = 8;
+                *(s32*)(p + 0x24c) = 0;
+                *(s32*)(p + 0x230) = 2;
+                *(u32*)(p + 0x234) = lbl_80472780[*(u32*)(p + 0x90) & 7] + 0x128;
+                *(s32*)(p + 0x238) = 0;
+            }
+        }
+    } else if (state == 4) {
+        s32 timer = *(s32*)(p + 0x244);
+        if (timer == 0) {
+            *(u32*)(p + 0x24c) = fn_801CD664(6);
+            fn_8035C1C4(p, 7, lbl_80472718[*(u32*)(p + 0x90) & 7]);
+            *(u32*)(p + 0x244) = fn_801CD664(4);
+            *(s32*)(p + 0x238) = 0;
+        } else if (timer == 0x28) {
+            *(s32*)(p + 0x248) = 0xa;
+        } else if (timer == 0xa) {
+            *(s32*)(p + 0x248) = 0xb;
+        }
+    }
 }
 
 extern "C" void fn_8035D6C4(char* p) {
