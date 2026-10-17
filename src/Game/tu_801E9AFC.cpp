@@ -3,6 +3,39 @@
 struct JMathSinCos { f32 sin; f32 cos; };
 struct FsaSlotEntry { void* actor; u8 kind; s32 id; };
 struct FsaSlot { FsaSlotEntry entries[8]; s32 count; s32 unk64[4]; s32 unk74; };
+
+static inline void fsaSlotClear(FsaSlot* s) {
+    s->entries[0].actor = NULL;
+    s->entries[0].kind = 0;
+    s->entries[0].id = -1;
+    s->entries[1].actor = NULL;
+    s->entries[1].kind = 0;
+    s->entries[1].id = -1;
+    s->entries[2].actor = NULL;
+    s->entries[2].kind = 0;
+    s->entries[2].id = -1;
+    s->entries[3].actor = NULL;
+    s->entries[3].kind = 0;
+    s->entries[3].id = -1;
+    s->entries[4].actor = NULL;
+    s->entries[4].kind = 0;
+    s->entries[4].id = -1;
+    s->entries[5].actor = NULL;
+    s->entries[5].kind = 0;
+    s->entries[5].id = -1;
+    s->entries[6].actor = NULL;
+    s->entries[6].kind = 0;
+    s->entries[6].id = -1;
+    s->entries[7].actor = NULL;
+    s->entries[7].kind = 0;
+    s->entries[7].id = -1;
+    s->count = 0;
+    s->unk64[0] = -1;
+    s->unk64[1] = -1;
+    s->unk64[2] = -1;
+    s->unk64[3] = -1;
+    s->unk74 = 0;
+}
 extern "C" {
 extern const f32 lbl_8053F65C;
 extern const f32 lbl_8053F660;
