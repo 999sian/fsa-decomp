@@ -73,6 +73,7 @@ struct PukuGameRes {
     PukuResMgr* res;
 };
 extern "C" void fn_802F86CC(void* layer, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
+extern void* lbl_8053AAF8;
 extern "C" void v07__5ActorFv(void* this_);
 extern "C" void fn_80172894(void* this_) {
     char* p = (char*)this_;
