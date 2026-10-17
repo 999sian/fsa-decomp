@@ -113,6 +113,64 @@ extern "C" void fn_8026947C(Obj8026942C* o, JGeometry::TVec3<f32>* out) {
     }
 }
 
+extern "C" u8 fn_80240670(void*);
+extern "C" u8 fn_802412A4(void*);
+extern "C" u8 fn_8023EAC4(void*);
+extern "C" f32 fn_80247330();
+extern "C" f32 fn_8024712C();
+extern "C" u8 fn_80250090(void*);
+extern "C" u8 fn_80241478(void*);
+extern "C" void fn_8026E1E0(u8* p) {
+    if (fn_80240670(*(void**)(p + 4)) && (fn_802412A4(*(void**)(p + 4)) || *(s32*)(*(u8**)(p + 4) + 0x1218) > 0)) {
+        *(s32*)(p + 0xa0) = 0;
+        *(s32*)(p + 0xa4) = 0;
+    } else {
+        if (fn_8023EAC4(*(void**)(*(u8**)(p + 4) + 4))) {
+            *(s32*)(p + 0xa0) = 0;
+            *(s32*)(p + 0xa4) = 0;
+        } else if (*(f32*)(*(u8**)(p + 4) + 0x10) > lbl_80540228) {
+            *(s32*)(p + 0xa0) = 0;
+            *(s32*)(p + 0xa4) = 0;
+        } else if (p[0x38] == 1 && *(s32*)(*(u8**)(p + 4) + 0x3dc) == 0 && fn_80247330() > lbl_80540228) {
+            *(s32*)(p + 0xa0) = *(s32*)(p + 0xa0) + 1;
+            if (*(s32*)(p + 0xa0) > 0x14) {
+                *(s32*)(p + 0xa0) = 0x14;
+            }
+            *(s32*)(p + 0xa4) = 0;
+        } else if (p[0x39] == 1 && *(s32*)(*(u8**)(p + 4) + 0x3dc) == 1 && fn_80247330() < lbl_80540228) {
+            *(s32*)(p + 0xa0) = *(s32*)(p + 0xa0) + 1;
+            if (*(s32*)(p + 0xa0) > 0x14) {
+                *(s32*)(p + 0xa0) = 0x14;
+            }
+            *(s32*)(p + 0xa4) = 0;
+        } else if (p[0x3a] == 1 && *(s32*)(*(u8**)(p + 4) + 0x3dc) == 2 && fn_8024712C() < lbl_80540228) {
+            *(s32*)(p + 0xa0) = *(s32*)(p + 0xa0) + 1;
+            if (*(s32*)(p + 0xa0) > 0x14) {
+                *(s32*)(p + 0xa0) = 0x14;
+            }
+            *(s32*)(p + 0xa4) = 0;
+        } else if (p[0x3b] == 1 && *(s32*)(*(u8**)(p + 4) + 0x3dc) == 3 && fn_8024712C() > lbl_80540228) {
+            *(s32*)(p + 0xa0) = *(s32*)(p + 0xa0) + 1;
+            if (*(s32*)(p + 0xa0) > 0x14) {
+                *(s32*)(p + 0xa0) = 0x14;
+            }
+            *(s32*)(p + 0xa4) = 0;
+        } else if (fn_80250090(*(void**)(p + 4))) {
+            *(s32*)(p + 0xa0) = 0x14;
+            *(s32*)(p + 0xa4) = 0;
+        } else if (!fn_80241478(*(void**)(p + 4))) {
+            *(s32*)(p + 0xa4) = *(s32*)(p + 0xa4) + 1;
+            if (*(s32*)(p + 0xa4) >= 5) {
+                *(s32*)(p + 0xa4) = 5;
+                *(s32*)(p + 0xa0) = 0;
+                *(s32*)(*(u8**)(p + 4) + 0xd94) = -1;
+                *(s32*)(*(u8**)(p + 4) + 0xd9c) = -1;
+                *(s32*)(*(u8**)(p + 4) + 0xd98) = 0;
+            }
+        }
+    }
+}
+
 extern "C" void fn_8026E464(u8* p) {
     s32 i;
     s32 j;
@@ -183,36 +241,183 @@ extern "C" u8 fn_8026EB1C(u8* p, u16 param) {
     return 0;
 }
 
-extern "C" void fn_8026F388(u8* p) {
-    if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 2) {
-        *(s32*)(p + 0xac) = 1;
-        if (fn_80250D30(*(void**)(p + 4)) && *(s32*)(*(u8**)(p + 4) + 0x3dc) == *(s32*)(p + 0x1c) && fn_8024FF84() < 0) {
+extern "C" s32 GetPtrField_0x4(void*);
+extern "C" void fn_8026EC88(u8* p, s32 param) {
+    *(s32*)(p + 0xac) = 1;
+    if (param == GetPtrField_0x4(*(void**)(p + 4))) {
+        if (fn_80250D30(*(void**)(p + 4)) && *(s32*)(p + 0x1c) == *(s32*)(*(u8**)(p + 4) + 0x3dc) && fn_8024FF84() < 0) {
             JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)(p + 8);
-            JGeometry::TVec3<f32> off = lbl_8046B998[*(s32*)(*(u8**)(p + 4) + 0x3dc)];
+            JGeometry::TVec3<f32> off(lbl_8046B998[*(s32*)(*(u8**)(p + 4) + 0x3dc)].x, lbl_8046B998[*(s32*)(*(u8**)(p + 4) + 0x3dc)].y, lbl_8046B998[*(s32*)(*(u8**)(p + 4) + 0x3dc)].z);
             v.add(off);
             bool ok;
             u16 t = fn_8022461C(&v, *(s32*)(*(u8**)(p + 4) + 0x3b4));
-            if (t == 0) {
-                ok = false;
-            } else if (t == 2) {
-                ok = false;
-            } else if (t == 0x50) {
-                ok = true;
+            if (t != 0 && t != 2) {
+                if (t == 0x50) {
+                    ok = true;
+                } else {
+                    ok = false;
+                }
             } else {
                 ok = false;
             }
             if (ok) {
                 JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 8);
                 pos.z = lbl_80540228;
+                u8* a = *(u8**)(p + 4);
+                s32 idx = *(s32*)(a + 0x3dc);
+                void* mgr = fn_801F856C();
+                void* id = Actor_CreateByID(mgr, 0x424c434b, *(s32*)(a + 0x3b4), &pos, (((param + 1) & 7) << 4) | ((idx & 3) << 2), -1, -1);
+                if (fn_8022461C(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4)) != 0x50) {
+                    if (fn_801F666C(fn_801F856C(), id) != 0) {
+                        *(void**)(*(u8**)(p + 4) + 0xd94) = id;
+                    }
+                }
+                return;
+            }
+        }
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+    } else {
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+    }
+}
+
+extern "C" void fn_8026F000(u8* p) {
+    JGeometry::TVec3<f32> pos;
+    if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 1) {
+        *(s32*)(p + 0xac) = 1;
+        if (fn_80250D30(*(void**)(p + 4)) && *(s32*)(p + 0x1c) == *(s32*)(*(u8**)(p + 4) + 0x3dc) && fn_8024FF84() < 0) {
+            JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)(p + 8);
+            JGeometry::TVec3<f32>* o = &lbl_8046B998[*(s32*)(*(u8**)(p + 4) + 0x3dc)];
+            JGeometry::TVec3<f32> off;
+            off.x = o->x;
+            off.y = o->y;
+            off.z = o->z;
+            v.add(off);
+            bool ok;
+            u16 t = fn_8022461C(&v, *(s32*)(*(u8**)(p + 4) + 0x3b4));
+            if (t != 0 && t != 2) {
+                if (t == 0x50) {
+                    ok = true;
+                } else {
+                    ok = false;
+                }
+            } else {
+                ok = false;
+            }
+            if (ok) {
+                pos = *(JGeometry::TVec3<f32>*)(p + 8);
+                pos.z = lbl_80540228;
+                u8* a = *(u8**)(p + 4);
+                s32 idx = *(s32*)(a + 0x3dc);
+                void* mgr = fn_801F856C();
+                void* id = Actor_CreateByID(mgr, 0x424c434b, *(s32*)(a + 0x3b4), &pos, (idx & 3) << 2, -1, -1);
+                if (fn_8022461C(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4)) != 0x50) {
+                    if (fn_801F666C(fn_801F856C(), id) != 0) {
+                        *(void**)(*(u8**)(p + 4) + 0xd94) = id;
+                    }
+                }
+                return;
+            }
+        }
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+    } else {
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+    }
+}
+
+extern "C" void fn_8026F388(u8* p) {
+    if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 2) {
+        *(s32*)(p + 0xac) = 1;
+        if (fn_80250D30(*(void**)(p + 4))) {
+            s32 d = *(s32*)(*(u8**)(p + 4) + 0x3dc);
+            if (d == *(s32*)(p + 0x1c) && fn_8024FF84() < 0) {
+            JGeometry::TVec3<f32> pos;
+            JGeometry::TVec3<f32> off;
+            JGeometry::TVec3<f32> v = *(JGeometry::TVec3<f32>*)(p + 8);
+            JGeometry::TVec3<f32>& e = lbl_8046B998[*(s32*)(*(u8**)(p + 4) + 0x3dc)];
+            off.x = e.x;
+            off.y = e.y;
+            off.z = e.z;
+            v.add(off);
+            bool ok;
+            u16 t = fn_8022461C(&v, *(s32*)(*(u8**)(p + 4) + 0x3b4));
+            if (t != 0 && t != 2) {
+                if (t == 0x50) {
+                    ok = true;
+                } else {
+                    ok = false;
+                }
+            } else {
+                ok = false;
+            }
+            if (ok) {
+                pos = *(JGeometry::TVec3<f32>*)(p + 8);
+                pos.z = lbl_80540228;
+                void* actor;
                 u8* pl = *(u8**)(p + 4);
-                s32 dir = *(s32*)(pl + 0x3dc);
-                void* actor = Actor_CreateByID(fn_801F856C(), 0x424c434b, *(s32*)(pl + 0x3b4), &pos, (dir & 3) << 2, -1, -1);
+                actor = (void*)*(s32*)(pl + 0x3dc);
+                void* mgr = fn_801F856C();
+                actor = Actor_CreateByID(mgr, 0x424c434b, *(s32*)(pl + 0x3b4), &pos, ((s32)actor & 3) << 2, -1, -1);
                 if ((u16)fn_8022461C(&pos, *(s32*)(*(u8**)(p + 4) + 0x3b4)) != 0x50) {
                     if (fn_801F666C(fn_801F856C(), actor)) {
                         *(void**)(*(u8**)(p + 4) + 0xd94) = actor;
                     }
                 }
                 return;
+            }
+            }
+        }
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+    } else {
+        p[*(s32*)(p + 0x1c) + 0x38] = 1;
+    }
+}
+
+extern "C" void fn_8026F54C(u8* p) {
+    JGeometry::TVec3<f32> cp;
+    u8* pl = *(u8**)(p + 4);
+    if (*(s32*)(pl + 0x3dc) == 3) {
+        *(s32*)(p + 0xac) = 1;
+        if (fn_80250D30(*(void**)(p + 4))) {
+            u8* q = *(u8**)(p + 4);
+            s32 cur = *(s32*)(p + 0x1c);
+            if (cur == *(s32*)(q + 0x3dc) && fn_8024FF84() < 0) {
+            JGeometry::TVec3<f32> off;
+            JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(p + 8);
+            u8* pl2 = *(u8**)(p + 4);
+            JGeometry::TVec3<f32>& src = lbl_8046B998[*(s32*)(pl2 + 0x3dc)];
+            off.x = src.x;
+            off.y = src.y;
+            off.z = src.z;
+            pos += off;
+            u16 r = fn_8022461C(&pos, *(s32*)(pl2 + 0x3b4));
+            bool ok;
+            if (r != 0 && r != 2) {
+                if (r == 0x50) {
+                    ok = true;
+                } else {
+                    ok = false;
+                }
+            } else {
+                ok = false;
+            }
+            if (ok) {
+                void* act;
+                s32 idx;
+                u8* a;
+                cp = *(JGeometry::TVec3<f32>*)(p + 8);
+                cp.z = lbl_80540228;
+                a = *(u8**)(p + 4);
+                idx = *(s32*)(a + 0x3dc);
+                void* mgr = fn_801F856C();
+                act = Actor_CreateByID(mgr, 0x424c434b, *(s32*)(a + 0x3b4), &cp, (idx & 3) << 2, -1, -1);
+                if (fn_8022461C(&cp, *(s32*)(*(u8**)(p + 4) + 0x3b4)) != 0x50) {
+                    if (fn_801F666C(fn_801F856C(), act)) {
+                        *(void**)(*(u8**)(p + 4) + 0xd94) = act;
+                    }
+                }
+                return;
+            }
             }
         }
         p[*(s32*)(p + 0x1c) + 0x38] = 1;
