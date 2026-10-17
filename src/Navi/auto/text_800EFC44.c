@@ -15,23 +15,36 @@ extern u8 lbl_802B7CA0[];
 extern char lbl_8028BFCC[];
 extern char lbl_8028BFDC[];
 extern char lbl_8028BFEC[];
-extern "C" s32 fn_800F0C44(void* param_1, u8* p, s32 idx) {
-    u8* dst = (idx * 0x9c4 + p) + 0x258;
+
+struct SaveSlot_800F0C44 {
+    u8 data[0x9c4];
+};
+
+struct SaveMgr_800F0C44 {
+    u8 pad[0x258];
+    SaveSlot_800F0C44 slots[1];
+};
+extern "C" s32 fn_800F0C44(void* param_1, s32 p, s32 idx) {
+    s64* dst;
+    p = idx * 0x9c4 + p;
+    dst = (s64*)(p + 0x258);
     memcpy(dst, lbl_802B7CA0, 0x9b8);
-    *(s64*)dst = OSGetTime();
+    *dst = OSGetTime();
     fn_801E445C(lbl_8028BFCC, 0x9b8);
     return 0;
 }
 
-extern "C" s32 fn_800F0CB4(void* param_1, u8* p, s32 idx) {
-    memcpy(lbl_802B7CA0, (idx * 0x9c4 + p) + 0x258, 0x9b8);
+extern "C" s32 fn_800F0CB4(void* param_1, s32 p, s32 idx) {
+    memcpy(lbl_802B7CA0, (void*)(idx * 0x9c4 + p + 0x258), 0x9b8);
     fn_801E445C(lbl_8028BFDC, 0x9b8);
     return 0;
 }
 
-extern "C" s32 fn_800F0D04(void* param_1, u8* p, s32 idx) {
+extern "C" s32 fn_800F0D04(void* param_1, s32 p, s32 idx) {
     u8 buf[0x9b8];
-    u8* dst = (idx * 0x9c4 + p) + 0x258;
+    void* dst;
+    p = idx * 0x9c4 + p;
+    dst = (void*)(p + 0x258);
     fn_800EFC44(buf);
     memcpy(dst, buf, 0x9b8);
     fn_801E445C(lbl_8028BFEC, 0x9b8);
@@ -153,6 +166,25 @@ extern "C" u8 fn_800F2750(u8* param_1, s32 param_2) {
         t += 5;
     }
     return t;
+}
+
+extern "C" u8 fn_800F2790(void* param_1, s16* param_2) {
+    s16 sVar1 = param_2[0] - 0xe00;
+    u8 uVar2 = lbl_802B7CA0[0x1419];
+    s16 sVar2 = param_2[1] - 0x2c00;
+    param_2[0] = sVar1;
+    param_2[1] = sVar2;
+    if (sVar1 < 0) {
+        param_2[0] = 0;
+    } else if (sVar1 >= 0x600) {
+        param_2[0] = 0x5ff;
+    }
+    if (param_2[1] < 0) {
+        param_2[1] = 0;
+    } else if (param_2[1] >= 0x400) {
+        param_2[1] = 0x3ff;
+    }
+    return (s32)param_2[0] / ((s16*)lbl_802C5A18)[uVar2 * 2] + ((s32)param_2[1] / ((s16*)lbl_802C5A18)[uVar2 * 2 + 1]) * 2;
 }
 
 extern "C" void* fn_800F2838(void* ptr, s16 param_2) {
