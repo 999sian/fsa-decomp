@@ -1,6 +1,8 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801e30ac-0x801ea39c (89 functions). split_file divides it into the game's real files.
 
+extern "C" void __begin_critical_region(int);
+extern "C" void __end_critical_region(int);
 extern "C" double fn_801E997C(void);
 extern "C" void fn_801E9310(int param);
 extern "C" int fn_801E7F88(void* param);
@@ -64,6 +66,27 @@ extern "C" unsigned char fn_801E3178(unsigned int param_1) {
     return *p & 0xc0;
 }
 
+extern "C" void* fn_801E39E4(void*);
+extern "C" void* fn_801E399C(void* volatile param_1) {
+    extern void __begin_critical_region(int);
+    extern void __end_critical_region(int);
+    void* r;
+    __begin_critical_region(2);
+    r = fn_801E39E4(param_1);
+    __end_critical_region(2);
+    return r;
+}
+
+extern "C" void fn_801E3B3C(unsigned char* p1, unsigned short p2) {
+    struct {
+        unsigned char* a;
+        unsigned short b;
+    } s;
+    s.a = p1;
+    s.b = p2;
+    fn_801E3B6C(s.a, s.b);
+}
+
 extern "C" int fn_801E3C54(unsigned char* s1, unsigned char* s2, unsigned int n) {
     unsigned char* p1 = s1 - 1;
     unsigned char* p2 = s2 - 1;
@@ -72,7 +95,11 @@ extern "C" int fn_801E3C54(unsigned char* s1, unsigned char* s2, unsigned int n)
         if (*++p1 == *++p2) {
             continue;
         }
-        result = *p1 < *p2 ? -1 : 1;
+        if (*p1 < *p2) {
+            result = -1;
+        } else {
+            result = 1;
+        }
         return result;
     }
     return 0;
