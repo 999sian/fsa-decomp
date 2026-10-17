@@ -1764,18 +1764,53 @@ extern "C" void fn_801DE718(s32 param_1, u32 param_2, u32 param_3) {
 
 extern "C" void fn_801DE760(s32 table, u32 red, u32 green, u32 blue, u32 alpha) {
     u8* gx = __GXData;
-    u32* p0 = (u32*)(gx + table * 8 + 0x1b0);
-    u32* p1;
-    *p0 = (*p0 & ~3) | (red & 3);
-    *p0 = (*p0 & ~0xC) | ((green & 3) << 2);
-    p1 = (u32*)(gx + (table * 2 + 1) * 4 + 0x1b0);
+    u32* Kreg;
+    Kreg = &((u32*)(gx + 0x1b0))[table * 2];
+    *Kreg = (*Kreg & ~3) | (red & 3);
+    *Kreg = (*Kreg & ~0xC) | ((green & 3) << 2);
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = *p0;
-    *p1 = (*p1 & ~3) | (blue & 3);
-    *p1 = (*p1 & ~0xC) | ((alpha & 3) << 2);
+    *(volatile u32*)0xCC008000 = *Kreg;
+    Kreg = &((u32*)(gx + 0x1b0))[table * 2 + 1];
+    *Kreg = (*Kreg & ~3) | (blue & 3);
+    *Kreg = (*Kreg & ~0xC) | ((alpha & 3) << 2);
     *(volatile u8*)0xCC008000 = 0x61;
-    *(volatile u32*)0xCC008000 = *p1;
+    *(volatile u32*)0xCC008000 = *Kreg;
     *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE7E0(u32 id, u8 ref, u32 thresh, u32 mode, u8 a) {
+    u8* gx = __GXData;
+    u32 reg = 0xF3000000;
+    reg = __rlwimi(reg, ref, 0, 24, 31);
+    reg = __rlwimi(reg, a, 8, 16, 23);
+    reg = __rlwimi(reg, id, 16, 13, 15);
+    reg = __rlwimi(reg, mode, 19, 10, 12);
+    *(volatile u8*)0xCC008000 = 0x61;
+    reg = __rlwimi(reg, thresh, 22, 8, 9);
+    *(volatile u32*)0xCC008000 = reg;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE824(u32 op, s32 fmt, u32 bias) {
+    u32 reg0 = 0;
+    u32 reg1 = 0;
+    u32 type;
+    reg0 = __rlwimi(reg0, bias, 0, 8, 31);
+    reg0 = __rlwimi(reg0, 0xF4, 24, 0, 7);
+    switch (fmt) {
+    case 0x11: type = 0; break;
+    case 0x13: type = 1; break;
+    case 0x16: type = 2; break;
+    default: type = 2; break;
+    }
+    *(volatile u8*)0xCC008000 = 0x61;
+    reg1 = __rlwimi(reg1, type, 0, 30, 31);
+    reg1 = __rlwimi(reg1, op, 2, 28, 29);
+    *(volatile u32*)0xCC008000 = reg0;
+    reg1 = __rlwimi(reg1, 0xF5, 24, 0, 7);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg1;
+    *(u16*)(__GXData + 2) = 0;
 }
 
 extern "C" void fn_801DEA4C(u8 param_1) {
@@ -1784,3 +1819,104 @@ extern "C" void fn_801DEA4C(u8 param_1) {
     gx[0x5ac / 4] |= 4;
 }
 
+extern "C" void fn_801DEDBC(u8 param_1, u8 param_2, u8 param_3, u8 param_4) {
+    u8* gx = __GXData;
+    u32 r7 = *(u32*)(gx + 0x1d0);
+    r7 = __rlwimi(r7, !(3 - param_1), 6, 20, 20);
+    r7 = __rlwimi(r7, param_1, 0, 31, 31);
+    r7 = __rlwimi(r7, !(2 - param_1), 28, 30, 30);
+    r7 = __rlwimi(r7, param_4, 12, 16, 19);
+    r7 = __rlwimi(r7, param_2, 8, 21, 23);
+    r7 = __rlwimi(r7, param_3, 5, 24, 26);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = r7;
+    *(u32*)(gx + 0x1d0) = r7;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DEE10(u8 param_1) {
+    u8* gx = __GXData;
+    u32 r6 = *(u32*)(gx + 0x1d0);
+    r6 = __rlwimi(r6, param_1, 3, 28, 28);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = r6;
+    *(u32*)(gx + 0x1d0) = r6;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DEE3C(u8 enable) {
+    u32* gx = (u32*)__GXData;
+    u32 reg = __rlwimi(gx[0x1d0 / 4], enable, 4, 27, 27);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = reg;
+    gx[0x1d0 / 4] = reg;
+    *(u16*)((u8*)gx + 2) = 0;
+}
+
+extern "C" void fn_801DEE68(u8 param_1, u8 param_2, u8 param_3) {
+    u8* gx = __GXData;
+    u32 r7 = *(u32*)(gx + 0x1d8);
+    r7 = __rlwimi(r7, param_1, 0, 31, 31);
+    r7 = __rlwimi(r7, param_2, 1, 28, 30);
+    r7 = __rlwimi(r7, param_3, 4, 27, 27);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = r7;
+    *(u32*)(gx + 0x1d8) = r7;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DEE9C(u8 param_1) {
+    u8* gx = __GXData;
+    u32 v = __rlwimi(*(u32*)(gx + 0x1dc), param_1, 6, 25, 25);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(gx + 0x1dc);
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DEFA4(u32 param_1) {
+    u8* gx = __GXData;
+    u32 v;
+    v = __rlwimi(*(u32*)(gx + 0x1d0), param_1, 2, 29, 29);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = v;
+    *(u32*)(gx + 0x1d0) = v;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DEFD0(u32 param_1, u32 param_2) {
+    u8* gx = __GXData;
+    u32 v = __rlwimi(*(u32*)(gx + 0x1d4), (u8)param_2, 0, 24, 31);
+    *(volatile u8*)0xCC008000 = 0x61;
+    v = __rlwimi(v, (u8)param_1, 8, 23, 23);
+    *(volatile u32*)0xCC008000 = v;
+    *(u32*)(gx + 0x1d4) = v;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DF00C(u32 param_1, u32 param_2)
+{
+    u32 r5 = 0;
+    r5 |= (param_2 & 1);
+    r5 |= (param_1 & 1) << 1;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = r5 | (0x44 << 24);
+    *(u16*)(__GXData + 0x2) = 0;
+}
+
+extern "C" void fn_801DF044(u8 param_1, u8 param_2)
+{
+    u8 cmd = param_1;
+    u8* gx = (u8*)__GXData;
+    u32 val = *(u32*)(gx + 0x7C);
+    val = (val & ~0x400000) | ((param_2 & 1) << 22);
+    *(u32*)(gx + 0x7C) = val;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(gx + 0x7C);
+    __GXFlushTextureState();
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = 0x68000000 | cmd;
+    __GXFlushTextureState();
+}
+typedef struct {
+    f32 v[6];
+} GXDrawBlock;
