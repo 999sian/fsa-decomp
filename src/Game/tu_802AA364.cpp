@@ -1,4 +1,3 @@
-#include "Game/SinitPoolChain.h"
 
 
 extern "C" char lbl_804A8118[];
