@@ -121,6 +121,67 @@ extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
     } while (--n != 0);
 }
 
+extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
+    u8* buf;
+    u8* base;
+    u32 i;
+    u32 len;
+    s32 n;
+    if (size == 0) {
+        if (JKRDecomp::checkCompressed(src)) {
+            len = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
+        } else {
+            void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
+            void** vt = *(void***)obj;
+            len = ((s32 (*)(void*, u8*))vt[12])(obj, src);
+        }
+        if ((s32)len < 0) {
+            len = 0x8000;
+        }
+    } else {
+        len = size;
+    }
+    dst += *(u32*)((u8*)(this_ + idx * 4) + 0x88);
+    if (JKRDecomp::checkCompressed(src)) {
+        JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
+        base = *(u8**)(this_ + 0xf8);
+    } else {
+        base = src;
+    }
+    buf = base + a;
+    i = 0;
+    if (len != 0) {
+        if (len > 8) {
+            n = (len - 8 + 7) >> 3;
+            do {
+                u8 b0 = buf[i];
+                u8 b1 = buf[i + 1];
+                u8 b2 = buf[i + 2];
+                u8 b3 = buf[i + 3];
+                u8 b4 = buf[i + 4];
+                u8 b5 = buf[i + 5];
+                u8 b6 = buf[i + 6];
+                u8 b7 = buf[i + 7];
+                dst[i] = (b0 >> 4) | (b0 << 4);
+                dst[i + 1] = (b1 >> 4) | (b1 << 4);
+                dst[i + 2] = (b2 >> 4) | (b2 << 4);
+                dst[i + 3] = (b3 >> 4) | (b3 << 4);
+                dst[i + 4] = (b4 >> 4) | (b4 << 4);
+                dst[i + 5] = (b5 >> 4) | (b5 << 4);
+                dst[i + 6] = (b6 >> 4) | (b6 << 4);
+                dst[i + 7] = (b7 >> 4) | (b7 << 4);
+                i += 8;
+            } while (--n != 0);
+        }
+        while (i < len) {
+            u8 b = buf[i];
+            dst[i] = (b >> 4) | (b << 4);
+            i++;
+        }
+    }
+    DCFlushRange(dst, len);
+}
+
 extern f32 lbl_80541518;
 extern "C" void fn_802F86CC(Tu802F5040Tbl* base, void* elem, s32 a, s32 b, void* ptr, f32 f1, f32 f2);
 extern "C" void fn_802F745C(Tu802F5040Tbl* base, void* elem, s32 a, void* ptr);
@@ -156,16 +217,18 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
   u32 i;
   u32 j;
   u32 n;
+  u32 k;
 
   if (param_5 == 0) {
-    s32 x;
     if (checkCompressed__9JKRDecompFPUc(param_2) != 0) {
-      x = ((u32)param_2[4] << 24) | ((u32)param_2[5] << 16) | ((u32)param_2[6] << 8) | (u32)param_2[7];
+      size = ((u32)param_2[4] << 24) | ((u32)param_2[5] << 16) | ((u32)param_2[6] << 8) | (u32)param_2[7];
     } else {
       void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-      x = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, param_2);
+      size = ((u32 (*)(void*, u8*))(*(void***)obj)[12])(obj, param_2);
     }
-    size = (x < 0) ? 0x2000 : x;
+    if ((s32)size < 0) {
+      size = 0x2000;
+    }
   } else {
     size = param_5;
   }
@@ -180,24 +243,30 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
   j = param_4 & ~1;
   if (param_4 < size) {
     n = ((size + 1) - param_4) >> 1;
-    for (u32 k = n >> 2; k != 0; k--) {
-      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-      i += 2;
-      j += 2;
-      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-      i += 2;
-      j += 2;
-      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-      i += 2;
-      j += 2;
-      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-      i += 2;
-      j += 2;
+    k = n >> 2;
+    if (k != 0) {
+      do {
+        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+        i += 2;
+        j += 2;
+        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+        i += 2;
+        j += 2;
+        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+        i += 2;
+        j += 2;
+        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+        i += 2;
+        j += 2;
+      } while (--k != 0);
     }
-    for (u32 k = n & 3; k != 0; k--) {
-      *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
-      i += 2;
-      j += 2;
+    k = n & 3;
+    if (k != 0) {
+      do {
+        *(u16*)(*(u8**)(param_1 + 0x24) + j) = p[i] | (p[i + 1] << 8);
+        i += 2;
+        j += 2;
+      } while (--k != 0);
     }
   }
 }
@@ -274,12 +343,14 @@ extern "C" void fn_802FF548(void* mgr) {
 }
 
 extern "C" void* fn_802FFBF8(void* self, s16 flag) {
+    struct VObj { virtual void Delete(s32); };
     u8* p = (u8*)self;
     if (p != NULL) {
         *(u8**)p = lbl_804AA858;
         __dt__10JUTTextureFv(*(void**)(p + 0xE454), 1);
         {
-            s32 i = 9; u8* q = p + 0x24;
+            u8* q; s32 i;
+            i = 9; q = p + 0x24;
             do { __dt__10JUTTextureFv(*(void**)(q + 0xE428), 1); q -= 4; } while (--i >= 0);
         }
         {
@@ -332,9 +403,8 @@ extern "C" void* fn_802FFBF8(void* self, s16 flag) {
             s32 i = 1; u8* q = p + 0x4;
             do { __dla__FPv(*(void**)(q + 0x4)); q -= 4; } while (--i >= 0);
         }
-        if (*(void**)(p + 0xFC) != NULL) {
-            void* obj = *(void**)(p + 0xFC);
-            (*(void (***)(void*, s32))obj)[2](obj, 1);
+        if (*(VObj**)(p + 0xFC) != NULL) {
+            (*(VObj**)(p + 0xFC))->Delete(1);
         }
         *(void**)(p + 0xFC) = NULL;
         __dl__FPv(*(void**)(p + 0x238C));
