@@ -461,6 +461,10 @@ extern "C" void* fn_80092F20(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80092F7C(s32* param_1) {
+    *param_1 = -1;
+}
+
 extern void* lbl_80287344[];
 extern "C" void* fn_80092F88(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
