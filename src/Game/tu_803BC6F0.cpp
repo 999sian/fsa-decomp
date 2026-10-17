@@ -39,9 +39,16 @@ struct DtorVt {
     void (*v3)(void* a);
 };
 
+struct DtorBase {
+    virtual void v0() = 0;
+    virtual void v1() = 0;
+    virtual void v2(s32 b) = 0;
+    virtual void v3() = 0;
+};
+
 static inline void releaseSlot(void* obj) {
     if (obj != 0) {
-        ((void (*)(void*, s32))((*(u32**)obj)[2]))(obj, 1);
+        ((DtorBase*)obj)->v2(1);
     }
 }
 
@@ -623,15 +630,17 @@ extern "C" void fn_803C05D8(u8* this_) {
 extern "C" void fn_803C1054(u8* p) {
     s32 i;
     u32* pair;
+    u32 hi;
 
     ((u8*)*(void**)(*(u8**)(p + 0x20) + 4))[0xb0] = 1;
     fn_80402E08(*(void**)(p + 0x50), -300.0f, 0.0f);
     *(u16*)(*(u8**)(p + 0x50) + 0x20) = 0;
     ((J2DTextBoxVt*)*(void**)(*(u8**)(p + 0x50) + 4))->v9(0);
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723031), (*(u8**)(p + 0x50))[0x28]);
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723032), (*(u8**)(p + 0x50))[0x28]);
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723033), (*(u8**)(p + 0x50))[0x28]);
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723034), (*(u8**)(p + 0x50))[0x28]);
+    hi = 0x500000;
+    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(hi, hi + 0x6663, 0x75723031), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(hi, hi + 0x6663, 0x75723032), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(hi, hi + 0x6663, 0x75723033), (*(u8**)(p + 0x50))[0x28]);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(hi, hi + 0x6663, 0x75723034), (*(u8**)(p + 0x50))[0x28]);
 
     if (p[0x115] & (u8)(1 << *(s32*)(p + 0xa0))) {
         *(u16*)(*(u8**)(p + 0x20) + 0x20) = 0;
