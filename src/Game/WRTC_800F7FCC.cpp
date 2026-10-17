@@ -374,10 +374,10 @@ extern "C" void fn_800F8210(WRTCEff* e, s32 n, const f32* pos, u8 kind) {
     }
 }
 
-extern "C" bool fn_800F82CC(f32* p1, const f32* p2, f32 step) {
-    u8 n = WRTC_stepToward(&p1[0], WRTC_quantize(p2[0]), step);
-    n += WRTC_stepToward(&p1[1], WRTC_quantize(p2[1]), step);
-    n += WRTC_stepToward(&p1[2], WRTC_quantize(p2[2]), step);
+extern "C" s8 fn_800F82CC(f32* p1, const f32* p2, f32 step) {
+    u8 n = WRTC_stepToward(&p1[0], p2[0], step);
+    n += WRTC_stepToward(&p1[1], p2[1], step);
+    n += WRTC_stepToward(&p1[2], p2[2], step);
     return n == 3;
 }
 
