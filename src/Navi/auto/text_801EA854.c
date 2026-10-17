@@ -5,6 +5,16 @@ extern "C" unsigned char lbl_802F8A48[];
 extern "C" void TRKAcquireMutex(void* param_1);
 extern "C" void TRKReleaseMutex(void* param_1);
 extern "C" void fn_80003590(void* param_1, int param_2, unsigned int param_3);
+extern "C" char lbl_80202BC8[];
+extern "C" int TRKWriteUARTN(const void* bytes, unsigned int length);
+extern "C" void MWTRACE(unsigned char, char*, ...);
+extern "C" void* TRK_memcpy(void* dst, const void* src, unsigned int n);
+extern "C" int fn_801EA854(void* param_1) {
+    int err = TRKWriteUARTN((unsigned char*)param_1 + 0x10, *(unsigned int*)((unsigned char*)param_1 + 8));
+    MWTRACE(1, lbl_80202BC8, err);
+    return 0;
+}
+
 extern "C" int TRKSetBufferPosition(void* param_1, unsigned int param_2) {
     int result = 0;
     if (param_2 > 0x880) {
