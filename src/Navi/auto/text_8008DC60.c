@@ -12,6 +12,7 @@ extern "C" f32 fn_800A1774(void*, u8, u8, s32);
 extern "C" void fn_800D1EE8(void* p);
 struct DtorVObj_800A0008 { virtual void Destroy(int); };
 extern "C" void fn_800D3274(u8* p);
+extern "C" void fn_800C6CA4(void* p);
 struct VObj_80098354 {
     virtual void v0();
     virtual void v1();
@@ -968,6 +969,13 @@ extern "C" void fn_8009970C(u8* p, s32 idx) {
 extern "C" void fn_8009C1A0(void* p) {
     *(u8*)((u8*)p + 0x7ba) = ((u8*)lbl_802C545C)[0x39];
     *(u8*)((u8*)p + 0x7bb) = 0;
+}
+
+extern "C" void fn_8009D544(char* p) {
+    s8 s = p[0x7e0];
+    if (s != -1) {
+        fn_801E10DC(p, lbl_802864E4 + s * 12);
+    }
 }
 
 extern "C" void fn_8009DE7C(void* param_1) {
