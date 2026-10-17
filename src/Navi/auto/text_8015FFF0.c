@@ -425,7 +425,7 @@ extern "C" void* fn_80161824(u8* p, s32 a) {
 }
 
 #pragma use_lmw_stmw reset
-extern "C" void fn_80160C34(void*, void*, int);
+extern "C" void* fn_80160C34(void*, void*, int);
 extern "C" u8 fn_80161A2C(void*, void*, void*);
 extern "C" void fn_80166D3C(void*, void*);
 extern "C" char lbl_80297DD4[];
