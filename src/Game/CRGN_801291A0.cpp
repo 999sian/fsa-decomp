@@ -69,17 +69,13 @@ extern "C" void fn_80129598(Actor* p) {
             } else {
                 type = *(s32*)((u8*)obj + 0x1a0);
                 switch (type) {
-                case 0x4352544c:
-                    flag = 0;
-                    break;
-                case 0x4c535449:
-                    flag = 0;
-                    break;
-                case 0x4e4e4a4e:
-                    flag = 0;
-                    break;
                 default:
                     flag = 1;
+                    break;
+                case 0x4352544c:
+                case 0x4c535449:
+                case 0x4e4e4a4e:
+                    flag = 0;
                     break;
                 }
             }
