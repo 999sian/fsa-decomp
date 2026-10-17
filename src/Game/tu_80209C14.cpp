@@ -1,5 +1,6 @@
 #include "Game/ItemBase.h"
 
+extern "C" void* fn_801D0F40(void* this_);
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* mgr, s32 idx);
 extern "C" void fn_802075D8(void*, u16);
