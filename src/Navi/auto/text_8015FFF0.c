@@ -212,6 +212,24 @@ extern "C" u32 fn_80160B84(void* self) {
     return 0;
 }
 
+extern "C" void fn_80160BBC(void* self) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12();
+    };
+    ((Obj*)self)->v12();
+}
+
+extern "C" void* fn_80160BE8(void* self) {
+    fn_8015FC28(self);
+    *(void**)self = lbl_80297CE8;
+    *((u8*)self + 0x30) = 0;
+    *(s32*)((u8*)self + 0x60) = 1;
+    return self;
+}
+
 extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80297CE8;
