@@ -206,68 +206,69 @@ struct T80431_Owner {
 extern "C" {
 
 f32 fn_80430368(void* self, u8 type, s32 count, char* buf) {
+    char* s = lbl_8048F390;
     switch (type) {
     case 1:
         if (count != 1) {
-            strcat(buf, " Force Gems");
+            strcat(buf, s + 0x38);
         } else {
-            strcat(buf, " Force Gem");
+            strcat(buf, s + 0x44);
         }
         break;
     case 2:
         if (count != 1) {
-            strcat(buf, " Cuccos");
+            strcat(buf, &lbl_80543B3C);
         } else {
-            strcat(buf, " Cucco");
+            strcat(buf, &lbl_80543B44);
         }
         break;
     case 3:
         if (count != 1) {
-            strcat(buf, " baddies");
+            strcat(buf, s + 0x50);
         } else {
-            strcat(buf, " baddy");
+            strcat(buf, &lbl_80543B4C);
         }
         break;
     case 4:
         if (count != 1) {
-            strcat(buf, " times");
+            strcat(buf, &lbl_80543B54);
         } else {
-            strcat(buf, " time");
+            strcat(buf, &lbl_80543B5C);
         }
         break;
     case 5:
         if (count != 1) {
-            strcat(buf, " systems");
+            strcat(buf, s + 0x5c);
         } else {
-            strcat(buf, " system");
+            strcat(buf, &lbl_80543B64);
         }
         break;
     case 6:
         if (count != 1) {
-            strcat(buf, " theves");
+            strcat(buf, &lbl_80543B6C);
         } else {
-            strcat(buf, " thief");
+            strcat(buf, &lbl_80543B74);
         }
         break;
     case 7:
         if (count != 1) {
-            strcat(buf, " moles");
+            strcat(buf, &lbl_80543B7C);
         } else {
-            strcat(buf, " mole");
+            strcat(buf, &lbl_80543B84);
         }
         break;
     case 8:
         if (count != 1) {
-            strcat(buf, " returns");
+            strcat(buf, s + 0x68);
         } else {
-            strcat(buf, " return");
+            strcat(buf, &lbl_80543B8C);
         }
         break;
     case 9:
         if (count != 1) {
-            strcat(buf, " Force Fairies");
+            strcat(buf, s + 0x74);
         } else {
-            strcat(buf, " Force Fairy");
+            strcat(buf, s + 0x84);
         }
         break;
     }
