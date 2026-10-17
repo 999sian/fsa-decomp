@@ -1,5 +1,56 @@
 #include "Game/Actor.h"
 
+struct YasiDrawKey {
+    s32 a, b;
+    YasiDrawKey() { a = -1; b = -1; }
+};
+struct YasiDrawParam {
+    u8 map[16];
+    YasiDrawKey key;
+    s32 c;
+    u8 palette;
+    u8 color;
+    u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
+    s32 blend;
+    u8 f2c, f2d, f2e;
+    s32 g;
+    s32 h;
+    s32 i;
+
+    YasiDrawParam() {
+        for (u8 n = 0; n < 16; n++) {
+            map[n] = n;
+        }
+        key.a = -1;
+        key.b = 0;
+        c = 0;
+        palette = 0;
+        color = 0;
+        f1e = 0;
+        f1f = 1;
+        f20 = 1;
+        f21 = 0;
+        f22 = 0;
+        f23 = 0;
+        f24 = 0;
+        f25 = 0;
+        f26 = 1;
+        blend = 3;
+        f2c = 1;
+        f2d = 0;
+        f2e = 0;
+        g = -1;
+        h = 0;
+        i = 2;
+    }
+};
+extern const char lbl_804721B0[];
+extern "C" s32 fn_8023CB24(s32 holder);
+extern "C" s32 fn_8023CA88(s32 holder);
+extern "C" void fn_801F06F0(Actor* a, const char* name, s32 id, YasiDrawParam* param, s32 p5, f32 f6, f32 f7);
+extern "C" void fn_80307AC8(u32 x, u32 y, void* v, s32 p, s32 p6, u32 u, s32 minus1);
+extern "C" void fn_803075AC(u32 x, u32 y, void* v, s32 p, s32 sign, s32 two, s32 minus1, u8 p7, u32 u, s32 zero);
+
 
 extern "C" u32 fn_801F132C(Actor* a, s32 b, s32 c, s32* d);
 extern "C" char __vt__4RCK2[];
