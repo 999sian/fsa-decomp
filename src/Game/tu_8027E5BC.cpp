@@ -34,6 +34,7 @@ u8 fn_80241284(char*);
 u8 fn_8022E438(s32, s32);
 void fn_8022B860(s32, s32);
 void fn_8024EFF8(char*, s32);
+void fn_8013CB44(void*, void*, s32, s32, s32, s32);
 s32 fn_80230CFC(s32);
 s32 fn_80230B70(s32);
 extern u32 lbl_8046C0B8[];
