@@ -12,6 +12,7 @@ extern "C" u32 fn_804032E8(u32 tag, char* buf);
 extern "C" int sprintf(char* buf, const char* fmt, ...);
 extern const char lbl_8046E9F8[];
 extern u32 lbl_8053ACB0;
+extern u8 lbl_804D4768[];
 
 extern "C" void* fn_802E2074(void* this_, s16 freeFlag) {
     if (this_ != 0) {
