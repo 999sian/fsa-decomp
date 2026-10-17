@@ -90,6 +90,38 @@ extern "C" void fn_80022DBC(void) {
     fn_80057B9C();
 }
 
+extern s32 lbl_802FED48;
+extern s32 lbl_802FED4C;
+extern s32 lbl_802FED50;
+extern s32 lbl_802FED54;
+extern s32 lbl_802FED58;
+extern s32 lbl_802FED5C;
+extern s32 lbl_802FED60;
+extern s32 lbl_802FED64;
+extern s32 lbl_802FED68;
+extern s32 lbl_802FED6C;
+extern "C" void fn_800589CC(s32 p);
+extern "C" void fn_80022FA0(s32* p) {
+    if ((u32)p[0] != 0 || p[2] != 0) {
+        fn_800589CC(p[5]);
+    }
+    p[0] = 0;
+    p[1] = 0;
+    p[2] = 0;
+    *(u8*)(p + 10) = 0;
+    *((u8*)p + 0x2e) = 0;
+    lbl_802FED48 = 0;
+    lbl_802FED4C = 0;
+    lbl_802FED50 = 0;
+    lbl_802FED54 = 3;
+    lbl_802FED58 = 0;
+    lbl_802FED5C = 0;
+    lbl_802FED60 = 0;
+    lbl_802FED64 = 0;
+    lbl_802FED68 = 0;
+    lbl_802FED6C = 0;
+}
+
 extern void* lbl_8022241C[];
 extern "C" void* fn_80025020(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
