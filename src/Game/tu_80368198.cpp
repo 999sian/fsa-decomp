@@ -70,6 +70,12 @@ extern "C" void fn_8036A894(void* this_);
 extern "C" void fn_8036AC58(void* this_, void* param);
 extern "C" void fn_80368660(void* this_);
 extern void* lbl_80474C48[];
+extern void* lbl_8053AB10;
+extern f32 lbl_80542C58;
+extern f32 lbl_80542C6C;
+extern f32 lbl_80542CC0;
+extern "C" void PSMTXTrans(f32 m[3][4], f32 x, f32 y, f32 z);
+extern "C" void fn_802F745C(void* mgr, f32* pos, void* tgt, EffArgs* args);
 
 extern "C" u8 fn_8036B018(u8* this_) {
     s32 v = *(s32*)(this_ + 0x240);
