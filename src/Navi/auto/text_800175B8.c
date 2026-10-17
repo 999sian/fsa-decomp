@@ -12,6 +12,13 @@ extern "C" void cTg_Addition__FP15node_list_classP16create_tag_class(void*, void
 extern u8 lbl_80205388[];
 
 extern "C" void fn_8015AB1C(void*);
+extern "C" void fn_801A7C3C(void* p, void* data);
+extern "C" char lbl_80202540[];
+extern "C" int fn_800175B8(int param_1) {
+    fn_801A7C3C((void*)(param_1 + 0x180), lbl_80202540);
+    return param_1;
+}
+
 extern "C" void* fn_800175F4(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
@@ -34,6 +41,24 @@ extern "C" void* fn_8001766C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" s32 fn_80017C9C(void* p) {
+    s32 r = fn_8001D5B8(*(void**)((u8*)p + 0xec), p);
+    if (r == 1) {
+        fn_8001AAFC((u8*)p + 0xd8);
+    }
+    return r;
+}
+
+extern "C" s32 fn_80017CF0(void* p) {
+    s32 r = fn_8001D5F4(*(void**)((u8*)p + 0xec), p);
+    if (r == 1) {
+        fn_80017F88((u8*)p + 0xc4);
+        fn_8001AAFC((u8*)p + 0xd8);
+        fn_8001836C(p);
+    }
+    return r;
+}
+
 extern "C" void fn_80017F5C(void* tag) {
     cTg_Addition__FP15node_list_classP16create_tag_class(lbl_80205388, tag);
 }
@@ -52,5 +77,19 @@ extern "C" s32 fn_80017FA8(void* tag, void* data) {
 extern "C" void fn_8001C9FC(void);
 extern "C" void fn_80017FCC(void) {
     fn_8001C9FC();
+}
+
+extern u8 lbl_802F0BC0[];
+extern "C" void fn_800187B0(void* p) {
+    u8* b = (u8*)p;
+    u8* t = lbl_802F0BC0 + ((*(s16*)(b + 0x136) >> 2) & 0x3ff8);
+    f32 v = *(f32*)(b + 0x154) + *(f32*)(b + 0x234);
+    f32 lim = *(f32*)(b + 0x238);
+    *(f32*)(b + 0x150) = *(f32*)(b + 0x230) * *(f32*)t;
+    if (v < lim) {
+        v = lim;
+    }
+    *(f32*)(b + 0x154) = v;
+    *(f32*)(b + 0x158) = *(f32*)(b + 0x230) * *(f32*)(t + 4);
 }
 
