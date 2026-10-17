@@ -230,3 +230,17 @@ extern "C" s32 fn_801D183C(u8* this_, f32 radius) {
     return result;
 }
 
+extern "C" fn_801D1974_obj* fn_801D1974(fn_801D1974_obj* p)
+{
+    fn_801D0F40(p);
+    p->vtbl = lbl_804A46F4;
+    p->m2a8 = 0;
+    __construct_array(p->m2ac, (void*)__ct__Q29JGeometry8TVec2_f_Fv, 0, 8, 0x10);
+    p->m32c = lbl_8053F028;
+    p->m330 = lbl_8053F028;
+    p->m334 = lbl_8053F028;
+    p->m338 = -1;
+    p->m33c = 0;
+    return p;
+}
+
