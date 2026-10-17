@@ -86,3 +86,5 @@ extern "C" void fn_8020D2AC(u8* o) {
     fn_8013CC50(lbl_8053FA08, *(u32*)(o + 4), &pos, 0x33a, 0, 1, 0, 0, 1);
 }
 
+
+
