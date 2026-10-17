@@ -18,6 +18,7 @@ struct Rect16 {
 };
 struct Bits_801A3EF8 { u8 pad[0x28]; u8 hi : 4; u8 b1 : 2; u8 b0 : 2; u8 pad2[7]; };
 struct Bits_801A4338 { u8 pad[0x3c]; u8 hi : 4; u8 b1 : 2; u8 b0 : 2; u8 pad2[3]; };
+struct Colors_801A4E90 { u8 pad[0x20]; GXColor col[8]; };
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80196344-0x801a537c (574 functions). split_file divides it into the game's real files.
@@ -2022,8 +2023,12 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A38E0(u8* p, s32 i, Rect16* src) {
-    ((Rect16*)(p + 0xda))[i].set(*src);
+extern "C" void fn_801A38E0(u8* p, u32 i, s16* src) {
+    s32 off = i << 3;
+    *(s16*)(p + off + 0xda) = src[0];
+    *(s16*)(p + off + 0xdc) = src[1];
+    *(s16*)(p + off + 0xde) = src[2];
+    *(s16*)(p + off + 0xe0) = src[3];
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
@@ -2031,9 +2036,8 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
-    s32 off = i * 4;
     u8 a = src[0];
-    u8* base = p + off;
+    u8* base = p + i * 4;
     base[0xfa] = a;
     a = src[1];
     base[0xfb] = a;
@@ -2212,19 +2216,23 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    u32 d = (u32)p + (i << 3);
-    *(s16*)(d + 0x42) = src[0];
-    *(s16*)(d + 0x44) = src[1];
-    *(s16*)(d + 0x46) = src[2];
-    *(s16*)(d + 0x48) = src[3];
+    s16* d = (s16*)(p + 0x42) + i * 4;
+    s16 a = src[0];
+    s16 b = src[1];
+    d[0] = a;
+    a = src[2];
+    d[1] = b;
+    b = src[3];
+    d[2] = a;
+    d[3] = b;
 }
 
 extern "C" s32 fn_801A3D80(s32 p, s32 i) {
     return p + i * 8 + 0x42;
 }
 
-extern "C" void fn_801A3D94(u8* p, u32 i, const u8* src) {
-    u8* d = (u8*)p + (i << 2);
+extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
+    u8* d = (u8*)(p + i * 4);
     d[0x62] = src[0];
     d[0x63] = src[1];
     d[0x64] = src[2];
@@ -2274,7 +2282,7 @@ extern "C" u8 fn_801A3E64(u8* p) {
 extern "C" void fn_80191388(int, void*);
 extern "C" void fn_80191220(int, void*);
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
-    u8* d = p + i * 8;
+    u8* d = p + (i << 3);
     u8 a = src[1];
     d[0x22] = a;
     u8 b = src[2];
@@ -2406,16 +2414,8 @@ extern "C" s32 fn_801A41C0(s32 p, s32 i) {
     return p + i * 8 + 0x14;
 }
 
-extern "C" void fn_801A41D4(u8* p, s32 i, u8* src) {
-    u8* d = p + i * 4;
-    u8 a = src[0];
-    d[0x45] = a;
-    u8 b = src[1];
-    d[0x46] = b;
-    u8 c = src[2];
-    d[0x47] = c;
-    u8 e = src[3];
-    d[0x48] = e;
+extern "C" void fn_801A41D4(u8* p, s32 i, GXColor* src) {
+    ((GXColor*)(p + 0x45))[i] = *src;
 }
 
 extern "C" int fn_801A422C(int param_1, int param_2) {
@@ -2588,20 +2588,22 @@ extern "C" BOOL fn_801A45B0(void)
     return TRUE;
 }
 
-extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* dst = p + i * 8;
+extern "C" void fn_801A45B8(u8* p, u32 i, u8* src) {
+    u8* d = p + i * 8;
     u8 a = src[1];
-    dst[0xf] = a;
-    a = src[2];
-    dst[0x10] = a;
-    a = src[3];
-    dst[0x11] = a;
-    a = src[5];
-    dst[0x13] = a;
-    a = src[6];
-    dst[0x14] = a;
-    a = src[7];
-    dst[0x15] = a;
+    d[0xf] = a;
+    {
+        u8 b = src[2];
+        u8 c = src[3];
+        d[0x10] = b;
+        b = src[5];
+        d[0x11] = c;
+        c = src[6];
+        d[0x13] = b;
+        b = src[7];
+        d[0x14] = c;
+        d[0x15] = b;
+    }
 }
 
 extern "C" s32 fn_801A4630(s32 p, s32 i) {
@@ -2753,12 +2755,11 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8 a = p3[0];
-    u8* d = p1 + p2 * 4;
-    d[0xb8] = a;
-    d[0xb9] = p3[1];
-    d[0xba] = p3[2];
-    d[0xbb] = p3[3];
+    Bytes4_801A3D94* q = (Bytes4_801A3D94*)(p1 + 0xb8) + p2;
+    q->b[0] = p3[0];
+    q->b[1] = p3[1];
+    q->b[2] = p3[2];
+    q->b[3] = p3[3];
 }
 
 extern "C" s32 fn_801A49CC(s32 p, s32 i) {
