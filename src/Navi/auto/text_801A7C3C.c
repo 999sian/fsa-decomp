@@ -1,5 +1,10 @@
 #include "types.h"
 
+struct Ent_801B2C08 {
+    u8 pad[0xe4];
+    u16 idx[52];
+};
+
 extern "C" void* fn_801B3580(void* p, void* q);
 extern "C" void* fn_8000F018(void* self);
 
@@ -1605,6 +1610,16 @@ extern "C" u8 fn_801B2BD0(u8* p, s32 a) {
         return *(u8*)(*(u8**)(p + 0x4c) + v);
     }
     return 0xff;
+}
+
+extern "C" void fn_801B2C08(void* p, u8* obj, s32 a, s32 b) {
+    u16 k = (*(u16**)(obj + 8))[a];
+    u16 idx = ((u16*)(*(u8**)(obj + 4) + k * 0x14c + 0xe4))[b];
+    if (idx != 0xffff) {
+        fn_801B3580(p, *(u8**)(obj + 0x50) + idx * 0x14);
+    } else {
+        fn_8000F018(p);
+    }
 }
 
 extern "C" void fn_801B338C(void) {}
