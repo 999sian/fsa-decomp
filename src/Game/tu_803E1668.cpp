@@ -7,6 +7,13 @@ public:
 };
 struct Tu803E1668Obj {};
 typedef void (Tu803E1668Obj::*Tu803E1668Fn)();
+struct T803ED83C;
+typedef void (T803ED83C::*PMF803ED83C)();
+extern PMF803ED83C lbl_804B0754[];
+extern "C" void* lbl_8053AD30;
+extern "C" u8 lbl_80529DEC[];
+extern "C" s32 fn_80309C4C(void* a, s32 b, s32 c);
+extern "C" s32 fn_80309A9C(void* a, s32 b, s32 c);
 
 
 extern void* lbl_8053AF80;
@@ -30,6 +37,49 @@ extern "C" void fn_803E29C8(u8* param_1) {
 extern "C" void fn_803E2A0C(u8* param_1) {
     *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
     *(s32*)(param_1 + 0x1d4) = 0xd;
+}
+
+extern "C" void fn_803E3320(u8* param_1) {
+    s32 j = 0;
+    s32 i;
+    *(s16*)(param_1 + 0x254) = j;
+    *(s32*)(param_1 + 0x1e0) = 5;
+    if (*(s32*)(param_1 + 0x1bc) == 0) {
+        if (*(s32*)(param_1 + 0x1b8) == 1) {
+            lbl_8053AAF8[0x82] |= 0x10;
+            lbl_8053AAF8[0x82] &= ~0x20;
+            lbl_8053AAF8[0x82] &= ~0x40;
+            lbl_8053AAF8[0x82] &= 0x7f;
+            lbl_8053AAF8[0x82] |= 0x1;
+            lbl_8053AAF8[0x82] &= ~0x2;
+            lbl_8053AAF8[0x82] &= ~0x4;
+            lbl_8053AAF8[0x82] &= ~0x8;
+            if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(0)) != 0) {
+                lbl_8053AAF8[0x83] &= ~0x3;
+                lbl_8053AAF8[0x83] |= 0x1;
+            } else {
+                lbl_8053AAF8[0x83] &= ~0x3;
+                lbl_8053AAF8[0x83] |= 0x2;
+            }
+            lbl_8053AAF8[0x83] &= ~0xc;
+            lbl_8053AAF8[0x83] &= ~0x30;
+            lbl_8053AAF8[0x83] &= 0x3f;
+        }
+    } else if (*(s32*)(param_1 + 0x1b8) == 0) {
+        for (i = 0; i < 4; i++) {
+            if (i < *(s32*)(param_1 + 0x1bc) + 1) {
+                lbl_8053AAF8[0x82] |= (u8)(1 << i);
+                lbl_8053AAF8[0x83] &= ~(u8)(3 << j);
+                lbl_8053AAF8[0x83] |= (u8)(1 << j);
+            } else {
+                lbl_8053AAF8[0x82] &= ~(u8)(1 << i);
+                lbl_8053AAF8[0x83] &= ~(u8)(3 << j);
+            }
+            j += 2;
+        }
+    }
+    *(s32*)(param_1 + 0x1d8) = *(s32*)(param_1 + 0x1d4);
+    *(s32*)(param_1 + 0x1d4) = 0xb;
 }
 
 extern "C" void fn_803E3548(u8* param_1) {
