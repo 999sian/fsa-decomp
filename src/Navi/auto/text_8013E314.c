@@ -47,10 +47,9 @@ extern "C" void fn_8013E374(void* param_1, void* param_2) {
 }
 
 extern "C" void* fn_8013E3A4(u32* self, u32 param_2, u32 param_3) {
-    u32* p = self;
-    *(void**)p = lbl_8029260C;
-    p[1] = (u32)(p + 3);
-    p[2] = 0xd;
+    *(void**)self = lbl_8029260C;
+    self[1] = (u32)(self + 3);
+    self[2] = 0xd;
     *(void**)self = lbl_802922F4;
     fn_801E0DB8(self + 3, (void*)fn_8013CD54, 0, 0x14, 0xd);
     *(void**)self = lbl_8029383C;
@@ -58,6 +57,19 @@ extern "C" void* fn_8013E3A4(u32* self, u32 param_2, u32 param_3) {
     self[0x45] = param_3;
     self[0x46] = 0;
     return self;
+}
+
+extern "C" void* fn_80134B3C(void* ptr, s16 param_2);
+extern "C" void* fn_8013E44C(void* ptr, s16 param_2) {
+    if (ptr) {
+        *(void**)ptr = lbl_8029383C;
+        (*(void (**)(void*, int))(*(u8**)ptr + 0x14))(ptr, 0);
+        fn_80134B3C(ptr, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
 }
 
 extern "C" void fn_8013E9E4(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
@@ -89,4 +101,9 @@ extern "C" void* fn_8013EAC0(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-
+struct NaviTracker {
+    virtual void fn_0();
+    virtual void fn_1();
+    virtual void fn_2();
+    virtual void fn_3(s32);
+};
