@@ -232,6 +232,23 @@ extern "C" void fn_800E4828(u8* p) {
     }
 }
 
+extern "C" s32 fn_800EC85C(void*, s32, u8, f32, f32, s32, s32);
+extern "C" s32 fn_800EC744(void*, s32, u8, f32, f32, s32, s32);
+extern "C" void fn_80058654(int, void*, int, float);
+extern "C" void fn_800E4A98(u8* p) {
+    if (*(s16*)(p + 0xb12) == 0) {
+        fn_8002F358(0x9a, 0);
+        fn_80058654(3, (void*)0xf1, 1, lbl_80301058);
+    }
+    s32 a = fn_800EC85C(p, *(s16*)(p + 0xb12), ((u8*)lbl_802C57D4)[0x38], *(f32*)((u8*)lbl_802C57D4 + 0x34), lbl_80301058, 0, 0);
+    s32 b = fn_800EC744(p, *(s16*)(p + 0xb12), ((u8*)lbl_802C57D4)[0x10], *(f32*)((u8*)lbl_802C57D4 + 0xc), lbl_80301058, 0, 0);
+    *(s16*)(p + 0xb12) = *(s16*)(p + 0xb12) + 1;
+    if (a == 1 && b == 1) {
+        *(s16*)(p + 0xb12) = 0;
+        p[0xa76] = 0;
+    }
+}
+
 extern "C" void fn_800E5084(u8* p) {
     if (*(s16*)(p + 0xb12) == 0) {
         fn_8002F358(0x9a, 0);
