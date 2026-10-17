@@ -191,6 +191,74 @@ extern "C" s32 fn_80132AE0(char* p) {
     return 0;
 }
 
+extern "C" void fn_80132B10(char* p)
+{
+    s32 state;
+    s32 v;
+
+    if (*(s32*)((char*)fn_8011921C() + 4) == 0xe) {
+        char* ret = (char*)fn_8011921C();
+        state = *(s32*)(p + 0x238);
+        v = *(s32*)(ret + 8);
+        switch (state) {
+        case 0:
+            if (v == lbl_80465204[5]) {
+                fn_80132454(p, 5);
+            } else if (v == lbl_80465204[6]) {
+                fn_80132454(p, 6);
+            } else if (v == lbl_80465204[7]) {
+                fn_80132454(p, 7);
+            } else if (v == lbl_80465204[8]) {
+                fn_80132454(p, 8);
+            } else if (v == lbl_80465204[9]) {
+                fn_80132454(p, 9);
+            } else if (v == lbl_80465204[10]) {
+                fn_80132454(p, 10);
+            } else if (v == lbl_80465204[11]) {
+                fn_80132454(p, 11);
+            } else if (v == lbl_80465204[12]) {
+                fn_80132454(p, 12);
+            } else if (v == lbl_80465204[13]) {
+                fn_80132454(p, 13);
+            } else if (v == lbl_80465204[14]) {
+                fn_80132454(p, 14);
+            } else if (v == lbl_80465204[15]) {
+                fn_80132454(p, 15);
+            } else if (v == lbl_80465204[16]) {
+                fn_80132454(p, 16);
+            } else if (v == lbl_80465204[17]) {
+                fn_80132454(p, 17);
+            } else if (v == lbl_80465204[18]) {
+                fn_80132454(p, 18);
+            } else if (v == lbl_80465204[19]) {
+                fn_80132454(p, 19);
+            } else if (v == lbl_80465204[20]) {
+                fn_80132454(p, 20);
+            } else if (v == lbl_80465204[21]) {
+                fn_80132454(p, 21);
+            }
+            break;
+        case 1:
+            if (v == lbl_80465204[4]) {
+                fn_80132454(p, 4);
+            } else if (v == lbl_80465204[5]) {
+                fn_80132454(p, 5);
+            } else if (v == lbl_80465204[6]) {
+                fn_80132454(p, 6);
+            } else if (v == lbl_80465204[22]) {
+                fn_80132454(p, 0x16);
+            } else if (v == lbl_80465204[23]) {
+                fn_80132454(p, 0x13);
+            } else if (v == lbl_80465204[24]) {
+                fn_80132454(p, 0x14);
+            } else if (v == lbl_80465204[25]) {
+                fn_80132454(p, 0x19);
+            }
+            break;
+        }
+    }
+}
+
 extern "C" void fn_80132E18(void* param_1) {
     fn_8010DF58();
     SPFR_DrawParam param;
