@@ -13,8 +13,6 @@ struct FsaVirtObj {
     virtual void v4(void);
     virtual void v5(void);
     virtual void v6(void);
-    virtual void v7(void);
-    virtual void v8(void);
     virtual void set9(s32);
     virtual void v10(void);
     virtual void v11(void);
@@ -899,18 +897,18 @@ extern "C" void fn_803DF624(u8* self) {
     ((J2DScreen*)*(void**)(self + 0x4))->draw(lbl_80543604, lbl_80543604, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
     fn_80440EE8(lbl_8053AED8);
     if (*(s32*)(self + 0x84) == 5) {
-        void* obj = *(void**)(self + 0x10);
-        ((void (**)(void*, s32))*(void**)obj)[0x24 / 4](obj, (s32)*(f32*)(self + 0x7c));
-        obj = *(void**)(self + 0x10);
-        ((void (**)(void*, s32, s32, s32, f32, f32, f32, f32))*(void**)obj)[0xec / 4](obj, 0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
+        FsaVirtObj* obj = *(FsaVirtObj**)(self + 0x10);
+        obj->set9((s32)*(f32*)(self + 0x7c));
+        obj = *(FsaVirtObj**)(self + 0x10);
+        obj->set59(0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
     } else if (*(s32*)(self + 0x84) == 6) {
-        void* obj = *(void**)(self + 0x10);
-        ((void (**)(void*, s32, s32, s32, f32, f32, f32, f32))*(void**)obj)[0xec / 4](obj, 0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
+        FsaVirtObj* obj = *(FsaVirtObj**)(self + 0x10);
+        obj->set59(0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
     } else if (*(s32*)(self + 0x84) == 7) {
-        void* obj = *(void**)(self + 0x10);
-        ((void (**)(void*, s32))*(void**)obj)[0x24 / 4](obj, (s32)*(f32*)(self + 0x7c));
-        obj = *(void**)(self + 0x10);
-        ((void (**)(void*, s32, s32, s32, f32, f32, f32, f32))*(void**)obj)[0xec / 4](obj, 0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
+        FsaVirtObj* obj = *(FsaVirtObj**)(self + 0x10);
+        obj->set9((s32)*(f32*)(self + 0x7c));
+        obj = *(FsaVirtObj**)(self + 0x10);
+        obj->set59(0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
     }
     if (*(s32*)(self + 0x94) != 0) {
         u8* base = lbl_80529DEC;
