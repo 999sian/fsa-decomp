@@ -16,6 +16,13 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80287910[];
 extern void* lbl_80286A30[];
 extern unsigned char lbl_802313EC[];
+extern u32 lbl_80287510[];
+extern "C" void fn_8002F544(u32 a);
+extern "C" void fn_800B95E4(u8* p);
+extern "C" void fn_800B6F64(u8* p);
+extern "C" void fn_800B72AC(u8* p);
+extern "C" void fn_800B7528(u8* p);
+extern "C" void fn_800B78BC(u8* p, int a, int b);
 extern char lbl_802B7CA0[];
 extern u32 lbl_802BB0FC[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
@@ -106,15 +113,16 @@ extern "C" void fn_800B97C0(u8* p) {
 }
 
 extern "C" void fn_800B9800(u8* p) {
-    (*(u8**)(p + 0x1c0))[0xb0] = 1;
-    (*(u8**)(p + 0x64))[0xb0] = 1;
-    (*(u8**)(p + 0x78))[0xb0] = 1;
-    (*(u8**)(p + 0x68))[0xb0] = 1;
-    (*(u8**)(p + 0x7c))[0xb0] = 1;
+    u8 one = 1;
+    (*(u8**)(p + 0x1c0))[0xb0] = one;
+    (*(u8**)(p + 0x64))[0xb0] = one;
+    (*(u8**)(p + 0x78))[0xb0] = one;
+    (*(u8**)(p + 0x68))[0xb0] = one;
+    (*(u8**)(p + 0x7c))[0xb0] = one;
     if ((u8)lbl_802B7CA0[((lbl_802BB0FC[0x10] >> 1) & 1) * 0xc + ((u8(*)[4])lbl_802313EC)[p[0x388]][p[0x387]] + 0x93c] == 0) {
         ((u8**)(p + 0x188))[p[0x37d]][0xb0] = 0;
     } else {
-        ((u8**)(p + 0x188))[p[0x37d]][0xb0] = 1;
+        ((u8**)(p + 0x188))[p[0x37d]][0xb0] = one;
     }
 }
 
