@@ -1336,6 +1336,8 @@ extern "C" void fn_8013A424(void** a, u32* b) {
 
 extern "C" void fn_8013A86C(void) {}
 
+extern "C" void fn_8013A870(void) {}
+
 extern void* lbl_80292F5C[];
 extern "C" void* fn_8013AF0C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
