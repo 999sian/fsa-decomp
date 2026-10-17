@@ -642,6 +642,114 @@ extern "C" void fn_8040B93C(u8* self) {
 	}
 }
 
+extern "C" void fn_803832BC(u8* p, u32 id, s32 a, s32 b, s32 c);
+extern "C" char* getStringPtr__10J2DTextBoxCFv(void*);
+extern "C" char lbl_80543920[];
+extern "C" char lbl_80543928[];
+extern "C" char lbl_80543930[];
+extern "C" char lbl_80543934[];
+extern "C" char lbl_8054393C[];
+extern "C" f32 lbl_805438BC;
+extern "C" f32 lbl_80543898;
+extern "C" f32 lbl_805438D0;
+extern "C" f32 lbl_8054397C;
+extern "C" f32 lbl_80543980;
+extern "C" void fn_8040C950(u8* self) {
+	(*(s16*)(self + 0x426))++;
+	if (*(s16*)(self + 0x426) >= 8) {
+		s32 st = *(s32*)(self + 0x340);
+		f32 a = 1.0f;
+		if (st < 8) {
+			fn_803832BC(self + 0x438, ((u32*)&lbl_8048C1F8)[st], 0, 0, 0);
+		} else if (st == 8) {
+			strcpy((char*)(self + 0x438), "Test-1");
+		} else if (st == 9) {
+			strcpy((char*)(self + 0x438), "ECTS");
+		} else if (st == 10) {
+			strcpy((char*)(self + 0x438), "E3");
+		} else if (st == 11) {
+			strcpy((char*)(self + 0x438), "Boss1-4");
+		} else if (st == 12) {
+			strcpy((char*)(self + 0x438), "Boss5-8");
+		} else {
+			self[0x438] = 0;
+		}
+		strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)), (char*)(self + 0x438));
+		strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)), (char*)(self + 0x438));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
+		a = 0.0f;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
+		*(s32*)(self + 0x350) = 0xb;
+	} else {
+		if (*(s16*)(self + 0x426) < 5) {
+			f32 w = -7.0f * (f32)(*(s16*)(self + 0x426) * *(s16*)(self + 0x426)) / 25.0f;
+			fn_80402E08(*(void**)(self + 0x228), 0.0f, w);
+			fn_80402E08(*(void**)(self + 0x22c), 0.0f, w);
+		} else if (*(s16*)(self + 0x426) <= 10) {
+			f32 w = -7.0f * (f32)((10 - *(s16*)(self + 0x426)) * (10 - *(s16*)(self + 0x426))) / 25.0f;
+			fn_80402E08(*(void**)(self + 0x228), 0.0f, w);
+			fn_80402E08(*(void**)(self + 0x22c), 0.0f, w);
+		}
+		f32 a = 1.0f - (f32)*(s16*)(self + 0x426) * 0.125f;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
+		a = 1.0f - a;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
+	}
+}
+
+extern "C" void fn_8040CE90(u8* self) {
+	(*(s16*)(self + 0x426))++;
+	if (*(s16*)(self + 0x426) >= 8) {
+		s32 st = *(s32*)(self + 0x340);
+		f32 a = 1.0f;
+		if (st < 8) {
+			fn_803832BC(self + 0x438, ((u32*)&lbl_8048C1F8)[st], 0, 0, 0);
+		} else if (st == 8) {
+			strcpy((char*)(self + 0x438), "Test-1");
+		} else if (st == 9) {
+			strcpy((char*)(self + 0x438), "ECTS");
+		} else if (st == 10) {
+			strcpy((char*)(self + 0x438), "E3");
+		} else if (st == 11) {
+			strcpy((char*)(self + 0x438), "Boss1-4");
+		} else if (st == 12) {
+			strcpy((char*)(self + 0x438), "Boss5-8");
+		} else {
+			self[0x438] = 0;
+		}
+		strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)), (char*)(self + 0x438));
+		strcpy(getStringPtr__10J2DTextBoxCFv((*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)), (char*)(self + 0x438));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
+		a = 0.0f;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
+		*(s32*)(self + 0x350) = 0xb;
+	} else {
+		f32 w;
+		f32 a;
+		if (*(s16*)(self + 0x426) < 5) {
+			w = -7.0f * (f32)(*(s16*)(self + 0x426) * *(s16*)(self + 0x426)) / 25.0f;
+			fn_80402E08(*(void**)(self + 0x230), 0.0f, w);
+			fn_80402E08(*(void**)(self + 0x234), 0.0f, w);
+		} else if (*(s16*)(self + 0x426) <= 10) {
+			w = -7.0f * (f32)((10 - *(s16*)(self + 0x426)) * (10 - *(s16*)(self + 0x426))) / 25.0f;
+			fn_80402E08(*(void**)(self + 0x230), 0.0f, w);
+			fn_80402E08(*(void**)(self + 0x234), 0.0f, w);
+		}
+		a = 1.0f - (f32)*(s16*)(self + 0x426) * 0.125f;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
+		a = 1.0f - a;
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
+	}
+}
+
 struct J2DTextBox {
 	char* getStringPtr() const;
 };
