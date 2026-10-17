@@ -132,6 +132,14 @@ struct FogAdjTable_8003C7DC {
 };
 extern "C" void fn_801DEA74(s32 type, Color_8003C7DC color, f32 startz, f32 endz, f32 nearz, f32 farz);
 extern "C" void fn_801DEC98(u8 enable, u16 center, FogAdjTable_8003C7DC* table);
+static inline Color_8003C7DC makeColor_8003C7DC(u8 r, u8 g, u8 b, u8 a) {
+    Color_8003C7DC c;
+    c.r = r;
+    c.g = g;
+    c.b = b;
+    c.a = a;
+    return c;
+}
 static inline void setFog_8003C7DC(s32 type, Color_8003C7DC color, f32 startz, f32 endz, f32 nearz, f32 farz) {
     fn_801DEA74(type, color, startz, endz, nearz, farz);
 }
@@ -379,33 +387,27 @@ extern "C" void fn_8003C6E0(u8* p, f32* out, f32 a, f32 b) {
 extern "C" void fn_8003C7DC(void) {
     f32 nearz = lbl_802FFDD0;
     u8* cam = *(u8**)(lbl_802B7CA0 + 0x16c0);
+    Color_8003C7DC color;
     f32 farz;
     int i;
     u8 alpha;
-    {
-        Color_8003C7DC color;
-        color.r = lbl_802FEFAC[0];
-        color.g = lbl_802FEFAC[1];
-        color.b = lbl_802FEFAC[2];
-        color.a = alpha;
-        farz = lbl_802FFDF0;
-        if (cam != 0) {
-            if (*(f32*)(cam + 0xc8) >= lbl_802FFDD4 && *(f32*)(cam + 0xcc) >= lbl_802FFDD4 &&
-                *(f32*)(cam + 0xc8) < *(f32*)(cam + 0xcc)) {
-                nearz = *(f32*)(cam + 0xc8);
-                farz = *(f32*)(cam + 0xcc);
-            }
+    color.r = lbl_802FEFAC[0];
+    color.g = lbl_802FEFAC[1];
+    color.b = lbl_802FEFAC[2];
+    color.a = alpha;
+    farz = lbl_802FFDF0;
+    if (cam != 0) {
+        if (*(f32*)(cam + 0xc8) >= lbl_802FFDD4 && *(f32*)(cam + 0xcc) >= lbl_802FFDD4 &&
+            *(f32*)(cam + 0xc8) < *(f32*)(cam + 0xcc)) {
+            nearz = *(f32*)(cam + 0xc8);
+            farz = *(f32*)(cam + 0xcc);
         }
-        fn_801DEA74(2, color, lbl_802FEE5C, lbl_802FEE60, nearz, farz);
     }
-    {
-        u8 enable = lbl_802FF056;
-        u16 center = lbl_802FF054;
-        for (i = 0; i < 10; i++) {
-            lbl_802BF1FC.r[i] = lbl_80246984[lbl_802FF057].r[i];
-        }
-        fn_801DEC98(enable, center, &lbl_802BF1FC);
+    setFog_8003C7DC(2, color, lbl_802FEE5C, lbl_802FEE60, nearz, farz);
+    for (i = 0; i < 10; i++) {
+        lbl_802BF1FC.r[i] = lbl_80246984[lbl_802FF057].r[i];
     }
+    fn_801DEC98(lbl_802FF056, lbl_802FF054, &lbl_802BF1FC);
 }
 
 extern "C" void fn_8003CB48(void* p) {
