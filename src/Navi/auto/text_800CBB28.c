@@ -20,6 +20,8 @@ extern f32 lbl_80300E9C;
 extern u8 lbl_802C56EC[];
 extern "C" s32 fn_800CC1C4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
 extern "C" s32 fn_800CC2DC(u8* self, s16 i, u8 n, void* unused, s32 mode);
+extern "C" s32 fn_80020384(void*, s32);
+extern "C" void fn_800F081C(void);
 struct VObj_800CC1C4 {
     virtual void v0();
     virtual void v1();
@@ -54,6 +56,15 @@ extern "C" void fn_800CC0BC(u8* p) {
         return;
     }
     p[0x2e] = 2;
+}
+
+extern "C" void fn_800CC0E0(u8* p) {
+    s32 r = fn_800CC1C4(p, *(s16*)(p + 0x2a), lbl_802C56EC[0x10], (void*)4, 1, lbl_80300EA0, -*(f32*)(lbl_802C56EC + 0xc));
+    (*(s16*)(p + 0x2a))++;
+    if (r == 1) {
+        *(s16*)(p + 0x2a) = 0;
+        p[0x2e] = 3;
+    }
 }
 
 extern "C" void fn_800CC1C0(void) {}
