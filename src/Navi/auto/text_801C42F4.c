@@ -6,7 +6,14 @@ volatile unsigned long __SIRegs[64] : 0xCC006400;
 extern "C" int OSDisableInterrupts(void);
 extern "C" int OSRestoreInterrupts(int level);
 extern unsigned long Type_8029D098[];
-extern int Si_8029D084;
+extern int Si_8029D084[];
+extern "C" int fn_801C42F4(void) {
+    if (*(int*)&Si_8029D084 != -1) {
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" unsigned long fn_801C4EA8(int chan) {
     int enabled;
     unsigned long sr;
