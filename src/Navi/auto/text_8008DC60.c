@@ -930,6 +930,16 @@ extern "C" void fn_8009516C(char* param_1) {
     }
 }
 
+extern "C" void fn_800951C0(char* param_1) {
+    if (*(void**)(param_1 + 0x278) != 0) {
+        fn_800F3D84(*(void**)(param_1 + 0x278));
+    }
+    fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x278) + 0x62));
+    if (*(*(u8**)(param_1 + 0x278) + 0x61) != 0) {
+        param_1[0x7e8] = 3;
+    }
+}
+
 extern "C" void* fn_800954A8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80283F48;
