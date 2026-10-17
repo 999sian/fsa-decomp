@@ -18,7 +18,8 @@ extern char lbl_802BEF44[];
 extern unsigned char lbl_802B7CA0[];
 extern unsigned int lbl_802444F4[];
 extern unsigned int lbl_80244524[];
-extern "C" void fn_80039CB8(void* p, int x, int cnt);
+extern "C" int fn_80039CB8(void* p, int x, int cnt);
+extern char lbl_802BEE18[];
 extern "C" void fn_80030250(int);
 extern "C" void fn_800302F0(int);
 extern "C" void fn_800300C0(int, float, int, int, int);
@@ -679,14 +680,14 @@ extern "C" void fn_80039A3C(int* p, int x, short* q) {
     int i;
     int n = 0;
     int cnt = 0;
-    short r = *(short*)(lbl_802BEF44 + 0x198);
     short qx = q[0];
     short qy = q[1];
+    short r = *(short*)(lbl_802BEF44 + 0x198);
     e = (short*)p[0];
     for (i = 0; i < p[3]; i++) {
         if (e[0] - qx >= -r && e[0] - qx <= r && e[1] - qy >= -r && e[1] - qy <= r) {
-            cnt++;
             e[2] = e[2] | 0x1000;
+            cnt++;
             if (!(e[2] & 0x8000)) {
                 n++;
             }
@@ -694,15 +695,24 @@ extern "C" void fn_80039A3C(int* p, int x, short* q) {
         e += 4;
     }
     fn_80039CB8(p, x, cnt);
-    if (n) {}
 }
 
 extern "C" void fn_80039FBC(int* p) {
+    volatile unsigned int tmp[2];
+    unsigned int a;
+    unsigned int b;
+    unsigned int flags;
     if (p[6] != 0 && !(*(unsigned int*)(lbl_802BB0FC + 0x4c) & 2)) {
         p[6]--;
-        *(unsigned int*)(lbl_802BB0FC + 0x7c) = p[1];
-        *(unsigned int*)(lbl_802BB0FC + 0x4c) = *(unsigned int*)(lbl_802BB0FC + 0x4c) | 2;
-        *(unsigned int*)(lbl_802BB0FC + 0x80) = p[2];
+        flags = *(unsigned int*)(lbl_802BB0FC + 0x4c);
+        a = p[1];
+        *(unsigned int*)(lbl_802BB0FC + 0x7c) = a;
+        flags |= 2;
+        b = p[2];
+        tmp[1] = a;
+        tmp[0] = b;
+        *(unsigned int*)(lbl_802BB0FC + 0x80) = b;
+        *(unsigned int*)(lbl_802BB0FC + 0x4c) = flags;
     }
 }
 
