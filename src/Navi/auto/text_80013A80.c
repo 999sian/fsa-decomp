@@ -20,6 +20,10 @@ extern u8 lbl_802A2140[];
 extern u8 lbl_802A3460[];
 extern u8 lbl_802FEBE0;
 extern f32 lbl_802FFBB8;
+extern "C" u32 fn_8002663C(void);
+extern "C" void fn_80026630(void);
+extern "C" void fn_800266A8(void);
+extern s32 lbl_802FED98;
 
 struct Unk80013DA0 {
     u8 pad[0x24];
