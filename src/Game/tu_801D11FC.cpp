@@ -24,6 +24,7 @@ extern "C" u8 fn_801F329C(void* a, s32 x);
 extern "C" u8 fn_801CF888(void* this_, void* a, void* b, s32 c);
 extern "C" void fn_801CD150(const JGeometry::TVec3<f32>* src, JGeometry::TVec3<f32>* dst);
 extern "C" void fn_8022E114(int index, JGeometry::TVec3<f32>* a0);
+extern const f32 lbl_8053F02C;
 extern const f32 lbl_8053F030;
 extern "C" u8 fn_801D0B44(void* this_);
 extern "C" u16 fn_802265FC(JGeometry::TVec3<f32>* a, s32 room);
