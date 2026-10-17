@@ -30,6 +30,14 @@ extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern f32 lbl_80300EE4;
 extern "C" f32 fn_800CDAFC(void* self, s32 n, s32 i);
+extern u8 lbl_802BB0FC[];
+extern u8 lbl_80288A50[];
+extern u8 lbl_802C5714[];
+extern "C" void fn_801E10DC(u8* self, s32 n);
+extern "C" void fn_800CD444(u8* self);
+extern "C" void fn_800CD6FC(u8* self);
+extern "C" void fn_800CD3C4(u8* self);
+extern "C" s32 fn_800CD8E4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
 extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
     if (i < 0) {
         return 0;
