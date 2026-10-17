@@ -4,6 +4,18 @@
 
 extern void* lbl_80247174[];
 extern void* lbl_802471EC[];
+extern void* lbl_802471C4[];
+extern f32 lbl_80300158;
+extern f32 lbl_8030015C;
+extern f32 lbl_80300160;
+extern f32 lbl_80300164;
+extern f32 lbl_80300168;
+extern f32 lbl_8030016C;
+extern f32 lbl_80300170;
+extern f32 lbl_80300174;
+extern f32 lbl_80300178;
+extern f32 lbl_8030017C;
+extern f32 lbl_80300180;
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_801DE4F4(s32, void*);
 extern "C" void fn_8004E268(void* param_1) {
