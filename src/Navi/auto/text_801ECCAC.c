@@ -1,6 +1,16 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801eccac-0x801ee900 (31 functions). split_file divides it into the game's real files.
 
+typedef struct TRKExceptionStatus_801ECCAC {
+    unsigned long data[3];
+    unsigned char unk_0xC;
+    unsigned char exceptionDetected;
+    unsigned char pad[2];
+} TRKExceptionStatus_801ECCAC;
+
+extern "C" int fn_801EAB08(unsigned char* param_1, const unsigned int* param_2, int param_3);
+extern "C" int fn_801EA898(void* param_1, unsigned char* param_2, int param_3);
+
 extern unsigned char gTRKCPUState[];
 extern unsigned char gTRKState[];
 
@@ -62,6 +72,11 @@ extern "C" void fn_801ECD7C(void* dst, int val, unsigned long n)
         } while (--n);
 
     return;
+}
+
+unsigned int __mfmsr(void);
+unsigned int fn_801ECE34(void) {
+    return __mfmsr();
 }
 
 extern "C" void TRKTargetSetStopped(int stopped)
