@@ -45,6 +45,7 @@ extern void* lbl_802FFA14;
 extern void* __peReg;
 extern u8 lbl_802FFA70;
 extern u8 lbl_802FFA74;
+extern void* __piReg;
 extern u8* __GXData;
 extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
@@ -804,6 +805,27 @@ extern "C" u32 fn_801D44FC(u8* param_1) {
     return *(u32*)(param_1 + 0x88);
 }
 
+extern "C" void fn_801D4504(void);
+#pragma dont_inline on
+extern "C" void fn_801D45D8(s32 chan, s32 arg) {
+    u8* p = lbl_802F7D60 + chan * 0x110;
+    s32 r = arg;
+    void (*cb)(s32, s32);
+    if (r >= 0) {
+        r = fn_801D4498(chan, *(s32*)(p + 0xc) * ((u32)(*(s32*)(p + 0x88) - *(s32*)(p + 0x80)) >> 13), 0x2000, *(s32*)(p + 0x88), (u32)fn_801D4504);
+        if (r < 0) {
+            if (*(u32*)(p + 0xd0) == 0) {
+                fn_801D2D80(p, r);
+            }
+            cb = (void (*)(s32, s32))*(void**)(p + 0xd8);
+            if (cb != NULL) {
+                *(void**)(p + 0xd8) = NULL;
+                cb(chan, r);
+            }
+        }
+    }
+}
+#pragma dont_inline reset
 extern u8 lbl_802F7D60[];
 extern "C" void fn_801D4AC8(void*, s32, void*, void*);
 extern "C" void fn_801BC250(void*, s32);
@@ -2248,31 +2270,41 @@ extern "C" void fn_801DFF1C(void) {
 }
 
 extern "C" void fn_801DFF2C(s32* a, s32* b, s32* c, s32* d) {
-    u32 lo;
-    u16 hi;
     u16 old;
+    u16 hi;
+    u32 lo;
+    volatile u16* hiP;
+    volatile u16* loP;
     do {
-        old = __cpReg[0x21];
-        lo = __cpReg[0x20];
-        hi = __cpReg[0x21];
+        hiP = &__cpReg[0x21];
+        loP = &__cpReg[0x20];
+        old = *hiP;
+        lo = *loP;
+        hi = *hiP;
     } while (old != hi);
     *c = ((u32)hi << 16) | lo;
     do {
-        old = __cpReg[0x23];
-        lo = __cpReg[0x22];
-        hi = __cpReg[0x23];
+        hiP = &__cpReg[0x23];
+        loP = &__cpReg[0x22];
+        old = *hiP;
+        lo = *loP;
+        hi = *hiP;
     } while (old != hi);
     *d = ((u32)hi << 16) | lo;
     do {
-        old = __cpReg[0x25];
-        lo = __cpReg[0x24];
-        hi = __cpReg[0x25];
+        hiP = &__cpReg[0x25];
+        loP = &__cpReg[0x24];
+        old = *hiP;
+        lo = *loP;
+        hi = *hiP;
     } while (old != hi);
     *a = ((u32)hi << 16) | lo;
     do {
-        old = __cpReg[0x27];
-        lo = __cpReg[0x26];
-        hi = __cpReg[0x27];
+        hiP = &__cpReg[0x27];
+        loP = &__cpReg[0x26];
+        old = *hiP;
+        lo = *loP;
+        hi = *hiP;
     } while (old != hi);
     *b = ((u32)hi << 16) | lo;
 }
