@@ -229,8 +229,10 @@ extern const f32 lbl_8053F168;
 
 struct Tu6CECUtil {
     static f32 inv_sqrt(f32 x) {
-        f32 y = x;
-        if (x > lbl_8053F150) {
+        f32 y;
+        if (x <= lbl_8053F150) {
+            y = x;
+        } else {
             y = __frsqrte(x);
             y = lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
         }
