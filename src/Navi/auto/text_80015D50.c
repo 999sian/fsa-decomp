@@ -20,6 +20,12 @@ extern "C" void fn_801C0EEC(void*);
 extern "C" void fn_800168D0(void);
 extern u8 lbl_802A4560[];
 extern u8 lbl_802A3560[];
+extern "C" void fn_801BE3A0(void*);
+extern "C" void fn_801BE690(void*, void*);
+extern "C" void fn_80015FE8(void*);
+extern "C" void fn_8001606C(void*);
+extern "C" void fn_80016540(void*);
+extern "C" void fn_80016618(void*);
 extern "C" void* fn_80015D50(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
