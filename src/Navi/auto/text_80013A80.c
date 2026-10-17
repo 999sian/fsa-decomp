@@ -230,17 +230,17 @@ extern "C" void fn_800141EC(void* p) {
 }
 
 extern "C" void fn_80014260(void* p) {
-    Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
-    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == 0x30) {
-        if (self->unk20 == 1) {
-            self->unk54 = 1;
+    if (fn_80124AF4(lbl_802FF370, ((Unk80013DA0*)p)->unk50, buf) == 0 && buf[0] == 0x30) {
+        if (((Unk80013DA0*)p)->unk20 == 1) {
+            ((Unk80013DA0*)p)->unk54 = 1;
         } else {
-            self->unk20 = 1;
+            ((Unk80013DA0*)p)->unk20 = 1;
         }
-        fn_80015A40(self);
+        fn_80015A40(p);
     } else {
-        fn_8001533C(self, &lbl_80204EBC, 0);
+        struct Unk80204EBC tbl = lbl_80204EBC;
+        fn_8001533C(p, &tbl, 0);
     }
 }
 
