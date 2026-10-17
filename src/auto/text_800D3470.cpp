@@ -3503,8 +3503,7 @@ extern "C" void fn_800DE618(int param_1, int param_2, u8* param_3)
 }
 
 extern "C" u8 fn_800DE628(u8* param_1, int param_2) {
-    u8* p = param_1 + param_2;
-    return p[0x57];
+    return *(u8*)(param_1 + param_2);
 }
 
 extern "C" void fn_800DE634(u8* param_1, u8 param_2) {
@@ -3814,7 +3813,8 @@ extern "C" int fn_800DED50(int p, int i) {
 }
 
 extern "C" void fn_800DED64(int p, int i, u8 v) {
-    u8* addr = (u8*)(p + i);
+    u8* addr = (u8*)p;
+    addr += i;
     addr[0xc8] = v;
 }
 
