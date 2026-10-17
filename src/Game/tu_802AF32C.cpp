@@ -67,4 +67,4 @@ extern "C" void fn_802AF78C(Actor* thisObj) {
 	}
 	*(s32*)(p + 0x240) = 0;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
