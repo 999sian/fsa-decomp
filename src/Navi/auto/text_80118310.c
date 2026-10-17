@@ -2,6 +2,17 @@
 #include "types.h"
 #include <cstring>
 
+extern "C" void fn_801DCCA0(s32);
+extern "C" void fn_801DAF24(s32);
+extern "C" void fn_801DEA4C(s32);
+extern "C" void fn_801DE8B0(s32, s32, s32, s32);
+extern "C" void fn_801DCCDC(s32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_801DE310(s32, s32);
+extern "C" void fn_801DEDBC(s32, s32, s32, s32);
+extern "C" void fn_801DA39C(s32, s32, s32, s32, s32);
+extern "C" void fn_801DA364(void);
+extern "C" void fn_801D9F18(s32, s32);
+
 extern "C" void fn_8011C280(int);
 extern void* lbl_80290080[];
 extern u8 lbl_802FF2A0;
@@ -201,12 +212,23 @@ extern "C" void fn_80119004(void* p) {
     u8* self = (u8*)p;
     u8* img = *(u8**)(self + 0x20);
     u32 c = img[0x10] != 0;
-    u32 off = 0x20;
-    f32 z, x, y;
-    if (*(u32*)(img + 0x1c) != 0) {
-        off = *(u32*)(img + 0x1c);
-    }
+    u32 off = *(u32*)(img + 0x1c) ? *(u32*)(img + 0x1c) : 0x20;
     fn_801DCFB8(self, img + off, *(u16*)(img + 2), *(u16*)(img + 4), img[0], self[0x30], self[0x31], c);
+    img = *(u8**)(self + 0x20);
+    fn_801DD24C(self, self[0x32], self[0x33], img[0x12], img[0x11], img[0x13],
+                0.125f * *(u16*)(self + 0x34), 0.125f * *(u16*)(self + 0x36), *(s16*)(self + 0x38) / 100.0f);
+}
+
+extern "C" void fn_801DD204(void* p, u8* data, u16 w, u16 h, u8 fmt, u8 a, u8 b, u32 c, u8 d);
+extern "C" void fn_801190F4(void* p, u8 v) {
+    u8* self = (u8*)p;
+    u8* img = *(u8**)(self + 0x20);
+    u32 c = img[0x10] != 0;
+    f32 z, x, y;
+    self[0x3a] = v;
+    img = *(u8**)(self + 0x20);
+    u32 off = *(u32*)(img + 0x1c) ? *(u32*)(img + 0x1c) : 0x20;
+    fn_801DD204(self, img + off, *(u16*)(img + 2), *(u16*)(img + 4), img[0], self[0x30], self[0x31], c, v);
     z = *(s16*)(self + 0x38) / 100.0f;
     x = *(u16*)(self + 0x34) * 0.125f;
     y = *(u16*)(self + 0x36) * 0.125f;
