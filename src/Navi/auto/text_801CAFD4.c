@@ -1180,6 +1180,3 @@ extern "C" u32 fn_801DD408(int param_1)
 {
     return *(u32*)(param_1 + 0x18);
 }
-extern "C" void* __OSSetInterruptHandler(u32 interrupt, void (*handler)(void));
-extern "C" void OSInitThreadQueue(void* queue);
-extern "C" void __OSUnmaskInterrupts(u32 mask);
