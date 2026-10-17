@@ -95,6 +95,11 @@ extern "C" void* fn_801749F0(void* p, void* q);
 struct VObj_8016C34C {
     virtual void v0(s32 a);
 };
+struct VObj_8017814C {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9();
+};
 struct UnkVObj_80166424 {
     virtual void vf0();
     virtual void vf1();
@@ -361,16 +366,16 @@ extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d) {
             }
             src++;
         } else {
-            u32 hi;
+            u8 b1;
             u8 b0 = src[0];
-            u8 b1 = src[1];
+            b1 = src[1];
             src += 2;
             back = dst - (((b0 << 8) & 0xf00) | b1);
-            hi = (u32)b0 >> 4;
-            if (hi == 0) {
+            len = b0 >> 4;
+            if (len == 0) {
                 len = *src++ + 0x12;
             } else {
-                len = hi + 2;
+                len += 2;
             }
             do {
                 if (skip == 0) {
@@ -676,6 +681,38 @@ extern "C" void* fn_801679DC(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" void fn_80167A94(List_80167A94* self, u32* arg1) {
+    Link_80167A94 tmp;
+    u32 n;
+    Link_80167A94* cur;
+    Link_80167A94* nx;
+    Link_80167A94* target;
+
+    target = (Link_80167A94*)*arg1;
+    tmp.next = &tmp;
+    tmp.prev = &tmp;
+    n = 0;
+    cur = self->head.next;
+    while (cur != &self->head) {
+        if (cur == target) {
+            nx = cur->next;
+            if (cur != &tmp && nx != &tmp) {
+                nx->prev = cur->prev;
+                cur->prev->next = nx;
+                self->count -= 1;
+                cur->next = &tmp;
+                cur->prev = tmp.prev;
+                tmp.prev->next = cur;
+                tmp.prev = cur;
+                n += 1;
+            }
+            cur = nx;
+        } else {
+            cur = cur->next;
+        }
+    }
 }
 
 extern "C" s32 fn_80167B7C(void* a, s32 b) { return b << 1; }
