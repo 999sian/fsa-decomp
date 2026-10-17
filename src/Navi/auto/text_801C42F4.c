@@ -59,20 +59,21 @@ extern "C" BOOL fn_801C4990(s32 param_1) {
 #pragma dont_inline reset
 
 extern "C" int fn_801C4A28(u32 param_1) {
-    u32* p;
-    u32* q;
     s32 i;
+    u32* p;
     BOOL enabled;
 
     enabled = OSDisableInterrupts();
-    for (p = lbl_802F7970, i = 0; i < 4; i++, p++) {
+    p = lbl_802F7970;
+    for (i = 0; i < 4; i++, p++) {
         if (*p == param_1) {
             OSRestoreInterrupts(enabled);
             return 1;
         }
     }
-    for (q = lbl_802F7970, i = 0; i < 4; i++, q++) {
-        if (*q == 0) {
+    p = lbl_802F7970;
+    for (i = 0; i < 4; i++, p++) {
+        if (*p == 0) {
             lbl_802F7970[i] = param_1;
             fn_801C4990(1);
             OSRestoreInterrupts(enabled);
@@ -169,22 +170,4 @@ extern "C" void fn_801C59E4(void);
 extern "C" void fn_801C5B30(void) {
     SIGetType(0);
     fn_801C59E4();
-}
-#pragma dont_inline off
-inline u32 SIGetStatusInline(s32 chan) {
-    BOOL enabled;
-    u32 sr;
-    int chanShift;
-
-    enabled = OSDisableInterrupts();
-    sr = __SIRegs[14];
-    chanShift = 8 * (3 - chan);
-    sr >>= chanShift;
-    if (sr & 8) {
-        if (!(Type_8029D098[chan] & 0x80)) {
-            Type_8029D098[chan] = 8;
-        }
-    }
-    OSRestoreInterrupts(enabled);
-    return sr;
 }
