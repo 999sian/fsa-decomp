@@ -356,15 +356,6 @@ extern "C" u8 fn_800FE2E4(RailRing* ring, RailVec* pos, s32 id) {
 
 extern "C" u8 fn_801F71E8(void* pool, u8 type, void** out, s32* count, s32 max);
 extern "C" void* fn_801F856C(void);
-static inline void railClear(RailRing* ring, u8 type) {
-    ring->m0 = type;
-    ring->mSize = 0;
-    ring->mCur = 0;
-    ring->mDir = 0;
-    for (int i = 0; i < 0x31; i++) {
-        ring->mNodes[i] = NULL;
-    }
-}
 extern "C" BOOL fn_800FE3EC(RailRing* ring, s32 type, RailVec* pos, s32 id) {
     s32 count;
     void* found[0x31];
