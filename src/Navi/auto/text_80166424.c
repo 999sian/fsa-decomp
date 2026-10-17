@@ -1262,6 +1262,10 @@ extern "C" unsigned char fn_801726E0(int param_1, int param_2) {
     return ((unsigned char*)param_2 + param_1)[0x108];
 }
 
+extern "C" void fn_80172704(u8* param_1, u8 param_2) {
+    *(u8*)(param_1 + 0x76) = param_2;
+}
+
 extern "C" int fn_801727AC(int param_1, int param_2) {
     return param_1 + param_2 + 0x128;
 }
