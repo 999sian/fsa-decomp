@@ -30,7 +30,7 @@ extern "C" void* fn_8045A640(void* this_, s16 freeFlag) {
         if (p + 0x4 != 0) {
             *(void**)(p + 0x4) = (void*)lbl_80495470;
             if (p + 0x4 != 0) {
-                if ((void*)(p + 0x4) == (void*)sInstance__33JASGlobalInstance__12JAISoundInfo) {
+                if (sInstance__33JASGlobalInstance__12JAISoundInfo == (void*)(p + 0x4)) {
                     sInstance__33JASGlobalInstance__12JAISoundInfo = 0;
                 }
             }
