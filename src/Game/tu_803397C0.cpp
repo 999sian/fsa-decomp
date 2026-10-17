@@ -3,6 +3,7 @@
 
 extern "C" char lbl_804AC100[];
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void* fn_801F856C(void);
 extern u8* lbl_8053AAF8;
 extern const f32 lbl_805420E8;
 extern const f32 lbl_805420EC;
