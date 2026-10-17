@@ -153,6 +153,15 @@ extern "C" void fn_80118FB4(u8* p) {
     }
 }
 
+extern "C" void fn_801192D8(char* param_1, u8 param_2, u8 param_3, u8 param_4, u16 param_5, u32 param_6) {
+    param_1[0xc] = param_2;
+    param_1[0xd] = param_3;
+    param_1[0x16] = param_4;
+    *(u16*)(param_1 + 0x14) = param_5;
+    *(u32*)(param_1 + 0x10) = param_6;
+    fn_801DD5E0(param_1, *(u32*)(param_1 + 0x10), *(u8*)(param_1 + 0xd), *(u16*)(param_1 + 0x14));
+}
+
 extern "C" void fn_801193D8(u8* self, u16* table) {
     *(u16**)(self + 4) = table;
     if (table != NULL) {
