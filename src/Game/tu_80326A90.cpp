@@ -1,4 +1,5 @@
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 #include "Game/ItemBase.h"
 
 struct Actor;
