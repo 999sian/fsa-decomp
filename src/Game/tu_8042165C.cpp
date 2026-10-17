@@ -43,6 +43,21 @@ extern u8 lbl_8048E1B8[];
 extern u8* lbl_8053AED0;
 extern u8* lbl_8053AD30;
 extern "C" u8 fn_80230188(s32 i);
+extern "C" s32 fn_80237810(s32 i);
+
+typedef u8* (*SubGetFn)(u8*, u64);
+typedef void (*SubSetFn)(u8*, f32, f32, f32, f32, f32, f32, f32, f32);
+
+// Virtual slot 15 of this_->sub: returns the object for a 64-bit key.
+static inline u8* GetSub(u8* this_, u64 key) {
+    u8* sub = *(u8**)(this_ + 4);
+    return ((SubGetFn)(*(void***)sub)[15])(sub, key);
+}
+
+// Virtual slot 65 of an object: eight float arguments.
+static inline void SetSub(u8* sub, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g, f32 h) {
+    ((SubSetFn)(*(void***)sub)[65])(sub, a, b, c, d, e, f, g, h);
+}
 extern "C" void fn_8022EA0C(s32 i);
 extern "C" u8 fn_8023BE0C(void);
 extern "C" u32 fn_8030AAF4(s32 i);
@@ -99,8 +114,8 @@ extern "C" void fn_8042165C(u8* this_) {
     *(u16*)(this_ + 0x1f4) = 0;
     *(u16*)(this_ + 0x1f6) = 0;
     for (i = 0; i < 4; i++) {
-        u32 mask = 1 << i;
-        if ((lbl_8053AAF8[0x82] & (u8)mask) != 0 && !fn_8022C8EC(i)) {
+        u8 mask = 1 << i;
+        if ((lbl_8053AAF8[0x82] & mask) != 0 && !fn_8022C8EC(i)) {
             u16 bit = mask;
             if (i != 0) *(u16*)(this_ + 0x1f0) |= bit;
             if (i != 1) *(u16*)(this_ + 0x1f2) |= bit;
@@ -232,6 +247,61 @@ extern "C" void fn_80421A34(u8* this_, s32 i, u8 flag) {
             (*(SubObj**)(p + 0x2c))->w13(*e)->w07((s32)((f32)this_[0x247 + j] * *(f32*)(p + 0x118)));
             e++;
         }
+    }
+}
+
+extern "C" void fn_80421D78(u8* this_, s32 idx) {
+    s32 n;
+    u8* p;
+    u8* q;
+    u32 s;
+
+    fn_8022EA0C(idx);
+    if (fn_802366CC() > 0) {
+        fn_8022EA0C(idx);
+        if (fn_802366CC() < 300) {
+            fn_8022EA0C(idx);
+            n = fn_802366CC() / 60 + 1;
+            q = this_ + idx;
+            if (n != q[0x25e]) {
+                if (n > 99) {
+                    n = 99;
+                }
+                if (n < 0) {
+                    n = 0;
+                }
+                if (n < 10) {
+                    s = fn_804030C4(0x54494d47, lbl_804B1434[n]);
+                    p = this_ + idx * 4;
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[0]), s);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[1]), s);
+                    if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] == 1) {
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] = 0;
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]))[0xb0] = 0;
+                    }
+                } else {
+                    s = fn_804030C4(0x54494d47, lbl_804B1434[n / 10]);
+                    p = this_ + idx * 4;
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[0]), s);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[1]), s);
+                    s = fn_804030C4(0x54494d47, lbl_804B1434[n % 10]);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]), s);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]), s);
+                    if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] == 0) {
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[2]))[0xb0] = 1;
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048F158[3]))[0xb0] = 1;
+                    }
+                }
+                q[0x25e] = n;
+            }
+        } else {
+            this_[idx + 0x25e] = 0;
+        }
+    } else {
+        this_[idx + 0x25e] = 0;
+    }
+    if (*(s16*)(this_ + idx * 2 + 0x208) > 0) {
+        *(s16*)(this_ + idx * 2 + 0x208) = *(s16*)(this_ + idx * 2 + 0x208) - 1;
     }
 }
 
