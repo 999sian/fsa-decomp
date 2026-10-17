@@ -215,6 +215,48 @@ extern "C" void fn_80121ABC(u8* self) {
     }
 }
 
+s32 fn_800FDEA0(void*, f32*, GameLowVec*, s32*, s16*, s32);
+u8 fn_800FD894(void*, s32, s32, s32);
+s32 ClassifyBamAngleToQuadrant(u16);
+extern "C" s32 fn_80121BB8(u8* self, f32* pt) {
+    if (*(s32*)(self + 0x35c) <= 0) {
+        return 1;
+    }
+    s16 angle = 0;
+    GameLowVec vel(lbl_8053C9B4, lbl_8053C9B4, lbl_8053C9B4);
+    s32 player = *(s32*)(self + 4);
+    GameLowVec pos(*(GameLowVec*)(self + 0xC));
+    pos.x += pt[0];
+    pos.y += pt[1];
+    f32 p2[2] = {pos.x, pos.y};
+    s32 r31 = fn_800FDEA0(self + 0x268, p2, &vel, &player, &angle, 0x200);
+    *(GameLowVec*)(self + 0x3C) = vel;
+    *(GameLowVec*)(self + 0xC) += *(GameLowVec*)(self + 0x3C);
+    s32 quadrant = ClassifyBamAngleToQuadrant((u16)angle);
+    if (quadrant >= 0) {
+        if (++*(s32*)(self + 0x374) >= 10) {
+            *(s32*)(self + 0x374) = 10;
+        }
+        if (*(s32*)(self + 0x374) >= 10) {
+            *(s32*)(self + 0x374) = 0;
+            *(s32*)(self + 0x98) = quadrant;
+            if (quadrant != *(s32*)(self + 0x238)) {
+                fn_801D22DC(self + 0x230, quadrant, 2, 0);
+                fn_801D1F14(self + 0x230, lbl_8053C9B4);
+            }
+        }
+    }
+    if (r31 == 3) {
+        return 1;
+    }
+    if (r31 == 1) {
+        if (fn_800FD894(self + 0x268, -1, 0, 0) == 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 extern "C" s32 fn_80121D68(u8* self) {
     GameLowVec position(*(GameLowVec*)(self + 0xC));
     fn_800FE3EC(self + 0x268, *(s32*)(self + 0x35C), &position,
@@ -651,7 +693,7 @@ void fn_802D7440(void*, s32);
 extern "C" void fn_80124448(u8* self) {
     v01__5ActorFv(self);
     lbl_80539F30 = *(s32*)(self + 0x198);
-    ((CompanionCalls*)self)->v25();
+    ((CompanionCalls*)self)->v23();
     *(f32*)(self + 0x60) = -7.0f;
     *(f32*)(self + 0x64) = -7.0f;
     *(f32*)(self + 0x68) = 7.0f;
@@ -665,17 +707,17 @@ extern "C" void fn_80124448(u8* self) {
     *(f32*)(self + 0x88) = *(f32*)(self + 0x68);
     *(f32*)(self + 0x8c) = *(f32*)(self + 0x6c);
     *(s32*)(self + 0xb8) = 2;
-    ((CompanionCalls*)self)->v28();
-    ((CompanionCalls*)self)->v29();
+    ((CompanionCalls*)self)->v26();
+    ((CompanionCalls*)self)->v27();
     fn_802D7440(fn_802D6A9C(), 0);
     if (self[0x332]) {
-        ((CompanionCalls*)self)->v31();
+        ((CompanionCalls*)self)->v29();
         if (self[0x332]) {
+            s32 i = 0;
             u8* p = self;
             GameLowVec position(*(GameLowVec*)(self + 0xC));
             position.x -= lbl_8053C9BC;
             CompanionSlots* slots = (CompanionSlots*)self;
-            s32 i = 0;
             for (; i < slots->count; i++) {
                 position.x += lbl_8053C9B0;
                 *(s32*)(p + 0x364) = Actor_CreateByID(fn_801F856C(), 'LIMT',
