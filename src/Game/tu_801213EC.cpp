@@ -8,6 +8,10 @@
 
 typedef JGeometry::TVec3<f32> GameLowVec;
 
+extern "C" void v01__5ActorFv(void* this_);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D7440(void* p, s32 x);
+
 namespace {
 // Call-only vtable view for the two companion slots at 0x7C and 0xC4.
 // This does not define an Actor layout or construct companion objects.
