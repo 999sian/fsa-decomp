@@ -40,10 +40,10 @@ extern "C" u8 fn_800126C8(void*, void*, void*);
 extern "C" void fn_80021220(void*, s32);
 
 extern "C" void fn_8015AB1C(void*);
-extern "C" void fn_800254CC(void);
+extern "C" int fn_800254CC(u8* param_1);
 extern "C" void fn_800251D8(u8* param_1) {
-    s32 i = 0;
     u8* p = param_1;
+    s32 i = 0;
     do {
         fn_80159C6C(*(void**)(p + 0x394), 0);
         *(u32*)(p + 0x394) = 0;
@@ -61,8 +61,8 @@ extern "C" void fn_80025268(void) {
     lbl_802A354C[4] = fn_800126C8(lbl_8029FDB4 + 4, lbl_80226364, lbl_802A354C);
 }
 
-extern "C" void fn_8002544C(void) {
-    fn_800254CC();
+extern "C" void fn_8002544C(u8* param_1) {
+    fn_800254CC(param_1);
 }
 
 extern "C" void fn_80025570(void);
@@ -95,13 +95,12 @@ extern "C" void fn_80025878(u8* p) {
 }
 
 extern "C" void fn_8002611C(u8 i) {
-    u8* p = lbl_802BE378 + i * 0x204;
     u16* w;
     s32 n;
-    p[0x202] = 0;
-    p[0x203] = 0;
-    *(u16*)(p + 0x200) = 0;
-    w = (u16*)p;
+    w = (u16*)(lbl_802BE378 + i * 0x204);
+    ((u8*)w)[0x202] = 0;
+    ((u8*)w)[0x203] = 0;
+    w[0x100] = 0;
     for (n = 8; n > 0; n--) {
         w[0] = 0;
         w[1] = 0;
@@ -142,28 +141,33 @@ extern "C" void fn_8002611C(u8 i) {
 extern "C" void fn_800261D4(u8 i, u16 param_2) {
     u8* p;
     u8* c;
+    u8* q;
     if (param_2 != 0) {
         p = lbl_802BE378 + i * 0x204;
-        if (param_2 == *(u16*)(p + 0x200)) {
-            param_2 = 0;
-        } else {
+        if (param_2 != *(u16*)(p + 0x200)) {
+            u8 n = p[0x203];
             c = p + 0x203;
-            if (*(u16*)(p + *c * 2) == 0) {
-                *(u16*)(p + *c * 2) = param_2;
+            if (*(u16*)(p + n * 2) == 0) {
+                *(u16*)(p + n * 2) = param_2;
                 (*c)++;
             }
+        } else {
+            param_2 = 0;
         }
     }
-    *(u16*)(lbl_802BE378 + i * 0x204 + 0x200) = param_2;
+    q = lbl_802BE378 + i * 0x204;
+    *(u16*)(q + 0x200) = param_2;
 }
 
 extern "C" void fn_80026248(u8 i) {
+    u8* c;
     u8* p = lbl_802BE378 + i * 0x204;
-    u8* c = p + 0x202;
-    if (*(u16*)(p + *c * 2) == 0) {
+    u8 n = p[0x202];
+    if (*(u16*)(p + n * 2) == 0) {
         return;
     }
-    *(u16*)(p + *c * 2) = 0;
+    *(u16*)(p + n * 2) = 0;
+    c = p + 0x202;
     (*c)++;
 }
 
