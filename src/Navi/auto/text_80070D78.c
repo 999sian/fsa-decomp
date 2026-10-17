@@ -59,11 +59,11 @@ extern "C" void* fn_800638A4(void*, int, void*, int);
 extern "C" void fn_8000DABC(void*, void*, void*, int, int, s16, s16, f32);
 extern void* lbl_80281904[];
 extern "C" void fn_8015AB1C(void* ptr);
-extern "C" void fn_80070D98(void);
+extern "C" bool fn_80070D98(u8* self);
 extern void* lbl_8027F6DC[];
 extern void* lbl_8027FDCC[];
-extern "C" void fn_80070D78(void) {
-    fn_80070D98();
+extern "C" void fn_80070D78(u8* self) {
+    fn_80070D98(self);
 }
 
 extern "C" void fn_80070E64(void);
