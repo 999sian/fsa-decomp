@@ -203,6 +203,12 @@ extern "C" int fn_80119318(u8* self) {
     return r;
 }
 
+extern "C" void* fn_8011935C(u8* self) {
+    *(void**)self = lbl_80286A4C;
+    fn_801193D8(self, 0);
+    return self;
+}
+
 extern "C" void fn_801193D8(u8* self, u16* table) {
     *(u16**)(self + 4) = table;
     if (table != NULL) {
