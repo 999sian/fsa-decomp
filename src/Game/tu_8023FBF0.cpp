@@ -1669,7 +1669,9 @@ f32 fn_80246F28(char* p) {
 f32 fn_8024712C(char* p) {
     return !padActive5(p) ? 0.0f : fn_80309F20(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
 }
-PAD_AXIS(80247330, fn_80309FCC)
+f32 fn_80247330(char* p) {
+    return !padActive5(p) ? 0.0f : fn_80309FCC(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec)));
+}
 s32 fn_80247534(char* p) { return fn_8030A308(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); }
 s32 fn_80247564(char* p) { return fn_8030A3B0(lbl_8053AD30, fn_8030AAF4(S32(p, 0x11ec))); }
 s32 fn_80247594(char* p, s32 amount) {
