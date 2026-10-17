@@ -5,7 +5,7 @@ struct NaviTracker {
     virtual void fn_2();
     virtual void fn_3(s32);
     virtual u32 fn_4();
-    virtual void fn_5(u32);
+    virtual void fn_5();
     virtual u32 fn_6();
     virtual void fn_7(u32);
     virtual void fn_8();
@@ -40,6 +40,7 @@ extern "C" void* fn_8013DD14(void* param_1, s16 param_2) {
 
 extern "C" void fn_801E10DC(void*);
 extern "C" void fn_8013DD74(void* param_1, void* param_2) {
+    void* p = (u8*)param_1 + 8;
     fn_801E10DC(*(void**)((u8*)param_2 + 0x100));
 }
 
