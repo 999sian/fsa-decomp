@@ -6,6 +6,9 @@ extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" u32 fn_8022461C(void*);
 extern "C" float lbl_80541E40;
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
+extern "C" void* lbl_8053AAF8;
 extern "C" u32 fn_8032EB28(char* p, void* a, void* b) {
     int t = (u16)fn_8022461C(b);
     if (t == 12 || t == 3 || t == 14) {
