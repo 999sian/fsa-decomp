@@ -101,6 +101,23 @@ extern "C" void* fn_801601C4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_80160220(s32 id, void* owner) {
+    extern void* lbl_802FF544;
+    void** node;
+    u8* p;
+    if (owner == 0) {
+        owner = lbl_802FF544;
+    }
+    for (node = *(void***)lbl_802EE2D4; node != 0; node = (void**)node[3]) {
+        p = (u8*)node[0];
+        if (*(u32*)(p + 0x2c) == 0x52415243 && *(s32*)(p + 0x40) == id && *(void**)(p + 0x38) == owner) {
+            (*(s32*)(p + 0x34))++;
+            return p;
+        }
+    }
+    return 0;
+}
+
 extern "C" int fn_80160564(void* a, void* b, void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
