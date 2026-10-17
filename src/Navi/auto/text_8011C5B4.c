@@ -16,6 +16,15 @@ extern u32 lbl_802FE970;
 extern "C" void fn_8011C8E8();
 extern "C" void OSSetErrorHandler(u32 code, void* handler);
 extern "C" void fn_80166C08(void*, int);
+extern void* lbl_802FF2FC;
+extern void* lbl_802FF300;
+extern void* lbl_802FF304;
+extern void* lbl_802FF360;
+extern f32 lbl_8030156C;
+extern f32 lbl_80301570;
+extern "C" BOOL fn_80122FC0(void*, u32);
+extern "C" void* fn_80122DA8(u32, void*, void*);
+extern "C" void fn_80123D7C(void*, void*);
 extern "C" void* fn_8011C5B4(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
