@@ -122,9 +122,3 @@ extern "C" void* fn_80086880(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-extern "C" int fn_80020EA4(u8* p, int q);
-extern "C" void fn_8008090C(u8* p);
-extern "C" int fn_800183AC(u8* p, void* f, void* q);
-extern "C" int fn_80081BA0(u8* p);
-extern "C" void fn_80081308();
-extern u8 lbl_802FCC10;
