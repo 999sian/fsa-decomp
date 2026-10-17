@@ -1737,17 +1737,8 @@ extern "C" void fn_800D91DC(void* param) {
 
 extern "C" void fn_800D92CC(u8* self) {
     u32 value = *(u32*)(self + 0x18);
-    u32 combined = value | 0x10000000;
-    
-    u8* dl = __GDCurrentDL->pDisplayListData;
-    
-    dl[0] = 0x61;
-    dl[1] = (combined >> 24) & 0xff;
-    dl[2] = (combined >> 16) & 0xff;
-    dl[3] = (combined >> 8) & 0xff;
-    dl[4] = combined & 0xff;
-    
-    __GDCurrentDL->pDisplayListData = dl + 5;
+    __GDWriteU8(0x61);
+    __GDWriteU32(value | 0x10000000);
 }
 
 extern "C" void fn_800D934C(void* param_1) {
