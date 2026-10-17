@@ -22,6 +22,7 @@ extern f32 lbl_80300BFC;
 extern f32 lbl_80300C1C;
 extern f32 lbl_80300C20;
 extern f32 lbl_80300C18;
+extern "C" f32 fn_800B0624(u8* p, u8 a, u8 b, s32 c);
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
 extern u8 lbl_802C5524[];
@@ -262,8 +263,7 @@ extern "C" s32 fn_800AE60C(u8* p, u8 a, s16 b, u8 c, f32 d, f32 e, f32 f, f32 g,
 extern f32 lbl_80300C08;
 extern "C" void fn_800ABCA4(u8* p)
 {
-    f32 k = (f32)p[0x3b0];
-    s32 r1 = fn_800AE60C(p, p[0x3b0], *(s16*)(p + 0x3d8), lbl_802C5524[0x34], *(f32*)(lbl_802C5524 + 0x3c), lbl_80300BFC, lbl_80300C08 * k, lbl_80300C08 * k, 0, 0);
+    s32 r1 = fn_800AE60C(p, p[0x3b0], *(s16*)(p + 0x3d8), lbl_802C5524[0x34], *(f32*)(lbl_802C5524 + 0x3c), lbl_80300BFC, lbl_80300C08 * (f32)p[0x3b0], lbl_80300C08 * (f32)p[0x3b0], 0, 0);
     s32 r2 = fn_800AE8A4(p, *(s16*)(p + 0x3d8), lbl_802C5524[0x4c], 0, 0, *(f32*)(lbl_802C5524 + 0x50), lbl_80300BFC, lbl_80300BFC, lbl_80300BFC);
     *(s16*)(p + 0x3d8) = *(s16*)(p + 0x3d8) + 1;
     if (r1 == 1 && r2 == 1) {
