@@ -32,6 +32,55 @@ extern "C" void fn_801E801C(char* p) {
     }
 }
 
+extern "C" f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t);
+extern "C" void fn_801E9C00(s16 angle, f32* out);
+extern f32 lbl_8053F604;
+extern f32 lbl_8053F608;
+extern "C" void fn_801E8C74(char* p, s32 a) {
+    u8 flag = 1;
+    s32 i;
+    *(s32*)(p + 0x3b8) = a;
+    *(u8*)(p + 0x2ad) = 0;
+    for (i = 0; i < 32; i++) {
+        if (*(u32*)(p + 0x2a8) & (1 << i)) {
+            if (flag) {
+                (*(u8*)(p + 0x2ad))++;
+            }
+        } else {
+            flag = 0;
+        }
+    }
+    f32 x0 = *(f32*)(p + 0x2b0);
+    f32 y0 = *(f32*)(p + 0x2b4);
+    *(f32*)(p + 0xc) = x0;
+    *(f32*)(p + 0x10) = y0;
+    *(f32*)(p + 0x14) = 0.0f;
+
+    f32 x1 = *(f32*)(p + 0x2b8);
+    f32 y1 = *(f32*)(p + 0x2bc);
+    f32 x2;
+    f32 y2;
+    if (*(u8*)(p + 0x2ad) - 2 == 0) {
+        x2 = x1;
+        y2 = y1;
+    } else {
+        x2 = *(f32*)(p + 0x2c0);
+        y2 = *(f32*)(p + 0x2c4);
+    }
+    f32 yc = fn_801CD6D8(y0, y0, y1, y2, 0.0625f);
+    f32 xc = fn_801CD6D8(x0, x0, x1, x2, 0.0625f);
+    f32 dx = *(f32*)(p + 0xc) - xc;
+    f32 dy = *(f32*)(p + 0x10) - yc;
+    *(s16*)(p + 0x3bc) = (s16)(JMath::atanTable_.atan2Radian(dx, dy) * 10430.4f);
+
+    f32 out[2];
+    fn_801E9C00(*(s16*)(p + 0x3bc), out);
+    *(f32*)(p + 0x60) += out[0];
+    *(f32*)(p + 0x64) += out[1];
+    *(f32*)(p + 0x68) += out[0];
+    *(f32*)(p + 0x6c) += out[1];
+}
+
 struct FsobVec2 {
     f32 x, y;
 };
@@ -125,7 +174,7 @@ extern "C" void fn_801E96F8(char* p) {
 extern "C" int fn_801E90BC(void) { return 0; }
 
 extern f32 lbl_8053F600;
-extern "C" void fn_801E9224(void);
+extern "C" void fn_801E9224(char* p = 0);
 extern "C" void fn_801E6EAC(void);
 extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F0E34(void* this_, s32 a, s32 b);
