@@ -96,6 +96,17 @@ static inline void CallSlot68(u8* obj, u32 s) {
     ((Slot68Fn)(*(void***)obj)[68])(obj, s, 0);
 }
 
+// Virtual slot 15 of obj keyed by a 64-bit value.
+static inline u8* GetKeyed(u8* obj, u64 key) {
+    return ((SubGetFn)(*(void***)obj)[15])(obj, key);
+}
+
+// Virtual slot 15 of obj keyed by a 64-bit value: sets the 0xb0 byte of the returned object.
+static inline void SetKeyFlag(u8* obj, u64 key, u8 v) {
+    u8* ret = GetKeyed(obj, key);
+    ret[0xb0] = v;
+}
+
 // Virtual slot 2 of an owned sub-object: destroy(freeFlag).
 struct DtorSlot2 {
     virtual void destroy(s32 freeFlag);
