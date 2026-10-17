@@ -151,6 +151,7 @@ extern "C" void* fn_8018C248(void* base, u32 offset);
 extern "C" void* fn_80174B40(void* base, u32 offset);
 extern "C" void* fn_8018C2C0(void* base, u32 offset);
 extern "C" void fn_801193D8(void* dst, void* src);
+extern "C" void fn_8016A530(void* p, void* obj);
 
 
 extern "C" void fn_8017FD80(void);
@@ -2937,9 +2938,8 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
                 n = half;
             }
         }
-        f32 k0 = k[0];
-        f32 dt = t - k0;
-        f32 len = k[3] - k0;
+        f32 dt = t - k[0];
+        f32 len = k[3] - k[0];
         f32 u = dt / len;
         f32 u2 = u * u;
         f32 dv = k[1] - k[4];
@@ -2965,9 +2965,8 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
                 n = half;
             }
         }
-        f32 k0 = k[0];
-        f32 dt = t - k0;
-        f32 len = k[4] - k0;
+        f32 dt = t - k[0];
+        f32 len = k[4] - k[0];
         f32 u = dt / len;
         f32 u2 = u * u;
         f32 dv = k[1] - k[5];
