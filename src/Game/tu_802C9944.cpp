@@ -22,7 +22,7 @@ extern const f32 lbl_80540D74;
 extern "C" void fn_802F745C(void* a, void* b, u32 c, u8* d);
 extern "C" void* fn_8022EA0C(s32 i);
 extern "C" void* fn_8023E724(void* p);
-extern "C" void fn_8013CC50(void* obj, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_8013CC50(void* obj, void* pos, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern "C" void fn_801F0E34(void* obj, s32 a, s32 b);
 extern const f32 lbl_80540D80;
 extern "C" void fn_802C99A4(u8* this_) {
