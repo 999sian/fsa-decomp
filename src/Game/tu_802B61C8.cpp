@@ -15,6 +15,25 @@ extern "C" void* Actor_CreateByID(void*, u32, s32, Vec*, s32, s32, s32);
 extern "C" u16 fn_8022461C(Vec*);
 extern "C" void* fn_8013CC50(u32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_801F0E34(Actor*, u32, s32);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" s32 fn_8023AF14(void* a, void* b, f32 c, s32 d);
+extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" u8 fn_801F2618(void* this_, void* out, s32 a);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" u8 fn_801F2B20(void* this_, u32 a);
+extern "C" const f32 lbl_80540A40;
+extern "C" const f32 lbl_80540A44;
+extern "C" const f32 lbl_80540A48;
+extern "C" const f32 lbl_80540A4C;
+extern "C" const f32 lbl_80540A50;
+extern "C" const f32 lbl_80540A54;
+extern "C" const f32 lbl_80540A58;
+extern "C" const f32 lbl_80540A5C;
+extern "C" const f32 lbl_80540A60;
+extern "C" const f32 lbl_80540A64;
+extern int __float_epsilon[];
 extern "C" Actor* fn_802B61C8(Actor* this_, s16 n) {
     if (this_ != nullptr) {
         *(void**)this_ = lbl_804A8750;
