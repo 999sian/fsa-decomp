@@ -202,6 +202,50 @@ extern "C" void fn_8008D910(void *param_1)
     *(u32 *)((u32)param_1 + 0x2c) = 0;
 }
 
+extern "C" void fn_8008D94C(u32* self, u16* padStatus, u32 stickStatus)
+{
+  u32 buttons = (padStatus ? *padStatus : 0) | stickStatus;
+  self[6] = 0;
+  if (self[10] != 0) {
+    u32 mask = self[9];
+    if (mask != 0) {
+      u32 rep = buttons & mask;
+      self[6] = 0;
+      if (rep == 0) {
+        self[8] = 0;
+        self[7] = 0;
+      } else if (self[8] == rep) {
+        self[7]++;
+        if (self[7] == self[10] || (self[7] > self[10] && (self[7] - self[10]) % self[11] == 0)) {
+          self[6] = rep;
+        }
+      } else {
+        self[6] = rep & (self[8] ^ 0xffffffff);
+        self[8] = rep;
+        self[7] = 0;
+      }
+    }
+  }
+  self[1] = buttons & (buttons ^ self[0]);
+  self[2] = self[0] & (buttons ^ self[0]);
+  self[0] = buttons;
+  self[6] |= (self[9] ^ 0xffffffff) & self[1];
+  u8* b = (u8*)self;
+  if (padStatus) {
+    b[0xc] = ((u8*)padStatus)[8];
+    b[0xd] = ((u8*)padStatus)[9];
+    b[0xe] = ((u8*)padStatus)[6];
+    b[0xf] = ((u8*)padStatus)[7];
+  } else {
+    b[0xc] = 0;
+    b[0xd] = 0;
+    b[0xe] = 0;
+    b[0xf] = 0;
+  }
+  ((f32*)self)[4] = (s32)b[0xe] / 150.0f;
+  ((f32*)self)[5] = (s32)b[0xf] / 150.0f;
+}
+
 extern "C" void fn_8008DADC(u32 *param_1) {
     float f = lbl_8053B8A0;
     *(float *)param_1 = f;
@@ -334,6 +378,36 @@ extern "C" int fn_8008E328(int param_1)
     } while (p != NULL);
     
     return 0;
+}
+
+extern "C" void fn_8008E364(u32 param_1)
+{
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        if ((lbl_8053A938 & lbl_80499480[i]) == 0) {
+            if (lbl_8053A934[i] != 0 && (lbl_8053A938 & lbl_80499470[i]) != 0) {
+                PADControlMotor(i, 0);
+                lbl_8053A934[i] = 0;
+            }
+            u8* obj = 0;
+            u8* link = *(u8**)lbl_8052E8A0;
+            for (; link != 0; link = *(u8**)(link + 0xc)) {
+                if (i == *(s16*)(*(u8**)link + 0x7c)) {
+                    obj = *(u8**)link;
+                    break;
+                }
+            }
+            if (obj != 0) {
+                s16 idx = *(s16*)(obj + 0x7c);
+                *(u32*)(obj + 0x6c) = 0;
+                if (lbl_8053A938 & lbl_80499470[idx]) {
+                    PADControlMotor(idx, 2);
+                    lbl_8053A934[idx] = 0;
+                }
+            }
+        }
+    }
+    lbl_8053A938 = param_1 & 0xf0000000;
 }
 
 extern "C" void fn_8008E530(int param_1, int param_2, u32 param_3)
