@@ -1238,6 +1238,11 @@ extern "C" s32 fn_80172640(s32 p, s32 i) {
     return p + i * 4 + 0x16;
 }
 
+extern "C" void fn_801726D4(int param_1, int param_2, unsigned char param_3) {
+    param_1 = param_1 + param_2;
+    *(unsigned char*)(param_1 + 0x108) = param_3;
+}
+
 extern "C" void fn_801727E4(void* self, int a, int b) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
