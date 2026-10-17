@@ -2311,17 +2311,9 @@ extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
 }
 
-extern u8 lbl_802994F0[];
-extern u8 lbl_80299504[];
-struct Unk8018B07CBase {
-    void** vt;
-    ~Unk8018B07CBase() { vt = (void**)lbl_802994F0; }
-};
-struct Unk8018B07C : Unk8018B07CBase {
-    ~Unk8018B07C() { vt = (void**)lbl_80299504; }
-};
 extern "C" void fn_8018B07C(void* ptr) {
-    ((Unk8018B07C*)ptr)->~Unk8018B07C();
+    *(void**)ptr = lbl_80299504;
+    *(void**)ptr = lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
