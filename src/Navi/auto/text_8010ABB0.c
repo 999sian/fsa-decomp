@@ -44,10 +44,17 @@ struct VObj_8010BD04 {
 struct VObj_8010B5B4 {
     virtual void v0();
     virtual void v1();
-    virtual void v2();
+    virtual void v2(f32, f32);
     virtual void v3();
     virtual void v4(f32, f32);
 };
+extern "C" void fn_8010B5B4(u8* param_1) {
+    *(f32*)(param_1 + 0x90) = lbl_80301280;
+    *(f32*)(param_1 + 0x94) = lbl_80301284;
+    (*(VObj_8010B5B4**)(param_1 + 0x14))->v4(*(f32*)(param_1 + 0x18) + *(f32*)(param_1 + 0x90), *(f32*)(param_1 + 0x1c));
+    (*(VObj_8010B5B4**)(param_1 + 0x20))->v4(*(f32*)(param_1 + 0x24), *(f32*)(param_1 + 0x28) + *(f32*)(param_1 + 0x94));
+}
+
 extern "C" void fn_8010B634(u8* p) {
     *(u8*)(*(u8**)(p + 0x70) + 0xb0) = 0;
     p[0x9d] = 0;
