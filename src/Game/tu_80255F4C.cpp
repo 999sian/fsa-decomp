@@ -1,5 +1,4 @@
 #include "Game/Actor.h"
-#include "std/math.h"
 
 struct ShapeArg {
     u8 idx[16];
