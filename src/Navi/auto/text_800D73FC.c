@@ -83,6 +83,17 @@ extern "C" void fn_800E3FF0(void* param_1) {
     *(u32*)(lbl_802BB0FC + 0x100) |= 0x800;
 }
 
+extern "C" void fn_80130974(void*);
+extern "C" void fn_800E5458(u8* p) {
+    if (*(u8**)(p + 0xb38) != 0) {
+        fn_80130974(*(u8**)(p + 0xb38));
+        u8* q = *(u8**)(p + 0xb38);
+        *(u32*)(q + 0xf4) |= 1;
+        *(u32*)(q + 0x24) = 1;
+        *(u32*)(p + 0xb38) = 0;
+    }
+}
+
 extern "C" void fn_800E6620(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
         *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
