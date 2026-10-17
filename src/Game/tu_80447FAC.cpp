@@ -141,3 +141,32 @@ extern "C" void* fn_804484C8(void* param_1, short param_2)
     return result;
 }
 
+extern "C" void fn_80402F04(PaneCtrl* ctrl, J2DPane* pane);
+extern "C" u8 lbl_80529DEC[];
+extern "C" u32 lbl_804AF86C[];
+extern "C" const char lbl_80490930[];
+extern "C" Obj80447C30* fn_804485C4(Obj80447C30* self) {
+    self->vt = &lbl_804B1C58;
+    lbl_8053AF10 = (u32)self;
+    self->screen = new J2DScreen();
+    self->screen->setPriority(lbl_80490930, 0x1100000, *(JKRArchive**)(lbl_80529DEC + 0x10));
+    for (int i = 0; i < 4; i++) {
+        PaneCtrl* p = (PaneCtrl*)operator new(0x2c);
+        if (p) p->vt = &lbl_804AF86C;
+        self->a[i] = p;
+        u64 tag0 = lbl_804906A8[i].tag0;
+        fn_80402F04(self->a[i], self->screen->search(tag0));
+        p = (PaneCtrl*)operator new(0x2c);
+        if (p) p->vt = &lbl_804AF86C;
+        self->b[i] = p;
+        u64 tag1 = lbl_804906A8[i].tag1;
+        fn_80402F04(self->b[i], self->screen->search(tag1));
+    }
+    self->f28 = 0;
+    self->f29 = 0;
+    self->f2a = 0;
+    self->f2b = 0;
+    self->f2c = 0;
+    return self;
+}
+
