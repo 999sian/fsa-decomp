@@ -222,6 +222,7 @@ extern "C" void fn_80121ABC(u8* self) {
     }
 }
 
+s32 fn_800FDEA0(void*, JGeometry::TVec2<f32>*, GameLowVec*, s32*, s16*, s32);
 extern "C" s32 fn_80121BB8(u8* self, f32* pt) {
     if (*(s32*)(self + 0x35c) <= 0) {
         return 1;
@@ -232,13 +233,16 @@ extern "C" s32 fn_80121BB8(u8* self, f32* pt) {
     GameLowVec pos(*(GameLowVec*)(self + 0xC));
     pos.x += pt[0];
     pos.y += pt[1];
-    f32 p2[2] = {pos.x, pos.y};
-    s32 r31 = fn_800FDEA0(self + 0x268, p2, &vel, &player, &angle, 0x200);
-    *(GameLowVec*)(self + 0x3C) = vel;
+    JGeometry::TVec2<f32> p2(pos.x, pos.y);
+    s32 r31 = fn_800FDEA0(self + 0x268, (f32*)&p2, &vel, &player, &angle, 0x200);
+    *(f32*)(self + 0x3C) = vel.x;
+    *(f32*)(self + 0x40) = vel.y;
+    *(f32*)(self + 0x44) = vel.z;
     *(GameLowVec*)(self + 0xC) += *(GameLowVec*)(self + 0x3C);
     s32 quadrant = ClassifyBamAngleToQuadrant((u16)angle);
     if (quadrant >= 0) {
-        if (++*(s32*)(self + 0x374) >= 10) {
+        *(s32*)(self + 0x374) += 1;
+        if (*(s32*)(self + 0x374) >= 10) {
             *(s32*)(self + 0x374) = 10;
         }
         if (*(s32*)(self + 0x374) >= 10) {
@@ -250,13 +254,8 @@ extern "C" s32 fn_80121BB8(u8* self, f32* pt) {
             }
         }
     }
-    if (r31 == 3) {
+    if (r31 == 3 || (r31 == 1 && fn_800FD894(self + 0x268, -1, 0, 0) == 1)) {
         return 1;
-    }
-    if (r31 == 1) {
-        if (fn_800FD894(self + 0x268, -1, 0, 0) == 1) {
-            return 1;
-        }
     }
     return 0;
 }
@@ -347,6 +346,69 @@ extern "C" void fn_801220C4(u8* self) {
     position.y += lbl_8053C9F4;
     fn_8013CC50(*(u32*)(self + 4), &position, 0x33A, 0, 0, 0, 0, 1, lbl_8053C9F8);
     fn_801F0E34(self, 0x400ED, 0);
+}
+
+extern "C" void fn_80122548(u8* self) {
+    s32 player = *(s32*)(self + 0x344);
+    s32 idx;
+    if (player < 0 || player >= 4) {
+        idx = -1;
+    } else {
+        idx = fn_8022EA0C(player);
+    }
+    if (idx >= 0) {
+        self[0x331] = 0;
+        player = *(s32*)(self + 0x344);
+        if (player < 0 || player >= 4) {
+            idx = -1;
+        } else {
+            idx = fn_8022EA0C(player);
+        }
+        GameLowVec pos = *fn_8023E724(idx);
+        player = *(s32*)(self + 0x344);
+        *(s32*)(self + 0x98) = fn_80230CFC(fn_8022EA0C((player < 0 || player >= 4) ? -1 : player));
+        switch (*(s32*)(self + 0x98)) {
+        case 0:
+            pos.x -= lbl_8053C9BC;
+            break;
+        case 1:
+            pos.x += lbl_8053C9BC;
+            break;
+        case 2:
+            pos.y -= lbl_8053C9BC;
+            break;
+        case 3:
+            pos.y += lbl_8053C9BC;
+            break;
+        }
+        *(f32*)(self + 0x37c) = 0.5f;
+        fn_801CD950((f32*)(self + 0xc), pos.x, 2.0f);
+        fn_801CD950((f32*)(self + 0x10), pos.y, 2.0f);
+        player = *(s32*)(self + 0x344);
+        if (player < 0 || player >= 4) {
+            idx = -1;
+        } else {
+            idx = fn_8022EA0C(player);
+        }
+        s32 n = fn_80230CFC(idx);
+        if (n < 0) {
+            return;
+        }
+        *(s32*)(self + 0x374) += 1;
+        if (*(s32*)(self + 0x374) >= 10) {
+            *(s32*)(self + 0x374) = 10;
+        }
+        if (*(s32*)(self + 0x374) < 10) {
+            return;
+        }
+        *(s32*)(self + 0x374) = 0;
+        *(s32*)(self + 0x98) = n;
+        if (n == *(s32*)(self + 0x238)) {
+            return;
+        }
+        fn_801D22DC(self + 0x230, n, 2, 0);
+        fn_801D1F14(self + 0x230, 0.0f);
+    }
 }
 
 extern "C" void fn_80122730(u8* self, s32 direction, u8 alternate, u8 throttle) {
@@ -690,6 +752,54 @@ extern "C" s32 fn_80123E9C(u8* self, s32 arg, f32* data) {
         }
     }
     return v17__5ActorFiPf(self, arg, data);
+}
+
+extern "C" void v03__5ActorFv(void* this_);
+extern "C" void fn_801217EC(u8* self, s32 flag);
+extern "C" void fn_801D1C18(void* p);
+extern "C" void fn_80239914(void* box, s32 player, void* room);
+extern "C" void fn_801F2618(u8* self, GameLowVec* out, s32 mode);
+extern "C" u8 fn_80121438(u8* self, GameLowVec* vel);
+extern "C" void fn_8030C210(void* a, void* b);
+extern void* lbl_8053AB10;
+extern "C" void fn_80124278(u8* self) {
+    v03__5ActorFv(self);
+    *(f32*)(self + 0x37c) = lbl_8053C9F8;
+    self[0x331] = 1;
+    JGeometry::TBox2<f32> box(*(JGeometry::TBox2<f32>*)(self + 0x60));
+    box.addPos(*(JGeometry::TVec2<f32>*)(self + 0xC));
+    ((CompanionCalls*)self)->v30();
+    if (self[0x333] != 0) {
+        *(s32*)(self + 0x354) += 1;
+        if (*(s32*)(self + 0x354) >= 300) {
+            self[0x333] = 0;
+            *(s32*)(self + 0x354) = 0;
+        }
+    }
+    if (self[0x335] != 0) {
+        *(s32*)(self + 0x378) += 1;
+        if (*(s32*)(self + 0x378) >= 90) {
+            self[0x335] = 0;
+            *(s32*)(self + 0x378) = 0;
+        }
+    }
+    ((CompanionCalls*)self)->v24();
+    if (self[0x330] != 0) {
+        fn_80239914(&box, *(s32*)(self + 4), *(void**)(self + 0x198));
+    }
+    if (self[0x331] != 0) {
+        GameLowVec out;
+        fn_801F2618(self, &out, 0);
+    }
+    GameLowVec vel(lbl_8053C9B4, lbl_8053C9B4, lbl_8053C9B4);
+    if (fn_80121438(self, &vel)) {
+        *(GameLowVec*)(self + 0xC) += vel;
+    }
+    *(f32*)(self + 0x260) = *(f32*)(self + 0x37c);
+    fn_801D1C18(self + 0x230);
+    fn_801217EC(self, *(s32*)(self + 0x108) ? 0 : 1);
+    fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), self + 0xC);
+    ((CompanionCalls*)self)->v34();
 }
 
 void v01__5ActorFv(void*);
