@@ -117,6 +117,108 @@ extern "C" BOOL fn_8014AD2C(u8* this_, s32 b, s32 c) {
     return 0;
 }
 
+extern "C" void fn_8014AFB4(u8* this_) {
+    s32 i;
+    s32 n;
+    s32 idx;
+    s32 mode;
+    f32 f30;
+    f32 scale;
+    f32 cx;
+    f32 sx, sy, sz;
+    f32 cy, cz;
+
+    if (*(s32*)(this_ + 0x230) == 9) {
+        return;
+    }
+    DrawRec rec;
+    f32 mtx[3][4];
+    f32 zero = 0.0f;
+    mtx[0][3] = zero;
+    mtx[1][3] = zero;
+    mtx[2][3] = zero;
+    i = 0;
+    n = 0;
+    for (; i < 4; i++) {
+        if (fn_80236B50(i)) {
+            n++;
+        }
+    }
+    if (n == 4 && *(s32*)(this_ + 0x230) == 5) {
+        if (*(s32*)(this_ + 0x234) == 0) {
+            *(s32*)(this_ + 0x24c) += 1;
+            if (*(s32*)(this_ + 0x24c) > 8) {
+                *(s32*)(this_ + 0x24c) = 8;
+                *(s32*)(this_ + 0x234) = 0;
+                return;
+            }
+            *(s32*)(this_ + 0x234) = lbl_8049F760[*(s32*)(this_ + 0x24c)];
+        } else {
+            *(s32*)(this_ + 0x234) -= 1;
+        }
+    }
+    if (*(u32*)(this_ + 0x90) == 8 || *(u32*)(this_ + 0x90) == 9) {
+        if (*(s32*)(this_ + 0x230) != 5) {
+            scale = 0.5f * *(f32*)(this_ + 0x274);
+            n = 0;
+            idx = *(s32*)(this_ + 0x24c) + 0x312;
+        } else {
+            idx = *(s32*)(this_ + 0x24c) + 0xe8;
+            n = 1;
+        }
+    } else {
+        n = 0;
+        scale = *(f32*)(this_ + 0x274);
+        idx = *(s32*)(this_ + 0x24c) + 0xe8;
+    }
+    f30 = *(f32*)(this_ + 0x278);
+    sx = sin(zero);
+    sy = sin(f30);
+    sz = sin(zero);
+    cx = cos(zero);
+    cy = cos(f30);
+    cz = cos(zero);
+    rec.w18 = mtx;
+    rec.b1d = 1;
+    rec.b1c = 1;
+    mtx[0][0] = scale * (cy * cz);
+    mtx[1][0] = scale * (cy * sz);
+    mtx[2][0] = scale * -sy;
+    mtx[0][1] = scale * (sx * sy * cz - cx * sz);
+    mtx[1][1] = scale * (sx * sy * sz + cx * cz);
+    mtx[2][1] = scale * (sx * cy);
+    mtx[0][2] = scale * (cx * cz * sy + sx * sz);
+    mtx[1][2] = scale * (cx * sz * sy - sx * cz);
+    mtx[2][2] = scale * (cx * cy);
+    if (*(s32*)(this_ + 0x90) == 0xb) {
+        fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, *(s32*)(this_ + 0x24c) + 0x2d5, 0, 2, -1, 1, 0, 0);
+        return;
+    }
+    if (*(s32*)(this_ + 0x230) == 0xa || *(s32*)(this_ + 0x230) == 2) {
+        rec.b1d = 0;
+        rec.b1c = 0;
+    }
+    if (*(u8*)(this_ + 0xc4) != 0) {
+        rec.b20 = 0;
+        rec.b1d = fn_8023CB24(*(s32*)(this_ + 0xc8)) + 1;
+        rec.b1c = fn_8023CA88(*(s32*)(this_ + 0xc8));
+    }
+    mode = -1;
+    if (*(s32*)(this_ + 0x24c) < 2) {
+        if (*(s32*)(this_ + 0x230) != 0xa && *(s32*)(this_ + 0x230) != 0 && *(s32*)(this_ + 0x230) != 6 && *(s32*)(this_ + 0x230) != 7 && *(s32*)(this_ + 0x230) != 8 && *(u8*)(this_ + 0xc4) == 0) {
+            mode = (*(u32*)(this_ + 0x90) == 8 || *(u32*)(this_ + 0x90) == 9) ? 7 : 0;
+        }
+        if (*(s32*)(this_ + 0x230) != 5) {
+            fn_801F06F0(this_, lbl_80465D48, idx, &rec, mode, 1.0f, 1.0f);
+        }
+    }
+    s32 r10 = 0;
+    if (*(u8*)(this_ + 0xc4) == 0 && *(s32*)(this_ + 0x90) == 0xb) {
+        r10 = 1;
+    }
+    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, idx, n != 0, 2, -1, r10, 0, 0);
+}
+
 extern "C" void* fn_8014CF28(u32* this_, s16 freeFlag) {
     if (this_ != 0) {
         u32* p = this_;
@@ -373,8 +475,8 @@ extern "C" BOOL fn_8014D6DC(u8* this_) {
     if (*(f32*)(this_ + 0x14) > 0.1f) {
         return 0;
     }
-    x = *(f32*)(this_ + 0xc);
     y = *(f32*)(this_ + 0x10);
+    x = *(f32*)(this_ + 0xc);
     minX = x + -3.0f;
     maxX = x + 3.0f;
     minY = y + -3.0f;
@@ -449,4 +551,4 @@ extern "C" void fn_8014DA20(u8* this_) {
         }
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
