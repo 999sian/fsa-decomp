@@ -58,6 +58,7 @@ void fn_8013EE0C(void)
     OSRegisterResetFunction(lbl_80293868);
 }
 
+#pragma dont_inline on
 extern "C" s32 fn_8013EEB0(s32 idx, s32 a, s32 b) {
     u8* p = lbl_802C6A80 + (idx << 8);
     if (*(s32*)(p + 0x1c) != 0) {
@@ -134,6 +135,29 @@ extern "C" void fn_8013F358(s32 idx, s32 r) {
     }
 end:
     *(s32*)(base + 0x20) = r;
+}
+
+extern "C" void fn_8013F400(s32 idx, s32 r) {
+    u8* s = lbl_802C6A80 + (idx << 8);
+    u8* p = s + 0x40;
+    if (r == 0 && **(u8**)(p + 0x10) != lbl_80293878[0x25]) {
+        r = 3;
+    }
+    if (r == 0) {
+        r = fn_8013EEB0(idx, *(s32*)(p + 0x10), (s32)fn_8013F4D0);
+        if (r == 0) {
+            goto end;
+        }
+    }
+    *(s32*)(p + 0x2c) = 0;
+    *(s32*)(p + 0x28) = 0;
+    void (*cb)(s32, s32) = *(void (**)(s32, s32))(p + 0x14);
+    if (cb != 0) {
+        *(s32*)(p + 0x14) = 0;
+        cb(idx, r);
+    }
+end:
+    *(s32*)(s + 0x20) = r;
 }
 
 extern "C" void fn_8013F5A0(s32 idx, s32 param_2) {
