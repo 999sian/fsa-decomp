@@ -1030,12 +1030,3 @@ extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out) {
 	if (a > n || a == *out) return TRUE;
 	return FALSE;
 }
-struct Tu80406ResMgr {
-	virtual void v0();
-	virtual void v1();
-	virtual void v2();
-	virtual void v3();
-	virtual void v4();
-	virtual void v5();
-	virtual void* get(u32 type, const char* name);
-};
