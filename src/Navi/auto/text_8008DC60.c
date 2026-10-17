@@ -1021,6 +1021,21 @@ extern "C" void fn_80096A3C(NaviState_8009E6F0* p) {
     (p->*lbl_802862F0[((u8*)p)[0x2a6]])();
 }
 
+extern "C" void fn_80096A74(u8* p) {
+    if (*(void**)(p + 0x2a0) == 0) {
+        void** o = (void**)fn_8015A90C(0x120);
+        if (o != 0) {
+            o[0] = lbl_80286B1C;
+            o[2] = lbl_8027EC78;
+            o[2] = lbl_8028F164;
+        }
+        *(void***)(p + 0x2a0) = o;
+        *(void**)(*(u8**)(p + 0x2a0) + 0x10) = *(void**)(p + 0x260);
+        fn_8011093C(*(void**)(p + 0x2a0));
+    }
+    p[0x2a6] = 1;
+}
+
 extern void* lbl_8028F164[];
 extern "C" void* fn_80096AFC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
