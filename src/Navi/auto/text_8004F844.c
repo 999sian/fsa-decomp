@@ -57,8 +57,9 @@ extern "C" void fn_80055C0C(void)
 	lbl_802FF0E8 = *(int*)(lbl_802BB0FC + 0x58) + 1000;
 }
 
-extern "C" void fn_80055C24(void) {
-    *(int*)lbl_802BB0FC == 0;
+extern "C" void fn_80055C24(void* param_1) {
+    lbl_802FF0E8 = *(int*)(lbl_802BB0FC + 0x58) + 1000;
+    fn_8002A3CC(param_1, lbl_802C05A0, 0xa3, 1);
 }
 
 extern "C" void fn_80055C68(void) {
