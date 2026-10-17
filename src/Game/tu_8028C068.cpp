@@ -1,5 +1,4 @@
 #include "Game/Actor.h"
-#include "Game/SinitPoolChain.h"
 
 struct YasiDrawKey {
     s32 a, b;
@@ -183,5 +182,8 @@ extern "C" int fn_8028D4DC(f32* this_, s32 a, void* c) {
     this_[1] = this_[1] + 16.0f * (x * d[1]);
     this_[2] = this_[2] + 0.0f;
     return 1;
+}
+
+static void fn_8028DB54(void) {
 }
 
