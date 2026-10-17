@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void* fn_801F856C();
 extern "C" void* fn_801F666C(void* base, s32 id);
