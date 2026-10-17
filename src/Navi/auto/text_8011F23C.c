@@ -595,6 +595,18 @@ extern "C" void fn_8012424C(void* p) {
     }
 }
 
+extern "C" void fn_80124674(void* self, s32 idx, u32 a, u32 b, u32 c, u32 d, u32 e, u32 f) {
+    u8* p = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
+    *(u32*)(p + 0x2c) = c;
+    *(u32*)(p + 0x30) = d;
+    *(u32*)(p + 0x34) = a;
+    *(u32*)(p + 0x38) = b;
+    *(u32*)(p + 0x4c) = e;
+    *(u32*)(p + 0x50) = f;
+    *(u8*)(p + 0x3c) = 0;
+    fn_801BDE1C(p, 1, 1);
+}
+
 extern "C" void fn_80124788(void* self, s32 idx, u32 a, u32 b) {
     u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
     *(u32*)(e + 0x4c) = a;
@@ -1002,6 +1014,12 @@ extern "C" void fn_8012894C(void) {
 
 extern "C" void fn_80128984(void) {
     fn_801DACA4(0, 0, 0, 0x1e, 0, 0x7d);
+}
+
+extern "C" void fn_80128D4C(u8* a)
+{
+    u16 idx = (*(u16**)(*(u8**)(a + 4) + 0x38))[(*(u8**)(*(u8**)(a + 4) + 0x1c))[0x20]];
+    fn_801191F0((*(u8***)(*(u8**)(a + 8) + 8))[idx] + 4, 0);
 }
 
 extern "C" void fn_80128DA0(u8* a)
