@@ -11,7 +11,7 @@ extern "C" void fn_8011FD18(void* a, void* b, s32 c, s32 d, void* e);
 extern "C" void fn_80007AB8(void* a, s32 b, s32 c);
 extern "C" s32 fn_8000E124(void* a, void* b, void* c, s32 d, s32 e, s32 f, s32 g, f32 h);
 extern "C" u8 lbl_802B7CA0[];
-extern "C" u8 lbl_802FC9D8[];
+extern "C" u8 lbl_802FC9D8[4];
 extern "C" u8 lbl_802FC9E0[1];
 extern "C" u8 lbl_802FC9E4[1];
 extern "C" u8 lbl_80280920[];
@@ -46,7 +46,7 @@ extern "C" u8 lbl_80280AD8[];
 extern "C" s32 fn_8000DE00(void* a, void* b, void* c, s32 d, s32 e, s32 f, s32 g, f32 h);
 extern "C" BOOL fn_8006FBEC(void* param_1, void* param_2) {
     u8* p = *(u8**)(*(u8**)(*(u8**)((u8*)param_1 + 0x268) + 4) + 4);
-    void* iVar1 = fn_800638A4(lbl_802FC9D8, param_2, lbl_802B7CA0 + 0x2200, 0x40);
+    void* iVar1 = fn_800638A4(&lbl_802FC9D8, param_2, lbl_802B7CA0 + 0x2200, 0x40);
     if (iVar1 == 0) {
         void* uVar2 = fn_8011FD10();
         fn_8011FD18(uVar2, lbl_80280920, 0x11d, (s32)lbl_802FC9E0, lbl_80280AD8);
