@@ -72,6 +72,7 @@ extern char lbl_802C5A84[];
 extern void* lbl_8028E960[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
+extern char lbl_802BB0FC[];
 extern f32 lbl_80301204;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
