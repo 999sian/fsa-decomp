@@ -7,6 +7,7 @@ extern "C" s32 fn_8022F3DC(s32);
 extern const f32 lbl_80542618;
 extern const f32 lbl_8054261C;
 extern const f64 lbl_805425F8;
+extern const f32 lbl_805425D8;
 
 struct Actor {
     ~Actor();
