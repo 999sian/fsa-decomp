@@ -382,7 +382,13 @@ extern "C" void fn_801546D0(JGeometry::TVec3<f32>* vector,
     JGeometry::setTVec3f(&other->x, &vector->x);
 }
 
-template class JGeometry::TVec2<f32>;
+#if defined(VERSION_G4SE01)
+JGeometry::TVec2<f32>::TVec2() {
+}
+#else
+JGeometry::TVec2<f32>::TVec2() {
+}
+#endif
 
 extern "C" void fn_801546E8(JGeometry::TVec2<f32>* vector, f32 x, f32 y)
 {
