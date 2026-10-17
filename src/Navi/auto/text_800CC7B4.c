@@ -23,6 +23,19 @@ struct VObj_800CD6FC {
     virtual void v9();
 };
 
+struct VObj_800CDA38 {
+    virtual void v0(s32 a);
+};
+
+struct Unk_800CDA38 {
+    u8 pad[4];
+    s8 unk4;
+    s32 unk8;
+};
+
+extern u8 lbl_8029FDB4[];
+extern "C" void fn_800127A0(void*, s8 = 0);
+
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
@@ -119,6 +132,30 @@ extern "C" void fn_800CD6E0(u8* self) {
     u8* tbl = lbl_802C5714;
     self[0x94] = tbl[0xc];
     self[0x95] = 1;
+}
+
+extern "C" void fn_800CD6FC(u8* self) {
+    u8* p = lbl_802C5714;
+    if (*(u8*)(*(u8**)(self + 0x64) + 0xb0) != 0) {
+        f32 t = ((f32 (*)(void*, s32, u8, s32))fn_800CDAFC)(self, p[0xc], self[0x94], 2);
+        if (self[0x95] == 0) {
+            t = lbl_80300EE4 - t;
+        }
+        VObj_800CD6FC* obj = *(VObj_800CD6FC**)(self + 0x64);
+        f32 a = *(f32*)(lbl_802C5714 + 0x14);
+        f32 d = *(f32*)(lbl_802C5714 + 0x10) - a;
+        d = t * d;
+        f32 v = a + d;
+        *(f32*)((u8*)obj + 0xcc) = v;
+        *(f32*)((u8*)obj + 0xd0) = v;
+        obj->v9();
+        if (self[0x94] == 0) {
+            self[0x94] = p[0xc];
+            self[0x95] ^= 1;
+        } else {
+            self[0x94] -= 1;
+        }
+    }
 }
 
 extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
