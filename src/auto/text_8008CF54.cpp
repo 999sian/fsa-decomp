@@ -17,7 +17,7 @@ extern "C" u32 lbl_8053A938;
 extern "C" float lbl_8053B8A0;
 extern "C" float lbl_80539DA4;
 extern "C" float lbl_80539DA0;
-extern "C" u8 lbl_8053A934[];
+extern "C" u8 lbl_8053A934[4];
 extern "C" u32 lbl_80499470[];
 extern "C" u8 lbl_8053A920;
 extern "C" u8 lbl_8053A924[4];
@@ -320,6 +320,58 @@ extern "C" void fn_8008DF30(int param_1, int param_2)
         PADControlMotor(param_1, mode);
         lbl_8053A934[param_1] = 0;
     }
+}
+
+extern "C" void fn_8008DFA0(u32 *param_1, s16 param_2) {
+    if ((lbl_8053A938 & lbl_80499470[param_2]) == 0) {
+        param_1[0] = 0;
+        param_1[1] = 0;
+        param_1[2] = 0;
+        param_1[3] = 0;
+        param_1[4] = 0;
+    }
+    if (param_1[1] != 0) {
+        if (param_1[0] < param_1[1]) {
+            u32 period = param_1[3];
+            if (period == 0) {
+                if (lbl_8053A934[param_2] == 0) {
+                    if ((lbl_8053A938 & lbl_80499470[param_2]) != 0) {
+                        PADControlMotor(param_2, 1);
+                        lbl_8053A934[param_2] = 1;
+                    }
+                }
+            } else {
+                u32 rem = param_1[0] % period;
+                u32 flagF = lbl_8053A934[param_2] != 0;
+                u32 flagB = (u8)(((u8 *)param_1[2])[rem >> 3] & (0x80 >> (rem & 7))) != 0;
+                if (flagB == 0) {
+                    u32 flagB2 = 0;
+                    if (param_1[4] != 0) {
+                        flagB2 = (u8)(((u8 *)param_1[4])[rem >> 3] & (0x80 >> (rem & 7))) != 0;
+                    }
+                    if (flagF == 0) {
+                        if (flagB2 != 0 && (lbl_8053A938 & lbl_80499470[param_2]) != 0) {
+                            PADControlMotor(param_2, 2);
+                            lbl_8053A934[param_2] = 0;
+                        }
+                    } else if ((lbl_8053A938 & lbl_80499470[param_2]) != 0) {
+                        PADControlMotor(param_2, flagB2 ? 2 : 0);
+                        lbl_8053A934[param_2] = 0;
+                    }
+                } else if (flagF == 0 && (lbl_8053A938 & lbl_80499470[param_2]) != 0) {
+                    PADControlMotor(param_2, 1);
+                    lbl_8053A934[param_2] = 1;
+                }
+            }
+        } else {
+            if ((lbl_8053A938 & lbl_80499470[param_2]) != 0) {
+                PADControlMotor(param_2, 2);
+                lbl_8053A934[param_2] = 0;
+            }
+            param_1[1] = 0;
+        }
+    }
+    param_1[0]++;
 }
 
 extern "C" void fn_8008E1FC(u32 *param_1, u8 *param_2, s32 param_3, u32 param_4) {
