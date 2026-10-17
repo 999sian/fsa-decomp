@@ -34,8 +34,10 @@ extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5
     u32 aligned;
     u32 remain;
     u32 count;
+    u32 pad;
     char* p;
     char* base;
+    char* end;
 
     if (align == 0) {
         align = 4;
@@ -66,9 +68,11 @@ extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5
         free__7JKRHeapFPvP7JKRHeap(p, 0);
         return 0;
     }
+    end = p + size;
+    pad = ((n >> 3) + 3) & ~3;
     result = p;
-    aligned = ((u32)base + (((n >> 3) + 3) & ~3) + align - 1) & mask;
-    remain = (u32)p + size - aligned;
+    aligned = (align + (u32)(base + pad) - 1) & mask;
+    remain = (u32)end - aligned;
     count = remain / unit;
     if (result != 0) {
         result = fn_80085BBC(p, (u32)base, (void*)aligned, unit, count, remain, align, heap, a5);
@@ -265,7 +269,7 @@ extern "C" void fn_80086438(u8* param_1) {
     *(s32*)(param_1 + 0x80) = *(s32*)(param_1 + 0x6c) * *(s32*)(param_1 + 0x70);
 }
 
-void fn_8008657C(void) {
+extern "C" void fn_8008657C() {
 }
 
 void fn_80086580(void) {
