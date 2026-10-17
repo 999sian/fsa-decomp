@@ -18,6 +18,37 @@ extern "C" void* fn_800CBF08(const void* base, const void* offset);
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
+J3DMaterialFactory_v21::J3DMaterialFactory_v21(const J3DMaterialBlock_v21& block)
+{
+	mMaterialNum = block.mNumMaterials;
+	mInitData = (J3DMaterialInitData_v21*)fn_800E1300(&block, block.mMatEntryDataOffset);
+	mMatRemapTable = JSUConvertOffsetToPtr<u16>(&block, block.mMatRemapTableOffset);
+	mCullModeInfo = JSUConvertOffsetToPtr<GXCullMode>(&block, block.mCullModeInfoOffset);
+	mColorData = JSUConvertOffsetToPtr<GXColor>(&block, block.mMatColorsOffset);
+	mNumColorChans = JSUConvertOffsetToPtr<u8>(&block, block.mNumColorChansOffset);
+	mColorChanInfo = (J3DColorChanInfo*)fn_800CC040(&block, block.mColorChanInfoOffset);
+	mTexGenNums = JSUConvertOffsetToPtr<u8>(&block, block.mNumTexCoordsOffset);
+	mTexCoordInfo = (J3DTexCoordInfo*)fn_800CC010(&block, block.mTexCoordInfoOffset);
+	mTexCoord2Info = (J3DTexCoord2Info*)fn_800CBFF8(&block, block.mTexCoord2InfoOffset);
+	mTexMtxInfo = (J3DTexMtxInfo*)fn_800CBFE0(&block, block.mTexMtxInfoOffset);
+	mTexMtxInfo2 = (J3DTexMtxInfo*)fn_800CBFE0(&block, block.mTexMtxInfo2Offset);
+	mTextureRemapTable = JSUConvertOffsetToPtr<u16>(&block, block.mTextureRemapTableOffset);
+	mTevOrderInfo = (J3DTevOrderInfo*)fn_800CBFC8(&block, block.mTevOrderInfoOffset);
+	mTevColors = JSUConvertOffsetToPtr<GXColorS10>(&block, block.mTevColorsOffset);
+	mTevKColors = JSUConvertOffsetToPtr<GXColor>(&block, block.mTevKColorsOffset);
+	mTevStageNums = JSUConvertOffsetToPtr<u8>(&block, block.mNumTevStagesOffset);
+	mTevStageInfo = (J3DTevStageInfo*)fn_800CBFB0(&block, block.mTevStageInfoOffset);
+	mTevSwapModeInfo = (J3DTevSwapModeInfo*)fn_800CBF98(&block, block.mTevSwapModeInfoOffset);
+	mTevSwapModeTableInfo = (J3DTevSwapModeTableInfo*)fn_800CBF80(&block, block.mTevSwapModeTableInfoOffset);
+	mFogInfo = (J3DFogInfo*)fn_800CBF68(&block, block.mFogInfoOffset);
+	mAlphaCompInfo = (J3DAlphaCompInfo*)fn_800CBF50(&block, block.mAlphaCompInfoOffset);
+	mBlendInfo = (J3DBlendInfo*)fn_800CBF38(&block, block.mBlendInfoOffset);
+	mZModeInfo = (J3DZModeInfo*)fn_800CBF20(&block, block.mZModeInfoOffset);
+	mZCompareInfo = JSUConvertOffsetToPtr<u8>(&block, block.mZCompareInfoOffset);
+	mDitherInfo = JSUConvertOffsetToPtr<u8>(&block, block.mDitherInfoOffset);
+	mNBTScaleInfo = (J3DNBTScaleInfo*)fn_800CBF08(&block, block.mNBTScaleInfoOffset);
+}
+
 u16 J3DMaterialFactory_v21::countUniqueMaterials()
 {
 	u16 count = 0;
