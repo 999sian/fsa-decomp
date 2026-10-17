@@ -4,6 +4,9 @@
 #include "dolphin/mtx.h"
 #include "JSystem/JGeometry/Vec.h"
 
+extern "C" void fn_801EE434(void*);
+extern "C" void __dt__13Base_8010E074Fv(void*, s32);
+extern "C" void __dl__FPv(void*);
 extern "C" void fn_8010E074(u8* this_);
 extern "C" void fn_801D267C(u8* p);
 extern u8 lbl_8049D740[];
@@ -328,8 +331,8 @@ extern "C" u8* fn_801134DC(u8* this_) {
     fn_8010E074(this_);
     *(u8**)(this_ + 0x0) = lbl_8049D740;
     f32 b = lbl_8053C65C;
-    f32 a = lbl_8053C628;
     *(u8*)(this_ + 0x230) = 0;
+    f32 a = lbl_8053C628;
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23c) = 0;
