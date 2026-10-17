@@ -18,6 +18,24 @@ extern "C" s32 fn_8022F3DC(s32 i);
 extern "C" u32 fn_80236100(s32 i);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B146C[];
+extern u8 lbl_8048E1B8[];
+extern u8* lbl_8053AED0;
+extern u8* lbl_8053AD30;
+extern "C" u8 fn_80230188(s32 i);
+extern "C" void fn_8022EA0C(s32 i);
+extern "C" u8 fn_8023BE0C(void);
+extern "C" u32 fn_8030AAF4(s32 i);
+extern "C" s32 fn_80309D24(u8* a, u32 b, s32 c);
+extern "C" u32 fn_802373EC(s32 i);
+extern "C" s32 fn_8023725C(s32 i);
+
+typedef u8* (*PairCallFn)(u8* self, u32 a, u32 b);
+
+// Virtual slot 15 of the sub-object at this+4: takes a (u32, u32) pair and returns the object whose 0xb0 byte is set.
+static inline u8* CallPair(u8* this_, u32 a, u32 b) {
+    u8* sub = *(u8**)(this_ + 4);
+    return ((PairCallFn)(*(void***)sub)[15])(sub, a, b);
+}
 
 // Virtual slot 2 of an owned sub-object: destroy(freeFlag).
 struct DtorSlot2 {
