@@ -52,6 +52,11 @@ inline bool operator==(ListIter_8013AE14 a, ListIter_8013AE14 b) { return a.node
 inline bool operator!=(ListIter_8013AE14 a, ListIter_8013AE14 b) { return !(a == b); }
 inline Iter_8013A388 iterCopy_8013A388(Iter_8013A388 x) { Iter_8013A388 t = x; return t; }
 inline bool iterNe3_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return iterNe_8013A388(x, y); }
+struct CIter_8013A388 {
+    void* node;
+    CIter_8013A388(const CIter_8013A388& o) : node(o.node) {}
+};
+inline bool cIterNe_8013A388(CIter_8013A388 x, CIter_8013A388 y) { return x.node != y.node; }
 
 
 struct Obj_8013A024 {
@@ -1302,11 +1307,10 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
 }
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    u32 base = (u32)lbl_802911A0;
-    u32 derived = (u32)lbl_80292C80;
-    *(u32*)param_1 = base;
-    *(u32*)param_1 = derived;
-    ((u32*)param_1)[1] = param_2;
+    u32* p = (u32*)param_1;
+    p[0] = (u32)lbl_802911A0;
+    p[0] = (u32)lbl_80292C80;
+    p[1] = param_2;
 }
 
 extern "C" void fn_80167880(void*, int);
@@ -1522,7 +1526,7 @@ extern "C" u8 fn_8013AE14(void* param_1, void* param_2)
     Iter_8013A388 cur = iterCopy_8013A388(iterCopy_8013A388(b0));
     Iter_8013A388* pcur = &cur;
     Iter_8013A388* plast = &last;
-    while (iterNe2_8013A388(*pcur, *plast)) {
+    while (iterNe2_8013A388(iterCopy_8013A388(*pcur), iterCopy_8013A388(*plast))) {
         u8* node = (u8*)pcur->node;
         pcur->node = *(void**)node;
         u8* obj = node - 0xc;
@@ -1565,8 +1569,7 @@ extern "C" void fn_8013AF5C(void* param_1, fn_80139DB0_Obj* param_2) {
 extern "C" void fn_8013AF98(void** param_1, u32 param_2) {
     void* base = (void*)lbl_802911A0;
     *param_1 = base;
-    void* derived = (void*)lbl_80292F24;
-    *param_1 = derived;
+    *param_1 = (void*)lbl_80292F24;
     param_1[1] = (void*)param_2;
 }
 
@@ -1695,11 +1698,12 @@ extern "C" void* fn_8013B620(void* param_1, void* param_2, void* param_3) {
         r30 = fn_80133C68(r30, param_1, r31);
     }
     if (r30 == 0) {
-        return 0;
-    }
-    VObj_8013B620* obj = *(VObj_8013B620**)((u8*)r30 + 0x34);
-    if (obj != 0) {
-        obj->v1(r30);
+        r30 = 0;
+    } else {
+        VObj_8013B620* obj = *(VObj_8013B620**)((u8*)r30 + 0x34);
+        if (obj != 0) {
+            obj->v1(r30);
+        }
     }
     return r30;
 }
@@ -1778,7 +1782,7 @@ extern "C" void* fn_8013B884(void* p1, void* p2, void* p3) {
     }
     vt = *(void**)((u8*)r30 + 0x34);
     if (vt != 0) {
-        ((VObj_8013B620*)vt)->v3(r30);
+        ((VObj_8013B620*)vt)->v1(r30);
     }
     return r30;
 }
@@ -2086,23 +2090,27 @@ extern "C" void fn_8013C508(void* a, void* b, void* c, void* d, void* e) {
 }
 
 extern "C" u32 fn_80136314(u32 i);
+#pragma dont_inline on
 extern "C" void fn_8013C838(void* a, void* b, f32 x) {
-    void* q = (u8*)b + *(s32*)((u8*)a + 8);
-    s32 w = *(s32*)((u8*)q - 1);
     PmfObj_8013C838* obj = *(PmfObj_8013C838**)((u8*)b + 0x128);
-    f32 t = (obj->*(*(PmfFunc_8013C838*)((u8*)a + 0x24)))(q, x);
+    f32 t;
     f32 s = x;
+    s32 off = *(s32*)((u8*)a + 8);
+    u8* q = (u8*)b + off;
+    s32 w = *(s32*)(q - 1);
+    u8 k = w;
+    t = (obj->*(*(PmfFunc_8013C838*)((u8*)a + 0x24)))(q, x);
     switch ((w >> 8) & 0xff) {
     case 1:
-        s = t - x;
+        s = t - s;
         break;
     }
-    if (t > 0.0f) {
-        s = ((f64 (*)(f32, f32))fn_80136314(w & 0xff))(s, t);
+    if (t > lbl_80301898) {
+        s = ((f64 (*)(f32, f32))fn_80136314(k))(s, t);
     }
     (obj->*(*(PmfFunc2_8013C838*)((u8*)a + 0xc)))(s);
 }
-
+#pragma dont_inline reset
 extern "C" void fn_80133414(void*, int);
 extern char lbl_80293190[];
 extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
