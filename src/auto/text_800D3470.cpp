@@ -969,10 +969,10 @@ extern "C" void fn_800D5E14(void* param) {
 extern "C" void fn_800D6394(Vtable800D8248* param_1, u32 param_2)
 {
   if ((param_2 & 1) != 0) {
-    param_1->m8();
+    param_1->m6();
   }
   if (((param_2 & 2) != 0) || (((param_2 >> 4) & 0xf) != 0)) {
-    param_1->m9();
+    param_1->m7();
   }
 }
 
