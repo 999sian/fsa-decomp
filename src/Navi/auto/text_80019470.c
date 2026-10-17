@@ -300,6 +300,19 @@ extern "C" s32 fn_80019A6C(void) {
 extern "C" void fn_80019AE0(void) {
 }
 
+extern "C" s32 fn_80019AE4(void* param_1) {
+    s32 iVar1 = fn_8001C9FC(*(void**)((u8*)param_1 + 0x20));
+    if (iVar1 == 1) {
+        *(u32*)((u8*)param_1 + 0x20) = 0;
+        *(u16*)((u8*)param_1 + 0x4) = 0;
+        *(u16*)((u8*)param_1 + 0x6) = 0;
+        *(u32*)((u8*)param_1 + 0x8) = 0;
+        *(u32*)((u8*)param_1 + 0xc) = 0;
+        return 2;
+    }
+    return 0;
+}
+
 extern "C" s32 fn_80019B40(void* param_1) {
     s16 sVar1;
     fn_80115590(param_1);
