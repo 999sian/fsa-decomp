@@ -1812,6 +1812,10 @@ extern "C" s32 fn_801855F8(u8* self, void* p, s32 b, s32 c, f32 f) {
     return 1;
 }
 
+extern "C" void fn_801856AC(u32* self, void* a, f32 f, int b, int c) {
+    ((VObj_8017E65C*)self)->vfC8(fn_8017A4A8(a), f, b, c);
+}
+
 extern "C" u8 fn_80185B00(void* self, s32 b);
 extern "C" void fn_801857C8(void* self, f32 f, s32 b);
 extern "C" s32 fn_80185724(void* self, s32 a, f32 f, s32 b) {
