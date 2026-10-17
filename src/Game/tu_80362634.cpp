@@ -10,7 +10,7 @@ extern "C" f32 lbl_80542B10;
 
 extern "C" void* fn_8013C824(void);
 extern "C" void* fn_801F856C(void);
-extern "C" u8 fn_801F2618(void* this_, void* out, s32 a);
+extern "C" void fn_801F2618(void* this_, s32 a, s32 b);
 extern "C" const s32 lbl_80474B58[];
 extern "C" const s32 lbl_80474B68[];
 extern "C" f32 lbl_80542B28;
