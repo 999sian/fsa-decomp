@@ -516,6 +516,11 @@ extern "C" void fn_80194A68(u32 param_1, s32 param_2, s16 param_3) {
     *(volatile u16*)0xCC008000 = (u16)(param_2 * 9 + 0x400) | 0x8000;
 }
 
+extern "C" void fn_80194AAC(u32 param_1, s32 param_2, s32 param_3) {
+    fn_80191A60(*(u8**)(*(u8**)(lbl_802EE470 + 0x40) + 0x30), param_2 * 3);
+    fn_80191EA0(lbl_802EE470, param_2, param_3);
+}
+
 extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
     fn_80191A60(((u8*)lbl_802EE470[16])+0x30, param_2 * 3);
     fn_80191AE0(((u32*)lbl_802EE470[16])[12], param_2 * 3);
