@@ -11,6 +11,21 @@ struct Vec4_80177B10 {
 extern void* lbl_802988A8[];
 extern "C" void fn_80118BD0(void* p, int b);
 
+struct Rec_80174620 {
+    f32 a, b, c, d, e, f;
+    u8 g;
+};
+struct Slot_80174620 {
+    u8 active;
+    u8 pad[0xb];
+    Rec_80174620 recs[10];
+};
+struct Owner_80174620 {
+    u8 pad[0xc];
+    Slot_80174620* slots;
+};
+extern const Rec_80174620 lbl_8020225C;
+
 struct RGB8_8017261C { u8 r, g, b; };
 struct Color4_8017261C { u8 r, g, b, a; };
 struct Entry_8017261C { u8 pad[0x16]; Color4_8017261C colors[1]; };
@@ -335,15 +350,16 @@ extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d) {
             }
             src++;
         } else {
+            s32 hi;
             u8 b0 = src[0];
             u8 b1 = src[1];
             src += 2;
             back = dst - (((b0 << 8) & 0xf00) | b1);
-            len = b0 >> 4;
-            if (len == 0) {
+            hi = b0 >> 4;
+            if (hi == 0) {
                 len = *src++ + 0x12;
             } else {
-                len += 2;
+                len = hi + 2;
             }
             do {
                 if (skip == 0) {
