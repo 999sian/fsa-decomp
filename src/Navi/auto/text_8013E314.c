@@ -1,5 +1,23 @@
 #include "types.h"
 #include "types.h"
+
+struct VObj_8013E314 {
+    virtual void fn_0();
+    virtual void fn_1();
+    virtual void fn_2();
+    virtual void fn_3(s32);
+    virtual u32 fn_4();
+    virtual void fn_5(u32);
+    virtual void fn_6();
+    virtual void fn_7();
+    virtual void fn_8();
+    virtual void fn_9();
+    virtual void fn_10();
+    virtual void fn_11();
+    virtual void fn_12();
+    virtual void fn_13();
+    virtual void fn_14(s32);
+};
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8013e314-0x8013eb20 (13 functions). split_file divides it into the game's real files.
 
