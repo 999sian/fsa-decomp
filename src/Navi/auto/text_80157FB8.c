@@ -3,8 +3,7 @@
 
 extern "C" void fn_801534C0(void* p);
 extern "C" unsigned char lbl_802E3B10[];
-extern "C" void fn_80157FB8(unsigned char param_1, int param_2)
+extern "C" void fn_80157FB8(unsigned char param_1)
 {
-	int off = (param_1 & 0xff) * 0xbc;
-	fn_801534C0(lbl_802E3B10 + off);
+	fn_801534C0(lbl_802E3B10 + (param_1 & 0xff) * 0xbc);
 }
