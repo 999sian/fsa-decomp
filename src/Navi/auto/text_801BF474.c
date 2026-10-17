@@ -6,6 +6,7 @@ extern u8 Scb_802F6CC0[];
 extern "C" void fn_801BF7E0(u32 param_1, u32 param_2);
 extern "C" BOOL OSDisableInterrupts(void);
 extern "C" BOOL OSRestoreInterrupts(BOOL level);
+extern "C" u64 OSGetTime(void);
 extern "C" u32 fn_801BF4D4(u8* param_1, u32 param_2, u32 param_3);
 extern "C" void fn_801BF474(void) {
     u8* puVar3 = Scb_802F6CC0;
