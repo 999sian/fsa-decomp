@@ -61,14 +61,14 @@ extern "C" void fn_801E1E24(u32* param_1, u32* param_2) {
 extern "C" u32* fn_801E1EBC(u32* param_1, u32* param_2) {
     u32* piVar1 = (u32*)param_2[1];
     if (piVar1 == param_2) {
-        piVar1 = nullptr;
+        piVar1 = 0;
     }
     if ((u32*)*param_1 == param_2) {
         *param_1 = (u32)piVar1;
     }
-    if (piVar1 != nullptr) {
-        piVar1[0] = param_2[0];
-        ((u32*)piVar1[0])[1] = (u32)piVar1;
+    if (piVar1 != 0) {
+        *piVar1 = param_2[0];
+        ((u32*)*piVar1)[1] = (u32)piVar1;
     }
     param_2[1] = 0;
     param_2[0] = 0;
