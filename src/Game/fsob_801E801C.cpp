@@ -36,6 +36,10 @@ extern "C" f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t);
 extern "C" void fn_801E9C00(s16 angle, f32* out);
 extern f32 lbl_8053F604;
 extern f32 lbl_8053F608;
+extern f32 lbl_8053F60C;
+extern f32 lbl_8053F610;
+extern f32 lbl_8053F640;
+extern f32 lbl_8053F644;
 extern "C" void fn_801E8C74(char* p, s32 a) {
     u8 flag = 1;
     s32 i;
@@ -221,6 +225,163 @@ extern "C" void fn_801E90C4(char* p) {
         break;
     default:
         break;
+    }
+}
+
+extern "C" void fn_801E9224(char* p) {
+    if (*(u32*)(p + 0x230) & 0x4000) {
+        return;
+    }
+    f32 rem = 0.5f;
+    rem = rem >= 0.0f ? rem : 0.0f;
+    u8 done = 0;
+    f32 uA;
+    f32 uB;
+    while (rem > 0.0f) {
+        s32 ti = (s32)*(f32*)(p + 0x3b4);
+        u8 seg = *(u8*)(p + 0x3b0);
+        f32 ax;
+        f32 ay;
+        switch ((u8)ti) {
+        case 0: {
+            char* q = p + seg * 8;
+            ax = *(f32*)(q + 0x2b0);
+            ay = *(f32*)(q + 0x2b4);
+            break;
+        }
+        case 16: {
+            char* q = p + seg * 8;
+            ax = *(f32*)(q + 0x2b8);
+            ay = *(f32*)(q + 0x2bc);
+            break;
+        }
+        default: {
+            f32 p0x;
+            f32 p0y;
+            if (seg == 0) {
+                p0x = *(f32*)(p + 0x2b0);
+                p0y = *(f32*)(p + 0x2b4);
+            } else {
+                char* q = p + seg * 8;
+                p0x = *(f32*)(q + 0x2a8);
+                p0y = *(f32*)(q + 0x2ac);
+            }
+            u8 count = *(u8*)(p + 0x2ad);
+            char* q = p + seg * 8;
+            f32 p1x = *(f32*)(q + 0x2b0);
+            f32 p1y = *(f32*)(q + 0x2b4);
+            f32 p2x = *(f32*)(q + 0x2b8);
+            f32 p2y = *(f32*)(q + 0x2bc);
+            f32 p3x;
+            f32 p3y;
+            if (seg == count - 2) {
+                p3x = p2x;
+                p3y = p2y;
+            } else {
+                p3x = *(f32*)(q + 0x2c0);
+                p3y = *(f32*)(q + 0x2c4);
+            }
+            uA = 0.0625f * (f32)(u8)ti;
+            ay = fn_801CD6D8(p0y, p1y, p2y, p3y, uA);
+            ax = fn_801CD6D8(p0x, p1x, p2x, p3x, uA);
+            break;
+        }
+        }
+
+        seg = *(u8*)(p + 0x3b0);
+        s32 tj = (s32)*(f32*)(p + 0x3b4);
+        u8 next = (u8)(tj + 1);
+        if (next >= 16) {
+            if (seg < *(u8*)(p + 0x2ad) - 2) {
+                seg++;
+                next -= 16;
+            } else {
+                done = 1;
+            }
+        }
+
+        f32 bx;
+        f32 by;
+        switch (next) {
+        case 0: {
+            char* q = p + seg * 8;
+            bx = *(f32*)(q + 0x2b0);
+            by = *(f32*)(q + 0x2b4);
+            break;
+        }
+        case 16: {
+            char* q = p + seg * 8;
+            bx = *(f32*)(q + 0x2b8);
+            by = *(f32*)(q + 0x2bc);
+            break;
+        }
+        default: {
+            f32 p0x;
+            f32 p0y;
+            if (seg == 0) {
+                p0x = *(f32*)(p + 0x2b0);
+                p0y = *(f32*)(p + 0x2b4);
+            } else {
+                char* q = p + seg * 8;
+                p0x = *(f32*)(q + 0x2a8);
+                p0y = *(f32*)(q + 0x2ac);
+            }
+            u8 count = *(u8*)(p + 0x2ad);
+            char* q = p + seg * 8;
+            f32 p1x = *(f32*)(q + 0x2b0);
+            f32 p1y = *(f32*)(q + 0x2b4);
+            f32 p2x = *(f32*)(q + 0x2b8);
+            f32 p2y = *(f32*)(q + 0x2bc);
+            f32 p3x;
+            f32 p3y;
+            if (seg == count - 2) {
+                p3x = p2x;
+                p3y = p2y;
+            } else {
+                p3x = *(f32*)(q + 0x2c0);
+                p3y = *(f32*)(q + 0x2c4);
+            }
+            uB = 0.0625f * (f32)next;
+            by = fn_801CD6D8(p0y, p1y, p2y, p3y, uB);
+            bx = fn_801CD6D8(p0x, p1x, p2x, p3x, uB);
+            break;
+        }
+        }
+
+        f32 abx = bx - ax;
+        f32 aby = by - ay;
+        f32 dx = bx - *(f32*)(p + 0xc);
+        f32 dy = by - *(f32*)(p + 0x10);
+        f32 len2 = dx * dx + dy * dy;
+        f32 len = sqrt(len2);
+        if (rem >= len) {
+            *(f32*)(p + 0xc) = bx;
+            *(f32*)(p + 0x10) = by;
+            *(f32*)(p + 0x14) = 0.0f;
+            if (done) {
+                *(u32*)(p + 0x230) |= 0x4000;
+                *(u8*)(p + 0x3b0) = *(u8*)(p + 0x2ad) - 2;
+                *(f32*)(p + 0x3b4) = 16.0f;
+                return;
+            } else {
+                rem -= len;
+                *(f32*)(p + 0x3b4) = (f32)next;
+                *(u8*)(p + 0x3b0) = seg;
+            }
+        } else {
+            if (len2 > FLT_EPSILON * 32.0f) {
+                f32 inv = 1.0f / sqrt(len2);
+                dx *= inv;
+                dy *= inv;
+            }
+            dx *= rem;
+            dy *= rem;
+            *(f32*)(p + 0xc) += dx;
+            *(f32*)(p + 0x10) += dy;
+            f32 abLen = sqrt(abx * abx + aby * aby);
+            *(f32*)(p + 0x3b4) += rem * (1.0f / abLen);
+            return;
+        }
     }
 }
 
