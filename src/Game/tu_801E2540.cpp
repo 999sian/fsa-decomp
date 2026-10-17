@@ -24,7 +24,7 @@ extern "C" u8 fn_801E1CF8(u8* this_);
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void* p, s32 idx);
 extern "C" void* fn_8023E724(s32 h);
-extern "C" u8 fn_801F37AC(u8* this_, s32 a, void* v, s32 b, s32 mode, s32 h);
+extern "C" s32 fn_801F37AC(u8* this_, s32 a, void* v, s32 b, s32 mode, s32 h);
 extern "C" s32 fn_801E2540(u8* this_) {
     s32 kind;
     s32 ret = 0;
