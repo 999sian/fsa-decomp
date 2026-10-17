@@ -5,6 +5,9 @@
 extern "C" void* memset(void* p, int c, size_t n);
 extern "C" void fn_801E20C8(u32* a, u32* b);
 extern "C" void fn_801E1978(u32* a);
+extern "C" void* fn_801E1DB0(void);
+extern "C" void fn_801E1B90(void* param_1, u8* param_2);
+extern "C" void fn_801E1B54(u8* param_1);
 extern "C" u32* fn_801E1EBC(u32* param_1, u32* param_2);
 extern u8 lbl_802FFAA0;
 extern u8 lbl_802F86E0[];
