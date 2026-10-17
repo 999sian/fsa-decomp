@@ -72,6 +72,8 @@ static inline f32 navi_sqrtf(f32 x)
     }
 }
 
+extern "C" s32 fn_800D2FE8(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 from, f32 to);
+extern "C" s32 fn_800D3120(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode);
 extern void* lbl_80289490[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
