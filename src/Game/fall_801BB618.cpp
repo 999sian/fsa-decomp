@@ -227,8 +227,7 @@ static inline u8 fallAlpha(char* this_) {
         t = (t - lbl_8053EC00) * lbl_8053EC04;
         if (t > lbl_8053EC08) {
             t = lbl_8053EC08;
-        }
-        if (t < lbl_8053EC0C) {
+        } else if (t < lbl_8053EC0C) {
             t = lbl_8053EC0C;
         }
         alpha = lbl_8053EC10 * t;
