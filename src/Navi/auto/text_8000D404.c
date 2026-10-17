@@ -67,6 +67,20 @@ extern "C" void fn_801B016C(void*, void*);
 extern "C" void fn_801B0240(void*, void*);
 extern "C" void fn_801AA6F0(void*);
 extern "C" char lbl_80203BC4[];
+extern "C" char lbl_802EE470[];
+extern "C" char lbl_802FB81C[];
+extern "C" char lbl_80204000[];
+extern "C" char lbl_802040A0[];
+extern "C" char lbl_80203B38[];
+extern "C" void fn_80192688(void*);
+extern "C" void fn_801DE24C(s32);
+extern "C" void fn_801DA364(void);
+extern "C" void fn_801D9F18(s32, s32);
+extern "C" void fn_801DA39C(s32, s32, s32, s32, s32);
+extern "C" void fn_801DAC08(s32, void*, s32);
+extern "C" void fn_801DF0BC(void*, s32);
+extern "C" void fn_801DF2A4(void*, s32);
+extern "C" void fn_801DF2F4(void*, s32);
 extern "C" u8 fn_8000D6F4(void* self) {
     if (*(void**)((u8*)self + 4) == nullptr) {
         fn_8011FD18(fn_8011FD10(), lbl_80203B9C, 0x16e, lbl_802FB810, lbl_80203BC4);
