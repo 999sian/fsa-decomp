@@ -13,11 +13,19 @@ extern void* lbl_8029260C[];
 extern void* lbl_802922F4[];
 extern void* lbl_8029383C[];
 
-static inline void fn_8013E3A4_base(u32* p) {
-    *(void**)p = lbl_8029260C;
-    p[1] = (u32)(p + 3);
-    p[2] = 0xd;
-}
+struct Elem_8013E3A4 {
+    u8 data[0x14];
+};
+struct Base_8013E3A4 {
+    void* vtbl;
+    Elem_8013E3A4* items;
+    s32 count;
+    Base_8013E3A4(Elem_8013E3A4* p, s32 n) {
+        vtbl = lbl_8029260C;
+        items = p;
+        count = n;
+    }
+};
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_80293738[];
@@ -38,9 +46,10 @@ extern "C" void fn_8013E374(void* param_1, void* param_2) {
 }
 
 extern "C" void* fn_8013E3A4(u32* self, u32 param_2, u32 param_3) {
-    *(void**)self = lbl_8029260C;
-    self[1] = (u32)(self + 3);
-    self[2] = 0xd;
+    u32* p = self;
+    *(void**)p = lbl_8029260C;
+    p[1] = (u32)(p + 3);
+    p[2] = 0xd;
     *(void**)self = lbl_802922F4;
     fn_801E0DB8(self + 3, (void*)fn_8013CD54, 0, 0x14, 0xd);
     *(void**)self = lbl_8029383C;
