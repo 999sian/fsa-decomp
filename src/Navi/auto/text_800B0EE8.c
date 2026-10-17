@@ -65,6 +65,16 @@ extern "C" void fn_800B6950(u8* p) {
     }
 }
 
+extern "C" void fn_800B699C(u8* p) {
+    if (p[0x39e] != 0) {
+        p[0x39e]--;
+        return;
+    }
+    p[0x39d] = 0;
+    *(u8*)(*(u8**)(p + 0x30) + 0xb0) = 1;
+    *(s32*)(p + 0x378) = 4;
+}
+
 extern "C" void fn_800B6E5C(u8* p) {
     p[0x384] = 0;
     fn_8002F544(lbl_80287510[p[0x387] + p[0x388] * 4]);
