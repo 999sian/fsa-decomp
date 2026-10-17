@@ -9,6 +9,8 @@ extern f32 lbl_80300B20;
 extern "C" f32 fn_800A1774(void*, u8, u8, s32);
 extern "C" void fn_800D1EE8(void* p);
 struct DtorVObj_800A0008 { virtual void Destroy(int); };
+struct DtorVObj_800A02DC { virtual void v0(); virtual void v1(); virtual void Destroy(int); };
+extern "C" void fn_800D3274(u8* p);
 struct VObj_80098354 {
     virtual void v0();
     virtual void v1();
