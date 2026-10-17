@@ -30,58 +30,65 @@ extern "C" void* fn_801902C0(void);
 extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
 {
     switch (param_1) {
-        case 3:
+        case 0:
             switch (param_2) {
-                case 3: return 0x2d3;
-                case 1: return 0x2df;
-                case 0: return 0x2d0;
-                case 2: return 0x2d6;
-                case 4: return 0x2dc;
-                default: return 0x2d9;
+                case 0: return 0x2fd;
+                case 1: return 0x307;
+                case 2: return 0x301;
+                case 3: return 0x2ff;
+                case 4: return 0x305;
+                case 5:
+                default: return 0x303;
             }
         case 1:
             switch (param_2) {
-                case 3: return 0x300;
-                case 1: return 0x308;
                 case 0: return 0x2fe;
+                case 1: return 0x308;
                 case 2: return 0x302;
+                case 3: return 0x300;
                 case 4: return 0x306;
+                case 5:
                 default: return 0x304;
-            }
-        case 0:
-            switch (param_2) {
-                case 3: return 0x2ff;
-                case 1: return 0x307;
-                case 0: return 0x2fd;
-                case 2: return 0x301;
-                case 4: return 0x305;
-                default: return 0x303;
             }
         case 2:
             switch (param_2) {
-                case 3: return 0x2d2;
-                case 1: return 0x2de;
                 case 0: return 0x2cf;
+                case 1: return 0x2de;
                 case 2: return 0x2d5;
+                case 3: return 0x2d2;
                 case 4: return 0x2db;
+                case 5:
                 default: return 0x2d8;
             }
-        case 5:
+        case 3:
             switch (param_2) {
-                case 3: return 0x2d4;
-                case 1: return 0x2e0;
+                case 0: return 0x2d0;
+                case 1: return 0x2df;
+                case 2: return 0x2d6;
+                case 3: return 0x2d3;
+                case 4: return 0x2dc;
+                case 5:
+                default: return 0x2d9;
+            }
+        case 4:
+            switch (param_2) {
                 case 0: return 0x2d1;
+                case 1: return 0x2e0;
                 case 2: return 0x2d7;
+                case 3: return 0x2d4;
                 case 4: return 0x2dd;
+                case 5:
                 default: return 0x2da;
             }
+        case 5:
         default:
             switch (param_2) {
-                case 3: return 0x2e5;
-                case 1: return 0x2e9;
                 case 0: return 0x2e4;
+                case 1: return 0x2e9;
                 case 2: return 0x2e6;
+                case 3: return 0x2e5;
                 case 4: return 0x2e8;
+                case 5:
                 default: return 0x2e7;
             }
     }
