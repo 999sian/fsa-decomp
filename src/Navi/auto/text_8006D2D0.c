@@ -99,9 +99,9 @@ extern "C" BOOL fn_8006E244(u8* p, u32* src, void* arg) {
     return TRUE;
 }
 
-extern "C" void fn_8006D9E8(void);
-extern "C" void fn_8006EA60(void) {
-    fn_8006D9E8();
+extern "C" int fn_8006D9E8(u8* p);
+extern "C" void fn_8006EA60(u8* p) {
+    fn_8006D9E8(p);
 }
 
 extern u8 lbl_802C2E44[];
