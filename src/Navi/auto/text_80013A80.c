@@ -275,10 +275,10 @@ extern "C" void fn_80014390(Unk80013DA0* self) {
 }
 
 extern "C" void fn_80014520(void* p) {
-    if (fn_80014EBC(p, 0) == 0) {
-        fn_80014574(p, fn_80013D58);
-    } else {
+    if (fn_80014EBC(p, 0) != 0) {
         fn_800145A4(p);
+    } else {
+        fn_80014574(p, fn_80013D58);
     }
 }
 
