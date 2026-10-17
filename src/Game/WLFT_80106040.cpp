@@ -35,6 +35,7 @@ public:
 extern u8* lbl_8053AAF8;
 extern const char* lbl_80539EC8[2];
 extern const char lbl_80463FC4[];
+extern const f32 lbl_8053C270;
 extern const f32 lbl_8053C284;
 extern const f32 lbl_8053C288;
 extern const f32 lbl_8053C28C;
