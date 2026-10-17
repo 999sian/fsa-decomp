@@ -1,4 +1,7 @@
 #include "types.h"
+extern "C" void fn_800E927C(u8* p);
+extern "C" s32 fn_800EE044(void);
+extern "C" void fn_8002F358(s32, s32);
 extern "C" char lbl_802B7CA0[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
 struct VObj_800A1A64 {
