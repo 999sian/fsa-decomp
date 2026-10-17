@@ -1332,12 +1332,8 @@ extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
 }
 
 extern "C" void fn_8012D7F8(u8* p, u8* a, u8* b) {
-    Vec3f* out = (Vec3f*)(p + 0x10);
-    Vec3f* v = (Vec3f*)(b + 0x10);
-    Vec3f* w = (Vec3f*)(a + 0x108);
-    out->x = v->x - w->x;
-    out->y = v->y - w->y;
-    out->z = v->z - w->z;
+    JGeometry::TVec3f* out = (JGeometry::TVec3f*)(p + 0x10);
+    out->sub(*(JGeometry::TVec3f*)(b + 0x10), *(JGeometry::TVec3f*)(a + 0x108));
     fn_801C6684(a + 0x78, out, out);
 }
 
