@@ -200,6 +200,20 @@ extern "C" void fn_801A7E48(u8* obj, u32 a, u32 b) {
     }
 }
 
+extern "C" u8 fn_80196540(void*, void*);
+#pragma use_lmw_stmw off
+extern "C" void fn_801A7EB4(u8* obj) {
+    u16 n = *(u16*)(obj + 4);
+    u16 i, j;
+    for (i = 0; i < n; i++) {
+        for (j = 0; j < i; j++) {
+            if (fn_80196540((*(u8***)(obj + 8))[i], (*(u8***)(obj + 8))[j])) {
+                *(u32*)((*(u8***)(obj + 8))[i] + 0x2c) = *(u32*)((*(u8***)(obj + 8))[j] + 0x2c);
+            }
+        }
+    }
+}
+
 extern "C" void fn_801A833C(void* p);
 extern "C" void fn_801AFB98(void* p);
 extern "C" void* lbl_802FF708;
