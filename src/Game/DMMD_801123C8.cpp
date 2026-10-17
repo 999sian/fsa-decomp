@@ -323,6 +323,28 @@ extern "C" void fn_801133C0(u8* this_) {
     fn_801D1F14(this_ + 0x260, lbl_8053C628);
 }
 
+extern "C" void* fn_8011342C(char* p, s16 freeFlag) {
+    if (p != 0) {
+        *(void**)p = lbl_8049D740;
+        fn_801EE434(*(void**)(p + 0x298));
+        *(s32*)(p + 0x298) = 0;
+        fn_801EE434(*(void**)(p + 0x29c));
+        *(s32*)(p + 0x29c) = 0;
+        fn_801EE434(*(void**)(p + 0x2a0));
+        *(s32*)(p + 0x2a0) = 0;
+        if (p + 0x260 != 0) {
+            if (p + 0x284 != 0) {
+                *(void**)(p + 0x284) = lbl_8049CC34;
+            }
+        }
+        __dt__13Base_8010E074Fv(p, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_8010E074(u8* this_);
 extern "C" void fn_801D267C(u8* p);
 extern u8 lbl_8049D740[];
