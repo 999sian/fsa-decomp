@@ -34,6 +34,12 @@ struct Slot_8013D1D4 { u8 pad[0x10]; void* ptr; };
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_802935B0[];
+extern char lbl_8029260C[];
+extern char lbl_80292398[];
+extern char lbl_80201EB4[];
+extern "C" void fn_801E0DB8(void*, void*, s32, s32, s32);
+extern "C" void fn_8013CD54();
+extern "C" void fn_801337AC(void*, void*, void*);
 extern "C" void* fn_8013DD14(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_802935B0;
