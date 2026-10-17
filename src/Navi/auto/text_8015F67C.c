@@ -82,3 +82,8 @@ extern "C" BOOL fn_8015F80C()
 	return TRUE;
 }
 
+extern "C" void fn_8015FBC0(u8* param_1)
+{
+    param_1[0x28] = 0;
+}
+
