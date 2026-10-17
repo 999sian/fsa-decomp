@@ -1713,12 +1713,14 @@ extern "C" void fn_8009F440(NaviState_8009E6F0* p) {
 
 extern "C" void fn_80177C20(void* p, f32 v);
 extern "C" void fn_8009F560(u8* p) {
-    s32 idx = *(s32*)(lbl_802BB0FC + 0x3f0) % 10;
+    u8* q = p;
     s32 i = 0;
+    s32 idx = *(s32*)(lbl_802BB0FC + 0x3f0) % 10;
     for (i = 0; i < 5; i++) {
-        fn_80177C20(*(void**)(p + idx * 4 + 0x64c), *(f32*)(p + i * 4 + 0x808));
+        fn_80177C20(*(void**)(p + idx * 4 + 0x64c), *(f32*)(q + 0x808));
         idx = (idx + 1) % 10;
-        *(f32*)(p + i * 4 + 0x808) = *(f32*)(p + i * 4 + 0x808) + *(f32*)(p + i * 4 + 0x830);
+        *(f32*)(q + 0x808) = *(f32*)(q + 0x808) + *(f32*)(q + 0x830);
+        q += 4;
     }
 }
 
