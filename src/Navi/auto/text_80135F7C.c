@@ -1,5 +1,10 @@
 #include "types.h"
 
+struct VObj_8013B620 {
+    virtual void v0();
+    virtual void v1(void* a);
+};
+
 struct Iter_8013A388 {
     void* node;
 };
@@ -1334,7 +1339,7 @@ extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
-    while (iterNe2_8013A388(*(Iter_8013A388*)c, *(Iter_8013A388*)b) && !fn_8013A48C((u8*)*b - 0xc, d)) {
+    while (iterNe_8013A388(*(Iter_8013A388*)c, *(Iter_8013A388*)b) && !fn_8013A48C((u8*)*b - 0xc, d)) {
         *b = *(void**)*b;
     }
     *a = *b;
@@ -1416,6 +1421,28 @@ extern "C" void* fn_8013AFB8(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" char lbl_80301890[4];
+typedef BOOL (*fn_8013B018_cb)(void*, u8**, u32);
+extern "C" BOOL fn_8013B018(void* obj, u8** param_2, u32* param_3, u32 param_4) {
+    u8* p = *param_2;
+    *param_2 = p + 0x20;
+    *param_3 = *(u32*)(p + 0xc);
+    if (fn_801E3C54(p, lbl_80301890, 4) != 0) {
+        return FALSE;
+    }
+    if (*(u16*)(p + 4) != 0xFEFF) {
+        return FALSE;
+    }
+    u16 ver = *(u16*)(p + 6);
+    if (ver < 1) {
+        return FALSE;
+    }
+    if (ver > 3) {
+        return FALSE;
+    }
+    return (*(fn_8013B018_cb*)(*(u8**)obj + 0x14))(obj, &p, param_4);
 }
 
 extern "C" void fn_8013B0E4(VObj_8013B140* self, u32** pp, u32* out, void* arg)
