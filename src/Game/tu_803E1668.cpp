@@ -13,7 +13,7 @@ public:
     virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C();
     virtual void v10(f32 x, f32 y);
     virtual void v14(); virtual void v18(); virtual void v1C(); virtual void v20();
-    virtual void setAlpha(u8 a);
+    virtual void setAlpha(s32 a);
 };
 extern "C" u8 lbl_80477970[];
 extern "C" f32* getBounds__7J2DPaneFv(void* this_);
