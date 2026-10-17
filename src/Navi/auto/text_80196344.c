@@ -109,7 +109,7 @@ inline void NaviRect16_Set(NaviRect16* d, s16 x, s16 y, s16 w, s16 h) {
     d->w = w;
     d->h = h;
 }
-inline void NaviRect16_Copy(NaviRect16* d, const NaviRect16& r) {
+inline void NaviRect16_Copy(NaviRect16* d, NaviRect16 r) {
     d->x = r.x;
     d->y = r.y;
     d->w = r.w;
@@ -2575,14 +2575,14 @@ extern "C" u8 fn_801A3A1C(u8* p) {
     return p[0x58];
 }
 
-extern "C" void fn_801A3A24(u8* p, s32 i, u8* src) {
+extern "C" void fn_801A3A24(u8* p, u32 i, u8* src) {
     u8* d = p + i * 8;
     u8 a, b, c;
     a = src[1];
     b = src[2];
     d[0x5a] = a;
-    d[0x5b] = b;
     c = src[3];
+    d[0x5b] = b;
     a = src[5];
     d[0x5c] = c;
     b = src[6];
@@ -2708,15 +2708,8 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    s16* d = (s16*)(p + 0x42) + i * 4;
-    s16 a = src[0];
-    d[0] = a;
-    s16 b = src[1];
-    d[1] = b;
-    a = src[2];
-    d[2] = a;
-    b = src[3];
-    d[3] = b;
+    NaviRect16* d = (NaviRect16*)(p + 0x42) + i;
+    NaviRect16_Copy(d, *(NaviRect16*)src);
 }
 
 extern "C" s32 fn_801A3D80(s32 p, s32 i) {
@@ -3234,7 +3227,7 @@ extern "C" s32 fn_801A48F4(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A4908(u8* p, int i, NaviRect16* src) {
-    ((NaviRectHolder98*)p)->rects[i] = *src;
+    NaviRect16_Copy(&((NaviRectHolder98*)p)->rects[i], *src);
 }
 
 extern "C" int fn_801A4960(int param_1, int param_2) {
@@ -3245,8 +3238,8 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8* d = p1 + p2 * 4;
     u8 a = p3[0];
+    u8* d = p1 + p2 * 4;
     d[0xb8] = a;
     d[0xb9] = p3[1];
     d[0xba] = p3[2];
