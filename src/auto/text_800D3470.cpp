@@ -19,7 +19,6 @@ struct Col3_800DDDD0 { u8 r, g, b; };
 struct Col4_800DDDD0 { u8 a; Col3_800DDDD0 c; };
 struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
 struct Obj_800DDDD0 { u8 pad[0x59]; Ent_800DDDD0 ent[1]; };
-struct Slot_800DDE5C { u8 v; u8 pad[7]; };
 
 struct Unk800DC290Src {
     virtual void m2() = 0;
