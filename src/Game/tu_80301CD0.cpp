@@ -105,6 +105,53 @@ extern "C" u8 fn_80301D30(s32 i) {
     return 0;
 }
 
+extern "C" void fn_803020C8(s32 a, s32 b, s32 c, u8 d) {
+    s32 slot = fn_8022F340();
+    if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << slot)) == 0) {
+        return;
+    }
+    if (b < 8) {
+        if (c < 8) {
+            lbl_8053ACE8[slot] = 0;
+        } else if (c == 8 || fn_802D7804(fn_802D6A9C(), c, 1) != 0) {
+            lbl_8053ACE8[slot] = 1;
+        } else {
+            lbl_8053ACE8[slot] = 3;
+        }
+    } else if (b == 8 || fn_802D7804(fn_802D6A9C(), b, 1) != 0) {
+        if (c < 8) {
+            lbl_8053ACE8[slot] = 3;
+            lbl_8053ACF8[a] = 1;
+        } else if (c == 8 || fn_802D7804(fn_802D6A9C(), c, 1) != 0) {
+            lbl_8053ACE8[slot] = 2;
+        } else {
+            lbl_8053ACE8[slot] = 2;
+            lbl_8053ACF8[a] = 1;
+        }
+    } else {
+        if (c < 8) {
+            lbl_8053ACE8[slot] = 3;
+        } else if (c == 8 || fn_802D7804(fn_802D6A9C(), c, 1) != 0) {
+            lbl_8053ACE8[slot] = 1;
+        } else {
+            lbl_8053ACE8[slot] = 2;
+        }
+    }
+    ((s32*)lbl_80506D88)[slot] = b;
+    ((s32*)lbl_80506D98)[slot] = c;
+    switch (d) {
+    case 0:
+        lbl_8053ACF4[slot] = 0;
+        break;
+    case 2:
+        lbl_8053ACF4[slot] = 0x5a;
+        break;
+    default:
+        lbl_8053ACF4[slot] = 0x14;
+        break;
+    }
+}
+
 // Player-state accessors (0x80303750..).
 static inline u8 tu80301_changed(s32 i) {
     if (lbl_80504A18[i] == lbl_80504A28[i]) {
