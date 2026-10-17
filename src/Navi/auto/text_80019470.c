@@ -307,6 +307,8 @@ extern "C" s32 fn_80019B40(void* param_1) {
     return ((sVar1 | ~-sVar1) >> 31) & 2;
 }
 
+extern "C" void fn_801155C0(void*, s32);
+
 extern "C" s32 fn_80019B8C(void* param_1) {
     if (fn_80115564(*(u8**)((u8*)param_1 + 0x20) + 0xc4) != 0) {
         *(u32*)((u8*)param_1 + 8) = 0;
