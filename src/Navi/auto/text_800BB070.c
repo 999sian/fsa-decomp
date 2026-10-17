@@ -99,6 +99,15 @@ extern "C" void fn_800BCF00(u8* p) {
     }
 }
 
+extern "C" void fn_800BCF5C(u8* p) {
+    if (p[0xe5] != 0) {
+        p[0xe5]--;
+    } else {
+        p[0xe1] = 3;
+        p[0xd4] = 2;
+    }
+}
+
 extern "C" void fn_800BCF88(void) {}
 
 extern "C" void fn_800BCF8C(u8* p) {
