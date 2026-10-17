@@ -49,7 +49,7 @@ struct VObj_8017EA3C {
     virtual void v65(); virtual void v66(); virtual void v67(); virtual void v68(); virtual void v69();
     virtual void* v70(u32 a); virtual void v71(); virtual void v72(); virtual void v73(); virtual void v74();
     virtual void v75(); virtual void v76(); virtual void v77(); virtual void v78(); virtual void v79();
-    virtual void v80(); virtual void v81(); virtual s32 v82(u32 a);
+          virtual s32 v80(u32 a); virtual void v81(); virtual void v82();
 };
 struct VObj_8018ED48 {
     virtual void v0();
@@ -1272,11 +1272,11 @@ extern "C" s32 fn_8017EA3C(u8* self, u8* arg1, u32 idx) {
         return 0;
     }
     if ((u8)idx < self[0x110]) {
-        s32 r30 = 0;
         void* obj = ((VObj_8017EA3C*)self)->v70(idx);
         s32 ret = *(s32*)((u8*)obj + 0x20);
+        s32 r30 = 0;
         if (arg1[8] != 0) {
-            r30 = ((VObj_8017EA3C*)self)->v82(idx);
+            r30 = ((VObj_8017EA3C*)self)->v80(idx);
             obj = ((VObj_8017EA3C*)self)->v70(idx);
         }
         fn_80118C44(obj, arg1, r30);
@@ -1770,8 +1770,8 @@ extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     pos[2] += f1;
     pos[3] += f2;
     fn_801C5DA8(param_2, self + 0x80, buf);
-    fn_801DF2A4(buf, 0);
     fn_80182764(self, pos, self + 0x114);
+    fn_801DF2A4(buf, 0);
     fn_80177CA8(self, self + 0x114);
 }
 
