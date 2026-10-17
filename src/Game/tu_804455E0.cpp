@@ -28,7 +28,8 @@ extern "C" void* fn_804030C4(u32, u32);
 extern "C" u32 lbl_804B1B78[];
 extern "C" u32 lbl_804B1BA0[];
 static inline void SetAnimation(J2DPane* pane, void* anm) {
-    ((fn_80445D24_VFn*)*(void**)pane)[0x110 / 4](pane, anm, 0);
+    fn_80445D24_VFn* vf = *(fn_80445D24_VFn**)pane;
+    vf[0x110 / 4](pane, anm, 0);
 }
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
 struct fn_804460AC_Obj {
@@ -40,6 +41,33 @@ extern "C" void fn_80445CDC(void* self_) {
     fn_8013B490(lbl_8053AB10);
     f32 f = lbl_80543D88;
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
+extern "C" void fn_80445D24(void* self_) {
+    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
+    u64* row = lbl_8048FC08;
+    void* anm;
+    for (int i = 0; i < 4; i++, row += 24) {
+        self->g &= ~(u8)(1 << i);
+        self->g &= ~(u8)(1 << (i + 4));
+        anm = fn_804030C4(0x54494D47, lbl_804B1B78[0]);
+        SetAnimation(self->screen->search(row[13]), anm);
+        SetAnimation(self->screen->search(row[14]), anm);
+        SetAnimation(self->screen->search(row[15]), anm);
+        SetAnimation(self->screen->search(row[16]), anm);
+        SetAnimation(self->screen->search(row[17]), anm);
+        SetAnimation(self->screen->search(row[18]), anm);
+        SetAnimation(self->screen->search(row[19]), anm);
+        SetAnimation(self->screen->search(row[20]), anm);
+        SetAnimation(self->screen->search(row[21]), anm);
+        SetAnimation(self->screen->search(row[22]), anm);
+        anm = fn_804030C4(0x54494D47, lbl_804B1BA0[0]);
+        SetAnimation(self->screen->search(row[0]), anm);
+        SetAnimation(self->screen->search(row[1]), anm);
+        ((u8*)self->screen->search(row[8]))[0xb0] = 0;
+        ((u8*)self->screen->search(row[23]))[0xb0] = 0;
+        ((u8*)self->screen->search(row[1]))[0xb0] = 0;
+    }
 }
 
 extern "C" void __dl__FPv(void*);
