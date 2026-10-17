@@ -5,6 +5,15 @@ class GateRegistry;
 extern "C" GateRegistry* fn_80131F0C(void);
 extern "C" u8* fn_80131E30(GateRegistry*, s32);
 
+static inline f32 EZZR_Sqrt(f32 x) {
+    if (x <= 0.0f) {
+        return x;
+    }
+    f32 y = __frsqrte(x);
+    y = 0.5f * y * (3.0f - (x * (y * y)));
+    return x * y;
+}
+
 class EZZR : public Actor {
 public:
     virtual void v19();
