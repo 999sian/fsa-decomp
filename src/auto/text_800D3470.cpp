@@ -957,14 +957,13 @@ extern "C" void fn_800D5E14(void* param) {
     __GDWrite((u8)val2);
 }
 
-extern "C" void fn_800D6394(int* param_1, u32 param_2)
+extern "C" void fn_800D6394(Vtable800D8248* param_1, u32 param_2)
 {
-  int* vtable = *(int**)param_1;
   if ((param_2 & 1) != 0) {
-    (*(void(**)(void))(vtable + 0x20))();
+    param_1->m8();
   }
   if (((param_2 & 2) != 0) || (((param_2 >> 4) & 0xf) != 0)) {
-    (*(void(**)(int*))(vtable + 0x24))(param_1);
+    param_1->m9();
   }
 }
 
@@ -1105,10 +1104,9 @@ extern "C" void fn_800D6C40(u8* this_) {
 
 extern "C" void fn_800D6CEC(void* r3, u32 r4) {
     if ((r4 >> 8) & 0xf) {
-        (*(void(**)(void*))(*(u8**)r3 + 0x28))(r3);
-        
+        (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
         if (r4 & (1 << 12)) {
-            (*(void(**)(void*))(*(u8**)r3 + 0x2c))(r3);
+            (*(void(**)(void*))(*(void***)r3 + 0xb))(r3);
         }
     }
 }
@@ -1744,22 +1742,22 @@ extern "C" void fn_800D92CC(u8* self) {
 }
 
 extern "C" void fn_800D934C(void* param_1) {
-    unsigned char texCoordID = *(unsigned char*)param_1;
-    unsigned char scaleIdx = *((unsigned char*)param_1 + 1);
-    
+    unsigned char texCoordID = *((unsigned char*)param_1 + 0xa);
+    unsigned char scaleIdx = *((unsigned char*)param_1 + 0xb);
+
     unsigned short* entry = (unsigned short*)(&sTexCoordScaleTable__6J3DSys) + ((scaleIdx & 7) * 4);
-    
-    unsigned short v0 = entry[0];
-    unsigned short v1 = entry[1];
+
     unsigned short v2 = entry[2];
+    unsigned short v0 = entry[0];
     unsigned short v3 = entry[3];
-    
-    unsigned int lz0 = __cntlzw(1 - v1);
+    unsigned short v1 = entry[1];
+
+    unsigned int lz0 = __cntlzw(1 - v2);
     unsigned int lz1 = __cntlzw(1 - v3);
-    unsigned char s0 = (lz0 >> 12) & 0xFF;
-    unsigned char s1 = (lz1 >> 12) & 0xFF;
-    
-    J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(texCoordID, v0, s0, (unsigned char)0, v2, s1, (unsigned char)0);
+    unsigned char s0 = (lz0 >> 5) & 0xFF;
+    unsigned char s1 = (lz1 >> 5) & 0xFF;
+
+    J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(texCoordID, v0, s0, (unsigned char)0, v1, s1, (unsigned char)0);
 }
 
 extern "C" void fn_800D93B4(void* param_1) {
@@ -2188,16 +2186,10 @@ extern "C" void fn_800DB8F4(void* param_1) {
 
 extern "C" void fn_800DBC64(void* obj, u32 flags) {
     if (flags & 0x10000000) {
-        typedef void (*FuncPtr)(void*);
-        void* vtable = *(void**)obj;
-        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x18);
-        fn(obj);
+        ((Vtable800D8248*)obj)->m4();
     }
     if (flags & 0x20000000) {
-        typedef void (*FuncPtr)(void*);
-        void* vtable = *(void**)obj;
-        FuncPtr fn = *(FuncPtr*)((u8*)vtable + 0x1c);
-        fn(obj);
+        ((Vtable800D8248*)obj)->m5();
     }
 }
 
@@ -3406,7 +3398,7 @@ extern "C" void fn_800DE388(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
 
 extern "C" J3DTevBlock4* fn_800DE390(J3DTevBlock4* this_, s16 flags) {
     if (this_) {
-        this_->~J3DTevBlock4();
+        this_->J3DTevBlock4::~J3DTevBlock4();
         if (flags > 0) {
             __dl__FPv(this_);
         }
