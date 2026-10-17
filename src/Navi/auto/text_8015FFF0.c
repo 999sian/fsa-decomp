@@ -673,15 +673,17 @@ extern "C" u32 fn_80161D1C(u8* src, u32 n, void* dst, u32 size, s32 mode) {
         memcpy(dst, src, n);
         return n;
     case 1:
-    case 2:
-        n = (u32)src[4] << 24 | (u32)src[5] << 16 | (u32)src[6] << 8 | src[7];
-        if (n > size) {
+    case 2: {
+        u32 len = (u32)src[4] << 24 | (u32)src[5] << 16 | (u32)src[6] << 8 | src[7];
+        n = len;
+        if (len > size) {
             n = size;
         }
         fn_80166680(src, dst, n, 0);
         return n;
+    }
     default:
-        fn_8011C9EC(lbl_80297D38, 0x2d3, lbl_802FE2B8, lbl_80297D4C);
+        fn_8011C9EC(lbl_80297D38, 0x2d3, "%s", lbl_80297D4C);
         return 0;
     }
 }
