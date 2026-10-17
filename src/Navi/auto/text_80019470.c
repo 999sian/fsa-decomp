@@ -195,6 +195,32 @@ extern "C" s32 fn_8001962C(u8* param_1) {
     }
     return var_r30;
 }
+
+extern s32 lbl_802B4C00[];
+extern f32 lbl_802C5C94[];
+extern "C" s32 fn_800196C4(s32 a, s16 b, s32 c, f32* d) {
+    f32* p = (f32*)((void* (*)(s32, s32))fn_801148BC)(-4, 0x18);
+    s32 ret;
+
+    if (p == 0) {
+        ret = -1;
+    } else {
+        if (d != 0) {
+            p[1] = d[0];
+            p[2] = d[1];
+            p[3] = d[2];
+        } else {
+            p[1] = lbl_802C5C94[0];
+            p[2] = lbl_802C5C94[1];
+            p[3] = lbl_802C5C94[2];
+        }
+        *(s32*)p = c;
+        ret = fn_8001F26C((u32)fn_8001C010(), b, 0, 0, (u32)p);
+    }
+    lbl_802B4C00[a] = ret;
+    return lbl_802B4C00[a];
+}
+
 #pragma dont_inline reset
 extern "C" void fn_8001978C(void) {
 }
@@ -781,7 +807,7 @@ extern "C" void fn_8001B494(void) {
 }
 
 extern "C" void* fn_801148BC(s32);
-extern "C" void fn_8001B0EC(void*);
+extern "C" s32 fn_8001B0EC(void*);
 extern "C" int fn_8001EB28(void*, void*, void*);
 extern "C" void fn_8001BFD0(void*);
 extern "C" void fn_8001BEC4(void*, void*);
@@ -1463,9 +1489,10 @@ extern "C" s32 fn_8001C730(void* param_1, u32 param_2, u16 param_3, u16 param_4)
 extern "C" s32 fn_8001E8CC(void* param_1, s32 param_2);
 extern "C" void fn_8001BEA4(void* param_1);
 extern "C" s32 fn_8001E710(void) {
-    u8* p;
+    u8* p = NULL;
+    create_tag_class* tag;
     while (true) {
-        create_tag_class* tag = (create_tag_class*)cTg_GetFirst(&lbl_802B7C80);
+        tag = (create_tag_class*)cTg_GetFirst(&lbl_802B7C80);
         if (tag != NULL) {
             p = (u8*)tag->mpTagData + 0x68;
             fn_8001BEA4(p + 0x14);
@@ -1903,23 +1930,11 @@ extern u8 lbl_802FBA68[];
 extern "C" void* fn_800200E4(s16 a, s8 b) {
     u8* p = lbl_80205BB0;
     s32 i;
-    for (i = 0; i < 13; i++) {
+    for (i = 0; i < 65; i++) {
         if (*(s16*)(p + 8) == a && *(s8*)(p + 0xa) == b) {
             return p;
         }
-        if (*(s16*)(p + 0x14) == a && *(s8*)(p + 0x16) == b) {
-            return p + 0xc;
-        }
-        if (*(s16*)(p + 0x20) == a && *(s8*)(p + 0x22) == b) {
-            return p + 0x18;
-        }
-        if (*(s16*)(p + 0x2c) == a && *(s8*)(p + 0x2e) == b) {
-            return p + 0x24;
-        }
-        if (*(s16*)(p + 0x38) == a && *(s8*)(p + 0x3a) == b) {
-            return p + 0x30;
-        }
-        p += 0x3c;
+        p += 0xc;
     }
     return lbl_802FBA68;
 }
