@@ -18,6 +18,7 @@ extern "C" void fn_800C6CA4(void* p);
 extern "C" char lbl_802AE880[];
 extern "C" void* fn_80016320(void* p);
 extern "C" void fn_800CA7C4(void* p);
+extern "C" u8 fn_800FFBBC(void* p);
 struct VObj_80098354 {
     virtual void v0();
     virtual void v1();
