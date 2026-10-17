@@ -17,6 +17,8 @@ extern f32 lbl_80300AE0;
 extern f32 lbl_80300AE4;
 extern f32 lbl_80300AE8;
 extern f32 lbl_80300AEC;
+extern f32 lbl_80300AFC;
+extern "C" f32 fn_80116064(f32 x);
 extern "C" s32 fn_80096F0C(void* p);
 extern "C" u8 fn_800C6E38(void* p);
 extern "C" u8 fn_800C6FD4(void* p);
@@ -774,13 +776,13 @@ extern "C" void fn_80017248(void* p, s32 v);
 extern "C" void fn_800938DC(void* p) {
     if (*(unsigned char*)(*(char**)((char*)p + 0x280) + 0x159) == 2) {
         if ((unsigned char)(*(unsigned char*)(*(char**)((char*)p + 0x280) + 0x158) ^ 1)) {
-            memset((char*)p + 0x883, 0, 0x258);
-            fn_800F0D04(lbl_802B7CA0, (char*)p + 0x883, 0);
-            fn_80017248((char*)p + 0x883, 0);
-            fn_800F0D04(lbl_802B7CA0, (char*)p + 0x883, 1);
-            fn_80017248((char*)p + 0x883, 1);
-            fn_800F0D04(lbl_802B7CA0, (char*)p + 0x883, 2);
-            fn_80017248((char*)p + 0x883, 2);
+            memset((unsigned char*)p + 0x883, 0, 0x258);
+            fn_800F0D04(lbl_802B7CA0, (unsigned char*)p + 0x883, 0);
+            fn_80017248((unsigned char*)p + 0x883, 0);
+            fn_800F0D04(lbl_802B7CA0, (unsigned char*)p + 0x883, 1);
+            fn_80017248((unsigned char*)p + 0x883, 1);
+            fn_800F0D04(lbl_802B7CA0, (unsigned char*)p + 0x883, 2);
+            fn_80017248((unsigned char*)p + 0x883, 2);
             *(unsigned char*)((char*)lbl_802B7CA0 + 0x1372) = 1;
             fn_800A5338(*(void**)((char*)p + 0x268));
             *(unsigned char*)((char*)p + 0x7e8) = 2;
@@ -1969,6 +1971,26 @@ extern "C" void fn_8009F43C(void) {}
 extern NaviStateFunc_8009E6F0 lbl_8028673C[];
 extern "C" void fn_8009F440(NaviState_8009E6F0* p) {
     (p->*lbl_8028673C[((u8*)p)[0x800]])();
+}
+
+extern "C" void fn_8009F478(u8* p) {
+    s32 idx;
+    s32 i;
+    u8* obj;
+    if (p[0x7bc] == 1) {
+        p[0x7bc] = 0;
+    }
+    i = 0;
+    idx = *(s32*)(lbl_802BB0FC + 0x3f0) % 10;
+    p[0x79c] = idx;
+    do {
+        obj = *(u8**)(p + idx * 4 + 0x64c);
+        (*(void (***)(u8*, f32, f32))obj)[6](obj, lbl_80300B40, lbl_80300B40);
+        fn_800A1178(p, idx);
+        i++;
+        idx = (idx + 1) % 10;
+    } while (i < 5);
+    p[0x800] = 4;
 }
 
 extern "C" void fn_80177C20(void* p, f32 v);
