@@ -511,6 +511,23 @@ extern "C" BOOL fn_80119A54(void* param_1, void* param_2, void* param_3) {
     return TRUE;
 }
 
+extern "C" void fn_80119E5C(void) {
+    fn_801DCCA0(1);
+    fn_801DEA4C(1);
+    fn_801DAF24(1);
+    fn_801DE8B0(0, 0, 0, 4);
+    fn_801DCCDC(4, 0, 0, 1, 0, 0, 2);
+    fn_801DE310(0, 0);
+    fn_801DEDBC(1, 4, 5, 0xf);
+    fn_801DA39C(0, 9, 1, 3, 0);
+    fn_801DA39C(0, 0xb, 1, 5, 0);
+    fn_801DA39C(0, 0xd, 1, 2, 0xf);
+    fn_801DA364();
+    fn_801D9F18(9, 1);
+    fn_801D9F18(0xb, 1);
+    fn_801D9F18(0xd, 1);
+}
+
 extern "C" void fn_8011A5B8(VObj_8011A74C* param_1, s32 param_2, void* param_3, void* param_4) {
     if (param_4 != 0) {
         param_1->v9(param_2, param_4);
