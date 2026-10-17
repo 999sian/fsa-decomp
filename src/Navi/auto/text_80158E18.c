@@ -940,7 +940,7 @@ extern "C" void* fn_8015DA4C(void* ptr, s16 param_2) {
     return ptr;
 }
 
-void fn_8015DA94()
+extern "C" void fn_8015DA94(void)
 {
 }
 
