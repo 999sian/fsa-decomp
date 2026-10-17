@@ -6,6 +6,11 @@
 #include "dolphin/os.h"
 #include "dolphin/dvd.h"
 
+struct FSAStackObj {
+    u8 _00[0xa8];
+    u8 _a8;
+};
+
 extern "C" {
 extern u8 lbl_80529DEC[];
 extern const _GXRenderModeObj lbl_8048C1B8;
