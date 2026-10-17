@@ -65,7 +65,7 @@ struct DrawRec {
     /* 0x14 */ s32 w14;
     /* 0x18 */ void* w18;
     /* 0x1c */ u8 b1c;
-    /* 0x1d */ u8 b1d;
+    /* 0x1d */ s8 b1d;
     /* 0x1e */ u8 b1e;
     /* 0x1f */ u8 b1f;
     /* 0x20 */ u8 b20;
