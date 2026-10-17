@@ -393,9 +393,8 @@ extern "C" void* fn_8011AC24(void* p, void* v) {
 }
 
 extern "C" void fn_8011AC3C(void* param_1) {
-    u8* p = *(u8**)((u8*)lbl_802FF328 + 4);
-    u16 a = p[4] | (p[5] << 8);
-    fn_8011AC74(param_1, 0, 0, *(u16*)(p + 4), *(u16*)(p + 6));
+    u16* p = *(u16**)((u8*)lbl_802FF328 + 4);
+    fn_8011AC74(param_1, 0, 0, p[2], p[3]);
 }
 
 extern "C" u16 fn_801194E4(void* param_1, char* param_2);
