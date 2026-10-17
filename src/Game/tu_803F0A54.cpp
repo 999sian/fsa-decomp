@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
 
 extern "C" void* lbl_8053AD30;
 extern "C" void* fn_80309C4C(void* a, s32 b, s32 c);
