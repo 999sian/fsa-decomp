@@ -1,13 +1,5 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
-struct BPOHEntry {
-    u32 w[3];
-};
-
-struct BPOHBytes {
-    u8 b[12];
-};
-
 struct BPOHV {
     virtual void v0();
     virtual void v1();
@@ -46,13 +38,28 @@ extern "C" void fn_80161F20(char* this_) {
 }
 
 extern u8 lbl_804661E0[];
+extern const float lbl_8053D6C4;
 extern "C" void fn_80161F98(char* this_, s32 arg, s32 param3) {
     if (*(s32*)(this_ + 0x2ec) != arg) {
         if (*(s32*)(this_ + 0x2ec) < 0) {
-            BPOHEntry tmp = *(BPOHEntry*)(lbl_804661E0 + arg * 12);
-            for (s32 i = 0; i < 12; i++) {
-                this_[0x2f4 + i] = ((u8*)&tmp)[i];
-            }
+            u32 w0 = *(u32*)(lbl_804661E0 + arg * 12);
+            u32 w1 = *(u32*)(lbl_804661E0 + arg * 12 + 4);
+            u32 w2 = *(u32*)(lbl_804661E0 + arg * 12 + 8);
+            u8* s0 = (u8*)&w0;
+            u8* s1 = (u8*)&w1;
+            u8* s2 = (u8*)&w2;
+            this_[0x2f4] = s0[0];
+            this_[0x2f5] = s0[1];
+            this_[0x2f6] = s0[2];
+            this_[0x2f7] = s0[3];
+            this_[0x2f8] = s1[0];
+            this_[0x2f9] = s1[1];
+            this_[0x2fa] = s1[2];
+            this_[0x2fb] = s1[3];
+            this_[0x2fc] = s2[0];
+            this_[0x2fd] = s2[1];
+            this_[0x2fe] = s2[2];
+            this_[0x2ff] = s2[3];
         }
         *(s32*)(this_ + 0x2ec) = arg;
         if (*(s32*)(this_ + 0x2f0) < 0) {
@@ -63,16 +70,15 @@ extern "C" void fn_80161F98(char* this_, s32 arg, s32 param3) {
     } else {
         if (*(s32*)(this_ + 0x2f0) > 0) {
             f32 n = (f32)*(s32*)(this_ + 0x2f0);
-            f32 a = 1.0f / n;
-            f32 b = 1.0f - a;
+            f32 a = lbl_8053D6C4 / n;
+            f32 b = lbl_8053D6C4 - a;
             s32 j = 0;
             u8* p = (u8*)this_;
             for (s32 i = 0; i < 3; i++, p += 4, j += 4) {
-                u8* src = lbl_804661E0 + *(s32*)(this_ + 0x2ec) * 12 + j;
-                p[0x2f4] = (u8)(s32)((f32)p[0x2f4] * b + a * (f32)src[0]);
-                p[0x2f5] = (u8)(s32)((f32)p[0x2f5] * b + a * (f32)src[1]);
-                p[0x2f6] = (u8)(s32)((f32)p[0x2f6] * b + a * (f32)src[2]);
-                p[0x2f7] = (u8)(s32)((f32)p[0x2f7] * b + a * (f32)src[3]);
+                p[0x2f4] = (u8)(s32)((f32)p[0x2f4] * b + a * (f32)lbl_804661E0[*(s32*)(this_ + 0x2ec) * 12 + j]);
+                p[0x2f5] = (u8)(s32)((f32)p[0x2f5] * b + a * (f32)lbl_804661E0[*(s32*)(this_ + 0x2ec) * 12 + j + 1]);
+                p[0x2f6] = (u8)(s32)((f32)p[0x2f6] * b + a * (f32)lbl_804661E0[*(s32*)(this_ + 0x2ec) * 12 + j + 2]);
+                p[0x2f7] = (u8)(s32)((f32)p[0x2f7] * b + a * (f32)lbl_804661E0[*(s32*)(this_ + 0x2ec) * 12 + j + 3]);
             }
             *(s32*)(this_ + 0x2f0) -= 1;
         }
