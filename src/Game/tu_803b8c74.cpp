@@ -57,7 +57,10 @@ struct EC80Row {
 extern EC80Row lbl_8050EC80[16];
 
 static inline BOOL EC80NibbleBit(s32 idx, s32 n, u32 bit) {
-	return (n < 0 || n > 7) ? FALSE : (lbl_8050EC80[idx].flags28 & (1 << (n * 4 + bit))) != 0;
+	if (n < 0 || n > 7) {
+		return FALSE;
+	}
+	return (lbl_8050EC80[idx].flags28 & (1 << (n * 4 + bit))) != 0;
 }
 
 extern "C" {
