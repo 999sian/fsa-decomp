@@ -143,6 +143,13 @@ extern "C" u32 fn_800266DC(void) {
     return result;
 }
 
+extern "C" void fn_80026758(void) {
+    lbl_802FEDA4 = 0;
+    ((u8*)&lbl_802FEDA4)[1] = 0;
+    ((u8*)&lbl_802FEDA4)[2] = 0;
+    ((u8*)&lbl_802FEDA4)[3] = 0;
+}
+
 extern "C" int fn_8002689C()
 {
 	return 0;
