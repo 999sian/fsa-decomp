@@ -30,7 +30,7 @@ extern "C" void fn_80013B90(void);
 extern "C" void fn_80013BEC(void);
 extern "C" void fn_801C0EEC(void* p);
 extern "C" void fn_801C0884(void* base, void* fn, s32 a, void* p, u32 size, s32 n, s32 c);
-extern "C" void fn_801BB764(void* alarm, u32 a, ...);
+extern "C" void fn_801BB764(void* alarm, u32 a, s64 t, u32 b, u32 c, void* handler);
 extern u8 lbl_802A3460[];
 extern u8 lbl_802FEBE0;
 extern f32 lbl_802FFBB8;
@@ -113,6 +113,7 @@ extern "C" void fn_80014390(Unk80013DA0* self);
 extern "C" void fn_80013A80(void)
 {
     u8* base = lbl_802A2140;
+    u8* stack = base + 0x320;
     s64 time;
     s32 n;
 
@@ -120,10 +121,10 @@ extern "C" void fn_80013A80(void)
         time = OSGetTime();
         fn_801C027C();
         n = fn_801C1594();
-        fn_801C0884(&base[0], fn_80013B90, 0, base + 0x320 + 0x1000, 0x1000, n - 3, 1);
-        fn_801C0EEC(&base[0]);
+        fn_801C0884(base, fn_80013B90, 0, stack + 0x1000, 0x1000, n - 3, 1);
+        fn_801C0EEC(base);
         OSCreateAlarm(base + 0x1320);
-        fn_801BB764(base + 0x1320, 0x80000000, (u32)(time >> 32), (u32)time, 0, *(u32*)0x800000F8 >> 2, fn_80013BEC);
+        fn_801BB764(base + 0x1320, 0x80000000, time, 0, *(u32*)0x800000F8 >> 2, fn_80013BEC);
         lbl_802FEBE0 = 1;
     }
 }
