@@ -6,6 +6,22 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_80138B7C(void* mgr);
 extern "C" void __dt__5ActorFv(Actor* self, s32 flag);
+extern "C" void fn_801EEC98(void* this_, void* room, s16* a, s32* dir, f32* dist, s32* player, s32 b, s32 c);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" void fn_80239914(void* box, u32 room, u32 id);
+extern "C" void fn_80458FF0(void* a, u32 b, s32 c, s32 d);
+extern "C" void fn_802D79E8(void* mgr, u32 room, s32 b, f32 x, f32 y);
+extern "C" void fn_80134DE4(void* a, s32 b, s32 c);
+extern u8 lbl_80463C30[];
+extern s16 lbl_8049C3B8[];
+extern "C" void* lbl_8053AF80;
+extern f32 lbl_8053C1FC;
+extern f32 lbl_8053C210;
+extern f32 lbl_8053C214;
+extern f32 lbl_8053C218;
+extern f32 lbl_8053C21C;
+extern f32 lbl_8053C220;
+extern f32 lbl_8053C224;
 extern "C" Actor* fn_80104894(Actor* p, s16 n) {
     if (p != NULL) {
         *(void**)p = lbl_8049CB04;
