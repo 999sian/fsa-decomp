@@ -37,6 +37,7 @@ extern "C" void fn_801BBDC4(s32 a, u32* b);
 extern s32 lbl_802FE960;
 extern "C" void fn_801E23D4(u8* d, double x);
 extern "C" void fn_801E2CB4(u8* param_1, s32 param_2);
+extern "C" void fn_801E2D28(u8* param_1, s32 param_2);
 extern char lbl_802026E8[];
 extern char lbl_80202720[];
 extern "C" void fn_801E1978(u32* param_1) {
@@ -220,6 +221,29 @@ extern "C" s32 fn_801E21CC(void) {
     return result;
 }
 
+#pragma push
+#pragma optimization_level 0
+extern "C" void fn_801E22E8(u8* fmt, double x, u8* d) {
+    register u8* f = fmt;
+    s16 digits = *(s16*)(f + 2);
+    int i;
+    fn_801E23D4(d, x);
+    if (d[5] > 9) {
+        return;
+    }
+    if (digits > 36) {
+        digits = 36;
+    }
+    fn_801E2CB4(d, digits);
+    while (d[4] < digits) {
+        d[d[4]++ + 5] = 0;
+    }
+    *(s16*)(d + 2) -= d[4] - 1;
+    for (i = 0; i < d[4]; i++) {
+        d[i + 5] += '0';
+    }
+}
+#pragma pop
 extern "C" s32 fn_801E2D9C(u8* param_1, s32 param_2);
 extern "C" void fn_801E2D28(u8* param_1, s32 param_2);
 extern "C" void fn_801E367C(u8* param_1);
