@@ -31,16 +31,16 @@ extern "C" void* fn_80165600(void* param_1, s16 param_2) {
 
 #pragma use_lmw_stmw off
 extern "C" s32 fn_80165654(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f) {
-    u8 buf[0x118];
+    u8 buf[0x100];
     s32 result;
     fn_80164484(buf);
-    if (fn_80164728(buf, a) != 0) {
-        result = fn_801656F8(buf, b, c, d, e, f);
+    if (fn_80164728(buf, a) == 0) {
         fn_801645A8(buf, -1);
-        return result;
+        return 0;
     }
+    result = fn_801656F8(buf, b, c, d, e, f);
     fn_801645A8(buf, -1);
-    return 0;
+    return result;
 }
 #pragma use_lmw_stmw on
 
@@ -60,6 +60,10 @@ extern "C" s32 fn_801656F8(void* a, u32 b, u32 c, u32 d, u32 e, u32 f) {
     fn_80165D44(obj, 1);
     return result;
 }
+
+struct VObj_80165D44 {
+    virtual void v0(s32 mode);
+};
 
 extern "C" void* fn_8015A9A8(int, void*, int);
 extern "C" void* lbl_802FF540;
@@ -120,6 +124,25 @@ extern "C" void* fn_80165D04(void* param_1) {
     fn_80166B58(param_1, param_1);
     *(s32*)((u8*)param_1 + 0x48) = 0;
     *(u8*)((u8*)param_1 + 0x4c) = 0;
+    return param_1;
+}
+
+extern "C" void* fn_80165D44(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        if (*((u8*)param_1 + 0x4c) == 1) {
+            void* obj = *(void**)((u8*)param_1 + 0x28);
+            if (obj != nullptr) {
+                void (**vt)(void*, s32) = *(void (***)(void*, s32))obj;
+                vt[2](obj, 1);
+            }
+        }
+        if (param_1 != nullptr) {
+            fn_80166B70(param_1, 0);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
     return param_1;
 }
 
