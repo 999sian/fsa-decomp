@@ -71,21 +71,21 @@ static inline f32 navi_sqrtf_800A1774(f32 x)
         f64 magic2 = lbl_80300B60;
         f64 res_d = __frsqrte(x);
         f64 temp = res_d * res_d;
-        f64 temp2 = magic3 * res_d;
+        res_d = magic3 * res_d;
         temp = (f64)x * temp;
         temp = magic2 - temp;
-        res_d = temp2 * temp;
+        res_d = res_d * temp;
         temp = res_d * res_d;
-        temp2 = magic3 * res_d;
+        res_d = magic3 * res_d;
         temp = (f64)x * temp;
         temp = magic2 - temp;
-        res_d = temp2 * temp;
+        res_d = res_d * temp;
         temp = res_d * res_d;
-        temp2 = magic3 * res_d;
+        res_d = magic3 * res_d;
         temp = (f64)x * temp;
         temp = magic2 - temp;
-        res_d = temp2 * temp;
-        r = (f32)(res_d * (f64)x);
+        res_d = res_d * temp;
+        r = (f32)((f64)x * res_d);
     } else if (x < lbl_80300B68) {
         r = lbl_802FEAB0[0];
     } else if (fpclassify(x) == 1) {
@@ -2425,7 +2425,8 @@ extern "C" void fn_800A1748(void* param_1, void* param_2) {
 
 extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
 {
-    f32 f4;
+    f32 t;
+    f32 result;
     if (param_1 <= 0) {
         return lbl_80300B20;
     }
@@ -2434,37 +2435,38 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
     } else if (param_2 > param_1) {
         param_2 = param_1;
     }
-    f4 = (f32)param_2 / (f32)param_1;
+    t = (f32)param_2 / (f32)param_1;
     switch (param_3) {
     case 0:
-        return f4 * f4;
+        result = t * t;
+        break;
     case 1:
-        return navi_sqrtf_800A1774(f4);
+        result = navi_sqrtf_800A1774(t);
+        break;
+    default:
+        result = t;
+        break;
     case 3: {
         f32 threshold = lbl_80300B38;
         f32 bias = lbl_80300B20;
-        f32 temp = threshold * f4;
+        f32 temp = threshold * t;
         temp = temp - bias;
         temp = threshold * temp;
-        return temp - bias;
+        result = temp - bias;
+        break;
     }
     case 4: {
-        f32 scaled = lbl_80300B70 * f4;
-        scaled = lbl_80300AFC * scaled;
-        u32 idx = (u32)(s32)scaled;
-        f32 val = *(f32*)((u8*)lbl_802F0BC0 + ((idx >> 2) & 0x3FF8));
-        return val * val;
+        f32 val = *(f32*)((u8*)lbl_802F0BC0 + (((u32)(s32)(lbl_80300AFC * (lbl_80300B70 * t)) >> 2) & 0x3FF8));
+        result = val * val;
+        break;
     }
     case 5: {
-        f32 scaled = lbl_80300B74 * f4;
-        scaled = lbl_80300AFC * scaled;
-        u32 idx = (u32)(s32)scaled;
-        f32 val = *(f32*)((u8*)lbl_802F0BC0 + ((idx >> 2) & 0x3FF8));
-        return val * val;
+        f32 val = *(f32*)((u8*)lbl_802F0BC0 + (((u32)(s32)(lbl_80300AFC * (lbl_80300B74 * t)) >> 2) & 0x3FF8));
+        result = val * val;
+        break;
     }
-    default:
-        return f4;
     }
+    return result;
 }
 
 extern f32 lbl_80300B20;
