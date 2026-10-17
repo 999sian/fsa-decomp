@@ -398,14 +398,13 @@ extern "C" s32 fn_80086584(void) {
     return -1;
 }
 
-u32 fn_8008658C(void* self_) {
+extern "C" u32 fn_8008658C(void* self_) {
     u32 result = fn_8008668C();
     u8 check = fn_800866D4(self_, result);
-    if (check == 0) {
-        return 0;
-    } else {
+    if (check) {
         return *(u32*)((u8*)self_ + 0x6c);
     }
+    return 0;
 }
 
 extern "C" s32 fn_800865DC(void* self_) {
@@ -423,13 +422,10 @@ extern "C" u32 fn_80086654(int param_1) {
 }
 
 extern "C" int fn_8008665C(int param_1, int param_2) {
-    u32 limit = *(u32*)(param_1 + 0x70);
-    if (param_2 >= 0 && (u32)param_2 >= limit) {
+    if (param_2 >= 0 && (u32)param_2 >= *(u32*)(param_1 + 0x70)) {
         return 0;
     }
-    int divisor = *(int*)(param_1 + 0x6c);
-    int offset = *(int*)(param_1 + 0x7c);
-    return offset + divisor * param_2;
+    return *(int*)(param_1 + 0x7c) + *(int*)(param_1 + 0x6c) * param_2;
 }
 
 extern "C" int fn_8008668C(int param_1, u32 param_2) {
@@ -456,17 +452,17 @@ extern "C" int fn_8008668C(int param_1, u32 param_2) {
 }
 
 extern "C" u8 fn_800866D4(int param_1, u32 param_2) {
-    if (!((-1 < (s32)param_2) && (param_2 < *(u32*)(param_1 + 0x70)))) {
+    if ((s32)param_2 < 0 || param_2 >= *(u32*)(param_1 + 0x70)) {
         return 0;
     }
-    
-    s32 idx = ((s32)param_2 >> 3) + ((u32)((s32)param_2 < 0 && (param_2 & 7) != 0));
+
+    s32 idx = (s32)param_2 / 8;
     u8* data = *(u8**)(param_1 + 0x78);
     u8 byte_val = data[idx];
-    u8 mask = *(u8*)(0x8053B770 + (param_2 & 7));
+    u8 mask = ((u8*)(u32)&lbl_8053B770)[param_2 & 7];
     u8 res = byte_val & mask;
-    
-    return (u8)((-(s32)res | res) >> 31);
+
+    return (u8)((u32)(-(s32)res | res) >> 31);
 }
 
 extern "C" void JUTWarningConsole_f(const char*, ...);
