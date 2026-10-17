@@ -1341,7 +1341,8 @@ extern "C" u32 lbl_80302390;
 extern "C" u32 lbl_80302394;
 extern "C" u16 fn_801B2A74(u8* p, s32 a, s32 b) {
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
-    u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 0x84 + b * 2);
+    u8* e = *(u8**)(p + 4) + idx * 0x14c + 0x84;
+    u16 v = *(u16*)(e + b * 2);
     if (v != 0xffff) {
         return ((u16*)*(u8**)(p + 0x38))[v];
     }
