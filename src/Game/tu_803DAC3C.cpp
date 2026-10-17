@@ -2,6 +2,7 @@
 
 #include "types.h"
 #include "dolphin/dvd/dvd.h"
+#include "dolphin/dvd/dvdfs.h"
 
 extern "C" {
 extern void* lbl_8053ADD0;
