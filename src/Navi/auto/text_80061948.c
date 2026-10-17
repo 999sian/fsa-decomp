@@ -1,6 +1,8 @@
 #include "types.h"
 #include "sdk/Dolphin/vec.h"
 extern u8 lbl_8029F8D8[];
+extern u8 lbl_8029B5D0[];
+extern u8 lbl_8027F308[];
 extern void* lbl_801F9650[];
 extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
 extern "C" void fn_8000C950(void* m, s32 a, s32 b, s32 c);
@@ -755,21 +757,21 @@ extern "C" void fn_800677B8(u8* p) {
     fn_801C5D74(lbl_8029F8D8, *(u8**)(p + 0x24c) + 0x24);
 }
 
-extern "C" void fn_80067840(u8* p, s32 arg) {
+extern "C" void fn_80067840(StateObj_80067840* self, s32 arg) {
     struct Unk8027FC14 tbl;
-    if (fn_801E1070(p + 0x284) == 0) {
+    if (fn_801E1070(&self->m_func) == 0) {
         tbl = lbl_8027FC14;
-        if (fn_801E10A0(p + 0x284, &tbl) != 0) {
-            if (fn_801E1070(p + 0x284) != 0) {
-                *(s8*)(p + 0x282) = -1;
-                fn_801E10DC(p, 0);
+        if (fn_801E10A0(&self->m_func, &tbl) != 0) {
+            if (fn_801E1070(&self->m_func) != 0) {
+                self->m_state = -1;
+                (self->*self->m_func)(0);
             }
-            *(struct Unk8027FC14*)(p + 0x284) = tbl;
-            *(s8*)(p + 0x282) = 0;
-            fn_801E10DC(p, 0);
+            *(struct Unk8027FC14*)&self->m_func = tbl;
+            self->m_state = 0;
+            (self->*self->m_func)(0);
         }
     }
-    fn_801E10DC(p, (void*)arg);
+    (self->*self->m_func)(arg);
 }
 
 extern "C" void fn_80067B74(u8* p) {
@@ -1279,12 +1281,12 @@ extern f32 lbl_8030044C;
 extern f32 lbl_80300450;
 extern "C" void fn_8006B04C(u8* p) {
     *(void**)(p + 0x0) = lbl_80247484;
-    *(f32*)(p + 0x4) = lbl_80300438;
-    *(f32*)(p + 0x8) = lbl_8030043C;
-    *(f32*)(p + 0xc) = lbl_80300440;
-    *(f32*)(p + 0x10) = lbl_80300444;
-    *(f32*)(p + 0x14) = lbl_80300444;
-    *(f32*)(p + 0x18) = lbl_80300448;
+    *(f32*)(p + 0x4) = -38.0f;
+    *(f32*)(p + 0x8) = 397.0f;
+    *(f32*)(p + 0xc) = 335.0f;
+    *(f32*)(p + 0x10) = 0.55f;
+    *(f32*)(p + 0x14) = 0.55f;
+    *(f32*)(p + 0x18) = 1.0f;
     *(s16*)(p + 0x1c) = 0;
     *(s16*)(p + 0x1e) = 0;
     *(s16*)(p + 0x20) = 0;
@@ -1299,14 +1301,14 @@ extern "C" void fn_8006B04C(u8* p) {
     *(u8*)(p + 0x4c) = 0;
     *(u8*)(p + 0x4d) = 0;
     *(s16*)(p + 0x46) = 0;
-    *(f32*)(p + 0x30) = lbl_8030044C;
+    *(f32*)(p + 0x30) = 0.001f;
     *(s16*)(p + 0x36) = 0xb;
     *(s16*)(p + 0x38) = 7;
     *(s16*)(p + 0x34) = 7;
     *(s16*)(p + 0x3a) = 8;
-    *(f32*)(p + 0x24) = lbl_80300450;
+    *(f32*)(p + 0x24) = 0.01f;
     *(f32*)(p + 0x28) = *(s16*)(p + 0x42);
-    *(f32*)(p + 0x2c) = lbl_80300448;
+    *(f32*)(p + 0x2c) = 1.0f;
     *(u8*)(p + 0x4e) = 0;
     *(u8*)(p + 0x4f) = 0;
 }
