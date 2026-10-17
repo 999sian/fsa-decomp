@@ -40,8 +40,14 @@ extern "C" void fn_8011526C(int* param_1, int param_2) {
 }
 
 extern "C" int fn_80115564(unsigned char* param_1) {
-    if (((*param_1 >> 6) & 1) == 1) {
-        *param_1 &= ~0x40;
+    struct Flags {
+        unsigned char b7 : 1;
+        unsigned char b6 : 1;
+        unsigned char rest : 6;
+    };
+    Flags* f = (Flags*)param_1;
+    if (f->b6 == 1) {
+        f->b6 = 0;
         return 1;
     }
     return 0;
