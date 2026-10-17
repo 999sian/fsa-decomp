@@ -116,16 +116,15 @@ extern "C" void fn_800E3F4C(void* param_1) {
 
 extern "C" void fn_800E3F80(void* param_1) {
     u8* p = (u8*)param_1;
-    u32 v = *(u16*)(p + 0xa9c);
-    if (v != 0) {
-        *(u16*)(p + 0xa9c) = v - 1;
-    } else {
+    if (*(u16*)(p + 0xa9c) == 0) {
         if (fn_800EE044() != 0) {
             fn_8002F358(0xa5, 0);
             p[0xb11] = 1;
             *(u16*)(p + 0xa9c) = 10;
             p[0xa76] = 0x16;
         }
+    } else {
+        *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
     }
 }
 
