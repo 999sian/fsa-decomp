@@ -90,6 +90,10 @@ extern "C" void* fn_8013CD6C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_8013CDCC(void* param_1, void* param_2) {
+    fn_801E10DC(*(void**)((u8*)param_2 + 0x128));
+}
+
 extern void* lbl_802933B4[];
 extern "C" void* fn_8013414C(void* ptr, s16 param_2);
 extern "C" void* fn_8013CE9C(void* ptr, s16 param_2) {
@@ -246,5 +250,12 @@ extern "C" void fn_8013D560(void* param_1, s32 param_2, u32* param_3) {
         *(u32*)((u8*)param_1 + 0x118) = *param_3;
         break;
     }
+}
+
+extern "C" void fn_8013D5BC(void* param_1, s32 param_2, u32* param_3) {
+    if (param_2 != 2) {
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0x11c) = *param_3 != 0;
 }
 
