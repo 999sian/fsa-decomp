@@ -179,8 +179,9 @@ extern "C" void** fn_800CF314(void** p, short del) {
 }
 
 extern "C" void fn_800CF370(void** p) {
-    *p = lbl_8049AE10;
     *p = lbl_8049AE38;
+    void* b = lbl_8049AE10;
+    *p = b;
 }
 
 extern "C" void** fn_800CF38C(void** p, short del) {
@@ -269,6 +270,20 @@ extern "C" void fn_800CF650(void** p, void* a) {
     fn_800CF678(p, p[1], a);
 }
 
+extern "C" void fn_800CF678(void* param_1, void* param_2, void* param_3) {
+    unsigned char* anm = (unsigned char*)param_2;
+    unsigned char* data = (unsigned char*)param_3;
+
+    *(s16*)(anm + 6) = *(const s16*)(data + 0xa);
+    anm[4] = data[8];
+    *(float*)(anm + 8) = lbl_8053BC80;
+    *(u16*)(anm + 0x1e) = *(const u16*)(data + 0xc);
+    *(void**)(anm + 0x20) = JSUConvertOffsetToPtr<J3DAnmTransformFullTable>(data, (void*)*(const u32*)(data + 0x14));
+    *(void**)(anm + 0xc) = JSUConvertOffsetToPtr<f32>(data, (void*)*(const u32*)(data + 0x18));
+    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<s16>(data, (void*)*(const u32*)(data + 0x1c));
+    *(void**)(anm + 0x14) = JSUConvertOffsetToPtr<f32>(data, (void*)*(const u32*)(data + 0x20));
+}
+
 extern "C" void fn_800CF70C(void** p, void* a) {
     fn_800CF734(p, (unsigned char*)p[1], (const unsigned char*)a);
 }
@@ -290,6 +305,21 @@ extern "C" void fn_800CF734(void* param_1, unsigned char* anm, const unsigned ch
 extern "C" void fn_800CF800(void** self, void* data)
 {
     fn_800CF828(self, self[1], data);
+}
+
+extern "C" void fn_800CF828(void* param_1, void* param_2, void* param_3) {
+    unsigned char* data = (unsigned char*)param_3;
+    unsigned char* anm = (unsigned char*)param_2;
+
+    *(float*)(anm + 8) = lbl_8053BC80;
+    *(short*)(anm + 6) = *(const short*)(data + 10);
+    anm[4] = data[8];
+    *(unsigned short*)(anm + 0x16) = *(const unsigned short*)(data + 12);
+    *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 14);
+    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmTexPatternFullTable>(data, (void*)*(const unsigned int*)(data + 0x10));
+    *(void**)(anm + 0xc) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x14));
+    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x18));
+    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x1c)));
 }
 
 extern "C" void fn_800CF8CC(void** self, void* data)
@@ -392,7 +422,7 @@ extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3
             fn_800CFE2C(param_1, param_2, p);
             break;
         case 0x50414b31:
-            fn_800D00F0(param_1, param_2, p);
+            fn_800D00F0(param_1, (unsigned char*)param_2, p);
             break;
         case 0x434c4b31:
             fn_800D0204(param_1, (unsigned char*)param_2, p);
@@ -414,6 +444,21 @@ extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3
 extern "C" void fn_800CFE04(void** self, void* data)
 {
     fn_800CFE2C(self, self[1], data);
+}
+
+extern "C" void fn_800CFE2C(void* self, void* anm, void* src) {
+    u8* a = (u8*)anm;
+    u8* s = (u8*)src;
+    f32 f = lbl_8053BC80;
+    *(s16*)(a + 6) = *(s16*)(s + 0xa);
+    *(u16*)(a + 0x1e) = *(u16*)(s + 0xc);
+    a[4] = s[8];
+    *(u32*)(a + 0x20) = s[9];
+    *(f32*)(a + 8) = f;
+    *(void**)(a + 0x24) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(s, *(void**)(s + 0x14));
+    *(void**)(a + 0xc) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x18));
+    *(void**)(a + 0x10) = JSUConvertOffsetToPtr<s16>(s, *(void**)(s + 0x1c));
+    *(void**)(a + 0x14) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x20));
 }
 
 extern "C" void fn_800CFEC8(void** self, void* data)
@@ -567,21 +612,22 @@ extern "C" int fn_800D0618(void)
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void** fn_800D0620(void** p, short flag)
+extern "C" void* fn_800D0620(void* param_1, short param_2)
 {
+    s32 p = (s32)param_1;
     if (p != 0) {
-        *p = lbl_8049AE5C;
+        *(void**)p = &lbl_8049AE5C;
         if (p != 0) {
-            *p = __vt__15J3DAnmTransform;
+            *(void**)p = &__vt__15J3DAnmTransform;
             if (p != 0) {
-                *p = __vt__10J3DAnmBase;
+                *(void**)p = &__vt__10J3DAnmBase;
             }
         }
-        if (flag > 0) {
-            operator delete(p);
+        if (param_2 > 0) {
+            __dl__FPv((void*)p);
         }
     }
-    return p;
+    return (void*)p;
 }
 #elif defined(VERSION_G4SP01)
 extern "C" void** fn_800D0620(void** p, short del) {
