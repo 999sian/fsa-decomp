@@ -3251,12 +3251,8 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    u8 c0 = c[0];
-    u8* p = self + i * 4;
-    p[0xc] = c0;
-    p[0xd] = c[1];
-    p[0xe] = c[2];
-    p[0xf] = c[3];
+    GXColor col = *(const GXColor*)c;
+    ((GXColor*)(self + 0xc))[i] = col;
 }
 #endif
 
