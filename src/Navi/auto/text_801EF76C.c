@@ -59,21 +59,22 @@ extern "C" void MWTRACE(u8, char*, ...);
 extern "C" void MWTRACE(u8 level, char* fmt, ...);
 extern "C" int ddh_cc_write(void* buf, int len)
 {
-	int iVar2;
+	int n = len;
+	void* p = buf;
 
 	if (lbl_802FFAC0 == 0) {
-		MWTRACE(8, lbl_80203220);
+		MWTRACE(8, "cc not initialized\n");
 		return -0x2711;
 	}
-	MWTRACE(8, lbl_80203220 + 0x14, buf, len);
-	while (len > 0) {
-		MWTRACE(1, lbl_80203220 + 0x40, len);
-		iVar2 = EXI2_WriteN(buf, len);
+	MWTRACE(8, "cc_write : Output data 0x%08x %ld bytes\n", buf, len);
+	while (n > 0) {
+		MWTRACE(1, "cc_write sending %ld bytes\n", n);
+		int iVar2 = EXI2_WriteN(p, n);
 		if (iVar2 == 0) {
 			break;
 		}
-		buf = (u8*)buf + iVar2;
-		len -= iVar2;
+		p = (u8*)p + iVar2;
+		n -= iVar2;
 	}
 	return 0;
 }
