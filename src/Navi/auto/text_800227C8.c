@@ -1,5 +1,16 @@
 #include "types.h"
 #include <stdarg.h>
+
+extern s32 lbl_802FED48;
+extern s32 lbl_802FED4C;
+extern s32 lbl_802FED50;
+extern s32 lbl_802FED54;
+extern s32 lbl_802FED58;
+extern s32 lbl_802FED5C;
+extern s32 lbl_802FED60;
+extern s32 lbl_802FED64;
+extern s32 lbl_802FED68;
+extern s32 lbl_802FED6C;
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800227c8-0x8002507c (33 functions). split_file divides it into the game's real files.
 
@@ -127,6 +138,15 @@ extern "C" void fn_80022CF0(s32 p1, s32 p2) {
 extern "C" void fn_80057B24(void);
 extern "C" void fn_80022D54(void) {
     fn_80057B24();
+}
+
+extern "C" void fn_80057B6C(void);
+extern "C" void fn_80024BC8(s32* p);
+extern "C" void fn_80022D74(s32* p) {
+    fn_80057B6C();
+    if (p != nullptr && p[1] != 0) {
+        fn_80024BC8(p);
+    }
 }
 
 extern "C" void fn_80057B9C(void);
