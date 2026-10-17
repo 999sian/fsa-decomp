@@ -17,6 +17,13 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_80300D34;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
+extern char lbl_802BB0FC[];
+extern char lbl_802C562C[];
+extern "C" s32 fn_800C3494(void);
+extern "C" s32 fn_800C3900(void* p, s16 idx, u8 b, s32 c);
+extern "C" s32 fn_800C3A1C(void* p, s16 idx, u8 b, s32 c, s32 d);
+extern "C" s32 fn_800C3B30(void* p, s16 idx, u8 b, f32 f, f32 g, s32 c, s32 d);
+extern "C" void fn_8002F458(s32 a, s32 b);
 extern "C" void fn_800C3490(void) {}
 
 extern "C" void fn_800C40D8(void* param_1, void* param_2) {
