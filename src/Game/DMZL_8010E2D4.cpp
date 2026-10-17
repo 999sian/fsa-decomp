@@ -416,23 +416,9 @@ extern const f32 lbl_8053C5D4;
 extern int __float_epsilon[];
 extern "C" f64 sin(f64);
 extern "C" f64 cos(f64);
-extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
-extern "C" f64 __ps_mul(f64, f64);
-extern "C" f64 __ps_madd(f64, f64, f64);
-extern "C" f64 __ps_sum0(f64, f64, f64);
-
-static inline f32 PSVECSquareMag(f32 v[3]) {
-    f64 xy = __psq_l((void*)v, 0, 0, 0);
-    xy = __ps_mul(xy, xy);
-    f64 z = *(f32*)(v + 2);
-    f64 ret = __ps_madd(z, z, xy);
-    ret = __ps_sum0(ret, xy, xy);
-    return (f32)ret;
-}
-
 void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle) {
     f32 v[3];
-    f32 len2 = (axis[2] * axis[2] + axis[0] * axis[0]) + axis[1] * axis[1];
+    f32 len2 = (axis[2] * axis[2] + axis[0] * axis[0]) + (axis[2] * axis[2] + axis[1] * axis[1]);
 
     if (len2 <= lbl_8053C5B4 * *(f32*)__float_epsilon) {
         v[0] = lbl_8053C55C;
