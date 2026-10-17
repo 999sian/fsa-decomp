@@ -26,6 +26,9 @@ extern "C" void fn_8010DF58(void*);
 extern "C" void fn_802F745C(void* mgr, f32* pos, void* tgt, EffArgs* args);
 extern void* lbl_8053AB10;
 extern f32 lbl_8053C730;
+extern "C" void PSMTXTrans(f32 m[3][4], f32 x, f32 y, f32 z);
+extern f32 lbl_8053C6D4;
+extern f32 lbl_8053C6D8;
 
 extern "C" char lbl_8049D940[];
 extern f32 lbl_8053C6D0;
@@ -80,11 +83,13 @@ extern "C" void fn_80115BC4(char* p, JGeometry::TVec3<f32>* a, JGeometry::TVec3<
     JGeometry::TVec3<f32> dir;
     JGeometry::TVec3<f32> b;
 
-    dir.x = dir.y = dir.z = lbl_8053C6D0;
+    dir.zero();
     if (a->z > lbl_8053C6E4) {
         f32 dx = a->x - *(f32*)(p + 0xc);
         f32 dy = a->y - *(f32*)(p + 0x10);
-        f32 dist = JMAFastSqrt(dx * dx + dy * dy);
+        f32 dx2 = dx * dx;
+        f32 dy2 = dy * dy;
+        f32 dist = JMAFastSqrt(dx2 + dy2);
         if (dist > lbl_8053C6DC) {
             f32 t = (dist - lbl_8053C6DC) * lbl_8053C6E8;
             if (t > lbl_8053C6D8) {
@@ -93,8 +98,8 @@ extern "C" void fn_80115BC4(char* p, JGeometry::TVec3<f32>* a, JGeometry::TVec3<
                 t = lbl_8053C6D0;
             }
             f32 w = t * lbl_8053C6F0 + lbl_8053C6EC;
-            dir = *(JGeometry::TVec3<f32>*)(p + 0xc) - *a;
-            dir.z = lbl_8053C6D0;
+            dir.sub(*(JGeometry::TVec3<f32>*)(p + 0xc), *a);
+            dir.z = 0.0f;
             dir.normalize();
             dir.scale((dist < w) ? dist : w);
         }
