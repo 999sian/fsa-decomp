@@ -108,8 +108,8 @@ extern "C" void fn_80052CAC(void) {
 }
 
 extern "C" void fn_80052CEC(void) {
-    s32 t = *(s32*)(lbl_802BB0FC + 0x58);
-    lbl_802FF0E4 = t + (s32)(lbl_803001FC * *(f32*)(lbl_802C050C + 0x28));
+    f32 f = *(f32*)(lbl_802C050C + 0x28);
+    lbl_802FF0E4 = (s32)(lbl_803001FC * f) + *(s32*)(lbl_802BB0FC + 0x58);
 }
 
 extern "C" void fn_80052D2C(void) {
@@ -191,6 +191,18 @@ extern "C" void fn_80056390(void* p) {
     fn_80058A28(0x37);
     fn_80058A28(0x99);
     *(u32*)(lbl_802BB0FC + 0x444) &= ~0x8;
+}
+
+extern "C" void fn_80056B08(void* p) {
+    u32 bit;
+    for (u8 i = 0; i < 4; i++) {
+        bit = 1 << i;
+        if (*(u32*)(lbl_802B7CA0 + 0x3440) & bit) {
+            if (*(u16*)(lbl_802BB0FC + 0xe4 + i * 2) == 0x30 && !(((u8*)p)[0xffa] & bit)) {
+                ((u8*)p)[0xffa] |= bit;
+            }
+        }
+    }
 }
 
 extern "C" int fn_800572C0(int a, u32 mask) {
