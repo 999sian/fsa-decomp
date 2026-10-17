@@ -23,6 +23,36 @@ extern "C" void fn_8030C5F0(void*, void*, s32, s32, f32*);
 extern "C" s32 fn_8023DE58(s32);
 extern "C" u8* lbl_8053AB10;
 extern "C" u8* sManager__8JUTVideo;
+extern u64 lbl_8048DDD0[];
+extern u32 lbl_804B139C[];
+extern "C" s32 fn_802366CC(void);
+extern "C" u32 fn_804030C4(u32 tag, u32 id);
+
+// Sub-object virtual slots 13 called by fn_8041918C.
+struct SubObj {
+    virtual void w00();
+    virtual void w01();
+    virtual void w02();
+    virtual void w03();
+    virtual void w04();
+    virtual void w05();
+    virtual void w06();
+    virtual void w07(s32 v);
+    virtual void w08();
+    virtual void w09();
+    virtual void w10();
+    virtual void w11();
+    virtual void w12();
+    virtual SubObj* w13(u64 x);
+};
+
+typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
+
+// Virtual slot 68 of object returned by SubObj::w13: calls (u32, 0).
+static inline void CallSlot68(u8* obj, u32 s) {
+    ((Slot68Fn)(*(void***)obj)[68])(obj, s, 0);
+}
+
 extern "C" s32 fn_80418B64(u8* self) {
     f32 buf[3];
     fn_8022EA0C(0);
