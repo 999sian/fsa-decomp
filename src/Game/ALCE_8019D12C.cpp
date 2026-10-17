@@ -203,7 +203,7 @@ extern "C" void fn_8019DC5C(char* this_) {
             case 0:
                 id = *(s32*)(actor + 4);
                 fn_801EE4F0(actor);
-                fn_8013CC50(id, actor + 0xc, 0x172, 1, 1, 0, 0, 1);
+                fn_8013CC50(id, actor + 0xc, lbl_8053E440, 0x172, 1, 1, 0, 0, 1);
                 id = *(s32*)(actor + 4);
                 fn_801EE4F0(actor);
                 fn_8013CC50(id, actor + 0xc, 0x173, 1, 1, 0, 0, 1);
