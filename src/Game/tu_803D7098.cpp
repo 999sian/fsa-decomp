@@ -120,7 +120,7 @@ extern "C" void fn_803D82EC(u8* param_1) {
     obj = *(FsaSlots**)(param_1 + 0x1c);
     obj->v7(param_1[0x77]);
     obj = *(FsaSlots**)(param_1 + 0x1c);
-    obj->v59(0, 0, 0, lbl_80543534, lbl_80543534, lbl_80543568, lbl_8054356C);
+    obj->v57(0, 0, 0, lbl_80543534, lbl_80543534, lbl_80543568, lbl_8054356C);
 }
 
 extern "C" void fn_803D8670(u8* param_1) {
