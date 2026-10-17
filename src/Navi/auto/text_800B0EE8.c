@@ -49,6 +49,8 @@ extern "C" void fn_800B73D8(u8* p);
 extern "C" void fn_800B6F18(u8* p);
 extern char lbl_802B7CA0[];
 extern u32 lbl_802BB0FC[];
+extern u32 lbl_80287550[];
+extern "C" void fn_8002F7C0(u32 a, s32 b);
 struct NaviState_800B51F8;
 typedef void (NaviState_800B51F8::*NaviStateFn_800B51F8)();
 extern NaviStateFn_800B51F8 lbl_802876DC[];
@@ -167,10 +169,9 @@ extern "C" void fn_800B699C(u8* p) {
 }
 
 extern "C" void fn_800B6D90(u8* p) {
-    s32 idx = p[0x387] + p[0x388] * 4;
-    if ((u16)(*(u16*)(lbl_802B7CA0 + 0xc) & (1 << lbl_802313EC[idx])) != 0) {
+    if ((u16)(*(u16*)(lbl_802B7CA0 + 0xc) & (1 << lbl_802313EC[p[0x387] + p[0x388] * 4])) != 0) {
         p[0x384] = 0;
-        fn_8002F544(lbl_80287510[idx]);
+        fn_8002F544(lbl_80287510[p[0x387] + p[0x388] * 4]);
         *(u32*)(p + 0x394) = 0;
     } else {
         p[0x384] = 1;
