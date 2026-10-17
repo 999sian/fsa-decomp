@@ -106,8 +106,7 @@ extern "C" void fn_8034C9D4(Actor* a) {
     } else {
         if ((s32)a->field_04 >= 8) {
             Vec pos;
-            pos.z = a->field_0C.z;
-            *(f64*)&pos = *(f64*)&a->field_0C;
+            *(JGeometry::TVec3<f32>*)&pos = *(JGeometry::TVec3<f32>*)&a->field_0C;
             pos.z = 0.0f;
             Actor_CreateByID(fn_801F856C(), 0x4b4d5249u, a->field_04, (f32*)&pos, 0, -1, -1);
         } else {
