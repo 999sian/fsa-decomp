@@ -12,7 +12,7 @@ extern "C" bool fn_801CAED4(void* thisObj, s32 value) {
 extern "C" u8 v17__5ActorFiPf(void* this_, s32 room, const f32* pos);
 extern const f32 lbl_8053EF38;
 
-static inline u8 tuCheckAt(void* this_, s32 room, const f32* pos, f32 y, f32 x) {
+static inline u8 tuCheckAt(void* this_, s32 room, const f32* pos, f32 x, f32 y) {
     f32 z = pos[2];
     JGeometry::TVec3f v(x, y, z);
     return v17__5ActorFiPf(this_, room, &v.x);
@@ -273,16 +273,21 @@ static inline JGeometry::TVec2<f32> tuProject(const JGeometry::TVec2<f32>& pos) 
 
 // near-match (~96%): stack slot order and loop register allocation differ
 extern "C" u8 fn_801CA274(char* p) {
+    s32 bit;
+    u8 mask;
     u8 r = 0;
     if (*(s32*)(p + 0x564) != 3) {
-        u8 mask = (*(s32*)(p + 0x560) == 4) ? (u8)0xf : (u8)(1 << *(s32*)(p + 0x560));
+        mask = 0xf;
+        if (*(s32*)(p + 0x560) != 4) {
+            mask = 1 << *(s32*)(p + 0x560);
+        }
         if (*(f32*)(p + 0x534) - *(f32*)(p + 0x52c) > lbl_8053EF20
             && *(f32*)(p + 0x538) - *(f32*)(p + 0x530) > lbl_8053EF20) {
             u8 hit = fn_8021693C(p + 0x528, mask);
             if (hit) {
                 u8 done = 0;
                 for (s32 i = 0; i < 4; i++) {
-                    s32 bit = 1 << i;
+                    bit = 1 << i;
                     if (hit & bit) {
                         fn_802379E4(i, p + 0xc);
                         if (!done) {
@@ -318,9 +323,9 @@ extern "C" u8 fn_801CA274(char* p) {
                     JGeometry::TVec2<f32> pos;
                     fn_801F3128(p, &pos);
                     for (s32 i = 0; i < 4; i++) {
-                        s32 bit = 1 << i;
-                        if (res & bit) {
-                            if (mask & bit) {
+                        s32 bit2 = 1 << i;
+                        if (res & bit2) {
+                            if (mask & bit2) {
                                 JGeometry::TVec2<f32> out;
                                 if (fn_801F329C(p, i)) {
                                     out = tuProject(pos);
@@ -329,7 +334,7 @@ extern "C" u8 fn_801CA274(char* p) {
                                 }
                                 fn_80238548(i, *(s32*)(p + 0x114), &out, 2);
                             } else {
-                                res &= ~bit;
+                                res &= ~bit2;
                             }
                         }
                     }
@@ -489,7 +494,7 @@ extern "C" u8 fn_801CA564(char* p) {
         *(f32*)(p + 0x68) = x1;
         *(f32*)(p + 0x6c) = y1;
         for (s32 i = 0; i < 4; i++) {
-            if (i == fn_801F285C(p, &hit, 0, 1, i) && *(s32*)(p + 0x98) == fn_801D0020(p, p + 0xc, i, 0)) {
+            if (i == fn_801F285C(p, &hit, 0, 1, i) && fn_801D0020(p, p + 0xc, i, 0) == *(s32*)(p + 0x98)) {
                 if (held) {
                     fn_8023B6CC(i);
                 fn_80237948(i, p + 0xc);
@@ -536,8 +541,9 @@ extern "C" u8 fn_801CA564(char* p) {
     found = 0;
     if (*(f32*)(p + 0x68) - *(f32*)(p + 0x60) > lbl_8053EF20
         && *(f32*)(p + 0x6c) - *(f32*)(p + 0x64) > lbl_8053EF20) {
+        s32 i;
         u8 other = 0;
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             if (i == fn_801F285C(p, 0, 0, 1, i)) {
                 if (held) {
                     fn_8023B6CC(i);
