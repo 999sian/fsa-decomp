@@ -35,18 +35,19 @@ extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4,
     if (param_2 < 0) {
         return 0;
     }
-    if (param_2 > param_5) {
+    s32 idx = param_2;
+    s32 max = param_5;
+    if (idx > max) {
         return 1;
     }
-    f32 d = param_4 - param_3;
-    f32 t = fn_800BDD94(param_1, param_5, param_2);
-    f32 m = t * d;
-    (*(VObj_800BD938**)(p + 0x24))->v4(*(f32*)(p + 0x28), *(f32*)(p + 0x2c) + (param_3 + m));
-    if (param_7 == 2) {
-        return 0;
-    }
-    if (param_7 == 1) {
-        (*(VObj_800BD938**)(p + 0x24))->v9((s32)((f32)*(u8*)(p + 0x30) * (lbl_80300D04 - t)));
+    f32 t = fn_800BDD94(param_1, max, idx);
+    f32 d = t * (param_4 - param_3);
+    (*(VObj_800BD938**)(p + 0x24))->v4(*(f32*)(p + 0x28), *(f32*)(p + 0x2c) + (param_3 + d));
+    if (param_7 != 2) {
+        if (param_7 == 1) {
+            t = lbl_80300D04 - t;
+        }
+        (*(VObj_800BD938**)(p + 0x24))->v9((s32)((f32)*(u8*)(p + 0x30) * t));
     }
     return 0;
 }
