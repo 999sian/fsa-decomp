@@ -21,6 +21,36 @@ struct DMLKResMgr {
     virtual void* getRes(s32 type, char* name);
 };
 
+#if defined(VERSION_G4SP01)
+extern "C" s32 fn_8011BDAC(u8* self) {
+    switch (*(s32*)(self + 0x23c)) {
+    case 12:
+    case 13:
+    case 20:
+    case 21:
+    case 28:
+    case 34:
+        return 1;
+    default:
+        return 0;
+    }
+}
+#else
+extern "C" s32 fn_8011BDAC(u8* self) {
+    switch (*(s32*)(self + 0x238)) {
+    case 12:
+    case 13:
+    case 20:
+    case 21:
+    case 28:
+    case 34:
+        return 1;
+    default:
+        return 0;
+    }
+}
+#endif
+
 extern "C" s32 fn_8011BDE4(u8* this_) {
 #if defined(VERSION_G4SP01)
     return *(s32*)(this_ + 0x23c);
