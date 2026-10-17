@@ -1,6 +1,7 @@
 // Game TU 801E801C-801E9AFC (FSOB). Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 // Only functions that re-verify byte-exact are included; the rest remain asm.
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -39,8 +40,9 @@ extern "C" void fn_801E8EB4(char* p, u8 idx, s32 unused, FsobVec2* v) {
     f32 x = v->x;
     f32 y = v->y;
     *(u32*)(p + 0x2a8) |= 1 << idx;
-    ((FsobVec2*)(p + 0x2b0))[idx].x = x;
-    ((FsobVec2*)(p + 0x2b0))[idx].y = y;
+    p += idx * 8;
+    *(f32*)(p + 0x2b0) = x;
+    *(f32*)(p + 0x2b4) = y;
 }
 
 extern "C" void fn_801E8EE8(char* p) {
@@ -121,6 +123,57 @@ extern "C" void fn_801E96F8(char* p) {
 }
 
 extern "C" int fn_801E90BC(void) { return 0; }
+
+extern f32 lbl_8053F600;
+extern "C" void fn_801E9224(void);
+extern "C" void fn_801E6EAC(void);
+extern "C" void fn_8013CB44(void* a, void* b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(void* this_, s32 a, s32 b);
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D800C(void* a, u16 b);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F666C(void* a, s32 b);
+extern "C" void fn_801E90C4(char* p) {
+    switch (*(s32*)(p + 0x248)) {
+    case 0: {
+        u16 sVar = *(u16*)(p + 0x94);
+        if (sVar != 0) {
+            void* a = fn_802D6A9C();
+            if (fn_802D800C(a, sVar) != 0) {
+                *(u32*)(p + 0x230) |= 0x2000;
+                if (*(void**)(p + 0x3c0) != 0) {
+                    void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(p + 0x3c0));
+                }
+                *(void**)(p + 0x3c0) = fn_8013CC50(*(u32*)(p + 0x4), p + 0xc, 0x260, 0, -2, 0, 0, 1, lbl_8053F600);
+                *(s32*)(p + 0x24c) = 0;
+                *(s32*)(p + 0x248) = 1;
+            }
+        }
+    } break;
+    case 1:
+        fn_801E9224();
+        fn_8013CB44(*(void**)(p + 0x3c0), p + 0xc, 0, -2, 1);
+        fn_801F0E34(p, 0x3003e, 0);
+        if (*(u32*)(p + 0x230) & 0x4000) {
+            s32 idx = *(s32*)(p + 0x3b8);
+            if (idx >= 0) {
+                void* a = fn_801F856C();
+                if (fn_801F666C(a, idx) != 0) {
+                    fn_801E6EAC();
+                }
+            }
+            *(u32*)(p + 0x230) &= ~0x2000;
+            fn_801EE434(*(void**)(p + 0x3c0));
+            *(void**)(p + 0x3c0) = 0;
+            *(s32*)(p + 0x24c) = 0;
+            *(s32*)(p + 0x248) = 2;
+        }
+        break;
+    default:
+        break;
+    }
+}
 
 extern "C" void* fn_801E97B4(void* this_, s16 freeFlag) {
     if (this_ != 0) {
