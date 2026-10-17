@@ -167,6 +167,22 @@ extern "C" bool fn_8008317C(u8* param_1, void* param_2) {
     return true;
 }
 
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" bool fn_8008325C(u8* param_1, u8* param_2, void* param_3, u16 param_4, s32 param_5, s32 param_6, f32 param_7) {
+    void* r = fn_800638A4(&lbl_802FCC10, param_3, lbl_802B7CA0 + 0x2200, 0x40);
+    if (r == 0) {
+        void* uVar2 = fn_8011FD10();
+        fn_8011FD18(uVar2, lbl_802830C8, 0x819, (s32)&lbl_802FCC18, lbl_80283548);
+        fn_80007AB8(lbl_802830C8, 0x819, (s32)&lbl_802FCC1C);
+    }
+    if (fn_8000E124(param_1 + 0x36c, param_2 + 0x58, r, 1, param_4, param_5, param_6, param_7) == 0) {
+        return false;
+    }
+    param_1[0x46c] = 0;
+    return true;
+}
+#pragma pop
 extern "C" s32 fn_80083584(u8* p) {
     if (*(s8*)(p + 0x462) == 0) {
         (*(s8*)(p + 0x462))++;
