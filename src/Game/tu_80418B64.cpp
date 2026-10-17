@@ -31,10 +31,9 @@ extern "C" s32 fn_80418B64(u8* self) {
     if (fn_8023DE58(0) >= 8) {
         self[0x218] = 1;
     } else {
-        f32 h = (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6);
-        if (buf[1] < 0.33333334f * h) {
+        if (buf[1] < 0.33333334f * (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6)) {
             self[0x218] = 0;
-        } else if (buf[1] > 0.6666667f * h) {
+        } else if (buf[1] > 0.6666667f * (f32)(s32)*(u16*)(*(u8**)(sManager__8JUTVideo + 4) + 6)) {
             self[0x218] = 1;
         }
     }
