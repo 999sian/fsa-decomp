@@ -17,6 +17,7 @@ extern void* lbl_8053ADD0;
 extern const float lbl_8054360C;
 extern const float lbl_80543610;
 extern const float lbl_80543604;
+extern const float lbl_80543608;
 extern const float lbl_805435E8;
 extern const float lbl_805435F8;
 extern const float lbl_805435FC;
