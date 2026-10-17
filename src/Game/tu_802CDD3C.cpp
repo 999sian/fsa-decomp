@@ -21,10 +21,7 @@ extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 
 static inline void fn_802CE508_spawn(char* this_) {
     if (*(s32*)(this_ + 0x4) >= 8) {
-        Vec v;
-        v.x = lbl_80540E38 + *(f32*)(this_ + 0xc);
-        v.y = lbl_80540E38 + *(f32*)(this_ + 0x10);
-        v.z = lbl_80540E34;
+        Vec v = {lbl_80540E38 + *(f32*)(this_ + 0xc), lbl_80540E38 + *(f32*)(this_ + 0x10), lbl_80540E34};
         Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), &v, 0, -1, -1);
     } else {
         fn_8013CC50(*(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), this_ + 0xc, lbl_80540E3C, 0x564, 0, 0, 0, 0, 1);
@@ -49,7 +46,7 @@ static inline void fn_802CE508_spawn(char* this_);
 extern "C" void fn_802CE508(char* this_) {
     switch (*(s32*)(this_ + 0x230)) {
     case 0:
-        if ((*(u32*)(this_ + 0x90) >> 27) == 0 || (u8)((Actor*)this_)->v13() == 1) {
+        if ((*(u32*)(this_ + 0x90) >> 27) == 0 || (u8)((Actor*)this_)->v11() == 1) {
             if (*(u8*)(this_ + 0x258)) {
                 fn_802CE508_spawn(this_);
             }
@@ -57,12 +54,12 @@ extern "C" void fn_802CE508(char* this_) {
         }
         break;
     case 1:
-        if ((*(s32*)(this_ + 0x240) == 2 || *(s32*)(this_ + 0x240) == 3) && !(u8)((Actor*)this_)->v13()) {
+        if ((*(s32*)(this_ + 0x240) == 2 || *(s32*)(this_ + 0x240) == 3) && !(u8)((Actor*)this_)->v11()) {
             if (*(u8*)(this_ + 0x258)) {
                 fn_802CE508_spawn(this_);
             }
             *(s32*)(this_ + 0x230) = 0;
-        } else if (*(s32*)(this_ + 0x240) == 4 && (u8)((Actor*)this_)->v13() == 1) {
+        } else if (*(s32*)(this_ + 0x240) == 4 && (u8)((Actor*)this_)->v11() == 1) {
             *(s32*)(this_ + 0x230) = 2;
         }
         break;
