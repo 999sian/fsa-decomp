@@ -101,9 +101,3 @@ extern "C" void* fn_8013EAC0(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-struct NaviTracker {
-    virtual void fn_0();
-    virtual void fn_1();
-    virtual void fn_2();
-    virtual void fn_3(s32);
-};
