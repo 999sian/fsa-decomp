@@ -63,12 +63,13 @@ extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key) {
     return 0;
 }
 
-extern "C" void fn_80030380(short* p) {
+extern "C" short* fn_80030380(short* p) {
     short v;
     do {
         v = *p;
         p += 3;
     } while (v <= 10);
+    return p;
 }
 
 extern "C" char* fn_80030394(char* base, unsigned long off) {
