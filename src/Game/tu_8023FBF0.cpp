@@ -40,8 +40,8 @@ extern "C" char lbl_8049F140[];
 extern "C" char lbl_804A64A8[];
 extern "C" void __dt__18JPAEmitterCallBackFv(void* this_, s16 flag);
 extern "C" void __dt__19JPAParticleCallBackFv(void* this_, s16 flag);
-void fn_80241E64(void* p);
-void __dl__FPv(void* p);
+extern "C" void fn_80241E64(void* p);
+extern "C" void __dl__FPv(void* p);
 
 struct GameRandom {
     u32 seed;
