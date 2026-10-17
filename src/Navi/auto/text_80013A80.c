@@ -58,7 +58,7 @@ struct Unk80013DA0 {
     u8 unk55;
     u8 pad56;
     u8 unk57;
-    u8 pad58;
+    u8 unk58;
     u8 unk59;
     u8 unk5a;
     u8 unk5b;
