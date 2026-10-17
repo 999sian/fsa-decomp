@@ -10,6 +10,8 @@ extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr,
 extern "C" u16 fn_8022461C(YasiVec* pos, u32 room);
 extern "C" u8 fn_802DE9A0();
 extern "C" u8 fn_802DEB58();
+extern "C" u8 fn_802DEBF8();
+extern "C" s32 fn_801CD664(s32 range);
 extern "C" void fn_802CEC10(char* p);
 BOOL fn_802CF598(char* p);
 void* fn_801F856C();
