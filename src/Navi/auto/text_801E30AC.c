@@ -161,33 +161,30 @@ extern "C" void fn_801E3B3C(unsigned char* p1, unsigned short p2) {
 }
 
 extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c) {
-    char tbl[4] = {0, 0, -64, -32};
+    unsigned char tbl[4] = {0x00, 0x00, 0xc0, 0xe0};
     unsigned char* p;
     int n;
-    unsigned int wc;
 
     if (s == 0) {
         return 0;
     }
-    wc = c;
-    if (wc < 0x80) {
+    if (c < 0x80) {
         n = 1;
-    } else if (wc < 0x800) {
+    } else if (c < 0x800) {
         n = 2;
     } else {
         n = 3;
     }
     p = s + n;
-    switch (n) {
-    case 3:
-        *--p = (wc & 0x3f) | 0x80;
-        wc >>= 6;
-    case 2:
-        *--p = (wc & 0x3f) | 0x80;
-        wc >>= 6;
-    case 1:
-        *--p = wc | tbl[n];
+    if (n == 3) {
+        *--p = (c & 0x3f) | 0x80;
+        c >>= 6;
     }
+    if (n >= 2) {
+        *--p = (c & 0x3f) | 0x80;
+        c >>= 6;
+    }
+    *--p = c | tbl[n];
     return n;
 }
 
@@ -722,6 +719,52 @@ extern "C" double fn_801E98A8(double x) {
         }
     }
 }
+
+extern "C" double fn_801E9D14(double x, double* iptr)
+{
+    int i0, i1, j0;
+    unsigned int i;
+    i0 = *(int*)&x;
+    i1 = *(1 + (int*)&x);
+    j0 = ((i0 >> 20) & 0x7ff) - 0x3ff;
+    if (j0 < 20) {
+        if (j0 < 0) {
+            *(int*)iptr = i0 & 0x80000000;
+            *(1 + (int*)iptr) = 0;
+            return x;
+        } else {
+            i = (0x000fffff) >> j0;
+            if (((i0 & i) | i1) == 0) {
+                *iptr = x;
+                *(int*)&x = i0 & 0x80000000;
+                *(1 + (int*)&x) = 0;
+                return x;
+            } else {
+                *(int*)iptr = i0 & (~i);
+                *(1 + (int*)iptr) = 0;
+                return x - *iptr;
+            }
+        }
+    } else if (j0 > 51) {
+        *iptr = x;
+        *(int*)&x = i0 & 0x80000000;
+        *(1 + (int*)&x) = 0;
+        return x;
+    } else {
+        i = ((unsigned)(0xffffffff)) >> (j0 - 20);
+        if ((i1 & i) == 0) {
+            *iptr = x;
+            *(int*)&x = i0 & 0x80000000;
+            *(1 + (int*)&x) = 0;
+            return x;
+        } else {
+            *(int*)iptr = i0;
+            *(1 + (int*)iptr) = i1 & (~i);
+            return x - *iptr;
+        }
+    }
+}
+
 #pragma dont_inline reset
 
 extern const double lbl_80302358;
