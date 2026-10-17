@@ -451,6 +451,20 @@ extern "C" void fn_80123A94(void* heap) {
     lbl_802FF360 = p;
 }
 
+extern "C" void fn_80123AFC(void* p, void* q) {
+    void* arr[6];
+    void* t = (u8*)p + 4;
+    arr[1] = t;
+    arr[0] = t;
+    arr[5] = t;
+    arr[4] = t;
+    arr[3] = t;
+    fn_80167A18(&arr[2], p, &arr[3], (u8*)q + 0x18);
+    if (*(void**)((u8*)p + 0xc) == NULL) {
+        *(void**)((u8*)p + 0xc) = q;
+    }
+}
+
 extern "C" void fn_80123EA0(void* p)
 {
 	lbl_802FF364 = p;
@@ -1240,6 +1254,16 @@ extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
     *(void**)ptr = param_2;
     fn_8012D010(ptr);
     return ptr;
+}
+
+extern "C" void fn_8012D7F8(u8* p, u8* a, u8* b) {
+    Vec3f* out = (Vec3f*)(p + 0x10);
+    Vec3f* v = (Vec3f*)(b + 0x10);
+    Vec3f* w = (Vec3f*)(a + 0x108);
+    out->x = v->x - w->x;
+    out->y = v->y - w->y;
+    out->z = v->z - w->z;
+    fn_801C6684(a + 0x78, out, out);
 }
 
 extern "C" void fn_8012EF18(void*, void*);
