@@ -500,6 +500,11 @@ extern "C" void fn_801252EC(void* param_1, void* param_2) {
     *(u16*)((u8*)param_1 + 0xe) = *(u16*)((u8*)param_1 + 0xe) + 1;
 }
 
+extern "C" void fn_8012530C(void* param_1, void* param_2) {
+    ((void**)*(void***)((u8*)param_1 + 0x8))[*(u16*)((u8*)param_1 + 0x12)] = param_2;
+    *(u16*)((u8*)param_1 + 0x12) = *(u16*)((u8*)param_1 + 0x12) + 1;
+}
+
 extern "C" void fn_80127DD4(void* param_1, u8* self) {
     f32 mtx[3][4];
     fn_80132450(*(s16*)(*(u8**)self + 0x4c) * 0xb6, *(s16*)(*(u8**)self + 0x4e) * 0xb6, *(s16*)(*(u8**)self + 0x50) * 0xb6, mtx);
