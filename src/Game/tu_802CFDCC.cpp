@@ -78,6 +78,10 @@ struct SobDrawParams {
     }
 };
 
+enum {
+    FOURCC_SOB = 0x534F4220, // 'SOB ' (Sprite Object Binary resource type)
+};
+
 extern FsaGameManager* lbl_8053AAF8;
 extern FsaRenderManager* lbl_8053AB10;
 extern "C" const char lbl_8046E040[];
