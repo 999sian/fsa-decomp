@@ -808,7 +808,27 @@ extern "C" void fn_80119D48(u8* self)
 
 extern "C" void* fn_80119DD0(void)
 {
-    return 0;
+    extern s8 lbl_8053AA91;
+    extern u8 lbl_804BC504[];
+    extern u8 lbl_804BC4F8[];
+    if (lbl_8053AA91 == 0) {
+        lbl_804BC504[0] = 0;
+        lbl_804BC504[1] = 0;
+        lbl_804BC504[2] = 0;
+        *(u32*)(lbl_804BC504 + 0x8) = 0;
+        *(u32*)(lbl_804BC504 + 0xc) = 0;
+        *(u32*)(lbl_804BC504 + 0x10) = 0;
+        *(f32*)(lbl_804BC504 + 0x14) = lbl_8053C798;
+        *(f32*)(lbl_804BC504 + 0x18) = lbl_8053C798;
+        *(u32*)(lbl_804BC504 + 0x1c) = 0;
+        *(u32*)(lbl_804BC504 + 0x20) = 0;
+        *(u32*)(lbl_804BC504 + 0x24) = 0;
+        *(u32*)(lbl_804BC504 + 0x28) = 0;
+        *(u32*)(lbl_804BC504 + 0x2c) = 0;
+        __register_global_object(lbl_804BC504, (void (*)(void*))fn_80119E5C, lbl_804BC4F8);
+        lbl_8053AA91 = 1;
+    }
+    return lbl_804BC504;
 }
 
 extern "C" void* fn_80119E5C(u8* self, s16 size)
