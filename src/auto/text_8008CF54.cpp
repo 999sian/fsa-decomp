@@ -69,7 +69,7 @@ extern "C" void fn_8008D148(int);
 extern "C" void fn_8008DFA0(u32 *param_1, s16 param_2);
 extern "C" void fn_8008E530(int param_1, int param_2, u32 param_3);
 extern "C" s64 OSGetTime(void);
-extern "C" u32 lbl_8052EB98;
+extern "C" u32 lbl_8052EB98[];
 extern "C" u32 lbl_80539DA8;
 extern "C" u32 lbl_80539DAC;
 void operator delete(void *p);
@@ -272,6 +272,90 @@ extern "C" void fn_8008D4CC(int param_1, int param_2, int param_3, int param_4)
         if (func_ptr != 0) {
             u32 arg = lbl_8053A940;
             ((void (*)(int, u32))(func_ptr))(val, arg);
+        }
+    }
+}
+
+extern "C" void fn_8008D538(void* this_) {
+    u8* p = (u8*)this_;
+    if (*(s16*)(p + 0x7c) != -1) {
+        if (*(s16*)(p + 0x7c) >= 0 && *(s16*)(p + 0x7c) < 4) {
+            u8* a = (u8*)lbl_8052EA58 + *(s16*)(p + 0x7c) * 0x30;
+            u8* b = (u8*)lbl_8052EB18 + *(s16*)(p + 0x7c) * 0x10;
+            u8* c = (u8*)lbl_8052EB58 + *(s16*)(p + 0x7c) * 0x10;
+            u8* d = (u8*)lbl_8052EA28 + *(s16*)(p + 0x7c) * 0xc;
+            *(u32*)(p + 0x18) = *(u32*)(a + 0x0);
+            *(u32*)(p + 0x1c) = *(u32*)(a + 0x4);
+            *(u32*)(p + 0x20) = *(u32*)(a + 0x8);
+            p[0x24] = a[0xc];
+            p[0x25] = a[0xd];
+            p[0x26] = a[0xe];
+            p[0x27] = a[0xf];
+            *(f32*)(p + 0x28) = *(f32*)(a + 0x10);
+            *(f32*)(p + 0x2c) = *(f32*)(a + 0x14);
+            *(u32*)(p + 0x30) = *(u32*)(a + 0x18);
+            *(u32*)(p + 0x34) = *(u32*)(a + 0x1c);
+            *(u32*)(p + 0x38) = *(u32*)(a + 0x20);
+            *(u32*)(p + 0x3c) = *(u32*)(a + 0x24);
+            *(u32*)(p + 0x40) = *(u32*)(a + 0x28);
+            *(u32*)(p + 0x44) = *(u32*)(a + 0x2c);
+            b = (u8*)lbl_8052EB18 + *(s16*)(p + 0x7c) * 0x10;
+            *(f32*)(p + 0x48) = *(f32*)(b + 0x0);
+            *(f32*)(p + 0x4c) = *(f32*)(b + 0x4);
+            *(f32*)(p + 0x50) = *(f32*)(b + 0x8);
+            *(s16*)(p + 0x54) = *(s16*)(b + 0xc);
+            p[0x56] = b[0xe];
+            p[0x57] = b[0xf];
+            c = (u8*)lbl_8052EB58 + *(s16*)(p + 0x7c) * 0x10;
+            *(f32*)(p + 0x58) = *(f32*)(c + 0x0);
+            *(f32*)(p + 0x5c) = *(f32*)(c + 0x4);
+            *(f32*)(p + 0x60) = *(f32*)(c + 0x8);
+            *(s16*)(p + 0x64) = *(s16*)(c + 0xc);
+            p[0x66] = c[0xe];
+            p[0x67] = c[0xf];
+            d = (u8*)lbl_8052EA28 + *(s16*)(p + 0x7c) * 0xc;
+            p[0x7e] = d[0xa];
+            if (p[0xa8] == 0 || lbl_80539DA8 != (*(u32*)(p + 0x18) & lbl_80539DAC)) {
+                p[0x98] = 0;
+            } else if (lbl_8053A951 == 0) {
+                if (p[0x98] == 1) {
+                    s64 elapsed = OSGetTime() - *(s64*)(p + 0xa0);
+                    if (elapsed >= *(s64*)&lbl_8053A948) {
+                        void (*fn)(s32, u32) = (void (*)(s32, u32))lbl_8053A93C;
+                        lbl_8053A951 = 1;
+                        lbl_8053A954 = *(s16*)(p + 0x7c);
+                        if (fn != 0) {
+                            fn(*(s16*)(p + 0x7c), lbl_8053A940);
+                        }
+                    }
+                } else {
+                    p[0x98] = 1;
+                    *(s64*)(p + 0xa0) = OSGetTime();
+                }
+            }
+            for (u32* piVar3 = (u32*)lbl_8052EB98; piVar3 != 0; piVar3 = (u32*)piVar3[3]) {
+                u8* obj = (u8*)*piVar3;
+                if (obj[0x10] != 0) {
+                    s16 sVar2 = *(s16*)(p + 0x7c);
+                    if (sVar2 >= 0 && sVar2 < 4) {
+                        u32 uVar9 = *(u32*)(p + 0x18);
+                        if ((uVar9 & *(u32*)(obj + 0x18)) == *(u32*)(obj + 0x14)) {
+                            if (obj[sVar2 + 0x20] == 1) {
+                                s64 t = OSGetTime();
+                                fn_8008E530(*piVar3, *(s16*)(p + 0x7c), (u32)t - *(u32*)(obj + sVar2 * 8 + 0x2c));
+                            } else {
+                                obj[sVar2 + 0x20] = 1;
+                                *(s64*)(obj + sVar2 * 8 + 0x28) = OSGetTime();
+                            }
+                        } else {
+                            obj[sVar2 + 0x20] = 0;
+                        }
+                    }
+                }
+            }
+            if (*(s16*)(p + 0x7c) >= 0 && *(s16*)(p + 0x7c) < 4) {
+                fn_8008DFA0((u32*)(p + 0x68), *(s16*)(p + 0x7c));
+            }
         }
     }
 }
