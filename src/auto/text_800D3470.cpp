@@ -642,6 +642,7 @@ void J3DTevBlock4::initialize()
 
 void J3DTevBlock16::initialize()
 {
+	u32* src = (u32*)&j3dDefaultTevColor;
 	mTexIndices[0] = 0xffff;
 	mTexIndices[1] = 0xffff;
 	mTexIndices[2] = 0xffff;
@@ -651,6 +652,25 @@ void J3DTevBlock16::initialize()
 	mTexIndices[6] = 0xffff;
 	mTexIndices[7] = 0xffff;
 	mStageNum = 1;
+	for (int i = 0; i < 3; i++) {
+		u32* dst = (u32*)&mColors[i];
+		dst[0] = src[0];
+		dst[1] = src[1];
+	}
+	for (int i = 0; i < 4; i++) {
+		GXColor c = j3dDefaultTevKColor;
+		mKColors[i] = c;
+	}
+	for (int i = 0; i < 16; i++) {
+		mKColorSels[i] = 0xc;
+	}
+	for (int i = 0; i < 16; i++) {
+		mKAlphaSels[i] = 0x1c;
+	}
+	for (int i = 0; i < 16; i++) {
+		mStages[i].mBPCommand1 = 0xc0 + i * 2;
+		mStages[i].mBPCommand2 = 0xc1 + i * 2;
+	}
 	mTexNoOffset = 0;
 	mRegOffset = 0;
 }
@@ -2134,6 +2154,76 @@ extern "C" void fn_800DA280(u8* this_, u32 flags) {
 
         J3DGDSetIndTexOrder(stageNum, (GXTexCoordID)this_[5], (GXTexMapID)this_[6], (GXTexCoordID)this_[9], (GXTexMapID)this_[0xa], (GXTexCoordID)this_[0xd], (GXTexMapID)this_[0xe], (GXTexCoordID)this_[0x11], (GXTexMapID)this_[0x12]);
     }
+}
+
+extern "C" void fn_800DA35C(void) {
+    GDOverflowCheck(0x1e);
+
+    __GDWrite(0x61);
+    __GDWrite(0xf3);
+    __GDWrite(0x3f);
+    __GDWrite(0x00);
+    __GDWrite(0x00);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0x00);
+    __GDWrite(0xff);
+    __GDWrite(0xe3);
+    __GDWrite(0x61);
+    __GDWrite(0x41);
+    __GDWrite(0x00);
+    __GDWrite(0x31);
+    __GDWrite(0x00);
+    __GDWrite(0x61);
+    __GDWrite(0x40);
+    __GDWrite(0x00);
+    __GDWrite(0x00);
+    __GDWrite(0x17);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0x00);
+    __GDWrite(0x00);
+    __GDWrite(0x40);
+    __GDWrite(0x61);
+    __GDWrite(0x43);
+    __GDWrite(0x00);
+    __GDWrite(0x00);
+    __GDWrite(0x40);
+}
+
+void fn_800DA624(void)
+{
+    GDOverflowCheck(0x1e);
+    __GDWrite(0x61);
+    __GDWrite(0xf3);
+    __GDWrite(0x1e);
+    __GDWrite(0xff);
+    __GDWrite(0x80);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0);
+    __GDWrite(0xff);
+    __GDWrite(0xe3);
+    __GDWrite(0x61);
+    __GDWrite(0x41);
+    __GDWrite(0);
+    __GDWrite(0x31);
+    __GDWrite(0);
+    __GDWrite(0x61);
+    __GDWrite(0x40);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0x17);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0x40);
+    __GDWrite(0x61);
+    __GDWrite(0x43);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0);
 }
 
 extern "C" void fn_800DABCC(u8* p) {
