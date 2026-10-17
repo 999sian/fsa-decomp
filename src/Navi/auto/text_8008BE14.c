@@ -40,7 +40,7 @@ struct VObj_8008C40C {
     virtual void v21();
     virtual void v22();
     virtual void v23();
-    virtual void* v24();
+    virtual void* v24(s32);
 };
 extern "C" void fn_8008BE14(void* p) {
     f32* f = (f32*)p;
