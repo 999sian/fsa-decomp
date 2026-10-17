@@ -82,6 +82,15 @@ extern "C" void fn_800BC984(NaviState_800BC984* p) {
     fn_8017A4F8(*(void**)((u8*)p + 8));
 }
 
+extern "C" void fn_800BC9E0(u8* p) {
+    if (*(u32*)(lbl_802B7CA0 + 0x3440) == 0) {
+        return;
+    }
+    *(u8*)(*(u8**)(p + 0x34) + 0xb0) = 1;
+    p[0xe4] = 2;
+    p[0xd4] = 1;
+}
+
 extern "C" void fn_800BD00C(u8* p);
 extern "C" void fn_800BCE58(u8* p) {
     if (p[0xe5] != 0) {
