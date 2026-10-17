@@ -141,7 +141,7 @@ extern "C" void* fn_800888E0(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80088928(u8* param_1) {
-    fn_80021240(param_1 + 0x1c4, lbl_802FCCF0, param_1);
+    fn_80021240(param_1 + 0x1c4, &lbl_802FCCF0, param_1);
 }
 
 extern "C" s32 fn_80088954(u8* param_1) {
