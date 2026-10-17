@@ -29,6 +29,7 @@ extern "C" void* fn_80165600(void* param_1, s16 param_2) {
     return param_1;
 }
 
+#pragma use_lmw_stmw off
 extern "C" s32 fn_80165654(u32 a, u32 b, u32 c, u32 d, u32 e, u32 f) {
     u8 buf[0x118];
     s32 result;
@@ -64,7 +65,6 @@ extern "C" void* fn_8015A9A8(int, void*, int);
 extern "C" void* lbl_802FF540;
 extern "C" void* fn_80165D04(void* p);
 extern "C" s32 fn_80165850(void* p);
-extern "C" void fn_80165D44(void* p, s32 n);
 extern "C" void fn_80164484(void* p);
 extern "C" u8 fn_80164728(u8* p, u32 r4);
 extern "C" void fn_801645A8(void* p, s32 n);
