@@ -88,9 +88,10 @@ extern "C" int fn_801BBB7C(int param_1) {
     return 1;
 }
 
+#pragma dont_inline on
 extern "C" u32* fn_801BBC1C(u32* param_1, u32* param_2) {
     u32* prev = 0;
-    u32* cur = (u32*)((int)param_1 + 0);
+    u32* cur = param_1;
     while (cur != 0) {
         if (param_2 <= cur) {
             break;
@@ -124,16 +125,12 @@ extern "C" u32* fn_801BBC1C(u32* param_1, u32* param_2) {
     }
     return param_2;
 }
-
-extern u32 lbl_802FF758;
-extern u32 lbl_802FF75C;
-extern u32 lbl_802FF760;
-extern u32 lbl_802FF764;
+#pragma dont_inline reset
 extern "C" u32* fn_801BBC1C(u32* param_1, u32* param_2);
 extern "C" void fn_801BBDC4(int param_1, u32* param_2) {
     u32* node = (u32*)((u8*)param_2 - 0x20);
     u32* entry = (u32*)(lbl_802FF758 + param_1 * 0xc);
-    u32 head;
+    u32 head = entry[2];
     if (node[1] != 0) {
         ((u32*)node[1])[0] = node[0];
     }
@@ -154,8 +151,9 @@ extern "C" u32 fn_801BBE40(u32 param_1) {
 }
 
 extern "C" void fn_801BBE50(u32 param_1, u32 param_2, s32 param_3) {
-    s32 i;
+    u32 size = param_3 * 12;
     u32 off = 0;
+    s32 i;
     lbl_802FF758 = param_1;
     lbl_802FF75C = param_3;
     for (i = 0; i < lbl_802FF75C; i++) {
@@ -167,16 +165,16 @@ extern "C" void fn_801BBE50(u32 param_1, u32 param_2, s32 param_3) {
     }
     lbl_802FF764 = param_2 & ~0x1f;
     lbl_802FE960 = -1;
-    lbl_802FF760 = (lbl_802FF758 + param_3 * 12 + 0x1f) & ~0x1f;
+    lbl_802FF760 = (lbl_802FF758 + size + 0x1f) & ~0x1f;
 }
 
 extern "C" s32 fn_801BBEC0(u32 param_1, u32 param_2) {
-    u32* block = (u32*)((param_1 + 0x1f) & ~0x1f);
-    u32* entry = (u32*)lbl_802FF758;
-    s32 i;
     s32 count = lbl_802FF75C;
+    u32* entry = (u32*)lbl_802FF758;
+    u32* block = (u32*)((param_1 + 0x1f) & ~0x1f);
+    s32 i;
     for (i = 0; i < count; i++) {
-        if ((s32)entry[0] >= 0) {
+        if ((s32)entry[0] < 0) {
             entry[0] = (param_2 & ~0x1f) - (u32)block;
             block[0] = 0;
             block[1] = 0;
