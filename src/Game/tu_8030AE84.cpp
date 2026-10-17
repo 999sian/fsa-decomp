@@ -1,4 +1,7 @@
 #include "types.h"
+#include "sdk/stl/float.h"
+
+extern "C" f32 sqrtf(f32 x);
 
 extern "C" int fn_8022EA0C(int);
 extern "C" int fn_8023DE58(int);
