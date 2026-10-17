@@ -45,7 +45,15 @@ struct YasiDrawParam {
     }
 };
 struct Rgba802D {
+    Rgba802D() {}
+    Rgba802D(Rgba802D* p) { *this = *p; }
+    Rgba802D(u8 r_, u8 g_, u8 b_, u8 a_) { r = r_; g = g_; b = b_; a = a_; }
     u8 r, g, b, a;
+};
+struct YasiMgr {
+    u8 flag(u32 i) { return mFlags[i]; }
+    u8 pad[0x131df];
+    u8 mFlags[1];
 };
 extern const char lbl_8046E100[];
 extern "C" const f32 lbl_80540ECC;
@@ -62,7 +70,7 @@ extern "C" s32 fn_8023CB24(s32 holder);
 extern "C" s32 fn_8023CA88(s32 holder);
 extern "C" s32 fn_801F02BC(void* p, const char* name, s32 id, void* param, s32 a, s32 b, s32 c, f32 f1, f32 f2);
 extern "C" s32 fn_802D6A9C(void);
-extern "C" void fn_80158B5C(void* a, s32 b, void* c, void* d, f32 f);
+extern "C" void fn_80158B5C(void* a, u32 b, void* c, Rgba802D d, f32 f);
 struct Vec3f_802D { float x, y, z; };
 struct VObj_802D {
     virtual void m0();
@@ -134,7 +142,8 @@ extern "C" void fn_8030C210(void*, void*);
 extern "C" u8 lbl_8053AAF8[];
 extern "C" void fn_802D1FEC(void* this_) {
     char* p = (char*)this_;
-    s32 flag = 0;
+
+    *(u8*)(p + 0x254) = 0xff;
     if (*(u8*)(p + 0xc4) != 0) {
         f32* v = fn_8023E7B0(*(s32*)(p + 0xc8));
         *(f32*)(p + 0xc) = v[0];
@@ -142,8 +151,52 @@ extern "C" void fn_802D1FEC(void* this_) {
         *(f32*)(p + 0x14) = v[2];
         *(s32*)(p + 4) = fn_8023DE58(*(s32*)(p + 0xc8));
         *(u8*)(p + 0x254) = fn_8023BCD4(*(s32*)(p + 0xc8));
-        *(u8*)(p + 0x254) = 0xff;
+        if (*(s32*)(p + 0x234) == 1) {
+            *(s32*)(p + 0x250) -= 1;
+            if (*(s32*)(p + 0x250) == 0) {
+                *(s32*)(p + 0x250) = 4;
+                *(s32*)(p + 0x23c) += 1;
+                if (*(s32*)(p + 0x23c) >= 3) {
+                    *(s32*)(p + 0x23c) = 0;
+                }
+            }
+            if (*(s32*)(p + 4) >= 8) {
+                *(s32*)(p + 0x238) = *(s32*)(p + 0x23c) + 2;
+            } else {
+                *(s32*)(p + 0x238) = 2;
+            }
+        }
+        if (*(s32*)(p + 0x234) == 1) {
+            f32 x = *(f32*)(p + 0xc);
+            f32 y = *(f32*)(p + 0x18);
+            if (x == y && *(f32*)(p + 0x10) == *(f32*)(p + 0x1c)) {
+                if (*(s32*)(p + 0x244) != 0) {
+                    if (*(s32*)(p + 0x230) != 0) {
+                        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(
+                            *(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x230));
+                        *(s32*)(p + 0x230) = 0;
+                    }
+                    *(s32*)(p + 0x230) = fn_8013CC50(*(s32*)(p + 4), p + 0xc, 1.0f, 0x1a8, 0, 0, 0, 0, 1);
+                    *(s32*)(p + 0x244) = 0;
+                }
+            }
+        }
+        if (*(s32*)(p + 0x230) != 0) {
+            fn_8013CB44(*(s32*)(p + 0x230), p + 0xc, 0, 1, 1);
+            *(u8*)(*(s32*)(p + 0x230) + 0xbb) = *(u8*)(p + 0x254);
+        }
+        return;
     }
+    if (*(u8*)((char*)fn_802D6A9C() + 0x10000 + *(s32*)(p + 4) + 0x31df) == 0) {
+        *(f32*)(p + 0x44) += 1.0f;
+    }
+    if (*(s32*)(p + 0x24c) == 0) {
+        *(f32*)(p + 0x10) -= *(f32*)(p + 0x14);
+        *(f32*)(p + 0x14) = 0.0f;
+        *(f32*)(p + 0x44) = 0.0f;
+        *(s32*)(p + 0x24c) = 1;
+    }
+    *(f32*)(p + 0x40) += 1.0f;
 }
 
 extern "C" char lbl_804A9428[];
