@@ -808,17 +808,15 @@ extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   s32 sel;
   s32 i;
   s32 idx = *out;
-  if (idx < 0 || idx < 4) {
-    if (idx < 0) {
-      sel = idx;
-    }
+  if (idx < 0 || idx >= 4) {
+    sel = idx;
+  } else {
+    sel = idx;
     for (i = 0; i < 4; ++i) {
       if (fn_8022E438(i, idx)) {
         sel = i;
       }
     }
-  } else {
-    sel = idx;
   }
   *out = sel;
   f32 v = lbl_8053C9B4;
