@@ -835,6 +835,8 @@ extern "C" void fn_8017A948(void) {
 
 extern "C" void fn_8017A968(void) {}
 
+extern "C" void fn_8017A96C(void) {}
+
 extern "C" void* fn_8017AA68(u32* self, int a, int b, int c) {
     fn_80176550(self);
     *(void**)self = lbl_80298DF0;
@@ -2367,9 +2369,8 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
-    void* b = lbl_802994F0;
     *(void**)ptr = lbl_80299504;
-    *(void**)ptr = b;
+    *(void**)ptr = lbl_802994F0;
 }
 
 extern "C" void fn_80178990(void);
