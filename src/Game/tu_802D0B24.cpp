@@ -53,6 +53,13 @@ extern "C" s32 fn_8023CA88(s32 holder);
 extern "C" s32 fn_801F02BC(void* p, const char* name, s32 id, void* param, s32 a, s32 b, s32 c, f32 f1, f32 f2);
 extern "C" const f32 lbl_80540EAC;
 extern "C" const f32 lbl_80540EA8;
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void*, u32, u32, void*, u32, s32, s32);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" void fn_8013CC50(u32, void*, f32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_801F0E34(void*, u32, s32);
+extern "C" u8 fn_802DE9A0(void);
+extern "C" u8 fn_802DEB58(void);
 
 struct Vtable802D0B84 {
     virtual void m0();
