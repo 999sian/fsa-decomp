@@ -79,11 +79,10 @@ extern "C" void fn_800A77AC(u32* param_1, u8* param_2) {
 }
 
 extern "C" s32 fn_800A7BF8(u8* p) {
-    u8 st = p[0x3d2];
-    if (st == 2) {
+    switch (p[0x3d2]) {
+    case 2:
         return 1;
-    }
-    if (st == 1) {
+    case 1:
         return fn_800A7C3C(p);
     }
 }
