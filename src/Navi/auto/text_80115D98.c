@@ -10,8 +10,8 @@ u32 lbl_802FF230;
 extern u32 lbl_802FF228;
 extern u32 lbl_802FF22C;
 extern u32 lbl_802FF230;
-extern "C" f64 fn_801E9FA0(void);
-s16 fn_80115D98(f64 a)
+extern "C" f64 fn_801E9FA0(f64 a, f64 b);
+extern "C" s16 fn_80115D98(f64 a)
 {
     f32 f;
     s32 v;
