@@ -44,6 +44,7 @@ extern "C" void* fn_801F666C(void* mgr, s32 id);
 extern "C" u8 fn_801CC8E4(void* actor);
 extern "C" const f32 lbl_8053F9D4;
 extern "C" const f32 lbl_8053F9D8;
+extern "C" void* fn_802D6A9C();
 struct FobrVec { f32 x, y, z; };
 
 // ---- Fobr_ctor_8020BE40.cpp ----
