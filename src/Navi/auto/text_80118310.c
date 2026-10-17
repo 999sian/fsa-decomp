@@ -222,9 +222,9 @@ extern "C" void* fn_8011935C(u8* self) {
     return self;
 }
 
-extern "C" void* fn_8011939C(u8* self) {
+extern "C" void* fn_8011939C(u8* self, u16* table) {
     *(void**)self = lbl_80286A4C;
-    fn_801193D8(self, 0);
+    fn_801193D8(self, table);
     return self;
 }
 
