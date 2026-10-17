@@ -506,6 +506,58 @@ extern "C" s32 fn_801CF798(u8* this_, s32 idx, s32 dir) {
     return arr[1 - i];
 }
 
+extern "C" u8 fn_801CFA70(ItemBase* this_, f32* a, f32* b, s32 idx) {
+    f32 vec[3];
+    u8* mgr = fn_802D6A9C();
+    f32* r;
+    if (idx < 8) {
+        r = (f32*)(mgr + 0xcc);
+    } else {
+        r = (f32*)(mgr + 0xdc);
+    }
+    if (a[0] < r[0] || a[1] < r[1] || a[0] >= r[2] || a[1] >= r[3] || b[0] < r[0] || b[1] < r[1] || b[0] >= r[2] || b[1] >= r[3]) {
+        return 1;
+    }
+    f32 dx = b[0] - a[0];
+    f32 dy = b[1] - a[1];
+    f32 len2 = dx * dx + dy * dy;
+    f32 len = sqrt(len2);
+    if (len <= lbl_8053EFC4) {
+        vec[0] = a[0];
+        vec[1] = a[1];
+        vec[2] = lbl_8053EFC4;
+        return this_->v17(idx, vec);
+    }
+    if (len2 > FLT_EPSILON * lbl_8053EFE0) {
+        f32 inv = 1.0f / sqrt(len2);
+        dx *= inv;
+        dy *= inv;
+    }
+    s32 n = (s32)(lbl_8053EFF8 * len) + 1;
+    dx *= lbl_8053EFDC;
+    dy *= lbl_8053EFDC;
+    f32 pos[3];
+    pos[0] = a[0];
+    pos[1] = a[1];
+    pos[2] = lbl_8053EFC4;
+    u8 result = 0;
+    for (s32 i = 0; i < n; i++) {
+        if (this_->v17(idx, pos)) {
+            result = 1;
+            break;
+        }
+        pos[0] += dx;
+        pos[1] += dy;
+    }
+    if (result == 0) {
+        vec[0] = b[0];
+        vec[1] = b[1];
+        vec[2] = lbl_8053EFC4;
+        result = this_->v17(idx, vec);
+    }
+    return result;
+}
+
 extern "C" u8 fn_801CFD68(f32 v);
 extern const f32 lbl_8053EFFC;
 extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
@@ -631,6 +683,9 @@ extern "C" s16 fn_801D02E0(u8* this_, const Vec& pos) {
 
 extern "C" u8 fn_801CCFE4(u32 id);
 extern "C" u32 fn_801F320C(u8* this_, u32 id);
+extern "C" s32 fn_8023DE58(s32 id);
+extern "C" s32 fn_8022CAF8(s32 id);
+extern "C" u8 fn_8022F514(s32 id);
 extern "C" s32 fn_8023DE58(s32 id);
 extern "C" s32 fn_8022CAF8(s32 id);
 extern "C" u8 fn_8022F514(s32 id);
