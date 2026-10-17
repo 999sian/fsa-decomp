@@ -83,8 +83,15 @@ extern "C" void* fn_80196834(char* this_, s16 freeFlag) {
     return this_;
 }
 
-extern "C" void fn_8013CC50(u32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
+extern "C" s32 fn_8013CC50(u32 id, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, f32 g);
 extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" s32 fn_8022F3DC(s32 i);
+extern "C" void fn_8022CA6C(s32 a, s32 b, s32 c);
+extern "C" u8 fn_802317F0(s32 a, u32 b, void* c, void* d, s32 e);
+extern f32 lbl_8053E298;
+extern u32 lbl_804C1BC0[];
+extern u8 lbl_804C1BD0[];
 struct GnonTimers { u8 pad[0x234]; s32 t[10]; };
 
 extern "C" void fn_80192BD8(char* this_) {
