@@ -201,7 +201,7 @@ extern "C" void fn_801E90C4(char* p) {
         }
     } break;
     case 1:
-        fn_801E9224();
+        fn_801E9224(p);
         fn_8013CB44(*(void**)(p + 0x3c0), p + 0xc, 0, -2, 1);
         fn_801F0E34(p, 0x3003e, 0);
         if (*(u32*)(p + 0x230) & 0x4000) {
