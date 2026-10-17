@@ -17,6 +17,10 @@ extern "C" void fn_8042C9F8();
 extern "C" void fn_8042C79C();
 extern "C" void fn_8042B1DC();
 extern "C" void fn_8042CD24();
+extern "C" s32 fn_8042BF54(u8* info, void* h);
+extern void* lbl_8053AE28;
+extern void* lbl_8053AE34;
+extern u8 lbl_8048F270[64];
 
 struct Obj8042E1E4 { u8 pad[0x1c]; u16 m1C; u8 pad2[2]; u32 m20; };
 
@@ -779,8 +783,9 @@ extern "C" u8 fn_80428AC8(s32 frameNum, s32 playFlag, s32 audioTrack) {
                 u32* tbl = (u32*)lbl_8052ACA0;
                 u32 a = *tbl++;
                 u32 b = *tbl;
+                u32 mdo = lbl_8052AAD0.header.movieDataOffsets;
                 lbl_8052AAD0.initReadFrame = frameNum;
-                lbl_8052AAD0.initOffset = a + lbl_8052AAD0.header.movieDataOffsets;
+                lbl_8052AAD0.initOffset = mdo + a;
                 lbl_8052AAD0.initReadSize = b - a;
             } else {
                 return 0;
@@ -1227,13 +1232,17 @@ extern "C" void fn_80429BE4(u8* yImage, u8* uImage, u8* vImage, s16 x, s16 y, s1
     GXInitTexObjLOD(&tobj2, GX_NEAR, GX_NEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
     GXLoadTexObj(&tobj2, GX_TEXMAP2);
     GXBegin(GX_QUADS, GX_VTXFMT7, 4);
-    fn_80429DF4(x, y, 0);
+    s32 x0 = x;
+    s32 y0 = y;
+    fn_80429DF4(x0, y0, 0);
     fn_80429DE4(0, 0);
-    fn_80429DF4(x + polygonWidth, y, 0);
+    s32 x1 = x0 + polygonWidth;
+    fn_80429DF4(x1, y0, 0);
     fn_80429DE4(1, 0);
-    fn_80429DF4(x + polygonWidth, y + polygonHeight, 0);
+    s32 y1 = y0 + polygonHeight;
+    fn_80429DF4(x1, y1, 0);
     fn_80429DE4(1, 1);
-    fn_80429DF4(x, y + polygonHeight, 0);
+    fn_80429DF4(x0, y1, 0);
     fn_80429DE4(0, 1);
     fn_80429DE0();
 }
@@ -1511,7 +1520,7 @@ extern "C" void fn_8042A970(VideoThreadObj* t, u8* bufPtr) {
     THPReadBuffer readBuffer;
     s32 tmp;
     s32 readSize;
-    u32 frame;
+    s32 frame;
     BOOL old;
     readBuffer.ptr = bufPtr;
     readSize = lbl_8052AAD0.initReadSize;
@@ -1777,6 +1786,99 @@ extern "C" u8 fn_8042B148() {
     fn_8042B1A8();
     lbl_8053AE78 = 1;
     return 1;
+}
+
+extern void* lbl_8053AE24;
+extern void* lbl_8053AE30;
+extern u8 lbl_8048F270[64];
+extern "C" s32 fn_8042BF54(u8* info, void* h);
+extern "C" void fn_8042C1CC(u8* info, s16* block) {
+    s32 t;
+    s16 dc;
+    s16 diff;
+
+    __dcbz(block, 0);
+    t = fn_8042BF54(info, lbl_8053AE24);
+    __dcbz(block, 32);
+    diff = 0;
+    __dcbz(block, 64);
+
+    if (t) {
+        s32 cnt = *(s32*)(info + 0x6a4);
+        u32 tmp = 33 - cnt;
+        u32 cw = *(u32*)(info + 0x6a0);
+        s32 v = t - tmp;
+        u32 code;
+        if (v <= 0) {
+            *(s32*)(info + 0x6a4) = cnt + t;
+            code = (cw << (cnt - 1)) >> (32 - t);
+        } else {
+            u32* p;
+            u32 hi = cw << (cnt - 1);
+            p = *(u32**)(info + 0x69c);
+            cw = *++p;
+            *(u32*)(info + 0x6a0) = cw;
+            hi = (cw >> tmp) + hi;
+            *(u32**)(info + 0x69c) = p;
+            *(s32*)(info + 0x6a4) = v + 1;
+            code = hi >> (32 - t);
+        }
+        diff = code;
+        if ((s32)__cntlzw(diff) > 32 - t) {
+            diff = (-1 << t) + code + 1;
+        }
+    }
+
+    __dcbz(block, 96);
+    {
+        s32 k = 1;
+        dc = *(s16*)(info + 0x68a) + diff;
+        *(s16*)(info + 0x68a) = dc;
+        block[0] = dc;
+
+        for (; k < 64; k++) {
+            s32 size;
+            s32 run;
+            t = fn_8042BF54(info, lbl_8053AE30);
+            size = t & 15;
+            run = t >> 4;
+            if (size) {
+                s32 cnt;
+                u32 tmp;
+                u32 cw;
+                s32 v;
+                u32 code;
+                k += run;
+                cnt = *(s32*)(info + 0x6a4);
+                tmp = 33 - cnt;
+                cw = *(u32*)(info + 0x6a0);
+                v = size - tmp;
+                if (v <= 0) {
+                    *(s32*)(info + 0x6a4) = cnt + size;
+                    code = (cw << (cnt - 1)) >> (32 - size);
+                } else {
+                    u32* p;
+                    u32 hi = cw << (cnt - 1);
+                    p = *(u32**)(info + 0x69c);
+                    cw = *++p;
+                    *(u32*)(info + 0x6a0) = cw;
+                    hi = (cw >> tmp) + hi;
+                    *(u32**)(info + 0x69c) = p;
+                    *(s32*)(info + 0x6a4) = v + 1;
+                    code = hi >> (32 - size);
+                }
+                if ((s32)__cntlzw(code) > 32 - size) {
+                    code = (-1 << size) + code + 1;
+                }
+                block[lbl_8048F270[k]] = code;
+            } else {
+                if (run != 15) {
+                    break;
+                }
+                k += 15;
+            }
+        }
+    }
 }
 
 extern "C" void fn_8042CC50(u32 param_1, u32 param_2, u32 param_3)
