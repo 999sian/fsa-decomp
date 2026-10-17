@@ -89,6 +89,17 @@ extern "C" void fn_802CBAFC(u8* this_) {
     }
 }
 
+struct OnofActor : Actor {
+    /* 0x230 */ s32 field_230;
+    /* 0x234 */ s32 field_234;
+    /* 0x238 */ s32 field_238;
+    /* 0x23c */ s32 field_23C;
+    /* 0x240 */ s32 field_240;
+    /* 0x244 */ s32 field_244;
+    /* 0x248 */ s32 field_248;
+    /* 0x24c */ s32 field_24C;
+};
+
 extern void* lbl_8053AAF8;
 extern f32 lbl_80540DB0;
 extern f32 lbl_80540DC4;
