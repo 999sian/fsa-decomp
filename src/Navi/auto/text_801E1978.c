@@ -282,6 +282,9 @@ extern "C" s64 fn_801E2F18(s32 n, s32 d) {
     return ret.v;
 }
 
+extern "C" void fn_801E3068(u8* p);
+extern "C" void fn_801E309C(void* p, u32* n);
+
 extern "C" int fn_801E2F8C(int param_1) {
     if (param_1 >= 0) {
         return param_1;
