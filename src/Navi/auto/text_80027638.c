@@ -726,7 +726,7 @@ extern "C" int fn_80030390(unsigned char c) {
 
 extern "C" void fn_80030534(void* node_, int a, int b) {
     unsigned char* self = *(unsigned char**)(lbl_802BB0FC + 0xf0);
-    unsigned char* next;
+    unsigned char* p;
     unsigned int* node = (unsigned int*)node_;
     if (self == 0) {
         return;
@@ -734,13 +734,12 @@ extern "C" void fn_80030534(void* node_, int a, int b) {
     node[0] = a;
     node[1] = b;
     node[2] = 0;
-    next = *(unsigned char**)(self + 0x6e0);
-    if (next != 0) {
-        self = next;
-        while ((next = *(unsigned char**)(self + 0x8)) != 0) {
-            self = next;
+    p = *(unsigned char**)(self + 0x6e0);
+    if (p != 0) {
+        while (*(unsigned char**)(p + 0x8) != 0) {
+            p = *(unsigned char**)(p + 0x8);
         }
-        *(unsigned int**)(self + 0x8) = node;
+        *(unsigned int**)(p + 0x8) = node;
         return;
     }
     *(unsigned int**)(self + 0x6e0) = node;
