@@ -26,6 +26,7 @@ extern "C" s32 fn_802F9908(void* a, s32 b, s32 c);
 extern "C" u8 fn_801EE3C0(u16 a);
 extern "C" void fn_80226CA8(s32 a, s32 b, f32* c);
 extern "C" u16 fn_8022461C(void* a, s32 b);
+extern "C" void* fn_802D6A9C(void);
 extern u16 lbl_8046CB88[];
 extern f32 lbl_80540B50;
 extern void* lbl_8053AB10;
