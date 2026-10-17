@@ -1092,6 +1092,31 @@ extern "C" void fn_80127F14(u8* self, u8* other) {
     fn_801DBA1C((s32)(*(f32*)(other + 0x60) * scale), 5);
 }
 
+extern "C" void fn_80127F58(char* p) {
+    u8* obj = *(u8**)p;
+    u32 c = *(u32*)(obj + 0x108);
+    u8* b = (u8*)&c;
+    u32 out;
+    b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
+    b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
+    b[2] = (((u32)b[2] * (obj[0xba] + 1)) >> 8) & 0xff;
+    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
+    out = c;
+    fn_801DE4F4(1, &out);
+}
+
+extern "C" void fn_80127FF4(char* p) {
+    u8* obj = *(u8**)p;
+    u32 c = *(u32*)(obj + 0x10c);
+    u8* b = (u8*)&c;
+    u32 out;
+    b[0] = (((u32)b[0] * (obj[0xbc] + 1)) >> 8) & 0xff;
+    b[1] = (((u32)b[1] * (obj[0xbd] + 1)) >> 8) & 0xff;
+    b[2] = (((u32)b[2] * (obj[0xbe] + 1)) >> 8) & 0xff;
+    out = c;
+    fn_801DE4F4(2, &out);
+}
+
 extern "C" void fn_80128548(char* p, char* q) {
     u8* obj = *(u8**)p;
     u32 c = *(u32*)(q + 0x90);
@@ -1969,6 +1994,29 @@ extern "C" s32 fn_80130AE8(u8* p) {
     }
     if ((*(u32*)(p + 0xf4) & 2) == 0) {
         *(s16*)(p + 0x104) = v + 1;
+    }
+    return 0;
+}
+
+extern "C" int fn_80130B28(u8* p) {
+    s32 n;
+    if (*(u32*)(p + 0xf4) & 0x100) {
+        return 1;
+    }
+    n = *(s32*)(p + 0x24);
+    if (n == 0) {
+        return 0;
+    }
+    if (n < 0) {
+        *(volatile u32*)(p + 0xf4) |= 8;
+        return (*(s32*)(p + 0xd0) + *(s32*)(p + 0xdc)) == 0;
+    }
+    if (*(u32*)(p + 0x100) >= (u32)n) {
+        *(volatile u32*)(p + 0xf4) |= 8;
+        if (*(u32*)(p + 0xf4) & 0x40) {
+            return 0;
+        }
+        return (*(s32*)(p + 0xd0) + *(s32*)(p + 0xdc)) == 0;
     }
     return 0;
 }
