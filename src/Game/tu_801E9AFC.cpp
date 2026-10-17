@@ -151,6 +151,22 @@ extern "C" void fn_801EA344(u8* param_1) {
     GXLoadTexObj((GXTexObj*)(param_1 + 0xf4), GX_TEXMAP0);
 }
 
+extern "C" void fn_801EA384(u8* param_1, u8 param_2) {
+    s32 i;
+
+    if (param_2) {
+        for (i = 0; i < 3; i++) {
+            *(f32*)(param_1 + 0x178 + i * 4) = fn_801CB270(lbl_804A5610[i], (GXTexObj*)(param_1 + 0xf4 + i * 0x20), (GXTlutObj*)(param_1 + 0x154 + i * 12));
+        }
+        param_1[0xf0] = 0;
+        fsaSlotClear((FsaSlot*)param_1);
+        fsaSlotClear((FsaSlot*)(param_1 + 0x78));
+    } else {
+        param_1[0xf0] ^= 1;
+        fsaSlotClear((FsaSlot*)(param_1 + param_1[0xf0] * 0x78));
+    }
+}
+
 extern "C" void fn_801EA594(u8* param_1) {
     s32 i;
     s32 count;
