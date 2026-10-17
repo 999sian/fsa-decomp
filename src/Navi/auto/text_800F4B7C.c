@@ -106,6 +106,17 @@ extern "C" void fn_80102E88(char* param_1) {
     }
 }
 
+extern "C" void fn_8010348C(u8*);
+extern "C" void fn_80103560(Unk80103560* p);
+extern "C" void fn_80103440(u8* p) {
+    if (p[0x525] == 1) {
+        fn_80103560((Unk80103560*)p);
+    } else {
+        p[0x525] = 1;
+    }
+    fn_8010348C(p);
+}
+
 extern "C" void fn_80103560(Unk80103560* p) {
     p->count = 0;
     p->objs[p->sel]->v7(0);
