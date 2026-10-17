@@ -168,7 +168,8 @@ extern "C" void fn_800D1EE8(NaviState_800D1EE8* p) {
 extern "C" void fn_800D2DC8(u8* p) {
     if (p[0x265] != 0) {
         *(s32*)(p + 0x260) = *(s32*)(p + 0x260) + 1;
-        s16 t = *(s16*)(*(u8**)(p + 0x25c) + 6);
+        u8* q = *(u8**)(p + 0x25c);
+        s16 t = *(s16*)(q + 6);
         if (*(s32*)(p + 0x260) >= t) {
             *(s32*)(p + 0x260) = *(s32*)(p + 0x260) - t;
         }
@@ -177,7 +178,28 @@ extern "C" void fn_800D2DC8(u8* p) {
     }
 }
 
-extern "C" void fn_800D2F3C(void* param_1, void* param_2) {
+extern "C" void fn_80178998(void* p);
+extern "C" void fn_800D2E48(u8* p) {
+    if (p[0x266] != 0) {
+        *(s32*)(p + 0xa0) = *(s32*)(p + 0xa0) + 1;
+        s16 t = *(s16*)(*(u8**)(p + 0x9c) + 6);
+        if (*(s32*)(p + 0xa0) >= t) {
+            *(s32*)(p + 0xa0) = *(s32*)(p + 0xa0) - t;
+        }
+        *(f32*)(*(u8**)(p + 0x9c) + 8) = (f32)*(s32*)(p + 0xa0);
+        fn_8017A4F8(*(void**)(p + 0xc));
+        *(s32*)(p + 0x138) = *(s32*)(p + 0x138) + 1;
+        t = *(s16*)(*(u8**)(p + 0x134) + 6);
+        if (*(s32*)(p + 0x138) >= t) {
+            *(s32*)(p + 0x138) = *(s32*)(p + 0x138) - t;
+        }
+        *(f32*)(*(u8**)(p + 0x134) + 8) = (f32)*(s32*)(p + 0x138);
+        void** slot = (void**)(p + ((s8*)p)[0x26e] * 4);
+        fn_80178998(slot[0x124 / 4]);
+    }
+}
+
+extern "C" s32 fn_800D2F3C(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
 
