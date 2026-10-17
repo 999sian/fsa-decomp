@@ -428,10 +428,9 @@ extern "C" void fn_80122D04(void* param_1) {
 extern "C" void* fn_80122D18(void* a, void* b, void* c) {
     void* r;
     void* p = lbl_802FF360;
-    void* q;
-    q = fn_80159BE0(fn_80122FB0((s32)a, (s32)b), 0, c);
+    void* q = fn_80159BE0(fn_80122FB0((s32)a, (s32)b), 0, c);
     r = q;
-    if (q != NULL) {
+    if (r != NULL) {
         r = fn_80122E40(q, a, b, 1);
     }
     *(u8**)((u8*)r + 0x28) = (u8*)q + 0x6c;
@@ -441,9 +440,10 @@ extern "C" void* fn_80122D18(void* a, void* b, void* c) {
 }
 #pragma pop
 extern "C" void* fn_80122DA8(void* a, void* b, void* c) {
-    void* r = b;
+    void* r;
     void* p = lbl_802FF360;
     void* q = (void*)fn_80122FC0((u32)c, (u32)a);
+    r = b;
     if (b != NULL) {
         r = fn_80122E40(b, a, q, 0);
     }
