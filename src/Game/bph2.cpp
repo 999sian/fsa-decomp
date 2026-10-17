@@ -58,6 +58,21 @@ extern f32 lbl_8053E0F8;
 extern f32 lbl_8053E130;
 extern f32 lbl_8053E140;
 extern f32 lbl_8053E1B4;
+extern f32 lbl_8053E104;
+extern f32 lbl_8053E0E4;
+extern f32 lbl_8053E0C8;
+extern f32 lbl_8053E0D0;
+extern f32 lbl_8053E0E0;
+extern f32 lbl_8053E124;
+extern f32 lbl_8053E168;
+extern f32 lbl_8053E16C;
+extern f32 lbl_8053E170;
+extern f32 lbl_8053E18C;
+extern s32 lbl_80539FC8;
+extern s32 lbl_80539FCC;
+extern s32 lbl_80539FD0;
+extern void* lbl_8053AF80;
+extern "C" void fn_80458F9C(void* a, s32 b);
 
 // BPH2 destructor
 extern "C" void* fn_8018D9D4(char* this_, s16 freeFlag) {
