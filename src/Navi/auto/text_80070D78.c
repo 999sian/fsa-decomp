@@ -192,6 +192,27 @@ extern "C" void fn_80071CD0(void) {
     fn_80071D8C();
 }
 
+extern "C" int fn_80071EF8(u8* p);
+#pragma push
+#pragma dont_inline on
+extern "C" int fn_80071CF0(u8* p) {
+    if ((*(u32*)(p + 0xf8) & 8) == 0) {
+        if (p != nullptr) {
+            fn_800175B8(p);
+            *(void**)(p + 0x250) = lbl_8027F6DC;
+            *(u32*)(p + 0x254) = 0;
+            *(void**)(p + 0x250) = lbl_8027FDCC;
+            *(u32*)(p + 0x25c) = 0;
+        }
+        *(u32*)(p + 0xf8) |= 8;
+    }
+    if ((u8)fn_800183AC(p, (void*)fn_80071CD0, 0)) {
+        return fn_80071EF8(p);
+    }
+    return 5;
+}
+#pragma pop
+
 extern "C" void fn_80071FE4(u8* p) {
     u8* q = *(u8**)(p + 0x24c);
     s16 rot[3];
