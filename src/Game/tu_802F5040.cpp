@@ -33,6 +33,10 @@ struct Tu802F5040Rect {
     s32 m0c;
 };
 
+struct Tu802F5040Mtx {
+    f32 v[12];
+};
+
 struct Tu802F5040Tbl {
     u8 pad0[0x28];
     u8* m_tbl[8];
@@ -792,12 +796,14 @@ extern "C" void fn_802F91AC(f32 f, f32* p, u8* o, u8* out) {
         return;
     }
     if (*(u32*)(o + 0x18) != 0) {
-        f32* src = *(f32**)(o + 0x18);
-        for (i = 0; i < 12; i++) {
-            m[i] = src[i];
+        PSMTXCopy(*(MtxPtr*)(o + 0x18), *(MtxPtr*)m);
+        if (lbl_805414F8 == m[0] && lbl_805414F8 == m[5] && lbl_805414F8 == m[10]) {
+            m[0] = lbl_80541518;
+            m[5] = lbl_80541518;
+            m[10] = lbl_80541518;
         }
     } else {
-        PSMTXIdentity(*(Mtx*)m);
+        PSMTXIdentity(*(MtxPtr*)m);
     }
     if (lbl_805414F8 != p[2] && o[0x1f] != 0) {
         s = 1.0f / (lbl_805414FC - (p[2] >= lbl_80541500 ? p[2] : lbl_80541500));
