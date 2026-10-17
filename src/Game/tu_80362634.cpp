@@ -9,6 +9,15 @@ extern "C" const char lbl_80474BFC[];
 extern "C" f32 lbl_80542B10;
 
 extern "C" void* fn_8013C824(void);
+extern "C" void* fn_801F856C(void);
+extern "C" u8 fn_801F2618(void* this_, void* out, s32 a);
+extern "C" const s32 lbl_80474B58[];
+extern "C" const s32 lbl_80474B68[];
+extern "C" f32 lbl_80542B28;
+extern "C" f32 lbl_80542B50;
+extern "C" f32 lbl_80542B58;
+extern "C" f32 lbl_80542BBC;
+extern "C" f32 lbl_80542BC0;
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
 extern "C" void* fn_804032E8(u32 type, const char* name);
 extern "C" void fn_802F745C(void* mgr, void* pos, void* tex, void* prm);
@@ -263,7 +272,7 @@ extern "C" void fn_80364340(char* self) {
         *(JGeometry::TVec3<f32>*)(self + 0xc) = saved;
         offs.z = lbl_80542B4C;
         u32 type = fn_801CD664(8) | 0x250000;
-        JGeometry::TVec3<f32> spawn = *(JGeometry::TVec3<f32>*)(self + 0xc);
+        JGeometry::TVec3<f32> spawn = saved;
         spawn.add(offs);
         Actor_CreateByID(fn_801F856C(), 0x52555059, *(u32*)(self + 4), (f32*)&spawn, type, -1, -1);
     }
@@ -319,6 +328,76 @@ extern "C" void fn_80364900(char* self) {
             *(f32*)(self + 0x3c) = lbl_80542B54;
             *(s32*)(self + 0x26c) = 0x38e;
             *(s32*)(self + 0x264) = 0;
+        }
+    }
+}
+
+extern "C" void fn_80364A88(char* self) {
+    char* tbl = (char*)lbl_80474320;
+    if (*(s32*)(self + 0x248) == 0) {
+        f32 mag = PSVECMag((Vec*)(self + 0x3c));
+        JMathInlineVEC::PSVECAdd((Vec*)(self + 0xc), (Vec*)(self + 0x3c), (Vec*)(self + 0xc));
+        *(f32*)(self + 0x2f8) += mag;
+        if (*(f32**)(self + 0x2f4) != 0) {
+            if (*(f32*)(self + 0x2f8) >= **(f32**)(self + 0x2f4)) {
+                f32 zero = lbl_80542B0C;
+                *(f32*)(self + 0x2f8) = zero;
+                *(s32*)(self + 0x2f4) += 4;
+                *(s32*)(self + 0x23c) += 1;
+                if (*(s32*)(self + 0x23c) == 1) {
+                    char* base = tbl + 0x228;
+                    *(f32*)(self + 0x3c) = zero;
+                    *(f32*)(self + 0x40) = lbl_80542B5C * mag;
+                    *(f32*)(self + 0x44) = zero;
+                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16 + 4);
+                } else if (*(s32*)(self + 0x23c) == 2) {
+                    char* base = tbl + 0x228;
+                    *(f32*)(self + 0x3c) = mag;
+                    *(f32*)(self + 0x40) = zero;
+                    *(f32*)(self + 0x44) = zero;
+                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16 + 0xc);
+                } else if (*(s32*)(self + 0x23c) == 3) {
+                    char* base = tbl + 0x228;
+                    *(f32*)(self + 0x3c) = zero;
+                    *(f32*)(self + 0x40) = mag;
+                    *(f32*)(self + 0x44) = zero;
+                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16);
+                } else if (*(s32*)(self + 0x23c) == 4) {
+                    char* base = tbl + 0x228;
+                    *(f32*)(self + 0x3c) = mag;
+                    *(f32*)(self + 0x40) = zero;
+                    *(f32*)(self + 0x44) = zero;
+                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 16 + 0xc);
+                } else {
+                    char* base = tbl + 0x228;
+                    *(s32*)(self + 0x26c) = *(s32*)(base + *(s32*)(self + 0x238) * 4 + 0x40);
+                    *(s32*)(self + 0x260) = 0xf;
+                    *(s32*)(self + 0x25c) = 0xf;
+                    *(s32*)(self + 0x264) = *(s32*)(self + 0x238) == 1;
+                    *(f32*)(self + 0x44) = zero;
+                    *(f32*)(self + 0x40) = zero;
+                    *(f32*)(self + 0x3c) = zero;
+                    *(s32*)(self + 0x2f4) = 0;
+                }
+            }
+            if (*(s32*)(self + 0x25c) != 0) {
+                return;
+            }
+            *(s32*)(self + 0x268) += 1;
+            if (*(s32*)(self + 0x268) >= 4) {
+                *(s32*)(self + 0x268) = 0;
+            }
+            if (*(s32*)(self + 0x238) == 1) {
+                *(s32*)(self + 0x25c) = *(s32*)(tbl + 0x758 + *(s32*)(self + 0x268) * 4);
+            } else {
+                *(s32*)(self + 0x25c) = *(s32*)(tbl + 0x768 + *(s32*)(self + 0x268) * 4);
+            }
+            *(s32*)(self + 0x264) = *(s32*)(tbl + 0x748 + *(s32*)(self + 0x268) * 4);
+        } else {
+            if (*(s32*)(self + 0x238) != 1 && *(s32*)(self + 0x25c) == 0) {
+                *(s32*)(self + 0x25c) = *(s32*)(self + 0x260);
+                *(s32*)(self + 0x264) ^= 1;
+            }
         }
     }
 }
