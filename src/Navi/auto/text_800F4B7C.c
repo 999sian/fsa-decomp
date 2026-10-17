@@ -110,7 +110,7 @@ extern char lbl_802BB0FC[];
 extern f32 lbl_80301204;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
-extern "C" void fn_800F4D38(void) {}
+extern "C" void fn_800F4D38(void* p) {}
 
 extern "C" void fn_800F7DAC(void) {}
 
