@@ -3104,6 +3104,15 @@ extern "C" void fn_800DDDD0(u8* this_, s32 idx, const u8* src) {
     this_[idx * 8 + 0x60] = src[7];
 }
 
+extern "C" void fn_800DDE0C(u8* this_, s32 idx, const u8* src) {
+    this_[idx * 8 + 0x5a] = src[1];
+    this_[idx * 8 + 0x5b] = src[2];
+    this_[idx * 8 + 0x5c] = src[3];
+    this_[idx * 8 + 0x5e] = src[5];
+    this_[idx * 8 + 0x5f] = src[6];
+    this_[idx * 8 + 0x60] = src[7];
+}
+
 extern "C" int fn_800DDE48(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x59;
 }
