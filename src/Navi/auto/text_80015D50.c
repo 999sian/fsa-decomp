@@ -164,6 +164,70 @@ extern "C" s32 fn_80016320(void* param_1) {
     return result;
 }
 
+extern "C" s32 fn_800163A0(void* param_1) {
+    u8* p = (u8*)param_1;
+    s32 result;
+    if (!fn_801BE5B4(p + 0x1fb0)) {
+        return 0xe;
+    }
+    switch (*(s32*)(p + 0x1fac)) {
+    case 0:
+        result = 2;
+        break;
+    case 1:
+        result = 1;
+        break;
+    case 2:
+        result = 3;
+        break;
+    case 3:
+        result = 4;
+        break;
+    case 4:
+        result = 5;
+        break;
+    case 5:
+        result = 0;
+        break;
+    case 6:
+        result = 7;
+        break;
+    case 7:
+        result = 6;
+        break;
+    case 8:
+        result = 0xb;
+        break;
+    case 9:
+        result = 0xc;
+        break;
+    case 10:
+        result = 9;
+        break;
+    case 11:
+        result = 0xa;
+        break;
+    case 12:
+        result = 8;
+        break;
+    case 13:
+        result = 0xe;
+        break;
+    }
+    fn_801BE47C(p + 0x1fb0);
+    return result;
+}
+
+extern "C" void fn_80016484(void* param_1) {
+    u8* p = (u8*)param_1;
+    u32 uVar1 = fn_801D6CC4(p[0x1fa4]);
+    if (uVar1 == 0) {
+        *(s32*)(p + 0x1fac) = 5;
+    } else {
+        fn_80016814(p);
+    }
+}
+
 extern "C" void fn_801BE47C(void*);
 extern "C" BOOL fn_801BE5B4(void*);
 extern "C" s32 fn_800164D0(void* param_1) {
@@ -179,6 +243,39 @@ extern "C" s32 fn_800164D0(void* param_1) {
         fn_801BE47C(p + 0x1fb0);
     }
     return result;
+}
+
+extern "C" s32 fn_801D5B34(u8, void*, s32*);
+extern "C" BOOL fn_80016650(void*);
+extern "C" BOOL fn_80016730(void*);
+extern "C" s32 fn_80016790(void*);
+extern "C" void fn_80016540(void* param_1) {
+    u8* p = (u8*)param_1;
+    u8 buf[4];
+    s32 type;
+    if (fn_801D5B34(p[0x1fa4], buf, &type) == -2) {
+        *(s32*)(p + 0x1fac) = 10;
+    } else if (type != 0x2000) {
+        *(s32*)(p + 0x1fac) = 11;
+    } else if (fn_80016650(p)) {
+        if (fn_80016730(p)) {
+            *(s32*)(p + 0x1fac) = 1;
+        } else {
+            switch (fn_80016790(p)) {
+            case 3:
+                break;
+            case 0:
+                *(s32*)(p + 0x1fac) = 2;
+                break;
+            case 1:
+                *(s32*)(p + 0x1fac) = 8;
+                break;
+            case 2:
+                *(s32*)(p + 0x1fac) = 9;
+                break;
+            }
+        }
+    }
 }
 
 extern "C" void fn_801D647C(u8);
