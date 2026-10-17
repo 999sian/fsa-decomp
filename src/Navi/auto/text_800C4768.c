@@ -8,6 +8,10 @@ struct VObj_800A1A64 {
     virtual void v5();
 };
 
+struct Color_800C5104 {
+    u8 r, g, b, a;
+};
+
 struct VObj_800C56A0 {
     virtual void v0();
     virtual void v1();
@@ -292,15 +296,13 @@ extern "C" s32 fn_800C56A0(u8* p, s16 a, u8 b, s32 c, f32 d, f32 e) {
     if (a < 0) {
         return 0;
     }
-    if (a > b) {
+    if (b < a) {
         return 1;
     }
     f32 t = fn_800C5824(p, b, a);
     f32 v = *fn_80177B10(*(void**)(p + 0x10));
     f32 lerp = t * (e - d);
-    void* obj = *(void**)(p + 0x10);
-    void (*fn)(void*, f32, f32) = *(void (**)(void*, f32, f32))(*(u8**)obj + 0x10);
-    fn(obj, v, *(f32*)(p + 0x14) + (d + lerp));
+    ((VObj_800C56A0*)*(void**)(p + 0x10))->v2(v, *(f32*)(p + 0x14) + (d + lerp));
     return 0;
 }
 
