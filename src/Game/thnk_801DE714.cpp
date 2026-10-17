@@ -117,6 +117,8 @@ extern "C" u8 fn_801E1DB4(void* this_) {
     return thnk_isIdleSub(this_);
 }
 
+extern "C" s32 fn_801CD664(s32 kind);
+
 extern "C" s32 fn_801E1DE8(void* this_) {
     return fn_801CCF7C();
 }
@@ -174,6 +176,47 @@ extern "C" void fn_801E2080(void* this_) {
     *(f32*)(p + 0x258) = zero;
     fn_801D2608(p + 0x270, lbl_804A51A0, 0x11);
     fn_801D22DC(p + 0x270, 0, 2, 0);
+}
+
+extern "C" void* fn_801E2180(void* this_, s16 freeFlag) {
+    extern u8 lbl_8050EC80[];
+    char* p = (char*)this_;
+    if (this_ != 0) {
+        *(void**)p = lbl_804A51E4;
+        if (*(s32*)(p + 0x2bc) >= 0) {
+            s32 n = *(s32*)(p + 0x2c0);
+            if (n > 0) {
+                if ((*(u32*)(p + 0x230) & 0x80000) == 0) {
+                    char* e = (char*)lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200;
+                    *(s32*)(e + 0x2c) += n;
+                    e = (char*)lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 200;
+                    if (*(s32*)(e + 0x2c) < 0) {
+                        *(s32*)(e + 0x2c) = 0;
+                    }
+                }
+                *(s32*)(p + 0x2c0) = 0;
+            }
+            void* tmp = fn_801F856C();
+            void* obj = fn_801F666C(tmp, *(s32*)(p + 0x2bc));
+            if (obj != 0) {
+                *(u8*)((char*)obj + 0x11c) = 0;
+            }
+            *(s32*)(p + 0x2bc) = -1;
+        }
+        if (this_ != 0) {
+            *(void**)p = lbl_804A4808;
+            if (p + 0x270 != 0) {
+                if (p + 0x294 != 0) {
+                    *(void**)(p + 0x294) = lbl_8049CC34;
+                }
+            }
+            __dt__5ActorFv(this_, 0);
+        }
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
 }
 
 extern "C" void* fn_801E22A4(void* this_) {
