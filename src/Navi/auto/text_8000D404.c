@@ -398,6 +398,20 @@ extern "C" void fn_8000EF28(u32* p) {
     *p = lbl_80301D04;
 }
 
+extern "C" u8 lbl_80202628[];
+extern "C" void fn_8000EF34(u32* param_1) {
+    *param_1 = 0;
+    *param_1 = (*param_1 & 0xfffffffc) | lbl_80202628[0];
+    *param_1 = (*param_1 & 0xfffffff3) | ((lbl_80202628[1] & 0xff) << 2);
+    *param_1 = (*param_1 & 0xffffff8f) | ((lbl_80202628[2] & 0xff) << 4);
+    *param_1 = (*param_1 & 0xffffe1ff) | ((lbl_80202628[3] & 0xff) << 9);
+    *param_1 = (*param_1 & 0xffff1fff) | ((lbl_80202628[4] & 0xff) << 13);
+    *param_1 = (*param_1 & 0xfff8ffff) | ((lbl_80202628[5] & 0xff) << 16);
+    *param_1 = (*param_1 & 0xffefffff) | ((lbl_80202628[6] & 0xff) << 20);
+    *param_1 = (*param_1 & 0xfff7ffff) | ((lbl_80202628[7] & 0xff) << 19);
+    *param_1 = (*param_1 & 0xfffffe7f) | ((lbl_80202628[8] & 0xff) << 7);
+}
+
 extern "C" u8 lbl_80301D1C[2];
 extern "C" void* fn_8000F018(void* self) {
     fn_8000F080(self, lbl_80202614);
