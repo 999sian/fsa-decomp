@@ -2,6 +2,7 @@
 #include "Game/SinitPoolChain.h"
 
 extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
+extern "C" void* fn_8011921C(void);
 extern "C" void* fn_8011871C(void* a, s32 b, s32 c);
 extern "C" void fn_8030C7C4(void* mgr, f32* pos, f32 f);
 extern u8* lbl_8053AB10;
