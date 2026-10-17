@@ -36,6 +36,10 @@ extern "C" void fn_80198828(u8*);
 extern "C" void fn_80197EB0(u8*);
 extern "C" void fn_801979C4(u8*);
 extern "C" void fn_801976E8(u8*);
+extern "C" void fn_801F06F0(u8* a, void* p2, void* p3, const void* p4, void* p5, f32 f6, f32 f7);
+extern "C" void fn_801F02BC(u8* a, void* p2, void* p3, void* p4, void* p5, void* p6, void* p7, f32 f8, f32 f9);
+extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
+
 struct UnkDrawRec {
     u8 field_00[0x10];
     u32 field_10;
