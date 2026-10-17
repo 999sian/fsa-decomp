@@ -16,6 +16,7 @@ extern "C" const f32 lbl_80542880;
 extern "C" const f32 lbl_80542884;
 extern "C" const f32 lbl_8054288C;
 extern "C" u8* lbl_8053AC98;
+extern "C" const u16 lbl_80542868[];
 struct Vec8035A860 {
     f32 x, y, z;
     Vec8035A860& operator-=(const Vec8035A860& o) {
@@ -39,9 +40,101 @@ extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     return p;
 }
 
+extern "C" void fn_801F0D20(u8* self, s32 i);
+extern "C" u8 fn_80235448(s32 i);
+extern "C" void fn_803597EC(u8* self) {
+    s32 i;
+    s32 flags = 0;
+    s16 ang;
+    f32 cs;
+    f32 box[4];
+    Vec8035A860 v8;
+    f32 d;
+    f32 py;
+
+    *(f32*)(self + 0x240) = lbl_8054286C;
+    *(u8*)(self + 0x24e) = 0;
+    if (*(s32*)(self + 0x254) != 0) {
+        *(s32*)(self + 0x254) -= 1;
+        if (*(s32*)(self + 0x254) == 0) {
+            fn_801F0D20(self, 3);
+        }
+    }
+    for (i = 0; i < 4; i++) {
+        *(u8*)(self + 0x246 + i) = 0;
+        *(u8*)(self + 0x24a + i) = 0;
+        if (fn_8023F264(i)) {
+            *(u8*)(self + 0x246 + i) = fn_8035AE9C(self, (void*)i);
+            if (fn_80235448(i) && *(s8*)(self + 0x246 + i) != 0) {
+                *(u8*)(self + 0x24e) |= 1 << i;
+                fn_801F317C(self, box);
+                ang = *(s16*)(self + 0x230);
+                py = *(f32*)(self + 0x10);
+                cs = __fabs(((f32*)(sincosTable___5JMath + ((ang >> 5) << 3)))[1]);
+                box[1] = (box[1] - py) * cs + py;
+                box[3] = (box[3] - py) * cs + py;
+                if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), &v8)) {
+                    d = py - v8.y;
+                    if (*(u8*)(self + 0x24e) != 0 && d == lbl_8054286C) {
+                        d = lbl_8054287C;
+                        if (*(u8*)(self + 0x24e) == 0 && __fabsf(d) <= lbl_80542880) {
+                            *(f32*)(self + 0x240) += lbl_80542884 * lbl_8054286C;
+                            *(s8*)(self + 0x24a + i) = d >= lbl_8054286C ? 1 : -1;
+                        } else {
+                            *(s8*)(self + 0x24a + i) = 0;
+                        }
+                    } else {
+                        *(s8*)(self + 0x24a + i) = 0;
+                    }
+                }
+            }
+        }
+        flags |= *(u8*)(self + 0x24e);
+        flags |= *(s8*)(self + 0x24a + i) << i;
+    }
+}
+
 extern "C" void fn_8035A1D4(Unk8035A1D4* self) {
     u32 v = *(u32*)((u8*)self + 0x90);
     (self->*lbl_804AD30C[(v >> 7) & 0x1f])();
+}
+
+extern "C" void fn_8035A210(u8* self) {
+    f32 box[4];
+    Vec8035A860 tmp;
+    u8* p;
+    s32 i;
+    s32 r;
+
+    p = self;
+    *(f32*)(p + 0x240) = 0.0f;
+    for (i = 0; i < 4; i++) {
+        p[0x246 + i] = 0;
+        p[0x24a + i] = 0;
+        if (fn_8023F264(i)) {
+            p[0x246 + i] = fn_8035AE9C(p, (void*)i);
+            fn_801F317C(p, box);
+            s16 rot = *(s16*)(p + 0x230);
+            f32 py = *(f32*)(p + 0x10);
+            f32 c = *(f32*)(sincosTable___5JMath + ((u16)rot >> 5) * 8 + 4);
+            c = fabs(c);
+            box[1] = (box[1] - py) * c + py;
+            box[3] = (box[3] - py) * c + py;
+            r = 0;
+            if (fn_8023AAF8(i, box, *(s32*)(p + 4), &tmp)) {
+                f32 dy = py - tmp.y;
+                if (p[0x24e] != 0 && dy == 0.0f) {
+                    r = 1;
+                } else {
+                    r = -1;
+                }
+                *(f32*)(p + 0x240) = *(f32*)(p + 0x240) + 1.0f;
+            }
+            p[0x24a + i] = r;
+        } else {
+            p[0x24a + i] = 0;
+        }
+    }
 }
 
 extern "C" Vec8035A860* fn_8023E724(void*);
