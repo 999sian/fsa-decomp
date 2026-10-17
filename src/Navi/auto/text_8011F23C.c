@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+extern "C" void fn_801326B0(u8 a, void* b);
 extern "C" void fn_80130BC4(void* a, JGeometry::TVec3f* out);
 extern "C" void fn_801D9F18(s32, s32);
 extern "C" void fn_801DB8C4(s32, s32, s32);
@@ -1569,16 +1570,16 @@ extern "C" void fn_8012BECC(int param_1, int param_2) {
 extern f32 lbl_803016B8;
 extern f32 lbl_803016C8;
 extern "C" void fn_8012BED8(u8* p, u8* q) {
+    s32 v = *(s16*)(q + 0x80);
     u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
-    s16 v = *(s16*)(q + 0x80);
-    s16 d = *(s16*)(*(u8**)a + 0x28);
+    s32 d = *(s16*)(*(u8**)a + 0x28);
     *(f32*)(p + 0x1fc) = (f32)(v - (v / d) * d) / (f32)d;
 }
 
 extern "C" void fn_8012BF3C(u8* p, u8* q) {
     u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
-    s16 d = *(s16*)(*(u8**)a + 0x2a);
-    s16 v = *(s16*)(q + 0x80);
+    s32 d = *(s16*)(*(u8**)a + 0x2a);
+    s32 v = *(s16*)(q + 0x80);
     *(f32*)(p + 0x1fc) = (f32)(v - (v / d) * d) / (f32)d;
 }
 
@@ -1877,14 +1878,14 @@ extern "C" s32 fn_80130AE8(u8* p) {
 extern "C" void fn_801C622C(f32 (*)[4], f32, f32, f32);
 extern "C" void fn_801C6630(f32 (*)[4], void*, void*);
 extern "C" void fn_80130BC4(void* a, JGeometry::TVec3f* out) {
-    u8* self = (u8*)a;
     f32 m[3][4];
-    fn_801C622C(m, *(f32*)(self + 0x98), *(f32*)(self + 0x9c), *(f32*)(self + 0xa0));
-    fn_801C5DA8(self + 0x68, m, m);
-    m[0][3] = *(f32*)(self + 0xa4);
-    m[1][3] = *(f32*)(self + 0xa8);
-    m[2][3] = *(f32*)(self + 0xac);
-    fn_801C6630(m, self + 0xc, out);
+    fn_801C622C(m, *(f32*)((u8*)a + 0x98), *(f32*)((u8*)a + 0x9c), *(f32*)((u8*)a + 0xa0));
+    fn_801C5DA8((u8*)a + 0x68, m, m);
+    JGeometry::TVec3f* t = (JGeometry::TVec3f*)((u8*)a + 0xa4);
+    m[0][3] = t->x;
+    m[1][3] = t->y;
+    m[2][3] = t->z;
+    fn_801C6630(m, (u8*)a + 0xc, out);
 }
 
 extern "C" u32 fn_80130C44(u8* param_1)
