@@ -324,19 +324,21 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, 
     u32 size = (length + 0x1f) & ~0x1f;
     u32 alignedDstLength = dstLength & ~0x1f;
 
-    if (compression == 0) {
+    switch (compression) {
+    case 0:
         if (size > alignedDstLength) {
             size = alignedDstLength;
         }
         JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DEFAULT, alignedDstLength, NULL, -1, &result);
         return result;
-    }
-    if (compression < 0 || compression >= 3) {
+    case 1:
+    case 2:
+        JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DECOMPRESS, alignedDstLength, NULL, -1, &result);
+        return result;
+    default:
         JUTException::panic_f(lbl_8045E0F8, 0x28f, lbl_8053B6D0, lbl_8045E10C);
         return 0;
     }
-    JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DECOMPRESS, alignedDstLength, NULL, -1, &result);
-    return result;
 }
 
 extern "C" void* findPtrResource__10JKRArchiveCFPCv(void* this_, const void* resource);
