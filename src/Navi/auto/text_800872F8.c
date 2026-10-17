@@ -341,6 +341,12 @@ extern "C" BOOL fn_800896B0(void) {
     return FALSE;
 }
 
+extern "C" s32 fn_8008981C(void* param_1) {
+    fn_8004D270(param_1);
+    fn_8001AA98(fn_8001C984, 0);
+    return 1;
+}
+
 extern "C" BOOL fn_80089850(void);
 extern "C" BOOL fn_80089850(void)
 {
