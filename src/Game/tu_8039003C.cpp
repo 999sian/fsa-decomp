@@ -107,14 +107,18 @@ extern "C" void* fn_8039017C(void* this_, short flag) {
         *(unsigned int*)(lbl_80529DEC + 0x104) = 0;
         void* p1 = *(void**)((u8*)this_ + 0x4);
         if (p1 != 0) {
-            ((VObj*)p1)->v00(1);
+            if (p1 != 0) {
+                ((VObj*)p1)->v00(1);
+            }
+            *(void**)((u8*)this_ + 0x4) = 0;
         }
-        *(void**)((u8*)this_ + 0x4) = 0;
         void* p2 = *(void**)((u8*)this_ + 0x8);
         if (p2 != 0) {
-            ((VObj*)p2)->v00(1);
+            if (p2 != 0) {
+                ((VObj*)p2)->v00(1);
+            }
+            *(void**)((u8*)this_ + 0x8) = 0;
         }
-        *(void**)((u8*)this_ + 0x8) = 0;
         ((VObj*)*(void**)(lbl_80529DEC + 0x34))->v01();
         lbl_8053AD80 = 0;
         if (flag > 0) {
@@ -125,6 +129,7 @@ extern "C" void* fn_8039017C(void* this_, short flag) {
 }
 
 extern "C" void* fn_8039027C(void* this_) {
+    char* base = lbl_80475670;
     *(void**)this_ = lbl_804AF480;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
     lbl_8053AD80 = (u8*)this_;
@@ -134,19 +139,19 @@ extern "C" void* fn_8039027C(void* this_) {
     if (lbl_80529DEC[0x242] == 0) {
         lbl_80529DEC[0x242] = 1;
         fn_802FF798(*(void**)(lbl_8053AB10 + 0x20));
-        void* res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670);
+        void* res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base);
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670 + 0x18);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base + 0x18);
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0x7000, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, lbl_80475670 + 0x30);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, base + 0x30);
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670 + 0x48);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base + 0x48);
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, lbl_80475670 + 0x30);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, base + 0x30);
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670 + 0x58);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, base + 0x58);
         fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0);
-        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, lbl_80475670 + 0x30);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, base + 0x30);
         fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0, 0);
         *((u8*)*(void**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
     }
