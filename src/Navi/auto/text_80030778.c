@@ -647,3 +647,17 @@ extern "C" void fn_8003793C(void* p, void*) {
     fn_80029208(lbl_80246138);
 }
 
+extern "C" void fn_8003916C(void* p) {
+    char* c = (char*)p;
+    *(int*)(c + 0x8) = 0;
+    *(unsigned char*)(c + 0xc) = 0;
+    *(unsigned char*)(c + 0xd) = 0;
+    *(int*)(c + 0x34) = 0;
+    *(unsigned char*)(c + 0x40) = 0;
+    *(int*)(c + 0x24) = 0;
+    *(int*)(c + 0x28) = 0;
+    *(int*)(c + 0x2c) = 0;
+    *(int*)(c + 0x30) = 0;
+    *(unsigned char*)(c + 0x41) = 1;
+}
+
