@@ -1,6 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
-extern "C" void fn_801326B0(u8 a, void* b);
+extern "C" f32 fn_801326B0(u16 n, void* t, f32 x = 0.0f);
 extern "C" void fn_80130BC4(void* a, JGeometry::TVec3f* out);
 extern "C" void fn_801D9F18(s32, s32);
 extern "C" void fn_801DB8C4(s32, s32, s32);
@@ -585,6 +585,36 @@ extern "C" void fn_80123AFC(void* p, void* q) {
     if (*(void**)((u8*)p + 0xc) == NULL) {
         *(void**)((u8*)p + 0xc) = q;
     }
+}
+
+void fn_80123B6C(void* arg0, void* arg1) {
+    void* arr[4];
+    u32* self = (u32*)arg0;
+    if (self[3] == (u32)arg1) {
+        if (self[0] <= 1) {
+            self[3] = 0;
+        } else {
+            void* t = (u8*)arg0 + 4;
+            u32 next;
+            arr[3] = t;
+            arr[2] = t;
+            if ((u32)arg1 == self[2] - 0x18) {
+                arr[1] = (void*)self[1];
+                arr[0] = arr[1];
+                next = (u32)arr[0] - 0x18;
+            } else {
+                next = ((u32*)arg1)[6] - 0x18;
+            }
+            self[3] = next;
+        }
+    }
+    if ((u32)fn_80123EB8() == (u32)arg1) {
+        fn_80123EB0(0);
+    }
+    if ((u32)fn_80123EA8() == (u32)arg1) {
+        fn_80123EA0(0);
+    }
+    fn_80167A68(arg0, (u8*)arg1 + 0x18);
 }
 
 extern "C" void fn_80123D00(u8* p, u8 flag) {
