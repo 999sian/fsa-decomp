@@ -2031,7 +2031,7 @@ extern "C" void fn_8009F478(u8* p) {
     p[0x79c] = idx;
     do {
         obj = *(u8**)(p + idx * 4 + 0x64c);
-        ((VObj_8009F478*)obj)->v6(lbl_80300B40, lbl_80300B40);
+        ((VObj_8009F478*)obj)->v4(lbl_80300B40, lbl_80300B40);
         fn_800A1178(p, idx);
         i++;
         idx = (idx + 1) % 10;
