@@ -12,6 +12,7 @@ extern "C" s32 fn_801D4C78(void* self);
 extern "C" s32 fn_801D4EFC(void* self, s32 a);
 extern "C" s32 fn_801D513C(void* self, s32 a);
 extern "C" void fn_801D2F34(s32 a);
+extern "C" void fn_801DF650(s32 a);
 extern void* lbl_802FF9B4;
 extern void* lbl_802FF9B0;
 extern void* lbl_802FF9C0;
@@ -1917,6 +1918,24 @@ extern "C" void fn_801DF044(u8 param_1, u8 param_2)
     *(volatile u32*)0xCC008000 = 0x68000000 | cmd;
     __GXFlushTextureState();
 }
+
+extern "C" void fn_801DB844();
+extern "C" void fn_801DB994();
+extern "C" void fn_801DF0BC(u32 param_1, u32 param_2) {
+    u32 buf[2];
+    buf[0] = param_1;
+    buf[1] = param_2;
+    if (((u32*)__GXData)[0x5ac / 4] != 0) {
+        fn_801DB844();
+    }
+    if (((u32*)__GXData)[0] == 0) {
+        fn_801DB994();
+    }
+    *(volatile u8*)0xCC008000 = 0x40;
+    *(volatile u32*)0xCC008000 = buf[0];
+    *(volatile u32*)0xCC008000 = buf[1];
+}
+
 typedef struct {
     f32 v[6];
 } GXDrawBlock;
