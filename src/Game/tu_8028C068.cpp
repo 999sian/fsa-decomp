@@ -78,6 +78,25 @@ extern "C" void fn_8028C0C8(u8* this_) {
     *(u8*)(this_ + 0x11c) = 0;
 }
 
+extern "C" void fn_8028C190(u8* this_) {
+    s32 idx = 0;
+    YasiDrawParam param;
+    s32 n = *(u32*)(this_ + 0x90) & 3;
+    if (n != 0) {
+        *(s8*)&param.color = -1;
+        param.palette = 0;
+        fn_801F06F0(this_, lbl_8046C210, n + 4, &param, 0, lbl_80540500, lbl_80540500);
+        fn_80307AC8(*(void**)(this_ + 0x198), *(u32*)(this_ + 0x4), this_ + 0xc, n + 4, 0, 0, -1);
+    } else {
+        s32 m = (*(u32*)(this_ + 0x90) >> 4) & 7;
+        if (m != 0) {
+            idx = m + 3;
+        }
+        fn_801F06F0(this_, lbl_8046C210, idx + 0x45, 0, 0, lbl_80540500, lbl_80540500);
+        fn_80307AC8(*(void**)(this_ + 0x198), *(u32*)(this_ + 0x4), this_ + 0xc, idx + 0x45, 0, 0, -1);
+    }
+}
+
 extern "C" int fn_80238CB4(int idx);
 extern "C" void* fn_8023E724(int idx);
 extern "C" BOOL fn_8028C364(u8* this_, u8 mode) {
