@@ -528,6 +528,14 @@ extern "C" void fn_80092FE4(char* param_1) {
     }
 }
 
+extern "C" void fn_80093234(u8* p) {
+    if (fn_8010B734(*(u8**)(p + 0x29c)) == 1) {
+        fn_800C55B8(*(u8**)(p + 0x284), *(*(u8**)(p + 0x29c) + 0x9d));
+        *(u8*)(p + 0x282e) = 0;
+        *(u8*)(p + 0x7e8) = 6;
+    }
+}
+
 extern "C" u8 fn_8010B8D4(void* p);
 extern "C" void fn_8009336C(char* param_1)
 {
