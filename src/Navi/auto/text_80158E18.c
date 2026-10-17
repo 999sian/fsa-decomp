@@ -1245,6 +1245,37 @@ extern "C" void fn_8015D474(VObj_80088CF8* obj) {
     obj->m1();
 }
 
+extern "C" void fn_801C00A0(void (*fn)(void));
+extern "C" void fn_8015D544(void);
+extern u32 lbl_802FF584;
+extern u32 lbl_802FF588;
+extern u32 lbl_802FF590;
+extern u32 lbl_802FF594;
+extern "C" void* fn_8015D4A0(void* heap) {
+    u32* p;
+    if (heap == 0) {
+        heap = (void*)lbl_802FF544;
+    }
+    p = (u32*)fn_8015A9A8(0x28, heap, 0);
+    if (p != 0) {
+        p[0] = (u32)lbl_8029796C;
+        p[1] = (u32)heap;
+        fn_801C00A0(fn_8015D544);
+        p[3] = 0;
+        p[4] = 1;
+        p[7] = 0;
+        p[6] = 0;
+        lbl_802FF588 = 0;
+        lbl_802FF594 = 0;
+        lbl_802FF590 = 0;
+        p[8] = 0;
+        p[9] = 0;
+        *(u8*)(p + 2) = 1;
+    }
+    lbl_802FF584 = (u32)p;
+    return p;
+}
+
 extern "C" int fn_8015DA14()
 {
 	return 0;
