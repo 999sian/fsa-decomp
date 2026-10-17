@@ -798,12 +798,14 @@ extern "C" void fn_80098918(char* param_1) {
         if (*(u8*)(param_1 + 0x7b5) == 0) {
             t = lbl_80300B20 - t;
         }
-        char* obj = *(char**)(param_1 + 0x2d0);
+        VObj_80098918* obj = *(VObj_80098918**)(param_1 + 0x2d0);
         f32 a = *(f32*)(lbl_802C545C + 0x34);
-        f32 v = a + (*(f32*)(lbl_802C545C + 0x30) - a) * t;
-        *(f32*)(obj + 0xcc) = v;
-        *(f32*)(obj + 0xd0) = v;
-        (*(void (**)(void*))(*(char**)obj + 0x2c))(obj);
+        f32 d = *(f32*)(lbl_802C545C + 0x30) - a;
+        d *= t;
+        f32 v = a + d;
+        *(f32*)((char*)obj + 0xcc) = v;
+        *(f32*)((char*)obj + 0xd0) = v;
+        obj->v9();
         if (*(u8*)(param_1 + 0x7b4) == 0) {
             *(u8*)(param_1 + 0x7b4) = *(u8*)(p + 0x2c);
             *(u8*)(param_1 + 0x7b5) ^= 1;
