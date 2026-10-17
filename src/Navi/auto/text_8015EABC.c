@@ -24,8 +24,8 @@ extern "C" void fn_8015D0B8(void*, int);
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801BE3A0(void*);
 extern "C" void fn_801BE47C(void*);
-extern "C" int fn_8015ED10(void*, int);
-extern "C" int fn_8015ED98(void*, int);
+extern "C" int fn_8015ED10(char* p, u32 size);
+extern "C" int fn_8015ED98(char* p, u32 size);
 extern "C" void* fn_8015EBE8(void* param_1, s16 param_2) {
     struct Obj {
         virtual void Release(int);
@@ -64,6 +64,20 @@ extern "C" int fn_8015EC90(char* param_1, int param_2, int param_3) {
     }
     fn_801BE47C(param_1 + 0x18);
     return r;
+}
+
+extern "C" u32 fn_8015EE10(char* p) {
+    char* n;
+    u32 max = 0;
+    fn_801BE3A0(p + 0x18);
+    for (n = *(char**)lbl_802EE28C; n != 0; n = *(char**)(n + 0xc)) {
+        u32 v = *(u32*)(*(char**)n + 0x1c);
+        if (v > max) {
+            max = v;
+        }
+    }
+    fn_801BE47C(p + 0x18);
+    return max;
 }
 
 extern "C" void* fn_8015F0BC(void* param_1, u32 size, u8 flag, char* p);
