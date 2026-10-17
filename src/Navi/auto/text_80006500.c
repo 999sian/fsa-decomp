@@ -36,6 +36,8 @@ void fn_80007AB8(const char*, int, const char*, ...);
 u32 fn_800095BC(void*, void*, u8, u8, u8);
 void DCFlushRange(void*, u32);
 void fn_801C0A6C(u32);
+void fn_801C13D0(void*);
+void fn_8006069C(void*);
 }
 
 extern "C" void fn_80006EE4(void) {
