@@ -93,6 +93,19 @@ extern "C" BOOL fn_800FFBC4(void)
     return TRUE;
 }
 
+extern "C" s32 fn_8002F87C(void);
+extern "C" u8 fn_801081D0(char*);
+extern "C" void fn_800FE858(char*);
+extern "C" void fn_80102E88(char* param_1) {
+    if (fn_8002F87C() == 0 && fn_801081D0(param_1) == 1) {
+        fn_800FE858(param_1);
+        (*(char**)(param_1 + 0x45c))[0xb0] = 1;
+        (*(char**)(param_1 + 0x488))[0xb0] = 1;
+        param_1[0x194] = 2;
+        param_1[0xee] = 3;
+    }
+}
+
 extern "C" void fn_80103560(Unk80103560* p) {
     p->count = 0;
     p->objs[p->sel]->v7(0);
