@@ -25,6 +25,20 @@ extern "C" void fn_8030C210(void*, void*);
 extern "C" u8* lbl_8053AB10;
 extern "C" const s32 lbl_8046C658[][4];
 extern "C" const s32 lbl_8046C6C8[][4];
+struct Unk802A4780 {
+    u8 pad00[4];
+    s32 m04;
+    u8 pad08[4];
+    JGeometry::TVec3f mPos; // 0x0c
+    u8 pad18[0x230 - 0x18];
+    s32 m230;
+    s32 m234;
+    u8 pad238[0x250 - 0x238];
+    s32 m250;
+    s32 m254[4];
+    JGeometry::TVec3f m264[4];
+};
+
 struct Unk802A4654 {
     u8 pad00[0xc];
     JGeometry::TVec3f mPos; // 0x0c
