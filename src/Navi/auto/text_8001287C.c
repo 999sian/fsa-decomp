@@ -38,6 +38,8 @@ extern "C" s32 lbl_802FB908;
 extern "C" s32 lbl_802FB90C;
 extern "C" u32 fn_8000F6A0(void);
 extern "C" u32 fn_8016028C(u32, u32, u32, u32);
+extern "C" u32 fn_80164A10(u32, u32, u32, u32, u32, u32, u32, u32, u32);
+extern "C" u32 fn_80159D88(u32);
 extern "C" void* fn_8011FD10(void);
 extern "C" void fn_8011FD18(...);
 extern "C" void fn_80007AB8(...);
@@ -308,9 +310,11 @@ extern "C" u32 fn_8001362C(u8* param_1) {
         mode = 1;
     }
     u32 t = fn_8000F6A0();
-    *(u32*)(param_1 + 0x1c) = fn_8016028C(*(u32*)(param_1 + 0x18), *(u32*)(param_1 + 0x20), t, mode);
+    u32 r = fn_8016028C(*(u32*)(param_1 + 0x18), *(u32*)(param_1 + 0x20), t, mode);
+    *(u32*)(param_1 + 0x1c) = r;
+    u32 v = *(u32*)(param_1 + 0x1c);
     *(u8*)(param_1 + 0xc) = 1;
-    return (-*(u32*)(param_1 + 0x1c) | *(u32*)(param_1 + 0x1c)) >> 31;
+    return (-v | v) >> 31;
 }
 
 extern "C" char lbl_80204D78[];
@@ -328,15 +332,15 @@ extern "C" void* fn_800136A8(void* ptr, s16 param_2) {
 }
 
 extern "C" u32 fn_80013704(u8* param_1) {
-    char* base = lbl_80204AF8;
+    UnkBlock* base = (UnkBlock*)lbl_80204AF8;
     if (*(u32*)(param_1 + 0x18) == 0) {
-        fn_8011FD18(fn_8011FD10(), base + 0, 0x49a, &lbl_802FB908, base + 0x198);
-        fn_80007AB8(base + 0, 0x49a, &lbl_802FB90C);
+        fn_8011FD18(fn_8011FD10(), &base->unk000, 0x49a, &lbl_802FB908, &base->unk198);
+        fn_80007AB8(&base->unk000, 0x49a, &lbl_802FB90C);
     }
     u32 r = fn_8016076C(*(u32*)(param_1 + 0x18), *(u16*)(param_1 + 0x1c));
     *(u32*)(param_1 + 0x14) = r;
     if (*(u32*)(param_1 + 0x14) == 0) {
-        fn_800074C0(base + 0x1a4);
+        fn_800074C0((const char*)&base->unk1a4);
     }
     *(u8*)(param_1 + 0xc) = 1;
     return (-*(u32*)(param_1 + 0x14) | *(u32*)(param_1 + 0x14)) >> 31;
