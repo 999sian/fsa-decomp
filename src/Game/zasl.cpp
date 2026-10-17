@@ -24,6 +24,18 @@ extern "C" bool fn_802265DC(void*, void*, s32);
 extern "C" u8* fn_8020D58C(void);
 extern "C" bool fn_8020D6AC(void*, void*, void*, u32, void*);
 extern "C" char lbl_8053F9E0;
+extern "C" s32 fn_801CD664(s32);
+extern "C" s32 fn_801CF6B8(void*);
+extern "C" s32 fn_801CF798(void*, s32);
+extern "C" s32 fn_801D0280(void*, s32);
+extern "C" bool fn_801D0DD4(void*);
+extern "C" bool fn_801CC9F8(void*, s32);
+extern "C" bool fn_801D217C(void*);
+extern "C" void fn_801F0E34(void*, s32, s32);
+extern char* lbl_8053AAF8;
+extern const f32 lbl_8053F9EC;
+extern const f32 lbl_8053F9F0;
+extern const f32 lbl_8053F9F4;
 
 // ---- Zasl_ctor_8020CA34.cpp ----
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
@@ -193,7 +205,7 @@ extern "C" void fn_8020C878(void* this_) {
     fn_801D22DC(p + 0x270, 0, 2, 0);
     fn_801D1D60(p + 0x270);
     if (*(u32*)(p + 0x230) & 0x2000) {
-        if ((*(u8 (**)(void*, s32, void*))(*(s32*)this_ + 0x4c))(this_, *(s32*)(p + 4), p + 0xc)) {
+        if ((*(u8 (**)(void*, s32, void*))(*(u32*)this_ + 0x4c))(this_, *(s32*)(p + 4), p + 0xc)) {
             detach__5ActorFv(this_);
         } else {
             s32 n = *(s32*)(p + 4);
@@ -207,8 +219,12 @@ extern "C" void fn_8020C878(void* this_) {
             f32 x = *(f32*)(p + 0xc);
             f32 y = *(f32*)(p + 0x10);
             bool bVar1 = false;
-            if (!(*(f32*)(p + 0x80) + x >= pf[0] || *(f32*)(p + 0x84) + y >= pf[1] || *(f32*)(p + 0x88) + x >= pf[2] || *(f32*)(p + 0x8c) + y >= pf[3])) {
-                bVar1 = true;
+            if (x + *(f32*)(p + 0x80) >= pf[0]) {
+            } else if (y + *(f32*)(p + 0x84) >= pf[1]) {
+            } else if (x + *(f32*)(p + 0x88) < pf[2]) {
+                if (y + *(f32*)(p + 0x8c) < pf[3]) {
+                    bVar1 = true;
+                }
             }
             if (!bVar1) {
                 detach__5ActorFv(this_);
