@@ -1,5 +1,11 @@
 #include "types.h"
 
+struct FsaDisposable {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void del(s32);
+};
+
 
 extern "C" void* lbl_8053AB10;
 extern "C" void* lbl_8053AD68;
@@ -55,6 +61,103 @@ extern "C" void fn_803D8718(u8* param_1) {
         fn_803D75B0();
         break;
     }
+}
+
+extern "C" char lbl_804B03D8[];
+extern "C" char lbl_80529DEC[];
+extern "C" void* lbl_8053ADC0;
+extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+extern "C" void __dl__FPv(void*);
+extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
+    void** slot;
+    s32 i;
+    u8* obj;
+
+    if (param_1 != 0) {
+        *(void**)param_1 = lbl_804B03D8;
+        getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 8));
+        obj = *(u8**)(param_1 + 0x4c);
+        if (obj != 0) {
+            *(u32*)(obj + 0xf4) |= 1;
+            *(s32*)(obj + 0x24) = 1;
+            *(void**)(param_1 + 0x4c) = 0;
+        }
+        slot = (void**)(param_1 + 4);
+        for (i = 1; i < 3; i++, slot++) {
+            if (slot[0x13] != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), slot[0x13]);
+                slot[0x13] = 0;
+            }
+        }
+        obj = *(u8**)(param_1 + 0x4);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x4) = 0;
+        obj = *(u8**)(param_1 + 0x8);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x8) = 0;
+        obj = *(u8**)(param_1 + 0x1c);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x1c) = 0;
+        obj = *(u8**)(param_1 + 0x20);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x20) = 0;
+        slot = (void**)param_1;
+        for (i = 0; i < 2; i++, slot++) {
+            obj = *(u8**)(slot + 9);
+            if (obj != 0) {
+                ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            }
+            slot[9] = 0;
+        }
+        obj = *(u8**)(param_1 + 0x2c);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x2c) = 0;
+        obj = *(u8**)(param_1 + 0x30);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x30) = 0;
+        slot = (void**)param_1;
+        for (i = 0; i < 4; i++, slot++) {
+            obj = *(u8**)(slot + 13);
+            if (obj != 0) {
+                ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            }
+            slot[13] = 0;
+        }
+        obj = *(u8**)(param_1 + 0x44);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x44) = 0;
+        obj = *(u8**)(param_1 + 0x10);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x10) = 0;
+        obj = *(u8**)(param_1 + 0x18);
+        if (obj != 0) {
+            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+        }
+        *(void**)(param_1 + 0x18) = 0;
+        lbl_8053ADC0 = 0;
+        if (param_2 > 0) {
+            __dl__FPv(param_1);
+        }
+    }
+    return param_1;
 }
 
 extern "C" char lbl_80528168[];
