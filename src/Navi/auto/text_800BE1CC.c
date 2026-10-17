@@ -28,6 +28,15 @@ extern "C" void fn_8002F358(s32 a, s32 b);
 extern "C" void fn_8003ABDC(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_8003ABF0(void* p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 extern "C" s32 fn_8002F168(void* p);
+extern "C" void fn_800C2364(u8* p) {
+    fn_8002F358(0x8e, 0);
+    *(*(u8**)(p + 0x194) + 0xb0) = 1;
+    fn_8003ABDC(*(void**)(p + 0x28), 0, 0, 0, 0);
+    u8* q = p + ((p[0x182] ^ 1) * 4);
+    fn_8003ABF0(*(void**)(p + 0x28), *(u32*)(q + 0x184), 0, *(u32*)(q + 0x178), 0, 0x285, 1, 0);
+    p[0x212] = 7;
+}
+
 extern "C" void fn_800C256C(u8* p) {
     s32 a = fn_800C3900(p, *(s16*)(p + 0x21e), lbl_802C562C[0x15], 0);
     s32 b = fn_800C3A1C(p, *(s16*)(p + 0x21e), lbl_802C562C[0x15], 0, 0);
