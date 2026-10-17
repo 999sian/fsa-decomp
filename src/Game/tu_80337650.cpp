@@ -1,5 +1,10 @@
 #include "Game/Actor.h"
 
+extern char lbl_80471BB8[];
+extern u8* lbl_8053AAF8;
+extern f32 lbl_80542058;
+extern f32 lbl_8054205C;
+
 
 extern "C" char lbl_804AC010[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -40,41 +45,6 @@ extern "C" void fn_80337A08(u8* this_) {
     }
 
     switch (*(s32*)(this_ + 0x230)) {
-    case 3:
-    case 5: {
-        s32 a = *(s32*)(this_ + 0x258);
-        s32 b = *(s32*)(this_ + 0x25c);
-        s32 a2 = a * a;
-        s32 b2 = b * b;
-
-        if (state == 14 || state < 7 || state >= 16) {
-            if (a2 == 0 && b2 == 0) {
-                *(s32*)(this_ + 0x248) = 2;
-            } else if (a2 > b2) {
-                if (a > 0) {
-                    *(s32*)(this_ + 0x248) = 0;
-                } else {
-                    *(s32*)(this_ + 0x248) = 1;
-                }
-            } else {
-                if (b > 0) {
-                    *(s32*)(this_ + 0x248) = 2;
-                } else {
-                    *(s32*)(this_ + 0x248) = 3;
-                }
-            }
-        } else {
-            if (a > 0) {
-                *(s32*)(this_ + 0x248) = 0;
-            } else {
-                *(s32*)(this_ + 0x248) = 1;
-            }
-        }
-        if (*(s32*)(this_ + 0x230) == 5) {
-            *(s32*)(this_ + 0x248) ^= 1;
-        }
-        break;
-    }
     case 0:
     case 1:
     case 4: {
@@ -105,11 +75,44 @@ extern "C" void fn_80337A08(u8* this_) {
         }
         break;
     }
+    case 3:
+    case 5: {
+        s32 a = *(s32*)(this_ + 0x258);
+        s32 b = *(s32*)(this_ + 0x25c);
+        s32 a2 = a * a;
+        s32 b2 = b * b;
+
+        if (state >= 7 && state <= 15 && state != 14) {
+            if (a > 0) {
+                *(s32*)(this_ + 0x248) = 0;
+            } else {
+                *(s32*)(this_ + 0x248) = 1;
+            }
+        } else if (a2 == 0 && b2 == 0) {
+            *(s32*)(this_ + 0x248) = 2;
+        } else if (a2 > b2) {
+            if (a > 0) {
+                *(s32*)(this_ + 0x248) = 0;
+            } else {
+                *(s32*)(this_ + 0x248) = 1;
+            }
+        } else {
+            if (b > 0) {
+                *(s32*)(this_ + 0x248) = 2;
+            } else {
+                *(s32*)(this_ + 0x248) = 3;
+            }
+        }
+        if (*(s32*)(this_ + 0x230) == 5) {
+            *(s32*)(this_ + 0x248) ^= 1;
+        }
+        break;
+    }
     }
 
     if (*(s32*)(this_ + 0x250) == 4) {
         s32 cur = *(s32*)(this_ + 0x248);
-        if ((cur > 1 && prev < 2) || (cur < 2 && prev > 1)) {
+        if ((cur >= 2 && prev < 2) || (cur < 2 && prev >= 2)) {
             *(s32*)(this_ + 0x238) = 0;
             *(s32*)(this_ + 0x234) = 0x14;
         }
