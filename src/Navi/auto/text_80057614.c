@@ -70,7 +70,7 @@ extern u8 lbl_802C2D30[];
 extern u8 lbl_8027D790[];
 extern u8 lbl_8027D780[];
 extern u8 lbl_802C2D60[];
-extern "C" void fn_801473F8(s32, void*, void*, s32, s32, void*, void*, s32);
+extern "C" void fn_801473F8(s32, void*, void*, s32, s32, void*, void*, s32, s32);
 extern "C" void fn_8005C5DC(void);
 extern "C" void fn_8017E1A4(void*, s32);
 extern "C" void fn_8015AB1C(void*);
