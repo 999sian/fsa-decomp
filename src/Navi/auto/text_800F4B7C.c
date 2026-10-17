@@ -71,11 +71,8 @@ extern "C" BOOL fn_800FFBC4(void)
     return TRUE;
 }
 
-extern "C" void fn_80103664(u8* p) {
-    s32 idx1 = (s8)p[0x4cd];
-    s32 idx2 = (s8)p[0x4cc];
-    VObj_800F4B7CListener* obj = *(VObj_800F4B7CListener**)(p + 0x46c);
-    obj->v4(*(f32*)(p + idx1 * 0x18 + idx2 * 4 + 0x4d0), *(f32*)(p + idx1 * 4 + 0x518));
+extern "C" void fn_80103664(Unk80103664* p) {
+    p->obj->v2(p->a[p->i1][p->i2], p->b[p->i1]);
 }
 
 extern "C" s32 fn_801092B8(void* self, u8 a, u8 b, s32 c);
