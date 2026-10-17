@@ -1,5 +1,4 @@
 #include "types.h"
-#include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
 
 
