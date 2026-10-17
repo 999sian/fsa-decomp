@@ -1175,20 +1175,23 @@ BOOL fn_802454C0(char* p) {
         ok2 = false;
     } else {
         s32 mode;
-        s32 c;
+        s32 e;
         s32 i;
-        for (i = c = 0; i < 4; i++) {
+        s32 c;
+        s32 d;
+        c = 0;
+        for (i = c; i < 4; i++) {
             if (i == S32(p, 0x4)) {
                 c++;
             } else if (fn_8022F514(i)) {
-                s32 d = S32(p, 0xd60);
+                d = S32(p, 0xd60);
                 if (d >= 0) {
                     if (d == fn_8022F3DC(i)) {
                         c++;
                     }
                 } else {
-                    s32 a = S32(p, 0x4);
-                    if (a == fn_8022F3DC(i)) {
+                    e = S32(p, 0x4);
+                    if (e == fn_8022F3DC(i)) {
                         c++;
                     }
                 }
@@ -1507,12 +1510,12 @@ inline s32 countSharing6(char* p) {
     s32 c;
     s32 i;
     s32 me;
-    s32 linked;
     c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
+            s32 linked;
             if ((linked = S32(p, 0xd60)) >= 0) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
