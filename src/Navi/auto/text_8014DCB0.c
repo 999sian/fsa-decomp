@@ -10,3 +10,24 @@ extern "C" u32 fn_8014DCB0(u8* param_1)
     *(u32*)(param_1 + 0xfc) = *(u32*)(param_1 + 0xf8);
     return *(u32*)(*(u32*)(param_1 + 0xf8) + 8);
 }
+
+extern "C" u32 fn_8014DDC0(u32 param_1)
+{
+    u32* p;
+
+    if (param_1 != 0xffffffff) {
+        for (p = lbl_802FF46C; p != 0; p = (u32*)*p) {
+            if (p[2] == param_1) {
+                break;
+            } else if (p[2] > param_1) {
+                p = 0;
+                break;
+            }
+        }
+        if (p != 0) {
+            return p[3];
+        }
+    }
+    return 0xffffffff;
+}
+
