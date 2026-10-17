@@ -6,7 +6,7 @@
 extern u32 fn_8008603C(void);
 extern u32 fn_8008668C(void);
 extern u8 fn_800866D4(void*, u32);
-extern void fn_8008665C(void*, u32);
+extern "C" int fn_8008665C(int, int);
 
 extern u8 g_bit_mask_table[8];
 extern s32 fn_8008668C(int);
@@ -414,7 +414,6 @@ extern "C" s32 fn_800865DC(void* self_) {
 
 void fn_80086614(void* self_) {
     u32 result = fn_8008603C((int)self_, 0);
-    fn_8008665C(self_, result);
 }
 
 extern "C" u32 fn_80086654(int param_1) {
