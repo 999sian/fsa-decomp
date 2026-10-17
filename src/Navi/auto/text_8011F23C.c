@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" void fn_8011F878(void*, u8, u8, u8);
 #include "stdarg.h"
 struct Vec3f { f32 x, y, z; };
 extern "C" void fn_801E4334(char* buf, u32 n, const void* fmt, va_list args);
@@ -521,7 +522,7 @@ extern "C" void fn_80124DAC(OSAlarm* alarm, OSContext* ctx) {
 extern "C" void fn_80124DD0(void* a, void* b, OSTime tick) {
     OSAlarm alarm;
     u32 saved;
-    u32 level;
+    BOOL level;
 
     OSCreateAlarm(&alarm);
     saved = fn_801C027C();
@@ -1114,13 +1115,15 @@ extern "C" f32 fn_80132284(void* param_1, u8* param_2) {
 }
 
 extern "C" void fn_801323DC(u32 param_1, u32 param_2, f32* param_3) {
-    f32* a = lbl_802F0BC0[(param_1 >> 5) & 0x7FF];
-    f32* b = lbl_802F0BC0[(param_2 >> 5) & 0x7FF];
     f32 zero = lbl_80301794;
-    f32 sA = a[0];
-    f32 cA = a[1];
-    f32 sB = b[0];
-    f32 cB = b[1];
+    u8* tbl = (u8*)lbl_802F0BC0;
+    u8* tbl4 = tbl + 4;
+    u32 i = (param_1 >> 2) & 0x3FF8;
+    u32 j = (param_2 >> 2) & 0x3FF8;
+    f32 sA = *(f32*)(tbl + i);
+    f32 cA = *(f32*)(tbl4 + i);
+    f32 sB = *(f32*)(tbl + j);
+    f32 cB = *(f32*)(tbl4 + j);
     param_3[0] = cA * cB;
     param_3[1] = -sB;
     param_3[2] = sA * cB;
@@ -1129,10 +1132,10 @@ extern "C" void fn_801323DC(u32 param_1, u32 param_2, f32* param_3) {
     param_3[6] = sA * sB;
     param_3[8] = -sA;
     param_3[10] = cA;
-    param_3[11] = zero;
-    param_3[9] = zero;
-    param_3[7] = zero;
     param_3[3] = zero;
+    param_3[7] = zero;
+    param_3[9] = zero;
+    param_3[11] = zero;
 }
 
 extern "C" void fn_80132524(void* a, void* b, void* c, void* d);
