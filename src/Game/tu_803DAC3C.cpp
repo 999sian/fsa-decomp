@@ -14,8 +14,6 @@ extern const float lbl_805435E8;
 extern const float lbl_805435F8;
 extern const float lbl_805435FC;
 extern const float lbl_80543600;
-extern const double lbl_805435E0;
-extern const double lbl_805435F0;
 void fn_80402E08(void*, f32, f32);
 extern s32 lbl_8053AF80;
 extern char lbl_80477898[];
@@ -53,9 +51,10 @@ extern "C" void fn_803DD1A4(u8* self) {
         s32 t = v - 30;
         f31 = lbl_805435E8 - (f32)(t * t) / lbl_805435F8;
     }
-    s32 d = *(s32*)(self + 0x88);
-    if (d >= 5) {
-        d = 10 - d;
+    s32 w = *(s32*)(self + 0x88);
+    s32 d = 10 - w;
+    if (w < 5) {
+        d = w;
     }
     f32 f30 = lbl_805435FC * (f32)(d * d) / lbl_80543600;
     if (*(s32*)(self + 0x80) == 0) {
@@ -68,9 +67,11 @@ extern "C" void fn_803DD1A4(u8* self) {
         fn_80402E08(*(void**)(self + 0x58), *(f32*)(*(u8**)(self + 0x54) + 8) - *(f32*)(*(u8**)(self + 0x50) + 8), f30);
     }
     J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search('Paccur01');
-    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, (s32)((f32)self[0xa2] * f31));
+    s32 alpha = (s32)((f32)self[0xa2] * f31);
+    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, alpha);
     pane = ((J2DScreen*)*(void**)(self + 0x4))->search('Paccur02');
-    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, (s32)((f32)self[0xa2] * f31));
+    alpha = (s32)((f32)self[0xa2] * f31);
+    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, alpha);
 }
 
 extern "C" void fn_803DD3DC(void)
