@@ -41,6 +41,11 @@ extern "C" void fn_800EAA4C(u8* p) {
     p[0xa77] = 0x43;
 }
 
+extern "C" void fn_800EAAB0(u8* p) {
+    *(u16*)(p + 0xa9c) = (u8)lbl_802C57D4[0x95];
+    p[0xa76] = 0x49;
+}
+
 extern "C" void fn_800EE0F0(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
