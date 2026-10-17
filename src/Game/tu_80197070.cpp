@@ -198,18 +198,6 @@ extern "C" void fn_8019C500(char* obj, int flag)
     } while (i < 4);
 }
 
-extern "C" void* fn_801F856C(void);
-extern "C" void* fn_801F666C(void* mgr, s32 idx);
-extern "C" void* fn_8013C824(void);
-extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
-extern "C" s32 fn_8013CC50(u32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
-extern "C" void fn_8013CB44(void* obj, void* pos, s32 a, s32 b, s32 c);
-extern "C" s32 lbl_8053A100;
-extern "C" const f32 lbl_8053E388;
-extern "C" void fn_8019C5B8(u8* this_) {
-    *(s32*)(this_ + 0x250) = -1;
-}
-
 #else
 extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
     for (int i = 0; i < 4; i++) {
