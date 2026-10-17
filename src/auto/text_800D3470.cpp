@@ -1766,8 +1766,10 @@ extern "C" void fn_800DC290(u8* p, Unk800DC290Src* src) {
 }
 
 extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
-    u8* q;
     u32 i;
+    u8* q;
+    s16* s;
+    u8* w;
 
     *(u8*)(p + 0xd0) = src->m38();
 
@@ -1777,7 +1779,7 @@ extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
     }
 
     for (i = 0, q = p; i < 4; i++) {
-        s16* s = src->m26(i);
+        s = src->m26(i);
         *(s16*)(q + 0x98) = s[0];
         *(s16*)(q + 0x9a) = s[1];
         *(s16*)(q + 0x9c) = s[2];
@@ -1794,20 +1796,17 @@ extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
         q += 4;
     }
 
-    {
-        u8* w = p;
-        for (i = 0, q = p; i < 8; i++) {
-            u8* b = src->m41(i);
-            *(u8*)(q + 0x39) = b[1];
-            *(u8*)(q + 0x3a) = b[2];
-            *(u8*)(q + 0x3b) = b[3];
-            *(u8*)(q + 0x3d) = b[5];
-            *(u8*)(q + 0x3e) = b[6];
-            *(u8*)(q + 0x3f) = b[7];
-            *(u32*)(w + 0x78) = *src->m49(i);
-            q += 8;
-            w += 4;
-        }
+    for (i = 0, q = p, w = p; i < 8; i++) {
+        u8* b = src->m41(i);
+        *(u8*)(q + 0x39) = b[1];
+        *(u8*)(q + 0x3a) = b[2];
+        *(u8*)(q + 0x3b) = b[3];
+        *(u8*)(q + 0x3d) = b[5];
+        *(u8*)(q + 0x3e) = b[6];
+        *(u8*)(q + 0x3f) = b[7];
+        *(u32*)(w + 0x78) = *src->m49(i);
+        q += 8;
+        w += 4;
     }
 }
 
@@ -1871,70 +1870,67 @@ extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
 }
 
 extern "C" void fn_800DD354(u8* this_, const Mtx mtx) {
-    u8* gen = this_;
-    u8* p = this_;
-    u32 i = 0;
-    for (; i < 8; i++) {
-        if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
-            *(u16*)(gen + 0xc) = gen[0xa];
-            switch ((*(J3DTexMtx**)(p + 0x38))->getTexMtxInfo().mInfo & 0x3f) {
+    u8* tex = this_;
+    u8* stage = this_;
+    Mtx m;
+    int i;
+    for (i = 0; i < 8; i++) {
+        if (*(void**)(tex + 0x38) != NULL) {
+            u32 type = *((u8*)*(void**)(tex + 0x38) + 1) & 0x3f;
+            *(u16*)(stage + 0xc) = stage[0xa];
+            switch (type) {
             case 0:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
-                break;
-            case 1:
-                if ((j3dSys.mFlags & 4) == 0) {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(mtx);
-                } else {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
-                }
-                break;
-            case 2:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
-                break;
-            case 3:
                 if ((j3dSys.mFlags & 8) == 0) {
-                    Mtx m;
-                    PSMTXCopy(mtx, m);
-                    m[0][3] = 0.0f;
-                    m[1][3] = 0.0f;
-                    m[2][3] = 0.0f;
-                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
-                } else {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
-                }
-                break;
-            case 4: {
-                Mtx m;
-                if (j3dSys.mFlags & 8) {
-                    PSMTXCopy(j3dSys.mViewMtx, m);
-                } else {
                     PSMTXConcat(j3dSys.mViewMtx, mtx, m);
+                } else {
+                    PSMTXCopy(j3dSys.mViewMtx, m);
                 }
                 m[0][3] = 0.0f;
                 m[1][3] = 0.0f;
                 m[2][3] = 0.0f;
-                (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                (*(J3DTexMtx**)(tex + 0x38))->calc(m);
                 break;
-            }
-            case 5:
-                if (j3dSys.mFlags & 4) {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dSys.mViewMtx);
+            case 1:
+                if ((j3dSys.mFlags & 4) == 0) {
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(mtx);
                 } else {
-                    Mtx m;
-                    PSMTXConcat(j3dSys.mViewMtx, mtx, m);
-                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 }
                 break;
-            case 6:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+            case 2:
+                if ((j3dSys.mFlags & 4) == 0) {
+                    PSMTXConcat(j3dSys.mViewMtx, mtx, m);
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(m);
+                } else {
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(j3dSys.mViewMtx);
+                }
                 break;
+            case 3:
+                if ((j3dSys.mFlags & 8) == 0) {
+                    PSMTXCopy(mtx, m);
+                    m[0][3] = 0.0f;
+                    m[1][3] = 0.0f;
+                    m[2][3] = 0.0f;
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(m);
+                } else {
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
+                }
+                break;
+            case 4:
+            case 5:
+            case 6:
+            case 7:
+            case 8:
+            case 9:
+            case 10:
+            case 11:
             default:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 break;
             }
         }
-        p += 4;
-        gen += 6;
+        tex += 4;
+        stage += 6;
     }
 }
 
@@ -2186,9 +2182,12 @@ extern "C" u32 fn_800DDA50(void) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    this_[7] = src[3];
-    this_[6] = src[2];
-    *(u16*)(this_ + 4) = *(u16*)src;
+    u16 w = *(u16*)src;
+    u8 b2 = src[2];
+    u8 b3 = src[3];
+    *(u16*)(this_ + 0x4) = w;
+    this_[0x6] = b2;
+    this_[0x7] = b3;
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
@@ -2414,9 +2413,8 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    int b0 = param_3[0];
-    int b1 = param_3[1];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
+    u8 b0 = param_3[0];
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
     param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
@@ -2591,17 +2589,15 @@ extern "C" u8 fn_800DE208(int param_1)
   return *(u8*)(param_1 + 0x20);
 }
 
-extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
+extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  u8* dst = param_1 + (param_2 << 3);
-  u8 b1 = param_3[1];
-  u8 b2 = param_3[2];
-  dst[0x22] = b1;
-  dst[0x23] = b2;
-  dst[0x24] = param_3[3];
-  dst[0x26] = param_3[5];
-  dst[0x27] = param_3[6];
-  dst[0x28] = param_3[7];
+  int offset = param_1 + param_2 * 8;
+  *(u8*)(offset + 0x22) = param_3[1];
+  *(u8*)(offset + 0x23) = param_3[2];
+  *(u8*)(offset + 0x24) = param_3[3];
+  *(u8*)(offset + 0x26) = param_3[5];
+  *(u8*)(offset + 0x27) = param_3[6];
+  *(u8*)(offset + 0x28) = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
@@ -2617,10 +2613,12 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  struct Bits { u8 hi : 4; u8 a : 2; u8 b : 2; };
-  Bits* e = (Bits*)(param_1 + param_2 * 8 + 0x28);
-  e->a = param_3[1];
-  e->b = param_3[0];
+  u8* e = param_1 + param_2 * 8;
+  u8 b1 = param_3[1];
+  u8 b0 = param_3[0];
+  u8 v = e[0x28];
+  e[0x28] = (b1 << 2) | (v & ~0xC);
+  e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
@@ -2771,10 +2769,21 @@ extern "C" u8 fn_800DE648(int param_1) {
 }
 
 extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
-    struct Rgb3 { u8 c[3]; };
-    u8* p = this_ + idx * 8;
-    *(Rgb3*)(p + 0x36) = *(Rgb3*)&src[0].g;
-    *(Rgb3*)(p + 0x3a) = *(Rgb3*)&src[1].g;
+    u8* p;
+    u8 a, b, c;
+    a = src[0].g;
+    p = this_ + idx * 8;
+    p[0x36] = a;
+    b = src[0].b;
+    c = src[0].a;
+    p[0x37] = b;
+    a = src[1].g;
+    p[0x38] = c;
+    b = src[1].b;
+    p[0x3a] = a;
+    c = src[1].a;
+    p[0x3b] = b;
+    p[0x3c] = c;
 }
 
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
@@ -3236,7 +3245,12 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    ((GXColor*)(self + 0xc))[i] = *(const GXColor*)c;
+    u8 c0 = c[0];
+    u8* p = self + i * 4;
+    p[0xc] = c0;
+    p[0xd] = c[1];
+    p[0xe] = c[2];
+    p[0xf] = c[3];
 }
 #endif
 
