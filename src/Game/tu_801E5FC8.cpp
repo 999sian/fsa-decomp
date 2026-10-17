@@ -136,3 +136,6 @@ extern "C" void fn_801E63D8(char* this_) {
     *(void**)(this_ + 0x2c4) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x25f, 0, 0, 0, 0, 1, 1.0f);
 }
 
+void __sinit_tu_801E5FC8_cpp(void) {
+}
+
