@@ -810,6 +810,12 @@ extern "C" void* fn_8012F52C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8012F588(u32* p, u32 v)
+{
+	p[0] = v;
+	p[1] = v + 0xc;
+}
+
 extern "C" void fn_801300FC(u8* p, u32 v, u8 i) {
     (*(u32**)(p + 0x1c))[i] = v;
 }
