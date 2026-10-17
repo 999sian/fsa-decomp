@@ -208,15 +208,11 @@ extern "C" u8 fn_8020A11C(char* this_) {
 extern "C" void fn_8020A2C0(void* this_) {
     char* p = (char*)this_;
     switch (*(s32*)(p + 0x248)) {
-    case 0:
+    case 3:
         *(f32*)(p + 0x44) += lbl_8053F970 * lbl_8053EFB8;
         break;
     case 1:
-    case 2:
-    case 3:
-    case 4:
     case 5:
-    case 6:
     case 7:
     case 8:
     case 9:
@@ -582,6 +578,20 @@ extern "C" void fn_8020AA78(u8* this_, s32 state) {
 }
 
 extern "C" void* fn_8020B0B8(char* this_) {
+    fn_801D0F40(this_);
+    *(void**)this_ = lbl_804A5D60;
+    f32 zero = lbl_8053F964;
+    *(s32*)(this_ + 0x2a8) = -1;
+    *(s32*)(this_ + 0x2ac) = 0;
+    *(u8*)(this_ + 0x2b0) = 1;
+    *(u8*)(this_ + 0x2b1) = 0;
+    *(f32*)(this_ + 0x2b4) = zero;
+    *(f32*)(this_ + 0x2b8) = zero;
+    *(f32*)(this_ + 0x2bc) = zero;
+    *(f32*)(this_ + 0x2c0) = zero;
+    *(f32*)(this_ + 0x2c4) = zero;
+    *(f32*)(this_ + 0x2c8) = zero;
+    *(f32*)(this_ + 0x2cc) = zero;
     return this_;
 }
 
