@@ -235,6 +235,32 @@ struct Game_80301CD0 {
 };
 extern Game_80301CD0* lbl_8053AAF8;
 
+struct Ent_803066F0 {
+    s32 prio;
+    u8 pad4[4];
+    s32 f8;
+    u8 padc[4];
+    u8 f10[0xc];
+    u32 f1c;
+    u8 f20;
+    u8 f21;
+    u8 f22;
+    u8 f23;
+    u8 f24;
+    u8 f25;
+    u8 pad26[2];
+};
+struct Out_803066F0 {
+    u8 b0;
+    u8 b1;
+    u8 b2;
+    u8 f20 : 3;
+    u8 f21 : 1;
+    u8 f22 : 1;
+    u8 f1c : 2;
+    u8 hi : 1;
+};
+
 extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id) {
     if (str == NULL) {
         return 0;
@@ -272,9 +298,12 @@ extern "C" void fn_803068D0(Hdr_80301CD0* hdr) {
     s32 side = hdr->side;
     Slot_80301CD0* base = (Slot_80301CD0*)(lbl_80506F88 + ((s32(*)(s32))fn_8022F340)(hdr->player) * 0x98);
     Slot_80301CD0* dst = base + side * 19;
+    s32 kind = hdr->kind;
+    u32* src = (u32*)hdr->slots;
+    u32* out = (u32*)dst;
     s32 i;
-    for (i = 0; i < lbl_80541618[hdr->kind] - 7; i++) {
-        dst[i] = hdr->slots[i];
+    for (i = 0; i < *(kind + lbl_80541618) - 7; i++) {
+        *out++ = *src++;
     }
     for (; i < 19; i++) {
         dst[i].flag = 1;
