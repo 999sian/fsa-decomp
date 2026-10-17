@@ -98,6 +98,18 @@ extern "C" void fn_800C28F0(u8* p) {
     }
 }
 
+extern "C" s32 fn_800C301C(u8* p, u8* a, u8* b) {
+    p[0x12c] = a[0];
+    p[0x12d] = a[1];
+    p[0x12e] = a[2];
+    p[0x12f] = a[3];
+    p[0x128] = b[0];
+    p[0x129] = b[1];
+    p[0x12a] = b[2];
+    p[0x12b] = b[3];
+    return 1;
+}
+
 extern "C" void fn_800C3240(u8* p) {
     u16 n = *(u16*)(p + 0x220);
     if (n != 0) {
@@ -113,6 +125,27 @@ extern "C" void fn_800C3270(u8* p) {
         *(u16*)(p + 0x220) = 0x46;
         p[0x212] = 0x13;
     }
+}
+
+extern "C" void fn_800C32B4(u8* p) {
+    if (*(u16*)(p + 0x220) != 0) {
+        *(u16*)(p + 0x220) = *(u16*)(p + 0x220) - 1;
+    } else {
+        if (fn_8002F168(p) != 1) {
+            *(u16*)(p + 0x220) = lbl_802C562C[0x1f];
+            p[0x212] = 0x14;
+        }
+    }
+}
+
+extern "C" void fn_800C3318(u8* p) {
+    if (*(u16*)(p + 0x220) != 0) {
+        *(u16*)(p + 0x220) = *(u16*)(p + 0x220) - 1;
+        return;
+    }
+    p[0x222] = 2;
+    *(u16*)(p + 0x220) = 10;
+    p[0x212] = 0x15;
 }
 
 extern "C" void fn_800C3490(void) {}
