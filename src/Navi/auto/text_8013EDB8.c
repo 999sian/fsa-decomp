@@ -11,9 +11,9 @@ extern "C" void OSInitThreadQueue(void* queue);
 extern "C" void OSRegisterResetFunction(void* info);
 extern "C" void fn_801D1360(void);
 extern "C" void fn_801404EC(void);
-extern "C" void fn_8013EDB8(void);
+extern "C" void fn_8013EDB8(s32 idx);
 extern "C" s32 fn_80140520(s32 idx);
-extern "C" s32 fn_801406B0(s32 idx, s32 a, s32 b, void (*cb)(void));
+extern "C" s32 fn_801406B0(s32 idx, s32 a, s32 b, void (*cb)(s32));
 extern "C" s32 fn_8013F21C(s32 idx);
 extern "C" void fn_801408CC(void* p);
 extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
@@ -82,7 +82,56 @@ extern "C" s32 fn_8013F008(s32 idx, s32 param_2) {
 }
 
 extern "C" s32 fn_8013F098(void) {
-    lbl_802FF388 = 1;
-    return 1;
+    return lbl_802FF388 = 1;
+}
+
+extern "C" void fn_8013F5A0(s32 idx, s32 param_2) {
+    u8* s = lbl_802C6A80 + (idx << 8);
+    u8* t = s + 0x40;
+    void (*cb)(s32);
+    if (param_2 == 0) {
+        *(u8*)(*(u8**)(t + 0x10)) = 0;
+        *(s32*)(t + 0x2c) = 0;
+        *(s32*)(t + 0x28) = 0;
+        cb = *(void (**)(s32))(t + 0x14);
+        if (cb != 0) {
+            *(s32*)(t + 0x14) = 0;
+            cb(param_2);
+        }
+    } else {
+        fn_801408CC(t + 0x18);
+    }
+    *(s32*)(s + 0x20) = param_2;
+}
+
+extern "C" void fn_80140060(s32 idx, s32 param_2) {
+    u8* s = lbl_802C6A80 + (idx << 8);
+    u8* t = s + 0x40;
+    void (*cb)(s32);
+    if (param_2 == 0) {
+        *(u8*)(*(u8**)(t + 0x10)) = 0;
+        *(s32*)(t + 0x2c) = 0;
+        *(s32*)(t + 0x28) = 0;
+        cb = *(void (**)(s32))(t + 0x14);
+        if (cb != 0) {
+            *(s32*)(t + 0x14) = 0;
+            cb(param_2);
+        }
+    }
+    *(s32*)(s + 0x20) = param_2;
+}
+
+extern "C" void fn_801400E0(s32 idx) {
+    if (fn_8013F21C(idx) == 0) {
+        fn_80140520(idx);
+    }
+}
+
+extern "C" void fn_80140128(s32 idx) {
+    u8* s = lbl_802C6A80 + (idx << 8);
+    if (*(s32*)(s + 0x20) == 0) {
+        memcpy(*(void**)(s + 0x18), s + 5, 4);
+        *(u8*)(*(u8**)(s + 0x14)) = s[9] & 0x3a;
+    }
 }
 
