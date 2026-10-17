@@ -130,6 +130,11 @@ extern "C" void* fn_801A8574(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801A9EE0(VObj_801A9EE0* p) {
+    p->vf2();
+    p->vf1();
+}
+
 extern "C" void fn_801A9040(void* p);
 extern "C" void fn_801AA450(u8* p) {
     fn_801A9040(*(void**)(p + 0x84));
