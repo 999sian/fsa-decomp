@@ -912,23 +912,18 @@ extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
 
 extern "C" int fn_8015CA24(char* param_1, u32 param_2, s32 param_3) {
     int r;
-    s32 n;
     fn_801BE3A0(param_1 + 0x18);
     if (param_2 < 4) {
         param_2 = 4;
     }
-    if (param_3 < 0) {
-        n = 4;
-        if (-param_3 > 3) {
+    if (param_3 >= 0) {
+        r = fn_8015CAD4(param_1, param_2, param_3 >= 4 ? param_3 : 4);
+    } else {
+        s32 n = 4;
+        if (-param_3 >= 4) {
             n = -param_3;
         }
         r = fn_8015CBAC(param_1, param_2, n);
-    } else {
-        n = 4;
-        if (param_3 > 3) {
-            n = param_3;
-        }
-        r = fn_8015CAD4(param_1, param_2, n);
     }
     fn_801BE47C(param_1 + 0x18);
     return r;
