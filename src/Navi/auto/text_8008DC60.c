@@ -1,4 +1,5 @@
 #include "types.h"
+#include "math.h"
 extern void* lbl_80289A14[];
 
 extern void* lbl_80283F48[];
@@ -959,9 +960,7 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
     } else if (param_2 > param_1) {
         param_2 = param_1;
     }
-    f32 num = (f32)param_2;
-    f32 den = (f32)param_1;
-    f32 f4 = num / den;
+    f32 f4 = (f32)param_2 / (f32)param_1;
     switch (param_3) {
     case 0:
         return f4 * f4;
@@ -989,14 +988,10 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
             r = (f32)(res_d * (f64)f4);
         } else if (f4 < lbl_80300B68) {
             r = *(f32*)&lbl_802FEAB0;
+        } else if (fpclassify(f4) == 1) {
+            r = *(f32*)&lbl_802FEAB0;
         } else {
-            u32 bits;
-            *(f32*)&bits = f4;
-            if (((bits >> 23) & 0xFF) == 0xFF && (bits & 0x7FFFFF) != 0) {
-                r = *(f32*)&lbl_802FEAB0;
-            } else {
-                r = f4;
-            }
+            r = f4;
         }
         return r;
     }
