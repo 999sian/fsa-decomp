@@ -156,8 +156,8 @@ static inline bool wlftOnLift(u8* this_, s32 i) {
         return false;
     }
     JGeometry::TVec3<f32> p(*fn_8023E724(i));
-    f32 cx = 8.0f + *(f32*)(this_ + 0xc);
-    f32 cy = 8.0f + *(f32*)(this_ + 0x10);
+    f32 cx = lbl_8053C270 + *(f32*)(this_ + 0xc);
+    f32 cy = lbl_8053C270 + *(f32*)(this_ + 0x10);
     f32 x0 = *(f32*)(this_ + 0x60) + cx;
     f32 y0 = *(f32*)(this_ + 0x64) + cy;
     f32 x1 = *(f32*)(this_ + 0x68) + cx;
