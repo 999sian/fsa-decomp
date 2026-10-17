@@ -43,23 +43,6 @@ extern "C" void fn_802B7CD8(void* this_) {
     ((ActorSlot9*)this_)->slot9();
 }
 
-extern "C" void* fn_8023E724(s32 id);
-extern "C" s32 fn_8023DE58(s32 id);
-extern "C" s32 fn_80237774(s32 id);
-extern "C" u8 fn_8023F264(s32 id);
-extern "C" u8 fn_80236B50(s32 id);
-extern "C" u8 fn_801F2B7C(char* this_, s32 a, s32 b, s32 c);
-extern "C" void fn_801F71A4(void* v, f32 x, f32 y, f32 z);
-extern void* lbl_8053AAF8;
-extern s32 lbl_804A8858[];
-extern f32 __float_epsilon;
-extern f32 lbl_80540AB8;
-extern f32 lbl_80540ABC;
-extern f32 lbl_80540AC0;
-extern f32 lbl_80540AC4;
-extern f32 lbl_80540AC8;
-extern f32 lbl_80540AD0;
-
 extern "C" void fn_802B8420(char* this_) {
     fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x173, 1, 0, 0, 0, 1, 1.0f);
     *(u8*)(this_ + 0x11c) = 0;
