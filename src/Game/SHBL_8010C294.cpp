@@ -10,7 +10,7 @@ extern "C" void v01__5ActorFv(void* this_);
 extern "C" void fn_801D2608(void* p, void* sym, s32 n);
 extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
 extern "C" void fn_801D1F14(void* p, f32 f);
-extern "C" void fn_8010C294(void* this_, s32 mode);
+extern "C" s32 fn_8010C294(u8* this_, s32 mode);
 extern f32 lbl_8053C4A4;
 extern f32 lbl_8053C4A0;
 extern f32 lbl_8053C4BC;
