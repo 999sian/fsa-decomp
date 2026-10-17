@@ -44,6 +44,53 @@ extern "C" void fn_803DD760(void)
 {
 }
 
+extern "C" void fn_803DD764(void* self_) {
+    u8* self = (u8*)self_;
+    f32 inc = lbl_8054360C;
+    f32 threshold = lbl_80543610;
+    *(f32*)(self + 0x7c) += inc;
+    if (*(f32*)(self + 0x7c) >= threshold) {
+        *(f32*)(self + 0x7c) = threshold;
+        u32 arg = 0xb;
+        DVDFileInfo fileInfo;
+        if (fn_80457F80(lbl_8053AF80, &arg, -2) != 0) {
+            s16 v = *(s16*)(self + 0x98) - 1;
+            *(s16*)(self + 0x98) = v;
+            if (v <= 0 && DVDOpen(lbl_80477898, &fileInfo) == 1) {
+                u8* base = lbl_80529DEC;
+                u32 off;
+                for (off = 0; off < 16; off += 8) {
+                    u8* src = base + off;
+                    u8* dst = (u8*)(off - 0x7f900000);
+                    dst[0] = src[0x216];
+                    dst[1] = src[0x217];
+                    dst[2] = src[0x218];
+                    dst[3] = src[0x219];
+                    dst[4] = src[0x21a];
+                    dst[5] = src[0x21b];
+                    dst[6] = src[0x21c];
+                    dst[7] = src[0x21d];
+                    src = base + off + 8;
+                    dst = (u8*)(off + 8 - 0x7f900000);
+                    dst[0] = src[0x216];
+                    dst[1] = src[0x217];
+                    dst[2] = src[0x218];
+                    dst[3] = src[0x219];
+                    dst[4] = src[0x21a];
+                    dst[5] = src[0x21b];
+                    dst[6] = src[0x21c];
+                    dst[7] = src[0x21d];
+                }
+                OSSetSaveRegion((void*)0x80700000, (void*)0x8070001f);
+                __PADDisableRecalibration(1);
+                fn_802B1558(lbl_8053ACA8);
+                OSSetBootDol(fileInfo.startAddr);
+                OSResetSystem(0, 0, 0);
+            }
+        }
+    }
+}
+
 extern "C" void fn_803DD8E8(void* self_)
 {
     u8* self = (u8*)self_;
@@ -77,4 +124,15 @@ extern "C" void fn_803DD93C(void* self_)
     *(f32*)(self + 0x7c) = threshold;
     *(int*)(self + 0x84) = 6;
 }
+class SeqMgr;
+typedef void (SeqMgr::*SeqFunc)(void);
 
+class SeqVoice {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0C();
+    virtual BOOL isPlaying();
+    virtual void fadeOut(f32);
+};
