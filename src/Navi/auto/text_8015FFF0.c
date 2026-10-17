@@ -86,6 +86,21 @@ extern "C" void* fn_8016017C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_801601C4(void* ptr, s16 param_2) {
+    extern char lbl_80297C8C[];
+    extern char lbl_80297C7C[];
+    if (ptr != nullptr) {
+        *(void**)((u8*)ptr + 0xc) = lbl_80297C7C;
+        if (ptr != nullptr) {
+            *(void**)((u8*)ptr + 0xc) = lbl_80297C8C;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" int fn_80160564(void* a, void* b, void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
