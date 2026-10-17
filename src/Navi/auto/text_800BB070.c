@@ -28,6 +28,18 @@ struct VObj_800BD938 {
     virtual void v9(s32);
 };
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern "C" void fn_800BC6F4(u8* p);
+extern "C" void fn_800BB210(u8* p);
+extern "C" void fn_800BB1B4(u8* param_1) {
+    fn_800BC6F4(param_1);
+    fn_800BB210(param_1);
+    if (*(u8*)(lbl_802B7CA0 + 0x141a) != 0) {
+        param_1[0xd4] = 0;
+    } else {
+        param_1[0xd4] = 1;
+    }
+}
+
 extern "C" void fn_800BCF88(void) {}
 
 extern "C" void fn_800BCF8C(u8* p) {
@@ -43,9 +55,13 @@ extern "C" void fn_800BD00C(u8* p) {
 
 extern "C" void fn_800BD024(u8* p) {
     if (*(*(u8**)(p + 0x34) + 0xb0) != 0) {
+        s32 n;
+        u8* q;
         *(s32*)(p + 0x48) = *(s32*)(p + 0x48) + 1;
-        if (*(s32*)(p + 0x48) >= *(s16*)(*(u8**)(p + 0x44) + 6)) {
-            *(s32*)(p + 0x48) = *(s32*)(p + 0x48) - *(s16*)(*(u8**)(p + 0x44) + 6);
+        q = *(u8**)(p + 0x44);
+        n = *(s32*)(p + 0x48);
+        if (n >= *(s16*)(q + 6)) {
+            *(s32*)(p + 0x48) = n - *(s16*)(q + 6);
         }
         *(f32*)(*(u8**)(p + 0x44) + 8) = (f32)*(s32*)(p + 0x48);
     }
