@@ -413,6 +413,19 @@ extern "C" void fn_8002EEEC(unsigned char a, unsigned short b) {
     *(S_8002EEEC*)(lbl_802BB0FC + 0x7c) = t;
 }
 
+extern "C" void fn_8002EF20(unsigned char a, int b, unsigned char c, unsigned short d) {
+    S_8002EF20 s;
+    S_8002EF20 t;
+    char* p = lbl_802BB0FC;
+    s.a = a;
+    s.c = c;
+    s.d = d;
+    *(int*)(p + 0x80) = b;
+    *(int*)&t = *(int*)&s;
+    *(int*)(p + 0x7c) = *(int*)&t;
+    *(int*)(p + 0x4c) |= 2;
+}
+
 extern "C" int fn_8002E0AC(void* obj, int a, int b, int c, int d, int e, int f, float g);
 extern "C" void fn_800589CC(int);
 extern "C" void* fn_80024BC8(void);
@@ -595,6 +608,13 @@ extern "C" int fn_8002F87C(void) {
         return 1;
     }
     return 0;
+}
+
+extern "C" int fn_8002F8AC(int p, int a, unsigned char b, unsigned char c, unsigned char d) {
+    if (p == 0) {
+        p = (a << 24) + (b << 16) + (c << 8) + d;
+    }
+    return p;
 }
 
 extern "C" void fn_80030664(void) {}
