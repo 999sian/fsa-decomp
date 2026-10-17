@@ -99,6 +99,34 @@ extern "C" s32 fn_802D0BB0(void* this_, u32 param2, u32 param3) {
     return fn_801F132C(this_, param2, param3, (u32*)((char*)this_ + 0x230));
 }
 
+extern "C" void fn_802D0BD4(char* p) {
+    YasiVec pos(*(YasiVec*)(p + 0xc));
+    pos.z = lbl_80540EA8;
+    s32 id = *(s32*)(p + 0x4);
+    if (id >= 8) {
+        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, id, &pos, 0, -1, -1);
+    }
+    if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xd || fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0x39) {
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540EAC, 0x3d0, 0, 1, 0, 0, 1);
+        fn_801F0E34(p, 0x30022, 0);
+    } else if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xe) {
+        if (fn_802DE9A0()) {
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540EAC, 0x2a9, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540EAC, 0x2aa, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5005f, 0);
+        } else if (fn_802DEB58()) {
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540EAC, 0x45e, -1, 1, 0, 0, 1);
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540EAC, 0x45f, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x5003f, 0);
+        }
+    } else {
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540EAC, 0x8c, 1, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540EAC, 0x8d, 1, 0, 0, 0, 1);
+        fn_801F0E34(p, 0x30003, 0);
+    }
+    *(u8*)(p + 0x11c) = 0;
+}
+
 extern "C" void fn_802D0E28(char* p) {
     s32 flag = 7;
     YasiDrawParam param;
