@@ -194,6 +194,55 @@ extern "C" void fn_8040E298(u8* self) {
     }
 }
 
+extern "C" void fn_8040E3A0(u8* self) {
+	f32 speed = 3.4f + (f32)*(s16*)(lbl_8050DB0C + 0x2ba) / 100.0f;
+	s32 idx = *(s32*)(self + 0x340) * 4 + *(s32*)(self + 0x348);
+	f32 tx = lbl_8048C95C[idx * 2];
+	f32 tz = lbl_8048C95C[idx * 2 + 1];
+	f32 dx = tx - *(f32*)(self + 0x394);
+	f32 dz = tz - *(f32*)(self + 0x398);
+	f32 dist = std::sqrtf(dx * dx + dz * dz);
+
+	if (*(u8*)(self + 0x664)) {
+		if (dist < 50.0f + speed) {
+			*(s16*)(self + 0x42c) = 0;
+			*(s32*)(self + 0x350) = 9;
+		} else {
+			u32 id = 0x20064;
+			*(f32*)(self + 0x394) += speed * dx / dist;
+			*(f32*)(self + 0x398) += speed * dz / dist;
+			(*(SoundHolder**)(self + 0x2b8))->play(&id);
+		}
+	} else {
+		if (dist < speed) {
+			*(f32*)(self + 0x394) = tx;
+			*(f32*)(self + 0x398) = tz;
+			*(s16*)(self + 0x42c) = 0;
+			*(s32*)(self + 0x350) = 9;
+		} else {
+			u32 id = 0x20064;
+			*(f32*)(self + 0x394) += speed * dx / dist;
+			*(f32*)(self + 0x398) += speed * dz / dist;
+			(*(SoundHolder**)(self + 0x2b8))->play(&id);
+		}
+	}
+
+	if (*(f32*)(self + 0x394) == tx) {
+		*(s32*)(self + 0x360) = 0x10;
+	} else {
+		u16 ang = (u16)(JMath::atanTable_.atan2_(-dx, -dz) * 10430.378f);
+		if (ang < 0x2000 || ang >= 0xe000) {
+			*(s32*)(self + 0x360) = 0x18;
+		} else if (ang < 0x6000) {
+			*(s32*)(self + 0x360) = 8;
+		} else if (ang <= 0xa000) {
+			*(s32*)(self + 0x360) = 0x10;
+		} else {
+			*(s32*)(self + 0x360) = 0;
+		}
+	}
+}
+
 extern "C" void fn_8040F16C(u8* self) {
     *(s16*)(self + 0x434) += 0x200;
     *(s16*)(self + 0x436) += 0x400;
@@ -460,6 +509,8 @@ extern "C" void fn_8040B388(u8* self) {
 
 extern "C" u8 fn_804446A4(void*);
 extern "C" void fn_80402E08(void*, f32, f32);
+extern "C" void fn_80402CE0(void*, f32, f32);
+extern "C" void appendChild__7J2DPaneFP7J2DPane(void*, void*);
 extern "C" void fn_8042EDAC(void*, s32, s32);
 extern "C" u8* getBounds__7J2DPaneFv(void*);
 extern u64 lbl_8048C4F8[];
