@@ -11,8 +11,6 @@ inline bool iterNe2_8013A388(Iter_8013A388 x, Iter_8013A388 y) {
     return iterNe_8013A388(tx, ty);
 }
 
-struct Pair_8013A388 { void* first; void* second; };
-inline bool pairNe_8013A388(Pair_8013A388 p) { return p.first != p.second; }
 
 struct Obj_8013A024 {
     u8 unk_0x0[0x8];
