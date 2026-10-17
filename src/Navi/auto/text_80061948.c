@@ -109,6 +109,8 @@ struct StateObj8006A924 {
     StateFunc8006A924 m_func;
 };
 extern StateFunc8006A924 lbl_802800FC;
+struct VObj800636F4_10 { u8 pad[0x10]; virtual void Destroy(int); };
+struct VObj800636F4_14 { virtual void f0(); virtual void Release(); };
 extern "C" void fn_80061948(void* param_1) {
     *(u16*)((u8*)param_1 + 0xe) = 0;
     *(u32*)((u8*)param_1 + 0x10) = 0;
