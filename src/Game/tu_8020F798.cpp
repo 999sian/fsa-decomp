@@ -27,8 +27,6 @@ struct Tu8020F80CResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 
@@ -37,6 +35,59 @@ extern "C" void fn_8020F798(char* self)
     JGeometry::TVec3f v(*(JGeometry::TVec3f*)(self + 0xc));
     fn_8020F80C(self, lbl_8046A238[*(int*)(self + 0x350)].p + *(int*)(self + 0x280));
     ((JGeometry::TVec3f*)(self + 0xc))->set(v);
+}
+
+extern "C" void fn_8020F80C(void* self, char* p)
+{
+    char* this_ = (char*)self;
+    DrawRec rec;
+    f32 mtx[3][4];
+    u32 mode;
+    f32 buf[3];
+
+    if (*(u8*)(this_ + 0xc4) != 0) {
+        u8 r = fn_8023BCD4(*(s32*)(this_ + 0xc8));
+        ((u8*)&rec.w10)[3] = r;
+        if (r == 0) {
+            return;
+        }
+        rec.b1c = 0;
+        rec.b1d = 0;
+        if (*(s32*)(this_ + 0x138) == 0) {
+            fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, &rec, 0, lbl_8046A448, 0, 0);
+        }
+        mode = 0;
+        rec.b1f = 0;
+        if (*(u8*)(this_ + 0xc4) != 0) {
+            rec.b20 = 0;
+            rec.b1c = fn_8023CA88(*(s32*)(this_ + 0xc8));
+            rec.b1d = fn_8023CB24(*(s32*)(this_ + 0xc8)) + 1;
+            mtx[0][3] = 0.0f;
+            mtx[1][3] = 0.0f;
+            mtx[2][3] = 0.0f;
+            mtx[0][0] = 1.0f;
+            mtx[0][1] = 0.0f;
+            mtx[0][2] = 0.0f;
+            mtx[1][0] = 0.0f;
+            mtx[1][1] = 1.0f;
+            mtx[1][2] = 0.0f;
+            mtx[2][0] = 0.0f;
+            mtx[2][1] = 0.0f;
+            mtx[2][2] = -1.0f;
+            rec.w18 = mtx;
+            mode = 2;
+            *(f32*)(this_ + 0x14) -= lbl_8046A238[*(s32*)(this_ + 0x350)].f;
+        }
+    }
+    if (*(s32*)(this_ + 4) < 8) {
+        void* res = (*(Tu8020F80CResMgr**)(lbl_8053AAF8 + 0xa4))->get('SOB ', lbl_8046A458);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, (s32)p, 1.0f, 1.0f, &rec);
+    }
+    if (*(s32*)(this_ + 4) == 8) {
+        fn_801CD0D0((f32*)(this_ + 0xc), buf);
+        fn_801EF574(lbl_8046A458, p, buf, &rec);
+    }
+    fn_80307AC8(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, (s32)p, 0, mode, -1);
 }
 
 extern "C" void fn_8020FADC(char* self)
