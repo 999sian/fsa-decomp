@@ -198,6 +198,10 @@ extern "C" void fn_80019834(void* param_1) {
     fn_8001D630(*(void**)((u8*)self + 0xc0), self);
 }
 
+extern "C" s32 fn_800198DC(u8* self) {
+    return (*(u8*)(self + 0xc4) & 0x3f) == 2;
+}
+
 extern "C" void fn_80019918(s32 param_1) {
     if (lbl_802FB9B8 != NULL) {
         *(s32*)(*(u8**)(lbl_802FB9B8 + 0x20) + 0xc8) = param_1;
