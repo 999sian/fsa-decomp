@@ -220,3 +220,6 @@ extern "C" void* fn_80196130(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" u32 fn_80196178(void) { return 0x534D5458; }
+
