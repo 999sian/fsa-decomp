@@ -5,6 +5,7 @@ struct Ctx_801B0240 { void* vt; u16 a; u16 b; void* obj; };
 
 typedef struct { u32 v[8]; } Blk32_801AF8F8;
 typedef struct { f32 x, y, z; } Vec3f_801AF8F8;
+typedef struct { u32 a, b, c; } W3_801AF8F8;
 struct Obj_801AF8F8 {
     u32 w0;
     u32 w4;
@@ -692,7 +693,7 @@ extern "C" void fn_801AA10C(void* arg0) {
     } else {
         *(u32*)(lbl_802EE470 + 0x34) &= ~8;
     }
-    fn_801A8538(*(u8**)(p + 4));
+    fn_801A8538(*(void**)(p + 4));
     q = *(u8**)(p + 4);
     *(u32*)(lbl_802EE470 + 0x58) = *(u32*)(q + 0x6c);
     for (i = 0; i < *(u16*)(q + 0x2c); i++) {
@@ -1586,7 +1587,10 @@ extern "C" void fn_801AF8C4(u8* self, void* node) {
     *(void**)(self + 0x10) = node;
 }
 
-void fn_801AF8F8(struct Obj_801AF8F8* p) {
+extern "C" void fn_801AF8F8(void* arg0) {
+    struct Obj_801AF8F8* p = (struct Obj_801AF8F8*)arg0;
+    Vec3f_801AF8F8 a;
+    Vec3f_801AF8F8 b;
     p->w0 = 0;
     p->w4 = 0;
     p->w8 = 0;
@@ -1599,8 +1603,10 @@ void fn_801AF8F8(struct Obj_801AF8F8* p) {
     p->f38 = lbl_80301DD4;
     p->w54 = 0;
     p->w58 = 0;
-    p->v3C = lbl_80202698;
-    p->v48 = lbl_802026A4;
+    a = lbl_80202698;
+    b = lbl_802026A4;
+    p->v3C = a;
+    p->v48 = b;
 }
 
 extern "C" void fn_801AFD48(void* param_1) {
@@ -1743,6 +1749,41 @@ extern "C" s32 fn_801B016C(u8* self, u8* other) {
     }
     return ret;
 }
+
+extern "C" s32 fn_801B0240(u8* a, u8* p) {
+    s32 r;
+    u16 i;
+    u16 n = *(u16*)(p + 0x16);
+    u32 v;
+    u16 t;
+    struct Ctx_801B0240 c;
+
+    r = 0;
+    if (*(u16*)(a + 0x1c) == 1) {
+        return 2;
+    }
+    for (i = 0; i < n; i++) {
+        t = *(u16*)(*(u8**)(p + 0x18) + i * 2);
+        if (t != 0xffff) {
+            v = *(u32*)(*(u8**)(*(u8**)(a + 8) + t * 4) + 0x3c);
+            if (v >= 0xC0000000) {
+                v = 0;
+            }
+            if (v == 0) {
+                r = 1;
+            } else {
+                c.vt = lbl_8027F1FC;
+                c.a = i;
+                c.b = 1;
+                c.obj = p;
+                fn_801AE3F8((u8*)v, *(u8*)(*(u8**)(p + 0x10) + i * 8 + 4), (u8*)&c);
+                c.vt = lbl_8027F1FC;
+            }
+        }
+    }
+    return r;
+}
+
 #pragma use_lmw_stmw reset
 #pragma dont_inline reset
 extern "C" void* fn_801B09A4(void* self, void* src) {
@@ -3603,9 +3644,15 @@ extern "C" void fn_801BA428(s16 arg0, s16 arg1, s16 arg2, f32* out) {
     out[2] = xc * (ya * yb) - yc * (xa * xb);
 }
 
-void fn_801BA4F4(f32* a, f32* b, f32* out, f32 t) {
-    f32 dot = a[0] * b[0] + a[1] * b[1] + a[2] * b[2] + a[3] * b[3];
-    if (dot < 0.0) {
+extern "C" f32 __psq_l(void* p, int off, int w, int gqr);
+extern "C" f32 __ps_mul(f32 a, f32 b);
+extern "C" f32 __ps_madd(f32 a, f32 b, f32 c);
+extern "C" f32 __ps_sum0(f32 a, f32 b, f32 c);
+extern "C" void fn_801BA4F4(f32* a, f32* b, f32* out, f32 t) {
+    f32 p = __ps_mul(__psq_l(a, 0, 0, 0), __psq_l(b, 0, 0, 0));
+    p = __ps_madd(__psq_l(a, 8, 0, 0), __psq_l(b, 8, 0, 0), p);
+    p = __ps_sum0(p, p, p);
+    if (p < 0.0) {
         out[0] = a[0] + (-t) * (a[0] + b[0]);
         out[1] = a[1] + (-t) * (a[1] + b[1]);
         out[2] = a[2] + (-t) * (a[2] + b[2]);
