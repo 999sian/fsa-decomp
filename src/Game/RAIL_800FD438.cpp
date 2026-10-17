@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "std/math.h"
 
 // ---- from Game/fn_800FD438_dtor.cpp
 
@@ -171,6 +172,28 @@ extern "C" RailVec fn_800FE294(RailRing* ring, u8 i) {
     return ring->mNodes[i]->mPos;
 }
 
+extern "C" u8 fn_800FE2E4(RailRing* ring, RailVec* pos, s32 id) {
+    f32 best = lbl_8053C0D8;
+    for (u16 i = 0; i < ring->mSize; i++) {
+        s32 nodeId;
+        if ((u8)i == 0xff) {
+            nodeId = ring->mNodes[ring->mCur]->mId;
+        } else {
+            nodeId = ring->mNodes[(u8)i]->mId;
+        }
+        if (id == nodeId) {
+            RailVec d = ring->mNodes[i]->mPos;
+            d -= *pos;
+            f32 mag = PSVECMag(&d);
+            if (mag < best) {
+                best = mag;
+                ring->mCur = i;
+            }
+        }
+    }
+    return ring->mCur;
+}
+
 extern "C" void OSPanic(const char* file, int line, const char* msg, ...);
 extern char lbl_80463A70[];
 extern char lbl_80463A80[];
@@ -227,6 +250,18 @@ extern "C" u8 fn_800FD894(RailRing* ring, s32 id, u8* out, s32 max) {
         }
     }
     return n;
+}
+
+extern "C" RailVec fn_800FDC70(RailRing* ring, RailVec* pos, s32 n, u8 i) {
+    RailVec d = fn_800FE294(ring, i);
+    d -= *pos;
+    f32 mag = PSVECMag(&d);
+    if (n == 0) {
+        return d;
+    }
+    d.normalize();
+    d.scale(mag / n);
+    return d;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
