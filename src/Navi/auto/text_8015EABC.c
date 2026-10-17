@@ -7,6 +7,8 @@ typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_8015D050(void*);
+extern "C" char lbl_80297A94[];
+extern "C" void* lbl_802EE28C[];
 extern "C" void fn_801BE368(void*);
 extern "C" void* fn_80159E8C(void*);
 extern "C" void* fn_8015A9A8(u32, void*, int);
