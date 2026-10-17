@@ -30,6 +30,10 @@ struct T804170EC_Grc {
     const J2DGrafContext* ctx;
 };
 extern T804170EC_Grc* lbl_8053AB10;
+
+struct T804170EC_Color {
+    u8 r, g, b, a;
+};
 extern s32 lbl_8053AE00;
 extern u64 lbl_8048CD50[];
 extern f32 lbl_805439C8;
