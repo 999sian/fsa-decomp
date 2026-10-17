@@ -110,6 +110,21 @@ extern "C" void fn_80118AB4(char *param_1, char *param_2, int param_3, int param
     fn_80118B58(param_1, param_3, param_4);
 }
 
+extern "C" void* fn_80118BD0(u8* p, s16 n) {
+    if (p) {
+        if (p[0x3b] & 1) {
+            fn_8015AB40(*(void**)(p + 0x3c));
+        }
+        if (p[0x3b] & 2) {
+            fn_8015AB1C(*(void**)(p + 0x28));
+        }
+        if (n > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void fn_80118DF0(void* a, void* b, u8* c) {
     fn_80118E24(a, b, c, c != 0 ? c[0xc] : 0);
 }
