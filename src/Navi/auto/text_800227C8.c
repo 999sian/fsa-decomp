@@ -1,6 +1,17 @@
 #include "types.h"
 #include <stdarg.h>
 
+typedef struct {
+    u8 b7 : 1;
+    u8 b6 : 1;
+    u8 b5 : 1;
+    u8 b4 : 1;
+    u8 b3 : 1;
+    u8 b2 : 1;
+    u8 b1 : 1;
+    u8 b0 : 1;
+} Bits8;
+
 extern s32 lbl_802FED48;
 extern s32 lbl_802FED4C;
 extern s32 lbl_802FED50;
