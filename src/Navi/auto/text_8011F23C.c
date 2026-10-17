@@ -16,6 +16,7 @@ extern f64 lbl_80301778;
 extern f32 lbl_802F0BC0[][2];
 extern "C" void fn_80123EC0(void* a, ...);
 extern "C" BOOL OSEnableInterrupts(void);
+extern "C" BOOL OSRestoreInterrupts(BOOL level);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" s32 fn_801C7C6C(void* a, void* b);
 extern "C" void fn_801C7D34(void* p);
