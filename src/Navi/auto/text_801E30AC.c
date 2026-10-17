@@ -161,16 +161,18 @@ extern "C" void fn_801E3B3C(unsigned char* p1, unsigned short p2) {
 }
 
 extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c) {
-    unsigned char tbl[4] = {0x00, 0x00, 0xc0, 0xe0};
+    char tbl[4] = {0, 0, -64, -32};
     unsigned char* p;
     int n;
+    unsigned int wc;
 
     if (s == 0) {
         return 0;
     }
-    if (c < 0x80) {
+    wc = c;
+    if (wc < 0x80) {
         n = 1;
-    } else if (c < 0x800) {
+    } else if (wc < 0x800) {
         n = 2;
     } else {
         n = 3;
@@ -178,13 +180,13 @@ extern "C" int fn_801E3B6C(unsigned char* s, unsigned short c) {
     p = s + n;
     switch (n) {
     case 3:
-        *--p = (c & 0x3f) | 0x80;
-        c >>= 6;
+        *--p = (wc & 0x3f) | 0x80;
+        wc >>= 6;
     case 2:
-        *--p = (c & 0x3f) | 0x80;
-        c >>= 6;
+        *--p = (wc & 0x3f) | 0x80;
+        wc >>= 6;
     case 1:
-        *--p = c | tbl[n];
+        *--p = wc | tbl[n];
     }
     return n;
 }
@@ -252,11 +254,11 @@ extern "C" void fn_801E3E8C(unsigned char* dst, const unsigned char* src, unsign
 }
 
 extern "C" void fn_801E3F48(unsigned char* dst, const unsigned char* src, unsigned long n) {
-    unsigned long shr;
-    unsigned long sh;
-    unsigned long shl;
     unsigned long b;
     unsigned long a;
+    unsigned long shr;
+    unsigned long shl;
+    unsigned long sh;
     unsigned long i;
     unsigned long* d;
     unsigned long* w;
@@ -271,25 +273,24 @@ extern "C" void fn_801E3F48(unsigned char* dst, const unsigned char* src, unsign
         } while (--i != 0);
     }
     i = n >> 3;
-    sh = ((unsigned long)src + 1) & 3;
+    src++;
+    sh = (unsigned long)src & 3;
     shl = sh << 3;
     shr = 32 - shl;
     d = (unsigned long*)(dst - 3);
-    w = (unsigned long*)((unsigned char*)src - sh + 1);
+    w = (unsigned long*)((unsigned long)src - sh);
     a = w[0];
     do {
         b = w[1];
-        d[1] = (a << shl) | (b >> shr);
+        *++d = (a << shl) | (b >> shr);
         w += 2;
         a = w[0];
-        d[2] = (b << shl) | (a >> shr);
-        d += 2;
+        *++d = (b << shl) | (a >> shr);
     } while (--i != 0);
     if (n & 4) {
         w += 1;
         b = w[0];
-        d[1] = (a << shl) | (b >> shr);
-        d += 1;
+        *++d = (a << shl) | (b >> shr);
     }
     dst = (unsigned char*)d + 3;
     src = (const unsigned char*)w + sh - 1;
@@ -397,6 +398,19 @@ extern "C" void fn_801E40D0(unsigned char* dst, const unsigned char* src, unsign
 
 extern "C" void fn_801E419C(void) {
     __stdio_exit = (void*)fn_801E2238;
+}
+
+extern "C" int fn_801E445C(const char* format, ...) {
+    int res;
+    va_list args;
+    if (fn_801E6DB0((struct FileFlags*)(lbl_8029E7B0 + 0x50), -1) >= 0) {
+        return -1;
+    }
+    __begin_critical_region(2);
+    va_start(args, format);
+    res = fn_801E4650((void*)fn_801E45E8, lbl_8029E7B0 + 0x50, (void*)format, args);
+    __end_critical_region(2);
+    return res;
 }
 
 extern "C" unsigned long fn_801E34D0(void* a, int b, unsigned long c, void* d);
@@ -621,6 +635,38 @@ extern "C" int fn_801E6EBC(volatile int a, void* buf, unsigned long* len, volati
     }
     fn_801EF5AC(a, buf, len, d);
     return 0;
+}
+
+extern const double lbl_803021D8;
+extern const double lbl_803021E0;
+extern const double lbl_803021E8;
+extern const double lbl_803021F0;
+extern const double lbl_803021F8;
+extern const double lbl_80302200;
+extern const double lbl_80302208;
+extern const double lbl_80302210;
+extern const double lbl_80302218;
+extern "C" double fn_801E8328(double x, double y) {
+    double z, r, hz, a, qx;
+    int ix;
+    ix = (*(int*)&x) & 0x7fffffff;
+    if (ix < 0x3e400000) {
+        if ((int)x == 0) return lbl_803021D8;
+    }
+    z = x * x;
+    r = z * (lbl_803021E0 + z * (lbl_803021E8 + z * (lbl_803021F0 + z * (lbl_803021F8 + z * (lbl_80302208 * z + lbl_80302200)))));
+    if (ix < 0x3FD33333) {
+        return lbl_803021D8 - (lbl_80302210 * z - (z * r - x * y));
+    }
+    if (ix > 0x3fe90000) {
+        qx = lbl_80302218;
+    } else {
+        ((int*)&qx)[0] = ix - 0x00200000;
+        ((int*)&qx)[1] = 0;
+    }
+    hz = lbl_80302210 * z - qx;
+    a = lbl_803021D8 - qx;
+    return a - (hz - (z * r - x * y));
 }
 
 extern const double lbl_80302260;
