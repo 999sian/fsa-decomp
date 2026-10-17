@@ -14,7 +14,7 @@ struct VObj_8011A74C {
     virtual void v6(void);
     virtual u32 v7(void);
     virtual u32 v8(void);
-    virtual void v9(void* a, void* c);
+    virtual void v9(s32 a, void* c);
     virtual void v10(void);
     virtual void v11(void);
     virtual void v12(void);
@@ -676,6 +676,20 @@ extern "C" void fn_8011C3AC(void* param_1, s32 a, s32 b, s32 c) {
     p[9] = a;
     p[10] = b;
     p[11] = c;
+}
+
+extern u32 lbl_80290138[4];
+extern u32 lbl_802FF2C0;
+extern "C" u32 fn_801CDB9C(u32);
+extern "C" BOOL fn_8011C3C8(u32 mask) {
+    u32* p = lbl_80290138;
+    int i;
+    for (i = 0; i < 4; i++, p++) {
+        if (lbl_802FF2C0 & *p) {
+            mask &= ~*p;
+        }
+    }
+    return fn_801CDB9C(mask) != 0;
 }
 
 extern "C" void fn_8011BF78(s32 chan, u8 stop);
