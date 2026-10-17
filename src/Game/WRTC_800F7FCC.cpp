@@ -24,7 +24,7 @@ extern "C" void* fn_800F7FCC(void* this_, s16 freeFlag) {
 // ---- from Game/fn_800F89FC.cpp
 
 extern "C" void fn_801F0E34(void* target, u32 effectId, s32 flag);
-struct WrtcVec { f32 x, y, z; };
+struct WrtcVec { f32 x, y, z; WrtcVec() {} WrtcVec(f32 a, f32 b, f32 c) { x = a; y = b; z = c; } };
 struct WrtcVT24 { virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19(); virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34(); };
 
 extern "C" void fn_800F89FC(void* this_) {
@@ -119,6 +119,54 @@ extern "C" void fn_800F8A30(void* this_) {
         if (*(u8*)((char*)owner + 0x2ad) == 2) {
             ((ActorVT*)this_)->slot9();
         }
+    }
+}
+
+extern "C" void fn_801F37AC(void*, s32, void*, s32, s32, s32);
+extern "C" void fn_800FA944(char* this_) {
+    u32 st = *(u32*)(this_ + 0xb0);
+    if (st == 4 || st == 0x12) {
+        return;
+    }
+    if (*(u8*)(this_ + 0x256) != 0) {
+        return;
+    }
+    if (*(s32*)(this_ + 0xd8) == 0) {
+        this_[0x255]++;
+        this_[0x256] = 0x32;
+        if (*(u32*)(this_ + 0x268) == 0) {
+            *(u32*)(this_ + 0x268) = 1;
+        }
+        fn_801F37AC(this_, 0, this_ + 0xc, 3, 0, -1);
+        fn_801F0E34(this_, 0x40005, 0);
+        WrtcVec v;
+        v.x = 0.0f;
+        v.y = 0.0f;
+        v.z = 0.0f;
+        *(WrtcVec*)(this_ + 0x3c) = v;
+        if (*(u8*)(this_ + 0x2ad) != 0) {
+            if (*(s32*)(this_ + 0x230) != 9) {
+                *(s32*)(this_ + 0x230) = 9;
+                *(u32*)(this_ + 0x238) |= 1;
+                *(u32*)(this_ + 0x238) &= ~4;
+                *(f32*)(this_ + 0x3c) = 0.0f;
+                *(f32*)(this_ + 0x40) = 0.0f;
+                *(f32*)(this_ + 0x44) = 5.0f;
+                *(u32*)(this_ + 0x268) = 0;
+                *(u32*)(this_ + 0x264) = 0;
+                f32 s = *(f32*)(this_ + 0x26c);
+                *(f32*)(this_ + 0x60) = -26.0f * s;
+                *(f32*)(this_ + 0x64) = -50.0f * s;
+                *(f32*)(this_ + 0x68) = 26.0f * s;
+                *(f32*)(this_ + 0x6c) = 0.0f;
+                fn_801F0E34(this_, 0x40005, 0);
+                if (*(s32*)(this_ + 0x108) <= 10) {
+                    ((WrtcVT24*)this_)->v7();
+                }
+            }
+        }
+    } else if (*(u8*)(this_ + 0x255) == 3) {
+        this_[0x2ad] = 1;
     }
 }
 
