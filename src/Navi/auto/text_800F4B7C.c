@@ -503,6 +503,12 @@ extern "C" u8 fn_801049C8(void) {
     return ((u8*)lbl_802B7CA0 + i)[0x3ec];
 }
 
+extern "C" void fn_80106540(char* p) {
+    *(unsigned char*)(*(char**)(p + 0x3f0) + 0xb0) = 1;
+    *(unsigned char*)(p + 0x408) = lbl_802C5A84[0x48];
+    *(unsigned char*)(p + 0x409) = 0;
+}
+
 extern "C" void fn_801074D4(void) {}
 
 extern "C" u32 fn_80107EA0(u8* p) {
