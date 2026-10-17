@@ -793,6 +793,55 @@ extern "C" void fn_8015C518(void* p, int a, int b, int c, int d, int e) {
     *(u32*)((u8*)p + 0xc) = b;
 }
 
+extern "C" u8* fn_8015C538(u8* p, u32 size, u8 a, u8 b, u8 c, u8 d) {
+    u8* n = 0;
+    p[3] = a;
+    p[2] = b;
+    if (*(u32*)(p + 4) >= size + 0x10) {
+        n = p + size;
+        n[0x13] = c;
+        n[0x12] = d;
+        *(u32*)(n + 0x14) = *(u32*)(p + 4) - (size + 0x10);
+        n += 0x10;
+        *(u32*)(p + 4) = size;
+    }
+    return n;
+}
+
+extern "C" u8* fn_8015C57C(u8* p, u32 size, u8 a, u8 b, u8 c, u8 flags) {
+    u8* n = 0;
+    if (*(u32*)(p + 4) >= size + 0x10) {
+        n = p + *(u32*)(p + 4) - size;
+        n[3] = c;
+        n[2] = flags | 0x80;
+        *(u32*)(n + 4) = size;
+        p[3] = a;
+        p[2] = b;
+        *(u32*)(p + 4) -= size + 0x10;
+    } else {
+        p[3] = c;
+        p[2] = 0x80;
+    }
+    return n;
+}
+
+extern "C" int fn_8015C5D4(void* node, void* list) {
+    u8* next = *(u8**)((u8*)node + 0xc);
+    u8* prev = *(u8**)((u8*)node + 0x8);
+    if (prev != 0) {
+        *(u8**)(prev + 0xc) = next;
+    } else {
+        *(u8**)((u8*)list + 0x80) = next;
+    }
+    if (next != 0) {
+        *(u8**)(next + 0x8) = prev;
+    } else {
+        *(u8**)((u8*)list + 0x84) = prev;
+    }
+    fn_8015BC6C(list, node);
+    return 0;
+}
+
 extern "C" void* fn_8015C634(u32 addr) {
     if (addr != 0) {
         u16* n = (u16*)(addr - 0x10);
