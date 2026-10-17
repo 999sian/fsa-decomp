@@ -86,6 +86,7 @@ extern "C" char* getStringPtr__10J2DTextBoxCFv(void* this_);
 extern "C" f32 lbl_80543494;
 extern "C" void fn_803832BC(char* a, s32 b, int c, int d, int e);
 extern "C" u8 lbl_804765D0[];
+extern "C" u8 lbl_8050DB0C[];
 extern "C" f32 lbl_8054349C;
 
 struct TextBoxVt15 {
