@@ -28,10 +28,9 @@ extern "C" u8 fn_802DEBA0(void);
 
 // Fast LCG at lbl_8053AAF8+0xB4; returns a value in [0,1).
 static inline f32 rupyRand01() {
-    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    u32 seed = *s * 0x19660du + 0x3c6ef35fu;
-    *s = seed;
-    u32 a = (*s >> 9) | 0x3f800000u;
+    u32 seed = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660du + 0x3c6ef35fu;
+    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = seed;
+    u32 a = (seed >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_80541D90;
 }
 
