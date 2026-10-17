@@ -223,6 +223,11 @@ extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4,
     return 0;
 }
 
+extern "C" void fn_800BDC20(u8* p) {
+    char* base = lbl_802B7CA0 + 0x1424;
+    fn_80060794(base, base + 0xfc, base + 0x100, p + 4);
+}
+
 extern "C" void fn_800BDFBC(void* param_1) {
     VObj_800A1A64* obj = *(VObj_800A1A64**)(lbl_802B7CA0 + 0x1394);
     obj->v3();
