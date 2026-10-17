@@ -553,9 +553,9 @@ extern "C" u8 fn_80161A2C(void*, void*, void*);
 extern "C" void fn_80166D3C(void*, void*);
 extern "C" char lbl_80297DD4[];
 extern "C" char lbl_802EE2D4[];
-extern "C" void* fn_80161710(void*, void*);
-extern "C" void* fn_80161874(void* a, void** b) {
-    *b = fn_80161710(a, *b);
+extern "C" char* fn_80161710(u16* p, char* s, s8 term);
+extern "C" void* fn_80161874(void* a, char** b, s8 term) {
+*b = fn_80161710((u16*)a, *b, term);
     return a;
 }
 
@@ -665,22 +665,25 @@ extern char lbl_80297D4C[];
 extern char lbl_802FE2B8[];
 extern char lbl_802FE2B8[4];
 extern "C" u32 fn_80161D1C(u8* src, u32 n, void* dst, u32 size, s32 mode) {
-    if (mode == 0) {
+    switch (mode) {
+    case 0:
         if (n > size) {
             n = size;
         }
         memcpy(dst, src, n);
         return n;
-    } else if (mode < 0 || mode >= 3) {
+    case 1:
+    case 2:
+        n = (u32)src[4] << 24 | (u32)src[5] << 16 | (u32)src[6] << 8 | src[7];
+        if (n > size) {
+            n = size;
+        }
+        fn_80166680(src, dst, n, 0);
+        return n;
+    default:
         fn_8011C9EC(lbl_80297D38, 0x2d3, lbl_802FE2B8, lbl_80297D4C);
         return 0;
     }
-    n = (u32)src[4] << 24 | (u32)src[5] << 16 | (u32)src[6] << 8 | src[7];
-    if (n > size) {
-        n = size;
-    }
-    fn_80166680(src, dst, n, 0);
-    return n;
 }
 
 extern "C" u32 fn_80161DF4(void* param_1, u8* param_2) {
