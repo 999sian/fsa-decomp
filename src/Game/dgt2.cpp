@@ -19,11 +19,6 @@ static inline u32 dgt2Idx(s32 m) {
     return ((u32)(s32)(4000.0f * (f32)m) >> 5) & 0x7ff;
 }
 
-// Same index through a 16-bit truncation of the angle (signed shift).
-static inline s32 dgt2IdxU16(s32 m) {
-    return (s32)(u16)(s32)(4000.0f * (f32)m) >> 5;
-}
-
 // from src/Game/fn_8018FB24_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
