@@ -15,6 +15,81 @@ extern "C" int fn_801EA854(void* param_1) {
     return 0;
 }
 
+extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) {
+    int err;
+    int i;
+
+    for (i = 0, err = 0; err == 0 && i < param_3; i++) {
+        int ret = 0;
+        unsigned int n = 1;
+        unsigned int remaining = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
+        if (n > remaining) {
+            ret = 0x302;
+            n = remaining;
+        }
+        TRK_memcpy(param_2 + i, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, n);
+        *(unsigned int*)((unsigned char*)param_1 + 0xc) += n;
+        err = ret;
+    }
+}
+
+extern "C" int TRKAppendBuffer_ui8(void* buffer, const unsigned char* data, int count) {
+    int err;
+    int i;
+
+    for (i = 0, err = 0; err == 0 && i < count; i++) {
+        unsigned int pos = *(unsigned int*)((unsigned char*)buffer + 0xc);
+        unsigned char ch = data[i];
+        int ret;
+        if (pos >= 0x880) {
+            ret = 0x301;
+        } else {
+            *(unsigned int*)((unsigned char*)buffer + 0xc) = pos + 1;
+            ((unsigned char*)buffer)[pos + 0x10] = ch;
+            *(unsigned int*)((unsigned char*)buffer + 8) += 1;
+            ret = 0;
+        }
+        err = ret;
+    }
+    return err;
+}
+
+extern "C" int fn_801EAD68(void* param_1, unsigned char* param_2, unsigned int param_3) {
+    unsigned int n = param_3;
+    int err = 0;
+    if (n == 0) {
+        return 0;
+    }
+    unsigned int remaining = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
+    if (n > remaining) {
+        err = 0x302;
+        n = remaining;
+    }
+    TRK_memcpy(param_2, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, n);
+    *(unsigned int*)((unsigned char*)param_1 + 0xc) += n;
+    return err;
+}
+
+extern "C" int fn_801EADF4(unsigned char* param_1, unsigned char* param_2, unsigned int param_3) {
+    int result = 0;
+    if (param_3 == 0) {
+        return 0;
+    }
+    unsigned int pos = *(unsigned int*)(param_1 + 0xc);
+    if (0x880 - pos < param_3) {
+        result = 0x301;
+        param_3 = 0x880 - pos;
+    }
+    if (param_3 == 1) {
+        *(param_1 + pos + 0x10) = *param_2;
+    } else {
+        TRK_memcpy(param_1 + pos + 0x10, param_2, param_3);
+    }
+    *(unsigned int*)(param_1 + 0xc) = *(unsigned int*)(param_1 + 0xc) + param_3;
+    *(unsigned int*)(param_1 + 8) = *(unsigned int*)(param_1 + 0xc);
+    return result;
+}
+
 extern "C" int TRKSetBufferPosition(void* param_1, unsigned int param_2) {
     int result = 0;
     if (param_2 > 0x880) {
@@ -51,5 +126,20 @@ extern "C" unsigned char* TRKGetBuffer(int param_1) {
         ret = lbl_802F8A48 + param_1 * 0x890;
     }
     return ret;
+}
+
+extern "C" int TRKInitializeMutex(void* mutex);
+extern "C" int TRKInitializeMessageBuffers(void) {
+    int i = 0;
+    unsigned char* buf = lbl_802F8A48;
+    do {
+        TRKInitializeMutex(buf);
+        TRKAcquireMutex(buf);
+        *(int*)(buf + 4) = 0;
+        TRKReleaseMutex(buf);
+        i++;
+        buf += 0x890;
+    } while (i < 3);
+    return 0;
 }
 
