@@ -44,6 +44,7 @@ extern u8* lbl_8053AB10;
 extern const char lbl_804660B8[];
 extern const char lbl_804660CC[];
 extern s32 lbl_804A01A0[];
+extern const f32 lbl_8053D460;
 extern "C" u8 fn_8023188C(void* p);
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_803075AC(void* h, s32 room, void* pos, s32 id, s32 sign, s32 two, s32 minus1, s32 p7, s32 u, s32 zero);
@@ -150,6 +151,81 @@ extern "C" void fn_80159AA0(char* this_) {
         *(Vec3f*)(this_ + 0x27c) = *(Vec3f*)fn_8023E724(*(void**)(this_ + 0x250));
     }
     Actor_CreateByID(fn_801F856C(), 0x4C535449, *(void**)(this_ + 0x4), this_ + 0x27c, (*(u32*)(this_ + 0x298) << 22) | *(u32*)(this_ + 0x294), -1, -1);
+}
+
+extern "C" void fn_80159C28(char* this_) {
+    if (fn_8023188C(*(void**)(this_ + 0x250))) {
+        s32 id;
+        s32 iVar5 = 0;
+        if (*(s32*)(this_ + 0x234) > 7 && *(s32*)(this_ + 0x234) < 0xc) {
+            iVar5 = 1;
+        }
+        DrawRec rec;
+        id = *(s32*)(this_ + 0x234);
+        if (id != 0x2f) {
+            if (id < 8) {
+                fn_801F06F0(this_, lbl_804660B8, *(s32*)(this_ + 0x244) + lbl_804A01A0[id], &rec, -1, 1.0f, 1.0f);
+                fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + lbl_804A01A0[id], iVar5 != 0, 2, -1, 1, 0, 0);
+            } else if (id < 0xc) {
+                fn_801F06F0(this_, lbl_804660CC, *(s32*)(this_ + 0x244) + lbl_804A01A0[id], &rec, -1, 1.0f, 1.0f);
+                fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + lbl_804A01A0[id - 4], iVar5 != 0, 2, -1, 1, 0, 0);
+            } else if (id < 0x10 || id > 0x19) {
+                if (id == 0x20) {
+                    fn_801F06F0(this_, lbl_804660B8, *(s32*)(this_ + 0x244) + 0x90, &rec, -1, 1.0f, 1.0f);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + 0x90, 0, 2, -1, 1, 0, 0);
+                } else if (id == 0x21) {
+                    fn_801F06F0(this_, lbl_804660B8, *(s32*)(this_ + 0x244) + 0x2af, &rec, -1, 1.0f, 1.0f);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + 0x2af, 0, 2, -1, 1, 0, 0);
+                } else if (id == 0x22) {
+                    fn_801F06F0(this_, lbl_804660B8, *(s32*)(this_ + 0x244) + 0x8c, &rec, 7, 1.0f, 1.0f);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + 0x8c, 0, 2, -1, 0, 0, 0);
+                } else if (id == 0x23) {
+                    rec.b2d = 1;
+                    fn_801F06F0(this_, lbl_804660B8, 0x2aa, &rec, 7, 1.0f, 1.0f);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, 0x2aa, 0, 2, -1, 0, 0, 0);
+                } else if (id == 0x24) {
+                    fn_801F06F0(this_, lbl_804660B8, *(s32*)(this_ + 0x244) + 0x2c7, &rec, -1, 1.0f, 1.0f);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x244) + 0x2c7, 0, 2, -1, 1, 0, 0);
+                } else if (id == 0x25) {
+                    fn_801F06F0(this_, lbl_804660B8, 0x98, &rec, -1, 1.0f, 1.0f);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, 0x98, 0, 2, -1, 1, 0, 0);
+                } else if (id < 0x2a || id > 0x2d) {
+                    if (id != 0x2e) {
+                        if (id < 0x40) {
+                            Vec3f pos;
+                            pos = *(Vec3f*)(this_ + 0xc);
+                            if (*(s32*)(this_ + 4) < 8) {
+                                void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
+                                void* model = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534f4220, lbl_804660B8);
+                                fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, id + 0x11, 1.0f, 1.0f, &rec);
+                            }
+                            fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, id + 0x11, 0, 2, -1, 1, 0, 0);
+                        } else {
+                            Vec3f pos;
+                            pos = *(Vec3f*)(this_ + 0xc);
+                            if (*(s32*)(this_ + 4) < 8) {
+                                void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
+                                void* model = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534f4220, lbl_804660B8);
+                                fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, id + 0x1cd, 1.0f, 1.0f, &rec);
+                            }
+                            fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, id + 0x1cd, 0, 2, -1, 1, 0, 0);
+                        }
+                    }
+                } else {
+                    fn_801F06F0(this_, lbl_804660CC, id + 0x255, &rec, -1, 1.0f, 1.0f);
+                }
+            } else {
+                Vec3f pos;
+                pos = *(Vec3f*)(this_ + 0xc);
+                if (*(s32*)(this_ + 4) < 8) {
+                    void* obj = *(void**)(lbl_8053AAF8 + 0xa4);
+                    void* model = ((void* (*)(void*, u32, const char*))(*(void***)obj)[6])(obj, 0x534f4220, lbl_804660B8);
+                    fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, model, id + 0x1d, 1.0f, 1.0f, &rec);
+                }
+                fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, id + 0x1d, 0, 2, -1, 1, 0, 0);
+            }
+        }
+    }
 }
 
 extern "C" void* fn_8015B420(char* this_, short how) {
