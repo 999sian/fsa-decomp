@@ -191,6 +191,16 @@ struct T8042_Random {
 struct T8042_Game { u8 pad[0xb4]; T8042_Random rnd; };
 extern "C" T8042_Game* lbl_8053AAF8;
 
+struct T80431_Pane {
+    u8 pad0[0x20];
+    f32 w;
+    f32 h;
+    f32 sw;
+    f32 sh;
+    u8 pad30[0x118 - 0x30];
+    f32 f118;
+};
+
 struct T80431_Owner {
     void* vt;
     u8 pad4[0x4];
