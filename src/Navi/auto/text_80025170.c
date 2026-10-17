@@ -12,6 +12,8 @@ struct NaviEntry { u8 pad[0x1c]; int flag; };
 struct NaviSlot { NaviEntry e[16]; s16 cur; s16 next; };
 struct NaviEnt14 { int a[3]; int val; int b; };
 struct NaviSlot2C { NaviEnt14 e[2]; s16 cur; s16 next; };
+struct NaviEnt18 { int a[5]; int val; };
+struct NaviSlot34 { NaviEnt18 e[2]; s16 cur; s16 next; };
 extern u8 lbl_802BC618[];
 extern u8 lbl_802BBD28[];
 extern u8 lbl_802BC548[];
