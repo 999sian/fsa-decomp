@@ -4,6 +4,7 @@
 
 extern "C" void fn_801F06F0(void* actor, void* res, u32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern "C" u8 fn_802ED7F0(char* p, f32 v);
+extern "C" u8* fn_801F856C(void);
 extern "C" u8 lbl_804714C0[];
 extern f32 lbl_805417E8;
 extern f32 lbl_805417EC;
