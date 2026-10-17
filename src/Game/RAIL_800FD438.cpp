@@ -101,31 +101,8 @@ void fn_800FDE38(void* ringArray)
 
 // ---- rail node ring helpers
 
-#ifndef RAIL_TYPES_TOP
-typedef JGeometry::TVec3<f32> RailVec;
-
-struct RailNode {
-    u8 pad0[4];
-    s32 mId;
-    u8 pad8[4];
-    RailVec mPos;
-    u8 pad18[0x90 - 0x18];
-    u32 mFlags;
-};
-
-struct RailRing {
-    u8 m0;
-    u8 mDir;
-    u8 mSize;
-    u8 mCur;
-    RailNode* mNodes[1];
-};
-#endif
-
 extern f32 lbl_8053C0B0;
 extern f32 lbl_8053C0D8;
-extern f32 lbl_8053C0B8;
-extern f32 lbl_8053C0D0;
 static inline s32 railGetId(RailRing* ring, u8 i);
 
 extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
