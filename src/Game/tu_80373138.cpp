@@ -5,6 +5,13 @@
 
 extern "C" char lbl_804AE574[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
+extern "C" f32 lbl_80542E54;
+extern "C" s32 lbl_80475024[];
+extern "C" u8 fn_8023077C(void);
+extern "C" u8 fn_80230534(s32 i);
+extern "C" Vec* fn_8023E724(s32 i);
+extern "C" void fn_80230498(s32 i, Vec* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230FD0(s32 i, s32 id);
 extern "C" Actor* fn_80373138(Actor* this_, s16 del) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804AE574;
