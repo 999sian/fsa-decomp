@@ -1,5 +1,22 @@
 #include "types.h"
 
+struct VObj_801A9EE0 {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+};
+
+struct VObj_801A9E44 {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+    virtual void vf3(void);
+    virtual void vf4(void);
+    virtual void vf5(void);
+    virtual void vf6(void);
+    virtual void vf7(s32 a);
+};
+
 extern "C" f32 lbl_80301D68;
 extern "C" void* lbl_8029B254[];
 extern "C" void fn_801A91FC(void*);
@@ -126,14 +143,16 @@ extern "C" void fn_801AA57C(u8* p) {
 
 extern "C" void fn_801AA5B0(u8* p) {
     u16 n = *(u16*)(*(u8**)(p + 4) + 0x7c);
+    void* a = p + 0x54;
+    void* b = lbl_802EE470;
     u16 i;
     for (i = 0; i < n; i++) {
         u8* e = *(u8**)(p + 0xc4) + i * 0x3c;
         *(void**)(e + 0x2c) = *(void**)(p + 0x84);
         if ((*(u32*)(p + 8) & 3) == 2) {
-            *(void**)(e + 0x30) = p + 0x54;
+            *(void**)(e + 0x30) = a;
         } else {
-            *(void**)(e + 0x30) = lbl_802EE470;
+            *(void**)(e + 0x30) = b;
         }
     }
 }
@@ -165,18 +184,19 @@ extern u8 lbl_802EE470[];
 extern void* lbl_8027F240[];
 extern "C" void fn_801AA6C0(u8* p, s16 param_2) {
     p[4] = 2;
+    f32 b = lbl_80301D6C;
     p[5] = 0;
+    f32 a = lbl_80301D68;
     *(s16*)(p + 6) = 0;
     *(s16*)(p + 8) = param_2;
     *(s16*)(p + 0xa) = 0;
-    *(f32*)(p + 0xc) = lbl_80301D68;
-    *(f32*)(p + 0x10) = lbl_80301D6C;
+    *(f32*)(p + 0xc) = a;
+    *(f32*)(p + 0x10) = b;
 }
 
 extern "C" void fn_801AAB64(u8* p, s16 param_2, void* param_3, void* param_4, void* param_5) {
-    f32 f;
     *(void**)p = lbl_8027F214;
-    f = lbl_80301D6C;
+    f32 f = lbl_80301D6C;
     p[4] = 0;
     p[5] = 0;
     *(s16*)(p + 6) = param_2;
