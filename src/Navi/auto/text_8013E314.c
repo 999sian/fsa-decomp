@@ -6,6 +6,7 @@
 struct PmfObj_8013E374;
 typedef void (PmfObj_8013E374::*PmfFunc_8013E374)();
 
+extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_80293738[];
