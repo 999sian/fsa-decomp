@@ -5,6 +5,50 @@
 extern void* lbl_802FF3AC;
 extern void* lbl_802FF3A8;
 extern u8 lbl_802C6E80[];
+extern "C" void fn_80141EA4(u32 param_1, u16 param_2) {
+    u8* base = lbl_802C6E80;
+    int* p;
+    u32 key = param_1 & 0x7fffffff;
+    u32 idx;
+
+    for (p = (int*)lbl_802FF3AC; p != 0; p = (int*)p[0]) {
+        if ((u32)p[3] == key) {
+            idx = (param_1 & 0x80000000) | *((u8*)p + 9);
+            goto found;
+        }
+    }
+    for (p = (int*)lbl_802FF3A8; p != 0; p = (int*)p[0]) {
+        if ((u32)p[3] == key) {
+            idx = (param_1 & 0x80000000) | *((u8*)p + 9);
+            goto found;
+        }
+    }
+    idx = -1;
+found:
+    if (!(idx & 0x80000000)) {
+        *(u16*)(base + idx * 0x1868 + 0x291a) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2952) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x298a) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x29c2) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x29fa) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2a32) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2a6a) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2aa2) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2ada) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2b12) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2b4a) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2b82) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2bba) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2bf2) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2c2a) = param_2;
+        *(u16*)(base + idx * 0x1868 + 0x2c62) = param_2;
+        return;
+    }
+    idx &= 0x7fffffff;
+    *(u8*)(base + idx * 0x1868 + 0x22da) |= 0x20;
+    *(u16*)(base + idx * 0x1868 + 0x22d8) = param_2;
+}
+
 extern "C" void fn_8014208C(u32 param_1, u32 param_2, u32 param_3)
 {
     u8* base = lbl_802C6E80;
