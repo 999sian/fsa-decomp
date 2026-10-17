@@ -16,6 +16,15 @@ public:
     virtual void s2C();
     virtual void s30();
     virtual u8 v13();
+    virtual void s38();
+    virtual void s3C();
+    virtual void s40();
+    virtual void s44();
+    virtual void s48();
+    virtual void s4C();
+    virtual void s50();
+    virtual void s54(s32 flag);
+    virtual void s58();
 };
 
 extern "C" void* fn_802D6A9C(void);
