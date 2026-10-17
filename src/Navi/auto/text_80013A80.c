@@ -26,6 +26,7 @@ extern "C" void fn_800266A8(void);
 extern s32 lbl_802FED98;
 extern u8 lbl_802FEBE8[];
 extern "C" void fn_80015B1C(void);
+extern "C" void fn_80015A00(void* p);
 extern "C" void fn_800265F0(u8 param_1);
 
 struct Unk80013DA0 {
