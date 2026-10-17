@@ -2099,10 +2099,9 @@ extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
 extern "C" void fn_801A3AB0(s32 param_1, s32 param_2, u8* param_3) {
     u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    u8* p = (u8*)(param_1 + param_2 * 8);
-    u8 x = p[0x60];
-    p[0x60] = (x & ~0x0C) | ((b1 & 0xFF) << 2);
-    p[0x60] = (p[0x60] & ~0x03) | b0;
+    u8* p = (u8*)&((NaviBits2x2*)(param_1 + 0x60))[param_2];
+    *p = (*p & ~0x0C) | ((b1 & 0xFF) << 2);
+    *p = (*p & ~0x03) | b0;
 }
 
 extern "C" void fn_801A3B20(u8* param_1, int param_2, u8* param_3) {
@@ -2208,12 +2207,12 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    s16* d = (s16*)(p + (i << 3));
+    u8* d = p + (i << 3);
     s16 v0 = src[0];
-    d[0x21] = v0;
-    d[0x22] = src[1];
-    d[0x23] = src[2];
-    d[0x24] = src[3];
+    *(s16*)(d + 0x42) = v0;
+    *(s16*)(d + 0x44) = src[1];
+    *(s16*)(d + 0x46) = src[2];
+    *(s16*)(d + 0x48) = src[3];
 }
 
 extern "C" s32 fn_801A3D80(s32 p, s32 i) {
@@ -2396,16 +2395,7 @@ extern "C" int fn_801A4154(int param_1, int param_2) {
 }
 
 extern "C" void fn_801A4168(u8* p, s32 i, NaviRect16* src) {
-    s16 a = src->x;
-    s32 off = i << 3;
-    u8* d = p + off;
-    s16 b = src->y;
-    *(s16*)(d + 0x14) = a;
-    s16 c = src->w;
-    *(s16*)(d + 0x16) = b;
-    s16 e = src->h;
-    *(s16*)(d + 0x18) = c;
-    *(s16*)(d + 0x1a) = e;
+    ((NaviRect16*)(p + 0x14))[i] = *src;
 }
 
 extern "C" s32 fn_801A41C0(s32 p, s32 i) {
@@ -2728,13 +2718,9 @@ struct T801A4840 { u8 pad[0x38]; S801A4840 e[1]; };
 struct C801A4840 { u8 r, g, b; };
 struct Q801A4840 { u8 b0; C801A4840 c1; u8 b4; C801A4840 c5; };
 struct R801A4840 { u8 pad[0x38]; Q801A4840 e[1]; };
-extern "C" void fn_801A4840(T801A4840* p1, int p2, const S801A4840* p3) {
-    p1->e[p2].b1 = p3->b1;
-    p1->e[p2].b2 = p3->b2;
-    p1->e[p2].b3 = p3->b3;
-    p1->e[p2].b5 = p3->b5;
-    p1->e[p2].b6 = p3->b6;
-    p1->e[p2].b7 = p3->b7;
+extern "C" void fn_801A4840(R801A4840* p1, int p2, const Q801A4840* p3) {
+    p1->e[p2].c1 = p3->c1;
+    p1->e[p2].c5 = p3->c5;
 }
 
 extern "C" s32 fn_801A48B8(s32 p, s32 i) {
@@ -3265,3 +3251,4 @@ extern "C" u32 fn_801A5370(void) {
 struct B4_801A4974 { u8 c[4]; };
 struct B3_801A4840 { u8 c[3]; };
 struct E_801A4840 { u8 x; B3_801A4840 rgb; };
+struct Bytes4_801A3D94 { u8 b[4]; };
