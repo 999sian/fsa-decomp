@@ -37,6 +37,17 @@ extern "C" void fn_8011FD18(void*, void*, s32, void*, void*);
 extern "C" void fn_80007AB8(void*, s32, void*);
 extern "C" u32 fn_8016076C(u32, u16);
 extern "C" void* fn_80012970(void* ptr, s16 param_2);
+extern "C" void* fn_80012900(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80204AC4;
+        fn_801E0D40((char*)ptr + 4, (void*)fn_80012970, 0x20, 0x40);
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_80012970(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
