@@ -63,6 +63,20 @@ extern "C" void fn_800CF138(u8* p) {
     (((NaviState_800CF138*)p)->*lbl_802890C8[p[0x284]])();
 }
 
+extern "C" void fn_800CF170(u8* p) {
+    u8* tbl = lbl_802C574C;
+    s32 res[4];
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        res[i] = fn_800D02D8(p, i, p[0x28b] - tbl[0x10] * i, tbl[0x11], 0, 0, *(f32*)(tbl + 0xc), lbl_80300F38);
+    }
+    p[0x28b]++;
+    if (res[0] == 1 && res[1] == 1 && res[2] == 1 && res[3] == 1) {
+        p[0x28b] = 0;
+        p[0x284] = 1;
+    }
+}
+
 extern "C" void fn_800D0140(u8* p) {
     if (p[0x28c] != 0) {
         u8* tbl = lbl_802C574C;
