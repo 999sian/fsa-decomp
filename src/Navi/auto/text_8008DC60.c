@@ -87,6 +87,7 @@ static inline f32 navi_sqrtf_800A1774(f32 x)
     }
     return r;
 }
+#pragma fp_contract reset
 extern "C" void fn_800D1EE8(void* p);
 struct DtorVObj_800A0008 { virtual void Destroy(int); };
 extern "C" void fn_800D3274(u8* p);
