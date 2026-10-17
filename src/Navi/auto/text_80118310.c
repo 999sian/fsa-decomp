@@ -126,6 +126,13 @@ extern "C" void fn_8011B184(void) {
     }
 }
 
+extern "C" void fn_8011B1C0(void) {
+    fn_801CE1B8(5);
+    lbl_802FF2C4 = 3;
+    fn_801CE970(3);
+    fn_801CDCB0();
+}
+
 extern "C" void fn_8011B1F8(u8* p) {
     p[0x98] = 0;
     p[0xa8] = 1;
