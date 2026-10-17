@@ -814,6 +814,59 @@ extern "C" void fn_800590D0(s32 param_1, s32* param_2, s32* param_3) {
     *param_3 = 0;
 }
 
+extern "C" s32 fn_80059190(s32 idx)
+{
+    s32 ret = 0;
+    u8* p = lbl_802C05F0;
+    s32 i;
+
+    if (idx >= 0 && idx <= 0xffff) {
+        for (i = 0; i < 2; i++) {
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+            if (*(u16*)(p + 0x8) == idx) {
+                ret = (s32)p;
+                break;
+            }
+            p += 0x18;
+        }
+    }
+    return ret;
+}
+
 extern "C" float lbl_80300230;
 extern "C" void fn_80059290(void* p) {
     unsigned char* q = (unsigned char*)p;
@@ -1295,17 +1348,20 @@ extern "C" s32 fn_8005C764(s32 idx) {
     s32 i;
     s32 count;
     s32 flag = 0;
-    u8* found = NULL;
+    u8* found;
     u8* p;
 
-    if ((idx >= 0x107 && idx <= 0x10c) || idx == 0xcb || idx == 0xcc) {
+    if (idx >= 0x107 && idx <= 0x10c) {
+        flag = 1;
+    } else if (idx == 0xcb || idx == 0xcc) {
         flag = 1;
     }
     if (flag == 0) {
         return idx;
     }
     count = 0;
-    p = (u8*)lbl_802C05F0;
+    found = NULL;
+    p = lbl_802C05F0;
     for (i = 0; i < 4; i++) {
         if (p[0x12] != 0 && *(s32*)p == 0x24) {
             found = p;
@@ -1340,10 +1396,7 @@ extern "C" s32 fn_8005C854(s32 param) {
     s32 count = 0;
     s32 i;
 
-    if (param > 0x106 && param < 0x10d) {
-        flag = 1;
-    }
-    if (param == 0xcb || param == 0xcc) {
+    if ((param > 0x106 && param < 0x10d) || param == 0xcb || param == 0xcc) {
         flag = 1;
     }
     if (!flag) {
@@ -1767,6 +1820,34 @@ extern "C" void fn_80060EF0(void* param_1) {
         }
         p += 0x110;
     }
+}
+
+extern const f32 lbl_8030036C;
+extern "C" f32* fn_8003C318(f32* out);
+extern "C" u8 fn_80060B20(u8* a, u8* b, u8* c, f32* d, s32 e, f32 f, f32 g, f32 h);
+extern "C" BOOL fn_800612EC(u8* self, f32 a, f32 b, s8 kind, s32 c, u8* d) {
+    f32 tmp[3];
+    f32 v[3];
+    f32 scale;
+
+    fn_8003C318(tmp);
+    v[0] = tmp[0];
+    v[1] = tmp[1];
+    v[2] = tmp[2];
+    if (d != NULL) {
+        v[0] = *(f32*)(d + 0x74);
+        v[1] = *(f32*)(d + 0x78);
+        v[2] = *(f32*)(d + 0x7c);
+    }
+    if (kind == 0) {
+        scale = lbl_803002D0;
+    } else {
+        scale = lbl_8030036C * b;
+    }
+    self[0xa] = fn_80060B20(self + 0x10, self + 0x40, self + 0x80, v, c, a, b, scale);
+    self[8] = 1;
+    self[9] = kind;
+    return 1;
 }
 
 extern "C" s32 fn_800613EC(void* self, s32 val) {
