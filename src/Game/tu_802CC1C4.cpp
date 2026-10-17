@@ -49,3 +49,48 @@ extern "C" void* fn_802CCA10(void* this_, short freeFlag) {
     }
     return this_;
 }
+
+extern "C" void fn_802CCAB4(void* this_) {
+    char* p = (char*)this_;
+    *(unsigned long*)(p + 0x230) = 0;
+    *(unsigned long*)(p + 0x234) = 0;
+    *(unsigned long*)(p + 0x238) = 0;
+    *(unsigned long*)(p + 0x23c) = 0;
+    *(float*)(p + 0x60) = -8.0f;
+    *(float*)(p + 0x64) = -8.0f;
+    *(float*)(p + 0x68) = 8.0f;
+    *(float*)(p + 0x6c) = 8.0f;
+    char* iVar2 = fn_802D6A9C(this_);
+    if (*(unsigned char*)(iVar2 + 0x171) == 0) {
+        Vec3CC a;
+        Vec3CC b;
+        fn_802A3948(lbl_8053AC98, p + 0xc, 0, *(unsigned long*)(p + 4), 0xaf);
+        *(unsigned long*)(p + 0x240) = 2;
+        a.x = 8.0f;
+        a.y = a.x + *(float*)(p + 0x10);
+        a.z = *(float*)(p + 0x14);
+        a.x = a.x + *(float*)(p + 0xc);
+        *(unsigned long*)(p + 0x230) = fn_8013CC50(*(unsigned long*)(p + 4), &a, 0x426, 1, 0, 0, 0, 1, 1.0f);
+        b.x = 8.0f;
+        b.y = b.x + *(float*)(p + 0x10);
+        b.z = *(float*)(p + 0x14);
+        b.x = b.x + *(float*)(p + 0xc);
+        *(unsigned long*)(p + 0x234) = fn_8013CC50(*(unsigned long*)(p + 4), &b, 0x427, 1, 0, 0, 0, 1, 1.0f);
+    } else {
+        Vec3CC c;
+        Vec3CC d;
+        *(unsigned long*)(p + 0x240) = 0;
+        c.x = 8.0f;
+        c.y = c.x + *(float*)(p + 0x10);
+        c.z = *(float*)(p + 0x14);
+        c.x = c.x + *(float*)(p + 0xc);
+        *(unsigned long*)(p + 0x238) = fn_8013CC50(*(unsigned long*)(p + 4), &c, 0x42d, 1, 0, 0, 0, 1, 1.0f);
+        d.x = 8.0f;
+        d.y = d.x + *(float*)(p + 0x10);
+        d.z = *(float*)(p + 0x14);
+        d.x = d.x + *(float*)(p + 0xc);
+        *(unsigned long*)(p + 0x23c) = fn_8013CC50(*(unsigned long*)(p + 4), &d, 0x42e, 1, 0, 0, 0, 1, 1.0f);
+    }
+    *(unsigned long*)(p + 0x244) = 0xf;
+}
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
