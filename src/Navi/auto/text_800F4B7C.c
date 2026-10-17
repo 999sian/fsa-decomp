@@ -30,6 +30,16 @@ struct VObj_80103560 {
     virtual void v7(u8 a);
 };
 
+struct Unk80103560 {
+    u8 pad[0x498];
+    VObj_80103560* objs[2];
+    u8 vals[2];
+    u8 pad2[0x524 - 0x4a2];
+    u8 sel;
+    u8 pad3;
+    u8 count;
+};
+
 struct VObj_80103664 {
     virtual void v0();
     virtual void v1();
@@ -69,6 +79,14 @@ extern "C" BOOL fn_800FFBC4(void);
 extern "C" BOOL fn_800FFBC4(void)
 {
     return TRUE;
+}
+
+extern "C" void fn_80103560(u8* p) {
+    p[0x526] = 0;
+    (*(VObj_80103560**)(p + p[0x524] * 4 + 0x498))->v7(0);
+    u32 i = p[0x524] ^ 1;
+    (*(VObj_80103560**)(p + i * 4 + 0x498))->v7(p[i + 0x4a0]);
+    p[0x524] ^= 1;
 }
 
 extern "C" void fn_80103664(Unk80103664* p) {
