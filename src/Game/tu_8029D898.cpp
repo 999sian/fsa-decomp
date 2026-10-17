@@ -32,6 +32,8 @@ struct WaveOwner {
 extern char lbl_804A7C98[];
 extern void* lbl_8053AC98;
 extern char* lbl_8053AB10;
+extern "C" u8 lbl_8046C5A0[];
+extern "C" u8 lbl_8046C528[];
 extern "C" s32 fn_80226BC4(JGeometry::TVec2<f32>* pos, s32 room);
 extern "C" void fn_802F9974(void* mgr, u32 room, s32 idx, u16 value);
 
@@ -484,7 +486,7 @@ extern "C" char memPool___26JASPoolAllocObject_5JAISe[];
 extern "C" void __dt__18JASMemPool_5JAISeFv(void*);
 extern "C" char __init__memPool___26JASPoolAllocObject_5JAISe;
 extern "C" void fn_802A3E94(void) {
-    char* base = lbl_804D0968;
+    char* base = &lbl_804D0968[0];
     if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
         __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
         __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x0);
