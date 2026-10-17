@@ -2,6 +2,8 @@
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JMath/JMath.h"
 
+#include "JSystem/JGeometry/Vec.h"
+
 struct Unk801C5B08 {
     u8 unk_00[0x4];
     s32 field_04;
