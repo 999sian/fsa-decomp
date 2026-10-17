@@ -127,10 +127,10 @@ extern "C" void fn_80124BC0(void* this_) {
 extern "C" s32 fn_80123D88(u8* self);
 extern "C" s32 fn_80124BF0(u8* self) {
     s32 val = *(s32*)(self + 0x33c);
-    if (val > 3 && val < 6) {
-        return fn_80123D88(self);
+    if (val >= 6 || val <= 3) {
+        return 0;
     }
-    return 0;
+    return fn_80123D88(self);
 }
 
 extern "C" void fn_80121DB0(void);
