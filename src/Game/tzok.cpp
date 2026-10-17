@@ -7,7 +7,7 @@ struct TzokVec3 { f32 x, y, z; };
 extern "C" u8 lbl_8046A238[];
 extern "C" s32 fn_801D0280(u8* this_, s32 idx);
 extern "C" void fn_80217484(void* p);
-extern "C" void fn_8021BA30(void* p, u16 tag);
+extern "C" void fn_8021BA30(void* p, s16 tag);
 
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" u8 fn_802046FC(void* base, void* a, void* b);
@@ -554,19 +554,21 @@ extern "C" BOOL fn_8020609C(TzokActor* self) {
 extern "C" void fn_80206168(char* p) {
     s32 kind;
     u32 n;
+    u32 x;
     bool b;
 
     if (*(u32*)(p + 0x344) != 0) {
         b = fn_801CD2F8(*(s32*)(p + 4));
         {
             u32 lim = fn_801CD664(0x1f) + 0x14;
-            n = *(u32*)(p + 0x344);
-            if (n >= lim) {
-                n = lim;
+            x = *(u32*)(p + 0x344);
+            if (x >= lim) {
+                x = lim;
             }
         }
-        if (b && n >= 0x14) {
-            n = n / 20 * 20;
+        n = x;
+        if (b && x >= 0x14) {
+            n = x - x % 20;
         }
         *(u32*)(p + 0x344) -= n;
         while (n != 0) {
