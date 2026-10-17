@@ -90,6 +90,18 @@ extern "C" void fn_80103560(Unk80103560* p) {
     p->sel ^= 1;
 }
 
+extern "C" void fn_801035EC(Unk80103560* p) {
+    if (p->pad3 != 0) {
+        s32 r = fn_801092B8(p, p->count, ((u8*)lbl_802C5A84)[0x5a], 0);
+        p->count++;
+        if (r == 1) {
+            p->count = 0;
+            p->pad3 = 0;
+            p->sel ^= 1;
+        }
+    }
+}
+
 extern "C" void fn_80103664(Unk80103664* p) {
     p->obj->v2(p->a[p->i1][p->i2], p->b[p->i1]);
 }
