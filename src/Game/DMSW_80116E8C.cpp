@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 struct SwbmDrawParam {
     SwbmDrawParam() : m40(-1), m44(-1) {
@@ -90,14 +91,68 @@ extern "C" void fn_80116E8C(char* p) {
 			}
 		}
 	}
+
 	switch (*(s32*)(p + 0x234)) {
+	case 9: {
+		struct Vec2 {
+			f32 x, y;
+		} xy = *(Vec2*)(p + 0xc);
+		f32 z = *(f32*)(p + 0x14);
+		xy.y += *(f32*)(p + 0x240);
+		fn_801CD950((f32*)(p + 0x240), lbl_8053C74C + *(f32*)(p + 0x10), lbl_8053C750);
+		u8* mgr = *(u8**)(lbl_8053AB10 + 0x24);
+		if (mgr[0x840] == 0) {
+			mgr[0x840] = 1;
+			*(f32*)(mgr + 0x84c) = xy.x;
+			*(f32*)(mgr + 0x844) = xy.x;
+			*(f32*)(mgr + 0x850) = xy.y;
+			*(f32*)(mgr + 0x848) = xy.y;
+			*(f32*)(mgr + 0x854) = lbl_8053C754;
+			*(f32*)(mgr + 0x1d4) = lbl_8053C758;
+			*(f32*)(mgr + 0x1d8) = lbl_8053C758;
+		}
+		break;
+	}
+	case 10:
+	case 11: {
+		struct Vec2 {
+			f32 x, y;
+		} xy = *(Vec2*)(p + 0xc);
+		xy.y += *(f32*)(p + 0x240);
+		u8* mgr = *(u8**)(lbl_8053AB10 + 0x24);
+		if (mgr[0x840] == 0) {
+			mgr[0x840] = 1;
+			*(f32*)(mgr + 0x84c) = xy.x;
+			*(f32*)(mgr + 0x844) = xy.x;
+			*(f32*)(mgr + 0x850) = xy.y;
+			*(f32*)(mgr + 0x848) = xy.y;
+			*(f32*)(mgr + 0x854) = lbl_8053C754;
+			*(f32*)(mgr + 0x1d4) = lbl_8053C758;
+			*(f32*)(mgr + 0x1d8) = lbl_8053C758;
+		}
+		break;
+	}
+	case 12:
+		break;
 	case 0:
 	case 1:
 	case 2:
-	case 12:
 		break;
-	default:
+	default: {
+		u8* mgr = *(u8**)(lbl_8053AB10 + 0x24);
+		if (mgr[0x840] == 0) {
+			mgr[0x840] = 1;
+			*(f32*)(mgr + 0x84c) = *(f32*)(p + 0xc);
+			*(f32*)(mgr + 0x844) = *(f32*)(p + 0xc);
+			*(f32*)(mgr + 0x850) = *(f32*)(p + 0x10);
+			*(f32*)(mgr + 0x848) = *(f32*)(p + 0x10);
+			*(f32*)(mgr + 0x854) = lbl_8053C754;
+			*(f32*)(mgr + 0x1d4) = lbl_8053C758;
+			*(f32*)(mgr + 0x1d8) = lbl_8053C758;
+		}
+		fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), p + 0xc);
 		break;
+	}
 	}
 }
 
