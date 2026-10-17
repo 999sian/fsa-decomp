@@ -87,13 +87,13 @@ extern unsigned long lbl_802FE9F4;
 extern unsigned long CurrTvMode_802FF92C;
 int jumptable_8029D79C[];
 extern "C" int fn_801CB248(int param_1) {
-    u32 pad[2];
+    volatile u32 pad;
     int r30 = param_1;
     int r31 = lbl_802FF8F4;
     BOOL enabled = OSDisableInterrupts();
     lbl_802FF8F4 = r30;
     OSRestoreInterrupts(enabled);
-    return r31 + (int)&pad[0] * 0;
+    return r31;
 }
 
 extern int lbl_802FF8E4;
@@ -809,7 +809,7 @@ extern "C" void fn_801D4AC8(void*, s32, void*, void*);
 extern "C" void fn_801BC250(void*, s32);
 extern "C" s32 fn_801D2AFC(s32, s32, void*);
 extern "C" void fn_801D493C(void);
-extern "C" void fn_801D45D8(void);
+extern "C" void fn_801D45D8(s32 chan, s32 arg);
 extern "C" void fn_801D47B8(s32 chan, u8* buf, u32 val) {
     u8* p;
     p = lbl_802F7D60 + chan * 0x110;
@@ -937,7 +937,7 @@ extern "C" void fn_801D7970(s32* param_1, s32 param_2, s32 param_3, s32 param_4)
 #pragma dont_inline on
 extern "C" s32 fn_801D81FC(s32 chan, u32* out) {
     u8* card;
-    u32* p;
+    Pair81FC* p;
     u32 lo;
     u32 hi;
     s32 result;
@@ -949,19 +949,11 @@ extern "C" s32 fn_801D81FC(s32 chan, u32* out) {
     if (result < 0) {
         return result;
     }
-    p = *(u32**)(card + 0x80);
-    hi = 0;
-    lo = 0;
-    hi ^= p[1];
-    lo ^= p[0];
-    lo ^= p[2];
-    hi ^= p[3];
-    lo ^= p[4];
-    hi ^= p[5];
-    lo ^= p[6];
-    hi ^= p[7];
-    out[1] = hi;
+    p = *(Pair81FC**)(card + 0x80);
+    lo = 0 ^ p[0].a ^ p[1].a ^ p[2].a ^ p[3].a;
+    hi = 0 ^ p[0].b ^ p[1].b ^ p[2].b ^ p[3].b;
     out[0] = lo;
+    out[1] = hi;
     return fn_801D2D80(card, 0);
 }
 #pragma dont_inline reset
@@ -2253,6 +2245,36 @@ extern "C" void fn_801DF650(s32 n) {
 
 extern "C" void fn_801DFF1C(void) {
     __cpReg[2] = 4;
+}
+
+extern "C" void fn_801DFF2C(s32* a, s32* b, s32* c, s32* d) {
+    u32 lo;
+    u16 hi;
+    u16 old;
+    do {
+        old = __cpReg[0x21];
+        lo = __cpReg[0x20];
+        hi = __cpReg[0x21];
+    } while (old != hi);
+    *c = ((u32)hi << 16) | lo;
+    do {
+        old = __cpReg[0x23];
+        lo = __cpReg[0x22];
+        hi = __cpReg[0x23];
+    } while (old != hi);
+    *d = ((u32)hi << 16) | lo;
+    do {
+        old = __cpReg[0x25];
+        lo = __cpReg[0x24];
+        hi = __cpReg[0x25];
+    } while (old != hi);
+    *a = ((u32)hi << 16) | lo;
+    do {
+        old = __cpReg[0x27];
+        lo = __cpReg[0x26];
+        hi = __cpReg[0x27];
+    } while (old != hi);
+    *b = ((u32)hi << 16) | lo;
 }
 
 extern "C" void fn_801DFFF0(s32* p, s32 a, s32 b) {
