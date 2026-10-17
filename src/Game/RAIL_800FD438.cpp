@@ -365,13 +365,16 @@ static inline void railClear(RailRing* ring, u8 type) {
         ring->mNodes[i] = NULL;
     }
 }
-extern "C" BOOL fn_800FE3EC(RailRing* ring, u8 type, RailVec* pos, s32 id) {
+extern "C" BOOL fn_800FE3EC(RailRing* ring, s32 type, RailVec* pos, s32 id) {
+    s32 count;
     void* found[0x31];
     s32 i;
 
     ring->m0 = type;
-    ring->mDir = ring->mCur = ring->mSize = 0;
-    s32 count = 0;
+    ring->mSize = 0;
+    ring->mCur = 0;
+    ring->mDir = 0;
+    count = 0;
     for (int j = 0; j < 0x31; j++) {
         ring->mNodes[j] = NULL;
     }
