@@ -516,6 +516,34 @@ extern "C" void fn_800D5750(Vtable800D8248* obj)
   obj->m4();
 }
 
+extern "C" void fn_800D579C(void* param) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((char*)param + 0x44);
+    u8* start = __GDCurrentDL->pDisplayListData;
+    if (start + lbl_80539E10 > __GDCurrentDL->end) {
+        GDOverflowed();
+    }
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0c);
+
+    u32 val1 = *(u32*)((char*)param + 4);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+
+    u32 val2 = *(u32*)((char*)param + 8);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+
+    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+}
+
 extern "C" void fn_800D5DAC(Vtable800D8248* param_1, u32 param_2)
 {
   if ((param_2 & 1) != 0) {
