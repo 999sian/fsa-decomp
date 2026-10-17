@@ -164,8 +164,33 @@ extern "C" void fn_800D1EE8(NaviState_800D1EE8* p) {
     (p->*lbl_80289394[((u8*)p)[0x264]])();
 }
 
+extern "C" void fn_800D2DC8(u8* p) {
+    if (p[0x265] != 0) {
+        *(s32*)(p + 0x260) = *(s32*)(p + 0x260) + 1;
+        s16 t = *(s16*)(*(u8**)(p + 0x25c) + 6);
+        if (*(s32*)(p + 0x260) >= t) {
+            *(s32*)(p + 0x260) = *(s32*)(p + 0x260) - t;
+        }
+        *(f32*)(*(u8**)(p + 0x25c) + 8) = (f32)*(s32*)(p + 0x260);
+        fn_8017A4F8(*(void**)(p + 0xc));
+    }
+}
+
 extern "C" void fn_800D2F3C(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
+}
+
+extern "C" void fn_800D2F68(u8* p) {
+    if (p[0x283] != 0) {
+        u8* tbl = (u8*)lbl_802C5774;
+        s32 r = fn_800D3120(p, p[0x26d], tbl[0x12], *(f32*)(tbl + 0x14), lbl_80300F88, 0, 0);
+        p[0x26d]++;
+        if (r == 1) {
+            p[0x26d] = 0;
+            p[0x283] = 0;
+            p[0x284] = 1;
+        }
+    }
 }
 
 extern f32 lbl_80300F98;
