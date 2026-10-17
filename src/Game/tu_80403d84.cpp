@@ -7,6 +7,9 @@
 
 extern "C" s16 lbl_8048C95C[];
 
+struct Tbl8048C1F8;
+extern Tbl8048C1F8 lbl_8048C1F8;
+
 struct Tu80406ResMgr {
 	virtual void v0();
 	virtual void v1();
