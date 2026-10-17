@@ -6,6 +6,15 @@ namespace JMath {
 extern const TAtanTable<1024, f32> atanTable_;
 }
 #include "JSystem/JUtility/JUTVideo.h"
+#include "dolphin/mtx.h"
+
+extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
+extern "C" void fn_8022FEB8(f32* box, s32 a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_8022FD8C(s32 b);
+extern "C" void fn_8022FF8C(s32 a, f32* box, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8 fn_802300EC(void);
+extern "C" u8 fn_80388CAC(s32 a, s32 b);
+extern f32 lbl_80542DDC;
 
 
 extern "C" void fn_803721F4(void);
@@ -31,6 +40,49 @@ extern void* lbl_8053AB10;
 extern float lbl_80542DF4;
 extern float lbl_80542DF8;
 extern float lbl_80542DFC;
+extern "C" s32 fn_80230CFC(s32);
+extern s32 lbl_80474F4C[];
+extern "C" s32 fn_80370200(u8* self) {
+    u8 found[4] = {0, 0, 0, 0};
+    s32 idx = *(s32*)(self + 0x39c);
+    f32 best = 100000.0f;
+    Vec* tgt = (Vec*)(self + 0x264 + idx * 0xc);
+    s32 result = -1;
+    bool any = false;
+    s32 i;
+    for (i = 0; i < 4; i++) {
+        Vec* p = (Vec*)(self + 0x294 + i * 0xc);
+        u16 ang = JMath::atanTable_.atan2_(tgt->y - p->y, tgt->x - p->x) * 10430.378f;
+        s32 dir = ((s32*)(self + 0x340))[i];
+        if (ang >= 0x2000 && ang < 0x6000) {
+            if (dir != 2) continue;
+        } else if (ang >= 0x6000 && ang < 0xa000) {
+            if (dir != 1) continue;
+        } else if (ang >= 0xa000 && ang < 0xe000) {
+            if (dir != 3) continue;
+        } else {
+            if (dir != 0) continue;
+        }
+        if (lbl_80474F4C[((s32*)(self + 0x340))[i]] == fn_80230CFC(idx)) {
+            found[i] = 1;
+            any = true;
+        }
+    }
+    if (!any) {
+        return -1;
+    }
+    for (i = 0; i < 4; i++) {
+        if (found[i] == 1) {
+            f32 d = PSVECDistance(tgt, (Vec*)(self + 0x294 + i * 0xc));
+            if (d < best) {
+                best = d;
+                result = i;
+            }
+        }
+    }
+    return result;
+}
+
 extern "C" void fn_803703C8(void* self) {
     char* s = (char*)self;
     char* a = *(char**)((char*)lbl_8053AB10 + 0x24);
