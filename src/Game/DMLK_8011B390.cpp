@@ -374,7 +374,7 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
     case 28:
         fn_801F0E34(this_, 0x400c7, 0);
         break;
-    case 29:
+    case 34:
         *(s32*)(this_ + 0x98) = 2;
         fn_800FEB78(this_ + 0x278, 1);
         break;
