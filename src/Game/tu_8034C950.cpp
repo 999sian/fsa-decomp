@@ -1,3 +1,4 @@
+#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
 struct YasiDrawKey {
