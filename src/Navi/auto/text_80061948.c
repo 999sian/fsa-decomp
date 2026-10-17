@@ -833,6 +833,25 @@ extern "C" void fn_80067840(StateObj_80067840* self, s32 arg) {
     (self->*self->m_func)(arg);
 }
 
+extern "C" s32 fn_8006792C(StateObj8006792C* self) {
+    if (self->m_282 == 0) {
+        self->m_296 = self->m_280;
+        self->m_282++;
+    } else if (self->m_282 != -1 && fn_80067E94(&self->m_296) == 0) {
+        StateFunc8006792C f = lbl_8027FC20;
+        if (fn_801E10A0(&self->m_284, &f) != 0) {
+            if (fn_801E1070(&self->m_284)) {
+                self->m_282 = -1;
+                (self->*self->m_284)(0);
+            }
+            self->m_284 = f;
+            self->m_282 = 0;
+            (self->*self->m_284)(0);
+        }
+    }
+    return 1;
+}
+
 extern "C" void fn_80067B74(u8* p) {
     s32 t = (s8)p[0x240];
 
