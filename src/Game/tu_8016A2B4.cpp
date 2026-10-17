@@ -15,6 +15,11 @@ extern const f32 lbl_8053D95C;
 extern const f32 lbl_8053D960;
 extern const f32 lbl_8053D988;
 extern const f32 lbl_8053D964;
+extern const f32 lbl_8053D938;
+extern const f32 lbl_8053D93C;
+extern const f32 lbl_8053D940;
+extern const f32 lbl_8053D944;
+extern const u32 lbl_80543F38;
 extern u8* lbl_8053AB10;
 extern u8* sManager__8JUTVideo;
 extern "C" void fn_8013B460(void*);
@@ -183,6 +188,11 @@ extern "C" void fn_8016AD84(u8* self) {
         offset.y = lbl_8053D958;
         offset.z = lbl_8053D944;
         fn_8016A7DC(self, *(void**)(self + 0x1C), &offset, 1, 1, 1, lbl_8053D950, lbl_8053D960);
+    }
+}
+
+extern "C" void fn_8016ADE0(void* param_1) {
+    if (((u8*)param_1)[0x1ec] != 0) {
     }
 }
 
