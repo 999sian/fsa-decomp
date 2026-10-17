@@ -29,6 +29,13 @@ extern u8 lbl_802C565C[];
 extern "C" s32 fn_800C56A0(u8* p, u8 a, u8 b, s32 c, f32 d, f32 e);
 extern "C" void fn_800C5648(u8* p);
 extern "C" void fn_800C5444(u8* p, s32 n);
+extern "C" void fn_800C4AC0(u8* p) {
+    f32 f = lbl_80300D8C;
+    u8* d = lbl_802C565C;
+    p[0x38] = 0;
+    fn_800C56A0(p, p[0x38], d[0xc], 0, *(f32*)(d + 0x10), f);
+}
+
 extern "C" void fn_800C4B50(void) {}
 
 extern "C" void fn_800C4C88(u8* param_1) {
@@ -43,14 +50,14 @@ extern "C" void fn_800C4C88(u8* param_1) {
 }
 
 extern "C" void fn_800C4D04(u8* param_1) {
-    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, lbl_80300D8C, *(f32*)(lbl_802C565C + 0x10));
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, 0.0f, *(f32*)(lbl_802C565C + 0x10));
     param_1[0x38]++;
     if (iVar1 == 1) {
         param_1[0x38] = 0;
         fn_800C5648(param_1);
         fn_800C5434(param_1);
-        void* obj = *(void**)(param_1 + 0x24);
-        ((void (*)(void*, void*, s32))(*(u8**)(*(u8**)obj + 0x114)))(obj, lbl_802881B8, 0);
+        u8* obj = *(u8**)(param_1 + 0x24);
+        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, lbl_802881B8, 0);
         param_1[0x36] = 0;
         param_1[0x37] = 0;
     }
@@ -69,7 +76,8 @@ extern "C" void fn_800C4DA4(u8* param_1) {
 }
 
 extern "C" void fn_800C4E28(u8* param_1) {
-    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, lbl_80300D8C, *(f32*)(lbl_802C565C + 0x10));
+    f32 fVar1 = lbl_80300D8C;
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, fVar1, *(f32*)(lbl_802C565C + 0x10));
     param_1[0x38]++;
     if (iVar1 == 1) {
         param_1[0x38] = 0;
@@ -114,13 +122,14 @@ extern "C" void fn_800C4F84(u8* param_1) {
 }
 
 extern "C" void fn_800C51FC(u8* param_1) {
-    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, lbl_80300D8C, *(f32*)(lbl_802C565C + 0x10));
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, 0.0f, *(f32*)(lbl_802C565C + 0x10));
     param_1[0x38]++;
     if (iVar1 == 1) {
         param_1[0x38] = 0;
         fn_800C5648(param_1);
-        void* obj = *(void**)(param_1 + 0x24);
-        ((void (*)(void*, void*, s32))(*(u8**)(*(u8**)obj + 0x114)))(obj, lbl_80288388, 0);
+        u8* obj = *(u8**)(param_1 + 0x24);
+        void (*fn)(void*, void*, s32) = *(void (**)(void*, void*, s32))(*(u8**)obj + 0x114);
+        fn(obj, lbl_80288388, 0);
         param_1[0x35] = 1;
         param_1[0x36] = 1;
         param_1[0x37] = 0;
