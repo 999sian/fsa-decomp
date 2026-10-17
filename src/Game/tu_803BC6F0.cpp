@@ -37,7 +37,7 @@ struct J2DTextBoxVt {
     virtual void v6();
     virtual void v7();
     virtual void v8();
-    virtual void v9();
+    virtual void v9(u32 a);
     virtual void v10();
     virtual void v11();
     virtual void v12();
