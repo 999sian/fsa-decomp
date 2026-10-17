@@ -1332,6 +1332,12 @@ extern "C" void fn_801DCA0C(void* self, f32 a, f32 b, f32 c) {
     *(f32*)((u8*)self + 0x30) = c;
 }
 
+extern "C" void fn_801DCA1C(void* self, f32 a, f32 b, f32 c) {
+    *(f32*)((u8*)self + 0x34) = -a;
+    *(f32*)((u8*)self + 0x38) = -b;
+    *(f32*)((u8*)self + 0x3c) = -c;
+}
+
 #pragma dont_inline reset
 extern "C" uint fn_801DD3D8(uint *param_1)
 {
