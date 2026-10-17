@@ -1807,6 +1807,8 @@ extern "C" void fn_80173384(void)
 
 extern "C" void fn_80173388(void) {}
 
+extern "C" void fn_8017338C(void) {}
+
 extern u32 lbl_80301AF0;
 extern "C" u32 lbl_80301AF0;
 extern "C" void fn_80173F24(Rgba4_80166424* dst, u8* src, s32 i, s32 j) {
