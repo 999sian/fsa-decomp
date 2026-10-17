@@ -440,7 +440,7 @@ extern "C" void fn_80405B10(T5B10* self, s32 key) {
 	}
 }
 
-static inline int checkRowBit(u32 idx, int p, int j) {
+static inline bool checkRowBit(u32 idx, int p, int j) {
 	if (p < 0 || p > 7) return false;
 	if (j < 0 || j > 3) return false;
 	return (*(u32*)((u8*)&lbl_8050EC80[idx] + 0x28) & (1 << (p * 4 + j))) != 0;
@@ -449,8 +449,11 @@ static inline int checkRowBit(u32 idx, int p, int j) {
 extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out) {
 	int n = 0;
 	int lim;
-	for (int j = 0; j < 4; j++) {
-		if (checkRowBit(lbl_8050EC80[0].selfIndex, p, j)) n++;
+	u32 idx = lbl_8050EC80[0].selfIndex;
+	for (int j = 0; j < 4; j += 2) {
+		if (checkRowBit(idx, p, j)) n++;
+		j++;
+		if (checkRowBit(idx, p, j)) n++;
 	}
 	if (p == 7) {
 		if (n <= 1) n--;
