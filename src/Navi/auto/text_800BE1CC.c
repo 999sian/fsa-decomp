@@ -24,6 +24,7 @@ extern "C" s32 fn_800C3900(void* p, s16 idx, u8 b, s32 c);
 extern "C" s32 fn_800C3A1C(void* p, s16 idx, u8 b, s32 c, s32 d);
 extern "C" s32 fn_800C3B30(void* p, s16 idx, u8 b, f32 f, f32 g, s32 c, s32 d);
 extern "C" void fn_8002F458(s32 a, s32 b);
+extern "C" s32 fn_800C3570(void* p, s16 idx, u8 b, f32 f, f32 g, s32 c, s32 d);
 extern "C" void fn_8002F358(s32 a, s32 b);
 extern "C" void fn_8003ABDC(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_8003ABF0(void* p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
