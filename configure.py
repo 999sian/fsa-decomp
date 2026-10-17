@@ -1005,7 +1005,7 @@ config.libs = [
             Object(MatchingFor("G4SE01", "G4SJ01", "G4SP01"), "JSystem/J3D/GraphBase/J3DShapeDraw.cpp"),
             Object(MatchingFor("G4SE01", "G4SJ01", "G4SP01"), "JSystem/J3D/GraphBase/J3DVertex.cpp"),
             Object(MatchingFor("G4SE01", "G4SJ01", "G4SP01"), "JSystem/J3D/GraphBase/J3DPacket.cpp"),
-            Object(NonMatching, "JSystem/J3D/GraphBase/J3DShape.cpp"),
+            Object(MatchingFor("G4SE01"), "JSystem/J3D/GraphBase/J3DShape.cpp"),
             Object(MatchingFor("G4SE01", "G4SJ01", "G4SP01"), "JSystem/J3D/GraphBase/J3DMaterial.cpp"),
             Object(NonMatching, "JSystem/J3D/GraphBase/J3DTevs.cpp"),
             Object(MatchingFor("G4SE01"), "JSystem/J3D/GraphBase/J3DShapeMtx.cpp"),
