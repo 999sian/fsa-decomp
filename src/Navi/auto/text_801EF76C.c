@@ -167,6 +167,28 @@ extern "C" DSError gdev_cc_pre_continue(void)
 	return DS_NoError;
 }
 
+extern "C" int gdev_cc_write(void* buf, int len)
+{
+	int n = len;
+	void* p = buf;
+
+	if (lbl_802FFAC8 == 0) {
+		MWTRACE(8, "cc not initialized\n");
+		return -0x2711;
+	}
+	MWTRACE(8, "cc_write : Output data 0x%08x %ld bytes\n", buf, len);
+	while (n > 0) {
+		MWTRACE(1, "cc_write sending %ld bytes\n", n);
+		int iVar2 = fn_801F0144(p, n);
+		if (iVar2 == 0) {
+			break;
+		}
+		p = (u8*)p + iVar2;
+		n -= iVar2;
+	}
+	return 0;
+}
+
 extern "C" int gdev_cc_close()
 {
 	return 0;
