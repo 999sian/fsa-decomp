@@ -10,6 +10,7 @@ extern "C" void fn_801D1C18(void*);
 extern "C" void fn_8010F4DC(u8* this_);
 extern "C" void fn_8010E7E8(void*, s32);
 extern "C" void fn_8010E2D4(void*, s32);
+extern "C" void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle);
 extern "C" void* fn_8011921C(void);
 extern "C" void* fn_8011871C(void* list, void* it, u32 tag);
 extern "C" void fn_801EE434(void*);
