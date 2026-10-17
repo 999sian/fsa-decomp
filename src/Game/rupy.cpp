@@ -31,7 +31,6 @@ static inline f32 rupyRand01() {
     u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
     *s = *s * 0x19660du + 0x3c6ef35fu;
     u32 a = (*s >> 9) | 0x3f800000u;
-    /* keep */
     return *(f32*)&a - lbl_80541D90;
 }
 
