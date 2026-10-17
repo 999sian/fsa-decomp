@@ -82,6 +82,23 @@ struct FsaSlots {
     virtual void v59(s32, s32, s32, f32, f32, f32, f32);
 };
 
+struct FsaNodeB {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void v2(void);
+    virtual void v3(void);
+    virtual void v4(void);
+    virtual void v5(void);
+    virtual void v6(void);
+    virtual void v7(void);
+    virtual void v8(void);
+    virtual void v9(void);
+    virtual void v10(void);
+    virtual void v11(void);
+    virtual void v12(void);
+    virtual FsaSlots* v13(u64);
+};
+
 struct FsaDisposable {
     virtual void v0(void);
     virtual void v1(void);
