@@ -1,15 +1,7 @@
-#include "Game/Actor.h"
+#include "JSystem/JGeometry/Vec.h"
 #include "Game/ItemBase.h"
 
-namespace JMath {
-template <int length, typename T>
-struct TAtanTable {
-	T atan2_(T, T) const;
-	T atan_(T) const;
-	T mTable[length];
-};
-extern const TAtanTable<1024, f32> atanTable_;
-}
+struct Actor;
 extern "C" f32 sincosTable___5JMath[];
 extern "C" void fn_801F71A4(f32* v, f32 target, f32 rate, f32 limit);
 extern "C" s32 fn_8023AF14(f32* box, s32 room, f32 f, s32 flag);
@@ -47,6 +39,136 @@ extern "C" void fn_80326A90(void* this_) {
 		rec.b2d = 1;
 		fn_801F06F0(this_, &lbl_80471888, *(s32*)((u8*)this_ + 0x250) + 0x5e, rec.ids, 0, 1.0f, 1.0f);
 		fn_803075AC(*(void**)((u8*)this_ + 0x198), *(void**)((u8*)this_ + 4), (u8*)this_ + 0xc, *(s32*)((u8*)this_ + 0x250) + 0x5e, 0, 2, -1, 0, 0, 0);
+	}
+}
+
+extern "C" void fn_80326C5C(void* thisPtr) {
+	char* p = (char*)thisPtr;
+	f32 box[4];
+	f32 x;
+	f32 dx;
+	f32 dy;
+	u32 seed;
+	u32 bits;
+	s32 hit;
+	s32 i;
+	char* e;
+	s32 room;
+
+	fn_801F71A4((f32*)(p + 0x3c), *(f32*)(p + 0x258), 0.1f, 0.5f);
+	fn_801F71A4((f32*)(p + 0x40), *(f32*)(p + 0x25c), 0.1f, 0.5f);
+	fn_801F71A4((f32*)(p + 0x14), *(f32*)(p + 0x260), 0.3f, 0.5f);
+	*(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
+	*(f32*)(p + 0x10) += *(f32*)(p + 0x40);
+	*(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+
+	e = *(char**)(p + 0x264);
+	if (e != NULL) {
+		*(f32*)(e + 0xa4) = *(f32*)(p + 0xc);
+		*(f32*)(e + 0xa8) = *(f32*)(p + 0x10);
+		*(f32*)(e + 0xac) = *(f32*)(p + 0x14);
+	}
+	e = *(char**)(p + 0x268);
+	if (e != NULL) {
+		*(f32*)(e + 0xa4) = *(f32*)(p + 0xc);
+		*(f32*)(e + 0xa8) = *(f32*)(p + 0x10);
+		*(f32*)(e + 0xac) = *(f32*)(p + 0x14);
+	}
+
+	if (*(s32*)(p + 0x230) == 0) {
+		if (*(s32*)(p + 0x23c) != 0) {
+			return;
+		}
+		*(s32*)(p + 0x244) += 0x300;
+		*(f32*)(p + 0x260) = 2.0f * sincosTable___5JMath[((u16)*(s32*)(p + 0x244) >> 5) * 2] + 7.0f;
+		if (*(s32*)(p + 0x24c) == 0) {
+			if (*(s32*)(p + 0x240) != 0) {
+				*(s32*)(p + 0x248) += 0x100;
+			} else {
+				seed = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+				*(u32*)((char*)lbl_8053AAF8 + 0xb4) = seed;
+				bits = (seed >> 9) | 0x3f800000;
+				x = *(f32*)&bits - 1.0f;
+				*(s32*)(p + 0x240) = (s32)(30.0f * x) + 30;
+				*(s32*)(p + 0x24c) = 1;
+				*(f32*)(p + 0x258) = 0.0f;
+				*(f32*)(p + 0x25c) = 0.0f;
+			}
+		}
+		if (*(s32*)(p + 0x240) == 0) {
+			seed = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+			*(u32*)((char*)lbl_8053AAF8 + 0xb4) = seed;
+			bits = (seed >> 9) | 0x3f800000;
+			x = *(f32*)&bits - 1.0f;
+			*(s32*)(p + 0x248) += (s32)(32768.0f * x);
+			seed = *(u32*)((char*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+			*(u32*)((char*)lbl_8053AAF8 + 0xb4) = seed;
+			bits = (seed >> 9) | 0x3f800000;
+			x = *(f32*)&bits - 1.0f;
+			*(s32*)(p + 0x240) = (s32)(40.0f * x) + 40;
+			*(s32*)(p + 0x24c) = 0;
+		}
+		box[0] = *(f32*)(p + 0x60) + *(f32*)(p + 0xc);
+		box[1] = *(f32*)(p + 0x64) + *(f32*)(p + 0x10);
+		box[2] = *(f32*)(p + 0x68) + *(f32*)(p + 0xc);
+		box[3] = *(f32*)(p + 0x6c) + *(f32*)(p + 0x10);
+		room = *(s32*)(p + 0x4);
+		hit = fn_8023AF14(box, room, 0.0f, 1);
+		if (hit < 0) {
+			return;
+		}
+		*(s32*)(p + 0x244) = 0;
+		*(s32*)(p + 0x248) = 0;
+		*(s32*)(p + 0x24c) = 0;
+		*(s32*)(p + 0x234) = 500;
+		*(s32*)(p + 0x244) = hit;
+		if (room >= 8) {
+			Actor_CreateByID(fn_801F856C(), 'PEFF', room, (f32*)(p + 0xc), (hit & 3) | 4, -1, -1);
+			*(s32*)(p + 0x23c) = 0;
+			*(s16*)(p + 0x254) = 0;
+			*(s32*)(p + 0x248) = 0;
+			*(s32*)(p + 0xb0) = 0;
+			*(s32*)(p + 0x230) = 1;
+			*(u8*)(p + 0x11e) = 1;
+			return;
+		}
+		fn_8023C830(hit);
+		*(s32*)(p + 0x234) = 1000;
+		*(s32*)(p + 0x248) += 1;
+	}
+
+	if (*(s32*)(p + 0x23c) == 0) {
+		f32* a = fn_8023E724(*(s32*)(p + 0x244));
+		dx = *(f32*)(p + 0xc) - a[0];
+		a = fn_8023E724(*(s32*)(p + 0x244));
+		dy = *(f32*)(p + 0x10) - a[1];
+		*(s16*)(p + 0x254) = (s16)(JMath::atanTable_.atan2_(-dx, -dy) * 10430.4f);
+		*(s32*)(p + 0x23c) = 5;
+		*(f32*)(p + 0x258) = 5.0f * sincosTable___5JMath[((u16)*(s16*)(p + 0x254) >> 5) * 2];
+		*(f32*)(p + 0x25c) = 5.0f * sincosTable___5JMath[((u16)*(s16*)(p + 0x254) >> 5) * 2 + 1];
+	}
+
+	if (*(s32*)(p + 0x248) > 720) {
+		e = *(char**)(p + 0x264);
+		if (e != NULL) {
+			*(u32*)(e + 0xf4) |= 1;
+			*(s32*)(e + 0x24) = 1;
+			*(s32*)(p + 0x264) = 0;
+		}
+		e = *(char**)(p + 0x268);
+		if (e != NULL) {
+			*(u32*)(e + 0xf4) |= 1;
+			*(s32*)(e + 0x24) = 1;
+			*(s32*)(p + 0x268) = 0;
+		}
+		*(u8*)(p + 0x11c) = 0;
+	}
+	if (*(s32*)(p + 0x238) == 0) {
+		*(s32*)(p + 0x238) = 4;
+		*(s32*)(p + 0x250) += 1;
+		if (*(s32*)(p + 0x250) > 2) {
+			*(s32*)(p + 0x250) = 0;
+		}
 	}
 }
 
