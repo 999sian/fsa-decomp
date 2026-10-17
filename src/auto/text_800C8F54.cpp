@@ -189,6 +189,15 @@ struct J3DNBTScaleInfo {
     f32 mScale[3];
 };
 extern "C" J3DNBTScaleInfo j3dDefaultNBTScaleInfo;
+
+struct J3DNBTScale : public J3DNBTScaleInfo {
+    J3DNBTScale() {
+        mHasScale = j3dDefaultNBTScaleInfo.mHasScale;
+        mScale[0] = j3dDefaultNBTScaleInfo.mScale[0];
+        mScale[1] = j3dDefaultNBTScaleInfo.mScale[1];
+        mScale[2] = j3dDefaultNBTScaleInfo.mScale[2];
+    }
+};
 extern u32 j3dDefaultTexCoordInfo[];
 extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b);
 extern "C" char lbl_8049AA38[];
@@ -663,7 +672,8 @@ extern "C" void __as__13J3DTexMtxInfoFRC13J3DTexMtxInfo(void*, const void*);
 extern "C" void* fn_800CB1F4(u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
-    u32 off = ids[idx] * 0x14c + 0x48 + b * 2;
+    u32 off = ids[idx] * 0x14c + 0x48;
+    off += b * 2;
     void* ret = NULL;
     if (*(u16*)(base + off) != 0xffff) {
         ret = __nw__FUl(0x94);
@@ -782,13 +792,15 @@ extern "C" void fn_800CB4C0(void* out, u8* e) {
 
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
     u16* ids = *(u16**)(p + 8);
-    u16 v = *(u16*)(*(u8**)(p + 4) + (ids[idx] * 0x14c + 0x124 + stage * 2));
+    u8* base = *(u8**)(p + 4);
+    u16 v = *(u16*)(base + ids[idx] * 0x14c + 0x124 + stage * 2);
     if (v != 0xffff) {
-        J3DTevSwapModeTableInfo* e = (J3DTevSwapModeTableInfo*)(*(u8**)(p + 0x58) + v * 4);
-        *out = (e->mG * 0x10 + e->mB * 4 + e->mA) + e->mR * 0x40;
+        u8* e = *(u8**)(p + 0x58) + v * 4;
+        *out = e[0] * 0x40 + e[1] * 0x10 + e[2] * 4 + e[3];
         return;
     }
-    *out = (j3dDefaultTevSwapModeTable.mG * 0x10 + j3dDefaultTevSwapModeTable.mB * 4 + j3dDefaultTevSwapModeTable.mA) + j3dDefaultTevSwapModeTable.mR * 0x40;
+    u8* d = (u8*)&j3dDefaultTevSwapModeTable;
+    *out = d[0] * 0x40 + d[1] * 0x10 + d[2] * 4 + d[3];
 }
 
 extern "C" u8 fn_800CB5BC(u8* p, s32 idx) {
@@ -815,8 +827,9 @@ extern "C" J3DIndTexMtxInfo fn_800CB628(u8* param_2, s32 param_3, s32 param_4) {
     J3DIndTexMtxInfo local;
     local = j3dDefaultIndTexMtxInfo;
     u8* pcVar1 = *(u8**)(param_2 + 0xc) + param_3 * 0x138;
+    J3DIndTexMtxInfo* p = (J3DIndTexMtxInfo*)(pcVar1 + param_4 * 0x1c + 0x14);
     if (*pcVar1 == 1) {
-        local = *(J3DIndTexMtxInfo*)(pcVar1 + param_4 * 0x1c + 0x14);
+        return *p;
     }
     return local;
 }
@@ -934,10 +947,7 @@ extern "C" void fn_800CBB9C(J3DNBTScaleInfo* param_1, u8* param_2, s32 param_3) 
     u32 uVar4;
     u8* puVar5;
 
-    local.mHasScale = j3dDefaultNBTScaleInfo.mHasScale;
-    local.mScale[0] = j3dDefaultNBTScaleInfo.mScale[0];
-    local.mScale[1] = j3dDefaultNBTScaleInfo.mScale[1];
-    local.mScale[2] = j3dDefaultNBTScaleInfo.mScale[2];
+    local = j3dDefaultNBTScaleInfo;
     uVar4 = *(u16*)(*(u8**)(param_2 + 4) + (u32)*(u16*)(*(u8**)(param_2 + 8) + param_3 * 2) * 0x14c + 0x14a);
     if (uVar4 != 0xffff) {
         puVar5 = *(u8**)(param_2 + 0x74) + (uVar4 << 4);
