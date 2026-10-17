@@ -24,6 +24,10 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80299A78[];
 extern void* lbl_80299A8C[];
 extern "C" void fn_801DF0BC(u32 a, u32 b);
+extern "C" void fn_801969C8(u32 a);
+extern "C" void fn_80194830(u32* a);
+extern "C" void* fn_8015AA60(u32 size, u32 align);
+extern u32 lbl_802FF6E0;
 extern "C" void fn_80192E40(u32* p) {
     p[0] = 0;
     p[1] = 0;
@@ -423,6 +427,11 @@ extern "C" void* fn_801942E4(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_801949C8(void) {
+}
+
+extern NaviEntry12 lbl_8029B128[];
+extern "C" void fn_801949CC(s32 param_1, u8* p) {
+    fn_801E10DC(p, param_1, lbl_8029B128[*(u32*)(p + 0xc)]);
 }
 
 extern "C" void fn_8019552C(u8* p) {
