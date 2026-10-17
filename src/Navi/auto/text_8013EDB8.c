@@ -4,6 +4,12 @@
 
 extern s32 lbl_802FF388;
 extern u8 lbl_802C6A80[];
+extern u8 lbl_802C6980[];
+extern u8 lbl_80293868[];
+extern "C" void OSInitAlarm(void);
+extern "C" void OSInitThreadQueue(void* queue);
+extern "C" void OSRegisterResetFunction(void* info);
+extern "C" void fn_801D1360(void);
 extern "C" void fn_801404EC(void);
 extern "C" void fn_8013EDB8(void);
 extern "C" void fn_80140520(s32 idx);
