@@ -12,6 +12,8 @@ extern "C" int fn_80058A28(int x);
 extern "C" void fn_80057C38(int x);
 extern "C" void fn_8001A454(int a, int b, int c);
 extern u8 lbl_802B7CA0[];
+extern u8 lbl_80284340[];
+extern u8 lbl_8028407C[];
 extern "C" void fn_80021240(void* a, void* b, void* c);
 extern "C" void fn_8011AC24(void* a, void* b);
 extern "C" void fn_80159C6C(void* a, s32 b);
