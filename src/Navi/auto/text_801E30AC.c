@@ -1,6 +1,8 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801e30ac-0x801ea39c (89 functions). split_file divides it into the game's real files.
 
+#include <stdarg.h>
+
 extern "C" void __begin_critical_region(int);
 extern "C" void __end_critical_region(int);
 extern "C" double fn_801E997C(void);
@@ -216,47 +218,45 @@ extern "C" void fn_801E3E8C(unsigned char* dst, const unsigned char* src, unsign
 }
 
 extern "C" void fn_801E3F48(unsigned char* dst, const unsigned char* src, unsigned long n) {
-    unsigned long i;
-    unsigned long chunks;
+    unsigned long shr;
     unsigned long sh;
     unsigned long shl;
-    unsigned long shr;
-    unsigned long* d;
-    unsigned long* w;
-    unsigned long a;
     unsigned long b;
+    unsigned long a;
+    unsigned long i;
 
     i = -(unsigned long)dst & 3;
-    dst--;
     src--;
+    dst--;
     if (i != 0) {
         n -= i;
         do {
             *++dst = *++src;
         } while (--i != 0);
     }
-    chunks = n >> 3;
+    i = n >> 3;
     src++;
     sh = (unsigned long)src & 3;
     shl = sh << 3;
     shr = 32 - shl;
-    d = (unsigned long*)(dst - 3);
-    w = (unsigned long*)((unsigned long)src - sh);
-    a = w[0];
+    dst -= 3;
+    src -= sh;
+    a = *(unsigned long*)src;
     do {
-        b = w[1];
-        *d++ = (a << shl) | (b >> shr);
-        w += 2;
-        a = w[0];
-        *d++ = (b << shl) | (a >> shr);
-    } while (--chunks != 0);
+        b = *((unsigned long*)src + 1);
+        *((unsigned long*)dst + 1) = (a << shl) | (b >> shr);
+        src += 8;
+        a = *(unsigned long*)src;
+        *((unsigned long*)dst + 2) = (b << shl) | (a >> shr);
+        dst += 8;
+    } while (--i != 0);
     if (n & 4) {
-        w += 1;
-        b = w[0];
-        *d++ = (a << shl) | (b >> shr);
+        src += 4;
+        b = *(unsigned long*)src;
+        *((unsigned long*)dst + 1) = (a << shl) | (b >> shr);
+        dst += 4;
     }
-    dst = (unsigned char*)d - 3;
-    src = (const unsigned char*)w + sh;
+    src += sh;
     i = n & 3;
     if (i != 0) {
         do {
@@ -449,6 +449,49 @@ extern "C" char* fn_801E6704(char* dst, const char* src, unsigned long n) {
     }
 
     return dst;
+}
+
+extern "C" void fn_801E6768(char* dst, const char* src) {
+    register unsigned char *destb, *fromb;
+    register unsigned long w, t, align;
+    register unsigned long K1 = 0xFEFEFEFF;
+    register unsigned long K2 = 0x80808080;
+
+    fromb = (unsigned char*)src;
+    destb = (unsigned char*)dst;
+
+    if ((align = ((unsigned long)fromb & 3)) != ((unsigned long)destb & 3)) {
+        goto bytecopy;
+    }
+    if (align) {
+        if ((*destb = *fromb) == 0) return;
+        for (align = 3 - align; align; align--) {
+            if ((*(++destb) = *(++fromb)) == 0) return;
+        }
+        ++destb;
+        ++fromb;
+    }
+    w = *((unsigned long*)fromb);
+    t = w + K1;
+    t &= K2;
+    if (t) goto bytecopy;
+    destb -= 4;
+    do {
+        destb += 4;
+        *(unsigned long*)destb = w;
+        fromb += 4;
+        w = *(unsigned long*)fromb;
+        t = w + K1;
+        t &= K2;
+        if (t) goto adjust;
+    } while (1);
+adjust:
+    destb += 4;
+bytecopy:
+    if ((*destb = *fromb) == 0) return;
+    do {
+        if ((*(++destb) = *(++fromb)) == 0) return;
+    } while (1);
 }
 
 #pragma push
