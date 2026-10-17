@@ -53,4 +53,4 @@ extern "C" void fn_8028F890(u8* param_1) {
     *(s32*)(param_1 + 0x234) = 0;
     *(s32*)(param_1 + 0x268) = 0xff;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
