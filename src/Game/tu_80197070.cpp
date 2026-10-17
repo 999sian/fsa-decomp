@@ -1,6 +1,11 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 80197070-8019D12C (unknown). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+
+#if defined(VERSION_G4SP01)
+extern "C" const f32 lbl_8053E3EC;
+#endif
 
 // from src/Game/Actor_SetVec2_0x0.cpp
 // Unnamed actor cluster, part 7/9. fn_8019C4F4 - trivial 2-float setter
@@ -123,6 +128,31 @@ extern "C" s32 fn_8023DE58(s32 i);
 extern "C" void fn_80230498(s32 i, Vec_8019* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 struct Pos_8019 { u32 vt; s32 id; u8 pad[0x2a4 - 8]; Vec_8019 p[4]; };
 
+#if defined(VERSION_G4SP01)
+extern "C" void fn_8019C500(char* obj, int flag)
+{
+    char* p;
+    int i;
+    int id;
+    float v[3];
+
+    i = 0;
+    p = obj;
+    do {
+        if (fn_8023F264(i) && (id = *(int*)(obj + 4), id == fn_8023DE58(i))) {
+            v[0] = *(float*)(p + 0x2a4);
+            v[1] = *(float*)(p + 0x2a8);
+            v[2] = *(float*)(p + 0x2ac);
+            if (flag == 0) {
+                v[1] = lbl_8053E3EC + *(float*)(obj + 0x10);
+            }
+            fn_80230498(i, (Vec_8019*)v, 0x3f, 0xff, -0x80, -0x80, 1);
+        }
+        i++;
+        p += 0xc;
+    } while (i < 4);
+}
+#else
 extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
     for (int i = 0; i < 4; i++) {
         if (fn_8023F264(i)) {
@@ -141,5 +171,6 @@ extern "C" void fn_8019C500(Pos_8019* this_, s32 flag) {
     }
 
 }
+#endif
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
