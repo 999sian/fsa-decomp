@@ -38,6 +38,7 @@ extern "C" void fn_800CD444(u8* self);
 extern "C" void fn_800CD6FC(u8* self);
 extern "C" void fn_800CD3C4(u8* self);
 extern "C" s32 fn_800CD8E4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
+extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
 extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
     if (i < 0) {
         return 0;
