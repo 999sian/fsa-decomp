@@ -27,6 +27,22 @@ extern "C" void* fn_80015D50(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80015D8C(void* param_1) {
+    u8* p = (u8*)param_1;
+    fn_801D2BDC();
+    p[0x1fa5] = 0;
+    p[0x1fa6] = 2;
+    *(s32*)(p + 0x1fac) = 0;
+    *(s32*)(p + 0x1fa8) = 0;
+    p[0x1fa4] = 0;
+    fn_801BE368(p + 0x1fb0);
+    fn_801BE670(p + 0x1fc8);
+    fn_801C027C();
+    s32 iVar1 = fn_801C1594();
+    fn_801C0884(lbl_802A4560, (void*)fn_800168D0, 0, lbl_802A3560 + 0x1000, 0x1000, iVar1 + 1, 1);
+    fn_801C0EEC(lbl_802A4560);
+}
+
 extern "C" void fn_80016170(void* param_1) {
     u8* p = (u8*)param_1;
     if (fn_801BE5B4(p + 0x1fb0)) {
