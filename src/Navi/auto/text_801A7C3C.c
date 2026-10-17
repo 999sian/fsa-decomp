@@ -1612,9 +1612,7 @@ extern "C" void* fn_801B37D8(void* base, u32 offset) {
 
 extern "C" u8 fn_801B474C(u8* s, u32 a) {
     u16 row = ((u16*)*(u8**)(s + 8))[a];
-    u8* base = *(u8**)(s + 4);
-    u32 off = row * 0x138 + 4;
-    u8 v = base[off];
+    u8 v = (*(u8**)(s + 4))[4 + row * 0x138];
     if (v != 0xff) {
         return (*(u8**)(s + 0x40))[v];
     }
@@ -1623,16 +1621,17 @@ extern "C" u8 fn_801B474C(u8* s, u32 a) {
 
 extern "C" u8 lbl_80301D20;
 extern "C" void* fn_8000F018(void* self);
+#pragma dont_inline on
 extern "C" void fn_801B4784(void* p, u8* s, u32 a, u32 b) {
     u16 row = ((u16*)*(u8**)(s + 8))[a];
     u16 idx = ((u16*)(*(u8**)(s + 4) + row * 0x138 + 0xd0))[b];
-    if (idx == 0xffff) {
-        fn_8000F018(p);
-    } else {
+    if (idx != 0xffff) {
         fn_801B3580(p, *(u8**)(s + 0x44) + idx * 0x14);
+    } else {
+        fn_8000F018(p);
     }
 }
-
+#pragma dont_inline reset
 extern "C" void fn_801B47E4(u8* p, u8* s, u32 a, u32 b) {
     u16 row = ((u16*)*(u8**)(s + 8))[a];
     u16 idx = ((u16*)(*(u8**)(s + 4) + row * 0x138 + 0x110))[b];
