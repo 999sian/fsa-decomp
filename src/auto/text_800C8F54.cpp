@@ -694,12 +694,13 @@ extern "C" u16 fn_800CB2CC(u8* p, s32 idx, s32 b) {
 }
 
 extern unsigned int j3dDefaultTevOrderInfoNull;
-extern "C" void fn_800CB314(u32* out, u8* p, u32 idx, u32 b) {
+extern "C" void fn_800CB314(u32* out, u8* p, s32 idx, s32 b) {
     u16* ids = *(u16**)(p + 8);
-    u32 off = ids[idx] * 0x14c;
-    u32 i = off + 0xbc;
-    i += b * 2;
-    u16 v = *(u16*)(*(u8**)(p + 4) + i);
+    u8* base;
+    u32 i = ids[idx] * 0x14c + 0xbc;
+    base = *(u8**)(p + 4);
+    i = i + b * 2;
+    u16 v = *(u16*)(base + i);
     if (v != 0xffff) {
         *out = (*(u32**)(p + 0x40))[v];
         return;
@@ -714,8 +715,8 @@ extern "C" void fn_800CB4C0(void* out, u8* e);
 extern "C" void __ct__11J3DTevStageFv(void* self);
 extern "C" void fn_800CB360(u32* out, u8* p, s32 idx, s32 b) {
     u32 def[2] = {lbl_80543F08, lbl_80543F0C};
-    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xdc + b * 2;
-    u16 v = *(u16*)(*(u8**)(p + 4) + off);
+    u32 off = ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0xdc;
+    u16 v = *(u16*)(*(u8**)(p + 4) + off + b * 2);
     if (v != 0xffff) {
         u32* e = (u32*)(*(u8**)(p + 0x44) + v * 8);
         out[0] = e[0];
@@ -770,6 +771,14 @@ struct J3DTevSwapModeTableInfo {
 extern J3DTevSwapModeInfo j3dDefaultTevSwapMode;
 extern const J3DTevSwapModeTableInfo j3dDefaultTevSwapModeTable;
 extern u32 j3dDefaultIndTexOrderNull;
+struct J3DTevStageBits {
+    u8 _00[7];
+    u8 mTevSwapModeInfo;
+    void setTevSwapModeInfo(const J3DTevSwapModeInfo& info) {
+        mTevSwapModeInfo = (mTevSwapModeInfo & ~0x0C) | (info.mTexSel << 2);
+        mTevSwapModeInfo = (mTevSwapModeInfo & ~0x03) | info.mRasSel;
+    }
+};
 extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, const void* info);
 extern "C" void fn_800CB4C0(void* out, u8* e) {
     u8* p = (u8*)out;
