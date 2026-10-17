@@ -21,6 +21,8 @@ extern void* lbl_8053AAF8;
 extern void* lbl_8053AB10;
 bool Player_IsLinked(char*);
 s32 Player_GetLinkTargetIndex(char*);
+u8 fn_80234ECC(s32);
+bool fn_80250D30(char*);
 u8 fn_80241230();
 bool fn_802412A4(char*);
 bool fn_8022D75C(s32);
@@ -1023,6 +1025,50 @@ void fn_80285074(char* p) {
 void fn_8028537C(char* p) { U8(p, 0x458) = 0; }
 
 void fn_80285388(void) {
+}
+
+void fn_8028538C(char* p) {
+    JGeometry::TVec3<f32> tmp;
+    fn_8027FA08(p, (f32*)&tmp);
+    if (lbl_80540360 == tmp.z && lbl_80540360 != F32(p, 0x10) && U8(p, 0x434) == 0) {
+        F32(p, 0x10) = lbl_80540360;
+    }
+    if (Player_IsLinked(p) && U8(p, 0x1215) != 0) {
+        S32(p, 0x3b4) = fn_8023DE58(Player_GetLinkTargetIndex(p));
+        VEC(p, 0x8) = *fn_8023E724(Player_GetLinkTargetIndex(p));
+        return;
+    }
+    fn_80275D9C(p);
+    if (fn_802486A0(p) == 5 && U8(PTR(p, 0xbf0), 0xb4) != 0) {
+        fn_802808E8(p, lbl_80540378);
+    } else if (S32(p, 0x122c) <= 0) {
+        JGeometry::TVec3<f32> tmp2;
+        fn_8027FA08(p, (f32*)&tmp2);
+        JGeometry::TVec3<f32> dir = tmp2 - VEC(p, 0x8);
+        dir.z = lbl_80540360;
+        if (dir.length() >= lbl_8054037C) {
+            F32(p, 0x8) = tmp2.x;
+            F32(p, 0xc) = tmp2.y;
+            F32(p, 0x10) = tmp2.z;
+            if (fn_802486A0(p) != 5) {
+                if (fn_8022C6AC(S32(p, 0x4)) == lbl_80540360) {
+                    fn_80251AEC(p, 0);
+                } else {
+                    fn_80251AEC(p, 2);
+                }
+            } else if (!Player_IsLinked(p)) {
+                fn_80251AEC(p, 0);
+            }
+        } else {
+            dir.normalize();
+            dir.scale(lbl_8054037C);
+            VEC(p, 0x8) += dir;
+        }
+    }
+    fn_8027EB04(p);
+    fn_8027EEB4(p);
+    fn_80261480(p);
+    fn_80268B3C(p);
 }
 
 void fn_80285668(char* p) {
