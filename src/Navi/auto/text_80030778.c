@@ -441,6 +441,10 @@ extern "C" void fn_800354C8(void* p) {
     fn_8002A3CC(p, (char*)p + 0x1a8, 0x46, 0x1);
 }
 
+extern "C" void fn_8003551C(void* p) {
+    fn_800358E4((char*)p + 0x198, p);
+}
+
 extern "C" void fn_80035544(void* p) {
     char* base;
     *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
