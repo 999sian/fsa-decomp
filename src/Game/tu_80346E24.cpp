@@ -1,6 +1,8 @@
 #include "Game/Actor.h"
 
 extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+extern "C" f32 lbl_80542438;
+extern "C" f32 lbl_8054243C;
 extern "C" f32 lbl_80542440;
 extern "C" f32 lbl_80542444;
 extern "C" f32 lbl_80542448;
