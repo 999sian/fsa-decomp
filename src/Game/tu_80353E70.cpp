@@ -1,6 +1,8 @@
-#include "Game/Actor.h"
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JMath/Inline.h"
+
+struct Actor;
 
 
 extern "C" char __vt__4TUGF[];
@@ -44,6 +46,76 @@ extern "C" void fn_80353EE0(void* this_) {
     rec.b1d = 1;
     rec.w30 = 8;
     fn_801F06F0(this_, lbl_80472298, lbl_80472288[*(s32*)((char*)this_ + 0x2c8)] + 0x466, &rec, 7, lbl_80542750, lbl_80542750);
+}
+
+extern "C" void fn_803545A4(char* this_) {
+    struct {
+        s32 a;
+        s32 b;
+        f32 c[7];
+        s16 d;
+    } rec;
+    s32 tmp;
+    char* p;
+    s32 v0;
+    s32 v1;
+
+    fn_801EBA14(&rec);
+    p = (char*)fn_802D6A9C();
+    v0 = *(s32*)(p + 0xcc);
+    v1 = *(s32*)(p + 0xd0);
+    *(s32*)(this_ + 0x2a8) = v0;
+    *(s32*)(this_ + 0x2ac) = v1;
+    v0 = *(s32*)(p + 0xd4);
+    v1 = *(s32*)(p + 0xd8);
+    *(s32*)(this_ + 0x2b0) = v0;
+    *(s32*)(this_ + 0x2b4) = v1;
+    *(f32*)(this_ + 0xc) = lbl_80542768 + *(f32*)(this_ + 0x2b0);
+    *(f32*)(this_ + 0x10) = (*(f32*)(this_ + 0x2ac) + *(f32*)(this_ + 0x2b4)) * lbl_80542738 + lbl_80542734;
+    *(f32*)(this_ + 0x14) = lbl_8054276C;
+    rec.a = 1;
+    rec.b = 1;
+    rec.c[0] = lbl_8054276C;
+    rec.c[1] = lbl_80542770;
+    rec.c[2] = lbl_80542774;
+    *(s32*)(this_ + 0x23c) = rec.a;
+    *(s32*)(this_ + 0x240) = rec.b;
+    *(f32*)(this_ + 0x244) = rec.c[0];
+    *(f32*)(this_ + 0x248) = rec.c[1];
+    *(f32*)(this_ + 0x24c) = rec.c[2];
+    *(f32*)(this_ + 0x250) = rec.c[3];
+    *(f32*)(this_ + 0x254) = rec.c[4];
+    *(f32*)(this_ + 0x258) = rec.c[5];
+    *(f32*)(this_ + 0x25c) = rec.c[6];
+    *(s16*)(this_ + 0x260) = rec.d;
+    fn_801EB710(this_ + 0x230, 0, this_ + 0xc);
+    *(s32*)(this_ + 0x2c8) = 0;
+    *(s32*)(this_ + 0x2bc) = 0;
+    *(s32*)(this_ + 0x2c0) = 0;
+    *(f32*)(this_ + 0x2f4) = lbl_8054273C;
+    *(f32*)(this_ + 0x290) = (*(f32*)(this_ + 0x2a8) - *(f32*)(this_ + 0x2b0)) * lbl_80542738 + *(f32*)(this_ + 0x2b0);
+    *(f32*)(this_ + 0x294) = (*(f32*)(this_ + 0x2ac) - *(f32*)(this_ + 0x2b4)) * lbl_80542738 + *(f32*)(this_ + 0x2b4);
+    *(f32*)(this_ + 0x294) = *(f32*)(this_ + 0x294) + lbl_80542734;
+    *(f32*)(this_ + 0x2a4) = lbl_8054273C;
+    *(f32*)(this_ + 0x2a0) = lbl_8054273C;
+    *(f32*)(this_ + 0x298) = (*(f32*)(this_ + 0x2b0) - *(f32*)(this_ + 0x2a8)) - lbl_80542734;
+    *(f32*)(this_ + 0x29c) = (*(f32*)(this_ + 0x2b4) - *(f32*)(this_ + 0x2ac)) - lbl_80542734;
+    *(s32*)(this_ + 0x2c4) = 0;
+    *(s16*)(this_ + 0x2ce) = 0;
+    *(s16*)(this_ + 0x2cc) = 0;
+    *(s16*)(this_ + 0x2d0) = 0;
+    *(u8*)(this_ + 0x2f8) = 1;
+    fn_8018330C(&tmp);
+    *(s32*)(this_ + 0x2d4) = tmp;
+    *(f32*)(this_ + 0x2d8) = (f32)(f64)(*(u32*)(this_ + 0x2d4) >> 24);
+    *(f32*)(this_ + 0x2dc) = (f32)(f64)((*(u32*)(this_ + 0x2d4) >> 16) & 0xff);
+    *(f32*)(this_ + 0x2e0) = (f32)(f64)((*(u32*)(this_ + 0x2d4) >> 8) & 0xff);
+    *(f32*)(this_ + 0x2e4) = (f32)(f64)((*(u32*)(this_ + 0x2d4)) & 0xff);
+    *(f32*)(this_ + 0x2e8) = -(lbl_80542778 * *(f32*)(this_ + 0x2d8)) / lbl_8054277C;
+    *(f32*)(this_ + 0x2ec) = -(lbl_80542778 * *(f32*)(this_ + 0x2dc)) / lbl_8054277C;
+    *(f32*)(this_ + 0x2f0) = -(lbl_80542778 * *(f32*)(this_ + 0x2e0)) / lbl_8054277C;
+    *(f32*)(this_ + 0x3c) = lbl_80542780;
+    *(s32*)(this_ + 0x2b8) = 0;
 }
 
 extern "C" void fn_80354820(void) {}
