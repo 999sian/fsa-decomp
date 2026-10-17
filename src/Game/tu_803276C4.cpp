@@ -99,9 +99,7 @@ extern "C" void fn_803283FC(u8* this_) {
     *(u8*)(this_ + 0x11c) = 0;
     *(s32*)(this_ + 0x108) = 10000;
     *(f32*)(this_ + 0x10) -= 8.0f;
-    *(f32*)(this_ + 0x260) = *(f32*)(this_ + 0xc);
-    *(f32*)(this_ + 0x264) = *(f32*)(this_ + 0x10);
-    *(f32*)(this_ + 0x268) = *(f32*)(this_ + 0x14);
+    *(Vec*)(this_ + 0x260) = *(Vec*)(this_ + 0xc);
     *(s32*)(this_ + 0x230) = 0;
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x244) = 0;
@@ -139,4 +137,4 @@ extern "C" void fn_803283FC(u8* this_) {
         }
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
