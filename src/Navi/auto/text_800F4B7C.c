@@ -194,6 +194,20 @@ extern "C" void fn_801001E8(u8* p) {
     }
 }
 
+extern "C" void fn_8010021C(u8* p) {
+    if (p[0xef] != 0) {
+        p[0xef]--;
+    } else {
+        p[0x188] = 0;
+        if (*(u16*)(p + 0x18c) != 0) {
+            p[0xf2] = 0xe;
+            p[0x188] = 1;
+            fn_8002F458((void*)0xad, 0);
+            p[0x189] = 6;
+        }
+    }
+}
+
 extern "C" void fn_8010046C(void* param_1) {
     u8* p = (u8*)param_1;
     if (p[0xef] != 0) {
