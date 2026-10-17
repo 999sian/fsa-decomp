@@ -16,6 +16,8 @@ extern "C" void OSInitAlarm(void);
 extern "C" void OSInitThreadQueue(void* queue);
 extern "C" void OSRegisterResetFunction(void* info);
 extern "C" void fn_801D1360(void);
+extern "C" void fn_801D134C(u32 v);
+extern "C" s32 fn_801D1314(void);
 extern "C" void fn_801404EC(void);
 extern "C" void fn_8013EDB8(s32 idx);
 extern "C" s32 fn_80140520(s32 idx);
@@ -336,5 +338,49 @@ extern "C" void fn_80140824(u8* p)
         }
     }
     fn_8013F620(idx, 0);
+}
+
+extern "C" void fn_801409B0(u8* p) {
+    NaviNode* head;
+    NaviNode* tail;
+    head = *(NaviNode**)(p + 0xe64);
+    if (head != 0) {
+        tail = head;
+        while (tail->next != 0) {
+            tail = tail->next;
+        }
+        if (lbl_802FF394 != 0) {
+            tail->next = lbl_802FF394;
+            lbl_802FF394->prev = tail;
+        }
+        lbl_802FF394 = head;
+        *(NaviNode**)(p + 0xe64) = 0;
+    }
+    head = *(NaviNode**)(p + 0xe68);
+    if (head != 0) {
+        tail = head;
+        while (tail->next != 0) {
+            tail = tail->next;
+        }
+        if (lbl_802FF394 != 0) {
+            tail->next = lbl_802FF394;
+            lbl_802FF394->prev = tail;
+        }
+        lbl_802FF394 = head;
+        *(NaviNode**)(p + 0xe68) = 0;
+    }
+    head = *(NaviNode**)(p + 0xe6c);
+    if (head != 0) {
+        tail = head;
+        while (tail->next != 0) {
+            tail = tail->next;
+        }
+        if (lbl_802FF394 != 0) {
+            tail->next = lbl_802FF394;
+            lbl_802FF394->prev = tail;
+        }
+        lbl_802FF394 = head;
+        *(NaviNode**)(p + 0xe6c) = 0;
+    }
 }
 
