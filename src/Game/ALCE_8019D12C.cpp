@@ -14,7 +14,7 @@ extern "C" void fn_802D79E8(void*, s32, s32, f32, f32);
 extern u8 lbl_804C1E30[];
 extern "C" void* fn_801F856C(void);
 extern "C" void fn_801EE4F0(void*);
-extern "C" void fn_8013CC50(u32, void*, ...);
+extern "C" void fn_8013CC50(u32, void*, f32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_801F4694(void*);
 extern "C" void detach__5ActorFv(void*);
 extern "C" void fn_801F8544(void*, u32, void*, void*, s32);
