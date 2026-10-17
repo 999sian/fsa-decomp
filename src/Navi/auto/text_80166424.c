@@ -1268,6 +1268,10 @@ extern "C" u32 fn_80172854(u8* param_1) {
     return *(u32*)(param_1 + 0x1ac);
 }
 
+extern "C" void fn_8017285C(u8* param_1, u8 param_2) {
+    param_1[0x1b0] &= param_2;
+}
+
 extern "C" int fn_80172884(void) {
     return 8;
 }
