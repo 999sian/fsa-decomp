@@ -203,6 +203,15 @@ extern "C" u16 fn_80160A78(void* a, char* p) {
     return 0;
 }
 
+extern "C" void fn_8015FC28(void*);
+extern "C" u32 fn_80160B84(void* self) {
+    u32* r = (u32*)fn_801614F0(self);
+    if (r != 0) {
+        return r[1] >> 24;
+    }
+    return 0;
+}
+
 extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80297CE8;
