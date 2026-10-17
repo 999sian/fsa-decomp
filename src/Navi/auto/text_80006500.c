@@ -40,6 +40,7 @@ void DCFlushRange(void*, u32);
 void fn_801C0A6C(u32);
 void fn_801C13D0(void*);
 void fn_8006069C(void*);
+u32 fn_8015C788(u32, u32, u32);
 }
 
 extern "C" void fn_80006EE4(void) {
