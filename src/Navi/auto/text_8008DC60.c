@@ -927,6 +927,13 @@ extern "C" void fn_8009C1A0(void* p) {
     *(u8*)((u8*)p + 0x7bb) = 0;
 }
 
+extern "C" void fn_8009DE7C(void* param_1) {
+    if (*(s32*)(lbl_802BB0FC + 0x424) == 2) {
+        return;
+    }
+    *((u8*)param_1 + 0x7e0) = 8;
+}
+
 extern "C" void fn_8009E6F0(NaviState_8009E6F0* p);
 extern "C" void fn_8009EBA0(NaviState_8009E6F0* p);
 extern "C" void fn_8009F01C(NaviState_8009E6F0* p);
