@@ -1386,6 +1386,10 @@ extern "C" s32 fn_8001EB7C(void* p, u8 mask) {
     return (u32)__cntlzw(ne) >> 5;
 }
 
+extern "C" void fn_8001EC84(u8* p) {
+    p[0xb] = 0;
+}
+
 extern "C" BOOL fn_8001EDE4(void);
 extern "C" BOOL fn_8001EDE4(void)
 {
