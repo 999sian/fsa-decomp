@@ -107,6 +107,35 @@ extern "C" void fn_80118AB4(char *param_1, char *param_2, int param_3, int param
     fn_80118B58(param_1, param_3, param_4);
 }
 
+extern "C" void fn_801193D8(u8* self, u16* table) {
+    *(u16**)(self + 4) = table;
+    if (table != NULL) {
+        *(u16*)(self + 0xc) = table[0];
+        *(u8**)(self + 8) = (u8*)table + *(u16*)(self + 0xc) * 4 + 4;
+    } else {
+        *(u16*)(self + 0xc) = 0;
+        *(u32*)(self + 8) = 0;
+    }
+}
+
+extern "C" int fn_801E6578(void* a, void* b);
+extern "C" void* fn_801194B4(u8* self, u16 idx) {
+    if (idx < *(u16*)(self + 0xc)) {
+        u8* table = *(u8**)(self + 4);
+        return table + *(u16*)(table + idx * 4 + 6);
+    }
+    return NULL;
+}
+
+extern "C" u16 fn_801194E4(void* param_1, char* param_2) {
+    u16 hash = 0;
+    while (*param_2 != 0) {
+        hash = (s8)*param_2 + hash * 3;
+        param_2++;
+    }
+    return hash;
+}
+
 extern "C" void fn_801196B4(void* p) {
     char* c = (char*)p;
     *(void**)p = lbl_80283F48;
