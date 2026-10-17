@@ -73,12 +73,7 @@ struct VObj_801988C0 {
     virtual void v1(u32);
 };
 struct Bytes4_801A3D94 { u8 b[4]; };
-static inline void Put4_801A394C(u8* d, u8 a, u8 b, u8 c, u8 e) {
-    d[0] = a;
-    d[1] = b;
-    d[2] = c;
-    d[3] = e;
-}
+
 struct Rect16 {
     s16 x, y, w, h;
     void set(const Rect16& r) { x = r.x; y = r.y; w = r.w; h = r.h; }
@@ -2522,15 +2517,15 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A394C(u8* p, u32 i, u8* src) {
-    u8* base = p + (i << 2);
     u8 a = src[0];
+    u8 b = src[1];
+    u8 c = src[2];
+    u8 d = src[3];
+    u8* base = p + (i << 2);
     base[0xfa] = a;
-    a = src[1];
-    base[0xfb] = a;
-    a = src[2];
-    base[0xfc] = a;
-    a = src[3];
-    base[0xfd] = a;
+    base[0xfb] = b;
+    base[0xfc] = c;
+    base[0xfd] = d;
 }
 
 extern "C" s32 fn_801A39A4(s32 param_1, s32 param_2) {
@@ -2597,11 +2592,12 @@ extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
 }
 
 extern "C" void fn_801A3AB0(s32 param_1, s32 param_2, u8* param_3) {
-    u8 b1 = param_3[1];
     u8 b0 = param_3[0];
+    u8 b1 = param_3[1];
     u8* p = (u8*)(param_1 + param_2 * 8);
+    u32 s = (b1 & 0xFF) << 2;
     u8 x = p[0x60];
-    p[0x60] = (x & ~0x0C) | ((b1 & 0xFF) << 2);
+    p[0x60] = (x & ~0x0C) | s;
     p[0x60] = (p[0x60] & ~0x03) | b0;
 }
 
@@ -2772,8 +2768,9 @@ extern "C" u8 fn_801A3E64(u8* p) {
 extern "C" void fn_80191388(int, void*);
 extern "C" void fn_80191220(int, void*);
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
-    u8* d = p + (u32)i * 8;
     u8 a = src[1];
+    u8* d = p;
+    d += i * 8;
     d[0x22] = a;
     u8 b = src[2];
     u8 c = src[3];
@@ -2949,19 +2946,19 @@ extern "C" void fn_801A4298(u8* p, u8* src) {
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
 extern "C" void fn_801A42AC(u8* p, s32 i, u8* src) {
+    u8* d = p + i * 8;
     u8 a = src[1];
-    p += i * 8;
     u8 b = src[2];
-    p[0x36] = a;
+    d[0x36] = a;
     u8 c = src[3];
-    p[0x37] = b;
+    d[0x37] = b;
     b = src[5];
-    p[0x38] = c;
+    d[0x38] = c;
     c = src[6];
-    p[0x3a] = b;
+    d[0x3a] = b;
     b = src[7];
-    p[0x3b] = c;
-    p[0x3c] = b;
+    d[0x3b] = c;
+    d[0x3c] = b;
 }
 
 extern "C" int fn_801A4324(int p1, int p2) {
