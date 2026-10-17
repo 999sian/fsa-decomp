@@ -26,6 +26,15 @@ extern "C" const f32 lbl_8053E394;
 extern "C" const f64 lbl_8053E398;
 extern "C" s32 lbl_8053ABA0;
 extern "C" s32 lbl_8053ABA4;
+extern "C" u8 lbl_8053ABA8;
+extern "C" u8 lbl_8053AB98;
+extern "C" s32 lbl_8053AB9C;
+extern "C" const f32 lbl_8053E3E8;
+extern "C" const f32 lbl_8053E434;
+extern "C" const f32 lbl_8053E438;
+extern "C" const f32 lbl_8053E43C;
+extern "C" void* lbl_8053AF80;
+extern "C" const u8 lbl_804A28C4[];
 extern "C" const u16 lbl_804A28FC[];
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
@@ -64,6 +73,136 @@ struct UnkDrawRec {
     s32 field_34;
     s32 field_38;
 };
+
+extern u8 lbl_80468428[];
+extern "C" void fn_80197070(u8* this_) {
+    u8* tbl = lbl_80468428;
+    switch (*(s32*)(this_ + 0x90)) {
+    case 0: {
+        UnkDrawRec local;
+        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
+        *reinterpret_cast<u32*>(&local.field_14) = 0xFFFFFFFF;
+        for (u8 i = 0; i < 0x10; i++) {
+            local.field_00[i] = i;
+        }
+        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
+        u32 idx = 0x9b;
+        s32 p5 = 7;
+        *reinterpret_cast<u32*>(&local.field_14) = 0;
+        local.field_18 = 0;
+        local.field_1C = 0;
+        local.field_1D = 0;
+        local.field_1E = 0;
+        local.field_1F = 1;
+        local.field_20 = 1;
+        local.field_21 = 0;
+        local.field_22 = 0;
+        local.field_23 = 0;
+        local.field_24 = 0;
+        local.field_25 = 0;
+        local.field_26 = 1;
+        local.field_28 = 3;
+        local.field_2C = 1;
+        local.field_2D = 0;
+        local.field_2E = 0;
+        local.field_30 = -1;
+        local.field_34 = 0;
+        local.field_38 = 2;
+        if (*(s32*)(this_ + 0x23c) == 0 || (*(u32*)(this_ + 0x23c) & 2) != 0) {
+            local.field_1F = 0;
+            if (*(u8*)(this_ + 0x268) == 1) {
+                idx = 0x274;
+            }
+            if (*(s32*)(this_ + 0x230) == 0x15) {
+                p5 = -1;
+            }
+            fn_801F06F0(this_, tbl + 0x30, (void*)(idx + *(s32*)(this_ + 0x254)), &local, (void*)p5,
+                        lbl_8053E370, lbl_8053E370);
+        }
+        break;
+    }
+    case 2: {
+        if (*(s32*)(this_ + 0x24c) == 0) {
+            UnkDrawRec local;
+            *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
+            *reinterpret_cast<u32*>(&local.field_14) = 0xFFFFFFFF;
+            for (u8 i = 0; i < 0x10; i++) {
+                local.field_00[i] = i;
+            }
+            local.field_1D = 0;
+            local.field_30 = -1;
+            *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
+            *reinterpret_cast<u32*>(&local.field_14) = 0;
+            local.field_18 = 0;
+            local.field_1C = 0;
+            local.field_1E = 0;
+            local.field_1F = 1;
+            local.field_20 = 1;
+            local.field_21 = 0;
+            local.field_22 = 0;
+            local.field_23 = 0;
+            local.field_24 = 0;
+            local.field_25 = 0;
+            local.field_26 = 1;
+            local.field_28 = 3;
+            local.field_2C = 1;
+            local.field_2D = 0;
+            local.field_2E = 0;
+            local.field_34 = 0;
+            local.field_38 = 2;
+            local.field_1D = 5;
+            local.field_30 = 0x11;
+            s32 total = *(s32*)(this_ + 0x254) + *(s32*)(tbl + *(u16*)(this_ + 0x94) * 4);
+            fn_801F02BC(this_, tbl + 0x30, (void*)total, &local, (void*)-1, 0, 0, lbl_8053E370, lbl_8053E370);
+            local.field_00[0x13] = (u8)(s32)*(f32*)(this_ + 0x270);
+            if (*(s32*)(this_ + 0x138) == 0) {
+                fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), local.field_00, 0x407, tbl + 0x30,
+                            *(s32*)(this_ + 0x254) + *(s32*)(tbl + *(u16*)(this_ + 0x94) * 4), 0);
+            }
+        }
+        break;
+    }
+    case 3: {
+        UnkDrawRec local;
+        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
+        *reinterpret_cast<u32*>(&local.field_14) = 0xFFFFFFFF;
+        for (u8 i = 0; i < 0x10; i++) {
+            local.field_00[i] = i;
+        }
+        local.field_1F = 1;
+        local.field_1D = 0;
+        *reinterpret_cast<u32*>(&local.field_10) = 0xFFFFFFFF;
+        *reinterpret_cast<u32*>(&local.field_14) = 0;
+        local.field_18 = 0;
+        local.field_1C = 0;
+        local.field_1E = 0;
+        local.field_20 = 1;
+        local.field_21 = 0;
+        local.field_22 = 0;
+        local.field_23 = 0;
+        local.field_24 = 0;
+        local.field_25 = 0;
+        local.field_26 = 1;
+        local.field_28 = 3;
+        local.field_2C = 1;
+        local.field_2D = 0;
+        local.field_2E = 0;
+        local.field_30 = -1;
+        local.field_34 = 0;
+        local.field_38 = 2;
+        local.field_1F = 0;
+        local.field_1D = 5;
+        s32 total = *(s32*)(this_ + 0x254) + *(s32*)(tbl + 0x18 + *(u16*)(this_ + 0x94) * 4);
+        fn_801F06F0(this_, tbl + 0x44, (void*)total, &local, (void*)-1, lbl_8053E370, lbl_8053E370);
+        local.field_00[0x13] = (u8)(s32)*(f32*)(this_ + 0x270);
+        if (*(s32*)(this_ + 0x138) == 0) {
+            fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), local.field_00, 0x407, tbl + 0x44,
+                        *(s32*)(this_ + 0x254) + *(s32*)(tbl + 0x18 + *(u16*)(this_ + 0x94) * 4), 0);
+        }
+        break;
+    }
+    }
+}
 
 extern "C" void fn_80197550(u8* this_) {
     JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
