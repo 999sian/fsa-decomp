@@ -631,4 +631,13 @@ extern "C" void fn_8002F9B4(void) {
     }
 }
 
+extern "C" void fn_80030418(int, int);
+extern "C" void fn_8002FA24(int idx) {
+    extern int lbl_80227888[];
+    fn_80030418(lbl_80227888[idx], idx);
+    if (idx == 3) {
+        *(unsigned int*)(lbl_802BB0FC + 0x468) |= 0x100;
+    }
+}
+
 extern "C" void fn_80030664(void) {}
