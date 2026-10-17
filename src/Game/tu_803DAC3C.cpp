@@ -188,3 +188,47 @@ extern "C" void fn_803DF624(u8* self) {
         *(s32*)(self + 0x94) = *(s32*)(base + 0x1a0);
     }
 }
+
+extern "C" void fn_803DF810(u8* self) {
+    if (*(s32*)(self + 0x94) == 0 && *(s32*)(self + 0x84) != 7) {
+        fn_80458FF0((void*)lbl_8053AF80, 0x100001a, 0, 0);
+        fn_80458408((void*)lbl_8053AF80, 0x100001a, 0);
+        lbl_80529DEC[0x248] = 0;
+    }
+    (((J2DScreen*)lbl_8053ADD0)->*(lbl_804B0568[*(s32*)(self + 0x84)]))();
+    fn_803DCCA4(self);
+    if (self[0xa0] == 1) {
+        if (fn_80427DB4(*(SeqVoice**)(self + 0x64), self[0x9e]) != 0) {
+            self[0xa1] = 0;
+            self[0xa0] = 2;
+        } else {
+            fn_80427D94(*(SeqVoice**)(self + 0x64));
+        }
+    } else if (self[0xa0] == 2) {
+        int r = fn_80427D60(*(SeqVoice**)(self + 0x64));
+        if (fn_804286A0() && self[0xa1] == 0) {
+            SeqVoice* v = *(SeqVoice**)(self + 0x64);
+            (*(void (**)(SeqVoice*, f32))((u8*)v + 0x14))(v, lbl_80543604);
+            self[0xa1] = 1;
+        }
+        if (*(s32*)(self + 0x68) != 2 || fn_802B1DCC(lbl_8053ACA8)) {
+            fn_80427D94(*(SeqVoice**)(self + 0x64));
+            self[0xa0] = 0;
+        } else {
+            SeqVoice* v = *(SeqVoice**)(self + 0x64);
+            if ((*(u32 (**)(SeqVoice*))((u8*)v + 0x10))(v) == 0 || r == 0) {
+                fn_80427D94(*(SeqVoice**)(self + 0x64));
+                if (fn_80427DB4(*(SeqVoice**)(self + 0x64), self[0x9e]) != 0) {
+                    self[0xa1] = 0;
+                } else {
+                    fn_80427D94(*(SeqVoice**)(self + 0x64));
+                    self[0xa0] = 1;
+                }
+            }
+        }
+    } else if (self[0xa0] == 3) {
+        fn_80427D94(*(SeqVoice**)(self + 0x64));
+        self[0xa0] = 0;
+    }
+}
+
