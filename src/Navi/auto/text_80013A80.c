@@ -286,6 +286,11 @@ extern "C" void fn_80014574(void* p, void (*cb)(void*, void*)) {
     fn_80124AAC(lbl_802FF370, ((Unk80013DA0*)p)->unk50, cb, p);
 }
 
+extern "C" void fn_800145A4(void* p) {
+    fn_80014790(p, 0);
+    fn_80124A04(lbl_802FF370, ((Unk80013DA0*)p)->unk50, (u8*)p + 0x28, fn_80013D7C, p);
+}
+
 extern "C" void fn_80014758(void) {
     if (fn_8002663C() != 0) {
         lbl_802FED98 = 0;
