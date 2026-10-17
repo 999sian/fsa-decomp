@@ -310,15 +310,7 @@ extern "C" void fn_802110A8(char* p) {
     if (*(u8*)(p + 0x2bc) != 0) {
         fn_800FDEA0(p + 0x2c0, *(JGeometry::TVec3f*)(p + 0xc), lbl_8053FB14, p + 0x3c, 0, 0, 0x200);
     } else {
-        s32 i;
-        u8 found = 0;
-        for (i = (s32)found; i < 4; i++) {
-            if (fn_801D0B44(p, i) && Rusa_Contains(p, fn_8023E724(i))) {
-                found = 1;
-                break;
-            }
-        }
-        if (found) {
+        if (Rusa_AnyPlayerContains(p)) {
             *(s32*)(p + 0x3ac) = -1;
             *(u8*)(p + 0x3b0) = 0;
             return;
