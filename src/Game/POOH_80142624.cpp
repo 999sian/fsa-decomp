@@ -22,10 +22,17 @@ extern "C" void* lbl_8053AB10;
 extern "C" void* lbl_8053AAF8;
 extern "C" s32 lbl_8049F318[];
 extern "C" void* lbl_80465B50;
+extern "C" void fn_801F0E34(Actor* this_, s32 id, s32 flag);
+extern "C" s32 lbl_8049F2B8[];
+
+/* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
+static inline f32 poohRand01() {
+    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *s = 0x19660du * *s + 0x3c6ef35fu;
+    u32 a = (*s >> 9) | 0x3f800000u;
+    return *(f32*)&a - 1.0f;
+}
 extern "C" void fn_80142684(Actor* this_) {
-    s32 size[2];
-    f32 mtx[12];
-    u8 buf[16];
     struct {
         s32 a;
         s32 b;
@@ -37,6 +44,9 @@ extern "C" void fn_80142684(Actor* this_) {
         s32 e;
         s32 f;
     } s;
+    u8 buf[16];
+    f32 mtx[12];
+    s32 size[2];
     u8 i;
     s32 idx;
     f32 scale;
