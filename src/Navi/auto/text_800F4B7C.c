@@ -19,6 +19,34 @@ struct VObj_800F4B7CListener {
     virtual void v4(f32 a, f32 b);
 };
 
+struct VObj_80103560 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(u8 a);
+};
+
+struct VObj_80103664 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(f32 a, f32 b);
+};
+
+struct Unk80103664 {
+    u8 pad[0x46c];
+    VObj_80103664* obj;
+    u8 pad2[0x4cc - 0x470];
+    s8 i2;
+    s8 i1;
+    u8 pad3[2];
+    f32 a[3][6];
+    f32 b[3];
+};
+
 extern void* lbl_8028E960[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
@@ -38,6 +66,13 @@ extern "C" BOOL fn_800FFBC4(void);
 extern "C" BOOL fn_800FFBC4(void)
 {
     return TRUE;
+}
+
+extern "C" void fn_80103664(u8* p) {
+    s32 idx1 = (s8)p[0x4cd];
+    s32 idx2 = (s8)p[0x4cc];
+    VObj_800F4B7CListener* obj = *(VObj_800F4B7CListener**)(p + 0x46c);
+    obj->v4(*(f32*)(p + idx1 * 0x18 + idx2 * 4 + 0x4d0), *(f32*)(p + idx1 * 4 + 0x518));
 }
 
 extern char lbl_802C5A84[];
