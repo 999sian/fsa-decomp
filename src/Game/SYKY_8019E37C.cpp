@@ -59,8 +59,9 @@ struct SykyObjVT { virtual void v0(); virtual void v1(); virtual void v2(); virt
 
 /* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
 static inline f32 sykyRand01() {
+    u32 m = 0x19660du;
     u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    *s = *s * 0x19660du + 0x3c6ef35fu;
+    *s = m * *s + 0x3c6ef35fu;
     u32 a = (*s >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_8053E460;
 }
