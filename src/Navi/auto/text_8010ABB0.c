@@ -34,6 +34,14 @@ extern "C" void fn_8010B634(u8* p) {
     p[0x9c] = 0;
 }
 
+extern "C" void fn_8010BD6C(u8* param_1) {
+    if (param_1[0x9b] != 0) {
+        param_1[0x9b]--;
+        return;
+    }
+    param_1[0x9a] = 3;
+}
+
 extern "C" void fn_8010C188(void) {}
 
 extern "C" void fn_8010C18C(u8* param_1) {
