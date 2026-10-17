@@ -19,6 +19,18 @@
 #endif
 #include "JSystem/JGeometry/Vec.h"
 
+extern "C" char* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(char* a, s32 b, void* c, void* d, u32* e);
+extern "C" s32 fn_80226AE0(void* a, s32 b);
+extern "C" s32 fn_802F9908(void* a, s32 b, s32 c);
+extern "C" u8 fn_801EE3C0(u16 a);
+extern "C" void fn_80226CA8(s32 a, s32 b, f32* c);
+extern "C" u16 fn_8022461C(void* a, s32 b);
+extern u16 lbl_8046CB88[];
+extern f32 lbl_80540B50;
+extern void* lbl_8053AB10;
+typedef void (*FireVFn)(void* self, void* v, s32 flag);
+
 // FIRE: small accessors.
 extern "C" s32 fn_802BA9F0(char* p) { return *(s32*)(p + 0x260); }
 extern "C" s32 fn_802BA9F8(char* p) { return *(s32*)(p + 0x264); }
