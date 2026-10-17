@@ -160,7 +160,13 @@ static inline bool wlftOnLift(u8* this_, s32 i) {
         f32 y0 = *(f32*)(this_ + 0x64) + cy;
         f32 x1 = *(f32*)(this_ + 0x68) + cx;
         f32 y1 = *(f32*)(this_ + 0x6c) + cy;
-        return p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1;
+        u8 in = 0;
+        if (p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1) {
+            in = 1;
+        }
+        if (in) {
+            return true;
+        }
     }
     return false;
 }
