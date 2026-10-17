@@ -13,6 +13,17 @@ struct NaviAnm_8018DE28 {
     NaviAnmTbl_8018DE28* table;
     u8 pad2[0x18];
     NaviAnmEnt_8018DE28* entries;
+
+    void getIdx(u16 idx, u16* out) {
+        u32 maxFrame = table[idx].count;
+        if (frame < 0.0f) {
+            *out = values[table[idx].offset];
+        } else if (frame >= maxFrame) {
+            *out = values[table[idx].offset + (maxFrame - 1)];
+        } else {
+            *out = values[table[idx].offset + (s32)frame];
+        }
+    }
 };
 struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
 struct NaviNode_8018ED48 {
@@ -1214,11 +1225,13 @@ extern "C" u8 fn_80180578(u8* self, u8 skip)
     u8* p;
     u8 v;
     s32 t;
+    u32 idx;
 
     mask = 0;
     for (i = 0; i < *(u8*)(self + 0x110); i++) {
         if (i != skip) {
-            e = ((u8**)(self + 0x100))[i];
+            idx = (u32)(u8)(i << 2);
+            e = *(u8**)(self + (idx + 0x100));
             if (e != NULL) {
                 p = *(u8**)(e + 0x20);
                 if (p != NULL && p[8] != 0) {
@@ -1547,8 +1560,8 @@ extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     pos[1] += f2;
     pos[2] += f1;
     pos[3] += f2;
-    fn_801C5DA8(param_2, self + 0x80, buf);
     fn_801DF2A4(buf, 0);
+    fn_801C5DA8(param_2, self + 0x80, buf);
     fn_80182764(self, pos, self + 0x114);
     fn_80177CA8(self, self + 0x114);
 }
@@ -2610,6 +2623,20 @@ extern "C" void fn_8018BB4C(void* self, void* src) {
 
 extern "C" void fn_8018BC08(void* self, void* src) {
     fn_8018BC30(self, *(void**)((u8*)self + 4), src);
+}
+
+extern "C" void fn_8018BC30(void* self, void* dst, void* src) {
+    *(s16*)((u8*)dst + 0x6) = *(s16*)((u8*)src + 0xc);
+    *(u8*)((u8*)dst + 0x4) = *(u8*)((u8*)src + 0x8);
+    *(f32*)((u8*)dst + 0x8) = lbl_80301C30;
+    *(u16*)((u8*)dst + 0x18) = *(u16*)((u8*)src + 0xe);
+    *(void**)((u8*)dst + 0x40) = fn_8018C248(src, *(u32*)((u8*)src + 0x18));
+    *(void**)((u8*)dst + 0x30) = fn_80174B40(src, *(u32*)((u8*)src + 0x24));
+    *(void**)((u8*)dst + 0x34) = fn_80174B40(src, *(u32*)((u8*)src + 0x28));
+    *(void**)((u8*)dst + 0x38) = fn_80174B40(src, *(u32*)((u8*)src + 0x2c));
+    *(void**)((u8*)dst + 0x3c) = fn_80174B40(src, *(u32*)((u8*)src + 0x30));
+    *(void**)((u8*)dst + 0x1c) = fn_80174BA0(src, *(u32*)((u8*)src + 0x1c));
+    fn_801193D8((u8*)dst + 0x20, fn_8018C2C0(src, *(u32*)((u8*)src + 0x20)));
 }
 
 extern "C" void fn_8018BB74(void* self, void* dst, void* src);
