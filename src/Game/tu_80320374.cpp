@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/Actor.h"
 
 extern "C" const f32 lbl_80541B3C;
 extern "C" const f32 lbl_80541B40;
@@ -186,6 +187,74 @@ extern "C" void fn_803226EC(char* p) {
     }
     if (*(s32*)(p + 0x248) >= 0) {
         *(s32*)(p + 0x248) -= 1;
+    }
+}
+
+extern "C" void fn_80322964(char* p) {
+    f32 saved[3];
+    u8 mask;
+    s32 i;
+    s32 ix;
+    s32 iy;
+    s32 dir;
+    f32* d;
+    f32 adj;
+
+    *(f32*)(p + 0x60) = lbl_80541B3C;
+    *(f32*)(p + 0x64) = lbl_80541B3C;
+    *(f32*)(p + 0x68) = lbl_80541B40;
+    *(f32*)(p + 0x6c) = lbl_80541B40;
+    saved[0] = *(f32*)(p + 0xc);
+    saved[1] = *(f32*)(p + 0x10);
+    saved[2] = *(f32*)(p + 0x14);
+
+    mask = fn_801F2740(p);
+    if (mask != 0) {
+        for (i = 0; i < 4; i++) {
+            if (mask & (1 << i)) {
+                d = (f32*)fn_8023E724(i);
+                ix = (s32)__fabsf(*(f32*)(p + 0xc) - d[0]);
+                iy = (s32)__fabsf(*(f32*)(p + 0x10) - d[1]);
+                dir = fn_80230CFC(i);
+                if (ix >= 0 && ix <= 15) {
+                    if (dir == 0) {
+                        ;
+                    } else if (dir == 1) {
+                        adj = (f32)((15 - ix) >> 1);
+                        if (*(f32*)(p + 0xc) > d[0]) {
+                            *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + adj;
+                        } else {
+                            *(f32*)(p + 0xc) = *(f32*)(p + 0xc) - adj;
+                        }
+                    }
+                }
+                if (*(u8*)((char*)fn_802D6A9C() + *(s32*)(p + 4) + 0x131df) == 0) {
+                    if (iy >= 0 && iy <= 15) {
+                        if (dir == 2) {
+                            adj = (f32)((15 - iy) >> 1);
+                            if (*(f32*)(p + 0x10) > d[1]) {
+                                *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + adj;
+                            } else {
+                                *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - adj;
+                            }
+                        } else if (dir == 3) {
+                            adj = (f32)((15 - iy) >> 1);
+                            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) - adj;
+                        }
+                    }
+                }
+            }
+            mask <<= 1;
+        }
+    }
+    if (fn_801F2618(p, 0, 0) == 1) {
+        *(f32*)(p + 0xc) = saved[0];
+        *(f32*)(p + 0x10) = saved[1];
+        *(f32*)(p + 0x14) = saved[2];
+        *(f32*)(p + 0x60) = lbl_80541B44;
+        *(f32*)(p + 0x64) = lbl_80541B44;
+        *(f32*)(p + 0x68) = lbl_80541ADC;
+        *(f32*)(p + 0x6c) = lbl_80541ADC;
     }
 }
 
