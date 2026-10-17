@@ -29,7 +29,7 @@ extern "C" void* fn_801902C0(void);
 
 extern "C" void fn_8010DF58(void* this_);
 extern "C" void fn_8010DF78(void* this_);
-extern "C" void fn_8010F7EC(void*, s32);
+extern "C" void fn_8010F7EC(u8* this_, s32 param2);
 extern "C" void fn_80110E9C(void*);
 extern "C" void fn_8011093C(void*);
 extern "C" void fn_801D1C18(void*);
