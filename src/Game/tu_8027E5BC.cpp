@@ -166,9 +166,8 @@ void fn_802808E8(char* p, f32 f) {
     if (U8(p, 0x1216) != 0) {
         return;
     }
-    if (JMathInlineVEC::PSVECSquareMag(&VEC(p, 0x35c)) > lbl_8054035C * FLT_EPSILON) {
-        a = lbl_80540360;
-        b = lbl_80540360;
+    if (!(JMathInlineVEC::PSVECSquareMag(&VEC(p, 0x35c)) <= lbl_8054035C * FLT_EPSILON)) {
+        a = b = lbl_80540360;
     }
     if (U8(p, 0x3c1)) {
         a = lbl_80540360;
@@ -198,14 +197,13 @@ void fn_802808E8(char* p, f32 f) {
         return;
     }
     F32(p, 0x8) += a * fn_8022C82C(S32(p, 0x4));
-    s32 area = S32(p, 0x3b4);
-    if (*((u8*)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0) {
+    if (*((u8*)fn_802D6A9C() + 0x10000 + S32(p, 0x3b4) + 0x31df) != 0) {
         if (fn_8022C76C(S32(p, 0x4)) > lbl_80540360) {
             s32 i;
             for (i = 0; i < 8; i++) {
                 fn_8024B298(p, i, &tmp);
                 tmp.y += b * -fn_8022C76C(S32(p, 0x4));
-                if ((u16)fn_8022461C((char*)&tmp, area) != 2) {
+                if ((u16)fn_8022461C((char*)&tmp, S32(p, 0x3b4)) != 2) {
                     F32(p, 0xc) += b * -fn_8022C76C(S32(p, 0x4));
                     return;
                 }
