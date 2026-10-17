@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" u8 lbl_804A8F74[];
