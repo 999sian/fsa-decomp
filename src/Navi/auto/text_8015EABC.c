@@ -66,3 +66,16 @@ extern "C" int fn_8015EC90(char* param_1, int param_2, int param_3) {
     return r;
 }
 
+extern "C" void* fn_8015F0BC(void* param_1, u32 size, u8 flag, char* p);
+extern "C" void* fn_8015F16C(void* param_1, u32 size, u8 flag, char* p);
+extern "C" long fn_8015EE88(char* p) {
+    char* n;
+    long sum = 0;
+    fn_801BE3A0(p + 0x18);
+    for (n = *(char**)lbl_802EE28C; n != 0; n = *(char**)(n + 0xc)) {
+        sum += *(long*)(*(char**)n + 0x1c);
+    }
+    fn_801BE47C(p + 0x18);
+    return sum;
+}
+
