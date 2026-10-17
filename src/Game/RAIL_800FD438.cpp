@@ -24,8 +24,9 @@ struct RailRing {
     u8 mCur;
     RailNode* mNodes[1];
 };
-#define RAIL_TYPES_TOP
 
+extern f32 lbl_8053C0B8;
+extern f32 lbl_8053C0D0;
 extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out);
 #include "std/math.h"
 
