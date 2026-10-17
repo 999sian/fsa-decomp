@@ -121,13 +121,11 @@ extern "C" void fn_8011972C(void* p, u8* src) {
     u8* d = (u8*)p;
     u8 b0 = src[0];
     u8 b1 = src[1];
-    u8 b2;
-    u8 b3;
     d[0xc] = b0;
+    u8 b2 = src[2];
     d[0xd] = b1;
-    b2 = src[2];
+    u8 b3 = src[3];
     d[0xe] = b2;
-    b3 = src[3];
     d[0xf] = b3;
     d[0x10] = b0;
     d[0x11] = b1;
