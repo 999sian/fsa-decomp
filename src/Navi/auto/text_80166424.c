@@ -24,6 +24,10 @@ extern "C" void fn_80118BD0(void* p, int b);
 struct Rec_80174620 {
     f32 a, b, c, d, e, f;
     u8 g;
+    Rec_80174620() {}
+    Rec_80174620(const Rec_80174620& o) {
+        a = o.a; b = o.b; c = o.c; d = o.d; e = o.e; f = o.f; g = o.g;
+    }
 };
 struct Slot_80174620 {
     u8 active;
