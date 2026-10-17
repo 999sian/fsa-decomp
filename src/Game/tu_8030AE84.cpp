@@ -6,6 +6,7 @@ extern "C" u8 fn_80234950(int id = 0);
 extern "C" u8 fn_80234ECC(int id = 0);
 extern "C" u8* fn_802D6A9C(void);
 extern "C" f32* fn_8023E724(int);
+extern "C" void fn_8030B97C(u8*);
 
 
 extern "C" void fn_8030AE84(u8* p, f32* rect)
@@ -93,7 +94,7 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
     int x;
     int y;
 
-    if (fn_80234950()) {
+    if (fn_80234950(id)) {
         id = *(int*)(p + 0x2b4);
     }
     if (*(int*)(p + 0x28c) != fn_8023DE58(id)) {
@@ -107,7 +108,7 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
         x = (int)pos[0];
         pos = fn_8023E724(id);
         y = (int)pos[1];
-        if (fn_80234ECC()) {
+        if (fn_80234ECC(id)) {
             pos = fn_8023E724(id);
             y -= (int)pos[2];
         }
@@ -115,13 +116,13 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
         u8* a = fn_802D6A9C();
         u8* b = fn_802D6A9C();
         f32* pos = fn_8023E724(id);
-        f32 fx = *(f32*)(b + 0xdc) + (pos[0] - *(f32*)(a + 0xcc));
-        x = (int)fx;
+        f32 fx = pos[0] - *(f32*)(a + 0xcc);
+        x = (int)(*(f32*)(b + 0xdc) + fx);
         a = fn_802D6A9C();
         b = fn_802D6A9C();
         pos = fn_8023E724(id);
-        f32 fy = *(f32*)(b + 0xe0) + (pos[1] - *(f32*)(a + 0xd0));
-        y = (int)fy;
+        f32 fy = pos[1] - *(f32*)(a + 0xd0);
+        y = (int)(*(f32*)(b + 0xe0) + fy);
     }
 
     y -= 0x50;
