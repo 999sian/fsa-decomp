@@ -1,5 +1,9 @@
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Box.h"
+#include "JSystem/JMath/Inline.h"
 
 struct SykyVec {
     f32 x, y, z;
@@ -37,6 +41,24 @@ extern const f32 lbl_8053E498;
 extern const f32 lbl_8053E49C;
 extern const f32 lbl_8053E4A0;
 extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
+extern "C" void fn_8019F3AC(u8* p);
+extern "C" void fn_8019EE74(u8* p);
+extern "C" void fn_8019EC04(u8* p);
+extern const f32 lbl_8053E470;
+extern const f32 lbl_8053E478;
+extern const f32 lbl_8053E47C;
+extern const f32 lbl_8053E480;
+extern const f32 lbl_8053E484;
+extern const f32 lbl_8053E488;
+extern void* lbl_8053AAF8;
+
+/* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
+static inline f32 sykyRand01() {
+    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *s = *s * 0x19660du + 0x3c6ef35fu;
+    u32 a = (*s >> 9) | 0x3f800000u;
+    return *(f32*)&a - lbl_8053E460;
+}
 extern const char lbl_80468480[];
 extern "C" void fn_8019E37C(u8* p) {
     s32 state = *(s32*)(p + 0x268);
@@ -91,9 +113,7 @@ extern "C" void fn_8019EC04(u8* p) {
     fn_801F71A4(p + 0x3c, *(f32*)(p + 0x2a0), lbl_8053E46C, lbl_8053E460);
     fn_801F71A4(p + 0x40, *(f32*)(p + 0x2a4), lbl_8053E46C, lbl_8053E460);
     *(s32*)(p + 0x108) = 10000;
-    *(f32*)(p + 0xc) += *(f32*)(p + 0x3c);
-    *(f32*)(p + 0x10) += *(f32*)(p + 0x40);
-    *(f32*)(p + 0x14) += *(f32*)(p + 0x44);
+    JMathInlineVEC::PSVECAdd((Vec*)(p + 0xc), (Vec*)(p + 0x3c), (Vec*)(p + 0xc));
     if (*(s32*)(p + 0x98) == 0) {
         if (*(f32*)(p + 0xc) > lbl_8053E48C) {
             p[0x11c] = 0;
@@ -112,7 +132,8 @@ extern "C" void fn_8019EC04(u8* p) {
         *(f32*)(p + 0x29c) = *(f32*)(p + 0x10);
         if (*(s32*)(p + 0x238) == 0) {
             *(s32*)(p + 0x238) = 4;
-            *(s32*)(p + 0x264) = (*(s32*)(p + 0x264) + 1) & 1;
+            *(s32*)(p + 0x264) += 1;
+            *(s32*)(p + 0x264) &= 1;
         }
         break;
     case 15:
@@ -120,7 +141,8 @@ extern "C" void fn_8019EC04(u8* p) {
         fn_801F71A4(p + 0x10, *(f32*)(p + 0x29c), lbl_8053E46C, lbl_8053E474);
         if (*(s32*)(p + 0x238) == 0) {
             *(s32*)(p + 0x238) = 2;
-            *(s32*)(p + 0x264) = (*(s32*)(p + 0x264) + 1) & 1;
+            *(s32*)(p + 0x264) += 1;
+            *(s32*)(p + 0x264) &= 1;
         }
         if ((f32)__fabs(*(f32*)(p + 0x10) - *(f32*)(p + 0x29c)) < lbl_8053E4A0) {
             *(f32*)(p + 0x290) = lbl_8053E460;
