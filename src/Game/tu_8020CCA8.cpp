@@ -35,7 +35,7 @@ struct CCA8ResMgr {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4(); virtual void v5();
     virtual void* get(u32 type, void* name);
 };
-extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
+extern "C" void fn_803075AC(s32 x, s32 y, u8* v, s32 p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
 extern "C" u8 lbl_8046A3C0[];
 extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AB10;
