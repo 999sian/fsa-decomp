@@ -2,8 +2,8 @@
 
 extern "C" int fn_8022EA0C(int);
 extern "C" int fn_8023DE58(int);
-extern "C" u8 fn_80234950(void);
-extern "C" u8 fn_80234ECC(void);
+extern "C" u8 fn_80234950(int id = 0);
+extern "C" u8 fn_80234ECC(int id = 0);
 extern "C" u8* fn_802D6A9C(void);
 extern "C" f32* fn_8023E724(int);
 
@@ -86,6 +86,73 @@ extern "C" s32 fn_8030B110(u8* p, s32 id, f32* rect) {
         }
     }
     return 0;
+}
+
+extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
+    int id = fn_8022EA0C(*(int*)(p + 0x288));
+    int x;
+    int y;
+
+    if (fn_80234950()) {
+        id = *(int*)(p + 0x2b4);
+    }
+    if (*(int*)(p + 0x28c) != fn_8023DE58(id)) {
+        id = *(int*)(p + 0x2b0);
+    }
+    if (*(int*)(p + 0x28c) != fn_8023DE58(id)) {
+        id = *(int*)(p + 0x288);
+    }
+    if (fn_8023DE58(id) >= 8) {
+        f32* pos = fn_8023E724(id);
+        x = (int)pos[0];
+        pos = fn_8023E724(id);
+        y = (int)pos[1];
+        if (fn_80234ECC()) {
+            pos = fn_8023E724(id);
+            y -= (int)pos[2];
+        }
+    } else {
+        u8* a = fn_802D6A9C();
+        u8* b = fn_802D6A9C();
+        f32* pos = fn_8023E724(id);
+        f32 fx = *(f32*)(b + 0xdc) + (pos[0] - *(f32*)(a + 0xcc));
+        x = (int)fx;
+        a = fn_802D6A9C();
+        b = fn_802D6A9C();
+        pos = fn_8023E724(id);
+        f32 fy = *(f32*)(b + 0xe0) + (pos[1] - *(f32*)(a + 0xd0));
+        y = (int)fy;
+    }
+
+    y -= 0x50;
+    x -= 0x78;
+    if (x + 0xf0 >= *(int*)(p + 0x2a0)) {
+        x = *(int*)(p + 0x2a0) - 0xf0;
+    } else if (x <= *(int*)(p + 0x2a4)) {
+        x = *(int*)(p + 0x2a4);
+    }
+    if (y + 0xa0 >= *(int*)(p + 0x2a8)) {
+        y = *(int*)(p + 0x2a8) - 0xa0;
+    } else if (y <= *(int*)(p + 0x2ac)) {
+        y = *(int*)(p + 0x2ac);
+    }
+
+    x += *(int*)(p + 0x298);
+    y += *(int*)(p + 0x29c);
+    if (x < 0) {
+        x = 0;
+    } else if (x > 0x110) {
+        x = 0x110;
+    }
+    if (y < 0) {
+        y = 0;
+    } else if (y > 0x160) {
+        y = 0x160;
+    }
+
+    *outX = x;
+    *outY = y;
+    return id;
 }
 
 extern "C" int fn_8023DE58(int);
