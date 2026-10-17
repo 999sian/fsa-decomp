@@ -7,7 +7,7 @@ extern "C" void fn_8010F7EC(void*, s32);
 extern "C" void fn_80110E9C(void*);
 extern "C" void fn_8011093C(void*);
 extern "C" void fn_801D1C18(void*);
-extern "C" void fn_8010F4DC(void*);
+extern "C" void fn_8010F4DC(u8* this_);
 extern "C" void fn_8010E7E8(void*, s32);
 extern "C" void fn_8010E2D4(void*, s32);
 extern "C" void* fn_8011921C(void);
@@ -109,16 +109,19 @@ extern "C" void fn_80111E38(u8* this_) {
     fn_801D2608(this_ + 0x2f4, lbl_8049D1A0, 0x1a);
     fn_801D22DC(this_ + 0x2f4, 8, 2, 0);
     fn_801D1F14(this_ + 0x2f4, lbl_8053C55C);
-    fn_801D2608(this_ + 0x32c, lbl_80539EF8, 2);
+    fn_801D2608(this_ + 0x32c, (void*)&lbl_80539EF8, 2);
     fn_801D22DC(this_ + 0x32c, 0, 2, 0);
     fn_801D1F14(this_ + 0x32c, lbl_8053C55C);
     if (*(s32*)(this_ + 0x234) == 2) {
         if (fn_802D800C(fn_802D6A9C(), *(s32*)(this_ + 0x250))) {
-            s32 iVar1 = *(s32*)(this_ + 0x234);
-            if (iVar1 == 2) {
-                fn_8010E2D4(this_, 0x3d);
-            } else if (iVar1 < 2 && iVar1 >= 0) {
+            switch (*(s32*)(this_ + 0x234)) {
+            case 0:
+            case 1:
                 fn_8010E7E8(this_, 0x3d);
+                break;
+            case 2:
+                fn_8010E2D4(this_, 0x3d);
+                break;
             }
             *(s32*)(this_ + 0x238) = 0x3d;
         } else {
@@ -219,6 +222,9 @@ extern "C" void fn_8010F478(u8* this_, s32 param_2) {
         break;
     }
     *(s32*)(this_ + 0x238) = param_2;
+}
+
+void fn_8010F668(Vec* out, Vec* v, f32 angle) {
 }
 
 extern "C" void fn_8010F9F0(u8* p) {
