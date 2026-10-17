@@ -1,5 +1,4 @@
 #include "types.h"
-#include "Game/SinitPoolChain.h"
 struct Vec3f_802D { float x, y, z; };
 struct VObj_802D {
     virtual void m0();
