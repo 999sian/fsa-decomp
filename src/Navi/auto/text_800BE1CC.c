@@ -49,7 +49,7 @@ extern "C" void fn_8003ABF0(void* p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s
 extern "C" s32 fn_8002F168(void* p);
 extern u8 lbl_80287F74[];
 extern u8 lbl_802313EC[];
-extern "C" u8 fn_800F0E14(void* p, u8 b);
+extern "C" s32 fn_800F0E14(void* p, u8 b);
 extern u8 lbl_8029FDB4[];
 extern u8 lbl_80287BD8[];
 extern u32 lbl_802FEC90;
