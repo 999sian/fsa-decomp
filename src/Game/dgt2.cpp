@@ -19,6 +19,11 @@ static inline u32 dgt2Idx(s32 m) {
     return ((u32)(s32)(4000.0f * (f32)m) >> 5) & 0x7ff;
 }
 
+// Same index through a 16-bit truncation of the angle (signed shift).
+static inline s32 dgt2IdxU16(s32 m) {
+    return (s32)(u16)(s32)(4000.0f * (f32)m) >> 5;
+}
+
 // from src/Game/fn_8018FB24_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
@@ -39,6 +44,92 @@ extern "C" void* fn_8018FB24(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8018FBB8(void* this_) {
+    char* p = (char*)this_;
+    *(f32*)(p + 0x80) = -6.0f;
+    *(f32*)(p + 0x84) = -6.0f;
+    *(f32*)(p + 0x88) = 6.0f;
+    *(f32*)(p + 0x8c) = 6.0f;
+    *(f32*)(p + 0x60) = -6.0f;
+    *(f32*)(p + 0x64) = -6.0f;
+    *(f32*)(p + 0x68) = 6.0f;
+    *(f32*)(p + 0x6c) = 6.0f;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+
+    dgt2CopyPos(p + 0x288, p);
+    dgt2CopyPos(p + 0x294, p);
+    dgt2CopyPos(p + 0x2a0, p);
+    dgt2CopyPos(p + 0x2ac, p);
+    dgt2CopyPos(p + 0x2b8, p);
+    dgt2CopyPos(p + 0x2c4, p);
+
+    char* q = p;
+    for (s32 i = 0; i < 2; i++) {
+        dgt2CopyPos(q + 0x2d0, p);
+        dgt2CopyPos(q + 0x2dc, p);
+        dgt2CopyPos(q + 0x2e8, p);
+        dgt2CopyPos(q + 0x2f4, p);
+        dgt2CopyPos(q + 0x300, p);
+        dgt2CopyPos(q + 0x30c, p);
+        dgt2CopyPos(q + 0x318, p);
+        dgt2CopyPos(q + 0x324, p);
+        dgt2CopyPos(q + 0x330, p);
+        dgt2CopyPos(q + 0x33c, p);
+        q += 0x78;
+    }
+
+    *(s32*)(p + 0x3c0) = 0;
+    *(s32*)(p + 0x3c4) = 0;
+    *(s32*)(p + 0x3c8) = 0;
+
+    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660du + 0x3c6ef35fu;
+    u32 bits = (*seed >> 9) | 0x3f800000u;
+    *(s32*)(p + 0x98) = (s32)(15.0f * (*(f32*)&bits - 1.0f));
+    *(s32*)(p + 0x25c) = *(s32*)(p + 0x98);
+    *(s32*)(p + 0x260) = *(s32*)(p + 0x98);
+    *(s32*)(p + 0x264) = -1;
+    *(f32*)(p + 0x27c) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].sin;
+    *(f32*)(p + 0x280) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].cos;
+    *(f32*)(p + 0x284) = 0.0f;
+    *(s32*)(p + 0x23c) = 8;
+    *(f32*)(p + 0x44) = 0.0f;
+    *(f32*)(p + 0x40) = 0.0f;
+    *(f32*)(p + 0x3c) = 0.0f;
+    *(f32*)(p + 0x268) = 0.3f;
+    *(f32*)(p + 0x26c) = 1.0f;
+    *(f32*)(p + 0x270) = 1.0f;
+    *(f32*)(p + 0x274) = 0.0f;
+    *(f32*)(p + 0x278) = 1.3f;
+
+    if ((lbl_8053AB88 & 1) == 0) {
+        *(s32*)(p + 0x254) = 1;
+    } else {
+        *(s32*)(p + 0x254) = -1;
+    }
+    s32 n = lbl_8053AB88 + 1;
+    lbl_8053AB88 = n;
+    lbl_8053AB88 = n & 1;
+    *(s32*)(p + 0xb0) = 0x12202;
+    *(s32*)(p + 0x230) = 0;
+
+    *(f32*)(p + 0x27c) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].sin;
+    *(f32*)(p + 0x280) = *(f32*)(p + 0x278) * sincosTable___5JMath[dgt2Idx(*(s32*)(p + 0x98))].cos;
+    dgt2CopyPos(p + 0x2ac, p);
+    *(f32*)(p + 0x2ac) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) - 2) & 0xf)].sin + *(f32*)(p + 0x2ac);
+    *(f32*)(p + 0x2b0) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) - 2) & 0xf)].cos + *(f32*)(p + 0x2b0);
+    dgt2CopyPos(p + 0x2b8, p);
+    *(f32*)(p + 0x2b8) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) + 2) & 0xf)].sin + *(f32*)(p + 0x2b8);
+    *(f32*)(p + 0x2bc) = 6.0f * sincosTable___5JMath[dgt2Idx((*(s32*)(p + 0x98) + 2) & 0xf)].cos + *(f32*)(p + 0x2bc);
 }
 
 struct Dgt2Child { u8 pad[0x24]; s32 dead; u8 pad2[0xf4 - 0x28]; u32 flags; };
