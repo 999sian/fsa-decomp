@@ -1393,6 +1393,10 @@ extern "C" void fn_80172A84(void* self, int a, int b) {
     ((Obj*)self)->vf7C(a, b, 0);
 }
 
+extern "C" u32 fn_80172AF4(u8* p) {
+    return *(u32*)(p + 0x11c);
+}
+
 extern "C" s32 fn_80172B18(void) {
     return 0x54564234;
 }
