@@ -7,6 +7,18 @@ extern "C" const JMathSinCos sincosTable___5JMath[];
 extern void* lbl_8053AAF8;
 extern s32 lbl_8053AB88;
 
+// Copy the actor position (+0xc) into dst.
+static inline void dgt2CopyPos(char* dst, char* src) {
+    *(f32*)(dst + 0x0) = *(f32*)(src + 0xc);
+    *(f32*)(dst + 0x4) = *(f32*)(src + 0x10);
+    *(f32*)(dst + 0x8) = *(f32*)(src + 0x14);
+}
+
+// Sine table index for an angle of 4000 * m (the table is indexed by bits 5..15).
+static inline u32 dgt2Idx(s32 m) {
+    return ((u32)(s32)(4000.0f * (f32)m) >> 5) & 0x7ff;
+}
+
 // from src/Game/fn_8018FB24_dtor.cpp
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
