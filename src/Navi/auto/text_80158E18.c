@@ -433,14 +433,14 @@ extern "C" void fn_80159D30(void* p) {
     ((Obj*)p)->v9();
 }
 
-extern "C" void fn_80159D5C(void* p) {
+extern "C" s32 fn_80159D5C(void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
         virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
         virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
-        virtual void v12(); virtual void v13(); virtual void v14();
+        virtual s32 v12(); virtual void v13(); virtual void v14();
     };
-    ((Obj*)p)->v12();
+    return ((Obj*)p)->v12();
 }
 
 extern "C" void fn_80159D88(void* p) {
@@ -1202,8 +1202,8 @@ extern "C" void* fn_8015D050(void* p) {
     *(void**)p = lbl_8029783C;
     fn_80166B58((u8*)p + 0x8, p);
     *(u32*)((u8*)p + 0x4) = (u32)fn_80159E8C(p);
-    if (*(void**)((u8*)p + 0x4) != 0) {
-        fn_80166C84(*(u8**)((u8*)p + 0x4) + 0x5c, (u8*)p + 0x8);
+    if (*(u32*)((u8*)p + 0x4) != 0) {
+        fn_80166C84(*(u8**)((u8*)p + 0x4) + 0x5c, (void*)((u32)p + 0x8));
     }
     return p;
 }
