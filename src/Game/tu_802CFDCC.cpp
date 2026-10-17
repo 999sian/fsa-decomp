@@ -98,6 +98,22 @@ struct GXColor {
 };
 
 extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, void* color, f32 size);
+extern "C" void* fn_801F856C();
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" s32 fn_801F7A08(void* a, u32 b);
+extern "C" void fn_801F35AC(Actor* a);
+extern "C" void fn_801F71A4(void* a, f32 b, f32 c, f32 d);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" u8 fn_802DE764(s32 a, s32 b, s32 c);
+extern "C" void fn_80458FF0(void* a, s32 b, s32 c, s32 d);
+extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, f32 g);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" const f32 lbl_80540E88;
+extern "C" const f32 lbl_80540E8C;
+extern "C" const f32 lbl_80540E90;
+extern "C" const f32 lbl_80540E94;
+extern "C" const f32 lbl_80540E98;
+extern void* lbl_8053AF80;
 
 
 extern "C" char lbl_804A9328[];
@@ -115,18 +131,18 @@ extern "C" Actor* fn_802CFDCC(Actor* p, s16 n) {
 
 extern "C" void fn_802CFE2C(Actor* p) {
     if (*(u8*)((u8*)p + 0x26c) == 1) {
-        u8 color[4];
-        Vec pos2;
-        Vec pos1;
-        Vec pos0;
         SobDrawParams drawParams;
+        Vec pos0;
+        Vec pos1;
+        Vec pos2;
+        u8 color[4];
         s32 spriteId;
         u32 sobRes;
 
         drawParams.renderFlags[1] = -1;
         drawParams.primaryColor.rgba.a = (u8)(s32)(lbl_80540E70 - *(f32*)((u8*)p + 0x270));
-        pos0.x = p->field_0C.x + lbl_80540E7C;
         pos0.y = p->field_0C.y + lbl_80540E78;
+        pos0.x = p->field_0C.x + lbl_80540E7C;
         pos0.z = p->field_0C.z;
         spriteId = *(s32*)((u8*)p + 0x264) + 0x175;
         if (p->field_04 < 8) {
@@ -135,8 +151,8 @@ extern "C" void fn_802CFE2C(Actor* p) {
         }
 
         drawParams.primaryColor.rgba.a = (u8)(s32)*(f32*)((u8*)p + 0x270);
-        pos1.x = p->field_0C.x + lbl_80540E7C;
         pos1.y = p->field_0C.y + lbl_80540E78;
+        pos1.x = p->field_0C.x + lbl_80540E7C;
         pos1.z = p->field_0C.z;
         spriteId = lbl_8046DFD0[*(s32*)((u8*)p + 0x264)] + 0x175;
         if (p->field_04 < 8) {
@@ -144,8 +160,8 @@ extern "C" void fn_802CFE2C(Actor* p) {
             fn_802F86CC(lbl_8053AB10->mSobRenderer, &pos1, sobRes, spriteId, lbl_80540E80, lbl_80540E80, &drawParams);
         }
 
-        pos2.x = p->field_0C.x + lbl_80540E7C;
         pos2.y = p->field_0C.y + lbl_80540E78;
+        pos2.x = p->field_0C.x + lbl_80540E7C;
         pos2.z = p->field_0C.z;
         color[0] = 0;
         color[1] = 0;
