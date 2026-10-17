@@ -1774,6 +1774,40 @@ extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
     return ptr;
 }
 
+extern "C" void fn_8012C9B0(void);
+extern "C" void fn_8012CAB8(void);
+extern "C" void fn_8012CD40(void);
+extern "C" void fn_8012CEBC(void);
+extern "C" void fn_8012C60C(void);
+extern "C" void fn_8012C804(void);
+extern "C" void fn_8012C6E8(void);
+extern "C" void fn_8012D010(void* ptr) {
+    u32 type = (*(u32*)(*(u8**)ptr + 8) >> 8) & 7;
+    switch (type) {
+    case 0:
+        *(void (**)(void))((u8*)ptr + 4) = fn_8012C9B0;
+        break;
+    case 1:
+        *(void (**)(void))((u8*)ptr + 4) = fn_8012CAB8;
+        break;
+    case 2:
+        *(void (**)(void))((u8*)ptr + 4) = fn_8012CD40;
+        break;
+    case 3:
+        *(void (**)(void))((u8*)ptr + 4) = fn_8012CEBC;
+        break;
+    case 4:
+        *(void (**)(void))((u8*)ptr + 4) = fn_8012C60C;
+        break;
+    case 5:
+        *(void (**)(void))((u8*)ptr + 4) = fn_8012C804;
+        break;
+    case 6:
+        *(void (**)(void))((u8*)ptr + 4) = fn_8012C6E8;
+        break;
+    }
+}
+
 extern "C" void fn_8012D2B0(u8* p, u8* r4, u8* q)
 {
     if ((*(u32*)(*(u8**)q + 8) >> 16) & 2) {
@@ -2637,6 +2671,16 @@ extern "C" void fn_80132F5C(u8* param_1, u8** param_2, u32 param_3) {
     }
 }
 
+extern "C" void fn_801678C8(void*, void*, u32);
+extern "C" void fn_80132FA0(u8* p, u8** q, u32 flags) {
+    u32 f = flags & 0xf;
+    u8* local = *q + 8;
+    if (flags & 0x10) f |= 0x10;
+    if (flags & 0x20) f |= 0x20;
+    if (flags & 0x40) f |= 0x40;
+    fn_801678C8(p + 8, &local, f);
+}
+
 extern void* lbl_80292694[];
 extern "C" void* fn_80133414(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -2656,6 +2700,10 @@ extern "C" void fn_8013345C(f32* p)
 
 extern "C" void fn_80133470(u8* p, f64 t) {
     *(f32*)p = *(f32*)(p + 0xc) * ((f64)*(u32*)(p + 4) * t);
+}
+
+extern "C" void fn_801334AC(Unk801334AC* p, f32 scale) {
+    p->val = p->obj->vf5(p->count * scale);
 }
 
 extern void* lbl_80292684[];
