@@ -1,3 +1,4 @@
+#include "Game/SinitPoolChain.h"
 #include "types.h"
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -18,26 +19,28 @@ extern f32 lbl_8053C4F4;
 extern f32 lbl_8053C490;
 extern void* lbl_80539EE8[2];
 extern "C" void fn_8010D55C(u8* this_) {
+    f32 t;
     v01__5ActorFv(this_);
     *(s32*)(this_ + 0x234) = *(s32*)(this_ + 0x90) & 0xf;
     if (((*(s32*)(this_ + 0x90)) >> 4 & 0xf) == 1) {
         *(f32*)(this_ + 0x260) = lbl_8053C4A4;
-        *(f32*)(this_ + 0x54) = *(f32*)(this_ + 0x260);
-        *(f32*)(this_ + 0x58) = *(f32*)(this_ + 0x260);
-        *(f32*)(this_ + 0x5c) = *(f32*)(this_ + 0x260);
+        t = *(f32*)(this_ + 0x260);
+        *(f32*)(this_ + 0x54) = t;
+        *(f32*)(this_ + 0x58) = t;
+        *(f32*)(this_ + 0x5c) = t;
     }
     *(s32*)(this_ + 0x258) = (*(s32*)(this_ + 0x90) >> 8) & 0xff;
     *(s32*)(this_ + 0x25c) = (*(s32*)(this_ + 0x90) >> 16) & 0xff;
     if (*(s32*)(this_ + 0x258) > 0 && lbl_8053C4A4 == *(f32*)(this_ + 0x260)) {
-        f32 a = lbl_8053C4F0;
         f32 b = lbl_8053C4A0;
+        f32 a = lbl_8053C4F0;
         *(f32*)(this_ + 0x60) = a;
         *(f32*)(this_ + 0x64) = a;
         *(f32*)(this_ + 0x68) = b;
         *(f32*)(this_ + 0x6c) = b;
     } else {
-        f32 a = lbl_8053C4F4;
         f32 b = lbl_8053C4BC;
+        f32 a = lbl_8053C4F4;
         *(f32*)(this_ + 0x60) = a;
         *(f32*)(this_ + 0x64) = a;
         *(f32*)(this_ + 0x68) = b;
