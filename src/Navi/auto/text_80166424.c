@@ -385,6 +385,13 @@ extern "C" void* fn_80167404(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8016744C(int param_1, int param_2, int param_3)
+{
+	*(int*)(param_1 + 0x8) = param_2;
+	*(int*)(param_1 + 0xc) = param_3;
+	*(int*)(param_1 + 0x10) = 0;
+}
+
 extern "C" int fn_80167554(int p) { return *(int*)(p + 0xc); }
 
 extern "C" int fn_8016755C(int param_1) {
