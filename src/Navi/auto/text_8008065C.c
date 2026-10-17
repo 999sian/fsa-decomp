@@ -1,4 +1,11 @@
 #include "types.h"
+
+extern "C" int fn_80020EA4(u8* p, int q);
+extern "C" void fn_8008090C(u8* p);
+extern "C" int fn_800183AC(u8* p, void* f, void* q);
+extern "C" int fn_80081BA0(u8* p);
+extern "C" void fn_80081308();
+extern u8 lbl_802FCC10;
 extern "C" void fn_8000D6F4(void*);
 extern "C" void fn_801C5D74(void* p, void* q);
 
