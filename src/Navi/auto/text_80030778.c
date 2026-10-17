@@ -661,3 +661,16 @@ extern "C" void fn_8003916C(void* p) {
     *(unsigned char*)(c + 0x41) = 1;
 }
 
+extern "C" void fn_800399CC(int* p) {
+    short* e;
+    int i;
+    p[0] = lbl_802444F4[lbl_802B7CA0[0x1419]];
+    p[3] = lbl_80244524[lbl_802B7CA0[0x1419]];
+    e = (short*)p[0];
+    for (i = 0; i < p[3]; i++) {
+        e[2] = e[2] & 1;
+        e += 4;
+    }
+    p[6] = 0;
+}
+
