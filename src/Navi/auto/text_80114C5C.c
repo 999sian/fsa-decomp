@@ -10,3 +10,12 @@ extern "C" int fn_80114C5C(int* p)
     }
     return 1;
 }
+
+extern "C" int fn_80114C94(int* p)
+{
+    if (p[2] > 0) {
+        return fn_80114FE4(p[0]);
+    }
+    return 0;
+}
+
