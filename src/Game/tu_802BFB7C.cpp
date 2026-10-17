@@ -18,6 +18,27 @@ extern "C" s32 fn_8022461C(s32 a, s32 b);
 extern "C" s32 fn_80226850(s32 a, s32 b);
 extern "C" u8* fn_802D6A9C(void);
 
+extern "C" f32 lbl_80540C48;
+extern "C" f32 lbl_80540C4C;
+extern "C" f32 lbl_80540C50;
+extern "C" f32 lbl_80540C54;
+extern "C" f32 lbl_80540C64;
+extern "C" f32 lbl_80540C6C;
+extern "C" u8* lbl_8053AAF8;
+extern "C" s32 fn_801CD664(s32 a);
+extern "C" u8 fn_801F2618(char* a, void* b, s32 c);
+
+struct Vec3f {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
+struct Vec2f {
+    f32 x;
+    f32 y;
+};
+
 struct Rec {
     u32 w00;
     u32 w04;
@@ -138,9 +159,9 @@ extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
 }
 
 extern "C" void fn_802C0278(char* p) {
-    Col4 col;
-    Col4 tmp;
     Rec rec;
+    Col4 tmp;
+    Col4 col;
     s32 iVar1;
     u8* buf;
     u32 i;
