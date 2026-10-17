@@ -976,6 +976,11 @@ extern "C" void fn_8009EBD8(u8* p)
     *(u8*)(p + 0x800) = 3;
 }
 
+extern "C" void fn_8009EE18(u8* p) {
+    *(u8*)(*(u8**)(p + 0x780) + 0xb0) = 0;
+    p[0x800] = 0;
+}
+
 extern NaviStateFunc_8009E6F0 lbl_80286694[];
 extern "C" void fn_8009F01C(NaviState_8009E6F0* p) {
     (p->*lbl_80286694[((u8*)p)[0x800]])();
