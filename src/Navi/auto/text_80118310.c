@@ -138,26 +138,26 @@ extern "C" void fn_8011972C(void* p, u8* src) {
 }
 
 extern "C" void fn_80119780(void* p, u8* a, u8* b) {
+    u8* d = (u8*)p;
     u8 a0 = a[0];
     u8 a1 = a[1];
-    u8 a2 = a[2];
-    u8 a3 = a[3];
-    u8 b0 = b[0];
-    u8 b1 = b[1];
-    u8 b2 = b[2];
-    u8 b3 = b[3];
-    u8* d = (u8*)p;
     d[0xc] = a0;
     d[0xd] = a1;
+    u8 a2 = a[2];
     d[0xe] = a2;
+    u8 a3 = a[3];
     d[0xf] = a3;
     d[0x10] = a0;
     d[0x11] = a1;
     d[0x12] = a2;
     d[0x13] = a3;
+    u8 b0 = b[0];
+    u8 b1 = b[1];
     d[0x14] = b0;
     d[0x15] = b1;
+    u8 b2 = b[2];
     d[0x16] = b2;
+    u8 b3 = b[3];
     d[0x17] = b3;
     d[0x18] = b0;
     d[0x19] = b1;
@@ -225,6 +225,14 @@ extern "C" int fn_8011AB38()
 extern "C" BOOL fn_8011AB40(void)
 {
     return TRUE;
+}
+
+extern "C" void* fn_8011AC24(void* p, void* v) {
+    void* old = *(void**)((u8*)p + 4);
+    if (v != 0) {
+        *(void**)((u8*)p + 4) = v;
+    }
+    return old;
 }
 
 extern "C" void* fn_8011B0D8(u8* p, s16 del) {
