@@ -12,6 +12,10 @@ extern "C" char lbl_802BB0FC[];
 extern "C" int lbl_802FF0E4;
 extern "C" char lbl_802C050C[];
 extern "C" float lbl_803001FC;
+extern int lbl_802FF0EC;
+extern int lbl_802FF0E8;
+extern "C" char lbl_802C05A0[];
+extern "C" void fn_8002A3CC(void* p, void* q, s32 a, s32 b);
 extern "C" void fn_8004FA30(void) {}
 
 extern "C" void fn_80052DEC(void)
