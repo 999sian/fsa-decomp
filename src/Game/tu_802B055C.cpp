@@ -11,7 +11,7 @@ extern f32 lbl_80540994;
 extern f32 lbl_80540998;
 extern f32 lbl_8054099C;
 extern void* lbl_8053AB10;
-extern "C" void fn_80158B5C(void* a, void* b, void* c, void* d, ...);
+extern "C" void fn_80158B5C(void* mgr, void* room, void* pos, void* col, f32 size);
 extern "C" void fn_802B055C(char* p) {
     struct {
         f32 x, y, z;
@@ -41,7 +41,7 @@ extern "C" void fn_802B055C(char* p) {
     vec.x = *(f32*)(p + 0xc) + lbl_8054099C;
     vec.y = *(f32*)(p + 0x10) + lbl_8054099C;
     vec.z = lbl_80540990;
-    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), &vec, &tmp);
+    fn_80158B5C(*(void**)((char*)lbl_8053AB10 + 0x2c), *(void**)(p + 4), &vec, &tmp, *(f32*)(p + 0x258));
 }
 
 extern "C" void* fn_802B0998(void* this_, s16 freeFlag) {
