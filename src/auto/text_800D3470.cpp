@@ -22,8 +22,6 @@ struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
 struct Obj_800DDDD0 { u8 pad[0x59]; Ent_800DDDD0 ent[1]; };
 
 struct Unk800DC64CSrc {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
@@ -1946,6 +1944,55 @@ extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
     param_1[0x14] = p[6];
     param_1[0x15] = p[7];
     *(u32*)(param_1 + 0x18) = *param_2->m47(0);
+}
+
+extern "C" void fn_800DC64C(u8* p, Unk800DC64CSrc* src) {
+    p[0x34] = src->m38();
+    *(s16*)(p + 8) = src->m20(0);
+    *(s16*)(p + 10) = src->m20(1);
+    u8* s = src->m41(0);
+    p[0x36] = s[1];
+    p[0x37] = s[2];
+    p[0x38] = s[3];
+    p[0x3a] = s[5];
+    p[0x3b] = s[6];
+    p[0x3c] = s[7];
+    s = src->m41(1);
+    p[0x3e] = s[1];
+    p[0x3f] = s[2];
+    p[0x40] = s[3];
+    p[0x42] = s[5];
+    p[0x43] = s[6];
+    p[0x44] = s[7];
+    *(u32*)(p + 0x60) = *src->m49(0);
+    *(u32*)(p + 0x64) = *src->m49(1);
+    *(u32*)(p + 0xc) = *src->m23(0);
+    *(u32*)(p + 0x10) = *src->m23(1);
+    p[0x55] = src->m32(0);
+    p[0x56] = src->m32(1);
+    p[0x57] = src->m35(0);
+    p[0x58] = src->m35(1);
+    u8* q = p;
+    for (u32 i = 0; i < 4; i++) {
+        s16* d = src->m26(i);
+        *(s16*)(q + 0x14) = d[0];
+        *(s16*)(q + 0x16) = d[1];
+        *(s16*)(q + 0x18) = d[2];
+        *(s16*)(q + 0x1a) = d[3];
+        q += 8;
+    }
+    q = p;
+    for (u32 i = 0; i < 4; i++) {
+        u8* d = src->m29(i);
+        q[0x45] = d[0];
+        q[0x46] = d[1];
+        q[0x47] = d[2];
+        q[0x48] = d[3];
+        q += 4;
+    }
+    for (u32 i = 0; i < 4; i++) {
+        p[0x59 + i] = *src->m46(i);
+    }
 }
 
 extern "C" void fn_800DCDD4(u8* this_, Unk800DCDD4Src* src) {
