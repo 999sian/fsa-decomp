@@ -118,6 +118,22 @@ extern "C" void fn_8010BDDC(u8* param_1) {
     }
 }
 
+extern "C" void fn_8010BE20(u8* param_1) {
+    s32 iVar1 = fn_8010C6D8(param_1, *(s16*)(param_1 + 0x98), lbl_802C5AFC[0x14], 0);
+    (*(s16*)(param_1 + 0x98))++;
+    if (iVar1 == 1) {
+        *(s16*)(param_1 + 0x98) = 0;
+        param_1[0x50] ^= 1;
+        param_1[0x7c] = 1;
+        fn_8010C1F0(param_1);
+        fn_8010C18C(param_1);
+        fn_8002F544(0x5c);
+        (*(u8**)(param_1 + 0x70))[0xb0] = 1;
+        param_1[0x9d] = 2;
+        param_1[0x9a] = 6;
+    }
+}
+
 extern "C" void fn_8010C0EC(u8* param_1) {
     s32 iVar1 = fn_8010C6D8(param_1, *(s16*)(param_1 + 0x98), lbl_802C5AFC[0x14], 0);
     (*(s16*)(param_1 + 0x98))++;
