@@ -335,6 +335,7 @@ extern "C" void fn_80035304(void* p) {
 }
 
 extern "C" void fn_80035348(void* p) {
+    char* base;
     *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
     if (*(unsigned char*)((char*)p + 0x23f) < 4) {
         *(unsigned char*)((char*)p + 0x1a4) = *(unsigned char*)((char*)p + 0x23f);
@@ -343,7 +344,7 @@ extern "C" void fn_80035348(void* p) {
         *(unsigned int*)((char*)p + 0x220) = 6;
     }
     *(unsigned int*)((char*)p + 0x1a0) |= 0x40000000;
-    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x58)) + *(int*)(lbl_802BB0FC + 0x58);
+    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x58)) + *(int*)((base = lbl_802BB0FC) + 0x58);
 }
 
 extern "C" void fn_800353C4(void* p) {
@@ -394,10 +395,11 @@ extern "C" void fn_80036F04(void* p) {
 }
 
 extern "C" void fn_80036F14(void* p) {
-    *(int*)((char*)p + 0x244) = (int)(lbl_802FFD44 * *(float*)((char*)lbl_802BEF44 + 0x6c)) + *(int*)((char*)lbl_802BB0FC + 0x58);
+    float f = lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x6c);
+    *(int*)((char*)p + 0x244) = (int)f + *(int*)(lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x24c) |= 0x2000;
-    if (*(int*)((char*)lbl_802BB0FC + 0x12c) == 2 && *(unsigned char*)((char*)p + 0x303) == 0) {
-        *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 8;
+    if (*(int*)(lbl_802BB0FC + 0x12c) == 2 && *(unsigned char*)((char*)p + 0x303) == 0) {
+        *(unsigned int*)(lbl_802BB0FC + 0x454) = 8;
     }
     *(unsigned int*)((char*)p + 0x24c) |= 0x200;
 }
@@ -418,6 +420,12 @@ extern "C" void fn_80036FE4(void* p) {
     *(int*)((char*)p + 0x244) = (int)(lbl_802FFD44 * *(float*)(lbl_802BEF44 + 0x88)) + *(int*)((char*)lbl_802BB0FC + 0x58);
     *(int*)((char*)p + 0x2e0) = *(int*)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x24c) |= 0x10000;
+}
+
+extern "C" void fn_80037038(void* p) {
+    *(unsigned int*)((char*)p + 0x24c) |= 0x100;
+    *(int*)((char*)p + 0x244) = *(int*)((char*)lbl_802BB0FC + 0x58) + 1000;
+    fn_8002A3CC(p, (char*)p + 0x254, 0x4c, 0x1);
 }
 
 extern "C" void fn_80037698(void* p) {
