@@ -144,6 +144,22 @@ extern "C" void fn_801A833C(void* p) {
     lbl_802FF700 = p;
 }
 
+extern "C" u8* fn_801A83C0(u8* p) {
+    *(void**)p = lbl_8029B23C;
+    fn_801A7F50(p + 0x10);
+    fn_801AFD70(p + 0x58);
+    *(void**)(p + 0x78) = lbl_8029B220;
+    *(s16*)(p + 0x7c) = 0;
+    *(s32*)(p + 0x80) = 0;
+    *(s32*)(p + 0x84) = 0;
+    fn_80192E40(p + 0x88);
+    *(s32*)(p + 4) = 0;
+    *(s32*)(p + 8) = 0;
+    *(s16*)(p + 0xc) = 0;
+    *(s16*)(p + 0xe) = 0;
+    return p;
+}
+
 extern "C" void fn_801A8538(u8* p) {
     if (*(u32*)(p + 8) & 0x20) {
         *(u32*)(lbl_802EE470 + 0x34) |= 0x40000000;
