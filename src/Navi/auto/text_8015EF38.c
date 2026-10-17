@@ -7,6 +7,12 @@ typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 // .text 0x8015ef38-0x8015f638 (11 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_8015F400(void);
+extern "C" void fn_80166B58(void*, void*);
+extern "C" void fn_801BDDBC(void*, void*, int);
+extern "C" void fn_80159C6C(void*, int);
+extern "C" void fn_80166B70(void*, int);
+extern "C" void fn_801BDE1C(void*, void*, int);
+extern "C" void fn_80166650(void*);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80166C08(void*, int);
 extern "C" void* fn_8015EF38(void* param_1, s16 param_2) {
