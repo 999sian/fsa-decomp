@@ -271,7 +271,6 @@ void fn_80223664(void* this_, u8 flag) {
     }
 }
 
-// NonMatching: callee-saved float register assignment (y0/x1 swapped).
 void fn_802238CC(void* this_) {
     char* p = (char*)this_;
     Rect_802233A4 r;
