@@ -35,7 +35,7 @@ extern "C" s32 fn_80021994(void) {
     u8 mask = lbl_802BB0FC[0xee];
     u8 i;
     for (i = 0; i < 4; i++) {
-        if (mask & (1 << i)) {
+        if ((u8)(mask & (1 << i))) {
             return i;
         }
     }
@@ -97,14 +97,15 @@ extern "C" s32 fn_80021C6C(u8* param_1, u8 param_2) {
         u8 uVar3 = param_1[0x470 + i] & 0xf;
         if (uVar3 == 4) {
             u8 uVar2;
+            s32 r;
             for (uVar2 = 0; uVar2 < 4; uVar2++) {
-                if ((u8)(mask & (1 << uVar2)) != 0) {
+                if ((mask & (1 << uVar2)) != 0) {
                     goto found;
                 }
             }
-            uVar2 = 0xff;
+            r = -1;
 found:
-            uVar3 = uVar2;
+            uVar3 = (u8)r;
         }
         if (uVar3 == param_2) {
             count++;
