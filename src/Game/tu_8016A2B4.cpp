@@ -472,3 +472,5 @@ extern "C" void fn_8016EDB0(u8* self) {
 extern "C" void fn_8016FDE0(void) {
 }
 
+void __sinit_tu_8016A2B4_cpp(void) {}
+
