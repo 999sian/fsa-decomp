@@ -1,5 +1,6 @@
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
