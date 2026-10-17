@@ -51,11 +51,18 @@ extern "C" void fn_800508D8(void* param_1)
 extern "C" void fn_80050938(void* param_1)
 {
     u32 v;
-    lbl_802BB0FC[0x44] = 0;
+    *(u32*)(lbl_802BB0FC + 0x44) = 0xb;
     v = *(u32*)((u8*)param_1 + 0xfec);
-    if ((v & 0x20000000) == 0) {
-        if (*(s32*)(lbl_802BB0FC + 0x58) >= 0x15f90) {
-        }
+    if (v & 0x20000000) {
+        *(u32*)((u8*)param_1 + 0xfec) = v | 0x100;
+    } else if (*(s32*)(lbl_802BB0FC + 0x58) >= 90000) {
+        *(u32*)((u8*)param_1 + 0xfec) = v | 0x100;
+    }
+    fn_80056B08(param_1);
+    if (fn_800572C0((int)param_1, *(u8*)((u8*)param_1 + 0xffa)) != 0 && (*(u32*)((u8*)param_1 + 0xfec) & 0x100) != 0) {
+        fn_80058B64(0x130);
+        lbl_802FEE34 = 0;
+        fn_80089634(param_1, 7);
     }
 }
 
