@@ -163,6 +163,17 @@ extern "C" s32 fn_80087A68(void* param_1) {
     return 1;
 }
 
+extern "C" s32 fn_80088384(u8* param_1) {
+    if (fn_80012B90() != 0) {
+        VObj_80088954* p = *(VObj_80088954**)(param_1 + 0x1cc);
+        if (p != 0) {
+            p->v0(1);
+        }
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" s32 fn_80088504(u8* param_1) {
     fn_8005E990(*(void**)(param_1 + 0x1cc), 0x50, 0xd0);
     u8* base = lbl_802B7CA0 + 0x1424;
@@ -265,6 +276,11 @@ extern "C" u16 fn_80088E00(void* obj) {
 
 extern "C" u16 fn_80088E0C(void* param_1) {
     return *(u16*)(*(u8**)((u8*)param_1 + 0x4c) + 0xc);
+}
+
+extern "C" s32 fn_80088E18(VObj_80088E18* obj) {
+    s32 a = obj->v6();
+    return obj->v5() + a;
 }
 
 extern "C" void fn_80088ED4(void);
