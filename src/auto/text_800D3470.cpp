@@ -3094,9 +3094,8 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDD64(u8* param_1, s32 param_2, u8 param_3) {
-    u8* p = param_1 + param_2;
-    p[0x10a] = param_3;
+extern "C" void fn_800DDD64(u8* param_1, u32 param_2, u8 param_3) {
+    param_1[param_2 + 0x10a] = param_3;
 }
 #else
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
@@ -3318,10 +3317,9 @@ extern "C" void fn_800DE1D8(int param_1, int param_2, u8* param_3)
   *(ptr + param_2 + 0x76) = *param_3;
 }
 
-extern "C" u8 fn_800DE1E8(int param_1, int param_2)
+extern "C" u8 fn_800DE1E8(u8* param_1, int param_2)
 {
-  int sum = param_1 + param_2;
-  return *(u8*)(sum + 0x76);
+  return param_1[param_2 + 0x76];
 }
 
 extern "C" void fn_800DE1F4(u8* param_1, u8 param_2)
@@ -3486,24 +3484,26 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
 
 extern "C" u8 fn_800DE600(int param_1, int param_2)
 {
-  u8* ptr = (u8*)(param_1 + param_2);
-  return *((u8*)ptr + 0x55);
+  u8* ptr = (u8*)param_1 + param_2;
+  return ptr[0x55];
 }
 
 extern "C" void fn_800DE60C(int param_1, int param_2, u8 param_3)
 {
   u8* ptr = (u8*)(param_1 + param_2);
-  *((u8*)ptr + 0x57) = param_3;
+  ptr[0x57] = param_3;
 }
 
 extern "C" void fn_800DE618(int param_1, int param_2, u8* param_3)
 {
+  u8 val = *param_3;
   u8* ptr = (u8*)(param_1 + param_2);
-  *((u8*)ptr + 0x57) = *param_3;
+  ptr[0x57] = val;
 }
 
-extern "C" u8 fn_800DE628(int param_1, int param_2) {
-    return *(u8*)((unsigned)param_1 + (unsigned)param_2 + 0x57);
+extern "C" u8 fn_800DE628(u8* param_1, int param_2) {
+    u8* p = param_1 + param_2;
+    return p[0x57];
 }
 
 extern "C" void fn_800DE634(u8* param_1, u8 param_2) {
@@ -4293,8 +4293,8 @@ extern "C" void fn_800D9658(u8* p) {
 
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
-extern "C" fn_800DF364(void* param_1, u8 param_2) {
-*(u8*)((u32)param_1 + 0xc) param_2;
+extern "C" void fn_800DF364(void* param_1, u8 param_2) {
+    *(u8*)((u32)param_1 + 0xc) = param_2;
 }
 
 extern "C" u8 fn_800DF36C(void* param_1) {
@@ -4305,7 +4305,7 @@ extern "C" void fn_800DF358(void* param_1, u8* param_2) {
     *(u8*)((u32)param_1 + 0xc) = *param_2;
 }
 
-inline void J3DIndBlockFull::initialize() {
+void J3DIndBlockFull::initialize() {
     mIndTexStageNum = 0;
 }
 
