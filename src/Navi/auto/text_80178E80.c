@@ -120,7 +120,7 @@ struct VObj_80185E08 {
 };
 struct VObj_8017A770 {
     virtual void v0();
-    virtual void v1();
+    virtual void v1(void* a);
     virtual void v2();
     virtual void v3(void* a);
 };
@@ -875,6 +875,28 @@ extern "C" void fn_8017A6CC(void* self, void* obj) {
         u16 idx = ((u16*)*(u8**)((u8*)obj + 0x1c))[i];
         if (idx < *(u16*)((u8*)self + 0x102)) {
             fn_8016A39C(*(u8**)((u8*)self + 0x104) + idx * 0x88, obj);
+        }
+    }
+}
+
+extern "C" void fn_8017A770(u8* self, u8* src) {
+    u16 i;
+    u16 count;
+    u16 idx;
+
+    ((VObj_8017A770*)src)->v3(self);
+    count = *(u16*)(src + 0x10);
+    for (i = 0; i < count; i++) {
+        idx = *(u16*)(*(u8**)(src + 0x24) + (i * 2));
+        if (idx < *(u16*)(self + 0x102)) {
+            fn_8016A530(*(u8**)(self + 0x104) + (idx * 0x88), src);
+        }
+    }
+    count = *(u16*)(src + 0x12);
+    for (i = 0; i < count; i++) {
+        idx = *(u16*)(*(u8**)(src + 0x38) + (i * 2));
+        if (idx < *(u16*)(self + 0x102)) {
+            fn_8016A530(*(u8**)(self + 0x104) + (idx * 0x88), src);
         }
     }
 }
@@ -2654,25 +2676,27 @@ extern "C" void fn_8018B748(void* self, void* src) {
 }
 
 extern "C" void fn_8018B770(void* self, void* dst, void* src) {
-    u8 flag = ((u8*)src)[8];
-    *(s16*)((u8*)dst + 6) = *(s16*)((u8*)src + 10);
-    u16 a = *(u16*)((u8*)src + 0xc);
-    *(u8*)((u8*)dst + 4) = flag;
-    u16 b = *(u16*)((u8*)src + 0xe);
-    *(f32*)((u8*)dst + 8) = lbl_80301C30;
-    *(u16*)((u8*)dst + 0x10) = a;
-    u32 c = *(u32*)((u8*)src + 0x18);
-    *(u16*)((u8*)dst + 0x12) = b;
-    *(void**)((u8*)dst + 0x24) = fn_8018C290(src, c);
-    *(void**)((u8*)dst + 0x28) = fn_8018C290(src, *(u32*)((u8*)src + 0x1c));
-    *(void**)((u8*)dst + 0x14) = fn_8018C278(src, *(u32*)((u8*)src + 0x20));
-    *(void**)((u8*)dst + 0x18) = fn_8018C278(src, *(u32*)((u8*)src + 0x24));
-    *(void**)((u8*)dst + 0x1c) = fn_80174BA0(src, *(u32*)((u8*)src + 0x28));
-    *(void**)((u8*)dst + 0x20) = fn_80174BA0(src, *(u32*)((u8*)src + 0x2c));
-    *(void**)((u8*)dst + 0x2c) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x30));
-    *(void**)((u8*)dst + 0x30) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x34));
-    *(void**)((u8*)dst + 0x34) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x38));
-    *(void**)((u8*)dst + 0x38) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x3c));
+    u8* s = (u8*)src;
+    u8* d = (u8*)dst;
+    u8 flag = s[8];
+    *(s16*)(d + 6) = *(s16*)(s + 10);
+    u16 a = *(u16*)(s + 0xc);
+    *(u8*)(d + 4) = flag;
+    u16 b = *(u16*)(s + 0xe);
+    *(f32*)(d + 8) = lbl_80301C30;
+    *(u16*)(d + 0x10) = a;
+    u32 c = *(u32*)(s + 0x18);
+    *(u16*)(d + 0x12) = b;
+    *(void**)(d + 0x24) = fn_8018C290(src, c);
+    *(void**)(d + 0x28) = fn_8018C290(src, *(u32*)(s + 0x1c));
+    *(void**)(d + 0x14) = fn_8018C278(src, *(u32*)(s + 0x20));
+    *(void**)(d + 0x18) = fn_8018C278(src, *(u32*)(s + 0x24));
+    *(void**)(d + 0x1c) = fn_80174BA0(src, *(u32*)(s + 0x28));
+    *(void**)(d + 0x20) = fn_80174BA0(src, *(u32*)(s + 0x2c));
+    *(void**)(d + 0x2c) = fn_8018C2D8(src, *(u32*)(s + 0x30));
+    *(void**)(d + 0x30) = fn_8018C2D8(src, *(u32*)(s + 0x34));
+    *(void**)(d + 0x34) = fn_8018C2D8(src, *(u32*)(s + 0x38));
+    *(void**)(d + 0x38) = fn_8018C2D8(src, *(u32*)(s + 0x3c));
 }
 
 extern u8 lbl_802994BC[];
