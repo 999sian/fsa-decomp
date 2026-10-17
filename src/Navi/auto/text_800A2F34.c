@@ -20,6 +20,13 @@ extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_800127A0(void*);
 extern "C" s32 fn_80020384(void*, s32);
 extern char lbl_802C54FC[];
+extern char lbl_802BB0FC[];
+extern char lbl_80231850[];
+extern u32 lbl_802FEDDC;
+extern "C" void fn_80017FCC(void*);
+extern "C" s32 fn_80029794(void*, void*, s32);
+extern "C" void fn_800A4768(void*, s16, u8, s32, s32, f32, f32);
+extern "C" void fn_800A4A90(void*, s16, u8, s32, s32, f32, f32);
 extern char lbl_8029FDB4[];
 extern void* lbl_802FF278;
 struct VObj_800A468C {
