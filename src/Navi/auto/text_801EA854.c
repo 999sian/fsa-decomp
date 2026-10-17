@@ -58,18 +58,17 @@ extern "C" int TRKAppendBuffer_ui8(void* buffer, const unsigned char* data, int 
 
 extern "C" int fn_801EAD68(void* param_1, unsigned char* param_2, unsigned int param_3) {
     int err = 0;
-    unsigned int n = param_3;
-    if (n != 0) {
-        unsigned int remaining = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
-        if (n > remaining) {
-            err = 0x302;
-            n = remaining;
-        }
-        TRK_memcpy(param_2, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, n);
-        *(unsigned int*)((unsigned char*)param_1 + 0xc) += n;
-        return err;
+    if (param_3 == 0) {
+        return 0;
     }
-    return 0;
+    unsigned int remaining = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
+    if (param_3 > remaining) {
+        err = 0x302;
+        param_3 = remaining;
+    }
+    TRK_memcpy(param_2, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, param_3);
+    *(unsigned int*)((unsigned char*)param_1 + 0xc) += param_3;
+    return err;
 }
 
 extern "C" int fn_801EADF4(unsigned char* param_1, unsigned char* param_2, unsigned int param_3) {
@@ -133,14 +132,15 @@ extern "C" unsigned char* TRKGetBuffer(int param_1) {
 extern "C" int TRKInitializeMutex(void* mutex);
 extern "C" int TRKInitializeMessageBuffers(void) {
     unsigned char* buf = lbl_802F8A48;
-    int i;
-    for (i = 0; i < 3; i++) {
+    int i = 0;
+    do {
         TRKInitializeMutex(buf);
         TRKAcquireMutex(buf);
         *(int*)(buf + 4) = 0;
         TRKReleaseMutex(buf);
+        i++;
         buf += 0x890;
-    }
+    } while (i < 3);
     return 0;
 }
 
