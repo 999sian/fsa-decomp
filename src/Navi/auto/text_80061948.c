@@ -641,22 +641,12 @@ extern "C" void fn_80017FCC(void* p);
 extern u8 lbl_802804C0[];
 extern u8 lbl_80280418[];
 extern f32 lbl_80300478;
-struct Base_80064D18 {
-    void* vt;
-    void* a;
-    Base_80064D18() { vt = lbl_8027F6DC; a = 0; }
-};
-struct Derived_80064D18 : Base_80064D18 {
-    void* b;
-    Derived_80064D18() { vt = lbl_8027FB48; b = 0; }
-};
-inline void* operator new(unsigned long, Derived_80064D18* p) { return p; }
-extern "C" void fn_80064D18(void** p) {
-    void* a = lbl_8027F6DC;
-    p[0] = a;
+extern "C" void* fn_80064D18(void** p) {
+    p[0] = lbl_8027F6DC;
     p[1] = 0;
     p[0] = lbl_8027FB48;
     p[2] = 0;
+    return p;
 }
 
 extern void* lbl_8027FB70[];
