@@ -1018,7 +1018,8 @@ extern "C" void fn_80128984(void) {
 
 extern "C" void fn_80128D4C(u8* a)
 {
-    u16 idx = (*(u16**)(*(u8**)(a + 4) + 0x38))[(*(u8**)(*(u8**)(a + 4) + 0x1c))[0x20]];
+    u8* p = *(u8**)(*(u8**)(a + 4) + 0x1c);
+    u16 idx = (*(u16**)(*(u8**)(a + 4) + 0x38))[(*(u8**)p)[0x20]];
     fn_801191F0((*(u8***)(*(u8**)(a + 8) + 8))[idx] + 4, 0);
 }
 
@@ -1558,6 +1559,16 @@ extern "C" u8 fn_80130C54(void* param_1) {
     void* p = *(void**)((u8*)param_1 + 0xe4);
     p = *(void**)((u8*)p + 0x20);
     return *(u8*)((u8*)p + 0x216);
+}
+
+extern "C" s32 fn_80130C64(u8* a, u32 b, s32 c)
+{
+    u8* r6 = *(u8**)(*(u8**)(a + 0xe4) + 0x20);
+    u8* r5 = *(u8**)(r6 + 8);
+    u8** tbl = *(u8***)(r5 + 8);
+    u16 idx = (*(u16**)(*(u8**)(a + 0xe8) + 0x38))[b & 0xff];
+    fn_801191F0(tbl[idx] + 4, c);
+    return 1;
 }
 
 extern void* lbl_802470EC[];
