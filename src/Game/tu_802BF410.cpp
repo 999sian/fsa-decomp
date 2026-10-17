@@ -1,5 +1,15 @@
 #include "Game/Actor.h"
 
+extern "C" void* lbl_8053AB10;
+extern "C" char lbl_8046D470[];
+extern "C" f32 lbl_80540C30;
+extern "C" f32 lbl_80540C34;
+extern "C" u16 fn_802D7B34(void* cfg, s32 room, s32 n);
+extern "C" void fn_802D7BE8(void* cfg, s32 room, s32 n, s32 k);
+extern "C" void fn_801F0D20(Actor* this_, s32 state);
+extern "C" void fn_8013CC50(s32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void fn_801F0E34(Actor* this_, s32 a, s32 b);
+
 
 extern "C" char lbl_804A8C28[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
