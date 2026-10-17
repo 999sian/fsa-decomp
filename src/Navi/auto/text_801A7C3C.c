@@ -104,6 +104,7 @@ extern "C" f32 lbl_80301D6C;
 extern void* lbl_8029B388[];
 extern void* lbl_8029B374[];
 
+extern void* lbl_8029B1FC[];
 struct Vec6_801A7C3C {
     f32 v[6];
 };
@@ -146,6 +147,19 @@ extern "C" void fn_801A7C3C(Struct_801A7C3C* dst, const Struct_801A7C3C* src) {
 
 extern "C" void fn_801A7D54(Blk_801A7D54* dst, Blk_801A7D54* src) {
     *dst = *src;
+}
+
+extern "C" void fn_801A833C(void* p);
+extern "C" void fn_801AFB98(void* p);
+extern "C" void* lbl_802FF708;
+extern "C" void fn_801A82CC(u8* p, void* a, void* b, void* c) {
+    VObj_801A82CC* obj = *(VObj_801A82CC**)(p + 0x14);
+    obj->vf9(b, c);
+    fn_801A833C(a);
+    if (*(void**)(p + 0x10) != nullptr) {
+        lbl_802FF708 = *(void**)(p + 0x14);
+        fn_801AFB98(*(void**)(p + 0x10));
+    }
 }
 
 extern void* lbl_8029B23C[];
