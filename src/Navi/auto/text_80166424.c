@@ -122,7 +122,7 @@ struct VObj_8016CF64 {
     virtual void vf28(); virtual void vf29(); virtual void vf30(); virtual void vf31();
     virtual void vf32(); virtual void vf33(); virtual void vf34(); virtual void vf35();
     virtual void vf36(); virtual void vf37(); virtual void vf38(); virtual void vf39();
-    virtual void vf40(); virtual void vf41();
+    virtual void vf40(); virtual void vf41(u8, u32, u32);
 };
 
 struct Unk80174858Pair {
@@ -1168,6 +1168,31 @@ extern "C" void fn_8016D5BC(u8* p, int unused, u32 idx)
     if (obj != 0 && *(void**)(obj + 0x20) != 0) {
         fn_801191F0(obj);
     }
+}
+
+extern "C" void* fn_8016D71C(void* param_1, s16 param_2) {
+    s32 i;
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_802988A8;
+        for (i = 0; i < 4; i++) {
+            if (*((u8*)param_1 + 0xb0) & (1 << i)) {
+                fn_80118BD0(((void**)param_1)[0x8c / 4 + i], 1);
+            }
+            fn_8015AB1C(((void**)param_1)[0x9c / 4 + i]);
+        }
+        if (*((u8*)param_1 + 0xb0) & 0x80) {
+            void* obj = ((void**)param_1)[0xac / 4];
+            if (obj != nullptr) {
+                void** vt = *(void***)obj;
+                ((void (*)(void*, int))vt[2])(obj, 1);
+            }
+        }
+        *(void**)param_1 = (void*)lbl_80298B14;
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
 }
 
 #pragma push
