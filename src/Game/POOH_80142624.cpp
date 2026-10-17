@@ -14,3 +14,6 @@ extern "C" Actor* fn_80142624(Actor* this_, s16 flag) {
     }
     return this_;
 }
+
+void __sinit_POOH_80142624_cpp(void) {}
+
