@@ -1,4 +1,8 @@
 #include "types.h"
+extern "C" void fn_800737CC(u8* p, s32 mode);
+extern "C" s16 fn_80015CA4(u8* p);
+extern "C" void fn_80017FCC(u8* p);
+extern u8 lbl_802BF814[];
 extern u8 lbl_802FCA30;
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -596,22 +600,25 @@ extern "C" void* fn_80075890(void* ptr, s16 param_2) {
 }
 
 extern "C" BOOL fn_800758D8(u8* p, s32 param_2) {
+    u32 off;
+    u8* obj;
+    u8* w;
+    s32 idx;
     if (param_2 == 0) {
-        u8* obj = *(u8**)(lbl_802EE470 + 0x38);
-        u16 idx = *(u16*)(p + 0x14);
-        u32 off = idx * 0x30;
-        u8* r31 = *(u8**)(obj + 0x14);
+        idx = *(u16*)(p + 0x14);
+        obj = *(u8**)(lbl_802EE470 + 0x38);
+        w = *(u8**)(obj + 0x14);
+        off = idx * 0x30;
         fn_801C5D74(*(u8**)(*(u8**)(obj + 0x84) + 0xc) + off, lbl_802FDC98);
-        if (idx == *(s8*)(r31 + 0x310)) {
-            fn_8000CB28(lbl_802FDC98, -*(s16*)(r31 + 0x33a));
-            fn_8000CA54(lbl_802FDC98, -*(s16*)(r31 + 0x33c));
-            fn_8000CBFC(lbl_802FDC98, -*(s16*)(r31 + 0x33e));
+        if (idx == (s8)w[0x310]) {
+            fn_8000CB28(lbl_802FDC98, -*(s16*)(w + 0x33a));
+            fn_8000CA54(lbl_802FDC98, -*(s16*)(w + 0x33c));
+            fn_8000CBFC(lbl_802FDC98, -*(s16*)(w + 0x33e));
         }
-        if (idx == *(s8*)(r31 + 0x311)) {
-            s16 a = *(s16*)(r31 + 0x340);
-            fn_8000CA54(lbl_802FDC98, a);
-            fn_8000CB28(lbl_802FDC98, *(s16*)(r31 + 0x342));
-            fn_8000CBFC(lbl_802FDC98, *(s16*)(r31 + 0x344));
+        if (idx == (s8)w[0x311]) {
+            fn_8000CA54(lbl_802FDC98, (s16)*(s16*)(w + 0x340));
+            fn_8000CB28(lbl_802FDC98, (s16)*(s16*)(w + 0x342));
+            fn_8000CBFC(lbl_802FDC98, (s16)*(s16*)(w + 0x344));
         }
         fn_801C5D74(lbl_802FDC98, *(u8**)(*(u8**)(obj + 0x84) + 0xc) + off);
         fn_801C5D74(lbl_802FDC98, lbl_802EE58C);
