@@ -9,6 +9,33 @@ extern "C" u8 fn_80303750(s32 i);
 extern "C" u8 fn_8028B850(u8* this_);
 extern "C" f32 lbl_805404CC;
 extern "C" f32 lbl_805404C0;
+extern "C" f32 lbl_805404D8;
+extern "C" f32 lbl_805404F0;
+extern void* lbl_8053AAF8;
+extern "C" u8* fn_802D6A9C(void);
+extern "C" s32 fn_80138A30(void* game);
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id);
+extern "C" double sin(double);
+extern "C" double cos(double);
+extern "C" void fn_8028AB7C(u8* this_) {
+    u8 idx[16];
+    s32 i;
+    f32 ang;
+    f32 s0, s1, s2, c0, c1, c2;
+
+    for (i = 0; i < 16; i++) {
+        idx[i] = i;
+    }
+    ang = (1.0f - *(f32*)(this_ + 0x240)) * 0.0f;
+    s0 = sin(ang);
+    s1 = sin(ang);
+    s2 = sin(ang);
+    c0 = cos(ang);
+    c1 = cos(ang);
+    c2 = cos(ang);
+    fn_801F06F0(this_, "enemy_gc_sob.bin", *(s32*)(this_ + 0x25c) + 0x129);
+}
+
 extern "C" void fn_8028BA5C(u8* this_) {
     s32 i;
     this_[0x250] = 1;
