@@ -14,7 +14,7 @@ extern "C" void fn_8008BE14(void* p);
 extern "C" void fn_80041268(void* a, void* b, s32 n);
 extern "C" void fn_8000E0F0(void* self, void* arg, f32 value);
 extern "C" void fn_8000EBB8(void* a);
-extern s16 lbl_802FF04C;
+extern s16 lbl_802FF04C[];
 struct VObj_8008C40C {
     virtual void v0();
     virtual void v1();
