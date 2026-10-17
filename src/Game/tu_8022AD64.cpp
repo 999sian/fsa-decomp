@@ -30,6 +30,12 @@ static inline u8 isPlayerEnabled(int index)
 }
 
 extern "C" {
+int fn_80240AF0(Player*);
+int fn_802486A0(Player*);
+int fn_80257DB4(Player*);
+int fn_802416C4(Player*);
+int fn_8024B24C(Player*);
+int Player_IsLinked(Player*);
 int fn_8023FC08(Player*);
 int fn_8023FC24(Player*);
 int fn_8023FFAC(Player*);
@@ -687,6 +693,29 @@ int fn_8022D498(int index)
     return 0;
 }
 
+int fn_8022EA0C(int idx);
+int fn_8022D534(int idx) {
+    int cVar;
+    int iVar;
+
+    if (lbl_8053AC90 == NULL) return 0;
+    if (!isPlayerEnabled(idx)) return 0;
+    if (lbl_8053AC90 == NULL) {
+        cVar = 0;
+    } else if (!isPlayerEnabled(idx)) {
+        cVar = 1;
+    } else {
+        cVar = fn_80240670(lbl_8053AC90->players[idx]);
+    }
+    if ((u8)cVar) {
+        iVar = fn_8022EA0C(idx);
+        if (lbl_8053AC90 == NULL) return 0;
+        return isPlayerEnabled(iVar) ? Player_GetField_0xce8(lbl_8053AC90->players[iVar]) : 0;
+    }
+    if (lbl_8053AC90 == NULL) return 0;
+    return isPlayerEnabled(idx) ? Player_GetField_0xce8(lbl_8053AC90->players[idx]) : 0;
+}
+
 int fn_8022D75C(int index)
 {
     if (lbl_8053AC90 == NULL) return 0;
@@ -1286,6 +1315,10 @@ int fn_802319B4(int index, int a0)
 {
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(index)) return fn_80251BFC(lbl_8053AC90->players[index], a0);
+    return 0;
+}
+
+int fn_80231A50(void) {
     return 0;
 }
 
