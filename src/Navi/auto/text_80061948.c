@@ -84,6 +84,34 @@ extern "C" void fn_80061948(void* param_1) {
     *(u32*)((u8*)param_1 + 0x20) = 0;
 }
 
+extern "C" void fn_8000FA24(void);
+extern "C" u8* fn_80061968(u8* p, s16 n) {
+    u8* obj;
+
+    if (p != 0) {
+        obj = *(u8**)(p + 0x10);
+        if (obj != 0) {
+            (*(void (**)(u8*, s32))(*(u8**)(obj + 0x10) + 8))(obj, 1);
+            *(u32*)(p + 0x10) = 0;
+        } else if (*(u32*)(p + 0x14) != 0) {
+            if (*(void**)(p + 0x1c) != 0) {
+                fn_8000FA24();
+                *(u32*)(p + 0x1c) = 0;
+            }
+            if (*(u32*)(p + 0x20) != 0) {
+                *(u32*)(p + 0x20) = 0;
+            }
+            obj = *(u8**)(p + 0x14);
+            (*(void (**)(u8*))(*(u8**)obj + 0xc))(obj);
+            *(u32*)(p + 0x14) = 0;
+        }
+        if (n > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void* fn_80062D60(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8027F2C0;
@@ -1336,6 +1364,35 @@ extern "C" void fn_8006CA98(u8* p) {
 }
 
 extern "C" void fn_8006CC58(void) {}
+
+struct UnkVObj6CC5C {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
+    virtual void v25(s32); virtual void v26(); virtual u8* v27(s32);
+};
+typedef void (*VFn_vi)(void*, s32);
+typedef void (*VFn_v)(void*);
+typedef u8* (*VFn_pi)(void*, s32);
+extern "C" void fn_8006CC5C(u8* p) {
+    s32 i;
+    for (i = 0; i <= 5; i++) {
+        u8* model = *(u8**)(*(u8**)(*(u8**)(p + 0x270 + i * 4) + 4) + 4);
+        u16 num = *(u16*)(model + 0x5c);
+        u16 j;
+        for (j = 0; j < num; j++) {
+            u8* obj = (*(u8***)(model + 0x60))[j];
+            void* a = *(void**)(obj + 0x24);
+            (*(VFn_vi*)(*(u8**)a + 0x6c))(a, 0);
+            (*(VFn_v*)(*(u8**)obj + 0x2c))(obj);
+            void* b = *(void**)(obj + 0x2c);
+            u8* r = (*(VFn_pi*)(*(u8**)b + 0x74))(b, 2);
+            r[3] = ((u8*)lbl_802BF814)[0x20c + i];
+        }
+    }
+}
 
 extern "C" u32 fn_8006CD30(void* param_1) {
     return ((s32)(*(u16*)((u8*)param_1 + 0x30e) + 0x2000) / 0x4000) & 3;
