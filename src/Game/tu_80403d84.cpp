@@ -23,6 +23,12 @@ struct EC80Row {
 
 extern "C" extern EC80Row lbl_8050EC80[16];
 extern "C" extern u8* lbl_8053AAF8;
+extern "C" char lbl_80529DEC[];
+
+static inline u8 EC80Bit28(s32 idx, s32 shift) {
+	if (idx < 0 || idx > 7) return 0;
+	return (*(u32*)((u8*)&lbl_8050EC80[lbl_8050EC80[0].selfIndex] + 0x28) & (1 << (idx * 4 + shift))) != 0;
+}
 
 // Pane pair of a 0x14-byte entry at self + 0x28 (one per row, 8 rows).
 struct PaneRef {
@@ -248,12 +254,13 @@ extern "C" void fn_8040E3A0(u8* self) {
 	if (*(f32*)(self + 0x394) == tx) {
 		*(s32*)(self + 0x360) = 0x10;
 	} else {
-		u16 ang = (u16)(JMath::atanTable_.atan2_(-dx, -dz) * 10430.378f);
+		s32 raw = (s32)(JMath::atanTable_.atan2_(-dx, -dz) * 10430.378f);
+		u16 ang = raw;
 		if (ang < 0x2000 || ang >= 0xe000) {
 			*(s32*)(self + 0x360) = 0x18;
-		} else if (ang < 0x6000) {
+		} else if (ang >= 0x2000 && ang < 0x6000) {
 			*(s32*)(self + 0x360) = 8;
-		} else if (ang <= 0xa000) {
+		} else if (ang >= 0x6000 && ang <= 0xa000) {
 			*(s32*)(self + 0x360) = 0x10;
 		} else {
 			*(s32*)(self + 0x360) = 0;
@@ -885,6 +892,59 @@ extern "C" void fn_80408114(u8* self) {
             ((void (*)(void*, s32))(*(u32**)obj)[9])(obj, 0);
         }
     }
+}
+
+extern "C" void fn_804083D8(u8* self) {
+	u8* p = self;
+	u32 bx0, ax0, bz0, az0, by0, ay0;
+	u32 bx1, ax1, bz1, az1, by1, ay1;
+	f32 t;
+	f32 yX;
+	f32 yY;
+	f32 sx = (*(PaneRef**)(self + 0x28))->w / 72.0f;
+	f32 sy = (*(PaneRef**)(self + 0x28))->h / 36.0f;
+	*(s16*)(self + 0x42e) = 30;
+	for (int i = 0; i < 8; i++, p += 0x14) {
+		if (i == *(s32*)(self + 0x340)) {
+			fn_80402CE0(*(PaneRef**)(p + 0x28), 1.0f / sx, 1.0f / sy);
+			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x18)))((*(PaneRef**)(p + 0x2c))->pane, 72.0f, 36.0f);
+			t = *(f32*)((u8*)getBounds__7J2DPaneFv((*(PaneRef**)(p + 0x28))->pane) + 4);
+			yX = (*(PaneRef**)(p + 0x28))->y;
+			yY = (*(PaneRef**)(p + 0x30))->y;
+			f32 dx = (*(PaneRef**)(p + 0x28))->x - *(f32*)getBounds__7J2DPaneFv((*(PaneRef**)(p + 0x28))->pane);
+			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0x10)))((*(PaneRef**)(p + 0x30))->pane, (*(PaneRef**)(p + 0x30))->x + dx, yY + (yX - t));
+			ax0 = *(u32*)(self + 0x31c);
+			bx0 = *(u32*)(self + 0x334);
+			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x28))->pane + 0x130)))((*(PaneRef**)(p + 0x28))->pane, &bx0, &ax0);
+			az0 = *(u32*)(self + 0x320);
+			bz0 = *(u32*)(self + 0x338);
+			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x130)))((*(PaneRef**)(p + 0x2c))->pane, &bz0, &az0);
+			ay0 = *(u32*)(self + 0x324);
+			by0 = *(u32*)(self + 0x33c);
+			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0xac)))((*(PaneRef**)(p + 0x30))->pane, &by0, &ay0);
+		} else {
+			fn_80402CE0(*(PaneRef**)(p + 0x28), 1.0f, 1.0f);
+			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x18)))((*(PaneRef**)(p + 0x2c))->pane, (*(PaneRef**)(p + 0x2c))->w, (*(PaneRef**)(p + 0x2c))->h);
+			((void (*)(void*, f32, f32))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0x10)))((*(PaneRef**)(p + 0x30))->pane, (*(PaneRef**)(p + 0x30))->x, (*(PaneRef**)(p + 0x30))->y);
+			ax1 = *(u32*)(self + 0x310);
+			bx1 = *(u32*)(self + 0x328);
+			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x28))->pane + 0x130)))((*(PaneRef**)(p + 0x28))->pane, &bx1, &ax1);
+			az1 = *(u32*)(self + 0x314);
+			bz1 = *(u32*)(self + 0x32c);
+			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x2c))->pane + 0x130)))((*(PaneRef**)(p + 0x2c))->pane, &bz1, &az1);
+			ay1 = *(u32*)(self + 0x318);
+			by1 = *(u32*)(self + 0x330);
+			((void (*)(void*, u32*, u32*))(*(u32*)(*(u32*)(*(PaneRef**)(p + 0x30))->pane + 0xac)))((*(PaneRef**)(p + 0x30))->pane, &by1, &ay1);
+		}
+	}
+	if (*(s32*)(self + 0x340) < 8) {
+		for (int j = 0; j < 8; j++) {
+			if (j != *(s32*)(self + 0x340)) {
+				appendChild__7J2DPaneFP7J2DPane((*(Screen408**)(self + 0x10))->search(0x004E646174613031ULL), (*(PaneRef**)(self + 0x28 + j * 0x14))->pane);
+			}
+		}
+		appendChild__7J2DPaneFP7J2DPane((*(Screen408**)(self + 0x10))->search(0x004E646174613031ULL), (*(PaneRef**)(self + 0x28 + *(s32*)(self + 0x340) * 0x14))->pane);
+	}
 }
 
 static inline bool checkRowBit(u32 idx, int p, int j) {
