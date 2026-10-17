@@ -524,22 +524,17 @@ extern "C" void* fn_80161518(void* self, void* name) {
 }
 
 #pragma dont_inline on
-#pragma use_lmw_stmw off
 extern "C" char* fn_80161710(u16* p, char* s, s8 term) {
     s32 i = 0;
-    s32 v;
-    s8 c;
     p[0] = 0;
-    c = *s;
-    while (c != 0 && c != term) {
-        v = fn_801E30E8(c);
+    while (*s != 0 && *s != term) {
+        s32 v = fn_801E30E8(*s);
         p[0] = v + p[0] * 3;
         if (i < 0x100) {
             ((u8*)p)[i + 4] = v;
             i++;
         }
         s++;
-        c = *s;
     }
     p[1] = i;
     ((u8*)p)[i + 4] = 0;
@@ -548,7 +543,6 @@ extern "C" char* fn_80161710(u16* p, char* s, s8 term) {
     }
     return 0;
 }
-#pragma use_lmw_stmw reset
 #pragma dont_inline reset
 
 extern "C" char lbl_80297EF0[];
