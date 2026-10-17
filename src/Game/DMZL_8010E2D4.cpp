@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
 typedef f32 Mtx[3][4];
@@ -285,7 +286,7 @@ extern "C" void fn_8010F4DC(u8* this_) {
         *(f32*)(e + 0x248) = z;
         *(f32*)(e + 0x24c) = z;
         *(f32*)(e + 0x250) = z;
-        *(MtxBox*)(e + 0x254) = *(MtxBox*)m1;
+        PSMTXCopy(m1, *(Mtx*)(e + 0x254));
         *(f32*)(e + 0x290) = lbl_8053C5D0;
         *(s32*)(e + 0x294) = n;
         *(s32*)(e + 0x29c) = 0;
