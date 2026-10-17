@@ -1139,11 +1139,10 @@ extern "C" void fn_80128240(char* p, char* q) {
     u32 c = *(u32*)(q + 0x8c);
     u8* b = (u8*)&c;
     u32 out;
-    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
-    b[3] = (((u32)b[3] * (q[0x96] + 1)) >> 8) & 0xff;
     b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
     b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
     b[2] = (((u32)b[2] * (obj[0xba] + 1)) >> 8) & 0xff;
+    b[3] = (((((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff) * ((u32)q[0x96] + 1) >> 8) & 0xff;
     out = c;
     fn_801DE4F4(1, &out);
 }
@@ -1709,17 +1708,20 @@ extern "C" void fn_8012C034(u8* p, u8* q) {
 extern "C" void fn_8012C0C8(u8* p, u8* q)
 {
     f32 r = *(f32*)(q + 0x84);
+    u8* b;
     u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
-    u8* b = *(u8**)a;
+    b = *(u8**)a;
     f32 v;
     if (r < *(f32*)(b + 0x2c)) {
-        v = lbl_803016CC * (*(f32*)(b + 0x34) + r * *(f32*)(a + 4));
+        f32 t = r * *(f32*)(a + 4);
+        v = lbl_803016CC * (*(f32*)(b + 0x34) + t);
     } else if (r > *(f32*)(b + 0x30)) {
-        v = lbl_803016CC * (*(f32*)(b + 0x38) + (r - *(f32*)(b + 0x30)) * *(f32*)(a + 8));
+        f32 t = (r - *(f32*)(b + 0x30)) * *(f32*)(a + 8);
+        v = lbl_803016CC * (*(f32*)(b + 0x38) + t);
     } else {
         v = lbl_803016CC * *(f32*)(b + 0x38);
     }
-    *(u8*)(q + 0x96) = (u8)v;
+    *(u8*)(q + 0x96) = v;
 }
 
 extern "C" void* fn_8012C240(void* ptr, void* param_2) {
@@ -1759,19 +1761,10 @@ extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
 extern "C" void fn_8012D2B0(u8* p, u8* r4, u8* q)
 {
     if (*(u32*)(*(u8**)q + 8) & 0x20000) {
-        Vec3f* out = (Vec3f*)(p + 4);
-        Vec3f* in = (Vec3f*)(q + 0x1c);
-        f32 s = *(f32*)(q + 0x28);
-        out->x = in->x * s;
-        out->y = in->y * s;
-        out->z = in->z * s;
+        JMathInlineVEC::PSVECScale((JGeometry::TVec3f*)(q + 0x1c), (JGeometry::TVec3f*)(p + 4), *(f32*)(q + 0x28));
     } else {
         fn_801C6684(r4 + 0x78, q + 0x1c, p + 4);
-        Vec3f* out = (Vec3f*)(p + 4);
-        f32 s = *(f32*)(q + 0x28);
-        out->x *= s;
-        out->y *= s;
-        out->z *= s;
+        ((JGeometry::TVec3f*)(p + 4))->scale(*(f32*)(q + 0x28));
     }
 }
 
@@ -1982,6 +1975,23 @@ extern "C" void* fn_8012F6F8(void* a, s32 b, void* c) {
         fn_8012F738(a);
     }
     return a;
+}
+
+extern "C" void fn_8012FDE0(u8* p)
+{
+    u8* node;
+    u8* actor;
+    u8 i;
+    for (i = 0; i < *(u8*)(p + 0x2c); i++) {
+        node = *(u8**)(*(u8**)p + i * 0xc);
+        while (node != 0) {
+            actor = *(u8**)node;
+            node = *(u8**)(node + 0xc);
+            if (fn_801268E4(*(void**)(actor + 0xe8), *(void**)(p + 0x20), actor) && !(*(u32*)(actor + 0xf4) & 0x200)) {
+                fn_80130090((void**)p, actor);
+            }
+        }
+    }
 }
 
 extern "C" void fn_80130974(void* p);
