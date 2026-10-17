@@ -773,6 +773,29 @@ extern "C" void fn_80093F00(u8* p) {
     }
 }
 
+extern "C" void fn_80093F70(u8* p) {
+    u8* q = *(u8**)(p + 0x280);
+    if (q[0x159] == 2) {
+        if ((u8)(q[0x158] ^ 1)) {
+            if (*(u8*)(p + 0x282f) == 0) {
+                *(u8*)(p + 0x282c) = 0x10;
+            } else {
+                fn_800CA434(q, 0x265, 0);
+                *(u8*)(p + 0x282c) = 0xf;
+            }
+        } else {
+            if (*(u8*)(p + 0x282f) == 0) {
+                fn_800CA434(q, 0x24b, 0);
+                *(u8*)(p + 0x282c) = 5;
+            } else {
+                fn_800C6CA4(*(void**)(p + 0x27c));
+                *(u8*)(p + 0x2a5) = 2;
+                *(u8*)(p + 0x85c) = 5;
+            }
+        }
+    }
+}
+
 extern "C" void OSResetSystem(int, u32, int);
 extern "C" void fn_80094090(void) {
     OSResetSystem(1, 1, 1);
@@ -1476,9 +1499,10 @@ extern "C" void fn_8009C6A4(u8* p, u8 v) {
 
 extern "C" void fn_8009CC30(u8* p) {
     if (p[0x7b2] != 0) {
-        u16 n = *(u16*)(p + 0x7ae);
+        u32 n = *(u16*)(p + 0x7ae);
         if (n != 0) {
-            *(u16*)(p + 0x7ae) = n - 1;
+            n--;
+            *(u16*)(p + 0x7ae) = n;
             if (*(u16*)(p + 0x7ae) == p[0x882]) {
                 fn_8002F358(((void**)lbl_80285708)[p[0x7b1] - 1], 0);
             }
