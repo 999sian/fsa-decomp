@@ -38,6 +38,18 @@ struct VObj_800BD938 {
     virtual void v8();
     virtual void v9(s32);
 };
+struct Unk800BB070 {
+    u8 pad_00[0x90];
+    VObj_800BD938* objs[2];
+    u8 vals[2];
+    u8 pad_9a[0xa];
+    VObj_800BD938* objs2[2];
+    u8 vals2[2];
+    u8 pad_ae[0xa];
+    u8 sel;
+    u8 pad_b9;
+    u8 count;
+};
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_800BC6F4(u8* p);
 extern "C" int fn_800BD710(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7);
