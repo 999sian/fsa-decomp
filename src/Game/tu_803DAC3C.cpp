@@ -125,27 +125,46 @@ extern "C" void fn_803DD93C(void* self_)
     *(f32*)(self + 0x7c) = threshold;
     *(int*)(self + 0x84) = 6;
 }
-class SeqMgr;
-typedef void (SeqMgr::*SeqFunc)(void);
 
-class SeqVoice {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0C();
-    virtual BOOL isPlaying();
-    virtual void fadeOut(f32);
-};
-
-extern SeqFunc lbl_804B0568[];
-extern "C" {
-void fn_80458FF0(s32, u32, s32, s32);
-void fn_80458408(s32, u32, s32);
-void fn_803DCCA4(u8*);
-int fn_80427DB4(SeqVoice*, u8);
-void fn_80427D94(SeqVoice*);
-int fn_80427D60(SeqVoice*);
-u8 fn_804286A0(void);
-u8 fn_802B1DCC(void*);
+extern void* lbl_8053AB10;
+extern void* lbl_8053AED8;
+extern void (J2DScreen::*lbl_804B0628[])();
+void fn_8013B490(void*);
+void fn_80427D2C(void*, s32, s32, s32, s32);
+void fn_80440EE8(void*);
+extern const float lbl_80543634;
+extern const float lbl_80543638;
+extern "C" void fn_803DF624(u8* self) {
+    (((J2DScreen*)lbl_8053ADD0)->*(lbl_804B0628[*(s32*)(self + 0x84)]))();
+    fn_8013B490(lbl_8053AB10);
+    ((J2DScreen*)*(void**)(self + 0x8))->draw(lbl_80543604, lbl_80543604, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
+    if (self[0xa0] == 2) {
+        fn_80427D2C(*(void**)(self + 0x64), 0x32, 0x9f, -0x164, -0x11b);
+    }
+    fn_8013B490(lbl_8053AB10);
+    ((J2DScreen*)*(void**)(self + 0x4))->draw(lbl_80543604, lbl_80543604, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
+    fn_80440EE8(lbl_8053AED8);
+    if (*(s32*)(self + 0x84) == 5) {
+        void* obj = *(void**)(self + 0x10);
+        ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)*(f32*)(self + 0x7c));
+        obj = *(void**)(self + 0x10);
+        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))((*(void***)obj)[0xec / 4]))(obj, 0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
+    } else if (*(s32*)(self + 0x84) == 6) {
+        void* obj = *(void**)(self + 0x10);
+        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))((*(void***)obj)[0xec / 4]))(obj, 0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
+    } else if (*(s32*)(self + 0x84) == 7) {
+        void* obj = *(void**)(self + 0x10);
+        ((void (*)(void*, s32))((*(void***)obj)[0x24 / 4]))(obj, (s32)*(f32*)(self + 0x7c));
+        obj = *(void**)(self + 0x10);
+        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))((*(void***)obj)[0xec / 4]))(obj, 0, 0, 0, lbl_80543604, lbl_80543604, lbl_80543634, lbl_80543638);
+    }
+    if (*(s32*)(self + 0x94) != 0) {
+        u8* base = lbl_80529DEC;
+        if (*(s32*)(base + 0x1a0) > 0) {
+            *(s32*)(base + 0x1a0) -= 1;
+        } else {
+            *(s32*)(base + 0x1a0) = 0;
+        }
+        *(s32*)(self + 0x94) = *(s32*)(base + 0x1a0);
+    }
 }
