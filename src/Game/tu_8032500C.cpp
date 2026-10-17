@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" char lbl_804AB464[];
@@ -19,6 +20,15 @@ extern "C" u8 fn_8020D6AC(void* entry, s32 a, f32* b, s32 d, s32 e);
 extern "C" u16 fn_8022461C(s32 a, s32 b);
 extern "C" u16 fn_80226850(s32 a, s32 b);
 extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D79E8(void* a, s32 b, s32 c, f32 d, f32 e);
+extern "C" void fn_80134DE4(void* a, s32 b, s32 c);
+extern "C" u8 fn_801F2B7C(Actor* a, s32 b, s32 c, s32 d);
+extern "C" void fn_801F2B20(Actor* a, s32 b);
+extern "C" void fn_801F0E34(Actor* a, s32 b, s32 c);
+extern "C" void fn_80236074(s32 a, s32 b, s32 c);
+extern "C" void fn_8013CC50(u32 a, Vec* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern "C" void* lbl_8053AAF8;
+extern "C" u32 lbl_804AB440[];
 extern "C" u32 fn_80325548(Actor* a, s32 b, s32 c) {
     s32 region = a->field_198;
     u8* base = static_cast<u8*>(fn_8020D58C());
@@ -69,5 +79,8 @@ extern "C" void fn_803261B0(u8* p) {
     ((VObj*)p)->v4C();
     fn_8029EDB8(lbl_8053AC98, p + 0xc, 0, *(s32*)(p + 0x4), buf);
     *(s32*)(p + 0x230) = 3;
+}
+
+void fn_8032686C(void) {
 }
 
