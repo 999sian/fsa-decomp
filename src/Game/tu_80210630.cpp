@@ -3,76 +3,47 @@
 extern "C" void fn_801D4F64(void);
 extern "C" void fn_801CEBD0(void);
 
-extern "C" void fn_804032E8(unsigned int tag, void* ptr);
-extern "C" void fn_802F745C(void* a, ...);
+#include "Game/ItemBase.h"
+
+extern "C" void* fn_804032E8(unsigned int tag, void* id);
+extern "C" void fn_802F745C(void* mgr, void* pos, void* tex, void* rec);
 extern "C" void* lbl_804A61A8[];
 extern "C" const float lbl_8046A470[];
 extern "C" const float lbl_8046A480[];
 extern "C" const float lbl_8053FAC0;
 extern "C" const float lbl_8053FAC4;
 extern "C" const float lbl_8053FAC8;
+extern "C" const double lbl_8053FAD0;
 extern "C" char* lbl_8053AB10;
+
 extern "C" void fn_80210630(char* p, unsigned char flag, unsigned char a, unsigned char b, unsigned char c)
 {
-	unsigned char blk[0x3c];
-	float mat[3][4];
 	float v[3];
-	unsigned char i;
-	int k;
+	float mat[3][4];
+	DrawRec rec;
+	void* tex;
 
-	fn_804032E8(0x54494D47, lbl_804A61A8[*(int*)(p + 0x98) + (flag != 0 ? 4 : 0)]);
-	*(int*)(blk + 0x10) = -1;
-	*(int*)(blk + 0x14) = -1;
-	for (i = 0; i < 16; i += 8) {
-		blk[(unsigned char)(i + 0)] = i + 0;
-		blk[(unsigned char)(i + 1)] = i + 1;
-		blk[(unsigned char)(i + 2)] = i + 2;
-		blk[(unsigned char)(i + 3)] = i + 3;
-		blk[(unsigned char)(i + 4)] = i + 4;
-		blk[(unsigned char)(i + 5)] = i + 5;
-		blk[(unsigned char)(i + 6)] = i + 6;
-		blk[(unsigned char)(i + 7)] = i + 7;
-	}
-	k = *(int*)(p + 0x98);
-	v[0] = *(float*)(p + 0xc);
-	v[1] = *(float*)(p + 0x10);
-	v[2] = *(float*)(p + 0x14);
+	tex = fn_804032E8(0x54494D47, lbl_804A61A8[*(int*)(p + 0x98) + 4 * (flag != 0)]);
+	rec.b1c = a;
+	rec.b1d = b;
+	*(u8*)&rec.w14 = c;
+	mat[0][3] = lbl_8053FAC0;
+	mat[1][3] = lbl_8053FAC0;
+	mat[2][3] = lbl_8053FAC0;
 	mat[0][0] = lbl_8053FAC4 * *(float*)(p + 0x54);
 	mat[0][1] = lbl_8053FAC0;
 	mat[0][2] = lbl_8053FAC0;
-	mat[0][3] = lbl_8053FAC0;
 	mat[1][0] = lbl_8053FAC0;
 	mat[1][1] = lbl_8053FAC4 * *(float*)(p + 0x58);
 	mat[1][2] = lbl_8053FAC0;
-	mat[1][3] = lbl_8053FAC0;
 	mat[2][0] = lbl_8053FAC0;
 	mat[2][1] = lbl_8053FAC0;
 	mat[2][2] = lbl_8053FAC4 * *(float*)(p + 0x5c);
-	mat[2][3] = lbl_8053FAC0;
-	v[0] = v[0] + mat[0][0] * (lbl_8053FAC8 * (float)*(unsigned short*)(p + 2) - lbl_8046A470[k]);
-	v[1] = v[1] + mat[1][1] * (lbl_8053FAC8 * (float)*(unsigned short*)(p + 4) - lbl_8046A480[k]);
-	*(void**)(blk + 0x18) = mat;
-	blk[0x14] = c;
-	blk[0x1c] = a;
-	blk[0x1d] = b;
-	blk[0x1e] = 0;
-	blk[0x1f] = 1;
-	blk[0x20] = 1;
-	blk[0x21] = 0;
-	blk[0x22] = 0;
-	blk[0x23] = 0;
-	blk[0x24] = 0;
-	blk[0x25] = 0;
-	blk[0x26] = 1;
-	*(int*)(blk + 0x28) = 3;
-	blk[0x2c] = 1;
-	blk[0x2d] = 0;
-	blk[0x2e] = 0;
-	*(int*)(blk + 0x30) = -1;
-	*(int*)(blk + 0x34) = 0;
-	*(int*)(blk + 0x38) = 2;
+	rec.w18 = mat;
+	v[0] = v[0] + mat[0][0] * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 2) - lbl_8046A470[*(int*)(p + 0x98)]);
+	v[1] = v[1] + mat[1][1] * (lbl_8053FAC8 * (float)*(unsigned short*)((char*)tex + 4) - lbl_8046A480[*(int*)(p + 0x98)]);
 	if (*(int*)(p + 4) < 8) {
-		fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), p, blk);
+		fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), v, tex, &rec);
 	}
 }
 
@@ -95,6 +66,13 @@ extern "C" void fn_80239914(float *, unsigned int, unsigned int);
 extern "C" unsigned char *fn_8020D58C(void);
 extern "C" void fn_8020D8C0(unsigned char *, float *, unsigned int, unsigned int);
 extern "C" void fn_801CE0A4(void);
+extern "C" const float lbl_8053FAD8;
+extern "C" const float lbl_8053FADC;
+extern "C" const float lbl_8053FAE0;
+extern "C" const float lbl_8053FAE4;
+extern "C" void fn_80239914(float* box, unsigned int a, unsigned int b);
+extern "C" unsigned char* fn_8020D58C(void);
+extern "C" void fn_8020D8C0(unsigned char* p, float* box, unsigned int b, unsigned int a);
 extern "C" void fn_802108BC(int param_1) {
     float box[4];
     fn_801CE0A4();
@@ -121,32 +99,32 @@ extern "C" void* lbl_804C3128[];
 extern "C" void fn_80210A30(char* p, float* out);
 extern "C" void fn_80210990(char* p, int side, float* out)
 {
-	float x = *(float*)(p + 0x54);
 	float y = *(float*)(p + 0x58);
+	float x = *(float*)(p + 0x54);
 	out[0] = -16.0f * x;
 	out[1] = -24.0f * y;
 	out[2] = 16.0f * x;
 	out[3] = 8.0f * y;
 	switch (side) {
 	case 0:
-		out[2] = out[2] - x * 8.0f;
+		out[2] = out[2] - 8.0f * x;
 		break;
 	case 1:
-		out[0] = out[0] + x * 8.0f;
+		out[0] = out[0] + 8.0f * x;
 		break;
 	case 2:
-		out[3] = out[3] - y * 8.0f;
+		out[3] = out[3] - 8.0f * y;
 		break;
 	case 3:
-		out[1] = out[1] + y * 8.0f;
+		out[1] = out[1] + 8.0f * y;
 		break;
 	}
 }
 
 extern "C" void fn_80210A30(char* p, float* out)
 {
-	float x = *(float*)(p + 0x54);
 	float y = *(float*)(p + 0x58);
+	float x = *(float*)(p + 0x54);
 	out[0] = x * -16.0f;
 	out[1] = y * -24.0f;
 	out[2] = x * 16.0f;
