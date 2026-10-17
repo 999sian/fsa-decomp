@@ -891,6 +891,14 @@ extern "C" void* fn_800970F8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800CBF78(void* p);
+extern "C" void fn_80097154(u8* self) {
+    void* p = *(void**)(self + 0x298);
+    if (p != NULL) {
+        fn_800CBF78(p);
+    }
+}
+
 extern "C" void fn_80098354(char* param_1) {
     if (*(void**)(param_1 + 0xec) != nullptr) {
         VObj_80098354* obj = (VObj_80098354*)param_1;
