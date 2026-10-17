@@ -30,7 +30,7 @@ extern "C" void fn_80194830(u32* a);
 extern "C" void* fn_8015AA60(u32 size, u32 align);
 extern "C" void* fn_8015A90C(u32 size);
 extern u32 lbl_802FF6E0;
-f32 sqrtf(f32 x);
+double sqrt(double x);
 struct VObj_801941F8 {
     virtual void vf0(void);
     virtual void vf1(void);
