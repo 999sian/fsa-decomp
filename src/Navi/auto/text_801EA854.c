@@ -11,7 +11,7 @@ extern "C" void MWTRACE(unsigned char, char*, ...);
 extern "C" void* TRK_memcpy(void* dst, const void* src, unsigned int n);
 extern "C" int usr_puts_serial(const char* msg);
 extern "C" const char lbl_80202BF0[];
-extern "C" int gTRKBigEndian;
+extern "C" int gTRKBigEndian[4];
 extern "C" int fn_801EA854(void* param_1) {
     int err = TRKWriteUARTN((unsigned char*)param_1 + 0x10, *(unsigned int*)((unsigned char*)param_1 + 8));
     MWTRACE(1, lbl_80202BC8, err);
