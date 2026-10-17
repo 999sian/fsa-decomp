@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JMath/Inline.h"
 
 typedef struct {
     u32 a;
@@ -459,10 +460,11 @@ extern "C" void fn_801C5DA8(u32 a, u8* b, u8* c);
 extern u32 lbl_802FF6D0;
 extern "C" int fn_801945C4(u8* p, u32 param_2) {
     u32* a;
-    s32 r;
+    s32 iVar1;
     s32 ret;
+    s32 iVar4;
     *(u32*)(p + 0x34) = param_2;
-    r = fn_80194350(p);
+    iVar1 = fn_80194350(p);
     a = (u32*)fn_8015A90C(0x10);
     if (a != 0) {
         a[0] = 0;
@@ -475,17 +477,17 @@ extern "C" int fn_801945C4(u8* p, u32 param_2) {
     if (a == 0) {
         ret = 4;
     } else {
-        a[3] = (r + 0x1f) & ~0x1f;
+        a[3] = (iVar1 + 0x1f) & ~0x1f;
         a[0] = (u32)fn_8015AA60(a[3], 0x20);
         a[1] = (u32)fn_8015AA60(a[3], 0x20);
         a[2] = 0;
         ret = 0;
     }
-    r = 0;
+    iVar4 = 0;
     if (ret != 0) {
-        r = ret;
+        iVar4 = ret;
     }
-    return r;
+    return iVar4;
 }
 
 extern "C" void fn_801949C8(void) {
