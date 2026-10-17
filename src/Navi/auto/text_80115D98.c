@@ -11,11 +11,13 @@ extern u32 lbl_802FF228;
 extern u32 lbl_802FF22C;
 extern u32 lbl_802FF230;
 extern "C" f64 fn_801E9FA0(void);
-s16 fn_80115D98(void)
+s16 fn_80115D98(f64 a)
 {
+    f32 f;
     s32 v;
 
-    v = (s32)(10430.4f * (f32)fn_801E9FA0());
+    f = (f32)fn_801E9FA0();
+    v = (s32)(10430.4f * f);
     if (v < -0x8000) {
         v += 0x10000;
     } else if (v > 0x7fff) {
