@@ -74,6 +74,11 @@ struct PukuGameRes {
 };
 extern "C" void fn_802F86CC(void* layer, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
 extern void* lbl_8053AAF8;
+extern u8* lbl_8053AB10;
+extern const f32 lbl_8053DAB8;
+extern const f32 lbl_8053DABC;
+extern const f32 lbl_8053DAC0;
+extern char lbl_80466808[];
 extern "C" void v07__5ActorFv(void* this_);
 extern "C" void fn_80172894(void* this_) {
     char* p = (char*)this_;
@@ -660,8 +665,8 @@ extern "C" void fn_801752D8(void* this_) {
                     *(s32*)(p + 0x2c0 + i * 4) = -1;
                     cnt++;
                 } else {
-                    Vec pos = *(Vec*)(p + 0xc);
-                    *(Vec*)((char*)a + 0x280) = pos;
+                    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+                    *(JGeometry::TVec3f*)((char*)a + 0x280) = pos;
                     *(s32*)(p + 0x260) = 0x384;
                 }
             } else {
