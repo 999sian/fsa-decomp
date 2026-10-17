@@ -99,6 +99,7 @@ struct StateObj8006792C {
     u16 m_296;
 };
 extern StateFunc8006792C lbl_8027FC20;
+extern "C" u16 fn_80067E94(u16* p);
 struct StateObj8006A924;
 typedef void (StateObj8006A924::*StateFunc8006A924)(s32);
 struct StateObj8006A924 {
@@ -255,6 +256,37 @@ extern "C" int fn_800636A0(void* a, u8* p, int n) {
     }
     return fn_80062FE4(r);
 }
+
+extern char lbl_8027F0BC[];
+#pragma dont_inline on
+extern "C" int fn_800636F4(s32 a, void* p, s32 n) {
+    u8* r = (u8*)fn_800637F0((void*)a, (u8*)p, n);
+    if (r == 0) {
+        fn_800074C0(lbl_8027F0BC, a);
+        return 0;
+    }
+    if (--*(u16*)(r + 0xe) == 0 && r != 0) {
+        u8* obj = *(u8**)(r + 0x10);
+        if (obj != 0) {
+            if (obj != 0) {
+                (*(void (**)(u8*, s32))(*(u8**)(obj + 0x10) + 8))(obj, 1);
+            }
+            *(u32*)(r + 0x10) = 0;
+        } else if (*(u32*)(r + 0x14) != 0) {
+            if (*(void**)(r + 0x1c) != 0) {
+                fn_8000FA24(*(void**)(r + 0x1c));
+                *(u32*)(r + 0x1c) = 0;
+            }
+            if (*(u32*)(r + 0x20) != 0) {
+                *(u32*)(r + 0x20) = 0;
+            }
+            (*(void (**)(u8*))(**(u8***)(r + 0x14) + 0xc))(*(u8**)(r + 0x14));
+            *(u32*)(r + 0x14) = 0;
+        }
+    }
+    return 1;
+}
+#pragma dont_inline reset
 
 extern "C" void* fn_800637F0(void* a, u8* p, int n) {
     int i;
