@@ -26,6 +26,21 @@ public:
     virtual void vf3();
     virtual void vf4(void* owner, void* item, void* arg);
 };
+class Unk801334ACObj {
+public:
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4();
+    virtual double vf5(double);
+};
+struct Unk801334AC {
+    f32 val;
+    u32 count;
+    u32 pad;
+    Unk801334ACObj* obj;
+};
 extern "C" void fn_801E4334(char* buf, u32 n, const void* fmt, va_list args);
 extern "C" void fn_80123628(void* p, char* s);
 extern "C" void fn_80123928(void* p, const void* fmt, va_list args);
@@ -1719,7 +1734,8 @@ extern "C" void fn_8012C0C8(u8* p, u8* q)
         f32 t = (r - *(f32*)(b + 0x30)) * *(f32*)(a + 8);
         v = lbl_803016CC * (*(f32*)(b + 0x38) + t);
     } else {
-        v = lbl_803016CC * *(f32*)(b + 0x38);
+        f32 t = lbl_803016CC;
+        v = t * *(f32*)(b + 0x38);
     }
     *(u8*)(q + 0x96) = v;
 }
