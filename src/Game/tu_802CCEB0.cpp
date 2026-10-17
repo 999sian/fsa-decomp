@@ -42,4 +42,4 @@ extern "C" void fn_802CDA70(Actor* this_) {
         *(u32*)((u8*)this_ + 0x230) = 8;
     }
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
