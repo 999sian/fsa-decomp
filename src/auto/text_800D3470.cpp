@@ -1317,7 +1317,7 @@ extern "C" void fn_800D7F78(void* p) {
 extern "C" void fn_800D800C(u8* self) {
     u8* p = self;
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(s32*)(self + 0xd4);
-    u8* start = __GDCurrentDL->pDisplayListData;
+    u32 start = (u32)__GDCurrentDL->pDisplayListData;
     for (u32 i = 0; i < 3; i++) {
         GXColorS10 c = *(GXColorS10*)(p + 0x98);
         J3DGDSetTevColorS10(GXTevRegID(i + 1), c);
@@ -1329,7 +1329,7 @@ extern "C" void fn_800D800C(u8* self) {
         J3DGDSetTevKColor(GXTevKColorID(i), c);
         p += 4;
     }
-    DCStoreRange(start, __GDCurrentDL->pDisplayListData - start);
+    DCStoreRange((void*)start, __GDCurrentDL->pDisplayListData - (u8*)start);
 }
 
 extern "C" void fn_800D80DC(u8* p) {
@@ -1668,13 +1668,12 @@ extern "C" void fn_800D8E70(u8* p) {
 
 extern "C" void fn_800D8F78(u8* self) {
     u8 count = *(u8*)(self + 0xd0);
-    if (count == 0) return;
-    
+
     u32 accumulator = 0;
-    for (u32 i = 0; i < count; i++) {
+    for (u32 i = 0; i < count; self += 4, i++) {
         u32 value = *(u32*)(self + 0x78);
-        accumulator = (value & 0xff000000) | ((i + 0x10) << 24);
-        
+        accumulator = value | ((i + 0x10) << 24);
+
         __GDWrite(0x61);
         __GDWrite(accumulator >> 24);
         __GDWrite((accumulator >> 16) & 0xff);
@@ -1982,8 +1981,8 @@ extern "C" void fn_800D9F10(void* p) {
 extern "C" u8 isTexNoReg__FPv(void*);
 extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
-    u8* start;
     u8* cur;
+    u8* start;
     u32 i = 0;
     GDSetCurrOffset(param_2);
     start = GDGetCurrPointer();
