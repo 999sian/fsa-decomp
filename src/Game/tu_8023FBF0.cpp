@@ -2,6 +2,7 @@
 // Small bodies originally from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Box.h"
 
 #define U8(p, o) (*(u8*)((char*)(p) + (o)))
 #define U16(p, o) (*(u16*)((char*)(p) + (o)))
