@@ -18,6 +18,38 @@ extern "C" char* lbl_8053AAF8;
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802DCD0C(void* room);
 
+extern "C" char* lbl_8053AB10;
+extern "C" void fn_8013B438(char* p);
+extern "C" f32 lbl_8053D430;
+extern "C" f32 lbl_8053D434;
+extern "C" f32 lbl_8053D438;
+extern "C" f32 lbl_8053D440;
+extern "C" f32 lbl_8053D444;
+extern "C" void GXClearVtxDesc(void);
+extern "C" void GXSetVtxDesc(s32 attr, s32 type);
+extern "C" void GXSetVtxAttrFmt(s32 vtxfmt, s32 attr, s32 cnt, s32 fmt, s32 frac);
+extern "C" void GXSetChanCtrl(s32 chan, s32 enable, s32 amb, s32 mat, s32 mask, s32 diff, s32 attn);
+extern "C" void GXSetNumChans(s32 n);
+extern "C" void GXSetNumTexGens(s32 n);
+extern "C" void GXSetTevColor(s32 id, u32* color);
+extern "C" void GXSetTevOrder(s32 stage, s32 coord, s32 map, s32 color);
+extern "C" void GXSetTevColorIn(s32 stage, s32 a, s32 b, s32 c, s32 d);
+extern "C" void GXSetTevAlphaIn(s32 stage, s32 a, s32 b, s32 c, s32 d);
+extern "C" void GXSetTevColorOp(s32 stage, s32 op, s32 bias, s32 scale, s32 clamp, s32 reg);
+extern "C" void GXSetTevAlphaOp(s32 stage, s32 op, s32 bias, s32 scale, s32 clamp, s32 reg);
+extern "C" void GXSetNumTevStages(s32 n);
+extern "C" void GXSetBlendMode(s32 type, s32 src, s32 dst, s32 op);
+extern "C" void GXSetZMode(s32 enable, s32 func, s32 update);
+extern "C" void GXSetZCompLoc(s32 before);
+extern "C" void GXSetAlphaCompare(s32 comp0, s32 ref0, s32 op, s32 comp1, s32 ref1);
+extern "C" void GXSetColorUpdate(s32 enable);
+extern "C" void GXSetAlphaUpdate(s32 enable);
+extern "C" void GXSetCullMode(s32 mode);
+extern "C" void GXBegin(s32 prim, s32 fmt, s32 nverts);
+extern "C" void PSMTXMultVec(void* m, void* src, void* dst);
+extern "C" double sin(double x);
+extern "C" double cos(double x);
+
 extern "C" void fn_80158B3C(char* p) {
     *(u8*)(p + 0x4) = 0xff;
     *(u8*)(p + 0x5) = 0xff;
