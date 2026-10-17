@@ -2,6 +2,12 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
+extern void* lbl_8053AAF8;
+extern "C" void* fn_8023E724(u32 id);
+extern "C" void* fn_8023DE58(u32 id);
+extern "C" void* fn_801F856C(void);
+extern "C" void Actor_CreateByID(void*, u32, void*, void*, u32, s32, s32);
+
 // ---- from Game/dtor_8013C5C8.cpp
 
 extern "C" void fn_800EB208(void* this_, s32 flag);
@@ -84,6 +90,37 @@ extern "C" void fn_8013DC1C(void* this_) {
     calc__17JPAEmitterManagerFUc(*(void**)((char*)this_ + 0xc), 10);
 }
 
+extern "C" void fn_8013DC44(u8* this_) {
+    bool bVar2 = false;
+    u8 flag = 0;
+    if (*((u8*)lbl_8053AAF8 + 0x7f) != 0) {
+        s32 t = *(s32*)((u8*)lbl_8053AAF8 + 0x4c);
+        if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb) flag = 1;
+    } else {
+        s32 t = *(s32*)((u8*)lbl_8053AAF8 + 0x4c);
+        if (t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb || t == 0xc) flag = 1;
+    }
+    if (!flag || *(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xc) {
+        bVar2 = true;
+    } else if (fn_802DCD0C(fn_802D6A9C()) == 0) {
+        bVar2 = true;
+    }
+    if (bVar2) {
+        if (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) != 0xb) {
+            calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 0);
+            calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 1);
+            calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 2);
+            calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 4);
+            calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 5);
+            calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 6);
+        }
+        calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 7);
+        calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 8);
+    }
+    calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 3);
+    calc__17JPAEmitterManagerFUc(*(void**)(this_ + 0xc), 9);
+}
+
 extern "C" void* fn_8013F378(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_8049F178;
@@ -93,6 +130,53 @@ extern "C" void* fn_8013F378(void* this_, s16 freeFlag) {
             dtor_80084580(this_);
         }
     }
+    return this_;
+}
+
+extern "C" void* create__12JKRSolidHeapFUlP7JKRHeapb(u32, void*, s32);
+extern "C" void* __nw__FUlP7JKRHeapi(u32, void*, s32);
+extern "C" void* __ct__18JPAResourceManagerFPCvP7JKRHeap(void*, const void*, void*);
+extern "C" void* __ct__17JPAEmitterManagerFUlUlP7JKRHeapUcUc(void*, u32, u32, void*, u8, u8);
+extern "C" void entryResourceManager__17JPAEmitterManagerFP18JPAResourceManagerUc(void*, void*, u8);
+extern "C" void* swapTexture__18JPAResourceManagerFPC7ResTIMGPCc(void*, const void*, const char*);
+extern "C" s32 adjustSize__12JKRSolidHeapFv(void*);
+extern "C" void __construct_array(void*, void*, void*, u32, u32);
+extern "C" void OSReport(const char*, ...);
+extern char lbl_80465980[];
+extern "C" void fn_8013F584(void);
+extern "C" void* fn_8013F3E4(u8* this_, void* heap) {
+    char* base = lbl_80465980;
+    *(void**)this_ = lbl_8049F178;
+    __construct_array(this_ + 0x10, (void*)fn_8013F584, 0, 0x10, 0x400);
+    *(void**)(this_ + 0x4) = create__12JKRSolidHeapFUlP7JKRHeapb(-1, heap, 0);
+    void* res = __nw__FUlP7JKRHeapi(0x14, *(void**)(this_ + 0x4), 0);
+    if (res != 0) {
+        void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
+        void* tex = (*(void* (**)(void*, u32, const char*))(**(u8***)((u8*)lbl_8053AAF8 + 0xa4) + 0x18))(obj, 0x3f3f3f3f, base + 0xb8);
+        res = __ct__18JPAResourceManagerFPCvP7JKRHeap(res, tex, *(void**)(this_ + 0x4));
+    }
+    *(void**)(this_ + 0x8) = res;
+    OSReport(base + 0xc8);
+    void* em = __nw__FUlP7JKRHeapi(0x30, *(void**)(this_ + 0x4), 0);
+    if (em != 0) {
+        em = __ct__17JPAEmitterManagerFUlUlP7JKRHeapUcUc(em, 0x1c00, 0x200, *(void**)(this_ + 0x4), 0xb, 8);
+    }
+    *(void**)(this_ + 0xc) = em;
+    entryResourceManager__17JPAEmitterManagerFP18JPAResourceManagerUc(*(void**)(this_ + 0xc), *(void**)(this_ + 0x8), 0);
+    swapTexture__18JPAResourceManagerFPC7ResTIMGPCc(*(void**)(this_ + 0x8), *(void**)(*(u8**)(lbl_8053AB10 + 0x34) + 0x20), base + 0xe8);
+    adjustSize__12JKRSolidHeapFv(*(void**)(this_ + 0x4));
+    this_[0x4110] = 200;
+    this_[0x4111] = 250;
+    this_[0x4112] = 172;
+    this_[0x4113] = 250;
+    this_[0x4114] = 174;
+    this_[0x4115] = 172;
+    this_[0x4116] = 180;
+    this_[0x4117] = 210;
+    this_[0x4118] = 230;
+    this_[0x4119] = 240;
+    this_[0x411a] = 180;
+    this_[0x411b] = 240;
     return this_;
 }
 
