@@ -4,10 +4,14 @@
 #include "Game/ItemBase.h"
 #include "Game/Actor.h"
 
-class ActorV19 : public Actor {
-public:
-    virtual u8 v19(s32 a, Vec* b);
-};
+extern "C" void detach__5ActorFv(void* this_);
+extern int __float_epsilon[];
+
+static inline f32 blkInvSqrt(f32 x) {
+    f32 y = __frsqrte(x);
+    y = 0.5f * y * (3.0f - (x * (y * y)));
+    return y;
+}
 
 // ---- fn_80207548_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
