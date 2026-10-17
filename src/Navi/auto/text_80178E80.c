@@ -198,6 +198,19 @@ extern "C" void fn_801DEA74(s32 a, void* b, f32 c, f32 d, f32 e, f32 f);
 extern "C" void fn_801DEC98(s32 a, s32 b, s32 c);
 extern "C" void fn_801DEE68(s32 a, s32 b, s32 c);
 extern "C" void fn_801DEE9C(s32 a);
+struct NaviPose_80185038 { u8 a; u8 b; f32 f[8]; };
+struct VObj_80185038 {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
+    virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29();
+    virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
+    virtual void v35(); virtual void v36(); virtual u8 v37();
+};
+extern NaviPose_80185038 lbl_80202238;
+extern "C" void fn_8016B200(void* p, u8 idx, u8* out, f32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g);
 extern s32 lbl_802FE658;
 extern s32 lbl_802FE65C;
 extern f32 lbl_80301CA0;
@@ -1768,10 +1781,10 @@ extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     pos[0] += f1;
     pos[1] += f2;
     pos[2] += f1;
-    pos[3] += f2;
     fn_801C5DA8(param_2, self + 0x80, buf);
-    fn_80182764(self, pos, self + 0x114);
+    pos[3] += f2;
     fn_801DF2A4(buf, 0);
+    fn_80182764(self, pos, self + 0x114);
     fn_80177CA8(self, self + 0x114);
 }
 
@@ -2478,14 +2491,14 @@ extern "C" void fn_801889D8(u8* param_1, void* param_2) {
 }
 
 extern "C" void fn_801889E0(u8* self, u8* arg) {
-    u8 k;
-    u16 i;
-    u16 j;
     u16 n;
-    u16 cnt;
-    u8* ent;
     u16* idx;
+    u8* ent;
+    u16 cnt;
     u32 off;
+    u16 j;
+    u16 i;
+    u8 k;
 
     *(u8**)(self + 0x1A0) = arg;
     self[0x1A4] = 0;
@@ -3416,6 +3429,22 @@ extern "C" void fn_80190758(u32 idx, u32 addr, u32 c) {
     *(*(u8**)&lbl_802FFA80[2])++ = w;
 }
 
+extern "C" void fn_801E012C(void);
+#pragma use_lmw_stmw off
+extern "C" void fn_80190D98(s32 a, u32 b, u32 c, u32 d, u32 e) {
+    extern int* lbl_802FFA80;
+    if ((u32)(lbl_802FFA80[2] + 5) > (u32)lbl_802FFA80[3]) {
+        fn_801E012C();
+    }
+    u32 w = (((c << 4) | b) | (d << 8)) | (e << 12);
+    w |= ((a >> 1) + 0x25) << 24;
+    *(*(u8**)&lbl_802FFA80[2])++ = 0x61;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 16;
+    *(*(u8**)&lbl_802FFA80[2])++ = w >> 8;
+    *(*(u8**)&lbl_802FFA80[2])++ = w;
+}
+#pragma use_lmw_stmw reset
 extern "C" void fn_80191A60(u32* data, s32 index) {
     *(volatile u8*)0xCC008000 = 0x10;
     *(volatile u16*)0xCC008000 = 0xB;
