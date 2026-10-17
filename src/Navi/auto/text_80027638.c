@@ -98,8 +98,6 @@ extern "C" void fn_80027CA8(void) {
 
 extern "C" void fn_80027CB8(void) {
     extern unsigned char lbl_802FEE34;
-    extern unsigned char lbl_802FEE41;
-    extern unsigned char lbl_802FEE42;
     unsigned int flags;
 
     if (fn_800218C4(lbl_802BB0FC) == 0 || lbl_802FEE34 != 0) {
