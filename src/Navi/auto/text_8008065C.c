@@ -183,6 +183,25 @@ extern "C" void fn_80083C34(u8* p, s32 idx)
 	fn_80083D50(p, (void*)table[*(s32*)(p + 0x3f0) * 2]);
 }
 
+extern "C" BOOL fn_80083C94(u8* p)
+{
+	if (*(s8*)(p + 0x463) != 0) {
+		s32* table = (s32*)lbl_80283038[*(s32*)(p + 0x3ec)];
+		s32 n = *(s32*)(p + 0x3f4);
+		if (n == 0) {
+			*(s32*)(p + 0x3f0) += 1;
+			fn_80083D50(p, (void*)table[*(s32*)(p + 0x3f0) * 2]);
+			*(s32*)(p + 0x3f4) = table[*(s32*)(p + 0x3f0) * 2 + 1];
+		} else if (n > 0) {
+			*(s32*)(p + 0x3f4) = n - 1;
+			fn_80083D50(p, (void*)table[*(s32*)(p + 0x3f0) * 2]);
+		} else {
+			return 1;
+		}
+	}
+	return 0;
+}
+
 extern "C" void fn_80081328(void);
 extern "C" void fn_80086710(void) {
     fn_80081328();
