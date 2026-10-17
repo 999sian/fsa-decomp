@@ -1,4 +1,27 @@
 #include "types.h"
+#include <math.h>
+
+static inline f64 sqrtStep(f64 tmpd, f32 mag) {
+    return tmpd * 0.5 * (3.0 - mag * (tmpd * tmpd));
+}
+static inline f32 dolsqrtfull(f32 mag) {
+    if (mag > 0.0f) {
+        f64 tmpd = __frsqrte(mag);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        tmpd = sqrtStep(tmpd, mag);
+        return mag * tmpd;
+    } else if (mag < 0.0) {
+        return NAN;
+    } else if (fpclassify(mag) == 1) {
+        return NAN;
+    } else {
+        return mag;
+    }
+}
+
+extern "C" s32 fn_801F7818(void* mgr, u32 name, u32 id, void* list, s32 max);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 
 extern "C" char lbl_8049F784[];
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -34,6 +57,70 @@ extern "C" void fn_8014D304(u8* this_) {
         virtual void v20(); virtual void v21();
     };
     ((VObj*)this_)->v19();
+}
+
+extern "C" u16 fn_802265FC(f32* pos, s32 room);
+extern "C" u8 fn_802DE9A0(void);
+extern "C" u8 fn_802DEB58(void);
+extern "C" f32 lbl_8053D128;
+extern "C" f32 lbl_8053D12C;
+extern "C" f32 lbl_8053D160;
+extern "C" f32 lbl_8053D178;
+extern "C" f32 lbl_8053D198;
+extern "C" BOOL fn_8014D6DC(u8* this_) {
+    f32 pos[2];
+    f32 x;
+    f32 y;
+    f32 minX;
+    f32 maxX;
+    f32 minY;
+    f32 maxY;
+
+    if (*(f32*)(this_ + 0x14) > 0.1f) {
+        return 0;
+    }
+    x = *(f32*)(this_ + 0xc);
+    y = *(f32*)(this_ + 0x10);
+    minX = x + -3.0f;
+    maxX = x + 3.0f;
+    minY = y + -3.0f;
+    maxY = y + 3.0f;
+    pos[0] = maxX + 0.5f * (minX - maxX);
+    pos[1] = maxY + 0.5f * (minY - maxY);
+    u16 kind = fn_802265FC(pos, *(s32*)(this_ + 4));
+    if (kind == 3) {
+        *(f32*)(this_ + 0x284) = *(f32*)(this_ + 0xc);
+        *(f32*)(this_ + 0x288) = *(f32*)(this_ + 0x10);
+        *(f32*)(this_ + 0x28c) = *(f32*)(this_ + 0x14);
+        *(f32*)(this_ + 0x44) = 0.0f;
+        *(f32*)(this_ + 0x40) = 0.0f;
+        *(f32*)(this_ + 0x3c) = 0.0f;
+        *(s32*)(this_ + 0x230) = 6;
+        return 1;
+    } else if (kind == 0xe) {
+        *(f32*)(this_ + 0x284) = *(f32*)(this_ + 0xc);
+        *(f32*)(this_ + 0x288) = *(f32*)(this_ + 0x10);
+        *(f32*)(this_ + 0x28c) = *(f32*)(this_ + 0x14);
+        *(f32*)(this_ + 0x44) = 0.0f;
+        *(f32*)(this_ + 0x40) = 0.0f;
+        *(f32*)(this_ + 0x3c) = 0.0f;
+        if (fn_802DE9A0() == 1 || fn_802DEB58() == 1) {
+            *(s32*)(this_ + 0x230) = 8;
+        } else {
+            *(s32*)(this_ + 0x230) = 6;
+        }
+        return 1;
+    } else if (kind == 0xd || kind == 0x3b) {
+        *(f32*)(this_ + 0x284) = *(f32*)(this_ + 0xc);
+        *(f32*)(this_ + 0x288) = *(f32*)(this_ + 0x10);
+        *(f32*)(this_ + 0x28c) = *(f32*)(this_ + 0x14);
+        *(f32*)(this_ + 0x44) = 0.0f;
+        *(f32*)(this_ + 0x40) = 0.0f;
+        *(f32*)(this_ + 0x3c) = 0.0f;
+        *(s32*)(this_ + 0x230) = 7;
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void fn_8014DA20(u8* this_) {
