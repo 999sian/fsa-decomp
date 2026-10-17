@@ -1214,8 +1214,8 @@ inline bool padActive3(char* p) {
     }
     return true;
 }
-  inline s32 countSharingC(char* p) { s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { s32 linked; if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { linked = S32(p, 0xd60); if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else { linked = S32(p, 0x4);
-                    if (linked == fn_8022F3DC(i)) {
+  inline s32 countSharingC(char* p) { s32 me; s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { s32 linked; if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { linked = S32(p, 0xd60); if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else { me = S32(p, 0x4);
+                     if (me == fn_8022F3DC(i)) {
                       c++;
                   }
               }
