@@ -56,7 +56,16 @@ struct J2DScreen {
 struct TagEntry {
     u8 pad[0x30];
     u64 tag0;
-    u8 pad2[0x30];
+    union {
+        u8 pad2[0x30];
+        struct {
+            u8 pad2_[0x10];
+            u64 tag2;
+            u64 tag3;
+            u64 tag4;
+            u64 tag5;
+        };
+    };
     u64 tag1;
 };
 struct ArcHolder {
@@ -64,7 +73,7 @@ struct ArcHolder {
     JKRArchive* arc;
 };
 extern "C" {
-extern TagEntry lbl_80490410[];
+extern const TagEntry lbl_80490410[];
 extern ArcHolder lbl_80529DEC_;
 }
 struct PaneCtrl {
@@ -170,13 +179,13 @@ extern "C" void fn_804479A0(Obj80447C30* self)
 {
     for (int i = 0; i < 4; i++) {
         self->f2c &= ~(u8)(1 << i);
-        register void* res = fn_804030C4('TIMG', lbl_804B1BF8[0]);
+        void* res = fn_804030C4('TIMG', lbl_804B1BF8[0]);
         self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x10))->changeTexture(res, 0);
         self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x18))->changeTexture(res, 0);
         self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x20))->changeTexture(res, 0);
         self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x28))->changeTexture(res, 0);
-        self->screen->search(lbl_80490410[i].tag0)->mVisible = 0;
-        self->screen->search(lbl_80490410[i].tag1)->mVisible = 0;
+        self->screen->search(lbl_80490410[i].tag0)->hide();
+        self->screen->search(lbl_80490410[i].tag1)->hide();
     }
 }
 
