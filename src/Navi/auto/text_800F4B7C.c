@@ -218,6 +218,26 @@ extern "C" void fn_80101004(void* param_1) {
     *(u8*)((u8*)param_1 + 0x189) = 0x17;
 }
 
+extern "C" void fn_801019C0(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x528) != 0) {
+        *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
+    } else {
+        if (*(s16*)((u8*)param_1 + 0xec) == 0) {
+            fn_8002F458((void*)0x9c, 0);
+        }
+        s32 iVar1 = fn_80108810(param_1, *(s16*)((u8*)param_1 + 0xec), *(u8*)(lbl_802C5A84 + 0x10), 0, 1, lbl_80301204, *(f32*)(lbl_802C5A84 + 0xc));
+        *(s16*)((u8*)param_1 + 0xec) = *(s16*)((u8*)param_1 + 0xec) + 1;
+        if (iVar1 == 1) {
+            *(s16*)((u8*)param_1 + 0xec) = 0;
+            *(u8*)(*(u32*)((u8*)param_1 + 0x12c) + 0xb0) = 0;
+            *(u8*)(*(u32*)((u8*)param_1 + 0x150) + 0xb0) = 1;
+            *(u32*)(lbl_802BB0FC + 0xf8) |= 0x20000000;
+            fn_8002F7C0((void*)0x36, 0);
+            *(u8*)((u8*)param_1 + 0x189) = 0x2d;
+        }
+    }
+}
+
 extern "C" void fn_80102458(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
