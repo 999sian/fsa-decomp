@@ -673,12 +673,9 @@ extern "C" int fn_801792B4(void* param_1, int param_2) {
 
 extern "C" void fn_80118BD0(void* p, s32 x);
 extern "C" int fn_80177D24(void);
-extern "C" int fn_80179E80(s64 param_1, s64 param_2) {
+extern "C" int fn_80179E80(u32 param_1, u32 param_2, s64 param_3) {
     int result = 0;
-    if (param_2 == result) {
-    } else {
-        result = fn_80177D24();
-    }
+    result = (param_3 != (s64)result) ? fn_80177D24() : result;
     return result;
 }
 
@@ -2314,11 +2311,17 @@ extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
 }
 
+extern u8 lbl_802994F0[];
+extern u8 lbl_80299504[];
+struct Unk8018B07CBase {
+    void** vt;
+    ~Unk8018B07CBase() { vt = (void**)lbl_802994F0; }
+};
+struct Unk8018B07C : Unk8018B07CBase {
+    ~Unk8018B07C() { vt = (void**)lbl_80299504; }
+};
 extern "C" void fn_8018B07C(void* ptr) {
-    void* b = lbl_802994F0;
-    void* a = lbl_80299504;
-    *(void**)ptr = a;
-    *(void**)ptr = b;
+    ((Unk8018B07C*)ptr)->~Unk8018B07C();
 }
 
 extern "C" void fn_80178990(void);
