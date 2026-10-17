@@ -242,6 +242,7 @@ extern "C" void fn_8021E4F8(char* p);
 extern "C" void* fn_8023E724(s32 i);
 extern "C" void fn_801CD8E4(void* p, f32 a, f32 b, f32 c);
 extern "C" void fn_801CD754(void* p, f32 a, f32 b, void* v, f32 c);
+extern int __float_epsilon[];
 extern const f32 lbl_8053FDA0;
 extern const f32 lbl_8053FDA4;
 extern const f32 lbl_8053FDA8;
