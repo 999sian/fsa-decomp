@@ -337,7 +337,7 @@ extern f32 lbl_80301238;
 extern "C" void fn_8002F458(void* p, s32 off);
 extern "C" s32 fn_80108810(void* self, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f);
 extern "C" void fn_80103814(void* param_1) {
-    s32 iVar1 = fn_80108928(param_1, *(s16*)((u8*)param_1 + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), *(f32*)(lbl_802C5A84 + 0x34), 0, 0, lbl_80301204, lbl_80301204, lbl_80301204);
+    s32 iVar1 = fn_80108928(param_1, *(s16*)((u8*)param_1 + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), *(f32*)(lbl_802C5A84 + 0x34), 0, 0, 0.0f, 0.0f, 0.0f);
     *(s16*)((u8*)param_1 + 0xec) = *(s16*)((u8*)param_1 + 0xec) + 1;
     if (iVar1 == 1) {
         *(s16*)((u8*)param_1 + 0xec) = 0;
