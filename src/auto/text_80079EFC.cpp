@@ -16,6 +16,7 @@ public:
 class JKRHeap {
 public:
     static void copyMemory(void*, void*, u32);
+    static void* alloc(u32, int, JKRHeap*);
 };
 
 class JKRAram {
