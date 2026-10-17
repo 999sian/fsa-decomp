@@ -28,6 +28,8 @@ extern const f32 lbl_8054378C;
 extern const f32 lbl_8054377C;
 extern const f32 lbl_80543790;
 extern const f32 lbl_805437AC;
+extern const f32 lbl_80543764;
+extern const f32 lbl_8054376C;
 extern "C" void fn_80440EE8(void* p);
 extern u8 lbl_80478A60[];
 extern void* lbl_8053AED8;
