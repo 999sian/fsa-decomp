@@ -1,5 +1,24 @@
 #include "types.h"
 
+struct FsaNode {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void v2(void);
+    virtual void v3(void);
+    virtual void v4(void);
+    virtual void v5(void);
+    virtual void v6(void);
+    virtual void v7(void);
+    virtual void v8(void);
+    virtual void v9(s32);
+    virtual void v10(void);
+    virtual void v11(void);
+    virtual void v12(void);
+    virtual void v13(void);
+    virtual void v14(void);
+    virtual FsaNode* v15(u64);
+};
+
 struct FsaDisposable {
     virtual void v0(void);
     virtual void v1(void);
@@ -77,6 +96,133 @@ extern "C" void fn_803D8718(u8* param_1) {
         fn_803D75B0();
         break;
     }
+}
+
+extern "C" void fn_803D87C0(u8* param_1) {
+    u8 mask;
+    s32* cnt;
+    s32 j;
+    s32 count;
+    u64* k26;
+    u64* k25;
+    u64* k23;
+    u64* k22;
+    u64* k21;
+    u64* k20;
+    u64* k19;
+    u64* k26o;
+    u64* k25o;
+    s32 i;
+    u8* p;
+
+    fn_804310CC(lbl_8053AEC0);
+    k19 = (u64*)(lbl_80476F80 + 0x420);
+    k20 = (u64*)(lbl_80476F80 + 0x438);
+    k21 = (u64*)(lbl_80476F80 + 0x450);
+    for (i = 0; i < 3; i++) {
+        if (i >= fn_80138A30(lbl_8053AAF8) - 1) {
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k19);
+            p[0xb0] = 1;
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k20);
+            p[0xb0] = 0;
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k21);
+            p[0xb0] = 0;
+        } else {
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k19);
+            p[0xb0] = 0;
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k20);
+            p[0xb0] = 1;
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k21);
+            p[0xb0] = 1;
+        }
+        k19++;
+        k20++;
+        k21++;
+    }
+
+    k22 = (u64*)(lbl_80476F80 + 0x400);
+    k23 = (u64*)(lbl_80476F80 + 0x468);
+    cnt = (s32*)lbl_80529DEC;
+    k25o = (u64*)(lbl_80476F80 + 0x200);
+    k26o = (u64*)lbl_80476F80;
+    for (i = 0; i < 4; i++) {
+        mask = (u8)(1 << i);
+        count = *(s32*)((u8*)cnt + 0x140);
+        if (((u8*)lbl_80529DEC)[0x243] & mask) {
+            *(s16*)(param_1 + 0x68) = i;
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k23);
+            p[0xb0] = 1;
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k22);
+            p[0xb0] = 1;
+        } else {
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k23);
+            p[0xb0] = 0;
+            p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k22);
+            p[0xb0] = 0;
+        }
+        k25 = k25o;
+        k26 = k26o;
+        for (j = 0; j < 16; j++) {
+            if (j < count && (((u8*)lbl_8053AAF8)[0x82] & mask)) {
+                if (!(((u8*)lbl_80529DEC)[0x243] & mask) || j != count - 1) {
+                    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k26);
+                    p[0xb0] = 1;
+                    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k25);
+                    p[0xb0] = 1;
+                    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k25);
+                    ((void (*)(u8*, s32))(*(void***)p)[0x24 / 4])(p, 0);
+                } else {
+                    *(s16*)(param_1 + 0x6a) = j;
+                    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k26);
+                    p[0xb0] = 0;
+                    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k25);
+                    p[0xb0] = 0;
+                }
+            } else {
+                p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k26);
+                p[0xb0] = 0;
+                p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), *k25);
+                p[0xb0] = 0;
+            }
+            k25++;
+            k26++;
+        }
+        k25o += 0x10;
+        k26o += 0x10;
+        k22++;
+        k23++;
+        cnt++;
+    }
+
+    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 8))[0x3c / 4])(*(u8**)(param_1 + 8), 0x0050306b616b3030ULL);
+    ((void (*)(u8*, s32))(*(void***)p)[0x24 / 4])(p, 0);
+    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 8))[0x3c / 4])(*(u8**)(param_1 + 8), 0x000050306b613030ULL);
+    ((void (*)(u8*, s32))(*(void***)p)[0x24 / 4])(p, 0);
+    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 8))[0x3c / 4])(*(u8**)(param_1 + 8), 0x0050737461726c69ULL);
+    ((void (*)(u8*, s32))(*(void***)p)[0x24 / 4])(p, 0);
+    fn_80402E08(*(u8**)(param_1 + 0x30), lbl_80543534, lbl_80543530);
+    *(u16*)(*(u8**)(param_1 + 0x30) + 0x22) = 0;
+    fn_80402E08(*(u8**)(param_1 + 0x48), lbl_80543534, lbl_80543530);
+    *(u16*)(*(u8**)(param_1 + 0x48) + 0x22) = 0;
+    for (i = 0; i < 4; i++) {
+        fn_80402E08(*(u8**)(param_1 + 0x34 + i * 4), lbl_80543534, lbl_80543538);
+        *(u16*)(*(u8**)(param_1 + 0x34 + i * 4) + 0x22) = 0;
+    }
+    p = fn_804030C4(0x54494d47, lbl_80476F80 + 0x4a8);
+    fn_80440D78(lbl_8053AED8, p);
+    fn_804030C4(0x54494d47, lbl_80476F80 + 0x4bc);
+    fn_80440BF4(lbl_8053AED8, 0);
+    (*(u8**)(*(u8**)(param_1 + 0x2c) + 4))[0xb0] = 0;
+    p = *(u8**)(*(u8**)(param_1 + 0x2c) + 4);
+    ((void (*)(u8*, s32))(*(void***)p)[0x24 / 4])(p, 0);
+    p = ((u8* (*)(u8*, u64))(*(void***)*(u8**)(param_1 + 4))[0x3c / 4])(*(u8**)(param_1 + 4), 0x5061636375723031ULL);
+    ((void (*)(u8*, s32))(*(void***)p)[0x24 / 4])(p, 0);
+    for (i = 0; i < 2; i++) {
+        fn_80402E08(*(u8**)(param_1 + 0x24 + i * 4), lbl_80543534, lbl_8054353C);
+        *(u16*)(*(u8**)(param_1 + 0x24 + i * 4) + 0x22) = 0;
+    }
+    ((u8*)lbl_80529DEC)[0x243] = 0;
+    fn_80458FF0(lbl_8053AF80, 0x1000005, 1, 0);
 }
 
 extern "C" char lbl_804B03D8[];
