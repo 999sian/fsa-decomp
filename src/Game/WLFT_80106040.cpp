@@ -151,7 +151,7 @@ extern "C" void fn_80136798(void* game, s32 a, s32 b);
 
 static inline bool wlftOnLift(u8* this_, s32 i) {
     s32 room = *(s32*)(this_ + 4);
-    if (room != fn_8023DE58(i)) {
+    if (fn_8023DE58(i) != room) {
         return false;
     }
     JGeometry::TVec3<f32> p(*fn_8023E724(i));
