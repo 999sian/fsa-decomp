@@ -1181,10 +1181,35 @@ extern "C" void fn_80096E48(char* param_1) {
     }
 }
 
+extern "C" void fn_80096EA0(u8* p) {
+    if (fn_800C6FD4(*(void**)(p + 0x27c)) && *(*(u8**)(p + 0x27c) + 0x8c) == 2) {
+        p[0x282f] = 1;
+        p[0x282c] = 0;
+        p[0x85c] = 0;
+        p[0x2a5] = 1;
+    }
+}
+
 extern "C" void fn_80096F08(void) {}
 
 extern "C" void fn_8009702C(NaviState_8009E6F0* p) {
     (p->*lbl_802863BC[((u8*)p)[0x86d]])();
+}
+
+extern "C" void fn_80097064(u8* p) {
+    if (*(void**)(p + 0x298) == 0) {
+        void** o = (void**)fn_8015A90C(0x30);
+        if (o != 0) {
+            o[0] = lbl_8028699C;
+            o[2] = lbl_8027EC78;
+            o[2] = lbl_80288988;
+        }
+        *(void***)(p + 0x298) = o;
+        *(void**)(*(u8**)(p + 0x298) + 0x10) = *(void**)(p + 0x260);
+        fn_800CBB28(*(void**)(p + 0x298));
+    }
+    fn_800EF4D0(*(void**)(p + 0x288), 2);
+    p[0x86d] = 1;
 }
 
 extern void* lbl_80288988[];
