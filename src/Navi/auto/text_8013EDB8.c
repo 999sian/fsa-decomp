@@ -15,6 +15,7 @@ extern "C" void fn_8013EDB8(s32 idx);
 extern "C" s32 fn_80140520(s32 idx);
 extern "C" s32 fn_801406B0(s32 idx, s32 a, s32 b, void (*cb)(s32));
 extern "C" s32 fn_8013F21C(s32 idx);
+extern "C" void fn_8013F400(s32 idx, s32 r);
 extern "C" void fn_801408CC(void* p);
 extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 void fn_8013EE0C(void)
