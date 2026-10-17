@@ -13,6 +13,9 @@ extern "C" void* fn_803DFF40(void* p);
 extern "C" void* fn_803D0264(void* p);
 extern "C" void* fn_803A8884(void* p);
 extern "C" void* fn_8039027C(void* p);
+extern "C" void fn_8013BE04(void*);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_80139958(void);
 struct TuVtable7 {
     virtual void v0(s32 flags);
     virtual void v1();
