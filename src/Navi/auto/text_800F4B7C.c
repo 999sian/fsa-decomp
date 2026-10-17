@@ -58,12 +58,13 @@ struct VObj_80103560 {
 struct Unk80104320 {
     u8 pad[0x238];
     VObj_80103560* objs[2];
+    u8 pad2[8];
     u8 vals[2];
-    u8 pad2[2];
+    u8 pad3[2];
     VObj_80103560* objs2[2];
     u8 vals2[2];
     u8 sel;
-    u8 pad3[3];
+    u8 pad4[3];
     u8 flag;
 };
 
