@@ -1,6 +1,8 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 80192038-80197070 (GNON). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "std/math.h"
+#include "JSystem/JMath/JMath.h"
 
 // from src/Game/GlobalMgr_GetByte_0x24f.cpp
 // fn_80196DF0 - reads a byte at lbl_80529DEC->0x24f.
