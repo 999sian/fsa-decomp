@@ -247,6 +247,20 @@ extern "C" void fn_803B8188(u8* this_) {
     fn_8013A884(&color);
 }
 
+struct FsaSubObj {
+    virtual void v00(s32 b);
+    virtual void v01(void);
+    virtual void v02(void);
+    virtual void v03(void);
+    virtual void v04(void);
+    virtual void v05(void);
+    virtual void v06(void);
+    virtual void v07(void);
+    virtual void v08(void);
+    virtual void v09(void);
+    virtual void v10(s32 b);
+};
+
 extern "C" void __dl__FPv(void* this_);
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* p);
@@ -254,11 +268,12 @@ extern "C" void getTotalFreeSize__7JKRHeapFv(void* heap);
 extern "C" char lbl_804AFAB0[];
 extern "C" s32 lbl_8053ADA8;
 extern "C" void* fn_803B82FC(void* this_, s16 flag) {
-    s32 i;
     void** p;
-    if (this_ != 0) {
-        *(void**)this_ = lbl_804AFAB0;
-        p = (void**)this_;
+    s32 i;
+    void** a = (void**)this_;
+    if (a != 0) {
+        p = a;
+        *a = lbl_804AFAB0;
         for (i = 0; i < 50; i++) {
             if (p[9] != 0) {
                 void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
@@ -268,21 +283,21 @@ extern "C" void* fn_803B82FC(void* this_, s16 flag) {
             p++;
         }
         getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
-        void* p1 = ((void**)this_)[1];
+        void* p1 = a[1];
         if (p1 != 0) {
             ((void (*)(void*, s32))(*(void**)((char*)*(void**)p1 + 0x8)))(p1, 1);
         }
-        ((void**)this_)[1] = 0;
-        void* p7 = ((void**)this_)[7];
+        a[1] = 0;
+        void* p7 = a[7];
         if (p7 != 0) {
             ((void (*)(void*, s32))(*(void**)((char*)*(void**)((char*)p7 + 0x8) + 0x30)))(p7, 1);
         }
-        ((void**)this_)[7] = 0;
-        void* p8 = ((void**)this_)[8];
+        a[7] = 0;
+        void* p8 = a[8];
         if (p8 != 0) {
             ((void (*)(void*, s32))(*(void**)((char*)*(void**)((char*)p8 + 0x8) + 0x30)))(p8, 1);
         }
-        ((void**)this_)[8] = 0;
+        a[8] = 0;
         lbl_8053ADA8 = 0;
         if (flag > 0) {
             __dl__FPv(this_);
