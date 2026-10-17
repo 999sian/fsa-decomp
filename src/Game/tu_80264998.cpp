@@ -842,7 +842,3 @@ extern "C" void fn_80268194(char* p)
 extern "C" void fn_80268280(void)
 {
 }
-static f32 fnDist(char* p, Vec* dst) {
-    JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), dst);
-    return PSVECMag(dst);
-}
