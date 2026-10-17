@@ -475,12 +475,6 @@ extern "C" void fn_80017FCC(void* p);
 extern u8 lbl_802804C0[];
 extern u8 lbl_80280418[];
 extern f32 lbl_80300478;
-struct VObj_80064D18 {
-    void* a;
-    void* b;
-    void* c;
-};
-
 extern "C" void fn_80064D18(void** p) {
     p[0] = lbl_8027F6DC;
     p[1] = 0;
