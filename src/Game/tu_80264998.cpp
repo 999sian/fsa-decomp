@@ -29,6 +29,88 @@ extern "C" void fn_80264998(char* p)
     }
 }
 
+extern "C" void fn_80265AE4(char* p)
+{
+    Vec d;
+    if (*(unsigned short*)(p + 0x3c4) == *(unsigned short*)(p + 0x3c6)) {
+        JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), &d);
+        if (PSVECMag(&d) <= lbl_80540200) {
+            goto step2;
+        }
+    }
+    *(int*)(p + 0x3d0) = *(int*)(p + 0x3d0) + 1;
+    if (*(int*)(p + 0x3d0) < 0x10) {
+        *(int*)(p + 0x3cc) = 8;
+    } else {
+        *(int*)(p + 0x3d0) = 0;
+        *(int*)(p + 0x3cc) = 8;
+    }
+step2:
+    if (*(int*)(p + 0x3cc) > 0) {
+        *(int*)(p + 0x3cc) = *(int*)(p + 0x3cc) - 1;
+    } else {
+        *(int*)(p + 0x3d0) = 0;
+    }
+    {
+        int t = *(int*)(p + 0x3d0);
+        if (t < 4) {
+            *(short*)(p + 0x3c8) = 0x195;
+        } else if (t < 8) {
+            *(short*)(p + 0x3c8) = 0x196;
+        } else if (t < 0xc) {
+            *(short*)(p + 0x3c8) = 0x197;
+        } else {
+            *(short*)(p + 0x3c8) = 0x196;
+        }
+    }
+    *(int*)(p + 0x3d4) = *(int*)(p + 0x3d4) + 1;
+    if (*(int*)(p + 0x3d4) >= 0xc) {
+        *(int*)(p + 0x3d4) = 0;
+    }
+    {
+        int t = *(int*)(p + 0x3d4);
+        if (t < 3) {
+            *(short*)(p + 0x3ca) = 0x18f;
+        } else if (t < 6) {
+            *(short*)(p + 0x3ca) = 0x190;
+        } else if (t < 9) {
+            *(short*)(p + 0x3ca) = 0x191;
+        } else {
+            *(short*)(p + 0x3ca) = 0x190;
+        }
+    }
+    if (*(f32*)(p + 0x10) <= lbl_805401F0 &&
+        fn_8022461C(p + 8, *(int*)(p + 0x3b4)) == 0x39) {
+        if (*(unsigned short*)(p + 0x3c4) != *(unsigned short*)(p + 0x3c6)) {
+            goto show;
+        }
+        JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), &d);
+        if (PSVECMag(&d) <= lbl_80540200) {
+            goto hide;
+        }
+    } else {
+        goto hide;
+    }
+show:
+    if (*(int*)(p + 0x1384) != 0) {
+        fn_8013CB44((void*)*(int*)(p + 0x1384), p + 8, 0, 0, 1);
+    } else {
+        *(int*)(p + 0x1384) = fn_8013CC50(*(int*)(p + 0x3b4), p + 8, 0x4d2, 0, 0, 0, 0, 1,
+                                          lbl_805401F4);
+    }
+    goto end;
+hide:
+    {
+        int e = *(int*)(p + 0x1384);
+        if (e != 0) {
+            *(u32*)(e + 0xf4) |= 1;
+            *(int*)(e + 0x24) = 1;
+            *(int*)(p + 0x1384) = 0;
+        }
+    }
+end:;
+}
+
 extern "C" void fn_80265D68(char* p)
 {
     unsigned char v = *(unsigned char*)(p + 0xca0);
@@ -760,4 +842,7 @@ extern "C" void fn_80268194(char* p)
 extern "C" void fn_80268280(void)
 {
 }
-
+static f32 fnDist(char* p, Vec* dst) {
+    JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), dst);
+    return PSVECMag(dst);
+}
