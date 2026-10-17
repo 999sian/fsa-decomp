@@ -9,8 +9,6 @@
 #include "JSystem/J3D/J3DAnmTextureSRTKey.h"
 #include "JSystem/J3D/J3DAnmVisibilityFull.h"
 
-extern "C" void* __nw__FUl(unsigned long size);
-extern "C" void* __ct__14J3DAnmColorKeyFv(void* self);
 extern "C" void fn_800CF370(void** p);
 extern "C" void fn_800CF2B0(void** p);
 extern "C" void** fn_800CF38C(void** p, short del);
@@ -58,7 +56,7 @@ extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
         case 0x62706b31: {
             void* self[2];
             fn_800CF370(self);
-            self[1] = (void*)new J3DAnmColorKey();
+            self[1] = new J3DAnmColorKey();
             void* r = fn_800CFB9C(self, data);
             fn_800CF38C(self, -1);
             return r;
