@@ -77,4 +77,5 @@ extern "C" Actor* fn_802BD1A8(Actor* a, s16 n) {
     }
     return a;
 }
+
 #include "Game/SinitPoolChain.h"
