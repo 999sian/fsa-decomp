@@ -35,6 +35,13 @@ extern "C" f32 lbl_80541B70;
 extern "C" char lbl_8047184C[];
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 extern "C" void fn_802F86CC(void*, void*, void*, f32, f32, s32, void*);
+extern "C" void* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, s32 id, void* ext);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" u16 fn_80226850(void* pos, s32 room);
+extern "C" void* fn_802D6A9C(void);
+extern "C" s32 lbl_80541B68;
+extern "C" s32 lbl_80541B6C;
 extern "C" void fn_803239A0(char* this_) {
     u8 tbl[16];
     FsaParam p;
