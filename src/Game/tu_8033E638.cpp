@@ -20,6 +20,71 @@ extern "C" Actor* fn_8033E638(Actor* p, s16 n) {
     return p;
 }
 
+extern "C" void fn_8033EA54(Actor* this_) {
+    u8* p = (u8*)this_;
+    if (*(s32*)(p + 0x230) == 1) {
+        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + *(f32*)(p + 0x3c);
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + *(f32*)(p + 0x40);
+        *(f32*)(p + 0x14) = *(f32*)(p + 0x14) + *(f32*)(p + 0x44);
+        if (((s32 (*)(Actor*))(*(void***)this_)[15])(this_) > 0) {
+            if (!((s32 (*)(Actor*))(*(void***)this_)[13])(this_)) {
+                *(s32*)(p + 0x230) = 2;
+            }
+        }
+    }
+    switch (*(s32*)(p + 0x230)) {
+    case 0:
+        if (*(s32*)(p + 0x248) == 0) {
+            break;
+        }
+        if (*(s32*)(p + 0x24c) > 0) {
+            break;
+        }
+        switch (*(s32*)(p + 0x254)) {
+        case 0:
+            *(f32*)(p + 0x3c) = lbl_80542224 * (f32)*(s32*)(p + 0x248);
+            *(f32*)(p + 0x40) = lbl_80542210;
+            *(f32*)(p + 0x44) = lbl_80542210;
+            break;
+        case 1:
+            *(f32*)(p + 0x3c) = lbl_80542224 * -(f32)*(s32*)(p + 0x248);
+            *(f32*)(p + 0x40) = lbl_80542210;
+            *(f32*)(p + 0x44) = lbl_80542210;
+            break;
+        case 2:
+            *(f32*)(p + 0x3c) = lbl_80542210;
+            *(f32*)(p + 0x40) = lbl_80542224 * ((f32)*(s32*)(p + 0x248) - lbl_80542238);
+            *(f32*)(p + 0x44) = lbl_80542210;
+            break;
+        case 3:
+            *(f32*)(p + 0x3c) = lbl_80542210;
+            *(f32*)(p + 0x40) = lbl_80542224 * -((f32)*(s32*)(p + 0x248) - lbl_80542238);
+            *(f32*)(p + 0x44) = lbl_80542210;
+            break;
+        }
+        *(s32*)(p + 0x24c) = 1;
+        *(s32*)(p + 0x230) = 1;
+        break;
+    case 1:
+        if (*(f32*)(p + 0x240) < lbl_8054221C) {
+            *(f32*)(p + 0x240) = *(f32*)(p + 0x240) + lbl_8054222C;
+            if (*(f32*)(p + 0x240) < lbl_8054221C) {
+                *(f32*)(p + 0x240) = lbl_8054221C;
+                *(s32*)(p + 0x230) = 0;
+            }
+        }
+        break;
+    case 2:
+        if (*(f32*)(p + 0x240) > lbl_80542210) {
+            *(f32*)(p + 0x240) = *(f32*)(p + 0x240) - lbl_8054222C;
+            if (*(f32*)(p + 0x240) > lbl_80542210) {
+                *(f32*)(p + 0x240) = lbl_80542210;
+            }
+        }
+        break;
+    }
+}
+
 extern "C" const float lbl_80542210;
 extern "C" const float lbl_8054221C;
 extern "C" const float lbl_80542240;
@@ -41,6 +106,25 @@ extern "C" void fn_8022DF48(void);
 extern "C" void fn_8023E724(void);
 extern "C" void fn_8022E088(void);
 extern "C" void fn_8023DE58(void);
+struct FsaVirtBase {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void v06();
+    virtual void v07();
+    virtual void v08();
+    virtual void v09();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual s32 v15();
+};
+
 extern "C" void fn_8033F0E8(u8* this_) {
     *(u8*)(this_ + 0x25e) = 0;
     *(u8*)(this_ + 0x25f) = 0;
@@ -60,7 +144,8 @@ extern "C" void fn_8033F0E8(u8* this_) {
     *(f32*)(this_ + 0x240) = lbl_8054221C;
     *(s32*)(this_ + 0x230) = 0;
 
-    if (((s32 (*)(u8*))(*(void***)this_)[15])(this_) > 0) {
+    s32 (*vfn)(u8*) = (s32 (*)(u8*))(*(void***)this_)[15];
+    if (vfn(this_) > 0) {
         *(s32*)(this_ + 0x230) = 2;
         *(f32*)(this_ + 0x240) = lbl_80542210;
     }
