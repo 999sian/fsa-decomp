@@ -1,6 +1,10 @@
 #include "types.h"
 #include <math.h>
 
+extern "C" u16 fn_8022461C(s32 a, s32 b);
+extern "C" u16 fn_80226850(s32 a, s32 b);
+extern "C" void* fn_802D6A9C(void);
+
 static inline f64 sqrtStep(f64 tmpd, f32 mag) {
     return tmpd * 0.5 * (3.0 - mag * (tmpd * tmpd));
 }
@@ -121,6 +125,28 @@ extern "C" BOOL fn_8014D6DC(u8* this_) {
         return 1;
     }
     return 0;
+}
+
+extern "C" void fn_8014D868(u8* this_, f32* pos) {
+    s32 list[1024];
+    s32 count = fn_801F7818(fn_801F856C(), 0x57415250, *(u32*)(this_ + 4), list, -1);
+    for (s32 i = 0; i < count; i++) {
+        u8* p = (u8*)list[i];
+        if (p != 0) {
+            f32 dx = *(f32*)(p + 0xc) - pos[0];
+            f32 dz = *(f32*)(p + 0x10) - pos[1];
+            f32 dist = dolsqrtfull(dx * dx + dz * dz);
+            if (dist < 24.0f) {
+                u32 type = (*(u32*)(p + 0x90) >> 24) & 7;
+                f32* q = (f32*)(p + 0x238);
+                s32 id = type + 7;
+                if (type == 0) {
+                    id = type;
+                }
+                Actor_CreateByID(fn_801F856C(), 0x48424d42, id, q, 0xc, -1, -1);
+            }
+        }
+    }
 }
 
 extern "C" void fn_8014DA20(u8* this_) {
