@@ -13,7 +13,7 @@ extern s32 lbl_802FF2EC;
 extern s32 lbl_802FF2D8;
 extern void (*lbl_802FF2D4)(s32, s32);
 extern u8 lbl_802FF2B8;
-extern u8 lbl_802FF2BC[];
+extern u8 lbl_802FF2BC[4];
 extern s32 lbl_802FF2C4;
 extern u32 lbl_8029016C[];
 extern "C" void fn_801CE1B8(int);
