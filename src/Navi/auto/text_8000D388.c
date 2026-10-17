@@ -9,6 +9,8 @@ extern "C" char* lbl_802FB808;
 extern "C" char* lbl_802FB80C;
 extern "C" int lbl_802FEB98;
 
+inline void* operator new(unsigned long, void* p) { return p; }
+
 struct Unk8000D388List {
     char* m0;
     char m4[0x110];
