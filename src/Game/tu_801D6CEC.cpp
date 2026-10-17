@@ -89,6 +89,11 @@ extern "C" u8 fn_801CD2F8(s32 id);
 extern "C" void __dl__FPv(void* p);
 extern const f32 lbl_8053F16C;
 extern const f32 lbl_8053F170;
+extern const f32 lbl_8053F174;
+extern const f32 lbl_8053F178;
+extern "C" void fn_801D7DB4(u8* this_, f32 s);
+extern "C" void fn_801CD930(void* p, s32 v, s32 n);
+extern int __float_epsilon[];
 
 struct Tu6CECVec { f32 x, y, z; };
 static inline void tu6cec_set(f32* d, f32 x, f32 y, f32 z) { d[0] = x; d[1] = y; d[2] = z; }
@@ -334,16 +339,18 @@ extern "C" void fn_801D72C0(char* this_, JGeometry::TVec3<f32>* src) {
     JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(this_ + 0x48);
     f32 y = lbl_8053F16C + src->y;
     f32 x = src->x;
+    f32 z = src->z;
     pos->x = x;
     pos->y = y;
-    pos->z = src->z;
+    pos->z = z;
     if (fn_801CD2F8(*(s32*)(this_ + 0x40))) {
         pos->y = lbl_8053F170 + src->y;
     }
     s32 off = 0;
+    s32 id;
     s32* ids = (s32*)this_;
     for (int i = 0; i < 16; i++, off += 0xfff) {
-        s32 id = ids[i];
+        id = ids[i];
         if (id < 0) {
             continue;
         }
