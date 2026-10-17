@@ -2,6 +2,13 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
 
+extern "C" void fn_80139BE8(void* p);
+struct TuVtable7 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(s32 flags);
+};
+
 // ---- from Game/oscluster_80134dc0.cpp
 
 extern "C" {
