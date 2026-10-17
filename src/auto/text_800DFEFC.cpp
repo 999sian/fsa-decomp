@@ -9,6 +9,7 @@
 
 extern "C" J3DFogInfo fn_800E0F84(const J3DMaterialFactory_v21* self, int idx);
 extern "C" J3DBlend fn_800E1144(const J3DMaterialFactory_v21* self, int idx);
+extern "C" J3DTexMtx* fn_800E0C1C(const J3DMaterialFactory_v21* self, int idx, int no);
 extern "C" void* fn_800E1300(const void* base, const void* offset);
 extern "C" void* fn_800CC040(const void* base, const void* offset);
 extern "C" void* fn_800CC010(const void* base, const void* offset);
