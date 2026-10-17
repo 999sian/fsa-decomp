@@ -1,8 +1,31 @@
 #include "Game/ItemBase.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JMath/Inline.h"
+#include "JSystem/JMath/JMath.h"
 
 struct Actor;
+extern "C" void detach__5ActorFv(Actor* a);
+extern void* lbl_8053AAF8;
+extern void* lbl_8053AD70;
+extern void* lbl_8053AB10;
+extern f32 lbl_80542730;
+extern f32 lbl_80542740;
+extern f32 lbl_80542744;
+extern f32 lbl_80542748;
+extern f32 lbl_8054274C;
+extern f32 lbl_80542754;
+extern f32 lbl_80542758;
+extern f32 lbl_8054275C;
+extern "C" void fn_80134FC4(void* p, s32 b);
+extern "C" void fn_80134FBC(void* p, s32 b);
+extern "C" void fn_8037AE00(void* p);
+extern "C" void fn_8037AE30(void* p);
+extern "C" void fn_801F0E34(void* a, u32 b, s32 c);
+extern "C" void fn_801F714C(void* p, u16 a, s32 b, s32 c);
+extern "C" void fn_801F71A4(void* p, f32 a, f32 b, f32 c);
+extern "C" void fn_801EB418(void* a, void* b);
+extern "C" void fn_80238548(s32 i, s32 b, void* p, s32 d);
+extern "C" void fn_8013A884(u32* p);
 
 
 extern "C" char __vt__4TUGF[];
