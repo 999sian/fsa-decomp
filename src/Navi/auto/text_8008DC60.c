@@ -65,33 +65,35 @@ extern f32 lbl_80300AF0;
 
 static inline f32 navi_sqrtf_800A1774(f32 x)
 {
+    f32 r;
     if (x > lbl_80300AF0) {
-        f64 guess = __frsqrte((f64)x);
-        guess = lbl_80300B58 * guess * (lbl_80300B60 - guess * guess * x);
-        guess = lbl_80300B58 * guess * (lbl_80300B60 - guess * guess * x);
-        guess = lbl_80300B58 * guess * (lbl_80300B60 - guess * guess * x);
-        return (f32)(x * guess);
+        f64 magic3 = lbl_80300B58;
+        f64 magic2 = lbl_80300B60;
+        f64 res_d = __frsqrte(x);
+        f64 temp = res_d * res_d;
+        f64 temp2 = magic3 * res_d;
+        temp = (f64)x * temp;
+        temp = magic2 - temp;
+        res_d = temp2 * temp;
+        temp = res_d * res_d;
+        temp2 = magic3 * res_d;
+        temp = (f64)x * temp;
+        temp = magic2 - temp;
+        res_d = temp2 * temp;
+        temp = res_d * res_d;
+        temp2 = magic3 * res_d;
+        temp = (f64)x * temp;
+        temp = magic2 - temp;
+        res_d = temp2 * temp;
+        r = (f32)(res_d * (f64)x);
     } else if (x < lbl_80300B68) {
-        return lbl_802FEAB0[0];
+        r = lbl_802FEAB0[0];
+    } else if (fpclassify(x) == 1) {
+        r = lbl_802FEAB0[0];
     } else {
-        int t;
-        u32 bits = *(u32*)&x;
-        switch (bits & 0x7f800000) {
-        case 0x7f800000:
-            t = (bits & 0x007fffff) ? 1 : 2;
-            break;
-        case 0:
-            t = (bits & 0x007fffff) ? 5 : 3;
-            break;
-        default:
-            t = 4;
-            break;
-        }
-        if (t == 1) {
-            return lbl_802FEAB0[0];
-        }
-        return x;
+        r = x;
     }
+    return r;
 }
 extern "C" void fn_800D1EE8(void* p);
 struct DtorVObj_800A0008 { virtual void Destroy(int); };
@@ -2432,42 +2434,12 @@ extern "C" f32 fn_800A1774(void* unused, s32 param_1, s32 param_2, u8 param_3)
     } else if (param_2 > param_1) {
         param_2 = param_1;
     }
-    f4 = (f32)param_2;
-    f4 /= (f32)param_1;
+    f4 = (f32)param_2 / (f32)param_1;
     switch (param_3) {
     case 0:
         return f4 * f4;
-    case 1: {
-        f32 r;
-        if (f4 > lbl_80300AF0) {
-            f64 magic3 = lbl_80300B58;
-            f64 magic2 = lbl_80300B60;
-            f64 res_d = __frsqrte(f4);
-            f64 temp = res_d * res_d;
-            f64 temp2 = magic3 * res_d;
-            temp = (f64)f4 * temp;
-            temp = magic2 - temp;
-            res_d = temp2 * temp;
-            temp = res_d * res_d;
-            temp2 = magic3 * res_d;
-            temp = (f64)f4 * temp;
-            temp = magic2 - temp;
-            res_d = temp2 * temp;
-            temp = res_d * res_d;
-            temp2 = magic3 * res_d;
-            temp = (f64)f4 * temp;
-            temp = magic2 - temp;
-            res_d = temp2 * temp;
-            r = (f32)(res_d * (f64)f4);
-        } else if (f4 < lbl_80300B68) {
-            r = lbl_802FEAB0[0];
-        } else if (fpclassify(f4) == 1) {
-            r = lbl_802FEAB0[0];
-        } else {
-            r = f4;
-        }
-        return r;
-    }
+    case 1:
+        return navi_sqrtf_800A1774(f4);
     case 3: {
         f32 threshold = lbl_80300B38;
         f32 bias = lbl_80300B20;
