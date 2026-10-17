@@ -83,6 +83,14 @@ extern "C" void fn_800F3D84(NaviState_800F3D84* p) {
 
 extern "C" void fn_800F42C0(void) {}
 
+extern "C" int fn_8002F6BC(void);
+extern "C" void fn_8002F9B4(void);
+extern "C" void fn_800F4328(u8* p) {
+    p[0x59] = 0;
+    p[0x5a] = 1;
+    (*(VObj_800F4328**)(p + 0x4c))->v7(lbl_802C5A54[0x1f]);
+}
+
 extern "C" void fn_800F46AC(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
