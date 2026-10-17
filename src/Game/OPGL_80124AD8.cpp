@@ -118,6 +118,92 @@ extern "C" void fn_80124C4C(u8* p) {
     fn_801D1F14(p + 0x230, lbl_8053CA40);
 }
 
+extern "C" void* fn_801F856C(void);
+extern "C" void fn_801F3604(void*);
+extern "C" void fn_8012202C(void*);
+extern "C" void fn_80121FA8(void*);
+extern "C" s32 fn_80230CFC(s32);
+extern "C" void fn_801F0E34(void*, s32, s32);
+extern "C" void fn_80121F34(void*);
+extern "C" void fn_801F6884(void*);
+extern "C" void fn_80121764(void*);
+extern "C" void fn_80121ABC(void*);
+extern "C" void fn_80121D68(void*);
+extern "C" void fn_801220C4(void*);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D8050(void*, s32, s32, s32);
+extern "C" s32 fn_80123E80(u8*, s32);
+extern "C" void fn_80124CA8(u8* p, u32 param) {
+    *(u8*)(p + 0x330) = 0;
+    *(u8*)(p + 0x335) = 0;
+    *(s32*)(p + 0x378) = 0;
+    switch (param) {
+    case 0:
+        *(u8*)(p + 0x330) = 1;
+        fn_801D22DC(p + 0x230, 7, 2, 0);
+        break;
+    case 1:
+    case 2:
+    case 3:
+        break;
+    case 4:
+        *(u8*)(p + 0x11E) = 1;
+        fn_801F3604(p);
+        break;
+    case 5:
+        fn_8012202C(p);
+        break;
+    case 6:
+        fn_80121FA8(p);
+        fn_801D22DC(p + 0x230, 2, 2, 0);
+        break;
+    case 7:
+        fn_801D22DC(p + 0x230, fn_80230CFC(fn_8012285C(p)), 2, 0);
+        *(u8*)(p + 0x333) = 0;
+        *(s32*)(p + 0x354) = 0;
+        break;
+    case 8:
+        fn_801D22DC(p + 0x230, fn_80230CFC(fn_8012285C(p)), 2, 0);
+        break;
+    case 9:
+        fn_801D22DC(p + 0x230, *(s32*)(p + 0x98) + 0xA, 0, 0);
+        *(u8*)(p + 0x333) = 1;
+        fn_801F0E34(p, 0x40071, 0);
+        *(s32*)(p + 0x3C8) = 0;
+        fn_80121F34(p);
+        break;
+    case 10:
+        fn_801D22DC(p + 0x230, 4, 0, 0);
+        fn_801F0E34(p, 0x40072, 0);
+        break;
+    case 11:
+        fn_801F6884(fn_801F856C());
+        fn_80121764(p);
+        break;
+    case 12:
+        fn_801D22DC(p + 0x230, 2, 2, 0);
+        fn_80121764(p);
+        fn_80121ABC(p);
+        *(u8*)(p + 0x333) = 1;
+        break;
+    case 13:
+        fn_80121D68(p);
+        fn_801220C4(p);
+        break;
+    case 14:
+        *(u8*)(p + 0x331) = 0;
+        break;
+    case 15:
+        fn_802D8050(fn_802D6A9C(), *(s32*)(p + 0x3CC), 1, 0xFF);
+        *(u8*)(p + 0x11C) = 0;
+        break;
+    case 16:
+    case 17:
+        break;
+    }
+    fn_80123E80(p, param);
+}
+
 extern "C" void fn_8012562C(void* this_) {
     char* p = (char*)this_;
     *(unsigned int*)(p + 0x35c) = *(unsigned int*)(p + 0x90) & 0xFF;
@@ -131,6 +217,44 @@ extern "C" int fn_80125648(void* this_) {
     default:
         return 0;
     }
+}
+
+extern "C" void* fn_8012FF9C(void);
+extern "C" u8 fn_80130030(void*, s32);
+extern "C" void* fn_8022EA0C(void);
+extern "C" void fn_8022FE80(void*, s32, s32, s32, s32);
+extern "C" s32 fn_8022FD8C(s32);
+extern "C" u8 fn_8038AD24(s32, s32, s32, s32, Vec*, s32);
+extern "C" int fn_80125668(void* this_, s32 param_2) {
+    typedef u8 (*method_t)(void*);
+    typedef void (*vmethod_t)(void*, s32);
+    if (*(s32*)((char*)this_ + 0x33c) == 0x11) {
+        return 3;
+    }
+    if (!((method_t)(*(void***)this_)[0x54 / sizeof(void*)])(this_)) {
+        return 0;
+    }
+    if (fn_80130030(fn_8012FF9C(), param_2) == 0) {
+        s32 state = *(s32*)((char*)this_ + 0x33c);
+        if (state != 3 && state != 0) {
+            fn_8012285C(this_);
+            fn_8022FE80(fn_8022EA0C(), *(s32*)((char*)this_ + 0x4), *(s32*)((char*)this_ + 0x198), 0, 0);
+            s32 r = fn_8022FD8C(*(s32*)((char*)this_ + 0x198));
+            if (r >= 0) {
+                Vec v = *(Vec*)((char*)this_ + 0xc);
+                if (fn_8038AD24(r, 0x442, *(s32*)((char*)this_ + 0x198), *(s32*)((char*)this_ + 0x4), &v, 0x28)) {
+                    *(s32*)((char*)this_ + 0x3d0) = *(s32*)((char*)this_ + 0x33c);
+                    vmethod_t move = (vmethod_t)(*(void***)this_)[0x6c / sizeof(void*)];
+                    move(this_, 3);
+                }
+            }
+        }
+        return 1;
+    }
+    if (((method_t)(*(void***)this_)[0x58 / sizeof(void*)])(this_)) {
+        return 2;
+    }
+    return 1;
 }
 
 extern "C" bool fn_801257A8(void* param_1)
