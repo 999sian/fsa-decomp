@@ -133,4 +133,181 @@ extern "C" void fn_8012C030(char* this_) {
     }
 }
 
+extern "C" f32 lbl_8053CBEC;
+extern "C" f32 lbl_8053CBB0;
+extern "C" void fn_8012C170(char* this_) {
+    f32 pos;
+    f32 step;
+    if (*(s32*)(this_ + 0x250) == 1) {
+        fn_80119468(fn_80119DD0(), 0, 0);
+    }
+    pos = *(f32*)(this_ + 0x3bc);
+    f32 threshold = lbl_8053CBEC + *(f32*)(this_ + 0x3f4);
+    if (pos >= threshold) {
+        step = lbl_8053CBB0;
+        *(f32*)(this_ + 0x3bc) = pos - step;
+        *(f32*)(this_ + 0x3c8) = *(f32*)(this_ + 0x3c8) - step;
+        *(f32*)(this_ + 0x3d4) = *(f32*)(this_ + 0x3d4) - step;
+        *(f32*)(this_ + 0x3e0) = *(f32*)(this_ + 0x3e0) - step;
+        if (*(s32*)(this_ + 0x3f0) == 0) {
+            *(s32*)(this_ + 0x3f0) = 6;
+            *(s32*)(this_ + 0x3ec) += 1;
+            if (*(s32*)(this_ + 0x3ec) >= 8) {
+                *(s32*)(this_ + 0x3ec) = 0;
+            }
+        }
+        fn_8012A5EC(this_);
+        return;
+    }
+    *(f32*)(this_ + 0x3bc) = threshold;
+    *(s32*)(this_ + 0x3ec) = 0;
+    fn_8012A5EC(this_);
+    JGeometry::TVec3<f32> pos2(
+        (f32)(s32)JUTVideo::getManager()->getFbWidth() / 2.0f,
+        (f32)(s32)JUTVideo::getManager()->getEfbHeight() / 2.0f,
+        0.0f);
+    pos2.y += -16.0f;
+    fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+    u32 owner = *(u32*)(this_ + 4);
+    JGeometry::TVec3<f32> copy(pos2);
+    if (fn_8038BD08(0, lbl_804650C8[*(s32*)(this_ + 0x254)], owner, &copy, 0x22)) {
+        ++*(s32*)(this_ + 0x254);
+        fn_8011921C();
+        fn_80118454();
+        *(s32*)(this_ + 0x230) += 2;
+    }
+}
+
+extern void* __vt__4DMTW[];
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void* fn_8012C4F8(u32* this_, s16 freeFlag) {
+    s32 i;
+    u32* p;
+    u32* a;
+    if (this_ != NULL) {
+        *(void**)this_ = __vt__4DMTW;
+        p = this_;
+        for (i = 0; i < 2; i++) {
+            a = (u32*)p[0xe2];
+            if (a != NULL) {
+                a[0x3d] |= 0x100;
+                p[0xe2] = 0;
+            }
+            a = (u32*)p[0xe6];
+            if (a != NULL) {
+                a[0x3d] |= 0x100;
+                p[0xe6] = 0;
+            }
+            a = (u32*)p[0xea];
+            if (a != NULL) {
+                a[0x3d] |= 0x100;
+                p[0xea] = 0;
+            }
+            a = (u32*)p[0xe3];
+            if (a != NULL) {
+                a[0x3d] |= 0x100;
+                p[0xe3] = 0;
+            }
+            a = (u32*)p[0xe7];
+            if (a != NULL) {
+                a[0x3d] |= 0x100;
+                p[0xe7] = 0;
+            }
+            a = (u32*)p[0xeb];
+            if (a != NULL) {
+                a[0x3d] |= 0x100;
+                p[0xeb] = 0;
+            }
+            p += 2;
+        }
+        __dt__5ActorFv(this_, 0);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, s32 a, s32 b, f32 s0, f32 s1);
+extern "C" const char lbl_804650E0[];
+extern "C" f32 lbl_8053CB90;
+extern "C" s32 fn_80230188(s32);
+extern "C" void fn_80230498(s32, void*, s32, s32, s32, s32, s32);
+extern "C" void fn_8012C638(char* this_) {
+    Vec saved;
+    s32 i;
+
+    JGeometry::setTVec3f((f32*)(this_ + 0xc), (f32*)&saved);
+    for (i = 0; i < 6; i++) {
+        JGeometry::setTVec3f((f32*)(this_ + 0x25c + i * 0xc), (f32*)(this_ + 0xc));
+        fn_801F06F0(this_, lbl_804650E0, *(s32*)(this_ + 0x2a4 + i * 4) + *(s32*)(this_ + 0x2c0), 0, 7, lbl_8053CB90, lbl_8053CB90);
+    }
+    if (*(s32*)(this_ + 0x230) > 0) {
+        for (i = 0; i < 4; i++) {
+            if ((u8)fn_80230188(i)) {
+                fn_80230498(i, this_ + 0x3b8 + i * 0xc, *(s32*)(this_ + 0x3e8) + *(s32*)(this_ + 0x3ec), 0xff, -0x80, -0x80, 1);
+            }
+        }
+    }
+    JGeometry::setTVec3f((f32*)&saved, (f32*)(this_ + 0xc));
+}
+
+extern s32 lbl_8053AF80;
+extern s32 lbl_8053AD30;
+extern "C" f32 lbl_8053CBF8;
+extern "C" char lbl_80529DEC[];
+extern "C" char lbl_8050EC80[];
+extern "C" void fn_80458FF0(s32, s32, s32, s32);
+extern "C" s32 fn_80309C4C(s32, s32, s32);
+extern "C" void fn_80387494(s32);
+extern "C" void fn_80119958(void);
+class DMTW;
+typedef void (DMTW::*DMTWStateFn)();
+extern DMTWStateFn lbl_8049E6EC[];
+extern "C" void fn_8012C73C(char* this_) {
+    if (*(s32*)(this_ + 0x258) != 0) {
+        *(s32*)(this_ + 0x258) -= 1;
+    } else if (*(u32*)(lbl_8053AF80 + 0x58) != 0x100001c) {
+        fn_80458FF0(lbl_8053AF80, 0x100001c, 0, 0);
+    }
+    if (*(s32*)(this_ + 0x3f0) != 0) {
+        *(s32*)(this_ + 0x3f0) -= 1;
+    }
+    if (*(s32*)(this_ + 0x2bc) != 0) {
+        *(s32*)(this_ + 0x2bc) -= 1;
+    }
+    if (*(s32*)(this_ + 0x250) != 0) {
+        *(s32*)(this_ + 0x250) -= 1;
+    }
+    u8* p = *(u8**)(lbl_8053AB10 + 0x30);
+    if (p[0x284] == 0) {
+        p[0x284] = 1;
+        *(f32*)(p + 0x28c) = lbl_8053CBF8;
+    }
+    (*(u8**)(lbl_8053AB10 + 0x24))[0x17c] = 1;
+    BOOL unlocked;
+    s32 a = *(s32*)(lbl_80529DEC + 0x118);
+    s32 b = *(s32*)(lbl_80529DEC + 0x11c);
+    if (a < 0 || a > 7) {
+        unlocked = FALSE;
+    } else if (b < 0 || b > 3) {
+        unlocked = FALSE;
+    } else {
+        unlocked = ((1 << (b + a * 4)) & *(u32*)(lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x28)) != 0;
+    }
+    if (unlocked && *(s32*)(this_ + 0x230) >= 3 && *(s32*)(this_ + 0x230) <= 9) {
+        *(u8*)(lbl_8053AAF8 + 0x85) = 2;
+        if ((u32)fn_80309C4C(lbl_8053AD30, 0x1000, -1) != 0) {
+            this_[0x404] = 1;
+            fn_80387494(0);
+            fn_80119DD0();
+            fn_80119958();
+            *(s32*)(this_ + 0x230) = 9;
+            *(s32*)(this_ + 0x250) = 0;
+        }
+    }
+    (((DMTW*)this_)->*lbl_8049E6EC[*(s32*)(this_ + 0x230)])();
+}
+
 extern "C" void fn_8012C910(void* this_) {}
