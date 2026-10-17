@@ -5,6 +5,9 @@ extern void* lbl_8053AB10;
 extern f32 lbl_8053DDC8;
 extern "C" u8 fn_8030C2A8(void* mgr, f32* vec);
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern u16 lbl_804A1210[][2];
+extern u8 lbl_80539F88[];
 
 struct ActorVt_tu8017C01C {
     virtual void v0();
