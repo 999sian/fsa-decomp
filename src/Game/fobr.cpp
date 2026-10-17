@@ -104,11 +104,70 @@ extern "C" void fn_8020B434(u8* this_) {
     }
 }
 
+extern "C" const f32 lbl_8053F9C8;
+extern "C" const f32 lbl_8053F9CC;
 extern "C" void fn_8020B500(u8* param_1) {
-    *(f32*)(param_1 + 0x60) = -10.0f;
-    *(f32*)(param_1 + 0x64) = -10.0f;
-    *(f32*)(param_1 + 0x68) = 10.0f;
-    *(f32*)(param_1 + 0x6c) = 10.0f;
+    if (*(s32*)(param_1 + 0x248) != 0) {
+        return;
+    }
+    *(f32*)(param_1 + 0x60) = lbl_8053F9C8;
+    *(f32*)(param_1 + 0x64) = lbl_8053F9C8;
+    *(f32*)(param_1 + 0x68) = lbl_8053F9CC;
+    *(f32*)(param_1 + 0x6c) = lbl_8053F9CC;
+    *(f32*)(param_1 + 0x70) = *(f32*)(param_1 + 0x60);
+    *(f32*)(param_1 + 0x74) = *(f32*)(param_1 + 0x64);
+    *(f32*)(param_1 + 0x78) = *(f32*)(param_1 + 0x68);
+    *(f32*)(param_1 + 0x7c) = *(f32*)(param_1 + 0x6c);
+    *(s32*)(param_1 + 0x24c) = 0;
+    *(s32*)(param_1 + 0x248) = 1;
+}
+
+extern void* lbl_8053AAF8;
+extern "C" void fn_8020B558(u8* this_) {
+    if (*(s32*)(this_ + 0x248) != 0) {
+        FobrArgs args;
+        args.f10.w = -1;
+        args.f14.w = -1;
+        for (u8 i = 0; i < 0x10; i++) {
+            args.order[i] = i;
+        }
+        args.b1c = 0;
+        args.b1d = 0;
+        args.f10.w = -1;
+        args.f14.w = 0;
+        args.ptr = 0;
+        args.b1e = 0;
+        args.b1f = 1;
+        args.b20 = 1;
+        args.b21 = 0;
+        args.b22 = 0;
+        args.b23 = 0;
+        args.b24 = 0;
+        args.b25 = 0;
+        args.b26 = 1;
+        args.w28 = 3;
+        args.b2c = 1;
+        args.b2d = 0;
+        args.b2e = 0;
+        args.x30 = -1;
+        args.x34 = 0;
+        args.x38 = 2;
+        args.b1c = 0;
+        args.b1d = 0;
+        s32 iVar6 = *(s32*)(this_ + 0x280) + 0x2bf;
+        if ((*(u32*)(this_ + 0x230) & 0x80) == 0) {
+            fn_801F06F0(this_, lbl_8046A384, iVar6, &args, 7, lbl_8053F9B8, lbl_8053F9B8);
+        } else {
+            if (*(s32*)(this_ + 0x138) == 0) {
+                fn_801EF830(*(s32*)(this_ + 4), (f32*)(this_ + 0xc), &args, 7, lbl_8046A384, iVar6, 0);
+            }
+            if (*(s32*)(this_ + 4) < 8) {
+                FobrResMgr* m = (FobrResMgr*)*(void**)((u8*)lbl_8053AAF8 + 0xa4);
+                void* name = (void*)m->load(0x534F4220, lbl_8046A384);
+                fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), (f32*)(this_ + 0xc), name, iVar6, &args, lbl_8053F9B8, lbl_8053F9B8);
+            }
+        }
+    }
 }
 
 extern "C" void* fn_801F856C();
