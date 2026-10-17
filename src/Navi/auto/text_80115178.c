@@ -4,6 +4,8 @@
 extern "C" void fn_801155E0(void);
 extern "C" int fn_80114C5C(void*, void*, void*);
 extern "C" int fn_80114C94(void*, void*, void*);
+#pragma push
+#pragma use_lmw_stmw off
 extern "C" int fn_80115178(int* param_1, void* param_2, void* param_3) {
     char* p = (char*)param_1[0];
     int n = param_1[1];
@@ -17,7 +19,7 @@ extern "C" int fn_80115178(int* param_1, void* param_2, void* param_3) {
     }
     return ret;
 }
-
+#pragma pop
 extern "C" void* fn_801151EC(int* param_1, void* param_2, void* param_3) {
     char* p = (char*)param_1[0];
     int n = param_1[1];
@@ -35,6 +37,14 @@ extern "C" void* fn_801151EC(int* param_1, void* param_2, void* param_3) {
 extern "C" void fn_8011526C(int* param_1, int param_2) {
     param_1[0] = param_2;
     param_1[1] = 0;
+}
+
+extern "C" int fn_80115564(unsigned char* param_1) {
+    if (((*param_1 >> 6) & 1) == 1) {
+        *param_1 &= ~0x40;
+        return 1;
+    }
+    return 0;
 }
 
 extern "C" void fn_801155C0(void) {
