@@ -60,3 +60,6 @@ extern "C" void fn_80143DD8(u8* this_) {
     *(s32*)(this_ + 0x230) = 0;
 }
 
+void __sinit_PEAC_80143874_cpp(void) {
+}
+
