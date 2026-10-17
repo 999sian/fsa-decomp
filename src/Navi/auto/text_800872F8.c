@@ -182,6 +182,10 @@ extern "C" u16 fn_80088E00(void* obj) {
     return *(u16*)(*(char**)((char*)obj + 0x4c) + 0xa);
 }
 
+extern "C" u16 fn_80088E0C(void* param_1) {
+    return *(u16*)(*(u8**)((u8*)param_1 + 0x4c) + 0xc);
+}
+
 extern "C" void fn_80088ED4(void);
 extern "C" void fn_80088E74(void) {
     fn_80088ED4();
