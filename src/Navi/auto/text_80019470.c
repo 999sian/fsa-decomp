@@ -179,22 +179,16 @@ extern "C" s32 fn_800195D8(void* param_1) {
 
 extern "C" s32 fn_8001962C(u8* param_1) {
     u8* var_r31 = param_1;
-    s32 var_r30;
-    if (*(s8*)(var_r31 + 0xc) == 0) {
-        *(u32*)(var_r31 + 0x224) = *(u32*)(*(u8**)(var_r31 + 0x10) + 0x3c);
-        fn_8001AB1C(var_r31 + 0x210, var_r31);
-        if (*(u32*)(var_r31 + 0xac) != 0) {
-            *(u32*)(var_r31 + 0xb0) = **(u32**)(var_r31 + 0xac);
+    {
+        s32 var_r30 = (int)fn_8001D630(*(void**)(var_r31 + 0x224), var_r31);
+        if (var_r30 == 4) {
+            s16 var_r4 = (s16)fn_8001C2C0(var_r31);
+            fn_8001AAD4(var_r31 + 0x210, var_r4);
         }
+        return var_r30;
     }
-    var_r30 = (int)fn_8001D630(*(void**)(var_r31 + 0x224), var_r31);
-    if (var_r30 == 4) {
-        s16 var_r4 = (s16)fn_8001C2C0(var_r31);
-        fn_8001AAD4(var_r31 + 0x210, var_r4);
-    }
-    return var_r30;
 }
-
+#pragma dont_inline reset
 extern "C" void fn_8001978C(void) {
 }
 
