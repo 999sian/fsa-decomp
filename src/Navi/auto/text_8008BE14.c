@@ -368,13 +368,11 @@ struct Rec8008DA68 {
     u32 a, b, c;
     Rec8008DA68() {}
     Rec8008DA68(const Rec8008DA68& o) { a = o.a; b = o.b; c = o.c; }
+    Rec8008DA68(u32 x, u32 y, u32 z) { a = x; b = y; c = z; }
 };
 
-extern "C" void fn_8008DA68(Rec8008DA68* p) {
-    Rec8008DA68* src = &((Rec8008DA68*)lbl_801FDAC8)[*(s32*)(lbl_802BB0FC + 0x424)];
-    p->a = src->a;
-    p->b = src->b;
-    p->c = src->c;
+extern "C" Rec8008DA68 fn_8008DA68(void) {
+    return ((Rec8008DA68*)lbl_801FDAC8)[*(s32*)(lbl_802BB0FC + 0x424)];
 }
 
 extern "C" void* fn_8008DAD8(void* ptr, s16 param_2) {
