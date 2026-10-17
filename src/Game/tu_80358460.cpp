@@ -9,6 +9,13 @@ typedef void (Unk8035A1D4::*Unk8035A1D4Func)();
 extern Unk8035A1D4Func lbl_804AD30C[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" char lbl_804AD348[];
+extern "C" unsigned char sincosTable___5JMath[];
+extern "C" const f32 lbl_8054286C;
+extern "C" const f32 lbl_8054287C;
+extern "C" const f32 lbl_80542880;
+extern "C" const f32 lbl_80542884;
+extern "C" const f32 lbl_8054288C;
+extern "C" u8* lbl_8053AC98;
 struct Vec8035A860 {
     f32 x, y, z;
     Vec8035A860& operator-=(const Vec8035A860& o) {
