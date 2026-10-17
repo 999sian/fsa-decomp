@@ -110,14 +110,14 @@ extern "C" void fn_800C8B30(void* param_1)
 }
 
 extern "C" void fn_800C8C2C(u8* p) {
-    if (p[0x8b] == 0) {
+    if (p[0x8b] != 0) {
+        p[0x8b]--;
+    } else {
         (*(u8**)(p + 0x70))[0xb0] = 1;
         p[0x7c] = 0;
         fn_800C8DF4(p);
         fn_800C8D90(p);
         p[0x88] = 0;
-    } else {
-        p[0x8b]--;
     }
 }
 
