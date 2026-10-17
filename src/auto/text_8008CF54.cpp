@@ -2,6 +2,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 
 #include "types.h"
+#include <math.h>
 
 extern "C" void fn_8008E364(u32);
 extern "C" void fn_8008E4A4(u32);
@@ -114,6 +115,102 @@ extern "C" void fn_8008D148(int param_1)
 {
   *(u8 *)(param_1 + 0x98) = 0;
   *(u8 *)(param_1 + 0xa8) = 1;
+}
+
+extern "C" s32 PADRead(void*);
+extern "C" void PADClamp(void*);
+extern "C" void PADClampCircle(void*);
+extern "C" void PADReset(u32);
+extern "C" s32 fn_8008DAF8(f32* self, s8 x, s8 y, s32 r6, s32 isY, u32 mask);
+extern "C" void fn_8008D94C(u32* self, u16* padStatus, u32 stickStatus);
+extern "C" void fn_8008D424(int);
+extern "C" void fn_8008D538(void*);
+extern "C" void fn_8008D864(void);
+extern "C" u32 lbl_8052EB18[];
+extern "C" u32 lbl_8052EB58[];
+extern "C" u32 lbl_8053A930;
+extern "C" s32 lbl_80539D9C;
+extern "C" s32 lbl_80539D98;
+extern "C" u32 lbl_8053A928;
+extern "C" u32 fn_8008D15C(void)
+{
+    u8 buf[0x18];
+    u32 mask;
+    u8* link;
+    u32* entry;
+    f32* stickY;
+    f32* stickX;
+    u8* pad;
+    u32 reset;
+    s32 i;
+
+    lbl_8053A930 = PADRead(lbl_8052EA28);
+    switch (lbl_80539D9C) {
+    case 1:
+        PADClamp(lbl_8052EA28);
+        break;
+    case 2:
+        PADClampCircle(lbl_8052EA28);
+        break;
+    }
+
+    reset = 0;
+    pad = (u8*)lbl_8052EA28;
+    entry = lbl_8052EA58;
+    stickX = (f32*)lbl_8052EB18;
+    stickY = (f32*)lbl_8052EB58;
+    for (i = 0; i < 4; i++) {
+        mask = 0x80000000 >> i;
+        if (pad[10] == 0) {
+            u32 packed = fn_8008DAF8(stickX, pad[2], pad[3], lbl_80539D98, 0, entry[0]) << 24;
+            packed |= fn_8008DAF8(stickY, pad[4], pad[5], lbl_80539D98, 1, entry[0]) << 16;
+            fn_8008D94C(entry, (u16*)pad, packed);
+        } else if ((s8)pad[10] == -1) {
+            fn_8008DAF8(stickX, 0, 0, lbl_80539D98, 0, 0);
+            fn_8008DAF8(stickY, 0, 0, lbl_80539D98, 1, 0);
+            fn_8008D94C(entry, 0, 0);
+            if ((lbl_8053A928 & mask) == 0) {
+                reset |= mask;
+            }
+        } else {
+            entry[1] = 0;
+            entry[2] = 0;
+            entry[6] = 0;
+        }
+        entry += 12;
+        stickX += 4;
+        stickY += 4;
+        pad += 0xc;
+    }
+
+    for (link = *(u8**)lbl_8052E8A0; link != 0; link = *(u8**)(link + 0xc)) {
+        u8* sub = *(u8**)(*(u8**)link + 0x94);
+        if (sub != 0 && sub[4] != 0) {
+            u32 packed;
+            ((void (*)(u8*, u8*))(*(u32**)sub)[3])(sub, buf);
+            packed = fn_8008DAF8((f32*)(*(u8**)link + 0x48), buf[2], buf[3], lbl_80539D98, 0, *(u32*)(*(u8**)link + 0x18)) << 24;
+            packed |= fn_8008DAF8((f32*)(*(u8**)link + 0x58), buf[4], buf[5], lbl_80539D98, 1, *(u32*)(*(u8**)link + 0x18)) << 16;
+            fn_8008D94C((u32*)(*(u8**)link + 0x18), (u16*)buf, packed);
+        } else {
+            if (*(s16*)(*(u8**)link + 0x7c) == -1) {
+                fn_8008D424((int)*(u8**)link);
+            }
+            fn_8008D538(*(u8**)link);
+        }
+        sub = *(u8**)(*(u8**)link + 0x90);
+        if (sub != 0 && sub[4] != 0) {
+            s16 idx = *(s16*)(*(u8**)link + 0x7c);
+            if (idx >= 0 && ((s8*)lbl_8052EA28)[idx * 12 + 10] == 0) {
+                ((void (*)(u8*))(*(u32**)sub)[4])(sub);
+            }
+        }
+    }
+
+    if (reset != 0) {
+        PADReset(reset);
+    }
+    fn_8008D864();
+    return lbl_8053A930;
 }
 
 extern "C" void fn_8008D424(int param_1)
