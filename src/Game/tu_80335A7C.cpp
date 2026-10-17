@@ -10,6 +10,11 @@ struct Vec2_FSA {
     f32 y;
 };
 
+struct Vec3_FSA {
+    Vec2_FSA xy;
+    f32 z;
+};
+
 extern "C" void* lbl_8053AAF8;
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" void* fn_801F856C(void);
@@ -30,6 +35,56 @@ extern "C" void* fn_80335A7C(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_80335ADC(void* this_) {
+    u8* p = (u8*)this_;
+    struct {
+        Vec2_FSA xy;
+        f32 z;
+    } pos;
+
+    pos.xy = *(Vec2_FSA*)(p + 0x230);
+    pos.z = *(f32*)(p + 0x238);
+    if (((u8 (**)(void*))(*(void**)this_))[13](this_)) {
+        return;
+    }
+    if (*(s32*)(p + 0x240) == 0) {
+        if (p[0x247] != 0) {
+            if (p[0x246] == 0) {
+                p[0x246] = 5;
+                *(u32*)(p + 0x90) |= 1;
+            } else {
+                p[0x246] -= 1;
+                *(u32*)(p + 0x90) &= ~1;
+                if (p[0x248] < 2) {
+                    f32 rnd = rand01();
+                    if (rnd <= *(f32*)(p + 0x23c)) {
+                        pos.xy.x = pos.xy.x + 2.5;
+                        *(f32*)(p + 0x23c) = 0.2f;
+                    } else {
+                        pos.xy.x = pos.xy.x - 2.5;
+                        *(f32*)(p + 0x23c) = 0.8f;
+                    }
+                } else {
+                    f32 rnd = rand01();
+                    if (rnd <= *(f32*)(p + 0x23c)) {
+                        pos.xy.y += 8.0f;
+                        *(f32*)(p + 0x23c) = 0.2f;
+                    } else {
+                        pos.xy.y -= 8.0f;
+                        *(f32*)(p + 0x23c) = 0.8f;
+                    }
+                }
+            }
+        }
+        Actor_CreateByID(fn_801F856C(), 0x42414C4C, *(u32*)(p + 0x4), (f32*)&pos, *(u32*)(p + 0x90) & 0xf80000ffu, -1, -1);
+    }
+    if (*(s32*)(p + 0x240) > 0) {
+        *(s32*)(p + 0x240) -= 1;
+    } else {
+        *(s32*)(p + 0x240) = p[0x244] + (s32)(p[0x245] * rand01());
+    }
 }
 
 extern "C" void* lbl_8053AAF8;
