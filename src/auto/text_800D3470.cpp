@@ -14,6 +14,7 @@ struct Vtable800D8248 {
 };
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
+extern "C" u32 lbl_80539E10;
 struct Col3_800DDDD0 { u8 r, g, b; };
 struct Col4_800DDDD0 { u8 a; Col3_800DDDD0 c; };
 struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
