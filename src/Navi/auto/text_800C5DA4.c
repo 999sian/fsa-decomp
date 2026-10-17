@@ -301,13 +301,12 @@ extern "C" void fn_800C8DF4(u8* param_1) {
 
 extern "C" void fn_800C8E40(u8* p) {
     char* base = lbl_802C567C;
-    f32 u;
-    f32 r = fn_800C95E4(p, (u8)base[0x26], p[0x7d], 0, u, u);
+    f32 u, v;
+    f32 r = fn_800C95E4(p, (u8)base[0x26], p[0x7d], 0, u, v);
     if (p[0x7e]) {
         r = lbl_80300DE8 - r;
     }
-    u8 lo = lbl_802C567C[0x28];
-    (*(VObj_800C8D90**)(p + 0x70))->v7(lo + (u8)((s32)((u8)lbl_802C567C[0x27] - lo) * r));
+    (*(VObj_800C8D90**)(p + 0x70))->v7((u8)lbl_802C567C[0x28] + (u32)((f32)((u8)lbl_802C567C[0x27] - (u8)lbl_802C567C[0x28]) * r));
     if (p[0x7d] == 0) {
         p[0x7d] = base[0x26];
         p[0x7e] ^= 1;
@@ -353,16 +352,6 @@ extern "C" void fn_8003ABF0(void* a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u
 extern "C" void fn_800C8D90(u8* p);
 extern "C" void fn_801E10DC(void);
 extern "C" void fn_800C7018(void);
-extern "C" void fn_800127A0(void* a);
-struct RefGuard_800C954C { u8 pad[4]; s8 flag; u8 pad2[3]; s32 cnt; };
-static inline void release_800C954C(RefGuard_800C954C* g) {
-    if (g->flag >= 0) {
-        if (--g->cnt == 0) {
-            fn_800127A0(lbl_8029FDB4 + 4);
-            g->flag = -1;
-        }
-    }
-}
 
 extern "C" void fn_800C954C(u8* p) {
     VObj_800C954C* o = *(VObj_800C954C**)(p + 8);
@@ -370,7 +359,12 @@ extern "C" void fn_800C954C(u8* p) {
         o->v0(1);
     }
     (*(VObj_800C954C**)(p + 0x10))->v7();
-    release_800C954C((RefGuard_800C954C*)lbl_802C567C);
+    if (lbl_802C567C[4] >= 0) {
+        if (--*(s32*)(lbl_802C567C + 8) == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            lbl_802C567C[4] = -1;
+        }
+    }
 }
 
 extern "C" void fn_800C980C(void* param_1) {
