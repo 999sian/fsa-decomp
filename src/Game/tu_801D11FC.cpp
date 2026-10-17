@@ -19,6 +19,7 @@ extern const f32 lbl_8053F018;
 extern const f32 lbl_8053F01C;
 extern const f64 lbl_8053F020;
 extern const f32 lbl_8053F028;
+extern void* lbl_804A46F4[];
 extern "C" void fn_801D0F40(void* p);
 extern "C" void __construct_array(void* ptr, void* ctor, void* dtor, u32 size, u32 n);
 extern "C" void __ct__Q29JGeometry8TVec2_f_Fv();
