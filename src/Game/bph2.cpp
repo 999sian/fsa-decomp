@@ -16,7 +16,7 @@ extern void* lbl_8053AAF8;
 extern "C" void* fn_80138A30(void* game);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void* mgr, void* a, void* b, void* c);
-extern "C" s32 fn_802D800C(void* mgr, void* a);
+extern "C" bool fn_802D800C(void* mgr, void* a);
 
 extern "C" void fn_8018E890(void) {}
 extern "C" void fn_8018E894(char* this_, s32 v) { *(s32*)(this_ + 0x234) = v; }
@@ -76,6 +76,55 @@ extern "C" void* fn_8018D9D4(char* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" s32 fn_8018DA6C(char* this_) {
+    s32 i;
+
+    if (*(u8*)(this_ + 0x27b) == 1) {
+        return 0;
+    }
+    if (fn_802D800C(fn_802D6A9C(), (void*)((*(u32*)(this_ + 0x90) >> 12) & 0x1f)) &&
+        fn_802D800C(fn_802D6A9C(), (void*)((*(u32*)(this_ + 0x90) >> 17) & 0x1f)) &&
+        fn_802D800C(fn_802D6A9C(), (void*)((*(u32*)(this_ + 0x90) >> 22) & 0x1f)) &&
+        fn_802D800C(fn_802D6A9C(), (void*)(*(u32*)(this_ + 0x90) >> 27))) {
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i) && *(s32*)(this_ + 0x4) == fn_8023DE58(i) && !fn_8022F478(i) && fn_80230188(i) &&
+                *(u8*)(this_ + 0x29c) == 1) {
+                fn_8023061C(i, 0);
+                *(u8*)(this_ + 0x29c) = 0;
+            }
+        }
+        if (*(f32*)(this_ + 0x284) != lbl_8053E0F8) {
+            *(f32*)(this_ + 0x284) = lbl_8053E0F8;
+            *(s32*)(this_ + 0x244) = 0x12c;
+            fn_801F0E34(this_, 0x4001f, 0);
+        }
+        if (*(f32*)(this_ + 0x280) <= lbl_8053E1B4) {
+            return 0;
+        }
+        *(s32*)(this_ + 0x27c) = -1;
+        if (*(void**)(this_ + 0x328) != 0) {
+            *(u32*)((char*)*(void**)(this_ + 0x328) + 0xf4) |= 1;
+            *(s32*)((char*)*(void**)(this_ + 0x328) + 0x24) = 1;
+            *(void**)(this_ + 0x328) = 0;
+        }
+        if (*(void**)(this_ + 0x32c) != 0) {
+            *(u32*)((char*)*(void**)(this_ + 0x32c) + 0xf4) |= 1;
+            *(s32*)((char*)*(void**)(this_ + 0x32c) + 0x24) = 1;
+            *(void**)(this_ + 0x32c) = 0;
+        }
+        if (*(void**)(this_ + 0x330) != 0) {
+            *(u32*)((char*)*(void**)(this_ + 0x330) + 0xf4) |= 1;
+            *(s32*)((char*)*(void**)(this_ + 0x330) + 0x24) = 1;
+            *(void**)(this_ + 0x330) = 0;
+        }
+        *(f32*)(this_ + 0x294) = lbl_8053E130;
+        *(s32*)(this_ + 0x230) = 6;
+        return 1;
+    }
+    *(f32*)(this_ + 0x284) = lbl_8053E140;
+    return 0;
 }
 
 static u8 lbl_804C18B8[0xC];
