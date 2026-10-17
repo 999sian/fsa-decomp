@@ -155,6 +155,30 @@ extern "C" BOOL fn_800704C4(void)
     return TRUE;
 }
 
+extern "C" int fn_8004D308(void* a, s32 b, s32 c, void* d, void* e, void* f, s32 g, s32 h, s32 i, s32 j, s32 k);
+extern "C" void fn_80024E70(void* a, s32 b);
+extern void* lbl_802FF0BC;
+extern "C" void fn_8007081C(void* param_1, u32* param_2) {
+    u32 r;
+    if (param_2[0] == 0) {
+        if (lbl_802FF0BC != 0) {
+            r = fn_8004D308(lbl_802FF0BC, 8, 0x6d, param_2 + 5, param_2 + 8, 0, 0xff, 0, 0, 0, 0);
+        } else {
+            r = 0;
+        }
+        param_2[0] = r;
+    }
+    if (param_2[1] == 0) {
+        if (lbl_802FF0BC != 0) {
+            r = fn_8004D308(lbl_802FF0BC, 8, 0x6e, param_2 + 5, param_2 + 8, 0, 0xff, 0, 0, 0, 0);
+        } else {
+            r = 0;
+        }
+        param_2[1] = r;
+    }
+    fn_80024E70(param_2 + 5, *(s16*)(param_2 + 9));
+}
+
 extern "C" void fn_800708F8(void* param)
 {
     u8* base = (u8*)param;
