@@ -70,13 +70,12 @@ extern "C" void* fn_80192F60(void* ptr, s16 param_2) {
 
 extern "C" void fn_80192F9C(u32* p) {
     extern u8 lbl_802EE470[];
-    u32* q = (u32*)(lbl_802EE470 + 0x10c);
     u32 a = p[11];
     u32 b = p[12];
     u32 c = p[13];
-    q[0] = a;
-    q[1] = b;
-    q[2] = c;
+    *(u32*)(lbl_802EE470 + 0x10c) = a;
+    *(u32*)(lbl_802EE470 + 0x110) = b;
+    *(u32*)(lbl_802EE470 + 0x114) = c;
 }
 
 extern "C" void fn_80192FC0(void* p) {
@@ -113,8 +112,8 @@ extern "C" void fn_80193C94(u32* p, u32 a, u32 b) {
 }
 
 extern "C" void fn_80193CB4(u32* p) {
-    fn_801DF0BC(p[0], p[2]);
-    return;
+    u32 b = p[2];
+    fn_801DF0BC(*p, b);
 }
 
 extern "C" void fn_80193CE0(u32* p)
@@ -160,6 +159,15 @@ extern "C" void fn_80193D9C(u32* p)
     lbl_802FF6B0 = OSDisableInterrupts();
     fn_801DFFF0(lbl_802EE618, p[0], p[3]);
     lbl_802FFA80 = (u32)lbl_802EE618;
+}
+
+extern "C" u32 fn_80193DFC(u32* p) {
+    extern u32 lbl_802FF6B0;
+    extern u32 lbl_802FFA80;
+    extern void OSRestoreInterrupts(u32);
+    OSRestoreInterrupts(lbl_802FF6B0);
+    lbl_802FFA80 = 0;
+    return p[2];
 }
 
 extern "C" BOOL fn_80193E38(void);
