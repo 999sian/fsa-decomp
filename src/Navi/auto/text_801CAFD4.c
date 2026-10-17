@@ -437,6 +437,7 @@ extern "C" void fn_801CEC14(u32 start, u32 length) {
     OSRestoreInterrupts(enabled);
 }
 
+volatile unsigned long __AIRegs[8] : 0xCC006C00;
 extern "C" BOOL fn_801CEE7C(void);
 extern "C" BOOL fn_801CEF64(void);
 extern "C" void fn_801CEF74(u8 param_1);
@@ -457,29 +458,30 @@ extern "C" u32 fn_801CED8C(void) {
 }
 
 extern "C" void fn_801CED9C(u32 rate) {
-    int enabled;
-    u32 state;
+    u8* base = (u8*)0xCC000000;
     u32 left;
     u32 right;
     u32 sampleRate;
+    u32 state;
+    int enabled;
 
     if (rate == fn_801CEE7C()) {
         return;
     }
-    *(vu32*)0xCC006C00 &= ~0x40;
+    *(vu32*)(base + 0x6c00) &= ~0x40;
     if (rate == 0) {
         left = fn_801CEF90();
         right = fn_801CEFBC();
-        state = *(vu32*)0xCC006C00 & 1;
+        state = *(vu32*)(base + 0x6c00) & 1;
         sampleRate = fn_801CEF64();
         fn_801CEF74(0);
         fn_801CEFA0(0);
         enabled = OSDisableInterrupts();
         fn_801CF2B8();
-        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~0x20) | 0x20;
-        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~2) | (sampleRate << 1);
-        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~1) | state;
-        *(vu32*)0xCC006C00 |= 0x40;
+        *(vu32*)(base + 0x6c00) = (*(vu32*)(base + 0x6c00) & ~0x20) | 0x20;
+        *(vu32*)(base + 0x6c00) = (*(vu32*)(base + 0x6c00) & ~2) | (sampleRate << 1);
+        *(vu32*)(base + 0x6c00) = (*(vu32*)(base + 0x6c00) & ~1) | state;
+        *(vu32*)(base + 0x6c00) |= 0x40;
         OSRestoreInterrupts(enabled);
         fn_801CEF74(left);
         fn_801CEFA0(right);
@@ -548,6 +550,20 @@ extern "C" void fn_801CEFA0(u32 param_1) {
 
 extern "C" u32 fn_801CEFBC(void) {
     return (*(vu32*)0xcc006c04 >> 8) & 0xff;
+}
+
+extern "C" void fn_801CF4E0(s32 a, u32 b, u32 c, u32 d) {
+    volatile u32 pad;
+    volatile u16* reg = (volatile u16*)0xCC005000;
+    int state = OSDisableInterrupts();
+    reg[16] = (u16)((reg[16] & ~0x3FF) | (b >> 16));
+    reg[17] = (u16)((reg[17] & ~0xFFE0) | (b & 0xFFFF));
+    reg[18] = (u16)((reg[18] & ~0x3FF) | (c >> 16));
+    reg[19] = (u16)((reg[19] & ~0xFFE0) | (c & 0xFFFF));
+    reg[20] = (u16)((reg[20] & ~0x8000) | (a << 15));
+    reg[20] = (u16)((reg[20] & ~0x3FF) | (d >> 16));
+    reg[21] = (u16)((reg[21] & ~0xFFE0) | (d & 0xFFFF));
+    OSRestoreInterrupts(state);
 }
 
 extern "C" void* fn_801CF5D0(int param_1) {
@@ -819,9 +835,9 @@ extern "C" void fn_801D2038(s32 chan) {
 extern "C" s32 fn_801D26F8(s32 chan, s32 a, s32 b);
 extern "C" BOOL EXIImmEx(s32 chan, void* buf, s32 len, u32 type);
 extern "C" s32 fn_801D2AFC(s32 chan, s32 arg, void* cb) {
+    volatile u32 pad[2];
     u8* card;
     s32 result;
-    u32 dummy[2];
 
     card = lbl_802F7D60 + chan * 0x110;
     card[0x94] = 0xF1;
@@ -955,6 +971,38 @@ extern "C" s32 fn_801D32CC(void) {
     }
     return result;
 }
+
+#pragma dont_inline on
+extern "C" void fn_801D427C(s32 chan, s32 arg) {
+    u8* card;
+    s32 r;
+    s32 n;
+    void (*cb)(s32, s32);
+    r = arg;
+    card = lbl_802F7D60 + chan * 0x110;
+    if (r >= 0) {
+        *(s32*)(card + 0xb8) += 0x200;
+        *(s32*)(card + 0xb0) += 0x200;
+        *(s32*)(card + 0xb4) += 0x200;
+        n = *(s32*)(card + 0xac) - 1;
+        *(s32*)(card + 0xac) = n;
+        if (n > 0) {
+            r = fn_801D28AC(chan, (void*)fn_801D427C);
+            if (r >= 0) {
+                return;
+            }
+        }
+    }
+    if ((u32)*(s32*)(card + 0xd0) == 0) {
+        fn_801D2D80(card, r);
+    }
+    cb = (void (*)(s32, s32))*(void**)(card + 0xd4);
+    if ((u32)cb != 0) {
+        *(s32*)(card + 0xd4) = 0;
+        cb(chan, r);
+    }
+}
+#pragma dont_inline reset
 
 extern "C" s32 fn_801D28AC(s32 chan, void* cb);
 extern "C" s32 fn_801D29E0(s32 chan, void* cb);
