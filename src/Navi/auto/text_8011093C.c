@@ -27,6 +27,20 @@ extern "C" s32 fn_8011171C(u8* self, s16 a, u8 b, u32 c, u32 d);
 extern f32 lbl_8030134C;
 extern u8 lbl_802C5B7C[];
 extern void* lbl_802FF278;
+extern u8 lbl_802FF140;
+extern f32 lbl_80301340;
+extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" f32 fn_801118D8(u8* self, u8 b, s16 a);
+struct VObj_801116EC {
+    virtual void m0();
+    virtual void m1(s32 a);
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7(s32 a);
+};
 extern "C" void fn_80111170(NaviState_8011093C* p) {
     (p->*lbl_8028F100[((u8*)p)[0x118]])();
 }
@@ -53,6 +67,25 @@ extern "C" void fn_80111248(u8* self) {
         return;
     }
     self[0x118] = 2;
+}
+
+extern "C" void fn_801115C4(u8* self) {
+    s32 iVar2;
+    void* piVar1;
+    iVar2 = fn_8002F2E0(0x27);
+    if (iVar2 != 1) {
+        if (self[0x11c] != 0) {
+            self[0x11c]--;
+        } else {
+            self[0x11c] = 0x3c;
+            piVar1 = *(void**)((u8*)lbl_802FF278 + 4);
+            if (piVar1 != nullptr) {
+                void** vt = *(void***)piVar1;
+                ((void (*)(void*, u8))vt[4])(piVar1, self[0x11c]);
+            }
+            self[0x118] = 4;
+        }
+    }
 }
 
 extern "C" void fn_80111718(void)
