@@ -31,6 +31,17 @@ extern "C" s32 fn_8002192C(void) {
     return count;
 }
 
+extern "C" s32 fn_80021994(void) {
+    u8 mask = lbl_802BB0FC[0xee];
+    u8 i;
+    for (i = 0; i < 4; i++) {
+        if (mask & (1 << i)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 extern u8 lbl_802B7CA0[];
 extern char* lbl_8020631C[];
 extern char* lbl_80206200[];
@@ -39,10 +50,10 @@ extern "C" void fn_801E6768(void*, char*);
 extern "C" void fn_801E66C0(void*, char*);
 extern "C" void fn_800219D8(u8* param_1, s32 param_2, void* param_3, s32 param_4) {
     char** table;
-    if (param_4 != 0) {
-        table = lbl_8020631C;
-    } else {
+    if (param_4 == 0) {
         table = lbl_80206200;
+    } else {
+        table = lbl_8020631C;
     }
     if (param_1[param_2 * 0x4c + 0x1e8] >= 0x47) {
         fn_801E6768(param_3, lbl_802FBCB4);
