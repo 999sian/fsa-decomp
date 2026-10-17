@@ -28,6 +28,7 @@ extern "C" void fn_801DF0BC(u32 a, u32 b);
 extern "C" void fn_801969C8(u32 a);
 extern "C" void fn_80194830(u32* a);
 extern "C" void* fn_8015AA60(u32 size, u32 align);
+extern "C" void* fn_8015A90C(u32 size);
 extern u32 lbl_802FF6E0;
 extern "C" void fn_80192E40(u32* p) {
     p[0] = 0;
@@ -558,7 +559,7 @@ extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
 
 extern "C" void fn_801951A0(u32* p, u32 param_2, u32 param_3) {
     u8 buf[72];
-    fn_801C5DA8(((u32*)((u32*)lbl_802EE470)[16])[12], (u8*)((u32*)lbl_802EE470)[65] + (u16)param_3 * 0x30, buf);
+    fn_801C5DA8(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), (u8*)*(u32*)(lbl_802EE470 + 0x104) + (u16)param_3 * 0x30, buf);
     if (lbl_802FF6D0 != 0) {
         fn_80194BB0(buf);
     }
