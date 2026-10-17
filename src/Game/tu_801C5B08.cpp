@@ -42,7 +42,7 @@ extern "C" void fn_801C6260(void* p);
 extern "C" u8 fn_801D0DD4(void* p);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" void* GetCurrentSlotPtr(void* p);
-extern "C" u8 fn_800FE2E4(void* slot, void* pos, s32 room);
+extern "C" s32 fn_800FE2E4(void* slot, void* pos, s32 room);
 extern "C" JGeometry::TVec3f fn_800FE294(void* slot, s32 room);
 extern "C" u8 fn_800FD5E8(void* slot, s32 room);
 extern "C" s16 fn_801D02E0(void* p, void* pos);
@@ -60,6 +60,7 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
         self->field_230 |= 0x2000000;
         fn_801C3B7C(p, 0x1e);
     } else {
+        u8 flag;
         s32 d = fn_801D05F8(p, &self->field_0C, self->field_5AC);
         if (d < 0) {
             if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE6C) {
@@ -88,7 +89,7 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
                     fn_801C3B7C(p, 0x1c);
                     self->field_59A = 0xb4;
                 } else {
-                    u8 flag = 0;
+                    flag = 0;
                     if (self->field_599 == 0) {
                         u8 r26 = ((u8*)GetCurrentSlotPtr(self->field_358))[3];
                         JGeometry::TVec3f pos = *(JGeometry::TVec3f*)&self->field_0C;
@@ -97,7 +98,8 @@ extern "C" void fn_801C5B08(void* p, s32 param_2) {
                         if (r26 < slot[2]) {
                             slot[3] = r26;
                         }
-                        JGeometry::TVec3f v = fn_800FE294(GetCurrentSlotPtr(self->field_358), r27);
+                        JGeometry::TVec3f v;
+                        v = fn_800FE294(GetCurrentSlotPtr(self->field_358), r27);
                         f32 dx = v.x - self->field_0C;
                         f32 dy = v.y - self->field_10;
                         if (dx * dx + dy * dy > lbl_8053EE74) {
