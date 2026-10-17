@@ -29,6 +29,18 @@ extern "C" s32 fn_8011D4C8(char* p) {
 
 extern s32 lbl_80464BBC[];
 extern "C" void* fn_8011921C(void);
+extern f32 lbl_8053C864;
+extern f32 lbl_8053C868;
+extern f32 lbl_8053C86C;
+extern f32 lbl_8053C870;
+extern f32 lbl_8053C874;
+extern f32 lbl_8053C878;
+extern f32 lbl_8053C87C;
+extern f32 lbl_8053C880;
+extern f32 lbl_8053C884;
+extern f64 lbl_8053C888;
+extern f32 lbl_8053C860;
+extern int __float_epsilon[];
 extern "C" void fn_8011D1B8(void* p, s32 n);
 extern "C" void fn_8011D4D0(void* param_1) {
     if (*(s32*)((char*)fn_8011921C() + 4) == 0x11) {
