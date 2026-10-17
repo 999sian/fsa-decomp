@@ -16,6 +16,8 @@ struct Vec_801367EC {
 struct Range_801367EC {
     VObj_801367EC** cur;
     VObj_801367EC** end;
+    VObj_801367EC* next() { return *cur++; }
+    bool done() const { return cur == end; }
 };
 
 struct VObj_8013B620 {
@@ -469,6 +471,29 @@ extern "C" void fn_80136700(void* param_1, f64 param_2, f64* param_3) {
         cur++;
         ((void (*)(void*, f64))(*(void***)elem)[7])(elem, d);
     }
+}
+
+extern f64 lbl_80301830;
+extern "C" f64 fn_801367EC(Vec_801367EC* p, f64* q, f64 x) {
+    u32 n;
+    f64 r;
+    Range_801367EC it;
+    if (p->begin == 0) {
+        n = 0;
+    } else {
+        n = p->end - p->begin;
+    }
+    if (n == 0) {
+        return lbl_80301830;
+    }
+    it.cur = p->begin;
+    it.end = p->end;
+    r = (*it.cur++)->v5(x);
+    while (it.cur != it.end) {
+        r -= (*it.cur++)->v5(x);
+    }
+    r -= *q;
+    return r;
 }
 
 extern "C" u32 fn_80136A68(void) {
