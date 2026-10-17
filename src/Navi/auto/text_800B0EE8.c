@@ -309,6 +309,32 @@ extern "C" void fn_800B9800(u8* p) {
     }
 }
 
+extern "C" void fn_80130974(void* p);
+extern "C" void fn_800B98AC(u8* p) {
+    VObj_800B98AC* obj;
+    u8* q;
+
+    obj = *(VObj_800B98AC**)(p + 0x8);
+    if (obj != 0) {
+        obj->v0(1);
+    }
+    obj = *(VObj_800B98AC**)(p + 0x1a8);
+    if (obj != 0) {
+        obj->v0(1);
+    }
+    obj = *(VObj_800B98AC**)(p + 0x58);
+    if (obj != 0) {
+        obj->v0(1);
+    }
+    (*(VObj2_800B98AC**)p)->v7();
+    if (*(void**)(p + 0x3a4) != 0) {
+        fn_80130974(*(void**)(p + 0x3a4));
+        q = *(u8**)(p + 0x3a4);
+        *(u32*)(q + 0xf4) |= 1;
+        *(u32*)(q + 0x24) = 1;
+    }
+}
+
 extern "C" void* fn_800B9970(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80287910;
