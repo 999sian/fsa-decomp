@@ -92,6 +92,9 @@ u8 fn_8023E98C(s32);
 u8 fn_8023ED8C(s32);
 s32 fn_8023ECF0(s32);
 u8 fn_8022D75C(s32);
+s32 fn_800FDEA0(void*, f32*, GameLowVec*, s32*, s16*, s32);
+u8 fn_800FD894(void*, s32, s32, s32);
+s32 ClassifyBamAngleToQuadrant(u16);
 void* fn_801F856C();
 u8* fn_801F666C(void*, s32);
 s32 Actor_CreateByID(void*, u32, u32, const GameLowVec*, s32, s32, s32);
@@ -579,7 +582,7 @@ extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
 extern const u8 lbl_80464CD8[];
 extern const f32 lbl_8053C9F0;
 extern "C" s32 fn_80123B94(u8* self) {
-    if (!((u8 (**)(u8*))(*(void***)self))[30](self)) {
+    if (!((SeekCalls*)self)->v28()) {
         return 0;
     }
     s32 handle = fn_801F26CC(self, lbl_80464CD8);
@@ -613,7 +616,7 @@ extern "C" s32 fn_80123B94(u8* self) {
                 *(s32*)(self + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)(ang * lbl_8053C9F0));
             }
         }
-        ((void (**)(u8*))(*(void***)self))[37](self);
+        ((SeekCalls*)self)->v35();
     }
     return 1;
 }
