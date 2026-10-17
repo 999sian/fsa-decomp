@@ -1,4 +1,6 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct J2DScreenVt {
     virtual void m0(void);
@@ -32,6 +34,47 @@ extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_80543D60;
 extern "C" void fn_8013B490(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
+class J2DScreen;
+class JKRArchive;
+struct J2DGrafContext;
+extern "C" s32 fn_804432DC(void* this_, u8 cmd, s16 a, s16 b) {
+    char* p = (char*)this_;
+    char* tbl = (char*)lbl_8048FB88;
+    if (cmd < 8 && *(u8*)(p + 0x15) == 3) {
+        *(u8*)(p + 0x14) = cmd;
+        *(s16*)(p + 0x10) = a;
+        *(s16*)(p + 0x12) = b;
+        if (cmd == 0) {
+            *(s16*)(*(char**)(p + 0x8) + 0x20) = 0;
+            *(s16*)(*(char**)(p + 0x8) + 0x22) = 0;
+            *(s16*)(*(char**)(p + 0x8) + 0x24) = 0;
+            fn_80402E08(*(void**)(p + 0x8), lbl_80543D60, lbl_80543D60);
+            fn_80402CE0(*(void**)(p + 0x8), lbl_80543D64, lbl_80543D64);
+            *(u8*)(*(char**)(*(char**)(p + 0x8) + 0x4) + 0xb0) = 1;
+            *(u8*)(*(char**)(*(char**)(p + 0xc) + 0x4) + 0xb0) = 0;
+            *(u8*)(p + 0x15) = 0;
+        } else if (cmd == 7) {
+            *(u8*)(*(char**)(*(char**)(p + 0x8) + 0x4) + 0xb0) = 0;
+            *(u8*)(*(char**)(*(char**)(p + 0xc) + 0x4) + 0xb0) = 1;
+            *(u8*)(p + 0x15) = 2;
+        } else {
+            *(s16*)(*(char**)(p + 0x8) + 0x20) = 0;
+            *(s16*)(*(char**)(p + 0x8) + 0x22) = 0;
+            *(s16*)(*(char**)(p + 0x8) + 0x24) = 0;
+            u8 idx = *(u8*)(p + 0x14);
+            f32 x = (f32)((s16*)(tbl + 0x1c))[idx];
+            f32 y = (f32)((s16*)(tbl + 0x2c))[idx];
+            fn_80402E08(*(void**)(p + 0x8), x, y);
+            f32 z = ((f32*)tbl)[idx] / ((f32*)*(void**)(p + 0x8))[6];
+            fn_80402CE0(*(void**)(p + 0x8), z, z);
+            *(u8*)(*(char**)(*(char**)(p + 0x8) + 0x4) + 0xb0) = 1;
+            *(u8*)(*(char**)(*(char**)(p + 0xc) + 0x4) + 0xb0) = 0;
+            *(u8*)(p + 0x15) = 2;
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_80443494(void* this_) {
     char* p = (char*)this_;
     s32 v = *(s16*)(p + 0x12);
@@ -48,14 +91,13 @@ extern "C" void fn_8040271C(void* this_, s32 a, f32 c, f32 d);
 extern u8 lbl_8048FB88[];
 extern f32 lbl_80543D64;
 extern "C" void fn_804434B8(void* this_) {
-    char* p = (char*)this_;
     char* tbl = (char*)lbl_8048FB88;
-    *(s16*)(p + 0x10) = *(s16*)(p + 0x10) + 1;
-    fn_80402B10(*(void**)(p + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x1c))[*(u8*)(p + 0x14)]);
-    fn_80402940(*(void**)(p + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x2c))[*(u8*)(p + 0x14)]);
-    fn_8040271C(*(void**)(p + 0x8), 0x1e, lbl_80543D64, ((f32*)tbl)[*(u8*)(p + 0x14)] / ((f32*)*(void**)(p + 0x8))[6]);
-    if (*(s16*)(p + 0x10) >= 0x1e) {
-        *(u8*)(p + 0x15) = 2;
+    *(s16*)((char*)this_ + 0x10) = *(s16*)((char*)this_ + 0x10) + 1;
+    fn_80402B10(*(void**)((char*)this_ + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x1c))[*(u8*)((char*)this_ + 0x14)]);
+    fn_80402940(*(void**)((char*)this_ + 0x8), 0x1e, 0, lbl_80543D60, ((s16*)(tbl + 0x2c))[*(u8*)((char*)this_ + 0x14)]);
+    fn_8040271C(*(void**)((char*)this_ + 0x8), 0x1e, lbl_80543D64, ((f32*)tbl)[*(u8*)((char*)this_ + 0x14)] / ((f32*)*(void**)((char*)this_ + 0x8))[6]);
+    if (*(s16*)((char*)this_ + 0x10) >= 0x1e) {
+        *(u8*)((char*)this_ + 0x15) = 2;
     }
 }
 
@@ -75,6 +117,17 @@ extern "C" void fn_804435E4(void* this_) {
     if (*(u8*)(p + 0x15) != 3) {
         fn_8013B490(lbl_8053AB10);
         draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(p + 0x4), lbl_80543D60, lbl_80543D60, ((void**)lbl_8053AB10)[4]);
+    }
+}
+
+struct T80443638;
+typedef void (T80443638::*PMF80443638)();
+extern PMF80443638 lbl_804B1AC4[];
+extern "C" void fn_80443638(T80443638* this_) {
+    u8 state = *(u8*)((char*)this_ + 0x15);
+    bool notThree = state != 3;
+    if (notThree) {
+        (((T80443638*)lbl_8053AEF0)->*lbl_804B1AC4[state])();
     }
 }
 
@@ -135,9 +188,9 @@ extern "C" void* fn_80443760(void* this_) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 8) = obj;
-    u32 a = 0x50740000;
-    u32 b = 0x50746573;
     u32 c = 0x746d6170;
+    u32 a = 0x50740000;
+    u32 b = a + 0x6573;
     fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m15(a, b, c));
 
     obj = __nw__FUl(0x2c);
@@ -145,12 +198,18 @@ extern "C" void* fn_80443760(void* this_) {
         *(void**)obj = (void*)lbl_804AF86C;
     }
     *(void**)(self + 12) = obj;
-    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(0x500000, 0x506d61, 0x7074656e));
+    u32 f = 0x7074656e;
+    u32 e = 0x500000;
+    u32 d = e + 0x6d61;
+    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m15(e, d, f));
 
     self[0x14] = 0;
     *(s16*)(self + 0x10) = 0;
     *(s16*)(self + 0x12) = 0;
     self[0x15] = 3;
     return this_;
+}
+
+extern "C" void fn_80443894(void) {
 }
 
