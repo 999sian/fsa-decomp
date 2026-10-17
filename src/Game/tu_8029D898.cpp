@@ -55,6 +55,19 @@ extern "C" u32 fn_802A0800(char* self, void* p3, u32 room);
 extern void* lbl_8053AAF8;
 extern u16 lbl_8046CB88[];
 extern "C" u16 fn_8022461C(JGeometry::TVec2<f32>* pos, s32 flag);
+extern "C" u8 lbl_8046C508[];
+
+static inline void fn_8029E9EC_sub(JGeometry::TVec2<f32>* pos, s32 room, u16 param) {
+    JGeometry::TVec2<f32> t = *pos;
+    void* mgr = lbl_8053AC98;
+    *(s32*)((u8*)mgr + 0x20) = fn_80226BC4(&t, room & 0xfe);
+    fn_802D782C(fn_802D6A9C(), 1);
+    fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)((u8*)mgr + 0x20), param);
+    s32 idx = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((u8*)mgr + 0x20));
+    if (idx != -1) {
+        fn_802D7D00(fn_802D6A9C(), room, idx, 1);
+    }
+}
 extern "C" void fn_8029D898(void* a, s32 b) {
     s32 v = *(s32*)((char*)fn_802D6A9C() + 0x34);
     fn_802D7970(fn_802D6A9C(), b);
@@ -63,20 +76,20 @@ extern "C" void fn_8029D898(void* a, s32 b) {
 }
 
 extern "C" void fn_8029D8F0(void* p, JGeometry::TVec2<f32>* pos, s32 param_3, s32 param_4, s32 param_5) {
-    s32 j;
-    s32 i;
-    u16 v;
-    u16* pv;
-    u16* row;
-    u32 room;
-    u32 slot;
-    u32 rowStart;
-    u32 cell;
-    JGeometry::TBox2f base;
-    JGeometry::TBox2f* src;
-    s32 y;
-    s32 x;
     void* mgr = fn_802D6A9C();
+    JGeometry::TBox2f* src;
+    JGeometry::TBox2f base;
+    s32 x;
+    s32 y;
+    u32 cell;
+    u32 rowStart;
+    u32 slot;
+    u32 room;
+    u16* row;
+    u16* pv;
+    u16 v;
+    s32 i;
+    s32 j;
 
     if ((param_3 & 0xfe) < 8) {
         src = (JGeometry::TBox2f*)((u8*)mgr + 0xcc);
@@ -340,62 +353,61 @@ extern "C" void fn_8029E050(void* self, JGeometry::TVec2<f32>* pos, u32 room, s3
 extern f32 lbl_80540780;
 extern "C" void fn_80230FD0(s32 h, s32 id);
 extern "C" u32 fn_8029E248(char* self, JGeometry::TVec2<f32>* pos, u32 room) {
-    u32 ret = 0;
     JGeometry::TVec2<f32> p;
     p.y = pos->y;
     p.x = pos->x;
+    u32 ret = 0;
     *(s32*)(self + 0x20) = fn_80226BC4(&p, room);
     *(u16*)(self + 0x24) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, *(s32*)(self + 0x20));
     u16 kind = *(u16*)(self + 0x24);
     if (kind == 0x19c || kind == 0x19d) {
-        u32 r = room;
         if (kind == 0x19d) {
             JGeometry::TVec2<f32> q;
             q.y = pos->y;
             q.x = pos->x;
             void* mgr = lbl_8053AC98;
-            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&q, r & 0xfe);
+            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&q, room & 0xfe);
             s32 idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
-            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), r, idx, 0x19f);
-            s32 n = fn_802D4C10(fn_802D6A9C(), r, (u16)*(s32*)((char*)mgr + 0x20));
+            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, idx, 0x19f);
+            s32 n = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((char*)mgr + 0x20));
             if (n != -1) {
-                fn_802D7D00(fn_802D6A9C(), r, n, 1);
+                fn_802D7D00(fn_802D6A9C(), room, n, 1);
             }
-            JGeometry::TVec2<f32> s;
-            s.y = pos->y;
-            s.x = pos->x - lbl_80540780;
-            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&s, r & 0xfe);
+            JGeometry::TVec2<f32> r;
+            r.y = pos->y;
+            r.x = pos->x - lbl_80540780;
+            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&r, room & 0xfe);
             idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
-            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), r, idx, 0x19e);
-            n = fn_802D4C10(fn_802D6A9C(), r, (u16)*(s32*)((char*)mgr + 0x20));
+            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, idx, 0x19e);
+            n = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((char*)mgr + 0x20));
             if (n != -1) {
-                fn_802D7D00(fn_802D6A9C(), r, n, 1);
+                fn_802D7D00(fn_802D6A9C(), room, n, 1);
             }
         } else {
             JGeometry::TVec2<f32> q;
             q.y = pos->y;
             q.x = pos->x;
             void* mgr = lbl_8053AC98;
-            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&q, r & 0xfe);
+            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&q, room & 0xfe);
             s32 idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
-            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), r, idx, 0x19e);
-            s32 n = fn_802D4C10(fn_802D6A9C(), r, (u16)*(s32*)((char*)mgr + 0x20));
+            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, idx, 0x19e);
+            s32 n = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((char*)mgr + 0x20));
             if (n != -1) {
-                fn_802D7D00(fn_802D6A9C(), r, n, 1);
+                fn_802D7D00(fn_802D6A9C(), room, n, 1);
             }
-            JGeometry::TVec2<f32> s;
-            s.y = pos->y;
-            s.x = pos->x + lbl_80540780;
-            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&s, r & 0xfe);
+            JGeometry::TVec2<f32> r;
+            r.y = pos->y;
+            r.x = pos->x + lbl_80540780;
+            *(s32*)((char*)mgr + 0x20) = fn_80226BC4(&r, room & 0xfe);
             idx = *(s32*)((char*)mgr + 0x20);
             fn_802D782C(fn_802D6A9C(), 1);
-            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), r, idx, 0x19f);
-            n = fn_802D4C10(fn_802D6A9C(), r, (u16)*(s32*)((char*)mgr + 0x20));
+            fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), room, idx, 0x19f);
+            n = fn_802D4C10(fn_802D6A9C(), room, (u16)*(s32*)((char*)mgr + 0x20));
             if (n != -1) {
-                fn_802D7D00(fn_802D6A9C(), r, n, 1);
+                fn_802D7D00(fn_802D6A9C(), room, n, 1);
             }
         }
         fn_80230FD0(0, 0x30007);
