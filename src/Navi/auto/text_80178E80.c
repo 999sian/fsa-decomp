@@ -1428,6 +1428,8 @@ extern "C" void fn_801820F4(void) {
     fn_80177E84();
 }
 
+extern "C" void fn_80182114(void) {}
+
 extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     f32 pos[4];
     u8 buf[56];
