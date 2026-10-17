@@ -1029,6 +1029,14 @@ extern "C" void fn_8012B878(u8* p) {
     }
 }
 
+extern "C" void fn_8012B8B4(u8* p, void* arg) {
+    u8* obj = *(u8**)p;
+    Unk8012B8B4Listener* sub = *(Unk8012B8B4Listener**)(obj + 0xf0);
+    if (sub != 0) {
+        sub->vf4(obj, arg);
+    }
+}
+
 extern "C" void fn_8012BEC0(void* a, f32* p) {
     p[0x64 / 4] = p[0x60 / 4];
 }
