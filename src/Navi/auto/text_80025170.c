@@ -235,8 +235,8 @@ extern "C" int fn_8002652C(void) {
 }
 
 extern "C" u8 fn_800265AC(u8 i) {
-    u8 v = lbl_802FED9D;
-    return v & (u8)(1 << i);
+    u8 v = *(volatile u8*)&lbl_802FED9D;
+    return (u8)(v & (u8)(1 << i));
 }
 
 extern "C" void fn_800265D0(u8 param_1) {
