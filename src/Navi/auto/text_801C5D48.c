@@ -4,6 +4,13 @@
 #include "Dolphin/os.h"
 #include "sdk/Dolphin/vec.h"
 
+static f32 Unit01[] = { 0.0f, 1.0f };
+extern "C" f32 __psq_l(void* p, int off, int w, int gqr);
+extern "C" void __psq_st(f32 v, void* p, int off, int w, int gqr);
+extern "C" f32 __ps_muls0(f32 a, f32 c);
+extern "C" f32 __ps_madds0(f32 a, f32 c, f32 b);
+extern "C" f32 __ps_madds1(f32 a, f32 c, f32 b);
+
 BOOL __DVDPushWaitingQueue(s32 prio, DVDCommandBlock* block);
 
 typedef struct DVDWACommand {
@@ -91,7 +98,6 @@ extern "C" float fn_801EA270(f32 x);
 extern "C" float fn_801EA294(f32 x);
 extern "C" void fn_801C5FDC(void* dst, s32 axis, f32 x, f32 y);
 extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
-    volatile f64 pad[2];
     f32 a = fn_801EA270(v);
     f32 b = fn_801EA294(v);
     fn_801C5FDC(dst, axis, a, b);
@@ -327,12 +333,56 @@ extern "C" BOOL fn_801C7BF8(s32 entryNum, DVDFileInfo* fileInfo)
 	return FALSE;
 }
 
+extern "C" BOOL fn_801C7EB8(char* path, u32 maxlen);
+extern "C" s32 fn_801C7904(char* path);
+extern char lbl_8029D2D0[];
+extern "C" BOOL fn_801C7C6C(char* path, DVDFileInfo* fileInfo)
+{
+	char buf[0x80];
+	s32 entryNum = fn_801C7904(path);
+	if (entryNum < 0) {
+		fn_801C7EB8(buf, 0x80);
+		OSReport(lbl_8029D2D0, path, buf);
+		return FALSE;
+	}
+	u32* entry = (u32*)(FstStart_802FF864 + entryNum * 0xc);
+	if ((entry[0] & 0xff000000) == 0) {
+		fileInfo->startAddr = entry[1];
+		fileInfo->length = entry[2];
+		fileInfo->callback = NULL;
+		fileInfo->cb.state = 0;
+		return TRUE;
+	}
+	return FALSE;
+}
+
 extern "C" s32 fn_801CA5B8(DVDCommandBlock* block);
 extern "C" void fn_801C803C(s32 result, DVDFileInfo* fileInfo);
 extern "C" BOOL fn_801C7D34(DVDCommandBlock* block)
 {
 	fn_801CA5B8(block);
 	return TRUE;
+}
+
+extern u32 lbl_802FF870;
+extern "C" u32 fn_801C7D58(u32 entry, char* path, u32 maxlen);
+extern "C" BOOL fn_801C7EB8(char* path, u32 maxlen) {
+    u32 entry = lbl_802FF870;
+    u32 len = fn_801C7D58(entry, path, maxlen);
+    if (len == maxlen) {
+        path[maxlen - 1] = 0;
+        return FALSE;
+    }
+    if ((*(u32*)(FstStart_802FF864 + entry * 0xc) & 0xff000000) ? TRUE : FALSE) {
+        if (len == maxlen - 1) {
+            path[len] = 0;
+            return FALSE;
+        }
+        path[len] = '/';
+        len++;
+    }
+    path[len] = 0;
+    return TRUE;
 }
 
 extern "C" BOOL fn_801C7F7C(DVDFileInfo* fileInfo, void* addr, s32 length, s32 offset, DVDCallback callback, s32 prio)
@@ -404,10 +454,11 @@ extern "C" void fn_801C8850(u32 param_1)
 	}
 }
 
+#pragma dont_inline on
 extern "C" void fn_801C8B48(void) {
     fn_801C76C8(((u8*)IDShouldBe_802FF884)[8], 10, fn_801C8E54);
 }
-
+#pragma dont_inline reset
 extern "C" void fn_801C8C24(DVDCommandBlock* block) {
     fn_801C6FF4(BB2_802F7AA0, 0x20, 0x420, fn_801C8D70);
 }
