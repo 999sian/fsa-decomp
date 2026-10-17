@@ -252,6 +252,5 @@ extern "C" void* fn_8020B0B8(char* this_) {
     return this_;
 }
 
-static void fn_8020B130(void) {}
 
 #endif
