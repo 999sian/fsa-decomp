@@ -111,6 +111,16 @@ extern "C" void fn_80016170(void* param_1) {
     }
 }
 
+extern "C" void fn_800161C0(void* param_1, void* param_2, u32 param_3, s32 param_4) {
+    u8* p = (u8*)param_1;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        memcpy(p + param_4, param_2, param_3);
+        *(s32*)(p + 0x1fa8) = 2;
+        fn_801BE47C(p + 0x1fb0);
+        fn_801BE764(p + 0x1fc8);
+    }
+}
+
 extern "C" void fn_80016244(void* param_1) {
     u8* p = (u8*)param_1;
     if (fn_801BE5B4(p + 0x1fb0)) {
