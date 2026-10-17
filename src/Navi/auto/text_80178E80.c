@@ -15,6 +15,16 @@ struct NaviAnm_8018DE28 {
     NaviAnmEnt_8018DE28* entries;
 };
 struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
+struct NaviNode_8018ED48 {
+    void* unk0;
+    void* unk4;
+    NaviNode_8018ED48* unk8;
+};
+struct VObj_8018ED48 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(s32 a);
+};
 struct VObj_8005E8B8 {
     virtual void v0();
     virtual void v1();
