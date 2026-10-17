@@ -98,6 +98,15 @@ extern "C" void fn_800E7B7C(void* param_1) {
     *(u32*)(lbl_802BB0FC + 0x100) |= 0x10;
 }
 
+extern "C" void fn_800E7D44(void* p) {
+    if (*(u16*)((u8*)p + 0xa9c) != 0) {
+        *(u16*)((u8*)p + 0xa9c) = *(u16*)((u8*)p + 0xa9c) - 1;
+        return;
+    }
+    *(u8*)((u8*)p + 0xa76) = 0;
+    *(u32*)(lbl_802BB0FC + 0x100) |= 0x8000;
+}
+
 extern "C" void fn_800E88D0(u8* p) {
     u8* obj = *(u8**)(p + 0xb34);
     if (obj != nullptr) {
