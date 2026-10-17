@@ -16,6 +16,7 @@ static char lbl_8050E538[0x10];
 static char lbl_8050E548[0x10];
 
 extern void* lbl_8053AD78;
+extern u8 lbl_8050EC80[];
 
 extern "C" void fn_803944C8(void* this_, s32 a, u8 b, u8 c) {
     *(u8*)((char*)this_ + 0x3b1) = 1;
@@ -700,6 +701,108 @@ extern "C" void fn_80398700(MsgMeasure* m, u8 kind, s32 count) {
     }
 }
 
+typedef s32 (*TuCall0)(void*);
+typedef void (*TuCall3)(void*, s32, void*);
+extern f32 lbl_805431E8;
+extern "C" void fn_80398A34(char* p, s32 n) {
+    void* obj = *(void**)(p + 0x38);
+    s32 printed = 0;
+    f32 scale = *(f32*)(p + 0x48) / (f32)(((TuCall0*)(*(void**)obj))[12](obj));
+    s32 q;
+    s32 x;
+    char* e;
+    char* f;
+    u8 wm[4];
+    u8 w10000[4];
+    u8 w1000[4];
+    u8 w100[4];
+    u8 w10[4];
+    u8 w1[4];
+
+    if (n < 0) {
+        n *= -1;
+        obj = *(void**)(p + 0x38);
+        ((TuCall3*)(*(void**)obj))[11](obj, 0x2d, wm);
+        x = wm[1];
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
+        f = p + *(u8*)(p + 0x201);
+        *(u8*)(f + 0x22d) += 1;
+    }
+
+    q = n / 10000;
+    n = n % 10000;
+    if (q != 0) {
+        printed = 1;
+        obj = *(void**)(p + 0x38);
+        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w10000);
+        x = w10000[1];
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
+        f = p + *(u8*)(p + 0x201);
+        *(u8*)(f + 0x22d) += 1;
+    }
+
+    q = n / 1000;
+    n = n % 1000;
+    if (q != 0 || printed != 0) {
+        printed = 1;
+        obj = *(void**)(p + 0x38);
+        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w1000);
+        x = w1000[1];
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
+        f = p + *(u8*)(p + 0x201);
+        *(u8*)(f + 0x22d) += 1;
+    }
+
+    q = n / 100;
+    n = n % 100;
+    if (q != 0 || printed != 0) {
+        printed = 1;
+        obj = *(void**)(p + 0x38);
+        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w100);
+        x = w100[1];
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
+        f = p + *(u8*)(p + 0x201);
+        *(u8*)(f + 0x22d) += 1;
+    }
+
+    q = n / 10;
+    n = n % 10;
+    if (q != 0 || printed != 0) {
+        printed = 1;
+        obj = *(void**)(p + 0x38);
+        ((TuCall3*)(*(void**)obj))[11](obj, q + 0x30, w10);
+        x = w10[1];
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+        e = p + *(u8*)(p + 0x201) * 4;
+        *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
+        f = p + *(u8*)(p + 0x201);
+        *(u8*)(f + 0x22d) += 1;
+    }
+
+    obj = *(void**)(p + 0x38);
+    ((TuCall3*)(*(void**)obj))[11](obj, n + 0x30, w1);
+    x = w1[1];
+    e = p + *(u8*)(p + 0x201) * 4;
+    *(f32*)(e + 0x4c) = scale * (*(f32*)(p + 0x44) * (f32)x) + *(f32*)(e + 0x4c);
+    e = p + *(u8*)(p + 0x201) * 4;
+    *(f32*)(e + 0xf4) = *(f32*)(e + 0xf4) + lbl_805431E8;
+    f = p + *(u8*)(p + 0x201);
+    *(u8*)(f + 0x22d) += 1;
+}
+
 // ---- ASCII -> font code table helpers ----
 struct MsgCharMap {
     u16 ascii;
@@ -881,8 +984,8 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
         p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10];
         p->str2c0[p->m2d0++] = -2;
         if (p->layout->m1a1 != 0) {
-            s32 top = p->lineTab[p->layout->m15c];
-            u32 line = p->slotLine[p->slot];
+            s8 top = p->lineTab[p->layout->m15c];
+            u32 line = (u8)p->slotLine[p->slot];
             if (line - top - 1 == 0) {
                 p->str2c0[p->m2d0++] = line + 0x20 - top;
                 break;
@@ -894,11 +997,14 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
         break;
     case 1:
         p->str2c0[p->m2d0++] = -2;
-        p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10] + 0x40;
+        {
+            s32 v = x + (s8)p->slotLine[p->slot + 0x10];
+            p->str2c0[p->m2d0++] = v + 0x40;
+        }
         p->str2c0[p->m2d0++] = -2;
         if (p->layout->m1a1 != 0) {
-            s32 top = p->lineTab[p->layout->m15c];
-            u32 line = p->slotLine[p->slot];
+            s8 top = p->lineTab[p->layout->m15c];
+            u32 line = (u8)p->slotLine[p->slot];
             if (line - top - 1 == 0) {
                 p->str2c0[p->m2d0++] = line + 0x60 - top;
                 break;
@@ -910,11 +1016,14 @@ extern "C" void fn_8039D30C(MsgProc* p, u8 tag) {
         break;
     case 2:
         p->str2c0[p->m2d0++] = -2;
-        p->str2c0[p->m2d0++] = x + (s8)p->slotLine[p->slot + 0x10] + 0x80;
+        {
+            s32 v = x + (s8)p->slotLine[p->slot + 0x10];
+            p->str2c0[p->m2d0++] = v + 0x80;
+        }
         p->str2c0[p->m2d0++] = -2;
         if (p->layout->m1a1 != 0) {
-            s32 top = p->lineTab[p->layout->m15c];
-            u32 line = p->slotLine[p->slot];
+            s8 top = p->lineTab[p->layout->m15c];
+            u32 line = (u8)p->slotLine[p->slot];
             if (line - top - 1 == 0) {
                 p->str2c0[p->m2d0++] = line + 0xa0 - top;
                 break;
