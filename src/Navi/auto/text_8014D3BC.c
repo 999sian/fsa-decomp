@@ -34,13 +34,8 @@ extern "C" void fn_8014D3BC(u8* p, s32 param_2)
                     *(void**)(*(u8**)(p + 0x44) + 0x48) = *(void**)(p + 0x48);
                 }
             }
-            u32 first = lbl_802FF458;
-            u32 second = lbl_802FF45C;
-
-            *(u32*)(p + 0x9c) = 0;
-            *(u32*)(p + 0x98) = 0;
-            *(u32*)(p + 0xa4) = second;
-            *(u32*)(p + 0xa0) = first;
+            *(u64*)(p + 0x98) = 0;
+            *(u64*)(p + 0xa0) = *(u64*)&lbl_802FF458;
             *(u64*)(p + 0x114) &= 0xFFFFFFFFFFFBFFFBULL;
         }
     }
