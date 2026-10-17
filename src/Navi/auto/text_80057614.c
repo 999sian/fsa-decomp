@@ -166,13 +166,12 @@ extern "C" void fn_800578E8(void) {
 }
 
 extern "C" void fn_8005796C(void* p) {
+    s32 i;
+    s32 v;
     if (*(s32*)(lbl_802BB0FC + 0x44) == 8) {
         fn_80089634(p, 3);
-        s32* q = (s32*)lbl_80249DA0;
-        s32 v;
-        while ((v = *q) != 0) {
+        for (i = 0; (v = ((s32*)lbl_80249DA0)[i]) != 0; i++) {
             fn_80058B64(v);
-            q++;
         }
     }
 }
