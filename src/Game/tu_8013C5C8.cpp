@@ -57,6 +57,9 @@ extern "C" s32 fn_8013D5B0(void* this_) {
 extern u8* lbl_8053AB10;
 extern "C" void fn_8013C958(void*);
 extern "C" void calc__17JPAEmitterManagerFUc(void*, u8);
+extern "C" u8* fn_802D6A9C(void);
+extern "C" u8 fn_802DCD0C(void*);
+extern void* lbl_8053AAF8;
 extern "C" void clearResourceManager__17JPAEmitterManagerFUc(void*, u8);
 extern "C" void destroy__7JKRHeapFv(void*);
 extern "C" void __dt__18JPAEmitterCallBackFv(void*, s32);
@@ -245,10 +248,11 @@ extern "C" u8 fn_8013CB44(u8* this_, f32* pos, s32 a, s32 b, u8 flag) {
         f32 z = pos[2] + off;
         f32 g = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), pos);
         f32 d = g - pos[2];
-        ret = 1;
         *(f32*)(this_ + 0xa4) = x;
         *(f32*)(this_ + 0xa8) = y;
-        *(f32*)(this_ + 0xac) = z + d;
+        z += d;
+        *(f32*)(this_ + 0xac) = z;
+        ret = 1;
     }
     return ret;
 }
