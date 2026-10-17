@@ -15,6 +15,14 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 extern "C" u32 lbl_80539E10;
+extern "C" u32 lbl_80539E18;
+static inline void writeChanCtrl(u16 x) {
+    u8 attnTbl[4] = {2, 0, 2, 1};
+    GXAttnFn attn = (GXAttnFn)attnTbl[(x >> 9) & 3];
+    u32 lightMask = ((x >> 2) & 0x0F) | ((x >> 11) & 0x0F) << 4;
+    __GDWriteU32(setChanCtrlMacro((x >> 1) & 1, (GXColorSrc)((x >> 6) & 1), (GXColorSrc)(x & 1), lightMask,
+                                  (GXDiffuseFn)((x >> 7) & 3), attn));
+}
 struct Hdr_800DDA5C { u16 w; u8 b2; u8 b3; };
 struct Col3_800DDDD0 { u8 r, g, b; };
 struct Col4_800DDDD0 { u8 a; Col3_800DDDD0 c; };
@@ -1678,6 +1686,40 @@ extern "C" void fn_800DA280(u8* this_, u32 flags) {
 
         J3DGDSetIndTexOrder(stageNum, (GXTexCoordID)this_[5], (GXTexMapID)this_[6], (GXTexCoordID)this_[9], (GXTexMapID)this_[0xa], (GXTexCoordID)this_[0xd], (GXTexMapID)this_[0xe], (GXTexCoordID)this_[0x11], (GXTexMapID)this_[0x12]);
     }
+}
+
+extern u8 j3dZModeTable[96];
+extern "C" void fn_800DB068(u8* p) {
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 d;
+    s32 h;
+    u8 flag = 0;
+    u32 idx;
+    u32 v;
+
+    GDOverflowCheck(0xf);
+    a = p[8];
+    b = p[9];
+    c = p[10];
+    d = p[11];
+    h = p[15];
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(flag);
+    __GDWrite(0xff);
+    __GDWrite(0xe7);
+    __GDWrite(0x61);
+    if (a == 1 || a == 3) {
+        flag = 1;
+    }
+    v = 0x41000000 | (d << 12) | (b << 8) | (c << 5) | (h << 2) | flag | ((a == 2) << 1) | ((a == 3) << 11);
+    __GDWriteU32(v);
+    __GDWrite(0x61);
+    idx = *(u16*)(p + 0xc) * 3;
+    v = 0x40000000 | (j3dZModeTable[idx + 2] << 4) | (j3dZModeTable[idx + 1] << 1) | j3dZModeTable[idx];
+    __GDWriteU32(v);
 }
 
 extern "C" void fn_800DB844(void* param_1) {
