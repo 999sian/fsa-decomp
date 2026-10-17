@@ -415,9 +415,9 @@ extern "C" BOOL fn_80119A54(void* param_1, void* param_2, void* param_3) {
     return TRUE;
 }
 
-extern "C" s32 fn_8011A7C8(void);
+extern "C" s32 fn_8011A7C8(void* a, s32 b);
 extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
-    s32 t = fn_8011A7C8();
+    s32 t = fn_8011A7C8(param_1, param_2);
     u32** list = *(u32***)(param_1 + 0x54);
     u32 i;
     u16 n;
