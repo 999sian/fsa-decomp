@@ -191,6 +191,12 @@ extern "C" void fn_80026810(u8 i) {
     }
 }
 
+extern "C" int fn_80026848(u8 i) {
+    u8* p = lbl_802BC548 + i * 0x34;
+    p += *(s16*)(p + 0x30) * 0x18;
+    return *(int*)(p + 0x14);
+}
+
 extern "C" int fn_8002689C()
 {
 	return 0;
