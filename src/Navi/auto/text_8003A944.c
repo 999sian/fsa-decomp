@@ -40,6 +40,8 @@ struct Vec3_8003C318 {
 extern u8 lbl_802BF188[];
 extern s16 lbl_802FF04C;
 extern "C" void fn_80041190(s32 arg);
+extern "C" void fn_80040E90(s32 arg);
+extern f32 lbl_802FFED0;
 extern void (*lbl_802FF05C)(s32);
 extern s8 lbl_802FF060;
 extern s16 lbl_802FF062;
