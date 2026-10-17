@@ -2,6 +2,17 @@
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
+void* fn_8023E724(s32 idx);
+u8 fn_8023EA28(s32 idx);
+u8 fn_8022E438(s32 idx, s32 other);
+u8 fn_80235580(s32 idx);
+u8 fn_8023B0F4(s32 idx, f32* box, s32 unk, f32 f, s32 unk2);
+s32 fn_8022CAF8(s32 idx);
+s32 fn_8022E23C(s32 idx, void* p);
+void fn_8022CC20(s32 idx);
+u8 fn_8022F514(s32 idx);
+void fn_8023DFF4(s32 idx);
+
 struct SwbmDrawParam {
     SwbmDrawParam() : m40(-1), m44(-1) {
         for (u8 i = 0; i < 16; i++) {
