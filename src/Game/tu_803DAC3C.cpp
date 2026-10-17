@@ -7,6 +7,8 @@
 
 class FsaSceneMgr {
 public:
+    virtual void v00();
+    virtual void v04();
     virtual void v08();
     virtual void v0C();
     virtual void v10();
