@@ -223,6 +223,52 @@ extern "C" void* fn_8011F290(void)
 	return lbl_802FF310;
 }
 
+extern "C" void fn_8011F304(u8* p, s32 x, s32 y, s32 w, s32 h) {
+    s32 row = 0;
+    s32 i;
+    u32 ctr;
+    s16* dst;
+
+    if (*(u32*)p == 0) {
+        return;
+    }
+    if (*(u16*)(p + 4) > 0x190) {
+        x *= 2;
+        w *= 2;
+    }
+    if (*(u16*)(p + 6) > 0x12C) {
+        y *= 2;
+        h *= 2;
+    }
+    dst = (s16*)(*(u8**)(p + 0x14) + (*(u16*)(p + 8) * y * 2 + x * 2));
+    for (row = 0; row < h; row++) {
+        i = 0;
+        if (w > 0) {
+            if (w > 8) {
+                ctr = (u32)(w - 8 + 7) >> 3;
+                if (w - 8 > 0) {
+                    do {
+                        dst[0] = 0x1080;
+                        i += 8;
+                        dst[1] = 0x1080;
+                        dst[2] = 0x1080;
+                        dst[3] = 0x1080;
+                        dst[4] = 0x1080;
+                        dst[5] = 0x1080;
+                        dst[6] = 0x1080;
+                        dst[7] = 0x1080;
+                        dst += 8;
+                    } while (--ctr != 0);
+                }
+            }
+            for (; i < w; i++) {
+                *dst++ = 0x1080;
+            }
+        }
+        dst += *(u16*)(p + 8) - w;
+    }
+}
+
 extern "C" void fn_8011F668(u8* p, void* buf, s16 w, s16 h)
 {
     *(void**)(p + 0x0) = buf;
@@ -270,11 +316,11 @@ extern "C" void fn_8011FA10(void) {
     }
     if (v != 0 && lbl_802FDD88 == 1) {
         u8* p = (u8*)lbl_802FF310;
-        u32 tw;
-        Color32 t;
-        Color32 c;
+        volatile u32 t;
         u32 cw;
-        t = *(Color32*)(p + 0x18);
+        Color32 c;
+        u32 tw;
+        t = *(u32*)(p + 0x18);
         c.r = 0xff;
         c.g = 0xc8;
         c.b = 0xc8;
@@ -283,7 +329,7 @@ extern "C" void fn_8011FA10(void) {
         fn_8011F848(p, (NaviRGB8*)&cw);
         fn_8011F6A0(p, (void*)0x10, (void*)0x10, lbl_802C6448);
         fn_8011F6A0(p, (void*)0x10, (void*)0x18, lbl_802C6488);
-        tw = *(u32*)&t;
+        tw = t;
         fn_8011F848(p, (NaviRGB8*)&tw);
     }
 }
@@ -3243,6 +3289,31 @@ extern "C" void fn_80133A80(u8* p) {
     Unk80133A44Listener* obj = *(Unk80133A44Listener**)(p + 0x34);
     if (obj != 0) {
         obj->vf5(p);
+    }
+}
+
+extern "C" void fn_80133ABC(void* param_1, u32 param_2)
+{
+    Unk80133ABCArr* arr = *(Unk80133ABCArr**)((u8*)param_1 + 0x34);
+    if (arr != 0) {
+        Unk80133ABCElem* e = arr->m4;
+        Unk80133ABCElem* end = (Unk80133ABCElem*)((u8*)e + arr->m8 * 0x14);
+        f32 f = *(f32*)(*(u8**)((u8*)param_1 + 0x14) + 0x58);
+        while (e != end) {
+            s32 v = e->m4;
+            Unk80133ABCElem* cur = e;
+            e = (Unk80133ABCElem*)((u8*)e + 0x14);
+            if ((u32)(-1 - v) > param_2) {
+                cur->m4 = v + param_2;
+            } else {
+                cur->m4 = -1;
+            }
+            if (cur->m8 != 0) {
+                cur->m8(cur, f);
+                cur->m10->vf2(arr, cur->m0);
+            }
+        }
+        arr->m0->vf6(param_1, param_2);
     }
 }
 
