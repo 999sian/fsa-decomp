@@ -12,9 +12,9 @@ extern unsigned long Type_8029D098[];
 extern int Si_8029D084[];
 extern int Packet_802F77D0[];
 extern char* __SIVersion;
-void SISetSamplingRate(u32 msec);
-void SIInterruptHandler(__OSInterrupt interrupt, OSContext* context);
-extern int Packet_802F77D0[];
+extern "C" void SISetSamplingRate(u32 msec);
+extern "C" void SIInterruptHandler(__OSInterrupt interrupt, OSContext* context);
+extern "C" u32 SIGetType(s32 chan);
 extern "C" int fn_801C42F4(void) {
     if (Si_8029D084[0] == -1) {
         return 0;
