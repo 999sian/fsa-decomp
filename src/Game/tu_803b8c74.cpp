@@ -67,7 +67,7 @@ static inline BOOL EC80NibbleBitCur(s32 n, u32 bit) {
 	if (n < 0 || n > 7) {
 		return FALSE;
 	}
-	return (lbl_8050EC80[lbl_8050EC80[0].selfIndex].flags28 & (1 << (n * 4 + bit))) != 0;
+	return (*(u32*)((u8*)lbl_8050EC80 + 0x28 + 0xc8 * *(s32*)((u8*)lbl_8050EC80 + 0x10)) & (1 << (n * 4 + bit))) != 0;
 }
 
 extern "C" {
@@ -97,11 +97,11 @@ BOOL fn_803B8CAC(s32 idx, s32 n) {
 
 extern "C" BOOL fn_803B8EBC(s32 n) {
 	if (n == 7) {
-		if (EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 0) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 2) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 3)) {
+		if (EC80NibbleBitCur(n, 0) && EC80NibbleBitCur(n, 2) && EC80NibbleBitCur(n, 3)) {
 			return TRUE;
 		}
 	} else {
-		if (EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 0) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 1) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 3)) {
+		if (EC80NibbleBitCur(n, 0) && EC80NibbleBitCur(n, 1) && EC80NibbleBitCur(n, 3)) {
 			return TRUE;
 		}
 	}
