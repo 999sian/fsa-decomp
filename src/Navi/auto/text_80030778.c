@@ -298,6 +298,21 @@ extern "C" void fn_800336F0(void* p) {
     fn_80033ADC((char*)p + 0xe0, p);
 }
 
+extern unsigned int lbl_802FEDE0;
+extern char lbl_80244C68[];
+extern "C" void fn_80033ADC(void* p, void*) {
+    lbl_802FEDE0 |= 0x400;
+    *(unsigned int*)((char*)p + 0x8) &= ~4;
+    *(unsigned int*)(lbl_802BB0FC + 0x118) = 0;
+    *(unsigned int*)(lbl_802BB0FC + 0xf8) &= ~1;
+    if (!lbl_802FEE44) {
+        lbl_802FEE44 = 1;
+        lbl_802FEE43 |= 4;
+        lbl_802FEE30 |= 0x8000;
+    }
+    fn_80029208(lbl_80244C68);
+}
+
 extern "C" void fn_80034B54(void) {
     *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 4;
 }
@@ -428,7 +443,7 @@ extern "C" void fn_800355C8(void* p) {
 }
 
 extern "C" unsigned short fn_80036C54(int i, int j) {
-    return *(unsigned short*)((unsigned char*)lbl_80245224 + i * 0x14 + j * 2 + 8);
+    return *(unsigned short*)((unsigned char*)lbl_80245224 + j * 2 + i * 0x14 + 8);
 }
 
 extern "C" void fn_80036F04(void* p) {
