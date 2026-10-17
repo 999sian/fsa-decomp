@@ -125,6 +125,15 @@ extern "C" void fn_80118F5C(u8* p, void* b) {
     }
 }
 
+extern "C" void fn_80118FB4(u8* p) {
+    if (*(u16*)(*(u8**)(p + 0x20) + 0xa) == 0) {
+        fn_80119004(p);
+    } else if (*(void**)(p + 0x28) != 0) {
+        *(void**)(p + 0x2c) = *(void**)(p + 0x28);
+        fn_801190F4(p, (*(u8**)(p + 0x2c))[0xc]);
+    }
+}
+
 extern "C" void fn_801193D8(u8* self, u16* table) {
     *(u16**)(self + 4) = table;
     if (table != NULL) {
