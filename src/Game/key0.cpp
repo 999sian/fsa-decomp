@@ -71,13 +71,12 @@ static inline void key0RecordDrop(char* p) {
 
 extern "C" void fn_802C1674(char* p) {
     if (*(s32*)(p + 0x240) == 4 && *(u8*)(p + 0xc4) == 0) {
-        if (*(u8*)(p + 0x2af) == 0) {
-            return;
-        }
-        if (*(u16*)(p + 0x2a8) != 0xffff) {
-            key0RecordDrop(p);
-            *(u16*)(p + 0x2a8) = 0xffff;
-            *(u8*)(p + 0x2af) = 0;
+        if (*(u8*)(p + 0x2af) != 0) {
+            if (*(u16*)(p + 0x2a8) != 0xffff) {
+                key0RecordDrop(p);
+                *(u16*)(p + 0x2a8) = 0xffff;
+                *(u8*)(p + 0x2af) = 0;
+            }
         }
     }
 }
@@ -91,11 +90,13 @@ extern "C" void fn_802C1778(char* p) {
     }
     if (fn_8022F478(*(s32*)(p + 0x23c)) == 1) {
         s32 me = *(s32*)(p + 0x198);
-        if (fn_8023EF50(*(s32*)(p + 0x23c)) != me) {
+        if (fn_8023EF50(*(s32*)(p + 0x23c)) == me) {
+        } else {
             return;
         }
     } else if (fn_8022F478(*(s32*)(p + 0xd0)) == 1 && *(s32*)(p + 0x240) == 10) {
-        if (*(u8*)(p + 0xcc) == 0) {
+        if (*(u8*)(p + 0xcc) != 0) {
+        } else {
             return;
         }
     } else {
@@ -147,6 +148,60 @@ extern "C" void fn_802C1DFC(char* p) {
     }
     key0Register(p);
     *(u8*)(p + 0x11c) = 0;
+}
+
+extern "C" s32 fn_801F78F4(void* mgr, u32 id, s32 prev);
+extern "C" u8* fn_801F666C(void* mgr, s32 idx);
+extern f32 lbl_80540C80;
+extern "C" BOOL fn_802C2154(u8* p) {
+    f32 m = lbl_80540C80;
+    f32 x0 = *(f32*)(p + 0x60);
+    f32 y0 = *(f32*)(p + 0x64);
+    f32 x1 = *(f32*)(p + 0x68);
+    f32 y1 = *(f32*)(p + 0x6c);
+    x0 -= m;
+    y0 -= m;
+    x1 += m;
+    y1 += m;
+    f32 px = *(f32*)(p + 0xc);
+    f32 py = *(f32*)(p + 0x10);
+    x0 += px;
+    y0 += py;
+    x1 += px;
+    y1 += py;
+    s32 idx = -1;
+    for (;;) {
+        idx = fn_801F78F4(fn_801F856C(), 0x57415250, idx);
+        if (idx < 0) {
+            return 0;
+        }
+        u8* o = fn_801F666C(fn_801F856C(), idx);
+        if (o == 0 || *(s32*)(p + 4) != *(s32*)(o + 4) || (*(s32*)(o + 0x90) & 0x7f) != 4) {
+            continue;
+        }
+        f32 ox0 = *(f32*)(o + 0x60);
+        f32 oy0 = *(f32*)(o + 0x64);
+        f32 ox1 = *(f32*)(o + 0x68);
+        f32 oy1 = *(f32*)(o + 0x6c);
+        f32 opx = *(f32*)(o + 0xc);
+        f32 opy = *(f32*)(o + 0x10);
+        ox0 += opx;
+        oy0 += opy;
+        ox1 += opx;
+        oy1 += opy;
+        if (ox0 <= x0) ox0 = x0;
+        if (oy0 <= y0) oy0 = y0;
+        if (ox1 >= x1) ox1 = x1;
+        if (oy1 >= y1) oy1 = y1;
+        bool hit = false;
+        if (ox1 >= ox0 && oy1 >= oy0) {
+            hit = true;
+        }
+        if (hit) {
+            p[0x2b0] = 1;
+            return 1;
+        }
+    }
 }
 
 extern "C" void fn_802C2B64(char* p) {
