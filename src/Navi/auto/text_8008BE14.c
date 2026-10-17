@@ -74,18 +74,17 @@ extern "C" int fn_8008C24C(void)
 }
 
 extern "C" int fn_8008C40C(char* p) {
-    fn_80041268(*(void**)(p + 0x24c), p + 0x180, 5);
+    char* m = p + 0x180;
+    fn_80041268(*(void**)(p + 0x24c), m, 5);
     fn_8000EBB8(*(void**)(p + 0x24c));
-    fn_80041268(*(void**)(p + 0x250), p + 0x180, 2);
-    char* a = *(char**)(p + 0x250);
-    char* b = *(char**)(a + 0x4);
-    char* c = *(char**)(b + 0x60);
+    fn_80041268(*(void**)(p + 0x250), m, 2);
+    char* c = *(char**)(*(char**)(*(char**)(p + 0x250) + 4) + 0x60);
     VObj_8008C40C* e = *(VObj_8008C40C**)(*(char**)c + 0x2c);
-    s16* dst = (s16*)e;
+    s16* dst = (s16*)e->v24(0);
     dst[0] = lbl_802FF04C[0];
     dst[1] = lbl_802FF04C[1];
     dst[2] = lbl_802FF04C[2];
-    fn_8000E0F0(p + 0x254, b + 0x58, *(f32*)(*(char**)(p + 0x258) + 0x10));
+    fn_8000E0F0(p + 0x254, *(char**)(*(char**)(p + 0x250) + 4) + 0x58, *(f32*)(*(char**)(p + 0x258) + 0x10));
     fn_8000EBB8(*(void**)(p + 0x250));
     return 1;
 }
