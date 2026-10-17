@@ -21,10 +21,6 @@ extern "C" void fn_80449070(void* self_) {
 
 extern "C" void __dl__FPv(void*);
 extern "C" u8 lbl_804B1C90[];
-extern "C" u8 lbl_80490940[];
-extern "C" u8 lbl_80490B00[];
-extern "C" u32 lbl_804B1C68;
-extern "C" void* fn_804030C4(u32, u32);
 extern u8* lbl_8053AF18;
 extern "C" void* fn_80449494(void* param_1, short param_2) {
     void* result = param_1;
