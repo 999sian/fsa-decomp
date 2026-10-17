@@ -59,6 +59,20 @@ extern "C" void fn_80172BC8(void* this_);
 extern "C" void fn_801F02BC(void* this_, char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 extern "C" void fn_801EF574(void* a, void* b, f32* v, DrawRec* rec);
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+struct PukuResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* get(u32 type, const char* name);
+};
+struct PukuGameRes {
+    u8 pad[0xa4];
+    PukuResMgr* res;
+};
+extern "C" void fn_802F86CC(void* layer, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
 extern "C" void v07__5ActorFv(void* this_);
 extern "C" void fn_80172894(void* this_) {
     char* p = (char*)this_;
@@ -399,7 +413,6 @@ extern "C" void fn_80174B44(void* this_) {
     s32 mode;
     s32 room;
     s32 a;
-    s32 id;
     void* obj;
     u32 bits;
 
@@ -469,9 +482,9 @@ extern "C" void fn_80174B44(void* this_) {
             room = 0;
         }
         *(s32*)(p + 0x238) = Actor_CreateByID(fn_801F856C(), 0x534c5234, room, p + 0xc, a, -1, -1);
-        id = *(s32*)(p + 0x238);
-        if (id >= 0) {
-            obj = fn_801F666C(fn_801F856C(), id);
+        mode = *(s32*)(p + 0x238);
+        if (mode >= 0) {
+            obj = fn_801F666C(fn_801F856C(), mode);
             if (obj != 0) {
                 *(s32*)((char*)obj + 0x114) = *(s32*)(p + 0x114);
                 *(s32*)((char*)obj + 0x238) = *(s32*)(p + 0x198);
@@ -511,7 +524,7 @@ extern "C" void fn_80174B44(void* this_) {
         *(s32*)(p + 0x28c) = -1;
     }
     *(u32*)(p + 0x90) = *(u32*)(p + 0x90) & 0xff;
-    *(u8*)(p + 0x234) = *((u8*)&lbl_80539F78 + (*(u32*)(p + 0x90) >> 1));
+    *(u8*)(p + 0x234) = lbl_80539F78[*(u32*)(p + 0x90) >> 1];
     *(f32*)(p + 0x2b0) = lbl_8053DAB8;
     *(f32*)(p + 0x2ac) = lbl_8053DAB8;
     *(f32*)(p + 0x2a8) = lbl_8053DAB8;
@@ -646,9 +659,8 @@ extern "C" void fn_801752D8(void* this_) {
                     *(s32*)(p + 0x2c0 + i * 4) = -1;
                     cnt++;
                 } else {
-                    *(f32*)((char*)a + 0x280) = *(f32*)(p + 0xc);
-                    *(f32*)((char*)a + 0x284) = *(f32*)(p + 0x10);
-                    *(f32*)((char*)a + 0x288) = *(f32*)(p + 0x14);
+                    Vec pos = *(Vec*)(p + 0xc);
+                    *(Vec*)((char*)a + 0x280) = pos;
                     *(s32*)(p + 0x260) = 0x384;
                 }
             } else {
