@@ -1,5 +1,6 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804AC7B8[];
