@@ -4293,6 +4293,10 @@ extern "C" void fn_800D9658(u8* p) {
     J3DGDSetTexCoordScale2__F13_GXTexCoordIDUsUcUcUsUcUc(p[0x10] & 7, e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
 }
 
+void J3DIndBlockFull::initialize() {
+    mIndTexStageNum = 0;
+}
+
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DF364(void* param_1, u8 param_2) {
