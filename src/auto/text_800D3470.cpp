@@ -2226,6 +2226,40 @@ void fn_800DA624(void)
     __GDWrite(0);
 }
 
+extern "C" void fn_800DA8F8(void) {
+    GDOverflowCheck(0x1e);
+    __GDWrite(0x61);
+    __GDWrite(0xf3);
+    __GDWrite(0x3f);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0);
+    __GDWrite(0xff);
+    __GDWrite(0xe3);
+    __GDWrite(0x61);
+    __GDWrite(0x41);
+    __GDWrite(0);
+    __GDWrite(0x34);
+    __GDWrite(0xa1);
+    __GDWrite(0x61);
+    __GDWrite(0x40);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(7);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0x40);
+    __GDWrite(0x61);
+    __GDWrite(0x43);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0x40);
+}
+
 extern "C" void fn_800DABCC(u8* p) {
     GDOverflowCheck(0x1e);
     u16 alphaID = *(u16*)(p + 4);
