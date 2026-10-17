@@ -143,8 +143,8 @@ extern "C" void fn_8013ABCC(CamViewBase* this_, Vec* pos, Mtx mtx) {
 
 extern "C" void fn_8013AC54(Mtx mtx) {
     char* mgr = (char*)lbl_8053AB10;
-    J3DDrawBuffer* xlu = *(J3DDrawBuffer**)(mgr + 0xc);
     J3DDrawBuffer* opa = *(J3DDrawBuffer**)(mgr + 0x8);
+    J3DDrawBuffer* xlu = *(J3DDrawBuffer**)(mgr + 0xc);
     j3dSys.setDrawBuffer(opa, 0);
     j3dSys.setDrawBuffer(xlu, 1);
     j3dSys.setViewMtx(mtx);
@@ -323,8 +323,8 @@ extern "C" void fn_8013B538(void* this_) {
 extern "C" void fn_8013B618(void* this_) {
     if (isEventMode() != 0) {
         fn_802FF0EC(*(void**)((char*)this_ + 0x20));
-        fn_8013D5D4(*(void**)((char*)this_ + 0x28));
     }
+    fn_8013D5D4(*(void**)((char*)this_ + 0x28));
     (*(J3DDrawBuffer**)((char*)this_ + 0x8))->frameInit();
     (*(J3DDrawBuffer**)((char*)this_ + 0xc))->frameInit();
 }
