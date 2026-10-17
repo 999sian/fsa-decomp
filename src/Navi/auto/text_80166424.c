@@ -21,8 +21,13 @@ struct Vec4_80177B10 {
 extern void* lbl_802988A8[];
 extern "C" void fn_80118BD0(void* p, int b);
 
+struct Vec_80174620 {
+    f32 x, y, z;
+    Vec_80174620() {}
+    Vec_80174620(const Vec_80174620& o) { x = o.x; y = o.y; z = o.z; }
+};
 struct Rec_80174620 {
-    f32 a, b, c, d, e, f;
+    Vec_80174620 a, b;
     u8 g;
 };
 struct Slot_80174620 {
@@ -1110,11 +1115,11 @@ extern "C" void fn_8016AED8(void* arg0) {
     u8* self = (u8*)arg0;
     s32 sp8;
     s32 spC[4];
-    s32* r30;
-    u16* q;
-    u32* r31;
     s32 i;
     s32 j;
+    u32* r31;
+    u16* q;
+    s32* r30;
 
     i = 0;
     r31 = (u32*)arg0;
@@ -2907,7 +2912,7 @@ extern "C" void fn_801745B8(u8* out, u8* p, u32 index, u32 subindex) {
 }
 
 extern "C" Rec_80174620 fn_80174620(Owner_80174620* owner, int slot, int idx) {
-    Rec_80174620 def = {0.5f, 0.0f, 0.0f, 0.0f, 0.5f, 0.0f, 1};
+    Rec_80174620 def = lbl_8020225C;
     Slot_80174620* slots = owner->slots;
     if (slots != nullptr) {
         Slot_80174620* s = &slots[slot];
