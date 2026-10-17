@@ -48,11 +48,11 @@ extern "C" void fn_8002F458(s32 a, s32 b);
 extern "C" s32 fn_800BA298(u8* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_800B68EC(u8* p) {
     if (fn_8002F6BC() == 0) {
-        if (p[0x39e] == 0) {
+        if (p[0x39e] != 0) {
+            p[0x39e]--;
+        } else {
             fn_8002F544(lbl_80287510[0]);
             *(s32*)(p + 0x378) = 0x14;
-        } else {
-            p[0x39e]--;
         }
     }
 }
