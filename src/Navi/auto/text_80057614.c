@@ -120,6 +120,11 @@ extern "C" void fn_80057614(u8* p) {
     *(u32*)(p + 0xf6c) = 0;
 }
 
+extern "C" void fn_80057734(u8* p) {
+    *(u32*)(p + 0xf6c) = 0;
+    fn_80075618(0);
+}
+
 extern "C" void fn_80057868(void) {
 }
 
