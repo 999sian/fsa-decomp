@@ -34,6 +34,15 @@ extern "C" s32 fn_803B9BDC(char* this_);
 extern "C" void fn_803BF004(char* this_);
 extern "C" void fn_803B93E8(void* a, void* b, void* c, s32 d);
 extern "C" void fn_803BACF8(void* a, u8 b);
+extern "C" u32 lbl_80476938[];
+extern "C" f32 lbl_80543458;
+extern "C" f32 lbl_80543498;
+extern "C" f32* getBounds__7J2DPaneFv(void* this_);
+extern "C" u32 fn_803B9940(void* a, s32 b);
+extern "C" void fn_803B9B8C(void* a);
+extern "C" void fn_80402B10(void* a, s16 b, u8 c, f32 d);
+extern "C" void fn_80402628(void* a, s16 b, u8 c, s32 d);
+extern "C" void fn_804023D0(void* a, void* b, u8 c);
 extern "C" void fn_803B9D54(void* a, void* b, u32 c, void* d, u32 e, s32 f);
 extern "C" s32 CARDGetSerialNo(s32 chan, u64* serial);
 extern "C" void fn_803C579C(char* this_) {
@@ -416,9 +425,9 @@ extern "C" void fn_803CE370(char* p) {
             *(s32*)(p + 0xb0) = 0x5a;
         }
         f32* bounds = getBounds__7J2DPaneFv(*(void**)(*(char**)(p + 0x20) + 4));
-        f32 w = *bounds;
-        if (w - *(f32*)(*(char**)(p + 0x20) + 8) < lbl_80543498) {
-            *(s16*)(*(char**)(p + 0x20) + 0x20) = 0;
+        char* pane = *(char**)(p + 0x20);
+        if (*bounds - *(f32*)(pane + 8) < lbl_80543498) {
+            *(s16*)(pane + 0x20) = 0;
             *(s16*)(*(char**)(p + 0x20) + 0x26) = 0;
             p[0x117] = 1;
         }
