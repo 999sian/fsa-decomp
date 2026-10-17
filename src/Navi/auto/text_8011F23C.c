@@ -20,6 +20,12 @@ extern "C" void fn_80167A18(void* a, void* b, void* c, void* d);
 struct NaviRGB8 { u8 r, g, b; };
 #include "stdarg.h"
 struct Vec3f { f32 x, y, z; };
+class Unk80127A4CListener {
+public:
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4(void* owner, void* item, void* arg);
+};
 extern "C" void fn_801E4334(char* buf, u32 n, const void* fmt, va_list args);
 extern "C" void fn_80123628(void* p, char* s);
 extern "C" void fn_80123928(void* p, const void* fmt, va_list args);
