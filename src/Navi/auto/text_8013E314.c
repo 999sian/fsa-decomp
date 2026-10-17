@@ -3,6 +3,9 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8013e314-0x8013eb20 (13 functions). split_file divides it into the game's real files.
 
+struct PmfObj_8013E374;
+typedef void (PmfObj_8013E374::*PmfFunc_8013E374)();
+
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_80293738[];
