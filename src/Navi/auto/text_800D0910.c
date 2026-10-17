@@ -99,14 +99,14 @@ extern "C" void fn_800D0A4C(u8* p);
 extern "C" void fn_800D1E44(u8* p);
 extern "C" void fn_800D0910(u8* p) {
     char* base = lbl_802891D8;
-    u8* tbl = lbl_802C5774;
+    register u8* tbl = lbl_802C5774;
     void* obj;
     s32 v;
     if ((s8)tbl[4] < 0) {
         tbl[4] = fn_800126C8(lbl_8029FDB4 + 4, base + 0x140, tbl);
     }
+    *(s32*)(lbl_802C5774 + 8) += 1;
     v = lbl_802FEC70;
-    *(s32*)(tbl + 8) += 1;
     *(s32*)(p + 4) = v;
     obj = fn_8015A90C(0x118);
     if (obj != 0) {
@@ -128,7 +128,7 @@ extern "C" void fn_800D0910(u8* p) {
     p[0x265] = 0;
     p[0x283] = 0;
     p[0x284] = 0;
-    p[0x26e] = -1;
+    ((s8*)p)[0x26e] = -1;
     p[0x287] = 0;
     p[0x264] = 0;
 }
