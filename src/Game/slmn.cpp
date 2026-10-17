@@ -249,18 +249,6 @@ extern "C" u8 fn_801D08B4(void* this_, s32 player, void* pos, f32 r);
 extern "C" u8 fn_801D0B44(void* this_, s32 player);
 extern "C" u8 fn_801D0D50(void* this_, s32 player, void* pos, f32 r);
 
-static inline u8 slmnAnyPlayerNear(char* this_, f32 r) {
-    u8 found = FALSE;
-    s32 j;
-    for (j = 0; j < 4; j++) {
-        if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
-            found = TRUE;
-            break;
-        }
-    }
-    return found;
-}
-
 extern "C" void fn_80207F14(char* this_) {
     fn_80207A60(this_);
     switch (*(s32*)(this_ + 0x248)) {
@@ -280,7 +268,7 @@ extern "C" void fn_80207F14(char* this_) {
             go = TRUE;
             break;
         case 1:
-            for (j = go; j < 4; j++) {
+            for (j = 0; j < 4; j++) {
                 if (fn_801D08B4(this_, j, this_ + 0xc, r)) {
                     go = TRUE;
                     break;
@@ -288,7 +276,7 @@ extern "C" void fn_80207F14(char* this_) {
             }
             break;
         case 2:
-            for (i = go; i < 4; i++) {
+            for (i = 0; i < 4; i++) {
                 s32 bit = 1 << i;
                 if (*(u8*)(this_ + 0x345) & bit) {
                     if (fn_801D0B44(this_, i) && !fn_801D0D50(this_, i, this_ + 0xc, r)) {
