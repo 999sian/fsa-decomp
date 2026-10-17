@@ -35,6 +35,8 @@ u8 Player_GetField_0x454(char*);
 u8 fn_80241230(char*);
 s32 Actor_CreateByID(void*, u32, u32, void*, u32, s32, s32);
 void* fn_8023E724(s32);
+void fn_8028414C(char*);
+u16 fn_802265FC(JGeometry::TVec3<f32>*, s32);
 }
 extern f32 lbl_80540150;
 extern JGeometry::TVec3<f32> lbl_8046B400[];
@@ -346,6 +348,64 @@ extern "C" void fn_80261480(char* p) {
     }
 }
 
+extern "C" f32 lbl_8054017C;
+extern "C" u8 lbl_8046B790[];
+extern "C" f32 lbl_8046B7B0[];
+extern "C" void fn_8026152C(char* p, u8 flag) {
+    u8 inX = 0;
+    u8 inY = 0;
+    u8 inZ = 0;
+    f32 eps = *(f32*)__float_epsilon * lbl_8054017C;
+    f32 d = F32(p, 0x8) - F32(p, 0x14);
+    if (-eps <= d && d <= eps) {
+        inX = 1;
+    }
+    if (inX) {
+        inX = 0;
+        d = F32(p, 0xc) - F32(p, 0x18);
+        if (-eps <= d && d <= eps) {
+            inX = 1;
+        }
+        if (inX) {
+            inY = 1;
+        }
+    }
+    if (inY) {
+        inY = 0;
+        d = F32(p, 0x10) - F32(p, 0x1c);
+        if (-eps <= d && d <= eps) {
+            inY = 1;
+        }
+        if (inY) {
+            inZ = 1;
+        }
+    }
+    if (inZ) {
+        if (VEC(p, 0x368).squared() <= lbl_8054017C * *(f32*)__float_epsilon) {
+            U8(p, 0x3f8) = 0;
+            goto done;
+        }
+    }
+    U8(p, 0x3f8)++;
+    if (flag == 0) {
+        if (U8(p, 0x3f8) >= 0x18) {
+            U8(p, 0x3f8) = 0;
+        }
+    } else if (U8(p, 0x3f8) >= 0x30) {
+        U8(p, 0x3f8) = 0;
+    }
+done:
+    if (flag == 0) {
+        U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 3 + S32(p, 0x3dc) * 8];
+    } else {
+        U8(p, 0x3f9) = ((u8*)lbl_8046B790)[U8(p, 0x3f8) / 6 + S32(p, 0x3dc) * 8];
+    }
+    s32 idx = U8(p, 0x3f9) * 5;
+    F32(p, 0x2f4) = ((f32*)lbl_8046B7B0)[idx] + F32(p, 0x8);
+    F32(p, 0x2f8) = ((f32*)lbl_8046B7B0)[idx + 1] + F32(p, 0xc);
+    F32(p, 0x2fc) = ((f32*)lbl_8046B7B0)[idx + 2] + F32(p, 0x10);
+}
+
 extern "C" void fn_8026173C(char* p) {
     p[0x121c] = 0;
     S32(p, 0xd84) = 20;
@@ -491,9 +551,7 @@ extern "C" void fn_802636D4(char* p) {
 
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_802636D0(void) {
-    return;
-}
+extern "C" void fn_802636D0(void) {}
 
 extern "C" void fn_802636D4(char* p) {
     U8(p, 0x3fc)++;
