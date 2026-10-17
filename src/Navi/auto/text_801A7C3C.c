@@ -228,7 +228,7 @@ extern "C" void fn_801AFB98(void* p);
 extern "C" void* lbl_802FF708;
 extern "C" void fn_801A82CC(u8* p, void* a, void* b, void* c) {
     VObj_801A82CC* obj = *(VObj_801A82CC**)(p + 0x14);
-    obj->vf9(b, c);
+    obj->vf7(b, c);
     fn_801A833C(a);
     void* q = *(void**)(p + 0x10);
     if (q != nullptr) {
