@@ -513,7 +513,7 @@ extern "C" void OSLockMutex(void* mutex);
 extern "C" void OSUnlockMutex(void* mutex);
 extern "C" void JUTReportConsole_f(const char* fmt, ...);
 extern "C" u32 fn_80086890(void* self_) {
-    u32 result = reinterpret_cast<VirtualSlotObj*>(self_)->v05();
+    u32 result = reinterpret_cast<VirtualSlotObj*>(self_)->v03();
     u8* p = (u8*)self_;
     OSLockMutex(p + 0x18);
     u32 total = *(u32*)(p + 0x38);
