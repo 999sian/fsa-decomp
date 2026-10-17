@@ -5,6 +5,26 @@ extern "C" char lbl_802C545C[];
 extern "C" char lbl_802BB0FC[];
 extern f32 lbl_80300B20;
 extern "C" f32 fn_800A1774(void*, u8, u8, s32);
+struct VObj_80098354 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17(f32, f32);
+};
 
 extern void* lbl_80283F48[];
 extern void* lbl_802886F8[];
@@ -848,6 +868,13 @@ extern "C" void* fn_800970F8(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80098354(char* param_1) {
+    if (*(void**)(param_1 + 0xec) != nullptr) {
+        void (*fn)(char*, f32, f32) = ((void (**)(char*, f32, f32))(*(void**)param_1))[0x44 / 4];
+        fn(param_1, *(f32*)(param_1 + 0xd4), *(f32*)(param_1 + 0xd8));
+    }
 }
 
 extern "C" void fn_80098918(char* param_1) {
