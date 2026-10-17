@@ -36,6 +36,7 @@ extern "C" void fn_801BBE40(void);
 extern "C" void fn_801BBDC4(s32 a, u32* b);
 extern s32 lbl_802FE960;
 extern "C" void fn_801E23D4(u8* d, double x);
+extern "C" void fn_801E2CB4(u8* param_1, s32 param_2);
 extern char lbl_802026E8[];
 extern char lbl_80202720[];
 extern "C" void fn_801E1978(u32* param_1) {
