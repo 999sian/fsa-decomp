@@ -129,5 +129,3 @@ struct NaviTracker_8013DF04 {
     virtual void fn_18();
     virtual void* fn_19();
 };
-struct Entry_8013DF04 { s32 unk0; s32 id; u8 pad[0xc]; f32 (NaviTracker_8013DF04::*fn)(); };
-struct Slot_8013DF04 { u8 pad[4]; s32 unk4; void* func; f32 value; };
