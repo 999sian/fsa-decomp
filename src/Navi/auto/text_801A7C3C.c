@@ -113,6 +113,19 @@ struct Struct_801A7C3C {
     u8 b[4];
     Vec6_801A7C3C c;
 };
+struct VObj_801A82CC {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+    virtual void vf3(void);
+    virtual void vf4(void);
+    virtual void vf5(void);
+    virtual void vf6(void);
+    virtual void vf7(void);
+    virtual void vf8(void);
+    virtual void vf9(void* a, void* b);
+};
+
 extern "C" void fn_8011935C(void* p);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_801B075C(void* param_1);
@@ -1468,15 +1481,16 @@ extern "C" void fn_801B2ABC(u32* out, u8* p, s32 a, s32 b) {
 }
 
 extern "C" void fn_801B2B08(u32* out, u8* p, s32 a, s32 b) {
-    u32 d[2];
-    d[0] = lbl_80302390;
-    d[1] = lbl_80302394;
+    u32 d[2] = {lbl_80302390, lbl_80302394};
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
-    u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 0xdc + b * 2);
+    u8* e = *(u8**)(p + 4) + idx * 0x14c;
+    u16 v = *(u16*)(e + 0xdc + b * 2);
     if (v != 0xffff) {
         u32* t = (u32*)(*(u8**)(p + 0x44) + v * 8);
-        out[0] = t[0];
-        out[1] = t[1];
+        u32 x = t[0];
+        u32 y = t[1];
+        out[0] = x;
+        out[1] = y;
         return;
     }
     out[0] = d[0];
@@ -1485,14 +1499,14 @@ extern "C" void fn_801B2B08(u32* out, u8* p, s32 a, s32 b) {
 
 extern "C" u32 lbl_80301DE0;
 extern "C" void fn_801B2B78(u32* out, u8* p, s32 a, s32 b) {
-    u32 d[1] = {lbl_80301DE0};
+    u32 d = lbl_80301DE0;
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
     u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 0x94 + b * 2);
     if (v != 0xffff) {
         out[0] = ((u32*)*(u8**)(p + 0x48))[v];
         return;
     }
-    out[0] = d[0];
+    out[0] = d;
 }
 
 extern "C" u8 fn_801B2BD0(u8* p, s32 a) {
