@@ -26,7 +26,7 @@ extern "C" void fn_8029B7BC(void) {
 extern "C" int fn_8023DE58(int);
 extern "C" int fn_80230CFC(int);
 extern "C" f32* fn_8023E724(int);
-extern "C" BOOL fn_8022DB04(int);
+extern "C" bool fn_8022DB04(int);
 extern "C" void fn_8029B7C0(void* this_) {
     u8* self = (u8*)this_;
     s32 owner = *(s32*)(self + 4);
