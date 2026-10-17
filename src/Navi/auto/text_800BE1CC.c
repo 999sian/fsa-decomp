@@ -83,6 +83,13 @@ extern "C" void fn_800C2850(u8* p) {
     }
 }
 
+extern "C" void fn_800C28F0(u8* p) {
+    if (fn_8002F168(p) != 1) {
+        *(u16*)(p + 0x220) = lbl_802C562C[0x1e];
+        p[0x212] = 0xd;
+    }
+}
+
 extern "C" void fn_800C3240(u8* p) {
     u16 n = *(u16*)(p + 0x220);
     if (n != 0) {
