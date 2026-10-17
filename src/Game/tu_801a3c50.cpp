@@ -14,6 +14,23 @@ public:
 
 extern "C" void fn_801F4694(void* this_);
 extern s32 lbl_8053A100;
+extern s8 lbl_8053ABC8;
+extern f32 lbl_8053E5D0;
+extern f32 lbl_8053E5D4;
+extern f32 lbl_8053E5D8;
+
+struct SayaCfg {
+    u8 tbl[16];
+    s32 w10;
+    s32 w14;
+    void* p18;
+    u8 b1c[11];
+    s32 w28;
+    u8 b2c[3];
+    s32 w30;
+    s32 w34;
+    s32 w38;
+};
 
 static inline void Saya_setTarget(u8* this_, s32 id) {
     *(s32*)(this_ + 0x108) = 0;
@@ -156,6 +173,7 @@ extern "C" void fn_801F3780(void* this_, s32 a);
 extern "C" s32 fn_801A4FB4(u8* this_) {
     s32 room;
     s32 i;
+    f32 vz;
     s32 mode = (*(u32*)(this_ + 0xB0) >> 12) & 0xF;
     if (mode == 0) {
         return 0;
@@ -188,7 +206,7 @@ extern "C" s32 fn_801A4FB4(u8* this_) {
             }
         }
     }
-    f32 vz = 0.0f;
+    vz = 0.0f;
     if (*(u8*)(this_ + 0xD4) == 1) {
         switch (mode) {
         case 1:
