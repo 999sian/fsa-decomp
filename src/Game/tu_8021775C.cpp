@@ -15,8 +15,8 @@ struct Vec3f {
 };
 
 extern "C" void fn_8021775C(void** p, f32 t) {
-    Vec target = *(Vec*)((u8*)p[6] + 0x600);
-    Vec cur = *(Vec*)((u8*)p[6] + 0x60c);
+    Vec3f target = *(Vec3f*)((u8*)p[6] + 0x600);
+    Vec3f cur = *(Vec3f*)((u8*)p[6] + 0x60c);
     if (t < __float_epsilon) {
         cur.x = target.x;
     } else {
@@ -37,9 +37,13 @@ extern "C" void fn_8021775C(void** p, f32 t) {
 }
 
 extern "C" void fn_80217874(char* this_, f32 t) {
-    Vec a = *(Vec*)(*(char**)(this_ + 0x18) + 0xc);
-    Vec b = *(Vec*)(*(char**)(this_ + 0x18) + 0x60c);
+    Vec* pa = (Vec*)(*(char**)(this_ + 0x18) + 0xc);
+    Vec* pb = (Vec*)(*(char**)(this_ + 0x18) + 0x60c);
+    Vec a;
+    Vec b;
 
+    a = *pa;
+    b = *pb;
     if (t < __float_epsilon) {
         a.x = b.x;
     } else {
@@ -89,7 +93,6 @@ extern "C" void fn_80217A74(void** p)
     p[1] = 0;
 }
 
-extern "C" f32 lbl_804CD838[];
 struct Vec2F {
     f32 x;
     f32 y;
@@ -135,7 +138,8 @@ extern "C" void fn_80217BC8(void** p) {
     if (p[2] == 0) {
         u8* obj = (u8*)p[6];
         u8* sub = obj + 0xc;
-        p[2] = fn_8013CC50(*(u32*)(obj + 4), sub, 0x22f, 1, lbl_8053FC38, 1, 0, 0, 1);
+        u32 id = *(u32*)(obj + 4);
+        p[2] = fn_8013CC50(id, sub, 0x22f, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[2];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
@@ -150,7 +154,8 @@ extern "C" void fn_80217BC8(void** p) {
     if (p[3] == 0) {
         u8* obj = (u8*)p[6];
         u8* sub = obj + 0xc;
-        p[3] = fn_8013CC50(*(u32*)(obj + 4), sub, 0x230, 1, lbl_8053FC38, 1, 0, 0, 1);
+        u32 id = *(u32*)(obj + 4);
+        p[3] = fn_8013CC50(id, sub, 0x230, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[3];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
@@ -165,11 +170,10 @@ extern "C" void fn_80217BC8(void** p) {
 }
 
 extern "C" void fn_80217CD8(void** p) {
-    u8* base;
     if (p[0] == 0) {
-        base = (u8*)p[6];
+        u8* base = (u8*)p[6];
         u8* sub = base + 0xc;
-        p[0] = fn_8013CC50(*(u32*)(base + 4), sub, 0x228, 1, lbl_8053FC38, 1, 0, 0, 1);
+        p[0] = fn_8013CC50(((u32*)base)[1], sub, 0x228, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[0];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
@@ -182,9 +186,9 @@ extern "C" void fn_80217CD8(void** p) {
         }
     }
     if (p[1] == 0) {
-        base = (u8*)p[6];
+        u8* base = (u8*)p[6];
         u8* sub = base + 0xc;
-        p[1] = fn_8013CC50(*(u32*)(base + 4), sub, 0x229, 1, lbl_8053FC38, 1, 0, 0, 1);
+        p[1] = fn_8013CC50(((u32*)base)[1], sub, 0x229, 1, lbl_8053FC38, 1, 0, 0, 1);
         u8* r = (u8*)p[1];
         if (r != 0) {
             f32* tbl = lbl_804CD838;
