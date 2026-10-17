@@ -85,13 +85,13 @@ extern "C" void fn_8004A37C(void) {
 extern "C" void fn_8004AE48(void) {
     u8* q;
     s32 i;
-    if (*(u8*)&lbl_802BF0E8 != 0) {
+    if (lbl_802BF0E8[0] != 0) {
         fn_80040120();
     }
-    if (*(u8*)&lbl_802BF104 != 0) {
+    if (lbl_802BF104[0] != 0) {
         fn_80040410();
     }
-    if (*(u8*)&lbl_802BF0F4 != 0) {
+    if (lbl_802BF0F4[0] != 0) {
         fn_800404E8();
     }
     if (lbl_802BF128[0] != 0) {
