@@ -11,6 +11,7 @@ extern "C" void fn_801D1F14(void*, f32);
 class Actor {
 public:
     void v01();
+    void v06();
 };
 
 extern "C" void fn_801D2608(void*, void*, s32);
@@ -84,6 +85,10 @@ extern "C" void fn_80125C58(u8* this_, u8 flag) {
         }
         fn_801D1F14(this_ + 0x27c, lbl_8053CA70);
     }
+}
+
+extern "C" void fn_80125CDC(u8* this_) {
+    ((Actor*)this_)->v01();
 }
 
 extern "C" void fn_8012639C(u8* this_) {
