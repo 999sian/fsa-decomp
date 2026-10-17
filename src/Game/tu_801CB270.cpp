@@ -17,6 +17,9 @@ extern const f64 lbl_8053EF70;
 extern const f32 lbl_8053EF7C;
 extern const f32 lbl_8053EF90;
 extern const f32 lbl_8053EF98;
+extern const f32 lbl_8053EF78;
+extern const f32 lbl_8053EF94;
+extern int __float_epsilon[];
 
 extern "C" u8 fn_8022F514(void* this_);
 extern "C" BOOL fn_801CD9F0(f32* value, f32 target, f32 step);
