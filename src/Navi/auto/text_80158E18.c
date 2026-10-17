@@ -793,6 +793,16 @@ extern "C" void fn_8015C518(void* p, int a, int b, int c, int d, int e) {
     *(u32*)((u8*)p + 0xc) = b;
 }
 
+extern "C" void* fn_8015C634(u32 addr) {
+    if (addr != 0) {
+        u16* n = (u16*)(addr - 0x10);
+        if (*n == 0x484d) {
+            return n;
+        }
+    }
+    return 0;
+}
+
 #pragma pop
 
 #pragma pop
