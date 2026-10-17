@@ -103,5 +103,5 @@ extern "C" Actor* fn_8032742C(Actor* p, s16 n) {
 	return p;
 }
 
-void fn_803274A0(void) {}
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
