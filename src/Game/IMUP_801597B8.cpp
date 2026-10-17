@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 class FSAVirtBase {
 public:
@@ -97,3 +98,6 @@ extern "C" void* fn_8015B420(char* this_, short how) {
     }
     return this_;
 }
+
+void __sinit_IMUP_801597B8_cpp(void) {}
+
