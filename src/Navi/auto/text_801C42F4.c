@@ -56,6 +56,7 @@ extern "C" BOOL fn_801C4990(s32 param_1) {
     OSRestoreInterrupts(enabled);
     return ret;
 }
+#pragma dont_inline reset
 
 extern "C" int fn_801C4A28(u32 param_1) {
     u32* p;
@@ -127,10 +128,25 @@ extern "C" void fn_801C4F38(void) {
     __SIRegs[14] = (int)0x80000000;
 }
 
+extern "C" BOOL fn_801C50BC(s32 chan) {
+    u32 sr;
+    u32 (*inputBuffer)[2] = (u32 (*)[2])&Packet_802F77D0[112];
+
+    sr = fn_801C4EA8(chan);
+    if (sr & 0x20) {
+        inputBuffer[chan][0] = __SIRegs[3 * chan + 1];
+        inputBuffer[chan][1] = __SIRegs[3 * chan + 2];
+        Packet_802F77D0[108 + chan] = TRUE;
+        return TRUE;
+    }
+    return FALSE;
+}
+
 extern "C" int fn_801C5190(s32 chan, s32* out) {
-    s32 enabled;
-    s32* packet = (s32*)Packet_802F77D0;
     s32 ret;
+    s32* packet = (s32*)Packet_802F77D0;
+    s32 enabled;
+    s32 pad[3];
 
     enabled = OSDisableInterrupts();
     if (fn_801C4EA8(chan) & 0x20) {
