@@ -478,7 +478,6 @@ extern "C" void fn_8013DB2C(u8* this_) {
 
 struct MtxS_ { f32 m[3][4]; };
 struct DrawInfoPOD_ { MtxS_ cam; MtxS_ prj; };
-struct Vec3S_ { f32 x, y, z; };
 extern "C" void fn_8013B438(void*);
 
 extern "C" void fn_8013D908(u8* this_) {
