@@ -21,6 +21,8 @@ extern u8* lbl_8053AAF0;
 extern u8* lbl_8053AAF8;
 extern void* lbl_8053ACA8;
 void OSSetSaveRegion(void*, void*);
+u32 OSGetResetCode(void);
+u32 OSGetProgressiveMode(void);
 void init__9JFWSystemFv(void);
 void fn_8008E364(u32);
 void fn_8008CF54(void*, s32);
