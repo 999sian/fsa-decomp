@@ -79,6 +79,98 @@ extern "C" void fn_80393228(void* this_) {
   }
 }
 
+extern "C" void fn_80393514(void* this_) {
+    u8* p = (u8*)this_;
+    if (*(s32*)(p + 0x230) == 0x5a) {
+        f32 scale[12] = {0.3f, 0.3f, 0.3f, 0.35f, 0.35f, 0.4f, 0.45f, 0.5f, 0.55f, 0.6f, 0.6f, 0.6f};
+        fn_8013CC50(*(s32*)(p + 4), p + 0xc, scale[0], 0xcb, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(s32*)(p + 4), p + 0xc, scale[0], 0xcc, 0, 0, 0, 0, 1);
+        s32 n = *(s32*)(p + 0x23c);
+        s32 idx = 9;
+        if (n < 10) {
+            idx = n - 1;
+        }
+        fn_80458880(lbl_8053AF80, lbl_80475710[idx], -1);
+    }
+    s16 ang = (*(s32*)(p + 0x230) % 60) << 10;
+    if (*(s32*)(p + 0x234) == 0) {
+        *(f32*)(p + 0x3c) = lbl_805431A8 * JMASinShort(ang);
+        ((JGeometry::TVec3f*)(p + 0xc))->add(*(JGeometry::TVec3f*)(p + 0x3c));
+    } else {
+        *(f32*)(p + 0x248) += lbl_805431A8 * JMASinShort(ang);
+        *(f32*)(p + 0x24c) -= lbl_805431A8;
+        JGeometry::TVec3f* pos = (JGeometry::TVec3f*)(p + 0xc);
+        pos->x = *(f32*)(p + 0x248) + fn_8023E724(*(s32*)(p + 0x238))->x;
+        pos->y = *(f32*)(p + 0x24c) + fn_8023E724(*(s32*)(p + 0x238))->y;
+    }
+    if ((*(s32*)(p + 0x230))-- == 0) {
+        JGeometry::TVec3f* player;
+        s32 count;
+        s32 i;
+        s32 j;
+        s32 slot;
+        s32 a = *(s32*)(p + 0x240) / 10;
+        s32 b = *(s32*)(p + 0x244) / 10;
+        i = b + 1;
+        if (a > b) {
+            count = a - b;
+            for (j = 0; j < count; i++, j++) {
+                slot = -1;
+                switch (i) {
+                case 1:
+                case 2: {
+                    f32 y = fn_8023E724(*(s32*)(p + 0x238))->y;
+                    f32 x = fn_8023E724(*(s32*)(p + 0x238))->x;
+                    JGeometry::TVec3f pos;
+                    pos.set(x, y, lbl_805431B8);
+                    slot = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(p + 4), (f32*)&pos, 2);
+                    break;
+                }
+                case 3:
+                case 4:
+                case 5: {
+                    f32 y = fn_8023E724(*(s32*)(p + 0x238))->y;
+                    f32 x = fn_8023E724(*(s32*)(p + 0x238))->x;
+                    JGeometry::TVec3f pos;
+                    pos.set(x, y, lbl_805431B8);
+                    slot = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(p + 4), (f32*)&pos, 3);
+                    break;
+                }
+                default: {
+                    player = fn_8023E724(*(s32*)(p + 0x238));
+                    Actor_CreateByID(fn_801F856C(), 0x46415259, *(s32*)(p + 4), player, 0, -1, -1);
+                    break;
+                }
+                }
+                if (slot >= 0) {
+                    u8* c = (u8*)fn_801F666C(fn_801F856C(), slot);
+                    if (c != 0) {
+                        JGeometry::TVec3f v;
+                        v.set(lbl_805431BC, lbl_805431BC, lbl_805431C0);
+                        *(JGeometry::TVec3f*)(c + 0x3c) = v;
+                    }
+                }
+            }
+        }
+        if (*(s32*)(p + 0x240) >= 15 && *(s32*)(p + 0x244) < 15) {
+            f32 y = fn_8023E724(*(s32*)(p + 0x238))->y;
+            f32 x = fn_8023E724(*(s32*)(p + 0x238))->x;
+            JGeometry::TVec3f pos;
+            pos.set(x, y, lbl_805431B8);
+            slot = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(p + 4), (f32*)&pos, 2);
+            if (slot >= 0) {
+                u8* c = (u8*)fn_801F666C(fn_801F856C(), slot);
+                if (c != 0) {
+                    JGeometry::TVec3f v;
+                    v.set(lbl_805431BC, lbl_805431BC, lbl_805431C0);
+                    *(JGeometry::TVec3f*)(c + 0x3c) = v;
+                }
+            }
+        }
+        *(u8*)(p + 0x11c) = 0;
+    }
+}
+
 // ---- from src/Game/fn_8039394C.cpp ----
 // fn_8039394C - actor@lbl_804AF490: coordinator function. Dispatches
 // on this->0x234 (mode): 0/4 -> fn_80393228(this); 1 -> nothing;
