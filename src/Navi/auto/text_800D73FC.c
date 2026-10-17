@@ -33,6 +33,7 @@ extern "C" s32 fn_800EE044(void);
 extern "C" void fn_8002F458(s32 a, s32 b);
 extern "C" void fn_800E7F50(void*, s32, s32, s32);
 extern char lbl_802C57D4[];
+extern "C" s32 fn_800ECFD0(void*, s32, u8, s32, s32, f32, f32);
 extern "C" void fn_8002F358(s32 a, s32 b);
 extern "C" void fn_800EBD88(char* p);
 extern "C" BOOL fn_800DDA6C(void* p, u8* src) {
