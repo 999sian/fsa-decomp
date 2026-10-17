@@ -310,7 +310,6 @@ extern void* lbl_802FF540;
 extern void* lbl_802FF5F0;
 extern "C" u32 fn_80160AD8(void* self, char* p) {
     u8* r;
-    void* obj;
     if (*p == '/') {
         p++;
         if (*p == 0) {
@@ -321,7 +320,8 @@ extern "C" u32 fn_80160AD8(void* self, char* p) {
         r = (u8*)fn_80160D88(self, p, lbl_802FF5F8);
     }
     if (r != NULL) {
-        if ((obj = fn_8015A9A8(0x24, lbl_802FF540, 0)) != NULL) {
+        void* obj = fn_8015A9A8(0x24, lbl_802FF540, 0);
+        if (obj != NULL) {
             return (u32)fn_80160044(obj, self, *(void**)(r + 0xc), *(u16*)(r + 0xa));
         }
     }
@@ -529,6 +529,8 @@ extern "C" void fn_8015E1F4(void* p, u32 a, u32 b, s32 flag, u32 c, s32 zero, s3
 extern "C" char lbl_80297E28[];
 extern "C" char lbl_80297E3C[];
 #pragma dont_inline on
+extern "C" void* fn_80160BE8(void* self);
+extern "C" char lbl_802FE2E0[];
 extern "C" void* fn_80161E84(void* self) {
     fn_80160BE8(self);
     *(void**)self = lbl_80297EF0;
@@ -549,6 +551,25 @@ extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
     fn_80166D3C(lbl_802EE2D4, p + 0x18);
     p[0x30] = 1;
     return p;
+}
+
+extern "C" s32 fn_80162724(void* p, u32 a, u32 b, u32 c, s32 mode) {
+    u32 out;
+    u32 w;
+    c &= ~0x1f;
+    w = (a + 0x1f) & ~0x1f;
+    if (mode == 0) {
+        if (w > c) {
+            w = c;
+        }
+        fn_8015E1F4(p, b, w, 0, c, 0, -1, &out);
+        return out;
+    } else if (mode < 0 || mode > 2) {
+        fn_8011C9EC(lbl_80297E28, 0x28f, 0, lbl_80297E3C);
+        return 0;
+    }
+    fn_8015E1F4(p, b, w, 1, c, 0, -1, &out);
+    return out;
 }
 
 extern "C" void fn_8015D0B8(void*, int);
