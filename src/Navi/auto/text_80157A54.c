@@ -28,11 +28,3 @@ extern "C" void fn_80157AB0(int idx, u8 v)
 {
     *(lbl_802FF4BC + idx * 0xf4 + 0xa0) = v;
 }
-struct Unk802FF4BC {
-    u8 pad0[0x70];
-    u16 unk70;
-    u8 pad72[0x94 - 0x72];
-    u32 unk94;
-    u32 unk98;
-    u8 pad9c[0xf4 - 0x9c];
-};
