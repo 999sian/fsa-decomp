@@ -23,7 +23,7 @@ extern u8 lbl_802BC618[];
 extern u8 lbl_802BBD28[];
 extern u8 lbl_802BC548[];
 extern u8 lbl_802BE378[];
-extern u8 lbl_802FBDB8;
+extern u8 lbl_802FBDB8[];
 extern u8 lbl_802FBDC0;
 extern u8 lbl_802FBDC8;
 extern "C" void fn_80021240(void*, void*, void*);
@@ -114,15 +114,16 @@ extern "C" int fn_800254CC(u8* param_1) {
     return 2;
 }
 
+#pragma use_lmw_stmw off
 extern "C" int fn_8002566C(u8* param_1) {
-    u8 buf[0x118];
+    u8 buf[0x100];
     u32* slot = (u32*)(param_1 + 0xc);
     u32* table = lbl_80226340;
     s32 i = 3;
     u8 r = lbl_802B7CA0[0x1419];
     do {
         if (slot[4] == 0) {
-            fn_801E41AC(buf, lbl_80226394, 0, r, *table);
+            fn_801E41AC(buf, lbl_80226394, (s32)&lbl_802FBDB8, r, *table);
             slot[4] = fn_800137B8(buf, 0, 0);
         }
         i++;
@@ -131,7 +132,7 @@ extern "C" int fn_8002566C(u8* param_1) {
     } while (i < 0xc);
     return 2;
 }
-
+#pragma use_lmw_stmw reset
 extern "C" void fn_80025824(void* p) {
     fn_80021240(p, &lbl_802FBDC0, p);
 }
