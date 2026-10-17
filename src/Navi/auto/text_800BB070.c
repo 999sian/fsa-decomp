@@ -30,6 +30,11 @@ struct VObj_800BD938 {
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_800BCF88(void) {}
 
+extern "C" void fn_800BD00C(u8* p) {
+    *(s32*)(p + 0x48) = 0;
+    *(*(u8**)(p + 0x34) + 0xb0) = 1;
+}
+
 extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7) {
     u8* p = (u8*)param_1;
     if (param_2 < 0) {
