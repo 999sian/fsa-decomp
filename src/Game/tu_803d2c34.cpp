@@ -804,11 +804,11 @@ void MemCardMenu::fn_803D4770() {
 }
 
 void MemCardMenu::fn_803D4484() {
-    s32 t0 = *(s16*)(lbl_8050DB0C + 0xe4);
-    s32 t1 = *(s16*)(lbl_8050DB0C + 0xe6);
-    s32 t2 = *(s16*)(lbl_8050DB0C + 0xe8);
-    s32 t3 = *(s16*)(lbl_8050DB0C + 0xea);
-    s32 t4 = *(s16*)(lbl_8050DB0C + 0xec);
+    int t0 = *(s16*)(lbl_8050DB0C + 0xe4);
+    int t1 = *(s16*)(lbl_8050DB0C + 0xe6);
+    int t2 = *(s16*)(lbl_8050DB0C + 0xe8);
+    int t3 = *(s16*)(lbl_8050DB0C + 0xea);
+    int t4 = *(s16*)(lbl_8050DB0C + 0xec);
     MemCardMenu* self = this;
     u8 done[3];
     done[2] = 0;
@@ -1118,10 +1118,6 @@ void MemCardMenu::fn_803D3D50() {
 }
 
 void MemCardMenu::fn_803D3EC8() {
-    s32 i;
-    u8 a = 0;
-    u8 b = 0;
-    u8 c = 0;
     s16 t0 = *(s16*)(lbl_8050DB0C + 0xee);
     s16 t1 = *(s16*)(lbl_8050DB0C + 0xf0);
     s16 t2 = *(s16*)(lbl_8050DB0C + 0xf2);
@@ -1129,6 +1125,10 @@ void MemCardMenu::fn_803D3EC8() {
     s16 t4 = *(s16*)(lbl_8050DB0C + 0xf6);
     s16 t5 = *(s16*)(lbl_8050DB0C + 0xf8);
     s16 t6 = *(s16*)(lbl_8050DB0C + 0xfa);
+    u8 a = 0;
+    u8 b = 0;
+    u8 c = 0;
+    s32 i;
     f84++;
     if (f84 > t0) {
         a = fn_80402940(f24, t1, 0.0f, 480.0f, 0);
