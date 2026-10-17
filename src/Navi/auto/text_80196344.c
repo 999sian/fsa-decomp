@@ -34,9 +34,9 @@ struct VObj_801A2D78 {
     virtual u8* v13();
     virtual void v14(); virtual void v15();
     virtual u32* v16();
-    virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v17(); virtual void v18();
     virtual u16* v20();
-    virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24(); virtual void v25();
+    virtual void v21(); virtual void v22();
     virtual u8 v26();
 };
 struct VObj_801A18F4 {
@@ -190,6 +190,43 @@ extern "C" s32 fn_801964C0(void* self) {
     return sum;
 }
 
+extern "C" BOOL fn_80196540(u8* self, u8* other) {
+    u32 n = 0;
+    u8* p = *(u8**)(other + 0x2c);
+    u8* q = *(u8**)(self + 0x2c);
+    int i;
+    for (i = 0x18; i > 0; i--) {
+        if (p[0] != q[0]) {
+            return 0;
+        }
+        if (p[1] != q[1]) {
+            return 0;
+        }
+        if (p[2] != q[2]) {
+            return 0;
+        }
+        if (p[3] != q[3]) {
+            return 0;
+        }
+        if (p[4] != q[4]) {
+            return 0;
+        }
+        if (p[5] != q[5]) {
+            return 0;
+        }
+        if (p[6] != q[6]) {
+            return 0;
+        }
+        if (p[7] != q[7]) {
+            return 0;
+        }
+        n += 7;
+        p += 8;
+        q += 8;
+    }
+    return 1;
+}
+
 extern "C" void fn_801DFFF0(void* p, u32 a, u32 b);
 extern "C" void fn_801E015C(u32 a);
 extern "C" void fn_8019662C(void* self);
@@ -277,25 +314,25 @@ extern "C" void fn_80196CDC(void* self) {
 
 extern "C" void* fn_8019772C(int param_1)
 {
-	void** p;
 	if (param_1 != 0) {
-		p = (void**)fn_8015A90C(0x7c);
+		u8* p = (u8*)fn_8015A90C(0x7c);
 		if (p != 0) {
-			*p = lbl_8029A078;
-			*p = lbl_8029AE0C;
-			fn_801E0DB8((u8*)p + 5, (void*)fn_8000EF10, 0, 4, 4);
-			fn_801E0DB8((u8*)p + 0x18, (void*)fn_8000EED8, (void*)fn_8000EE4C, 0x1c, 3);
-			fn_801E0DB8((u8*)p + 0x6c, (void*)fn_8000EECC, (void*)fn_8000EE0C, 4, 4);
+			*(void**)p = lbl_8029A078;
+			*(void**)p = lbl_8029AE0C;
+			fn_801E0DB8(p + 5, (void*)fn_8000EF10, 0, 4, 4);
+			fn_801E0DB8(p + 0x18, (void*)fn_8000EED8, (void*)fn_8000EE4C, 0x1c, 3);
+			fn_801E0DB8(p + 0x6c, (void*)fn_8000EECC, (void*)fn_8000EE0C, 4, 4);
 			fn_80199984(p);
 		}
 		return p;
+	} else {
+		void** q = (void**)fn_8015A90C(4);
+		if (q != 0) {
+			*q = lbl_8029A078;
+			*q = lbl_8029A02C;
+		}
+		return q;
 	}
-	p = (void**)fn_8015A90C(4);
-	if (p != 0) {
-		*p = lbl_8029A078;
-		*p = lbl_8029A02C;
-	}
-	return p;
 }
 
 extern "C" int fn_801979BC(int param_1) {
@@ -2034,13 +2071,13 @@ extern "C" void fn_80190AB8(int, void*, int);
 extern "C" void fn_80190D98(int, u8, u8, u8, u8);
 extern "C" void fn_80190E90(u8, u8, u8, u8, u8, u8, u8, u8, int);
 extern "C" void fn_8019FEAC(int param_1, u32 param_2) {
-    u16* e;
     if (param_2 & 0x8000000) {
+        u8 b30 = *(u8*)(param_1 + 0x30);
         u8 b4 = *(u8*)(param_1 + 4);
-        s8 b30 = *(s8*)(param_1 + 0x30);
-        fn_80190AB8(1, (void*)(param_1 + 0x18), b30);
+        fn_80190AB8(1, (void*)(param_1 + 0x18), (s8)b30);
         fn_80190D98(0, *(u8*)(param_1 + 0x6c), *(u8*)(param_1 + 0x6d), *(u8*)(param_1 + 0x70), *(u8*)(param_1 + 0x71));
-        e = lbl_802EE5D4[*(u8*)(param_1 + 6) & 7];
+        u32 idx = *(u8*)(param_1 + 6) & 7;
+        u16* e = lbl_802EE5D4[idx];
         fn_8019019C(*(u8*)(param_1 + 5), e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
         fn_80190E90(b4, *(u8*)(param_1 + 5), *(u8*)(param_1 + 6), *(u8*)(param_1 + 9), *(u8*)(param_1 + 10), *(u8*)(param_1 + 0xd), *(u8*)(param_1 + 0xe), *(u8*)(param_1 + 0x11), *(u8*)(param_1 + 0x12));
     }
@@ -2115,6 +2152,20 @@ extern "C" void fn_801A219C(u8* p, VObj_801A219C* o) {
     p[0x14] = b[6];
     p[0x15] = b[7];
     *(u32*)(p + 0x18) = *o->v47(0);
+}
+
+extern "C" void fn_801A2D78(u8* p, VObj_801A2D78* o) {
+    u8* q;
+    s32 x = o->v7();
+    if (x == 0x5045464c || x == 0x50454647) {
+        q = o->v13();
+        *(u16*)(p + 4) = *(u16*)q;
+        p[6] = q[2];
+        p[7] = q[3];
+        *(u32*)(p + 8) = *o->v16();
+        *(u16*)(p + 0xc) = *o->v20();
+        p[0xe] = o->v26();
+    }
 }
 
 extern "C" void fn_801A34DC(void) {
