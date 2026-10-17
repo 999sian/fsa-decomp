@@ -29,22 +29,40 @@ struct Tu80390818_Sub14 {
 };
 
 struct Tu80390818_Sub {
-    u8 pad0[0x14];
+    u8 pad0[0x8];
+    JMessage::TControl* m08;
+    u8 pad0C[0x4];
+    void* m10;
     Tu80390818_Sub14* m14;
-    u8 pad18[0x148 - 0x18];
+    u8 pad18[0x98 - 0x18];
+    f32 m98[3];
+    f32 mA4[3];
+    u8 padB0[0x148 - 0xB0];
     s32 m148;
-    u8 pad14C[0x150 - 0x14C];
+    u32 m14C;
     u32 m150;
-    u8 pad154[0x174 - 0x154];
+    u8 pad154[0x168 - 0x154];
+    s32 m168;
+    u8 pad16C[0x174 - 0x16C];
     s32 m174;
-    u8 pad178[0x180 - 0x178];
+    s32 m178;
+    s32 m17C;
     s32 m180[4];
-    u8 pad190[0x19E - 0x190];
+    s16 m190;
+    s16 m192;
+    u8 pad194[0x19E - 0x194];
     u8 m19E;
     u8 m19F;
-    u8 pad1A0[0x3AF - 0x1A0];
+    u8 pad1A0[0x1A2 - 0x1A0];
+    u8 m1A2;
+    u8 pad1A3[0x1AA - 0x1A3];
+    u8 m1AA;
+    u8 m1AB;
+    u8 pad1AC[0x3AE - 0x1AC];
+    u8 m3AE;
     u8 m3AF;
-    u8 pad3B0[2];
+    u8 pad3B0[1];
+    u8 m3B1;
     u8 m3B2[1];
 };
 
