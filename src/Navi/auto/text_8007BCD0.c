@@ -28,8 +28,8 @@ extern f32 lbl_802FEAB0;
 extern u8 lbl_802BB0FC[];
 extern u8 lbl_802C5024[];
 extern u8 lbl_8029FDB4[];
-extern s32 lbl_802FCBE0;
-extern "C" int fn_800126C8(u8* a, s32 b, u8* c);
+extern u8 lbl_802FCBE0[];
+extern "C" int fn_800126C8(u8* a, u8* b, u8* c);
 extern "C" void fn_8007D940(u8* p);
 
 static inline f32 navi_sqrtf(f32 x)
