@@ -1,4 +1,5 @@
 #include "Game/ItemBase.h"
+#include "Game/Actor.h"
 
 extern "C" void fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int how);
@@ -233,6 +234,8 @@ extern "C" void fn_80331D38(char* this_) {
         } while (i < 4);
     }
 }
+
+void fn_80331E6C(void) { }
 
 extern "C" unsigned char fn_801F2618(char* a, float* out, unsigned int c);
 extern "C" int fn_801F11B4(char* a);
