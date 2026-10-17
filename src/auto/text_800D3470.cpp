@@ -2170,27 +2170,10 @@ extern "C" void GDOverflowed(void);
 extern "C" void J3DGDSetFog__F10_GXFogTypeffff8_GXColor(u8, u32, float, float, float, float);
 extern "C" void J3DGDSetFogRangeAdj__FUcUsP14_GXFogAdjTable(u8, u16, void*);
 extern "C" void fn_800DB8F4(void* param_1) {
-    u32* gd = (u32*)&__GDCurrentDL;
-    u32 cur = gd[2];
-    u32 max = gd[3];
-    
-    if (cur + 0x37 > max) {
-        GDOverflowed();
-    }
-    
     u8* p = (u8*)param_1;
-    u32 color = *(u32*)(p + 0x18);
-    u8 type = p[4];
-    float f1 = *(float*)(p + 0x8);
-    float f2 = *(float*)(p + 0xc);
-    float f3 = *(float*)(p + 0x10);
-    float f4 = *(float*)(p + 0x14);
-    
-    J3DGDSetFog__F10_GXFogTypeffff8_GXColor(type, color, f1, f2, f3, f4);
-    
-    u8 uc = p[5];
-    u16 us = *(u16*)(p + 6);
-    J3DGDSetFogRangeAdj__FUcUsP14_GXFogAdjTable(uc, us, p + 0x1c);
+    GDOverflowCheck(0x37);
+    J3DGDSetFog((GXFogType)p[4], *(f32*)(p + 8), *(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14), *(GXColor*)(p + 0x18));
+    J3DGDSetFogRangeAdj(p[5], *(u16*)(p + 6), (GXFogAdjTable*)(p + 0x1c));
 }
 
 extern "C" void fn_800DBC64(void* obj, u32 flags) {
