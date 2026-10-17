@@ -379,6 +379,126 @@ void fn_8027F16C(char* p) {
         fn_802416FC(p, 0x180);
 }
 
+void fn_8027F1C8(char* p) {
+    JGeometry::TVec3<f32> pos;
+    s32 state;
+    s32 i;
+
+    if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && !Player_GetField_0x454(p)) {
+        if (!fn_802341D0(S32(p, 0x4)) || Player_GetField_0xce8(p)) {
+            if (PTR(p, 0x1388)) {
+                void* mgr = fn_8013C824();
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)mgr + 0xc), PTR(p, 0x1388));
+                PTR(p, 0x1388) = 0;
+            }
+        } else {
+            pos.x = F32(p, 0x8);
+            pos.y = F32(p, 0xc);
+            pos.z = F32(p, 0x10);
+            pos.z = lbl_80540360;
+            switch (fn_802486A0(p)) {
+            case 0:
+                pos.x += lbl_80540364 * (f32)(fn_802487FC(p) - 1);
+                break;
+            case 1:
+                pos.y += lbl_80540364 * (f32)(fn_802487FC(p) - 1);
+                break;
+            case 2:
+                pos.x += lbl_80540364;
+                pos.y += lbl_80540364;
+                break;
+            case 3:
+                if (fn_80241284(p)) {
+                    pos.x = F32(p, 0x11b4);
+                    pos.y = F32(p, 0x11b8);
+                    pos.z = F32(p, 0x11bc);
+                } else {
+                    switch (S32(p, 0x4)) {
+                    case 0:
+                        pos.y += lbl_80540368;
+                        break;
+                    case 1:
+                        pos.x += lbl_80540368;
+                        break;
+                    case 2:
+                        pos.x -= lbl_80540368;
+                        break;
+                    case 3:
+                        pos.y -= lbl_80540368;
+                        break;
+                    }
+                }
+                break;
+            }
+            if (U8(p, 0x121d) == 0) {
+                if (U8(lbl_8053AAF8, 0x7e) == 0) {
+                    if (PTR(p, 0x1388)) {
+                        ((void (*)(void*, void*, s32, s32, s32))fn_8013CB44)(PTR(p, 0x1388), &pos, 0, -1, 1);
+                    } else {
+                        switch (fn_802486A0(p)) {
+                        case 0:
+                            PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x35e, 0, -1, 0, 0, 1, lbl_8054036C);
+                            break;
+                        case 1:
+                            PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x360, 0, -1, 0, 0, 1, lbl_8054036C);
+                            break;
+                        case 2:
+                            PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x35f, 0, -1, 0, 0, 1, lbl_8054036C);
+                            break;
+                        case 3:
+                            PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x361, 0, -1, 0, 0, 1, lbl_8054036C);
+                            break;
+                        }
+                    }
+                } else if (PTR(p, 0x1388)) {
+                    void* mgr = fn_8013C824();
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)mgr + 0xc), PTR(p, 0x1388));
+                    PTR(p, 0x1388) = 0;
+                }
+            } else {
+                if (PTR(p, 0x1388)) {
+                    void* mgr = fn_8013C824();
+                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)mgr + 0xc), PTR(p, 0x1388));
+                    PTR(p, 0x1388) = 0;
+                }
+                switch (fn_802486A0(p)) {
+                case 0:
+                    PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x35e, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1ba, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1bb, 0, -1, 0, 0, 1, lbl_8054036C);
+                    break;
+                case 1:
+                    PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x360, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b8, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b9, 0, -1, 0, 0, 1, lbl_8054036C);
+                    break;
+                case 2:
+                    PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x35f, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b5, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b6, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b7, 0, -1, 0, 0, 1, lbl_8054036C);
+                    break;
+                case 3:
+                    PTR(p, 0x1388) = fn_8013CC50(S32(p, 0x3b4), &pos, 0x361, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b2, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b3, 0, -1, 0, 0, 1, lbl_8054036C);
+                    fn_8013CC50(S32(p, 0x3b4), &pos, 0x1b4, 0, -1, 0, 0, 1, lbl_8054036C);
+                    break;
+                }
+                for (i = 0; i < 4; i++) {
+                    if (fn_8022E438(S32(p, 0x4), i)) {
+                        fn_8022B860(i, 5);
+                    }
+                }
+                U8(p, 0x121d) = 0;
+                if (fn_802486A0(p) != 5 && fn_802486A0(p) != 4) {
+                    fn_8024EFF8(p, 0x37);
+                }
+            }
+        }
+    }
+}
+
 extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32 i);
 extern "C" s32 fn_8022E8D4(s32 i);
 extern "C" s32 fn_80248778(char* p);
