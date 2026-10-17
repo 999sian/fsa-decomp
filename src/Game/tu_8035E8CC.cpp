@@ -112,21 +112,22 @@ extern "C" void fn_8035EB18(void* this_) {
 extern "C" void fn_80230498(s32 a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g);
 extern "C" void fn_8035EB90(void* this_) {
     s32 i;
-    f32 vec[3];
-    char* p = (char*)this_;
-    if (*(s32*)(p + 0x234) == 0) {
-        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + lbl_805429B8;
-        fn_80230498(0, p + 0xc, *(s32*)(p + 0x250) + *(s32*)(p + 0x248), 0xff, -0x80, -0x80, 1);
-        *(f32*)(p + 0x260) = *(f32*)(p + 0x10);
+    f32 y;
+    if (*(s32*)((char*)this_ + 0x234) == 0) {
+        *(f32*)((char*)this_ + 0x10) = *(f32*)((char*)this_ + 0x10) + lbl_805429B8;
+        fn_80230498(0, (char*)this_ + 0xc, *(s32*)((char*)this_ + 0x250) + *(s32*)((char*)this_ + 0x248), 0xff, -0x80, -0x80, 1);
+        *(f32*)((char*)this_ + 0x260) = *(f32*)((char*)this_ + 0x10);
         for (i = 0; i < 3; i++) {
-            vec[1] = *(f32*)(p + 0x260);
-            vec[0] = *(f32*)(p + 0x254 + i * 4);
+            f32 vec[3];
+            y = *(f32*)((char*)this_ + 0x260);
+            vec[0] = *(f32*)((char*)this_ + 0x254 + i * 4);
+            vec[1] = y;
             vec[2] = lbl_805429BC;
-            fn_80230498(i + 1, vec, *(s32*)(p + 0x264) + *(s32*)(p + 0x268), 0xff, -0x80, -0x80, 1);
+            fn_80230498(i + 1, vec, *(s32*)((char*)this_ + 0x264) + *(s32*)((char*)this_ + 0x268), 0xff, -0x80, -0x80, 1);
         }
-        *(s32*)(p + 0x264) = -1;
-        *(s32*)(p + 0x234) = 0x17c;
-        *(s32*)(p + 0x230) = *(s32*)(p + 0x230) + 1;
+        *(s32*)((char*)this_ + 0x264) = -1;
+        *(s32*)((char*)this_ + 0x234) = 0x17c;
+        *(s32*)((char*)this_ + 0x230) = *(s32*)((char*)this_ + 0x230) + 1;
     }
 }
 
@@ -145,7 +146,7 @@ extern "C" void fn_8035EC98(void* this_) {
         pos[1] = lbl_805429C4;
         pos[2] = lbl_805429BC;
         for (i = 0; i < 0x11; i++) {
-            fn_8013CC50(*(void**)(p + 4), pos, ids[i], 1, 1, 0, 0, 1, lbl_805429C8);
+            fn_8013CC50(*(void**)(p + 4), pos, *ids++, 1, 1, 0, 0, 1, lbl_805429C8);
         }
         fn_801F0E34(this_, 0x30087, 0);
         *(s32*)(p + 0x234) = 0x14;
