@@ -63,6 +63,7 @@ extern const f32 lbl_8054111C;
 extern const f32 lbl_80541124;
 extern const f32 lbl_80541160;
 extern const f32 lbl_80541164;
+extern void* lbl_8053AF80;
 
 extern "C" {
 int sprintf(char*, const char*, ...);
