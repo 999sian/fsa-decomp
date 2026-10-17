@@ -19,6 +19,11 @@ extern f32 lbl_8053C884;
 extern f64 lbl_8053C888;
 extern int __float_epsilon[];
 extern s32 lbl_80464BBC[];
+extern void* lbl_8053AF80;
+extern f32 lbl_8053C8A0;
+struct Actor {
+    void detach();
+};
 #include "JSystem/JGeometry/Vec.h"
 
 extern char lbl_8049DD68[];
@@ -36,6 +41,80 @@ extern "C" char* fn_8011CEC8(char* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void fn_8011CF48(void* this_) {
+    char* p = (char*)this_;
+    switch (*(s32*)(p + 0x234)) {
+    case 0: {
+        f32 v[2];
+        if (*(f32*)(p + 0x244) - (*(f32*)(p + 0x28) - lbl_8053C864) >= lbl_8053C868) {
+            fn_801CD950((f32*)(p + 0x23c), lbl_8053C86C, lbl_8053C870);
+        } else {
+            fn_801CD950((f32*)(p + 0x23c), lbl_8053C874, lbl_8053C878);
+        }
+        fn_801CD950((f32*)(p + 0x244), *(f32*)(p + 0x28) - lbl_8053C864, *(f32*)(p + 0x23c));
+        v[1] = *(f32*)(p + 0x244);
+        v[0] = *(f32*)(p + 0x240);
+        v[1] = *(f32*)(p + 0x244);
+        fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), v, *(f32*)(p + 0x258));
+        break;
+    }
+    case 1: {
+        f32 v[2];
+        v[0] = *(f32*)(p + 0x240);
+        v[1] = *(f32*)(p + 0x244);
+        fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), v, *(f32*)(p + 0x258));
+        break;
+    }
+    case 2: {
+        f32 v[2];
+        if (*(s32*)((u8*)fn_8011921C() + 0x8) >= *(s32*)((u8*)lbl_80464BBC + 0x18) + 0x14) {
+            s32 d = *(s32*)((u8*)lbl_80464BBC + 0x1c) - 0x4b - *(s32*)((u8*)fn_8011921C() + 0x8);
+            f32 t = (f32)d;
+            if (t < *(f32*)__float_epsilon) {
+                *(f32*)(p + 0x244) = *(f32*)(p + 0x28);
+            } else {
+                *(f32*)(p + 0x244) = lbl_8053C87C / t * (*(f32*)(p + 0x28) - *(f32*)(p + 0x244)) + *(f32*)(p + 0x244);
+            }
+        }
+        v[1] = *(f32*)(p + 0x244);
+        v[0] = *(f32*)(p + 0x240);
+        v[1] = *(f32*)(p + 0x244);
+        fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), v, *(f32*)(p + 0x258));
+        break;
+    }
+    case 3: {
+        f32 v[2];
+        v[1] = *(f32*)(p + 0x244);
+        v[0] = *(f32*)(p + 0x240);
+        v[1] = *(f32*)(p + 0x244);
+        fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), v, *(f32*)(p + 0x258));
+        break;
+    }
+    case 4: {
+        f32 v[2];
+        f32 z[3];
+        f32* q;
+        u8* ret = (u8*)fn_8011921C();
+        u8* r = (u8*)fn_8011871C(ret, *(s32*)(ret + 0x10), 0x444d5357);
+        if (r == *(u8**)((u8*)fn_8011921C() + 0x14)) {
+            z[0] = lbl_8053C860;
+            z[1] = lbl_8053C860;
+            z[2] = lbl_8053C860;
+            q = z;
+        } else {
+            q = (f32*)(*(u8**)r + 0xc);
+        }
+        fn_801CD950((f32*)(p + 0x244), lbl_8053C880 + q[1], lbl_8053C884);
+        v[0] = *(f32*)(p + 0x240);
+        v[1] = *(f32*)(p + 0x244);
+        fn_8030C7C4(*(void**)(lbl_8053AB10 + 0x24), v, *(f32*)(p + 0x258));
+        break;
+    }
+    default:
+        break;
+    }
 }
 
 extern "C" u8 fn_8011D4B4(int param_1) {
