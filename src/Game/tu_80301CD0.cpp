@@ -102,10 +102,9 @@ static inline void tu80301_pushMeasured(s32 i, char* str, u32 color) {
     if (!fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
         return;
     }
-    TextCall_80301CD0* t = *(TextCall_80301CD0**)((u8*)lbl_8053AAF8 + 0xa4);
     MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A28[i]];
     e->f104 = 0;
-    e->f100 = (t->measure(t->convert(0x3f3f3f3f, str)) + 3) / 4;
+    e->f100 = (((TextCall_80301CD0*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->measure(((TextCall_80301CD0*)*(void**)((u8*)lbl_8053AAF8 + 0xa4))->convert(0x3f3f3f3f, str)) + 3) / 4;
     e->f114 = color;
     e->f119 = 0;
     e->f11a = 1;
@@ -306,16 +305,16 @@ extern "C" void fn_80303870(s32 i) {
     fn_802D6A9C();
     str = fn_802D9C4C();
     if (str[0] == 'c') {
-        fn_80304C10(i, (char*)(lbl_80471208 + 0x48), 0x6000000, 1, 0);
+        tu80301_pushMeasured(i, (char*)(lbl_80471208 + 0x48), 0x6000000);
     } else {
         sprintf(buf28, (char*)(lbl_80471208 + 0x38), str);
-        fn_80304C10(i, buf28, 0x6000000, 1, 0);
+        tu80301_pushMeasured(i, buf28, 0x6000000);
     }
     sprintf(buf8, (char*)(lbl_80471208 + 0x58), str);
-    fn_80304C10(i, buf8, 0x5000001, 1, 0);
+    tu80301_pushMeasured(i, buf8, 0x5000001);
     fn_802D6A9C();
     sprintf(buf28, (char*)(lbl_80471208 + 0x6c), fn_802D9C1C());
-    fn_80304C10(i, buf28, 0x6017000, 1, 0);
+    tu80301_pushMeasured(i, buf28, 0x6017000);
     lbl_8053ACE4[i] = 1;
 }
 
