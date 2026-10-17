@@ -10,6 +10,16 @@ extern "C" void* GetCurrentSlotPtr(void* thisPtr);
 extern "C" s32 fn_801CD664(s32 n);
 
 struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
+extern "C" u8 fn_800FD5E8(void* ring, u8 i);
+extern "C" s32 fn_800FE25C(void* ring, u8 i);
+extern "C" u8 fn_801CC9F8(void* p, s32 room);
+extern "C" u16 fn_8022461C(void* p, s32 room);
+extern "C" u8 fn_801CAEF4(char* this_, void* p, s32 room);
+extern "C" void fn_801C9234(char* this_, f32* out);
+extern "C" void* lbl_8053AAF8;
+extern "C" f32 lbl_8053EEF4;
+extern "C" f32 lbl_8053EF04;
+extern "C" f32 lbl_8053EED4;
 extern "C" TndrG* fn_802D6A9C(void);
 extern "C" u32 fn_800FD548(void* ring, u8 i);
 extern "C" u8 fn_801CF888(void* this_, void* a, void* b, s32 c);
@@ -78,6 +88,158 @@ extern "C" void fn_801C71BC(char* this_) {
     if (!(*(u32*)(this_ + 0x524) & 0x40)) {
         fn_801C3B7C(this_, 0x1c);
     }
+}
+
+extern "C" u8 fn_800FD594(void* ring, u8 i);
+extern "C" u8 fn_801CD2F8(s32 p);
+extern "C" s32 fn_800FE25C(void* ring, u8 i);
+extern "C" void fn_801C79A0(char* this_) {
+    JGeometry::TVec3<f32> pos;
+    u8 buf[0x30];
+    s32 r;
+    u8 t;
+
+    *(u32*)(this_ + 0x230) &= 0xfdffffff;
+    pos = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+    *(f32*)(this_ + 0x32c) = pos.x;
+    *(f32*)(this_ + 0x330) = pos.y;
+    *(f32*)(this_ + 0x334) = pos.z;
+    *(s32*)(this_ + 0x56c) = *(s32*)(this_ + 0x4);
+    *(f32*)(this_ + 0x570) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x574) = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x578) = *(f32*)(this_ + 0x14);
+    *(s32*)(this_ + 0x4) = fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+    *(JGeometry::TVec3<f32>*)(this_ + 0xc) = *(JGeometry::TVec3<f32>*)(this_ + 0x32c);
+    *(JGeometry::TVec3<f32>*)(this_ + 0x18) = *(JGeometry::TVec3<f32>*)(this_ + 0x32c);
+    *(s32*)(this_ + 0x57c) = *(s32*)(this_ + 0x4);
+    *(f32*)(this_ + 0x580) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x584) = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x588) = *(f32*)(this_ + 0x14);
+    if (fn_800FD594(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
+        *(u32*)(this_ + 0x230) |= 0x20000;
+    } else {
+        *(u32*)(this_ + 0x230) &= 0xfffdffff;
+    }
+    s32 n = 1;
+    if (((u8*)GetCurrentSlotPtr(this_ + 0x358))[1] != 0) {
+        n = -1;
+    }
+    fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), n);
+    fn_801C8C84(this_, 0, 1);
+    r = fn_800FD894(GetCurrentSlotPtr(this_ + 0x358), *(s32*)(this_ + 0x4), buf, 0x30);
+    if (r <= 3) {
+        *(u8*)(this_ + 0x55d) = 1;
+    } else {
+        *(u8*)(this_ + 0x55d) = fn_801CD664(4) + 1;
+        if (*(u32*)(this_ + 0x524) & 0x100) {
+            *(u8*)(this_ + 0x55d) += 1;
+        }
+        t = r - 2;
+        if (t >= *(u8*)(this_ + 0x55d)) {
+            t = *(u8*)(this_ + 0x55d);
+        }
+        *(u8*)(this_ + 0x55d) = t;
+    }
+    if (*(u32*)(this_ + 0x524) & 0x4) {
+        *(s32*)(this_ + 0x4) = *(s32*)(this_ + 0x56c);
+        *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x570);
+        *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x574);
+        *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x578);
+        if (fn_801CD2F8(*(s32*)(this_ + 0x56c))) {
+            *(s32*)(this_ + 0x58c) = 1;
+        } else {
+            *(s32*)(this_ + 0x58c) = 0;
+        }
+        fn_801C3B7C(this_, 0x18);
+    } else {
+        fn_801C3B7C(this_, 0x17);
+    }
+}
+
+extern "C" f32 lbl_8053EEF0;
+extern "C" f32 lbl_8053EDF0;
+extern "C" f32 lbl_8053EEF4;
+extern "C" f32 lbl_8053EEF8;
+extern "C" u8 fn_801CCB1C(void* pos, s32 layer);
+extern "C" u8 fn_801CC9F8(void* pos, s32 layer);
+extern "C" u16 fn_8022461C(void* pos, s32 room);
+extern "C" BOOL fn_801C7BD0(char* this_) {
+    BOOL result = 0;
+    s32 state = *(s32*)(this_ + 0x2a8);
+    if (state == 2) {
+        f32 dx = *(f32*)(this_ + 0x32c) - *(f32*)(this_ + 0xc);
+        f32 dz = *(f32*)(this_ + 0x330) - *(f32*)(this_ + 0x10);
+        f32 r = lbl_8053EEF0 + lbl_8053EDF0;
+        if (dx * dx + dz * dz <= r * r) {
+            s32 i = 1;
+            if (state <= 1) {
+                i = 0;
+            }
+            f32 y = *(f32*)(this_ + 0x2b0 + i * 8);
+            f32 z = lbl_8053EEF4;
+            s32 j = 1;
+            if (state <= 1) {
+                j = 0;
+            }
+            f32 x = *(f32*)(this_ + 0x2ac + j * 8);
+            *(f32*)(this_ + 0x32c) = x;
+            *(f32*)(this_ + 0x330) = y;
+            *(f32*)(this_ + 0x334) = z;
+            *(s32*)(this_ + 0x2a8) = 0;
+            *(u32*)(this_ + 0x230) &= 0xffffefff;
+        }
+    } else {
+        f32 tx = *(f32*)(this_ + 0x32c);
+        f32 ty = *(f32*)(this_ + 0x330);
+        f32 r = lbl_8053EEF8;
+        s32 room = *(s32*)(this_ + 0x4);
+        BOOL k = 0;
+        TndrG* g = fn_802D6A9C();
+        if (g->arr[room] != 0) {
+            r = lbl_8053EEF0 + lbl_8053EDF0;
+            JGeometry::TVec3<f32> p = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+            if (fn_801CCB1C(&p, room)) {
+                k = 1;
+            } else {
+                tx = p.x;
+                ty = p.y;
+            }
+            if (room == fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), 0xff) && !fn_800FD548(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
+                JGeometry::TVec3<f32> q = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+                if (!fn_801CC9F8(this_ + 0xc, room) || fn_8022461C(&q, room)) {
+                    *(f32*)(this_ + 0x32c) = q.x;
+                    *(f32*)(this_ + 0x330) = *(f32*)(this_ + 0x10);
+                    *(f32*)(this_ + 0x334) = q.z;
+                } else {
+                    *(f32*)(this_ + 0x32c) = q.x;
+                    *(f32*)(this_ + 0x330) = q.y;
+                    *(f32*)(this_ + 0x334) = q.z;
+                }
+            }
+        }
+        f32 dx = tx - *(f32*)(this_ + 0xc);
+        f32 dz = ty - *(f32*)(this_ + 0x10);
+        if (dx * dx + dz * dz <= r * r) {
+            if (k) {
+                fn_801C8B50(this_);
+                result = 1;
+            } else {
+                if (fn_800FD594(GetCurrentSlotPtr(this_ + 0x358), 0xff)) {
+                    *(u32*)(this_ + 0x230) |= 0x20000;
+                } else {
+                    *(u32*)(this_ + 0x230) &= 0xfffdffff;
+                }
+                result = 1;
+                if (((u8*)GetCurrentSlotPtr(this_ + 0x358))[1] != 0) {
+                    result = -1;
+                }
+                fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), result);
+                fn_801C8C84(this_, 0, 0);
+                result = 1;
+            }
+        }
+    }
+    return result;
 }
 
 extern "C" void fn_801C7EE4(char* this_) {
