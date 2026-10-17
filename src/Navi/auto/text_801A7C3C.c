@@ -949,6 +949,14 @@ extern "C" void fn_801AE6B8(void* a, u8* p) {
     fn_801AE6DC(a, p + 0x88);
 }
 
+extern "C" void fn_801AE7B0(u32* p, u32 v) {
+    p[0] = v;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = 0;
+    p[4] = 3;
+}
+
 extern void* lbl_8029B61C[];
 extern "C" void* fn_801AFDA4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
