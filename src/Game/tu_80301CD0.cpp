@@ -631,73 +631,29 @@ extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id) {
 }
 
 extern "C" void fn_80304D64() {
-    Elem28_80301CD0* e = lbl_80504A38[0];
-    Elem28_80301CD0* f = lbl_80505438[0];
     for (s32 i = 0; i < 4; i++) {
-        Elem28_80301CD0* p = e;
-        for (int j = 0; j < 4; j++) {
-            if (p->f25 == 1) {
-                p->f24 = 0;
-                p->f25 = 0;
-                p->f4 = -1;
-            } else if (p->f24 == 1 && p->f0 < 5) {
-                p->f0++;
+        for (int j = 0; j < 16; j++) {
+            if (lbl_80504A38[i][j].f25 == 1) {
+                lbl_80504A38[i][j].f24 = 0;
+                lbl_80504A38[i][j].f25 = 0;
+                lbl_80504A38[i][j].f4 = -1;
+            } else if (lbl_80504A38[i][j].f24 == 1 && lbl_80504A38[i][j].f0 < 5) {
+                lbl_80504A38[i][j].f0++;
             }
-            p++;
-            if (p->f25 == 1) {
-                p->f24 = 0;
-                p->f25 = 0;
-                p->f4 = -1;
-            } else if (p->f24 == 1 && p->f0 < 5) {
-                p->f0++;
-            }
-            p++;
-            if (p->f25 == 1) {
-                p->f24 = 0;
-                p->f25 = 0;
-                p->f4 = -1;
-            } else if (p->f24 == 1 && p->f0 < 5) {
-                p->f0++;
-            }
-            p++;
-            if (p->f25 == 1) {
-                p->f24 = 0;
-                p->f25 = 0;
-                p->f4 = -1;
-            } else if (p->f24 == 1 && p->f0 < 5) {
-                p->f0++;
-            }
-            p++;
         }
-        Elem28_80301CD0* q = f;
-        for (int j = 0; j < 20; j++) {
-            if (q->f25 == 1 && q->f0 == 0) {
-                q->f24 = 0;
-                q->f25 = 0;
-                q->f4 = -1;
-                q->fc = -1;
-            } else if (q->f25 == 1) {
-                q->fc = -1;
-                q->f0 = 0;
-            } else if (q->f24 == 1 && q->f0 < 5) {
-                q->f0++;
+        for (int j = 0; j < 40; j++) {
+            if (lbl_80505438[i][j].f25 == 1 && lbl_80505438[i][j].f0 == 0) {
+                lbl_80505438[i][j].f24 = 0;
+                lbl_80505438[i][j].f25 = 0;
+                lbl_80505438[i][j].f4 = -1;
+                lbl_80505438[i][j].fc = -1;
+            } else if (lbl_80505438[i][j].f25 == 1) {
+                lbl_80505438[i][j].fc = -1;
+                lbl_80505438[i][j].f0 = 0;
+            } else if (lbl_80505438[i][j].f24 == 1 && lbl_80505438[i][j].f0 < 5) {
+                lbl_80505438[i][j].f0++;
             }
-            q++;
-            if (q->f25 == 1 && q->f0 == 0) {
-                q->f24 = 0;
-                q->f25 = 0;
-                q->f4 = -1;
-                q->fc = -1;
-            } else if (q->f25 == 1) {
-                q->fc = -1;
-                q->f0 = 0;
-            } else if (q->f24 == 1 && q->f0 < 5) {
-                q->f0++;
-            }
-            q++;
         }
-        e += 16;
-        f += 40;
     }
 }
 
@@ -890,11 +846,89 @@ extern "C" s32 fn_803074A4(s32 a, s32 b) {
 	}
 }
 
+extern "C" s32 fn_803075AC(u32 caller, s32 room, void* pos, s32 id, bool on, s32 mode, s32 target, s32 kind, bool b, s32 d) {
+    s32 ok = 0;
+    s32 i;
+    s32 n;
+    s32 c;
+    Elem28_80301CD0* e;
+
+    if (room < 8 && room != -1) {
+        return 0;
+    }
+    for (i = 0; i < 4; i++) {
+        s32 r = fn_8022EA0C(i);
+        if (((*((u8*)lbl_8053AAF8 + 0x82)) & (u8)(1 << i)) == 0) {
+            continue;
+        }
+        if (target != i && (target >= 0 || fn_8023DE58(r) != room)) {
+            continue;
+        }
+        e = lbl_80505438[i];
+        n = 0;
+        c = 5;
+        do {
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+            if (e->f24 == 1 && e->f4 == caller) break;
+            n++;
+            e++;
+        } while (--c != 0);
+        if (n < 40) {
+            e->f8 = room;
+            *(struct Vec*)&e->f10 = *(struct Vec*)pos;
+            ok = 1;
+            e->f1c = id;
+            e->f21 = on;
+            e->f22 = b;
+        } else {
+            e = lbl_80505438[i];
+            for (c = 0x28; c != 0; c--) {
+                if (e->f24 == 0) {
+                    e->f0 = mode;
+                    e->f4 = caller;
+                    e->f8 = room;
+                    e->fc = target;
+                    *(struct Vec*)&e->f10 = *(struct Vec*)pos;
+                    ok = 1;
+                    e->f1c = id;
+                    e->f21 = on;
+                    e->f20 = kind;
+                    e->f23 = d;
+                    e->f22 = b;
+                    e->f24 = 1;
+                    break;
+                }
+                e++;
+            }
+        }
+    }
+    return ok;
+}
+
 // fn_80307AC8 - effect spawn dispatcher: ids below 0x45 go to the small
 // effect table (fn_80307830), others to the generic effect spawner.
 extern "C" s32 fn_80307830(u32 caller, s32 room, void* pos, s32 id, bool on, s32 a, bool b, s32 kind);
-extern "C" s32 fn_803075AC(u32 caller, s32 room, void* pos, s32 id, bool on, s32 mode, s32 target, s32 kind,
-                           bool b, s32 d);
+
 
 extern "C" s32 fn_80307AC8(u32 caller, s32 room, void* pos, s32 id, s32 on, s32 b, s32 target) {
     if (b == 2) {
