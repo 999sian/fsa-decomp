@@ -55,6 +55,114 @@ extern "C" void fn_80110198(u8* this_) {
     }
 }
 
+extern "C" void fn_8030C210(void* p, void* q);
+extern "C" u8* lbl_8053AB10;
+extern "C" void fn_80110210(u8* this_) {
+    u8* obj;
+    Vec tmp;
+    f32 x;
+    f32 sum;
+    f32 f274;
+
+    switch (*(s32*)(this_ + 0x238)) {
+    case 38:
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), this_ + 0xc);
+        break;
+    case 39:
+    case 40:
+    case 41:
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
+        sum = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x278);
+        f274 = *(f32*)(this_ + 0x274);
+        x = *(f32*)(this_ + 0xc);
+        if (obj[0x7f5] == 0) {
+            obj[0x7f4] = 1;
+            *(s32*)(obj + 0x7f8) = 5;
+            *(f32*)(obj + 0x808) = x;
+            *(f32*)(obj + 0x80c) = sum - f274;
+            *(f32*)(obj + 0x810) = x;
+            *(f32*)(obj + 0x814) = f274 + sum;
+            obj[0x7f6] = 0;
+        }
+        break;
+    case 42:
+    case 43:
+    case 44:
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
+        sum = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x278);
+        f274 = *(f32*)(this_ + 0x274);
+        x = *(f32*)(this_ + 0xc);
+        if (obj[0x7f5] == 0) {
+            obj[0x7f4] = 1;
+            *(s32*)(obj + 0x7f8) = 5;
+            *(f32*)(obj + 0x808) = x;
+            *(f32*)(obj + 0x80c) = sum - f274;
+            *(f32*)(obj + 0x810) = x;
+            *(f32*)(obj + 0x814) = f274 + sum;
+            obj[0x7f6] = 0;
+        }
+        break;
+    case 45:
+    case 46:
+    case 47:
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
+        if (obj[0x7f4] == 0) {
+            obj[0x7f5] = 1;
+        }
+        break;
+    case 48:
+    case 49:
+    case 50:
+    case 51:
+    case 52:
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
+        sum = *(f32*)(this_ + 0x10);
+        f274 = *(f32*)(this_ + 0x274);
+        x = *(f32*)(this_ + 0xc);
+        if (obj[0x840] == 0) {
+            obj[0x840] = 1;
+            *(f32*)(obj + 0x844) = x;
+            *(f32*)(obj + 0x848) = sum - f274;
+            *(f32*)(obj + 0x84c) = x;
+            *(f32*)(obj + 0x850) = sum + f274;
+            *(f32*)(obj + 0x854) = lbl_8053C550;
+            *(f32*)(obj + 0x1d4) = lbl_8053C5D0;
+            *(f32*)(obj + 0x1d8) = lbl_8053C5D0;
+        }
+        break;
+    case 53:
+    case 54:
+    case 55:
+    case 56:
+    case 57:
+    case 58:
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x17c) = 1;
+        *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
+        tmp = *(Vec*)(this_ + 0x24);
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
+        sum = tmp.y + *(f32*)(this_ + 0x278);
+        f274 = *(f32*)(this_ + 0x274);
+        tmp.y = sum;
+        if (obj[0x7f5] == 0) {
+            obj[0x7f4] = 1;
+            *(s32*)(obj + 0x7f8) = 5;
+            *(f32*)(obj + 0x808) = tmp.x;
+            *(f32*)(obj + 0x80c) = sum - f274;
+            *(f32*)(obj + 0x810) = tmp.x;
+            *(f32*)(obj + 0x814) = sum + f274;
+            obj[0x7f6] = 0;
+        }
+        break;
+    case 59:
+    case 60:
+        fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), this_ + 0xc);
+        break;
+    }
+}
+
 extern "C" void fn_80111CC0(u8* this_) {
     fn_8010DF78(this_);
     switch (*(s32*)(this_ + 0x234)) {
@@ -64,6 +172,8 @@ extern "C" void fn_80111CC0(u8* this_) {
         break;
     case 2:
         fn_8011093C(this_);
+        break;
+    case 3:
         break;
     }
     fn_801D1C18(this_ + 0x2f4);
@@ -235,6 +345,9 @@ extern "C" void fn_8010F478(u8* this_, s32 param_2) {
         break;
     case 2:
         fn_8010E2D4(this_, param_2);
+        break;
+    case -1:
+    default:
         break;
     }
     *(s32*)(this_ + 0x238) = param_2;
