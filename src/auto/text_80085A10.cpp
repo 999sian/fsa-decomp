@@ -325,7 +325,7 @@ extern "C" s32 fn_800861C4(int param_1, u32 param_2) {
 
 extern u8 lbl_8053B770[8];
 extern "C" void fn_800863C0(void* param_1) {
-    s32 idx = fn_8008668C((int)param_1);
+    s32 idx = fn_8008668C();
     
     if (idx < 0) {
         return;
