@@ -10,6 +10,12 @@ extern "C" u16 lbl_804648E8[];
 extern "C" u32 lbl_804648F4[];
 extern "C" char lbl_8049D820[];
 
+struct Vec3_80113B54 {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
 struct Mtx34_8011395C {
     float m[3][4];
 };
