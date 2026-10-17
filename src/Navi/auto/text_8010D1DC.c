@@ -37,6 +37,25 @@ extern "C" void fn_8010EA18(u8* p) {
     }
 }
 
+#pragma use_lmw_stmw off
+extern "C" s32 fn_8010EB54(u8* p) {
+    s32 ret;
+    s32 r1;
+    s32 r2;
+    s32 r3;
+
+    ret = 0;
+    r1 = fn_8010FD74(p, *(s16*)(p + 0xcc) - lbl_802C5B44[0x18], lbl_802C5B44[0x10], 0, 1, lbl_803012EC, *(f32*)(lbl_802C5B44 + 0xc));
+    r2 = fn_8011024C(p, *(s16*)(p + 0xcc), lbl_802C5B44[0x19], 0, 1);
+    r3 = fn_8010FEDC(p, *(s16*)(p + 0xcc), lbl_802C5B44[0x18], 0, 1, lbl_803012EC, *(f32*)(lbl_802C5B44 + 0x14));
+    *(s16*)(p + 0xcc) += 1;
+    if (r1 == 1 && r2 == 1 && r3 == 1) {
+        *(s16*)(p + 0xcc) = 0;
+        ret = 1;
+    }
+    return ret;
+}
+#pragma use_lmw_stmw reset
 struct NaviState_8010D1DC;
 typedef void (NaviState_8010D1DC::*NaviStateFn_8010D1DC)();
 extern NaviStateFn_8010D1DC lbl_8028EF1C[];
@@ -129,18 +148,18 @@ extern "C" void fn_8010F880(u8* param_1) {
 extern "C" void fn_8017A4F8(void* p);
 extern "C" void fn_8010F9F8(u8* param_1) {
     if (*(u8*)(*(u8**)(param_1 + 0xa0) + 0xb0) != 0) {
-        u8* p = *(u8**)(param_1 + 0xa8);
         *(s32*)(param_1 + 0xac) += 1;
-        if (!(*(s32*)(param_1 + 0xac) < *(s16*)(p + 6))) {
-            *(s32*)(param_1 + 0xac) -= *(s16*)(p + 6);
+        s32 lim = *(s16*)(*(u8**)(param_1 + 0xa8) + 6);
+        if (*(s32*)(param_1 + 0xac) >= lim) {
+            *(s32*)(param_1 + 0xac) -= lim;
         }
-        *(f32*)(p + 8) = (f32)*(s32*)(param_1 + 0xac);
-        u8* q = *(u8**)(param_1 + 0xc4);
+        *(f32*)(*(u8**)(param_1 + 0xa8) + 8) = (f32)*(s32*)(param_1 + 0xac);
         *(s32*)(param_1 + 0xc8) += 1;
-        if (!(*(s32*)(param_1 + 0xc8) < *(s16*)(q + 6))) {
-            *(s32*)(param_1 + 0xc8) -= *(s16*)(q + 6);
+        s32 lim2 = *(s16*)(*(u8**)(param_1 + 0xc4) + 6);
+        if (*(s32*)(param_1 + 0xc8) >= lim2) {
+            *(s32*)(param_1 + 0xc8) -= lim2;
         }
-        *(f32*)(q + 8) = (f32)*(s32*)(param_1 + 0xc8);
+        *(f32*)(*(u8**)(param_1 + 0xc4) + 8) = (f32)*(s32*)(param_1 + 0xc8);
         fn_8017A4F8(*(void**)(param_1 + 8));
     }
 }
