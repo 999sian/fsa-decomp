@@ -28,6 +28,8 @@ extern "C" unsigned char lbl_8022F534[];
 extern "C" unsigned char lbl_802FBE3C[8];
 extern "C" unsigned int lbl_802FEE30;
 extern "C" int fn_8002B484(unsigned char* p, unsigned int a, unsigned char b);
+extern "C" int lbl_802FEE08;
+extern "C" unsigned int lbl_80227878[];
 struct S_801F9280 {
     int v[7];
 };
@@ -317,14 +319,6 @@ extern "C" int fn_8002B6D4(int a, unsigned char v) {
         if (v == q[0x1d9]) {
             return 1;
         }
-        q++;
-        if (v == q[0x1d9]) {
-            return 1;
-        }
-        q++;
-        if (v == q[0x1d9]) {
-            return 1;
-        }
         p += 0x4c;
     }
     return 0;
@@ -339,13 +333,16 @@ extern "C" unsigned char fn_8002B7B0(unsigned char* self, unsigned char idx, int
     return val;
 }
 
+#pragma use_lmw_stmw off
 extern "C" int fn_8002B808(unsigned char* p, unsigned int param) {
-    int n;
-    int i;
-    int found = 0;
     unsigned char* t = lbl_802FBE3C;
-    unsigned char* q = lbl_802FBE3C;
-    n = (lbl_802FEE30 & 0x8000) ? 4 : 5;
+    int found = 0;
+    unsigned char* q = t;
+    int i;
+    int n = 5;
+    if (lbl_802FEE30 & 0x8000) {
+        n = 4;
+    }
     for (i = 0; i < n; i++, q++) {
         if (fn_8002B484(p, param, *q) == 0) {
             found = 1;
@@ -356,13 +353,13 @@ extern "C" int fn_8002B808(unsigned char* p, unsigned int param) {
         return 0;
     }
     for (i = 0; i < n; i++, t++) {
-        if (p[(unsigned char)param + 0x838] == *t) {
+        if ((p + 4)[(unsigned char)param + 0x834] == *t) {
             return 0;
         }
     }
     return 1;
 }
-
+#pragma use_lmw_stmw reset
 extern "C" void fn_8002BC84(void) {
     extern unsigned int lbl_802FEDDC;
     lbl_802FEDDC &= 0xffffffef;
