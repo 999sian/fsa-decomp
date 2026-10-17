@@ -1694,9 +1694,9 @@ extern "C" void fn_800D9020(u8* self) {
 }
 
 extern "C" void fn_800D90B8(u8* p) {
-    u8 n;
-    u32 i;
     u8* e;
+    u32 n;
+    u32 i;
     u8* f;
     u16* s;
     e = p;
@@ -1968,20 +1968,30 @@ extern "C" void fn_800D9F10(void* p) {
 
 extern "C" u8 isTexNoReg__FPv(void*);
 extern "C" u16 getTexNoReg__FPv(void*);
-extern "C" void fn_800D9FE4(int param_1, int param_2) {
-    u8* cur;
-    u8* start;
+extern "C" void fn_800D9FE4(void* param_1, u32 param_2) {
+    u32* gd = (u32*)&__GDCurrentDL;
+    u32 cur = *(u32*)gd;
+    gd[2] = cur + param_2;
+    
+    u32 dl_ptr = gd[2];
+    gd = (u32*)&__GDCurrentDL;
+    u32 cur_dl = gd[2];
+    
     u32 i = 0;
-    GDSetCurrOffset(param_2);
-    cur = GDGetCurrPointer();
-    start = GDGetCurrPointer();
-    while (true) {
-        if (!isTexNoReg(cur)) break;
-        u16 tex_no = getTexNoReg(cur);
+    while (1) {
+        if (!isTexNoReg((void*)cur_dl)) {
+            break;
+        }
+        u16 tex_no = getTexNoReg((void*)cur_dl);
         loadTexNo(i, tex_no);
         i++;
+        gd = (u32*)&__GDCurrentDL;
+        cur_dl = gd[2];
     }
-    DCStoreRange(start, GDGetCurrPointer() - start);
+    
+    gd = (u32*)&__GDCurrentDL;
+    u32 dl_end = gd[2];
+    DCStoreRange((void*)dl_ptr, dl_end - dl_ptr);
 }
 
 void J3DGDSetIndTexMtx(GXIndTexMtxID, f32 (*)[3], s8);
