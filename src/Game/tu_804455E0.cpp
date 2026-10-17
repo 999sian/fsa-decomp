@@ -28,7 +28,8 @@ extern "C" void* fn_804030C4(u32, u32);
 extern "C" u32 lbl_804B1B78[];
 extern "C" u32 lbl_804B1BA0[];
 static inline void SetAnimation(J2DPane* pane, void* anm) {
-    ((fn_80445D24_VFn*)*(void**)pane)[0x110 / 4](pane, anm, 0);
+    void** vt = *(void***)pane;
+    ((fn_80445D24_VFn)vt[0x110 / 4])(pane, anm, 0);
 }
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
 struct fn_804460AC_Obj {
@@ -43,13 +44,17 @@ extern "C" void fn_80445CDC(void* self_) {
 }
 
 extern "C" void fn_80445D24(void* self_) {
-    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
-    u64* row = lbl_8048FC08;
     void* anm;
-    for (int i = 0; i < 4; i++, row += 24) {
+    u32 tag = 0x54494D47;
+    u32* p2 = lbl_804B1BA0;
+    u32* p1 = lbl_804B1B78;
+    fn_804461D0_Self* self = (fn_804461D0_Self*)self_;
+    int i = 0;
+    u64* row = lbl_8048FC08;
+    for (; i < 4; i++, row += 24) {
         self->g &= ~(u8)(1 << i);
         self->g &= ~(u8)(1 << (i + 4));
-        anm = fn_804030C4(0x54494D47, lbl_804B1B78[0]);
+        anm = fn_804030C4(tag, *p1);
         SetAnimation(self->screen->search(row[13]), anm);
         SetAnimation(self->screen->search(row[14]), anm);
         SetAnimation(self->screen->search(row[15]), anm);
@@ -60,7 +65,7 @@ extern "C" void fn_80445D24(void* self_) {
         SetAnimation(self->screen->search(row[20]), anm);
         SetAnimation(self->screen->search(row[21]), anm);
         SetAnimation(self->screen->search(row[22]), anm);
-        anm = fn_804030C4(0x54494D47, lbl_804B1BA0[0]);
+        anm = fn_804030C4(tag, *p2);
         SetAnimation(self->screen->search(row[0]), anm);
         SetAnimation(self->screen->search(row[1]), anm);
         ((u8*)self->screen->search(row[8]))[0xb0] = 0;
