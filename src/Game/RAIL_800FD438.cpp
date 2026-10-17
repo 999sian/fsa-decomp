@@ -102,6 +102,47 @@ extern f32 lbl_8053C0B8;
 extern f32 lbl_8053C0D0;
 static inline s32 railGetId(RailRing* ring, u8 i);
 
+extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
+    u8 ret = 0;
+    RailNode* node = ring->mNodes[ring->mCur];
+    f32 dx = node->mPos.x - pos->x;
+    f32 dy = node->mPos.y - pos->y;
+    f32 dist = std::sqrtf(dx * dx + dy * dy);
+    if (dist < 10.0f) {
+        u8 cur = ring->mCur;
+        u32 mode = ring->mNodes[cur]->mFlags & 3;
+        ret = 2;
+        if (cur == 0) {
+            ret = 1;
+            if ((ring->mNodes[ring->mSize - 1]->mFlags & 3) == 2 && ring->mDir == 1) {
+                ring->mDir = 0;
+            }
+        } else if (cur == ring->mSize - 1) {
+            ret = 3;
+            if (mode == 2) {
+                ring->mDir ^= 1;
+            } else if (mode != 1) {
+                goto out;
+            }
+        }
+        if (ring->mDir == 0) {
+            ring->mCur++;
+        } else {
+            ring->mCur--;
+        }
+        if (ring->mCur == ring->mSize) {
+            ring->mCur = 0;
+        }
+        if (ring->mCur == 0xff) {
+            ring->mCur = ring->mSize - 1;
+        }
+    }
+out:
+    node = ring->mNodes[ring->mCur];
+    *out = node->mPos;
+    return ret;
+}
+
 extern "C" void fn_800FD498(void) {}
 extern "C" void fn_800FD49C(void) {}
 
