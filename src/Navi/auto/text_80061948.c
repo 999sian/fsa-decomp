@@ -476,15 +476,6 @@ struct Unk8027FC14 {
     u32 c;
 };
 extern struct Unk8027FC14 lbl_8027FC14;
-struct StateObj_80067840;
-typedef void (StateObj_80067840::*StateFunc_80067840)(s32);
-struct StateObj_80067840 {
-    u8 pad[0x282];
-    s8 m_state;
-    u8 pad2;
-    StateFunc_80067840 m_func;
-    u32 m_c;
-};
 extern "C" int fn_801E10A0(void* p, void* q = 0);
 extern "C" int fn_801E1070(void* p);
 extern "C" void fn_801E10DC(void* p, void* q);
