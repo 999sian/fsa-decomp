@@ -28,9 +28,9 @@ extern "C" void fn_80040410(void);
 extern "C" void fn_800404E8(void);
 extern "C" void fn_800405C0(void);
 extern "C" void fn_80130974(void*);
-extern u8 lbl_802BF0E8;
-extern u8 lbl_802BF104;
-extern u8 lbl_802BF0F4;
+extern u8 lbl_802BF0E8[];
+extern u8 lbl_802BF104[];
+extern u8 lbl_802BF0F4[];
 extern u8 lbl_802BF128[];
 extern "C" void* fn_80041C10(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
