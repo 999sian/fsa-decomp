@@ -965,6 +965,13 @@ extern "C" void fn_8009E960(void) {
 extern "C" void fn_8009EAD4(void) {
 }
 
+extern "C" void fn_8009EAD8(u8* p) {
+    *(u8*)(p + 0x85d) = ((u8*)lbl_802C545C)[0x5a];
+    fn_8006F0F4();
+    p[0x7fe] = 1;
+    p[0x800] = 5;
+}
+
 extern "C" void fn_8009EB24(u8* p) {
     if ((lbl_802FEDD8 & 4) == 0) {
         return;
