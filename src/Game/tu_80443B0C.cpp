@@ -10,6 +10,57 @@ extern "C" void fn_80402628(void*, s32, s32, u8);
 extern void* lbl_8053AB10;
 extern const f32 lbl_80543D7C;
 extern "C" u8 fn_80402940(void*, s32, s32, f32, f32);
+extern void* lbl_8053AAF8;
+extern void* lbl_8053AD78;
+extern char lbl_8048FBD0[];
+extern "C" s8* getStringPtr__10J2DTextBoxCFv(void* self);
+extern "C" void fn_80402E08(void* state, f32 x, f32 y);
+extern "C" void fn_80443B0C(void* unused, s8* dst, s32 idx, s32 num) {
+    void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa8);
+    u8* data = (u8*)((void* (*)(void*, u32, void*))(*(void***)obj)[6])(obj, 0x3f3f3f3f, lbl_8048FBD0) + 0x20;
+    s32 top = num / 10000;
+    s8* text = (s8*)(data + *(u32*)(data + 4) + *(u32*)(data + idx * 8 + 0x10) + 8);
+    s32 in = 0;
+    s32 out = 0;
+    s8 c = text[in];
+    while (c != 0) {
+        s8* p = text + in;
+        if (c == 0x1a) {
+            if (p[2] == 3 && ((p[3] == 0 && p[4] == 3) || (p[3] == 0 && p[4] == 4))) {
+                s32 rest = num;
+                if (num >= 10000) {
+                    dst[out++] = top + '0';
+                    rest = num % 10000;
+                }
+                if (num >= 1000) {
+                    dst[out++] = rest / 1000 + '0';
+                    rest %= 1000;
+                }
+                if (num >= 100) {
+                    dst[out++] = rest / 100 + '0';
+                    rest %= 100;
+                }
+                if (num >= 10) {
+                    dst[out++] = rest / 10 + '0';
+                    rest %= 10;
+                }
+                dst[out++] = rest + '0';
+            }
+            in += p[1];
+        } else {
+            dst[out++] = c;
+            in++;
+            void* font = *(void**)((u8*)lbl_8053AD78 + 0x154);
+            u8 lead = ((u8 (*)(void*, u8))(*(void***)font)[16])(font, (u8)c);
+            if (lead) {
+                dst[out++] = text[in++];
+            }
+        }
+        c = text[in];
+    }
+    dst[out] = c;
+}
+
 extern "C" void fn_80443D5C(u8* p) {
     if (fn_80402940(*(void**)(p + 8), 10, 0, lbl_80543D78, lbl_80543D7C)) {
         p[0x4d] = 4;
