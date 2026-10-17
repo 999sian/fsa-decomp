@@ -9,6 +9,28 @@ extern "C" u32* fn_801E1EBC(u32* param_1, u32* param_2);
 extern u8 lbl_802FFAA0;
 extern u8 lbl_802F86E0[];
 extern "C" void fn_801E1DF4(void* param_1);
+extern "C" void __begin_critical_region(int);
+extern "C" void __end_critical_region(int);
+extern "C" void __kill_critical_regions(void);
+extern "C" void _ExitProcess(void);
+extern s32 lbl_802FFA94;
+extern void (*lbl_802F85E0[])(void);
+extern void (*lbl_802FFA9C)(void);
+extern "C" void __exit(int) {
+    __begin_critical_region(0);
+    while (lbl_802FFA94 > 0) {
+        lbl_802FFA94--;
+        lbl_802F85E0[lbl_802FFA94]();
+    }
+    __end_critical_region(0);
+    __kill_critical_regions();
+    if (lbl_802FFA9C != NULL) {
+        lbl_802FFA9C();
+        lbl_802FFA9C = NULL;
+    }
+    _ExitProcess();
+}
+
 extern "C" void* fn_801E1DB0(void) {
     if (lbl_802FFAA0 == 0) {
         fn_801E1DF4(lbl_802F86E0);
@@ -18,17 +40,15 @@ extern "C" void* fn_801E1DB0(void) {
 }
 
 extern "C" void fn_801E1DF4(void* param_1) {
-    void* p = param_1;
-    memset(p, 0, 0x34);
+    memset(param_1, 0, 0x34);
 }
 
 extern "C" void fn_801E1E24(u32* param_1, u32* param_2) {
     u32* block = (u32*)(param_2[-1] & ~1);
     fn_801E20C8(block, param_2 - 2);
-    u32* piVar2 = block + 4;
     BOOL bVar1 = 0;
-    if ((*piVar2 & 2) == 0) {
-        if ((*piVar2 & ~7) == ((block[3] & ~7) - 0x18)) {
+    if ((block[4] & 2) == 0) {
+        if ((block[4] & ~7) == ((block[3] & ~7) - 0x18)) {
             bVar1 = 1;
         }
     }
@@ -53,6 +73,29 @@ extern "C" u32* fn_801E1EBC(u32* param_1, u32* param_2) {
     param_2[1] = 0;
     param_2[0] = 0;
     return piVar1;
+}
+
+extern "C" s64 fn_801E2F18(s32 n, s32 d) {
+    union {
+        struct {
+            s32 quot;
+            s32 rem;
+        } s;
+        s64 v;
+    } ret;
+    int sn = 1;
+    int sd = 1;
+    if (n < 0) {
+        n = -n;
+        sn = -1;
+    }
+    if (d < 0) {
+        d = -d;
+        sd = -1;
+    }
+    ret.s.quot = (n / d) * (sn * sd);
+    ret.s.rem = n * sn - sd * (*(volatile s32*)&ret.s.quot * d);
+    return ret.v;
 }
 
 extern "C" int fn_801E2F8C(int param_1) {
