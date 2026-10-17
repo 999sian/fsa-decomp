@@ -85,7 +85,7 @@ struct VObj_8013D7E0 {
     virtual void vf10(); virtual void vf11(); virtual void vf12(); virtual void vf13();
     virtual void vf14(); virtual void vf15(); virtual void vf16(); virtual void vf17();
     virtual void vf18(); virtual void vf19(); virtual void vf1A(); virtual void vf1B();
-    virtual void vf1C(); virtual void vf1D(); virtual void vf1E(); virtual void vf1F();
+    virtual void vf1C(); virtual void vf1D(); virtual void vf1E(); virtual void vf1F(u32*);
     virtual void vf20(f32*);
 };
 extern "C" void fn_801E0DB8(void* arr, void* ctor, void* dtor, u32 size, u32 n);
