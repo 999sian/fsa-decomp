@@ -73,6 +73,12 @@ struct VObj_801988C0 {
     virtual void v1(u32);
 };
 struct Bytes4_801A3D94 { u8 b[4]; };
+static inline void Put4_801A394C(u8* d, u8 a, u8 b, u8 c, u8 e) {
+    d[0] = a;
+    d[1] = b;
+    d[2] = c;
+    d[3] = e;
+}
 struct Rect16 {
     s16 x, y, w, h;
     void set(const Rect16& r) { x = r.x; y = r.y; w = r.w; h = r.h; }
@@ -2569,12 +2575,12 @@ extern "C" u8 fn_801A3A1C(u8* p) {
     return p[0x58];
 }
 
-extern "C" void fn_801A3A24(u8* p, u32 i, u8* src) {
+extern "C" void fn_801A3A24(u8* p, s32 i, u8* src) {
     u8* d = p + i * 8;
     u8 a, b, c;
     a = src[1];
-    b = src[2];
     d[0x5a] = a;
+    b = src[2];
     c = src[3];
     d[0x5b] = b;
     a = src[5];
@@ -2719,6 +2725,7 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
 
 extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
     typedef struct { u8 r, g, b, a; } Col;
+    register u32 off = i << 2;
     ((Col*)(p + 0x62))[i] = *(Col*)src;
 }
 
@@ -2765,7 +2772,7 @@ extern "C" u8 fn_801A3E64(u8* p) {
 extern "C" void fn_80191388(int, void*);
 extern "C" void fn_80191220(int, void*);
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
-    u8* d = p + (i << 3);
+    u8* d = p + (u32)i * 8;
     u8 a = src[1];
     d[0x22] = a;
     u8 b = src[2];
@@ -2786,8 +2793,8 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
 
 extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
     u8 b1 = param_3[1];
-    param_1[param_2 * 8 + 0x28] = (param_1[param_2 * 8 + 0x28] & ~0x0c) | ((b1 & 0xff) << 2);
     u8 b0 = param_3[0];
+    param_1[param_2 * 8 + 0x28] = (param_1[param_2 * 8 + 0x28] & ~0x0c) | ((b1 & 0xff) << 2);
     param_1[param_2 * 8 + 0x28] = (param_1[param_2 * 8 + 0x28] & ~0x03) | b0;
 }
 
@@ -2942,19 +2949,19 @@ extern "C" void fn_801A4298(u8* p, u8* src) {
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
 extern "C" void fn_801A42AC(u8* p, s32 i, u8* src) {
-    u8* d = p + i * 8;
     u8 a = src[1];
+    p += i * 8;
     u8 b = src[2];
-    d[0x36] = a;
+    p[0x36] = a;
     u8 c = src[3];
-    d[0x37] = b;
+    p[0x37] = b;
     b = src[5];
-    d[0x38] = c;
+    p[0x38] = c;
     c = src[6];
-    d[0x3a] = b;
+    p[0x3a] = b;
     b = src[7];
-    d[0x3b] = c;
-    d[0x3c] = b;
+    p[0x3b] = c;
+    p[0x3c] = b;
 }
 
 extern "C" int fn_801A4324(int p1, int p2) {
@@ -2962,10 +2969,9 @@ extern "C" int fn_801A4324(int p1, int p2) {
 }
 
 extern "C" void fn_801A4338(u8* param_1, s32 param_2, u8* param_3) {
-    u32 idx = (u32)param_2 << 3;
     u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    u8* p = &param_1[idx];
+    u8* p = &param_1[param_2 * 8];
     p[0x3c] = (p[0x3c] & ~0x0c) | ((b1 & 0xff) << 2);
     p[0x3c] = (p[0x3c] & ~0x03) | b0;
 }
@@ -3074,8 +3080,9 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
-    u8* d = p + i * 8;
-    d[0xf] = src[1];
+    u8* d = p + (i << 3);
+    u8 a = src[1];
+    d[0xf] = a;
     {
         u8 b = src[2];
         u8 c = src[3];
@@ -3412,7 +3419,7 @@ extern "C" int fn_801A4CF4(int param_1, int param_2) {
 }
 
 extern "C" void fn_801DF0BC(void*, s32);
-extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
+extern "C" void fn_801A4D08(u8* param_1, u32 param_2, u8* param_3) {
     struct C4 {
         u8 r, g, b, a;
         void set(const u8* s) { r = s[0]; g = s[1]; b = s[2]; a = s[3]; }
