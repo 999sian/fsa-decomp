@@ -21,6 +21,10 @@ extern "C" void fn_803C0018(char* p);
 
 
 extern "C" void OSResetSystem(int reset, unsigned long resetCode, int forceMenu);
+extern "C" u32 fn_80309A9C(void* a, u32 b, int c);
+extern "C" void fn_803C05D8(u8* p);
+extern "C" void fn_8040245C(void* a, s32 b, s32 c, u8 d, s32 e);
+extern "C" f32 lbl_80543458;
 
 extern "C" char lbl_804AFF60[];
 extern "C" char lbl_80529DEC[];
@@ -143,6 +147,147 @@ static inline void stopPane(void* obj) {
     (*(PaneVt9**)obj)->v9(obj, 0);
 }
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
+extern "C" void fn_803BD5E0(u8* p, u32 idx) {
+    Clr a = {0x80, 0x80, 0x80, 0xff};
+    Clr b = {0, 0, 0, 0};
+    Clr c = {0xb4, 0xb4, 0xb4, 0xff};
+    Clr d = {0x82, 0x82, 0x82, 0x00};
+    Clr e;
+    Clr f = {0x80, 0x80, 0x80, 0xff};
+    Clr g = {0x50, 0x50, 0x50, 0x00};
+    Clr h = {0x82, 0x82, 0x82, 0xff};
+    Clr i = {0x64, 0x64, 0x64, 0x00};
+    Clr b8;
+    Clr j = {0xb4, 0xb4, 0xb4, 0xff};
+    Clr k = {0xb4, 0xb4, 0xb4, 0x00};
+    void* r;
+
+    {
+        Clr a2 = a;
+        Clr b2 = b;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), idx, *(u64*)(lbl_804765D0 + 0x5d8 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &b2, &a2);
+    }
+    {
+        Clr d2 = d;
+        Clr c2 = c;
+        e = d;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&d, *(u64*)(lbl_804765D0 + 0x5c0 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &d2, &c2);
+    }
+    {
+        Clr t84 = d;
+        Clr t88 = c;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&c, *(u64*)(lbl_804765D0 + 0x5a8 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t84, &t88);
+    }
+    {
+        Clr t8c = d;
+        Clr t90 = c;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&c, *(u64*)(lbl_804765D0 + 0x590 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t8c, &t90);
+    }
+    {
+        Clr t94 = d;
+        Clr t98 = c;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&c, *(u64*)(lbl_804765D0 + 0x578 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t94, &t98);
+    }
+    {
+        Clr n = {e.r, e.g, e.b, 0xff};
+        Clr t9c = n;
+        Clr ta4 = c;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), e.b, *(u64*)(lbl_804765D0 + 0x560 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t9c, &ta4);
+    }
+    {
+        Clr t54 = g;
+        Clr t58 = f;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0, *(u64*)(lbl_804765D0 + 0x548 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t54, &t58);
+    }
+    {
+        Clr t5c = g;
+        Clr t60 = f;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(lbl_804765D0 + 0x530 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t5c, &t60);
+    }
+    {
+        Clr t64 = g;
+        Clr t68 = f;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(lbl_804765D0 + 0x518 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t64, &t68);
+    }
+    {
+        Clr t6c = g;
+        Clr t70 = f;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(lbl_804765D0 + 0x500 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t6c, &t70);
+    }
+    {
+        Clr t74 = g;
+        Clr t78 = f;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&f, *(u64*)(lbl_804765D0 + 0x4e8 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t74, &t78);
+    }
+    {
+        b8 = i;
+        Clr t28 = i;
+        Clr t2c = h;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&i, *(u64*)(lbl_804765D0 + 0x6c8 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t28, &t2c);
+    }
+    {
+        Clr t30 = i;
+        Clr t34 = h;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&h, *(u64*)(lbl_804765D0 + 0x6b0 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t30, &t34);
+    }
+    {
+        Clr t38 = i;
+        Clr t3c = h;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&h, *(u64*)(lbl_804765D0 + 0x698 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t38, &t3c);
+    }
+    {
+        Clr t40 = i;
+        Clr t44 = h;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&h, *(u64*)(lbl_804765D0 + 0x680 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t40, &t44);
+    }
+    {
+        Clr n2 = {b8.r, b8.g, b8.b, 0xff};
+        Clr t48 = n2;
+        Clr t50 = h;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), b8.b, *(u64*)(lbl_804765D0 + 0x668 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t48, &t50);
+    }
+    {
+        Clr t8 = k;
+        Clr tc = j;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0, *(u64*)(lbl_804765D0 + 0x650 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t8, &tc);
+    }
+    {
+        Clr t10 = k;
+        Clr t14 = j;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&j, *(u64*)(lbl_804765D0 + 0x638 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t10, &t14);
+    }
+    {
+        Clr t18 = k;
+        Clr t1c = j;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&j, *(u64*)(lbl_804765D0 + 0x620 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t18, &t1c);
+    }
+    {
+        Clr t20 = k;
+        Clr t24 = j;
+        r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u32*)&j, *(u64*)(lbl_804765D0 + 0x608 + idx * 8));
+        (*(ColorVt**)r)->v76(r, &t20, &t24);
+    }
+}
+
 extern "C" void fn_803BDD44(u8* p, s32 idx) {
     s32 off;
     void* q;
@@ -584,19 +729,22 @@ extern "C" void fn_803C3904(u8* this_) {
     s32 k;
     s32 off;
     s32 idx;
-    u8* obj;
-    u8* sub;
-    s16 a = *(s16*)(lbl_8050DB0C + 0x200);
-    s16 b = *(s16*)(lbl_8050DB0C + 0x202);
-    s16 c = *(s16*)(lbl_8050DB0C + 0x1fe);
-    s16 total = a + b + c;
+    u8* keys = lbl_804765D0;
+    s32 a = *(s16*)(lbl_8050DB0C + 0x200);
+    s32 b = *(s16*)(lbl_8050DB0C + 0x202);
+    s32 c = *(s16*)(lbl_8050DB0C + 0x1fe);
+    s32 total = a + b + c;
 
+    if (*(s32*)(this_ + 0xa4) != 0) {
+        order[0] = 0;
+    }
     ord = order;
     if (*(s32*)(this_ + 0xa4) != 0) {
-        *ord++ = 0;
+        ord++;
     }
     if (*(s32*)(this_ + 0xa4) != 1) {
-        *ord++ = 1;
+        *ord = 1;
+        ord++;
     }
     if (*(s32*)(this_ + 0xa4) != 2) {
         *ord = 2;
@@ -609,19 +757,53 @@ extern "C" void fn_803C3904(u8* this_) {
     do {
         if (c + off < *(s16*)(this_ + 0xd8)) {
             idx = *ord;
-            obj = *(u8**)(this_ + 0x38 + idx * 4);
-            ((Fn5Fn)fn_80402B10)(obj, a, 0, lbl_80543498, lbl_80543458);
-            fn_80402628(obj, a, 0, obj[0x28]);
-            sub = *(u8**)(this_ + 8);
-            idx = *ord;
-            ((KeyGetFn)(*(void***)sub)[15])(sub, *(u64*)(lbl_804765D0 + 0x780 + idx * 8));
+            ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x38 + idx * 4), a, 0, lbl_80543498, lbl_80543458);
+            fn_80402628(*(void**)(this_ + 0x38 + idx * 4), a, 0, *(u8*)(*(u8**)(this_ + 0x38 + idx * 4) + 0x28));
+            setCell(this_, 0x38, *ord, 0x780, this_[0x125]);
+            setCell(this_, 0x38, *ord, 0x768, this_[0x126]);
+            setCell(this_, 0x38, *ord, 0x750, this_[0x127]);
+            setCell(this_, 0x38, *ord, 0x6c8, this_[0x128]);
+            setCell(this_, 0x38, *ord, 0x6b0, this_[0x129]);
+            setCell(this_, 0x38, *ord, 0x698, this_[0x12a]);
+            setCell(this_, 0x38, *ord, 0x680, this_[0x12b]);
+            setCell(this_, 0x38, *ord, 0x668, this_[0x12c]);
+            setCell(this_, 0x38, *ord, 0x650, this_[0x12d]);
+            setCell(this_, 0x38, *ord, 0x638, this_[0x12e]);
+            setCell(this_, 0x38, *ord, 0x620, this_[0x12f]);
+            setCell(this_, 0x38, *ord, 0x608, this_[0x130]);
+            setCell(this_, 0x38, *ord, 0x5f0, this_[0x131]);
+            ((Fn5Fn)fn_80402B10)(*(void**)(this_ + 0x44 + idx * 4), a, 0, lbl_80543498, lbl_80543458);
+            fn_80402628(*(void**)(this_ + 0x44 + idx * 4), a, 0, *(u8*)(*(u8**)(this_ + 0x44 + idx * 4) + 0x28));
+            setCell(this_, 0x44, *ord, 0x5d8, this_[0x118]);
+            setCell(this_, 0x44, *ord, 0x5c0, this_[0x119]);
+            setCell(this_, 0x44, *ord, 0x5a8, this_[0x11a]);
+            setCell(this_, 0x44, *ord, 0x590, this_[0x11b]);
+            setCell(this_, 0x44, *ord, 0x578, this_[0x11c]);
+            setCell(this_, 0x44, *ord, 0x560, this_[0x11d]);
+            setCell(this_, 0x44, *ord, 0x548, this_[0x11e]);
+            setCell(this_, 0x44, *ord, 0x530, this_[0x11f]);
+            setCell(this_, 0x44, *ord, 0x518, this_[0x120]);
+            setCell(this_, 0x44, *ord, 0x500, this_[0x121]);
+            setCell(this_, 0x44, *ord, 0x4e8, this_[0x122]);
+            setCell(this_, 0x44, *ord, 0x4d0, this_[0x123]);
+            setCell(this_, 0x44, *ord, 0x4b8, this_[0x124]);
         }
         off += b;
         ord++;
         k++;
     } while (k < 2);
-    fn_80402940(this_, a, 0, 0.0f, 0.0f);
-    *(s16*)(this_ + 0xd8) = total;
+
+    if (*(s32*)(this_ + 0xa4) != 0 && *(s16*)(this_ + 0xd8) > c) {
+        idx = *(s32*)(this_ + 0xa4);
+        ((Fn5Fn)fn_80402940)(*(void**)(this_ + 0x38 + idx * 4), a, 0,
+                             *(f32*)(*(u8**)(this_ + 0x38) + 0xc) - *(f32*)(*(u8**)(this_ + 0x38 + idx * 4) + 0xc), lbl_80543458);
+        ((Fn5Fn)fn_80402940)(*(void**)(this_ + 0x44 + idx * 4), a, 0,
+                             *(f32*)(*(u8**)(this_ + 0x44) + 0xc) - *(f32*)(*(u8**)(this_ + 0x44 + idx * 4) + 0xc), lbl_80543458);
+    }
+    if (*(s16*)(this_ + 0xd8) > total) {
+        this_[0x112] = this_[0x110];
+        this_[0x110] = 5;
+    }
 }
 
 extern "C" f32 lbl_805434A4;
