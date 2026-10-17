@@ -90,8 +90,8 @@ extern "C" void fn_802CBAFC(u8* this_) {
 }
 
 struct OnofActor : Actor {
-    /* 0x230 */ s32 field_230;
-    /* 0x234 */ s32 field_234;
+    /* 0x230 */ u32 field_230;
+    /* 0x234 */ u32 field_234;
     /* 0x238 */ s32 field_238;
     /* 0x23c */ s32 field_23C;
     /* 0x240 */ s32 field_240;
@@ -109,76 +109,74 @@ extern f32 lbl_80540DC8;
 extern "C" u8 fn_80138A30(void* game);
 extern "C" bool fn_802D7888(void* mgr, s32 bit);
 extern "C" void fn_802A3884(void* g, void* pos, s32 a, s32 kind, s32 b);
-extern "C" void fn_802CBC70(char* this_) {
-    f32 k = lbl_80540DB0;
-    *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0xc) + k;
-    *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x10) + k;
-    *(u32*)(this_ + 0x244) = *(u32*)(this_ + 0x90) >> 27;
-    *(u32*)(this_ + 0x24c) = *(u32*)(this_ + 0x90) & 0xfff;
-    *(u32*)(this_ + 0x240) = (*(u32*)(this_ + 0x90) >> 12) & 7;
-    *(u32*)(this_ + 0x248) = (*(u32*)(this_ + 0x90) >> 25) & 3;
-    *(s32*)(this_ + 0x23c) = 0;
-    *(s32*)(this_ + 0x254) = 0;
-    *(s32*)(this_ + 0x230) = 0;
-    *(s32*)(this_ + 0x234) = 0;
-    char cVar5 = fn_80138A30(lbl_8053AAF8);
-    s32 iVar4 = *(s32*)(this_ + 0x248);
-    s32 bVar1 = 0;
-    if (iVar4 == 0) {
-        bVar1 = 1;
-    } else if (iVar4 == 1) {
-        if (cVar5 != 2) {
-            bVar1 = 1;
+extern "C" void fn_802CBC70(OnofActor* this_) {
+    this_->field_0C.x += lbl_80540DB0;
+    this_->field_0C.y += lbl_80540DB0;
+    this_->field_244 = this_->field_90 >> 27;
+    this_->field_24C = this_->field_90 & 0xfff;
+    this_->field_240 = (this_->field_90 >> 12) & 7;
+    this_->field_248 = (this_->field_90 >> 25) & 3;
+    this_->field_23C = 0;
+    this_->field_254 = 0;
+    this_->field_230 = 0;
+    this_->field_234 = 0;
+    u8 area = fn_80138A30(lbl_8053AAF8);
+    s32 mode = this_->field_248;
+    s32 skip = 0;
+    if (mode == 0) {
+        skip = 1;
+    } else if (mode == 1) {
+        if (area != 2) {
+            skip = 1;
         }
-    } else if (iVar4 == 2) {
-        if ((u8)(cVar5 - 2) > 1) {
-            bVar1 = 1;
+    } else if (mode == 2) {
+        if ((u8)(area - 2) > 1) {
+            skip = 1;
         }
-    } else if (iVar4 == 3) {
-        bVar1 = 1;
+    } else if (mode == 3) {
+        skip = 1;
     }
-    if (bVar1 == 1) {
-        if (*(s32*)(this_ + 0x240) == 3 || *(s32*)(this_ + 0x240) == 4) {
-            u8 c = fn_802D7888(fn_802D6A9C(), *(s32*)(this_ + 0x244));
-            if (c == 1) {
-                fn_802A3948(lbl_8053AC98, this_ + 0xc, 0, *(u32*)(this_ + 4), 0xbe);
-                if (*(u32*)(this_ + 0x230) == 0) {
-                    *(s32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80540DC0, 0x428, 1, 0, 0, 0, 1);
+    if (skip == 1) {
+        if (this_->field_240 == 3 || this_->field_240 == 4) {
+            if (fn_802D7888(fn_802D6A9C(), this_->field_244) == 1) {
+                fn_802A3948(lbl_8053AC98, &this_->field_0C, 0, this_->field_04, 0xbe);
+                if (this_->field_230 == 0) {
+                    this_->field_230 = fn_8013CC50(this_->field_04, &this_->field_0C, lbl_80540DC0, 0x428, 1, 0, 0, 0, 1);
                 }
-                if (*(u32*)(this_ + 0x234) == 0) {
-                    *(s32*)(this_ + 0x234) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80540DC0, 0x429, 1, 0, 0, 0, 1);
+                if (this_->field_234 == 0) {
+                    this_->field_234 = fn_8013CC50(this_->field_04, &this_->field_0C, lbl_80540DC0, 0x429, 1, 0, 0, 0, 1);
                 }
-                (*(void (**)(char*, s32, s32))(*(char**)this_ + 0x30))(this_, 0xff, 1);
-                if (*(s32*)(this_ + 0x240) == 3) {
-                    *(s32*)(this_ + 0x238) = 2;
+                ((Actor*)this_)->v10(0xff, 1);
+                if (this_->field_240 == 3) {
+                    this_->field_238 = 2;
                 } else {
-                    *(s32*)(this_ + 0x238) = 4;
+                    this_->field_238 = 4;
                 }
             } else {
-                fn_802A3884(lbl_8053AC98, this_ + 0xc, 0, *(u32*)(this_ + 4), 0xbf);
-                (*(void (**)(char*, s32, s32))(*(char**)this_ + 0x30))(this_, 0xff, 0);
-                *(s32*)(this_ + 0x238) = 0;
+                fn_802A3884(lbl_8053AC98, &this_->field_0C, 0, this_->field_04, 0xbf);
+                ((Actor*)this_)->v10(0xff, 0);
+                this_->field_238 = 0;
             }
         } else {
-            fn_802A3884(lbl_8053AC98, this_ + 0xc, 0, *(u32*)(this_ + 4), 0xbf);
-            (*(void (**)(char*, s32, s32))(*(char**)this_ + 0x30))(this_, 0xff, 0);
-            *(s32*)(this_ + 0x238) = 0;
+            fn_802A3884(lbl_8053AC98, &this_->field_0C, 0, this_->field_04, 0xbf);
+            ((Actor*)this_)->v10(0xff, 0);
+            this_->field_238 = 0;
         }
     } else {
-        fn_802A3948(lbl_8053AC98, this_ + 0xc, 0, *(u32*)(this_ + 4), 0xbe);
-        if (*(u32*)(this_ + 0x230) == 0) {
-            *(s32*)(this_ + 0x230) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80540DC0, 0x428, 1, 0, 0, 0, 1);
+        fn_802A3948(lbl_8053AC98, &this_->field_0C, 0, this_->field_04, 0xbe);
+        if (this_->field_230 == 0) {
+            this_->field_230 = fn_8013CC50(this_->field_04, &this_->field_0C, lbl_80540DC0, 0x428, 1, 0, 0, 0, 1);
         }
-        if (*(u32*)(this_ + 0x234) == 0) {
-            *(s32*)(this_ + 0x234) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_80540DC0, 0x429, 1, 0, 0, 0, 1);
+        if (this_->field_234 == 0) {
+            this_->field_234 = fn_8013CC50(this_->field_04, &this_->field_0C, lbl_80540DC0, 0x429, 1, 0, 0, 0, 1);
         }
-        (*(void (**)(char*, s32, s32))(*(char**)this_ + 0x30))(this_, 0xff, 1);
-        *(s32*)(this_ + 0x238) = 4;
+        ((Actor*)this_)->v10(0xff, 1);
+        this_->field_238 = 4;
     }
-    *(f32*)(this_ + 0x60) = lbl_80540DC4;
-    *(f32*)(this_ + 0x64) = lbl_80540DC4;
-    *(f32*)(this_ + 0x68) = lbl_80540DC8;
-    *(f32*)(this_ + 0x6c) = lbl_80540DC8;
+    this_->field_60 = lbl_80540DC4;
+    this_->field_64 = lbl_80540DC4;
+    this_->field_68 = lbl_80540DC8;
+    this_->field_6C = lbl_80540DC8;
 }
 
 // Shared JAudio pool __sinit (docs/game/sinit_pools.md). Drop the ESD
