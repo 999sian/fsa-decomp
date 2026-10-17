@@ -30,8 +30,13 @@ extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 struct NaviNode {
     NaviNode* next;
     NaviNode* prev;
+    u8 pad8[4];
+    s32 key;
+    u8 type;
+    u8 slot;
 };
 extern NaviNode* lbl_802FF394;
+extern u8* lbl_802FF390;
 extern "C" void fn_8013EDB8(s32 idx) {
     u8* b = lbl_802C6A80 + (idx << 8);
     if (*(s32*)(b + 0x20) != 0) {
@@ -274,27 +279,27 @@ extern "C" s32 fn_8014034C(s32 idx, void* param_2, s32 param_3) {
     return r != 0 ? r : fn_80140520(idx);
 }
 
-extern "C" void fn_80140410(s32 idx, s32 param_2, OSContext* param_3) {
+extern "C" void fn_80140410(int idx, int param_2, OSContext* param_3) {
     u8* b = lbl_802C6A80 + (idx << 8);
     OSContext ctx;
-    void (*cb)(s32);
-    void (*cb2)(s32, s32);
+    void (*cb)(int);
+    void (*cb2)(int, int);
     if (lbl_802FF388 == 0) {
         if ((param_2 & 0xf) != 0) {
             *(s32*)(b + 0x20) = 1;
         } else {
             *(s32*)(b + 0x20) = 0;
         }
-        cb = *(void (**)(s32))(b + 0x38);
+        cb = *(void (**)(int))(b + 0x38);
         if (cb != 0) {
             *(s32*)(b + 0x38) = 0;
             cb(idx);
         }
-        cb2 = *(void (**)(s32, s32))(b + 0x1c);
+        cb2 = *(void (**)(int, int))(b + 0x1c);
         if (cb2 != 0) {
             OSClearContext(&ctx);
             OSSetCurrentContext(&ctx);
-            cb2 = *(void (**)(s32, s32))(b + 0x1c);
+            cb2 = *(void (**)(int, int))(b + 0x1c);
             *(s32*)(b + 0x1c) = 0;
             cb2(idx, *(s32*)(b + 0x20));
             OSClearContext(&ctx);
@@ -312,6 +317,28 @@ extern "C" s64 fn_80140724(s32 idx, s64 value)
     p[13] = (s32)value;
     p[12] = (s32)(value >> 32);
     return prev;
+}
+
+extern "C" void fn_80140748(u8* param_1) {
+    s32 idx;
+    u8* b;
+    if (lbl_802C6A80 + 0xa8 == param_1) {
+        idx = 0;
+    } else if (lbl_802C6A80 + 0x1a8 == param_1) {
+        idx = 1;
+    } else if (lbl_802C6A80 + 0x2a8 == param_1) {
+        idx = 2;
+    } else if (lbl_802C6A80 + 0x3a8 == param_1) {
+        idx = 3;
+    } else {
+        fn_80007AB8(lbl_80293C28, 0xa9, lbl_80293C34);
+        idx = -1;
+    }
+    b = lbl_802C6A80 + (idx << 8);
+    fn_801D134C(0xabba0000);
+    while (fn_801D1314() != 0) {}
+    fn_801D134C(*(u32*)(b + 0xf8));
+    while (fn_801D1314() != 0) {}
 }
 
 extern "C" void fn_80140824(u8* p)
@@ -341,45 +368,42 @@ extern "C" void fn_80140824(u8* p)
 }
 
 extern "C" void fn_801409B0(u8* p) {
-    NaviNode* head;
     NaviNode* tail;
-    head = *(NaviNode**)(p + 0xe64);
-    if (head != 0) {
-        tail = head;
-        while (tail->next != 0) {
-            tail = tail->next;
+    NaviNode* next;
+    tail = *(NaviNode**)(p + 0xe64);
+    if (tail != 0) {
+        while ((next = tail->next) != 0) {
+            tail = next;
         }
         if (lbl_802FF394 != 0) {
             tail->next = lbl_802FF394;
             lbl_802FF394->prev = tail;
         }
-        lbl_802FF394 = head;
+        lbl_802FF394 = *(NaviNode**)(p + 0xe64);
         *(NaviNode**)(p + 0xe64) = 0;
     }
-    head = *(NaviNode**)(p + 0xe68);
-    if (head != 0) {
-        tail = head;
-        while (tail->next != 0) {
-            tail = tail->next;
+    tail = *(NaviNode**)(p + 0xe68);
+    if (tail != 0) {
+        while ((next = tail->next) != 0) {
+            tail = next;
         }
         if (lbl_802FF394 != 0) {
             tail->next = lbl_802FF394;
             lbl_802FF394->prev = tail;
         }
-        lbl_802FF394 = head;
+        lbl_802FF394 = *(NaviNode**)(p + 0xe68);
         *(NaviNode**)(p + 0xe68) = 0;
     }
-    head = *(NaviNode**)(p + 0xe6c);
-    if (head != 0) {
-        tail = head;
-        while (tail->next != 0) {
-            tail = tail->next;
+    tail = *(NaviNode**)(p + 0xe6c);
+    if (tail != 0) {
+        while ((next = tail->next) != 0) {
+            tail = next;
         }
         if (lbl_802FF394 != 0) {
             tail->next = lbl_802FF394;
             lbl_802FF394->prev = tail;
         }
-        lbl_802FF394 = head;
+        lbl_802FF394 = *(NaviNode**)(p + 0xe6c);
         *(NaviNode**)(p + 0xe6c) = 0;
     }
 }
