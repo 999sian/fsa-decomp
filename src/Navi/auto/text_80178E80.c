@@ -831,6 +831,33 @@ extern "C" int fn_801792B4(void* param_1, int param_2) {
     return 0;
 }
 
+extern "C" s32 fn_80179314(u8* self, VObj_80179314* obj) {
+    NaviHdr_80179314 hdr;
+    f32 vec[4];
+    u32 tmp;
+    u8* src;
+
+    fn_801670D0((int)obj, &hdr, 0x10);
+    if (hdr.magic != 0x494E4631) {
+        return 0;
+    }
+    vec[0] = 0.0f;
+    vec[1] = 0.0f;
+    vec[2] = (f32)hdr.x;
+    vec[3] = (f32)hdr.y;
+    fn_80177728(self, vec);
+    tmp = hdr.w;
+    src = (u8*)&tmp;
+    self[0x114] = src[0];
+    self[0x115] = src[1];
+    self[0x116] = src[2];
+    self[0x117] = src[3];
+    if (hdr.size > 0x10) {
+        obj->v2(hdr.size - 0x10);
+    }
+    return 1;
+}
+
 extern "C" void fn_80118BD0(void* p, s32 x);
 extern "C" void* fn_80177D24(char* self, u64 id);
 extern "C" void* fn_80179E80(char* self, u32 param_2, u64 id) {
@@ -849,16 +876,18 @@ extern "C" void* fn_80179EC0(char* self, u32 param_2, u64 id) {
 extern "C" void fn_80167354(void* self, s32 a, s32 b);
 extern "C" u32 fn_8015AA14(s32 a);
 extern "C" u32 fn_8015AA60(s32 a, s32 b);
+#pragma use_lmw_stmw off
 extern "C" u32 fn_8017A074(void* a, void* self, u32 flags) {
     s32 spC;
     s32 sp8;
     s32 temp_r31 = ((VObj_8017A074*)self)->v5();
     ((VObj_8017A074*)self)->v2(4);
     fn_801670D0((int)self, &spC, 4);
+    s32 temp_r29 = spC;
     ((VObj_8017A074*)self)->v2(4);
     fn_801670D0((int)self, &sp8, 4);
     fn_80167354(self, temp_r31 + sp8, 0);
-    s32 temp_r29 = spC - sp8;
+    temp_r29 -= sp8;
     u32 r30;
     if (flags & 0x1F0000) {
         r30 = fn_8015AA14(temp_r29);
@@ -870,7 +899,7 @@ extern "C" u32 fn_8017A074(void* a, void* self, u32 flags) {
     }
     return r30;
 }
-
+#pragma use_lmw_stmw reset
 extern "C" void fn_8017A468(void) {
     fn_80177E84();
 }
@@ -2188,9 +2217,9 @@ extern "C" s32 fn_80185038(u8* self, u8 arg1) {
     if (o->v37() == 0) {
         return 0;
     }
-    u32 n = arg1;
+    u8 n = arg1;
     u32 i;
-    for (i = 0; i < n; i++) {
+    for (i = 0; (u8)i < n; i++) {
         NaviPose_80185038 pose;
         pose.f[0] = lbl_80202238.f[0];
         pose.f[1] = lbl_80202238.f[1];
@@ -3497,7 +3526,8 @@ extern "C" void fn_80190D98(s32 a, u32 b, u32 c, u32 d, u32 e) {
         fn_801E012C();
     }
     u32 w = (c << 4) | b;
-    w = (w | (d << 8)) | (e << 12);
+    w |= d << 8;
+    w |= e << 12;
     w |= ((a >> 1) + 0x25) << 24;
     *(*(u8**)&lbl_802FFA80[2])++ = 0x61;
     *(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
