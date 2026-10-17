@@ -226,9 +226,8 @@ extern "C" u8 fn_80021D5C(void) {
 }
 
 extern "C" s32 fn_80021DDC(s32 param_1) {
-    return *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1b0) + *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1a8) +
-           *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1c8) + *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1cc) +
-           *(s32*)(lbl_802BB0FC + param_1 * 0x4c + 0x1ac);
+    s32* p = (s32*)(lbl_802BB0FC + param_1 * 0x4c);
+    return p[0x1ac / 4] + (((p[0x1a8 / 4] + p[0x1b0 / 4]) + p[0x1c8 / 4]) + p[0x1cc / 4]);
 }
 
 extern "C" void fn_80022434(void) {}
