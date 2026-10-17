@@ -997,6 +997,13 @@ extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
     return 1;
 }
 
+extern "C" void* fn_80440928(f32 a, f32 b);
+extern "C" void fn_8043E7CC(void* a, void* b) {
+    f32 pos[6];
+    fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), b, 0, 0, pos);
+    fn_80440928(pos[0], pos[1]);
+}
+
 extern const f32 lbl_80543CB8;
 extern const f32 lbl_80543D14;
 extern const f32 lbl_80543D18;
