@@ -147,6 +147,176 @@ extern "C" void fn_80452308(void* self_) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 
+extern "C" void fn_804310CC(void*);
+extern "C" u32 fn_804030C4(u32, void*);
+extern "C" u32 fn_80403084(u32, void*);
+extern "C" void fn_8044D894(u8*);
+extern "C" char lbl_80529DEC[];
+extern "C" char lbl_80491400[];
+extern "C" char lbl_80491414[];
+extern "C" u8* lbl_8053AAF8;
+extern f32 lbl_80543E18;
+extern "C" void fn_80452350(u8* self) {
+	u8* p = self;
+	s32 i;
+	fn_804310CC(lbl_8053AEC0);
+	*(s16*)(self + 0xf8) = 0;
+	*(s16*)(self + 0xfe) = 0;
+	for (i = 0; i < 3; i++) {
+		fn_80402E08(*(void**)(p + 0x48), lbl_80543DF8, lbl_80543DFC);
+		fn_80402E08(*(void**)(p + 0x60), lbl_80543DF8, lbl_80543DFC);
+		*(s16*)(*(u8**)(p + 0x48) + 0x20) = 0;
+		*(s16*)(*(u8**)(p + 0x60) + 0x20) = 0;
+		(*(UlPane**)(*(u8**)(p + 0x48) + 4))->setAlpha(0);
+		*(s16*)(*(u8**)(p + 0x48) + 0x26) = 0;
+		(*(UlPane**)(*(u8**)(p + 0x54) + 4))->setAlpha(0);
+		*(s16*)(*(u8**)(p + 0x54) + 0x26) = 0;
+		(*(UlPane**)(*(u8**)(p + 0x60) + 4))->setAlpha(0);
+		*(s16*)(*(u8**)(p + 0x60) + 0x26) = 0;
+		p += 4;
+	}
+	(*(UlPane**)(self + 4))->find(0x5063756c3031ULL)
+		->move(lbl_80543DF8 + *(f32*)(self + 0x114),
+		       *(f32*)(self + 0x118) + ((f32*)(self + 0x108))[*(s16*)(self + 0xf8)]);
+	(*(UlPane**)(self + 4))->find(0x5063756c3031ULL)->setAlpha(0);
+	*(s16*)(self + 0x132) = 0;
+	*(s16*)(self + 0xfe) = 0;
+	*(s16*)(self + 0xfa) = 2;
+	*(s16*)(self + 0xfc) = 0;
+	(*(UlPane**)(self + 8))->setAlpha(0);
+	*(s16*)(*(u8**)(self + 8) + 0x26) = 0;
+	p = self;
+	for (i = 0; i < 0xf; i++) {
+		fn_80402E08(*(void**)(p + 0xc), lbl_80543DFC, lbl_80543E18);
+		*(s16*)(*(u8**)(p + 0xc) + 0x22) = 0;
+		p += 4;
+	}
+	if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0 && (
+		(*(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+		(*(s32*)(lbl_80529DEC + 0x118) == 1 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+		(*(s32*)(lbl_80529DEC + 0x118) == 2 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+		(*(s32*)(lbl_80529DEC + 0x118) == 3 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+		(*(s32*)(lbl_80529DEC + 0x118) == 4 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+		(*(s32*)(lbl_80529DEC + 0x118) == 5 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+		(*(s32*)(lbl_80529DEC + 0x118) == 6 && *(s32*)(lbl_80529DEC + 0x11c) == 2) ||
+		(*(s32*)(lbl_80529DEC + 0x118) == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1))) {
+		u32 h = fn_804030C4(0x54494d47, lbl_80491400);
+		(*(UlPane**)(self + 4))->find(0x7363000050ULL);
+	} else {
+		u32 h = fn_80403084(0x54494d47, lbl_80491414);
+	}
+	fn_8044D894(self);
+	*(s32*)(self + 0x184) = 9;
+}
+
+extern "C" void* fn_8045270C(u8* self, s16 deleting) {
+    s32 i;
+    u8* p;
+    if (self != NULL) {
+        *(void***)(self) = lbl_804B1D58;
+        fn_80459274(lbl_8053AF80);
+        for (i = 0; i < 7; i++) {
+            p = *(u8**)(self + 0x6c + i * 4);
+            if (p != NULL) {
+                *(u32*)(p + 0xf4) |= 1;
+                *(s32*)(p + 0x24) = 1;
+                *(u8**)(self + 0x6c + i * 4) = NULL;
+            }
+            p = *(u8**)(self + 0x88 + i * 4);
+            if (p != NULL) {
+                *(u32*)(p + 0xf4) |= 1;
+                *(s32*)(p + 0x24) = 1;
+                *(u8**)(self + 0x88 + i * 4) = NULL;
+            }
+        }
+        p = *(u8**)(self + 0xb0);
+        if (p != NULL) {
+            *(u32*)(p + 0xf4) |= 1;
+            *(s32*)(p + 0x24) = 1;
+            *(u8**)(self + 0xb0) = NULL;
+        }
+        p = *(u8**)(self + 0xb4);
+        if (p != NULL) {
+            *(u32*)(p + 0xf4) |= 1;
+            *(s32*)(p + 0x24) = 1;
+            *(u8**)(self + 0xb4) = NULL;
+        }
+        p = *(u8**)(self + 0xb8);
+        if (p != NULL) {
+            *(u32*)(p + 0xf4) |= 1;
+            *(s32*)(p + 0x24) = 1;
+            *(u8**)(self + 0xb8) = NULL;
+        }
+        p = *(u8**)(self + 0xbc);
+        if (p != NULL) {
+            *(u32*)(p + 0xf4) |= 1;
+            *(s32*)(p + 0x24) = 1;
+            *(u8**)(self + 0xbc) = NULL;
+        }
+        for (i = 0; i < 3; i++) {
+            if (*(void**)(self + 0xa4 + i * 4) != NULL) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(self + 0xa4 + i * 4));
+                *(void**)(self + 0xa4 + i * 4) = NULL;
+            }
+            if (*(void**)(self + 0xc0 + i * 4) != NULL) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)(self + 0xc0 + i * 4));
+                *(void**)(self + 0xc0 + i * 4) = NULL;
+            }
+        }
+        if (*(Deletable**)(self + 0x4) != NULL) {
+            (*(Deletable**)(self + 0x4))->del(1);
+        }
+        *(void**)(self + 0x4) = NULL;
+        for (i = 0; i < 4; i++) {
+            if (*(Deletable**)(self + 0xd8 + i * 4) != NULL) {
+                (*(Deletable**)(self + 0xd8 + i * 4))->del(1);
+            }
+            *(void**)(self + 0xd8 + i * 4) = NULL;
+        }
+        if (*(Deletable**)(self + 0xec) != NULL) {
+            (*(Deletable**)(self + 0xec))->del(1);
+        }
+        *(void**)(self + 0xec) = NULL;
+        if (*(Deletable**)(self + 0xf4) != NULL) {
+            (*(Deletable**)(self + 0xf4))->del(1);
+        }
+        *(void**)(self + 0xf4) = NULL;
+        if (*(Deletable**)(self + 0xd0) != NULL) {
+            (*(Deletable**)(self + 0xd0))->del(1);
+        }
+        *(void**)(self + 0xd0) = NULL;
+        if (*(Deletable**)(self + 0x8) != NULL) {
+            (*(Deletable**)(self + 0x8))->del(1);
+        }
+        *(void**)(self + 0x8) = NULL;
+        for (i = 0; i < 15; i++) {
+            if (*(Deletable**)(self + 0xc + i * 4) != NULL) {
+                (*(Deletable**)(self + 0xc + i * 4))->del(1);
+            }
+            *(void**)(self + 0xc + i * 4) = NULL;
+        }
+        for (i = 0; i < 3; i++) {
+            if (*(Deletable**)(self + 0x48 + i * 4) != NULL) {
+                (*(Deletable**)(self + 0x48 + i * 4))->del(1);
+            }
+            *(void**)(self + 0x48 + i * 4) = NULL;
+            if (*(Deletable**)(self + 0x54 + i * 4) != NULL) {
+                (*(Deletable**)(self + 0x54 + i * 4))->del(1);
+            }
+            *(void**)(self + 0x54 + i * 4) = NULL;
+            if (*(Deletable**)(self + 0x60 + i * 4) != NULL) {
+                (*(Deletable**)(self + 0x60 + i * 4))->del(1);
+            }
+            *(void**)(self + 0x60 + i * 4) = NULL;
+        }
+        lbl_8053AF40 = NULL;
+        if (deleting > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
+}
+
 extern "C" void fn_80453830(void* thisPtr) {
 	s32* p = (s32*)thisPtr;
 	p[0] = -1;
@@ -169,7 +339,7 @@ extern "C" void fn_80453874(void* thisObj, f32 x, f32 y, f32 z) {
 	*(f32*)((char*)thisObj + 0x8) = z;
 }
 
-extern "C" void fn_80453884(J2DWindow* window, JUtility::TColor* colors) {
+extern "C" void fn_80453884(J2DWindow* window, const JUtility::TColor* colors) {
     window->setContentsColor(colors[0], colors[1], colors[2], colors[3]);
 }
 
