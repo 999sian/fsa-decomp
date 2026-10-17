@@ -83,7 +83,7 @@ struct T34Mgr {
     s32 m1B0;
     s32 m1B4[4];
     T34Vec m1C4[4];
-    u8 m1F4[8];
+    u16 m1F4[4];
     u8 m1FC[24];
     u8 m214;
     u8 m215;
@@ -127,14 +127,9 @@ extern "C" void fn_80403514(T34Mgr* p) {
     p->m11C = 0;
     for (s32 a = 0; a < 8; a++) {
         for (s32 b = 0; b < 4; b++) {
-            BOOL set;
-            if (a < 0 || a > 7) {
-                set = FALSE;
-            } else if (b < 0 || b > 3) {
-                set = FALSE;
-            } else {
-                T34SaveSlot* slot = t34CurSlot();
-                set = (1 << (b + a * 4)) & slot->flags ? TRUE : FALSE;
+            BOOL set = FALSE;
+            if (a >= 0 && a <= 7 && b >= 0 && b <= 3) {
+                set = (1 << (b + a * 4)) & t34CurSlot()->flags ? TRUE : FALSE;
             }
             if (!set) {
                 p->m118 = a;
@@ -228,6 +223,92 @@ extern "C" void* fn_80403804(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void __ct__Q29JGeometry8TVec3_f_Fv();
+extern "C" void __construct_array(void*, void*, void*, u32, u32);
+extern "C" T34Mgr* fn_8040384C(T34Mgr* p) {
+    s32* w = (s32*)p;
+    *(void**)p = lbl_804B0FE0;
+    __construct_array(p->m1C4, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 4);
+    w[1] = 0;
+    w[2] = 0;
+    w[3] = 0;
+    w[4] = 0;
+    w[5] = 0;
+    w[6] = 0;
+    w[7] = 0;
+    w[8] = 0;
+    w[9] = 0;
+    w[10] = 0;
+    w[11] = 0;
+    w[12] = 0;
+    w[13] = 0;
+    w[14] = 0;
+    w[15] = 0;
+    w[16] = 0;
+    w[17] = 0;
+    w[18] = 0;
+    w[19] = 0;
+    w[20] = 0;
+    w[21] = 0;
+    w[22] = 0;
+    w[23] = 0;
+    w[24] = 0;
+    p->m1B0 = 0;
+    for (int k = 0; k < 34; k++) {
+        ((u8*)p)[0x214 + k] = 0;
+    }
+    for (int i = 0; i < 4; i++) {
+        p->m68[i] = 0;
+        p->m78[i] = 1;
+        p->m88[i] = 2;
+        p->m98[i] = 0;
+        p->mA8[i] = 1;
+        p->mB8[i] = 2;
+        p->mE8[i] = 0;
+        p->mD8[i] = 4;
+        p->mC8[i] = 4;
+        p->m108[i] = 0x80;
+        p->mF8[i] = 0;
+        p->m130[i] = 0;
+        p->m140[i] = 0;
+        p->m150[i] = 0;
+        p->m160[i] = 0;
+        p->m170[i] = 0;
+        p->m180[i] = 0;
+        p->m190[i] = 0;
+        p->m1C4[i].x = 0.0f;
+        p->m1C4[i].y = 0.0f;
+        p->m1C4[i].z = 0.0f;
+    }
+    p->m64 = -1;
+    p->m1A8 = -1;
+    p->m236 = 0;
+    p->m118 = 0;
+    p->m11C = 0;
+    p->m120 = 0;
+    p->m124 = 0;
+    p->m128 = 0;
+    p->m12C = 0;
+    p->m239 = 0;
+    p->m1A0 = 0;
+    p->m1A4 = -1;
+    p->m1AC = 0;
+    p->m253 = 0;
+    p->m254 = 0;
+    p->m1B4[0] = 0;
+    *(u16*)(p->m1F4 + 0) = 0;
+    p->m1B4[1] = 0;
+    *(u16*)(p->m1F4 + 2) = 0;
+    p->m1B4[2] = 0;
+    *(u16*)(p->m1F4 + 4) = 0;
+    p->m1B4[3] = 0;
+    *(u16*)(p->m1F4 + 6) = 0;
+    for (int j = 0; j < 24; j++) {
+        p->m1FC[j] = 0xff;
+    }
+    return p;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
