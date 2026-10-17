@@ -47,8 +47,8 @@ extern "C" void fn_801597C0(FSAVirtBase* p) {
 
 extern "C" void fn_801597EC(char* this_) {
     s32 id = *(s32*)(this_ + 0x234);
-    if (id == 0x19) {
-        Actor_CreateByID(fn_801F856C(), 0x4b455930, *(void**)(this_ + 0x4), this_ + 0xc, id + (*(s32*)(this_ + 0x250) << 12) + 0xf0, -1, -1);
+    if (id == 0x10 || (u32)(id - 0x11) <= 1 || (u32)(id - 0x16) <= 2 || id == 0x19) {
+        Actor_CreateByID(fn_801F856C(), 0x4b455930, *(void**)(this_ + 0x4), this_ + 0xc, id + (*(s32*)(this_ + 0x250) * 0x1000) + 0xf0, -1, -1);
     } else if (id == 0x13) {
         fn_80236DB0(*(void**)(this_ + 0x274));
     } else if (id == 0x15) {
@@ -69,16 +69,16 @@ extern "C" void fn_801597EC(char* this_) {
         if (id == 0x4a) {
             fn_80236ED8(*(void**)(this_ + 0x274), 2);
         } else {
-            s32 n = id - 0x2f;
             s32 kind = 1;
+            s32 n = id - 0x2f;
             if (id >= 0x40) {
                 n = id - 0x3f;
                 kind = 2;
             }
             if (*(s32*)(this_ + 0x264) == 0) {
-                if (*(s32*)(this_ + 0x254) == 0 && fn_802373EC(*(void**)(this_ + 0x250)) != NULL && lbl_8053AAF8[0x7f] == 1 && *(s32*)(this_ + 0x258) == 0) {
-                    *(void**)(this_ + 0x294) = fn_802373EC(*(void**)(this_ + 0x274));
-                    *(void**)(this_ + 0x298) = fn_8023725C(*(void**)(this_ + 0x274));
+                if (*(s32*)(this_ + 0x254) == 0 && (s32)fn_802373EC(*(void**)(this_ + 0x250)) != 0 && lbl_8053AAF8[0x7f] == 1 && *(s32*)(this_ + 0x258) == 0) {
+                    *(s32*)(this_ + 0x294) = (s32)fn_802373EC(*(void**)(this_ + 0x274));
+                    *(s32*)(this_ + 0x298) = (s32)fn_8023725C(*(void**)(this_ + 0x274));
                 }
                 fn_802372F8(*(void**)(this_ + 0x250), n, kind);
             }
@@ -88,6 +88,14 @@ extern "C" void fn_801597EC(char* this_) {
 
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
+extern "C" f32 lbl_8053D4AC;
+extern "C" f32 lbl_8053D480;
+extern "C" u8* lbl_8053AED0;
+extern "C" void* lbl_804A0170[];
+extern "C" u8 fn_8022F514(s32 i);
+extern "C" void* fn_8022F3DC(s32 i);
+extern "C" void fn_802362C4(void* p, void* v);
+extern "C" void fn_8043D874(u8* p, void* q, void* r, s32 s);
 extern "C" void fn_802ED140(void*);
 extern "C" void* fn_8023E724(void*);
 extern "C" void Actor_CreateByID(void*, u32, void*, void*, u32, s32, s32);
