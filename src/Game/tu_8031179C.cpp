@@ -7,6 +7,15 @@ extern "C" char lbl_80471488[];
 extern "C" f32 lbl_805417C4;
 extern "C" void fn_801F06F0(void*, void*, s32, s32, s32, f32, f32);
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+extern "C" void* lbl_8053AED0;
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D8050(void*, s32, s32, s32);
+extern "C" u8 fn_8023A97C(s32 i, void* area, s32 b, f32* pos);
+extern "C" u16 fn_80226998(f32* pos, s32 room);
+extern "C" u8 fn_8022E438(s32 i, s32 b);
+extern "C" s32 fn_8022CAF8(s32 i);
+extern "C" void fn_8043D67C(void* mgr, s32 id, s32 arg, s32 flag);
+extern "C" u32 __cvt_fp2unsigned(f64);
 extern "C" void fn_80311C58(void* p) {
     fn_801F06F0(p, lbl_80471488, 0x386, 0, 0, lbl_805417C4, lbl_805417C4);
     fn_803075AC(*(void**)((u8*)p + 0x198), *(s32*)((u8*)p + 4), (u8*)p + 0xc, 0x386, 0, 2, -1, 0, 0, 0);
