@@ -55,7 +55,7 @@ struct HitRectTable {
 
 inline bool rectContains(const HitRect& r, const Vec2f* p) {
     bool in = false;
-    if (p->y >= r.y0 && p->x >= r.x0 && p->x < r.x1 && p->y < r.y1) {
+    if (p->x >= r.x0 && p->y >= r.y0 && p->x < r.x1 && p->y < r.y1) {
         in = true;
     }
     return in;
@@ -63,7 +63,7 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
 
 extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     for (s32 i = 0; i < 80; i++) {
-        if (t->ids[i] >= 0 && type == t->types[i] && p->x >= t->rects[i].x0 && p->y >= t->rects[i].y0 && p->x < t->rects[i].x1 && p->y < t->rects[i].y1) {
+        if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
             t->hits[i] = t->ids[i];
             return 1;
         }
