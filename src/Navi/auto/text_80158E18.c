@@ -353,6 +353,7 @@ extern "C" void fn_80159BB4(VObj_8003B920* obj) {
 }
 
 extern "C" void* fn_80159C40(void* p, u32 size, u32 align);
+#pragma dont_inline on
 extern "C" void* fn_80159BE0(u32 size, u32 align, void* p) {
     if (p != 0) {
         return fn_80159C40(p, size, align);
@@ -1134,6 +1135,15 @@ extern "C" u32 fn_8015D028(u8* p) {
 
 extern "C" void fn_8015D030(void) {
     fn_80159DB4();
+}
+
+extern "C" void fn_8015D374(u8* p, void* r4, u32 r5) {
+    *(u32*)(p + 0x54) = r5;
+    *(void**)(p + 0x50) = fn_80159BE0(*(u32*)(p + 0x54) << 2, 0, r4);
+    fn_801BDDBC(p + 0x30, *(void**)(p + 0x50), *(u32*)(p + 0x54));
+    fn_80166C84(lbl_802EE20C, p + 0x18);
+    *(u32*)(p + 0x74) = 0;
+    *(u32*)(p + 0x78) = 0;
 }
 
 extern "C" void fn_8015D474(VObj_80088CF8* obj) {
