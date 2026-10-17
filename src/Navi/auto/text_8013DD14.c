@@ -133,8 +133,8 @@ extern char lbl_8029260C[];
 extern char lbl_80292398[];
 extern char lbl_80201EB4[];
 extern "C" void fn_8013DFF8(void* param_1) {
-    NaviTracker* o = *(NaviTracker**)((u8*)param_1 + 0x88);
-    o->fn_7(o->fn_6() & 0xfffffffe);
+    NaviTracker_8013DF04* o = *(NaviTracker_8013DF04**)((u8*)param_1 + 0x88);
+    o->fn_5(o->fn_4() & 0xfffffffe);
 }
 
 extern "C" void fn_8013E04C(void* param_1) {
