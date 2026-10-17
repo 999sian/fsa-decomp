@@ -19,6 +19,13 @@ extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
 extern "C" void fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+extern "C" u32 fn_804032E8(u32 tag, void* id);
+extern "C" void fn_802F745C(void* mgr, void* pos, u32 tex, void* rec);
+extern "C" void PSMTXIdentity(f32 (*m)[4]);
+extern "C" const u8 lbl_80540E28[];
+extern "C" void* lbl_804A90F0[];
+extern "C" char lbl_8046D920[];
+extern "C" char* lbl_8053AB10;
 
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
