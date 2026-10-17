@@ -1,5 +1,11 @@
 #include "types.h"
 #include "math.h"
+extern "C" s32 fn_80096F0C(void* p);
+extern "C" u8 fn_800C6E38(void* p);
+extern "C" u8 fn_800C6FD4(void* p);
+extern "C" void fn_800CBB28(void* p);
+extern "C" void fn_800EF4D0(void* p, s32 v);
+extern "C" void fn_80097180(void* p);
 
 typedef struct NaviColor4 { u8 r, g, b, a; } NaviColor4;
 extern void* lbl_80289A14[];
