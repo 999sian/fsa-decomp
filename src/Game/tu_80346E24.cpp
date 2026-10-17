@@ -1,5 +1,7 @@
 #include "Game/Actor.h"
 
+extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+
 
 extern "C" char lbl_804AC6B0[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -10,6 +12,66 @@ extern "C" Actor* fn_80346E24(Actor* p, s16 n) {
         if (n > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" s32 fn_8022461C(s32);
+extern "C" void fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_801F0E34(Actor*, s32, s32);
+extern "C" u8 fn_802DE9A0(void);
+extern "C" u8 fn_802DEB58(void);
+extern "C" s32 v17__5ActorFiPf(Actor*, s32, f32*);
+extern "C" f32 lbl_80542438;
+extern "C" f32 lbl_8054243C;
+extern "C" f32 lbl_8054245C;
+extern "C" s32 fn_803477DC(Actor* this_, s32 a, s32 b) {
+    u8* p = (u8*)this_;
+    s32 type = (u16)fn_8022461C(b);
+    if ((u32)(type - 0x4c) <= 2 || type == 0x4f) {
+        return 0;
+    } else if (type == 3) {
+        if (*(f32*)(p + 0x14) <= lbl_80542438) {
+            *(f32*)(p + 0x234) = (f32)(((s32)*(f32*)(p + 0xc)) & 0xfff0) + lbl_8054245C;
+            *(f32*)(p + 0x238) = (f32)(((s32)*(f32*)(p + 0x10)) & 0xfff0) + lbl_8054245C;
+            *(u32*)(p + 0x24c) = 0x400;
+            *(s32*)(p + 0x230) = 3;
+            *(f32*)(p + 0x3c) = lbl_80542438;
+            *(f32*)(p + 0x40) = lbl_80542438;
+            *(f32*)(p + 0x44) = lbl_80542438;
+        }
+        return 0;
+    } else if (type == 0xd || type == 0x3a) {
+        if (*(f32*)(p + 0x14) <= lbl_80542438) {
+            fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_8054243C, 0x3d0, 0, 1, 0, 0, 1);
+            fn_801F0E34(this_, 0x30022, 0);
+            *(u8*)(p + 0x11c) = 0;
+        }
+        return 0;
+    } else if (type == 0xe) {
+        if (*(f32*)(p + 0x14) <= lbl_80542438) {
+            if (fn_802DE9A0()) {
+                fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_8054243C, 0x2a9, -1, 1, 0, 0, 1);
+                fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_8054243C, 0x2aa, -1, 0, 0, 0, 1);
+                fn_801F0E34(this_, 0x5005f, 0);
+                *(u8*)(p + 0x11c) = 0;
+            } else if (fn_802DEB58()) {
+                fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_8054243C, 0x45e, -1, 1, 0, 0, 1);
+                fn_8013CC50(*(s32*)(p + 0x4), p + 0xc, lbl_8054243C, 0x45f, 0, 0, 0, 0, 1);
+                fn_801F0E34(this_, 0x5003f, 0);
+            } else {
+                *(f32*)(p + 0x234) = (f32)(((s32)*(f32*)(p + 0xc)) & 0xfff0) + lbl_8054245C;
+                *(f32*)(p + 0x238) = (f32)(((s32)*(f32*)(p + 0x10)) & 0xfff0) + lbl_8054245C;
+                *(u32*)(p + 0x24c) = 0x400;
+                *(s32*)(p + 0x230) = 3;
+                *(f32*)(p + 0x3c) = lbl_80542438;
+                *(f32*)(p + 0x40) = lbl_80542438;
+                *(f32*)(p + 0x44) = lbl_80542438;
+            }
+        }
+        return 0;
+    } else if (type == 0x39) {
+        return 0;
+    }
+    return v17__5ActorFiPf(this_, a, (f32*)b);
 }
 
 extern "C" u16 fn_80226850(void* pos, s32 room);
