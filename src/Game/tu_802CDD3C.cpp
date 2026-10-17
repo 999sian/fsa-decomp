@@ -28,6 +28,13 @@ extern "C" char lbl_8046D920[];
 extern "C" char* lbl_8053AB10;
 extern "C" char sincosTable___5JMath[];
 
+static inline void fn_802CDD9C_draw(char* this_, void* pos, u32 tex, void* rec)
+{
+    if ((s32)(*(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259)) < 8) {
+        fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), pos, tex, rec);
+    }
+}
+
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
 {
@@ -39,6 +46,39 @@ extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
         }
     }
     return p;
+}
+
+extern "C" void fn_802CDD9C(char* this_)
+{
+    Vec v;
+    f32 mtx[3][4];
+    DrawRec rec;
+    u32 tex;
+
+    if (*(s32*)(this_ + 0x230) == 1) {
+        if (*(s32*)(this_ + 0x234) >= 0x1b && *(s32*)(this_ + 0x234) <= 0x1e) {
+            s16 ang = *(s16*)(this_ + 0x248);
+            f32 sx = *(f32*)(this_ + 0x24c);
+            f32 sy = *(f32*)(this_ + 0x250);
+            f32 sz = *(f32*)(this_ + 0x254);
+            f32* tbl = (f32*)sincosTable___5JMath;
+            f32 s = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8));
+            f32 c = *(f32*)((char*)tbl + (((u16)ang >> 5) * 8) + 4);
+            f32 s0 = tbl[0];
+            f32 c0 = tbl[1];
+            PSMTXIdentity(mtx);
+            rec.w18 = mtx;
+            mtx[0][0] = sx * (c * c0);
+            mtx[0][1] = sy * ((s0 * s) * c0 - c0 * s0);
+            mtx[0][2] = sz * ((c0 * c0) * s + s0 * s0);
+            mtx[1][0] = sx * (c * s0);
+            mtx[1][1] = sy * ((s0 * s) * s0 + c0 * c0);
+            mtx[1][2] = sz * ((c0 * s0) * s - c0 * s0);
+            mtx[2][0] = sx * -s;
+            mtx[2][1] = sy * (c * s0);
+            mtx[2][2] = sz * (c * c0);
+        }
+    }
 }
 
 static inline void fn_802CE508_spawn(char* this_);
