@@ -358,6 +358,14 @@ extern "C" u32 fn_80122FC0(u32 param_1, u32 param_2)
 	return (param_1 - 0x6c) / (param_2 + 2);
 }
 
+extern "C" s32 fn_80123A70(u8* p) {
+    s32 n = *(s32*)(p + 0x30) - *(s32*)(p + 0x34);
+    if (n >= 0) {
+        return n;
+    }
+    return n + *(s32*)(p + 0x24);
+}
+
 extern "C" void fn_80123EA0(void* p)
 {
 	lbl_802FF364 = p;
@@ -950,6 +958,21 @@ extern "C" void* fn_80130CB8(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" BOOL fn_801321E4(void* param_1, void* param_2) {
+    u8* t = *(u8**)((u8*)param_2 + 4);
+    u8* obj = **(u8***)(t + 0x24);
+    s32 n = *(s16*)((u8*)param_1 + 0x82) - 1;
+    s32 q = (s32)((f32)n * *(f32*)(obj + 0x3c));
+    s32 a = *(s16*)((u8*)param_1 + 0x80) - q;
+    if (a >= 0) {
+        s32 d = obj[0x44] + 1;
+        if (a == (a / d) * d) {
+            return 1;
+        }
+    }
+    return 0;
 }
 
 extern "C" void* fn_80132778(void* param_1, s16 param_2) {
