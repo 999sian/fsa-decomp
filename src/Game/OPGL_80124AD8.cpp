@@ -13,6 +13,8 @@ public:
     virtual void v23();
     virtual void v24();
     virtual void v25(s32);
+    virtual void v26();
+    virtual void v27(s32);
 };
 
 extern "C" void fn_80124AD8(void* p) {
@@ -274,7 +276,9 @@ extern "C" bool fn_801257A8(void* param_1)
 
 extern "C" s32 fn_80125830(void* self) {
     s32 v = *(s32*)((char*)self + 0x33c);
-    if (v < 9 && v >= 4) {
+    if (v >= 9) {
+        return 0;
+    } else if (v >= 4) {
         return 1;
     }
     return 0;
