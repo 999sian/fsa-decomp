@@ -11,6 +11,8 @@ extern "C" s16 lbl_8048C95C[];
 
 struct Tbl8048C1F8;
 extern Tbl8048C1F8 lbl_8048C1F8;
+extern u8* sManager__8JUTVideo;
+extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 struct Tu80406ResMgr {
 	virtual void v0();
@@ -1027,7 +1029,28 @@ extern "C" void fn_804069E8(u8* self) {
 						*(void**)(self + 0x2ec) = fn_8013CC50(0, 1.0f, pos, 0x7b, 1, 0, 0, 0, 1);
 						(*(JPABaseEmitter**)(self + 0x2ec))->flags |= 0x40;
 					}
+					if (*(void**)(self + 0x2f0) == 0) {
+						*(void**)(self + 0x2f0) = fn_8013CC50(0, 1.0f, pos, 0x7c, 1, 0, 0, 0, 1);
+						(*(JPABaseEmitter**)(self + 0x2f0))->flags |= 0x40;
+					}
+					if (*(void**)(self + 0x2f4) == 0) {
+						*(void**)(self + 0x2f4) = fn_8013CC50(0, 1.0f, pos, 0x7d, 1, 0, 0, 0, 1);
+						(*(JPABaseEmitter**)(self + 0x2f4))->flags |= 0x40;
+					}
+					if (*(void**)(q + 0x2f8)) {
+						JPABaseEmitter* e = *(JPABaseEmitter**)(q + 0x2f8);
+						e->flags |= 1;
+						*(s32*)((u8*)e + 0x24) = 1;
+						*(void**)(q + 0x2f8) = 0;
+					}
 				}
+				if (*(s32*)(self + 0x35c) <= 10) {
+					Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
+					fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC40), 0x25b, &rec, 1.0f, 1.0f);
+				}
+			} else {
+				Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
+				fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC40), 0x25a, &rec, 1.0f, 1.0f);
 			}
 		}
 	}
