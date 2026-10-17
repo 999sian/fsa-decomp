@@ -85,6 +85,7 @@ extern "C" void fn_801CDCD0(u8* this_, u32 id, const JGeometry::TVec3<f32>& pos,
 
 extern "C" void fn_801CE00C(void) {}
 
+extern "C" f32 __fsels(f32 a, f32 b, f32 c);
 extern "C" void fn_801CE010(u8* this_, f32* out) {
     s32 idx = *(s32*)(this_ + 0x4);
     u8* mgr = fn_802D6A9C();
@@ -272,7 +273,7 @@ extern "C" void fn_801CE694(u8* this_) {
         *(f32*)(this_ + 0x14) = lbl_8053EFC4;
         if (*(f32*)(this_ + 0x88) - *(f32*)(this_ + 0x80) > lbl_8053EFC4 &&
             *(f32*)(this_ + 0x8c) - *(f32*)(this_ + 0x84) > lbl_8053EFC4) {
-            bool hit = true;
+            bool hit = false;
             f32 out[2];
             f32 vec[2];
             f32 y = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14);
@@ -281,10 +282,14 @@ extern "C" void fn_801CE694(u8* this_) {
             u16 kind = fn_802265FC(vec, *(s32*)(this_ + 0x4));
             switch (kind) {
             case 0:
-                hit = *(f32*)(this_ + 0x14) <= lbl_8053EFC4;
+                if (*(f32*)(this_ + 0x14) <= lbl_8053EFC4) {
+                    hit = true;
+                }
                 break;
             case 2:
-                hit = false;
+                break;
+            default:
+                hit = true;
                 break;
             }
             if (hit) {
@@ -443,8 +448,7 @@ extern "C" int fn_801CECEC(void) { return 0; }
 
 #pragma fp_contract off
 extern "C" s32 fn_801CF0F4(u8* this_) {
-    f32 x = *(f32*)(this_ + 0x3c);
-    f32 a = JMath::atanTable_.atan2_(x, *(f32*)(this_ + 0x40));
+    f32 a = JMath::atanTable_.atan2_(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40));
     s32 q = (s32)(a * lbl_8053EFEC);
     return ClassifyBamAngleToQuadrant(q);
 }
@@ -456,7 +460,8 @@ extern "C" bool fn_801CF144(u8* this_) {
     pos[0] = *(f32*)(this_ + 0xc);
     pos[1] = y;
     pos[2] = lbl_8053EFC4;
-    if (fn_801CCB1C(pos, *(s32*)(this_ + 0x4))) {
+    s32 layer = *(s32*)(this_ + 0x4);
+    if (fn_801CCB1C(pos, layer)) {
         result = true;
     }
     return result;
@@ -584,29 +589,122 @@ extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
     return fn_801CFD68(this_, idx, v);
 }
 
+extern "C" u8 fn_801CFD68(u8* this_, s32 idx, f32 v) {
+    s32 lastCol;
+    s32 lastRow;
+    s32 rows;
+    s32 cols;
+    s32 i;
+    s32 j;
+    s32 room;
+    JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(this_ + 0xc));
+    v = lbl_8053EFE4 * v;
+    switch (idx) {
+    case 0:
+        pos.x += v;
+        break;
+    case 1:
+        pos.x -= v;
+        break;
+    case 2:
+        pos.y += v;
+        break;
+    case 3:
+        pos.y -= v;
+        break;
+    }
+    f32 x0 = *(f32*)(this_ + 0x80);
+    f32 y0 = *(f32*)(this_ + 0x84);
+    f32 x1 = *(f32*)(this_ + 0x88);
+    f32 y1 = *(f32*)(this_ + 0x8c);
+    switch (idx) {
+    case 0:
+    case 1:
+        x0 = -v;
+        x1 = v;
+        break;
+    case 2:
+    case 3:
+        y0 = -v;
+        y1 = v;
+        break;
+    }
+    f32 dy = pos.y - *(f32*)(this_ + 0x14);
+    room = *(s32*)(this_ + 0x4);
+    x0 += pos.x;
+    x1 += pos.x;
+    y0 += dy;
+    y1 += dy;
+
+    u8* mgr = fn_802D6A9C();
+    f32* r;
+    if (room < 8) {
+        r = (f32*)(mgr + 0xcc);
+    } else {
+        r = (f32*)(mgr + 0xdc);
+    }
+    u8 inside = 0;
+    if (x0 >= r[0] && y0 >= r[1] && x1 < r[2] && y1 < r[3]) {
+        inside = 1;
+    }
+    if (!inside) {
+        return 1;
+    }
+    if (x1 - x0 < lbl_8053EFC4 || y1 - y0 < lbl_8053EFC4) {
+        return 1;
+    }
+
+    f32 cur[3];
+    cur[0] = x0;
+    cur[1] = y0;
+    cur[2] = lbl_8053EFC4;
+    s32 nx = (s32)(lbl_8053EFF8 * (x1 - x0));
+    s32 ny = (s32)(lbl_8053EFF8 * (y1 - y0));
+    cols = nx + 2;
+    rows = ny + 2;
+    lastCol = cols - 1;
+    lastRow = rows - 1;
+    for (i = 0; i < rows; i++) {
+        cur[0] = x0;
+        if (i == lastRow) {
+            cur[1] = y1;
+        }
+        for (j = 0; j < cols; j++) {
+            if (j == lastCol) {
+                cur[0] = x1;
+            }
+            if (((u8 (*)(u8*, s32, f32*))((void**)*(void**)this_)[19])(this_, room, cur)) {
+                return 1;
+            }
+            cur[0] += lbl_8053EFDC;
+        }
+        cur[1] += lbl_8053EFDC;
+    }
+    return 0;
+}
+
 extern "C" s32 fn_801D0020(u8* this_, f32* pos, s32 idx, u8 flag) {
     f32* rec = (f32*)(this_ + idx * 0xc + 0x1ac);
-    f32 dx = rec[0] - pos[0];
-    f32 dz = rec[1] - pos[1];
-    if (__fabsf(dx) > __fabsf(dz)) {
+    f32 ax = __fabsf(rec[0] - pos[0]);
+    f32 az = __fabsf(rec[1] - pos[1]);
+    if (ax > az) {
         if (flag == 0) {
             goto x_axis;
         }
-        if (flag == 1) {
-            goto x_axis;
-        }
     }
-    if (__fabsf(dx) <= __fabsf(dz) || flag != 1) {
-        if (pos[1] < rec[1]) {
-            return 2;
-        }
-        return 3;
+    if (ax <= az || flag != 1) {
+        goto z_axis;
     }
 x_axis:
     if (pos[0] < rec[0]) {
         return 0;
     }
     return 1;
+z_axis:
+    if (pos[1] < rec[1]) {
+        return 2;
+    }
+    return 3;
 }
 
 #pragma fp_contract on
@@ -627,9 +725,11 @@ extern "C" void fn_801D00B4(u8* this_, s32 idx, f32* out, f32 maxLen) {
         dx *= scale;
         dz *= scale;
     }
-    f32 ddz = rec[1] - *(f32*)(this_ + 0x10);
     f32 ddx = rec[0] - *(f32*)(this_ + 0xc);
-    f32 dist = ddx * ddx + ddz * ddz;
+    f32 ddz = rec[1] - *(f32*)(this_ + 0x10);
+    f32 a = ddx * ddx;
+    f32 b = ddz * ddz;
+    f32 dist = a + b;
     out[0] = dx;
     out[1] = dz;
     if (dist > lbl_8053EFC4) {
@@ -675,15 +775,17 @@ extern "C" void fn_801D01A0(u8* this_, f32* pos, f32* out, f32 maxLen) {
 
 #pragma fp_contract off
 extern "C" s16 fn_801D0280(u8* this_, s32 idx) {
-    Vec* rec = (Vec*)(this_ + idx * 0xc + 0x1ac);
     Vec* self = (Vec*)(this_ + 0xc);
-    return JMAAtan2Radian(rec->x - self->x, rec->y - self->y) * lbl_8053EFEC;
+    f32 x = self->x;
+    f32 y = self->y;
+    Vec* rec = (Vec*)(this_ + idx * 0xc + 0x1ac);
+    f32 ang = JMAAtan2Radian(rec->x - x, rec->y - y);
+    return ang * lbl_8053EFEC;
 }
-
 extern "C" s16 fn_801D02E0(u8* this_, const Vec& pos) {
-    f32 px = pos.x;
-    f32 py = pos.y;
-    return lbl_8053EFEC * JMAAtan2Radian(px - *(f32*)(this_ + 0xc), py - *(f32*)(this_ + 0x10));
+    f32 dx = pos.x - *(f32*)(this_ + 0xc);
+    f32 dy = pos.y - *(f32*)(this_ + 0x10);
+    return JMath::atanTable_.atan2Radian(dx, dy) * lbl_8053EFEC;
 }
 
 extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
@@ -894,15 +996,13 @@ extern "C" f32 fn_801D0DA0(void* thisArg, s32 playerIdx, f32* point) {
 }
 
 extern "C" BOOL fn_801D0DD4(char* this_) {
-    struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
-    struct Self { u8 pad0[4]; s32 room; u8 pad8[0xc]; f32 f14; u8 pad18[0x218]; u32 flags; };
-    Self* s = (Self*)this_;
-    s32 room = s->room;
-    TndrG* g = (TndrG*)fn_802D6A9C();
-    if (g->arr[room] != 0) {
-        return (s->flags & 0x18) != 0;
+    char* self = this_;
+    s32 room = *(s32*)(self + 0x4);
+    u8* g = (u8*)fn_802D6A9C();
+    if (g[0x131df + room] != 0) {
+        return (*(u32*)(self + 0x230) & 0x18) != 0;
     }
-    return s->f14 <= lbl_8053EFC4 ? TRUE : FALSE;
+    return *(f32*)(self + 0x14) <= lbl_8053EFC4 ? TRUE : FALSE;
 }
 
 extern "C" void fn_801D0E58(char* p) {
