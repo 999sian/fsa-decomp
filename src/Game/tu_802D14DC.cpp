@@ -51,6 +51,13 @@ extern const char lbl_8046E100[];
 extern "C" const f32 lbl_80540ECC;
 extern "C" const f32 lbl_80540EE0;
 extern "C" u32 lbl_8053AB10;
+extern "C" int fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+extern "C" void fn_8013CB44(s32, void*, s32, s32, s32);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+extern "C" f32* fn_8023E7B0(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u8 fn_8023BCD4(s32);
 extern "C" s32 fn_8023CB24(s32 holder);
 extern "C" s32 fn_8023CA88(s32 holder);
 extern "C" s32 fn_801F02BC(void* p, const char* name, s32 id, void* param, s32 a, s32 b, s32 c, f32 f1, f32 f2);
@@ -75,6 +82,68 @@ extern "C" void fn_802D14DC(VObj_802D* p) {
 extern "C" void fn_801F132C(void*, int, int, void*);
 extern "C" void fn_802D1508(char* this_, int a, int b) {
     fn_801F132C(this_, a, b, this_ + 0x248);
+}
+
+extern "C" void fn_802D1DB4(char* p) {
+    s32 flag = 7;
+    YasiDrawParam param;
+    ((u8*)&param.key.a)[3] = *(u8*)(p + 0x254);
+    if (*(u8*)(p + 0xc4) != 0) {
+        param.f20 = 0;
+        flag = -1;
+        param.color = fn_8023CB24(*(s32*)(p + 0xc8)) + 1;
+        param.palette = fn_8023CA88(*(s32*)(p + 0xc8));
+    }
+    s32 n = *(s32*)(p + 4);
+    if (*(u8*)((char*)fn_802D6A9C() + 0x10000 + n + 0x31df) != 0) {
+        s32 id = *(s32*)(p + 0x234);
+        id += *(s32*)(p + 0x238);
+        id += 0x1bb;
+        fn_801F02BC(p, lbl_8046E100, id, &param, flag, 0, 1, lbl_80540ECC, lbl_80540ECC);
+    } else {
+        s32 id = *(s32*)(p + 0x234);
+        id += *(s32*)(p + 0x238);
+        id += 0x21;
+        fn_801F02BC(p, lbl_8046E100, id, &param, flag, 0, 1, lbl_80540ECC, lbl_80540ECC);
+    }
+    if (*(s32*)(p + 0x234) == 1) {
+        u8 col[4];
+        col[0] = 0;
+        col[1] = 0;
+        col[2] = 0;
+        col[3] = 0x80;
+        Rgba802D dst = *(Rgba802D*)col;
+        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(p + 4), p + 0xc, &dst, lbl_80540EE0);
+    }
+}
+
+extern "C" f32* fn_8023E7B0(s32);
+extern "C" s32 fn_8023DE58(s32);
+extern "C" u8 fn_8023BCD4(s32);
+extern "C" u8 fn_801F2618(void*, s32, s32);
+extern "C" u8 fn_801F2B7C(void*, s32, s32, s32);
+extern "C" u8 fn_801F2B20(void*, s32);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+extern "C" void fn_8013CB44(s32, void*, s32, s32, s32);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7818(void*, u32, s32, void*, s32);
+extern "C" u32 fn_80226850(void*, s32);
+extern "C" void fn_802A381C(void*, void*, s32, s32);
+extern "C" void fn_8030C210(void*, void*);
+extern "C" u8 lbl_8053AAF8[];
+extern "C" void fn_802D1FEC(void* this_) {
+    char* p = (char*)this_;
+    s32 flag = 0;
+    if (*(u8*)(p + 0xc4) != 0) {
+        f32* v = fn_8023E7B0(*(s32*)(p + 0xc8));
+        *(f32*)(p + 0xc) = v[0];
+        *(f32*)(p + 0x10) = v[1];
+        *(f32*)(p + 0x14) = v[2];
+        *(s32*)(p + 4) = fn_8023DE58(*(s32*)(p + 0xc8));
+        *(u8*)(p + 0x254) = fn_8023BCD4(*(s32*)(p + 0xc8));
+        *(u8*)(p + 0x254) = 0xff;
+    }
 }
 
 extern "C" char lbl_804A9428[];
