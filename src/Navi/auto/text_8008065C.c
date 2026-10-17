@@ -32,7 +32,7 @@ extern "C" void* fn_80080A64(u8* p) {
     if (*(void**)(p + 0x3c0) == nullptr) {
         void* r;
         void* m = lbl_802FF0BC;
-        u16 id = *(u16*)&lbl_801FA1CC;
+        u16 id = lbl_801FA1CC[0];
         if (m != nullptr) {
             r = fn_8004D308(m, 1, id, p + 0x128, p + 0x13c, p + 0x144, 0xff, 0, 0, 0, 0);
         } else {
