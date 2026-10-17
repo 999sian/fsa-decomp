@@ -2,6 +2,10 @@
 // TU 801A908C-801AAC8C (TTAT). Remaining functions are not yet decompiled.
 #include "types.h"
 
+extern char* lbl_8053AB10;
+extern char* lbl_8053AF80;
+extern char* lbl_8053AAF8;
+extern s32 lbl_8053ABD0;
 extern const f32 lbl_8053E6E0;
 extern const f32 lbl_8053E6E8;
 extern const f32 lbl_8053E6EC;
