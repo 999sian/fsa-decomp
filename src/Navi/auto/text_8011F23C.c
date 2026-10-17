@@ -463,6 +463,28 @@ extern "C" void* fn_80124160(void* p, s16 n) {
     return p;
 }
 
+extern "C" BOOL fn_801241A4(void* p, void* arg) {
+    u8* c = (u8*)p;
+    BOOL state;
+    BOOL ok;
+    if (arg == NULL) {
+        return 0;
+    }
+    state = OSEnableInterrupts();
+    ok = fn_801C7C6C(arg, c + 0x834);
+    OSRestoreInterrupts(state);
+    if (ok == 0) {
+        c[0x830] = 0;
+        return 0;
+    }
+    state = OSEnableInterrupts();
+    *(s32*)(c + 0x828) = *(s32*)(c + 0x868);
+    OSRestoreInterrupts(state);
+    *(s32*)(c + 0x82c) = 0;
+    c[0x830] = 1;
+    return 1;
+}
+
 extern "C" s32 fn_80124AF4(void* a, s32 idx, u8* out) {
     u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
     if (*(u32*)(e + 0x24) != 7) {
