@@ -29,6 +29,23 @@ extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_800EF4E0(void* p);
 extern "C" s32 fn_800EF768(void* p, u8 idx, u8 b, s32 c);
 extern u8 lbl_802C587C[];
+extern u8 lbl_8029FDB4[];
+extern "C" void fn_800127A0(void*, s8 = 0);
+struct VObj_800EF6D0A {
+ virtual void v0(s32 x);
+};
+
+struct VObj_800EF6D0B {
+ virtual void v0();
+ virtual void v1();
+ virtual void v2();
+ virtual void v3();
+ virtual void v4();
+ virtual void v5();
+ virtual void v6();
+ virtual void v7();
+};
+
 struct NaviState_800EF384;
 typedef void (NaviState_800EF384::*NaviStateFn_800EF384)();
 extern NaviStateFn_800EF384 lbl_8028B874[];
