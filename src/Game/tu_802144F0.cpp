@@ -16,6 +16,7 @@ extern char* lbl_8053AB10;
 extern "C" void* fn_8013C824();
 extern "C" void fn_800EC240(void* table, s32 id);
 extern "C" void fn_801CDC8C(void* this_, s32 event);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* em);
 
 extern "C" void fn_80214900(void* this_) {
     char* p = (char*)this_;
@@ -34,6 +35,78 @@ extern "C" void fn_80214900(void* this_) {
         *(s32*)(p + 0x18) = 0;
     }
     fn_801CDC8C(*(void**)(p + 0x34), 0x4000E);
+}
+
+extern "C" void fn_80214994(void* this_)
+{
+	char* p = (char*)this_;
+	JGeometry::TVec3f v;
+	char* q = *(char**)(p + 0x34);
+
+	v = *(JGeometry::TVec3f*)(q + 0xc);
+	v.y += lbl_8053FBBC;
+	if (fn_801CD2F8(*(void**)(q + 0x4))) {
+		s32 id = *(s32*)(p + 0x30);
+		if (id >= 0) {
+			char* found = (char*)fn_801F666C(fn_801F856C(), id);
+			if (found != 0) {
+				*(JGeometry::TVec3f*)(found + 0xc) = v;
+			}
+		}
+	} else {
+		if (*(void**)(p + 0x18) != 0) {
+			s32 a = 0;
+			s32 b = 1;
+			if (v.z > lbl_8053FBC0) {
+				a = b;
+				b = 0;
+			}
+			s32 lim = (a << 10) + (b << 7);
+			f32 x = v.x;
+			f32 y = v.y + lim;
+			f32 z = v.z + lim;
+			f32 w = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), &v.x);
+			*(f32*)(p + 0x20) = x;
+			*(f32*)(p + 0x24) = y;
+			*(f32*)(p + 0x28) = z + (w - v.z);
+			fn_8013CB44(*(void**)(p + 0x18), &v, 0, 1, 1);
+		}
+	}
+}
+
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* em);
+extern "C" void fn_80214CE4(u8* this_) {
+    if (*(u8**)(this_ + 0) != 0) {
+        JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(*(u8**)(this_ + 0x34) + 0xc));
+        pos.y += -24.0f;
+        s32 lo = 1;
+        s32 hi = 0;
+        if (pos.z > 0.0f) {
+            hi = lo;
+            lo = 0;
+        }
+        f32 off = (hi << 10) + (lo << 7);
+        f32 x = pos.x;
+        f32 y = pos.y + off;
+        f32 z = pos.z + off;
+        f32 d = fn_802F5E9C(*(void**)(lbl_8053AB10 + 0x20), &pos.x) - pos.z;
+        *(f32*)(this_ + 0x8) = x;
+        *(f32*)(this_ + 0xc) = y;
+        z += d;
+        *(f32*)(this_ + 0x10) = z;
+        fn_8013CB44(*(void**)(this_ + 0), &pos, 0, 1, 1);
+        bool del = false;
+        if (*(u32*)(*(u8**)(this_ + 0) + 0xf4) & 0x8) {
+            if (*(s32*)(*(u8**)(this_ + 0) + 0xd0) + *(s32*)(*(u8**)(this_ + 0) + 0xdc) == 0) {
+                del = true;
+            }
+        }
+        if (del && *(u8**)(this_ + 0) != 0) {
+            void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(this_ + 0));
+            *(u8**)(this_ + 0) = 0;
+        }
+    }
 }
 
 // ---- Slk2_InitVtablePairRecord.cpp ----
