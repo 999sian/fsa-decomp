@@ -97,13 +97,37 @@ extern s32 MaxEntryNum_802FF86C;
 extern "C" float fn_801EA270(f32 x);
 extern "C" float fn_801EA294(f32 x);
 extern "C" void fn_801C5FDC(void* dst, s32 axis, f32 x, f32 y);
+
 extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
     f32 a = fn_801EA270(v);
     f32 b = fn_801EA294(v);
     fn_801C5FDC(dst, axis, a, b);
 }
 
+extern "C" float fn_801EA24C(double x);
+extern f32 lbl_80301E38;
+extern f32 lbl_80301E3C;
+extern f32 lbl_80301E40;
+extern f32 lbl_80301E4C;
+extern f32 lbl_80301E50;
 #pragma fp_contract off
+extern "C" void fn_801C64DC(float* m, float fovy, float aspect, float sx, float sy, float tx, float ty)
+{
+    float inv = 1.0f / fn_801EA24C(0.017453292f * (0.5f * fovy));
+    m[0] = sx * (inv / aspect);
+    m[1] = 0.0f;
+    m[2] = -tx;
+    m[3] = 0.0f;
+    m[4] = 0.0f;
+    m[5] = inv * sy;
+    m[6] = -ty;
+    m[7] = 0.0f;
+    m[8] = 0.0f;
+    m[9] = 0.0f;
+    m[10] = -1.0f;
+    m[11] = 0.0f;
+}
+#pragma fp_contract on
 extern "C" void fn_801C65A8(float *m, float y0, float y1, float x0, float x1, float sx, float sy, float ox, float oy)
 {
     float tmp;
@@ -416,6 +440,37 @@ extern "C" void fn_801C8184(void)
 
 extern "C" void fn_801C81A8(void) {}
 
+static BOOL DVDInitialized_802FF8C0;
+static u8* bootInfo_802FF888;
+static BOOL FirstTimeInBootrom_802FF8BC;
+extern "C" char* __DVDVersion;
+extern "C" void __DVDFSInit(void);
+extern "C" void __DVDClearWaitingQueue(void);
+extern "C" void __DVDInterruptHandler(__OSInterrupt interrupt, OSContext* context);
+extern "C" void __fstLoad(void);
+extern "C" void DVDInit(void) {
+    if (!DVDInitialized_802FF8C0) {
+        OSRegisterVersion(__DVDVersion);
+        DVDInitialized_802FF8C0 = TRUE;
+        __DVDFSInit();
+        __DVDClearWaitingQueue();
+        __DVDInitWA();
+        bootInfo_802FF888 = (u8*)0x80000000;
+        IDShouldBe_802FF884 = (u8*)0x80000000;
+        __OSSetInterruptHandler(21, __DVDInterruptHandler);
+        __OSUnmaskInterrupts(0x400);
+        OSInitThreadQueue(&__DVDThreadQueue);
+        *(vu32*)0xCC006000 = 0x2a;
+        *(vu32*)0xCC006004 = 0;
+        if (*(u32*)(bootInfo_802FF888 + 0x20) == 0xE5207C22) {
+            OSReport("load fst\n");
+            __fstLoad();
+        } else if (*(u32*)(bootInfo_802FF888 + 0x20) != 0x0D15EA5E) {
+            FirstTimeInBootrom_802FF8BC = TRUE;
+        }
+    }
+}
+
 extern "C" void fn_801C8478(void)
 {
 	fn_801C747C(fn_801C8554);
@@ -469,6 +524,46 @@ extern "C" void AlarmHandler(void) {
     DVDCommandBlock* block = executing_802FF880;
     lbl_802FF8C4 = fn_801C9060;
     fn_801C9060(block);
+}
+
+static s32 CurrCommand_802FF89C;
+extern "C" void fn_801C8F94(void)
+{
+	DVDCommandBlock* old;
+
+	switch (CurrCommand_802FF89C) {
+	case 4:
+	case 5:
+	case 13:
+	case 15:
+		__DVDClearWaitingQueue();
+		old = executing_802FF880;
+		executing_802FF880 = (DVDCommandBlock*)(BB2_802F7AA0 + 0x40);
+		if (old->callback) {
+			(old->callback)(-4, old);
+		}
+		stateReady();
+		break;
+	default:
+		DVDReset();
+		OSCreateAlarm((OSAlarm*)(BB2_802F7AA0 + 0x70));
+		OSSetAlarm((OSAlarm*)(BB2_802F7AA0 + 0x70), OSMillisecondsToTicks(1150), (OSAlarmHandler)AlarmHandler);
+		break;
+	}
+}
+
+extern "C" BOOL DVDReadAbsAsyncForBS(DVDCommandBlock* block, void* addr, s32 length, s32 offset, DVDCBCallback callback)
+{
+    BOOL idle;
+    block->command = 4;
+    block->addr = addr;
+    block->length = length;
+    block->offset = offset;
+    block->transferredSize = 0;
+    block->callback = callback;
+
+    idle = issueCommand(2, block);
+    return idle;
 }
 
 extern "C" BOOL fn_801CA014(DVDCommandBlock* block, DVDCBCallback callback)
