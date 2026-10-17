@@ -69,6 +69,15 @@ extern "C" void fn_800E88D0(u8* p) {
     *(u8*)(p + 0x5dd) = 0;
 }
 
+extern "C" void fn_800E8B24(u8* p) {
+    if (p[0xb14] != 0) {
+        p[0xb14]--;
+    } else {
+        p[0x4c4] = 0;
+        p[0xa76] = 0x35;
+    }
+}
+
 extern "C" void fn_800EA848(u8* p) {
     if (p[0xb14] != 0) {
         p[0xb14]--;
