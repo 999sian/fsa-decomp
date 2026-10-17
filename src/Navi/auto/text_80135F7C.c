@@ -120,7 +120,7 @@ struct VObj_801398CC {
 
 struct VObj_8013B6EC {
     virtual void v0();
-    virtual void v1();
+    virtual void v1(void*);
     virtual void v2();
     virtual void v3(void*);
 };
@@ -1663,6 +1663,34 @@ extern "C" void* fn_8013B884(void* p1, void* p2, void* p3) {
     vt = *(void**)((u8*)r30 + 0x34);
     if (vt != 0) {
         ((VObj_8013B620*)vt)->v3(r30);
+    }
+    return r30;
+}
+
+extern "C" void* fn_8013DDA4(void* p, void* a, void* b);
+extern "C" void* fn_801348F4(void* p, void* a, void* b);
+extern "C" void* fn_8013B950(void* param_1, void* param_2, void* param_3) {
+    void* r31;
+    void* r30;
+    r31 = fn_8015A90C(0x8c);
+    if (r31 != 0) {
+        r31 = fn_8013DDA4(r31, param_3, param_2);
+    }
+    if (r31 == 0) {
+        return 0;
+    }
+    r30 = fn_8015A90C(0x38);
+    if (r30 != 0) {
+        r30 = fn_801348F4(r30, param_1, r31);
+    }
+    if (r30 == 0) {
+        return 0;
+    }
+    {
+        void* obj = *(void**)((u8*)r30 + 0x34);
+        if (obj != 0) {
+            ((void (*)(void*, void*))(*(void***)obj)[3])(obj, r30);
+        }
     }
     return r30;
 }
