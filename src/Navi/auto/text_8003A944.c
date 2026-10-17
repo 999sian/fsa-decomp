@@ -668,6 +668,15 @@ extern "C" void* fn_8004038C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern void* lbl_802BF104[];
+extern "C" void fn_80040410(void) {
+    extern void* lbl_802BF104[];
+    if (lbl_802BF104[2] != nullptr) {
+        ((VObj_800402B4*)lbl_802BF104[2])->m2(1);
+    }
+    lbl_802BF104[2] = nullptr;
+}
+
 extern "C" void* fn_80040464(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = lbl_80246A20;
