@@ -25,6 +25,11 @@ struct Vec8035A860 {
         return *this;
     }
 };
+extern "C" unsigned char sincosTable___5JMath[];
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" s32 fn_8035AE9C(u8* self, void* obj);
+extern "C" void fn_801F317C(u8* self, f32* out);
+extern "C" u8 fn_8023AAF8(s32 i, f32* box, s32 room, Vec8035A860* out);
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
