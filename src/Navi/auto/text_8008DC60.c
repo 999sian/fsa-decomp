@@ -1,5 +1,7 @@
 #include "types.h"
 #include "math.h"
+
+typedef struct NaviColor4 { u8 r, g, b, a; } NaviColor4;
 extern void* lbl_80289A14[];
 extern "C" char lbl_802C545C[];
 extern "C" char lbl_802BB0FC[];
@@ -784,6 +786,18 @@ extern "C" void* fn_800957BC(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" int fn_80095E00(u8* p, u8* c) {
+    u8 a = c[0];
+    u8 b = c[1];
+    u8 d = c[2];
+    u8 e = c[3];
+    p[0x148] = a;
+    p[0x149] = b;
+    p[0x14a] = d;
+    p[0x14b] = e;
+    return 1;
 }
 
 extern "C" void fn_80095FEC(void) {}
