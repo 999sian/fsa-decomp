@@ -505,6 +505,10 @@ extern "C" u8 fn_801049C8(void) {
 
 extern "C" void fn_801074D4(void) {}
 
+extern "C" u32 fn_80107EA0(u8* p) {
+    return (u32)__cntlzw(p[0x45b]) >> 5;
+}
+
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
     fn_8015FDA8(a, b);
 }
