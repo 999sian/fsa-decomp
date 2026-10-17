@@ -3,6 +3,8 @@
 
 extern "C" f32 sqrtf(f32 x);
 
+extern "C" f32 sqrtf(f32 x);
+
 extern "C" int fn_8022EA0C(int);
 extern "C" int fn_8023DE58(int);
 extern "C" u8 fn_80234950(int id = 0);
@@ -157,6 +159,45 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
     *outX = x;
     *outY = y;
     return id;
+}
+
+extern "C" void fn_8030B774(u8* p) {
+    int x;
+    int y;
+    f32 dx;
+    f32 dy;
+    f32 d2;
+    f32 len;
+
+    if (fn_8023F264(*(void**)(p + 0x288))) {
+        if (*(int*)(p + 0x28c) != fn_8023DE58(*(int*)(p + 0x288))) {
+            *(int*)(p + 0x28c) = fn_8023DE58(*(int*)(p + 0x288));
+            fn_8030B97C(p);
+        }
+        *(int*)(p + 0x2b4) = fn_8030B570(p, &x, &y);
+        if (*(int*)(p + 0x2b4) == *(int*)(p + 0x2b0)) {
+            *(int*)(p + 0x290) = x;
+            *(int*)(p + 0x294) = y;
+        } else {
+            dy = (f32)(y - *(int*)(p + 0x294));
+            dx = (f32)(x - *(int*)(p + 0x290));
+            d2 = dx * dx + dy * dy;
+            len = sqrtf(d2);
+            if (len <= 16.0f) {
+                *(int*)(p + 0x290) = x;
+                *(int*)(p + 0x294) = y;
+                *(int*)(p + 0x2b0) = *(int*)(p + 0x2b4);
+            } else {
+                if (d2 > 32.0f * FLT_EPSILON) {
+                    f32 inv = 1.0f / sqrtf(d2);
+                    dx *= inv;
+                    dy *= inv;
+                }
+                *(int*)(p + 0x290) = (int)(16.0f * dx + (f32)*(int*)(p + 0x290));
+                *(int*)(p + 0x294) = (int)(16.0f * dy + (f32)*(int*)(p + 0x294));
+            }
+        }
+    }
 }
 
 extern "C" int fn_8023DE58(int);
