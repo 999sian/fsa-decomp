@@ -72,18 +72,38 @@ extern "C" void fn_80111248(u8* self) {
 extern "C" void fn_801115C4(u8* self) {
     s32 iVar2;
     void* piVar1;
+    u8 b;
     iVar2 = fn_8002F2E0(0x27);
     if (iVar2 != 1) {
         if (self[0x11c] != 0) {
             self[0x11c]--;
         } else {
             self[0x11c] = 0x3c;
+            b = self[0x11c];
             piVar1 = *(void**)((u8*)lbl_802FF278 + 4);
             if (piVar1 != nullptr) {
-                ((void (*)(void*, u8))(*(void***)piVar1)[4])(piVar1, self[0x11c]);
+                void** vt = *(void***)piVar1;
+                ((void (*)(void*, u8))vt[4])(piVar1, b);
             }
             self[0x118] = 4;
         }
+    }
+}
+
+extern "C" void fn_80111648(u8* p) {
+    if (p[0x11c] == 0) {
+        (*(VObj_801116EC**)(p + 0x110))->m7(0xff);
+        (*(u8**)(p + 0x14))[0xb0] = 0;
+        p[0x11d] = 1;
+        lbl_802FF140 = 0;
+        p[0x11c] = 0x1e;
+        VObj_801116EC* obj = *(VObj_801116EC**)((u8*)lbl_802FF278 + 4);
+        if (obj != 0) {
+            obj->m1(p[0x11c]);
+        }
+        p[0x118] = 5;
+    } else {
+        p[0x11c]--;
     }
 }
 
@@ -98,6 +118,33 @@ extern "C" void fn_801116EC(u8* p) {
 
 extern "C" void fn_80111718(void)
 {
+}
+
+extern "C" s32 fn_8011171C(u8* self, s16 a, u8 b, u32 c, u32 mode) {
+    f32 f;
+    if (a < 0) {
+        return 0;
+    }
+    if (a > b) {
+        return 1;
+    }
+    f = fn_801118D8(self, b, a);
+    if (mode != 2) {
+        if (mode == 1) {
+            f = lbl_80301340 - f;
+        }
+        (*(VObj_801116EC**)(self + 0x110))->m7((int)((float)self[0x114] * f));
+    }
+    return 0;
+}
+
+extern "C" void fn_801117DC(u8* p) {
+    char* base = lbl_802B7CA0 + 0x1424;
+    if (p[0x11d] == 0) {
+        fn_80060794(base, base + 0xb4, base + 0xb8, p + 8);
+    } else {
+        fn_80060794(base, base + 0x204, base + 0x208, p + 8);
+    }
 }
 
 extern "C" void fn_80111B00(void* param_1) {
