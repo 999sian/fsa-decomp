@@ -117,6 +117,17 @@ extern "C" void fn_80030AE4(void* p) {
     *(unsigned char*)((char*)p + 0x34) = 0;
 }
 
+extern "C" void fn_80030B00(void* p) {
+    if (*(int*)((char*)lbl_802BB0FC + 0x420) != 0) {
+        return;
+    }
+    if (*(unsigned int*)((char*)lbl_802BB0FC + 0x40) & 2) {
+        return;
+    }
+    *(unsigned int*)((char*)lbl_802BB0FC + 0xf8) |= 0x100;
+    *(unsigned int*)((char*)p + 0x8) |= 0x8000;
+}
+
 extern "C" void fn_80031CBC(void* p) {
     *(void**)((char*)p + 0x38) = *(void**)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x40) |= 0x80000000;
