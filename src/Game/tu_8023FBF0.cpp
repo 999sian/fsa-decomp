@@ -452,8 +452,8 @@ inline s32 countSharing2(char* p) {
     return c;
 }
 inline s32 countSharing3(char* p) {
-    s32 linked;
     s32 me;
+    s32 linked;
     s32 c;
     s32 i;
     c = 0;
