@@ -1,4 +1,3 @@
-#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
@@ -104,4 +103,5 @@ extern "C" Actor* fn_8032742C(Actor* p, s16 n) {
 	return p;
 }
 
+void fn_803274A0(void) {}
 
