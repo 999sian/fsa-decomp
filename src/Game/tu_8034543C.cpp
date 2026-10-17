@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include <math.h>
 
 /* JSystem/JMath/JMath.h cannot be included here (its Vec clashes with Actor.h). */
 namespace JMath {
