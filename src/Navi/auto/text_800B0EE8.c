@@ -56,6 +56,8 @@ typedef void (NaviState_800B51F8::*NaviStateFn_800B51F8)();
 extern NaviStateFn_800B51F8 lbl_802876DC[];
 extern "C" void fn_800B7234(u8* p);
 extern "C" void fn_800B7448(u8* p);
+extern "C" s32 fn_800B9D60(u8* p, s32 idx, u8 max, s32 unused, s32 mode, f32 a, f32 b);
+extern f32 lbl_80300C88;
 extern "C" void fn_800B9754(char* self);
 extern "C" void fn_800B9588(u8* p);
 extern "C" void fn_800B96D8(char* p);
