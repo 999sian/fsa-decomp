@@ -866,9 +866,9 @@ extern "C" void* fn_80067F8C(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void fn_800680A4(void);
-extern "C" void fn_80067FE8(void) {
-    fn_800680A4();
+extern "C" s32 fn_800680A4(u8* self);
+extern "C" void fn_80067FE8(u8* self) {
+    fn_800680A4(self);
 }
 
 #pragma dont_inline on
