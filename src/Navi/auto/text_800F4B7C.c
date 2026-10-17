@@ -1140,12 +1140,14 @@ extern "C" s32 fn_801096BC(void* self, s16 a, u8 b, void* c, s32 d) {
 }
 
 extern "C" void fn_80109960(void) {
-    if (*(s8*)(lbl_802C5A84 + 0x4) >= 0) {
-        s32 n = *(s32*)(lbl_802C5A84 + 0x8) - 1;
-        *(s32*)(lbl_802C5A84 + 0x8) = n;
+    u8* p = (u8*)lbl_802C5A84;
+    s8 flag = p[0x4];
+    if ((s32)flag >= 0) {
+        s32 n = *(s32*)(p + 0x8) - 1;
+        *(s32*)(p + 0x8) = n;
         if (n == 0) {
             fn_800127A0(lbl_8029FDB4 + 0x4);
-            *(s8*)(lbl_802C5A84 + 0x4) = -1;
+            *(s8*)(p + 0x4) = -1;
         }
     }
 }
