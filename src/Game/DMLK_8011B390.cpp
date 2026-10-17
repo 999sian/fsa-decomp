@@ -17,6 +17,16 @@ extern "C" void fn_8010DF98(u8* this_);
 extern "C" void fn_8011B878(u8* this_, s32 id);
 extern "C" void fn_800FEB78(u8* this_, s32 flag);
 extern "C" f32 lbl_8053C858;
+
+struct DMLKResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* getRes(s32 type, char* name);
+};
 extern "C" void fn_8011CB5C(u8* this_) {
     fn_8010DF98(this_);
     *(s32*)(this_ + 0x234) = *(u32*)(this_ + 0x90) & 0xf;
