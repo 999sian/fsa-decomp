@@ -168,6 +168,17 @@ extern "C" void fn_800E71CC(u8* p) {
     *(u8*)(p + 0xa76) = 0;
 }
 
+extern "C" void fn_800E79EC(u8* p) {
+    if (*(u16*)(p + 0xa9c) != 0) {
+        *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
+    } else {
+        fn_8002F358(0xf2, 0);
+        *(u8*)(*(u8**)(p + 0x564) + 0xb0) = 1;
+        *(u16*)(p + 0xa9c) = (u8)lbl_802C57D4[0x64];
+        p[0xa76] = 0x21;
+    }
+}
+
 extern "C" void fn_800E7B7C(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
         *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
