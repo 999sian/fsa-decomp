@@ -112,4 +112,4 @@ extern "C" void* fn_80086880(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-
+extern "C" void fn_8000D6F4(void*);
