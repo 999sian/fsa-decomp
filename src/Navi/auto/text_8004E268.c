@@ -120,3 +120,40 @@ extern "C" void* fn_8004E7F4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern f32 lbl_80300158;
+extern f32 lbl_8030015C;
+extern f32 lbl_80300160;
+extern f32 lbl_80300164;
+extern f32 lbl_80300168;
+extern f32 lbl_8030016C;
+extern f32 lbl_80300170;
+extern f32 lbl_80300174;
+extern f32 lbl_80300178;
+extern f32 lbl_8030017C;
+extern f32 lbl_80300180;
+extern void* lbl_8024714C[];
+extern void* lbl_80222428[];
+extern "C" void fn_801E0D40(void*, void*, s32, s32);
+extern "C" void* fn_8004E83C(void** p, s16 param_2) {
+    if (p != 0) {
+        p[0] = lbl_8024714C;
+        fn_801E0D40(&p[0x34], (void*)fn_8004E71C, 0xb4, 2);
+        if (&p[0x30] != 0) {
+            p[0x30] = lbl_8024719C;
+        }
+        if (&p[0x18] != 0) {
+            p[0x18] = lbl_802471C4;
+        }
+        if (&p[2] != 0) {
+            p[2] = lbl_802471EC;
+        }
+        if (p != 0) {
+            p[0] = lbl_80222428;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
