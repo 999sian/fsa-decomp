@@ -8,6 +8,8 @@ extern f32 lbl_8053F394;
 extern f32 lbl_8053F398;
 extern f32 lbl_8053F39C;
 extern f32 lbl_8053F3A0;
+extern "C" u8 fn_801DA904(void* p);
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" s32 fn_801DD1AC(u8* this_) {
     s32 result = 0;
     if (!(*(u32*)(this_ + 0x230) & 0x1000)) {
