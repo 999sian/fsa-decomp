@@ -14,12 +14,9 @@ static inline void* PrtcSpawn(char* p, s32 id, s32 a) {
 }
 
 static inline void PrtcNotify(char* p) {
-    s32 phase = *(s32*)(p + 0x250);
-    if (phase == 6 || phase == 8) {
-        s32 code = 0x30074;
-        void* obj = *(void**)(p + 0x230);
-        ((void (*)(void*, s32*))(*(void***)((char*)obj + 8))[5])(obj, &code);
-    }
+    s32 code = 0x30074;
+    void* obj = *(void**)(p + 0x230);
+    ((void (*)(void*, s32*))(*(void***)((char*)obj + 8))[5])(obj, &code);
 }
 
 extern "C" void fn_801F0E34(void* this_, u32 code, u32 z);
