@@ -15,7 +15,7 @@ struct Vtable800D8248 {
 #include "JSystem/J3D/J3DTypes.h"
 struct Col3_800DDDD0 { u8 r, g, b; };
 struct Col4_800DDDD0 { u8 a; Col3_800DDDD0 c; };
-struct Ent_800DDDD0 { u8 pad[2]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
+struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
 
 struct Unk800DC290Src {
     virtual void m2() = 0;
@@ -2159,19 +2159,10 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
 }
 
 extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
-    u8 v1 = param_3[1];
-    param_1 = param_1 + param_2 * 8;
-    u8 v2 = param_3[2];
-    *(u8 *)(param_1 + 0x5a) = v1;
-    u8 v3 = param_3[3];
-    *(u8 *)(param_1 + 0x5b) = v2;
-    u8 v5 = param_3[5];
-    *(u8 *)(param_1 + 0x5c) = v3;
-    u8 v6 = param_3[6];
-    *(u8 *)(param_1 + 0x5e) = v5;
-    u8 v7 = param_3[7];
-    *(u8 *)(param_1 + 0x5f) = v6;
-    *(u8 *)(param_1 + 0x60) = v7;
+    Ent_800DDDD0 *e = &((Ent_800DDDD0 *)(param_1 + 0x58))[param_2];
+    Col4_800DDDD0 *s = (Col4_800DDDD0 *)param_3;
+    e->c0 = s[0].c;
+    e->c1 = s[1].c;
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
