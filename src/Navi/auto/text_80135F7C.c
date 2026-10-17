@@ -1301,6 +1301,15 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
     }
 }
 
+struct Base_802911A0 {
+    void* vt;
+    Base_802911A0() { vt = (void*)lbl_802911A0; }
+};
+struct Obj_80139DEC : Base_802911A0 {
+    u32 val;
+    Obj_80139DEC(u32 v) { vt = (void*)lbl_80292C80; val = v; }
+};
+
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
     u32* p = (u32*)param_1;
     p[0] = (u32)lbl_802911A0;
