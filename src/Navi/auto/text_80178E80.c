@@ -2356,6 +2356,8 @@ extern "C" void fn_8018A7B0(u8* self, void* p) {
     *(void**)(self + 0x144) = p;
 }
 
+extern "C" void* fn_8018A838(u8* p) { return *(void**)(p + 0x138); }
+
 extern "C" void fn_8018A840(VObj_80178E10* self, u8 flag) {
     int mode = 0;
     if (flag) {
