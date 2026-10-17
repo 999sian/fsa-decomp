@@ -30,7 +30,7 @@ extern "C" void fn_80194830(u32* a);
 extern "C" void* fn_8015AA60(u32 size, u32 align);
 extern "C" void* fn_8015A90C(u32 size);
 extern u32 lbl_802FF6E0;
-extern "C" f32 sqrtf(f32 x);
+f32 sqrtf(f32 x);
 struct VObj_801941F8 {
     virtual void vf0(void);
     virtual void vf1(void);
@@ -131,6 +131,30 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
         fn_8015AB1C(ptr);
     }
     return ptr;
+}
+
+extern "C" void fn_80193010(f32* m) {
+    f32 sx = (m[0] * m[0] + m[4] * m[4]) + m[8] * m[8];
+    f32 sy = (m[1] * m[1] + m[5] * m[5]) + m[9] * m[9];
+    f32 sz = (m[2] * m[2] + m[6] * m[6]) + m[10] * m[10];
+    if (sx > 0.0f) {
+        sx = __frsqrte(sx) * sx;
+    }
+    if (sy > 0.0f) {
+        sy = __frsqrte(sy) * sy;
+    }
+    if (sz > 0.0f) {
+        sz = __frsqrte(sz) * sz;
+    }
+    m[0] = sx;
+    m[1] = 0.0f;
+    m[2] = 0.0f;
+    m[4] = 0.0f;
+    m[5] = sy;
+    m[6] = 0.0f;
+    m[8] = 0.0f;
+    m[9] = 0.0f;
+    m[10] = sz;
 }
 
 extern "C" s32 fn_8019323C(f32 (*m)[4], f32* out) {
