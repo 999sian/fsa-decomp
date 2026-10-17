@@ -233,6 +233,30 @@ extern "C" void fn_80057B6C(void) {
     fn_8005C460();
 }
 
+extern "C" void fn_80057B9C(s32 param_1) {
+    s32 i = 0;
+    u8* p = lbl_802C05F0;
+    void fn_80058D50(void* p);
+    fn_8005C424();
+    do {
+        if (p[0x12] != 0) {
+            if (p[0x12] == 1) {
+                fn_80058D50(p);
+            } else {
+                p[0x13] = 3;
+                if (param_1 > 0) {
+                    *(s16*)(p + 0x10) = *(u16*)(p + 0xa) / param_1;
+                } else {
+                    *(s16*)(p + 0x10) = 65000;
+                }
+            }
+        }
+        i++;
+        p += 0x18;
+    } while (i < 0x10);
+    fn_8005C460();
+}
+
 extern u8 lbl_802FF0F8;
 extern u32 lbl_802FF0FC;
 extern "C" BOOL OSDisableInterrupts(void);
@@ -803,6 +827,22 @@ extern "C" void fn_8005C380(void) {
     lbl_802FF10C = 0;
     fn_801BFEBC(lbl_802C2D30, lbl_8027D780);
     fn_801BFFF0(lbl_802C2D30);
+}
+
+extern "C" void fn_8005C3CC(void) {
+    lbl_802FF110 = *(s32*)(lbl_802C2D30 + 0x8);
+    lbl_802FF114 = *(s32*)(lbl_802C2D30 + 0xc);
+    fn_801BFFF0(lbl_802C2D30);
+    if (lbl_802FF10C != 0) {
+        fn_8005C330(0, lbl_8027D790);
+    }
+}
+
+extern "C" void fn_8005C424(void) {
+    lbl_802FF10C = lbl_802FF10C + 1;
+    if (lbl_802FF10C == 1) {
+        fn_801BFEE8(lbl_802C2D30);
+    }
 }
 
 extern "C" void* lbl_802FF118;
