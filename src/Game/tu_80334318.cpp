@@ -167,16 +167,19 @@ extern "C" void fn_80334488(Actor* a) {
 
 extern "C" u16 fn_8022461C(s32 a);
 extern "C" s32 fn_80335688(Actor* p, s32 a, s32 b) {
-    s32 r = (u16)fn_8022461C(b);
-    if (*(s32*)((u8*)p + 0x230) != 3 && (r == 0xc || r == 3 || r == 0xe)) {
-        if (*(s32*)((u8*)p + 0x230) != 7) {
+    s32 st;
+    s32 r = fn_8022461C(b);
+    st = *(s32*)((u8*)p + 0x230);
+    r = (u16)r;
+    if (st != 3 && (r == 0xc || r == 3 || r == 0xe)) {
+        if (st != 7) {
             *(s32*)((u8*)p + 0x25c) = 0x1e;
         }
         *(s32*)((u8*)p + 0x230) = 7;
         return 0;
     }
-    if (r == 0 || r == 0x22) return 0;
-    return 1;
+    if (r != 0 && r != 0x22) return 1;
+    return 0;
 }
 
 extern "C" void fn_8033571C(char* p) {
