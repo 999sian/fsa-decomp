@@ -40,6 +40,10 @@ extern "C" void fn_800A77A0(u32* param_1, u8* param_2) {
     *param_1 = *(u32*)(param_2 + 0x148);
 }
 
+extern "C" void fn_800A77AC(u32* param_1, u8* param_2) {
+    *param_1 = *(u32*)(param_2 + 0x14c);
+}
+
 extern "C" void fn_800A8FC0(u8* p)
 {
     f32 z = lbl_80300BFC;
