@@ -1,4 +1,18 @@
 #include "types.h"
+
+extern "C" void fn_8017A4F8(void* p);
+extern "C" void fn_800127A0(void* p);
+
+struct VObj_800D3274 {
+    virtual void v0(s32 mode);
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+};
 struct VObjLerp {
     virtual void v0();
     virtual void v1();
