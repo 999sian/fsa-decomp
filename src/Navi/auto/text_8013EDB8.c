@@ -135,3 +135,15 @@ extern "C" void fn_80140128(s32 idx) {
     }
 }
 
+s64 fn_80140724(s32 idx, s64 value)
+{
+    s64 prev;
+
+    prev = *(s64*)((u8*)lbl_802C6A80 + idx * 0x100 + 0x30);
+    *(s64*)((u8*)lbl_802C6A80 + idx * 0x100 + 0x30) = value;
+    return prev;
+}
+extern char lbl_80293C28[];
+extern char lbl_80293C34[];
+extern "C" void fn_80007AB8(const char*, int, const char*, ...);
+extern "C" void fn_8013F620(s32, s32);
