@@ -21,7 +21,7 @@ void fn_8024F0E8(char*, s32);
 u8 fn_80251AEC(char*, s32);
 void fn_80258BBC(char*);
 void fn_80259660(char*);
-void fn_8025EB18(char*);
+bool fn_8025EB18(char*);
 void fn_8025F698(char*, u8);
 void fn_8026022C(char*);
 u8 fn_802604CC(char*);
@@ -442,7 +442,8 @@ extern "C" void fn_80263078(char* p) {
     fn_8028414C(p);
     if (U32(p, 0xd6c) == 0x4E495741 && U8(p, 0x441) == 0) {
         char* a = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
-        if (a != NULL && U8(a, 0x2a1) == 1) {
+        if (a != NULL && *(s8*)(a + 0x2a1) == 1) {
+            s32 id;
             s32 n = 2;
             pos.x = F32(p, 0x8);
             pos.y = F32(p, 0xc);
@@ -452,15 +453,18 @@ extern "C" void fn_80263078(char* p) {
                 } else {
                     pos.x -= lbl_80540154;
                 }
-                s32 id = S32(p, 0x3b4);
+                id = S32(p, 0x3b4);
                 char* base = fn_802D6A9C();
                 if (id < 8) {
                     base += 0xcc;
                 } else {
                     base += 0xdc;
                 }
-                if (pos.x >= F32(base, 0) || pos.y >= F32(base, 4) || pos.x >= F32(base, 8) ||
-                    pos.y >= F32(base, 0xc)) {
+                u8 inside = 0;
+                if (pos.x < F32(base, 0) && pos.y < F32(base, 4) && pos.x < F32(base, 8) && pos.y < F32(base, 0xc)) {
+                    inside = 1;
+                }
+                if (!inside) {
                     break;
                 }
                 u16 r = fn_802265FC(&pos, S32(p, 0x3b4));
