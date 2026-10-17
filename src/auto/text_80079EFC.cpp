@@ -37,7 +37,7 @@ public:
 
 extern char lbl_8045E0F8[];
 extern char lbl_8045E10C[];
-extern char lbl_8053B6D0[];
+extern char lbl_8053B6D0[3];
 
 extern void* lbl_80498BB0[];
 extern "C" void* fn_8007BC30(void* this_);
@@ -201,25 +201,34 @@ extern "C" void* fn_8007A7F0(void* this_, void* data, u32 compressedSize, void* 
     return data;
 }
 
-u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, u8* dst, u32 dstLength, int compression)
+u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* heap, int compression, u8** out)
 {
-    u32 result;
-    u32 size = (length + 0x1f) & ~0x1f;
-    u32 alignedDstLength = dstLength & ~0x1f;
+    u32 readSize;
+    u8* buffer;
+    u32 alignedLength = (length + 0x1f) & ~0x1f;
+    u32 expandSize;
+    u8 header[64];
 
-    if (compression == 0) {
-        if (size > alignedDstLength) {
-            size = alignedDstLength;
-        }
-        JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DEFAULT, alignedDstLength, NULL, -1, &result);
-        return result;
-    }
-    if (compression < 0 || compression >= 3) {
-        JUTException::panic_f(lbl_8045E0F8, 0x28f, lbl_8053B6D0, lbl_8045E10C);
+    switch (compression) {
+    case 0:
+        buffer = (u8*)JKRHeap::alloc(alignedLength, 0x20, heap);
+        JKRAram::aramToMainRam(aramAddr, buffer, alignedLength, EXPAND_SWITCH_DEFAULT, alignedLength, NULL, -1, NULL);
+        *out = buffer;
+        return length;
+    case 1:
+    case 2:
+        buffer = (u8*)(((u32)header + 0x1f) & ~0x1f);
+        JKRAram::aramToMainRam(aramAddr, buffer, 0x20, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL);
+        expandSize = (buffer[4] << 24) | (buffer[5] << 16) | (buffer[6] << 8) | buffer[7];
+        length = (expandSize + 0x1f) & ~0x1f;
+        buffer = (u8*)JKRHeap::alloc(length, 0x20, heap);
+        JKRAram::aramToMainRam(aramAddr, buffer, alignedLength, EXPAND_SWITCH_DECOMPRESS, length, heap, -1, &readSize);
+        *out = buffer;
+        return readSize;
+    default:
+        JUTException::panic_f(lbl_8045E0F8, 0x2c9, "%s", lbl_8045E10C);
         return 0;
     }
-    JKRAram::aramToMainRam(aramAddr, dst, size, EXPAND_SWITCH_DECOMPRESS, alignedDstLength, NULL, -1, &result);
-    return result;
 }
 
 extern "C" void* findPtrResource__10JKRArchiveCFPCv(void* this_, const void* resource);
