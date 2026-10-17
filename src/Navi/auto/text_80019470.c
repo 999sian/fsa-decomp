@@ -352,6 +352,19 @@ extern "C" s32 fn_80019C4C(void* param_1) {
     return 0;
 }
 
+extern "C" s32 fn_80019C9C(void* param_1) {
+    unsigned int p;
+    if (fn_8001CA1C(*(void**)((u8*)param_1 + 0x14)) == 0) {
+        p = fn_8001BBCC(*(int*)((u8*)param_1 + 0x14));
+        if (p == 0) {
+            return 5;
+        }
+        *(unsigned int*)((u8*)param_1 + 0x20) = p;
+        return 2;
+    }
+    return 0;
+}
+
 extern "C" s32 fn_80019CFC(u8* p) {
     fn_8001C008(*(void**)(p + 0x24));
     *(u32*)(p + 0x14) = fn_8001F26C((u32)fn_8001C010(), *(s16*)(p + 0x10), 0, 0, 0);
