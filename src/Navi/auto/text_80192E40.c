@@ -1,5 +1,4 @@
 #include "types.h"
-#include "JSystem/JMath/Inline.h"
 
 typedef struct {
     u32 a;
@@ -320,6 +319,30 @@ extern "C" void* fn_80193E60(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_80193EBC(u8* p, u32 n) {
+    u32* a;
+    int r;
+    a = (u32*)fn_8015A90C(0x10);
+    if (a != 0) {
+        a[0] = 0;
+        a[1] = 0;
+        a[2] = 0;
+        a[3] = 0;
+    }
+    *(u32**)(p + 0x20) = a;
+    a = *(u32**)(p + 0x20);
+    if (a == 0) {
+        r = 4;
+    } else {
+        a[3] = (n + 0x1f) & ~0x1f;
+        a[0] = (u32)fn_8015AA60(a[3], 0x20);
+        a[1] = (u32)fn_8015AA60(a[3], 0x20);
+        a[2] = 0;
+        r = 0;
+    }
+    return r;
+}
+
 extern "C" void fn_80193FFC(u32* p) {
     u32* q = (u32*)p[8];
     fn_801DF0BC(q[0], q[2]);
@@ -558,7 +581,7 @@ extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
 }
 
 extern "C" void fn_801951A0(u32* p, u32 param_2, u32 param_3) {
-    u8 buf[72];
+    u8 buf[48];
     fn_801C5DA8(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), (u8*)*(u32*)(lbl_802EE470 + 0x104) + (u16)param_3 * 0x30, buf);
     if (lbl_802FF6D0 != 0) {
         fn_80194BB0(buf);
