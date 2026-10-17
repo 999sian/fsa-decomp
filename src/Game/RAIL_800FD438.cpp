@@ -97,6 +97,9 @@ struct RailRing {
 
 extern f32 lbl_8053C0B0;
 extern f32 lbl_8053C0D8;
+extern f32 lbl_8053C0B8;
+extern f32 lbl_8053C0D0;
+extern "C" s32 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out);
 static inline s32 railGetId(RailRing* ring, u8 i);
 
 extern "C" void fn_800FD498(void) {}
