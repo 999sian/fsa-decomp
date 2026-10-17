@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+extern "C" u8 fn_801F6758(void* pos, u32 room, f32 r);
 
 extern char lbl_80471BB8[];
 extern u8* lbl_8053AAF8;
@@ -32,9 +33,87 @@ extern "C" Actor* fn_80337650(Actor* p, s16 n) {
     return p;
 }
 
+extern "C" void fn_803376B0(u8* this_) {
+    *(s32*)(this_ + 0x234) = *(s32*)(this_ + 0x234) - 1;
+    if (*(s32*)(this_ + 0x234) > 0) {
+        return;
+    }
+    *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) + 1;
+    switch (*(s32*)(this_ + 0x250)) {
+    case 0:
+    case 1:
+    case 5:
+    case 6:
+    case 7:
+    case 10:
+    case 11:
+    case 12:
+    case 13:
+    case 14: {
+        int mode = *(s32*)(this_ + 0x230);
+        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
+            *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
+        } else if (mode == 5) {
+            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
+            *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+        }
+        break;
+    }
+    case 2:
+    case 3: {
+        int mode = *(s32*)(this_ + 0x230);
+        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
+            *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
+        } else if (mode == 5) {
+            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
+            *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+        }
+        break;
+    }
+    case 4: {
+        int mode = *(s32*)(this_ + 0x230);
+        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
+            *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
+        } else if (mode == 5) {
+            if (*(s32*)(this_ + 0x248) < 2) {
+                *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
+                *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
+            } else {
+                *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 3;
+                *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+            }
+        }
+        break;
+    }
+    case 8:
+    case 9:
+    case 15: {
+        int mode = *(s32*)(this_ + 0x230);
+        if (mode == 0 || mode == 1 || mode == 3 || mode == 4) {
+            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
+            *(s32*)(this_ + 0x234) = ((s32*)*(char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[*(s32*)(this_ + 0x238)];
+        } else if (mode == 5) {
+            *(s32*)(this_ + 0x238) = *(s32*)(this_ + 0x238) & 1;
+            *(s32*)(this_ + 0x234) = ((s32*)((char**)(lbl_80471BB8 + *(s32*)(this_ + 0x250) * 16))[1])[*(s32*)(this_ + 0x238)];
+        }
+        break;
+    }
+    }
+
+    if (*(s32*)(this_ + 0x238) == 0) {
+        u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
+        *seed = *seed * 0x19660du + 0x3c6ef35fu;
+        u32 bits = (*seed >> 9) | 0x3f800000u;
+        *(s32*)(this_ + 0x234) += (s32)(lbl_80542058 * (*(f32*)&bits - lbl_8054205C));
+    }
+}
+
 extern "C" void fn_80337A08(u8* this_) {
-    s32 state = *(s32*)(this_ + 0x250);
     s32 prev = *(s32*)(this_ + 0x248);
+    s32 state = *(s32*)(this_ + 0x250);
 
     switch (state) {
     case 5:
