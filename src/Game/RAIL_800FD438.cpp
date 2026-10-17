@@ -3,6 +3,30 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
+
+// ---- rail node ring types
+
+typedef JGeometry::TVec3<f32> RailVec;
+
+struct RailNode {
+    u8 pad0[4];
+    s32 mId;
+    u8 pad8[4];
+    RailVec mPos;
+    u8 pad18[0x90 - 0x18];
+    u32 mFlags;
+};
+
+struct RailRing {
+    u8 m0;
+    u8 mDir;
+    u8 mSize;
+    u8 mCur;
+    RailNode* mNodes[1];
+};
+#define RAIL_TYPES_TOP
+
+extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out);
 #include "std/math.h"
 
 // ---- from Game/fn_800FD438_dtor.cpp
