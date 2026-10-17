@@ -57,8 +57,26 @@ struct Unk80458F9C {
     JAISound* m80;
 };
 
+struct Unk8045815COut {
+    f32 m0;
+    f32 m4;
+    f32 m8;
+    u32 mC;
+};
+
 struct Unk80458F04Sound {
-    char pad[0x18];
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual Unk80458408Obj* v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual Unk8045815COut* v10();
+    char pad[0x14];
     u32 mID;
     char pad1C[0x48 - 0x1C];
     JAISoundParamsMove mMove;
