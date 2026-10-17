@@ -16,6 +16,9 @@ extern "C" void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle);
 typedef struct MtxBox {
     Mtx m;
 } MtxBox;
+typedef struct MtxD {
+    f64 d[6];
+} MtxD;
 extern "C" void* fn_801902C0(void);
 
 extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
@@ -84,8 +87,8 @@ extern "C" void fn_80112AE8(u8* this_) {
     Vec v1;
     Vec v2;
     u8* e;
-    s32 idx;
     s32 n;
+    s32 idx;
     f32 z;
 
     *(f32*)(this_ + 0x248) = *(f32*)(this_ + 0x248) + lbl_8053C64C;
@@ -94,13 +97,21 @@ extern "C" void fn_80112AE8(u8* this_) {
     v1.y = lbl_8053C628;
     v1.z = lbl_8053C628;
     fn_8010F668(m1, (f32*)&v1, lbl_8053C650);
+    m2[2][3] = lbl_8053C628;
+    m2[1][3] = lbl_8053C628;
+    m2[0][3] = lbl_8053C628;
+    m2[2][2] = lbl_8053C628;
+    m2[1][2] = lbl_8053C628;
+    m2[0][2] = lbl_8053C628;
+    m2[2][1] = lbl_8053C628;
+    m2[1][1] = lbl_8053C628;
+    m2[0][1] = lbl_8053C628;
+    m2[2][0] = lbl_8053C628;
+    m2[1][0] = lbl_8053C628;
+    m2[0][0] = lbl_8053C628;
     v2.x = lbl_8053C628;
     v2.y = lbl_8053C628;
     v2.z = lbl_8053C644;
-    m2[2][3] = m2[1][3] = m2[0][3] = lbl_8053C628;
-    m2[2][2] = m2[1][2] = m2[0][2] = lbl_8053C628;
-    m2[2][1] = m2[1][1] = m2[0][1] = lbl_8053C628;
-    m2[2][0] = m2[1][0] = m2[0][0] = lbl_8053C628;
     fn_8010F668(m2, (f32*)&v2, *(f32*)(this_ + 0x248));
     PSMTXConcat(m1, m2, m1);
 
@@ -118,7 +129,7 @@ extern "C" void fn_80112AE8(u8* this_) {
         *(f32*)(e + 0x0) = z;
         *(f32*)(e + 0x4) = z;
         *(f32*)(e + 0x8) = z;
-        PSMTXCopy(m1, (f32(*)[4])(e + 0xc));
+        PSMTXCopy(m1, *(Mtx*)(e + 0xc));
         *(f32*)(e + 0x48) = lbl_8053C654;
         *(s32*)(e + 0x4c) = n;
         *(s32*)(e + 0x54) = 0;
@@ -169,7 +180,6 @@ extern "C" void fn_80112C9C(u8* this_) {
         } else if (v == p[14]) {
             fn_80112654(this_, 15);
         }
-    } else {
     }
 }
 
