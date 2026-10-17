@@ -26,7 +26,7 @@ public:
     virtual void s7();
     virtual void s8();
     virtual void s9();
-    virtual u32 s10();
+    virtual s32 s10();
     virtual void s11();
     virtual void s12();
     virtual void* s13(u64 tag);
