@@ -65,6 +65,12 @@ extern const f32 lbl_80540348, lbl_8054034C;
 extern const f32 lbl_80540368;
 extern const f32 lbl_8054035C, lbl_805403A0;
 u8 Player_GetField_0xce8(char* p);
+void fn_8027FA08(char*, f32*);
+bool fn_80275D9C(char*);
+f32 fn_8022C6AC(s32);
+s32 fn_8023DE58(s32);
+void fn_8027EEB4(char*);
+void fn_80261480(char*);
 void fn_8027E5BC(char* p, f32 f) {
     s32 area;
     if (!Player_GetField_0xce8(p)) {
@@ -124,13 +130,14 @@ void fn_8027EB04(char* p) {
         }
         if (fn_802486A0(p) == 3 && fn_80248970(p) >= 2) {
             s32 base = S32(p, 0x3b4);
-            if (U8(fn_802D6A9C(), base + 0x131df) != 0) {
-                S32(p, 0x3dc) = lbl_8046C0B8[S32(p, 4)];
-                S32(p, 0x3e8) = lbl_8046C0B8[S32(p, 4)];
-                return;
+            s32 v;
+            if (U8((char*)fn_802D6A9C() + 0x10000 + base, 0x31df) != 0) {
+                v = lbl_8046C0B8[S32(p, 4)];
+            } else {
+                v = lbl_8046C0C8[S32(p, 4)];
             }
-            S32(p, 0x3dc) = lbl_8046C0C8[S32(p, 4)];
-            S32(p, 0x3e8) = lbl_8046C0C8[S32(p, 4)];
+            S32(p, 0x3dc) = v;
+            S32(p, 0x3e8) = v;
             return;
         }
         if (Player_IsLinked(p) && fn_802486A0(p) != 5 && fn_802486A0(p) != 4) {
@@ -138,6 +145,47 @@ void fn_8027EB04(char* p) {
             S32(p, 0x3e8) = fn_80230B70(Player_GetLinkTargetIndex(p));
             return;
         }
+    }
+    if (fn_80246B10(p, 2) != 0) {
+        if (fn_80246B10(p, 8) == 0) {
+            if (fn_80246B10(p, 4) == 0) {
+                S32(p, 0x3dc) = 0;
+                S32(p, 0x3e8) = 0;
+            } else {
+                if (S32(p, 0x3dc) != 0 && S32(p, 0x3dc) != 2) {
+                    S32(p, 0x3dc) = 0;
+                }
+                S32(p, 0x3e8) = 4;
+            }
+        } else {
+            if (S32(p, 0x3dc) != 0 && S32(p, 0x3dc) != 3) {
+                S32(p, 0x3dc) = 0;
+            }
+            S32(p, 0x3e8) = 6;
+        }
+    } else if (fn_80246B10(p, 1) != 0) {
+        if (fn_80246B10(p, 8) == 0) {
+            if (fn_80246B10(p, 4) == 0) {
+                S32(p, 0x3dc) = 1;
+                S32(p, 0x3e8) = 1;
+            } else {
+                if (S32(p, 0x3dc) != 1 && S32(p, 0x3dc) != 2) {
+                    S32(p, 0x3dc) = 1;
+                }
+                S32(p, 0x3e8) = 5;
+            }
+        } else {
+            if (S32(p, 0x3dc) != 1 && S32(p, 0x3dc) != 3) {
+                S32(p, 0x3dc) = 1;
+            }
+            S32(p, 0x3e8) = 7;
+        }
+    } else if (fn_80246B10(p, 8) != 0) {
+        S32(p, 0x3dc) = 3;
+        S32(p, 0x3e8) = 3;
+    } else if (fn_80246B10(p, 4) != 0) {
+        S32(p, 0x3dc) = 2;
+        S32(p, 0x3e8) = 2;
     }
 }
 
@@ -269,19 +317,21 @@ void fn_80280B30(char* p) {
         return;
     }
     if (U8(PTR(p, 0xbf0), 0xb7) != 0) {
-        if (F32(p, 0x10) <= lbl_80540360) {
+        if (F32(p, 0x10) > lbl_80540360) {
+            if (!fn_80246B10(p, 0x40)) {
+                f32 before = PSVECMag((JGeometry::TVec3<f32>*)(p + 0x368));
+                F32(p, 0x368) += lbl_805403A4 * (F32(p, 0x38c) * fn_8022C82C(S32(p, 0x4)));
+                F32(p, 0x36c) += lbl_805403A4 * (F32(p, 0x390) * -fn_8022C76C(S32(p, 0x4)));
+                if (PSVECMag((JGeometry::TVec3<f32>*)(p + 0x368)) < before) {
+                    fn_8024F0E8(p, 0x20059);
+                }
+            }
+        } else {
             F32(p, 0x368) = lbl_80540360;
             F32(p, 0x36c) = lbl_80540360;
-        } else if (!fn_80246B10(p, 0x40)) {
-            f32 before = VEC(p, 0x368).length();
-            F32(p, 0x368) += lbl_805403A4 * (F32(p, 0x38c) * fn_8022C82C(S32(p, 0x4)));
-            F32(p, 0x36c) += lbl_805403A4 * (F32(p, 0x390) * -fn_8022C76C(S32(p, 0x4)));
-            if (VEC(p, 0x368).length() < before) {
-                fn_8024F0E8(p, 0x20059);
-            }
         }
         F32(p, 0x370) = lbl_80540360;
-        f32 t = VEC(p, 0x368).length() - lbl_805403A8;
+        f32 t = PSVECMag((JGeometry::TVec3<f32>*)(p + 0x368)) - lbl_805403A8;
         if (t < lbl_80540360) {
             t = lbl_80540360;
         } else if (t < lbl_80540378) {
