@@ -24,6 +24,10 @@ extern "C" void fn_8042CD24();
 extern "C" s32 fn_8042BF54(u8* info, void* h);
 extern void* lbl_8053AE28;
 extern void* lbl_8053AE34;
+extern void* lbl_8053AE20;
+extern void* lbl_8053AE24;
+extern void* lbl_8053AE2C;
+extern void* lbl_8053AE30;
 
 static inline void THPHuffFill(s32 off, s32 idx, s32 dst) {
     u8* base = lbl_8053AE74;
