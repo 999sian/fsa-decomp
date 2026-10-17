@@ -13,3 +13,4 @@ extern "C" void fn_80114664(void) {
     __register_global_object(p + 0x54, (void*)fn_8000CEC4, p + 0x48);
     __register_global_object(fn_80111CDC(p + 0x6c), (void*)fn_8011461C, p + 0x60);
 }
+__declspec(section ".ctors") void (*lbl_801F0CD4)(void) = fn_80114664;
