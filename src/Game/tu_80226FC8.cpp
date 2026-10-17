@@ -17,12 +17,54 @@ extern void* lbl_8046ACB8[];
 extern f32 lbl_8053FF74;
 extern f32 lbl_8053FF84;
 extern f32 lbl_8053FF88;
+extern void* lbl_8053AC98;
+extern "C" u8 fn_8023EFEC(s32 idx);
+extern "C" u32 fn_8023EEB4(s32 idx);
+extern "C" s32 fn_8023EF50(s32 idx);
+extern "C" char* fn_801F666C(void* mgr, s32 id);
+extern "C" void fn_802A3948(void* mgr, f32* pos, s32 idx, u32 room, s32 n);
+extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 s32 fn_801CD664(s32 arg);
 void fn_802F6CF4(void* obj, f32* pos, void* res, u8* blk);
+void fn_802F6CF4(void* obj, FsaVec3* pos, void* res, u8* blk);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
+    s32 found = -1;
+    s32 room = *(s32*)((u8*)this_ + 0x4);
+    u8 flag = ((u8*)fn_802D6A9C())[room + 0x131df];
+    s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+    for (s32 i = 0; i < count; i++) {
+        u8* a = (u8*)(*(void**)((u8*)fn_801F856C() + i * 4 + 8));
+        if (a == 0 || a[0x11c] == 0 || *(s32*)(a + 0x4) != room || *(s32*)(a + 0x198) == handle) {
+            continue;
+        }
+        if (flag == 0) {
+            f32 dz = *(f32*)((u8*)this_ + 0x14) - *(f32*)(a + 0x14);
+            if (dz < 0.0f) dz = -dz;
+            if (dz > eps) {
+                continue;
+            }
+            found = *(s32*)(a + 0x198);
+            break;
+        }
+        for (u32* t = types; *t != 0x4e554c4c; t++) {
+            if (*t == *(u32*)(a + 0x1a0)) {
+                found = *(s32*)(a + 0x198);
+                break;
+            }
+        }
+        if (found >= 0) {
+            break;
+        }
+    }
+    return found;
+}
+
 extern "C" void fn_80227CE8(void* this_) {
-    u8 blk[0x3c];
-    f32 save[3];
     f32 d[3];
+    f32 save[3];
+    u8 blk[0x3c];
     u8 i;
 
     if ((*(s32*)((u8*)this_ + 0x90) & 0x7f) == 0x20 && *((u8*)this_ + 0x255) == 0) {
