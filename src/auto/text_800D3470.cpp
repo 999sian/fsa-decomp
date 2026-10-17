@@ -581,6 +581,26 @@ void J3DTevBlock1::initialize()
 	mTexNoOffset = 0;
 }
 
+void J3DTevBlock2::initialize()
+{
+	mTexIndices[0] = 0xffff;
+	mTexIndices[1] = 0xffff;
+	mStageNum = 1;
+	mStages[0].mTevColorOp = 0xc0;
+	mStages[0].mTevColorAB = 0xc1;
+	mStages[1].mTevColorOp = 0xc2;
+	mStages[1].mTevColorAB = 0xc3;
+	mKColorSels[0] = 0xc;
+	mKColorSels[1] = 0xc;
+	mKAlphaSels[0] = 0x1c;
+	mKAlphaSels[1] = 0x1c;
+	for (int i = 0; i < 3; i++) {
+		mColors[i] = j3dDefaultTevColor;
+	}
+	mTexNoOffset = 0;
+	mRegOffset = 0;
+}
+
 void J3DTevBlock4::initialize()
 {
 	mTexIndices[0] = 0xffff;
