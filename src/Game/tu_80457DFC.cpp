@@ -181,6 +181,7 @@ extern "C" void fn_80457E54(u8* this_, u8 flag) {
         if (obj != NULL) {
             f32* p = ((Unk80457E54Vt*)obj)->v8();
             if (p != NULL) {
+                f32 d;
                 u32 n = lbl_8053A26C;
                 f32 v = lbl_8053A268;
                 if (n == 0) {
@@ -189,7 +190,7 @@ extern "C" void fn_80457E54(u8* this_, u8 flag) {
                     *(u32*)(p + 3) = 0;
                     p[2] = lbl_80543EB0;
                 } else {
-                    f32 d = lbl_8053A268 - p[0];
+                    d = v - p[0];
                     *(u32*)(p + 3) = n;
                     f32 e = (f32)*(u32*)(p + 3);
                     p[1] = d / e;
@@ -361,8 +362,9 @@ extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
     if (obj != NULL && param_2 == 0x100001a) {
         Unk80458408Obj* bank = obj->v4();
         if (bank != NULL) {
+            s32 i;
             BOOL enabled = OSDisableInterrupts();
-            for (s32 i = 0; i < 0x10; i++) {
+            for (i = 0; i < 0x10; i++) {
                 JASTrack* track = bank->v7(i);
                 if (track != NULL) {
                     if (param_3 != 0) {
