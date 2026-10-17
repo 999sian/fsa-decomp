@@ -1039,6 +1039,15 @@ extern "C" void* fn_80096D8C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800C719C(void* p);
+extern "C" void fn_80096E48(char* param_1) {
+    fn_800C719C(*(void**)(param_1 + 0x27c));
+    fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x27c) + 0x8d));
+    if (*(*(u8**)(param_1 + 0x27c) + 0x8c) != 0) {
+        param_1[0x2a5] = 4;
+    }
+}
+
 extern "C" void fn_80096F08(void) {}
 
 extern "C" void fn_8009702C(NaviState_8009E6F0* p) {
