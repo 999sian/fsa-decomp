@@ -1,7 +1,6 @@
 #include "Game/esd/types.h"
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
-#include "Game/SinitPoolChain.h"
 
 
 extern "C" void fn_802A3948(void* mgr, void* pos, s32 player, u32 room, s32 id);
