@@ -730,9 +730,7 @@ extern "C" void fn_80118BD0(void* p, s32 x);
 extern "C" void* fn_80177D24(char* self, u64 id);
 extern "C" void* fn_80179E80(char* self, u32 param_2, u64 id) {
     void* result = 0;
-    if (id != 0) {
-        result = fn_80177D24(self, id);
-    }
+    result = (id == (u64)result) ? result : fn_80177D24(self, id);
     return result;
 }
 
