@@ -23,6 +23,12 @@ extern f64 lbl_80300D90;
 extern char lbl_802881B8[];
 extern "C" void fn_800C4B50(void) {}
 
+extern "C" void fn_800C55B8(u8* param_1, u8 param_2) {
+    if (param_2 != 0) {
+        param_1[0x37] = param_2;
+    }
+}
+
 extern "C" void fn_800C576C(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
