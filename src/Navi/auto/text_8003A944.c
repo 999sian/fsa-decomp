@@ -472,6 +472,31 @@ extern "C" void* fn_80040628(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" s32 fn_800410BC(void) {
+    if (lbl_802FF060 == 0) {
+        lbl_802FF060++;
+        lbl_802FEF5C = lbl_802FFDD4;
+    } else if (lbl_802FF060 != -1) {
+        lbl_802FEF5C = lbl_802FFDD4;
+        if (*(s32*)(lbl_802BB0FC + 0xf4) == 0x27 && lbl_802FF05C != fn_80041190) {
+            if (lbl_802FF05C != 0) {
+                lbl_802FF060 = -1;
+                lbl_802FF05C(0);
+            }
+            lbl_802FF05C = fn_80041190;
+            lbl_802FF060 = 0;
+            lbl_802FF062 = 0;
+            lbl_802FF064 = 0;
+            lbl_802FF066 = 0;
+            lbl_802FF068 = 0;
+            lbl_802FF06C = lbl_802FFDD4;
+            lbl_802FF070 = lbl_802FFDD4;
+            lbl_802FF05C(0);
+        }
+    }
+    return 1;
+}
+
 extern "C" void fn_800415DC(void) {}
 
 extern "C" void fn_800415E0(void) {}
