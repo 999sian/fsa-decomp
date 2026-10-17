@@ -4,6 +4,24 @@
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
 
+namespace JMessage {
+struct TControl {
+    void reset();
+    bool setMessageCode(u16, u16);
+    void* mVtbl;
+    void* mBaseProcSeq;
+    void* mBaseProcRender;
+    u16 mMessageCode;
+    u16 mMessageIndex;
+    void* mResourceCache;
+};
+}
+
+struct Tu80390818_Proc {
+    u8 pad0[0x8];
+    void* m08;
+};
+
 // ---- small accessors (0x80390818-0x80390EBC) ----
 struct Tu80390818_Sub14 {
     u8 pad0[0x2D0];
@@ -142,9 +160,12 @@ extern "C" u8* fn_801F666C(void* mgr, s32 id);
 extern "C" u8 fn_802EB27C(u8* actor);
 
 extern "C" s32 fn_803908D0(Tu80390818* t) {
+    s32 off = 0;
+    s32 i = 0;
     s32 id;
-    for (s32 i = 0; i < 4; i++) {
-        id = t->m48->m180[i];
+    Tu80390818* p = t;
+    for (; i < 4; i++, off += 4) {
+        id = *(s32*)((u8*)p->m48 + 0x180 + off);
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
@@ -152,9 +173,9 @@ extern "C" s32 fn_803908D0(Tu80390818* t) {
                     return 0;
                 }
             }
-            t->m48->m180[i] = -1;
+            *(s32*)((u8*)p->m48 + 0x180 + off) = -1;
         }
-        id = t->m4C->m180[i];
+        id = *(s32*)((u8*)p->m4C + 0x180 + off);
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
@@ -162,7 +183,7 @@ extern "C" s32 fn_803908D0(Tu80390818* t) {
                     return 0;
                 }
             }
-            t->m4C->m180[i] = -1;
+            *(s32*)((u8*)p->m4C + 0x180 + off) = -1;
         }
     }
     return 1;
@@ -304,6 +325,7 @@ extern "C" void fn_80390E68(Tu80390818* t) {
 }
 
 extern "C" void fn_803913E0(Tu80390818* t) {
+    s32 i;
     t->m08 = 0;
     t->m25 = 0;
     t->m26 = 0;
@@ -313,7 +335,7 @@ extern "C" void fn_803913E0(Tu80390818* t) {
     t->m14 = 0;
     t->m42 = 0;
     t->m43 = 0;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         s32 id = t->m48->m180[i];
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
@@ -338,6 +360,7 @@ extern "C" void fn_803913E0(Tu80390818* t) {
 }
 
 extern "C" void fn_80391678(Tu80390818* t) {
+    s32 id;
     t->m08 = 0;
     t->m20 = 0;
     t->m24 = 0;
@@ -363,7 +386,7 @@ extern "C" void fn_80391678(Tu80390818* t) {
         lbl_8053AD78->mED = 0;
     }
     for (s32 i = 0; i < 4; i++) {
-        s32 id = t->m48->m180[i];
+        id = t->m48->m180[i];
         if (id >= 0) {
             if (Tu80390818_isShared() == true) {
                 u8* a = fn_801F666C(fn_801F856C(), id);
