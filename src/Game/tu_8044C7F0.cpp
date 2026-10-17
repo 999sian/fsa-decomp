@@ -12,6 +12,22 @@ extern void* lbl_8053AF40;
 extern f32 lbl_80543DF8;
 extern f32 lbl_80543DFC;
 extern "C" void fn_80402E08(void*, f32, f32);
+struct UlPane {
+    virtual void v08();
+    virtual void v0c();
+    virtual void move(f32, f32);
+    virtual void v14();
+    virtual void v18();
+    virtual void v1c();
+    virtual void v20();
+    virtual void setAlpha(u32);
+    virtual void v28();
+    virtual void v2c();
+    virtual void v30();
+    virtual void v34();
+    virtual void v38();
+    virtual UlPane* search(u32, u32, u32);
+};
 
 extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
