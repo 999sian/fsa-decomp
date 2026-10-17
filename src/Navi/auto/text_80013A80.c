@@ -199,22 +199,23 @@ extern "C" void fn_80013FC0(void* p) {
 }
 
 extern "C" void fn_8001404C(void* p) {
-    Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
-    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == '(') {
-        fn_8012495C(lbl_802FF370, self->unk50, &self->pad2c, fn_80013C80, self);
+    if (fn_80124AF4(lbl_802FF370, ((Unk80013DA0*)p)->unk50, buf) == 0 && (u32)buf[0] == 0x28) {
+        fn_8012495C(lbl_802FF370, ((Unk80013DA0*)p)->unk50, (u8*)p + 0x2c, fn_80013C80, p);
     } else {
-        fn_80124820(lbl_802FF370, self->unk50, fn_80013C14, self);
+        fn_80124820(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013C14, p);
     }
 }
 
 extern "C" void fn_80014160(void* p) {
+    Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
-    if (fn_80124AF4(lbl_802FF370, ((Unk80013DA0*)p)->unk50, buf) == 0 && buf[0] == 0x20) {
-        ((Unk80013DA0*)p)->unk28 = lbl_802FB958;
-        fn_80124A04(lbl_802FF370, ((Unk80013DA0*)p)->unk50, &((Unk80013DA0*)p)->unk28, fn_80013CC8, p);
+    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == 0x20) {
+        u32* dst = &self->unk28;
+        *dst = lbl_802FB958;
+        fn_80124A04(lbl_802FF370, self->unk50, dst, fn_80013CC8, self);
     } else {
-        fn_80124820(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013C14, p);
+        fn_80124820(lbl_802FF370, self->unk50, fn_80013C14, self);
     }
 }
 
