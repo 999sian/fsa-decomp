@@ -3,6 +3,17 @@
 #include "types.h"
 extern "C" void fn_8018DEF0(void* p, u16 id, u8* out);
 extern "C" void fn_80178BFC(u8* self, void* arg);
+struct NaviAnmTbl_8018DE28 { u16 count; u16 offset; u8 pad[4]; };
+struct NaviAnmEnt_8018DE28 { u8 pad[4]; u32 value; };
+struct NaviAnm_8018DE28 {
+    u8 pad0[8];
+    f32 frame;
+    u8 pad1[4];
+    u16* values;
+    NaviAnmTbl_8018DE28* table;
+    u8 pad2[0x18];
+    NaviAnmEnt_8018DE28* entries;
+};
 struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
 struct VObj_8005E8B8 {
     virtual void v0();
@@ -2683,6 +2694,25 @@ extern "C" u32 fn_8018DD64(u8* p, u32 param_2) {
         n = (*(u16**)(p + 0x10))[e0 + e1 - 1];
     }
     return *(u32*)(base + n * 8);
+}
+
+extern "C" u32 fn_8018DE28(u8* self, u16 idx) {
+    u16 v;
+    u8* entries = *(u8**)(self + 0x30);
+    if (entries == 0) {
+        return 0;
+    }
+    f32 frame = *(f32*)(self + 0x8);
+    u8* tbl = *(u8**)(self + 0x14);
+    u16 count = *(u16*)(tbl + idx * 8);
+    if (frame < 0.0f) {
+        v = (*(u16**)(self + 0x10))[*(u16*)(tbl + idx * 8 + 2)];
+    } else if (frame >= count) {
+        v = (*(u16**)(self + 0x10))[count + *(u16*)(tbl + idx * 8 + 2) - 1];
+    } else {
+        v = (*(u16**)(self + 0x10))[(s32)frame + *(u16*)(tbl + idx * 8 + 2)];
+    }
+    return *(u32*)(entries + v * 8 + 4);
 }
 
 extern "C" void fn_8018DEF0(void* self, u16 param_2, u8* param_3) {
