@@ -206,3 +206,13 @@ extern "C" void fn_8032D660(void* this_) {
 #define NULL 0
 #define unknown jsys_unknown
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+extern "C" s32 fn_802D6A9C(void);
+extern "C" u8 fn_8023A51C(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" f32* fn_8023A478(s32 i);
+extern "C" s32 fn_8023A240(void);
+extern "C" u8 fn_801F2618(void* this_, void* pos, s32 flag);
+extern const f32 lbl_80541DB0;
+extern const f32 lbl_80541DB8;
+extern const f32 lbl_80541DBC;
+extern const f32 lbl_80541DC0;
