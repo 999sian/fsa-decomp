@@ -50,6 +50,14 @@ extern "C" void fn_8002F358(s32 a, s32 b);
 extern "C" void fn_800EBD88(char* p);
 extern "C" void fn_800589CC(s32 a);
 extern "C" s32 fn_800E6DA4(void* p);
+extern "C" void fn_800D7A08(u8* p) {
+    fn_800ED5AC(p, *(s16*)(p + 0xb12), (u8)lbl_802C57D4[0x10], 0, 0, *(f32*)(lbl_802C57D4 + 0xc), lbl_80301058);
+    (*(u8**)(p + 0x858))[0xb0] = 0;
+    fn_800ED6C4(p, *(s16*)(p + 0xb12), lbl_802C57D4[0x18], 0, 0, *(f32*)(lbl_802C57D4 + 0x20), lbl_80301058);
+    (*(u8**)(p + 0x9c8))[0xb0] = 0;
+    (*(u8**)(p + 0x9d8))[0xb0] = 0;
+}
+
 extern "C" BOOL fn_800DDA6C(void* p, u8* src) {
     u8* c = (u8*)p;
     u8 a;
@@ -223,6 +231,7 @@ extern "C" void fn_800E5458(u8* p) {
     }
 }
 
+#pragma use_lmw_stmw off
 extern "C" void fn_800E560C(u8* p) {
     u8* q = p;
     s32 i;
@@ -237,7 +246,7 @@ extern "C" void fn_800E560C(u8* p) {
     }
     p[0x3bd] = 0;
 }
-
+#pragma use_lmw_stmw reset
 extern "C" void fn_800E61E8(u8* p) {
     if (*(u16*)(p + 0xa9c) != 0) {
         *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
@@ -269,11 +278,9 @@ extern "C" void fn_800E6A4C(void* param_1) {
     *(u8*)((u8*)param_1 + 0xa76) = 0x2a;
 }
 
-extern "C" void fn_800E6A80(void* param_1) {
-    u8* p = (u8*)param_1;
-    s16 v = *(s16*)(p + 0xa9c);
-    if (v != 0) {
-        *(s16*)(p + 0xa9c) = v - 1;
+extern "C" void fn_800E6A80(u8* p) {
+    if (*(u16*)(p + 0xa9c) != 0) {
+        *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
     } else if (fn_800EE044() != 0) {
         fn_8002F358(0xa5, 0);
         p[0xb11] = 1;
@@ -317,14 +324,12 @@ extern "C" void fn_800E72E4(u8* p) {
 
 extern "C" void fn_800E7364(u8* p) {
     if (p[0x4d0] != 0) {
-        u8* q = *(u8**)(p + 0x4c8);
         *(s32*)(p + 0x4cc) = *(s32*)(p + 0x4cc) + 1;
-        s16 t = *(s16*)(q + 6);
+        s16 t = *(s16*)(*(u8**)(p + 0x4c8) + 6);
         if (*(s32*)(p + 0x4cc) >= t) {
             *(s32*)(p + 0x4cc) = *(s32*)(p + 0x4cc) - t;
         }
-        f32 f = (f32)*(s32*)(p + 0x4cc);
-        *(f32*)(*(u8**)(p + 0x4c8) + 8) = f;
+        *(f32*)(*(u8**)(p + 0x4c8) + 8) = (f32)*(s32*)(p + 0x4cc);
         fn_8017A4F8(*(void**)(p + 0x14));
     }
 }
