@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" char lbl_804A7F38[];
@@ -37,4 +38,64 @@ extern "C" void fn_802A6AAC(Actor* p, s32 player) {
 }
 
 extern "C" void fn_802A6BC0(void) {}
+
+extern f32 lbl_80540804;
+extern f32 lbl_80540808;
+extern f32 lbl_8054080C;
+extern f32 lbl_80540810;
+extern "C" void fn_802A7978(Actor* p) {
+    u8* base = (u8*)p;
+    f32 k;
+    f32 c;
+    f32 d;
+    s32 v;
+
+    *(u32*)(base + 0x238) = ((*(u32*)(base + 0x90) >> 0x16) & 0x1f) + 1;
+    *(u32*)(base + 0x23c) = ((*(u32*)(base + 0x90) >> 0x11) & 0x1f) + 1;
+    *(u32*)(base + 0x240) = *(u32*)(base + 0x90) & 0x3e0;
+    *(u32*)(base + 0x234) = *(u32*)(base + 0x90) & 0x1f;
+    *(s32*)(base + 0x264) = (*(u32*)(base + 0x90) >> 0xc) & 0x1f;
+    if (*(s32*)(base + 0x264) == 0) {
+        *(s32*)(base + 0x264) = -1;
+    }
+    *(u32*)(base + 0x25c) = *(u32*)(base + 0x90) >> 0x1b;
+    if (*(s32*)(base + 0x234) == 8 && *(s32*)(base + 0x240) == 0) {
+        *(s32*)(base + 0x240) = 0x3c;
+    }
+    v = *(s32*)(base + 0x240);
+    k = lbl_80540804;
+    *(s32*)(base + 0x24c) = v;
+    *(f32*)(base + 0xc) = *(f32*)(base + 0xc) + k;
+    *(f32*)(base + 0x10) = *(f32*)(base + 0x10) + k;
+    if (*(s32*)(base + 0x234) == 2 || *(s32*)(base + 0x234) == 3) {
+        d = lbl_8054080C;
+        c = lbl_80540808;
+        *(f32*)(base + 0x60) = c;
+        *(f32*)(base + 0x64) = c;
+        *(f32*)(base + 0x68) = d;
+        *(f32*)(base + 0x6c) = d;
+    } else if (*(s32*)(base + 0x234) == 7) {
+        f32 a = lbl_80540810 * (f32)*(s32*)(base + 0x238);
+        f32 b = lbl_80540810 * (f32)*(s32*)(base + 0x23c);
+        *(f32*)(base + 0x60) = -a;
+        *(f32*)(base + 0x64) = -b;
+        *(f32*)(base + 0x68) = a;
+        *(f32*)(base + 0x6c) = b;
+    } else {
+        d = lbl_8054080C;
+        c = lbl_80540808;
+        *(f32*)(base + 0x60) = c;
+        *(f32*)(base + 0x64) = c;
+        *(f32*)(base + 0x68) = d;
+        *(f32*)(base + 0x6c) = d;
+    }
+    *(s32*)(base + 0x248) = 0;
+    if (*(s32*)(base + 0x234) == 4 || *(s32*)(base + 0x234) == 7) {
+        *(s32*)(base + 0x230) = 2;
+    } else {
+        *(s32*)(base + 0x230) = 1;
+    }
+    *(s32*)(base + 0x250) = -1;
+    *(s32*)(base + 0x260) = -1;
+}
 
