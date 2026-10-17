@@ -198,6 +198,27 @@ struct Unk80133ABCArr {
     Unk80133ABCElem* m4;
     s32 m8;
 };
+class Unk80133ABCCb {
+public:
+    virtual void vf0(void* list, f32 v);
+};
+struct Unk80133ABCItem {
+    f32 m0;
+    s32 m4;
+    void (*m8)(void* elem, f64 v);
+    f32 mC;
+    Unk80133ABCCb* m10;
+};
+class Unk80133ABCMgr {
+public:
+    virtual void vf0();
+    virtual void vf1();
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4(void* owner, u32 n);
+    Unk80133ABCItem* m4;
+    s32 m8;
+};
 extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
@@ -226,6 +247,7 @@ extern "C" void* fn_8011F290(void)
 extern "C" void fn_8011F304(u8* p, s32 x, s32 y, s32 w, s32 h) {
     s32 row = 0;
     s32 i;
+    s32 temp_r5;
     u32 ctr;
     s16* dst;
 
@@ -240,13 +262,14 @@ extern "C" void fn_8011F304(u8* p, s32 x, s32 y, s32 w, s32 h) {
         y *= 2;
         h *= 2;
     }
-    dst = (s16*)(*(u8**)(p + 0x14) + (*(u16*)(p + 8) * y * 2 + x * 2));
+    dst = (s16*)*(u8**)(p + 0x14) + (*(u16*)(p + 8) * y * 2 + x);
     for (row = 0; row < h; row++) {
         i = 0;
         if (w > 0) {
+            temp_r5 = w - 8;
             if (w > 8) {
-                ctr = (u32)(w - 8 + 7) >> 3;
-                if (w - 8 > 0) {
+                ctr = (u32)(temp_r5 + 7) >> 3;
+                if (temp_r5 > 0) {
                     do {
                         dst[0] = 0x1080;
                         i += 8;
@@ -261,8 +284,11 @@ extern "C" void fn_8011F304(u8* p, s32 x, s32 y, s32 w, s32 h) {
                     } while (--ctr != 0);
                 }
             }
-            for (; i < w; i++) {
-                *dst++ = 0x1080;
+            if (i < w) {
+                ctr = w - i;
+                do {
+                    *dst++ = 0x1080;
+                } while (--ctr != 0);
             }
         }
         dst += *(u16*)(p + 8) - w;
@@ -2052,6 +2078,19 @@ extern "C" const float lbl_803016E0;
 extern "C" void fn_8012C274(void*);
 extern "C" void fn_8012C500(void** param_1, void* param_2) {
     *param_1 = param_2;
+}
+
+extern "C" void fn_8012C508(u8* param_1)
+{
+    u8** data = *(u8***)(*(u8**)(param_1 + 4) + 0x28);
+    if (*(u32*)(*data + 8) & 1) {
+        fn_801DACA4(1, 1, 4, 0x3c, 0, 0x7d);
+        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(param_1 + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(param_1 + 4) + 0x38) + *(u8*)(*data + 0x25) * 2)) * 4) + 4, 2);
+    }
+    if (*(u32*)(*data + 8) & 0x100) {
+        fn_801DACA4(2, 1, 4, 0x3c, 0, 0x7d);
+        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(param_1 + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(param_1 + 4) + 0x38) + *(u8*)(*data + 0x26) * 2)) * 4) + 4, 3);
+    }
 }
 
 extern "C" void fn_8012C604(void** param_1, void* param_2) {
