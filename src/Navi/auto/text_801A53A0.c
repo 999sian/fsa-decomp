@@ -13,6 +13,26 @@ extern "C" void fn_801E10DC(void* p);
 extern u8 lbl_8029B188[];
 
 extern "C" void fn_801A59E8(void);
+extern "C" void fn_801E012C(void);
+extern "C" void fn_8018F6A4(u32 a, f32 b, f32 c, f32 d);
+extern "C" void fn_8018F27C(u32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g);
+extern "C" void fn_8018F594(u32 a, u32* b);
+extern "C" void fn_8018F890(u32 a, f32 b, f32 c, f32 d);
+extern "C" void fn_801A53A0(u8* param_1, u32 param_2) {
+    extern u32* lbl_802FFA80;
+    u32 local;
+    u32 mask;
+    if ((lbl_802FFA80[2] + 0x48) > lbl_802FFA80[3]) {
+        fn_801E012C();
+    }
+    mask = 1 << param_2;
+    fn_8018F6A4(mask, *(f32*)(param_1 + 0x0), *(f32*)(param_1 + 0x4), *(f32*)(param_1 + 0x8));
+    fn_8018F27C(mask, *(f32*)(param_1 + 0x1c), *(f32*)(param_1 + 0x20), *(f32*)(param_1 + 0x24), *(f32*)(param_1 + 0x28), *(f32*)(param_1 + 0x2c), *(f32*)(param_1 + 0x30));
+    local = *(u32*)(param_1 + 0x18);
+    fn_8018F594(mask, &local);
+    fn_8018F890(mask, *(f32*)(param_1 + 0xc), *(f32*)(param_1 + 0x10), *(f32*)(param_1 + 0x14));
+}
+
 extern "C" void fn_801A59C8(void) {
     fn_801A59E8();
 }
@@ -61,5 +81,17 @@ extern "C" BOOL fn_801A79C4(u32** param_1, u32* param_2, u16 param_3) {
 
 extern "C" void fn_801A79E4(u8* param_1) {
     fn_801E10DC(param_1);
+}
+
+extern "C" void fn_801A7A38(u32* param_1) {
+    u32 count = param_1[1];
+    u32** arr = (u32**)param_1[0];
+    for (u32 i = 0; i < count; i++) {
+        u32* node = arr[i];
+        while (node != NULL) {
+            ((VObj_801A7A38*)node)->v1();
+            node = (u32*)node[1];
+        }
+    }
 }
 
