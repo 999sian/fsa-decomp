@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 
 extern "C" char lbl_804A4310[];
@@ -66,6 +67,77 @@ extern "C" void fn_801C1918(u8* this_) {
             fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, &rec);
         }
     }
+}
+
+extern "C" void fn_801D0ED0(u8* this_);
+extern "C" void* fn_804032E8(u32 name, void* str);
+extern "C" void* fn_801C0D70(void);
+extern "C" u16 lbl_8053EDA8[];
+extern "C" f32 lbl_8053EDD0;
+extern "C" f32 lbl_8053EDE8;
+extern "C" char lbl_80469444[];
+extern "C" char lbl_8053AC1C;
+extern "C" char* lbl_8053AC18;
+extern "C" void fn_801C2150(u8* this_) {
+    struct ItemBaseVT {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual int v13();
+    };
+    fn_801D0ED0(this_);
+    f32 zero = lbl_8053EDC0;
+    f32 two = lbl_8053EDE8;
+    f32 neg = lbl_8053EDD0;
+    *(u8*)(this_ + 0x2a8) = *(u32*)(this_ + 0x90) >> 8;
+    *(u8*)(this_ + 0x2a9) = *(u32*)(this_ + 0x90) >> 16;
+    *(f32*)(this_ + 0x60) = zero;
+    *(f32*)(this_ + 0x64) = zero;
+    *(f32*)(this_ + 0x68) = two;
+    *(f32*)(this_ + 0x6c) = two;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = zero;
+    *(f32*)(this_ + 0x84) = zero;
+    *(f32*)(this_ + 0x88) = two;
+    *(f32*)(this_ + 0x8c) = two;
+    *(s32*)(this_ + 0xb0) = 0;
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x380;
+    *(s32*)(this_ + 0x108) = 1000;
+    *(s32*)(this_ + 0x244) = *(s32*)(this_ + 0x108);
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = -1;
+    *(f32*)(this_ + 0x254) = neg;
+    *(f32*)(this_ + 0x258) = neg;
+    if (lbl_8053AC1C == 0) {
+        lbl_8053AC1C = 1;
+        lbl_8053AC18 = lbl_80469444;
+        *(void**)(this_ + 0x2d4) = fn_804032E8(0x54494d47, lbl_80469444);
+    }
+    if (((ItemBaseVT*)this_)->v13() != 0) {
+        *(s32*)(this_ + 0x248) = 0xb;
+    } else {
+        *(void**)(this_ + 0x2b0) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x4f, 0, 0, 0, 0, 1, lbl_8053EDC0);
+        for (s32 i = 0; i < 3; i++) {
+            *(void**)(this_ + 0x2b4 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053EDA8[i], 0, 0, 0, 0, 1, lbl_8053EDC0);
+        }
+    }
+    void* p = *(void**)(this_ + 0x198);
+    *(void**)((u8*)fn_801C0D70() + 0x50) = p;
 }
 
 extern "C" void* fn_801C231C(u8* this_, s16 freeFlag) {
