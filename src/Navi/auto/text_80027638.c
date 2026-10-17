@@ -131,6 +131,25 @@ extern "C" void fn_800291B8(const char*, ...) {
 extern "C" void fn_80029208(const char*, ...) {
 }
 
+extern "C" int lbl_80227384[3];
+extern "C" void fn_8002A4A4(unsigned char* p, int v);
+extern "C" void fn_8002A410(unsigned char* p) {
+    if ((*(unsigned int*)(lbl_802BB0FC + 0x4c) & 1) == 0) {
+        int* obj = *(int**)(p + 0x6e0);
+        if (obj != 0) {
+            fn_8002A4A4(p, obj[0]);
+            (*(int**)(p + 0x6e0))[1]--;
+            obj = *(int**)(p + 0x6e0);
+            if (obj[1] == 0) {
+                *(int*)(p + 0x6e0) = obj[2];
+                obj[0] = lbl_80227384[0];
+                obj[1] = lbl_80227384[1];
+                obj[2] = lbl_80227384[2];
+            }
+        }
+    }
+}
+
 extern "C" void fn_8002BC84(void) {
     extern unsigned int lbl_802FEDDC;
     lbl_802FEDDC &= 0xffffffef;
