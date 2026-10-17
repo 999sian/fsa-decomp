@@ -3,6 +3,22 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
 
+extern const f32 lbl_8053D330;
+extern const f32 lbl_8053D334;
+extern const f32 lbl_8053D338;
+extern const f32 lbl_8053D340;
+extern const f32 lbl_8053D344;
+extern const f32 lbl_8053D350;
+extern const f32 lbl_8053D358;
+extern "C" void fn_802D6A9C();
+extern "C" u8 fn_802DCD0C();
+extern "C" u16 fn_80226998(f32* pos, void* room);
+extern "C" s32 fn_801F3D94(void* this_, s32 a);
+extern "C" u8 fn_801F305C(void* this_);
+extern "C" u8 fn_801F2618(void* this_, s32 a, s32 b);
+extern "C" void fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" void fn_801F71A4(void* vec, f32 a, f32 b, f32 c);
+
 // ---- from Game/fn_801549B0_dtor.cpp
 
 extern "C" void __dt__5ActorFv(void* this_, int flag);
