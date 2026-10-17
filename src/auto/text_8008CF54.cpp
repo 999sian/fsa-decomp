@@ -370,6 +370,47 @@ extern "C" void fn_8008DADC(u32 *param_1) {
     *(u16 *)((char *)param_1 + 0xc) = 0;
 }
 
+extern "C" u32 fn_8008DDB0(float *param_1, u32 param_2);
+extern "C" s32 fn_8008DAF8(f32 *param_1, s8 param_2, s8 param_3, s32 param_4, s32 param_5, u32 param_6) {
+    s32 uVar3;
+
+    switch (lbl_80539D9C) {
+    case 1:
+        uVar3 = param_5 == 0 ? 0x36 : 0x2a;
+        break;
+    case 2:
+        uVar3 = param_5 == 0 ? 0x26 : 0x1d;
+        break;
+    default:
+        uVar3 = param_5 == 0 ? 0x45 : 0x39;
+        break;
+    }
+    *(s8 *)((char *)param_1 + 0xe) = param_2;
+    *(s8 *)((char *)param_1 + 0xf) = param_3;
+    param_1[0] = (f32)param_2 / (f32)uVar3;
+    param_1[1] = (f32)param_3 / (f32)uVar3;
+    param_1[2] = dolsqrtfull(param_1[0] * param_1[0] + param_1[1] * param_1[1]);
+    if (param_1[2] > 1.0f) {
+        if (param_4 == 1) {
+            param_1[0] = param_1[0] / param_1[2];
+            param_1[1] = param_1[1] / param_1[2];
+        }
+        param_1[2] = 1.0f;
+    }
+    if (param_1[2] > 0.0f) {
+        if (0.0f == param_1[1]) {
+            if (param_1[0] > 0.0f) {
+                *(s16 *)(param_1 + 3) = 0x4000;
+            } else {
+                *(s16 *)(param_1 + 3) = -0x4000;
+            }
+        } else {
+            *(s16 *)(param_1 + 3) = (s16)(10430.378f * (f32)atan2(param_1[0], -param_1[1]));
+        }
+    }
+    return fn_8008DDB0(param_1, param_6 >> (param_5 == 0 ? 0x18 : 0x10));
+}
+
 extern "C" u32 fn_8008DDB0(float *param_1, u32 param_2) {
     u32 result = param_2 & 0xf;
     float f2 = *param_1;
