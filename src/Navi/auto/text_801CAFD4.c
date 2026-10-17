@@ -24,6 +24,9 @@ extern u8 lbl_802FFA74;
 extern u8* __GXData;
 extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
+typedef struct {
+    f32 v[6];
+} GXProjVals;
 extern f32 lbl_80301F68;
 extern f32 lbl_80301F6C;
 extern "C" void fn_801DD410(void* a, void* b, u32 c);
@@ -1940,12 +1943,15 @@ extern "C" void fn_801DF0BC(u32 param_1, u32 param_2) {
 
 extern f32 lbl_80301F68;
 extern f32 lbl_80301F6C;
+extern f32 __psq_l(void* p, int off, int w, int gqr);
+extern void __psq_st(f32 v, void* p, int off, int w, int gqr);
+extern "C" f32 __psq_l(void* p, int off, int w, int gqr);
+extern "C" void __psq_st(f32 v, void* p, int off, int w, int gqr);
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 extern "C" void fn_801DF25C(f32* p) {
     u8* gx = __GXData;
     p[0] = *(s32*)(gx + 0x4d8) != 0 ? lbl_80301F6C : lbl_80301F68;
-    for (s32 i = 0; i < 6; i++) {
-        p[1 + i] = *(f32*)(gx + 0x4dc + i * 4);
-    }
+    memcpy(p + 1, gx + 0x4dc, 24);
 }
 
 extern "C" void fn_801DF344(u32 a) {
