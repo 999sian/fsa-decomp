@@ -332,6 +332,30 @@ extern "C" s32 fn_80390E40(Tu80390818* t, s32 v, u8 force) {
 
 extern "C" void fn_80394690(Tu80390818_Sub*);
 extern "C" void fn_8039499C(Tu80390818_Sub*, u8);
+extern "C" void fn_803A2F74(void*);
+extern "C" void fn_80396F94(Tu80390818_Sub*);
+extern "C" void fn_80396884(Tu80390818_Sub*);
+extern "C" void fn_803944EC(Tu80390818_Sub*, f32);
+extern u8 lbl_8053AD04[];
+extern u8 lbl_8050DB0C[];
+extern f32 lbl_80543168;
+
+struct Tu80390818_Vec {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+struct Tu80390818_Inner {
+    u8 pad0[0x179];
+    u8 m179;
+    u8 pad17A;
+    u8 m17B;
+};
+struct Tu80390818_Top {
+    u8 pad0[0x24];
+    Tu80390818_Inner* m24;
+};
+extern Tu80390818_Top* lbl_8053AB10;
 
 extern "C" void fn_80390E68(Tu80390818* t) {
     u8 b = 0;
