@@ -19,6 +19,25 @@ extern "C" u32 fn_80236100(s32 i);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B146C[];
 extern u8 lbl_8048E1B8[];
+
+// Sub-object whose virtual slots 9 and 15 are called by fn_80421A34.
+struct SubObj {
+    virtual void w00();
+    virtual void w01();
+    virtual void w02();
+    virtual void w03();
+    virtual void w04();
+    virtual void w05();
+    virtual void w06();
+    virtual void w07(s32 v);
+    virtual void w08();
+    virtual void w09();
+    virtual void w10();
+    virtual void w11();
+    virtual void w12();
+    virtual SubObj* w13(u64 x);
+};
+extern u8 lbl_8048E1B8[];
 extern u8* lbl_8053AED0;
 extern u8* lbl_8053AD30;
 extern "C" u8 fn_80230188(s32 i);
@@ -50,6 +69,97 @@ static inline void ReleaseSlot(void** slot) {
     }
     *slot = 0;
 }
+extern "C" void fn_80423DF0(u8* this_, s32 i) {
+    s32 j;
+    u32* pair2;
+    u32* pair;
+    u8* tbl = lbl_8048E1B8;
+    u32 bit = 1 << i;
+    u8 mask = bit;
+    s32 idx = -1;
+
+    if ((this_[0x259] & mask) == 0 && !fn_80230188(i)) {
+        fn_8022EA0C(i);
+        if (fn_8023BE0C() && !(lbl_8053AED0[0x255] & mask)) {
+            this_[0x259] |= mask;
+            pair = (u32*)(tbl + 0xe28) + i * 2;
+            CallPair(this_, pair[0], pair[1])[0xb0] = 1;
+        }
+    } else if ((u32)fn_80309D24(lbl_8053AD30, fn_8030AAF4(i), 0x100) == 0 || (lbl_8053AED0[0x255] & mask) != 0 || fn_80230188(i)) {
+        this_[0x259] &= ~mask;
+        pair = (u32*)(tbl + 0xe28) + i * 2;
+        CallPair(this_, pair[0], pair[1])[0xb0] = 0;
+    }
+
+    switch (fn_802373EC(i)) {
+    case 1:
+        idx = 5;
+        break;
+    case 2:
+        idx = 0xb;
+        break;
+    case 3:
+        idx = 2;
+        break;
+    case 4:
+        idx = 3;
+        break;
+    case 5:
+        idx = 6;
+        break;
+    case 6:
+        idx = 7;
+        break;
+    case 7:
+        idx = 4;
+        break;
+    case 8:
+        idx = 8;
+        break;
+    case 9:
+        idx = 0xa;
+        break;
+    case 10:
+        idx = 1;
+        break;
+    case 11:
+    case 12:
+    case 13:
+        idx = 0;
+        break;
+    }
+
+    if (*(s32*)(this_ + 0x148 + i * 4) != idx || (lbl_8053AED0[0x255] & mask) != 0) {
+        *(s32*)(this_ + 0x148 + i * 4) = idx;
+        pair = (u32*)(tbl + 0x6e8 + i * 0x60);
+        pair2 = (u32*)(tbl + 0x868 + i * 0x60);
+        for (j = 0; j < 0xc; j++) {
+            if (j == idx) {
+                CallPair(this_, pair[0], pair[1])[0xb0] = 1;
+                CallPair(this_, pair2[0], pair2[1])[0xb0] = 1;
+            } else {
+                CallPair(this_, pair[0], pair[1])[0xb0] = 0;
+                CallPair(this_, pair2[0], pair2[1])[0xb0] = 0;
+            }
+            pair += 2;
+            pair2 += 2;
+        }
+        if (fn_8023725C(i) == 2) {
+            pair = (u32*)(tbl + 0x688 + i * 0x18);
+            for (j = 0; j < 3; j++) {
+                CallPair(this_, pair[0], pair[1])[0xb0] = 1;
+                pair += 2;
+            }
+        } else {
+            pair = (u32*)(tbl + 0x688 + i * 0x18);
+            for (j = 0; j < 3; j++) {
+                CallPair(this_, pair[0], pair[1])[0xb0] = 0;
+                pair += 2;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80425128(u8* this_) {
     s32 i;
     s32 j;
