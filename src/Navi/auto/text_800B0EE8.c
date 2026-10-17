@@ -27,6 +27,11 @@ extern "C" unsigned char fn_800B51E8(void* self, int i) {
 
 extern "C" void fn_800B8634(void) {}
 
+extern "C" void fn_800B9570(u8* param_1) {
+    *(u8*)(*(u8**)(param_1 + 0x30) + 0xb0) = 1;
+    *(u32*)(param_1 + 0x5c) = 0;
+}
+
 extern "C" void fn_800B96CC(u8* p) {
     *(u32*)(p + 0x1bc) = 0;
 }
