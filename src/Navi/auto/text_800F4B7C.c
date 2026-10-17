@@ -106,7 +106,7 @@ extern "C" s32 fn_80108030(void* p);
 extern "C" void fn_8002F358(s32 a, s32 b);
 extern "C" void fn_8002F198(void);
 extern "C" void fn_80030418(s32 a, s32 b);
-extern "C" f32 fn_801099E8(void* self, u8 b, s16 a);
+extern "C" f32 fn_801099E8(void* self, u8 b, s16 a, ...);
 extern f32 lbl_80301208;
 struct VObj_80108104 {
     virtual void v0();
