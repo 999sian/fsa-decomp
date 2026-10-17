@@ -188,6 +188,19 @@ extern "C" void fn_80033330(void* p) {
     *(unsigned int*)((char*)p + 0xe0) = *(unsigned int*)((char*)lbl_802BB0FC + 0x58) + 0xfa0;
 }
 
+extern "C" unsigned char lbl_802FEE50;
+extern "C" char lbl_80244C10[];
+extern "C" void fn_80029208(const char*, ...);
+extern "C" void fn_80033350(void* p) {
+    lbl_802FEE50 = 1;
+    *(unsigned int*)((char*)p + 0xe8) |= 0x20040;
+    if (*(int*)((char*)p + 0x11c) >= 3) {
+        *(int*)((char*)p + 0x128) = 0x1e;
+        *(int*)((char*)p + 0x12c) = *(int*)((char*)p + 0x11c) - 3;
+    }
+    fn_80029208(lbl_80244C10);
+}
+
 extern "C" void fn_80033ADC(void*, void*);
 extern float lbl_802FFD48;
 extern int lbl_80244A88[];
