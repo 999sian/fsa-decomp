@@ -14,6 +14,9 @@ extern "C" u8 fn_801F2FAC(void* this_);
 extern const f32 lbl_8053EFD4;
 extern const f32 lbl_8053EFD8;
 extern const f32 lbl_8053EFEC;
+extern const f32 lbl_8053EFDC;
+extern const f32 lbl_8053EFE0;
+extern const f32 lbl_8053EFF8;
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JAUSoundObject.h"
 extern "C" s32 fn_801F285C(void* this_, f32* pos, s32* out, s32 a, s32 idx);
