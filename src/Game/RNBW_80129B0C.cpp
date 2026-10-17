@@ -1,6 +1,19 @@
 // RNBW_80129B0C: .text 0x80129B0C-0x8012A5EC (actor RNBW)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "Game/Actor.h"
+
+extern "C" void* fn_802D6A9C(void);
+extern "C" u8 fn_802D800C(void* manager, s32 kind);
+extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
+extern u16 lbl_80465098[];
+extern u16 lbl_804650A4[];
+extern f32 lbl_8053CB48;
+extern f32 lbl_8053CB4C;
+extern f32 lbl_8053CB50;
+extern f32 lbl_8053CB54;
+extern f32 lbl_8053CB58;
 
 // ---- from Game/Rnbw_ctor_8012A364.cpp
 
@@ -38,9 +51,11 @@ inline void releaseHandle(void*& h) { fn_801EE434(h); h = 0; }
 extern "C" void* fn_8012A2E0(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_8049E610;
-        for (s32 i = 0; i < 5; i++) {
-            fn_801EE434(((RnbwActor*)this_)->mHandles[i]);
-            ((RnbwActor*)this_)->mHandles[i] = 0;
+        RnbwActor* actor = (RnbwActor*)this_;
+        s32 i = 0;
+        for (; i < 5; i++) {
+            fn_801EE434(actor->mHandles[i]);
+            actor->mHandles[i] = 0;
         }
         __dt__5ActorFv(this_, 0);
         if (freeFlag > 0) {
