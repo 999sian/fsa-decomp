@@ -6,6 +6,7 @@ extern "C" void fn_8002F228(int);
 extern "C" void fn_8002E3C4(void*, int);
 extern "C" void fn_8002A3CC(void*, void*, int, int);
 extern char lbl_802BB0FC[];
+extern char lbl_80245224[];
 extern "C" unsigned int lbl_802FEDDC;
 extern unsigned char lbl_802FEE44;
 extern unsigned char lbl_802FEE43;
