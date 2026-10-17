@@ -54,6 +54,7 @@ extern "C" void fn_8020D16C(void* this_);
 extern "C" void fn_8020CFC4(void* this_);
 extern "C" s32 fn_801CD664(s32 kind);
 extern f32 lbl_8053F4A8;
+extern "C" void fn_801E1594(void* this_, s32 state);
 extern f32 lbl_8053F4BC;
 extern f32 lbl_8053F490;
 extern f32 lbl_8053F4C0;
@@ -107,6 +108,198 @@ extern "C" void fn_801DE9F4(void* this_) {
             }
         }
         fn_801CE4BC(this_);
+    }
+}
+
+extern "C" void fn_801E0CF4(void* this_) {
+    char* p = (char*)this_;
+    s32 found[4];
+    s32 n;
+    s32 i;
+    s32 id;
+    s32 st;
+    s32 st98;
+    s32 st278;
+    s32 idx;
+    u32 flags;
+    u8 b2;
+    u8 b3;
+    char* obj;
+
+    if (*(s32*)(p + 0x248) == 0) {
+        *(s32*)(p + 0x2a8) = -1;
+        if (*(s32*)(p + 0x2a8) < 0) {
+            n = 0;
+            for (i = 0; i < 4; i++) {
+                id = fn_8023DE58(i);
+                if (fn_801CD2F8(id) && id != 8 && fn_801E3250(id, 0) == 0) {
+                    if (fn_801F750C(fn_801F856C(), (void*)id, -1) < 0 && fn_801F7464(fn_801F856C(), (void*)id, -1) < 0) {
+                        continue;
+                    }
+                    found[n] = id;
+                    n++;
+                }
+            }
+            if (n == 0) {
+                *(s32*)(p + 4) = 0;
+            } else {
+                *(s32*)(p + 4) = found[fn_801CD664(n)];
+            }
+        } else {
+            *(s32*)(p + 4) = fn_8023DE58(*(s32*)(p + 0x2a8));
+        }
+    } else {
+        if ((*(u32*)(p + 0x230) & 0x4000) != 0 &&
+            __fabsf(*(f32*)(p + 0x2c4) - *(f32*)(p + 0xc)) < lbl_8053F488 &&
+            __fabsf(*(f32*)(p + 0x2c8) - *(f32*)(p + 0x10)) < lbl_8053F488) {
+            fn_801E1594(p, 0);
+            return;
+        }
+        if (fn_801CD2F8(*(s32*)(p + 4)) && fn_801CD290(*(s32*)(p + 4)) == 0) {
+            fn_801E1594(p, 0);
+            return;
+        }
+        if ((*(u32*)(p + 0x230) & 0x10000) == 0) {
+            st278 = *(s32*)(p + 0x278);
+            if (st278 < 0xf && st278 >= 0xd && *(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
+                fn_801D22DC(p + 0x270, *(s32*)(p + 0x98), 2, 0);
+            }
+        } else {
+            *(u32*)(p + 0x230) &= 0xfffeffff;
+            st = *(s32*)(p + 0x248);
+            if (st < 7 && st >= 5) {
+                *(s32*)(p + 0x98) = fn_801CD354(*(s32*)(p + 0x98));
+                *(s32*)(p + 0x2d0) = -1;
+            }
+            fn_801E1594(p, 8);
+        }
+
+        flags = *(u32*)(p + 0x230);
+        if ((flags & 0x20000) != 0) {
+            st = *(s32*)(p + 0x248);
+            if (st == 6 || st == 1) goto LAB_A;
+            if (st > 6 && st < 0x12 && st >= 0xf) {
+                fn_8022FE80(*(s32*)(p + 0x2a8), *(s32*)(p + 4), *(s32*)(p + 0x198), 0, 0);
+            }
+            goto after_A;
+LAB_A:
+            if (*(s32*)(p + 0x2a8) >= 0 && *(s32*)(p + 0x2a8) != -1) {
+                b3 = 0;
+                if (st != 7) {
+                    if (st < 7) {
+                        if (st != 0) goto LAB2;
+                    } else if (st > 0x12 || st < 0xf) {
+                        goto LAB2;
+                    }
+                }
+                goto CHK_B3;
+LAB2:
+                if ((flags & 0x4000) == 0 && *(u16*)(p + 0x2cc) == 0) {
+                    st278 = *(s32*)(p + 0x278);
+                    b2 = 0;
+                    if (st278 < 0xd) {
+                        if (st278 < 3 && st278 >= 0) b2 = 1;
+                    } else if (st278 < 0x11) {
+                        b2 = 1;
+                    }
+                    if (b2) {
+                        if ((flags & 0x20000) == 0) {
+                            if (*(s32*)(p + 0x2bc) < 0) b3 = 1;
+                        } else if ((flags & 0x100000) != 0) {
+                            b3 = 1;
+                        }
+                    }
+                }
+CHK_B3:
+                if (b3) {
+                    *(s32*)(p + 0x2a8) = -1;
+                    fn_801E1594(p, 7);
+                }
+            }
+after_A:
+            ;
+        }
+
+        fn_8021FDB8(p);
+        st = *(s32*)(p + 0x248);
+        b3 = 0;
+        if (st < 8) {
+            if (st != 0 && st < 5) goto LAB_B;
+        } else if (st > 0x12 || st < 0xf) {
+            goto LAB_B;
+        }
+        goto after_B;
+LAB_B:
+        st278 = *(s32*)(p + 0x278);
+        b2 = 0;
+        if (st278 < 0xd) {
+            if (st278 < 3 && st278 >= 0) b2 = 1;
+        } else if (st278 < 0x11) {
+            b2 = 1;
+        }
+        if (b2 && st278 != 2) {
+            flags = *(u32*)(p + 0x230);
+            if ((flags & 0x4000) == 0) {
+                if ((flags & 0x20000) == 0) {
+                    idx = *(s32*)(p + 0x2ac);
+                    obj = 0;
+                    if (idx >= 0) {
+                        obj = (char*)fn_801F666C(fn_801F856C(), idx);
+                    }
+                    if (obj == 0 && *(s32*)(p + 0x2b0) >= 0) {
+                        obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x2b0));
+                    }
+                    if (obj == 0 && *(s32*)(p + 0x2b4) >= 0) {
+                        obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x2b4));
+                    }
+                    if (obj != 0) {
+                        st98 = *(s32*)(p + 0x98);
+                        b3 = 0;
+                        if (st98 == 1) {
+                            if (lbl_8053F4AC + *(f32*)(p + 0xc) < *(f32*)(obj + 0xc)) b3 = 1;
+                        } else if (st98 < 1 && st98 >= 0) {
+                            if (*(f32*)(obj + 0xc) < *(f32*)(p + 0xc) - lbl_8053F4AC) b3 = 1;
+                        }
+                    }
+                } else if (*(s32*)(p + 0x2a8) >= 0 && *(s32*)(p + 0x2a8) == -1) {
+                    f32* pf = (f32*)fn_8023E724(*(s32*)(p + 0x2a8));
+                    st98 = *(s32*)(p + 0x98);
+                    b3 = 0;
+                    if (st98 == 1) {
+                        if (lbl_8053F4AC + *(f32*)(p + 0xc) < *pf) b3 = 1;
+                    } else if (st98 < 1 && st98 >= 0) {
+                        if (*pf < *(f32*)(p + 0xc) - lbl_8053F4AC) b3 = 1;
+                    }
+                }
+            } else {
+                st98 = *(s32*)(p + 0x98);
+                b3 = 0;
+                if (st98 == 1) {
+                    if (lbl_8053F4AC + *(f32*)(p + 0xc) < *(f32*)(p + 0x2c4)) b3 = 1;
+                } else if (st98 < 1 && st98 >= 0) {
+                    if (*(f32*)(p + 0x2c4) < *(f32*)(p + 0xc) - lbl_8053F4AC) b3 = 1;
+                }
+            }
+            if (b3) {
+                *(s32*)(p + 0x2d0) = *(s32*)(p + 0x248);
+                fn_801E1594(p, 6);
+            }
+        }
+after_B:
+        st = *(s32*)(p + 0x248);
+        b3 = 0;
+        if (st < 0xd && st > 10) b3 = 1;
+        if (b3) {
+            if (fn_801E2F40(p) == 0) {
+                fn_801E2EE4(p);
+            } else {
+                fn_801E1594(p, 0xe);
+            }
+        }
+    }
+
+    if (*(s32*)(p + 0x2a8) == -1 && (*(u32*)(p + 0x230) & 0x20000) == 0) {
+        fn_801E1300(p);
     }
 }
 
