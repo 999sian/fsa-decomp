@@ -15,6 +15,10 @@ struct FsaObj {
 extern "C" void fn_8013B490(void* this_);
 extern u8 lbl_80529DEC[];
 extern void* lbl_8053AB10;
+extern u8 lbl_8050DB0C[];
+extern void* lbl_8053AD68;
+extern "C" void fn_80128C58(s32 val);
+extern "C" void fn_8013A884(u32* color);
 extern "C" void fn_803B7DCC(u8* this_) {
     if (*(s32*)(lbl_80529DEC + 0x118) != 8 || *(s32*)(lbl_80529DEC + 0x11c) != 3) {
         fn_8013B490(lbl_8053AB10);
