@@ -233,6 +233,25 @@ extern "C" void fn_800E6A4C(void* param_1) {
     *(u8*)((u8*)param_1 + 0xa76) = 0x2a;
 }
 
+extern "C" void fn_800E6A80(u8* p) {
+    if (*(u16*)(p + 0xa9c) != 0) {
+        *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
+    } else if (fn_800EE044() != 0) {
+        fn_8002F358(0xa5, 0);
+        p[0xb11] = 1;
+        p[0xa76] = 0x2c;
+    }
+}
+
+extern "C" void fn_800E6D44(u8* p) {
+    if (fn_800E6DA4(p) == 0) {
+        fn_800589CC(2);
+        fn_8002F358(0xca, 0);
+        *(s16*)(p + 0xa9c) = *(s16*)(lbl_802C57D4 + 0x4a);
+        p[0xa76] = 0x2f;
+    }
+}
+
 extern "C" void fn_800E71CC(u8* p) {
     if (*(u16*)(p + 0xa9c) != 0) {
         *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
