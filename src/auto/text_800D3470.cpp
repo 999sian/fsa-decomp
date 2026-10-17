@@ -21,6 +21,59 @@ struct Col4_800DDDD0 { u8 a; Col3_800DDDD0 c; };
 struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
 struct Obj_800DDDD0 { u8 pad[0x59]; Ent_800DDDD0 ent[1]; };
 
+struct Unk800DC64CSrc {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual void m14() = 0;
+    virtual void m15() = 0;
+    virtual void m16() = 0;
+    virtual void m17() = 0;
+    virtual void m18() = 0;
+    virtual void m19() = 0;
+    virtual s16 m20(int) = 0;
+    virtual void m21() = 0;
+    virtual void m22() = 0;
+    virtual u32* m23(int) = 0;
+    virtual void m24() = 0;
+    virtual void m25() = 0;
+    virtual s16* m26(int) = 0;
+    virtual void m27() = 0;
+    virtual void m28() = 0;
+    virtual u8* m29(int) = 0;
+    virtual void m30() = 0;
+    virtual void m31() = 0;
+    virtual u8 m32(int) = 0;
+    virtual void m33() = 0;
+    virtual void m34() = 0;
+    virtual u8 m35(int) = 0;
+    virtual void m36() = 0;
+    virtual void m37() = 0;
+    virtual u8 m38() = 0;
+    virtual void m39() = 0;
+    virtual void m40() = 0;
+    virtual u8* m41(int) = 0;
+    virtual void m42() = 0;
+    virtual void m43() = 0;
+    virtual void m44() = 0;
+    virtual void m45() = 0;
+    virtual u8* m46(int) = 0;
+    virtual void m47() = 0;
+    virtual void m48() = 0;
+    virtual u32* m49(int) = 0;
+};
+
 struct Unk800DC290Src {
     virtual void m2() = 0;
     virtual void m3() = 0;
@@ -1897,23 +1950,19 @@ extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
 
 extern "C" void fn_800DCDD4(u8* this_, Unk800DCDD4Src* src) {
     u32 i;
-    u8* q;
     u8* r;
+    u8* q;
 
     *(this_ + 0x58) = src->m38();
-    q = this_;
-    for (i = 0; i < 8; i++) {
+    for (i = 0, q = this_; i < 8; i++) {
         *(u16*)(q + 8) = src->m20(i);
         q += 2;
     }
-    q = this_;
-    for (i = 0; i < 16; i++) {
+    for (i = 0, q = this_; i < 16; i++) {
         *(u32*)(q + 0x18) = *src->m23(i);
         q += 4;
     }
-    q = this_;
-    r = this_;
-    for (i = 0; i < 16; i++) {
+    for (i = 0, q = this_, r = this_; i < 16; i++) {
         u8* s = src->m41(i);
         q[0x5a] = s[1];
         q[0x5b] = s[2];
@@ -1925,23 +1974,21 @@ extern "C" void fn_800DCDD4(u8* this_, Unk800DCDD4Src* src) {
         q += 8;
         r += 4;
     }
-    q = this_;
-    for (i = 0; i < 4; i++) {
+    for (i = 0, r = this_; i < 4; i++) {
         s16* s = src->m26(i);
-        *(s16*)(q + 0xda) = s[0];
-        *(s16*)(q + 0xdc) = s[1];
-        *(s16*)(q + 0xde) = s[2];
-        *(s16*)(q + 0xe0) = s[3];
-        q += 8;
+        *(s16*)(r + 0xda) = s[0];
+        *(s16*)(r + 0xdc) = s[1];
+        *(s16*)(r + 0xde) = s[2];
+        *(s16*)(r + 0xe0) = s[3];
+        r += 8;
     }
-    q = this_;
-    for (i = 0; i < 4; i++) {
+    for (i = 0, r = this_; i < 4; i++) {
         u8* s = src->m29(i);
-        q[0xfa] = s[0];
-        q[0xfb] = s[1];
-        q[0xfc] = s[2];
-        q[0xfd] = s[3];
-        q += 4;
+        r[0xfa] = s[0];
+        r[0xfb] = s[1];
+        r[0xfc] = s[2];
+        r[0xfd] = s[3];
+        r += 4;
     }
     for (i = 0; i < 16; i++) {
         this_[i + 0x10a] = src->m32(i);
@@ -2312,12 +2359,12 @@ extern "C" u32 fn_800DDA50(void) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDA5C(u8* this_, Hdr_800DDA5C* src) {
-    u8 b2 = src->b2;
-    Hdr_800DDA5C* dst = (Hdr_800DDA5C*)(this_ + 0x4);
-    dst->w = src->w;
-    dst->b2 = b2;
-    dst->b3 = src->b3;
+extern "C" void fn_800DDA5C(u8* this_, u8* src) {
+    u16 w = *(u16*)src;
+    *(u16*)(this_ + 0x4) = w;
+    u8 b2 = src[2];
+    *(u8*)(this_ + 0x6) = b2;
+    *(u8*)(this_ + 0x7) = src[3];
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
@@ -2550,11 +2597,9 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8 b1 = param_3[1];
-    u8* p = param_1 + param_2 * 8;
     u8 b0 = param_3[0];
-    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
-    p[0x60] = (p[0x60] & ~0x3) | b0;
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -2730,8 +2775,8 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  int offset = param_2 * 8;
   u8 b1 = param_3[1];
+  int offset = param_2 * 8;
   *(u8*)(param_1 + offset + 0x22) = b1;
   *(u8*)(param_1 + offset + 0x23) = param_3[2];
   *(u8*)(param_1 + offset + 0x24) = param_3[3];
@@ -2753,7 +2798,7 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  u8* e = param_1 + param_2 * 8;
+  u8* e = param_1 + (param_2 << 3);
   u8 b0 = param_3[0];
   u8 b1 = param_3[1];
   e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
