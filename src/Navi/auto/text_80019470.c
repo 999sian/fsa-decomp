@@ -286,11 +286,11 @@ extern "C" s32 fn_80019B8C(void* param_1) {
 extern "C" void fn_801155C0(void*, s32);
 
 extern "C" s32 fn_80019C4C(void* param_1) {
-    if (fn_80115564(*(u8**)((u8*)param_1 + 0x20) + 0xc4) == 0) {
-        return 0;
+    if (fn_80115564(*(u8**)((u8*)param_1 + 0x20) + 0xc4) != 0) {
+        fn_80115590(param_1);
+        return 2;
     }
-    fn_80115590(param_1);
-    return 2;
+    return 0;
 }
 
 extern "C" s32 fn_80019CFC(u8* p) {
