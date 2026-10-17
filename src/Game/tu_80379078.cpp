@@ -1,6 +1,5 @@
 #include "types.h"
 #include "Game/Actor.h"
-#include "Game/SinitPoolChain.h"
 
 
 struct LimtDrawParam {
