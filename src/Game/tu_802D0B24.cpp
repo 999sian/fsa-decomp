@@ -52,6 +52,7 @@ extern "C" s32 fn_8023CB24(s32 holder);
 extern "C" s32 fn_8023CA88(s32 holder);
 extern "C" s32 fn_801F02BC(void* p, const char* name, s32 id, void* param, s32 a, s32 b, s32 c, f32 f1, f32 f2);
 extern "C" const f32 lbl_80540EAC;
+extern "C" const f32 lbl_80540EA8;
 
 struct Vtable802D0B84 {
     virtual void m0();
