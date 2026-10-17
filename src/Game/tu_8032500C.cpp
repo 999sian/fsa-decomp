@@ -4,6 +4,7 @@
 
 extern "C" char lbl_804AB464[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
+extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c);
 extern "C" Actor* fn_8032500C(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AB464;
@@ -133,6 +134,118 @@ extern "C" void fn_80326208(Actor* a) {
         fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f5, 0, 0, 0, 0, 1);
         fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f6, 0, 0, 0, 0, 1);
         fn_801F0E34(a, 0x30022, 0);
+    }
+}
+
+extern "C" void fn_8023061C(s32 a, s32 b);
+extern "C" u8 fn_8022F9E4(s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_803264C0(Actor* a) {
+    u8* p = (u8*)a;
+    f32 k = 2.5f;
+    *(s32*)(p + 0x26c) = (a->field_90 >> 16) & 3;
+    a->field_60 = -8.0f;
+    a->field_64 = -8.0f;
+    a->field_68 = 8.0f;
+    a->field_6C = 8.0f;
+    *(f32*)(p + 0x80) = -7.0f;
+    *(f32*)(p + 0x84) = -4.0f;
+    a->field_88 = 7.0f;
+    a->field_8C = 7.0f;
+    *(s32*)(p + 0x250) = 0;
+    *(s32*)(p + 0x254) = 0;
+    *(s32*)(p + 0x258) = 0;
+    *(s32*)(p + 0x25c) = 0;
+    *(s32*)(p + 0x260) = 0;
+    *(s32*)(p + 0x264) = 0;
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    a->field_108 = 2;
+    a->field_118 = 2;
+    a->field_114 = 2;
+    *(f32*)(p + 0x280) = 1.0f;
+    *(f32*)(p + 0x27c) = 0.0f;
+    *(u8*)(p + 0x278) = (a->field_90 >> 4) & 1;
+    *(s32*)(p + 0x268) = 0;
+    *(u32*)(p + 0xb0) = 0x53308;
+    *(s32*)(p + 0x270) = (a->field_90 >> 8) & 0xf;
+    a->field_90 = a->field_90 & 0xf;
+    *(s32*)(p + 0x264) = -1;
+    *(u8*)(p + 0x274) = 0;
+    *(u8*)(p + 0x275) = 1;
+    *(u8*)(p + 0x277) = 1;
+    *(f32*)(p + 0x234) = 0.3f;
+    *(u8*)(p + 0x276) = 1;
+    if (*(s32*)(p + 0x270) == 1) {
+        k = 1.25f;
+    }
+    switch (a->field_90 & 0xf) {
+    case 0:
+        a->field_3C.x = 0.0f;
+        a->field_3C.y = 0.0f;
+        a->field_3C.z = 0.0f;
+        *(s32*)(p + 0x23c) = 300;
+        *(s32*)(p + 0x230) = 0;
+        *(u32*)(p + 0xb0) = 0x73308;
+        break;
+    case 1:
+        *(s32*)(p + 0x23c) = 300;
+        *(s32*)(p + 0x248) = 10;
+        *(s32*)(p + 0x230) = 2;
+        *(u32*)(p + 0xb0) = 0x73308;
+        break;
+    case 2:
+        *(s32*)(p + 0x23c) = 300;
+        *(s32*)(p + 0x248) = 10;
+        *(s32*)(p + 0x230) = 2;
+        *(u32*)(p + 0xb0) = 0x73308;
+        *(u8*)(p + 0x275) = 0;
+        break;
+    case 4: {
+        s32 t;
+        u8* sc;
+        *(s32*)(p + 0x23c) = 300;
+        *(s32*)(p + 0x248) = 120;
+        *(s32*)(p + 0x230) = 2;
+        *(u32*)(p + 0xb0) = 0x73308;
+        t = ((s32)(65536.0f * rand01()) >> 2) & 0x3ff8;
+        sc = sincosTable___5JMath + t;
+        a->field_3C.x = k * *(f32*)sc;
+        a->field_3C.y = k * *(f32*)(sc + 4);
+        a->field_3C.z = 0.0f;
+        *(u8*)(p + 0x275) = 0;
+        break;
+    }
+    case 3:
+        *(s32*)(p + 0x23c) = 300;
+        *(s32*)(p + 0x24c) = 10;
+        *(s32*)(p + 0x230) = 2;
+        *(u32*)(p + 0xb0) = 0x73308;
+        *(u8*)(p + 0x277) = 0;
+        if ((s32)(2.0f * rand01()) == 0) {
+            a->field_3C.x = k;
+        } else {
+            a->field_3C.x = -k;
+        }
+        a->field_3C.y = 0.0f;
+        a->field_3C.z = 0.0f;
+        *(u8*)(p + 0x275) = 0;
+        break;
+    case 5:
+        *(s32*)(p + 0x23c) = 300;
+        a->field_90 = 0;
+        *(s32*)(p + 0x230) = 2;
+        *(u32*)(p + 0xb0) = 0x73308;
+        fn_8023061C(*(s32*)(p + 0x26c), 0);
+        if (fn_8022F9E4(*(s32*)(p + 0x26c), a->field_198, 0, 0) == 1) {
+            *(s32*)(p + 0x230) = 2;
+        } else {
+            *(s32*)(p + 0x230) = 1;
+        }
+        break;
     }
 }
 
