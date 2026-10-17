@@ -76,6 +76,31 @@ extern "C" f32 lbl_8053C758;
 extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
 extern "C" void fn_8030C210(void* p, void* q);
 extern "C" void* fn_8011921C(void);
+
+struct Vec3 {
+	f32 x, y, z;
+};
+extern "C" void fn_80116E8C(char* p) {
+	if (*(s32*)(p + 0x234) >= 2 && *(s32*)(p + 0x234) <= 0xb) {
+		if (*(s32*)((char*)fn_8011921C() + 8) >= 0x32) {
+			u8* mgr = *(u8**)(lbl_8053AB10 + 0x30);
+			if (mgr[0x284] == 0) {
+				mgr[0x284] = 1;
+				*(f32*)(mgr + 0x28c) = lbl_8053C748;
+			}
+		}
+	}
+	switch (*(s32*)(p + 0x234)) {
+	case 0:
+	case 1:
+	case 2:
+	case 12:
+		break;
+	default:
+		break;
+	}
+}
+
 extern "C" s32 fn_80117498(char* p) {
     switch (*(s32*)(p + 0x234)) {
     case 12:
@@ -113,6 +138,22 @@ extern "C" void fn_801174C0(void* param_1) {
         } else if (v == lbl_80464A7C[12]) {
             fn_80117074(param_1, 12);
         }
+    }
+}
+
+extern "C" void fn_80117600(char* this_) {
+    fn_8010DF58();
+    SwbmDrawParam prm;
+    prm.reset();
+    if (*(u32*)(this_ + 0x138) == 0) {
+        fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, &prm, 1, lbl_80464AC0, 0x179, 0);
+    }
+    Vec pos;
+    pos = *(Vec*)(this_ + 0xc);
+    pos.y += lbl_8053C78C;
+    if (*(s32*)(this_ + 4) < 8) {
+        void* res = (*(SwbmResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_80464AC0);
+        fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), &pos, res, 0x179, lbl_8053C754, lbl_8053C754, 0);
     }
 }
 
