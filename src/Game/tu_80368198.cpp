@@ -110,8 +110,8 @@ extern char* lbl_8053A1C8;
 extern void* sManager__8JUTVideo;
 extern "C" void fn_80368198(Sub8036C0EC* this_) {
     char* self = (char*)this_;
-    void* pic;
     void* res;
+    void* pic;
     void* render;
     s32 arr[4];
 
@@ -119,7 +119,7 @@ extern "C" void fn_80368198(Sub8036C0EC* this_) {
         if (*(s32*)(self + 0x274) < 0x80) {
             *(f32*)(self + 0x290) = *(f32*)(self + 0x290) - 2.0f;
         } else {
-            *(f32*)(self + 0x290) = *(f32*)(self + 0x290) + 2.0f;
+            *(f32*)(self + 0x290) = 2.0f + *(f32*)(self + 0x290);
         }
         if (*(f32*)(self + 0x290) >= 255.0f) {
             *(f32*)(self + 0x290) = 255.0f;
