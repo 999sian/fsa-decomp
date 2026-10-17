@@ -921,7 +921,7 @@ extern "C" void fn_801AE5C8(u8* p, u8* src) {
     } else {
         *(u32*)(p + 0x14) &= ~1;
     }
-    ((VObj_801AE5C8*)p)->vf2(src + 0x88, *(s32*)(src + 0x84));
+    ((VObj_801AE5C8*)p)->vf0(src + 0x88, *(s32*)(src + 0x84));
 }
 
 extern void* lbl_8029B61C[];
