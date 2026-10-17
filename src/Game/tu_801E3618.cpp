@@ -34,6 +34,9 @@ extern "C" void fn_801F3128(char* p, f32* out);
 extern "C" void fn_801D6D38(char* p, f32* d);
 extern "C" f32 lbl_8053F54C;
 extern "C" f32 lbl_8053F550;
+extern "C" f32 lbl_8053F534;
+extern "C" f32 lbl_8053F538;
+extern "C" f32 lbl_8053F53C;
 extern "C" u8 fn_801E3618(u8* p, void* obj, f32* pos) {
     u8 flag = 1;
     u8 ret = 0;
