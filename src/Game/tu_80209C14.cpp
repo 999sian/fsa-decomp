@@ -9,6 +9,17 @@ extern "C" u32 fn_801F37AC(void*, u32, void*, u32, u32, u32);
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JMath/JMath.h"
 #include "JSystem/JGeometry/Box.h"
+#include "Game/SinitPoolChain.h"
+
+struct ItemResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* getRes(s32 type, char* name);
+};
 
 
 extern void* lbl_804A5D60[];
@@ -593,6 +604,9 @@ extern "C" void* fn_8020B0B8(char* this_) {
     *(f32*)(this_ + 0x2c8) = zero;
     *(f32*)(this_ + 0x2cc) = zero;
     return this_;
+}
+
+static void fn_8020B130(void) {
 }
 
 // Keep regional definitions that were present before source-tree consolidation.
