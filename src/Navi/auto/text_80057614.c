@@ -1258,6 +1258,32 @@ extern "C" void* fn_8005F864(void* ptr, s16 param_2) {
 extern "C" void fn_8005F8A0(void) {
 }
 
+extern "C" void fn_801DF0BC(void* p, s32 n);
+extern "C" void fn_80158E18(void* p);
+extern "C" void fn_80159138(s32 a, void* p);
+extern "C" void fn_801DF628(s32 v);
+extern "C" void fn_8005F258(void* a, void* b);
+extern "C" void fn_80159528(s32, s32, s32, s32, s32, s32, s32);
+extern "C" s32 fn_8005F8A4(u8* p, void* arg) {
+    u8* base = lbl_8027D7C0;
+    u8* q;
+    s32 i;
+    if (*(s16*)(p + 6) == 0) {
+        return 0;
+    }
+    fn_801DF0BC(base + 0xe00, 0x60);
+    fn_80158E18(base + 0xe64);
+    fn_80159138(0, base + 0xe74);
+    fn_801DF628(0);
+    q = *(u8**)(p + 8);
+    for (i = 0; i < *(s16*)(p + 6); i++) {
+        fn_8005F258(q, arg);
+        q += 8;
+    }
+    fn_80159528(0, 0, 0, 0, 1, 0, 1);
+    return 1;
+}
+
 extern "C" void fn_8005FCEC(void* self) {
     u8* base = lbl_8027D7C0;
     u32 buf[2];
