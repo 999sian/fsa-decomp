@@ -452,8 +452,8 @@ inline s32 countSharing2(char* p) {
     return c;
 }
 inline s32 countSharing3(char* p) {
-    s32 me;
     s32 linked;
+    s32 me;
     s32 c;
     s32 i;
     c = 0;
@@ -1175,10 +1175,10 @@ BOOL fn_802454C0(char* p) {
         ok2 = false;
     } else {
         s32 mode;
-        s32 e;
+        s32 d;
         s32 i;
         s32 c;
-        s32 d;
+        s32 e;
         c = 0;
         for (i = c; i < 4; i++) {
             if (i == S32(p, 0x4)) {
