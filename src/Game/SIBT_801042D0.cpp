@@ -27,28 +27,27 @@ extern "C" Actor* fn_80104894(Actor* p, s16 n) {
 
 extern f32 lbl_8053C1F8;
 extern "C" void fn_80104934(Actor* this_) {
-    u8* p = (u8*)this_;
-    void** vtbl = *(void***)this_;
-    *(s32*)(p + 0x238) = *(s32*)(p + 0x90) & 0xf;
-    *(s32*)(p + 0x234) = (*(s32*)(p + 0x90) >> 8) & 0xf;
-    *(f32*)(p + 0x240) = lbl_8053C1F8;
-    *(s32*)(p + 0x23c) = 0;
-    *(u8*)(p + 0x244) = 0;
-    *(u8*)(p + 0x245) = 0;
-    *(u8*)(p + 0x246) = 0;
-    if (*(s32*)(p + 0x234) == 2) {
-        *(u8*)(p + 0x244) = 1;
+    s32 kind = *(s32*)((u8*)this_ + 0x90);
+    *(s32*)((u8*)this_ + 0x238) = kind & 0xf;
+    *(s32*)((u8*)this_ + 0x234) = (kind >> 8) & 0xf;
+    *(f32*)((u8*)this_ + 0x240) = lbl_8053C1F8;
+    *(s32*)((u8*)this_ + 0x23c) = 0;
+    *(u8*)((u8*)this_ + 0x244) = 0;
+    *(u8*)((u8*)this_ + 0x245) = 0;
+    *(u8*)((u8*)this_ + 0x246) = 0;
+    if (*(s32*)((u8*)this_ + 0x234) == 2) {
+        *(u8*)((u8*)this_ + 0x244) = 1;
     }
     if (*(u8*)((u8*)fn_802D6A9C() + 0x131f9) != 0) {
-        ((void (*)(void*, s32, s32))vtbl[0xc])(this_, 0xff, 1);
+        ((void (*)(void*, s32, s32))(*(void***)this_)[0xc])(this_, 0xff, 1);
     }
-    if (*(s32*)(p + 0x234) == 2) {
-        if (((u8 (*)(void*))vtbl[0xd])(this_) == 0) {
-            *(u8*)(p + 0x246) = 2;
+    if (*(s32*)((u8*)this_ + 0x234) == 2) {
+        if (((u8 (*)(void*))(*(void***)this_)[0xd])(this_) != 0) {
+            *(u8*)((u8*)this_ + 0x245) = 2;
+            *(u8*)((u8*)this_ + 0x246) = 1;
         } else {
-            *(u8*)(p + 0x245) = 2;
-            *(u8*)(p + 0x246) = 1;
+            *(u8*)((u8*)this_ + 0x246) = 2;
         }
     }
 }
-
+#include "Game/SinitPoolChain.h"
