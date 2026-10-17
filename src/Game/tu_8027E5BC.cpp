@@ -57,6 +57,9 @@ s32 fn_8022F3DC(s32);
 void fn_802384BC(s32);
 u32 fn_8022461C(char*, s32);
 bool fn_8022B244();
+void* fn_8013C824();
+void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
+void fn_802BAA0C(void*, void*);
 f32 fn_8022C82C(s32);
 f32 fn_8022C76C(s32);
 void fn_8024B298(char*, s32, void*);
@@ -90,8 +93,7 @@ void fn_8027E5BC(char* p, f32 f) {
         JGeometry::TVec3<f32> a(VEC(p, 0x3a4));
         a.sub(VEC(p, 0x398));
         d = a;
-        f32 mag = PSVECMag(&d);
-        f = f * mag * lbl_80540348;
+        f = f * PSVECMag(&d) * lbl_80540348;
     }
     if (F32(p, 0x3a4) > F32(p, 0x398)) {
         S32(p, 0x3dc) = 0;
@@ -397,6 +399,94 @@ void fn_8027F854(char* p, JGeometry::TVec3<f32>* out, s32 i) {
     case 5:
         break;
     }
+}
+
+void fn_802804E0(char* p) {
+    JGeometry::TVec3<f32> a;
+    JGeometry::TVec3<f32> step;
+    bool linked = Player_IsLinked(p);
+    if (fn_802486A0(p) == 4 && fn_80248778(p) == fn_80240888(p)) {
+        linked = false;
+    }
+    if (linked) {
+        fn_8027FA08(p, (f32*)&a);
+        step = a - VEC(p, 0x8);
+        step.z = lbl_80540360;
+        if (step.length() < lbl_80540388) {
+            step.normalize();
+            step.scale(lbl_80540388);
+            VEC(p, 0x8) += step;
+        } else {
+            F32(p, 0x8) = a.x;
+            F32(p, 0xc) = a.y;
+            F32(p, 0x10) = a.z;
+        }
+        if (U8(p, 0x3ff) == 0) {
+            if (fn_80245238(p)) {
+                U8(p, 0x3ff) = 1;
+                fn_8024F0E8(p, 0x20039);
+            }
+        } else {
+            U8(p, 0x3ff)++;
+            if (U8(p, 0x3ff) >= 0x21) {
+                U8(p, 0x3ff) = 0;
+            }
+        }
+        return;
+    }
+    if (fn_80246B10(p, 0x40)) {
+        return;
+    }
+    f32 f31 = PSVECMag((Vec*)(p + 0x344));
+    if (S32(p, 0x430) > 0) {
+        f31 -= lbl_8054038C;
+        if (f31 < lbl_80540360) {
+            f31 = lbl_80540360;
+        }
+    } else if (U8(p, 0x3ff) == 0) {
+        if (fn_80245238(p)) {
+            U8(p, 0x3ff) = 1;
+            fn_8024F0E8(p, 0x20039);
+        } else if (fn_80244FFC(p)) {
+            f31 -= lbl_8054038C;
+            if (f31 < lbl_80540390) {
+                f31 = lbl_80540390;
+            }
+        } else if (fn_80246F28(p) > lbl_80540360) {
+            f31 -= lbl_8054038C;
+            if (f31 < lbl_8054036C) {
+                f31 = lbl_8054036C;
+            }
+        } else {
+            f31 -= lbl_8054038C;
+            if (f31 < lbl_80540360) {
+                f31 = lbl_80540360;
+            }
+        }
+    } else {
+        u8 st = U8(p, 0x3ff);
+        if (st >= 10) {
+            if (st == 10) {
+                F32(p, 0x410) = lbl_80540394;
+                f31 = lbl_8054036C;
+            } else if (st < 16) {
+                f31 += lbl_8054039C;
+            } else {
+                f31 -= lbl_8054038C;
+                if (f31 < lbl_80540390) {
+                    f31 = lbl_80540390;
+                }
+            }
+        }
+        if (U8(p, 0x3ff) >= 0x21) {
+            U8(p, 0x3ff) = 0;
+        } else {
+            U8(p, 0x3ff)++;
+        }
+    }
+    VEC(p, 0x344) = lbl_8046BED8[S32(p, 0x3e8)];
+    VEC(p, 0x344).scale(f31);
+    VEC(p, 0x8) += VEC(p, 0x344);
 }
 
 void fn_802808E8(char* p, f32 f) {
