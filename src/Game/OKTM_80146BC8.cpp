@@ -50,6 +50,15 @@ public:
     virtual void* vf18(u32 type, const char* name);
 };
 
+class ResMgrFsa {
+public:
+    virtual void vf00();
+    virtual void vf04();
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void* vf18(u32 type, const char* name);
+};
+
 extern "C" Actor* fn_80146BC8(Actor* p, s16 n) {
     if (p) {
         *(void**)p = lbl_8049F5D8;
