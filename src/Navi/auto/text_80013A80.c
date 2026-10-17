@@ -79,6 +79,15 @@ struct Unk80204EA4 {
 };
 extern struct Unk80204EA4 lbl_80204EA4;
 extern struct Unk80204EA4 lbl_80204EB0;
+extern struct Unk80204EA4 lbl_80204EC8;
+struct StateObj_80014790;
+typedef void (StateObj_80014790::*StateFunc_80014790)(s32);
+struct StateObj_80014790 {
+    u8 pad[0x70];
+    StateFunc_80014790 m_func;
+    u8 pad2[0xa9 - 0x7c];
+    s8 m_state;
+};
 
 struct Unk80013DA0 {
     u8 pad[0x20];
@@ -388,6 +397,28 @@ extern "C" void fn_80015A40(void* p) {
         fn_801E10DC(p, 0);
     }
     self[0xab] = 1;
+}
+
+extern "C" void fn_80015B1C(void* p) {
+    struct Unk80204EA4 tbl;
+    u8* self = (u8*)p;
+    self[0x55] = 1;
+    tbl = lbl_80204F64;
+    if (fn_801E10A0(self + 0x64, &tbl) != 0) {
+        if (fn_801E1070(self + 0x64) != 0) {
+            self[0xa8] = -1;
+            fn_801E10DC(p, 0);
+        }
+        *(struct Unk80204EA4*)(self + 0x64) = tbl;
+        self[0xa8] = 0;
+        *(u16*)(self + 0x88) = 0;
+        *(u16*)(self + 0x8a) = 0;
+        *(u16*)(self + 0x8c) = 0;
+        *(u16*)(self + 0x8e) = 0;
+        *(f32*)(self + 0x90) = lbl_802FFBBC;
+        fn_801E10DC(p, 0);
+    }
+    self[0x5e] = 0;
 }
 
 extern "C" void fn_80015C24(void) {
