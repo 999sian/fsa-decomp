@@ -25,6 +25,7 @@ extern f32 lbl_80540AC0;
 extern f32 lbl_80540AC4;
 extern f32 lbl_80540AC8;
 extern f32 lbl_80540AD0;
+extern f32 lbl_80540AD4;
 extern f32 lbl_80540ACC;
 extern f32 lbl_80540ADC;
 extern f32 lbl_80540AE0;
