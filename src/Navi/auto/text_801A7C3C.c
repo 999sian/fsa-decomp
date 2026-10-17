@@ -26,6 +26,8 @@ struct VObj_801A9E44 {
 extern "C" f32 lbl_80301D68;
 extern "C" void* lbl_8029B254[];
 extern "C" void fn_801A91FC(void*);
+extern "C" u16 lbl_80301D34;
+extern "C" u32 lbl_80301D24;
 extern u8 lbl_802EE470[];
 extern "C" void fn_80192F60(void* p, s32 param_2);
 
