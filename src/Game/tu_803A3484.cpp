@@ -52,8 +52,7 @@ extern "C" void fn_803A5380(u8* this_) {
     }
     *(s32*)(this_ + 0x154) = 1;
     this_[0x14c] = 0;
-    *(f32*)(this_ + 0x50) = lbl_805432E0;
-    *(f32*)(this_ + 0x4c) = lbl_805432E0;
+    *(f32*)(this_ + 0x4c) = *(f32*)(this_ + 0x50) = lbl_805432E0;
     *(s16*)(this_ + 0x6e) = 0;
     *(s16*)(this_ + 0x72) = 0;
     *(s16*)(this_ + 0x7a) = 0;
