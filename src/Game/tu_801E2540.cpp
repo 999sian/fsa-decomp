@@ -282,3 +282,6 @@ extern "C" s32 fn_801E2F40(u8* this_) {
     return result;
 }
 
+void __sinit_tu_801E2540_cpp(void) {
+}
+
