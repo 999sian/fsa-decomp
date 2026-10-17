@@ -147,6 +147,14 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     fn_80013E18(self);
 }
 
+extern "C" void fn_80014390(Unk80013DA0* self) {
+    fn_80015A00(self);
+    self->unk51 = 0;
+    self->unk54 = 0;
+    self->b1 = (u32)fn_80116064(32767.0f);
+    self->unk20 = 0;
+}
+
 extern "C" void fn_80014758(void) {
     if (fn_8002663C() != 0) {
         lbl_802FED98 = 0;
