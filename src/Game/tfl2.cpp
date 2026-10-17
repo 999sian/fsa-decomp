@@ -84,16 +84,17 @@ extern "C" void fn_802F368C(u8* this_) {
         *(s16*)(this_ + 0x252) = 13;
     }
     if (*(s32*)(this_ + 0x234) >= 2) {
-        f32 y;
         f32 x = *(f32*)(this_ + 0xc);
         s32 room = *(s32*)(this_ + 0x4);
         Tfl2RoomCfg* cfg = fn_802D6A9C();
         Tfl2Rect r = room < 8 ? cfg->rectA : cfg->rectB;
+        f32 y;
+        f32 ry0 = r.y0;
         for (s32 i = 0; i < lbl_8046F788[*(s32*)(this_ + 0x234)]; i++) {
             s32 tx = (s32)(x - r.x0);
             y = *(f32*)(this_ + 0x10);
             for (s32 j = 0; j < lbl_8046F7A4[*(s32*)(this_ + 0x234)]; j++) {
-                s32 ty = (s32)(y - r.y0);
+                s32 ty = (s32)(y - ry0);
                 s32 cx = tfl2Clamp(tx);
                 if (ty < 0) {
                     ty = 0;
