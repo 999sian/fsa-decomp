@@ -952,6 +952,45 @@ extern "C" BOOL fn_8005AD7C(u32 p) {
     return *(s32*)(p + 0x14) >= 1;
 }
 
+void* fn_8005AE08(s32 param_1)
+{
+    u8* p;
+    s32 i;
+
+    if (param_1 <= 0) {
+        return NULL;
+    }
+    p = lbl_802C0770;
+    for (i = 0; i < 2; i++) {
+        if (*(s32*)(p + 0x14) == param_1) {
+            return p;
+        }
+        if (*(s32*)(p + 0x40) == param_1) {
+            return p + 0x2c;
+        }
+        if (*(s32*)(p + 0x6c) == param_1) {
+            return p + 0x58;
+        }
+        if (*(s32*)(p + 0x98) == param_1) {
+            return p + 0x84;
+        }
+        if (*(s32*)(p + 0xc4) == param_1) {
+            return p + 0xb0;
+        }
+        if (*(s32*)(p + 0xf0) == param_1) {
+            return p + 0xdc;
+        }
+        if (*(s32*)(p + 0x11c) == param_1) {
+            return p + 0x108;
+        }
+        if (*(s32*)(p + 0x148) == param_1) {
+            return p + 0x134;
+        }
+        p += 0x160;
+    }
+    return NULL;
+}
+
 extern char lbl_8027D550[];
 extern "C" void fn_8005AEFC(void*);
 extern "C" u32 fn_8005B2C8(void* a, u32 b, void* c, u32 d, void* e) {
