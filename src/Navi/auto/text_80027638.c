@@ -181,11 +181,26 @@ extern "C" void fn_8002F500(void* p) {
     }
 }
 
+extern "C" void* fn_8002F6BC(void) {
+    extern int lbl_802FEE04;
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    unsigned int i;
+    if (obj != 0 && lbl_802FEE04 > 0) {
+        for (i = 0; i < 8; i++) {
+            int id = *(int*)(obj + 0x384 + i * 0x3c);
+            if (id != 0 && id == lbl_802FEE04) {
+                return obj + 0x384 + i * 0x3c;
+            }
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_80058A28(int);
 extern "C" void fn_8002F72C(void) {
     extern unsigned int lbl_801F929C[];
     unsigned int buf[8];
-    int i;
+    unsigned int i;
     for (i = 0; i < 8; i++) {
         buf[i] = lbl_801F929C[i];
     }
