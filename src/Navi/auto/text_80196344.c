@@ -2022,21 +2022,21 @@ extern "C" void fn_8019F8B8(int param_1) {
     }
 }
 
+#pragma use_lmw_stmw off
 extern "C" void fn_8019F960(int param_1) {
-    u8* base = (u8*)param_1;
-    u8* p = base;
+    u8* p = (u8*)param_1;
+    u32 count = *(u8*)(param_1 + 0x58);
     u32 i;
-    u8 count = base[0x58];
     for (i = 0; i < count; i += 2) {
         u16* e = lbl_802EE5D4[p[0x19] & 7];
         fn_8019019C(p[0x18] & 7, e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
-        u8* q = base + (i + 1) * 4;
+        u8* q = (u8*)(param_1 + (i + 1) * 4);
         e = lbl_802EE5D4[q[0x19] & 7];
         fn_8019019C(q[0x18] & 7, e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
         p += 8;
     }
 }
-
+#pragma use_lmw_stmw reset
 extern "C" void fn_801A6214(int, void*);
 #pragma use_lmw_stmw off
 extern "C" void fn_8019FA54(int param_1)
