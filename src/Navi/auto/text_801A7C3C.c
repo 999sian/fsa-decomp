@@ -1468,10 +1468,11 @@ extern "C" void fn_801B2ABC(u32* out, u8* p, s32 a, s32 b) {
 }
 
 extern "C" void fn_801B2B08(u32* out, u8* p, s32 a, s32 b) {
-    u32 d[2] = {lbl_80302390, lbl_80302394};
+    u32 d[2];
+    d[0] = lbl_80302390;
+    d[1] = lbl_80302394;
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
-    u8* e = *(u8**)(p + 4) + idx * 0x14c + 0xdc;
-    u16 v = *(u16*)(e + b * 2);
+    u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 0xdc + b * 2);
     if (v != 0xffff) {
         u32* t = (u32*)(*(u8**)(p + 0x44) + v * 8);
         out[0] = t[0];
@@ -1484,14 +1485,14 @@ extern "C" void fn_801B2B08(u32* out, u8* p, s32 a, s32 b) {
 
 extern "C" u32 lbl_80301DE0;
 extern "C" void fn_801B2B78(u32* out, u8* p, s32 a, s32 b) {
-    u32 d = lbl_80301DE0;
+    u32 d[1] = {lbl_80301DE0};
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
     u16 v = *(u16*)(*(u8**)(p + 4) + idx * 0x14c + 0x94 + b * 2);
     if (v != 0xffff) {
         out[0] = ((u32*)*(u8**)(p + 0x48))[v];
         return;
     }
-    out[0] = d;
+    out[0] = d[0];
 }
 
 extern "C" u8 fn_801B2BD0(u8* p, s32 a) {
