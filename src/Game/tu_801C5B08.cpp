@@ -42,7 +42,7 @@ extern "C" u8 fn_801D0DD4(void* p);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" void* GetCurrentSlotPtr(void* p);
 extern "C" u8 fn_800FE2E4(void* slot, void* pos, s32 room);
-extern "C" void fn_800FE294(void* out, void* slot, s32 room);
+extern "C" JGeometry::TVec3f fn_800FE294(void* slot, s32 room);
 extern "C" u8 fn_800FD5E8(void* slot, s32 room);
 extern "C" s16 fn_801D02E0(void* p, void* pos);
 extern void* lbl_8053AAF8;
