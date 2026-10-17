@@ -80,6 +80,7 @@ extern void* lbl_80290ACC[];
 extern void* lbl_80298574[];
 extern "C" u8 fn_801268E4(void* a, void* b, void* c);
 extern f32 lbl_803016CC;
+extern "C" void fn_80130090(void** param_1, u8* param_2);
 extern void* lbl_80298520[];
 extern "C" void fn_80168E04(void* p);
 extern "C" void fn_801688F0(void* p, u32* a, u32* b, u32* c, u32* d);
@@ -1127,7 +1128,7 @@ extern "C" void fn_80128190(char* p, char* q) {
     b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
     b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
     b[2] = (((u32)b[2] * (obj[0xba] + 1)) >> 8) & 0xff;
-    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
+    b[3] = (((((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff) * ((u32)q[0x96] + 1) >> 8) & 0xff;
     out = c;
     fn_801DE4F4(1, &out);
 }
@@ -1137,10 +1138,11 @@ extern "C" void fn_80128240(char* p, char* q) {
     u32 c = *(u32*)(q + 0x8c);
     u8* b = (u8*)&c;
     u32 out;
+    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
+    b[3] = (((u32)b[3] * (q[0x96] + 1)) >> 8) & 0xff;
     b[0] = (((u32)b[0] * (obj[0xb8] + 1)) >> 8) & 0xff;
     b[1] = (((u32)b[1] * (obj[0xb9] + 1)) >> 8) & 0xff;
     b[2] = (((u32)b[2] * (obj[0xba] + 1)) >> 8) & 0xff;
-    b[3] = (((u32)b[3] * (obj[0xbb] + 1)) >> 8) & 0xff;
     out = c;
     fn_801DE4F4(1, &out);
 }
@@ -1691,6 +1693,22 @@ extern "C" void fn_8012BFA0(u8* p, u8* q) {
     *(f32*)(p + 0x1fc) = r + t3;
 }
 
+extern "C" void fn_8012C0C8(u8* p, u8* q)
+{
+    f32 r = *(f32*)(q + 0x84);
+    u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
+    u8* b = *(u8**)a;
+    f32 v;
+    if (r < *(f32*)(b + 0x2c)) {
+        v = lbl_803016CC * (*(f32*)(b + 0x34) + r * *(f32*)(a + 4));
+    } else if (r > *(f32*)(b + 0x30)) {
+        v = lbl_803016CC * (*(f32*)(b + 0x38) + (r - *(f32*)(b + 0x30)) * *(f32*)(a + 8));
+    } else {
+        v = lbl_803016CC * *(f32*)(b + 0x38);
+    }
+    *(u8*)(q + 0x96) = (u8)v;
+}
+
 extern "C" void* fn_8012C240(void* ptr, void* param_2) {
     *(void**)ptr = param_2;
     fn_8012C274(ptr);
@@ -1723,6 +1741,25 @@ extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
     *(void**)ptr = param_2;
     fn_8012D010(ptr);
     return ptr;
+}
+
+extern "C" void fn_8012D2B0(u8* p, u8* r4, u8* q)
+{
+    if (*(u32*)(*(u8**)q + 8) & 0x20000) {
+        Vec3f* out = (Vec3f*)(p + 4);
+        Vec3f* in = (Vec3f*)(q + 0x1c);
+        f32 s = *(f32*)(q + 0x28);
+        out->x = in->x * s;
+        out->y = in->y * s;
+        out->z = in->z * s;
+    } else {
+        fn_801C6684(r4 + 0x78, q + 0x1c, p + 4);
+        Vec3f* out = (Vec3f*)(p + 4);
+        f32 s = *(f32*)(q + 0x28);
+        out->x *= s;
+        out->y *= s;
+        out->z *= s;
+    }
 }
 
 extern "C" void fn_8012D7F8(u8* p, u8* a, u8* b) {
