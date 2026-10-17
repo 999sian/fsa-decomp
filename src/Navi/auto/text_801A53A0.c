@@ -78,8 +78,8 @@ extern "C" void fn_801A6238(u8* param_1) {
 }
 
 extern "C" void fn_801A6664(void) {
-    s32 i = 0;
     u8* p = lbl_802F0408;
+    s32 i = 0;
     do {
         p[0] = i >> 6;
         p[1] = (i >> 4) & 3;
