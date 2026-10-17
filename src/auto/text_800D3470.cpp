@@ -511,6 +511,32 @@ extern "C" void fn_800D5120(Vtable800D8248* obj)
   obj->m4();
 }
 
+extern "C" void fn_800D516C(void* param) {
+    GDSetCurrOffset(*(s32*)((char*)param + 0x18));
+    u8* start = GDGetCurrPointer();
+    GDOverflowCheck(lbl_80539E10);
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x01);
+    __GDWrite(0x10);
+    __GDWrite(0x0c);
+
+    u32 val1 = *(u32*)((char*)param + 4);
+    __GDWrite((u8)(val1 >> 24));
+    __GDWrite((u8)(val1 >> 16));
+    __GDWrite((u8)(val1 >> 8));
+    __GDWrite((u8)val1);
+
+    u32 val2 = *(u32*)((char*)param + 8);
+    __GDWrite((u8)(val2 >> 24));
+    __GDWrite((u8)(val2 >> 16));
+    __GDWrite((u8)(val2 >> 8));
+    __GDWrite((u8)val2);
+
+    DCStoreRange(start, GDGetCurrPointer() - start);
+}
+
 extern "C" void fn_800D5750(Vtable800D8248* obj)
 {
   obj->m3();
