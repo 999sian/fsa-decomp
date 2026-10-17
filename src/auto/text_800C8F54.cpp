@@ -627,13 +627,14 @@ extern "C" u8 fn_800CAF38(u8* p, s32 idx) {
 }
 
 extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
+    s32 def = lbl_8053BC74;
     u16* ids = *(u16**)(p + 8);
     u8* base = *(u8**)(p + 4);
     u16 v = *(u16*)(base + ids[a] * 0x14c + 0x14 + b * 2);
-    if (v == 0xffff) {
-        *out = lbl_8053BC74;
-    } else {
+    if (v != 0xffff) {
         *out = (*(s32**)(p + 0x1c))[v];
+    } else {
+        *out = def;
     }
 }
 
@@ -774,20 +775,19 @@ extern u32 j3dDefaultIndTexOrderNull;
 struct J3DTevStageBits {
     u8 _00[7];
     u8 mTevSwapModeInfo;
+    void setTexSel(const u8 texSel) { mTevSwapModeInfo = (mTevSwapModeInfo & ~0xC) | (texSel << 2); }
+    void setRasSel(const u8 rasSel) { mTevSwapModeInfo = (mTevSwapModeInfo & ~0x3) | rasSel; }
     void setTevSwapModeInfo(const J3DTevSwapModeInfo& info) {
-        mTevSwapModeInfo = (mTevSwapModeInfo & ~0x0C) | (info.mTexSel << 2);
-        mTevSwapModeInfo = (mTevSwapModeInfo & ~0x03) | info.mRasSel;
+        setTexSel(info.mTexSel);
+        setRasSel(info.mRasSel);
     }
 };
 extern "C" void setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(void* self, const void* info);
 extern "C" void fn_800CB4C0(void* out, u8* e) {
-    u8* p = (u8*)out;
+    J3DTevStageBits* self = (J3DTevStageBits*)out;
     setTevStageInfo__11J3DTevStageFRC15J3DTevStageInfo(out, e);
-    u8 v = p[7];
-    v = (v & ~0x0C) | (j3dDefaultTevSwapMode.mTexSel << 2);
-    p[7] = v;
-    v = p[7];
-    p[7] = (v & ~0x03) | j3dDefaultTevSwapMode.mRasSel;
+    self->setTevSwapModeInfo(j3dDefaultTevSwapMode);
+    self->mTevSwapModeInfo = self->mTevSwapModeInfo;
 }
 
 extern "C" void fn_800CB520(u8* out, u8* p, s32 idx, s32 stage) {
