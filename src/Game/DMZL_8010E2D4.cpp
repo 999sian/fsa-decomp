@@ -357,10 +357,10 @@ extern "C" void fn_8010F478(u8* this_, s32 param_2) {
 }
 
 extern "C" void fn_8010F4DC(u8* this_) {
-    Mtx m1;
-    Mtx m2;
     Vec v1;
     Vec v2;
+    Mtx m1;
+    Mtx m2;
     u8* e;
     s32 n;
     f32 z;
@@ -410,7 +410,63 @@ extern "C" void fn_8010F4DC(u8* this_) {
     }
 }
 
+extern const f32 lbl_8053C58C;
+extern const f32 lbl_8053C5B4;
+extern const f32 lbl_8053C5D4;
+extern int __float_epsilon[];
+extern "C" f64 sin(f64);
+extern "C" f64 cos(f64);
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" f64 __ps_mul(f64, f64);
+extern "C" f64 __ps_madd(f64, f64, f64);
+extern "C" f64 __ps_sum0(f64, f64, f64);
+
+static inline f32 PSVECSquareMag(f32 v[3]) {
+    f64 xy = __psq_l((void*)v, 0, 0, 0);
+    xy = __ps_mul(xy, xy);
+    f64 z = *(f32*)(v + 2);
+    f64 ret = __ps_madd(z, z, xy);
+    ret = __ps_sum0(ret, xy, xy);
+    return (f32)ret;
+}
+
 void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle) {
+    f32 v[3];
+    f32 len2 = (axis[2] * axis[2] + axis[0] * axis[0]) + axis[1] * axis[1];
+
+    if (len2 <= lbl_8053C5B4 * *(f32*)__float_epsilon) {
+        v[0] = lbl_8053C55C;
+        v[1] = lbl_8053C55C;
+        v[2] = lbl_8053C55C;
+    } else {
+        f32 inv;
+        if (len2 <= lbl_8053C55C) {
+            inv = len2;
+        } else {
+            f32 y = __frsqrte(len2);
+            inv = lbl_8053C58C * y * (lbl_8053C5D4 - (len2 * (y * y)));
+        }
+        v[0] = axis[0] * inv;
+        v[1] = axis[1] * inv;
+        v[2] = axis[2] * inv;
+    }
+
+    f32 s = sin(angle);
+    f32 c = cos(angle);
+    f32 t = lbl_8053C550 - c;
+    f32 x = v[0];
+    f32 y = v[1];
+    f32 z = v[2];
+
+    m[0][0] = t * (x * x) + c;
+    m[0][1] = t * x * y - s * z;
+    m[0][2] = t * x * z + s * y;
+    m[1][0] = t * x * y + s * z;
+    m[1][1] = t * (y * y) + c;
+    m[1][2] = t * y * z - s * x;
+    m[2][0] = t * x * z - s * y;
+    m[2][1] = t * y * z + s * x;
+    m[2][2] = t * (z * z) + c;
 }
 
 extern "C" void fn_8010F9F0(u8* p) {
