@@ -1653,6 +1653,8 @@ extern "C" u16 fn_80173084(u8* p, s32 i) {
     return ((u16*)(p + 4))[i];
 }
 
+extern "C" void fn_80173094(u8* p, u16 v) { *(u16*)(p + 6) = v; }
+
 extern "C" void fn_801730A4(int param_1, int param_2, u8* param_3) {
     u8 uVar0 = param_3[0];
     u8* p = (u8*)(param_1 + param_2 * 4);
