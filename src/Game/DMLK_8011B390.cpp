@@ -130,9 +130,6 @@ extern "C" u8* fn_8011CC2C(u8* p) {
     return p;
 }
 
-void __sinit_DMLK_8011B390_cpp(void) {
-}
-
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SP01)
 extern "C" char lbl_8049DB90[];
