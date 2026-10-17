@@ -1,4 +1,6 @@
 #include "types.h"
+extern void* lbl_8029BBB0[];
+
 
 struct Unk801B425C { u32 v; };
 
@@ -2057,6 +2059,20 @@ extern "C" void fn_801B44B8(u32* out, u8* p, s32 a, s32 b) {
     *(u16*)(out + 1) = *(u8*)((u8*)out + 2);
 }
 
+#pragma dont_inline on
+extern "C" void* fn_801B4518(u8* p, s32 a, s32 b) {
+    u16 idx = ((u16*)*(u8**)(p + 8))[a];
+    u8* e = *(u8**)(p + 4) + idx * 0x138 + 0x34;
+    void* r = 0;
+    if (*(u16*)(e + b * 2) != 0xffff) {
+        r = fn_8015A90C(0x94);
+        if (r != 0) {
+            fn_801A7C90(r, *(u8**)(p + 0x24) + *(u16*)(e + b * 2) * 100);
+        }
+    }
+    return r;
+}
+#pragma dont_inline reset
 extern "C" u32 fn_801B45B0(u8* p, s32 a) {
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
     u8 v = *(u8*)(*(u8**)(p + 4) + idx * 0x138 + 1);
@@ -2078,19 +2094,20 @@ extern "C" void fn_801B4638(u32* out, u8* p, s32 a, s32 b) {
 }
 
 extern "C" void fn_801B4684(u32* out, u8* p, s32 a, s32 b) {
-    u32 def0 = lbl_80302398;
-    u32 def1 = lbl_8030239C;
+    u32 def[2] = {lbl_80302398, lbl_8030239C};
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
     u8* e = *(u8**)(p + 4) + idx * 0x138 + 0xc8;
     u16 v = *(u16*)(e + b * 2);
     if (v != 0xffff) {
         u32* tbl = (u32*)(*(u8**)(p + 0x38) + v * 8);
-        out[0] = tbl[0];
-        out[1] = tbl[1];
+        u32 x = tbl[0];
+        u32 y = tbl[1];
+        out[0] = x;
+        out[1] = y;
         return;
     }
-    out[0] = def0;
-    out[1] = def1;
+    out[0] = def[0];
+    out[1] = def[1];
 }
 
 extern "C" u32 lbl_80301DEC;
@@ -2548,6 +2565,16 @@ extern "C" void* fn_801B7294(void* param_1) {
     return param_1;
 }
 
+extern "C" void* fn_801B72E8(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)((u8*)ptr + 8) = lbl_8029BBB0;
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_801B7330(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
@@ -2918,10 +2945,8 @@ extern "C" u32 lbl_80301D24;
 extern "C" void fn_801B9718(void* unused, void* dest, void* src) {
     u8* d = (u8*)dest;
     u8* s = (u8*)src;
-    u8 flag = s[8];
-    s16 h = *(s16*)(s + 0xa);
-    *(s16*)(d + 6) = h;
-    d[4] = flag;
+    *(s16*)(d + 6) = *(s16*)(s + 0xa);
+    d[4] = s[8];
     *(f32*)(d + 8) = 0.0f;
     *(void**)(d + 0x10) = fn_801BA410(s, *(u32*)(s + 0x10));
     *(void**)(d + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x14));
