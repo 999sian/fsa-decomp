@@ -1817,6 +1817,51 @@ extern "C" u8 fn_8042B148() {
     return 1;
 }
 
+extern "C" void fn_8042B1DC() {
+    u16 uVar1 = *(u16*)(lbl_8053AE74 + 0x692);
+    u32 half = uVar1 >> 1;
+    LCQueueWait(3);
+    for (u8 i = 0; i < *(u16*)(lbl_8053AE74 + 0x696); i++) {
+        u32 off = i << 4;
+        lbl_8053AE60 = uVar1;
+        lbl_8053AE44 = lbl_8052AAAC[0];
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x680] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[0], off);
+        fn_8042B8DC((void*)lbl_8052AAB8[1], off + 8);
+        fn_8042B430((void*)lbl_8052AAB8[2], off);
+        fn_8042B430((void*)lbl_8052AAB8[3], off + 8);
+        off >>= 1;
+        lbl_8053AE60 = half;
+        lbl_8053AE44 = lbl_8052AAAC[1];
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x686] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[4], off);
+        lbl_8053AE44 = lbl_8052AAAC[2];
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x68c] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[5], off);
+        if (lbl_8053AE74[0x6a9] != 0) {
+            *(u16*)(lbl_8053AE74 + 0x6ac) = *(u16*)(lbl_8053AE74 + 0x6ac) - 1;
+            if (*(u16*)(lbl_8053AE74 + 0x6ac) == 0) {
+                *(u16*)(lbl_8053AE74 + 0x6ac) = *(u16*)(lbl_8053AE74 + 0x6aa);
+                *(u32*)(lbl_8053AE74 + 0x6a4) = ((*(u32*)(lbl_8053AE74 + 0x6a4) + 6) & ~7) + 1;
+                if (*(u32*)(lbl_8053AE74 + 0x6a4) > 0x20) {
+                    *(u32*)(lbl_8053AE74 + 0x6a4) = 0x21;
+                }
+                *(u16*)(lbl_8053AE74 + 0x684) = 0;
+                *(u16*)(lbl_8053AE74 + 0x68a) = 0;
+                *(u16*)(lbl_8053AE74 + 0x690) = 0;
+            }
+        }
+    }
+    u32 size0 = (uVar1 >> 4) & 0xffffff;
+    u32 size1 = (uVar1 >> 4) << 6;
+    LCStoreData((void*)*(u32*)(lbl_8053AE74 + 0x6b0), (void*)lbl_8052AAAC[0], size0);
+    LCStoreData((void*)*(u32*)(lbl_8053AE74 + 0x6b4), (void*)lbl_8052AAAC[1], size1);
+    LCStoreData((void*)*(u32*)(lbl_8053AE74 + 0x6b8), (void*)lbl_8052AAAC[2], size1);
+    *(u32*)(lbl_8053AE74 + 0x6b0) += size0;
+    *(u32*)(lbl_8053AE74 + 0x6b4) += size1;
+    *(u32*)(lbl_8053AE74 + 0x6b8) += size1;
+}
+
 extern "C" void fn_8042BD84(u8* info, s16* block) {
     s32 t;
     s16 dc;
@@ -1913,6 +1958,44 @@ extern "C" void fn_8042BD84(u8* info, s16* block) {
     }
 }
 
+extern "C" s32 fn_8042BF54(u8* info, void* h) {
+    u8* tab = (u8*)h;
+    s32 cnt = *(s32*)(info + 0x6a4);
+    u32 buf = *(u32*)(info + 0x6a0);
+    u32 code;
+    u32 idx;
+    s32 l;
+    s32* maxCode = (s32*)(tab + 0x44);
+
+    if (cnt > 28) {
+        u32* p = *(u32**)(info + 0x69c);
+        code = ((buf & ~(0xffffffffU << (33 - cnt))) << 1) | (p[1] >> 31);
+        buf = p[1];
+        *(u32**)(info + 0x69c) = p + 1;
+        *(u32*)(info + 0x6a0) = buf;
+        l = 34 - cnt;
+        cnt = 2;
+    } else {
+        idx = ((buf << (cnt + 4)) | (buf >> (28 - cnt))) & 0x1f;
+        if (tab[idx] != 0xff) {
+            *(s32*)(info + 0x6a4) = cnt + tab[idx + 0x20];
+            return tab[idx];
+        }
+        cnt += 5;
+        code = (idx << 1) | ((buf >> (32 - cnt)) & 1);
+        cnt++;
+        l = 6;
+    }
+
+    while ((s32)code > maxCode[l]) {
+        code = (code << 1) | ((buf >> (32 - cnt)) & 1);
+        cnt++;
+        l++;
+    }
+    *(s32*)(info + 0x6a4) = cnt;
+    return (*(u8**)(tab + 0x40))[code + *(s32*)(tab + 0x8c + l * 4)];
+}
+
 extern void* lbl_8053AE24;
 extern void* lbl_8053AE30;
 extern u8 lbl_8048F270[64];
@@ -2006,6 +2089,55 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
     }
 }
 
+extern "C" void fn_8042C9F8() {
+    u8 i;
+    s32 off;
+
+    LCQueueWait(3);
+    for (i = 0; i < *(u16*)(lbl_8053AE74 + 0x696); i++) {
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[0]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[1]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[2]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[3]);
+        fn_8042C1CC(lbl_8053AE74, (s16*)lbl_8052AAB8[4]);
+        fn_8042BD84(lbl_8053AE74, (s16*)lbl_8052AAB8[5]);
+        off = i * 16;
+        lbl_8053AE44 = lbl_8052AAA0[0];
+        lbl_8053AE60 = 0x200;
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x680] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[0], off);
+        fn_8042B8DC((void*)lbl_8052AAB8[1], off + 8);
+        fn_8042B430((void*)lbl_8052AAB8[2], off);
+        fn_8042B430((void*)lbl_8052AAB8[3], off + 8);
+        off = (u32)off >> 1;
+        lbl_8053AE44 = lbl_8052AAA0[1];
+        lbl_8053AE60 = 0x100;
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x686] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[4], off);
+        lbl_8053AE44 = lbl_8052AAA0[2];
+        lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x68c] << 8);
+        fn_8042B8DC((void*)lbl_8052AAB8[5], off);
+        if (lbl_8053AE74[0x6a9] != 0) {
+            if (--*(u16*)(lbl_8053AE74 + 0x6ac) == 0) {
+                *(u16*)(lbl_8053AE74 + 0x6ac) = *(u16*)(lbl_8053AE74 + 0x6aa);
+                *(u32*)(lbl_8053AE74 + 0x6a4) = ((*(u32*)(lbl_8053AE74 + 0x6a4) + 6) & ~7) + 1;
+                if (*(u32*)(lbl_8053AE74 + 0x6a4) > 0x21) {
+                    *(u32*)(lbl_8053AE74 + 0x6a4) = 0x21;
+                }
+                *(u16*)(lbl_8053AE74 + 0x684) = 0;
+                *(u16*)(lbl_8053AE74 + 0x68a) = 0;
+                *(u16*)(lbl_8053AE74 + 0x690) = 0;
+            }
+        }
+    }
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b0), (void*)lbl_8052AAA0[0], 0x2000);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b4), (void*)lbl_8052AAA0[1], 0x800);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b8), (void*)lbl_8052AAA0[2], 0x800);
+    *(u32*)(lbl_8053AE74 + 0x6b0) += 0x2000;
+    *(u32*)(lbl_8053AE74 + 0x6b4) += 0x800;
+    *(u32*)(lbl_8053AE74 + 0x6b8) += 0x800;
+}
+
 extern "C" void fn_8042CC50(u32 param_1, u32 param_2, u32 param_3)
 {
     u16 uVar2;
@@ -2032,6 +2164,45 @@ extern "C" void fn_8042CC50(u32 param_1, u32 param_2, u32 param_3)
         }
     }
     fn_8042CD24();
+}
+
+extern "C" void fn_8042CD64() {
+    u32 x;
+    u8* ptr;
+    u32 low;
+    s32 i, off, k, dst;
+
+    x = *(u32*)(lbl_8053AE74 + 0x6a4);
+    ptr = *(u8**)(lbl_8053AE74 + 0x69c);
+    low = (u32)ptr & 3;
+    if (x == 0x21) {
+        x = low * 8 + 1;
+    } else {
+        x -= (3 - low) * 8;
+    }
+    *(u32*)(lbl_8053AE74 + 0x6a4) = x;
+    *(u8**)(lbl_8053AE74 + 0x69c) = (u8*)((u32)ptr & ~3);
+    *(u32*)(lbl_8053AE74 + 0x6a0) = *(u32*)((u32)ptr & ~3);
+
+    off = 0;
+    for (i = 0; i < 4; i++) {
+        if (lbl_8053AE74[0x6a8] & (1 << i)) {
+            dst = off;
+            for (k = 0; k < 16; k++) {
+                THPHuffFill(off, k * 2, dst);
+                THPHuffFill(off, k * 2 + 1, dst + 1);
+                dst += 2;
+            }
+        }
+        off += 0xe0;
+    }
+
+    lbl_8053AE20 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x681] * 2) * 0xe0;
+    lbl_8053AE24 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x687] * 2) * 0xe0;
+    lbl_8053AE28 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x68d] * 2) * 0xe0;
+    lbl_8053AE2C = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x682] * 2 + 1) * 0xe0;
+    lbl_8053AE30 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x688] * 2 + 1) * 0xe0;
+    lbl_8053AE34 = lbl_8053AE74 + 0x300 + (lbl_8053AE74[0x68e] * 2 + 1) * 0xe0;
 }
 
 extern u8* lbl_8053AE74;
@@ -2292,6 +2463,7 @@ extern "C" void fn_8042DA10() {
 }
 
 extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
+    u8* ctx;
     u8* pcVar2;
     u8* pbVar3;
     u8 bVar1;
@@ -2304,62 +2476,60 @@ extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
             if (p4 != NULL) {
                 if ((PPCMfhid2() & 0x10000000) != 0) {
                     if (lbl_8053AE78 != 0) {
-                        lbl_8053AE70 = (u32)p4;
+                        *(volatile u32*)&lbl_8053AE70 = (u32)p4;
                         p = ((u32)p4 + 0x1f) & ~0x1f;
                         lbl_8053AE74 = (u8*)p;
                         lbl_8053AE70 = p + 0x6bc;
                         DCZeroRange((void*)p, 0x6bc);
-                        *(u32*)(lbl_8053AE74 + 0x6a4) = 0x21;
-                        *(u16*)(lbl_8053AE74 + 0x698) = 0;
-                        *(u8**)(lbl_8053AE74 + 0x69c) = data;
+                        ctx = lbl_8053AE74;
+                        *(u32*)(ctx + 0x6a4) = 0x21;
+                        *(u16*)(ctx + 0x698) = 0;
+                        *(u8**)(ctx + 0x69c) = data;
                         bVar4 = 0;
                         do {
-                            pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
-                            *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + 1;
+                            pcVar2 = *(u8**)(ctx + 0x69c);
+                            *(u8**)(ctx + 0x69c) = pcVar2 + 1;
                             if (*pcVar2 != 0xff) {
                                 return 3;
                             }
-                            while (**(u8**)(lbl_8053AE74 + 0x69c) == 0xff) {
-                                *(u8**)(lbl_8053AE74 + 0x69c) = *(u8**)(lbl_8053AE74 + 0x69c) + 1;
+                            while (**(u8**)(ctx + 0x69c) == 0xff) {
+                                *(u8**)(ctx + 0x69c) = *(u8**)(ctx + 0x69c) + 1;
                             }
-                            pbVar3 = *(u8**)(lbl_8053AE74 + 0x69c);
-                            *(u8**)(lbl_8053AE74 + 0x69c) = pbVar3 + 1;
+                            pbVar3 = *(u8**)(ctx + 0x69c);
+                            *(u8**)(ctx + 0x69c) = pbVar3 + 1;
                             bVar1 = *pbVar3;
-                            if (bVar1 > 0xd7) {
-                                if (bVar1 >= 0xd8 && bVar1 <= 0xdf) {
-                                    if (bVar1 == 0xdd) {
-                                        fn_8042CF9C();
-                                    } else if (bVar1 == 0xdb) {
-                                        cVar6 = fn_8042D3E4();
-                                        if (cVar6 != 0) {
-                                            return cVar6;
-                                        }
-                                    } else if (bVar1 == 0xda) {
-                                        cVar6 = fn_8042D7B8();
-                                        if (cVar6 != 0) {
-                                            return cVar6;
-                                        }
-                                        bVar4 = 1;
-                                    } else if (bVar1 != 0xd8) {
+                            if (bVar1 < 0xd8) {
+                                if (bVar1 == 0xc4) {
+                                    cVar6 = fn_8042D20C();
+                                } else {
+                                    if (bVar1 != 0xc0) {
                                         return 0xb;
                                     }
-                                } else if (bVar1 <= 0xef || bVar1 == 0xfe) {
-                                    pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
-                                    *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
-                                } else {
+                                    cVar6 = fn_8042D8D4();
+                                }
+                                if (cVar6 != 0) {
+                                    return cVar6;
+                                }
+                            } else if (bVar1 > 0xdf) {
+                                if (bVar1 > 0xef && bVar1 != 0xfe) {
                                     return 0xb;
                                 }
-                            } else if (bVar1 == 0xc4) {
-                                cVar6 = fn_8042D20C();
+                                pcVar2 = *(u8**)(ctx + 0x69c);
+                                *(u8**)(ctx + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
+                            } else if (bVar1 == 0xdd) {
+                                fn_8042CF9C();
+                            } else if (bVar1 == 0xdb) {
+                                cVar6 = fn_8042D3E4();
                                 if (cVar6 != 0) {
                                     return cVar6;
                                 }
-                            } else if (bVar1 == 0xc0) {
-                                cVar6 = fn_8042D8D4();
+                            } else if (bVar1 == 0xda) {
+                                cVar6 = fn_8042D7B8();
                                 if (cVar6 != 0) {
                                     return cVar6;
                                 }
-                            } else {
+                                bVar4 = 1;
+                            } else if (bVar1 != 0xd8) {
                                 return 0xb;
                             }
                         } while (!bVar4);
