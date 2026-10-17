@@ -3339,6 +3339,10 @@ extern "C" void fn_800DE29C(Unk800DE29C* param_1, int param_2, const u8* param_3
     param_1->mStage[param_2].setSwapModeInfo(param_3);
 }
 
+extern "C" void fn_800DE2D4(Unk800DE29C* param_1, int param_2, const u8* param_3) {
+    param_1->mStage[param_2].setSwapModeInfo(param_3);
+}
+
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
     this_[idx + 0x7a] = *src;
 }
