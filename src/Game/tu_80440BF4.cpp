@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/J2D/J2DScreen.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 struct fn_80440EE8_Ctx { u8 pad[0x10]; J2DGrafContext* graf; };
 struct fn_80440EE8_Owner { void* vt; J2DScreen* screen; };
