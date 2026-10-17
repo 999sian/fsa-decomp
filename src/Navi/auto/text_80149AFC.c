@@ -1,2 +1,5 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80149afc-0x80149ba4 (1 functions). split_file divides it into the game's real files.
+#include "dolphin/types.h"
+
+typedef struct { u16 pad; u16 len; void* data; } Unk80149AFCEntry;
