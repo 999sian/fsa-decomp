@@ -229,18 +229,21 @@ extern "C" f32 fn_801ABF3C(Anim_801ABF3C* self, u16 idx)
 }
 
 extern "C" void fn_801ABFC0(u8* p) {
+    void* vt0 = lbl_8027F214;
+    void* vt1 = lbl_8029B430;
+    void* vt2 = lbl_8029B41C;
     f32 f = lbl_80301D6C;
-    *(void**)p = lbl_8027F214;
+    *(void**)p = vt0;
     p[4] = 0;
     p[5] = 0;
     *(s16*)(p + 6) = 0;
     *(f32*)(p + 8) = f;
-    *(void**)p = lbl_8029B430;
+    *(void**)p = vt1;
     *(s16*)(p + 0xc) = 0;
     *(s16*)(p + 0xe) = 0;
     *(s32*)(p + 0x10) = 0;
     *(s32*)(p + 0x14) = 0;
-    *(void**)p = lbl_8029B41C;
+    *(void**)p = vt2;
     *(s32*)(p + 0x18) = 0;
     *(s32*)(p + 0x1c) = 0;
 }
@@ -715,6 +718,10 @@ extern "C" void* fn_801AE0B0(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" s32 fn_801AE11C(void) {
+    return 9;
 }
 
 extern void* lbl_8029B5F8[];
