@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 #include "JSystem/JParticle/JPAEmitter.h"
 
 
