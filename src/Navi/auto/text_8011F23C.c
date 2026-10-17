@@ -1161,6 +1161,20 @@ extern "C" void* fn_80132A3C(void* param_1) {
     return param_1;
 }
 
+extern "C" void fn_80139860(u8* p, s16 del);
+extern "C" void fn_8013AC50(void* p, s16 v);
+extern "C" void* fn_80132ACC(void* p, s16 param_2) {
+    if (p != nullptr) {
+        *(void**)p = lbl_802914AC;
+        fn_80139860((u8*)p + 0x60, -1);
+        fn_8013AC50(p, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern void* lbl_8020597C[];
 extern "C" void* fn_80132C50(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
