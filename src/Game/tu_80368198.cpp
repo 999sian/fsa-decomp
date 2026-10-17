@@ -71,6 +71,18 @@ extern "C" void fn_8036A894(void* this_);
 extern "C" void fn_8036AC58(void* this_, void* param);
 extern "C" void fn_80368660(void* this_);
 extern void* lbl_80474C48[];
+extern u8 lbl_80474E48[];
+extern "C" void fn_801EF830(s32 idx, void* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
+extern "C" void fn_802F86CC(void*, void*, void*, s32, f32, f32, void*);
+extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
+class SobResMgr {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void* vf18(u32 type, const char* name);
+};
 extern void* lbl_8053AB10;
 extern f32 lbl_80542C58;
 extern f32 lbl_80542C6C;
@@ -448,6 +460,112 @@ extern "C" void fn_8036C300(Unk8036C300* this_) {
         }
     }
     (this_->*lbl_804AE070[*(s32*)(self + 0x23c) - 4])();
+}
+
+extern "C" void fn_8036C3AC(void* this_) {
+    extern void fn_8010DF98(void* p);
+    extern void detach__5ActorFv(void* p);
+    extern void fn_801D2608(void* p, void* a, s32 b);
+    extern void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+    extern void fn_801D1F14(void* p);
+    extern void fn_802D7440(void* mgr, s32 a);
+    extern void* fn_802D6A9C(void);
+    extern void* fn_801F856C(void);
+    extern s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+    extern char lbl_8053A1C0;
+    extern u8 sincosTable___5JMath[];
+    extern f32 lbl_80542C58;
+    extern f32 lbl_80542C6C;
+    extern f32 lbl_80542C84;
+    extern f32 lbl_80542C9C;
+    extern f32 lbl_80542CBC;
+    extern f32 lbl_80542CD0;
+    extern f32 lbl_80542CD4;
+
+    char* self = (char*)this_;
+    char* tbl = lbl_80474C38;
+    s32 i;
+    u32* b;
+    u16* a;
+    Vec3f* pt;
+    s32* dst;
+    Vec3f pts[5];
+
+    fn_8010DF98(this_);
+    *(s32*)(self + 0x23c) = *(s32*)(self + 0x90) & 0x1f;
+    *(s32*)(self + 0x248) = (*(u32*)(self + 0x90) >> 22) & 0x1f;
+    if (*(s32*)(self + 0x23c) != 4 && *(s32*)(self + 0x23c) != 5) {
+        detach__5ActorFv(this_);
+        return;
+    }
+    if (*(s32*)(self + 0x23c) == 5) {
+        *(s32*)(self + 0x240) = 0x13;
+        *(s32*)(self + 0x268) = 5;
+    } else {
+        *(s32*)(self + 0x268) = 0;
+    }
+    {
+        void* obj = lbl_8053AAF8;
+        char* str = lbl_8053A1C8;
+        void* sub = *(void**)((char*)obj + 0xa4);
+        *(void**)(self + 0x310) = ((void* (*)(void*, u32, char*))(*(void***)sub)[6])(sub, 0x3f3f3f3f, str);
+    }
+    fn_801D2608(self + 0x318, &lbl_8053A1C0, 2);
+    if (*(s32*)(self + 0x23c) == 6 || *(s32*)(self + 0x23c) >= 6 || *(s32*)(self + 0x23c) < 0) {
+        fn_801D22DC(self + 0x318, 1, 2, 0);
+    } else {
+        fn_801D22DC(self + 0x318, 0, 2, 0);
+    }
+    fn_801D1F14(self + 0x318);
+    *(f32*)(self + 0x10) = *(f32*)(self + 0x10) - lbl_80542C84;
+
+    pts[0] = *(Vec3f*)(self + 0xc);
+    pts[1].x = *(f32*)(self + 0x24) - lbl_80542CBC;
+    pts[1].y = *(f32*)(self + 0x28) - lbl_80542C9C;
+    pts[1].z = lbl_80542C6C;
+    pts[2].x = *(f32*)(self + 0x24) + lbl_80542CBC;
+    pts[2].y = *(f32*)(self + 0x28) - lbl_80542C9C;
+    pts[2].z = lbl_80542C6C;
+    pts[3].x = *(f32*)(self + 0x24) - lbl_80542CBC;
+    pts[3].y = lbl_80542C9C + *(f32*)(self + 0x28);
+    pts[3].z = lbl_80542C6C;
+    pts[4].x = lbl_80542CBC + *(f32*)(self + 0x24);
+    pts[4].y = lbl_80542C9C + *(f32*)(self + 0x28);
+    pts[4].z = lbl_80542C6C;
+
+    b = (u32*)(tbl + 0xb4);
+    a = (u16*)(tbl + 0xa8);
+    pt = pts;
+    dst = (s32*)(self + 0x384);
+    for (i = 0; i < 5; i++) {
+        *dst = fn_8013CC50(*(u32*)(self + 0x4), pt, lbl_80542C58, *a, 0, *b, 0, 0, 1);
+        dst++;
+        pt++;
+        a++;
+        b++;
+    }
+    fn_802D7440(fn_802D6A9C(), 0);
+
+    for (i = 0; i < 5; i++) {
+        s16 ang = *(s16*)(tbl + 0x6c + i * 2);
+        f32* sc = (f32*)(sincosTable___5JMath + ((u16)ang >> 5) * 8);
+        Vec3f* out = (Vec3f*)(self + 0x2a8);
+        out[i].x = *(f32*)(self + 0xc) + lbl_80542CD4 * sc[1];
+        out[i].y = lbl_80542C84 + (*(f32*)(self + 0x10) + lbl_80542CD0 * sc[0]);
+        out[i].z = lbl_80542C6C;
+    }
+    *(Vec3f*)(self + 0x2e4) = *(Vec3f*)(self + 0xc);
+
+    {
+        s32 n = *(s32*)((char*)fn_801F856C() + 0x1008);
+        for (i = 0; i < n; i++) {
+            char* a = (char*)*(void**)((char*)fn_801F856C() + 8 + i * 4);
+            if (a != 0 && *(u32*)(a + 0x1a0) == 0x474F4C32) {
+                *(char**)(self + 0x2f4) = a;
+                return;
+            }
+        }
+    }
 }
 
 extern "C" void* fn_8036C69C(void* this_, short how) {
