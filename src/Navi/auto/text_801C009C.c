@@ -5,6 +5,10 @@ extern "C" void fn_801C009C(void) {}
 
 extern "C" int OSDisableInterrupts(void);
 extern "C" void OSRestoreInterrupts(int level);
+extern "C" void OSClearContext(void* context);
+extern "C" void fn_801BE544(unsigned char* p);
+extern "C" void fn_801C13D0(unsigned char* p);
+extern int RunQueueHint_802FF7CC;
 extern int Reschedule_802FF7D0;
 extern "C" void OSInitThreadQueue(unsigned int* p) {
     p[1] = 0;
