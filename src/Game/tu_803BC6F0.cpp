@@ -100,6 +100,38 @@ extern "C" u8 lbl_8050DB0C[];
 extern "C" f32 lbl_8054349C;
 extern "C" u8 fn_80402940(void* p, s32 id, f32 a, f32 b, s32 c);
 
+struct KeyObjVt {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void* v15(u32 a, u64 b);
+};
+
+struct PaneObjVt {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(s32 b);
+};
+
 struct Clr {
     u8 r, g, b, a;
 };
@@ -477,6 +509,73 @@ extern "C" void fn_803BF3BC(u8* this_) {
     *(u16*)(this_ + 0xda) = 0;
     this_[0x112] = this_[0x110];
     this_[0x110] = 0x16;
+}
+
+extern "C" void fn_803BF698(u8* p) {
+    u32 v;
+    void* r;
+    fn_803CE4CC((char*)p);
+    v = 0x117;
+    if (lbl_8053AAF8[0x7f]) {
+        v = 0x116;
+    }
+    *(u32*)(p + 0x84) = v;
+    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), v, 0x0000005466743031ULL);
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv(r), *(u32*)(p + 0x84), 0, 0, 0);
+    if (*(u32*)(p + 0x84) == 0x60 || *(u32*)(p + 0x84) == 0x64) {
+        *(u32*)(p + 0xb0) = 0x5a;
+    }
+    fn_80402E08(*(void**)(p + 0x50), lbl_80543494, lbl_80543458);
+    *(u16*)(*(u8**)(p + 0x50) + 0x20) = 0;
+    stopPane(*(void**)(*(u8**)(p + 0x50) + 0x4));
+    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723031ULL);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723032ULL);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723033ULL);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x500000, 0x0050666375723034ULL);
+    fn_804023D0(*(void**)(p + 0x50), r, *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    *(u16*)(*(u8**)(p + 0x38) + 0x20) = 0;
+    *(u16*)(*(u8**)(p + 0x38) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x38) + 0x26) = 0;
+    *(u16*)(*(u8**)(p + 0x44) + 0x20) = 0;
+    *(u16*)(*(u8**)(p + 0x44) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x44) + 0x26) = 0;
+    *(u16*)(*(u8**)(p + 0x3c) + 0x20) = 0;
+    *(u16*)(*(u8**)(p + 0x3c) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x3c) + 0x26) = 0;
+    *(u16*)(*(u8**)(p + 0x48) + 0x20) = 0;
+    *(u16*)(*(u8**)(p + 0x48) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x48) + 0x26) = 0;
+    *(u16*)(*(u8**)(p + 0x40) + 0x20) = 0;
+    *(u16*)(*(u8**)(p + 0x40) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x40) + 0x26) = 0;
+    *(u16*)(*(u8**)(p + 0x4c) + 0x20) = 0;
+    *(u16*)(*(u8**)(p + 0x4c) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x4c) + 0x26) = 0;
+    stopPane(*(void**)(*(u8**)(p + 0x34) + 0x4));
+    r = (*(ColorVt**)*(void**)(p + 0x8))->v15(*(void**)(p + 0x8), 0x50610000, 0x5061636375723031ULL);
+    fn_804023D0(*(void**)(p + 0x34), r, *(u8*)(*(u8**)(p + 0x34) + 0x28));
+    if ((u8)(1 << *(u32*)(p + 0xa4)) & p[0x115]) {
+        *(u16*)(*(u8**)(p + 0x20) + 0x20) = 0;
+        *(u16*)(*(u8**)(p + 0x20) + 0x26) = 0;
+    } else {
+        *(u16*)(*(u8**)(p + 0x14) + 0x20) = 0;
+        *(u16*)(*(u8**)(p + 0x14) + 0x26) = 0;
+        *(u16*)(*(u8**)(p + 0x18) + 0x20) = 0;
+        *(u16*)(*(u8**)(p + 0x18) + 0x26) = 0;
+        *(u16*)(*(u8**)(p + 0x1c) + 0x20) = 0;
+        *(u16*)(*(u8**)(p + 0x1c) + 0x26) = 0;
+    }
+    *(u16*)(*(u8**)(p + 0x24) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x24) + 0x26) = 0;
+    *(u16*)(*(u8**)(p + 0x28) + 0x22) = 0;
+    *(u16*)(*(u8**)(p + 0x28) + 0x26) = 0;
+    *(u16*)(p + 0xd8) = 0;
+    *(u16*)(p + 0xda) = 0;
+    p[0x112] = p[0x110];
+    p[0x110] = 0x27;
 }
 
 extern "C" void fn_803C02CC(u8* p) {
