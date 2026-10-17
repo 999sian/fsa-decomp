@@ -44,6 +44,15 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_80300F38;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" s32 fn_800D01C0(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode);
+extern "C" s32 fn_800D02D8(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 from, f32 to);
+extern "C" unsigned char lbl_802C574C[];
+class NaviState_800CF138;
+extern "C" void (NaviState_800CF138::*lbl_802890C8[])();
+extern "C" void fn_800CF138(u8* p) {
+    (((NaviState_800CF138*)p)->*lbl_802890C8[p[0x284]])();
+}
+
 extern "C" s32 fn_800D01C0(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode) {
     if (a < 0) {
         return 0;
