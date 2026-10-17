@@ -6,6 +6,7 @@ struct NaviRGB8 { u8 r, g, b; };
 struct Vec3f { f32 x, y, z; };
 extern "C" void fn_801E4334(char* buf, u32 n, const void* fmt, va_list args);
 extern "C" void fn_80123628(void* p, char* s);
+extern "C" void fn_80123928(void* p, const void* fmt, va_list args);
 
 extern "C" void fn_801DBA5C(s32 v, s32 n);
 extern "C" void fn_80132450(s16 a, s16 b, s16 c, void* out);
