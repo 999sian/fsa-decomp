@@ -1275,6 +1275,8 @@ extern "C" void* fn_801B339C(void* ptr, s16 param_2) {
 
 extern "C" void fn_801B33F8(void) {}
 
+extern "C" void fn_801B33FC(void) {}
+
 extern void* lbl_8029B6F4[];
 extern void* lbl_8029AE58[];
 extern "C" void* fn_801B3430(void* ptr, s16 param_2) {
