@@ -27,6 +27,15 @@ extern "C" void* fn_800228C8(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80022904(void* self) {
+    s16* p = (s16*)self;
+    p[0] = 0;
+    p[1] = 0;
+    p[4] = 0;
+    *(u8*)((u8*)self + 0xa) = 0;
+    *(u8*)((u8*)self + 0xb) = 0;
+}
+
 extern "C" void* fn_80022920(void* ptr, s16 param_2) {
     if (ptr != nullptr && param_2 > 0) {
         fn_8015AB1C(ptr);
