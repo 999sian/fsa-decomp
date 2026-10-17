@@ -1310,7 +1310,9 @@ extern "C" void fn_801B34A8(void) {
     return;
 }
 
-extern "C" void fn_801B34AC(void) {}
+extern "C" void fn_801B34AC(void) {
+    return;
+}
 
 extern void* lbl_8029B800[];
 extern void* lbl_8029A0D4[];
