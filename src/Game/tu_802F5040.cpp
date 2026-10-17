@@ -253,11 +253,12 @@ extern "C" f32 fn_802F5E9C(u8* this_, f32* pos) {
 
 extern "C" f32 fn_802F5FF4(f32 x) {
     f32 a = lbl_805414FC;
+    f32 lim = lbl_80541500;
     f32 v;
-    if (x >= lbl_80541500) {
+    if (x >= lim) {
         v = x;
     } else {
-        v = lbl_80541500;
+        v = lim;
     }
     return a / (a - v);
 }
@@ -1097,6 +1098,106 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     DCFlushRange(d, len);
 }
 
+extern "C" void fn_8013B438(void* mgr);
+extern "C" void* fn_802D6A9C();
+extern "C" void load__10JUTTextureF11_GXTexMapID(void* tex, s32 id);
+extern "C" void fn_802FC268(u8* this_, u8* arr, s32 i, u32 v);
+extern "C" u32 lbl_805414E8;
+extern "C" void fn_802FC80C(u8* this_) {
+    s32 i;
+    u8* mgr;
+    bool flag;
+    s32 idx;
+
+    fn_8013B1E8(lbl_8053AB10);
+    fn_8013B438(lbl_8053AB10);
+    GXClearVtxDesc();
+    GXSetVtxDesc((GXAttr)9, (GXAttrType)3);
+    GXSetVtxDesc((GXAttr)0xb, (GXAttrType)3);
+    GXSetVtxDesc((GXAttr)0xd, (GXAttrType)3);
+    GXSetVtxDesc((GXAttr)0xe, (GXAttrType)1);
+    GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)9, (GXCompCnt)1, (GXCompType)4, 0);
+    GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)0xb, (GXCompCnt)0, (GXCompType)5, 0);
+    GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)0xd, (GXCompCnt)1, (GXCompType)4, 0);
+    GXSetVtxAttrFmt((GXVtxFmt)0, (GXAttr)0xe, (GXCompCnt)1, (GXCompType)4, 0);
+    GXSetArray((GXAttr)9, ((void**)this_)[*(s32*)(this_ + 0x2388) + 0x40], 0xc);
+    GXSetArray((GXAttr)0xb, ((void**)this_)[*(s32*)(this_ + 0x2388) + 0x42], 4);
+    GXSetArray((GXAttr)0xd, *(void**)(this_ + 0x110), 8);
+    GXSetChanCtrl((GXChannelID)4, (GXBool)0, (GXColorSrc)0, (GXColorSrc)1, 0, (GXDiffuseFn)0, (GXAttnFn)2);
+    GXSetNumChans(1);
+    GXSetTexCoordGen2((GXTexCoordID)1, (GXTexGenType)1, (GXTexGenSrc)5, (GXTexMtx)0x3c, (GXBool)0, (GXPTTexMtx)0x7d);
+    GXSetNumTexGens(2);
+    GXSetTevOrder((GXTevStageID)0, (GXTexCoordID)0, (GXTexMapID)0, (GXChannelID)4);
+    GXSetTevColorIn((GXTevStageID)0, (GXTevColorArg)0xf, (GXTevColorArg)0xc, (GXTevColorArg)0xa, (GXTevColorArg)8);
+    GXSetTevAlphaIn((GXTevStageID)0, (GXTevAlphaArg)7, (GXTevAlphaArg)6, (GXTevAlphaArg)5, (GXTevAlphaArg)4);
+    GXSetTevColorOp((GXTevStageID)0, (GXTevOp)0, (GXTevBias)2, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevAlphaOp((GXTevStageID)0, (GXTevOp)0, (GXTevBias)2, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+    GXSetTevSwapMode((GXTevStageID)0, (GXTevSwapSel)0, (GXTevSwapSel)0);
+    GXSetTevDirect((GXTevStageID)0);
+    if (this_[0xe450] != 0) {
+        mgr = (u8*)lbl_8053AAF8;
+        if (mgr[0x7f] != 0) {
+            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb);
+        } else {
+            flag = (*(s32*)(mgr + 0x4c) == 0x7 || *(s32*)(mgr + 0x4c) == 0x8 || *(s32*)(mgr + 0x4c) == 0x9 || *(s32*)(mgr + 0x4c) == 0x16 || *(s32*)(mgr + 0x4c) == 0xa || *(s32*)(mgr + 0x4c) == 0xb || *(s32*)(mgr + 0x4c) == 0xc);
+        }
+        if (flag && *(void**)(mgr + 0x4) != NULL) {
+            idx = *(s32*)((u8*)fn_802D6A9C() + 0x50);
+        } else {
+            idx = 0;
+        }
+        load__10JUTTextureF11_GXTexMapID(((void**)(this_ + 0xE428))[idx], 1);
+        GXSetTevOrder((GXTevStageID)1, (GXTexCoordID)1, (GXTexMapID)1, (GXChannelID)0xff);
+        GXSetTevColorIn((GXTevStageID)1, (GXTevColorArg)0xf, (GXTevColorArg)0, (GXTevColorArg)8, (GXTevColorArg)0xf);
+        GXSetTevAlphaIn((GXTevStageID)1, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)0);
+        GXSetTevColorOp((GXTevStageID)1, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)1);
+        GXSetTevAlphaOp((GXTevStageID)1, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+        GXSetTevSwapMode((GXTevStageID)1, (GXTevSwapSel)0, (GXTevSwapSel)0);
+        GXSetTevDirect((GXTevStageID)1);
+        GXSetTevOrder((GXTevStageID)2, (GXTexCoordID)0xff, (GXTexMapID)0xff, (GXChannelID)0xff);
+        GXSetTevColorIn((GXTevStageID)2, (GXTevColorArg)0xf, (GXTevColorArg)0xc, (GXTevColorArg)2, (GXTevColorArg)0);
+        GXSetTevAlphaIn((GXTevStageID)2, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)0);
+        GXSetTevColorOp((GXTevStageID)2, (GXTevOp)1, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+        GXSetTevAlphaOp((GXTevStageID)2, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+        GXSetTevSwapMode((GXTevStageID)2, (GXTevSwapSel)0, (GXTevSwapSel)0);
+        GXSetTevDirect((GXTevStageID)2);
+        GXSetTevColor((GXTevRegID)2, *(GXColor*)&lbl_805414E8);
+        GXSetTevOrder((GXTevStageID)3, (GXTexCoordID)0xff, (GXTexMapID)0xff, (GXChannelID)0xff);
+        GXSetTevColorIn((GXTevStageID)3, (GXTevColorArg)5, (GXTevColorArg)1, (GXTevColorArg)0, (GXTevColorArg)2);
+        GXSetTevAlphaIn((GXTevStageID)3, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)7, (GXTevAlphaArg)0);
+        GXSetTevColorOp((GXTevStageID)3, (GXTevOp)8, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+        GXSetTevAlphaOp((GXTevStageID)3, (GXTevOp)0, (GXTevBias)0, (GXTevScale)0, (GXBool)1, (GXTevRegID)0);
+        GXSetTevSwapMode((GXTevStageID)3, (GXTevSwapSel)0, (GXTevSwapSel)0);
+        GXSetTevDirect((GXTevStageID)3);
+        GXSetNumTevStages(4);
+    } else {
+        GXSetNumTevStages(1);
+    }
+    GXSetNumIndStages(0);
+    GXInvalidateVtxCache();
+    GXSetCullMode((GXCullMode)0);
+    for (i = 0; i <= 8; i++) {
+        if (i < 4 && this_[i + 0x235c] != 0) {
+            if (i == 0 && this_[0x2365] != 0) {
+                GXSetAlphaCompare((GXCompare)2, 0xff, (GXAlphaOp)1, (GXCompare)0, 0);
+                GXSetZMode((GXBool)1, (GXCompare)3, (GXBool)1);
+            } else {
+                GXSetAlphaCompare((GXCompare)4, 0, (GXAlphaOp)0, (GXCompare)7, 0);
+                GXSetZMode((GXBool)1, (GXCompare)3, (GXBool)1);
+            }
+            fn_802FC268(this_, this_ + 0x2368, i, *(u32*)(this_ + i * 4 + 0x28));
+        } else if (i >= 4 && i < 8 && this_[i + 0x235c] != 0) {
+            GXSetAlphaCompare((GXCompare)4, 0, (GXAlphaOp)0, (GXCompare)7, 0);
+            GXSetZMode((GXBool)1, (GXCompare)3, (GXBool)1);
+            fn_802FC268(this_, this_ + 0x2374, i - 4, *(u32*)(this_ + i * 4 + 0x28));
+        } else if (this_[0x2365] != 0 && i == 8 && this_[0x235c] != 0) {
+            GXSetAlphaCompare((GXCompare)1, 0xff, (GXAlphaOp)0, (GXCompare)4, 0);
+            GXSetZMode((GXBool)1, (GXCompare)3, (GXBool)0);
+            fn_802FC268(this_, this_ + 0x2368, 0, *(u32*)(this_ + 0x28));
+        }
+    }
+}
+
 extern "C" void fn_802FF0EC(u8* p) {
     bool bVar2 = false;
     s32 i = 0;
@@ -1352,9 +1453,8 @@ extern "C" void* fn_802FFBF8(void* self, s16 flag) {
 extern "C" void fn_8030029C(u8* p) {
     *(s32*)(p + 0x2c) = -1;
     *(s32*)(p + 0x30) = -1;
-    u8 i = 0;
-    while (i < 0x10) {
-        p[(u8)(i + 0) + 0x1c] = i;
+    for (int i = 0; (u8)i < 0x10; i += 8) {
+        p[(u8)(i + 0) + 0x1c] = i + 0;
         p[(u8)(i + 1) + 0x1c] = i + 1;
         p[(u8)(i + 2) + 0x1c] = i + 2;
         p[(u8)(i + 3) + 0x1c] = i + 3;
@@ -1362,7 +1462,6 @@ extern "C" void fn_8030029C(u8* p) {
         p[(u8)(i + 5) + 0x1c] = i + 5;
         p[(u8)(i + 6) + 0x1c] = i + 6;
         p[(u8)(i + 7) + 0x1c] = i + 7;
-        i += 8;
     }
     *(s32*)(p + 0x2c) = -1;
     *(s32*)(p + 0x30) = 0;
