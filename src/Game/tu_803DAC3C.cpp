@@ -51,10 +51,12 @@ extern "C" void fn_803DD1A4(u8* self) {
         s32 t = v - 30;
         f31 = lbl_805435E8 - (f32)(t * t) / lbl_805435F8;
     }
+    s32 d;
     s32 w = *(s32*)(self + 0x88);
-    s32 d = 10 - w;
     if (w < 5) {
         d = w;
+    } else {
+        d = 10 - w;
     }
     f32 f30 = lbl_805435FC * (f32)(d * d) / lbl_80543600;
     if (*(s32*)(self + 0x80) == 0) {
@@ -67,11 +69,9 @@ extern "C" void fn_803DD1A4(u8* self) {
         fn_80402E08(*(void**)(self + 0x58), *(f32*)(*(u8**)(self + 0x54) + 8) - *(f32*)(*(u8**)(self + 0x50) + 8), f30);
     }
     J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search('Paccur01');
-    s32 alpha = (s32)((f32)self[0xa2] * f31);
-    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, alpha);
+    pane->setAlpha((u8)((f32)self[0xa2] * f31));
     pane = ((J2DScreen*)*(void**)(self + 0x4))->search('Paccur02');
-    alpha = (s32)((f32)self[0xa2] * f31);
-    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, alpha);
+    pane->setAlpha((u8)((f32)self[0xa2] * f31));
 }
 
 extern "C" void fn_803DD3DC(void)
