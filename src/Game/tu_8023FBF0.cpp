@@ -201,8 +201,7 @@ inline bool isShrinking(char* p) {
 
 inline bool isBusy(char* p) {
     bool r = false;
-    s32 s = S32(p, 0x1240);
-    if (s == 0x4a || s == 0x4b) {
+    if (S32(p, 0x1240) == 0x4a || S32(p, 0x1240) == 0x4b) {
         r = true;
     }
     return r;
@@ -1109,69 +1108,34 @@ BOOL fn_80242704(char* p, s32 v) {
 
 void fn_80242940(char* p) {
     if (U8(p, 0x454) == 0) {
-        bool busy = false;
-        if (S32(p, 0x1240) == 0x4a || S32(p, 0x1240) == 0x4b) {
-            busy = true;
-        }
-        if (busy) {
+        if (isBusy(p)) {
             if (S32(p, 0xbe4) > 0) {
                 bool done = true;
                 S32(p, 0xbe4) = S32(p, 0xbe4) - 1;
                 if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) || S32(p, 0xd60) >= 0) {
-                    s32 count = 0;
-                    s32 linked;
-                    s32 i;
-                    s32 mode;
-                    for (i = 0; i < 4; i++) {
-                        if (i == S32(p, 0x4)) {
-                            count++;
-                        } else if (fn_8022F514(i)) {
-                            if ((linked = S32(p, 0xd60)) >= 0) {
-                                if (linked == fn_8022F3DC(i)) {
-                                    count++;
-                                }
-                            } else {
-                                linked = S32(p, 0x4);
-                                if (linked == fn_8022F3DC(i)) {
-                                    count++;
-                                }
-                            }
-                        } else if (i == S32(p, 0xd60)) {
-                            count++;
-                        }
-                    }
-                    if (count <= 1) {
-                        mode = 5;
-                    } else if (S32(p, 0xd60) >= 0) {
-                        mode = fn_8022CAF8(S32(p, 0xd60));
-                    } else {
-                        mode = S32(p, 0x120c);
-                    }
+                    s32 mode = getMode(p);
                     if (mode == 4) {
                         s32 target;
                         s32 n = 0;
+                        s32 i;
                         if (S32(p, 0xd60) >= 0) {
                             target = fn_80234004(S32(p, 0xd60));
-                        } else {
-                            target = S32(p, 0x1224);
-                        }
-                        if (S32(p, 0xd60) >= 0) {
                             for (i = 0; i < S32(p, 0x4); i++) {
                                 if (S32(p, 0xd60) == fn_8022F3DC(i)) {
                                     n++;
                                 }
                             }
                             n++;
+                        } else {
+                            target = S32(p, 0x1224);
                         }
                         done = n != target;
                     } else {
                         done = S32(p, 0xd60) >= 0;
                     }
                 }
-                if (!done) {
-                    if (S32(p, 0xbe4) > 0 && S32(p, 0xbe4) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
-                        fn_803037D4(S32(p, 0x4), 2);
-                    }
+                if (!done && S32(p, 0xbe4) > 0 && S32(p, 0xbe4) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
+                    fn_803037D4(S32(p, 0x4), 2);
                 }
             }
             if (U8(p, 0xbe8) != 0 && S32(p, 0xbe4) <= 0 && S32(p, 0x3b4) >= 8) {
