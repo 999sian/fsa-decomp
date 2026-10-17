@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 #include "dolphin/mtx.h"
 
@@ -87,14 +88,14 @@ extern "C" void fn_80112AE8(u8* this_) {
     Vec v1;
     Vec v2;
     u8* e;
-    s32 n;
     s32 idx;
+    s32 n;
     f32 z;
 
     *(f32*)(this_ + 0x248) = *(f32*)(this_ + 0x248) + lbl_8053C64C;
     PSMTXTrans(m1, *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
-    v1.x = lbl_8053C644;
     v1.y = lbl_8053C628;
+    v1.x = lbl_8053C644;
     v1.z = lbl_8053C628;
     fn_8010F668(m1, (f32*)&v1, lbl_8053C650);
     m2[2][3] = lbl_8053C628;
@@ -129,7 +130,7 @@ extern "C" void fn_80112AE8(u8* this_) {
         *(f32*)(e + 0x0) = z;
         *(f32*)(e + 0x4) = z;
         *(f32*)(e + 0x8) = z;
-        PSMTXCopy(m1, *(Mtx*)(e + 0xc));
+        *(MtxD*)(e + 0xc) = *(MtxD*)m1;
         *(f32*)(e + 0x48) = lbl_8053C654;
         *(s32*)(e + 0x4c) = n;
         *(s32*)(e + 0x54) = 0;
