@@ -239,6 +239,35 @@ extern "C" u32 fn_800248F0(u8* p1, u32 p2, u32 p3) {
     return ret;
 }
 
+extern f32 lbl_802FFCF0;
+extern f32 lbl_802FFCF4;
+extern f32 lbl_802FFCF8;
+extern "C" s32 fn_80058C08(s32 idx);
+extern "C" void fn_8005867C(int, void*, int, int, int, float);
+extern "C" void fn_80024D98(f32* param_1, void* param_2) {
+    s32 idx;
+    s32 q;
+    f32 f;
+
+    idx = fn_80058C08(0x84);
+    f = param_1[1] / lbl_802FFCF0 * lbl_802FFCF4;
+    if (f < lbl_802FFCF4) {
+        f = lbl_802FFCF4;
+    }
+    if (f > lbl_802FFCF8) {
+        f = lbl_802FFCF8;
+    }
+    q = ((s32)param_1[0] + 0x130) * 0x80 / 0x260;
+    if (q < 0) {
+        q = 0;
+    }
+    if (q > 0x7f) {
+        q = 0x7f;
+    }
+    fn_8005867C(idx + (lbl_802FED48 & 1), param_2, 1, q, -1, f);
+    lbl_802FED48++;
+}
+
 extern "C" void fn_801E42F8(char* buf, const char* fmt, va_list args);
 extern "C" void fn_80029208(const char*, ...);
 extern "C" void fn_80024F84(u8* p1, const char* p2, ...) {
@@ -264,13 +293,3 @@ extern "C" void* fn_80025020(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-typedef struct {
-    u8 b7 : 1;
-    u8 b6 : 1;
-    u8 b5 : 1;
-    u8 b4 : 1;
-    u8 b3 : 1;
-    u8 b2 : 1;
-    u8 b1 : 1;
-    u8 b0 : 1;
-} Bits8;
