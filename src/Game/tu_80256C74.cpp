@@ -45,8 +45,14 @@ u8 Player_CheckField_0xc9c(void*);
 u8 fn_802412C4(void*);
 void fn_80268B3C(void*);
 s32 Actor_CreateByID(void* mgr, u32 fourCC, u32 owner, void* pos, u32 param, s32 a, s32 b);
-s32 fn_8026FC20(void*);
+        s32 fn_8026FC20(void*);
+s32 fn_802A1844(void*, void*, s32, s32);
+u16 fn_8022461C(void*, s32);
+void fn_8013CC50(s32, void*, u16, s32, s32, s32, s32, s32, f32);
 }
+extern const f32 lbl_805400DC;
+extern u8 lbl_8046B200[];
+extern u8* lbl_8053AC98;
 
 extern u8* lbl_8053AAF8;
 extern const f32 lbl_805400C0;
@@ -175,6 +181,48 @@ extern "C" bool fn_80256F44(u8* p, const f32* bounds, s32 id, JGeometry::TVec2<f
         center->x = lbl_805400C0 * (F32(p, 0x5b0) - F32(p, 0x5b8)) + F32(p, 0x5b8);
         center->y = lbl_805400C0 * (F32(p, 0x5b4) - F32(p, 0x5bc)) + F32(p, 0x5bc);
         return true;
+    }
+    return false;
+}
+
+extern "C" bool fn_802570BC(u8* p, const JGeometry::TBox2<f32>* bounds,
+                             s32 id, JGeometry::TVec2<f32>* center) {
+    if (GetBusyLocked(p)) {
+        return false;
+    }
+    if (Player_GetField_0x454(p)) {
+        return false;
+    }
+    u8* ids = p;
+    u8* boxes = p;
+    for (s32 i = 0; i < 3; ids += 4, boxes += 0x10, i++) {
+        if (S32(ids, 0xb1c) >= 0 && S32(ids, 0xb5c) == id) {
+            JGeometry::TBox2<f32> overlap = BOX(boxes, 0x550);
+            if (overlap.intersect(*bounds)) {
+                JGeometry::TBox2<f32>& box = BOX(p, (i << 4) + 0x550);
+                center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
+                center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
+                return true;
+            }
+        }
+    }
+    if (S32(p, 0xb28) >= 0 && id == S32(p, 0x3b4)) {
+        JGeometry::TBox2<f32>& box = BOX(p, 0x580);
+        JGeometry::TBox2<f32> overlap = box;
+        if (overlap.intersect(*bounds)) {
+            center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
+            center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
+            return true;
+        }
+    }
+    if (S32(p, 0xb3c) >= 0 && S32(p, 0xb70) == id) {
+        JGeometry::TBox2<f32>& box = BOX(p, 0x5a0);
+        JGeometry::TBox2<f32> overlap = box;
+        if (overlap.intersect(*bounds)) {
+            center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
+            center->y = lbl_805400C0 * (box.i.y - box.f.y) + box.f.y;
+            return true;
+        }
     }
     return false;
 }
