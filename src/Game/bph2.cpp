@@ -49,6 +49,15 @@ extern "C" void fn_801EE434(void* handle);
 extern "C" void fn_802D7440(void* mgr, s32 a);
 extern "C" void fn_8022ADCC(void);
 extern void* lbl_804A1E50[];
+extern "C" s32 fn_8023F264(s32 idx);
+extern "C" s32 fn_8023DE58(s32 idx);
+extern "C" s32 fn_8022F478(s32 idx);
+extern "C" s32 fn_80230188(s32 idx);
+extern "C" void fn_8023061C(s32 idx, s32 p);
+extern f32 lbl_8053E0F8;
+extern f32 lbl_8053E130;
+extern f32 lbl_8053E140;
+extern f32 lbl_8053E1B4;
 
 // BPH2 destructor
 extern "C" void* fn_8018D9D4(char* this_, s16 freeFlag) {
