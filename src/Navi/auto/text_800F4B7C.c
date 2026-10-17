@@ -751,6 +751,13 @@ extern "C" void fn_80106978(void* param_1) {
     }
 }
 
+extern "C" void fn_80107490(void* p) {
+    if (fn_8002F6BC(p) == 0) {
+        *(u8*)((u8*)p + 0xf1) = *(u8*)((u8*)p + 0xf0);
+        *(u8*)((u8*)p + 0xee) = 0x23;
+    }
+}
+
 extern "C" void fn_801074D4(void) {}
 
 extern "C" u32 fn_80107EA0(u8* p) {
