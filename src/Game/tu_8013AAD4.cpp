@@ -89,6 +89,7 @@ extern "C" void fn_80158F70(void* p);
 extern "C" void fn_8013D908(void* p);
 extern "C" void __sinit_tu_8013C5C8_cpp_8013D6E4(void* p);
 extern "C" void fn_8015F9C0(void* p);
+extern "C" void GXDrawSphere1(u8 depth);
 
 static inline bool isDrawMode(u8* this_) {
     return this_[0x39] == 0 || lbl_8053AAF8->mode == 4 || lbl_8053AAF8->mode == 6;
