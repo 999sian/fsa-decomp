@@ -8,7 +8,10 @@ static inline f32 rsqrt_step(f32 x) {
 }
 
 static inline f32 rsqrt_guard(f32 x) {
-    return x > 0.0f ? rsqrt_step(x) : x;
+    if (x <= 0.0f) {
+        return x;
+    }
+    return rsqrt_step(x);
 }
 
 static inline f32 sqrt_guard(f32 x) {
