@@ -54,14 +54,6 @@ static inline f32 distSq(const ActorV::Vec2& a, const ActorV::Vec2& b) {
     return dx2 + dy2;
 }
 
-static inline f32 distSq(const ActorV::Vec2* a, const ActorV::Vec2* b) {
-    f32 dx = a->x - b->x;
-    f32 dy = a->y - b->y;
-    f32 dx2 = dx * dx;
-    f32 dy2 = dy * dy;
-    return dx2 + dy2;
-}
-
 // NonMatching: one instruction short, retail materialises a dead
 // "addi r4, this, 0xc" (address of pos) after the fn_8023A478 call.
 extern "C" void fn_802B9D10(ActorV* this_) {
@@ -70,8 +62,8 @@ extern "C" void fn_802B9D10(ActorV* this_) {
         if (fn_8023A51C(i) == 1) {
             id = this_->m04;
             if (id != fn_8023DE58(i)) continue;
-            const ActorV::Vec2* pos = &this_->pos;
-            if (!(distSq(*fn_8023A478(i), *pos) > 6400.0f)) {
+            const ActorV::Vec2& pos = this_->pos;
+            if (!(distSq(*fn_8023A478(i), pos) > 6400.0f)) {
                 if (this_->m04 != 0) {
                     this_->s10(0xff, 1);
                     return;
