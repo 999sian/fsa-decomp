@@ -674,3 +674,35 @@ extern "C" void fn_800399CC(int* p) {
     p[6] = 0;
 }
 
+extern "C" void fn_80039A3C(int* p, int x, short* q) {
+    short* e;
+    int i;
+    int n = 0;
+    int cnt = 0;
+    short r = *(short*)(lbl_802BEF44 + 0x198);
+    short qx = q[0];
+    short qy = q[1];
+    e = (short*)p[0];
+    for (i = 0; i < p[3]; i++) {
+        if (e[0] - qx >= -r && e[0] - qx <= r && e[1] - qy >= -r && e[1] - qy <= r) {
+            cnt++;
+            e[2] = e[2] | 0x1000;
+            if (!(e[2] & 0x8000)) {
+                n++;
+            }
+        }
+        e += 4;
+    }
+    fn_80039CB8(p, x, cnt);
+    if (n) {}
+}
+
+extern "C" void fn_80039FBC(int* p) {
+    if (p[6] != 0 && !(*(unsigned int*)(lbl_802BB0FC + 0x4c) & 2)) {
+        p[6]--;
+        *(unsigned int*)(lbl_802BB0FC + 0x7c) = p[1];
+        *(unsigned int*)(lbl_802BB0FC + 0x4c) = *(unsigned int*)(lbl_802BB0FC + 0x4c) | 2;
+        *(unsigned int*)(lbl_802BB0FC + 0x80) = p[2];
+    }
+}
+
