@@ -616,6 +616,10 @@ extern "C" void* fn_8012A804(void* p) {
 
 extern "C" int fn_8012A80C(int* p) { return *p; }
 
+extern "C" void fn_8012BEC0(void* a, f32* p) {
+    p[0x64 / 4] = p[0x60 / 4];
+}
+
 extern "C" void* fn_8012C240(void* ptr, void* param_2) {
     *(void**)ptr = param_2;
     fn_8012C274(ptr);
@@ -1175,6 +1179,20 @@ extern "C" void* fn_80132ACC(void* p, s16 param_2) {
     return p;
 }
 
+extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v);
+extern "C" void fn_801C61E0(void* tmp, void* dst, f32 x, f32 y, f32 z);
+extern f32 lbl_803017BC;
+extern "C" void fn_80132B3C(void* self, f32 f, void* table) {
+    u8 tmp[0x30];
+    f32* v = (f32*)table;
+    *(f32*)((u8*)self + 0x78) = v[0];
+    *(f32*)((u8*)self + 0x7c) = v[1];
+    *(f32*)((u8*)self + 0x80) = v[2];
+    *(f32*)((u8*)self + 0x90) = f;
+    fn_801C5F6C(tmp, 0x79, lbl_803017BC * f);
+    fn_801C61E0(tmp, (u8*)self + 0x98, v[0], v[1], v[2]);
+}
+
 extern void* lbl_8020597C[];
 extern "C" void* fn_80132C50(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
@@ -1184,6 +1202,18 @@ extern "C" void* fn_80132C50(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_80167A18(void* a, void* b, void* c, void* d);
+extern "C" void fn_80132D1C(u32 p, u32 q) {
+    u32 arr[6];
+    u32 v = p + 8;
+    arr[1] = v;
+    arr[0] = v;
+    arr[5] = v;
+    arr[4] = v;
+    arr[3] = v;
+    fn_80167A18(&arr[2], (void*)(p + 4), &arr[3], (void*)(q + 4));
 }
 
 extern void* lbl_80292694[];
