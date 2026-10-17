@@ -10,6 +10,10 @@ extern "C" void fn_801C5DA8(void* a, void* b, void* c);
 extern "C" void fn_801C6684(void* a, void* b, void* c);
 
 extern s32 lbl_802FDDB0;
+extern f32 lbl_80301788;
+extern f32 lbl_80301794;
+extern f64 lbl_80301778;
+extern f32 lbl_802F0BC0[][2];
 extern "C" void fn_80123EC0(void* a, ...);
 #include "dolphin/os/OSFastCast.h"
 extern "C" void fn_8013A57C(void);
