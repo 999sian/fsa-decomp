@@ -273,8 +273,12 @@ extern "C" s32 fn_800199DC(s16 param_1, u16 param_2) {
 extern "C" void fn_80019A24(void) {
     if (lbl_802FB9B8 != NULL) {
         s32 iVar1 = fn_80019DF0(lbl_802FB9B8);
-        if (iVar1 < 6 && iVar1 >= 3) {
+        switch (iVar1) {
+        case 3:
+        case 4:
+        case 5:
             lbl_802FB9B8 = NULL;
+            break;
         }
     }
 }
