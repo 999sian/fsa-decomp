@@ -35,6 +35,8 @@ extern u32 lbl_8053AE60;
 extern u32 lbl_8053AE44;
 extern u8* lbl_8053AE64;
 extern "C" void fn_8042C39C(u8* info, s16* block);
+extern "C" void fn_8042C1CC(u8* info, s16* block);
+extern "C" void fn_8042BD84(u8* info, s16* block);
 extern "C" void fn_8042B8DC(void* block, s32 off);
 extern "C" void fn_8042B430(void* block, s32 off);
 
