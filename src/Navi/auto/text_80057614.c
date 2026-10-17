@@ -3,6 +3,9 @@
 // .text 0x80057614-0x800618fc (176 functions). split_file divides it into the game's real files.
 
 extern u8 lbl_802C05F0[];
+extern u8 lbl_802B7CA0[];
+extern u8 lbl_802BB0FC[];
+extern "C" void fn_8002F8D4(void*);
 extern "C" double fn_80059DA0(void*);
 extern "C" void fn_80059338(void*);
 extern "C" void fn_80059768(void*);
@@ -632,10 +635,9 @@ extern "C" void fn_8005C4A8(u8 flag, s32** bufs)
         max = 0;
         b = bufs[1];
         a = bufs[0];
-        i = 0;
         same = TRUE;
         first = (a[0] + b[0]) / 2;
-        for (; i < 160; i++) {
+        for (i = 0; i < 160; i++) {
             s32 v = (a[i] + b[i]) / 2;
             s32 av = v < 0 ? -v : v;
             if (av > max) {
