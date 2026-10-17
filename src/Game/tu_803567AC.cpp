@@ -1,3 +1,4 @@
+#include "JSystem/JMath/JMath.h"
 
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
@@ -12,6 +13,79 @@ extern "C" void* fn_803567AC(void* this_, short how) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_801EE558(void* a, void* b, f32* c, s32 d);
+extern "C" void* fn_802D6A9C(void);
+extern "C" float lbl_805427E8;
+extern "C" float lbl_805427EC;
+extern "C" void fn_8035680C(u8* this_) {
+    switch (*(s32*)(this_ + 0x250)) {
+    case 6:
+    case 7:
+    case 8:
+    case 9:
+    case 10:
+        *(s32*)(this_ + 0x248) = 0;
+        return;
+    case 1:
+    case 3:
+        if (this_[0x268] == 1 && *(s32*)((u8*)fn_802D6A9C() + 4) == 1 && *(s32*)((u8*)fn_802D6A9C() + 8) == 1) {
+            *(s32*)(this_ + 0x248) = 0;
+            return;
+        }
+        break;
+    }
+
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+    case 1:
+    case 4:
+        {
+            s32 n = *(s32*)(this_ + 0x244);
+            if (n != 0) {
+                *(s32*)(this_ + 0x244) = n - 1;
+            } else {
+                f32 v[3];
+                f32 len;
+                *(s32*)(this_ + 0x244) = 0x14;
+                fn_801EE558(this_, v, &len, 0);
+                if (len < lbl_805427E8) {
+                    f32 a = JMath::atanTable_.atan2_(-v[0], -v[1]);
+                    u16 ang = (s32)(a * lbl_805427EC);
+                    if (ang < 0x2000 || ang >= 0xe000) {
+                        *(s32*)(this_ + 0x248) = 3;
+                    } else if (ang >= 0x2000 && ang < 0x6000) {
+                        *(s32*)(this_ + 0x248) = 1;
+                    } else if (ang >= 0x6000 && ang <= 0xa000) {
+                        *(s32*)(this_ + 0x248) = 2;
+                    } else {
+                        *(s32*)(this_ + 0x248) = 0;
+                    }
+                } else {
+                    *(s32*)(this_ + 0x248) = 3;
+                }
+            }
+        }
+        break;
+    case 3:
+    case 5:
+        if (*(s32*)(this_ + 0x250) == 5) {
+            if (*(s32*)(this_ + 0x25c) > 0) {
+                *(s32*)(this_ + 0x248) = 0;
+            } else {
+                *(s32*)(this_ + 0x248) = 1;
+            }
+        } else if (*(s32*)(this_ + 0x258) > 0) {
+            *(s32*)(this_ + 0x248) = 0;
+        } else {
+            *(s32*)(this_ + 0x248) = 1;
+        }
+        if (*(s32*)(this_ + 0x230) == 5) {
+            *(s32*)(this_ + 0x248) ^= 1;
+        }
+        break;
+    }
 }
 
 extern "C" char lbl_80472390[];
