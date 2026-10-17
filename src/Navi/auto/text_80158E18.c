@@ -1070,6 +1070,10 @@ extern "C" int fn_8015CA24(char* param_1, u32 param_2, s32 param_3) {
     return r;
 }
 
+extern "C" void fn_8015CC7C(void) {
+    fn_80124034(lbl_80297690);
+}
+
 extern "C" void fn_8015CD08(unsigned char* p) {
     unsigned char* q;
     unsigned int a;
