@@ -229,13 +229,10 @@ extern const f32 lbl_8053F168;
 
 struct Tu6CECUtil {
     static f32 inv_sqrt(f32 x) {
-        f32 y;
-        if (x <= lbl_8053F150) {
-            y = x;
-        } else {
-            y = __frsqrte(x);
-            y = lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
-        }
+        if (x <= lbl_8053F150)
+            return x;
+        f32 y = __frsqrte(x);
+        y = lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
         return y;
     }
 };
@@ -313,9 +310,9 @@ extern "C" void fn_801D70BC(Tu6CECGroup* g, Tu6CECVec p, s32 player) {
             dx = lbl_8053F174;
             dy = lbl_8053F150;
         } else if (!(sq <= lbl_8053F158 * *(f32*)__float_epsilon)) {
-            f32 inv = tu6cec_invSqrt(sq);
-            dx *= inv;
-            dy *= inv;
+            sq = tu6cec_invSqrt(sq);
+            dx *= sq;
+            dy *= sq;
         }
         s16 ang = -(s16)(fn_801CD664(0xe39) - 0x71c);
         f32 cs = JMASCos(ang);
