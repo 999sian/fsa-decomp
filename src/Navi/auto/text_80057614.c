@@ -806,6 +806,13 @@ extern "C" void fn_8005CAD4(int param_1) {
     lbl_802FF128 = 0;
 }
 
+extern "C" void fn_8005CAE8(int param_1, int param_2) {
+    if (param_1 != 0x13) {
+        return;
+    }
+    lbl_802FF128 += param_2;
+}
+
 extern "C" void fn_8005CB14(void) {
     if (lbl_802FF130 >= 0x20) {
         return;
