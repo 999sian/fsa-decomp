@@ -15,6 +15,10 @@ extern void* lbl_8053AD78;
 extern char lbl_8048FBD0[];
 extern "C" s8* getStringPtr__10J2DTextBoxCFv(void* self);
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
+extern "C" u32 fn_80309C4C(void* pad, s32 mask, s32 a);
+extern "C" void fn_80458880(void* mgr, u32 p, s32 v);
+extern void* lbl_8053AF80;
+extern void* lbl_8053AD30;
 extern "C" void fn_80443B0C(void* unused, s8* dst, s32 idx, s32 num) {
     void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa8);
     u8* data = (u8*)((void* (*)(void*, u32, void*))(*(void***)obj)[6])(obj, 0x3f3f3f3f, lbl_8048FBD0) + 0x20;
@@ -112,6 +116,68 @@ extern "C" bool fn_804446A4(T804446A4* this_) {
         return false;
     }
     return true;
+}
+
+extern "C" void fn_804446F0(u8* this_, s32 num)
+{
+    u8* self = this_;
+    s32 n = num;
+    void* obj;
+    void* tb;
+    *(s32*)(self + 0x44) = n;
+
+    obj = *(void**)(self + 4);
+    tb = ((void* (*)(void*, s32, s32, u32))(*(void***)obj)[0x3c / 4])(obj, n, 0x54, 0x6d6d3031);
+    fn_80443B0C(self, getStringPtr__10J2DTextBoxCFv(tb), 0x241, n);
+
+    obj = *(void**)(self + 4);
+    tb = ((void* (*)(void*, s32, s32, u32))(*(void***)obj)[0x3c / 4])(obj, 0x6d6d0000, 0x54, 0x6d6d3032);
+    fn_80443B0C(self, getStringPtr__10J2DTextBoxCFv(tb), 0x241, n);
+
+    obj = *(void**)(self + 4);
+    tb = ((void* (*)(void*, s32, s32, u32))(*(void***)obj)[0x3c / 4])(obj, 0x6d6d0000, 0x54, 0x6d6d3033);
+    fn_80443B0C(self, getStringPtr__10J2DTextBoxCFv(tb), 0x242, n);
+
+    obj = *(void**)(self + 4);
+    tb = ((void* (*)(void*, s32, s32, u32))(*(void***)obj)[0x3c / 4])(obj, 0x6d6d0000, 0x54, 0x6d6d3034);
+    fn_80443B0C(self, getStringPtr__10J2DTextBoxCFv(tb), 0x242, n);
+
+    obj = *(void**)(self + 4);
+    tb = ((void* (*)(void*, s32, s32, u32))(*(void***)obj)[0x3c / 4])(obj, 0x6d6d0000, 0x54, 0x6d6d3035);
+    fn_80443B0C(self, getStringPtr__10J2DTextBoxCFv(tb), 0x243, n);
+
+    obj = *(void**)(self + 4);
+    tb = ((void* (*)(void*, s32, s32, u32))(*(void***)obj)[0x3c / 4])(obj, 0x6d6d0000, 0x54, 0x6d6d3036);
+    fn_80443B0C(self, getStringPtr__10J2DTextBoxCFv(tb), 0x243, n);
+
+    fn_80402E08(*(void**)(self + 8), 0.0f, -480.0f);
+    *(u16*)(*(u8**)(self + 8) + 0x22) = 0;
+
+    obj = *(void**)(*(u8**)(self + 0xc) + 4);
+    ((void (*)(void*, s32))(*(void***)obj)[0x24 / 4])(obj, 0);
+    *(u16*)(*(u8**)(self + 0xc) + 0x26) = 0;
+
+    *(u8*)(*(u8**)(*(u8**)(self + 0x10) + 4) + 0xb0) = 1;
+    *(u8*)(*(u8**)(*(u8**)(self + 0x14) + 4) + 0xb0) = 1;
+
+    *(u32*)((u8*)lbl_8053AAF8 + 0xb4) = *(u32*)((u8*)lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*(u32*)((u8*)lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
+    *(s32*)(self + 0x48) = (s32)(11.0f * (*(f32*)&bits - 1.0f)) + 10;
+    *(u8*)(self + 0x4c) = 0;
+
+    u32 a = *(u32*)(self + 0x34);
+    u32 b = *(u32*)(self + 0x30);
+    obj = *(void**)(self + 4);
+    tb = ((void* (*)(void*, s32, s32, u32))(*(void***)obj)[0x3c / 4])(obj, 0x6d6d0000, 0x54, 0x6d6d3035);
+    ((void (*)(void*, void*, void*))(*(void***)tb)[0xac / 4])(tb, &b, &a);
+
+    for (s32 i = 0; i < 6; i++) {
+        fn_80402E08(*(void**)(self + 0x10 + i * 4), 0.0f, -480.0f);
+    }
+    for (s32 i = 0; i < 2; i++) {
+        fn_80402E08(*(void**)(self + 0x28 + i * 4), 0.0f, -480.0f);
+    }
+    *(u8*)(self + 0x4d) = 0;
 }
 
 extern "C" void* fn_80444A24(T80444A24* this_, s16 flag) {
