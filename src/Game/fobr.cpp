@@ -28,6 +28,8 @@ public:
     virtual void e1();
     virtual void e2();
     virtual void e3();
+    virtual void e4();
+    virtual void e5();
     virtual u32 load(u32 a, void* b);
 };
 
