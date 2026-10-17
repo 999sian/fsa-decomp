@@ -480,8 +480,7 @@ extern "C" int fn_801945C4(u8* p, u32 param_2) {
         a[3] = (iVar1 + 0x1f) & ~0x1f;
         a[0] = (u32)fn_8015AA60(a[3], 0x20);
         a[1] = (u32)fn_8015AA60(a[3], 0x20);
-        a[2] = 0;
-        ret = 0;
+        ret = a[2] = 0;
     }
     iVar4 = 0;
     if (ret != 0) {
@@ -526,6 +525,11 @@ extern "C" void fn_80194A68(u32 param_1, s32 param_2, s16 param_3) {
 extern "C" void fn_80194AAC(u32 param_1, s32 param_2, s32 param_3) {
     fn_80191A60(*(u8**)(*(u8**)(lbl_802EE470 + 0x40) + 0x30), param_2 * 3);
     fn_80191EA0(lbl_802EE470, param_2, param_3);
+}
+
+extern "C" void fn_80194B0C(u32 param_1, s32 param_2) {
+    fn_80191E7C((u32*)lbl_802EE470);
+    fn_80191AE0(((u32*)((u32*)lbl_802EE470)[16])[12], param_2 * 3);
 }
 
 extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
