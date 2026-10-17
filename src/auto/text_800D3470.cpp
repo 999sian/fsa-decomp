@@ -22,6 +22,8 @@ struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
 struct Obj_800DDDD0 { u8 pad[0x59]; Ent_800DDDD0 ent[1]; };
 
 struct Unk800DC64CSrc {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
