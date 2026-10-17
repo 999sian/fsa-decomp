@@ -16,9 +16,9 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_803012D8;
 extern s32 lbl_802FEC60;
-extern char lbl_802FDBD0[];
-extern char lbl_802FDBD4[];
-extern char lbl_802FDBDC[];
+extern s32 lbl_802FDBD0;
+extern s32 lbl_802FDBD4;
+extern s32 lbl_802FDBDC;
 extern char lbl_8028EB08[];
 extern char lbl_8028EB18[];
 extern "C" void* fn_8015A90C(u32 size);
@@ -30,6 +30,22 @@ extern "C" void fn_80179030(void* a, void* b, s32 c, void* d);
 extern "C" void fn_8010CDD8(u8* p);
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_8010CD28(u8* p) {
+    *(s32*)(p + 0xc) = lbl_802FEC60;
+    void* obj = fn_8015A90C(0x118);
+    if (obj != nullptr) {
+        obj = fn_80178E80(obj);
+    }
+    *(void**)(p + 8) = obj;
+    if (*(void**)(p + 8) == nullptr) {
+        void* v = fn_8011FD10();
+        fn_8011FD18(v, lbl_8028EB08, 0x67, (void*)lbl_802FDBD0, lbl_8028EB18);
+        fn_80007AB8(lbl_8028EB08, 0x67, (void*)lbl_802FDBD4);
+    }
+    fn_80179030(*(void**)(p + 8), (void*)lbl_802FDBDC, 0x100000, *(void**)(p + 0xc));
+    fn_8010CDD8(p);
+}
+
 extern "C" void fn_8010CFE0(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
