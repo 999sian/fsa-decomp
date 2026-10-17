@@ -11,7 +11,7 @@ extern "C" u8 lbl_804AA858[];
 
 extern "C" f32 lbl_80541500;
 extern "C" f32 lbl_805414FC;
-extern "C" f32 lbl_80541508;
+extern "C" f64 lbl_80541508;
 extern "C" f32 lbl_80541510;
 extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
