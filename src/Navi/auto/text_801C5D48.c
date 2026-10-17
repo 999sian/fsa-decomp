@@ -29,6 +29,8 @@ extern DVDCommandBlock DummyCommandBlock_802F7AE0;
 static volatile BOOL ResetRequired_802FF8B8;
 static vu32 ResumeFromHere_802FF8A8;
 static u32 lbl_802FF8B4;
+static u32 lbl_802FF8A0;
+static DVDCBCallback lbl_802FF8A4;
 static BOOL StopAtNextInt_802FF818;
 extern char AlarmForTimeout_802F7A38[];
 extern "C" void AlarmHandlerForTimeout(OSAlarm* alarm, OSContext* context);
@@ -609,14 +611,13 @@ extern "C" void fn_801C8D70(u32 param_1)
 		DVDReset();
 		cbForStateError(0);
 	} else if (param_1 & 1) {
-		u32* base = (u32*)BB2_802F7AA0;
-		u32* info = (u32*)bootInfo_802FF888;
+		u32* p = (u32*)(BB2_802F7AA0 + 8);
 		lbl_802FF8C4 = fn_801C8278;
 		lbl_802FF8B4 = 0;
-		if (info[0xf] < base[2]) {
-			fn_80007AB8(lbl_802FE9BC, 0x28a, lbl_8029D3C4);
+		if (*(u32*)(bootInfo_802FF888 + 0x3c) < *p) {
+			fn_80007AB8(0, 0x28a, lbl_8029D3C4);
 		}
-		fn_801C6FF4((void*)info[0xe], (base[2] + 0x1f) & ~0x1f, base[1], fn_801C830C);
+		fn_801C6FF4((void*)*(u32*)(bootInfo_802FF888 + 0x38), (*p + 0x1f) & ~0x1f, *(u32*)(BB2_802F7AA0 + 4), fn_801C830C);
 	} else {
 		fn_801C747C(fn_801C8554);
 	}
