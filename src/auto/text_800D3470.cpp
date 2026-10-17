@@ -345,6 +345,15 @@ extern "C" void* memcpy(void*, const void*, unsigned long);
 extern "C" void __dt__12J3DIndTexMtxFv(void*);
 extern "C" void __as__16J3DIndTexMtxInfoFRC16J3DIndTexMtxInfo(J3DIndTexMtxInfo*, const J3DIndTexMtxInfo&);
 struct ActorBox;
+struct J3DColorBlockLightOff {
+    void initialize();
+    void* __vt;
+    J3DGXColor mMatColor[2];
+    u8 mColorChanNum;
+    u16 mColorChan[4];
+    u32 mMatColorOffset;
+    u32 mColorChanOffset;
+};
 struct J3DColorBlockAmbientOn {
     void initialize();
     void* __vt;
