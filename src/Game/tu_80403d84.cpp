@@ -227,7 +227,7 @@ struct J2DPane {
 	virtual void vd0(); virtual void vd4(); virtual void vd8(); virtual void vdc();
 	virtual void ve0(); virtual void ve4(); virtual void ve8(); virtual void vec();
 	virtual void vf0(); virtual void vf4(); virtual void vf8(); virtual void vfc();
-	virtual void v100(); virtual void v104x(); virtual void v108x();
+	virtual void v100();
 	virtual void setBlendRatio(f32, f32, f32, f32, f32, f32, f32, f32); // 0x104
 	void rotate(f32, f32, J2DRotateAxis, f32);
 };
