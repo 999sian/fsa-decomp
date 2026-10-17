@@ -208,10 +208,12 @@ extern "C" u8 fn_801E4094(char* this_) {
     }
     if (ok && !(*(u32*)(this_ + 0x230) & 0x2000)) {
         f32 x1 = *(f32*)(this_ + 0x60);
+        f32 y1;
         f32 x2 = *(f32*)(this_ + 0x68);
+        f32 y2;
         if (x2 - x1 > lbl_8053F530) {
-            f32 y1 = *(f32*)(this_ + 0x64);
-            f32 y2 = *(f32*)(this_ + 0x6c);
+            y1 = *(f32*)(this_ + 0x64);
+            y2 = *(f32*)(this_ + 0x6c);
             if (y2 - y1 > lbl_8053F530) {
                 *(f32*)(this_ + 0x60) *= lbl_8053F54C;
                 *(f32*)(this_ + 0x64) *= lbl_8053F54C;
@@ -270,62 +272,75 @@ extern "C" void fn_801F0E34(char* this_, s32 a, s32 b);
 extern "C" void fn_801D5D84(char* this_, s32 a);
 extern "C" s32 fn_801E4348(char* this_) {
     s32 state = *(s32*)(this_ + 0x248);
-    s32 ok = 1;
+    s32 ret = 0;
+    u8 ok = 1;
     f32 pos[2];
     f32 vec[3];
-    u8 buf[0x24];
+    u8 buf[0x1c];
     s32 r;
     u8 cv;
 
-    if (state < 9) {
-        if (state == 5 || (state < 5 && state < 0)) {
-            ok = 0;
-        }
-    } else if (state >= 0x1b || state < 0x15) {
+    switch (state) {
+    case 0:
+    case 1:
+    case 2:
+    case 3:
+    case 4:
+    case 6:
+    case 7:
+    case 8:
+    case 0x15:
+    case 0x16:
+    case 0x17:
+    case 0x18:
+    case 0x19:
+    case 0x1a:
         ok = 0;
+        break;
     }
-    if (!ok) {
-        return 0;
-    }
-    if (!(*(u32*)(this_ + 0x230) & 0x2000)) {
-        return 0;
-    }
-    fn_801F317C(this_, buf);
-    r = fn_8023AE34(buf, *(s32*)(this_ + 4), pos);
-    if (r < 0) {
-        return 0;
-    }
-    state = *(s32*)(this_ + 0x248);
-    if (state != 0x13 && (state < 0xc || state >= 0xe)) {
-        cv = fn_801CC820(r, 0);
-        if (!cv) {
-            return 0;
-        }
-        vec[0] = pos[0];
-        vec[1] = pos[1] + *(f32*)(this_ + 0x14);
-        vec[2] = *(f32*)(this_ + 0x14);
-        fn_801CB688(*(s32*)(this_ + 4), vec, 1, 1);
-        fn_801F0E34(this_, 0x5003c, 0);
-        state = *(s32*)(this_ + 0x248);
-        if (state != 0x13) {
-            if (state < 0x13) {
-                if (state != 10) {
-                    if (state < 10 || state < 0xe) {
-                        return 1;
+    if (ok) {
+        if (*(u32*)(this_ + 0x230) & 0x2000) {
+            fn_801F317C(this_, buf);
+            r = fn_8023AE34(buf, *(s32*)(this_ + 4), pos);
+            if (r >= 0) {
+                state = *(s32*)(this_ + 0x248);
+                switch (state) {
+                case 0xc:
+                case 0xd:
+                case 0x13:
+                    cv = fn_801CC730(r, 0, 0);
+                    if (cv) {
+                        ret = 1;
                     }
+                    break;
+                default:
+                    cv = fn_801CC820(r, 0);
+                    if (cv) {
+                        vec[2] = *(f32*)(this_ + 0x14);
+                        vec[0] = pos[0];
+                        vec[1] = pos[1] + *(f32*)(this_ + 0x14);
+                        fn_801CB688(*(s32*)(this_ + 4), vec, 1, 1);
+                        fn_801F0E34(this_, 0x5003c, 0);
+                        state = *(s32*)(this_ + 0x248);
+                        switch (state) {
+                        case 10:
+                        case 0xe:
+                        case 0xf:
+                        case 0x10:
+                        case 0x11:
+                        case 0x12:
+                        case 0x14:
+                            fn_801D5D84(this_, 0xb);
+                            break;
+                        }
+                        ret = 1;
+                    }
+                    break;
                 }
-            } else if (state > 0x14) {
-                return 1;
             }
-            fn_801D5D84(this_, 0xb);
         }
-        return 1;
     }
-    cv = fn_801CC730(r, 0, 0);
-    if (cv != 0) {
-        return 1;
-    }
-    return 0;
+    return ret;
 }
 
 extern "C" f32 lbl_8053F534;
@@ -371,11 +386,9 @@ extern "C" u8 fn_801E44CC(u8* p, const f32* a, f32* b, f32* n) {
 extern "C" void fn_801E4618(char* param_1, f32* param_2, u8 param_3) {
     if (param_3 != 0) {
         f32 x = *(f32*)(param_1 + 0x5e0);
-        f32 cx = *(u8*)(param_1 + 0x5e8) - lbl_8053F528;
-        f32 out2 = lbl_8053F510 * cx + x;
         f32 y = *(f32*)(param_1 + 0x5e4);
-        f32 cy = *(u8*)(param_1 + 0x5e9) - lbl_8053F528;
-        f32 out3 = lbl_8053F510 * cy + y;
+        f32 out2 = lbl_8053F510 * (f32)*(u8*)(param_1 + 0x5e8) + x;
+        f32 out3 = lbl_8053F510 * (f32)*(u8*)(param_1 + 0x5e9) + y;
         param_2[0] = x;
         param_2[1] = y;
         param_2[2] = out2;
