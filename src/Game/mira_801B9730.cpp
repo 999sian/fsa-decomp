@@ -339,8 +339,8 @@ static inline void mira_pickNext(char* p) {
 extern "C" void fn_801B9A5C(char* p, u8 arg) {
     switch (*(s32*)(p + 0x248)) {
     case 0:
-        if (mira_chk(p, 0x8000) && *(s32*)(p + 0x24c) >= 5) {
-            mira_off(p, 0x8000);
+        if ((*(s32*)(p + 0x230) & 0x8000) && *(s32*)(p + 0x24c) >= 5) {
+            *(u32*)(p + 0x230) &= ~0x8000;
         }
         if (arg) {
             s32 dir = fn_801CF1B0(p, 1, lbl_8053EB74, lbl_8053EB78);
@@ -360,9 +360,9 @@ extern "C" void fn_801B9A5C(char* p, u8 arg) {
     case 1:
         if (*(s32*)(p + 0x24c) > 1 && fn_801D21F0(p + 0x270)) {
             s32 flag = 0;
-            if (mira_chk(p, 0x2000)) {
+            if (*(s32*)(p + 0x230) & 0x2000) {
                 flag = 1;
-                mira_off(p, 0x2000);
+                *(u32*)(p + 0x230) &= ~0x2000;
             }
             s32 dir = fn_801CF1B0(p, flag, lbl_8053EB74, lbl_8053EB78);
             if (dir == *(s32*)(p + 0x98)) {
