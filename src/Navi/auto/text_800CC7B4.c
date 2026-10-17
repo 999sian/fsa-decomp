@@ -10,6 +10,19 @@ struct VObj_800CC1C4 {
     virtual void SetAlpha(s32 a);
 };
 
+struct VObj_800CD6FC {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+};
+
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
@@ -39,6 +52,22 @@ extern "C" void fn_800CD6FC(u8* self);
 extern "C" void fn_800CD3C4(u8* self);
 extern "C" s32 fn_800CD8E4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
 extern "C" s32 fn_800CD7CC(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to);
+extern "C" void fn_800CCF80(u8* self) {
+    f32 scale = lbl_80300EF0;
+    u8* tbl = lbl_802C5714;
+    self[0x96] = 0;
+    self[0x97] = 0;
+    self[0x98] = 0;
+    self[0x99] = 0;
+    self[0x9f] = 0;
+    *(s16*)(self + 0x9c) = 0;
+    self[0x9e] = 0;
+    self[0x8b] = 0;
+    self[0x9a] = 0;
+    self[0x9b] = 0;
+    fn_800CD8E4(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 0, *(f32*)(tbl + 0x1c), scale);
+}
+
 extern "C" void fn_800CCFEC(u8* self) {
     u8* obj = lbl_802BB0FC;
     if (*(s32*)(obj + 0xf4) == 0x46 || *(s32*)(obj + 0xf4) == 0xb) {
