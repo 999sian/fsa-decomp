@@ -113,7 +113,18 @@ public:
     u32 mInfo;
 };
 
-class J3DMaterial;
+class J3DMaterial {
+public:
+    void initialize();
+};
+class J3DLockedMaterial : public J3DMaterial {
+public:
+    void initialize();
+};
+class J3DDisplayListObj {
+public:
+    void setSingleDisplayList(void*, u32);
+};
 class J3DMaterialFactory {
 public:
     enum MaterialType {
@@ -374,55 +385,60 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
     if (*(void**)(p + 0x78) != NULL) {
         fn_800CAEC8(p, mat, idx, flags);
     } else {
-        u8 tevNum;
-        u32 texGenNum;
+        u32 tevNum = 0;
+        u32 texGenNum = 0;
         u32 tevStageNum;
         u8 indNum = 0;
         u32 texGenFlags;
         u32 peFlags;
         u32 indFlag;
-        u8* entry = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
+        {
+            u8* entry = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
 
-        tevNum = texGenNum = 0;
-        if (entry[4] != 0xff) {
-            tevNum = (*(u8**)(p + 0x4c))[entry[4]];
-        }
-        if (*(u16*)(entry + 0x84) != 0xffff) {
-            texGenNum = 1;
-        }
-        if (*(u16*)(entry + 0x86) != 0xffff) {
-            texGenNum++;
-        }
-        if (*(u16*)(entry + 0x88) != 0xffff) {
-            texGenNum++;
-        }
-        if (*(u16*)(entry + 0x8a) != 0xffff) {
-            texGenNum++;
-        }
-        if (*(u16*)(entry + 0x8c) != 0xffff) {
-            texGenNum++;
-        }
-        if (*(u16*)(entry + 0x8e) != 0xffff) {
-            texGenNum++;
-        }
-        if (*(u16*)(entry + 0x90) != 0xffff) {
-            texGenNum++;
-        }
-        if (*(u16*)(entry + 0x92) != 0xffff) {
-            texGenNum++;
-        }
-        if (texGenNum == 0 || tevNum >= texGenNum) {
-            texGenNum = tevNum;
-        }
-        tevStageNum = (flags >> 0x10) & 0x1f;
-        if (tevStageNum < texGenNum) {
-            tevStageNum = texGenNum;
-        }
-        if (entry[3] != 0xff) {
-            indNum = (*(u8**)(p + 0x24))[entry[3]];
+            if (entry[4] != 0xff) {
+                tevNum = (*(u8**)(p + 0x4c))[entry[4]];
+            }
+            if (*(u16*)(entry + 0x84) != 0xffff) {
+                texGenNum = 1;
+            }
+            if (*(u16*)(entry + 0x86) != 0xffff) {
+                texGenNum++;
+            }
+            if (*(u16*)(entry + 0x88) != 0xffff) {
+                texGenNum++;
+            }
+            if (*(u16*)(entry + 0x8a) != 0xffff) {
+                texGenNum++;
+            }
+            if (*(u16*)(entry + 0x8c) != 0xffff) {
+                texGenNum++;
+            }
+            if (*(u16*)(entry + 0x8e) != 0xffff) {
+                texGenNum++;
+            }
+            if (*(u16*)(entry + 0x90) != 0xffff) {
+                texGenNum++;
+            }
+            if (*(u16*)(entry + 0x92) != 0xffff) {
+                texGenNum++;
+            }
+            if (tevNum != texGenNum && texGenNum != 0) {
+                if (tevNum > texGenNum) {
+                    texGenNum = tevNum;
+                }
+            } else {
+                texGenNum = tevNum;
+            }
+            tevStageNum = (flags >> 0x10) & 0x1f;
+            if (texGenNum > tevStageNum) {
+                tevStageNum = texGenNum;
+            }
+            if (entry[3] != 0xff) {
+                indNum = (*(u8**)(p + 0x24))[entry[3]];
+            }
         }
         peFlags = flags & 0x30000000;
-        texGenFlags = (indNum > 4) ? 0 : (flags & 0x0C000000);
+        texGenFlags = flags & 0x0C000000 & ~-(u32)(4 < indNum);
         indFlag = (flags >> 24) & 1;
 
         if (mat == NULL) {
