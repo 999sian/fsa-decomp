@@ -314,3 +314,6 @@ extern "C" void* fn_801258D8(void* self) {
     return self;
 }
 
+void __sinit_OPGL_80124AD8_cpp(void) {
+}
+
