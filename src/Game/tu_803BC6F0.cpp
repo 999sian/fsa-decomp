@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/J2D/J2DPane.h"
 
 struct VtSlot9 {
     void* v0;
@@ -484,15 +485,15 @@ extern "C" void fn_803C02CC(u8* p) {
         state = 0x116;
     }
     *(s32*)(p + 0x84) = state;
-    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DTextBoxVt*)*(void**)(p + 8))->v15((u32)lbl_8053AAF8, 0x54, 0x66743031)), *(s32*)(p + 0x84), 0, 0, 0);
+    fn_803832BC(getStringPtr__10J2DTextBoxCFv(((J2DPane*)*(void**)(p + 8))->search(0x5466743031ULL)), *(s32*)(p + 0x84), 0, 0, 0);
     if (*(u32*)(p + 0x84) == 0x60 || *(u32*)(p + 0x84) == 0x64) {
         *(s32*)(p + 0xb0) = 0x5a;
     }
-    (*(PaneVt9**)(*(u8**)(*(u8**)(p + 0x50) + 4)))->v9(*(void**)(*(u8**)(p + 0x50) + 4), 0);
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723031), *(u8*)(*(u8**)(p + 0x50) + 0x28));
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723032), *(u8*)(*(u8**)(p + 0x50) + 0x28));
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723033), *(u8*)(*(u8**)(p + 0x50) + 0x28));
-    fn_804023D0(*(void**)(p + 0x50), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x500000, 0x506663, 0x75723034), *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    ((J2DPane*)*(void**)(*(u8**)(p + 0x50) + 4))->setAlpha(0);
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723031ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723032ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723033ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
+    fn_804023D0(*(void**)(p + 0x50), ((J2DPane*)*(void**)(p + 8))->search(0x50666375723034ULL), *(u8*)(*(u8**)(p + 0x50) + 0x28));
     *(s16*)(*(u8**)(p + 0x38) + 0x20) = 0;
     *(s16*)(*(u8**)(p + 0x38) + 0x22) = 0;
     *(s16*)(*(u8**)(p + 0x38) + 0x26) = 0;
@@ -511,8 +512,8 @@ extern "C" void fn_803C02CC(u8* p) {
     *(s16*)(*(u8**)(p + 0x4c) + 0x20) = 0;
     *(s16*)(*(u8**)(p + 0x4c) + 0x22) = 0;
     *(s16*)(*(u8**)(p + 0x4c) + 0x26) = 0;
-    (*(PaneVt9**)(*(u8**)(*(u8**)(p + 0x34) + 4)))->v9(*(void**)(*(u8**)(p + 0x34) + 4), 0);
-    fn_804023D0(*(void**)(p + 0x34), ((J2DTextBoxVt*)*(void**)(p + 8))->v15(0x50610000, 0x50616363, 0x75723031), *(u8*)(*(u8**)(p + 0x34) + 0x28));
+    ((J2DPane*)*(void**)(*(u8**)(p + 0x34) + 4))->setAlpha(0);
+    fn_804023D0(*(void**)(p + 0x34), ((J2DPane*)*(void**)(p + 8))->search(0x5061636375723031ULL), *(u8*)(*(u8**)(p + 0x34) + 0x28));
     if (p[0x115] & (u8)(1 << *(s32*)(p + 0xa0))) {
         *(s16*)(*(u8**)(p + 0x20) + 0x20) = 0;
         *(s16*)(*(u8**)(p + 0x20) + 0x26) = 0;
@@ -676,6 +677,7 @@ extern "C" void fn_803C1054(u8* p) {
 extern "C" void fn_803C21A8(u8* this_) {
     void* o;
     u32 state;
+    u32 p;
 
     fn_803CE4CC((char*)this_);
     state = 0x117;
@@ -690,11 +692,12 @@ extern "C" void fn_803C21A8(u8* this_) {
     fn_80402E08(*(void**)(this_ + 0x50), lbl_80543494, lbl_80543458);
     *(u16*)(*(u8**)(this_ + 0x50) + 0x20) = 0;
     o = *(void**)(*(u8**)(this_ + 0x50) + 4);
-    ((void (*)(void*, s32))(*(void***)o)[9])(o, 0);
-    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(0x500000, 0x506663, 0x75723031), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
-    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(0x500000, 0x506663, 0x75723032), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
-    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(0x500000, 0x506663, 0x75723033), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
-    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(0x500000, 0x506663, 0x75723034), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
+    (*(VtSlot9**)o)->v9(o, 0);
+    p = 0x500000;
+    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(p, p + 0x6663, 0x75723031), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
+    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(p, p + 0x6663, 0x75723032), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
+    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(p, p + 0x6663, 0x75723033), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
+    fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(p, p + 0x6663, 0x75723034), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
     *(u16*)(*(u8**)(this_ + 0x38) + 0x20) = 0;
     *(u16*)(*(u8**)(this_ + 0x38) + 0x22) = 0;
     *(u16*)(*(u8**)(this_ + 0x38) + 0x26) = 0;
@@ -720,7 +723,7 @@ extern "C" void fn_803C21A8(u8* this_) {
     *(u16*)(*(u8**)(this_ + 0x1c) + 0x20) = 0;
     *(u16*)(*(u8**)(this_ + 0x1c) + 0x26) = 0;
     o = *(void**)(*(u8**)(this_ + 0x34) + 4);
-    ((void (*)(void*, s32))(*(void***)o)[9])(o, 0);
+    (*(VtSlot9**)o)->v9(o, 0);
     fn_804023D0(*(void**)(this_ + 0x34), ((J2DTextBoxVt*)*(void**)(this_ + 8))->v15(0x50610000, 0x50616363, 0x75723031), *(u8*)(*(u8**)(this_ + 0x34) + 0x28));
     *(u16*)(*(u8**)(this_ + 0x24) + 0x22) = 0;
     *(u16*)(*(u8**)(this_ + 0x24) + 0x26) = 0;
@@ -1125,7 +1128,7 @@ extern "C" void fn_803C7CA0(u8* p) {
     if (p[0x110] == 0x1b) {
         t = *(s16*)(p + 0xda);
         f30 = lbl_80543458;
-        if (t) {
+        if (t != 0) {
             if (t < 5) {
                 f30 = lbl_805434A4 * (f32)(t * t) / lbl_805434A8;
                 *(s16*)(p + 0xda) = t + 1;
@@ -1149,8 +1152,7 @@ extern "C" void fn_803C7CA0(u8* p) {
             fn_80402E08(*(void**)(p + 0x34), *(f32*)(*(u8**)(q + 0x24) + 8) - *(f32*)(*(u8**)(p + 0x24) + 8), f30);
         }
         fn_8040245C(*(void**)(p + 0x34), 0x3c, 0, *(u8*)(*(u8**)(p + 0x34) + 0x28), 1);
-        u32 hi = 0x50610000;
-        fn_804023D0(*(void**)(p + 0x34), ((J2DTextBoxVt*)*(void**)(p + 0x8))->v15(hi, hi + 0x6363, 0x75723031), *(u8*)(*(u8**)(p + 0x34) + 0x28));
+        fn_804023D0(*(void**)(p + 0x34), ((J2DTextBoxVt*)*(void**)(p + 0x8))->v15(0x50610000, 0x50616363, 0x75723031), *(u8*)(*(u8**)(p + 0x34) + 0x28));
     }
 }
 
