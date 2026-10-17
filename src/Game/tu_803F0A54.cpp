@@ -175,6 +175,158 @@ extern "C" void fn_803F2B5C(u8* p) {
     *(s32*)(p + 0x1c4) = 4;
 }
 
+extern "C" void fn_803F2B78(u8* p) {
+    u8* base;
+    u32* pt31;
+    u32* pt30;
+    u32* pt29;
+    u32* pt28;
+    u32* pt27;
+    u32* pt26;
+    u32* pt25;
+    u8* q;
+    s32 i;
+    s32 j;
+    u32* t20;
+    void* uVar1;
+    void* piVar;
+    void* s1;
+    void* s2;
+    u8* sp;
+
+    base = lbl_80478A60;
+    if (*(s32*)(p + 0x1ac) == 0) {
+        uVar1 = fn_804031C4(0x54494d47, base + 0xf30);
+        piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x746e0000, 0x50, 0x746e3032);
+        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x746e0000, 0x50, 0x746e3031);
+        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+    } else if (*(s32*)(p + 0x1ac) == 1) {
+        uVar1 = fn_804031C4(0x54494d47, base + 0xf44);
+        piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x746e0000, 0x50, 0x746e3032);
+        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x746e0000, 0x50, 0x746e3031);
+        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+    } else {
+        uVar1 = fn_804031C4(0x54494d47, base + 0xf58);
+        piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x746e0000, 0x50, 0x746e3032);
+        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+        piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x746e0000, 0x50, 0x746e3031);
+        ((void (*)(void*, void*, s32))(*(void***)piVar)[68])(piVar, uVar1, 0);
+    }
+
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x6b670000, 0x5474, 0x6b673031);
+    s1 = getStringPtr__10J2DTextBoxCFv(piVar);
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x6b670000, 0x5474, 0x6b673032);
+    s2 = getStringPtr__10J2DTextBoxCFv(piVar);
+    fn_803832BC(s1, 0x3f, 0, 0, 0);
+    fn_803832BC(s2, 0x3f, 0, 0, 0);
+
+    *(f32*)(p + 0x9c) = lbl_80543764;
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x74610000, 0x4e6461, 0x74613033);
+    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0x94), *(f32*)(p + 0x98) + *(f32*)(p + 0x9c));
+
+    *(f32*)(p + 0xa8) = lbl_80543768;
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x74610000, 0x4e6461, 0x74613035);
+    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xa0), *(f32*)(p + 0xa4) + *(f32*)(p + 0xa8));
+
+    *(f32*)(p + 0xb4) = lbl_80543754;
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x74610000, 0x4e6461, 0x74613036);
+    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xac), *(f32*)(p + 0xb0) + *(f32*)(p + 0xb4));
+
+    *(f32*)(p + 0xb8) = lbl_80543754;
+    fn_80402E08(*(void**)(p + 0x74), lbl_8054372C, *(f32*)(p + 0xb8));
+
+    *(f32*)(p + 0xdc) = lbl_8054376C;
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, 0x50706c6c, 0x626b3032);
+    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xbc), *(f32*)(p + 0xcc) + *(f32*)(p + 0xdc));
+
+    *(f32*)(p + 0xe0) = lbl_8054376C;
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, 0x50706c6c, 0x626b3132);
+    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xc0), *(f32*)(p + 0xd0) + *(f32*)(p + 0xe0));
+
+    *(f32*)(p + 0xe4) = lbl_8054376C;
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, 0x50706c6c, 0x626b3232);
+    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xc4), *(f32*)(p + 0xd4) + *(f32*)(p + 0xe4));
+
+    *(f32*)(p + 0xe8) = lbl_8054376C;
+    piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, 0x50706c6c, 0x626b3332);
+    ((void (*)(void*, f32, f32))(*(void***)piVar)[4])(piVar, *(f32*)(p + 0xc8), *(f32*)(p + 0xd8) + *(f32*)(p + 0xe8));
+
+    q = p;
+    pt30 = (u32*)(base + 0x7f8);
+    pt29 = (u32*)(base + 0x818);
+    pt28 = (u32*)(base + 0x838);
+    pt27 = (u32*)(base + 0x858);
+    pt26 = (u32*)(base + 0x898);
+    pt25 = (u32*)(base + 0x878);
+    pt31 = (u32*)(base + 0x918);
+    for (i = 0; i < 4; i++) {
+        if (*(s32*)(p + 0x1ac) + 1 < i) {
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt30[0], pt30[1]);
+            sp[0xb0] = 0;
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt29[0], pt29[1]);
+            sp[0xb0] = 0;
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt28[0], pt28[1]);
+            sp[0xb0] = 0;
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt27[0], pt27[1]);
+            sp[0xb0] = 0;
+            t20 = pt26 + 4;
+            for (j = 2; j < 4; j++) {
+                sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, t20[0], t20[1]);
+                sp[0xb0] = 0;
+                t20 += 2;
+            }
+            piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt25[0], pt25[1]);
+            ((void (*)(void*, s32))(*(void***)piVar)[9])(piVar, 0x80);
+            *(s32*)(q + 0x220) = 0;
+            *(s32*)(q + 0x230) = 0;
+        } else {
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt30[0], pt30[1]);
+            sp[0xb0] = 1;
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt29[0], pt29[1]);
+            sp[0xb0] = 1;
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt28[0], pt28[1]);
+            sp[0xb0] = 1;
+            sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt27[0], pt27[1]);
+            sp[0xb0] = 1;
+            t20 = pt26 + 4;
+            for (j = 2; j < 4; j++) {
+                sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, t20[0], t20[1]);
+                sp[0xb0] = 1;
+                t20 += 2;
+            }
+            piVar = ((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt25[0], pt25[1]);
+            ((void (*)(void*, s32))(*(void***)piVar)[9])(piVar, 0xff);
+            *(s32*)(q + 0x220) = *(s16*)(*(u8**)(q + 0x38) + 6);
+            *(s32*)(q + 0x230) = *(s16*)(*(u8**)(q + 0x48) + 6);
+        }
+        sp = (u8*)((void* (*)(void*, u32, u32, u32))(*(void***)(*(void**)(p + 8)))[15])(*(void**)(p + 8), 0x626b0000, pt31[0], pt31[1]);
+        sp[0xb0] = 0;
+        q += 4;
+        pt30 += 2;
+        pt29 += 2;
+        pt28 += 2;
+        pt27 += 2;
+        pt26 += 8;
+        pt25 += 2;
+        pt31 += 2;
+    }
+
+    *(s16*)(p + 0x240) = 0;
+    *(s16*)(p + 0x248) = 0;
+    *(s16*)(p + 0x24a) = 0;
+    *(u8*)(p + 0x25b) = 0;
+    *(s16*)(p + 0x24e) = -1;
+    *(s16*)(p + 0x250) = -1;
+    *(s32*)(p + 0x210) = 0;
+    *(s32*)(p + 0x214) = 0;
+    *(s32*)(p + 0x218) = 0;
+    *(s32*)(p + 0x21c) = 0;
+    *(s32*)(p + 0x1c8) = *(s32*)(p + 0x1c4);
+    *(s32*)(p + 0x1c4) = 3;
+}
+
 extern "C" void fn_803F32E8(u8* p) {
     *(s32*)(p + 0x210) = 0;
     *(s16*)(p + 0x240) = 0;
@@ -190,37 +342,29 @@ extern "C" void fn_803F3310(u8* p) {
 
 extern "C" void fn_803F3324(u8* p) {
     void* obj;
-    void* self;
 
     *(f32*)(p + 0x110) = lbl_80543770;
-    self = *(void**)(p + 4);
-    obj = ((void* (*)(void*, s32, s32, s32))(*(void***)self)[15])(self, 0x62620000, 0x506d6261, 0x62623037);
+    obj = ((void* (*)(void*, u32, u32, u32))(**(void****)(p + 4))[15])(*(void**)(p + 4), 0x62620000, 0x506d6261, 0x62623037);
     ((void (*)(void*, f32, f32))(*(void***)obj)[4])(obj, *(f32*)(p + 0x108), *(f32*)(p + 0x10c) + *(f32*)(p + 0x110));
     *(f32*)(p + 0x114) = lbl_80543768;
     fn_80402E08(*(void**)(p + 0x74), lbl_8054372C, *(f32*)(p + 0x114));
 
     *(f32*)(p + 0x130) = lbl_80543774;
-    self = *(void**)(p + 4);
-    obj = ((void* (*)(void*, s32, s32, s32))(*(void***)self)[15])(self, 0x70620000, 0x506e6f, 0x70623038);
+    obj = ((void* (*)(void*, u32, u32, u32))(**(void****)(p + 4))[15])(*(void**)(p + 4), 0x70620000, 0x506e6f, 0x70623038);
     ((void (*)(void*, f32, f32))(*(void***)obj)[4])(obj, *(f32*)(p + 0x118) + *(f32*)(p + 0x130), *(f32*)(p + 0x124));
     *(f32*)(p + 0x134) = lbl_80543774;
-    self = *(void**)(p + 4);
-    obj = ((void* (*)(void*, s32, s32, s32))(*(void***)self)[15])(self, 0x70620000, 0x506e6f, 0x70623132);
+    obj = ((void* (*)(void*, u32, u32, u32))(**(void****)(p + 4))[15])(*(void**)(p + 4), 0x70620000, 0x506e6f, 0x70623132);
     ((void (*)(void*, f32, f32))(*(void***)obj)[4])(obj, *(f32*)(p + 0x11c) + *(f32*)(p + 0x134), *(f32*)(p + 0x128));
     *(f32*)(p + 0x138) = lbl_80543774;
-    self = *(void**)(p + 4);
-    obj = ((void* (*)(void*, s32, s32, s32))(*(void***)self)[15])(self, 0x70620000, 0x506e6f, 0x70623136);
+    obj = ((void* (*)(void*, u32, u32, u32))(**(void****)(p + 4))[15])(*(void**)(p + 4), 0x70620000, 0x506e6f, 0x70623136);
     ((void (*)(void*, f32, f32))(*(void***)obj)[4])(obj, *(f32*)(p + 0x120) + *(f32*)(p + 0x138), *(f32*)(p + 0x12c));
     *(f32*)(p + 0x144) = lbl_80543778;
-    self = *(void**)(p + 4);
-    obj = ((void* (*)(void*, s32, s32, s32))(*(void***)self)[15])(self, 0x74610000, 0x4e6461, 0x74613032);
+    obj = ((void* (*)(void*, u32, u32, u32))(**(void****)(p + 4))[15])(*(void**)(p + 4), 0x74610000, 0x4e6461, 0x74613032);
     ((void (*)(void*, f32, f32))(*(void***)obj)[4])(obj, *(f32*)(p + 0x13c) + *(f32*)(p + 0x144), *(f32*)(p + 0x140));
     *(f32*)(p + 0x158) = lbl_80543778;
-    self = *(void**)(p + 4);
-    obj = ((void* (*)(void*, s32, s32, s32))(*(void***)self)[15])(self, 0x74610000, 0x4e6461, 0x74613035);
+    obj = ((void* (*)(void*, u32, u32, u32))(**(void****)(p + 4))[15])(*(void**)(p + 4), 0x74610000, 0x4e6461, 0x74613035);
     ((void (*)(void*, f32, f32))(*(void***)obj)[4])(obj, *(f32*)(p + 0x148) + *(f32*)(p + 0x158), *(f32*)(p + 0x14c));
-    self = *(void**)(p + 4);
-    obj = ((void* (*)(void*, s32, s32, s32))(*(void***)self)[15])(self, 0x4e0000, 0x4e6461, 0x74613037);
+    obj = ((void* (*)(void*, u32, u32, u32))(**(void****)(p + 4))[15])(*(void**)(p + 4), 0x4e0000, 0x4e6461, 0x74613037);
     ((void (*)(void*, f32, f32))(*(void***)obj)[4])(obj, *(f32*)(p + 0x150) + *(f32*)(p + 0x158), *(f32*)(p + 0x154));
 
     *(s32*)(p + 0x210) = 0;
@@ -771,6 +915,10 @@ extern "C" void fn_803FC5E4(u8* p, u8 flag) {
 }
 
 extern "C" u8 lbl_804B0F10[];
+class T803FC904Obj {
+public:
+    virtual void v08(s32);
+};
 extern "C" void* fn_803FC904(u8* param_1, s16 param_2) {
     s32 i;
     u8* p;
