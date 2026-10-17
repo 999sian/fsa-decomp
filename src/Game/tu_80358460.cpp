@@ -6,6 +6,7 @@ typedef void (Unk8035A1D4::*Unk8035A1D4Func)();
 extern Unk8035A1D4Func lbl_804AD30C[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" char lbl_804AD348[];
+struct Vec8035A860 { f32 x, y, z; };
 extern "C" Actor* fn_80358460(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AD348;
