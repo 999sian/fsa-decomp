@@ -989,12 +989,12 @@ extern "C" void fn_8005FEB4(u8* self) {
 }
 
 extern "C" BOOL fn_80060794(void* param_1, u32* param_2, u32* param_3, u32 param_4) {
-    if (*param_2 < *param_3) {
-        *(u32*)*param_2 = param_4;
-        *param_2 += 4;
-        return 1;
+    if (*param_2 >= *param_3) {
+        return 0;
     }
-    return 0;
+    *(u32*)*param_2 = param_4;
+    *param_2 += 4;
+    return 1;
 }
 
 extern "C" void fn_8006081C(void) {
