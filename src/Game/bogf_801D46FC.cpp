@@ -536,7 +536,7 @@ extern "C" void fn_801D47DC(u8* this_) {
     }
     JGeometry::TVec3<f32> pos(*(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14), lbl_8053F0C8);
     f32 lim = lbl_8053F0CC + rect[1];
-    pos.y = (lim - pos.y >= 0.0f) ? lim : pos.y;
+    pos.y = __fsel(lim - pos.y, lim, pos.y);
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
     case 0x17:
