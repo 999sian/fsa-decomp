@@ -16,6 +16,7 @@ class Actor;
 extern "C" {
 extern char* lbl_8053AAF8;
 extern void* lbl_8053AF80;
+extern void* lbl_8053AC98;
 extern const f32 lbl_805405A8;
 extern const f32 lbl_805405AC;
 extern const f32 lbl_805405B0;
