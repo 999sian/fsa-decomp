@@ -19,6 +19,7 @@ extern "C" void fn_801A670C(u8* param_1, s32 param_2);
 extern "C" void fn_801A676C(u8* param_1, s32 param_2, u8 param_3);
 extern "C" void fn_801A6CEC(u8* param_1, s32 param_2);
 extern u8 lbl_802F0408[];
+extern u8 lbl_802EE470[];
 extern u32* lbl_802FFA80;
 extern "C" void fn_8018F6A4(u32 a, f32 b, f32 c, f32 d);
 extern "C" void fn_8018F27C(u32 a, f32 b, f32 c, f32 d, f32 e, f32 f, f32 g);
