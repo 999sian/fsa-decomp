@@ -21,6 +21,9 @@ extern "C" void fn_8015D050(void* p);
 extern "C" void fn_80166B58(void* a, void* b);
 extern "C" void fn_8015D3E4(void* p, u32 a, u32 b, u32 c);
 extern "C" void fn_8015D374(u8* p, void* r4, u32 r5);
+struct VObj_80088CF8;
+extern "C" void fn_8015D474(VObj_80088CF8* obj);
+extern "C" void fn_801C0884(void*, void*, void*, void*, u32, u32, s32);
 struct VObj_8003B920 {
     virtual void m0();
     virtual void m1();
