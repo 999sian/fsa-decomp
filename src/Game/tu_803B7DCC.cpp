@@ -1,12 +1,5 @@
 #include "types.h"
 
-struct FsaObjVtbl {
-    char pad_00[0x24];
-    void (*fn24)(void* self, u8 b);
-    char pad_28[0xec - 0x28];
-    void (*fnEC)(void* self, s32 a, s32 b, s32 c, f32 d, f32 e, f32 f, f32 g);
-};
-
 struct FsaVObj {
     virtual void v0(void);
     virtual void v1(void);
