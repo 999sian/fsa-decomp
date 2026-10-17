@@ -743,7 +743,10 @@ extern "C" char* fn_8015AC80(u32 param_1, char* param_2, char* param_3) {
     if (iVar2 == 0) {
         return 0;
     }
-    iVar3 = fn_8015ADE8(iVar2, iVar2 + 0x90, (int)(param_1 - 0x90), (int)param_2, param_3);
+    iVar3 = iVar2;
+    if (iVar2 != 0) {
+        iVar3 = fn_8015ADE8(iVar2, iVar2 + 0x90, (int)(param_1 - 0x90), (int)param_2, param_3);
+    }
     if (iVar3 == 0) {
         fn_80159C6C(iVar2, 0);
         return 0;
@@ -796,31 +799,31 @@ extern "C" void* fn_8015AE80(void* p, s16 param_2) {
 extern "C" u8* fn_8015C538(u8* p, u32 size, u8 a, u8 b, u8 c, u8 d);
 extern "C" u8* fn_8015B260(u8* p, u32 size) {
     u32 best = 0xffffffff;
-    u32 aligned = (size + 3) & ~3;
-    u8* found = 0;
+    u8* found;
     u8* node;
     u8* ret;
+    size = (size + 3) & ~3;
+    found = 0;
     for (node = *(u8**)(p + 0x78); node != 0; node = *(u8**)(node + 0xc)) {
-        u32 s = *(u32*)(node + 4);
-        if (s >= aligned && s < best) {
-            best = s;
+        if (*(u32*)(node + 4) >= size && best > *(u32*)(node + 4)) {
+            best = *(u32*)(node + 4);
             found = node;
-            if (*(u8*)(p + 0x6c) != 0 || s == aligned) {
+            if (*(u8*)(p + 0x6c) != 0 || best == size) {
                 break;
             }
         }
     }
-    if (found == 0) {
-        return 0;
+    if (found != 0) {
+        ret = fn_8015C538(found, size, *(u8*)(p + 0x6d), 0, 0, 0);
+        if (ret != 0) {
+            fn_8015BBEC(p, ret, *(u8**)(found + 8), *(u8**)(found + 0xc));
+        } else {
+            fn_8015BC38(p, found);
+        }
+        fn_8015BB50((char*)p, (char*)found);
+        return found + 0x10;
     }
-    ret = fn_8015C538(found, aligned, *(u8*)(p + 0x6d), 0, 0, 0);
-    if (ret != 0) {
-        fn_8015BBEC(p, ret, *(u8**)(found + 8), *(u8**)(found + 0xc));
-    } else {
-        fn_8015BC38(p, found);
-    }
-    fn_8015BB50((char*)p, (char*)found);
-    return found + 0x10;
+    return 0;
 }
 
 extern "C" u8* fn_8015B4A4(u8* p, u32 size) {
@@ -1199,9 +1202,9 @@ extern "C" int fn_8015CAD4(void* p, u32 size, s32 align) {
     u8* self = (u8*)p;
     int ret = 0;
     u32 n = (size + 3) & ~3;
+    u32 a = align;
     u32 cur = *(u32*)(self + 0x70);
-    u32 mask = ~(align - 1);
-    u32 aligned = mask & (align + cur - 1);
+    u32 aligned = ~(a - 1) & (a + cur - 1);
     u32 need = n + (aligned - cur);
     if (need <= *(u32*)(self + 0x6c)) {
         *(u32*)(self + 0x70) = cur + need;
