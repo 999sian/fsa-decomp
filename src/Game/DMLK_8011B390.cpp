@@ -23,7 +23,7 @@ struct DMLKResMgr {
 
 #if defined(VERSION_G4SP01)
 extern "C" s32 fn_8011BDAC(u8* self) {
-    switch (*(s32*)(self + 0x23c)) {
+    switch (*(s32*)(self + 0x238)) {
     case 12:
     case 13:
     case 20:
