@@ -372,7 +372,7 @@ extern "C" void fn_802F601C(u8* this_, f32* src, s32 type, f32* src2, f32 f1, f3
         v[1] = src2[1];
         v[2] = src2[2];
         mag = v[0] * v[0] + v[1] * v[1] + v[2] * v[2];
-        if (mag <= 32.0f * __float_epsilon) {
+        if (mag <= 32.0f * *(f32*)&__float_epsilon) {
             return;
         }
         if (mag <= 0.0f) {
@@ -535,7 +535,7 @@ extern "C" u8 fn_802F654C(u8* self, f32* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
             *(s32*)(e + 0x54) = *(s32*)(src + 0x38);
             e[0x3d] = 0;
             if (*(void**)(src + 0x18) != NULL) {
-                memcpy(e + 0x58, *(void**)(src + 0x18), 0x30);
+                PSMTXCopy(*(MtxPtr*)(src + 0x18), (MtxPtr)(e + 0x58));
                 *(void**)(e + 0x34) = e + 0x58;
             }
         } else {
@@ -769,7 +769,8 @@ extern "C" void fn_802F8F0C(void*, u8* p) {
         GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
     }
     if (p != NULL) {
-        GXSetZMode(*(u8*)(p + 0x26), (GXCompare)*(s32*)(p + 0x28), *(u8*)(p + 0x2c));
+        u8 zc = *(u8*)(p + 0x2c);
+        GXSetZMode(*(u8*)(p + 0x26), (GXCompare)*(s32*)(p + 0x28), zc);
     } else {
         GXSetZMode(GX_TRUE, GX_LEQUAL, GX_TRUE);
     }
@@ -1144,6 +1145,92 @@ extern "C" void fn_802F9DA8(u8* this_, u8* src, u32 srcOff, s32 idx, u32 dstOff,
     DCFlushRange(d, len);
 }
 
+extern "C" void fn_802FA160(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
+    u32 len;
+    u8* e;
+    u8* q;
+    u8* p;
+    s32 n;
+    u32 i;
+    u8* d;
+    u8* s;
+    u8* base;
+    if (size == 0) {
+        s32 r;
+        if (JKRDecomp::checkCompressed(src)) {
+            r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
+        } else {
+            void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
+            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
+        }
+        if (r < 0) {
+            len = 0x8000;
+        } else {
+            len = r;
+        }
+    } else {
+        len = size;
+    }
+    e = this_ + idx * 4;
+    dst += ((u32*)e)[1];
+    if (JKRDecomp::checkCompressed(src)) {
+        JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
+        base = *(u8**)(this_ + 0xf8);
+    } else {
+        base = src;
+    }
+    base += a;
+    i = 0;
+    if (len != 0) {
+        if (len > 8) {
+            for (n = len - 8; n > 0; n -= 8) {
+                s = base + i;
+                d = dst + i;
+                d[0] = (s[0] >> 4) | (s[0] << 4);
+                d[1] = (s[1] >> 4) | (s[1] << 4);
+                d[2] = (s[2] >> 4) | (s[2] << 4);
+                d[3] = (s[3] >> 4) | (s[3] << 4);
+                d[4] = (s[4] >> 4) | (s[4] << 4);
+                d[5] = (s[5] >> 4) | (s[5] << 4);
+                d[6] = (s[6] >> 4) | (s[6] << 4);
+                d[7] = (s[7] >> 4) | (s[7] << 4);
+                i += 8;
+            }
+        }
+        s = base + i;
+        d = dst + i;
+        for (n = len - i; n > 0; n--) {
+            u8 b = *s++;
+            *d++ = (b >> 4) | (b << 4);
+        }
+    }
+    DCFlushRange(dst, len);
+    if (idx == 1) {
+        p = *(u8**)(this_ + 8) + 0x200;
+        q = *(u8**)(this_ + 0x238c);
+        for (n = 0x10; n > 0; n--) {
+            q[0] = p[0];
+            q[1] = p[1];
+            q[2] = p[2];
+            q[3] = p[3];
+            q[4] = p[4];
+            q[5] = p[5];
+            q[6] = p[6];
+            q[7] = p[7];
+            q[8] = p[8];
+            q[9] = p[9];
+            q[10] = p[10];
+            q[11] = p[11];
+            q[12] = p[12];
+            q[13] = p[13];
+            q[14] = p[14];
+            q[15] = p[15];
+            p += 0x10;
+            q += 0x10;
+        }
+    }
+}
+
 extern "C" void fn_8013B438(void* mgr);
 extern "C" void* fn_802D6A9C();
 extern "C" void load__10JUTTextureF11_GXTexMapID(void* tex, s32 id);
@@ -1242,6 +1329,69 @@ extern "C" void fn_802FC80C(u8* this_) {
             fn_802FC268(this_, this_ + 0x2368, 0, *(u32*)(this_ + 0x28));
         }
     }
+}
+
+extern "C" void fn_802FEE68(Tu802F5040Tbl* base) {
+    u8* p;
+    s32 i;
+    MtxPtr orig;
+    union {
+        f64 d;
+        u32 w[2];
+    } u;
+    f32 ratio;
+    f32 n;
+    f32 t;
+    Mtx m;
+    s32 j;
+    f32 s;
+    f32 v;
+
+    i = 0xff;
+    p = (u8*)base + 0x9b64;
+    do {
+        if (*(s32*)(p + 0x2398) > 0) {
+            u.w[0] = 0x43300000;
+            u.w[1] = *(s32*)(p + 0x2398) ^ 0x80000000;
+            n = u.d - lbl_80541508;
+            u.w[1] = *(s32*)(p + 0x239c) ^ 0x80000000;
+            ratio = n / (u.d - lbl_80541508);
+            p[0x23d0] = p[0x242c];
+            p[0x23d1] = p[0x242d];
+            p[0x23d2] = p[0x242e];
+            u.w[1] = p[0x242f];
+            t = u.d - lbl_80541558;
+            p[0x23d3] = (u8)(int)(t * ratio);
+            p[0x23d4] = p[0x2430];
+            p[0x23d5] = p[0x2431];
+            p[0x23d6] = p[0x2432];
+            u.w[1] = p[0x2433];
+            t = u.d - lbl_80541558;
+            p[0x23d7] = (u8)(int)(t * ratio);
+            v = *(f32*)(p + 0x23a0);
+            if (lbl_80541518 != v) {
+                orig = *(MtxPtr*)(p + 0x23d8);
+                s = v - (v - lbl_80541518) * ratio;
+                PSMTXCopy(orig, m);
+                for (j = 0; j < 12; j++) {
+                    ((f32*)m)[j] *= s;
+                }
+                *(MtxPtr*)(p + 0x23d8) = m;
+            }
+            if (*(s32*)(p + 0x23b0) != 0) {
+                fn_802F86CC(base, p + 0x23a4, *(s32*)(p + 0x23b0), *(u32*)(p + 0x23b4), p + 0x23c0, lbl_80541518, lbl_80541518);
+            } else if (*(s32*)(p + 0x23b8) != 0) {
+                fn_802F745C(base, p + 0x23a4, *(s32*)(p + 0x23b8), p + 0x23c0);
+            } else if (*(s32*)(p + 0x23bc) != 0) {
+                fn_802F6CF4(base, p + 0x23a4, *(s32*)(p + 0x23bc), p + 0x23c0);
+            }
+            if (lbl_80541518 != *(f32*)(p + 0x23a0)) {
+                *(MtxPtr*)(p + 0x23d8) = orig;
+            }
+        }
+        i--;
+        p -= 0x9c;
+    } while (i >= 0);
 }
 
 extern "C" void fn_802FF0EC(u8* p) {
