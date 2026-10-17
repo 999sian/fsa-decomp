@@ -2,7 +2,6 @@
 
 struct FsaDisposable {
     virtual void v0(void);
-    virtual void v1(void);
     virtual void del(s32);
 };
 
@@ -93,63 +92,63 @@ extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
         }
         obj = *(u8**)(param_1 + 0x4);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x4) = 0;
         obj = *(u8**)(param_1 + 0x8);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x8) = 0;
         obj = *(u8**)(param_1 + 0x1c);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x1c) = 0;
         obj = *(u8**)(param_1 + 0x20);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x20) = 0;
         slot = (void**)param_1;
         for (i = 0; i < 2; i++, slot++) {
             obj = *(u8**)(slot + 9);
             if (obj != 0) {
-                ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             slot[9] = 0;
         }
         obj = *(u8**)(param_1 + 0x2c);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x2c) = 0;
         obj = *(u8**)(param_1 + 0x30);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x30) = 0;
         slot = (void**)param_1;
         for (i = 0; i < 4; i++, slot++) {
             obj = *(u8**)(slot + 13);
             if (obj != 0) {
-                ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             slot[13] = 0;
         }
         obj = *(u8**)(param_1 + 0x44);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x44) = 0;
         obj = *(u8**)(param_1 + 0x10);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x10) = 0;
         obj = *(u8**)(param_1 + 0x18);
         if (obj != 0) {
-            ((void (*)(u8*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(param_1 + 0x18) = 0;
         lbl_8053ADC0 = 0;
