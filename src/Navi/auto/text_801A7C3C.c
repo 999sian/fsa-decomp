@@ -1083,6 +1083,18 @@ extern "C" void fn_801AF42C(void* a, void* b) {
     fn_801BA614(b, lbl_802EE58C);
 }
 
+extern "C" void fn_801AF8C4(u8* self, void* node) {
+    if (*(u8**)(self + 0xc) == 0) {
+        *(void**)(self + 0xc) = node;
+        return;
+    }
+    self = *(u8**)(self + 0xc);
+    while (*(u8**)(self + 0x10) != 0) {
+        self = *(u8**)(self + 0x10);
+    }
+    *(void**)(self + 0x10) = node;
+}
+
 extern "C" void fn_801AFD48(void* param_1) {
     *(u16*)((u8*)param_1 + 0x4) = 0;
     *(u16*)((u8*)param_1 + 0x6) = 0;
