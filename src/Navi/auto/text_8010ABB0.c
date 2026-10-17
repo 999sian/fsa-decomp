@@ -104,6 +104,13 @@ extern "C" void fn_8010BD6C(u8* param_1) {
     param_1[0x9a] = 3;
 }
 
+extern "C" void fn_8010BD90(u8* param_1) {
+    s32 r = fn_80020384((char*)lbl_802B7CA0 + 0x1388, 0);
+    if (r == 1) {
+        param_1[0x9a] = 8;
+    }
+}
+
 extern "C" void fn_8010C0EC(u8* param_1) {
     s32 iVar1 = fn_8010C6D8(param_1, *(s16*)(param_1 + 0x98), lbl_802C5AFC[0x14], 0);
     (*(s16*)(param_1 + 0x98))++;
