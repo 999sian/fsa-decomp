@@ -122,16 +122,17 @@ extern char lbl_802BB0FC[];
 extern char lbl_801FDAC8[];
 extern f32 lbl_802C53E4[];
 extern "C" void fn_8008D820(void* p, s32 n);
+struct Rec8008DA68 { u32 a, b, c; };
+
 extern "C" void fn_8008DA68(void* p) {
-    s32 idx = *(s32*)(lbl_802BB0FC + 0x424);
-    u32* src = (u32*)(lbl_801FDAC8 + idx * 12);
-    u32* dst = (u32*)p;
+    u32* src = (u32*)(lbl_801FDAC8 + *(s32*)(lbl_802BB0FC + 0x424) * 12);
     u32 a = src[0];
     u32 b = src[1];
-    dst[0] = a;
-    u32 c = src[2];
-    dst[1] = b;
-    dst[2] = c;
+    u32 c;
+    ((u32*)p)[0] = a;
+    c = src[2];
+    ((u32*)p)[1] = b;
+    ((u32*)p)[2] = c;
 }
 
 extern "C" void* fn_8008DAD8(void* ptr, s16 param_2) {
