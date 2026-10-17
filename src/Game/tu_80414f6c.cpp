@@ -2,6 +2,7 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+#include "JSystem/J2D/J2DScreen.h"
 
 // ---- from src/Game/fn_8041769C_dtor.cpp ----
 // vtable slot 2 (byte offset 8) - see [[reference_fsa_virtual_dispatch_codegen_trick]]
@@ -99,6 +100,87 @@ void TU80414F6C::fn_80414F78() {
         }
         break;
     }
+}
+
+extern "C" void fn_80416BD0(void* this_) {
+    u8* p = (u8*)this_;
+    u64* t = lbl_8048CD50;
+    s32 i;
+
+    fn_8042EB24(lbl_8053AEC4);
+    *(s32*)(p + 0x1c) = -1;
+    *(s32*)(p + 0x20) = 5;
+    *(u8*)(p + 0x109) = 0;
+    *(u8*)(p + 0x10a) = 0;
+    *(u16*)(p + 0x102) = 0;
+
+    u64* q = t;
+    for (i = 0; i < 0xb; i++) {
+        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x123 + i) * lbl_805439CC));
+        q++;
+    }
+    q = t + 11;
+    for (i = 0; i < 0xb; i++) {
+        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x12e + i) * lbl_805439CC));
+        q++;
+    }
+    q = t + 22;
+    for (i = 0; i < 9; i++) {
+        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x139 + i) * lbl_805439CC));
+        q++;
+    }
+    q = t + 31;
+    for (i = 0; i < 6; i++) {
+        (*(T80416BD0_Child**)(p + 0x24))->slot15(*q)->slot9((s32)((f32)*(u8*)(p + 0x142 + i) * lbl_805439CC));
+        q++;
+    }
+
+    q = t + 37;
+    for (i = 0; i < 0xa; i++) {
+        u64* row = q + i * 10;
+        for (s32 j = 0; j < 0xa; j++) {
+            if (row[j] != 0) {
+                (*(T80416BD0_Child**)(p + 0x24))->slot15(row[j])->slot9((s32)((f32)*(u8*)(p + 0x148 + j) * lbl_805439CC));
+            }
+        }
+    }
+
+    for (i = 0; i < 3; i++) {
+        u8* slot = p + 0x28 + i * 4;
+        fn_80402E08(*(void**)slot, 0.0f, lbl_805439C8);
+        *(u16*)((u8*)*(void**)slot + 0x22) = 0;
+    }
+
+    fn_80402E08(*(void**)(p + 0x34), 0.0f, lbl_805439D4);
+    *(u16*)((u8*)*(void**)(p + 0x34) + 0x22) = 0;
+    fn_80402E08(*(void**)(p + 0x38), 0.0f, lbl_805439DC);
+    *(u16*)((u8*)*(void**)(p + 0x38) + 0x22) = 0;
+
+    for (i = 0; i < 0xa; i++) {
+        u8* slotA = p + 0x3c + i * 4;
+        fn_80402E08(*(void**)slotA, 0.0f, lbl_805439C8);
+        *(u16*)((u8*)*(void**)slotA + 0x22) = 0;
+        u8* slotB = p + 0x6c + i * 4;
+        fn_80402E08(*(void**)slotB, 0.0f, lbl_805439C8);
+        *(u16*)((u8*)*(void**)slotB + 0x22) = 0;
+    }
+
+    fn_80402E08(*(void**)(p + 0x9c), 0.0f, lbl_805439C8);
+    *(u16*)((u8*)*(void**)(p + 0x9c) + 0x22) = 0;
+    fn_80402E08(*(void**)(p + 0xa0), 0.0f, lbl_805439DC);
+    *(u16*)((u8*)*(void**)(p + 0xa0) + 0x22) = 0;
+
+    T80416BD0_Child* c;
+    c = (*(T80416BD0_Child**)(p + 0x24))->slot15(0x0050736375723031ULL);
+    *((u8*)c + 0xb0) = 0;
+    c = (*(T80416BD0_Child**)(p + 0x24))->slot15(0x0050736375723032ULL);
+    *((u8*)c + 0xb0) = 0;
+    c = (*(T80416BD0_Child**)(p + 0x24))->slot15(0x0050736375723033ULL);
+    *((u8*)c + 0xb0) = 0;
+    (*(T80416BD0_Child**)(p + 0x24))->slot15(0x00506f6375723031ULL)->slot9(0);
+    (*(T80416BD0_Child**)(p + 0x24))->slot15(0x00506f6375723032ULL)->slot9(0);
+
+    *(s32*)(p + 0xe0) = 6;
 }
 
 void TU80414F6C::fn_804170B0() {
