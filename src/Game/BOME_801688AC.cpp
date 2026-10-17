@@ -5,6 +5,15 @@
 #include <math.h>
 
 struct JMathSinCos { f32 sin; f32 cos; };
+
+static inline f32 bomeInvSqrt(f32 x) {
+    if (x <= 0.0f) {
+        return x;
+    }
+    f32 y = __frsqrte(x);
+    y = 0.5f * y * (3.0f - (x * (y * y)));
+    return y;
+}
 extern "C" const JMathSinCos sincosTable___5JMath[];
 extern "C" u32 lbl_804A0718[];
 extern "C" void fn_8016890C(void* this_, void* pos, s32 room, void* out);
@@ -170,5 +179,94 @@ extern "C" void fn_80168E78(char* this_) {
     }
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x250) + 0x69, 0, 2,
                 -1, 0, 0, 0);
+}
+
+extern "C" void fn_80169DCC(char* this_) {
+    char* p;
+    s32 i;
+    f32 x;
+    f32 y;
+    f32 lenSq;
+
+    *(s32*)(this_ + 0x98) = (*(u32*)(this_ + 0x90) >> 4) & 7;
+    *(s32*)(this_ + 0x25c) = (*(u32*)(this_ + 0x90) >> 8) & 1;
+    *(u32*)(this_ + 0x90) = *(u32*)(this_ + 0x90) & 3;
+    *(f32*)(this_ + 0x80) = -4.0f;
+    *(f32*)(this_ + 0x84) = -4.0f;
+    *(f32*)(this_ + 0x88) = 4.0f;
+    *(f32*)(this_ + 0x8c) = 4.0f;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(s32*)(this_ + 0x240) = 0;
+    *(f32*)(this_ + 0x274) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x278) = *(f32*)(this_ + 0x10);
+    *(s32*)(this_ + 0x284) = *(s32*)(this_ + 0x4);
+    *(f32*)(this_ + 0x28c) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x290) = *(f32*)(this_ + 0x10);
+    *(s32*)(this_ + 0x29c) = *(s32*)(this_ + 0x4);
+    *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2a8) = *(f32*)(this_ + 0x10);
+    *(s32*)(this_ + 0x2b4) = *(s32*)(this_ + 0x4);
+    *(f32*)(this_ + 0x2bc) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2c0) = *(f32*)(this_ + 0x10);
+    *(s32*)(this_ + 0x2cc) = *(s32*)(this_ + 0x4);
+    *(f32*)(this_ + 0x2d4) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2d8) = *(f32*)(this_ + 0x10);
+    *(s32*)(this_ + 0x2e4) = *(s32*)(this_ + 0x4);
+    p = this_;
+    for (i = 0; i < 5; i++) {
+        f32* v = (f32*)fn_8023E724(*(s32*)(this_ + 0x90));
+        *(f32*)(p + 0x2f4) = v[0];
+        *(f32*)(p + 0x2f8) = v[1];
+        *(s32*)(p + 0x300) = fn_8023DE58(*(s32*)(this_ + 0x90));
+        p += 0x18;
+    }
+    *(s32*)(this_ + 0x264) = 0;
+    *(s32*)(this_ + 0x268) = 0;
+    *(s32*)(this_ + 0x26c) = 0;
+    *(s32*)(this_ + 0x270) = 0;
+    *(s32*)(this_ + 0x250) = 0;
+    *(f32*)(this_ + 0x36c) = 0.0f;
+    *(f32*)(this_ + 0x368) = 0.0f;
+    *(f32*)(this_ + 0x364) = 0.0f;
+    *(f32*)(this_ + 0x44) = 0.0f;
+    *(f32*)(this_ + 0x40) = 0.0f;
+    *(f32*)(this_ + 0x3c) = 0.0f;
+    fn_8016890C(this_, this_ + 0xc, *(s32*)(this_ + 4), this_ + 0x370);
+    y = 1000.0f * sincosTable___5JMath[(u16)lbl_804A0718[*(s32*)(this_ + 0x98)] >> 5].cos;
+    x = 1000.0f * sincosTable___5JMath[(u16)lbl_804A0718[*(s32*)(this_ + 0x98)] >> 5].sin;
+    lenSq = x * x + y * y;
+    if (lenSq > 32.0f * FLT_EPSILON) {
+        if (lenSq > 0.0f) {
+            f32 r = __frsqrte(lenSq);
+            lenSq = 0.5f * r * (3.0f - (lenSq * (r * r)));
+        }
+        x *= lenSq;
+        y *= lenSq;
+    }
+    if (*(s32*)(this_ + 0x25c) != 0) {
+        *(f32*)(this_ + 0x3c) = 9.0f * x;
+        *(f32*)(this_ + 0x40) = 9.0f * y;
+    } else {
+        *(f32*)(this_ + 0x3c) = 6.0f * x;
+        *(f32*)(this_ + 0x40) = 6.0f * y;
+    }
+    *(s16*)(this_ + 0x94) = 0;
+    *(s32*)(this_ + 0x23c) = 4;
+    if (*(s32*)(this_ + 0x98) > 3) {
+        *(f32*)(this_ + 0x3c) = *(f32*)(this_ + 0x3c) * 1.2f;
+        *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x40) * 1.2f;
+    }
+    *(s32*)(this_ + 0x254) = 0;
+    *(u8*)(this_ + 0x260) = 0;
+    *(u8*)(this_ + 0x261) = 0;
+    *(s32*)(this_ + 0x258) = 300;
+    *(s32*)(this_ + 0x180) = 60;
+    *(f32*)(this_ + 0x184) = 80.0f;
+    *(s32*)(this_ + 0x230) = 0;
 }
 
