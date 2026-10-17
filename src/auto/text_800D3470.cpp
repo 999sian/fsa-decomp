@@ -3853,8 +3853,10 @@ extern "C" u32* fn_800DEDA4(u32* self, short flag) {
         u32 tmp;
         tmp = (u32)lbl_8049B440;
         self[0] = tmp;
-        tmp = (u32)&__vt__11J3DTevBlock;
-        self[0] = tmp;
+        if (self != NULL) {
+            tmp = (u32)&__vt__11J3DTevBlock;
+            self[0] = tmp;
+        }
         if (flag > 0) {
             __dl__FPv(self);
         }
