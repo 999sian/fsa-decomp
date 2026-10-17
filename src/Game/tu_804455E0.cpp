@@ -28,8 +28,7 @@ extern "C" void* fn_804030C4(u32, u32);
 extern "C" u32 lbl_804B1B78[];
 extern "C" u32 lbl_804B1BA0[];
 static inline void SetAnimation(J2DPane* pane, void* anm) {
-    void** vt = *(void***)pane;
-    ((fn_80445D24_VFn)vt[0x110 / 4])(pane, anm, 0);
+    ((fn_80445D24_VFn*)*(void**)pane)[0x110 / 4](pane, anm, 0);
 }
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(J2DScreen*, f32, f32, const J2DGrafContext*);
 struct fn_804460AC_Obj {
