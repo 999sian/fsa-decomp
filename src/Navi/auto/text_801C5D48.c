@@ -44,6 +44,7 @@ extern "C" void fn_801C8D70(u32 param_1);
 extern "C" void fn_801C8278(DVDCommandBlock* block);
 extern "C" void fn_801C830C(void);
 extern char lbl_8029D3C4[];
+extern char lbl_802FE9BC[];
 extern "C" void fn_801C6FF4(void* a, s32 b, s32 c, void* cb);
 extern "C" void fn_801C9060(DVDCommandBlock* block);
 extern "C" void fn_801C8554(u32 result);
@@ -629,8 +630,7 @@ extern "C" void cbForStateMotorStopped(void)
 {
 	char* base = BB2_802F7AA0;
 	DVDCommandBlock* old;
-	DVDCBCallback callback;
-	OSTime ticks;
+	volatile s32 state;
 
 	*(vu32*)0xCC006004 = 0;
 	executing_802FF880->state = 3;
@@ -642,17 +642,15 @@ extern "C" void cbForStateMotorStopped(void)
 		__DVDClearWaitingQueue();
 		old = executing_802FF880;
 		executing_802FF880 = (DVDCommandBlock*)(base + 0x40);
-		callback = old->callback;
-		if (callback != nullptr) {
-			callback(-4, old);
+		if (old->callback != nullptr) {
+			old->callback(-4, old);
 		}
 		stateReady();
 		break;
 	default:
 		DVDReset();
 		OSCreateAlarm((OSAlarm*)(base + 0x70));
-		ticks = OSMillisecondsToTicks(1150);
-		OSSetAlarm((OSAlarm*)(base + 0x70), ticks, (OSAlarmHandler)AlarmHandler);
+		OSSetAlarm((OSAlarm*)(base + 0x70), OSMillisecondsToTicks(1150), (OSAlarmHandler)AlarmHandler);
 		break;
 	}
 }
