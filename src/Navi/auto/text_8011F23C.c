@@ -813,6 +813,20 @@ extern "C" void fn_80124A04(void* self, s32 idx, u32 c, u32 a, u32 b) {
     fn_801BDE1C(e, 6, 1);
 }
 
+extern "C" s32 fn_80124A50(void* a, s32 idx, u8* out) {
+    u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
+    if (*(u32*)(e + 0x24) != 6) {
+        return -1;
+    }
+    if (e[0x3c] != 1) {
+        return -2;
+    }
+    if (*(s32*)(e + 0x40) == 0 && out != NULL) {
+        *out = e[0x44];
+    }
+    return *(s32*)(e + 0x40);
+}
+
 extern "C" void fn_80124AAC(void* self, s32 idx, u32 a, u32 b) {
     u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
     *(u32*)(e + 0x4c) = a;
