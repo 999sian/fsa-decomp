@@ -1,5 +1,6 @@
 #include "types.h"
 #include <JSystem/JGeometry/Box.h>
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void fn_802397B4(void* rect, u32 id, s32 v);
 extern "C" u16 fn_8022461C(void* pos, s32 room);
@@ -125,17 +126,16 @@ extern "C" s32 fn_801E2610(u8* this_) {
 }
 
 extern "C" s32 fn_801E2A98(u8* this_) {
-    s32 h;
-    u8 b30 = 0;
-    u8 b29 = 0;
-    u8 b28 = 0;
-    s32 b26 = 0;
-    s32 mode;
-    JGeometry::TVec3<f32> a50;
+    f32 a50[3];
     JGeometry::TVec3<f32> a44;
     u8 buf34[0x10];
     JGeometry::TVec3<f32> v28;
     s32 buf8[2];
+    s32 h;
+    u8 b30 = 0;
+    u8 b29 = 0;
+    u8 b28 = 0;
+    u8 b26 = 0;
 
     a44.x = lbl_8053F4D4;
     a44.y = lbl_8053F4D4;
@@ -147,11 +147,11 @@ extern "C" s32 fn_801E2A98(u8* this_) {
     } else if ((h = fn_8023AA18(buf34, *(s32*)(this_ + 4), buf8)) >= 0) {
         b29 = 1;
     } else if ((h = fn_8023AC74(buf34, *(s32*)(this_ + 4), buf8)) >= 0) {
-        b28 = fn_801CC538(h, buf8, &a50, 0);
+        b28 = fn_801CC538(h, buf8, a50, 0);
     } else if ((h = fn_8023AD54(buf34, *(s32*)(this_ + 4), buf8)) >= 0) {
         b26 = fn_801CC640(h, 0, &a44);
     }
-    if (b30 || b28 || (u8)b26) {
+    if (b30 || b28 || b26) {
         if (*(s32*)(this_ + 0x248) == 0xc && *(s32*)(this_ + 0x24c) >= 6 && !fn_801E1DE8(this_)) {
             fn_801E1594(this_, 0xd);
         } else if (fn_801E1CF8(this_) && (*(u32*)(this_ + 0x230) & 0x10000) == 0) {
@@ -178,12 +178,16 @@ extern "C" s32 fn_801E2A98(u8* this_) {
     }
     b26 = 0;
     if (h >= 0) {
+        s32 mode;
+
         v28 = *(JGeometry::TVec3<f32>*)fn_8023E724(h);
         mode = 0;
         if (b29) {
             mode = 4;
         } else if (b28) {
-            v28 = a50;
+            v28.x = a50[0];
+            v28.y = a50[1];
+            v28.z = a50[2];
         } else {
             v28 = *(JGeometry::TVec3<f32>*)(this_ + 0xc) - a44;
             if (b30) {
