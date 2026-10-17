@@ -199,6 +199,15 @@ inline bool isShrinking(char* p) {
     return r;
 }
 
+inline bool isBusy(char* p) {
+    bool r = false;
+    s32 s = S32(p, 0x1240);
+    if (s == 0x4a || s == 0x4b) {
+        r = true;
+    }
+    return r;
+}
+
 inline bool inOtherRoom(char* p) {
     bool r = false;
     if (U8(p, 0xce8) != 0 && S32(p, 0x3b4) != 8) {
@@ -787,40 +796,7 @@ BOOL fn_80240F14(char* p) { return S32(p, 0x1240) == 0x41 ? 1 : 0; }
 
 s32 fn_8023513C(s32);
 s32 fn_80240F28(char* p) {
-    s32 c = 0;
-    s32 n = S32(p, 0x4);
-    s32 i = c;
-    s32 mode;
-    for (; i < 4; i++) {
-        if (i == n) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            s32 linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                s32 me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    if (c <= 1) {
-        mode = 5;
-    } else {
-        s32 linked = S32(p, 0xd60);
-        if (linked >= 0) {
-            mode = fn_8022CAF8(linked);
-        } else {
-            mode = S32(p, 0x120c);
-        }
-    }
-    if (mode == 5) {
+    if (getMode2(p) == 5) {
         if ((u8)isLinkOwner3(p)) {
             return fn_8023513C(fn_8022EA0C(S32(p, 0x4)));
         }
@@ -1133,9 +1109,8 @@ BOOL fn_80242704(char* p, s32 v) {
 
 void fn_80242940(char* p) {
     if (U8(p, 0x454) == 0) {
-        s32 s = S32(p, 0x1240);
         bool busy = false;
-        if (s == 0x4a || s == 0x4b) {
+        if (S32(p, 0x1240) == 0x4a || S32(p, 0x1240) == 0x4b) {
             busy = true;
         }
         if (busy) {
@@ -1143,15 +1118,44 @@ void fn_80242940(char* p) {
                 bool done = true;
                 S32(p, 0xbe4) = S32(p, 0xbe4) - 1;
                 if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) || S32(p, 0xd60) >= 0) {
-                    s32 mode = getMode(p);
+                    s32 count = 0;
+                    s32 linked;
+                    s32 i;
+                    s32 mode;
+                    for (i = 0; i < 4; i++) {
+                        if (i == S32(p, 0x4)) {
+                            count++;
+                        } else if (fn_8022F514(i)) {
+                            if ((linked = S32(p, 0xd60)) >= 0) {
+                                if (linked == fn_8022F3DC(i)) {
+                                    count++;
+                                }
+                            } else {
+                                linked = S32(p, 0x4);
+                                if (linked == fn_8022F3DC(i)) {
+                                    count++;
+                                }
+                            }
+                        } else if (i == S32(p, 0xd60)) {
+                            count++;
+                        }
+                    }
+                    if (count <= 1) {
+                        mode = 5;
+                    } else if (S32(p, 0xd60) >= 0) {
+                        mode = fn_8022CAF8(S32(p, 0xd60));
+                    } else {
+                        mode = S32(p, 0x120c);
+                    }
                     if (mode == 4) {
                         s32 target;
                         s32 n = 0;
-                        s32 i;
-                        if (S32(p, 0xd60) < 0) {
-                            target = S32(p, 0x1224);
-                        } else {
+                        if (S32(p, 0xd60) >= 0) {
                             target = fn_80234004(S32(p, 0xd60));
+                        } else {
+                            target = S32(p, 0x1224);
+                        }
+                        if (S32(p, 0xd60) >= 0) {
                             for (i = 0; i < S32(p, 0x4); i++) {
                                 if (S32(p, 0xd60) == fn_8022F3DC(i)) {
                                     n++;
@@ -1164,8 +1168,10 @@ void fn_80242940(char* p) {
                         done = S32(p, 0xd60) >= 0;
                     }
                 }
-                if (!done && S32(p, 0xbe4) > 0 && S32(p, 0xbe4) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
-                    fn_803037D4(S32(p, 0x4), 2);
+                if (!done) {
+                    if (S32(p, 0xbe4) > 0 && S32(p, 0xbe4) % 60 == 0 && fn_8030381C(S32(p, 0x4))) {
+                        fn_803037D4(S32(p, 0x4), 2);
+                    }
                 }
             }
             if (U8(p, 0xbe8) != 0 && S32(p, 0xbe4) <= 0 && S32(p, 0x3b4) >= 8) {
@@ -2664,12 +2670,11 @@ u8 fn_80250030(char* p, s32 v) {
 }
 
 int fn_80250ACC(char* p) {
+    s32 linked;
     s32 s2;
     s32 c;
     s32 i;
-    s32 linked;
     s32 s;
-    s32 cnt;
 
     c = 0;
     i = c;
@@ -2677,13 +2682,13 @@ int fn_80250ACC(char* p) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
                 }
             } else {
-                if (S32(p, 0x4) == fn_8022F3DC(i)) {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
                     c++;
                 }
             }
@@ -2693,29 +2698,31 @@ int fn_80250ACC(char* p) {
     }
     if (c <= 1) {
         s = 5;
-    } else if (S32(p, 0xd60) < 0) {
-        s = S32(p, 0x120c);
-    } else {
+    } else if (S32(p, 0xd60) >= 0) {
         s = fn_8022CAF8(S32(p, 0xd60));
+    } else {
+        s = S32(p, 0x120c);
     }
     if (s == 4) {
-        if (S32(p, 0xd60) < 0) {
-            s2 = S32(p, 0x1224);
-        } else {
+        if (S32(p, 0xd60) >= 0) {
             s2 = fn_80234004(S32(p, 0xd60));
+        } else {
+            s2 = S32(p, 0x1224);
         }
         if (S32(p, 0xd60) < 0) {
-            cnt = 0;
+            c = 0;
         } else {
-            cnt = i = 0;
+            s32 cnt = 0;
+            i = cnt;
             for (; i < S32(p, 0x4); i++) {
-                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
+                linked = S32(p, 0xd60);
+                if (linked == fn_8022F3DC(i)) {
                     cnt++;
                 }
             }
-            cnt++;
+            c = cnt + 1;
         }
-        if (s2 != cnt) {
+        if (s2 != c) {
             return 0;
         }
     }
@@ -2726,13 +2733,13 @@ int fn_80250ACC(char* p) {
         if (i == S32(p, 0x4)) {
             c++;
         } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
+            if ((linked = S32(p, 0xd60)) >= 0) {
                 if (linked == fn_8022F3DC(i)) {
                     c++;
                 }
             } else {
-                if (S32(p, 0x4) == fn_8022F3DC(i)) {
+                linked = S32(p, 0x4);
+                if (linked == fn_8022F3DC(i)) {
                     c++;
                 }
             }
@@ -2742,19 +2749,19 @@ int fn_80250ACC(char* p) {
     }
     if (c <= 1) {
         s = 5;
-    } else if (S32(p, 0xd60) < 0) {
-        s = S32(p, 0x120c);
-    } else {
+    } else if (S32(p, 0xd60) >= 0) {
         s = fn_8022CAF8(S32(p, 0xd60));
+    } else {
+        s = S32(p, 0x120c);
     }
     if (s == 5 && S32(p, 0xd60) >= 0) {
         return 0;
     }
-    if (S32(p, 0xd60) < 0) {
-        if (S32(PTR(p, 0xbf0), 0xa0) > 0x13) {
+    if (S32(p, 0xd60) >= 0) {
+        if (S32(PTR(p, 0xbf0), 0xa0) > 0x11) {
             return 1;
         }
-    } else if (S32(PTR(p, 0xbf0), 0xa0) > 0x11) {
+    } else if (S32(PTR(p, 0xbf0), 0xa0) > 0x13) {
         return 1;
     }
     return 0;
