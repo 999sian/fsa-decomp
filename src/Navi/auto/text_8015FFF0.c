@@ -822,6 +822,27 @@ extern "C" void fn_801647A0(u8* p) {
     }
 }
 
+extern "C" u32 fn_801648EC(u8* p);
+extern "C" void fn_80164940(void* a, u8* b);
+extern "C" u32 fn_801C027C(void);
+extern "C" int fn_801C7F7C(void* p, u32 a, u32 b, u32 c, void* cb, int flags);
+extern "C" u32 fn_80164820(u8* p, u32 r4, u32 r5, u32 r6) {
+    u32 ret;
+    fn_801BE3A0(p + 0x1c);
+    if (*(u32*)(p + 0xf4) != 0) {
+        fn_801BE47C(p + 0x1c);
+        return -1;
+    }
+    *(u32*)(p + 0xf4) = fn_801C027C();
+    ret = -1;
+    if (fn_801C7F7C(p + 0x5c, r4, r5, r6, (void*)fn_80164940, 2) != 0) {
+        ret = fn_801648EC(p);
+    }
+    *(u32*)(p + 0xf4) = 0;
+    fn_801BE47C(p + 0x1c);
+    return ret;
+}
+
 extern "C" int fn_801648E4(void) {
     return -1;
 }
