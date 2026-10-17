@@ -4,13 +4,6 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 
-struct BGBL_Pos {
-    u8 pad0[0xC];
-    JGeometry::TVec3<f32> mPos;
-    u8 pad1[0x3C - 0x18];
-    JGeometry::TVec3<f32> mVel;
-};
-
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
 
