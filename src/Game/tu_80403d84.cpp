@@ -5,6 +5,8 @@
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
 
+extern "C" s16 lbl_8048C95C[];
+
 // ---- from src/Game/Table_GetSelfIndexedBit87.cpp ----
 // fn_804149C0(void) - same lbl_8050EC80 global table as
 // fn_803B8C90 (Game/stub_803b8c74.cpp): reads row 0's own
