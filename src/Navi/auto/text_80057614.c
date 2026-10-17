@@ -797,6 +797,14 @@ extern "C" u8 fn_8005BAB4(s32 idx) {
 extern "C" void fn_8005C330(const char*, ...) {
 }
 
+extern "C" void fn_8005C380(void) {
+    lbl_802FF114 = 0;
+    lbl_802FF110 = 0;
+    lbl_802FF10C = 0;
+    fn_801BFEBC(lbl_802C2D30, lbl_8027D780);
+    fn_801BFFF0(lbl_802C2D30);
+}
+
 extern "C" void* lbl_802FF118;
 extern "C" void* fn_8005C498(void)
 {
