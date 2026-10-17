@@ -460,9 +460,10 @@ extern "C" void fn_80058CB0(void) {
 }
 
 extern "C" void fn_80058D00(void) {
+    void fn_800595FC(void* p);
     s32 i = 0;
     do {
-        ((void (*)(void*))fn_800595FC)(&lbl_802C05F0[i * 0x18]);
+        fn_800595FC(&lbl_802C05F0[i * 0x18]);
         i++;
     } while (i < 0x10);
 }
