@@ -204,6 +204,122 @@ extern "C" BOOL fn_802C2154(u8* p) {
     }
 }
 
+extern "C" u8 fn_802DE7CC(void);
+extern "C" s32 fn_8022CAF8(s32 player);
+extern "C" u8 fn_8022F514(s32 player);
+extern "C" s32 fn_8022F3DC(s32 player);
+extern "C" u8 fn_802D46D8(void* mgr, s32 a, s32 b, s32 c);
+extern "C" u8 fn_802308E0(s32 a);
+extern "C" u8 fn_8023077C(void);
+extern "C" void fn_8022FE80(s32, s32, s32, u8, u8);
+extern s32 lbl_8053AAF8;
+extern "C" s32 fn_802C2300(char* p, u32 flags) {
+    u8 slot;
+    u8 kind;
+    if (*(s32*)(p + 0x280) != 0) {
+        return 0;
+    }
+    if (!fn_802DE7CC()) {
+        return 0;
+    }
+    u8 low = flags;
+    slot = 0;
+    if (flags & 2) {
+        slot = 1;
+    } else if (low & 4) {
+        slot = 2;
+    } else if (low & 8) {
+        slot = 3;
+    }
+    kind = slot;
+    if (fn_8022CAF8(kind) == 4) {
+        if (fn_8022F478(kind)) {
+            return 0;
+        }
+        *(s32*)(p + 0x2a4) = kind;
+        if (fn_8022F514(kind)) {
+            slot = fn_8022F3DC(kind);
+        }
+        *(s32*)(p + 0x2a0) = slot;
+    } else {
+        if (fn_8022F514(kind)) {
+            slot = fn_8022F3DC(kind);
+        }
+        *(s32*)(p + 0x2a4) = slot;
+        *(s32*)(p + 0x2a0) = slot;
+    }
+    if (!fn_802D46D8(fn_802D6A9C(), *(s32*)(p + 0x2a0), 0x168, 0)) {
+        if (*(u8*)(lbl_8053AAF8 + 0x7e) == 1) {
+            if (fn_802308E0(*(s32*)(p + 0x2a0)) == 1) {
+                fn_8022FE80(*(s32*)(p + 0x2a4), *(s32*)(p + 4), *(s32*)(p + 0x198), 0, 0);
+            }
+        } else {
+            if (fn_8023077C() == 1) {
+                fn_8022FE80(*(s32*)(p + 0x2a4), *(s32*)(p + 4), *(s32*)(p + 0x198), 0, 0);
+            }
+        }
+        return 1;
+    }
+    return 0;
+}
+
+extern "C" BOOL fn_802C2684(void* unused, u8* p, f32* rect) {
+    if (p == 0) {
+        return 0;
+    }
+    u32 tag = *(u32*)(p + 0x1a0);
+    if (tag != 'LIFT' && tag != 'LIF2' && tag != 'CLOD') {
+        if (tag == 'OBLF') {
+            if (*(s32*)(p + 0x230) != 0) {
+                return 0;
+            }
+        } else if (tag == 'SSLF') {
+            if ((*(s16*)(p + 0x230) & 0x7fff) != 0) {
+                return 0;
+            }
+        } else {
+            return 0;
+        }
+    }
+    f32 px = *(f32*)(p + 0xc);
+    f32 py = *(f32*)(p + 0x10);
+    f32 x0 = *(f32*)(p + 0x60) + px;
+    f32 y0 = *(f32*)(p + 0x64) + py;
+    f32 x1 = *(f32*)(p + 0x68) + px;
+    f32 y1 = *(f32*)(p + 0x6c) + py;
+    s32 type = *(s32*)(p + 4);
+    u8* base = (u8*)fn_802D6A9C();
+    f32* off;
+    if (type < 8) {
+        off = (f32*)(base + 0xcc);
+    } else {
+        off = (f32*)(base + 0xdc);
+    }
+    f32 ox = -off[0];
+    f32 oy = -off[1];
+    x0 += ox;
+    y0 += oy;
+    x1 += ox;
+    y1 += oy;
+    if (x0 <= rect[0]) {
+        x0 = rect[0];
+    }
+    if (y0 <= rect[1]) {
+        y0 = rect[1];
+    }
+    if (x1 >= rect[2]) {
+        x1 = rect[2];
+    }
+    if (y1 >= rect[3]) {
+        y1 = rect[3];
+    }
+    bool hit = false;
+    if (x1 >= x0 && y1 >= y0) {
+        hit = true;
+    }
+    return hit;
+}
+
 extern "C" void fn_802C2B64(char* p) {
     if (*(s32*)(p + 0x240) == 2) {
         *(u8*)(p + 0x2b0) = 1;
