@@ -38,7 +38,7 @@ extern "C" u32 fn_8013CC50(u32 owner, void* pos, u16 id, s32 a, f32 f, s32 b, s3
 extern "C" void* fn_801F856C(void);
 extern "C" void Actor_CreateByID(void* mgr, u32 id, s32 kind, void* pos, s32 a, s32 b, s32 c);
 extern "C" void fn_801F0E34(void* self, u32 id, s32 b);
-extern "C" u8 fn_8022F514(s32);
+extern "C" s32 fn_8022F514(s32);
 extern "C" s32 fn_8022CAF8(s32);
 extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8022F3DC(s32);
