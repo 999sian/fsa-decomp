@@ -12,6 +12,51 @@ extern "C" const f32 lbl_8053E3EC;
 // (0x0/0x4), no extab.
 extern "C" {
 
+extern "C" void fn_801F71A4(f32* p, f32 target, f32 a, f32 b);
+extern "C" const f32 lbl_8053E370;
+extern "C" const f32 lbl_8053E374;
+extern "C" const f32 lbl_8053E378;
+extern "C" const f32 lbl_8053E37C;
+extern "C" char* lbl_8053AB10;
+extern "C" void fn_8030C210(void* p, JGeometry::TVec3<f32>* v);
+extern "C" void fn_80198828(u8*);
+extern "C" void fn_80197EB0(u8*);
+extern "C" void fn_801979C4(u8*);
+extern "C" void fn_801976E8(u8*);
+extern "C" void fn_80197550(u8* this_) {
+    JGeometry::TVec3<f32> pos = *(JGeometry::TVec3<f32>*)(this_ + 0xc);
+    *(s32*)(this_ + 0x108) = 10000;
+    fn_801F71A4((f32*)(this_ + 0x3c), *(f32*)(this_ + 0x274), lbl_8053E374, lbl_8053E370);
+    fn_801F71A4((f32*)(this_ + 0x40), *(f32*)(this_ + 0x278), lbl_8053E374, lbl_8053E370);
+    fn_801F71A4((f32*)(this_ + 0x14), *(f32*)(this_ + 0x26c), lbl_8053E374, lbl_8053E370);
+    ((JGeometry::TVec3<f32>*)(this_ + 0xc))->add(*(JGeometry::TVec3<f32>*)(this_ + 0x3c));
+    switch (*(s32*)(this_ + 0x90)) {
+    case 0:
+        fn_80198828(this_);
+        break;
+    case 1:
+        fn_80197EB0(this_);
+        break;
+    case 2:
+        fn_801979C4(this_);
+        pos.x += lbl_8053E378;
+        pos.y -= lbl_8053E37C;
+        break;
+    case 3:
+        fn_801976E8(this_);
+        pos.x += lbl_8053E378;
+        pos.y -= lbl_8053E37C;
+        break;
+    }
+    fn_8030C210(*(void**)(lbl_8053AB10 + 0x24), &pos);
+    for (s32 i = 0; i < 4; i++) {
+        s32* t = (s32*)(this_ + i * 4);
+        if (t[0x234 / 4] > 0) {
+            t[0x234 / 4]--;
+        }
+    }
+}
+
 void fn_8019C4F4(void* thisPtr, f32 a, f32 b) { *(f32*)((char*)thisPtr + 0x0) = a; *(f32*)((char*)thisPtr + 0x4) = b; }
 
 }
