@@ -98,7 +98,8 @@ extern "C" void fn_80052BEC(void) {
 
 extern "C" void fn_80052C2C(void) {
     char* p = lbl_802C050C;
-    lbl_802FF0E4 = (int)(lbl_803001FC * *(f32*)(p + 0x18)) + *(int*)(lbl_802BB0FC + 0x58);
+    int base = *(int*)(lbl_802BB0FC + 0x58);
+    lbl_802FF0E4 = (int)(lbl_803001FC * *(f32*)(p + 0x18)) + base;
 }
 
 extern "C" void fn_80052C6C(void) {
@@ -225,6 +226,25 @@ extern "C" int fn_800572F4(int a, u32 mask) {
         return 1;
     }
     return 0;
+}
+
+extern "C" BOOL fn_80057324(void* p, u16 id) {
+    u32 bit;
+    for (u8 i = 0; i < 4; i++) {
+        bit = 1 << i;
+        if (*(u32*)(lbl_802B7CA0 + 0x3440) & bit) {
+            if (id == *(u16*)(lbl_802BB0FC + 0xe4 + i * 2)) {
+                ((u8*)p)[0xffc] |= bit;
+            }
+        }
+    }
+    u8 flags = ((u8*)p)[0xffc];
+    u8 m = *(u32*)(lbl_802B7CA0 + 0x3444);
+    flags &= m;
+    if (flags != 0 && (flags ^ m) == 0) {
+        return TRUE;
+    }
+    return FALSE;
 }
 
 extern "C" void* fn_8005757C(void* ptr, s16 param_2) {
