@@ -1366,9 +1366,6 @@ static const s32 lbl_804763B4[3] = {300, 150, 0};
 static const s32 lbl_80543380[2] = {150, 0};
 
 extern "C" void fn_803AF1B0(Menu_Rank* p) {
-    static const s32 tbl0[4] = {300, 150, 50, 0};
-    static const s32 tbl1[3] = {300, 150, 0};
-    static const s32 tbl2[2] = {150, 0};
     s32 done = 0;
     s32 n = 0;
     u8 any = 0;
@@ -1402,13 +1399,13 @@ extern "C" void fn_803AF1B0(Menu_Rank* p) {
                     } else {
                         switch (p->cur) {
                         case 0:
-                            p->target[i] = tbl0[placed];
+                            p->target[i] = lbl_804763A4[placed];
                             break;
                         case 1:
-                            p->target[i] = tbl1[placed];
+                            p->target[i] = lbl_804763B4[placed];
                             break;
                         case 2:
-                            p->target[i] = tbl2[placed];
+                            p->target[i] = lbl_80543380[placed];
                             break;
                         }
                     }
