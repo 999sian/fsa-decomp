@@ -10,7 +10,7 @@ extern "C" void fn_80164484(void* p);
 extern "C" u8 fn_80164728(u8* p, u32 r4);
 extern "C" void fn_801645A8(void* p, s32 n);
 extern "C" void fn_80165C24(void* p, s32 n);
-extern "C" void fn_80165D44(void* p, s32 n);
+extern "C" void* fn_80165D44(void* p, s16 n);
 extern "C" void fn_8015F248(s32 a, u32 b, u32 c, u32 d, s32 e);
 extern "C" s32 fn_801656F8(void* a, u32 b, u32 c, u32 d, u32 e, u32 f);
 extern "C" void* fn_8016579C(void* a, void* b, u32 c, u32 d, u32 e, u32 f, u32 g);
