@@ -62,7 +62,7 @@ extern "C" BOOL DVDLowStopMotor(DVDLowCallback callback);
 extern "C" void fn_801C747C(void (*callback)(u32));
 extern "C" void fn_801C88E8(void);
 extern "C" void fn_801C8850(u32 param_1);
-extern "C" s32 fn_801CAC6C(void* a, s32 b);
+extern "C" BOOL fn_801CAC6C(void* a, DVDDiskID* b);
 extern "C" void fn_801C8B7C(DVDCommandBlock* block);
 extern "C" s32 fn_801E3C54(void* a, void* b, s32 c);
 extern "C" void fn_801C8C5C(u32 intType);
@@ -94,6 +94,27 @@ extern s32 MaxEntryNum_802FF86C;
 extern "C" float fn_801EA270(f32 x);
 extern "C" float fn_801EA294(f32 x);
 extern "C" void fn_801C5FDC(void* dst, s32 axis, f32 x, f32 y);
+
+extern "C" u32 fn_801C5E74(const f32 src[3][4], f32 inv[3][4]) {
+    f32 det = src[0][0] * (src[1][1] * src[2][2] - src[1][2] * src[2][1]) - src[0][1] * (src[1][0] * src[2][2] - src[1][2] * src[2][0]) + src[0][2] * (src[1][0] * src[2][1] - src[1][1] * src[2][0]);
+    if (det == 0.0f) {
+        return 0;
+    }
+    f32 inv_det = 1.0f / det;
+    inv[0][0] = (src[1][1] * src[2][2] - src[1][2] * src[2][1]) * inv_det;
+    inv[0][1] = (src[0][2] * src[2][1] - src[0][1] * src[2][2]) * inv_det;
+    inv[0][2] = (src[0][1] * src[1][2] - src[0][2] * src[1][1]) * inv_det;
+    inv[1][0] = (src[1][2] * src[2][0] - src[1][0] * src[2][2]) * inv_det;
+    inv[1][1] = (src[0][0] * src[2][2] - src[0][2] * src[2][0]) * inv_det;
+    inv[1][2] = (src[0][2] * src[1][0] - src[0][0] * src[1][2]) * inv_det;
+    inv[2][0] = (src[1][0] * src[2][1] - src[1][1] * src[2][0]) * inv_det;
+    inv[2][1] = (src[0][1] * src[2][0] - src[0][0] * src[2][1]) * inv_det;
+    inv[2][2] = (src[0][0] * src[1][1] - src[0][1] * src[1][0]) * inv_det;
+    inv[0][3] = -(inv[0][0] * src[0][3] + inv[0][1] * src[1][3] + inv[0][2] * src[2][3]);
+    inv[1][3] = -(inv[1][0] * src[0][3] + inv[1][1] * src[1][3] + inv[1][2] * src[2][3]);
+    inv[2][3] = -(inv[2][0] * src[0][3] + inv[2][1] * src[1][3] + inv[2][2] * src[2][3]);
+    return 1;
+}
 
 extern "C" void fn_801C5F6C(void* dst, s32 axis, f32 v) {
     f32 a = fn_801EA270(v);
@@ -557,6 +578,36 @@ extern "C" void fn_801C8F94(void)
 	DVDCommandBlock* old;
 	DVDCBCallback callback;
 
+	switch (CurrCommand_802FF89C) {
+	case 4:
+	case 5:
+	case 13:
+	case 15:
+		__DVDClearWaitingQueue();
+		old = executing_802FF880;
+		executing_802FF880 = (DVDCommandBlock*)(base + 0x40);
+		callback = old->callback;
+		if (callback != nullptr) {
+			callback(-4, old);
+		}
+		stateReady();
+		break;
+	default:
+		DVDReset();
+		OSCreateAlarm((OSAlarm*)(base + 0x70));
+		OSSetAlarm((OSAlarm*)(base + 0x70), OSMillisecondsToTicks(1150), (OSAlarmHandler)AlarmHandler);
+		break;
+	}
+}
+
+extern "C" void cbForStateMotorStopped(void)
+{
+	char* base = BB2_802F7AA0;
+	DVDCommandBlock* old;
+	DVDCBCallback callback;
+
+	*(vu32*)0xCC006004 = 0;
+	executing_802FF880->state = 3;
 	switch (CurrCommand_802FF89C) {
 	case 4:
 	case 5:
