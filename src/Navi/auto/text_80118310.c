@@ -99,6 +99,33 @@ extern "C" BOOL fn_8011AB40(void)
     return TRUE;
 }
 
+extern "C" void* fn_8011B0D8(u8* p, s16 del) {
+    if (p) {
+        *(u32*)p = (u32)lbl_8029016C;
+        s16 idx = *(s16*)(p + 0x7c);
+        if (idx >= 0) {
+            lbl_802FF2BC[idx]--;
+            *(s16*)(p + 0x7c) = -1;
+        }
+        fn_80166FC4(lbl_802C5FBC, p + 0x80);
+        if (p + 0x80) {
+            fn_80166B70(p + 0x80, 0);
+        }
+        fn_8015D0B8(p, 0);
+        if (del > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
+extern "C" void fn_8011B184(void) {
+    if (lbl_802FF2B8 == 0) {
+        fn_80166C70(lbl_802C5FBC);
+        lbl_802FF2B8 = 1;
+    }
+}
+
 extern "C" void fn_8011B1F8(u8* p) {
     p[0x98] = 0;
     p[0xa8] = 1;
