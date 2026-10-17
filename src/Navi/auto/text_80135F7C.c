@@ -1301,6 +1301,8 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
     }
 }
 
+inline void* operator new(unsigned long, void* p) { return p; }
+
 struct Base_802911A0 {
     void* vt;
     Base_802911A0() { vt = (void*)lbl_802911A0; }
@@ -1311,10 +1313,7 @@ struct Obj_80139DEC : Base_802911A0 {
 };
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    u32* p = (u32*)param_1;
-    p[0] = (u32)lbl_802911A0;
-    p[0] = (u32)lbl_80292C80;
-    p[1] = param_2;
+    ((Obj_80139DEC*)param_1)->Obj_80139DEC::Obj_80139DEC(param_2);
 }
 
 extern "C" void fn_80167880(void*, int);
