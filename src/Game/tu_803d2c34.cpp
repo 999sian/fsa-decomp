@@ -241,10 +241,10 @@ extern u8* lbl_8053AAF8;
 static inline void stampSave() {
 lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
 if (!(lbl_8050EC80.entries[lbl_8050EC80.idx].flags & 1)) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 1;
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 1;
 }
 if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 2;
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 2;
 }
 }
 
