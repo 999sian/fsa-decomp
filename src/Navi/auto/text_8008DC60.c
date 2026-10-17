@@ -1471,6 +1471,25 @@ extern "C" void fn_8009970C(u8* p, s32 idx) {
     }
 }
 
+extern "C" void fn_800A1178(void* p, s32 idx);
+extern "C" void fn_8009A394(u8* p) {
+    u8* q = p;
+    s32 i;
+    for (i = 0; i < 10; i++) {
+        if ((*(u16*)(lbl_802BB0FC + (i % 10) * 12 + 0x2dc) & 1) == 0) {
+            if (((u8*)*(void**)(q + 0x64c))[0xb0] != 0) {
+                ((u8*)*(void**)(q + 0x64c))[0xb0] = 0;
+            }
+        } else {
+            if (((u8*)*(void**)(q + 0x64c))[0xb0] == 0) {
+                ((u8*)*(void**)(q + 0x64c))[0xb0] = 1;
+            }
+            fn_800A1178(p, i);
+        }
+        q += 4;
+    }
+}
+
 extern "C" void fn_8009CCD8();
 extern "C" void fn_8009CF80(void* p);
 extern "C" void fn_8002F358(void* p, s32 v);
