@@ -77,12 +77,13 @@ extern "C" int fn_8002F6BC(void);
 extern "C" void fn_8002F9B4(void);
 extern "C" void fn_80130974(void* obj);
 extern "C" void fn_8015FDA8(void* a, void* b);
+extern "C" void fn_800B9570(u8* p);
 extern "C" void fn_800B83C0(u8* p) {
     if (fn_8002F87C() == 0 && fn_8002F6BC() == 0) {
-        if (p[0x39e] == 0) {
-            *(u32*)(p + 0x378) = 6;
-        } else {
+        if (p[0x39e] != 0) {
             p[0x39e]--;
+        } else {
+            *(u32*)(p + 0x378) = 6;
         }
     }
 }
