@@ -161,6 +161,11 @@ extern "C" void fn_800332BC(void* p) {
     *(unsigned int*)((char*)p + 0xe8) |= 0x80;
 }
 
+extern "C" void fn_800332CC(void* p) {
+    *(void**)((char*)p + 0xe0) = *(void**)((char*)lbl_802BB0FC + 0x58);
+    *(unsigned int*)((char*)p + 0xe8) |= 0x20000;
+}
+
 extern "C" void fn_80033ADC(void*, void*);
 extern float lbl_802FFD48;
 extern int lbl_80244A88[];
