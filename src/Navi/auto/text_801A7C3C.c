@@ -1613,13 +1613,28 @@ extern "C" u8 fn_801B2BD0(u8* p, s32 a) {
 }
 
 extern "C" void fn_801B2C08(void* p, u8* obj, s32 a, s32 b) {
-    u16 k = (*(u16**)(obj + 8))[a];
-    u16 idx = ((u16*)(*(u8**)(obj + 4) + k * 0x14c + 0xe4))[b];
+    u16 idx = ((u16*)(*(u8**)(obj + 4) + *(u16*)(*(u8**)(obj + 8) + a * 2) * 0x14c + 0xe4))[b];
     if (idx != 0xffff) {
         fn_801B3580(p, *(u8**)(obj + 0x50) + idx * 0x14);
     } else {
         fn_8000F018(p);
     }
+}
+
+extern "C" void fn_801B3150(u16* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u16 value = *(u16*)(data + indices[index] * 0x14c + 0x146);
+    if (value != 0xffff) {
+        u8* entry = *(u8**)((u8*)ptr + 0x60) + (u16)value * 8;
+        out[0] = ((u8)entry[0] << 5) + ((u8)entry[2] << 3) + entry[3];
+        ((u8*)out)[2] = entry[1];
+        ((u8*)out)[3] = entry[4];
+        return;
+    }
+    out[0] = 0xffff;
+    ((u8*)out)[2] = 0;
+    ((u8*)out)[3] = 0;
 }
 
 extern "C" void fn_801B338C(void) {}
