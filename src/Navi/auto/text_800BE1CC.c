@@ -31,6 +31,8 @@ extern "C" int fn_800C36D8(char* p, short idx, u8 n, int a, int b);
 extern "C" void fn_800C157C(char* p);
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void* fn_8015FDA8(void*, void*);
+extern "C" void* fn_800C40D8(void* p, void* q);
+extern "C" void fn_8017A4F8(void* p);
 extern u8 lbl_802BB0FC[];
 extern u8 lbl_802C562C[];
 extern "C" s32 fn_800C3494(void);
