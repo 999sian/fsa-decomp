@@ -8,6 +8,15 @@ extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" void fn_8010E074(void*);
 extern "C" void fn_801D267C(void*);
+extern "C" u8* lbl_8053AB10;
+extern "C" f32 lbl_8053C748;
+extern "C" f32 lbl_8053C74C;
+extern "C" f32 lbl_8053C750;
+extern "C" f32 lbl_8053C754;
+extern "C" f32 lbl_8053C758;
+extern "C" void fn_801CD950(f32* value, f32 target, f32 step);
+extern "C" void fn_8030C210(void* p, void* q);
+extern "C" void* fn_8011921C(void);
 extern "C" s32 fn_80117498(char* p) {
     switch (*(s32*)(p + 0x234)) {
     case 12:
