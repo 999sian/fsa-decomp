@@ -83,8 +83,6 @@ extern "C" void fn_800F3D84(NaviState_800F3D84* p) {
 
 extern "C" void fn_800F42C0(void) {}
 
-extern "C" int fn_8002F6BC(void);
-extern "C" void fn_8002F9B4(void);
 extern "C" void fn_800F4328(u8* p) {
     p[0x59] = 0;
     p[0x5a] = 1;
