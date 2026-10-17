@@ -27,6 +27,13 @@ extern "C" void fn_8022CA6C(int, int, int);
 extern "C" void fn_8023077C(void);
 extern "C" void fn_80458FF0(void*, int, int, int);
 extern "C" void __dt__5ActorFv(void*, int);
+struct FSAObj;
+typedef void (FSAObj::*FSAStateFn)(JGeometry::TBox2<f32>);
+extern FSAStateFn lbl_804AE420[];
+extern "C" s32 fn_8022EA0C(s32);
+extern "C" JGeometry::TVec3<f32>* fn_8023E724(s32);
+extern "C" void fn_80239914(JGeometry::TBox2<f32>* box, s32 room, s32 handle);
+extern "C" void fn_8036FB60(char* self);
 extern "C" unsigned char __vt__4FGAL[];
 extern void* lbl_8053AF80;
 extern float lbl_80542E00;
@@ -371,6 +378,58 @@ extern "C" void fn_803711F0(char* self)
 		*(char*)(self + 0x3a8) = 0;
 		*(int*)(self + 0x3a0) = -1;
 		fn_8022CA6C(0, 5, 0);
+	}
+}
+
+extern "C" void fn_803717CC(char* self)
+{
+	fn_803721F4();
+	JGeometry::TBox2<f32> area(lbl_80542E1C, lbl_80542E28, lbl_80542E2C, lbl_80542E30);
+	f32* pos = (f32*)(self + *(s32*)(self + 0x39c) * 0xc + 0x264);
+	bool inside = false;
+	if (pos[0] >= area.i.x && pos[1] >= area.i.y && pos[0] < area.f.x && pos[1] < area.f.y) {
+		inside = true;
+	}
+	if (inside) {
+		for (s32 i = 0; i < 4; i++) {
+			if (fn_8023ED8C(i) != 0) {
+				fn_80230C6C(i);
+			}
+		}
+		fn_8022CA6C(*(s32*)(self + 0x39c), 5, 0);
+		for (s32 i = 0; i < 4; i++) {
+			if (fn_80230188(i) == 0 && ((u8 (*)(int))fn_802300EC)(i) != 0) {
+				fn_80230AD4(i);
+			}
+		}
+		*(f32*)(self + 0x324) = lbl_80542DF4;
+		*(f32*)(self + 0x328) = lbl_80542E00;
+		*(f32*)(self + 0x32c) = lbl_80542DC4;
+		*(u8*)(self + 0x399) = 1;
+		*(s32*)(self + 0x230) = 1;
+		*(f32*)(self + 0x244) = -*(f32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x10);
+		*(f32*)(self + 0x248) = -*(f32*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x20);
+		*(f32*)(self + 0x24c) = lbl_80542DC4;
+		*(f32*)(self + 0x250) = (lbl_80542DF4 - *(f32*)(self + 0x244)) / lbl_80542E34;
+		*(f32*)(self + 0x254) = (lbl_80542DF8 - *(f32*)(self + 0x248)) / lbl_80542E34;
+		JGeometry::TBox2<f32> rect = *(JGeometry::TBox2<f32>*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x164);
+		*(f32*)(self + 0x25c) = (rect.f.y - rect.i.y) * lbl_80542E04;
+		*(f32*)(self + 0x260) = lbl_80542DFC - *(f32*)(self + 0x25c);
+		f32 f1 = *(f32*)(self + 0x248);
+		f32 f0 = *(f32*)(self + 0x25c);
+		f32 f4 = *(f32*)(self + 0x244);
+		*(u8*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x179) = 1;
+		char* a = *(char**)((char*)lbl_8053AB10 + 0x24);
+		if (*(u8*)(a + 0x840) == 0) {
+			*(u8*)(a + 0x840) = 1;
+			*(f32*)(a + 0x844) = f4;
+			*(f32*)(a + 0x848) = f1 - f0;
+			*(f32*)(a + 0x84c) = f4;
+			*(f32*)(a + 0x850) = f1 + f0;
+			*(f32*)(a + 0x854) = lbl_80542E38;
+			*(f32*)(a + 0x1d4) = lbl_80542E3C;
+			*(f32*)(a + 0x1d8) = lbl_80542E3C;
+		}
 	}
 }
 
