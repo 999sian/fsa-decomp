@@ -20,7 +20,7 @@ extern u8 lbl_802A2140[];
 extern u8 lbl_802A3460[];
 extern u8 lbl_802FEBE0;
 extern f32 lbl_802FFBB8;
-extern "C" u32 fn_8002663C(void);
+extern "C" s32 fn_8002663C(void);
 extern "C" void fn_80026630(void);
 extern "C" void fn_800266A8(void);
 extern s32 lbl_802FED98;
@@ -122,6 +122,14 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     self->b1 = (u32)fn_80116064(32767.0f);
     self->b0 = self->unk50;
     fn_80013E18(self);
+}
+
+extern "C" void fn_80014758(void) {
+    if (fn_8002663C() != 0) {
+        lbl_802FED98 = 0;
+        fn_80026630();
+        fn_800266A8();
+    }
 }
 
 extern "C" s32 fn_80015574(s8* p) {
