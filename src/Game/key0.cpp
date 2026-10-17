@@ -20,6 +20,20 @@
 #endif
 #include "JSystem/JGeometry/Vec.h"
 
+extern const f32 lbl_80540C74;
+extern const f32 lbl_80540C8C;
+extern const f32 lbl_80540C98;
+extern const f32 lbl_80540C9C;
+extern const f32 lbl_80540CA0;
+extern const f32 lbl_80540CA4;
+extern const f32 lbl_80540CA8;
+extern const f32 lbl_80540C84;
+extern const f32 lbl_80540C88;
+extern f32 lbl_80540C80;
+extern const f32 lbl_80540C94;
+extern "C" void* fn_801F856C();
+extern "C" BOOL fn_802C2684(void* unused, u8* p, f32* rect);
+
 // ---- fn_802C1614_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
