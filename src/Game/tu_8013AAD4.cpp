@@ -8,6 +8,9 @@
 #include "JSystem/J3D/J3DDrawBuffer.h"
 #include "JSystem/JGeometry.h"
 #include "JSystem/J2D/J2DGrafContext.h"
+#include "JSystem/J2D/J2DPrint.h"
+#include "JSystem/J2D/J2DPicture.h"
+#include "JSystem/JKernel/JKRHeap.h"
 
 
 extern void* lbl_8053AB10;
@@ -131,9 +134,7 @@ struct CamViewBase {
 };
 
 extern "C" void fn_8013ABCC(CamViewBase* this_, Vec* pos, Mtx mtx) {
-    this_->mPos.x = pos->x;
-    this_->mPos.y = pos->y;
-    this_->mPos.z = pos->z;
+    *(Vec*)&this_->mPos = *pos;
     PSMTXCopy(mtx, this_->mMtx);
     this_->v2();
     this_->v1();
@@ -142,8 +143,10 @@ extern "C" void fn_8013ABCC(CamViewBase* this_, Vec* pos, Mtx mtx) {
 
 extern "C" void fn_8013AC54(Mtx mtx) {
     char* mgr = (char*)lbl_8053AB10;
-    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0x8), 0);
-    j3dSys.setDrawBuffer(*(J3DDrawBuffer**)(mgr + 0xc), 1);
+    J3DDrawBuffer* xlu = *(J3DDrawBuffer**)(mgr + 0xc);
+    J3DDrawBuffer* opa = *(J3DDrawBuffer**)(mgr + 0x8);
+    j3dSys.setDrawBuffer(opa, 0);
+    j3dSys.setDrawBuffer(xlu, 1);
     j3dSys.setViewMtx(mtx);
 }
 
@@ -172,12 +175,12 @@ extern "C" void fn_8013B004(f32* rect, GXColor* color) {
     GXSetAlphaUpdate(GX_FALSE);
     GXSetCullMode(GX_CULL_NONE);
     GXBegin(GX_QUADS, GX_VTXFMT0, 4);
-    f32 x1 = rect[2];
     f32 x0 = rect[0];
     f32 y0 = rect[1];
     GXPosition2f32(x0, y0);
-    f32 y1 = rect[3];
+    f32 x1 = rect[2];
     GXPosition2f32(x1, y0);
+    f32 y1 = rect[3];
     GXPosition2f32(x1, y1);
     GXPosition2f32(x0, y1);
     GXEnd();
@@ -318,7 +321,7 @@ extern "C" void fn_8013B538(void* this_) {
 }
 
 extern "C" void fn_8013B618(void* this_) {
-    if (isEventMode()) {
+    if (isEventMode() != 0) {
         fn_802FF0EC(*(void**)((char*)this_ + 0x20));
         fn_8013D5D4(*(void**)((char*)this_ + 0x28));
     }
@@ -437,13 +440,15 @@ extern "C" void fn_8013BBE0(u8* this_) {
     JGeometry::TBox2f box((f32)vp[0], (f32)vp[1], (f32)vp[2], (f32)vp[3]);
     (*(J2DGrafContext**)(this_ + 0x14))->place(box);
     (*(J2DGrafContext**)(this_ + 0x14))->scissor(box);
-    if (!lbl_8053AAF8->b7f || !isNot12()) {
-        this_[0x39] = 0;
-        return;
+    if (lbl_8053AAF8->b7f) {
+        if (lbl_8053AAF8->mode == 12) {
+            this_[0x39] = 0;
+            return;
+        }
     }
-        if (!isEventMode()) {
-            this_[0x39] = 1;
-        } else {
+    if (!isEventMode()) {
+        this_[0x39] = 1;
+    } else {
         u8 r = 0;
         if (this_[0x38] >= 0xff) {
             bool ok = true;
@@ -455,7 +460,7 @@ extern "C" void fn_8013BBE0(u8* this_) {
             }
         }
         this_[0x39] = r;
-        }
+    }
 }
 // ---- from Game/fn_8013BE04.cpp
 
