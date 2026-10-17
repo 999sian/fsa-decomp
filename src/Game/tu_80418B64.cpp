@@ -50,7 +50,8 @@ typedef void (*Slot68Fn)(u8* self, u32 a, u32 b);
 
 // Virtual slot 68 of object returned by SubObj::w13: calls (u32, 0).
 static inline void CallSlot68(u8* obj, u32 s) {
-    ((Slot68Fn)(*(void***)obj)[68])(obj, s, 0);
+    void** vtbl = *(void***)obj;
+    ((Slot68Fn)vtbl[68])(obj, s, 0);
 }
 
 extern "C" s32 fn_80418B64(u8* self) {
@@ -90,6 +91,61 @@ extern "C" s32 fn_80418B64(u8* self) {
         } else r = 1;
     }
     return r;
+}
+
+extern "C" void fn_8041918C(u8* this_, s32 idx) {
+    u8* p;
+    u8* q;
+    u32 s;
+    s32 n;
+
+    fn_8022EA0C(idx);
+    if (fn_802366CC() > 0) {
+        fn_8022EA0C(idx);
+        if (fn_802366CC() < 300) {
+            fn_8022EA0C(idx);
+            q = this_ + idx;
+            n = fn_802366CC() / 60 + 1;
+            if (n != q[0x294]) {
+                if (n > 99) {
+                    n = 99;
+                }
+                if (n < 0) {
+                    n = 0;
+                }
+                if (n < 10) {
+                    s = fn_804030C4(0x54494d47, lbl_804B139C[n]);
+                    p = this_ + idx * 4;
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[0]), s);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[1]), s);
+                    if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] == 1) {
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] = 0;
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]))[0xb0] = 0;
+                    }
+                } else {
+                    s = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
+                    p = this_ + idx * 4;
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[0]), s);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[1]), s);
+                    s = fn_804030C4(0x54494d47, lbl_804B139C[n % 10]);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]), s);
+                    CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]), s);
+                    if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] == 0) {
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] = 1;
+                        ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]))[0xb0] = 1;
+                    }
+                }
+                q[0x294] = n;
+            }
+        } else {
+            this_[idx + 0x294] = 0;
+        }
+    } else {
+        this_[idx + 0x294] = 0;
+    }
+    if (*(s16*)(this_ + idx * 2 + 0x234) > 0) {
+        *(s16*)(this_ + idx * 2 + 0x234) = *(s16*)(this_ + idx * 2 + 0x234) - 1;
+    }
 }
 
 extern "C" void fn_8041E3B4(u8* this_, u32 idx) {
