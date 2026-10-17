@@ -41,7 +41,7 @@ struct DtorVt {
 
 static inline void releaseSlot(void* obj) {
     if (obj != 0) {
-        (*(void (**)(void*, s32))((*(u32**)obj)[2]))(obj, 1);
+        ((void (*)(void*, s32))((*(u32**)obj)[2]))(obj, 1);
     }
 }
 
@@ -431,7 +431,7 @@ extern "C" void fn_803BF3BC(u8* this_) {
     fn_80402E08(*(void**)(this_ + 0x50), lbl_80543494, lbl_80543458);
     *(u16*)(*(u8**)(this_ + 0x50) + 0x20) = 0;
     o = *(void**)(*(u8**)(this_ + 0x50) + 4);
-    (*(VtSlot9**)o)->v9(o, 0);
+    ((void (*)(void*, s32))(*(void***)o)[9])(o, 0);
     fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 0x8))->v15(0x500000, 0x506663, 0x75723031), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
     fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 0x8))->v15(0x500000, 0x506663, 0x75723032), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
     fn_804023D0(*(void**)(this_ + 0x50), ((J2DTextBoxVt*)*(void**)(this_ + 0x8))->v15(0x500000, 0x506663, 0x75723033), *(u8*)(*(u8**)(this_ + 0x50) + 0x28));
@@ -451,7 +451,7 @@ extern "C" void fn_803BF3BC(u8* this_) {
                     *(f32*)(*(u8**)(this_ + 0x3c) + 0xc) - *(f32*)(*(u8**)(this_ + 0x38) + 0xc));
         *(u16*)(*(u8**)(this_ + 0x20) + 0x20) = 0;
         o = *(void**)(*(u8**)(this_ + 0x20) + 4);
-        (*(VtSlot9**)o)->v9(o, 0);
+        ((void (*)(void*, s32))(*(void***)o)[9])(o, 0);
         tbl = lbl_80476938;
         for (i = 0; i < 9; i++) {
             fn_804023D0(*(void**)(this_ + 0x20), ((J2DTextBoxVt*)*(void**)(this_ + 0x4))->v15(0, tbl[0], tbl[1]), this_[0x196 + i]);
@@ -460,7 +460,7 @@ extern "C" void fn_803BF3BC(u8* this_) {
         *(u16*)(*(u8**)(this_ + 0x20) + 0x26) = 0;
     }
     o = *(void**)(*(u8**)(this_ + 0x34) + 4);
-    (*(VtSlot9**)o)->v9(o, 0);
+    ((void (*)(void*, s32))(*(void***)o)[9])(o, 0);
     fn_804023D0(*(void**)(this_ + 0x34), ((J2DTextBoxVt*)*(void**)(this_ + 0x8))->v15(0x50610000, 0x50616363, 0x75723031), *(u8*)(*(u8**)(this_ + 0x34) + 0x28));
     *(u16*)(*(u8**)(this_ + 0x34) + 0x26) = 0;
     *(u16*)(*(u8**)(this_ + 0x24) + 0x22) = 0;
@@ -826,6 +826,7 @@ extern "C" void fn_803C4054(u8* p) {
     s16 t;
     s32 i;
     void* r;
+    u8* q;
 
     if (fn_80309C4C(lbl_8053AD30, 1, 1) != 0) {
         if (p[0x114] != 0) {
@@ -878,7 +879,8 @@ extern "C" void fn_803C4054(u8* p) {
                 fn_80402E08(*(void**)(p + 0x24 + i * 4), lbl_80543458, lbl_80543458);
             }
         }
-        fn_80402E08(*(void**)(p + 0x34), *(f32*)(*(u8**)(p + p[0x114] * 4 + 0x24) + 8) - *(f32*)(*(u8**)(p + 0x24) + 8), v);
+        q = p + p[0x114] * 4;
+        fn_80402E08(*(void**)(p + 0x34), *(f32*)(*(u8**)(q + 0x24) + 8) - *(f32*)(*(u8**)(p + 0x24) + 8), v);
         fn_8040245C(*(void**)(p + 0x34), 0x3c, 0, (*(u8**)(p + 0x34))[0x28], 1);
         r = ((void* (*)(void*, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), 0x50616363, 0x75723031);
         fn_804023D0(*(void**)(p + 0x34), r, (*(u8**)(p + 0x34))[0x28]);
