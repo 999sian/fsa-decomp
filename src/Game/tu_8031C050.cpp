@@ -1,4 +1,15 @@
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
+
+struct FsaResourceManager {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void* getResource(u32 fourccType, const char* fileName);
+};
 
 
 extern "C" char lbl_804AB170[];
@@ -12,6 +23,45 @@ extern "C" Actor* fn_8031C050(Actor* p, s16 n) {
         if (n > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" s32 fn_8031DAB0(Actor* p, s32 unused, void* pos) {
+    u8* self = (u8*)p;
+    s32 kind = (u16)fn_8022461C(pos);
+
+    if (kind == 3) {
+        *(f32*)(self + 0x44) = lbl_805419B8;
+        *(f32*)(self + 0x40) = lbl_805419B8;
+        *(f32*)(self + 0x3c) = lbl_805419B8;
+        *(s32*)(self + 0x230) = 5;
+        return 0;
+    }
+    if (kind == 0xe) {
+        if (*(s32*)(self + 0x230) != 7) {
+            *(s32*)(self + 0x248) = 10;
+            *(s32*)(self + 0x230) = 7;
+        }
+        return 0;
+    }
+    if (kind == 0xd) {
+        if (*(s32*)(self + 0x230) != 6) {
+            *(s32*)(self + 0x248) = 10;
+            *(s32*)(self + 0x230) = 6;
+        }
+        return 0;
+    }
+    if (kind == 0 || kind == 0x27 || kind == 2 ||
+        (kind == 0x28 && (s32)*(f32*)(self + 0x10) % 16 > 8) ||
+        (kind == 0x29 && (s32)*(f32*)(self + 0x10) % 16 < 8) ||
+        (kind == 0x2c && (s32)*(f32*)(self + 0x10) % 16 > 8) ||
+        (kind == 0x2d && (s32)*(f32*)(self + 0x10) % 16 < 8) ||
+        (kind == 0x2a && (s32)*(f32*)(self + 0xc) % 16 > 8) ||
+        (kind == 0x2b && (s32)*(f32*)(self + 0xc) % 16 < 8) ||
+        (kind == 0x2e && (s32)*(f32*)(self + 0xc) % 16 > 8) ||
+        (kind == 0x2f && (s32)*(f32*)(self + 0xc) % 16 < 8)) {
+        return 0;
+    }
+    return 1;
 }
 
 extern "C" u8* lbl_8053AAF8;
