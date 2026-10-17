@@ -25,7 +25,7 @@ extern "C" char lbl_802BB0FC[];
 extern "C" unsigned int lbl_8022797C[];
 extern float lbl_802FFD10;
 extern "C" unsigned char lbl_8022F534[];
-extern "C" unsigned char lbl_802FBE3C[];
+extern "C" unsigned char lbl_802FBE3C[8];
 extern "C" unsigned int lbl_802FEE30;
 extern "C" int fn_8002B484(unsigned char* p, unsigned int a, unsigned char b);
 struct S_801F9280 {
@@ -284,30 +284,45 @@ extern "C" int fn_8002B620(unsigned char* self, unsigned char idx, unsigned char
 
 extern "C" int fn_8002B6D4(int a, unsigned char v) {
     int i;
+    unsigned char* q;
     unsigned char* p = (unsigned char*)lbl_802BB0FC;
     for (i = 0; i < 4; i++) {
         if (v == p[0x1d8]) {
             return 1;
         }
+        q = p + 1;
         if (v == p[0x1d9]) {
             return 1;
         }
-        if (v == p[0x1da]) {
+        if (v == q[0x1d9]) {
             return 1;
         }
-        if (v == p[0x1db]) {
+        q++;
+        if (v == q[0x1d9]) {
             return 1;
         }
-        if (v == p[0x1dc]) {
+        q++;
+        if (v == q[0x1d9]) {
             return 1;
         }
-        if (v == p[0x1dd]) {
+        q++;
+        if (v == q[0x1d9]) {
             return 1;
         }
-        if (v == p[0x1de]) {
+        q++;
+        if (v == q[0x1d9]) {
             return 1;
         }
-        if (v == p[0x1df]) {
+        q++;
+        if (v == q[0x1d9]) {
+            return 1;
+        }
+        q++;
+        if (v == q[0x1d9]) {
+            return 1;
+        }
+        q++;
+        if (v == q[0x1d9]) {
             return 1;
         }
         p += 0x4c;
@@ -322,6 +337,30 @@ extern "C" unsigned char fn_8002B7B0(unsigned char* self, unsigned char idx, int
     (self + idx * 8)[slot + 0x840] = (lbl_802BB0FC + idx * 0x4c)[slot + 0x1d8];
     (lbl_802BB0FC + idx * 0x4c)[slot + 0x1d8] = val;
     return val;
+}
+
+extern "C" int fn_8002B808(unsigned char* p, unsigned int param) {
+    int n;
+    int i;
+    int found = 0;
+    unsigned char* t = lbl_802FBE3C;
+    unsigned char* q = lbl_802FBE3C;
+    n = (lbl_802FEE30 & 0x8000) ? 4 : 5;
+    for (i = 0; i < n; i++, q++) {
+        if (fn_8002B484(p, param, *q) == 0) {
+            found = 1;
+            break;
+        }
+    }
+    if (found == 0) {
+        return 0;
+    }
+    for (i = 0; i < n; i++, t++) {
+        if (p[(unsigned char)param + 0x838] == *t) {
+            return 0;
+        }
+    }
+    return 1;
 }
 
 extern "C" void fn_8002BC84(void) {
