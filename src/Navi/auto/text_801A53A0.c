@@ -133,6 +133,20 @@ extern "C" BOOL fn_801A78EC(u8* param_1, u8* param_2) {
     return FALSE;
 }
 
+extern "C" BOOL fn_801A793C(u8* param_1, u8* param_2) {
+    *(u32*)(param_2 + 4) = 0;
+    *(u32*)(param_2 + 8) = 0;
+    u8* p = *(u8**)(param_2 + 0x2c);
+    *(u32*)(p + 4) = 0;
+    *(u32*)(p + 8) = 0;
+    u32 v = *(u32*)(param_1 + 0x20);
+    if (v != 0) {
+        fn_80193E40(v, *(u8**)(param_2 + 0x2c));
+        return TRUE;
+    }
+    return FALSE;
+}
+
 extern "C" BOOL fn_801A7990(u32** param_1, u32* param_2) {
     param_2[1] = 0;
     param_2[2] = 0;
