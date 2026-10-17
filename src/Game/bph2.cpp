@@ -73,6 +73,7 @@ extern s32 lbl_80539FCC;
 extern s32 lbl_80539FD0;
 extern void* lbl_8053AF80;
 extern "C" void fn_80458F9C(void* a, s32 b);
+extern u8 lbl_804C18B8[0xC];
 
 // BPH2 destructor
 extern "C" void* fn_8018D9D4(char* this_, s16 freeFlag) {
