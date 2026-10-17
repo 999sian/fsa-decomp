@@ -310,7 +310,15 @@ void MemCardMenu::fn_803D2E10() {
         self->f2171 = self->f2170;
         if (self->f2170 == 0) {
             memcpy(self->work, lbl_8050EC80.extra, 0x1d4c);
-            stampSave();
+            lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
+            u8* e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
+            if (!(e[0x85] & 1)) {
+                e[0x85] |= 1;
+            }
+            e = (u8*)&lbl_8050EC80 + lbl_8050EC80.idx * 0xc8;
+            if (*(u32*)(e + 0x28) & 1) {
+                e[0x85] |= 2;
+            }
             self->f54 = 0x7e;
             self->f2177 = 0;
             self->f216d = 0x12;
@@ -1110,40 +1118,40 @@ void MemCardMenu::fn_803D3D50() {
 }
 
 void MemCardMenu::fn_803D3EC8() {
-    MemCardMenu* self = this;
+    s32 i;
     u8 a = 0;
     u8 b = 0;
     u8 c = 0;
-    s32 t0 = *(s16*)(lbl_8050DB0C + 0xee);
-    s32 t1 = *(s16*)(lbl_8050DB0C + 0xf0);
-    s32 t2 = *(s16*)(lbl_8050DB0C + 0xf2);
-    s32 t3 = *(s16*)(lbl_8050DB0C + 0xf4);
-    s32 t4 = *(s16*)(lbl_8050DB0C + 0xf6);
-    s32 t5 = *(s16*)(lbl_8050DB0C + 0xf8);
-    s32 t6 = *(s16*)(lbl_8050DB0C + 0xfa);
-    self->f84++;
-    if (self->f84 > t0) {
-        a = fn_80402940(self->f24, t1, 0.0f, 480.0f, 0);
-        if (self->f2176) {
-            fn_80402940(self->f4c, t1, 0.0f, -200.0f, 0);
+    s16 t0 = *(s16*)(lbl_8050DB0C + 0xee);
+    s16 t1 = *(s16*)(lbl_8050DB0C + 0xf0);
+    s16 t2 = *(s16*)(lbl_8050DB0C + 0xf2);
+    s16 t3 = *(s16*)(lbl_8050DB0C + 0xf4);
+    s16 t4 = *(s16*)(lbl_8050DB0C + 0xf6);
+    s16 t5 = *(s16*)(lbl_8050DB0C + 0xf8);
+    s16 t6 = *(s16*)(lbl_8050DB0C + 0xfa);
+    f84++;
+    if (f84 > t0) {
+        a = fn_80402940(f24, t1, 0.0f, 480.0f, 0);
+        if (f2176) {
+            fn_80402940(f4c, t1, 0.0f, -200.0f, 0);
         }
-        fn_80402628(self->f14, t1, self->f14->f28, 0);
-        for (s32 i = 0; i < 8; i++) {
-            fn_8040271C(self->f2c[i], t1, 1.0f, 2.0f);
-            fn_80402628(self->f2c[i], t1, self->f2c[i]->f28, 0);
+        fn_80402628(f14, t1, f14->f28, 0);
+        for (i = 0; i < 8; i++) {
+            fn_8040271C(f2c[i], t1, 1.0f, 2.0f);
+            fn_80402628(f2c[i], t1, f2c[i]->f28, 0);
         }
-        fn_803D49A4(self);
+        fn_803D49A4(this);
     }
-    if (self->f84 > t2) {
-        b = fn_80402940(self->f18, t3, 0.0f, 480.0f, 0);
+    if (f84 > t2) {
+        b = fn_80402940(f18, t3, 0.0f, 480.0f, 0);
     }
-    for (s32 i = 0; i < 2; i++) {
-        if (self->f84 > t4 + i * t6) {
-            c = fn_80402940(self->f1c[i], t5, 0.0f, 200.0f, 0);
+    for (i = 0; i < 2; i++) {
+        if (f84 > t4 + i * t6) {
+            c = fn_80402940(f1c[i], t5, 0.0f, 200.0f, 0);
         }
     }
     if (a && b && c) {
-        self->f216c = self->f216d;
+        f216c = f216d;
     }
 }
 
