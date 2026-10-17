@@ -25,6 +25,24 @@ s32 fn_80241794(void*);
 u8 fn_80251AEC(void*, s32);
 void fn_802BAA00(void*);
 s32 fn_802415CC(void*);
+u8 Player_IsLinked(void*);
+s32 Player_GetLinkTargetIndex(void*);
+u8 fn_80230188(s32);
+u8 fn_8025F684(void*);
+u8 fn_8025F448(void*);
+u8 fn_802412A4(void*);
+u8 fn_8024C448(void*);
+u8 fn_80241230(void*);
+u8 fn_80250D30(void*);
+u8 fn_802411C4(void*);
+u8 fn_80240B70(void*);
+u8 fn_80240B5C(void*);
+u8 fn_80240B84(void*);
+u8 Player_GetField_0xce8(void*);
+u8 fn_80240D64(void*);
+u8 fn_80240DAC(void*);
+u8 Player_CheckField_0xc9c(void*);
+u8 fn_802412C4(void*);
 void fn_80268B3C(void*);
 s32 Actor_CreateByID(void* mgr, u32 fourCC, u32 owner, void* pos, u32 param, s32 a, s32 b);
 s32 fn_8026FC20(void*);
@@ -808,6 +826,22 @@ extern "C" void fn_8025D6AC(u8* p) {
             F32(p, 0x348) = lbl_805400C4;
         }
     }
+}
+
+extern "C" void fn_8025D7E4(u8* p) {
+    U8(p, 0x124d) = 1;
+    U8(p, 0x458) = 0;
+    const JGeometry::TVec3<f32>* e = &lbl_8046AFE0[S32(p, 0x3dc)];
+    F32(p, 0x344) = e->x;
+    F32(p, 0x348) = e->y;
+    F32(p, 0x34c) = e->z;
+    fn_8024F0E8(p, 0x20010);
+    if (F32(p, 0x348) != lbl_805400C4) {
+        fn_802D79E8(fn_802D6A9C(), S32(p, 0x3b4), 0, lbl_805400E0, lbl_805400C4);
+    } else {
+        fn_802D79E8(fn_802D6A9C(), S32(p, 0x3b4), 0, lbl_805400C4, lbl_805400E0);
+    }
+    fn_80134DE4(lbl_8053AAF8, 1, 0);
 }
 
 extern "C" void fn_8025D9FC(u8* p) {
