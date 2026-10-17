@@ -76,6 +76,16 @@ struct VObj_80185520 {
     virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43(); virtual void v44();
     virtual void v45(); virtual void v46(); virtual void v47(); virtual s32 vfc8(s32 a, s32 b, u8 c); virtual void v49();
 };
+struct VObj_80185E08 {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
+    virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29();
+    virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
+    virtual void v35(); virtual void v36(); virtual void v37(); virtual u32 v38(u8 a);
+};
 struct VObj_80178E10 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
     virtual void v4(); virtual void v5();
@@ -2412,8 +2422,9 @@ extern "C" void fn_8018A8C0(void) {
 }
 
 extern "C" void fn_8018B07C(void* ptr) {
+    void* a = lbl_80299504;
     void* b = lbl_802994F0;
-    *(void**)ptr = lbl_80299504;
+    *(void**)ptr = a;
     *(void**)ptr = b;
 }
 
@@ -2698,8 +2709,9 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
                 n = half;
             }
         }
-        f32 dt = t - k[0];
-        f32 len = k[3] - k[0];
+        f32 k0 = k[0];
+        f32 dt = t - k0;
+        f32 len = k[3] - k0;
         f32 u = dt / len;
         f32 u2 = u * u;
         f32 dv = k[1] - k[4];
@@ -2725,8 +2737,9 @@ extern "C" f32 fn_8018E870(u16* hdr, f32 t, f32* k) {
                 n = half;
             }
         }
-        f32 dt = t - k[0];
-        f32 len = k[4] - k[0];
+        f32 k0 = k[0];
+        f32 dt = t - k0;
+        f32 len = k[4] - k0;
         f32 u = dt / len;
         f32 u2 = u * u;
         f32 dv = k[1] - k[5];
