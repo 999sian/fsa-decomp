@@ -1071,6 +1071,12 @@ extern "C" void fn_801AE7B0(u32* p, u32 v) {
 }
 
 extern "C" void fn_801BA614(void* a, void* b);
+extern "C" void* fn_801B3658(void* base, u32 offset);
+extern "C" void* fn_801B3640(void* base, u32 offset);
+extern "C" void* fn_801B3628(void* base, u32 offset);
+extern "C" void* fn_801B0AF0(void* a, void* b, void* c, void* d);
+extern "C" void* fn_801B1F9C(void* a, void* b, void* c, void* d);
+extern "C" void* fn_801B1504(void* a, void* b, void* c, void* d);
 extern "C" void fn_801AF42C(void* a, void* b) {
     extern u32 lbl_8020268C[];
     extern f32 lbl_802EE5BC[];
