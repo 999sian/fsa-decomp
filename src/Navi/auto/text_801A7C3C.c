@@ -145,13 +145,59 @@ extern "C" void fn_801A7C3C(Struct_801A7C3C* dst, const Struct_801A7C3C* src) {
     *dst = *src;
 }
 
+extern f32 lbl_80301D4C;
+extern f32 lbl_80301D48;
+extern "C" void fn_801A7D0C(f32* dst, f32* src)
+{
+    typedef struct { f32 m[12]; } M;
+    f32 z;
+    *(M*)(dst + 9) = *(M*)src;
+    z = lbl_80301D4C;
+    dst[21] = z;
+    dst[22] = z;
+    dst[23] = z;
+    dst[24] = lbl_80301D48;
+}
+
 extern "C" void fn_801A7D54(Blk_801A7D54* dst, Blk_801A7D54* src) {
     *dst = *src;
+}
+
+extern "C" void fn_801A7D78(u8* dst, u8* src)
+{
+    int i;
+    dst[0] = src[0];
+    dst[1] = src[1];
+    *(u16*)(dst + 2) = *(u16*)(src + 2);
+    *(f32*)(dst + 4) = *(f32*)(src + 4);
+    *(f32*)(dst + 8) = *(f32*)(src + 8);
+    *(f32*)(dst + 0xc) = *(f32*)(src + 0xc);
+    *(f32*)(dst + 0x10) = *(f32*)(src + 0x10);
+    dst[0x14] = src[0x14];
+    dst[0x15] = src[0x15];
+    dst[0x16] = src[0x16];
+    dst[0x17] = src[0x17];
+    for (i = 0; i < 10; i++) {
+        ((u16*)(dst + 0x18))[i] = ((u16*)(src + 0x18))[i];
+    }
 }
 
 extern "C" void fn_801A7E24(u8* dst, u8* src) {
     typedef struct { u8 b; f32 x, y, z; } S;
     *(S*)dst = *(S*)src;
+}
+
+extern "C" void fn_80196928(void*);
+#pragma use_lmw_stmw off
+extern "C" void fn_801A7E48(u8* obj, u32 a, u32 b) {
+    u16 n = *(u16*)(obj + 4);
+    u16 i;
+    for (i = 0; i < n; i++) {
+        u8* e = (*(u8***)(obj + 8))[i];
+        *(u32*)(e + 0x50) = a;
+        *(u32*)(e + 0x4c) = b;
+        fn_80196928(e);
+    }
 }
 
 extern "C" void fn_801A833C(void* p);
