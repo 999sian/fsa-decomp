@@ -521,6 +521,17 @@ extern "C" J3DIndTexMtxInfo fn_800CB628(u8* param_2, s32 param_3, s32 param_4) {
     return local;
 }
 
+extern "C" void fn_800CB6F0(J3DIndTevStage* out, u8* p, s32 idx, s32 stage) {
+    J3DIndTevStage dflt;
+    u8* data = *(u8**)(p + 0xc) + idx * 0x138;
+    if (data[0] == 1) {
+        out->mInfo = 0;
+        out->setIndTevStageInfo(*(J3DIndTevStageInfo*)(data + stage * 0xc + 0x78));
+    } else {
+        *out = dflt;
+    }
+}
+
 struct J3DIndTexCoordScaleInfo {
     void operator=(const J3DIndTexCoordScaleInfo& other) { *(u32*)this = *(u32*)&other; }
 
