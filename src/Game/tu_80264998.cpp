@@ -1,12 +1,34 @@
 
 
 #include "Game/SinitPoolChain.h"
+#include "types.h"
+#include "JSystem/JMath/Inline.h"
+
 
 extern "C" int fn_802486A0(void*);
 extern "C" int fn_80248778(void*);
 extern "C" int fn_80240888(void*);
 extern "C" unsigned char fn_8025F448(char* p);
 extern "C" int fn_8023DE58(void);
+extern "C" u16 fn_8022461C(void*, s32);
+extern "C" s32 fn_8013CC50(s32 id, void* pos, s32 type, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
+extern const f32 lbl_805401F0;
+extern const f32 lbl_805401F4;
+extern const f32 lbl_80540200;
+extern "C" void fn_80264998(char* p)
+{
+    if (p[0xcac] == 0) {
+        return;
+    }
+    if (p[0xcee] == 1) {
+        return;
+    }
+    if (p[0x1215] != 0) {
+        return;
+    }
+}
+
 extern "C" void fn_80265D68(char* p)
 {
     unsigned char v = *(unsigned char*)(p + 0xca0);
@@ -29,7 +51,6 @@ extern "C" void fn_80265D8C(char* p)
 
 extern "C" void fn_80265DB0(char* p)
 {
-    int n;
     unsigned short v = *(unsigned short*)(p + 0x3c4);
     if (v == 0x122 || (v >= 0xb7 && v < 0xbd) || *(int*)(p + 0x3b4) > 8) {
         *(unsigned char*)(p + 0xca1) = 0;
@@ -40,16 +61,17 @@ extern "C" void fn_80265DB0(char* p)
         return;
     }
     if (fn_8025F448(p) != 0) {
-        n = *(int*)(p + 0xd70);
-        if (n < 0 || fn_8023DE58() != 8) {
-            if (*(unsigned char*)(p + 0xca1) >= 8) {
-                *(unsigned char*)(p + 0xca1) -= 8;
-                return;
-            }
-            *(unsigned char*)(p + 0xca1) = 0;
+        if (*(s32*)(p + 0xd70) >= 0 && fn_8023DE58() == 8) {
+            goto skip;
+        }
+        if (*(unsigned char*)(p + 0xca1) >= 8) {
+            *(unsigned char*)(p + 0xca1) -= 8;
             return;
         }
+        *(unsigned char*)(p + 0xca1) = 0;
+        return;
     }
+skip:
     if (*(unsigned char*)(p + 0xca1) <= 0xf7) {
         *(unsigned char*)(p + 0xca1) += 8;
         return;
