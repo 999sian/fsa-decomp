@@ -221,6 +221,15 @@ struct Self_80167618 {
     Stream_80167618* stream;
     u32 pos;
 };
+struct Slot_8016AFCC {
+    RGB8_8017261C c;
+    u8 pad;
+};
+struct Blk_8016AFCC {
+    u32 w0;
+    Slot_8016AFCC s[8];
+    u32 tail[8];
+};
 struct VObj_801693F4 {
     virtual void vf0(); virtual void vf1(); virtual void vf2(); virtual void vf3();
     virtual void vf4(); virtual void vf5(); virtual void vf6(); virtual void vf7();
