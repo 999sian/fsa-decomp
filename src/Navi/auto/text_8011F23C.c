@@ -58,7 +58,6 @@ extern "C" void* lbl_802FF368;
 extern "C" void* fn_801328F8(void* ptr, s16 param_2);
 extern char lbl_802911E4[];
 
-extern "C" void fn_8013345C();
 
 static inline void fn_80133624_set(u8* self, int i, f32 v) {
     u8* e = *(u8**)(self + 4) + i * 0x14;
