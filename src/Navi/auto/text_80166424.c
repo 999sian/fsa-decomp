@@ -1632,6 +1632,12 @@ extern "C" u32 fn_80173018(int param_1, u32 param_2) {
 
 extern "C" u32 fn_80173038(u8* p) { return *(u32*)(p + 0x74); }
 
+extern "C" void fn_80173040(void* param_1, u8 param_2) {
+    u8 val = *(u8*)((u8*)param_1 + 0x78);
+    val &= param_2;
+    *(u8*)((u8*)param_1 + 0x78) = val;
+}
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
