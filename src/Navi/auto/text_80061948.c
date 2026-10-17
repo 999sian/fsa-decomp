@@ -933,6 +933,34 @@ extern "C" void fn_80069DC0(void) {
     fn_80069EA4();
 }
 
+#pragma dont_inline on
+extern "C" int fn_80069DE0(u8* p) {
+    int iVar1 = fn_80020EA4(p + 0x244, (void*)&lbl_802FC930);
+    if (iVar1 == 4) {
+        if ((*(u32*)(p + 0xf8) & 8) == 0) {
+            if (p != nullptr) {
+                fn_800175B8(p);
+                *(void**)(p + 0x250) = lbl_8027F6DC;
+                *(u32*)(p + 0x254) = 0;
+                *(void**)(p + 0x250) = lbl_8027FB48;
+                *(u32*)(p + 0x258) = 0;
+                *(void**)(p + 0x260) = lbl_8027F6DC;
+                *(u32*)(p + 0x264) = 0;
+                *(void**)(p + 0x260) = lbl_8027FB48;
+                *(u32*)(p + 0x268) = 0;
+            }
+            *(u32*)(p + 0xf8) |= 8;
+        }
+        if ((u8)fn_800183AC(p, (void*)fn_80069DC0, (void*)0x4200)) {
+            iVar1 = fn_8006A1D0(p);
+        } else {
+            iVar1 = 5;
+        }
+    }
+    return iVar1;
+}
+#pragma dont_inline reset
+
 extern "C" int fn_8006A5D0(void* param_1, int param_2) {
     s32 old_val = *(s32*)((u8*)param_1 + 0x26c);
     if (old_val != param_2) {
