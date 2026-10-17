@@ -99,6 +99,17 @@ extern "C" void fn_800BE284(u8* p) {
     *(u16*)(p + 0x214) = 0;
 }
 
+extern "C" void fn_800C11D4(u8* p);
+extern "C" void fn_800C1108(u8* p) {
+    *(s16*)(p + 0x21e) = 0;
+    fn_800C3570(p, *(s16*)(p + 0x21e), lbl_802C562C[0x14], *(f32*)(lbl_802C562C + 0xc), lbl_80300D34, 0, 0);
+    fn_800C36D8((char*)p, *(s16*)(p + 0x21e), lbl_802C562C[0x14], 0, 0);
+    fn_800C3798(p, *(s16*)(p + 0x21e), lbl_802C562C[0x14], *(f32*)(lbl_802C562C + 0x10), lbl_80300D34, 0, 0);
+    fn_800C3A1C(p, *(s16*)(p + 0x21e), lbl_802C562C[0x14], 0, 0);
+    fn_800C11D4(p);
+    *(u16*)(p + 0x220) = lbl_802C562C[0x18];
+}
+
 #pragma use_lmw_stmw off
 extern "C" void fn_800C11D4(u8* p) {
     u8* sig = lbl_802313EC;
@@ -153,6 +164,23 @@ extern "C" void fn_800C1968(u8* p) {
         p[0x222] = 2;
         *(u16*)(p + 0x220) = 0xe;
         p[0x212] = 4;
+    }
+}
+
+extern "C" void fn_800C1BB8(u8* p) {
+    s32 iVar1;
+    s32 iVar2;
+    if (*(s16*)(p + 0x21e) == 0) {
+        fn_8002F458(0x9c, 0);
+    }
+    iVar1 = fn_800C3570(p, *(s16*)(p + 0x21e), lbl_802C562C[0x14], lbl_80300D34, *(f32*)(lbl_802C562C + 0xc), 0, 1);
+    iVar2 = fn_800C36D8((char*)p, *(s16*)(p + 0x21e), lbl_802C562C[0x14], 0, 1);
+    *(s16*)(p + 0x21e) = *(s16*)(p + 0x21e) + 1;
+    if (iVar1 == 1 && iVar2 == 1) {
+        *(s16*)(p + 0x21e) = 0;
+        p[0x213] = 0;
+        *(u32*)(lbl_802BB0FC + 0x108) |= 0x1000;
+        p[0x212] = 0x17;
     }
 }
 
@@ -235,6 +263,17 @@ extern "C" void fn_800C2640(u8* p) {
             p[0x212] = 10;
         }
     }
+}
+
+extern u8 lbl_80287F88[];
+extern "C" s32 fn_8002192C(void);
+extern "C" void fn_800C2780(u8* p) {
+    s32 r30 = (*(u32*)(lbl_802BB0FC + 0x40) >> 1) & 1;
+    s32 v = fn_8002192C();
+    s32 r29 = lbl_802B7CA0[r30 + (((1 - v) == 0) << 1) + 0x3ec] * 4;
+    *(u8*)(*(u8**)(p + r29 + 0x1c0) + 0xb0) = 1;
+    fn_8003ABDC(*(void**)(p + 0x28), 0, 0, 0, 0);
+    fn_8003ABF0(*(void**)(p + 0x28), *(s32*)(p + 0x1c0), 0, *(s32*)(p + 0x1bc), 0, *(u16*)(lbl_80287F88 + r29 + r30 * 2 - 4), 0, 0);
 }
 
 extern "C" void fn_800C2850(u8* p) {
