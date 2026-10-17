@@ -1318,11 +1318,12 @@ extern "C" void fn_801DC46C(u32 param_1)
 
 extern "C" void fn_801DC774(void)
 {
+	u8* gx = __GXData;
 	*(volatile u8*)0xCC008000 = 0x61;
 	*(volatile u32*)0xCC008000 = 0x550003ff;
 	*(volatile u8*)0xCC008000 = 0x61;
 	*(volatile u32*)0xCC008000 = 0x560003ff;
-	*(u16*)(__GXData + 2) = 0;
+	*(u16*)(gx + 2) = 0;
 }
 
 extern "C" void fn_801DCA0C(void* self, f32 a, f32 b, f32 c) {
@@ -1340,6 +1341,10 @@ extern "C" void fn_801DCA1C(void* self, f32 a, f32 b, f32 c) {
 extern "C" void fn_801DCA38(void* p, u32* v)
 {
 	*(u32*)((u8*)p + 0xc) = *v;
+}
+
+extern "C" s32 fn_801DD3B0(u32* param_1) {
+    return (param_1[2] & 0x3ff) + 1;
 }
 
 #pragma dont_inline reset
