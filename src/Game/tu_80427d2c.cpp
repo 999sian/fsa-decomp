@@ -1239,6 +1239,10 @@ extern "C" void fn_804299C0(s16* destination, s16* source, u32 sample) {
 }
 
 extern "C" void fn_80429BE4(u8* yImage, u8* uImage, u8* vImage, s16 x, s16 y, s16 textureWidth, s16 textureHeight, s16 polygonWidth, s16 polygonHeight) {
+    s32 x0;
+    s32 y0;
+    s32 x1;
+    s32 y1;
     GXTexObj tobj0;
     GXTexObj tobj1;
     GXTexObj tobj2;
@@ -1252,14 +1256,14 @@ extern "C" void fn_80429BE4(u8* yImage, u8* uImage, u8* vImage, s16 x, s16 y, s1
     GXInitTexObjLOD(&tobj2, GX_NEAR, GX_NEAR, 0.0f, 0.0f, 0.0f, GX_FALSE, GX_FALSE, GX_ANISO_1);
     GXLoadTexObj(&tobj2, GX_TEXMAP2);
     GXBegin(GX_QUADS, GX_VTXFMT7, 4);
-    s32 x0 = x;
-    s32 y0 = y;
+    x0 = x;
+    y0 = y;
     fn_80429DF4(x0, y0, 0);
     fn_80429DE4(0, 0);
-    s32 x1 = x0 + polygonWidth;
+    x1 = x0 + polygonWidth;
     fn_80429DF4(x1, y0, 0);
     fn_80429DE4(1, 0);
-    s32 y1 = y0 + polygonHeight;
+    y1 = y0 + polygonHeight;
     fn_80429DF4(x1, y1, 0);
     fn_80429DE4(1, 1);
     fn_80429DF4(x0, y1, 0);
@@ -1813,9 +1817,11 @@ extern "C" u8 fn_8042B148() {
 }
 
 extern "C" void fn_8042B1DC() {
-    u32 uVar1 = *(u16*)(lbl_8053AE74 + 0x692);
-    LCQueueWait(3);
     u8 i;
+    s32 off;
+    u32 uVar1 = *(u16*)(lbl_8053AE74 + 0x692);
+
+    LCQueueWait(3);
     for (i = 0; i < *(u16*)(lbl_8053AE74 + 0x696); i++) {
         fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[0]);
         fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[1]);
@@ -1823,7 +1829,7 @@ extern "C" void fn_8042B1DC() {
         fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[3]);
         fn_8042C1CC(lbl_8053AE74, (s16*)lbl_8052AAB8[4]);
         fn_8042BD84(lbl_8053AE74, (s16*)lbl_8052AAB8[5]);
-        s32 off = i * 16;
+        off = i * 16;
         lbl_8053AE44 = lbl_8052AAAC[0];
         lbl_8053AE60 = uVar1;
         lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x680] << 8);
@@ -1853,14 +1859,12 @@ extern "C" void fn_8042B1DC() {
             }
         }
     }
-    u32 size0 = (uVar1 >> 4) & 0xffffff;
-    u32 size1 = (uVar1 >> 4) * 0x40;
-    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b0), (void*)lbl_8052AAAC[0], size0);
-    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b4), (void*)lbl_8052AAAC[1], size1);
-    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b8), (void*)lbl_8052AAAC[2], size1);
-    *(u32*)(lbl_8053AE74 + 0x6b0) += size0;
-    *(u32*)(lbl_8053AE74 + 0x6b4) += size1;
-    *(u32*)(lbl_8053AE74 + 0x6b8) += size1;
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b0), (void*)lbl_8052AAAC[0], (uVar1 >> 4) * 0x100);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b4), (void*)lbl_8052AAAC[1], (uVar1 >> 4) * 0x40);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b8), (void*)lbl_8052AAAC[2], (uVar1 >> 4) * 0x40);
+    *(u32*)(lbl_8053AE74 + 0x6b0) += (uVar1 >> 4) * 0x100;
+    *(u32*)(lbl_8053AE74 + 0x6b4) += (uVar1 >> 4) * 0x40;
+    *(u32*)(lbl_8053AE74 + 0x6b8) += (uVar1 >> 4) * 0x40;
 }
 
 extern "C" void fn_8042BD84(u8* info, s16* block) {
@@ -2473,6 +2477,7 @@ extern "C" void fn_8042DA10() {
 }
 
 extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
+    u8* ctx;
     u8* pcVar2;
     u8* pbVar3;
     u8 bVar1;
@@ -2495,16 +2500,17 @@ extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
                         *(u8**)(lbl_8053AE74 + 0x69c) = data;
                         bVar4 = 0;
                         do {
-                            pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
-                            *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + 1;
+                            ctx = lbl_8053AE74;
+                            pcVar2 = *(u8**)(ctx + 0x69c);
+                            *(u8**)(ctx + 0x69c) = pcVar2 + 1;
                             if (*pcVar2 != 0xff) {
                                 return 3;
                             }
-                            while (**(u8**)(lbl_8053AE74 + 0x69c) == 0xff) {
-                                *(u8**)(lbl_8053AE74 + 0x69c) = *(u8**)(lbl_8053AE74 + 0x69c) + 1;
+                            while (**(u8**)(ctx + 0x69c) == 0xff) {
+                                *(u8**)(ctx + 0x69c) = *(u8**)(ctx + 0x69c) + 1;
                             }
-                            pbVar3 = *(u8**)(lbl_8053AE74 + 0x69c);
-                            *(u8**)(lbl_8053AE74 + 0x69c) = pbVar3 + 1;
+                            pbVar3 = *(u8**)(ctx + 0x69c);
+                            *(u8**)(ctx + 0x69c) = pbVar3 + 1;
                             bVar1 = *pbVar3;
                             if (bVar1 <= 0xd7) {
                                 if (bVar1 == 0xc4) {
@@ -2535,8 +2541,9 @@ extern "C" s32 fn_8042DA54(u8* data, u8* p1, u8* p2, u8* p3, void* p4) {
                                     return 0xb;
                                 }
                             } else if (bVar1 <= 0xef || bVar1 == 0xfe) {
-                                pcVar2 = *(u8**)(lbl_8053AE74 + 0x69c);
-                                *(u8**)(lbl_8053AE74 + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
+                                ctx = lbl_8053AE74;
+                                pcVar2 = *(u8**)(ctx + 0x69c);
+                                *(u8**)(ctx + 0x69c) = pcVar2 + ((pcVar2[0] << 8) | pcVar2[1]);
                             } else {
                                 return 0xb;
                             }
