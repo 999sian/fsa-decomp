@@ -3484,7 +3484,8 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
 
 extern "C" u8 fn_800DE600(int param_1, int param_2)
 {
-  return *(u8*)(param_1 + param_2 + 0x55);
+  u32 addr = param_1 + param_2;
+  return *(u8*)(addr + 0x55);
 }
 
 extern "C" void fn_800DE60C(int param_1, int param_2, u8 param_3)
@@ -4294,6 +4295,15 @@ extern "C" void fn_800D9658(u8* p) {
 
 void J3DIndBlockFull::initialize() {
     mIndTexStageNum = 0;
+}
+
+void J3DTexGenBlock4::initialize() {
+    mTexGenCnt = 0;
+    mTexMatrices[0] = nullptr;
+    mTexMatrices[1] = nullptr;
+    mTexMatrices[2] = nullptr;
+    mTexMatrices[3] = nullptr;
+    mTexMtxOffset = 0;
 }
 
 // Keep regional definitions that were present before source-tree consolidation.
