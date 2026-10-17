@@ -87,6 +87,23 @@ extern "C" void fn_804482EC(void* self_) {
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
 }
 
+extern "C" void* fn_804030C4(u32 type, const char* name);
+extern "C" const char* lbl_804B1C30[];
+extern "C" void fn_80448334(Obj80447C30* self)
+{
+    void* res;
+    for (int i = 0; i < 4; i++) {
+        self->f2c &= ~(u8)(1 << i);
+        res = fn_804030C4('TIMG', lbl_804B1C30[0]);
+        self->screen->search(*(u64*)(lbl_804906A8[i].pad2 + 0x10))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_804906A8[i].pad2 + 0x18))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_804906A8[i].pad2 + 0x20))->changeTexture(res, 0);
+        self->screen->search(*(u64*)(lbl_804906A8[i].pad2 + 0x28))->changeTexture(res, 0);
+        self->screen->search(lbl_804906A8[i].tag0)->hide();
+        self->screen->search(lbl_804906A8[i].tag1)->hide();
+    }
+}
+
 extern "C" void* fn_804484C8(void* param_1, short param_2)
 {
     void* result = param_1;
