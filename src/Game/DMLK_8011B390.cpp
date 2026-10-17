@@ -382,17 +382,4 @@ extern "C" void fn_8011B878(u8* this_, s32 id) {
     *(s32*)(this_ + 0x238) = id;
 }
 
-extern "C" s32 fn_8011BDAC(u8* self) {
-    switch (*(s32*)(self + 0x23c)) {
-    case 12:
-    case 13:
-    case 20:
-    case 21:
-    case 28:
-    case 34:
-        return 1;
-    default:
-        return 0;
-    }
-}
 #endif
