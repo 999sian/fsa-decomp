@@ -28,7 +28,6 @@ extern "C" void fn_80159C6C(void*, int);
 extern "C" void fn_80166B70(void*, int);
 extern "C" void fn_801BDE1C(void*, void*, int);
 extern "C" void fn_80166650(void*);
-#include "dolphin/os/OSCache.h"
 extern "C" void* fn_8015F520(void* param_1) {
     u32 p = (u32)param_1;
     fn_80166B58((void*)(p + 0x20), (void*)p);
