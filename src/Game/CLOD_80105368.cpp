@@ -182,7 +182,7 @@ extern "C" void* fn_80105368(void* this_, s16 freeFlag) {
 
 extern "C" s32 fn_8023DE58(s32 arg);
 extern "C" u8* fn_802D6A9C(void);
-extern "C" u8 fn_8023B0F4(s32 arg, f32* box, s32 id, s32 flag);
+extern "C" u8 fn_8023B0F4(s32 arg, f32* box, f32 zero, s32 id, s32 flag);
 extern "C" void fn_8022DF48(s32 arg);
 extern "C" void fn_8022E088(s32 arg, s32 idx, JGeometry::TVec3f* out);
 extern const f32 lbl_8053C22C;
@@ -207,7 +207,7 @@ extern "C" s32 fn_801053E8(char* p, s32 arg) {
         box[1] += *(f32*)(p + 0x10);
         box[3] += *(f32*)(p + 0x10);
         box[1] -= lbl_8053C22C;
-        if (fn_8023B0F4(arg, box, *(s32*)(p + 4), 0)) {
+        if (fn_8023B0F4(arg, box, lbl_8053C228, id, 0)) {
             fn_8022DF48(arg);
             return 1;
         }
