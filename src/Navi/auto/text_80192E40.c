@@ -216,6 +216,22 @@ extern "C" void fn_801940F0(u32* p, u32* node) {
     }
 }
 
+extern "C" void fn_80194110(u32* p) {
+    extern u32 lbl_802FF6B0;
+    extern u32 lbl_802FFA80;
+    extern u8 lbl_802EE618[];
+    extern u32 OSDisableInterrupts(void);
+    extern void fn_801DFFF0(void*, u32, u32);
+    u8* base = *(u8**)((u8*)p + 0x28);
+    u32* q = *(u32**)(base + 0x20);
+    u32 tmp = q[0];
+    q[0] = q[1];
+    q[1] = tmp;
+    lbl_802FF6B0 = OSDisableInterrupts();
+    fn_801DFFF0(lbl_802EE618, q[0], q[3]);
+    lbl_802FFA80 = (u32)lbl_802EE618;
+}
+
 extern "C" void* lbl_80299A2C[];
 extern "C" void* fn_801942E4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
