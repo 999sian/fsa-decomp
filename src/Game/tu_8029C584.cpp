@@ -8,6 +8,11 @@ struct Vec2 {
     float x, y;
 };
 
+struct Box2 {
+    Vec2 min;
+    Vec2 max;
+};
+
 struct FsaResourceManager {
     virtual void v00();
     virtual void v01();
@@ -81,6 +86,102 @@ extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void __dl__FPv(void* p);
 extern void* lbl_804A7BE8[];
 extern void* lbl_8053AAF8;
+extern "C" void fn_8022B8EC(unsigned int index, float* a0);
+extern "C" unsigned char fn_8022C8EC(int index);
+extern "C" void fn_802F86CC(unsigned int sobRenderer, Vec* pos, unsigned int sobResource, int spriteId, float scaleX, float scaleY, SobDrawParams* drawParams);
+extern "C" void fn_80307AC8(unsigned int a, int room, Vec* pos, int spriteId, int b, int c, int d);
+extern void* lbl_8053AB10;
+extern float lbl_80540738;
+extern float lbl_8054073C;
+extern float lbl_80540740;
+extern float lbl_80540744;
+extern float lbl_80540748;
+extern float lbl_8054074C;
+extern float lbl_80540750;
+extern float lbl_80540754;
+extern float lbl_80540758;
+extern "C" const char lbl_8046C490[];
+extern "C" void fn_8029C584(void* this_) {
+    float box[4];
+    Vec pos;
+    char* p = (char*)this_;
+
+    *(Vec2*)&pos = *(Vec2*)(p + 0xc);
+    pos.z = *(float*)(p + 0x14);
+    if (*(int*)(p + 0x4) == 0) {
+        char* m = *(char**)((char*)lbl_8053AB10 + 0x24);
+        ((unsigned int*)box)[0] = *(unsigned int*)(m + 0x164);
+        ((unsigned int*)box)[1] = *(unsigned int*)(m + 0x168);
+        ((unsigned int*)box)[2] = *(unsigned int*)(m + 0x16c);
+        ((unsigned int*)box)[3] = *(unsigned int*)(m + 0x170);
+        if (pos.y - pos.z < lbl_80540738 + box[1]) {
+            pos.y += lbl_8054073C;
+        }
+        if (*(unsigned char*)(p + 0x24c) != 0) {
+            if (pos.x < lbl_80540740 + box[0]) {
+                pos.x = lbl_80540740 + box[0];
+            } else if (pos.x >= box[2] - lbl_80540744) {
+                pos.x = box[2] - lbl_80540744;
+            }
+        } else {
+            if (pos.x < lbl_8054073C + box[0]) {
+                pos.x = lbl_8054073C + box[0];
+            } else if (pos.x >= box[2] - lbl_80540748) {
+                pos.x = box[2] - lbl_80540748;
+            }
+        }
+    } else {
+        fn_8022B8EC(*(int*)(p + 0x248), box);
+        if (pos.y - pos.z < lbl_8054073C + box[1]) {
+            pos.y += lbl_8054073C;
+        }
+        if (*(unsigned char*)(p + 0x24c) != 0) {
+            if (fn_8022C8EC(*(int*)(p + 0x90) & 3)) {
+                if (pos.x < lbl_8054073C + box[0]) {
+                    pos.x = lbl_8054073C + box[0];
+                } else if (pos.x >= box[2] - lbl_8054073C) {
+                    pos.x = box[2] - lbl_8054073C;
+                }
+            } else {
+                if (pos.x < lbl_8054074C + box[0]) {
+                    pos.x = lbl_8054074C + box[0];
+                } else if (pos.x >= box[2] - lbl_8054074C) {
+                    pos.x = box[2] - lbl_8054074C;
+                }
+            }
+        } else {
+            if (fn_8022C8EC(*(int*)(p + 0x90) & 3)) {
+                if (pos.x < lbl_80540750 + box[0]) {
+                    pos.x = lbl_80540750 + box[0];
+                } else if (pos.x >= box[2] - lbl_80540750) {
+                    pos.x = box[2] - lbl_80540750;
+                }
+            } else {
+                if (pos.x < lbl_80540754 + box[0]) {
+                    pos.x = lbl_80540754 + box[0];
+                } else if (pos.x >= box[2] - lbl_80540754) {
+                    pos.x = box[2] - lbl_80540754;
+                }
+            }
+        }
+    }
+
+    SobDrawParams drawParams;
+    unsigned int sobRes;
+    drawParams.renderFlags[0] = 2;
+    drawParams.shadowFlags[1] = 1;
+
+    if (*(int*)(p + 0x4) < 8) {
+        sobRes = ((FsaResourceManager*)*(void**)((char*)lbl_8053AAF8 + 0xa4))->getResource(0x534F4220, lbl_8046C490);
+        fn_802F86CC(*(unsigned int*)((char*)lbl_8053AB10 + 0x20), &pos, sobRes, *(int*)(p + 0x230), lbl_80540758, lbl_80540758, &drawParams);
+    }
+    if (fn_8022C8EC(*(int*)(p + 0x90) & 3)) {
+        fn_80307AC8(*(unsigned int*)(p + 0x198), *(int*)(p + 0x4), &pos, *(int*)(p + 0x230), 0, 0, -1);
+    } else {
+        fn_80307AC8(*(unsigned int*)(p + 0x198), *(int*)(p + 0x4), &pos, *(int*)(p + 0x230), 1, 0, -1);
+    }
+}
+
 extern "C" void* fn_8029CF44(void* this_, short how) {
     if (this_) {
         *(void**)this_ = lbl_804A7BE8;
