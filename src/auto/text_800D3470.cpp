@@ -2999,11 +2999,11 @@ extern "C" u8 fn_800DDB0C(int param_1)
 extern "C" void* fn_800DDB14(void* param_1, short param_2)
 {
   if (param_1 != nullptr) {
-    void* vt1 = &__vt__16J3DPEBlockFogOff;
-    *(void**)param_1 = vt1;
-    void* vt2 = &__vt__10J3DPEBlock;
-    *(void**)param_1 = vt2;
-    if (param_2 > 0) {
+    *(void**)param_1 = &__vt__16J3DPEBlockFogOff;
+    if (param_1 != nullptr) {
+      *(void**)param_1 = &__vt__10J3DPEBlock;
+    }
+    if (0 < param_2) {
       __dl__FPv(param_1);
     }
   }
