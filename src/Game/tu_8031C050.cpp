@@ -7,6 +7,7 @@ extern const f32 lbl_805419BC;
 extern "C" s32 lbl_804AB130[];
 extern "C" char lbl_804716F0[];
 extern "C" u8* lbl_8053AB10;
+extern "C" u8* lbl_8053AAF8;
 extern "C" void fn_802F86CC(void* a, void* b, void* c, s32 d, DrawRec* e, f32 f, f32 g);
 extern "C" void fn_801F06F0(Actor* p, void* b, s32 c, DrawRec* d, s32 e, f32 f, f32 g);
 extern "C" void fn_803075AC(void* a, s32 b, void* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
