@@ -734,6 +734,13 @@ extern "C" void* fn_80179E80(char* self, u32 param_2, u64 id) {
     return result;
 }
 
+extern "C" void* fn_80177DD4(char* self, u64 id);
+extern "C" void* fn_80179EC0(char* self, u32 param_2, u64 id) {
+    void* result = 0;
+    result = (id == (u64)result) ? result : fn_80177DD4(self, id);
+    return result;
+}
+
 extern "C" void fn_8017A468(void) {
     fn_80177E84();
 }
