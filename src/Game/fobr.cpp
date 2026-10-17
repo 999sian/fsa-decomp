@@ -182,6 +182,9 @@ extern "C" void fn_8020B74C(u8* this_) {
     v07__5ActorFv(this_);
 }
 
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_8030C210(void* mgr, f32* pos);
+extern "C" const f32 lbl_8053F9D0;
 extern "C" void fn_8020B798(u8* param_1) {
     u32* ptr = (u32*)(param_1 + 0x230);
     if (*ptr != 0) {
