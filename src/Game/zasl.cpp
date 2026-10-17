@@ -24,6 +24,7 @@ extern "C" bool fn_802265DC(void*, void*, s32);
 extern "C" u8* fn_8020D58C(void);
 extern "C" bool fn_8020D6AC(void*, void*, void*, u32, void*);
 extern "C" char lbl_8053F9E0;
+extern "C" void fn_8020C6E8(void* this_);
 extern "C" s32 fn_801CD664(s32);
 extern "C" s32 fn_801CF6B8(void*);
 extern "C" s32 fn_801CF798(void*, s32);
