@@ -46,6 +46,7 @@ extern "C" s32 fn_800ECFD0(void*, s32, u8, s32, s32, f32, f32);
 extern "C" void fn_8002F358(s32 a, s32 b);
 extern "C" void fn_800EBD88(char* p);
 extern "C" void fn_800589CC(s32 a);
+extern "C" const f64 lbl_80301060;
 extern "C" s32 fn_800E6DA4(void* p);
 extern "C" BOOL fn_800DDA6C(void* p, u8* src) {
     u8* c = (u8*)p;
