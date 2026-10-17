@@ -306,7 +306,7 @@ struct T84List {
 
 static inline void t84PickTarget(char* p) {
     if (*(u8*)(p + 0x33f) == 3) {
-                  s32 l[6];
+                  s32 l[12];
         s32 n = 0;
         l[n++] = 1;
         l[n++] = 2;
