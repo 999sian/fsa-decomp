@@ -22,7 +22,7 @@ struct VObj_80098354 {
     virtual void v13();
     virtual void v14(f32, f32);
     virtual void v15(f32, f32);
-    virtual void v16();
+    virtual void v16(f32, f32, f32, f32);
     virtual void v17(f32, f32);
 };
 
