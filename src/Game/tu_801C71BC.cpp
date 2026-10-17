@@ -40,14 +40,6 @@ extern "C" f32 lbl_8053EEE0;
 extern "C" f32 lbl_8053EEE4;
 extern "C" void* lbl_8053AC98;
 
-static inline f32 fn_801C7370_rnd(void) {
-    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    u32 bits;
-    *seed = *seed * 0x19660d + 0x3c6ef35f;
-    bits = (*seed >> 9) | 0x3f800000;
-    return *(f32*)&bits - lbl_8053EEC8;
-}
-
 extern "C" void fn_801C71BC(char* this_) {
     u8 done;
     u8 ca;
