@@ -1053,8 +1053,7 @@ extern "C" void fn_80127A4C(u8* p, void* a, void* b) {
     s32 i;
     for (i = p[0x3e] - 1; i >= 0; i--) {
         void* e = ((void**)*(void**)(p + 0x30))[i];
-        void* obj = ((void**)e)[1];
-        (**(void (***)(void*, void*, void*, void*))obj)(obj, a, e, b);
+        ((Unk80127A4CListener*)((void**)e)[1])->vf4(a, e, b);
     }
 }
 
