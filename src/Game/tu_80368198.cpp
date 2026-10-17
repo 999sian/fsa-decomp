@@ -100,6 +100,64 @@ struct Obj8036C750 {
     s32 a3ec[5];
     s32 a400[5];
 };
+extern "C" void* __nw__FUl(u32 size);
+extern "C" void __ct__10J2DPictureFPC7ResTIMG(void* this_, void* res);
+extern "C" void fn_8013B490(void* p);
+extern "C" void fn_8011921C(void);
+extern "C" void fn_801183BC(void);
+extern void* lbl_8053AAF8;
+extern char* lbl_8053A1C8;
+extern void* sManager__8JUTVideo;
+extern "C" void fn_80368198(Sub8036C0EC* this_) {
+    char* self = (char*)this_;
+    void* pic;
+    void* res;
+    void* render;
+    s32 arr[4];
+
+    if (*(u8*)(self + 0x270) != 0) {
+        if (*(s32*)(self + 0x274) < 0x80) {
+            *(f32*)(self + 0x290) = *(f32*)(self + 0x290) - 2.0f;
+        } else {
+            *(f32*)(self + 0x290) = *(f32*)(self + 0x290) + 2.0f;
+        }
+        if (*(f32*)(self + 0x290) >= 255.0f) {
+            *(f32*)(self + 0x290) = 255.0f;
+        } else if (*(f32*)(self + 0x290) < 0.0f) {
+            *(f32*)(self + 0x290) = 0.0f;
+        }
+        if (*(void**)(self + 0x314) == 0) {
+            res = ((void* (*)(void*, u32, char*))(*(void***)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x3f3f3f3f, lbl_8053A1C8);
+            pic = __nw__FUl(0x168);
+            if (pic != 0) {
+                __ct__10J2DPictureFPC7ResTIMG(pic, res);
+            }
+            *(void**)(self + 0x314) = pic;
+        }
+        fn_8013B490(lbl_8053AB10);
+        arr[1] = 0;
+        arr[3] = -1;
+        arr[0] = 0;
+        arr[2] = -1;
+        ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x314))[76])(*(void**)(self + 0x314), &arr[3], &arr[1]);
+        ((void (*)(void*, s32))(*(void***)*(void**)(self + 0x314))[9])(*(void**)(self + 0x314), (s32)*(f32*)(self + 0x290));
+        render = *(void**)((char*)sManager__8JUTVideo + 4);
+        ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)*(void**)(self + 0x314))[59])(
+            *(void**)(self + 0x314), 0, 0, 0, 0.0f, 0.0f, (f32)*(u16*)((char*)render + 4), (f32)*(u16*)((char*)render + 6));
+        if (*(s32*)(self + 0x274) == 0x80) {
+            *(u8*)(self + 0x234) = 0;
+            *(u8*)(self + 0x236) = 1;
+            *(s32*)(self + 0x24c) = 1;
+            fn_8036A65C(this_);
+        } else if (*(s32*)(self + 0x274) == 0) {
+            *(u8*)(self + 0x270) = 0;
+            this_->v24(0x26);
+            fn_8011921C();
+            fn_801183BC();
+        }
+    }
+}
+
 void fn_8036A894(u8* this_)
 {
     EffArgs args;
