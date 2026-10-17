@@ -618,12 +618,14 @@ extern "C" void fn_8008E1FC(u32 *param_1, u8 *param_2, s32 param_3, u32 param_4)
     param_1[2] = ptr_val;
     
     switch (param_3) {
-    case 0:
+    case 0: {
+        u32 v = param_1[3];
         if (param_1[2] == 0) return;
-        if (param_1[3] == 0) return;
-        param_1[1] = param_1[3];
+        if (v == 0) return;
+        param_1[1] = v;
         param_1[0] = 0;
         break;
+    }
     case 1:
         if (param_1[2] == 0) return;
         if (param_1[3] == 0) return;
