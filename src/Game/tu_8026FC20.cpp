@@ -3574,7 +3574,7 @@ void fn_8027D320(char* p) {
     po->ofs.z = o[2];
     po->ofs += po->pos;
     if (PTR(p, 0x1274) == NULL) {
-        PTR(p, 0x1274) = fn_8013CC50(PTR(p, 0x3b4), p + 0x8, 0xcb, 0, -1, 0, p + 0x1278, 1, 1.0f);
+        PTR(p, 0x1274) = fn_8013CC50(PTR(p, 0x3b4), p + 0x12a4, 0xcb, 0, -1, 0, p + 0x1278, 1, 1.0f);
         if (PTR(p, 0x1274) != NULL) {
             ((EmitterObj*)PTR(p, 0x1274))->mF4 |= 0x40;
         }
@@ -3585,7 +3585,7 @@ void fn_8027D320(char* p) {
             ((EmitterObj*)PTR(p, 0x128c))->mF4 |= 0x40;
         }
     }
-    S32(p, 0x12c0) = Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x8, (S32(p, 0x4) & 3) | 8, -1, -1);
+    S32(p, 0x12c0) = Actor_CreateByID(fn_801F856C(), 'PEFF', PTR(p, 0x3b4), p + 0x12a4, (S32(p, 0x4) & 3) | 8, -1, -1);
 }
 void fn_8027D4F4(char* p) {
     if (comboFreeSlot(p) >= 4) {
