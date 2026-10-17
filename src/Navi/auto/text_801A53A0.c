@@ -68,6 +68,25 @@ extern "C" void fn_801A6238(u8* param_1) {
     }
 }
 
+extern "C" void fn_801A6664(void) {
+    s32 i;
+    u8* p = lbl_802F0408;
+    for (i = 0; i < 0x100; i++) {
+        p[0] = i >> 6;
+        p[1] = (i >> 4) & 3;
+        p[2] = (i >> 2) & 3;
+        p[3] = i & 3;
+        p += 4;
+    }
+}
+
+extern "C" void fn_801A66A8(u8* param_1, s32 param_2) {
+    if ((u32)(lbl_802FFA80[2] + 0x35) > (u32)lbl_802FFA80[3]) {
+        fn_801E012C();
+    }
+    fn_801A676C(param_1 + 0x64, param_2 * 3 + 0x1e, *param_1);
+}
+
 extern "C" BOOL fn_801A7990(u32** param_1, u32* param_2) {
     param_2[1] = 0;
     param_2[2] = 0;
