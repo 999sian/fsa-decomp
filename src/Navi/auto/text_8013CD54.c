@@ -93,6 +93,16 @@ struct VObj_8013D7E0 {
     virtual void vf20(f32*);
 };
 extern "C" void fn_801E0DB8(void* arr, void* ctor, void* dtor, u32 size, u32 n);
+struct VObj_8013D5DC {
+ virtual void vf00(); virtual void vf01(); virtual void vf02(); virtual void vf03();
+ virtual void vf04(); virtual void vf05(); virtual void vf06(); virtual void vf07();
+ virtual void vf08(); virtual void vf09(); virtual void vf0A(); virtual void vf0B();
+ virtual void vf0C(); virtual void vf0D(); virtual void vf0E(); virtual void vf0F();
+ virtual void vf10(); virtual void vf11(); virtual void vf12(); virtual void vf13();
+ virtual void vf14(); virtual void vf15(); virtual void vf16(); virtual void vf17();
+ virtual void vf18(); virtual void vf19(); virtual void vf1A(); virtual void vf1B();
+ virtual void vf1C(f32*);
+};
 extern "C" void fn_801E10DC(void* p);
 extern void* lbl_8029260C[];
 extern void* lbl_80292500[];
@@ -337,6 +347,50 @@ extern "C" void fn_8013D5BC(void* param_1, s32 param_2, u32* param_3) {
         return;
     }
     *(u8*)((u8*)param_1 + 0x11c) = *param_3 != 0;
+}
+
+extern "C" void fn_8013D5DC(void* param_1, void* param_2) {
+    u8* self = (u8*)param_1;
+    u8* other = (u8*)param_2;
+    f32 pos[3];
+    f32 v[3];
+    f32 m[12];
+    f32* p;
+    f32* q;
+    u8 ok;
+    fn_80133694(self, pos, lbl_80201E90);
+    if (self[0x110] == 0) {
+        if (other[0x74] == 0) {
+            q = pos;
+        } else {
+            fn_801C6630(other + 0x98, pos, v);
+            q = v;
+        }
+        p = q;
+    } else {
+        p = pos;
+        switch (*(s32*)(self + 0x104)) {
+        case 0:
+            if (!fn_8013BAB4(m, pos, *(u32*)(self + 0x108), *(u32*)(self + 0x10c))) {
+                ok = 0;
+            } else {
+                v[0] = m[3];
+                v[1] = m[7];
+                v[2] = m[11];
+                ok = 1;
+            }
+            if (!ok) {
+                return;
+            }
+            p = v;
+            break;
+        case 1:
+            break;
+        }
+    }
+    void* obj = *(void**)(self + 0x100);
+    void (*call)(void*, void*) = *(void (**)(void*, void*))(*(u32*)obj + 0x78);
+    call(obj, p);
 }
 
 extern "C" void fn_80133694(void*, void*, void*);
