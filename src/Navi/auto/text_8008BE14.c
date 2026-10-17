@@ -20,7 +20,21 @@ extern const Arg_8008CF88 lbl_80284BCC;
 extern const Arg_8008CF88 lbl_80284BD8;
 extern u32 lbl_802FEDD8;
 extern s32 lbl_802FEDE4;
-extern "C" void fn_8008CF88(void* self, Arg_8008CF88* arg, s32 n);
+struct StateObj_8008CF88;
+typedef BOOL (StateObj_8008CF88::*StateFunc_8008CF88)(int);
+struct StateObj_8008CF88 {
+    u8 pad[0x2e0];
+    s8 m_state;
+    u8 pad2[3];
+    StateFunc_8008CF88 m_func;
+    u8 pad3[0xc];
+    s32 m_unk2fc[4];
+    f32 m_unk30c[2];
+};
+extern "C" s32 fn_801E10A0(void*);
+extern "C" s32 fn_801E1070(void*);
+extern "C" void fn_801E10DC(void*, void*);
+extern "C" BOOL fn_8008CF88(void* self, Arg_8008CF88* arg, s32 n);
 struct VObj_8008C40C {
     virtual void v0();
     virtual void v1();
@@ -175,6 +189,32 @@ extern "C" void fn_8008D4BC(void) {
     fn_8008C994();
 }
 
+#pragma use_lmw_stmw off
+extern "C" int fn_8008D4DC(char* p) {
+    u16 i;
+    u8 v;
+    char* obj;
+    char* elem;
+    char* o;
+    char* r;
+    *(u32*)(lbl_802EE470 + 0x48) = *(u32*)(lbl_802B7CA0 + 0x142c);
+    *(u32*)(lbl_802EE470 + 0x4c) = *(u32*)(lbl_802B7CA0 + 0x1430);
+    if (*(u8*)(lbl_802C5408 + 0x34) == 0) {
+        obj = *(char**)(*(char**)(p + 0x24c) + 4);
+        for (i = 0; i < *(u16*)(obj + 0x5c); i++) {
+            v = (u8)*(s16*)(lbl_802C5408 + 0x2e);
+            elem = ((char**)*(char**)(obj + 0x60))[i];
+            o = *(char**)(elem + 0x34);
+            r = ((char*(*)(char*))(*(void**)(*(char**)o + 0x3c)))(o);
+            r[2] = v;
+        }
+        fn_8000EBB8(*(void**)(p + 0x24c));
+    }
+    *(u32*)(lbl_802EE470 + 0x48) = *(u32*)(lbl_802B7CA0 + 0x1434);
+    *(u32*)(lbl_802EE470 + 0x4c) = *(u32*)(lbl_802B7CA0 + 0x1438);
+    return 1;
+}
+#pragma use_lmw_stmw reset
 extern "C" BOOL fn_8008D5B4(void);
 extern "C" BOOL fn_8008D5B4(void)
 {
