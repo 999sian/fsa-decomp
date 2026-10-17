@@ -30,6 +30,11 @@ extern "C" u8 fn_8038AD24(s32, s32, s32, s32, void*, s32);
 extern "C" s32 fn_802D6A9C(void);
 extern "C" u8 fn_802D7F40(s32, s32);
 extern "C" s32 lbl_804AAF40[];
+extern "C" u8 lbl_8053A1B0[];
+extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
+extern "C" s32 fn_8023DE58(void);
+extern const f32 lbl_805418F8;
+extern const f32 lbl_805418FC;
 extern "C" Actor* fn_80317EB8(Actor* param_1, s16 param_2)
 {
     if (param_1 != 0) {
@@ -153,6 +158,80 @@ extern "C" void fn_80318B84(Actor* this_)
     }
 }
 
+extern "C" void fn_801EE558(void* this_, void* p, f32* len, s32 p4);
+extern "C" s32 fn_8023DE58(void);
+extern "C" void fn_803190E0(Actor* self)
+{
+    Tu80317Rect rect;
+    Tu80317Vec2 dir;
+    Tu80317Vec3 pos;
+    f32 dist;
+    s32 r;
+    u32 ang;
+
+    u8* p = (u8*)self;
+    rect = *(Tu80317Rect*)(p + 0x60);
+    rect.x0 += *(f32*)(p + 0xc);
+    rect.y0 += *(f32*)(p + 0x10);
+    rect.x1 += *(f32*)(p + 0xc);
+    rect.y1 += *(f32*)(p + 0x10);
+    fn_80239914(&rect, *(s32*)(p + 4), *(s32*)(p + 0x198));
+    *(u64*)&rect.x0 = *(u64*)(p + 0x248);
+    *(u64*)&rect.x1 = *(u64*)(p + 0x250);
+    rect.x0 += *(f32*)(p + 0xc);
+    rect.y0 += *(f32*)(p + 0x10);
+    rect.x1 += *(f32*)(p + 0xc);
+    rect.y1 += *(f32*)(p + 0x10);
+
+    if (*(s32*)(p + 0x230) != 1) {
+        fn_8022FEB8(&rect, *(s32*)(p + 4), *(s32*)(p + 0x198), 1, 0);
+        r = fn_8022FD8C(*(s32*)(p + 0x198));
+        if (r >= 0 && fn_802300EC()) {
+            pos = *(Tu80317Vec3*)(p + 0xc);
+            if (fn_8038C678(r, *(s32*)(p + 0x244), *(s32*)(p + 0x198), *(s32*)(p + 4), &pos, 0x10)) {
+                *(s32*)(p + 0x234) = r;
+                *(s32*)(p + 0x230) = 1;
+            }
+        }
+    } else {
+        fn_8022FF8C(*(s32*)(p + 0x234), &rect, *(s32*)(p + 4), *(s32*)(p + 0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(p + 0x234), *(s32*)(p + 0x198))) {
+            *(s32*)(p + 0x234) = -1;
+            *(s32*)(p + 0x230) = 0;
+        }
+    }
+
+    if (*(s32*)(p + 0x23c) == 1) {
+        if (*(s32*)(p + 0x268) > 0) {
+            *(s32*)(p + 0x268) = *(s32*)(p + 0x268) - 1;
+        } else {
+            *(s32*)(p + 0x268) = 0x14;
+            if (*(s32*)(p + 0x234) < 0 || fn_8023DE58() != *(s32*)(p + 4)) {
+                fn_801EE558(self, &dir, &dist, 0);
+            } else {
+                fn_801EE558(self, &dir, &dist, *(s32*)(p + 0x234) + 1);
+            }
+            if (dist >= 0.0f) {
+                *(s32*)(p + 0x264) = 2;
+            } else {
+                ang = (s32)(JMath::atanTable_.atan2_(-dir.x, -dir.y) * 10430.378f) & 0xffff;
+                if (ang < 0x2000 || ang > 0xdfff) {
+                    *(s32*)(p + 0x264) = 3;
+                } else if (ang < 0x2000 || ang > 0x5fff) {
+                    if (ang < 0x6000 || ang > 0xa000) {
+                        *(s32*)(p + 0x264) = 0;
+                    } else {
+                        *(s32*)(p + 0x264) = 2;
+                    }
+                } else {
+                    *(s32*)(p + 0x264) = 1;
+                }
+            }
+        }
+        *(s32*)(p + 0x25c) = *(s32*)(p + 0x264) << 3;
+    }
+}
+
 extern "C" void fn_803193B4(Actor* this_)
 {
     u8* self = (u8*)this_;
@@ -171,7 +250,10 @@ extern "C" void fn_803193B4(Actor* this_)
     rect.y1 += *(f32*)(self + 0x10);
     fn_80239914(&rect, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
     if (*(s32*)(self + 0x264) == 2) {
-        rect = *(Tu80317Rect*)(self + 0x248);
+        *(s32*)&rect.x0 = *(s32*)(self + 0x248);
+        *(s32*)&rect.y0 = *(s32*)(self + 0x24c);
+        *(s32*)&rect.x1 = *(s32*)(self + 0x250);
+        *(s32*)&rect.y1 = *(s32*)(self + 0x254);
         rect.x0 += *(f32*)(self + 0xc);
         rect.y0 += *(f32*)(self + 0x10);
         rect.x1 += *(f32*)(self + 0xc);
@@ -187,13 +269,13 @@ extern "C" void fn_803193B4(Actor* this_)
         if (!fn_802300EC()) {
             goto tail;
         }
-        vec.xy = *(Tu80317Vec2*)(self + 0xc);
-        vec.z = *(f32*)(self + 0x14);
-        ok = 0;
+        vec = *(Tu80317Vec3*)(self + 0xc);
         if (fn_8038C678(r, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 0x4), &vec, 0x10)) {
             *(s32*)(self + 0x234) = r;
             *(s32*)(self + 0x230) = 1;
             ok = 1;
+        } else {
+            ok = 0;
         }
         if (!ok) {
             goto tail;
