@@ -31,6 +31,15 @@ extern "C" s16 fn_801D02E0(char* this_, void* p);
 extern "C" u8 fn_800FD894(void* ring, s32 id, u8* buf, s32 n);
 extern "C" s32 fn_801CD664(s32 n);
 
+extern "C" f32 lbl_8053EECC;
+extern "C" f32 lbl_8053EED0;
+extern "C" f32 lbl_8053EED4;
+extern "C" f32 lbl_8053EED8;
+extern "C" f32 lbl_8053EEDC;
+extern "C" f32 lbl_8053EEE0;
+extern "C" f32 lbl_8053EEE4;
+extern "C" void* lbl_8053AC98;
+
 extern "C" void fn_801C71BC(char* this_) {
     u8 done;
     u8 ca;
