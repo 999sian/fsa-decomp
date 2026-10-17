@@ -184,11 +184,10 @@ extern "C" void fn_80014160(void* p) {
 
 extern "C" void fn_800141EC(void* p) {
     u8 buf[4];
-    Unk80013DA0* self = (Unk80013DA0*)p;
-    if (fn_80124A50(lbl_802FF370, self->unk50, buf) == 0) {
-        fn_80124AAC(lbl_802FF370, self->unk50, fn_80013CEC, self);
+    if (fn_80124A50(lbl_802FF370, ((Unk80013DA0*)p)->unk50, buf) == 0) {
+        fn_80124AAC(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013CEC, p);
     } else {
-        fn_80124820(lbl_802FF370, self->unk50, fn_80013C14, self);
+        fn_80124820(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013C14, p);
     }
 }
 
