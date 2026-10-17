@@ -147,7 +147,7 @@ extern "C" int fn_801ED520(unsigned long count, int stepOver)
     return result;
 }
 
-extern unsigned char gTRKExceptionStatus_8029F044[];
+extern TRKExceptionStatus_801ECCAC gTRKExceptionStatus_8029F044;
 extern "C" void* memset(void*, int, unsigned long);
 extern "C" int fn_801EE4C0(unsigned long*, unsigned long = 0);
 extern "C" int TRKAppendBuffer_ui8(void*, const void*, int);
@@ -166,10 +166,10 @@ extern "C" void fn_801ED5CC(void* buffer)
     memset(&msg, 0, sizeof(msg));
     msg.msgLength = sizeof(msg);
     msg.command = 0x91;
-    msg.pc = *(unsigned long*)gTRKExceptionStatus_8029F044;
+    msg.pc = gTRKExceptionStatus_8029F044.exceptionInfo.PC;
     fn_801EE4C0(&instr);
     msg.instruction = instr;
-    msg.exceptionID = *(unsigned short*)(gTRKExceptionStatus_8029F044 + 8);
+    msg.exceptionID = gTRKExceptionStatus_8029F044.exceptionInfo.exceptionID;
     TRKAppendBuffer_ui8(buffer, &msg, sizeof(msg));
 }
 
@@ -231,13 +231,14 @@ extern "C" int fn_801EE3CC(unsigned long firstRegister, unsigned long lastRegist
     unsigned long count;
     unsigned long* data;
     TRKExceptionStatus_801ECCAC tempExceptionStatus;
+    TRKExceptionStatus_801ECCAC* status = (TRKExceptionStatus_801ECCAC*)&gTRKExceptionStatus_8029F044;
 
     if (lastRegister > 0x24) {
         return 0x701;
     }
 
-    tempExceptionStatus = *(TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044;
-    ((TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044)->exceptionDetected = 0;
+    tempExceptionStatus = *status;
+    status->exceptionDetected = 0;
 
     data = (unsigned long*)gTRKCPUState + firstRegister;
     count = (lastRegister - firstRegister) + 1;
@@ -249,12 +250,12 @@ extern "C" int fn_801EE3CC(unsigned long firstRegister, unsigned long lastRegist
         error = fn_801EA898(b, (unsigned char*)data, count);
     }
 
-    if (((TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044)->exceptionDetected) {
+    if (status->exceptionDetected) {
         *registersLengthPtr = 0;
         error = 0x702;
     }
 
-    *(TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044 = tempExceptionStatus;
+    *status = tempExceptionStatus;
     return error;
 }
 
