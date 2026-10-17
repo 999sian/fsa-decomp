@@ -24,6 +24,45 @@ extern "C" Actor* fn_80145F60(Actor* this_, s16 n) {
     return this_;
 }
 
+extern "C" void* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(void* entry, s32 a, void* b, s32 d, void* e);
+extern "C" u16 fn_8022461C(void* a, s32 b);
+extern "C" u16 fn_80226850(void* a, s32 b);
+extern "C" u32 lbl_8053D040;
+extern "C" u32 lbl_8053D044;
+extern "C" u32 fn_80145FC0(Actor* a, s32 b, void* c) {
+    u32 tmp[2];
+    tmp[0] = lbl_8053D040;
+    tmp[1] = lbl_8053D044;
+    s32 region = a->field_198;
+    void* base = fn_8020D58C();
+    u8 idx = static_cast<u8*>(base)[1];
+    if (fn_8020D6AC(static_cast<u8*>(base) + idx * 0x784 + 4, b, c, region, tmp) == 1) {
+        return 1;
+    }
+    s32 kind = fn_8022461C(c, b);
+    s32 sub = fn_80226850(c, b);
+    if ((u32)(kind - 0x10) <= 7 || (sub >= 0x140 && sub <= 0x15f)) {
+        return 0;
+    }
+    if (kind != 0x0 && kind != 0x4 && kind != 0x5 && kind != 0x6 && kind != 0x7 && kind != 0x2 && kind != 0x3 &&
+        kind != 0x50 && kind != 0xe && kind != 0xc && kind != 0x27 && kind != 0x28 && kind != 0x29 &&
+        kind != 0x2a && kind != 0x2b && kind != 0x2c && kind != 0x2d && kind != 0x2e && kind != 0x2f &&
+        kind != 0x20 && kind != 0xd && kind != 0x39 && kind != 0x3a && kind != 0x3b && kind != 0x4c &&
+        kind != 0x4d && kind != 0x4e && kind != 0x4f && kind != 0x24 && kind != 0x23) {
+        if (kind == 0x25) {
+            return ((u8*)fn_802D6A9C())[0x171] == 0;
+        }
+        if (kind == 0x26) {
+            return ((u8*)fn_802D6A9C())[0x171] == 1;
+        }
+        if (kind != 0x22 || ((u8*)fn_802D6A9C())[0x170] == 1) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 extern "C" const f32 lbl_8053D048;
 extern "C" char lbl_80465BC0[];
 extern "C" void fn_801F06F0(void* this_, void* p, s32 n, void* ids, s32 flag, f32 fa, f32 fb);
