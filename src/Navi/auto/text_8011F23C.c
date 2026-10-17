@@ -2009,6 +2009,13 @@ extern "C" void fn_80132D1C(u32 p, u32 q) {
     fn_80167A18(&arr[2], (void*)(p + 4), &arr[3], (void*)(q + 4));
 }
 
+extern "C" u8* fn_80132E20(u8* p, u8* a) {
+    fn_8013AF98(p, a);
+    *(void**)p = lbl_80291450;
+    fn_80139DEC(p + 8, a + 0x60);
+    return p;
+}
+
 extern "C" void fn_80132FA0(void);
 extern "C" void fn_8013B140(void);
 extern "C" void fn_80132F5C(u32 param_1, s32* param_2) {
