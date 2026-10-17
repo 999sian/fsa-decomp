@@ -64,7 +64,7 @@ public:
     virtual void v43(f32*, f32*, s32*);
     virtual void v44(f32*, f32*, s32*);
     virtual void v45(f32*, f32*, s32*);
-    virtual void v46();
+    virtual void v46(f32*, f32*, s32*);
     virtual u8 v47();
     virtual u8 v48();
     virtual u8 v49();
