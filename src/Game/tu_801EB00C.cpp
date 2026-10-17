@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry.h"
 
 extern "C" void fn_801EE434(void*);
 extern "C" void __dl__FPv(void*);
