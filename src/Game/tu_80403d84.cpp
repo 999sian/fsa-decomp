@@ -807,6 +807,23 @@ static inline void killEmitter(JPABaseEmitter** e) {
 	*e = 0;
 }
 
+static inline void stopEmitter(void* e) {
+	*(u32*)((u8*)e + 0xf4) |= 1;
+	*(s32*)((u8*)e + 0x24) = 1;
+}
+
+static inline void delSlot(u8* p) {
+	void* o = *(void**)p;
+	if (o) ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+	*(void**)p = 0;
+}
+
+static inline void delSlot2(u8* p) {
+	void* o = *(void**)p;
+	if (o) ((void (*)(void*, s32))(*(void***)((u8*)o + 8))[12])(o, 1);
+	*(void**)p = 0;
+}
+
 struct E720 {
 	u8 pad[0x2c8];
 	SoundHolder* sound;
