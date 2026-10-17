@@ -49,14 +49,6 @@ extern "C" bool fn_8030C058(u8* p, f32* v) {
     return ret;
 }
 
-static inline bool fn_8030C058_in(u8* p, f32* v) {
-    bool in = false;
-    if (v[0] >= *(f32*)(p + 0x154) && v[1] >= *(f32*)(p + 0x158) && v[0] < *(f32*)(p + 0x15c) && v[1] < *(f32*)(p + 0x160)) {
-        in = true;
-    }
-    return in;
-}
-
 extern "C" bool fn_8030C210(u8* p, f32* v) {
     bool ret = false;
     s32 n = *(s32*)(p + 0x7f0);
