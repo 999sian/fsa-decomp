@@ -109,6 +109,90 @@ extern "C" void fn_801AC8EC(char* this_) {
     }
 }
 
+extern "C" void* fn_804032E8(u32 type, const char* name);
+extern "C" void fn_801EFD34(void* this_, void* res, void* rec, s32 n, f32 a, f32 b, f32 c);
+extern const char* lbl_804A3208[];
+extern void* lbl_8053AAF8;
+extern "C" void fn_801AC930(void* this_) {
+    struct {
+        u8 idx[16];
+        s32 a;
+        s32 b;
+        f32* p;
+        u8 c[11];
+        s32 d;
+        u8 e[3];
+        s32 f;
+        s32 g;
+        s32 h;
+    } blk;
+    f32 local_78[12];
+    s32 r5;
+    void* uVar1;
+    u8 i;
+
+    blk.a = -1;
+    blk.b = -1;
+    for (i = 0; i < 16; i += 8) {
+        blk.idx[(u8)i] = i;
+        blk.idx[(u8)(i + 1)] = i + 1;
+        blk.idx[(u8)(i + 2)] = i + 2;
+        blk.idx[(u8)(i + 3)] = i + 3;
+        blk.idx[(u8)(i + 4)] = i + 4;
+        blk.idx[(u8)(i + 5)] = i + 5;
+        blk.idx[(u8)(i + 6)] = i + 6;
+        blk.idx[(u8)(i + 7)] = i + 7;
+    }
+    blk.a = -1;
+    blk.b = 0;
+    blk.p = 0;
+    blk.c[0] = 0;
+    blk.c[1] = 0;
+    blk.c[2] = 0;
+    blk.c[3] = 1;
+    blk.c[4] = 1;
+    blk.c[5] = 0;
+    blk.c[6] = 0;
+    blk.c[7] = 0;
+    blk.c[8] = 0;
+    blk.c[9] = 0;
+    blk.c[10] = 1;
+    blk.d = 3;
+    blk.e[0] = 1;
+    blk.e[1] = 0;
+    blk.e[2] = 0;
+    blk.f = -1;
+    blk.g = 0;
+    blk.h = 2;
+
+    r5 = *(s32*)((char*)this_ + 0x258);
+    if ((*(u32*)((char*)this_ + 0x244) & 2) == 0) {
+        if (r5 > 2 && r5 - 12 > 2 && r5 - 24 > 1 && r5 == 0x20) {
+            local_78[0] = -1.0f * *(f32*)((char*)this_ + 0x274);
+            local_78[1] = 0.0f;
+            local_78[2] = 0.0f;
+            local_78[3] = 0.0f;
+            local_78[4] = 0.0f;
+            local_78[5] = *(f32*)((char*)this_ + 0x278);
+            local_78[6] = 0.0f;
+            local_78[7] = 0.0f;
+            local_78[8] = 0.0f;
+            local_78[9] = 0.0f;
+            local_78[10] = *(f32*)((char*)this_ + 0x278);
+            local_78[11] = 0.0f;
+            blk.p = local_78;
+            blk.b = r5;
+        }
+        if (*(s32*)((char*)this_ + 0x294) == 1) {
+            uVar1 = fn_804032E8(0x54494D47, lbl_804A3208[r5 + 0x24]);
+        } else {
+            uVar1 = ((void* (*)(void*, u32, const char*))((void**)*(void**)lbl_8053AAF8)[6])(
+                *(void**)((char*)lbl_8053AAF8 + 0xa4), 0x54494D47, lbl_804A3208[r5]);
+        }
+        fn_801EFD34(this_, uVar1, &blk, 7, 0.0f, -2.0f, 0.0f);
+    }
+}
+
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void __dl__FPv(void* this_);
 extern "C" void fn_801EE434(void* handle);
@@ -143,6 +227,113 @@ extern "C" void* fn_801ACC14(char* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_801AE5AC(void* this_);
+extern void* lbl_8053AF80;
+extern "C" void fn_80458F9C(void* a, u32 b);
+extern "C" void fn_801AE32C(void* this_) {
+    char* t = (char*)this_;
+    u32* seed;
+    u32 bits;
+    f32 r;
+
+    *(f32*)(t + 0x60) = -8.0f;
+    *(f32*)(t + 0x64) = -8.0f;
+    *(f32*)(t + 0x68) = 8.0f;
+    *(f32*)(t + 0x6c) = 8.0f;
+    *(f32*)(t + 0x80) = -8.0f;
+    *(f32*)(t + 0x84) = -8.0f;
+    *(f32*)(t + 0x88) = 8.0f;
+    *(f32*)(t + 0x8c) = 8.0f;
+    *(s32*)(t + 0x234) = *(u32*)(t + 0x90) & 0xf;
+    *(s32*)(t + 0x294) = (*(u32*)(t + 0x90) >> 4) & 0xf;
+    *(s32*)(t + 0x24c) = 0;
+    *(s32*)(t + 0x250) = 0;
+    *(s32*)(t + 0x254) = 0;
+    *(s32*)(t + 0x238) = 0;
+    *(s32*)(t + 0x23c) = 0;
+    *(s32*)(t + 0x240) = 0;
+    *(s32*)(t + 0x244) = 0;
+    *(s32*)(t + 0x248) = 0;
+    *(s32*)(t + 0x29c) = 0;
+    *(s32*)(t + 0x2a0) = 0;
+    *(f32*)(t + 0x274) = 1.0f;
+    *(f32*)(t + 0x278) = 1.0f;
+    *(f32*)(t + 0x27c) = 1.0f;
+    *(f32*)(t + 0x280) = 1.0f;
+    *(f32*)(t + 0x284) = 1.0f;
+    *(f32*)(t + 0x288) = 1.0f;
+    *(s32*)(t + 0x264) = -1;
+    *(s32*)(t + 0x28c) = 0;
+    *(s32*)(t + 0x290) = -1;
+    *(s32*)(t + 0x260) = -1;
+    *(u8*)(t + 0x298) = 0;
+
+    seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    bits = (*seed >> 9) | 0x3f800000;
+    r = *(f32*)&bits;
+    *(s32*)(t + 0x98) = (s32)(4.0f * (r - 1.0f));
+    *(s32*)(t + 0x98) = *(s32*)(t + 0x98) & 3;
+
+    if (*(s32*)(t + 0x290) != 0) {
+        *(s32*)(t + 0x290) = 0;
+        *(u8*)(t + 0x298) = 0;
+        *(s32*)(t + 0x238) = 0;
+        *(s32*)(t + 0x24c) = 0;
+        switch (*(s32*)(t + 0x290)) {
+        case 0:
+            *(s32*)(t + 0x28c) = 0;
+            break;
+        case 1:
+            *(s32*)(t + 0x28c) = 0xc;
+            *(s32*)(t + 0x258) = *(s32*)(t + 0x28c);
+            break;
+        case 2:
+            *(s32*)(t + 0x28c) = 0x18;
+            break;
+        case 3:
+            *(s32*)(t + 0x28c) = 0x20;
+            break;
+        case 4:
+            *(s32*)(t + 0x28c) = 0x24;
+            break;
+        }
+    }
+
+    fn_801AE5AC(this_);
+    *(f32*)(t + 0x270) = 0.0f;
+    *(f32*)(t + 0x26c) = 0.0f;
+    *(f32*)(t + 0x268) = 0.0f;
+    *(f32*)(t + 0x44) = 0.0f;
+    *(f32*)(t + 0x40) = 0.0f;
+    *(f32*)(t + 0x3c) = 0.0f;
+    *(s32*)(t + 0x108) = 10000;
+    *(s32*)(t + 0x25c) = 3;
+
+    if (*(s32*)(t + 0x234) == 0 || *(s32*)(t + 0x234) == 2) {
+        *(s32*)(t + 0xb8) = 1;
+        *(s32*)(t + 0xb0) = 0xa040004;
+    }
+
+    switch (*(s32*)(t + 0x234)) {
+    case 0:
+        *(s32*)(t + 0x230) = 1;
+        break;
+    case 1:
+        *(s32*)(t + 0x230) = 0xc;
+        break;
+    case 2:
+        if (lbl_8053ABE0 == 0) {
+            fn_80458F9C(lbl_8053AF80, 0x3c);
+            *(s32*)(t + 0x230) = 0;
+            lbl_8053ABE0++;
+        } else {
+            *(s32*)(t + 0x230) = 1;
+        }
+        break;
+    }
 }
 
 extern "C" void fn_801ACFF4(void* this_);
