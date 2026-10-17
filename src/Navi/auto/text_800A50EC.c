@@ -6,6 +6,10 @@ struct VObj_800A1A64 {
     virtual void v3();
     virtual void v4(f32 x, f32 y);
     virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(u8 a);
 };
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -156,8 +160,7 @@ extern "C" void fn_800F0D04(void*, void*, u8);
 extern "C" void fn_800AA92C(u8* p)
 {
     s32 r1 = fn_800AEE04(p, *(s16*)(p + 0x3d8), lbl_802C5524[0x58], 1);
-    u8* t = lbl_802C5524;
-    s32 r2 = fn_800AE784(p, *(s16*)(p + 0x3d8), t[0x4c], *(f32*)(t + 0x50), lbl_80300BFC, 0, 0);
+    s32 r2 = fn_800AE784(p, *(s16*)(p + 0x3d8), lbl_802C5524[0x4c], *(f32*)(lbl_802C5524 + 0x50), lbl_80300BFC, 0, 0);
     *(s16*)(p + 0x3d8) = *(s16*)(p + 0x3d8) + 1;
     if (r1 == 1 && r2 == 1) {
         *(s16*)(p + 0x3d8) = 0;
@@ -231,6 +234,16 @@ extern "C" void fn_800AC610(u8* p) {
 }
 
 extern "C" void fn_800AC654(void) {}
+
+extern "C" void fn_800AC658(u8* p) {
+    VObj_800A1A64* obj = *(VObj_800A1A64**)(p + 0xa4);
+    obj->v4(*(f32*)(p + 0xa8), *(f32*)(p + 0xac) + lbl_80300C0C * (f32)p[0x3b0]);
+}
+
+extern "C" void fn_800AC6BC(u8* p) {
+    VObj_800A1A64* obj = *(VObj_800A1A64**)(p + 0xa4);
+    obj->v4(*(f32*)(p + 0xa8), *(f32*)(p + 0xac) + (*(f32*)(lbl_802C5524 + 0x6c) + lbl_80300C0C * (f32)(p[0x3b4] + 1)));
+}
 
 extern "C" u32 fn_800AD744(void* param_1, u8* param_2, u8* param_3) {
     u8 r6 = param_2[0];
