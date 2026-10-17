@@ -1038,6 +1038,14 @@ extern "C" void* fn_8015C788(u32 size, void* heap, void* arg) {
     return fn_8015C89C(p, q, size - 0x80, heap, arg);
 }
 
+extern "C" void fn_8015C83C(Unk8015AD64* p) {
+    u32 iVar = *(u32*)(*(u32*)((u8*)p + 0x50) + 0xc);
+    if (iVar != 0) {
+        p->vf08(-1);
+        fn_80159C6C(p, iVar);
+    }
+}
+
 extern void* lbl_802977D0[];
 extern "C" void* fn_8015C8F8(void* p, s16 param_2) {
     if (p != nullptr) {
