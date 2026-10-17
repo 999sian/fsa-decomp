@@ -1,5 +1,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+extern "C" void* fn_8015A90C(s32 size);
+extern "C" void* lbl_802FF310;
 extern "C" void fn_801DE4F4(s32, void*);
 extern "C" void fn_8013F0A8(s32 idx, u8* out);
 extern "C" void fn_801191F0(void*, s32);
