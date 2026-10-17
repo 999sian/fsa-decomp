@@ -814,13 +814,3 @@ extern "C" void fn_80040084(s16 param_1, s16 param_2, s16 param_3, f32 factor) {
     lbl_802FEFF4[1] = (s16)(s32)d2;
     lbl_802FEFF4[2] = (s16)(s32)d3;
 }
-extern "C" void fn_80041190(s32 arg);
-extern void (*lbl_802FF05C)(s32);
-extern s8 lbl_802FF060;
-extern s16 lbl_802FF062;
-extern s16 lbl_802FF064;
-extern s16 lbl_802FF066;
-extern s16 lbl_802FF068;
-extern f32 lbl_802FF06C;
-extern f32 lbl_802FF070;
-extern f32 lbl_802FEF5C;
