@@ -132,37 +132,61 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void fn_801933DC(u32 a, u32 b, u32 c, f32* out, f32 x, f32 y, f32 z) {
-    extern u8 lbl_802F0BC0[];
-    u32 ia = (a >> 2) & 0x3FF8;
-    u32 ib = (b >> 2) & 0x3FF8;
-    u32 ic = (c >> 2) & 0x3FF8;
-    f32 sa = *(f32*)(lbl_802F0BC0 + ia);
-    f32 ca = *(f32*)(lbl_802F0BC0 + ia + 4);
-    f32 sb = *(f32*)(lbl_802F0BC0 + ib);
-    f32 cb = *(f32*)(lbl_802F0BC0 + ib + 4);
-    f32 sc = *(f32*)(lbl_802F0BC0 + ic);
-    f32 cc = *(f32*)(lbl_802F0BC0 + ic + 4);
-    out[0] = cc * cb;
-    out[1] = sa * cc * sb - ca * sc;
-    out[2] = sa * sc + ca * cc * sb;
-    out[3] = x;
-    out[4] = sc * cb;
-    out[5] = ca * cc + sa * sc * sb;
-    out[6] = ca * sc * sb - sa * cc;
-    out[7] = y;
-    out[8] = -sb;
-    out[9] = cb * sa;
-    out[10] = cb * ca;
-    out[11] = z;
+extern "C" s32 fn_8019323C(f32 (*m)[4], f32* out) {
+    f32 c00 = m[1][1] * m[2][2] - m[1][2] * m[2][1];
+    f32 c01 = m[1][2] * m[2][0] - m[1][0] * m[2][2];
+    f32 c02 = m[1][0] * m[2][1] - m[1][1] * m[2][0];
+    f32 c10 = m[0][2] * m[2][1] - m[0][1] * m[2][2];
+    f32 c11 = m[0][0] * m[2][2] - m[0][2] * m[2][0];
+    f32 c12 = m[0][1] * m[2][0] - m[0][0] * m[2][1];
+    f32 c20 = m[0][1] * m[1][2] - m[0][2] * m[1][1];
+    f32 c21 = m[0][2] * m[1][0] - m[0][0] * m[1][2];
+    f32 c22 = m[0][0] * m[1][1] - m[0][1] * m[1][0];
+    f32 det = m[0][0] * c00 + m[1][0] * c10 + m[2][0] * c20;
+    if (det == 0.0f) {
+        return 0;
+    }
+    f32 invDet = 1.0f / det;
+    out[0] = c00 * invDet;
+    out[1] = c01 * invDet;
+    out[2] = c02 * invDet;
+    out[3] = c10 * invDet;
+    out[4] = c11 * invDet;
+    out[5] = c12 * invDet;
+    out[6] = c20 * invDet;
+    out[7] = c21 * invDet;
+    out[8] = c22 * invDet;
+    return 1;
 }
 
 #pragma fp_contract off
+extern "C" void fn_801933DC(u32 a, u32 b, u32 c, f32* out, f32 x, f32 y, f32 z) {
+    extern u8 lbl_802F0BC0[];
+    f32 sb = *(f32*)(lbl_802F0BC0 + ((b >> 2) & 0x3FF8));
+    f32 cb = *(f32*)(lbl_802F0BC0 + ((b >> 2) & 0x3FF8) + 4);
+    f32 cc = *(f32*)(lbl_802F0BC0 + ((c >> 2) & 0x3FF8) + 4);
+    f32 sa = *(f32*)(lbl_802F0BC0 + ((a >> 2) & 0x3FF8));
+    f32 ca = *(f32*)(lbl_802F0BC0 + ((a >> 2) & 0x3FF8) + 4);
+    f32 sc = *(f32*)(lbl_802F0BC0 + ((c >> 2) & 0x3FF8));
+    out[8] = -sb;
+    out[0] = cc * cb;
+    out[4] = sc * cb;
+    out[9] = cb * sa;
+    out[10] = cb * ca;
+    out[1] = sa * cc * sb - ca * sc;
+    out[6] = ca * sc * sb - sa * cc;
+    out[2] = sa * sc + ca * cc * sb;
+    out[5] = ca * cc + sa * sc * sb;
+    out[3] = x;
+    out[7] = y;
+    out[11] = z;
+}
+#pragma fp_contract reset
 extern "C" void fn_8019349C(f32* p, f32* q, f32* out) {
     extern u8 lbl_802F0BC0[];
     u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
-    f32 c = *(f32*)(lbl_802F0BC0 + idx + 4);
     f32 s = *(f32*)(lbl_802F0BC0 + idx);
+    f32 c = *(f32*)(lbl_802F0BC0 + idx + 4);
     f32 x = p[0];
     f32 y = p[1];
     out[0] = x * c;
@@ -558,15 +582,18 @@ extern "C" void fn_801941F8(u32* p) {
 
 extern "C" void fn_8019428C(u32* p) {
     extern void* lbl_80299A2C[];
-    p[0] = (u32)lbl_80299A8C;
+    void* a = lbl_80299A8C;
+    void* b = lbl_80299A78;
+    void* c = lbl_80299A2C;
+    p[0] = (u32)a;
     p[1] = 0;
     p[2] = 0;
     p[3] = 0;
-    p[0] = (u32)lbl_80299A78;
+    p[0] = (u32)b;
     p[4] = 0;
     p[8] = 0;
     p[9] = 0;
-    p[0] = (u32)lbl_80299A2C;
+    p[0] = (u32)c;
     p[10] = 0;
     p[11] = 0;
     p[12] = 0;
@@ -736,6 +763,17 @@ extern "C" void fn_801953A4(void* p, u32 param_2, u32 param_3) {
     if (lbl_802FF6C4 == 0x2000) {
         fn_80191BB8(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), param_2 + 0x1e);
     }
+}
+
+extern "C" void fn_80195458(Navi801951A0* p, u32 param_2, u32 param_3) {
+    u8 buf[48];
+    fn_801C5DA8(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), (u8*)*(u32*)(lbl_802EE470 + 0x104) + (u16)param_3 * 0x30, buf);
+    fn_801C5DA8((u32)buf, (u8*)*(u32*)(*(u32*)(*(u32*)(lbl_802EE470 + 0x38) + 4) + 0x3c) + (param_3 & 0xffff) * 0x30, buf);
+    if (lbl_802FF6D0 != 0) {
+        fn_80194BB0(buf);
+    }
+    fn_80191A60(buf, param_2 * 3);
+    p->v7(param_2, param_3, buf);
 }
 
 extern "C" void fn_8019552C(u8* p) {
