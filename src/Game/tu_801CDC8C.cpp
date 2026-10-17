@@ -563,7 +563,7 @@ extern "C" u8 fn_801CFA70(ItemBase* this_, f32* a, f32* b, s32 idx) {
     return result;
 }
 
-extern "C" u8 fn_801CFD68(f32 v);
+extern "C" u8 fn_801CFD68(u8* this_, s32 idx, f32 v);
 extern const f32 lbl_8053EFFC;
 extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
     f32 v = lbl_8053EFFC;
@@ -581,7 +581,7 @@ extern "C" u8 fn_801CFCF0(u8* this_, s32 idx) {
         v -= *(f32*)(this_ + 0x84);
         break;
     }
-    return fn_801CFD68(v);
+    return fn_801CFD68(this_, idx, v);
 }
 
 extern "C" s32 fn_801D0020(u8* this_, f32* pos, s32 idx, u8 flag) {
@@ -685,6 +685,131 @@ extern "C" s16 fn_801D02E0(u8* this_, const Vec& pos) {
     f32 py = pos.y;
     return lbl_8053EFEC * JMAAtan2Radian(px - *(f32*)(this_ + 0xc), py - *(f32*)(this_ + 0x10));
 }
+
+extern "C" s32 fn_801D05F8(u8* this_, JGeometry::TVec2<f32>* pos, f32 radius) {
+    s32 best = -1;
+    f32 bestDist = *(f32*)__float_max;
+    f32 r2 = radius * radius;
+    for (s32 i = 0; i < 4; i++) {
+        bool ok = false;
+        if (fn_801CCFE4(i)) {
+            bool match = false;
+            switch (*(u32*)(this_ + 0x1a0)) {
+            case 'KEPO':
+            case 'FLOR':
+            case 'FBGE':
+            case 'FALL':
+            case 'HRMN':
+            case 'TINK':
+            case 'SLK2':
+            case 'NAVI':
+            case 'TZOK':
+                match = fn_8023DE58(i) == *(s32*)(this_ + 0x4);
+                break;
+            default:
+                match = fn_801F320C(this_, i);
+                break;
+            }
+            if (match) {
+                switch (*(u32*)(this_ + 0x1a0)) {
+                case 'NAVI':
+                case 'HRMN':
+                case 'FLOR':
+                case 'FALL':
+                case 'KEPO':
+                case 'TNDR':
+                case 'TINK':
+                case 'TZOK':
+                    ok = fn_8022CAF8(i) == 4 || !fn_8022F514(i);
+                    break;
+                default:
+                    ok = true;
+                    break;
+                }
+            }
+        }
+        if (ok) {
+            JGeometry::TVec3<f32>* arr = (JGeometry::TVec3<f32>*)(this_ + 0x1ac);
+            f32 dx = arr[i].x - pos->x;
+            f32 dy = arr[i].y - pos->y;
+            f32 d2 = dx * dx + dy * dy;
+            if (d2 < bestDist && (radius == lbl_8053EFC4 || d2 <= r2)) {
+                bestDist = d2;
+                best = i;
+            }
+        }
+    }
+    return best;
+}
+
+#pragma fp_contract off
+extern "C" s32 fn_801D08B4(u8* this_, s32 id, f32 radius, f32* point) {
+    s32 result;
+    u8 flag;
+    s32 ok;
+
+    result = 0;
+    if (id >= 0 && id < 4) {
+        flag = 0;
+        if (fn_801CCFE4(id)) {
+            ok = 0;
+            switch (*(s32*)(this_ + 0x1a0)) {
+            case 0x4b45504f:
+            case 0x464c4f52:
+            case 0x46424745:
+            case 0x46414c4c:
+            case 0x48524d4e:
+            case 0x54494e4b:
+            case 0x534c4b32:
+            case 0x4e415649:
+            case 0x545a4f4b: {
+                s32 room = *(s32*)(this_ + 4);
+                s32 roomId = fn_8023DE58(id);
+                if (roomId == room) {
+                    ok = 1;
+                }
+                break;
+            }
+            default:
+                ok = fn_801F320C(this_, id);
+                break;
+            }
+            if ((u8)ok) {
+                switch (*(s32*)(this_ + 0x1a0)) {
+                case 0x4e415649:
+                case 0x48524d4e:
+                case 0x464c4f52:
+                case 0x46414c4c:
+                case 0x4b45504f:
+                case 0x544e4452:
+                case 0x54494e4b:
+                case 0x545a4f4b:
+                    if (fn_8022CAF8(id) == 4) {
+                        flag = 1;
+                    } else if (!fn_8022F514(id)) {
+                        flag = 1;
+                    }
+                    break;
+                default:
+                    flag = 1;
+                    break;
+                }
+            }
+        }
+        if (flag) {
+            f32 radiusSq = radius * radius;
+            f32* record = (f32*)(this_ + id * 0xc + 0x1ac);
+            f32 dz = record[1] - point[1];
+            f32 dx = record[0] - point[0];
+            f32 distSq = dx * dx + dz * dz;
+            if (!(distSq <= radiusSq)) {
+                result = 1;
+            }
+        }
+    }
+    return result;
+}
+#pragma fp_contract reset
 
 extern "C" u8 fn_801CCFE4(u32 id);
 extern "C" u32 fn_801F320C(u8* this_, u32 id);
