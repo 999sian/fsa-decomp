@@ -17,6 +17,19 @@ extern "C" const f32 lbl_8053E370;
 extern "C" const f32 lbl_8053E374;
 extern "C" const f32 lbl_8053E378;
 extern "C" const f32 lbl_8053E37C;
+extern "C" const f32 lbl_8053E380;
+extern "C" const f32 lbl_8053E384;
+extern "C" const f32 lbl_8053E388;
+extern "C" const f32 lbl_8053E38C;
+extern "C" const f32 lbl_8053E390;
+extern "C" const f32 lbl_8053E394;
+extern "C" const f64 lbl_8053E398;
+extern "C" s32 lbl_8053ABA0;
+extern "C" s32 lbl_8053ABA4;
+extern "C" const u16 lbl_804A28FC[];
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+extern "C" s32 fn_8013CC50(u32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern "C" char* lbl_8053AB10;
 extern "C" void fn_8030C210(void* p, JGeometry::TVec3<f32>* v);
 extern "C" void fn_80198828(u8*);
@@ -230,6 +243,55 @@ extern "C" const f32 lbl_8053E370;
 extern "C" const f32 lbl_8053E388;
 
 extern "C" void fn_8019C5B8(u8* this_) {
+    if (*(s32*)(this_ + 0x90) == 1 && *(s32*)(this_ + 0x230) != 0x49) {
+        u8* src = (u8*)fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x25c));
+        if (src != 0) {
+            s32 idx = *(s32*)(this_ + 0xa0);
+            if (idx >= 0) {
+                src = (u8*)fn_801F666C(fn_801F856C(), idx);
+                if (src != 0 && *(u32*)(src + 0x1a0) == 0x41525257) {
+                    *(f32*)(this_ + 0xc) = *(f32*)(src + 0xc);
+                    *(f32*)(this_ + 0x10) = *(f32*)(src + 0x10);
+                    *(f32*)(this_ + 0x14) = *(f32*)(src + 0x14);
+                    if (*(s32*)(src + 0x26c) >= 1) {
+                        *(s32*)(this_ + 0x250) = -1;
+                    } else {
+                        u8* p;
+                        s32 i;
+                        if (*(s32*)(this_ + 0x250) == 0) {
+                            *(s32*)(this_ + 0x250) = lbl_8053A100;
+                            *(s32*)(this_ + 0x250) += 1;
+                            for (i = 0, p = this_; i < 3; i++, p += 4) {
+                                if (*(void**)(p + 0x304) != 0) {
+                                    void* mgr = fn_8013C824();
+                                    forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)mgr + 0xc), *(void**)(p + 0x304));
+                                    *(void**)(p + 0x304) = 0;
+                                }
+                            }
+                            fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E370, 0xb5, 1, 5, 0, 0, 1);
+                            fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E370, 0xb6, 1, 5, 0, 0, 1);
+                            if (*(void**)(this_ + 0x304) == 0) {
+                                *(s32*)(this_ + 0x304) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E370, 0x199, 1, 5, 0, 0, 1);
+                            }
+                            if (*(void**)(this_ + 0x308) == 0) {
+                                *(s32*)(this_ + 0x308) = fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, lbl_8053E370, 0x19a, 1, 5, 0, 0, 1);
+                            }
+                        }
+                        *(f32*)(this_ + 0x44) = lbl_8053E388;
+                        *(f32*)(this_ + 0x40) = lbl_8053E388;
+                        *(f32*)(this_ + 0x3c) = lbl_8053E388;
+                        *(f32*)(this_ + 0x27c) = lbl_8053E388;
+                        *(f32*)(this_ + 0x278) = lbl_8053E388;
+                        *(f32*)(this_ + 0x274) = lbl_8053E388;
+                        p = this_;
+                        for (i = 0; i < 13; i++, p += 4) {
+                            fn_8013CB44(*(void**)(p + 0x304), this_ + 0xc, 1, 5, 1);
+                        }
+                    }
+                }
+            }
+        }
+    }
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
