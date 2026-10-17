@@ -1033,6 +1033,16 @@ extern "C" void fn_80127954(void* p, void* a, void* b) {
     }
 }
 
+#pragma use_lmw_stmw off
+extern "C" void fn_801279D0(u8* p, void* a, void* b) {
+    s32 i;
+    if (*(void**)(p + 0x14) != 0) {
+        for (i = p[0x46] - 1; i >= 0; i--) {
+            ((void (**)(void*, void*))(*(u8**)(p + 0x14)))[i](a, b);
+        }
+    }
+}
+#pragma use_lmw_stmw reset
 extern "C" void fn_80127DD4(void* param_1, u8* self) {
     f32 mtx[3][4];
     fn_80132450(*(s16*)(*(u8**)self + 0x4c) * 0xb6, *(s16*)(*(u8**)self + 0x4e) * 0xb6, *(s16*)(*(u8**)self + 0x50) * 0xb6, mtx);
@@ -1539,6 +1549,23 @@ extern "C" void fn_8012B8B4(u8* p, void* arg) {
     if (sub != 0) {
         sub->vf4(obj, arg);
     }
+}
+
+extern "C" void fn_8012BDD0(u8* p, u8* q) {
+    f32 r = *(f32*)(p + 0x1fc);
+    u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
+    u8* b = *(u8**)a;
+    if (r < *(f32*)(b + 0xc)) {
+        f32 t = r * *(f32*)(a + 0xc);
+        *(f32*)(q + 0x60) = *(f32*)(q + 0x68) * (t + *(f32*)(b + 0x14));
+        return;
+    }
+    if (r > *(f32*)(b + 0x10)) {
+        f32 t = (r - *(f32*)(b + 0x10)) * *(f32*)(a + 0x14);
+        *(f32*)(q + 0x60) = *(f32*)(q + 0x68) * (lbl_803016B8 + t);
+        return;
+    }
+    *(f32*)(q + 0x60) = *(f32*)(q + 0x68);
 }
 
 extern "C" void fn_8012BE48(u8* p, u8* q) {
