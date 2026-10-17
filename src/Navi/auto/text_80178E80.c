@@ -2,7 +2,6 @@
 
 #include "types.h"
 struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
-struct NaviDst_8018B770 { u8 pad0[4]; u8 f4; u8 pad1; s16 s6; f32 f8; u8 pad2[4]; u16 h10; u16 h12; void* p[10]; };
 struct VObj_8005E8B8 {
     virtual void v0();
     virtual void v1();
@@ -2427,27 +2426,25 @@ extern "C" void fn_8018B748(void* self, void* src) {
 }
 
 extern "C" void fn_8018B770(void* self, void* dst, void* src) {
-    struct NaviSrc_8018B770* s = (struct NaviSrc_8018B770*)src;
-    struct NaviDst_8018B770* d = (struct NaviDst_8018B770*)dst;
-    u8 flag = s->flag;
-    d->s6 = s->sa;
-    u16 a = s->ua;
-    d->f4 = flag;
-    u16 b = s->ub;
-    d->f8 = lbl_80301C30;
-    d->h10 = a;
-    u32 c = s->w[0];
-    d->h12 = b;
-    d->p[4] = fn_8018C290(src, c);
-    d->p[5] = fn_8018C290(src, s->w[1]);
-    d->p[0] = fn_8018C278(src, s->w[2]);
-    d->p[1] = fn_8018C278(src, s->w[3]);
-    d->p[2] = fn_80174BA0(src, s->w[4]);
-    d->p[3] = fn_80174BA0(src, s->w[5]);
-    d->p[6] = fn_8018C2D8(src, s->w[6]);
-    d->p[7] = fn_8018C2D8(src, s->w[7]);
-    d->p[8] = fn_8018C2D8(src, s->w[8]);
-    d->p[9] = fn_8018C2D8(src, s->w[9]);
+    u8 flag = ((u8*)src)[8];
+    *(s16*)((u8*)dst + 6) = *(s16*)((u8*)src + 10);
+    u16 a = *(u16*)((u8*)src + 0xc);
+    *(u8*)((u8*)dst + 4) = flag;
+    u16 b = *(u16*)((u8*)src + 0xe);
+    *(f32*)((u8*)dst + 8) = lbl_80301C30;
+    *(u16*)((u8*)dst + 0x10) = a;
+    u32 c = *(u32*)((u8*)src + 0x18);
+    *(u16*)((u8*)dst + 0x12) = b;
+    *(void**)((u8*)dst + 0x24) = fn_8018C290(src, c);
+    *(void**)((u8*)dst + 0x28) = fn_8018C290(src, *(u32*)((u8*)src + 0x1c));
+    *(void**)((u8*)dst + 0x14) = fn_8018C278(src, *(u32*)((u8*)src + 0x20));
+    *(void**)((u8*)dst + 0x18) = fn_8018C278(src, *(u32*)((u8*)src + 0x24));
+    *(void**)((u8*)dst + 0x1c) = fn_80174BA0(src, *(u32*)((u8*)src + 0x28));
+    *(void**)((u8*)dst + 0x20) = fn_80174BA0(src, *(u32*)((u8*)src + 0x2c));
+    *(void**)((u8*)dst + 0x2c) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x30));
+    *(void**)((u8*)dst + 0x30) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x34));
+    *(void**)((u8*)dst + 0x34) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x38));
+    *(void**)((u8*)dst + 0x38) = fn_8018C2D8(src, *(u32*)((u8*)src + 0x3c));
 }
 
 extern u8 lbl_802994BC[];
