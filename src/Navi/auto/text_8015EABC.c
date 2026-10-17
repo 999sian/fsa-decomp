@@ -38,7 +38,7 @@ extern "C" void* fn_8015EBE8(void* param_1, s16 param_2) {
     };
     if (param_1) {
         *(void**)param_1 = lbl_80297A94;
-        Node* node = (Node*)lbl_802EE28C;
+        Node* node = (Node*)lbl_802EE28C[0];
         while (node) {
             Node* cur = node;
             node = node->next;
