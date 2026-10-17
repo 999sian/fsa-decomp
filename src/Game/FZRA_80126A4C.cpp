@@ -1,5 +1,30 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
+
+extern "C" void* fn_801283E8(void);
+extern "C" void fn_801D22DC(void* p, s32 a, s32 b, s32 c);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_800FE3EC(void* a, s32 b, void* c, s32 d);
+extern "C" s32 fn_800FD894(void* a, s32 b, s32 c, s32 d);
+extern "C" void fn_800FDC70(void* out, void* a, void* pos, s32 b, u8 c);
+extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+extern "C" void fn_8012824C(void);
+extern "C" void fn_80128228(void);
+extern "C" void fn_80128074(void);
+extern "C" void* fn_80127F90(void);
+extern "C" void fn_801F0E34(void* this_, s32 a, s32 b);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7A08(void* a, s32 b);
+extern "C" void Actor_CreateByID(void* a, s32 id, s32 room, void* pos, s32 flags, s32 c, s32 d);
+extern "C" void* fn_80237810(s32 i);
+extern "C" void fn_80236554(s32 i, void* a, s32 b);
+extern "C" void fn_80237524(s32 i, s32 a);
+extern "C" void fn_802D8050(void* mgr, s32 kind, s32 a, s32 b);
+extern "C" void detach__5ActorFv(void* this_);
+extern "C" f32 lbl_8053CAB8;
+extern "C" f32 lbl_8053CAC0;
+extern "C" void* lbl_8053AAF8;
 
 extern "C" void __ct__5ActorFv(void* this_);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
