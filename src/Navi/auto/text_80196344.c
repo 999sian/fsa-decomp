@@ -12,7 +12,10 @@ extern void* lbl_8029A150[];
 extern "C" void fn_801A605C(int, void*);
 extern "C" void fn_801BC250(int, int);
 struct Bytes4_801A3D94 { u8 b[4]; };
-struct Rect16 { s16 x, y, w, h; };
+struct Rect16 {
+    s16 x, y, w, h;
+    void set(const Rect16& r) { x = r.x; y = r.y; w = r.w; h = r.h; }
+};
 struct Bits_801A4338 { u8 pad[0x3c]; u8 hi : 4; u8 b1 : 2; u8 b0 : 2; u8 pad2[3]; };
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -2018,8 +2021,12 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A38E0(u8* p, s32 i, NaviRect16* src) {
-    ((NaviRect16*)(p + 0xda))[i] = *src;
+extern "C" void fn_801A38E0(u8* p, s32 i, Rect16* src) {
+    Rect16* d = &((Rect16*)(p + 0xda))[i];
+    d->x = src->x;
+    d->y = src->y;
+    d->w = src->w;
+    d->h = src->h;
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
@@ -2207,13 +2214,10 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    s32 off = i * 8;
-    s16 v0 = src[0];
-    u8* d = p + off;
-    *(s16*)(d + 0x42) = v0;
+    u8* d = p + (i << 3);
+    *(s16*)(d + 0x42) = src[0];
     *(s16*)(d + 0x44) = src[1];
-    s16 v2 = src[2];
-    *(s16*)(d + 0x46) = v2;
+    *(s16*)(d + 0x46) = src[2];
     *(s16*)(d + 0x48) = src[3];
 }
 
