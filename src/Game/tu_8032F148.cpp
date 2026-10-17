@@ -1,5 +1,6 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" void fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int how);
@@ -303,6 +304,178 @@ extern "C" void fn_80333078(char* this_) {
             *(unsigned char*)(this_ + 0x11c) = 0;
             break;
         }
+    }
+}
+
+extern "C" void fn_80333148(char* this_) {
+    extern unsigned char* lbl_8053AAF8;
+    extern char* fn_802D6A9C(void);
+    extern int fn_80138A30(unsigned char* a);
+    extern int fn_801EEC98(char* a, void* h, u16* p5, int p6, int p7, s32* p8, int p9, int p10);
+    extern void fn_8023061C(int a);
+    extern unsigned char fn_8022F9E4(int idx, int a0, unsigned char a1, unsigned char a2);
+
+    u16 local_8 = 0;
+    s32 local_18;
+
+    *(float*)(this_ + 0x60) = -7.0f;
+    *(float*)(this_ + 0x64) = -7.0f;
+    *(float*)(this_ + 0x68) = 7.0f;
+    *(float*)(this_ + 0x6c) = 7.0f;
+    *(float*)(this_ + 0x80) = -7.0f;
+    *(float*)(this_ + 0x84) = -7.0f;
+    *(float*)(this_ + 0x88) = 7.0f;
+    *(float*)(this_ + 0x8c) = 7.0f;
+    *(s32*)(this_ + 0x254) = 0;
+    *(s32*)(this_ + 0x258) = 0;
+    *(s32*)(this_ + 0x25c) = 0;
+    *(s32*)(this_ + 0x260) = 0;
+    *(s32*)(this_ + 0x234) = 0;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = 0;
+    *(s32*)(this_ + 0x240) = 0;
+    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = 0;
+    *(u16*)(this_ + 0x94) = (*(u32*)(this_ + 0x90) >> 4) & 0xf;
+    *(s32*)(this_ + 0x25c) = (*(u32*)(this_ + 0x90) >> 8) & 3;
+    this_[0x2a1] = (*(u32*)(this_ + 0x90) >> 12) & 1;
+    this_[0x2a2] = (*(u32*)(this_ + 0x90) >> 13) & 1;
+    this_[0x2a3] = (*(u32*)(this_ + 0x90) >> 15) & 1;
+    this_[0x2a7] = (*(u32*)(this_ + 0x90) >> 14) & 1;
+    this_[0x2a8] = 0;
+    if ((*(u8 (**)(char*))(*(char**)this_ + 0x34))(this_) == 1) {
+        this_[0x2a7] = 0;
+    }
+    this_[0x2a4] = 1;
+    this_[0x2a5] = 1;
+    *(s32*)(this_ + 0x290) = *(u32*)(this_ + 0x90) & 0xf;
+    *(s32*)(this_ + 0x108) = 1000;
+    *(s32*)(this_ + 0x264) = 0;
+    *(s32*)(this_ + 0x26c) = 0;
+    *(float*)(this_ + 0x2d0) = *(float*)(this_ + 0xc);
+    *(float*)(this_ + 0x2d4) = *(float*)(this_ + 0x10);
+    *(float*)(this_ + 0x2d8) = *(float*)(this_ + 0x14);
+    *(u32*)(lbl_8053AAF8 + 0xb4) = *(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f;
+    {
+        u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) >> 9) | 0x3f800000;
+        *(s16*)(this_ + 0x29c) = 65536.0f * (*(float*)&a - 1.0f);
+    }
+    *(s16*)(this_ + 0x29e) = 0;
+    this_[0x288] = 0xff;
+    *(float*)(this_ + 0x2b0) = 0.0f;
+    *(s32*)(this_ + 0x2ac) = 0;
+    *(s32*)(this_ + 0x298) = 0;
+    *(s32*)(this_ + 0x270) = 0;
+    *(s32*)(this_ + 0x274) = 0;
+    *(s32*)(this_ + 0x278) = 0;
+    *(s32*)(this_ + 0x27c) = 50;
+    *(s32*)(this_ + 0x280) = 0;
+    *(Vec*)(this_ + 0x2dc) = *(Vec*)(this_ + 0xc);
+    *(s32*)(this_ + 0x294) = *(s32*)(this_ + 4);
+    *(s32*)(this_ + 0x268) = 10;
+    *(s32*)(this_ + 0x2f4) = 0;
+    *(s32*)(this_ + 0x2f8) = 0;
+    *(s32*)(this_ + 0x2fc) = 0;
+    *(s32*)(this_ + 0x300) = 0;
+    this_[0x2a0] = 1;
+    this_[0x2a9] = 1;
+    *(float*)(this_ + 0x2b4) = 0.3f;
+    *(s32*)(this_ + 0x28c) = 1;
+    if (lbl_8053AAF8[0x7f] == 0) {
+        *(s32*)(this_ + 0x28c) = 4;
+    }
+    {
+        s32 n = fn_80138A30(lbl_8053AAF8);
+        s32 shift = 0;
+        for (; n > 0; n--) {
+            if (((lbl_8053AAF8[0x83] >> shift) & 3) == 2) {
+                this_[0x2a0] = 0;
+                break;
+            }
+            shift += 2;
+        }
+    }
+    this_[0x2a6] = 0;
+    *(float*)(this_ + 0x2b8) = 0.0f;
+    *(float*)(this_ + 0x2bc) = 0.0f;
+    *(float*)(this_ + 0x2c0) = 0.0f;
+    *(float*)(this_ + 0x3c) = 0.0f;
+    *(float*)(this_ + 0x40) = 0.0f;
+    *(float*)(this_ + 0x44) = 0.0f;
+    *(float*)(this_ + 0x2cc) = 0.0f;
+    *(float*)(this_ + 0x2c8) = 0.0f;
+    *(float*)(this_ + 0x2c4) = 0.0f;
+    *(float*)(this_ + 0x184) = 20.0f;
+    *(s32*)(this_ + 0x284) = 0;
+    *(Vec*)(this_ + 0x2e8) = *(Vec*)(this_ + 0xc);
+    *(float*)(this_ + 0x2f0) = *(float*)(this_ + 0x14);
+
+    switch (*(s32*)(this_ + 0x290)) {
+    case 1: {
+        fn_801EEC98(this_, *(void**)(this_ + 0x198), &local_8, 0, 0, &local_18, 0, *(s32*)(this_ + 0x28c));
+        *(s32*)(this_ + 0x240) = 10;
+        if (local_18 == -1) {
+            char* m = fn_802D6A9C();
+            float y = 0.5f * (*(float*)(m + 0xcc) - *(float*)(m + 0xd4)) + *(float*)(m + 0xd4) - *(float*)(this_ + 0xc);
+            float x = 0.5f * (*(float*)(m + 0xd0) - *(float*)(m + 0xd8)) + *(float*)(m + 0xd8) - *(float*)(this_ + 0x10);
+            local_8 = JMath::atanTable_.atan2_(y, x) * 10430.378f;
+            *(float*)(this_ + 0x2b8) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].first;
+            *(float*)(this_ + 0x2bc) = 3.0f * JMath::sincosTable_.mTable[local_8 >> 5].second;
+            *(s32*)(this_ + 0x98) = (*(float*)(this_ + 0x2b8) >= 0.0f) ? 1 : 0;
+            this_[0x2a6] = 1;
+            *(s32*)(this_ + 0x230) = 7;
+        } else {
+            *(s32*)(this_ + 0x290) = 1;
+            *(s32*)(this_ + 0x240) = 1000;
+            *(s32*)(this_ + 0x230) = 6;
+        }
+        break;
+    }
+    case 2:
+    case 3:
+    case 8:
+        *(s32*)(this_ + 0x230) = 3;
+        break;
+    case 4:
+        *(s32*)(this_ + 0xb8) = 2;
+        *(s32*)(this_ + 0x290) = 0;
+        fn_8023061C(*(s32*)(this_ + 0x25c));
+        if (fn_8022F9E4(*(s32*)(this_ + 0x25c), *(s32*)(this_ + 0x198), 0, 0) == 1) {
+            *(s32*)(this_ + 0x230) = 3;
+        } else {
+            *(s32*)(this_ + 0x230) = 2;
+        }
+        break;
+    case 5:
+        if (fn_8022F9E4(0, *(s32*)(this_ + 0x198), 0, 0) == 1) {
+            *(s32*)(this_ + 0x230) = 3;
+        } else {
+            *(s32*)(this_ + 0x230) = 2;
+        }
+        break;
+    case 6:
+    case 7:
+    default:
+        *(s32*)(this_ + 0x230) = 0;
+        *(s32*)(this_ + 0xb8) = 2;
+        if (*(s32*)(this_ + 0x290) == 7) {
+            *(s32*)(this_ + 0x290) = 6;
+            *(s32*)(this_ + 0x230) = 1;
+            if (this_[0x2a2] == 1) {
+                u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f);
+                *(u32*)(lbl_8053AAF8 + 0xb4) = a;
+                a = (a >> 9) | 0x3f800000;
+                *(s32*)(this_ + 0x240) = (s32)(200.0f * (*(float*)&a - 1.0f)) + 0xc8;
+            } else {
+                u32 a = (*(u32*)(lbl_8053AAF8 + 0xb4) * 0x19660d + 0x3c6ef35f);
+                *(u32*)(lbl_8053AAF8 + 0xb4) = a;
+                a = (a >> 9) | 0x3f800000;
+                *(s32*)(this_ + 0x240) = (s32)(100.0f * (*(float*)&a - 1.0f)) + 0x64;
+            }
+        }
+        break;
     }
 }
 
