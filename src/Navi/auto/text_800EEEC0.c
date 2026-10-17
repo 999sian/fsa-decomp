@@ -29,9 +29,9 @@ extern "C" void fn_800EF378(u8* param_1, u32 param_2, u32 param_3) {
     *(u32*)(param_1 + 0x44) = param_3;
 }
 
-extern "C" void fn_800EF384(u8* param_1) {
-    fn_801E10DC(param_1, lbl_8028B874 + param_1[0x52] * 12);
-    fn_800EF4E0(param_1);
+extern "C" void fn_800EF384(NaviState_800EF384* p) {
+    (p->*lbl_8028B874[((u8*)p)[0x52]])();
+    fn_800EF4E0(p);
 }
 
 extern "C" void fn_800EF3D0(void) {}
