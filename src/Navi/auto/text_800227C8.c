@@ -147,6 +147,18 @@ extern "C" u32 fn_800248F0(u8* p1, u32 p2, u32 p3) {
     return ret;
 }
 
+extern "C" void fn_801E42F8(char* buf, const char* fmt, va_list args);
+extern "C" void fn_80029208(const char*, ...);
+extern "C" void fn_80024F84(u8* p1, const char* p2, ...) {
+    char buf[268];
+    va_list args;
+    if (!(p1[0x2a] & 2)) {
+        va_start(args, p2);
+        fn_801E42F8(buf, p2, args);
+        fn_80029208(buf);
+    }
+}
+
 extern void* lbl_8022241C[];
 extern "C" void* fn_80025020(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
