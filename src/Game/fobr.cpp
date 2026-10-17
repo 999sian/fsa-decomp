@@ -1,7 +1,7 @@
 // TU 0x8020b354-0x8020c0a8 (actor FOBR).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
-struct JMathSinCos { f32 sin; f32 cos; };
+struct JMathSinCos { f32 first; f32 second; };
 extern "C" const JMathSinCos sincosTable___5JMath[];
 
 union FobrWord {
@@ -186,11 +186,23 @@ extern "C" void* fn_802D6A9C();
 extern "C" void fn_8030C210(void* mgr, f32* pos);
 extern "C" const f32 lbl_8053F9D0;
 extern "C" void fn_8020B798(u8* param_1) {
-    u32* ptr = (u32*)(param_1 + 0x230);
-    if (*ptr != 0) {
-        if ((*ptr & 0x80) != 0) {
-            *ptr &= ~0x80u;
+    if (*(s32*)(param_1 + 0x248) != 0) {
+        s32 room = *(s32*)(param_1 + 0x4);
+        u8* base = (u8*)fn_802D6A9C();
+        f32* box;
+        if (room < 8) {
+            box = (f32*)(base + 0xcc);
+        } else {
+            box = (f32*)(base + 0xdc);
         }
+        f32 vec[3];
+        f32 y = *(f32*)(param_1 + 0x10) - *(f32*)(param_1 + 0x14);
+        vec[0] = *(f32*)(param_1 + 0xc);
+        vec[2] = lbl_8053F9C4;
+        vec[1] = y;
+        f32 t = lbl_8053F9D0 + box[1];
+        vec[1] = (t - y) >= 0.0f ? t : y;
+        fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), vec);
     }
 }
 
