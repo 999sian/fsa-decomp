@@ -35,6 +35,7 @@ extern "C" char lbl_802BB0FC[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301058;
+extern f32 lbl_803010D0;
 extern "C" f32* fn_80177B10(void* p);
 extern "C" void fn_800E6770(u8* p);
 extern "C" int fn_8004D308(void* a, s32 b, s32 c, void* d, void* e, void* f, s32 g, s32 h, s32 i, s32 j, s32 k);
