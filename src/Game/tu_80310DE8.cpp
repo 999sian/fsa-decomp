@@ -1,4 +1,7 @@
 #include "Game/esd/types.h"
+#include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" void fn_802A3948(void* mgr, void* pos, s32 player, u32 room, s32 id);
@@ -48,5 +51,32 @@ extern "C" void fn_80310F50(void* this_, s32 p2, s32 p3, s32 p4) {
     *(s32*)((u8*)this_ + 0x238) = p3;
     *(s32*)((u8*)this_ + 0x23c) = p4;
     *(s32*)((u8*)this_ + 0x230) = 1;
+}
+
+extern "C" f32 lbl_805417AC;
+extern "C" f32 lbl_805417A4;
+extern "C" f32 lbl_805417B0;
+extern "C" f32 lbl_805417A0;
+extern "C" f32 lbl_805417B4;
+extern "C" void fn_80311504(u8* this_) {
+    JGeometry::TVec3f* pos = (JGeometry::TVec3f*)(this_ + 0xc);
+    f32 a = lbl_805417AC;
+    f32 nx = pos->x + a;
+    f32 b = lbl_805417A4;
+    f32 c = lbl_805417B0;
+    f32 d = lbl_805417A0;
+    f32 z = lbl_805417B4;
+    pos->x = nx;
+    pos->y = pos->y + b;
+    ((JGeometry::TVec3f*)(this_ + 0x60))->set(c, d, z);
+    *(f32*)(this_ + 0x6c) = z;
+    *(s32*)(this_ + 0x230) = 0;
+    *(s32*)(this_ + 0x234) = -1;
+    *(s32*)(this_ + 0x238) = 0;
+    *(s32*)(this_ + 0x23c) = -1;
+    *(s32*)(this_ + 0x240) = 0;
+    *(JGeometry::TVec3f*)(this_ + 0x248) = *pos;
+    *(u8*)(this_ + 0x254) = 0;
+    *(s32*)(this_ + 0x244) = 0;
 }
 
