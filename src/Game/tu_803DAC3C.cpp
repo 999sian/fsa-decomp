@@ -5,26 +5,6 @@
 #include "dolphin/dvd/dvdfs.h"
 #include "JSystem/J2D/J2DScreen.h"
 
-class FsaVoice {
-public:
-    virtual void v00();
-    virtual void v04();
-    virtual void v08();
-    virtual void v0C();
-    virtual void v10();
-    virtual void v14();
-    virtual void v18();
-    virtual void v1C();
-    virtual void v20();
-    virtual void setVolume(s32);
-    virtual void v28();
-    virtual void v2C();
-    virtual void v30();
-    virtual void v34();
-    virtual void v38();
-    virtual FsaVoice* play(u32, s32, u32);
-};
-
 struct FsaDisposable {
     virtual void v0(void);
     virtual void v1(void);
