@@ -308,6 +308,14 @@ extern "C" void fn_80088EB4(void) {
     fn_80088F9C();
 }
 
+extern "C" int fn_80063AF8(void* p, int n);
+extern "C" int fn_80088F58(void) {
+    int x = fn_80063AF8(lbl_802B7CA0 + 0x2200, 0x40);
+    int neg_x = -x;
+    int t = (neg_x | x) >> 31;
+    return ~t & 2;
+}
+
 extern "C" void fn_80069BEC(void);
 extern "C" void fn_80089420(void) {
     fn_80069BEC();
@@ -316,6 +324,22 @@ extern "C" void fn_80089420(void) {
 extern "C" void fn_8008962C(void) {}
 
 extern "C" void fn_80089630(void) {}
+
+extern u8 lbl_80284340[];
+extern u8 lbl_8028407C[];
+extern "C" void fn_80058BC4(void);
+extern "C" void fn_80159BB4(void* a);
+extern "C" BOOL fn_800896B0(void) {
+    if (fn_80012B90() != 0) {
+        fn_80159BB4(*(void**)(lbl_802B7CA0 + 0x1420));
+        *(void**)(lbl_802B7CA0 + 0x1420) = 0;
+        fn_8001F37C();
+        lbl_802B7CA0[0x1418] = 0;
+        fn_80058BC4();
+        return TRUE;
+    }
+    return FALSE;
+}
 
 extern "C" BOOL fn_80089850(void);
 extern "C" BOOL fn_80089850(void)
