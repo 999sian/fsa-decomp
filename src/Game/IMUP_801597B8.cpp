@@ -54,7 +54,6 @@ extern u8* lbl_8053AB10;
 extern const char lbl_804660B8[];
 extern const char lbl_804660CC[];
 extern s32 lbl_804A01A0[];
-extern const f32 lbl_8053D460;
 extern "C" u8 fn_8023188C(void* p);
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern "C" void fn_803075AC(void* h, s32 room, void* pos, s32 id, s32 sign, s32 two, s32 minus1, s32 p7, s32 u, s32 zero);
