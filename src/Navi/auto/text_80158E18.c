@@ -1198,6 +1198,32 @@ extern "C" void fn_8015D030(void) {
     fn_80159DB4();
 }
 
+extern "C" void* fn_8015D050(void* p) {
+    *(void**)p = lbl_8029783C;
+    fn_80166B58((u8*)p + 0x8, p);
+    *(u32*)((u8*)p + 0x4) = (u32)fn_80159E8C(p);
+    if (*(void**)((u8*)p + 0x4) != 0) {
+        fn_80166C84(*(u8**)((u8*)p + 0x4) + 0x5c, (u8*)p + 0x8);
+    }
+    return p;
+}
+
+extern "C" void* fn_8015D0B8(void* p, s16 param_2) {
+    if (p != nullptr) {
+        *(void**)p = lbl_8029783C;
+        if (*(void**)((u8*)p + 0x4) != 0) {
+            fn_80166FC4(*(u8**)((u8*)p + 0x4) + 0x5c, (u8*)p + 0x8);
+        }
+        if ((s32)p + 0x8 != 0) {
+            fn_80166B70((u8*)p + 0x8, 0);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
 extern "C" void* fn_8015D13C(void* p, u32 a2, u32 a3, u32 a4) {
     u32 ret;
     fn_8015D050(p);
