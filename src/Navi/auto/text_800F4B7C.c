@@ -1049,6 +1049,20 @@ extern "C" u8 fn_801049C8(u8* p) {
     return ((u8*)lbl_802B7CA0 + i)[0x3ec];
 }
 
+extern "C" void fn_801049F8(u8* p);
+extern "C" void fn_80104FB8(u8* p) {
+    s32 r = fn_80108928(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0.0f, 0, 1, 0.0f, 0.0f, *(f32*)(lbl_802C5A84 + 0x38));
+    (*(s16*)(p + 0xec))++;
+    if (r == 1) {
+        *(s16*)(p + 0xec) = 0;
+        fn_801049F8(p);
+        (*(u8**)(p + 0x284))[0xb0] = 1;
+        (*(u8**)(p + 0x28c))[0xb0] = 1;
+        p[0x40f] = 1;
+        p[0xee] = 0x10;
+    }
+}
+
 extern "C" void fn_80105050(u8* p) {
     s32 a = fn_801095A4(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), *(f32*)(lbl_802C5A84 + 0x38), lbl_80301204, 0, 0);
     s32 b = fn_801096BC(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 0);
