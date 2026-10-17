@@ -154,16 +154,6 @@ extern "C" void fn_80022DBC(void) {
     fn_80057B9C();
 }
 
-extern s32 lbl_802FED48;
-extern s32 lbl_802FED4C;
-extern s32 lbl_802FED50;
-extern s32 lbl_802FED54;
-extern s32 lbl_802FED58;
-extern s32 lbl_802FED5C;
-extern s32 lbl_802FED60;
-extern s32 lbl_802FED64;
-extern s32 lbl_802FED68;
-extern s32 lbl_802FED6C;
 extern "C" void fn_800589CC(s32 p);
 extern "C" void fn_80022FA0(s32* p) {
     if ((u32)p[0] != 0 || p[2] != 0) {
