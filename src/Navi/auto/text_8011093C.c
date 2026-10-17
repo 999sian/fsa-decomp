@@ -16,6 +16,14 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301358;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
+extern "C" void fn_80111248(u8* self) {
+    if (self[0x11c] != 0) {
+        self[0x11c]--;
+        return;
+    }
+    self[0x118] = 2;
+}
+
 extern "C" void fn_80111718(void)
 {
 }
