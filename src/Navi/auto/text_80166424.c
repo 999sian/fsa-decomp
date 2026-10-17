@@ -186,6 +186,15 @@ struct Self_80167618 {
     Stream_80167618* stream;
     u32 pos;
 };
+struct VObj_801693F4 {
+    virtual void vf0(); virtual void vf1(); virtual void vf2(); virtual void vf3();
+    virtual void vf4(); virtual void vf5(); virtual void vf6(); virtual void vf7();
+    virtual void vf8(); virtual void vf9();
+};
+struct Obj_801693F4 {
+    void** vt;
+    u8 pad[0xCC];
+};
 extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
@@ -326,7 +335,7 @@ extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d) {
             }
             src++;
         } else {
-            s8 b0 = src[0];
+            u8 b0 = src[0];
             u8 b1 = src[1];
             src += 2;
             back = dst - (((b0 << 8) & 0xf00) | b1);
