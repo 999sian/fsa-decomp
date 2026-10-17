@@ -2,6 +2,8 @@
 
 
 extern "C" char lbl_804AB170[];
+extern const f32 lbl_805419B8;
+extern "C" u16 fn_8022461C(void* pos);
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_8031C050(Actor* p, s16 n) {
     if (p) {
