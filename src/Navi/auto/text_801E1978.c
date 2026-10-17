@@ -6,6 +6,11 @@ extern "C" void* memset(void* p, int c, size_t n);
 extern "C" void fn_801E20C8(u32* a, u32* b);
 extern "C" void fn_801E1978(u32* a);
 extern "C" void fn_801E1C2C(void* param_1, u32* param_2, u32 param_3);
+extern "C" void __destroy_global_chain(void);
+extern "C" void __exit(int);
+extern s32 __aborting;
+extern void (*_dtors[])(void);
+extern void (*__stdio_exit)(void);
 extern "C" void fn_801E1E24(u32* param_1, u32* param_2);
 extern "C" void* fn_801E1DB0(void);
 extern "C" void fn_801E1B90(void* param_1, u8* param_2);
@@ -68,6 +73,23 @@ extern "C" void fn_801E1B54(u8* volatile param_1) {
     void* p = fn_801E1DB0();
     fn_801E1B90(p, param_1);
     __end_critical_region(1);
+}
+
+extern "C" void fn_801E1B90(void* volatile param_1, u8* param_2) {
+    if (param_2 != 0) {
+        u32* p = (u32*)param_2;
+        u32 size;
+        if ((p[-1] & 1) == 0) {
+            size = ((u32*)p[-1])[2];
+        } else {
+            size = (p[-2] & ~7) - 8;
+        }
+        if (size > 0x44) {
+            fn_801E1E24((u32*)param_1, p);
+        } else {
+            fn_801E1C2C(param_1, p, size);
+        }
+    }
 }
 
 extern "C" void* fn_801E1DB0(void) {
