@@ -61,6 +61,7 @@ extern "C" u8 fn_8010B8D4(void*);
 extern "C" void fn_800C55B8(void*, u8);
 extern "C" u8 fn_800BC8A4(void*);
 extern "C" u8 fn_800F39B4(void*);
+extern "C" u8 fn_800A79FC(void*);
 extern "C" void fn_800F3D84(void*);
 extern "C" void fn_800F2CD4(void*);
 extern "C" void fn_800F3888(void*);
