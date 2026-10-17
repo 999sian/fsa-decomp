@@ -131,4 +131,7 @@ extern "C" void fn_8012639C(u8* this_) {
         }
     }
 }
+
+void __sinit_OPGA_80125B58_cpp(void) {}
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
