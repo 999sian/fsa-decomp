@@ -183,12 +183,6 @@ extern "C" u8 fn_8026EB1C(u8* p, u16 param) {
     return 0;
 }
 
-extern "C" s32 fn_8024FF84();
-extern "C" u16 fn_8022461C(JGeometry::TVec3<f32>*, s32);
-extern "C" void* fn_801F856C();
-extern "C" void* Actor_CreateByID(void*, u32, s32, JGeometry::TVec3<f32>*, s32, s32, s32);
-extern "C" void* fn_801F666C(void*, void*);
-extern JGeometry::TVec3<f32> lbl_8046B998[];
 extern "C" void fn_8026F388(u8* p) {
     if (*(s32*)(*(u8**)(p + 4) + 0x3dc) == 2) {
         *(s32*)(p + 0xac) = 1;
