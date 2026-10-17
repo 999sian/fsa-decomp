@@ -73,7 +73,10 @@ static bool fn_80364340_isBadPos(Vec* p) {
     v2.x = lbl_80542B44;
     v2.y = lbl_80542B48;
     v2.z = lbl_80542B0C;
-    return PSVECDistance(p, &v2) < lbl_80542B40;
+    if (PSVECDistance(p, &v2) < lbl_80542B40) {
+        return true;
+    }
+    return false;
 }
 
 
@@ -160,17 +163,17 @@ extern "C" void fn_80362680(char* self) {
     }
     if (*(u8*)(self + 0x278) == 1) {
         vecs[3] = lbl_80542B0C;
-        vecs[7] = lbl_80542B0C;
-        vecs[11] = lbl_80542B0C;
+        vecs[5] = lbl_80542B10;
         vecs[0] = lbl_80542B5C;
         vecs[1] = lbl_80542B0C;
         vecs[2] = lbl_80542B0C;
         vecs[4] = lbl_80542B0C;
-        vecs[5] = lbl_80542B10;
         vecs[6] = lbl_80542B0C;
+        vecs[7] = lbl_80542B0C;
         vecs[8] = lbl_80542B0C;
         vecs[9] = lbl_80542B0C;
         vecs[10] = lbl_80542B10;
+        vecs[11] = lbl_80542B0C;
         p.unk_0x18 = vecs;
     }
     if (*(s32*)(self + 0x258) == 0) {
