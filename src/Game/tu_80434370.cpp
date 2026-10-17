@@ -14,6 +14,23 @@ static inline void DispatchSlot2(char* slot) {
 extern "C" char lbl_804B16A8[];
 extern "C" void __dl__FPv(void* this_);
 class J2DGrafContext;
+class VtSlots {
+public:
+    virtual void s0();
+    virtual void s1();
+    virtual void s2();
+    virtual void s3();
+    virtual void s4();
+    virtual void s5();
+    virtual void s6();
+    virtual void s7();
+    virtual void s8();
+    virtual void s9();
+    virtual u32 s10();
+    virtual void s11();
+    virtual void s12();
+    virtual void* s13(u64 tag);
+};
 class J2DScreen {
 public:
     void draw(float, float, const J2DGrafContext*);
