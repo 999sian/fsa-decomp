@@ -17,6 +17,26 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_80301198;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_800F39E8(void);
+extern "C" void fn_800F3B20(void);
+extern "C" void fn_800F42C4(void);
+extern "C" int fn_80181BA0(void* self);
+extern "C" void fn_8003ABDC(void*, u32, u32, s32, s32);
+extern "C" void fn_8003ABF0(void*, u32, s32, u32, s32, s32, s32, s32);
+extern "C" void fn_800F4458(u8* p, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f);
+extern "C" void fn_800F4570(u8* p, s32 i, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f);
+extern u8 lbl_802C5A54[];
+struct NaviState_800F3D84;
+typedef void (NaviState_800F3D84::*NaviStateFn_800F3D84)();
+extern NaviStateFn_800F3D84 lbl_8028C538[];
+extern "C" void fn_800F39B4(u8* p) {
+    if (p[0x63] == 1) {
+        fn_800F39E8();
+    } else {
+        fn_800F3B20();
+    }
+}
+
 extern "C" void fn_800F42C0(void) {}
 
 extern "C" void fn_800F46AC(u8* p) {
