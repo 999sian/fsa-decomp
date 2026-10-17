@@ -523,6 +523,30 @@ extern "C" void* fn_80161518(void* self, void* name) {
     return 0;
 }
 
+#pragma dont_inline on
+extern "C" char* fn_80161710(u16* p, char* s, s8 term) {
+    s32 i = 0;
+    s8 c;
+    p[0] = 0;
+    c = *s;
+    while (c != 0 && c != term) {
+        p[0] = fn_801E30E8(c) + p[0] * 3;
+        if (i < 0x100) {
+            ((u8*)p)[i + 4] = fn_801E30E8(c);
+            i++;
+        }
+        s++;
+        c = *s;
+    }
+    p[1] = i;
+    ((u8*)p)[i + 4] = 0;
+    if (*s != 0) {
+        return s + 1;
+    }
+    return 0;
+}
+#pragma dont_inline reset
+
 extern "C" char lbl_80297EF0[];
 extern "C" char fn_801621C0(void* p, void* a);
 extern "C" void fn_801617D8(u8* p, s32 a, void* v) {
