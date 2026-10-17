@@ -651,6 +651,47 @@ extern "C" u32* fn_80169B1C(u32* self, short param_2)
     return self;
 }
 
+extern "C" void* fn_8015A90C(u32 size);
+extern "C" void fn_80169FEC(void* param_1)
+{
+    u8* p;
+    if (*(void**)((u8*)param_1 + 0x84) == nullptr) {
+        p = (u8*)fn_8015A90C(0x44);
+        if (p != nullptr) {
+            *(u32*)(p + 0x0) = 0;
+            *(u16*)(p + 0x10) = 0xFFFF;
+            *(u32*)(p + 0x4) = 0;
+            *(u16*)(p + 0x12) = 0xFFFF;
+            *(u16*)(p + 0x14) = 0xFFFF;
+            *(u16*)(p + 0x16) = 0xFFFF;
+            *(u16*)(p + 0x18) = 0xFFFF;
+            *(u16*)(p + 0x1a) = 0xFFFF;
+            *(u16*)(p + 0x1c) = 0xFFFF;
+            *(u16*)(p + 0x1e) = 0xFFFF;
+            *(u16*)(p + 0x20) = 0xFFFF;
+            *(u32*)(p + 0x8) = 0;
+            *(u16*)(p + 0x22) = 0xFFFF;
+            *(u16*)(p + 0x24) = 0xFFFF;
+            *(u16*)(p + 0x26) = 0xFFFF;
+            *(u16*)(p + 0x28) = 0xFFFF;
+            *(u16*)(p + 0x2a) = 0xFFFF;
+            *(u16*)(p + 0x2c) = 0xFFFF;
+            *(u16*)(p + 0x2e) = 0xFFFF;
+            *(u16*)(p + 0x30) = 0xFFFF;
+            *(u32*)(p + 0xc) = 0;
+            *(u16*)(p + 0x32) = 0xFFFF;
+            *(u16*)(p + 0x34) = 0xFFFF;
+            *(u16*)(p + 0x36) = 0xFFFF;
+            *(u16*)(p + 0x38) = 0xFFFF;
+            *(u16*)(p + 0x3a) = 0xFFFF;
+            *(u16*)(p + 0x3c) = 0xFFFF;
+            *(u16*)(p + 0x3e) = 0xFFFF;
+            *(u16*)(p + 0x40) = 0xFFFF;
+        }
+        *(void**)((u8*)param_1 + 0x84) = p;
+    }
+}
+
 extern "C" void* fn_8016ABEC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80298600;
@@ -1265,9 +1306,10 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    p1[p2 * 4 + 0x16] = p3[0];
-    p1[p2 * 4 + 0x17] = p3[1];
-    p1[p2 * 4 + 0x18] = p3[2];
+    u8* p = p1 + p2 * 4;
+    p[0x16] = p3[0];
+    p[0x17] = p3[1];
+    p[0x18] = p3[2];
 }
 
 extern "C" s32 fn_80172640(s32 p, s32 i) {
