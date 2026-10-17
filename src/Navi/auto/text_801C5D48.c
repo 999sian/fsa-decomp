@@ -4,13 +4,6 @@
 #include "Dolphin/os.h"
 #include "sdk/Dolphin/vec.h"
 
-static f32 Unit01[] = { 0.0f, 1.0f };
-extern "C" f32 __psq_l(void* p, int off, int w, int gqr);
-extern "C" void __psq_st(f32 v, void* p, int off, int w, int gqr);
-extern "C" f32 __ps_muls0(f32 a, f32 c);
-extern "C" f32 __ps_madds0(f32 a, f32 c, f32 b);
-extern "C" f32 __ps_madds1(f32 a, f32 c, f32 b);
-
 BOOL __DVDPushWaitingQueue(s32 prio, DVDCommandBlock* block);
 
 typedef struct DVDWACommand {
