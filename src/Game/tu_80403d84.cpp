@@ -4,6 +4,7 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
 #include "std/math.h"
+#include "Game/ItemBase.h"
 
 extern "C" s16 lbl_8048C95C[];
 
@@ -683,20 +684,21 @@ extern "C" void fn_8040C950(u8* self) {
 		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
 		*(s32*)(self + 0x350) = 0xb;
 	} else {
-		if (*(s16*)(self + 0x426) < 5) {
-			f32 w = -7.0f * (f32)(*(s16*)(self + 0x426) * *(s16*)(self + 0x426)) / 25.0f;
+		s32 t = *(s16*)(self + 0x426);
+		f32 w;
+		f32 a;
+		if (t < 5) {
+			w = -7.0f * (f32)(t * t) / 25.0f;
 			fn_80402E08(*(void**)(self + 0x228), 0.0f, w);
 			fn_80402E08(*(void**)(self + 0x22c), 0.0f, w);
-		} else if (*(s16*)(self + 0x426) <= 10) {
-			f32 w = -7.0f * (f32)((10 - *(s16*)(self + 0x426)) * (10 - *(s16*)(self + 0x426))) / 25.0f;
+		} else if (t <= 10) {
+			w = -7.0f * (f32)((10 - t) * (10 - t)) / 25.0f;
 			fn_80402E08(*(void**)(self + 0x228), 0.0f, w);
 			fn_80402E08(*(void**)(self + 0x22c), 0.0f, w);
 		}
-		f32 a = 1.0f - (f32)*(s16*)(self + 0x426) * 0.125f;
-		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763131ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - (f32)*(s16*)(self + 0x426) * 0.125f)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763132ULL)->setAlpha((int)(self[0x64c] * a));
-		a = 1.0f - a;
-		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * a));
+		(*(Screen408**)(self + 0x10))->search(0x54746c763133ULL)->setAlpha((int)(self[0x64b] * (a = 1.0f - a)));
 		(*(Screen408**)(self + 0x10))->search(0x54746c763134ULL)->setAlpha((int)(self[0x64c] * a));
 	}
 }
@@ -966,6 +968,66 @@ extern "C" void fn_80405D00(u8* self, s32 param) {
 				self[0x65e] = 0;
 			}
 			fn_80458880(lbl_8053AF80, 0x26, -1);
+		}
+	}
+}
+
+extern "C" BOOL fn_80404074(u8* self, s32 p, s32 a, s32* out);
+extern "C" void* fn_8013CC50(void* mgr, f32 scale, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" u8 lbl_8048CC40[];
+extern "C" void fn_804069E8(u8* self) {
+	DrawRec rec;
+	s32 out = -1;
+	f32 mtx[3][4];
+	f32 pos[3];
+	f32 zero = 0.0f;
+	s32 idx = *(s32*)(self + 0x340);
+	if (idx == 10 && *(s32*)(self + 0x348) == 2) {
+		idx = *(s32*)(lbl_80529DEC + 0x120);
+	}
+	f32 s = *(f32*)(lbl_8050DB0C + 8);
+	f32 sx = sin(zero);
+	f32 sy = sin(zero);
+	f32 sz = sin(zero);
+	f32 cx = cos(zero);
+	f32 cy = cos(zero);
+	f32 cz = cos(zero);
+	mtx[0][0] = s * (cy * cz);
+	mtx[0][1] = s * ((sx * sy) * cz - cx * sz);
+	mtx[0][2] = s * ((cx * cz) * sy + sx * sz);
+	mtx[0][3] = 0.0f;
+	mtx[1][0] = s * (cy * sz);
+	mtx[1][1] = s * ((sx * sy) * sz + cx * cz);
+	mtx[1][2] = s * ((cx * sz) * sy - sx * cz);
+	mtx[1][3] = 0.0f;
+	mtx[2][0] = s * -sy;
+	mtx[2][1] = s * (sx * cy);
+	mtx[2][2] = s * (cx * cy);
+	mtx[2][3] = 0.0f;
+	rec.w18 = mtx;
+	u8* q = self;
+	for (int i = 0; i < 4; i++, q += 4) {
+		if (fn_80404074(self, idx, i, &out)) {
+			_GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
+			pos[0] = lbl_8048C95C[idx * 8 + i * 2] * (384.0f / mode->fbWidth);
+			pos[1] = lbl_8048C95C[idx * 8 + i * 2 + 1] * (288.0f / mode->efbHeight);
+			pos[2] = 0.0f;
+			GXSetTevDirect(GX_TEVSTAGE0);
+			GXSetTevDirect(GX_TEVSTAGE1);
+			GXSetTevDirect(GX_TEVSTAGE2);
+			GXSetTevDirect(GX_TEVSTAGE3);
+			rec.b26 = 0;
+			rec.b1d = 1;
+			rec.b1c = 1;
+			((u8*)&rec.w10)[3] = (u8)(s32)(255.0f * *(f32*)(self + 0x400));
+			if (i == out) {
+				if (*(s32*)(self + 0x35c) == 10) {
+					if (*(void**)(self + 0x2ec) == 0) {
+						*(void**)(self + 0x2ec) = fn_8013CC50(0, 1.0f, pos, 0x7b, 1, 0, 0, 0, 1);
+						(*(JPABaseEmitter**)(self + 0x2ec))->flags |= 0x40;
+					}
+				}
+			}
 		}
 	}
 }
