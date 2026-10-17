@@ -427,15 +427,15 @@ s32 fn_8023FC2C(char* p) {
 }
 
 extern "C" u8 fn_8023FC5C(u8* p) {
-    u8 bVar1;
     s32 cnt;
     s32 i;
-    s32 mode;
-    s32 v;
     s32 n;
+    s32 mode;
     s32 lVar2;
     u32 uVar5;
     s32 uVar9;
+    s32 v;
+    u8 bVar1;
 
     if (p[0xc80] == 0) {
         bVar1 = 0;
@@ -1944,6 +1944,8 @@ void fn_80247F58(char* p) {
         fn_80272160(p, 0, p + 0x8, 0x12);
     }
 }
+void fn_8025250C(char* p) {
+}
 extern "C" f32 lbl_80540034;
 void fn_80248604(char* p) {
     if (U8(p, 0x1216) != 0) {
@@ -2886,42 +2888,11 @@ int fn_80250ACC(char* p) {
 u8 fn_80250D30(char* p) {
     bool bVar1;
     s32 mode;
-    s32 n;
-    s32 linked;
-    s32 me;
-    s32 i;
-    s32 c;
     s32 x;
+    s32 n;
+    s32 i;
 
-    c = 0;
-    i = c;
-    for (; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    mode = 5;
-    if (c > 1) {
-        if (S32(p, 0xd60) >= 0) {
-            mode = fn_8022CAF8(S32(p, 0xd60));
-        } else {
-            mode = S32(p, 0x120c);
-        }
-    }
+    mode = getMode(p);
     if (mode == 4) {
         if (S32(p, 0xd60) >= 0) {
             x = fn_80234004(S32(p, 0xd60));
@@ -2942,35 +2913,7 @@ u8 fn_80250D30(char* p) {
             goto LAB_final;
         }
     }
-    c = 0;
-    i = c;
-    for (; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
-            c++;
-        } else if (fn_8022F514(i)) {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                if (linked == fn_8022F3DC(i)) {
-                    c++;
-                }
-            } else {
-                me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
-                    c++;
-                }
-            }
-        } else if (i == S32(p, 0xd60)) {
-            c++;
-        }
-    }
-    mode = 5;
-    if (c > 1) {
-        if (S32(p, 0xd60) >= 0) {
-            mode = fn_8022CAF8(S32(p, 0xd60));
-        } else {
-            mode = S32(p, 0x120c);
-        }
-    }
+    mode = getMode(p);
     if (mode == 5 && S32(p, 0xd60) >= 0) {
         bVar1 = false;
     } else if (S32(p, 0xd60) < 0) {
