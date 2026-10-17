@@ -104,10 +104,11 @@ void fn_800FDE38(void* ringArray)
 extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* angOut, s16 maxTurn, f32 speed) {
     RailVec target;
     RailVec p = *pos;
+    s32 ang;
     u8 res = fn_800FE090(ring, &p, &target);
     f32 dx = target.x - pos->x;
     f32 dy = target.y - pos->y;
-    s32 ang = lbl_8053C0D0 * JMath::atanTable_.atan2_(dx, dy);
+    ang = lbl_8053C0D0 * JMath::atanTable_.atan2_(dx, dy);
     s32 out;
     if (id != NULL) {
         s32 nodeId = ring->mNodes[ring->mCur]->mId;
@@ -159,15 +160,14 @@ extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
     f32 dx = node->mPos.x - pos->x;
     f32 dy = node->mPos.y - pos->y;
     f32 d2 = dx * dx + dy * dy;
-    f32 dist;
     if (d2 <= lbl_8053C0B8) {
-        dist = d2;
+        d2 = d2;
     } else {
         f32 guess = (f32)__frsqrte(d2);
         guess = lbl_8053C0B4 * guess * (lbl_8053C0C0 - guess * guess * d2);
-        dist = d2 * guess;
+        d2 = d2 * guess;
     }
-    if (dist < lbl_8053C0D4) {
+    if (d2 < lbl_8053C0D4) {
         u8 cur = ring->mCur;
         u32 mode = ring->mNodes[cur]->mFlags & 3;
         ret = 2;
@@ -257,6 +257,60 @@ extern "C" BOOL fn_800FD594(RailRing* ring, u8 i) {
     return TRUE;
 }
 
+extern "C" BOOL fn_800FD5E8(RailRing* ring, u8 i) {
+    u8 size = ring->mSize;
+    u32 mode = ((RailNode**)ring)[size]->mFlags & 3;
+    if (i == 0xff) {
+        s32 n;
+        u8 cur = ring->mCur;
+        if (ring->mDir == 0) {
+            n = cur + 1;
+        } else {
+            n = cur - 1;
+        }
+        if ((s16)n < 0) {
+            if (mode == 1) {
+                n = size - 1;
+            } else {
+                return FALSE;
+            }
+        } else if ((s16)n == size) {
+            if (mode == 1) {
+                n = 0;
+            } else {
+                return FALSE;
+            }
+        }
+        if ((cur == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[cur])->mId != ((u8)n == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[(u8)n])->mId) {
+            return TRUE;
+        }
+        return FALSE;
+    }
+    s32 next = i + 1;
+    s16 prev = i - 1;
+    if (next == size) {
+        if (mode == 1) {
+            next = 0;
+        } else {
+            next = size - 1;
+        }
+    }
+    if (prev < 0) {
+        if (mode == 1) {
+            prev = size - 1;
+        } else {
+            prev = 0;
+        }
+    }
+    if ((i == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[i])->mId != ((u8)next == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[(u8)next])->mId) {
+        return TRUE;
+    }
+    if ((i == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[i])->mId != ((u8)prev == 0xff ? ring->mNodes[ring->mCur] : ring->mNodes[(u8)prev])->mId) {
+        return TRUE;
+    }
+    return FALSE;
+}
+
 extern "C" u8 fn_800FE21C(RailRing* ring, u8 i) {
     if (i == 0xff) {
         return ring->mNodes[ring->mCur]->mFlags >> 24;
@@ -289,7 +343,7 @@ extern "C" u8 fn_800FE2E4(RailRing* ring, RailVec* pos, s32 id) {
         }
         if (id == nodeId) {
             RailVec d = ring->mNodes[i]->mPos;
-            d -= *pos;
+            d.sub(ring->mNodes[i]->mPos, *pos);
             f32 mag = PSVECMag(&d);
             if (mag < best) {
                 best = mag;
@@ -298,6 +352,71 @@ extern "C" u8 fn_800FE2E4(RailRing* ring, RailVec* pos, s32 id) {
         }
     }
     return ring->mCur;
+}
+
+extern "C" u8 fn_801F71E8(void* pool, u8 type, void** out, s32* count, s32 max);
+extern "C" void* fn_801F856C(void);
+static inline void railClear(RailRing* ring, u8 type) {
+    ring->m0 = type;
+    ring->mSize = 0;
+    ring->mCur = 0;
+    ring->mDir = 0;
+    for (int i = 0; i < 0x31; i++) {
+        ring->mNodes[i] = NULL;
+    }
+}
+extern "C" BOOL fn_800FE3EC(RailRing* ring, u8 type, RailVec* pos, s32 id) {
+    void* found[0x31];
+    s32 i;
+
+    ring->m0 = type;
+    ring->mDir = ring->mCur = ring->mSize = 0;
+    s32 count = 0;
+    for (int j = 0; j < 0x31; j++) {
+        ring->mNodes[j] = NULL;
+    }
+
+    u8 ok = fn_801F71E8(fn_801F856C(), ring->m0, found, &count, 0x31);
+    ring->mSize = count;
+    if (!ok || ring->mSize == 0) {
+        return FALSE;
+    }
+
+    for (i = 0; i < ring->mSize; i++) {
+        u8 idx = (((RailNode*)found[i])->mFlags >> 16) & 0xff;
+        if (idx >= ring->mSize || ring->mNodes[idx] != NULL) {
+            return FALSE;
+        }
+        ring->mNodes[idx] = (RailNode*)found[i];
+    }
+
+    for (i = 0; i < ring->mSize; i++) {
+        if (ring->mNodes[i] == NULL) {
+            return FALSE;
+        }
+    }
+
+    RailVec p = *pos;
+    f32 best = lbl_8053C0D8;
+    for (u16 k = 0; k < ring->mSize; k++) {
+        s32 nodeId;
+        u8 idx = k;
+        if (idx == 0xff) {
+            nodeId = ring->mNodes[ring->mCur]->mId;
+        } else {
+            nodeId = ring->mNodes[idx]->mId;
+        }
+        if (id == nodeId) {
+            RailVec d = ring->mNodes[k]->mPos;
+            d.sub(p);
+            f32 mag = PSVECMag(&d);
+            if (mag < best) {
+                best = mag;
+                ring->mCur = k;
+            }
+        }
+    }
+    return TRUE;
 }
 
 extern "C" void OSPanic(const char* file, int line, const char* msg, ...);
@@ -316,9 +435,10 @@ static inline u32 railLoopMode(RailRing* ring, u8 n) {
 }
 
 extern "C" void fn_800FD818(RailRing* ring, s8 step) {
+    s32 s = step;
     u8 size = ring->mSize;
     u32 mode = railLoopMode(ring, size);
-    s32 idx = step + ring->mCur;
+    s32 idx = s + ring->mCur;
     if ((s16)idx < 0) {
         if (mode == 1) {
             ring->mCur = size + idx;
@@ -356,6 +476,33 @@ extern "C" u8 fn_800FD894(RailRing* ring, s32 id, u8* out, s32 max) {
         }
     }
     return n;
+}
+
+extern "C" RailVec fn_800FD998(RailRing* ring, RailVec* pos, s32 X, s32 n, u8 i) {
+    RailVec node;
+    if (i == 0xff) {
+        node = ring->mNodes[ring->mCur]->mPos;
+    } else {
+        node = ring->mNodes[i]->mPos;
+    }
+    RailVec mid = (node + *pos) * 0.5f;
+    RailVec d = node;
+    d -= *pos;
+    f32 half = PSVECMag(&d) * 0.5f;
+    if (n == 0) {
+        return d;
+    }
+    if (X == 0) {
+        RailVec zero(0.0f, 0.0f, 0.0f);
+        return zero;
+    }
+    u16 step = 0x8000 / n;
+    RailVec v = *pos;
+    v -= mid;
+    v.normalize();
+    f32 cosX = JMath::sincosTable_.mTable[(u16)(X * step) >> 5].second;
+    f32 cosX1 = JMath::sincosTable_.mTable[(u16)((X - 1) * step) >> 5].second;
+    return v * (half * cosX) - v * (half * cosX1);
 }
 
 extern "C" RailVec fn_800FDC70(RailRing* ring, RailVec* pos, s32 n, u8 i) {
