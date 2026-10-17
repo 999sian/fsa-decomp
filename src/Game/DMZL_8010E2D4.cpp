@@ -248,6 +248,9 @@ extern "C" void fn_80111E38(u8* this_) {
             case 2:
                 fn_8010E2D4(this_, 0x3d);
                 break;
+            case 3:
+            default:
+                break;
             }
             *(s32*)(this_ + 0x238) = 0x3d;
         } else {
