@@ -219,9 +219,7 @@ extern "C" void fn_8017EACC(void* thisPtr, u8 a, u8 b, u8 c) {
 extern "C" void fn_8017EADC(f32* dst, const f32* src) { dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2]; }
 
 extern "C" void fn_8017EAF8(void* dst, const f32* src) {
-    *(f32*)((char*)dst + 0x3c) = src[0];
-    *(f32*)((char*)dst + 0x40) = src[1];
-    *(f32*)((char*)dst + 0x44) = src[2];
+    *(JGeometry::TVec3<f32>*)((char*)dst + 0x3c) = *(JGeometry::TVec3<f32>*)src;
 }
 
 extern "C" void fn_8017EB0C(void* thisObj, f32 x, f32 y, f32 z) {
