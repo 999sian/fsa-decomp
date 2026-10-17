@@ -1,4 +1,9 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+extern "C" void fn_801C8B50(char* this_);
+extern "C" void fn_801C3B7C(void* this_, s32 state);
+extern "C" BOOL fn_800FD4C0(void* ring, u8 a, u8 b);
+extern "C" JGeometry::TVec3<f32> fn_800FE294(void* ring, u8 i);
 
 struct TndrG { u8 pad[0x131df]; u8 arr[4]; };
 extern "C" TndrG* fn_802D6A9C(void);
@@ -62,5 +67,57 @@ extern "C" void fn_801C8BC4(char* this_, u8 param_2) {
     } else {
         *(u8*)(this_ + 0x55d) = fn_801CD664(0xc) + 1;
     }
+}
+
+extern "C" void* lbl_8053AAF8;
+extern "C" f32 lbl_8053EED8;
+extern "C" void fn_800FD818(void* p, s32 n);
+extern "C" s32 fn_800FE25C(void* p, u8 n);
+extern "C" u8 fn_801C976C(char* this_) {
+    u8 pair[2];
+    u8 a = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
+    fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), 1);
+    u8 b = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
+    u8* s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+    if (a < s[2]) {
+        s[3] = a;
+    }
+    fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), -1);
+    u8 c = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
+    s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+    u32 ia = a;
+    if ((u8)ia < s[2]) {
+        s[3] = a;
+    }
+    u8* pc = &pair[1];
+    if (pc != 0) {
+        *pc = c;
+    }
+    u8* pb = &pair[0];
+    if (pb != 0) {
+        *pb = b;
+    }
+    f32 one = lbl_8053EEC8;
+    f32 thr = lbl_8053EED8;
+    u32* seed = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    u32 bits = (*seed >> 9) | 0x3f800000;
+    f32 r = *(f32*)&bits;
+    r = r - one;
+    u8 x;
+    if (r < thr) {
+        x = pair[0];
+        s32 cur = *(s32*)(this_ + 4);
+        if (cur != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), x)) {
+            x = pair[1];
+        }
+    } else {
+        x = pair[1];
+        s32 cur = *(s32*)(this_ + 4);
+        if (cur != fn_800FE25C(GetCurrentSlotPtr(this_ + 0x358), x)) {
+            x = pair[0];
+        }
+    }
+    return x;
 }
 
