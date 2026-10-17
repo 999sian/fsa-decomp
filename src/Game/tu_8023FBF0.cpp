@@ -373,6 +373,7 @@ void fn_80276538(char*);
 void fn_80276078(char*);
 void fn_8030B774(s32);
 void fn_8024E0A0(char*);
+void fn_80456154(void*);
 s32 fn_8030AF10(void*, s32, f32*);
 void fn_8030B084(void*, s32, JGeometry::TVec3<f32>);
 s32 fn_8023697C(s32);
@@ -1213,13 +1214,13 @@ u32 fn_80241BA0(char* p, s32 room, f32* rect, u8 mode) {
         }
     }
     f32 buf[4];
-    f32 c = rect[2];
     f32 a = rect[0];
-    f32 d = rect[3];
     f32 b = rect[1];
+    f32 c = rect[2];
+    register f32 d = rect[3];
     buf[0] = a;
-    buf[1] = b;
     buf[2] = c;
+    buf[1] = b;
     buf[3] = d;
     return fn_8030AF10(PTR(p, 0xbec), room, buf);
 }
@@ -2001,7 +2002,9 @@ BOOL fn_80247C0C(char* p) {
         return 0;
     }
     n = 0;
-    for (i = 0; i < 4; i++) {
+    i = 0;
+    n = 0;
+    for (i = n; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             n++;
         } else if (fn_8022F514(i)) {
@@ -2899,8 +2902,9 @@ BOOL fn_8024C5A0(char* p, s32 id) {
             s32 y = linked >= 0 ? fn_80234004(linked) : S32(p, 0x1224);
             s32 x = 0;
             if (linked >= 0) {
+                s32 i;
                 s32 c = 0;
-                for (s32 i = 0; i < S32(p, 0x4); i++) {
+                for (i = 0; i < S32(p, 0x4); i++) {
                     if (linked == fn_8022F3DC(i)) {
                         c++;
                     }
