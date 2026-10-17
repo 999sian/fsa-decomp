@@ -1167,6 +1167,3 @@ extern "C" void fn_8015DB88(void) {
     while (1) {
     }
 }
-extern "C" void fn_801BDDBC(void* p, void* data, u32 count);
-extern "C" void fn_80166C84(void* p, void* p2);
-extern u8 lbl_802EE20C[];
