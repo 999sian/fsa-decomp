@@ -16,6 +16,9 @@ extern "C" void* lbl_8053AED0;
 extern "C" void* lbl_8053AF80;
 extern "C" void fn_8043D67C(void* snd, s32 a, s32 b);
 extern "C" void fn_80458508(void* obj, s32 a);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F78F4(void* pool, u32 type, s32 afterId);
+extern "C" void* fn_801F666C(void* reg, s32 id);
 extern "C" void fn_801F06F0(void*, const char*, s32, f32, f32, s32, s32);
 extern "C" Actor* fn_8034AA40(Actor* p, s16 n) {
     if (p) {
