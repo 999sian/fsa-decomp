@@ -7,6 +7,15 @@ extern u8 lbl_8049D740[];
 extern f32 lbl_8053C628;
 extern f32 lbl_8053C65C;
 
+extern const f32 lbl_8053C644;
+extern const f32 lbl_8053C64C;
+extern const f32 lbl_8053C650;
+extern const f32 lbl_8053C654;
+extern "C" void PSMTXTrans(f32 m[3][4], f32 xT, f32 yT, f32 zT);
+extern "C" void PSMTXConcat(f32 a[3][4], f32 b[3][4], f32 ab[3][4]);
+extern "C" void fn_8010F668(f32 m[3][4], f32 angle);
+extern "C" void* fn_801902C0(void);
+
 extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
 {
     switch (param_1) {
