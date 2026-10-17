@@ -11,15 +11,6 @@ extern "C" s32 fn_803A3484(void) {
 
 extern "C" u8 lbl_804AF820[];
 extern "C" u8 lbl_80529DEC[];
-struct TResMgr {
-    virtual void v00();
-    virtual void v01();
-    virtual void v02();
-    virtual void v03();
-    virtual void v04();
-    virtual void v05();
-    virtual void* get(u32 type, const char* name);
-};
 extern "C" void* fn_8013C824(void);
 extern "C" void fn_80427D94(void*);
 extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
