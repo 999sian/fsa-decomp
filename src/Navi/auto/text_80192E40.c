@@ -206,6 +206,16 @@ extern "C" void* fn_80194084(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801940F0(u32* p, u32* node) {
+    u32 head = p[11];
+    if (head == 0) {
+        p[11] = (u32)node;
+    } else {
+        node[1] = head;
+        p[11] = (u32)node;
+    }
+}
+
 extern "C" void* lbl_80299A2C[];
 extern "C" void* fn_801942E4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
