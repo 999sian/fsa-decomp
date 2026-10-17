@@ -1,7 +1,7 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JGeometry/Vec.h"
 struct Vec3f { float x, y, z; };
-struct TblEnt { char pad[0xc]; char* p; char pad2[4]; };
+struct TblEnt { char pad[0xc]; char* p; f32 f; };
 extern TblEnt lbl_8046A238[];
 extern "C" void fn_8020F80C(void* self, char* p);
 extern "C" u16 fn_8022461C(void* pos, u32 room);
