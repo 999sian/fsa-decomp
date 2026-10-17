@@ -289,6 +289,75 @@ extern "C" void fn_80166728(void* a, u32 b, u32 c, u32 d)
     }
 }
 
+extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d) {
+    u8* self = (u8*)a;
+    u8* src;
+    u8* dst = (u8*)b;
+    u8* end;
+    u8* back;
+    s32 bits = 0;
+    u32 flags;
+    s32 len;
+    u32 count = c;
+    u32 skip = d;
+
+    end = dst + *(u32*)(self + 4) - skip;
+    if (count == 0) {
+        return;
+    }
+    if (skip > *(u32*)self) {
+        return;
+    }
+    src = self + 0x10;
+    for (;;) {
+        if (bits == 0) {
+            bits = 8;
+            flags = *src++;
+        }
+        if (flags & 0x80) {
+            if (skip == 0) {
+                count--;
+                *dst++ = *src;
+                if (count == 0) {
+                    return;
+                }
+            } else {
+                skip--;
+            }
+            src++;
+        } else {
+            s8 b0 = src[0];
+            u8 b1 = src[1];
+            src += 2;
+            back = dst - (((b0 << 8) & 0xf00) | b1);
+            len = b0 >> 4;
+            if (len == 0) {
+                len = *src++ + 0x12;
+            } else {
+                len += 2;
+            }
+            do {
+                if (skip == 0) {
+                    count--;
+                    *dst++ = back[-1];
+                    if (count == 0) {
+                        return;
+                    }
+                } else {
+                    skip--;
+                }
+                back++;
+                len--;
+            } while (len != 0);
+        }
+        flags <<= 1;
+        bits--;
+        if (dst == end) {
+            return;
+        }
+    }
+}
+
 #pragma use_lmw_stmw reset
 
 extern "C" u8* fn_80166ACC(u8* p)
@@ -625,6 +694,33 @@ extern "C" int fn_80168DF8()
 
 extern "C" void fn_80168E00(void)
 {
+}
+
+extern "C" void fn_801682D8(void);
+extern "C" void* lbl_80298574[];
+extern "C" f32 lbl_80301A90;
+extern "C" void* fn_80168E64(void* self, f32 unused0, f32 unused1, f32 a, f32 b, f32 c, f32 d) {
+    f32 sp14;
+    f32 sp10;
+    f32 spC;
+    f32 sp8;
+    f32 temp;
+
+    fn_801682D8();
+    sp10 = a;
+    temp = -d;
+    sp8 = lbl_80301A90;
+    spC = lbl_80301A90;
+    *(void**)self = lbl_80298574;
+    *(u32*)((u8*)self + 0xbc) = *(u32*)&sp8;
+    sp14 = b;
+    *(u32*)((u8*)self + 0xc0) = *(u32*)&spC;
+    *(u32*)((u8*)self + 0xc4) = *(u32*)&sp10;
+    *(u32*)((u8*)self + 0xc8) = *(u32*)&sp14;
+    *(f32*)((u8*)self + 0xcc) = temp;
+    *(f32*)((u8*)self + 0xd0) = -c;
+    ((UnkVObj_80166424*)self)->vf7();
+    return self;
 }
 
 extern "C" BOOL fn_801694D8(void);
@@ -1600,28 +1696,28 @@ extern "C" void* fn_801706E4(u8* self, s16 param_2)
 }
 
 extern "C" s32 fn_80170D0C(u8* self, u8 count) {
-    s32 i;
+    u8 i;
 
     for (i = 0; i < count; i++) {
-        s32 off;
+        u32 off;
         u8* obj;
 
         if (i >= 8) {
             return 0;
         }
         off = (i * 4) + 0x16c;
-        if (*(void**)(self + off) == nullptr) {
+        if (*(void**)((u32)self + off) == nullptr) {
             obj = (u8*)fn_8015A90C(0x40);
             if (obj != nullptr) {
                 obj[0x3b] = obj[0x3b] & 2;
                 *(u32*)(obj + 0x28) = 0;
                 *(u32*)(obj + 0x20) = 0;
             }
-            *(void**)(self + off) = obj;
-            if (*(void**)(self + off) == nullptr) {
+            *(void**)((u32)self + off) = obj;
+            if (*(void**)((u32)self + off) == nullptr) {
                 return 0;
             }
-            self[0x1b0] = self[0x1b0] | (1 << i);
+            self[0x1b0] = self[0x1b0] | (1 << (u8)i);
         }
     }
     return 1;
