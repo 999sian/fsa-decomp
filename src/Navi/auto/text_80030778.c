@@ -366,6 +366,12 @@ extern "C" void fn_80036F8C(void* p) {
     *(unsigned int*)((char*)p + 0x24c) |= 0x4000;
 }
 
+extern "C" void fn_80036FB8(void* p) {
+    *(int*)((char*)p + 0x244) = *(int*)((char*)lbl_802BB0FC + 0x58) + 500;
+    *(int*)((char*)p + 0x2e0) = *(int*)((char*)lbl_802BB0FC + 0x58);
+    *(unsigned int*)((char*)p + 0x24c) |= 0x8000;
+}
+
 extern "C" void fn_80037698(void* p) {
     *(unsigned int*)((char*)p + 0x24c) |= 0x100000;
     *(unsigned int*)((char*)p + 0x2ec) = 3;
