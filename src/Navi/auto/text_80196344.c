@@ -42,6 +42,12 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_80198608(u8* p);
+inline void NaviRect16_Set(NaviRect16* d, s16 x, s16 y, s16 w, s16 h) {
+    d->x = x;
+    d->y = y;
+    d->w = w;
+    d->h = h;
+}
 struct NaviRectHolder98 {
     u8 unk_0x0[0x98];
     NaviRect16 rects[4];
@@ -2744,9 +2750,9 @@ extern "C" s32 fn_801A48F4(s32 p, s32 i) {
     return p + i * 4 + 0x78;
 }
 
-extern "C" void fn_801A4908(u8* p, int i, NaviRect16* src) {
-    NaviRect16* d = (NaviRect16*)(p + (i << 3) + 0x98);
-    *d = *src;
+extern "C" void fn_801A4908(NaviRectHolder98* p, int i, NaviRect16* src) {
+    NaviRect16 r = *src;
+    p->rects[i] = r;
 }
 
 extern "C" int fn_801A4960(int param_1, int param_2) {
