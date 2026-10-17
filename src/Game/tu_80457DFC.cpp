@@ -8,6 +8,7 @@
 #include "JSystem/JAudio/Interface/JAIAudience.h"
 #include "JSystem/JAudio/JAUSectionHeap.h"
 #include "JSystem/JAudio/JAUSoundMgr.h"
+#include "JSystem/JAudio/JAUAudience.h"
 #include "JSystem/JAudio/System/JASAudioReseter.h"
 
 extern "C" void* lbl_804B2074[];
@@ -254,6 +255,90 @@ extern "C" u32 fn_804580DC(char* this_, u8 idx) {
         }
     }
     return 0;
+}
+
+extern "C" void fn_8045815C(u8* this_, u8 mode) {
+    Unk80458F04* self = (Unk80458F04*)this_;
+    s32 id;
+    Unk8045815COut* out;
+    Unk80458408Obj* obj;
+    u32 irq;
+    s32 i;
+
+    self->m8B = mode;
+    if (self->m80 != NULL || self->m84 != NULL) {
+        id = -1;
+        if (self->m80 != NULL) {
+            s32 a = self->m80->mID;
+            id = a;
+        }
+        if (self->m84 != NULL) {
+            s32 b = self->m84->mID;
+            id = b;
+        }
+        if (id != 0x1000002 && id != 0x1000023 && id != 0x100002D && id != 0x1000001) {
+            if (self->m80 != NULL) {
+                id = self->m80->mID;
+            }
+            if (id != 0x100000D && (id > 0x100000C || id != 0x1000004)) {
+                if (mode != 0) {
+                    if (self->m80 != NULL) {
+                        out = self->m80->v10();
+                        if (out != NULL) {
+                            u32 a = lbl_8053A26C;
+                            f32 b = lbl_8053A268;
+                            if (a == 0) {
+                                out->m0 = b;
+                                out->m4 = lbl_80543EB0;
+                                out->mC = 0;
+                                out->m8 = lbl_80543EB0;
+                            } else {
+                                out->mC = a;
+                                out->m4 = (b - out->m0) / (f32)out->mC;
+                                out->m8 = b;
+                            }
+                        }
+                    }
+                } else {
+                    if (self->m80 != NULL) {
+                        out = self->m80->v10();
+                        if (out != NULL) {
+                            out->m0 = lbl_80543EB4;
+                            out->m4 = lbl_80543EB0;
+                            out->mC = 0;
+                            out->m8 = lbl_80543EB0;
+                        }
+                    }
+                }
+                if (mode != 0) {
+                    self->m80->mMove.movePitch(lbl_80543EC4, 0);
+                } else {
+                    self->m80->mMove.movePitch(lbl_80543EB4, 0);
+                }
+                if (mode != 0) {
+                    self->m80->mMove.moveFxMix(lbl_80543EB4, 0);
+                } else {
+                    self->m80->mMove.moveFxMix(lbl_80543EB0, 0);
+                }
+                if (self->m84 != NULL) {
+                    obj = self->m84->v6();
+                } else {
+                    obj = self->m80->v6();
+                }
+                if (obj != NULL) {
+                    irq = OSDisableInterrupts();
+                    for (i = 0; i < 16; i++) {
+                        JASTrack* track = obj->v9(i);
+                        if (track != NULL) {
+                            writePort__8JASTrackFUlUs(track, 0, mode);
+                        }
+                    }
+                    self->m8B = mode;
+                    OSRestoreInterrupts(irq);
+                }
+            }
+        }
+    }
 }
 
 extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
@@ -629,6 +714,30 @@ extern "C" void fn_80459624(char* self, f32* pos, Mtx mtx, int idx)
     *(f32*)(self + 0xc) = pos[2];
     *(f32*)(self + 0x10) = pos[1];
     PSMTXCopy(mtx, (f32(*)[4])(*(char**)(self + 0x3c) + idx * 0x30 + 0x54));
+}
+
+extern "C" void __ct__18JAU_JASInitializerFv(void*);
+extern "C" void initJASystem__18JAU_JASInitializerFP12JKRSolidHeap(void*, JKRSolidHeap*);
+extern "C" void __ct__18JAU_JAIInitializerFv(void*);
+extern "C" void initJAInterface__18JAU_JAIInitializerFv(void*);
+extern "C" void* __nw__FUlP7JKRHeapi(u32, void*, s32);
+extern "C" void* __ct__15JASAudioReseterFv(void*);
+extern "C" void fn_80459AE4(u32 a, u32 b, u32 c, void* d, void* e) {
+    u8 jasInit[0x30];
+    u8 jaiInit[0x10];
+    u8* this_ = (u8*)a;
+    JKRSolidHeap* heap = (JKRSolidHeap*)b;
+
+    __ct__18JAU_JASInitializerFv(jasInit);
+    initJASystem__18JAU_JASInitializerFP12JKRSolidHeap(jasInit, heap);
+    __ct__18JAU_JAIInitializerFv(jaiInit);
+    initJAInterface__18JAU_JAIInitializerFv(jaiInit);
+
+    if (__nw__FUlP7JKRHeapi(0x10, heap, 0) != 0) {
+        *(void**)(this_ + 0x2c) = __ct__15JASAudioReseterFv(0);
+    } else {
+        *(void**)(this_ + 0x2c) = 0;
+    }
 }
 
 extern "C" void fn_8045A080(char* self)
