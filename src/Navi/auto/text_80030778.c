@@ -311,6 +311,8 @@ extern "C" void fn_800336F0(void* p) {
 
 extern unsigned int lbl_802FEDE0;
 extern char lbl_80244C68[];
+extern char lbl_80246138[];
+extern "C" void fn_800358E4(void* a, void* b);
 extern "C" void fn_80033ADC(void* p, void*) {
     lbl_802FEDE0 |= 0x400;
     *(unsigned int*)((char*)p + 0x8) &= ~4;
