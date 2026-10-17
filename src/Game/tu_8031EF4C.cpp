@@ -1,3 +1,4 @@
+#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 extern "C" char lbl_804AB258[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
