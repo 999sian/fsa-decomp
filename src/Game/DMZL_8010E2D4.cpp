@@ -7,6 +7,7 @@ typedef struct MtxBox {
 } MtxBox;
 extern "C" void PSMTXTrans(Mtx m, f32 xT, f32 yT, f32 zT);
 extern "C" void PSMTXConcat(const Mtx a, const Mtx b, Mtx ab);
+extern "C" void PSMTXCopy(const Mtx src, Mtx dst);
 extern const f32 lbl_8053C550;
 extern const f32 lbl_8053C55C;
 extern const f32 lbl_8053C5C8;
@@ -236,6 +237,60 @@ extern "C" void fn_8010F478(u8* this_, s32 param_2) {
         break;
     }
     *(s32*)(this_ + 0x238) = param_2;
+}
+
+extern "C" void fn_8010F4DC(u8* this_) {
+    Mtx m1;
+    Mtx m2;
+    Vec v1;
+    Vec v2;
+    u8* e;
+    s32 n;
+    f32 z;
+
+    *(f32*)(this_ + 0x268) = *(f32*)(this_ + 0x268) + lbl_8053C5C8;
+    PSMTXTrans(m1, *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
+    v1.x = lbl_8053C550;
+    v1.y = lbl_8053C55C;
+    v1.z = lbl_8053C55C;
+    fn_8010F668(m1, (f32*)&v1, lbl_8053C5CC);
+    m2[2][3] = lbl_8053C55C;
+    m2[1][3] = lbl_8053C55C;
+    m2[0][3] = lbl_8053C55C;
+    m2[2][2] = lbl_8053C55C;
+    m2[1][2] = lbl_8053C55C;
+    m2[0][2] = lbl_8053C55C;
+    m2[2][1] = lbl_8053C55C;
+    m2[1][1] = lbl_8053C55C;
+    m2[0][1] = lbl_8053C55C;
+    m2[2][0] = lbl_8053C55C;
+    m2[1][0] = lbl_8053C55C;
+    m2[0][0] = lbl_8053C55C;
+    v2.x = lbl_8053C55C;
+    v2.y = lbl_8053C55C;
+    v2.z = lbl_8053C550;
+    fn_8010F668(m2, (f32*)&v2, *(f32*)(this_ + 0x268));
+    PSMTXConcat(m1, m2, m1);
+
+    n = *(s32*)(this_ + 0x240) + 1;
+    *(s32*)(this_ + 0x240) = n;
+    if (*(s32*)(this_ + 0x240) >= 0xc8) {
+        *(s32*)(this_ + 0x240) = 0;
+    }
+    n = *(s32*)(this_ + 0x240);
+    z = *(f32*)(this_ + 0x270);
+    e = (u8*)fn_801902C0();
+    if (*(u32*)(e + 0x284) != 0 && e[0x2a4] == 0) {
+        e[0x2a4] = 1;
+        *(f32*)(e + 0x248) = z;
+        *(f32*)(e + 0x24c) = z;
+        *(f32*)(e + 0x250) = z;
+        *(MtxBox*)(e + 0x254) = *(MtxBox*)m1;
+        *(f32*)(e + 0x290) = lbl_8053C5D0;
+        *(s32*)(e + 0x294) = n;
+        *(s32*)(e + 0x29c) = 0;
+        *(s32*)(e + 0x2a0) = 1;
+    }
 }
 
 void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle) {
