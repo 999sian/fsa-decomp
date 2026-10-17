@@ -44,6 +44,15 @@ extern "C" void fn_800E29CC(u8* p) {
 
 extern "C" void fn_800E38B8(void) {}
 
+extern "C" void fn_800E3EF0(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
+        *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0xa76) = 0;
+    *(u32*)(lbl_802BB0FC + 0x100) |= 0x4;
+}
+
 extern "C" void fn_800E3F28(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
         *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
