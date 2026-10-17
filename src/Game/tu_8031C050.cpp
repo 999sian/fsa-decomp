@@ -1,6 +1,9 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
+extern "C" double sin(double x);
+extern "C" double cos(double x);
+
 typedef f32 Mtx[3][4];
 extern "C" void PSMTXIdentity(Mtx m);
 
