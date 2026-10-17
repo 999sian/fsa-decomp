@@ -2,6 +2,7 @@
 
 extern u8 lbl_802C5BFC[];
 extern u8 lbl_802BB0FC[];
+extern "C" void fn_80114010(void);
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80111cdc-0x80114664 (28 functions). split_file divides it into the game's real files.
 
@@ -39,23 +40,16 @@ extern "C" s32 fn_801E10A0(void*);
 extern "C" s32 fn_801E1070(void*);
 extern "C" void fn_801E10DC(void*, void*);
 extern "C" f32 lbl_803013C0;
-extern "C" BOOL fn_80112488(u8* p, u32* src, void* arg) {
-    if (fn_801E10A0(p + 0x264) != 0) {
-        if (fn_801E1070(p + 0x264) != 0) {
-            *(s8*)(p + 0x300) = -1;
-            fn_801E10DC(p, arg);
+extern "C" BOOL fn_80112488(StateObj_80112488* self, StateFunc_80112488* func, int arg) {
+    if (fn_801E10A0(&self->m_func) != 0) {
+        if (fn_801E1070(&self->m_func) != 0) {
+            self->m_state = -1;
+            (self->*self->m_func)(arg);
         }
-        *(u32*)(p + 0x264) = src[0];
-        *(u32*)(p + 0x268) = src[1];
-        *(u32*)(p + 0x26c) = src[2];
-        p[0x300] = 0;
-        *(s16*)(p + 0x304) = 0;
-        *(s16*)(p + 0x306) = 0;
-        *(s16*)(p + 0x308) = 0;
-        *(s16*)(p + 0x30a) = 0;
-        *(f32*)(p + 0x30c) = 0.0f;
-        *(f32*)(p + 0x310) = 0.0f;
-        fn_801E10DC(p, arg);
+        self->m_func = *func;
+        self->m_unk304[0] = 0;
+        self->m_state = 0;
+        (self->*self->m_func)(arg);
     }
     return TRUE;
 }
