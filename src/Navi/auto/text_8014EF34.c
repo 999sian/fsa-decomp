@@ -17,9 +17,9 @@ extern "C" u32 fn_8014EF34(u8 p1, u32 p2)
     base = p2 >> 24;
     if (p1 != base) {
         if (base < p1) {
-            scale = lbl_802940E8[p1 - base];
+            scale = lbl_802940E8[(u8)p1 - base];
         } else {
-            scale = lbl_802942E8[base - p1];
+            scale = lbl_802942E8[base - (u8)p1];
         }
         v = (f32)(p2 & 0xffffff) * scale;
     } else {
