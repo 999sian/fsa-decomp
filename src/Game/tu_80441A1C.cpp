@@ -18,7 +18,35 @@ extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_80543D40;
 extern "C" f32 lbl_80543D44;
+extern "C" f32 lbl_80543D48;
+extern "C" f32 lbl_80543D4C;
+extern "C" f64 lbl_80543D50;
+extern "C" f64 lbl_80543D58;
 extern "C" u8 lbl_804AF86C[];
+extern "C" u8 lbl_8050DB0C[];
+extern "C" void* lbl_8053AAF8;
+extern "C" void* lbl_8053AD30;
+extern "C" void* lbl_8053AF80;
+extern "C" u8 fn_8030A258(void*, s32);
+extern "C" u8 fn_8030A388(void*, s32);
+extern "C" s32 fn_8030AAF4(s32);
+extern "C" u8 AnimTable_IsField0xdcLessThan3(void*, s32);
+extern "C" u8 AnimTable_IsField0xe0LessThan3(void*, s32);
+extern "C" void* fn_80309C4C(void*, s32, s32);
+extern "C" void fn_80458F9C(void*, s32);
+extern "C" void fn_80459274(void*);
+struct Unk80441A1CVt {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4();
+    virtual void m5();
+    virtual void m6();
+    virtual void m7(s32);
+    virtual void m8();
+    virtual void m9(s32);
+};
 extern "C" u8 lbl_8048FAF0[];
 extern "C" u8 lbl_80529DEC[];
 extern "C" void* lbl_8053AD78;
@@ -160,3 +188,45 @@ extern "C" void* fn_80442368(void* this_, s16 flag) {
     }
     return this_;
 }
+
+extern "C" void* fn_8044243C(void* this_) {
+    u8* self = (u8*)this_;
+    *(void**)self = (void*)lbl_804B19F0;
+    lbl_8053AEE0 = (u32)self;
+
+    void* screen = __nw__FUl(0x118);
+    if (screen != 0) {
+        __ct__9J2DScreenFv(screen);
+    }
+    *(void**)(self + 4) = screen;
+    setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 4), (const char*)lbl_8048FAF0, 0x1100000, *(void**)(lbl_80529DEC + 0x20));
+
+    void* r30 = *(void**)((char*)lbl_8053AD78 + 0x154);
+    ((J2DScreenObjVt*)((J2DScreenVt*)*(void**)(self + 4))->m13(0x77740000, 0x54, 0x77743031))->m37(r30);
+
+    void* obj = __nw__FUl(0x2c);
+    if (obj != 0) {
+        *(void**)obj = (void*)lbl_804AF86C;
+    }
+    *(void**)(self + 8) = obj;
+    fn_80402F04(*(void**)(self + 8), ((J2DScreenVt*)*(void**)(self + 4))->m13(0x500000, 0x507762, 0x6c6b3031));
+
+    obj = __nw__FUl(0x2c);
+    if (obj != 0) {
+        *(void**)obj = (void*)lbl_804AF86C;
+    }
+    *(void**)(self + 12) = obj;
+    fn_80402F04(*(void**)(self + 12), ((J2DScreenVt*)*(void**)(self + 4))->m13(0x4e640000, 0x4e646174, 0x61673031));
+
+    ((Unk80442254Vt*)*(void**)(*(char**)(self + 8) + 4))->m7(0);
+    f32 a = lbl_80543D40;
+    *(u16*)(*(char**)(self + 8) + 0x26) = 0;
+    fn_80402E08(*(void**)(self + 12), a, lbl_80543D44);
+    *(u16*)(*(char**)(self + 12) + 0x22) = 0;
+    *(s32*)(self + 0x10) = 0x16;
+    *(s32*)(self + 0x14) = 0;
+    *(s32*)(self + 0x18) = 0;
+    *(s32*)(self + 0x1c) = 0;
+    return this_;
+}
+
