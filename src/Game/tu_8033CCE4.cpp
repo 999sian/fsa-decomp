@@ -115,3 +115,5 @@ extern "C" f32 fn_8033D4AC(f32 a, f32 b, f32 c) {
     return b + t;
 }
 
+void fn_8033E414(void) {}
+
