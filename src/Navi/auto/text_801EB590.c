@@ -2,6 +2,11 @@
 extern "C" void TRKConstructEvent(void* event, int eventType);
 extern "C" int TRKPostEvent(void* event);
 extern "C" void MWTRACE(u8, char*, ...);
+extern "C" int TRKGetFreeBuffer(int*, void**);
+extern "C" int TRKAppendBuffer_ui8(void*, const u8*, int);
+extern "C" void* TRKGetBuffer(int);
+extern "C" void TRKReleaseBuffer(int);
+extern "C" int fn_801EC874(void*, int*, int, int, int);
 extern void* lbl_802FA410[];
 extern char lbl_80202FBC[];
 extern char lbl_80202FC4[];
@@ -26,14 +31,15 @@ extern "C" int TRKDoSetOption(u8* param_1)
 		u8 flag;
 		u8 rest[0x40 - 9];
 	} msg;
+	char* str = lbl_80202DE0;
 	u8 option = param_1[0x1c];
 
 	if (param_1[0x18] == 1) {
-		usr_puts_serial(lbl_80202DE0 + 0);
+		usr_puts_serial(str);
 		if (option != 0) {
-			usr_puts_serial(lbl_80202DE0 + 0x20);
+			usr_puts_serial(str + 0x20);
 		} else {
-			usr_puts_serial(lbl_80202DE0 + 0x28);
+			usr_puts_serial(str + 0x28);
 		}
 		fn_801EF5A0(option);
 	}
@@ -244,12 +250,11 @@ extern "C" void fn_801EC4B8(u8* param_1, int param_2)
 {
 	u8* p = param_1;
 	int i;
-	for (i = 0; i < param_2; i++) {
+	for (i = 0; i < param_2; i++, p++) {
 		MWTRACE(8, lbl_80202FBC, *p);
 		if (i % 16 == 15) {
 			MWTRACE(8, lbl_80202FC4);
 		}
-		p++;
 	}
 	MWTRACE(8, lbl_80202FC4);
 }
