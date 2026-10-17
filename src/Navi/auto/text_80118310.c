@@ -28,7 +28,6 @@ extern u8 lbl_802C5FC8[];
 extern u8 lbl_802C5FF8[];
 extern s32 lbl_802FF2E0;
 extern u32 lbl_802FF2E4;
-extern "C" s32 fn_8011A7C8(void);
 extern "C" void* fn_8015A90C(u32);
 extern "C" void fn_8011AC74(void*, s32, s32, u16, u16);
 extern void* lbl_802FF328;
@@ -626,6 +625,23 @@ extern "C" u32 fn_8011BE50(f32* p, u32 flags) {
         flags = (flags & ~4) | 8;
     }
     return flags;
+}
+
+extern "C" void fn_8011BF04(void* a, void* b) {
+    struct S { u8 pad[0x7c]; s16 chan; };
+    u32* p = (u32*)a;
+    S* q = (S*)b;
+    s16 chan = q->chan;
+    if (chan >= 0 && chan < 4) {
+        lbl_802FF2CC[chan] = 0;
+        fn_8011BF78(q->chan, 1);
+    }
+    p[0] = 0;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = 0;
+    p[4] = 0;
+    lbl_802FF2D0 = 0xf0000000;
 }
 
 extern "C" void fn_801CE100(long chan, unsigned long command);
