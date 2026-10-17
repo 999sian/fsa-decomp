@@ -21,10 +21,17 @@ extern "C" void fn_801E10DC(void* p, void* q);
 extern "C" void fn_800EF4E0(void* p);
 extern "C" s32 fn_800EF768(void* p, u8 idx, u8 b, s32 c);
 extern u8 lbl_802C587C[];
-extern u8 lbl_8028B874[];
+struct NaviState_800EF384;
+typedef void (NaviState_800EF384::*NaviStateFn_800EF384)();
+extern NaviStateFn_800EF384 lbl_8028B874[];
 extern "C" void fn_800EF378(u8* param_1, u32 param_2, u32 param_3) {
     *(u32*)(param_1 + 0x40) = param_2;
     *(u32*)(param_1 + 0x44) = param_3;
+}
+
+extern "C" void fn_800EF384(u8* param_1) {
+    fn_801E10DC(param_1, lbl_8028B874 + param_1[0x52] * 12);
+    fn_800EF4E0(param_1);
 }
 
 extern "C" void fn_800EF3D0(void) {}
