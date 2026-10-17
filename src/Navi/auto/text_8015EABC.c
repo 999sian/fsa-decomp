@@ -69,13 +69,14 @@ extern "C" int fn_8015EC90(char* param_1, int param_2, int param_3) {
 }
 
 extern "C" int fn_8015ED10(char* p, u32 size) {
-    char* obj = 0;
+    char* o;
+    char* n;
     u32 aligned = (size + 0x1f) & ~0x1f;
     u32 best = -1;
-    char* n;
+    char* obj = 0;
     for (n = *(char**)lbl_802EE28C; n != 0; n = *(char**)(n + 0xc)) {
-        char* o = *(char**)n;
-        if (*(u32*)(o + 0x1c) >= aligned && *(u32*)(o + 0x1c) < best) {
+        o = *(char**)n;
+        if (*(u32*)(o + 0x1c) >= aligned && best > *(u32*)(o + 0x1c)) {
             best = *(u32*)(o + 0x1c);
             obj = o;
             if (best == aligned) {
