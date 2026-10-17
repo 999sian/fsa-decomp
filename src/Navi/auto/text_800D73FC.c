@@ -26,6 +26,7 @@ extern "C" void* fn_80181BA0(void* p);
 extern "C" void fn_801E41AC(void* dst, void* src, ...);
 extern "C" void fn_801E6768(void* dst, char* src);
 extern "C" int fn_80030390(unsigned char c);
+extern "C" s32 fn_8002192C(void);
 extern "C" char lbl_8028B50C[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" s32 fn_8002F168(u8* p);
