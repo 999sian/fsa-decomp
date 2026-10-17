@@ -1306,7 +1306,9 @@ extern "C" void fn_801B34A0(void) {}
 
 extern "C" void fn_801B34A4(void) {}
 
-extern "C" void fn_801B34A8(void) {}
+extern "C" void fn_801B34A8(void) {
+    return;
+}
 
 extern "C" void fn_801B34AC(void) {}
 
