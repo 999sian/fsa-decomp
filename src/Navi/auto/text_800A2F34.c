@@ -25,8 +25,8 @@ extern char lbl_80231850[];
 extern u32 lbl_802FEDDC;
 extern "C" void fn_80017FCC(void*);
 extern "C" s32 fn_80029794(void*, void*, s32);
-extern "C" void fn_800A4768(void*, s16, u8, s32, s32, f32, f32);
-extern "C" void fn_800A4A90(void*, s16, u8, s32, s32, f32, f32);
+extern "C" s32 fn_800A4768(void*, s16, u8, s32, s32, f32, f32);
+extern "C" s32 fn_800A4A90(void*, s16, u8, s32, s32, f32, f32);
 extern char lbl_8029FDB4[];
 extern void* lbl_802FF278;
 struct VObj_800A468C {
@@ -82,8 +82,9 @@ extern "C" BOOL fn_800A3038(void)
 
 extern "C" void fn_800A4140(void* param_1) {
     u8* p = (u8*)param_1;
+    f32 c = lbl_80300B80;
     *(s16*)(p + 0x196) = 0;
-    fn_800A4768(p, (s16)*(u16*)(p + 0x196), *(u8*)(lbl_802C54FC + 0x15), 0, 0, *(f32*)(lbl_802C54FC + 0x18), lbl_80300B80);
+    fn_800A4768(p, (s16)*(u16*)(p + 0x196), *(u8*)(lbl_802C54FC + 0x15), 0, 0, *(f32*)(lbl_802C54FC + 0x18), c);
     fn_800A4A90(p, (s16)*(u16*)(p + 0x196), *(u8*)(lbl_802C54FC + 0xc), 0, 0, *(f32*)(lbl_802C54FC + 0x10), lbl_80300B80);
 }
 
