@@ -7,6 +7,9 @@ struct Vec3f { f32 x, y, z; };
 extern "C" void fn_801E4334(char* buf, u32 n, const void* fmt, va_list args);
 extern "C" void fn_80123628(void* p, char* s);
 extern "C" void fn_80123928(void* p, const void* fmt, va_list args);
+extern "C" void* fn_8015A9A8(int, void*, int);
+extern void* lbl_802FF544;
+extern void* lbl_802FF360;
 
 extern "C" void fn_801DBA5C(s32 v, s32 n);
 extern "C" void fn_80132450(s16 a, s16 b, s16 c, void* out);
@@ -1758,6 +1761,17 @@ extern "C" void fn_80132D1C(u32 p, u32 q) {
     arr[4] = v;
     arr[3] = v;
     fn_80167A18(&arr[2], (void*)(p + 4), &arr[3], (void*)(q + 4));
+}
+
+extern "C" void fn_80132FA0(void);
+extern "C" void fn_8013B140(void);
+extern "C" void fn_80132F5C(u32 param_1, s32** param_2) {
+    s32* obj = *param_2;
+    if (obj[1] == 0x4a465642) {
+        fn_80132FA0();
+    } else {
+        fn_8013B140();
+    }
 }
 
 extern void* lbl_80292694[];
