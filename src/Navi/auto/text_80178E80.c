@@ -1272,17 +1272,17 @@ extern "C" s32 fn_8017EA3C(u8* self, u8* arg1, u32 idx) {
         return 0;
     }
     if ((u8)idx < self[0x110]) {
-        void* obj = ((void* (*)(void*, u32))(*(void***)self)[72])(self, idx);
-        s32 ret = *(s32*)((u8*)obj + 0x20);
         s32 r30 = 0;
+        void* obj = ((VObj_8017EA3C*)self)->v70(idx);
+        s32 ret = *(s32*)((u8*)obj + 0x20);
         if (arg1[8] != 0) {
-            r30 = ((s32 (*)(void*, u32))(*(void***)self)[82])(self, idx);
-            obj = ((void* (*)(void*, u32))(*(void***)self)[72])(self, idx);
+            r30 = ((VObj_8017EA3C*)self)->v82(idx);
+            obj = ((VObj_8017EA3C*)self)->v70(idx);
         }
         fn_80118C44(obj, arg1, r30);
         return ret;
     } else {
-        ((void (*)(void*, f32))(*(void***)self)[39])(self, lbl_80301B90);
+        ((VObj_8017EA3C*)self)->v37(lbl_80301B90);
         return 0;
     }
 }
@@ -1734,10 +1734,11 @@ extern "C" void* fn_801825CC(u8* param_1, s16 param_2) {
         virtual void Release(int);
     };
     if (param_1) {
-        *(void**)param_1 = lbl_80299138;
-        for (u8 i = 0; i < 4; i++) {
-            if (param_1[0x170] & (1 << i)) {
-                Obj* o = *(Obj**)(param_1 + 0x148 + (i << 2));
+        *(void**)param_1 = (void*)lbl_80299138;
+        u8 i;
+        for (i = 0; i < 4; i++) {
+            if (param_1[0x170] & (1 << (u8)i)) {
+                Obj* o = *(Obj**)(param_1 + 0x148 + i * 4);
                 if (o) {
                     o->Release(1);
                 }
@@ -1758,12 +1759,12 @@ extern "C" void* fn_801825CC(u8* param_1, s16 param_2) {
 }
 
 extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
+    u8 buf[56];
     f32 pos[4];
     pos[0] = *(f32*)(self + 0x20);
-    u8 buf[56];
-    pos[1] = *(f32*)((s32)self + 0x24);
-    pos[2] = *(f32*)(self + 0x28);
+    pos[1] = *(f32*)(self + 0x24);
     pos[3] = *(f32*)(self + 0x2c);
+    pos[2] = *(f32*)(self + 0x28);
     pos[0] += f1;
     pos[1] += f2;
     pos[2] += f1;
@@ -2010,8 +2011,8 @@ extern "C" void fn_8018485C(u8* self, u32 v) {
 }
 
 extern "C" void fn_80184864(u8* self, u8* p) {
-    u8 i;
     u16 j;
+    u8 i;
     u16 count;
 
     *(u8**)(self + 0x178) = p;
