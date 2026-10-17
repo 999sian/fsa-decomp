@@ -1,4 +1,19 @@
 #include "JSystem/J3D/J3DMaterialFactory.h"
+
+extern "C" void* fn_800E1300(const void* base, const void* offset);
+extern "C" void* fn_800CC040(const void* base, const void* offset);
+extern "C" void* fn_800CC010(const void* base, const void* offset);
+extern "C" void* fn_800CBFF8(const void* base, const void* offset);
+extern "C" void* fn_800CBFE0(const void* base, const void* offset);
+extern "C" void* fn_800CBFC8(const void* base, const void* offset);
+extern "C" void* fn_800CBFB0(const void* base, const void* offset);
+extern "C" void* fn_800CBF98(const void* base, const void* offset);
+extern "C" void* fn_800CBF80(const void* base, const void* offset);
+extern "C" void* fn_800CBF68(const void* base, const void* offset);
+extern "C" void* fn_800CBF50(const void* base, const void* offset);
+extern "C" void* fn_800CBF38(const void* base, const void* offset);
+extern "C" void* fn_800CBF20(const void* base, const void* offset);
+extern "C" void* fn_800CBF08(const void* base, const void* offset);
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
