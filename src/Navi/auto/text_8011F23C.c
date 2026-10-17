@@ -518,6 +518,19 @@ extern "C" void fn_80124DAC(OSAlarm* alarm, OSContext* ctx) {
     fn_801C0EEC(*(void**)((u8*)alarm + 0x28));
 }
 
+extern "C" void fn_80124DD0(void* a, void* b, OSTime tick) {
+    OSAlarm alarm;
+    u32 saved;
+    u32 level;
+
+    OSCreateAlarm(&alarm);
+    saved = fn_801C027C();
+    level = OSDisableInterrupts();
+    OSSetAlarm(&alarm, tick, fn_80124DAC);
+    fn_801C1174((void*)saved);
+    OSRestoreInterrupts(level);
+}
+
 extern "C" void fn_80124E44(void* p, void** v)
 {
 	*(u32*)((u8*)*v + 0x40) = 0;
@@ -644,6 +657,12 @@ extern "C" void fn_801DBA1C(s32 v, s32 n);
 extern "C" void fn_80127F14(u8* self, u8* other) {
     f32 scale = 25.0f * *(f32*)(self + 0x144);
     fn_801DBA1C((s32)(*(f32*)(other + 0x60) * scale), 5);
+}
+
+extern "C" void fn_801285CC(char* p) {
+    u32 a = *(u32*)(*(char**)p + 0x100);
+    s16 m = *(s16*)(**(char***)(*(char**)(p + 4) + 0x1c) + 0x24);
+    *(s16*)(p + 0x214) = (a < (u32)m) ? (s16)a : m;
 }
 
 extern "C" void fn_801285F8(char* p, char* q) {
@@ -1095,11 +1114,13 @@ extern "C" f32 fn_80132284(void* param_1, u8* param_2) {
 }
 
 extern "C" void fn_801323DC(u32 param_1, u32 param_2, f32* param_3) {
+    f32* a = lbl_802F0BC0[(param_1 >> 5) & 0x7FF];
+    f32* b = lbl_802F0BC0[(param_2 >> 5) & 0x7FF];
     f32 zero = lbl_80301794;
-    f32 sA = lbl_802F0BC0[(param_1 >> 5) & 0x7FF][0];
-    f32 sB = lbl_802F0BC0[(param_2 >> 5) & 0x7FF][0];
-    f32 cA = lbl_802F0BC0[(param_1 >> 5) & 0x7FF][1];
-    f32 cB = lbl_802F0BC0[(param_2 >> 5) & 0x7FF][1];
+    f32 sA = a[0];
+    f32 cA = a[1];
+    f32 sB = b[0];
+    f32 cB = b[1];
     param_3[0] = cA * cB;
     param_3[1] = -sB;
     param_3[2] = sA * cB;
