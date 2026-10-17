@@ -410,9 +410,6 @@ extern "C" void fn_8011AC3C(void* param_1) {
     fn_8011AC74(param_1, 0, 0, p[2], p[3]);
 }
 
-extern "C" u16 fn_801194E4(void* param_1, char* param_2);
-extern "C" int fn_801E6578(void* a, void* b);
-
 extern "C" void* fn_8011B0D8(u8* p, s16 del) {
     if (p) {
         *(u32*)p = (u32)lbl_8029016C;
