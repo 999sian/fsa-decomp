@@ -254,6 +254,39 @@ extern "C" void fn_8008A50C(JUTException* this_, OSContext* context)
     }
 }
 
+extern "C" char lbl_8053B868;
+extern "C" char lbl_8053B87C;
+
+static BOOL searchSection(u32 addr, u32* id, u32* index, u32* offset, char** name)
+{
+    OSModuleInfo* module = *(OSModuleInfo**)0x800030C8;
+    for (; module != nullptr; module = module->link.next) {
+        OSSectionInfo* section = (OSSectionInfo*)module->sectionInfoOffset;
+        u32 i = 0;
+        for (u32 n = module->numSections; n != 0; n--) {
+            u32 base = OS_SECTIONINFO_OFFSET(section->offset);
+            if (section->size != 0 && base <= addr && addr < base + section->size) {
+                if (id != nullptr) {
+                    *id = module->id;
+                }
+                if (index != nullptr) {
+                    *index = i;
+                }
+                if (offset != nullptr) {
+                    *offset = addr - base;
+                }
+                if (name != nullptr) {
+                    *name = (char*)module->nameOffset;
+                }
+                return TRUE;
+            }
+            section++;
+            i++;
+        }
+    }
+    return FALSE;
+}
+
 extern "C" BOOL fn_8008AFBC(JUTException* this_, u32 param_1, bool param_2);
 extern "C" JUTConsole* lbl_8053A914;
 extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
