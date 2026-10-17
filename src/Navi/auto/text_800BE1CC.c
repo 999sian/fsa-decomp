@@ -81,6 +81,13 @@ extern "C" void fn_800C3240(u8* p) {
     p[0x212] = 0x12;
 }
 
+extern "C" void fn_800C3270(u8* p) {
+    if (fn_8002F168(p) != 1) {
+        *(u16*)(p + 0x220) = 0x46;
+        p[0x212] = 0x13;
+    }
+}
+
 extern "C" void fn_800C3490(void) {}
 
 extern "C" void fn_800C40D8(void* param_1, void* param_2) {
