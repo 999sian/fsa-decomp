@@ -24,6 +24,14 @@ extern const float lbl_80543600;
 extern const float lbl_80543614;
 extern const float lbl_8054361C;
 extern const float lbl_8054362C;
+extern const float lbl_80543618;
+extern const float lbl_80543624;
+extern const float lbl_80543630;
+extern u64 lbl_804774C8[];
+extern void* lbl_8053AED8;
+u8 fn_80402B10(void*, s32, f32, s32, f32);
+u8 fn_80402940(void*, s32, f32, s32, f32);
+void fn_80440E0C(void*, f32);
 void fn_80402E08(void*, f32, f32);
 extern s32 lbl_8053AF80;
 extern char lbl_80477898[];
@@ -340,7 +348,7 @@ extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
     s32 i;
 
     if (self != 0) {
-        *(void**)self = &lbl_804B0688;
+        *(void**)self = lbl_804B0688;
         getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 8));
         if (self[0xa0] == 2) {
             fn_80427D94(*(SeqVoice**)(self + 0x64));
@@ -348,74 +356,74 @@ extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
         }
         obj = *(void**)(self + 0x60);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x60) = 0;
         obj = *(void**)(self + 0x64);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x64) = 0;
         obj = *(void**)(self + 0x4);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x4) = 0;
         obj = *(void**)(self + 0x8);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x8) = 0;
         for (i = 0; i < 7; i++) {
             obj = *(void**)(self + 0x14 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x14 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x30);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x30) = 0;
         for (i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x34 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x34 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x40);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x40) = 0;
         for (i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x44 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x44 + i * 4) = 0;
         }
         for (i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x50 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x50 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x58);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x58) = 0;
         obj = *(void**)(self + 0x10);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x10) = 0;
         obj = *(void**)(lbl_80529DEC + 0x2c);
-        ((void (*)(void))(*(void***)obj)[3])();
+        ((FsaDisposable*)obj)->v3();
         lbl_8053ADD0 = 0;
         if (param_2 > 0) {
             __dl__FPv(self);
