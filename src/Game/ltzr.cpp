@@ -46,6 +46,68 @@ extern "C" void* fn_8033F9A0(void* this_, s16 flag) {
     return this_;
 }
 
+extern "C" void fn_8033FA00(char* p) {
+    fn_801BA670();
+    DrawRec rec;
+    Mtx m;
+    f32 trans[3];
+    f32 scale[3];
+    f32 rot[3];
+    s32 iVar1;
+
+    rec.b20 = 0;
+    rec.b21 = 1;
+    rec.b1c = 0;
+    PSMTXIdentity(m);
+    trans[2] = lbl_80542268;
+    trans[1] = lbl_80542268;
+    trans[0] = lbl_80542268;
+    iVar1 = *(s32*)(p + 0x248);
+    if (iVar1 != 0) {
+        switch (*(u32*)(p + 0x280)) {
+        case 0:
+        case 4:
+            trans[2] = lbl_8054226C;
+            rec.b1d = 1;
+            break;
+        case 1:
+        case 3:
+        case 5:
+        case 7:
+            trans[2] = lbl_80542270;
+            rec.b1d = 1;
+            break;
+        case 2:
+        case 6:
+            trans[2] = lbl_80542274;
+            rec.b1d = 1;
+            break;
+        case 8:
+            trans[2] = lbl_80542278;
+            rec.b1d = 0;
+            break;
+        default:
+            if (iVar1 == 2 || iVar1 == 5) {
+                rec.b1d = 0;
+            } else {
+                rec.b1d = -1;
+            }
+            break;
+        }
+    } else {
+        rec.b1d = -1;
+    }
+    rot[0] = 0.0f;
+    rot[1] = 0.0f;
+    rot[2] = 0.0f;
+    scale[0] = *(f32*)(p + 0x2b4);
+    scale[1] = *(f32*)(p + 0x2b4);
+    scale[2] = *(f32*)(p + 0x2b4);
+    fn_8033FC4C(m, scale, rot, trans);
+    rec.w18 = m;
+    fn_801F06F0(p, lbl_80471EB0, 0x173, &rec, -1, lbl_8054227C, lbl_8054227C);
+}
+
 extern "C" void fn_8033FC4C(Mtx m, f32* scale, f32* rot, f32* trans) {
     f32 sx = sin(rot[0]);
     f32 sy = sin(rot[1]);
