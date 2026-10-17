@@ -2664,6 +2664,23 @@ extern "C" void fn_801A4700(void) { }
 
 extern "C" void fn_801A4704(void) { }
 
+extern "C" void fn_801A4708(int param_1) {
+    u16 tmp;
+    int i = 0;
+    lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 4);
+    u32 start = lbl_802FFA80[2];
+    while (true) {
+        u32 p = (*(int* volatile*)&lbl_802FFA80)[2];
+        if (!fn_801A602C(p)) {
+            break;
+        }
+        tmp = fn_801A6050(p);
+        fn_801A605C(i, &tmp);
+        i++;
+    }
+    fn_801BC250(start, lbl_802FFA80[2] - start);
+}
+
 extern "C" u32 fn_801A47A8(void) { return 0x54565054; }
 
 extern "C" void fn_801A47B4(u8* p, u8 v) {
