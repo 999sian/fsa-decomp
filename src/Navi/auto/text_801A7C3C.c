@@ -1238,6 +1238,25 @@ extern "C" void* fn_801B0A74(void* a, void* b, s32 sel, void* c, void* d) {
     return b;
 }
 
+extern "C" int fn_801B22D4(void* a, s32 b, u16 c, void* d);
+extern "C" s32 fn_801B2670(void* a, u32 b, u16 c, void* d);
+extern "C" int fn_801B2534(void* a, s32 b, u16 c, void* d);
+extern "C" int fn_801B2254(void* a, s32 b, s32 sel, u16 c, void* d) {
+    int r = 0;
+    switch (sel) {
+    case 0:
+        r = fn_801B22D4(a, b, c, d);
+        break;
+    case 1:
+        r = fn_801B2670(a, b, c, d);
+        break;
+    case 2:
+        r = fn_801B2534(a, b, c, d);
+        break;
+    }
+    return r;
+}
+
 extern "C" s32 fn_801B2670(void* a, u32 b, u16 c, void* d) {
     s32 r = 0;
     if (b == 0) {
