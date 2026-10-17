@@ -1883,12 +1883,12 @@ extern "C" s32 fn_80185E08(u8* self, u32 arg1) {
     u32 i;
     for (i = 0; (u8)i < n; i++) {
         VObj_80185E08* o = *(VObj_80185E08**)(*(u8**)(self + 0x168) + 0x70);
-        if (o->v38((u8)i) == arg1) {
+        u32 r = o->v38((u8)i);
+        if (r == arg1) {
             break;
         }
     }
-    u8 k = (u8)i;
-    return ((VObj_80185DA4*)self)->v52(k);
+    return ((VObj_80185DA4*)self)->v52(i);
 }
 
 extern "C" void fn_801DCCA0(s32);
