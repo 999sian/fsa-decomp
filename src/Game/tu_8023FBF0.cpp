@@ -2744,6 +2744,106 @@ BOOL fn_8024DC00(char* p, const JGeometry::TVec3<f32>& v, s32 frame, u8 a, u8 b,
     }
     return 1;
 }
+
+BOOL fn_8024DCD0(char* p) {
+    bool ok;
+    if (U8(p, 0x454) != 0) {
+        ok = false;
+    } else if (U8(p, 0xce8) == 1) {
+        ok = false;
+    } else if (U8(p, 0x1216) == 1) {
+        ok = false;
+    } else {
+        ok = true;
+    }
+    if (!ok) {
+        return 0;
+    }
+    if (S32(p, 0x1240) == 0x4f) {
+        if (fn_80251BFC(p, 0)) {
+            if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) == 0 && S32(p, 0xd60) < 0) {
+                S32(p, 0x1244) = 1;
+            } else if (U8(p, 0x434) != 0) {
+                if (S32(p, 0x1240) == 2) {
+                    goto LAB_end;
+                }
+                S32(p, 0x1244) = 2;
+            } else {
+                S32(p, 0x1244) = 0;
+            }
+            U8(p, 0x124c) = 1;
+            if (S32(p, 0xd60) < 0 && U8(p, 0xcfe) == 1 && S32(p, 0x1244) != 0) {
+                U8(p, 0xcfe) = 0;
+            }
+        }
+    }
+LAB_end:
+    U8(p, 0x454) = 1;
+    V3(p, 0x32c) = V3(p, 0x8);
+    U8(p, 0x455) = 0;
+    U16(p, 0x450) = U16(p, 0x3c4);
+    if (fn_80270A8C(p)) {
+        U16(p, 0x450) = U16(p, 0x3c4);
+    } else if (fn_8025F448(p)) {
+        U16(p, 0x450) = U16(p, 0x3c4);
+    } else {
+        BOOL isBusy = S32(p, 0x1240) == 0x4a || S32(p, 0x1240) == 0x4b;
+        if (isBusy) {
+            s32 mode = S32(p, 0x3dc);
+            if (mode == 0) {
+                U16(p, 0x450) = 0x1e8;
+            } else if (mode == 1) {
+                U16(p, 0x450) = 0x1ec;
+            } else if (mode == 2) {
+                U16(p, 0x450) = 0x1f0;
+            } else {
+                U16(p, 0x450) = 0x1f4;
+            }
+        } else if (fn_8025F684(p)) {
+            s32 mode = S32(p, 0x3dc);
+            if (mode == 0) {
+                U16(p, 0x450) = 0x2c0;
+            } else if (mode == 1) {
+                U16(p, 0x450) = 0x2c4;
+            } else if (mode == 2) {
+                U16(p, 0x450) = 0x2c8;
+            } else {
+                U16(p, 0x450) = 0x2cf;
+            }
+        } else {
+            BOOL inRange = S32(p, 0x1240) == 1 || (U16(p, 0x3c4) >= 0x1bf && U16(p, 0x3c4) < 0x1c6);
+            if (!inRange) {
+                s32 mode = S32(p, 0x3dc);
+                if (mode == 0) {
+                    U16(p, 0x450) = 0x3c;
+                } else if (mode == 1) {
+                    U16(p, 0x450) = 0x3d;
+                } else if (mode == 2) {
+                    U16(p, 0x450) = 0x3e;
+                } else {
+                    U16(p, 0x450) = 0x3f;
+                }
+            }
+        }
+    }
+    U8(p, 0xca2) = 0xff;
+    U16(p, 0x452) = 0;
+    fn_80241E64(p);
+    char* a = getActor(S32(p, 0x1230));
+    if (a != NULL) {
+        U8(a, 0x11c) = 0;
+        S32(p, 0x1230) = -1;
+    } else if (U8(p, 0x121f) == 1) {
+        U8(p, 0x121f) = 0;
+        if (S32(p, 0x11f0) < 5) {
+            S32(p, 0x11f0) = 5;
+        }
+    }
+    U8(p, 0xcae) = 1;
+    U8(p, 0xcaf) = 1;
+    return 1;
+}
+
 char* fn_8024E018(char* p) { return p + 0x2b8; }
 void fn_8024E020(char* p, const f32* v) {
     F32(p, 0x2b8) = v[0];
