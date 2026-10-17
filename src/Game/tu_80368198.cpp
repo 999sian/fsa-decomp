@@ -163,7 +163,7 @@ void fn_8036A894(u8* this_)
 
 extern "C" void fn_8036AA60(char* self) {
     extern void* fn_801902C0(void);
-    char* tbl = lbl_80474C38;
+    char* tbl;
     Mtx m1;
     Mtx m2;
     Vec3f v1;
@@ -173,23 +173,24 @@ extern "C" void fn_8036AA60(char* self) {
     s32 st;
     s32 idx;
 
+    tbl = lbl_80474C38;
     PSMTXTrans(m1, *(f32*)(self + 0xc), *(f32*)(self + 0x10), *(f32*)(self + 0x14));
     v1.x = lbl_80542C58;
     v1.y = lbl_80542C6C;
     v1.z = lbl_80542C6C;
     fn_8010F668(m1, &v1, lbl_80542CC4);
-    m2[0][0] = lbl_80542C6C;
-    m2[0][1] = lbl_80542C6C;
-    m2[0][2] = lbl_80542C6C;
-    m2[0][3] = lbl_80542C6C;
-    m2[1][0] = lbl_80542C6C;
-    m2[1][1] = lbl_80542C6C;
-    m2[1][2] = lbl_80542C6C;
-    m2[1][3] = lbl_80542C6C;
-    m2[2][0] = lbl_80542C6C;
-    m2[2][1] = lbl_80542C6C;
-    m2[2][2] = lbl_80542C6C;
     m2[2][3] = lbl_80542C6C;
+    m2[1][3] = lbl_80542C6C;
+    m2[0][3] = lbl_80542C6C;
+    m2[2][2] = lbl_80542C6C;
+    m2[1][2] = lbl_80542C6C;
+    m2[0][2] = lbl_80542C6C;
+    m2[2][1] = lbl_80542C6C;
+    m2[1][1] = lbl_80542C6C;
+    m2[0][1] = lbl_80542C6C;
+    m2[2][0] = lbl_80542C6C;
+    m2[1][0] = lbl_80542C6C;
+    m2[0][0] = lbl_80542C6C;
     v2.x = lbl_80542C6C;
     v2.y = lbl_80542C6C;
     v2.z = lbl_80542C58;
