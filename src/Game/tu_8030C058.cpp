@@ -21,6 +21,42 @@ static inline bool fn_8030C210_contains(u8* p, f32 x, f32 y) {
     return in;
 }
 
+extern "C" bool fn_8030C058(u8* p, f32* v) {
+    bool ret = false;
+    s32 n = *(s32*)(p + 0x7f0);
+    if (n + 1 < 0x80) {
+        if (v[0] >= *(f32*)(p + 0x154) && v[1] >= *(f32*)(p + 0x158) && v[0] < *(f32*)(p + 0x15c) && v[1] < *(f32*)(p + 0x160)) {
+            if (v[2] >= *(f32*)(p + 0x154) && v[3] >= *(f32*)(p + 0x158) && v[2] < *(f32*)(p + 0x15c) && v[3] < *(f32*)(p + 0x160)) {
+                if (n < 0x80 && v[0] >= *(f32*)(p + 0x154) && v[1] >= *(f32*)(p + 0x158) && v[0] < *(f32*)(p + 0x15c) && v[1] < *(f32*)(p + 0x160)) {
+                    f32* d = (f32*)(p + n * 0xc + 0x1f0);
+                    d[0] = v[0];
+                    d[1] = v[1];
+                    d[2] = lbl_805416C8;
+                    (*(s32*)(p + 0x7f0))++;
+                }
+                n = *(s32*)(p + 0x7f0);
+                if (n < 0x80 && v[2] >= *(f32*)(p + 0x154) && v[3] >= *(f32*)(p + 0x158) && v[2] < *(f32*)(p + 0x15c) && v[3] < *(f32*)(p + 0x160)) {
+                    f32* d = (f32*)(p + n * 0xc + 0x1f0);
+                    d[0] = v[2];
+                    d[1] = v[3];
+                    d[2] = lbl_805416C8;
+                    (*(s32*)(p + 0x7f0))++;
+                }
+                ret = true;
+            }
+        }
+    }
+    return ret;
+}
+
+static inline bool fn_8030C058_in(u8* p, f32* v) {
+    bool in = false;
+    if (v[0] >= *(f32*)(p + 0x154) && v[1] >= *(f32*)(p + 0x158) && v[0] < *(f32*)(p + 0x15c) && v[1] < *(f32*)(p + 0x160)) {
+        in = true;
+    }
+    return in;
+}
+
 extern "C" bool fn_8030C210(u8* p, f32* v) {
     bool ret = false;
     s32 n = *(s32*)(p + 0x7f0);
@@ -93,8 +129,8 @@ extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out) {
     Vec v;
     PSMTXMultVec((MtxPtr)(p + 0x74), (Vec*)a, &v);
     f32* m = (f32*)(p + 0xa4);
-    f32 x = v.x * m[0] + v.y * m[1] + v.z * m[2] + 1.0f * m[3];
     f32 y = v.x * m[4] + v.y * m[5] + v.z * m[6] + 1.0f * m[7];
+    f32 x = v.x * m[0] + v.y * m[1] + v.z * m[2] + 1.0f * m[3];
     if ((u8)c != 0) {
         out[0] = 0.5f * (1.0f + x);
         out[1] = 0.5f * (1.0f - y);
