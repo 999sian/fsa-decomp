@@ -20,6 +20,10 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300CE8;
 extern f32 lbl_80300D04;
+extern u8 lbl_802FD350[];
+extern u8 lbl_802C55FC[];
+extern "C" void fn_8002F9B4();
+extern "C" void fn_8002FA24(s32 a);
 extern "C" f32 fn_800BDD94(void*, u8, s32);
 extern "C" void fn_80060794(void* a, void* b, void* c, void* d);
 struct VObj_800BD938 {
@@ -45,27 +49,13 @@ extern "C" void fn_800BB1B4(u8* param_1) {
     }
 }
 
-extern "C" int fn_800BB6C0(u8* p, u8* q) {
-    u8 r = q[0];
-    u8 g = q[1];
-    u8 b = q[2];
-    u8 a = q[3];
-    p[0x13c] = r;
-    p[0x13d] = g;
-    p[0x13e] = b;
-    p[0x13f] = a;
+extern "C" int fn_800BB6C0(u8* p, NaviColor c) {
+    *(NaviColor*)(p + 0x13c) = c;
     return 1;
 }
 
-extern "C" int fn_800BB6E8(u8* p, u8* q) {
-    u8 r = q[0];
-    u8 g = q[1];
-    u8 b = q[2];
-    u8 a = q[3];
-    p[0x138] = r;
-    p[0x139] = g;
-    p[0x13a] = b;
-    p[0x13b] = a;
+extern "C" int fn_800BB6E8(u8* p, NaviColor c) {
+    *(NaviColor*)(p + 0x138) = c;
     return 1;
 }
 
