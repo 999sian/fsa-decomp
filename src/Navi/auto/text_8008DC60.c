@@ -111,7 +111,7 @@ extern void* lbl_8027EC78[];
 extern void* lbl_80286948[];
 extern void* lbl_802893EC[];
 extern "C" void fn_800D0910(void*);
-extern "C" void fn_801E0DB8(void* arr, void* ctor, void* dtor, u32 size, u32 n);
+extern "C" void fn_801E0DB8(void* arr, void* ctor, void* dtor, s32 size, s32 n);
 struct Obj_8009287C {
     u8 pad[0x7e8];
     u8 state;
@@ -1471,13 +1471,15 @@ extern "C" void fn_80097154(u8* self) {
 
 extern "C" void fn_80097EB0(u8* p, s32 idx, s16 x, s16 y);
 extern "C" void fn_80097DE8(u8* p) {
+    char* tbl = lbl_802BB0FC;
     s32 i;
-    if (*(s32*)(lbl_802BB0FC + 0x44) != 0xa) {
+    if (*(s32*)(tbl + 0x44) != 0xa) {
         for (i = 0; i < 0xa; i++) {
-            char* e = lbl_802BB0FC + (i % 10) * 0xc;
-            if (*(u16*)(e + 0x2dc) & 2) {
-                *(u16*)(e + 0x2dc) &= 0xfffd;
-                if (*(u8*)(e + 0x2de) >= *(s32*)(lbl_802BB0FC + 0x3f0)) {
+            char* e = tbl + (i % 10) * 0xc;
+            u16* flag = (u16*)(e + 0x2dc);
+            if (*flag & 2) {
+                *flag = *flag & ~2;
+                if (*(u8*)(e + 0x2de) >= *(s32*)(tbl + 0x3f0)) {
                     fn_80097EB0(p, i, *(s16*)(e + 0x2d8), *(s16*)(e + 0x2da));
                 }
             }
@@ -1996,6 +1998,24 @@ extern "C" void fn_800A010C(void* p) {
 
 extern "C" void fn_800A0130(NaviState_8009FE50* p) {
     (p->*lbl_80286874[((u8*)p)[0x2bc]])();
+}
+
+extern "C" void fn_800A0168(u8* p) {
+    if (*(void**)(p + 0x2b8) == 0) {
+        void** o = (void**)fn_8015A90C(0x288);
+        if (o != 0) {
+            o[0] = lbl_80286948;
+            o[2] = lbl_8027EC78;
+            o[2] = lbl_802893EC;
+            fn_801E0DB8(o + 0x29, (void*)fn_80092F7C, 0, 4, 0x10);
+            fn_801E0DB8(o + 0x39, (void*)fn_80092F7C, 0, 4, 0x10);
+        }
+        *(void***)(p + 0x2b8) = o;
+        *(void**)(*(u8**)(p + 0x2b8) + 0x10) = *(void**)(p + 0x260);
+        fn_800D0910(*(void**)(p + 0x2b8));
+    }
+    p[0x7e0] = 3;
+    p[0x2bc] = 1;
 }
 
 extern void* lbl_802893EC[];
