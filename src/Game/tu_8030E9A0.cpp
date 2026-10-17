@@ -1,5 +1,4 @@
 #include "Game/Actor.h"
-#include "Game/SinitPoolChain.h"
 
 struct Unk8030EC18Buf {
     u8 idx[16];
@@ -200,5 +199,8 @@ extern "C" void fn_8030F9E4(u8* this_) {
     f0 = lbl_80541740;
     *(f32*)(this_ + 0x88) = f0;
     *(f32*)(this_ + 0x8c) = f0;
+}
+
+void fn_8030FB3C(void) {
 }
 
