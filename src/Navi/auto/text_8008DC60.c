@@ -1563,10 +1563,13 @@ extern "C" s32 fn_8009D0D8(s16* param_1) {
 }
 
 extern "C" void fn_8009D3E0(u8* p) {
+    s16 sVar1;
+    s32 n;
     *(s32*)(p + 0x588) = *(s32*)(p + 0x588) + 1;
-    s16 sVar1 = *(s16*)(*(u8**)(p + 0x584) + 6);
-    if (*(s32*)(p + 0x588) >= sVar1) {
-        *(s32*)(p + 0x588) = *(s32*)(p + 0x588) - sVar1;
+    sVar1 = *(s16*)(*(u8**)(p + 0x584) + 6);
+    n = *(s32*)(p + 0x588);
+    if (n >= sVar1) {
+        *(s32*)(p + 0x588) = n - sVar1;
     }
     *(f32*)(*(u8**)(p + 0x584) + 8) = (f32)*(s32*)(p + 0x588);
     fn_8017A4F8(*(void**)(p + 0x250));
@@ -1580,8 +1583,8 @@ extern "C" void fn_8009D544(char* p) {
 }
 
 extern "C" void fn_8009D784(u8* p) {
-    u8* q = (u8*)lbl_802C545C;
     f32 k = lbl_80300B30;
+    u8* q = (u8*)lbl_802C545C;
     s32 r = fn_800A1488(p, *(s16*)(p + 0x7fa), q[0x64], 1, 0, *(f32*)(q + 0x68), k, *(f32*)(p + 0x7e4), *(f32*)(p + 0x7e4));
     (*(s16*)(p + 0x7fa))++;
     if (r == 1) {
@@ -1591,8 +1594,8 @@ extern "C" void fn_8009D784(u8* p) {
 }
 
 extern "C" void fn_8009D7FC(u8* p) {
-    u8* q = (u8*)lbl_802C545C;
     f32 k = lbl_80300B30;
+    u8* q = (u8*)lbl_802C545C;
     s32 r = fn_800A1488(p, *(s16*)(p + 0x7fa), q[0x64], 0, 1, k, *(f32*)(q + 0x68), *(f32*)(p + 0x7e4), *(f32*)(p + 0x7e4));
     (*(s16*)(p + 0x7fa))++;
     if (r == 1) {
@@ -1706,6 +1709,17 @@ extern "C" void fn_8009F43C(void) {}
 extern NaviStateFunc_8009E6F0 lbl_8028673C[];
 extern "C" void fn_8009F440(NaviState_8009E6F0* p) {
     (p->*lbl_8028673C[((u8*)p)[0x800]])();
+}
+
+extern "C" void fn_80177C20(void* p, f32 v);
+extern "C" void fn_8009F560(u8* p) {
+    s32 idx = *(s32*)(lbl_802BB0FC + 0x3f0) % 10;
+    s32 i = 0;
+    for (i = 0; i < 5; i++) {
+        fn_80177C20(*(void**)(p + idx * 4 + 0x64c), *(f32*)(p + i * 4 + 0x808));
+        idx = (idx + 1) % 10;
+        *(f32*)(p + i * 4 + 0x808) = *(f32*)(p + i * 4 + 0x808) + *(f32*)(p + i * 4 + 0x830);
+    }
 }
 
 extern "C" void fn_8009FBB0(void) {}
