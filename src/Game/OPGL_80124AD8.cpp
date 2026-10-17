@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" u8 fn_80122834(void*);
 
