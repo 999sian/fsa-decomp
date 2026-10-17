@@ -40,6 +40,17 @@ extern "C" void fn_800BB1B4(u8* param_1) {
     }
 }
 
+extern "C" void fn_800BD00C(u8* p);
+extern "C" void fn_800BCE58(u8* p) {
+    if (p[0xe5] != 0) {
+        p[0xe5]--;
+    } else {
+        p[0xe6] = 1;
+        fn_800BD00C(p);
+        p[0xd4] = 1;
+    }
+}
+
 extern "C" void fn_800BCF88(void) {}
 
 extern "C" void fn_800BCF8C(u8* p) {
