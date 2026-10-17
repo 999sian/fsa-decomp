@@ -1728,4 +1728,3 @@ extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-inline bool iterNeRef_8013A388(const Iter_8013A388& x, const Iter_8013A388& y) { return x.node != y.node; }
