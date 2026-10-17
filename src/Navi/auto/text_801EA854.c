@@ -28,7 +28,7 @@ extern "C" void fn_801EAEC8(void* param_1, int param_2) {
 
 extern "C" void TRKReleaseBuffer(int param_1) {
     if (param_1 != -1 && param_1 >= 0 && param_1 < 3) {
-        unsigned char* buf = (unsigned char*)&lbl_802F8A48 + param_1 * 0x890;
+        unsigned char* buf = lbl_802F8A48 + param_1 * 0x890;
         TRKAcquireMutex(buf);
         *(int*)(buf + 4) = 0;
         TRKReleaseMutex(buf);
