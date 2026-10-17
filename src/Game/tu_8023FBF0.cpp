@@ -1214,7 +1214,7 @@ inline bool padActive3(char* p) {
     }
     return true;
 }
-  inline s32 countSharingC(char* p) { s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { s32 linked; if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { linked = S32(p, 0xd60); if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else { s32 me = S32(p, 0x4);
+  inline s32 countSharingC(char* p) { s32 c; s32 i; c = 0; for (i = 0; i < 4; i++) { if (i == S32(p, 0x4)) { c++; } else if (fn_8022F514(i)) { s32 linked = S32(p, 0xd60); if (linked >= 0) { if (linked == fn_8022F3DC(i)) { c++; } } else { s32 me = S32(p, 0x4);
                       if (me == fn_8022F3DC(i)) {
                       c++;
                   }
@@ -1576,11 +1576,48 @@ BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
     if (S32(p, 0x1240) != 0) {
         return 0;
     }
-    if (anim == 0xe8 && getMode3(p) == 4) {
-        s32 v = linkIdx(p);
-        if (v != linkRank2(p)) {
-            S16(p, 0x450) = 0x1c5;
-            goto done;
+    if (anim == 0xe8) {
+        s32 me;
+        s32 linked;
+        s32 i;
+        s32 c;
+        c = 0;
+        i = c;
+        for (; i < 4; i++) {
+            if (i == S32(p, 0x4)) {
+                c++;
+            } else if (fn_8022F514(i)) {
+                if ((linked = S32(p, 0xd60)) >= 0) {
+                    if (linked == fn_8022F3DC(i)) {
+                        c++;
+                    }
+                } else {
+                    me = S32(p, 0x4);
+                    if (me == fn_8022F3DC(i)) {
+                        c++;
+                    }
+                }
+            } else if (i == S32(p, 0xd60)) {
+                c++;
+            }
+        }
+        s32 mode;
+        if (c <= 1) {
+            mode = 5;
+        } else {
+            linked = S32(p, 0xd60);
+            if (linked >= 0) {
+                mode = fn_8022CAF8(linked);
+            } else {
+                mode = S32(p, 0x120c);
+            }
+        }
+        if (mode == 4) {
+            s32 v = linkIdx(p);
+            if (v != linkRank2(p)) {
+                S16(p, 0x450) = 0x1c5;
+                goto done;
+            }
         }
     }
     if (anim >= 0) {
