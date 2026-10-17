@@ -11,7 +11,7 @@ extern f32 lbl_80540994;
 extern f32 lbl_80540998;
 extern f32 lbl_8054099C;
 extern void* lbl_8053AB10;
-extern "C" void fn_80158B5C(void* a, void* b, void* c, void* d);
+extern "C" void fn_80158B5C(void* a, void* b, void* c, void* d, ...);
 extern "C" void fn_802B055C(char* p) {
     struct {
         f32 x, y, z;
