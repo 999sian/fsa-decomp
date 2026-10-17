@@ -924,6 +924,11 @@ extern "C" void fn_801AE5C8(u8* p, u8* src) {
     ((VObj_801AE5C8*)p)->vf0(src + 0x88, *(s32*)(src + 0x84));
 }
 
+extern "C" void fn_801AE6DC(void* a, u8* p);
+extern "C" void fn_801AE650(VObj_801AE5C8* self, u8* p, s32 b) {
+    self->vf0(p + 0x88, b);
+}
+
 extern void* lbl_8029B61C[];
 extern "C" void* fn_801AFDA4(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
