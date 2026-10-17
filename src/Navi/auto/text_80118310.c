@@ -28,6 +28,7 @@ extern u8 lbl_802C5FC8[];
 extern u8 lbl_802C5FF8[];
 extern s32 lbl_802FF2E0;
 extern u32 lbl_802FF2E4;
+extern "C" s32 fn_8011A7C8(void* a, s32 b);
 extern "C" void* fn_8015A90C(u32);
 extern "C" void fn_8011AC74(void*, s32, s32, u16, u16);
 extern void* lbl_802FF328;
@@ -584,7 +585,7 @@ extern "C" void fn_8011B4C0(u8* param_1) {
 }
 
 extern "C" void fn_8011B568(u8* param_1, s32 param_2, s64 param_3) {
-    if (param_3 >= (((s64)lbl_802FF2E0 << 32) | lbl_802FF2E4)) {
+    if (param_3 >= (s64)(((u64)lbl_802FF2E0 << 32) | lbl_802FF2E4)) {
         void (*fn)(s32, s32) = lbl_802FF2D4;
         lbl_802FF2E9 = 1;
         lbl_802FF2EC = *(s16*)(param_1 + 0x7c);
