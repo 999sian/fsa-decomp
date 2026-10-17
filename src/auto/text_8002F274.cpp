@@ -13,6 +13,14 @@ public:
 extern JKRHeap* JASDram;
 extern "C" char* fn_80030454(char* base, unsigned long off);
 extern "C" char* fn_8003043C(char* base, unsigned long off);
+extern "C" char* fn_80030424(char* base, unsigned long off);
+extern "C" char* fn_8003040C(char* base, unsigned long off);
+extern "C" char* fn_800303F4(char* base, unsigned long off);
+extern "C" char* fn_800303DC(char* base, unsigned long off);
+extern "C" char* fn_800303C4(char* base, unsigned long off);
+extern "C" char* fn_800303AC(char* base, unsigned long off);
+extern "C" char* fn_80030394(char* base, unsigned long off);
+extern "C" void* fn_8003026C(JASBasicBank* bank, char* data, char* key);
 extern "C" int lbl_80557688;
 extern "C" void* fn_8002FB90(const void*, JKRHeap*);
 extern "C" void* fn_8002F34C(const void*, JKRHeap*);
