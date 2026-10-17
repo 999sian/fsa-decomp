@@ -7,7 +7,7 @@ struct FsaVObj {
     virtual void v3(void);
     virtual void v4(void);
     virtual void v5(void);
-    virtual void v6(void);
+    virtual void v6(u32 a, void* b);
     virtual void v9(u8 b);
     virtual void v10(void);
     virtual void v11(void);
@@ -283,19 +283,19 @@ extern "C" void* fn_803B82FC(void* this_, s16 flag) {
             p++;
         }
         getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
-        void* p1 = a[1];
+        FsaSubObj* p1 = (FsaSubObj*)a[1];
         if (p1 != 0) {
-            ((void (*)(void*, s32))(*(void**)((char*)*(void**)p1 + 0x8)))(p1, 1);
+            p1->v00(1);
         }
         a[1] = 0;
-        void* p7 = a[7];
+        FsaSubObj* p7 = (FsaSubObj*)a[7];
         if (p7 != 0) {
-            ((void (*)(void*, s32))(*(void**)((char*)*(void**)((char*)p7 + 0x8) + 0x30)))(p7, 1);
+            p7->v10(1);
         }
         a[7] = 0;
-        void* p8 = a[8];
+        FsaSubObj* p8 = (FsaSubObj*)a[8];
         if (p8 != 0) {
-            ((void (*)(void*, s32))(*(void**)((char*)*(void**)((char*)p8 + 0x8) + 0x30)))(p8, 1);
+            p8->v10(1);
         }
         a[8] = 0;
         lbl_8053ADA8 = 0;
@@ -321,14 +321,13 @@ extern "C" void* fn_803B8414(u8* this_) {
     u32 local_14[2];
     u32 local_c[2];
     s32 i;
-    void* obj;
     *(void**)this_ = lbl_804AFAB0;
     __construct_array(this_ + 0xf8, (void*)__ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0xa);
     *(s32*)(this_ + 0x28c) = -1;
     *(s32*)(this_ + 0x290) = -1;
     getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
     lbl_8053ADA8 = (s32)this_;
-    obj = *(void**)((u8*)lbl_8053AAF8 + 0xa8);
+    void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa8);
     ((void (*)(void*, u32, void*))(*(void**)((u8*)*(void**)obj + 0x18)))(obj, 0x3f3f3f3f, lbl_80476520);
     *(s32*)(this_ + 0x24) = 0;
     *(s32*)(this_ + 0x28) = 0;
