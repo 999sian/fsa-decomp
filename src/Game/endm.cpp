@@ -3,6 +3,7 @@
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Util.h"
 
 extern char* lbl_8053AB10;
 extern "C" void fn_8030C7C4(void* mgr, f32* pos, f32 f);
