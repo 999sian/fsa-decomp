@@ -340,7 +340,9 @@ void fn_803037D4(s32, s32);
 void fn_80458F04(void*, s32);
 extern void* lbl_8053AB10;
 void fn_8030AE84(void*, f32*);
-void fn_8030C2A8(void*, const JGeometry::TVec3<f32>*);
+u8 fn_8030C2A8(void*, const JGeometry::TVec3<f32>*);
+extern f32 lbl_80540034;
+s32 fn_8030AF10(void*, s32, f32*);
 void fn_8030B084(void*, s32, JGeometry::TVec3<f32>);
 s32 fn_8023697C(s32);
 s32 fn_8022F3DC(s32);
@@ -2164,6 +2166,35 @@ void fn_8024CA20(char* p) {
     S32(p, 0xd40) = S32(p, 0xd3c);
     S32(p, 0xd3c) = -1;
 }
+
+void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
+    if (S32(p, 0xd50) <= 0 && (S32(p, 0xd44) < 0 || S32(p, 0xd44) == a3) && S32(p, 0xd3c) < 0) {
+        u8 uVar8 = 1;
+        if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 4))) != 0 || S32(p, 0xd60) >= 0) {
+            if (getMode2(p) == 4) {
+                uVar8 = linkIdx(p) != linkRank2(p);
+            } else {
+                uVar8 = ((u32)S32(p, 0xd60) >> 31) ^ 1;
+            }
+        }
+        if (uVar8 == 0 && a2 == S32(p, 0x3b4) && !fn_8025F448(p) && U8(p, 0xce8) == 0) {
+            if (U8(p, 0x454) == 0) {
+                bool bVar1 = false;
+                if (S32(p, 0x1240) == 0xb || S32(p, 0x1244) == 0xb) {
+                    bVar1 = true;
+                }
+                if (bVar1) {
+                    return;
+                }
+            }
+            if (a5 != 1 || S32(p, 0x3dc) == 3) {
+                S32(p, 0xd3c) = a3;
+                U8(p, 0xd4e) = a4;
+            }
+        }
+    }
+}
+
 BOOL fn_8024D058(char* p, u8 on) {
     if (on) {
         U8(p, 0x454) = 0;
@@ -2482,6 +2513,62 @@ u8 fn_80250030(char* p, s32 v) {
     }
     return 0;
 }
+
+int fn_80250ACC(char* p) {
+    s32 s;
+    s32 s2;
+    s32 expected;
+    s32 cnt;
+    s32 i;
+
+    if (countSharingH(p) <= 1) {
+        s = 5;
+    } else if (S32(p, 0xd60) < 0) {
+        s = S32(p, 0x120c);
+    } else {
+        s = fn_8022CAF8(S32(p, 0xd60));
+    }
+    if (s == 4) {
+        if (S32(p, 0xd60) < 0) {
+            s2 = S32(p, 0x1224);
+        } else {
+            s2 = fn_80234004(S32(p, 0xd60));
+        }
+        if (S32(p, 0xd60) < 0) {
+            expected = 0;
+        } else {
+            cnt = 0;
+            for (i = 0; i < S32(p, 0x4); i++) {
+                if (S32(p, 0xd60) == fn_8022F3DC(i)) {
+                    cnt++;
+                }
+            }
+            expected = cnt + 1;
+        }
+        if (s2 != expected) {
+            return 0;
+        }
+    }
+
+    if (countSharingH(p) <= 1) {
+        s = 5;
+    } else if (S32(p, 0xd60) < 0) {
+        s = S32(p, 0x120c);
+    } else {
+        s = fn_8022CAF8(S32(p, 0xd60));
+    }
+    if (s != 5 || S32(p, 0xd60) < 0) {
+        if (S32(p, 0xd60) < 0) {
+            if (S32(PTR(p, 0xbf0), 0xa0) > 0x13) {
+                return 1;
+            }
+        } else if (S32(PTR(p, 0xbf0), 0xa0) > 0x11) {
+            return 1;
+        }
+    }
+    return 0;
+}
+
 BOOL fn_802517E4(char* p) { return S32(p, 0x1240) == 0x1a; }
 BOOL fn_802517F8(char* p, u8 all) {
     char* s = (char*)PTR(p, 0xbf0);
