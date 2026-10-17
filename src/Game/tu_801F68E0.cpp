@@ -10,6 +10,23 @@ extern "C" u8 fn_8023EBB8(s32 idx);
 extern "C" s32 fn_8023EF50(s32 idx);
 extern "C" u8* fn_80204638(void);
 extern "C" void fn_802048F4(void);
+extern "C" void fn_801F6068(void);
+extern "C" void fn_801F6A4C(void* pool);
+extern "C" u8 fn_80239D38(void);
+extern "C" u8* fn_8020D58C(void);
+extern "C" void fn_8020D660(void);
+extern "C" void fn_8021F064(void);
+extern "C" void fn_8021F130(void);
+extern "C" void fn_801C0D70(void);
+extern "C" void fn_801C0DCC(void);
+extern "C" u8 fn_802DCD0C(void);
+extern "C" void fn_801F32F4(void* actor);
+extern "C" void fn_801EAB0C(void* p);
+extern "C" s32 fn_801A6160(void* actor);
+extern "C" void fn_801F33C4(void* actor);
+extern "C" void fn_801EE508(void* actor);
+extern "C" void fn_80456154(void* handle);
+extern "C" u8 fn_8020D6AC(u8* a, s32 room, void* pos, s32 handle, s32 flag);
 
 class JKRHeap;
 class WaveController {
