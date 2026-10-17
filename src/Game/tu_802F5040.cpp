@@ -313,6 +313,12 @@ static inline void Tu802F5040_setVec(f32* dst, f32 x, f32 y, f32 z) {
     dst[1] = y;
     dst[2] = z;
 }
+
+static inline void Tu802F5040_setVecR(f32* dst, f32 z, f32 y, f32 x) {
+    dst[0] = x;
+    dst[1] = y;
+    dst[2] = z;
+}
 extern "C" void fn_802F601C(u8* this_, f32* src, s32 type, f32* src2, f32 f1, f32 f2) {
     u8* p;
     s32 best;
@@ -406,7 +412,7 @@ extern "C" u8 fn_802F6298(u8* self, Vec* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
     if (n < 0x20) {
         u8* e = self + n * 0x88 + 0xd324;
         u8 i;
-        *(Vec*)e = *pos;
+        Tu802F5040_setVec((f32*)e, pos->x, pos->y, pos->z);
         *(s32*)(e + 0xc) = a;
         *(s32*)(e + 0x10) = b;
         *(s32*)(e + 0x14) = c;
