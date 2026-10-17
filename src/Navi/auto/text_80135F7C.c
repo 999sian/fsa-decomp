@@ -42,6 +42,7 @@ inline bool iterNe2_8013A388(Iter_8013A388 x, Iter_8013A388 y) {
     Iter_8013A388 ty = y;
     return iterNe_8013A388(tx, ty);
 }
+inline Iter_8013A388 iterCopy_8013A388(Iter_8013A388 x) { Iter_8013A388 t = x; return t; }
 inline bool iterNe3_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return iterNe_8013A388(x, y); }
 
 
