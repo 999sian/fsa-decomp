@@ -16,6 +16,8 @@ extern "C" void fn_80166650(void*);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80166C08(void*, int);
 extern "C" void fn_80166FC4(void*, void*);
+extern "C" void* fn_8015A9A8(u32, void*, int);
+extern "C" void fn_80166DF4(void*, void*, void*);
 extern "C" void* fn_8015EF38(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
