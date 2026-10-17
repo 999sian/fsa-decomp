@@ -71,6 +71,7 @@ struct Unk80013DA0 {
     u8 pad64[0xa8 - 0x64];
     s8 unkA8;
 };
+extern "C" void fn_80014390(Unk80013DA0* self);
 extern "C" void fn_80013B48(void) {
     if (lbl_802FEBE0) {
         OSCancelThread(lbl_802A2140);
@@ -158,6 +159,43 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     self->b1 = (u32)fn_80116064(32767.0f);
     self->b0 = self->unk50;
     fn_80013E18(self);
+}
+
+extern "C" void fn_80014160(void* p) {
+    Unk80013DA0* self = (Unk80013DA0*)p;
+    u8 buf[4];
+    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == 0x20) {
+        self->unk28 = lbl_802FB958;
+        fn_80124A04(lbl_802FF370, self->unk50, &self->unk28, fn_80013CC8, self);
+    } else {
+        fn_80124820(lbl_802FF370, self->unk50, fn_80013C14, self);
+    }
+}
+
+extern "C" void fn_800141EC(void* p) {
+    Unk80013DA0* self = (Unk80013DA0*)p;
+    u8 buf[4];
+    if (fn_80124A50(lbl_802FF370, self->unk50, buf) == 0) {
+        fn_80124AAC(lbl_802FF370, self->unk50, fn_80013CEC, self);
+    } else {
+        fn_80124820(lbl_802FF370, self->unk50, fn_80013C14, self);
+    }
+}
+
+extern "C" void fn_80014260(void* p) {
+    Unk80013DA0* self = (Unk80013DA0*)p;
+    u8 buf[4];
+    u32 tbl[3] = {lbl_80204EBC[0], lbl_80204EBC[1], lbl_80204EBC[2]};
+    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == '0') {
+        if (self->unk20 == 1) {
+            self->unk54 = 1;
+        } else {
+            self->unk20 = 1;
+        }
+        fn_80015A40(self);
+    } else {
+        fn_8001533C(self, tbl, 0);
+    }
 }
 
 extern "C" void fn_80014390(Unk80013DA0* self) {
