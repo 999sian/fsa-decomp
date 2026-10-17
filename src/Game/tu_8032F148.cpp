@@ -13,6 +13,100 @@ extern float lbl_80541EEC;
 extern "C" int fn_8013CC50(int, char*, float, int, int, int, int, int, int);
 extern "C" void fn_8013CB44(void*, void*, int, int, int);
 extern float lbl_80541EBC;
+extern "C" void fn_8032F4A8(char* this_) {
+    extern unsigned char* lbl_8053AAF8;
+    extern float lbl_80541E9C;
+    extern unsigned char lbl_80471A78[];
+    extern unsigned short fn_8022461C(void* a, int b);
+    extern int fn_8023CB24(int a);
+    extern int fn_8023CA88(int a);
+    extern void fn_801F06F0(char* a, void* p2, int p3, void* p4, int p5, float f6, float f7);
+    extern void fn_803075AC(void* h, int room, void* pos, int idx, int a, int b, int c, int d, int e, int f);
+
+    if (*(unsigned char*)(this_ + 0x2a7) != 1 && *(unsigned char*)(this_ + 0x288) != 0) {
+        DrawRec rec;
+        int bVar1 = 0;
+        int uVar9 = 7;
+        int iVar8 = 0;
+
+        if (lbl_80541E9C == *(float*)(this_ + 0x14) && (int)fn_8022461C(this_ + 0xc, *(int*)(this_ + 4)) == 0x39) {
+            uVar9 = 0;
+        }
+        rec.b20 = 0;
+        if (*(unsigned char*)(this_ + 0x2a8) == 1) {
+            int iVar2 = *(int*)(this_ + 0x25c);
+            if (iVar2 >= 0 && iVar2 <= 3) {
+                iVar8 = iVar2 + 1;
+            }
+        }
+        switch (iVar8) {
+        case 1:
+            ((u8*)&rec)[0x15] = 0x14;
+            ((u8*)&rec)[0x10] = 0xc8;
+            ((u8*)&rec)[0x12] = 0x96;
+            break;
+        case 2:
+            ((u8*)&rec)[0x14] = 0x14;
+            ((u8*)&rec)[0x11] = 0xc8;
+            ((u8*)&rec)[0x12] = 0xaa;
+            break;
+        case 3:
+            ((u8*)&rec)[0x16] = 0x14;
+            ((u8*)&rec)[0x10] = 0xb4;
+            ((u8*)&rec)[0x11] = 0xc8;
+            break;
+        case 4:
+            ((u8*)&rec)[0x14] = 0x14;
+            ((u8*)&rec)[0x16] = 0x14;
+            ((u8*)&rec)[0x11] = 0xc3;
+            break;
+        }
+        if (*(int*)(this_ + 0x230) == 3) {
+            rec.b1d = 1;
+            rec.b1c = 1;
+            if (*(int*)(this_ + 0x290) != 0 && (*(unsigned int*)(this_ + 0x26c) & 8) == 0) {
+                rec.ids[0xb] = 9;
+            }
+        } else {
+            if (*(int*)(this_ + 0x290) != 0 && *(int*)(this_ + 0x290) != 6) {
+                rec.ids[0xb] = 9;
+            }
+            if (*(int*)(this_ + 0x23c) != 0) {
+                rec.w30 = 0x11;
+            }
+        }
+        if (*(unsigned char*)(this_ + 0xc4) != 0) {
+            uVar9 = -1;
+            ((u8*)&rec)[0x13] = *(unsigned char*)(this_ + 0x288);
+            rec.b1d = fn_8023CB24(*(int*)(this_ + 0xc8)) + 1;
+            rec.b1c = fn_8023CA88(*(int*)(this_ + 0xc8));
+            bVar1 = 1;
+        }
+        if (*(int*)(this_ + 0x230) == 10) {
+            if (lbl_8053AAF8[0x7f] == 1) {
+                rec.b1d = fn_8023CB24(*(int*)(this_ + 0x25c)) + 1;
+                rec.b1c = fn_8023CA88(*(int*)(this_ + 0x25c));
+                if (*(int*)(this_ + 0x290) != 2) {
+                    fn_801F06F0(this_, lbl_80471A78, *(int*)(this_ + 0x264) + 0x11, &rec, -1, lbl_80541EBC, lbl_80541EBC);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(int*)(this_ + 4), this_ + 0xc, 0x11, 0, 2, -1, 1, 0, 0);
+                } else {
+                    fn_801F06F0(this_, lbl_80471A78, *(int*)(this_ + 0x264) + 0x1d, &rec, -1, lbl_80541EBC, lbl_80541EBC);
+                    fn_803075AC(*(void**)(this_ + 0x198), *(int*)(this_ + 4), this_ + 0xc, 0x1d, 0, 2, -1, 1, 0, 0);
+                }
+            }
+        } else {
+            int iVar3 = *(int*)(this_ + 0x290);
+            if (iVar3 == 2 || ((iVar3 == 0 || iVar3 == 6 || iVar3 == 1) && *(unsigned char*)(this_ + 0x2a1) == 1)) {
+                fn_801F06F0(this_, lbl_80471A78, *(int*)(this_ + 0x264) + 0x2c7, &rec, uVar9, lbl_80541EBC, lbl_80541EBC);
+                fn_803075AC(*(void**)(this_ + 0x198), *(int*)(this_ + 4), this_ + 0xc, *(int*)(this_ + 0x264) + 0x2c7, 0, 2, -1, bVar1, 0, 0);
+            } else {
+                fn_801F06F0(this_, lbl_80471A78, *(int*)(this_ + 0x264) + 0x2af, &rec, uVar9, lbl_80541EBC, lbl_80541EBC);
+                fn_803075AC(*(void**)(this_ + 0x198), *(int*)(this_ + 4), this_ + 0xc, *(int*)(this_ + 0x264) + 0x2af, 0, 2, -1, bVar1, 0, 0);
+            }
+        }
+    }
+}
+
 extern "C" void fn_803319B8(char* this_) {
     extern unsigned char* lbl_8053AAF8;
     extern int fn_801F0E34(void* this_, unsigned int id, int c);
