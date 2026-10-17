@@ -34,7 +34,7 @@ struct Unk801C5B08 {
 extern "C" s16 fn_801D0280(void* p, s32 idx);
 extern "C" u8 fn_801CC9F8(void* p, s32 idx);
 extern "C" u8* fn_802D6A9C(void);
-extern "C" int fn_801C5340(void);
+extern "C" u8 fn_801C5340(void);
 extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag);
 extern "C" void fn_801C3B7C(void* p, s32 state);
 extern "C" s32 fn_801D05F8(void* p, void* pos, f32 radius);
@@ -54,6 +54,79 @@ extern f32 lbl_8053EE74;
 extern f32 lbl_8053EE78;
 extern f32 lbl_8053EE7C;
 extern f32 lbl_8053EE80;
+extern "C" void fn_801C5B08(void* p, s32 param_2) {
+    Unk801C5B08* self = (Unk801C5B08*)p;
+    if (fn_801C5340() != 0) {
+        self->field_230 |= 0x2000000;
+        fn_801C3B7C(p, 0x1e);
+    } else {
+        s32 d = fn_801D05F8(p, &self->field_0C, self->field_5AC);
+        if (d < 0) {
+            if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE6C) {
+                fn_801C3B7C(p, 0xf);
+            } else {
+                fn_801C3B7C(p, 0x11);
+            }
+        } else {
+            self->field_338 = d;
+            fn_801C6260(p);
+            if (self->field_248 == 0x1b) {
+                if (self->field_59A == 0 && self->field_24C >= 0xf0 && fn_801D0DD4(p) != 0 &&
+                    (self->field_524 & 0x40) == 0) {
+                    s32 off = self->field_04;
+                    u8* base = fn_802D6A9C();
+                    if (base[0x10000 + off + 0x31df] != 0 && fn_801CC9F8(&self->field_0C, self->field_04) == 0) {
+                        if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE70) {
+                            self->field_33C = 0x4000;
+                        } else {
+                            self->field_33C = -0x4000;
+                        }
+                    } else {
+                        self->field_33C = fn_801D0280(p, d);
+                        self->field_33C += fn_801CD664(0x4001) - 0x2000;
+                    }
+                    fn_801C3B7C(p, 0x1c);
+                    self->field_59A = 0xb4;
+                } else {
+                    u8 flag = 0;
+                    if (self->field_599 == 0) {
+                        u8 r26 = ((u8*)GetCurrentSlotPtr(self->field_358))[3];
+                        JGeometry::TVec3f pos = *(JGeometry::TVec3f*)&self->field_0C;
+                        u8 r27 = fn_800FE2E4(GetCurrentSlotPtr(self->field_358), &pos, self->field_04);
+                        u8* slot = (u8*)GetCurrentSlotPtr(self->field_358);
+                        if (r26 < slot[2]) {
+                            slot[3] = r26;
+                        }
+                        JGeometry::TVec3f v = fn_800FE294(GetCurrentSlotPtr(self->field_358), r27);
+                        f32 dx = v.x - self->field_0C;
+                        f32 dy = v.y - self->field_10;
+                        if (dx * dx + dy * dy > lbl_8053EE74) {
+                            if (fn_800FD5E8(GetCurrentSlotPtr(self->field_358), r27)) {
+                                flag = 1;
+                            } else {
+                                f32 diff = (f32)(s16)(self->field_33C - fn_801D02E0(p, &v));
+                                if (lbl_8053EE78 * fabs(diff) > lbl_8053EE7C) {
+                                    if (((JMARandFast*)((u8*)lbl_8053AAF8 + 0xb4))->get_ufloat_1() < lbl_8053EE80) {
+                                        flag = 1;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    if (flag) {
+                        self->field_230 |= 0x200000;
+                        fn_801C3B7C(p, 0x11);
+                        self->field_230 &= ~0x200000;
+                        self->field_598 = 0x78;
+                    } else {
+                        fn_801C5EBC((u8*)p, d, param_2);
+                    }
+                }
+            }
+        }
+    }
+}
+
 extern "C" void fn_801C5EBC(u8* this_, s32 state, u8 flag) {
     extern u8* fn_802D6A9C(void);
     extern u8 fn_801CC9F8(void*, s32);
