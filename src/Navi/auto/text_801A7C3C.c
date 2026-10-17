@@ -123,7 +123,7 @@ struct VObj_801A82CC {
     virtual void vf5(void);
     virtual void vf6(void);
     virtual void vf7(void);
-    virtual void vf8(void);
+    virtual void vf8(void* a, void* b);
     virtual void vf9(void* a, void* b);
 };
 
