@@ -29,12 +29,42 @@ extern u8 lbl_802C5A54[];
 struct NaviState_800F3D84;
 typedef void (NaviState_800F3D84::*NaviStateFn_800F3D84)();
 extern NaviStateFn_800F3D84 lbl_8028C538[];
+extern "C" void fn_800F3730(u8* p) {
+    s32 i;
+    u8* tbl = lbl_802C5A54;
+    *(s16*)(p + 0x5c) = 0;
+    *(u8*)(*(u8**)(p + 0x4c) + 0xb0) = 0;
+    fn_800F4458(p, *(s16*)(p + 0x5c), tbl[0x14], 0, 0, *(f32*)(tbl + 0x10), lbl_80301198);
+    for (i = 0; i < 2; i++) {
+        fn_800F4570(p, i, *(s16*)(p + 0x5c), tbl[0x1c], 0, 0, *(f32*)(tbl + 0x18), lbl_80301198);
+    }
+}
+
+extern "C" void fn_800F37D8(u8* p) {
+    p[0x58] = 0;
+    fn_800F42C4();
+    s32 id = fn_80181BA0(*(void**)(p + 0x24));
+    u32 v = 0x3cd;
+    if (p[0x63] != 0) {
+        v = 0x289;
+    }
+    fn_8003ABDC(*(void**)(p + 0xc), *(u32*)(p + 0x28), *(u32*)(p + 0x2c), 0, 0);
+    fn_8003ABF0(*(void**)(p + 0xc), id, 0, *(u32*)(p + 0x24), 0, v, 1, 1);
+    p[0x61] = 0;
+    p[0x5f] = 8;
+}
+
 extern "C" void fn_800F39B4(u8* p) {
     if (p[0x63] == 1) {
         fn_800F39E8();
     } else {
         fn_800F3B20();
     }
+}
+
+extern "C" void fn_800F3D84(NaviState_800F3D84* p) {
+    ((u8*)p)[0x62] = 0;
+    (p->*lbl_8028C538[((u8*)p)[0x5e]])();
 }
 
 extern "C" void fn_800F42C0(void) {}
