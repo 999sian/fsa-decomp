@@ -122,7 +122,7 @@ struct VObj_8016CF64 {
     virtual void vf28(); virtual void vf29(); virtual void vf30(); virtual void vf31();
     virtual void vf32(); virtual void vf33(); virtual void vf34(); virtual void vf35();
     virtual void vf36(); virtual void vf37(); virtual void vf38(); virtual void vf39();
-    virtual void vf40(); virtual void vf41(u8, u32, u32); virtual void vf41(u8, u32);
+    virtual void vf40(); virtual void vf41(u8, u32); virtual void vf41(u8, u32, u32);
 };
 
 struct Unk80174858Pair {
