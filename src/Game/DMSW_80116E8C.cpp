@@ -203,8 +203,7 @@ extern "C" void fn_80117600(char* this_) {
     if (*(u32*)(this_ + 0x138) == 0) {
         fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, &prm, 1, lbl_80464AC0, 0x179, 0);
     }
-    Vec pos;
-    pos = *(Vec*)(this_ + 0xc);
+    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(this_ + 0xc);
     pos.y += lbl_8053C78C;
     if (*(s32*)(this_ + 4) < 8) {
         void* res = (*(SwbmResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_80464AC0);
