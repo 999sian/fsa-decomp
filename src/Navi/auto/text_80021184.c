@@ -117,12 +117,15 @@ extern "C" void fn_80021A98(void* param_1, u8* param_2, char* param_3, s32 param
 }
 
 extern "C" void fn_80021B4C(void* param_1, char* param_2, u16* param_3, s32 param_4) {
-    char** table = param_4 == 0 ? lbl_80206200 : lbl_8020631C;
+    s32 j;
+    char** p;
+    char cVar3;
     s32 i;
+    char** table;
+    table = param_4 == 0 ? lbl_80206200 : lbl_8020631C;
     for (i = 0; i < 2; i++) {
-        char** p = table;
-        char cVar3 = 0;
-        s32 j;
+        p = table;
+        cVar3 = 0;
         for (j = 0; j < 0x47; j++) {
             if (*(u16*)*p == *param_3) {
                 break;
@@ -134,6 +137,13 @@ extern "C" void fn_80021B4C(void* param_1, char* param_2, u16* param_3, s32 para
         param_3++;
         param_2++;
     }
+}
+
+extern char* lbl_80206450[];
+extern "C" s32 fn_80021C00(void* param_1, u16 param_2, s32 param_3);
+extern "C" void fn_80021BB8(void* param_1, u16 param_2, void* param_3, s32 param_4) {
+    s32 index = fn_80021C00(param_1, param_2, param_4);
+    fn_801E6768(param_3, lbl_80206450[index]);
 }
 
 extern u8 lbl_802BB0FC[];
