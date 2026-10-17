@@ -781,7 +781,8 @@ void fn_802859C4(char* p) {
                     } else {
                         if (fn_8022C6AC(Player_GetLinkTargetIndex(p)) == lbl_80540360 && fn_8022CFE8(S32(p, 4)) > lbl_80540360) {
                             s32 target = S32(p, 0x3b4);
-                            if (target == fn_8023DE58(Player_GetLinkTargetIndex(p))) {
+                            s32 linkIdx = fn_8023DE58(Player_GetLinkTargetIndex(p));
+                            if (linkIdx == target) {
                                 fn_80251AEC(p, 3);
                             }
                         }
