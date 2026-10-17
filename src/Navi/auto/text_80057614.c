@@ -720,6 +720,10 @@ extern "C" void fn_8005A6F4(void* a) {
     }
 }
 
+extern "C" BOOL fn_8005A720(void* a) {
+    return fn_8005AE08(a) != 0;
+}
+
 extern "C" void fn_8005B450(void) {}
 
 extern "C" void fn_8005C330(const char*, ...) {
