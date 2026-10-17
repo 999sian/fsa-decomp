@@ -17,7 +17,7 @@ struct Range_801367EC {
     VObj_801367EC** cur;
     VObj_801367EC** end;
     VObj_801367EC* next() { return *cur++; }
-    bool done() const { return cur == end; }
+    bool done() const { return !(cur != end); }
 };
 
 struct VObj_8013B620 {
