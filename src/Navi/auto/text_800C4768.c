@@ -31,7 +31,9 @@ extern char lbl_80288388[];
 extern "C" void fn_800C5434(u8* param_1);
 extern "C" void fn_800C5444(u8* param_1, s32 param_2);
 extern u8 lbl_802C565C[];
-extern "C" s32 fn_800C56A0(u8* p, u8 a, u8 b, s32 c, f32 d, f32 e);
+extern "C" s32 fn_800C56A0(u8* p, s16 a, u8 b, s32 c, f32 d, f32 e);
+extern "C" f32 fn_800C5824(u8* p, u8 b, s16 a);
+extern "C" f32* fn_80177B10(void* p);
 extern "C" void fn_800C5648(u8* p);
 extern "C" void fn_800C5444(u8* p, s32 n);
 extern "C" void fn_800C4AC0(u8* p) {
@@ -196,6 +198,31 @@ extern "C" void fn_800C539C(u8* param_1) {
 
 extern "C" void fn_800C5434(u8* param_1) {
     *(u8*)(*(u8**)(param_1 + 0x1c) + 0xb0) = 1;
+}
+
+extern char lbl_80288158[];
+extern "C" void fn_800C5444(u8* p, s32 n) {
+    void* obj;
+    char* base = lbl_80288158;
+    *(u8*)(*(u8**)(p + 0x1c) + 0xb0) = 0;
+    switch (n) {
+    case 0:
+        break;
+    case 1:
+        obj = *(void**)(p + 0x24);
+        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, base + 0x230, 0);
+        p[0x35] = 1;
+        p[0x36] = 1;
+        break;
+    case 2:
+        obj = *(void**)(p + 0x24);
+        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, base + 0x240, 0);
+        break;
+    case 3:
+        obj = *(void**)(p + 0x24);
+        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, base + 0x60, 0);
+        break;
+    }
 }
 
 extern "C" void fn_800C5510(u8* param_1) {
