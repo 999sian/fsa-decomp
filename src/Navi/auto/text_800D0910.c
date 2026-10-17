@@ -45,9 +45,13 @@ static inline f32 navi_sqrtf(f32 x)
 {
     if (x > lbl_80300F88) {
         f64 guess = __frsqrte((f64)x);
-        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
-        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
-        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
+        f64 h;
+        h = guess * guess;
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - h * x);
+        h = guess * guess;
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - h * x);
+        h = guess * guess;
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - h * x);
         return (f32)(x * guess);
     } else if (x < lbl_80300FB8) {
         return lbl_802FEAB0;
@@ -132,6 +136,42 @@ extern "C" s32 fn_800D3120(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode) {
 extern "C" void fn_800D3238(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
+}
+
+extern char lbl_802F0BC0[];
+extern f32 lbl_80300FCC;
+extern f32 lbl_80300FC8;
+extern f32 lbl_80300FC0;
+extern f32 lbl_80300FC4;
+extern "C" f32 fn_800D332C(u8* p, s32 max, s32 t, s32 b, f32 from, f32 to) {
+    if (max <= 0) {
+        return lbl_80300F98;
+    }
+    if (t < 0) {
+        t = 0;
+    }
+    if (t > max) {
+        t = max;
+    }
+    f32 r = (f32)t / (f32)max;
+    switch ((u8)b) {
+    case 0:
+        return navi_sqrtf(r);
+    case 1:
+        return r * r;
+    case 3: {
+        f32 v = *(f32*)(lbl_802F0BC0 + (((s32)(lbl_80300FCC * r * 0.5f)) >> 2 & 0x3FF8));
+        return v * v;
+    }
+    case 4:
+        return 2.0f * (2.0f * r - 1.0f) - 1.0f;
+    case 5: {
+        f32 v = *(f32*)(lbl_802F0BC0 + (((s32)(lbl_80300FC8 * r * 0.5f)) >> 2 & 0x3FF8));
+        return v * v;
+    }
+    default:
+        return lbl_802FEAB0;
+    }
 }
 
 extern "C" void fn_800D3554(void* param_1) {
