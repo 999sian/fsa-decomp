@@ -2084,6 +2084,13 @@ extern "C" void fn_801DFF1C(void) {
     __cpReg[2] = 4;
 }
 
+extern "C" void fn_801DFFF0(s32* p, s32 a, s32 b) {
+    p[0] = a;
+    p[2] = a;
+    p[3] = a + b;
+    p[1] = b;
+}
+
 typedef struct {
     f32 v[6];
 } GXDrawBlock;
