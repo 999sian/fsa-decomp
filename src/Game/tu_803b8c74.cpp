@@ -63,6 +63,13 @@ static inline BOOL EC80NibbleBit(s32 idx, s32 n, u32 bit) {
 	return (lbl_8050EC80[idx].flags28 & (1 << (n * 4 + bit))) != 0;
 }
 
+static inline BOOL EC80NibbleBitCur(s32 n, u32 bit) {
+	if (n < 0 || n > 7) {
+		return FALSE;
+	}
+	return (lbl_8050EC80[lbl_8050EC80[0].selfIndex].flags28 & (1 << (n * 4 + bit))) != 0;
+}
+
 extern "C" {
 
 void fn_803B8C74(u8 val) {
@@ -88,12 +95,29 @@ BOOL fn_803B8CAC(s32 idx, s32 n) {
 	return FALSE;
 }
 
+extern "C" BOOL fn_803B8EBC(s32 n) {
+	if (n == 7) {
+		if (EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 0) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 2) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 3)) {
+			return TRUE;
+		}
+	} else {
+		if (EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 0) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 1) && EC80NibbleBit(lbl_8050EC80[0].selfIndex, n, 3)) {
+			return TRUE;
+		}
+	}
+	return FALSE;
+}
+
 BOOL fn_803B90E4(s32 idx, s32 n) {
 	if (n < 3) {
 		return TRUE;
 	}
 	EC80Row* r = &lbl_8050EC80[idx];
-	return (r->flags28 & 0x80000000) ? TRUE : FALSE;
+	u32 f = r->flags28;
+	if ((s32)f < 0) {
+		return TRUE;
+	}
+	return FALSE;
 }
 
 BOOL fn_803B9120(s32 n) {
@@ -102,13 +126,71 @@ BOOL fn_803B9120(s32 n) {
 	}
 	u32 idx = lbl_8050EC80[0].selfIndex;
 	u32 f = lbl_8050EC80[idx].flags28;
-	if (f & 0x80000000) {
-		return TRUE;
-	} else {
+	if (!(f & 0x80000000)) {
 		return FALSE;
 	}
+	return TRUE;
 }
 
+extern u32 lbl_80476548[];
+extern "C" void fn_803B9160(void* this_) {
+	u8* self = (u8*)this_;
+	u32* t = lbl_80476548;
+	u32* d1 = (u32*)(self + 0x4c);
+	u32* d2 = (u32*)(self + 0x6c);
+	u32 off = 0;
+	s32 k = 0;
+	s32 i;
+
+	*(void**)this_ = lbl_804AFB3C;
+	for (i = 0; i < 2; i++) {
+		u8* p = self + off;
+		p[4] = 0; p[0x94] = 0; p[5] = 0; p[0x95] = 0; p[6] = 0; p[0x96] = 0; p[7] = 0; p[0x97] = 0;
+		p[8] = 0; p[0x98] = 0; p[9] = 0; p[0x99] = 0; p[0xa] = 0; p[0x9a] = 0; p[0xb] = 0; p[0x9b] = 0;
+		off += 8;
+		p = self + off;
+		p[4] = 0; p[0x94] = 0; p[5] = 0; p[0x95] = 0; p[6] = 0; p[0x96] = 0; p[7] = 0; p[0x97] = 0;
+		p[8] = 0; p[0x98] = 0; p[9] = 0; p[0x99] = 0; p[0xa] = 0; p[0x9a] = 0; p[0xb] = 0; p[0x9b] = 0;
+		off += 8;
+	}
+	for (i = 0; i < 2; i++) {
+		u8* q = self + k;
+		q[0x24] = 0; q[0xb4] = 0; q[0x2d] = 0; q[0xbd] = 0; q[0x35] = 0; q[0xc5] = 0; q[0x3d] = 0; q[0xcd] = 0;
+		d1[0] = t[0];
+		d2[0] = t[0];
+		k++;
+		q = self + k;
+		q[0x24] = 0; q[0xb4] = 0; q[0x2d] = 0; q[0xbd] = 0; q[0x35] = 0; q[0xc5] = 0; q[0x3d] = 0; q[0xcd] = 0;
+		d1[1] = t[1];
+		d2[1] = t[1];
+		k++;
+		q = self + k;
+		q[0x24] = 0; q[0xb4] = 0; q[0x2d] = 0; q[0xbd] = 0; q[0x35] = 0; q[0xc5] = 0; q[0x3d] = 0; q[0xcd] = 0;
+		d1[2] = t[2];
+		d2[2] = t[2];
+		k++;
+		q = self + k;
+		q[0x24] = 0; q[0xb4] = 0; q[0x2d] = 0; q[0xbd] = 0; q[0x35] = 0; q[0xc5] = 0; q[0x3d] = 0; q[0xcd] = 0;
+		d1[3] = t[3];
+		d2[3] = t[3];
+		k++;
+		d1 += 4;
+		d2 += 4;
+		t += 4;
+	}
+	self[0x45] = 0;
+	self[0xd5] = 0;
+	self[0x46] = 0;
+	self[0xd6] = 0;
+	*(u32*)(self + 0x8c) = 0;
+	*(u32*)(self + 0x90) = 0;
+	self[0x2c] = 0;
+	self[0xbc] = 0;
+	self[0x47] = 0;
+	self[0xd7] = 0;
+	self[0x48] = 0;
+	self[0xd8] = 0;
+}
 
 }
 
