@@ -30,7 +30,9 @@ extern "C" void fn_80015A00(void* p);
 extern "C" void fn_800265F0(u8 param_1);
 
 struct Unk80013DA0 {
-    u8 pad[0x24];
+    u8 pad[0x20];
+    u8 unk20;
+    u8 pad21[0x24 - 0x21];
     u32 b0 : 2;
     u32 b1 : 15;
     u32 b2 : 15;
