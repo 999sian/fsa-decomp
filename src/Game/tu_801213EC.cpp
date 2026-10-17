@@ -2,6 +2,7 @@
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include <string.h>
+#include <math.h>
 #include "JSystem/JMath/JMath.h"
 #include "Game/SinitPoolChain.h"
 
