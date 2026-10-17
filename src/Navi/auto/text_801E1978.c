@@ -8,16 +8,27 @@ extern "C" void fn_801E1978(u32* a);
 extern "C" u32* fn_801E1EBC(u32* param_1, u32* param_2);
 extern u8 lbl_802FFAA0;
 extern u8 lbl_802F86E0[];
+extern "C" void fn_801E1DF4(void* param_1);
+extern "C" void* fn_801E1DB0(void) {
+    if (lbl_802FFAA0 == 0) {
+        fn_801E1DF4(lbl_802F86E0);
+        lbl_802FFAA0 = 1;
+    }
+    return lbl_802F86E0;
+}
+
 extern "C" void fn_801E1DF4(void* param_1) {
-    memset(param_1, 0, 0x34);
+    void* p = param_1;
+    memset(p, 0, 0x34);
 }
 
 extern "C" void fn_801E1E24(u32* param_1, u32* param_2) {
     u32* block = (u32*)(param_2[-1] & ~1);
     fn_801E20C8(block, param_2 - 2);
+    u32* piVar2 = block + 4;
     BOOL bVar1 = 0;
-    if ((block[4] & 2) == 0) {
-        if ((block[4] & ~7) == ((block[3] & ~7) - 0x18)) {
+    if ((*piVar2 & 2) == 0) {
+        if ((*piVar2 & ~7) == ((block[3] & ~7) - 0x18)) {
             bVar1 = 1;
         }
     }
