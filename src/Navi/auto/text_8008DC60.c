@@ -27,6 +27,7 @@ extern "C" void fn_800EF4D0(void* p, s32 v);
 extern "C" void fn_80097180(void* p);
 extern "C" s32 fn_8009D0D8(s16* param_1);
 struct NaviObjTbl_80097EB0 { u8 pad[0x64c]; u8* objs[1]; };
+struct NaviObjSlot_8009C1BC { u8 pad[0x64c]; u8* obj; };
 extern f32 lbl_80300B40;
 struct VObj_8009F478 {
     virtual void v0();
