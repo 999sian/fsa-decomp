@@ -155,3 +155,13 @@ extern "C" BOOL fn_80016730(void* param_1) {
     }
 }
 
+#pragma dont_inline on
+extern "C" u32 fn_800168D0(void) {
+    u8 auStack_80[0x80];
+    fn_8015D1F4(auStack_80, fn_801C027C(), 0);
+    fn_8015D29C(auStack_80, -1);
+    fn_80159BA4(0);
+    fn_80015E2C(lbl_802AE880);
+    return 0;
+}
+#pragma dont_inline reset
