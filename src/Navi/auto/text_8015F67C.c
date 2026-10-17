@@ -160,12 +160,15 @@ extern "C" void* fn_8015FC80(u8* p, s16 del) {
 }
 
 extern "C" void fn_8015FD0C(u8* p) {
-    s32 n = *(s32*)(p + 0x34);
+    u32 n = *(u32*)(p + 0x34);
     if (n != 0) {
-        n--;
-        *(s32*)(p + 0x34) = n;
-        if (n == 0 && p != 0) {
-            ((void (*)(void*, s32))(*(void***)p)[2])(p, 1);
+        u32 m = n - 1;
+        *(u32*)(p + 0x34) = m;
+        if (m == 0) {
+            if (p != 0) {
+                void** vt = *(void***)p;
+                ((void (*)(void*, s32))vt[2])(p, 1);
+            }
         }
     }
 }
@@ -188,5 +191,26 @@ extern "C" s32 fn_8015FDA8(u32 param_1, void* param_2) {
     for (node = *(void***)lbl_802FF540; node != 0; node = (void**)node[3]) {
     }
     return ret;
+}
+
+extern "C" int fn_801E6578(void* a, void* b);
+extern "C" void* fn_8015FECC(void* a, int b);
+extern char lbl_802EE2D4[];
+extern "C" void* fn_8015FE40(void* param_1) {
+    char buf[0x110];
+    void** node;
+    char* s;
+
+    s = *(char**)param_1;
+    if (*s != '/') {
+        return lbl_802FF5F0;
+    }
+    *(void**)param_1 = fn_8015FECC(buf, 0x101);
+    for (node = (void**)lbl_802EE2D4; node != 0; node = (void**)node[3]) {
+        if (fn_801E6578(buf, ((void**)node[0])[0x28 / 4]) == 0) {
+            return node[0];
+        }
+    }
+    return 0;
 }
 
