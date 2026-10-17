@@ -385,9 +385,8 @@ extern "C" void fn_8013D8C0(void* param_1, void* param_2) {
     void* q;
     u8 ok;
 
-    void* obj = *(void**)((u8*)param_1 + 0x100);
-    void (*fn)(void*, void*) = (void (*)(void*, void*))((*(void***)obj)[0x84 / 4]);
-    fn(obj, auStack_4c);
+    VObj_8013D7E0* obj = *(VObj_8013D7E0**)((u8*)param_1 + 0x100);
+    obj->vf1F(auStack_4c);
     if (*(u8*)((u8*)param_1 + 0x11c) == 0) {
         if (*(u8*)((u8*)param_2 + 0x75) == 0) {
             q = auStack_4c;
