@@ -18,12 +18,6 @@ extern void* lbl_80286A30[];
 extern unsigned char lbl_802313EC[];
 extern u32 lbl_80287510[];
 extern "C" void fn_8002F544(u32 a);
-extern "C" int fn_8002F6BC(void);
-struct VObj_800B95E4 {
-    virtual void v0();
-    virtual void v1();
-    virtual void v2(f32 x, f32 y);
-};
 extern "C" void fn_800B95E4(u8* p);
 extern "C" void fn_800B6F64(u8* p);
 extern "C" void fn_800B72AC(u8* p);
