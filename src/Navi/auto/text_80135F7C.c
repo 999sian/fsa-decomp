@@ -52,11 +52,6 @@ inline bool operator==(ListIter_8013AE14 a, ListIter_8013AE14 b) { return a.node
 inline bool operator!=(ListIter_8013AE14 a, ListIter_8013AE14 b) { return !(a == b); }
 inline Iter_8013A388 iterCopy_8013A388(Iter_8013A388 x) { Iter_8013A388 t = x; return t; }
 inline bool iterNe3_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return iterNe_8013A388(x, y); }
-struct CIter_8013A388 {
-    void* node;
-    CIter_8013A388(const CIter_8013A388& o) : node(o.node) {}
-};
-inline bool cIterNe_8013A388(CIter_8013A388 x, CIter_8013A388 y) { return x.node != y.node; }
 
 
 struct Obj_8013A024 {
