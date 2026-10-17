@@ -417,3 +417,12 @@ extern "C" void* fn_8011C244(s32 id) {
     return 0;
 }
 
+extern "C" void fn_8011C3AC(void* param_1, s32 a, s32 b, s32 c) {
+    s32* p = (s32*)param_1;
+    p[8] = 0;
+    p[7] = 0;
+    p[9] = a;
+    p[10] = b;
+    p[11] = c;
+}
+
