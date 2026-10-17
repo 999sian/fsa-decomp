@@ -1207,16 +1207,18 @@ extern "C" void fn_801DB844(void) {
     *(u32*)(__GXData + 0x5ac) = 0;
 }
 
-extern "C" void fn_801DBB80(u32 left, u32 top, u32 width, u32 height)
+extern "C" void fn_801DBB80(u16 left, u16 top, u16 width, u16 height)
 {
 	u8* gx = __GXData;
+	u32 wd = width - 1;
+	u32 ht = height - 1;
 	*(u32*)(gx + 0x1e0) = 0;
-	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), (u16)left, 0, 22, 31);
-	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), (u16)top, 10, 12, 21);
+	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), left, 0, 22, 31);
+	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), top, 10, 12, 21);
 	*(u32*)(gx + 0x1e0) = __rlwimi(*(u32*)(gx + 0x1e0), 0x49, 24, 0, 7);
 	*(u32*)(gx + 0x1e4) = 0;
-	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), (u16)width - 1, 0, 22, 31);
-	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), (u16)height - 1, 10, 12, 21);
+	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), wd, 0, 22, 31);
+	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), ht, 10, 12, 21);
 	*(u32*)(gx + 0x1e4) = __rlwimi(*(u32*)(gx + 0x1e4), 0x4a, 24, 0, 7);
 }
 
@@ -1250,12 +1252,17 @@ extern "C" void fn_801DBDDC(u32 param_1) {
 }
 
 extern "C" void fn_801DBE00(u32 param_1) {
+    u8* gx = __GXData;
     u32 a = (param_1 & 1) == 1;
     u32 b = (param_1 & 2) == 2;
-    *(u32*)(__GXData + 0x1ec) = (*(u32*)(__GXData + 0x1ec) & 0xfffffffe) | a;
-    *(u32*)(__GXData + 0x1ec) = (*(u32*)(__GXData + 0x1ec) & 0xfffffffd) | (b << 1);
-    *(u32*)(__GXData + 0x1fc) = (*(u32*)(__GXData + 0x1fc) & 0xfffffffe) | a;
-    *(u32*)(__GXData + 0x1fc) = (*(u32*)(__GXData + 0x1fc) & 0xfffffffd) | (b << 1);
+    u32 r = *(u32*)(gx + 0x1ec);
+    r = (r & 0xfffffffe) | a;
+    r = (r & 0xfffffffd) | (b << 1);
+    *(u32*)(gx + 0x1ec) = r;
+    r = *(u32*)(gx + 0x1fc);
+    r = (r & 0xfffffffe) | a;
+    r = (r & 0xfffffffd) | (b << 1);
+    *(u32*)(gx + 0x1fc) = r;
 }
 
 #pragma dont_inline reset
@@ -1281,4 +1288,3 @@ extern "C" u32 fn_801DD408(int param_1)
 {
     return *(u32*)(param_1 + 0x18);
 }
-extern f32 lbl_80301EC0;
