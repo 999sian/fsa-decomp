@@ -16,6 +16,7 @@ extern char* lbl_8053AB10;
 extern "C" void* fn_8013C824();
 extern "C" void fn_800EC240(void* table, s32 id);
 extern "C" void fn_801CDC8C(void* this_, s32 event);
+extern const f32 lbl_8053FBD0;
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* em);
 
@@ -254,6 +255,37 @@ void fn_802146A4(u8* this_) {
     fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), o + 0xc, 0x416, 0, f - 1, 0, 0, 1);
     o = *(u8**)(this_ + 0x34);
     fn_8013CC50(lbl_8053FBA4, *(u32*)(o + 4), o + 0xc, 0x417, 0, f, 0, 0, 1);
+}
+
+extern "C" u8* fn_801C0D70(void* o);
+extern "C" void fn_801CDCD0(u8* o, u32 owner, void* pos, s32 id);
+extern const u16 lbl_8053FB90[];
+extern const u16 lbl_8053FB98[];
+extern "C" void fn_80214740(u8* this_, u32 owner, void* pos, u8 flag) {
+    s32 f = 0;
+    if (*(u32*)(*(u8**)(this_ + 0x34) + 0x524) & 0x400) {
+        f = 1;
+    }
+    if (*(s32*)(fn_801C0D70(*(u8**)(this_ + 0x34)) + 0x50) >= 0) {
+        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d6, 0, f, 0, 0, 1);
+        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d7, 0, f, 0, 0, 1);
+        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d8, 0, f, 0, 0, 1);
+        fn_8013CC50(lbl_8053FBA4, owner, pos, 0x1d9, 0, f, 0, 0, 1);
+        fn_801F0E34(*(void**)(this_ + 0x34), 0x400d6, 0);
+    } else {
+        const u16* ids = lbl_8053FB90;
+        if (flag) {
+            ids = lbl_8053FB98;
+        }
+        fn_8013CC50(lbl_8053FBA4, owner, pos, ids[0], 0, f - 1, 0, 0, 1);
+        fn_8013CC50(lbl_8053FBA4, owner, pos, ids[1], 0, f, 0, 0, 1);
+        fn_8013CC50(lbl_8053FBA4, owner, pos, ids[2], 0, f, 0, 0, 1);
+        s32 id = 0x40048;
+        if (flag) {
+            id = 0x4004e;
+        }
+        fn_801CDCD0(*(u8**)(this_ + 0x34), owner, pos, id);
+    }
 }
 
 void fn_80214E50(u8* this_) {
