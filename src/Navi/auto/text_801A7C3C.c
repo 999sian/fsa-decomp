@@ -135,6 +135,11 @@ extern "C" void fn_801A7D54(Blk_801A7D54* dst, Blk_801A7D54* src) {
     *dst = *src;
 }
 
+extern void* lbl_8029B23C[];
+extern "C" void fn_801A7F50(void*);
+extern "C" void fn_801AFD70(void*);
+extern "C" void fn_80192E40(void*);
+
 extern "C" void fn_801A833C(void* p) {
     lbl_802FF700 = p;
 }
@@ -194,6 +199,17 @@ extern "C" void fn_801A8654(u32* p) {
     p[11] = 1;
     p[12] = 0;
     p[13] = 0;
+}
+
+extern "C" int fn_801A87B4(u8* p1, u8* p2) {
+    u16 n = *(u16*)(p2 + 0x2c);
+    if (n != 0) {
+        *(void**)(p1 + 4) = fn_8015AA14((u16)n);
+        n = *(u16*)(p2 + 0x2c);
+        *(void**)(p1 + 0xc) = fn_8015AA14(n * 0x30);
+        *(void**)(p1 + 0x34) = *(void**)(p1 + 0xc);
+    }
+    return 0;
 }
 
 extern "C" u32 fn_801A881C(u8* p1, u8* p2) {
@@ -1658,10 +1674,8 @@ extern "C" void* fn_801B37D8(void* base, u32 offset) {
 }
 
 extern "C" u8 fn_801B474C(u8* s, u32 a) {
-    u16* rows = *(u16**)(s + 8);
-    u8* base = *(u8**)(s + 4);
-    u16 row = rows[a];
-    u8 v = base[row * 0x138 + 4];
+    u16 row = ((u16*)*(u8**)(s + 8))[a];
+    u8 v = (*(u8**)(s + 4))[row * 0x138 + 4];
     if (v != 0xff) {
         return (*(u8**)(s + 0x40))[v];
     }
@@ -1672,9 +1686,9 @@ extern "C" u8 lbl_80301D20;
 extern "C" void* fn_8000F018(void* self);
 #pragma dont_inline on
 extern "C" void fn_801B4784(u8* p, u8* s, u32 a, u32 b) {
-    u16* rows = *(u16**)(s + 8);
-    u16 row = rows[a];
-    u16 idx = ((u16*)(*(u8**)(s + 4) + row * 0x138 + 0xd0))[b];
+    u8* base = *(u8**)(s + 4);
+    u16 row = ((u16*)*(u8**)(s + 8))[a];
+    u16 idx = ((u16*)(base + row * 0x138 + 0xd0))[b];
     if (idx != 0xffff) {
         fn_801B3580(p, *(u8**)(s + 0x44) + idx * 0x14);
     } else {
@@ -2469,9 +2483,8 @@ extern "C" u32 lbl_80301D24;
 extern "C" void fn_801B9718(void* unused, void* dest, void* src) {
     u8* d = (u8*)dest;
     u8* s = (u8*)src;
-    u8 b = s[8];
     *(s16*)(d + 6) = *(s16*)(s + 0xa);
-    d[4] = b;
+    d[4] = s[8];
     *(f32*)(d + 8) = 0.0f;
     *(void**)(d + 0x10) = fn_801BA410(s, *(u32*)(s + 0x10));
     *(void**)(d + 0xc) = fn_8018C2F0(s, *(u32*)(s + 0x14));
