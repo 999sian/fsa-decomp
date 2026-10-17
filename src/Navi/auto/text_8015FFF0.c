@@ -662,8 +662,6 @@ extern "C" BOOL fn_80161CE0(void) {
 
 extern char lbl_80297D38[];
 extern char lbl_80297D4C[];
-extern char lbl_802FE2B8[];
-extern char lbl_802FE2B8[4];
 extern "C" u32 fn_80161D1C(u8* src, u32 n, void* dst, u32 size, s32 mode) {
     switch (mode) {
     case 0:
