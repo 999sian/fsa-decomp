@@ -235,7 +235,9 @@ extern "C" BOOL fn_8008CF88(void* self, Arg_8008CF88* arg, s32 n) {
     return TRUE;
 }
 
+#pragma dont_inline on
 extern "C" int fn_8008C4FC(u8* p);
+#pragma dont_inline reset
 extern "C" void fn_8008D420(u8* p) {
     fn_8008C4FC(p);
 }
