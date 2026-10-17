@@ -635,7 +635,7 @@ extern "C" void* fn_80040230(void* param_1, s16 param_2) {
 extern "C" void fn_800402B4(void) {
     extern void* lbl_802BF110[];
     if (lbl_802BF110[2] != nullptr) {
-        ((VObj_800402B4*)lbl_802BF110[2])->m4(1);
+        ((VObj_800402B4*)lbl_802BF110[2])->m2(1);
     }
     lbl_802BF110[2] = nullptr;
 }
