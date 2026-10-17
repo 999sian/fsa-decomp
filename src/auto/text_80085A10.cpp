@@ -12,7 +12,7 @@ extern u8 g_bit_mask_table[8];
 extern s32 fn_8008668C(int);
 extern "C" void fn_80085F0C(void);
 extern "C" void fn_800861C4(int, u32);
-extern "C" void fn_8008603C(int, u32);
+extern "C" s32 fn_8008603C(int, u32);
 extern "C" char lbl_80498FB8[];
 extern "C" void dispose__7JKRHeapFv(void* param_1);
 extern "C" void __dt__7JKRHeapFv(void* param_1, s32 param_2);
