@@ -39,10 +39,10 @@ extern "C" void fn_8010CD28(u8* p) {
     *(void**)(p + 8) = obj;
     if (*(void**)(p + 8) == nullptr) {
         void* v = fn_8011FD10();
-        fn_8011FD18(v, lbl_8028EB08, 0x67, (void*)lbl_802FDBD0, lbl_8028EB18);
-        fn_80007AB8(lbl_8028EB08, 0x67, (void*)lbl_802FDBD4);
+        fn_8011FD18(v, lbl_8028EB08, 0x67, &lbl_802FDBD0, lbl_8028EB18);
+        fn_80007AB8(lbl_8028EB08, 0x67, &lbl_802FDBD4);
     }
-    fn_80179030(*(void**)(p + 8), (void*)lbl_802FDBDC, 0x100000, *(void**)(p + 0xc));
+    fn_80179030(*(void**)(p + 8), &lbl_802FDBDC, 0x100000, *(void**)(p + 0xc));
     fn_8010CDD8(p);
 }
 
