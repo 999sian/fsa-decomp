@@ -122,6 +122,30 @@ extern "C" void fn_80022FA0(s32* p) {
     lbl_802FED6C = 0;
 }
 
+extern u8 lbl_802BB0FC[];
+extern "C" s32 fn_80024678(u8* p1, s32 p2, s32 p3) {
+    s32 b = *(u8*)(lbl_802BB0FC + p2 * 0x4c + p3 + 0x1e8);
+    if (p2 == 4) {
+        b = (p1 + p3)[0x43];
+    }
+    if (b >= 0x47) {
+        b = 0;
+    }
+    return b;
+}
+
+extern u8 lbl_80206488[];
+extern "C" u32 fn_800248F0(u8* p1, u32 p2, u32 p3) {
+    u32 ret = 0;
+    if ((u8)(lbl_802BB0FC[0xee] & (1 << (u8)p2))) {
+        p1[0x28] = 0;
+    } else {
+        ret = *(u32*)(lbl_80206488 + p3 * 0x40 + *(s32*)(p1 + 0x24) * 0x10 + p2 * 4);
+        p1[0x28] = 1;
+    }
+    return ret;
+}
+
 extern void* lbl_8022241C[];
 extern "C" void* fn_80025020(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
