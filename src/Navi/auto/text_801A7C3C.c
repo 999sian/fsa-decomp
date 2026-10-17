@@ -1485,7 +1485,7 @@ extern "C" void fn_801B49C0(u16* out, void* ptr, u32 index) {
     u16 value = *(u16*)(data + indices[index] * 0x138 + 0x132);
     if (value != 0xffff) {
         u8* entry = *(u8**)((u8*)ptr + 0x54) + value * 8;
-        out[0] = (u8)entry[0] << 5 | (u8)entry[2] << 3 | entry[3];
+        out[0] = ((entry[2] << 3) + entry[3]) + (entry[0] << 5);
         ((u8*)out)[2] = entry[1];
         ((u8*)out)[3] = entry[4];
         return;
@@ -1513,7 +1513,10 @@ extern "C" void fn_801B4A84(u16* out, void* ptr, u32 index) {
     u8 value = data[indices[index] * 0x138 + 6];
     if (value != 0xff) {
         u8* entry = *(u8**)((u8*)ptr + 0x5c) + value * 4;
-        out[0] = (entry[0] << 4) + (entry[1] << 1) + entry[2];
+        u8 b0 = entry[0];
+        u8 b1 = entry[1];
+        u8 b2 = entry[2];
+        out[0] = (b1 << 1) + ((b0 << 4) + b2);
         return;
     }
     out[0] = lbl_80301D34;
