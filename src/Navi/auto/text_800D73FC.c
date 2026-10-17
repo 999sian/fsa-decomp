@@ -116,7 +116,7 @@ extern "C" void fn_800E3F4C(void* param_1) {
 
 extern "C" void fn_800E3F80(void* param_1) {
     u8* p = (u8*)param_1;
-    u16 v = *(u16*)(p + 0xa9c);
+    u32 v = *(u16*)(p + 0xa9c);
     if (v != 0) {
         *(u16*)(p + 0xa9c) = v - 1;
     } else {
