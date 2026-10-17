@@ -2,6 +2,9 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
 
+extern "C" void fn_801F0E34(void* this_, u32 code, u32 z);
+extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+
 // ---- Prtc_EmptyHook.cpp ----
 // PRTC (vtable lbl_804A9AC8, ctor fn_80201E80) cluster, part 1/4. No
 // separate leading static-init this time - PRTC's cluster begins
