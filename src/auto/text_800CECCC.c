@@ -194,6 +194,35 @@ extern "C" void fn_800CFA04(void** self, const void* data) {
     fn_800CFA2C(self, self[1], data);
 }
 
+extern "C" void fn_800CFA2C(void** self, void* res, const void* data) {
+    unsigned char* anm = (unsigned char*)res;
+    const unsigned char* src = (const unsigned char*)data;
+    u16* ptr28;
+    u16* ptr2c;
+
+    *(s16*)(anm + 6) = *(const s16*)(src + 0xa);
+    anm[4] = src[8];
+    *(float*)(anm + 8) = lbl_8053BC80;
+    *(u16*)(anm + 0xc) = *(const u16*)(src + 0xc);
+    *(u16*)(anm + 0xe) = *(const u16*)(src + 0xe);
+    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(data, (void*)*(const u32*)(src + 0x18));
+    *(void**)(anm + 0x1c) = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(data, (void*)*(const u32*)(src + 0x1c));
+    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(data, (void*)*(const u32*)(src + 0x20));
+    *(void**)(anm + 0x14) = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(data, (void*)*(const u32*)(src + 0x24));
+    ptr28 = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(src + 0x28));
+    ptr2c = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(src + 0x2c));
+    for (s32 i = 0, off = 0; i < *(u16*)(anm + 0xc); i++, off += 8) {
+        *(u32*)(*(u8**)(anm + 0x10) + off + 4) = (u32)(ptr28 + *(u32*)(*(u8**)(anm + 0x10) + off + 4));
+    }
+    for (s32 i = 0, off = 0; i < *(u16*)(anm + 0xe); i++, off += 8) {
+        *(u32*)(*(u8**)(anm + 0x14) + off + 4) = (u32)(ptr2c + *(u32*)(*(u8**)(anm + 0x14) + off + 4));
+    }
+    *(void**)(anm + 0x20) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x30));
+    *(void**)(anm + 0x24) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x34));
+    *(void**)(anm + 0x28) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x38));
+    *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x3c));
+}
+
 extern "C" void fn_800CFE04(void** self, void* data);
 extern "C" void fn_800D01DC(void** self, void* data);
 extern "C" void fn_800D00C8(void** self, void* data);
