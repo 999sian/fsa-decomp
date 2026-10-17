@@ -219,6 +219,23 @@ extern "C" void fn_80103814(void* param_1) {
     }
 }
 
+extern "C" s32 fn_800F0D64(void*);
+extern "C" void fn_80104198(char* p) {
+    if (p[0x45a] == 4) {
+        if (fn_800F0D64(lbl_802B7CA0) < 2) {
+            p[0xf2] = 8;
+        } else {
+            p[0xf2] = 9;
+        }
+    } else if (p[0x45a] >= 0 && p[0x45a] <= 1) {
+        p[0xf2] = 8;
+    } else if (p[0x45a] >= 2 && p[0x45a] <= 3) {
+        p[0xf2] = 9;
+    } else {
+        p[0xf2] = 8;
+    }
+}
+
 extern "C" void fn_80104240(u8* p) {
     if (p[0x259] == 1) {
         fn_80104320(p);
@@ -237,15 +254,21 @@ extern "C" void fn_8010428C(void* self) {
 }
 
 extern "C" void fn_801043FC(u8* p) {
-    if (*(u32*)(p + 0x238) != 0 && *(u32*)(p + 0x23c) != 0) {
-        if ((s8)p[0x45a] == 4 && p[0x259] != 0) {
-            s32 r = fn_801093D4(p, p[0x25a], ((u8*)lbl_802C5A84)[0x61], 0);
-            p[0x25a]++;
-            if (r == 1) {
-                p[0x25a] = 0;
-                p[0x259] = 0;
-                p[0x256] ^= 1;
-            }
+    if (*(u32*)(p + 0x238) != 0) {
+        if (*(u32*)(p + 0x23c) != 0) {
+            goto body;
+        }
+        return;
+    }
+    return;
+body:
+    if ((s8)p[0x45a] == 4 && p[0x259] != 0) {
+        s32 r = fn_801093D4(p, p[0x25a], ((u8*)lbl_802C5A84)[0x61], 0);
+        p[0x25a]++;
+        if (r == 1) {
+            p[0x25a] = 0;
+            p[0x259] = 0;
+            p[0x256] ^= 1;
         }
     }
 }
