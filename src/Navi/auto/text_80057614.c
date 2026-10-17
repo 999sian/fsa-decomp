@@ -754,6 +754,16 @@ extern "C" u32 fn_8005B2C8(void* a, u32 b, void* c, u32 d, void* e) {
     return 0x4d0;
 }
 
+extern u8 lbl_802C0A30[];
+extern "C" void fn_8005BB28(void*);
+extern "C" void fn_8005B400(void) {
+    s32 i = 0;
+    do {
+        fn_8005BB28(&lbl_802C0A30[i * 0x5c]);
+        i++;
+    } while (i < 0x40);
+}
+
 extern "C" void fn_8005B450(void) {}
 
 extern "C" void fn_8005C330(const char*, ...) {
