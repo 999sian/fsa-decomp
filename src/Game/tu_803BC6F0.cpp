@@ -95,6 +95,12 @@ struct TextBoxVt15 {
     void* (*v15)(void* a, u64 b);
 };
 
+// Looks up the object for a u64 key at lbl_804765D0+keyOff (virtual slot 15 of this->8) and sets it on the cell this+base+idx*4.
+static inline void setCell(u8* this_, s32 base, s32 idx, u32 keyOff, u8 flag) {
+    void* s = (*(TextBoxVt15**)(this_ + 0x8))->v15(*(void**)(this_ + 0x8), *(u64*)(lbl_804765D0 + keyOff + idx * 8));
+    fn_804023D0(*(void**)(this_ + base + idx * 4), s, flag);
+}
+
 static inline void drawTextRow(u8* p, u8* q, u8* t) {
     s32 k;
     for (k = 0; k < 4; k++) {
@@ -121,6 +127,135 @@ static inline void stopPane(void* obj) {
     (*(PaneVt9**)obj)->v9(obj, 0);
 }
 extern "C" void fn_80402E08(void* state, f32 x, f32 y);
+extern "C" void fn_803BDD44(u8* p, s32 idx) {
+    u8* tbl;
+    s32 off;
+    void* q;
+    u32 c0, c4, c8, cc;
+    u32 v08, v0c, v10, v14, v18, v1c, v20, v24, v28, v2c, v30, v34, v38, v3c, v40, v44;
+    u32 v48, v4c, v50, v54, v58, v5c, v60, v64, v68, v6c, v70, v74, v78, v7c, v80, v84;
+    u32 v88, v8c, v90, v94, v98, v9c, va0, va4, va8, vb0, vb4, vb8, vbc;
+
+    tbl = lbl_804765D0;
+    off = idx * 8;
+
+    c8 = *(u32*)(p + 0xe8);
+    cc = *(u32*)(p + 0xfc);
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), idx, *(u32*)(tbl + 0x5d8 + off), *(u32*)(tbl + 0x5dc + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &cc, &c8);
+
+    c0 = *(u32*)(p + 0xec);
+    c4 = *(u32*)(p + 0x100);
+    v80 = c0;
+    v7c = c4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c4, *(u32*)(tbl + 0x5c0 + off), *(u32*)(tbl + 0x5c4 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v7c, &v80);
+
+    v88 = c0;
+    v84 = c4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c0, *(u32*)(tbl + 0x5a8 + off), *(u32*)(tbl + 0x5ac + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v84, &v88);
+
+    v90 = c0;
+    v8c = c4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c0, *(u32*)(tbl + 0x590 + off), *(u32*)(tbl + 0x594 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v8c, &v90);
+
+    v98 = c0;
+    v94 = c4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), c0, *(u32*)(tbl + 0x578 + off), *(u32*)(tbl + 0x57c + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v94, &v98);
+
+    va4 = c0;
+    ((u8*)&va0)[0] = ((u8*)&c4)[0];
+    ((u8*)&va0)[1] = ((u8*)&c4)[1];
+    ((u8*)&va0)[2] = ((u8*)&c4)[2];
+    ((u8*)&va0)[3] = 0xff;
+    v9c = va0;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&c4)[2], *(u32*)(tbl + 0x560 + off), *(u32*)(tbl + 0x564 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v9c, &va4);
+
+    vb8 = *(u32*)(p + 0xf0);
+    vbc = *(u32*)(p + 0x104);
+    v58 = vb8;
+    v54 = vbc;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vbc, *(u32*)(tbl + 0x548 + off), *(u32*)(tbl + 0x54c + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v54, &v58);
+
+    v60 = vb8;
+    v5c = vbc;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x530 + off), *(u32*)(tbl + 0x534 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v5c, &v60);
+
+    v68 = vb8;
+    v64 = vbc;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x518 + off), *(u32*)(tbl + 0x51c + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v64, &v68);
+
+    v70 = vb8;
+    v6c = vbc;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x500 + off), *(u32*)(tbl + 0x504 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v6c, &v70);
+
+    v78 = vb8;
+    v74 = vbc;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb8, *(u32*)(tbl + 0x4e8 + off), *(u32*)(tbl + 0x4ec + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v74, &v78);
+
+    vb0 = *(u32*)(p + 0xf4);
+    vb4 = *(u32*)(p + 0x108);
+    v2c = vb0;
+    v28 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, *(u32*)(tbl + 0x6c8 + off), *(u32*)(tbl + 0x6cc + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v28, &v2c);
+
+    v34 = vb0;
+    v30 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(tbl + 0x6b0 + off), *(u32*)(tbl + 0x6b4 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v30, &v34);
+
+    v3c = vb0;
+    v38 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(tbl + 0x698 + off), *(u32*)(tbl + 0x69c + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v38, &v3c);
+
+    v44 = vb0;
+    v40 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb0, *(u32*)(tbl + 0x680 + off), *(u32*)(tbl + 0x684 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v40, &v44);
+
+    ((u8*)&v4c)[0] = ((u8*)&vb4)[0];
+    ((u8*)&v4c)[1] = ((u8*)&vb4)[1];
+    ((u8*)&v4c)[2] = ((u8*)&vb4)[2];
+    ((u8*)&v4c)[3] = 0xff;
+    v48 = v4c;
+    v50 = vb0;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), ((u8*)&vb4)[2], *(u32*)(tbl + 0x668 + off), *(u32*)(tbl + 0x66c + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v48, &v50);
+
+    va8 = *(u32*)(p + 0xf8);
+    vb4 = *(u32*)(p + 0x10c);
+    v0c = va8;
+    v08 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), vb4, *(u32*)(tbl + 0x650 + off), *(u32*)(tbl + 0x654 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v08, &v0c);
+
+    v14 = va8;
+    v10 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(tbl + 0x638 + off), *(u32*)(tbl + 0x63c + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v10, &v14);
+
+    v1c = va8;
+    v18 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(tbl + 0x620 + off), *(u32*)(tbl + 0x624 + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v18, &v1c);
+
+    v24 = va8;
+    v20 = vb4;
+    q = ((void* (*)(void*, s32, u32, u32))(*(void***)*(void**)(p + 8))[15])(*(void**)(p + 8), va8, *(u32*)(tbl + 0x608 + off), *(u32*)(tbl + 0x60c + off));
+    ((void (*)(void*, void*, void*))(*(void***)q)[76])(q, &v20, &v24);
+}
+
 extern "C" void fn_803BF3BC(u8* this_) {
     u32 i;
     u32* tbl;
@@ -569,20 +704,20 @@ extern "C" void fn_803C61C4(u8* p) {
     s16 sVar;
     s16 E;
     s16 F;
-    s16 A;
-    s16 B;
-    s16 C;
-    s32 n;
-    s32 lim;
-    s32 i;
-    s32 j;
-    s32 k;
-    s32 lo;
-    s32 hi;
+    u8* tbl;
     s32 off;
     u8* q;
-    u8* tbl;
+    s16 B;
+    s16 C;
+    s32 hi;
+    s16 A;
+    s32 i;
+    s32 EF;
+    s32 j;
+    s32 lo;
+    s32 n;
 
+    tbl = lbl_804765D0;
     A = *(s16*)(lbl_8050DB0C + 0x1e2);
     B = *(s16*)(lbl_8050DB0C + 0x1e4);
     C = *(s16*)(lbl_8050DB0C + 0x1e0);
@@ -594,8 +729,6 @@ extern "C" void fn_803C61C4(u8* p) {
         sVar = n;
     }
     *(s16*)(p + 0xd8) += 1;
-    lim = sVar + (E + F);
-    tbl = lbl_804765D0;
     if (p[0x112] != 5) {
         q = p;
         off = 0;
@@ -607,28 +740,16 @@ extern "C" void fn_803C61C4(u8* p) {
                 fn_80402628(*(void**)(q + 0x24), A, *(u8*)(*(u8**)(q + 0x24) + 0x28), 0);
                 switch (i) {
                 case 0:
-                    for (k = 0; k < 4; k++) {
-                        void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x7f8 + k * 8));
-                        fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                    }
+                    drawTextRow(p, q, tbl + 0x7f8);
                     break;
                 case 1:
-                    for (k = 0; k < 4; k++) {
-                        void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x7d8 + k * 8));
-                        fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                    }
+                    drawTextRow(p, q, tbl + 0x7d8);
                     break;
                 case 2:
-                    for (k = 0; k < 4; k++) {
-                        void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x7b8 + k * 8));
-                        fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                    }
+                    drawTextRow(p, q, tbl + 0x7b8);
                     break;
                 case 3:
-                    for (k = 0; k < 4; k++) {
-                        void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x798 + k * 8));
-                        fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                    }
+                    drawTextRow(p, q, tbl + 0x798);
                     break;
                 }
                 if (*(s16*)(p + 0xd8) == hi) {
@@ -652,41 +773,30 @@ extern "C" void fn_803C61C4(u8* p) {
 
     q = p;
     off = 0;
+    EF = E + F;
     for (j = 0; j < 2; j++) {
         if (*(s16*)(p + 0xd8) > sVar + off) {
             fn_80402940(*(void**)(q + 0x24), E, lbl_8054349C, lbl_80543458, 0);
             fn_80402628(*(void**)(q + 0x24), E, 0, *(u8*)(*(u8**)(q + 0x24) + 0x28));
             switch (j) {
             case 0:
-                for (k = 0; k < 4; k++) {
-                    void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x7f8 + k * 8));
-                    fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                }
+                drawTextRow(p, q, tbl + 0x7f8);
                 break;
             case 1:
-                for (k = 0; k < 4; k++) {
-                    void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x7d8 + k * 8));
-                    fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                }
+                drawTextRow(p, q, tbl + 0x7d8);
                 break;
             case 2:
-                for (k = 0; k < 4; k++) {
-                    void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x7b8 + k * 8));
-                    fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                }
+                drawTextRow(p, q, tbl + 0x7b8);
                 break;
             case 3:
-                for (k = 0; k < 4; k++) {
-                    void* s = (*(TextBoxVt15**)(p + 0x8))->v15(*(void**)(p + 0x8), *(u64*)(tbl + 0x798 + k * 8));
-                    fn_804023D0(*(void**)(q + 0x24), s, p[k + 0x19f]);
-                }
+                drawTextRow(p, q, tbl + 0x798);
                 break;
             }
         }
         off += F;
         q += 4;
     }
-    if (*(s16*)(p + 0xd8) > lim) {
+    if (*(s16*)(p + 0xd8) > sVar + EF) {
         p[0x112] = p[0x110];
         p[0x110] = 0x25;
     }
