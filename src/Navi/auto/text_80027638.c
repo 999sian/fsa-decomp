@@ -131,8 +131,7 @@ extern "C" void fn_80027D4C(unsigned char* p) {
 }
 
 extern "C" int fn_800290BC(unsigned char* p, int idx) {
-    unsigned char* e = p + idx * 0x3c + 0x384;
-    switch (*(int*)(e + 0x14)) {
+    switch (((S_Slot3C*)(p + 0x384))[idx].state) {
     case 1:
     case 2:
         if (p[0x57e] != 0) {
