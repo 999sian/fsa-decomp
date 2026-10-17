@@ -13,7 +13,7 @@ extern "C" u8* fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 b
 extern "C" bool fn_801E1D9C();
 extern "C" u8 fn_801E1D7C(u8* o);
 extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
-extern "C" void fn_801EF574(void* a, void* b, f32* v, void* rec);
+extern "C" void fn_801EF574(u8* a, s32 b, f32* v, u8* rec);
 extern "C" void fn_801CD0D0(f32* a, f32* b);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, f32 e, f32 f, void* g);
 extern "C" int __float_epsilon[];
