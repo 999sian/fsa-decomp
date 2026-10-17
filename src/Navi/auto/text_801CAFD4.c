@@ -276,6 +276,27 @@ extern "C" void fn_801CD47C(int param_1, unsigned long param_2) {
     }
 }
 
+extern "C" void fn_801CD548(s32 arg1) {
+    u32 top = 0x80000000U;
+    s32 temp_r30;
+    s32 sp1C;
+
+    if (!(arg1 & 0xF)) {
+        temp_r30 = lbl_802FE9EC;
+        lbl_802FF944 |= top >> temp_r30;
+        fn_801C5190(temp_r30, &sp1C);
+        fn_801C4F24(temp_r30, lbl_802FE9F4 | 0x400000);
+        fn_801C4FB4(lbl_802FF944);
+        lbl_802FF950 |= top >> lbl_802FE9EC;
+    }
+    lbl_802FE9EC = __cntlzw(lbl_802FF948);
+    if (lbl_802FE9EC != 0x20) {
+        lbl_802FF948 &= ~(top >> lbl_802FE9EC);
+        memset(lbl_802F7D20 + lbl_802FE9EC * 12, 0, 12);
+        fn_801C58A8(lbl_802FE9EC, fn_801CD620);
+    }
+}
+
 extern "C" unsigned long SIGetType(long chan);
 extern "C" void fn_801C4F24(long, unsigned long);
 extern "C" void fn_801C4F38(void);
@@ -698,6 +719,31 @@ extern "C" void fn_801D1D6C(s32 chan) {
     fn_801C13D0((int)(p + 0x8c));
 }
 
+extern "C" void* EXISetExiCallback(s32 chan, void* callback);
+extern "C" void fn_801BB7E0(void* p);
+extern "C" void fn_801D1DA0(s32 chan) {
+    void (*cb)(s32, s32);
+    u8* p = lbl_802F7D60 + chan * 0x110;
+    if (*(s32*)p != 0) {
+        *(s32*)p = 0;
+        EXISetExiCallback(chan, NULL);
+        fn_801BB7E0(p + 0xe0);
+        cb = *(void (**)(s32, s32))(p + 0xcc);
+        if (cb != NULL) {
+            *(void**)(p + 0xcc) = NULL;
+            cb(chan, -3);
+        }
+        if (*(s32*)(p + 4) != -1) {
+            *(s32*)(p + 4) = -3;
+        }
+        cb = *(void (**)(s32, s32))(p + 0xc4);
+        if (cb != NULL && *(s32*)(p + 0x24) >= 7) {
+            *(void**)(p + 0xc4) = NULL;
+            cb(chan, -3);
+        }
+    }
+}
+
 extern "C" void fn_801D1F90(s32 chan) {
     extern u8 lbl_802F7D60[];
     u8* p = lbl_802F7D60 + chan * 0x110;
@@ -878,7 +924,34 @@ extern "C" u32 fn_801D44FC(u8* param_1) {
     return *(u32*)(param_1 + 0x88);
 }
 
+#pragma dont_inline on
+extern "C" void fn_801D4504(s32 chan, s32 result) {
+    u32 dummy[2];
+    u8* card = lbl_802F7D60 + chan * 0x110;
+    void (*cb)(s32, s32);
+    if (result >= 0) {
+        u8* base = *(u8**)(card + 0x80);
+        u8* next = base + 0x8000;
+        if ((u32)*(u8**)(card + 0x88) == (u32)(base + 0x6000)) {
+            *(u8**)(card + 0x88) = next;
+            memcpy(next, base + 0x6000, 0x2000);
+        } else {
+            *(u8**)(card + 0x88) = base + 0x6000;
+            memcpy(base + 0x6000, next, 0x2000);
+        }
+    }
+    if ((u32)*(s32*)(card + 0xd0) == 0) {
+        fn_801D2D80(card, result);
+    }
+    cb = (void (*)(s32, s32))*(u32*)(card + 0xd8);
+    if ((u32)cb != 0) {
+        *(s32*)(card + 0xd8) = 0;
+        cb(chan, result);
+    }
+}
+#pragma dont_inline reset
 extern "C" void fn_801D4504(s32 chan, s32 result);
+extern "C" s32 fn_801D28AC(s32 chan, void* cb);
 #pragma dont_inline on
 extern "C" void fn_801D45D8(s32 chan, s32 arg) {
     u32 dummy[2];  // force stack frame to 0x28
@@ -1686,6 +1759,7 @@ extern "C" u16 fn_801DBE58(u16 p, f32 f) {
 extern "C" u32 fn_801DC120(f32 vertScale)
 {
 	u32 scale;
+	u32 check;
 	u32 reg;
 	u8* gx;
 	u32 height;
@@ -1694,6 +1768,7 @@ extern "C" u32 fn_801DC120(f32 vertScale)
 	u32 newScale;
 
 	scale = (u32)(256.0f / vertScale) & 0x1FF;
+	check = (scale != 0x100);
 
 	reg = scale | 0x4E000000;
 	*(volatile u8*)0xCC008000 = 0x61;
@@ -1701,7 +1776,7 @@ extern "C" u32 fn_801DC120(f32 vertScale)
 
 	gx = __GXData;
 	*(u16*)(gx + 2) = 0;
-	*(u32*)(gx + 0x1EC) = (*(u32*)(gx + 0x1EC) & ~0x400) | ((scale != 0x100) << 10);
+	*(u32*)(gx + 0x1EC) = (*(u32*)(gx + 0x1EC) & ~0x400) | (check << 10);
 
 	height = ((*(u32*)(gx + 0x1E4) >> 10) & 0x3FF) + 1;
 	numLines = (*(u32*)(gx + 0x1E4) >> 2) & 0x3FF00;
@@ -2401,6 +2476,35 @@ extern "C" void fn_801DEE9C(u8 param_1) {
     u32 v = __rlwimi(*(u32*)(gx + 0x1dc), param_1, 6, 25, 25);
     *(volatile u8*)0xCC008000 = 0x61;
     *(volatile u32*)0xCC008000 = *(u32*)(gx + 0x1dc);
+    *(u16*)(gx + 2) = 0;
+}
+
+extern u32 lbl_8029E638[];
+extern "C" void fn_801DEED0(s32 arg0, s32 arg1) {
+    u8* gx = __GXData;
+    u32* temp_r6 = &lbl_8029E638[arg0];
+    u32 old = *(u32*)(gx + 0x1dc);
+    *(u32*)(gx + 0x1dc) = (old & ~7) | (*temp_r6 & 7);
+    *(u32*)(gx + 0x1dc) = (*(u32*)(gx + 0x1dc) & ~0x38) | ((arg1 << 3) & 0x38);
+    u32 new_val = *(u32*)(gx + 0x1dc);
+    if (old != new_val) {
+        *(u8*)0xCC008000 = 0x61;
+        *(u32*)0xCC008000 = new_val;
+        s32 v;
+        if (arg0 == 2) {
+            v = 1;
+        } else {
+            v = 0;
+        }
+        *(u32*)(gx + 0x204) = (*(u32*)(gx + 0x204) & ~0x200) | ((v << 9) & 0x200);
+        *(u32*)(gx + 0x5ac) |= 4;
+    }
+    if (*temp_r6 == 4) {
+        *(u32*)(gx + 0x1d4) = (*(u32*)(gx + 0x1d4) & ~0x600) | (((arg0 - 4) << 9) & 0x600);
+        *(u32*)(gx + 0x1d4) = (*(u32*)(gx + 0x1d4) & ~0xFF000000) | 0x42000000;
+        *(u8*)0xCC008000 = 0x61;
+        *(u32*)0xCC008000 = *(u32*)(gx + 0x1d4);
+    }
     *(u16*)(gx + 2) = 0;
 }
 
