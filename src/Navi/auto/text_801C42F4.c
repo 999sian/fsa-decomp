@@ -13,7 +13,7 @@ extern int Si_8029D084[];
 extern int Packet_802F77D0[];
 extern char* __SIVersion;
 void SISetSamplingRate(u32 msec);
-void SIInterruptHandler(void);
+void SIInterruptHandler(__OSInterrupt interrupt, OSContext* context);
 extern int Packet_802F77D0[];
 extern "C" int fn_801C42F4(void) {
     if (Si_8029D084[0] == -1) {
@@ -43,7 +43,7 @@ extern "C" BOOL fn_801C4990(s32 param_1) {
     } else {
         reg &= ~0x08000000;
     }
-    reg &= ~1;
+    reg &= 0x7ffffffe;
     *(vu32*)0xCC006434 = reg;
     OSRestoreInterrupts(enabled);
     return ret;
