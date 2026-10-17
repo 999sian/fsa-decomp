@@ -86,23 +86,28 @@ extern "C" void fn_8032ABE0(void* this_) {
     s32 i;
     f32 pos[2];
     f32 box[4];
-    RupyVec3 v;
-    RupyVec3 w;
+    JGeometry::TVec3f v;
+    JGeometry::TVec3f w;
     s32 state = *(s32*)(p + 0x230);
 
     if (state == 0 || state == 6 || (u32)(state - 1) <= 1 || state == 9 || state == 0xd) {
         if (*(u16*)(p + 0x94) != 2) {
-            if (*((u8*)lbl_8053AAF8 + 0x7e) == 1) {
-                if (*(s32*)(p + 0x24c) > 0x3d4) {
+            u8 flag = *((u8*)lbl_8053AAF8 + 0x7e);
+            if (flag == 1 && *(s32*)(p + 0x24c) <= 0x3d4) {
+            } else {
+                if (flag != 0) {
                     return;
                 }
-            } else if (*(s32*)(p + 0x24c) > 0x320) {
-                return;
+                if (*(s32*)(p + 0x24c) > 0x320) {
+                    return;
+                }
             }
         }
 
-        pos[0] = *(f32*)(p + 0xc);
-        pos[1] = *(f32*)(p + 0x10);
+        f32 y = *(f32*)(p + 0x10);
+        f32 x = *(f32*)(p + 0xc);
+        pos[0] = x;
+        pos[1] = y;
         box[0] = *(f32*)(p + 0x60);
         box[1] = *(f32*)(p + 0x64);
         box[2] = *(f32*)(p + 0x68);
@@ -157,16 +162,17 @@ extern "C" void fn_8032ABE0(void* this_) {
             if (*(s32*)(p + 0x268) >= 4) {
                 if (fn_8023ED8C(idx) == 0 && fn_8023EBB8(idx) == 0 && fn_80233DA4(idx) == 0) {
                     if (fn_802308E0(idx) == 1) {
-                        v = *(RupyVec3*)fn_8023E724(idx);
-                        w = v;
+                        v = *(JGeometry::TVec3f*)fn_8023E724(idx);
+                        w.x = v.x;
                         w.y = v.y - lbl_80541D94;
+                        w.z = v.z;
                         if (fn_80233E40(idx)) {
                             fn_80230498(idx, &v, 0x336, 0xff, -0x80, -0x80, 1);
                         } else {
                             fn_80230498(idx, &v, 0xed, 0xff, -0x80, -0x80, 1);
                         }
                         Actor_CreateByID(fn_801F856C(), 0x494d5550, *(u32*)(p + 4), &w,
-                                         *(s32*)(p + 0x268) + (idx << 26) + (idx << 24) + 0xa00000, -1, -1);
+                                         *(s32*)(p + 0x268) + (idx << 24) + (idx << 26) + 0xa00000, -1, -1);
                         detach__5ActorFv(this_);
                     }
                 } else {
