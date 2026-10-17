@@ -42,7 +42,7 @@ extern "C" void fn_803E2A0C(u8* param_1) {
 extern "C" void fn_803E3320(u8* param_1) {
     s32 j = 0;
     s32 i;
-    *(s16*)(param_1 + 0x254) = 0;
+    *(u16*)(param_1 + 0x254) = 0;
     *(s32*)(param_1 + 0x1e0) = 5;
     if (*(s32*)(param_1 + 0x1bc) == 0) {
         if (*(s32*)(param_1 + 0x1b8) == 1) {
@@ -71,8 +71,9 @@ extern "C" void fn_803E3320(u8* param_1) {
         for (i = 0; i < 4; i++) {
             if (i < *(s32*)(param_1 + 0x1bc) + 1) {
                 lbl_8053AAF8[0x82] |= (u8)(1 << i);
-                lbl_8053AAF8[0x83] &= ~(u8)(3 << j);
-                lbl_8053AAF8[0x83] |= (u8)(1 << j);
+                u8* p = lbl_8053AAF8;
+                p[0x83] &= ~(u8)(3 << j);
+                p[0x83] |= (u8)(1 << j);
             } else {
                 lbl_8053AAF8[0x82] &= ~(u8)(1 << i);
                 lbl_8053AAF8[0x83] &= ~(u8)(3 << j);
