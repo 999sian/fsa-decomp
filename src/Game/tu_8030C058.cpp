@@ -91,22 +91,36 @@ extern "C" bool fn_8030C2A8(u8* p, s32 r4) {
     return ret;
 }
 
+extern "C" void fn_8030C380(u8* p, f32* out) {
+    f32 scale = lbl_805416C8;
+    f32 x0 = *(f32*)(p + 0x164);
+    f32 y0 = *(f32*)(p + 0x168);
+    f32 x1 = *(f32*)(p + 0x16c);
+    f32 y1 = *(f32*)(p + 0x170);
+    u16 w;
+    u16 h;
+    JUTVideo::sManager->getBounds(w, h);
+    out[0] = x0 + (scale * (x1 - x0)) / (f32)w;
+    out[1] = y0 + (scale * (y1 - y0)) / (f32)h;
+    out[2] = scale;
+    JUTVideo::sManager->getBounds(w, h);
+    out[3] = x0 + ((f32)w * (x1 - x0)) / (f32)w;
+    out[4] = y0 + ((f32)h * (y1 - y0)) / (f32)h;
+    out[5] = scale;
+}
+
 extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out) {
     if (flag != 0) {
         u32 a = *(u32*)(p + 0x144);
         u32 b = *(u32*)(p + 0x148);
         u32 c = *(u32*)(p + 0x14c);
         u32 d = *(u32*)(p + 0x150);
-        f32 x0 = (f32)a;
-        f32 y0 = (f32)b;
-        f32 xs = (f32)(c - a);
-        f32 ys = (f32)(d - b);
         f32 x1 = *(f32*)(p + 0x164);
         f32 x2 = *(f32*)(p + 0x16c);
         f32 y1 = *(f32*)(p + 0x168);
         f32 y2 = *(f32*)(p + 0x170);
-        f32 tx = (in[0] - x0) * (x2 - x1) / xs;
-        f32 ty = (in[1] - y0) * (y2 - y1) / ys;
+        f32 tx = (in[0] - (f32)a) * (x2 - x1) / (f32)(c - a);
+        f32 ty = (in[1] - (f32)b) * (y2 - y1) / (f32)(d - b);
         out[0] = x1 + tx;
         out[1] = y1 + ty;
         out[2] = 0.0f;
@@ -114,10 +128,10 @@ extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out) {
         const GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
         f32 x1 = *(f32*)(p + 0x164);
         f32 x2 = *(f32*)(p + 0x16c);
-        f32 w = (f32)(s32)rm->fbWidth;
-        f32 h = (f32)(s32)rm->efbHeight;
         f32 y1 = *(f32*)(p + 0x168);
         f32 y2 = *(f32*)(p + 0x170);
+        f32 w = (f32)(s32)rm->fbWidth;
+        f32 h = (f32)(s32)rm->efbHeight;
         out[0] = x1 + in[0] * (x2 - x1) / w;
         out[1] = y1 + in[1] * (y2 - y1) / h;
         out[2] = 0.0f;
@@ -129,8 +143,11 @@ extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out) {
     PSMTXMultVec((MtxPtr)(p + 0x74), (Vec*)a, &v);
     f32* m = (f32*)(p + 0xa4);
     f32 one = 1.0f;
-    f32 y = v.x * m[4] + v.y * m[5] + v.z * m[6] + one * m[7];
-    f32 x = v.x * m[0] + v.y * m[1] + v.z * m[2] + one * m[3];
+    f32 vy = v.y;
+    f32 vx = v.x;
+    f32 vz = v.z;
+    f32 y = vx * m[4] + vy * m[5] + vz * m[6] + one * m[7];
+    f32 x = vx * m[0] + vy * m[1] + vz * m[2] + one * m[3];
     if ((u8)c != 0) {
         out[0] = 0.5f * (1.0f + x);
         out[1] = 0.5f * (1.0f - y);
@@ -151,12 +168,12 @@ extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out) {
 }
 
 extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
+    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
     f32 hw = 0.5f * size;
     f32 x = pos[0];
     const GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
     int h = rm->efbHeight;
     int w = rm->fbWidth;
-    u8* obj = *(u8**)(lbl_8053AB10 + 0x24);
     f32 y = pos[1];
     f32 hh = 0.5f * (size * (f32)h / (f32)w);
     *(f32*)(obj + 0x180) = x - hw;
@@ -167,7 +184,7 @@ extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
 }
 
 extern "C" void fn_8030C85C(u8* self) {
-    u8 zero = 0;
+    u32 zero = 0;
     self[0x1e8] = zero;
     if (((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x235c] != 0) {
         ((u8*)(*(u8**)(lbl_8053AB10 + 0x20)))[0x2360] = zero;
@@ -214,6 +231,8 @@ extern u8 lbl_804AA8E8[];
 extern f32 lbl_805416EC;
 extern f32 lbl_805416C8;
 extern "C" void fn_8030CD18(u8* p, f32* rect, u8* entry, s32 zero, u8* a, u8* b);
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void fn_8030C9E4(u8* self, f32* rect) {
     u8* g;
     Vec v;
@@ -233,8 +252,8 @@ extern "C" void fn_8030C9E4(u8* self, f32* rect) {
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2361] = g[0x235d];
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2362] = g[0x235e];
     g = *(u8**)(lbl_8053AB10 + 0x20); g[0x2363] = g[0x235f];
-    g = *(u8**)(lbl_8053AB10 + 0x20); *(Vec*)(g + 0x2374) = *(Vec*)(g + 0x2368);
-    g = *(u8**)(lbl_8053AB10 + 0x20); *(Vec*)(g + 0x2368) = v;
+    g = *(u8**)(lbl_8053AB10 + 0x20); *(f64*)(g + 0x2374) = *(f64*)(g + 0x2368); *(f32*)(g + 0x237c) = *(f32*)(g + 0x2370);
+    g = *(u8**)(lbl_8053AB10 + 0x20); *(f64*)(g + 0x2368) = *(f64*)&v; g[0x2370] = 0;
 }
 
 extern "C" void fn_8030CB10(u8* p, f32* v, f32 s) {
