@@ -2027,7 +2027,7 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
     return p + 0xda + i * 8;
 }
 
-extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
+extern "C" void fn_801A394C(u8* p, u32 i, u8* src) {
     u8 a = src[0];
     u8* base = p + i * 4;
     base[0xfa] = a;
@@ -3249,4 +3249,3 @@ extern "C" u32 fn_801A5370(void) {
 struct B4_801A4974 { u8 c[4]; };
 struct B3_801A4840 { u8 c[3]; };
 struct E_801A4840 { u8 x; B3_801A4840 rgb; };
-struct Bits_801A4338 { u8 pad[0x3c]; u8 hi : 4; u8 b1 : 2; u8 b0 : 2; u8 pad2[3]; };
