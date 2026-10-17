@@ -599,7 +599,8 @@ extern "C" s32 fn_80123B94(u8* self) {
             }
         }
         case 0x4f4b544d:
-            if (*(s32*)(actor + 0x230) == 2) {
+            switch (*(s32*)(actor + 0x230)) {
+            case 2:
                 return 0;
             }
             break;
