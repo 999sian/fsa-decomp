@@ -1,6 +1,7 @@
 // TU 0x8032ab80-0x8032df94 (actor RUPY).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 // ---- fn_8032AB80_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -77,6 +78,116 @@ extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_8032ABE0(void* this_) {
+    s32 idx;
+    u8* p = (u8*)this_;
+    s32 i;
+    f32 pos[2];
+    f32 box[4];
+    RupyVec3 v;
+    RupyVec3 w;
+    s32 state = *(s32*)(p + 0x230);
+
+    if (state == 0 || state == 6 || (u32)(state - 1) <= 1 || state == 9 || state == 0xd) {
+        if (*(u16*)(p + 0x94) != 2) {
+            if (*((u8*)lbl_8053AAF8 + 0x7e) == 1) {
+                if (*(s32*)(p + 0x24c) > 0x3d4) {
+                    return;
+                }
+            } else if (*(s32*)(p + 0x24c) > 0x320) {
+                return;
+            }
+        }
+
+        pos[0] = *(f32*)(p + 0xc);
+        pos[1] = *(f32*)(p + 0x10);
+        box[0] = *(f32*)(p + 0x60);
+        box[1] = *(f32*)(p + 0x64);
+        box[2] = *(f32*)(p + 0x68);
+        box[3] = *(f32*)(p + 0x6c);
+        box[0] += pos[0];
+        box[1] += pos[1];
+        box[2] += pos[0];
+        box[3] += pos[1];
+
+        idx = -1;
+        for (i = 0; i < 4; i++) {
+            if (fn_8023B0F4(i, box, *(u32*)(p + 4), 0, *(f32*)(p + 0x14)) == 1) {
+                if (*(f32*)(p + 0x14) > lbl_80541D8C && *(u16*)(p + 0x94) != 2) {
+                    continue;
+                }
+                if (fn_80230188(i) != 1 && fn_80234ECC(i) != 1 && fn_8023EA28(i) != 1) {
+                    idx = i;
+                    break;
+                }
+            }
+        }
+
+        if (idx < 0 && (*(f32*)(p + 0x14) < lbl_80541D8C || *(u16*)(p + 0x94) == 2)) {
+            for (i = 0; i < 4; i++) {
+                if (fn_80230188(i) == 0 && fn_8023EA28(i) == 0 && fn_80236B50(i) == 0 &&
+                    (fn_8023B9CC(i, box, *(u32*)(p + 4), pos, 1) == 1 ||
+                     fn_8023B848(i, box, *(u32*)(p + 4), pos) == 1)) {
+                    idx = i;
+                    break;
+                }
+            }
+        }
+
+        if (idx < 0) {
+            return;
+        }
+        if (fn_80234C5C(idx) != 0) {
+            return;
+        }
+        if ((*(u16*)(p + 0x94) != 0x23 && fn_8022B7C4(idx) == 0) ||
+            (*(u16*)(p + 0x94) == 0x23 && fn_8022B7C4(idx) == 1)) {
+            *(f32*)(p + 0x238) = lbl_80541D90;
+            i = idx;
+            if (fn_8022F514(idx) == 1) {
+                i = fn_8022F3DC(idx);
+            }
+            if (*(s32*)((u8*)fn_802D6A9C() + 4) == 0 && *(s32*)((u8*)fn_802D6A9C() + 8) == 0 &&
+                fn_802D7F40(fn_802D6A9C(), 0) == 0) {
+                fn_8043D67C(lbl_8053AED0, 0x13f, i, 0);
+                fn_802D7F84(fn_802D6A9C(), 0, 1);
+            }
+            if (*(s32*)(p + 0x268) >= 4) {
+                if (fn_8023ED8C(idx) == 0 && fn_8023EBB8(idx) == 0 && fn_80233DA4(idx) == 0) {
+                    if (fn_802308E0(idx) == 1) {
+                        v = *(RupyVec3*)fn_8023E724(idx);
+                        w = v;
+                        w.y = v.y - lbl_80541D94;
+                        if (fn_80233E40(idx)) {
+                            fn_80230498(idx, &v, 0x336, 0xff, -0x80, -0x80, 1);
+                        } else {
+                            fn_80230498(idx, &v, 0xed, 0xff, -0x80, -0x80, 1);
+                        }
+                        Actor_CreateByID(fn_801F856C(), 0x494d5550, *(u32*)(p + 4), &w,
+                                         *(s32*)(p + 0x268) + (idx << 26) + (idx << 24) + 0xa00000, -1, -1);
+                        detach__5ActorFv(this_);
+                    }
+                } else {
+                    fn_8043D874(lbl_8053AED0, idx, lbl_804719D8[*(s32*)(p + 0x268)], 0);
+                    *(u16*)(p + 0x94) = 1;
+                    *(s32*)(p + 0x264) = idx;
+                    *(s32*)(p + 0x230) = 3;
+                    *(s32*)(p + 0x274) = 0;
+                    *(s32*)(p + 0xb0) = 0;
+                }
+            } else {
+                fn_80230FD0(i, 0x20011);
+                fn_802362C4(idx, lbl_804719D8[*(s32*)(p + 0x268)]);
+                *(u16*)(p + 0x94) = 1;
+                *(s32*)(p + 0x264) = idx;
+                *(s32*)(p + 0x230) = 3;
+                *(s32*)(p + 0x274) = 0;
+                *(s32*)(p + 0xb0) = 0;
+            }
+        }
+    }
 }
 
 extern "C" s32 fn_8032B0A4(void* this_) {
