@@ -1069,7 +1069,8 @@ void fn_80281E98(char* p) {
     if (U8(p, 0x3fc) != 0) {
         U8(p, 0x3fc)--;
     } else {
-        F32(p, 0x348) -= lbl_805403B8;
+        f32 t = F32(p, 0x348) - lbl_805403B8;
+        F32(p, 0x348) = t;
         if (F32(p, 0x348) <= lbl_805403AC) {
             F32(p, 0x348) = lbl_805403AC;
         }
@@ -1147,7 +1148,7 @@ void fn_802828A8(char* p) {
     void* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd8c));
     if (actor != NULL) {
         area = S32(p, 0x3b4);
-        if (*((u8*)fn_802D6A9C() + 0x10000 + area + 0x31df) != 0) {
+        if (U8(fn_802D6A9C(), 0x131df + area) != 0) {
             f32 speed = -fn_801080B8(actor);
             F32(p, 0x374) = lbl_80540360;
             F32(p, 0x378) = speed;
@@ -1420,7 +1421,10 @@ void fn_80283D2C(char* p) {
                 s32 i = 0;
                 id = S32(p, 0x4);
                 do {
-                    if (fn_8022F3DC(i) == id) fn_802384BC(i);
+                    s32 found = fn_8022F3DC(i);
+                    if (found == id) {
+                        fn_802384BC(i);
+                    }
                     i++;
                 } while (i < 4);
             }
@@ -1565,9 +1569,11 @@ void fn_80284328(char* p) {
 }
 
 void fn_8028434C(char* p) {
-    VEC(p, 8).add(VEC(p, 8), VEC(p, 0x344));
-    F32(p, 0x34c) = F32(p, 0x34c) - lbl_80540398;
-    if (F32(p, 0x34c) < lbl_80540404) F32(p, 0x34c) = lbl_80540404;
+    f32 d = lbl_80540404;
+    f32 c = lbl_80540398;
+    VEC(p, 8).add(VEC(p, 0x344));
+    F32(p, 0x34c) -= c;
+    if (F32(p, 0x34c) < d) F32(p, 0x34c) = d;
     if (F32(p, 0x34c) < lbl_80540360 && F32(p, 0x10) <= lbl_80540360) {
         F32(p, 0x10) = lbl_80540360;
         U8(p, 0x124d) = 0;
@@ -1745,8 +1751,8 @@ u8 fn_802300EC(s32);
 u8 fn_8023B0F4(s32, void*, s32, f32, s32);
 s32 Actor_CreateByID(void*, u32, u32, void*, u32, s32, s32);
 void fn_802857F0(char* p) {
-    f32 zero = lbl_80540360;
-    if (zero < F32(p, 0x10) && !U8(p, 0x434)) {
+    f32 zero = 0.0f;
+    if (F32(p, 0x10) > zero && !U8(p, 0x434)) {
         F32(p, 0x10) = zero;
     }
     u16 state = (u16)fn_8022461C(p + 8, S32(p, 0x3b4));
