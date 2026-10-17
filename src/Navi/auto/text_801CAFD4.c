@@ -26,6 +26,11 @@ extern void* lbl_802FF9B0;
 extern void* lbl_802FF9C0;
 extern void* lbl_802FF9C8;
 extern void* lbl_802FF9C4;
+extern "C" void OSRegisterVersion(const char* version);
+extern "C" void fn_801D14E4(void* a, void* b);
+extern int lbl_802FF9F8;
+extern void* lbl_802FEA20;
+extern u8 lbl_8029DAA8[];
 extern void* __peReg;
 extern u8 lbl_802FFA70;
 extern u8 lbl_802FFA74;
@@ -192,6 +197,34 @@ extern "C" u32 fn_801CC9A0(void) {
     
     OSRestoreInterrupts(interrupt_state);
     return 0;
+}
+
+extern "C" void* memset(void* s, int c, unsigned long n);
+extern "C" void fn_801CD3B8(int unused, unsigned long param) {
+    s32 out[4];
+    s32 pad[3];
+    s32 chan;
+    s32 r5;
+    s32 idx;
+    u32 mask;
+
+    if ((param & 0xf) == 0) {
+        fn_801CD214(lbl_802FE9EC);
+        chan = lbl_802FE9EC;
+        lbl_802FF944 = lbl_802FF944 | (0x80000000 >> chan);
+        fn_801C5190(chan, out);
+        fn_801C4F24(chan, lbl_802FE9F4 | 0x400000);
+        fn_801C4FB4(lbl_802FF944);
+    }
+    r5 = lbl_802FF948;
+    *(volatile s32*)&lbl_802FE9EC = __cntlzw(r5);
+    idx = *(volatile s32*)&lbl_802FE9EC;
+    if (idx != 0x20) {
+        mask = 0x80000000 >> idx;
+        lbl_802FF948 = r5 & ~mask;
+        memset(lbl_802F7D20 + idx * 12, 0, 12);
+        fn_801C58A8(*(volatile s32*)&lbl_802FE9EC, fn_801CD620);
+    }
 }
 
 extern "C" unsigned long SIGetType(long chan);
@@ -387,6 +420,29 @@ extern "C" void* fn_801CF5D0(int param_1) {
     OSRestoreInterrupts(state);
     
     return r31;
+}
+
+extern "C" void OSRegisterVersion(const char* version);
+extern "C" void fn_801CF70C(void* a, void* b);
+extern "C" void fn_801CF784(void);
+extern int lbl_802FF9CC;
+extern void* lbl_802FEA10;
+extern "C" int fn_801CF638(void* param_1, void* param_2) {
+    if (lbl_802FF9CC == 1) {
+        return 0x4000;
+    }
+    OSRegisterVersion((const char*)lbl_802FEA10);
+    int state = OSDisableInterrupts();
+    lbl_802FF9B0 = 0;
+    __OSSetInterruptHandler(6, fn_801CF70C);
+    __OSUnmaskInterrupts(0x2000000);
+    lbl_802FF9C4 = param_2;
+    lbl_802FF9C0 = (void*)0x4000;
+    lbl_802FF9C8 = param_1;
+    fn_801CF784();
+    lbl_802FF9CC = 1;
+    OSRestoreInterrupts(state);
+    return (int)lbl_802FF9C0;
 }
 
 extern "C" u32 fn_801CF6FC(void) {
