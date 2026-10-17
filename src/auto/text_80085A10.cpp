@@ -21,6 +21,14 @@ extern "C" void free__7JKRHeapFPvP7JKRHeap(void* p, void* heap);
 struct VirtualDtorObj {
     virtual ~VirtualDtorObj();
 };
+struct VirtualSlotObj {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual u32 v05();
+};
 
 extern "C" char* fn_80085BBC(char* p, u32 a2, void* a3, u32 a4, u32 a5, u32 a6, u32 a7, void* a8, u8 a9);
 extern "C" char* alloc__7JKRHeapFUliP7JKRHeap(u32 size, int align, void* heap);
@@ -498,6 +506,22 @@ extern "C" s32 fn_80086764(char* p) {
     return 1;
 }
 
+extern "C" char lbl_8045E854[];
+extern "C" f32 lbl_8053B778;
+extern "C" void JUTReportConsole_f(const char*, ...);
+extern "C" void OSLockMutex(void* mutex);
+extern "C" void OSUnlockMutex(void* mutex);
+extern "C" void JUTReportConsole_f(const char* fmt, ...);
+extern "C" u32 fn_80086890(u8* self_) {
+    u32 result = (*(u32 (**)(u8*))(*(u8**)self_ + 0x14))(self_);
+    OSLockMutex(self_ + 0x18);
+    u32 a = *(u32*)(self_ + 0x38);
+    u32 b = *(u32*)(self_ + 0x80);
+    JUTReportConsole_f(lbl_8045E854, (f32)(a - b) / (f32)a * 100.0f);
+    OSUnlockMutex(self_ + 0x18);
+    return result;
+}
+
 extern "C" u32 getTotalFreeSize__7JKRHeapFv(void *heap);
 extern "C" void fn_8008693C(int param_1, int *param_2, int param_3) {
     int *start;
@@ -527,12 +551,12 @@ extern "C" void fn_8008693C(int param_1, int *param_2, int param_3) {
                 start += 8;
             } while (--cnt != 0);
         }
-        n &= 7;
-        if (n != 0) {
+        cnt = n & 7;
+        if (cnt != 0) {
             do {
                 sum += *start;
                 start++;
-            } while (--n != 0);
+            } while (--cnt != 0);
         }
     }
     param_2[1] = sum;
