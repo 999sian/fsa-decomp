@@ -27,6 +27,10 @@ struct RailRing {
 
 extern f32 lbl_8053C0B8;
 extern f32 lbl_8053C0D0;
+
+static inline bool railNoFlag4(RailNode* node) {
+    return !((node->mFlags >> 2) & 1);
+}
 extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out);
 #include "std/math.h"
 
@@ -97,6 +101,45 @@ void fn_800FDE38(void* ringArray)
     }
 }
 
+extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* angOut, s16 maxTurn, f32 speed) {
+    RailVec target;
+    RailVec p = *pos;
+    u8 res = fn_800FE090(ring, &p, &target);
+    f32 dx = target.x - pos->x;
+    f32 dy = target.y - pos->y;
+    s32 ang = JMath::atanTable_.atan2_(dx, dy) * lbl_8053C0D0;
+    s16 out;
+    if (id != NULL) {
+        s32 nodeId = ring->mNodes[ring->mCur]->mId;
+        if (*id != nodeId) {
+            *id = nodeId;
+            vel[0] = dx;
+            vel[1] = dy;
+            return 4;
+        }
+    }
+    if (lbl_8053C0B8 == vel[0] && lbl_8053C0B8 == vel[1] && (bool)!((ring->mNodes[ring->mCur]->mFlags >> 2) & 1)) {
+        out = ang;
+    } else {
+        s32 cur = JMath::atanTable_.atan2_(vel[0], vel[1]) * lbl_8053C0D0;
+        s16 diff = ang - cur;
+        if (diff >= 0) {
+            if (diff > maxTurn) {
+                ang = cur + maxTurn;
+            }
+        } else if (diff < -maxTurn) {
+            ang = cur - maxTurn;
+        }
+        out = ang;
+    }
+    vel[0] = speed * JMath::sincosTable_.sinShort(out);
+    vel[1] = speed * JMath::sincosTable_.cosShort(out);
+    if (angOut != NULL) {
+        *angOut = out;
+    }
+    return res;
+}
+
 } // extern "C"
 
 
@@ -106,13 +149,22 @@ extern f32 lbl_8053C0B0;
 extern f32 lbl_8053C0D8;
 static inline s32 railGetId(RailRing* ring, u8 i);
 
+extern f32 lbl_8053C0B4;
+extern f32 lbl_8053C0C0;
+extern f32 lbl_8053C0D4;
 extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
     u8 ret = 0;
     RailNode* node = ring->mNodes[ring->mCur];
     f32 dx = node->mPos.x - pos->x;
     f32 dy = node->mPos.y - pos->y;
-    f32 dist = std::sqrtf(dx * dx + dy * dy);
-    if (dist < 10.0f) {
+    f32 d2 = dx * dx + dy * dy;
+    f32 dist = d2;
+    if (d2 > lbl_8053C0B8) {
+        f32 guess = (f32)__frsqrte(d2);
+        guess = lbl_8053C0B4 * guess * (lbl_8053C0C0 - guess * guess * d2);
+        dist = d2 * guess;
+    }
+    if (dist < lbl_8053C0D4) {
         u8 cur = ring->mCur;
         u32 mode = ring->mNodes[cur]->mFlags & 3;
         ret = 2;
