@@ -323,8 +323,7 @@ extern "C" s32 fn_800861C4(int param_1, u32 param_2) {
     return result - param_2 + 1;
 }
 
-extern "C" s32 fn_8008668C(int);
-extern u8 g_bit_mask_table[];
+extern u8 lbl_8053B770[8];
 extern "C" void fn_800863C0(void* param_1) {
     s32 idx = fn_8008668C((int)param_1);
     
@@ -459,7 +458,7 @@ extern "C" u8 fn_800866D4(int param_1, u32 param_2) {
     s32 idx = (s32)param_2 / 8;
     u8* data = *(u8**)(param_1 + 0x78);
     u8 byte_val = data[idx];
-    u8 mask = ((u8*)(u32)&lbl_8053B770)[param_2 & 7];
+    u8 mask = lbl_8053B770[param_2 & 7];
     u8 res = byte_val & mask;
 
     return (u8)((u32)(-(s32)res | res) >> 31);
