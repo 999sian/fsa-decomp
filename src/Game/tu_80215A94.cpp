@@ -1,6 +1,8 @@
 // TU 0x80215a94-0x8021693c.
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
+#include "sdk/stl/float.h"
+#include "Game/Actor.h"
 
 // ---- fn_80216238.cpp ----
 extern "C" void* Hrmn_InitSlotStateType3(void* obj);
@@ -97,7 +99,7 @@ extern "C" void fn_80215E18(HrmnEntry* e);
 extern "C" int fn_80215A94(HrmnTable* t) {
     int result = -1;
     s32 cnt = t->mCount;
-    if (cnt >= 2 && cnt - 1 == t->countSet()) {
+    if (cnt >= 2 && t->countSet() == cnt - 1) {
         s32 n = t->mCount;
         for (int i = 0; i < n; i++) {
             if (!t->mEntry[i].isSet()) {
@@ -123,15 +125,16 @@ extern "C" void fn_80215B6C(HrmnTable* t, int idx) {
 
 extern "C" void fn_80215BCC(HrmnTable* t, int idx) {
     if (t->mEntry[idx].mSub2[0] != 0 && !fn_801ED7B0(t->mEntry[idx].mSub2)) {
-        lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x79] = t->mEntry[idx].m20;
-        lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x78] = t->mEntry[idx].m21;
+        u8 a = t->mEntry[idx].m20;
+        u8 b = t->mEntry[idx].m21;
+        lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x79] = a;
+        lbl_8050EC80[*(s32*)(lbl_8050EC80 + 0x10) * 0xc8 + 0x78] = b;
         fn_802D7844(fn_802D6A9C(), 1, t->mEntry[idx].mA);
     }
 }
 
 extern "C" int fn_80215C6C(HrmnTable* t, int idx) {
-    int result;
-    result = 0;
+    int result = 0;
     if (t->mEntry[idx].mSub2[0] != 0 && !fn_801ED7B0(t->mEntry[idx].mSub2)) {
         u8* rec = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
         u8 hi = rec[0x79];
@@ -139,8 +142,8 @@ extern "C" int fn_80215C6C(HrmnTable* t, int idx) {
         if (hi == 0 && lo == 0) {
             result = 1;
         } else {
-            u8 a = t->mEntry[idx].m20;
-            u8 b = t->mEntry[idx].m21;
+            u32 a = t->mEntry[idx].m20;
+            u32 b = t->mEntry[idx].m21;
             if (a < hi || ((u8)a == hi && (u8)b < lo)) {
                 result = 1;
             }
@@ -202,7 +205,8 @@ extern "C" int fn_80215E98(HrmnTable* t) {
 extern "C" void fn_80215ECC(HrmnTable* t) {
     s32 n = t->mCount;
     HrmnTable* p = t;
-    for (int i = 0; i < n; i++) {
+    int i = 0;
+    for (; i < n; i++) {
         fn_801ED3DC(p->mEntry[0].mSub2, p->mEntry[0].mA, p->mEntry[0].mId);
         p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry));
     }
@@ -231,12 +235,14 @@ extern "C" void fn_8021600C(HrmnTable* t) {
 
 extern "C" int fn_8021606C(HrmnTable* t) {
     s32 n = t->mCount;
+    HrmnTable* p = t;
     int result = 0;
     for (int i = 0; i < n; i++) {
-        if (t->mEntry[i].mId < 0 && fn_801ED7B0(t->mEntry[i].mSub2)) {
+        if (p->mEntry[0].mId < 0 && fn_801ED7B0(p->mEntry[0].mSub2)) {
             result = 1;
             break;
         }
+        p = (HrmnTable*)((u8*)p + sizeof(HrmnEntry));
     }
     return result;
 }
