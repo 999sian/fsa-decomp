@@ -56,9 +56,10 @@ extern "C" void fn_80377A38(u8* this_) {
         if ((u8)fn_8028D4DC((f32*)(this_ + 0xc), 3, *(void**)(this_ + 0x16c))) {
             *(s32*)(this_ + 0x244) = 1;
             Vec pos;
-            f32 x = ((Vec*)(this_ + 0xc))->x - 24.0f;
+            f32 x = ((Vec*)(this_ + 0xc))->x;
             f32 y = ((Vec*)(this_ + 0xc))->y;
             f32 z = ((Vec*)(this_ + 0xc))->z;
+            x -= 24.0f;
             for (s32 i = 0; i < 4; i++) {
                 pos.x = x;
                 pos.y = y;
@@ -76,7 +77,8 @@ extern "C" void fn_80377A38(u8* this_) {
     ((Vec*)(this_ + 0x3c))->x = 0.0f;
     ((Vec*)(this_ + 0x3c))->y = 0.0f;
     ((Vec*)(this_ + 0x3c))->z = 0.0f;
-    *(Vec*)(this_ + 0x248) = *(Vec*)(this_ + 0xc);
+    *(f64*)(this_ + 0x248) = *(f64*)(this_ + 0xc);
+    *(f32*)(this_ + 0x250) = ((Vec*)(this_ + 0xc))->z;
     *(f32*)(this_ + 0x60) = -31.5f;
     *(f32*)(this_ + 0x64) = -31.5f;
     *(f32*)(this_ + 0x68) = 31.5f;
@@ -96,4 +98,4 @@ extern "C" void fn_80377A38(u8* this_) {
     *(s32*)(this_ + 0x23c) = 0;
     *(s32*)(this_ + 0x240) = 0;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
