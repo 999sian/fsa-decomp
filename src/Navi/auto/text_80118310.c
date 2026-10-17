@@ -262,7 +262,7 @@ extern "C" BOOL fn_8011AB40(void)
 
 extern "C" int fn_8011AB48(int param_1) {
     int r = 0;
-    if ((param_1 > 0x80 && param_1 < 0xa0) || (param_1 > 0xdf && param_1 < 0xfd)) {
+    if ((param_1 >= 0x81 && param_1 <= 0x9f) || (param_1 >= 0xe0 && param_1 <= 0xfc)) {
         r = 1;
     }
     return r;
