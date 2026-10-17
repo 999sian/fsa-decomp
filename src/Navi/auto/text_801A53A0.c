@@ -2,6 +2,16 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x801a53a0-0x801a7b40 (33 functions). split_file divides it into the game's real files.
 
+struct VObj_801A7A38 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+};
+
+extern "C" void fn_801E10DC(void* p);
+extern u8 lbl_8029B188[];
+
 extern "C" void fn_801A59E8(void);
 extern "C" void fn_801A59C8(void) {
     fn_801A59E8();
@@ -20,8 +30,8 @@ extern "C" u16 fn_801A6050(void* param_1) {
     return *(u32*)((u8*)param_1 + 1);
 }
 
-extern "C" void fn_801A6214(void* param_1, void* param_2) {
-    fn_80190684(param_1, *(u16*)param_2);
+extern "C" void fn_801A6214(void* param_1, const u16* param_2) {
+    fn_80190684(param_1, *param_2);
 }
 
 extern "C" void fn_801A6238(u8* param_1) {
