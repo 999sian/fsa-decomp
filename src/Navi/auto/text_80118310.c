@@ -136,3 +136,16 @@ extern "C" void fn_8011BB70(void* param_1) {
     *(s16*)((char*)param_1 + 0xc) = 0;
 }
 
+extern "C" void* fn_8011C244(s32 id) {
+    u32** list = lbl_802C5FBC;
+    u32* p;
+
+    for (p = *list; p != 0; p = (u32*)p[3]) {
+        char* obj = (char*)p[0];
+        if (id == *(s16*)(obj + 0x7c)) {
+            return obj;
+        }
+    }
+    return 0;
+}
+
