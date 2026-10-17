@@ -73,6 +73,18 @@ struct VObj_800A1A64 {
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800d36d0-0x800d70bc (46 functions). split_file divides it into the game's real files.
 
+struct VObj_800D6C70 {
+    virtual void d0(s32);
+    virtual void d1();
+    virtual void d2();
+    virtual void d3();
+    virtual void d4();
+    virtual void d5();
+    virtual void d6();
+    virtual void d7();
+};
+extern "C" void fn_800127A0(void*);
+extern char lbl_8029FDB4[];
 extern void* lbl_80289AD0[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_8028EB48[];
@@ -138,24 +150,38 @@ extern "C" void fn_800D54EC(char* p)
     }
 }
 
+extern "C" void fn_800D5538(void* param_1) {
+    u8* p = (u8*)param_1;
+    f32 c = lbl_80300FD8;
+    s32 r = fn_800D65E8(param_1, *(s16*)(p + 0x134), c, *(f32*)(lbl_802C579C + 0x18), lbl_802C579C[0x14], 0, 1);
+    (*(s16*)(p + 0x134))++;
+    if (r == 1) {
+        *(s16*)(p + 0x134) = 0;
+        fn_8003ABDC(*(void**)(p + 0xc), 0, 0, 0, 0);
+        fn_8003ABF0(*(void**)(p + 0xc), *(u32*)(p + 0x40), 0, *(u32*)(p + 0x38), 0, 0x2b3, 0, 0);
+        fn_801E6768(*(void**)(p + 0x3c), *(char**)(p + 0x40));
+        p[0x130] = 2;
+    }
+}
+
 extern "C" void fn_801E6768(void*, char*);
 extern "C" int fn_800D6904(void*, s16, u8, s32, s32);
 extern "C" void fn_800D55F0(void* param_1) {
-    u8* p = (u8*)param_1;
     char* q = lbl_802C579C;
-    s32 r = fn_800D65E8(param_1, *(s16*)(p + 0x134), *(f32*)(q + 0x18), lbl_80300FD8, q[0x14], 0, 0);
-    s32 r2 = fn_800D6904(param_1, *(s16*)(p + 0x134), q[0x14], 0, 0);
-    (*(s16*)(p + 0x134))++;
+    s32 r = fn_800D65E8(param_1, *(s16*)((char*)param_1 + 0x134), *(f32*)(q + 0x18), lbl_80300FD8, q[0x14], 0, 0);
+    s32 r2 = fn_800D6904(param_1, *(s16*)((char*)param_1 + 0x134), q[0x14], 0, 0);
+    (*(s16*)((char*)param_1 + 0x134))++;
     if (r == 1 && r2 == 1) {
-        *(s16*)(p + 0x134) = 0;
-        p[0x130] = 0;
+        *(s16*)((char*)param_1 + 0x134) = 0;
+        ((char*)param_1)[0x130] = 0;
     }
 }
 
 extern "C" void fn_800D5690(void* param_1) {
     u8* p = (u8*)param_1;
+    f32 c = lbl_80300FD8;
     char* q = lbl_802C579C;
-    s32 r = fn_800D6700(param_1, *(s16*)(p + 0x134), q[0xc], 0, 1, lbl_80300FD8, lbl_80300FD8, lbl_80300FD8, *(f32*)(q + 0x10));
+    s32 r = fn_800D6700(param_1, *(s16*)(p + 0x134), q[0xc], 0, 1, c, c, c, *(f32*)(q + 0x10));
     (*(s16*)(p + 0x134))++;
     if (r == 1) {
         *(s16*)(p + 0x134) = 0;
@@ -338,6 +364,25 @@ extern "C" int fn_800D65E8(void* param_1, s16 param_2, f32 param_3, f32 param_4,
             t = lbl_80300FDC - t;
         }
         (*(VObj_800BD938**)(p + 0x24))->v9((s32)((f32)*(u8*)(p + 0x30) * t));
+    }
+    return 0;
+}
+
+extern "C" int fn_800D6904(void* param_1, s16 param_2, u8 param_3, s32 param_4, s32 param_5) {
+    u8* p = (u8*)param_1;
+    f32 f;
+    if (param_2 < 0) {
+        return 0;
+    }
+    if (param_2 > param_3) {
+        return 1;
+    }
+    f = fn_800D6DE8((char*)param_1, param_3, param_2);
+    if (param_5 != 2) {
+        if (param_5 == 1) {
+            f = lbl_80300FDC - f;
+        }
+        ((VObj_800BD938*)*(void**)(p + p[0x5e] * 4 + 0x54))->v9((s32)((f32)p[p[0x5e] + 0x5c] * f));
     }
     return 0;
 }
