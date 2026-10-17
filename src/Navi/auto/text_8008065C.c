@@ -1,4 +1,6 @@
 #include "types.h"
+extern "C" void fn_801C5D74(void* p, void* q);
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8008065c-0x800868f4 (51 functions). split_file divides it into the game's real files.
 
@@ -12,6 +14,38 @@ extern "C" void* fn_800808C4(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern u8 lbl_802EE470[];
+extern void* lbl_802FDC98;
+extern u8 lbl_802EE58C[];
+extern "C" void fn_8000CB28(void* a, s16 b);
+extern "C" void fn_8000CA54(void* a, s16 b);
+extern "C" void fn_8000CBFC(void* a, s16 b);
+extern "C" BOOL fn_80081098(u8* p, s32 mode)
+{
+    if (mode == 0) {
+        s32 idx = *(u16*)(p + 0x14);
+        u8* w;
+        u8* obj = *(u8**)(lbl_802EE470 + 0x38);
+        u32 off;
+        w = *(u8**)(obj + 0x14);
+        off = idx * 0x30;
+        fn_801C5D74(*(u8**)(*(u8**)(obj + 0x84) + 0xc) + off, lbl_802FDC98);
+        if (idx == (s8)w[0x310]) {
+            fn_8000CB28(lbl_802FDC98, -*(s16*)(w + 0x33a));
+            fn_8000CA54(lbl_802FDC98, -*(s16*)(w + 0x33c));
+            fn_8000CBFC(lbl_802FDC98, -*(s16*)(w + 0x33e));
+        }
+        if (idx == (s8)w[0x311]) {
+            fn_8000CA54(lbl_802FDC98, -*(s16*)(w + 0x342));
+            fn_8000CB28(lbl_802FDC98, (s16)*(s16*)(w + 0x340));
+            fn_8000CBFC(lbl_802FDC98, (s16)*(s16*)(w + 0x344));
+        }
+        fn_801C5D74(lbl_802FDC98, *(u8**)(*(u8**)(obj + 0x84) + 0xc) + off);
+        fn_801C5D74(lbl_802FDC98, lbl_802EE58C);
+    }
+    return TRUE;
 }
 
 extern "C" BOOL fn_800811B8(void);
