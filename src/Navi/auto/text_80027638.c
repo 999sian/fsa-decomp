@@ -656,5 +656,10 @@ extern "C" void fn_8002FAD4(int a) {
     }
 }
 
+extern "C" void fn_8002FB68(int param_1, int param_2) {
+    extern char lbl_8023061C[];
+    fn_8002F0A8(*(int*)(lbl_8023061C + param_1 * 0x50 + param_2 * 16 + *(int*)(lbl_802BB0FC + 0x420) * 4));
+}
+
 #pragma dont_inline reset
 extern "C" void fn_80030664(void) {}
