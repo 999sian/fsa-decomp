@@ -78,8 +78,10 @@ extern "C" void fn_803288A0(u8* this_) {
     b.x1 = 4.0f;
     b.y1 = 4.0f;
     Vec2 pos;
-    pos.x = *(f32*)(this_ + 0xc);
-    pos.y = *(f32*)(this_ + 0x10);
+    f32 y = *(f32*)(this_ + 0x10);
+    f32 x = *(f32*)(this_ + 0xc);
+    pos.x = x;
+    pos.y = y;
     a.add(pos);
     b.add(pos);
     switch (*(s32*)(this_ + 0x230)) {
