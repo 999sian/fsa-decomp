@@ -39,6 +39,31 @@ extern "C" void* fn_8015EF8C(u8* p, u32 a, u32 b, u32 c, u8 d, u8 e) {
     *(u8*)(p + 0x21) = e;
     return p;
 }
+
+extern "C" void* fn_8015F000(void* self, s16 param_2) {
+    if (self != 0) {
+        *(void**)self = lbl_80297AB0;
+        u8* p = (u8*)self;
+        void* r3 = *(void**)(p + 0x8);
+        u8* q = *(u8**)(p + 0xc);
+        if (q != 0) {
+            u8* o = *(u8**)q;
+            *(s32*)(o + 0x1c) += *(s32*)(p + 0x18) + *(s32*)(p + 0x1c);
+            fn_80166FC4(r3, p + 4);
+        } else {
+            *(s32*)(p + 0x1c) = *(s32*)(p + 0x1c) + *(s32*)(p + 0x18);
+            *(s32*)(p + 0x18) = 0;
+        }
+        if (p + 4 != 0) {
+            fn_80166B70(p + 4, 0);
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(self);
+        }
+    }
+    return self;
+}
+
 #pragma pop
 extern "C" void fn_8015F228(void) {
     fn_8015F400();
