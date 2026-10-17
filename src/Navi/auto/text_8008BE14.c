@@ -285,7 +285,7 @@ extern "C" void fn_8008D72C(f32* p, s32 idx) {
     fn_8008D5BC(v, s);
     p[0] = v[0];
     p[1] = v[1];
-    p[2] = v[2] + (f32)a * *(f32*)(lbl_802C5408 + 0x24);
+    p[2] = v[2] + (f32)a * *(f32*)((char*)lbl_802C5408 + 0x24);
 }
 
 extern "C" void fn_8008D938(void* p) {
