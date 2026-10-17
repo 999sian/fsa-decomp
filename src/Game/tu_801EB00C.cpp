@@ -10,6 +10,10 @@ extern const float lbl_8053F6AC;
 extern const float lbl_8053F6B0;
 extern const float lbl_8053F678;
 extern "C" u16 fn_801CD664(s32);
+extern const float lbl_8053F67C;
+extern const float lbl_8053F698;
+extern "C" char sincosTable___5JMath[];
+extern "C" void* fn_8013CC50(void* mgr, f32* pos, u16 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" int fn_801EB648(void* param_1) {
     int result = 0;
     if ((unsigned char)(int)*(float*)((char*)param_1 + 0x54) != 0) {
