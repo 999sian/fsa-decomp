@@ -1,4 +1,8 @@
 #include "types.h"
+
+struct Quad_800A9340 {
+    u8 v[4];
+};
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
@@ -29,6 +33,19 @@ extern "C" s32 fn_800ACDAC(void* p, s32 x);
 extern "C" void fn_8003ABDC(void*, u32, u32, s32, s32);
 extern "C" void fn_8003ABF0(void*, u32, s32, u32, s32, s32, s32, s32);
 extern u8 lbl_802AE880[];
+extern "C" s32 fn_800A9340(u8* p, u8* a, u8* b)
+{
+    p[0x14c] = a[0];
+    p[0x14d] = a[1];
+    p[0x14e] = a[2];
+    p[0x14f] = a[3];
+    p[0x148] = b[0];
+    p[0x149] = b[1];
+    p[0x14a] = b[2];
+    p[0x14b] = b[3];
+    return 1;
+}
+
 extern "C" void fn_800AA390(u8* p)
 {
     s32 r1 = fn_800AEE04(p, *(s16*)(p + 0x3d8), lbl_802C5524[0x58], 1);
