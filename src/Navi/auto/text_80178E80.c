@@ -2948,6 +2948,8 @@ extern "C" void fn_8018A8C0(void) {
     fn_801788C0();
 }
 
+inline void* operator new(unsigned long, void* p) { return p; }
+
 struct Base_8018B07C {
     void* vt;
     Base_8018B07C() { vt = lbl_80299504; }
