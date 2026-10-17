@@ -71,3 +71,14 @@ extern "C" void* fn_80165BB4(void** param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" s32 fn_80166378(u32 a) {
+    s32 size;
+    if (lbl_802FF65C == lbl_802FF654) {
+        return 0;
+    }
+    size = (lbl_802FF65C - lbl_802FF654 + 0x1f) & ~0x1f;
+    fn_8015F248(0, lbl_802FF654, a, size, 0);
+    lbl_802FF65C = lbl_802FF654;
+    return size;
+}
+
