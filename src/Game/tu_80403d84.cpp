@@ -639,9 +639,6 @@ extern "C" void fn_8040B93C(u8* self) {
 	}
 }
 
-struct Tbl8048C1F8;
-extern Tbl8048C1F8 lbl_8048C1F8;
-
 struct J2DTextBox {
 	char* getStringPtr() const;
 };
