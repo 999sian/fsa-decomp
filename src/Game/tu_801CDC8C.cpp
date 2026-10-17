@@ -4,6 +4,11 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 extern "C" void fn_801D1C18(void* obj);
+extern "C" u8 fn_801CCFE4(u32 id);
+extern "C" u32 fn_801F320C(u8* this_, u32 id);
+extern "C" s32 fn_8023DE58(s32 id);
+extern "C" s32 fn_8022CAF8(s32 id);
+extern "C" u8 fn_8022F514(s32 id);
 extern "C" s32 fn_801CD950(f32* value, f32 target, f32 step);
 extern "C" u8* fn_802D6A9C();
 extern const f32 lbl_8053EFC4;
