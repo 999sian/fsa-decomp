@@ -30,7 +30,7 @@ extern u8 lbl_802FCEA0;
 extern f32 lbl_80300A50;
 extern char lbl_802848B0[];
 extern char lbl_8028494C[];
-extern "C" void* fn_800638A4(void*, s32, void*, s32);
+extern "C" void* fn_800638A4(void*, void*, void*, s32);
 extern "C" void* fn_8011FD10(void);
 extern "C" void fn_8011FD18(void*, char*, s32, void*, void*, ...);
 extern "C" void fn_80007AB8(char*, s32, void*, ...);
