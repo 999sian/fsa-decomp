@@ -12,6 +12,7 @@ extern void* lbl_8029A150[];
 extern "C" void fn_801A605C(int, void*);
 extern "C" void fn_801BC250(int, int);
 struct Bytes4_801A3D94 { u8 b[4]; };
+struct Quad_801A4974 { u8 a, b, c, d; };
 struct Rect16 {
     s16 x, y, w, h;
     void set(const Rect16& r) { x = r.x; y = r.y; w = r.w; h = r.h; }
@@ -2212,7 +2213,7 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    u8* d = p + (i << 3);
+    u32 d = (u32)p + (i << 3);
     *(s16*)(d + 0x42) = src[0];
     *(s16*)(d + 0x44) = src[1];
     *(s16*)(d + 0x46) = src[2];
@@ -2223,10 +2224,9 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
     return p + i * 8 + 0x42;
 }
 
-extern "C" void fn_801A3D94(u8* p, u32 i, u8* src) {
-    u8 a = src[0];
-    u8* d = p + i * 4;
-    d[0x62] = a;
+extern "C" void fn_801A3D94(u8* p, u32 i, const u8* src) {
+    u8* d = (u8*)p + (i << 2);
+    d[0x62] = src[0];
     d[0x63] = src[1];
     d[0x64] = src[2];
     d[0x65] = src[3];
@@ -2275,7 +2275,7 @@ extern "C" u8 fn_801A3E64(u8* p) {
 extern "C" void fn_80191388(int, void*);
 extern "C" void fn_80191220(int, void*);
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
-    u8* d = p + (i << 3);
+    u8* d = p + i * 8;
     u8 a = src[1];
     d[0x22] = a;
     u8 b = src[2];
@@ -2298,10 +2298,8 @@ extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
     u8 b1 = param_3[1];
     u8 b0 = param_3[0];
     u8* p = param_1 + param_2 * 8;
-    u8 v = p[0x28];
-    p[0x28] = (v & ~0x0c) | ((b1 & 0xff) << 2);
-    v = p[0x28];
-    p[0x28] = (v & ~0x03) | b0;
+    p[0x28] = (p[0x28] & ~0x0c) | ((b1 & 0xff) << 2);
+    p[0x28] = (p[0x28] & ~0x03) | b0;
 }
 
 extern "C" void fn_801A3F68(int param_1, int param_2, u8* param_3) {
@@ -2462,7 +2460,7 @@ extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
 extern "C" void fn_801A42AC(u8* p, s32 i, u8* src) {
     u8 a = src[1];
-    u8* d = p + i * 8;
+    u8* d = p + (i << 3);
     u8 b = src[2];
     d[0x36] = a;
     u8 c = src[3];
@@ -2756,12 +2754,11 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8 a = p3[0];
-    u8* d = p1 + p2 * 4;
-    d[0xb8] = a;
-    d[0xb9] = p3[1];
-    d[0xba] = p3[2];
-    d[0xbb] = p3[3];
+    u8* d = p1 + 0xb8;
+    d[p2 * 4 + 0] = p3[0];
+    d[p2 * 4 + 1] = p3[1];
+    d[p2 * 4 + 2] = p3[2];
+    d[p2 * 4 + 3] = p3[3];
 }
 
 extern "C" s32 fn_801A49CC(s32 p, s32 i) {
