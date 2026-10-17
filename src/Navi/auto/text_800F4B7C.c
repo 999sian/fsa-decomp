@@ -464,6 +464,12 @@ extern "C" void fn_80104914(void* param_1) {
     }
 }
 
+extern "C" s32 fn_80107EB0(void);
+extern "C" u8 fn_801049C8(void) {
+    s32 i = fn_80107EB0();
+    return ((u8*)lbl_802B7CA0 + i)[0x3ec];
+}
+
 extern "C" void fn_801074D4(void) {}
 
 extern "C" void fn_801099C0(void* self, void* a, void* b) {
