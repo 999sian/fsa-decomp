@@ -9,6 +9,7 @@ extern "C" void __dl__FPv(void*);
 extern "C" void __dla__FPv(void*);
 extern "C" u8 lbl_804AA858[];
 
+extern "C" f32 lbl_805414F8;
 extern "C" f32 lbl_80541500;
 extern "C" f32 lbl_805414FC;
 extern "C" f64 lbl_80541508;
@@ -215,6 +216,69 @@ extern "C" void fn_802F9974(Tu802F5040Tbl* base, s32 idx, s32 off, u16 val) {
     }
 }
 
+extern "C" void fn_802F99DC(u8* this_, u8* src, u32 a, s32 idx, u32 dst, u32 size) {
+    u8* base;
+    u8* d;
+    u32 i;
+    u32 len;
+    u32 n;
+    u32 k;
+    if (size == 0) {
+        s32 r;
+        if (JKRDecomp::checkCompressed(src)) {
+            r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
+        } else {
+            void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
+            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
+        }
+        if (r < 0) {
+            len = 0x2000;
+        } else {
+            len = r;
+        }
+    } else {
+        len = size;
+    }
+    if (JKRDecomp::checkCompressed(src)) {
+        JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
+        base = *(u8**)(this_ + 0xf8);
+    } else {
+        base = src;
+    }
+    base += a;
+    if (idx >= 0 && idx < 4) {
+        d = *(u8**)(this_ + idx * 4 + 0x28) + (dst & ~1);
+    } else if (idx >= 4 && idx < 8) {
+        d = *(u8**)(this_ + idx * 4 + 0x28) + (dst & ~1);
+    } else {
+        d = *(u8**)(this_ + idx * 4 + 0x28) + (dst & ~1);
+    }
+    if (len != 0) {
+        n = (len + 1) >> 1;
+        i = 0;
+        k = n >> 2;
+        if (k != 0) {
+            do {
+                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
+                i += 2;
+                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
+                i += 2;
+                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
+                i += 2;
+                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
+                i += 2;
+            } while (--k != 0);
+        }
+        k = n & 3;
+        if (k != 0) {
+            do {
+                *(u16*)(d + (i & ~1)) = base[i] | (base[i + 1] << 8);
+                i += 2;
+            } while (--k != 0);
+        }
+    }
+}
+
 extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, u32 param_5)
 {
   u32 size;
@@ -279,42 +343,46 @@ extern "C" void fn_802F9BE8(u8* param_1, u8* param_2, s32 param_3, u32 param_4, 
 
 extern "C" void fn_802FF0EC(u8* p) {
     bool bVar2 = false;
-    s32* piVar8 = (s32*)lbl_80506D98;
-    s32* piVar7 = (s32*)lbl_80506D88;
-    s32 iVar10 = 0;
-    u8* pbVar9 = lbl_8053ACF0;
-    u8* iVar5 = p;
-    u8* iVar6 = p;
+    s32 i = 0;
+    s32* pD88 = (s32*)lbl_80506D88;
+    s32* pD98 = (s32*)lbl_80506D98;
+    u8* pCell = p;
+    u8* pVal = p;
+    u8* pBias = lbl_8053ACF0;
     do {
-        if (p[iVar10 + 0x148] != 0 && *(s32*)((u8*)lbl_8053AAF8 + 0x4c) != 0xc) {
+        if (p[i + 0x148] != 0 && *(s32*)((u8*)lbl_8053AAF8 + 0x4c) != 0xc) {
             if (p[0x214] != 0) {
                 s32 iVar1 = *(s32*)(p + 0x230);
-                if (iVar10 == iVar1 || iVar1 == -1) {
-                    fn_80432750(*(void**)(p + 0xfc), (-1 - iVar1) == 0, (f32)*(s32*)(p + 0x21c), (f32)*(s32*)(p + 0x220), (f32)*(s32*)(p + 0x224), (f32)*(s32*)(p + 0x228));
+                if (i == iVar1 || iVar1 == -1) {
+                    s32 x0 = *(s32*)(p + 0x21c);
+                    s32 x1 = *(s32*)(p + 0x220);
+                    s32 x2 = *(s32*)(p + 0x224);
+                    s32 x3 = *(s32*)(p + 0x228);
+                    fn_80432750(*(void**)(p + 0xfc), (-1 - iVar1) ? 0 : 1, (f32)x0, (f32)x1, (f32)x2, (f32)x3);
                     bVar2 = true;
                 }
             }
             u8 bVar11 = 0;
             s32 uVar12 = 0xff;
-            if (fn_80301D30(iVar10) == 1) {
-                bVar11 = *pbVar9 >> 1;
-            } else if (fn_80301D30(iVar10) == 2) {
-                if (AnimTable_IsField0xe0LessThan3(lbl_8053AD30, fn_8030AAF4(iVar10)) != 0 || *piVar7 == *piVar8) {
-                    uVar12 = (0x10 - *pbVar9) * 0x10;
+            if (fn_80301D30(i) == 1) {
+                bVar11 = *pBias >> 1;
+            } else if (fn_80301D30(i) == 2) {
+                if (AnimTable_IsField0xe0LessThan3(lbl_8053AD30, fn_8030AAF4(i)) != 0 || *pD88 == *pD98) {
+                    uVar12 = (0x10 - *pBias) * 0x10;
                     if (uVar12 > 0xff) {
                         uVar12 = 0xff;
                     }
                 }
             }
-            fn_802FB69C(p, iVar10, *(s32*)(iVar5 + 0x11c), iVar6 + 0x150, iVar6 + 0x190, p[iVar10 + 0x210], bVar11, (u8)uVar12);
+            fn_802FB69C(p, i, *(s32*)(pVal + 0x11c), pCell + 0x150, pCell + 0x190, p[i + 0x210], bVar11, (u8)uVar12);
         }
-        iVar10++;
-        piVar8++;
-        piVar7++;
-        iVar6 += 0x10;
-        iVar5 += 4;
-        pbVar9++;
-    } while (iVar10 < 4);
+        i++;
+        pD88++;
+        pD98++;
+        pCell += 0x10;
+        pVal += 4;
+        pBias++;
+    } while (i < 4);
     if (bVar2) {
         fn_80432638(*(void**)(p + 0xfc));
     }
@@ -390,6 +458,67 @@ extern void* lbl_8053AAF8;
 extern "C" void fn_802FA3FC(void* mgr);
 extern "C" void fn_802FF548(void* mgr) {
     fn_802FF798(mgr);
+}
+
+extern "C" void fn_802FDDD4(u8* this_);
+extern "C" void fn_802FCE74(u8* this_);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" void fn_802FF568(u8* this_) {
+    u8* g;
+    s32 i;
+    u8* p;
+    bool f;
+
+    fn_802FDDD4(this_);
+    g = (u8*)lbl_8053AAF8;
+    if (g[0x7f] != 0) {
+        s32 t = *(s32*)(g + 0x4c);
+        f = t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb;
+    } else {
+        s32 t = *(s32*)(g + 0x4c);
+        f = t == 7 || t == 8 || t == 9 || t == 0x16 || t == 0xa || t == 0xb || t == 0xc;
+    }
+    if (f == 1) {
+        fn_802FCE74(this_);
+    }
+    p = this_;
+    for (i = 0; i < 0x20; i++) {
+        if (*(s32*)(p + 0x2398) > 0) {
+            *(s32*)(p + 0x2398) = *(s32*)(p + 0x2398) - 1;
+        }
+        if (*(s32*)(p + 0x2434) > 0) {
+            *(s32*)(p + 0x2434) = *(s32*)(p + 0x2434) - 1;
+        }
+        if (*(s32*)(p + 0x24d0) > 0) {
+            *(s32*)(p + 0x24d0) = *(s32*)(p + 0x24d0) - 1;
+        }
+        if (*(s32*)(p + 0x256c) > 0) {
+            *(s32*)(p + 0x256c) = *(s32*)(p + 0x256c) - 1;
+        }
+        if (*(s32*)(p + 0x2608) > 0) {
+            *(s32*)(p + 0x2608) = *(s32*)(p + 0x2608) - 1;
+        }
+        if (*(s32*)(p + 0x26a4) > 0) {
+            *(s32*)(p + 0x26a4) = *(s32*)(p + 0x26a4) - 1;
+        }
+        if (*(s32*)(p + 0x2740) > 0) {
+            *(s32*)(p + 0x2740) = *(s32*)(p + 0x2740) - 1;
+        }
+        if (*(s32*)(p + 0x27dc) > 0) {
+            *(s32*)(p + 0x27dc) = *(s32*)(p + 0x27dc) - 1;
+        }
+        p += 0x4e0;
+    }
+    this_[0xbf98] = 1;
+    this_[0xe461] = 1;
+    if (((u8*)lbl_8053AAF8)[0x7f] == 0) {
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i) != 0 && ((((u8*)lbl_8053AAF8)[0x83] >> (i * 2)) & 3) == 2) {
+                this_[0xe461] = 0;
+                return;
+            }
+        }
+    }
 }
 
 extern "C" void* fn_802FFBF8(void* self, s16 flag) {
