@@ -13,6 +13,12 @@ extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
+extern "C" s32 fn_8001AB70(void* p);
+extern "C" void fn_80019918(s32 param_1);
+extern "C" void* fn_8001D630(void* param_1, void* param_2);
+extern "C" int fn_8001C2C0(void* param_1);
+extern "C" s32 fn_8001AB1C(void* tag, void* data);
+extern "C" void fn_8001AAD4(void* tag, int no);
 extern "C" void* fn_80115590(void*);
 extern u8 lbl_802B4C10[];
 extern "C" void* fn_80019D4C(u8* p, s16 a, u16 b);
@@ -525,6 +531,20 @@ extern "C" s32 fn_8001A650(void* param_1) {
     }
     lbl_802FEC00 = 0;
     return 2;
+}
+
+extern "C" s32 fn_8001AB70(void* p);
+extern "C" void fn_80019918(s32 param_1);
+extern "C" void* fn_8001D630(void* param_1, void* param_2);
+extern "C" int fn_8001C2C0(void* param_1);
+extern "C" s32 fn_8001AB1C(void* tag, void* data);
+extern "C" void fn_8001AAD4(void* tag, int no);
+s32 fn_8001A798(u8* param_1, u8* param_2) {
+    fn_8001AB70(param_1);
+    if (*(s32*)(param_2 + 0x64) != 0) {
+        fn_80019918(*(s32*)(param_1 + 0x4));
+    }
+    return 1;
 }
 
 extern "C" s32 fn_80019A6C(void);
