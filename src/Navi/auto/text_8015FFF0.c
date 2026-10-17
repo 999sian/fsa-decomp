@@ -594,8 +594,9 @@ extern "C" void fn_801641A8(u8* p) {
     if (*(void**)(p + 0x44) != NULL && p[0x3c] != 1) {
         u8* entry = *(u8**)(p + 0x4c);
         for (u32 i = 0; i < *(u32*)(*(u8**)(p + 0x44) + 8); i++) {
+            u8 flags = *(u32*)(entry + 4) >> 24;
             if (*(void**)(entry + 0x10) != NULL) {
-                if ((*(u32*)(entry + 4) >> 24 & 0x10) == 0) {
+                if ((flags & 0x10) == 0) {
                     fn_80159C6C(*(void**)(entry + 0x10), *(s32*)(p + 0x38));
                 }
                 *(void**)(entry + 0x10) = NULL;
