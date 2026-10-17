@@ -13,7 +13,7 @@ struct FsaVObjX {
     virtual void v8(void);
     virtual void v9(void);
     virtual void v10(void);
-    virtual u8 v11(void* p);
+    virtual u8 v11(...);
 };
 
 
@@ -68,28 +68,26 @@ extern "C" void fn_80208EFC(char* this_) {
     }
     case 1: {
         f32 pos[2];
-        f32 zero = lbl_8053F918;
         if (*(s32*)(this_ + 0x344) == 0) {
             fn_80209640(this_ + 0x34c, pos);
             *(f32*)(this_ + 0x3c) = pos[0];
             *(f32*)(this_ + 0x40) = pos[1];
-            *(f32*)(this_ + 0x44) = zero;
+            *(f32*)(this_ + 0x44) = lbl_8053F918;
         } else if (*(s32*)(this_ + 0x340) == 0) {
             *(f32*)(this_ + 0x3c) = lbl_8053F91C;
-            *(f32*)(this_ + 0x40) = zero;
-            *(f32*)(this_ + 0x44) = zero;
+            *(f32*)(this_ + 0x40) = lbl_8053F918;
+            *(f32*)(this_ + 0x44) = lbl_8053F918;
         } else {
             *(f32*)(this_ + 0x3c) = lbl_8053F920;
-            *(f32*)(this_ + 0x40) = zero;
-            *(f32*)(this_ + 0x44) = zero;
+            *(f32*)(this_ + 0x40) = lbl_8053F918;
+            *(f32*)(this_ + 0x44) = lbl_8053F918;
         }
         s32 i = 0;
         char* e = this_;
         do {
             char* actor = (char*)fn_801F666C(fn_801F856C(), *(s32*)(e + 0x2b0));
             if (actor != 0) {
-                *(JGeometry::TVec2<f32>*)(actor + 0x3c) = *(JGeometry::TVec2<f32>*)(this_ + 0x3c);
-                *(f32*)(actor + 0x44) = *(f32*)(this_ + 0x44);
+                *(JGeometry::TVec3<f32>*)(actor + 0x3c) = *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
             }
             i++;
             e += 0x24;
@@ -112,9 +110,9 @@ extern "C" void fn_80209014(char* this_) {
     switch (*(s32*)(this_ + 0x248)) {
     case 0: {
         if ((*(s32*)(this_ + 0x348) == 0 && *(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) ||
-            ((u8 (*)(char*))(*(void***)this_)[13])(this_)) {
-            char* p = this_;
+            ((FsaVObjX*)this_)->v11(this_)) {
             s32 i = 0;
+            char* p = this_;
             while (i < 4) {
                 void* a = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x2b0));
                 if (a != 0) {
