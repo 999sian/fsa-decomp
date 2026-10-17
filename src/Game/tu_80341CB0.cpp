@@ -4,10 +4,98 @@
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" void* lbl_8053AAF8;
-extern "C" void fn_8034335C(s32 a, void* b);
+extern "C" void fn_8034335C(Actor* a, s32 room, f32* pos);
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_802D79E8(void* mgr, s32 room, s32 flag, f32 a, f32 b);
+extern "C" void fn_80134DE4(void* a, s32 b, s32 c);
+extern "C" u8 fn_8022D75C(s32 i);
+extern "C" u8 fn_80234ECC(s32 i);
+extern "C" u8 fn_8023ED8C(s32 i);
+extern "C" s32 fn_8023ECF0(s32 i);
+extern "C" u8 fn_8023F264(s32 i);
+extern "C" u8 fn_8022F478(s32 i);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" u8 fn_80230188(s32 i);
+extern "C" u8 fn_8022B7C4(s32 i);
+extern "C" u8 fn_802349EC(s32 i);
+extern "C" void fn_80238548(s32 i, s32 b, f32* p, s32 d);
+extern "C" void fn_802F601C(void* obj, f32* pos, f32 a, f32 b, s32 c, s32 d);
+extern "C" void fn_8013CC50(s32 room, f32* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 f);
+extern "C" void fn_801F0E34(Actor* a, u32 code, u32 z);
+extern "C" void* lbl_8053AB10;
 
 extern "C" void fn_80341CB0(s32 id, f32* pos) {
     Actor_CreateByID(fn_801F856C(), 0x42424D42, id, pos, 0x30000, -1, -1);
+}
+
+extern "C" void fn_803435F8(Actor* p) {
+    *(u32*)((u8*)p + 0x244) = *(u32*)((u8*)p + 0x90) & 0xfff;
+    *(u32*)((u8*)p + 0x118) = 0x80;
+    *(u32*)((u8*)p + 0x230) = 0;
+    *(u32*)((u8*)p + 0x23c) = 0;
+    *(u32*)((u8*)p + 0x240) = 0;
+    *(u32*)((u8*)p + 0x234) = 0;
+    *(u8*)((u8*)p + 0x260) = 0;
+    *(u32*)((u8*)p + 0x238) = 0;
+    *(u32*)((u8*)p + 0x248) = (*(u32*)((u8*)p + 0x90) >> 12) & 3;
+    *(u32*)((u8*)p + 0x24c) = (*(u32*)((u8*)p + 0x90) >> 16) & 0xf;
+    *(u8*)((u8*)p + 0x261) = 0;
+    *(u32*)((u8*)p + 0x250) = 0x100000d;
+    *(u32*)((u8*)p + 0x108) = 10000;
+    *(f32*)((u8*)p + 0x80) = -24.0f;
+    *(f32*)((u8*)p + 0x84) = -24.0f;
+    *(f32*)((u8*)p + 0x88) = 24.0f;
+    *(f32*)((u8*)p + 0x8c) = 24.0f;
+    *(f32*)((u8*)p + 0x60) = -24.0f;
+    *(f32*)((u8*)p + 0x64) = -24.0f;
+    *(f32*)((u8*)p + 0x68) = 24.0f;
+    *(f32*)((u8*)p + 0x6c) = 24.0f;
+    *(f32*)((u8*)p + 0x70) = -24.0f;
+    *(f32*)((u8*)p + 0x74) = -24.0f;
+    *(f32*)((u8*)p + 0x78) = 24.0f;
+    *(f32*)((u8*)p + 0x7c) = 24.0f;
+    *(f32*)((u8*)p + 0x254) = 0.75f;
+    *(f32*)((u8*)p + 0x258) = 0.75f;
+    *(f32*)((u8*)p + 0x25c) = 0.75f;
+    switch (*(u32*)((u8*)p + 0x24c)) {
+    case 0:
+        *(f32*)((u8*)p + 0x80) = 0.0f;
+        *(f32*)((u8*)p + 0x84) = 0.0f;
+        *(f32*)((u8*)p + 0x88) = 0.0f;
+        *(f32*)((u8*)p + 0x8c) = 0.0f;
+        *(f32*)((u8*)p + 0x60) = 0.0f;
+        *(f32*)((u8*)p + 0x64) = 0.0f;
+        *(f32*)((u8*)p + 0x68) = 0.0f;
+        *(f32*)((u8*)p + 0x6c) = 0.0f;
+        *(f32*)((u8*)p + 0x70) = 0.0f;
+        *(f32*)((u8*)p + 0x74) = 0.0f;
+        *(f32*)((u8*)p + 0x78) = 0.0f;
+        *(f32*)((u8*)p + 0x7c) = 0.0f;
+        *(f32*)((u8*)p + 0x25c) = 0.0f;
+        *(f32*)((u8*)p + 0x258) = 0.0f;
+        *(f32*)((u8*)p + 0x254) = 0.0f;
+        break;
+    case 1:
+        *(f32*)((u8*)p + 0x14) = 400.0f;
+        *(u32*)((u8*)p + 0x230) = 2;
+        if (((u8*)lbl_8053AAF8)[0x7f] == 1) {
+            *(u8*)((u8*)p + 0x261) = 1;
+        }
+        break;
+    case 2:
+        *(u32*)((u8*)p + 0x230) = 3;
+        if (((u8*)lbl_8053AAF8)[0x7f] == 1) {
+            *(u8*)((u8*)p + 0x261) = 1;
+        }
+        break;
+    case 3:
+        fn_8034335C(p, *(u32*)((u8*)p + 0x4), (f32*)((u8*)p + 0xc));
+        *(u32*)((u8*)p + 0x230) = 7;
+        *(u32*)((u8*)p + 0x234) = 3;
+        break;
+    }
+    *(u32*)((u8*)p + 0x264) = 0;
+    *(u32*)((u8*)p + 0x268) = 0;
 }
 
 extern "C" char lbl_804AC588[];
