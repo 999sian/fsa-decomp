@@ -210,8 +210,7 @@ extern "C" void fn_80019834(void* param_1) {
 
 extern "C" s32 fn_8001989C(void) {
     if (lbl_802FB9B8 != NULL) {
-        fn_8001BBCC(*(int*)(*(u8**)(lbl_802FB9B8 + 0x20) + 0xc8));
-        return fn_8001ABBC(0);
+        return fn_8001ABBC((void*)fn_8001BBCC(*(int*)(*(u8**)(lbl_802FB9B8 + 0x20) + 0xc8)));
     }
     return 0;
 }
@@ -268,6 +267,31 @@ extern "C" s32 fn_800199DC(s32 param_1, s32 param_2) {
         r = 0;
     }
     return r;
+}
+
+extern "C" void fn_80019A24(void) {
+    if (lbl_802FB9B8 != NULL) {
+        s32 iVar1 = fn_80019DF0();
+        if (iVar1 < 6 && iVar1 > 2) {
+            lbl_802FB9B8 = NULL;
+        }
+    }
+}
+
+extern "C" s32 fn_80019A6C(void) {
+    s32 iVar1;
+    void* uVar2;
+    if (lbl_802FB9B8 == NULL) {
+        return 1;
+    }
+    iVar1 = fn_8001A1C8();
+    if (iVar1 == 1) {
+        lbl_802FB9B8 = NULL;
+        uVar2 = fn_8011FD10();
+        fn_8011FF30(uVar2, lbl_80205548, 0x14b, lbl_802FB9BC, lbl_80205560);
+        return 1;
+    }
+    return 0;
 }
 
 #pragma dont_inline reset
