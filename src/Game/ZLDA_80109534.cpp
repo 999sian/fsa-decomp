@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
 
 extern "C" void* fn_801F856C();
@@ -15,6 +16,58 @@ extern const f32 lbl_8053C414;
 extern const f32 lbl_8053C418;
 extern const f32 lbl_8053C3FC;
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
+extern "C" void fn_80109534(u8* this_) {
+    if (*(s32*)(this_ + 0x310) < 0) {
+        s32 id = Actor_CreateByID(fn_801F856C(), 0x4C494D54, *(u32*)(this_ + 4), this_ + 0xC, 0, -1, -1);
+        *(s32*)(this_ + 0x310) = id;
+        if (*(s32*)(this_ + 0x310) < 0) {
+            return;
+        }
+    }
+    u8* o = (u8*)fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x310));
+    if (o == 0) {
+        *(s32*)(this_ + 0x310) = -1;
+    } else {
+        if (*(u8*)(this_ + 0x2f8) != 0 || *(s32*)(this_ + 0x328) == 0xc) {
+            *(u8*)(o + 0x11d) = 1;
+        } else {
+            *(u8*)(o + 0x11d) = 0;
+        }
+        if (*(s32*)(this_ + 0x328) == 0xc) {
+            if (*(s32*)(this_ + 0x358) < 8) {
+                s32 v = *(s32*)(this_ + 0x108);
+                *(s32*)(o + 0x250) = *(s32*)(this_ + 0x198);
+                *(f32*)(o + 0x254) = lbl_8053C3FC;
+                *(s32*)(o + 0x24c) = v + 2;
+            } else if (*(s32*)(this_ + 0x358) < 0xc) {
+                s32 v = *(s32*)(this_ + 0x108);
+                *(s32*)(o + 0x250) = *(s32*)(this_ + 0x198);
+                *(f32*)(o + 0x254) = lbl_8053C3FC;
+                *(s32*)(o + 0x24c) = v;
+            } else {
+                *(u8*)(o + 0x11d) = 0;
+            }
+        } else {
+            s32 v = *(s32*)(this_ + 0x108);
+            if (v != 0) {
+                if (v == 4) {
+                    *(s32*)(o + 0x250) = *(s32*)(this_ + 0x198);
+                    *(f32*)(o + 0x254) = lbl_8053C3FC;
+                    *(s32*)(o + 0x24c) = v;
+                } else if (*(s32*)(this_ + 0x30c) < 0x2d && *(u8*)(this_ + 0x2f8) != 0) {
+                    *(s32*)(o + 0x250) = *(s32*)(this_ + 0x198);
+                    *(f32*)(o + 0x254) = lbl_8053C3FC;
+                    *(s32*)(o + 0x24c) = v + 2;
+                } else {
+                    *(s32*)(o + 0x250) = *(s32*)(this_ + 0x198);
+                    *(f32*)(o + 0x254) = lbl_8053C3FC;
+                    *(s32*)(o + 0x24c) = v;
+                }
+            }
+        }
+    }
+}
+
 extern "C" s32 fn_80109AE0(char* self, f32* out) {
     out[2] = lbl_8053C3E0;
     out[1] = lbl_8053C3E0;
