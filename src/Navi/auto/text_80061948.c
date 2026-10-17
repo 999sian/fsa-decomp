@@ -962,9 +962,9 @@ extern "C" int fn_8006A5D0(void* param_1, int param_2) {
     return 0;
 }
 
-extern "C" void fn_80069DE0(void);
-extern "C" void fn_8006AF00(void) {
-    fn_80069DE0();
+extern "C" int fn_80069DE0(u8* p);
+extern "C" void fn_8006AF00(u8* p) {
+    fn_80069DE0(p);
 }
 
 extern "C" int fn_8006AF20(void) {
