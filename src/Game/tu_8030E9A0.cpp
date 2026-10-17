@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 struct Unk8030EC18Buf {
     u8 idx[16];
