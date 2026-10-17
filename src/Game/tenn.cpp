@@ -5,6 +5,10 @@
 
 extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
 extern const char lbl_804684E8[];
+extern const f32 lbl_8053E4F0;
+extern const f32 lbl_8053E4F4;
+extern const f32 lbl_8053E4F8;
+extern const f32 lbl_8053E4FC;
 
 // from src/Game/fn_801A0710.cpp
 extern "C" void fn_801A0910(void* this_);
@@ -31,6 +35,40 @@ call0754:
     fn_801A0754(this_);
 skip:
     return;
+}
+
+extern "C" void fn_801A0754(void* this_) {
+    DrawRec rec;
+    f32 m[3][4];
+
+    m[0][3] = 0.0f;
+    m[1][3] = 0.0f;
+    m[2][3] = 0.0f;
+    m[0][0] = 1.2f;
+    m[0][1] = 0.0f;
+    m[0][2] = 0.0f;
+    m[1][0] = 0.0f;
+    m[1][1] = 1.2f;
+    m[1][2] = 0.0f;
+    m[2][0] = 0.0f;
+    m[2][1] = 0.0f;
+    m[2][2] = 1.2f;
+
+    if (*(s32*)((char*)this_ + 0x274) == 2) {
+        m[0][0] = 2.0f;
+        m[0][1] = 0.0f;
+        m[0][2] = 0.0f;
+        m[1][0] = 0.0f;
+        m[1][1] = 2.0f;
+        m[1][2] = 0.0f;
+        m[2][0] = 0.0f;
+        m[2][1] = 0.0f;
+        m[2][2] = 2.0f;
+        rec.w18 = m;
+        rec.w30 = 0x11;
+        ((u8*)&rec)[0x13] = (u8)(s32)*(f32*)((char*)this_ + 0x340);
+        fn_801F06F0(this_, lbl_804684E8, *(s32*)((char*)this_ + 0x264) + 0x2ba, &rec, 0, 1.0f, 1.0f);
+    }
 }
 
 // from src/Game/Tenn_update_801A0B8C.cpp
