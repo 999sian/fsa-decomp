@@ -189,6 +189,10 @@ extern "C" void fn_800B99CC(u8* p) {
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
 }
 
+extern "C" void fn_800BA9E4(void** p, void* x) {
+    fn_8015FDA8(x, *p);
+}
+
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300C88;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
