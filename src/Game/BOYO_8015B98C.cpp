@@ -126,9 +126,9 @@ extern const f32 lbl_8053D4C0;
 struct BoyoMtx {
     f32 m[3][4];
     BoyoMtx() {
-        m[0][3] = lbl_8053D4B8;
-        m[1][3] = lbl_8053D4B8;
-        m[2][3] = lbl_8053D4B8;
+        m[0][3] = 0.0f;
+        m[1][3] = 0.0f;
+        m[2][3] = 0.0f;
     }
 };
 
