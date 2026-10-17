@@ -1,6 +1,7 @@
 // WRTC_800F7FCC: .text 0x800F7FCC-0x800FD438 (actor WRTC/BWRT)
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0).
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern f32 lbl_8053BFA0;
 extern f32 lbl_8053BFA4;
@@ -158,6 +159,75 @@ extern "C" void fn_800F8A30(void* this_) {
         void* owner = *(void**)((char*)this_ + 0x240);
         if (*(u8*)((char*)owner + 0x2ad) == 2) {
             ((ActorVT*)this_)->slot9();
+        }
+    }
+}
+
+extern "C" void fn_800F9C20(void* this_) {
+    char* p = (char*)this_;
+    f32 a = lbl_8053C02C;
+    f32 b = lbl_8053C030;
+    f32 c = lbl_8053C034;
+    f32 d = lbl_8053BFA8;
+    *(f32*)(p + 0x70) = a;
+    *(f32*)(p + 0x74) = b;
+    *(f32*)(p + 0x78) = c;
+    *(f32*)(p + 0x7c) = d;
+    *(s32*)(p + 0x108) = 4;
+    *(s32*)(p + 0x230) = 0;
+    *(s32*)(p + 0x234) = 0;
+    *(u8*)(p + 0x246) = 0;
+    *(u16*)(p + 0x244) = 0;
+    *(u8*)(p + 0x249) = 0;
+    *(u8*)(p + 0x247) = (*(u32*)(p + 0x90) >> 16) & 0xff;
+    *(u8*)(p + 0x248) = *(u32*)(p + 0x90) >> 24;
+    if (*(u8*)(p + 0x248) == 2) {
+        *(f32*)(p + 0x80) = a;
+        *(f32*)(p + 0x84) = b;
+        *(f32*)(p + 0x88) = c;
+        *(f32*)(p + 0x8c) = d;
+        *(f32*)(p + 0x60) = a;
+        *(f32*)(p + 0x64) = b;
+        *(f32*)(p + 0x68) = c;
+        *(f32*)(p + 0x6c) = d;
+        *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + (f32)lbl_804638C0[*(u8*)(p + 0x247) * 2];
+        *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + (f32)lbl_804638C0[*(u8*)(p + 0x247) * 2 + 1];
+        *(u32*)(p + 0xb0) = 0x40004;
+    } else {
+        if (*(u8*)(p + 0x247) < 0x30) {
+            *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + (f32)lbl_80463800[*(u8*)(p + 0x247) * 2];
+            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + (f32)lbl_80463800[*(u8*)(p + 0x247) * 2 + 1];
+        } else {
+            s16 x = lbl_80463800[0];
+            s16 y = lbl_80463800[1];
+            *(f32*)(p + 0xc) = *(f32*)(p + 0xc) + (f32)x;
+            *(f32*)(p + 0x10) = *(f32*)(p + 0x10) + (f32)y;
+        }
+        *(f32*)(p + 0x14) = d;
+        *(u16*)(p + 0x24c) = 0;
+        for (s32 i = 0; i < *(u8*)(p + 0x247); i++) {
+            s32 step = 10;
+            if (*(u8*)(p + 0x247) < 0x1e) {
+                step = 0x28 - *(u8*)(p + 0x247);
+            }
+            *(u16*)(p + 0x24c) = *(u16*)(p + 0x24c) + step;
+        }
+        s32 cnt = fn_80138A30(lbl_8053AAF8);
+        if ((f32)cnt == lbl_8053BFCC) {
+            *(s32*)(p + 0x23c) = -1;
+            *(u16*)(p + 0x94) = 0;
+        } else {
+            u32* rng = (u32*)((char*)lbl_8053AAF8 + 0xb4);
+            *rng = *rng * 0x19660d + 0x3c6ef35f;
+            u32 bits = (*rng >> 9) | 0x3f800000;
+            *(s32*)(p + 0x23c) = (s32)((f32)cnt * (*(f32*)&bits - 1.0f));
+            *(u16*)(p + 0x94) = *(s32*)(p + 0x23c) + 1;
+            *rng = *rng * 0x19660d + 0x3c6ef35f;
+            bits = (*rng >> 9) | 0x3f800000;
+            if ((s32)(lbl_8053BFA0 * (*(f32*)&bits - 1.0f)) < 1) {
+                *(s32*)(p + 0x23c) = -1;
+                *(u16*)(p + 0x94) = 0;
+            }
         }
     }
 }
