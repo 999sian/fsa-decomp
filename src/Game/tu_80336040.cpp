@@ -8,8 +8,8 @@ extern "C" char lbl_804ABA90[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_801EE434(void* handle);
 extern "C" int fn_80230CFC(int index);
-extern "C" int fn_80230498(int index, Vec* pos, s32 a1, u8 a2, u8 a3, u8 a4, u8 a5);
-extern "C" const Vec lbl_80471AE0[4][4];
+extern "C" int fn_80230498(int index, const void* pos, s32 a1, u8 a2, u8 a3, u8 a4, u8 a5);
+extern "C" const JGeometry::TVec3<f32> lbl_80471AE0[4][4];
 extern "C" s32 fn_80336040(Actor* self) {
     u8* p = (u8*)self;
     s32 ret = 0;
