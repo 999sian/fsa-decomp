@@ -143,9 +143,9 @@ inline s32 countSharing(const char* p) {
 }
 
 inline s32 countSharingH(const char* p) {
-s32 linked;
-s32 c;
 s32 i;
+s32 c;
+s32 linked;
 c = 0;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
@@ -2400,8 +2400,7 @@ s32 fn_80248778(const char* p) {
     return c + 1;
 }
 s32 fn_802487FC(const char* p) {
-    s32 mode = getModeH(p);
-    if (mode == 4) {
+    if (getModeH(p) == 4) {
         return 1;
     }
     return countSharingH(p);
