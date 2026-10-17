@@ -69,8 +69,8 @@ static inline void Rusa_CalcPush(char* p, const JGeometry::TVec3f* v, JGeometry:
                 out->sub(*(JGeometry::TVec3f*)(p + 0xc), *v);
                 out->z = 0.0f;
                 out->normalize();
-                f32 f = d - lbl_8053FB04;
-                f32 m = *(f32*)(p + 0x3a4);
+                                  f32 m = *(f32*)(p + 0x3a4);
+                  f32 f = d - lbl_8053FB04;
                 out->scale((f32)__fsel(f - m, m, f));
             }
         }
@@ -290,15 +290,18 @@ extern "C" void fn_80211078(char* p) {
 
 // near-match (99%): loop counter init is li instead of mr
 extern "C" void fn_802110A8(char* p) {
-    if (!(*(u32*)(p + 0x230) & 0x8000) || *(s32*)(p + 0x248) == 0) {
+    if (!(*(u32*)(p + 0x230) & 0x8000)) {
+        return;
+    }
+    if (*(s32*)(p + 0x248) == 0) {
         return;
     }
     if (*(u8*)(p + 0x2bc) != 0) {
         fn_800FDEA0(p + 0x2c0, *(JGeometry::TVec3f*)(p + 0xc), lbl_8053FB14, p + 0x3c, 0, 0, 0x200);
     } else {
-        s32 i = 0;
-        u8 found = i;
-        for (i = found; i < 4; i++) {
+        s32 i;
+        u8 found = 0;
+        for (i = (s32)found; i < 4; i++) {
             if (fn_801D0B44(p, i) && Rusa_Contains(p, fn_8023E724(i))) {
                 found = 1;
                 break;
