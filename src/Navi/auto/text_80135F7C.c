@@ -1720,8 +1720,3 @@ extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-struct Iter_8013A388 {
-    void* node;
-};
-inline bool iterEq_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return x.node == y.node; }
-inline bool iterNe_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return !iterEq_8013A388(x, y); }
