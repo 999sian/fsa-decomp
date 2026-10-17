@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
 
 
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
@@ -39,6 +40,65 @@ extern "C" void* fn_802A40B8(void* this_, s16 freeFlag) {
 extern "C" void fn_802A4118(u8* this_) {
     fn_801F06F0(this_, lbl_8046C640, 0x31, 0, 1, lbl_805407A0, lbl_805407A0);
     fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 0x4), this_ + 0xc, 0x31, 0, 2, -1, 0, 0, 0);
+}
+
+extern "C" void fn_802A4190(u8* this_) {
+    f32 vec[4];
+    f32 tmp[3];
+    f32 pos[3];
+    s32 idx;
+    s32 state = *(s32*)(this_ + 0x230);
+
+    if (state == 1) {
+        if (*(s32*)(this_ + 0x234) == 0 && fn_80388EEC(*(void**)(this_ + 0x238))) {
+            fn_80230224(*(s32*)(this_ + 0x238), 0);
+            fn_80230224(*(s32*)(this_ + 0x90) & 0xf, 0);
+            this_[0x11c] = 0;
+        } else if (*(s32*)(this_ + 0x234) != 0) {
+            *(s32*)(this_ + 0x234) -= 1;
+        }
+    } else if (state == 0) {
+        if (*(f32*)(this_ + 0x14) != lbl_805407A4 || *(f32*)(this_ + 0x44) != lbl_805407A4) {
+            *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
+            *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
+            *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+            *(f32*)(this_ + 0x44) -= lbl_805407A8;
+            if (*(f32*)(this_ + 0x14) > lbl_805407A4) {
+                *(f32*)(this_ + 0x14) = lbl_805407A4;
+                *(f32*)(this_ + 0x44) = lbl_805407A4;
+                *(f32*)(this_ + 0x40) = lbl_805407A4;
+                *(f32*)(this_ + 0x3c) = lbl_805407A4;
+            }
+        }
+
+        vec[0] = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+        vec[1] = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+        vec[2] = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+        vec[3] = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+        idx = fn_8023AF14(vec, *(s32*)(this_ + 4), 1);
+        *(s32*)(this_ + 0x238) = idx;
+
+        if (idx >= 0 && !fn_8023ED8C() && !fn_8023EBB8(idx) && *(f32*)(this_ + 0x14) <= lbl_805407A4) {
+            f32* src = (f32*)fn_8023E724(idx);
+            tmp[0] = src[0];
+            tmp[1] = src[1];
+            tmp[2] = src[2];
+            *(f32*)(this_ + 0xc) = lbl_805407AC + tmp[0];
+            *(f32*)(this_ + 0x10) = tmp[1] - lbl_805407B0;
+            if (fn_802308E0(idx) == 1) {
+                void* mgr = fn_801F856C();
+                Actor_CreateByID(mgr, 0x494d5550, *(s32*)(this_ + 4), this_ + 0xc, ((idx << 24) + 0x800000 + (idx << 26)) + 0x14, -1, -1);
+                this_[0x11c] = 0;
+            }
+        }
+    }
+
+    if (*(s32*)(this_ + 4) < 8) {
+        pos[0] = *(f32*)(this_ + 0xc);
+        pos[1] = *(f32*)(this_ + 0x10) - *(f32*)(this_ + 0x14);
+        pos[2] = lbl_805407A4;
+        fn_8030C210(*(void**)((u8*)lbl_8053AB10 + 0x24), pos);
+    }
 }
 
 extern "C" void fn_802A4404(u8* this_) {
