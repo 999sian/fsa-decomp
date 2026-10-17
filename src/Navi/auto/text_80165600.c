@@ -19,6 +19,41 @@ extern "C" void* fn_80165600(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_8015A9A8(int, void*, int);
+extern "C" void* lbl_802FF540;
+extern "C" void* fn_80165D04(void* p);
+extern "C" s32 fn_80165850(void* p);
+extern "C" void fn_80165D44(void* p, s32 n);
+extern "C" void fn_80164484(void* p);
+extern "C" u8 fn_80164728(u8* p, u32 r4);
+extern "C" void fn_801645A8(void* p, s32 n);
+extern "C" void fn_80165C24(void* p, s32 n);
+extern "C" void fn_8015F248(s32 a, u32 b, u32 c, u32 d, s32 e);
+extern "C" s32 fn_801656F8(void* a, u32 b, u32 c, u32 d, u32 e, u32 f);
+extern u32 lbl_802FF654;
+extern u32 lbl_802FF65C;
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" void* fn_8016579C(void* a, void* b, u32 c, u32 d, u32 e, u32 f, u32 g) {
+    void* p = fn_8015A9A8(0x54, lbl_802FF540, -4);
+    if (p != nullptr) {
+        p = fn_80165D04(p);
+        *(void**)((u8*)p + 0x28) = a;
+        *(void**)((u8*)p + 0x2c) = b;
+        *(u32*)((u8*)p + 0x30) = 0;
+        *(u32*)((u8*)p + 0x34) = c;
+        *(u32*)((u8*)p + 0x38) = d;
+        *(u32*)((u8*)p + 0x3c) = e;
+        *(u32*)((u8*)p + 0x40) = f;
+        *(u32*)((u8*)p + 0x44) = g;
+        if (fn_80165850(p) == 0) {
+            fn_80165D44(p, 1);
+            return nullptr;
+        }
+    }
+    return p;
+}
+#pragma pop
 extern char lbl_8029836C[];
 extern "C" void fn_80167074(void*, int);
 extern char lbl_802984EC[];
