@@ -50,6 +50,35 @@ extern "C" void fn_80015D8C(void* param_1) {
     fn_801C0EEC(lbl_802A4560);
 }
 
+extern "C" void fn_80015E2C(void* param_1) {
+    u8* p = (u8*)param_1;
+    do {
+        fn_801BE3A0(p + 0x1fb0);
+        while (*(s32*)(p + 0x1fa8) == 0) {
+            fn_801BE690(p + 0x1fc8, p + 0x1fb0);
+        }
+        switch (*(s32*)(p + 0x1fa8)) {
+        case 1:
+            fn_80015FE8(p);
+            break;
+        case 2:
+            fn_8001606C(p);
+            break;
+        case 3:
+            fn_80016484(p);
+            break;
+        case 4:
+            fn_80016540(p);
+            break;
+        case 5:
+            fn_80016618(p);
+            break;
+        }
+        *(s32*)(p + 0x1fa8) = 0;
+        fn_801BE47C(p + 0x1fb0);
+    } while (1);
+}
+
 extern "C" void fn_80016170(void* param_1) {
     u8* p = (u8*)param_1;
     if (fn_801BE5B4(p + 0x1fb0)) {
