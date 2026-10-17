@@ -21,6 +21,8 @@ extern u32 lbl_802FEB54;
 extern u8 lbl_802FB7B0, lbl_802FB7B1, lbl_802FB7B2;
 extern u32 lbl_802FB79C[2];
 extern u8 lbl_802FEB38;
+extern u32 lbl_802FF544;
+extern char lbl_802037C0[];
 extern "C" {
 void fn_8015AB1C(void*);
 u32 fn_8000F74C(u32, u32, u32);
