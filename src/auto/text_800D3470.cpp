@@ -3484,8 +3484,7 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
 
 extern "C" u8 fn_800DE600(int param_1, int param_2)
 {
-  u8* ptr = (u8*)param_1 + param_2;
-  return ptr[0x55];
+  return *(u8*)(param_1 + param_2 + 0x55);
 }
 
 extern "C" void fn_800DE60C(int param_1, int param_2, u8 param_3)
@@ -4318,15 +4317,6 @@ extern "C" void fn_800DDA78(u8* this_, u8* src) {
     u8 b3 = src[3];
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
-}
-
-void J3DTexGenBlock4::initialize() {
-    mTexGenCnt = 0;
-    mTexMatrices[0] = nullptr;
-    mTexMatrices[1] = nullptr;
-    mTexMatrices[2] = nullptr;
-    mTexMatrices[3] = nullptr;
-    mTexMtxOffset = 0;
 }
 
 extern "C" void fn_800DF0B8(u8* self, int i, const u8* c) {
