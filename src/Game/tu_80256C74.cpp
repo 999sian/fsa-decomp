@@ -694,7 +694,7 @@ extern "C" void fn_80258470(u8* p) {
 extern "C" void fn_8025851C(u8* p) {
     u8* ids = p;
     u8* boxes = p;
-    for (s32 i = 0; i < 3; i++, boxes += 0x10, ids += 4) {
+    for (s32 i = 0; i < 3; i++, ids += 4, boxes += 0x10) {
         void* manager = fn_801F856C();
         u8* actor = fn_801F666C(manager, S32(ids, 0xb0c));
         if (!actor) {
