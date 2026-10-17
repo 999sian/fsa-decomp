@@ -154,6 +154,24 @@ extern "C" void fn_80022DBC(void) {
     fn_80057B9C();
 }
 
+extern "C" void fn_80022DDC(s32* p) {
+    p[0] = 0;
+    p[1] = 0;
+    p[2] = 0;
+    *(u8*)(p + 10) = 0;
+    *((u8*)p + 0x2e) = 0;
+    lbl_802FED48 = 0;
+    lbl_802FED4C = 0;
+    lbl_802FED50 = 0;
+    lbl_802FED54 = 3;
+    lbl_802FED58 = 0;
+    lbl_802FED5C = 0;
+    lbl_802FED60 = 0;
+    lbl_802FED64 = 0;
+    lbl_802FED68 = 0;
+    lbl_802FED6C = 0;
+}
+
 extern "C" void fn_800589CC(s32 p);
 extern "C" void fn_80022FA0(s32* p) {
     if ((u32)p[0] != 0 || p[2] != 0) {
