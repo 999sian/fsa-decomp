@@ -96,8 +96,8 @@ extern "C" void fn_801334CC(char* p) {
         f32 z;
     } pos;
     fn_8010DF98();
-    f32 a = lbl_8053CD28;
     f32 b = lbl_8053CD08;
+    f32 a = lbl_8053CD28;
     *(s32*)(p + 0x238) = *(s32*)(p + 0x90) & 1;
     *(s32*)(p + 0x248) = (*(u32*)(p + 0x90) >> 22) & 0x1f;
     *(f32*)(p + 0x60) = a;
