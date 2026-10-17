@@ -433,7 +433,7 @@ extern "C" void fn_80159D30(void* p) {
     ((Obj*)p)->v9();
 }
 
-extern "C" s32 fn_80159D5C(void* p) {
+extern "C" s32 fn_80159D5C(void* p, void* a, s32 b) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
         virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
