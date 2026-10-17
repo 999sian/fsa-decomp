@@ -131,7 +131,7 @@ struct VObj_801A82CC {
     virtual void vf4(void);
     virtual void vf5(void);
     virtual void vf6(void);
-    virtual void vf7(void);
+    virtual void vf7(void* a, void* b);
     virtual void vf8(void* a, void* b);
     virtual void vf9(void* a, void* b);
 };
@@ -227,8 +227,8 @@ extern "C" void fn_801A833C(void* p);
 extern "C" void fn_801AFB98(void* p);
 extern "C" void* lbl_802FF708;
 extern "C" void fn_801A82CC(u8* p, void* a, void* b, void* c) {
-    void* obj = *(void**)(p + 0x14);
-    ((void (*)(void*, void*, void*))((void**)(*(void**)obj))[9])(obj, b, c);
+    VObj_801A82CC* obj = *(VObj_801A82CC**)(p + 0x14);
+    obj->vf9(b, c);
     fn_801A833C(a);
     void* q = *(void**)(p + 0x10);
     if (q != nullptr) {
@@ -1646,19 +1646,20 @@ extern "C" u32 lbl_80301D08;
 extern "C" void fn_801B2D2C(u32* out, u8* p, u32 n, u32 idx) {
     u8* t = *(u8**)(p + 0xc) + n * 0x138;
     u32 dflt = lbl_80301D08;
+    u32* pd = &dflt;
     if (t[0] == 1) {
         *out = *(u32*)(t + 4 + idx * 4);
     } else {
-        *out = dflt;
+        *out = *pd;
     }
 }
 
 extern "C" u32 lbl_80301D14;
 extern "C" void fn_801B2FCC(u32* out, void* ptr, s32 index, s32 sub) {
     typedef struct { u32 v; } W;
-    u8* entry = *(u8**)((u8*)ptr + 0xc) + index * 0x138;
     W def = *(W*)&lbl_80301D14;
-    if (*entry == 1) {
+    u8* entry = *(u8**)((u8*)ptr + 0xc) + index * 0x138;
+    if (entry[0] == 1) {
         *(W*)out = *(W*)(entry + sub * 4 + 0x68);
     } else {
         *(W*)out = def;
