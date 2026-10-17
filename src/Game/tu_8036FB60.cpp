@@ -19,6 +19,12 @@ extern f32 lbl_80542DDC;
 
 
 extern "C" void fn_803721F4(void);
+extern "C" u8 fn_8023ED8C(int);
+extern "C" void fn_80230C6C(int);
+extern "C" u8 fn_8023E854(int);
+extern "C" void fn_8023DFF4(int, void*);
+extern "C" int fn_8022CAF8(int);
+extern "C" u8 fn_802341D0(int);
 extern "C" void fn_803703C8(void* self);
 extern "C" void fn_8022FE80(int, int, int, int, int);
 extern "C" unsigned char fn_80388EEC(int);
@@ -456,6 +462,87 @@ extern "C" void fn_80372400(char* self) {
             JGeometry::setTVec3f((f32*)&saved, (f32*)(self + 0xc));
         }
     }
+}
+
+extern "C" void fn_8037251C(char* self)
+{
+	if (*(s32*)(self + 0x238) != 0) {
+		*(s32*)(self + 0x238) = *(s32*)(self + 0x238) - 1;
+	}
+	*(s32*)(self + 0x39c) = fn_8022EA0C(0);
+	char* dst = self;
+	for (s32 i = 0; i < 4; i++) {
+		*(JGeometry::TVec3<f32>*)(dst + 0x264) = *fn_8023E724(i);
+		dst += 0xc;
+	}
+	if (*(u8*)((char*)lbl_8053AAF8 + 0x7e) != 0) {
+		fn_8036FB60(self);
+		return;
+	}
+	if (*(s32*)(self + 0x240) != 0) {
+		*(s32*)(self + 0x240) = *(s32*)(self + 0x240) - 1;
+	}
+	if (*(s32*)(self + 0x3ac) != 0) {
+		*(s32*)(self + 0x3ac) = *(s32*)(self + 0x3ac) - 1;
+	}
+	if (*(s32*)(self + 0x360) != 0) {
+		*(s32*)(self + 0x360) = *(s32*)(self + 0x360) - 1;
+	}
+	if (*(s32*)(self + 0x360) == 0) {
+		*(s32*)(self + 0x360) = 8;
+		*(s32*)(self + 0x364) = *(s32*)(self + 0x364) + 1;
+		if (*(s32*)(self + 0x364) >= 4) {
+			*(s32*)(self + 0x364) = 0;
+		}
+	}
+	if (*(s32*)(self + 0x36c) != 0) {
+		*(s32*)(self + 0x36c) = *(s32*)(self + 0x36c) - 1;
+	}
+	if (*(s32*)(self + 0x36c) == 0) {
+		if (*(s32*)(self + 0x368) == 0x108) {
+			*(s32*)(self + 0x36c) = 0x10;
+		} else {
+			*(s32*)(self + 0x36c) = 0xa;
+		}
+	}
+	*(s32*)(self + 0x370) = *(s32*)(self + 0x370) ^ 1;
+
+	f32 x0 = *(f32*)(self + 0x60);
+	f32 y0 = *(f32*)(self + 0x64);
+	f32 x1 = *(f32*)(self + 0x68);
+	f32 y1 = *(f32*)(self + 0x6c);
+	JGeometry::TBox2<f32> orig;
+	orig.i.x = x0;
+	orig.i.y = y0;
+	orig.f.x = x1;
+	orig.f.y = y1;
+	JGeometry::TBox2<f32> box;
+	box.i.x = x0;
+	box.i.y = y0;
+	box.f.x = x1;
+	box.f.y = y1;
+	char* tp = self;
+	char* op = self;
+	for (s32 i = 0; i < 4; i++) {
+		if (*(s32*)(tp + 0x330) != 0) {
+			*(s32*)(tp + 0x330) = *(s32*)(tp + 0x330) - 1;
+		}
+		box.i.x += *(f32*)(op + 0x294);
+		box.f.x += *(f32*)(op + 0x294);
+		box.i.y += *(f32*)(op + 0x298);
+		box.f.y += *(f32*)(op + 0x298);
+		fn_80239914(&box, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
+		box = orig;
+		tp += 4;
+		op += 0xc;
+	}
+	box.i.x += *(f32*)(self + 0x324);
+	box.f.x += *(f32*)(self + 0x324);
+	box.i.y += *(f32*)(self + 0x328);
+	box.f.y += *(f32*)(self + 0x328);
+	fn_80239914(&box, *(s32*)(self + 0x4), *(s32*)(self + 0x198));
+	box = orig;
+	(((FSAObj*)self)->*lbl_804AE420[*(s32*)(self + 0x230)])(box);
 }
 
 extern "C" void* fn_80372AA0(void* self, short flag)
