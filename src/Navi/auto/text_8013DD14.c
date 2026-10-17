@@ -38,6 +38,11 @@ extern "C" void* fn_8013DD14(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void fn_801E10DC(void*);
+extern "C" void fn_8013DD74(void* param_1, void* param_2) {
+    fn_801E10DC(*(void**)((u8*)param_2 + 0x100));
+}
+
 extern void* lbl_8029366C[];
 extern "C" void* fn_80134898(void* ptr, s16 param_2);
 extern "C" void* fn_8013DE44(void* ptr, s16 param_2) {
@@ -62,5 +67,10 @@ extern "C" void fn_8013DEBC(void* param_1) {
         void* p = e ? (void*)e : (void*)&lbl_802FF378;
         s->ptr = p;
     }
+}
+
+extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
+extern "C" void fn_8013E0B8(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
+    fn_8013BC94(*(void**)((u8*)param_1 + 0x88), param_3, param_4, param_5, param_6);
 }
 
