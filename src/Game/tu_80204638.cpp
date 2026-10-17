@@ -1,4 +1,5 @@
 #include "Game/esd/types.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" u8 fn_80204D44(u8* param_1);
@@ -46,16 +47,17 @@ extern "C" int __float_max[];
 extern "C" const f32 lbl_8053F838;
 extern "C" const f32 lbl_8053F83C;
 extern "C" u8 fn_801CB85C(void* a, void* b, f32* c, f32 x, f32 y);
+#pragma fp_contract off
 extern "C" u32 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
     f32 local[2];
-    u8* p;
     f32 best;
     f32 dx;
     f32 dy;
     f32 d;
-    s32 count;
-    s32 idx;
     s32 i;
+    s32 idx;
+    u8* p;
+    s32 count;
     u32 ret;
 
     count = *(s32*)(param_1 + 0x54);
@@ -67,10 +69,11 @@ extern "C" u32 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
         local[0] = param_3[0];
         local[1] = param_3[1];
         idx = 0;
-        if (*(s32*)(param_1 + 0x54) > 1) {
-            best = *(f32*)&__float_max;
+        count = *(s32*)(param_1 + 0x54);
+        if (count > 1) {
+            best = *(f32*)__float_max;
             p = param_1;
-            for (i = 0; i < *(s32*)(param_1 + 0x54); i++, p += 0xc) {
+            for (i = 0; i < count; i++, p += 0xc) {
                 dy = *(f32*)(p + 0x5c) - param_3[1];
                 dx = *(f32*)(p + 0x58) - param_3[0];
                 d = dx * dx + dy * dy;
@@ -93,7 +96,7 @@ extern "C" u32 fn_802046FC(u8* param_1, void* param_2, f32* param_3) {
     *(s32*)(param_1 + 0x54) = *(s32*)(param_1 + 0x54) + 1;
     return ret;
 }
-
+#pragma fp_contract on
 extern "C" void fn_80204834(u8* param_1) {
     for (int i = 0; i < 2; i++) {
         for (int j = 4; j <= 0x28; j += 4) {
