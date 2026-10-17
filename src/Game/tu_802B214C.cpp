@@ -8,6 +8,16 @@ struct Color4 {
 };
 
 
+struct VecOp : Vec {
+    VecOp& operator+=(const Vec& o)
+    {
+        x += o.x;
+        y += o.y;
+        z += o.z;
+        return *this;
+    }
+};
+
 extern "C" char lbl_804A8588[];
 extern "C" f32 lbl_805409D8;
 extern "C" f32 lbl_805409DC;
@@ -33,6 +43,152 @@ extern "C" u8 fn_802B21AC(Actor* param_1, int param_2, f32* param_3)
         *((u8*)param_1 + 0x27c) = 0;
     }
     return (u8)ret;
+}
+
+extern "C" u8 fn_801F2618(Actor* a, Vec* out, u32 c);
+extern "C" void fn_802B21EC(Actor* param_1)
+{
+    Vec hitE;
+    Vec hitD;
+    Vec posBak;
+    Vec velBak;
+    Vec accBak;
+    Vec oldPos;
+    Vec sum;
+    f32 sign;
+    u8 hit1;
+    u8 hit2;
+    u8 hit3;
+    u8* p = (u8*)param_1;
+
+    sign = lbl_805409D8;
+    hitE.x = lbl_805409DC;
+    hitE.y = lbl_805409DC;
+    hitE.z = lbl_805409DC;
+    hitD.x = lbl_805409DC;
+    hitD.y = lbl_805409DC;
+    hitD.z = lbl_805409DC;
+    posBak = *(Vec*)(p + 0xc);
+    velBak = *(Vec*)(p + 0x3c);
+    accBak = *(Vec*)(p + 0x270);
+
+    *(u8*)(p + 0x27c) = 0;
+    ((Vec*)(p + 0xc))->x += ((Vec*)(p + 0x3c))->x;
+    ((Vec*)(p + 0xc))->y += ((Vec*)(p + 0x3c))->y;
+    ((Vec*)(p + 0xc))->z += ((Vec*)(p + 0x3c))->z;
+    hit1 = fn_801F2618(param_1, &hitE, 0);
+    if (lbl_805409DC != ((Vec*)(p + 0x270))->x) {
+        *(u8*)(p + 0x27c) = 1;
+        ((Vec*)(p + 0xc))->x += ((Vec*)(p + 0x270))->x;
+        ((Vec*)(p + 0xc))->y += ((Vec*)(p + 0x270))->y;
+        ((Vec*)(p + 0xc))->z += ((Vec*)(p + 0x270))->z;
+        hit2 = fn_801F2618(param_1, &hitD, 0);
+        if (hit1 == 1 && lbl_805409DC != hitE.y) {
+            if (((Vec*)(p + 0x270))->x > lbl_805409DC) {
+                if (((Vec*)(p + 0x3c))->y <= lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            } else {
+                if (((Vec*)(p + 0x3c))->y > lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            }
+            ((Vec*)(p + 0x3c))->x = -((Vec*)(p + 0x3c))->y * sign;
+            ((Vec*)(p + 0x270))->y = ((Vec*)(p + 0x270))->x * sign;
+            ((Vec*)(p + 0x3c))->y = lbl_805409DC;
+            ((Vec*)(p + 0x270))->x = lbl_805409DC;
+        } else if (!hit2 || lbl_805409DC == hitD.x) {
+            if (((Vec*)(p + 0x270))->x > lbl_805409DC) {
+                if (((Vec*)(p + 0x3c))->y > lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            } else {
+                if (((Vec*)(p + 0x3c))->y <= lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            }
+            ((Vec*)(p + 0x3c))->x = -((Vec*)(p + 0x3c))->y * sign;
+            ((Vec*)(p + 0x270))->y = ((Vec*)(p + 0x270))->x * sign;
+            ((Vec*)(p + 0x3c))->y = lbl_805409DC;
+            ((Vec*)(p + 0x270))->x = lbl_805409DC;
+            oldPos = *(Vec*)(p + 0xc);
+            sum.x = ((Vec*)(p + 0x3c))->x * lbl_805409E4 + ((Vec*)(p + 0x270))->x;
+            sum.y = ((Vec*)(p + 0x3c))->y * lbl_805409E4 + ((Vec*)(p + 0x270))->y;
+            sum.z = ((Vec*)(p + 0x3c))->z * lbl_805409E4 + ((Vec*)(p + 0x270))->z;
+            ((Vec*)(p + 0xc))->x += sum.x;
+            ((Vec*)(p + 0xc))->y += sum.y;
+            ((Vec*)(p + 0xc))->z += sum.z;
+            hit3 = fn_801F2618(param_1, 0, 0);
+            if (hit3) {
+                *(Vec*)(p + 0xc) = oldPos;
+            } else {
+                *(Vec*)(p + 0xc) = posBak;
+                *(Vec*)(p + 0x3c) = velBak;
+                *(Vec*)(p + 0x270) = accBak;
+                ((Vec*)(p + 0xc))->x += ((Vec*)(p + 0x3c))->x;
+                ((Vec*)(p + 0xc))->y += ((Vec*)(p + 0x3c))->y;
+                ((Vec*)(p + 0xc))->z += ((Vec*)(p + 0x3c))->z;
+            }
+        }
+    } else if (lbl_805409DC != ((Vec*)(p + 0x270))->y) {
+        *(u8*)(p + 0x27c) = 1;
+        ((Vec*)(p + 0xc))->x += ((Vec*)(p + 0x270))->x;
+        ((Vec*)(p + 0xc))->y += ((Vec*)(p + 0x270))->y;
+        ((Vec*)(p + 0xc))->z += ((Vec*)(p + 0x270))->z;
+        hit2 = fn_801F2618(param_1, &hitD, 0);
+        if (hit1 == 1 && lbl_805409DC != hitE.x) {
+            if (((Vec*)(p + 0x270))->y > lbl_805409DC) {
+                if (((Vec*)(p + 0x3c))->x <= lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            } else {
+                if (((Vec*)(p + 0x3c))->x > lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            }
+            ((Vec*)(p + 0x3c))->y = -((Vec*)(p + 0x3c))->x * sign;
+            ((Vec*)(p + 0x270))->x = ((Vec*)(p + 0x270))->y * sign;
+            ((Vec*)(p + 0x3c))->x = lbl_805409DC;
+            ((Vec*)(p + 0x270))->y = lbl_805409DC;
+        } else if (!hit2 || lbl_805409DC == hitD.y) {
+            if (((Vec*)(p + 0x270))->y > lbl_805409DC) {
+                if (((Vec*)(p + 0x3c))->x > lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            } else {
+                if (((Vec*)(p + 0x3c))->x <= lbl_805409DC) {
+                    sign = lbl_805409E0;
+                }
+            }
+            ((Vec*)(p + 0x3c))->y = -((Vec*)(p + 0x3c))->x * sign;
+            ((Vec*)(p + 0x270))->x = ((Vec*)(p + 0x270))->y * sign;
+            ((Vec*)(p + 0x3c))->x = lbl_805409DC;
+            ((Vec*)(p + 0x270))->y = lbl_805409DC;
+            oldPos = *(Vec*)(p + 0xc);
+            sum.x = ((Vec*)(p + 0x3c))->x * lbl_805409E4 + ((Vec*)(p + 0x270))->x;
+            sum.y = ((Vec*)(p + 0x3c))->y * lbl_805409E4 + ((Vec*)(p + 0x270))->y;
+            sum.z = ((Vec*)(p + 0x3c))->z * lbl_805409E4 + ((Vec*)(p + 0x270))->z;
+            ((Vec*)(p + 0xc))->x += sum.x;
+            ((Vec*)(p + 0xc))->y += sum.y;
+            ((Vec*)(p + 0xc))->z += sum.z;
+            hit3 = fn_801F2618(param_1, 0, 0);
+            if (hit3) {
+                *(Vec*)(p + 0xc) = oldPos;
+            } else {
+                *(Vec*)(p + 0xc) = posBak;
+                *(Vec*)(p + 0x3c) = velBak;
+                *(Vec*)(p + 0x270) = accBak;
+                ((Vec*)(p + 0xc))->x += ((Vec*)(p + 0x3c))->x;
+                ((Vec*)(p + 0xc))->y += ((Vec*)(p + 0x3c))->y;
+                ((Vec*)(p + 0xc))->z += ((Vec*)(p + 0x3c))->z;
+            }
+        }
+    }
+    if (*(u8*)(p + 0x27c) == 1) {
+        *(Vec*)(p + 0xc) = posBak;
+        *(Vec*)(p + 0x3c) = velBak;
+        *(Vec*)(p + 0x270) = accBak;
+    }
 }
 
 extern "C" char lbl_8046CA80[];
