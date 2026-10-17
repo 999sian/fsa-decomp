@@ -26,6 +26,8 @@ struct Unk801C5B08 {
     u8 field_598;
     u8 field_599;
     u8 field_59A;
+    u8 unk_59B[0x5AC - 0x59B];
+    f32 field_5AC;
 };
 extern "C" s16 fn_801D0280(void* p, s32 idx);
 extern "C" u8 fn_801CC9F8(void* p, s32 idx);
