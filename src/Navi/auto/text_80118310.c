@@ -42,6 +42,7 @@ extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_80118B58(void*, int, int);
 
 extern "C" void fn_8015AB40(void*);
+extern "C" void fn_801DD5E0(void* p, u32 a, u32 b, u16 c);
 extern "C" void fn_801196E0(void*);
 extern "C" void fn_80118E24(void* a, void* b, void* c, s32 d);
 extern "C" void fn_80119004(void* p);
