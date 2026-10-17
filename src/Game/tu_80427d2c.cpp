@@ -2,6 +2,8 @@
 // Function bodies adapted from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 // Remaining functions of this TU are not yet decompiled.
 #include "types.h"
+extern u32 lbl_8053AE70;
+extern u8 lbl_8053AE78;
 #include <dolphin/os.h>
 #include <dolphin/vi.h>
 #include <string.h>
@@ -1788,6 +1790,102 @@ extern "C" u8 fn_8042B148() {
     return 1;
 }
 
+extern "C" void fn_8042BD84(u8* info, s16* block) {
+    s32 t;
+    s16 dc;
+    s16 diff;
+
+    __dcbz(block, 0);
+    t = fn_8042BF54(info, lbl_8053AE28);
+    __dcbz(block, 32);
+    diff = 0;
+    __dcbz(block, 64);
+
+    if (t) {
+        s32 cnt = *(s32*)(info + 0x6a4);
+        s32 tmp = 33 - cnt;
+        s32 sh = cnt - 1;
+        u32 cw = *(u32*)(info + 0x6a0);
+        s32 v = t - tmp;
+        u32 code;
+        if (v <= 0) {
+            code = cw << sh;
+            *(s32*)(info + 0x6a4) = cnt + t;
+            code >>= 32 - t;
+        } else {
+            u32* p;
+            code = cw << sh;
+            p = *(u32**)(info + 0x69c);
+            cw = *++p;
+            *(u32*)(info + 0x6a0) = cw;
+            code += cw >> tmp;
+            *(u32**)(info + 0x69c) = p;
+            *(s32*)(info + 0x6a4) = v + 1;
+            code >>= 32 - t;
+        }
+        diff = code;
+        if (__cntlzw(diff) > 32 - t) {
+            diff = (-1 << t) + code + 1;
+        }
+    }
+
+    __dcbz(block, 96);
+    {
+        s32 k = 1;
+        dc = *(s16*)(info + 0x690) + diff;
+        *(s16*)(info + 0x690) = dc;
+        block[0] = dc;
+
+        for (; k < 64; k++) {
+            s32 size;
+            s32 run;
+            t = fn_8042BF54(info, lbl_8053AE34);
+            size = t & 15;
+            run = t >> 4;
+            if (size) {
+                s32 cnt;
+                s32 tmp;
+                s32 sh;
+                u32 cw;
+                s32 v;
+                u32 code;
+                s32 value;
+                k += run;
+                cnt = *(s32*)(info + 0x6a4);
+                tmp = 33 - cnt;
+                sh = cnt - 1;
+                cw = *(u32*)(info + 0x6a0);
+                v = size - tmp;
+                if (v <= 0) {
+                    code = cw << sh;
+                    *(s32*)(info + 0x6a4) = cnt + size;
+                    code >>= 32 - size;
+                } else {
+                    u32* p;
+                    code = cw << sh;
+                    p = *(u32**)(info + 0x69c);
+                    cw = *++p;
+                    *(u32*)(info + 0x6a0) = cw;
+                    code += cw >> tmp;
+                    *(u32**)(info + 0x69c) = p;
+                    *(s32*)(info + 0x6a4) = v + 1;
+                    code >>= 32 - size;
+                }
+                value = code;
+                if (__cntlzw(value) > 32 - size) {
+                    value = (-1 << size) + code + 1;
+                }
+                block[lbl_8048F270[k]] = value;
+            } else {
+                if (run != 15) {
+                    break;
+                }
+                k += 15;
+            }
+        }
+    }
+}
+
 extern void* lbl_8053AE24;
 extern void* lbl_8053AE30;
 extern u8 lbl_8048F270[64];
@@ -1805,7 +1903,7 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
 
     if (t) {
         s32 cnt = *(s32*)(info + 0x6a4);
-        u32 tmp = 33 - cnt;
+        s32 tmp = 33 - cnt;
         u32 cw = *(u32*)(info + 0x6a0);
         s32 v = t - tmp;
         u32 code;
@@ -1814,18 +1912,18 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
             code = (cw << (cnt - 1)) >> (32 - t);
         } else {
             u32* p;
-            u32 hi = cw << (cnt - 1);
+            code = cw << (cnt - 1);
             p = *(u32**)(info + 0x69c);
             cw = *++p;
             *(u32*)(info + 0x6a0) = cw;
-            hi = (cw >> tmp) + hi;
+            code += cw >> tmp;
             *(u32**)(info + 0x69c) = p;
             *(s32*)(info + 0x6a4) = v + 1;
-            code = hi >> (32 - t);
+            code >>= 32 - t;
         }
         diff = code;
-        if ((s32)__cntlzw(diff) > 32 - t) {
-            diff = (-1 << t) + code + 1;
+        if (__cntlzw(diff) > 32 - t) {
+            diff = code + (-1 << t) + 1;
         }
     }
 
@@ -1844,7 +1942,7 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
             run = t >> 4;
             if (size) {
                 s32 cnt;
-                u32 tmp;
+                s32 tmp;
                 u32 cw;
                 s32 v;
                 u32 code;
@@ -1858,17 +1956,17 @@ extern "C" void fn_8042C1CC(u8* info, s16* block) {
                     code = (cw << (cnt - 1)) >> (32 - size);
                 } else {
                     u32* p;
-                    u32 hi = cw << (cnt - 1);
+                    code = cw << (cnt - 1);
                     p = *(u32**)(info + 0x69c);
                     cw = *++p;
                     *(u32*)(info + 0x6a0) = cw;
-                    hi = (cw >> tmp) + hi;
+                    code += cw >> tmp;
                     *(u32**)(info + 0x69c) = p;
                     *(s32*)(info + 0x6a4) = v + 1;
-                    code = hi >> (32 - size);
+                    code >>= 32 - size;
                 }
-                if ((s32)__cntlzw(code) > 32 - size) {
-                    code = (-1 << size) + code + 1;
+                if (__cntlzw(code) > 32 - size) {
+                    code += (-1 << size) + 1;
                 }
                 block[lbl_8048F270[k]] = code;
             } else {
