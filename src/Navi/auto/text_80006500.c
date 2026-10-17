@@ -64,7 +64,7 @@ extern "C" void fn_8000829C(u8 param_1, u8 param_2) {
     lbl_8029F408[0x137] = param_2;
 }
 
-void fn_800085E0(void) {}
+extern "C" void fn_800085E0(void) {}
 
 extern "C" void fn_800085E4(void) {}
 
