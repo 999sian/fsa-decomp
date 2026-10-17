@@ -37,7 +37,7 @@ private:
 };
 extern void* lbl_804A5800[];
 extern u8 lbl_80529DEC[];
-extern f32 lbl_804CABD8[3];
+static f32 lbl_804CABD8[3];
 extern f32 lbl_8053F828;
 extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5);
 extern "C" void fn_801F62AC(u8* this_, JKRHeap* heap);
@@ -319,17 +319,17 @@ extern "C" void fn_801F7CAC(u8* mgr) {
             room == *(s32*)(fn_802D6A9C() + 0x131b0) || room == *(s32*)(fn_802D6A9C() + 0x131b4)) {
             continue;
         }
-        a = *(u8**)(it + 8);
-        id = *(u32*)(a + 0x1a0);
+        u8* b = *(u8**)(it + 8);
+        id = *(u32*)(b + 0x1a0);
         if (id == 'RANK' || id == 'GBAO') {
             continue;
         }
         if (id == 'RASN') {
-            if (*(s32*)(a + 0x230) == 0) {
-                a[0x11c] = 0;
+            if (*(s32*)(b + 0x230) == 0) {
+                b[0x11c] = 0;
             }
         } else {
-            a[0x11c] = 0;
+            b[0x11c] = 0;
         }
     }
     fn_80204638();
@@ -504,13 +504,15 @@ extern "C" s32 fn_801F7464(ActorPool* pool, s32 param, s32 exceptId) {
     s32 count = pool->mCount;
     PoolActor** cur = (PoolActor**)pool;
     s32 id = -1;
-    s32 i;
-    for (i = 0; i < count; cur++, i++) {
+    s32 i = 0;
+    while (i < count) {
         PoolActor* a = cur[2];
         if (a != NULL && a->mActive && param == a->mParam && exceptId != a->mId && fn_801CC960(a)) {
             id = pool->mActors[i]->mId;
             break;
         }
+        cur++;
+        i++;
     }
     return id;
 }
@@ -845,6 +847,61 @@ extern "C" s32 fn_801F7F58(ActorPool* pool, PoolActor* a, u32* types, s32 exclud
     return result;
 }
 
+extern "C" s32 fn_801F8108(Actor* self, u32 type, s32 handle, f32 radius) {
+    s32 i;
+    s32 best;
+    u8* pool;
+    u8 near;
+    u8* slot;
+    s32 room;
+    u32 types[2];
+    f32 boxA[4];
+    f32 boxB[4];
+
+    room = self->field_04;
+    pool = *(u8**)(*(u8**)((u8*)lbl_8053AAF8 + 4) + 8);
+    best = -1;
+    types[0] = type;
+    types[1] = 'NULL';
+    near = fn_802D6A9C()[0x131df + room];
+    slot = pool;
+    for (i = 0; i < *(s32*)(pool + 0x1008); i++, slot += 4) {
+        Actor* e = *(Actor**)(slot + 8);
+        if (e == NULL || e->field_11C == 0 || (s32)e->field_04 != room || handle == e->field_198) {
+            continue;
+        }
+        if (near == 0) {
+            if (__fabs(self->field_0C.z - e->field_0C.z) > radius) {
+                continue;
+            }
+        }
+        u32* p = types;
+        while (*p != 'NULL') {
+            if (*p == e->field_1A0) {
+                fn_801F31C4(self, boxA);
+                fn_801F31C4(e, boxB);
+                f32 x0 = boxA[0];
+                f32 y0 = boxA[1];
+                f32 x1 = boxA[2];
+                f32 y1 = boxA[3];
+                if (x0 <= boxB[0]) x0 = boxB[0];
+                if (y0 <= boxB[1]) y0 = boxB[1];
+                if (x1 >= boxB[2]) x1 = boxB[2];
+                if (y1 >= boxB[3]) y1 = boxB[3];
+                if (x1 >= x0 && y1 >= y0) {
+                    best = e->field_198;
+                    break;
+                }
+            }
+            p++;
+        }
+        if (best >= 0) {
+            return best;
+        }
+    }
+    return best;
+}
+
 extern "C" void fn_801F31C4(const Actor* a, f32* out);
 extern "C" s32 fn_801F82CC(void* mgr, Actor* a, u8 c, f32 f) {
     f32 other[4];
@@ -1127,46 +1184,46 @@ extern "C" u8* fn_801F9078(u8* self, JKRHeap* heap) {
 	}
 	u32 n = flag ? 0x200 : 0x400;
 	*(char**)(self + 4) = fn_80085A10(n, (n << 10) + 0x1a8, 0x20, heap, 0);
-	u32* p = (u32*)self;
+	u8* p = self;
 	for (s32 i = 0x20; i > 0; i--) {
-		p[2] = 0;
-		p[3] = 0;
-		p[4] = 0;
-		p[5] = 0;
-		p[6] = 0;
-		p[7] = 0;
-		p[8] = 0;
-		p[9] = 0;
-		p[10] = 0;
-		p[11] = 0;
-		p[12] = 0;
-		p[13] = 0;
-		p[14] = 0;
-		p[15] = 0;
-		p[16] = 0;
-		p[17] = 0;
-		p[18] = 0;
-		p[19] = 0;
-		p[20] = 0;
-		p[21] = 0;
-		p[22] = 0;
-		p[23] = 0;
-		p[24] = 0;
-		p[25] = 0;
-		p[26] = 0;
-		p[27] = 0;
-		p[28] = 0;
-		p[29] = 0;
-		p[30] = 0;
-		p[31] = 0;
-		p[32] = 0;
-		p[33] = 0;
-		p += 32;
+		*(s32*)(p + 0x8) = 0;
+		*(s32*)(p + 0xc) = 0;
+		*(s32*)(p + 0x10) = 0;
+		*(s32*)(p + 0x14) = 0;
+		*(s32*)(p + 0x18) = 0;
+		*(s32*)(p + 0x1c) = 0;
+		*(s32*)(p + 0x20) = 0;
+		*(s32*)(p + 0x24) = 0;
+		*(s32*)(p + 0x28) = 0;
+		*(s32*)(p + 0x2c) = 0;
+		*(s32*)(p + 0x30) = 0;
+		*(s32*)(p + 0x34) = 0;
+		*(s32*)(p + 0x38) = 0;
+		*(s32*)(p + 0x3c) = 0;
+		*(s32*)(p + 0x40) = 0;
+		*(s32*)(p + 0x44) = 0;
+		*(s32*)(p + 0x48) = 0;
+		*(s32*)(p + 0x4c) = 0;
+		*(s32*)(p + 0x50) = 0;
+		*(s32*)(p + 0x54) = 0;
+		*(s32*)(p + 0x58) = 0;
+		*(s32*)(p + 0x5c) = 0;
+		*(s32*)(p + 0x60) = 0;
+		*(s32*)(p + 0x64) = 0;
+		*(s32*)(p + 0x68) = 0;
+		*(s32*)(p + 0x6c) = 0;
+		*(s32*)(p + 0x70) = 0;
+		*(s32*)(p + 0x74) = 0;
+		*(s32*)(p + 0x78) = 0;
+		*(s32*)(p + 0x7c) = 0;
+		*(s32*)(p + 0x80) = 0;
+		*(s32*)(p + 0x84) = 0;
+		p += 0x80;
 	}
-	f32 zf = lbl_8053F828;
-	lbl_804CABD8[0] = zf;
-	lbl_804CABD8[1] = zf;
-	lbl_804CABD8[2] = zf;
+	f32 zero = lbl_8053F828;
+	lbl_804CABD8[0] = zero;
+	lbl_804CABD8[1] = zero;
+	lbl_804CABD8[2] = zero;
 	void** slot = (void**)self;
 	for (u32 i = 0; i < 0x400; i++) {
 		slot[0x403] = new (heap, 0) WaveController((s32)lbl_804CABD8, 0, 8);
