@@ -172,6 +172,49 @@ extern "C" void fn_8043A208(u8* param_1, f32 param_2, f32 param_3, f32 param_4, 
     }
 }
 
+extern "C" const char* lbl_804B1820[];
+extern "C" void fn_8043A450(void* param_1, s32 param_2, s32 param_3) {
+    struct VScreen {
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual Fn8043ABCC_Obj* search(u64 tag);
+    };
+    u8* self = (u8*)param_1;
+    void* uVar1;
+    if ((param_2 == 0 && param_3 == 2) || (param_2 == 1 && param_3 == 2) || (param_2 == 2 && param_3 == 2) ||
+        (param_2 == 3 && param_3 == 2) || (param_2 == 4 && param_3 == 2) || (param_2 == 5 && param_3 == 2) ||
+        (param_2 == 6 && param_3 == 2) || (param_2 == 7 && param_3 == 1)) {
+        return;
+    }
+    if (((u8*)lbl_8053AAF8)[0x7f] == 0) return;
+    if (param_2 >= 8) return;
+    if (param_3 >= 4) return;
+    s32 idx = param_3 + param_2 * 4;
+    if (idx != 0) {
+        uVar1 = fn_804032E8(0x54494D47, lbl_804B1820[idx]);
+    } else {
+        uVar1 = fn_804030C4(0x54494D47, lbl_804B1820[idx]);
+    }
+    (*(VScreen**)(self + 8))->search(0x507730313031ULL)->v68(uVar1, 0);
+    u8* p = (u8*)(*(VScreen**)(self + 8))->search(0x507730313031ULL);
+    p[0xb0] = 1;
+    u8* q = (u8*)(*(VScreen**)(self + 8))->search(0x5064663031ULL);
+    q[0xb0] = 0;
+    *(s16*)(self + 0x106) = 1;
+    self[0x10d] = 0;
+}
+
 extern "C" void fn_8043A608(void* param_1) {
     fn_8043A450(param_1, *(s32*)(lbl_80529DEC + 0x118), *(s32*)(lbl_80529DEC + 0x11c));
 }
