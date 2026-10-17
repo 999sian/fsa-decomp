@@ -2,6 +2,8 @@
 
 extern "C" f32 lbl_80301D68;
 extern "C" void* lbl_8029B254[];
+extern "C" void fn_801A91FC(void*);
+extern u8 lbl_802EE470[];
 extern "C" void fn_80192F60(void* p, s32 param_2);
 
 struct Pair_801A7D54 { f32 x, y; };
@@ -138,11 +140,14 @@ extern "C" void* fn_801AA678(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_801A91FC(void*);
+extern u8 lbl_802EE470[];
+extern void* lbl_8027F240[];
 extern "C" void fn_801AA6C0(u8* p, s16 param_2) {
-    p[4] = 2;
     f32 a = lbl_80301D68;
-    p[5] = 0;
     f32 b = lbl_80301D6C;
+    p[4] = 2;
+    p[5] = 0;
     *(s16*)(p + 6) = 0;
     *(s16*)(p + 8) = param_2;
     *(s16*)(p + 0xa) = 0;
@@ -151,8 +156,9 @@ extern "C" void fn_801AA6C0(u8* p, s16 param_2) {
 }
 
 extern "C" void fn_801AAB64(u8* p, s16 param_2, void* param_3, void* param_4, void* param_5) {
+    f32 f;
     *(void**)p = lbl_8027F214;
-    f32 f = lbl_80301D6C;
+    f = lbl_80301D6C;
     p[4] = 0;
     p[5] = 0;
     *(s16*)(p + 6) = param_2;
