@@ -1,5 +1,6 @@
 #include "types.h"
 #include "stdarg.h"
+struct Vec3f { f32 x, y, z; };
 extern "C" void fn_801E4334(char* buf, u32 n, const void* fmt, va_list args);
 extern "C" void fn_80123628(void* p, char* s);
 
@@ -628,6 +629,27 @@ extern "C" void fn_801290F0(u8* self, void* p) {
     u8 buf[0x38];
     fn_801C5DA8(self + 0x1b4, p, buf);
     fn_801DF378(buf, 0x1e, 0);
+}
+
+extern "C" void fn_80129734(void* self, u8* obj, f32* out) {
+    f32 y;
+    f32 x;
+    f32 z;
+    x = *(f32*)(obj + 0x24);
+    y = *(f32*)(obj + 0x28);
+    out[0] = x;
+    z = *(f32*)(obj + 0x2c);
+    out[1] = y;
+    out[2] = z;
+}
+
+extern "C" void fn_80129750(void* param_1, u8* param_2, f32* param_3) {
+    f32 y = *(f32*)(param_2 + 0x10);
+    f32 x = *(f32*)(param_2 + 0xc);
+    param_3[0] = x;
+    f32 z = *(f32*)(param_2 + 0x14);
+    param_3[1] = y;
+    param_3[2] = z;
 }
 
 extern "C" void* fn_8012A804(void* p) {
