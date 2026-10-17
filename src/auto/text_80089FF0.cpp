@@ -256,6 +256,7 @@ extern "C" void fn_8008A50C(JUTException* this_, OSContext* context)
 
 extern "C" char lbl_8053B868;
 extern "C" char lbl_8053B87C;
+extern "C" char lbl_8045EC1C[];
 
 static BOOL searchSection(u32 addr, u32* id, u32* index, u32* offset, char** name)
 {
