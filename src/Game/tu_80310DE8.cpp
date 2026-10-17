@@ -11,6 +11,9 @@ extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
 extern "C" void fn_8023061C(s32 p, s32 a);
 extern "C" char lbl_804AAAE8[];
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+extern "C" f32 lbl_805417A0;
+extern "C" f32 lbl_805417A4;
+extern "C" f32 lbl_805417A8;
 extern void* lbl_8053AC98;
 
 struct Vec2_FSA {
@@ -77,8 +80,9 @@ extern "C" f32 lbl_80541798;
 extern "C" f32 lbl_8054179C;
 extern "C" void fn_80310FC8(u8* this_) {
     if (*(s32*)(this_ + 0x230) >= 2) {
-        Vec saved = *(Vec*)(this_ + 0xc);
-        *(Vec*)(this_ + 0xc) = *(Vec*)(this_ + 0x248);
+        Vec saved;
+        JGeometry::setTVec3f((f32*)(this_ + 0xc), (f32*)&saved);
+        JGeometry::setTVec3f((f32*)(this_ + 0x248), (f32*)(this_ + 0xc));
         Mtx mtx;
         DrawRec rec;
         if (*(s32*)(this_ + 0x238) == 4) {
@@ -91,7 +95,7 @@ extern "C" void fn_80310FC8(u8* this_) {
             fn_801F06F0(this_, lbl_80471438 + 0x3c, id, rec.ids, -1, lbl_8054179C, lbl_8054179C);
             fn_803075AC(*(void**)(this_ + 0x198), *(void**)(this_ + 4), this_ + 0xc, id, 0, 2, -1, 1, 0, 0);
         }
-        *(Vec*)(this_ + 0xc) = saved;
+        JGeometry::setTVec3f((f32*)&saved, (f32*)(this_ + 0xc));
     }
 }
 
