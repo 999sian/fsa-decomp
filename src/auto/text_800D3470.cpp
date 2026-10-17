@@ -808,6 +808,26 @@ extern "C" void fn_800D6DAC(void* param_1) {
     }
 }
 
+extern "C" void fn_800D6DE0(u8* p) {
+    *(u32*)(p + 4) = GDGetCurrOffset();
+    GDOverflowCheck(0x69);
+    if (*(u16*)(p + 8) != 0xffff) {
+        loadTexNo__FUlRCUs(0, (u16*)(p + 8));
+    }
+    J3DGDSetTevOrder((GXTevStageID)0, (GXTexCoordID)p[10], (GXTexMapID)p[11], (GXChannelID)p[12], (GXTexCoordID)0xff, (GXTexMapID)0xff, (GXChannelID)0xff);
+    u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (p[11] & 7) * 8);
+    J3DGDSetTexCoordScale2((GXTexCoordID)p[10], s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
+    u32 v = *(u32*)(p + 0xe);
+    __GDWrite(0x61);
+    __GDWriteU32(v);
+    v = *(u32*)(p + 0x12);
+    __GDWrite(0x61);
+    __GDWriteU32(v);
+    v = *(u32*)(p + 0x18) | 0x10000000;
+    __GDWrite(0x61);
+    __GDWriteU32(v);
+}
+
 extern "C" void fn_800D7F78(void* p) {
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)p + 4);
     u8* saved = __GDCurrentDL->pDisplayListData;
@@ -2183,9 +2203,10 @@ extern "C" u32 fn_800DDA50(void) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, Hdr_800DDA5C* src) {
+    u8 b2 = src->b2;
     Hdr_800DDA5C* dst = (Hdr_800DDA5C*)(this_ + 0x4);
     dst->w = src->w;
-    dst->b2 = src->b2;
+    dst->b2 = b2;
     dst->b3 = src->b3;
 }
 #else
@@ -2419,12 +2440,11 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8 b0;
-    u8 b1;
-    b1 = param_3[1];
-    b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
+    u8 b1 = param_3[1];
+    u8* p = param_1 + param_2 * 8;
+    u8 b0 = param_3[0];
+    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
+    p[0x60] = (p[0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -2627,7 +2647,7 @@ extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
   e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
-  e[0x28] = (e[0x28] & ~0x3) | b0;
+  e[0x28] = b0 | (e[0x28] & ~0x3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
