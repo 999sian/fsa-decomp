@@ -28,6 +28,9 @@ extern "C" void fn_8002F358(s32 a, s32 b);
 extern "C" void fn_8003ABDC(void* p, s32 a, s32 b, s32 c, s32 d);
 extern "C" void fn_8003ABF0(void* p, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 extern "C" s32 fn_8002F168(void* p);
+extern u8 lbl_80287F74[];
+extern u8 lbl_802313EC[];
+extern "C" u8 fn_800F0E14(void* p, u8 b);
 extern "C" void fn_800C2364(u8* p) {
     fn_8002F358(0x8e, 0);
     *(*(u8**)(p + 0x194) + 0xb0) = 1;
