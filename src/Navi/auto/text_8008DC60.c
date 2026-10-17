@@ -27,7 +27,6 @@ extern "C" void fn_800EF4D0(void* p, s32 v);
 extern "C" void fn_80097180(void* p);
 extern "C" s32 fn_8009D0D8(s16* param_1);
 struct NaviObjTbl_80097EB0 { u8 pad[0x64c]; u8* objs[1]; };
-struct NaviObjSlot_8009C1BC { u8 pad[0x64c]; u8* obj; };
 extern f32 lbl_80300B40;
 struct VObj_8009F478 {
     virtual void v0();
@@ -1800,8 +1799,8 @@ extern "C" void fn_8009C1BC(u8* p) {
             t = lbl_80300B20 - t;
         }
         s32 idx = *(s32*)(lbl_802BB0FC + 0x3f0) % 10;
-        f32 a = *(f32*)(q + 0x40);
-        f32 d = *(f32*)(q + 0x3c) - a;
+        f32 a = *(f32*)(lbl_802C545C + 0x40);
+        f32 d = *(f32*)(lbl_802C545C + 0x3c) - a;
         d *= t;
         f32 v = a + d;
         VObj_80098918* obj = (VObj_80098918*)((NaviObjTbl_80097EB0*)p)->objs[idx];
@@ -1914,18 +1913,24 @@ extern "C" void fn_8009D3E0(u8* p) {
 extern "C" void fn_8009D454(u8* p) {
     if (*(s32*)(lbl_802BB0FC + 0x44) == 0xc && p[0x754] != 0) {
         s32 n;
+        s32 c;
+        u8* a;
         (*(s32*)(p + 0x748))++;
-        n = *(s16*)(*(u8**)(p + 0x744) + 6);
-        if (n <= *(s32*)(p + 0x748)) {
+        a = *(u8**)(p + 0x744);
+        c = *(s32*)(p + 0x748);
+        n = *(s16*)(a + 6);
+        if (c >= n) {
             *(s32*)(p + 0x748) = n;
             p[0x754] = 0;
             *(*(u8**)(p + 0x740) + 0xb0) = 0;
         }
         *(f32*)(*(u8**)(p + 0x744) + 8) = *(s32*)(p + 0x748);
         (*(s32*)(p + 0x750))++;
-        n = *(s16*)(*(u8**)(p + 0x74c) + 6);
-        if (n <= *(s32*)(p + 0x750)) {
-            *(s32*)(p + 0x750) -= n;
+        a = *(u8**)(p + 0x74c);
+        c = *(s32*)(p + 0x750);
+        n = *(s16*)(a + 6);
+        if (c >= n) {
+            *(s32*)(p + 0x750) = c - n;
         }
         *(f32*)(*(u8**)(p + 0x74c) + 8) = *(s32*)(p + 0x750);
         fn_8017A4F8(*(void**)(p + 0x250));
