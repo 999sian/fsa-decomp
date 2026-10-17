@@ -12,7 +12,7 @@ typedef struct {
 
 extern u32 lbl_802FF6B8;
 extern NaviEntry12 lbl_80299AD0[];
-extern void fn_801937C8(void* e, s32 idx);
+extern "C" void fn_801937C8(void* e, ...);
 extern "C" void fn_801E10DC(void* p, s32 idx, NaviEntry12* tmp);
 extern void* lbl_80299E10[];
 
@@ -136,11 +136,13 @@ extern "C" void fn_80195588(u8* p, s32 x, NaviEntry36* src, NaviEntry36* dst) {
 
 extern "C" void fn_801957E4(u8* p) {
     u16* list = *(u16**)(p + 0xc);
+    u32 idx = lbl_802FF6B8;
     s32 count = *(u16*)(p + 8);
-    NaviEntry12 tmp = lbl_80299AD0[lbl_802FF6B8];
+    NaviEntry12 tmp = lbl_80299AD0[idx];
     s32 i;
     for (i = 0; i < count; i++) {
-        if (list[0] != 0xffff) {
+        u16 v = list[0];
+        if (v != 0xffff) {
             fn_801E10DC(p, i, &tmp);
         }
         list++;
