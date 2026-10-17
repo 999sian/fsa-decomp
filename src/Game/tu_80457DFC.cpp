@@ -454,7 +454,7 @@ extern "C" void fn_80458F9C(Unk80458F9C* self, u32 fadeout)
     self->m60 = 0;
 }
 
-extern "C" void fn_8045815C(void* this_, s32 mode);
+extern "C" void fn_8045815C(u8* this_, u8 mode);
 extern "C" u32 lbl_8053A25C;
 extern "C" void writePort__8JASTrackFUlUs(void* a, u32 b, u16 c);
 extern "C" void fn_80458FF0(u8* this_, s32 id, u8 param_3, u8 param_4) {
