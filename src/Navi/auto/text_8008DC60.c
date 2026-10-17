@@ -999,8 +999,9 @@ extern "C" void fn_80096BB0(void) {}
 
 extern "C" void fn_80096BB4(u8* p) {
     (((NaviState_8008DC60*)p)->*lbl_8028635C[p[0x2a5]])();
-    if (*(void**)(p + 0x280) != 0) {
-        fn_800CAB58(p);
+    void* v = *(void**)(p + 0x280);
+    if (v != 0) {
+        fn_800CAB58(v);
     }
 }
 
