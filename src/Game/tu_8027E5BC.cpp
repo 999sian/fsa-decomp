@@ -685,6 +685,10 @@ s32 fn_8023DE58(s32);
 void fn_802808E8(char*, f32);
 void fn_8027EEB4(char*);
 void fn_80261480(char*);
+s32 fn_80248778(char*);
+s32 fn_80240888(char*);
+f32 fn_80246F28(char*);
+void fn_8027E7E0(char*);
 extern const f32 lbl_80540378;
 void fn_80285690(char* p) {
     f32 pos[2];
