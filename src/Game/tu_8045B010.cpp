@@ -2,7 +2,7 @@
 
 
 extern "C" void* fn_8045A640(void*);
-extern "C" void fn_8045ABC8(void*);
+extern "C" u16 fn_8045ABC8(void* param_1, u8* param_2);
 extern "C" void fn_8045AD64(void*);
 extern "C" void __ct__14WaveControllerFlll(void*, long, long, long);
 extern "C" unsigned char lbl_804B20F8[];
@@ -11,14 +11,18 @@ extern "C" void fn_8045AD64(void* p);
 extern "C" void fn_8045B010(void* p) {
     fn_8045AD64((char*)p - 4);
 }
-extern "C" void fn_8045ABC8(void* p);
-extern "C" void fn_8045B018(void* p) {
-    fn_8045ABC8((char*)p - 4);
+extern "C" u16 fn_8045B018(void* p, u8* q) {
+    return fn_8045ABC8((char*)p - 4, q);
 }
 
 #pragma mark fn_8045B010
-extern "C" void fn_8045B020(void* p) {
-    ((void (*)(void*))fn_8045A640)((char*)p - 8);
+extern "C" void* fn_8045B020(void* p) {
+    return fn_8045A640((char*)p - 8);
+}
+
+extern "C" s32 fn_8045A6F4(void* p);
+extern "C" void fn_8045B028(char* p) {
+    fn_8045A6F4(p - 8);
 }
 
 extern "C" void fn_80458880(void* a, u32 b, s32 c);
