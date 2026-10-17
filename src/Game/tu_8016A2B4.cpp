@@ -14,6 +14,12 @@ extern const f32 lbl_8053D958;
 extern const f32 lbl_8053D95C;
 extern const f32 lbl_8053D960;
 extern const f32 lbl_8053D988;
+extern const f32 lbl_8053D964;
+extern u8* lbl_8053AB10;
+extern u8* sManager__8JUTVideo;
+extern "C" void fn_8013B460(void*);
+extern "C" void fn_8013B1E8(void*);
+extern "C" void load__10JUTTextureF11_GXTexMapID(void*, s32);
 
 extern "C" void* fn_8013C824();
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
@@ -467,6 +473,84 @@ extern "C" void fn_8016EDB0(u8* self) {
     *(void**)(self + 0x1A8) = 0;
     self[0x1BC] = 0;
     *(s32*)(self + 0x1C0) = 0;
+}
+
+extern "C" void* fn_8013C824(void);
+extern "C" void __dt__10JUTTextureFv(void*, s32);
+extern "C" void destroy__7JKRHeapFv(void*);
+extern "C" void __dl__FPv(void*);
+extern "C" void* fn_8016EE84(void* this_, s16 freeFlag) {
+    if (this_ != 0) {
+        s32 i = 0;
+        u8* p = (u8*)this_;
+        for (; i < 4; i++) {
+            void* emitter = *(void**)(p + 0x140);
+            if (emitter != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), emitter);
+            }
+            if (*(void**)(p + 0x158) != 0) {
+                void* obj = *(void**)(p + 0x158);
+                if (obj != 0) {
+                    (*(void (***)(void*, s32))((u8*)obj + 8))[12](obj, 1);
+                }
+            }
+            p += 0x1c;
+        }
+        if (*(u32*)((u8*)this_ + 0x138) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)((u8*)this_ + 0x138));
+        }
+        if (*(u32*)((u8*)this_ + 0x13c) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)((u8*)this_ + 0x13c));
+        }
+        if (*(u32*)((u8*)this_ + 0x130) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)((u8*)this_ + 0x130));
+        }
+        if (*(u32*)((u8*)this_ + 0x134) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)((u8*)this_ + 0x134));
+        }
+        if (*(u32*)((u8*)this_ + 0x124) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)((u8*)this_ + 0x124));
+        }
+        if (*(u32*)((u8*)this_ + 0x128) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)((u8*)this_ + 0x128));
+        }
+        if (*(u32*)((u8*)this_ + 0x12c) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((u8*)fn_8013C824() + 0xc), *(void**)((u8*)this_ + 0x12c));
+        }
+        if (*(void**)((u8*)this_ + 0x120) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x120), 1);
+        }
+        if (*(void**)((u8*)this_ + 0x11c) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x11c), 1);
+        }
+        if (*(void**)((u8*)this_ + 0x118) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x118), 1);
+        }
+        if (*(void**)((u8*)this_ + 0x114) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x114), 1);
+        }
+        if (*(void**)((u8*)this_ + 0x110) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x110), 1);
+        }
+        if (*(void**)((u8*)this_ + 0x10c) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x10c), 1);
+        }
+        if (*(void**)((u8*)this_ + 0x108) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x108), 1);
+        }
+        if (*(void**)((u8*)this_ + 0x104) != 0) {
+            __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x104), 1);
+        }
+        __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0x100), 1);
+        __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0xfc), 1);
+        __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0xf8), 1);
+        __dt__10JUTTextureFv(*(void**)((u8*)this_ + 0xf4), 1);
+        destroy__7JKRHeapFv(*(void**)this_);
+        if (freeFlag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
 }
 
 extern "C" void fn_8016FDE0(void) {
