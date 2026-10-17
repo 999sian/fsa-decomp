@@ -97,6 +97,16 @@ extern "C" void fn_80118AB4(char *param_1, char *param_2, int param_3, int param
     fn_80118B58(param_1, param_3, param_4);
 }
 
+extern "C" void fn_801196B4(void* p) {
+    char* c = (char*)p;
+    *(void**)p = lbl_80283F48;
+    *(s32*)(c + 0xc) = -1;
+    *(s32*)(c + 0x10) = -1;
+    *(s32*)(c + 0x14) = -1;
+    *(s32*)(c + 0x18) = -1;
+    *(u8*)(c + 0x4) = 0;
+}
+
 extern "C" void* fn_80119978(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = lbl_802900DC;
