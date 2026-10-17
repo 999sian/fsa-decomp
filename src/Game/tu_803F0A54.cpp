@@ -919,93 +919,97 @@ class T803FC904Obj {
 public:
     virtual void v08(s32);
 };
+struct T803FC904Base { u32 pad[2]; };
+class T803FC904Late : public T803FC904Base {
+public:
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0c();
+    virtual void v10();
+    virtual void v14();
+    virtual void v18();
+    virtual void v1c();
+    virtual void v20();
+    virtual void v24();
+    virtual void v30(s32);
+};
 extern "C" void* fn_803FC904(u8* param_1, s16 param_2) {
-    s32 i;
+    int firstIndex;
     u8* p;
 
     if (param_1 != 0) {
         *(void**)param_1 = lbl_804B0F10;
         if (*(void**)(param_1 + 0x8) != 0) {
-            void* o = *(void**)(param_1 + 0x8);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0x8))->v08(1);
         }
         *(void**)(param_1 + 0x8) = 0;
         if (*(void**)(param_1 + 0x4) != 0) {
-            void* o = *(void**)(param_1 + 0x4);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0x4))->v08(1);
         }
         *(void**)(param_1 + 0x4) = 0;
         if (*(void**)(param_1 + 0xc) != 0) {
-            void* o = *(void**)(param_1 + 0xc);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0xc))->v08(1);
         }
         *(void**)(param_1 + 0xc) = 0;
         if (*(void**)(param_1 + 0x10) != 0) {
-            void* o = *(void**)(param_1 + 0x10);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0x10))->v08(1);
         }
         *(void**)(param_1 + 0x10) = 0;
         if (*(void**)(param_1 + 0x14) != 0) {
-            void* o = *(void**)(param_1 + 0x14);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0x14))->v08(1);
         }
         *(void**)(param_1 + 0x14) = 0;
 
         p = param_1;
-        for (i = 0; i < 4; i++, p += 4) {
+        for (firstIndex = 0; firstIndex < 4; firstIndex++, p += 4) {
             if (*(void**)(p + 0x18) != 0) {
-                void* o = *(void**)(p + 0x18);
-                ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+                ((T803FC904Obj*)*(void**)(p + 0x18))->v08(1);
             }
             *(void**)(p + 0x18) = 0;
             if (*(void**)(p + 0x38) != 0) {
-                void* o = *(void**)(p + 0x38);
-                ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+                ((T803FC904Obj*)*(void**)(p + 0x38))->v08(1);
             }
             *(void**)(p + 0x38) = 0;
             if (*(void**)(p + 0x28) != 0) {
-                void* o = *(void**)(p + 0x28);
-                ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+                ((T803FC904Obj*)*(void**)(p + 0x28))->v08(1);
             }
             *(void**)(p + 0x28) = 0;
             if (*(void**)(p + 0x48) != 0) {
-                void* o = *(void**)(p + 0x48);
-                ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+                ((T803FC904Obj*)*(void**)(p + 0x48))->v08(1);
             }
             *(void**)(p + 0x48) = 0;
         }
 
         if (*(void**)(param_1 + 0x60) != 0) {
-            void* o = *(void**)(param_1 + 0x60);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0x60))->v08(1);
         }
         *(void**)(param_1 + 0x60) = 0;
 
         p = param_1;
-        for (i = 0; i < 4; i++, p += 4) {
+        for (int i = 0; i < 4; i++, p += 4) {
             if (*(void**)(p + 0x64) != 0) {
-                void* o = *(void**)(p + 0x64);
-                ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+                ((T803FC904Obj*)*(void**)(p + 0x64))->v08(1);
             }
             *(void**)(p + 0x64) = 0;
         }
 
         if (*(void**)(param_1 + 0x58) != 0) {
-            void* o = *(void**)(param_1 + 0x58);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0x58))->v08(1);
         }
         *(void**)(param_1 + 0x58) = 0;
         if (*(void**)(param_1 + 0x5c) != 0) {
-            void* o = *(void**)(param_1 + 0x5c);
-            ((void (*)(void*, s32))(*(void***)o)[2])(o, 1);
+            ((T803FC904Obj*)*(void**)(param_1 + 0x5c))->v08(1);
         }
         *(void**)(param_1 + 0x5c) = 0;
 
         p = param_1;
-        for (i = 0; i < 4; i++, p += 4) {
+        for (int i = 0; i < 4; i++, p += 4) {
             if (*(void**)(p + 0x78) != 0) {
                 void* o = *(void**)(p + 0x78);
-                ((void (*)(void*, s32))((*(void***)((u8*)o + 8))[12]))(o, 1);
+                typedef void (*Destroy)(void*, s32);
+                Destroy* vtable = *(Destroy**)((u8*)o + 8);
+                vtable[12](o, 1);
             }
             *(void**)(p + 0x78) = 0;
         }
