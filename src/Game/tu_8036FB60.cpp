@@ -44,18 +44,44 @@ extern float lbl_80542DFC;
 extern "C" s32 fn_80230CFC(s32);
 extern s32 lbl_80474F4C[];
 extern "C" void fn_80370020(char* self) {
-    f32 box[4];
+    JGeometry::TBox2<f32> box;
+    JGeometry::TVec3<f32> pos;
+    s32 idx;
 
-    if (*(s32*)(self + 0x3a0) == 4) {
-        box[0] = *(f32*)(self + 0x60);
-        box[1] = *(f32*)(self + 0x64);
-        box[2] = *(f32*)(self + 0x68);
-        box[3] = *(f32*)(self + 0x6c);
-        box[0] += *(f32*)(self + 0x324);
-        box[2] += *(f32*)(self + 0x324);
-        box[1] += *(f32*)(self + 0x328);
-        box[3] += *(f32*)(self + 0x328);
-        fn_8022FF8C(*(s32*)(self + 0x3a4), box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+    if (*(u8*)(self + 0x3a8) == 0) {
+        if (*(s32*)(self + 0x3ac) == 0) {
+            box.i.x = *(f32*)(self + 0x60);
+            box.i.y = *(f32*)(self + 0x64);
+            box.f.x = *(f32*)(self + 0x68);
+            box.f.y = *(f32*)(self + 0x6c);
+            box.i.x += *(f32*)(self + 0x324);
+            box.f.x += *(f32*)(self + 0x324);
+            box.i.y += *(f32*)(self + 0x328);
+            box.f.y += *(f32*)(self + 0x328);
+            fn_8022FEB8((f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+            idx = fn_8022FD8C(*(s32*)(self + 0x198));
+            if (idx >= 0 && fn_802300EC()) {
+                if (PSVECDistance((Vec*)(self + idx * 0xc + 0x264), (Vec*)(self + 0x324)) > lbl_80542DDC) {
+                    pos = *(JGeometry::TVec3<f32>*)(self + 0x324);
+                    if (fn_8038BD08(idx, 0x510, *(u32*)(self + 4), &pos, 0x22)) {
+                        *(s32*)(self + 0x3a4) = idx;
+                        *(u8*)(self + 0x3a8) = 1;
+                        *(s32*)(self + 0x3a0) = 4;
+                        fn_8023077C();
+                    }
+                }
+            }
+        }
+    } else if (*(s32*)(self + 0x3a0) == 4) {
+        box.i.x = *(f32*)(self + 0x60);
+        box.i.y = *(f32*)(self + 0x64);
+        box.f.x = *(f32*)(self + 0x68);
+        box.f.y = *(f32*)(self + 0x6c);
+        box.i.x += *(f32*)(self + 0x324);
+        box.f.x += *(f32*)(self + 0x324);
+        box.i.y += *(f32*)(self + 0x328);
+        box.f.y += *(f32*)(self + 0x328);
+        fn_8022FF8C(*(s32*)(self + 0x3a4), (f32*)&box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         if (fn_80388CAC(*(s32*)(self + 0x3a4), *(s32*)(self + 0x198))) {
             *(s32*)(self + 0x3a4) = -1;
             *(u8*)(self + 0x3a8) = 0;
@@ -271,6 +297,59 @@ extern "C" void fn_80370C18(void* this_)
 		*(int*)(p + 0x240) = 0x1e;
 		*(int*)(p + 0x230) = 6;
 		*(int*)(p + 0x23c) = 0;
+	}
+}
+
+extern "C" u8 fn_8023ED8C(int);
+extern "C" void fn_80230C6C(int);
+extern "C" u8 fn_80230188(int);
+extern "C" u8 fn_80230AD4(int);
+extern "C" void fn_8037AE00(void*);
+extern "C" u32 fn_80119DD0(void);
+extern "C" void fn_80119998(u32, int, int, int, int, int, int, int);
+extern float lbl_80542DEC;
+extern float lbl_80542E18;
+extern float lbl_80542E1C;
+extern float lbl_80542E20;
+extern void* lbl_8053AD70;
+extern "C" void fn_8037100C(char* self)
+{
+	fn_803703C8(self);
+	((void (*)(void*))fn_803721F4)(self);
+	fn_80370020(self);
+	float bounds[4] = { lbl_80542E18, lbl_80542DEC, lbl_80542E1C, lbl_80542E20 };
+	float* pos = (float*)(self + *(s32*)(self + 0x39c) * 0xc + 0x264);
+	bool bVar3 = false;
+	if (pos[0] >= bounds[0] && pos[1] >= bounds[1] && pos[0] < bounds[2] && pos[1] < bounds[3]) {
+		bVar3 = true;
+	}
+	if (bVar3) {
+		for (s32 i = 0; i < 4; i++) {
+			if (((u8 (*)(int))fn_802300EC)(i) == 0) {
+				return;
+			}
+		}
+		if (*(u8*)(self + 0x398) == 1) {
+			for (s32 i = 0; i < 4; i++) {
+				if (fn_8023ED8C(i) != 0) {
+					fn_80230C6C(i);
+				}
+			}
+			fn_8022CA6C(0, 0, 0);
+			if (fn_80230AD4(*(s32*)(self + 0x39c)) != 0) {
+				for (s32 i = 0; i < 4; i++) {
+					if (fn_80230188(i) == 0 && ((u8 (*)(int))fn_802300EC)(i) != 0) {
+						fn_80230AD4(i);
+					}
+				}
+				*(s32*)(self + 0x230) = 4;
+				fn_8037AE00(lbl_8053AD70);
+				u32 uVar4 = fn_80119DD0();
+				fn_80119998(uVar4, 0x3c, 0, 2, 0, 0, 10, 0);
+				*(s32*)(self + 0x240) = 0x46;
+				fn_80458FF0(lbl_8053AF80, 0x1000007, 0, 0);
+			}
+		}
 	}
 }
 
