@@ -1,5 +1,6 @@
 #include "dolphin/os/OSFastCast.h"
 #include "types.h"
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 typedef void (*VirtualMethod0)(void*, s16);
 typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 
@@ -114,6 +115,36 @@ extern "C" void* fn_80165BB4(void** param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_801BE3A0(void*);
+extern "C" void fn_801BE47C(void*);
+extern "C" s32 fn_8015FAD8(void*, s32);
+extern "C" void fn_80166FC4(void*, void*);
+extern "C" u8 lbl_802EE334[];
+extern "C" s32 fn_80165C24(void* p, s32 n) {
+    u8* owner = *(u8**)((u8*)p + 0x28);
+    fn_801BE3A0(owner + 0x34);
+    void* h = *(void**)((u8*)p + 0x50);
+    if (h != nullptr) {
+        s32 r = fn_8015FAD8(h, n);
+        *(s32*)((u8*)p + 0x48) = -(r == 0);
+        if (n != 0 && r == 0) {
+            fn_801BE47C(owner + 0x34);
+            return 0;
+        }
+    }
+    fn_80166FC4(lbl_802EE334, p);
+    if (*(void**)((u8*)p + 0x50) != nullptr) {
+        fn_8015AB1C(*(void**)((u8*)p + 0x50));
+    }
+    VObj_80165D44* obj = *(VObj_80165D44**)(owner + 0x54);
+    if (obj != nullptr) {
+        obj->v0(1);
+    }
+    *(u32*)(owner + 0x50) = 0;
+    fn_801BE47C(owner + 0x34);
+    return 1;
 }
 
 extern "C" void fn_80166B58(void* param_1, void* param_2);
