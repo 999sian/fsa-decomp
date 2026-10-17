@@ -893,6 +893,16 @@ extern "C" u8 fn_8005BAB4(s32 idx) {
     return lbl_802FC71C[t];
 }
 
+extern "C" void* fn_8005BF40(s32 param_1, s32 param_2, s32 param_3) {
+    void* p = fn_801BBCC8(lbl_802FE960, param_1);
+    if (p == 0) {
+        fn_8005C330((const char*)1, lbl_8027D714);
+    } else {
+        fn_8005C0BC(p, param_1, param_2, param_3);
+    }
+    return p;
+}
+
 extern "C" void fn_8005C074(void) {
     s32 i = 0;
     lbl_802FF104 = 0;
