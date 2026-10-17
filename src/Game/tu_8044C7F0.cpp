@@ -9,6 +9,10 @@ struct J2DScreen {
 extern "C" void fn_804316EC(void*);
 extern void* lbl_8053AEC0;
 extern void* lbl_8053AF40;
+extern void* lbl_8053AF80;
+extern void* lbl_804B1D58[];
+extern "C" void fn_80459274(void* a);
+extern "C" void __dl__FPv(void* p);
 extern f32 lbl_80543DF8;
 extern f32 lbl_80543DFC;
 extern "C" void fn_80402E08(void*, f32, f32);
