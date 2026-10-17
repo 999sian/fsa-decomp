@@ -7,6 +7,7 @@ extern const TAtanTable<1024, f32> atanTable_;
 }
 #include "JSystem/JUtility/JUTVideo.h"
 #include "dolphin/mtx.h"
+#include "JSystem/JGeometry/Box.h"
 
 extern "C" u8 fn_8038BD08(s32, s32, u32, JGeometry::TVec3<f32>*, s32);
 extern "C" void fn_8022FEB8(f32* box, s32 a, s32 b, s32 c, s32 d);
@@ -42,6 +43,29 @@ extern float lbl_80542DF8;
 extern float lbl_80542DFC;
 extern "C" s32 fn_80230CFC(s32);
 extern s32 lbl_80474F4C[];
+extern "C" void fn_80370020(char* self) {
+    f32 box[4];
+
+    if (*(s32*)(self + 0x3a0) == 4) {
+        box[0] = *(f32*)(self + 0x60);
+        box[1] = *(f32*)(self + 0x64);
+        box[2] = *(f32*)(self + 0x68);
+        box[3] = *(f32*)(self + 0x6c);
+        box[0] += *(f32*)(self + 0x324);
+        box[2] += *(f32*)(self + 0x324);
+        box[1] += *(f32*)(self + 0x328);
+        box[3] += *(f32*)(self + 0x328);
+        fn_8022FF8C(*(s32*)(self + 0x3a4), box, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
+        if (fn_80388CAC(*(s32*)(self + 0x3a4), *(s32*)(self + 0x198))) {
+            *(s32*)(self + 0x3a4) = -1;
+            *(u8*)(self + 0x3a8) = 0;
+            fn_80230534(0);
+            *(s32*)(self + 0x3ac) = 3;
+            *(s32*)(self + 0x3a0) = -1;
+        }
+    }
+}
+
 extern "C" s32 fn_80370200(u8* self) {
     u8 found[4] = {0, 0, 0, 0};
     s32 idx = *(s32*)(self + 0x39c);
