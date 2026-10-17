@@ -1,6 +1,15 @@
 #include "types.h"
 
 extern u8 lbl_802C5BFC[];
+extern u8 lbl_802C5B90[];
+extern void* lbl_8028F39C[];
+extern void* lbl_8028F4EC[];
+extern u8 lbl_802FF20C;
+extern u8 lbl_802FF20D;
+extern u8 lbl_802FF20E;
+extern s32 lbl_802FF208;
+extern "C" f32 lbl_803013C0;
+extern "C" s32 fn_800137B8(void*, s32, s32);
 extern u8 lbl_802BB0FC[];
 extern "C" void fn_80114010(void);
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
