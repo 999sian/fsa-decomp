@@ -6,12 +6,6 @@
 struct FsaBlock48 {
     u32 w[12];
 };
-struct FsaBlock12 {
-    u32 w[3];
-};
-struct FsaBlock36 {
-    u32 w[9];
-};
 extern "C" u8 lbl_804B1810[];
 extern "C" u8 lbl_8052C5D8[];
 extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
@@ -1081,7 +1075,9 @@ extern "C" void fn_8043DC98(u8* param_1) {
     if (*(u8*)(param_1 + 0x257) != 0) {
         fn_8013B490(lbl_8053AB10);
         void* screen = *(void**)(param_1 + 0xc);
-        void* pane = ((VFn15)(*(void***)screen)[15])(screen, 0x4E0000, 0x4E6461, 0x74613035);
+        u32 t3 = 0x74613035;
+        u32 t2 = 0x4E6461;
+        void* pane = ((VFn15)(*(void***)screen)[15])(screen, 0x4E0000, t2, t3);
         ((VFn4)(*(void***)pane)[4])(pane, *(f32*)(param_1 + 0x110) + (f32)*(s16*)(lbl_8050DB0C + 0x2a2), *(f32*)(param_1 + 0x114) + (f32)*(s16*)(lbl_8050DB0C + 0x2a4));
         draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(param_1 + 0xc), lbl_80543C88, lbl_80543C88, *(void**)((u8*)lbl_8053AB10 + 0x10));
     }
