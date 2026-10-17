@@ -1,6 +1,7 @@
 #include "types.h"
 #include "sdk/stl/float.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 extern "C" f32 lbl_8053F0BC;
 extern "C" f32 lbl_8053F510;
