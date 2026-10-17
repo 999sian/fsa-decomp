@@ -28,8 +28,8 @@ struct RailRing {
 extern f32 lbl_8053C0B8;
 extern f32 lbl_8053C0D0;
 
-static inline bool railNoFlag4(RailNode* node) {
-    return !((node->mFlags >> 2) & 1);
+static inline u8 railNoFlag4(RailNode* node) {
+    return ((node->mFlags >> 2) & 1) ^ 1;
 }
 extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out);
 #include "std/math.h"
@@ -107,8 +107,8 @@ extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* 
     u8 res = fn_800FE090(ring, &p, &target);
     f32 dx = target.x - pos->x;
     f32 dy = target.y - pos->y;
-    s32 ang = JMath::atanTable_.atan2_(dx, dy) * lbl_8053C0D0;
-    s16 out;
+    s32 ang = lbl_8053C0D0 * JMath::atanTable_.atan2_(dx, dy);
+    s32 out;
     if (id != NULL) {
         s32 nodeId = ring->mNodes[ring->mCur]->mId;
         if (*id != nodeId) {
@@ -118,10 +118,10 @@ extern "C" u8 fn_800FDEA0(RailRing* ring, RailVec* pos, f32* vel, s32* id, s16* 
             return 4;
         }
     }
-    if (lbl_8053C0B8 == vel[0] && lbl_8053C0B8 == vel[1] && (bool)!((ring->mNodes[ring->mCur]->mFlags >> 2) & 1)) {
+    if (lbl_8053C0B8 == vel[0] && lbl_8053C0B8 == vel[1] && railNoFlag4(ring->mNodes[ring->mCur])) {
         out = ang;
     } else {
-        s32 cur = JMath::atanTable_.atan2_(vel[0], vel[1]) * lbl_8053C0D0;
+        s32 cur = lbl_8053C0D0 * JMath::atanTable_.atan2_(vel[0], vel[1]);
         s16 diff = ang - cur;
         if (diff >= 0) {
             if (diff > maxTurn) {
@@ -158,11 +158,13 @@ extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
     f32 dx = node->mPos.x - pos->x;
     f32 dy = node->mPos.y - pos->y;
     f32 d2 = dx * dx + dy * dy;
-    f32 dist = d2;
+    f32 dist;
     if (d2 > lbl_8053C0B8) {
         f32 guess = (f32)__frsqrte(d2);
         guess = lbl_8053C0B4 * guess * (lbl_8053C0C0 - guess * guess * d2);
         dist = d2 * guess;
+    } else {
+        dist = d2;
     }
     if (dist < lbl_8053C0D4) {
         u8 cur = ring->mCur;
@@ -175,10 +177,11 @@ extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
             }
         } else if (cur == ring->mSize - 1) {
             ret = 3;
-            if (mode == 2) {
+            if (mode != 1) {
+                if (mode != 2) {
+                    goto out;
+                }
                 ring->mDir ^= 1;
-            } else if (mode != 1) {
-                goto out;
             }
         }
         if (ring->mDir == 0) {
@@ -195,7 +198,9 @@ extern "C" u8 fn_800FE090(RailRing* ring, RailVec* pos, RailVec* out) {
     }
 out:
     node = ring->mNodes[ring->mCur];
-    *out = node->mPos;
+    out->x = node->mPos.x;
+    out->y = node->mPos.y;
+    out->z = node->mPos.z;
     return ret;
 }
 
