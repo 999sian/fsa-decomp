@@ -55,7 +55,7 @@ extern "C" BOOL fn_8006FBEC(void* param_1, void* param_2) {
         fn_8011FD18(uVar2, lbl_80280920, 0x11d, (s32)&lbl_802FC9E0, lbl_80280AD8);
         fn_80007AB8(lbl_80280920, 0x11d, (s32)&lbl_802FC9E4);
     }
-    if (fn_8000DE00((u8*)param_1 + 0x26c, p + 0x58, iVar1, 1, 2, 0, -1, lbl_803004D8) != 0) {
+    if (fn_8000DE00((u8*)param_1 + 0x26c, p + 0x58, iVar1, 1, 2, 0, -1, lbl_803004D8) == 0) {
         return FALSE;
     }
     return TRUE;
