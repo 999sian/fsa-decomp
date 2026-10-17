@@ -877,7 +877,21 @@ struct T5B10 {
 	s32 f34c;
 	u8 pad350[0x38c - 0x350];
 	u32 f38c;
-	u8 pad390[0x65e - 0x390];
+	u8 pad390[0x394 - 0x390];
+	f32 f394;
+	f32 f398;
+	u8 pad39c[0x3bc - 0x39c];
+	struct {
+		f32 a;
+		f32 b;
+	} pos[4]; // 0x3bc
+	struct {
+		f32 a;
+		f32 b;
+	} ypos[4]; // 0x3dc
+	u8 pad3fc[0x424 - 0x3fc];
+	s16 f424;
+	u8 pad426[0x65e - 0x426];
 	u8 f65e;
 };
 
