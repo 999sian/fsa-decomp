@@ -666,22 +666,4 @@ extern "C" void fn_8020AE50(u8* this_) {
     *(f32*)(this_ + 0x258) = 0.0f;
 }
 
-extern "C" void* fn_8020B0B8(char* this_) {
-    fn_801D0F40(this_);
-    *(void**)this_ = lbl_804A5D60;
-    *(s32*)(this_ + 0x2a8) = -1;
-    *(s32*)(this_ + 0x2ac) = 0;
-    *(u8*)(this_ + 0x2b0) = 1;
-    *(u8*)(this_ + 0x2b1) = 0;
-    *(f32*)(this_ + 0x2b4) = lbl_8053F964;
-    *(f32*)(this_ + 0x2b8) = lbl_8053F964;
-    *(f32*)(this_ + 0x2bc) = lbl_8053F964;
-    *(f32*)(this_ + 0x2c0) = lbl_8053F964;
-    *(f32*)(this_ + 0x2c4) = lbl_8053F964;
-    *(f32*)(this_ + 0x2c8) = lbl_8053F964;
-    *(f32*)(this_ + 0x2cc) = lbl_8053F964;
-    return this_;
-}
-
-
 #endif
