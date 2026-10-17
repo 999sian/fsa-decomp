@@ -225,6 +225,22 @@ extern "C" void fn_8013D1D4(void* param_1) {
     }
 }
 
+extern "C" void fn_8013D21C(void* param_1, void* param_2) {
+    VObj_8013D304* o = *(VObj_8013D304**)((u8*)param_1 + 0x100);
+    o->vf5(o->vf4() | 1);
+    void* v = *(void**)((u8*)param_2 + 0x14);
+    fn_8013D6D8(param_1, v);
+    fn_8013D8C0(param_1, v);
+    Entry_8013D21C* e;
+    for (e = (Entry_8013D21C*)lbl_802C67C4; e->id != -1; e++) {
+        f32 val = ((*(VObj_8013D304**)((u8*)param_1 + 0x100))->*(e->fn))();
+        Slot_8013D21C* s = (Slot_8013D21C*)((u8*)*(void**)((u8*)param_1 + 4) + e->id * 0x14);
+        s->func = (void*)fn_8013345C;
+        s->unk4 = 0;
+        s->value = val;
+    }
+}
+
 extern "C" void fn_8013D304(void* param_1) {
     VObj_8013D304* o = *(VObj_8013D304**)((u8*)param_1 + 0x100);
     o->vf5(o->vf4() & 0xfffffffe);
