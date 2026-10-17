@@ -102,6 +102,28 @@ extern "C" void fn_801C0848(void) {
     OSRestoreInterrupts(level);
 }
 
+extern "C" void fn_801C0E4C(unsigned char* p) {
+    int level = OSDisableInterrupts();
+    *(unsigned short*)(p + 0x2ca) |= 1;
+    if (*(unsigned short*)(p + 0x2c8) == 8) {
+        unsigned char* next = *(unsigned char**)(p + 0x2fc);
+        unsigned char* prev = *(unsigned char**)(p + 0x300);
+        if (next == 0) {
+            *(unsigned int*)0x800000E0 = (unsigned int)prev;
+        } else {
+            *(unsigned char**)(next + 0x300) = prev;
+        }
+        if (prev == 0) {
+            *(unsigned int*)0x800000DC = (unsigned int)next;
+        } else {
+            *(unsigned char**)(prev + 0x2fc) = next;
+        }
+        *(unsigned short*)(p + 0x2c8) = 0;
+    }
+    fn_801C13D0(p + 0x2e8);
+    OSRestoreInterrupts(level);
+}
+
 extern int RunQueueHint_802FF7CC;
 #pragma dont_inline on
 extern "C" int fn_801C14D4(unsigned char* thread, int priority) {
@@ -128,6 +150,28 @@ extern "C" int fn_801C14D4(unsigned char* thread, int priority) {
 }
 #pragma dont_inline reset
 extern "C" unsigned int fn_801C1594(unsigned char* p) { return *(unsigned int*)(p + 0x2d4); }
+
+extern "C" int fn_801C159C(unsigned char** queue)
+{
+    unsigned char* thread;
+    unsigned char* head = queue[0];
+
+    if (head != 0 && *(unsigned char**)(head + 0x2e4) != 0) {
+        return 0;
+    }
+    if (queue[1] != 0 && *(unsigned char**)(queue[1] + 0x2e0) != 0) {
+        return 0;
+    }
+    for (thread = head; thread != 0; thread = *(unsigned char**)(thread + 0x2e0)) {
+        if (*(unsigned char**)(thread + 0x2e0) != 0 && thread != *(unsigned char**)(*(unsigned char**)(thread + 0x2e0) + 0x2e4)) {
+            return 0;
+        }
+        if (*(unsigned char**)(thread + 0x2e4) != 0 && thread != *(unsigned char**)(*(unsigned char**)(thread + 0x2e4) + 0x2e0)) {
+            return 0;
+        }
+    }
+    return 1;
+}
 
 extern "C" long long fn_801C1EB8(long long time) {
     int enabled;
