@@ -865,7 +865,9 @@ struct Tbl8048C1F8 {
 extern Tbl8048C1F8 lbl_8048C1F8;
 
 struct T5B10 {
-	u8 pad[0x120];
+	u8 pad[0x10];
+	Screen408* scr; // 0x10
+	u8 pad14[0x120 - 0x14];
 	Obj240* p120;
 	Obj240* p124;
 	u8 pad128[0x340 - 0x128];
