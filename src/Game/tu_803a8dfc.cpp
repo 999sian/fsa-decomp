@@ -2067,22 +2067,22 @@ static inline BOOL fn_803B31AC_isSkip() {
 extern "C" void fn_803B31AC(void* this_) {
     char* p = (char*)this_;
     s32 mode = *(s32*)(lbl_80529DEC + 0x118);
-    if (mode == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (mode == 1 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (mode == 2 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (mode == 3 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (mode == 4 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (mode == 5 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (mode == 6 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (mode == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1) return;
-    if (mode == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 3) return;
-    if (mode == 10 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    if (*(u8*)(lbl_80529DEC + 0x237) == 8) {
-    } else {
-        fn_8013B490(lbl_8053AB10);
-        (*(VPane_803B31AC**)(p + 0x170))->setAlpha(*(u8*)(p + 0x4c2));
-        (*(VPane_803B31AC**)(p + 0x170))->drawRect(0, 0, 0, lbl_805433C8, lbl_805433C8, lbl_805433D8, lbl_805433DC);
+    if ((mode == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || (mode == 1 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || (mode == 2 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || (mode == 3 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || (mode == 4 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || (mode == 5 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || (mode == 6 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || (mode == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1)
+        || (mode == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 3)
+        || (mode == 10 && *(s32*)(lbl_80529DEC + 0x11c) == 2)
+        || *(u8*)(lbl_80529DEC + 0x237) == 8) {
+        return;
     }
+    fn_8013B490(lbl_8053AB10);
+    (*(VPane_803B31AC**)(p + 0x170))->setAlpha(*(u8*)(p + 0x4c2));
+    (*(VPane_803B31AC**)(p + 0x170))->drawRect(0, 0, 0, lbl_805433C8, lbl_805433C8, lbl_805433D8, lbl_805433DC);
 }
 
 extern "C" void fn_803B3358(void* this_, u32 kind) {
