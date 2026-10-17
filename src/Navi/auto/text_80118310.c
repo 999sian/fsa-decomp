@@ -3,6 +3,11 @@
 #include <cstring>
 
 extern "C" void fn_8011C280(int);
+extern "C" void* fn_8015A90C(u32);
+extern "C" void fn_8011AC74(void*, s32, s32, u16, u16);
+extern void* lbl_802FF328;
+extern void* lbl_802FF2B0;
+extern void* lbl_802FF544;
 extern "C" void fn_8011C3C8(u32);
 extern u32* lbl_802C5FBC[];
 extern "C" BOOL OSGetResetSwitchState(void);
@@ -109,10 +114,10 @@ extern "C" void fn_801196B4(void* p) {
 }
 
 extern "C" void fn_8011972C(void* p, u8* src) {
-    u8 b0 = src[0];
-    u8 b1 = src[1];
-    u8 b2 = src[2];
     u8 b3 = src[3];
+    u8 b2 = src[2];
+    u8 b1 = src[1];
+    u8 b0 = src[0];
     u8* d = (u8*)p;
     d[0xc] = b0;
     d[0xd] = b1;
