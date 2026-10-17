@@ -140,6 +140,26 @@ extern "C" void fn_800FFBCC(NaviState_800FFBCC* p) {
     (p->*lbl_8028DD1C[((u8*)p)[0xee]])();
 }
 
+extern "C" void fn_8010095C(void* param_1) {
+    if (fn_8002F87C() != 0) {
+        if (*(u16*)((u8*)param_1 + 0x18c) != 0) {
+            fn_8002F458((void*)0xad, 0);
+            fn_8002F7C0((void*)0x8, 0);
+            *(u32*)((u8*)param_1 + 0x124) = 0;
+            *(u8*)((u8*)*(void**)((u8*)param_1 + 0x110) + 0xb0) = 1;
+            *(u16*)((u8*)param_1 + 0x528) = 8;
+            *(u8*)((u8*)param_1 + 0xf2) = 0xe;
+            *(u8*)((u8*)param_1 + 0x188) = 1;
+            *(u8*)((u8*)param_1 + 0x189) = 0x11;
+        }
+    } else {
+        *(u8*)((u8*)param_1 + 0xf2) = 0xb;
+        *(u8*)((u8*)param_1 + 0x188) = 1;
+        *(u16*)((u8*)param_1 + 0x528) = 8;
+        *(u8*)((u8*)param_1 + 0x189) = 0xf;
+    }
+}
+
 extern "C" void fn_80100A08(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
@@ -527,6 +547,19 @@ extern "C" void fn_80106540(char* p) {
     *(unsigned char*)(*(char**)(p + 0x3f0) + 0xb0) = 1;
     *(unsigned char*)(p + 0x408) = lbl_802C5A84[0x48];
     *(unsigned char*)(p + 0x409) = 0;
+}
+
+extern "C" void fn_80106978(void* param_1) {
+    s32 iVar1;
+    iVar1 = fn_80108928(param_1, *(s16*)((u8*)param_1 + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), lbl_80301204, 0, 0, lbl_80301204, *(f32*)(lbl_802C5A84 + 0x38), lbl_80301204);
+    *(s16*)((u8*)param_1 + 0xec) = *(s16*)((u8*)param_1 + 0xec) + 1;
+    if (iVar1 == 1) {
+        *(s16*)((u8*)param_1 + 0xec) = 0;
+        *(u8*)(*(u32*)((u8*)param_1 + 0x25c) + 0xb0) = 1;
+        *(u8*)(*(u32*)((u8*)param_1 + 0x268) + 0xb0) = 1;
+        *(u8*)((u8*)param_1 + 0xf2) = 2;
+        *(u8*)((u8*)param_1 + 0xee) = 8;
+    }
 }
 
 extern "C" void fn_801074D4(void) {}
