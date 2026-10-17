@@ -30,6 +30,7 @@ extern "C" void fn_801645A8(void* p, s32 n);
 extern "C" void fn_80165C24(void* p, s32 n);
 extern "C" void fn_8015F248(s32 a, u32 b, u32 c, u32 d, s32 e);
 extern "C" s32 fn_801656F8(void* a, u32 b, u32 c, u32 d, u32 e, u32 f);
+extern "C" void* fn_8016579C(void* a, void* b, u32 c, u32 d, u32 e, u32 f, u32 g);
 extern u32 lbl_802FF654;
 extern u32 lbl_802FF65C;
 #pragma push
