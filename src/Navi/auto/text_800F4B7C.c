@@ -59,6 +59,7 @@ struct Unk80103664 {
 
 extern "C" s32 fn_801092B8(void* self, u8 a, u8 b, s32 c);
 extern "C" void fn_8017A4F8(void* p);
+extern char lbl_802C5A84[];
 
 extern void* lbl_8028E960[];
 extern "C" void fn_8015AB1C(void* ptr);
