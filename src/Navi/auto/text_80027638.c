@@ -177,6 +177,16 @@ extern "C" int fn_80029794(int a, int b, int c) {
     return fn_800294AC(a, b, c, lbl_802FFD10, 0, 0, *(int*)(b + 8), 0, 0, 0);
 }
 
+#pragma push
+#pragma use_lmw_stmw off
+extern "C" int fn_80029810(int a, int x, int y, int z, int c, int d, int e, int g, float f, int h, unsigned char i, unsigned char j) {
+    struct S_801F9280 tbl = lbl_801F9280;
+    tbl.v[4] = x;
+    tbl.v[5] = y;
+    tbl.v[6] = z;
+    return fn_800294AC(a, (int)&tbl, f, c, d, e, g, h, i, j);
+}
+#pragma pop
 extern "C" unsigned char* fn_800298BC(unsigned char* self, int id) {
     int i;
     for (i = 0; i < 8; i++) {
@@ -720,10 +730,10 @@ extern "C" int fn_80030588(int param_1) {
     return 0;
 }
 
-extern "C" signed char fn_80030638(int param_1) {
+extern "C" int fn_80030638(int param_1) {
     unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
     if (obj != 0) {
-        return (signed char)obj[param_1 + 0xc69];
+        return (int)(signed char)obj[param_1 + 0xc69];
     }
     return 0;
 }
