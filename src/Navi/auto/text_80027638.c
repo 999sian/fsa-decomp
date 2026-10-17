@@ -617,4 +617,18 @@ extern "C" int fn_8002F8AC(int p, int a, unsigned char b, unsigned char c, unsig
     return p;
 }
 
+extern "C" void fn_8002F9B4(void) {
+    extern int lbl_802FEE08;
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    if (obj != 0) {
+        lbl_802FEE28 = 0;
+        if (obj[0x56e] == 2) {
+            fn_8005869C(1, 3);
+            obj[0x56e] = 1;
+            obj[0x56f] = 3;
+        }
+        lbl_802FEE08 = -1;
+    }
+}
+
 extern "C" void fn_80030664(void) {}
