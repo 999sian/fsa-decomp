@@ -136,12 +136,29 @@ extern "C" void fn_800E8B24(u8* p) {
 
 extern "C" void fn_800EB018(void);
 extern "C" void fn_800EA20C(u8* p) {
-    u8 v = p[0xb14];
-    if (v != 0) {
-        p[0xb14] = v - 1;
+    if (p[0xb14] != 0) {
+        p[0xb14]--;
     } else {
         fn_800EB018();
         p[0xa76] = 0x3c;
+    }
+}
+
+extern "C" void fn_8002F358(s32 a, s32 b);
+extern "C" void fn_800EA4BC(void* param_1) {
+    s8 v = *(s8*)((u8*)param_1 + 0xa6a);
+    if (v == 0) {
+        fn_8002F358(0xe5, 0);
+    } else if (v < 3) {
+        fn_8002F358(0xe6, 0);
+    } else if (v < 5) {
+        fn_8002F358(0xe7, 0);
+    } else if (v < 7) {
+        fn_8002F358(0xe3, 0);
+    } else if (v < 10) {
+        fn_8002F358(0xe4, 0);
+    } else {
+        fn_8002F358(0xed, 0);
     }
 }
 
