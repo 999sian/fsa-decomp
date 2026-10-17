@@ -131,7 +131,7 @@ extern "C" int fn_800877E4(void* param_1) {
 
 extern "C" s32 fn_80087850(void* param_1) {
     fn_8004D270(param_1);
-    void* p = *(void**)((u8*)param_1 + 0x424);
+    u32 p = (u32)*(void**)((u8*)param_1 + 0x424);
     if (p != 0) {
         fn_800C576C();
     }
@@ -168,7 +168,7 @@ extern "C" int fn_80088080(void* param_1) {
     if (!byte) {
         *(u8*)((u8*)param_1 + 0x1d4) = byte + 1;
     } else if (byte != -1) {
-        fn_8001A454(3, 0, 5);
+        ((void (*)(void*, int, int, int))fn_8001A454)(param_1, 3, 0, 5);
     }
     return 1;
 }
@@ -290,7 +290,8 @@ extern "C" u16 fn_80088E0C(void* param_1) {
 
 extern "C" s32 fn_80088E18(VObj_80088E18* obj) {
     s32 a = obj->v6();
-    return obj->v5() + a;
+    s32 b = obj->v5();
+    return b + a;
 }
 
 extern "C" void fn_80088ED4(void);
