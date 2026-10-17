@@ -169,6 +169,22 @@ extern u32 j3dDefaultTexCoordInfo[];
 extern "C" void fn_800CB194(u32* out, u8* p, s32 idx, s32 b);
 extern "C" char lbl_8049AA38[];
 extern "C" char __vt__10J3DPEBlock[];
+extern "C" void* fn_800CC070(const void* base, const void* offset);
+extern "C" void* fn_800CC058(const void* base, const void* offset);
+extern "C" void* fn_800CC040(const void* base, const void* offset);
+extern "C" void* fn_800CC028(const void* base, const void* offset);
+extern "C" void* fn_800CC010(const void* base, const void* offset);
+extern "C" void* fn_800CBFF8(const void* base, const void* offset);
+extern "C" void* fn_800CBFE0(const void* base, const void* offset);
+extern "C" void* fn_800CBFC8(const void* base, const void* offset);
+extern "C" void* fn_800CBFB0(const void* base, const void* offset);
+extern "C" void* fn_800CBF98(const void* base, const void* offset);
+extern "C" void* fn_800CBF80(const void* base, const void* offset);
+extern "C" void* fn_800CBF68(const void* base, const void* offset);
+extern "C" void* fn_800CBF50(const void* base, const void* offset);
+extern "C" void* fn_800CBF38(const void* base, const void* offset);
+extern "C" void* fn_800CBF20(const void* base, const void* offset);
+extern "C" void* fn_800CBF08(const void* base, const void* offset);
 extern "C" u32 calcSizeColorBlock__11J3DMaterialFUl(u32);
 extern "C" u32 calcSizeTexGenBlock__11J3DMaterialFUl(u32);
 extern "C" u32 calcSizeTevBlock__11J3DMaterialFi(int);
@@ -315,7 +331,7 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
     if (*(void**)(p + 0x78) != NULL) {
         fn_800CAEC8(p, mat, idx, flags);
     } else {
-        u32 tevNum = 0;
+        u8 tevNum = 0;
         u32 texGenNum = 0;
         u32 tevStageNum;
         u8 indNum = 0;
@@ -361,8 +377,8 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
         if (entry[3] != 0xff) {
             indNum = (*(u8**)(p + 0x24))[entry[3]];
         }
-        texGenFlags = flags & 0x0C000000 & ~-(u32)(4 < indNum);
         peFlags = flags & 0x30000000;
+        texGenFlags = flags & 0x0C000000 & ~-(u32)(4 < indNum);
         indFlag = (flags >> 24) & 1;
 
         if (mat == NULL) {
@@ -372,31 +388,30 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
         size += calcSizeTexGenBlock__11J3DMaterialFUl(texGenFlags);
         size += calcSizeTevBlock__11J3DMaterialFi((u16)tevStageNum);
         size += calcSizeIndBlock__11J3DMaterialFi(indFlag);
-        size += calcSizePEBlock__11J3DMaterialFUlUl(peFlags, entry[0]);
+        size += calcSizePEBlock__11J3DMaterialFUlUl(peFlags, *(u8*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c));
 
-        entry = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
-        if (*(u16*)(entry + 0x48) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x48) != 0xffff) {
             size += 0x94;
         }
-        if (*(u16*)(entry + 0x4a) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4a) != 0xffff) {
             size += 0x94;
         }
-        if (*(u16*)(entry + 0x4c) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4c) != 0xffff) {
             size += 0x94;
         }
-        if (*(u16*)(entry + 0x4e) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4e) != 0xffff) {
             size += 0x94;
         }
-        if (*(u16*)(entry + 0x50) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x50) != 0xffff) {
             size += 0x94;
         }
-        if (*(u16*)(entry + 0x52) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x52) != 0xffff) {
             size += 0x94;
         }
-        if (*(u16*)(entry + 0x54) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x54) != 0xffff) {
             size += 0x94;
         }
-        if (*(u16*)(entry + 0x56) != 0xffff) {
+        if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x56) != 0xffff) {
             size += 0x94;
         }
     }
