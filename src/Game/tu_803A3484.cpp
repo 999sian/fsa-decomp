@@ -5,8 +5,6 @@ struct TResMgr {
     virtual void v01();
     virtual void v02();
     virtual void v03();
-    virtual void v04();
-    virtual void v05();
     virtual void* get(u32 type, const char* name);
 };
 
