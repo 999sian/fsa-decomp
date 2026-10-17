@@ -825,11 +825,11 @@ extern "C" void fn_80319870(Actor* this_)
 extern "C" void fn_803199AC(u32* param_1)
 {
     u32 state;
-    u8 cVar1;
+    int cVar1;
     if (param_1[0x90] != 0) {
-        cVar1 = ((u8 (*)(Actor*))((void**)*param_1)[13])((Actor*)param_1);
+        cVar1 = ((Actor*)param_1)->v11();
         state = param_1[0x90];
-        if ((state == 1 && cVar1 == 1) || (state == 2 && cVar1 == 0)) {
+        if ((state == 1 && (u8)cVar1 == 1) || (state == 2 && (u8)cVar1 == 0)) {
             *(u8*)(param_1 + 0x9c) = 0;
         } else {
             *(u8*)(param_1 + 0x9c) = 1;
