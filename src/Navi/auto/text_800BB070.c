@@ -30,9 +30,25 @@ struct VObj_800BD938 {
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_800BCF88(void) {}
 
+extern "C" void fn_800BCF8C(u8* p) {
+    *(u8*)(*(u8**)(p + 0x34) + 0xb0) = 1;
+    p[0xe4] = 2;
+    p[0xd4] = 1;
+}
+
 extern "C" void fn_800BD00C(u8* p) {
     *(s32*)(p + 0x48) = 0;
     *(*(u8**)(p + 0x34) + 0xb0) = 1;
+}
+
+extern "C" void fn_800BD024(u8* p) {
+    if (*(*(u8**)(p + 0x34) + 0xb0) != 0) {
+        *(s32*)(p + 0x48) = *(s32*)(p + 0x48) + 1;
+        if (*(s32*)(p + 0x48) >= *(s16*)(*(u8**)(p + 0x44) + 6)) {
+            *(s32*)(p + 0x48) = *(s32*)(p + 0x48) - *(s16*)(*(u8**)(p + 0x44) + 6);
+        }
+        *(f32*)(*(u8**)(p + 0x44) + 8) = (f32)*(s32*)(p + 0x48);
+    }
 }
 
 extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7) {
