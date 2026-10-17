@@ -29,6 +29,14 @@ extern "C" void fn_80236074(s32 a, s32 b, s32 c);
 extern "C" void fn_8013CC50(u32 a, Vec* b, f32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern "C" void* lbl_8053AAF8;
 extern "C" u32 lbl_804AB440[];
+extern "C" u8 sincosTable___5JMath[];
+
+static inline f32 rand01() {
+    u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
+    *s = *s * 0x19660du + 0x3c6ef35fu;
+    u32 a = (*s >> 9) | 0x3f800000u;
+    return *(f32*)&a - 1.0f;
+}
 extern "C" u32 fn_80325548(Actor* a, s32 b, s32 c) {
     s32 region = a->field_198;
     u8* base = static_cast<u8*>(fn_8020D58C());
