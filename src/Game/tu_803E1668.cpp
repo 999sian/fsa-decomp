@@ -145,3 +145,52 @@ extern "C" void fn_803ED5B4(u8* param_1) {
     fn_80458880(lbl_8053AF80, 0xb, -1);
 }
 
+extern "C" void fn_80456154(void* p);
+extern "C" s32 fn_8030AAF4(s32 i);
+extern "C" u8 fn_8030A308(void* a, s32 b);
+extern "C" u8 fn_8030A3B0(void* a, s32 b);
+extern "C" void* lbl_8053AD30;
+extern "C" u8* lbl_8053AAF8;
+struct T803ED83C;
+typedef void (T803ED83C::*PMF803ED83C)();
+extern PMF803ED83C lbl_804B08BC[];
+extern "C" void fn_803ED83C(u8* p) {
+    s32 i;
+
+    *(s32*)(p + 0x1d0) = 0;
+    if (*(s32*)(p + 0x1bc) == 0) {
+        if (fn_8030A3B0(lbl_8053AD30, fn_8030AAF4(0))) {
+            lbl_8053AAF8[0x82] |= 0x10;
+            *(s32*)(p + 0x1d0) += 1;
+        } else {
+            lbl_8053AAF8[0x82] &= ~0x10;
+        }
+        lbl_8053AAF8[0x82] &= ~0x20;
+        lbl_8053AAF8[0x82] &= ~0x40;
+        lbl_8053AAF8[0x82] &= ~0x80;
+    } else {
+        for (i = 0; i < 4; i++) {
+            if (i <= *(s32*)(p + 0x1bc)) {
+                if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
+                    lbl_8053AAF8[0x82] |= (u8)(1 << (i + 4));
+                    *(s32*)(p + 0x1d0) += 1;
+                } else {
+                    lbl_8053AAF8[0x82] &= ~(u8)(1 << (i + 4));
+                }
+            } else {
+                lbl_8053AAF8[0x82] &= ~(u8)(1 << (i + 4));
+            }
+        }
+    }
+    if (p[0x26e] == 0 || *(s32*)(p + 0x1d4) == 6) {
+        if (*(s32*)(p + 0x1d4) != 0xf) {
+            (((T803ED83C*)p)->*lbl_804B08BC[*(s32*)(p + 0x1d4)])();
+        } else {
+            (((T803ED83C*)p)->*lbl_804B08BC[*(s32*)(p + 0x1d8)])();
+        }
+        for (i = 0; i < 4; i++, p += 4) {
+            fn_80456154(*(void**)(p + 0x7c));
+        }
+    }
+}
+
