@@ -28,18 +28,19 @@ extern "C" void fn_80159C6C(void*, int);
 extern "C" void fn_80166B70(void*, int);
 extern "C" void fn_801BDE1C(void*, void*, int);
 extern "C" void fn_80166650(void*);
-extern "C" void DCInvalidateRange(void*, u32);
-extern "C" u8* fn_8015F520(u8* p) {
-    fn_80166B58(p + 0x20, p);
-    fn_80166B58(p + 0x30, p);
-    fn_801BDDBC(p + 0x68, p + 0x88, 1);
+#include "dolphin/os/OSCache.h"
+extern "C" void* fn_8015F520(void* param_1) {
+    u32 p = (u32)param_1;
+    fn_80166B58((void*)(p + 0x20), (void*)p);
+    fn_80166B58((void*)(p + 0x30), (void*)p);
+    fn_801BDDBC((void*)(p + 0x68), (void*)(p + 0x88), 1);
     *(u32*)(p + 0x58) = 0;
     *(u32*)(p + 0x5c) = 0;
     *(u32*)(p + 0x60) = 0;
     *(u32*)(p + 0x8c) = 0;
     *(u32*)(p + 0x90) = 0;
     *(u32*)(p + 0x94) = 0;
-    return p;
+    return (void*)p;
 }
 
 extern "C" void* fn_8015F590(u8* p, s16 del) {
