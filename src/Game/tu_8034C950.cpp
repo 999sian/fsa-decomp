@@ -1,4 +1,3 @@
-#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
 struct YasiDrawKey {
@@ -204,5 +203,8 @@ extern "C" void fn_8034DBF4(Actor* a) {
     *(u8*)(p + 0x384) = 0;
     *(u8*)(p + 0x385) = 0;
     *(u8*)(p + 0x382) = 0;
+}
+
+extern "C" void fn_8034DDCC(void) {
 }
 
