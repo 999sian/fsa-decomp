@@ -1,4 +1,18 @@
 #include "types.h"
+
+struct DtorSlot2 {
+	virtual void destroy(s32 freeFlag);
+};
+
+static inline void DispatchSlot2(char* slot) {
+	DtorSlot2* obj = *(DtorSlot2**)slot;
+	if (obj != 0) {
+		obj->destroy(1);
+	}
+	*(void**)slot = 0;
+}
+extern "C" char lbl_804B16A8[];
+extern "C" void __dl__FPv(void* this_);
 class J2DGrafContext;
 class J2DScreen {
 public:
