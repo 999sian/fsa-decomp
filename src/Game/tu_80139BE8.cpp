@@ -1,6 +1,27 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 
+extern unsigned char* lbl_8053AAF8;
+extern unsigned char lbl_80529DEC[];
+extern void* lbl_8053AC98;
+extern "C" void fn_80136500(void*);
+extern "C" void fn_8023F390(void);
+extern "C" void fn_801914C4(void*);
+extern "C" void fn_8016DE30(void*);
+extern "C" void fn_801F871C(void*);
+extern "C" void fn_80190DC8(void*);
+extern "C" void fn_8016DCEC(void*);
+extern "C" void fn_802A3A0C(void*);
+extern "C" void fn_8038D570(void);
+extern "C" void fn_80136364(void*);
+extern "C" void fn_8044B960(void*);
+extern "C" void fn_80118E20(void);
+extern "C" void* fn_80236100(s32);
+extern "C" void* fn_80237774(s32);
+extern "C" void* fn_80235A30(s32);
+extern "C" void* fn_8023587C(s32);
+extern "C" void* fn_80235ACC(s32);
+
 class VObj {
 public:
     virtual void v00();
@@ -113,6 +134,114 @@ extern "C" void fn_8013A1A4(unsigned char* p) {
     *(short*)(lbl_80529DEC + 0x1fa) = 0;
     lbl_80529DEC[0x24f] = fn_803B8C90();
     lbl_80529DEC[0x253] = 0;
+}
+
+extern unsigned char lbl_8049F080[];
+extern void* lbl_8053AB00;
+extern "C" void fn_8013A884(const unsigned char* src);
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteAllEmitter__17JPAEmitterManagerFv(void*);
+extern "C" void fn_8016EE84(void*, int);
+extern "C" void fn_80191744(void*, int);
+extern "C" void freeAll__7JKRHeapFv(void*);
+extern "C" void destroy__7JKRHeapFv(void*);
+extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
+extern "C" void __dl__FPv(void* this_);
+extern "C" void* fn_8013A27C(unsigned char* this_, s16 how) {
+	struct VObj {
+		virtual void v00();
+		virtual void v04();
+		virtual void v08(int);
+		virtual void v0C();
+	};
+
+	if (this_ != 0) {
+		*(void**)this_ = lbl_8049F080;
+		s32 buf = -0x100;
+		fn_8013A884((const unsigned char*)&buf);
+
+		void* mgr = fn_8013C824();
+		forceDeleteAllEmitter__17JPAEmitterManagerFv(*(void**)((char*)mgr + 0xc));
+
+		if (((u8*)lbl_80529DEC)[0x24b] != 0) {
+			((u8*)lbl_80529DEC)[0x24b] = 0;
+		}
+
+		if (*(void**)(this_ + 0x2c) != 0) {
+			((VObj*)*(void**)(this_ + 0x2c))->v08(1);
+		}
+		*(void**)(this_ + 0x2c) = 0;
+
+		if (*(void**)(this_ + 0x30) != 0) {
+			freeAll__7JKRHeapFv(*(void**)(this_ + 0x30));
+			destroy__7JKRHeapFv(*(void**)(this_ + 0x30));
+		}
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		fn_8016EE84(*(void**)(this_ + 0x24), 1);
+		*(void**)(this_ + 0x24) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		fn_80191744(*(void**)(this_ + 0x20), 1);
+		*(void**)(this_ + 0x20) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		if (*(void**)(this_ + 0x1c) != 0) {
+			((VObj*)*(void**)(this_ + 0x1c))->v08(1);
+		}
+		*(void**)(this_ + 0x1c) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		if (*(void**)(this_ + 0x18) != 0) {
+			((VObj*)*(void**)(this_ + 0x18))->v08(1);
+		}
+		*(void**)(this_ + 0x18) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		if (*(void**)(this_ + 0x14) != 0) {
+			((VObj*)*(void**)(this_ + 0x14))->v08(1);
+		}
+		*(void**)(this_ + 0x14) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		if (*(void**)(this_ + 0x10) != 0) {
+			((VObj*)*(void**)(this_ + 0x10))->v08(1);
+		}
+		*(void**)(this_ + 0x10) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		if (*(void**)(this_ + 0x8) != 0) {
+			((VObj*)*(void**)(this_ + 0x8))->v08(1);
+		}
+		*(void**)(this_ + 0x8) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		if (*(void**)(this_ + 0x4) != 0) {
+			((VObj*)*(void**)(this_ + 0x4))->v08(1);
+		}
+		*(void**)(this_ + 0x4) = 0;
+
+		getTotalFreeSize__7JKRHeapFv(lbl_8053AB00);
+		if (*(void**)(this_ + 0xc) != 0) {
+			((VObj*)*(void**)(this_ + 0xc))->v08(1);
+		}
+		*(void**)(this_ + 0xc) = 0;
+
+		if (*(void**)((char*)lbl_80529DEC + 0x10) != 0) {
+			((VObj*)*(void**)((char*)lbl_80529DEC + 0x10))->v0C();
+		}
+		*(void**)((char*)lbl_80529DEC + 0x10) = 0;
+
+		if (*(void**)((char*)lbl_80529DEC + 0x4c) != 0) {
+			((VObj*)*(void**)((char*)lbl_80529DEC + 0x4c))->v0C();
+		}
+		*(void**)((char*)lbl_80529DEC + 0x4c) = 0;
+
+		if (how > 0) {
+			__dl__FPv(this_);
+		}
+	}
+	return this_;
 }
 
 extern "C" void fn_8013A884(const unsigned char* src) {
