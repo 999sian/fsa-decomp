@@ -7,8 +7,6 @@
 
 class FsaSceneMgr {
 public:
-    virtual void v00();
-    virtual void v04();
     virtual void v08();
     virtual void v0C();
     virtual void v10();
@@ -85,38 +83,30 @@ extern "C" void fn_803DCCA4(u8* self)
             *(s32*)(self + 0x90) = 0;
         }
         if (self[0x9e] != 0 && self[0x9f] != 0) {
-            FsaSceneMgr* mgr = *(FsaSceneMgr**)(self + 0x8);
-            FsaSceneMgr* r = mgr->v3C(0x696d0000, 0x50, 0x696d3031);
-            r->v24(0);
-            mgr = *(FsaSceneMgr**)(self + 0x8);
-            r = mgr->v3C(0x696d0000, 0x50, 0x696d3032);
-            r->v24(0);
+            void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3031);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+            r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3032);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
         }
         if (self[0x9e] != 1 && self[0x9f] != 1) {
-            FsaSceneMgr* mgr = *(FsaSceneMgr**)(self + 0x8);
-            FsaSceneMgr* r = mgr->v3C(0x696d0000, 0x50, 0x696d3131);
-            r->v24(0);
-            mgr = *(FsaSceneMgr**)(self + 0x8);
-            r = mgr->v3C(0x696d0000, 0x50, 0x696d3132);
-            r->v24(0);
+            void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3131);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
+            r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3132);
+            ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, 0);
         }
         if (*(s32*)(self + 0x84) != 2) {
             switch (self[0x9e]) {
             case 0: {
-                FsaSceneMgr* mgr = *(FsaSceneMgr**)(self + 0x8);
-                FsaSceneMgr* r = mgr->v3C(0x696d0000, 0x50, 0x696d3031);
-                r->v24((s32)((f32)self[0x11a] * f31));
-                mgr = *(FsaSceneMgr**)(self + 0x8);
-                r = mgr->v3C(0x696d0000, 0x50, 0x696d3032);
-                r->v24((s32)((f32)self[0x11b] * f31));
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3031);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11a] * f31));
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3032);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11b] * f31));
             } break;
             case 1: {
-                FsaSceneMgr* mgr = *(FsaSceneMgr**)(self + 0x8);
-                FsaSceneMgr* r = mgr->v3C(0x696d0000, 0x50, 0x696d3131);
-                r->v24((s32)((f32)self[0x11c] * f31));
-                mgr = *(FsaSceneMgr**)(self + 0x8);
-                r = mgr->v3C(0x696d0000, 0x50, 0x696d3132);
-                r->v24((s32)((f32)self[0x11d] * f31));
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3131);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11c] * f31));
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3132);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11d] * f31));
             } break;
             }
         }
@@ -124,20 +114,16 @@ extern "C" void fn_803DCCA4(u8* self)
         if (*(s32*)(self + 0x84) != 1 || self[0x9e] != self[0x9f]) {
             switch (self[0x9f]) {
             case 0: {
-                FsaSceneMgr* mgr = *(FsaSceneMgr**)(self + 0x8);
-                FsaSceneMgr* r = mgr->v3C(0x696d0000, 0x50, 0x696d3031);
-                r->v24((s32)((f32)self[0x11a] * f31));
-                mgr = *(FsaSceneMgr**)(self + 0x8);
-                r = mgr->v3C(0x696d0000, 0x50, 0x696d3032);
-                r->v24((s32)((f32)self[0x11b] * f31));
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3031);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11a] * f31));
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3032);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11b] * f31));
             } break;
             case 1: {
-                FsaSceneMgr* mgr = *(FsaSceneMgr**)(self + 0x8);
-                FsaSceneMgr* r = mgr->v3C(0x696d0000, 0x50, 0x696d3131);
-                r->v24((s32)((f32)self[0x11c] * f31));
-                mgr = *(FsaSceneMgr**)(self + 0x8);
-                r = mgr->v3C(0x696d0000, 0x50, 0x696d3132);
-                r->v24((s32)((f32)self[0x11d] * f31));
+                void* r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3131);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11c] * f31));
+                r = ((void* (*)(void*, void*, s32, s32))((*(void***)*(void**)(self + 0x8))[0x3c / 4]))(*(void**)(self + 0x8), (void*)0x696d0000, 0x50, 0x696d3132);
+                ((void (*)(void*, s32))((*(void***)r)[0x24 / 4]))(r, (s32)((f32)self[0x11d] * f31));
             } break;
             }
         }
