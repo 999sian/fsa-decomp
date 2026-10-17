@@ -7,6 +7,7 @@ extern "C" s32 fn_800ED0E8(void*, s32, u8, s32, s32, f32, f32);
 extern "C" void fn_800E53A0(u8* p);
 extern "C" char lbl_802B7CA0[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" s32 fn_8002F168(u8* p);
 struct VObj_800D73FC {
     virtual void v0();
     virtual void v1();
@@ -375,6 +376,26 @@ extern "C" void fn_800E61E8(u8* p) {
         *(u16*)(p + 0xa9c) = *(s16*)(lbl_802C57D4 + 0x48);
         p[0xa76] = 4;
     }
+}
+
+extern "C" void fn_800E6478(u8* p) {
+    if (p[0x340] != 0) {
+        *(s32*)(p + 0x33c) = *(s32*)(p + 0x33c) + 1;
+        u8* q = *(u8**)(p + 0x338);
+        if (*(s16*)(q + 6) <= *(s32*)(p + 0x33c)) {
+            *(s32*)(p + 0x33c) = *(s32*)(p + 0x33c) - *(s16*)(q + 6);
+        }
+    }
+    *(f32*)(*(u8**)(p + 0x338) + 8) = (f32)*(s32*)(p + 0x33c);
+    if (p[0x341] != 0) {
+        *(s32*)(p + 0x334) = *(s32*)(p + 0x334) + 1;
+        u8* r = *(u8**)(p + 0x330);
+        if (*(s16*)(r + 6) <= *(s32*)(p + 0x334)) {
+            *(s32*)(p + 0x334) = *(s32*)(p + 0x334) - *(s16*)(r + 6);
+        }
+    }
+    *(f32*)(*(u8**)(p + 0x330) + 8) = (f32)*(s32*)(p + 0x334);
+    fn_8017A4F8(*(void**)(p + 0x2c));
 }
 
 extern "C" s32 fn_800EC62C(void*, s32, u8, s32, s32, f32, f32);
@@ -865,9 +886,8 @@ extern "C" void fn_800EC0E4(void* param_1) {
 
 extern "C" int fn_800ED4DC(u8* param_1, s16 param_2, u8 param_3, s32 param_4, s32 param_5) {
     float f;
-    s32 obj;
-    obj = *(s32*)(param_1 + 0x64);
-    if (*(u8*)(obj + 0xb0) == 0) {
+    s32 mode = param_5;
+    if (*(u8*)(*(u8**)(param_1 + 0x64) + 0xb0) == 0) {
         return 1;
     }
     if (param_2 < 0) {
@@ -877,7 +897,7 @@ extern "C" int fn_800ED4DC(u8* param_1, s16 param_2, u8 param_3, s32 param_4, s3
         return 1;
     }
     f = fn_800EE11C(param_1, param_3, param_2);
-    if (param_5 == 1) {
+    if (mode == 1) {
         f = lbl_803010D0 - f;
     }
     (*(VObj_800D73FC**)(param_1 + 0x64))->v7((int)((float)*(u8*)(param_1 + 0x70) * f));
