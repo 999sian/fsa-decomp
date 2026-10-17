@@ -29,8 +29,6 @@ struct VObj_800402B4 {
     virtual void m0();
     virtual void m1();
     virtual void m2(s16 a);
-    virtual void m3();
-    virtual void m4(s16 a);
 };
 extern "C" void* fn_800F0D64(void* p);
 extern u8 lbl_802BB0FC[];
