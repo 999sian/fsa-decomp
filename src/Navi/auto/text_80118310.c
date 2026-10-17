@@ -48,6 +48,7 @@ extern void (*lbl_802FF2D4)(s32, s32);
 extern u8 lbl_802FF2B8;
 extern u8 lbl_802FF2BC[4];
 extern u8 lbl_802FF2CC[4];
+extern "C" void fn_8011BF78(s32 chan, u8 stop);
 extern u32 lbl_802FF2D0;
 extern u32 lbl_80290128[];
 extern "C" void fn_801CE100(long chan, unsigned long command);
