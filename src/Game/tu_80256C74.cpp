@@ -39,6 +39,12 @@ extern const f32 lbl_805400D0;
 extern const f32 lbl_805400D4;
 extern const f32 lbl_805400D8;
 extern const f32 lbl_8054010C;
+extern const f32 lbl_805400E0;
+extern const f32 lbl_80540130;
+extern const JGeometry::TVec3<f32> lbl_8046AFE0[];
+extern "C" void* fn_802D6A9C();
+extern "C" void fn_802D79E8(void* mgr, s32 id, s32 a, f32 f1, f32 f2);
+extern "C" void fn_80134DE4(void* game, s32 a, s32 b);
 
 extern "C" u8 GetBusyLocked(void*);
 extern "C" u8 fn_802413F0(void*);
@@ -413,6 +419,48 @@ extern "C" void fn_802585F4(u8* p) {
 }
 
 extern "C" void fn_802586CC(void) {
+}
+
+extern "C" u8 fn_80247594(void*, s32);
+extern "C" void fn_802586D0(u8* p) {
+    u8 state = U8(p, 0x3fa);
+    if (state < 2) {
+        U8(p, 0x3fb) = 0;
+    } else if (state < 6) {
+        U8(p, 0x3fb) = 1;
+    } else if (state < 8) {
+        U8(p, 0x3fb) = 0;
+    } else {
+        U8(p, 0x3fb) = 0;
+        fn_80251AEC(p, 0);
+    }
+    if (U8(p, 0x3fa) == 2 && fn_80247594(p, 0) && S32(p, 0xb3c) < 0) {
+        JGeometry::TVec3<f32> pos = V3(p, 0x8);
+        switch (S32(p, 0x3dc)) {
+        case 0:
+            pos.y -= lbl_805400C8;
+            break;
+        case 1:
+            pos.y -= lbl_805400C8;
+            break;
+        case 2:
+            pos.x += lbl_805400C8;
+            break;
+        case 3:
+            pos.x -= lbl_805400C8;
+            break;
+        }
+        u32 flags;
+        s32 owner = S32(p, 0x4);
+        flags = (fn_802415CC(p) << 12) | ((S32(p, 0x3dc) & 3) << 4) | (owner & 3) | 0x140;
+        flags = Actor_CreateByID(fn_801F856C(), 0x46495245, S32(p, 0x3b4), &pos, flags, -1, owner);
+        u8* actor = fn_801F666C(fn_801F856C(), flags);
+        if (actor) {
+            S32(p, 0xb3c) = flags;
+            U8(p, 0x3fa) += 1;
+            fn_80268B3C(p);
+        }
+    }
 }
 
 extern "C" void fn_80258880(u8* p) {
