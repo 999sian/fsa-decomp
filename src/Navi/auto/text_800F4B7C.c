@@ -165,6 +165,12 @@ extern char lbl_8028D704[];
 extern "C" s32 fn_80108928(void* self, s16 a, u8 b, f32 c, s32 d, s32 e, f32 f, f32 g, f32 h);
 extern "C" void fn_8002F7C0(void* p, s32 b);
 extern "C" void fn_80107F20(void* self);
+extern "C" void fn_8003ABDC(void*, u32, u32, s32, s32);
+extern "C" void fn_8003ABF0(void*, u32, s32, u32, s32, s32, s32, s32);
+extern "C" void fn_80104320(void* self);
+extern "C" void fn_8010428C(void* self);
+extern "C" s32 fn_801093D4(void* self, u8 a, u8 b, s32 c);
+extern u16 lbl_8028D6E4[];
 extern "C" void fn_80103814(void* param_1) {
     f32 f = lbl_80301204;
     u8* base = (u8*)lbl_802C5A84;
