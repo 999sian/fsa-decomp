@@ -713,17 +713,19 @@ extern "C" void fn_80128620(char* p) {
 }
 
 extern "C" void fn_80128650(char* p, char* q) {
-    u8* info = **(u8***)(*(u8**)(p + 4) + 0x1c);
-    s32 a = *(s16*)(q + 0x80) + (q[0x95] & info[0x2f]);
+    char* info = **(char***)(*(char**)(p + 4) + 0x1c);
+    s32 a = *(s16*)(q + 0x80) + (*(u8*)(info + 0x2f) & *(u8*)(q + 0x95));
     s32 m = *(s16*)(info + 0x24) + 1;
-    *(s16*)(p + 0x214) = a - (a / m) * m;
+    s32 r = a / m;
+    *(s16*)(p + 0x214) = a - r * m;
 }
 
 extern "C" void fn_8012868C(char* p) {
-    char* info = *(char**)(*(char**)(p + 4) + 0x1c);
+    char* t = *(char**)(p + 4);
     char* obj = *(char**)p;
+    char* info = **(char***)(t + 0x1c);
     u32 a = *(u32*)(obj + 0x100);
-    s16 m = *(s16*)(*(char**)info + 0x24);
+    s16 m = *(s16*)(info + 0x24);
     u32 q = a / m;
     s32 r = a - q * m;
     *(s16*)(p + 0x214) = r + (q & 1) * (m - 2 * r);
@@ -762,6 +764,12 @@ extern "C" void fn_801287A0(u8* param_1, u8* param_2) {
     s32 d = *(s16*)(iVar2 + 0x24) + 1;
     s32 m = b & *(u8*)(iVar2 + 0x2f);
     *(s16*)(param_1 + 0x214) = m % d;
+}
+
+extern "C" void fn_801DACA4(s32, s32, s32, s32, s32, s32);
+extern "C" void fn_80128914(void)
+{
+	fn_801DACA4(0, 1, 4, 0x3c, 0, 0x7d);
 }
 
 extern "C" void fn_80128EE8(u8* a, u8* b) {
