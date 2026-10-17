@@ -55,6 +55,12 @@ extern "C" s32 fn_80239108(s32 handle);
 extern "C" s32 fn_80238BC4(s32 handle);
 extern "C" void fn_80238E08(s32 handle);
 extern "C" void fn_801F0E34(u8* this_, s32 a, s32 b);
+extern f32 lbl_80475248[];
+extern u8 lbl_804751F8[];
+extern f32 lbl_80543014;
+extern f32 lbl_8054301C;
+extern f32 lbl_80543020;
+extern f32 lbl_80543024;
 extern "C" void* fn_80379078(void* param_1, short param_2) {
     if (param_1 != 0) {
         *(void**)param_1 = lbl_804AE8F4;
