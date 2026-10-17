@@ -112,6 +112,11 @@ void fn_801F0E34(void*, u32, s32);
 void fn_801D22DC(void*, s32, s32, s32);
 void fn_801D1F14(void*, f32);
 s32 fn_8022EA0C(s32);
+u8 fn_80234E30(s32);
+u8 fn_80235448(s32);
+u8 fn_8023BCD4(s32);
+s32 fn_8023DE58(s32);
+s32 fn_8023E10C(s32);
 s32 fn_8022CAF8(s32);
 u8 fn_8022E438(s32, s32);
 s32 fn_8022E970(s32);
@@ -705,6 +710,48 @@ extern "C" void fn_80122E34(u8* self, f32* x, f32* y, s32* player) {
         *x = lbl_8053C9B8;
         *y = lbl_8053C9BC * t + offset;
         break;
+    }
+}
+
+extern "C" void fn_8012309C(u8* self, s16* ang, s32* quad, f32* z, s32* outIdx, s32 e) {
+    if (self[0x334] != 0) {
+        fn_801EEC98(self, *(s32*)(self + 0x198), (s32*)ang, quad, z, (f32*)outIdx, e, 2);
+        self[0x334] = 0;
+        return;
+    }
+    f32 ox = 0.0f;
+    f32 oy = 0.0f;
+    s32 idx = e;
+    switch (fn_8022CAF8(e)) {
+    case 0:
+        ((CompanionCalls*)self)->v41(&ox, &oy, &idx);
+        break;
+    case 1:
+        ((CompanionCalls*)self)->v42(&ox, &oy, &idx);
+        break;
+    case 2:
+        ((CompanionCalls*)self)->v43(&ox, &oy, &idx);
+        break;
+    case 3:
+        ((CompanionCalls*)self)->v44(&ox, &oy, &idx);
+        break;
+    case 5:
+        ((CompanionCalls*)self)->v45(&ox, &oy, &idx);
+        break;
+    case 4:
+    default:
+        ((CompanionCalls*)self)->v46(&ox, &oy, &idx);
+        break;
+    }
+    f32 dx = *(f32*)(self + 0xC) - (ox + fn_8023E724(idx)->x);
+    f32 dy = *(f32*)(self + 0x10) - (oy + fn_8023E724(idx)->y);
+    f32 len = std::sqrtf(dx * dx + dy * dy);
+    if (fpclassify(len) == 1) {
+        *z = NAN;
+        f32 a = JMath::atanTable_.atan2_(-dx, -dy);
+        *ang = (s16)(a * 10430.4f);
+        *quad = ClassifyBamAngleToQuadrant(*ang);
+        *outIdx = e;
     }
 }
 
