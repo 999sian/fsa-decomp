@@ -40,6 +40,12 @@ struct SubObj {
     virtual SubObj* w13(u64 x);
 };
 extern u8 lbl_8048E1B8[];
+extern u8 lbl_8050EC80[];
+extern u32 lbl_804B145C[];
+extern "C" u32 fn_802375B0(s32 i);
+extern "C" void fn_80421A34(u8* this_, s32 i, u8 flag);
+extern "C" void fn_80424148(u8* this_, s32 i, u8 flag);
+extern "C" void fn_8044172C(void* p);
 extern u8* lbl_8053AED0;
 extern u8* lbl_8053AD30;
 extern "C" u8 fn_80230188(s32 i);
@@ -302,6 +308,79 @@ extern "C" void fn_80421D78(u8* this_, s32 idx) {
     }
     if (*(s16*)(this_ + idx * 2 + 0x208) > 0) {
         *(s16*)(this_ + idx * 2 + 0x208) = *(s16*)(this_ + idx * 2 + 0x208) - 1;
+    }
+}
+
+extern "C" void fn_80423804(u8* this_, u32 idx) {
+    u8* base = lbl_8048E1B8;
+    if (this_[0x256] & (u8)(1 << idx)) {
+        s32 n = fn_80237810(idx);
+        s32 cnt = *(s32*)(lbl_80529DEC + idx * 4 + 0xd8);
+        s32 k = cnt;
+        if (n > 0x20) {
+            n = 0x20;
+        }
+        if (n < 0) {
+            n = 0;
+        }
+        if (n < cnt) {
+            k = n;
+        }
+        if (k < 0) {
+            k = 0;
+        }
+
+        u32 off = idx * 0x40;
+        u64* a = (u64*)(base + 0x228 + off);
+        u64* b = (u64*)(base + 0x328 + off);
+        u64* c = (u64*)(base + 0x428 + off);
+        u64* d = (u64*)(base + 0x528 + off);
+        for (s32 j = 0; j < 8; j++) {
+            if (k >= 4) {
+                SetSub(GetSub(this_, *a), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                SetSub(GetSub(this_, *b), lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                GetSub(this_, *c)[0xb0] = 0;
+                GetSub(this_, *d)[0xb0] = 0;
+                n -= 4;
+                k -= 4;
+            } else {
+                if (k == 0) {
+                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    if (n > 0) {
+                        GetSub(this_, *c)[0xb0] = 1;
+                        GetSub(this_, *d)[0xb0] = 1;
+                        n -= 4;
+                    } else {
+                        GetSub(this_, *c)[0xb0] = 0;
+                        GetSub(this_, *d)[0xb0] = 0;
+                    }
+                } else if (k == 1) {
+                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    GetSub(this_, *c)[0xb0] = 0;
+                    GetSub(this_, *d)[0xb0] = 0;
+                    n -= 4;
+                } else if (k == 2) {
+                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    GetSub(this_, *c)[0xb0] = 0;
+                    GetSub(this_, *d)[0xb0] = 0;
+                    n -= 4;
+                } else if (k == 3) {
+                    SetSub(GetSub(this_, *a), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    SetSub(GetSub(this_, *b), lbl_80543A40, lbl_80543A4C, lbl_80543A40, lbl_80543A40, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C, lbl_80543A4C);
+                    GetSub(this_, *c)[0xb0] = 0;
+                    GetSub(this_, *d)[0xb0] = 0;
+                    n -= 4;
+                }
+                k = 0;
+            }
+            a++;
+            b++;
+            c++;
+            d++;
+        }
     }
 }
 
