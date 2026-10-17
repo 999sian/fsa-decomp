@@ -412,7 +412,7 @@ extern "C" s32 fn_800865DC(void* self_) {
     return *(s32*)((u8*)self_ + 0x6c) * result;
 }
 
-void fn_80086614(void* self_) {
+extern "C" void fn_80086614(void* self_) {
     u32 result = fn_8008603C((int)self_, 0);
     fn_8008665C((int)self_, result);
 }
