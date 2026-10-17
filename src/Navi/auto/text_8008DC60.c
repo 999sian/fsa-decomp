@@ -1017,6 +1017,21 @@ extern "C" void* fn_80096950(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800969AC(u8* p) {
+    fn_800C1278(*(void**)(p + 0x294));
+    fn_800C55B8(*(void**)(p + 0x284), ((u8*)*(void**)(p + 0x294))[0x222]);
+    if (((u8*)*(void**)(p + 0x294))[0x21d] != 0) {
+        fn_800C3EE8();
+        DtorVObj_800A0008* o = *(DtorVObj_800A0008**)(p + 0x294);
+        if (o != 0) {
+            o->Destroy(1);
+        }
+        *(void**)(p + 0x294) = 0;
+        p[0x7e8] = 2;
+        p[0x85c] = 7;
+    }
+}
+
 extern "C" void fn_80096A38(void) {}
 
 extern "C" void fn_80096A3C(NaviState_8009E6F0* p) {
