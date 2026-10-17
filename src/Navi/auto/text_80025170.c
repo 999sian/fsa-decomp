@@ -57,6 +57,14 @@ extern "C" void fn_80025878(u8* p) {
     }
 }
 
+extern "C" void fn_80026410(u8 i) {
+    u8* p = lbl_802BBD38 + i * 0x204;
+    (*(s16*)(p + 0x202))++;
+    if (*(s16*)(p + 0x202) >= 0x10) {
+        *(s16*)(p + 0x202) = 0;
+    }
+}
+
 extern "C" void fn_80026448(u8 i) {
     u8* p = lbl_802BBD38 + i * 0x204;
     (*(s16*)(p + 0x200))++;
