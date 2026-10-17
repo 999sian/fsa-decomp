@@ -11,6 +11,20 @@ extern const f32 lbl_805407A0;
 extern const f32 lbl_805407A4;
 extern const f32 lbl_805407B4;
 extern const f32 lbl_805407B8;
+extern const f32 lbl_805407A8;
+extern const f32 lbl_805407AC;
+extern const f32 lbl_805407B0;
+extern "C" s32 fn_8023AF14(f32* pos, s32 a, s32 b);
+extern "C" u8 fn_80388EEC(void* p);
+extern "C" void fn_80230224(s32 a, s32 b);
+extern "C" u8 fn_8023ED8C(void);
+extern "C" u8 fn_8023EBB8(s32 a);
+extern "C" void* fn_8023E724(s32 a);
+extern "C" u8 fn_802308E0(s32 a);
+extern "C" void fn_801F856C(void);
+extern "C" void Actor_CreateByID(void* mgr, s32 id, s32 a, void* pos, s32 b, s32 c, s32 d);
+extern "C" void fn_8030C210(void* a, void* b);
+extern void* lbl_8053AB10;
 extern "C" void* fn_802A40B8(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804A7E58;
