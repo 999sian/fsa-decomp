@@ -85,6 +85,7 @@ extern "C" const s32 lbl_8046DFD0[];
 extern "C" const f64 lbl_80540E70;
 extern "C" const f32 lbl_80540E78;
 extern "C" const f32 lbl_80540E80;
+extern "C" const f32 lbl_80540E7C;
 extern "C" const f32 lbl_80540E84;
 extern "C" void fn_802F86CC(u32 sobRenderer, Vec* pos, u32 sobResource, s32 spriteId,
                             f32 scaleX, f32 scaleY, SobDrawParams* drawParams);
