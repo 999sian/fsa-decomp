@@ -1162,11 +1162,12 @@ extern "C" void fn_80139DB0(void* param_1, fn_80139DB0_Obj* param_2) {
 }
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    u32 derived = (u32)lbl_80292C80;
-    u32 base = (u32)lbl_802911A0;
-    *(u32*)param_1 = base;
-    *(u32*)param_1 = derived;
-    ((u32*)param_1)[1] = param_2;
+    void* vt[2];
+    vt[0] = lbl_802911A0;
+    vt[1] = lbl_80292C80;
+    param_1[0] = vt[0];
+    param_1[0] = vt[1];
+    param_1[1] = (void*)param_2;
 }
 
 extern "C" void fn_80167880(void*, int);
@@ -1327,11 +1328,8 @@ extern "C" void fn_80167BB0(void* p, u32 x);
 extern "C" void* fn_80167818(void* x, void* y, void* z, u32 w);
 extern void* lbl_80292EC4[];
 extern "C" void fn_8013A388(void** a, void** b, void** c, u32 d) {
-    Iter_8013A388 ib = *(Iter_8013A388*)b;
-    Iter_8013A388 ic = *(Iter_8013A388*)c;
-    while (iterNe_8013A388(ib, ic) && !fn_8013A48C((u8*)*b - 0xc, d)) {
+    while (iterNe_8013A388(*(Iter_8013A388*)c, *(Iter_8013A388*)b) && !fn_8013A48C((u8*)*b - 0xc, d)) {
         *b = *(void**)*b;
-        ib = *(Iter_8013A388*)b;
     }
     *a = *b;
 }
@@ -1730,3 +1728,5 @@ extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+struct Pair_8013A388 { void* first; void* second; };
+inline bool pairNe_8013A388(Pair_8013A388 p) { return p.first != p.second; }
