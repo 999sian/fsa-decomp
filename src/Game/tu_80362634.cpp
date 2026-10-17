@@ -46,6 +46,27 @@ extern "C" f32 lbl_80542BB8;
 extern "C" void* fn_801F856C(void);
 extern "C" s32 fn_801CD664(s32 n);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
+
+static inline bool fn_80364340_isBadPos(Vec* p) {
+    if (p->x >= lbl_80542B20 && p->x > lbl_80542B24) {
+        return true;
+    }
+    if (p->y >= lbl_80542B28 && p->y > lbl_80542B2C) {
+        return true;
+    }
+    if (p->x + p->y < lbl_80542B30) {
+        return true;
+    }
+    if (p->x > lbl_80542B34 && p->y < lbl_80542B38) {
+        return true;
+    }
+    Vec v1 = {lbl_80542B3C, lbl_80542B38, lbl_80542B0C};
+    if (PSVECDistance(p, &v1) < lbl_80542B40) {
+        return true;
+    }
+    Vec v2 = {lbl_80542B44, lbl_80542B48, lbl_80542B0C};
+    return PSVECDistance(p, &v2) < lbl_80542B40;
+}
 extern "C" const s32 lbl_80474A98[];
 extern "C" const s32 lbl_80474AD8[];
 
@@ -54,6 +75,99 @@ extern "C" void fn_80362634(char* self) {
         void* mgr = *(void**)((char*)fn_8013C824() + 0xc);
         forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(mgr, *(void**)(self + 0x300));
         *(void**)(self + 0x300) = NULL;
+    }
+}
+
+extern "C" void fn_80362680(char* self) {
+    struct {
+        u8 unk_0x0[16];
+        s32 unk_0x10;
+        s32 unk_0x14;
+        void* unk_0x18;
+        u8 unk_0x1c;
+        u8 unk_0x1d;
+        u8 unk_0x1e;
+        u8 unk_0x1f;
+        u8 unk_0x20;
+        u8 unk_0x21[5];
+        u8 unk_0x26;
+        s32 unk_0x28;
+        u8 unk_0x2c;
+        u8 unk_0x2d[2];
+        s32 unk_0x30;
+        s32 unk_0x34;
+        s32 unk_0x38;
+    } p;
+    f32 vecs[12];
+    u8 i;
+
+    p.unk_0x10 = -1;
+    p.unk_0x14 = -1;
+    for (i = 0; i < 0x10; i += 8) {
+        p.unk_0x0[i] = i;
+        p.unk_0x0[(u8)(i + 1)] = i + 1;
+        p.unk_0x0[(u8)(i + 2)] = i + 2;
+        p.unk_0x0[(u8)(i + 3)] = i + 3;
+        p.unk_0x0[(u8)(i + 4)] = i + 4;
+        p.unk_0x0[(u8)(i + 5)] = i + 5;
+        p.unk_0x0[(u8)(i + 6)] = i + 6;
+        p.unk_0x0[(u8)(i + 7)] = i + 7;
+    }
+    p.unk_0x1f = 1;
+    p.unk_0x10 = -1;
+    p.unk_0x14 = 0;
+    p.unk_0x18 = NULL;
+    p.unk_0x1c = 0;
+    p.unk_0x1d = 0;
+    p.unk_0x1e = 0;
+    p.unk_0x20 = 1;
+    p.unk_0x21[0] = 0;
+    p.unk_0x21[1] = 0;
+    p.unk_0x21[2] = 0;
+    p.unk_0x21[3] = 0;
+    p.unk_0x21[4] = 0;
+    p.unk_0x26 = 1;
+    p.unk_0x28 = 3;
+    p.unk_0x2c = 1;
+    p.unk_0x2d[0] = 0;
+    p.unk_0x2d[1] = 0;
+    p.unk_0x30 = -1;
+    p.unk_0x34 = 0;
+    p.unk_0x38 = 2;
+    p.unk_0x1f = 0;
+
+    if (*(s32*)(self + 0x234) == 0x10 || *(s32*)(self + 0x234) == 8) {
+        p.unk_0x1d = 1;
+    }
+    if (*(s32*)(self + 0x234) == 4) {
+        if (*(s32*)(self + 0x238) == 0x1d || *(s32*)(self + 0x238) == 0x1e) {
+            p.unk_0x26 = 0;
+        }
+        if (*(s32*)(self + 0x238) >= 0x26 && *(s32*)(self + 0x238) <= 0x29) {
+            *((u8*)&p.unk_0x10 + 3) = 0x66;
+        }
+    }
+    if (*(u8*)(self + 0x278) == 1) {
+        vecs[0] = lbl_80542B5C;
+        vecs[1] = lbl_80542B0C;
+        vecs[2] = lbl_80542B0C;
+        vecs[3] = lbl_80542B0C;
+        vecs[4] = lbl_80542B0C;
+        vecs[5] = lbl_80542B10;
+        vecs[6] = lbl_80542B0C;
+        vecs[7] = lbl_80542B0C;
+        vecs[8] = lbl_80542B0C;
+        vecs[9] = lbl_80542B0C;
+        vecs[10] = lbl_80542B10;
+        vecs[11] = lbl_80542B0C;
+        p.unk_0x18 = vecs;
+    }
+    if (*(s32*)(self + 0x258) == 0) {
+        fn_801F06F0(self, (const char*)lbl_80474320 + 0x8b4, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
+    } else if (*(s32*)(self + 0x258) == 1) {
+        fn_801F06F0(self, (const char*)lbl_80474320 + 0x8c8, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
+    } else if (*(s32*)(self + 0x258) == 2) {
+        fn_801F06F0(self, (const char*)lbl_80474320 + 0x8dc, *(s32*)(self + 0x26c) + *(s32*)(self + 0x264), (s32)&p, 7, lbl_80542B10, lbl_80542B10);
     }
 }
 
