@@ -50,6 +50,17 @@ extern "C" unsigned char fn_800B51E8(void* self, int i) {
     return lbl_802313EC[i];
 }
 
+extern "C" void fn_800B51F8(NaviState_800B51F8* p) {
+    ((u8*)p)[0x3a2] = 0;
+    (p->*lbl_802876DC[*(u32*)((u8*)p + 0x378)])();
+    fn_800B7234((u8*)p);
+    fn_800B7448((u8*)p);
+    fn_800B9754((char*)p);
+    fn_800B9588((u8*)p);
+    fn_800B96D8((char*)p);
+    fn_8017A4F8(*(void**)((u8*)p + 8));
+}
+
 extern "C" void fn_800B562C(u8* p) {
     if (fn_8002F6BC() == 0) {
         if (p[0x39e] != 0) {
