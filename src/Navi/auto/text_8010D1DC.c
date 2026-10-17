@@ -27,6 +27,14 @@ extern "C" void fn_8010EA18(u8* p) {
     }
 }
 
+struct NaviState_8010D1DC;
+typedef void (NaviState_8010D1DC::*NaviStateFn_8010D1DC)();
+extern NaviStateFn_8010D1DC lbl_8028EF1C[];
+extern "C" void fn_8010EC3C(NaviState_8010D1DC* p) {
+    ((u8*)p)[0xd7] = 0;
+    (p->*lbl_8028EF1C[((u8*)p)[0xcf]])();
+}
+
 extern "C" void fn_8010F818(void)
 {
 }
