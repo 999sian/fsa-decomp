@@ -1306,6 +1306,7 @@ inline void* operator new(unsigned long, void* p) { return p; }
 struct Base_802911A0 {
     void* vt;
     Base_802911A0() { vt = (void*)lbl_802911A0; }
+    void setVt(void* v) { vt = v; }
 };
 struct Obj_80139DEC : Base_802911A0 {
     u32 val;
@@ -1313,7 +1314,7 @@ struct Obj_80139DEC : Base_802911A0 {
 };
 
 extern "C" void fn_80139DEC(void** param_1, u32 param_2) {
-    ((Obj_80139DEC*)param_1)->Obj_80139DEC::Obj_80139DEC(param_2);
+    new (param_1) Obj_80139DEC(param_2);
 }
 
 extern "C" void fn_80167880(void*, int);
