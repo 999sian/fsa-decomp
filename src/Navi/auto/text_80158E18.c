@@ -300,6 +300,60 @@ extern "C" void fn_80159608(int id, short* p) {
     *(volatile u32*)0xCC008000 = reg;
 }
 
+extern "C" void fn_80159668(float* m, u32 id) {
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u16*)0xCC008000 = 0xb;
+    *(volatile u16*)0xCC008000 = (u16)(id << 2);
+    {
+        float f = m[0];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[1];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[2];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[3];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[4];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[5];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[6];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[7];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[8];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[9];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[10];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+    {
+        float f = m[11];
+        *(volatile u32*)0xCC008000 = *(u32*)&f;
+    }
+}
+
 extern "C" void fn_80159750(float* m, int id) {
     volatile unsigned char* fifo = (volatile unsigned char*)0xCC008000;
     float f;
@@ -729,6 +783,7 @@ extern "C" char* fn_8015AC00(void* arg, void* arg2) {
 extern "C" char* fn_8015AC80(u32 param_1, char* param_2, char* param_3) {
     char* iVar2;
     char* iVar3;
+    char* iVar4;
     if (param_2 == 0) {
         param_2 = lbl_802FF548;
     }
@@ -743,10 +798,9 @@ extern "C" char* fn_8015AC80(u32 param_1, char* param_2, char* param_3) {
     if (iVar2 == 0) {
         return 0;
     }
+    iVar4 = iVar2 + 0x90;
     iVar3 = iVar2;
-    if (iVar2 != 0) {
-        iVar3 = fn_8015ADE8(iVar2, iVar2 + 0x90, (int)(param_1 - 0x90), (int)param_2, param_3);
-    }
+    iVar3 = fn_8015ADE8(iVar2, iVar4, (int)(param_1 - 0x90), (int)param_2, param_3);
     if (iVar3 == 0) {
         fn_80159C6C(iVar2, 0);
         return 0;
@@ -1202,9 +1256,8 @@ extern "C" int fn_8015CAD4(void* p, u32 size, s32 align) {
     u8* self = (u8*)p;
     int ret = 0;
     u32 n = (size + 3) & ~3;
-    u32 a = align;
     u32 cur = *(u32*)(self + 0x70);
-    u32 aligned = ~(a - 1) & (a + cur - 1);
+    u32 aligned = ~(align - 1) & (align + cur - 1);
     u32 need = n + (aligned - cur);
     if (need <= *(u32*)(self + 0x6c)) {
         *(u32*)(self + 0x70) = cur + need;
