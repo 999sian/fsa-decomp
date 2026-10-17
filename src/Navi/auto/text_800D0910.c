@@ -82,6 +82,57 @@ extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
 extern "C" void fn_8015FDA8(void*, void*);
 extern "C" unsigned char lbl_802C5774[];
+extern char lbl_8029FDB4[];
+extern char lbl_802891D8[];
+extern s32 lbl_802FEC70;
+extern s32 lbl_802FD4E0;
+extern s32 lbl_802FD4E4;
+extern s32 lbl_802FD4EC;
+extern "C" u8 fn_800126C8(void*, void*, void*);
+extern "C" void* fn_8015A90C(u32 size);
+extern "C" void* fn_80178E80(void* self);
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void* a, void* b, s32 c, void* d, void* e, ...);
+extern "C" void fn_80007AB8(void* a, s32 b, void* c, ...);
+extern "C" void fn_80179030(void* a, void* b, s32 c, void* d);
+extern "C" void fn_800D0A4C(u8* p);
+extern "C" void fn_800D1E44(u8* p);
+extern "C" void fn_800D0910(u8* p) {
+    char* base = lbl_802891D8;
+    u8* tbl = lbl_802C5774;
+    void* obj;
+    s32 v;
+    if ((s8)tbl[4] < 0) {
+        tbl[4] = fn_800126C8(lbl_8029FDB4 + 4, base + 0x140, tbl);
+    }
+    v = lbl_802FEC70;
+    *(s32*)(tbl + 8) += 1;
+    *(s32*)(p + 4) = v;
+    obj = fn_8015A90C(0x118);
+    if (obj != 0) {
+        obj = fn_80178E80(obj);
+    }
+    *(void**)(p + 0xc) = obj;
+    if (*(void**)(p + 0xc) == 0) {
+        fn_8011FD18(fn_8011FD10(), base + 0x150, 0x79, &lbl_802FD4E0, base + 0x164);
+        fn_80007AB8(base + 0x150, 0x79, &lbl_802FD4E4);
+    }
+    fn_80179030(*(void**)(p + 0xc), &lbl_802FD4EC, 0x100000, *(void**)(p + 4));
+    fn_800D0A4C(p);
+    fn_800D1E44(p);
+    p[0x286] = 0;
+    p[0x267] = 0;
+    p[0x268] = 0;
+    p[0x266] = 0;
+    p[0x26c] = 0;
+    p[0x265] = 0;
+    p[0x283] = 0;
+    p[0x284] = 0;
+    p[0x26e] = -1;
+    p[0x287] = 0;
+    p[0x264] = 0;
+}
+
 extern "C" void fn_800D1E44(u8* p) {
     u8* tbl = lbl_802C5774;
     s32 i;
