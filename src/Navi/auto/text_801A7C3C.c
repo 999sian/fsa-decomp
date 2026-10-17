@@ -669,6 +669,10 @@ extern "C" void* fn_801ADF28(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" s32 fn_801ADF94(void) {
+    return 0xc;
+}
+
 extern "C" int fn_801AE024(void) {
     return 4;
 }
