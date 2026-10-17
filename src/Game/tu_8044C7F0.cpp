@@ -27,6 +27,7 @@ struct UlPane {
     virtual void v34();
     virtual void v38();
     virtual UlPane* search(u32, u32, u32);
+    UlPane* find(u64 tag) { return search((u32)(tag >> 32) << 16, (u32)(tag >> 32), (u32)tag); }
 };
 
 extern "C" void* fn_8013C824(void);
@@ -82,6 +83,31 @@ extern "C" void fn_8044C7F0(u8* self) {
             *(void**)(self + 0xc0 + i * 4) = NULL;
         }
     }
+}
+
+extern "C" void fn_8044C968(u8* self) {
+    s32 i;
+    u8* p = self;
+    for (i = 0; i < 3; i++) {
+        fn_80402E08(*(void**)(p + 0x48), lbl_80543DF8, lbl_80543DFC);
+        fn_80402E08(*(void**)(p + 0x60), lbl_80543DF8, lbl_80543DFC);
+        *(s16*)(*(u8**)(p + 0x48) + 0x20) = 0;
+        *(s16*)(*(u8**)(p + 0x60) + 0x20) = 0;
+        (*(UlPane**)(*(u8**)(p + 0x48) + 4))->setAlpha(0);
+        *(s16*)(*(u8**)(p + 0x48) + 0x26) = 0;
+        (*(UlPane**)(*(u8**)(p + 0x54) + 4))->setAlpha(0);
+        *(s16*)(*(u8**)(p + 0x54) + 0x26) = 0;
+        (*(UlPane**)(*(u8**)(p + 0x60) + 4))->setAlpha(0);
+        *(s16*)(*(u8**)(p + 0x60) + 0x26) = 0;
+        p += 4;
+    }
+    (*(UlPane**)(self + 4))->search(0x756c0000, 0x5063, 0x756c3031)
+        ->move(lbl_80543DF8 + *(f32*)(self + 0x114),
+               *(f32*)(self + 0x118) + *(f32*)(self + 0x108 + *(s16*)(self + 0xf8) * 4));
+    (*(UlPane**)(self + 4))->search(0x756c0000, 0x5063, 0x756c3031)->setAlpha(0);
+    *(s16*)(self + 0x132) = 0;
+    *(s16*)(self + 0xfe) = 0;
+    *(s16*)(self + 0xfa) = 2;
 }
 
 extern "C" u8 fn_8044CB00(u8* p) { return p[0x140]; }
