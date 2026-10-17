@@ -1,6 +1,7 @@
 // TU 0x802c1614-0x802c5950 (actor KEY0).
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "Game/esd/types.h"
+#include "Game/ItemBase.h"
 
 #undef ALIGN_NEXT
 #undef ALIGN_PREV
@@ -321,51 +322,57 @@ extern "C" void fn_802C24A8(u8* p) {
 }
 
 extern "C" BOOL fn_802C2684(void* unused, u8* p, f32* rect) {
-    bool hit = false;
-    if (p != 0) {
-        u32 tag = *(u32*)(p + 0x1a0);
-        if (tag == 'LIFT' || tag == 'LIF2' || tag == 'CLOD' || (tag == 'OBLF' && *(s32*)(p + 0x230) == 0) ||
-            (tag == 'SSLF' && (*(s16*)(p + 0x230) & 0x7fff) == 0)) {
-            f32 x0 = *(f32*)(p + 0x60);
-            f32 y0 = *(f32*)(p + 0x64);
-            f32 x1 = *(f32*)(p + 0x68);
-            f32 y1 = *(f32*)(p + 0x6c);
-            f32 px = *(f32*)(p + 0xc);
-            f32 py = *(f32*)(p + 0x10);
-            x0 += px;
-            y0 += py;
-            x1 += px;
-            y1 += py;
-            s32 type = *(s32*)(p + 4);
-            u8* base = (u8*)fn_802D6A9C();
-            f32* off;
-            if (type < 8) {
-                off = (f32*)(base + 0xcc);
-            } else {
-                off = (f32*)(base + 0xdc);
-            }
-            x0 += -off[0];
-            y0 += -off[1];
-            x1 += -off[0];
-            y1 += -off[1];
-            if (x0 <= rect[0]) {
-                x0 = rect[0];
-            }
-            if (y0 <= rect[1]) {
-                y0 = rect[1];
-            }
-            if (x1 >= rect[2]) {
-                x1 = rect[2];
-            }
-            if (y1 >= rect[3]) {
-                y1 = rect[3];
-            }
-            if (x1 >= x0 && y1 >= y0) {
-                hit = true;
-            }
+    if (p == 0) {
+        return 0;
+    }
+    u32 tag = *(u32*)(p + 0x1a0);
+    if (tag == 'LIFT' || tag == 'LIF2' || tag == 'CLOD' || (tag == 'OBLF' && *(s32*)(p + 0x230) == 0) ||
+        (tag == 'SSLF' && (*(s16*)(p + 0x230) & 0x7fff) == 0)) {
+        f32 x0 = *(f32*)(p + 0x60);
+        f32 px = *(f32*)(p + 0xc);
+        f32 y0 = *(f32*)(p + 0x64);
+        f32 x1 = *(f32*)(p + 0x68);
+        f32 py = *(f32*)(p + 0x10);
+        f32 y1 = *(f32*)(p + 0x6c);
+        x0 += px;
+        x1 += px;
+        y0 += py;
+        y1 += py;
+        s32 type = *(s32*)(p + 4);
+        u8* base = (u8*)fn_802D6A9C();
+        f32* off;
+        if (type < 8) {
+            off = (f32*)(base + 0xcc);
+        } else {
+            off = (f32*)(base + 0xdc);
+        }
+        f32 ox = -off[0];
+        f32 oy = -off[1];
+        x0 += ox;
+        y0 += oy;
+        x1 += ox;
+        y1 += oy;
+        if (x0 <= rect[0]) {
+            x0 = rect[0];
+        }
+        if (y0 <= rect[1]) {
+            y0 = rect[1];
+        }
+        if (x1 >= rect[2]) {
+            x1 = rect[2];
+        }
+        if (y1 >= rect[3]) {
+            y1 = rect[3];
+        }
+        bool hit = false;
+        if (x1 >= x0 && y1 >= y0) {
+            hit = true;
+        }
+        if (hit) {
+            return 1;
         }
     }
-    return hit;
+    return 0;
 }
 
 extern "C" void fn_802C2B64(char* p) {
