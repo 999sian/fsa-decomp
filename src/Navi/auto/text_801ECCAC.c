@@ -11,7 +11,6 @@ typedef struct TRKExceptionStatus_801ECCAC {
     TRKStopInfo_801ECCAC exceptionInfo;
     unsigned char inTRK;
     unsigned char exceptionDetected;
-    unsigned short pad;
 } TRKExceptionStatus_801ECCAC;
 
 extern "C" int fn_801EAB08(unsigned char* param_1, const unsigned int* param_2, int param_3);
