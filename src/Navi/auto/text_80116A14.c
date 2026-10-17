@@ -30,6 +30,34 @@ extern "C" void fn_80117A2C(u8* param_1)
     fn_801C0EEC(*(u32*)(param_1 + 0x28));
 }
 
+extern "C" void fn_80117A6C(void* param_1, void* param_2, u64 param_3)
+{
+    u8 alarm[44];
+    u8 buf[44];
+    u8* ptr;
+    u32 local_30;
+    u32 level;
+
+    fn_80166B58(buf, alarm);
+    OSCreateAlarm(alarm);
+    local_30 = fn_801C027C();
+    level = OSDisableInterrupts();
+    fn_80166C84(lbl_802C5F84, buf);
+    OSSetAlarm(alarm, param_3, (void (*)(void*, void*))fn_80117A2C);
+    fn_801C1174(local_30);
+    OSRestoreInterrupts(level);
+    ptr = buf;
+    if (ptr != 0) {
+        fn_80166B70(ptr, 0);
+    }
+}
+
+extern "C" void fn_80117B28(void)
+{
+    fn_801DCFB8(lbl_802C5F90, lbl_8028FF00, 4, 4, 0x16, 1, 1, 0);
+    fn_801DD24C(lbl_802C5F90, 0, 0, 0, 0, 0, lbl_803014B0, lbl_803014B0, lbl_803014B0);
+}
+
 extern "C" void fn_801180DC(void)
 {
     fn_80118104();
