@@ -3122,12 +3122,8 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x59;
 }
 
-extern "C" void fn_800DDE5C(u8* param_1, int param_2, const u8* param_3) {
-    struct S {
-        u8 pad[0x59];
-        Unk800DE6DCStage mStage[1];
-    };
-    ((S*)param_1)->mStage[param_2].setSwapModeInfo(param_3);
+extern "C" void fn_800DDE5C(Unk800DDE5C* param_1, int param_2, const u8* param_3) {
+    param_1->mStage[param_2].setSwapModeInfo(param_3);
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
