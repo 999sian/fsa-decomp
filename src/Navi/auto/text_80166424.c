@@ -2520,6 +2520,8 @@ extern "C" void* fn_80178424(char* self)
     return *(void**)(l + 0xc);
 }
 
+extern "C" void fn_80178990(u8* p, u32 v) { *(u32*)(p + 0xf8) = v; }
+
 extern "C" void fn_80178DA4(void* param_1)
 {
 }
