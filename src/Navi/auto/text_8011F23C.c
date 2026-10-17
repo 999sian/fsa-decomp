@@ -776,6 +776,16 @@ extern "C" void fn_80128814(char* p, char* q) {
     q[0x8f] = e[3];
 }
 
+extern "C" void fn_80128890(char* p, char* q) {
+    s32 i = *(s16*)(p + 0x214);
+    char* b = *(char**)(*(char**)(*(char**)(p + 4) + 0x1c) + 0x10);
+    u8* e = (u8*)(b + i * 4);
+    q[0x90] = e[0];
+    q[0x91] = e[1];
+    q[0x92] = e[2];
+    q[0x93] = e[3];
+}
+
 extern "C" void fn_801DACA4(s32, s32, s32, s32, s32, s32);
 extern "C" void fn_80128914(void)
 {
