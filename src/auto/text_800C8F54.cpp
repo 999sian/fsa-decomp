@@ -133,8 +133,7 @@ extern "C" void fn_800C9CF4(void)
 {
 }
 
-void fn_800C9CF8(void)
-{
+extern "C" void fn_800C9CF8() {
 }
 
 void fn_800C9CFC(void)
@@ -173,6 +172,33 @@ extern "C" void** __dt__11J3DMaterialFv(void** param_1, short param_2)
     return param_1;
 }
 
+void J3DMaterialFactory::modifyPatchedCurrentMtx(J3DMaterial* material, int idx) const {
+    u8 buf[8][6];
+    u32 tmp[2];
+    u8 count;
+    u8 gen;
+    u32 def = j3dDefaultTexCoordInfo[0];
+
+    for (int k = 0; k < 8; k++) {
+        *(u32*)buf[k] = def;
+        ((u16*)buf[k])[2] = buf[k][2];
+    }
+
+    gen = ((u8*)mInitData)[mMatRemapTable[idx] * 0x14c + 3];
+    if (gen != 0xff) {
+        count = ((u8*)unk_0C[6])[gen];
+    } else {
+        count = 0;
+    }
+    for (u8 i = 0; i < count; i++) {
+        fn_800CB194(tmp, (u8*)this, idx, i);
+        *(u32*)buf[i] = tmp[0];
+    }
+
+    *(u32*)((u8*)material + 0x40) = (buf[0][2] << 6) | (buf[1][2] << 12) | (buf[2][2] << 18) | (buf[3][2] << 24);
+    *(u32*)((u8*)material + 0x44) = buf[4][2] | (buf[5][2] << 6) | (buf[6][2] << 12) | (buf[7][2] << 18);
+}
+
 extern "C" void fn_800CAAA8(void) {
 }
 
@@ -200,38 +226,34 @@ extern "C" u32 calcSizeColorBlock__11J3DMaterialFUl(u32);
 extern "C" u32 calcSizeIndBlock__11J3DMaterialFi(int);
 extern "C" u32 calcSizePEBlock__11J3DMaterialFUlUl(u32, u32);
 extern "C" u32 fn_800CAD8C(u8* p, void* mat, s32 idx, u32 flags) {
-    u32 size = 0;
-    if (!mat) {
-        size = 0x4c;
-    }
+    u32 size = mat == NULL ? 0x4c : 0;
     u32 ind = (flags & 0x03000000) != 0;
     size += calcSizeColorBlock__11J3DMaterialFUl(0x40000000);
     size += 0x134;
     size += calcSizeIndBlock__11J3DMaterialFi(ind);
-    u8* e = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
-    size += calcSizePEBlock__11J3DMaterialFUlUl(0x10000000, *e);
-    if (*(u16*)(e + 0x48) != 0xffff) {
+    size += calcSizePEBlock__11J3DMaterialFUlUl(0x10000000, *(u8*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c));
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x48) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(e + 0x4a) != 0xffff) {
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4a) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(e + 0x4c) != 0xffff) {
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4c) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(e + 0x4e) != 0xffff) {
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x4e) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(e + 0x50) != 0xffff) {
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x50) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(e + 0x52) != 0xffff) {
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x52) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(e + 0x54) != 0xffff) {
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x54) != 0xffff) {
         size += 0x94;
     }
-    if (*(u16*)(e + 0x56) != 0xffff) {
+    if (*(u16*)(*(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c + 0x56) != 0xffff) {
         size += 0x94;
     }
     return size;
