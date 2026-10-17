@@ -70,6 +70,16 @@ extern "C" void fn_800E6620(void* param_1) {
     *(u8*)((u8*)param_1 + 0xa76) = 7;
 }
 
+extern "C" void fn_800E6A4C(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
+        *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
+        return;
+    }
+    *(u16*)((u8*)param_1 + 0xa9c) = 10;
+    *(u8*)((u8*)param_1 + 0xb11) = 2;
+    *(u8*)((u8*)param_1 + 0xa76) = 0x2a;
+}
+
 extern "C" void fn_800E88D0(u8* p) {
     u8* obj = *(u8**)(p + 0xb34);
     if (obj != nullptr) {
