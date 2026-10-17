@@ -1686,6 +1686,12 @@ extern "C" void fn_801732E0(void* param_1, u8 param_2) {
     *(u8*)((u8*)param_1 + 0x5c) = val;
 }
 
+extern "C" void fn_801732F0(void* param_1) {
+    u8 val = *(u8*)((u8*)param_1 + 0x5c);
+    val &= 0x7f;
+    *(u8*)((u8*)param_1 + 0x5c) = val;
+}
+
 extern "C" void fn_80173300(void)
 {
 }
