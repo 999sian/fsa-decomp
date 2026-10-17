@@ -390,12 +390,10 @@ extern "C" void fn_80036F04(void* p) {
 }
 
 extern "C" void fn_80036F14(void* p) {
-    char* b = (char*)lbl_802BB0FC;
-    char* a = (char*)lbl_802BEF44;
-    *(int*)((char*)p + 0x244) = (int)(lbl_802FFD44 * *(float*)(a + 0x6c)) + *(int*)(b + 0x58);
+    *(int*)((char*)p + 0x244) = (int)(lbl_802FFD44 * *(float*)((char*)lbl_802BEF44 + 0x6c)) + *(int*)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x24c) |= 0x2000;
-    if (*(int*)(b + 0x12c) == 2 && *(unsigned char*)((char*)p + 0x303) == 0) {
-        *(unsigned int*)(b + 0x454) = 8;
+    if (*(int*)((char*)lbl_802BB0FC + 0x12c) == 2 && *(unsigned char*)((char*)p + 0x303) == 0) {
+        *(unsigned int*)((char*)lbl_802BB0FC + 0x454) = 8;
     }
     *(unsigned int*)((char*)p + 0x24c) |= 0x200;
 }
