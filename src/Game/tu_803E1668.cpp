@@ -1,5 +1,26 @@
 #include "types.h"
 
+class Screen803E4650 {
+public:
+    virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C();
+    virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1C();
+    virtual void v20(); virtual void v24(); virtual void v28(); virtual void v2C();
+    virtual void v30(); virtual void v34(); virtual void v38();
+    virtual class Pane803E4650* v3C(s32 a, s32 b, s32 c);
+};
+class Pane803E4650 {
+public:
+    virtual void v00(); virtual void v04(); virtual void v08(); virtual void v0C();
+    virtual void v10(f32 x, f32 y);
+    virtual void v14(); virtual void v18(); virtual void v1C(); virtual void v20();
+    virtual void setAlpha(u8 a);
+};
+extern "C" u8 lbl_80477970[];
+extern "C" f32* getBounds__7J2DPaneFv(void* this_);
+extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* this_, f32 x, f32 y, void* ctx);
+extern "C" void fn_80440EE8(void* p);
+extern "C" void fn_80402E08(void* p, f32 a, f32 b);
+
 class J2DGrafContext;
 class J2DScreen {
 public:
