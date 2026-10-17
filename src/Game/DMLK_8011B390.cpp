@@ -229,21 +229,34 @@ extern "C" u8* fn_8011CC2C(u8* p) {
     return p;
 }
 
+#if !defined(VERSION_G4SP01)
+extern "C" Actor* fn_8011B390(Actor* param_1, s16 param_2) {
+    if (param_1 != 0) {
+        *(void**)param_1 = lbl_8049DB90;
+        __dt__13Base_8010E074Fv(param_1, 0);
+        if (param_2 > 0) {
+            operator delete(param_1);
+        }
+    }
+    return param_1;
+}
+#endif
+
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SP01)
 extern "C" char lbl_8049DB90[];
 extern "C" f32 lbl_8053C7D8;
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void fn_8010E074(u8*);
-extern "C" void* fn_8011B390(u8* p, s16 n) {
-    if (p != 0) {
-        *(void**)p = lbl_8049DB90;
-        __dt__13Base_8010E074Fv(p, 0);
-        if (n > 0) {
-            operator delete(p);
+extern "C" Actor* fn_8011B390(Actor* param_1, s16 param_2) {
+    if (param_1 != 0) {
+        *(void**)param_1 = lbl_8049DB90;
+        __dt__13Base_8010E074Fv(param_1, 0);
+        if (param_2 > 0) {
+            operator delete(param_1);
         }
     }
-    return p;
+    return param_1;
 }
 
 extern "C" void* fn_801902C0(void);
