@@ -586,8 +586,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 me;
     s32 linked;
+    s32 me;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -826,8 +826,10 @@ BOOL fn_80240670(char* p) {
         return 1;
     }
     s32 c = 0;
-    for (s32 i = 0; i < 4; i++) {
-        if (i == S32(p, 0x4)) {
+    s32 me = S32(p, 0x4);
+    s32 i = c;
+    for (; i < 4; i++) {
+        if (i == me) {
             c++;
         } else if (fn_8022F514(i)) {
             s32 linked = S32(p, 0xd60);
@@ -836,8 +838,8 @@ BOOL fn_80240670(char* p) {
                     c++;
                 }
             } else {
-                s32 me = S32(p, 0x4);
-                if (me == fn_8022F3DC(i)) {
+                s32 me2 = S32(p, 0x4);
+                if (me2 == fn_8022F3DC(i)) {
                     c++;
                 }
             }
@@ -857,8 +859,29 @@ BOOL fn_80240670(char* p) {
         }
     }
     if (mode == 4) {
-        s32 v = linkIdx(p);
-        return v != linkRank(p);
+        s32 idx;
+        s32 rank;
+        s32 linked = S32(p, 0xd60);
+        if (linked >= 0) {
+            idx = fn_80234004(linked);
+        } else {
+            idx = S32(p, 0x1224);
+        }
+        linked = S32(p, 0xd60);
+        if (linked < 0) {
+            rank = 0;
+        } else {
+            s32 cnt = 0;
+            s32 j = 0;
+            s32 n = S32(p, 0x4);
+            for (; j < n; j++) {
+                if (linked == fn_8022F3DC(j)) {
+                    cnt++;
+                }
+            }
+            rank = cnt + 1;
+        }
+        return idx != rank;
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
