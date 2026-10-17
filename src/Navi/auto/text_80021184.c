@@ -14,24 +14,25 @@ extern char lbl_802FBCB4[4];
 extern "C" void fn_801E6768(void*, char*);
 extern "C" void fn_801E66C0(void*, char*);
 extern "C" void fn_800219D8(u8* param_1, s32 param_2, void* param_3, s32 param_4) {
-    char** table = lbl_8020631C;
-    if (param_4 == 0) {
+    char** table;
+    if (param_4 != 0) {
+        table = lbl_8020631C;
+    } else {
         table = lbl_80206200;
     }
-    if (param_1[param_2 * 0x4c + 0x1e8] < 0x47) {
-        fn_801E6768(param_3, table[param_1[param_2 * 0x4c + 0x1e8]]);
-    } else {
+    if (param_1[param_2 * 0x4c + 0x1e8] >= 0x47) {
         fn_801E6768(param_3, lbl_802FBCB4);
-    }
-    if (param_1[param_2 * 0x4c + 0x1e9] < 0x47) {
-        fn_801E66C0(param_3, table[param_1[param_2 * 0x4c + 0x1e9]]);
     } else {
+        fn_801E6768(param_3, table[param_1[param_2 * 0x4c + 0x1e8]]);
+    }
+    if (param_1[param_2 * 0x4c + 0x1e9] >= 0x47) {
         fn_801E66C0(param_3, lbl_802FBCB4);
+    } else {
+        fn_801E66C0(param_3, table[param_1[param_2 * 0x4c + 0x1e9]]);
     }
 }
 
 extern u8 lbl_802BB0FC[];
-extern u8 lbl_802B7CA0[];
 extern char* lbl_8020631C[];
 extern char* lbl_80206200[];
 extern char lbl_802FBCB4[];
