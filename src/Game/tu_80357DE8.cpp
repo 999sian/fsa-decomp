@@ -57,4 +57,44 @@ extern "C" void fn_803581AC(char* self)
     }
     *(s32*)(self + 0x230) = 0;
 }
-
+static s32 fn_80357E4C_findHit(Actor* self)
+{
+    f32 boxA[4];
+    f32 boxB[4];
+    s32 hit = -1;
+    s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+    for (s32 i = 0, off = 0; i < count; i++, off += 4) {
+        Actor* other = *(Actor**)((u8*)fn_801F856C() + off + 8);
+        if (other != NULL && other->field_1A0 == 0x4D525441) {
+            if (other != NULL) {
+                fn_801F31C4(self, boxA);
+                fn_801F31C4(other, boxB);
+                f32 x0 = boxA[0];
+                if (x0 <= boxB[0]) {
+                    x0 = boxB[0];
+                }
+                f32 y0 = boxA[1];
+                if (y0 <= boxB[1]) {
+                    y0 = boxB[1];
+                }
+                f32 x1 = boxA[2];
+                if (x1 >= boxB[2]) {
+                    x1 = boxB[2];
+                }
+                f32 y1 = boxA[3];
+                if (y1 >= boxB[3]) {
+                    y1 = boxB[3];
+                }
+                bool overlap = false;
+                if (x1 >= x0 && y1 >= y0) {
+                    overlap = true;
+                }
+                if (overlap && other->field_0C.z <= 0.0f) {
+                    hit = *(s32*)((u8*)other + 0x198);
+                    break;
+                }
+            }
+        }
+    }
+    return hit;
+}
