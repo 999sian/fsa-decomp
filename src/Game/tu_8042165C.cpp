@@ -19,11 +19,18 @@ extern "C" u32 fn_80236100(s32 i);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B146C[];
 
-// Releases the owned object in a member slot: virtual slot 2 with freeFlag=1, then clears the slot.
+// Virtual slot 2 of an owned sub-object: destroy(freeFlag).
+struct DtorSlot2 {
+    virtual void slot0();
+    virtual void slot1();
+    virtual void destroy(s32 freeFlag);
+};
+
+// Releases the owned object in a member slot, then clears the slot.
 static inline void ReleaseSlot(void** slot) {
-    void* obj = *slot;
+    DtorSlot2* obj = (DtorSlot2*)*slot;
     if (obj != 0) {
-        ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+        obj->destroy(1);
     }
     *slot = 0;
 }
