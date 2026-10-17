@@ -8,6 +8,11 @@ extern "C" void fn_801F00B4(int* p)
     OSRestoreInterrupts(*p);
 }
 
+extern "C" void fn_801F00D8(int* p)
+{
+    *p = OSDisableInterrupts();
+}
+
 extern "C" void fn_801F0108(void)
 {
 }
