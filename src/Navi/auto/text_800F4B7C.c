@@ -1,5 +1,9 @@
 #include "types.h"
 extern char lbl_802C5A84[];
+extern char lbl_8029FDB4[];
+extern char lbl_8028D72C[];
+extern "C" void fn_800127A0(void* p);
+extern "C" void fn_801071C4(void* self);
 extern f64 lbl_80301210;
 extern "C" void fn_8017A4F8(void* p);
 extern "C" s32 fn_80108B20(void* self, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f);
@@ -939,11 +943,52 @@ extern "C" u8 fn_801049C8(u8* p) {
     return ((u8*)lbl_802B7CA0 + i)[0x3ec];
 }
 
+extern "C" void fn_80105050(u8* p) {
+    s32 a = fn_801095A4(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), *(f32*)(lbl_802C5A84 + 0x38), lbl_80301204, 0, 0);
+    s32 b = fn_801096BC(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 0);
+    *(s16*)(p + 0xec) = *(s16*)(p + 0xec) + 1;
+    if (a == 1 && b == 1) {
+        *(s16*)(p + 0xec) = 0;
+        p[0xf2] = 2;
+        p[0xee] = 0x11;
+    }
+}
+
 extern "C" void fn_801050FC(u8* p) {
     if (fn_80108030(p) != 0) {
         fn_8002F358(0xab, 0);
         p[0xf2] = 9;
         p[0xee] = 0x12;
+    }
+}
+
+extern "C" void fn_8010514C(u8* p) {
+    f32 f = lbl_80301204;
+    f32 g = *(f32*)(lbl_802C5A84 + 0x38);
+    s32 a = fn_801095A4(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), f, g, 0, 1);
+    s32 b = fn_801096BC(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0, 1);
+    *(s16*)(p + 0xec) = *(s16*)(p + 0xec) + 1;
+    if (a == 1 && b == 1) {
+        *(s16*)(p + 0xec) = 0;
+        *(u8*)(*(u32*)(p + 0x284) + 0xb0) = 0;
+        *(u8*)(*(u32*)(p + 0x28c) + 0xb0) = 0;
+        p[0x40f] = 0;
+        p[0xee] = 0x13;
+    }
+}
+
+extern "C" void fn_80105204(u8* p) {
+    f32 f = lbl_80301204;
+    f32 g = *(f32*)(lbl_802C5A84 + 0x38);
+    s32 a = fn_80108928(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), f, 0, 0, f, g, f);
+    *(s16*)(p + 0xec) = *(s16*)(p + 0xec) + 1;
+    if (a == 1) {
+        *(s16*)(p + 0xec) = 0;
+        *(u8*)(*(u32*)(p + 0x25c) + 0xb0) = 1;
+        *(u8*)(*(u32*)(p + 0x268) + 0xb0) = 1;
+        *(u8*)(*(u32*)(p + 0x1bc) + 0xb0) = 1;
+        p[0xf2] = 2;
+        p[0xee] = 8;
     }
 }
 
