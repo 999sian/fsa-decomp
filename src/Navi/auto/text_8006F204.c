@@ -26,10 +26,10 @@ extern "C" bool fn_8006FA3C(u8* param_1, void* param_2) {
         fn_8011FD18(uVar2, lbl_80280920, 0xf9, (s32)&lbl_802FC9E0, lbl_80280AC0);
         fn_80007AB8(lbl_80280920, 0xf9, (s32)&lbl_802FC9E4);
     }
-    if (fn_8000E124(param_1 + 0x250, p + 0x58, r, 1, 2, 0, -1, lbl_803004D8) != 0) {
-        return true;
+    if (fn_8000E124(param_1 + 0x250, p + 0x58, r, 1, 2, 0, -1, lbl_803004D8) == 0) {
+        return false;
     }
-    return false;
+    return true;
 }
 #pragma use_lmw_stmw reset
 extern "C" u8 lbl_80280ACC[];
@@ -49,13 +49,16 @@ extern "C" u8 lbl_80280AD8[];
 extern "C" s32 fn_8000DE00(void* a, void* b, void* c, s32 d, s32 e, s32 f, s32 g, f32 h);
 extern "C" BOOL fn_8006FBEC(void* param_1, void* param_2) {
     u8* p = *(u8**)(*(u8**)(*(u8**)((u8*)param_1 + 0x268) + 4) + 4);
-    void* iVar1 = fn_800638A4(lbl_802FC9D8, param_2, lbl_802B7CA0 + 0x2200, 0x40);
+    void* iVar1 = fn_800638A4(&lbl_802FC9D8, param_2, lbl_802B7CA0 + 0x2200, 0x40);
     if (iVar1 == 0) {
         void* uVar2 = fn_8011FD10();
         fn_8011FD18(uVar2, lbl_80280920, 0x11d, (s32)&lbl_802FC9E0, lbl_80280AD8);
         fn_80007AB8(lbl_80280920, 0x11d, (s32)&lbl_802FC9E4);
     }
-    return fn_8000DE00((u8*)param_1 + 0x26c, p + 0x58, iVar1, 1, 2, 0, -1, lbl_803004D8) != 0;
+    if (fn_8000DE00((u8*)param_1 + 0x26c, p + 0x58, iVar1, 1, 2, 0, -1, lbl_803004D8) != 0) {
+        return FALSE;
+    }
+    return TRUE;
 }
 
 extern "C" BOOL fn_8006FCC4(void* param_1, void* param_2) {
@@ -76,11 +79,11 @@ extern "C" BOOL fn_8006FCC4(void* param_1, void* param_2) {
 #pragma use_lmw_stmw off
 extern "C" bool fn_8006FD9C(u8* param_1, void* param_2) {
     u8* p = *(u8**)(*(u8**)(*(u8**)(param_1 + 0x268) + 4) + 4);
-    void* r = fn_800638A4(lbl_802FC9D8, param_2, lbl_802B7CA0 + 0x2200, 0x40);
+    void* r = fn_800638A4(&lbl_802FC9D8, param_2, lbl_802B7CA0 + 0x2200, 0x40);
     if (r == 0) {
         void* uVar2 = fn_8011FD10();
-        fn_8011FD18(uVar2, lbl_80280920, 0x141, lbl_802FC9E0, lbl_80280ACC);
-        fn_80007AB8(lbl_80280920, 0x141, lbl_802FC9E4);
+        fn_8011FD18(uVar2, lbl_80280920, 0x141, (s32)&lbl_802FC9E0, lbl_80280ACC);
+        fn_80007AB8(lbl_80280920, 0x141, (s32)&lbl_802FC9E4);
     }
     return fn_8000D798(param_1 + 0x284, p + 0x58, r, 1, 2, 0, -1, lbl_803004D8) != 0;
 }
