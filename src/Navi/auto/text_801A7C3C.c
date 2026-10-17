@@ -1968,16 +1968,16 @@ extern "C" void* fn_801B37D8(void* base, u32 offset) {
 extern "C" u16 fn_801B39D0(u16* p) {
     u16 n = *p;
     u16 i = 0;
-    if (n > 0) {
-        if (n > 8) {
-            for (; i < (u16)(n - 8); i += 8) {
-            }
-        }
-        for (; i < n; i++) {
-        }
+    if (n == 0) {
         return i;
     }
-    return 0;
+    if (n > 8) {
+        for (; i < (u16)(n - 8); i += 8) {
+        }
+    }
+    for (; i < n; i++) {
+    }
+    return i;
 }
 
 extern "C" u8 fn_801B474C(u8* s, u32 a) {
@@ -2934,12 +2934,3 @@ extern "C" void* fn_801BA410(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
 }
-typedef struct { f32 x, y; } Vec2f_7C90;
-typedef struct {
-    u8 a, b;
-    Vec2f_7C90 c;
-    f32 d;
-    Vec2f_7C90 e;
-    u32 f;
-    Vec2f_7C90 g[9];
-} Unk7C90;
