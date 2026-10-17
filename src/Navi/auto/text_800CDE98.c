@@ -64,8 +64,8 @@ extern "C" void fn_800CF138(u8* p) {
 }
 
 extern "C" void fn_800D0140(u8* p) {
-    u8* tbl = lbl_802C574C;
     if (p[0x28c] != 0) {
+        u8* tbl = lbl_802C574C;
         s32 r = fn_800D01C0(p, p[0x28b], tbl[0x12], *(f32*)(tbl + 0x14), lbl_80300F38, 0, 0);
         p[0x28b]++;
         if (r == 1) {
