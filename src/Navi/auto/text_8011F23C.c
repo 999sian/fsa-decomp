@@ -495,6 +495,11 @@ extern "C" s32 fn_80125208(u8* self, u16 param_2) {
     return 0;
 }
 
+extern "C" void fn_801252EC(void* param_1, void* param_2) {
+    ((void**)*(void***)((u8*)param_1 + 0x4))[*(u16*)((u8*)param_1 + 0xe)] = param_2;
+    *(u16*)((u8*)param_1 + 0xe) = *(u16*)((u8*)param_1 + 0xe) + 1;
+}
+
 extern "C" void fn_80127DD4(void* param_1, u8* self) {
     f32 mtx[3][4];
     fn_80132450(*(s16*)(*(u8**)self + 0x4c) * 0xb6, *(s16*)(*(u8**)self + 0x4e) * 0xb6, *(s16*)(*(u8**)self + 0x50) * 0xb6, mtx);
@@ -632,24 +637,30 @@ extern "C" void fn_801290F0(u8* self, void* p) {
 }
 
 extern "C" void fn_80129734(void* self, u8* obj, f32* out) {
-    f32 y;
-    f32 x;
-    f32 z;
-    x = *(f32*)(obj + 0x24);
-    y = *(f32*)(obj + 0x28);
+    f32 x = *(f32*)(obj + 0x24);
+    f32 y = *(f32*)(obj + 0x28);
     out[0] = x;
-    z = *(f32*)(obj + 0x2c);
+    f32 z = *(f32*)(obj + 0x2c);
     out[1] = y;
     out[2] = z;
 }
 
-extern "C" void fn_80129750(void* param_1, u8* param_2, f32* param_3) {
-    f32 y = *(f32*)(param_2 + 0x10);
-    f32 x = *(f32*)(param_2 + 0xc);
+extern "C" void fn_80129750(void* param_1, f32* param_2, f32* param_3) {
+    f32 x = param_2[3];
+    f32 y = param_2[4];
     param_3[0] = x;
-    f32 z = *(f32*)(param_2 + 0x14);
+    f32 z = param_2[5];
     param_3[1] = y;
     param_3[2] = z;
+}
+
+extern "C" void fn_801297A0(u8* obj, s32 param_2, f32* out) {
+    f32 a = *(f32*)(obj + 0x120);
+    f32 b = *(f32*)(obj + 0x124);
+    out[0] = a;
+    f32 c = *(f32*)(obj + 0x128);
+    out[1] = b;
+    out[2] = c;
 }
 
 extern "C" void* fn_8012A804(void* p) {
