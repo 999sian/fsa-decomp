@@ -3522,6 +3522,16 @@ extern "C" void fn_800DE650(u8* this_, s32 idx, const u8* src)
     this_[idx * 8 + 0x3c] = src[7];
 }
 
+extern "C" void fn_800DE68C(u8* this_, s32 idx, const u8* src)
+{
+    this_[idx * 8 + 0x36] = src[1];
+    this_[idx * 8 + 0x37] = src[2];
+    this_[idx * 8 + 0x38] = src[3];
+    this_[idx * 8 + 0x3a] = src[5];
+    this_[idx * 8 + 0x3b] = src[6];
+    this_[idx * 8 + 0x3c] = src[7];
+}
+
 extern "C" int fn_800DE6C8(int param_1, int param_2) {
     return param_1 + param_2 * 8 + 0x35;
 }
