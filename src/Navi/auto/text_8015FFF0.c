@@ -274,9 +274,9 @@ extern void fn_8015D0B8(void* p, int r4);
 extern void fn_8015AB1C(void* p);
 extern void fn_801BE368(void* p);
 extern void fn_801BDDBC(void* p, void* p2, int r5);
-extern u32 fn_801C7C6C(u32 r4, void* p);
-extern void fn_80166C84(u32 r3, void* p);
-extern void fn_801CA1E4(void* p);
+extern "C" u32 fn_801C7C6C(u32 r4, void* p);
+extern "C" void fn_80166C84(u32 r3, void* p);
+extern "C" void fn_801CA1E4(void* p);
 extern void fn_8015D050(void);
 extern void fn_80166B58(void* p, void* p2);
 extern "C" void fn_80164644(u8* p) {
