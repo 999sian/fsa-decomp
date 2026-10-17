@@ -24,6 +24,13 @@ extern "C" void fn_80166B70(void* a, u32 b);
 extern "C" void fn_801DCFB8(void* a, void* b, int c, int d, int e, int f, int g, int h);
 extern "C" void fn_801DD24C(void* a, int b, int c, int d, int e, int f, f32 g, f32 h, f32 i);
 extern "C" void fn_8011790C(void* a, u16 b);
+extern "C" void fn_801178BC(u8* param_1, s32 param_2)
+{
+    while (param_2-- > 0) {
+        fn_8011790C(*(void**)(param_1 + 0x20), *(u16*)(param_1 + 0x1c));
+    }
+}
+
 extern "C" void fn_80117A2C(u8* param_1)
 {
     fn_80166FC4(lbl_802C5F84, param_1 + 0x2c);
