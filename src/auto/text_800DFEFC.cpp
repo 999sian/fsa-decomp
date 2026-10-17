@@ -77,6 +77,116 @@ u16 J3DMaterialFactory_v21::countUniqueMaterials()
 	return count;
 }
 
+J3DMaterial* J3DMaterialFactory_v21::create(J3DMaterial* pMaterial, int idx, u32 flags) const
+{
+	J3DMaterialInitData_v21* initData = &mInitData[mMatRemapTable[idx]];
+	u32 numTevStages = 0;
+	if (initData->mNumTevStagesIndex != 0xff) {
+		numTevStages = mTevStageNums[initData->mNumTevStagesIndex];
+	}
+	u32 numTextures = 0;
+	if (initData->mTextureIndex[0] != 0xffff) { numTextures++; }
+	if (initData->mTextureIndex[1] != 0xffff) { numTextures++; }
+	if (initData->mTextureIndex[2] != 0xffff) { numTextures++; }
+	if (initData->mTextureIndex[3] != 0xffff) { numTextures++; }
+	if (initData->mTextureIndex[4] != 0xffff) { numTextures++; }
+	if (initData->mTextureIndex[5] != 0xffff) { numTextures++; }
+	if (initData->mTextureIndex[6] != 0xffff) { numTextures++; }
+	if (initData->mTextureIndex[7] != 0xffff) { numTextures++; }
+	u32 numStages = numTevStages;
+	if (numTextures != 0 && numTextures >= numTevStages) {
+		numStages = numTextures;
+	}
+	u32 maxStages = (flags >> 16) & 0x1f;
+	if (maxStages < numStages) {
+		maxStages = numStages;
+	}
+	u32 numTexSlots = maxStages;
+	if (numTexSlots > 8) {
+		numTexSlots = 8;
+	}
+	u8 numTexGens = 0;
+	if (initData->mNumTexGensIndex != 0xff) {
+		numTexGens = mTexGenNums[initData->mNumTexGensIndex];
+	}
+	if (pMaterial == NULL) {
+		pMaterial = new J3DMaterial;
+	}
+	pMaterial->mColorBlock = J3DMaterial::createColorBlock(flags & 0xc0000000);
+	pMaterial->mTexGenBlock = J3DMaterial::createTexGenBlock(numTexGens > 4 ? 0 : flags & 0x0c000000);
+	pMaterial->mTevBlock = J3DMaterial::createTevBlock((u16)maxStages);
+	pMaterial->mIndBlock = J3DMaterial::createIndBlock((flags >> 24) & 1);
+	pMaterial->mPEBlock = J3DMaterial::createPEBlock(flags & 0x30000000, initData->mPixelEngineMode);
+	pMaterial->mMaterialMode = initData->mPixelEngineMode;
+	pMaterial->mIndex = idx;
+
+	pMaterial->mColorBlock->setColorChanNum(newColorChanNum(idx));
+	pMaterial->mColorBlock->setCullMode(newCullMode(idx));
+	pMaterial->mTexGenBlock->setTexGenNum(newTexGenNum(idx));
+	pMaterial->mTexGenBlock->setNBTScale(newNBTScale(idx));
+	J3DFog fog;
+	fog.setFogInfo(fn_800E0F84(this, idx));
+	pMaterial->mPEBlock->setFog(fog);
+	pMaterial->mPEBlock->setAlphaComp(newAlphaComp(idx));
+	pMaterial->mPEBlock->setBlend(fn_800E1144(this, idx));
+	pMaterial->mPEBlock->setZMode(newZMode(idx));
+	pMaterial->mPEBlock->setZCompLoc(newZCompLoc(idx));
+	pMaterial->mPEBlock->setDither(newDither(idx));
+	pMaterial->mTevBlock->setTevStageNum(newTevStageNum(idx));
+
+	for (u8 i = 0; i < numTexSlots; i++) {
+		pMaterial->mTevBlock->setTexNo(i, newTexNo(idx, i));
+	}
+	for (u8 i = 0; i < maxStages; i++) {
+		pMaterial->mTevBlock->setTevOrder(i, fn_800E0D3C(this, idx, i));
+	}
+	for (u8 i = 0; i < maxStages; i++) {
+		pMaterial->mTevBlock->setTevStage(i, newTevStage(idx, i));
+		u16 swapIdx = initData->mTevSwapModeInfoIndex[i];
+		if (swapIdx != 0xffff) {
+			pMaterial->mTevBlock->getTevStage(i)->setTexSel(mTevSwapModeInfo[swapIdx].mTexSel);
+			pMaterial->mTevBlock->getTevStage(i)->setRasSel(mTevSwapModeInfo[swapIdx].mRasSel);
+		}
+	}
+	for (u8 i = 0; i < 4; i++) {
+		pMaterial->mTevBlock->setTevKColor(i, fn_800E0DF8(this, idx, i));
+	}
+	for (u8 i = 0; i < 4; i++) {
+		pMaterial->mTevBlock->setTevColor(i, fn_800E0D88(this, idx, i));
+	}
+	for (u8 i = 0; i < 4; i++) {
+		pMaterial->mTevBlock->setTevSwapModeTable(i, newTevSwapModeTable(idx, i));
+	}
+	for (u8 i = 0; i < 2; i++) {
+		pMaterial->mColorBlock->setMatColor(i, fn_800E0960(this, idx, i));
+	}
+	for (u8 i = 0; i < 4; i++) {
+		pMaterial->mColorBlock->setColorChan(i, fn_800E09F0(this, idx, i));
+	}
+	for (u8 i = 0; i < numTexGens; i++) {
+		J3DTexCoord texCoord = fn_800E0BBC(this, idx, i);
+		pMaterial->mTexGenBlock->setTexCoord(i, &texCoord);
+	}
+	for (u8 i = 0; i < 8; i++) {
+		pMaterial->mTexGenBlock->setTexMtx(i, fn_800E0C1C(this, idx, i));
+	}
+	for (u8 i = 0; i < maxStages; i++) {
+		if (initData->mTevKColorSels[i] == 0xff) {
+			pMaterial->mTevBlock->setTevKColorSel(i, 0xc);
+		} else {
+			pMaterial->mTevBlock->setTevKColorSel(i, initData->mTevKColorSels[i]);
+		}
+	}
+	for (u8 i = 0; i < maxStages; i++) {
+		if (initData->mTevKAlphaSels[i] == 0xff) {
+			pMaterial->mTevBlock->setTevKAlphaSel(i, 0x1c);
+		} else {
+			pMaterial->mTevBlock->setTevKAlphaSel(i, initData->mTevKAlphaSels[i]);
+		}
+	}
+	return pMaterial;
+}
+
 extern "C" J3DGXColor fn_800E0960(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
@@ -160,16 +270,25 @@ extern "C" J3DTevOrder fn_800E0D3C(const J3DMaterialFactory_v21* self, int idx, 
 	return J3DTevOrder();
 }
 
+extern "C" u32 lbl_80543F10;
+extern "C" u32 lbl_80543F14;
 extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx, int no)
 {
+	u32 defaultLo = lbl_80543F10;
+	u32 defaultHi = lbl_80543F14;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
 	if (initData->mTevColorIndex[no] != 0xffff) {
-		return J3DGXColorS10(self->mTevColors[initData->mTevColorIndex[no]]);
+		J3DGXColorS10 color;
+		*(u64*)&color = *(u64*)&self->mTevColors[initData->mTevColorIndex[no]];
+		return color;
 	}
-	return j3dDefaultTevColor;
+	J3DGXColorS10 color;
+	*(u32*)&color = defaultLo;
+	*((u32*)&color + 1) = defaultHi;
+	return color;
 }
 
-extern "C" GXColor fn_800E0DF8(const J3DMaterialFactory_v21* self, int idx, int no)
+extern "C" GXColor fn_800E0DF8_old(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	GXColor defaultColor = j3dDefaultTevKColor;
 	J3DMaterialInitData_v21* initData = &self->mInitData[self->mMatRemapTable[idx]];
