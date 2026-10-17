@@ -84,7 +84,7 @@ extern "C" void* sManager__8JUTVideo;
 extern "C" void fn_8013B414(void* this_, f32* rect, s32 n);
 extern "C" void fn_803B7E64(u8* this_) {
     f32 rect[4];
-    void* obj;
+    FsaVObj* obj;
     u8* video;
     u16 w;
     u16 h;
@@ -94,10 +94,10 @@ extern "C" void fn_803B7E64(u8* this_) {
         ((u8*)lbl_8053ADC8)[0x20] = 1;
         ((u8*)lbl_8053ADC8)[0x21] = 2;
     }
-    obj = *(void**)(this_ + 4);
-    (*(void (***)(void*, u8))obj)[9](obj, this_[0x296]);
-    obj = *(void**)(this_ + 4);
-    (*(void (***)(void*, s32, s32, s32, f32, f32, f32, f32))obj)[59](obj, 0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
+    obj = *(FsaVObj**)(this_ + 4);
+    obj->v9(this_[0x296]);
+    obj = *(FsaVObj**)(this_ + 4);
+    obj->v59(0, 0, 0, 0.0f, 0.0f, 800.0f, 640.0f);
     video = *(u8**)((u8*)sManager__8JUTVideo + 4);
     h = *(u16*)(video + 6);
     w = *(u16*)(video + 4);
