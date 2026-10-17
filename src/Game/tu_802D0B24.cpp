@@ -1,4 +1,7 @@
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/SinitPoolChain.h"
+
+typedef JGeometry::TVec3<f32> YasiVec;
 
 struct YasiDrawKey {
     s32 a, b;
@@ -114,4 +117,6 @@ extern "C" void fn_802D1270(char* p) {
     *(u8*)(p + 0x234) = 0xff;
     *(u8*)(p + 0x235) = 0;
 }
+
+void fn_802D12B8(void) {}
 
