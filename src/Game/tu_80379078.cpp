@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 
 struct LimtDrawParam {
@@ -64,6 +65,7 @@ extern "C" const char* lbl_804AE8E0[];
 extern "C" f32 __float_epsilon;
 extern "C" void fn_803790D8(u8* this_) {
     LimtDrawParam prm;
+    prm.reset();
     Vec* v = (Vec*)(this_ + 0x54);
     f32 lenSq = v->x * v->x + v->y * v->y + v->z * v->z;
     if (lenSq > 32.0f * __float_epsilon) {
@@ -84,10 +86,9 @@ extern "C" void fn_803790D8(u8* this_) {
     }
     Vec pos;
     Vec* a = (Vec*)(this_ + 0xc);
-    pos.x = a->x;
+    pos.x = a->x + 8.0f;
     pos.y = a->y;
     pos.z = a->z;
-    pos.x = a->x + 8.0f;
     u32 tex = fn_804032E8(0x54494D47, lbl_804AE8E0[this_[0x241]]);
     if (*(s32*)(this_ + 4) < 8) {
         fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), &pos, (void*)tex, &prm);
