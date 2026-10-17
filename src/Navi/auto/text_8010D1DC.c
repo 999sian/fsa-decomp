@@ -115,6 +115,19 @@ extern "C" void fn_8010F81C(u8* param_1) {
     (*(VObj_8010F81C_b**)(param_1 + 0x60))->v2(*(f32*)(param_1 + 0x74), *(f32*)(param_1 + 0x78) + off);
 }
 
+extern "C" void fn_8010F880(u8* param_1) {
+    param_1[0x7d] = 0;
+    param_1[0x7e] = 1;
+    (*(VObj_8010F880**)(param_1 + 0x64))->v7(lbl_802C5B44[0x24]);
+    (*(VObj_8010F880**)(param_1 + 0x68))->v7(lbl_802C5B44[0x24]);
+}
+
+extern "C" void fn_8010FD00(u8* param_1) {
+    f32 off = lbl_80301310 * param_1[0xc1];
+    f32* r = (f32*)fn_80177B10(*(void**)(param_1 + 0xb8));
+    (*(VObj_8010FD00**)(param_1 + 0xb8))->v2(*(f32*)(param_1 + 0xbc) + off, r[1]);
+}
+
 extern "C" void fn_801103A0(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
