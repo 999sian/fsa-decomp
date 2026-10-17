@@ -102,7 +102,7 @@ extern "C" void fn_8044C968(u8* self) {
     }
     (*(UlPane**)(self + 4))->find(0x5063756c3031ULL)
         ->move(lbl_80543DF8 + *(f32*)(self + 0x114),
-               *(f32*)(self + 0x118) + *(f32*)(self + 0x108 + *(s16*)(self + 0xf8) * 4));
+               *(f32*)(self + 0x118) + ((f32*)(self + 0x108))[*(s16*)(self + 0xf8)]);
     (*(UlPane**)(self + 4))->find(0x5063756c3031ULL)->setAlpha(0);
     *(s16*)(self + 0x132) = 0;
     *(s16*)(self + 0xfe) = 0;
