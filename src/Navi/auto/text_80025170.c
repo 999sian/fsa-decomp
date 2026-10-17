@@ -7,6 +7,9 @@ extern u8 lbl_802FED9D;
 extern u8 lbl_802FED9E;
 extern u8 lbl_802FED9F;
 extern u8 lbl_802FEDA4;
+extern u8 lbl_8029F408[];
+extern "C" void fn_801E0D40(void*, void*, s32, s32);
+extern "C" void* fn_80026E54(void*, s16);
 extern "C" u8 lbl_802BBD38[];
 struct NaviEntry { u8 pad[0x1c]; int flag; };
 struct NaviSlot { NaviEntry e[16]; s16 cur; s16 next; };
@@ -78,6 +81,42 @@ extern "C" void fn_8002548C(u8* param_1) {
 extern "C" void fn_80025710(void);
 extern "C" void fn_800254AC(void) {
     fn_80025710();
+}
+
+extern "C" int fn_800254CC(u8* param_1) {
+    u8 buf[0x118];
+    u32* slot = (u32*)(param_1 + 0xc);
+    u32* table = lbl_802262BC;
+    s32 i = 0;
+    s32 v = *(s32*)(lbl_802B7CA0 + 0x343c) + 1;
+    do {
+        if (slot[4] == 0) {
+            fn_801E41AC(buf, lbl_80226374, v, *table);
+            slot[4] = fn_800137B8(buf, 0, 0);
+        }
+        i++;
+        table++;
+        slot++;
+    } while (i < 3);
+    return 2;
+}
+
+extern "C" int fn_8002566C(u8* param_1) {
+    u8 buf[0x118];
+    u32* slot = (u32*)(param_1 + 0xc);
+    u32* table = lbl_80226340;
+    s32 i = 3;
+    u8 r = lbl_802B7CA0[0x1419];
+    do {
+        if (slot[4] == 0) {
+            fn_801E41AC(buf, lbl_80226394, 0, r, *table);
+            slot[4] = fn_800137B8(buf, 0, 0);
+        }
+        i++;
+        table++;
+        slot++;
+    } while (i < 0xc);
+    return 2;
 }
 
 extern "C" void fn_80025824(void* p) {
