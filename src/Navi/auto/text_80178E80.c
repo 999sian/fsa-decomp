@@ -1,6 +1,8 @@
 
 
 #include "types.h"
+extern "C" void fn_8018DEF0(void* p, u16 id, u8* out);
+extern "C" void fn_80178BFC(u8* self, void* arg);
 struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
 struct VObj_8005E8B8 {
     virtual void v0();
