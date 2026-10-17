@@ -1,5 +1,8 @@
 #include "types.h"
 
+extern "C" s32 checkCompressed__9JKRDecompFPUc(u8*);
+extern "C" void decode__9JKRDecompFPUcPUcUlUl(u8*, u8*, u32, u32);
+
 extern "C" void __dt__10JUTTextureFv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" void __dla__FPv(void*);
@@ -213,6 +216,78 @@ extern void* lbl_8053AAF8;
 extern "C" void fn_802FA3FC(void* mgr);
 extern "C" void fn_802FF548(void* mgr) {
     fn_802FF798(mgr);
+}
+
+extern "C" void* fn_802FFBF8(void* self, s16 flag) {
+    u8* p = (u8*)self;
+    if (p != NULL) {
+        *(u8**)p = lbl_804AA858;
+        __dt__10JUTTextureFv(*(void**)(p + 0xE454), 1);
+        {
+            u8* q = p + 0x24; s32 i = 9;
+            do { __dt__10JUTTextureFv(*(void**)(q + 0xE428), 1); q -= 4; } while (--i >= 0);
+        }
+        {
+            s32 i = 3; u8* q = p + 0xC;
+            do { __dl__FPv(*(void**)(q + 0x11C)); q -= 4; } while (--i >= 0);
+        }
+        if (*(void**)(p + 0x110) != NULL) {
+            __dla__FPv((u8*)*(void**)(p + 0x110) - 0x10);
+        }
+        {
+            s32 i = 1; u8* q = p + 0x4;
+            do {
+                if (*(void**)(q + 0x108) != NULL) __dla__FPv((u8*)*(void**)(q + 0x108) - 0x10);
+                if (*(void**)(q + 0x100) != NULL) __dla__FPv((u8*)*(void**)(q + 0x100) - 0x10);
+                q -= 4;
+            } while (--i >= 0);
+        }
+        __dla__FPv(*(void**)(p + 0xF8));
+        {
+            s32 i = 3; u8* q = p + 0xC;
+            do {
+                __dla__FPv(*(void**)(q + 0xC8));
+                __dla__FPv(*(void**)(q + 0x98));
+                __dla__FPv(*(void**)(q + 0x88));
+                q -= 4;
+            } while (--i >= 0);
+        }
+        {
+            s32 i = 15; u8* q = p + 0x3C;
+            do { __dla__FPv(*(void**)(q + 0x48)); q -= 4; } while (--i >= 0);
+        }
+        {
+            s32 i = 3; u8* q = p + 0xC;
+            do {
+                __dla__FPv(*(void**)(q + 0x38));
+                __dla__FPv(*(void**)(q + 0x28));
+                q -= 4;
+            } while (--i >= 0);
+        }
+        __dla__FPv(*(void**)(p + 0x24));
+        {
+            s32 i = 2; u8* q = p + 0x8;
+            do {
+                __dla__FPv(*(void**)(q + 0x18));
+                __dla__FPv(*(void**)(q + 0xC));
+                q -= 4;
+            } while (--i >= 0);
+        }
+        {
+            s32 i = 1; u8* q = p + 0x4;
+            do { __dla__FPv(*(void**)(q + 0x4)); q -= 4; } while (--i >= 0);
+        }
+        if (*(void**)(p + 0xFC) != NULL) {
+            void* obj = *(void**)(p + 0xFC);
+            (*(void (***)(void*, s32))obj)[2](obj, 1);
+        }
+        *(void**)(p + 0xFC) = NULL;
+        __dl__FPv(*(void**)(p + 0x238C));
+        if (flag > 0) {
+            __dl__FPv(p);
+        }
+    }
+    return p;
 }
 
 extern "C" void fn_8030029C(u8* p) {
