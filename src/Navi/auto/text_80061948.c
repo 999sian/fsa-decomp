@@ -1,4 +1,5 @@
 #include "types.h"
+#include "sdk/Dolphin/vec.h"
 extern u8 lbl_8029F8D8[];
 extern void* lbl_801F9650[];
 extern "C" void fn_801C61AC(void* p, f32 x, f32 y, f32 z);
@@ -276,6 +277,23 @@ extern "C" int fn_80063C70(void) {
 
 extern "C" f32 fn_80063C78(void* p) {
     return fn_801AB758(((f32*)p)[2]);
+}
+
+extern "C" void fn_801E0D40(void*, void*, s32, s32);
+extern u8 lbl_8029B5D0[];
+extern "C" void* fn_80063D90(void* p, s16 param_2) {
+    if (p != 0) {
+        *(void**)p = lbl_8029B5D0;
+        fn_801E0D40((u8*)p + 0xd4, (void*)&fn_80062E28, 8, 4);
+        fn_801E0D40((u8*)p + 0xb4, (void*)&fn_80062E7C, 8, 4);
+        fn_801E0D40((u8*)p + 0x54, (void*)&fn_80062ED0, 0xc, 8);
+        fn_801E0D40((u8*)p + 0x14, (void*)&fn_80062F3C, 8, 8);
+        fn_801E0D40((u8*)p + 0x4, (void*)&fn_80062F90, 8, 2);
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
 }
 
 extern "C" void fn_80063E60(void* param_1, void* param_2) {
@@ -962,6 +980,37 @@ extern "C" int fn_80069DE0(u8* p) {
     }
     return iVar1;
 }
+
+extern "C" void fn_8006A490(void* p);
+extern "C" void fn_80010DF0(void* p);
+extern "C" int fn_8006A5D0(void* param_1, int param_2);
+extern f32 lbl_801F9A48[];
+extern s32 lbl_802FF178;
+extern "C" int fn_8006A1D0(u8* p) {
+    f32* v = (f32*)((u8*)lbl_801F9A48 + *(s32*)((u8*)lbl_802BB0FC + 0x424) * 12);
+    f32 x = v[0];
+    f32 y = v[1];
+    *(f32*)(p + 0x144) = x;
+    f32 z = v[2];
+    *(f32*)(p + 0x148) = y;
+    *(f32*)(p + 0x14c) = z;
+    lbl_802FF178 = 0;
+    fn_8006A490(p);
+    u8* g = (u8*)lbl_802BF814;
+    *(f32*)(g + 0x21c) = *(f32*)(p + 0x100);
+    *(f32*)(g + 0x220) = *(f32*)(p + 0x104);
+    *(f32*)(g + 0x224) = *(f32*)(p + 0x108);
+    *(f32*)(g + 0x228) = *(f32*)(p + 0x144);
+    *(f32*)(g + 0x22c) = *(f32*)(p + 0x148);
+    *(f32*)(g + 0x230) = *(f32*)(p + 0x14c);
+    lbl_802FF17C = 0;
+    fn_8006A5D0(p, 3);
+    fn_80010DF0(*(void**)(p + 0x24c));
+    p[0x27f] = 0;
+    p[0x27e] = 0;
+    return 4;
+}
+
 #pragma dont_inline reset
 
 extern "C" int fn_8006A5D0(void* param_1, int param_2) {
@@ -991,6 +1040,24 @@ extern "C" int fn_8006A5D0(void* param_1, int param_2) {
         *(f32*)((u8*)param_1 + 0x274) = f0;
     }
     return 0;
+}
+
+extern "C" void fn_8006A668(u8* param_1) {
+    if (*(s32*)((u8*)lbl_802BB0FC + 0x46c) & 1) {
+        fn_8006A814(param_1, 1);
+    } else {
+        fn_8006A814(param_1, 0);
+    }
+    *(u8*)(param_1 + 0x27d) = fn_80010C6C(*(void**)(param_1 + 0x24c), 0, 0, 0);
+    if (*(f32*)(*(u8**)(param_1 + 0x24c) + 0x18) < lbl_80300418) {
+        if (*(f32*)(param_1 + 0x274) < *(f32*)(*(u8**)(param_1 + 0x24c) + 0x1c)) {
+            *(u8*)(param_1 + 0x27d) = 1;
+        }
+    } else if (*(f32*)(param_1 + 0x274) > *(f32*)(*(u8**)(param_1 + 0x24c) + 0x1c)) {
+        *(u8*)(param_1 + 0x27d) = 1;
+    }
+    *(f32*)(param_1 + 0x274) = *(f32*)(*(u8**)(param_1 + 0x24c) + 0x1c);
+    fn_8000D6F4(param_1 + 0x250);
 }
 
 extern "C" int fn_80069DE0(u8* p);
