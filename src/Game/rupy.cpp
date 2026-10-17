@@ -11,6 +11,7 @@ extern const f32 lbl_80541D98;
 extern const f32 lbl_80541D9C;
 extern const f32 lbl_80541DA0;
 extern const f32 lbl_80541DA4;
+extern "C" u16 fn_8022461C(void* pos, s32 room);
 extern "C" u8 fn_802DE9A0(void);
 extern "C" u8 fn_802DEB58(void);
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 flag);
