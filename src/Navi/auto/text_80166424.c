@@ -1311,6 +1311,27 @@ extern "C" void fn_80171E5C(u8* p, u32 unused, u32 idx) {
     }
 }
 
+extern "C" void fn_801DE24C(s32);
+extern "C" void fn_801698EC(u8* p, s32 x);
+extern "C" void fn_8016991C(u8* p, s32 x);
+extern "C" void fn_8016994C(u8* p, s32 x);
+#pragma dont_inline on
+extern "C" void fn_80171FEC(void* param_1)
+{
+    u8* self = (u8*)param_1;
+    u32 i;
+    fn_801DE24C(self[4]);
+    for (i = 0; (u8)i < self[4]; i++) {
+        fn_801698EC(self + 0x10 + (u8)i * 0x1c, i);
+    }
+    for (i = 0; (u8)i < self[4]; i++) {
+        fn_8016991C(self + 0x64 + (u8)i * 2, i);
+    }
+    for (i = 0; (u8)i < self[4]; i++) {
+        fn_8016994C(self + 0x5 + (u8)i * 2, i);
+    }
+}
+#pragma dont_inline reset
 extern "C" u8 lbl_80301ADC;
 extern "C" void fn_801721F0(u8* p) {
     *p = lbl_80301ADC;
@@ -1364,8 +1385,9 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    u8* p = p1 + p2 * 4;
-    p[0x16] = p3[0];
+    u8* p = p1 + (p2 << 2);
+    u8 a = p3[0];
+    p[0x16] = a;
     p[0x17] = p3[1];
     p[0x18] = p3[2];
 }
