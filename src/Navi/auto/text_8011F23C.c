@@ -1417,6 +1417,30 @@ extern "C" void fn_801298D4(f32* param_1, f32 param_2, f32 param_3) {
     param_1[11] = zero;
 }
 
+extern f32 lbl_803016A8;
+extern f32 lbl_803016AC;
+extern "C" void fn_80130BC4(void* a, JGeometry::TVec3f* out);
+extern "C" void fn_801D9F18(s32, s32);
+extern "C" void fn_801DB8C4(s32, s32, s32);
+extern "C" void fn_80129914(f32* m, f32 s, f32 c) {
+    f32 one = lbl_80301694;
+    f32 zero = lbl_80301698;
+    f32 a = lbl_803016A8 * (one - c);
+    f32 b = lbl_803016AC * s;
+    m[0] = a + c;
+    m[1] = a - b;
+    m[2] = a + b;
+    m[3] = zero;
+    m[4] = a + b;
+    m[5] = a + c;
+    m[6] = a - b;
+    m[7] = zero;
+    m[8] = a - b;
+    m[9] = a + b;
+    m[10] = a + c;
+    m[11] = zero;
+}
+
 extern "C" void fn_80129970(f32* p, f32 a, f32 b) {
     p[0] *= a;
     p[4] *= a;
@@ -1433,6 +1457,18 @@ extern "C" void fn_801299BC(f32* p, f32 a, f32 b) {
     p[2] *= b;
     p[6] *= b;
     p[10] *= b;
+}
+
+extern "C" void fn_80129A08(f32* p, f32 a, f32 b) {
+    p[0] *= a;
+    p[4] *= a;
+    p[8] *= a;
+    p[1] *= b;
+    p[5] *= b;
+    p[9] *= b;
+    p[2] *= a;
+    p[6] *= a;
+    p[10] *= a;
 }
 
 extern "C" void* fn_8012A804(void* p) {
@@ -2193,6 +2229,16 @@ extern "C" void* fn_80132E74(void* p, s16 param_2) {
         }
     }
     return p;
+}
+
+extern char lbl_803017C0[];
+extern char lbl_803017C0[8];
+extern "C" BOOL fn_80132EE4(void* p, u8** q) {
+    u8* d = *q + 0x10;
+    if (fn_801E3C54(d, lbl_803017C0, 8) != 0) return FALSE;
+    u16 n = *(u16*)(d + 0xe);
+    if (n < 2) return FALSE;
+    return n <= 4;
 }
 
 extern "C" void fn_80132FA0(void);
