@@ -1974,11 +1974,10 @@ extern "C" void* fn_801A3768(void* ptr, s16 param_2) {
 extern "C" void fn_801A37C4(int param_1) {
     u16 tmp;
     int i = 0;
-    u32* base = lbl_802FFA80;
-    base[2] = base[0] + *(u32*)(param_1 + 4);
-    u32 start = (*(int* volatile*)&lbl_802FFA80)[2];
-    u32 p = (*(int* volatile*)&lbl_802FFA80)[2];
+    lbl_802FFA80[2] = lbl_802FFA80[0] + *(u32*)(param_1 + 4);
+    u32 start = lbl_802FFA80[2];
     while (true) {
+        u32 p = (*(int* volatile*)&lbl_802FFA80)[2];
         if (!fn_801A602C(p)) {
             break;
         }
@@ -1986,7 +1985,7 @@ extern "C" void fn_801A37C4(int param_1) {
         fn_801A605C(i, &tmp);
         i++;
     }
-    fn_801BC250(start, (*(int* volatile*)&lbl_802FFA80)[2] - start);
+    fn_801BC250(start, lbl_802FFA80[2] - start);
 }
 
 extern "C" u32 fn_801A3864(void) { return 0x54563136; }
@@ -2082,14 +2081,13 @@ extern "C" u8 fn_801A3A1C(u8* p) {
 }
 
 extern "C" void fn_801A3A24(u8* p, u32 i, u8* src) {
-    u8* d = p + (i << 3);
-    u8 a = src[1];
-    d[0x5a] = a;
-    d[0x5b] = src[2];
-    d[0x5c] = src[3];
-    d[0x5e] = src[5];
-    d[0x5f] = src[6];
-    d[0x60] = src[7];
+    u8* d = p + i * 8 + 0x58;
+    d[2] = src[1];
+    d[3] = src[2];
+    d[4] = src[3];
+    d[6] = src[5];
+    d[7] = src[6];
+    d[8] = src[7];
 }
 
 extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
@@ -2097,8 +2095,8 @@ extern "C" s32 fn_801A3A9C(s32 param_1, s32 param_2) {
 }
 
 extern "C" void fn_801A3AB0(s32 param_1, s32 param_2, u8* param_3) {
-    u32 b1 = param_3[1];
-    u32 b0 = param_3[0];
+    u8 b1 = param_3[1];
+    u8 b0 = param_3[0];
     u8* p = (u8*)(param_1 + param_2 * 8);
     u8 x = p[0x60];
     p[0x60] = (x & ~0x0C) | ((b1 & 0xFF) << 2);
@@ -2203,9 +2201,8 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D94(s32 p, u32 i, u8* src) {
-    u8* d = (u8*)(p + (i << 2));
-    u8 a = src[0];
-    d[0x62] = a;
+    u8* d = (u8*)(i * 4 + p);
+    d[0x62] = src[0];
     d[0x63] = src[1];
     d[0x64] = src[2];
     d[0x65] = src[3];
@@ -2254,10 +2251,10 @@ extern "C" u8 fn_801A3E64(u8* p) {
 extern "C" void fn_80191388(int, void*);
 extern "C" void fn_80191220(int, void*);
 extern "C" void fn_801A3E6C(u8* p, s32 i, u8* src) {
-    u8* d = p + (i << 3);
     u8 a = src[1];
-    d[0x22] = a;
     u8 b = src[2];
+    u8* d = p + (i << 3);
+    d[0x22] = a;
     u8 c = src[3];
     d[0x23] = b;
     b = src[5];
@@ -2363,14 +2360,14 @@ extern "C" int fn_801A4154(int param_1, int param_2) {
 
 extern "C" void fn_801A4168(u8* p, s32 i, s16* src) {
     s16 a = src[0];
-    p = p + i * 8;
+    u8* d = p + (i << 3);
     s16 b = src[1];
-    *(s16*)(p + 0x14) = a;
+    *(s16*)(d + 0x14) = a;
     s16 c = src[2];
-    *(s16*)(p + 0x16) = b;
+    *(s16*)(d + 0x16) = b;
     s16 e = src[3];
-    *(s16*)(p + 0x18) = c;
-    *(s16*)(p + 0x1a) = e;
+    *(s16*)(d + 0x18) = c;
+    *(s16*)(d + 0x1a) = e;
 }
 
 extern "C" s32 fn_801A41C0(s32 p, s32 i) {
@@ -2378,7 +2375,8 @@ extern "C" s32 fn_801A41C0(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A41D4(u8* p, s32 i, u8* src) {
-    u8* d = p + i * 4;
+    u8* d = p;
+    d += i * 4;
     u8 a = src[0];
     d[0x45] = a;
     u8 b = src[1];
@@ -2692,11 +2690,12 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    NaviBytes4* d = (NaviBytes4*)(p1 + 0xb8) + p2;
-    d->b[0] = p3[0];
-    d->b[1] = p3[1];
-    d->b[2] = p3[2];
-    d->b[3] = p3[3];
+    u8* d = p1 + (p2 << 2);
+    u8 a = p3[0];
+    d[0xb8] = a;
+    d[0xb9] = p3[1];
+    d[0xba] = p3[2];
+    d[0xbb] = p3[3];
 }
 
 extern "C" s32 fn_801A49CC(s32 p, s32 i) {
@@ -2865,7 +2864,8 @@ extern "C" int fn_801A4CF4(int param_1, int param_2) {
 
 extern "C" void fn_801DF0BC(void*, s32);
 extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
-    u8* dst = param_1 + param_2 * 4;
+    u32 off = param_2 << 2;
+    u8* dst = param_1 + off;
     dst[0xc] = param_3[0];
     dst[0xd] = param_3[1];
     dst[0xe] = param_3[2];
