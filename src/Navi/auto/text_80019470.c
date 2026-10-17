@@ -1099,7 +1099,7 @@ extern "C" s32 fn_8001C9FC(void* param_1) {
     fn_8001B9CC();
 }
 
-extern "C" void fn_8001CA1C(void) {
+extern "C" s32 fn_8001CA1C(void*) {
     fn_8001B5D4();
 }
 
