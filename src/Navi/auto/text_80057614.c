@@ -78,6 +78,7 @@ extern u8 lbl_802C2D60[];
 extern "C" void fn_801473F8(s32, void*, void*, s32, s32, void*, void*, s32, s32);
 extern "C" void fn_8005C5DC(void);
 extern "C" void fn_8017E1A4(void*, s32);
+extern "C" void fn_8005C330(const char*, ...);
 extern "C" void fn_8015AB1C(void*);
 extern void* lbl_8027EC68[];
 extern "C" void fn_801BFEBC(void* param_1, void* param_2);
@@ -1433,7 +1434,13 @@ void fn_80060EF0(void* param_1) {
         }
         p[3] = 0;
         w = (u32*)(p + 0xa8);
-        for (j = 0; j < 26; j++) {
+        w[0] = 0; w[1] = 0; w[2] = 0; w[3] = 0;
+        w[4] = 0; w[5] = 0; w[6] = 0; w[7] = 0;
+        w[8] = 0; w[9] = 0; w[10] = 0; w[11] = 0;
+        w[12] = 0; w[13] = 0; w[14] = 0; w[15] = 0;
+        w[16] = 0; w[17] = 0; w[18] = 0; w[19] = 0;
+        w[20] = 0; w[21] = 0; w[22] = 0; w[23] = 0;
+        for (j = 24; j < 26; j++) {
             w[j] = 0;
         }
         p += 0x110;
