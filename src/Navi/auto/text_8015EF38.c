@@ -21,3 +21,48 @@ extern "C" void* fn_8015EF38(void* param_1, s16 param_2) {
 extern "C" void fn_8015F228(void) {
     fn_8015F400();
 }
+
+extern "C" void fn_80166B58(void*, void*);
+extern "C" void fn_801BDDBC(void*, void*, int);
+extern "C" void fn_80159C6C(void*, int);
+extern "C" void fn_80166B70(void*, int);
+extern "C" void fn_801BDE1C(void*, void*, int);
+extern "C" void fn_80166650(void*);
+extern "C" void DCInvalidateRange(void*, u32);
+extern "C" u8* fn_8015F520(u8* p) {
+    fn_80166B58(p + 0x20, p);
+    fn_80166B58(p + 0x30, p);
+    fn_801BDDBC(p + 0x68, p + 0x88, 1);
+    *(u32*)(p + 0x58) = 0;
+    *(u32*)(p + 0x5c) = 0;
+    *(u32*)(p + 0x60) = 0;
+    *(u32*)(p + 0x8c) = 0;
+    *(u32*)(p + 0x90) = 0;
+    *(u32*)(p + 0x94) = 0;
+    return p;
+}
+
+extern "C" void* fn_8015F590(u8* p, s16 del) {
+    if (p) {
+        if (*(void**)(p + 0x8c)) {
+            fn_8015AB1C(*(void**)(p + 0x8c));
+        }
+        if (*(void**)(p + 0x90)) {
+            fn_8015AB1C(*(void**)(p + 0x90));
+        }
+        if (*(void**)(p + 0x94)) {
+            fn_80159C6C(*(void**)(p + 0x94), 0);
+        }
+        if (p + 0x30) {
+            fn_80166B70(p + 0x30, 0);
+        }
+        if (p + 0x20) {
+            fn_80166B70(p + 0x20, 0);
+        }
+        if (del > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
+}
+
