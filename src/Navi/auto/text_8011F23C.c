@@ -273,7 +273,7 @@ extern "C" void fn_8011F304(u8* p, s32 x, s32 y, s32 w, s32 h) {
         y *= 2;
         h *= 2;
     }
-    dst = (s16*)*(u8**)(p + 0x14) + (*(u16*)(p + 8) * y * 2 + x);
+    dst = (s16*)(*(u8**)(p + 0x14) + (*(u16*)(p + 8) * y * 2 + x * 2));
     for (row = 0; row < h; row++) {
         i = 0;
         if (w > 0) {
@@ -299,6 +299,7 @@ extern "C" void fn_8011F304(u8* p, s32 x, s32 y, s32 w, s32 h) {
                 ctr = w - i;
                 do {
                     *dst++ = 0x1080;
+                    i++;
                 } while (--ctr != 0);
             }
         }
@@ -386,6 +387,10 @@ extern void fn_8015AB1C(void* ptr);
 extern "C" void* fn_80120138(void* ptr, void* param);
 extern "C" void* fn_801CB248(void* ptr);
 extern "C" void* fn_801CB28C(void* ptr);
+extern "C" void fn_801CC8B4(s32 a);
+extern "C" void fn_801CC710(void);
+extern "C" void fn_801DB70C(void* a);
+extern "C" void fn_801BDDBC(void* p, void* data, s32 count);
 typedef void (*VirtualMethod0)(void*, s16);
 extern "C" void fn_80120090(u8 param_1) {
     lbl_802FDD88 = param_1;
@@ -548,6 +553,45 @@ extern "C" void fn_80120880(Unk80120880* p, s32 x, s32 y, s32 w, s32 h, u32* q) 
     p->mA = 0;
     p->m24 = 0;
     p->m20 = -1;
+}
+
+extern "C" void fn_8012092C(Unk8012092C* p) {
+    s32 n = p->m20;
+    if (n >= 0) {
+        p->m20 = n - 1;
+        if (n == 0) {
+            p->m4 = p->m24;
+        }
+    }
+    switch (p->m4) {
+    case 1:
+        break;
+    case 0:
+        p->mF = 0xFF;
+    default:
+        goto call;
+    case 2: {
+        u16 t = p->mA + 1;
+        p->mA = t;
+        p->mF = (u8)(0xFF - ((s32)(t * 0xFF) / (s32)p->m8));
+        if (t >= p->m8) {
+            p->m4 = 1;
+        }
+        goto call;
+    }
+    case 3: {
+        u16 t = p->mA + 1;
+        p->mA = t;
+        p->mF = (u8)((s32)(t * 0xFF) / (s32)p->m8);
+        if (t >= p->m8) {
+            p->m4 = 0;
+        }
+        goto call;
+    }
+    }
+    return;
+call:
+    ((void (*)(void*))p->vt[5])(p);
 }
 
 extern "C" void fn_80120A2C(u8* p) {
@@ -2093,14 +2137,16 @@ extern "C" void fn_8012C500(void** param_1, void* param_2) {
 
 extern "C" void fn_8012C508(u8* param_1)
 {
-    u8** data = *(u8***)(*(u8**)(param_1 + 4) + 0x28);
+    u8** data;
+    u8* p = param_1;
+    data = *(u8***)(*(u8**)(p + 4) + 0x28);
     if (*(u32*)(*data + 8) & 1) {
         fn_801DACA4(1, 1, 4, 0x3c, 0, 0x7d);
-        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(param_1 + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(param_1 + 4) + 0x38) + *(u8*)(*data + 0x25) * 2)) * 4) + 4, 2);
+        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(p + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(p + 4) + 0x38) + (u8)(*(s8*)(*data + 0x25)) * 2)) * 4) + 4, 2);
     }
     if (*(u32*)(*data + 8) & 0x100) {
         fn_801DACA4(2, 1, 4, 0x3c, 0, 0x7d);
-        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(param_1 + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(param_1 + 4) + 0x38) + *(u8*)(*data + 0x26) * 2)) * 4) + 4, 3);
+        fn_801191F0(*(u8**)(*(u8**)(*(u8**)(p + 8) + 8) + (*(u16*)(*(u8**)(*(u8**)(p + 4) + 0x38) + (u8)(*(s8*)(*data + 0x26)) * 2)) * 4) + 4, 3);
     }
 }
 
@@ -3342,31 +3388,33 @@ extern "C" void fn_80133A80(u8* p) {
     }
 }
 
+#pragma use_lmw_stmw off
 extern "C" void fn_80133ABC(void* param_1, u32 param_2)
 {
-    Unk80133ABCArr* arr = *(Unk80133ABCArr**)((u8*)param_1 + 0x34);
+    Unk80133ABCMgr* arr = *(Unk80133ABCMgr**)((u8*)param_1 + 0x34);
     if (arr != 0) {
-        Unk80133ABCElem* e = arr->m4;
-        Unk80133ABCElem* end = (Unk80133ABCElem*)((u8*)e + arr->m8 * 0x14);
-        f32 f = *(f32*)(*(u8**)((u8*)param_1 + 0x14) + 0x58);
+        Unk80133ABCItem* end = (Unk80133ABCItem*)((u8*)arr->m4 + arr->m8 * 0x14);
+        Unk80133ABCItem* cur;
+        Unk80133ABCItem* e = arr->m4;
+        f64 f = *(f64*)(*(u8**)((u8*)param_1 + 0x14) + 0x58);
         while (e != end) {
             s32 v = e->m4;
-            Unk80133ABCElem* cur = e;
-            e = (Unk80133ABCElem*)((u8*)e + 0x14);
-            if ((u32)(-1 - v) > param_2) {
-                cur->m4 = v + param_2;
-            } else {
+            cur = e;
+            e = (Unk80133ABCItem*)((u8*)e + 0x14);
+            if ((u32)(-1 - v) <= param_2) {
                 cur->m4 = -1;
+            } else {
+                cur->m4 = v + param_2;
             }
             if (cur->m8 != 0) {
                 cur->m8(cur, f);
-                cur->m10->vf2(arr, cur->m0);
+                cur->m10->vf0(arr, cur->m0);
             }
         }
-        arr->m0->vf6(param_1, param_2);
+        arr->vf4(param_1, param_2);
     }
 }
-
+#pragma use_lmw_stmw reset
 extern "C" void fn_80133BB0(int param_1, void* param_2, void* param_3, void* param_4, void* param_5) {
     int* obj = *(int**)(param_1 + 0x34);
     if (obj != 0) {
