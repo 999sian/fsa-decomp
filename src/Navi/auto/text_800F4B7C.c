@@ -992,6 +992,19 @@ extern "C" void fn_80105204(u8* p) {
     }
 }
 
+extern "C" void fn_801060B8(u8* p) {
+    s32 r = fn_80108928(p, *(s16*)(p + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), 0.0f, 0, 0, 0.0f, *(f32*)(lbl_802C5A84 + 0x38), 0.0f);
+    (*(s16*)(p + 0xec))++;
+    if (r == 1) {
+        *(s16*)(p + 0xec) = 0;
+        (*(u8**)(p + 0x1d4))[0xb0] = 1;
+        (*(u8**)(p + 0x25c))[0xb0] = 1;
+        (*(u8**)(p + 0x268))[0xb0] = 1;
+        p[0xf2] = 2;
+        p[0xee] = 8;
+    }
+}
+
 extern "C" void fn_80106540(char* p) {
     *(unsigned char*)(*(char**)(p + 0x3f0) + 0xb0) = 1;
     *(unsigned char*)(p + 0x408) = lbl_802C5A84[0x48];
