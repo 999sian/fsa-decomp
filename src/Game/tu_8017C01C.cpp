@@ -287,14 +287,10 @@ extern "C" u8 fn_8017EC70(const f32* pos, f32 val) {
 }
 
 extern "C" u8 fn_8017ECC0(void) {
-    u8 result = 0;
-    void* base;
-    void* p;
-    base = *(void**)lbl_8053AB10;
-    p = *(void**)((char*)base + 0x24);
+    u32 result = 0;
+    void* p = *(void**)((char*)lbl_8053AB10 + 0x24);
     if (*(u8*)((char*)p + 0x179) == 0) {
-        *(u8*)((char*)p + 0x178) = 1;
-        result = 1;
+        *(u8*)((char*)p + 0x178) = result = 1;
     }
     return result;
 }
