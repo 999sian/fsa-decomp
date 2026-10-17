@@ -50,7 +50,7 @@ extern "C" char lbl_802BB0FC[];
 extern "C" char lbl_802864E4[];
 extern "C" void fn_801E10DC(void* p, void* q);
 extern f32 lbl_80300B20;
-extern "C" f32 fn_800A1774(void*, u8, u8, s32);
+extern "C" f32 fn_800A1774(void*, s32, s32, u8);
 extern "C" void fn_800D1EE8(void* p);
 struct DtorVObj_800A0008 { virtual void Destroy(int); };
 extern "C" void fn_800D3274(u8* p);
