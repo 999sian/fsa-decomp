@@ -30,13 +30,14 @@ extern "C" TzokRng* lbl_8053AAF8;
 
 static inline f32 tzokRand01() {
     TzokRng* g = lbl_8053AAF8;
+    f32 one = lbl_8053F870;
     union {
         f32 f;
         u32 s;
     } out;
     g->seed = g->seed * 0x19660d + 0x3c6ef35f;
     out.s = (g->seed >> 9) | 0x3f800000;
-    return out.f - lbl_8053F870;
+    return out.f - one;
 }
 
 // ---- fn_802064E0.cpp ----
@@ -271,15 +272,14 @@ extern "C" void fn_801CE0A4(void* self, s32 param);
 extern "C" void fn_8020FADC(void* self);
 extern "C" void fn_802051AC(void* this_, s32 param_2) {
     char* p = (char*)this_;
-    if (p[0xc4] != 0 && *(s32*)(p + 0xc8) >= 0 && *(s32*)(p + 0xc8) < 4) {
-        bool bVar1 = false;
+    if (*(u8*)(p + 0xc4) != 0 && *(s32*)(p + 0xc8) >= 0 && *(s32*)(p + 0xc8) < 4) {
+        bool bVar1 = true;
         if (*(u8*)fn_80204638() == 0) {
+            bVar1 = false;
             s32 room = *(s32*)(p + 0x354);
             if (room != 0 && fn_802D7F40(fn_802D6A9C(), room)) {
                 bVar1 = true;
             }
-        } else {
-            bVar1 = true;
         }
         if (bVar1) {
             fn_80230C6C(*(s32*)(p + 0xc8));
@@ -291,24 +291,22 @@ extern "C" void fn_802051AC(void* this_, s32 param_2) {
         bVar1 = true;
     }
     if (bVar1) {
-        s32 st = *(s32*)(p + 0x248);
-        if (st != 7) {
-            if (st < 7) {
-                if (st < 3 || st == 6) {
-                    fn_80205E0C((u8*)p, 9);
-                }
-            } else if (st != 9) {
-                fn_80205E0C((u8*)p, 9);
-            }
+        switch (*(s32*)(p + 0x248)) {
+        case 3:
+        case 4:
+        case 5:
+        case 7:
+        case 9:
+            break;
+        default:
+            fn_80205E0C((u8*)p, 9);
         }
     }
-    u8 c348 = *(u8*)(p + 0x348);
-    if (c348 != 0) {
-        *(u8*)(p + 0x348) = c348 - 1;
+    if (*(u8*)(p + 0x348) != 0) {
+        *(u8*)(p + 0x348) -= 1;
     }
-    u8 c349 = *(u8*)(p + 0x349);
-    if (c349 != 0) {
-        *(u8*)(p + 0x349) = c349 - 1;
+    if (*(u8*)(p + 0x349) != 0) {
+        *(u8*)(p + 0x349) -= 1;
     }
     bVar1 = false;
     if (*(u16*)(p + 0x94) == 1 && !fn_801CD2F8(*(s32*)(p + 4))) {
