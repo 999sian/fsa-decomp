@@ -300,7 +300,6 @@ extern "C" void fn_8032D534(char* p) {
     *(s32*)(p + 0x230) = 1;
 }
 
-extern const u32 lbl_804719D8[];
 extern "C" u32 fn_8032D564(void* p, s32 i) { return lbl_804719D8[i]; }
 
 // NONMATCHING (93.1%): the constant extent copy is scheduled before the
