@@ -33,6 +33,7 @@ extern "C" BOOL fn_801C4314(s32 chan) {
     return ret;
 }
 
+#pragma dont_inline on
 extern "C" BOOL fn_801C4990(s32 param_1) {
     BOOL enabled;
     BOOL ret;
@@ -54,6 +55,31 @@ extern "C" BOOL fn_801C4990(s32 param_1) {
     *(vu32*)0xCC006434 = reg;
     OSRestoreInterrupts(enabled);
     return ret;
+}
+
+extern "C" int fn_801C4A28(u32 param_1) {
+    u32* p;
+    u32* q;
+    s32 i;
+    BOOL enabled;
+
+    enabled = OSDisableInterrupts();
+    for (p = lbl_802F7970, i = 0; i < 4; i++, p++) {
+        if (*p == param_1) {
+            OSRestoreInterrupts(enabled);
+            return 1;
+        }
+    }
+    for (q = lbl_802F7970, i = 0; i < 4; i++, q++) {
+        if (*q == 0) {
+            lbl_802F7970[i] = param_1;
+            fn_801C4990(1);
+            OSRestoreInterrupts(enabled);
+            return 1;
+        }
+    }
+    OSRestoreInterrupts(enabled);
+    return 0;
 }
 
 extern "C" void SIInit(void) {
@@ -99,6 +125,27 @@ extern "C" void fn_801C4F24(int chan, unsigned long val) {
 
 extern "C" void fn_801C4F38(void) {
     __SIRegs[14] = (int)0x80000000;
+}
+
+extern "C" int fn_801C5190(s32 chan, s32* out) {
+    s32 enabled;
+    s32* packet = (s32*)Packet_802F77D0;
+    s32 ret;
+
+    enabled = OSDisableInterrupts();
+    if (fn_801C4EA8(chan) & 0x20) {
+        packet[chan * 2 + 0x70] = __SIRegs[chan * 3 + 1];
+        packet[chan * 2 + 0x71] = __SIRegs[chan * 3 + 2];
+        packet[chan + 0x6c] = 1;
+    }
+    ret = packet[chan + 0x6c];
+    packet[chan + 0x6c] = 0;
+    if (ret) {
+        out[0] = packet[chan * 2 + 0x70];
+        out[1] = packet[chan * 2 + 0x71];
+    }
+    OSRestoreInterrupts(enabled);
+    return ret;
 }
 
 extern "C" u32 SIGetType(s32 chan);
