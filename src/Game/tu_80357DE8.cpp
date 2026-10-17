@@ -20,7 +20,7 @@ static inline void setRect(f32* r, f32 a, f32 b)
     r[3] = b;
 }
 
-static inline void setBounds(char* self, const f32 a, const f32 b)
+static inline void setBounds(char* self, f32 a, f32 b)
 {
     setRect((f32*)(self + 0x80), a, b);
     setRect((f32*)(self + 0x60), a, b);
