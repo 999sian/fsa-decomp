@@ -216,6 +216,172 @@ extern "C" void* fn_8011B390(u8* p, s16 n) {
     return p;
 }
 
+extern "C" void* fn_801902C0(void);
+extern "C" void fn_801F0E34(u8* this_, s32 id, s32 flag);
+extern "C" void fn_8013CC50(u32 room, Vec* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230498(s32 i, Vec* v, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_80230BF4(s32 i, s32 n);
+extern "C" Vec* fn_8023E724(s32 i);
+extern "C" f32 lbl_8053C81C;
+extern "C" f32 lbl_8053C820;
+extern "C" f32 lbl_8053C818;
+extern "C" void fn_8011B878(u8* this_, s32 id) {
+    switch (id) {
+    case 0:
+        *(u8*)(this_ + 0x11d) = 0;
+        break;
+    case 1:
+        (*(void (**)(u8*, s32, s32))((u8*)*(void**)this_ + 0x30))(this_, 0xff, 1);
+        break;
+    case 4: {
+        u8* p = (u8*)fn_801902C0();
+        *(u8*)(p + 0x7c0) = 1;
+        *(s32*)(p + 0x7bc) = 1;
+        fn_801F0E34(this_, 0x40035, 0);
+        fn_800FEB78(this_ + 0x278, 4);
+        *(u8*)(this_ + 0x11d) = 1;
+        break;
+    }
+    case 5:
+        fn_800FEB78(this_ + 0x278, 0);
+        break;
+    case 6:
+        fn_801F0E34(this_, 0x400c7, 0);
+        break;
+    case 8:
+        fn_800FEB78(this_ + 0x278, 4);
+        break;
+    case 9: {
+        Vec tmp;
+        (*(void (**)(u8*, s32, s32))((u8*)*(void**)this_ + 0x30))(this_, 0xff, 0);
+        *(u8*)(this_ + 0x11d) = 0;
+        tmp = *(Vec*)(this_ + 0x24);
+        tmp.y = tmp.y + lbl_8053C81C;
+        for (s32 i = 0; i < 4; i++) {
+            fn_80230498(i, &tmp, 0x18, 0xff, -0x80, -0x80, 1);
+        }
+        break;
+    }
+    case 10: {
+        Vec* p;
+        Vec* pos;
+        f32 k;
+        for (s32 i = 0; i < 4; i++) {
+            fn_80230BF4(i, 3);
+        }
+        *(Vec*)(this_ + 0x260) = *(Vec*)(this_ + 0x24);
+        p = fn_8023E724(0);
+        pos = (Vec*)(this_ + 0x24);
+        k = lbl_8053C820;
+        *(f32*)(this_ + 0x26c) = (pos->x - p->x) / k;
+        *(f32*)(this_ + 0x270) = (pos->y - p->y) / k;
+        *(f32*)(this_ + 0x274) = (pos->z - p->z) / k;
+        break;
+    }
+    case 11:
+        *(u8*)(this_ + 0x11d) = 0;
+        break;
+    case 12: {
+        Vec tmp;
+        tmp = *(Vec*)(this_ + 0xc);
+        fn_8013CC50(*(u32*)(this_ + 4), &tmp, lbl_8053C7F8, 0x41d, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), &tmp, lbl_8053C7F8, 0x41e, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), &tmp, lbl_8053C7F8, 0x41f, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 4), &tmp, lbl_8053C7F8, 0x420, 0, 0, 0, 0, 1);
+        fn_801F0E34(this_, 0x30091, 0);
+        break;
+    }
+    case 13:
+        *(u8*)(this_ + 0x11d) = 1;
+        break;
+    case 14:
+        *(s32*)(this_ + 0x98) = 3;
+        *(s32*)(this_ + 0x278) = 1;
+        *(u8*)(this_ + 0x284) = 3;
+        break;
+    case 15:
+        *(s32*)(this_ + 0x98) = 2;
+        *(s32*)(this_ + 0x278) = 0;
+        *(u8*)(this_ + 0x284) = 2;
+        break;
+    case 16: {
+        Vec tmp;
+        *(s32*)(this_ + 0x98) = 2;
+        *(s32*)(this_ + 0x278) = 0;
+        *(u8*)(this_ + 0x284) = 2;
+        tmp = *(Vec*)(this_ + 0xc);
+        tmp.y = tmp.y + lbl_8053C818;
+        fn_8013CC50(*(u32*)(this_ + 4), &tmp, lbl_8053C7F8, 0x33b, 0, 0, 0, 0, 1);
+        break;
+    }
+    case 17:
+        *(s32*)(this_ + 0x98) = 3;
+        fn_800FEB78(this_ + 0x278, 1);
+        break;
+    case 18:
+        fn_800FEB78(this_ + 0x278, 0);
+        break;
+    case 19:
+        *(s32*)(this_ + 0x98) = 3;
+        fn_800FEB78(this_ + 0x278, 1);
+        *(f32*)(this_ + 0x44) = lbl_8053C7D8;
+        *(f32*)(this_ + 0x40) = lbl_8053C7D8;
+        *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
+        break;
+    case 20: {
+        s32 i;
+        fn_800FEB78(this_ + 0x278, 4);
+        *(s32*)(this_ + 0x23c) = 0;
+        for (i = 0; i < 4; i++) {
+            fn_80230498(i, fn_8023E724(i), 0x3f, 0xff, -0x80, -0x80, 1);
+        }
+        break;
+    }
+    case 21:
+        *(s32*)(this_ + 0x98) = 2;
+        fn_800FEB78(this_ + 0x278, 0);
+        *(s32*)(this_ + 0x23c) = 0;
+        break;
+    case 22:
+        fn_800FEB78(this_ + 0x278, 0);
+        *(s32*)(this_ + 0x23c) = 0;
+        break;
+    case 23:
+        fn_800FEB78(this_ + 0x278, 4);
+        *(u8*)(this_ + 0x231) = *(u8*)(this_ + 0x231) == 0;
+        *(s32*)(this_ + 0x23c) = 0;
+        *(f32*)(this_ + 0x14) = lbl_8053C7D8;
+        fn_801F0E34(this_, 0x400c7, 0);
+        break;
+    case 24:
+        fn_800FEB78(this_ + 0x278, 0);
+        *(f32*)(this_ + 0x44) = lbl_8053C7D8;
+        *(f32*)(this_ + 0x40) = lbl_8053C7D8;
+        *(f32*)(this_ + 0x3c) = lbl_8053C7D8;
+        *(f32*)(this_ + 0x14) = lbl_8053C7D8;
+        break;
+    case 25:
+        fn_801F0E34(this_, 0x400c7, 0);
+        break;
+    case 26:
+        fn_800FEB78(this_ + 0x278, 4);
+        *(f32*)(this_ + 0x14) = lbl_8053C7D8;
+        break;
+    case 27:
+        *(s32*)(this_ + 0x98) = 3;
+        fn_800FEB78(this_ + 0x278, 0);
+        break;
+    case 28:
+        fn_801F0E34(this_, 0x400c7, 0);
+        break;
+    case 29:
+        *(s32*)(this_ + 0x98) = 2;
+        fn_800FEB78(this_ + 0x278, 1);
+        break;
+    }
+    *(s32*)(this_ + 0x238) = id;
+}
+
 extern "C" s32 fn_8011BDAC(u8* self) {
     switch (*(s32*)(self + 0x23c)) {
     case 12:
