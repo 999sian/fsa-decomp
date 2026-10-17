@@ -1246,7 +1246,7 @@ extern "C" s32 fn_80124600(u8* self) {
                 return 3;
             }
             actor[0x334] = 1;
-            return ((ActorSlot23Calls*)actor)->v23(self);
+            return ((ActorSlot23Calls*)actor)->v21(self);
         }
     }
     flag = 0;
@@ -1255,7 +1255,7 @@ extern "C" s32 fn_80124600(u8* self) {
         if (p != 0 && *(s32*)(p + 0x1a0) == 0x46415a52) {
             s32 r;
             p[0x334] = 1;
-            r = ((ActorSlot23Calls*)p)->v23(self);
+            r = ((ActorSlot23Calls*)p)->v21(self);
             switch (r) {
             case 1:
                 return 1;
