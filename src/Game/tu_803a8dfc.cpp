@@ -1432,8 +1432,9 @@ extern "C" void fn_803AF1B0(Menu_Rank* p) {
         }
     }
     if (done >= p->count) {
+        s32 t;
         for (s32 j = 0; j < p->count; j++) {
-            s32 t = p->target[j];
+            t = p->target[j];
             if (best < t) {
                 p->m4c8 = 0;
                 best = t;
