@@ -1565,6 +1565,13 @@ extern "C" void fn_8019F1B8(int param_1) {
     }
 }
 
+extern "C" void fn_8019F260(int param_1) {
+    u16* e = lbl_802EE5D4[*(u8*)(param_1 + 0xd) & 7];
+    fn_8019019C(*(u8*)(param_1 + 0xc), e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
+    e = lbl_802EE5D4[*(u8*)(param_1 + 0x11) & 7];
+    fn_8019019C(*(u8*)(param_1 + 0x10) & 7, e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
+}
+
 extern "C" void fn_8019F324(int param_1) {
     u8* p = (u8*)param_1;
     u32 i = 0;
