@@ -904,6 +904,7 @@ extern "C" BOOL fn_8005A720(void* a) {
 
 extern "C" void fn_8005A74C(u8* p) {
     u8 n;
+    f32 f;
     if (fn_8005A74C_isBadPtr(p)) {
         return;
     }
@@ -912,17 +913,18 @@ extern "C" void fn_8005A74C(u8* p) {
     if (n == 0) {
         lbl_802FF0FC = OSDisableInterrupts();
     }
-    ((u32*)p)[5] = 0;
-    ((u32*)p)[6] = 0;
-    ((u32*)p)[7] = 0;
-    ((f32*)p)[8] = lbl_80300230;
+    *(u32*)(p + 0x14) = 0;
+    f = lbl_80300230;
+    *(u32*)(p + 0x18) = 0;
+    *(u32*)(p + 0x1c) = 0;
+    *(f32*)(p + 0x20) = f;
     p[0x24] = 0;
     p[0x25] = 0x40;
     p[0x26] = 0;
-    ((u32*)p)[3] = 0;
+    *(u32*)(p + 0xc) = 0;
     p[0x27] = 0;
     p[0x28] = 0;
-    ((u32*)p)[4] = 0;
+    *(u32*)(p + 0x10) = 0;
     n = lbl_802FF0F8;
     if (n != 0) {
         n--;
@@ -1250,17 +1252,59 @@ extern "C" void fn_8005C710(void) {
     fn_801473F8(0, (void*)fn_8005C4A8, lbl_802C2D60, 0xff, 0, (void*)fn_8005C5DC, lbl_802C2D60, 0xff, 0);
 }
 
+extern "C" s32 fn_8005C764(s32 idx) {
+    s32 i;
+    s32 count;
+    u8* found;
+    u8* p;
+
+    if (!((0x106 < idx && idx < 0x10d) || idx == 0xcb || idx == 0xcc)) {
+        return idx;
+    }
+    count = 0;
+    found = NULL;
+    p = lbl_802C05F0;
+    for (i = 0; i < 4; i++) {
+        if (p[0x12] != 0 && *(s32*)p == 0x24) {
+            found = p;
+        }
+        p += 0x18;
+        if (p[0x12] != 0 && *(s32*)p == 0x24) {
+            found = p;
+        }
+        p += 0x18;
+        if (p[0x12] != 0 && *(s32*)p == 0x24) {
+            found = p;
+        }
+        p += 0x18;
+        if (p[0x12] != 0 && *(s32*)p == 0x24) {
+            found = p;
+        }
+        p += 0x18;
+        count += 3;
+    }
+    if (found == NULL) {
+        return count;
+    }
+    found[0x13] = 2;
+    *(u16*)(found + 0x10) = *(u16*)(found + 0xa) >> 2;
+    return count;
+}
+
 extern "C" s32 fn_8005C854(s32 param) {
-    s32 inRange = 0;
+    s32 flag = 0;
     u8* found = 0;
     u8* p = lbl_802C05F0;
     s32 count = 0;
     s32 i;
 
-    if ((param >= 0x107 && param <= 0x10c) || param == 0xcb || param == 0xcc) {
-        inRange = 1;
+    if (param > 0x106 && param < 0x10d) {
+        flag = 1;
     }
-    if (!inRange) {
+    if (param == 0xcb || param == 0xcc) {
+        flag = 1;
+    }
+    if (!flag) {
         return param;
     }
     for (i = 0; i < 4; i++) {
@@ -1383,6 +1427,43 @@ extern "C" void fn_8005CC20(void* self, f32 a, f32 b, f32 c, f32 d) {
     *(f32*)((u8*)self + 0x1c) = b;
     *(f32*)((u8*)self + 0x20) = c;
     *(f32*)((u8*)self + 0x24) = d;
+}
+
+extern "C" void fn_801D9F18(s32 a, s32 b);
+extern "C" void fn_801DCCA0(s32 a);
+extern "C" void fn_801DCCDC(s32 a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern "C" void fn_801DCBB0(s32 a, void* b);
+extern "C" void fn_801DAF24(s32 a);
+extern "C" void fn_801DEA4C(s32 a);
+extern "C" void fn_801DE8B0(s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_801DE310(s32 a, s32 b);
+extern "C" void fn_801DEDBC(s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_801DBA5C(s32 a, s32 b);
+extern "C" void fn_801DB8C4(s32 a, s32 b, s32 c);
+extern "C" void fn_8005CDE8(u8* param_1) {
+    u32 local[2];
+    s16 a;
+    s16 b;
+    volatile s16* hw;
+    fn_801DA364();
+    fn_801D9F18(9, 1);
+    fn_801DCCA0(1);
+    fn_801DCCDC(4, 0, 0, 0, 0, 0, 2);
+    local[0] = *(u32*)(param_1 + 8);
+    fn_801DCBB0(4, local);
+    fn_801DAF24(0);
+    fn_801DEA4C(1);
+    fn_801DE8B0(0, 0xff, 0xff, 4);
+    fn_801DE310(0, 4);
+    fn_801DEDBC(1, 4, 5, 0xf);
+    fn_801DBA5C(param_1[0xc], 0);
+    fn_801DB8C4(0xb8, 0, 1);
+    a = *(s16*)(param_1 + 6);
+    hw = (volatile s16*)0xCC008000;
+    b = *(s16*)(param_1 + 4);
+    *hw = b;
+    *hw = a;
+    *hw = 0;
 }
 
 extern "C" void* fn_8005E7D8(void* ptr, s16 param_2) {
