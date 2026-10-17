@@ -4,6 +4,7 @@
 #include "types.h"
 extern u32 lbl_8053AE70;
 extern u8 lbl_8053AE78;
+extern "C" void fn_8042DA10();
 #include <dolphin/os.h>
 #include <dolphin/vi.h>
 #include <string.h>
