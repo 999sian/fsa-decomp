@@ -8,6 +8,72 @@ struct Vec2 {
     float x, y;
 };
 
+struct FsaResourceManager {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual unsigned int getResource(unsigned int fourccType, const char* fileName);
+};
+
+// 0x3C-byte 2D SOB draw configuration payload (same layout tu_802CFDCC.cpp)
+struct SobDrawParams {
+    unsigned char paletteMap[0x10];
+    union {
+        int raw;
+        struct {
+            unsigned char r, g, b, a;
+        } rgba;
+    } primaryColor;
+    int envColor;
+    void* transformMtx;
+    signed char renderFlags[0xB];
+    int blendMode;
+    unsigned char shadowFlags[3];
+    int lightId;
+    int animPhase;
+    int cullMode;
+
+    SobDrawParams() {
+        int i;
+        primaryColor.raw = -1;
+        envColor = -1;
+        for (i = 0; (unsigned char)i < 0x10; i += 8) {
+            paletteMap[(unsigned char)i] = i;
+            paletteMap[(unsigned char)(i + 1)] = i + 1;
+            paletteMap[(unsigned char)(i + 2)] = i + 2;
+            paletteMap[(unsigned char)(i + 3)] = i + 3;
+            paletteMap[(unsigned char)(i + 4)] = i + 4;
+            paletteMap[(unsigned char)(i + 5)] = i + 5;
+            paletteMap[(unsigned char)(i + 6)] = i + 6;
+            paletteMap[(unsigned char)(i + 7)] = i + 7;
+        }
+        primaryColor.raw = -1;
+        envColor = 0;
+        transformMtx = 0;
+        renderFlags[0] = 0;
+        renderFlags[1] = 0;
+        renderFlags[2] = 0;
+        renderFlags[3] = 1;
+        renderFlags[4] = 1;
+        renderFlags[5] = 0;
+        renderFlags[6] = 0;
+        renderFlags[7] = 0;
+        renderFlags[8] = 0;
+        renderFlags[9] = 0;
+        renderFlags[10] = 1;
+        blendMode = 3;
+        shadowFlags[0] = 1;
+        shadowFlags[1] = 0;
+        shadowFlags[2] = 0;
+        lightId = -1;
+        animPhase = 0;
+        cullMode = 2;
+    }
+};
+
 extern "C" void fn_8022CA6C(int a, int b, int c);
 extern "C" void fn_8022CDD4(int a);
 extern "C" void fn_80134FE0(void* p, int b);
