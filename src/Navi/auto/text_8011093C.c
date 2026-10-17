@@ -31,6 +31,22 @@ extern "C" void fn_80111170(NaviState_8011093C* p) {
     (p->*lbl_8028F100[((u8*)p)[0x118]])();
 }
 
+extern "C" void fn_801111A8(u8* self) {
+    s32 iVar1;
+    if (*(s16*)(self + 0x116) == 0) {
+        fn_80060820(lbl_8030134C);
+        fn_8002F308(0x1e);
+    }
+    iVar1 = fn_8011171C(self, *(s16*)(self + 0x116), lbl_802C5B7C[0xc], 0, 0);
+    *(s16*)(self + 0x116) = *(s16*)(self + 0x116) + 1;
+    if (iVar1 == 1) {
+        *(s16*)(self + 0x116) = 0;
+        fn_8002F228(0x27);
+        self[0x11c] = lbl_802C5B7C[0xd];
+        self[0x118] = 1;
+    }
+}
+
 extern "C" void fn_80111248(u8* self) {
     if (self[0x11c] != 0) {
         self[0x11c]--;
