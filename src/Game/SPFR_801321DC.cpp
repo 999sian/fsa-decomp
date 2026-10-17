@@ -158,3 +158,6 @@ extern "C" void* fn_801336B4(char* p) {
     *(void**)(p + 0x288) = 0;
     return p;
 }
+
+void __sinit_SPFR_801321DC_cpp(void) {}
+
