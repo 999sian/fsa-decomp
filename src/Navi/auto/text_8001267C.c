@@ -28,6 +28,7 @@ extern "C" void fn_800126C4(void) {}
 
 extern char lbl_802049C8[];
 extern char lbl_80204A10[];
+extern char lbl_80204A4C[];
 extern "C" void fn_800074C0(const char* fmt, ...);
 extern "C" void fn_801E6704(void* dst, const void* src, u32 size);
 extern "C" s32 fn_800126C8(Table_800126C8* self, const void* src, u32 key) {
