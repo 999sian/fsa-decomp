@@ -3,6 +3,30 @@
 #include "std/math.h"
 #include "JSystem/JMath/JMath.h"
 
+union EffWord {
+    u32 w;
+    u8 b[4];
+};
+
+struct EffArgs {
+    u8 order[0x10];
+    EffWord f10;
+    EffWord f14;
+    void* ptr;
+    u8 b1c, b1d, b1e, b1f, b20, b21, b22, b23, b24, b25, b26;
+    u8 pad0;
+    u32 w28;
+    u8 b2c, b2d, b2e;
+    u8 pad1;
+    u32 x30, x34, x38;
+};
+
+extern "C" void fn_801158B8(void);
+extern "C" void fn_8010DF58(void*);
+extern "C" void fn_802F745C(void* mgr, f32* pos, void* tgt, EffArgs* args);
+extern void* lbl_8053AB10;
+extern f32 lbl_8053C730;
+
 extern "C" char lbl_8049D940[];
 extern f32 lbl_8053C6D0;
 extern f32 lbl_8053C6DC;
@@ -21,17 +45,21 @@ extern "C" void dtor_801EB8CC(void*, s32);
 extern "C" void __dt__13Base_8010E074Fv(void*, s32);
 extern "C" void __dl__FPv(void*);
 extern "C" s32 fn_80115A7C(char* p) {
-    JGeometry::TVec3<f32> a;
     JGeometry::TVec3<f32> b;
+    JGeometry::TVec3<f32> a;
+    f32 maxDist = lbl_8053C6DC;
+    f32 minDistSq = lbl_8053C6D0;
     for (s32 i = 0; i < 4; i++) {
         a = *fn_8023E724(i);
         fn_80115BC4(p, &a, &b);
         a += b;
         f32 dx = a.x - *(f32*)(p + 0xc);
         f32 dy = a.y - *(f32*)(p + 0x10);
-        f32 d2 = dx * dx + dy * dy;
-        if (d2 > lbl_8053C6D0) {
-            if (d2 * __frsqrte(d2) <= lbl_8053C6DC) {
+        f32 dx2 = dx * dx;
+        f32 dy2 = dy * dy;
+        f32 d2 = dx2 + dy2;
+        if (d2 > minDistSq) {
+            if (JMAFastSqrt(d2) <= maxDist) {
                 fn_80230498(i, &a, *(s32*)(p + 0x280) + 0x3b5, (s32)lbl_8053C6E0, -0x80, -0x80, 1);
             } else {
                 fn_8023DFF4(i, &a);
