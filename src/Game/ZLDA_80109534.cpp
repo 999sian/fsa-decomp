@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" void* fn_801F856C();
 extern "C" s32 fn_801F7A08(void*, u32);
