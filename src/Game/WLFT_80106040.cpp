@@ -152,7 +152,6 @@ extern "C" void fn_80136798(void* game, s32 a, s32 b);
 
 static inline bool wlftOnLift(u8* this_, s32 i) {
     s32 room = *(s32*)(this_ + 4);
-    u8 in;
     if (fn_8023DE58(i) == room) {
         JGeometry::TVec3<f32> p(*fn_8023E724(i));
         f32 cx = lbl_8053C270 + *(f32*)(this_ + 0xc);
@@ -161,15 +160,13 @@ static inline bool wlftOnLift(u8* this_, s32 i) {
         f32 y0 = *(f32*)(this_ + 0x64) + cy;
         f32 x1 = *(f32*)(this_ + 0x68) + cx;
         f32 y1 = *(f32*)(this_ + 0x6c) + cy;
-        in = 0;
+        u8 in = 0;
         if (p.x >= x0 && p.y >= y0 && p.x < x1 && p.y < y1) {
             in = 1;
         }
-    } else {
-        in = 0;
-    }
-    if (in) {
-        return true;
+        if (in) {
+            return true;
+        }
     }
     return false;
 }
