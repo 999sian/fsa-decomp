@@ -619,6 +619,22 @@ extern "C" void fn_800667B4(u8* p) {
     fn_8000D6F4(p + 0x32c);
 }
 
+extern "C" void fn_80066A80(StateObj80066A80* self, s32 param) {
+    if (!self->m_func) {
+        StateFunc80066A80 f = lbl_8027FAC0;
+        if (self->m_func != f) {
+            if (self->m_func) {
+                self->m_3ba = -1;
+                (self->*self->m_func)(0);
+            }
+            self->m_func = f;
+            self->m_3ba = 0;
+            (self->*self->m_func)(0);
+        }
+    }
+    (self->*self->m_func)(param);
+}
+
 extern "C" BOOL fn_80066B6C(char* p) {
     if (p[0x3ba] == 0) {
         p[0x3ba]++;
