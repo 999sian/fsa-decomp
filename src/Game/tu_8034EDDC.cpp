@@ -19,6 +19,12 @@ extern "C" Actor* fn_8034EDDC(Actor* self, s16 flag) {
     return self;
 }
 
+extern "C" u32 fn_8013CC50(u32 owner, void* pos, u16 id, s32 a, f32 f, s32 b, s32 c, s32 d, s32 e);
+extern "C" void* fn_801F856C(void);
+extern "C" void Actor_CreateByID(void* mgr, u32 id, s32 kind, void* pos, s32 a, s32 b, s32 c);
+extern const f32 lbl_805425F0;
+extern const f32 lbl_805425D8;
+extern const f32 lbl_80542608;
 extern "C" s16 fn_8022461C(s32);
 extern "C" s32 fn_80350274(s32 param_1, s32 param_2, s32 param_3) {
     s32 r = (u16)fn_8022461C(param_3);
