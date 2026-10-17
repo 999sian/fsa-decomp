@@ -268,6 +268,61 @@ extern "C" s32 fn_8008603C(int param_1, u32 param_2) {
     return result;
 }
 
+extern "C" s32 fn_800861C4(int param_1, u32 param_2) {
+    u8 inRun = 0;
+    s32 runStart = -1;
+    s32 result = -1;
+    s32 best = 0xffff;
+    u32* base = *(u32**)(param_1 + 0x78);
+    u32* end = (u32*)((u8*)base + ((*(u32*)(param_1 + 0x70) + 0x1f) >> 3 & ~3));
+    u32* p;
+    s32 count = 0;
+    s32 bit;
+
+    for (p = end - 1; p >= base - 1; p--) {
+        u32 word = (p == base - 1) ? 0xffffffff : *p;
+        if (word == 0) {
+            if (!inRun) {
+                runStart = ((s32)p - (s32)base) / 4 * 32 + 31;
+                count = 0;
+                inRun = 1;
+            }
+            count += 0x20;
+        } else if (word != 0xffffffff || inRun) {
+            for (bit = 31; bit >= 0; bit--) {
+                if (word & (0x80000000U >> bit)) {
+                    if (inRun) {
+                        if (count == param_2) {
+                            return runStart - count + 1;
+                        }
+                        if (param_2 < count) {
+                            if (*(u8*)(param_1 + 0x84) == 1) {
+                                return runStart - param_2 + 1;
+                            }
+                            if (count < best) {
+                                best = count;
+                                result = runStart;
+                            }
+                        }
+                        inRun = 0;
+                    }
+                } else {
+                    if (!inRun) {
+                        runStart = bit + ((s32)p - (s32)base) / 4 * 32;
+                        count = 0;
+                        inRun = 1;
+                    }
+                    count++;
+                }
+            }
+        }
+    }
+    if (result == -1) {
+        return -1;
+    }
+    return result - param_2 + 1;
+}
+
 extern "C" void fn_800863C0(void* param_1) {
     s32 idx = fn_8008668C((int)param_1);
     
@@ -351,13 +406,13 @@ u32 fn_8008658C(void* self_) {
     }
 }
 
-s32 fn_800865DC(void* self_) {
-    s32 result = fn_8008603C();
+extern "C" s32 fn_800865DC(void* self_) {
+    s32 result = fn_8008603C((int)self_, 0);
     return *(s32*)((u8*)self_ + 0x6c) * result;
 }
 
 void fn_80086614(void* self_) {
-    u32 result = fn_8008603C();
+    u32 result = fn_8008603C((int)self_, 0);
     fn_8008665C(self_, result);
 }
 
@@ -365,17 +420,17 @@ extern "C" u32 fn_80086654(int param_1) {
     return *(u32*)(param_1 + 0x80);
 }
 
-extern "C" int fn_8008665C(int param_1, uint param_2) {
+extern "C" int fn_8008665C(int param_1, int param_2) {
     if (param_2 < 0) {
         return 0;
     }
     u32 limit = *(u32*)(param_1 + 0x70);
-    if (param_2 >= limit) {
+    if ((u32)param_2 >= limit) {
         return 0;
     }
     int divisor = *(int*)(param_1 + 0x6c);
     int offset = *(int*)(param_1 + 0x7c);
-    return offset + divisor * (int)param_2;
+    return offset + divisor * param_2;
 }
 
 extern "C" int fn_8008668C(int param_1, u32 param_2) {
