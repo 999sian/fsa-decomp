@@ -18,9 +18,30 @@ extern "C" char lbl_802C05A0[];
 extern "C" void fn_8002A3CC(void* p, void* q, s32 a, s32 b);
 extern "C" void fn_8004FA30(void) {}
 
+extern "C" void fn_80052B7C(void) {
+    char* p = lbl_802C050C;
+    lbl_802FF0E4 = (int)(lbl_803001FC * *(f32*)(p + 0x40)) + *(int*)(lbl_802BB0FC + 0x58);
+}
+
 extern "C" void fn_80052BBC(void* param_1) {
     fn_8002A3CC(param_1, lbl_802C05A0, 0x93, 1);
 }
+
+extern "C" void fn_80052BEC(void) {
+    char* p = lbl_802C050C;
+    lbl_802FF0E4 = (int)(lbl_803001FC * *(f32*)(p + 0x14)) + *(int*)(lbl_802BB0FC + 0x58);
+}
+
+extern "C" void fn_80052C2C(void) {
+    char* p = lbl_802C050C;
+    lbl_802FF0E4 = (int)(lbl_803001FC * *(f32*)(p + 0x18)) + *(int*)(lbl_802BB0FC + 0x58);
+}
+
+extern "C" u8 lbl_802B7CA0[];
+extern "C" u32 lbl_802313F8[];
+extern "C" u8 lbl_802FEE34;
+extern "C" u32 lbl_802FF1D0;
+extern "C" u32 fn_80030390(u32);
 
 extern "C" void fn_80052DEC(void)
 {
