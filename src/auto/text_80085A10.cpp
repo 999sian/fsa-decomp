@@ -429,7 +429,7 @@ extern "C" u32 fn_80086654(int param_1) {
 }
 
 extern "C" int fn_8008665C(int param_1, int param_2) {
-    if (param_2 >= 0 && (u32)param_2 >= *(u32*)(param_1 + 0x70)) {
+    if (!(param_2 >= 0 && (u32)param_2 < *(u32*)(param_1 + 0x70))) {
         return 0;
     }
     return *(int*)(param_1 + 0x7c) + *(int*)(param_1 + 0x6c) * param_2;
