@@ -1,6 +1,10 @@
 #include "types.h"
 
 extern "C" void* lbl_8053AAF8;
+extern "C" void fn_802D6A9C(void);
+extern "C" BOOL fn_802DCD0C(void);
+extern "C" BOOL fn_80239D38(void);
+
 extern "C" void* fn_801902C0(void) {
     return *(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x20);
 }
@@ -8,26 +12,27 @@ extern "C" void* fn_801902C0(void) {
 extern "C" f32 lbl_8053E218;
 extern "C" void destroy__7JKRHeapFv(void*);
 extern "C" void fn_8019169C(u8* param_1) {
+    f32 fzero = lbl_8053E218;
     *(u8*)(param_1 + 0x64) = 0;
-    *(f32*)(param_1 + 0x50) = lbl_8053E218;
+    *(f32*)(param_1 + 0x50) = fzero;
     *(s32*)(param_1 + 0x58) = 0;
     *(u8*)(param_1 + 0xc4) = 0;
-    *(f32*)(param_1 + 0xb0) = lbl_8053E218;
+    *(f32*)(param_1 + 0xb0) = fzero;
     *(s32*)(param_1 + 0xb8) = 0;
     *(u8*)(param_1 + 0x124) = 0;
-    *(f32*)(param_1 + 0x110) = lbl_8053E218;
+    *(f32*)(param_1 + 0x110) = fzero;
     *(s32*)(param_1 + 0x118) = 0;
     *(u8*)(param_1 + 0x184) = 0;
-    *(f32*)(param_1 + 0x170) = lbl_8053E218;
+    *(f32*)(param_1 + 0x170) = fzero;
     *(s32*)(param_1 + 0x178) = 0;
     *(u8*)(param_1 + 0x1e4) = 0;
-    *(f32*)(param_1 + 0x1d0) = lbl_8053E218;
+    *(f32*)(param_1 + 0x1d0) = fzero;
     *(s32*)(param_1 + 0x1d8) = 0;
     *(u8*)(param_1 + 0x244) = 0;
-    *(f32*)(param_1 + 0x230) = lbl_8053E218;
+    *(f32*)(param_1 + 0x230) = fzero;
     *(s32*)(param_1 + 0x238) = 0;
     *(u8*)(param_1 + 0x2a4) = 0;
-    *(f32*)(param_1 + 0x290) = lbl_8053E218;
+    *(f32*)(param_1 + 0x290) = fzero;
     *(s32*)(param_1 + 0x298) = 0;
     *(u8*)(param_1 + 0x2c0) = 0;
     *(u8*)(param_1 + 0x2dc) = 0;
@@ -52,11 +57,13 @@ extern "C" void** fn_80191744(void** param_1, s16 param_2) {
     if (param_1 != NULL) {
         void* obj = param_1[499];
         if (obj != NULL) {
-            ((void (*)(void*, int))((void**)(*(void***)obj))[12])(obj, 1);
+            void** vt = *(void***)((u8*)obj + 8);
+            ((void (*)(void*, int))vt[12])(obj, 1);
         }
         obj = param_1[0x1ee];
         if (obj != NULL) {
-            ((void (*)(void*, int))((void**)(*(void***)obj))[12])(obj, 1);
+            void** vt = *(void***)((u8*)obj + 8);
+            ((void (*)(void*, int))vt[12])(obj, 1);
         }
         destroy__7JKRHeapFv(*param_1);
         if (param_2 > 0) {
