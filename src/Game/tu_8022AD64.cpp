@@ -247,6 +247,7 @@ static inline u8 playerMgrByte(u32 offset)
 u8 fn_8022ADFC()
 {
     u8 r;
+    if (lbl_8053AC90 == NULL) return 0;
     if (playerMgrByte(0x6c)) return 1;
     if (playerMgrByte(0x6d)) return 1;
     if (playerMgrByte(0x6e)) return 1;
@@ -400,7 +401,6 @@ void fn_8022B278()
 int fn_8022B334(int index)
 {
     int state;
-    int i;
 
     if (lbl_8053AC90 == NULL) return 0;
     if (isPlayerEnabled(index) && fn_80240AF0(lbl_8053AC90->players[index])) return 0;
@@ -415,6 +415,7 @@ int fn_8022B334(int index)
         }
         if (!fn_80257DB4(lbl_8053AC90->players[index])) return 0;
     } else {
+        int i;
         for (i = 0; i < 4; i++) {
             if (isPlayerEnabled(i) && (index == i || fn_8022E438(index, i))) {
                 if (!(isPlayerEnabled(i) && fn_80240AF0(lbl_8053AC90->players[i])) && !fn_80257DB4(lbl_8053AC90->players[i])) return 0;
@@ -1307,13 +1308,7 @@ int fn_802316C8(int idx, int p2, const JGeometry::TVec3<f32>& p3) {
     const JGeometry::TVec3<f32>* pos;
     if (lbl_8053AC90 == NULL) return 0;
     if (!isPlayerEnabled(idx)) return 0;
-    if (lbl_8053AC90 == NULL) {
-        pos = &lbl_804CF460;
-    } else if (!isPlayerEnabled(idx)) {
-        pos = &lbl_804CF460;
-    } else {
-        pos = (const JGeometry::TVec3<f32>*)((u8*)lbl_8053AC90->players[idx] + 8);
-    }
+    pos = (lbl_8053AC90 == NULL || !isPlayerEnabled(idx)) ? &lbl_804CF460 : (const JGeometry::TVec3<f32>*)((u8*)lbl_8053AC90->players[idx] + 8);
     return fn_80290070(lbl_8053AC90->players[idx], p2, *pos, p3, 0x11);
 }
 
