@@ -6,7 +6,7 @@ public:
     virtual void v10(); virtual void v14(); virtual void v18(); virtual void v1C();
     virtual void v20(); virtual void v24(); virtual void v28(); virtual void v2C();
     virtual void v30(); virtual void v34(); virtual void v38();
-    virtual class Pane803E4650* v3C(s32 a, s32 b, s32 c);
+    virtual class Pane803E4650* v3C(s32 a, s32 b);
 };
 class Pane803E4650 {
 public:
