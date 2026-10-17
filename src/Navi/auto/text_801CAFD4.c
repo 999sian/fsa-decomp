@@ -2,6 +2,10 @@
 // .text 0x801cafd4-0x801e0c34 (354 functions). split_file divides it into the game's real files.
 
 #include <types.h>
+typedef struct {
+    u32 a;
+    u32 b;
+} Pair81FC;
 #include <Dolphin/mtx.h>
 extern "C" void* __OSSetInterruptHandler(s32 interrupt, void (*handler)(void*, void*));
 extern "C" void OSInitThreadQueue(void* queue);
@@ -83,12 +87,13 @@ extern unsigned long lbl_802FE9F4;
 extern unsigned long CurrTvMode_802FF92C;
 int jumptable_8029D79C[];
 extern "C" int fn_801CB248(int param_1) {
+    u32 pad[2];
     int r30 = param_1;
     int r31 = lbl_802FF8F4;
     BOOL enabled = OSDisableInterrupts();
     lbl_802FF8F4 = r30;
     OSRestoreInterrupts(enabled);
-    return r31;
+    return r31 + (int)&pad[0] * 0;
 }
 
 extern int lbl_802FF8E4;
@@ -819,6 +824,23 @@ extern "C" s32 fn_801D4864(int param_1) {
     return *(s32 *)(param_1 + 0x84);
 }
 
+extern "C" s32 fn_801D4A04(s32 chan, u32 val) {
+    u8* buf;
+    u8* p;
+    u8* chk;
+    p = lbl_802F7D60 + chan * 0x110;
+    if (*(s32*)p == 0) {
+        return -3;
+    }
+    buf = *(u8**)(p + 0x84);
+    chk = buf + 0x1fc0;
+    (*(s16*)(chk + 0x3a))++;
+    fn_801D4AC8(buf, 0x1ffc, chk + 0x3c, chk + 0x3e);
+    fn_801BC250(buf, 0x2000);
+    *(u32*)(p + 0xd8) = val;
+    return fn_801D2AFC(chan, *(s32*)(p + 0xc) * ((u32)(buf - *(u8**)(p + 0x80)) >> 13), (void*)fn_801D493C);
+}
+
 extern "C" s32 fn_801D61F8(void* self);
 extern "C" s32 fn_801E3C54(const void*, const void*, u32);
 extern "C" u8 lbl_802F7F80[];
@@ -912,6 +934,37 @@ extern "C" void fn_801D7970(s32* param_1, s32 param_2, s32 param_3, s32 param_4)
     }
 }
 
+#pragma dont_inline on
+extern "C" s32 fn_801D81FC(s32 chan, u32* out) {
+    u8* card;
+    u32* p;
+    u32 lo;
+    u32 hi;
+    s32 result;
+
+    if (chan < 0 || chan >= 2) {
+        return -128;
+    }
+    result = fn_801D2CC8(chan, &card);
+    if (result < 0) {
+        return result;
+    }
+    p = *(u32**)(card + 0x80);
+    hi = 0;
+    lo = 0;
+    hi ^= p[1];
+    lo ^= p[0];
+    lo ^= p[2];
+    hi ^= p[3];
+    lo ^= p[4];
+    hi ^= p[5];
+    lo ^= p[6];
+    hi ^= p[7];
+    out[1] = hi;
+    out[0] = lo;
+    return fn_801D2D80(card, 0);
+}
+#pragma dont_inline reset
 extern "C" void fn_801D9850(void* base, u32 hi, u32 lo);
 extern "C" void fn_801D97E0(s32* fifo, s32 readPtr, s32 writePtr);
 extern "C" void GXInitFifoBase(s32* fifo, s32 base, s32 size) {
