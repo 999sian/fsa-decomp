@@ -160,6 +160,11 @@ extern "C" void fn_80026774(void) {
     p[3] = 0;
 }
 
+extern "C" int fn_80026790(u8 i, int j) {
+    u8* p = lbl_802BC548 + i * 0x34;
+    return *(int*)(p + *(s16*)(p + 0x30) * 0x18 + j * 4);
+}
+
 extern "C" int fn_8002689C()
 {
 	return 0;
