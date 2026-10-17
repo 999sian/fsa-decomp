@@ -21,6 +21,12 @@ extern "C" void fn_800127A0(void*);
 extern "C" s32 fn_80020384(void*, s32);
 extern char lbl_802C54FC[];
 extern char lbl_8029FDB4[];
+struct VObj_800A468C {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(u8);
+};
+
 extern "C" BOOL fn_800A2F68(void)
 {
     return TRUE;
