@@ -16,7 +16,7 @@ struct Vtable800D8248 {
 struct Col3_800DDDD0 { u8 r, g, b; };
 struct Col4_800DDDD0 { u8 a; Col3_800DDDD0 c; };
 struct Ent_800DDDD0 { u8 pad[1]; Col3_800DDDD0 c0; u8 pad2; Col3_800DDDD0 c1; };
-struct Obj_800DDDD0 { u8 pad[0x58]; Ent_800DDDD0 ent[1]; };
+struct Obj_800DDDD0 { u8 pad[0x59]; Ent_800DDDD0 ent[1]; };
 
 struct Unk800DC290Src {
     virtual void m2() = 0;
@@ -2159,15 +2159,9 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
     return *(unsigned char *)(param_1 + 0x58);
 }
 
-extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
-    Col4_800DDDD0 *s = (Col4_800DDDD0 *)param_3;
-    Ent_800DDDD0 *e = (Ent_800DDDD0 *)(param_1 + 0x59);
-    e[param_2].c0.r = s[0].c.r;
-    e[param_2].c0.g = s[0].c.g;
-    e[param_2].c0.b = s[0].c.b;
-    e[param_2].c1.r = s[1].c.r;
-    e[param_2].c1.g = s[1].c.g;
-    e[param_2].c1.b = s[1].c.b;
+extern "C" void fn_800DDDD0(Obj_800DDDD0 *obj, int idx, Col4_800DDDD0 *s) {
+    obj->ent[idx].c0 = s[0].c;
+    obj->ent[idx].c1 = s[1].c;
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
