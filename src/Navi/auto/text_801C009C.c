@@ -10,6 +10,7 @@ extern "C" void fn_801BE544(unsigned char* p);
 extern "C" void fn_801C13D0(unsigned char* p);
 extern int RunQueueHint_802FF7CC;
 extern int Reschedule_802FF7D0;
+extern int RunQueueHint_802FF7CC;
 extern "C" void OSInitThreadQueue(unsigned int* p) {
     p[1] = 0;
     p[0] = 0;
@@ -103,6 +104,41 @@ extern "C" void SelectThread(int);
 extern "C" void fn_801C0848(void) {
     int level = OSDisableInterrupts();
     SelectThread(1);
+    OSRestoreInterrupts(level);
+}
+
+extern "C" void fn_801C0A6C(unsigned int param) {
+    unsigned char* thread;
+    unsigned char* next;
+    unsigned char* prev;
+    int level = OSDisableInterrupts();
+
+    thread = *(unsigned char**)0x800000E4;
+    OSClearContext(thread);
+    if (*(unsigned short*)(thread + 0x2ca) & 1) {
+        next = *(unsigned char**)(thread + 0x2fc);
+        prev = *(unsigned char**)(thread + 0x300);
+        if (next != 0) {
+            *(unsigned char**)(next + 0x300) = prev;
+        } else {
+            *(unsigned char**)0x800000E0 = prev;
+        }
+        if (prev != 0) {
+            *(unsigned char**)(prev + 0x2fc) = next;
+        } else {
+            *(unsigned char**)0x800000DC = next;
+        }
+        *(unsigned short*)(thread + 0x2c8) = 0;
+    } else {
+        *(unsigned short*)(thread + 0x2c8) = 8;
+        *(unsigned int*)(thread + 0x2d8) = param;
+    }
+    fn_801BE544(thread);
+    fn_801C13D0(thread + 0x2e8);
+    RunQueueHint_802FF7CC = 1;
+    if (RunQueueHint_802FF7CC != 0) {
+        SelectThread(0);
+    }
     OSRestoreInterrupts(level);
 }
 
