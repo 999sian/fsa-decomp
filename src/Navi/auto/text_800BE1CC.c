@@ -292,8 +292,8 @@ extern "C" void fn_800C334C(u8* p) {
 
 extern "C" void fn_800C3490(void) {}
 
-extern "C" void fn_800C40D8(void* param_1, void* param_2) {
-    fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
+extern "C" void* fn_800C40D8(void* param_1, void* param_2) {
+    return fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
 
 extern "C" void fn_800C432C(void* param_1) {
