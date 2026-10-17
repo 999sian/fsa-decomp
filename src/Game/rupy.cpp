@@ -6,6 +6,15 @@
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804AB6D8[];
+extern const f32 lbl_80541D90;
+extern const f32 lbl_80541D98;
+extern const f32 lbl_80541D9C;
+extern const f32 lbl_80541DA0;
+extern const f32 lbl_80541DA4;
+extern "C" u8 fn_802DE9A0(void);
+extern "C" u8 fn_802DEB58(void);
+extern "C" void fn_801F0E34(void* this_, u32 id, s32 flag);
+extern "C" void* fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 extern "C" void* fn_8032AB80(void* this_, s16 freeFlag) {
     if (this_ != 0) {
@@ -45,7 +54,9 @@ extern "C" u8 fn_8020D6AC(void* slot, s32 room, void* pos, u32 id, RupyPt* ext);
 extern "C" u16 fn_8022461C(void* pos, s32 room);
 extern "C" bool fn_802265DC(void* pos, s32 room, s32 a);
 extern "C" u8 fn_8032D578(char* p, s32 room, void* pos) {
-    RupyPt ext = lbl_80541D80;
+    RupyPt ext;
+    *(u32*)&ext = *(u32*)&lbl_80541D80;
+    ((u32*)&ext)[1] = *(u32*)&lbl_80541D84;
     u32 id = *(u32*)(p + 0x198);
     u8* mgr = fn_8020D58C();
     if (fn_8020D6AC(mgr + 4 + mgr[1] * 0x784, room, pos, id, &ext) == 1) {
