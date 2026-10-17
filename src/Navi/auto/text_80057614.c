@@ -881,6 +881,16 @@ extern "C" u8 fn_8005BAB4(s32 idx) {
     return lbl_802FC71C[t];
 }
 
+extern "C" void fn_8005C074(void) {
+    s32 i = 0;
+    lbl_802FF104 = 0;
+    lbl_802FF108 = 0;
+    do {
+        fn_8005C21C(i);
+        i++;
+    } while (i < 0x100);
+}
+
 extern "C" void fn_8005C330(const char*, ...) {
 }
 
