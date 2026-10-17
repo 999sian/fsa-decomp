@@ -147,12 +147,12 @@ extern "C" u32 fn_8045ACDC(void* param_1, u8* param_2) {
 }
 
 extern "C" s32 fn_8045AD30(void* param_1, u8* param_2) {
-    u8 val = param_2[0];
-    if (val == 1) {
-        return 1;
-    } else if (val == 0) {
+    switch (param_2[0]) {
+    case 0:
         return 0;
-    } else {
+    case 1:
+        return 1;
+    default:
         return -1;
     }
 }
@@ -174,4 +174,6 @@ extern "C" u16 fn_8045AD64(int param_1, u32 param_2_val) {
     }
     return 0xffff;
 }
+
+void fn_8045ADEC(void) {}
 
