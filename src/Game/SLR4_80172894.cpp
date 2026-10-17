@@ -47,7 +47,7 @@ extern const f32 lbl_8053DB44;
 extern const f32 lbl_8053DACC;
 extern const f32 lbl_8053DAD0;
 extern s32 lbl_804A0AF8[];
-extern u8 lbl_80539F78[];
+extern u8 lbl_80539F78[8];
 extern "C" u8 fn_802DE814(void);
 extern "C" void fn_801746DC(void* this_);
 extern u8 lbl_8053AB60;
@@ -478,7 +478,7 @@ extern "C" void fn_80174B44(void* this_) {
         *(s32*)(p + 0x28c) = -1;
     }
     *(u32*)(p + 0x90) = *(u32*)(p + 0x90) & 0xff;
-    *(u8*)(p + 0x234) = *((u8*)lbl_80539F78 + (*(u32*)(p + 0x90) >> 1));
+    *(u8*)(p + 0x234) = *((u8*)&lbl_80539F78 + (*(u32*)(p + 0x90) >> 1));
     *(f32*)(p + 0x2b0) = lbl_8053DAB8;
     *(f32*)(p + 0x2ac) = lbl_8053DAB8;
     *(f32*)(p + 0x2a8) = lbl_8053DAB8;
