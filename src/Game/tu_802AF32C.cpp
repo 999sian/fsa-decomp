@@ -14,7 +14,7 @@ extern "C" void* lbl_8053AB10;
 extern "C" char lbl_8046CA50[];
 extern "C" char lbl_804668A8[];
 extern "C" void fn_802F86CC(void* layer, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
-extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, bool b, s32 c, s32 d, s32 e, s32 f, s32 g);
+extern "C" void fn_803075AC(void* a, s32 room, void* pos, s32 id, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g);
 
 
 extern "C" char lbl_804A8418[];
