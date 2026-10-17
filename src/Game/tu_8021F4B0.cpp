@@ -1,7 +1,5 @@
 
 
-#include "Game/SinitPoolChain.h"
-
 extern "C" void fn_8021F914(int* p, int v) {
     p[1] = 0;
     p[0] = v;
@@ -99,4 +97,6 @@ extern "C" void fn_8021FB44(char* p) {
     *(int*)(p + 0x38) = 0;
     *(int*)(p + 0x3c) = 0;
 }
+
+void fn_8021FB94(void) {}
 
