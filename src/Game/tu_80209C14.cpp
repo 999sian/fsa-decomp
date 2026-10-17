@@ -18,6 +18,22 @@ extern void* lbl_8049CC34[];
 extern "C" f32 lbl_8053F970;
 extern "C" f32 lbl_8053F964;
 extern "C" f32 lbl_8053EFB8;
+extern "C" f32 lbl_8053F968;
+extern "C" f32 lbl_8053F98C;
+extern "C" f32 lbl_8053F990;
+extern "C" f32 lbl_8053F994;
+extern "C" f32 lbl_8053F998;
+extern "C" f32 lbl_8053F99C;
+extern "C" f32 lbl_8053F9A0;
+extern "C" f32 lbl_8053F9A4;
+extern "C" f32 lbl_8053F9A8;
+extern "C" f32 lbl_8053F988;
+extern "C" void fn_801D22DC(u8* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801D22A0(u8* p, s32 a, s32 b);
+extern "C" void fn_801F0E34(u8* p, s32 a, s32 b);
+extern "C" s32 fn_801D05F8(u8* p, u8* pos, f32 f);
+extern "C" s32 fn_801D0280(u8* p);
+extern "C" s32 fn_801CD664(s32 a);
 extern "C" void* fn_80209C14(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         char* p = (char*)this_;
@@ -229,6 +245,81 @@ extern "C" void fn_8020AE2C(void* param_1) {
     f32 f2 = *(f32*)((u8*)param_1 + 0x10);
     *(f32*)((u8*)param_1 + 0x2c0) = f1 - f0;
     *(f32*)((u8*)param_1 + 0x2c4) = f3 - f2;
+}
+
+extern "C" void fn_801D0ED0(u8* this_);
+extern "C" void fn_801D2608(u8* p, void* data, s32 n);
+extern "C" void fn_801D22DC(u8* p, s32 a, s32 b, s32 c);
+extern "C" void fn_801F0E34(u8* p, s32 a, s32 b);
+extern "C" s32 fn_801D05F8(u8* p, u8* pos, f32 f);
+extern "C" s32 fn_801D0280(u8* p);
+extern "C" s32 fn_801CD664(s32 a);
+extern "C" u8 lbl_804A5D38[];
+extern "C" u8 sincosTable___5JMath[];
+extern "C" void fn_8020AE50(u8* this_) {
+    s16 ang;
+    s32 idx;
+    s32 state;
+    void* actor;
+    fn_801D0ED0(this_);
+    *(f32*)(this_ + 0x60) = 1.0f;
+    *(f32*)(this_ + 0x64) = 1.0f;
+    *(f32*)(this_ + 0x68) = -1.0f;
+    *(f32*)(this_ + 0x6C) = -1.0f;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7C) = *(f32*)(this_ + 0x6C);
+    *(f32*)(this_ + 0x80) = 1.0f;
+    *(f32*)(this_ + 0x84) = 1.0f;
+    *(f32*)(this_ + 0x88) = -1.0f;
+    *(f32*)(this_ + 0x8C) = -1.0f;
+    *(s32*)(this_ + 0xB0) = 0x50303;
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x80;
+    *(u8*)(this_ + 0x194) = 1;
+    *(s32*)(this_ + 0x2A8) = *(s32*)(this_ + 0x90);
+    actor = fn_801F666C(fn_801F856C(), *(s32*)(this_ + 0x2A8));
+    fn_801D2608(this_ + 0x270, lbl_804A5D38, 10);
+    state = *(s32*)((u8*)actor + 0x340);
+    if (state == 3) {
+        *(s32*)(this_ + 0x248) = 3;
+        fn_801D22DC(this_ + 0x270, 7, 0, 0);
+        fn_801F0E34(this_, 0x50037, 0);
+        if (fn_801D05F8(this_, this_ + 0xC, 0.0f) < 0) {
+            ang = fn_801CD664(0x10000);
+        } else {
+            ang = fn_801D0280(this_) - 0x8000;
+        }
+        idx = ((s32)ang >> 2) & 0x3FF8;
+        *(f32*)(this_ + 0x2B4) = *(f32*)(sincosTable___5JMath + idx) * 1.5f;
+        *(f32*)(this_ + 0x2B8) = *(f32*)(sincosTable___5JMath + idx + 4) * 1.5f;
+        *(f32*)(this_ + 0x2BC) = 0.5f * (50.0f * (0.3f * -(-0.2f)));
+        *(f32*)(this_ + 0x3C) = *(f32*)(this_ + 0x2B4);
+        *(f32*)(this_ + 0x40) = *(f32*)(this_ + 0x2B8);
+        *(f32*)(this_ + 0x44) = *(f32*)(this_ + 0x2BC);
+    } else if (state < 3) {
+        if (state == 0) {
+            *(s32*)(this_ + 0x248) = 6;
+            fn_801D22DC(this_ + 0x270, 5, 2, 0);
+            *(f32*)(this_ + 0x60) = -8.0f;
+            *(f32*)(this_ + 0x64) = -8.0f;
+            *(f32*)(this_ + 0x68) = 8.0f;
+            *(f32*)(this_ + 0x6C) = 8.0f;
+            *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+            *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+            *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+            *(f32*)(this_ + 0x7C) = *(f32*)(this_ + 0x6C);
+        } else if (state > -1) {
+            *(s32*)(this_ + 0x248) = 0;
+            fn_801D22DC(this_ + 0x270, 0, 0, 0);
+            fn_801F0E34(this_, 0x50037, 0);
+        }
+    }
+    *(s32*)(this_ + 0x24C) = 0;
+    *(s32*)(this_ + 0x250) = -1;
+    *(f32*)(this_ + 0x254) = 0.0f;
+    *(f32*)(this_ + 0x258) = 0.0f;
 }
 
 extern "C" void* fn_801D0F40(void* this_);
