@@ -23,6 +23,7 @@ extern "C" u8 fn_800C6FD4(void* p);
 extern "C" void fn_800CBB28(void* p);
 extern "C" void fn_800EF4D0(void* p, s32 v);
 extern "C" void fn_80097180(void* p);
+extern "C" s32 fn_8009D0D8(s16* param_1);
 
 typedef struct NaviColor4 { u8 r, g, b, a; } NaviColor4;
 extern void* lbl_80289A14[];
