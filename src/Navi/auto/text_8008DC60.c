@@ -28,6 +28,15 @@ extern "C" void fn_80097180(void* p);
 extern "C" s32 fn_8009D0D8(s16* param_1);
 struct NaviObjTbl_80097EB0 { u8 pad[0x64c]; u8* objs[1]; };
 extern f32 lbl_80300B40;
+struct VObj_8009F478 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6(f32, f32);
+};
 extern "C" void fn_800F4C70(void* p);
 extern void* lbl_80286A98[];
 extern void* lbl_8028E870[];
@@ -1676,6 +1685,19 @@ extern "C" void fn_80098918(char* param_1) {
         } else {
             *(u8*)(param_1 + 0x7b4) -= 1;
         }
+    }
+}
+
+extern "C" void fn_80098B00(char* param_1, s32 param_2) {
+    if (*(u8*)(param_1 + 0x719) != 0 && *(u16*)(lbl_802BB0FC + param_2 * 2 + 0xe4) == 0x253 && *(u8*)(param_1 + 0x71a) == 0) {
+        char* p = lbl_802C545C;
+        *(u8*)(param_1 + 0x71a) = 1;
+        char* obj = *(char**)(param_1 + 0x700);
+        f32 d = *(f32*)(obj + 0x28) - *(f32*)(obj + 0x20);
+        *(f32*)(param_1 + 0x720) = fn_80116064(*(f32*)(p + 0x7c)) + d * lbl_80300AFC;
+        obj = *(char**)(param_1 + 0x700);
+        d = *(f32*)(obj + 0x2c) - *(f32*)(obj + 0x24);
+        *(f32*)(param_1 + 0x724) = fn_80116064(*(f32*)(p + 0x7c)) + d * lbl_80300AFC;
     }
 }
 
