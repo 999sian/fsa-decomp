@@ -73,7 +73,6 @@ extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) 
     }
 }
 
-extern "C" int gTRKBigEndian;
 extern "C" int fn_801EAA20(void* param_1, unsigned char* param_2) {
     unsigned char auStack_28[8];
     unsigned char* puVar4;
