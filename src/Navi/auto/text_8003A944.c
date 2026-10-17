@@ -25,6 +25,13 @@ struct VObj_8003A988 {
     virtual void m1();
     virtual void m2(s32 a);
 };
+struct VObj_800402B4 {
+    virtual void m0();
+    virtual void m1();
+    virtual void m2();
+    virtual void m3();
+    virtual void m4(s16 a);
+};
 extern "C" void* fn_800F0D64(void* p);
 extern u8 lbl_802BB0FC[];
 extern u8 lbl_802B7CA0[];
@@ -261,8 +268,9 @@ extern "C" void fn_8003C2B4(u8* p, s16 a, s16 b, s16 c, s16 d, s16 e, s16 f, s16
 
 extern "C" void* memset(void* dst, int c, unsigned long n);
 extern "C" void fn_8003C34C(f32* out, u8* obj);
-extern "C" void fn_8003C318(f32* out) {
+extern "C" f32* fn_8003C318(f32* out) {
     fn_8003C34C(out, lbl_802BB0FC);
+    return out;
 }
 
 extern "C" void fn_8003C34C(f32* out, u8* obj) {
@@ -626,9 +634,10 @@ extern "C" void* fn_80040230(void* param_1, s16 param_2) {
 
 extern "C" void fn_800402B4(void) {
     extern void* lbl_802BF110[];
-    if (lbl_802BF110[2] != nullptr) {
-        void (*dtor)(void*, s16) = (void (*)(void*, s16))(*(void**)(*(void***)lbl_802BF110[2] + 4));
-        dtor(lbl_802BF110[2], 1);
+    register void* obj = lbl_802BF110[2];
+    if (obj != nullptr) {
+        void (*dtor)(void*, s16) = (void (*)(void*, s16)) * (void**)((*(void***)obj)[4]);
+        dtor(obj, 1);
     }
     lbl_802BF110[2] = nullptr;
 }
