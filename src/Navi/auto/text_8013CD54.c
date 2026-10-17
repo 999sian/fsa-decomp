@@ -31,6 +31,9 @@ extern "C" void fn_8013D7E0(void*, void*);
 struct Entry_802C67C4 { s32 unk0; s32 id; u8 pad[0x18]; };
 extern Entry_802C67C4 lbl_802C67C4[];
 extern u32 lbl_802FF378;
+extern void* lbl_8029260C[];
+extern void* lbl_80292500[];
+extern void* lbl_802933B4[];
 struct Slot_8013D1D4 { u8 pad[0x10]; void* ptr; };
 struct VObj_8013CD54 {
     virtual void vf0();
