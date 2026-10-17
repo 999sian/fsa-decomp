@@ -25,6 +25,8 @@ extern "C" s32 fn_801CD970(s16* value, s16 target, s16 step);
 
 extern "C" s32 fn_8023DE58(s32 playerIdx);
 
+extern "C" void C_VECReflect(const JGeometry::TVec3f* src, const JGeometry::TVec3f* normal, JGeometry::TVec3f* dst);
+
 extern "C" void fn_801CB434(u32 a, u32 b, u8 flag) {
     s32 kind = 4;
     kind += (flag != 0);
@@ -363,6 +365,70 @@ extern "C" f32 fn_801CD6D8(f32 p0, f32 p1, f32 p2, f32 p3, f32 t) {
     f32 b2 = ht + (lbl_8053EFA4 * t3 + lbl_8053EF80 * t2);
     f32 b3 = lbl_8053EF8C * t3 - lbl_8053EF8C * t2;
     return p3 * b3 + (p2 * b2 + (p0 * b0 + p1 * b1));
+}
+
+extern "C" u32 fn_801CD754(f32* a, f32* b, f32 t, f32 maxStep, f32 limit) {
+    f32 dx;
+    f32 dy;
+    f32 len2;
+    f32 len;
+    f32 y;
+    f32 f;
+
+    if (t > lbl_8053EF60) {
+        t = lbl_8053EF60;
+    } else if (t < lbl_8053EF7C) {
+        t = lbl_8053EF7C;
+    }
+    dx = b[0] - a[0];
+    dy = b[1] - a[1];
+    len2 = dx * dx + dy * dy;
+    len = len2;
+    if (len2 > lbl_8053EF7C) {
+        y = (f32)__frsqrte(len2);
+        y = (lbl_8053EF8C * y) * (lbl_8053EF90 - len2 * (y * y));
+        len = len2 * y;
+    }
+    if (len > lbl_8053EF7C) {
+        if (len * t < maxStep) {
+            f = lbl_8053EF60 / len;
+            f = maxStep * f;
+            if (f > lbl_8053EF60) {
+                f = lbl_8053EF60;
+            } else if (f < t) {
+                f = t;
+            }
+            t = f;
+        } else if (len * t > limit) {
+            f = lbl_8053EF60 / len;
+            f = limit * f;
+            if (f > t) {
+                f = t;
+            }
+            if (f < lbl_8053EF7C) {
+                f = lbl_8053EF7C;
+            }
+            t = f;
+        }
+    }
+    {
+        f32 k = t;
+        if (k > lbl_8053EF60) {
+            k = lbl_8053EF60;
+        }
+        a[0] = a[0] + k * (b[0] - a[0]);
+        if (t > lbl_8053EF60) {
+            t = lbl_8053EF60;
+        }
+        a[1] = a[1] + t * (b[1] - a[1]);
+    }
+    {
+        u32 eq = 0;
+        if (a[0] == b[0] && a[1] == b[1]) {
+            eq = 1;
+        }
+        return !eq;
+    }
 }
 
 extern "C" void fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
@@ -727,8 +793,8 @@ extern "C" f32 fn_801CB270(const char* name, GXTexObj* tex, GXTlutObj* tlut) {
 extern "C" s32 fn_801CD398(s32 a, s32 b) {
     if (a == b) {
         s32 list[3];
-        s32* p = list;
         s32 n = 0;
+        s32* p = list;
         for (s32 i = 0; i < 4; i++) {
             if (i != a) {
                 *p++ = i;
