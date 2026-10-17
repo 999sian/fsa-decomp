@@ -24,6 +24,8 @@ extern "C" void fn_800CBB28(void* p);
 extern "C" void fn_800EF4D0(void* p, s32 v);
 extern "C" void fn_80097180(void* p);
 extern "C" s32 fn_8009D0D8(s16* param_1);
+extern "C" void fn_800F4C70(void* p);
+extern void* lbl_80286A98[];
 extern "C" void fn_8010B64C(void* p);
 extern "C" void fn_800A5338(void* p);
 
@@ -1516,15 +1518,18 @@ extern "C" void fn_80097DE8(u8* p) {
 extern "C" void fn_80097EB0(u8* p, s32 idx, s16 x, s16 y) {
     s16 pos[2];
     u8* obj;
+    u8* base;
     pos[0] = x;
     pos[1] = y;
     if (fn_8009D0D8(pos) != 0) {
-        obj = *(u8**)(p + idx * 4 + 0x64c);
+        base = p + idx * 4;
+        obj = *(u8**)(base + 0x64c);
         if (obj[0xb2] != 0x78) {
             (*(void (***)(u8*, s32))obj)[9](obj, 0x78);
         }
     } else {
-        obj = *(u8**)(p + idx * 4 + 0x64c);
+        base = p + idx * 4;
+        obj = *(u8**)(base + 0x64c);
         if (obj[0xb2] != 0xff) {
             (*(void (***)(u8*, s32))obj)[9](obj, 0xff);
         }
