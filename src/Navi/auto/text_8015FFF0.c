@@ -660,6 +660,29 @@ extern "C" BOOL fn_80161CE0(void) {
     return 1;
 }
 
+extern char lbl_80297D38[];
+extern char lbl_80297D4C[];
+extern char lbl_802FE2B8[];
+extern char lbl_802FE2B8[4];
+extern "C" u32 fn_80161D1C(u8* src, u32 n, void* dst, u32 size, s32 mode) {
+    if (mode == 0) {
+        if (n > size) {
+            n = size;
+        }
+        memcpy(dst, src, n);
+        return n;
+    } else if (mode < 0 || mode >= 3) {
+        fn_8011C9EC(lbl_80297D38, 0x2d3, lbl_802FE2B8, lbl_80297D4C);
+        return 0;
+    }
+    n = (u32)src[4] << 24 | (u32)src[5] << 16 | (u32)src[6] << 8 | src[7];
+    if (n > size) {
+        n = size;
+    }
+    fn_80166680(src, dst, n, 0);
+    return n;
+}
+
 extern "C" u32 fn_80161DF4(void* param_1, u8* param_2) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -704,6 +727,36 @@ extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
     return p;
 }
 
+#pragma dont_inline on
+extern "C" int fn_801620C0(u8* p, s32 a, void* b) {
+    if (a < 0) {
+        return 0;
+    }
+    if (fn_80160220(a, lbl_802FF544) != NULL) {
+        return 0;
+    }
+    p[0x30] = 0;
+    *(void**)(p + 0x60) = b;
+    p[0x3c] = 2;
+    *(s32*)(p + 0x34) = 1;
+    *(s32*)(p + 0x58) = 2;
+    *(void**)(p + 0x38) = lbl_802FF544;
+    *(s32*)(p + 0x40) = a;
+    if (lbl_802FF5F0 == NULL) {
+        lbl_802FF5F0 = p;
+        lbl_802FF5F8 = NULL;
+    }
+    u8 ok = fn_801621C0(p, (void*)a);
+    if (ok == 0) {
+        return 0;
+    }
+    *(u32*)(p + 0x2c) = 0x52415243;
+    *(int*)(p + 0x28) = *(int*)(p + 0x54) + *(int*)(*(u8**)(p + 0x48) + 4);
+    fn_80166D3C(lbl_802EE2D4, p + 0x18);
+    p[0x30] = 1;
+    return 1;
+}
+#pragma dont_inline reset
 extern "C" s32 fn_80162724(void* p, u32 a, u32 b, u32 c, s32 mode) {
     u32 out;
     u32 w;
