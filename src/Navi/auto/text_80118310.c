@@ -4,10 +4,6 @@
 
 extern "C" void fn_8011C280(int);
 
-struct Navi802FF2A8 {
-    u8 a, b, c, d, e;
-};
-
 struct VObj_8011A74C {
     virtual void v0(void);
     virtual void v1(void);
