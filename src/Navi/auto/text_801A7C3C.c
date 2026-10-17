@@ -1694,6 +1694,39 @@ extern "C" void fn_801B31D0(u32* out, void* ptr, u32 index) {
     *out = lbl_80301D24;
 }
 
+extern u16 lbl_80301D34;
+extern "C" void fn_801B3214(u16* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u8 value = data[indices[index] * 0x14c + 6];
+    if (value != 0xff) {
+        u8* entry = *(u8**)((u8*)ptr + 0x68) + value * 4;
+        out[0] = (entry[1] << 1) + ((entry[0] << 4) + entry[2]);
+        return;
+    }
+    out[0] = lbl_80301D34;
+}
+
+extern "C" u8 fn_801B3274(void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u8 value = *(data + (5 + indices[index] * 0x14c));
+    if (value != 0xff) {
+        return (*(u8**)((u8*)ptr + 0x6c))[value];
+    }
+    return 0;
+}
+
+extern "C" u8 fn_801B32AC(void* ptr, u32 index) {
+    u8 (*data)[0x14c] = *(u8 (**)[0x14c])((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u8 value = data[indices[index]][7];
+    if (value != 0xff) {
+        return (*(u8**)((u8*)ptr + 0x70))[value];
+    }
+    return 1;
+}
+
 extern "C" void fn_801B338C(void) {}
 
 extern "C" u32 fn_801B3390(void) {
@@ -1718,6 +1751,11 @@ extern "C" void* fn_801B339C(void* ptr, s16 param_2) {
 extern "C" void fn_801B33F8(void) {}
 
 extern "C" void fn_801B33FC(void) {}
+
+extern "C" void fn_8019FC0C(void* a, void* b);
+extern "C" void fn_801B3400(void* p) {
+    fn_8019FC0C(p, *(void**)((u8*)p + 4));
+}
 
 extern "C" u32 fn_801B3424(void) {
     return 0x54564e4c;
