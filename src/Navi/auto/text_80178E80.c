@@ -32,6 +32,25 @@ struct NaviNode_8018ED48 {
     void* unk4;
     NaviNode_8018ED48* unk8;
 };
+struct VObj_8017EA3C {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
+    virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29();
+    virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
+    virtual void v35(); virtual void v36(); virtual void v37(f32 a); virtual void v38(); virtual void v39();
+    virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43(); virtual void v44();
+    virtual void v45(); virtual void v46(); virtual void v47(); virtual void v48(); virtual void v49();
+    virtual void v50(); virtual void v51(); virtual void v52(); virtual void v53(); virtual void v54();
+    virtual void v55(); virtual void v56(); virtual void v57(); virtual void v58(); virtual void v59();
+    virtual void v60(); virtual void v61(); virtual void v62(); virtual void v63(); virtual void v64();
+    virtual void v65(); virtual void v66(); virtual void v67(); virtual void v68(); virtual void v69();
+    virtual void* v70(u32 a); virtual void v71(); virtual void v72(); virtual void v73(); virtual void v74();
+    virtual void v75(); virtual void v76(); virtual void v77(); virtual void v78(); virtual void v79();
+    virtual void v80(); virtual void v81(); virtual s32 v82(u32 a);
+};
 struct VObj_8018ED48 {
     virtual void v0();
     virtual void v1();
@@ -934,14 +953,13 @@ extern "C" void fn_8017A96C(void) {}
 
 extern "C" void fn_8017C0A8(u8* self, u32* a, u32* b, u32* c, u32* d);
 extern "C" void* fn_8017A970(u8* self) {
+    NaviPair_80178E80 pr;
     u32 sp24;
-    u32 sp20;
-    u32 sp1C;
+    u32 sp8;
     u32 sp18;
     u32 sp14;
     u32 sp10;
     u32 spC;
-    u32 sp8;
 
     fn_80176550(self);
     *(void**)self = lbl_80298DF0;
@@ -965,16 +983,9 @@ extern "C" void* fn_8017A970(u8* self) {
     sp10 = -1;
     spC = -1;
     fn_8017C0A8(self, &spC, &sp10, &sp14, &sp18);
-    sp20 = 0;
-    sp1C = -1;
-    self[0x13C] = (u8)sp20;
-    self[0x13D] = (u8)(sp20 >> 8);
-    self[0x13E] = (u8)(sp20 >> 16);
-    self[0x13F] = (u8)(sp20 >> 24);
-    self[0x138] = (u8)sp1C;
-    self[0x139] = (u8)(sp1C >> 8);
-    self[0x13A] = (u8)(sp1C >> 16);
-    self[0x13B] = (u8)(sp1C >> 24);
+    pr.b = 0;
+    pr.a = -1;
+    *(NaviPair_80178E80*)(self + 0x138) = pr;
     return self;
 }
 
@@ -1963,7 +1974,6 @@ extern "C" void fn_8018485C(u8* self, u32 v) {
 extern "C" void fn_80184864(u8* self, u8* p) {
     u8 i;
     u16 j;
-    u16 k;
     u16 count;
 
     *(u8**)(self + 0x178) = p;
@@ -1976,8 +1986,9 @@ extern "C" void fn_80184864(u8* self, u8* p) {
             }
             for (j = 0; j < count; j++) {
                 u8* rec = *(u8**)(p + 0x14) + j * 8;
-                u16 n = *(u16*)rec;
                 u16* vals = (u16*)*(u8**)(p + 0x1c) + *(u32*)(rec + 4);
+                u16 k;
+                u16 n = *(u16*)rec;
                 for (k = 0; k < n; k++) {
                     if (*(u16*)(self + 0x168 + i * 2) == vals[k]) {
                         *(u8**)(self + 0x178) = p;
@@ -1986,8 +1997,8 @@ extern "C" void fn_80184864(u8* self, u8* p) {
                     }
                 }
             }
-next:;
         }
+next:;
     }
     if (self[0x17c] == 0) {
         *(u8**)(self + 0x178) = NULL;
