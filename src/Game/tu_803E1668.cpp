@@ -1,5 +1,13 @@
 #include "types.h"
 
+class J2DGrafContext;
+class J2DScreen {
+public:
+    void draw(f32, f32, const J2DGrafContext*);
+};
+struct Tu803E1668Obj {};
+typedef void (Tu803E1668Obj::*Tu803E1668Fn)();
+
 
 extern void* lbl_8053AF80;
 extern "C" int fn_804366B8(void* p);
