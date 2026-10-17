@@ -242,10 +242,11 @@ extern "C" void fn_8011FA10(void) {
     }
     if (v != 0 && lbl_802FDD88 == 1) {
         u8* p = (u8*)lbl_802FF310;
-        u32 t = *(u32*)(p + 0x18);
-        Color32 c;
-        u32 cw;
         u32 tw;
+        u32 cw;
+        Color32 c;
+        u32 t;
+        t = *(u32*)(p + 0x18);
         c.r = 0xff;
         c.g = 0xc8;
         c.b = 0xc8;
@@ -271,9 +272,9 @@ extern void* lbl_802FF328;
 extern void* lbl_80290AB4[];
 extern "C" void* fn_8015A90C(s32 size);
 extern void fn_8015AB1C(void* ptr);
-extern void* fn_80120138(void* ptr, void* param);
-extern "C" void fn_801CB248(void* ptr);
-extern "C" void fn_801CB28C(void* ptr);
+extern "C" void* fn_80120138(void* ptr, void* param);
+extern "C" void* fn_801CB248(void* ptr);
+extern "C" void* fn_801CB28C(void* ptr);
 typedef void (*VirtualMethod0)(void*, s16);
 extern "C" void fn_80120090(u8 param_1) {
     lbl_802FDD88 = param_1;
