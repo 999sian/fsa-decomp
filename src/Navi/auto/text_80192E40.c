@@ -161,8 +161,8 @@ extern "C" void fn_801933DC(u32 a, u32 b, u32 c, f32* out, f32 x, f32 y, f32 z) 
 extern "C" void fn_8019349C(f32* p, f32* q, f32* out) {
     extern u8 lbl_802F0BC0[];
     u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
-    f32 s = *(f32*)(lbl_802F0BC0 + idx);
     f32 c = *(f32*)(lbl_802F0BC0 + idx + 4);
+    f32 s = *(f32*)(lbl_802F0BC0 + idx);
     f32 x = p[0];
     f32 y = p[1];
     out[0] = x * c;
@@ -542,9 +542,8 @@ extern "C" s32 fn_801941D4(u32* p, u32* q) {
 
 extern "C" void fn_801941F8(u32* p) {
     u32* it;
-    void* obj = (void*)p[12];
-    void** vt = *(void***)obj;
-    ((void (*)(void*))vt[6])(obj);
+    VObj_801941F8* obj = (VObj_801941F8*)p[12];
+    obj->vf4();
     fn_801DF0BC(*(u32*)p[8], ((u32*)p[8])[2]);
     it = (u32*)p[11];
     fn_801969C8(((u32*)p[11])[10]);
