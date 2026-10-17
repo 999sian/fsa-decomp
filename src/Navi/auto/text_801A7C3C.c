@@ -1,5 +1,9 @@
 #include "types.h"
 
+extern "C" f32 lbl_80301D68;
+extern "C" void* lbl_8029B254[];
+extern "C" void fn_80192F60(void* p, s32 param_2);
+
 struct Pair_801A7D54 { f32 x, y; };
 struct Blk_801A7D54 { Pair_801A7D54 p[3]; u8 b; };
 extern void* lbl_8029BBBC[];
@@ -116,6 +120,23 @@ extern "C" void* fn_801AA678(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void fn_801AAB64(u8* p, s16 param_2, void* param_3, void* param_4, void* param_5) {
+    f32 f = lbl_80301D6C;
+    *(void**)p = lbl_8027F214;
+    p[4] = 0;
+    p[5] = 0;
+    *(s16*)(p + 6) = param_2;
+    *(f32*)(p + 8) = f;
+    *(void**)p = lbl_8027F240;
+    *(void**)(p + 0xc) = param_3;
+    *(void**)(p + 0x10) = param_4;
+    *(void**)(p + 0x14) = param_5;
+    *(s16*)(p + 0x18) = 0;
+    *(s16*)(p + 0x1a) = 0;
+    *(s16*)(p + 0x1c) = 0;
+    *(s16*)(p + 0x1e) = 0;
 }
 
 extern "C" void* fn_801ABB80(u8* p) {
