@@ -163,6 +163,76 @@ extern "C" void fn_80368198(Sub8036C0EC* this_) {
     }
 }
 
+extern "C" void* fn_8013C824(void);
+extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* mgr, void* emitter);
+extern "C" void fn_8036A65C(void* this_) {
+    char* p = (char*)this_;
+    s32 i;
+
+    if (*(u32*)(p + 0x350) != 0) {
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x350));
+        *(u32*)(p + 0x350) = 0;
+    }
+    if (*(u32*)(p + 0x354) != 0) {
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x354));
+        *(u32*)(p + 0x354) = 0;
+    }
+    if (*(u32*)(p + 0x358) != 0) {
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x358));
+        *(u32*)(p + 0x358) = 0;
+    }
+    if (*(u32*)(p + 0x398) != 0) {
+        forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x398));
+        *(u32*)(p + 0x398) = 0;
+    }
+
+    i = 0;
+    do {
+        if (*(u32*)(p + 0x35c) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x35c));
+            *(u32*)(p + 0x35c) = 0;
+        }
+        if (i < 2 && *(u32*)(p + 0x3b4) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x3b4));
+            *(u32*)(p + 0x3b4) = 0;
+        }
+        if (i < 3 && *(u32*)(p + 0x378) != 0) {
+            forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x378));
+            *(u32*)(p + 0x378) = 0;
+        }
+        if (i < 5) {
+            if (*(u32*)(p + 0x384) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x384));
+                *(u32*)(p + 0x384) = 0;
+            }
+            if (*(u32*)(p + 0x3ec) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x3ec));
+                *(u32*)(p + 0x3ec) = 0;
+            }
+            if (*(u32*)(p + 0x400) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x400));
+                *(u32*)(p + 0x400) = 0;
+            }
+        }
+        if (i < 6) {
+            if (*(u32*)(p + 0x3bc) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x3bc));
+                *(u32*)(p + 0x3bc) = 0;
+            }
+            if (*(u32*)(p + 0x3d4) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x3d4));
+                *(u32*)(p + 0x3d4) = 0;
+            }
+            if (*(u32*)(p + 0x39c) != 0) {
+                forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(*(void**)((char*)fn_8013C824() + 0xc), *(void**)(p + 0x39c));
+                *(u32*)(p + 0x39c) = 0;
+            }
+        }
+        i++;
+        p += 4;
+    } while (i < 7);
+}
+
 void fn_8036A894(u8* this_)
 {
     EffArgs args;
