@@ -173,6 +173,14 @@ extern "C" void fn_80118FB4(u8* p) {
     }
 }
 
+extern "C" void fn_801191F0(u8* param_1, s32 param_2) {
+    u8* p = *(u8**)(param_1 + 0x2c);
+    if (p != 0) {
+        fn_80119318(p);
+    }
+    fn_801DD58C(param_1, param_2);
+}
+
 extern "C" void fn_801192D8(char* param_1, u8 param_2, u8 param_3, u8 param_4, u16 param_5, u32 param_6) {
     param_1[0xc] = param_2;
     param_1[0xd] = param_3;
