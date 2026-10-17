@@ -11,7 +11,9 @@ struct VObj_800A1A64 {
 struct VObj_800EF2A8 {
  virtual void v0();
  virtual void v1();
- virtual void v2(f32 x, f32 y);
+ virtual void v2();
+ virtual void v3();
+ virtual void v4(f32 x, f32 y);
 };
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
