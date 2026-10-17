@@ -1951,7 +1951,7 @@ extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 extern "C" void fn_801DF25C(f32* p) {
     u8* gx = __GXData;
     p[0] = *(s32*)(gx + 0x4d8) != 0 ? lbl_80301F6C : lbl_80301F68;
-    memcpy(p + 1, gx + 0x4dc, 24);
+    *(GXProjVals*)(p + 1) = *(GXProjVals*)(gx + 0x4dc);
 }
 
 extern "C" void fn_801DF344(u32 a) {
@@ -2078,6 +2078,10 @@ extern "C" void fn_801DF650(s32 n) {
         *(volatile u32*)0xCC008000 = v;
     }
     *(u16*)(__GXData + 2) = 1;
+}
+
+extern "C" void fn_801DFF1C(void) {
+    __cpReg[2] = 4;
 }
 
 typedef struct {
