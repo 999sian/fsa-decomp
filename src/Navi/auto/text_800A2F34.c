@@ -88,6 +88,21 @@ extern "C" void fn_800A4140(void* param_1) {
     fn_800A4A90(p, (s16)*(u16*)(p + 0x196), *(u8*)(lbl_802C54FC + 0xc), 0, 0, *(f32*)(lbl_802C54FC + 0x10), lbl_80300B80);
 }
 
+extern "C" void fn_8002F458(s32, s32);
+extern "C" void fn_800C5510(void*);
+extern "C" void fn_800A4594(u8* param_1) {
+    if (*(u16*)(param_1 + 0x196) == ((u8*)lbl_802C54FC)[0x14]) {
+        fn_8002F458(0x9c, 0);
+    }
+    s32 r = fn_800A4768(param_1, *(u16*)(param_1 + 0x196) - ((u8*)lbl_802C54FC)[0x14], ((u8*)lbl_802C54FC)[0x15], 0, 1, lbl_80300B80, *(f32*)((u8*)lbl_802C54FC + 0x18));
+    s32 r2 = fn_800A4A90(param_1, *(u16*)(param_1 + 0x196), ((u8*)lbl_802C54FC)[0xc], 0, 1, lbl_80300B80, *(f32*)((u8*)lbl_802C54FC + 0x10));
+    (*(u16*)(param_1 + 0x196))++;
+    if (r == 1 && r2 == 1) {
+        fn_800C5510(*(void**)(param_1 + 0x14));
+        param_1[0x19b] = 1;
+    }
+}
+
 extern "C" s32 fn_8002F168(void* p);
 extern "C" void fn_800A4678(void* param_1) {
     *(u8*)((u8*)param_1 + 0x19c) = 2;
