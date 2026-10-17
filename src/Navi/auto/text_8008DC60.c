@@ -42,6 +42,7 @@ struct NaviState_8009E6F0 {
 typedef void (NaviState_8009E6F0::*NaviStateFunc_8009E6F0)();
 extern NaviStateFunc_8009E6F0 lbl_802865A4[];
 extern NaviStateFunc_8009E6F0 lbl_802862F0[];
+extern NaviStateFunc_8009E6F0 lbl_802863BC[];
 extern u32 lbl_802FEDD8;
 extern s32 lbl_802FEDE4;
 extern char lbl_802B7CA0[];
