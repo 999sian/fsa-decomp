@@ -64,5 +64,3 @@ extern "C" void fn_803738DC(Actor* this_) {
     *(s32*)(p + 0x250) = 0;
 }
 
-extern "C" void fn_803739B4(void) {
-}
