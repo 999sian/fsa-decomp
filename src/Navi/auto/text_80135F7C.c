@@ -1606,10 +1606,12 @@ extern "C" void* fn_8013B6EC(void* param_1, void* param_2, void* param_3) {
     if (result != 0) {
         result = fn_80134440(result, param_1, obj);
     }
-    if (result != 0) {
+    if (result == 0) {
+        result = 0;
+    } else {
         VObj_8013B6EC* v = *(VObj_8013B6EC**)((u8*)result + 0x34);
         if (v != 0) {
-            v->v3(result);
+            v->v1(result);
         }
     }
     return result;
@@ -1672,21 +1674,25 @@ extern "C" void* fn_801348F4(void* p, void* a, void* b);
 extern "C" void* fn_8013B950(void* param_1, void* param_2, void* param_3) {
     void* r31;
     void* r30;
+    void* r29;
+    void* r28;
+    r28 = param_1;
+    r29 = param_3;
+    r30 = param_2;
     r31 = fn_8015A90C(0x8c);
     if (r31 != 0) {
-        r31 = fn_8013DDA4(r31, param_3, param_2);
+        r31 = fn_8013DDA4(r31, r29, r30);
     }
     if (r31 == 0) {
         return 0;
     }
     r30 = fn_8015A90C(0x38);
     if (r30 != 0) {
-        r30 = fn_801348F4(r30, param_1, r31);
+        r30 = fn_801348F4(r30, r28, r31);
     }
     if (r30 == 0) {
-        return 0;
-    }
-    {
+        r30 = 0;
+    } else {
         void* obj = *(void**)((u8*)r30 + 0x34);
         if (obj != 0) {
             ((void (*)(void*, void*))(*(void***)obj)[3])(obj, r30);
@@ -1977,3 +1983,20 @@ extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
+struct VObj_801367EC {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual f64 v5(f64 x);
+};
+struct Vec_801367EC {
+    u32 unk_0x0;
+    VObj_801367EC** begin;
+    VObj_801367EC** end;
+};
+struct Range_801367EC {
+    VObj_801367EC** cur;
+    VObj_801367EC** end;
+};
