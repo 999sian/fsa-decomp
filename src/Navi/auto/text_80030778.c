@@ -143,6 +143,11 @@ extern "C" void fn_800320DC(void* p) {
     *(unsigned int*)((char*)p + 0x20) = 0;
 }
 
+extern "C" void fn_80032658(void* p) {
+    *(int*)((char*)p + 0x8c) = *(int*)((char*)lbl_802BB0FC + 0x58) + 500;
+    *(unsigned int*)((char*)p + 0x94) |= 0xc0000000;
+}
+
 extern "C" void fn_8003267C(void* p) {
     *(unsigned int*)((char*)p + 0x8) = 0;
     *(unsigned char*)((char*)p + 0xc) = 0;
@@ -403,6 +408,14 @@ extern "C" void fn_800354C8(void* p) {
     fn_8002A3CC(p, (char*)p + 0x1a8, 0x46, 0x1);
 }
 
+extern "C" void fn_80035544(void* p) {
+    char* base;
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
+    *(unsigned int*)((char*)p + 0x220) = 6;
+    *(unsigned int*)((char*)p + 0x1a0) |= 0x40000000;
+    *(int*)((char*)p + 0x198) = (int)(lbl_802FFD44 * *(float*)((char*)lbl_802BEF44 + 0x58)) + *(int*)((base = (char*)lbl_802BB0FC) + 0x58);
+}
+
 extern "C" void fn_800355A4(void* p) {
     *(unsigned int*)((char*)p + 0x1a0) |= 0x80000;
     *(unsigned int*)((char*)p + 0x220) = 4;
@@ -415,7 +428,7 @@ extern "C" void fn_800355C8(void* p) {
 }
 
 extern "C" unsigned short fn_80036C54(int i, int j) {
-    return *(unsigned short*)(lbl_80245224 + i * 0x14 + j * 2 + 8);
+    return *(unsigned short*)((unsigned char*)lbl_80245224 + i * 0x14 + j * 2 + 8);
 }
 
 extern "C" void fn_80036F04(void* p) {
