@@ -22,6 +22,12 @@ struct DtorVt {
     void (*v3)(void* a);
 };
 
+static inline void releaseSlot(void* obj) {
+    if (obj != 0) {
+        (*(DtorVt**)obj)->v2(obj, 1);
+    }
+}
+
 struct J2DTextBoxVt {
     virtual void v2();
     virtual void v3();
