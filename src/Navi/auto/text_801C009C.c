@@ -3,5 +3,10 @@
 
 extern "C" void fn_801C009C(void) {}
 
+extern "C" unsigned int fn_801C027C(void)
+{
+	return *(unsigned int*)0x800000E4;
+}
+
 extern "C" unsigned int fn_801C1594(unsigned char* p) { return *(unsigned int*)(p + 0x2d4); }
 
