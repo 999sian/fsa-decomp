@@ -336,7 +336,7 @@ extern "C" void fn_803A2F74(void*);
 extern "C" void fn_80396F94(Tu80390818_Sub*);
 extern "C" void fn_80396884(Tu80390818_Sub*);
 extern "C" void fn_803944EC(Tu80390818_Sub*, f32);
-extern u8 lbl_8053AD04[];
+extern u8 lbl_8053AD04[8];
 extern u8 lbl_8050DB0C[];
 extern f32 lbl_80543168;
 
@@ -386,8 +386,9 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
         t->m4C->m192 = t->m3E;
         t->m4C->m178 = t->m34;
         t->m4C->m17C = t->m38;
-        t->m4C->m08->reset();
-        c = t->m4C->m08;
+        s = t->m4C;
+        s->m08->reset();
+        c = s->m08;
         if (c->mBaseProcSeq != 0) {
             ((Tu80390818_Proc*)c->mBaseProcSeq)->m08 = 0;
         }
@@ -395,9 +396,8 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
             ((Tu80390818_Proc*)c->mBaseProcRender)->m08 = 0;
         }
         c->mResourceCache = 0;
-        t->m4C->m1A2 = 0;
+        s->m1A2 = 0;
         t->m44 = 2;
-        s = t->m4C;
         s->m14C = t->m20;
         s->m08->setMessageCode(t->m20 >> 16, t->m20 & 0xFFFF);
         *(Tu80390818_Vec*)s->m98 = *(Tu80390818_Vec*)&t->m50;
@@ -450,9 +450,8 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
             r31 = 2;
         }
         s = t->m48;
+        s->m08->reset();
         c = s->m08;
-        c->reset();
-        c = t->m48->m08;
         if (c->mBaseProcSeq != 0) {
             ((Tu80390818_Proc*)c->mBaseProcSeq)->m08 = 0;
         }
@@ -460,7 +459,7 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
             ((Tu80390818_Proc*)c->mBaseProcRender)->m08 = 0;
         }
         c->mResourceCache = 0;
-        t->m48->m1A2 = r31;
+        s->m1A2 = r31;
         {
             s32 id = t->m30;
             v = *(Tu80390818_Vec*)&t->m50;
@@ -471,7 +470,6 @@ extern "C" void fn_80390EBC(Tu80390818* t) {
                 }
             }
         }
-        s = t->m48;
         s->m14C = t->m20;
         s->m08->setMessageCode(t->m20 >> 16, t->m20 & 0xFFFF);
         *(Tu80390818_Vec*)s->m98 = *(Tu80390818_Vec*)&t->m50;
