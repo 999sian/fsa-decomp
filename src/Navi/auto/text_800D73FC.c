@@ -268,6 +268,14 @@ extern "C" void fn_800EC0E4(void* param_1) {
     *(u8*)((u8*)param_1 + 0xa76) = *(u8*)((u8*)param_1 + 0xa77);
 }
 
+extern "C" void fn_800EDBB4(u8* p) {
+    s32 v = p[0xb48];
+    if (v != 1 && v >= 1 && v < 5) {
+        char* base = lbl_802B7CA0 + 0x1424;
+        fn_80060794(base, base + 0x204, base + 0x208, p + 8);
+    }
+}
+
 extern "C" void fn_800EE0F0(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
