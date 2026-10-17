@@ -167,6 +167,9 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern u8 lbl_802FF334;
 extern f32 lbl_802FEAB4;
 extern "C" void fn_80166C08(void*, int);
+extern "C" void fn_80166FC4(void* a, void* b);
+extern "C" void fn_80166C84(void* a, void* b);
+extern "C" void fn_80130404(void* a, void* b, s32 c);
 extern "C" void* fn_8011F23C(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
@@ -1889,6 +1892,57 @@ extern "C" void fn_8012C604(void** param_1, void* param_2) {
     *param_1 = param_2;
 }
 
+extern "C" void fn_8012C60C(u8* p)
+{
+    u32 sp10;
+    u32 spC;
+    u32 sp8;
+    u32 r;
+    f32 f1;
+    f32 f2;
+    f32 f3;
+    f32 a;
+    f32 b;
+    f32 c;
+    u8* q;
+
+    f3 = 0.0f;
+    f2 = 1.0f;
+    f1 = 0.5f;
+    *(f32*)(p + 0x18) = f3;
+    *(f32*)(p + 0x14) = f3;
+    *(f32*)(p + 0x10) = f3;
+
+    q = *(u8**)p;
+    r = *(u32*)(q + 0xC4) * 0x19660D + 0x3C6EF35F;
+    *(u32*)(q + 0xC4) = r;
+    sp10 = (r >> 9) | 0x3F800000;
+    a = *(f32*)&sp10;
+    a = (a - f2) - f1;
+
+    q = *(u8**)p;
+    r = *(u32*)(q + 0xC4) * 0x19660D + 0x3C6EF35F;
+    *(u32*)(q + 0xC4) = r;
+    spC = (r >> 9) | 0x3F800000;
+    b = *(f32*)&spC;
+    b = (b - f2) - f1;
+
+    q = *(u8**)p;
+    r = *(u32*)(q + 0xC4) * 0x19660D + 0x3C6EF35F;
+    *(u32*)(q + 0xC4) = r;
+    sp8 = (r >> 9) | 0x3F800000;
+    c = *(f32*)&sp8;
+    c = (c - f2) - f1;
+
+    *(f32*)(p + 0x1C) = c;
+    *(f32*)(p + 0x20) = b;
+    *(f32*)(p + 0x24) = a;
+    f1 = *(f32*)(p + 0x24);
+    *(f32*)(p + 0x28) = *(f32*)(p + 0x1C);
+    *(f32*)(p + 0x2C) = f3;
+    *(f32*)(p + 0x30) = f1;
+}
+
 extern "C" void fn_8012D010(void*);
 extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
     *(void**)ptr = param_2;
@@ -2930,6 +2984,17 @@ extern "C" void fn_80133694(int param_1, f32* param_2, int* param_3) {
     param_2[0] = *(f32*)(base + param_3[0] * 0x14);
     param_2[1] = *(f32*)(base + i1 * 0x14);
     param_2[2] = *(f32*)(base + i2 * 0x14);
+}
+
+extern "C" void fn_801336CC(u8* self, s32* idx, u8* vals) {
+    u8 v3 = vals[3];
+    u8 v2 = vals[2];
+    u8 v1 = vals[1];
+    u8 v0 = vals[0];
+    fn_80133624_set(self, idx[0], (f32)v0);
+    fn_80133624_set(self, idx[1], (f32)v1);
+    fn_80133624_set(self, idx[2], (f32)v2);
+    fn_80133624_set(self, idx[3], (f32)v3);
 }
 
 extern "C" void fn_801338F8(u8* p, void* unused, int i) {
