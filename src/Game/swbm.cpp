@@ -27,6 +27,13 @@ struct TVec3f {
         y += o.y;
         z += o.z;
     }
+    TVec3f operator+(const TVec3f& o) const {
+        TVec3f r;
+        r.x = x + o.x;
+        r.y = y + o.y;
+        r.z = z + o.z;
+        return r;
+    }
 };
 extern "C" SinCos sincosTable___5JMath[];
 extern void* lbl_8053AC98;
@@ -169,9 +176,7 @@ extern "C" void fn_801F856C(void);
 extern "C" void Actor_CreateByID(u32 id, s32 room, void* pos, s32 a, s32 b, s32 c);
 extern "C" void fn_8030C210(void* a, void* pos);
 extern "C" void fn_8017A68C(char* this_) {
-    *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
-    *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
-    *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+    *(TVec3f*)(this_ + 0xc) += *(TVec3f*)(this_ + 0x3c);
 
     if (*(s32*)(this_ + 0x25c) == 1) {
         s32 ang = (s16)fn_801F6874(*(s32*)(this_ + 0x98)) + 0x2000;
