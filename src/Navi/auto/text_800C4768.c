@@ -12,6 +12,26 @@ struct Color_800C5104 {
     u8 r, g, b, a;
 };
 
+struct VObj_800C5104 {
+    virtual void v00(); virtual void v01(); virtual void v02(); virtual void v03(); virtual void v04();
+    virtual void v05(); virtual void v06(); virtual void v07(); virtual void v08(); virtual void v09();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23(); virtual void v24();
+    virtual void v25(); virtual void v26(); virtual void v27(); virtual void v28(); virtual void v29();
+    virtual void v30(); virtual void v31(); virtual void v32(); virtual void v33(); virtual void v34();
+    virtual void v35(); virtual void v36(); virtual void v37(); virtual void v38(); virtual void v39();
+    virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43(); virtual void v44();
+    virtual void v45(); virtual void v46(); virtual void v47(); virtual void v48(); virtual void v49();
+    virtual void v50(); virtual void v51(); virtual void v52(); virtual void v53(); virtual void v54();
+    virtual void v55(); virtual void v56(); virtual void v57(); virtual void v58(); virtual void v59();
+    virtual void v60(); virtual void v61(); virtual void v62(); virtual void v63(); virtual void v64();
+    virtual void v65(); virtual void v66();
+    virtual void setString(const char*, s32);
+    virtual void v68(); virtual void v69(); virtual void v70(); virtual void v71(); virtual void v72();
+    virtual void setColor(Color_800C5104);
+};
+
 struct VObj_800C56A0 {
     virtual void v0();
     virtual void v1();
@@ -172,6 +192,29 @@ extern "C" void fn_800C4F84(u8* param_1) {
         param_1[0x38] = 0;
         fn_800C5648(param_1);
         fn_800C5444(param_1, 3);
+        param_1[0x36] = 0;
+        param_1[0x37] = 0;
+    }
+}
+
+extern char lbl_8028837C[];
+extern "C" void fn_800C5104(u8* param_1) {
+    void* obj;
+    u8* tbl = lbl_802C565C;
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], tbl[0xc], 0, lbl_80300D8C, *(f32*)(tbl + 0x10));
+    param_1[0x38]++;
+    if (iVar1 == 1) {
+        param_1[0x38] = 0;
+        fn_800C5648(param_1);
+        obj = *(void**)(param_1 + 0x24);
+        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, lbl_802881B8, 0);
+        obj = *(void**)(param_1 + 0x20);
+        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, lbl_8028837C, 0);
+        Color_800C5104 c = {0, 0xff, 0xff, 0xff};
+        Color_800C5104 c2 = c;
+        obj = *(void**)(param_1 + 0x20);
+        (*(void (**)(void*, Color_800C5104*))(*(u8**)obj + 0x12c))(obj, &c2);
+        fn_800C5434(param_1);
         param_1[0x36] = 0;
         param_1[0x37] = 0;
     }
