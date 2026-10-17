@@ -218,8 +218,8 @@ extern "C" void fn_800B95E4(u8* p) {
 }
 
 extern "C" void fn_800B9668(u8* p) {
-    (*(VObj_800B95E4**)(p + 0x3c))->v2(*(f32*)(p + 0x40) + *(f32*)(p + 0x38c) * p[0x386],
-                                       *(f32*)(p + 0x44));
+    f32 off = *(f32*)(p + 0x38c) * p[0x386];
+    (*(VObj_800B95E4**)(p + 0x3c))->v2(*(f32*)(p + 0x40) + off, *(f32*)(p + 0x44));
 }
 
 extern "C" void fn_800B96CC(u8* p) {
