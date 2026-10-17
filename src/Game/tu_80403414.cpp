@@ -119,8 +119,7 @@ inline T34SaveSlot* t34CurSlot() { return &lbl_8050EC80[lbl_8050EC80[0].cur]; }
 inline BOOL t34IsSet(s32 a, s32 b) {
     if (a < 0 || a > 7) return FALSE;
     if (b < 0 || b > 3) return FALSE;
-    T34SaveSlot* slot = t34CurSlot();
-    return (1 << (b + a * 4)) & slot->flags ? TRUE : FALSE;
+    return (1 << (b + a * 4)) & lbl_8050EC80[lbl_8050EC80[0].cur].flags ? TRUE : FALSE;
 }
 
 extern "C" void fn_80403514(T34Mgr* p) {
@@ -128,11 +127,7 @@ extern "C" void fn_80403514(T34Mgr* p) {
     p->m11C = 0;
     for (s32 a = 0; a < 8; a++) {
         for (s32 b = 0; b < 4; b++) {
-            BOOL set = FALSE;
-            if (a >= 0 && a <= 7 && b >= 0 && b <= 3) {
-                set = (1 << (b + a * 4)) & t34CurSlot()->flags ? TRUE : FALSE;
-            }
-            if (!set) {
+            if (!t34IsSet(a, b)) {
                 p->m118 = a;
                 p->m11C = b;
                 if ((p->m118 == 0 && p->m11C == 2) || (p->m118 == 1 && p->m11C == 2) ||
