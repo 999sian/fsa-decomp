@@ -225,7 +225,7 @@ extern "C" void fn_8010F478(u8* this_, s32 param_2) {
     *(s32*)(this_ + 0x238) = param_2;
 }
 
-void fn_8010F668(Vec* out, Vec* v, f32 angle) {
+void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle) {
 }
 
 extern "C" void fn_8010F9F0(u8* p) {
