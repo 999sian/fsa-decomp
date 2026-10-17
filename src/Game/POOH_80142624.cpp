@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8049F330[];
 extern "C" void __dt__5ActorFv(Actor* this_, s32 flag);
