@@ -513,6 +513,41 @@ extern "C" void fn_80072D6C(void) {
     fn_80072E68();
 }
 
+extern void* lbl_8027FB48[];
+extern void* lbl_8027FB70[];
+extern "C" int fn_800733C0(u8* p);
+#pragma dont_inline on
+extern "C" int fn_80072D8C(u8* p) {
+    int iVar1 = fn_80020EA4(p + 0x244, (int)&lbl_802FCAA8);
+    if (iVar1 == 4) {
+        if ((*(u32*)(p + 0xf8) & 8) == 0) {
+            if (p != nullptr) {
+                fn_800175B8(p);
+                *(void**)(p + 0x25c) = lbl_8027F6DC;
+                *(u32*)(p + 0x260) = 0;
+                *(void**)(p + 0x25c) = lbl_8027FB48;
+                *(u32*)(p + 0x264) = 0;
+                *(void**)(p + 0x268) = lbl_8027F6DC;
+                *(u32*)(p + 0x26c) = 0;
+                *(void**)(p + 0x268) = lbl_8027FB48;
+                *(u32*)(p + 0x270) = 0;
+                *(void**)(p + 0x274) = lbl_8027F6DC;
+                *(u32*)(p + 0x278) = 0;
+                *(void**)(p + 0x274) = lbl_8027FB70;
+                *(u32*)(p + 0x27c) = 0;
+            }
+            *(u32*)(p + 0xf8) |= 8;
+        }
+        if ((u8)fn_800183AC(p, (void*)fn_80072D6C, (void*)0x52a0)) {
+            iVar1 = fn_800733C0(p);
+        } else {
+            iVar1 = 5;
+        }
+    }
+    return iVar1;
+}
+#pragma dont_inline reset
+
 #pragma dont_inline on
 extern "C" BOOL fn_80073720(u8* p) {
     u32 flags;
