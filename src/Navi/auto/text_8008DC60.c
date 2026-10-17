@@ -1095,6 +1095,14 @@ extern "C" void* fn_8009FC88(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800CCFEC(u8* self);
+extern "C" void fn_8009FCE4(u8* p) {
+    fn_800CCFEC(*(u8**)(p + 0x2b0));
+    if (*(u8*)(*(u8**)(p + 0x2b0) + 0x9f)) {
+        *(u8*)(p + 0x2b4) = 2;
+    }
+}
+
 extern "C" void* fn_8009FDBC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80288EDC;
