@@ -198,6 +198,15 @@ extern "C" void fn_80100AD8(void* param_1) {
     *(u8*)((u8*)param_1 + 0x189) = 0x12;
 }
 
+extern "C" void fn_80100B0C(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x528) != 0) {
+        *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0x188) = 0;
+    *(u8*)((u8*)param_1 + 0x189) = 0x13;
+}
+
 extern "C" void fn_80101004(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
