@@ -59,6 +59,10 @@ extern u8 lbl_802FFA54;
 extern u8* __GXData;
 extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
+extern int lbl_802FF9D8;
+extern int lbl_802FF9E4;
+extern int lbl_802FF9EC;
+extern int lbl_802FF9F0;
 typedef struct {
     Mtx23 v;
 } GXProjVals;
@@ -458,30 +462,29 @@ extern "C" u32 fn_801CED8C(void) {
 }
 
 extern "C" void fn_801CED9C(u32 rate) {
-    u8* base = (u8*)0xCC000000;
+    int enabled;
+    u32 state;
     u32 left;
     u32 right;
     u32 sampleRate;
-    u32 state;
-    int enabled;
 
     if (rate == fn_801CEE7C()) {
         return;
     }
-    *(vu32*)(base + 0x6c00) &= ~0x40;
+    *(vu32*)0xCC006C00 &= ~0x40;
     if (rate == 0) {
         left = fn_801CEF90();
         right = fn_801CEFBC();
-        state = *(vu32*)(base + 0x6c00) & 1;
+        state = *(vu32*)0xCC006C00 & 1;
         sampleRate = fn_801CEF64();
         fn_801CEF74(0);
         fn_801CEFA0(0);
         enabled = OSDisableInterrupts();
         fn_801CF2B8();
-        *(vu32*)(base + 0x6c00) = (*(vu32*)(base + 0x6c00) & ~0x20) | 0x20;
-        *(vu32*)(base + 0x6c00) = (*(vu32*)(base + 0x6c00) & ~2) | (sampleRate << 1);
-        *(vu32*)(base + 0x6c00) = (*(vu32*)(base + 0x6c00) & ~1) | state;
-        *(vu32*)(base + 0x6c00) |= 0x40;
+        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~0x20) | 0x20;
+        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~2) | (sampleRate << 1);
+        *(vu32*)0xCC006C00 = (*(vu32*)0xCC006C00 & ~1) | state;
+        *(vu32*)0xCC006C00 |= 0x40;
         OSRestoreInterrupts(enabled);
         fn_801CEF74(left);
         fn_801CEFA0(right);
@@ -553,14 +556,17 @@ extern "C" u32 fn_801CEFBC(void) {
 }
 
 extern "C" void fn_801CF4E0(s32 a, u32 b, u32 c, u32 d) {
-    volatile u32 pad;
     volatile u16* reg = (volatile u16*)0xCC005000;
+    u32 t;
     int state = OSDisableInterrupts();
     reg[16] = (u16)((reg[16] & ~0x3FF) | (b >> 16));
     reg[17] = (u16)((reg[17] & ~0xFFE0) | (b & 0xFFFF));
     reg[18] = (u16)((reg[18] & ~0x3FF) | (c >> 16));
     reg[19] = (u16)((reg[19] & ~0xFFE0) | (c & 0xFFFF));
-    reg[20] = (u16)((reg[20] & ~0x8000) | (a << 15));
+    t = reg[20];
+    t &= 0xFFFF7FFF;
+    t |= (a << 15) & 0xFFFF8000;
+    reg[20] = (u16)t;
     reg[20] = (u16)((reg[20] & ~0x3FF) | (d >> 16));
     reg[21] = (u16)((reg[21] & ~0xFFE0) | (d & 0xFFFF));
     OSRestoreInterrupts(state);
@@ -830,6 +836,25 @@ extern "C" void fn_801D2038(s32 chan) {
             ((void (*)(s32, s32))cb)(chan, -3);
         }
     }
+}
+
+extern "C" s32 fn_801D217C(s32 chan, void* buf) {
+    u32 cmd;
+    u32 err;
+
+    if (EXISelect(chan, 0, 4) == 0) {
+        return -3;
+    }
+    cmd = 0x83000000;
+    err = (EXIImm(chan, &cmd, 2, 1, 0) == 0);
+    err |= (EXISync(chan) == 0);
+    err |= (EXIImm(chan, buf, 1, 0, 0) == 0);
+    err |= (EXISync(chan) == 0);
+    err |= (EXIDeselect(chan) == 0);
+    if (err != 0) {
+        return -3;
+    }
+    return 0;
 }
 
 extern "C" s32 fn_801D26F8(s32 chan, s32 a, s32 b);
@@ -1287,6 +1312,32 @@ extern "C" u32 fn_801D6D80(u8* param_1, u8* param_2) {
     return uVar2;
 }
 
+extern "C" u32 fn_801D6D80(u8* param_1, u8* param_2);
+extern u8 lbl_802FEA3A;
+#pragma dont_inline on
+extern "C" s32 fn_801D6F48(u8* param_1, u8* param_2) {
+    u8* arg = param_2;
+    u8* r28 = *(u8**)(param_1 + 0x10c);
+    s32 r29 = fn_801D6D80(param_1, arg);
+    if (r29 == -10) {
+        u8* lbl = lbl_802F7F80;
+        u8 r30 = arg[0x34] & lbl_802FEA3A;
+        if (r30 & 0x20) {
+            if (fn_801E3C54(arg, lbl, 4) == 0 && fn_801E3C54(arg + 4, lbl + 4, 2) == 0) {
+                r29 = 0;
+            }
+        } else if (r30 & 0x40) {
+            if (fn_801E3C54(arg, lbl, 4) == 0 && fn_801E3C54(arg + 4, r28 + 4, 2) == 0) {
+                r29 = 0;
+            }
+        }
+    }
+    if (r29 == -10 && (arg[0x34] & 4)) {
+        return 0;
+    }
+    return r29;
+}
+#pragma dont_inline reset
 extern "C" s32 fn_801D782C(void* a);
 extern "C" void fn_801D2F34(s32 a);
 extern "C" s32 fn_801D72DC(void* a);
@@ -1323,6 +1374,35 @@ extern "C" s32 fn_801D81FC(s32 chan, u32* out) {
     out[1] = hi;
     return fn_801D2D80(card, 0);
 }
+
+extern "C" u32 fn_801DD3D0(u8* p);
+extern "C" uint fn_801DD3F0(int param_1);
+extern "C" u8* fn_801D82C0(s32 arg0, s32 arg1) {
+    s32 temp_r31 = fn_801DD3D0((u8*)arg0);
+    u8 temp_r3 = fn_801DD3F0(arg0);
+    s32 temp_r4 = arg1 % 8;
+    if (temp_r31 != 7) {
+        if (temp_r31 < 7) {
+            if (temp_r31 < 6) {
+                goto block_10;
+            }
+            if (temp_r3 != 0) {
+                return __GXData + ((temp_r4 * 0x10) + 0x308);
+            }
+            return __GXData + ((temp_r4 * 0x10) + 0x288);
+        }
+        if (temp_r31 < 0xB) {
+            return __GXData + ((temp_r4 * 0x10) + 0x208);
+        }
+        goto block_10;
+    }
+block_10:
+    if (temp_r3 != 0) {
+        return __GXData + ((temp_r4 * 0x10) + 0x288);
+    }
+    return __GXData + ((temp_r4 * 0x10) + 0x208);
+}
+
 #pragma dont_inline reset
 extern "C" void fn_801D9850(void* base, u32 hi, u32 lo);
 extern "C" void fn_801D97E0(s32* fifo, s32 readPtr, s32 writePtr);
@@ -2010,6 +2090,88 @@ extern "C" void fn_801DCA38(void* p, u32* v)
 	*(u32*)((u8*)p + 0xc) = *v;
 }
 
+extern "C" void fn_801DCAC0(s32 arg0, void* arg1) {
+    s32 idx;
+    u32 val;
+
+    switch (arg0) {
+    case 0:
+        idx = 0;
+        val = (*(u32*)arg1 & ~0xff) | (*(u32*)(__GXData + 0xa8) & 0xff);
+        break;
+    case 1:
+        idx = 1;
+        val = (*(u32*)arg1 & ~0xff) | (*(u32*)(__GXData + 0xac) & 0xff);
+        break;
+    case 2:
+        idx = 0;
+        val = (*(u32*)(__GXData + 0xa8) & ~0xff) | ((u8*)arg1)[3];
+        break;
+    case 3:
+        idx = 1;
+        val = (*(u32*)(__GXData + 0xac) & ~0xff) | ((u8*)arg1)[3];
+        break;
+    case 4:
+        idx = 0;
+        val = *(u32*)arg1;
+        break;
+    case 5:
+        idx = 1;
+        val = *(u32*)arg1;
+        break;
+    default:
+        return;
+    }
+
+    *(u8*)0xCC008000 = 0x10;
+    *(u32*)0xCC008000 = idx + 0x100a;
+    *(u32*)0xCC008000 = val;
+    *(u16*)(__GXData + 2) = 1;
+    *(u32*)(__GXData + 0xa8 + idx * 4) = val;
+}
+
+extern "C" void fn_801DCBB0(s32 arg0, void* arg1) {
+    u8* gx;
+    u32 val;
+    s32 idx;
+    u8* a = (u8*)arg1;
+
+    switch (arg0) {
+    case 0:
+        idx = 0;
+        val = (*(u32*)arg1 & ~0xff) | (*(u32*)(__GXData + 0xb0) & 0xff);
+        break;
+    case 1:
+        idx = 1;
+        val = (*(u32*)arg1 & ~0xff) | (*(u32*)(__GXData + 0xb4) & 0xff);
+        break;
+    case 2:
+        idx = 0;
+        val = (*(u32*)(__GXData + 0xb0) & ~0xff) | a[3];
+        break;
+    case 3:
+        idx = 1;
+        val = (*(u32*)(__GXData + 0xb4) & ~0xff) | a[3];
+        break;
+    case 4:
+        val = *(u32*)arg1;
+        idx = 0;
+        break;
+    case 5:
+        val = *(u32*)arg1;
+        idx = 1;
+        break;
+    default:
+        return;
+    }
+    *(vu8*)0xCC008000 = 0x10;
+    *(vu32*)0xCC008000 = idx + 0x100c;
+    *(vu32*)0xCC008000 = val;
+    gx = __GXData;
+    *(u16*)(gx + 2) = 1;
+    *(u32*)(gx + idx * 4 + 0xb0) = val;
+}
+
 extern "C" void fn_801DCCA0(u8 v)
 {
     u8* gx = __GXData;
@@ -2182,6 +2344,50 @@ extern "C" void fn_801DD618(u32* p, u32 id)
 	r[1] = p[0];
 	r[2] = p[1];
 	r[3] = p[2];
+}
+
+extern "C" void GXInitTexCacheRegion(void* region, u8 is32bMIPmap, u32 memEven, s32 sizeEven, u32 memOdd, s32 sizeOdd)
+{
+    s32 var_r9;
+    u32* reg = (u32*)region;
+    u8* bytes = (u8*)region;
+
+    switch (sizeEven) {
+    case 0:
+        var_r9 = 3;
+        break;
+    case 1:
+        var_r9 = 4;
+        break;
+    case 2:
+        var_r9 = 5;
+        break;
+    }
+    reg[0] = 0;
+    reg[0] = __rlwimi(reg[0], memEven >> 5, 0, 17, 31);
+    reg[0] = __rlwimi(reg[0], var_r9, 15, 14, 16);
+    reg[0] = __rlwimi(reg[0], var_r9, 18, 11, 13);
+    reg[0] = __rlwimi(reg[0], 0, 21, 10, 10);
+    switch (sizeOdd) {
+    case 0:
+        var_r9 = 3;
+        break;
+    case 1:
+        var_r9 = 4;
+        break;
+    case 2:
+        var_r9 = 5;
+        break;
+    case 3:
+        var_r9 = 0;
+        break;
+    }
+    reg[1] = 0;
+    reg[1] = __rlwimi(reg[1], memOdd >> 5, 27, 17, 31);
+    reg[1] = __rlwimi(reg[1], var_r9, 15, 14, 16);
+    reg[1] = __rlwimi(reg[1], var_r9, 18, 11, 13);
+    bytes[0xC] = is32bMIPmap;
+    bytes[0xD] = 1;
 }
 
 extern "C" void GXInitTlutRegion(u32* p, u32 a, u32 b) {
@@ -2921,6 +3127,42 @@ extern "C" void DCFlushRange(void* addr, u32 nBytes);
 extern u32* lbl_802FFA80;
 extern "C" void fn_801E0008(void) {
     DCFlushRange((void*)lbl_802FFA80[0], lbl_802FFA80[1]);
+}
+
+extern "C" void fn_801E0034(void) {
+    u32 r0;
+    u32 r3;
+    u32 count;
+
+    r0 = lbl_802FFA80[2] & 0x1F;
+    if (r0 == 0) {
+        return;
+    }
+    r3 = 0x20 - r0;
+    if (r0 >= 0x20) {
+        return;
+    }
+    count = r3 >> 3;
+    if (count != 0) {
+        do {
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+            *(*(u8**)&lbl_802FFA80[2])++ = 0;
+        } while (--count != 0);
+        r3 &= 7;
+        if (r3 == 0) {
+            return;
+        }
+    }
+    while (r3 != 0) {
+        *(*(u8**)&lbl_802FFA80[2])++ = 0;
+        r3--;
+    }
 }
 
 extern "C" s32 fn_801E0B6C(u8* arg0, s32 arg1) {
