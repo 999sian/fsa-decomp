@@ -28,6 +28,18 @@ extern u8 lbl_802FEBE8[];
 extern "C" void fn_80015B1C(void);
 extern "C" void fn_80015A00(void* p);
 extern "C" void fn_800265F0(u8 param_1);
+extern void* lbl_802FF370;
+extern u32 lbl_802FB958;
+extern u32 lbl_80204EBC[3];
+extern "C" s32 fn_80124A50(void* mgr, u8 id, void* buf);
+extern "C" void fn_80124AAC(void* mgr, u8 id, void (*cb)(void*, void*), void* p);
+extern "C" void fn_80124820(void* mgr, u8 id, void (*cb)(void*, void*), void* p);
+extern "C" s32 fn_80124AF4(void* mgr, u8 id, void* buf);
+extern "C" void fn_80124A04(void* mgr, u8 id, void* dst, void (*cb)(void*, void*), void* p);
+extern "C" s32 fn_80124900(void* mgr, u8 id, void* buf);
+extern "C" void fn_801248B8(void* mgr, u8 id, void (*cb)(void*, void*), void* p);
+extern "C" void fn_80015A40(void* self);
+extern "C" void fn_8001533C(void* self, void* tbl, s32 x);
 
 struct Unk80013DA0 {
     u8 pad[0x20];
