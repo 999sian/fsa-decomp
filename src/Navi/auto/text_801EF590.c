@@ -60,4 +60,4 @@ extern "C" int fn_801EF668(u32 handle, u8* buf, u32* count) {
         return 1;
     }
 }
-
+#pragma dont_inline reset
