@@ -1,6 +1,15 @@
 #include "types.h"
 #include "Game/ItemBase.h"
-#include "Game/Actor.h"
+
+struct SykyVec {
+    f32 x, y, z;
+    SykyVec& operator+=(const SykyVec& o) {
+        x += o.x;
+        y += o.y;
+        z += o.z;
+        return *this;
+    }
+};
 
 extern "C" void fn_80458880(void*, s32, s32);
 extern const f32 lbl_8053E4A4;
