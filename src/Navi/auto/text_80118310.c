@@ -185,13 +185,17 @@ extern "C" void fn_801193D8(u8* self, u16* table) {
     }
 }
 
+#pragma use_lmw_stmw off
 extern "C" s32 fn_80119414(u8* self, char* name) {
-    u8* table = *(u8**)(self + 4);
-    u16 count = *(u16*)(self + 0xc);
-    u16* entry = (u16*)(table + 4);
-    u16 hash = fn_801194E4(self, name);
+    u16 count;
+    u16 hash;
+    u8* table;
+    u16* entry = (u16*)(*(u8**)(self + 4) + 4);
     u16 i;
-    for (i = 0; i < count; i++, entry += 2) {
+    hash = fn_801194E4(self, name);
+    table = *(u8**)(self + 4);
+    count = *(u16*)(self + 0xc);
+    for (i = 0; i < count; entry += 2, i++) {
         if (*entry == hash && fn_801E6578(table + *(u16*)(table + i * 4 + 6), name) == 0) {
             return i;
         }
@@ -354,7 +358,7 @@ extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
 
 extern "C" u32 fn_8011A700(void* param_1) {
     VObj_8011A74C* p = (VObj_8011A74C*)param_1;
-    u8* q = *(u8**)((u8*)p + 0x58);
+    u8* q = ((u8**)p)[0x58 / 4];
     if (q != 0) {
         q = *(u8**)q;
         if (q != 0) {
@@ -376,9 +380,9 @@ extern "C" u32 fn_8011A74C(void* param_1) {
     return p->v7();
 }
 
-extern "C" void fn_8011A798(void* param_1, void* param_2) {
-    void* obj = *(void**)((u8*)param_1 + 0x6c);
-    ((void (*)(void*))(*(void**)obj))(param_2);
+extern "C" void fn_8011A798(u8* param_1, s32 param_2) {
+    void (*fn)(s32) = *(void (**)(s32))(*(u8**)(param_1 + 0x6c));
+    fn(param_2);
 }
 
 extern "C" int fn_8011AB38()
@@ -521,6 +525,27 @@ extern "C" void fn_8011BB70(void* param_1) {
     *(f32*)((char*)param_1 + 0x4) = v;
     *(f32*)((char*)param_1 + 0x8) = v;
     *(s16*)((char*)param_1 + 0xc) = 0;
+}
+
+extern f32 lbl_802FDD00;
+extern f32 lbl_802FDD04;
+extern "C" u32 fn_8011BE50(f32* p, u32 flags) {
+    flags &= 0xF;
+    if (-lbl_802FDD04 < p[0] && p[0] < lbl_802FDD04) {
+        flags &= ~3;
+    } else if (p[0] <= -lbl_802FDD00) {
+        flags = (flags & ~2) | 1;
+    } else if (p[0] >= lbl_802FDD00) {
+        flags = (flags & ~1) | 2;
+    }
+    if (-lbl_802FDD04 < p[1] && p[1] < lbl_802FDD04) {
+        flags &= ~0xC;
+    } else if (p[1] <= -lbl_802FDD00) {
+        flags = (flags & ~8) | 4;
+    } else if (p[1] >= lbl_802FDD00) {
+        flags = (flags & ~4) | 8;
+    }
+    return flags;
 }
 
 extern "C" void fn_801CE100(long chan, unsigned long command);
