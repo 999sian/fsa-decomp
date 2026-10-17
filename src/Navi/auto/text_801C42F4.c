@@ -170,4 +170,21 @@ extern "C" void fn_801C5B30(void) {
     SIGetType(0);
     fn_801C59E4();
 }
+#pragma dont_inline off
+inline u32 SIGetStatusInline(s32 chan) {
+    BOOL enabled;
+    u32 sr;
+    int chanShift;
 
+    enabled = OSDisableInterrupts();
+    sr = __SIRegs[14];
+    chanShift = 8 * (3 - chan);
+    sr >>= chanShift;
+    if (sr & 8) {
+        if (!(Type_8029D098[chan] & 0x80)) {
+            Type_8029D098[chan] = 8;
+        }
+    }
+    OSRestoreInterrupts(enabled);
+    return sr;
+}
