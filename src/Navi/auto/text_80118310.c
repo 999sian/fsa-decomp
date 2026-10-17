@@ -296,7 +296,7 @@ extern "C" u16 fn_801194E4(void* param_1, char* param_2) {
 
 extern void* lbl_80290080[];
 extern u8* lbl_802FF2A4;
-extern u8 lbl_802FF2A8[];
+extern u8 lbl_802FF2A8[5];
 extern void* lbl_802FF540;
 extern "C" void fn_801D9AFC(void*);
 extern "C" void fn_801D9BF8(u8*, u8*, u8*, u8*, u8*);
