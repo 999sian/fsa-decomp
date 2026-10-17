@@ -1,6 +1,9 @@
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
 
+typedef f32 Mtx[3][4];
+extern "C" void PSMTXIdentity(Mtx m);
+
 struct FsaResourceManager {
     virtual void v00();
     virtual void v01();
