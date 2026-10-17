@@ -661,5 +661,12 @@ extern "C" void fn_8002FB68(int param_1, int param_2) {
     fn_8002F0A8(*(int*)(lbl_8023061C + param_1 * 0x50 + param_2 * 16 + *(int*)(lbl_802BB0FC + 0x420) * 4));
 }
 
+extern "C" void fn_800300C0(int id, unsigned int flags, int val, int idx, float f);
+extern "C" void fn_8002FF34(int a, unsigned int b, unsigned int c, int d) {
+    extern short lbl_802278B8[];
+    extern float lbl_802FFD30;
+    fn_800300C0(0x18, ((d << 16) + (b & 0xf)) | 0x70, lbl_802278B8[c & 0x1f], 0, lbl_802FFD30);
+}
+
 #pragma dont_inline reset
 extern "C" void fn_80030664(void) {}
