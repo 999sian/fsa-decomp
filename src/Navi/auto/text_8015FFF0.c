@@ -373,6 +373,16 @@ extern "C" void* fn_80161984(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" u32 fn_80161B94(u8* a, u8* b, u32* out) {
+    if (*(u32*)(b + 0x10) == 0) {
+        *(u32*)(b + 0x10) = *(u32*)(a + 0x68) + *(u32*)(b + 0x8);
+    }
+    if (out != NULL) {
+        *out = *(u32*)(b + 0xc);
+    }
+    return *(u32*)(b + 0x10);
+}
+
 extern "C" BOOL fn_80161CE0(void) {
     u8* p = (u8*)fn_801615C4();
     if (p == NULL) {
