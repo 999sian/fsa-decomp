@@ -15,10 +15,11 @@ struct Unk157854 {
 
 extern "C" void fn_80157854(int i)
 {
-    u8* p = lbl_802FF4BC + i * 0xf4;
-    if (p[0xec] == 1 && lbl_802FF4E8 == 0) {
-        p[0xee] = 1;
+    Unk157854* p = &((Unk157854*)lbl_802FF4BC)[i];
+    if (p->unkEC == 1 && lbl_802FF4E8 == 0) {
+        p->unkEE = 1;
     }
-    u32* q = (u32*)(lbl_802FF4BC + i * 0xf4);
-    q[lbl_802FF4E8 + 9] |= 0x20;
+    p = &((Unk157854*)lbl_802FF4BC)[i];
+    p = (Unk157854*)((u8*)p + lbl_802FF4E8 * 4);
+    p->flags[0] |= 0x20;
 }
