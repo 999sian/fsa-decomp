@@ -120,6 +120,14 @@ extern "C" void fn_801A7258(u8* param_1) {
     *(f32*)(param_1 + 0x18) = (*(f32*)(param_1 + 0x14) - *(f32*)(param_1 + 0x10)) / (f32)*(u32*)(param_1 + 0x4);
 }
 
+extern "C" u32 fn_801A72C0(u8* param_1, s32 param_2) {
+    *(u32*)param_1 = fn_8015AA60(param_2 << 2, 0x20);
+    *(s32*)(param_1 + 0x4) = param_2;
+    fn_801A73A4(param_1);
+    *(f32*)(param_1 + 0x18) = (*(f32*)(param_1 + 0x14) - *(f32*)(param_1 + 0x10)) / (f32)*(u32*)(param_1 + 0x4);
+    return 0;
+}
+
 extern "C" void fn_8015AB40(void* p);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" void fn_801A73A4(u8* p);
