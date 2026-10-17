@@ -169,8 +169,9 @@ extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
 }
 
 extern "C" s32 fn_80015CA4(s16* p) {
-    if (*p != 0) {
-        *p = *p - 1;
+    s32 v = *p;
+    if (v != 0) {
+        *p = v - 1;
     }
     return *p;
 }
