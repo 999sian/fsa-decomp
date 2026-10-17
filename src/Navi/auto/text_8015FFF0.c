@@ -26,6 +26,7 @@ extern "C" void fn_8015FC80(void*, int);
 extern char lbl_80297CE8[];
 extern char lbl_80298208[];
 extern "C" void fn_80166C08(void*, int);
+extern "C" void fn_80161678(u16* p, void* s);
 extern "C" void* fn_8015FFF0(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
