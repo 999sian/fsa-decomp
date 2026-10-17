@@ -32,8 +32,25 @@ struct Unk80013DA0 {
     u32 b2 : 15;
     u8 pad28[0x50 - 0x28];
     u8 unk50;
-    u8 pad51[0x5f - 0x51];
+    u8 unk51;
+    u8 unk52;
+    u8 unk53;
+    u8 unk54;
+    u8 unk55;
+    u8 pad56;
+    u8 unk57;
+    u8 pad58;
+    u8 unk59;
+    u8 unk5a;
+    u8 unk5b;
+    u8 unk5c;
+    u8 unk5d;
+    u8 unk5e;
     u8 unk5f;
+    u8 pad60[0x63 - 0x60];
+    u8 unk63;
+    u8 pad64[0xa8 - 0x64];
+    s8 unkA8;
 };
 extern "C" void fn_80013B48(void) {
     if (lbl_802FEBE0) {
