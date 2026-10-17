@@ -24,6 +24,9 @@ extern "C" void fn_80230FD0(s32 idx, s32 id);
 extern "C" void fn_801F0D20(Actor* self, s32 id);
 extern "C" u8 fn_80230534(s32 idx);
 extern "C" s32 lbl_804721D4[];
+extern "C" const f32 lbl_805425C4;
+extern "C" const f32 lbl_805425C8;
+extern "C" const f32 lbl_805425CC;
 
 enum YnswConstants {
     FOURCC_SOB           = 0x534F4220, // 'SOB ' (Sprite Object Binary resource type)
