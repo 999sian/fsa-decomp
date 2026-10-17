@@ -1,4 +1,7 @@
 #include "types.h"
+extern "C" void* lbl_802FF5F8;
+extern void* lbl_802FF5F0;
+extern "C" void* fn_801611A8(void*, char*, void*);
 extern "C" void* fn_801615C4(void);
 extern "C" void fn_80159C6C(void*, int);
 extern "C" void* fn_80160D88(void*, char*, void*);
@@ -556,7 +559,7 @@ extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
 extern "C" s32 fn_80162724(void* p, u32 a, u32 b, u32 c, s32 mode) {
     u32 out;
     u32 w;
-    c &= ~0x1f;
+    c = c & ~0x1f;
     w = (a + 0x1f) & ~0x1f;
     if (mode == 0) {
         if (w > c) {
@@ -565,7 +568,7 @@ extern "C" s32 fn_80162724(void* p, u32 a, u32 b, u32 c, s32 mode) {
         fn_8015E1F4(p, b, w, 0, c, 0, -1, &out);
         return out;
     } else if (mode < 0 || mode > 2) {
-        fn_8011C9EC(lbl_80297E28, 0x28f, 0, lbl_80297E3C);
+        fn_8011C9EC(lbl_80297E28, 0x28f, lbl_802FE2E0, lbl_80297E3C);
         return 0;
     }
     fn_8015E1F4(p, b, w, 1, c, 0, -1, &out);
