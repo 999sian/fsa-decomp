@@ -2,8 +2,8 @@
 // .text 0x80141abc-0x80141b20 (1 functions). split_file divides it into the game's real files.
 
 extern "C" {
-extern int* lbl_802FF3AC;
-extern int* lbl_802FF3A8;
+extern void* lbl_802FF3AC;
+extern void* lbl_802FF3A8;
 }
 void fn_80141ABC(int* param_1)
 {
