@@ -22,7 +22,7 @@ extern "C" void fn_801C1440(void* rec, u32 v);
 extern "C" void dtor_80214F9C(void* p, s32 flag);
 extern void* lbl_804A43E8[];
 extern const f32 lbl_8053EE08;
-extern u16 lbl_8046A748[4];
+extern u16 lbl_8046A748[8];
 extern f32 lbl_8053EE14;
 extern f32 lbl_8053EE20;
 extern f32 lbl_8053EE28;
@@ -89,11 +89,6 @@ extern void* lbl_8053AED0;
 extern "C" void fn_8030C210(void* cam, void* pos);
 extern "C" void fn_8043E7CC(void* a, void* b);
 extern "C" void fn_801C283C(u8* this_) {
-    struct Vec3f {
-        f32 x;
-        f32 y;
-        f32 z;
-    } tmp, pos;
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
     case 1:
@@ -140,7 +135,8 @@ extern "C" void fn_801C283C(u8* this_) {
         }
         break;
     }
-    tmp = *(struct Vec3f*)(this_ + 0xc);
+    Vec tmp, pos;
+    tmp = *(Vec*)(this_ + 0xc);
     pos = tmp;
     fn_8043E7CC(lbl_8053AED0, &pos);
 }
@@ -594,7 +590,7 @@ extern "C" void* fn_801C573C(void* this_) {
     *(u8*)(p + 0x55e) = 0;
     *(s32*)(p + 0x560) = 4;
     *(s32*)(p + 0x564) = 0;
-    *(s32*)(p + 0x568) = *(u16*)&lbl_8046A748;
+    *(s32*)(p + 0x568) = lbl_8046A748[0];
     *(s32*)(p + 0x56c) = 0;
     *(f32*)(p + 0x570) = lbl_8053EE08;
     *(f32*)(p + 0x574) = lbl_8053EE08;
