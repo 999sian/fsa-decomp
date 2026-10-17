@@ -441,13 +441,13 @@ extern "C" void* fn_80122D18(void* a, void* b, void* c) {
 }
 #pragma pop
 extern "C" void* fn_80122DA8(void* a, void* b, void* c) {
+    void* r = b;
     void* p = lbl_802FF360;
     void* q = (void*)fn_80122FC0((u32)c, (u32)a);
-    void* r = b;
     if (b != NULL) {
         r = fn_80122E40(b, a, q, 0);
     }
-    *(u8**)((u8*)b + 0x28) = (u8*)b + 0x6c;
+    *(u8**)((u8*)r + 0x28) = (u8*)b + 0x6c;
     fn_80122FD0(r);
     fn_80123AFC(p, r);
     return r;
