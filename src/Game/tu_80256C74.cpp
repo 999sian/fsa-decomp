@@ -48,6 +48,7 @@ s32 Actor_CreateByID(void* mgr, u32 fourCC, u32 owner, void* pos, u32 param, s32
         s32 fn_8026FC20(void*);
 s32 fn_802A1844(void*, void*, s32, s32);
 u16 fn_8022461C(void*, s32);
+void fn_8024F0E8(void*, s32);
 void fn_8013CC50(s32, void*, u16, s32, s32, s32, s32, s32, f32);
 }
 extern const f32 lbl_805400DC;
