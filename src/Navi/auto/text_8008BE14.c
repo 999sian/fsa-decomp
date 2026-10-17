@@ -127,7 +127,7 @@ extern "C" s32 fn_8008CB14(u8* self) {
     } else if (*(s8*)(self + 0x2e0) != -1) {
         if (*(s32*)(lbl_802BB0FC + 0x44) >= 0xe) {
             Arg_8008CF88 a = lbl_80284BCC;
-            fn_8008CF88(self, &a, 0);
+            fn_8008CF88((StateObj_8008CF88*)self, &a, 0);
         } else if (lbl_802FEDD8 & 1) {
             switch (lbl_802FEDE4) {
             case 1: {
@@ -248,6 +248,19 @@ extern "C" void fn_8008D6F8(f32* p) {
     p[0] = v[0];
     p[1] = v[1];
     p[2] = v[2];
+}
+
+extern "C" void fn_8008D72C(f32* p, s32 idx) {
+    s32 n = idx - 1;
+    f32 v[3];
+    char* e = (char*)lbl_802BB0FC + ((n % 10) % 10) * 12;
+    s16 a = *(s16*)(e + 0x2d6);
+    s16 b = *(s16*)(e + 0x2d4);
+    s16 s[2] = {b, a};
+    fn_8008D5BC(v, s);
+    p[0] = v[0];
+    p[1] = v[1];
+    p[2] = v[2] + (f32)a * *(f32*)(lbl_802C5408 + 0x24);
 }
 
 extern "C" void fn_8008D938(void* p) {
