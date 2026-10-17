@@ -25,6 +25,8 @@ extern "C" void detach__5ActorFv(void* this_);
 extern "C" f32 lbl_8053CAB8;
 extern "C" f32 lbl_8053CAC0;
 extern "C" void* lbl_8053AAF8;
+extern "C" f32 lbl_8053CAA0;
+extern "C" f32 lbl_8053CABC;
 
 extern "C" void __ct__5ActorFv(void* this_);
 extern "C" void __dt__5ActorFv(void* this_, int flag);
