@@ -179,6 +179,26 @@ extern "C" void fn_8008CEDC(char* p) {
     fn_801C5D74(lbl_8029F8D8, *(char**)(p + 0x24c) + 0x24);
 }
 
+extern "C" BOOL fn_8008CF88(void* self, Arg_8008CF88* arg, s32 n) {
+    StateObj_8008CF88* obj = (StateObj_8008CF88*)self;
+    if (fn_801E10A0(&obj->m_func) != 0) {
+        if (fn_801E1070(&obj->m_func) != 0) {
+            obj->m_state = -1;
+            (obj->*obj->m_func)(n);
+        }
+        obj->m_func = *(StateFunc_8008CF88*)arg;
+        obj->m_state = 0;
+        obj->m_unk2fc[0] = 0;
+        obj->m_unk2fc[1] = 0;
+        obj->m_unk2fc[2] = 0;
+        obj->m_unk2fc[3] = 0;
+        obj->m_unk30c[0] = 0.0f;
+        obj->m_unk30c[1] = 0.0f;
+        (obj->*obj->m_func)(n);
+    }
+    return TRUE;
+}
+
 extern "C" void fn_8008C4FC(void);
 extern "C" void fn_8008D420(void) {
     fn_8008C4FC();
@@ -220,6 +240,8 @@ extern "C" BOOL fn_8008D5B4(void)
 {
     return TRUE;
 }
+
+extern "C" void fn_8008D5BC(f32* p, s16* q);
 
 extern "C" void fn_8008D6F8(f32* p) {
     f32 v[3] = {lbl_802C53E4[0], lbl_802C53E4[1], lbl_802C53E4[2]};
