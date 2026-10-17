@@ -4,6 +4,11 @@
 
 struct TzokVec3 { f32 x, y, z; };
 
+extern "C" u8 lbl_8046A238[];
+extern "C" s32 fn_801D0280(u8* this_, s32 idx);
+extern "C" void fn_80217484(void* p);
+extern "C" void fn_8021BA30(void* p, u16 tag);
+
 extern "C" bool fn_801CD2F8(s32 id);
 extern "C" u8 fn_802046FC(void* base, void* a, void* b);
 extern "C" u8 fn_801F2618(u8* p, u8* q, u8 c);
@@ -119,10 +124,13 @@ extern "C" void fn_80204DAC(void* this_) {
             *(void**)(p + 0x98) = fn_80230CFC(*(void**)(p + 0xc8));
             *(s16*)(p + 0x33c) = fn_801F6874(*(void**)(p + 0x98));
             TzokVec3* src = (TzokVec3*)fn_8023E7B0(*(void**)(p + 0xc8));
-            *(TzokVec3*)(p + 0xc) = *src;
-            *(f32*)(p + 0x3c) = lbl_8053F860;
-            *(f32*)(p + 0x40) = lbl_8053F860;
-            *(f32*)(p + 0x44) = lbl_8053F860;
+            f32 zero = lbl_8053F860;
+            *(f32*)(p + 0xc) = src->x;
+            *(f32*)(p + 0x10) = src->y;
+            *(f32*)(p + 0x14) = src->z;
+            *(f32*)(p + 0x3c) = zero;
+            *(f32*)(p + 0x40) = zero;
+            *(f32*)(p + 0x44) = zero;
             if (*(s32*)(p + 4) != fn_8023DE58(*(void**)(p + 0xc8))) {
                 *(s32*)(p + 4) = fn_8023DE58(*(void**)(p + 0xc8));
                 *(s32*)(p + 0x2a8) = 0;
@@ -169,6 +177,62 @@ extern "C" void fn_80204EB8(TzokActor* self) {
     if (fn_802046FC(fn_80204638(), (u8*)self + 0x3c, &self->mX) != 0 &&
         (*(u32*)((u8*)self + 0x230) & 0x1000)) {
         fn_801F2618((u8*)self, (u8*)self + 0x264, lbl_8053EFC0);
+    }
+}
+
+extern "C" u8 sincosTable___5JMath[];
+extern "C" void fn_801D01A0(TzokActor* self, TzokVec3* pos, f32* out, f32 scale);
+extern "C" void fn_80204FEC(TzokActor* self) {
+    (*(void (**)(TzokActor*))(*(u8**)self + 0x84))(self);
+    bool outside = false;
+    if (self->m94 == 1 && !fn_801CD2F8(self->mRoom)) {
+        s32 room = self->mRoom;
+        u8* cfg = (u8*)fn_802D6A9C();
+        f32* rect = (f32*)(room < 8 ? cfg + 0xcc : cfg + 0xdc);
+        f32 x = self->mX;
+        bool inside = false;
+        if (x >= rect[0] && self->mY >= rect[1] && x < rect[2] && self->mY < rect[3]) {
+            inside = true;
+        }
+        if (!inside) {
+            outside = true;
+        }
+    }
+    if (outside) {
+        *(f32*)((u8*)self + 0x3c) = lbl_8053F860;
+        *(f32*)((u8*)self + 0x40) = lbl_8053F860;
+        return;
+    }
+    f32 out[2];
+    switch (self->mState) {
+    case 4:
+        return;
+    case 3:
+    case 7:
+        *(f32*)((u8*)self + 0x3c) = lbl_8053F860;
+        *(f32*)((u8*)self + 0x40) = lbl_8053F860;
+        return;
+    case 5:
+        out[0] = *(f32*)((u8*)self + 0x360);
+        out[1] = *(f32*)((u8*)self + 0x364);
+        *(f32*)((u8*)self + 0x3c) = out[0];
+        *(f32*)((u8*)self + 0x40) = out[1];
+        return;
+    case 6:
+    case 8:
+    case 9: {
+        u8* tbl = (u8*)sincosTable___5JMath + ((s32)*(s16*)((u8*)self + 0x33c) >> 2 & 0x3ff8);
+        out[0] = *(f32*)tbl;
+        out[1] = *(f32*)(tbl + 4);
+        *(f32*)((u8*)self + 0x3c) = out[0] * *(f32*)((u8*)self + 0x254);
+        *(f32*)((u8*)self + 0x40) = out[1] * *(f32*)((u8*)self + 0x254);
+        return;
+    }
+    default:
+        fn_801D01A0(self, (TzokVec3*)((u8*)self + 0x32c), out, *(f32*)((u8*)self + 0x254));
+        *(f32*)((u8*)self + 0x3c) = out[0];
+        *(f32*)((u8*)self + 0x40) = out[1];
+        return;
     }
 }
 
