@@ -1321,7 +1321,6 @@ extern "C" void fn_801B293C(u32* out, u8* p, s32 a, s32 b) {
 }
 
 extern "C" void fn_801A7C90(void* a, void* b);
-extern u32 lbl_80202574;
 
 extern "C" u32 fn_801B2A34(u8* p, s32 a) {
     u16 idx = ((u16*)*(u8**)(p + 8))[a];
