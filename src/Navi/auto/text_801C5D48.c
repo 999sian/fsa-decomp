@@ -42,7 +42,8 @@ extern s32 CurrCommand_802FF89C;
 extern char lbl_802F7AC0[];
 extern char BB2_802F7AA0[];
 extern "C" BOOL fn_801C76C8(s32 a, u32 b, void* cb);
-extern "C" void fn_801C8E54(void);
+extern "C" void fn_801C8E54(u32 param_1);
+extern "C" void stateBusy_801C943C(DVDCommandBlock* block);
 extern "C" void fn_801C8D70(u32 param_1);
 extern "C" void fn_801C8278(DVDCommandBlock* block);
 extern "C" void fn_801C830C(void);
@@ -609,12 +610,13 @@ extern "C" void fn_801C8D70(u32 param_1)
 		cbForStateError(0);
 	} else if (param_1 & 1) {
 		u32* base = (u32*)BB2_802F7AA0;
+		u32* info = (u32*)bootInfo_802FF888;
 		lbl_802FF8C4 = fn_801C8278;
 		lbl_802FF8B4 = 0;
-		if (*(u32*)(bootInfo_802FF888 + 0x3c) < base[2]) {
+		if (info[0xf] < base[2]) {
 			fn_80007AB8(lbl_802FE9BC, 0x28a, lbl_8029D3C4);
 		}
-		fn_801C6FF4((void*)*(u32*)(bootInfo_802FF888 + 0x38), (base[2] + 0x1f) & ~0x1f, base[1], fn_801C830C);
+		fn_801C6FF4((void*)info[0xe], (base[2] + 0x1f) & ~0x1f, base[1], fn_801C830C);
 	} else {
 		fn_801C747C(fn_801C8554);
 	}
