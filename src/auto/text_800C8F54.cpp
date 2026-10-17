@@ -83,30 +83,40 @@ struct J3DMaterialInitData {
     u8 _14[0x14C - 0x14];
 };
 
-struct J3DColorChan {
-    u16 mChanCtrl;
+inline u16 calcColorChanID(u16 enable, u8 matSrc, u32 lightMask, u8 diffuseFn, GXAttnFn attnFn, u8 ambSrc)
+{
+    u32 reg = 0;
+    reg = reg & ~0x0002 | enable << 1;
+    reg = reg & ~0x0001 | matSrc;
+    reg = reg & ~0x0040 | ambSrc << 6;
+    reg = reg & ~0x0004 | bool(lightMask & 0x01) << 2;
+    reg = reg & ~0x0008 | bool(lightMask & 0x02) << 3;
+    reg = reg & ~0x0010 | bool(lightMask & 0x04) << 4;
+    reg = reg & ~0x0020 | bool(lightMask & 0x08) << 5;
+    reg = reg & ~0x0800 | bool(lightMask & 0x10) << 11;
+    reg = reg & ~0x1000 | bool(lightMask & 0x20) << 12;
+    reg = reg & ~0x2000 | bool(lightMask & 0x40) << 13;
+    reg = reg & ~0x4000 | bool(lightMask & 0x80) << 14;
+    reg = reg & ~0x0180 | (attnFn == GX_AF_SPEC ? 0 : diffuseFn) << 7;
+    reg = reg & ~0x0200 | (attnFn != GX_AF_NONE) << 9;
+    reg = reg & ~0x0400 | (attnFn != GX_AF_SPEC) << 10;
+    return reg;
+}
 
-    J3DColorChan() { mChanCtrl = 0; }
-    J3DColorChan(u16 id) { mChanCtrl = id; }
+struct J3DColorChan {
+    J3DColorChan() { setColorChanInfo(j3dDefaultColorChanInfo); }
     J3DColorChan(const J3DColorChanInfo& info)
     {
-        u32 reg = 0;
-        reg = reg & ~0x0002 | info.mEnable << 1;
-        reg = reg & ~0x0001 | info.mMatSrc;
-        reg = reg & ~0x0040 | info.mAmbSrc << 6;
-        reg = reg & ~0x0004 | (info.mLightMask & 0x01) << 2;
-        reg = reg & ~0x0008 | (info.mLightMask & 0x02) << 3;
-        reg = reg & ~0x0010 | (info.mLightMask & 0x04) << 4;
-        reg = reg & ~0x0020 | (info.mLightMask & 0x08) << 5;
-        reg = reg & ~0x0800 | (info.mLightMask & 0x10) << 11;
-        reg = reg & ~0x1000 | (info.mLightMask & 0x20) << 12;
-        reg = reg & ~0x2000 | (info.mLightMask & 0x40) << 13;
-        reg = reg & ~0x4000 | (info.mLightMask & 0x80) << 14;
-        reg = reg & ~0x0180 | info.mDiffuseFn << 7;
-        reg = reg & ~0x0200 | (info.mAttnFn != 0) << 9;
-        reg = reg & ~0x0400 | (info.mAttnFn != 1) << 10;
-        mChanCtrl = reg;
+        mChanCtrl = calcColorChanID(info.mEnable, info.mMatSrc, info.mLightMask, info.mDiffuseFn, (GXAttnFn)info.mAttnFn,
+                                    info.mAmbSrc == 0xFF ? 0 : info.mAmbSrc);
     }
+    void setColorChanInfo(const J3DColorChanInfo& info)
+    {
+        mChanCtrl = calcColorChanID(info.mEnable, info.mMatSrc, info.mLightMask, info.mDiffuseFn, (GXAttnFn)info.mAttnFn,
+                                    info.mAmbSrc == 0xFFFF ? 0 : info.mAmbSrc);
+    }
+
+    u16 mChanCtrl;
 };
 
 struct J3DIndTevStageInfo {
@@ -675,6 +685,15 @@ extern "C" u8 fn_800CAF38(u8* p, s32 idx) {
         return (*(u8**)(p + 0x14))[b];
     }
     return 0;
+}
+
+extern "C" J3DColorChan fn_800CAF70(const J3DMaterialFactory* self, int idx, int no)
+{
+	J3DMaterialInitData* initData = &((J3DMaterialInitData*)self->mInitData)[self->mMatRemapTable[idx]];
+	if (initData->mColorChanControlIndex[no] != 0xffff) {
+		return J3DColorChan(((J3DColorChanInfo*)self->unk_0C)[initData->mColorChanControlIndex[no]]);
+	}
+	return J3DColorChan();
 }
 
 extern "C" void fn_800CB104(s32* out, u8* p, s32 a, s32 b) {
