@@ -1,4 +1,3 @@
-#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
 
@@ -79,5 +78,8 @@ extern "C" void fn_803744C4(u8* p) {
     *(s32*)(p + 0x248) = 0;
     *(s32*)(p + 0x24c) = -1;
     *(s32*)(p + 0x250) = 0;
+}
+
+extern "C" void fn_80374564(void) {
 }
 
