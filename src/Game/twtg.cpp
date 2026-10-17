@@ -154,6 +154,7 @@ extern "C" void fn_80313C20(char* p) {
 
 extern const f32 lbl_80541880;
 extern const f32 lbl_80541884;
+extern const f32 lbl_80541888;
 extern char* lbl_8053AAF8;
 extern "C" s32 fn_8023DE58(s32);
 extern "C" void fn_801EE558(void* p, JGeometry::TVec3f* out, f32* dist, s32 idx);
