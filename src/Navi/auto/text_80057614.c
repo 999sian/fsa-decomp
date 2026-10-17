@@ -146,6 +146,19 @@ extern "C" void fn_800578E8(void) {
     }
 }
 
+extern "C" void fn_8005796C(void* p) {
+    if (*(s32*)(lbl_802BB0FC + 0x44) == 8) {
+        fn_80089634(p, 3);
+        for (s32* q = (s32*)lbl_80249DA0; *q != 0; q++) {
+            fn_80058B64(*q);
+        }
+    }
+}
+
+extern "C" void fn_800579CC(void) {
+    *(s32*)(lbl_802BB0FC + 0x44) = 0x13;
+}
+
 extern "C" void fn_800579E0(void) {
 }
 
