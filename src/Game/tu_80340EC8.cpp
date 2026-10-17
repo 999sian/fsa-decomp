@@ -15,11 +15,10 @@ extern "C" u8 fn_802D800C(s32, s32);
 extern "C" s32 fn_802D6A9C();
 extern "C" void PSMTXIdentity(f32 m[3][4]);
 extern "C" void fn_801F06F0(u8* p, void* a, s32 b, void* c, s32 d, f32 e, f32 f);
-extern "C" f32 lbl_805422B8;
-extern "C" f32 lbl_805422BC;
-extern "C" f32 lbl_805422C4;
+extern "C" const f32 lbl_805422B8;
+extern "C" const f32 lbl_805422BC;
 extern "C" char lbl_80471EC8[];
-extern "C" f32 lbl_805422C0;
+extern "C" const f32 lbl_805422C0;
 extern "C" void fn_80340EC8(u8* p) {
     if (*(s32*)(p + 0x230) == 8 || *(s32*)(p + 0x230) == 0xb) {
         DrawRec rec;
