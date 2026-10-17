@@ -43,4 +43,5 @@ extern "C" void fn_802AAEC0(int* param_1)
     param_1[0x8e] = 0xf;
   }
 }
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
