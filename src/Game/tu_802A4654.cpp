@@ -23,6 +23,7 @@ extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void* 
 extern "C" void fn_801F0E34(void* this_, u32 id, s32 c);
 extern "C" void fn_8030C210(void*, void*);
 extern "C" u8* lbl_8053AB10;
+extern "C" u8* lbl_8053AAF8;
 extern "C" const s32 lbl_8046C658[][4];
 extern "C" const s32 lbl_8046C6C8[][4];
 struct Unk802A4780 {
