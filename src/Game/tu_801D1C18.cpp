@@ -80,25 +80,6 @@ static inline void setSeqFrame(AnmSeqCtrl* this_, f32 frame) {
     calcSeq(this_);
 }
 
-static inline void calcSeqB(AnmSeqCtrl* this_) {
-    f32 frame = this_->mCtrl.mFrame;
-    SeqEntry* e = this_->mSeqs[this_->mCurSeq];
-    SeqEntry* seq = e;
-    s32 start = 0;
-    s32 idx = start;
-    for (; e->mFrame >= 0; e++, idx++) {
-        s32 prev = start;
-        start += e->_2;
-        if ((f32)prev <= frame && frame < (f32)start) {
-            this_->_10 = clampSeq(this_, e->mFrame);
-            this_->_1C = idx;
-            return;
-        }
-    }
-    this_->_10 = clampSeq(this_, seq->mFrame);
-    this_->_1C = 0;
-}
-
 extern "C" void fn_801D1C18(AnmSeqCtrl* this_) {
     if (this_->mCurSeq >= 0 && this_->mCurSeq < this_->mSeqNum) {
         if (this_->_20 != 0) {
@@ -215,22 +196,7 @@ extern "C" void fn_801D22DC(AnmSeqCtrl* this_, s32 seqIndex, s32 mode, bool keep
             }
         }
         this_->mCtrl.mFrame = frame;
-        SeqEntry* seq = this_->mSeqs[this_->mCurSeq];
-        SeqEntry* e2 = seq;
-        s32 start = 0;
-        s32 idx = start;
-        for (; e2->mFrame >= 0; e2++, idx++) {
-            s32 prev = start;
-            start += e2->_2;
-            if ((f32)prev <= this_->mCtrl.mFrame && this_->mCtrl.mFrame < (f32)start) {
-                this_->_10 = clampSeq(this_, e2->mFrame);
-                this_->_1C = idx;
-                goto done1;
-            }
-        }
-        this_->_10 = clampSeq(this_, seq->mFrame);
-        this_->_1C = 0;
-    done1:
+        calcSeq(this_);
         this_->_20 = 0;
     } else {
         calcSeq(this_);
