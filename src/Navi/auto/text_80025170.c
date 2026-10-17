@@ -37,6 +37,14 @@ extern "C" void fn_800254AC(void) {
     fn_80025710();
 }
 
+extern "C" void fn_80026448(u8 i) {
+    u8* p = lbl_802BBD38 + i * 0x204;
+    (*(s16*)(p + 0x200))++;
+    if (*(s16*)(p + 0x200) >= 0x10) {
+        *(s16*)(p + 0x200) = 0;
+    }
+}
+
 extern "C" void fn_80026480(u8 i) {
     NaviSlot* s = (NaviSlot*)lbl_802BBD38 + i;
     s->e[s->next].flag = 1;
@@ -166,7 +174,8 @@ extern "C" int fn_80026790(u8 i, int j) {
 }
 
 extern "C" void fn_800267BC(u8 i) {
-    u32* w = (u32*)(lbl_802BC548 + i * 0x34);
+    u8* p = lbl_802BC548 + i * 0x34;
+    u32* w = (u32*)p;
     w[0] = 0;
     w[1] = 0;
     w[2] = 0;
@@ -179,8 +188,8 @@ extern "C" void fn_800267BC(u8 i) {
     w[9] = 0;
     w[10] = 0;
     w[11] = 0;
-    *(u16*)(lbl_802BC548 + i * 0x34 + 0x30) = 0;
-    *(u16*)(lbl_802BC548 + i * 0x34 + 0x32) = 0;
+    *(u16*)(p + 0x30) = 0;
+    *(u16*)(p + 0x32) = 0;
 }
 
 extern "C" void fn_80026810(u8 i) {
@@ -195,6 +204,12 @@ extern "C" int fn_80026848(u8 i) {
     u8* p = lbl_802BC548 + i * 0x34;
     p += *(s16*)(p + 0x30) * 0x18;
     return *(int*)(p + 0x14);
+}
+
+extern "C" void fn_80026870(u8 i) {
+    u8* p = lbl_802BC548 + i * 0x34;
+    p += *(s16*)(p + 0x30) * 0x18;
+    *(int*)(p + 0x14) = 0;
 }
 
 extern "C" int fn_8002689C()
@@ -303,5 +318,12 @@ extern "C" BOOL fn_80026F14(s8* p) {
         p[0xd0]++;
     }
     return TRUE;
+}
+
+extern "C" u8 fn_800275B8(u8* param_1) {
+    if (*param_1 != 0) {
+        *param_1 = *param_1 - 1;
+    }
+    return *param_1;
 }
 
