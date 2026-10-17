@@ -110,16 +110,20 @@ extern char* lbl_8053A1C8;
 extern void* sManager__8JUTVideo;
 extern "C" void fn_80368198(Sub8036C0EC* this_) {
     char* self = (char*)this_;
-    void* pic;
+    s32 a;
+    s32 b;
+    s32 c;
+    s32 d;
+    void* mgr;
     void* res;
+    void* pic;
     void* render;
-    s32 arr[4];
 
     if (*(u8*)(self + 0x270) != 0) {
         if (*(s32*)(self + 0x274) < 0x80) {
-            *(f32*)(self + 0x290) -= 2.0f;
+            *(f32*)(self + 0x290) = *(f32*)(self + 0x290) - 2.0f;
         } else {
-            *(f32*)(self + 0x290) += 2.0f;
+            *(f32*)(self + 0x290) = *(f32*)(self + 0x290) + 2.0f;
         }
         if (*(f32*)(self + 0x290) >= 255.0f) {
             *(f32*)(self + 0x290) = 255.0f;
@@ -127,7 +131,8 @@ extern "C" void fn_80368198(Sub8036C0EC* this_) {
             *(f32*)(self + 0x290) = 0.0f;
         }
         if (*(void**)(self + 0x314) == 0) {
-            res = ((void* (*)(void*, u32, char*))(*(void***)*(void**)((char*)lbl_8053AAF8 + 0xa4))[6])(*(void**)((char*)lbl_8053AAF8 + 0xa4), 0x3f3f3f3f, lbl_8053A1C8);
+            mgr = *(void**)((char*)lbl_8053AAF8 + 0xa4);
+            res = ((void* (*)(void*, u32, char*))(*(void***)mgr)[6])(mgr, 0x3f3f3f3f, lbl_8053A1C8);
             pic = __nw__FUl(0x168);
             if (pic != 0) {
                 __ct__10J2DPictureFPC7ResTIMG(pic, res);
@@ -135,11 +140,11 @@ extern "C" void fn_80368198(Sub8036C0EC* this_) {
             *(void**)(self + 0x314) = pic;
         }
         fn_8013B490(lbl_8053AB10);
-        arr[1] = 0;
-        arr[3] = -1;
-        arr[0] = 0;
-        arr[2] = -1;
-        ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x314))[76])(*(void**)(self + 0x314), &arr[3], &arr[1]);
+        a = 0;
+        b = 0;
+        c = -1;
+        d = -1;
+        ((void (*)(void*, s32*, s32*))(*(void***)*(void**)(self + 0x314))[76])(*(void**)(self + 0x314), &d, &b);
         ((void (*)(void*, s32))(*(void***)*(void**)(self + 0x314))[9])(*(void**)(self + 0x314), (s32)*(f32*)(self + 0x290));
         render = *(void**)((char*)sManager__8JUTVideo + 4);
         ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)*(void**)(self + 0x314))[59])(
