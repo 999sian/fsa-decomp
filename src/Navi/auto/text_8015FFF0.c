@@ -124,6 +124,7 @@ extern "C" void* fn_80160220(s32 id, void* owner) {
 
 extern "C" BOOL fn_80160464(void* self, char* p) {
     void* r;
+    BOOL found;
     if (*p == '/') {
         p++;
         if (*p == 0) {
@@ -133,11 +134,12 @@ extern "C" BOOL fn_80160464(void* self, char* p) {
     } else {
         r = fn_80160D88(self, p, lbl_802FF5F8);
     }
-    if (r != NULL) {
+    found = r != NULL;
+    if (found) {
         lbl_802FF5F0 = self;
         lbl_802FF5F8 = (void*)(((s32)r - *(s32*)((u8*)self + 0x48)) / 16);
     }
-    return r != NULL;
+    return found;
 }
 
 extern "C" int fn_80160564(void* a, void* b, void* p) {
@@ -400,6 +402,27 @@ extern "C" void* fn_80160BE8(void* self) {
 }
 
 #pragma dont_inline on
+extern "C" void* fn_80160C34(void* self, void* a, int b) {
+    fn_8015FC28(self);
+    *(void**)self = lbl_80297CE8;
+    *((u8*)self + 0x30) = 0;
+    *((u8*)self + 0x3c) = b;
+    *(s32*)((u8*)self + 0x34) = 1;
+    *(s32*)((u8*)self + 0x58) = 1;
+    *(void**)((u8*)self + 0x38) = fn_80159E8C(self);
+    if (*(void**)((u8*)self + 0x38) == NULL) {
+        *(void**)((u8*)self + 0x38) = lbl_802FF544;
+    }
+    *(void**)((u8*)self + 0x40) = a;
+    if (lbl_802FF5F0 == NULL) {
+        lbl_802FF5F0 = self;
+        lbl_802FF5F8 = NULL;
+    }
+    return self;
+}
+#pragma dont_inline reset
+
+#pragma dont_inline on
 extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)lbl_80297CE8;
@@ -412,12 +435,10 @@ extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
 }
 
 extern "C" u32 fn_80160D3C(void* self, u16* p, u32 off, u16 id) {
-    u32 r;
     if (*p != id) {
         return 0;
     }
-    r = fn_801E6578((u8*)(*(u32*)((u8*)self + 0x54)) + off, p + 2);
-    return r == 0;
+    return fn_801E6578((u8*)(*(u32*)((u8*)self + 0x54)) + off, p + 2) == 0;
 }
 
 #pragma dont_inline reset
