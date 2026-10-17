@@ -199,6 +199,40 @@ extern "C" void* fn_8009198C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_80091A00(void* ptr, s16 param_2) {
+    if (ptr != nullptr) {
+        *(void**)ptr = lbl_80286B04;
+        if ((s32)ptr + (unsigned)0x20 != 0) {
+            ((void**)ptr)[8] = lbl_802880BC;
+            if ((s32)ptr + 0x20 != 0) {
+                ((void**)ptr)[8] = lbl_8027EC78;
+            }
+        }
+        if ((s32)ptr + (unsigned)0x18 != 0) {
+            ((void**)ptr)[6] = lbl_802880BC;
+            if ((s32)ptr + 0x18 != 0) {
+                ((void**)ptr)[6] = lbl_8027EC78;
+            }
+        }
+        if ((s32)ptr + (unsigned)0x10 != 0) {
+            ((void**)ptr)[4] = lbl_802880BC;
+            if ((s32)ptr + 0x10 != 0) {
+                ((void**)ptr)[4] = lbl_8027EC78;
+            }
+        }
+        if ((s32)ptr + (unsigned)0x8 != 0) {
+            ((void**)ptr)[2] = lbl_802880BC;
+            if ((s32)ptr + 0x8 != 0) {
+                ((void**)ptr)[2] = lbl_8027EC78;
+            }
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(ptr);
+        }
+    }
+    return ptr;
+}
+
 extern "C" void* fn_80091AEC(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80283F48;
