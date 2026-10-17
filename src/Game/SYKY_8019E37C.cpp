@@ -60,7 +60,7 @@ struct SykyObjVT { virtual void v0(); virtual void v1(); virtual void v2(); virt
 /* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
 static inline f32 sykyRand01() {
     u32* s = (u32*)((u8*)lbl_8053AAF8 + 0xb4);
-    *s = 0x19660du * *s + 0x3c6ef35fu;
+    *s = *s * 0x19660du + 0x3c6ef35fu;
     u32 a = (*s >> 9) | 0x3f800000u;
     return *(f32*)&a - lbl_8053E460;
 }
@@ -261,12 +261,11 @@ extern "C" void fn_8019EC04(u8* p) {
     if (*(s32*)(p + 0x23c) > 0) {
         *(s32*)(p + 0x23c) -= 1;
     }
-    u8* q = p + 8;
     if (*(s32*)(p + 0x240) > 0) {
-        *(s32*)(q + 0x238) -= 1;
+        *(s32*)(p + 0x240) -= 1;
     }
-    if (*(s32*)(q + 0x23c) > 0) {
-        *(s32*)(q + 0x23c) -= 1;
+    if (*(s32*)(p + 0x244) > 0) {
+        *(s32*)(p + 0x244) -= 1;
     }
 }
 
