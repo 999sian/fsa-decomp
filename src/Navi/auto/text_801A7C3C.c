@@ -1,5 +1,7 @@
 #include "types.h"
 
+struct Unk801B425C { u32 v; };
+
 typedef struct { f32 x, y; } Vec2f_7C90;
 typedef struct {
     u8 a, b;
