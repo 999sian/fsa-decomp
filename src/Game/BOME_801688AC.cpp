@@ -2,6 +2,12 @@
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
+struct JMathSinCos { f32 sin; f32 cos; };
+extern "C" const JMathSinCos sincosTable___5JMath[];
+extern "C" u32 lbl_804A0718[];
+extern "C" void fn_8016890C(void* this_, void* pos, s32 room, void* out);
+extern "C" s32 fn_8023DE58(s32 idx);
+
 extern "C" {
 void* fn_8023E724(s32 idx);
 u8 fn_8023EA28(s32 idx);
@@ -82,19 +88,34 @@ extern "C" Actor* fn_801688AC(Actor* p, s16 n) {
 }
 
 extern "C" s32 fn_80168C38(char* this_) {
-    f32 box[4];
-    Vec pos;
+    f32 rel[2];
     Vec d;
+    f32 box[4];
     Vec* ptr;
+    f32 px;
+    f32 py;
     s32 found = -1;
     s32 i;
 
     ptr = (Vec*)fn_8023E724(*(s32*)(this_ + 0x90));
-    pos = *(Vec*)(this_ + 0xc);
-    box[0] = pos.x + *(f32*)(this_ + 0x60) - 4.0f;
-    box[1] = pos.y + *(f32*)(this_ + 0x64) - 4.0f;
-    box[2] = pos.x + *(f32*)(this_ + 0x68) + 4.0f;
-    box[3] = pos.y + *(f32*)(this_ + 0x6c) + 4.0f;
+    rel[0] = ptr->x;
+    rel[1] = ptr->y;
+    px = *(f32*)(this_ + 0xc);
+    py = *(f32*)(this_ + 0x10);
+    rel[0] = rel[0] - px;
+    rel[1] = rel[1] - py;
+    box[0] = *(f32*)(this_ + 0x60);
+    box[1] = *(f32*)(this_ + 0x64);
+    box[2] = *(f32*)(this_ + 0x68);
+    box[3] = *(f32*)(this_ + 0x6c);
+    box[0] = box[0] + px;
+    box[1] = box[1] + py;
+    box[2] = box[2] + px;
+    box[3] = box[3] + py;
+    box[0] = box[0] - 4.0f;
+    box[1] = box[1] - 4.0f;
+    box[2] = box[2] + 4.0f;
+    box[3] = box[3] + 4.0f;
     for (i = 0; i < 4; i++) {
         if (fn_8023EA28(i) != 1) {
             if (fn_8022E438(i, *(s32*)(this_ + 0x90)) == 0) {
@@ -124,10 +145,11 @@ extern "C" s32 fn_80168C38(char* this_) {
             fn_8022E23C(i, *(void**)(this_ + 0x198));
             fn_8022CC20(i);
             if (fn_8022F514(i) == 1) {
+                d = *(Vec*)(this_ + 0xc);
                 ptr = (Vec*)fn_8023E724(i);
-                d.x = pos.x - ptr->x;
-                d.y = pos.y - ptr->y;
-                d.z = pos.z - ptr->z;
+                d.x = d.x - ptr->x;
+                d.y = d.y - ptr->y;
+                d.z = d.z - ptr->z;
                 fn_8023DFF4(i);
             }
         }
