@@ -3251,4 +3251,3 @@ extern "C" u32 fn_801A5370(void) {
 struct B4_801A4974 { u8 c[4]; };
 struct B3_801A4840 { u8 c[3]; };
 struct E_801A4840 { u8 x; B3_801A4840 rgb; };
-struct Bytes4_801A3D94 { u8 b[4]; };
