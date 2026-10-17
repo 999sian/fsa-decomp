@@ -23,6 +23,11 @@ extern const f32 lbl_80543CCC;
 extern const f32 lbl_80543CC0;
 extern const f32 lbl_80543CCC;
 extern const f64 lbl_80543C98;
+extern const f32 lbl_80543C8C;
+extern const f32 lbl_80543C90;
+extern u8 lbl_8050DB0C[];
+extern u8 lbl_80529DEC[];
+extern void* lbl_8053AED0;
 
 struct Fn8043ABCC_Obj {
     virtual void v02();
@@ -368,6 +373,83 @@ extern "C" void fn_8043CF40(u8* self) {
         *(s16*)(self + 0x104) = 0xa0;
         self[0x10b] = 2;
     }
+}
+
+extern "C" void fn_8043D034(u8* self) {
+	u8 flags[4];
+	JGeometry::TVec3<f32> vecB;
+	JGeometry::TVec3<f32> vecA;
+	JGeometry::TVec3<f32> outLoop;
+	JGeometry::TVec3<f32> outB;
+	JGeometry::TVec3<f32> outA;
+	f32 f30;
+	s32 i;
+
+	if (((u8*)lbl_8053AED0)[0x10a] != 0) {
+		*(s16*)(*(u8**)(self + 0x40) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x44) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x48) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x4c) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x50) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x54) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x58) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x5c) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x60) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x64) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x68) + 0x22) = 0;
+		*(s16*)(*(u8**)(self + 0x6c) + 0x22) = 0;
+		fn_803837A4(self + 0x78, *(u32*)(((u8*)lbl_8053AED0) + 0xe8), *(f32*)(*(u8**)(self + 0x70) + 0x18), lbl_80543CCC, *(u32*)(((u8*)lbl_8053AED0) + 0xfc), *(u32*)(((u8*)lbl_8053AED0) + 0x100));
+		for (i = 0; i < 2; i++) {
+			strcpy(getStringPtr__10J2DTextBoxCFv(*(void**)((u8*)*(void**)(self + 0x70 + i * 4) + 4)), (char*)(self + 0x78));
+		}
+		vecA.x = lbl_80543C88;
+		vecA.y = lbl_80543C88;
+		vecA.z = lbl_80543C88;
+		fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), &vecA, 0, 0, &outA);
+		vecB.x = lbl_80543C88;
+		vecB.y = lbl_80543CC0;
+		vecB.z = lbl_80543C88;
+		fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), &vecB, 0, 0, &outB);
+		f30 = (outB.y - outA.y) + ((f32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) - *(f32*)(*(u8**)(self + 0x64) + 0xc));
+		self[0x10c] = 0;
+		for (i = 0; i < 4; i++) {
+			fn_8030C5F0(*(void**)((u8*)lbl_8053AB10 + 0x24), fn_8023E724(i), 0, 0, &outLoop);
+			flags[i] = 0;
+			if (outLoop.x > lbl_80543C88 && outLoop.x < (f32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 4)) {
+				if (outLoop.y > lbl_80543C88 && outLoop.y < (f32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6)) {
+					if (outLoop.y > (f32)*(u16*)(*(u8**)((u8*)sManager__8JUTVideo + 4) + 6) - f30) {
+						flags[i] = 1;
+						self[0x10c] = 1;
+					} else if (outLoop.y < f30) {
+						flags[i] = 2;
+					}
+				}
+			}
+		}
+		if (self[0x10c] == 1) {
+			if (flags[0] == 2) {
+				self[0x10c] = 0;
+			}
+			if (flags[1] == 2) {
+				self[0x10c] = 0;
+			}
+			if (flags[2] == 2) {
+				self[0x10c] = 0;
+			}
+			if (flags[3] == 2) {
+				self[0x10c] = 0;
+			}
+		}
+		if (self[0x10c] == 0) {
+			f30 = lbl_80543CC4;
+		} else {
+			f30 = lbl_80543CC8 - *(f32*)(*(u8**)(self + 0x64) + 0xc) - lbl_80543CC4;
+		}
+		for (i = 0; i < 12; i++) {
+			fn_80402E08(*(void**)(self + 0x40 + i * 4), lbl_80543C88, f30);
+		}
+		self[0x10b] = 1;
+	}
 }
 
 extern "C" void fn_8043D39C(u8* self) {
@@ -815,6 +897,146 @@ extern "C" s32 fn_8043DF24(f32 x, f32 y, f32 px, f32 py, f32 r) {
         return 0;
     }
     return 1;
+}
+
+extern const f32 lbl_80543CB8;
+extern const f32 lbl_80543D14;
+extern const f32 lbl_80543D18;
+extern const f32 lbl_80543D1C;
+extern const f32 lbl_80543D20;
+extern const f32 lbl_80543D24;
+extern "C" void fn_8043E80C(u8* param_1, s32 param_2, s32 param_3, u32 param_4, u32 param_5, f32 param_6, f32 param_7, f32 param_8) {
+    f32 x;
+    f32 y;
+    f32 sx;
+    f32 sy;
+    if ((lbl_80543CE4 == param_8) | (lbl_80543CD4 == param_8) | (lbl_80543CE0 == param_8)) {
+        sx = lbl_80543D14;
+        sy = lbl_80543D14;
+    } else if (param_8 > lbl_80543CCC) {
+        sx = lbl_80543D18 * param_8;
+        sy = lbl_80543D18 * param_8;
+    } else if (lbl_80543CCC == param_8) {
+        sx = lbl_80543D1C;
+        sy = lbl_80543D1C;
+    } else {
+        sx = lbl_80543D20;
+        sy = lbl_80543D20;
+    }
+    x = (lbl_80543D24 + param_6) - sx * lbl_80543CB8;
+    y = (lbl_80543D24 + param_7) - sy * lbl_80543CB8;
+    switch ((u32)param_2) {
+    case 0: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x258);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x258);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x258);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 1: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x25c);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x25c);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x25c);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 2: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x260);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x260);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x260);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 3: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x264);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x264);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x264);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 4: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x268);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x268);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x268);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 5: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x26c);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x26c);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x26c);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 6: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x270);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x270);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x270);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 7: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x274);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x274);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x274);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 8: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x278);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x278);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x278);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    case 9: {
+        u32 a = param_4;
+        u32 b = param_5;
+        void* obj = *(void**)(param_1 + 0x27c);
+        ((void (*)(void*, u32*, u32*))(*(void***)obj)[76])(obj, &a, &b);
+        obj = *(void**)(param_1 + 0x27c);
+        ((void (*)(void*, s32))(*(void***)obj)[9])(obj, param_3);
+        obj = *(void**)(param_1 + 0x27c);
+        ((void (*)(void*, f32, f32, u32, f32, f32, u32, u32))(*(void***)obj)[59])(obj, x, y, 0, sx, sy, 0, 0);
+        break;
+    }
+    }
 }
 
 extern "C" void fn_8043EDE8(char* param_1, s32 param_2) {
