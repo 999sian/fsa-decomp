@@ -24,16 +24,15 @@ extern "C" void fn_800E7F50(void*, s32, s32, s32);
 extern char lbl_802C57D4[];
 extern "C" BOOL fn_800DDA6C(void* p, u8* src) {
     u8* c = (u8*)p;
-    u8 b;
     u8 a;
-    b = src[0];
-    a = src[1];
-    c[0x128] = b;
-    b = src[2];
-    c[0x129] = a;
-    a = src[3];
-    c[0x12a] = b;
-    c[0x12b] = a;
+    u8 b;
+    b = src[1];
+    c[0x128] = src[0];
+    a = src[2];
+    c[0x129] = b;
+    b = src[3];
+    c[0x12a] = a;
+    c[0x12b] = b;
     return 1;
 }
 
@@ -59,6 +58,15 @@ extern "C" void fn_800E6620(void* param_1) {
         return;
     }
     *(u8*)((u8*)param_1 + 0xa76) = 7;
+}
+
+extern "C" void fn_800E88D0(u8* p) {
+    u8* obj = *(u8**)(p + 0xb34);
+    if (obj != nullptr) {
+        *(u32*)(obj + 0xf4) |= 1;
+        *(s32*)(obj + 0x24) = 1;
+    }
+    *(u8*)(p + 0x5dd) = 0;
 }
 
 extern "C" void fn_800EA848(u8* p) {
