@@ -7,6 +7,7 @@ extern "C" char lbl_802C545C[];
 extern "C" char lbl_802BB0FC[];
 extern f32 lbl_80300B20;
 extern "C" f32 fn_800A1774(void*, u8, u8, s32);
+struct DtorVObj_800A0008 { virtual void Destroy(int); };
 struct VObj_80098354 {
     virtual void v0();
     virtual void v1();
