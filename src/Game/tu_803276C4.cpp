@@ -35,12 +35,7 @@ extern "C" Actor* fn_803276C4(Actor* p, s16 n) {
 
 extern "C" void fn_80327724(u8* this_) {
     if (*(f32*)(this_ + 0x25c) != 0.0f) {
-        if (*(s32*)((u8*)fn_802D6A9C() + 4) == 7 && *(s32*)((u8*)fn_802D6A9C() + 8) == 2) {
-            void* res = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->vf18(0x54494d47, lbl_804AB518[*(s32*)(this_ + 0x250)]);
-            if (*(s32*)(this_ + 4) < 8) {
-                fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, 0);
-            }
-        } else {
+        if (*(s32*)((u8*)fn_802D6A9C() + 4) != 7 || *(s32*)((u8*)fn_802D6A9C() + 8) != 2) {
             DrawRec rec;
             f32 mtx[3][4];
             PSMTXIdentity(mtx);
@@ -61,7 +56,12 @@ extern "C" void fn_80327724(u8* this_) {
                 fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, &rec, 1.0f, 1.0f);
             }
             fn_803075AC(*(void**)(this_ + 0x198), *(s32*)(this_ + 4), this_ + 0xc, *(s32*)(this_ + 0x234) + 0x141,
-                        (-*(u32*)(this_ + 0x240) | *(u32*)(this_ + 0x240)) >> 31, 2, -1, 0, 0, 0);
+                        *(s32*)(this_ + 0x240) != 0, 2, -1, 0, 0, 0);
+        } else {
+            void* res = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->vf18(0x54494d47, lbl_804AB518[*(s32*)(this_ + 0x250)]);
+            if (*(s32*)(this_ + 4) < 8) {
+                fn_802F745C(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, 0);
+            }
         }
     }
 }
