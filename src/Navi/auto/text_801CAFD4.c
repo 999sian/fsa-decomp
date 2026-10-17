@@ -18,6 +18,13 @@ extern "C" s32 fn_801D4EFC(void* self, s32 a);
 extern "C" s32 fn_801D513C(void* self, s32 a);
 extern "C" void fn_801D2F34(s32 a);
 extern "C" void fn_801DF650(s32 a);
+extern "C" void fn_801DB994(void);
+extern "C" void fn_801DD968(void);
+extern "C" void fn_801DE2B8(void);
+extern "C" void fn_801DBB5C(void);
+extern "C" void fn_801DA184(void);
+extern "C" void fn_801DA878(void);
+extern "C" void fn_801DA240(void);
 extern "C" void fn_801C4F24(long, unsigned long);
 extern "C" int fn_801C5190(s32 chan, s32* out);
 extern "C" void fn_801C4FB4(unsigned long);
@@ -238,6 +245,33 @@ extern "C" void fn_801CD3B8(int unused, unsigned long param) {
         lbl_802FF948 = r5 & ~mask;
         memset(lbl_802F7D20 + idx * 12, 0, 12);
         fn_801C58A8(*(volatile s32*)&lbl_802FE9EC, fn_801CD620);
+    }
+}
+
+extern "C" void fn_801BFCE8(int, int);
+extern unsigned long lbl_802FF950;
+extern unsigned long lbl_802FF954;
+extern unsigned long lbl_802FF958;
+extern unsigned long lbl_802FF95C;
+extern "C" void fn_801CD47C(int param_1, unsigned long param_2) {
+    int state;
+    unsigned long mask = 0x80000000U >> param_1;
+    if (lbl_802FF944 & mask) {
+        if (!(param_2 & 0xF)) {
+            fn_801CD214(param_1);
+        }
+        if (param_2 & 8) {
+            state = OSDisableInterrupts();
+            fn_801C5050(mask);
+            unsigned long inv = ~mask;
+            lbl_802FF944 &= inv;
+            lbl_802FF950 &= inv;
+            lbl_802FF954 &= inv;
+            lbl_802FF958 &= inv;
+            lbl_802FF95C &= inv;
+            fn_801BFCE8(param_1, 0);
+            OSRestoreInterrupts(state);
+        }
     }
 }
 
@@ -809,8 +843,9 @@ extern "C" u32 fn_801D44FC(u8* param_1) {
 extern "C" void fn_801D4504(void);
 #pragma dont_inline on
 extern "C" void fn_801D45D8(s32 chan, s32 arg) {
-    u8* p = lbl_802F7D60 + chan * 0x110;
+    u32 dummy[2];  // force stack frame to 0x28
     s32 r = arg;
+    u8* p = lbl_802F7D60 + chan * 0x110;
     void (*cb)(s32, s32);
     if (r >= 0) {
         r = fn_801D4498(chan, *(s32*)(p + 0xc) * ((u32)(*(s32*)(p + 0x88) - *(s32*)(p + 0x80)) >> 13), 0x2000, *(s32*)(p + 0x88), (u32)fn_801D4504);
@@ -847,6 +882,28 @@ extern "C" s32 fn_801D4864(int param_1) {
     return *(s32 *)(param_1 + 0x84);
 }
 
+extern "C" void fn_801D486C(s32 chan, s32 result);
+#pragma dont_inline on
+extern "C" void fn_801D493C(s32 chan, s32 result) {
+    u8* card = lbl_802F7D60 + chan * 0x110;
+    void* callback;
+
+    if (result >= 0) {
+        result = fn_801D4498(chan, *(s32*)(card + 0xc) * ((u32)(*(s32*)(card + 0x84) - *(s32*)(card + 0x80)) >> 13), 0x2000, *(s32*)(card + 0x84), (u32)fn_801D486C);
+        if (result >= 0) {
+            return;
+        }
+    }
+    if (*(s32*)(card + 0xd0) == 0) {
+        fn_801D2D80(card, result);
+    }
+    callback = *(void**)(card + 0xd8);
+    if (callback != NULL) {
+        *(s32*)(card + 0xd8) = 0;
+        ((void (*)(s32, s32))callback)(chan, result);
+    }
+}
+#pragma dont_inline reset
 extern "C" s32 fn_801D4A04(s32 chan, u32 val) {
     u8* buf;
     u8* p;
@@ -897,6 +954,40 @@ extern "C" void fn_801D59DC(void* param_1) {
             fn_801D2F34((s32)param_1);
         }
     }
+}
+
+extern u16 lbl_802FEA38;
+extern s32 lbl_8029DE20[];
+extern "C" s32 fn_801D5A30(u32 arg0) {
+    s32 kind;
+    s32 val;
+
+    if ((arg0 & 0xFFFF0000) && (((arg0 + 0x80000000) != 4) || (lbl_802FEA38 == 0xFFFF))) {
+        return 0;
+    }
+    if (arg0 & 3) {
+        return 0;
+    }
+    kind = arg0 & 0xFC;
+    switch (kind) {
+    case 0x20:
+    case 0x8:
+    case 0x4:
+    case 0x10:
+    case 0x80:
+    case 0x40:
+        break;
+    default:
+        return 0;
+    }
+    val = *(s32*)((u8*)lbl_8029DE20 + ((arg0 >> 9) & 0x1C));
+    if (val == 0) {
+        return 0;
+    }
+    if ((((u32)kind << 17) & 0x1FFE0000) / (u32)val < 8) {
+        return 0;
+    }
+    return 1;
 }
 
 extern "C" void fn_801D6398(void* param_1) {
@@ -952,7 +1043,9 @@ extern "C" s32 fn_801D2CC8(s32 chan, u8** pcard);
 extern "C" s32 fn_801D2D80(u8* card, s32 result);
 extern "C" void fn_801D7970(s32* param_1, s32 param_2, s32 param_3, s32 param_4) {
     s32 fn_801D782C(s32* a, s32 b, s32 c, s32 d, void (*e)(s32));
-    if (fn_801D782C(param_1, param_2, param_3, param_4, fn_801D1D6C) >= 0) {
+    s32 result;
+    result = fn_801D782C(param_1, param_2, param_3, param_4, fn_801D1D6C);
+    if (result >= 0) {
         fn_801D2F34(*param_1);
     }
 }
@@ -1005,6 +1098,24 @@ extern "C" void fn_801D97E0(s32* fifo, s32 readPtr, s32 writePtr) {
 extern "C" void fn_801D9850(void* base, u32 hi, u32 lo) {
     *(u32*)((u8*)base + 0xc) = hi;
     *(u32*)((u8*)base + 0x10) = lo;
+}
+
+extern "C" void fn_801D9B30(void* arg0) {
+    s32* out = (s32*)arg0;
+    int state = OSDisableInterrupts();
+    out[0] = (s32)(((u32*)__piReg)[3] + 0x80000000);
+    out[1] = (s32)(((u32*)__piReg)[4] + 0x80000000);
+    out[6] = (s32)((((u32*)__piReg)[5] & 0xFBFFFFFF) + 0x80000000);
+    if (lbl_802FFA54 != 0) {
+        out[5] = (s32)((((u32)__cpReg[0x1d] << 16) | __cpReg[0x1c]) + 0x80000000);
+        out[7] = (s32)(((u32)__cpReg[0x19] << 16) | __cpReg[0x18]);
+    } else {
+        out[7] = out[6] - out[5];
+        if (out[7] < 0) {
+            out[7] += out[2];
+        }
+    }
+    OSRestoreInterrupts(state);
 }
 
 extern "C" void fn_801D9BF8(u8* a, u8* b, u8* c, u8* d, u8* e)
@@ -1575,6 +1686,60 @@ extern "C" void fn_801DCCDC(s32 chan, u8 enable, s32 amb_src, s32 mat_src, u32 l
         *(volatile u32*)0xCC008000 = reg;
     }
     *(u16*)&__GXData[2] = 1;
+}
+
+extern "C" void fn_801DCEF0(s32 param_1, u16 param_2, u16 param_3, s32* param_4, s32* param_5, s32* param_6) {
+    u32 shiftX;
+    u32 shiftY;
+    BOOL bVar1;
+
+    switch (param_1) {
+    case 0:
+    case 8:
+    case 14:
+        shiftX = 3;
+        shiftY = 3;
+        break;
+    case 1:
+    case 2:
+    case 9:
+    case 17:
+        shiftX = 3;
+        shiftY = 2;
+        break;
+    case 3:
+    case 4:
+    case 5:
+    case 6:
+    case 10:
+    case 19:
+    case 22:
+        shiftX = 2;
+        shiftY = 2;
+        break;
+    case 0x3c:
+    default:
+        shiftY = 0;
+        shiftX = 0;
+        break;
+    }
+    if (param_2 == 0) {
+        param_2 = 1;
+    }
+    if (param_3 == 0) {
+        param_3 = 1;
+    }
+    *param_4 = (s32)(param_2 + ((1 << shiftX) - 1)) >> shiftX;
+    *param_5 = (s32)(param_3 + ((1 << shiftY) - 1)) >> shiftY;
+    bVar1 = 1;
+    if (param_1 != 6 && param_1 != 0x16) {
+        bVar1 = 0;
+    }
+    if (bVar1) {
+        *param_6 = 2;
+    } else {
+        *param_6 = 1;
+    }
 }
 
 #pragma dummy
@@ -2321,6 +2486,49 @@ extern "C" void DCFlushRange(void* addr, u32 nBytes);
 extern u32* lbl_802FFA80;
 extern "C" void fn_801E0008(void) {
     DCFlushRange((void*)lbl_802FFA80[0], lbl_802FFA80[1]);
+}
+
+extern "C" s32 fn_801E0B6C(u8* arg0, s32 arg1) {
+    u8* p = arg0;
+    s8 x = arg0[0];
+    s32 lim = 8;
+    s32 blk = 4;
+    s32 mul = 4;
+    s32 odd = 0;
+    s32 step = 1;
+    s32 base = 0;
+    s32 r;
+
+    if (arg1 == 3) {
+        p = arg0 + 1;
+        blk = 8;
+        base = 0x20;
+        x = arg0[1];
+        mul = 8;
+    }
+    if (arg1 == 2) {
+        blk = 8;
+        lim = 7;
+        if (x & 1) {
+            odd = 1;
+        }
+        step = 2;
+    }
+    if (x < lim) {
+        s32 t = x + odd;
+        *p = t + step;
+        r = *(s32*)(arg0 + 8) + base + t * mul;
+    } else {
+        s32 t = blk - 1;
+        u32 m = ~t;
+        *p = 8;
+        r = m & (*(s32*)(arg0 + 4) + blk - 1);
+        *(s32*)(arg0 + 4) = r + blk;
+    }
+    if (arg1 == 0) {
+        r = *(s32*)r;
+    }
+    return r;
 }
 
 typedef struct {
