@@ -163,10 +163,10 @@ static inline void twtgUpdateDir(char* p, JGeometry::TVec3f& v, f32& dist) {
     if (*(s32*)(p + 0x274) <= 0) {
         *(s32*)(p + 0x274) = 20;
         s32 room;
-        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), fn_8023DE58(*(s32*)(p + 0x254)) == room)) {
-            fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
-        } else {
+        if (*(s32*)(p + 0x254) < 0 || (room = *(s32*)(p + 0x4), room != fn_8023DE58(*(s32*)(p + 0x254)))) {
             fn_801EE558(p, &v, &dist, 0);
+        } else {
+            fn_801EE558(p, &v, &dist, *(s32*)(p + 0x254) + 1);
         }
         if (dist < lbl_80541880) {
             f32 ang = JMAAtan2Radian(-v.x, -v.y);
