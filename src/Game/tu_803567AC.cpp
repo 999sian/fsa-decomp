@@ -94,6 +94,17 @@ extern "C" float lbl_805427E4;
 extern "C" void fn_801F06F0(void* this_, void* p2, int p3, int p4, int p5, float f6, float f7);
 extern "C" void fn_80307AC8(void* obj, unsigned int id, void* pos, int kind, unsigned int a, unsigned int b, int c);
 extern "C" void fn_80307AC8(void* obj, unsigned int id, void* pos, int kind, unsigned int a, unsigned int b, int c);
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8 fn_801F6758(void* pos, u32 room, f32 r);
+
+static f32 tu803567AC_rnd() {
+    union { f32 f; u32 s; } out;
+    u32* seed = (u32*)(lbl_8053AAF8 + 0xb4);
+    *seed = *seed * 0x19660d + 0x3c6ef35f;
+    out.s = (*seed >> 9) | 0x3f800000;
+    return out.f - 1.0f;
+}
+
 extern "C" void fn_80356A24(char* this_) {
     char* base = lbl_80472390;
     int mode = *(int*)(this_ + 0x230);
