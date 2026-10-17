@@ -40,8 +40,7 @@ extern "C" void* fn_804030C4(u32 tag, u32 name);
 typedef void (*VFn)(void*, u32, u32);
 typedef u32 (*VFnRet)(void*, u32, u32, u32);
 static void* Make(u8* self, u32* table, int i) {
-    void* obj = *(void**)(self + 4);
-    return (void*)(*(VFnRet**)obj)[15](obj, (u32)table, table[i], table[i + 1]);
+    return (void*)(*(VFnRet**)*(void**)(self + 4))[15](*(void**)(self + 4), (u32)table, table[i], table[i + 1]);
 }
 static void Attach(void* o, void* handle) {
     (*(VFn**)o)[68](o, (u32)handle, 0);
@@ -57,27 +56,44 @@ extern "C" void fn_8044AF90(void* self_) {
 extern "C" void fn_8044AFD8(void* self_) {
     u8* self = (u8*)self_;
     void* handle;
+    void* obj;
 
     self[0x14] &= 0xFE;
     handle = fn_804030C4(0x54494D47, *(u32*)lbl_804B1CD8);
-    Attach(Make(self, lbl_80490DB8, 4), handle);
-    Attach(Make(self, lbl_80490DB8, 6), handle);
-    Attach(Make(self, lbl_80490DB8, 8), handle);
-    Attach(Make(self, lbl_80490DB8, 10), handle);
-    Attach(Make(self, lbl_80490DB8, 12), handle);
-    Attach(Make(self, lbl_80490DB8, 14), handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[4], lbl_80490DB8[5]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[6], lbl_80490DB8[7]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[8], lbl_80490DB8[9]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[10], lbl_80490DB8[11]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[12], lbl_80490DB8[13]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[14], lbl_80490DB8[15]);
+    Attach(obj, handle);
     self[0x14] &= 0xFD;
     handle = fn_804030C4(0x54494D47, *(u32*)lbl_804B1CD8);
-    Attach(Make(self, lbl_80490E00, 8), handle);
-    Attach(Make(self, lbl_80490E00, 10), handle);
-    Attach(Make(self, lbl_80490E00, 12), handle);
-    Attach(Make(self, lbl_80490E00, 14), handle);
-    Attach(Make(self, lbl_80490E00, 16), handle);
-    Attach(Make(self, lbl_80490E00, 18), handle);
-    Attach(Make(self, lbl_80490E00, 20), handle);
-    Attach(Make(self, lbl_80490E00, 22), handle);
-    ((u8*)Make(self, lbl_80490DB8, 16))[0xb0] = 0;
-    ((u8*)Make(self, lbl_80490E00, 24))[0xb0] = 0;
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[8], lbl_80490E00[9]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[10], lbl_80490E00[11]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[12], lbl_80490E00[13]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[14], lbl_80490E00[15]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[16], lbl_80490E00[17]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[18], lbl_80490E00[19]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[20], lbl_80490E00[21]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[22], lbl_80490E00[23]);
+    Attach(obj, handle);
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490DB8, lbl_80490DB8[16], lbl_80490DB8[17]);
+    ((u8*)obj)[0xb0] = 0;
+    obj = (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)lbl_80490E00, lbl_80490E00[24], lbl_80490E00[25]);
+    ((u8*)obj)[0xb0] = 0;
 }
 
 extern "C" void* fn_8044B3FC(VObj** param_1, short param_2) {
