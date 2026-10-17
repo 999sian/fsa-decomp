@@ -25,11 +25,33 @@ extern "C" unsigned char fn_800B51E8(void* self, int i) {
     return lbl_802313EC[i];
 }
 
+extern unsigned char lbl_802C55A4[];
+extern "C" int fn_800BA614(u8* p, u8 a, u8 b, int c);
+extern "C" void fn_800B7234(u8* p) {
+    if (p[0x37e] != 0) {
+        s32 r = fn_800BA614(p, p[0x37f], lbl_802C55A4[0xc], 0);
+        p[0x37f]++;
+        if (r == 1) {
+            p[0x37f] = 0;
+            p[0x37e] = 0;
+            p[0x37d] ^= 1;
+        }
+    }
+}
+
 extern "C" void fn_800B8634(void) {}
 
 extern "C" void fn_800B9570(u8* param_1) {
     *(u8*)(*(u8**)(param_1 + 0x30) + 0xb0) = 1;
     *(u32*)(param_1 + 0x5c) = 0;
+}
+
+extern "C" void fn_800B9588(u8* param_1) {
+    (*(s32*)(param_1 + 0x5c))++;
+    if (*(s32*)(param_1 + 0x5c) >= *(s16*)(*(u8**)(param_1 + 0x58) + 6)) {
+        *(s32*)(param_1 + 0x5c) -= *(s16*)(*(u8**)(param_1 + 0x58) + 6);
+    }
+    *(f32*)(*(u8**)(param_1 + 0x58) + 8) = *(s32*)(param_1 + 0x5c);
 }
 
 extern "C" void fn_800B96CC(u8* p) {
