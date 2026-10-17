@@ -43,6 +43,7 @@ extern s32 lbl_802FF110;
 extern s32 lbl_802FF114;
 extern u8 lbl_802C2D30[];
 extern u8 lbl_8027D790[];
+extern u8 lbl_8027D780[];
 extern "C" void fn_801BFEBC(void* param_1, void* param_2);
 extern "C" void fn_801BFEE8(void* param_1);
 extern "C" void fn_801BFF24(void* param_1);
