@@ -226,9 +226,8 @@ extern "C" int fn_80026848(u8 i) {
 }
 
 extern "C" void fn_80026870(u8 i) {
-    u8* p = i * 0x34 + lbl_802BC548;
-    p += *(s16*)(p + 0x30) * 0x18;
-    *(int*)(p + 0x14) = 0;
+    NaviSlot34* s = (NaviSlot34*)lbl_802BC548 + i;
+    s->e[s->cur].val = 0;
 }
 
 extern "C" int fn_8002689C()
