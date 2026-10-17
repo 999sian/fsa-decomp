@@ -28,6 +28,8 @@ extern "C" void fn_80056B08(void* p);
 extern "C" int fn_800572C0(int a, u32 mask);
 extern "C" void fn_80058B64(s32 a);
 extern "C" void fn_80058A28(s32 a);
+extern "C" char lbl_80247690[];
+extern "C" void fn_800300C0(int id, unsigned int flags, int val, int idx, float f);
 extern "C" void fn_80089634(void* p, s32 n);
 extern "C" void fn_8004FA30(void) {}
 
