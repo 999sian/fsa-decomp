@@ -27,8 +27,32 @@ extern "C" s32 fn_800C56A0(u8* p, u8 a, u8 b, s32 c, f32 d, f32 e);
 extern "C" void fn_800C5648(u8* p);
 extern "C" void fn_800C4B50(void) {}
 
+extern "C" void fn_800C539C(u8* param_1) {
+    void* obj;
+    void** vtbl;
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, 0.0f, *(f32*)(lbl_802C565C + 0x10));
+    param_1[0x38]++;
+    if (iVar1 == 1) {
+        param_1[0x38] = 0;
+        fn_800C5648(param_1);
+        obj = *(void**)(param_1 + 0x24);
+        vtbl = *(void***)obj;
+        ((void (*)(void*, void*, s32))vtbl[0x114 / 4])(obj, lbl_80288398, 0);
+        param_1[0x36] = 0;
+        param_1[0x37] = 0;
+    }
+}
+
 extern "C" void fn_800C5434(u8* param_1) {
     *(u8*)(*(u8**)(param_1 + 0x1c) + 0xb0) = 1;
+}
+
+extern "C" void fn_800C5510(u8* param_1) {
+    u8* p = *(u8**)(param_1 + 0x18);
+    if (p[0xb0] != 0) {
+        return;
+    }
+    p[0xb0] = 1;
 }
 
 extern "C" void fn_800C5548(u8* param_1) {
