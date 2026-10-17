@@ -1,5 +1,13 @@
 #include "types.h"
 
+extern "C" s32 fn_8022F514(s32);
+extern "C" s32 fn_8022CAF8(s32);
+extern "C" void* fn_8023E724(s32);
+extern "C" s32 fn_8022F3DC(s32);
+extern const f32 lbl_80542618;
+extern const f32 lbl_8054261C;
+extern const f64 lbl_805425F8;
+
 struct Actor {
     ~Actor();
 };
