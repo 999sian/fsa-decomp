@@ -23,7 +23,7 @@ extern "C" void fn_801183BC();
 extern "C" u8 fn_803865B8(s32);
 extern "C" void fn_80388EEC(s32);
 extern s32 lbl_804650C8[];
-extern u8 lbl_8053CB60[];
+extern u8 lbl_8053CB60[4];
 extern "C" void fn_801F0E34(void* self, u32 id, s32 flag);
 extern "C" f32 lbl_8053CB90;
 extern "C" void fn_80239914(void*, u32, u32);
@@ -149,6 +149,46 @@ extern "C" void fn_8012BC40(char* this_) {
         *(s32*)(this_ + 0x230) = *(s32*)(this_ + 0x230) + 1;
         *(s32*)(this_ + 0x234) = 0;
     }
+}
+
+extern "C" void fn_8012BE2C(char* this_) {
+    fn_8012A5EC(this_);
+    fn_8022FE80(0, *(s32*)(this_ + 4), *(s32*)(this_ + 0x198), 1, 0);
+    if (fn_803865B8(0)) {
+        fn_80388EEC(0);
+        fn_8011921C();
+        fn_801183BC();
+        u8* idx = lbl_8053CB60;
+        f32 zero = lbl_8053CB8C;
+        f32 half = lbl_8053CBB0;
+        *(s32*)(this_ + 0x230) += 2;
+        *(JGeometry::TVec3<f32>*)(this_ + 0x2c8) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + idx[0] * 12);
+        *(f32*)(this_ + 0x2f8) = zero;
+        *(f32*)(this_ + 0x2fc) = zero;
+        *(f32*)(this_ + 0x300) = half;
+        *(JGeometry::TVec3<f32>*)(this_ + 0x2d4) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + idx[1] * 12);
+        *(f32*)(this_ + 0x304) = zero;
+        *(f32*)(this_ + 0x308) = zero;
+        *(f32*)(this_ + 0x30c) = half;
+        *(JGeometry::TVec3<f32>*)(this_ + 0x2e0) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + idx[2] * 12);
+        *(f32*)(this_ + 0x310) = zero;
+        *(f32*)(this_ + 0x314) = zero;
+        *(f32*)(this_ + 0x318) = half;
+        *(JGeometry::TVec3<f32>*)(this_ + 0x2ec) = *(JGeometry::TVec3<f32>*)(this_ + 0x3b8 + idx[3] * 12);
+        *(f32*)(this_ + 0x31c) = zero;
+        *(f32*)(this_ + 0x320) = zero;
+        *(f32*)(this_ + 0x324) = half;
+        s32 i = 0;
+        do {
+            void* pos = this_ + 0x2c8 + i * 12;
+            *(void**)(this_ + 0x328 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053CB90, (u16)(0x3c0 + i * 3), 0, 0, 0, 0, 1);
+            *(void**)(this_ + 0x338 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053CB90, (u16)(0x3c1 + i * 3), 0, 0, 0, 0, 1);
+            *(void**)(this_ + 0x348 + i * 4) = fn_8013CC50(*(u32*)(this_ + 4), pos, lbl_8053CB90, (u16)(0x3c2 + i * 3), 0, 0, 0, 0, 1);
+            i++;
+        } while (i < 4);
+    }
+    *(s32*)(this_ + 0x234) = 0;
+    fn_801F0E34(this_, 0x50062, 0);
 }
 
 extern "C" void fn_8012C030(char* this_) {
