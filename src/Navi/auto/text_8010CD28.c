@@ -2,7 +2,7 @@
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
-    virtual void v2();
+    virtual void v2(s32 b);
     virtual void v3();
     virtual void v4();
     virtual void v5();
@@ -44,6 +44,21 @@ extern "C" void fn_8010CD28(u8* p) {
     }
     fn_80179030(*(void**)(p + 8), &lbl_802FDBDC, 0x100000, *(void**)(p + 0xc));
     fn_8010CDD8(p);
+}
+
+extern "C" void fn_8017A4F8(void*);
+extern "C" void fn_8010CF1C(u8* p) {
+    (*(s32*)(p + 0x20))++;
+    if (*(s32*)(p + 0x20) >= (s32)*(s16*)(*(u8**)(p + 0x18) + 6)) {
+        *(s32*)(p + 0x20) = *(s32*)(p + 0x20) - *(s16*)(*(u8**)(p + 0x18) + 6);
+    }
+    *(f32*)(*(u8**)(p + 0x18) + 8) = *(s32*)(p + 0x20);
+    (*(s32*)(p + 0x24))++;
+    if (*(s32*)(p + 0x24) >= (s32)*(s16*)(*(u8**)(p + 0x1c) + 6)) {
+        *(s32*)(p + 0x24) = *(s32*)(p + 0x24) - *(s16*)(*(u8**)(p + 0x1c) + 6);
+    }
+    *(f32*)(*(u8**)(p + 0x1c) + 8) = *(s32*)(p + 0x24);
+    fn_8017A4F8(*(void**)(p + 8));
 }
 
 extern "C" void fn_8010CFE0(u8* p) {
