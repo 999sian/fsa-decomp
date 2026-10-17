@@ -646,6 +646,20 @@ extern "C" void fn_801952FC(void* p, u32 param_2, u32 param_3) {
     }
 }
 
+extern "C" void fn_801953A4(void* p, u32 param_2, u32 param_3) {
+    u8 buf[48];
+    if (lbl_802FF6D0 != 0) {
+        fn_801C5DA8(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), (u8*)*(u32*)(lbl_802EE470 + 0x104) + (u16)param_3 * 0x30, buf);
+        fn_80194BB0(buf);
+    }
+    param_2 *= 3;
+    fn_80191A60((u8*)*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), param_2);
+    fn_80191AE0(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), param_2);
+    if (lbl_802FF6C4 == 0x2000) {
+        fn_80191BB8(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), param_2 + 0x1e);
+    }
+}
+
 extern "C" void fn_8019552C(u8* p) {
     u16 idx = *(u16*)(p + 4);
     NaviEntry12 tmp = lbl_80299AD0[lbl_802FF6B8];
