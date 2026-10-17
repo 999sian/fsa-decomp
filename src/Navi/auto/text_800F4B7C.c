@@ -939,6 +939,14 @@ extern "C" u8 fn_801049C8(u8* p) {
     return ((u8*)lbl_802B7CA0 + i)[0x3ec];
 }
 
+extern "C" void fn_801050FC(u8* p) {
+    if (fn_80108030(p) != 0) {
+        fn_8002F358(0xab, 0);
+        p[0xf2] = 9;
+        p[0xee] = 0x12;
+    }
+}
+
 extern "C" void fn_80106540(char* p) {
     *(unsigned char*)(*(char**)(p + 0x3f0) + 0xb0) = 1;
     *(unsigned char*)(p + 0x408) = lbl_802C5A84[0x48];
