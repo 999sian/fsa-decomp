@@ -423,10 +423,14 @@ extern "C" void fn_80122D04(void* param_1) {
     *(u32*)((u8*)param_1 + 0xc) = 0;
 }
 
+#pragma push
+#pragma use_lmw_stmw off
 extern "C" void* fn_80122D18(void* a, void* b, void* c) {
+    void* r;
     void* p = lbl_802FF360;
-    void* q = fn_80159BE0(fn_80122FB0((s32)a, (s32)b), 0, c);
-    void* r = q;
+    void* q;
+    q = fn_80159BE0(fn_80122FB0((s32)a, (s32)b), 0, c);
+    r = q;
     if (q != NULL) {
         r = fn_80122E40(q, a, b, 1);
     }
@@ -435,7 +439,7 @@ extern "C" void* fn_80122D18(void* a, void* b, void* c) {
     fn_80123AFC(p, r);
     return r;
 }
-
+#pragma pop
 extern "C" void* fn_80122DA8(void* a, void* b, void* c) {
     void* p = lbl_802FF360;
     void* q = (void*)fn_80122FC0((u32)c, (u32)a);
@@ -443,7 +447,7 @@ extern "C" void* fn_80122DA8(void* a, void* b, void* c) {
     if (b != NULL) {
         r = fn_80122E40(b, a, q, 0);
     }
-    *(u8**)((u8*)r + 0x28) = (u8*)b + 0x6c;
+    *(u8**)((u8*)b + 0x28) = (u8*)b + 0x6c;
     fn_80122FD0(r);
     fn_80123AFC(p, r);
     return r;
