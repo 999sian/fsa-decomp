@@ -16,6 +16,12 @@ extern "C" void fn_8013CB44(void* obj, void* p, s32 a, s32 b, s32 c);
 extern const f32 lbl_805401F0;
 extern const f32 lbl_805401F4;
 extern const f32 lbl_80540200;
+
+static f32 fnDist(char* p, Vec* dst) {
+    JMathInlineVEC::PSVECSubtract((Vec*)(p + 8), (Vec*)(p + 0x14), dst);
+    return PSVECMag(dst);
+}
+
 extern "C" void fn_80264998(char* p)
 {
     if (p[0xcac] == 0) {
