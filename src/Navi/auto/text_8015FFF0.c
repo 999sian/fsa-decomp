@@ -32,6 +32,29 @@ extern "C" void* fn_8015FFF0(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" u8 fn_801604EC(void*, void*, s32);
+extern "C" u8 fn_801600D0(u8* p) {
+    struct Entry {
+        u8 type;
+        u8 pad;
+        u16 id;
+        u32 offset;
+    } e;
+    if (*(u8*)(p + 0x10) != 0) {
+        *(u8*)(p + 0x10) = *(s32*)(p + 0x20) <= *(s32*)(p + 0x1c);
+        if (*(u8*)(p + 0x10) != 0) {
+            *(u8*)(p + 0x10) = fn_801604EC(*(void**)(p + 0x14), &e, *(s32*)(p + 0x20));
+            *(u32*)(p + 0x0) = e.offset;
+            *(s32*)(p + 0x4) = *(s32*)(p + 0x20);
+            *(u16*)(p + 0x8) = e.id;
+            *(u16*)(p + 0xa) = e.type;
+            *(u8*)(p + 0x11) = (*(u16*)(p + 0xa) >> 1) & 1;
+            (*(s32*)(p + 0x20))++;
+        }
+    }
+    return *(u8*)(p + 0x10);
+}
+
 extern char lbl_80297C8C[];
 extern "C" void* fn_8016017C(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
@@ -324,6 +347,28 @@ extern "C" void* fn_80161518(void* self, void* name) {
     }
     return 0;
 }
+
+extern "C" char lbl_80297EF0[];
+extern "C" char fn_801621C0(void* p, void* a);
+extern "C" void fn_801617D8(u8* p, s32 a, void* v) {
+    s32 idx = (a - *(s32*)(p + 0x4c)) / 20;
+    if (*(void**)(p + 0x50) == 0) {
+        return;
+    }
+    if ((u32)idx < *(u32*)(*(u8**)(p + 0x44) + 8)) {
+        ((void**)*(u8**)(p + 0x50))[idx] = v;
+    }
+}
+
+extern "C" void* fn_80161824(u8* p, s32 a) {
+    s32 idx = (a - *(s32*)(p + 0x4c)) / 20;
+    void** arr = *(void***)(p + 0x50);
+    if (arr != 0 && (u32)idx < *(u32*)(*(u8**)(p + 0x44) + 8)) {
+        return arr[idx];
+    }
+    return 0;
+}
+
 #pragma use_lmw_stmw reset
 extern "C" void fn_80160C34(void*, void*, int);
 extern "C" u8 fn_80161A2C(void*, void*, void*);
@@ -390,6 +435,20 @@ extern "C" BOOL fn_80161CE0(void) {
     }
     *(u32*)(p + 0x10) = 0;
     return 1;
+}
+
+extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
+    fn_80160C34(p, a, 2);
+    *(void**)p = lbl_80297EF0;
+    *(void**)(p + 0x60) = b;
+    if (!fn_801621C0(p, a)) {
+        return p;
+    }
+    *(u32*)(p + 0x2c) = 0x52415243;
+    *(int*)(p + 0x28) = *(int*)(p + 0x54) + *(int*)(*(u8**)(p + 0x48) + 4);
+    fn_80166D3C(lbl_802EE2D4, p + 0x18);
+    p[0x30] = 1;
+    return p;
 }
 
 extern "C" void fn_8015D0B8(void*, int);
