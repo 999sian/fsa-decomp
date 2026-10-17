@@ -30,6 +30,17 @@ extern const Arg_8008CF88 lbl_80284BCC;
 extern const Arg_8008CF88 lbl_80284BD8;
 extern u32 lbl_802FEDD8;
 extern s32 lbl_802FEDE4;
+extern const Arg_8008CF88 lbl_802026C0;
+extern f32 lbl_80300A7C;
+extern f32 lbl_802FF1E8;
+extern s32 lbl_802FF1EC;
+extern "C" int fn_80020EA4(void* p, void* q);
+extern "C" int fn_800175B8(void* p);
+extern "C" void fn_80011688(void);
+extern "C" void fn_8000CEC4(void);
+extern "C" void fn_801E0DB8(void* self, void* a, void* b, s32 size, s32 count);
+extern "C" int fn_800183AC(void* p, void* f, s32 n);
+extern "C" int fn_8008C6E0(void* p);
 struct StateObj_8008CF88;
 typedef BOOL (StateObj_8008CF88::*StateFunc_8008CF88)(int);
 struct StateObj_8008CF88 {
@@ -276,20 +287,53 @@ extern "C" void fn_8008D6F8(f32* p) {
 }
 
 extern "C" void fn_8008D72C(f32* p, s32 idx) {
-    s32 n = idx - 1;
+    s16 s[2];
     f32 v[3];
+    f32 w[3];
+    s32 n = idx - 1;
     char* e = (char*)lbl_802BB0FC + ((n % 10) % 10) * 12;
     s16 a = *(s16*)(e + 0x2d6);
-    s16 b = *(s16*)(e + 0x2d4);
-    s16 s[2] = {b, a};
+    s[0] = *(s16*)(e + 0x2d4);
+    s[1] = a;
     fn_8008D5BC(v, s);
+    w[0] = v[0];
+    w[1] = v[1];
+    w[2] = v[2];
     p[0] = v[0];
     p[1] = v[1];
-    p[2] = v[2] + (f32)a * *(f32*)((char*)lbl_802C5408 + 0x24);
+    w[2] = v[2] + (f32)a * *(f32*)((char*)lbl_802C5408 + 0x24);
+    p[2] = w[2];
 }
 
 extern "C" void fn_8008D938(void* p) {
     fn_8008D820(p, *(s32*)(lbl_802BB0FC + 0x3f0) + 1);
+}
+
+extern "C" void fn_8008D974(f32* p) {
+    s32 n = *(s32*)(lbl_802BB0FC + 0x3f0);
+    s16 s[2];
+    f32 v[3];
+    f32 t[3];
+    s16 x, y;
+    char* e = (char*)lbl_802BB0FC + ((n % 10) % 10) * 12;
+    s16 a = *(s16*)(e + 0x2d4);
+    s16 b = *(s16*)(e + 0x2d6);
+    if (lbl_802FEDE4 == 2) {
+        x = (a & 0xff00) + 0x80;
+        y = (b & 0xff00) + 0x80;
+    } else {
+        x = (a & 0xfe00) + 0x100;
+        y = (b & 0xfe00) + 0x100;
+    }
+    s[0] = x;
+    s[1] = y;
+    fn_8008D5BC(v, s);
+    t[0] = v[0];
+    p[0] = v[0];
+    p[1] = v[1];
+    p[2] = v[2];
+    t[1] = v[1];
+    t[2] = v[2];
 }
 
 extern char lbl_802BB0FC[];
