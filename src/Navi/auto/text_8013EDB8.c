@@ -14,6 +14,9 @@ extern "C" void fn_801404EC(void);
 extern "C" void fn_8013EDB8(void);
 extern "C" s32 fn_80140520(s32 idx);
 extern "C" s32 fn_801406B0(s32 idx, s32 a, s32 b, void (*cb)(void));
+extern "C" s32 fn_8013F21C(s32 idx);
+extern "C" void fn_801408CC(void* p);
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 void fn_8013EE0C(void)
 {
     s32 i = 0;
@@ -35,51 +38,51 @@ void fn_8013EE0C(void)
     OSRegisterResetFunction(lbl_80293868);
 }
 
-extern "C" void fn_8013EF14(s32 idx, s32 param_2) {
+extern "C" s32 fn_8013EF14(s32 idx, s32 param_2) {
     u8* s = lbl_802C6A80 + (idx << 8);
     s32 r;
-    if (*(u32*)(s + 0x1c) == 0) {
-        s[0] = 0;
-        *(s32*)(s + 0x14) = param_2;
-        *(void**)(s + 0x1c) = (void*)fn_801404EC;
-        r = fn_801406B0(idx, 1, 3, fn_8013EDB8);
-    } else {
-        r = 2;
+    if (*(u32*)(s + 0x1c) != 0) {
+        return 2;
     }
+    s[0] = 0;
+    *(s32*)(s + 0x14) = param_2;
+    *(void**)(s + 0x1c) = (void*)fn_801404EC;
+    r = fn_801406B0(idx, 1, 3, fn_8013EDB8);
     if (r == 0) {
-        fn_80140520(idx);
+        r = fn_80140520(idx);
     }
+    return r;
 }
 
 extern "C" s32 fn_8013EFA4(s32 idx, s32 param_2, s32 param_3) {
     u8* s = lbl_802C6A80 + (idx << 8);
-    if (*(u32*)(s + 0x1c) == 0) {
-        s[0] = 0xff;
-        *(s32*)(s + 0x14) = param_2;
-        *(s32*)(s + 0x1c) = param_3;
-        return fn_801406B0(idx, 1, 3, fn_8013EDB8);
+    if (*(u32*)(s + 0x1c) != 0) {
+        return 2;
     }
-    return 2;
+    s[0] = 0xff;
+    *(s32*)(s + 0x14) = param_2;
+    *(s32*)(s + 0x1c) = param_3;
+    return fn_801406B0(idx, 1, 3, fn_8013EDB8);
 }
 
-extern "C" void fn_8013F008(s32 idx, s32 param_2) {
+extern "C" s32 fn_8013F008(s32 idx, s32 param_2) {
     u8* s = lbl_802C6A80 + (idx << 8);
     s32 r;
-    if (*(u32*)(s + 0x1c) == 0) {
-        s[0] = 0xff;
-        *(s32*)(s + 0x14) = param_2;
-        *(void**)(s + 0x1c) = (void*)fn_801404EC;
-        r = fn_801406B0(idx, 1, 3, fn_8013EDB8);
-    } else {
-        r = 2;
+    if (*(u32*)(s + 0x1c) != 0) {
+        return 2;
     }
+    s[0] = 0xff;
+    *(s32*)(s + 0x14) = param_2;
+    *(void**)(s + 0x1c) = (void*)fn_801404EC;
+    r = fn_801406B0(idx, 1, 3, fn_8013EDB8);
     if (r == 0) {
-        fn_80140520(idx);
+        r = fn_80140520(idx);
     }
+    return r;
 }
 
 extern "C" s32 fn_8013F098(void) {
     lbl_802FF388 = 1;
-    return lbl_802FF388 == 1 ? 1 : 0;
+    return 1;
 }
 
