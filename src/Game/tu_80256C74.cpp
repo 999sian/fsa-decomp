@@ -269,6 +269,73 @@ extern "C" u8 fn_802577E0(u8* p) {
     return fn_80251AEC(p, 0x3f);
 }
 
+extern "C" BOOL fn_80257DB4(u8* p) {
+    if (U8(p, 0x1174) != 0) {
+        return FALSE;
+    }
+    if (Player_IsLinked(p) && fn_80230188(Player_GetLinkTargetIndex(p))) {
+        return FALSE;
+    }
+    if (Player_GetField_0x454(p)) {
+        return FALSE;
+    }
+    if (fn_80270A8C(p)) {
+        return FALSE;
+    }
+    if (fn_8025F684(p) && fn_802416C4(p) != 7) {
+        return FALSE;
+    }
+    if (fn_8025F448(p)) {
+        return FALSE;
+    }
+    if (fn_802412A4(p)) {
+        return FALSE;
+    }
+    if (fn_8024C448(p)) {
+        return FALSE;
+    }
+    if (fn_80241230(p)) {
+        return FALSE;
+    }
+    if (fn_80250D30(p)) {
+        return FALSE;
+    }
+    if (fn_802411C4(p)) {
+        return FALSE;
+    }
+    if (fn_80240B70(p)) {
+        return FALSE;
+    }
+    if (fn_80240B5C(p)) {
+        return FALSE;
+    }
+    if (fn_80240B84(p)) {
+        return FALSE;
+    }
+    if (Player_GetField_0xce8(p)) {
+        return FALSE;
+    }
+    if (fn_80240D64(p)) {
+        return FALSE;
+    }
+    if (fn_80240DAC(p)) {
+        return FALSE;
+    }
+    if (F32(p, 0x10) > lbl_805400C4) {
+        return FALSE;
+    }
+    if (Player_CheckField_0xc9c(p)) {
+        return FALSE;
+    }
+    if (fn_802412C4(p)) {
+        return FALSE;
+    }
+    if (S32(p, 0xd74) != 0) {
+        return FALSE;
+    }
+    return U32(p, 0xd3c) >> 31;
+}
+
 extern "C" void fn_80257FF4(u8* p) {
     s32 i;
     s32 id;
