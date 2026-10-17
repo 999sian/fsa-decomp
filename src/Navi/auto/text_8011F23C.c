@@ -1374,10 +1374,13 @@ extern "C" void fn_801297A0(u8* obj, s32 param_2, f32* out) {
 }
 
 extern "C" void fn_801297BC(u8* p, const JGeometry::TVec3f* src, JGeometry::TVec3f* out) {
+    f32 x = src->x;
+    f32 y = src->y;
+    f32 z = src->z;
     JGeometry::TVec3f tmp;
-    tmp.x = src->x;
-    tmp.y = src->y;
-    tmp.z = src->z;
+    tmp.x = x;
+    tmp.y = y;
+    tmp.z = z;
     u8* q = *(u8**)(p + 0x1e8);
     u8* v = *(u8**)q;
     if (v != 0) {
@@ -1500,8 +1503,9 @@ extern "C" void fn_8012A5B0(void* a, u8* p) {
         fn_801D9F18(9, 1);
         fn_801D9F18(0xd, 1);
         fn_801DB8C4(0xb8, 1, 1);
+        f32 y;
         f32 z = *(f32*)(p + 0x8);
-        f32 y = *(f32*)(p + 0x4);
+        y = *(f32*)(p + 0x4);
         f32 x = *(f32*)(p + 0x0);
         *(volatile f32*)0xCC008000 = x;
         *(volatile f32*)0xCC008000 = y;
@@ -1546,9 +1550,10 @@ extern "C" void fn_8012BECC(int param_1, int param_2) {
 extern f32 lbl_803016B8;
 extern f32 lbl_803016C8;
 extern "C" void fn_8012BED8(u8* p, u8* q) {
-    u8* a = *(u8**)(*(u8**)(p + 4) + 0x20);
-    s16 d = *(s16*)(*(u8**)a + 0x28);
     s16 v = *(s16*)(q + 0x80);
+    u8* b = *(u8**)(p + 4);
+    u8* a = *(u8**)(b + 0x20);
+    s16 d = *(s16*)(*(u8**)a + 0x28);
     *(f32*)(p + 0x1fc) = (f32)(v - (v / d) * d) / (f32)d;
 }
 
@@ -1932,34 +1937,24 @@ extern "C" void fn_801323DC(u32 param_1, u32 param_2, f32* param_3) {
 
 extern "C" void fn_80132450(s16 a, s16 b, s16 c, void* out) {
     f32* m = (f32*)out;
-    f32 sy = lbl_802F0BC0[(u16)b >> 5][0];
-    f32 cy = lbl_802F0BC0[(u16)b >> 5][1];
-    f32 sz = lbl_802F0BC0[(u16)c >> 5][0];
-    f32 cz = lbl_802F0BC0[(u16)c >> 5][1];
-    f32 sx = lbl_802F0BC0[(u16)a >> 5][0];
-    f32 cx = lbl_802F0BC0[(u16)a >> 5][1];
-    f32 cxsz = cx * sz;
-    f32 sxcz = sx * cz;
-    f32 cxcz = cx * cz;
-    f32 sxsz = sx * sz;
-    f32 t1 = sxcz * sy;
-    f32 t2 = cxsz * sy;
-    f32 t3 = cxcz * sy;
-    f32 t4 = sxsz * sy;
-    f32 zero;
+    f32 sy = lbl_802F0BC0[(u16)b >> 3][0];
+    f32 cy = lbl_802F0BC0[(u16)b >> 3][1];
+    f32 sz = lbl_802F0BC0[(u16)c >> 3][0];
+    f32 cz = lbl_802F0BC0[(u16)c >> 3][1];
+    f32 sx = lbl_802F0BC0[(u16)a >> 3][0];
+    f32 cx = lbl_802F0BC0[(u16)a >> 3][1];
     m[0] = cy * cz;
     m[4] = cy * sz;
     m[8] = -sy;
     m[9] = sx * cy;
     m[10] = cx * cy;
-    m[1] = t1 - cxsz;
-    m[6] = t2 - sxcz;
-    m[2] = sxsz + t3;
-    m[5] = cxcz + t4;
-    zero = lbl_80301794;
-    m[11] = zero;
-    m[7] = zero;
-    m[3] = zero;
+    m[1] = sx * cz * sy - cx * sz;
+    m[6] = cx * sz * sy - sx * cz;
+    m[2] = sx * sz + cx * cz * sy;
+    m[5] = cx * cz + sx * sz * sy;
+    m[11] = lbl_80301794;
+    m[7] = lbl_80301794;
+    m[3] = lbl_80301794;
 }
 
 extern "C" void fn_80132524(void* a, void* b, void* c, void* d);
