@@ -146,6 +146,18 @@ extern "C" void fn_800BD144(u8* p) {
     fn_800BD190(p);
 }
 
+extern "C" void fn_800BD344(u8* p) {
+    if (p[0xb9] != 0) {
+        s32 r = fn_800BDA50(p, p[0xba], lbl_802C55FC[0x19], 0);
+        p[0xba]++;
+        if (r == 1) {
+            p[0xba] = 0;
+            p[0xb9] = 0;
+            p[0xb8] ^= 1;
+        }
+    }
+}
+
 extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7) {
     u8* p = (u8*)param_1;
     if (param_2 < 0) {
