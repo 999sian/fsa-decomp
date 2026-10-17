@@ -212,3 +212,10 @@ extern "C" void fn_8013D488(void* param_1, s32 param_2, u32* param_3) {
     }
 }
 
+extern "C" void fn_8013D508(void* param_1, s32 param_2, u32* param_3) {
+    if (param_2 != 2) {
+        return;
+    }
+    *(u32*)((u8*)param_1 + 0x104) = *param_3;
+}
+
