@@ -781,9 +781,12 @@ extern "C" void fn_80128984(void) {
 }
 
 extern "C" void fn_80128E78(char* p, char* q) {
-    s16 m = *(s16*)(q + 0x80);
-    char* r6 = *(char**)(*(char**)(p + 4) + 0x1c);
-    u8 i = *(u8*)(*(char**)r6 + 0x1f) - 1;
+    char* r6;
+    s32 m;
+    s32 i;
+    r6 = *(char**)(*(char**)(p + 4) + 0x1c);
+    m = *(s16*)(q + 0x80);
+    i = *(u8*)(*(char**)r6 + 0x1f) - 1;
     if (i < m) {
         m = i;
     }
@@ -943,6 +946,13 @@ extern "C" void fn_8012D010(void*);
 extern "C" void* fn_8012CFDC(void* ptr, void* param_2) {
     *(void**)ptr = param_2;
     fn_8012D010(ptr);
+    return ptr;
+}
+
+extern "C" void fn_8012EF18(void*, void*);
+extern "C" void* fn_8012EEE0(void* ptr, void* param_2, void* param_3) {
+    *(void**)ptr = param_2;
+    fn_8012EF18(ptr, param_3);
     return ptr;
 }
 
