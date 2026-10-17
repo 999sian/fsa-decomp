@@ -95,13 +95,15 @@ extern "C" void fn_80025878(u8* p) {
 }
 
 extern "C" void fn_8002611C(u8 i) {
+    u8* p = lbl_802BE378;
     u16* w;
-    s32 n;
-    w = (u16*)(lbl_802BE378 + i * 0x204);
-    ((u8*)w)[0x202] = 0;
-    ((u8*)w)[0x203] = 0;
-    w[0x100] = 0;
-    for (n = 8; n > 0; n--) {
+    s32 n = 8;
+    p += i * 0x204;
+    p[0x202] = 0;
+    p[0x203] = 0;
+    *(u16*)(p + 0x200) = 0;
+    w = (u16*)p;
+    do {
         w[0] = 0;
         w[1] = 0;
         w[2] = 0;
@@ -135,13 +137,12 @@ extern "C" void fn_8002611C(u8 i) {
         w[30] = 0;
         w[31] = 0;
         w += 0x20;
-    }
+    } while (--n != 0);
 }
 
 extern "C" void fn_800261D4(u8 i, u16 param_2) {
     u8* p;
     u8* c;
-    u8* q;
     if (param_2 != 0) {
         p = lbl_802BE378 + i * 0x204;
         if (param_2 != *(u16*)(p + 0x200)) {
@@ -155,8 +156,9 @@ extern "C" void fn_800261D4(u8 i, u16 param_2) {
             param_2 = 0;
         }
     }
-    q = lbl_802BE378 + i * 0x204;
-    *(u16*)(q + 0x200) = param_2;
+    p = lbl_802BE378;
+    p += i * 0x204;
+    *(u16*)(p + 0x200) = param_2;
 }
 
 extern "C" void fn_80026248(u8 i) {
