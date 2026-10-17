@@ -21,6 +21,14 @@ extern void* lbl_8053AAF8;
 extern void* lbl_8053AB10;
 bool Player_IsLinked(char*);
 s32 Player_GetLinkTargetIndex(char*);
+u8 fn_80241230();
+bool fn_802412A4(char*);
+bool fn_8022D75C(s32);
+s32 fn_80248970(char*);
+s32 fn_80230CFC(s32);
+s32 fn_80230B70(s32);
+extern u32 lbl_8046C0B8[];
+extern u32 lbl_8046C0C8[];
 bool fn_80245FEC(char*);
 bool fn_80245DB0(char*);
 bool fn_80251AEC(char*, s32);
@@ -235,18 +243,16 @@ void fn_80280B30(char* p) {
         return;
     }
     if (U8(PTR(p, 0xbf0), 0xb7) != 0) {
-        if (F32(p, 0x10) > lbl_80540360) {
-            if (!fn_80246B10(p, 0x40)) {
-                f32 before = VEC(p, 0x368).length();
-                F32(p, 0x368) += lbl_805403A4 * (F32(p, 0x38c) * fn_8022C82C(S32(p, 0x4)));
-                F32(p, 0x36c) += lbl_805403A4 * (F32(p, 0x390) * -fn_8022C76C(S32(p, 0x4)));
-                if (VEC(p, 0x368).length() < before) {
-                    fn_8024F0E8(p, 0x20059);
-                }
-            }
-        } else {
+        if (F32(p, 0x10) <= lbl_80540360) {
             F32(p, 0x368) = lbl_80540360;
             F32(p, 0x36c) = lbl_80540360;
+        } else if (!fn_80246B10(p, 0x40)) {
+            f32 before = VEC(p, 0x368).length();
+            F32(p, 0x368) += lbl_805403A4 * (F32(p, 0x38c) * fn_8022C82C(S32(p, 0x4)));
+            F32(p, 0x36c) += lbl_805403A4 * (F32(p, 0x390) * -fn_8022C76C(S32(p, 0x4)));
+            if (VEC(p, 0x368).length() < before) {
+                fn_8024F0E8(p, 0x20059);
+            }
         }
         F32(p, 0x370) = lbl_80540360;
         f32 t = VEC(p, 0x368).length() - lbl_805403A8;
@@ -367,16 +373,69 @@ bool fn_802DEBF8();
 void fn_80281A90(char* p) {
     s32 area;
     if (U8(p, 0x3fa) >= 5) {
-        S32(p, 0x11ac) = 4;
+        if (fn_802466B4(p)) {
+            if (!fn_802DEBF8() && fn_80251AEC(p, 9)) {
+                S32(p, 0x11ac) = 4;
+            }
+        }
     }
     F32(p, 0x8) += F32(p, 0x344);
     F32(p, 0x8) += fn_8022C82C(S32(p, 0x4));
     area = S32(p, 0x3b4);
-    if (*((u8*)fn_802D6A9C() + area + 0x131df) == 0) {
+    if (*((u8*)((char*)fn_802D6A9C() + 0x10000) + area + 0x31df) == 0 || (u16)fn_8022461C(p + 8, S32(p, 0x3b4)) != 2) {
         F32(p, 0xc) += F32(p, 0x348);
+        F32(p, 0xc) -= fn_8022C76C(S32(p, 0x4));
     }
-    if (area == 0) {
-        S32(p, 0x11ac) = 4;
+    F32(p, 0x368) = lbl_80540360;
+    F32(p, 0x36c) = lbl_80540360;
+    F32(p, 0x370) = lbl_80540360;
+    {
+        u8 v = U8(p, 0x3fa);
+        if (v < 4) {
+            U8(p, 0x3fb) = 0;
+        } else if (v < 8) {
+            U8(p, 0x3fb) = 1;
+        } else if (v < 11) {
+            U8(p, 0x3fb) = 2;
+        } else if (v < 14) {
+            U8(p, 0x3fb) = 3;
+        } else if (v < 17) {
+            U8(p, 0x3fb) = 4;
+        } else if (v < 20) {
+            U8(p, 0x3fb) = 5;
+        } else {
+            U8(p, 0x3fb) = 5;
+            fn_80251AEC(p, 0);
+        }
+    }
+    U8(p, 0x3fa)++;
+    fn_80268B3C(p);
+    if (F32(p, 0x10) <= lbl_80540360) {
+        if ((u16)fn_8022461C(p + 8, S32(p, 0x3b4)) == 0x39) {
+            if (PTR(p, 0x1358) == 0) {
+                PTR(p, 0x1358) = fn_8013CC50(S32(p, 0x3b4), p + 8, 0x3d4, 0, -1, (s32)(p + 0x13a8), 0, 1, lbl_8054036C);
+            } else {
+                ((void (*)(void*, void*, s32, s32, s32))fn_8013CB44)(PTR(p, 0x1358), p + 8, 0, -1, 1);
+            }
+            char* e = (char*)PTR(p, 0x1354);
+            if (e != 0) {
+                S32(e, 0xf4) |= 1;
+                S32(e, 0x24) = 1;
+                PTR(p, 0x1354) = 0;
+            }
+        } else {
+            if (PTR(p, 0x1354) == 0) {
+                PTR(p, 0x1354) = fn_8013CC50(S32(p, 0x3b4), p + 8, 0x3d3, 0, -1, (s32)(p + 0x1398), 0, 1, lbl_8054036C);
+            } else {
+                ((void (*)(void*, void*, s32, s32, s32))fn_8013CB44)(PTR(p, 0x1354), p + 8, 0, -1, 1);
+            }
+            char* e = (char*)PTR(p, 0x1358);
+            if (e != 0) {
+                S32(e, 0xf4) |= 1;
+                S32(e, 0x24) = 1;
+                PTR(p, 0x1358) = 0;
+            }
+        }
     }
 }
 
