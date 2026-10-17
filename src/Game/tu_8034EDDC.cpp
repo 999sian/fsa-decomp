@@ -1,4 +1,7 @@
 #include "types.h"
+#include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JGeometry/Util.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" void fn_801F0E34(void* self, u32 id, s32 b);
 extern "C" u8 fn_8022F514(s32);
@@ -9,6 +12,7 @@ extern const f32 lbl_80542618;
 extern const f32 lbl_8054261C;
 extern const f64 lbl_805425F8;
 extern const f32 lbl_805425D8;
+extern const f32 lbl_80542600;
 
 struct Actor {
     ~Actor();
@@ -57,7 +61,8 @@ extern "C" s32 fn_80350530(u8* self) {
         f32* p;
         f32 dx;
         f32 dy;
-        f32 d2;
+        f32 dx2;
+        f32 dy2;
         if (fn_8022F514(i) == 1 && fn_8022CAF8(i) == 5) {
             continue;
         }
@@ -71,9 +76,9 @@ extern "C" s32 fn_80350530(u8* self) {
         p = (f32*)fn_8023E724(i);
         dx = x - p[0];
         dy = y - p[1];
-        d2 = dx * dx;
-        d2 = d2 + dy * dy;
-        if (d2 < r2) {
+        dx2 = dx * dx;
+        dy2 = dy * dy;
+        if (dx2 + dy2 < r2) {
             p = (f32*)fn_8023E724(i);
             if (p[2] == lbl_805425D8) {
                 if (prev == 0) {
@@ -85,7 +90,7 @@ extern "C" s32 fn_80350530(u8* self) {
                     }
                 }
                 *(s32*)(self + 0x270) = 1;
-                return *(s32*)(self + 0x244) > 0 ? -1 : *(s32*)(self + 0x268);
+                return *(s32*)(self + 0x244) <= 0 ? *(s32*)(self + 0x268) : -1;
             }
         }
     }
@@ -93,6 +98,82 @@ extern "C" s32 fn_80350530(u8* self) {
     *(s32*)(self + 0x274) = -1;
     *(s32*)(self + 0x244) = 0;
     return -1;
+}
+
+extern const f32 lbl_80542628;
+extern const f32 lbl_8054262C;
+extern "C" s32 fn_8023DE58(s32 player);
+extern "C" void fn_8022E088(s32 player, s32 idx, JGeometry::TVec3<f32>* out);
+extern "C" void fn_8022DF48(s32 player);
+extern const f32 lbl_80542600;
+extern const f32 lbl_80542604;
+extern "C" s32 fn_80351020(u8* this_, s32 player) {
+    s32 room = *(s32*)(this_ + 4);
+    if (fn_8023DE58(player) != room) {
+        return 0;
+    }
+    for (s32 i = 0; i < 8; i++) {
+        JGeometry::TVec3f pt;
+        fn_8022E088(player, i, &pt);
+        pt -= *(JGeometry::TVec3f*)(this_ + 0xc);
+        pt.z = lbl_805425D8;
+        f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
+        s32 idx = (s32)(ang * lbl_80542628);
+        f32 len = pt.x * pt.x + pt.y * pt.y;
+        if (len > lbl_805425D8) {
+            f32 y = __frsqrte(len);
+            y = lbl_80542600 * y * (lbl_80542604 - (len * (y * y)));
+            len = len * y;
+        }
+        u8* sc = (u8*)&JMath::sincosTable_ + ((idx >> 2) & 0x3ff8);
+        pt.x = *(f32*)(sc + 4) * len;
+        pt.y = *(f32*)sc * len;
+        pt.z = lbl_805425D8;
+        f32 x0 = *(f32*)(this_ + 0x80) - lbl_8054262C;
+        f32 y0 = *(f32*)(this_ + 0x84) - lbl_8054262C;
+        f32 x1 = *(f32*)(this_ + 0x88) + lbl_8054262C;
+        f32 y1 = *(f32*)(this_ + 0x8c) + lbl_8054262C;
+        u8 in = 0;
+        if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+            in = 1;
+        }
+        if (in) {
+            fn_8022DF48(player);
+            return 1;
+        }
+    }
+    return 0;
+}
+
+extern "C" void fn_803511F0(u8* self) {
+    fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x97, 0, lbl_805425F0, -3, 0, 0, 1);
+    fn_8013CC50(*(s32*)(self + 4), self + 0xc, 0x98, 0, lbl_805425F0, -3, 0, 0, 1);
+    *(s32*)(self + 0x258) = 0xb;
+    self[0x282] = 0;
+    *(s32*)(self + 0x24c) = 0;
+    *(s32*)(self + 0x230) = 7;
+    *(s32*)(self + 0x240) = 0xb;
+    *(s32*)(self + 0x248) = 0xa;
+    *(s32*)(self + 0x274) = -1;
+    *(s32*)(self + 0x268) = *(s32*)(self + 0x264);
+    f32 dx = *(f32*)(self + 0xc) - *(f32*)(self + 0x24);
+    f32 dy = *(f32*)(self + 0x10) - *(f32*)(self + 0x28);
+    f32 dx2 = dx * dx;
+    f32 dy2 = dy * dy;
+    f32 d2 = dx2 + dy2;
+    if (!(d2 > lbl_805425D8)) {
+        f32 y = __frsqrte(d2);
+        y = lbl_80542600 * y * (lbl_80542604 - (d2 * (y * y)));
+        d2 = d2 * y;
+    }
+    if (d2 > lbl_80542608) {
+        *(JGeometry::TVec3f*)(self + 0xc) = *(JGeometry::TVec3f*)(self + 0x24);
+        s32 kind = *(s32*)(self + 4);
+        if (kind >= 8) {
+            Actor_CreateByID(fn_801F856C(), 0x4b4d5249, kind, self + 0xc, 0x83, -1, -1);
+            *(f32*)(self + 0x28c) = lbl_805425F0;
+        }
+    }
 }
 
 extern "C" u32 fn_8013CC50(u32 owner, void* pos, u16 id, s32 a, f32 f, s32 b, s32 c, s32 d, s32 e);
