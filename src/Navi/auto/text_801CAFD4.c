@@ -2,6 +2,7 @@
 // .text 0x801cafd4-0x801e0c34 (354 functions). split_file divides it into the game's real files.
 
 #include <types.h>
+#include <Dolphin/mtx.h>
 extern "C" void* __OSSetInterruptHandler(s32 interrupt, void (*handler)(void*, void*));
 extern "C" void OSInitThreadQueue(void* queue);
 extern "C" void __OSUnmaskInterrupts(u32 mask);
