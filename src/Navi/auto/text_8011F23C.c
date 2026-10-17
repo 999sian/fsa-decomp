@@ -526,6 +526,14 @@ extern "C" void fn_80124788(void* self, s32 idx, u32 a, u32 b) {
     fn_801BDE1C(e, 2, 1);
 }
 
+extern "C" void fn_80124820(void* self, s32 idx, u32 a, u32 b) {
+    u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
+    *(u32*)(e + 0x4c) = a;
+    *(u32*)(e + 0x50) = b;
+    *(u8*)(e + 0x3c) = 0;
+    fn_801BDE1C(e, 3, 1);
+}
+
 extern "C" s32 fn_80124AF4(void* a, s32 idx, u8* out) {
     u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
     if (*(u32*)(e + 0x24) != 7) {
