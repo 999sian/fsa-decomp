@@ -26,6 +26,23 @@ extern "C" u8 lbl_804BA1B0[];
 extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
+static void showFloat(f32 value, int col)
+{
+    u32 bits = *(u32*)&value;
+    if ((bits & 0x7f800000) == 0x7f800000) {
+        if ((bits & 0x7fffff) != 0) {
+            lbl_8053A914->print_f(lbl_8045E878 + 0xd4, col);
+        } else if ((bits & 0x80000000) != 0) {
+            lbl_8053A914->print_f(lbl_8045E878 + 0xe8, col);
+        } else {
+            lbl_8053A914->print_f(lbl_8045E878 + 0xf8, col);
+        }
+    } else if (value == 0.0f) {
+        lbl_8053A914->print_f(lbl_8045E878 + 0x108, col);
+    } else {
+        lbl_8053A914->print_f(lbl_8045E878 + 0x11c, col, value);
+    }
+}
 extern "C" void* __nw__FUlP7JKRHeapi(size_t size, JKRHeap* heap, int align);
 extern void* lbl_80499414[];
 extern "C" void __ct__9JKRThreadFUlii(JKRThread* this_, u32 stackSize, int msgCount, int threadPriority);
@@ -500,6 +517,150 @@ extern "C" void fn_8008B508(JUTException* this_, s32 param_2, u16 param_3, OSCon
         lbl_8053A914->print(base + 0x3f8);
     }
     JUTConsoleManager::sManager->drawDirect(true);
+}
+
+extern "C" BOOL fn_8008B8B4(JUTException* this_, u32* param_1, u32* param_2)
+{
+    BOOL result = FALSE;
+    s64 start = OSGetTime();
+    s64 ms;
+    do {
+        ms = (OSGetTime() - start) / ((*(u32*)0x800000F8 / 4) / 1000);
+    } while (ms < 50);
+
+    if (*(s32*)((u8*)this_ + 0x84) == -1) {
+        FSAPad pad0;
+        FSAPad pad1;
+        FSAPad pad2;
+        FSAPad pad3;
+        fn_8008CF54(&pad0, 0);
+        fn_8008CF54(&pad1, 1);
+        fn_8008CF54(&pad2, 2);
+        fn_8008CF54(&pad3, 3);
+        fn_8008D15C();
+
+        bool active = false;
+        if (pad0._7c != -1 && pad0._98 != 0) {
+            active = true;
+        }
+        s64 t0;
+        if (active) {
+            t0 = lbl_804993B0[0];
+            if (t0 == 0) {
+                t0 = OSGetTime();
+            }
+        } else {
+            t0 = 0;
+        }
+        lbl_804993B0[0] = t0;
+
+        active = false;
+        if (pad1._7c != -1 && pad1._98 != 0) {
+            active = true;
+        }
+        s64 t1;
+        if (active) {
+            t1 = lbl_804993B0[1];
+            if (t1 == 0) {
+                t1 = OSGetTime();
+            }
+        } else {
+            t1 = 0;
+        }
+        lbl_804993B0[1] = t1;
+
+        active = false;
+        if (pad2._7c != -1 && pad2._98 != 0) {
+            active = true;
+        }
+        s64 t2;
+        if (active) {
+            t2 = lbl_804993B0[2];
+            if (t2 == 0) {
+                t2 = OSGetTime();
+            }
+        } else {
+            t2 = 0;
+        }
+        lbl_804993B0[2] = t2;
+
+        active = false;
+        if (pad3._7c != -1 && pad3._98 != 0) {
+            active = true;
+        }
+        s64 t3;
+        if (active) {
+            t3 = lbl_804993B0[3];
+            if (t3 == 0) {
+                t3 = OSGetTime();
+            }
+        } else {
+            t3 = 0;
+        }
+        lbl_804993B0[3] = t3;
+
+        s64 e0 = lbl_804993B0[0] != 0 ? OSGetTime() - lbl_804993B0[0] : 0;
+        s64 e1 = lbl_804993B0[1] != 0 ? OSGetTime() - lbl_804993B0[1] : 0;
+        s64 e2 = lbl_804993B0[2] != 0 ? OSGetTime() - lbl_804993B0[2] : 0;
+        s64 e3 = lbl_804993B0[3] != 0 ? OSGetTime() - lbl_804993B0[3] : 0;
+        fn_8008D4CC(&pad0, e0);
+        fn_8008D4CC(&pad1, e1);
+        fn_8008D4CC(&pad2, e2);
+        fn_8008D4CC(&pad3, e3);
+
+        if (param_1 != nullptr) {
+            *param_1 = pad0._1c | pad1._1c | pad2._1c | pad3._1c;
+        }
+        if (param_2 != nullptr) {
+            *param_2 = pad0._18 | pad1._18 | pad2._18 | pad3._18;
+        }
+        result = TRUE;
+        dtor_8008D028(&pad3, -1);
+        dtor_8008D028(&pad2, -1);
+        dtor_8008D028(&pad1, -1);
+        dtor_8008D028(&pad0, -1);
+    } else if (*(s32*)((u8*)this_ + 0x88) < 0) {
+        if (*(s32*)((u8*)this_ + 0x84) != 0) {
+            FSAPad* pad = (FSAPad*)*(s32*)((u8*)this_ + 0x84);
+            fn_8008D15C();
+            if (param_1 != nullptr) {
+                *param_1 = pad->_1c;
+            }
+            if (param_2 != nullptr) {
+                *param_2 = pad->_18;
+            }
+            result = TRUE;
+        }
+    } else {
+        FSAPad pad;
+        fn_8008CF54(&pad, *(s32*)((u8*)this_ + 0x88));
+        bool active = false;
+        if (pad._7c != -1 && pad._98 != 0) {
+            active = true;
+        }
+        s64 t0;
+        if (active) {
+            t0 = lbl_804993B0[0];
+            if (t0 == 0) {
+                t0 = OSGetTime();
+            }
+        } else {
+            t0 = 0;
+        }
+        lbl_804993B0[0] = t0;
+        s64 e0 = lbl_804993B0[0] != 0 ? OSGetTime() - lbl_804993B0[0] : 0;
+        fn_8008D4CC(&pad, e0);
+        fn_8008D15C();
+        if (param_1 != nullptr) {
+            *param_1 = pad._1c;
+        }
+        if (param_2 != nullptr) {
+            *param_2 = pad._18;
+        }
+        result = TRUE;
+        dtor_8008D028(&pad, -1);
+    }
+    return result;
 }
 
 extern "C" void fn_8008BE24(JUTException* this_, u16 param_1, OSContext* param_2, u32 param_3, u32 param_4)
