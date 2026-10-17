@@ -35,6 +35,12 @@ struct VObj_800A468C {
     virtual void v2(u8);
 };
 
+extern "C" s32 fn_800A2F34(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(u32*)(p + 0x244) = ((u32*)(lbl_80231850 + *(u32*)(p + 0xb0) * 0x10))[*(u32*)(lbl_802BB0FC + 0x420)];
+    return 4;
+}
+
 extern "C" BOOL fn_800A2F68(void)
 {
     return TRUE;
