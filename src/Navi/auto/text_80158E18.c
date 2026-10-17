@@ -414,16 +414,12 @@ extern "C" void fn_80159CB4(void* heap, void* p) {
     ((Obj*)heap)->v8(p);
 }
 
-#pragma push
-#pragma dont_inline on
 extern "C" void fn_80159CE0(void* p) {
     while (*(void**)((u8*)p + 0x5c) != 0) {
         Unk8015AD64* obj = **(Unk8015AD64***)((u8*)p + 0x5c);
         obj->vf08(-1);
     }
 }
-
-#pragma pop
 
 extern "C" void fn_80159D30(void* p) {
     struct Obj {
