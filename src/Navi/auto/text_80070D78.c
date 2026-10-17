@@ -11,6 +11,7 @@ extern u8 lbl_802FCA30;
 extern char lbl_8029F8D8[];
 extern "C" void fn_801C61AC(void*, f32, f32, f32);
 extern "C" void fn_8000C8A4(void*, s16, s16, s16);
+extern "C" void fn_8000C950(void*, s16, s16, s16);
 extern "C" void fn_80115D38(s16*, s16, int, int);
 extern "C" void fn_801C5D74(void*, void*);
 extern "C" int fn_80020EA4(void* p, int x);
@@ -297,6 +298,28 @@ extern "C" BOOL fn_80072134(s8* p)
         p[0x294]++;
     }
     return TRUE;
+}
+
+extern u8 lbl_802F0BC0[];
+extern "C" int fn_80072150(u8* p) {
+    s8 state = *(s8*)(p + 0x294);
+    if (state == 0) {
+        *(s8*)(p + 0x294) = 1;
+        *(s16*)(p + 0x2a4) = 0xb4;
+    } else if (state != -1) {
+        if (fn_80015CA4(p + 0x2a4) == 0) {
+            fn_80017FCC(p);
+        } else {
+            u8* tbl = lbl_802F0BC0 + ((*(s16*)(p + 0x136) >> 2) & 0x3ff8);
+            *(f32*)(p + 0x150) = *(f32*)(p + 0x230) * *(f32*)tbl;
+            *(f32*)(p + 0x158) = *(f32*)(p + 0x230) * *(f32*)(tbl + 4);
+            *(f32*)(p + 0x154) = *(f32*)(p + 0x154) - *(f32*)(p + 0x234);
+            *(f32*)(p + 0x270) = *(f32*)(p + 0x270) + *(f32*)(p + 0x150);
+            *(f32*)(p + 0x280) = *(f32*)(p + 0x280) + *(f32*)(p + 0x154);
+            *(f32*)(p + 0x290) = *(f32*)(p + 0x290) + *(f32*)(p + 0x158);
+        }
+    }
+    return 1;
 }
 
 extern "C" int fn_80071CF0(u8* p);
