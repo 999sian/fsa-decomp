@@ -166,13 +166,11 @@ extern "C" void fn_800578E8(void) {
 }
 
 extern "C" void fn_8005796C(void* p) {
+    u32* q;
     if (*(s32*)(lbl_802BB0FC + 0x44) == 8) {
         fn_80089634(p, 3);
-        s32* q = (s32*)lbl_80249DA0;
-        s32 v;
-        while ((v = *q) != 0) {
-            fn_80058B64(v);
-            q++;
+        for (q = (u32*)lbl_80249DA0; (s32)*q != 0; q++) {
+            fn_80058B64(*q);
         }
     }
 }
@@ -724,6 +722,24 @@ extern "C" BOOL fn_8005A720(void* a) {
     return fn_8005AE08(a) != 0;
 }
 
+extern char lbl_8027D36C[];
+extern char lbl_8027D510[];
+extern "C" void fn_8005C330(const char*, ...);
+extern "C" int fn_8005AD7C(u32 p) {
+    int bad;
+    if ((p & 0xF0000000) != 0x80000000) {
+        fn_8005C330((const char*)1, lbl_8027D36C, lbl_8027D510, p);
+        bad = 1;
+    } else {
+        bad = 0;
+    }
+    if (bad) {
+        return 0;
+    }
+    int n = *(s32*)(p + 0x14);
+    return n >= 1;
+}
+
 extern "C" void fn_8005B450(void) {}
 
 extern "C" void fn_8005C330(const char*, ...) {
@@ -780,6 +796,13 @@ extern int lbl_802FF128;
 extern int lbl_802FF12C;
 extern int lbl_802FF130;
 extern "C" void fn_8005CAC8(void) {
+    lbl_802FF128 = 0;
+}
+
+extern "C" void fn_8005CAD4(int param_1) {
+    if (param_1 != 0x13) {
+        return;
+    }
     lbl_802FF128 = 0;
 }
 
