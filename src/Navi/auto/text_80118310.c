@@ -40,7 +40,7 @@ extern "C" void fn_80118B58(void*, int, int);
 
 extern "C" void fn_8015AB40(void*);
 extern "C" void fn_801196E0(void*);
-extern "C" void fn_80118E24(void* a, void* b, void* c, u8 d);
+extern "C" void fn_80118E24(void* a, void* b, void* c, s32 d);
 extern "C" void fn_80119004(void* p);
 extern "C" void fn_801190F4(void* p, u8 v);
 extern "C" void fn_8011972C(void* p, u8* src);
@@ -367,9 +367,7 @@ extern "C" void* fn_8011AC24(void* p, void* v) {
 
 extern "C" void fn_8011AC3C(void* param_1) {
     u8* p = *(u8**)((u8*)lbl_802FF328 + 4);
-    u16 b = *(u16*)(p + 6);
-    u16 a = *(u16*)(p + 4);
-    fn_8011AC74(param_1, 0, 0, a, b);
+    fn_8011AC74(param_1, 0, 0, *(u16*)(p + 4), *(u16*)(p + 6));
 }
 
 extern "C" void* fn_8011B0D8(u8* p, s16 del) {
