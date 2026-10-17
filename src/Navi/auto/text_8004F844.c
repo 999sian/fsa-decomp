@@ -34,6 +34,20 @@ extern "C" void fn_80058A28(s32 a);
 extern "C" char lbl_80247690[];
 extern "C" void fn_800300C0(int id, unsigned int flags, int val, int idx, float f);
 extern "C" void fn_80089634(void* p, s32 n);
+extern "C" void* fn_8004F844(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = lbl_80247684;
+        fn_801E0D40((char*)param_1 + 0x8, &fn_8004F77C, 0x90, 5);
+        if (param_1 != nullptr) {
+            *(void**)param_1 = lbl_80222428;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_8004FA30(void) {}
 
 extern "C" void fn_800505D4(void* param_1)
