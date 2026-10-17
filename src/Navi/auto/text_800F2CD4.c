@@ -15,6 +15,7 @@ extern void* lbl_8028C5D0[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80301198;
+extern f32 lbl_8030119C;
 extern u8 lbl_802C5A54[];
 
 struct VObj_800F4328 {
