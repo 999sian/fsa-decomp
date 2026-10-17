@@ -34,6 +34,7 @@ int fn_80240AF0(Player*);
 int fn_802486A0(Player*);
 int fn_80257DB4(Player*);
 int fn_802416C4(Player*);
+int fn_80257DB4(Player*);
 int fn_8023FC08(Player*);
 int fn_8023FC24(Player*);
 int fn_8023FFAC(Player*);
