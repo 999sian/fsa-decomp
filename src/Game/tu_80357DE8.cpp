@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/Actor.h"
 
 extern "C" void __dt__5ActorFv(void* self, s32 del);
 extern "C" void __dl__FPv(void* p);
@@ -44,32 +45,12 @@ extern "C" void fn_803581AC(char* self)
     switch (*(s32*)(self + 0x234)) {
     case 0:
     case 2:
-    case 3: {
-        f32 a = lbl_80542854;
-        f32 b = lbl_80542858;
-        *(f32*)(self + 0x80) = a;
-        *(f32*)(self + 0x84) = a;
-        *(f32*)(self + 0x88) = b;
-        *(f32*)(self + 0x8c) = b;
-        *(f32*)(self + 0x60) = a;
-        *(f32*)(self + 0x64) = a;
-        *(f32*)(self + 0x68) = b;
-        *(f32*)(self + 0x6c) = b;
+    case 3:
+        setBounds(self, lbl_80542854, lbl_80542858);
         break;
-    }
-    case 1: {
-        f32 a = lbl_8054285C;
-        f32 b = lbl_80542860;
-        *(f32*)(self + 0x80) = a;
-        *(f32*)(self + 0x84) = a;
-        *(f32*)(self + 0x88) = b;
-        *(f32*)(self + 0x8c) = b;
-        *(f32*)(self + 0x60) = a;
-        *(f32*)(self + 0x64) = a;
-        *(f32*)(self + 0x68) = b;
-        *(f32*)(self + 0x6c) = b;
+    case 1:
+        setBounds(self, lbl_8054285C, lbl_80542860);
         break;
-    }
     }
     *(s32*)(self + 0x230) = 0;
 }
