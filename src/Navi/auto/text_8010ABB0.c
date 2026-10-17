@@ -23,6 +23,19 @@ struct VObj_800A1A64 {
 // .text 0x8010abb0-0x8010cb9c (30 functions). split_file divides it into the game's real files.
 
 extern void* lbl_8028EAF8[];
+extern u8 lbl_802C5AFC[];
+extern "C" s32 fn_8010C6D8(void* p, s16 a, u8 b, s32 c);
+extern "C" void fn_8010C1F0(u8* p);
+struct VObj_8010C1F0 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(u8);
+};
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_8030127C;
@@ -49,10 +62,12 @@ struct VObj_8010B5B4 {
     virtual void v4(f32, f32);
 };
 extern "C" void fn_8010B5B4(u8* param_1) {
-    *(f32*)(param_1 + 0x90) = lbl_80301280;
-    *(f32*)(param_1 + 0x94) = lbl_80301284;
-    (*(VObj_8010B5B4**)(param_1 + 0x14))->v4(*(f32*)(param_1 + 0x18) + *(f32*)(param_1 + 0x90), *(f32*)(param_1 + 0x1c));
-    (*(VObj_8010B5B4**)(param_1 + 0x20))->v4(*(f32*)(param_1 + 0x24), *(f32*)(param_1 + 0x28) + *(f32*)(param_1 + 0x94));
+    f32 a = lbl_80301280;
+    *(f32*)(param_1 + 0x90) = a;
+    f32 b = lbl_80301284;
+    *(f32*)(param_1 + 0x94) = b;
+    (*(VObj_8010B5B4**)(param_1 + 0x14))->v2(*(f32*)(param_1 + 0x18) + *(f32*)(param_1 + 0x90), *(f32*)(param_1 + 0x1c));
+    (*(VObj_8010B5B4**)(param_1 + 0x20))->v2(*(f32*)(param_1 + 0x24), *(f32*)(param_1 + 0x28) + *(f32*)(param_1 + 0x94));
 }
 
 extern "C" void fn_8010B634(u8* p) {
