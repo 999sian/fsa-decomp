@@ -3497,8 +3497,9 @@ extern "C" void fn_800DE60C(int param_1, int param_2, u8 param_3)
 
 extern "C" void fn_800DE618(int param_1, int param_2, u8* param_3)
 {
+  u8* ptr = (u8*)param_1;
   u8 val = *param_3;
-  u8* ptr = (u8*)(param_1 + param_2);
+  ptr += param_2;
   ptr[0x57] = val;
 }
 
