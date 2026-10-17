@@ -9,7 +9,7 @@ extern f32 lbl_8053F398;
 extern f32 lbl_8053F39C;
 extern f32 lbl_8053F3A0;
 extern "C" u8 fn_801DA904(void* p);
-extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" s32 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
 extern "C" s32 fn_801DD1AC(u8* this_) {
     s32 result = 0;
     if (!(*(u32*)(this_ + 0x230) & 0x1000)) {
@@ -47,6 +47,45 @@ extern "C" s32 fn_801DD1AC(u8* this_) {
             *(f32*)(this_ + 0x268) = b;
             *(f32*)(this_ + 0x26c) = a;
         }
+    }
+    return result;
+}
+
+extern "C" s32 fn_801DD28C(u8* this_) {
+    s32 result = 0;
+    f32 x0 = lbl_8053F388;
+    f32 y0 = lbl_8053F388;
+    f32 x1 = lbl_8053F390;
+    f32 y1 = lbl_8053F390;
+    switch (*(s32*)(this_ + 0x248)) {
+    case 9:
+        x0 = lbl_8053F394;
+        y0 = lbl_8053F398;
+        x1 = lbl_8053F39C;
+        y1 = lbl_8053F3A0;
+        if (x1 - x0 > lbl_8053F38C && (*(u32*)(this_ + 0x230) & 0x2000) && fn_801DA904(this_ + 0x2a8)) {
+            f32 tmp = x0;
+            x0 = -x1;
+            x1 = -tmp;
+        }
+        if (x1 - x0 > lbl_8053F38C && y1 - y0 > lbl_8053F38C) {
+            f32 sx0 = *(f32*)(this_ + 0x60);
+            f32 sy0 = *(f32*)(this_ + 0x64);
+            f32 sx1 = *(f32*)(this_ + 0x68);
+            f32 sy1 = *(f32*)(this_ + 0x6c);
+            *(f32*)(this_ + 0x60) = x0;
+            *(f32*)(this_ + 0x64) = y0;
+            *(f32*)(this_ + 0x68) = x1;
+            *(f32*)(this_ + 0x6c) = y1;
+            result = fn_801F2B7C(this_, *(s32*)(this_ + 0x114), -1, 1);
+            *(f32*)(this_ + 0x60) = sx0;
+            *(f32*)(this_ + 0x64) = sy0;
+            *(f32*)(this_ + 0x68) = sx1;
+            *(f32*)(this_ + 0x6c) = sy1;
+        }
+        break;
+    default:
+        break;
     }
     return result;
 }
