@@ -1,6 +1,7 @@
 #include "types.h"
 extern "C" void fn_801DE4F4(s32, void*);
 extern "C" void fn_801191F0(void*, s32);
+extern "C" void fn_8012302C(void* p, s32 n);
 extern "C" void fn_8011F878(void*, u8, u8, u8);
 extern "C" void fn_80167A18(void* a, void* b, void* c, void* d);
 struct NaviRGB8 { u8 r, g, b; };
