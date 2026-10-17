@@ -64,8 +64,6 @@ struct PukuResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 struct PukuGameRes {
@@ -170,11 +168,11 @@ extern "C" void fn_80172BC8(void* this_) {
             mtx[2][2] = lbl_8053DAC0;
             rec.w18 = mtx;
         }
-    }
-    s32 id = *(s32*)(p + 0x280) + 0x3fd;
-    if (*(s32*)(p + 4) < 8) {
-        void* res = ((PukuGameRes*)lbl_8053AAF8)->res->get('SOB ', lbl_80466808);
-        fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_8053DAC0, lbl_8053DAC0, &rec);
+        s32 id = *(s32*)(p + 0x280) + 0x3fd;
+        if (*(s32*)(p + 4) < 8) {
+            void* res = ((PukuGameRes*)lbl_8053AAF8)->res->get('SOB ', lbl_80466808);
+            fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_8053DAC0, lbl_8053DAC0, &rec);
+        }
     }
 }
 
