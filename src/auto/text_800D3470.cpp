@@ -2875,13 +2875,10 @@ extern "C" u32 fn_800DDA50(void) {
 }
 
 #if !defined(VERSION_G4SJ01)
-extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    u16 w = *(u16*)src;
-    u8 b2 = src[2];
-    *(u16*)(this_ + 0x4) = w;
-    u8 b3 = src[3];
-    *(u8*)(this_ + 0x6) = b2;
-    *(u8*)(this_ + 0x7) = b3;
+extern "C" void fn_800DDA5C(u8* self, const u8* other) {
+    *(u16*)(self + 0x4) = *(const u16*)other;
+    self[0x6] = other[2];
+    self[0x7] = other[3];
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
