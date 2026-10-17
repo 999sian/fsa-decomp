@@ -116,6 +116,26 @@ extern "C" u8 fn_80301D30(s32 i) {
     return 0;
 }
 
+extern "C" u8 fn_8023ED8C(s32 p);
+extern "C" s32 fn_8023ECF0(s32 p);
+extern "C" void fn_80301D54(s32 p) {
+    s32 i = ((s32 (*)(s32))fn_8022F340)(p);
+    if (lbl_8053ACF0[i] == 0) {
+        lbl_8053ACE8[i] = 0;
+        lbl_8053ACEC[i] = 0;
+        lbl_8053ACF4[i] = 0;
+    } else {
+        lbl_8053ACEC[i] = 0xff;
+    }
+    lbl_8053ACF8[p] = 0;
+    if (fn_8023ED8C(p)) {
+        s32 n = fn_8023ECF0(p);
+        if (n == fn_8022EA0C(n)) {
+            fn_80301D54(n);
+        }
+    }
+}
+
 extern "C" void fn_803020C8(s32 a, s32 b, s32 c, u8 d) {
     s32 slot = fn_8022F340();
     if ((((u8*)lbl_8053AAF8)[0x82] & (u8)(1 << slot)) == 0) {
@@ -360,73 +380,92 @@ extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id) {
 }
 
 extern "C" void fn_80304D64() {
-    Elem28_80301CD0* p3 = lbl_80504A38[0];
-    Elem28_80301CD0* p4 = lbl_80505438[0];
     for (s32 i = 0; i < 4; i++) {
-        Elem28_80301CD0* e = p3;
-        for (s32 j = 0; j < 4; j++) {
-            if (e->f25 == 1) {
-                e->f24 = 0;
-                e->f25 = 0;
-                e->f4 = -1;
-            } else if (e->f24 == 1 && e->f0 < 5) {
-                e->f0++;
+        for (int j = 0; j < 16; j++) {
+            if (lbl_80504A38[i][j].f25 == 1) {
+                lbl_80504A38[i][j].f24 = 0;
+                lbl_80504A38[i][j].f25 = 0;
+                lbl_80504A38[i][j].f4 = -1;
+            } else if (lbl_80504A38[i][j].f24 == 1 && lbl_80504A38[i][j].f0 < 5) {
+                lbl_80504A38[i][j].f0++;
             }
-            e++;
-            if (e->f25 == 1) {
-                e->f24 = 0;
-                e->f25 = 0;
-                e->f4 = -1;
-            } else if (e->f24 == 1 && e->f0 < 5) {
-                e->f0++;
-            }
-            e++;
-            if (e->f25 == 1) {
-                e->f24 = 0;
-                e->f25 = 0;
-                e->f4 = -1;
-            } else if (e->f24 == 1 && e->f0 < 5) {
-                e->f0++;
-            }
-            e++;
-            if (e->f25 == 1) {
-                e->f24 = 0;
-                e->f25 = 0;
-                e->f4 = -1;
-            } else if (e->f24 == 1 && e->f0 < 5) {
-                e->f0++;
-            }
-            e++;
         }
-        e = p4;
-        for (s32 j = 0; j < 20; j++) {
-            if (e->f25 == 1 && e->f0 == 0) {
-                e->f24 = 0;
-                e->f25 = 0;
-                e->f4 = -1;
-                e->fc = -1;
-            } else if (e->f25 == 1) {
-                e->fc = -1;
-                e->f0 = 0;
-            } else if (e->f24 == 1 && e->f0 < 5) {
-                e->f0++;
+        for (int j = 0; j < 40; j++) {
+            if (lbl_80505438[i][j].f25 == 1 && lbl_80505438[i][j].f0 == 0) {
+                lbl_80505438[i][j].f24 = 0;
+                lbl_80505438[i][j].f25 = 0;
+                lbl_80505438[i][j].f4 = -1;
+                lbl_80505438[i][j].fc = -1;
+            } else if (lbl_80505438[i][j].f25 == 1) {
+                lbl_80505438[i][j].fc = -1;
+                lbl_80505438[i][j].f0 = 0;
+            } else if (lbl_80505438[i][j].f24 == 1 && lbl_80505438[i][j].f0 < 5) {
+                lbl_80505438[i][j].f0++;
             }
-            e++;
-            if (e->f25 == 1 && e->f0 == 0) {
-                e->f24 = 0;
-                e->f25 = 0;
-                e->f4 = -1;
-                e->fc = -1;
-            } else if (e->f25 == 1) {
-                e->fc = -1;
-                e->f0 = 0;
-            } else if (e->f24 == 1 && e->f0 < 5) {
-                e->f0++;
-            }
-            e++;
         }
-        p3 += 16;
-        p4 += 40;
+    }
+}
+
+extern "C" void fn_803064A8(void* p, s32 player, s32 count, s32 start) {
+    s32 idx = start;
+    if (count == 0) {
+        return;
+    }
+    s32 slot = fn_8022EA0C(player);
+    u8* o = lbl_80506DE8 + player * 0x68 + start * 4;
+    for (s32 prio = 5; prio > 0; prio--) {
+        u8* q = o;
+        Elem28_80301CD0* e = lbl_80505438[player];
+        for (s32 j = 0; j < 40; j++, e++) {
+            if (e->f24 == 0) {
+                continue;
+            }
+            s32 t = fn_8023DE58(slot);
+            if ((e->f8 != t && e->fc != player) || (*(s32*)((u8*)lbl_8053AAF8 + 0x4c) == 0xb && e->f23 == 0)) {
+                e->f0 = 0;
+                e->f25 = 1;
+                continue;
+            }
+            if (e->f0 != prio && e->fc != player) {
+                continue;
+            }
+            if (e->fc >= 0) {
+                q[0x1b] = ((((int)e->f10) >> 8) & 1) | (q[0x1b] & 0xfe);
+                q[0x1a] = (int)e->f10;
+                q[0x19] = (int)e->f14;
+            } else {
+                u32 r21 = fn_8023D9B0(&e->f10, slot) & 0x1ff;
+                u8 c = fn_8023D4F8(&e->f10, slot);
+                if (r21 == 0x180 || c == 0xe0) {
+                    e->f0 = 0;
+                    e->f25 = 1;
+                    continue;
+                }
+                q[0x1b] = ((r21 >> 8) & 1) | (q[0x1b] & 0xfe);
+                q[0x1a] = r21;
+                q[0x19] = c;
+            }
+            s32 v = e->f1c;
+            if (v > 0x3ff) {
+                v -= 0x400;
+                q[0x1b] = ((((v >> 8) & 3) << 1)) | (q[0x1b] & 0xf9);
+                q[0x18] = v;
+                q[0x1b] = (q[0x1b] & 0x1f) | 0x40;
+            } else {
+                q[0x1b] = ((((v >> 8) & 0xff) << 1) & 6) | (q[0x1b] & 0xf9);
+                q[0x18] = v;
+                q[0x1b] = (e->f20 << 5) | (q[0x1b] & 0x1f);
+            }
+            q[0x1b] = ((e->f21 & 1) << 4) | (q[0x1b] & 0xef);
+            q[0x1b] = ((e->f22 & 1) << 3) | (q[0x1b] & 0xf7);
+            e->f25 = 1;
+            o += 4;
+            q += 4;
+            idx++;
+            if (count <= idx) {
+                return;
+            }
+        }
     }
 }
 
