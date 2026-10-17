@@ -462,6 +462,20 @@ extern "C" void* fn_80124160(void* p, s16 n) {
     return p;
 }
 
+extern "C" s32 fn_80124AF4(void* a, s32 idx, u8* out) {
+    u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
+    if (*(u32*)(e + 0x24) != 7) {
+        return -1;
+    }
+    if (e[0x3c] != 1) {
+        return -2;
+    }
+    if (*(s32*)(e + 0x40) == 0 && out != NULL) {
+        *out = e[0x44];
+    }
+    return *(s32*)(e + 0x40);
+}
+
 extern "C" void fn_80124E44(void* p, void** v)
 {
 	*(u32*)((u8*)*v + 0x40) = 0;
