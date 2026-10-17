@@ -236,8 +236,9 @@ extern "C" void fn_8008A4C4(unsigned int param_1)
 
 extern "C" void fn_8008A50C(JUTException* this_, OSContext* context)
 {
+    char* fmt = lbl_8045E878;
     if (lbl_8053A914 != nullptr) {
-        lbl_8053A914->print(lbl_8045E878 + 0x128);
+        lbl_8053A914->print(fmt + 0x128);
         for (int i = 0; i < 10; i++) {
             showFloat((f32)context->fpr[i], i);
             lbl_8053A914->print(" ");
@@ -285,8 +286,8 @@ extern "C" void fn_8008AC7C(JUTException* this_, OSContext* context)
     }
 }
 
-extern "C" char lbl_8053B86C[];
-extern "C" char lbl_8053B874[];
+extern "C" char lbl_8053B86C;
+extern "C" char lbl_8053B874;
 extern "C" const char* lbl_804993D0[];
 extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsisr, u32 dar)
 {
@@ -303,7 +304,7 @@ extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsis
             if (bits & 0x20000000) {
                 lbl_8053A914->print_f(base + 0x1f4);
                 if (lbl_8053A91C & 0x1000000) {
-                    lbl_8053A914->print_f(lbl_8053B86C);
+                    lbl_8053A914->print_f((const char*)&lbl_8053B86C);
                 }
                 if (lbl_8053A91C & 0x800000) {
                     lbl_8053A914->print_f(base + 0x210);
@@ -312,7 +313,7 @@ extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsis
                     lbl_8053A914->print_f(base + 0x228);
                 }
                 if (lbl_8053A91C & 0x200000) {
-                    lbl_8053A914->print_f(lbl_8053B874);
+                    lbl_8053A914->print_f((const char*)&lbl_8053B874);
                 }
                 if (lbl_8053A91C & 0x100000) {
                     lbl_8053A914->print_f(base + 0x240);
@@ -320,13 +321,13 @@ extern "C" void fn_8008AD78(u32 param_1, u16 error, OSContext* context, u32 dsis
                 if (lbl_8053A91C & 0x80000) {
                     lbl_8053A914->print_f(base + 0x250);
                 }
-                if (lbl_8053A91C & 0x800) {
+                if (lbl_8053A91C & 0x400) {
                     lbl_8053A914->print_f(base + 0x264);
                 }
-                if (lbl_8053A91C & 0x400) {
+                if (lbl_8053A91C & 0x200) {
                     lbl_8053A914->print_f(base + 0x278);
                 }
-                if (lbl_8053A91C & 0x200) {
+                if (lbl_8053A91C & 0x100) {
                     lbl_8053A914->print_f(base + 0x290);
                 }
             }
