@@ -1149,7 +1149,8 @@ extern "C" void fn_803C7CA0(u8* p) {
             fn_80402E08(*(void**)(p + 0x34), *(f32*)(*(u8**)(q + 0x24) + 8) - *(f32*)(*(u8**)(p + 0x24) + 8), f30);
         }
         fn_8040245C(*(void**)(p + 0x34), 0x3c, 0, *(u8*)(*(u8**)(p + 0x34) + 0x28), 1);
-        fn_804023D0(*(void**)(p + 0x34), ((J2DTextBoxVt*)*(void**)(p + 0x8))->v15(0x50610000, 0x50610000 + 0x6363, 0x75723031), *(u8*)(*(u8**)(p + 0x34) + 0x28));
+        u32 hi = 0x50610000;
+        fn_804023D0(*(void**)(p + 0x34), ((J2DTextBoxVt*)*(void**)(p + 0x8))->v15(hi, hi + 0x6363, 0x75723031), *(u8*)(*(u8**)(p + 0x34) + 0x28));
     }
 }
 
@@ -1821,6 +1822,7 @@ extern "C" s32 fn_803CE4B0(void) {
 
 extern "C" u8* fn_803CFFBC(u8* p, s16 flags) {
     void** q;
+    void** r;
 
     if (p != 0) {
         *(void**)p = lbl_804AFF60;
@@ -1848,13 +1850,13 @@ extern "C" u8* fn_803CFFBC(u8* p, s16 flags) {
         releaseSlot(*(void**)(p + 0x34));
         *(void**)(p + 0x34) = 0;
 
-        q = (void**)p;
+        r = (void**)p;
         for (int i = 0; i < 3; i++) {
-            releaseSlot(q[0xe]);
-            q[0xe] = 0;
-            releaseSlot(q[0x11]);
-            q[0x11] = 0;
-            q++;
+            releaseSlot(r[0xe]);
+            r[0xe] = 0;
+            releaseSlot(r[0x11]);
+            r[0x11] = 0;
+            r++;
         }
 
         releaseSlot(*(void**)(p + 0x50));
@@ -1864,7 +1866,7 @@ extern "C" u8* fn_803CFFBC(u8* p, s16 flags) {
 
         {
             void* obj = *(void**)(lbl_80529DEC + 0x30);
-            (*(DtorVt**)obj)->v3(obj);
+            ((DtorBase*)obj)->v1();
         }
         lbl_8053ADB0 = 0;
         if (flags > 0) {
