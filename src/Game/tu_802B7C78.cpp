@@ -1,6 +1,12 @@
 #include <math.h>
 #include "Game/Actor.h"
 
+struct SinCosEntry {
+    f32 first;
+    f32 second;
+};
+extern SinCosEntry sincosTable___5JMath[];
+
 
 extern "C" char lbl_804A886C[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -164,6 +170,82 @@ tail:
         *(s32*)(this_ + 0x250) = 0;
         *(f64*)(this_ + 0x234) = *(f64*)(this_ + 0xc);
         *(f32*)(this_ + 0x23c) = *(f32*)(this_ + 0x14);
+    }
+}
+
+extern "C" void fn_802B8078(char* this_) {
+    *(s32*)(this_ + 0x29c) = fn_8023DE58(*(s32*)(this_ + 0x298));
+    if (*(s32*)(this_ + 0x29c) < 8) {
+        if (*(s32*)(this_ + 4) >= 8) {
+            Vec v;
+            *(f64*)(this_ + 0xc) = *(f64*)(this_ + 0x28c);
+            *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x294);
+            *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
+            v.x = *(f32*)(this_ + 0xc);
+            v.y = *(f32*)(this_ + 0x10) + lbl_80540AB8;
+            v.z = *(f32*)(this_ + 0x14) + lbl_80540AD4;
+            fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
+            fn_8015F8FC(*(void**)((char*)lbl_8053AB10 + 0x30), *(s32*)(this_ + 4), this_ + 0xc, 3);
+            *(s32*)(this_ + 0x244) = 0x32;
+            *(s32*)(this_ + 0x24c) = 0;
+            *(s32*)(this_ + 0x230) = 4;
+        } else {
+            *(s32*)(this_ + 0x230) = 2;
+            *(s32*)(this_ + 0x244) = 300;
+        }
+    } else {
+        if (*(s32*)(this_ + 4) >= 8) {
+            if (*(s32*)(this_ + 0x29c) == *(s32*)(this_ + 4)) {
+                *(s32*)(this_ + 0x230) = 7;
+                *(s32*)(this_ + 0x244) = 300;
+            } else {
+                Vec v;
+                *(f64*)(this_ + 0xc) = *(f64*)(this_ + 0x28c);
+                *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x294);
+                *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
+                v.x = *(f32*)(this_ + 0xc);
+                v.y = *(f32*)(this_ + 0x10) + lbl_80540AB8;
+                v.z = *(f32*)(this_ + 0x14) + lbl_80540AD4;
+                fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
+                fn_8015F8FC(*(void**)((char*)lbl_8053AB10 + 0x30), *(s32*)(this_ + 4), this_ + 0xc, 3);
+                *(s32*)(this_ + 0x244) = 0x32;
+                *(s32*)(this_ + 0x24c) = 0;
+                *(s32*)(this_ + 0x230) = 4;
+            }
+        } else {
+            Vec v;
+            v.x = *(f32*)(this_ + 0xc);
+            v.y = *(f32*)(this_ + 0x10) + lbl_80540AB8;
+            v.z = *(f32*)(this_ + 0x14) + lbl_80540AD4;
+            fn_8013CC50(*(s32*)(this_ + 4), &v, 0x17d, 1, 0, 0, 0, 1, lbl_80540ACC);
+            fn_8015F8FC(*(void**)((char*)lbl_8053AB10 + 0x30), *(s32*)(this_ + 4), this_ + 0xc, 3);
+            *(f64*)(this_ + 0x28c) = *(f64*)(this_ + 0xc);
+            *(f32*)(this_ + 0x294) = *(f32*)(this_ + 0x14);
+            Vec* src = (Vec*)fn_8023E724(*(s32*)(this_ + 0x298));
+            *(f64*)(this_ + 0xc) = *(f64*)src;
+            *(f32*)(this_ + 0x14) = src->z;
+            *(s32*)(this_ + 0x244) = 0xb4;
+            *(s32*)(this_ + 0x24c) = 0;
+            *(s32*)(this_ + 0x230) = 5;
+            *(s32*)(this_ + 4) = *(s32*)(this_ + 0x29c);
+            Vec t;
+            t.x = *(f32*)(this_ + 0xc) - lbl_80540AD4;
+            t.y = *(f32*)(this_ + 0x10) - lbl_80540AD4;
+            t.z = *(f32*)(this_ + 0x14);
+            Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
+            t.x = *(f32*)(this_ + 0xc) + lbl_80540AD4;
+            t.y = *(f32*)(this_ + 0x10) - lbl_80540AD4;
+            t.z = *(f32*)(this_ + 0x14);
+            Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
+            t.x = *(f32*)(this_ + 0xc) - lbl_80540AD4;
+            t.y = *(f32*)(this_ + 0x10) + lbl_80540AD4;
+            t.z = *(f32*)(this_ + 0x14);
+            Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
+            t.x = *(f32*)(this_ + 0xc) + lbl_80540AD4;
+            t.y = *(f32*)(this_ + 0x10) + lbl_80540AD4;
+            t.z = *(f32*)(this_ + 0x14);
+            Actor_CreateByID(fn_801F856C(), 0x4B4D5249, *(s32*)(this_ + 4), &t, 0x81, -1, -1);
+        }
     }
 }
 
