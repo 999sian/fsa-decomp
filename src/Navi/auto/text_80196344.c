@@ -12,6 +12,7 @@ extern void* lbl_8029A150[];
 extern "C" void fn_801A605C(int, void*);
 extern "C" void fn_801BC250(int, int);
 struct Bytes4_801A3D94 { u8 b[4]; };
+struct Rect16 { s16 x, y, w, h; };
 struct Bits_801A4338 { u8 pad[0x3c]; u8 hi : 4; u8 b1 : 2; u8 b0 : 2; u8 pad2[3]; };
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
@@ -2017,12 +2018,8 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
     return p + 0x18 + i * 4;
 }
 
-extern "C" void fn_801A38E0(u8* p, s32 i, s16* src) {
-    s32 off = i << 3;
-    *(s16*)(p + off + 0xda) = src[0];
-    *(s16*)(p + off + 0xdc) = src[1];
-    *(s16*)(p + off + 0xde) = src[2];
-    *(s16*)(p + off + 0xe0) = src[3];
+extern "C" void fn_801A38E0(u8* p, s32 i, NaviRect16* src) {
+    ((NaviRect16*)(p + 0xda))[i] = *src;
 }
 
 extern "C" u8* fn_801A3938(u8* p, s32 i) {
@@ -2030,8 +2027,8 @@ extern "C" u8* fn_801A3938(u8* p, s32 i) {
 }
 
 extern "C" void fn_801A394C(u8* p, s32 i, u8* src) {
-    u8* base = p + (i << 2);
     u8 a = src[0];
+    u8* base = p + i * 4;
     base[0xfa] = a;
     a = src[1];
     base[0xfb] = a;
@@ -2224,9 +2221,10 @@ extern "C" s32 fn_801A3D80(s32 p, s32 i) {
     return p + i * 8 + 0x42;
 }
 
-extern "C" void fn_801A3D94(u8* p, s32 i, u8* src) {
-    u8* d = p + (i * 4);
-    d[0x62] = src[0];
+extern "C" void fn_801A3D94(u8* p, u32 i, u8* src) {
+    u8 a = src[0];
+    u8* d = p + i * 4;
+    d[0x62] = a;
     d[0x63] = src[1];
     d[0x64] = src[2];
     d[0x65] = src[3];
@@ -2299,8 +2297,10 @@ extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
     u8 b1 = param_3[1];
     u8 b0 = param_3[0];
     u8* p = param_1 + param_2 * 8;
-    p[0x28] = (p[0x28] & ~0x0c) | ((b1 & 0xff) << 2);
-    p[0x28] = (p[0x28] & ~0x03) | b0;
+    u8 v = p[0x28];
+    p[0x28] = (v & ~0x0c) | ((b1 & 0xff) << 2);
+    v = p[0x28];
+    p[0x28] = (v & ~0x03) | b0;
 }
 
 extern "C" void fn_801A3F68(int param_1, int param_2, u8* param_3) {
@@ -2460,8 +2460,8 @@ extern "C" void fn_801A4298(u8* p, u8* src) {
 extern "C" u8 fn_801A42A4(int p1) { return *(u8*)(p1 + 0x34); }
 
 extern "C" void fn_801A42AC(u8* p, s32 i, u8* src) {
-    u8* d = p + (i << 3);
     u8 a = src[1];
+    u8* d = p + i * 8;
     u8 b = src[2];
     d[0x36] = a;
     u8 c = src[3];
@@ -2591,8 +2591,8 @@ extern "C" BOOL fn_801A45B0(void)
 }
 
 extern "C" void fn_801A45B8(u8* p, s32 i, u8* src) {
+    u8* dst = p + i * 8;
     u8 a = src[1];
-    u8* dst = p + (i << 3);
     dst[0xf] = a;
     a = src[2];
     dst[0x10] = a;
@@ -2755,8 +2755,8 @@ extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
 extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8* d = p1 + (p2 << 2);
     u8 a = p3[0];
+    u8* d = p1 + p2 * 4;
     d[0xb8] = a;
     d[0xb9] = p3[1];
     d[0xba] = p3[2];
@@ -2929,18 +2929,12 @@ extern "C" int fn_801A4CF4(int param_1, int param_2) {
 
 extern "C" void fn_801DF0BC(void*, s32);
 extern "C" void fn_801A4D08(u8* param_1, s32 param_2, u8* param_3) {
-    struct Rec {
-        u8 pad[0xc];
-        u8 a;
-        u8 b;
-        u8 c;
-        u8 e;
-    };
-    Rec* s = (Rec*)(param_1 + param_2 * 4);
-    s->a = param_3[0];
-    s->b = param_3[1];
-    s->c = param_3[2];
-    s->e = param_3[3];
+    u8 b0 = param_3[0];
+    u8* dst = param_1 + param_2 * 4;
+    dst[0xc] = b0;
+    dst[0xd] = param_3[1];
+    dst[0xe] = param_3[2];
+    dst[0xf] = param_3[3];
 }
 
 extern "C" int fn_801A4D60(int param_1, int param_2) {
