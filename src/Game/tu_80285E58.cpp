@@ -36,6 +36,7 @@ extern "C" void fn_8023ECF0(s32 h);
 extern "C" void fn_8023105C(void);
 extern "C" void fn_802310F8(s32 h);
 extern void* lbl_8053AD30;
+extern f32 lbl_80540410;
 void fn_802870C8();
 void fn_80265E88(char* p);
 void fn_8024CA20(char* p);
