@@ -16,6 +16,25 @@ extern char* __SIVersion;
 extern "C" void SISetSamplingRate(u32 msec);
 extern "C" void SIInterruptHandler(__OSInterrupt interrupt, OSContext* context);
 extern "C" u32 SIGetType(s32 chan);
+
+inline u32 SIGetStatusInline(s32 chan) {
+    BOOL enabled;
+    u32 sr;
+    int chanShift;
+
+    enabled = OSDisableInterrupts();
+    sr = __SIRegs[14];
+    chanShift = 8 * (3 - chan);
+    sr >>= chanShift;
+    if (sr & 8) {
+        if (!(Type_8029D098[chan] & 0x80)) {
+            Type_8029D098[chan] = 8;
+        }
+    }
+    OSRestoreInterrupts(enabled);
+    return sr;
+}
+
 extern "C" int fn_801C42F4(void) {
     if (Si_8029D084[0] == -1) {
         return 0;
