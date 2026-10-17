@@ -16,8 +16,6 @@ struct ItemResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* getRes(s32 type, char* name);
 };
 
@@ -93,6 +91,51 @@ extern "C" void fn_80209D20(u8* this_, u32 value, u8 flag) {
 
 extern "C" void fn_80209D44(ItemBase* this_) {
     this_->m230 |= 0x2000;
+}
+
+extern "C" int __float_epsilon[];
+extern "C" f32 lbl_8053F960;
+extern "C" char lbl_8046A354[];
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8* lbl_8053AB10;
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_801EF830(s32 room, void* pos, DrawRec* rec, s32 a, char* name, s32 id, s32 e);
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
+extern "C" void fn_80209D54(u8* this_) {
+    if (JMathInlineVEC::PSVECSquareMag((const Vec*)(this_ + 0x54)) <= lbl_8053F960 * *(f32*)__float_epsilon) {
+        return;
+    }
+
+    DrawRec rec;
+    rec.b1c = 0;
+    rec.b1d = 0;
+    f32 mtx[3][4];
+    mtx[0][3] = lbl_8053F964;
+    mtx[1][3] = lbl_8053F964;
+    mtx[2][3] = lbl_8053F964;
+    mtx[0][0] = *(f32*)(this_ + 0x54);
+    mtx[0][1] = lbl_8053F964;
+    mtx[0][2] = lbl_8053F964;
+    mtx[1][0] = lbl_8053F964;
+    mtx[1][1] = *(f32*)(this_ + 0x58);
+    mtx[1][2] = lbl_8053F964;
+    mtx[2][0] = lbl_8053F964;
+    mtx[2][1] = lbl_8053F964;
+    mtx[2][2] = *(f32*)(this_ + 0x5c);
+    rec.w18 = mtx;
+
+    s32 id = *(s32*)(this_ + 0x280) + 0x2c9;
+    if ((*(u32*)(this_ + 0x230) & 0x80) == 0) {
+        fn_801F06F0(this_, lbl_8046A354, id, &rec, 7, lbl_8053F968, lbl_8053F968);
+    } else {
+        if (*(s32*)(this_ + 0x138) == 0) {
+            fn_801EF830(*(s32*)(this_ + 4), this_ + 0xc, &rec, 7, lbl_8046A354, id, 0);
+        }
+        if (*(s32*)(this_ + 4) < 8) {
+            void* res = (*(ItemResMgr**)(lbl_8053AAF8 + 0xa4))->getRes('SOB ', lbl_8046A354);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, lbl_8053F968, lbl_8053F968, &rec);
+        }
+    }
 }
 
 extern "C" void fn_80209FBC(u8* this_) {
