@@ -50,6 +50,15 @@ extern "C" int fn_8006D760(void)
     return 1;
 }
 
+extern "C" BOOL fn_8006D93C(u8* p) {
+    fn_80041268(*(void**)(p + 0x24c), p + 0x180, 5);
+    fn_8000E0F0(p + 0x254, *(u8**)(*(u8**)(p + 0x24c) + 4) + 0x58, *(f32*)(*(u8**)(p + 0x258) + 0x10));
+    fn_8000EBB8(*(void**)(p + 0x24c));
+    fn_8000E0F0(p + 0x260, *(u8**)(*(u8**)(p + 0x250) + 4) + 0x58, *(f32*)(*(u8**)(p + 0x264) + 0x10));
+    fn_8000EBB8(*(void**)(p + 0x250));
+    return TRUE;
+}
+
 extern "C" BOOL fn_8006D9C0(void);
 extern "C" BOOL fn_8006D9C0(void)
 {
