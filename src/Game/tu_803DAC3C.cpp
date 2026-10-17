@@ -17,7 +17,6 @@ void OSSetSaveRegion(void*, void*);
 void OSSetBootDol(u32);
 BOOL __PADDisableRecalibration(BOOL);
 void fn_802B1558(void*);
-void OSResetSystem(s32, u32, BOOL);
 }
 
 extern "C" int fn_803DAC3C(void)
