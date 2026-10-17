@@ -83,7 +83,18 @@ extern "C" void fn_80217A30(void** p) {
 }
 
 extern "C" void* fn_8013CC50(u32, void*, u16, s32, f32, s32, s32, s32, s32);
-extern f32 lbl_804CD838[];
+extern "C" const f32 lbl_8053F0BC;
+// Retail initialises this in __sinit before the JASPoolAllocObject pools (see the include at the end).
+struct Vec3fArr {
+    Vec3fArr(f32 a, f32 b, f32 c) {
+        v[0] = a;
+        v[1] = b;
+        v[2] = c;
+    }
+    operator f32*() { return v; }
+    f32 v[3];
+};
+static Vec3fArr lbl_804CD838(lbl_8053F0BC, lbl_8053F0BC, lbl_8053F0BC);
 
 extern "C" void fn_80217A74(void** p)
 {
