@@ -221,20 +221,19 @@ extern "C" void fn_801F7B18(ActorPool* pool) {
 
     s32 count = pool->mCount;
     for (s32 i = 0; i < count; i++) {
-        PoolActor* a = pool->mActors[i];
-        if (a != NULL && a->mActive && a->mType != 0x545a4f4b) {
-            s32 id = a->mId;
+        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->mType != 0x545a4f4b) {
+            s32 id = pool->mActors[i]->mId;
             if (id != *(s32*)(fn_802D6A9C() + 0x131a8) && id != *(s32*)(fn_802D6A9C() + 0x131ac) &&
                 id != *(s32*)(fn_802D6A9C() + 0x131b0) && id != *(s32*)(fn_802D6A9C() + 0x131b4))
             {
-                u32 type = a->mType;
+                u32 type = pool->mActors[i]->mType;
                 if (type != 0x52414e4b && type != 0x4742414f && type != 0x454e444d && type != 0x444d4741) {
                     if (type == 0x5241534e) {
-                        if (*(s32*)((u8*)a + 0x230) == 0) {
-                            a->mActive = 0;
+                        if (*(s32*)((u8*)pool->mActors[i] + 0x230) == 0) {
+                            pool->mActors[i]->mActive = 0;
                         }
                     } else {
-                        a->mActive = 0;
+                        pool->mActors[i]->mActive = 0;
                     }
                 }
             }
@@ -481,6 +480,7 @@ extern "C" void fn_801A3CFC(PoolActor* actor);
 extern "C" void fn_801E9AFC(void);
 extern "C" void fn_801E9C74(void);
 extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_801F31C4(const Actor* a, f32* out);
 extern s32 lbl_8053A168;
 
 extern "C" void fn_801F8658(ActorPool* pool) {
