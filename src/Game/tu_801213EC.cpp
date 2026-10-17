@@ -2,6 +2,7 @@
 #include "JSystem/JGeometry/Box.h"
 #include "JSystem/JGeometry/Vec.h"
 #include <string.h>
+#include "JSystem/JMath/JMath.h"
 
 #pragma auto_inline off
 
@@ -62,6 +63,21 @@ public:
     virtual u8 v47();
     virtual u8 v48();
     virtual u8 v49();
+};
+
+// Call-only vtable view for the seek/turn slots 0x78 and 0x94.
+class SeekCalls {
+public:
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+    virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+    virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+    virtual void v12(); virtual void v13(); virtual void v14(); virtual void v15();
+    virtual void v16(); virtual void v17(); virtual void v18(); virtual void v19();
+    virtual void v20(); virtual void v21(); virtual void v22(); virtual void v23();
+    virtual void v24(); virtual void v25(); virtual void v26(); virtual void v27();
+    virtual void v28(); virtual void v29(); virtual u8 v30(); virtual void v31();
+    virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35();
+    virtual void v36(); virtual void v37();
 };
 
 struct CompanionSlots {
@@ -399,10 +415,10 @@ extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   *b = lbl_8053C9B4;
   s32 idx = *out;
   s32 sel;
-  if (idx < 0) {
-    sel = idx;
-  } else if (idx < 4) {
-    sel = idx;
+  if (idx < 0 || idx < 4) {
+    if (idx < 0) {
+      sel = idx;
+    }
     for (s32 i = 0; i < 4; ++i) {
       if (fn_8022E438(i, idx)) {
         sel = i;
@@ -413,7 +429,7 @@ extern "C" void fn_80122B98(u8* self, f32* a, f32* b, s32* out) {
   }
   *out = sel;
   f32 v = lbl_8053C9B4;
-  if (((CompanionCalls*)self)->v49()) {
+  if (((CompanionCalls*)self)->v47()) {
     v = lbl_8053C9BC;
   }
   switch (fn_80230CFC(*out)) {
@@ -516,6 +532,50 @@ extern "C" void fn_80123AB4(u8* self, s32 arg1, s32 arg2, f32 distance) {
     }
 }
 
+extern "C" s32 fn_801F26CC(u8*, const void*);
+extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
+extern const u8 lbl_80464CD8[];
+extern const f32 lbl_8053C9F0;
+extern "C" s32 fn_80123B94(u8* self) {
+    if (!((u8 (**)(u8*))(*(void***)self))[30](self)) {
+        return 0;
+    }
+    s32 handle = fn_801F26CC(self, lbl_80464CD8);
+    if (handle < 0) {
+        return 0;
+    }
+    u8* actor = fn_801F666C(fn_801F856C(), handle);
+    if (actor != 0) {
+        switch (*(s32*)(actor + 0x1a0)) {
+        case 0x46495245: {
+            s32 st = (*(u32*)(actor + 0x90) >> 6) & 0xf;
+            if ((u32)st <= 1 || st == 5 || st == 6) {
+                return 0;
+            }
+        }
+        case 0x4f4b544d:
+            if (*(s32*)(actor + 0x230) == 2) {
+                return 0;
+            }
+            break;
+        }
+    }
+    *(s32*)(self + 0x108) -= 2;
+    if (*(s32*)(self + 0x108) > 0) {
+        if (handle >= 0) {
+            u8* a = fn_801F666C(fn_801F856C(), handle);
+            if (a != 0) {
+                GameLowVec pos = *(GameLowVec*)(a + 0xc);
+                f32 ang = JMath::atanTable_.atan2_(pos.x - *(f32*)(self + 0xc),
+                    (pos.y - pos.z) - (*(f32*)(self + 0x10) - *(f32*)(self + 0x14)));
+                *(s32*)(self + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)(ang * lbl_8053C9F0));
+            }
+        }
+        ((void (**)(u8*))(*(void***)self))[37](self);
+    }
+    return 1;
+}
+
 extern "C" void fn_80123D30(u8* self) {
     if (fn_80138A30(lbl_8053AAF8) == 1) {
         *(s32*)(self + 0x360) = 1;
@@ -591,22 +651,24 @@ extern "C" void* fn_801F856C();
 extern "C" u8* fn_801F666C(void*, s32);
 extern "C" s32 lbl_80539F30;
 extern "C" s32 fn_80124600(u8* self) {
-    s32 i;
+    s32 count;
     u8 flag;
-    s32 count = *(s32*)fn_80131F0C();
+    s32 i;
+    s32 ret;
 
+    count = *(s32*)fn_80131F0C();
     if (count == 0) {
-        s32 idx = lbl_80539F30;
-        if (idx < 0) {
+        count = lbl_80539F30;
+        if (count < 0) {
             return 3;
         }
         {
-            u8* actor = fn_801F666C(fn_801F856C(), idx);
+            u8* actor = fn_801F666C(fn_801F856C(), count);
             if (actor == 0) {
                 return 3;
             }
             actor[0x334] = 1;
-            return ((s32 (*)(u8*, u8*))(*(void***)actor)[23])(actor, self);
+            return ((s32 (**)(u8*, u8*))(*(void***)actor))[23](actor, self);
         }
     }
     flag = 0;
@@ -615,7 +677,7 @@ extern "C" s32 fn_80124600(u8* self) {
         if (p != 0 && *(s32*)(p + 0x1a0) == 0x46415a52) {
             s32 r;
             p[0x334] = 1;
-            r = ((s32 (*)(u8*, u8*))(*(void***)p)[23])(p, self);
+            r = ((s32 (**)(u8*, u8*))(*(void***)p))[23](p, self);
             switch (r) {
             case 1:
                 return 1;
@@ -630,7 +692,11 @@ extern "C" s32 fn_80124600(u8* self) {
             }
         }
     }
-    return flag ? 3 : 2;
+    ret = 2;
+    if (flag) {
+        ret = 3;
+    }
+    return ret;
 }
 
 extern "C" void* fn_80124740(u8* self, s16 deleting) {
