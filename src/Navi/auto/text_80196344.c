@@ -14,6 +14,17 @@ extern "C" void fn_801BC250(int, int);
 extern "C" void fn_80191090(int, u8, u8, u8, int, int, int);
 extern "C" void fn_8019019C(u8, u16, int, int, u16, int, int);
 extern u16 lbl_802EE5D4[][4];
+extern "C" void* fn_8015A90C(u32);
+extern "C" void fn_801E0DB8(void*, void*, void*, u32, u32);
+extern "C" void fn_8000EF10();
+extern "C" void fn_8000EED8();
+extern "C" void fn_8000EE4C();
+extern "C" void fn_8000EECC();
+extern "C" void fn_8000EE0C();
+extern "C" void fn_80199984(void*);
+extern void* lbl_8029A078[];
+extern void* lbl_8029AE0C[];
+extern void* lbl_8029A02C[];
 struct VObj_801A18F4 {
     virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
     virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
