@@ -97,7 +97,89 @@ extern "C" void fn_80125C58(u8* this_, u8 flag) {
 }
 
 extern "C" void fn_80125CDC(u8* this_) {
-    ((Actor*)this_)->v01();
+    struct {
+        u8 idx[16];
+        s32 a;
+        s32 b;
+        s32 c;
+        u8 d[11];
+        s32 e;
+        u8 f[3];
+        s32 g;
+        s32 h;
+        s32 i;
+    } local;
+    u32 i;
+    s32 iVar1;
+
+    ((Actor*)this_)->v06();
+    local.a = -1;
+    local.b = -1;
+    for (i = 0; (u8)i < 0x10; i += 8) {
+        local.idx[(u8)i] = i;
+        local.idx[(u8)(i + 1)] = i + 1;
+        local.idx[(u8)(i + 2)] = i + 2;
+        local.idx[(u8)(i + 3)] = i + 3;
+        local.idx[(u8)(i + 4)] = i + 4;
+        local.idx[(u8)(i + 5)] = i + 5;
+        local.idx[(u8)(i + 6)] = i + 6;
+        local.idx[(u8)(i + 7)] = i + 7;
+    }
+    local.a = -1;
+    local.b = 0;
+    local.c = 0;
+    local.d[0] = 0;
+    local.d[1] = 0;
+    local.d[2] = 0;
+    local.d[3] = 1;
+    local.d[4] = 1;
+    local.d[5] = 0;
+    local.d[6] = 0;
+    local.d[7] = 0;
+    local.d[8] = 0;
+    local.d[9] = 0;
+    local.d[10] = 1;
+    local.e = 3;
+    local.f[0] = 1;
+    local.f[1] = 0;
+    local.f[2] = 0;
+    local.g = -1;
+    local.h = 0;
+    local.i = 2;
+
+    switch (*(s32*)(this_ + 0x238)) {
+    case 1:
+        iVar1 = 0x2d2;
+        break;
+    case 0:
+    default:
+        iVar1 = 0x2e6;
+        break;
+    }
+    fn_801F02BC(this_, lbl_80464EE8, iVar1 + *(s32*)(this_ + 0x254), local.idx, 0x407, lbl_8053CA7C, lbl_8053CA7C, 0, 0);
+
+    if (this_[0x231] != 0) {
+        JGeometry::TVec3f pos(*(JGeometry::TVec3f*)(this_ + 0xc));
+        pos.y += lbl_8053CA80;
+        if (*(s32*)(this_ + 0x238) == 1) {
+            pos.x += lbl_8053CA84;
+        } else {
+            pos.x += lbl_8053CA88;
+        }
+        u8* p = *(u8**)(this_ + 0x28c) + 0x2a3;
+        if (*(s32*)(this_ + 4) < 8) {
+            struct Snd {
+                virtual void v02();
+                virtual void v03();
+                virtual void v04();
+                virtual void v05();
+                virtual s32 v06(u32 a, void* b);
+            };
+            Snd* snd = *(Snd**)((u8*)lbl_8053AAF8 + 0xa4);
+            s32 r = snd->v06(0x534F4220, lbl_80464EFC);
+            fn_802F86CC(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, r, p, lbl_8053CA7C, lbl_8053CA7C, 0);
+        }
+    }
 }
 
 extern "C" void fn_8012639C(u8* this_) {
