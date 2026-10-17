@@ -240,14 +240,12 @@ extern "C" void fn_800BD190(u8* p) {
 
 extern "C" void fn_800BD268(u8* param_1) {
     param_1[0xba] = 0;
-    VObj_800BD938** objs = (VObj_800BD938**)(param_1 + 0x90);
-    u32 sel = param_1[0xb8];
-    objs[sel]->v9(0);
-    u32 i = sel ^ 1;
-    objs[i]->v9(param_1[0x98 + i]);
-    objs = (VObj_800BD938**)(param_1 + 0xa4);
-    objs[sel]->v9(0);
-    objs[i]->v9(param_1[0xac + i]);
+    (*(VObj_800BD938**)(param_1 + 0x90 + param_1[0xb8] * 4))->v9(0);
+    u32 i = param_1[0xb8] ^ 1;
+    (*(VObj_800BD938**)(param_1 + 0x90 + i * 4))->v9(param_1[0x98 + i]);
+    (*(VObj_800BD938**)(param_1 + 0xa4 + param_1[0xb8] * 4))->v9(0);
+    i = param_1[0xb8] ^ 1;
+    (*(VObj_800BD938**)(param_1 + 0xa4 + i * 4))->v9(param_1[0xac + i]);
     param_1[0xb8] ^= 1;
 }
 
