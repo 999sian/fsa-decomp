@@ -11,6 +11,37 @@ extern f32 lbl_802C53E4[];
 extern "C" void fn_8008D820(void* p, s32 n);
 extern void* lbl_8024751C[];
 extern "C" void fn_8008BE14(void* p);
+extern "C" void fn_80041268(void* a, void* b, s32 n);
+extern "C" void fn_8000E0F0(void* self, void* arg, f32 value);
+extern "C" void fn_8000EBB8(void* a);
+extern s16 lbl_802FF04C;
+struct VObj_8008C40C {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9();
+    virtual void v10();
+    virtual void v11();
+    virtual void v12();
+    virtual void v13();
+    virtual void v14();
+    virtual void v15();
+    virtual void v16();
+    virtual void v17();
+    virtual void v18();
+    virtual void v19();
+    virtual void v20();
+    virtual void v21();
+    virtual void v22();
+    virtual void v23();
+    virtual void* v24();
+};
 extern "C" void fn_8008BE14(void* p) {
     f32* f = (f32*)p;
     *(void**)p = lbl_8024751C;
@@ -124,15 +155,14 @@ extern f32 lbl_802C53E4[];
 extern "C" void fn_8008D820(void* p, s32 n);
 struct Rec8008DA68 { u32 a, b, c; };
 
-extern "C" void fn_8008DA68(void* p) {
-    u32* src = (u32*)(lbl_801FDAC8 + *(s32*)(lbl_802BB0FC + 0x424) * 12);
-    u32 a = src[0];
-    u32 b = src[1];
-    u32 c;
-    ((u32*)p)[0] = a;
-    c = src[2];
-    ((u32*)p)[1] = b;
-    ((u32*)p)[2] = c;
+extern "C" void fn_8008DA68(Rec8008DA68* p) {
+    Rec8008DA68* src = &((Rec8008DA68*)lbl_801FDAC8)[*(s32*)(lbl_802BB0FC + 0x424)];
+    u32 a = src->a;
+    u32 b = src->b;
+    p->a = a;
+    u32 c = src->c;
+    p->b = b;
+    p->c = c;
 }
 
 extern "C" void* fn_8008DAD8(void* ptr, s16 param_2) {
