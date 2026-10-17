@@ -17,13 +17,3 @@ extern "C" void* fn_8015EABC(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-struct fn_8015EBE8_Obj {
-    virtual void Release(int);
-};
-
-struct fn_8015EBE8_Node {
-    fn_8015EBE8_Obj* obj;
-    u32 unk4;
-    u32 unk8;
-    fn_8015EBE8_Node* next;
-};
