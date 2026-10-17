@@ -3,6 +3,15 @@
 
 
 extern "C" char lbl_804AB464[];
+struct TVec3fAdd {
+    f32 x, y, z;
+    TVec3fAdd& operator+=(const TVec3fAdd& o) {
+        x += o.x;
+        y += o.y;
+        z += o.z;
+        return *this;
+    }
+};
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c);
 extern "C" void* fn_802D6A9C(void);
@@ -15,6 +24,30 @@ extern "C" Actor* fn_8032500C(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void fn_8032506C(Actor* a) {
+    u8* p = (u8*)a;
+    f32 out[3];
+    u8 r;
+
+    if (((u8*)fn_802D6A9C())[a->field_04 + 0x131df] == 0) {
+        a->field_0C.x += a->field_3C.x;
+        a->field_0C.y += a->field_3C.y;
+        a->field_0C.z += a->field_3C.z;
+        r = fn_801F2618(a, out, 0);
+        if (r == 1) {
+            if (out[0] != 0.0f) {
+                if (p[0x275] != 0) {
+                    a->field_3C.x = a->field_3C.x * 0.5;
+                    a->field_3C.y = -a->field_3C.x;
+                    p[0x275] = 0;
+                } else {
+                    a->field_3C.x = -a->field_3C.x;
+                }
+            }
+        }
+    }
 }
 
 extern "C" void* fn_8020D58C(void);
