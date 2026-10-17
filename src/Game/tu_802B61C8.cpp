@@ -28,8 +28,7 @@ extern "C" Actor* fn_802B61C8(Actor* this_, s16 n) {
 
 extern "C" void fn_802B6228(char* p) {
     if (*(s32*)(p + 0x4) >= 8) {
-        Vec* src = (Vec*)(p + 0xc);
-        Vec pos = *src;
+        JGeometry::TVec3<f32> pos(*(JGeometry::TVec3<f32>*)(p + 0xc));
         pos.z = lbl_80540A38;
         Actor_CreateByID(fn_801F856C((Actor*)p), 0x4b4d5249, *(s32*)(p + 0x4), &pos, 0, -1, -1);
     } else if (*(f32*)(p + 0x14) < lbl_80540A38 && fn_8022461C((Vec*)(p + 0xc)) == 0xd) {
@@ -67,4 +66,4 @@ extern "C" void fn_802B67F8(char* p) {
     *(f32*)(p + 0x240) = lbl_80540A70;
     *(s32*)(p + 0x230) = 0;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
