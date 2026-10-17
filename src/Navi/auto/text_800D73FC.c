@@ -68,17 +68,17 @@ extern "C" void fn_800E29CC(u8* p) {
     fn_800E29F4(p);
 }
 
+#pragma use_lmw_stmw off
 extern "C" void fn_800E347C(u8* p) {
     s32 i;
-    u32 flags = *(u32*)(lbl_802B7CA0 + 0x3448);
     for (i = 0; i < 4; i++) {
         p[0xa78 + i] = 0xff;
-        if (flags & (1 << i)) {
+        if (*(u32*)(lbl_802B7CA0 + 0x3448) & (1 << i)) {
             p[0xa78 + i] = fn_80057530(i);
         }
     }
 }
-
+#pragma use_lmw_stmw reset
 extern "C" s32 fn_800E3638(void* param_1, s32 param_2) {
     NaviSlot_802C04D0* s = lbl_802C04D0;
     u32 flags = *(u32*)(lbl_802B7CA0 + 0x3448);
@@ -302,8 +302,8 @@ extern "C" void fn_800E71CC(u8* p) {
 
 extern "C" void fn_800E72E4(u8* p) {
     if (p[0x4c4] != 0) {
-        u8* q = *(u8**)(p + 0x4bc);
         *(s32*)(p + 0x4c0) = *(s32*)(p + 0x4c0) + 1;
+        u8* q = *(u8**)(p + 0x4bc);
         s16 t = *(s16*)(q + 6);
         if (*(s32*)(p + 0x4c0) >= t) {
             *(s32*)(p + 0x4c0) = *(s32*)(p + 0x4c0) - t;
@@ -317,7 +317,7 @@ extern "C" void fn_800E7364(u8* p) {
     if (p[0x4d0] != 0) {
         *(s32*)(p + 0x4cc) = *(s32*)(p + 0x4cc) + 1;
         s16 t = *(s16*)(*(u8**)(p + 0x4c8) + 6);
-        if (t <= *(s32*)(p + 0x4cc)) {
+        if (*(s32*)(p + 0x4cc) >= t) {
             *(s32*)(p + 0x4cc) = *(s32*)(p + 0x4cc) - t;
         }
         *(f32*)(*(u8**)(p + 0x4c8) + 8) = (f32)*(s32*)(p + 0x4cc);
