@@ -36,6 +36,61 @@ void fn_802F6CF4(void* obj, f32* pos, void* res, u8* blk);
 void fn_802F6CF4(void* obj, FsaVec3* pos, void* res, u8* blk);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_801F856C(void);
+extern "C" void fn_80226FC8(void* this_, s32 idx) {
+    if (*((u8*)this_ + 0x255) != 1) {
+        u8* p = (u8*)this_ + idx * 4;
+        void* a = *(void**)(p + 0x27c);
+        if (a == 0) {
+            if (fn_8023EFEC(idx) && fn_8023EEB4(idx) == 0x59415349) {
+                s32 id = fn_8023EF50(idx);
+                void* mgr = fn_801F856C();
+                *(void**)(p + 0x27c) = fn_801F666C(mgr, id);
+            }
+        } else if (*((u8*)a + 0x11c) == 0) {
+            *(void**)(p + 0x27c) = 0;
+        } else {
+            FsaVec3* vel = (FsaVec3*)((u8*)a + 0x3c);
+            FsaVec3* apos = (FsaVec3*)((u8*)a + 0xc);
+            FsaVec3* bpos = (FsaVec3*)((u8*)this_ + 0xc);
+            FsaVec3 d;
+            FsaVec3 v0, v1, v2, v3;
+            u8 hit = 0;
+            if (vel->z * vel->z + vel->x * vel->x + vel->y * vel->y > lbl_8053FF60 * FLT_EPSILON && apos->z < lbl_8053FF64) {
+                d.x = apos->x - bpos->x;
+                d.y = apos->y - bpos->y;
+                d.z = apos->z - bpos->z;
+                if (d.x < lbl_8053FF68 && d.y < lbl_8053FF68 && d.x < lbl_8053FF6C && d.y < lbl_8053FF6C) {
+                    hit = 1;
+                }
+                if (hit) {
+                    ((void (*)(void*))(*(void***)a)[18])(a);
+                    *(void**)(p + 0x27c) = 0;
+                    v0.x = bpos->x - lbl_8053FF70;
+                    v0.y = bpos->y - lbl_8053FF70;
+                    v0.z = lbl_8053FF74;
+                    fn_802A3948(lbl_8053AC98, (f32*)&v0, idx, *(u32*)((u8*)this_ + 4), 0xc);
+                    v1.x = bpos->x + lbl_8053FF70;
+                    v1.y = bpos->y - lbl_8053FF70;
+                    v1.z = lbl_8053FF74;
+                    fn_802A3948(lbl_8053AC98, (f32*)&v1, idx, *(u32*)((u8*)this_ + 4), 0xc);
+                    v2.x = bpos->x - lbl_8053FF70;
+                    v2.y = bpos->y + lbl_8053FF70;
+                    v2.z = lbl_8053FF74;
+                    fn_802A3948(lbl_8053AC98, (f32*)&v2, idx, *(u32*)((u8*)this_ + 4), 0xc);
+                    v3.x = bpos->x + lbl_8053FF70;
+                    v3.y = bpos->y + lbl_8053FF70;
+                    v3.z = lbl_8053FF74;
+                    fn_802A3948(lbl_8053AC98, (f32*)&v3, idx, *(u32*)((u8*)this_ + 4), 0xc);
+                    if (*((u8*)this_ + 0x255) == 0) {
+                        fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, lbl_8053FF78, 0x3e3, 0, -2, 0, 0, 1);
+                        *((u8*)this_ + 0x255) = 1;
+                    }
+                }
+            }
+        }
+    }
+}
+
 extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
     s32 found = -1;
     s32 room = *(s32*)((u8*)this_ + 0x4);
@@ -66,6 +121,29 @@ extern "C" s32 fn_80227290(void* this_, f32 eps, u32* types, s32 handle) {
         }
     }
     return found;
+}
+
+extern "C" void fn_80227530(void* this_, f32* out) {
+    FsaVec3 v0, v1, v2, v3;
+    f32* box = (f32*)((u8*)this_ + 0x60);
+    FsaVec3* bpos = (FsaVec3*)((u8*)this_ + 0xc);
+    fn_80226FC8(this_, 0);
+    out[0] = box[0];
+    out[1] = box[1];
+    out[2] = box[2];
+    out[3] = box[3];
+    v0.x = bpos->x - lbl_8053FF70;
+    v0.y = bpos->y - lbl_8053FF70;
+    v0.z = lbl_8053FF74;
+    fn_802A3948(lbl_8053AC98, (f32*)&v0, 0, *(u32*)((u8*)this_ + 4), 0xc);
+    v1.x = bpos->x + lbl_8053FF70;
+    v1.y = bpos->y - lbl_8053FF70;
+    v1.z = lbl_8053FF74;
+    fn_802A3948(lbl_8053AC98, (f32*)&v1, 0, *(u32*)((u8*)this_ + 4), 0xc);
+    if (*((u8*)this_ + 0x255) == 0) {
+        fn_8013CC50(*(u32*)((u8*)this_ + 4), (u8*)this_ + 0xc, lbl_8053FF78, 0x3e3, 0, -2, 0, 0, 1);
+        *((u8*)this_ + 0x255) = 1;
+    }
 }
 
 extern "C" void fn_80227CE8(void* this_) {
@@ -160,3 +238,4 @@ extern "C" void* fn_80228AEC(void* this_, s16 freeFlag) {
     }
     return this_;
 }
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
