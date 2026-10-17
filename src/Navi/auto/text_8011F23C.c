@@ -14,7 +14,7 @@ extern "C" void fn_80123EC0(void* a, ...);
 extern "C" void fn_8013A57C(void);
 extern "C" void* fn_80139950(void*, void*, void*);
 extern "C" void fn_801334AC();
-extern "C" void fn_8013345C();
+extern "C" void fn_8013345C(f32*);
 extern void* lbl_802925EC[];
 extern void* lbl_80292558[];
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
