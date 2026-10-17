@@ -86,6 +86,7 @@ extern "C" s32 fn_801C7C6C(void* a, void* b);
 extern "C" void fn_801C7D34(void* p);
 #include "dolphin/os/OSFastCast.h"
 #include "dolphin/os/OSAlarm.h"
+#include "dolphin/os/OSTime.h"
 extern "C" void fn_8013A57C(void);
 extern "C" void* fn_80139950(void*, void*, void*);
 extern "C" void fn_801334AC(Unk801334AC* p, f32 scale);
@@ -447,6 +448,38 @@ extern "C" void fn_80120C98(void) {
     lbl_802FF348 = NULL;
 }
 
+extern f32 lbl_802FDDA8;
+extern f32 lbl_802FDDAC;
+extern f32 lbl_803015F0;
+extern f32 lbl_803015F4;
+extern "C" void fn_80120CD8(void) {
+    u8* obj = (u8*)lbl_802FF348;
+    obj[0x10] = 0xFF;
+    obj[0x11] = 0x81;
+    obj[0x12] = 0x1E;
+    *(OSTick*)obj = OSGetTick();
+    obj = (u8*)lbl_802FF348;
+    obj[0x38] = 0xFF;
+    obj[0x39] = 0x81;
+    obj[0x3A] = 0x1E;
+    *(OSTick*)(obj + 0x28) = OSGetTick();
+    obj = (u8*)lbl_802FF348;
+    obj[0x24] = 0xFF;
+    obj[0x25] = 0x81;
+    obj[0x26] = 0x1E;
+    *(OSTick*)(obj + 0x14) = OSGetTick();
+    obj = (u8*)lbl_802FF348;
+    obj[0x60] = 0xFF;
+    obj[0x61] = 0x81;
+    obj[0x62] = 0x1E;
+    *(OSTick*)(obj + 0x50) = OSGetTick();
+    f32 a = lbl_803015F0;
+    *(u32*)((u8*)lbl_802FF348 + 0x104) = 0;
+    f32 b = lbl_803015F4;
+    lbl_802FDDA8 = a;
+    lbl_802FDDAC = b;
+}
+
 extern "C" void fn_80120DDC(void);
 extern "C" void fn_801225F8(u8* p);
 extern "C" void fn_80120DA8(u8* p) {
@@ -537,6 +570,47 @@ extern "C" void fn_80123928(void* p, const void* fmt, va_list args) {
     fn_80123628(p, buf);
 }
 
+extern "C" void fn_80123970(u8* p, s32 n)
+{
+    s32 d;
+    s32 s;
+    s32 cnt;
+    if (n < 0) {
+        d = *(s32*)(p + 0x30) - *(s32*)(p + 0x34);
+        if (d < 0) {
+            d += *(s32*)(p + 0x24);
+        }
+        if (n < -d) {
+            n = -d;
+        }
+    } else if (n > 0) {
+        s = *(s32*)(p + 0x38) - *(s32*)(p + 0x34);
+        if (s < 0) {
+            s += *(s32*)(p + 0x24);
+        }
+        cnt = *(s32*)(p + 0x48);
+        if ((u32)(s + 1) <= (u32)cnt) {
+            n = 0;
+        } else {
+            d = *(s32*)(p + 0x38) - *(s32*)(p + 0x30);
+            if (d < 0) {
+                d += *(s32*)(p + 0x24);
+            }
+            d = d - cnt + 1;
+            if (n > d) {
+                n = d;
+            }
+        }
+    }
+    *(s32*)(p + 0x30) += n;
+    if (*(s32*)(p + 0x30) < 0) {
+        *(s32*)(p + 0x30) += *(s32*)(p + 0x24);
+    }
+    if ((u32)*(s32*)(p + 0x30) >= (u32)*(s32*)(p + 0x24)) {
+        *(s32*)(p + 0x30) -= *(s32*)(p + 0x24);
+    }
+}
+
 extern "C" s32 fn_80123A4C(u8* p) {
     s32 n = *(s32*)(p + 0x38) - *(s32*)(p + 0x34);
     if (n >= 0) {
@@ -588,22 +662,20 @@ extern "C" void fn_80123AFC(void* p, void* q) {
 }
 
 void fn_80123B6C(void* arg0, void* arg1) {
-    void* arr[4];
     u32* self = (u32*)arg0;
     if (self[3] == (u32)arg1) {
         if (self[0] <= 1) {
             self[3] = 0;
         } else {
-            void* t = (u8*)arg0 + 4;
+            void* volatile sp14 = (u8*)arg0 + 4;
+            void* volatile sp10 = (u8*)arg0 + 4;
             u32 next;
-            arr[3] = t;
-            arr[2] = t;
-            if ((u32)arg1 == self[2] - 0x18) {
-                arr[1] = (void*)self[1];
-                arr[0] = arr[1];
-                next = (u32)arr[0] - 0x18;
-            } else {
+            if ((u32)arg1 != self[2] - 0x18) {
                 next = ((u32*)arg1)[6] - 0x18;
+            } else {
+                void* volatile sp0C = (void*)self[1];
+                void* volatile sp08 = (void*)self[1];
+                next = self[1] - 0x18;
             }
             self[3] = next;
         }
@@ -615,6 +687,21 @@ void fn_80123B6C(void* arg0, void* arg1) {
         fn_80123EA0(0);
     }
     fn_80167A68(arg0, (u8*)arg1 + 0x18);
+}
+
+extern "C" void fn_80123C34(u8* p) {
+    u32 owner = *(u32*)(p + 0xC);
+    u8* node = *(u8**)(p + 4);
+    u8* end = p + 4;
+    while (node != end) {
+        if ((u32)(node - 0x18) != owner) {
+            fn_8012302C(node - 0x18, 1);
+        }
+        *(u8**)&node = *(u8**)node;
+    }
+    if (*(u32*)(p + 0xC) != 0) {
+        fn_8012302C((void*)*(u32*)(p + 0xC), 0);
+    }
 }
 
 extern "C" void fn_80123D00(u8* p, u8 flag) {
@@ -1832,7 +1919,7 @@ extern "C" void fn_8012D010(void* ptr) {
         *(void (**)(void))((u8*)ptr + 4) = fn_8012CEBC;
         break;
     case 4:
-        *(void (**)(void))((u8*)ptr + 4) = fn_8012C60C;
+        *(void (**)(void))((u8*)ptr + 4) = (void (*)(void))fn_8012C60C;
         break;
     case 5:
         *(void (**)(void))((u8*)ptr + 4) = fn_8012C804;
@@ -2318,6 +2405,35 @@ extern "C" void fn_80132524(void* a, void* b, void* c, void* d);
 extern "C" void fn_801324FC(void* a, void* b, void* c) {
     struct Vec3f buf;
     fn_80132524(a, b, &buf, c);
+}
+
+extern "C" f32 fn_801326B0(u16 arg0, void* arg1, f32 farg0) {
+    f32* t = (f32*)arg1;
+    s32 n;
+    s32 mid;
+    if (farg0 < t[0]) {
+        return t[1];
+    }
+    n = arg0;
+    if (t[(n - 1) * 4] <= farg0) {
+        return t[(n - 1) * 4 + 1];
+    }
+    while (n > 1) {
+        mid = n / 2;
+        if (farg0 >= t[mid * 4]) {
+            t += mid * 4;
+            n -= mid;
+        } else {
+            n = mid;
+        }
+    }
+    f32 d = farg0 - t[0];
+    f32 u = d / (t[4] - t[0]);
+    f32 uu = u * u;
+    f32 v = uu - u;
+    f32 w = ((u + u) * v) - uu;
+    f32 a = (t[1] - t[5]) * w + t[1];
+    return a - d * ((u * t[3]) - ((t[6] * v) + ((t[3] * v) + t[3])));
 }
 
 extern "C" void* fn_80132778(void* param_1, s16 param_2) {
