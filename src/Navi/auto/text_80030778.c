@@ -392,7 +392,7 @@ extern "C" void fn_800353C4(void* p) {
 
 extern float lbl_802FFD4C;
 extern "C" void fn_800353DC(void) {
-    fn_800300C0(0x18, lbl_802FFD4C, 0x80, 0x2000, 0);
+    fn_800300C0(0x18, 0.6f, 0x80, 0x2000, 0);
 }
 
 extern "C" void fn_80035410(void* p) {
