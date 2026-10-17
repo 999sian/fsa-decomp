@@ -610,7 +610,8 @@ extern "C" void* fn_8015AE80(void* p, s16 param_2) {
 }
 
 extern "C" void* fn_8015C634(u32);
-extern "C" void fn_8015C5D4(void*, void*);
+extern "C" int fn_8015C5D4(void*, void*);
+extern "C" void fn_8015BC6C(void*, void*);
 extern "C" void fn_8015B584(char* p, u32 addr) {
     void* blk;
     fn_801BE3A0(p + 0x18);
