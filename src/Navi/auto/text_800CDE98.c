@@ -49,8 +49,31 @@ extern "C" s32 fn_800D02D8(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 f
 extern "C" unsigned char lbl_802C574C[];
 class NaviState_800CF138;
 extern "C" void (NaviState_800CF138::*lbl_802890C8[])();
+extern "C" void fn_800CF094(u8* p) {
+    u8* tbl = lbl_802C574C;
+    s32 i;
+    p[0x28b] = 0;
+    for (i = 0; i < 4; i++) {
+        fn_800D02D8(p, i, p[0x28b], tbl[0x11], 0, 0, *(f32*)(tbl + 0xc), lbl_80300F38);
+    }
+    fn_800D01C0(p, p[0x28b], lbl_802C574C[0x12], *(f32*)(lbl_802C574C + 0x14), lbl_80300F38, 0, 0);
+}
+
 extern "C" void fn_800CF138(u8* p) {
     (((NaviState_800CF138*)p)->*lbl_802890C8[p[0x284]])();
+}
+
+extern "C" void fn_800D0140(u8* p) {
+    u8* tbl = lbl_802C574C;
+    if (p[0x28c] != 0) {
+        s32 r = fn_800D01C0(p, p[0x28b], tbl[0x12], *(f32*)(tbl + 0x14), lbl_80300F38, 0, 0);
+        p[0x28b]++;
+        if (r == 1) {
+            p[0x28b] = 0;
+            p[0x28c] = 0;
+            p[0x28d] = 1;
+        }
+    }
 }
 
 extern "C" s32 fn_800D01C0(u8* p, s16 a, u8 b, f32 x, f32 y, s32 c, s32 mode) {
