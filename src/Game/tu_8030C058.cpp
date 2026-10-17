@@ -4,6 +4,7 @@
 #include "JSystem/JUtility/JUTVideo.h"
 
 extern u8* lbl_8053AB10;
+extern f32 lbl_805416C8;
 
 extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out);
 extern "C" void* fn_802D6A9C(void);
@@ -65,15 +66,52 @@ extern "C" void fn_8030C4A0(u8* p, f32* in, u8 flag, f32* out) {
         f32 y0 = (f32)b;
         f32 xs = (f32)(c - a);
         f32 ys = (f32)(d - b);
-        out[0] = *(f32*)(p + 0x164) + (in[0] - x0) * (*(f32*)(p + 0x16c) - *(f32*)(p + 0x164)) / xs;
-        out[1] = *(f32*)(p + 0x168) + (in[1] - y0) * (*(f32*)(p + 0x170) - *(f32*)(p + 0x168)) / ys;
+        f32 x1 = *(f32*)(p + 0x164);
+        f32 x2 = *(f32*)(p + 0x16c);
+        f32 y1 = *(f32*)(p + 0x168);
+        f32 y2 = *(f32*)(p + 0x170);
+        f32 tx = (in[0] - x0) * (x2 - x1) / xs;
+        f32 ty = (in[1] - y0) * (y2 - y1) / ys;
+        out[0] = x1 + tx;
+        out[1] = y1 + ty;
         out[2] = 0.0f;
     } else {
         const GXRenderModeObj* rm = JUTVideo::getManager()->getRenderMode();
-        out[0] = *(f32*)(p + 0x164) + in[0] * (*(f32*)(p + 0x16c) - *(f32*)(p + 0x164)) / (f32)rm->fbWidth;
-        out[1] = *(f32*)(p + 0x168) + in[1] * (*(f32*)(p + 0x170) - *(f32*)(p + 0x168)) / (f32)rm->efbHeight;
+        f32 x1 = *(f32*)(p + 0x164);
+        f32 x2 = *(f32*)(p + 0x16c);
+        f32 w = (f32)(s32)rm->fbWidth;
+        f32 h = (f32)(s32)rm->efbHeight;
+        f32 y1 = *(f32*)(p + 0x168);
+        f32 y2 = *(f32*)(p + 0x170);
+        out[0] = x1 + in[0] * (x2 - x1) / w;
+        out[1] = y1 + in[1] * (y2 - y1) / h;
         out[2] = 0.0f;
     }
+}
+
+extern "C" void fn_8030C5F0(u8* p, s32 a, s32 b, s32 c, f32* out) {
+    Vec v;
+    PSMTXMultVec((MtxPtr)(p + 0x74), (Vec*)a, &v);
+    f32* m = (f32*)(p + 0xa4);
+    f32 x = v.x * m[0] + v.y * m[1] + v.z * m[2] + 1.0f * m[3];
+    f32 y = v.x * m[4] + v.y * m[5] + v.z * m[6] + 1.0f * m[7];
+    if ((u8)c != 0) {
+        out[0] = 0.5f * (1.0f + x);
+        out[1] = 0.5f * (1.0f - y);
+    } else if ((u8)b != 0) {
+        u32 x0 = *(u32*)(p + 0x144);
+        f32 sx = 0.5f * (1.0f + x);
+        f32 sy = 0.5f * (1.0f - y);
+        out[0] = sx * (f32)(*(u32*)(p + 0x14c) - x0) + (f32)x0;
+        u32 y0 = *(u32*)(p + 0x148);
+        out[1] = sy * (f32)(*(u32*)(p + 0x150) - y0) + (f32)y0;
+    } else {
+        f32 sx = 0.5f * (1.0f + x);
+        f32 sy = 0.5f * (1.0f - y);
+        out[0] = sx * (f32)(s32)JUTVideo::getManager()->getRenderMode()->fbWidth;
+        out[1] = sy * (f32)(s32)JUTVideo::getManager()->getRenderMode()->efbHeight;
+    }
+    out[2] = 0.0f;
 }
 
 extern "C" void fn_8030C7C4(void* self, f32* pos, f32 size) {
