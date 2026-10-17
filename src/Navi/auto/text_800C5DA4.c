@@ -53,7 +53,7 @@ struct VObj_800C954C {
     virtual void v7();
 };
 extern char lbl_8029FDB4[];
-extern "C" void fn_800127A0(void*);
+extern "C" void fn_800127A0(void* self, s8 idx = 0);
 extern "C" void fn_800C8D48(u8* param_1, s32 param_2);
 extern "C" void fn_800C8D90(u8* param_1);
 extern "C" void fn_800C8DF4(u8* param_1);
