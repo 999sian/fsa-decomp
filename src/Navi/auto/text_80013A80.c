@@ -211,9 +211,8 @@ extern "C" void fn_80014160(void* p) {
     Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
     if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == 0x20) {
-        u32* dst = &self->unk28;
-        *dst = lbl_802FB958;
-        fn_80124A04(lbl_802FF370, self->unk50, dst, fn_80013CC8, self);
+        self->unk28 = lbl_802FB958;
+        fn_80124A04(lbl_802FF370, self->unk50, &self->unk28, fn_80013CC8, self);
     } else {
         fn_80124820(lbl_802FF370, self->unk50, fn_80013C14, self);
     }
@@ -253,7 +252,7 @@ extern "C" void fn_80014308(void* p) {
         if (self->unk58 > 0x3c) {
             fn_80014390(self);
         } else {
-            fn_801248B8(lbl_802FF370, self->unk50, fn_80013D10, self);
+            fn_801248B8(lbl_802FF370, self->unk50, fn_80013D10, p);
         }
     }
 }
