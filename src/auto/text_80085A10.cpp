@@ -346,9 +346,9 @@ extern "C" void fn_800863C0(void* param_1) {
     }
 }
 
-extern u8 lbl_8053B770[];
+extern u8 lbl_8053B770[8];
 extern "C" void fn_80086438(u8* param_1) {
-    extern u8 lbl_8053B770[];
+    extern u8 lbl_8053B770[8];
     s32 i;
     s32 n;
     u8* p;
@@ -414,6 +414,7 @@ extern "C" s32 fn_800865DC(void* self_) {
 
 void fn_80086614(void* self_) {
     u32 result = fn_8008603C((int)self_, 0);
+    fn_8008665C((int)self_, result);
 }
 
 extern "C" u32 fn_80086654(int param_1) {
