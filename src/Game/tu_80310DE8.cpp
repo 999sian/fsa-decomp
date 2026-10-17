@@ -12,6 +12,22 @@ extern "C" void fn_8023061C(s32 p, s32 a);
 extern "C" char lbl_804AAAE8[];
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern void* lbl_8053AC98;
+
+struct Vec2_FSA {
+    f32 x;
+    f32 y;
+};
+
+struct Vec3_FSA {
+    Vec2_FSA xy;
+    f32 z;
+};
+
+extern "C" void fn_801F06F0(void* this_, void* p, s32 id, u8* ids, s32 flag, f32 a, f32 b);
+extern "C" void fn_803075AC(void* a, void* b, void* c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i, s32 j);
+extern "C" char lbl_80471438[];
+extern "C" f32 lbl_80541798;
+extern "C" f32 lbl_8054179C;
 extern "C" void* fn_80310DE8(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804AAAE8;
