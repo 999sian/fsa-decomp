@@ -20,6 +20,7 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300CE8;
 extern f32 lbl_80300D04;
+extern u8 lbl_802BB0FC[];
 extern u8 lbl_802FD350[];
 extern u8 lbl_802C55FC[];
 extern "C" void fn_8002F9B4();
@@ -73,6 +74,12 @@ extern "C" int fn_800BB6E8(u8* p, u8* q) {
     p[0x13a] = b;
     p[0x13b] = a;
     return 1;
+}
+
+extern "C" void fn_800BC6F4(u8* p) {
+    *(s16*)(p + 0xe2) = 0;
+    fn_800BD710(p, *(s16*)(p + 0xe2), lbl_802C55FC[0x10], lbl_80300CE8, 0, 0, 0);
+    fn_800BD938(p, *(s16*)(p + 0xe2), *(f32*)(lbl_802C55FC + 0x14), lbl_80300CE8, lbl_802C55FC[0x18], 0, 0);
 }
 
 extern "C" void fn_801E10DC(void* p, void* q);
