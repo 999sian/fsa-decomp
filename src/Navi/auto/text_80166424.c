@@ -1230,10 +1230,8 @@ extern "C" unsigned short fn_80172614(int param_1) {
 }
 
 extern "C" void fn_8017261C(u8* p1, s32 p2, u8* p3) {
-    s32 off = p2 * 4;
-    u8* p = p1 + off;
-    u8 a = p3[0];
-    p[0x16] = a;
+    u8* p = p1 + p2 * 4;
+    p[0x16] = p3[0];
     p[0x17] = p3[1];
     p[0x18] = p3[2];
 }
@@ -1680,6 +1678,12 @@ extern "C" void fn_80173268(void* self, int a, int b) {
 
 extern "C" u32 fn_801732D8(void* param_1) {
     return *(u32*)((u8*)param_1 + 0x58);
+}
+
+extern "C" void fn_801732E0(void* param_1, u8 param_2) {
+    u8 val = *(u8*)((u8*)param_1 + 0x5c);
+    val &= param_2;
+    *(u8*)((u8*)param_1 + 0x5c) = val;
 }
 
 extern "C" void fn_80173300(void)
