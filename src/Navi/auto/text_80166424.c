@@ -392,6 +392,24 @@ extern "C" void fn_8016744C(int param_1, int param_2, int param_3)
 	*(int*)(param_1 + 0x10) = 0;
 }
 
+extern "C" void* memcpy(void*, const void*, unsigned long);
+extern "C" int fn_80167460(int param_1, void* param_2, int param_3)
+{
+	int pos = *(int*)(param_1 + 0x10);
+	int cap = *(int*)(param_1 + 0xc);
+
+	if (pos + param_3 > cap) {
+		param_3 = cap - pos;
+	}
+
+	if (param_3 > 0) {
+		memcpy(param_2, (void*)(*(int*)(param_1 + 0x8) + pos), param_3);
+		*(int*)(param_1 + 0x10) = *(int*)(param_1 + 0x10) + param_3;
+	}
+
+	return param_3;
+}
+
 extern "C" int fn_80167554(int p) { return *(int*)(p + 0xc); }
 
 extern "C" int fn_8016755C(int param_1) {
