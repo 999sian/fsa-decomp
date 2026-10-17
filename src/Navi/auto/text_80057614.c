@@ -1398,6 +1398,48 @@ extern "C" void fn_80060A80(void* self) {
     fn_801DC264(1, v + 0x1a, 1, v + 0x32);
 }
 
+extern "C" u32 fn_801DCD94(u32, u32, u32, u32, u32);
+extern "C" void* fn_8015AA60(u32, u32);
+extern "C" void fn_801DCFB8(void*, void*, u32, u32, u32, u32, u32, u32);
+extern "C" void fn_801DD24C(void*, u32, u32, f32, f32, f32, u32, u32, u32);
+extern "C" void fn_80060E18(u8* p) {
+    u8* q;
+    u8* r;
+    u32 size;
+    s32 i;
+    size = fn_801DCD94(0x1c0, 0x1c0, 5, 0, 0);
+    q = p;
+    r = p;
+    for (i = 0; i < 2; i++) {
+        *(void**)(q + 0x8c8) = fn_8015AA60(size, 0x20);
+        fn_801DCFB8(r + 0x888, *(void**)(q + 0x8c8), 0x1c0, 0x1c0, 5, 0, 0, 0);
+        fn_801DD24C(r + 0x888, 1, 1, 0.0f, 0.0f, 0.0f, 0, 0, 0);
+        q += 4;
+        r += 0x20;
+    }
+}
+
+void fn_80060EF0(void* param_1) {
+    u8* p = (u8*)param_1 + 8;
+    s32 i;
+    s32 j;
+    u32* w;
+    for (i = 0; i < 8; i++) {
+        if (p[0] == 1) {
+            p[0] = 2;
+        } else {
+            p[0] = 0;
+            p[1] = -1;
+        }
+        p[3] = 0;
+        w = (u32*)(p + 0xa8);
+        for (j = 0; j < 26; j++) {
+            w[j] = 0;
+        }
+        p += 0x110;
+    }
+}
+
 extern "C" s32 fn_800613EC(void* self, s32 val) {
     u8* base = (u8*)self + 8;
     if (val == 0) {
