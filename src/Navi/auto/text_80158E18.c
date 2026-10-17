@@ -830,15 +830,15 @@ extern "C" u8* fn_8015C57C(u8* p, u32 size, u8 a, u8 b, u8 c, u8 flags) {
 extern "C" int fn_8015C5D4(void* node, void* list) {
     u8* next = *(u8**)((u8*)node + 0xc);
     u8* prev = *(u8**)((u8*)node + 0x8);
-    if (prev != 0) {
-        *(u8**)(prev + 0xc) = next;
-    } else {
+    if (prev == 0) {
         *(u8**)((u8*)list + 0x80) = next;
-    }
-    if (next != 0) {
-        *(u8**)(next + 0x8) = prev;
     } else {
+        *(u8**)(prev + 0xc) = next;
+    }
+    if (next == 0) {
         *(u8**)((u8*)list + 0x84) = prev;
+    } else {
+        *(u8**)(next + 0x8) = prev;
     }
     fn_8015BC6C(list, node);
     return 0;
