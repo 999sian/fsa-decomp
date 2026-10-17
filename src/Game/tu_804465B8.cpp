@@ -7,7 +7,7 @@ struct J2DScreen {
 
 extern "C" void __dl__FPv(void*);
 extern "C" void* fn_804030C4(u32 type, const char* name);
-extern "C" const char* lbl_804B1BC0;
+extern "C" const char* lbl_804B1BC0[];
 extern "C" u8 lbl_80490038[];
 extern "C" u8 lbl_804B1BE8[];
 extern "C" u32 lbl_8053AF00;
@@ -26,6 +26,61 @@ extern "C" void fn_80446D68(void* self_) {
     fn_8013B490(lbl_8053AB10);
     f32 f = lbl_80543D90;
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
+extern "C" void fn_80446DB0(void* self_) {
+    typedef void* (*SearchFn)(void*, unsigned long long);
+    typedef void (*SetFn)(void*, void*, int);
+    u8* params = lbl_80490038;
+    int i;
+    u8* self = (u8*)self_;
+    void* obj;
+    void* tex;
+    for (i = 0; i < 4; i++, params += 0xc0) {
+        self[0x30] &= ~(1 << i);
+        self[0x30] &= ~(1 << (i + 4));
+        tex = fn_804030C4(0x54494D47, *(const char**)&lbl_804B1BC0);
+
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x68));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x70));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x78));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x80));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x88));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x90));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x98));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xa0));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xa8));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xb0));
+        ((SetFn)((*(void***)obj)[68]))(obj, tex, 0);
+
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x30));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x50));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x60));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x70));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x80));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x90));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xa0));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0xb0));
+        ((u8*)obj)[0xb0] = 0;
+        obj = ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), *(unsigned long long*)(params + 0x40));
+        ((u8*)obj)[0xb0] = 0;
+    }
 }
 
 extern "C" void* fn_80447190(void* param_1, short param_2)
