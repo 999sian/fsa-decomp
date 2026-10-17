@@ -418,22 +418,20 @@ extern "C" s32 fn_80123A70(u8* p) {
 
 extern "C" void fn_80123A94(void* heap) {
     u32* p;
-    u32 zero;
     u32* q;
     if (heap == 0) {
         heap = lbl_802FF544;
     }
     p = (u32*)fn_8015A9A8(0x14, heap, 0);
     if (p != 0) {
-        zero = 0;
-        q = p + 1;
-        p[1] = zero;
-        p[2] = zero;
-        p[0] = zero;
+        q = (u32*)((u8*)p + 4);
+        p[1] = 0;
+        p[2] = 0;
+        p[0] = 0;
         p[1] = (u32)q;
         p[2] = (u32)q;
-        p[3] = zero;
-        p[4] = zero;
+        p[3] = 0;
+        p[4] = 0;
     }
     lbl_802FF360 = p;
 }
@@ -565,6 +563,15 @@ extern "C" void fn_801248B8(void* self, s32 idx, u32 a, u32 b) {
     *(u32*)(e + 0x50) = b;
     *(u8*)(e + 0x3c) = 0;
     fn_801BDE1C(e, 4, 1);
+}
+
+extern "C" void fn_8012495C(void* self, s32 idx, u32 c, u32 a, u32 b) {
+    u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
+    *(u32*)(e + 0x4c) = a;
+    *(u32*)(e + 0x50) = b;
+    *(u8*)(e + 0x3c) = 0;
+    *(u32*)(e + 0x48) = c;
+    fn_801BDE1C(e, 5, 1);
 }
 
 extern "C" void fn_80124AAC(void* self, s32 idx, u32 a, u32 b) {
