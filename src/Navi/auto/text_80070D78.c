@@ -74,6 +74,21 @@ extern "C" void fn_80070D78(u8* self) {
     fn_80070D98(self);
 }
 
+extern "C" bool fn_80070D98(u8* self) {
+    char* str = lbl_80280CF8;
+    void* res = fn_800639B4(&lbl_802FCA18, str + 0x18, lbl_802B7CA0 + 0x2200, 0x40);
+    if (res == nullptr) {
+        fn_8011FD18(fn_8011FD10(), str + 0x24, 0x78, &lbl_802FCA20, str + 0x34);
+        fn_80007AB8(str + 0x24, 0x78, &lbl_802FCA24);
+    }
+    *(void**)(self + 0x24c) = fn_80011CF4(res, 0x80000, 0x11020202);
+    u8 ret = 0;
+    if (res != nullptr && *(void**)(self + 0x24c) != nullptr) {
+        ret = 1;
+    }
+    return ret;
+}
+
 extern "C" void fn_80070E64(void);
 extern "C" void fn_800710A4(void) {
     fn_80070E64();
