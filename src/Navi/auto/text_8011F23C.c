@@ -526,9 +526,9 @@ extern "C" void fn_80124DAC(OSAlarm* alarm, OSContext* ctx) {
 }
 
 extern "C" void fn_80124DD0(void* a, void* b, OSTime tick) {
+    OSAlarm alarm;
     volatile u32 saved;
     BOOL level;
-    OSAlarm alarm;
 
     OSCreateAlarm(&alarm);
     saved = fn_801C027C();
@@ -541,6 +541,20 @@ extern "C" void fn_80124DD0(void* a, void* b, OSTime tick) {
 extern "C" void fn_80124E44(void* p, void** v)
 {
 	*(u32*)((u8*)*v + 0x40) = 0;
+}
+
+extern "C" s32 fn_801400E0(s32 a, s32 b, s32 c, s32 d, s32 e, void* f);
+extern "C" s32 fn_80124E54(s32 param_1, s32* param_2) {
+    u8* r31 = *(u8**)param_2;
+    s32 r3 = fn_801400E0(*(s32*)(r31 + 0x28), *(s32*)(r31 + 0x34), *(s32*)(r31 + 0x38), *(s32*)(r31 + 0x2c), *(s32*)(r31 + 0x30), r31 + 0x44);
+    *(s32*)(r31 + 0x40) = r3;
+    if (*(s32*)(r31 + 0x40) == 0) {
+        *(u8*)(r31 + 0x3C) = 1;
+    } else if (*(s32*)(r31 + 0x40) == 1 || *(s32*)(r31 + 0x40) == 3) {
+        param_2[5] = param_2[4];
+        param_2[6] = ((*(u32*)0x800000F8 >> 2) / 1000) * 15;
+    }
+    return *(s32*)(r31 + 0x40);
 }
 
 extern "C" s32 fn_801C5B30(void* param_1);
@@ -699,16 +713,17 @@ extern "C" void fn_80128620(char* p) {
 }
 
 extern "C" void fn_80128650(char* p, char* q) {
-    char* info = **(char***)(*(char**)(p + 4) + 0x1c);
-    s32 a = *(s16*)(q + 0x80) + (*(u8*)(q + 0x95) & *(u8*)(info + 0x2f));
+    u8* info = **(u8***)(*(u8**)(p + 4) + 0x1c);
+    s32 a = *(s16*)(q + 0x80) + (q[0x95] & info[0x2f]);
     s32 m = *(s16*)(info + 0x24) + 1;
-    *(s16*)(p + 0x214) = a - m * (a / m);
+    *(s16*)(p + 0x214) = a - (a / m) * m;
 }
 
 extern "C" void fn_8012868C(char* p) {
-    char* info = **(char***)(*(char**)(p + 4) + 0x1c);
-    u32 a = *(u32*)(*(char**)p + 0x100);
-    s16 m = *(s16*)(info + 0x24);
+    char* info = *(char**)(*(char**)(p + 4) + 0x1c);
+    char* obj = *(char**)p;
+    u32 a = *(u32*)(obj + 0x100);
+    s16 m = *(s16*)(*(char**)info + 0x24);
     u32 q = a / m;
     s32 r = a - q * m;
     *(s16*)(p + 0x214) = r + (q & 1) * (m - 2 * r);
@@ -832,6 +847,12 @@ extern "C" void fn_80129750(void* param_1, f32* param_2, f32* param_3) {
     f32 z = param_2[5];
     param_3[1] = y;
     param_3[2] = z;
+}
+
+extern "C" void fn_8012976C(void* a, const Vec3f* src, Vec3f* dst) {
+    dst->x = -src->x;
+    dst->y = -src->y;
+    dst->z = -src->z;
 }
 
 extern "C" void fn_801297A0(u8* obj, s32 param_2, f32* out) {
