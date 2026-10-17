@@ -9,6 +9,7 @@ extern "C" s32 fn_8022CAF8(s32);
 extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8022F3DC(s32);
 extern const f32 lbl_80542618;
+extern const f32 lbl_80542604;
 extern const f32 lbl_8054261C;
 extern const f64 lbl_805425F8;
 extern const f32 lbl_805425D8;
@@ -34,65 +35,61 @@ extern "C" Actor* fn_8034EDDC(Actor* self, s16 flag) {
 }
 
 extern "C" void fn_8035001C(u8* self, u32 kind) {
+    f32 x;
+
     switch (kind) {
-    case 0: {
-        f32 x = (f32)*(s32*)(self + 0x260);
+    case 0:
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * x;
         *(f32*)(self + 0x40) = lbl_805425D8;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    }
-    case 1: {
-        f32 x = (f32)*(s32*)(self + 0x260);
+    case 1:
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * -x;
         *(f32*)(self + 0x40) = lbl_805425D8;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    }
-    case 2: {
-        f32 x = (f32)*(s32*)(self + 0x260);
+    case 2:
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_805425D8;
         *(f32*)(self + 0x40) = lbl_80542600 * x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    }
-    case 3: {
-        f32 x = (f32)*(s32*)(self + 0x260);
+    case 3:
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_805425D8;
         *(f32*)(self + 0x40) = lbl_80542600 * -x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    }
-    case 4: {
-        f32 x = (f32)*(s32*)(self + 0x260);
+    case 4:
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * x;
         *(f32*)(self + 0x40) = lbl_80542600 * x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    }
     case 5: {
-        f32 x = (f32)*(s32*)(self + 0x260);
         f32 y = (f32)*(s32*)(self + 0x260);
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * -x;
         *(f32*)(self + 0x40) = lbl_80542600 * y;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
     }
     case 6: {
-        f32 x = (f32)*(s32*)(self + 0x260);
         f32 y = (f32)*(s32*)(self + 0x260);
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * x;
         *(f32*)(self + 0x40) = lbl_80542600 * -y;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
     }
-    case 7: {
-        f32 x = (f32)*(s32*)(self + 0x260);
+    case 7:
+        x = (f32)*(s32*)(self + 0x260);
         *(f32*)(self + 0x3c) = lbl_80542600 * -x;
         *(f32*)(self + 0x40) = lbl_80542600 * -x;
         *(f32*)(self + 0x44) = lbl_805425D8;
         break;
-    }
     default:
         *(f32*)(self + 0x3c) = lbl_805425D8;
         *(f32*)(self + 0x40) = lbl_805425D8;
@@ -273,26 +270,20 @@ extern "C" s32 fn_80351020(u8* this_, s32 player) {
     if (room != fn_8023DE58(player)) {
         return 0;
     }
-    f32 zero = lbl_805425D8;
     f32 scale = lbl_80542628;
     f32 margin = lbl_8054262C;
     for (s32 i = 0; i < 8; i++) {
         JGeometry::TVec3f pt;
         fn_8022E088(player, i, &pt);
         pt -= *(JGeometry::TVec3f*)(this_ + 0xc);
-        pt.z = zero;
+        pt.z = 0.0f;
         f32 ang = JMath::atanTable_.atan2_(pt.y, pt.x);
         s32 idx = (s32)(ang * scale);
-        f32 len = pt.x * pt.x + pt.y * pt.y;
-        if (len > zero) {
-            f32 y = __frsqrte(len);
-            y = lbl_80542600 * y * (lbl_80542604 - (len * (y * y)));
-            len = len * y;
-        }
+        f32 len = JGeometry::TUtilf::sqrt(pt.x * pt.x + pt.y * pt.y);
         u8* sc = (u8*)&JMath::sincosTable_ + ((idx >> 2) & 0x3ff8);
         pt.x = *(f32*)(sc + 4) * len;
         pt.y = *(f32*)sc * len;
-        pt.z = zero;
+        pt.z = 0.0f;
         f32 x0 = *(f32*)(this_ + 0x80) - margin;
         f32 y0 = *(f32*)(this_ + 0x84) - margin;
         f32 x1 = *(f32*)(this_ + 0x88) + margin;
@@ -325,10 +316,12 @@ extern "C" void fn_803511F0(u8* self) {
     f32 dx2 = dx * dx;
     f32 dy2 = dy * dy;
     f32 d2 = dx2 + dy2;
-    if (!(d2 > lbl_805425D8)) {
+    if (d2 <= lbl_805425D8) {
         f32 y = __frsqrte(d2);
         y = lbl_80542600 * y * (lbl_80542604 - (d2 * (y * y)));
         d2 = d2 * y;
+    } else {
+        d2 = d2;
     }
     if (d2 > lbl_80542608) {
         *(JGeometry::TVec3f*)(self + 0xc) = *(JGeometry::TVec3f*)(self + 0x24);
@@ -336,7 +329,15 @@ extern "C" void fn_803511F0(u8* self) {
         if (kind >= 8) {
             Actor_CreateByID(fn_801F856C(), 0x4b4d5249, kind, self + 0xc, 0x83, -1, -1);
             *(f32*)(self + 0x28c) = lbl_805425F0;
+        } else {
+            fn_8013CC50(kind, self + 0xc, 0x503, 1, lbl_805425E8, 0, 0, 0, 1);
+            fn_801F0E34(self, 0x30003, 0);
         }
+    } else {
+        *(JGeometry::TVec3f*)(self + 0xc) = *(JGeometry::TVec3f*)(self + 0x24);
+    }
+    if (*(s32*)(self + 4) < 8) {
+        *(f32*)(self + 0x28c) = lbl_805425D8;
     }
 }
 
