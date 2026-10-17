@@ -590,6 +590,32 @@ extern "C" u8* fn_801636F8(u8* p, void* a, void* b) {
     return p;
 }
 
+extern "C" void fn_801641A8(u8* p) {
+    if (*(void**)(p + 0x44) != NULL && p[0x3c] != 1) {
+        u8* entry = *(u8**)(p + 0x4c);
+        for (u32 i = 0; i < *(u32*)(*(u8**)(p + 0x44) + 8); i++) {
+            if (*(void**)(entry + 0x10) != NULL) {
+                if ((*(u32*)(entry + 4) >> 24 & 0x10) == 0) {
+                    fn_80159C6C(*(void**)(entry + 0x10), *(s32*)(p + 0x38));
+                }
+                *(void**)(entry + 0x10) = NULL;
+            }
+        }
+    }
+}
+
+extern "C" BOOL fn_8016424C(u8* a, void* b) {
+    u8* p = (u8*)fn_801615C4();
+    if (p == NULL) {
+        return 0;
+    }
+    if ((*(u32*)(p + 4) >> 24 & 0x10) == 0) {
+        fn_80159C6C(b, *(s32*)(a + 0x38));
+    }
+    *(u32*)(p + 0x10) = 0;
+    return 1;
+}
+
 extern "C" void* fn_801615C4(void);
 extern "C" void fn_80159C6C(void*, int);
 extern "C" void* fn_80160D88(void*, char*, void*);
