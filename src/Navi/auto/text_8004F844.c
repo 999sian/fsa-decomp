@@ -18,6 +18,10 @@ extern "C" char lbl_802C05A0[];
 extern "C" void fn_8002A3CC(void* p, void* q, s32 a, s32 b);
 extern "C" void fn_8004FA30(void) {}
 
+extern "C" void fn_80052BBC(void* param_1) {
+    fn_8002A3CC(param_1, lbl_802C05A0, 0x93, 1);
+}
+
 extern "C" void fn_80052DEC(void)
 {
 	int base = *(int*)(lbl_802BB0FC + 0x58);
