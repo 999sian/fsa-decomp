@@ -33,6 +33,17 @@ extern "C" unsigned char fn_800B51E8(void* self, int i) {
     return lbl_802313EC[i];
 }
 
+extern "C" void fn_800B562C(u8* p) {
+    if (fn_8002F6BC() == 0) {
+        if (p[0x39e] != 0) {
+            p[0x39e]--;
+        } else {
+            fn_8002F544(lbl_80287510[0]);
+            *(u32*)(p + 0x378) = 0xb;
+        }
+    }
+}
+
 extern "C" void fn_800B6E5C(u8* p) {
     p[0x384] = 0;
     fn_8002F544(lbl_80287510[p[0x387] + p[0x388] * 4]);
