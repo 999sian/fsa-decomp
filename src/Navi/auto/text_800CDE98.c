@@ -38,6 +38,17 @@ struct VObjLerp {
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800cde98-0x800d0844 (21 functions). split_file divides it into the game's real files.
 
+struct VObjDel {
+    virtual void v0(s32 a);
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+};
+
 extern void* lbl_802891CC[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
@@ -74,6 +85,25 @@ extern "C" void fn_800CF170(u8* p) {
     if (res[0] == 1 && res[1] == 1 && res[2] == 1 && res[3] == 1) {
         p[0x28b] = 0;
         p[0x284] = 1;
+    }
+}
+
+extern "C" void fn_8017A4F8(void*);
+extern "C" void fn_80178998(void*);
+extern "C" void fn_800D0050(u8* p) {
+    if (p[0x264] != 0) {
+        *(s32*)(p + 0x258) = *(s32*)(p + 0x258) + 1;
+        if (*(s32*)(p + 0x258) >= *(s16*)(*(u8**)(p + 0x24c) + 6)) {
+            *(s32*)(p + 0x258) -= *(s16*)(*(u8**)(p + 0x24c) + 6);
+        }
+        *(f32*)(*(u8**)(p + 0x24c) + 8) = (f32)*(s32*)(p + 0x258);
+        fn_8017A4F8(*(void**)(p + 0xc));
+        *(s32*)(p + 0x25c) = *(s32*)(p + 0x25c) + 1;
+        if (*(s32*)(p + 0x25c) >= *(s16*)(*(u8**)(p + 0x250) + 6)) {
+            *(s32*)(p + 0x25c) -= *(s16*)(*(u8**)(p + 0x250) + 6);
+        }
+        *(f32*)(*(u8**)(p + 0x250) + 8) = (f32)*(s32*)(p + 0x25c);
+        fn_80178998(*(void**)(p + p[0x285] * 16 + 0xcc));
     }
 }
 
