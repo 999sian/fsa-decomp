@@ -94,7 +94,6 @@ void fn_8037AE30(void*);
 void fn_8023F1D4(int, void*, int, int, u8);
 void* fn_8023E724(s32);
 void fn_801F7B18();
-void fn_802D8D50(char*, u8);
 void* fn_8023E724(s32);
 s32 fn_8023CBC0();
 s32 fn_80230498(s32, const void*, s32, s32, s32, s32, s32);
