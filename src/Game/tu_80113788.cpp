@@ -1,5 +1,14 @@
 #include "types.h"
 
+extern "C" f32 lbl_8053C67C;
+extern "C" f32 lbl_8053C684;
+extern "C" f32 lbl_8053C690;
+extern "C" f32 lbl_8053C698;
+extern "C" f32 lbl_8053C69C;
+extern "C" u16 lbl_804648E8[];
+extern "C" u32 lbl_804648F4[];
+extern "C" char lbl_8049D820[];
+
 struct Mtx34_8011395C {
     float m[3][4];
 };
