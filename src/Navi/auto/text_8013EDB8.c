@@ -25,6 +25,11 @@ extern "C" void fn_8013F400(s32 idx, s32 r);
 extern "C" void fn_8013F4D0(s32 idx, s32 r);
 extern "C" void fn_801408CC(void* p);
 extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
+struct NaviNode {
+    NaviNode* next;
+    NaviNode* prev;
+};
+extern NaviNode* lbl_802FF394;
 extern "C" void fn_8013EDB8(s32 idx) {
     u8* b = lbl_802C6A80 + (idx << 8);
     if (*(s32*)(b + 0x20) != 0) {
@@ -265,6 +270,35 @@ extern "C" s32 fn_8014034C(s32 idx, void* param_2, s32 param_3) {
         r = fn_801406B0(idx, 5, 1, fn_80140288);
     }
     return r != 0 ? r : fn_80140520(idx);
+}
+
+extern "C" void fn_80140410(s32 idx, s32 param_2, OSContext* param_3) {
+    u8* b = lbl_802C6A80 + (idx << 8);
+    OSContext ctx;
+    void (*cb)(s32);
+    void (*cb2)(s32, s32);
+    if (lbl_802FF388 == 0) {
+        if ((param_2 & 0xf) != 0) {
+            *(s32*)(b + 0x20) = 1;
+        } else {
+            *(s32*)(b + 0x20) = 0;
+        }
+        cb = *(void (**)(s32))(b + 0x38);
+        if (cb != 0) {
+            *(s32*)(b + 0x38) = 0;
+            cb(idx);
+        }
+        cb2 = *(void (**)(s32, s32))(b + 0x1c);
+        if (cb2 != 0) {
+            OSClearContext(&ctx);
+            OSSetCurrentContext(&ctx);
+            cb2 = *(void (**)(s32, s32))(b + 0x1c);
+            *(s32*)(b + 0x1c) = 0;
+            cb2(idx, *(s32*)(b + 0x20));
+            OSClearContext(&ctx);
+            OSSetCurrentContext(param_3);
+        }
+    }
 }
 
 extern "C" s64 fn_80140724(s32 idx, s64 value)
