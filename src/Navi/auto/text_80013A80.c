@@ -415,7 +415,7 @@ extern "C" void fn_80015B1C(void* p) {
         *(u16*)(self + 0x8a) = 0;
         *(u16*)(self + 0x8c) = 0;
         *(u16*)(self + 0x8e) = 0;
-        *(f32*)(self + 0x90) = lbl_802FFBBC;
+        *(f32*)(self + 0x90) = 0.0f;
         fn_801E10DC(p, 0);
     }
     self[0x5e] = 0;
