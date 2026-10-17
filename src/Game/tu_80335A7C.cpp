@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
@@ -44,3 +45,6 @@ extern "C" void fn_80335D4C(void* this_) {
     p[0x247] = *(u32*)(p + 0x90) & 0xf;
     p[0x248] = (*(u32*)(p + 0x90) >> 4) & 0xf;
 }
+
+
+
