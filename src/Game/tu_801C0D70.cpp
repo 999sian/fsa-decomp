@@ -211,13 +211,12 @@ extern "C" void fn_801C1224(char* this_, s32 param_2) {
     };
     s32 count = *(s32*)(this_ + 0xc);
     char* p = this_;
-    for (s32 i = 0; i < count; i++) {
+    for (s32 i = 0; i < count; p += 4, i++) {
         char* obj = (char*)fn_801F666C(fn_801F856C(), *(s32*)(p + 0x10));
         if (obj != 0 && (*(u32*)(obj + 0x230) & 0x10000) == 0) {
             *(s32*)(obj + 0x10c) = param_2;
             ((VObj*)obj)->v07();
         }
-        p += 4;
     }
 }
 
@@ -244,11 +243,11 @@ extern "C" s32 fn_801C1314(u16* this_) {
     return ret;
 }
 
-extern "C" void fn_801C1374(u16* this_, char param_2) {
+extern "C" void fn_801C1374(u16* this_, u8 param_2) {
     s32 x = *(s32*)((char*)this_ + 0x50);
-    u8 active;
+    bool active;
     this_[4] = this_[4] + 1;
-    active = ((u32)x >> 31) ^ 1;
+    active = !(x < 0);
     if (this_[4] == this_[2] && (!active || param_2 != 0)) {
         if (param_2 != 0) {
             this_[0] |= 0x200;
@@ -256,20 +255,20 @@ extern "C" void fn_801C1374(u16* this_, char param_2) {
         fn_802D7440(fn_802D6A9C(), 1);
         fn_80138B7C(lbl_8053AAF8);
         fn_802D6BC8(fn_802D6A9C(), 0);
-        if (((u32)*(s32*)((char*)this_ + 0x50) >> 31) == 1) {
+        if (!(u8)(((u32)*(s32*)((char*)this_ + 0x50) >> 31) ^ 1)) {
             fn_8022ADCC();
         }
-    } else if (active && this_[4] == 3) {
+    } else if (active && (s32)this_[4] == 3) {
         this_[0] |= 0x100;
     }
 }
 
 extern "C" void fn_801C1440(char* this_, s32 param_2) {
+    u8 found = 0;
     s32* p = (s32*)(this_ + 0x10);
     s32 i;
-    u8 found;
-    found = i = 0;
     if (*(s32*)(this_ + 0xc) <= 0) return;
+    i = found;
     for (; i < *(s32*)(this_ + 0xc); i++, p++) {
         if (!found) {
             if (param_2 == *p) {
