@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct Box4 {
     f32 a, b, c, d;
@@ -139,10 +140,11 @@ extern "C" void fn_80175024(void* this_) {
                         if (*(u32*)((char*)obj + 0x90) == 7) {
                             v = *(Vec3f*)(p + 0xc);
                         } else {
-                            Box4 box = *(Box4*)((char*)fn_802D6A9C() + (*(s32*)((char*)obj + 0x4) < 8 ? 0xcc : 0xdc));
-                            v.x = *(f32*)(p + 0xc) + box.a;
-                            v.y = *(f32*)(p + 0x10) + box.b;
-                            v.z = *(f32*)(p + 0x14);
+                            s32 room = *(s32*)((char*)obj + 0x4);
+                            Box4 box = *(Box4*)((char*)fn_802D6A9C() + (room < 8 ? 0xcc : 0xdc));
+                            v = *(Vec3f*)(p + 0xc);
+                            v.x += box.a;
+                            v.y += box.b;
                         }
                         *(Vec3f*)((char*)obj + 0xc) = v;
                     }
