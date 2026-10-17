@@ -19,9 +19,9 @@ extern "C" void fn_8008AE90(void) {
     fn_8008AF98();
 }
 
-extern "C" void fn_8008AEB0(void);
-extern "C" void fn_8008BC64(void) {
-    fn_8008AEB0();
+extern "C" s32 fn_8008AEB0(u8* param_1);
+extern "C" void fn_8008BC64(u8* param_1) {
+    fn_8008AEB0(param_1);
 }
 
 extern void fn_8008BA14(void* param);
