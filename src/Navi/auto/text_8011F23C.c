@@ -800,6 +800,17 @@ extern "C" void fn_80128984(void) {
     fn_801DACA4(0, 0, 0, 0x1e, 0, 0x7d);
 }
 
+extern "C" void fn_80128E3C(void** param_1) {
+    u8* obj = (u8*)param_1[0];
+    u8** info = *(u8***)((u8*)param_1[1] + 0x1c);
+    u32 n = (*info)[0x1f] - 1;
+    u32 v = *(u32*)(obj + 0x100);
+    if (n < v) {
+        v = n;
+    }
+    obj[0x111] = ((u8*)info[2])[v & 0xff];
+}
+
 extern "C" void fn_80128E78(char* p, char* q) {
     char* r6;
     s32 m;
@@ -926,6 +937,14 @@ extern "C" void* fn_8012A804(void* p) {
 }
 
 extern "C" int fn_8012A80C(int* p) { return *p; }
+
+extern "C" void fn_8012B878(u8* p) {
+    u8* obj = *(u8**)p;
+    Unk80133A44Listener* sub = *(Unk80133A44Listener**)(obj + 0xec);
+    if (sub != 0) {
+        sub->vf5(obj);
+    }
+}
 
 extern "C" void fn_8012BEC0(void* a, f32* p) {
     p[0x64 / 4] = p[0x60 / 4];
