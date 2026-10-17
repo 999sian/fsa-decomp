@@ -215,6 +215,56 @@ extern "C" void fn_801E3E8C(unsigned char* dst, const unsigned char* src, unsign
     }
 }
 
+extern "C" void fn_801E3F48(unsigned char* dst, const unsigned char* src, unsigned long n) {
+    unsigned long i;
+    unsigned long chunks;
+    unsigned long sh;
+    unsigned long shl;
+    unsigned long shr;
+    unsigned long* d;
+    unsigned long* w;
+    unsigned long a;
+    unsigned long b;
+
+    i = -(unsigned long)dst & 3;
+    dst--;
+    src--;
+    if (i != 0) {
+        n -= i;
+        do {
+            *++dst = *++src;
+        } while (--i != 0);
+    }
+    chunks = n >> 3;
+    src++;
+    sh = (unsigned long)src & 3;
+    shl = sh << 3;
+    shr = 32 - shl;
+    d = (unsigned long*)(dst - 3);
+    w = (unsigned long*)((unsigned long)src - sh);
+    a = w[0];
+    do {
+        b = w[1];
+        *d++ = (a << shl) | (b >> shr);
+        w += 2;
+        a = w[0];
+        *d++ = (b << shl) | (a >> shr);
+    } while (--chunks != 0);
+    if (n & 4) {
+        w += 1;
+        b = w[0];
+        *d++ = (a << shl) | (b >> shr);
+    }
+    dst = (unsigned char*)d - 3;
+    src = (const unsigned char*)w + sh;
+    i = n & 3;
+    if (i != 0) {
+        do {
+            *++dst = *++src;
+        } while (--i != 0);
+    }
+}
+
 extern "C" void fn_801E4018(unsigned char* dst, const unsigned char* src, unsigned long n) {
     unsigned long i;
     unsigned long* d32;
@@ -264,22 +314,22 @@ extern "C" void fn_801E4018(unsigned char* dst, const unsigned char* src, unsign
 
 extern "C" void fn_801E40D0(unsigned char* dst, const unsigned char* src, unsigned long n) {
     unsigned long i;
-    unsigned long chunks;
-    unsigned long words;
     unsigned long* d32;
     const unsigned long* s32;
 
     i = (-(unsigned long)dst) & 3;
+    dst--;
+    src--;
     if (i != 0) {
         n -= i;
         do {
-            *dst++ = *src++;
+            *++dst = *++src;
         } while (--i != 0);
     }
-    d32 = (unsigned long*)dst;
-    s32 = (const unsigned long*)src;
-    chunks = n >> 5;
-    if (chunks != 0) {
+    d32 = (unsigned long*)(dst - 3);
+    s32 = (const unsigned long*)(src - 3);
+    i = n >> 5;
+    if (i != 0) {
         do {
             d32[1] = s32[1];
             d32[2] = s32[2];
@@ -291,21 +341,21 @@ extern "C" void fn_801E40D0(unsigned char* dst, const unsigned char* src, unsign
             d32[8] = s32[8];
             d32 += 8;
             s32 += 8;
-        } while (--chunks != 0);
+        } while (--i != 0);
     }
-    words = (n >> 2) & 7;
-    if (words != 0) {
-        do {
-            *d32++ = *s32++;
-        } while (--words != 0);
-    }
-    dst = (unsigned char*)d32;
-    src = (const unsigned char*)s32;
-    i = n & 3;
+    i = (n >> 2) & 7;
     if (i != 0) {
         do {
-            *dst++ = *src++;
+            *++d32 = *++s32;
         } while (--i != 0);
+    }
+    dst = (unsigned char*)d32 + 3;
+    src = (const unsigned char*)s32 + 3;
+    n &= 3;
+    if (n != 0) {
+        do {
+            *++dst = *++src;
+        } while (--n != 0);
     }
 }
 
@@ -573,9 +623,9 @@ extern "C" float fn_801EA270(void) {
     return (float)fn_801E9E10();
 }
 
-extern "C" double fn_801E98A8(void);
-extern "C" float fn_801EA294(void) {
-    return (float)fn_801E98A8();
+extern "C" double fn_801E98A8(double x);
+extern "C" float fn_801EA294(double x) {
+    return (float)fn_801E98A8(x);
 }
 
 extern "C" int fn_801EA2B8(double f1_param) {
