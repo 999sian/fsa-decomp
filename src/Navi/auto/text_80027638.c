@@ -25,6 +25,9 @@ extern "C" char lbl_802BB0FC[];
 extern "C" unsigned int lbl_8022797C[];
 extern float lbl_802FFD10;
 extern "C" unsigned char lbl_8022F534[];
+extern "C" unsigned char lbl_802FBE3C[];
+extern "C" unsigned int lbl_802FEE30;
+extern "C" int fn_8002B484(unsigned char* p, unsigned int a, unsigned char b);
 struct S_801F9280 {
     int v[7];
 };
@@ -279,6 +282,39 @@ extern "C" int fn_8002B620(unsigned char* self, unsigned char idx, unsigned char
     return 0;
 }
 
+extern "C" int fn_8002B6D4(int a, unsigned char v) {
+    int i;
+    unsigned char* p = (unsigned char*)lbl_802BB0FC;
+    for (i = 0; i < 4; i++) {
+        if (v == p[0x1d8]) {
+            return 1;
+        }
+        if (v == p[0x1d9]) {
+            return 1;
+        }
+        if (v == p[0x1da]) {
+            return 1;
+        }
+        if (v == p[0x1db]) {
+            return 1;
+        }
+        if (v == p[0x1dc]) {
+            return 1;
+        }
+        if (v == p[0x1dd]) {
+            return 1;
+        }
+        if (v == p[0x1de]) {
+            return 1;
+        }
+        if (v == p[0x1df]) {
+            return 1;
+        }
+        p += 0x4c;
+    }
+    return 0;
+}
+
 extern "C" unsigned char fn_8002B7B0(unsigned char* self, unsigned char idx, int slot, unsigned char val) {
     if (val < 7 || val >= 0x14 || val == 0xe) {
         val = 0;
@@ -430,6 +466,28 @@ extern "C" void fn_8002E3C4(char* p, int idx) {
         fn_8005869C(n, 3);
         e[2] = 1;
         e[3] = 3;
+    }
+}
+
+extern "C" void fn_8002E55C(unsigned char* obj) {
+    if (lbl_802FEE28 != 0 && fn_80058740(1, (void*)lbl_802FEE28) == 0 &&
+        fn_8005887C((void*)lbl_802FEE28) == 1000000) {
+        int p = lbl_802FEE28;
+        if (obj[0x56e] == 3) {
+            fn_800589CC(1);
+            fn_800589CC(2);
+        } else if (obj[0x56e] != 0) {
+            fn_800589CC(1);
+        }
+        lbl_802FEE28 = 0;
+        *(unsigned short*)(obj + 0x56c) = 0;
+        obj[0x56e] = 0;
+        obj[0x56f] = 1;
+        lbl_802FEE28 = p;
+        fn_80058654(1, (void*)p, 1, lbl_802FFD10);
+        *(unsigned short*)(obj + 0x56c) = (unsigned short)p;
+        obj[0x56e] = 2;
+        obj[0x56f] = 1;
     }
 }
 
