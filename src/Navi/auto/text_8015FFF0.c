@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" int fn_801E6578(void* a, void* b);
 extern "C" void* lbl_802FF5F8;
 extern void* lbl_802FF5F0;
 extern "C" void* fn_801611A8(void*, char*, void*);
@@ -121,6 +122,26 @@ extern "C" void* fn_80160220(s32 id, void* owner) {
     return 0;
 }
 
+extern "C" BOOL fn_80160464(void* self, char* p) {
+    void* r;
+    BOOL found;
+    if (*p == '/') {
+        p++;
+        if (*p == 0) {
+            p = NULL;
+        }
+        r = fn_80160D88(self, p, 0);
+    } else {
+        r = fn_80160D88(self, p, lbl_802FF5F8);
+    }
+    found = r != NULL;
+    if (found) {
+        lbl_802FF5F0 = self;
+        lbl_802FF5F8 = (void*)(((s32)r - *(s32*)((u8*)self + 0x48)) / 16);
+    }
+    return found;
+}
+
 extern "C" int fn_80160564(void* a, void* b, void* p) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
@@ -237,6 +258,29 @@ extern "C" int fn_801607C0(void* self, void* a, void* b, u32 id, void* name) {
         r = fn_80161518(self, name);
     } else {
         r = fn_801610AC(self, id, name);
+    }
+    if (r != 0) {
+        ((Obj*)self)->v44(a, b, r, &out);
+        return out;
+    }
+    return 0;
+}
+
+extern "C" int fn_8016086C(void* self, void* a, void* b, char* p) {
+    struct Obj {
+        virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
+        virtual void v4(); virtual void v5(); virtual void v6(); virtual void v7();
+        virtual void v8(); virtual void v9(); virtual void v10(); virtual void v11();
+        virtual void v12(); virtual void v13();
+        virtual int v40(void* r, int b);
+        virtual void v44(void* a, void* b, void* r, int* out);
+    };
+    void* r;
+    int out;
+    if (p[0] == '/') {
+        r = fn_801611A8(self, p + 1, 0);
+    } else {
+        r = fn_801611A8(self, p, lbl_802FF5F8);
     }
     if (r != 0) {
         ((Obj*)self)->v44(a, b, r, &out);
@@ -559,20 +603,23 @@ extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
 extern "C" s32 fn_80162724(void* p, u32 a, u32 b, u32 c, s32 mode) {
     u32 out;
     u32 w;
-    c = c & ~0x1f;
     w = (a + 0x1f) & ~0x1f;
-    if (mode == 0) {
+    c = c & ~0x1f;
+    switch (mode) {
+    case 0:
         if (w > c) {
             w = c;
         }
         fn_8015E1F4(p, b, w, 0, c, 0, -1, &out);
         return out;
-    } else if (mode < 0 || mode > 2) {
+    case 1:
+    case 2:
+        fn_8015E1F4(p, b, w, 1, c, 0, -1, &out);
+        return out;
+    default:
         fn_8011C9EC(lbl_80297E28, 0x28f, lbl_802FE2E0, lbl_80297E3C);
         return 0;
     }
-    fn_8015E1F4(p, b, w, 1, c, 0, -1, &out);
-    return out;
 }
 
 extern "C" void fn_8015D0B8(void*, int);
