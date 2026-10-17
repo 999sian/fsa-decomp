@@ -11,6 +11,10 @@ struct VObj_800A1A64 {
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800c4768-0x800c5af8 (33 functions). split_file divides it into the game's real files.
 
+extern "C" void fn_800C55C8(u8* p);
+class NaviState_800C4768;
+extern void (NaviState_800C4768::*lbl_80288294[])();
+
 extern void* lbl_80288450[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
@@ -57,7 +61,8 @@ extern "C" void fn_800C4D04(u8* param_1) {
         fn_800C5648(param_1);
         fn_800C5434(param_1);
         u8* obj = *(u8**)(param_1 + 0x24);
-        (*(void (**)(void*, void*, s32))(*(u8**)obj + 0x114))(obj, lbl_802881B8, 0);
+        void (*fn)(void*, void*, s32) = *(void (**)(void*, void*, s32))(*(u8**)obj + 0x114);
+        fn(obj, lbl_802881B8, 0);
         param_1[0x36] = 0;
         param_1[0x37] = 0;
     }
@@ -76,8 +81,8 @@ extern "C" void fn_800C4DA4(u8* param_1) {
 }
 
 extern "C" void fn_800C4E28(u8* param_1) {
-    f32 fVar1 = lbl_80300D8C;
-    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], lbl_802C565C[0xc], 0, fVar1, *(f32*)(lbl_802C565C + 0x10));
+    u8* tbl = lbl_802C565C;
+    s32 iVar1 = fn_800C56A0(param_1, param_1[0x38], tbl[0xc], 0, lbl_80300D8C, *(f32*)(tbl + 0x10));
     param_1[0x38]++;
     if (iVar1 == 1) {
         param_1[0x38] = 0;
@@ -214,6 +219,19 @@ extern "C" void fn_800C5648(u8* param_1) {
 extern "C" void fn_800C576C(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
+}
+
+extern "C" void fn_800C57A8(u8* param_1) {
+    void* obj = *(void**)(param_1 + 0x2c);
+    if (obj != 0) {
+        (*(void (**)(void*, s32))(*(u8**)obj + 0x8))(obj, 1);
+    }
+    obj = *(void**)(param_1 + 0x8);
+    if (obj != 0) {
+        (*(void (**)(void*, s32))(*(u8**)obj + 0x8))(obj, 1);
+    }
+    obj = *(void**)(param_1 + 0xc);
+    (*(void (**)(void*))(*(u8**)obj + 0x24))(obj);
 }
 
 extern "C" void fn_800C5A4C(void* param_1) {
