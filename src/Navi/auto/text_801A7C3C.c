@@ -1265,6 +1265,7 @@ extern "C" s32 fn_801B2670(void* a, u32 b, u16 c, void* d) {
     return r + 0x10;
 }
 
+extern u32 lbl_80202574;
 extern u32 lbl_80301DD8;
 extern "C" void fn_801B2688(u32* out, u8* p, s32 a, s32 b) {
     u32 def = lbl_80301DD8;
