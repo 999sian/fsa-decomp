@@ -9,6 +9,19 @@ extern "C" void fn_803C0018(char* p);
 
 extern "C" void OSResetSystem(int reset, unsigned long resetCode, int forceMenu);
 
+extern "C" char lbl_804AFF60[];
+extern "C" char lbl_80529DEC[];
+extern "C" u32 lbl_8053ADB0;
+extern "C" u32 getTotalFreeSize__7JKRHeapFv(void* heap);
+extern "C" void __dl__FPv(void* p);
+
+struct DtorVt {
+    void* v0;
+    void* v1;
+    void (*v2)(void* a, s32 b);
+    void (*v3)(void* a);
+};
+
 struct J2DTextBoxVt {
     virtual void v2();
     virtual void v3();
@@ -399,6 +412,86 @@ extern "C" void fn_803CE05C(char* p) {
             p[0x110] = 3;
         }
         fn_80458880(lbl_8053AF80, 0xb, -1);
+    }
+}
+
+extern "C" void fn_803CE11C(char* p) {
+    s32 i;
+    u32* pair;
+    u32 state;
+    f32* bounds;
+
+    state = fn_803B9940(lbl_8051C1A0, 0);
+    bounds = getBounds__7J2DPaneFv(*(void**)(*(char**)(p + 0x20) + 4));
+    if (*bounds - *(f32*)(*(char**)(p + 0x20) + 8) < lbl_80543498) {
+        fn_80402B10(*(void**)(p + 0x20), *(s16*)(lbl_8050DB0C + 0x1d2), 0, lbl_80543458);
+        fn_80402628(*(void**)(p + 0x20), *(s16*)(lbl_8050DB0C + 0x1d2), *(u8*)(*(char**)(p + 0x20) + 0x28), 0);
+        pair = lbl_80476938;
+        for (i = 0; i < 9; i++) {
+            fn_804023D0(*(void**)(p + 0x20), ((J2DTextBoxVt*)*(void**)(p + 4))->v15(0, pair[0], pair[1]), p[0x196 + i]);
+            pair += 2;
+        }
+        p[0x117] = 0;
+    } else {
+        switch (state) {
+        case 0:
+            *(s32*)(p + 0x80) = 0x4c;
+            p[0x112] = p[0x110];
+            p[0x1a4] = 1;
+            fn_803C24BC(p);
+            p[0x110] = 2;
+            *(u32*)((u8*)lbl_8050EC80 + 0xc) = 0;
+            *(u32*)((u8*)lbl_8050EC80 + 0x8) = 0;
+            break;
+        case 1:
+            *(s32*)(p + 0x80) = 0x4d;
+            p[0x112] = p[0x110];
+            p[0x1a4] = 1;
+            p[0x110] = 2;
+            break;
+        case 2:
+            *(s32*)(p + 0x80) = 0x4e;
+            p[0x112] = p[0x110];
+            p[0x1a4] = 1;
+            p[0x110] = 2;
+            break;
+        case 3:
+            *(s32*)(p + 0x80) = 0x4f;
+            p[0x112] = p[0x110];
+            p[0x1a4] = 1;
+            p[0x110] = 2;
+            break;
+        case 4:
+            *(s32*)(p + 0x80) = 0x50;
+            p[0x112] = p[0x110];
+            p[0x110] = 0xb;
+            break;
+        case 5:
+            *(s32*)(p + 0x80) = 0x51;
+            p[0x112] = p[0x110];
+            p[0x1a4] = 1;
+            p[0x110] = 2;
+            break;
+        case 6:
+            fn_803B9B8C(lbl_8051C1A0);
+            *(s32*)(p + 0x80) = 0;
+            p[0x112] = p[0x110];
+            p[0x110] = 0x11;
+            break;
+        case 7:
+            *(s32*)(p + 0x80) = 0x57;
+            p[0x112] = p[0x110];
+            p[0x110] = 7;
+            break;
+        case 8:
+        case 9:
+        case 10:
+        case 11:
+        case 12:
+        default:
+            *(s32*)(p + 0x80) = 0;
+            break;
+        }
     }
 }
 
