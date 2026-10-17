@@ -167,6 +167,25 @@ extern "C" void* lbl_802FF540;
 extern "C" void* lbl_802FF688;
 extern "C" void* fn_801664D8(void* ptr, void* param_2);
 extern "C" void fn_80166C08(void*, int);
+struct VObj_80167618 {
+    virtual void vf0(); virtual void vf1(); virtual void vf2();
+    virtual s32 vf3(void* buf, s32 len, u32 pos);
+    virtual void vf4();
+    virtual u32 vf5();
+};
+struct Stream_80167618 {
+    virtual void vf0(); virtual void vf1(); virtual void vf2();
+    virtual s32 vf3(void* buf, s32 len, u32 pos);
+    virtual void vf4();
+    virtual u32 vf5();
+    u8 pad[0x14];
+    u8 flag;
+};
+struct Self_80167618 {
+    u8 pad[8];
+    Stream_80167618* stream;
+    u32 pos;
+};
 extern "C" void* fn_80166424(void* param_1, s16 param_2) {
     if (param_1) {
         fn_80166C08(param_1, 0);
