@@ -372,8 +372,9 @@ static inline bool testBit(u8 bits, s32 n) {
 }
 
 extern "C" void fn_8038D4A8() {
+    s32 v;
     for (s32 i = 0; i < 4; i++) {
-        s32 v = lbl_8053AD78->wfc[i];
+        v = lbl_8053AD78->wfc[i];
         if (v != -1 && testBit(lbl_8053AAF8->b82, v) == true) {
             fn_80390E68(lbl_8053AD78->sub[v]);
         }
@@ -460,7 +461,7 @@ struct SubFlags { u16 pad : 9; u16 big : 1; u16 rest : 6; };
 #define POS(i) (((Vec2f*)((u8*)lbl_8053AD78 + 0x124))[i])
 extern "C" void fn_8037EB4C() {
     for (s32 i = 0; i < 4; i++) {
-        u8* sub = (u8*)lbl_8053AD78->sub[i];
+        u8* sub = *(u8**)((u8*)lbl_8053AD78 + 0x114 + i * 4);
         f32 s = lbl_805430C4;
         if ((*(u16*)(sub + 0x28) >> 6) & 1) {
             s = *(f32*)(lbl_8050DB0C + 0x38);
@@ -495,15 +496,14 @@ extern "C" u8 fn_8037EC98(s32 p, u16 flags) {
     s32 list[4];
     s32 n = 0;
     s32 ok = 0;
-    s32 j;
-    for (j = 0; j < 4; j++) {
+    for (s32 j = 0; j < 4; j++) {
         list[j] = -1;
         if (fn_8023F264(j) == 1) {
             list[j] = j;
             n++;
         }
     }
-    for (j = 0; j < 4; j++) {
+    for (s32 j = 0; j < 4; j++) {
         if (list[j] >= 0 && fn_802300EC(list[j]) == 1) {
             ok++;
         }
@@ -511,7 +511,7 @@ extern "C" u8 fn_8037EC98(s32 p, u16 flags) {
     if (n != ok) {
         return 0;
     }
-    for (j = 0; j < 4; j++) {
+    for (s32 j = 0; j < 4; j++) {
         if (list[j] >= 0) {
             fn_80230AD4(list[j]);
         }
@@ -627,8 +627,8 @@ extern "C" char lbl_804755B0[];
 extern "C" char lbl_804755C4[];
 MsgMgr::MsgMgr() {
     lbl_8053AD78 = (Mgr*)this;
-    ResFONT* res = (ResFONT*)((GameStateRes*)lbl_8053AAF8)->loader->getRes(0x3f3f3f3f, lbl_804755B0);
-    mFont = new JUTResFont(res, 0);
+    void* res = ((GameStateRes*)lbl_8053AAF8)->loader->getRes(0x3f3f3f3f, lbl_804755B0);
+    mFont = new JUTResFont((ResFONT*)res, 0);
     mMsgData = ((GameStateRes*)lbl_8053AAF8)->loader->getRes(0x3f3f3f3f, lbl_804755C4);
     for (s32 i = 0; i < 4; i++) {
         mSub[i] = new MsgSub(i);
