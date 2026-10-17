@@ -51,6 +51,10 @@ struct VObj_8017EA3C {
     virtual void v75(); virtual void v76(); virtual void v77(); virtual void v78(); virtual void v79();
           virtual s32 v80(u32 a); virtual void v81(); virtual void v82();
 };
+struct VObj_8017A074 {
+    virtual void v0(); virtual void v1(); virtual void v2(s32 a); virtual void v3(); virtual void v4();
+    virtual s32 v5();
+};
 struct VObj_8018ED48 {
     virtual void v0();
     virtual void v1();
@@ -2147,6 +2151,21 @@ extern "C" void* fn_80184FA8(void* self, s16 param_2) {
     }
     return self;
 }
+
+extern "C" s32 fn_80185038(u8* self, u8 arg1) {
+    VObj_80185038* o = *(VObj_80185038**)(*(u8**)(self + 0x168) + 0x70);
+    if (o->v37() == 0) {
+        return 0;
+    }
+    u8 n = arg1;
+    u8 i;
+    for (i = 0; i < n; i++) {
+        NaviPose_80185038 pose = lbl_80202238;
+        fn_8016B200(*(u8**)(self + 0x168) + 0x28, i, (u8*)&pose, pose.f[6], pose.f[5], pose.f[4], pose.f[3], pose.f[2], pose.f[1], pose.f[0]);
+    }
+    return 1;
+}
+
 #pragma dont_inline reset
 extern "C" void fn_801851FC(u32* self, s32 a) {
     u8* p = (u8*)self;
@@ -3436,7 +3455,9 @@ extern "C" void fn_80190D98(s32 a, u32 b, u32 c, u32 d, u32 e) {
     if ((u32)(lbl_802FFA80[2] + 5) > (u32)lbl_802FFA80[3]) {
         fn_801E012C();
     }
-    u32 w = (((c << 4) | b) | (d << 8)) | (e << 12);
+    u32 w = (c << 4) | b;
+    w |= d << 8;
+    w |= e << 12;
     w |= ((a >> 1) + 0x25) << 24;
     *(*(u8**)&lbl_802FFA80[2])++ = 0x61;
     *(*(u8**)&lbl_802FFA80[2])++ = w >> 24;
