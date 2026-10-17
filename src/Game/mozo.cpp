@@ -20,6 +20,34 @@ struct MozoResMgr {
     virtual void* get(u32 type, const char* name);
 };
 
+static inline void mozoRotScale(f32 m[3][4], f32 rx, f32 ry, f32 rz, f32 s) {
+    m[0][3] = lbl_8053D7F8;
+    m[1][3] = lbl_8053D7F8;
+    m[2][3] = lbl_8053D7F8;
+    f32 sz, sy, sx;
+    f32 cz, cy, cx;
+    sx = sin(rx);
+    sy = sin(ry);
+    sz = sin(rz);
+    cx = cos(rx);
+    cy = cos(ry);
+    cz = cos(rz);
+    f32 cxcz = cx * cz;
+    f32 sxsy = sx * sy;
+    f32 cxsz = cx * sz;
+    f32 sxsz = sx * sz;
+    f32 sxcz = sx * cz;
+    m[0][0] = s * (cy * cz);
+    m[1][0] = s * (cy * sz);
+    m[2][0] = s * -sy;
+    m[0][1] = s * (sxsy * cz - cxsz);
+    m[1][1] = s * (sxsy * sz + cxcz);
+    m[2][1] = s * (sx * cy);
+    m[0][2] = s * (cxcz * sy + sxsz);
+    m[1][2] = s * (cxsz * sy - sxcz);
+    m[2][2] = s * (cx * cy);
+}
+
 static inline void mozoRotScale(f32 m[3][4], f32 rx, const f32* pry, f32 rz, const f32* ps) {
     m[0][3] = lbl_8053D7F8;
     m[1][3] = lbl_8053D7F8;
