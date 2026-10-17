@@ -21,6 +21,16 @@ extern "C" int fn_8002F0A8(int);
 extern char lbl_802C57D4[];
 extern "C" void fn_800E38B8(void) {}
 
+extern "C" void fn_800EA848(u8* p) {
+    if (p[0xb14] != 0) {
+        p[0xb14]--;
+    } else {
+        p[0xb14] = lbl_802C57D4[0x81];
+        fn_8002F0A8(*(int*)(p + 0xa88));
+        p[0xa76] = 0x41;
+    }
+}
+
 extern "C" void fn_800EE0F0(void* param_1, void* param_2) {
     fn_8015FDA8(param_2, *(void**)((u8*)param_1 + 4));
 }
