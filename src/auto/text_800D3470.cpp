@@ -185,8 +185,6 @@ struct Unk800DBF04Obj {
 };
 
 struct Unk800DCDD4Src {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
@@ -1897,6 +1895,65 @@ extern "C" void fn_800DC574(u8* param_1, Unk800DC574Src* param_2) {
     *(u32*)(param_1 + 0x18) = *param_2->m47(0);
 }
 
+extern "C" void fn_800DCDD4(u8* this_, Unk800DCDD4Src* src) {
+    u32 i;
+    u8* q;
+    u8* r;
+
+    *(this_ + 0x58) = src->m38();
+    q = this_;
+    for (i = 0; i < 8; i++) {
+        *(u16*)(q + 8) = src->m20(i);
+        q += 2;
+    }
+    q = this_;
+    for (i = 0; i < 16; i++) {
+        *(u32*)(q + 0x18) = *src->m23(i);
+        q += 4;
+    }
+    q = this_;
+    r = this_;
+    for (i = 0; i < 16; i++) {
+        u8* s = src->m41(i);
+        q[0x5a] = s[1];
+        q[0x5b] = s[2];
+        q[0x5c] = s[3];
+        q[0x5e] = s[5];
+        q[0x5f] = s[6];
+        q[0x60] = s[7];
+        *(u32*)(r + 0x130) = *src->m49(i);
+        q += 8;
+        r += 4;
+    }
+    q = this_;
+    for (i = 0; i < 4; i++) {
+        s16* s = src->m26(i);
+        *(s16*)(q + 0xda) = s[0];
+        *(s16*)(q + 0xdc) = s[1];
+        *(s16*)(q + 0xde) = s[2];
+        *(s16*)(q + 0xe0) = s[3];
+        q += 8;
+    }
+    q = this_;
+    for (i = 0; i < 4; i++) {
+        u8* s = src->m29(i);
+        q[0xfa] = s[0];
+        q[0xfb] = s[1];
+        q[0xfc] = s[2];
+        q[0xfd] = s[3];
+        q += 4;
+    }
+    for (i = 0; i < 16; i++) {
+        this_[i + 0x10a] = src->m32(i);
+    }
+    for (i = 0; i < 16; i++) {
+        this_[i + 0x11a] = src->m35(i);
+    }
+    for (i = 0; i < 4; i++) {
+        this_[i + 0x12a] = *src->m46(i);
+    }
+}
+
 extern "C" void fn_800DD040(u8* this_, J3DIndBlock* src) {
     this_[4] = src->getIndTexStageNum();
     u8* dst = this_;
@@ -2673,8 +2730,8 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
-  u8 b1 = param_3[1];
   int offset = param_2 * 8;
+  u8 b1 = param_3[1];
   *(u8*)(param_1 + offset + 0x22) = b1;
   *(u8*)(param_1 + offset + 0x23) = param_3[2];
   *(u8*)(param_1 + offset + 0x24) = param_3[3];
