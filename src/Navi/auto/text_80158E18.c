@@ -1,6 +1,10 @@
 #include "types.h"
 #include "dolphin/os/OSFastCast.h"
 extern "C" int fn_8015CAD4(void* p, u32 r4, s32 r5);
+extern "C" u8* fn_8015C57C(u8* p, u32 size, u8 a, u8 b, u8 c, u8 flags);
+extern "C" void fn_8015BC38(u8* list, u8* node);
+extern "C" void fn_8015BBEC(u8* list, u8* node, u8* prev, u8* next);
+extern "C" void fn_8015BB50(char* p, char* q);
 extern "C" int fn_8015CBAC(void* p, u32 r4, s32 r5);
 extern "C" void fn_8011C9EC(const char*, int, const char*, ...);
 extern char lbl_80297240[];
@@ -1101,6 +1105,27 @@ extern "C" int fn_8015CA24(char* param_1, u32 param_2, s32 param_3) {
     return r;
 }
 
+extern char lbl_80297628[];
+extern "C" int fn_8015CAD4(void* p, u32 size, s32 align) {
+    u8* self = (u8*)p;
+    int ret = 0;
+    u32 n = (size + 3) & ~3;
+    u32 cur = *(u32*)(self + 0x70);
+    u32 aligned = ~(align - 1) & (align + cur - 1);
+    u32 need = n + (aligned - cur);
+    if (need <= *(u32*)(self + 0x6c)) {
+        *(u32*)(self + 0x70) = cur + need;
+        *(u32*)(self + 0x6c) -= need;
+        ret = aligned;
+    } else {
+        fn_80124034(lbl_80297628);
+        if (self[0x68] == 1 && lbl_802FF54C != 0) {
+            ((void (*)(void*, u32, s32))lbl_802FF54C)(p, n, align);
+        }
+    }
+    return ret;
+}
+
 extern "C" int fn_8015CBAC(void* p, u32 r4, s32 r5) {
     s32 iVar6 = r5;
     u32 uVar5 = 0;
@@ -1281,6 +1306,30 @@ extern "C" void* fn_8015D1F4(void* p, u8* a2, u32 a3) {
     *(u32*)((u8*)p + 0x5c) = *(u32*)(a2 + 0x308) - *(u32*)(a2 + 0x304);
     *(u32*)((u8*)p + 0x58) = *(u32*)(a2 + 0x304);
     fn_8015D374((u8*)p, (void*)lbl_802FF540, a3);
+    return p;
+}
+
+extern "C" void* fn_8015D29C(void* p, s16 param_2) {
+    if (p != 0) {
+        *(void**)p = lbl_802979B8;
+        fn_80166FC4(lbl_802EE20C, (u8*)p + 0x18);
+        if (*(u32*)((u8*)p + 0x28) != 0) {
+            if (fn_801C0288(*(void**)((u8*)p + 0x2c)) == 0) {
+                fn_801C0E4C(*(void**)((u8*)p + 0x2c));
+                OSCancelThread(*(void**)((u8*)p + 0x2c));
+            }
+            fn_80159C6C(*(void**)((u8*)p + 0x58), *(s32*)((u8*)p + 0x28));
+            fn_80159C6C(*(void**)((u8*)p + 0x2c), *(s32*)((u8*)p + 0x28));
+            fn_80159C6C(*(void**)((u8*)p + 0x50), 0);
+        }
+        if ((u8*)p + 0x18 != 0) {
+            fn_80166B70((u8*)p + 0x18, 0);
+        }
+        fn_8015D0B8(p, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
     return p;
 }
 
