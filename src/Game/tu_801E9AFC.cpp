@@ -1,5 +1,6 @@
 #include "types.h"
 #include <dolphin/gx.h>
+struct JMathSinCos { f32 sin; f32 cos; };
 extern "C" {
 extern const f32 lbl_8053F65C;
 extern const f32 lbl_8053F660;
@@ -68,6 +69,38 @@ extern "C" void fn_801E9C00(s16 param_1, f32* param_2) {
     fy = param_2[1];
     param_2[0] = fx * pt[1] - fy * pt[0];
     param_2[1] = fy * pt[1] + fx * pt[0];
+}
+
+extern "C" const f32 lbl_8053F668;
+extern "C" const f32 lbl_8053F66C;
+extern "C" const f32 lbl_8053F670;
+extern "C" void fn_801EA108(u8* param_1, f32* pos, s16 angle, f32 z) {
+    f32 u0 = lbl_8053F660;
+    f32 u1 = lbl_8053F668;
+    f32 ox = u0;
+    f32 oy = lbl_8053F66C;
+    f32 cx, cy, t;
+    s32 a;
+
+    if (angle < 0) {
+        t = u0;
+        ox = -u0;
+        u0 = u1;
+        u1 = t;
+        oy = -oy;
+    }
+    a = -angle;
+    cx = pos[0] + (oy * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - ox * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]);
+    cy = pos[1] + (oy * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + ox * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1]);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    GXPosition3f32(cx + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXTexCoord2f32(u0, lbl_8053F660);
+    GXPosition3f32(cx + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXTexCoord2f32(u1, lbl_8053F660);
+    GXPosition3f32(cx + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXTexCoord2f32(u1, lbl_8053F668);
+    GXPosition3f32(cx + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1] - lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2]), z + (cy + (lbl_8053F670 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2] + lbl_8053F664 * sincosTable___5JMath[((a >> 5) & 0x7ff) * 2 + 1])), z);
+    GXTexCoord2f32(u0, lbl_8053F668);
 }
 
 extern "C" void fn_801EA304(u8* param_1) {
