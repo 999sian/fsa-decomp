@@ -24,6 +24,7 @@ extern "C" u8 fn_803865B8(s32);
 extern "C" void fn_80388EEC(s32);
 extern s32 lbl_804650C8[];
 extern u8 lbl_8053CB60[];
+extern "C" void fn_801F0E34(void* self, u32 id, s32 flag);
 extern "C" f32 lbl_8053CB90;
 extern "C" void fn_80239914(void*, u32, u32);
 extern "C" void fn_8012A8C0(char* this_) {
