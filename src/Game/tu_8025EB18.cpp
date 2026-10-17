@@ -64,32 +64,35 @@ extern "C" bool fn_8025EB18(char* p) {
             a += 0xdc;
         f32 ax = F32(a, 0);
         f32 ay = F32(a, 4);
+        s32 id = S32(p, 0x3b4);
         char* b = fn_802D6A9C();
-        if (S32(p, 0x3b4) < 8)
+        if (id < 8)
             b += 0xcc;
         else
             b += 0xdc;
-        pos.x += ax - F32(b, 0);
-        pos.y += ay - F32(b, 4);
+        f32 bx = F32(b, 0);
+        f32 by = F32(b, 4);
+        pos.x += ax - bx;
+        pos.y += ay - by;
         u16 t = fn_8022461C(&pos, fn_8023DE58(S32(p, 0xd70)));
-        if (!fn_802265DC(&pos, fn_8023DE58(S32(p, 0xd70)), 1) || t == 0xe || t == 0x39 || t == 0xd) {
-            if (!fn_802684A4(p, &pos, fn_8023DE58(S32(p, 0xd70))))
-                return false;
+        if ((fn_802265DC(&pos, fn_8023DE58(S32(p, 0xd70)), 1) && t != 0xe && t != 0x39 && t != 0xd) ||
+            fn_802684A4(p, &pos, fn_8023DE58(S32(p, 0xd70)))) {
+            F32(p, 0x2f4) = F32(p, 0x8);
+            F32(p, 0x2f8) = F32(p, 0xc);
+            return true;
         }
-        F32(p, 0x2f4) = F32(p, 0x8);
-        F32(p, 0x2f8) = F32(p, 0xc);
-        return true;
+        return false;
     }
     u16 t2 = fn_8022461C(&VEC(p, 0x2f4), S32(p, 0x3b4));
     bool held2 = (u8)(U8(p, 0xd64) == 1) == 1 && S32(p, 0xd70) >= 0 && S32(p, 0xd70) < 4;
     if (held2) {
-        if (!fn_802265DC(&VEC(p, 0x2f4), S32(p, 0x3b4), 1) || t2 == 0xe || t2 == 0x39 || t2 == 0xd) {
-            if (!fn_802684A4(p, &VEC(p, 0x2f4), S32(p, 0x3b4)))
-                return false;
+        if ((fn_802265DC(&VEC(p, 0x2f4), S32(p, 0x3b4), 1) && t2 != 0xe && t2 != 0x39 && t2 != 0xd) ||
+            fn_802684A4(p, &VEC(p, 0x2f4), S32(p, 0x3b4))) {
+            F32(p, 0x2f4) = F32(p, 0x8);
+            F32(p, 0x2f8) = F32(p, 0xc);
+            return true;
         }
-        F32(p, 0x2f4) = F32(p, 0x8);
-        F32(p, 0x2f8) = F32(p, 0xc);
-        return true;
+        return false;
     }
     char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
     if (actor && ((u8(*)(char*, s32, JGeometry::TVec3<f32>*))(*(void***)actor)[19])(actor, S32(p, 0x3b4), &VEC(p, 0x2f4))) {
@@ -163,6 +166,85 @@ extern "C" bool fn_8025EF68(char* p, s32 id) {
         return false;
     }
     return false;
+}
+
+extern "C" bool fn_8025EFFC(char* p, s32 id, u8 flag, u8 force) {
+    char* actor;
+    bool held;
+    bool good;
+    if (force == 0) {
+        goto zero;
+    }
+    held = U8(p, 0xd64) == 1;
+    if (held) {
+        goto main;
+    }
+    good = ((S32(p, 0xd70) < 0 || S32(p, 0xd70) >= 4) && S32(p, 0xd68) < 0) || U8(p, 0xd64) != 0;
+    if (!good) {
+        goto main;
+    }
+    if ((u8)fn_80241230(p)) {
+        goto main;
+    }
+    if (!(u8)fn_802412A4(p)) {
+        goto search;
+    }
+main:
+    if (S32(p, 0xd88) != id && S32(p, 0xd88) < 0) {
+        actor = fn_801F666C(fn_801F856C(), id);
+        if (actor != 0 && fn_801F36D4(actor, S32(p, 4))) {
+            S32(p, 0xd88) = id;
+        }
+    }
+    return true;
+zero:
+    if ((u8)fn_80270A8C(p)) {
+        return false;
+    }
+    held = U8(p, 0xd64) == 1;
+    if (held) {
+        return false;
+    }
+    good = ((S32(p, 0xd70) < 0 || S32(p, 0xd70) >= 4) && S32(p, 0xd68) < 0) || U8(p, 0xd64) != 0;
+    if (!good) {
+        return false;
+    }
+    if ((u8)Player_GetField_0xce8(p)) {
+        return false;
+    }
+    if ((u8)fn_80241230(p)) {
+        return false;
+    }
+    if ((u8)fn_802412A4(p)) {
+        return false;
+    }
+    if ((u8)Player_GetField_0x454(p)) {
+        return false;
+    }
+    if (F32(p, 0x10) > lbl_80540150) {
+        return false;
+    }
+    if (S32(p, 0xd88) < 0 && Player_IsLinked(p) && fn_802486A0(p) == 5) {
+        return false;
+    }
+search:
+    actor = fn_801F666C(fn_801F856C(), id);
+    if (actor == 0) {
+        return false;
+    }
+    if (!fn_80251AEC(p, flag != 0 ? 0x11 : 0x12)) {
+        return false;
+    }
+    S32(p, 0xd88) = -1;
+    U32(p, 0xd6c) = U32(actor, 0x1a0);
+    VEC(p, 0x2f4) = VEC(actor, 0xc);
+    U8(p, 0xd64) = 1;
+    S32(p, 0xd68) = id;
+    fn_801F3744(p, S32(p, 4));
+    S32(p, 0xd74) = 3;
+    U8(p, 0x1174) = 1;
+    fn_8024F0E8(p, 0x20022);
+    return true;
 }
 
 extern "C" bool fn_8025F418(char* p) {
@@ -597,6 +679,78 @@ extern "C" void fn_80263854(char* p) {
     p[0x459] = 0;
 }
 
+extern "C" void fn_80206168(char*);
+extern "C" u8 fn_802A3164(char*, JGeometry::TVec3<f32>*, s32, s32);
+extern JGeometry::TVec3<f32> lbl_8046B310[];
+extern char* lbl_8053AC98;
+extern const f32 lbl_80540188;
+extern const f32 lbl_805401E0;
+extern "C" void fn_80263860(char* p) {
+    U8(p, 0x3fc)++;
+    if (U8(p, 0x3fc) < 8) {
+        p[0x3fd] = 0;
+    } else if (U8(p, 0x3fc) < 9) {
+        p[0x3fd] = 1;
+    } else if (U8(p, 0x3fc) < 10) {
+        p[0x459] = 1;
+        p[0x3fd] = 2;
+    } else if (U8(p, 0x3fc) < 0x12) {
+        p[0x3fd] = 3;
+        if (U8(p, 0x3fc) == 0xb && U32(p, 0xd6c) == 'TZOK') {
+            char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+            if (actor)
+                fn_80206168(actor);
+        }
+    } else if (U8(p, 0x3fc) < 0x16) {
+        p[0x3fd] = 4;
+    } else {
+        p[0x3fd] = 2;
+        fn_80251AEC(p, 0x12);
+    }
+    const JGeometry::TVec3<f32>& pos = lbl_8046B310[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
+    f32 x = pos.x;
+    f32 y = pos.y;
+    F32(p, 0x2f4) = x;
+    f32 z = pos.z;
+    F32(p, 0x2f8) = y;
+    F32(p, 0x2fc) = z;
+    VEC(p, 0x2f4).add(VEC(p, 8));
+    if (U8(p, 0x3fd) == 2) {
+        JGeometry::TVec3<f32> v = VEC(p, 0x2f4);
+        v.z = 0.0f;
+        if (fn_802A3164(lbl_8053AC98, &v, S32(p, 4), S32(p, 0x3b4))) {
+            char* actor = fn_801F666C(fn_801F856C(), S32(p, 0xd68));
+            if (actor)
+                (*(void (***)(char*))actor)[18](actor);
+        }
+    }
+    if (fn_8025EB18(p)) {
+        p[0x3fd] = 1;
+        p[0x459] = 0;
+        const JGeometry::TVec3<f32>& pos2 = lbl_8046B310[S32(p, 0x3dc) * 5 + U8(p, 0x3fd)];
+        f32 x2 = pos2.x;
+        f32 y2 = pos2.y;
+        F32(p, 0x2f4) = x2;
+        f32 z2 = pos2.z;
+        F32(p, 0x2f8) = y2;
+        F32(p, 0x2fc) = z2;
+        VEC(p, 0x2f4).add(VEC(p, 8));
+        if (VEC(p, 0x35c).length() < lbl_80540188) {
+            const JGeometry::TVec3<f32>& pos3 = lbl_8046B310[S32(p, 0x3dc) * 5 + 2];
+            f32 x3 = pos3.x;
+            f32 y3 = pos3.y;
+            F32(p, 0x35c) = x3;
+            f32 z3 = pos3.z;
+            F32(p, 0x360) = y3;
+            F32(p, 0x364) = z3;
+            VEC(p, 0x35c).z = 0.0f;
+            VEC(p, 0x35c).normalize();
+            VEC(p, 0x35c).scale(lbl_805401E0);
+        }
+    }
+    fn_80268B3C(p);
+}
+
 extern "C" void fn_80263BA0(char* p) {
     p[0x458] = 0;
     p[0x459] = 0;
@@ -666,10 +820,10 @@ extern "C" void fn_802636D4(char* p) {
 #undef F32
 #undef VEC
 
-// Keep regional definitions that were present before source-tree consolidation.
-#if defined(VERSION_G4SJ01)
 extern "C" void fn_802636D0(void) {}
 
+// Keep regional definitions that were present before source-tree consolidation.
+#if defined(VERSION_G4SJ01)
 extern "C" void fn_802636D4(char* p) {
     U8(p, 0x3fc)++;
     if (U8(p, 0x3fc) < 8) {
