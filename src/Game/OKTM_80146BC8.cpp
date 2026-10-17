@@ -20,6 +20,16 @@ extern "C" s32 fn_801F6874(s32 angle);
 extern "C" void fn_801F8544(void* mgr, u32 id, s32 room, void* pos, s32 flag);
 extern "C" void fn_8013CC50(s32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" s32 ClassifyBamAngleToQuadrant(s32 angle);
+extern "C" s32 lbl_8049F548[];
+extern "C" s32 lbl_8049F558[];
+extern "C" f32 sincosTable___5JMath[];
+namespace JMath {
+template <int N, typename T> class TAtanTable {
+public:
+    T atan2(T, T) const;
+};
+extern TAtanTable<1024, f32> atanTable_;
+}
 
 struct Tmp16 {
     f32 x;
