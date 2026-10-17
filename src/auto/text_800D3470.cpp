@@ -2420,15 +2420,9 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    struct Entry {
-        u8 pad : 4;
-        u8 hi : 2;
-        u8 lo : 2;
-        u8 rest[7];
-    };
-    Entry* e = (Entry*)(param_1 + 0x60) + param_2;
-    e->hi = param_3[1];
-    e->lo = param_3[0];
+    int b0 = param_3[0];
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -2630,8 +2624,7 @@ extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
   u8* e = param_1 + param_2 * 8;
   u8 b1 = param_3[1];
   u8 b0 = param_3[0];
-  u8 v = e[0x28];
-  e[0x28] = (b1 << 2) | (v & ~0xC);
+  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
   e[0x28] = (e[0x28] & ~0x3) | b0;
 }
 
@@ -2785,17 +2778,18 @@ extern "C" u8 fn_800DE648(int param_1) {
 extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8* p;
     u8 a, b, c;
-    a = src[0].g;
+    u8* s = (u8*)src;
     p = this_ + idx * 8;
+    a = s[1];
+    b = s[2];
     p[0x36] = a;
-    b = src[0].b;
-    c = src[0].a;
+    c = s[3];
     p[0x37] = b;
-    a = src[1].g;
+    a = s[5];
     p[0x38] = c;
-    b = src[1].b;
+    b = s[6];
     p[0x3a] = a;
-    c = src[1].a;
+    c = s[7];
     p[0x3b] = b;
     p[0x3c] = c;
 }
@@ -3259,7 +3253,12 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    ((GXColor*)(self + 0xc))[i] = *(const GXColor*)c;
+    u8 c0 = c[0];
+    u8* p = self + (i << 2);
+    p[0xc] = c0;
+    p[0xd] = c[1];
+    p[0xe] = c[2];
+    p[0xf] = c[3];
 }
 #endif
 
