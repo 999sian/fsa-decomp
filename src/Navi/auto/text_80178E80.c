@@ -2678,6 +2678,24 @@ extern "C" void* fn_8018C308(void* base, u32 offset) {
     return (u8*)base + offset;
 }
 
+extern "C" s32 fn_801194B4(void* p, u16 i);
+extern "C" s32 fn_80119414(void* p, s32 v);
+extern "C" void fn_8018DA08(u8* self, u8* other)
+{
+    u16 i;
+    s32 r;
+    if (other != NULL && *(void**)(other + 0x110) != NULL) {
+        for (i = 0; i < (u16)(*(u16*)(self + 0x14) / 3); i++) {
+            r = fn_80119414(*(void**)(other + 0x110), fn_801194B4(self + 0x38, i));
+            if (r != -1) {
+                (*(u16**)(self + 0x34))[i] = r;
+            } else {
+                (*(u16**)(self + 0x34))[i] = 0xFFFF;
+            }
+        }
+    }
+}
+
 extern f32 lbl_80301C38;
 extern "C" u32 fn_8018DD64(u8* p, u32 param_2) {
     u32 base;
