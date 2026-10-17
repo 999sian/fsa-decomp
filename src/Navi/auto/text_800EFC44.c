@@ -59,9 +59,9 @@ extern "C" void fn_800F0EC0(u8* p) {
         return;
     }
     if (fn_8002185C() <= 1) {
-        *(u16*)(p + 0x412) |= 0x80;
-    } else {
         *(u16*)(p + 0x412) |= 0x40;
+    } else {
+        *(u16*)(p + 0x412) |= 0x80;
     }
 }
 
