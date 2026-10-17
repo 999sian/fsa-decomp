@@ -199,9 +199,9 @@ extern "C" BOOL fn_8008856C(void)
     return TRUE;
 }
 
-extern "C" void fn_800885B4(void);
-extern "C" void fn_80088574(void) {
-    fn_800885B4();
+extern "C" s32 fn_800885B4(void* param_1);
+extern "C" void fn_80088574(void* param_1) {
+    fn_800885B4(param_1);
 }
 
 extern "C" void fn_80088690(void);
@@ -328,11 +328,11 @@ extern "C" void fn_8008962C(void) {}
 extern "C" void fn_80089630(void) {}
 
 extern "C" void fn_80089634(u8* param_1, s32 param_2) {
-    u8* entry = lbl_80284340 + param_2 * 12;
+    void** entry = (void**)(lbl_80284340 + param_2 * 12);
     *(s32*)(param_1 + 0xf68) = param_2;
-    *(void**)(param_1 + 0xf5c) = *(void**)(entry + 0);
-    *(void**)(param_1 + 0xf60) = *(void**)(entry + 4);
-    *(void**)(param_1 + 0xf64) = *(void**)(entry + 8);
+    *(void**)(param_1 + 0xf5c) = entry[0];
+    *(void**)(param_1 + 0xf60) = entry[1];
+    *(void**)(param_1 + 0xf64) = entry[2];
     *(s32*)(param_1 + 0xf6c) = 0;
     *(s32*)(param_1 + 0xf70) = 0;
     *(s32*)(param_1 + 0xf74) = 0;
