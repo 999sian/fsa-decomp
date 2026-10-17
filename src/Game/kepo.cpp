@@ -2,6 +2,11 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 
+struct KepoGlobals;
+extern KepoGlobals* lbl_8053AB10;
+extern "C" void* fn_802D6A9C(void);
+extern "C" void fn_8030C210(void* g, f32* v);
+
 // ---- ReturnZero_80218F80.cpp ----
 // NEW ACTOR (vtable lbl_804A6550). Two trivial vtable-slot stubs, both return 0.
 extern "C" {
