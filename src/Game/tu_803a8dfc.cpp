@@ -1186,6 +1186,10 @@ struct Menu_Rank {
 };
 
 // NONMATCHING (99.8%): r6/r7 swap in the ranking loop.
+static const s32 lbl_804763C0[4] = {300, 150, 50, 0};
+static const s32 lbl_804763D0[3] = {300, 150, 0};
+static const s32 lbl_80543388[2] = {150, 0};
+
 extern "C" void fn_803AE810(Menu_Rank* p) {
     static const s32 tbl0[4] = {300, 150, 50, 0};
     static const s32 tbl1[3] = {300, 150, 0};
