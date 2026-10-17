@@ -20,8 +20,6 @@ struct Tmp16 {
 
 class ResMgr {
 public:
-    virtual void vf00();
-    virtual void vf04();
     virtual void vf08();
     virtual void vf0C();
     virtual void vf10();
@@ -38,6 +36,56 @@ extern "C" Actor* fn_80146BC8(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
+extern "C" void fn_801F06F0(void* this_, const char* name, s32 id, DrawRec* rec, s32 p5, f32 a, f32 b);
+extern "C" void fn_801EF574(const char* name, s32 id, Vec* pos, DrawRec* rec);
+extern "C" void fn_802F86CC(void* mgr, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
+extern const char lbl_80465BD8[];
+extern const char lbl_80465BEC[];
+extern u8* lbl_8053AAF8;
+extern u8* lbl_8053AB10;
+extern "C" void fn_80146C28(char* this_) {
+    DrawRec rec;
+    Vec pos;
+
+    *(u8*)((u8*)&rec + 0x13) = *(s32*)(this_ + 0x248);
+    switch (*(s32*)(this_ + 0x90)) {
+    case 0:
+        if (*(s32*)(this_ + 0x4) == 8) {
+            void* mgr = fn_802D6A9C();
+            Tmp16 cpy = *(Tmp16*)((u8*)mgr + 0xcc);
+            Vec* p = (Vec*)(this_ + 0xc);
+            pos.x = p->x + cpy.x;
+            pos.y = p->y + cpy.y;
+            pos.z = p->z;
+            fn_801EF574(lbl_80465BD8, 0x25, &pos, &rec);
+            fn_801F02BC(this_, lbl_80465BEC, 0x317, &rec, 1, 0, 0, 1.0f, 1.0f);
+        } else {
+            fn_801F02BC(this_, lbl_80465BD8, 0x25, &rec, 1, 0, 0, 1.0f, 1.0f);
+        }
+        break;
+    case 1:
+    case 5: {
+        s32 id = *(s32*)(this_ + 0x24c) + 0x4c;
+        if (*(s32*)(this_ + 0x4) < 8) {
+            void* res = (*(ResMgr**)(lbl_8053AAF8 + 0xa4))->vf18('SOB ', lbl_80465BEC);
+            fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), this_ + 0xc, res, id, 1.0f, 1.0f, &rec);
+        }
+        break;
+    }
+    case 2:
+        fn_801F02BC(this_, lbl_80465BEC, *(s32*)(this_ + 0x24c) + 0x170, &rec, 7, 0, 0, 1.0f, 1.0f);
+        break;
+    case 3:
+        fn_801F02BC(this_, lbl_80465BEC, 0x1ba, 0, 0, 0, 0, 1.0f, 1.0f);
+        break;
+    case 4:
+        rec.w30 = 0x11;
+        fn_801F06F0(this_, lbl_80465BD8, *(s32*)(this_ + 0x24c) + 0xe5, &rec, -1, 1.0f, 1.0f);
+        break;
+    }
 }
 
 extern "C" u32 fn_80147620(Actor* a, s32 b, void* c) {
