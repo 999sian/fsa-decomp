@@ -1,5 +1,7 @@
 
 
+#include "Game/SinitPoolChain.h"
+
 extern "C" void fn_8021F914(int* p, int v) {
     p[1] = 0;
     p[0] = v;
@@ -31,8 +33,8 @@ extern "C" void fn_8021F9AC(char* this_, float* src) {
     void** p;
     int i;
     float x = src[0];
-    float y = src[1];
     float k1 = lbl_8053FDE8;
+    float y = src[1];
     float k2 = lbl_8053FDF0;
     float k3 = lbl_8053FDEC;
 
