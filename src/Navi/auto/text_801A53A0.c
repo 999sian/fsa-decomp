@@ -87,6 +87,13 @@ extern "C" void fn_801A66A8(u8* param_1, s32 param_2) {
     fn_801A676C(param_1 + 0x64, param_2 * 3 + 0x1e, *param_1);
 }
 
+extern "C" void fn_801A670C(u8* param_1, s32 param_2) {
+    if ((u32)(lbl_802FFA80[2] + 0x35) > (u32)lbl_802FFA80[3]) {
+        fn_801E012C();
+    }
+    fn_801A6CEC(param_1 + 0x64, param_2 * 3 + 0x40);
+}
+
 extern "C" BOOL fn_801A7990(u32** param_1, u32* param_2) {
     param_2[1] = 0;
     param_2[2] = 0;
