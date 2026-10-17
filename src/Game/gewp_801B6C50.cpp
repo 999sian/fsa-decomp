@@ -281,6 +281,7 @@ extern "C" void* fn_801B7324(void* this_, short how) {
 }
 
 extern "C" void fn_801B73B8(u8* this_) {
+    s32 i;
     *(f32*)(this_ + 0x60) = lbl_8053EAE0;
     *(f32*)(this_ + 0x64) = lbl_8053EAE0;
     *(f32*)(this_ + 0x68) = lbl_8053EAE4;
@@ -301,8 +302,7 @@ extern "C" void fn_801B73B8(u8* this_) {
     *(s32*)(this_ + 0x234) = 0;
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23c) = 0;
-    s32 i;
-    for (s32 i = 0; i < 4; i++) {
+    for (i = 0; i < 4; i++) {
         f32* p = (f32*)fn_8023E724(i);
         f32* d = (f32*)(this_ + i * 0xc + 0x264);
         d[0] = p[0];
@@ -325,7 +325,7 @@ extern "C" void fn_801B73B8(u8* this_) {
         *(s32*)(this_ + 0x230) = 0;
     } else {
         fn_80119468(fn_80119DD0(), 0, 0);
-        for (s32 i = 0; i < 4; i++) {
+        for (i = 0; i < 4; i++) {
             fn_8023EE28(i);
         }
         *(s32*)(this_ + 0x230) = 6;
