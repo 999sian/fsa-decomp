@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void fn_801D41B8(void* this_);
 extern "C" void fn_801D3DAC(void* this_, void* p2);
@@ -38,3 +39,35 @@ extern "C" void fn_801D3CBC(void* this_) {
         fn_803075AC(*(s32*)((u8*)this_ + 0x198), 8, buf, 0x176, 0, 2, -1, 0, 0, 0);
     }
 }
+
+extern "C" void fn_801D41B8(void* this_) {
+    f32 pos[3];
+    u8 buf[16];
+    s32 tmp;
+    u32 ratio;
+    u32 mode;
+    s32 idx;
+    s32 r3;
+    s32 i;
+    BOOL flag = FALSE;
+    s16 s;
+    u16 u;
+    u8 c;
+    u8 tbl[0x28];
+    void* obj;
+
+    if (fn_801CD2F8(*(s32*)((u8*)this_ + 0x56c))) {
+        mode = 0x3e;
+        pos[0] = *(f32*)((u8*)this_ + 0xc);
+        pos[1] = *(f32*)((u8*)this_ + 0x10);
+        pos[2] = *(f32*)((u8*)this_ + 0x14);
+        ratio = (u32)(0.0f * 0.0f);
+    } else {
+        mode = 0x3f;
+        pos[0] = *(f32*)((u8*)this_ + 0x570);
+        pos[1] = *(f32*)((u8*)this_ + 0x574);
+        pos[2] = *(f32*)((u8*)this_ + 0x578);
+        ratio = 0;
+    }
+}
+
