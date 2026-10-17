@@ -615,9 +615,11 @@ extern "C" u8 fn_80428448() {
     lbl_8053AEA4 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->fbWidth - lbl_8052BEC0[0]) >> 1;
     lbl_8053AEA8 = (((RenderModeHolder*)fn_8042828C(fn_80428294()))->efbHeight - lbl_8052BEC0[1]) >> 1;
     fn_804291F0((u8*)lbl_8053AEAC);
-    s32 r;
+    u32 r;
     if (lbl_8052BECC[3] != 1) {
-        r = OSGetTick() % lbl_8052BECC[3];
+        u32 tick = OSGetTick();
+        u32 q = tick / lbl_8052BECC[3];
+        r = tick - q * lbl_8052BECC[3];
     } else {
         r = 0;
     }
@@ -799,8 +801,8 @@ extern "C" u8 fn_80428AC8(s32 frameNum, s32 playFlag, s32 audioTrack) {
             }
             if (lbl_8052AAD0.header.numFrames > (u32)frameNum) {
                 u32* tbl = (u32*)lbl_8052ACA0;
-                u32 a = *tbl++;
-                u32 b = *tbl;
+                u32 b = tbl[1];
+                u32 a = *tbl;
                 u32 mdo = lbl_8052AAD0.header.movieDataOffsets;
                 lbl_8052AAD0.initReadFrame = frameNum;
                 lbl_8052AAD0.initOffset = mdo + a;
@@ -906,7 +908,7 @@ extern "C" void fn_80428CBC(u32 retraceCount) {
         }
         if (!(lbl_8052AAD0.playFlag & 1)) {
             if (lbl_8052AAD0.audioExist) {
-                if (lbl_8052AAD0.mF4 + lbl_8052AAD0.initReadFrame == lbl_8052AAD0.header.numFrames && lbl_8052AAD0.playAudioBuffer == 0) {
+                if (lbl_8052AAD0.header.numFrames == lbl_8052AAD0.mF4 + lbl_8052AAD0.initReadFrame && lbl_8052AAD0.playAudioBuffer == 0) {
                     lbl_8052AAD0.state = lbl_8052AAD0.internalState = 3;
                 }
             } else {
@@ -1540,6 +1542,7 @@ extern "C" void fn_8042A970(VideoThreadObj* t, u8* bufPtr) {
     s32 readSize;
     s32 frame;
     BOOL old;
+    s32 last;
     readBuffer.ptr = bufPtr;
     readSize = lbl_8052AAD0.initReadSize;
     frame = 0;
@@ -1549,7 +1552,8 @@ extern "C" void fn_8042A970(VideoThreadObj* t, u8* bufPtr) {
                 old = OSDisableInterrupts();
                 lbl_8052AAD0.mD8++;
                 OSRestoreInterrupts(old);
-                if ((frame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+                last = (frame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames;
+                if (last == lbl_8052AAD0.header.numFrames - 1) {
                     if (lbl_8052AAD0.playFlag & 1) {
                         readSize = *(s32*)readBuffer.ptr;
                         readBuffer.ptr = lbl_8052AAD0.movieData;
@@ -1566,7 +1570,8 @@ extern "C" void fn_8042A970(VideoThreadObj* t, u8* bufPtr) {
         }
         readBuffer.frameNumber = frame;
         fn_8042E64C(&readBuffer);
-        if ((frame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1) {
+        last = (frame + lbl_8052AAD0.initReadFrame) % lbl_8052AAD0.header.numFrames;
+        if (last == lbl_8052AAD0.header.numFrames - 1) {
             if (lbl_8052AAD0.playFlag & 1) {
                 readSize = *(s32*)readBuffer.ptr;
                 readBuffer.ptr = lbl_8052AAD0.movieData;
@@ -1589,7 +1594,8 @@ extern "C" void fn_8042AAA8(VideoThreadObj* t, u32) {
         if (lbl_8052AAD0.audioExist) {
             while (lbl_8052AAD0.mD8 < 0) {
                 readBuffer = (THPReadBuffer*)fn_8042E674();
-                if ((lbl_8052AAD0.initReadFrame + readBuffer->frameNumber) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
+                s32 frameNumber = readBuffer->frameNumber;
+                if ((lbl_8052AAD0.initReadFrame + frameNumber) % lbl_8052AAD0.header.numFrames == lbl_8052AAD0.header.numFrames - 1 &&
                     !(lbl_8052AAD0.playFlag & 1)) {
                     fn_8042E64C(readBuffer);
                 }
@@ -1807,21 +1813,27 @@ extern "C" u8 fn_8042B148() {
 }
 
 extern "C" void fn_8042B1DC() {
-    u16 uVar1 = *(u16*)(lbl_8053AE74 + 0x692);
-    u32 half = uVar1 >> 1;
+    u32 uVar1 = *(u16*)(lbl_8053AE74 + 0x692);
     LCQueueWait(3);
-    for (u8 i = 0; i < *(u16*)(lbl_8053AE74 + 0x696); i++) {
-        u32 off = i << 4;
-        lbl_8053AE60 = uVar1;
+    u8 i;
+    for (i = 0; i < *(u16*)(lbl_8053AE74 + 0x696); i++) {
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[0]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[1]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[2]);
+        fn_8042C39C(lbl_8053AE74, (s16*)lbl_8052AAB8[3]);
+        fn_8042C1CC(lbl_8053AE74, (s16*)lbl_8052AAB8[4]);
+        fn_8042BD84(lbl_8053AE74, (s16*)lbl_8052AAB8[5]);
+        s32 off = i * 16;
         lbl_8053AE44 = lbl_8052AAAC[0];
+        lbl_8053AE60 = uVar1;
         lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x680] << 8);
         fn_8042B8DC((void*)lbl_8052AAB8[0], off);
         fn_8042B8DC((void*)lbl_8052AAB8[1], off + 8);
         fn_8042B430((void*)lbl_8052AAB8[2], off);
         fn_8042B430((void*)lbl_8052AAB8[3], off + 8);
-        off >>= 1;
-        lbl_8053AE60 = half;
+        off = (u32)off >> 1;
         lbl_8053AE44 = lbl_8052AAAC[1];
+        lbl_8053AE60 = uVar1 >> 1;
         lbl_8053AE64 = lbl_8053AE74 + (lbl_8053AE74[0x686] << 8);
         fn_8042B8DC((void*)lbl_8052AAB8[4], off);
         lbl_8053AE44 = lbl_8052AAAC[2];
@@ -1842,10 +1854,10 @@ extern "C" void fn_8042B1DC() {
         }
     }
     u32 size0 = (uVar1 >> 4) & 0xffffff;
-    u32 size1 = (uVar1 >> 4) << 6;
-    LCStoreData((void*)*(u32*)(lbl_8053AE74 + 0x6b0), (void*)lbl_8052AAAC[0], size0);
-    LCStoreData((void*)*(u32*)(lbl_8053AE74 + 0x6b4), (void*)lbl_8052AAAC[1], size1);
-    LCStoreData((void*)*(u32*)(lbl_8053AE74 + 0x6b8), (void*)lbl_8052AAAC[2], size1);
+    u32 size1 = (uVar1 >> 4) * 0x40;
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b0), (void*)lbl_8052AAAC[0], size0);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b4), (void*)lbl_8052AAAC[1], size1);
+    LCStoreData(*(void**)(lbl_8053AE74 + 0x6b8), (void*)lbl_8052AAAC[2], size1);
     *(u32*)(lbl_8053AE74 + 0x6b0) += size0;
     *(u32*)(lbl_8053AE74 + 0x6b4) += size1;
     *(u32*)(lbl_8053AE74 + 0x6b8) += size1;
@@ -2163,7 +2175,8 @@ extern "C" void fn_8042CD64() {
     u32 x;
     u8* ptr;
     u32 low;
-    s32 i, off, k, j, dst;
+    s32 i, off, k, j;
+    u32 idx;
 
     x = *(u32*)(lbl_8053AE74 + 0x6a4);
     ptr = *(u8**)(lbl_8053AE74 + 0x69c);
@@ -2180,25 +2193,15 @@ extern "C" void fn_8042CD64() {
     off = 0;
     for (i = 0; i < 4; i++) {
         if (lbl_8053AE74[0x6a8] & (1 << i)) {
-            dst = off;
-            for (k = 0; k < 16; k++) {
-                lbl_8053AE74[0x300 + off + k * 2] = 0xff;
+            for (idx = 0; idx < 32; idx++) {
+                lbl_8053AE74[0x300 + off + idx] = 0xff;
                 for (j = 0; j < 5; j++) {
-                    if ((k * 2 >> (4 - j)) <= *(s32*)(lbl_8053AE74 + off + j * 4 + 0x348)) {
-                        lbl_8053AE74[0x300 + dst] = *(u8*)(*(s32*)(lbl_8053AE74 + off + j * 4 + 0x390) + *(s32*)(lbl_8053AE74 + off + 0x340) + (k * 2 >> (4 - j)));
-                        lbl_8053AE74[0x320 + dst] = j + 1;
+                    if ((s32)(idx >> (4 - j)) <= *(s32*)(lbl_8053AE74 + off + j * 4 + 0x348)) {
+                        lbl_8053AE74[0x300 + off + idx] = *(u8*)(*(s32*)(lbl_8053AE74 + off + j * 4 + 0x390) + *(s32*)(lbl_8053AE74 + off + 0x340) + (idx >> (4 - j)));
+                        lbl_8053AE74[0x320 + off + idx] = j + 1;
                         break;
                     }
                 }
-                lbl_8053AE74[0x300 + off + k * 2 + 1] = 0xff;
-                for (j = 0; j < 5; j++) {
-                    if ((k * 2 + 1 >> (4 - j)) <= *(s32*)(lbl_8053AE74 + off + j * 4 + 0x348)) {
-                        lbl_8053AE74[0x300 + dst + 1] = *(u8*)(*(s32*)(lbl_8053AE74 + off + j * 4 + 0x390) + *(s32*)(lbl_8053AE74 + off + 0x340) + (k * 2 + 1 >> (4 - j)));
-                        lbl_8053AE74[0x320 + dst + 1] = j + 1;
-                        break;
-                    }
-                }
-                dst += 2;
             }
         }
         off += 0xe0;
