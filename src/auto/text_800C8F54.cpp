@@ -195,6 +195,48 @@ extern "C" s32 fn_800CAEC8(void* self, void* mat, s32 idx, u32 flags);
 
 #include <types.h>
 
+J3DMaterialFactory::J3DMaterialFactory(const J3DMaterialBlock& block)
+{
+    mMaterialNum = block.mNumMaterials;
+    mInitData = fn_800CC070(&block, block.mMatEntryDataOffset);
+    mMatRemapTable = JSUConvertOffsetToPtr<u16>(&block, block.mMatRemapTableOffset);
+    if (block.mIndTextureInfoOffset != NULL && (u32)block.mIndTextureInfoOffset - (u32)block.mStringTableOffset > 4) {
+        unk_0C[0] = fn_800CC058(&block, block.mIndTextureInfoOffset);
+    } else {
+        unk_0C[0] = NULL;
+    }
+    unk_0C[12] = JSUConvertOffsetToPtr<GXCullMode>(&block, block.mCullModeInfoOffset);
+    unk_0C[1] = JSUConvertOffsetToPtr<GXColor>(&block, block.mMatColorsOffset);
+    unk_0C[2] = JSUConvertOffsetToPtr<u8>(&block, block.mNumColorChansOffset);
+    unk_0C[3] = fn_800CC040(&block, block.mColorChanInfoOffset);
+    unk_0C[4] = JSUConvertOffsetToPtr<GXColor>(&block, block.mAmbientColorOffset);
+    unk_0C[5] = fn_800CC028(&block, block.mLightInfoOffset);
+    unk_0C[6] = JSUConvertOffsetToPtr<u8>(&block, block.mNumTexCoordsOffset);
+    unk_0C[7] = fn_800CC010(&block, block.mTexCoordInfoOffset);
+    unk_0C[8] = fn_800CBFF8(&block, block.mTexCoord2InfoOffset);
+    unk_0C[9] = fn_800CBFE0(&block, block.mTexMtxInfoOffset);
+    unk_0C[10] = fn_800CBFE0(&block, block.mTexMtxInfo2Offset);
+    unk_0C[11] = JSUConvertOffsetToPtr<u16>(&block, block.mTextureRemapTableOffset);
+    unk_0C[13] = fn_800CBFC8(&block, block.mTevOrderInfoOffset);
+    unk_0C[14] = JSUConvertOffsetToPtr<GXColorS10>(&block, block.mTevColorsOffset);
+    unk_0C[15] = JSUConvertOffsetToPtr<GXColor>(&block, block.mTevKColorsOffset);
+    unk_0C[16] = JSUConvertOffsetToPtr<u8>(&block, block.mNumTevStagesOffset);
+    unk_0C[17] = fn_800CBFB0(&block, block.mTevStageInfoOffset);
+    unk_0C[18] = fn_800CBF98(&block, block.mTevSwapModeInfoOffset);
+    unk_0C[19] = fn_800CBF80(&block, block.mTevSwapModeTableInfoOffset);
+    unk_0C[20] = fn_800CBF68(&block, block.mFogInfoOffset);
+    unk_0C[21] = fn_800CBF50(&block, block.mAlphaCompInfoOffset);
+    unk_0C[22] = fn_800CBF38(&block, block.mBlendInfoOffset);
+    unk_0C[23] = fn_800CBF20(&block, block.mZModeInfoOffset);
+    unk_0C[24] = JSUConvertOffsetToPtr<u8>(&block, block.mZCompareInfoOffset);
+    unk_0C[25] = JSUConvertOffsetToPtr<u8>(&block, block.mDitherInfoOffset);
+    unk_0C[26] = fn_800CBF08(&block, block.mNBTScaleInfoOffset);
+    mDisplayLists = NULL;
+    mPatchInfo = NULL;
+    mCurrMtxInfo = NULL;
+    mPEModes = NULL;
+}
+
 J3DMaterialFactory::J3DMaterialFactory(const J3DMaterialDLBlock& block)
 {
     mMaterialNum = block.mEntries;
@@ -369,18 +411,18 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
         if (*(u16*)(entry + 0x92) != 0xffff) {
             texGenNum++;
         }
-        if (tevNum < texGenNum) {
-            tevNum = texGenNum;
+        if (texGenNum == 0 || tevNum >= texGenNum) {
+            texGenNum = tevNum;
         }
         tevStageNum = (flags >> 0x10) & 0x1f;
-        if (tevStageNum < tevNum) {
-            tevStageNum = tevNum;
+        if (tevStageNum < texGenNum) {
+            tevStageNum = texGenNum;
         }
         if (entry[3] != 0xff) {
             indNum = (*(u8**)(p + 0x24))[entry[3]];
         }
         peFlags = flags & 0x30000000;
-        texGenFlags = flags & 0x0C000000 & ~-(u32)(4 < indNum);
+        texGenFlags = (indNum > 4) ? 0 : (flags & 0x0C000000);
         indFlag = (flags >> 24) & 1;
 
         if (mat == NULL) {
