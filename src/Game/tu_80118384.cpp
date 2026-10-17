@@ -1,6 +1,7 @@
 #include "types.h"
 
 extern "C" void* fn_80119E5C(u8* self, s16 size);
+extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern "C" void fn_801F856C(void);
 extern "C" void fn_801F6884(void);
 extern "C" void __register_global_object(void* obj, void (*dtor)(void*), void* handle);
@@ -87,6 +88,90 @@ extern "C" void fn_80118454(u8* self)
         lbl_8053AA91 = 1;
     }
     lbl_804BC504[1] = 1;
+}
+
+extern "C" BOOL fn_801184F0(u8* self, u8 arg)
+{
+    extern u8 lbl_804BC504[];
+    extern u8 lbl_804BC4F8[];
+    extern s8 lbl_8053AA91;
+    extern const f32 lbl_8053C798;
+    u8** end;
+    u8** src;
+    u8** dst;
+    u8** it;
+    u32 count;
+    u32 n;
+
+    fn_801F856C();
+    fn_801F6884();
+    self[0] = 0;
+    if (arg != 0) {
+        if (lbl_8053AA91 == 0) {
+            lbl_804BC504[0] = 0;
+            lbl_804BC504[1] = 0;
+            lbl_804BC504[2] = 0;
+            *(u32*)(lbl_804BC504 + 0x8) = 0;
+            *(u32*)(lbl_804BC504 + 0xc) = 0;
+            *(u32*)(lbl_804BC504 + 0x10) = 0;
+            *(f32*)(lbl_804BC504 + 0x14) = lbl_8053C798;
+            *(f32*)(lbl_804BC504 + 0x18) = lbl_8053C798;
+            *(u32*)(lbl_804BC504 + 0x1c) = 0;
+            *(u32*)(lbl_804BC504 + 0x20) = 0;
+            *(u32*)(lbl_804BC504 + 0x24) = 0;
+            *(u32*)(lbl_804BC504 + 0x28) = 0;
+            *(u32*)(lbl_804BC504 + 0x2c) = 0;
+            __register_global_object(lbl_804BC504, (void (*)(void*))fn_80119E5C, lbl_804BC4F8);
+            lbl_8053AA91 = 1;
+        }
+        lbl_804BC504[0] = 0;
+        lbl_804BC504[1] = 0;
+        lbl_804BC504[2] = 0;
+        *(u32*)(lbl_804BC504 + 0x4) = 0;
+        *(u32*)(lbl_804BC504 + 0x8) = 0;
+        *(u32*)(lbl_804BC504 + 0xc) = 0;
+        *(f32*)(lbl_804BC504 + 0x14) = lbl_8053C798;
+        *(f32*)(lbl_804BC504 + 0x18) = lbl_8053C798;
+        *(u32*)(lbl_804BC504 + 0x1c) = 0;
+        *(u32*)(lbl_804BC504 + 0x20) = 0;
+        *(u32*)(lbl_804BC504 + 0x24) = 0;
+        *(u32*)(lbl_804BC504 + 0x28) = 0;
+        *(u32*)(lbl_804BC504 + 0x10) = 0;
+    }
+    end = *(u8***)(self + 0x14);
+    src = *(u8***)(self + 0x14);
+    dst = *(u8***)(self + 0x10);
+    count = ((u32)end + 3 - (u32)src) >> 2;
+    if (src < end) {
+        if ((n = count >> 3) != 0) {
+            do {
+                dst[0] = src[0];
+                dst[1] = src[1];
+                dst[2] = src[2];
+                dst[3] = src[3];
+                dst[4] = src[4];
+                dst[5] = src[5];
+                dst[6] = src[6];
+                dst[7] = src[7];
+                src += 8;
+                dst += 8;
+            } while (--n != 0);
+        }
+        n = count & 7;
+        while (n != 0) {
+            *dst++ = *src++;
+            n--;
+        }
+    }
+    for (it = dst; it != *(u8***)(self + 0x14); it++) {
+    }
+    *(u8***)(self + 0x14) = dst;
+    self[0] = 0;
+    self[1] = 0;
+    self[2] = 0;
+    *(u32*)(self + 0x4) = 0x13;
+    *(u32*)(self + 0x8) = 0;
+    return 1;
 }
 
 extern "C" BOOL fn_801186B0(u8* self, u32 param)
@@ -217,6 +302,147 @@ extern "C" void fn_80118938(u8* self, u32 unused, u32 count, void* src)
                 dst++;
                 count--;
             }
+        }
+    }
+}
+
+extern "C" void fn_80118E20(u8* self)
+{
+    extern u8* lbl_8053AED0;
+    extern u32 lbl_8053AB10;
+    extern f32 lbl_8053C79C;
+    extern const f32 lbl_8053C798;
+    extern u8 lbl_804BC504[];
+    extern u8 lbl_804BC4F8[];
+    extern s8 lbl_8053AA91;
+    struct VElem {
+        virtual void v00(void);
+        virtual void v01(void);
+        virtual void v02(void);
+        virtual void v03(void);
+        virtual void v04(void);
+        virtual void v05(void);
+        virtual void v06(void);
+        virtual void v07(void);
+        virtual void v08(void);
+        virtual void v09(void);
+        virtual void v10(void);
+        virtual void v11(void);
+        virtual void v12(void);
+        virtual void v13(void);
+        virtual void v14(void);
+        virtual void v15(void);
+        virtual void v16(void);
+        virtual void v17(void);
+        virtual void v18(void);
+        virtual void v19(void);
+        virtual void v20(void);
+        virtual u8 v21(void);
+    };
+    u8 ok;
+    u8** it;
+    VElem* elem;
+    u8 c;
+    u8** dst;
+    u8** src;
+    u8** end;
+    u32 count;
+    u32 n;
+
+    if (self[0] != 0) {
+        lbl_8053AED0[0xdd] &= 0xfe;
+        lbl_8053AED0[0xdd] &= ~0x02;
+        lbl_8053AED0[0xdd] &= ~0x04;
+        lbl_8053AED0[0xdd] &= ~0x08;
+        if (self[2] != 0) {
+            u8* p = *(u8**)(lbl_8053AB10 + 0x30);
+            if (p[0x284] == 0) {
+                p[0x284] = 1;
+                *(f32*)(p + 0x28c) = lbl_8053C79C;
+            }
+        }
+        if (self[1] == 0) {
+            ok = 1;
+            for (it = *(u8***)(self + 0x10); it != *(u8***)(self + 0x14); it++) {
+                elem = (VElem*)*it;
+                if (elem != 0) {
+                    elem->v19();
+                    c = elem->v21();
+                    if (c == 0) {
+                        ok = 0;
+                    }
+                }
+            }
+            if (ok && *(s32*)(self + 4) < 0xe) {
+                fn_801F856C();
+                fn_801F6884();
+                self[0] = 0;
+                if (lbl_8053AA91 == 0) {
+                    lbl_804BC504[0] = 0;
+                    lbl_804BC504[1] = 0;
+                    lbl_804BC504[2] = 0;
+                    *(u32*)(lbl_804BC504 + 0x8) = 0;
+                    *(u32*)(lbl_804BC504 + 0xc) = 0;
+                    *(u32*)(lbl_804BC504 + 0x10) = 0;
+                    *(f32*)(lbl_804BC504 + 0x14) = lbl_8053C798;
+                    *(f32*)(lbl_804BC504 + 0x18) = lbl_8053C798;
+                    *(u32*)(lbl_804BC504 + 0x1c) = 0;
+                    *(u32*)(lbl_804BC504 + 0x20) = 0;
+                    *(u32*)(lbl_804BC504 + 0x24) = 0;
+                    *(u32*)(lbl_804BC504 + 0x28) = 0;
+                    *(u32*)(lbl_804BC504 + 0x2c) = 0;
+                    __register_global_object(lbl_804BC504, (void (*)(void*))fn_80119E5C, lbl_804BC4F8);
+                    lbl_8053AA91 = 1;
+                }
+                lbl_804BC504[0] = 0;
+                lbl_804BC504[1] = 0;
+                lbl_804BC504[2] = 0;
+                *(u32*)(lbl_804BC504 + 0x4) = 0;
+                *(u32*)(lbl_804BC504 + 0x8) = 0;
+                *(u32*)(lbl_804BC504 + 0xc) = 0;
+                *(f32*)(lbl_804BC504 + 0x14) = lbl_8053C798;
+                *(f32*)(lbl_804BC504 + 0x18) = lbl_8053C798;
+                *(u32*)(lbl_804BC504 + 0x1c) = 0;
+                *(u32*)(lbl_804BC504 + 0x20) = 0;
+                *(u32*)(lbl_804BC504 + 0x24) = 0;
+                *(u32*)(lbl_804BC504 + 0x28) = 0;
+                *(u32*)(lbl_804BC504 + 0x10) = 0;
+
+                end = *(u8***)(self + 0x14);
+                src = *(u8***)(self + 0x14);
+                dst = *(u8***)(self + 0x10);
+                count = ((u32)end + 3 - (u32)src) >> 2;
+                if (src < end) {
+                    if ((n = count >> 3) != 0) {
+                        do {
+                            dst[0] = src[0];
+                            dst[1] = src[1];
+                            dst[2] = src[2];
+                            dst[3] = src[3];
+                            dst[4] = src[4];
+                            dst[5] = src[5];
+                            dst[6] = src[6];
+                            dst[7] = src[7];
+                            src += 8;
+                            dst += 8;
+                        } while (--n != 0);
+                    }
+                    n = count & 7;
+                    while (n != 0) {
+                        *dst++ = *src++;
+                        n--;
+                    }
+                }
+                for (it = dst; it != *(u8***)(self + 0x14); it++) {
+                }
+                *(u8***)(self + 0x14) = dst;
+                self[0] = 0;
+                self[1] = 0;
+                self[2] = 0;
+                *(u32*)(self + 0x4) = 0x13;
+                *(u32*)(self + 0x8) = 0;
+            }
+            *(u32*)(self + 0x8) = *(u32*)(self + 0x8) + 1;
         }
     }
 }
