@@ -117,6 +117,12 @@ extern "C" void fn_800509E8(void) {
     *(u32*)(lbl_802BB0FC + 0x104) |= 0x2;
 }
 
+extern "C" void fn_80052818(void* param_1) {
+    fn_80052A38();
+    *(u32*)((u8*)param_1 + 0xf6c) = 0;
+    lbl_802FEE20 = *(u32*)(lbl_802BB0FC + 0x70);
+}
+
 extern "C" void fn_80052AFC(void) {
     f32 f = *(f32*)(lbl_802C050C + 0x8);
     lbl_802FF0E4 = (s32)(lbl_803001FC * f) + *(s32*)(lbl_802BB0FC + 0x58);
