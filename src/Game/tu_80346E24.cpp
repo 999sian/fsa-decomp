@@ -5,6 +5,7 @@ extern "C" f32 lbl_80542438;
 extern "C" f32 lbl_8054243C;
 extern "C" f32 lbl_80542440;
 extern "C" f32 lbl_80542444;
+extern "C" u16 fn_80226850(void* pos, s32 room);
 extern "C" f32 lbl_80542448;
 extern "C" f32 lbl_8054244C;
 extern "C" f32 lbl_80542450;
