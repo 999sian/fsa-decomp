@@ -64,8 +64,6 @@ struct PukuResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 struct PukuGameRes {
@@ -148,15 +146,16 @@ extern "C" void fn_80172BC8(void* this_) {
     mtx[1][3] = zero;
     mtx[2][3] = zero;
     if (*(u32*)(p + 0x90) != 7) {
-        mtx[0][0] = lbl_8053DABC;
+        f32 one = lbl_8053DABC;
+        mtx[0][0] = one;
         mtx[0][1] = zero;
         mtx[0][2] = zero;
         mtx[1][0] = zero;
-        mtx[1][1] = lbl_8053DABC;
+        mtx[1][1] = one;
         mtx[1][2] = zero;
         mtx[2][0] = zero;
         mtx[2][1] = zero;
-        mtx[2][2] = lbl_8053DABC;
+        mtx[2][2] = one;
         if (*(s32*)(p + 0x23c) == 0) {
             mtx[0][0] = lbl_8053DAC0;
             mtx[0][1] = zero;
@@ -692,19 +691,23 @@ extern "C" void fn_80175024(void* this_) {
 
 extern "C" void fn_801752D8(void* this_) {
     char* p = (char*)this_;
-    s32 n;
+    char* q;
+    char* e;
     s16 rot;
-    s32 cnt = 0;
+    s32 cnt;
     s32 i;
+    s32 n;
     if (*(s32*)(p + 0x4) >= 8 && *(s32*)(p + 0x23c) == 1 && *(s32*)(lbl_80529DEC + 0x118) == 6) {
-        for (i = 0; i < 4; i++) {
-            s32 id = *(s32*)(p + 0x2c0 + i * 4);
+        cnt = 0;
+        q = p;
+        for (i = 0; i < 4; i++, q += 4) {
+            s32 id = *(s32*)(q + 0x2c0);
             if (id < 0) {
                 cnt++;
             } else {
                 void* a = fn_801F666C(fn_801F856C(), id);
                 if (a == 0) {
-                    *(s32*)(p + 0x2c0 + i * 4) = -1;
+                    *(s32*)(q + 0x2c0) = -1;
                     cnt++;
                 } else {
                     JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
@@ -715,24 +718,28 @@ extern "C" void fn_801752D8(void* this_) {
                 }
             }
         }
-        if (*(s32*)(p + 0x260) == 0 && cnt == 4 && *(s32*)(p + 0x4) == fn_8023DE58(0)) {
-            n = 0;
-            rot = 0;
-            for (i = 0; i < 4; i++) {
-                s32 id = Actor_CreateByID(fn_801F856C(), 0x4b455448, *(u32*)(p + 0x4), p + 0xc, 4, -1, -1);
-                *(s32*)(p + 0x2c0 + i * 4) = id;
-                if (id >= 0) {
-                    void* a = fn_801F666C(fn_801F856C(), id);
-                    if (a != 0) {
-                        n++;
-                        *(s16*)((char*)a + 0x268) = rot;
-                        *(f32*)((char*)a + 0x270) = lbl_8053DB4C;
-                        if (n >= 4) {
-                            *(s32*)(p + 0x260) = 0x384;
+        if (*(s32*)(p + 0x260) == 0 && cnt == 4) {
+            s32 room = *(s32*)(p + 0x4);
+            if (room == fn_8023DE58(0)) {
+                n = 0;
+                rot = 0;
+                e = p;
+                for (i = 0; i < 4; i++, e += 4) {
+                    *(s32*)(e + 0x2c0) = Actor_CreateByID(fn_801F856C(), 0x4b455448, *(u32*)(p + 0x4), p + 0xc, 4, -1, -1);
+                    s32 id = *(s32*)(e + 0x2c0);
+                    if (id >= 0) {
+                        void* a = fn_801F666C(fn_801F856C(), id);
+                        if (a != 0) {
+                            n++;
+                            *(s16*)((char*)a + 0x268) = rot;
+                            *(f32*)((char*)a + 0x270) = lbl_8053DB4C;
+                            if (n >= 4) {
+                                *(s32*)(p + 0x260) = 0x384;
+                            }
                         }
                     }
+                    rot += 0x4000;
                 }
-                rot += 0x4000;
             }
         }
     }
