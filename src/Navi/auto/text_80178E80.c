@@ -2366,6 +2366,20 @@ extern "C" void fn_8018A7B0(u8* self, void* p) {
     *(void**)(self + 0x144) = p;
 }
 
+extern "C" void fn_8018A7B8(u8* self, void* arg) {
+    u8 buf[8];
+    void* p = *(void**)(self + 0x144);
+    if (p != NULL && *(u16*)(self + 0x13c) != 0xffff) {
+        fn_8018DEF0(p, *(u16*)(self + 0x13c), buf);
+        if (buf[0] != 0) {
+            self[0xb0] = 1;
+        } else {
+            self[0xb0] = 0;
+        }
+    }
+    fn_80178BFC(self, arg);
+}
+
 extern "C" void* fn_8018A838(u8* p) { return *(void**)(p + 0x138); }
 
 extern "C" void fn_8018A840(VObj_80178E10* self, u8 flag) {
