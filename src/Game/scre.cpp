@@ -4,6 +4,7 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JUtility/TColor.h"
+#include "JSystem/JMath/JMath.h"
 
 class RupyNum {
 public:
@@ -32,6 +33,37 @@ extern "C" void* fn_80391CE4(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_80393228(void* this_) {
+  u8* p = (u8*)this_;
+  u8 alpha = (u8)(s32)(255.0f * (*(s32*)(p + 0x230) / 90.0f));
+  s32 n = *(s32*)(p + 0x23c);
+  s32 type = *(s32*)(p + 0x238);
+  if (n < 10) {
+    if (*(s32*)(p + 4) < 8) {
+      JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+      JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
+      lbl_8053AF50->add(n, (int)&pos, 0.5f, color);
+    }
+  } else if (n < 100) {
+    if (*(s32*)(p + 4) < 8) {
+      JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+      pos.x -= 8.333f;
+      JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
+      lbl_8053AF50->add(n / 10, (int)&pos, 0.5f, color);
+    }
+    if (*(s32*)(p + 4) < 8) {
+      JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+      pos.x += 8.333f;
+      JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
+      lbl_8053AF50->add(n - (n / 10) * 10, (int)&pos, 0.5f, color);
+    }
+  } else if (*(s32*)(p + 4) < 8) {
+    JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
+    JUtility::TColor color(lbl_80543170[type], lbl_80543174[type], lbl_80543178[type], alpha);
+    lbl_8053AF50->add(10, (int)&pos, 0.5f, color);
+  }
 }
 
 // ---- from src/Game/fn_8039394C.cpp ----
@@ -159,12 +191,13 @@ struct SCRE2 {
 };
 
 extern "C" void fn_80393BF4(SCRE2* this_) {
+    u16* tbl;
     this_->m23C = this_->m90 & 0xffff;
     this_->mPlayer = (this_->m90 >> 16) & 0xff;
     this_->mMode = this_->m90 >> 24;
     this_->m248 = this_->mPos.x - fn_8023E724(this_->mPlayer)->x;
     this_->m24C = this_->mPos.y - fn_8023E724(this_->mPlayer)->y - lbl_805431C8;
-    u16* tbl = lbl_80529DEC.arr;
+    tbl = lbl_80529DEC.arr;
     this_->m240 = this_->m23C;
     this_->m244 = tbl[this_->mPlayer];
     s32 mode = this_->mMode;
