@@ -48,6 +48,20 @@ extern "C" void fn_8010F570(u8* p) {
     }
 }
 
+extern "C" s32 fn_8002F6BC();
+extern "C" void fn_8002F458(s32, s32);
+extern "C" void fn_8010F760(u8* p) {
+    if (p[0xd4] != 0) {
+        p[0xd4]--;
+    } else {
+        if (fn_8002F6BC() == 0) {
+            p[0xd6] = p[0xd5];
+            p[0xcf] = 8;
+            fn_8002F458(0x9c, 0);
+        }
+    }
+}
+
 extern "C" void fn_8010F818(void)
 {
 }
