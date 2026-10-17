@@ -981,6 +981,20 @@ extern "C" s32 fn_80107EB0(u8* p) {
     }
 }
 
+extern "C" void fn_80107F20(void* param_1) {
+    *(u8*)(*(u32*)((u8*)param_1 + 0x25c) + 0xb0) = 1;
+    *(u8*)(*(u32*)((u8*)param_1 + 0x268) + 0xb0) = 1;
+    if (*(s8*)((u8*)param_1 + 0x45a) == 4 && *(u8*)(*(u32*)((u8*)param_1 + 0x228) + 0xb0) != 0) {
+        *(u8*)(*(u32*)((u8*)param_1 + 0x220) + 0xb0) = 0;
+        if (*(u8*)((u8*)param_1 + 0x258) == 1) {
+            *(u8*)(*(u32*)((u8*)param_1 + 0x224) + 0xb0) = 0;
+        } else {
+            *(u8*)(*(u32*)((u8*)param_1 + 0x224) + 0xb0) = 1;
+        }
+    }
+    *(u32*)((u8*)param_1 + 0x27c) = 0;
+}
+
 extern "C" void fn_801080E8(void* p) {
     *(u8*)((u8*)p + 0x191) = ((u8*)lbl_802C5A84)[0x26];
     *(u8*)((u8*)p + 0x192) = 0;
