@@ -6,6 +6,8 @@ extern "C" s32 fn_80108B20(void* self, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f);
 extern f32 lbl_80301204;
 extern "C" s32 fn_80108928(void* self, s16 a, u8 b, f32 c, s32 d, s32 e, f32 f, f32 g, f32 h);
 extern "C" void fn_80106CBC(void* self);
+extern "C" s32 fn_801095A4(void* self, s16 a, u8 b, f32 c, f32 d, s32 e, s32 f);
+extern "C" s32 fn_801096BC(void* self, s16 a, u8 b, void* c, s32 d);
 extern "C" s32 fn_8002F87C(void);
 extern "C" void fn_8002F458(void* p, s32 off);
 extern "C" void fn_8002F7C0(void* p, s32 b);
