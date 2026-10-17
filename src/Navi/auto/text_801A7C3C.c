@@ -142,6 +142,49 @@ extern "C" void* fn_801A8574(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" u32 fn_801A887C(u8* p) {
+    extern s32 lbl_802FE7E0;
+    extern s32 lbl_802FE7E4;
+    s32 b = (s32)&lbl_802FE7E4;
+    s32 a = (s32)&lbl_802FE7E0;
+    *(s32*)(p + 0x18) = a;
+    *(s32*)(p + 0x14) = a;
+    *(s32*)(p + 0x20) = b;
+    *(s32*)(p + 0x1c) = b;
+    *(s32*)(p + 0x28) = 0;
+    *(s32*)(p + 0x24) = 0;
+    return 0;
+}
+
+extern "C" void fn_801A9354(void* param_1, f32* param_2, f32* param_3, void* param_4) {
+    f32 m[12];
+    f32 m0 = param_3[0] * param_2[0];
+    f32 m1 = param_3[1] * param_2[1];
+    f32 m2 = param_3[2] * param_2[2];
+    f32 m3 = param_3[3];
+    f32 m4 = param_3[4] * param_2[0];
+    f32 m5 = param_3[5] * param_2[1];
+    f32 m6 = param_3[6] * param_2[2];
+    f32 m7 = param_3[7];
+    f32 m8 = param_3[8] * param_2[0];
+    f32 m9 = param_3[9] * param_2[1];
+    f32 m10 = param_3[10] * param_2[2];
+    f32 m11 = param_3[11];
+    m[0] = m0;
+    m[1] = m1;
+    m[2] = m2;
+    m[3] = m3;
+    m[4] = m4;
+    m[5] = m5;
+    m[6] = m6;
+    m[7] = m7;
+    m[8] = m8;
+    m[9] = m9;
+    m[10] = m10;
+    m[11] = m11;
+    fn_801C5DA8(param_1, m, param_4);
+}
+
 extern "C" void fn_801C5D48(void* p);
 extern "C" f32 lbl_80301D60;
 extern "C" void fn_801A940C(u8* param_1) {
@@ -171,9 +214,8 @@ extern "C" void fn_801942E4(void);
 extern "C" int fn_801945C4(void* a, void* b);
 extern "C" void fn_801C5DA8(void* a, void* b, void* c);
 extern "C" int fn_801A95FC(u8* param_1, u8* param_2) {
-    u16 n;
     s32 i;
-    n = *(u16*)(param_2 + 0x7c);
+    u32 n = (u16)*(u16*)(param_2 + 0x7c);
     if (n != 0) {
         *(void**)(param_1 + 0xc4) = fn_801E0F6C(fn_8015AA14(n * 0x3c + 0x10), fn_8019428C, fn_801942E4, 0x3c, n);
         for (i = 0; i < *(u16*)(param_2 + 0x7c); i++) {
@@ -1018,6 +1060,27 @@ extern "C" void fn_801AE7B0(u32* p, u32 v) {
     p[2] = 0;
     p[3] = 0;
     p[4] = 3;
+}
+
+extern "C" void fn_801BA614(void* a, void* b);
+extern "C" void fn_801AF42C(void* a, void* b) {
+    extern u32 lbl_8020268C[];
+    extern f32 lbl_802EE5BC[];
+    extern f32 lbl_802EE5C8[];
+    extern u8 lbl_802EE58C[];
+    typedef union {
+        u32 i[3];
+        f32 f[3];
+    } Pun_801AF42C;
+    Pun_801AF42C v = *(Pun_801AF42C*)lbl_8020268C;
+    f32* fa = (f32*)a;
+    lbl_802EE5BC[0] = fa[0];
+    lbl_802EE5BC[1] = fa[1];
+    lbl_802EE5BC[2] = fa[2];
+    lbl_802EE5C8[0] = v.f[0];
+    lbl_802EE5C8[1] = v.f[1];
+    lbl_802EE5C8[2] = v.f[2];
+    fn_801BA614(b, lbl_802EE58C);
 }
 
 extern void* lbl_8029B61C[];
