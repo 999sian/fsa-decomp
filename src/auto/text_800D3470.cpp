@@ -48,6 +48,59 @@ struct Unk800DC290Src {
 static inline void setBits2_3(u8* p, u8 v) { *p = (*p & ~0xC) | (v << 2); }
 static inline void setBits0_1(u8* p, u8 v) { *p = (*p & ~0x3) | v; }
 
+struct Unk800DC3BCSrc {
+    virtual void m0() = 0;
+    virtual void m1() = 0;
+    virtual void m2() = 0;
+    virtual void m3() = 0;
+    virtual void m4() = 0;
+    virtual void m5() = 0;
+    virtual void m6() = 0;
+    virtual void m7() = 0;
+    virtual void m8() = 0;
+    virtual void m9() = 0;
+    virtual void m10() = 0;
+    virtual void m11() = 0;
+    virtual void m12() = 0;
+    virtual void m13() = 0;
+    virtual void m14() = 0;
+    virtual void m15() = 0;
+    virtual void m16() = 0;
+    virtual void m17() = 0;
+    virtual void m18() = 0;
+    virtual void m19() = 0;
+    virtual u16 m20(u32) = 0;
+    virtual void m21() = 0;
+    virtual void m22() = 0;
+    virtual void m23() = 0;
+    virtual void m24() = 0;
+    virtual void m25() = 0;
+    virtual s16* m26(u32) = 0;
+    virtual void m27() = 0;
+    virtual void m28() = 0;
+    virtual u8* m29(u32) = 0;
+    virtual void m30() = 0;
+    virtual void m31() = 0;
+    virtual void m32() = 0;
+    virtual void m33() = 0;
+    virtual void m34() = 0;
+    virtual void m35() = 0;
+    virtual void m36() = 0;
+    virtual void m37() = 0;
+    virtual u8 m38() = 0;
+    virtual void m39() = 0;
+    virtual void m40() = 0;
+    virtual u8* m41(u32) = 0;
+    virtual void m42() = 0;
+    virtual void m43() = 0;
+    virtual void m44() = 0;
+    virtual void m45() = 0;
+    virtual void m46() = 0;
+    virtual void m47() = 0;
+    virtual void m48() = 0;
+    virtual u32* m49(u32) = 0;
+};
+
 struct Unk800DE29CBits {
     u8 pad : 4;
     u8 hi : 2;
