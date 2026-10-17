@@ -223,13 +223,14 @@ extern "C" void fn_802D4768(u8* p, s32 x, u16 v, s32* out, u32* out2) {
 
 extern "C" void fn_802D4874(u8* p, s32 x, u16 v, u32* out, u32* out2) {
     s32 base = (x < 8) ? 0 : x - 7;
-    s32 idx;
-    for (idx = 0; idx < 0x40; idx++) {
+    s32 idx = 0;
+    while (idx < 0x40) {
         RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
         if (rooms->values2948[base][idx] == 0) {
             rooms->values2948[base][idx] = v;
             break;
         }
+        idx++;
     }
     out[1] = 1;
     out[0] = 0;
@@ -261,8 +262,12 @@ extern "C" bool fn_802D49A8(char* p, s32 x, u16 value) {
         }
     }
     u64 mask = 1;
-    for (; i != 0; i--) {
+    for (;;) {
+        if (i == 0) {
+            break;
+        }
         mask <<= 1;
+        i--;
     }
     u64 flags;
     if (x < 8) {
@@ -272,7 +277,10 @@ extern "C" bool fn_802D49A8(char* p, s32 x, u16 value) {
         RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
         flags = rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][x - 7];
     }
-    return (mask & flags) != 0;
+    if ((mask & flags) != 0) {
+        return true;
+    }
+    return false;
 }
 
 extern "C" bool fn_802D4ADC(char* p, s32 x, u16 v) {
@@ -314,7 +322,7 @@ extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
     s32 row;
     index = index < 8 ? 0 : index - 7;
     row = index << 7;
-    for (k = 0; k < 16; k++) {
+    for (k = 16; k != 0; k--) {
         if (value == *(u16*)(row + (p + off + 0x2948))) return n;
         off += 2;
         n++;
@@ -728,14 +736,11 @@ extern "C" u32 fn_802D7B34(char* p, s32 index, s32 digit) {
 }
 
 extern "C" void fn_802D7BE8(char* p, s32 index, s32 bit, u32 value) {
-    s32 shift = 0x3c - bit * 4;
-    s32 idx = index < 8 ? 0 : index - 7;
-    u32 v = value;
-    char* base = p;
+    index = index < 8 ? 0 : index - 7;
     RoomArrays* rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    rooms->flags1048[*(s32*)(base + 0x18)][*(s32*)(base + 0x14)][idx] &= ~((u64)0xf << shift);
+    rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] &= ~((u64)0xf << (0x3c - bit * 4));
     rooms = *(RoomArrays**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
-    rooms->flags1048[*(s32*)(base + 0x18)][*(s32*)(base + 0x14)][idx] |= (u64)v << shift;
+    rooms->flags1048[*(s32*)(p + 0x18)][*(s32*)(p + 0x14)][index] |= (u64)value << (0x3c - bit * 4);
 }
 
 extern "C" void fn_802D7D00(char* p, s32 index, s32 bit, u8 set) {
@@ -1254,6 +1259,7 @@ extern "C" void fn_802DA788(char* p) {
         *(s32*)(p + 0x30) = 0;
     }
     if (fn_802DEDFC((s32)(p + 0x2c))) {
+        s32 i = 0;
         fn_8038D454();
         fn_801F7CAC(fn_801F856C());
         fn_801F6204(fn_801F856C(), 0);
@@ -1261,7 +1267,6 @@ extern "C" void fn_802DA788(char* p) {
         char* base = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
         *(u8*)(base + 0x131DE) = 0;
         fn_8013C8CC(fn_8013C824());
-        s32 i = 0;
         *(u8*)(p + 0xC9) = i;
         const f32* t = lbl_8046E148;
         do {
