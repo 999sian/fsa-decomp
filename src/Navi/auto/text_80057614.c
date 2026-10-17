@@ -983,6 +983,7 @@ extern "C" void fn_8005C4A8(u8 flag, s32** bufs)
 }
 
 extern "C" void fn_8005C710(void) {
+    fn_801473F8(0, (void*)fn_8005C4A8, lbl_802C2D60, 0xff, 0, (void*)fn_8005C5DC, lbl_802C2D60, 0xff, 0);
 }
 
 extern int lbl_802FF128;
