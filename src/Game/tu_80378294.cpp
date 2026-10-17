@@ -4,7 +4,7 @@
 
 extern "C" void __dt__5ActorFv(void* this_, int how);
 extern "C" void __dl__FPv(void* p);
-extern "C" void fn_801EE434(void);
+extern "C" void fn_801EE434(void* p);
 extern char lbl_804AE888[];
 extern "C" void* fn_801F856C(void);
 extern "C" int fn_801F78F4(void* mgr, unsigned int type, int idx);
@@ -21,52 +21,53 @@ extern "C" unsigned char fn_80230534(int a);
 extern "C" void fn_801F0D20(void* this_, int id);
 extern "C" void detach__5ActorFv(void* this_);
 extern int lbl_804751A8[];
-extern "C" int fn_8037845C(int* param_1) {
+extern "C" int fn_8037845C(void* param_1) {
+    int* p = (int*)param_1;
     int i;
 
-    if (0 < param_1[0x91]) {
-        param_1[0x91] = param_1[0x91] - 1;
+    if (0 < p[0x91]) {
+        p[0x91] = p[0x91] - 1;
     }
-    if (param_1[0x92] < 0) {
+    if (p[0x92] < 0) {
         return 0;
     }
-    if (param_1[0x92] < 4) {
+    if (p[0x92] < 4) {
         if (fn_8023077C()) {
-            param_1[0x92] = 4;
-            param_1[0x91] = 0x32;
-            param_1[0x93] = 0;
+            p[0x92] = 4;
+            p[0x91] = 0x32;
+            p[0x93] = 0;
             for (i = 0; i < 4; i++) {
                 fn_80230498(i, fn_8023E724(i), 0xe8, 0xff, -0x80, -0x80, 1);
             }
         }
         return 1;
     }
-    if (param_1[0x93] == 0 && param_1[0x91] > 0x1e) {
+    if (p[0x93] == 0 && p[0x91] > 0x1e) {
         for (i = 0; i < 4; i++) {
             fn_80230498(i, fn_8023E724(i), 0xe8, 0xff, -0x80, -0x80, 1);
         }
         return 1;
     }
-    if (param_1[0x93] < 0xd) {
-        if (param_1[0x91] == 0) {
+    if (p[0x93] < 0xd) {
+        if (p[0x91] == 0) {
             i = 0;
-            param_1[0x93] = param_1[0x93] + 1;
-            param_1[0x91] = lbl_804751A8[param_1[0x93]];
+            p[0x93]++;
+            p[0x91] = lbl_804751A8[p[0x93]];
             do {
-                fn_80230498(i, fn_8023E724(i), param_1[0x93] + 0xdb, 0xff, -0x80, -0x80, 1);
-                if (param_1[0x93] == 1) {
+                fn_80230498(i, fn_8023E724(i), p[0x93] + 0xdb, 0xff, -0x80, -0x80, 1);
+                if (p[0x93] == 1) {
                     fn_80230FD0(i, 0x10001);
                 }
                 i++;
             } while (i < 4);
-            if (param_1[0x93] == 0xd) {
-                param_1[0x91] = 0x19;
+            if (p[0x93] == 0xd) {
+                p[0x91] = 0x19;
             }
         }
-    } else if (param_1[0x91] == 0 && fn_80230534(0)) {
-        param_1[0x92] = -1;
+    } else if (p[0x91] == 0 && fn_80230534(0)) {
+        p[0x92] = -1;
         fn_801F0D20(param_1, 3);
-        ((void (*)(void*, int, int))(*(void**)param_1))(param_1, 0xff, 1);
+        (*(void (**)(void*, int, int))(*(int*)param_1 + 0x30))(param_1, 0xff, 1);
         detach__5ActorFv(param_1);
     }
     return 1;
