@@ -1,5 +1,11 @@
 #include "types.h"
 
+struct Iter_8013A388 {
+    void* node;
+};
+inline bool iterEq_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return x.node == y.node; }
+inline bool iterNe_8013A388(Iter_8013A388 x, Iter_8013A388 y) { return !iterEq_8013A388(x, y); }
+
 struct Obj_8013A024 {
     u8 unk_0x0[0x8];
     void* m_0x8;
