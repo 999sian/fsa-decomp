@@ -29,6 +29,14 @@ extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_801670D0(int, void*, int);
 extern "C" void fn_80118B58(void*, int, int);
 
+extern "C" void fn_8015AB40(void*);
+extern "C" void fn_801196E0(void*);
+extern "C" u8 fn_80119AD4(void*);
+extern "C" void fn_80119A04(void*);
+extern "C" void fn_80119A28(void*);
+extern u8 lbl_802900DC[];
+extern u8 lbl_80283F48[];
+
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80118310-0x8011c4b8 (86 functions). split_file divides it into the game's real files.
 
@@ -104,7 +112,7 @@ extern "C" void* fn_8011B0D8(u8* p, s16 del) {
         *(u32*)p = (u32)lbl_8029016C;
         s16 idx = *(s16*)(p + 0x7c);
         if (idx >= 0) {
-            lbl_802FF2BC[idx]--;
+            ((u8*)&lbl_802FF2BC)[idx]--;
             *(s16*)(p + 0x7c) = -1;
         }
         fn_80166FC4(lbl_802C5FBC, p + 0x80);
