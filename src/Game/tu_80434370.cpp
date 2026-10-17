@@ -28,6 +28,14 @@ typedef void (Unk80434370::*Unk80434370Fn)();
 extern Unk80434370Fn lbl_804B1690[];
 
 extern "C" char* lbl_8053AB10;
+extern "C" float lbl_80543BC8;
+extern "C" double lbl_80543BD0;
+extern "C" void* lbl_8053AD78;
+extern "C" f32 fn_803832BC(char*, s32, s32, s32, s32);
+class J2DTextBox {
+public:
+    char* getStringPtr() const;
+};
 extern "C" void* lbl_8053AED8;
 extern "C" const float lbl_80543BD8;
 extern "C" void fn_8013B490(void*);
