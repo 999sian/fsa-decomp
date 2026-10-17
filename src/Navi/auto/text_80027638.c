@@ -110,6 +110,29 @@ extern "C" void* fn_8002F198(void) {
     return ret;
 }
 
+extern "C" void fn_8005867C(int, void*, int, int, int, float);
+extern "C" void fn_8002F228(void* p) {
+    extern float lbl_802FFD10;
+    unsigned char* obj = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    if (obj != 0) {
+        if (obj[0x56e] == 3) {
+            fn_800589CC(1);
+            fn_800589CC(2);
+        } else if (obj[0x56e] != 0) {
+            fn_800589CC(1);
+        }
+        lbl_802FEE28 = 0;
+        *(unsigned short*)(obj + 0x56c) = 0;
+        obj[0x56e] = 0;
+        obj[0x56f] = 1;
+        lbl_802FEE28 = (int)p;
+        fn_80058654(1, p, 1, lbl_802FFD10);
+        *(unsigned short*)(obj + 0x56c) = (unsigned short)(int)p;
+        obj[0x56e] = 2;
+        obj[0x56f] = 1;
+    }
+}
+
 extern "C" void fn_8002F2E0(void* p) {
     fn_80058740(1, p);
 }
@@ -126,11 +149,24 @@ extern "C" void fn_8002F330(void) {
 }
 
 extern "C" void fn_8002F358(void* p, int off) {
-    fn_80058628(off + fn_80058C08(), p, 1);
+    int r = fn_80058C08();
+    r = off + r;
+    fn_80058628(r, p, 1);
 }
 
 extern "C" void fn_8002F3A0(void* p, int off, float f) {
     fn_80058654(off + fn_80058C08(), p, 1, f);
+}
+
+extern "C" void fn_8002F3F8(void* p, int off, int v) {
+    extern float lbl_802FFD10;
+    fn_8005867C(off + fn_80058C08(), p, 1, v, -1, lbl_802FFD10);
+}
+
+extern "C" void fn_8002F4A0(void* p, int idx) {
+    extern float lbl_802FFD10;
+    extern void* lbl_80227868[];
+    fn_8005867C(idx + fn_80058C08(), p, 1, (int)lbl_80227868[idx], -1, lbl_802FFD10);
 }
 
 extern "C" int fn_8002F87C(void) {
