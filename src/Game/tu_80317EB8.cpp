@@ -20,6 +20,8 @@ extern "C" void* fn_801F666C(void*, s32);
 extern "C" s32 Actor_CreateByID(void*, u32, s32, char*, u32, s32, s32);
 extern "C" char lbl_804AAFB8[];
 extern "C" void (Actor::*lbl_804AAED4[])();
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void fn_80239914(void*, s32, s32);
 extern "C" void fn_8022FEB8(void*, s32, s32, s32, s32);
 extern "C" s32 fn_8022FD8C(s32);
@@ -274,7 +276,8 @@ extern "C" void fn_803185A8(Actor* this_)
         fn_8022FEB8(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 1, 0);
         r = fn_8022FD8C(*(s32*)(self + 0x198));
         if (r >= 0 && fn_802300EC()) {
-            vec = *(Tu80317Vec3*)(self + 0xc);
+            *(f64*)&vec = *(f64*)(self + 0xc);
+            vec.z = *(f32*)(self + 0x14);
             if (fn_8038AD24(r, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 4), &vec, 0x10)) {
                 *(s32*)(self + 0x234) = r;
                 *(s32*)(self + 0x230) = 1;
@@ -428,6 +431,8 @@ extern "C" u8 fn_802300EC(void);
 extern "C" u8 fn_8038C678(s32, s32, s32, s32, void*, s32);
 extern "C" void fn_8022FF8C(s32, void*, s32, s32, s32, s32);
 extern "C" u8 fn_80388CAC(s32, s32);
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void fn_80318B84(Actor* this_)
 {
     u8* self = (u8*)this_;
@@ -453,7 +458,7 @@ extern "C" void fn_80318B84(Actor* this_)
         r = fn_8022FD8C(*(s32*)(self + 0x198));
         if (r >= 0 && fn_802300EC()) {
             Tu80317Vec3 vec;
-            vec.xy = *(Tu80317Vec2*)(self + 0xc);
+            *(f64*)&vec = *(f64*)(self + 0xc);
             vec.z = *(f32*)(self + 0x14);
             if (fn_8038C678(r, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 4), &vec, 0x10)) {
                 *(s32*)(self + 0x234) = r;
@@ -744,7 +749,7 @@ extern "C" void fn_80319658(Actor* this_)
     Tu80317Rect rect;
     Tu80317Vec3 pos;
     s32 slot;
-    char* self = (char*)this_;
+    u8* self = (u8*)this_;
 
     if (*(s32*)(self + 0x264) == 2) {
         rect.x0 = *(f32*)(self + 0x248);
@@ -759,17 +764,18 @@ extern "C" void fn_80319658(Actor* this_)
             fn_8022FEB8(&rect, *(s32*)(self + 4), *(s32*)(self + 0x198), 0, 0);
             slot = fn_8022FD8C(*(s32*)(self + 0x198));
             if (slot >= 0 && fn_802300EC() && fn_802373EC(slot) == 6) {
-                pos = *(Tu80317Vec3*)(self + 0xc);
+                *(f64*)&pos = *(f64*)(self + 0xc);
+                pos.z = *(f32*)(self + 0x14);
                 if (fn_8038C678(slot, *(s32*)(self + 0x244), *(s32*)(self + 0x198), *(s32*)(self + 4), &pos, 0x10)) {
                     *(s32*)(self + 0x234) = slot;
                     *(s32*)(self + 0x230) = 1;
                     s32 idx = *(s32*)(self + 0x258);
                     if (idx >= 0) {
-                        char* obj = (char*)fn_801F666C(fn_801F856C(), idx);
-                        if (obj != 0 && *(s32*)(obj + 0x1a0) == 0x534e5043) {
-                            s32 t = *(s32*)(obj + 0x238);
-                            if (t == 6 || t == 7 || t == 0 || t == 8) {
-                                *(s32*)(obj + 0x264) = 3;
+                        u8* p = (u8*)fn_801F666C(fn_801F856C(), idx);
+                        if (p != 0 && *(u32*)(p + 0x1a0) == 0x534e5043) {
+                            s32 k = *(s32*)(p + 0x238);
+                            if (k == 6 || k == 7 || k == 0 || k == 8) {
+                                *(s32*)(p + 0x264) = 3;
                             }
                         }
                     }
@@ -780,11 +786,11 @@ extern "C" void fn_80319658(Actor* this_)
             if (fn_80388CAC(*(s32*)(self + 0x234), *(s32*)(self + 0x198))) {
                 s32 idx = *(s32*)(self + 0x258);
                 if (idx >= 0) {
-                    char* obj = (char*)fn_801F666C(fn_801F856C(), idx);
-                    if (obj != 0 && *(s32*)(obj + 0x1a0) == 0x534e5043) {
-                        s32 t = *(s32*)(obj + 0x238);
-                        if (t == 6 || t == 7 || t == 0 || t == 8) {
-                            *(s32*)(obj + 0x264) = 2;
+                    u8* p = (u8*)fn_801F666C(fn_801F856C(), idx);
+                    if (p != 0 && *(u32*)(p + 0x1a0) == 0x534e5043) {
+                        s32 k = *(s32*)(p + 0x238);
+                        if (k == 6 || k == 7 || k == 0 || k == 8) {
+                            *(s32*)(p + 0x264) = 2;
                         }
                     }
                 }
@@ -802,13 +808,11 @@ extern "C" void fn_80319870(Actor* this_)
     extern void fn_80307AC8(void*, s32, void*, s32, s32, s32, s32);
     extern void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32);
     char* tbl = lbl_80471638;
-    s32 off;
 
     if (*((u8*)this_ + 0x270) != 0) {
         switch (*(s32*)((u8*)this_ + 0x23c) & 3) {
         case 1:
-            off = 0;
-            fn_801F06F0(this_, tbl + off, *(s32*)((u8*)this_ + 0x26c) + *(s32*)((u8*)this_ + 0x25c), 0, 7, lbl_80541900, lbl_80541900);
+            fn_801F06F0(this_, tbl + 0, *(s32*)((u8*)this_ + 0x26c) + *(s32*)((u8*)this_ + 0x25c), 0, 7, lbl_80541900, lbl_80541900);
             fn_80307AC8(*(void**)((u8*)this_ + 0x198), *(s32*)((u8*)this_ + 4), (u8*)this_ + 0xc, *(s32*)((u8*)this_ + 0x26c) + *(s32*)((u8*)this_ + 0x25c), 0, 0, -1);
             break;
         case 2:
