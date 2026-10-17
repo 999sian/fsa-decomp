@@ -52,6 +52,16 @@ extern "C" void fn_800E3F28(void* param_1) {
     *(u8*)((u8*)param_1 + 0xa76) = 0x14;
 }
 
+extern "C" void fn_800E3F4C(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
+        *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0xb11) = 2;
+    *(u16*)((u8*)param_1 + 0xa9c) = 10;
+    *(u8*)((u8*)param_1 + 0xa76) = 0x15;
+}
+
 extern "C" void fn_800E6620(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0xa9c) != 0) {
         *(u16*)((u8*)param_1 + 0xa9c) = *(u16*)((u8*)param_1 + 0xa9c) - 1;
