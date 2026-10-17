@@ -22,6 +22,25 @@ extern "C" void fn_8006D300(void) {
     fn_8006D320();
 }
 
+extern "C" void fn_80041268(void*, void*, s32);
+extern "C" void fn_8000E0F0(void*, void*, f32);
+extern "C" void fn_8000EBB8(void*);
+extern "C" void fn_80115914(f32*, void*);
+extern "C" void fn_801C61AC(void*, f32, f32, f32);
+extern "C" void fn_8000C950(void*, s32, s32, s32);
+extern "C" void fn_801C5D74(void*, void*);
+extern "C" BOOL fn_801E10A0(void*);
+extern "C" BOOL fn_801E1070(void*);
+extern "C" void fn_801E10DC(void*, void*);
+extern u8 lbl_8029F8D8[];
+extern f32 lbl_802BF784[];
+extern "C" BOOL fn_8006D5A8(char* p) {
+    if (p[0x26c] == 0) {
+        p[0x26c]++;
+    }
+    return TRUE;
+}
+
 extern u8 lbl_802FC990;
 extern "C" void fn_800636F4(void*, void*, s32);
 extern char lbl_802B7CA0[];
