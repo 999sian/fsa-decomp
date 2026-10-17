@@ -915,6 +915,11 @@ extern "C" void* fn_8005BFC8(s32 param_1) {
     return p;
 }
 
+extern "C" void fn_8005C038(s32 param_1) {
+    fn_801BBDC4(lbl_802FE960, param_1);
+    fn_8005C170(param_1);
+}
+
 extern "C" void fn_8005C074(void) {
     s32 i = 0;
     lbl_802FF104 = 0;
@@ -956,7 +961,7 @@ extern "C" s32 fn_8005C1F0(s32 idx) {
     if (idx < 0x2e) {
         return 3;
     }
-    return idx >= 0x128 ? 5 : 4;
+    return 5 - ((u32)idx < 0x128) + (idx >> 31);
 }
 
 extern "C" void fn_8005C330(const char*, ...) {
