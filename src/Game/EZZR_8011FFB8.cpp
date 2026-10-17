@@ -143,6 +143,9 @@ extern "C" void* fn_80121164(u8* p) {
     return p;
 }
 
+void __sinit_EZZR_8011FFB8_cpp(void) {
+}
+
 extern "C" s32 fn_8011FFB8(void)
 {
 	return 0;
@@ -156,6 +159,10 @@ extern "C" s32 fn_8011FFC0(void)
 extern "C" void fn_8011FFC8(void) {}
 class JASGenericMemPool {
 public:
+    void* mRunner;
+    s32 mFreeMemCount;
+    s32 mTotalMemCount;
+    u32 mUsedMemCount;
     JASGenericMemPool();
     ~JASGenericMemPool();
 };
