@@ -670,13 +670,14 @@ extern "C" void fn_8008E2B8(u32 param_1, s16 param_2) {
 extern "C" int fn_8008E328(int param_1)
 {
     int *p = *(int **)((void *)lbl_8052E8A0);
-    
-    do {
-        s16 val = *(s16*)((u8*)(*(int *)p) + 0x7c);
-        if (param_1 == val) return (int)p;
+
+    while (p != NULL) {
+        int *obj = (int *)*p;
+        s16 val = *(s16 *)((u8 *)obj + 0x7c);
+        if (param_1 == val) return (int)obj;
         p = (int *)p[3];
-    } while (p != NULL);
-    
+    }
+
     return 0;
 }
 
