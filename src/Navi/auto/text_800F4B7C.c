@@ -301,6 +301,31 @@ extern "C" void fn_80101264(void* param_1) {
     *(u8*)((u8*)param_1 + 0x189) = 0x1e;
 }
 
+extern "C" void fn_80101290(u8* p) {
+    if (*(u16*)(p + 0x18c) != 0) {
+        fn_8002F458((void*)0xad, 0);
+        fn_8002F7C0((void*)0xa, 0);
+        *(u8*)(*(u8**)(p + 0x110) + 0xb0) = 1;
+        *(s32*)(p + 0x124) = 0;
+        *(f32*)(*(u8**)(p + 0x120) + 8) = (f32)((f64)*(s32*)(p + 0x124) - lbl_80301210);
+        fn_8017A4F8(*(void**)(p + 0x1c));
+        *(u16*)(p + 0x528) = 8;
+        *(u8*)(p + 0xf2) = 0xe;
+        *(u8*)(p + 0x188) = 1;
+        *(u8*)(p + 0x189) = 0x1f;
+    }
+}
+
+extern "C" void fn_80101340(void* param_1) {
+    if (*(u16*)((u8*)param_1 + 0x528) != 0) {
+        *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0xf2) = 2;
+    *(u16*)((u8*)param_1 + 0x528) = 8;
+    *(u8*)((u8*)param_1 + 0x189) = 0x20;
+}
+
 extern "C" void fn_80101374(void* param_1) {
     if (*(u16*)((u8*)param_1 + 0x528) != 0) {
         *(u16*)((u8*)param_1 + 0x528) = *(u16*)((u8*)param_1 + 0x528) - 1;
