@@ -71,6 +71,17 @@ extern "C" void fn_800F4D38(void) {}
 
 extern "C" void fn_800F7DAC(void) {}
 
+extern "C" void fn_8015AB1C(void*);
+extern "C" void* fn_800F7E40(void* param_1, s16 param_2) {
+    if (param_1) {
+        fn_8015AB1C(*(void**)((u8*)param_1 + 4));
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" BOOL fn_800FFBBC(void)
 {
     return TRUE;
