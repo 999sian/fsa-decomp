@@ -146,6 +146,14 @@ extern "C" void fn_800C14DC(char* p) {
     }
 }
 
+extern "C" void fn_800C1968(u8* p) {
+    if (fn_8002F168(p) != 1) {
+        p[0x222] = 2;
+        *(u16*)(p + 0x220) = 0xe;
+        p[0x212] = 4;
+    }
+}
+
 extern "C" void fn_800C2364(u8* p) {
     fn_8002F358(0x8e, 0);
     *(*(u8**)(p + 0x194) + 0xb0) = 1;
