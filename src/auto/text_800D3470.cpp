@@ -3993,8 +3993,8 @@ extern "C" u8* fn_800DF078(u8* self, int i) {
 }
 
 #if !defined(VERSION_G4SJ01)
-extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    ((GXColor*)(self + 0xc))[i] = *(const GXColor*)c;
+extern "C" void fn_800DF08C(GXColor* param_1, int param_2, const GXColor* param_3) {
+    param_1[param_2 + 3] = *param_3;
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
