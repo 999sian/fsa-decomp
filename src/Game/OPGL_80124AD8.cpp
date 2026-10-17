@@ -13,8 +13,6 @@ public:
     virtual void v23();
     virtual void v24();
     virtual void v25(s32);
-    virtual void v26();
-    virtual void v27(s32);
 };
 
 extern "C" void fn_80124AD8(void* p) {
