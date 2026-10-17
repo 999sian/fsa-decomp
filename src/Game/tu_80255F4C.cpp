@@ -1,4 +1,5 @@
 #include "types.h"
+#include "JSystem/JGeometry/Util.h"
 #include "JSystem/JMath/JMath.h"
 
 struct Actor;
@@ -179,6 +180,38 @@ extern "C" void fn_80256410(Actor* param_1)
         *(f32*)(p + 0xc) = k * *(f32*)(sincosTable___5JMath + ((u32)*(s16*)(p + 0x23a) >> 2 & 0x3ff8) + 4) + *(f32*)(p + 0x24);
         *(f32*)(p + 0x10) = k * *(f32*)(sincosTable___5JMath + ((u32)*(s16*)(p + 0x23a) >> 2 & 0x3ff8)) + *(f32*)(p + 0x28);
     }
+}
+
+extern "C" void fn_8022E088(Actor* a, s32 i, Vec* out);
+extern "C" void fn_8022DF48(Actor* a);
+extern "C" s32 fn_8023DE58(s32 i);
+extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
+    u8* p = (u8*)a;
+    s32 i;
+    Vec d;
+    f32 len;
+    s32 ang;
+
+    if (fn_8023DE58(arg) != *(s32*)(p + 0x4)) {
+        return 0;
+    }
+    for (i = 0; i < 8; i++) {
+        fn_8022E088(a, i, &d);
+        d.x = d.x - *(f32*)(p + 0xc);
+        d.y = d.y - *(f32*)(p + 0x10);
+        d.z = d.z - *(f32*)(p + 0x14);
+        d.z = 0.0f;
+        ang = (s32)(JMath::atanTable_.atan2_(d.y, d.x) * 10430.378f);
+        len = sqrt(d.x * d.x + d.y * d.y);
+        ang = ang - *(s16*)(p + 0x238);
+        d.x = len * JMath::sincosTable_.mTable[(u16)ang >> 5].second;
+        d.y = len * JMath::sincosTable_.mTable[(u16)ang >> 5].first;
+        if (!(d.x < *(f32*)(p + 0x60) || d.x >= *(f32*)(p + 0x68)) && !(d.y < *(f32*)(p + 0x64) || d.y >= *(f32*)(p + 0x6c))) {
+            fn_8022DF48(a);
+            return 1;
+        }
+    }
+    return 0;
 }
 
 extern char* lbl_8053AAF8;
