@@ -574,6 +574,15 @@ extern "C" void fn_8012495C(void* self, s32 idx, u32 c, u32 a, u32 b) {
     fn_801BDE1C(e, 5, 1);
 }
 
+extern "C" void fn_80124A04(void* self, s32 idx, u32 c, u32 a, u32 b) {
+    u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
+    *(u32*)(e + 0x4c) = a;
+    *(u32*)(e + 0x50) = b;
+    *(u8*)(e + 0x3c) = 0;
+    *(u32*)(e + 0x48) = c;
+    fn_801BDE1C(e, 6, 1);
+}
+
 extern "C" void fn_80124AAC(void* self, s32 idx, u32 a, u32 b) {
     u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
     *(u32*)(e + 0x4c) = a;
