@@ -232,7 +232,8 @@ struct Tu6CECUtil {
         if (x <= lbl_8053F150)
             return x;
         f32 y = __frsqrte(x);
-        return lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
+        y = lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
+        return y;
     }
 };
 static inline f32 tu6cec_invSqrt(f32 x) { return Tu6CECUtil::inv_sqrt(x); }
@@ -269,9 +270,9 @@ extern "C" void fn_801D6D38(char* p, Tu6CECVec2* in) {
         x = lbl_8053F150;
         y = lbl_8053F15C;
     } else if (!(sq <= lbl_8053F158 * *(f32*)__float_epsilon)) {
-        f32 inv = tu6cec_invSqrt(sq);
-        x *= inv;
-        y *= inv;
+        sq = Tu6CECUtil::inv_sqrt(sq);
+        x = x * sq;
+        y = y * sq;
     }
     x *= lbl_8053F168;
     y *= lbl_8053F168;
