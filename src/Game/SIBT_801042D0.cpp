@@ -50,4 +50,7 @@ extern "C" void fn_80104934(Actor* this_) {
         }
     }
 }
+
+void __sinit_SIBT_801042D0_cpp(void) {}
+
 #include "Game/SinitPoolChain.h"
