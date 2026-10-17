@@ -251,6 +251,16 @@ extern "C" void fn_800E88D0(u8* p) {
     *(u8*)(p + 0x5dd) = 0;
 }
 
+extern "C" void fn_800E8A08(u8* p) {
+    if (p[0xb14] != 0) {
+        p[0xb14]--;
+    } else if (*(u32*)(lbl_802BB0FC + 0x100) & 1) {
+        fn_800E927C(p);
+        p[0xb14] = 0x3c;
+        p[0xa76] = 0x32;
+    }
+}
+
 extern "C" void fn_800E8A70(void* param_1) {
     u8* p = (u8*)param_1;
     u8 v = p[0xb14];
