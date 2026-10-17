@@ -3,6 +3,18 @@
 #include <cstring>
 
 extern "C" void fn_8011C280(int);
+
+struct VObj_8011A74C {
+    virtual void v0(void);
+    virtual void v1(void);
+    virtual void v2(void);
+    virtual void v3(void);
+    virtual void v4(void);
+    virtual void v5(void);
+    virtual void v6(void);
+    virtual u32 v7(void);
+    virtual u32 v8(void);
+};
 extern "C" s32 fn_8011A7C8(void);
 extern "C" void* fn_8015A90C(u32);
 extern "C" void fn_8011AC74(void*, s32, s32, u16, u16);
@@ -173,13 +185,27 @@ extern "C" void fn_801193D8(u8* self, u16* table) {
     }
 }
 
+extern "C" s32 fn_80119414(u8* self, char* name) {
+    u8* table = *(u8**)(self + 4);
+    u16 count = *(u16*)(self + 0xc);
+    u16* entry = (u16*)(table + 4);
+    u16 hash = fn_801194E4(self, name);
+    u16 i;
+    for (i = 0; i < count; i++, entry += 2) {
+        if (*entry == hash && fn_801E6578(table + *(u16*)(table + i * 4 + 6), name) == 0) {
+            return i;
+        }
+    }
+    return -1;
+}
+#pragma use_lmw_stmw reset
 extern "C" int fn_801E6578(void* a, void* b);
 extern "C" u16 fn_801194E4(void* param_1, char* param_2);
 extern "C" void* fn_801194B4(u8* self, u16 idx) {
     if (idx < *(u16*)(self + 0xc)) {
         u8* table = *(u8**)(self + 4);
-        u8* e = table + idx * 4;
-        return table + *(u16*)(e + 6);
+        u16* e = (u16*)(table + idx * 4);
+        return table + e[3];
     }
     return NULL;
 }
