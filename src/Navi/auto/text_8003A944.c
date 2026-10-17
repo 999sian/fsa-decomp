@@ -2,6 +2,8 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x8003a944-0x80041b7c (90 functions). split_file divides it into the game's real files.
 
+extern "C" void fn_80041C88(f64* v, f32* out);
+extern f64 lbl_802FFDE8;
 extern void* lbl_802469E8[];
 extern void* lbl_80246AF4[];
 extern void* lbl_80246B28[];
@@ -547,9 +549,8 @@ extern "C" s32 fn_80041190(s32 arg) {
         lbl_802FF060++;
         lbl_802FF06C = lbl_802FFED0;
     } else if (lbl_802FF060 != -1) {
-        f32 t = lbl_802FEF5C + lbl_802FF06C;
-        lbl_802FEF5C = t;
-        if (t > lbl_802FFDD0) {
+        lbl_802FEF5C = lbl_802FEF5C + lbl_802FF06C;
+        if (lbl_802FEF5C > lbl_802FFDD0) {
             lbl_802FEF5C = lbl_802FFDD0;
             if (lbl_802FF05C != fn_80040E90) {
                 if (lbl_802FF05C != 0) {
@@ -569,6 +570,32 @@ extern "C" s32 fn_80041190(s32 arg) {
         }
     }
     return 1;
+}
+
+extern "C" void fn_80041348(void* self);
+extern "C" void fn_80041740(void* self);
+extern "C" void fn_80041854(void* self);
+extern "C" void fn_80041968(void* self);
+extern "C" void fn_80041AC4(void* self);
+extern "C" void fn_800415E4(void* self);
+extern "C" void fn_80041268(void* self, void* param_2, s32 param_3) {
+    s32 i;
+    for (i = *(u16*)(*(u8**)((u8*)self + 4) + 0x5c) - 1; i >= 0; i--) {
+        void* elem = ((void**)*(u8**)(*(u8**)((u8*)self + 4) + 0x60))[(u16)i];
+        if (param_3 == 0) {
+            ((void (*)(void*, void*))fn_80041348)(elem, param_2);
+        } else if (param_3 == 1) {
+            ((void (*)(void*, void*))fn_80041740)(elem, param_2);
+        } else if (param_3 == 2) {
+            ((void (*)(void*, void*))fn_80041854)(elem, param_2);
+        } else if (param_3 == 3) {
+            ((void (*)(void*, void*))fn_80041968)(elem, param_2);
+        } else if (param_3 == 4) {
+            ((void (*)(void*, void*))fn_80041AC4)(elem, param_2);
+        } else {
+            ((void (*)(void*, void*))fn_800415E4)(elem, param_2);
+        }
+    }
 }
 
 extern "C" void fn_800415DC(void) {}
