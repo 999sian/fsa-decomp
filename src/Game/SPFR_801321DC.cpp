@@ -2,6 +2,9 @@
 #include "Game/SinitPoolChain.h"
 
 extern "C" void fn_8010DF58(void);
+extern "C" void* fn_8011921C(void);
+extern "C" void fn_80132454(char* a, s32 b);
+extern "C" s32 lbl_80465204[];
 extern const char lbl_80465270[];
 extern f32 lbl_8053CD00;
 extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, struct SPFR_DrawParam* param, s32 a, s32 b, s32 c, f32 s0, f32 s1);
@@ -53,6 +56,122 @@ struct SPFR_DrawParam {
 
 extern "C" s32 fn_801321DC(char* p) {
     return *(s32*)(p + 0x234);
+}
+
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F7A08(void* mgr, u32 type);
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern u8* lbl_8053AB10;
+extern f32 lbl_8053CD18;
+extern f32 lbl_8053CD1C;
+extern f32 lbl_8053CD20;
+extern "C" void fn_801321E4(char* p) {
+    struct Vec3f {
+        f32 x;
+        f32 y;
+        f32 z;
+    } pos;
+    char* g;
+    char* obj;
+    s32 id;
+    f32 c;
+    f32 x;
+    f32 y;
+    switch (*(s32*)(p + 0x234)) {
+    case 0:
+        if (*(s32*)(p + 0x238) == 0) {
+            g = *(char**)(lbl_8053AB10 + 0x24);
+            *(u8*)(g + 0x17d) = 1;
+        } else {
+            c = lbl_8053CD18;
+            g = *(char**)(lbl_8053AB10 + 0x24);
+            *(u8*)(g + 0x179) = 1;
+            x = *(f32*)(p + 0x10);
+            y = *(f32*)(p + 0xc);
+            g = *(char**)(lbl_8053AB10 + 0x24);
+            if (*(u8*)(g + 0x7f5) == 0) {
+                *(u8*)(g + 0x7f4) = 1;
+                *(s32*)(g + 0x7f8) = 5;
+                *(f32*)(g + 0x808) = y;
+                *(f32*)(g + 0x80c) = x - c;
+                *(f32*)(g + 0x810) = y;
+                *(f32*)(g + 0x814) = x + c;
+                *(u8*)(g + 0x7f6) = 0;
+            }
+        }
+        break;
+    case 1:
+        g = *(char**)(lbl_8053AB10 + 0x24);
+        *(u8*)(g + 0x179) = 1;
+        id = fn_801F7A08(fn_801F856C(), 0x42415249);
+        if (id >= 0) {
+            obj = (char*)fn_801F666C(fn_801F856C(), id);
+            if (obj != 0) {
+                pos = *(struct Vec3f*)(obj + 0xc);
+                pos.y = pos.y + lbl_8053CD18;
+                g = *(char**)(lbl_8053AB10 + 0x24);
+                if (*(u8*)(g + 0x840) == 0) {
+                    *(u8*)(g + 0x840) = 1;
+                    *(f32*)(g + 0x844) = pos.x;
+                    *(f32*)(g + 0x848) = pos.y - lbl_8053CD1C;
+                    *(f32*)(g + 0x84c) = pos.x;
+                    *(f32*)(g + 0x850) = pos.y + lbl_8053CD1C;
+                    *(f32*)(g + 0x854) = lbl_8053CD00;
+                    *(f32*)(g + 0x1d4) = lbl_8053CD20;
+                    *(f32*)(g + 0x1d8) = lbl_8053CD20;
+                }
+            }
+        }
+        break;
+    case 2:
+        c = lbl_8053CD18;
+        g = *(char**)(lbl_8053AB10 + 0x24);
+        *(u8*)(g + 0x179) = 1;
+        x = *(f32*)(p + 0x10);
+        y = *(f32*)(p + 0xc);
+        g = *(char**)(lbl_8053AB10 + 0x24);
+        if (*(u8*)(g + 0x840) == 0) {
+            *(u8*)(g + 0x840) = 1;
+            *(f32*)(g + 0x844) = y;
+            *(f32*)(g + 0x848) = x - c;
+            *(f32*)(g + 0x84c) = y;
+            *(f32*)(g + 0x850) = x + c;
+            *(f32*)(g + 0x854) = lbl_8053CD00;
+            *(f32*)(g + 0x1d4) = lbl_8053CD20;
+            *(f32*)(g + 0x1d8) = lbl_8053CD20;
+        }
+        break;
+    case 3:
+        g = *(char**)(lbl_8053AB10 + 0x24);
+        if (*(u8*)(g + 0x7f4) == 0) {
+            *(u8*)(g + 0x7f5) = 1;
+        }
+        break;
+    case 4:
+        g = *(char**)(lbl_8053AB10 + 0x24);
+        *(u8*)(g + 0x17d) = 1;
+        break;
+    case 5:
+        c = lbl_8053CD18;
+        g = *(char**)(lbl_8053AB10 + 0x24);
+        *(u8*)(g + 0x179) = 1;
+        x = *(f32*)(p + 0x10);
+        y = *(f32*)(p + 0xc);
+        g = *(char**)(lbl_8053AB10 + 0x24);
+        if (*(u8*)(g + 0x840) == 0) {
+            *(u8*)(g + 0x840) = 1;
+            *(f32*)(g + 0x844) = y;
+            *(f32*)(g + 0x848) = x - c;
+            *(f32*)(g + 0x84c) = y;
+            *(f32*)(g + 0x850) = x + c;
+            *(f32*)(g + 0x854) = lbl_8053CD00;
+            *(f32*)(g + 0x1d4) = lbl_8053CD20;
+            *(f32*)(g + 0x1d8) = lbl_8053CD20;
+        }
+        break;
+    case 26:
+        break;
+    }
 }
 
 extern "C" char lbl_8049EB8C[];
