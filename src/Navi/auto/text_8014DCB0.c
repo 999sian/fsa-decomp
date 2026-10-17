@@ -1,6 +1,8 @@
 #include "types.h"
 
 extern u32* lbl_802FF46C;
+extern u32 lbl_802E1C00[];
+extern u16 lbl_802FF474;
 
 struct Unk8014Node {
     Unk8014Node* next;
