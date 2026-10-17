@@ -22,6 +22,7 @@ extern u8 lbl_802FFA70;
 extern u8 lbl_802FFA74;
 extern u8* __GXData;
 extern volatile u16* __cpReg;
+extern f32 lbl_80301EC0;
 
 
 extern "C" int OSDisableInterrupts(void);
