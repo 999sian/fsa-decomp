@@ -1989,9 +1989,11 @@ extern "C" void fn_8019FEAC(int param_1, u32 param_2) {
     u16* e;
     if (param_2 & 0x8000000) {
         u8 b4 = *(u8*)(param_1 + 4);
-        fn_80190AB8(1, (void*)(param_1 + 0x18), *(s8*)(param_1 + 0x30));
+        s8 b30 = *(s8*)(param_1 + 0x30);
+        fn_80190AB8(1, (void*)(param_1 + 0x18), b30);
         fn_80190D98(0, *(u8*)(param_1 + 0x6c), *(u8*)(param_1 + 0x6d), *(u8*)(param_1 + 0x70), *(u8*)(param_1 + 0x71));
-        e = lbl_802EE5D4[*(u8*)(param_1 + 6) & 7];
+        u8 idx = *(u8*)(param_1 + 6);
+        e = lbl_802EE5D4[idx & 7];
         fn_8019019C(*(u8*)(param_1 + 5), e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
         fn_80190E90(b4, *(u8*)(param_1 + 5), *(u8*)(param_1 + 6), *(u8*)(param_1 + 9), *(u8*)(param_1 + 10), *(u8*)(param_1 + 0xd), *(u8*)(param_1 + 0xe), *(u8*)(param_1 + 0x11), *(u8*)(param_1 + 0x12));
     }
@@ -2030,6 +2032,28 @@ extern "C" void fn_801A188C(NaviVObj* p, u32 flags) {
     if (flags & 0x20000000) {
         p->vf5();
     }
+}
+
+extern "C" void fn_801A18F4(u8* p, VObj_801A18F4* o) {
+    u32 i;
+    u8* d;
+    p[0xc] = o->v18();
+    d = p;
+    for (i = 0; i < 2; i++) {
+        u8* b = o->v12(i);
+        d[4] = b[0];
+        d[5] = b[1];
+        d[6] = b[2];
+        d[7] = b[3];
+        d += 4;
+    }
+    i = 0;
+    d = p;
+    do {
+        *(u16*)(d + 0xe) = *o->v21(i);
+        i++;
+        d += 2;
+    } while (i < 4);
 }
 
 extern "C" void fn_801A219C(u8* p, VObj_801A219C* o) {
