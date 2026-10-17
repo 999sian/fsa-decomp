@@ -594,18 +594,20 @@ void J3DTevBlock2::initialize()
 	mKColorSels[1] = 0xc;
 	mKAlphaSels[0] = 0x1c;
 	mKAlphaSels[1] = 0x1c;
-	for (int i = 0; i < 3; i++) {
-		mColors[i] = j3dDefaultTevColor;
-	}
-	for (int i = 0; i < 4; i++) {
-		mKColors[i] = j3dDefaultTevKColor;
-	}
+	*(u64*)&mColors[0] = *(u64*)&j3dDefaultTevColor;
+	*(u64*)&mColors[1] = *(u64*)&j3dDefaultTevColor;
+	*(u64*)&mColors[2] = *(u64*)&j3dDefaultTevColor;
+	mKColors[0] = (u32)*(u32*)&j3dDefaultTevKColor;
+	mKColors[1] = (u32)*(u32*)&j3dDefaultTevKColor;
+	mKColors[2] = (u32)*(u32*)&j3dDefaultTevKColor;
+	mKColors[3] = (u32)*(u32*)&j3dDefaultTevKColor;
 	mTexNoOffset = 0;
 	mRegOffset = 0;
 }
 
 void J3DTevBlock4::initialize()
 {
+	u32* src = (u32*)&j3dDefaultTevColor;
 	mTexIndices[0] = 0xffff;
 	mTexIndices[1] = 0xffff;
 	mTexIndices[2] = 0xffff;
@@ -627,9 +629,9 @@ void J3DTevBlock4::initialize()
 	mKAlphaSels[1] = 0x1c;
 	mKAlphaSels[2] = 0x1c;
 	mKAlphaSels[3] = 0x1c;
-	*(u64*)&mColors[0] = *(u64*)&j3dDefaultTevColor;
-	*(u64*)&mColors[1] = *(u64*)&j3dDefaultTevColor;
-	*(u64*)&mColors[2] = *(u64*)&j3dDefaultTevColor;
+	*(u64*)&mColors[0] = *(u64*)src;
+	*(u64*)&mColors[1] = *(u64*)src;
+	*(u64*)&mColors[2] = *(u64*)src;
 	mKColors[0] = (u32)*(u32*)&j3dDefaultTevKColor;
 	mKColors[1] = (u32)*(u32*)&j3dDefaultTevKColor;
 	mKColors[2] = (u32)*(u32*)&j3dDefaultTevKColor;
@@ -638,8 +640,70 @@ void J3DTevBlock4::initialize()
 	mRegOffset = 0;
 }
 
+void J3DTevBlock16::initialize()
+{
+	mTexIndices[0] = 0xffff;
+	mTexIndices[1] = 0xffff;
+	mTexIndices[2] = 0xffff;
+	mTexIndices[3] = 0xffff;
+	mTexIndices[4] = 0xffff;
+	mTexIndices[5] = 0xffff;
+	mTexIndices[6] = 0xffff;
+	mTexIndices[7] = 0xffff;
+	mStageNum = 1;
+	mTexNoOffset = 0;
+	mRegOffset = 0;
+}
+
 extern "C" void fn_800D36E0(u32* param_1) {
     param_1[1] = 0;
+}
+
+extern "C" void fn_800D36EC(J3DTevBlockPatched* this_) {
+	u32* src = (u32*)&j3dDefaultTevColor;
+	u32 kcol = *(u32*)&j3dDefaultTevKColor;
+	this_->mTexIndices[0] = 0xffff;
+	this_->mTexIndices[1] = 0xffff;
+	this_->mTexIndices[2] = 0xffff;
+	this_->mTexIndices[3] = 0xffff;
+	this_->mTexIndices[4] = 0xffff;
+	this_->mTexIndices[5] = 0xffff;
+	this_->mTexIndices[6] = 0xffff;
+	this_->mTexIndices[7] = 0xffff;
+	this_->mStages[0].mBPCommand1 = 0xc0;
+	this_->mStages[0].mBPCommand2 = 0xc1;
+	this_->mStages[1].mBPCommand1 = 0xc2;
+	this_->mStages[1].mBPCommand2 = 0xc3;
+	this_->mStages[2].mBPCommand1 = 0xc4;
+	this_->mStages[2].mBPCommand2 = 0xc5;
+	this_->mStages[3].mBPCommand1 = 0xc6;
+	this_->mStages[3].mBPCommand2 = 0xc7;
+	this_->mStages[4].mBPCommand1 = 0xc8;
+	this_->mStages[4].mBPCommand2 = 0xc9;
+	this_->mStages[5].mBPCommand1 = 0xca;
+	this_->mStages[5].mBPCommand2 = 0xcb;
+	this_->mStages[6].mBPCommand1 = 0xcc;
+	this_->mStages[6].mBPCommand2 = 0xcd;
+	this_->mStages[7].mBPCommand1 = 0xce;
+	this_->mStages[7].mBPCommand2 = 0xcf;
+	*(u64*)&this_->mColors[0] = *(u64*)src;
+	*(u64*)&this_->mColors[1] = *(u64*)src;
+	*(u64*)&this_->mColors[2] = *(u64*)src;
+	this_->J3DTevBlockPatched::setTevKColor(0, *(J3DGXColor*)&kcol);
+	this_->J3DTevBlockPatched::setTevKColor(1, *(J3DGXColor*)&kcol);
+	this_->J3DTevBlockPatched::setTevKColor(2, *(J3DGXColor*)&kcol);
+	this_->J3DTevBlockPatched::setTevKColor(3, *(J3DGXColor*)&kcol);
+	this_->mKColorSels[0] = 0xc;
+	this_->mKColorSels[1] = 0xc;
+	this_->mKColorSels[2] = 0xc;
+	this_->mKColorSels[3] = 0xc;
+	this_->mKColorSels[4] = 0xc;
+	this_->mKColorSels[5] = 0xc;
+	this_->mKColorSels[6] = 0xc;
+	this_->mKColorSels[7] = 0xc;
+	this_->mStageNum = 1;
+	this_->mTexNoOffset = 0;
+	this_->mRegOffset = 0;
 }
 
 extern "C" int fn_800D3E10(void) {
@@ -2669,25 +2733,26 @@ extern "C" void fn_800DD354(u8* this_, const Mtx mtx) {
 }
 
 extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
-    u8* gen = this_;
-    u8* p = this_;
-    u32 i = 0;
-    for (; i < 8; i++) {
-        if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
-            *(u16*)(gen + 0xc) = gen[0xa];
-            switch ((*(J3DTexMtx**)(p + 0x38))->getTexMtxInfo().mInfo & 0x3f) {
+    u8* tex = this_;
+    u8* stage = this_;
+    int i;
+    for (i = 0; i < 8; i++) {
+        if (*(void**)(tex + 0x38) != NULL) {
+            u32 type = *((u8*)*(void**)(tex + 0x38) + 1) & 0x3f;
+            *(u16*)(stage + 0xc) = stage[0xa];
+            switch (type) {
             case 0:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 1:
                 if ((j3dSys.mFlags & 4) == 0) {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(mtx);
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(mtx);
                 } else {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 }
                 break;
             case 2:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 break;
             case 3:
                 if ((j3dSys.mFlags & 8) == 0) {
@@ -2696,18 +2761,18 @@ extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
                     m[0][3] = 0.0f;
                     m[1][3] = 0.0f;
                     m[2][3] = 0.0f;
-                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(m);
                 } else {
-                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                    (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 }
                 break;
             default:
-                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                (*(J3DTexMtx**)(tex + 0x38))->calc(j3dDefaultMtx);
                 break;
             }
         }
-        p += 4;
-        gen += 6;
+        tex += 4;
+        stage += 6;
     }
 }
 
@@ -3087,9 +3152,8 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDD64(u8* param_1, s32 param_2, u8 param_3) {
-    u8* p = param_1 + 0x10a;
-    p[param_2] = param_3;
+extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
+    *(u8*)(param_1 + param_2 + 0x10a) = param_3;
 }
 #else
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
