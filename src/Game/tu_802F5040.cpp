@@ -34,6 +34,16 @@ struct Tu802F5040Tbl {
 
 extern "C" void fn_802FA3FC(void* mgr);
 extern "C" void fn_802FF798(void* mgr);
+extern "C" void fn_80432750(void* obj, u32 flag, f32 a, f32 b, f32 c, f32 d);
+extern "C" void fn_80432638(void* obj);
+extern "C" u8 fn_80301D30(s32 i);
+extern "C" s32 fn_8030AAF4(s32 i);
+extern "C" s32 AnimTable_IsField0xe0LessThan3(void* table, s32 slot);
+extern "C" void fn_802FB69C(u8* p, s32 i, s32 a, u8* b, u8* c, u8 d, u8 e, u8 f);
+extern void* lbl_8053AD30;
+extern u8 lbl_8053ACF0[4];
+extern u8 lbl_80506D88[];
+extern u8 lbl_80506D98[];
 extern void* lbl_8053AAF8;
 extern "C" f32 lbl_80541508;
 extern "C" f32 lbl_80541510;
@@ -122,60 +132,54 @@ extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
 }
 
 extern "C" void fn_802F9714(u8* this_, u8* src, u32 a, s32 idx, u8* dst, u32 size) {
-    u8* buf;
+    u32 len;
     u8* base;
     u32 i;
-    u32 len;
     s32 n;
+    u8* p;
     if (size == 0) {
+        s32 r;
         if (JKRDecomp::checkCompressed(src)) {
-            len = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
+            r = (src[4] << 24) | (src[5] << 16) | (src[6] << 8) | src[7];
         } else {
             void* obj = *(void**)((u8*)lbl_8053AAF8 + 0xa4);
-            void** vt = *(void***)obj;
-            len = ((s32 (*)(void*, u8*))vt[12])(obj, src);
+            r = ((s32 (*)(void*, u8*))(*(void***)obj)[12])(obj, src);
         }
-        if ((s32)len < 0) {
+        if (r < 0) {
             len = 0x8000;
+        } else {
+            len = r;
         }
     } else {
         len = size;
     }
-    dst += *(u32*)((u8*)(this_ + idx * 4) + 0x88);
+    p = this_ + idx * 4;
+    dst += *(u32*)(p + 0x88);
     if (JKRDecomp::checkCompressed(src)) {
         JKRDecomp::decode(src, *(u8**)(this_ + 0xf8), 0x8000, 0);
         base = *(u8**)(this_ + 0xf8);
     } else {
         base = src;
     }
-    buf = base + a;
+    base += a;
     i = 0;
     if (len != 0) {
         if (len > 8) {
             n = (len - 8 + 7) >> 3;
             do {
-                u8 b0 = buf[i];
-                u8 b1 = buf[i + 1];
-                u8 b2 = buf[i + 2];
-                u8 b3 = buf[i + 3];
-                u8 b4 = buf[i + 4];
-                u8 b5 = buf[i + 5];
-                u8 b6 = buf[i + 6];
-                u8 b7 = buf[i + 7];
-                dst[i] = (b0 >> 4) | (b0 << 4);
-                dst[i + 1] = (b1 >> 4) | (b1 << 4);
-                dst[i + 2] = (b2 >> 4) | (b2 << 4);
-                dst[i + 3] = (b3 >> 4) | (b3 << 4);
-                dst[i + 4] = (b4 >> 4) | (b4 << 4);
-                dst[i + 5] = (b5 >> 4) | (b5 << 4);
-                dst[i + 6] = (b6 >> 4) | (b6 << 4);
-                dst[i + 7] = (b7 >> 4) | (b7 << 4);
+                dst[i] = (base[i] >> 4) | (base[i] << 4);
+                dst[i + 1] = (base[i + 1] >> 4) | (base[i + 1] << 4);
+                dst[i + 2] = (base[i + 2] >> 4) | (base[i + 2] << 4);
+                dst[i + 3] = (base[i + 3] >> 4) | (base[i + 3] << 4);
+                dst[i + 4] = (base[i + 4] >> 4) | (base[i + 4] << 4);
+                dst[i + 5] = (base[i + 5] >> 4) | (base[i + 5] << 4);
+                dst[i + 6] = (base[i + 6] >> 4) | (base[i + 6] << 4);
+                dst[i + 7] = (base[i + 7] >> 4) | (base[i + 7] << 4);
                 i += 8;
             } while (--n != 0);
         }
         while (i < len) {
-            u8 b = buf[i];
-            dst[i] = (b >> 4) | (b << 4);
+            dst[i] = (base[i] >> 4) | (base[i] << 4);
             i++;
         }
     }
