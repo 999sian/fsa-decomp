@@ -18,6 +18,38 @@ struct OSAlarmQueue {
     OSAlarm* tail;
 };
 
+typedef struct OSCell OSCell;
+
+struct OSCell {
+    OSCell* prev;
+    OSCell* next;
+    s32 size;
+};
+
+typedef struct OSHeapDesc {
+    s32 size;
+    OSCell* free;
+    OSCell* allocated;
+} OSHeapDesc;
+
+static inline OSCell* DLAddFront(OSCell* list, OSCell* cell) {
+    cell->next = list;
+    cell->prev = 0;
+    if (list)
+        list->prev = cell;
+    return cell;
+}
+
+static inline OSCell* DLExtract(OSCell* list, OSCell* cell) {
+    if (cell->next)
+        cell->next->prev = cell->prev;
+    if (!cell->prev)
+        list = cell->next;
+    else
+        cell->prev->next = cell->next;
+    return list;
+}
+
 extern OSAlarmQueue AlarmQueue_802FF750;
 extern u32 ResetFunctionInfo_8029BEC8[];
 extern u32 lbl_802FF758;
@@ -151,8 +183,8 @@ extern "C" u32 fn_801BBE40(u32 param_1) {
 }
 
 extern "C" void fn_801BBE50(u32 param_1, u32 param_2, s32 param_3) {
-    u32 size = param_3 * 12;
     u32 off = 0;
+    u32 size = param_3 * 12;
     s32 i;
     lbl_802FF758 = param_1;
     lbl_802FF75C = param_3;
@@ -169,13 +201,14 @@ extern "C" void fn_801BBE50(u32 param_1, u32 param_2, s32 param_3) {
 }
 
 extern "C" s32 fn_801BBEC0(u32 param_1, u32 param_2) {
-    s32 count = lbl_802FF75C;
     u32* entry = (u32*)lbl_802FF758;
     u32* block = (u32*)((param_1 + 0x1f) & ~0x1f);
+    u32 size = param_2 & ~0x1f;
+    s32 count = lbl_802FF75C;
     s32 i;
     for (i = 0; i < count; i++) {
         if ((s32)entry[0] < 0) {
-            entry[0] = (param_2 & ~0x1f) - (u32)block;
+            entry[0] = size - (u32)block;
             block[0] = 0;
             block[1] = 0;
             block[2] = entry[0];
