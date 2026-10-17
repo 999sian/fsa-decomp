@@ -21,6 +21,7 @@ private:
 extern void* lbl_804A5800[];
 extern u8 lbl_80529DEC[];
 extern f32 lbl_804CABD8[3];
+extern f32 lbl_8053F828;
 extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5);
 extern "C" void fn_801F62AC(u8* this_, JKRHeap* heap);
 
