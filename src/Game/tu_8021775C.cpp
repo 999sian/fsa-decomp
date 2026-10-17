@@ -289,5 +289,7 @@ extern "C" void fn_80218020(void** p) {
     p[6] = 0;
 }
 
+#include "Game/SinitPoolChain.h"
+
 void fn_80218044(void) {}
 
