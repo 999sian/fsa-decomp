@@ -3,6 +3,7 @@
 #include "JSystem/JUtility/JUTNameTab.h"
 #include "JSystem/J3D/J3DAnmTevRegKey.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/J3D/J3DAnmVtxColor.h"
 
 template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
 extern f32 lbl_8053BC80;
@@ -266,6 +267,47 @@ extern "C" void fn_800CFE04(void** self, void* data)
 extern "C" void fn_800CFEC8(void** self, void* data)
 {
     fn_800CFEF0(self, self[1], data);
+}
+
+extern "C" void fn_800CFEF0(void* param_1, void* param_2, void* param_3) {
+    unsigned char* anm = (unsigned char*)param_2;
+    const unsigned char* data = (const unsigned char*)param_3;
+    *(short*)(anm + 6) = *(const short*)(data + 10);
+    anm[4] = data[8];
+    *(float*)(anm + 8) = 0.0f;
+    *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 12);
+    *(unsigned short*)(anm + 0x16) = *(const unsigned short*)(data + 14);
+    *(unsigned short*)(anm + 0x18) = *(const unsigned short*)(data + 16);
+    *(unsigned short*)(anm + 0x1a) = *(const unsigned short*)(data + 18);
+    *(unsigned int*)(anm + 0xc) = data[9];
+    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(data, (void*)*(const unsigned int*)(data + 0x14));
+    *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x18));
+    ((JUTNameTab*)(anm + 0x30))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x1c)));
+    *(void**)(anm + 0x28) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)(data + 0x20));
+    *(void**)(anm + 0x40) = JSUConvertOffsetToPtr<Vec>(data, (void*)*(const unsigned int*)(data + 0x24));
+    *(void**)(anm + 0x1c) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x28));
+    *(void**)(anm + 0x20) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x2c));
+    *(void**)(anm + 0x24) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x30));
+    if (*(const unsigned int*)(data + 0x44) != 0) {
+        ((JUTNameTab*)(anm + 0x64))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x44)));
+    }
+    *(unsigned short*)(anm + 0x4a) = *(const unsigned short*)(data + 0x34);
+    *(unsigned short*)(anm + 0x44) = *(const unsigned short*)(data + 0x36);
+    *(unsigned short*)(anm + 0x46) = *(const unsigned short*)(data + 0x38);
+    *(unsigned short*)(anm + 0x48) = *(const unsigned short*)(data + 0x3a);
+    *(void**)(anm + 0x58) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(data, (void*)*(const unsigned int*)(data + 0x3c));
+    *(void**)(anm + 0x60) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x40));
+    *(void**)(anm + 0x5c) = JSUConvertOffsetToPtr<unsigned char>(data, (void*)*(const unsigned int*)(data + 0x48));
+    *(void**)(anm + 0x74) = JSUConvertOffsetToPtr<Vec>(data, (void*)*(const unsigned int*)(data + 0x4c));
+    *(void**)(anm + 0x4c) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x50));
+    *(void**)(anm + 0x50) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x54));
+    *(void**)(anm + 0x54) = JSUConvertOffsetToPtr<float>(data, (void*)*(const unsigned int*)(data + 0x58));
+    s32 flag = *(const s32*)(data + 0x5c);
+    if (flag < 2 && flag >= 0) {
+        *(s32*)(anm + 0x78) = flag;
+    } else {
+        *(s32*)(anm + 0x78) = 0;
+    }
 }
 
 extern "C" void fn_800D00C8(void** self, void* data)
