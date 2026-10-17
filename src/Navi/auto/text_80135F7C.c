@@ -1,5 +1,23 @@
 #include "types.h"
 
+struct VObj_801367EC {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual f64 v5(f64 x);
+};
+struct Vec_801367EC {
+    u32 unk_0x0;
+    VObj_801367EC** begin;
+    VObj_801367EC** end;
+};
+struct Range_801367EC {
+    VObj_801367EC** cur;
+    VObj_801367EC** end;
+};
+
 struct VObj_8013B620 {
     virtual void v0();
     virtual void v1(void* a);
