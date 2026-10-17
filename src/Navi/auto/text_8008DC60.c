@@ -922,6 +922,11 @@ extern "C" void fn_8009970C(u8* p, s32 idx) {
     }
 }
 
+extern "C" void fn_8009C1A0(void* p) {
+    *(u8*)((u8*)p + 0x7ba) = ((u8*)lbl_802C545C)[0x39];
+    *(u8*)((u8*)p + 0x7bb) = 0;
+}
+
 extern "C" void fn_8009E6F0(NaviState_8009E6F0* p);
 extern "C" void fn_8009EBA0(NaviState_8009E6F0* p);
 extern "C" void fn_8009F01C(NaviState_8009E6F0* p);
