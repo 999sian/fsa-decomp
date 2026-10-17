@@ -502,6 +502,11 @@ extern "C" void* fn_80092F88(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void OSResetSystem(int, u32, int);
+extern "C" void fn_80094090(void) {
+    OSResetSystem(1, 1, 1);
+}
+
 extern StateFn_8009287C lbl_80285F58[];
 extern "C" void fn_800940BC(Obj_8009287C* param_1) {
     (param_1->*lbl_80285F58[param_1->state])();
@@ -789,14 +794,15 @@ extern "C" void* fn_800957BC(void* ptr, s16 param_2) {
 }
 
 extern "C" int fn_80095E00(u8* p, u8* c) {
-    u8 a = c[0];
-    u8 b = c[1];
-    u8 d = c[2];
-    u8 e = c[3];
+    u8 a, b;
+    a = c[0];
+    b = c[1];
     p[0x148] = a;
+    a = c[2];
     p[0x149] = b;
-    p[0x14a] = d;
-    p[0x14b] = e;
+    b = c[3];
+    p[0x14a] = a;
+    p[0x14b] = b;
     return 1;
 }
 
