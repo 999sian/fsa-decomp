@@ -15,6 +15,14 @@ extern "C" u8 fn_802DE9A0(void);
 extern "C" const f32 sincosTable___5JMath[];
 extern f32 lbl_8053D388;
 extern f32 lbl_8053D3D8;
+extern f32 lbl_8053D37C, lbl_8053D380, lbl_8053D38C, lbl_8053D390, lbl_8053D394, lbl_8053D3C0;
+extern f32 lbl_8053D3A4, lbl_8053D3C4, lbl_8053D3F4, lbl_8053D3FC, lbl_8053D410, lbl_8053D414;
+extern f32 lbl_8053D418, lbl_8053D41C;
+extern void* lbl_8053AAF8;
+extern s32 lbl_8053AB50;
+extern u32 lbl_8049FDC8[];
+extern s32 lbl_8049FFD8[];
+extern char lbl_80529DEC[];
 extern "C" s32 fn_80157C68(char* self) {
     if (*(s32*)(self + 0x230) == 0xd) {
         return 1;
