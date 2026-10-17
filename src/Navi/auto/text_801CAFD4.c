@@ -431,6 +431,43 @@ extern "C" BOOL fn_801CEE7C(void) {
     return ((*(vu32*)0xcc006c00 >> 6) & 1) ^ 1;
 }
 
+extern "C" BOOL fn_801CEF64(void);
+extern "C" void fn_801CEF74(u8 param_1);
+extern "C" u32 fn_801CEF90(void);
+extern "C" void fn_801CEFA0(u32 param_1);
+extern "C" u32 fn_801CEFBC(void);
+extern "C" void fn_801CF2B8(void);
+extern "C" void fn_801CECB4(s32 a);
+extern "C" void fn_801CEE90(u32 arg0)
+{
+	u8* base = (u8*)0xCC000000;
+	u32 temp_r29;
+	u32 temp_r28;
+	u32 temp_r27;
+	u32 temp_r26;
+	u32 temp_r30;
+	u32 temp_r4;
+	if (arg0 != fn_801CEF64()) {
+		temp_r29 = *(vu32*)(base + 0x6c00) & 1;
+		temp_r28 = fn_801CEF90();
+		temp_r27 = fn_801CEFBC();
+		fn_801CEFA0(0);
+		fn_801CEF74(0);
+		temp_r26 = *(vu32*)(base + 0x6c00) & 0x40;
+		*(vu32*)(base + 0x6c00) &= 0xFFFFFFBF;
+		temp_r30 = OSDisableInterrupts();
+		fn_801CF2B8();
+		*(vu32*)(base + 0x6c00) |= temp_r26;
+		*(vu32*)(base + 0x6c00) = (*(vu32*)(base + 0x6c00) & 0xFFFFFFDF) | 0x20;
+		temp_r4 = *(vu32*)(base + 0x6c00) & 0xFFFFFFFD;
+		*(vu32*)(base + 0x6c00) = temp_r4 | (arg0 * 2);
+		OSRestoreInterrupts(temp_r30);
+		fn_801CECB4(temp_r29);
+		fn_801CEF74(temp_r28);
+		fn_801CEFA0(temp_r27);
+	}
+}
+
 extern "C" BOOL fn_801CEF64(void) {
     return (*(vu32*)0xcc006c00 >> 1) & 1;
 }
@@ -841,7 +878,7 @@ extern "C" u32 fn_801D44FC(u8* param_1) {
     return *(u32*)(param_1 + 0x88);
 }
 
-extern "C" void fn_801D4504(void);
+extern "C" void fn_801D4504(s32 chan, s32 result);
 #pragma dont_inline on
 extern "C" void fn_801D45D8(s32 chan, s32 arg) {
     u32 dummy[2];  // force stack frame to 0x28
@@ -883,6 +920,32 @@ extern "C" s32 fn_801D4864(int param_1) {
     return *(s32 *)(param_1 + 0x84);
 }
 
+#pragma dont_inline on
+extern "C" void fn_801D486C(s32 chan, s32 result) {
+    u8* card = lbl_802F7D60 + chan * 0x110;
+    if (result >= 0) {
+        u8* base = *(u8**)(card + 0x80);
+        u8* next = base + 0x4000;
+        if ((u32)*(u8**)(card + 0x84) == (u32)(base + 0x2000)) {
+            *(u8**)(card + 0x84) = next;
+            memcpy(next, base + 0x2000, 0x2000);
+        } else {
+            *(u8**)(card + 0x84) = base + 0x2000;
+            memcpy(base + 0x2000, next, 0x2000);
+        }
+    }
+    if ((u32)*(s32*)(card + 0xd0) == 0) {
+        fn_801D2D80(card, result);
+    }
+    {
+        void (*cb)(s32, s32) = *(void (**)(s32, s32))(card + 0xd8);
+        if ((u32)cb != 0) {
+            *(s32*)(card + 0xd8) = 0;
+            cb(chan, result);
+        }
+    }
+}
+#pragma dont_inline reset
 extern "C" void fn_801D486C(s32 chan, s32 result);
 #pragma dont_inline on
 extern "C" void fn_801D493C(s32 chan, s32 result) {
@@ -1511,6 +1574,41 @@ extern "C" void fn_801DB844(void) {
     *(u32*)(__GXData + 0x5ac) = 0;
 }
 
+extern "C" void fn_801DB8C4(s32 arg0, s32 arg1, s16 arg2) {
+    s16 r30 = arg2;
+    s32 r29 = arg1;
+    s32 r28 = arg0;
+    u32 temp_r31;
+
+    temp_r31 = *(u32*)(__GXData + 0x5ac);
+    if (temp_r31 != 0) {
+        if (temp_r31 & 1) {
+            fn_801DD968();
+        }
+        if (temp_r31 & 2) {
+            fn_801DE2B8();
+        }
+        if (temp_r31 & 4) {
+            fn_801DBB5C();
+        }
+        if (temp_r31 & 8) {
+            fn_801DA184();
+        }
+        if (temp_r31 & 0x10) {
+            fn_801DA878();
+        }
+        if (temp_r31 & 0x18) {
+            fn_801DA240();
+        }
+        *(u32*)(__GXData + 0x5ac) = 0;
+    }
+    if (*(u32*)__GXData == 0) {
+        fn_801DB994();
+    }
+    *(u8*)0xCC008000 = r29 | r28;
+    *(s16*)0xCC008000 = r30;
+}
+
 extern "C" void fn_801DBB80(u16 left, u16 top, u16 width, u16 height)
 {
 	u8* gx = __GXData;
@@ -1585,6 +1683,44 @@ extern "C" u16 fn_801DBE58(u16 p, f32 f) {
     return (u16)r;
 }
 
+extern "C" u32 fn_801DC120(f32 vertScale)
+{
+	u32 scale;
+	u32 reg;
+	u8* gx;
+	u32 height;
+	u32 numLines;
+	u32 actualHeight;
+	u32 newScale;
+
+	scale = (u32)(256.0f / vertScale) & 0x1FF;
+
+	reg = scale | 0x4E000000;
+	*(volatile u8*)0xCC008000 = 0x61;
+	*(volatile u32*)0xCC008000 = reg;
+
+	gx = __GXData;
+	*(u16*)(gx + 2) = 0;
+	*(u32*)(gx + 0x1EC) = (*(u32*)(gx + 0x1EC) & ~0x400) | ((scale != 0x100) << 10);
+
+	height = ((*(u32*)(gx + 0x1E4) >> 10) & 0x3FF) + 1;
+	numLines = (*(u32*)(gx + 0x1E4) >> 2) & 0x3FF00;
+	actualHeight = (numLines / scale) + 1;
+	newScale = scale;
+	if (newScale > 0x80 && newScale < 0x100) {
+		while (newScale % 2 == 0) {
+			newScale /= 2;
+		}
+		if (height % newScale == 0) {
+			actualHeight++;
+		}
+	}
+	if (actualHeight > 0x400) {
+		actualHeight = 0x400;
+	}
+	return actualHeight;
+}
+
 extern "C" void fn_801DC1EC(u8* p, u32 val)
 {
 	u8* gx;
@@ -1627,6 +1763,45 @@ extern "C" void fn_801DC774(void)
 	*(volatile u8*)0xCC008000 = 0x61;
 	*(volatile u32*)0xCC008000 = 0x560003ff;
 	*(u16*)(gx + 2) = 0;
+}
+
+extern f32 lbl_80301ED0;
+extern f32 lbl_80301EE8;
+extern f32 lbl_80301EFC;
+extern "C" void fn_801DC93C(void* arg0, s32 arg1, f32 farg0, f32 farg1) {
+    f32* out = (f32*)arg0;
+    f32 var_f3;
+    f32 var_f4;
+    s32 var_r4 = arg1;
+
+    if (farg0 < lbl_80301ED0) {
+        var_r4 = 0;
+    }
+    if (farg1 <= lbl_80301ED0 || farg1 >= lbl_80301EE8) {
+        var_r4 = 0;
+    }
+    switch (var_r4) {
+    case 1:
+        var_f4 = lbl_80301ED0;
+        var_f3 = (lbl_80301EE8 - farg1) / (farg1 * farg0);
+        break;
+    case 2:
+        var_f3 = lbl_80301EFC * (lbl_80301EE8 - farg1) / (farg1 * farg0);
+        var_f4 = lbl_80301EFC * (lbl_80301EE8 - farg1) / (farg0 * (farg1 * farg0));
+        break;
+    case 3:
+        var_f3 = lbl_80301ED0;
+        var_f4 = (lbl_80301EE8 - farg1) / (farg0 * (farg1 * farg0));
+        break;
+    default:
+    case 0:
+        var_f3 = lbl_80301ED0;
+        var_f4 = var_f3;
+        break;
+    }
+    out[7] = lbl_80301EE8;
+    out[8] = var_f3;
+    out[9] = var_f4;
 }
 
 extern "C" void fn_801DCA0C(void* self, f32 a, f32 b, f32 c) {
