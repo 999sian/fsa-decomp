@@ -1,3 +1,5 @@
+#include "JSystem/JGeometry/Vec.h"
+#define Vec ActorVec
 #include "Game/Actor.h"
 
 struct YasiDrawKey {
@@ -76,6 +78,49 @@ extern "C" void fn_8034C9B0(Actor* a, s32 b, s32 c) {
     fn_801F132C(a, b, c, (s32*)((u8*)a + 0x378));
 }
 
+extern "C" void fn_8034C9D4(Actor* a) {
+    u8* p = (u8*)a;
+    s32 c = fn_8022461C(&a->field_0C, a->field_04);
+    if (c == 0xd || c == 0x3b || c == 0x39) {
+        *(f32*)(p + 0x14) = 0.0f;
+        *(f32*)(p + 0x3c) = 0.0f;
+        *(f32*)(p + 0x40) = 0.0f;
+        *(f32*)(p + 0x44) = 0.0f;
+        fn_801F0E34(a, 0x30047, 0);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f3, -1, 1, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f4, 0, 0, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f5, 0, 0, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4f6, 0, 0, 0, 0, 1);
+        *(u8*)(p + 0x11c) = 0;
+    } else if (c == 0xe && fn_802DEB58() == 1) {
+        *(f32*)(p + 0x14) = 0.0f;
+        *(f32*)(p + 0x3c) = 0.0f;
+        *(f32*)(p + 0x40) = 0.0f;
+        *(f32*)(p + 0x44) = 0.0f;
+        fn_801F0E34(a, 0x30047, 0);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4fb, -1, 1, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4fc, 0, 0, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4fd, 0, 0, 0, 0, 1);
+        fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x4fe, 0, 0, 0, 0, 1);
+        *(u8*)(p + 0x11c) = 0;
+    } else {
+        if ((s32)a->field_04 >= 8) {
+            Vec pos;
+            pos.z = a->field_0C.z;
+            *(f64*)&pos = *(f64*)&a->field_0C;
+            pos.z = 0.0f;
+            Actor_CreateByID(fn_801F856C(), 0x4b4d5249u, a->field_04, (f32*)&pos, 0, -1, -1);
+        } else {
+            fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x8a, 1, 0, 0, 0, 1);
+            fn_8013CC50(a->field_04, &a->field_0C, 1.0f, 0x8b, 1, 0, 0, 0, 1);
+        }
+        fn_801F0E34(a, 0x30003, 0);
+        *(u8*)(p + 0x11c) = 0;
+    }
+}
+
+extern "C" f64 __psq_l(void* ptr, s32 offset, s32 w, s32 i);
+extern "C" void __psq_st(f64 v, void* ptr, s32 offset, s32 w, s32 i);
 extern "C" void fn_8034CC98(Actor* a) {
     Vec saved;
     YasiDrawParam param;
@@ -107,69 +152,47 @@ extern "C" void* fn_801F856C(void);
 extern "C" u16 fn_80226850(void* p, s32 q);
 extern "C" void fn_8034D99C(Actor* a) {
     u8* p = (u8*)a;
-    u32 attr = (u16)fn_80226850(&a->field_0C, a->field_04);
-    if (attr - 0x64 > 3 && attr - 0x2c2 > 1 && attr != 0x2d2) {
-        if (attr != 0x2d3) {
-            goto bounds;
-        }
+    u16 attr = fn_80226850(&a->field_0C, a->field_04);
+    if ((attr >= 0x64 && attr <= 0x67) || (attr >= 0x2c2 && attr <= 0x2c3) || attr == 0x2d2 || attr == 0x2d3) {
         *(u8*)(p + 0x380) = 1;
         *(u8*)(p + 0x385) = 1;
     }
-    if (*(s32*)(p + 0x370) != 1) {
-        return;
-    }
-bounds:
-    f32 minX = *(f32*)(p + 0x80) + a->field_0C.x;
-    f32 maxX = *(f32*)(p + 0x88) + a->field_0C.x;
-    f32 minY = *(f32*)(p + 0x84) + a->field_0C.y;
-    f32 maxY = *(f32*)(p + 0x8c) + a->field_0C.y;
-    s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
-    s32 i = 0;
-    s32 j = 0;
-    for (; i < count; i++, j += 4) {
-        Actor* e = (Actor*)*(void**)((u8*)fn_801F856C() + j + 8);
-        u8 ok = 0;
-        if (e == 0) {
-            continue;
+    if (*(s32*)(p + 0x370) == 1) {
+        f32 minX = *(f32*)(p + 0x80);
+        f32 minY = *(f32*)(p + 0x84);
+        f32 maxX = *(f32*)(p + 0x88);
+        f32 maxY = *(f32*)(p + 0x8c);
+        minX += a->field_0C.x;
+        maxX += a->field_0C.x;
+        minY += a->field_0C.y;
+        maxY += a->field_0C.y;
+        s32 count = *(s32*)((u8*)fn_801F856C() + 0x1008);
+        s32 j = 0;
+        s32 i = 0;
+        for (; i < count; i++, j += 4) {
+            Actor* e = (Actor*)*(void**)((u8*)fn_801F856C() + j + 8);
+            if (e != 0 && a->field_198 != e->field_198 && e->field_11C == 1 && a->field_04 == e->field_04) {
+                u8 ok = (e->field_24.x >= minX && e->field_24.y >= minY && e->field_24.x < maxX && e->field_24.y < maxY);
+                if (ok == 1) {
+                    if (*(s32*)(p + 0x374) >= 8) {
+                        return;
+                    }
+                    if (e->field_1A8 == 1) {
+                        *(u8*)(p + 0x380) = 1;
+                        *(u8*)(p + 0x381) = 1;
+                    } else if (e->field_1A0 == 0x4654474c) {
+                        *(u8*)(p + 0x380) = 1;
+                        *(u8*)(p + 0x384) = 1;
+                    }
+                    *(u32*)(p + *(s32*)(p + 0x374) * 0x18 + 0x260) = e->field_1A0;
+                    *(Vec*)(p + *(s32*)(p + 0x374) * 0x18 + 0x264) = e->field_24;
+                    *(u32*)(p + *(s32*)(p + 0x374) * 0x18 + 0x270) = e->field_90;
+                    *(s32*)(p + *(s32*)(p + 0x374) * 0x18 + 0x274) = e->field_16C;
+                    e->field_11C = 0;
+                    (*(s32*)(p + 0x374))++;
+                }
+            }
         }
-        if (a->field_198 == e->field_198) {
-            continue;
-        }
-        if (e->field_11C != 1) {
-            continue;
-        }
-        if ((s32)a->field_04 != (s32)e->field_04) {
-            continue;
-        }
-        f32 ex = e->field_24.x;
-        f32 ey = e->field_24.y;
-        if (ex >= minX || ey >= minY || ex >= maxX || ey >= maxY) {
-            ok = 0;
-        } else {
-            ok = 1;
-        }
-        if (ok != 1) {
-            continue;
-        }
-        if (*(s32*)(p + 0x374) >= 8) {
-            return;
-        }
-        if (e->field_1A8 == 1) {
-            *(u8*)(p + 0x380) = 1;
-            *(u8*)(p + 0x381) = 1;
-        } else if (e->field_1A0 == 0x4654474c) {
-            *(u8*)(p + 0x380) = 1;
-            *(u8*)(p + 0x384) = 1;
-        }
-        s32 idx = *(s32*)(p + 0x374);
-        *(u32*)(p + idx * 0x18 + 0x260) = e->field_1A0;
-        *(f32*)(p + idx * 0x18 + 0x264) = ex;
-        *(f32*)(p + idx * 0x18 + 0x268) = ey;
-        *(f32*)(p + idx * 0x18 + 0x26c) = e->field_24.z;
-        *(u32*)(p + idx * 0x18 + 0x270) = e->field_90;
-        *(s32*)(p + idx * 0x18 + 0x274) = e->field_16C;
-        e->field_11C = 0;
-        *(s32*)(p + 0x374) = idx + 1;
     }
 }
 
