@@ -15,6 +15,21 @@ extern "C" void fn_8042EB14(void* a);
 extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B1378[];
 extern void* lbl_8053AEC4;
+extern void* lbl_8053AED8;
+extern void* sManager__10JFWDisplay;
+extern f32 lbl_805439B8;
+extern f32 lbl_805439D8;
+extern f32 lbl_805439E8;
+extern f32 lbl_805439EC;
+extern "C" void fn_8013B490(void* this_);
+extern "C" void fn_8042EB98(void* this_);
+extern "C" void fn_80440EE8(void* this_);
+
+struct T804170EC_Grc {
+    u8 pad0[0x10];
+    const J2DGrafContext* ctx;
+};
+extern T804170EC_Grc* lbl_8053AB10;
 extern s32 lbl_8053AE00;
 extern u64 lbl_8048CD50[];
 extern f32 lbl_805439C8;
