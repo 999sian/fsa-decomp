@@ -33,6 +33,17 @@ struct J2DScreenVT {
 };
 extern u8* lbl_8053AB10;
 extern f32 lbl_80543DB8;
+extern u32 lbl_804B1CD8;
+extern u32 lbl_80490DB8[];
+extern u32 lbl_80490E00[];
+extern "C" void* fn_804030C4(u32 tag, u32 name);
+typedef void (*VFn)(void*, u32, u32);
+static void* Make(u8* self, u32* table, int i) {
+    return (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)table, table[i], table[i + 1]);
+}
+static void Attach(void* o, void* handle) {
+    (*(VFn**)o)[68](o, (u32)handle, 0);
+}
 
 extern "C" void fn_8044AF90(void* self_) {
     u8* self = (u8*)self_;
@@ -79,13 +90,13 @@ extern "C" void* fn_8044B4B8(VObj** param_1) {
         *(void**)a = lbl_804AF86C;
     }
     param_1[2] = a;
-    fn_80402F04(param_1[2], ((J2DScreenVT*)param_1[1])->m15(0x4e0000, 0x4e6461, 0x74613030));
+    fn_80402F04(param_1[2], ((J2DScreenVT*)param_1[1])->m13(0x4e0000, 0x4e6461, 0x74613030));
     VObj* b = (VObj*)__nw__FUl(0x2c);
     if (b != 0) {
         *(void**)b = lbl_804AF86C;
     }
     param_1[3] = b;
-    fn_80402F04(param_1[3], ((J2DScreenVT*)param_1[1])->m15(0x4e0000, 0x4e6461, 0x74613031));
+    fn_80402F04(param_1[3], ((J2DScreenVT*)param_1[1])->m13(0x4e0000, 0x4e6461, 0x74613031));
     *(u16*)(param_1 + 4) = 0;
     *(u8*)((u8*)param_1 + 0x12) = 0;
     *(u8*)((u8*)param_1 + 0x13) = 0;
