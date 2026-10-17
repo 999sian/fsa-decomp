@@ -6,6 +6,17 @@
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" u8 fn_802308E0(s32 p);
 extern void* lbl_804B1A48[];
+extern void* lbl_8053AD30;
+extern u8* lbl_8053AED0;
+struct Tu80442Vec3 { f32 x; f32 y; f32 z; };
+extern "C" s32 fn_8030AAF4(s32 i);
+extern "C" u32 fn_80309D24(void* p, s32 i, u32 mask);
+extern "C" u32 fn_80309D6C(void* p, s32 i, u32 mask);
+extern "C" void fn_8023061C(s32 p, s32 a);
+extern "C" void fn_8022FE80(s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_8022FD8C(s32 a);
+extern "C" u8 fn_80388CAC(s32 a, s32 b);
+extern "C" u8 fn_8038C678(s32 a, s32 b, s32 c, s32 d, void* e, s32 f);
 extern "C" void* fn_80442C64(void* this_, s16 freeFlag) {
     if (this_ != 0) {
         *(void**)this_ = lbl_804B1A48;
