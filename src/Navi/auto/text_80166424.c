@@ -1061,6 +1061,32 @@ extern "C" void* fn_8016C34C(void* self, s16 param_2) {
     return self;
 }
 
+extern "C" s32 fn_8016C774(void* self, u8 count) {
+    u8 i = 0;
+    while (i < count) {
+        if (i >= 2) {
+            return 0;
+        }
+        u32 off = i * 4 + 0x64;
+        if (*(void**)((u8*)self + off) == nullptr) {
+            void* p = fn_8015A90C(0x40);
+            if (p != nullptr) {
+                *(u8*)((u8*)p + 0x3b) = *(u8*)((u8*)p + 0x3b) & 2;
+                *(u32*)((u8*)p + 0x28) = 0;
+                *(u32*)((u8*)p + 0x20) = 0;
+            }
+            *(void**)((u8*)self + off) = p;
+            if (*(void**)((u8*)self + off) == nullptr) {
+                return 0;
+            }
+        }
+        u8 bit = 1 << i;
+        *(u8*)((u8*)self + 0x78) = *(u8*)((u8*)self + 0x78) | bit;
+        i++;
+    }
+    return 1;
+}
+
 #pragma use_lmw_stmw off
 extern "C" int fn_8016CEB4(u8* p, u32 idx, void* val)
 {
@@ -1226,6 +1252,35 @@ extern "C" void* fn_8016D71C(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" BOOL fn_8016DBC8(void* self, u8 count) {
+    struct S {
+        u8 pad[0x8c];
+        void* slots[4];
+        u8 pad2[0xb0 - 0x9c];
+        u8 mask;
+    };
+    S* s = (S*)self;
+    for (u8 i = 0; i < count; i++) {
+        if (i >= 4) {
+            return FALSE;
+        }
+        if (s->slots[i] == nullptr) {
+            u8* p = (u8*)fn_8015A90C(0x40);
+            if (p != nullptr) {
+                p[0x3b] &= 2;
+                *(u32*)(p + 0x28) = 0;
+                *(u32*)(p + 0x20) = 0;
+            }
+            s->slots[i] = p;
+            if (s->slots[i] == nullptr) {
+                return FALSE;
+            }
+            s->mask |= 1 << i;
+        }
+    }
+    return TRUE;
+}
+
 #pragma push
 #pragma use_lmw_stmw off
 extern "C" int fn_8016E4E0(u8* p, u32 idx, void* val)
@@ -1373,6 +1428,30 @@ extern "C" void* fn_8016EE94(u8* self, s16 param_2) {
     return self;
 }
 
+extern "C" s32 fn_8016F424(u8* self, u8 count)
+{
+    u8 i;
+    for (i = 0; i < count; i++) {
+        if (i >= 8) {
+            return 0;
+        }
+        if (((void**)(self + 0xdc))[i] == nullptr) {
+            u8* p = (u8*)fn_8015A90C(0x40);
+            if (p != nullptr) {
+                p[0x3b] = p[0x3b] & 2;
+                *(u32*)(p + 0x28) = 0;
+                *(u32*)(p + 0x20) = 0;
+            }
+            ((void**)(self + 0xdc))[i] = p;
+            if (((void**)(self + 0xdc))[i] == nullptr) {
+                return 0;
+            }
+        }
+        self[0x120] = self[0x120] | (1 << i);
+    }
+    return 1;
+}
+
 #pragma use_lmw_stmw off
 extern "C" int fn_8016FD58(u8* p, u32 idx, void* val)
 {
@@ -1515,6 +1594,34 @@ extern "C" void* fn_801706E4(u8* self, s16 param_2)
 	return self;
 }
 
+extern "C" s32 fn_80170D0C(u8* self, u8 count) {
+    u8 i;
+
+    for (i = 0; i < count; i++) {
+        s32 off;
+        u8* obj;
+
+        if (i >= 8) {
+            return 0;
+        }
+        off = (i * 4) + 0x16c;
+        if (*(void**)(self + off) == nullptr) {
+            obj = (u8*)fn_8015A90C(0x40);
+            if (obj != nullptr) {
+                obj[0x3b] = obj[0x3b] & 2;
+                *(u32*)(obj + 0x28) = 0;
+                *(u32*)(obj + 0x20) = 0;
+            }
+            *(void**)(self + off) = obj;
+            if (*(void**)(self + off) == nullptr) {
+                return 0;
+            }
+            self[0x1b0] = self[0x1b0] | (1 << i);
+        }
+    }
+    return 1;
+}
+
 extern "C" int fn_80171640(u8* p, u32 idx, void* val)
 {
     int mask;
@@ -1576,14 +1683,18 @@ extern "C" int fn_801719B4(u8* p, DtorVObj_80166424* obj) {
 
 extern "C" s32 fn_80171A30(u8* self, u32 a, u32 c)
 {
+    void* q;
+    u8* p;
+    u32 idx;
+
     if (a >= 8) {
         return 0;
     }
     if (c != 0) {
-        s32 idx = a * 4;
-        u8* p = self + idx;
+        idx = a * 4;
+        p = self + idx;
         if (*(void**)(p + 0x18c) == nullptr) {
-            void* q = fn_8015A90C(0x18);
+            q = fn_8015A90C(0x18);
             if (q != nullptr) {
                 fn_80119240(q, a, c);
             }
