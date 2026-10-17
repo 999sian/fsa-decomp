@@ -8,6 +8,12 @@ extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
 extern "C" s32 fn_80237060(s32 id);
 extern "C" u32 fn_8023B630(s32 id);
 extern void* lbl_804A1160[];
+extern const char lbl_80466880[];
+extern "C" void* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(void* entry, s32 a, void* b, s32 d, const char* e);
+extern "C" u16 fn_8022461C(s32 a, s32 b);
+extern "C" u16 fn_80226850(s32 a, s32 b);
+extern "C" void* fn_802D6A9C(void);
 
 // SWBM destructor
 extern "C" void* fn_8017A44C(char* this_, s16 freeFlag) {
