@@ -6,6 +6,16 @@ typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x80165600-0x801663e0 (14 functions). split_file divides it into the game's real files.
 
+extern "C" void fn_80164484(void* p);
+extern "C" u8 fn_80164728(u8* p, u32 r4);
+extern "C" void fn_801645A8(void* p, s32 n);
+extern "C" void fn_80165C24(void* p, s32 n);
+extern "C" void fn_80165D44(void* p, s32 n);
+extern "C" void fn_8015F248(s32 a, u32 b, u32 c, u32 d, s32 e);
+extern "C" s32 fn_801656F8(void* a, u32 b, u32 c, u32 d, u32 e, u32 f);
+extern "C" void* fn_8016579C(void* a, void* b, u32 c, u32 d, u32 e, u32 f, u32 g);
+extern u32 lbl_802FF654;
+extern u32 lbl_802FF65C;
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_80166C08(void*, int);
 typedef void (*VirtualMethod0)(void*, s16);
