@@ -129,6 +129,45 @@ extern "C" void fn_80057D38(void) {
     }
 }
 
+extern "C" void fn_80057D70(void) {
+    u32* base = (u32*)lbl_802C05B0;
+    u32* p = base;
+    s32 i = 0;
+    base[0] = 0;
+    base[1] = 0;
+    do {
+        fn_80057F74((u8*)(p + 2));
+        i++;
+        p++;
+    } while (i < 2);
+    base[4] = 0;
+    base[5] = -1;
+    base[6] = 0;
+    *(u8*)&base[7] = 0;
+}
+
+extern "C" void fn_80057EE0(void) {
+    s32 i = 0;
+    do {
+        fn_800583D8(i);
+        i++;
+    } while (i < 2);
+    u32* base = (u32*)lbl_802C05B0;
+    u32* p = base;
+    i = 0;
+    base[0] = 0;
+    base[1] = 0;
+    do {
+        fn_80057F74((u8*)(p + 2));
+        i++;
+        p++;
+    } while (i < 2);
+    base[4] = 0;
+    base[5] = -1;
+    base[6] = 0;
+    *(u8*)&base[7] = 0;
+}
+
 extern "C" void fn_80057F74(u8* p) {
     if (p == nullptr) {
         return;
