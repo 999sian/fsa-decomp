@@ -1,5 +1,38 @@
 #include "Game/Actor.h"
 
+struct ShapeArg {
+    u8 idx[16];
+    s32 unk10;
+    s32 unk14;
+    f32* mtx;
+    u8 unk1c;
+    u8 unk1d;
+    u8 unk1e;
+    u8 unk1f;
+    u8 unk20;
+    u8 unk21;
+    u8 unk22;
+    u8 unk23;
+    u8 unk24;
+    u8 unk25;
+    u8 unk26;
+    s32 unk28;
+    u8 unk2c;
+    u8 unk2d;
+    u8 unk2e;
+    s32 unk30;
+    s32 unk34;
+    s32 unk38;
+};
+
+extern "C" u8 sincosTable___5JMath[];
+extern "C" f32 lbl_805400A0;
+extern "C" f32 lbl_805400A4;
+extern "C" u32 lbl_804A6F48[];
+extern "C" char* lbl_8053AAF8;
+extern "C" char* lbl_8053AB10;
+extern "C" void* fn_802F745C(void* a, void* b, void* c, void* d);
+
 
 extern "C" char lbl_804A6F6C[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
