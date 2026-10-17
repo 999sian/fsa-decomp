@@ -41,6 +41,7 @@ struct DtorVt {
 
 struct DtorBase {
     virtual void del(s32 b) = 0;
+    virtual void v1() = 0;
 };
 
 static inline void releaseSlot(void* obj) {
@@ -1148,7 +1149,7 @@ extern "C" void fn_803C7CA0(u8* p) {
             fn_80402E08(*(void**)(p + 0x34), *(f32*)(*(u8**)(q + 0x24) + 8) - *(f32*)(*(u8**)(p + 0x24) + 8), f30);
         }
         fn_8040245C(*(void**)(p + 0x34), 0x3c, 0, *(u8*)(*(u8**)(p + 0x34) + 0x28), 1);
-        fn_804023D0(*(void**)(p + 0x34), ((J2DTextBoxVt*)*(void**)(p + 0x8))->v15(0x50610000, 0x50616363, 0x75723031), *(u8*)(*(u8**)(p + 0x34) + 0x28));
+        fn_804023D0(*(void**)(p + 0x34), ((J2DTextBoxVt*)*(void**)(p + 0x8))->v15(0x50610000, 0x50610000 + 0x6363, 0x75723031), *(u8*)(*(u8**)(p + 0x34) + 0x28));
     }
 }
 
@@ -1820,7 +1821,6 @@ extern "C" s32 fn_803CE4B0(void) {
 
 extern "C" u8* fn_803CFFBC(u8* p, s16 flags) {
     void** q;
-    s32 i;
 
     if (p != 0) {
         *(void**)p = lbl_804AFF60;
@@ -1839,27 +1839,23 @@ extern "C" u8* fn_803CFFBC(u8* p, s16 flags) {
         *(void**)(p + 0x20) = 0;
 
         q = (void**)p;
-        i = 0;
-        do {
+        for (int i = 0; i < 4; i++) {
             releaseSlot(q[9]);
             q[9] = 0;
-            i++;
             q++;
-        } while (i < 4);
+        }
 
         releaseSlot(*(void**)(p + 0x34));
         *(void**)(p + 0x34) = 0;
 
         q = (void**)p;
-        i = 0;
-        do {
+        for (int i = 0; i < 3; i++) {
             releaseSlot(q[0xe]);
             q[0xe] = 0;
             releaseSlot(q[0x11]);
-            i++;
             q[0x11] = 0;
             q++;
-        } while (i < 3);
+        }
 
         releaseSlot(*(void**)(p + 0x50));
         *(void**)(p + 0x50) = 0;
