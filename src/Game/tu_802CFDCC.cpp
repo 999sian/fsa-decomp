@@ -1,5 +1,4 @@
 #include "Game/Actor.h"
-#include "Game/SinitPoolChain.h"
 
 
 extern "C" char lbl_804A9328[];
@@ -14,3 +13,7 @@ extern "C" Actor* fn_802CFDCC(Actor* p, s16 n) {
     }
     return p;
 }
+
+extern "C" void fn_802D0900(void) {
+}
+
