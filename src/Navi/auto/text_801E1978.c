@@ -61,6 +61,13 @@ extern "C" void __exit(int) {
     _ExitProcess();
 }
 
+extern "C" void fn_801E1B54(u8* volatile param_1) {
+    __begin_critical_region(1);
+    void* p = fn_801E1DB0();
+    fn_801E1B90(p, param_1);
+    __end_critical_region(1);
+}
+
 extern "C" void* fn_801E1DB0(void) {
     if (lbl_802FFAA0 == 0) {
         fn_801E1DF4(lbl_802F86E0);
