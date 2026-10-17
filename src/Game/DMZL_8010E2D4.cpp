@@ -1,6 +1,17 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
+
+struct JMathSinCos {
+    f32 sin;
+    f32 cos;
+};
+extern "C" const JMathSinCos sincosTable___5JMath[];
+extern const f32 lbl_8053C560;
+extern "C" char lbl_8046464C[];
+extern "C" char lbl_80464660[];
+extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec, s32 a, s32 b, s32 c, f32 s0, f32 s1);
 
 typedef f32 Mtx[3][4];
 typedef struct MtxBox {
@@ -72,9 +83,9 @@ extern "C" void fn_80110210(u8* this_) {
     case 40:
     case 41:
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
-        obj = *(u8**)(lbl_8053AB10 + 0x24);
         sum = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x278);
         f274 = *(f32*)(this_ + 0x274);
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
         x = *(f32*)(this_ + 0xc);
         if (obj[0x7f5] == 0) {
             obj[0x7f4] = 1;
@@ -90,9 +101,9 @@ extern "C" void fn_80110210(u8* this_) {
     case 43:
     case 44:
         *(u8*)(*(u8**)(lbl_8053AB10 + 0x24) + 0x179) = 1;
-        obj = *(u8**)(lbl_8053AB10 + 0x24);
         sum = *(f32*)(this_ + 0x10) + *(f32*)(this_ + 0x278);
         f274 = *(f32*)(this_ + 0x274);
+        obj = *(u8**)(lbl_8053AB10 + 0x24);
         x = *(f32*)(this_ + 0xc);
         if (obj[0x7f5] == 0) {
             obj[0x7f4] = 1;
