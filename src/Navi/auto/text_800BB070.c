@@ -74,6 +74,21 @@ extern "C" void fn_800BCE58(u8* p) {
     }
 }
 
+extern "C" s32 fn_8002F6BC(void* p);
+extern "C" void fn_8002F9B4(void);
+extern u8 lbl_802BB0FC[];
+extern u8 lbl_802C55FC[];
+extern "C" s32 fn_800BDA50(u8* p, u8 a, u8 b, s32 c);
+extern "C" void fn_800BCEAC(u8* p) {
+    if (fn_8002F6BC(p) == 0) {
+        if (p[0xe0] == 3) {
+            fn_8002F9B4();
+        }
+        p[0xe1] = p[0xe0];
+        p[0xd4] = 2;
+    }
+}
+
 extern "C" void fn_800BCF88(void) {}
 
 extern "C" void fn_800BCF8C(u8* p) {
