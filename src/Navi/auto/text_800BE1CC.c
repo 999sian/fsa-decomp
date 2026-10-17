@@ -45,14 +45,14 @@ extern "C" void fn_800C2610(u8* p) {
 }
 
 extern "C" void fn_800C2640(u8* p) {
-    u16 n = *(u16*)(p + 0x220);
-    if (n == 0) {
+    u32 n = *(u16*)(p + 0x220);
+    if (n != 0) {
+        *(u16*)(p + 0x220) = n - 1;
+    } else {
         if (fn_800C3494() == 1) {
             p[0x222] = 1;
             p[0x212] = 10;
         }
-    } else {
-        *(u16*)(p + 0x220) = n - 1;
     }
 }
 
@@ -68,6 +68,16 @@ extern "C" void fn_800C2850(u8* p) {
         fn_8002F458(0x96, 0);
         p[0x212] = 0xc;
     }
+}
+
+extern "C" void fn_800C3240(u8* p) {
+    u16 n = *(u16*)(p + 0x220);
+    if (n != 0) {
+        *(u16*)(p + 0x220) = n - 1;
+        return;
+    }
+    *(u8*)(*(u32*)(p + 0x1fc) + 0xb0) = 1;
+    p[0x212] = 0x12;
 }
 
 extern "C" void fn_800C3490(void) {}
