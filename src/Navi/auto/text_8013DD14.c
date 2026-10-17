@@ -16,6 +16,13 @@ struct NaviTracker {
     virtual s32 fn_13(u32*, u32, s32);
     virtual void fn_14();
     virtual s32 fn_15(u32*, u32, s32);
+    virtual void fn_16();
+    virtual void fn_17();
+    virtual void fn_18();
+    virtual void fn_19();
+    virtual void fn_20();
+    virtual void fn_21();
+    virtual void fn_22(void*);
 };
 
 struct Entry_802C67C4 { s32 unk0; s32 id; u8 pad[0x18]; };
