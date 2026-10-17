@@ -84,7 +84,6 @@ extern "C" void fn_80208EFC(char* this_) {
 }
 
 extern void fn_80207A60(void* this_);
-extern void* fn_802D6A9C();
 extern void fn_8020B500(void* p);
 extern f32 lbl_8053F924;
 extern "C" void fn_80207A60(void* this_);
@@ -166,6 +165,111 @@ extern "C" void fn_80209264(char* this_) {
     *(f32*)(this_ + 0xc) = *(f32*)(this_ + 0x24);
     *(f32*)(this_ + 0x10) = *(f32*)(this_ + 0x28);
     *(f32*)(this_ + 0x14) = *(f32*)(this_ + 0x2c);
+}
+
+extern "C" void fn_801D0ED0(void* this_);
+extern "C" s32 fn_801CD664(s32 n);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 arg5, s32 arg6, s32 arg7);
+extern f32 lbl_8053F928;
+extern f32 lbl_8053F92C;
+extern f32 lbl_8053F930;
+extern f32 lbl_8053F934;
+extern f32 lbl_8053F938;
+extern f32 lbl_8053F93C;
+extern f32 lbl_8053F940;
+extern f32 lbl_8053F944;
+extern "C" void fn_80209280(char* this_) {
+    f32 vec[2];
+    f32 dx;
+    f32 dy;
+    fn_801D0ED0(this_);
+    *(s32*)(this_ + 0x2ac) = *(u32*)(this_ + 0x90) & 3;
+    if (*(s32*)(this_ + 0x2ac) >= 2 || *(s32*)(this_ + 0x2ac) < 0) {
+        *(s32*)(this_ + 0x2ac) = fn_801CD664(2);
+    }
+    *(s32*)(this_ + 0x340) = (*(u32*)(this_ + 0x90) >> 4) & 3;
+    if (*(s32*)(this_ + 0x340) >= 2 || *(s32*)(this_ + 0x340) < 0) {
+        *(s32*)(this_ + 0x340) = fn_801CD664(2);
+    }
+    *(s32*)(this_ + 0x344) = (*(u32*)(this_ + 0x90) >> 8) & 1;
+    *(s32*)(this_ + 0x348) = *(u32*)(this_ + 0x90) >> 27;
+    f32 lo = lbl_8053F928;
+    f32 hi = lbl_8053F92C;
+    *(f32*)(this_ + 0x60) = lo;
+    *(f32*)(this_ + 0x64) = lo;
+    *(f32*)(this_ + 0x68) = hi;
+    *(f32*)(this_ + 0x6c) = hi;
+    *(f32*)(this_ + 0x70) = *(f32*)(this_ + 0x60);
+    *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
+    *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
+    *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    *(f32*)(this_ + 0x80) = lo;
+    *(f32*)(this_ + 0x84) = lo;
+    *(f32*)(this_ + 0x88) = hi;
+    *(f32*)(this_ + 0x8c) = hi;
+    *(s32*)(this_ + 0xb0) = 0;
+    *(s32*)(this_ + 0x98) = 2;
+    *(u32*)(this_ + 0x230) |= 0x380;
+    *(s32*)(this_ + 0x108) = 1000;
+    *(s32*)(this_ + 0x244) = *(s32*)(this_ + 0x108);
+    *(u8*)(this_ + 0x194) = 1;
+    *(s32*)(this_ + 0x248) = 0;
+    *(s32*)(this_ + 0x24c) = 0;
+    *(s32*)(this_ + 0x250) = fn_801CD664(0x4b1) + 0x258;
+    *(f32*)(this_ + 0x254) = lbl_8053F918;
+    *(f32*)(this_ + 0x258) = lbl_8053F918;
+
+    s32 flag = *(s32*)(this_ + 0x340) != 0;
+    char* g = (char*)fn_802D6A9C();
+    f32 x4 = lbl_8053F930 * (*(f32*)(g + 0xd0) + *(f32*)(g + 0xd8));
+    f32 y2 = lbl_8053F930 * (*(f32*)(g + 0xcc) + *(f32*)(g + 0xd4));
+    *(s32*)(this_ + 0x34c) = 0;
+    if (flag) {
+        *(f32*)(this_ + 0x350) = lbl_8053F934 + *(f32*)(g + 0xd4);
+    } else {
+        *(f32*)(this_ + 0x350) = *(f32*)(g + 0xcc) - lbl_8053F934;
+    }
+    *(f32*)(this_ + 0x354) = x4 - lbl_8053F938;
+    *(s32*)(this_ + 0x358) = flag;
+    *(s16*)(this_ + 0x35c) = -0x8000;
+    *(s16*)(this_ + 0x35e) = flag ? 0x64 : -0x64;
+    *(f32*)(this_ + 0x360) = y2 - lbl_8053F93C;
+    *(f32*)(this_ + 0x364) = x4;
+    *(f32*)(this_ + 0x368) = y2 + lbl_8053F93C;
+    *(f32*)(this_ + 0x36c) = x4;
+
+    vec[0] = *(f32*)(this_ + 0x350);
+    vec[1] = *(f32*)(this_ + 0x354);
+    *(f32*)(this_ + 0x24) = vec[0];
+    if (*(s32*)(this_ + 0x344) == 0) {
+        *(f32*)(this_ + 0x28) = vec[1];
+    }
+    *(f32*)(this_ + 0x2c) = lbl_8053F940;
+    Vec pos = *(Vec*)(this_ + 0x24);
+    dx = lbl_8053F918;
+    dy = dx;
+    switch (*(s32*)(this_ + 0x2ac)) {
+    case 1:
+        pos.x -= lbl_8053F940;
+        dx = lbl_8053F944;
+        break;
+    case 0:
+        pos.y -= lbl_8053F940;
+        dy = lbl_8053F944;
+        break;
+    }
+
+    char* e = this_;
+    for (s32 i = 0; i < 4; i++) {
+        *(s32*)(e + 0x2b0) = Actor_CreateByID(fn_801F856C(), 0x464f4252, *(u32*)(this_ + 4), &pos, *(u32*)(this_ + 0x198), -1, -1);
+        void* a = fn_801F666C(fn_801F856C(), *(s32*)(e + 0x2b0));
+        if (a != 0) {
+            *(s16*)((char*)a + 0x94) = i;
+        }
+        pos.x += dx;
+        pos.y += dy;
+        e += 0x24;
+    }
 }
 
 extern "C" void* fn_802095C4(char* this_) {
