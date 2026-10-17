@@ -1,6 +1,7 @@
 #include "types.h"
 #include <math.h>
 
+extern "C" f32 lbl_8053D128;
 extern "C" f32 lbl_8053D130;
 extern "C" f32 lbl_8053D138;
 extern "C" f32 lbl_8053D144;
