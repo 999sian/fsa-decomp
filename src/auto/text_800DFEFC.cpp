@@ -284,6 +284,8 @@ extern "C" J3DGXColorS10 fn_800E0D88(const J3DMaterialFactory_v21* self, int idx
 	return *(J3DGXColorS10*)defaultColor;
 }
 
+
+
 extern "C" GXColor fn_800E0DF8_old(const J3DMaterialFactory_v21* self, int idx, int no)
 {
 	GXColor defaultColor = j3dDefaultTevKColor;
