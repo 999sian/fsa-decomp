@@ -1982,13 +1982,16 @@ extern "C" void fn_800D9F10(void* p) {
 extern "C" u8 isTexNoReg__FPv(void*);
 extern "C" u16 getTexNoReg__FPv(void*);
 extern "C" void fn_800D9FE4(int param_1, int param_2) {
-    GDSetCurrOffset(param_2);
-    u8* start = GDGetCurrPointer();
-    u8* cur = __GDCurrentDL->pDisplayListData;
+    u8* start;
+    u8* cur;
     u32 i = 0;
+    GDSetCurrOffset(param_2);
+    start = GDGetCurrPointer();
+    cur = GDGetCurrPointer();
     while (true) {
         if (!isTexNoReg(cur)) break;
-        loadTexNo(i, getTexNoReg(cur));
+        u16 tex_no = getTexNoReg(cur);
+        loadTexNo(i, tex_no);
         i++;
     }
     DCStoreRange(start, GDGetCurrPointer() - start);
@@ -2118,38 +2121,18 @@ extern "C" void fn_800DB360(u8* p) {
 }
 
 extern "C" void fn_800DB844(void* param_1) {
-    u32* gd = (u32*)&__GDCurrentDL;
-    u32 size = *(u32*)((u8*)param_1 + 0x3c);
-    u32 cur = *(u32*)gd;
-    gd[2] = cur + size;
-    
-    u32 cur2 = gd[2];
-    u32 cap = gd[3];
-    if (cur2 > cap + 0x37) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)((u8*)param_1 + 0x3c);
+    u8* start = __GDCurrentDL->pDisplayListData;
+    if (start + 0x37 > __GDCurrentDL->end) {
         GDOverflowed();
     }
-    
-    gd = (u32*)&__GDCurrentDL;
-    u32 dl_ptr = gd[2];
-    
-    GXFogType fog_type = (GXFogType)*(u8*)((u8*)param_1 + 0x4);
-    f32 f1 = *(f32*)((u8*)param_1 + 0x8);
-    f32 f2 = *(f32*)((u8*)param_1 + 0xc);
-    f32 f3 = *(f32*)((u8*)param_1 + 0x10);
-    f32 f4 = *(f32*)((u8*)param_1 + 0x14);
-    GXColor color = *(GXColor*)((u8*)param_1 + 0x18);
-    
-    J3DGDSetFog(fog_type, f1, f2, f3, f4, color);
-    
-    GXFogAdjTable* adj_tbl = (GXFogAdjTable*)((u8*)param_1 + 0x1c);
-    u8 adj_type = *(u8*)((u8*)param_1 + 0x5);
-    u16 adj_val = *(u16*)((u8*)param_1 + 0x6);
-    
-    J3DGDSetFogRangeAdj(adj_type, adj_val, adj_tbl);
-    
-    gd = (u32*)&__GDCurrentDL;
-    u32 dl_end = gd[2];
-    DCStoreRange((void*)dl_ptr, dl_end - dl_ptr);
+
+    u8* dl_ptr = __GDCurrentDL->pDisplayListData;
+    J3DGDSetFog((GXFogType)*(u8*)((u8*)param_1 + 0x4), *(f32*)((u8*)param_1 + 0x8), *(f32*)((u8*)param_1 + 0xc), *(f32*)((u8*)param_1 + 0x10), *(f32*)((u8*)param_1 + 0x14), *(GXColor*)((u8*)param_1 + 0x18));
+
+    J3DGDSetFogRangeAdj(*(u8*)((u8*)param_1 + 0x5), *(u16*)((u8*)param_1 + 0x6), (GXFogAdjTable*)((u8*)param_1 + 0x1c));
+
+    DCStoreRange(dl_ptr, __GDCurrentDL->pDisplayListData - dl_ptr);
 }
 
 extern "C" void GDOverflowed(void);
