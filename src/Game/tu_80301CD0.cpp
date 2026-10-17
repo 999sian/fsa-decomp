@@ -76,6 +76,49 @@ struct MsgEntry_80301CD0 {
 extern u8 lbl_8053AD20[4];
 extern u8 lbl_80541618[4];
 
+struct TextCall_80301CD0 {
+    virtual void v00();
+    virtual void v04();
+    virtual void v08();
+    virtual void v0c();
+    virtual void v10();
+    virtual void v14();
+    virtual char* convert(u32 tag, const char* src);
+    virtual void v1c();
+    virtual void v20();
+    virtual void v24();
+    virtual void v28();
+    virtual void v2c();
+    virtual s32 measure(const char* s);
+};
+struct Game_80301CD0;
+extern Game_80301CD0* lbl_8053AAF8;
+extern "C" char* strcpy(char*, const char*);
+
+static inline void tu80301_pushMeasured(s32 i, char* str, u32 color) {
+    if (str == NULL) {
+        return;
+    }
+    if (!fn_8030A308(lbl_8053AD30, fn_8030AAF4(i))) {
+        return;
+    }
+    TextCall_80301CD0* t = *(TextCall_80301CD0**)((u8*)lbl_8053AAF8 + 0xa4);
+    MsgEntry_80301CD0* e = &((MsgEntry_80301CD0*)(lbl_804FBC18 + i * 0x2380))[lbl_80504A28[i]];
+    e->f104 = 0;
+    e->f100 = (t->measure(t->convert(0x3f3f3f3f, str)) + 3) / 4;
+    e->f114 = color;
+    e->f119 = 0;
+    e->f11a = 1;
+    e->f110 = 0;
+    e->f118 = 1;
+    e->f10c = 0;
+    strcpy(e->text, str);
+    lbl_80504A28[i]++;
+    if (lbl_80504A28[i] >= 0x20) {
+        lbl_80504A28[i] = 0;
+    }
+}
+
 struct Slot_80301CD0 {
     u8 id;
     u8 f1;
@@ -247,6 +290,33 @@ extern "C" u8 fn_8030381C(void* p) {
         return lbl_8053ACE0[i];
     }
     return 0;
+}
+
+extern "C" int sprintf(char*, const char*, ...);
+extern "C" char* fn_802D9C4C();
+extern "C" char* fn_802D9C1C();
+extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id);
+extern u8 lbl_80471208[];
+extern u8 lbl_8053ACE4[4];
+extern "C" void fn_80303870(s32 i) {
+    char buf8[0x20];
+    char buf28[0x20];
+    char* str;
+
+    fn_802D6A9C();
+    str = fn_802D9C4C();
+    if (str[0] == 'c') {
+        fn_80304C10(i, (char*)(lbl_80471208 + 0x48), 0x6000000, 1, 0);
+    } else {
+        sprintf(buf28, (char*)(lbl_80471208 + 0x38), str);
+        fn_80304C10(i, buf28, 0x6000000, 1, 0);
+    }
+    sprintf(buf8, (char*)(lbl_80471208 + 0x58), str);
+    fn_80304C10(i, buf8, 0x5000001, 1, 0);
+    fn_802D6A9C();
+    sprintf(buf28, (char*)(lbl_80471208 + 0x6c), fn_802D9C1C());
+    fn_80304C10(i, buf28, 0x6017000, 1, 0);
+    lbl_8053ACE4[i] = 1;
 }
 
 // ---- stub_803074a4.cpp ----
