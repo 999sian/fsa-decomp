@@ -390,13 +390,12 @@ extern "C" u32 fn_80194174(u32* p) {
 extern "C" s32 fn_801941D4(u32* p, u32* q) {
     s32 r = 0;
     s32 a = p[13];
-    if (a != q[13]) {
-        return r;
+    if (a == q[13]) {
+        if (a >= 0) {
+            return 1;
+        }
     }
-    if (a < 0) {
-        return r;
-    }
-    return 1;
+    return r;
 }
 
 extern "C" void fn_801941F8(u32* p) {
@@ -479,7 +478,7 @@ extern "C" void fn_801957E4(u8* p) {
     for (i = 0; i < count; i++) {
         u16 v = list[0];
         if (v != 0xffff) {
-            fn_801E10DC(p, i, &tmp);
+            fn_801E10DC(p, i, tmp);
         }
         list++;
     }
