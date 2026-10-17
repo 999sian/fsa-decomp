@@ -332,7 +332,7 @@ extern "C" void fn_803DF9E8(void* self_) {
     *(s32*)(self + 0x68) = 2;
 }
 
-extern "C" void* lbl_804B0688;
+extern "C" u8 lbl_804B0688[];
 extern "C" void getTotalFreeSize__7JKRHeapFv(void*);
 void __dl__FPv(void*);
 extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
