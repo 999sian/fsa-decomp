@@ -61,6 +61,17 @@ extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
 extern "C" f32 fn_802F5FF4(f32 x);
 extern "C" void fn_8013B1E8(void* mgr);
+static inline s32 Tu802F93F4_c5(s32 v) {
+    f32 f = (f32)v * lbl_80541518 + lbl_805414F8;
+    s32 r = (s32)f;
+    if (r < 0) {
+        r = 0;
+    } else if (r > 0x1f) {
+        r = 0x1f;
+    }
+    return r;
+}
+
 extern "C" void fn_802F5040(f32* pos, u8* ent, f32* out) {
     f32 t;
     s32 a;
