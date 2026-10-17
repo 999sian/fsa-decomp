@@ -136,7 +136,6 @@ extern "C" void fn_801E367C(u8* param_1);
 extern "C" void fn_801E1B54(u8* param_1);
 extern "C" void* fn_801E1DB0(void);
 extern "C" void fn_801E1B90(void* param_1, u8* param_2);
-extern "C" void fn_801E1C2C(void* param_1, u8* param_2, s32 param_3);
 extern u8 lbl_8029E7B0[];
 extern "C" void fn_801E2CB4(u8* param_1, s32 param_2) {
     if (param_2 > 0 && param_2 < param_1[4]) {
