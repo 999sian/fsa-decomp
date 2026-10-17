@@ -2,6 +2,12 @@
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
 // .text 0x800872f8-0x80089858 (57 functions). split_file divides it into the game's real files.
 
+struct NaviObj_8008971C;
+typedef void (NaviObj_8008971C::*NaviFunc_8008971C)(void);
+struct NaviObj_8008971C {
+    u8 pad[0xf5c];
+    NaviFunc_8008971C m_func;
+};
 extern void* lbl_80283F48[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_802883C4[];
@@ -209,6 +215,29 @@ extern "C" void fn_80088594(void) {
     fn_80088690();
 }
 
+extern u8 lbl_80283E58[];
+extern "C" s32 lbl_802FCCF8;
+extern "C" s32 lbl_802FCCFC;
+extern "C" s32 fn_800137B8(void*, s32, s32);
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void*, void*, ...);
+extern "C" void fn_80007AB8(void*, s32, void*, ...);
+extern "C" s32 fn_800885B4(void* param_1) {
+    u8* self = (u8*)param_1;
+    u8* base = lbl_80283E58;
+    *(u32*)(self + 0x1cc) = fn_800137B8(&lbl_80283E58[0], 0, 0);
+    if (*(u32*)(self + 0x1cc) == 0) {
+        fn_8011FD18(fn_8011FD10(), base + 0x1c, 0x5a, &lbl_802FCCF8, base + 0x2c);
+        fn_80007AB8(base + 0x1c, 0x5a, &lbl_802FCCFC);
+    }
+    *(u32*)(self + 0x1d0) = fn_800137B8(base + 0x3c, 0, 0);
+    if (*(u32*)(self + 0x1d0) == 0) {
+        fn_8011FD18(fn_8011FD10(), base + 0x1c, 0x5e, &lbl_802FCCF8, base + 0x60);
+        fn_80007AB8(base + 0x1c, 0x5e, &lbl_802FCCFC);
+    }
+    return 2;
+}
+
 extern "C" void* fn_800888E0(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80283F48;
@@ -358,6 +387,49 @@ extern "C" BOOL fn_800896B0(void) {
         return TRUE;
     }
     return FALSE;
+}
+
+extern "C" int fn_80012AE8(void* a);
+extern "C" void fn_8002E55C(void* a);
+extern "C" void fn_80027CB8(void* a);
+extern "C" void fn_800F0FA0(void* a);
+extern "C" void fn_80027D6C(void* a);
+extern "C" void fn_80056B74(void* a);
+extern "C" void fn_801E10DC(void* p, void* q);
+extern "C" void fn_80027D4C(void* a);
+extern "C" void fn_800570CC(void* a);
+extern "C" void fn_80020078(s32 a);
+extern "C" void fn_80040664(void);
+extern "C" void fn_8006EEB8(void);
+extern "C" s32 lbl_802FED88;
+extern "C" s32 lbl_802FEC58;
+extern u8 lbl_80284190[];
+extern "C" BOOL fn_8008971C(u8* param_1) {
+    if (fn_80012AE8(param_1) == 0) {
+        if (*(s32*)(param_1 + 0xf8c) != 0) {
+            *(s32*)(param_1 + 0xf8c) -= 1;
+            if (*(s32*)(param_1 + 0xf8c) == 0) {
+                lbl_802FED88 = 1;
+            }
+        }
+        u8* a = param_1 + 0x1cc;
+        fn_8002E55C(a);
+        fn_80027CB8(a);
+        fn_800F0FA0(param_1 + 0xe3c);
+        fn_80027D6C(a);
+        fn_80056B74(param_1);
+        if (*(s32*)(param_1 + 0xf88) != 0) {
+            fn_801E10DC(param_1, lbl_80284190 + *(s32*)(param_1 + 0xf68) * 12);
+            *(s32*)(param_1 + 0xf88) = 0;
+        }
+        fn_801E10DC(param_1, param_1 + 0xf5c);
+        fn_80027D4C(a);
+        fn_800570CC(param_1);
+        fn_80020078(lbl_802FEC58);
+        fn_80040664();
+        fn_8006EEB8();
+    }
+    return TRUE;
 }
 
 extern "C" s32 fn_8008981C(void* param_1) {
