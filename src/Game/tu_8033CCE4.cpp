@@ -77,7 +77,8 @@ struct UnkObj8033D4CC {
     s32 m25c;
     s32 m260;
     u8 m264;
-    u8 pad265[0x268 - 0x265];
+    u8 m265;
+    u8 pad266[0x268 - 0x266];
     s32 m268;
     s32 m26c;
     u8 m270;
