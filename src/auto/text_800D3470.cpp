@@ -3094,9 +3094,9 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 }
 
 #if defined(VERSION_G4SJ01)
-extern "C" void fn_800DDD64(u8* param_1, u8* param_2, u8 param_3) {
-    u32 offset = (u32)param_1 + (u32)param_2;
-    *(u8*)(offset + 0x10a) = param_3;
+extern "C" void fn_800DDD64(u8* param_1, s32 param_2, u8 param_3) {
+    u8* p = param_1 + param_2;
+    p[0x10a] = param_3;
 }
 #else
 extern "C" void fn_800DDD64(int param_1, int param_2, u8 param_3) {
@@ -3702,8 +3702,8 @@ extern "C" void fn_800DEA8C(void* param_1)
   DCStoreRange(pStart, (u8*)__GDCurrentDL->pDisplayListData - (u8*)pStart);
 }
 
-unsigned int fn_800DEB2C(void) {
-    return 0x54565054U;
+extern "C" u32 fn_800DEB2C(void) {
+    return 0x54565054;
 }
 
 extern "C" void fn_800DEB38(u8* p, u8 v) {
@@ -3812,9 +3812,9 @@ extern "C" int fn_800DED50(int p, int i) {
     return p + i * 4 + 0xb8;
 }
 
-extern "C" void fn_800DED64(int p, int i, int v) {
-    int addr = p + i;
-    *(u8*)(addr + 0xc8) = v;
+extern "C" void fn_800DED64(int p, int i, u8 v) {
+    u8* addr = (u8*)(p + i);
+    addr[0xc8] = v;
 }
 
 extern "C" void fn_800DED70(int param_1, int param_2, const u8* param_3)
@@ -4309,10 +4309,13 @@ inline void J3DIndBlockFull::initialize() {
     mIndTexStageNum = 0;
 }
 
-extern "C" void fn_800DDA78(u8* self, const u8* src) {
-    *(u16*)(self + 4) = *(const u16*)src;
-    self[6] = src[2];
-    self[7] = src[3];
+extern "C" void fn_800DDA78(u8* this_, u8* src) {
+    u16 w = *(u16*)src;
+    u8 b2 = src[2];
+    *(u16*)(this_ + 0x4) = w;
+    u8 b3 = src[3];
+    *(u8*)(this_ + 0x6) = b2;
+    *(u8*)(this_ + 0x7) = b3;
 }
 
 void J3DTexGenBlock4::initialize() {
@@ -4325,10 +4328,10 @@ void J3DTexGenBlock4::initialize() {
 }
 
 extern "C" void fn_800DF0B8(u8* self, int i, const u8* c) {
-    self[i * 4 + 0xc] = c[0];
-    self[i * 4 + 0xd] = c[1];
-    self[i * 4 + 0xe] = c[2];
-    self[i * 4 + 0xf] = c[3];
+    self[(i << 2) + 0xc] = c[0];
+    self[(i << 2) + 0xd] = c[1];
+    self[(i << 2) + 0xe] = c[2];
+    self[(i << 2) + 0xf] = c[3];
 }
 
 extern "C" void fn_800D95B0(u8* p)
