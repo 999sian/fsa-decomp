@@ -55,7 +55,7 @@ struct HitRectTable {
 
 inline bool rectContains(const HitRect& r, const Vec2f* p) {
     bool in = false;
-    if (p->x >= r.x0 && p->y >= r.y0 && p->x < r.x1 && p->y < r.y1) {
+    if (p->y >= r.y0 && p->x >= r.x0 && p->x < r.x1 && p->y < r.y1) {
         in = true;
     }
     return in;
@@ -63,7 +63,7 @@ inline bool rectContains(const HitRect& r, const Vec2f* p) {
 
 extern "C" s32 fn_802684A4(HitRectTable* t, const Vec2f* p, s32 type) {
     for (s32 i = 0; i < 80; i++) {
-        if (t->ids[i] >= 0 && type == t->types[i] && rectContains(t->rects[i], p)) {
+        if (t->ids[i] >= 0 && type == t->types[i] && p->x >= t->rects[i].x0 && p->y >= t->rects[i].y0 && p->x < t->rects[i].x1 && p->y < t->rects[i].y1) {
             t->hits[i] = t->ids[i];
             return 1;
         }
@@ -82,6 +82,67 @@ extern "C" void fn_80268B3C(u8* p) {
             *(f32*)(p + 0x10) = saved;
         }
     }
+}
+
+extern "C" u8 fn_80268BC4(u8* p) {
+    s32 i;
+    s32 j;
+    for (i = 0; i < 8; i++) {
+        p[0x40 + i] = p[0x48 + i];
+        p[0x48 + i] = 0;
+        p[0x30 + i] = 0;
+    }
+    for (i = 0; i < 5; i++) {
+        for (j = 0; j < 16; j++) {
+            *(s32*)(*(u8**)(p + 4) + i * 0x40 + j * 4 + 0xef0) = -1;
+        }
+    }
+    p[0xb5] = p[0xb4]; p[0xb4] = 0; p[0xb6] = 0; p[0xb7] = 0; p[0xb8] = 0; p[0xb9] = 0; p[0xba] = 0;
+    *(s32*)(p + 0xac) = 0;
+    if (fn_80240B84(*(void**)(p + 4))) {
+        return 1;
+    }
+    if (fn_8025F448(*(void**)(p + 4))) {
+        return 1;
+    }
+    *(s32*)(p + 0xb0) = 0;
+    p[0x9a] = 0;
+    *(s32*)(p + 0x1c) = 0;
+    for (i = 0; i < 8; i++) {
+        p[0x20 + i] = 0;
+        p[0x28 + i] = 0;
+        p[0x38 + i] = 0;
+        p[0x50 + i] = 0;
+        p[0x58 + i] = 0;
+        p[0x60 + i] = 0;
+        p[0x68 + i] = 0;
+        p[0x70 + i] = 0;
+        p[0x78 + i] = 0;
+        p[0x80 + i] = 0;
+        p[0x88 + i] = 0;
+    }
+    *(s32*)(p + 0xb0) = *(s32*)(p + 0xb0) + 1;
+    for (i = 0; i < 8; i++) {
+        *(JGeometry::TVec3<f32>*)(p + 8) = lbl_8046BAE8[i];
+        *(s32*)(p + 0x1c) = i;
+        ((JGeometry::TVec3<f32>*)(p + 8))->add(*(JGeometry::TVec3<f32>*)(*(u8**)(p + 4) + 8));
+        u16 r27 = fn_8022461C((JGeometry::TVec3<f32>*)(p + 8), *(s32*)(*(u8**)(p + 4) + 0x3b4));
+        if (fn_8025F590(*(void**)(p + 4)) && *(s32*)(*(u8**)(p + 4) + 0x3b4) == 8 && fn_8023DE58(*(s32*)(*(u8**)(p + 4) + 0xd70)) < 8) {
+            JGeometry::TVec3<f32>* pp = (JGeometry::TVec3<f32>*)(p + 8);
+            JGeometry::TVec3<f32> saved = *pp;
+            s32 room = *(s32*)(*(u8**)(p + 4) + 0x3b4);
+            Vec2f* o = (room < 8) ? (Vec2f*)(fn_802D6A9C() + 0xcc) : (Vec2f*)(fn_802D6A9C() + 0xdc);
+            pp->x -= o->x;
+            pp->y -= o->y;
+            *pp = saved;
+        }
+        fn_8026C350(p, r27);
+    }
+    fn_80269574(p);
+    if (*(s32*)(p + 0xb0) <= 1) {
+        fn_8026E1E0(p);
+    }
+    return 0;
 }
 
 extern "C" {
@@ -203,12 +264,12 @@ extern "C" void fn_8026E464(u8* p) {
 extern "C" u8 fn_8026E5F8(u8* p, Vec2f* pos) {
     if (!p[0xd64]) {
         if (fn_80251AEC(p, 0x38)) {
-            ((JGeometry::TVec2<f32>*)(p + 0x324))->set(pos->x, pos->y);
+            ((Vec2f*)(p + 0x324))->set(*pos);
             return 1;
         }
     } else {
         if (fn_80251AEC(p, 0x13)) {
-            ((JGeometry::TVec2<f32>*)(p + 0x324))->set(pos->x, pos->y);
+            ((Vec2f*)(p + 0x324))->set(*pos);
             return 1;
         }
     }
