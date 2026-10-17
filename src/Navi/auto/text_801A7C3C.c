@@ -1495,6 +1495,30 @@ extern "C" void fn_801B49C0(u16* out, void* ptr, u32 index) {
     ((u8*)out)[3] = 0;
 }
 
+extern "C" void fn_801B4A40(u32* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u16 value = *(u16*)(data + indices[index] * 0x138 + 0x134);
+    if (value != 0xffff) {
+        u32* table = *(u32**)((u8*)ptr + 0x58);
+        *out = table[value];
+        return;
+    }
+    *out = lbl_80301D24;
+}
+
+extern "C" void fn_801B4A84(u16* out, void* ptr, u32 index) {
+    u8* data = *(u8**)((u8*)ptr + 4);
+    u16* indices = *(u16**)((u8*)ptr + 8);
+    u8 value = data[indices[index] * 0x138 + 6];
+    if (value != 0xff) {
+        u8* entry = *(u8**)((u8*)ptr + 0x5c) + value * 4;
+        out[0] = (entry[0] << 4) + (entry[1] << 1) + entry[2];
+        return;
+    }
+    out[0] = lbl_80301D34;
+}
+
 extern "C" u8 fn_801B4AE4(u8* p, s32 i) {
     u8 idx = (*(u8**)(p + 4))[(*(u16**)(p + 8))[i] * 0x138 + 5];
     if (idx != 0xff) {
