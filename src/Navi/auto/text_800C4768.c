@@ -55,6 +55,14 @@ extern "C" void fn_800C5510(u8* param_1) {
     p[0xb0] = 1;
 }
 
+extern "C" void fn_800C552C(u8* param_1) {
+    u8* p = *(u8**)(param_1 + 0x18);
+    if (p[0xb0] == 0) {
+        return;
+    }
+    p[0xb0] = 0;
+}
+
 extern "C" void fn_800C5548(u8* param_1) {
     void* obj;
     void** vt;
