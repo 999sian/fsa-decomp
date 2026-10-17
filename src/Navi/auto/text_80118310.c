@@ -3,6 +3,7 @@
 #include <cstring>
 
 extern "C" void fn_8011C280(int);
+extern "C" s32 fn_8011A7C8(void);
 extern "C" void* fn_8015A90C(u32);
 extern "C" void fn_8011AC74(void*, s32, s32, u16, u16);
 extern void* lbl_802FF328;
@@ -367,6 +368,7 @@ extern "C" void* fn_8011AC24(void* p, void* v) {
 
 extern "C" void fn_8011AC3C(void* param_1) {
     u8* p = *(u8**)((u8*)lbl_802FF328 + 4);
+    u16 a = p[4] | (p[5] << 8);
     fn_8011AC74(param_1, 0, 0, *(u16*)(p + 4), *(u16*)(p + 6));
 }
 
