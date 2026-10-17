@@ -198,6 +198,11 @@ struct Unk800DE6DC {
     Unk800DE6DCStage mStage[1];
 };
 
+struct Unk800DE29C {
+    u8 pad[0x21];
+    Unk800DE6DCStage mStage[1];
+};
+
 struct Unk800DDE5C {
     u8 pad[0x59];
     Unk800DE6DCStage mStage[1];
@@ -1339,20 +1344,26 @@ extern "C" void fn_800D800C(u8* self) {
 }
 
 extern "C" void fn_800D80DC(u8* p) {
-    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
-    u8* saved = __GDCurrentDL->pDisplayListData;
-    u8 count = p[0xd0];
+    u8* saved;
+    u8* tev;
+    u8 count;
+    u8* addr;
+    u32 i;
 
-    u8* addr = p;
-    for (u32 i = 0; i < 8; i++) {
+    __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
+    count = p[0xd0];
+    saved = __GDCurrentDL->pDisplayListData;
+
+    addr = p;
+    for (i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
             loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
         }
         addr += 2;
     }
 
-    u8* tev = p;
-    for (u32 i = 0; i < count; i += 2) {
+    tev = p;
+    for (i = 0; i < count; i += 2) {
         u8* next = p + (i + 1) * 4;
         J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
         u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
@@ -3053,7 +3064,8 @@ extern "C" u8* fn_800DDD50(Unk800DDC8C* this_, s32 idx) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDD64(u8* param_1, u32 param_2, u8 param_3) {
-    u8* p = param_1 + param_2;
+    u8* p = param_1;
+    p = p + param_2;
     p[0x10a] = param_3;
 }
 #else
@@ -3325,11 +3337,11 @@ struct fn_800DE29C_Bits2 {
 
 extern "C" void fn_800DE29C(u8* param_1, int param_2, u8* param_3)
 {
-  u8* e = param_1 + (param_2 << 3);
-  u8 b0 = param_3[0];
-  u8 b1 = param_3[1];
-  e[0x28] = (b1 << 2) | (e[0x28] & ~0xC);
-  e[0x28] = b0 | (e[0x28] & ~0x3);
+    struct Unk {
+        u8 pad[0x21];
+        Unk800DE6DCStage mStage[1];
+    };
+    ((Unk*)param_1)->mStage[param_2].setSwapModeInfo(param_3);
 }
 
 extern "C" void fn_800DE30C(u8* this_, s32 idx, u8* src) {
