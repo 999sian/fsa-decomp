@@ -416,6 +416,14 @@ extern "C" BOOL fn_80119A54(void* param_1, void* param_2, void* param_3) {
     return TRUE;
 }
 
+extern "C" void fn_8011A5B8(VObj_8011A74C* param_1, s32 param_2, void* param_3, void* param_4) {
+    if (param_4 != 0) {
+        param_1->v9(param_2, param_4);
+    }
+    s32 t = fn_8011A7C8(param_1, param_2);
+    param_1->v15(t, param_3);
+}
+
 extern "C" s32 fn_8011A7C8(void* a, s32 b);
 extern "C" void fn_8011A640(u8* param_1, s32 param_2, u8* param_3) {
     s32 t = fn_8011A7C8(param_1, param_2);
