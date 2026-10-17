@@ -14,8 +14,8 @@ extern "C" const char lbl_80202BF0[];
 extern "C" int gTRKBigEndian[];
 
 static inline int fn_801EAB08_append4(unsigned char* buffer, unsigned char* src) {
-    int result = 0;
     unsigned int len = 4;
+    int result = 0;
     unsigned int pos = *(unsigned int*)(buffer + 0xc);
     if (0x880 - pos < len) {
         result = 0x301;
@@ -65,7 +65,7 @@ extern "C" void fn_801EA898(void* param_1, unsigned char* param_2, int param_3) 
 
     for (i = 0, err = 0; err == 0 && i < param_3; i++) {
         puVar3 = param_2;
-        if (gTRKBigEndian == 0) {
+        if (gTRKBigEndian[0] == 0) {
             puVar3 = auStack_8;
         }
         ret = 0;
@@ -77,7 +77,7 @@ extern "C" void fn_801EA898(void* param_1, unsigned char* param_2, int param_3) 
         }
         TRK_memcpy(puVar3, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, uVar2);
         *(unsigned int*)((unsigned char*)param_1 + 0xc) += uVar2;
-        if (gTRKBigEndian == 0 && ret == 0) {
+        if (gTRKBigEndian[0] == 0 && ret == 0) {
             param_2[0] = puVar3[3];
             param_2[1] = puVar3[2];
             param_2[2] = puVar3[1];
@@ -110,11 +110,11 @@ extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) 
 }
 
 extern "C" int fn_801EAA20(void* param_1, unsigned char* param_2) {
-    unsigned char auStack_28[8];
-    int ret;
     unsigned char* puVar4;
+    unsigned char auStack_28[8];
     unsigned int uVar1;
     unsigned int n;
+    int ret;
 
     puVar4 = gTRKBigEndian[0] ? param_2 : auStack_28;
     ret = 0;
@@ -139,39 +139,11 @@ extern "C" int fn_801EAA20(void* param_1, unsigned char* param_2) {
     return ret;
 }
 
-extern "C" int fn_801EAB08(unsigned char* param_1, unsigned int* param_2, int param_3) {
-    int i;
+extern "C" int fn_801EAB08(unsigned char* param_1, const unsigned int* param_2, int param_3) {
     int result = 0;
+    int i;
     for (i = 0; result == 0 && i < param_3; i++) {
-        unsigned int data = *param_2;
-        unsigned char* src;
-        unsigned char* byteData;
-        unsigned char swapped[4];
-        if (gTRKBigEndian) {
-            src = (unsigned char*)&data;
-        } else {
-            byteData = (unsigned char*)&data;
-            src = swapped;
-            src[0] = byteData[3];
-            src[1] = byteData[2];
-            src[2] = byteData[1];
-            src[3] = byteData[0];
-        }
-        unsigned int pos = *(unsigned int*)(param_1 + 0xc);
-        unsigned int len = 4;
-        result = 0;
-        if (0x880 - pos < len) {
-            result = 0x301;
-            len = 0x880 - pos;
-        }
-        if (len == 1) {
-            *(param_1 + pos + 0x10) = *src;
-        } else {
-            TRK_memcpy(param_1 + pos + 0x10, src, len);
-        }
-        param_2++;
-        *(unsigned int*)(param_1 + 0xc) = *(unsigned int*)(param_1 + 0xc) + len;
-        *(unsigned int*)(param_1 + 8) = *(unsigned int*)(param_1 + 0xc);
+        result = fn_801EAB08_append1_ui32(param_1, param_2[i]);
     }
     return result;
 }
