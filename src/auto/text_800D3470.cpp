@@ -14,13 +14,6 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 
-struct DDE5CEntry {
-    u8 pad[0x60];
-    u8 unk_hi : 4;
-    u8 unk_b : 2;
-    u8 unk_a : 2;
-};
-
 struct Unk800DC290Src {
     virtual void m2() = 0;
     virtual void m3() = 0;
@@ -2162,20 +2155,14 @@ extern "C" unsigned char fn_800DDDC8(int param_1) {
     return *(unsigned char *)(param_1 + 0x58);
 }
 
-extern "C" void fn_800DDDD0(int param_1, int param_2, u8 *param_3) {
-    u8 v1 = param_3[1];
-    param_1 = param_1 + param_2 * 8;
-    u8 v2 = param_3[2];
-    *(u8 *)(param_1 + 0x5a) = v1;
-    u8 v3 = param_3[3];
-    *(u8 *)(param_1 + 0x5b) = v2;
-    u8 v5 = param_3[5];
-    *(u8 *)(param_1 + 0x5c) = v3;
-    u8 v6 = param_3[6];
-    *(u8 *)(param_1 + 0x5e) = v5;
-    u8 v7 = param_3[7];
-    *(u8 *)(param_1 + 0x5f) = v6;
-    *(u8 *)(param_1 + 0x60) = v7;
+extern "C" void fn_800DDDD0(u8 *param_1, int param_2, u8 *param_3) {
+    param_1 += param_2 * 8;
+    param_1[0x5a] = param_3[1];
+    param_1[0x5b] = param_3[2];
+    param_1[0x5c] = param_3[3];
+    param_1[0x5e] = param_3[5];
+    param_1[0x5f] = param_3[6];
+    param_1[0x60] = param_3[7];
 }
 
 extern "C" int fn_800DDE48(int param_1, int param_2) {
@@ -2184,7 +2171,8 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
     u8 b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
+    u8 b1 = param_3[1];
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
     param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
@@ -2361,8 +2349,9 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(int param_1, int param_2, u8* param_3)
 {
+  u8 b1 = param_3[1];
   int offset = param_1 + param_2 * 8;
-  *(u8*)(offset + 0x22) = param_3[1];
+  *(u8*)(offset + 0x22) = b1;
   *(u8*)(offset + 0x23) = param_3[2];
   *(u8*)(offset + 0x24) = param_3[3];
   *(u8*)(offset + 0x26) = param_3[5];
@@ -2537,7 +2526,7 @@ extern "C" u8 fn_800DE648(int param_1) {
     return *(u8*)(param_1 + 0x34);
 }
 
-extern "C" void fn_800DE650(u8* this_, u32 idx, GXColor* src) {
+extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8* p = this_ + idx * 8;
     u8 t;
     t = src[0].g; p[0x36] = t;
