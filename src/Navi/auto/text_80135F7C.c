@@ -634,6 +634,31 @@ extern "C" f64 fn_80137644(void* param_1, f64* param_2) {
     return 0.0;
 }
 
+double fn_801376D0(u8* s, u8* t) {
+    u32 i = *(u32*)(t + 0x10);
+    f32* pts = *(f32**)(s + 0x44);
+    f32* p = &pts[i];
+    f64 p1 = pts[i];
+    f64 p2 = p[1];
+    f64 p0, p3;
+    if (i == 0) {
+        p3 = p[2];
+        p0 = 2.0 * p1 - p2;
+    } else if (i == *(u32*)(s + 0x48) - 2) {
+        p0 = p[-1];
+        p3 = 2.0 * p2 - p1;
+    } else {
+        p0 = p[-1];
+        p3 = p[2];
+    }
+    f64 u = *(f64*)t - *(f64*)(t + 8);
+    f64 u2 = u * u;
+    f64 u3 = u2 * u;
+    f64 v = 1.0 - u;
+    return (2.0 / 3.0 + (0.5 * u3 - u2)) * p1 + (1.0 / 6.0) * (v * v * v * p0 + u3 * p3)
+         + ((1.0 / 6.0) + 0.5 * (u + u2 - u3)) * p2;
+}
+
 extern "C" void fn_801377A0(void* param_1) {
     u8* p = (u8*)param_1;
     void* vt2 = lbl_80292A08;
@@ -1560,7 +1585,7 @@ extern "C" void* fn_8013B620(void* param_1, void* param_2, void* param_3) {
     }
     VObj_8013B620* obj = *(VObj_8013B620**)((u8*)r30 + 0x34);
     if (obj != 0) {
-        obj->v3(r30);
+        obj->v1(r30);
     }
     return r30;
 }
@@ -1593,16 +1618,14 @@ extern "C" void* fn_8013B6EC(void* param_1, void* param_2, void* param_3) {
 extern "C" void* fn_8013CDFC(void* p, void* a, void* b);
 extern "C" void* fn_801341A8(void* p, void* a, void* b);
 extern "C" void* fn_8013B7B8(void* param_1, void* param_2, void* param_3) {
-    void* result;
-    void* obj;
-    obj = fn_8015A90C(0x64);
+    void* obj = fn_8015A90C(0x64);
     if (obj != 0) {
         obj = fn_8013CDFC(obj, param_3, param_2);
     }
     if (obj == 0) {
         return 0;
     }
-    result = fn_8015A90C(0x38);
+    void* result = fn_8015A90C(0x38);
     if (result != 0) {
         result = fn_801341A8(result, param_1, obj);
     }
