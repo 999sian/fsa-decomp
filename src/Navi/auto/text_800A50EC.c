@@ -29,6 +29,13 @@ extern "C" s32 fn_800ACDAC(void* p, s32 x);
 extern "C" void fn_8003ABDC(void*, u32, u32, s32, s32);
 extern "C" void fn_8003ABF0(void*, u32, s32, u32, s32, s32, s32, s32);
 extern u8 lbl_802AE880[];
+extern u8 lbl_802BB0FC[];
+extern "C" s32 fn_800AE8A4(void* p, s16 a, u8 b, u8 c, s32 d, f32 x, f32 y, f32 z, f32 w);
+extern "C" void fn_800ACEE0(u8* p);
+extern "C" void fn_800AC8CC(u8* p);
+extern "C" void fn_800A923C(u8* p, s32 x);
+extern "C" void fn_800AD488(u8* p, u8 a, s32 b);
+extern "C" s32 fn_800A91C8(u8* p, s32 mode, f32 a, f32 b);
 extern "C" s32 fn_800A9340(u8* p, u8* a, u8* b)
 {
     u8 t0 = a[0];
