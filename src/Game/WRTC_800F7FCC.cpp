@@ -19,6 +19,11 @@ extern "C" void fn_80458F9C(void* p, s32 x);
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern void* lbl_8053AF80;
+extern f32 lbl_8053BFAC;
+extern f32 lbl_8053BFCC;
+extern f32 lbl_8053C054;
+extern f32 lbl_8053C058;
+extern f32 lbl_8053C05C;
 
 // ---- from Game/fn_800F7FCC_dtor.cpp
 
