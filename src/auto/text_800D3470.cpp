@@ -1108,7 +1108,8 @@ extern "C" void fn_800D6CEC(void* r3, u32 r4) {
         (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
         
         if (r4 & (1 << 12)) {
-            (*(void(**)(void*))(*(void***)r3 + 0xb))(r3);
+            void* p = r3;
+            (*(void(**)(void*))(*(void***)p + 0xb))(p);
         }
     }
 }
@@ -3404,6 +3405,16 @@ extern "C" void* fn_800DE380(u8* this_) {
 extern "C" void fn_800DE388(Actor* a, u32 v);
 extern "C" void fn_800DE388(Actor* a, u32 v) { *(u32*)((u8*)a + 0x90) = v; }
 
+extern "C" J3DTevBlock4* fn_800DE390(J3DTevBlock4* this_, s16 flags) {
+    if (this_) {
+        this_->~J3DTevBlock4();
+        if (flags > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 extern "C" void fn_800DE3EC(void) {
 }
 
@@ -3686,6 +3697,24 @@ extern "C" u32* fn_800DEA10(u8* this_, s32 idx) {
 
 extern "C" u32 fn_800DEA24(u8* this_) {
     return *(u32*)(this_ + 4);
+}
+
+extern char __vt__12J3DTevBlock1[];
+void __dl__FPv(void*);
+extern "C" u32* fn_800DEA2C(u32* self, short flag) {
+    if (self != NULL) {
+        u32 tmp;
+        tmp = (u32)&__vt__12J3DTevBlock1;
+        self[0] = tmp;
+        if (self != NULL) {
+            tmp = (u32)&__vt__11J3DTevBlock;
+            self[0] = tmp;
+        }
+        if (flag > 0) {
+            __dl__FPv(self);
+        }
+    }
+    return self;
 }
 
 extern "C" void fn_800DEA88(void) {}
