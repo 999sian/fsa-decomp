@@ -16,6 +16,12 @@ extern "C" void fn_8022FF8C(s32 a, f32* box, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 fn_802300EC(void);
 extern "C" u8 fn_80388CAC(s32 a, s32 b);
 extern f32 lbl_80542DDC;
+extern f32 lbl_80542DC4;
+extern f32 lbl_80542DE8;
+extern f32 lbl_80542DEC;
+extern f32 lbl_80542DF0;
+extern s32 lbl_80474F30[];
+extern s32 lbl_80474F40[];
 
 
 extern "C" void fn_803721F4(void);
