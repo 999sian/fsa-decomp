@@ -1531,10 +1531,74 @@ extern "C" void fn_8009CC30(u8* p) {
     }
 }
 
+extern f32 lbl_80300B30;
+extern "C" s32 fn_800A1488(void* p, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f, f32 g, f32 h);
+extern "C" void fn_8017A4F8(void* p);
+extern char lbl_801FDAF8[];
+extern "C" s32 fn_8009D0D8(s16* param_1) {
+    s32 uVar3 = 0;
+    u8 mode = *(u8*)(lbl_802B7CA0 + 0x1419);
+    if ((u8)lbl_801FDAF8[mode] != 0) {
+        s16 sVar1 = param_1[0];
+        s32 xHi = sVar1 >> 8;
+        s32 yHi = param_1[1] >> 8;
+        if (mode == 8) {
+            if (xHi == 0xe && yHi == 0x2c) {
+                uVar3 = 1;
+                param_1[0] = sVar1 + 0x250;
+                param_1[1] = param_1[1] + 0x120;
+            }
+            if (((xHi & 0xfe) == 0x12) && yHi == 0x2c) {
+                uVar3 = 1;
+                param_1[0] = param_1[0] + -0x1f0;
+                param_1[1] = param_1[1] + 0x210;
+            }
+        } else if (yHi >= 0x31) {
+            uVar3 = 1;
+            param_1[0] = sVar1 + 0x30;
+            param_1[1] = param_1[1] + -0x370;
+        }
+    }
+    return uVar3;
+}
+
+extern "C" void fn_8009D3E0(u8* p) {
+    *(s32*)(p + 0x588) = *(s32*)(p + 0x588) + 1;
+    s16 sVar1 = *(s16*)(*(u8**)(p + 0x584) + 6);
+    if (*(s32*)(p + 0x588) >= sVar1) {
+        *(s32*)(p + 0x588) = *(s32*)(p + 0x588) - sVar1;
+    }
+    *(f32*)(*(u8**)(p + 0x584) + 8) = (f32)*(s32*)(p + 0x588);
+    fn_8017A4F8(*(void**)(p + 0x250));
+}
+
 extern "C" void fn_8009D544(char* p) {
     s8 s = p[0x7e0];
     if (s != -1) {
         fn_801E10DC(p, lbl_802864E4 + s * 12);
+    }
+}
+
+extern "C" void fn_8009D784(u8* p) {
+    u8* q = (u8*)lbl_802C545C;
+    f32 k = lbl_80300B30;
+    s32 r = fn_800A1488(p, *(s16*)(p + 0x7fa), q[0x64], 1, 0, *(f32*)(q + 0x68), k, *(f32*)(p + 0x7e4), *(f32*)(p + 0x7e4));
+    (*(s16*)(p + 0x7fa))++;
+    if (r == 1) {
+        *(s16*)(p + 0x7fa) = 0;
+        *(s8*)(p + 0x7e0) = -1;
+    }
+}
+
+extern "C" void fn_8009D7FC(u8* p) {
+    u8* q = (u8*)lbl_802C545C;
+    f32 k = lbl_80300B30;
+    s32 r = fn_800A1488(p, *(s16*)(p + 0x7fa), q[0x64], 0, 1, k, *(f32*)(q + 0x68), *(f32*)(p + 0x7e4), *(f32*)(p + 0x7e4));
+    (*(s16*)(p + 0x7fa))++;
+    if (r == 1) {
+        *(u8*)(*(u8**)(p + 0x338) + 0xb0) = 0;
+        *(s16*)(p + 0x7fa) = 0;
+        *(s8*)(p + 0x7e0) = -1;
     }
 }
 
