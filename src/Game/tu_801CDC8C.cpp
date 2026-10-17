@@ -104,6 +104,44 @@ extern "C" void fn_801CE0A4(ItemBase* this_) {
     }
 }
 
+extern "C" void fn_801CE120(ItemBase* this_) {
+    if ((*(u32*)((u8*)this_ + 0x230) & 7) == 0) {
+        if (this_->m254 != this_->m258) {
+            f32 step = this_->m25C;
+            if (this_->m254 > this_->m258) {
+                step = this_->m260;
+            }
+            fn_801CD950(&this_->m254, this_->m258, step);
+        }
+        this_->v32();
+        *(JGeometry::TVec3<f32>*)((u8*)this_ + 0xc) += *(JGeometry::TVec3<f32>*)((u8*)this_ + 0x3c);
+        this_->v33();
+        if (*(f32*)((u8*)this_ + 0x14) <= lbl_8053EFC4) {
+            u32 idx = *(u32*)((u8*)this_ + 0x4);
+            u8* mgr = fn_802D6A9C();
+            if (mgr[0x131df + idx]) {
+                this_->v30();
+            } else if (*(u32*)((u8*)this_ + 0x230) & 0x40) {
+                *(f32*)((u8*)this_ + 0x14) = lbl_8053EFCC * -*(f32*)((u8*)this_ + 0x14);
+                *(f32*)((u8*)this_ + 0x44) = lbl_8053EFCC * -*(f32*)((u8*)this_ + 0x44);
+                this_->m254 *= lbl_8053EFCC;
+                this_->m258 *= lbl_8053EFCC;
+                *(f32*)((u8*)this_ + 0x3c) *= lbl_8053EFCC;
+                *(f32*)((u8*)this_ + 0x40) *= lbl_8053EFCC;
+                if (__fabs(*(f32*)((u8*)this_ + 0x44)) < lbl_8053EFD0) {
+                    *(f32*)((u8*)this_ + 0x14) = lbl_8053EFC4;
+                    *(f32*)((u8*)this_ + 0x44) = lbl_8053EFC4;
+                } else {
+                    this_->v29();
+                }
+            } else {
+                *(f32*)((u8*)this_ + 0x14) = lbl_8053EFC4;
+                *(f32*)((u8*)this_ + 0x44) = lbl_8053EFC4;
+            }
+        }
+    }
+}
+
 extern "C" s32 fn_801CD950(f32* value, f32 target, f32 step);
 extern const f32 lbl_8053EFCC;
 
