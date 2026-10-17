@@ -518,6 +518,17 @@ extern "C" void fn_80092FE4(char* param_1) {
     }
 }
 
+extern "C" void fn_800CA434(void* a, u16 b, s32 c);
+extern "C" void fn_800937C0(u8* p) {
+    u8* q = *(u8**)(p + 0x280);
+    if (q[0x159] == 2) {
+        if (*(u16*)(p + 0x2830) != 0xffff) {
+            fn_800CA434(q, *(u16*)(p + 0x2830), 0);
+        }
+        *(u8*)(p + 0x282c) = *(u8*)(p + 0x282d);
+    }
+}
+
 extern "C" void fn_8009388C(char* param_1) {
     if (*(u8*)(*(char**)(param_1 + 0x280) + 0x159) == 2) {
         fn_800C6CA4(*(void**)(param_1 + 0x27c));
