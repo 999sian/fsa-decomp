@@ -93,10 +93,47 @@ extern "C" void fn_80124B90(void* this_) {
 }
 
 extern "C" void fn_80124BC0(void* this_) {
-    register void** vtable = (void**)*(void**)this_;
-    typedef void (*method_t)(void*, int);
-    method_t method = (method_t)vtable[0x6c / sizeof(void*)];
-    method(this_, 0x7);
+    struct VObj {
+        virtual void v00();
+        virtual void v01();
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v0a();
+        virtual void v0b();
+        virtual void v0c();
+        virtual void v0d();
+        virtual void v0e();
+        virtual void v0f();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual void v15();
+        virtual void v16();
+        virtual void v17();
+        virtual void v18();
+        virtual void v19(int);
+    };
+    ((VObj*)this_)->v19(7);
+}
+
+extern "C" s32 fn_80123D88(u8* self);
+extern "C" s32 fn_80124BF0(u8* self) {
+    s32 val = *(s32*)(self + 0x33c);
+    if (val >= 6) {
+        return 0;
+    }
+    if (val > 3) {
+        return fn_80123D88(self);
+    }
+    return 0;
 }
 
 extern "C" void fn_80121DB0(void);
@@ -275,10 +312,12 @@ extern "C" bool fn_801257A8(void* param_1)
 extern "C" s32 fn_80125830(void* self) {
     s32 v = *(s32*)((char*)self + 0x33c);
     if (v >= 9) {
-        return 0;
-    } else if (v >= 4) {
+        goto ret0;
+    }
+    if (v >= 4) {
         return 1;
     }
+ret0:
     return 0;
 }
 
