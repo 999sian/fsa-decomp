@@ -1,11 +1,21 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 
 extern "C" char __vt__4NWOK[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" char lbl_804720E8[];
 extern "C" f32 lbl_80542518;
+extern "C" f32 lbl_80542528;
+extern "C" f32 lbl_8054252C;
+extern "C" f32 lbl_80542530;
+extern "C" f32 lbl_80542534;
+extern "C" s32 lbl_80472158[];
+extern "C" void* lbl_8053AED0;
+extern "C" void* lbl_8053AF80;
+extern "C" void fn_8043D67C(void* snd, s32 a, s32 b);
+extern "C" void fn_80458508(void* obj, s32 a);
 extern "C" void fn_801F06F0(void*, const char*, s32, f32, f32, s32, s32);
 extern "C" Actor* fn_8034AA40(Actor* p, s16 n) {
     if (p) {
@@ -61,4 +71,6 @@ extern "C" void fn_8034C358(void) {
         p[0x2a3] = 1;
     }
 }
+
+void fn_8034C72C(void) {}
 
