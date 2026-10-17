@@ -2,8 +2,6 @@
 
 class ActorV {
 public:
-    virtual void s00();
-    virtual void s04();
     virtual void s08();
     virtual void s0C();
     virtual void s10();
