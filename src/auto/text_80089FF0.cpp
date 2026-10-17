@@ -26,13 +26,25 @@ extern "C" u8 lbl_804BA1B0[];
 extern "C" OSMessageQueue lbl_80499390;
 extern "C" void fn_8008C308(s32 param_1);
 extern char lbl_8045E878[];
-static void showFloat(f32 value, int col)
+static int fpKind(f32 value)
 {
     u32 bits = *(u32*)&value;
     if ((bits & 0x7f800000) == 0x7f800000) {
-        if ((bits & 0x7fffff) != 0) {
-            lbl_8053A914->print_f(lbl_8045E878 + 0xd4, col);
-        } else if ((bits & 0x80000000) != 0) {
+        return (bits & 0x7fffff) ? 1 : 2;
+    }
+    if ((bits & 0x7f800000) == 0) {
+        return (bits & 0x7fffff) ? 5 : 3;
+    }
+    return 4;
+}
+
+static void showFloat(f32 value, int col)
+{
+    if (fpKind(value) == 1) {
+        lbl_8053A914->print_f(lbl_8045E878 + 0xd4, col);
+    } else if (fpKind(value) == 2) {
+        u8 sign = *(u8*)&value;
+        if (sign & 0x80) {
             lbl_8053A914->print_f(lbl_8045E878 + 0xe8, col);
         } else {
             lbl_8053A914->print_f(lbl_8045E878 + 0xf8, col);
@@ -204,6 +216,25 @@ extern "C" void fn_8008A4C4(unsigned int param_1)
         OSSetErrorHandler(OS_ERROR_FPE, (OSErrorHandler)fn_8008A220);
     } else {
         OSSetErrorHandler(OS_ERROR_FPE, 0);
+    }
+}
+
+extern "C" void fn_8008A50C(JUTException* this_, OSContext* context)
+{
+    if (lbl_8053A914 != nullptr) {
+        lbl_8053A914->print(lbl_8045E878 + 0x128);
+        for (int i = 0; i < 10; i++) {
+            showFloat((f32)context->fpr[i], i);
+            lbl_8053A914->print(" ");
+            showFloat((f32)context->fpr[i + 11], i + 11);
+            lbl_8053A914->print(" ");
+            showFloat((f32)context->fpr[i + 22], i + 22);
+            lbl_8053A914->print("\n");
+        }
+        showFloat((f32)context->fpr[10], 10);
+        lbl_8053A914->print(" ");
+        showFloat((f32)context->fpr[21], 21);
+        lbl_8053A914->print("\n");
     }
 }
 
