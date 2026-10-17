@@ -14,6 +14,8 @@ extern "C" void fn_801C6684(void* a, void* b, void* c);
 
 extern s32 lbl_802FDDB0;
 extern f32 lbl_80301788;
+extern f32 lbl_80301694;
+extern f32 lbl_80301698;
 extern f32 lbl_80301794;
 extern f64 lbl_80301778;
 extern f32 lbl_802F0BC0[][2];
@@ -764,6 +766,17 @@ extern "C" void fn_801287A0(u8* param_1, u8* param_2) {
     s32 d = *(s16*)(iVar2 + 0x24) + 1;
     s32 m = b & *(u8*)(iVar2 + 0x2f);
     *(s16*)(param_1 + 0x214) = m % d;
+}
+
+extern "C" void fn_801287D4(char* p) {
+    s32 i = *(s16*)(p + 0x214);
+    char* b = *(char**)(*(char**)(*(char**)(p + 4) + 0x1c) + 0xc);
+    u8* e = (u8*)(b + i * 4);
+    char* q = *(char**)p;
+    q[0x108] = e[0];
+    q[0x109] = e[1];
+    q[0x10a] = e[2];
+    q[0x10b] = e[3];
 }
 
 extern "C" void fn_80128814(char* p, char* q) {
