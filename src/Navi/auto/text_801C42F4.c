@@ -75,10 +75,10 @@ extern "C" void fn_801C4F38(void) {
     __SIRegs[14] = (int)0x80000000;
 }
 
-extern "C" void SIGetType(void);
+extern "C" u32 SIGetType(s32 chan);
 extern "C" void fn_801C59E4(void);
 extern "C" void fn_801C5B30(void) {
-    SIGetType();
+    SIGetType(0);
     fn_801C59E4();
 }
 
