@@ -17,6 +17,16 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_803012EC;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_8010EA4C(u8* p);
+extern "C" void fn_8010EB54(u8* p);
+extern "C" void fn_8010EA18(u8* p) {
+    if (p[0xce] == 0) {
+        fn_8010EA4C(p);
+    } else {
+        fn_8010EB54(p);
+    }
+}
+
 extern "C" void fn_8010F818(void)
 {
 }
