@@ -50,6 +50,7 @@ extern "C" void fn_801F0E34(void* a, s32 b, s32 c);
 extern "C" void fn_8013CC50(s32 room, void* pos, f32 f, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" u8 fn_802DEB58(void);
 extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* mgr, u32 name, u32 id, f32* pos, u32 arg5, s32 arg6, s32 arg7);
 extern "C" s32 fn_8023CB24(s32 holder);
 extern "C" s32 fn_8023CA88(s32 holder);
 extern "C" void fn_801F06F0(Actor* a, const char* name, s32 id, YasiDrawParam* param, s32 p5, f32 f6, f32 f7);
