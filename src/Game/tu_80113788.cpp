@@ -74,45 +74,43 @@ extern "C" void fn_802F745C(void* a, void* b, s32 c, void* d);
 extern "C" void* lbl_8053AB10;
 extern "C" f32 lbl_8053C6A0;
 extern "C" void fn_80113790(char* self) {
-    u8 buf[0x40];
+    EffArgs args;
     f32 mtx[3][4];
-    Vec3_80113B54 vec;
-    s32 i;
+    Vec3_80113B54 pos;
+    u8 i;
 
     if (*(s32*)(self + 0x248) > 0) {
-        *(s32*)(buf + 0x10) = -1;
-        *(s32*)(buf + 0x14) = -1;
-        for (i = 0; (u8)i < 0x10; i += 8) {
-            buf[(u8)i] = i;
-            buf[(u8)(i + 1)] = i + 1;
-            buf[(u8)(i + 2)] = i + 2;
-            buf[(u8)(i + 3)] = i + 3;
-            buf[(u8)(i + 4)] = i + 4;
-            buf[(u8)(i + 5)] = i + 5;
-            buf[(u8)(i + 6)] = i + 6;
-            buf[(u8)(i + 7)] = i + 7;
+        args.f10.w = -1;
+        args.f14.w = -1;
+        for (i = 0; i < 0x10; i += 8) {
+            args.order[i] = i;
+            args.order[(u8)(i + 1)] = i + 1;
+            args.order[(u8)(i + 2)] = i + 2;
+            args.order[(u8)(i + 3)] = i + 3;
+            args.order[(u8)(i + 4)] = i + 4;
+            args.order[(u8)(i + 5)] = i + 5;
+            args.order[(u8)(i + 6)] = i + 6;
+            args.order[(u8)(i + 7)] = i + 7;
         }
-        *(s32*)(buf + 0x10) = -1;
-        *(s32*)(buf + 0x14) = 0;
-        *(s32*)(buf + 0x18) = 0;
-        buf[0x1c] = 0;
-        buf[0x1d] = 0;
-        buf[0x1e] = 0;
-        buf[0x1f] = 1;
-        buf[0x20] = 1;
-        buf[0x21] = 0;
-        buf[0x22] = 0;
-        buf[0x23] = 0;
-        buf[0x24] = 0;
-        buf[0x25] = 0;
-        buf[0x26] = 1;
-        *(s32*)(buf + 0x28) = 3;
-        buf[0x2c] = 1;
-        buf[0x2d] = 0;
-        buf[0x2e] = 0;
-        *(s32*)(buf + 0x30) = -1;
-        *(s32*)(buf + 0x34) = 0;
-        *(s32*)(buf + 0x38) = 2;
+        args.f14.w = 0;
+        args.b1c = 0;
+        args.b1d = 0;
+        args.b1e = 0;
+        args.b1f = 1;
+        args.b20 = 1;
+        args.b21 = 0;
+        args.b22 = 0;
+        args.b23 = 0;
+        args.b24 = 0;
+        args.b25 = 0;
+        args.b26 = 1;
+        args.w28 = 3;
+        args.b2c = 1;
+        args.b2d = 0;
+        args.b2e = 0;
+        args.x30 = -1;
+        args.x34 = 0;
+        args.x38 = 2;
         PSMTXTrans(mtx, lbl_8053C69C, lbl_8053C69C, lbl_8053C69C);
         mtx[0][0] = lbl_8053C6A0;
         mtx[0][1] = lbl_8053C69C;
@@ -123,17 +121,14 @@ extern "C" void fn_80113790(char* self) {
         mtx[2][0] = lbl_8053C69C;
         mtx[2][1] = lbl_8053C69C;
         mtx[2][2] = lbl_8053C6A0;
-        buf[0x14] = 0;
-        buf[0x15] = 0;
-        buf[0x16] = 0;
-        buf[0x17] = *(s32*)(self + 0x248);
-        *(f32(**)[4])(buf + 0x18) = mtx;
-        *(s8*)(buf + 0x1d) = -1;
-        buf[0x2d] = 1;
-        vec = *(Vec3_80113B54*)(self + 0xc);
-        vec.z = lbl_8053C69C;
+        args.b1d = -1;
+        args.f14.b[3] = *(u8*)(self + 0x248);
+        args.ptr = mtx;
+        args.b2d = 1;
+        pos = *(Vec3_80113B54*)(self + 0xc);
+        pos.z = lbl_8053C69C;
         if (*(s32*)(self + 4) < 8) {
-            fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &vec, *(s32*)(self + 0x260), buf);
+            fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), &pos, *(s32*)(self + 0x260), &args);
         }
     }
 }
@@ -387,7 +382,7 @@ extern "C" void fn_80114C1C(char* self) {
 extern "C" void fn_8010DF98(char* self);
 extern "C" void fn_801D2608(char* p, char* s, s32 n);
 extern "C" void fn_801D22DC(char* p, s32 a, s32 b, s32 c);
-extern "C" void fn_801D1F14(char* p);
+extern "C" void fn_801D1F14(char* p, ...);
 extern "C" s32 fn_8013CC50(void* obj, void* v, u16 a, s32 b, f32 c, u32 d, s32 e, s32 f, s32 g);
 extern "C" void fn_802D6A9C(void);
 extern "C" void fn_802D7440(s32 a);
@@ -404,12 +399,10 @@ extern "C" void fn_80115248(char* self) {
     *(s32*)(self + 0x260) = vfn(obj, 0x3f3f3f3f, lbl_80539F00);
     fn_801D2608(self + 0x264, lbl_8049D820, 7);
     s32 st = *(s32*)(self + 0x238);
-    if (st == 6 || st > 6) {
+    if (st == 6 || st >= 6 || st < 0) {
         fn_801D22DC(self + 0x264, 6, 2, 0);
-    } else if (st >= 0) {
-        fn_801D22DC(self + 0x264, 4, 2, 0);
     } else {
-        fn_801D22DC(self + 0x264, 6, 2, 0);
+        fn_801D22DC(self + 0x264, 4, 2, 0);
     }
     fn_801D1F14(self + 0x264);
     tmp[0].z = lbl_8053C69C;
