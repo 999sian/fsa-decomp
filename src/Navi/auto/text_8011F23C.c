@@ -389,6 +389,19 @@ extern "C" u32 fn_80122FC0(u32 param_1, u32 param_2)
 	return (param_1 - 0x6c) / (param_2 + 2);
 }
 
+extern "C" void fn_80122FD0(void* p) {
+    u32 i;
+    *(u32*)((u8*)p + 0x30) = 0;
+    *(u32*)((u8*)p + 0x34) = 0;
+    *(u32*)((u8*)p + 0x38) = 0;
+    *(u32*)((u8*)p + 0x3c) = 0;
+    for (i = 0; i < *(u32*)((u8*)p + 0x24); i++) {
+        *(u8*)(*(u8**)((u8*)p + 0x28) + (*(s32*)((u8*)p + 0x20) + 2) * i) = 0;
+    }
+    *(*(u8**)((u8*)p + 0x28)) = 0xff;
+    *(*(u8**)((u8*)p + 0x28) + 1) = 0;
+}
+
 extern "C" void fn_8012359C(void* p, const void* fmt, ...) {
     va_list args;
     va_start(args, fmt);
