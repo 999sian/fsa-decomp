@@ -2,6 +2,16 @@
 
 class Actor;
 
+extern const f32 lbl_80541F3C;
+extern const f32 lbl_80541F40;
+extern const f32 lbl_80541F44;
+extern const f32 lbl_80541F48;
+extern const f32 lbl_80541F4C;
+extern char* lbl_8053AB10;
+extern u8* lbl_8053AAF8;
+extern char lbl_80471A90[];
+extern char lbl_80471AA0[];
+
 struct Tu80333958ResMgr {
     virtual void v0();
     virtual void v1();
