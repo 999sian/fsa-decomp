@@ -13,9 +13,11 @@ extern "C" int usr_puts_serial(const char* msg);
 extern "C" const char lbl_80202BF0[];
 extern "C" int gTRKBigEndian[];
 
-static inline int fn_801EAB08_append4(unsigned char* buffer, unsigned char* src) {
-    unsigned int len = 4;
+static inline int fn_801EAB08_append4(unsigned char* buffer, unsigned char* src, unsigned int len = 4) {
     int result = 0;
+    if (len == 0) {
+        return 0;
+    }
     unsigned int pos = *(unsigned int*)(buffer + 0xc);
     if (0x880 - pos < len) {
         result = 0x301;
@@ -59,19 +61,17 @@ extern "C" void fn_801EA898(void* param_1, unsigned char* param_2, int param_3) 
     unsigned char* puVar3;
     unsigned int uVar1;
     unsigned int uVar2;
-    int ret;
     int i;
     int err;
 
     for (i = 0, err = 0; err == 0 && i < param_3; i++) {
-        puVar3 = param_2;
-        if (gTRKBigEndian[0] == 0) {
-            puVar3 = auStack_8;
-        }
-        ret = 0;
-        uVar1 = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
+        int ret;
+
+        puVar3 = gTRKBigEndian[0] != 0 ? param_2 : auStack_8;
         uVar2 = 4;
-        if (uVar1 < 4) {
+        uVar1 = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
+        ret = 0;
+        if (uVar2 > uVar1) {
             ret = 0x302;
             uVar2 = uVar1;
         }
@@ -83,8 +83,8 @@ extern "C" void fn_801EA898(void* param_1, unsigned char* param_2, int param_3) 
             param_2[2] = puVar3[1];
             param_2[3] = puVar3[0];
         }
-        param_2 += 4;
         err = ret;
+        param_2 += 4;
     }
 }
 
@@ -110,11 +110,11 @@ extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) 
 }
 
 extern "C" int fn_801EAA20(void* param_1, unsigned char* param_2) {
-    unsigned char* puVar4;
     unsigned char auStack_28[8];
-    unsigned int uVar1;
+    unsigned char* puVar4;
     unsigned int n;
     int ret;
+    unsigned int uVar1;
 
     puVar4 = gTRKBigEndian[0] ? param_2 : auStack_28;
     ret = 0;
@@ -140,12 +140,12 @@ extern "C" int fn_801EAA20(void* param_1, unsigned char* param_2) {
 }
 
 extern "C" int fn_801EAB08(unsigned char* param_1, const unsigned int* param_2, int param_3) {
-    int result = 0;
+    int err;
     int i;
-    for (i = 0; result == 0 && i < param_3; i++) {
-        result = fn_801EAB08_append1_ui32(param_1, param_2[i]);
+    for (i = 0, err = 0; err == 0 && i < param_3; i++) {
+        err = fn_801EAB08_append1_ui32(param_1, *param_2++);
     }
-    return result;
+    return err;
 }
 
 extern "C" int TRKAppendBuffer_ui8(void* buffer, const unsigned char* data, int count) {
