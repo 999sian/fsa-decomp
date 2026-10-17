@@ -7,6 +7,9 @@ extern u8 lbl_802FF0F8;
 extern u32 lbl_802FF0FC;
 extern s32 lbl_802FF104;
 extern s32 lbl_802FF108;
+extern "C" s32 fn_8005C248(s32 idx);
+extern u8 lbl_802C2130[];
+extern char lbl_8027D730[];
 extern "C" void fn_8005C21C(s32 idx);
 extern "C" void OSRestoreInterrupts(u32 level);
 extern u8 lbl_802B7CA0[];
@@ -1285,6 +1288,7 @@ extern "C" void* fn_800615A4(void* ptr, s16 param_2) {
 }
 
 extern "C" void* fn_80061600(void* param_1, s16 param_2) {
+    s16 n = param_2;
     void** p = (void**)param_1;
     if (p != 0) {
         p[0] = lbl_8027EC68;
@@ -1292,7 +1296,7 @@ extern "C" void* fn_80061600(void* param_1, s16 param_2) {
         if (p != 0) {
             p[0] = lbl_8027EC78;
         }
-        if (param_2 > 0) {
+        if (n > 0) {
             fn_8015AB1C(p);
         }
     }
