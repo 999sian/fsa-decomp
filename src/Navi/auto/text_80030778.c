@@ -18,7 +18,7 @@ extern char lbl_802BEF44[];
 extern unsigned char lbl_802B7CA0[];
 extern unsigned int lbl_802444F4[];
 extern unsigned int lbl_80244524[];
-extern "C" int fn_80039CB8(void* p, int x, int cnt);
+extern "C" int fn_80039CB8(void* p, int x, int cnt, int n = 0);
 extern char lbl_802BEE18[];
 extern "C" void fn_80030250(int);
 extern "C" void fn_800302F0(int);
@@ -695,6 +695,60 @@ extern "C" void fn_80039A3C(int* p, int x, short* q) {
         e += 4;
     }
     fn_80039CB8(p, x, cnt);
+}
+
+extern "C" int fn_80039AF0(void* p, int x, int idx) {
+    short* e;
+    short px, py, r;
+    int hits, cnt, i;
+    if ((*(unsigned int*)((char*)lbl_802B7CA0 + 0x3440) & (1 << idx)) == 0) {
+        return 0;
+    }
+    e = *(short**)p;
+    px = *(short*)((char*)lbl_802BB0FC + idx * 0x4c + 0x1a4);
+    r = *(short*)((char*)lbl_802BEF44 + 0x198);
+    hits = 0;
+    py = *(short*)((char*)lbl_802BB0FC + idx * 0x4c + 0x1a6);
+    cnt = 0;
+    for (i = 0; i < *(int*)((char*)p + 0xc); i++) {
+        int d = e[0] - px;
+        if (d >= -r && d <= r) {
+            d = e[1] - py;
+            if (d >= -r && d <= r) {
+                hits++;
+                e[2] |= 0x1000;
+                if (!(e[2] & 0x8000)) {
+                    cnt++;
+                }
+            }
+        }
+        e += 4;
+    }
+    fn_80039CB8(p, x, hits);
+}
+
+extern "C" int fn_80039BD4(int* p, int x, int idx) {
+    short* e;
+    short* t;
+    int i;
+    int n = 0;
+    int cnt = 0;
+    if (idx < 0 || idx >= 0x24) {
+        return 0;
+    }
+    t = (short*)((char*)lbl_802BEE18 + idx * 8);
+    e = (short*)p[0];
+    for (i = 0; i < p[3]; i++) {
+        if (e[0] >= t[0] && e[1] >= t[1] && e[0] < t[2] && e[1] < t[3]) {
+            cnt++;
+            e[2] = e[2] | 0x1000;
+            if (!(e[2] & 0x8000)) {
+                n++;
+            }
+        }
+        e += 4;
+    }
+    return ((int (*)(void*, int, int, int))fn_80039CB8)(p, x, cnt, n);
 }
 
 extern "C" void fn_80039FBC(int* p) {
