@@ -19,6 +19,10 @@ extern s32 lbl_802FF2D8;
 extern void (*lbl_802FF2D4)(s32, s32);
 extern u8 lbl_802FF2B8;
 extern u8 lbl_802FF2BC[4];
+extern u8 lbl_802FF2CC[4];
+extern u32 lbl_802FF2D0;
+extern u32 lbl_80290128[];
+extern "C" void fn_801CE100(long chan, unsigned long command);
 extern s32 lbl_802FF2C4;
 extern u32 lbl_8029016C[];
 extern "C" void fn_801CE1B8(int);
@@ -114,14 +118,16 @@ extern "C" void fn_801196B4(void* p) {
 }
 
 extern "C" void fn_8011972C(void* p, u8* src) {
-    u8 b3 = src[3];
-    u8 b2 = src[2];
-    u8 b1 = src[1];
-    u8 b0 = src[0];
     u8* d = (u8*)p;
+    u8 b0 = src[0];
+    u8 b1 = src[1];
+    u8 b2;
+    u8 b3;
     d[0xc] = b0;
     d[0xd] = b1;
+    b2 = src[2];
     d[0xe] = b2;
+    b3 = src[3];
     d[0xf] = b3;
     d[0x10] = b0;
     d[0x11] = b1;
@@ -227,12 +233,49 @@ extern "C" BOOL fn_8011AB40(void)
     return TRUE;
 }
 
+extern "C" int fn_8011AB48(int param_1) {
+    int r = 0;
+    if ((param_1 > 0x80 && param_1 < 0xa0) || (param_1 > 0xdf && param_1 < 0xfd)) {
+        r = 1;
+    }
+    return r;
+}
+
+extern "C" void* fn_8011AB78(void* param_1, void* param_2) {
+    if (lbl_802FF2B0 == 0) {
+        void* obj;
+        if (param_2 == 0) {
+            param_2 = lbl_802FF544;
+        }
+        obj = fn_8015A90C(0x14);
+        if (obj != 0) {
+            u8* o = (u8*)obj;
+            *(s32*)(o + 8) = -1;
+            *(void**)(o + 4) = param_1;
+            *(s32*)(o + 0) = 0;
+            *(void**)(o + 0x10) = param_2 != 0 ? param_2 : lbl_802FF544;
+            o[8] = 0xff;
+            o[9] = 0xff;
+            o[0xa] = 0xff;
+            o[0xb] = 0xff;
+            o[0xc] = 1;
+            lbl_802FF2B0 = obj;
+        }
+    }
+    return lbl_802FF2B0;
+}
+
 extern "C" void* fn_8011AC24(void* p, void* v) {
     void* old = *(void**)((u8*)p + 4);
     if (v != 0) {
         *(void**)((u8*)p + 4) = v;
     }
     return old;
+}
+
+extern "C" void fn_8011AC3C(void* param_1) {
+    u8* p = *(u8**)((u8*)lbl_802FF328 + 4);
+    fn_8011AC74(param_1, 0, 0, *(u16*)(p + 4), *(u16*)(p + 6));
 }
 
 extern "C" void* fn_8011B0D8(u8* p, s16 del) {
@@ -320,6 +363,18 @@ extern "C" void fn_8011BB70(void* param_1) {
     *(f32*)((char*)param_1 + 0x4) = v;
     *(f32*)((char*)param_1 + 0x8) = v;
     *(s16*)((char*)param_1 + 0xc) = 0;
+}
+
+extern "C" void fn_801CE100(long chan, unsigned long command);
+extern u32 lbl_80290128[];
+extern u32 lbl_802FF2D0;
+extern u8 lbl_802FF2CC[];
+extern u8 lbl_802FF2CC[4];
+extern "C" void fn_8011BF78(s32 chan, u8 stop) {
+    if (lbl_802FF2D0 & lbl_80290128[chan]) {
+        fn_801CE100(chan, (u8)(stop ? 2 : 0));
+        lbl_802FF2CC[chan] = 0;
+    }
 }
 
 extern "C" void* fn_8011C244(s32 id) {
