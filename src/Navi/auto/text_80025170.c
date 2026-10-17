@@ -49,6 +49,12 @@ extern "C" void fn_8002584C(u8* p) {
     fn_80021240(p + 8, &lbl_802FBDC8, p);
 }
 
+extern "C" void fn_80025878(u8* p) {
+    for (u8 i = 0; i < 4; i++) {
+        fn_800274C8(p + i * 0xd4 + 0x40);
+    }
+}
+
 extern "C" void fn_80026448(u8 i) {
     u8* p = lbl_802BBD38 + i * 0x204;
     (*(s16*)(p + 0x200))++;
@@ -218,8 +224,9 @@ extern "C" int fn_80026848(u8 i) {
 }
 
 extern "C" void fn_80026870(u8 i) {
-    u8* p = lbl_802BC548 + i * 0x34;
-    *(int*)(p + *(s16*)(p + 0x30) * 0x18 + 0x14) = 0;
+    u8* p = i * 0x34 + lbl_802BC548;
+    p += *(s16*)(p + 0x30) * 0x18;
+    *(int*)(p + 0x14) = 0;
 }
 
 extern "C" int fn_8002689C()
