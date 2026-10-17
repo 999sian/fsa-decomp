@@ -28,12 +28,17 @@ extern "C" void* fn_800F659C(void* this_, s16 freeFlag) {
 extern "C" u32 fn_8022461C(void* p);
 extern "C" u8 fn_802265DC(void* a, void* b, u32 c);
 
-extern "C" u8 fn_800F51D8(void* this_, void* a, void* b) {
-    s32 kind = (u16)fn_8022461C(a);
-    if (kind == 3 || kind == 14 || kind == 2) {
-        return 0;
-    }
-    return fn_802265DC(a, b, 0);
+extern "C" u8 fn_800F51D8(void* this_, s32 a, void* b) {
+    struct H {
+        static inline u8 check(u32 r, void* p) {
+            s32 kind = ((u16 (*)(void*, u32))fn_8022461C)(p, r);
+            if (kind == 3 || kind == 14 || kind == 2) {
+                return 0;
+            }
+            return fn_802265DC(p, (void*)r, 0);
+        }
+    };
+    return H::check(a, b);
 }
 
 struct OiwaRandom {
@@ -60,19 +65,20 @@ static inline void oiwaSetBox(char* this_, f32 lo, f32 hi) {
 }
 
 extern "C" void fn_800F6328(char* this_) {
-    *(s32*)(this_ + 0x23c) = 0;
-    *(u8*)(this_ + 0x231) = 0;
-    *(s32*)(this_ + 0x238) = 0;
-    *(s32*)(this_ + 0x240) = 0;
+    s32 zero = 0;
+    *(s32*)(this_ + 0x23c) = zero;
+    *(u8*)(this_ + 0x231) = zero;
+    *(s32*)(this_ + 0x238) = zero;
+    *(s32*)(this_ + 0x240) = zero;
     *(s8*)(this_ + 0x232) = -1;
     *(f32*)(this_ + 0x254) = 0.0f;
     *(f32*)(this_ + 0x258) = 0.0f;
     *(f32*)(this_ + 0x25c) = 0.0f;
     *(u8*)(this_ + 0x230) = *(u32*)(this_ + 0x90);
-    *(s32*)(this_ + 0x250) = 0;
-    *(s32*)(this_ + 0x24c) = 0;
-    *(s32*)(this_ + 0x248) = 0;
-    *(s32*)(this_ + 0x244) = 0;
+    *(s32*)(this_ + 0x250) = zero;
+    *(s32*)(this_ + 0x24c) = zero;
+    *(s32*)(this_ + 0x248) = zero;
+    *(s32*)(this_ + 0x244) = zero;
     switch (*(u8*)(this_ + 0x230)) {
     case 0:
     case 4:
@@ -97,7 +103,7 @@ extern "C" void fn_800F6328(char* this_) {
     case 5:
         oiwaSetBox(this_, -16.0f, 16.0f);
         *(s32*)(this_ + 0x240) = (s32)(5.0f * lbl_8053AAF8->rnd.get_ufloat_1());
-        *(s32*)(this_ + 0x244) = 0;
+        *(s32*)(this_ + 0x244) = zero;
         *(s32*)(this_ + 0x248) = 0x300 - (s32)(1536.0f * lbl_8053AAF8->rnd.get_ufloat_1());
         *(f32*)(this_ + 0x3c) = 0.0f;
         *(f32*)(this_ + 0x40) = 0.0f;
@@ -213,14 +219,17 @@ extern "C" void fn_800F5E08(char* this_) {
                 *(u8*)(this_ + 0x11c) = 0;
             }
         } else {
-            for (s32 i = 0; i < 4; i++) {
-                s32 room = *(s32*)(this_ + 4);
+            s32 j;
+            s32 room;
+            s32 i = 0;
+            room = *(s32*)(this_ + 4);
+            for (; i < 4; i++) {
                 if (fn_8023DE58(i) == room) {
                     f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
                     f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
                     f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
                     f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
-                    for (s32 j = 0; j < 8; j++) {
+                    for (j = 0; j < 8; j++) {
                         JGeometry::TVec3<f32> pt;
                         fn_8022E088(i, j, &pt);
                         u8 in = 0;
@@ -386,21 +395,22 @@ extern "C" void fn_800F4C70(char* this_) {
         mtx[0][3] = 0.0f;
         mtx[1][3] = 0.0f;
         mtx[2][3] = 0.0f;
+        f32 s = 1.0f;
+        f32 ca;
         f32 ang = (f32)*(s32*)(this_ + 0x244) / -10430.228f;
         f32 rx = 0.0f;
         f32 sa = sin(rx);
         f32 sb = sin(ang);
         f32 sc = sin(rx);
-        f32 ca = cos(rx);
+        ca = cos(rx);
         f32 cb = cos(ang);
         f32 cc = cos(rx);
-        f32 s = 1.0f;
-        mtx[0][0] = s * (cb * cc);
-        mtx[1][0] = s * (cb * sc);
-        mtx[2][0] = s * -sb;
         f32 sasb = sa * sb;
         f32 cacc = ca * cc;
         f32 casc = ca * sc;
+        mtx[0][0] = s * (cb * cc);
+        mtx[1][0] = s * (cb * sc);
+        mtx[2][0] = s * -sb;
         mtx[0][1] = s * (sasb * cc - casc);
         mtx[1][1] = s * (sasb * sc + cacc);
         mtx[2][1] = s * (sa * cb);
@@ -506,9 +516,9 @@ extern "C" void fn_800F555C(char* this_) {
                 break;
             }
             fn_80238E08(*(u32*)(this_ + 0x198));
+            s32 id = *(s32*)(this_ + 0x198);
             for (s32 i = 0; i < 4; i++) {
-                s32 id = *(s32*)(this_ + 0x198);
-                if (fn_80238CB4(i) != id) continue; {
+                if (fn_80238CB4(i) == id) {
                     fn_80230FD0(i, 0x10012);
                 }
             }
@@ -522,7 +532,7 @@ extern "C" void fn_800F555C(char* this_) {
         }
         *(s32*)(this_ + 0x23c) = *(s32*)(this_ + 0x23c) & 3;
         if (__fabsf(*(f32*)(this_ + 0x3c)) < 1.5f && __fabsf(*(f32*)(this_ + 0x40)) < 1.5f &&
-            __fabsf(*(f32*)(this_ + 0x44)) == 0.0f) {
+            0.0f == __fabsf(*(f32*)(this_ + 0x44))) {
             fn_80239914(&box, *(u32*)(this_ + 4), *(u32*)(this_ + 0x198));
         } else {
             f32 z = 0.0f;
