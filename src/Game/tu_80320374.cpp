@@ -2,6 +2,15 @@
 
 extern "C" const f32 lbl_80541AE0;
 extern "C" void* lbl_804AB308[];
+extern "C" const f32 lbl_80541ADC;
+extern "C" const f32 lbl_80541AE4;
+extern "C" s32 fn_8022461C(f32* pos);
+extern "C" u16 fn_80226850(f32* pos, s32 p2);
+extern "C" u8 fn_802DEB58(void);
+extern "C" u8 fn_802DE9A0(void);
+extern "C" void* fn_802D6A9C(void);
+extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
+extern "C" void detach__5ActorFv(void* this_);
 extern "C" void fn_801EE434(void*);
 extern "C" void __dt__5ActorFv(void*, short);
 extern "C" s32 fn_801F0E34(void* a, u32 code, u32 z);
@@ -77,6 +86,107 @@ extern "C" void fn_803226EC(char* p) {
     }
     if (*(s32*)(p + 0x248) >= 0) {
         *(s32*)(p + 0x248) -= 1;
+    }
+}
+
+extern "C" void fn_80322BC4(char* p) {
+    f32 chance;
+    s32 count = 0;
+    s32 n = 0;
+    s32 a;
+    s32 i;
+    s32 buf[10];
+    u32 flags;
+
+    if (*(u8*)(lbl_8053AAF8 + 0x7e) == 0) {
+        count = 4;
+    } else if (*(u8*)(lbl_8053AAF8 + 0x7f) == 1) {
+        a = fn_80236228(*(s32*)(p + 0x23c));
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i) == 1 && *(s32*)(p + 4) == fn_8023DE58(i) && !fn_80230188(i) && a < fn_80236228(i)) {
+                count++;
+            }
+        }
+    } else {
+        a = fn_80237774(*(s32*)(p + 0x23c));
+        for (i = 0; i < 4; i++) {
+            if (fn_8023F264(i) && *(s32*)(p + 4) == fn_8023DE58(i) && !fn_80230188(i) && a < fn_80237774(i)) {
+                count++;
+            }
+        }
+    }
+
+    flags = *(u32*)(p + 0x90);
+    if ((flags >> 18) & 1) {
+        buf[0] = 10;
+        n = 1;
+    }
+    if ((flags >> 19) & 1) {
+        buf[n++] = 3;
+    }
+    if ((flags >> 20) & 1) {
+        buf[n++] = 4;
+    }
+    if ((flags >> 21) & 1) {
+        buf[n++] = 8;
+    }
+    if ((flags >> 22) & 1) {
+        buf[n++] = 6;
+    }
+    if ((flags >> 23) & 1) {
+        buf[n++] = 5;
+    }
+    if ((flags >> 24) & 1) {
+        buf[n++] = 7;
+    }
+    if ((flags >> 25) & 1) {
+        buf[n++] = 1;
+    }
+    if ((flags >> 26) & 1) {
+        buf[n++] = 9;
+    }
+    if ((flags >> 4) & 1) {
+        buf[n++] = 2;
+    }
+
+    {
+        u32 bits;
+        char* rng = lbl_8053AAF8;
+
+        *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+        bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+        *(s32*)(p + 0x294) = buf[(s32)((f32)n * (*(f32*)&bits - lbl_80541AEC)) % n];
+    }
+
+    if (*(s32*)(p + 0x294) != 2) {
+        switch (count) {
+        case 0:
+            chance = lbl_80541B48;
+            break;
+        case 1:
+            chance = lbl_80541B2C;
+            break;
+        case 2:
+            chance = lbl_80541B4C;
+            break;
+        case 3:
+            chance = lbl_80541AD8;
+            break;
+        case 4:
+            chance = lbl_80541AE8;
+            break;
+        }
+        {
+            u32 bits;
+            char* rng = lbl_8053AAF8;
+
+            *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+            bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000;
+            if (*(f32*)&bits - lbl_80541AEC >= chance) {
+                *(s32*)(p + 0x298) = 2;
+                *(s32*)(p + 0x230) = 4;
+            }
+        }
     }
 }
 
