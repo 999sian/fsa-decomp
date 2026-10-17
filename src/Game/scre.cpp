@@ -18,6 +18,19 @@ extern const f32 lbl_80543194;
 extern const f32 lbl_80543198;
 extern const f32 lbl_8054318C;
 extern const f32 lbl_805431B4;
+extern "C" void fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" void fn_80458880(void* mgr, u32 p, s32 v);
+extern "C" void* fn_801F856C(void);
+extern "C" s32 fn_801F8544(void* mgr, u32 tag, u32 id, f32* pos, s32 n);
+extern "C" void* fn_801F666C(void* mgr, s32 idx);
+extern "C" void Actor_CreateByID(void* mgr, u32 name, u32 id, void* pos, u32 a5, s32 a6, s32 a7);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32);
+extern "C" void* lbl_8053AF80;
+extern const s32 lbl_80475710[10];
+extern const f32 lbl_805431A8;
+extern const f32 lbl_805431B8;
+extern const f32 lbl_805431BC;
+extern const f32 lbl_805431C0;
 
 // ---- from src/Game/fn_80391CE4_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
