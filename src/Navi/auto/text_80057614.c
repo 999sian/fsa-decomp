@@ -1176,7 +1176,8 @@ extern "C" void fn_800609E8(void) {
     if (lbl_802FF140 == 0) {
         return;
     }
-    f32 v = lbl_802FF144 + lbl_802FF148;
+    f32 v = lbl_802FF144;
+    v = v + lbl_802FF148;
     lbl_802FF144 = v;
     if (v < lbl_803002D0) {
         lbl_802FF144 = lbl_803002D0;
@@ -1277,6 +1278,21 @@ extern "C" void* fn_800615A4(void* ptr, s16 param_2) {
         }
     }
     return ptr;
+}
+
+extern "C" void* fn_80061600(void* param_1, s16 param_2) {
+    void** p = (void**)param_1;
+    if (p != 0) {
+        p[0] = lbl_8027EC68;
+        fn_8017E1A4((u8*)p + 8, -1);
+        if (p != 0) {
+            p[0] = lbl_8027EC78;
+        }
+        if (param_2 > 0) {
+            fn_8015AB1C(p);
+        }
+    }
+    return p;
 }
 
 extern void* lbl_8027ECA4[];
