@@ -1343,9 +1343,9 @@ extern "C" void fn_801DCA38(void* p, u32* v)
 	*(u32*)((u8*)p + 0xc) = *v;
 }
 
-extern "C" void fn_801DCFB8(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
+extern "C" void fn_801DCFB8(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
 extern "C" void fn_801DD204(u8* param_1, void* a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 val) {
-    fn_801DCFB8(param_1, a, b, c, d, e, f, g);
+    fn_801DCFB8(param_1, a, b, c, d, e, f, g, val);
     param_1[0x1f] &= ~2;
     *(s32*)(param_1 + 0x18) = val;
 }
