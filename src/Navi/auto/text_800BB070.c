@@ -53,6 +53,19 @@ struct Unk800BB070 {
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_800BC6F4(u8* p);
 extern "C" int fn_800BD710(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7);
+
+struct FadeParam {
+    f32 unk0;
+    f32 unk4;
+    u8 unk8;
+    u8 unk9;
+    f32 unkC;
+    u8 unk10;
+    u8 unk11;
+    f32 unk14;
+    u8 unk18;
+    u8 unk19;
+};
 extern "C" int fn_800BD938(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7);
 extern "C" void fn_800BB210(u8* p);
 extern "C" void fn_800BB1B4(u8* param_1) {
@@ -93,6 +106,24 @@ extern "C" void fn_800BC6F4(u8* p) {
     *(s16*)(p + 0xe2) = 0;
     fn_800BD710(p, *(s16*)(p + 0xe2), lbl_802C55FC[0x10], lbl_80300CE8, 0, 0, 0);
     fn_800BD938(p, *(s16*)(p + 0xe2), *(f32*)(lbl_802C55FC + 0x14), lbl_80300CE8, lbl_802C55FC[0x18], 0, 0);
+}
+
+extern "C" void fn_8002F458(s32, s32);
+extern "C" BOOL fn_800BC8A4(u8* p) {
+    BOOL ret = FALSE;
+    int a;
+    int b;
+    if (*(s16*)(p + 0xe2) == 0) {
+        fn_8002F458(0xa6, 0);
+    }
+    a = fn_800BD710(p, (s16)(*(s16*)(p + 0xe2) - lbl_802C55FC[0x11]), lbl_80300CE8, *(f32*)(lbl_802C55FC + 0xc), lbl_802C55FC[0x10], 0, 1);
+    b = fn_800BD938(p, *(s16*)(p + 0xe2), lbl_80300CE8, *(f32*)(lbl_802C55FC + 0x14), lbl_802C55FC[0x18], 0, 1);
+    (*(s16*)(p + 0xe2))++;
+    if (a == 1 && b == 1) {
+        ret = TRUE;
+        *(s16*)(p + 0xe2) = 0;
+    }
+    return ret;
 }
 
 extern "C" void fn_801E10DC(void* p, void* q);
