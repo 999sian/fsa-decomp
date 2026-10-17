@@ -58,7 +58,10 @@ struct PoohSinCos {
 
 /* 0x19660d/0x3c6ef35f LCG at lbl_8053AAF8+0xB4, mantissa read as [0,1) */
 static inline f32 poohRand01() {
-    return ((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1();
+    union { f32 f; u32 s; } out;
+    ((PoohGame*)lbl_8053AAF8)->rnd.seed = ((PoohGame*)lbl_8053AAF8)->rnd.seed * 0x19660d + 0x3c6ef35f;
+    out.s = (((PoohGame*)lbl_8053AAF8)->rnd.seed >> 9) | 0x3f800000;
+    return out.f - lbl_8053CF30;
 }
 extern "C" void fn_80142684(Actor* this_) {
     struct {
@@ -147,85 +150,87 @@ extern "C" void fn_80142684(Actor* this_) {
     }
 }
 
-extern "C" void fn_80143330(u8* this_) {
-    *(f32*)(this_ + 0x60) = lbl_8053CF38;
-    *(f32*)(this_ + 0x64) = lbl_8053CF38;
-    *(f32*)(this_ + 0x68) = lbl_8053CF94;
-    *(f32*)(this_ + 0x6c) = lbl_8053CF94;
-    *(u16*)(this_ + 0x94) = (u8)*(u32*)(this_ + 0x90);
-    *(s16*)(this_ + 0x26c) = (s16)((*(u32*)(this_ + 0x90) >> 8) & 0xffff);
-    *(s32*)(this_ + 0x238) = 0;
-    *(s32*)(this_ + 0x23c) = 0;
-    *(s32*)(this_ + 0x240) = 0;
-    *(s32*)(this_ + 0x244) = 0;
-    *(s32*)(this_ + 0x248) = 0;
-    *(s32*)(this_ + 0x24c) = 0;
-    *(s32*)(this_ + 0x250) = 0;
-    *(s32*)(this_ + 0x254) = 0;
-    *(s32*)(this_ + 0x258) = 0;
-    *(f32*)(this_ + 0x270) = lbl_8053CF40;
-    *(s32*)(this_ + 0x23c) = (s32)(lbl_8053CF60 * ((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1()) + 60;
-    *(s32*)(this_ + 0x234) = 0;
-    *(s32*)(this_ + 0xb0) = 0;
-    *(f32*)(this_ + 0x260) = *(f32*)(this_ + 0xc);
-    *(f32*)(this_ + 0x264) = *(f32*)(this_ + 0x10);
-    *(f32*)(this_ + 0x268) = *(f32*)(this_ + 0x14);
+extern "C" void fn_80143330(Actor* this_) {
+    u8* p = (u8*)this_;
 
-    switch (*(u16*)(this_ + 0x94)) {
+    *(f32*)(p + 0x60) = lbl_8053CF38;
+    *(f32*)(p + 0x64) = lbl_8053CF38;
+    *(f32*)(p + 0x68) = lbl_8053CF94;
+    *(f32*)(p + 0x6c) = lbl_8053CF94;
+    *(u16*)(p + 0x94) = (u8)*(u32*)(p + 0x90);
+    *(s16*)(p + 0x26c) = (s16)((*(u32*)(p + 0x90) >> 8) & 0xffff);
+    *(s32*)(p + 0x238) = 0;
+    *(s32*)(p + 0x23c) = 0;
+    *(s32*)(p + 0x240) = 0;
+    *(s32*)(p + 0x244) = 0;
+    *(s32*)(p + 0x248) = 0;
+    *(s32*)(p + 0x24c) = 0;
+    *(s32*)(p + 0x250) = 0;
+    *(s32*)(p + 0x254) = 0;
+    *(s32*)(p + 0x258) = 0;
+    *(f32*)(p + 0x270) = lbl_8053CF40;
+    *(s32*)(p + 0x23c) = (s32)(lbl_8053CF60 * ((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1()) + 60;
+    *(s32*)(p + 0x234) = 0;
+    *(s32*)(p + 0xb0) = 0;
+    *(f32*)(p + 0x260) = *(f32*)(p + 0xc);
+    *(f32*)(p + 0x264) = *(f32*)(p + 0x10);
+    *(f32*)(p + 0x268) = *(f32*)(p + 0x14);
+
+    switch (*(u16*)(p + 0x94)) {
     case 6:
-        *(f32*)(this_ + 0x270) = lbl_8053CF34;
+        *(f32*)(p + 0x270) = lbl_8053CF34;
     case 2:
-        *(s32*)(this_ + 0x248) = (s32)((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1();
-        *(s32*)(this_ + 0x238) = (s32)(lbl_8053CF58 * ((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1()) + 150;
-        if (*(u16*)(this_ + 0x94) == 2) {
-            *(s32*)(this_ + 0xb0) = 0x201;
+        *(s32*)(p + 0x248) = (s32)((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1();
+        *(s32*)(p + 0x238) = (s32)(lbl_8053CF58 * ((PoohGame*)lbl_8053AAF8)->rnd.get_ufloat_1()) + 150;
+        if (*(u16*)(p + 0x94) == 2) {
+            *(s32*)(p + 0xb0) = 0x201;
         }
-        *(f32*)(this_ + 0x14) = lbl_8053CF98;
-        *(s32*)(this_ + 0x230) = 1;
+        *(f32*)(p + 0x14) = lbl_8053CF98;
+        *(s32*)(p + 0x230) = 1;
         break;
     case 10:
-        fn_801F0E34((Actor*)this_, 0x4001d, 0);
-        *(f32*)(this_ + 0x270) = lbl_8053CF34;
-        *(f32*)(this_ + 0x14) = lbl_8053CF98;
-        *(s32*)(this_ + 0x238) = 30;
-        *(f32*)(this_ + 0x3c) = lbl_8053CF9C * ((const PoohSinCos*)sincosTable___5JMath)[*(u16*)(this_ + 0x26c) >> 5].s;
-        *(f32*)(this_ + 0x40) = lbl_8053CF9C * ((const PoohSinCos*)sincosTable___5JMath)[*(u16*)(this_ + 0x26c) >> 5].c;
-        *(s32*)(this_ + 0x230) = 0;
+        fn_801F0E34(this_, 0x4001d, 0);
+        *(f32*)(p + 0x270) = lbl_8053CF34;
+        *(f32*)(p + 0x14) = lbl_8053CF98;
+        *(s32*)(p + 0x238) = 30;
+        *(f32*)(p + 0x3c) = lbl_8053CF9C * ((const PoohSinCos*)sincosTable___5JMath)[*(u16*)(p + 0x26c) >> 5].s;
+        *(f32*)(p + 0x40) = lbl_8053CF9C * ((const PoohSinCos*)sincosTable___5JMath)[*(u16*)(p + 0x26c) >> 5].c;
+        *(s32*)(p + 0x230) = 0;
         break;
     case 4:
     case 9:
-        fn_801F0E34((Actor*)this_, 0x4001d, 0);
-        *(f32*)(this_ + 0x270) = lbl_8053CF34;
+        fn_801F0E34(this_, 0x4001d, 0);
+        *(f32*)(p + 0x270) = lbl_8053CF34;
     case 0:
-        if (*(u16*)(this_ + 0x94) == 0) {
-            *(s32*)(this_ + 0xb0) = 0x201;
+        if (*(u16*)(p + 0x94) == 0) {
+            *(s32*)(p + 0xb0) = 0x201;
         }
-        *(f32*)(this_ + 0x14) = lbl_8053CF98;
-        *(s32*)(this_ + 0x230) = 1;
+        *(f32*)(p + 0x14) = lbl_8053CF98;
+        *(s32*)(p + 0x230) = 1;
         break;
     case 3:
     case 7:
-        *(f32*)(this_ + 0x60) = lbl_8053CFA0;
-        *(f32*)(this_ + 0x64) = lbl_8053CFA0;
-        *(f32*)(this_ + 0x68) = lbl_8053CFA4;
-        *(f32*)(this_ + 0x6c) = lbl_8053CFA4;
-        *(f32*)(this_ + 0x14) = lbl_8053CF98;
-        *(s32*)(this_ + 0x108) = 100;
-        *(s32*)(this_ + 0xb0) = 0x4000000;
-        *(s32*)(this_ + 0x230) = 1;
+        *(f32*)(p + 0x60) = lbl_8053CFA0;
+        *(f32*)(p + 0x64) = lbl_8053CFA0;
+        *(f32*)(p + 0x68) = lbl_8053CFA4;
+        *(f32*)(p + 0x6c) = lbl_8053CFA4;
+        *(f32*)(p + 0x14) = lbl_8053CF98;
+        *(s32*)(p + 0x108) = 100;
+        *(s32*)(p + 0xb0) = 0x4000000;
+        *(s32*)(p + 0x230) = 1;
         break;
     case 1:
     case 5:
-        *(f32*)(this_ + 0x270) = lbl_8053CF34;
-        *(s32*)(this_ + 0x230) = 2;
+        *(f32*)(p + 0x270) = lbl_8053CF34;
+        *(s32*)(p + 0x230) = 2;
         break;
     }
 
     s32 idx = 0;
-    if (*(f32*)(this_ + 0x3c) < lbl_8053CF34) {
+    if (*(f32*)(p + 0x3c) < lbl_8053CF34) {
         idx = 1;
     }
-    *(s32*)(this_ + 0x25c) = lbl_8049F2B8[idx * 8 + *(s32*)(this_ + 0x258)];
+    *(s32*)(p + 0x25c) = lbl_8049F2B8[idx * 8 + *(s32*)(p + 0x258)];
 }
 
 void __sinit_POOH_80142624_cpp(void) {}
