@@ -1033,74 +1033,74 @@ extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
         }
         obj = *(void**)(self + 0x60);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x60) = 0;
         obj = *(void**)(self + 0x64);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x64) = 0;
         obj = *(void**)(self + 0x4);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x4) = 0;
         obj = *(void**)(self + 0x8);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x8) = 0;
-        for (i = 0; i < 7; i++) {
+        for (int i = 0; i < 7; i++) {
             obj = *(void**)(self + 0x14 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x14 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x30);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x30) = 0;
-        for (i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x34 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x34 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x40);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x40) = 0;
-        for (i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x44 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x44 + i * 4) = 0;
         }
-        for (i = 0; i < 2; i++) {
+        for (int i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x50 + i * 4);
             if (obj != 0) {
-                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+                ((FsaDisposable*)obj)->del(1);
             }
             *(void**)(self + 0x50 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x58);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x58) = 0;
         obj = *(void**)(self + 0x10);
         if (obj != 0) {
-            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
+            ((FsaDisposable*)obj)->del(1);
         }
         *(void**)(self + 0x10) = 0;
         obj = *(void**)(lbl_80529DEC + 0x2c);
-        ((void (*)(void*))(*(void***)obj)[3])(obj);
+        ((FsaDisposable*)obj)->v3();
         lbl_8053ADD0 = 0;
         if (param_2 > 0) {
             __dl__FPv(self);
