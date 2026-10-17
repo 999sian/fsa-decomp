@@ -8,7 +8,7 @@ public:
 extern u8* lbl_8053AAF8;
 extern u8* lbl_8053AB10;
 extern const char* lbl_804AB518[];
-extern u8 lbl_804718D0[];
+extern const char lbl_804718D0[];
 extern "C" void* fn_802D6A9C(void);
 extern "C" void PSMTXIdentity(void* m);
 extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
