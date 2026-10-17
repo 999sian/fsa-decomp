@@ -350,7 +350,6 @@ extern "C" void fn_8013D7E0(void* param_1, void* param_2) {
         }
         p = v;
     }
-    void** obj = *(void***)(self + 0x100);
-    ((void (*)(void*, f32*))(*(void***)obj)[0x88 / 4])(obj, p);
+    (*(VObj_8013D7E0**)(self + 0x100))->vf20(p);
 }
 
