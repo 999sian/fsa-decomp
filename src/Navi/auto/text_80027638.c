@@ -289,6 +289,22 @@ extern "C" void fn_8002D3E4(char* p) {
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58);
 }
 
+extern "C" void fn_8002E444(char* p, int idx);
+extern "C" void fn_8002E010(char* p, int idx, int val, float f) {
+    if (idx < 0 || idx >= 10) {
+        return;
+    }
+    unsigned char* e = (unsigned char*)(p + idx * 4 + 0x56c);
+    fn_8002E444(p, idx);
+    if (idx == 0) {
+        lbl_802FEE28 = val;
+    }
+    fn_80058654(idx + 1, (void*)val, 1, f);
+    *(unsigned short*)e = val;
+    e[2] = 2;
+    e[3] = 1;
+}
+
 extern "C" int fn_8002E0AC(void* obj, int a, int b, int c, int d, int e, int f, float g);
 extern "C" void fn_800589CC(int);
 extern "C" void* fn_80024BC8(void);
