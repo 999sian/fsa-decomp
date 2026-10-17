@@ -894,6 +894,11 @@ extern "C" void* fn_80067F8C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void* fn_800638A4(void* a, void* b, void* c, s32 n);
+extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8011FD18(void* a, const char* file, s32 line, s32 b, ...);
+extern "C" void fn_80007AB8(const char* file, s32 line, s32 b, ...);
+extern "C" void* fn_80011CF4(void* res, s32 a, u32 flags);
 extern "C" s32 fn_800680A4(u8* self);
 extern "C" void fn_80067FE8(u8* self) {
     fn_800680A4(self);
