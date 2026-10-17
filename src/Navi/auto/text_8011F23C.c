@@ -342,6 +342,12 @@ extern "C" void fn_80120DA8(u8* p) {
     fn_801225F8(p);
 }
 
+extern "C" void fn_80122D04(void* param_1) {
+    *(u32*)((u8*)param_1 + 4) = 0;
+    *(u32*)((u8*)param_1 + 8) = 0;
+    *(u32*)((u8*)param_1 + 0xc) = 0;
+}
+
 extern "C" int fn_80122FB0(int param_1, int param_2)
 {
 	return (param_1 + 2) * param_2 + 0x6c;
