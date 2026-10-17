@@ -30,6 +30,8 @@ extern "C" void fn_80059290(void* p);
 extern "C" s32 fn_80058D70(s32 idx);
 extern u8 lbl_802FC71C[4];
 extern void* lbl_802FE960;
+extern "C" void fn_801BBDC4(void*, s32);
+extern "C" void fn_8005C170(s32 param_1);
 extern char lbl_8027D714[];
 extern "C" void* fn_801BBCC8(void*, s32);
 extern "C" void fn_8005C0BC(void*, s32, s32, s32);
@@ -941,13 +943,20 @@ extern "C" void fn_8005C0BC(void* param_1, s32 param_2, s32 param_3, s32 param_4
 extern char lbl_8027D758[];
 extern "C" void fn_8005C170(s32 param_1) {
     s32 idx = fn_8005C248(param_1);
-    if (idx < 0) {
-        fn_8005C330(0, lbl_8027D758, param_1);
-    } else {
+    if (idx >= 0) {
         lbl_802FF104 = lbl_802FF104 - 1;
-        lbl_802FF108 = lbl_802FF108 - *(s32*)(lbl_802C2130 + idx * 12 + 4);
+        lbl_802FF108 = lbl_802FF108 - *(s32*)((u8*)lbl_802C2130 + 4 + idx * 12);
         fn_8005C21C(idx);
+    } else {
+        fn_8005C330(0, lbl_8027D758, param_1);
     }
+}
+
+extern "C" s32 fn_8005C1F0(s32 idx) {
+    if (idx < 0x2e) {
+        return 3;
+    }
+    return idx >= 0x128 ? 5 : 4;
 }
 
 extern "C" void fn_8005C330(const char*, ...) {
