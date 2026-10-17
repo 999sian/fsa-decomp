@@ -6,6 +6,7 @@ struct SinCosEntry {
     f32 second;
 };
 extern SinCosEntry sincosTable___5JMath[];
+extern f32 lbl_80540AD8;
 
 
 extern "C" char lbl_804A886C[];
