@@ -123,7 +123,6 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
     return ptr;
 }
 
-#pragma fp_contract off
 extern "C" void fn_801933DC(u32 a, u32 b, u32 c, f32* out, f32 x, f32 y, f32 z) {
     extern u8 lbl_802F0BC0[];
     u32 ia = (a >> 2) & 0x3FF8;
