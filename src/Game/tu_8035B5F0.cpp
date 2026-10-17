@@ -26,6 +26,10 @@ extern const f32 lbl_805428DC;
 extern "C" void __dt__5ActorFv(void* this_, s32 flag);
 extern "C" void __dl__FPv(void* p);
 extern u32 lbl_804AD48C[];
+extern "C" s32 fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern const f32 lbl_805428E0;
+extern const f32 lbl_805428E4;
+extern const f32 lbl_805428F0;
 extern "C" void* fn_8035B5F0(void* this_, s16 flag) {
     if (this_ != 0) {
         *(u32*)this_ = (u32)lbl_804AD48C;
