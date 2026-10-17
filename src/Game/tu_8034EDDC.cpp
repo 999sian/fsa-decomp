@@ -10,6 +10,8 @@ extern "C" void* fn_8023E724(s32);
 extern "C" s32 fn_8022F3DC(s32);
 extern const f32 lbl_80542618;
 extern const f32 lbl_80542604;
+extern "C" char lbl_8050ADF8[];
+extern "C" char lbl_8050AE38[];
 extern const f32 lbl_8054261C;
 extern const f64 lbl_805425F8;
 extern const f32 lbl_805425D8;
