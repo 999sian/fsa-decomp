@@ -1,6 +1,12 @@
 #include "types.h"
 #include "Game/Actor.h"
 
+extern "C" void* fn_8020D58C(void);
+extern "C" u8 fn_8020D6AC(void* entry, s32 a, void* b, s32 d, s32 e);
+extern "C" u16 fn_8022461C(void* a, s32 b);
+extern "C" u16 fn_80226850(void* a, s32 b);
+extern "C" void* fn_802D6A9C(void);
+
 extern "C" char lbl_8049F5D8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_80146BC8(Actor* p, s16 n) {
