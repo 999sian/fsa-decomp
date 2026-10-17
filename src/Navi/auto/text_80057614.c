@@ -3,6 +3,12 @@
 // .text 0x80057614-0x800618fc (176 functions). split_file divides it into the game's real files.
 
 extern u8 lbl_802C05F0[];
+extern u8 lbl_802FF0F8;
+extern u32 lbl_802FF0FC;
+extern s32 lbl_802FF104;
+extern s32 lbl_802FF108;
+extern "C" void fn_8005C21C(s32 idx);
+extern "C" void OSRestoreInterrupts(u32 level);
 extern u8 lbl_802B7CA0[];
 extern u8 lbl_802BB0FC[];
 extern "C" void fn_8002F8D4(void*);
@@ -874,8 +880,8 @@ extern "C" void fn_8005C380(void) {
 
 extern "C" void fn_8005C3CC(void) {
     s32 a = *(s32*)(lbl_802C2D30 + 0x8);
-    s32 b = *(s32*)(lbl_802C2D30 + 0xc);
     lbl_802FF110 = a;
+    s32 b = *(s32*)(lbl_802C2D30 + 0xc);
     lbl_802FF114 = b;
     fn_801BFFF0(lbl_802C2D30);
     if (lbl_802FF10C != 0) {
@@ -1167,6 +1173,21 @@ extern "C" void fn_80060A80(void* self) {
     fn_801DB4F8();
     v = *(s32*)((u8*)lbl_802FF328 + 4);
     fn_801DC264(1, v + 0x1a, 1, v + 0x32);
+}
+
+extern "C" s32 fn_800613EC(void* self, s32 val) {
+    u8* base = (u8*)self + 8;
+    if (val == 0) {
+        return 0;
+    }
+    if (base[3] >= 0x1a) {
+        fn_8011FD18(fn_8011FD10(), lbl_8027EA6C, 0x111b, "%s", "mModelNum < MODE");
+        fn_80007AB8(lbl_8027EA6C, 0x111b, "Halt");
+    }
+    s32 idx = base[3];
+    base[3] = idx + 1;
+    *(s32*)(base + idx * 4 + 0xa8) = val;
+    return 1;
 }
 
 extern void* lbl_8027EB8C[];
