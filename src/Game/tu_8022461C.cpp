@@ -362,7 +362,29 @@ extern "C" void fn_80226CA8(s32 idx, s32 room, JGeometry::TVec3<f32>* out) {
 extern const u16 lbl_8046AAB0[12];
 
 extern "C" BOOL fn_80225EF4(f32* pos, s32 room) {
-    u16 tile = tileAt(pos, room);
+    struct Lookup {
+        static inline u16 get(const f32* pos, u32 room) {
+    u8* g = fn_802D6A9C();
+    const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+    f32 x0;
+    f32 px = pos[0];
+    x0 = r.x0;
+    u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
+    if (!in) {
+        return 0xf;
+    } else {
+        s32 x = px - x0;
+        s32 y = pos[1] - r.y0;
+        if (x < 0) x = 0;
+        else if (x >= 0x200) x = 0x1ff;
+        if (y < 0) y = 0;
+        else if (y >= 0x200) y = 0x1ff;
+        return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+            ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
+    }
+        }
+    };
+    u16 tile = Lookup::get(pos, room);
     for (s32 i = 0; i < 12; i++) {
         if (tile == lbl_8046AAB0[i]) {
             return TRUE;
