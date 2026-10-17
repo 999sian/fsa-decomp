@@ -41,6 +41,14 @@ extern "C" u8 fn_802D4ADC(void* cfg, s32 room, u16 tile);
 extern "C" void fn_802F9974(void* mgr, s32 id, s32 n, s32 flag);
 extern "C" s32 fn_80226BC4(f32* pos, s32 n);
 extern "C" void* lbl_8053AB10;
+extern "C" char lbl_8046D470[];
+extern "C" f32 lbl_80540C30;
+extern "C" f32 lbl_80540C34;
+extern "C" u16 fn_802D7B34(void* cfg, s32 room, s32 n);
+extern "C" void fn_802D7BE8(void* cfg, s32 room, s32 n, s32 k);
+extern "C" void fn_801F0D20(Actor* this_, s32 state);
+extern "C" void fn_8013CC50(s32 id, void* pos, f32 scale, s32 a, s32 b, s32 c, s32 d, s32 e, s32 f);
+extern "C" void fn_801F0E34(Actor* this_, s32 a, s32 b);
 extern "C" void fn_802BF7CC(Actor* this_) {
     u8* self = (u8*)this_;
     f32 pos[2];
