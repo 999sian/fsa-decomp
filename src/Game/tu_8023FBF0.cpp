@@ -2646,27 +2646,14 @@ void fn_802544B0(char* p) {
 }
 void fn_80254660(char* p) { initItemState(p); }
 
-extern "C" void* fn_802558E4(void* this_, s16 flag) {
-    u8* p = (u8*)this_;
+extern "C" void* fn_802558E4(u8* p, s16 flag) {
     if (p != 0) {
         *(void**)p = (void*)lbl_804A6F38;
         fn_80241E64(p);
-        void* o = PTR(p, 0xbf0);
-        if (o != 0) {
-            (*(void (**)(void*, s32))(*(u8**)o + 8))(o, 1);
-        }
-        o = PTR(p, 0xbec);
-        if (o != 0) {
-            (*(void (**)(void*, s32))(*(u8**)o + 8))(o, 1);
-        }
-        o = PTR(p, 0x1254);
-        if (o != 0) {
-            (*(void (**)(void*, s32))(*(u8**)((u8*)o + 8) + 0x30))(o, 1);
-        }
-        o = PTR(p, 0x1250);
-        if (o != 0) {
-            (*(void (**)(void*, s32))(*(u8**)((u8*)o + 8) + 0x30))(o, 1);
-        }
+        delete (DtorObjA*)PTR(p, 0xbf0);
+        delete (DtorObjA*)PTR(p, 0xbec);
+        delete (DtorObjB*)PTR(p, 0x1254);
+        delete (DtorObjB*)PTR(p, 0x1250);
         if (p + 0x13a8 != 0) {
             *(void**)(p + 0x13a8) = (void*)lbl_8049F140;
             __dt__18JPAEmitterCallBackFv(p + 0x13a8, 0);
