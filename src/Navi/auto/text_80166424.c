@@ -514,6 +514,23 @@ extern "C" void* fn_80167564(void** param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" s32 fn_80167618(Self_80167618* self, void* buf, s32 len) {
+    s32 result = 0;
+    if (self->stream->flag != 0) {
+        if ((u32)(self->pos + len) > self->stream->vf5()) {
+            len = self->stream->vf5() - self->pos;
+        }
+        if (len > 0) {
+            result = self->stream->vf3(buf, len, self->pos);
+            if (result < 0) {
+                return 0;
+            }
+            self->pos += result;
+        }
+    }
+    return result;
+}
+
 extern "C" int fn_80167810(int p) { return *(int*)(p + 0xc); }
 
 extern void* lbl_802911A0[];
@@ -1569,7 +1586,8 @@ extern "C" s32 fn_80171A30(u8* self, u32 a, u32 c)
         return 0;
     }
     if (c != 0) {
-        u8* p = self + a * 4;
+        s32 idx = a * 4;
+        u8* p = self + idx;
         if (*(void**)(p + 0x18c) == nullptr) {
             void* q = fn_8015A90C(0x18);
             if (q != nullptr) {
@@ -1582,8 +1600,8 @@ extern "C" s32 fn_80171A30(u8* self, u32 a, u32 c)
         } else {
             fn_80119240(*(void**)(p + 0x18c), 0, c);
         }
-        if (*(void**)(self + a * 4 + 0x16c) != nullptr) {
-            fn_80118F5C(*(void**)(self + a * 4 + 0x16c), *(void**)(p + 0x18c));
+        if (*(void**)(self + idx + 0x16c) != nullptr) {
+            fn_80118F5C(*(void**)(self + idx + 0x16c), *(void**)(p + 0x18c));
         }
     } else {
         fn_8015AB1C(*(void**)(self + a * 4 + 0x18c));
