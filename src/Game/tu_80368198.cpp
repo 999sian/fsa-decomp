@@ -83,6 +83,7 @@ extern f32 lbl_80542CA4;
 extern f32 lbl_80542CC4;
 extern f32 lbl_80542CC8;
 extern "C" void fn_8010F668(Mtx m, Vec3f* v, f32 f);
+inline void* operator new[](unsigned long, void* p) { return p; }
 void fn_8036A894(u8* this_)
 {
     EffArgs args;
