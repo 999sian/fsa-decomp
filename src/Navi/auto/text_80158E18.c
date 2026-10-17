@@ -1016,6 +1016,13 @@ extern "C" int fn_8015DA14()
 	return 0;
 }
 
+extern "C" void fn_8015DA1C(void* self, int a) {
+    struct VObj_8015DA1C {
+        virtual void m0(int, int);
+    };
+    ((VObj_8015DA1C*)self)->m0(a, 0);
+}
+
 extern "C" void* fn_8015DA4C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_8029796C;
