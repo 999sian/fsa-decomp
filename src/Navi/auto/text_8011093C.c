@@ -80,11 +80,19 @@ extern "C" void fn_801115C4(u8* self) {
             self[0x11c] = 0x3c;
             piVar1 = *(void**)((u8*)lbl_802FF278 + 4);
             if (piVar1 != nullptr) {
-                void** vt = *(void***)piVar1;
-                ((void (*)(void*, u8))vt[4])(piVar1, self[0x11c]);
+                ((void (*)(void*, u8))(*(void***)piVar1)[4])(piVar1, self[0x11c]);
             }
             self[0x118] = 4;
         }
+    }
+}
+
+extern "C" void fn_801116EC(u8* p) {
+    if (p[0x11c] != 0) {
+        p[0x11c]--;
+    } else {
+        p[0x11e] = 1;
+        p[0x118] = 6;
     }
 }
 
