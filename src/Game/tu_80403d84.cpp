@@ -25,7 +25,7 @@ extern "C" extern EC80Row lbl_8050EC80[16];
 extern "C" extern u8* lbl_8053AAF8;
 extern "C" char lbl_80529DEC[];
 
-static inline u8 EC80Bit28(s32 idx, s32 shift) {
+static inline s32 EC80Bit28(s32 idx, s32 shift) {
 	if (idx < 0 || idx > 7) return 0;
 	return (*(u32*)((u8*)&lbl_8050EC80[lbl_8050EC80[0].selfIndex] + 0x28) & (1 << (idx * 4 + shift))) != 0;
 }
@@ -196,33 +196,24 @@ struct SoundHolder {
 };
 
 u8 fn_80404270(void* self, s32 idx) {
-	if (lbl_80529DEC[0x23f]) return 0;
-	if (!lbl_8053AAF8[0x7e]) return 0;
-	if (((u8*)self)[0x656]) return 0;
-	if (fn_804045F8(self, idx)) return 0;
-	if (idx == 0) {
-		if (EC80Bit28(idx, 1)) return 1;
-	}
-	if (idx == 1) {
-		if (EC80Bit28(idx, 1)) return 1;
-	}
-	if (idx == 2) {
-		if (EC80Bit28(idx, 1)) return 1;
-	}
-	if (idx == 3) {
-		if (EC80Bit28(idx, 1)) return 1;
-	}
-	if (idx == 4) {
-		if (EC80Bit28(idx, 1)) return 1;
-	}
-	if (idx == 5) {
-		if (EC80Bit28(idx, 1)) return 1;
-	}
-	if (idx == 6) {
-		if (EC80Bit28(idx, 1)) return 1;
-	}
-	if (idx == 7) {
-		if (EC80Bit28(idx, 2)) return 1;
+	if (!((u8*)lbl_80529DEC)[0x23f] && lbl_8053AAF8[0x7e] && !((u8*)self)[0x656] && !fn_804045F8(self, idx)) {
+		if (idx == 0) {
+			if (EC80Bit28(idx, 1)) return 1;
+		} else if (idx == 1) {
+			if (EC80Bit28(idx, 1)) return 1;
+		} else if (idx == 2) {
+			if (EC80Bit28(idx, 1)) return 1;
+		} else if (idx == 3) {
+			if (EC80Bit28(idx, 1)) return 1;
+		} else if (idx == 4) {
+			if (EC80Bit28(idx, 1)) return 1;
+		} else if (idx == 5) {
+			if (EC80Bit28(idx, 1)) return 1;
+		} else if (idx == 6) {
+			if (EC80Bit28(idx, 1)) return 1;
+		} else if (idx == 7) {
+			if (EC80Bit28(idx, 2)) return 1;
+		}
 	}
 	return 0;
 }
