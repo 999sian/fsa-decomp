@@ -50,6 +50,14 @@ extern "C" void fn_800A4678(void* param_1) {
     *(u8*)((u8*)param_1 + 0x19a) = 1;
 }
 
+extern "C" void fn_800A46F4(void* param_1) {
+    if (*(u8*)((u8*)param_1 + 0x198) != 0) {
+        *(u8*)((u8*)param_1 + 0x198) = *(u8*)((u8*)param_1 + 0x198) - 1;
+        return;
+    }
+    *(u8*)((u8*)param_1 + 0x19a) = 6;
+}
+
 extern "C" void fn_800A4718(u8* param_1) {
     s32 r = fn_80020384((char*)lbl_802B7CA0 + 0x1388, 0);
     if (r == 1) {
