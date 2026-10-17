@@ -3,6 +3,24 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
 
+union EffWord {
+    u32 w;
+    u8 b[4];
+};
+
+struct EffArgs {
+    u8 order[0x10];
+    EffWord f10;
+    EffWord f14;
+    void* ptr;
+    u8 b1c, b1d, b1e, b1f, b20, b21, b22, b23, b24, b25, b26;
+    u8 pad0;
+    u32 w28;
+    u8 b2c, b2d, b2e;
+    u8 pad1;
+    u32 x30, x34, x38;
+};
+
 struct Sub8036C69C {
     virtual void v0(int);
     virtual void v1();
