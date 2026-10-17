@@ -9,7 +9,7 @@ struct YasiDrawParam {
     YasiDrawKey key;
     s32 c;
     u8 palette;
-    u8 color;
+    s8 color;
     u8 f1e, f1f, f20, f21, f22, f23, f24, f25, f26;
     s32 blend;
     u8 f2c, f2d, f2e;
@@ -68,6 +68,33 @@ extern "C" Actor* fn_8034C950(Actor* p, s16 n) {
 
 extern "C" void fn_8034C9B0(Actor* a, s32 b, s32 c) {
     fn_801F132C(a, b, c, (s32*)((u8*)a + 0x378));
+}
+
+extern "C" void fn_8034CC98(Actor* a) {
+    Vec saved;
+    YasiDrawParam param;
+    s32 flag;
+
+    param.color = -1;
+    param.palette = 0;
+    if (a->field_C4 == 1 && a->field_0C.z != 0.0f) {
+        param.f20 = 0;
+        param.color = fn_8023CB24(a->field_C8) + 1;
+        param.palette = fn_8023CA88(a->field_C8);
+    }
+    *(f64*)&saved = *(f64*)&a->field_0C;
+    saved.z = a->field_0C.z;
+    a->field_0C.y += 8.0f;
+    flag = 7;
+    if (*(s32*)((u8*)a + 0x230) == 0) {
+        flag = -1;
+        fn_80307AC8(a->field_198, a->field_04, 0, 0xc, 0, 0, -1);
+    } else {
+        fn_803075AC(a->field_198, a->field_04, 0, 0x2b, 0, 2, -1, 1, 0, 0);
+    }
+    fn_801F06F0(a, lbl_804721B0, 0x2b, &param, flag, 1.0f, 1.0f);
+    *(f64*)&a->field_0C = *(f64*)&saved;
+    a->field_0C.z = saved.z;
 }
 
 extern "C" void fn_8034DBF4(Actor* a) {
