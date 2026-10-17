@@ -97,7 +97,7 @@ extern "C" BOOL fn_80083B80(void* param_1) {
         p[0x461] = p[0x461] + 1;
     } else if (p[0x461] != -1) {
         float* sample;
-        p[0x465] = ((char (*)(void*))fn_8000D6F4)(p + 0x3a0);
+        p[0x465] = fn_8000D6F4(p + 0x3a0);
         sample = *(float**)(p + 0x3a4);
         if (sample[3] < 0.0f) {
             if (*(float*)(p + 0x418) < sample[4]) {
