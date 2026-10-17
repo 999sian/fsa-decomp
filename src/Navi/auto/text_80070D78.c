@@ -238,6 +238,31 @@ extern "C" int fn_80071CF0(u8* p) {
     }
     return 5;
 }
+
+extern char lbl_80203B38[];
+extern StateFunc_80072080 lbl_80280E9C;
+extern StateFunc_80072080 lbl_80280EA8;
+extern "C" BOOL fn_80072080(StateObj_80072080* self, StateFunc_80072080* func, int arg);
+extern "C" void fn_80071FE4(u8* p);
+extern "C" int fn_80071EF8(u8* p) {
+    fn_801C5D74(lbl_80203B38, p + 0x264);
+    if (*(u32*)(p + 0xb0) == 1) {
+        StateFunc_80072080 f = lbl_80280E9C;
+        fn_80072080((StateObj_80072080*)p, &f, 0);
+    } else {
+        StateFunc_80072080 f = lbl_80280EA8;
+        fn_80072080((StateObj_80072080*)p, &f, 0);
+    }
+    fn_80071FE4(p);
+    *(f32*)(lbl_802BF814 + 0xa0) = *(f32*)(p + 0x100);
+    *(f32*)(lbl_802BF814 + 0xa4) = *(f32*)(p + 0x104);
+    *(f32*)(lbl_802BF814 + 0xa8) = *(f32*)(p + 0x108);
+    *(f32*)(lbl_802BF814 + 0xac) = *(f32*)(p + 0x144);
+    *(f32*)(lbl_802BF814 + 0xb0) = *(f32*)(p + 0x148);
+    *(f32*)(lbl_802BF814 + 0xb4) = *(f32*)(p + 0x14c);
+    return 4;
+}
+
 #pragma pop
 
 extern "C" void fn_80071FE4(u8* p) {
