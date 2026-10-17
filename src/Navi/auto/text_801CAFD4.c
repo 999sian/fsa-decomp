@@ -23,6 +23,8 @@ extern u8 lbl_802FFA74;
 extern u8* __GXData;
 extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
+extern "C" void fn_801DD410(void* a, void* b, u32 c);
+extern "C" void __GXFlushTextureState(void);
 
 
 extern "C" int OSDisableInterrupts(void);
@@ -1343,6 +1345,50 @@ extern "C" void fn_801DCA38(void* p, u32* v)
 	*(u32*)((u8*)p + 0xc) = *v;
 }
 
+extern "C" void fn_801DCCA0(u8 v)
+{
+    u8* gx = __GXData;
+    *(u32*)&gx[0x204] = (*(u32*)&gx[0x204] & ~0x70) | ((u32)v << 4);
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u32*)0xCC008000 = 0x1009;
+    *(volatile u32*)0xCC008000 = v;
+    *(u32*)&gx[0x5ac] |= 4;
+}
+
+extern "C" void fn_801DCCDC(s32 chan, u8 enable, s32 amb_src, s32 mat_src, u32 light_mask, s32 diff_fn, s32 attn_fn)
+{
+    u32 reg;
+    u32 idx;
+
+    reg = 0;
+    reg = __rlwimi(reg, enable, 1, 30, 30);
+    reg = __rlwimi(reg, mat_src, 0, 31, 31);
+    reg = __rlwimi(reg, amb_src, 6, 25, 25);
+    if (attn_fn == 0) {
+        diff_fn = 0;
+    }
+    idx = chan & 3;
+    reg = __rlwimi(reg, diff_fn, 7, 23, 24);
+    reg = __rlwimi(reg, attn_fn != 2 ? 1 : 0, 9, 22, 22);
+    reg = __rlwimi(reg, attn_fn != 0 ? 1 : 0, 10, 21, 21);
+    reg = (reg & ~0x3C) | ((light_mask & 0xF) << 2);
+    reg = (reg & ~0x7800) | (((light_mask >> 4) & 0xF) << 11);
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u32*)0xCC008000 = idx + 0x100e;
+    *(volatile u32*)0xCC008000 = reg;
+    if (chan == 4) {
+        *(volatile u8*)0xCC008000 = 0x10;
+        *(volatile u32*)0xCC008000 = 0x1010;
+        *(volatile u32*)0xCC008000 = reg;
+    } else if (chan == 5) {
+        *(volatile u8*)0xCC008000 = 0x10;
+        *(volatile u32*)0xCC008000 = 0x1011;
+        *(volatile u32*)0xCC008000 = reg;
+    }
+    *(u16*)&__GXData[2] = 1;
+}
+
+#pragma dummy
 extern "C" void fn_801DCFB8(void* a, void* b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 h);
 extern "C" void fn_801DD204(u8* param_1, void* a, s32 b, s32 c, s32 d, s32 e, s32 f, s32 g, s32 val) {
     fn_801DCFB8(param_1, a, b, c, d, e, f, g);
@@ -1381,3 +1427,21 @@ extern "C" u32 fn_801DD408(int param_1)
 {
     return *(u32*)(param_1 + 0x18);
 }
+
+extern "C" void fn_801DD410(void* a, void* b, u32 c);
+extern "C" void __GXFlushTextureState(void);
+extern "C" void fn_801DD618(u32* p, u32 id)
+{
+	u32* r = (*(u32* (**)(u32))(__GXData + 0x4cc))(id);
+	__GXFlushTextureState();
+	*(volatile u8*)0xCC008000 = 0x61;
+	*(volatile u32*)0xCC008000 = p[1];
+	*(volatile u8*)0xCC008000 = 0x61;
+	*(volatile u32*)0xCC008000 = r[0];
+	__GXFlushTextureState();
+	p[0] = __rlwimi(p[0], r[0], 0, 22, 31);
+	r[1] = p[0];
+	r[2] = p[1];
+	r[3] = p[2];
+}
+
