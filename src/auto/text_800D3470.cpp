@@ -18,10 +18,14 @@ extern "C" u32 lbl_80539E10;
 extern "C" u32 lbl_80539E18;
 static inline void writeChanCtrl(u16 x) {
     u8 attnTbl[4] = {2, 0, 2, 1};
-    GXAttnFn attn = (GXAttnFn)attnTbl[(x >> 9) & 3];
+    u8 attn = attnTbl[(x >> 9) & 3];
+    u32 diffuse = (x >> 7) & 3;
     u32 lightMask = ((x >> 2) & 0x0F) | ((x >> 11) & 0x0F) << 4;
-    __GDWriteU32(setChanCtrlMacro((x >> 1) & 1, (GXColorSrc)((x >> 6) & 1), (GXColorSrc)(x & 1), lightMask,
-                                  (GXDiffuseFn)((x >> 7) & 3), attn));
+    if (attn == GX_AF_SPEC) {
+        diffuse = GX_DF_NONE;
+    }
+    __GDWriteU32((x & 3) | (x >> 6 & 1) << 6 | (lightMask & 0x0F) << 2 | diffuse << 7 | (attn != GX_AF_NONE) << 9 |
+                 (attn != GX_AF_SPEC) << 10 | (lightMask >> 4) << 11);
 }
 struct Hdr_800DDA5C { u16 w; u8 b2; u8 b3; };
 struct Col3_800DDDD0 { u8 r, g, b; };
@@ -799,6 +803,28 @@ extern "C" void fn_800D6404(void* param) {
     __GDWrite((u8)(val2 >> 16));
     __GDWrite((u8)(val2 >> 8));
     __GDWrite((u8)val2);
+}
+
+extern "C" void fn_800D6580(u8* p) {
+    GDOverflowCheck(lbl_80539E18);
+
+    __GDWrite(0x10);
+    __GDWrite(0x00);
+    __GDWrite(0x03);
+    __GDWrite(0x10);
+    __GDWrite(0x0e);
+
+    writeChanCtrl(*(u16*)(p + 0x16));
+    writeChanCtrl(*(u16*)(p + 0x1a));
+    writeChanCtrl(*(u16*)(p + 0x18));
+    writeChanCtrl(*(u16*)(p + 0x1c));
+
+    for (int i = 0; i < 8; i++) {
+        J3DLightObj* light = ((J3DLightObj**)(p + 0x20))[i];
+        if (light != NULL) {
+            light->load(i);
+        }
+    }
 }
 
 extern "C" void fn_800D69B4(void* p) {
