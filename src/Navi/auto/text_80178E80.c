@@ -884,7 +884,7 @@ extern "C" void fn_8017A770(u8* self, u8* src) {
     u16 count;
     u16 idx;
 
-    ((VObj_8017A770*)src)->v3(self);
+    ((VObj_8017A770*)src)->v1(self);
     count = *(u16*)(src + 0x10);
     for (i = 0; i < count; i++) {
         idx = *(u16*)(*(u8**)(src + 0x24) + (i * 2));
