@@ -60,11 +60,36 @@ extern "C" void* fn_802BFB7C(void* p, s16 flags) {
     return p;
 }
 
+extern "C" u32 fn_8022F514(s32 a);
+extern "C" s32 fn_8022F3DC(s32 a);
+extern "C" BOOL fn_802308E0(s32 a);
+extern "C" BOOL fn_8023077C(s32 a);
+extern "C" void fn_8037AE30(void* a);
+extern "C" void* fn_8023E724(s32 a);
+extern "C" s32 fn_8023DE58(s32 a);
+extern "C" void* fn_801F856C(void);
+extern "C" void Actor_CreateByID(void* a, u32 id, void* rec, void* d, s32 e, s32 f, s32 g);
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_802D6F38(void* a, void* b, void* c, s32 d);
+extern "C" BOOL fn_802BFF30(u8* this_, s32 room) {
+    s32 v26 = room;
+    s32 v22 = room;
+    s32 v3;
+    s32 i;
+    u32 base;
+
+    v22 = room;
+    if (fn_8022F514(room)) {
+        v26 = fn_8022F3DC(room);
+    }
+    return 1;
+}
+
 extern "C" void fn_802C0278(char* p) {
-    s32 iVar1;
     Col4 col;
-    Rec rec;
     Col4 tmp;
+    Rec rec;
+    s32 iVar1;
     u8* buf;
     u32 i;
 
@@ -125,10 +150,7 @@ extern "C" void fn_802C0278(char* p) {
             fn_803075AC(*(void**)(p + 0x198), iVar1, p + 0xc, *(s32*)(p + 0x238) + 0x182, 0, 2, -1, 0, 0, 0);
         }
     }
-    tmp.r = 0;
-    tmp.g = 0;
-    tmp.b = 0;
-    tmp.a = 0x80;
+    tmp = Col4(0, 0, 0, 0x80);
     col = tmp;
     fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(p + 4), p + 0xc, &col, lbl_80540C44);
 }
