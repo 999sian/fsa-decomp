@@ -114,6 +114,11 @@ extern "C" void fn_801B7F68(void* param_1);
 extern "C" int fn_801B864C(void* param_1);
 extern "C" int fn_801B85B8(void* param_1, u16 param_2, void* param_3);
 extern "C" void* lbl_802FF700;
+extern "C" void* fn_80174B40(void* base, u32 offset);
+extern "C" void* fn_80174BA0(void* base, u32 offset);
+extern "C" void* fn_8018C2F0(void* base, u32 offset);
+extern "C" void* fn_801B7348(void* base, u32 offset);
+extern "C" void* fn_8015AA14(u32 size);
 extern "C" void fn_801A7C3C(Struct_801A7C3C* dst, const Struct_801A7C3C* src) {
     *dst = *src;
 }
