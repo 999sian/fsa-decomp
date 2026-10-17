@@ -3,6 +3,7 @@ extern "C" void fn_800E927C(u8* p);
 extern "C" s32 fn_800EE044(void);
 extern "C" void fn_8002F358(s32, s32);
 extern "C" void fn_8017A4F8(void* p);
+extern "C" s32 fn_800ED0E8(void*, s32, u8, s32, s32, f32, f32);
 extern "C" char lbl_802B7CA0[];
 extern "C" void fn_80060794(void*, void*, void*, void*);
 struct VObj_800A1A64 {
@@ -647,13 +648,15 @@ extern "C" void fn_800EB138(u8* p) {
     if ((s8)p[0xa6a] <= 2) {
         f32 y = (*(f32*)(p + 0x864) + fn_80177B10(*(void**)(p + 0x888))[1]) - lbl_803010F0;
         f32 x = (*(f32*)(p + 0x860) + fn_80177B10(*(void**)(p + 0x888))[0]) - lbl_803010EC;
+        u8* obj = *(u8**)(p + 0xb2c);
         f32 z = lbl_80301058;
-        *(f32*)(*(u8**)(p + 0xb2c) + 0xa4) = x;
-        *(f32*)(*(u8**)(p + 0xb2c) + 0xa8) = y;
-        *(f32*)(*(u8**)(p + 0xb2c) + 0xac) = z;
-        *(f32*)(*(u8**)(p + 0xb30) + 0xa4) = x;
-        *(f32*)(*(u8**)(p + 0xb30) + 0xa8) = y;
-        *(f32*)(*(u8**)(p + 0xb30) + 0xac) = z;
+        *(f32*)(obj + 0xa4) = x;
+        *(f32*)(obj + 0xa8) = y;
+        *(f32*)(obj + 0xac) = z;
+        obj = *(u8**)(p + 0xb30);
+        *(f32*)(obj + 0xa4) = x;
+        *(f32*)(obj + 0xa8) = y;
+        *(f32*)(obj + 0xac) = z;
     }
 }
 
