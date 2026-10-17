@@ -123,6 +123,74 @@ extern "C" void* fn_80192FD4(void* ptr, s16 param_2) {
     return ptr;
 }
 
+#pragma fp_contract off
+extern "C" void fn_801933DC(u32 a, u32 b, u32 c, f32* out, f32 x, f32 y, f32 z) {
+    extern u8 lbl_802F0BC0[];
+    u32 ia = (a >> 2) & 0x3FF8;
+    u32 ib = (b >> 2) & 0x3FF8;
+    u32 ic = (c >> 2) & 0x3FF8;
+    f32 sa = *(f32*)(lbl_802F0BC0 + ia);
+    f32 ca = *(f32*)(lbl_802F0BC0 + ia + 4);
+    f32 sb = *(f32*)(lbl_802F0BC0 + ib);
+    f32 cb = *(f32*)(lbl_802F0BC0 + ib + 4);
+    f32 sc = *(f32*)(lbl_802F0BC0 + ic);
+    f32 cc = *(f32*)(lbl_802F0BC0 + ic + 4);
+    out[0] = cc * cb;
+    out[1] = sa * cc * sb - ca * sc;
+    out[2] = sa * sc + ca * cc * sb;
+    out[3] = x;
+    out[4] = sc * cb;
+    out[5] = ca * cc + sa * sc * sb;
+    out[6] = ca * sc * sb - sa * cc;
+    out[7] = y;
+    out[8] = -sb;
+    out[9] = cb * sa;
+    out[10] = cb * ca;
+    out[11] = z;
+}
+
+extern "C" void fn_8019349C(f32* p, f32* q, f32* out) {
+    extern u8 lbl_802F0BC0[];
+    u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
+    f32 s = *(f32*)(lbl_802F0BC0 + idx);
+    f32 c = *(f32*)(lbl_802F0BC0 + idx + 4);
+    f32 x = p[0];
+    f32 y = p[1];
+    out[0] = x * c;
+    out[1] = -(x * s);
+    out[2] = p[3] + (q[0] + (-(x * c) * q[0] + (x * s) * q[1]));
+    out[4] = y * s;
+    out[5] = y * c;
+    out[6] = p[4] + (q[1] + (-(y * s) * q[0] - (y * c) * q[1]));
+    out[3] = 0.0f;
+    out[7] = 0.0f;
+    out[8] = 0.0f;
+    out[9] = 0.0f;
+    out[10] = 1.0f;
+    out[11] = 0.0f;
+}
+
+extern "C" void fn_80193550(f32* p, f32* q, f32* out) {
+    extern u8 lbl_802F0BC0[];
+    u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
+    f32 s = *(f32*)(lbl_802F0BC0 + idx);
+    f32 c = *(f32*)(lbl_802F0BC0 + idx + 4);
+    f32 x = p[0];
+    f32 y = p[1];
+    out[0] = x * c;
+    out[1] = -(x * s);
+    out[3] = p[3] + (q[0] + (-(x * c) * q[0] + (x * s) * q[1]));
+    out[4] = y * s;
+    out[5] = y * c;
+    out[7] = p[4] + (q[1] + (-(y * s) * q[0] - (y * c) * q[1]));
+    out[2] = 0.0f;
+    out[6] = 0.0f;
+    out[8] = 0.0f;
+    out[9] = 0.0f;
+    out[10] = 1.0f;
+    out[11] = 0.0f;
+}
+
 extern "C" void fn_80193604(f32* p, f32* out) {
     extern u8 lbl_802F0BC0[];
     u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
