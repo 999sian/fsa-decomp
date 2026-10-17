@@ -476,9 +476,11 @@ extern u8 lbl_802804C0[];
 extern u8 lbl_80280418[];
 extern f32 lbl_80300478;
 extern "C" void fn_80064D18(void** p) {
-    p[0] = lbl_8027F6DC;
+    void* vt = lbl_8027F6DC;
+    p[0] = vt;
     p[1] = 0;
-    p[0] = lbl_8027FB48;
+    vt = lbl_8027FB48;
+    p[0] = vt;
     p[2] = 0;
 }
 
@@ -1206,6 +1208,7 @@ extern "C" void fn_8006C950(u8* param_1) {
 }
 #pragma pop
 
+#pragma use_lmw_stmw off
 extern "C" void fn_8006C9F4(u8* p) {
     s32 i;
     s32 val;
@@ -1218,7 +1221,6 @@ extern "C" void fn_8006C9F4(u8* p) {
         }
     }
 }
-
 extern "C" void fn_8006CC58(void) {}
 
 extern "C" u32 fn_8006CD30(void* param_1) {
