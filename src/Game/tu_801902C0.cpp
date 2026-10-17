@@ -4,6 +4,8 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void fn_802D6A9C(void);
 extern "C" BOOL fn_802DCD0C(void);
 extern "C" BOOL fn_80239D38(void);
+extern "C" u8 lbl_80529DEC[];
+extern "C" u8 lbl_8053AEC8[];
 
 extern "C" void* fn_801902C0(void) {
     return *(void**)((u8*)*(void**)((u8*)lbl_8053AAF8 + 4) + 0x20);
