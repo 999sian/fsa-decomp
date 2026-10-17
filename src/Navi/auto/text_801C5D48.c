@@ -534,7 +534,7 @@ extern "C" void fn_801C8850(u32 param_1)
 }
 
 #pragma dont_inline on
-extern "C" void fn_801C8B48(DVDCommandBlock* block) {
+extern "C" void fn_801C8B48(void) {
     fn_801C76C8(((u8*)IDShouldBe_802FF884)[8], 10, fn_801C8E54);
 }
 #pragma dont_inline reset
