@@ -154,7 +154,7 @@ extern "C" bool fn_80256DCC(u8* p, const JGeometry::TBox2<f32>* bounds, s32 id, 
     if (!fn_802413F0(p)) {
         return false;
     }
-    if (id != S32((u32)p, (int)0x3b4)) {
+    if (id != S32(p, 0x3b4)) {
         return false;
     }
     JGeometry::TBox2<f32>& box = BOX(p, 0x5cc);
@@ -235,7 +235,7 @@ extern "C" bool fn_802570BC(u8* p, const JGeometry::TBox2<f32>* bounds,
         }
     }
     if (S32(p, 0xb28) >= 0 && id == S32(p, 0x3b4)) {
-        JGeometry::TBox2<f32>& box = BOX((uInt)p, 0x580);
+        JGeometry::TBox2<f32>& box = BOX(p, 0x580);
         JGeometry::TBox2<f32> overlap = box;
         if (overlap.intersect(*bounds)) {
             center->x = lbl_805400C0 * (box.i.x - box.f.x) + box.f.x;
