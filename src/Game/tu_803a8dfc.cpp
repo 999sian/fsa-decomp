@@ -2048,6 +2048,22 @@ struct VPane_803B31AC {
 
 extern u8 lbl_80529DEC[];
 
+static inline BOOL fn_803B31AC_isSkip() {
+    s32 mode = *(s32*)(lbl_80529DEC + 0x118);
+    if (mode == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (mode == 1 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (mode == 2 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (mode == 3 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (mode == 4 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (mode == 5 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (mode == 6 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (mode == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1) return TRUE;
+    if (mode == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 3) return TRUE;
+    if (mode == 10 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return TRUE;
+    if (*(u8*)(lbl_80529DEC + 0x237) == 8) return TRUE;
+    return FALSE;
+}
+
 extern "C" void fn_803B31AC(void* this_) {
     char* p = (char*)this_;
     s32 mode = *(s32*)(lbl_80529DEC + 0x118);
@@ -2061,13 +2077,12 @@ extern "C" void fn_803B31AC(void* this_) {
     if (mode == 7 && *(s32*)(lbl_80529DEC + 0x11c) == 1) return;
     if (mode == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 3) return;
     if (mode == 10 && *(s32*)(lbl_80529DEC + 0x11c) == 2) return;
-    // NONMATCHING: retail compares with cmplwi + bne/b.
     if (*(u8*)(lbl_80529DEC + 0x237) == 8) {
-        return;
+    } else {
+        fn_8013B490(lbl_8053AB10);
+        (*(VPane_803B31AC**)(p + 0x170))->setAlpha(*(u8*)(p + 0x4c2));
+        (*(VPane_803B31AC**)(p + 0x170))->drawRect(0, 0, 0, lbl_805433C8, lbl_805433C8, lbl_805433D8, lbl_805433DC);
     }
-    fn_8013B490(lbl_8053AB10);
-    (*(VPane_803B31AC**)(p + 0x170))->setAlpha(*(u8*)(p + 0x4c2));
-    (*(VPane_803B31AC**)(p + 0x170))->drawRect(0, 0, 0, lbl_805433C8, lbl_805433C8, lbl_805433D8, lbl_805433DC);
 }
 
 extern "C" void fn_803B3358(void* this_, u32 kind) {
