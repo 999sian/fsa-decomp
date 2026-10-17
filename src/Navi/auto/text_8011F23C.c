@@ -2673,11 +2673,12 @@ extern "C" void fn_80132F5C(u8* param_1, u8** param_2, u32 param_3) {
 
 extern "C" void fn_801678C8(void*, void*, u32);
 extern "C" void fn_80132FA0(u8* p, u8** q, u32 flags) {
+    u8* data = *q + 8;
     u32 f = flags & 0xf;
-    u8* local = *q + 8;
     if (flags & 0x10) f |= 0x10;
     if (flags & 0x20) f |= 0x20;
     if (flags & 0x40) f |= 0x40;
+    u8* local = data;
     fn_801678C8(p + 8, &local, f);
 }
 
@@ -2703,7 +2704,7 @@ extern "C" void fn_80133470(u8* p, f64 t) {
 }
 
 extern "C" void fn_801334AC(Unk801334AC* p, f32 scale) {
-    p->val = p->obj->vf5(p->count * scale);
+    p->val = p->obj->vf5((f64)p->count * scale);
 }
 
 extern void* lbl_80292684[];
