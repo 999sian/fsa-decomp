@@ -1630,6 +1630,8 @@ extern "C" u32 fn_80173018(int param_1, u32 param_2) {
     return *(u32*)(p + 0x6c);
 }
 
+extern "C" u32 fn_80173038(u8* p) { return *(u32*)(p + 0x74); }
+
 extern "C" unsigned int fn_80173060(void) {
     return 0x54564231;
 }
