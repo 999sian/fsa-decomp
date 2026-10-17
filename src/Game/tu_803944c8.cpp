@@ -476,7 +476,7 @@ struct MsgProc {
         l->slotX[i] = (f32)x + slotOfs[i];
         l->slotY[i] = (f32)y;
     }
-    BOOL testBit(s32 n) {
+    BOOL testBit(int n) {
         if (n < 32) {
             return (bits[0] & (s64)(1 << n)) ? TRUE : FALSE;
         } else if (n < 64) {
@@ -1078,9 +1078,9 @@ extern "C" void fn_8039CDF8(MsgProc* p, u8 tag) {
         return;
     }
     s32 x = 0;
-    if (!p->testBit(p->cur)) {
+    if (!p->testBit((int)p->cur)) {
         MsgLayout* l = p->layout;
-        if (l->m16c == 0 || !p->testBit(p->cur)) {
+        if (l->m16c == 0 || !p->testBit((int)p->cur)) {
             f32 base;
             f32 pos;
             if (!(l->font->flags & 0x40)) {
@@ -1230,8 +1230,8 @@ extern "C" void fn_8039FB6C(MsgProc* p, const void* entry, const char* text) {
     p->layout->m154 = -1;
     p->m2d6 = 1;
     p->m70 = p->m2bc;
-    l = p->layout;
-    p->setInfo(l->m190, l->m192, l->m178, l->m17c);
+    MsgLayout* q = p->layout;
+    p->setInfo(q->m190, q->m192, q->m178, q->m17c);
     s32 t = *(s32*)((char*)lbl_8053AD78 + 0x44);
     p->setTime(t);
     p->proc.setBegin_messageEntryText(p->res, entry, text);
