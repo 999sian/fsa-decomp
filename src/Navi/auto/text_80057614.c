@@ -38,7 +38,7 @@ extern u8 lbl_8027D7C0[];
 extern s32 lbl_8027D340[];
 extern u8 lbl_802FF140;
 extern f32 lbl_802FF144;
-extern f32 lbl_802FF148;
+extern const f32 lbl_802FF148;
 extern const f32 lbl_803002D0;
 extern const f32 lbl_803002F4;
 extern const f32 lbl_80300338;
@@ -260,10 +260,13 @@ extern "C" void fn_80057B6C(void) {
 
 #pragma use_lmw_stmw off
 extern "C" void fn_80057B9C(s32 param_1) {
-    s32 i = 0;
+    s32 i;
     u8* p;
+    s32 max;
     void fn_80058D50(void* p);
     fn_8005C424();
+    max = 0x10000;
+    i = 0;
     p = lbl_802C05F0;
     do {
         if (p[0x12] != 0) {
@@ -274,7 +277,7 @@ extern "C" void fn_80057B9C(s32 param_1) {
                 if (param_1 > 0) {
                     *(s16*)(p + 0x10) = *(u16*)(p + 0xa) / param_1;
                 } else {
-                    *(s16*)(p + 0x10) = (s16)(0x10000 - 0x218);
+                    *(s16*)(p + 0x10) = max - 0x218;
                 }
             }
         }
@@ -286,10 +289,9 @@ extern "C" void fn_80057B9C(s32 param_1) {
 #pragma use_lmw_stmw reset
 extern "C" void fn_80057C38(s32 param_1) {
     s32 i = 0;
-    u8* p;
+    u8* p = lbl_802C05F0;
     void fn_80058D50(void* p);
     fn_8005C424();
-    p = lbl_802C05F0;
     do {
         if (p[0x12] != 0 && (s32)lbl_8026D4BC[*(s32*)p * 0xc] == 1) {
             if (p[0x12] == 1) {
@@ -299,7 +301,7 @@ extern "C" void fn_80057C38(s32 param_1) {
                 if (param_1 > 0) {
                     *(s16*)(p + 0x10) = *(u16*)(p + 0xa) / param_1;
                 } else {
-                    *(s16*)(p + 0x10) = (s16)(0x10000 - 0x218);
+                    *(s16*)(p + 0x10) = (0x10000 - 0x218);
                 }
             }
         }
@@ -1177,14 +1179,13 @@ extern "C" void fn_800609E8(void) {
     }
     u8* base = lbl_802B7CA0;
     f32 a = lbl_80300338 * lbl_802FF144;
-    f32 b = lbl_80300340 * a;
+    *(f32*)(lbl_802C2D7C + 0x34) = a;
+    *(f32*)(lbl_802C2D7C + 0x38) = lbl_80300340 * a;
     if (*(u8**)(base + 0x1628) >= *(u8**)(base + 0x162c)) {
         return;
     }
     **(u8***)(base + 0x1628) = lbl_802C2D7C;
     *(u8**)(base + 0x1628) = *(u8**)(base + 0x1628) + 4;
-    *(f32*)(lbl_802C2D7C + 0x34) = a;
-    *(f32*)(lbl_802C2D7C + 0x38) = b;
 }
 
 extern "C" void fn_80060A80(void* self) {
