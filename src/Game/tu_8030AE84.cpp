@@ -1,6 +1,20 @@
 #include "types.h"
 #include "sdk/stl/float.h"
 
+// Reciprocal square root from frsqrte with one Newton step; x must be > 0.
+static inline f32 rsqrt_step(f32 x) {
+    f32 r = (f32)__frsqrte(x);
+    return (0.5f * r) * (3.0f - x * (r * r));
+}
+
+static inline f32 rsqrt_guard(f32 x) {
+    return x > 0.0f ? rsqrt_step(x) : x;
+}
+
+static inline f32 sqrt_guard(f32 x) {
+    return x > 0.0f ? x * rsqrt_step(x) : x;
+}
+
 extern "C" f32 sqrtf(f32 x);
 extern "C" int fn_8022EA0C(int);
 extern "C" int fn_8023DE58(int);
