@@ -202,6 +202,11 @@ extern "C" void fn_8002C070(void) {
     lbl_802FEDDC |= 0x4000000;
 }
 
+extern "C" void fn_8002C080(void) {
+    extern unsigned int lbl_802FEDDC;
+    lbl_802FEDDC &= 0xfbffffff;
+}
+
 extern "C" void fn_8002EF5C(int, unsigned char, unsigned char, unsigned char, unsigned char, int, int);
 extern "C" void fn_8002D250(int a, int b, int slot, unsigned char v, int e) {
     unsigned char buf[4] = {0, 0, 0, 0};
