@@ -420,3 +420,4 @@ extern "C" f32 fn_80154744()
     result.bits = (random->get_bit32() >> 9) | 0x3F800000;
     return result.value - lbl_8053D25C;
 }
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
