@@ -1249,6 +1249,10 @@ extern "C" unsigned char fn_801726E0(int param_1, int param_2) {
     return ((unsigned char*)param_2 + param_1)[0x108];
 }
 
+extern "C" int fn_801727AC(int param_1, int param_2) {
+    return param_1 + param_2 + 0x128;
+}
+
 extern "C" void fn_801727E4(void* self, int a, int b) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
