@@ -55,13 +55,4 @@ extern "C" s32 fn_8013F098(void) {
     lbl_802FF388 = 1;
     return lbl_802FF388 == 1 ? 1 : 0;
 }
-extern "C" {
-extern u8 lbl_802C6A80[];
-extern u8 lbl_802C6980[];
-extern u8 lbl_80293868[];
-extern s32 lbl_802FF388;
-void OSInitAlarm(void);
-void OSInitThreadQueue(void* queue);
-void OSRegisterResetFunction(void* info);
-void fn_801D1360(void);
-}
+
