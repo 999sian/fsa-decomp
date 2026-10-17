@@ -51,6 +51,45 @@ extern "C" void fn_802CEBEC(void* this_, void* b, void* c) {
     fn_801F132C(this_, b, c, (char*)this_ + 0x23c);
 }
 
+extern "C" void fn_802CF130(char* p) {
+    if (*(s32*)(p + 0x4) >= 8) {
+        YasiVec pos(*(YasiVec*)(p + 0xc));
+        pos.z = lbl_80540E48;
+        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(u32*)(p + 0x4), &pos, 4, -1, -1);
+        if (*(s32*)(p + 0x238) == 0) {
+            fn_801F0E34(p, 0x30006, 0);
+        } else if (*(s32*)(p + 0x238) == 1) {
+            fn_801F0E34(p, 0x5002f, 0);
+        }
+    } else if (*(s32*)(p + 0x238) == 0) {
+        if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xd || fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0x39) {
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540E58, 0x3d0, 0, 1, 0, 0, 1);
+            fn_801F0E34(p, 0x30022, 0);
+        } else if (fn_8022461C((YasiVec*)(p + 0xc), *(u32*)(p + 0x4)) == 0xe) {
+            if (fn_802DE9A0()) {
+                fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540E58, 0x2a9, -1, 1, 0, 0, 1);
+                fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540E58, 0x2aa, 0, 0, 0, 0, 1);
+                fn_801F0E34(p, 0x5005f, 0);
+            } else if (fn_802DEB58()) {
+                fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540E58, 0x45e, -1, 1, 0, 0, 1);
+                fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540E58, 0x45f, 0, 0, 0, 0, 1);
+                fn_801F0E34(p, 0x5003f, 0);
+            }
+        } else {
+            fn_802CF598(p);
+            fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540E5C, 0x357, 0, 0, 0, 0, 1);
+            fn_801F0E34(p, 0x30006, 0);
+            *(s32*)(p + 0x234) = 2;
+            fn_802CEC10(p);
+        }
+    } else if (*(s32*)(p + 0x238) == 1) {
+        fn_8013CC50(*(u32*)(p + 0x4), (YasiVec*)(p + 0xc), lbl_80540E5C, 0x358, 0, 0, 0, 0, 1);
+        fn_801F0E34(p, 0x5002f, 0);
+        fn_802CEC10(p);
+    }
+    *(u8*)(p + 0x11c) = 0;
+}
+
 extern "C" void fn_801F02BC(void* a, u8* p2, s32 p3, DrawRec* p4, s32 p5, s32 p6, u8 p7, f32 f6, f32 f7);
 extern "C" s32 fn_8023CB24(s32 a);
 extern "C" s32 fn_8023CA88(s32 a);
