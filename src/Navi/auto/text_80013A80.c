@@ -171,14 +171,47 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
     fn_80013E18(self);
 }
 
-extern "C" void fn_80014160(void* p) {
+extern "C" void fn_80013F24(void* p) {
+    Unk80013DA0* self = (Unk80013DA0*)p;
+    s32 r;
+    struct Unk80204EA4 tbl;
+    if (fn_80124868(lbl_802FF370, self->unk50, &r) == 0 && r == 0x40000) {
+        fn_801248B8(lbl_802FF370, self->unk50, fn_80013C38, self);
+    } else {
+        tbl = lbl_80204EA4;
+        fn_8001533C(self, &tbl, 0);
+    }
+}
+
+extern "C" void fn_80013FC0(void* p) {
+    Unk80013DA0* self = (Unk80013DA0*)p;
+    s32 r;
+    struct Unk80204EA4 tbl;
+    if (fn_80124900(lbl_802FF370, self->unk50, &r) == 0) {
+        fn_80124AAC(lbl_802FF370, self->unk50, fn_80013C5C, self);
+    } else {
+        tbl = lbl_80204EB0;
+        fn_8001533C(self, &tbl, 0);
+    }
+}
+
+extern "C" void fn_8001404C(void* p) {
     Unk80013DA0* self = (Unk80013DA0*)p;
     u8 buf[4];
-    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == 0x20) {
-        self->unk28 = lbl_802FB958;
-        fn_80124A04(lbl_802FF370, self->unk50, &self->unk28, fn_80013CC8, self);
+    if (fn_80124AF4(lbl_802FF370, self->unk50, buf) == 0 && buf[0] == '(') {
+        fn_8012495C(lbl_802FF370, self->unk50, &self->pad2c, fn_80013C80, self);
     } else {
         fn_80124820(lbl_802FF370, self->unk50, fn_80013C14, self);
+    }
+}
+
+extern "C" void fn_80014160(void* p) {
+    u8 buf[4];
+    if (fn_80124AF4(lbl_802FF370, ((Unk80013DA0*)p)->unk50, buf) == 0 && buf[0] == 0x20) {
+        ((Unk80013DA0*)p)->unk28 = lbl_802FB958;
+        fn_80124A04(lbl_802FF370, ((Unk80013DA0*)p)->unk50, &((Unk80013DA0*)p)->unk28, fn_80013CC8, p);
+    } else {
+        fn_80124820(lbl_802FF370, ((Unk80013DA0*)p)->unk50, fn_80013C14, p);
     }
 }
 
