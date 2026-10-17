@@ -222,8 +222,9 @@ extern "C" void fn_8004C5A0(void*, void* p) {
 }
 
 extern "C" void* fn_8011FD10(void);
-extern "C" void fn_8011FD18(void*, void*, int, void*, void*);
-extern "C" void fn_80007AB8(void*, int, void*);
+extern "C" void fn_8011FD18(void*, void*, int, void*, void*, ...);
+extern "C" void fn_80007AB8(void*, int, void*, ...);
+extern "C" u32 fn_8000F6A8(u32, u32);
 extern "C" void fn_80130C64(void*, unsigned char, int);
 extern "C" void fn_8003C510(void*, void*, void*);
 extern "C" void fn_80115914(void*, void*);
@@ -319,6 +320,34 @@ extern "C" void fn_8004CEC8(void* param_1, void* param_2, void* param_3) {
     *(float*)((char*)param_3 + 0x18) = arr1[0];
     *(float*)((char*)param_3 + 0x1c) = arr1[1];
     *(float*)((char*)param_3 + 0x20) = arr1[2];
+}
+
+extern "C" u32 fn_8000F6A8(u32, u32);
+extern "C" void fn_8004D0B4(void);
+extern u32 lbl_802FF0B4;
+extern u32 lbl_802FF0B8;
+extern void* lbl_802FF0BC;
+extern unsigned char lbl_80246C58[];
+extern "C" void* fn_8004CFF0(void* param_1) {
+    u8* p = (u8*)param_1;
+    u32 r;
+
+    fn_801E0DB8(p + 0x10, (void*)fn_8004CB44, (void*)fn_8004D0B4, 0x290, 0x19);
+    r = fn_8000F6A8(0x100000, 0);
+    lbl_802FF0B4 = r;
+    if (r == 0) {
+        void* tmp = fn_8011FD10();
+        fn_8011FD18(tmp, lbl_80246BD8, 0x5fd, &lbl_802FC1B0, lbl_80246C58);
+        fn_80007AB8(lbl_80246BD8, 0x5fd, &lbl_802FC1B4);
+    }
+    lbl_802FF0BC = p;
+    p[0xc] = 0xff;
+    p[0xd] = 0;
+    lbl_802FF0C0 = 0;
+    p[0xe] = 0;
+    lbl_802FF0B8 = 0;
+    *(u32*)(p + 8) = 0;
+    return param_1;
 }
 
 extern "C" void fn_8004D270(void) {
