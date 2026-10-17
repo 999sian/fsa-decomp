@@ -67,7 +67,3 @@ extern "C" void** fn_80323708(void** p, short del) {
     }
     return p;
 }
-
-extern "C" void fn_8032377C(void) {
-}
-#include "Game/SinitPoolChain.h"
