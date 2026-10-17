@@ -39,7 +39,8 @@ extern "C" void fn_80026630(void);
 extern "C" void fn_800266A8(void);
 extern s32 lbl_802FED98;
 extern u8 lbl_802FEBE8[];
-extern "C" void fn_80015B1C(void);
+extern "C" void fn_80015B1C(void* p);
+extern struct Unk80204EA4 lbl_80204F64;
 extern "C" void fn_80015A00(void* p);
 extern "C" void fn_800265F0(u8 param_1);
 extern void* lbl_802FF370;
@@ -113,7 +114,6 @@ extern "C" void fn_80014390(Unk80013DA0* self);
 extern "C" void fn_80013A80(void)
 {
     u8* base = lbl_802A2140;
-    u8* stack = base + 0x320;
     s64 time;
     s32 n;
 
@@ -121,7 +121,7 @@ extern "C" void fn_80013A80(void)
         time = OSGetTime();
         fn_801C027C();
         n = fn_801C1594();
-        fn_801C0884(base, fn_80013B90, 0, stack + 0x1000, 0x1000, n - 3, 1);
+        fn_801C0884(base, fn_80013B90, 0, base + 0x320 + 0x1000, 0x1000, n - 3, 1);
         fn_801C0EEC(base);
         OSCreateAlarm(base + 0x1320);
         fn_801BB764(base + 0x1320, 0x80000000, time, 0, *(u32*)0x800000F8 >> 2, fn_80013BEC);
@@ -371,23 +371,23 @@ extern "C" void fn_801E10DC(void* p, void* q);
 extern "C" f32 lbl_802FFBBC;
 extern "C" void fn_80015A40(void* p) {
     struct Unk80204EA4 tbl;
-    StateObj_80015A40* self = (StateObj_80015A40*)p;
+    u8* self = (u8*)p;
     tbl = lbl_80204F58;
-    if (fn_801E10A0(&self->m_func, &tbl) != 0) {
-        if (fn_801E1070(&self->m_func) != 0) {
-            ((u8*)p)[0xa8] = -1;
-            (self->*self->m_func)(0);
+    if (fn_801E10A0(self + 0x64, &tbl) != 0) {
+        if (fn_801E1070(self + 0x64) != 0) {
+            self[0xa8] = -1;
+            fn_801E10DC(p, 0);
         }
-        *(struct Unk80204EA4*)(&self->m_func) = tbl;
-        ((u8*)p)[0xa8] = 0;
-        *(u16*)((u8*)p + 0x88) = 0;
-        *(u16*)((u8*)p + 0x8a) = 0;
-        *(u16*)((u8*)p + 0x8c) = 0;
-        *(u16*)((u8*)p + 0x8e) = 0;
-        *(f32*)((u8*)p + 0x90) = lbl_802FFBBC;
-        (self->*self->m_func)(0);
+        *(struct Unk80204EA4*)(self + 0x64) = tbl;
+        self[0xa8] = 0;
+        *(u16*)(self + 0x88) = 0;
+        *(u16*)(self + 0x8a) = 0;
+        *(u16*)(self + 0x8c) = 0;
+        *(u16*)(self + 0x8e) = 0;
+        *(f32*)(self + 0x90) = 0.0f;
+        fn_801E10DC(p, 0);
     }
-    ((u8*)p)[0xab] = 1;
+    self[0xab] = 1;
 }
 
 extern "C" void fn_80015C24(void) {
