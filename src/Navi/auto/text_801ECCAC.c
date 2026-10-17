@@ -5,7 +5,6 @@ typedef struct TRKExceptionStatus_801ECCAC {
     unsigned long data[3];
     unsigned char unk_0xC;
     unsigned char exceptionDetected;
-    unsigned char pad[2];
 } TRKExceptionStatus_801ECCAC;
 
 extern "C" int fn_801EAB08(unsigned char* param_1, const unsigned int* param_2, int param_3);
@@ -218,6 +217,39 @@ extern "C" void TRKPostInterruptEvent(void)
         TRKConstructEvent(event, type);
         TRKPostEvent(event);
     }
+}
+
+extern "C" int fn_801EE3CC(unsigned long firstRegister, unsigned long lastRegister, unsigned char* b, unsigned long* registersLengthPtr, int read)
+{
+    int error;
+    unsigned long count;
+    unsigned long* data;
+    TRKExceptionStatus_801ECCAC tempExceptionStatus;
+
+    if (lastRegister > 0x24) {
+        return 0x701;
+    }
+
+    tempExceptionStatus = *(TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044;
+    ((TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044)->exceptionDetected = 0;
+
+    data = (unsigned long*)gTRKCPUState + firstRegister;
+    count = (lastRegister - firstRegister) + 1;
+    *registersLengthPtr = count * sizeof(unsigned long);
+
+    if (read) {
+        error = fn_801EAB08(b, (const unsigned int*)data, count);
+    } else {
+        error = fn_801EA898(b, (unsigned char*)data, count);
+    }
+
+    if (((TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044)->exceptionDetected) {
+        *registersLengthPtr = 0;
+        error = 0x702;
+    }
+
+    *(TRKExceptionStatus_801ECCAC*)gTRKExceptionStatus_8029F044 = tempExceptionStatus;
+    return error;
 }
 
 extern "C" int fn_801EE50C(void*, unsigned long, unsigned long*, int, int);
