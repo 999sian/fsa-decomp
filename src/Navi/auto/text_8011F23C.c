@@ -1,4 +1,5 @@
 #include "types.h"
+extern "C" void fn_801DE4F4(s32, void*);
 extern "C" void fn_8011F878(void*, u8, u8, u8);
 struct NaviRGB8 { u8 r, g, b; };
 #include "stdarg.h"
@@ -121,11 +122,8 @@ extern "C" void fn_8011F6A0(void* a, void* b, void* c, void* e) {
     fn_8011F6CC(a, b, c, lbl_802FDD78, e);
 }
 
-extern "C" void fn_8011F848(void* p, u8* c) {
-    u8 r = c[0];
-    u8 g = c[1];
-    u8 b = c[2];
-    fn_8011F878(p, r, g, b);
+extern "C" void fn_8011F848(void* p, NaviRGB8* c) {
+    fn_8011F878(p, c->r, c->g, c->b);
 }
 
 extern "C" void fn_8011FA0C(void)
@@ -680,6 +678,28 @@ extern "C" void fn_801285F8(char* p, char* q) {
     *(s16*)(p + 0x214) = (a < m) ? a : m;
 }
 
+extern "C" void fn_801DE4F4(s32, void*);
+extern "C" void fn_80128620(char* p) {
+    u32 a = *(u32*)(*(char**)p + 0x100);
+    s16 m = *(s16*)(**(char***)(*(char**)(p + 4) + 0x1c) + 0x24) + 1;
+    *(s16*)(p + 0x214) = a - (a / m) * m;
+}
+
+extern "C" void fn_80128650(char* p, char* q) {
+    char* info = **(char***)(*(char**)(p + 4) + 0x1c);
+    s32 a = *(s16*)(q + 0x80) + (*(u8*)(q + 0x95) & *(u8*)(info + 0x2f));
+    s16 m = *(s16*)(info + 0x24) + 1;
+    *(s16*)(p + 0x214) = a - (a / m) * m;
+}
+
+extern "C" void fn_8012868C(char* p) {
+    u32 a = *(u32*)(*(char**)p + 0x100);
+    s16 m = *(s16*)(**(char***)(*(char**)(p + 4) + 0x1c) + 0x24);
+    u32 q = a / m;
+    s32 r = a - q * m;
+    *(s16*)(p + 0x214) = r + (q & 1) * (m - 2 * r);
+}
+
 extern "C" void fn_801286CC(u8* param_1, u8* param_2) {
     u8* p = *(u8**)(param_1 + 4);
     u8* iVar2 = **(u8***)(p + 0x1c);
@@ -1094,22 +1114,18 @@ extern "C" void* fn_80130CB8(void* ptr, s16 param_2) {
 }
 
 extern "C" BOOL fn_801321E4(void* param_1, void* param_2) {
-    BOOL ret = 0;
     u8* t = *(u8**)((u8*)param_2 + 4);
     u8* obj = **(u8***)(t + 0x24);
-    u32 bits[2];
-    bits[0] = 0x43300000;
-    bits[1] = (u32)(*(s16*)((u8*)param_1 + 0x82) - 1) ^ 0x80000000;
-    f32 fn = (f32)(*(f64*)bits - lbl_80301778);
-    s32 q = (s32)(fn * *(f32*)(obj + 0x3c));
+    s32 n = *(s16*)((u8*)param_1 + 0x82) - 1;
+    s32 q = (s32)((f32)n * *(f32*)(obj + 0x3c));
     s32 a = *(s16*)((u8*)param_1 + 0x80) - q;
     if (a >= 0) {
         s32 d = obj[0x44] + 1;
-        if (a - (a / d) * d == 0) {
-            ret = 1;
+        if (a == (a / d) * d) {
+            return 1;
         }
     }
-    return ret;
+    return 0;
 }
 
 extern "C" f32 fn_80132264(void* param_1, u8* param_2) {
