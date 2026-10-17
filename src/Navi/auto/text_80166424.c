@@ -1065,7 +1065,7 @@ extern "C" int fn_8016CF64(u8* p, u32 idx) {
     *(void**)(p + 0x68) = 0;
     *(void**)(p + 0x70) = 0;
     *(u16*)(p + 6) = 0xFFFF;
-    ((VObj_8016CF64*)p)->vf41((u8)idx, 0, 0);
+    ((VObj_8016CF64*)p)->vf41((u8)idx, 0);
     return 1;
 }
 
@@ -1260,30 +1260,33 @@ extern "C" int fn_8016E85C(u8* p, void* obj)
 extern "C" s32 fn_8016E8DC(u8* self, u32 idx, u32 c)
 {
     u32 off;
+    void** slot;
 
     if (idx >= 4) {
         return 0;
     }
     if (c != 0) {
         off = idx * 4;
-        if (*(void**)(self + off + 0x9c) == nullptr) {
+        slot = (void**)(self + off + 0x9c);
+        if (*slot == nullptr) {
             void* p = fn_8015A90C(0x18);
             if (p != nullptr) {
                 fn_80119240(p, idx, c);
             }
-            *(void**)(self + off + 0x9c) = p;
-            if (*(void**)(self + off + 0x9c) == nullptr) {
+            *slot = p;
+            if (*slot == nullptr) {
                 return 0;
             }
         } else {
-            fn_80119240(*(void**)(self + off + 0x9c), 0, c);
+            fn_80119240(*slot, 0, c);
         }
         if (*(void**)(self + off + 0x8c) != nullptr) {
-            fn_80118F5C(*(void**)(self + off + 0x8c), *(void**)(self + off + 0x9c));
+            fn_80118F5C(*(void**)(self + off + 0x8c), *slot);
         }
     } else {
-        fn_8015AB1C(*(void**)(self + idx * 4 + 0x9c));
-        *(void**)(self + idx * 4 + 0x9c) = nullptr;
+        slot = (void**)(self + idx * 4 + 0x9c);
+        fn_8015AB1C(*slot);
+        *slot = nullptr;
     }
     return 1;
 }
