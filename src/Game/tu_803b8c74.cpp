@@ -56,6 +56,13 @@ struct EC80Row {
 
 extern EC80Row lbl_8050EC80[16];
 
+static inline BOOL EC80NibbleBit(s32 idx, s32 n, u32 bit) {
+	if (n < 0 || n > 7) {
+		return FALSE;
+	}
+	return (lbl_8050EC80[idx].flags28 & (1 << (n * 4 + bit))) != 0;
+}
+
 extern "C" {
 
 void fn_803B8C74(u8 val) {
@@ -73,21 +80,20 @@ BOOL fn_803B90E4(s32 idx, s32 n) {
 		return TRUE;
 	}
 	EC80Row* r = &lbl_8050EC80[idx];
-	if (r->flags28 & 0x80000000) {
-		return TRUE;
-	}
-	return FALSE;
+	return (r->flags28 & 0x80000000) ? TRUE : FALSE;
 }
 
 BOOL fn_803B9120(s32 n) {
 	if (n < 3) {
 		return TRUE;
 	}
-	EC80Row* r = &lbl_8050EC80[lbl_8050EC80[0].selfIndex];
-	if (r->flags28 & 0x80000000) {
+	u32 idx = lbl_8050EC80[0].selfIndex;
+	u32 f = lbl_8050EC80[idx].flags28;
+	if (f & 0x80000000) {
 		return TRUE;
+	} else {
+		return FALSE;
 	}
-	return FALSE;
 }
 
 
@@ -153,12 +159,17 @@ static inline void resetSlot(SaveSlot* dst, SaveBig* bdst) {
 extern "C" {
 
 s32 fn_803B933C(void* unused, SaveSlot* slots, s32 idx) {
-	resetSlot(&slots[idx]);
+	SaveSlot* dst = &slots[idx];
+	SaveSlot tmp;
+	initSlot(&tmp);
+	memcpy(dst, &tmp, sizeof(SaveSlot));
 	return 0;
 }
 
 s32 fn_803B93E8(void* unused, SaveSlot* slots, SaveBig* bigs, s32 idx) {
-	resetSlot(&slots[idx], &bigs[idx]);
+	SaveSlot* dst = &slots[idx];
+	SaveBig* bdst = &bigs[idx];
+	resetSlot(dst, bdst);
 	return 0;
 }
 
