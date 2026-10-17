@@ -1,5 +1,27 @@
 #include "types.h"
 
+struct TResMgr {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02();
+    virtual void v03();
+    virtual void v04();
+    virtual void v05();
+    virtual void* get(u32 type, const char* name);
+};
+
+extern "C" u8 lbl_80529DEC[];
+extern "C" char lbl_80475F58[];
+extern "C" u8* lbl_8053AAF8;
+extern "C" u8* lbl_8053AB10;
+extern "C" u8* lbl_8053AF80;
+extern "C" f32 lbl_805432E0;
+extern "C" void fn_802FF798(void* mgr);
+extern "C" void fn_802F9714(void* mgr, void* res, s32 a, s32 b, s32 c, s32 d);
+extern "C" void fn_802F93F4(void* mgr, void* res, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_8016ED88(u8* self);
+extern "C" void fn_80458FF0(void* obj, u32 id, s32 a, s32 b);
+
 
 extern "C" u8* lbl_8053AD88;
 extern "C" s32 fn_803A3484(void) {
