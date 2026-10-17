@@ -173,6 +173,50 @@ extern "C" void fn_8043A208(u8* param_1, f32 param_2, f32 param_3, f32 param_4, 
     }
 }
 
+extern "C" void fn_8043A268(u8* param_1, s32 param_2, s32 param_3, s16 param_4, f32 param_5, f32 param_6) {
+    struct VScreen {
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void v09();
+        virtual void v10();
+        virtual void v11();
+        virtual void v12();
+        virtual void v13();
+        virtual void v14();
+        virtual Fn8043ABCC_Obj* search(u64 tag);
+    };
+    u8* self = (u8*)param_1;
+    void* uVar1;
+    if ((param_2 == 0 && param_3 == 2) || (param_2 == 1 && param_3 == 2) || (param_2 == 2 && param_3 == 2) ||
+        (param_2 == 3 && param_3 == 2) || (param_2 == 4 && param_3 == 2) || (param_2 == 5 && param_3 == 2) ||
+        (param_2 == 6 && param_3 == 2) || (param_2 == 7 && param_3 == 1)) {
+        return;
+    }
+    if (((u8*)lbl_8053AAF8)[0x7f] != 0 && param_2 < 8 && param_3 < 4) {
+        s32 idx = param_3 + param_2 * 4;
+        if (idx != 0) {
+            uVar1 = fn_804032E8(0x54494D47, lbl_804B1820[idx]);
+        } else {
+            uVar1 = fn_804030C4(0x54494D47, lbl_804B1820[idx]);
+        }
+        (*(VScreen**)(self + 8))->search(0x507730313031ULL)->v68(uVar1, 0);
+        u8* p = (u8*)(*(VScreen**)(self + 8))->search(0x507730313031ULL);
+        p[0xb0] = 1;
+        u8* q = (u8*)(*(VScreen**)(self + 8))->search(0x5064663031ULL);
+        q[0xb0] = 0;
+        *(s16*)(self + 0x106) = 1;
+        self[0x10d] = 1;
+        *(f32*)(self + 0xf4) = param_5;
+        *(f32*)(self + 0xf8) = param_6;
+        *(s16*)(self + 0x108) = param_4;
+    }
+}
+
 extern "C" const char* lbl_804B1820[];
 extern "C" void fn_8043A450(void* param_1, s32 param_2, s32 param_3) {
     struct VScreen {
@@ -368,22 +412,24 @@ extern "C" void fn_80383E2C(u32 id, char* buf);
 extern "C" void fn_80458880(void* p, u32 a, s32 b);
 extern void* lbl_8053AF80;
 extern "C" s32 fn_8043D67C(u8* param_1, s32 param_2, u32 param_3, u32 param_4) {
+    u8 flags;
     u8 bit;
     char name[8];
     if (param_1[0x10a] != 0) {
         return 0;
     }
-    if (param_2 == 0x199) {
+    if ((u32)param_2 == 0x199) {
         if (fn_802D46D8(fn_802D6A9C(), 0, param_2, 0) == 1) {
             return 0;
         }
         fn_802D46D8(fn_802D6A9C(), 0, param_2, 1);
-    } else if (param_2 == 0x1b5) {
+    } else if ((u32)param_2 == 0x1b5) {
+        flags = param_1[0xde];
         bit = 1 << param_3;
-        if (param_1[0xde] & bit) {
+        if ((flags & bit) != 0) {
             return 0;
         }
-        param_1[0xde] |= bit;
+        param_1[0xde] = flags | bit;
     }
     fn_80383E2C(param_2, name);
     if (name[0] == '*') {
@@ -396,10 +442,21 @@ extern "C" s32 fn_8043D67C(u8* param_1, s32 param_2, u32 param_3, u32 param_4) {
     *(u32*)(param_1 + 0xfc) = param_3 + 1;
     *(s32*)(param_1 + 0xe8) = param_2;
     *(u32*)(param_1 + 0x100) = param_4;
-    if (param_2 == 0x1a8 || (param_2 >= 0x18f && param_2 < 0x191) || (param_2 >= 0x195 && param_2 < 0x199)) {
+    switch (param_2) {
+    case 0x18f:
+    case 0x190:
+    case 0x195:
+    case 0x196:
+    case 0x197:
+    case 0x198:
+    case 0x1a8:
         fn_80458880(lbl_8053AF80, 0x40, -1);
-    } else if (param_2 != 0x23f) {
+        break;
+    case 0x23f:
+        break;
+    default:
         fn_80458880(lbl_8053AF80, 0x39, -1);
+        break;
     }
     return 1;
 }
