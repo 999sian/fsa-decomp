@@ -16,7 +16,7 @@ extern void* lbl_8053AAF8;
 extern "C" void* fn_80138A30(void* game);
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D8050(void* mgr, void* a, void* b, void* c);
-extern "C" void fn_802D800C(void* mgr, void* a);
+extern "C" s32 fn_802D800C(void* mgr, void* a);
 
 extern "C" void fn_8018E890(void) {}
 extern "C" void fn_8018E894(char* this_, s32 v) { *(s32*)(this_ + 0x234) = v; }
