@@ -1,3 +1,4 @@
+#include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
 
@@ -18,6 +19,36 @@ extern "C" Actor* fn_80373BD8(Actor* p, s16 n) {
         if (n > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" void fn_80373EC8(Actor* p) {
+    Vec saved = p->field_0C;
+    f32 angle = *(f32*)((u8*)p + 0x244);
+    f32 period = lbl_80542E90;
+    f32 q = (f32)(s32)(angle / period);
+    f32 rem = angle - period * q;
+    s32 idx;
+    if (rem < lbl_80542E94) {
+        idx = 0;
+    } else if (rem < lbl_80542E98) {
+        idx = 1;
+    } else if (rem < lbl_80542E9C) {
+        idx = 2;
+    } else {
+        idx = 3;
+    }
+    p->field_0C.y -= angle;
+    p->field_0C.y += lbl_80475060[idx];
+    fn_801F06F0(p, lbl_804750AC, *(s32*)((u8*)p + 0x23c) + 0x469, 0, -1, lbl_80542E94, lbl_80542E94);
+    if (idx == 0) {
+        p->field_0C = saved;
+    } else {
+        p->field_0C.x = saved.x - lbl_80542E88;
+        p->field_0C.y = saved.y - angle;
+        p->field_0C.z = saved.z - lbl_80542E88;
+        fn_801F06F0(p, lbl_804750AC, idx + 0x469, 0, -1, lbl_80542E94, lbl_80542E94);
+        p->field_0C = saved;
+    }
 }
 
 extern "C" f32 lbl_80542ED0;
