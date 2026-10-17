@@ -136,3 +136,15 @@ public:
     virtual BOOL isPlaying();
     virtual void fadeOut(f32);
 };
+
+extern SeqFunc lbl_804B0568[];
+extern "C" {
+void fn_80458FF0(s32, u32, s32, s32);
+void fn_80458408(s32, u32, s32);
+void fn_803DCCA4(u8*);
+int fn_80427DB4(SeqVoice*, u8);
+void fn_80427D94(SeqVoice*);
+int fn_80427D60(SeqVoice*);
+u8 fn_804286A0(void);
+u8 fn_802B1DCC(void*);
+}
