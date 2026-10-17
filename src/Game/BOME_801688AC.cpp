@@ -1,8 +1,7 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
-#include <float.h>
-#include <math.h>
+#include "sdk/stl/float.h"
 
 struct JMathSinCos { f32 sin; f32 cos; };
 
@@ -187,6 +186,7 @@ extern "C" void fn_80169DCC(char* this_) {
     f32 x;
     f32 y;
     f32 lenSq;
+    const JMathSinCos* sc;
 
     *(s32*)(this_ + 0x98) = (*(u32*)(this_ + 0x90) >> 4) & 7;
     *(s32*)(this_ + 0x25c) = (*(u32*)(this_ + 0x90) >> 8) & 1;
@@ -237,14 +237,12 @@ extern "C" void fn_80169DCC(char* this_) {
     *(f32*)(this_ + 0x40) = 0.0f;
     *(f32*)(this_ + 0x3c) = 0.0f;
     fn_8016890C(this_, this_ + 0xc, *(s32*)(this_ + 4), this_ + 0x370);
-    y = 1000.0f * sincosTable___5JMath[(u16)lbl_804A0718[*(s32*)(this_ + 0x98)] >> 5].cos;
-    x = 1000.0f * sincosTable___5JMath[(u16)lbl_804A0718[*(s32*)(this_ + 0x98)] >> 5].sin;
+    sc = &sincosTable___5JMath[(u16)lbl_804A0718[*(s32*)(this_ + 0x98)] >> 5];
+    y = 1000.0f * sc->cos;
+    x = 1000.0f * sc->sin;
     lenSq = x * x + y * y;
-    if (lenSq > 32.0f * FLT_EPSILON) {
-        if (lenSq > 0.0f) {
-            f32 r = __frsqrte(lenSq);
-            lenSq = 0.5f * r * (3.0f - (lenSq * (r * r)));
-        }
+    if (!(lenSq <= 32.0f * FLT_EPSILON)) {
+        lenSq = bomeInvSqrt(lenSq);
         x *= lenSq;
         y *= lenSq;
     }
