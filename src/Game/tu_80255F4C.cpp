@@ -33,14 +33,6 @@ extern "C" char* lbl_8053AAF8;
 extern "C" char* lbl_8053AB10;
 extern "C" void* fn_802F745C(void* a, void* b, void* c, void* d);
 
-namespace JMath {
-template <int N, typename T>
-struct TAtanTable {
-    T atan2(T y, T x) const;
-};
-extern const TAtanTable<1024, f32> atanTable_;
-}
-
 
 extern "C" char lbl_804A6F6C[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
