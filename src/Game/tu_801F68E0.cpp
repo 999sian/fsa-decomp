@@ -4,6 +4,13 @@
 #include "float.h"
 #include "Game/Actor.h"
 
+extern "C" u8* fn_802D6A9C(void);
+extern "C" void fn_802D39B8(void* mgr, s32 idx, s32 value);
+extern "C" s32 fn_8023EBB8(s32 idx);
+extern "C" s32 fn_8023EF50(s32 idx);
+extern "C" void fn_80204638(void);
+extern "C" void fn_802048F4(void);
+
 // ---- stub_801f714c.cpp ----
 // fn_801F714C(shortPtr, target, divisor, maxStep) - integer/angle "ease
 // toward" helper: delta = (target - *shortPtr) / divisor (word divide,
@@ -281,10 +288,9 @@ extern "C" BOOL fn_801F84C4(LinkPool* pool, LinkActor* actor) {
 }
 
 extern "C" BOOL fn_801F71E8(ActorPool* pool, u32 key, PoolActor** out, s32* count, s32 max) {
-    s32 i;
-    s32 n;
+    s32 n = pool->mCount;
     *count = 0;
-    for (i = 0, n = pool->mCount; i < n; i++) {
+    for (s32 i = 0; i < n; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->mType == 'RAIL' &&
             key == ((pool->mActors[i]->m90 >> 8) & 0xff))
         {
@@ -303,8 +309,8 @@ extern "C" s32 fn_801F7664(ActorPool* pool, f32* pos, f32* outDist) {
     f32 best = 1000000.0f;
     for (s32 i = 0; i < pool->mCount; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && pool->mActors[i]->m1a8 == 1) {
-            f32 dx = pos[0] - pool->mActors[i]->mX;
             f32 dy = pos[1] - pool->mActors[i]->mY;
+            f32 dx = pos[0] - pool->mActors[i]->mX;
             f32 dx2 = dx * dx;
             f32 dy2 = dy * dy;
             f32 d = dx2 + dy2;
@@ -369,14 +375,17 @@ extern "C" u8 fn_801CC9B0(PoolActor* actor);
 
 extern "C" s32 fn_801F7464(ActorPool* pool, s32 param, s32 exceptId) {
     s32 count = pool->mCount;
+    PoolActor** cur = (PoolActor**)pool;
     s32 id = -1;
-    for (s32 i = 0; i < count; i++) {
-        if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
-            exceptId != pool->mActors[i]->mId && fn_801CC960(pool->mActors[i]))
-        {
+    s32 i = 0;
+    while (i < count) {
+        PoolActor* a = cur[2];
+        if (a != NULL && a->mActive && param == a->mParam && exceptId != a->mId && fn_801CC960(a)) {
             id = pool->mActors[i]->mId;
             break;
         }
+        cur++;
+        i++;
     }
     return id;
 }
@@ -396,8 +405,8 @@ extern "C" s32 fn_801F750C(ActorPool* pool, s32 param, s32 exceptId) {
 }
 
 extern "C" s32 fn_801F7274(ActorPool* pool, s32 param, PoolActor** out, s32 exceptId) {
-    s32 count = pool->mCount;
     s32 n = 0;
+    s32 count = pool->mCount;
     for (s32 i = 0; i < count; i++) {
         if (pool->mActors[i] != NULL && pool->mActors[i]->mActive && param == pool->mActors[i]->mParam &&
             exceptId != pool->mActors[i]->mId && pool->mActors[i]->mZ <= 16.0f &&
@@ -472,6 +481,39 @@ extern "C" void fn_801F7E88(ActorPool* pool) {
             }
         }
     }
+}
+
+extern "C" void fn_801F31C4(const Actor* a, f32* out);
+extern "C" s32 fn_801F82CC(void* mgr, Actor* a, u8 c, f32 f) {
+    f32 other[4];
+    f32 pos[4];
+    s32 result = -1;
+    fn_801F31C4(a, pos);
+    u8 kind = ((u8*)fn_802D6A9C())[a->field_04 + 0x131df];
+    PoolActor* p = *(PoolActor**)((u8*)mgr + 0x2018);
+    while (p != NULL) {
+        if (*((u8*)p + 0x11c) != 0 && p->mParam == (s32)a->field_04 && *((u8*)p + 0xc4) == 0) {
+            if (c != 0 || p->mType != 0x4152494A) {
+                if (kind != 0 || __fabs(a->field_0C.z - p->mZ) <= f) {
+                    fn_801F31C4((Actor*)p, other);
+                    f32 v0 = other[0];
+                    f32 v1 = other[1];
+                    f32 v2 = other[2];
+                    f32 v3 = other[3];
+                    if (other[0] <= pos[0]) v0 = pos[0];
+                    if (other[1] <= pos[1]) v1 = pos[1];
+                    if (other[2] >= pos[2]) v2 = pos[2];
+                    if (other[3] >= pos[3]) v3 = pos[3];
+                    if (v2 < v0 && v3 < v1) {
+                        result = p->mId;
+                        break;
+                    }
+                }
+            }
+        }
+        p = *(PoolActor**)((u8*)p + 0x160);
+    }
+    return result;
 }
 
 extern "C" s32 fn_801F78F4(ActorPool* pool, u32 type, s32 afterId) {
@@ -611,8 +653,10 @@ struct PoolSlots {
 extern "C" void fn_801F8E4C(u8* pool) {
     PoolSlots* p = (PoolSlots*)pool;
     u32 off;
-    u32 i = 0;
-    for (off = i; i < 0x400; i++, off += 4) {
+    u32 i;
+    i = 0;
+    off = i;
+    for (; i < 0x400; i++, off += 4) {
         PoolSlots* s = (PoolSlots*)(pool + off);
         if (s->mActors[0] != 0) {
             fn_80456120(s->mLocks[0]);
