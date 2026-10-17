@@ -439,8 +439,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 me;
     s32 linked;
+    s32 me;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -1120,14 +1120,16 @@ void fn_80242940(char* p) {
                         s32 i;
                         if (S32(p, 0xd60) >= 0) {
                             target = fn_80234004(S32(p, 0xd60));
+                        } else {
+                            target = S32(p, 0x1224);
+                        }
+                        if (S32(p, 0xd60) >= 0) {
                             for (i = 0; i < S32(p, 0x4); i++) {
                                 if (S32(p, 0xd60) == fn_8022F3DC(i)) {
                                     n++;
                                 }
                             }
                             n++;
-                        } else {
-                            target = S32(p, 0x1224);
                         }
                         done = n != target;
                     } else {
@@ -1303,8 +1305,8 @@ BOOL fn_802454C0(char* p) {
         ok2 = false;
     } else {
         s32 mode;
-        s32 e;
         s32 d;
+        s32 e;
         s32 i;
         s32 c;
         c = 0;
