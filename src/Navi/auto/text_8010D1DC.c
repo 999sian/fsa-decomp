@@ -97,3 +97,28 @@ struct VObj_8010F81C {
     virtual void v1();
     virtual void v2(f32, f32);
 };
+struct VObj_8010FD00 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(f32, f32);
+};
+struct VObj_8010F880 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(u8);
+};
+struct VObj_801103DC {
+    virtual void v0(u8);
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+};
