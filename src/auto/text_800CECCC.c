@@ -308,18 +308,18 @@ extern "C" void fn_800CF800(void** self, void* data)
 }
 
 extern "C" void fn_800CF828(void* param_1, void* param_2, void* param_3) {
-    unsigned char* data = (unsigned char*)param_3;
     unsigned char* anm = (unsigned char*)param_2;
+    unsigned char* data = (unsigned char*)param_3;
 
-    *(float*)(anm + 8) = lbl_8053BC80;
-    *(short*)(anm + 6) = *(const short*)(data + 10);
+    *(f32*)(anm + 8) = lbl_8053BC80;
     anm[4] = data[8];
-    *(unsigned short*)(anm + 0x16) = *(const unsigned short*)(data + 12);
-    *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 14);
-    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmTexPatternFullTable>(data, (void*)*(const unsigned int*)(data + 0x10));
-    *(void**)(anm + 0xc) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x14));
-    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x18));
-    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x1c)));
+    *(s16*)(anm + 6) = *(const s16*)(data + 10);
+    *(u16*)(anm + 0x16) = *(const u16*)(data + 12);
+    *(u16*)(anm + 0x14) = *(const u16*)(data + 14);
+    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmTexPatternFullTable>(data, (void*)*(const u32*)(data + 0x10));
+    *(void**)(anm + 0xc) = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(data + 0x14));
+    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(data + 0x18));
+    ((JUTNameTab*)(anm + 0x1c))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const u32*)(data + 0x1c)));
 }
 
 extern "C" void fn_800CF8CC(void** self, void* data)
@@ -348,32 +348,31 @@ extern "C" void fn_800CFA04(void** self, const void* data) {
 }
 
 extern "C" void fn_800CFA2C(void** self, void* res, const void* data) {
-    unsigned char* anm = (unsigned char*)res;
-    const unsigned char* src = (const unsigned char*)data;
-    u16* ptr28;
-    u16* ptr2c;
-
-    *(s16*)(anm + 6) = *(const s16*)(src + 0xa);
-    anm[4] = src[8];
-    *(float*)(anm + 8) = lbl_8053BC80;
-    *(u16*)(anm + 0xc) = *(const u16*)(src + 0xc);
-    *(u16*)(anm + 0xe) = *(const u16*)(src + 0xe);
-    *(void**)(anm + 0x18) = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(data, (void*)*(const u32*)(src + 0x18));
-    *(void**)(anm + 0x1c) = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(data, (void*)*(const u32*)(src + 0x1c));
-    *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(data, (void*)*(const u32*)(src + 0x20));
-    *(void**)(anm + 0x14) = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(data, (void*)*(const u32*)(src + 0x24));
-    ptr28 = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(src + 0x28));
-    ptr2c = JSUConvertOffsetToPtr<u16>(data, (void*)*(const u32*)(src + 0x2c));
-    for (s32 i = 0, off = 0; i < *(u16*)(anm + 0xc); i++, off += 8) {
-        *(u32*)(*(u8**)(anm + 0x10) + off + 4) = (u32)(ptr28 + *(u32*)(*(u8**)(anm + 0x10) + off + 4));
+#define anm ((J3DAnmVtxColorFull*)res)
+#define src ((const J3DAnmVtxColorFullData*)data)
+    anm->mMaxFrame = src->mTotalFrameCount;
+    anm->mAttribute = src->mAttribute;
+    anm->mCurrentFrame = 0.0f;
+    anm->mAnmTableNum[0] = src->mExtraInfo1;
+    anm->mAnmTableNum[1] = src->mExtraInfo2;
+    anm->mTable[0] = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(src, (void*)src->mTableOffsets[0]);
+    anm->mTable[1] = JSUConvertOffsetToPtr<J3DAnmColorFullTable>(src, (void*)src->mTableOffsets[1]);
+    anm->mAnmVtxColorIndexData[0] = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(src, (void*)src->mVtxColorIndexDataOffsets[0]);
+    anm->mAnmVtxColorIndexData[1] = JSUConvertOffsetToPtr<J3DAnmVtxColorIndexData>(src, (void*)src->mVtxColorIndexDataOffsets[1]);
+    void* ptr28 = JSUConvertOffsetToPtr<u16>(src, (void*)src->mVtxColorIndexPointerOffsets[0]);
+    void* ptr2c = JSUConvertOffsetToPtr<u16>(src, (void*)src->mVtxColorIndexPointerOffsets[1]);
+    for (s32 i = 0; i < anm->mAnmTableNum[0]; i++) {
+        anm->mAnmVtxColorIndexData[0][i].mData = (void*)((s32)ptr28 + (s32)anm->mAnmVtxColorIndexData[0][i].mData * 2);
     }
-    for (s32 i = 0, off = 0; i < *(u16*)(anm + 0xe); i++, off += 8) {
-        *(u32*)(*(u8**)(anm + 0x14) + off + 4) = (u32)(ptr2c + *(u32*)(*(u8**)(anm + 0x14) + off + 4));
+    for (s32 i = 0; i < anm->mAnmTableNum[1]; i++) {
+        anm->mAnmVtxColorIndexData[1][i].mData = (void*)((s32)ptr2c + (s32)anm->mAnmVtxColorIndexData[1][i].mData * 2);
     }
-    *(void**)(anm + 0x20) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x30));
-    *(void**)(anm + 0x24) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x34));
-    *(void**)(anm + 0x28) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x38));
-    *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<u8>(data, (void*)*(const u32*)(src + 0x3c));
+    anm->mRedVals = JSUConvertOffsetToPtr<u8>(src, (void*)src->mRValuesOffset);
+    anm->mGreenVals = JSUConvertOffsetToPtr<u8>(src, (void*)src->mGValuesOffset);
+    anm->mBlueVals = JSUConvertOffsetToPtr<u8>(src, (void*)src->mBValuesOffset);
+    anm->mAlphaVals = JSUConvertOffsetToPtr<u8>(src, (void*)src->mAValuesOffset);
+#undef anm
+#undef src
 }
 
 extern "C" void fn_800CFE04(void** self, void* data);
@@ -385,7 +384,8 @@ extern "C" void fn_800D0424(void** self, const void* data);
 extern "C" void* fn_800CFB9C(void** self, unsigned char* data) {
     unsigned int count = *(unsigned int*)(data + 0xc);
     unsigned char* chunk = data + 0x20;
-    for (unsigned int i = 0; i < count; i++) {
+    unsigned int i;
+    for (i = 0; i < count; i++) {
         switch (*(unsigned int*)chunk) {
         case 0x414e4b31:
             fn_800CFE04(self, chunk);
@@ -422,7 +422,7 @@ extern "C" void fn_800CFCC4(void* param_1, void* param_2, unsigned char* param_3
             fn_800CFE2C(param_1, param_2, p);
             break;
         case 0x50414b31:
-            fn_800D00F0(param_1, (unsigned char*)param_2, p);
+            fn_800D00F0(param_1, param_2, p);
             break;
         case 0x434c4b31:
             fn_800D0204(param_1, (unsigned char*)param_2, p);
@@ -450,12 +450,17 @@ extern "C" void fn_800CFE2C(void* self, void* anm, void* src) {
     u8* a = (u8*)anm;
     u8* s = (u8*)src;
     f32 f = lbl_8053BC80;
-    *(s16*)(a + 6) = *(s16*)(s + 0xa);
-    *(u16*)(a + 0x1e) = *(u16*)(s + 0xc);
-    a[4] = s[8];
-    *(u32*)(a + 0x20) = s[9];
+    s16 h = *(s16*)(s + 0xa);
+    u16 w = *(u16*)(s + 0xc);
+    *(u16*)(a + 0x1e) = w;
+    u8 b = s[8];
+    *(s16*)(a + 6) = h;
+    u8 c = s[9];
+    a[4] = b;
+    void* p = *(void**)(s + 0x14);
+    *(u32*)(a + 0x20) = c;
     *(f32*)(a + 8) = f;
-    *(void**)(a + 0x24) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(s, *(void**)(s + 0x14));
+    *(void**)(a + 0x24) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(s, p);
     *(void**)(a + 0xc) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x18));
     *(void**)(a + 0x10) = JSUConvertOffsetToPtr<s16>(s, *(void**)(s + 0x1c));
     *(void**)(a + 0x14) = JSUConvertOffsetToPtr<f32>(s, *(void**)(s + 0x20));
@@ -467,16 +472,17 @@ extern "C" void fn_800CFEC8(void** self, void* data)
 }
 
 extern "C" void fn_800CFEF0(void* param_1, void* param_2, void* param_3) {
-    unsigned char* anm = (unsigned char*)param_2;
     const unsigned char* data = (const unsigned char*)param_3;
+    unsigned char* anm = (unsigned char*)param_2;
+    *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 12);
     *(short*)(anm + 6) = *(const short*)(data + 10);
     anm[4] = data[8];
+    *(unsigned int*)(anm + 0xc) = data[9];
     *(float*)(anm + 8) = 0.0f;
     *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 12);
     *(unsigned short*)(anm + 0x16) = *(const unsigned short*)(data + 14);
     *(unsigned short*)(anm + 0x18) = *(const unsigned short*)(data + 16);
     *(unsigned short*)(anm + 0x1a) = *(const unsigned short*)(data + 18);
-    *(unsigned int*)(anm + 0xc) = data[9];
     *(void**)(anm + 0x10) = JSUConvertOffsetToPtr<J3DAnmTransformKeyTable>(data, (void*)*(const unsigned int*)(data + 0x14));
     *(void**)(anm + 0x2c) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x18));
     ((JUTNameTab*)(anm + 0x30))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x1c)));
