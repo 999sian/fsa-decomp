@@ -53,7 +53,7 @@ extern "C" u32 fn_803B9940(char* this_, s32 arg) {
         r = 0xe;
         break;
     }
-    OSUnlockMutex(this_ + 0x1fd4);
+    OSUnlockMutex((void*)(this_ + 0x1fd4));
     return r;
     }
     return 0xe;
@@ -296,6 +296,371 @@ extern "C" void fn_803B9E2C(char* this_) {
     *(s32*)(this_ + 0x1fcc) = 6;
     OSUnlockMutex(this_ + 0x1fd4);
     fn_8004392C(this_ + 0x1fec);
+}
+
+extern "C" void OSWaitCond(void* cond, void* mutex);
+extern "C" s32 CARDFormat(s32 chan);
+extern "C" s32 CARDCheck(s32 chan);
+extern "C" s32 CARDOpen(s32 chan, char* fileName, void* fileInfo);
+extern "C" s32 CARDClose(void* fileInfo);
+extern "C" s32 CARDCreate(s32 chan, char* fileName, u32 size, void* fileInfo);
+extern "C" s32 CARDUnmount(s32 chan);
+extern "C" s32 CARDProbeEx(s32 chan, s32* memSize, s32* sectorSize);
+extern "C" s32 CARDMount(s32 chan, void* workArea, void* detachCallback);
+extern "C" s32 CARDFreeBlocks(s32 chan, s32* byteNotUsed, s32* filesNotUsed);
+extern "C" s32 fn_803BAE68(void* fileInfo);
+extern "C" s32 fn_803BAEF4(void* fileInfo, void* src1, void* src2, s32 size1, s32 size2);
+extern "C" s32 fn_803BBF08(void* fileInfo, void* src1, void* src2, s32 size1, s32 size2);
+extern "C" char lbl_80476568[];
+extern "C" u8 lbl_80512180[];
+extern "C" void fn_803B9F40(void* obj) {
+    s32 r2;
+    char* this_ = (char*)obj;
+    s32 r;
+    s32 req;
+    s32 memSize;
+    s32 sectorSize;
+    s32 freeBytes;
+    s32 freeFiles;
+    u32 uVar2;
+    bool ok;
+    u8 fi54[20];
+    u8 fi40[20];
+    u8 fi2c[44];
+    u8 fi68[20];
+
+    do {
+        OSLockMutex(this_ + 0x1fd4);
+        while ((req = *(s32*)(this_ + 0x1fcc)) == 0) {
+            OSWaitCond(this_ + 0x1fec, this_ + 0x1fd4);
+        }
+        switch (req) {
+        case 1:
+            r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi54);
+            if (r == 0) {
+                r = fn_803BAEF4(fi54, this_ + 0x20, this_ + 0x280, 600, 0x1d4c);
+                if (r == 0) {
+                    *(s32*)(this_ + 0x1fd0) = 3;
+                } else if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                    *(s32*)(this_ + 0x1fd0) = 7;
+                }
+                CARDClose(fi54);
+            } else if (r == -5 || r == -0x80) {
+                *(s32*)(this_ + 0x1fd0) = 0xc;
+            } else if (r < -5) {
+                if (r == -0xd) {
+                    *(s32*)(this_ + 0x1fd0) = 6;
+                } else if (r < -0xd) {
+                    if (r == -0x80) {
+                        *(s32*)(this_ + 0x1fd0) = 0xc;
+                    }
+                } else if (r > -7) {
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                        *(s32*)(this_ + 0x1fd0) = 7;
+                    }
+                }
+            } else if (r == 0) {
+                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                    *(s32*)(this_ + 0x1fd0) = 7;
+                }
+            } else if (r < 0) {
+                if (r == -3) {
+                    *(s32*)(this_ + 0x1fd0) = 0;
+                } else if (r < -3) {
+                    *(s32*)(this_ + 0x1fd0) = 2;
+                }
+            }
+            break;
+        case 2:
+            if (*(s32*)(this_ + 0x1fd0) == 1) {
+                r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi40);
+                if (r == 0) {
+                    r = fn_803BAE68(fi40);
+                    if (r == 0) {
+                        *(s32*)(this_ + 0x1fd0) = 3;
+                    } else if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                        *(s32*)(this_ + 0x1fd0) = 7;
+                    }
+                    CARDClose(fi40);
+                } else if (r == -5 || r == -0x80) {
+                    *(s32*)(this_ + 0x1fd0) = 0xc;
+                } else if (r < -5) {
+                    if (r == -0xd) {
+                        *(s32*)(this_ + 0x1fd0) = 6;
+                    } else if (r < -0xd) {
+                        if (r == -0x80) {
+                            *(s32*)(this_ + 0x1fd0) = 0xc;
+                        }
+                    } else if (r > -7) {
+                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                            *(s32*)(this_ + 0x1fd0) = 7;
+                        }
+                    }
+                } else if (r == 0) {
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                        *(s32*)(this_ + 0x1fd0) = 7;
+                    }
+                } else if (r < 0) {
+                    if (r == -3) {
+                        *(s32*)(this_ + 0x1fd0) = 0;
+                    } else if (r < -3) {
+                        *(s32*)(this_ + 0x1fd0) = 2;
+                    }
+                }
+            }
+            break;
+        case 3:
+            if (*(s32*)(this_ + 0x1fd0) == 2) {
+                r2 = CARDCreate(*(u8*)(this_ + 0x1ff4), lbl_80476568, 0x6000, fi2c);
+                if (r2 == 0) {
+                    *(s32*)(this_ + 0x1fd0) = 1;
+                } else if (r2 == -7) {
+                    *(s32*)(this_ + 0x1fd0) = 1;
+                } else if (r2 == -5 || r2 == -0x80) {
+                    *(s32*)(this_ + 0x1fd0) = 0xc;
+                } else if (r2 < -5) {
+                    if (r2 == -0xd) {
+                        *(s32*)(this_ + 0x1fd0) = 6;
+                    } else if (r2 < -0xd) {
+                        if (r2 == -0x80) {
+                            *(s32*)(this_ + 0x1fd0) = 0xc;
+                        }
+                    } else if (r2 > -7) {
+                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                            *(s32*)(this_ + 0x1fd0) = 7;
+                        }
+                    }
+                } else if (r2 == 0) {
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                        *(s32*)(this_ + 0x1fd0) = 7;
+                    }
+                } else if (r2 < 0) {
+                    if (r2 == -3) {
+                        *(s32*)(this_ + 0x1fd0) = 0;
+                    } else if (r2 < -3) {
+                        *(s32*)(this_ + 0x1fd0) = 2;
+                    }
+                }
+            }
+            if (*(s32*)(this_ + 0x1fd0) == 1) {
+                r2 = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi2c);
+                if (r2 == 0) {
+                    r2 = fn_803BBF08(fi2c, this_ + 0x20, this_ + 0x280, 600, 0x1d4c);
+                    if (r2 == 0) {
+                        *(s32*)(this_ + 0x1fd0) = 4;
+                    } else if (r2 == -5 || r2 == -0x80) {
+                        *(s32*)(this_ + 0x1fd0) = 0xc;
+                    } else if (r2 < -5) {
+                        if (r2 == -0xd) {
+                            *(s32*)(this_ + 0x1fd0) = 6;
+                        } else if (r2 < -0xd) {
+                            if (r2 == -0x80) {
+                                *(s32*)(this_ + 0x1fd0) = 0xc;
+                            }
+                        } else if (r2 > -7) {
+                            if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                                *(s32*)(this_ + 0x1fd0) = 7;
+                            }
+                        }
+                    } else if (r2 == 0) {
+                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                            *(s32*)(this_ + 0x1fd0) = 7;
+                        }
+                    } else if (r2 < 0) {
+                        if (r2 == -3) {
+                            *(s32*)(this_ + 0x1fd0) = 0;
+                        } else if (r2 < -3) {
+                            *(s32*)(this_ + 0x1fd0) = 2;
+                        }
+                    }
+                    CARDClose(fi2c);
+                } else if (r2 == -5 || r2 == -0x80) {
+                    *(s32*)(this_ + 0x1fd0) = 0xc;
+                } else if (r2 < -5) {
+                    if (r2 == -0xd) {
+                        *(s32*)(this_ + 0x1fd0) = 6;
+                    } else if (r2 < -0xd) {
+                        if (r2 == -0x80) {
+                            *(s32*)(this_ + 0x1fd0) = 0xc;
+                        }
+                    } else if (r2 > -7) {
+                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                            *(s32*)(this_ + 0x1fd0) = 7;
+                        }
+                    }
+                } else if (r2 == 0) {
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                        *(s32*)(this_ + 0x1fd0) = 7;
+                    }
+                } else if (r2 < 0) {
+                    if (r2 == -3) {
+                        *(s32*)(this_ + 0x1fd0) = 0;
+                    } else if (r2 < -3) {
+                        *(s32*)(this_ + 0x1fd0) = 2;
+                    }
+                }
+            }
+            break;
+        case 4:
+            r = CARDFormat(*(u8*)(this_ + 0x1ff4));
+            if (r == 0) {
+                *(s32*)(this_ + 0x1fd0) = 5;
+            } else if (r == -5 || r == -0x80) {
+                *(s32*)(this_ + 0x1fd0) = 0xc;
+            } else if (r < -5) {
+                if (r == -0xd) {
+                    *(s32*)(this_ + 0x1fd0) = 6;
+                } else if (r < -0xd) {
+                    if (r == -0x80) {
+                        *(s32*)(this_ + 0x1fd0) = 0xc;
+                    }
+                } else if (r > -7) {
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                        *(s32*)(this_ + 0x1fd0) = 7;
+                    }
+                }
+            } else if (r == 0) {
+                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                    *(s32*)(this_ + 0x1fd0) = 7;
+                }
+            } else if (r < 0) {
+                if (r == -3) {
+                    *(s32*)(this_ + 0x1fd0) = 0;
+                } else if (r < -3) {
+                    *(s32*)(this_ + 0x1fd0) = 2;
+                }
+            }
+            break;
+        case 5:
+            r = CARDProbeEx(*(u8*)(this_ + 0x1ff4), &memSize, &sectorSize);
+            if (r == -2) {
+                *(s32*)(this_ + 0x1fd0) = 10;
+            } else if (sectorSize == 0x2000) {
+                r = CARDMount(*(u8*)(this_ + 0x1ff4), lbl_80512180, 0);
+                ok = false;
+                if (r == -5 || r == -0x80) {
+                    *(s32*)(this_ + 0x1fd0) = 0xc;
+                } else if (r < -5) {
+                    if (r == -0xd) {
+                        *(s32*)(this_ + 0x1fd0) = 6;
+                    } else if (r < -0xd) {
+                        if (r == -0x80) {
+                            *(s32*)(this_ + 0x1fd0) = 0xc;
+                        }
+                    } else if (r > -7) {
+                        if (CARDCheck(*(u8*)(this_ + 0x1ff4)) == 0) {
+                            ok = true;
+                        } else {
+                            *(s32*)(this_ + 0x1fd0) = 7;
+                        }
+                    }
+                } else if (r == 0) {
+                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) == 0) {
+                        ok = true;
+                    } else {
+                        *(s32*)(this_ + 0x1fd0) = 7;
+                    }
+                } else if (r < 0) {
+                    if (r == -3) {
+                        *(s32*)(this_ + 0x1fd0) = 0;
+                    }
+                }
+                if (ok) {
+                    r = CARDOpen(*(u8*)(this_ + 0x1ff4), lbl_80476568, fi68);
+                    if (r == 0) {
+                        CARDClose(fi68);
+                        ok = true;
+                    } else {
+                        ok = false;
+                        if (r == -5 || r == -0x80) {
+                            *(s32*)(this_ + 0x1fd0) = 0xc;
+                        } else if (r < -5) {
+                            if (r == -0xd) {
+                                *(s32*)(this_ + 0x1fd0) = 6;
+                            } else if (r < -0xd) {
+                                if (r == -0x80) {
+                                    *(s32*)(this_ + 0x1fd0) = 0xc;
+                                }
+                            } else if (r > -7) {
+                                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                                    *(s32*)(this_ + 0x1fd0) = 7;
+                                }
+                            }
+                        } else if (r == 0) {
+                            if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                                *(s32*)(this_ + 0x1fd0) = 7;
+                            }
+                        } else if (r < 0) {
+                            if (r == -3) {
+                                *(s32*)(this_ + 0x1fd0) = 0;
+                            } else if (r < -3) {
+                                *(s32*)(this_ + 0x1fd0) = 2;
+                            }
+                        }
+                    }
+                    if (ok) {
+                        *(s32*)(this_ + 0x1fd0) = 1;
+                    } else {
+                        r = CARDFreeBlocks(*(u8*)(this_ + 0x1ff4), &freeBytes, &freeFiles);
+                        if (r == 0) {
+                            if (freeBytes < 0x6000) {
+                                uVar2 = 1;
+                            } else if (freeFiles < 1) {
+                                uVar2 = 2;
+                            } else {
+                                uVar2 = 0;
+                            }
+                        } else {
+                            if (r == -5 || r == -0x80) {
+                                *(s32*)(this_ + 0x1fd0) = 0xc;
+                            } else if (r < -5) {
+                                if (r == -0xd) {
+                                    *(s32*)(this_ + 0x1fd0) = 6;
+                                } else if (r < -0xd) {
+                                    if (r == -0x80) {
+                                        *(s32*)(this_ + 0x1fd0) = 0xc;
+                                    }
+                                } else if (r > -7) {
+                                    if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                                        *(s32*)(this_ + 0x1fd0) = 7;
+                                    }
+                                }
+                            } else if (r == 0) {
+                                if (CARDCheck(*(u8*)(this_ + 0x1ff4)) != 0) {
+                                    *(s32*)(this_ + 0x1fd0) = 7;
+                                }
+                            } else if (r < 0) {
+                                if (r == -3) {
+                                    *(s32*)(this_ + 0x1fd0) = 0;
+                                } else if (r < -3) {
+                                    *(s32*)(this_ + 0x1fd0) = 2;
+                                }
+                            }
+                            uVar2 = 3;
+                        }
+                        if (uVar2 == 2) {
+                            *(s32*)(this_ + 0x1fd0) = 9;
+                        } else if (uVar2 < 2) {
+                            if (uVar2 == 0) {
+                                *(s32*)(this_ + 0x1fd0) = 2;
+                            } else {
+                                *(s32*)(this_ + 0x1fd0) = 8;
+                            }
+                        }
+                    }
+                }
+            } else {
+                *(s32*)(this_ + 0x1fd0) = 0xb;
+            }
+            break;
+        case 6:
+            CARDUnmount(*(u8*)(this_ + 0x1ff4));
+            *(s32*)(this_ + 0x1fd0) = 0;
+            break;
+        }
+        *(s32*)(this_ + 0x1fcc) = 0;
+        OSUnlockMutex(this_ + 0x1fd4);
+    } while (true);
 }
 
 // ---- from src/Game/fn_803BAA1C_dtor.cpp ----
