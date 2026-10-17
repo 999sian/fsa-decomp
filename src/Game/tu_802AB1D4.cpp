@@ -12,10 +12,6 @@ struct Obj802AB9DC {
     virtual bool check();
 };
 
-struct Box802AB9DC {
-    f32 f[4];
-};
-
 extern "C" void* fn_802AB1D4(void* p, s16 d) {
     if (p != NULL) {
         *(char**)p = lbl_804A81C8;
