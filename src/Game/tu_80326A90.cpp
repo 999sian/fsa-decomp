@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
 
 
 extern "C" char lbl_804AB4C0[];
@@ -6,6 +7,32 @@ extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" void fn_801EE434(void*);
 extern "C" void* lbl_8053AAF8;
 extern "C" s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
+extern "C" void* lbl_80471888;
+extern "C" void fn_801F06F0(void* this_, void* name, s32 id, void* ids, s32 flag, f32 f, f32 g);
+extern "C" void fn_803075AC(void* a, void* b, void* c, s32 id, s32 d, s32 e, s32 f, s32 g, s32 h, s32 i);
+extern "C" void fn_80326A90(void* this_) {
+	DrawRec rec;
+	f32 m[12];
+	m[3] = 0.0f;
+	m[7] = 0.0f;
+	m[11] = 0.0f;
+	m[0] = 1.5f;
+	m[1] = 0.0f;
+	m[2] = 0.0f;
+	m[4] = 0.0f;
+	m[5] = 1.5f;
+	m[6] = 0.0f;
+	m[8] = 0.0f;
+	m[9] = 0.0f;
+	m[10] = 1.5f;
+	rec.w18 = m;
+	if (*(s32*)((u8*)this_ + 0x234) >= 0x100 || (*(s32*)((u8*)this_ + 0x234) & 2) == 0) {
+		rec.b2d = 1;
+		fn_801F06F0(this_, &lbl_80471888, *(s32*)((u8*)this_ + 0x250) + 0x5e, rec.ids, 0, 1.0f, 1.0f);
+		fn_803075AC(*(void**)((u8*)this_ + 0x198), *(void**)((u8*)this_ + 4), (u8*)this_ + 0xc, *(s32*)((u8*)this_ + 0x250) + 0x5e, 0, 2, -1, 0, 0, 0);
+	}
+}
+
 extern "C" void fn_8032722C(void* thisPtr) {
 	char* p = (char*)thisPtr;
 	*(f32*)(p + 0x60) = -4.0f;
@@ -75,4 +102,4 @@ extern "C" Actor* fn_8032742C(Actor* p, s16 n) {
 	}
 	return p;
 }
-
+#include "Game/SinitPoolChain.h"
