@@ -6,6 +6,8 @@ struct J2DScreen {
 
 
 extern "C" void __dl__FPv(void*);
+extern "C" void* fn_804030C4(u32 type, const char* name);
+extern "C" const char* lbl_804B1BC0;
 extern "C" u8 lbl_804B1BE8[];
 extern "C" u32 lbl_8053AF00;
 
@@ -61,3 +63,57 @@ extern "C" void* fn_80447190(void* param_1, short param_2)
 
     return result;
 }
+
+extern "C" void* __nw__FUl(unsigned long size);
+extern "C" void __ct__9J2DScreenFv(void* self);
+extern "C" void setPriority__9J2DScreenFPCcUlP10JKRArchive(void* pane, const char* name, unsigned long id, void* archive);
+extern "C" void fn_80402F04(void* a, void* b);
+extern "C" u8 lbl_804AF86C[];
+extern "C" u8 lbl_80490038[];
+extern "C" char lbl_80490400[];
+extern "C" u8 lbl_80529DEC[];
+extern "C" void* fn_8044728C(void* param_1) {
+    typedef void* (*SearchFn)(void*, unsigned long long);
+    u8* self = (u8*)param_1;
+    *(void**)self = (void*)lbl_804B1BE8;
+    lbl_8053AF00 = (u32)self;
+
+    void* screen = __nw__FUl(0x118);
+    if (screen != 0) {
+        __ct__9J2DScreenFv(screen);
+    }
+    *(void**)(self + 4) = screen;
+    setPriority__9J2DScreenFPCcUlP10JKRArchive(*(void**)(self + 4), lbl_80490400, 0x1100000, *(void**)(lbl_80529DEC + 0x10));
+
+    void** p = (void**)self;
+    u8* params = lbl_80490038;
+    for (int i = 0; i < 4; i++, params += 0xc0, p++) {
+        void* obj = __nw__FUl(0x2c);
+        if (obj != 0) {
+            *(void**)obj = (void*)lbl_804AF86C;
+        }
+        p[2] = obj;
+        unsigned long long tag = *(unsigned long long*)(params + 0x30);
+        fn_80402F04(p[2], ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), tag));
+
+        obj = __nw__FUl(0x2c);
+        if (obj != 0) {
+            *(void**)obj = (void*)lbl_804AF86C;
+        }
+        p[6] = obj;
+        tag = *(unsigned long long*)(params + 0xb8);
+        fn_80402F04(p[6], ((SearchFn)((*(void***)(*(void**)(self + 4)))[15]))(*(void**)(self + 4), tag));
+    }
+
+    self[0x28] = 0;
+    self[0x2c] = 0;
+    self[0x29] = 0;
+    self[0x2d] = 0;
+    self[0x2a] = 0;
+    self[0x2e] = 0;
+    self[0x2b] = 0;
+    self[0x2f] = 0;
+    self[0x30] = 0;
+    return param_1;
+}
+
