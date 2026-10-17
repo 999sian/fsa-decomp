@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void fn_8010DF58();
 extern "C" void fn_8010DF98();
