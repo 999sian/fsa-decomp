@@ -244,7 +244,112 @@ extern "C" s32 fn_800FAB50(void* this_, void* a, void* b) {
     return fn_802265DC(b, a, 0);
 }
 
+extern "C" void fn_800FCF80(u8* this_) {
+    f32 fVar1 = lbl_8053BFCC;
+    *(f32*)(this_ + 0x23c) = *(f32*)(this_ + 0xc);
+    f32 fVar2 = lbl_8053BFAC;
+    *(f32*)(this_ + 0x240) = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x244) = *(f32*)(this_ + 0x14);
+    *(f32*)(this_ + 0x248) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x24c) = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x250) = *(f32*)(this_ + 0x14);
+    *(s32*)(this_ + 0x258) = 0;
+    *(s32*)(this_ + 0x230) = 0;
+    *(s32*)(this_ + 0x234) = 500;
+    *(u8*)(this_ + 0x254) = 0;
+    *(s32*)(this_ + 0x264) = 0;
+    *(u8*)(this_ + 0x255) = 0;
+    *(u8*)(this_ + 0x256) = 0;
+    *(u8*)(this_ + 0x2ad) = 0;
+    *(s32*)(this_ + 0x268) = 0;
+    *(s16*)(this_ + 0x262) = 0;
+    *(f32*)(this_ + 0x270) = fVar1;
+    *(f32*)(this_ + 0x274) = fVar2;
+    *(f32*)(this_ + 0x26c) = fVar1;
+    *(s16*)(this_ + 0x260) = 0;
+    *(f32*)(this_ + 0x25c) = fVar2;
+    *(s32*)(this_ + 0x238) = 0;
+    *(u8*)(this_ + 0x257) = 0;
+    *(s16*)(this_ + 0x284) = 0;
+    *(s16*)(this_ + 0x286) = 0;
+    *(s32*)(this_ + 0x98) = 2;
+    fn_802D7440(fn_802D6A9C(), 0);
+    *(u8*)(this_ + 0x196) = 1;
+    if (*(u32*)(this_ + 0x90) == 1) {
+        *(u32*)(this_ + 0x238) |= 8;
+    }
+    if (*(u32*)(this_ + 0x238) & 8) {
+        *(s32*)(this_ + 0x108) = 0xf0;
+    } else {
+        *(s32*)(this_ + 0x108) = 0x1e0;
+    }
+    *(s32*)(this_ + 0xbc) = 3;
+    f32 k2 = *(f32*)(this_ + 0x26c);
+    f32 a = lbl_8053C054 * k2;
+    f32 b = lbl_8053C058 * k2;
+    f32 c = lbl_8053C05C * k2;
+    f32 d = lbl_8053BFAC;
+    *(f32*)(this_ + 0x60) = a;
+    *(f32*)(this_ + 0x64) = b;
+    *(f32*)(this_ + 0x68) = c;
+    *(f32*)(this_ + 0x6c) = d;
+    *(f32*)(this_ + 0x80) = a;
+    *(f32*)(this_ + 0x84) = b;
+    *(f32*)(this_ + 0x88) = c;
+    *(f32*)(this_ + 0x8c) = d;
+    *(s32*)(this_ + 0x27c) = 0;
+    fn_801F0E34(this_, 0x40026, 0);
+    *(s32*)(this_ + 0x280) = 9;
+    fn_800FA6B0(this_);
+    fn_80458F9C(lbl_8053AF80, 0x3c);
+    s32 n = 0;
+    s32 off = 0;
+    u32 base = *(u32*)(this_ + 0x198) & 0xffff;
+    do {
+        void* mgr = fn_801F856C();
+        Actor_CreateByID(mgr, 0x57525443, *(u32*)(this_ + 4), (f32*)(this_ + 0xc), base + off + 0x1000000, -1, -1);
+        n++;
+        off += 0x10000;
+        *(u8*)(this_ + 0x2ac) += 1;
+    } while (n < 0x18);
+    if (*(u32*)(this_ + 0x238) & 8) {
+        s32* slot = (s32*)this_;
+        s32 cnt = 0;
+        off = 0;
+        do {
+            void* mgr = fn_801F856C();
+            s32 id = Actor_CreateByID(mgr, 0x57525443, *(u32*)(this_ + 4), (f32*)(this_ + 0xc), base + off + 0x2000000, -1, -1);
+            cnt++;
+            slot[0x288 / 4] = id;
+            off += 0x10000;
+            slot++;
+        } while (cnt < 2);
+    }
+}
+
 struct WRTCEff { f32 x, y, z; u8 m0C, m0D; u8 pad[2]; f32 m10; u16 m14; u8 m16; };
+
+static inline f32 WRTC_quantize(f32 v) {
+    return 0.0001f * (f32)(s32)(10000.0f * v);
+}
+
+static inline u8 WRTC_stepToward(f32* v, f32 target, f32 step) {
+    *v = WRTC_quantize(*v);
+    if (*v > target) {
+        *v -= step;
+        if (*v <= target) {
+            *v = target;
+            return 1;
+        }
+    } else {
+        *v += step;
+        if (*v >= target) {
+            *v = target;
+            return 1;
+        }
+    }
+    return 0;
+}
 
 extern "C" void fn_800F8210(WRTCEff* e, s32 n, const f32* pos, u8 kind) {
     e->x = pos[0];
