@@ -9,6 +9,8 @@
 #include "JSystem/J3D/J3DAnmTextureSRTKey.h"
 #include "JSystem/J3D/J3DAnmVisibilityFull.h"
 
+extern "C" void* __nw__FUl(unsigned long size);
+extern "C" void* __ct__14J3DAnmColorKeyFv(void* self);
 extern "C" void fn_800CF370(void** p);
 extern "C" void fn_800CF2B0(void** p);
 extern "C" void** fn_800CF38C(void** p, short del);
@@ -39,6 +41,117 @@ extern "C" void fn_800CF678(void*, void*, void*);
 extern "C" void fn_800CF734(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800CF998(void*, unsigned char*, const unsigned char*);
 extern "C" void fn_800CFA2C(void**, void*, const void*);
+extern "C" void* fn_800CECCC(unsigned char* data, u32 flags) {
+    if (data == 0) {
+        return 0;
+    }
+    if (*(u32*)data == 0x4a334431) {
+        switch (*(u32*)(data + 4)) {
+        case 0x62636b31: {
+            void* self[2];
+            fn_800CF370(self);
+            self[1] = new J3DAnmTransformKey();
+            void* r = fn_800CFB9C(self, data);
+            fn_800CF38C(self, -1);
+            return r;
+        }
+        case 0x62706b31: {
+            void* self[2];
+            fn_800CF370(self);
+            self[1] = (void*)new J3DAnmColorKey();
+            void* r = fn_800CFB9C(self, data);
+            fn_800CF38C(self, -1);
+            return r;
+        }
+        case 0x626c6b31: {
+            void* self[2];
+            fn_800CF370(self);
+            self[1] = new J3DAnmClusterKey();
+            void* r = fn_800CFB9C(self, data);
+            fn_800CF38C(self, -1);
+            return r;
+        }
+        case 0x62746b31: {
+            void* self[2];
+            fn_800CF370(self);
+            self[1] = new J3DAnmTextureSRTKey();
+            void* r = fn_800CFB9C(self, data);
+            fn_800CF38C(self, -1);
+            return r;
+        }
+        case 0x62726b31: {
+            void* self[2];
+            fn_800CF370(self);
+            self[1] = new J3DAnmTevRegKey();
+            void* r = fn_800CFB9C(self, data);
+            fn_800CF38C(self, -1);
+            return r;
+        }
+        case 0x62786b31: {
+            void* self[2];
+            fn_800CF370(self);
+            self[1] = new J3DAnmVtxColorKey();
+            void* r = fn_800CFB9C(self, data);
+            fn_800CF38C(self, -1);
+            return r;
+        }
+        case 0x62636131: {
+            void* self[2];
+            fn_800CF2B0(self);
+            if (flags & 1) {
+                self[1] = new J3DAnmTransformFullWithLerp();
+            } else {
+                self[1] = new J3DAnmTransformFull();
+            }
+            void* r = fn_800CF3E8(self, data);
+            fn_800CF314(self, -1);
+            return r;
+        }
+        case 0x62706131: {
+            void* self[2];
+            fn_800CF2B0(self);
+            self[1] = new J3DAnmColorFull();
+            void* r = fn_800CF3E8(self, data);
+            fn_800CF314(self, -1);
+            return r;
+        }
+        case 0x62747031: {
+            void* self[2];
+            fn_800CF2B0(self);
+            self[1] = new J3DAnmTexPattern();
+            void* r = fn_800CF3E8(self, data);
+            fn_800CF314(self, -1);
+            return r;
+        }
+        case 0x62766131: {
+            void* self[2];
+            fn_800CF2B0(self);
+            self[1] = new J3DAnmVisibilityFull();
+            void* r = fn_800CF3E8(self, data);
+            fn_800CF314(self, -1);
+            return r;
+        }
+        case 0x626c6131: {
+            void* self[2];
+            fn_800CF2B0(self);
+            self[1] = new J3DAnmClusterFull();
+            void* r = fn_800CF3E8(self, data);
+            fn_800CF314(self, -1);
+            return r;
+        }
+        case 0x62786131: {
+            void* self[2];
+            fn_800CF2B0(self);
+            self[1] = new J3DAnmVtxColorFull();
+            void* r = fn_800CF3E8(self, data);
+            fn_800CF314(self, -1);
+            return r;
+        }
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_800CF2B0(void** p) {
     *p = lbl_8049AE38;
     *p = lbl_8049AE24;
