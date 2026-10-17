@@ -98,6 +98,7 @@ extern "C" u8 fn_80230188(s32 i);
 extern "C" void fn_80230224(s32 i, s32 b);
 extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 extern const f32 lbl_8053FA58;
+#define FLT_EPSILON_FLOR (*(f32*)__float_epsilon)
 extern const f32 lbl_8053FA68;
 extern const f32 lbl_8053FA6C;
 extern "C" void fn_8020EB08(char* this_);
