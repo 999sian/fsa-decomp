@@ -24,6 +24,11 @@ public:
     static u32 aramToMainRam(u32, u8*, u32, JKRExpandSwitch, u32, JKRHeap*, int, u32*);
 };
 
+inline u8* JKRAramToMainRam(u32 src, u8* dst, u32 size, JKRExpandSwitch expandSwitch, u32 maxExpandSize, JKRHeap* heap, int id, u32* pSize)
+{
+    return (u8*)JKRAram::aramToMainRam(src, dst, size, expandSwitch, maxExpandSize, heap, id, pSize);
+}
+
 class JUTException {
 public:
     static void panic_f(const char*, int, const char*, ...);
@@ -217,16 +222,16 @@ u32 JKRAramArchive::fetchResource_subroutine(u32 aramAddr, u32 length, JKRHeap* 
         return length;
     case 1:
     case 2:
-        buffer = (u8*)(((u32)header + 0x1f) & ~0x1f);
-        JKRAram::aramToMainRam(aramAddr, buffer, 0x20, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL);
-        expandSize = (buffer[4] << 24) | (buffer[5] << 16) | (buffer[6] << 8) | buffer[7];
+        u8* hdr = (u8*)(((u32)header + 0x1f) & ~0x1f);
+        JKRAram::aramToMainRam(aramAddr, hdr, 0x20, EXPAND_SWITCH_DEFAULT, 0, NULL, -1, NULL);
+        expandSize = (hdr[4] << 24) | (hdr[5] << 16) | (hdr[6] << 8) | hdr[7];
         length = (expandSize + 0x1f) & ~0x1f;
         buffer = (u8*)JKRHeap::alloc(length, 0x20, heap);
         JKRAram::aramToMainRam(aramAddr, buffer, alignedLength, EXPAND_SWITCH_DECOMPRESS, length, heap, -1, &readSize);
         *out = buffer;
         return readSize;
     default:
-        JUTException::panic_f(lbl_8045E0F8, 0x2c9, "%s", lbl_8045E10C);
+        JUTException::panic_f(lbl_8045E0F8, 0x2c9, lbl_8053B6D0, lbl_8045E10C);
         return 0;
     }
 }
