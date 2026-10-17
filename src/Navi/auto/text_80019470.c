@@ -5,6 +5,8 @@ extern "C" int fn_80115564(void*);
 #include "Navi/SSystem/c_tag.h"
 #include "sdk/Dolphin/vec.h"
 extern "C" int fn_8001A24C(void* param_1);
+extern "C" void* fn_80115590(void*);
+extern u8 lbl_802B4C10[];
 extern "C" int fn_8006347C(void*, void*, int, const char*, int, int);
 extern "C" void fn_800134B8(void*, int, int);
 extern u8 lbl_802B7CA0[];
