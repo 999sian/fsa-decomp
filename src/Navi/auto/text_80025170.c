@@ -18,6 +18,16 @@ struct NaviEnt14 { int a[3]; int val; int b; };
 struct NaviSlot2C { NaviEnt14 e[2]; s16 cur; s16 next; };
 struct NaviEnt18 { int a[5]; int val; };
 struct NaviEnt1C { int a[7]; };
+struct StateObj_800274C8;
+typedef BOOL (StateObj_800274C8::*StateFunc_800274C8)(int);
+struct StateObj_800274C8 {
+    u8 pad[0xb8];
+    StateFunc_800274C8 m_func;
+    u8 pad2[4];
+    s16 m_unk[4];
+    u8 pad3[0x3];
+    s8 m_state;
+};
 struct NaviSlot34 { NaviEnt18 e[2]; s16 cur; s16 next; };
 extern u8 lbl_802BC618[];
 extern u8 lbl_802BBD28[];
@@ -114,6 +124,43 @@ extern "C" int fn_800254CC(u8* param_1) {
     } while (i < 3);
     return 2;
 }
+
+extern "C" u8 lbl_802FED9C;
+extern "C" s32 fn_80025570(u8* param_1) {
+    u8* a;
+    s32 i;
+    u32* p;
+    u32 zero;
+
+    a = *(u8**)(param_1 + 0x10);
+    if (a != 0 && a[0xc] == 0) {
+        return 0;
+    }
+    a = *(u8**)(param_1 + 0x14);
+    if (a != 0 && a[0xc] == 0) {
+        return 0;
+    }
+    a = *(u8**)(param_1 + 0x18);
+    if (a != 0 && a[0xc] == 0) {
+        return 0;
+    }
+    i = 0;
+    zero = 0;
+    p = (u32*)param_1;
+    for (; i < 3; i++) {
+        if (p[4] != 0) {
+            p[0xe5] = ((u32*)p[4])[7];
+            p[0xf1] = ((u32*)p[4])[8];
+            if (p[4] != 0) {
+                (*(void (**)(void*, s32))(*(u32*)(p[4] + 0x10) + 8))((void*)p[4], 1);
+            }
+            p[4] = zero;
+        }
+        p++;
+    }
+    return 4;
+}
+
 #pragma use_lmw_stmw reset
 extern "C" int fn_8002566C(u8* param_1) {
     u8 buf[0x100];
@@ -277,6 +324,25 @@ extern "C" void fn_80026248(u8 i) {
 extern "C" void fn_8002628C(u8 i, s32 j, u32 v) {
     u8* p = lbl_802BBD38 + i * 0x204;
     *(u32*)(p + *(s16*)(p + 0x202) * 0x20 + j * 4) = v;
+}
+
+extern "C" void fn_800262B8(u8 i) {
+    u8* p = lbl_802BBD38 + i * 0x204;
+    u32* w = (u32*)p;
+    s32 n = 2;
+    do {
+        w[0] = 0; w[1] = 0; w[2] = 0; w[3] = 0; w[4] = 0; w[7] = 0;
+        w[8] = 0; w[9] = 0; w[10] = 0; w[11] = 0; w[12] = 0; w[15] = 0;
+        w[16] = 0; w[17] = 0; w[18] = 0; w[19] = 0; w[20] = 0; w[23] = 0;
+        w[24] = 0; w[25] = 0; w[26] = 0; w[27] = 0; w[28] = 0; w[31] = 0;
+        w[32] = 0; w[33] = 0; w[34] = 0; w[35] = 0; w[36] = 0; w[39] = 0;
+        w[40] = 0; w[41] = 0; w[42] = 0; w[43] = 0; w[44] = 0; w[47] = 0;
+        w[48] = 0; w[49] = 0; w[50] = 0; w[51] = 0; w[52] = 0; w[55] = 0;
+        w[56] = 0; w[57] = 0; w[58] = 0; w[59] = 0; w[60] = 0; w[63] = 0;
+        w += 0x40;
+    } while (--n != 0);
+    *(s16*)(p + 0x200) = 0;
+    *(s16*)(p + 0x202) = 0;
 }
 
 extern "C" void fn_800263B4(NaviEnt1C* dst, u8 i) {
