@@ -1766,21 +1766,19 @@ extern "C" void fn_800DC290(u8* p, Unk800DC290Src* src) {
 }
 
 extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
-    u32 i;
     u8* q;
-    s16* s;
+    u8* w;
+    u32 i;
 
     *(u8*)(p + 0xd0) = src->m38();
 
-    q = p;
-    for (i = 0; i < 8; i++) {
+    for (i = 0, q = p; i < 8; i++) {
         *(s16*)(q + 8) = src->m20(i);
         q += 2;
     }
 
-    q = p;
-    for (i = 0; i < 4; i++) {
-        s = src->m26(i);
+    for (i = 0, q = p; i < 4; i++) {
+        s16* s = src->m26(i);
         *(s16*)(q + 0x98) = s[0];
         *(s16*)(q + 0x9a) = s[1];
         *(s16*)(q + 0x9c) = s[2];
@@ -1788,8 +1786,7 @@ extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
         q += 8;
     }
 
-    q = p;
-    for (i = 0; i < 4; i++) {
+    for (i = 0, q = p; i < 4; i++) {
         u8* b = src->m29(i);
         *(u8*)(q + 0xb8) = b[0];
         *(u8*)(q + 0xb9) = b[1];
@@ -1798,8 +1795,7 @@ extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
         q += 4;
     }
 
-    q = p;
-    for (i = 0; i < 8; i++) {
+    for (i = 0, q = p, w = p; i < 8; i++) {
         u8* b = src->m41(i);
         *(u8*)(q + 0x39) = b[1];
         *(u8*)(q + 0x3a) = b[2];
@@ -1807,7 +1803,9 @@ extern "C" void fn_800DC3BC(u8* p, Unk800DC3BCSrc* src) {
         *(u8*)(q + 0x3d) = b[5];
         *(u8*)(q + 0x3e) = b[6];
         *(u8*)(q + 0x3f) = b[7];
+        *(u32*)(w + 0x78) = *src->m49(i);
         q += 8;
+        w += 4;
     }
 }
 
@@ -1867,6 +1865,74 @@ extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
         this_->mZMode = *src->getZMode();
         this_->mZCompLoc = src->getZCompLoc();
         break;
+    }
+}
+
+extern "C" void fn_800DD354(u8* this_, const Mtx mtx) {
+    u8* gen = this_;
+    u8* p = this_;
+    u32 i = 0;
+    for (; i < 8; i++) {
+        if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
+            *(u16*)(gen + 0xc) = gen[0xa];
+            switch ((*(J3DTexMtx**)(p + 0x38))->getTexMtxInfo().mInfo & 0x3f) {
+            case 0:
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                break;
+            case 1:
+                if ((j3dSys.mFlags & 4) == 0) {
+                    (*(J3DTexMtx**)(p + 0x38))->calc(mtx);
+                } else {
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                }
+                break;
+            case 2:
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                break;
+            case 3:
+                if ((j3dSys.mFlags & 8) == 0) {
+                    Mtx m;
+                    PSMTXCopy(mtx, m);
+                    m[0][3] = 0.0f;
+                    m[1][3] = 0.0f;
+                    m[2][3] = 0.0f;
+                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                } else {
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                }
+                break;
+            case 4: {
+                Mtx m;
+                if (j3dSys.mFlags & 8) {
+                    PSMTXCopy(j3dSys.mViewMtx, m);
+                } else {
+                    PSMTXConcat(j3dSys.mViewMtx, mtx, m);
+                }
+                m[0][3] = 0.0f;
+                m[1][3] = 0.0f;
+                m[2][3] = 0.0f;
+                (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                break;
+            }
+            case 5:
+                if (j3dSys.mFlags & 4) {
+                    (*(J3DTexMtx**)(p + 0x38))->calc(j3dSys.mViewMtx);
+                } else {
+                    Mtx m;
+                    PSMTXConcat(j3dSys.mViewMtx, mtx, m);
+                    (*(J3DTexMtx**)(p + 0x38))->calc(m);
+                }
+                break;
+            case 6:
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                break;
+            default:
+                (*(J3DTexMtx**)(p + 0x38))->calc(j3dDefaultMtx);
+                break;
+            }
+        }
+        p += 4;
+        gen += 6;
     }
 }
 
@@ -2346,9 +2412,11 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
+    u8* p = param_1 + param_2 * 8;
     u8 b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
+    u8 b1 = param_3[1];
+    p[0x60] = (p[0x60] & ~0xC) | (b1 << 2);
+    p[0x60] = (p[0x60] & ~0x3) | b0;
 }
 
 extern "C" void fn_800DDECC(u8* this_, s32 idx, u8* src) {
@@ -3174,7 +3242,12 @@ extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
 }
 #else
 extern "C" void fn_800DF08C(u8* self, int i, const u8* c) {
-    ((GXColor*)(self + 0xc))[i] = *(const GXColor*)c;
+    u8 c0 = c[0];
+    u8* p = self + i * 4;
+    p[0xc] = c0;
+    p[0xd] = c[1];
+    p[0xe] = c[2];
+    p[0xf] = c[3];
 }
 #endif
 
