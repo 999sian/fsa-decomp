@@ -897,16 +897,27 @@ extern "C" void fn_80199078(void* param_1) {
 
 extern "C" void fn_8019912C(u8* self) {
     extern u32 lbl_80301CFC;
-    NaviBytes4 a;
-    NaviBytes4 b;
-    *(u32*)&a = lbl_80301CF8;
+    u32 a = lbl_80301CF8;
+    u32 b = lbl_80301CFC;
+    u8* pa = (u8*)&a;
+    u8* pb = (u8*)&b;
     self[0x14] = 0;
-    *(NaviBytes4*)(self + 4) = a;
-    *(u32*)&a = lbl_80301CF8;
-    *(NaviBytes4*)(self + 8) = a;
-    *(u32*)&b = lbl_80301CFC;
-    *(NaviBytes4*)(self + 12) = b;
-    *(NaviBytes4*)(self + 16) = b;
+    self[4] = pa[0];
+    self[5] = pa[1];
+    self[6] = pa[2];
+    self[7] = pa[3];
+    self[8] = pa[0];
+    self[9] = pa[1];
+    self[10] = pa[2];
+    self[11] = pa[3];
+    self[12] = pb[0];
+    self[13] = pb[1];
+    self[14] = pb[2];
+    self[15] = pb[3];
+    self[16] = pb[0];
+    self[17] = pb[1];
+    self[18] = pb[2];
+    self[19] = pb[3];
     *(u32*)(self + 0x20) = 0;
     *(u32*)(self + 0x24) = 0;
     *(u32*)(self + 0x28) = 0;
@@ -1950,6 +1961,20 @@ extern "C" void fn_801A188C(NaviVObj* p, u32 flags) {
     if (flags & 0x20000000) {
         p->vf5();
     }
+}
+
+extern "C" void fn_801A219C(u8* p, VObj_801A219C* o) {
+    u8* b;
+    *(s16*)(p + 0x8) = o->v18(0);
+    *(u32*)(p + 0xa) = *o->v21(0);
+    b = o->v39(0);
+    p[0xf] = b[1];
+    p[0x10] = b[2];
+    p[0x11] = b[3];
+    p[0x13] = b[5];
+    p[0x14] = b[6];
+    p[0x15] = b[7];
+    *(u32*)(p + 0x18) = *o->v47(0);
 }
 
 extern "C" void fn_801A34DC(void) {
