@@ -35,7 +35,7 @@ extern "C" void fn_8036E5E4(void) {
 extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8023077C(void);
 extern "C" void* fn_801F856C(void);
-extern "C" void* fn_8013CC50(s32 id, void* p, s32 kind, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void* fn_8013CC50(s32 room, void* p, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_8036F5BC(void* this_) {
     s32 i;
     s32 n;
@@ -96,7 +96,7 @@ extern "C" void fn_8036F5BC(void* this_) {
     v[1] = (f32)ty * 384.0f + 192.0f;
     v[0] = (f32)tx * 512.0f + 256.0f;
     v[2] = 0.0f;
-    *(void**)((char*)this_ + 0x2a8) = fn_8013CC50(*(s32*)((char*)this_ + 4), v, 0x274, 0, 0, 0, 0, 1);
+    *(void**)((char*)this_ + 0x2a8) = fn_8013CC50(*(s32*)((char*)this_ + 4), v, 1.0f, 0x274, 0, 0, 0, 0, 1);
 
     n = *(s32*)((char*)fn_801F856C() + 0x1008);
     for (i = 0, off = 0; i < n; i++, off += 4) {
