@@ -7,8 +7,6 @@
 
 
 struct FsaVObj {
-    virtual void v0(void);
-    virtual void v1(void);
     virtual void v2(void);
     virtual void v3(void);
     virtual void v4(void);
@@ -185,10 +183,10 @@ extern "C" f64 lbl_80543C70;
 extern "C" void fn_804399A0(u8* param_1)
 {
     fn_8013B490(lbl_8053AB10);
-    void** obj = *(void***)(param_1 + 0x34);
-    ((void (*)(void*, s32))(*(void***)obj)[9])(obj, (s32)*(f32*)(param_1 + 0x50));
-    obj = *(void***)(param_1 + 0x34);
-    ((void (*)(void*, s32, s32, s32, f32, f32, f32, f32))(*(void***)obj)[59])(obj, 0, 0, 0, lbl_80543C78, lbl_80543C78, lbl_80543C7C, lbl_80543C80);
+    FsaVObj* obj = *(FsaVObj**)(param_1 + 0x34);
+    obj->v9((s32)*(f32*)(param_1 + 0x50));
+    obj = *(FsaVObj**)(param_1 + 0x34);
+    obj->v59(0, 0, 0, lbl_80543C78, lbl_80543C78, lbl_80543C7C, lbl_80543C80);
     *(f32*)(*(u8**)(param_1 + 8) + 8) = (f32)*(s32*)(param_1 + 0x3c);
     (*(J2DPane**)(param_1 + 4))->search(0x004e646174613031ULL)->animationTransform();
     (*(J2DScreen**)(param_1 + 4))->draw(lbl_80543C44, lbl_80543C44, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
@@ -246,14 +244,16 @@ extern "C" void** fn_80439B28(void** this_, s16 flag) {
         }
         this_[13] = 0;
         void** pp = this_;
-        for (i = 0; i < 8; i++) {
+        i = 0;
+        do {
             if (pp[3] != 0) {
                 JPAEmitterManager* mgr = *(JPAEmitterManager**)((char*)fn_8013C824() + 0xc);
                 mgr->forceDeleteEmitter((JPABaseEmitter*)pp[3]);
                 pp[3] = 0;
             }
             pp++;
-        }
+            i++;
+        } while (i < 8);
         if (this_[11] != 0) {
             JPAEmitterManager* mgr = *(JPAEmitterManager**)((char*)fn_8013C824() + 0xc);
             mgr->forceDeleteEmitter((JPABaseEmitter*)this_[11]);
