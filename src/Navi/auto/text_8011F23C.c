@@ -64,6 +64,7 @@ struct Unk80120880 {
 };
 extern "C" void* lbl_802FF364;
 extern "C" void* lbl_802FF368;
+extern "C" void* lbl_802FF370;
 extern "C" void* fn_801328F8(void* ptr, s16 param_2);
 extern char lbl_802911E4[];
 
