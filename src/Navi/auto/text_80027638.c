@@ -316,6 +316,19 @@ extern "C" void fn_8002E1E4(char* p, int idx, float f) {
     e[3] = 1;
 }
 
+extern "C" void fn_8002E380(char* p, int idx) {
+    if (idx == 0) {
+        lbl_802FEE28 = 0;
+    }
+    if (idx < 0 || idx >= 10) {
+        return;
+    }
+    unsigned char* e = (unsigned char*)(p + idx * 4);
+    *(unsigned short*)(e + 0x56c) = 0;
+    e[0x56e] = 0;
+    e[0x56f] = 1;
+}
+
 extern "C" int fn_8002E0AC(void* obj, int a, int b, int c, int d, int e, int f, float g);
 extern "C" void fn_800589CC(int);
 extern "C" void* fn_80024BC8(void);
