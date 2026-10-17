@@ -586,16 +586,19 @@ void J3DTevBlock2::initialize()
 	mTexIndices[0] = 0xffff;
 	mTexIndices[1] = 0xffff;
 	mStageNum = 1;
-	mStages[0].mTevColorOp = 0xc0;
-	mStages[0].mTevColorAB = 0xc1;
-	mStages[1].mTevColorOp = 0xc2;
-	mStages[1].mTevColorAB = 0xc3;
+	mStages[0].mBPCommand1 = 0xc0;
+	mStages[0].mBPCommand2 = 0xc1;
+	mStages[1].mBPCommand1 = 0xc2;
+	mStages[1].mBPCommand2 = 0xc3;
 	mKColorSels[0] = 0xc;
 	mKColorSels[1] = 0xc;
 	mKAlphaSels[0] = 0x1c;
 	mKAlphaSels[1] = 0x1c;
 	for (int i = 0; i < 3; i++) {
 		mColors[i] = j3dDefaultTevColor;
+	}
+	for (int i = 0; i < 4; i++) {
+		mKColors[i] = j3dDefaultTevKColor;
 	}
 	mTexNoOffset = 0;
 	mRegOffset = 0;
@@ -1364,11 +1367,12 @@ extern "C" void fn_800D800C(u8* self) {
 }
 
 extern "C" void fn_800D80DC(u8* p) {
-    u32 i;
-    u8* addr;
+    u8* saved;
     u8* tev;
     u8 count;
-    u8* saved;
+    u8* addr;
+    u32 j;
+    u32 i;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
     count = p[0xd0];
@@ -1383,9 +1387,9 @@ extern "C" void fn_800D80DC(u8* p) {
     }
 
     tev = p;
-    for (i = 0; i < count; i += 2) {
-        u8* next = p + (i + 1) * 4;
-        J3DGDSetTevOrder((GXTevStageID)i, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
+    for (j = 0; j < count; j += 2) {
+        u8* next = p + (j + 1) * 4;
+        J3DGDSetTevOrder((GXTevStageID)j, (GXTexCoordID)tev[0x18], (GXTexMapID)tev[0x19], (GXChannelID)tev[0x1a], (GXTexCoordID)next[0x18], (GXTexMapID)next[0x19], (GXChannelID)next[0x1a]);
         u16* s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (tev[0x19] & 7) * 8);
         J3DGDSetTexCoordScale2((GXTexCoordID)(tev[0x18] & 7), s[0], s[2] == 1, 0, s[1], s[3] == 1, 0);
         s = (u16*)((u8*)&sTexCoordScaleTable__6J3DSys + (next[0x19] & 7) * 8);
@@ -3495,8 +3499,9 @@ extern "C" void fn_800DE5F0(Unk800DE5D0* p, int i, const u8& v) {
 
 extern "C" u8 fn_800DE600(int param_1, int param_2)
 {
-  u32 addr = param_1 + param_2;
-  return *(u8*)(addr + 0x55);
+  u8* p = (u8*)param_1;
+  p += param_2;
+  return p[0x55];
 }
 
 extern "C" void fn_800DE60C(int param_1, int param_2, u8 param_3)
