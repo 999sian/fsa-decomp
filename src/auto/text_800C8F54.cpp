@@ -120,6 +120,7 @@ public:
         LOCKED = 1,
         PATCHED = 2,
     };
+    J3DMaterialFactory(const J3DMaterialBlock& block);
     J3DMaterialFactory(const J3DMaterialDLBlock& block);
     size_t calcSize(J3DMaterial*, MaterialType, int, u32) const;
     size_t calcSizeNormalMaterial(J3DMaterial*, int, u32) const;
