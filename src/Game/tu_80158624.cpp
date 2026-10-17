@@ -1,5 +1,16 @@
 #include "types.h"
 
+static inline void GXPosition3f32(f32 x, f32 y, f32 z) {
+    *(volatile f32*)0xCC008000 = x;
+    *(volatile f32*)0xCC008000 = y;
+    *(volatile f32*)0xCC008000 = z;
+}
+
+static inline void GXTexCoord2f32(f32 s, f32 t) {
+    *(volatile f32*)0xCC008000 = s;
+    *(volatile f32*)0xCC008000 = t;
+}
+
 extern "C" char* lbl_8053AAF8;
 extern "C" void* fn_802D6A9C(void);
 extern "C" u8 fn_802DCD0C(void* room);
