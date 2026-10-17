@@ -115,6 +115,15 @@ extern "C" void fn_800B6E5C(u8* p) {
     }
 }
 
+extern "C" void fn_800B6F18(u8* p) {
+    if (p[0x37e] == 1) {
+        fn_800B72AC(p);
+    } else {
+        p[0x37e] = 1;
+    }
+    fn_800B6F64(p);
+}
+
 extern unsigned char lbl_802C55A4[];
 extern "C" int fn_800BA614(u8* p, u8 a, u8 b, int c);
 extern "C" void fn_800B7234(u8* p) {
