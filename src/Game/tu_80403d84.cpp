@@ -639,6 +639,9 @@ extern "C" void fn_8040B93C(u8* self) {
 	}
 }
 
+struct Tbl8048C1F8;
+extern Tbl8048C1F8 lbl_8048C1F8;
+
 struct J2DTextBox {
 	char* getStringPtr() const;
 };
@@ -865,24 +868,47 @@ extern "C" s32 lbl_8048CB58[];
 extern "C" u8 lbl_8048CC2C[];
 extern u8* lbl_8053AAF8;
 extern "C" void fn_80406F68(u8* self, f32 a, f32 b) {
-	DrawRec rec;
-	f32 box[4] = {0.0f, 0.0f, 256.0f, 192.0f};
 	s32 st = *(s32*)(self + 0x380);
 	s32 seg = (st % 40) / 10;
+	f32 box[4];
+	DrawRec rec;
+	f32 vec[3];
+	f32 pos[3];
 
+	box[0] = 0.0f;
+	box[1] = 0.0f;
+	box[2] = 256.0f;
+	box[3] = 192.0f;
 	fn_8013B414(lbl_8053AB10, box, 1);
 	_GXRenderModeObj* mode = JUTVideo::getManager()->getRenderMode();
-	f32 px = a * (256.0f / mode->fbWidth);
-	f32 py = b * (192.0f / mode->efbHeight) - 5.0f;
+	pos[0] = a * (256.0f / mode->fbWidth);
+	pos[1] = b * (192.0f / mode->efbHeight) - 5.0f;
+	pos[2] = 0.0f;
 
 	GXSetTevDirect(GX_TEVSTAGE0);
 	GXSetTevDirect(GX_TEVSTAGE1);
 	GXSetTevDirect(GX_TEVSTAGE2);
 	GXSetTevDirect(GX_TEVSTAGE3);
 
-	f32 vec[3] = {px, py + JMASinShort((s16)(st << 11)), 0.0f};
+	vec[0] = pos[0];
+	vec[1] = pos[1] + JMath::sincosTable_.sinShort((s16)(st << 11));
+	vec[2] = 0.0f;
 	rec.ids[2] = 2;
-	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), vec, lbl_8053AAF8, 0xc6, &rec, 1.0f, 1.0f);
+	Tu80406ResMgr* mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
+	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), vec, mgr->get('SOB ', (const char*)lbl_8048CC2C), 0xc6, &rec, 1.0f, 1.0f);
+
+	pos[0] -= 16.0f;
+	pos[1] += 3.0f;
+	rec.ids[2] = 3;
+	s32 id = lbl_8048CB58[seg] + 0xc0;
+	mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
+	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC2C), id, &rec, 1.0f, 1.0f);
+
+	pos[0] += 32.0f;
+	rec.ids[2] = 4;
+	id = lbl_8048CB58[seg] + 0xc3;
+	mgr = *(Tu80406ResMgr**)(lbl_8053AAF8 + 0xa4);
+	fn_802F86CC(*(void**)(lbl_8053AB10 + 0x20), pos, mgr->get('SOB ', (const char*)lbl_8048CC2C), id, &rec, 1.0f, 1.0f);
 }
 
 extern "C" u32 lbl_8048C2B8[];
