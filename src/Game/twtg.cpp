@@ -160,6 +160,7 @@ extern "C" s32 fn_8023DE58(s32);
 extern "C" void fn_801EE558(void* p, JGeometry::TVec3f* out, f32* dist, s32 idx);
 extern "C" void fn_8013665C(void* game, s32 a, s32 b);
 extern u8 lbl_8053ABF8;
+extern u8 lbl_80529DEC[];
 extern "C" void fn_8022FE80(s32 slot, s32 player, void* room, s32 a, s32 b);
 extern "C" void fn_8013670C(char* game, s32 msg);
 extern "C" s32 fn_8037EFB4(s32 slot);
