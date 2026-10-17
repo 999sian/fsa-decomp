@@ -87,3 +87,24 @@ extern "C" void fn_8015FBC0(u8* param_1)
     param_1[0x28] = 0;
 }
 
+extern "C" s32 fn_8015FBCC(u8* param_1)
+{
+    s32 iVar1;
+    s32 iVar2;
+
+    iVar1 = ((s32 (*)(void*))(*(u32**)param_1)[6])(param_1);
+    iVar2 = ((s32 (*)(void*))(*(u32**)param_1)[7])(param_1);
+    return iVar1 - iVar2;
+}
+
+extern "C" void* fn_8015FC28(u32* param_1)
+{
+    fn_8015D050(param_1);
+    *param_1 = (u32)lbl_80297C10;
+    fn_80166B58(param_1 + 6, param_1);
+    param_1[10] = 0;
+    param_1[11] = 0;
+    param_1[13] = 0;
+    return param_1;
+}
+
