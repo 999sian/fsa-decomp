@@ -47,7 +47,7 @@ extern "C" void fn_800B73D8(u8* p) {
     } else {
         p[0x382] = 1;
     }
-    fn_800B78BC(p, lbl_802313EC[p[0x387] + p[0x388] * 4], p[0x381] ^ 1);
+    fn_800B78BC(p, fn_800B51E8(p, p[0x387] + p[0x388] * 4), p[0x381] ^ 1);
 }
 
 extern "C" void fn_800B8634(void) {}
