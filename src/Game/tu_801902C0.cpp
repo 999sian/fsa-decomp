@@ -163,3 +163,5 @@ extern "C" void fn_80191E0C(void) {}
 
 extern "C" void fn_80191E10(void) {}
 
+void __sinit_tu_801902C0_cpp(void) {}
+
