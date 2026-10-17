@@ -96,9 +96,10 @@ extern "C" void fn_800254AC(void) {
     fn_80025710();
 }
 
+#pragma use_lmw_stmw off
 extern "C" int fn_800254CC(u8* param_1) {
-    u8 buf[0x118];
-    u32* slot = (u32*)(param_1 + 0xc);
+    u8 buf[0x100];
+    u32* slot = (u32*)param_1;
     u32* table = lbl_802262BC;
     s32 i = 0;
     s32 v = *(s32*)(lbl_802B7CA0 + 0x343c) + 1;
@@ -113,17 +114,16 @@ extern "C" int fn_800254CC(u8* param_1) {
     } while (i < 3);
     return 2;
 }
-
-#pragma use_lmw_stmw off
+#pragma use_lmw_stmw reset
 extern "C" int fn_8002566C(u8* param_1) {
     u8 buf[0x100];
-    u32* slot = (u32*)(param_1 + 0xc);
-    u32* table = lbl_80226340;
-    s32 i = 3;
     u8 r = lbl_802B7CA0[0x1419];
+    s32 i = 3;
+    u32* table = lbl_80226340;
+    u32* slot = (u32*)(param_1 + 0xc);
     do {
         if (slot[4] == 0) {
-            fn_801E41AC(buf, lbl_80226394, lbl_802FBDB8, r, *table);
+            fn_801E41AC(buf, lbl_80226394, "RULE0", r, *table);
             slot[4] = fn_800137B8(buf, 0, 0);
         }
         i++;
@@ -145,6 +145,42 @@ extern "C" void fn_80025878(u8* p) {
     for (u8 i = 0; i < 4; i++) {
         fn_800274C8(p + i * 0xd4 + 0x40);
     }
+}
+
+extern "C" BOOL fn_80025D0C(u8* p1) {
+    s32 i;
+    s32 r;
+
+    i = 0;
+    while (i < 2) {
+        if (p1[0x91] == 0) {
+            r = 0;
+        } else if (p1[0x92] == 0) {
+            r = 0;
+        } else if (p1[0x95] == 1) {
+            r = 0;
+        } else {
+            r = p1[0x93] == 3;
+        }
+        if (r != 0) {
+            return 0;
+        }
+        if (p1[0x165] == 0) {
+            r = 0;
+        } else if (p1[0x166] == 0) {
+            r = 0;
+        } else if (p1[0x169] == 1) {
+            r = 0;
+        } else {
+            r = p1[0x167] == 3;
+        }
+        if (r != 0) {
+            return 0;
+        }
+        p1 += 0x1a8;
+        i++;
+    }
+    return 1;
 }
 
 extern "C" s32 fn_80025DE4(void) {
@@ -460,6 +496,24 @@ extern "C" void fn_80026BD8(u8 idx) {
     *(u16*)(lbl_802BC618 + idx * 0x2c + 0x2a) = 0;
 }
 
+extern "C" u32 fn_80015C28(u32 param);
+#pragma use_lmw_stmw off
+extern "C" void fn_80026C24(u8 i, u32* list, s32 n, u32 v) {
+    u32* p = list;
+    s32 rem = n;
+    s32 sum = 0;
+    for (; rem > 0; rem -= 4) {
+        sum += fn_80015C28(*p);
+        p++;
+    }
+    NaviSlot2C* s = (NaviSlot2C*)lbl_802BC618 + i;
+    s->e[s->next].a[0] = (int)list;
+    s->e[s->next].a[1] = n;
+    s->e[s->next].a[2] = sum;
+    s->e[s->next].b = v;
+    s->e[s->next].val = 1;
+}
+#pragma use_lmw_stmw reset
 extern "C" NaviEnt14 fn_80026CF0(u8 i) {
     NaviSlot2C* s = (NaviSlot2C*)lbl_802BC618 + i;
     return s->e[s->cur];
