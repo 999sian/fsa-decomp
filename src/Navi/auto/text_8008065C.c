@@ -152,6 +152,21 @@ extern "C" void fn_800827C4(u8* p)
 	fn_801C5D74(lbl_8029F8D8, *(u8**)(*(u8**)(p + 0x358) + 4) + 0x24);
 }
 
+extern "C" bool fn_8008317C(u8* param_1, void* param_2) {
+    u8* p = *(u8**)(*(u8**)(*(u8**)(param_1 + 0x358) + 4) + 4);
+    void* r = fn_800638A4(&lbl_802FCC10, param_2, lbl_802B7CA0 + 0x2200, 0x40);
+    if (r == 0) {
+        void* uVar2 = fn_8011FD10();
+        fn_8011FD18(uVar2, lbl_802830C8, 0x809, (s32)&lbl_802FCC18, lbl_80283548);
+        fn_80007AB8(lbl_802830C8, 0x809, (s32)&lbl_802FCC1C);
+    }
+    if (fn_8000E124(param_1 + 0x36c, p + 0x58, r, 1, 2, 0, -1, lbl_80300904) == 0) {
+        return false;
+    }
+    param_1[0x46c] = 0;
+    return true;
+}
+
 extern "C" s32 fn_80083584(u8* p) {
     if (*(s8*)(p + 0x462) == 0) {
         (*(s8*)(p + 0x462))++;
