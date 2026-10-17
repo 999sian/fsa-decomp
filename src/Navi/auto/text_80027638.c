@@ -130,6 +130,11 @@ extern "C" void fn_800291B8(const char*, ...) {
 extern "C" void fn_80029208(const char*, ...) {
 }
 
+extern "C" void fn_8002BC84(void) {
+    extern unsigned int lbl_802FEDDC;
+    lbl_802FEDDC &= 0xffffffef;
+}
+
 extern "C" void fn_8002D2EC(char* p) {
     lbl_802FEDE0 |= 0x800;
     lbl_802FEDDC |= 0x2000;
