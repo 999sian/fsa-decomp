@@ -114,6 +114,8 @@ extern "C" void fn_80027CB8(void) {
     }
 }
 
+extern "C" void fn_8002A410(void);
+
 extern "C" void fn_80027D4C(void) {
     fn_8002A410();
 }
@@ -148,6 +150,13 @@ extern "C" void fn_8002C060(void) {
 extern "C" void fn_8002C070(void) {
     extern unsigned int lbl_802FEDDC;
     lbl_802FEDDC |= 0x4000000;
+}
+
+extern "C" void fn_8002EF5C(int, unsigned char, unsigned char, unsigned char, unsigned char, int, int);
+extern "C" void fn_8002D250(int a, int b, int slot, unsigned char v, int e) {
+    unsigned char buf[4] = {0, 0, 0, 0};
+    buf[slot] = v;
+    fn_8002EF5C(b, buf[0], buf[1], buf[2], buf[3], e, 0);
 }
 
 extern "C" void fn_8002D2EC(char* p) {
