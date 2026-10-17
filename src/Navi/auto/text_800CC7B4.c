@@ -53,14 +53,17 @@ extern "C" void fn_800CCFEC(u8* self) {
 extern "C" void fn_800CD304(u8* self) {
     s32 iVar1;
     s32 iVar2;
-    u8* tbl = lbl_802C5714;
 
-    if (self[0x9b] == 0) {
-        iVar1 = 1;
-    } else {
+    if (self[0x9b] != 0) {
+        u8* tbl = lbl_802C5714;
         iVar1 = fn_800CD8E4(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 1, lbl_80300EF0, *(f32*)(tbl + 0x1c));
+    } else {
+        iVar1 = 1;
     }
-    iVar2 = fn_800CD7CC(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 1, lbl_80300EF0, *(f32*)(tbl + 0x20));
+    {
+        u8* tbl = lbl_802C5714;
+        iVar2 = fn_800CD7CC(self, *(s16*)(self + 0x9c), tbl[0x18], 0, 1, lbl_80300EF0, *(f32*)(tbl + 0x20));
+    }
     *(s16*)(self + 0x9c) = *(s16*)(self + 0x9c) + 1;
     if (iVar1 == 1 && iVar2 == 1) {
         *(s16*)(self + 0x9c) = 0;
