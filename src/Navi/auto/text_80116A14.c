@@ -62,6 +62,23 @@ extern "C" void fn_80116A14(u16* param_1, u32 param_2)
     } while (--n != 0);
 }
 
+extern "C" void* fn_80116DC4(void* param_1, s16 param_2)
+{
+    if (param_1 != 0) {
+        *(u8**)param_1 = lbl_80290024;
+        if (lbl_802FF328 != 0) {
+            fn_801178BC((u8*)param_1, 2);
+        }
+        fn_80120C98();
+        fn_80120704();
+        *(s32*)((u8*)param_1 + 0x10) = 0;
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_801178BC(u8* param_1, s32 param_2)
 {
     while (param_2-- > 0) {
