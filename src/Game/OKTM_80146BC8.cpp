@@ -1,6 +1,7 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 extern "C" void* fn_8020D58C(void);
 extern "C" u8 fn_8020D6AC(void* entry, s32 a, void* b, s32 d, s32 e);
@@ -112,6 +113,179 @@ extern "C" void fn_80146C28(char* this_) {
     }
 }
 
+extern "C" void fn_80146F58(char* this_) {
+    s32 r30 = *(s32*)(this_ + 0x98);
+    u8 r29 = 0;
+    *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
+    *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
+    *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+        if (*(s32*)(this_ + 0x23c) == 0) {
+            if (*(s32*)(this_ + 0x90) == 5) {
+                *(u8*)(this_ + 0x11c) = 0;
+                break;
+            }
+            r29 = fn_801F2618(this_, 0, 0);
+        }
+        if (*(s32*)(this_ + 0x90) == 2 || *(s32*)(this_ + 0x90) == 3) {
+            r30 = -1;
+        }
+        if (fn_801F2A10(this_, -1, r30, 1, 1)) {
+            *(s32*)(this_ + 0x230) = 1;
+            break;
+        }
+        if (r29 == 0 && !fn_801F2B7C(this_, *(s32*)(this_ + 0x114), -1, 1)) {
+            break;
+        }
+        if (r29 == 0) {
+            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x24a, 0, 1, 0, 0, 1);
+            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x24b, 0, 1, 0, 0, 1);
+            *(u8*)(this_ + 0x11c) = 0;
+        } else if (*(s32*)(this_ + 0x90) == 1 || *(s32*)(this_ + 0x90) == 5) {
+            fn_801F0E34(this_, 0x30000, 0);
+            *(f32*)(this_ + 0x3c) = 0.0f;
+            *(f32*)(this_ + 0x40) = 0.0f;
+            *(f32*)(this_ + 0x44) = 0.0f;
+            *(s32*)(this_ + 0x240) = 0;
+            *(s32*)(this_ + 0x234) = 0;
+            *(s32*)(this_ + 0x230) = 3;
+        } else {
+            fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x339, 0, 1, 0, 0, 1);
+            *(u8*)(this_ + 0x11c) = 0;
+        }
+        break;
+    case 1:
+        fn_801F0E34(this_, 0x400D1, 0);
+        if (*(s32*)(this_ + 0x90) == 1) {
+            *(s32*)(this_ + 0x238) = 100;
+            switch (*(s32*)(this_ + 0x98)) {
+            case 0:
+                *(s32*)(this_ + 0x240) = 3;
+                break;
+            case 1:
+                *(s32*)(this_ + 0x240) = 1;
+                break;
+            case 2:
+                *(s32*)(this_ + 0x240) = 0;
+                break;
+            case 3:
+                *(s32*)(this_ + 0x240) = 2;
+                break;
+            }
+            *(f32*)(this_ + 0x3c) *= -0.7f;
+            *(f32*)(this_ + 0x40) *= -0.7f;
+            *(f32*)(this_ + 0x44) = 5.0f;
+        } else {
+            *(f32*)(this_ + 0x3c) *= -0.3f;
+            *(f32*)(this_ + 0x40) *= -0.3f;
+            *(f32*)(this_ + 0x44) = 3.0f;
+        }
+        *(s32*)(this_ + 0x108) = 0;
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x117, 0, 1, 0, 0, 1);
+        fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x118, 0, 1, 0, 0, 1);
+        *(s32*)(this_ + 0x230) = 2;
+        break;
+    case 2:
+        if (*(s32*)(this_ + 0x90) == 1 && (*(s32*)(this_ + 0x238) & 1) == 0) {
+            *(s32*)(this_ + 0x240) = (*(s32*)(this_ + 0x240) + 1) & 3;
+            *(s32*)(this_ + 0x98) = lbl_8049F548[*(s32*)(this_ + 0x240)];
+        }
+        *(s32*)(this_ + 0x248) -= 10;
+        if (*(s32*)(this_ + 0x248) < 0) {
+            *(s32*)(this_ + 0x248) = 0;
+        }
+        *(f32*)(this_ + 0x44) -= 0.3f;
+        if (*(f32*)(this_ + 0x14) < 0.0f) {
+            *(u8*)(this_ + 0x11c) = 0;
+        }
+        break;
+    case 3:
+        if (*(s32*)(this_ + 0x234) == 0) {
+            *(s32*)(this_ + 0x234) = 1;
+            *(s32*)(this_ + 0x240) += 1;
+            if (*(s32*)(this_ + 0x240) == 6) {
+                *(s32*)(this_ + 0x234) = 30;
+            } else if (*(s32*)(this_ + 0x240) >= 7) {
+                *(u8*)(this_ + 0x11c) = 0;
+            }
+        }
+        break;
+    case 4:
+    case 5:
+    case 6: {
+        s32 id;
+        char* tgt;
+        *(s32*)(this_ + 0xb0) = 0;
+        id = *(s32*)(this_ + 0x258);
+        if (id >= 0) {
+            tgt = (char*)fn_801F666C(fn_801F856C(), id);
+            if (tgt != 0) {
+                f32 scale = *(f32*)(this_ + 0x254);
+                s32 i = ((u16)(fn_801F6874(*(s32*)(tgt + 0x98)) - *(u16*)(this_ + 0x25c)) >> 5) * 2;
+                f32 dx;
+                f32 dy;
+                *(f32*)(this_ + 0xc) = scale * sincosTable___5JMath[i];
+                *(f32*)(this_ + 0x10) = scale * sincosTable___5JMath[i + 1];
+                *(f32*)(this_ + 0xc) += *(f32*)(tgt + 0xc);
+                *(f32*)(this_ + 0x10) += *(f32*)(tgt + 0x10);
+                *(f32*)(this_ + 0x14) = *(f32*)(tgt + 0x14);
+                dx = *(f32*)(this_ + 0xc) - *(f32*)(tgt + 0xc);
+                dy = *(f32*)(this_ + 0x10) - *(f32*)(tgt + 0x10);
+                *(s32*)(this_ + 0x98) = ClassifyBamAngleToQuadrant((u16)(s32)(JMath::atanTable_.atan2(-dx, -dy) * 10430.4f));
+                if (*(s32*)(this_ + 0x240) < 6) {
+                    *(s32*)(this_ + 0x240) += 1;
+                } else if (*(s32*)(this_ + 0x230) == 6) {
+                    *(s32*)(this_ + 0x244) += 1;
+                    if (*(s32*)(this_ + 0x244) > 20) {
+                        *(u8*)(this_ + 0x11c) = 0;
+                    }
+                }
+                break;
+            }
+        }
+        if (*(s32*)(this_ + 0x230) == 4) {
+            fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(this_ + 4), this_ + 0xc, 1);
+        }
+        *(u8*)(this_ + 0x11c) = 0;
+        break;
+    }
+    }
+    if (*(s32*)(this_ + 0x234) > 0) {
+        *(s32*)(this_ + 0x234) -= 1;
+        if (*(s32*)(this_ + 0x230) == 0 && *(s32*)(this_ + 0x234) == 0) {
+            *(u8*)(this_ + 0x11c) = 0;
+        }
+    }
+    if (*(s32*)(this_ + 0x238) > 0) {
+        *(s32*)(this_ + 0x238) -= 1;
+        if (*(s32*)(this_ + 0x230) == 0 && *(s32*)(this_ + 0x234) == 0) {
+            *(u8*)(this_ + 0x11c) = 0;
+        }
+    }
+    if (*(s32*)(this_ + 0x23c) > 0) {
+        *(s32*)(this_ + 0x23c) -= 1;
+        if (*(s32*)(this_ + 0x230) == 0 && *(s32*)(this_ + 0x234) == 0) {
+            *(u8*)(this_ + 0x11c) = 0;
+        }
+    }
+    if (*(s32*)(this_ + 0x90) == 3) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x90) == 1 || *(s32*)(this_ + 0x90) == 5) {
+        if (*(s32*)(this_ + 0x230) == 0 || *(s32*)(this_ + 0x230) == 2) {
+            *(s32*)(this_ + 0x24c) = *(s32*)(this_ + 0x98);
+        } else {
+            *(s32*)(this_ + 0x24c) = lbl_8049F558[*(s32*)(this_ + 0x98) * 8 + *(s32*)(this_ + 0x240)];
+        }
+    } else if (*(s32*)(this_ + 0x90) == 2 || *(s32*)(this_ + 0x90) == 4) {
+        if (*(s32*)(this_ + 0x238) == 0) {
+            *(s32*)(this_ + 0x238) = 3;
+            *(s32*)(this_ + 0x24c) = (*(s32*)(this_ + 0x24c) + 1) & 3;
+        }
+    }
+}
+
 extern "C" u32 fn_80147620(Actor* a, s32 b, void* c) {
     s32 region = a->field_198;
     void* base = fn_8020D58C();
@@ -188,5 +362,8 @@ extern "C" void fn_80147834(char* this_) {
         break;
     }
     *(s32*)(this_ + 0x230) = 0;
+}
+
+void __sinit_OKTM_80146BC8_cpp(void) {
 }
 
