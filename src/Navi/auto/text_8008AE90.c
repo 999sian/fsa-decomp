@@ -58,6 +58,23 @@ extern "C" s32 fn_8008B4E4(void* param_1)
     return 4;
 }
 
+extern "C" BOOL fn_8008B888(void* param_1, void* param_2, void* param_3, void* param_4)
+{
+    void* iVar1;
+    void* uVar2;
+
+    iVar1 = fn_800638A4(&lbl_802FCE94, param_4, (u8*)lbl_802B7CA0 + 0x2200, 0x40);
+    if (iVar1 == NULL) {
+        uVar2 = fn_8011FD10();
+        fn_8011FD18(uVar2, lbl_802848B0, 0x212, &lbl_802FCE9C, lbl_8028494C);
+        fn_80007AB8(lbl_802848B0, 0x212, &lbl_802FCEA0);
+    }
+    if (fn_8000DE00(param_2, (u8*)param_3 + 0x58, iVar1, 1, 2, 0, -1, lbl_80300A50) == 0) {
+        return FALSE;
+    }
+    return TRUE;
+}
+
 extern "C" s32 fn_8008BC84(void)
 {
     s8 flag;
