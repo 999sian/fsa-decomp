@@ -280,38 +280,3 @@ extern "C" int TRKInitializeMessageBuffers(void) {
     } while (i < 3);
     return 0;
 }
-static inline int fn_801EAB08_append4(unsigned char* buffer, unsigned char* src) {
-    int result = 0;
-    unsigned int len = 4;
-    unsigned int pos = *(unsigned int*)(buffer + 0xc);
-    if (0x880 - pos < len) {
-        result = 0x301;
-        len = 0x880 - pos;
-    }
-    if (len == 1) {
-        *(buffer + pos + 0x10) = *src;
-    } else {
-        TRK_memcpy(buffer + pos + 0x10, src, len);
-    }
-    *(unsigned int*)(buffer + 0xc) = *(unsigned int*)(buffer + 0xc) + len;
-    *(unsigned int*)(buffer + 8) = *(unsigned int*)(buffer + 0xc);
-    return result;
-}
-
-static inline int fn_801EAB08_append1_ui32(unsigned char* buffer, const unsigned int data) {
-    unsigned char* bigEndianData;
-    unsigned char* byteData;
-    unsigned char swapData[4];
-
-    if (gTRKBigEndian) {
-        bigEndianData = (unsigned char*)&data;
-    } else {
-        byteData = (unsigned char*)&data;
-        bigEndianData = swapData;
-        bigEndianData[0] = byteData[3];
-        bigEndianData[1] = byteData[2];
-        bigEndianData[2] = byteData[1];
-        bigEndianData[3] = byteData[0];
-    }
-    return fn_801EAB08_append4(buffer, bigEndianData);
-}
