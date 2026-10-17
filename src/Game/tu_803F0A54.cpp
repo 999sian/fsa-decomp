@@ -8,6 +8,11 @@ extern "C" void fn_80436668(void* p);
 extern "C" s32 fn_804366B8(void* p);
 extern "C" void fn_80458880(void* p, s32 a, s32 b);
 extern "C" u8* lbl_8053AAF8;
+extern const f32 lbl_80543768;
+extern const f32 lbl_80543770;
+extern const f32 lbl_80543774;
+extern const f32 lbl_80543778;
+extern "C" void fn_80402E08(void* p, f32 a, f32 b);
 
 extern "C" void fn_803F1C18(u8* p) {
     fn_8043670C(*(void**)(p + 0x58), 1);
@@ -191,12 +196,12 @@ extern "C" void fn_803FC46C(u8* p) {
     if (state != 0) {
         switch (state) {
         case 1:
-            if (p[0x25d] < 0xf5) {
-                p[0x25d] += 10;
-            } else {
+            if (p[0x25d] >= 0xf5) {
                 p[0x25d] = 0xff;
                 p[0x25e] = 2;
                 (((T803FC46C*)p)->*lbl_804B0BDC[*(s32*)(p + 0x1cc)])();
+            } else {
+                p[0x25d] += 10;
             }
             break;
         case 2:
@@ -210,7 +215,7 @@ extern "C" void fn_803FC46C(u8* p) {
         }
         fn_8013B490(lbl_8053AB10);
         ((void(*)(void*, s32))(*(void***)(*(void**)(p + 0x5c)))[9])(*(void**)(p + 0x5c), p[0x25d]);
-        ((void(*)(void*, s32, f32, s32, f32, f32, s32, f32))(*(void***)(*(void**)(p + 0x5c)))[59])(*(void**)(p + 0x5c), 0, lbl_8054372C, 0, lbl_8054372C, lbl_8054374C, 0, lbl_80543750);
+        ((void(*)(void*, s32, f32, s32, s32, f32, f32, f32))(*(void***)(*(void**)(p + 0x5c)))[59])(*(void**)(p + 0x5c), 0, lbl_8054372C, 0, 0, lbl_8054372C, lbl_8054374C, lbl_80543750);
     }
 }
 
