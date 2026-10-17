@@ -77,8 +77,11 @@ struct Unk80458F04 {
     Unk80458F04Starter* m30;
     char pad34[0x50 - 0x34];
     f32 m50;
-    char pad54[0x84 - 0x54];
+    char pad54[0x80 - 0x54];
+    Unk80458F04Sound* m80;
     Unk80458F04Sound* m84;
+    char pad88[0x8B - 0x88];
+    u8 m8B;
 };
 
 extern "C" const f32 lbl_80543EB0;
@@ -431,6 +434,84 @@ extern "C" void fn_80458F9C(Unk80458F9C* self, u32 fadeout)
     self->m58 = 0;
     self->m5C = 0;
     self->m60 = 0;
+}
+
+extern "C" void fn_8045815C(void* this_, s32 mode);
+extern "C" u32 lbl_8053A25C;
+extern "C" void writePort__8JASTrackFUlUs(void* a, u32 b, u16 c);
+extern "C" void fn_80458FF0(u8* this_, s32 id, u8 param_3, u8 param_4) {
+    if (this_[0x4] != 0) {
+        return;
+    }
+    if (id == -1) {
+        return;
+    }
+    switch (id) {
+    case 0x100000c:
+    case 0x100001c:
+        *(s32*)(this_ + 0x70) = 0;
+        break;
+    case 0x1000019:
+        param_3 = 1;
+        break;
+    case 0x1000028:
+        this_[0x89] = 1;
+        param_3 = 1;
+        break;
+    }
+    if (this_[0x68] == 1 && param_3 == 0 && *(void**)(this_ + 0x80) != NULL) {
+        if (id == *(s32*)(this_ + 0x58) && *(s32*)(this_ + 0x64) == -1) {
+            return;
+        }
+        if (id == *(s32*)(this_ + 0x5c)) {
+            return;
+        }
+        if (*(void**)(this_ + 0x80) != NULL) {
+            ((JAISound*)*(void**)(this_ + 0x80))->stop(lbl_8053A25C);
+            *(s32*)(this_ + 0x64) = 0;
+        }
+        *(s32*)(this_ + 0x5c) = id;
+        *(s32*)(this_ + 0x60) = id;
+        this_[0x8d] = param_4;
+    } else {
+        u32 soundID = id;
+        ((Unk80458F04Starter*)*(void**)(this_ + 0x30))->startSound(&soundID, (Unk80458F04Sound**)(this_ + 0x80), 0);
+        fn_8045815C(this_, this_[0x8b]);
+        switch (*(s32*)(this_ + 0x5c)) {
+        case 0x100001a:
+            if (*(void**)(this_ + 0x80) != NULL) {
+                Unk80458408Obj* bank = ((Unk80458408Obj*)*(void**)(this_ + 0x80))->v6();
+                if (bank != NULL) {
+                    BOOL enabled = OSDisableInterrupts();
+                    for (s32 i = 0; i < 0x10; i++) {
+                        JASTrack* track = bank->v9(i);
+                        if (track != NULL) {
+                            if (i == 2 || i == 7) {
+                                track->mute(FALSE);
+                            } else {
+                                track->mute(TRUE);
+                            }
+                        }
+                    }
+                    OSRestoreInterrupts(enabled);
+                }
+            }
+            break;
+        }
+        *(f32*)(this_ + 0x4c) = lbl_80543EB4;
+        if (*(void**)(this_ + 0x80) != NULL) {
+            ((JAISoundParamsMove*)(*(char**)(this_ + 0x80) + 0x48))->moveVolume(*(f32*)(this_ + 0x4c) * *(f32*)(this_ + 0x54), 0);
+            if (param_4 != 0) {
+                u32 port = ((Unk80458408Obj*)*(void**)(this_ + 0x80))->v8();
+                writePort__8JASTrackFUlUs((void*)port, 0, 1);
+            }
+        }
+        *(s32*)(this_ + 0x58) = id;
+        *(s32*)(this_ + 0x60) = id;
+        *(s32*)(this_ + 0x5c) = 0;
+        *(s32*)(this_ + 0x64) = -1;
+    }
+    this_[0x68] = 1;
 }
 
 extern "C" void fn_80459274(u8* this_) {
