@@ -1189,6 +1189,16 @@ extern "C" u32 fn_801AFE98(u8* p1, u8* p2) {
     return ret;
 }
 
+extern "C" void* fn_801B09A4(void* self, void* src) {
+    *(u16*)self = *(u16*)((u8*)src + 8);
+    *(u32*)((u8*)self + 4) = 0;
+    *(void**)((u8*)self + 0x78) = fn_801B3658(src, *(u32*)((u8*)src + 0xc));
+    *(void**)((u8*)self + 0x7c) = fn_801B3640(src, *(u32*)((u8*)src + 0x10));
+    *(void**)((u8*)self + 0x80) = fn_801B3628(src, *(u32*)((u8*)src + 0x14));
+    *(void**)((u8*)self + 0x84) = fn_80174B40(src, *(u32*)((u8*)src + 0x18));
+    return self;
+}
+
 extern "C" s32 fn_801B0A2C(void* self) {
     u16 n = *(u16*)self;
     s32 cnt = 0;
@@ -1210,14 +1220,16 @@ extern "C" void* fn_801B0AF0(void* a, void* b, void* c, void* d);
 extern "C" void* fn_801B1F9C(void* a, void* b, void* c, void* d);
 extern "C" void* fn_801B1504(void* a, void* b, void* c, void* d);
 extern "C" void* fn_801B0A74(void* a, void* b, s32 sel, void* c, void* d) {
-    if (sel == 1) {
+    switch (sel) {
+    case 0:
+        b = fn_801B0AF0(a, b, c, d);
+        break;
+    case 1:
         b = fn_801B1F9C(a, b, c, d);
-    } else if (sel < 1) {
-        if (sel >= 0) {
-            b = fn_801B0AF0(a, b, c, d);
-        }
-    } else if (sel < 3) {
+        break;
+    case 2:
         b = fn_801B1504(a, b, c, d);
+        break;
     }
     return b;
 }
