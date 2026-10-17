@@ -509,6 +509,11 @@ extern "C" s32 fn_80124AF4(void* a, s32 idx, u8* out) {
     return *(s32*)(e + 0x40);
 }
 
+extern "C" void fn_801C0EEC(void*);
+extern "C" void fn_80124DAC(void* p) {
+    fn_801C0EEC(*(void**)((u8*)p + 0x28));
+}
+
 extern "C" void fn_80124E44(void* p, void** v)
 {
 	*(u32*)((u8*)*v + 0x40) = 0;
@@ -1063,6 +1068,10 @@ extern "C" BOOL fn_801321E4(void* param_1, void* param_2) {
         }
     }
     return 0;
+}
+
+extern "C" f32 fn_80132264(void* param_1, u8* param_2) {
+    return lbl_80301788 * *(f32*)((u8*)param_1 + 0x60) * *(f32*)(*(u8**)(*(u8**)(param_2 + 0xe4) + 0x20) + 0x144);
 }
 
 extern "C" void* fn_80132778(void* param_1, s16 param_2) {
