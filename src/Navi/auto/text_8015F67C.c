@@ -33,17 +33,6 @@ struct VObj_8015FBCC {
     virtual s32 vf7(void);
 };
 
-struct VObjT_8015FBCC {
-    virtual void vf0(void);
-    virtual void vf1(void);
-    virtual void vf2(void);
-    virtual void vf3(void);
-    virtual void vf4(void);
-    virtual void vf5(void);
-    virtual s32 vf6(void);
-    virtual s32 vf7(void);
-};
-
 extern "C" void fn_8015D050(void*);
 extern "C" void fn_80166B58(void*, void*);
 extern "C" void* fn_8015F67C(void* param_1)
