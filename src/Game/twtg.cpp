@@ -258,6 +258,108 @@ struct TwtgRandom {
     }
 };
 
+extern "C" void fn_80313D7C(char* p) {
+    TwtgBox b;
+    JGeometry::TVec3f v;
+    f32 dist;
+    twtgUpdateDir(p, v, dist);
+    b.min.x = *(f32*)(p + 0x258);
+    b.min.y = *(f32*)(p + 0x25c);
+    b.max.x = *(f32*)(p + 0x260);
+    b.max.y = *(f32*)(p + 0x264);
+    b.min.x += *(f32*)(p + 0xc);
+    b.min.y += *(f32*)(p + 0x10);
+    b.max.x += *(f32*)(p + 0xc);
+    b.max.y += *(f32*)(p + 0x10);
+    s32 slot;
+    if (*(s32*)(p + 0x234) == 0) {
+        s32 n = fn_80138A30(lbl_8053AAF8);
+        switch (*(s32*)(p + 0x238)) {
+        case 0:
+            fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
+            slot = fn_8022FD8C(*(void**)(p + 0x198));
+            if (slot >= 0 && fn_802300EC()) {
+                void* room = *(void**)(p + 0x198);
+                s32 player = *(s32*)(p + 4);
+                if (fn_8038AD24(slot, 0x4db, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {
+                    *(s32*)(p + 0x254) = slot;
+                    *(s32*)(p + 0x268) = 0x4db;
+                    *(s32*)(p + 0x234) = 1;
+                }
+            }
+            break;
+        case 1:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4cf);
+            break;
+        case 2: {
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4dc);
+            s32 i;
+            for (i = 0; i < n; i++) {
+                if (twtgPlayerFlag(i)) {
+                    break;
+                }
+            }
+            if (i >= n) {
+                *(s32*)(p + 0x238) = 7;
+            }
+            break;
+        }
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            while (*(s32*)(p + 0x238) < 7) {
+                if (twtgPlayerFlag(*(s32*)(p + 0x238) - 3)) {
+                    break;
+                }
+                (*(s32*)(p + 0x238))++;
+            }
+            if (*(s32*)(p + 0x238) < n + 3) {
+                twtgAsk(p, *(s32*)(p + 0x238) + 0x4d1);
+                break;
+            }
+            /* fall through */
+        case 7:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            if (twtgAsk(p, 0x4dd)) {
+                s32 i;
+                for (i = 0; i < n; i++) {
+                    if (twtgPlayerFlag(i)) {
+                        fn_8043D874(lbl_8053AED0, i, -0x12c, 0);
+                    }
+                }
+                *(s32*)(p + 0x238) = 8;
+            }
+            break;
+        case 8:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4de);
+            break;
+        default:
+            *(s32*)(p + 0x230) = 4;
+            *(s32*)(p + 0x238) = 5;
+            *(s32*)(p + 0x254) = 0;
+            *(s32*)(p + 0x234) = 0;
+            break;
+        }
+    } else if (*(s32*)(p + 0x234) == 1) {
+        fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        if (fn_803865B8(*(s32*)(p + 0x254))) {
+            if (*(s32*)(p + 0x238) < 8) {
+                (*(s32*)(p + 0x238))++;
+                *(s32*)(p + 0x234) = 0;
+            } else {
+                *(s32*)(p + 0x230) = 4;
+                *(s32*)(p + 0x238) = 0;
+                *(s32*)(p + 0x234) = 0;
+            }
+        }
+    }
+}
+
 extern "C" void fn_803142E4(char* p) {
     TwtgBox b;
     JGeometry::TVec3f v;
@@ -295,7 +397,7 @@ extern "C" void fn_803142E4(char* p) {
             fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
             s32 n = fn_80138A30(lbl_8053AAF8);
             f32 r = ((TwtgRandom*)(lbl_8053AAF8 + 0xb4))->get();
-            s32 i = (s32)((f32)n * r) & 3;
+            s32 i = (s32)(r * n) & 3;
             fn_803894BC(*(s32*)(p + 0x254), i + 1);
             if (twtgAsk(p, 0x4da)) {
                 fn_8043D874(lbl_8053AED0, i, 300, 0);
@@ -563,6 +665,106 @@ extern "C" void fn_803146DC(char* p) {
     }
 }
 
+extern "C" void fn_80314B1C(char* p) {
+    TwtgBox b;
+    JGeometry::TVec3f v;
+    f32 dist;
+    s32 n;
+    s32 slot;
+    s32 k;
+    twtgUpdateDir(p, v, dist);
+    b.min.x = *(f32*)(p + 0x258);
+    b.min.y = *(f32*)(p + 0x25c);
+    b.max.x = *(f32*)(p + 0x260);
+    b.max.y = *(f32*)(p + 0x264);
+    b.min.x += *(f32*)(p + 0xc);
+    b.min.y += *(f32*)(p + 0x10);
+    b.max.x += *(f32*)(p + 0xc);
+    b.max.y += *(f32*)(p + 0x10);
+    if (*(s32*)(p + 0x234) == 0) {
+        n = fn_80138A30(lbl_8053AAF8);
+        switch (*(s32*)(p + 0x238)) {
+        case 0:
+            fn_8022FEB8(&b, *(s32*)(p + 4), *(void**)(p + 0x198), 0, 0);
+            slot = fn_8022FD8C(*(void**)(p + 0x198));
+            if (slot >= 0 && fn_802300EC()) {
+                void* room = *(void**)(p + 0x198);
+                s32 player = *(s32*)(p + 4);
+                if (fn_8038AD24(slot, 0x4ce, room, player, *(JGeometry::TVec3f*)(p + 0xc), 0x110)) {
+                    *(s32*)(p + 0x254) = slot;
+                    *(s32*)(p + 0x268) = 0x4ce;
+                    *(s32*)(p + 0x234) = 1;
+                }
+            }
+            break;
+        case 1:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4cf);
+            break;
+        case 2:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4d3);
+            for (k = 0; k < n; k++) {
+                if (twtgPlayerFlag(k)) {
+                    break;
+                }
+            }
+            if (k >= n) {
+                *(s32*)(p + 0x238) = 7;
+            }
+            break;
+        case 3:
+        case 4:
+        case 5:
+        case 6:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            while (*(s32*)(p + 0x238) < 7) {
+                if (twtgPlayerFlag(*(s32*)(p + 0x238) - 3)) {
+                    break;
+                }
+                *(s32*)(p + 0x238) = *(s32*)(p + 0x238) + 1;
+            }
+            if (*(s32*)(p + 0x238) < n + 3) {
+                twtgAsk(p, *(s32*)(p + 0x238) + 0x4d1);
+                break;
+            }
+        case 7:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            if (twtgAsk(p, 0x4d8)) {
+                for (k = 0; k < 4; k++) {
+                    if (twtgPlayerFlag(k)) {
+                        fn_8043D874(lbl_8053AED0, k, 0x12c, 0);
+                    }
+                }
+                *(s32*)(p + 0x238) = 8;
+            }
+            break;
+        case 8:
+            fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+            twtgAsk(p, 0x4d9);
+            break;
+        default:
+            *(s32*)(p + 0x230) = 4;
+            *(s32*)(p + 0x238) = 5;
+            *(s32*)(p + 0x254) = 0;
+            *(s32*)(p + 0x234) = 0;
+            break;
+        }
+    } else if (*(s32*)(p + 0x234) == 1) {
+        fn_8022FF8C(*(s32*)(p + 0x254), &b, *(s32*)(p + 4), *(void**)(p + 0x198), 1, 0);
+        if (fn_803865B8(*(s32*)(p + 0x254))) {
+            if (*(s32*)(p + 0x238) < 8) {
+                *(s32*)(p + 0x238) = *(s32*)(p + 0x238) + 1;
+                *(s32*)(p + 0x234) = 0;
+            } else {
+                *(s32*)(p + 0x230) = 4;
+                *(s32*)(p + 0x238) = 0;
+                *(s32*)(p + 0x234) = 0;
+            }
+        }
+    }
+}
+
 extern "C" s32 fn_80236228(s32 i);
 extern "C" void fn_80458F04(void* mgr, u32 id);
 extern "C" void fn_8038911C(s32 slot);
@@ -587,9 +789,12 @@ extern "C" void fn_80315864(char* p) {
         switch (*(s32*)(p + 0x238)) {
         case 0:
             if (twtgAsk(p, 0x486)) {
-                for (s32 k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
-                    TwtgOrd* o = (TwtgOrd*)p;
-                    for (s32 j = 0; j < k; j++) {
+                TwtgOrd* o;
+                s32 j;
+                s32 k;
+                for (k = fn_80138A30(lbl_8053AAF8) - 1; k > 0; k--) {
+                    o = (TwtgOrd*)p;
+                    for (j = 0; j < k; j++) {
                         s32 nv = fn_80236228(o->order[1]);
                         if (fn_80236228(o->order[0]) < nv) {
                             s32 t = o->order[0];
