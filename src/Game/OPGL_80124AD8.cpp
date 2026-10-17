@@ -127,10 +127,7 @@ extern "C" void fn_80124BC0(void* this_) {
 extern "C" s32 fn_80123D88(u8* self);
 extern "C" s32 fn_80124BF0(u8* self) {
     s32 val = *(s32*)(self + 0x33c);
-    if (val >= 6) {
-        return 0;
-    }
-    if (val > 3) {
+    if (val > 3 && val < 6) {
         return fn_80123D88(self);
     }
     return 0;
@@ -311,14 +308,16 @@ extern "C" bool fn_801257A8(void* param_1)
 
 extern "C" s32 fn_80125830(void* self) {
     s32 v = *(s32*)((char*)self + 0x33c);
-    if (v >= 9) {
-        goto ret0;
-    }
-    if (v >= 4) {
+    switch (v) {
+    case 4:
+    case 5:
+    case 6:
+    case 7:
+    case 8:
         return 1;
+    default:
+        return 0;
     }
-ret0:
-    return 0;
 }
 
 extern "C" void fn_80124448(void*);
