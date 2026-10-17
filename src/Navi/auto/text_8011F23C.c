@@ -608,6 +608,32 @@ extern "C" void fn_80124674(void* self, s32 idx, u32 a, u32 b, u32 c, u32 d, u32
     fn_801BDE1C(p, 1, 1);
 }
 
+extern "C" s32 fn_801246CC(void* self, s32 idx, u8* out) {
+    u8* p = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
+    if (*(u32*)(p + 0x24) != 1) {
+        return -1;
+    }
+    if (*(u8*)(p + 0x3c) == 0) {
+        if (*(s32*)(p + 0x40) == 1) {
+            if (out != 0) {
+                *out = 0xff;
+            }
+        } else if (out != 0) {
+            fn_8013F0A8(idx, out);
+        }
+        return -2;
+    } else {
+        if (*(s32*)(p + 0x40) == 0) {
+            if (out != 0) {
+                *out = 100;
+            }
+        } else if (out != 0) {
+            *out = 0;
+        }
+        return *(s32*)(p + 0x40);
+    }
+}
+
 extern "C" void fn_80124788(void* self, s32 idx, u32 a, u32 b) {
     u8* e = (u8*)lbl_802FF370 + idx * 0x5c + 0x4c60;
     *(u32*)(e + 0x4c) = a;
