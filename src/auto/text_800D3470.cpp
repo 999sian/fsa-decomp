@@ -14,6 +14,13 @@ struct Vtable800D8248 {
 #include "types.h"
 #include "JSystem/J3D/J3DTypes.h"
 
+struct DDE5CEntry {
+    u8 pad[0x60];
+    u8 unk_hi : 4;
+    u8 unk_b : 2;
+    u8 unk_a : 2;
+};
+
 struct Unk800DC290Src {
     virtual void m2() = 0;
     virtual void m3() = 0;
@@ -411,11 +418,10 @@ void J3DTevBlock4::initialize()
 	*(u64*)&mColors[0] = *(u64*)&j3dDefaultTevColor;
 	*(u64*)&mColors[1] = *(u64*)&j3dDefaultTevColor;
 	*(u64*)&mColors[2] = *(u64*)&j3dDefaultTevColor;
-	u32 kcolor = *(u32*)&j3dDefaultTevKColor;
-	mKColors[0] = kcolor;
-	mKColors[1] = kcolor;
-	mKColors[2] = kcolor;
-	mKColors[3] = kcolor;
+	mKColors[0] = (u32)*(u32*)&j3dDefaultTevKColor;
+	mKColors[1] = (u32)*(u32*)&j3dDefaultTevKColor;
+	mKColors[2] = (u32)*(u32*)&j3dDefaultTevKColor;
+	mKColors[3] = (u32)*(u32*)&j3dDefaultTevKColor;
 	mTexNoOffset = 0;
 	mRegOffset = 0;
 }
@@ -901,18 +907,19 @@ extern "C" void fn_800D87B4(u8* self) {
 }
 
 extern "C" void fn_800D8884(u8* p) {
-    u8* addr = p;
-    u8* saved;
-    u8 n;
-    u8* q;
-    u8* r;
     u16* s;
+    u8* r;
+    u8* q;
     u32 i;
+    u8 n;
+    u8* saved;
+    u8* addr;
 
     __GDCurrentDL->pDisplayListData = __GDCurrentDL->begin + *(u32*)(p + 4);
-    n = p[0x20];
     saved = __GDCurrentDL->pDisplayListData;
+    n = p[0x20];
 
+    addr = p;
     for (i = 0; i < 8; i++) {
         if (*(u16*)(addr + 8) != 0xffff) {
             loadTexNo__FUlRCUs(i, (u16*)(addr + 8));
@@ -1692,9 +1699,9 @@ extern "C" void fn_800DD230(J3DPEBlockFull* this_, J3DPEBlock* src) {
 }
 
 extern "C" void fn_800DD504(u8* this_, const Mtx mtx) {
-    u32 i = 0;
-    u8* p = this_;
     u8* gen = this_;
+    u8* p = this_;
+    u32 i = 0;
     for (; i < 8; i++) {
         if (*(J3DTexMtx**)(p + 0x38) != nullptr) {
             *(u16*)(gen + 0xc) = gen[0xa];
@@ -1941,8 +1948,8 @@ extern "C" u32 fn_800DDA50(void) {
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
     u16 w = *(u16*)src;
     u8 b2 = src[2];
-    *(u16*)(this_ + 0x4) = w;
     u8 b3 = src[3];
+    *(u16*)(this_ + 0x4) = w;
     *(u8*)(this_ + 0x6) = b2;
     *(u8*)(this_ + 0x7) = b3;
 }
