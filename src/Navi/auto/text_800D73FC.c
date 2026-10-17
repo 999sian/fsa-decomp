@@ -162,6 +162,17 @@ extern "C" void fn_800EA4BC(void* param_1) {
     }
 }
 
+extern "C" void fn_800EA564(void* param_1) {
+    u8* p = (u8*)param_1;
+    u8 v = p[0xb14];
+    if (v != 0) {
+        p[0xb14] = v - 1;
+        return;
+    }
+    *(u32*)(lbl_802BB0FC + 0x100) |= 0x4000000;
+    p[0xa76] = 0;
+}
+
 extern "C" void fn_800EA848(u8* p) {
     if (p[0xb14] != 0) {
         p[0xb14]--;
