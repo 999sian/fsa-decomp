@@ -6,12 +6,16 @@ volatile unsigned long __SIRegs[64] : 0xCC006400;
 extern "C" int OSDisableInterrupts(void);
 extern "C" int OSRestoreInterrupts(int level);
 extern unsigned long Type_8029D098[];
+#include "dolphin/types.h"
+#include "dolphin/os.h"
+
 extern int Si_8029D084[];
+extern int Packet_802F77D0[];
 extern "C" int fn_801C42F4(void) {
-    if (*(int*)&Si_8029D084 != -1) {
-        return 1;
+    if (Si_8029D084[0] == -1) {
+        return 0;
     }
-    return 0;
+    return 1;
 }
 
 extern "C" unsigned long fn_801C4EA8(int chan) {
@@ -38,5 +42,12 @@ extern "C" void fn_801C4F24(int chan, unsigned long val) {
 
 extern "C" void fn_801C4F38(void) {
     __SIRegs[14] = (int)0x80000000;
+}
+
+extern "C" void SIGetType(void);
+extern "C" void fn_801C59E4(void);
+extern "C" void fn_801C5B30(void) {
+    SIGetType();
+    fn_801C59E4();
 }
 
