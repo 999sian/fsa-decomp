@@ -156,6 +156,19 @@ extern "C" int fn_801607C0(void* self, void* a, void* b, u32 id, void* name) {
     return 0;
 }
 
+extern "C" void fn_80160910(u8* p) {
+    if (*(void**)(p + 0x44) != NULL && p[0x3c] != 1) {
+        u8* entry = *(u8**)(p + 0x4c);
+        for (u32 i = 0; i < *(u32*)(*(u8**)(p + 0x44) + 8); i++) {
+            if (*(void**)(entry + 0x10) != NULL) {
+                fn_80159C6C(*(void**)(entry + 0x10), *(s32*)(p + 0x38));
+                *(void**)(entry + 0x10) = NULL;
+            }
+            entry += 0x14;
+        }
+    }
+}
+
 extern "C" BOOL fn_801609A8(u8* a, void* b) {
     u8* p = (u8*)fn_801615C4();
     if (p == NULL) {
@@ -203,6 +216,32 @@ extern "C" u16 fn_80160A78(void* a, char* p) {
     return 0;
 }
 
+extern "C" void* fn_80159E8C(void* ptr);
+extern "C" void* fn_80160044(void*, void*, void*, u16);
+extern "C" void* fn_8015A9A8(int, void*, int);
+extern void* lbl_802FF544;
+extern void* lbl_802FF540;
+extern void* lbl_802FF5F0;
+extern "C" u32 fn_80160AD8(void* self, char* p) {
+    u8* r;
+    if (*p == '/') {
+        p++;
+        if (*p == 0) {
+            p = NULL;
+        }
+        r = (u8*)fn_80160D88(self, p, 0);
+    } else {
+        r = (u8*)fn_80160D88(self, p, lbl_802FF5F8);
+    }
+    if (r != NULL) {
+        void* obj = fn_8015A9A8(0x24, lbl_802FF540, 0);
+        if (obj != NULL) {
+            return (u32)fn_80160044(obj, self, *(void**)(r + 0xc), *(u16*)(r + 0xa));
+        }
+    }
+    return 0;
+}
+
 extern "C" void fn_8015FC28(void*);
 extern "C" u32 fn_80160B84(void* self) {
     u32* r = (u32*)fn_801614F0(self);
@@ -238,6 +277,32 @@ extern "C" void* fn_80160CDC(void* param_1, s16 param_2) {
         }
     }
     return param_1;
+}
+
+extern "C" void fn_80161678(u16* p, void* s);
+extern "C" int fn_801E6578(void* a, void* b);
+extern "C" void* fn_80161518(void* self, void* name) {
+    u16 hash[2];
+    char buf[272];
+    u8* entry = *(u8**)((u8*)self + 0x4c);
+    u8* base;
+    u8* table;
+    u32 i;
+    fn_80161678(hash, name);
+    base = *(u8**)((u8*)self + 0x54);
+    table = *(u8**)((u8*)self + 0x44);
+    for (i = 0; i < *(u32*)(table + 8); i++) {
+        u32 off = *(u32*)(entry + 4) & 0xffffff;
+        u8 ok = 0;
+        if (hash[0] == *(u16*)(entry + 2)) {
+            ok = fn_801E6578(base + off, buf) == 0;
+        }
+        if (ok) {
+            return entry;
+        }
+        entry += 0x14;
+    }
+    return 0;
 }
 
 extern "C" void fn_80160C34(void*, void*, int);
