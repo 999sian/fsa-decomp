@@ -532,10 +532,7 @@ extern "C" void fn_800FA944(char* this_) {
         }
         fn_801F37AC(this_, 0, this_ + 0xc, 3, 0, -1);
         fn_801F0E34(this_, 0x40005, 0);
-        WrtcVec v;
-        v.x = 0.0f;
-        v.y = 0.0f;
-        v.z = 0.0f;
+        WrtcVec v(0.0f, 0.0f, 0.0f);
         *(WrtcVec*)(this_ + 0x3c) = v;
         if (*(u8*)(this_ + 0x2ad) != 0) {
             if (*(s32*)(this_ + 0x230) != 9) {
@@ -619,9 +616,7 @@ extern "C" u8 fn_801F2FAC(void* this_);
 extern "C" void fn_8013CC50(s32 id, void* p, f32 f, s32 a, s32 b, s32 c, s32 d, s32 e, s32 g);
 extern "C" void fn_800FB070(u8* this_) {
     *(f32*)(this_ + 0x44) -= 0.3f;
-    *(f32*)(this_ + 0xc) += *(f32*)(this_ + 0x3c);
-    *(f32*)(this_ + 0x10) += *(f32*)(this_ + 0x40);
-    *(f32*)(this_ + 0x14) += *(f32*)(this_ + 0x44);
+    *(JGeometry::TVec3<f32>*)(this_ + 0xc) += *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
     if (*(f32*)(this_ + 0x14) <= 0.0f) {
         *(f32*)(this_ + 0x14) = 0.0f;
         *(f32*)(this_ + 0x44) = 0.0f;
@@ -635,15 +630,18 @@ extern "C" void fn_800FB070(u8* this_) {
         *(s32*)(this_ + 0xb0) = 4;
     }
     f32 v = *(f32*)(this_ + 0x26c);
-    *(f32*)(this_ + 0x60) = -26.0f * v;
-    *(f32*)(this_ + 0x64) = -50.0f * v;
-    *(f32*)(this_ + 0x68) = 26.0f * v;
+    f32 a = -26.0f * v;
+    f32 b = -50.0f * v;
+    f32 c = 26.0f * v;
+    *(f32*)(this_ + 0x60) = a;
+    *(f32*)(this_ + 0x64) = b;
+    *(f32*)(this_ + 0x68) = c;
     *(f32*)(this_ + 0x6c) = 0.0f;
-    *(f32*)(this_ + 0x80) = -26.0f * v;
-    *(f32*)(this_ + 0x84) = -50.0f * v;
-    *(f32*)(this_ + 0x88) = 26.0f * v;
+    *(f32*)(this_ + 0x80) = a;
+    *(f32*)(this_ + 0x84) = b;
+    *(f32*)(this_ + 0x88) = c;
     *(f32*)(this_ + 0x8c) = 0.0f;
-    if (*(s32*)(this_ + 0x268) != 0) {
+    if ((u32)*(s32*)(this_ + 0x268) != 0) {
         *(s32*)(this_ + 0x268) += 0x2000;
         if ((u32)*(s32*)(this_ + 0x268) > 0x10000) {
             *(s32*)(this_ + 0x268) = 0;
@@ -666,7 +664,11 @@ extern "C" void fn_800FB070(u8* this_) {
         *(s32*)(this_ + 0x264) = 0;
         if (!(*(s32*)(this_ + 0x238) & 8)) {
             f32 r = (f32)*(s32*)(this_ + 0x108) / 480.0f;
-            *(u8*)(this_ + 0x257) = r < 0.4f ? 3 : 2;
+            if (r < 0.4f) {
+                *(u8*)(this_ + 0x257) = 3;
+            } else {
+                *(u8*)(this_ + 0x257) = 2;
+            }
         }
         fn_801F0E34(this_, 0x4002b, 0);
         return;
@@ -682,7 +684,7 @@ extern "C" void fn_800FB070(u8* this_) {
         fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x4eb, 0, 0, 0, 0, 1);
         fn_8013CC50(*(s32*)(this_ + 4), this_ + 0xc, 1.0f, 0x4ec, 0, 0, 0, 0, 1);
         if (*(s32*)(this_ + 0x108) <= 10) {
-            ((void (*)(void*))((void**)*(void**)this_)[9])(this_);
+            ((ActorVT*)this_)->slot9();
         }
     }
 }
@@ -1006,8 +1008,8 @@ extern "C" void fn_800FCCCC(void* this_) {
             *(f32*)(mgr + 0x28c) = lbl_8053C074;
         }
         u8* o = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-        f32 y = *(f32*)(p + 0x10) - lbl_8053BFF8;
         f32 x = *(f32*)(p + 0xc);
+        f32 y = *(f32*)(p + 0x10) - lbl_8053BFF8;
         if (o[0x7f5] == 0) {
             o[0x7f4] = 1;
             *(s32*)(o + 0x7f8) = 4;
@@ -1033,8 +1035,8 @@ extern "C" void fn_800FCCCC(void* this_) {
             *(f32*)(mgr + 0x28c) = lbl_8053C074;
         }
         u8* o = *(u8**)((u8*)lbl_8053AB10 + 0x24);
-        f32 y = *(f32*)(p + 0x10) - lbl_8053BFF8;
         f32 x = *(f32*)(p + 0xc);
+        f32 y = *(f32*)(p + 0x10) - lbl_8053BFF8;
         if (o[0x7f5] == 0) {
             o[0x7f4] = 1;
             *(s32*)(o + 0x7f8) = 4;
@@ -1043,8 +1045,9 @@ extern "C" void fn_800FCCCC(void* this_) {
             *(f32*)(o + 0x804) = 0.0f;
             o[0x7f6] = 0;
         }
-        *(f32*)(p + 0x25c) = *(f32*)(p + 0x25c) + lbl_8053C00C;
-        if (*(f32*)(p + 0x25c) < lbl_8053BFFC) {
+        f32 v = *(f32*)(p + 0x25c) + lbl_8053C00C;
+        *(f32*)(p + 0x25c) = v;
+        if (*(f32*)(p + 0x25c) <= lbl_8053BFFC) {
             *(f32*)(p + 0x25c) = lbl_8053BFFC;
         }
         *(u16*)(p + 0x260) = *(u16*)(p + 0x260) + 0x200;
