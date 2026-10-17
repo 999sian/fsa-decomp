@@ -38,6 +38,12 @@ extern "C" void fn_801EF830(s32 idx, f32* pos, void* args, u32 mask, void* lbl, 
 extern "C" void fn_802F86CC(void* mgr, f32* pos, void* name, u32 id, void* args, f32 a, f32 b);
 extern char lbl_8046A384[];
 extern void* lbl_8053AB10;
+extern "C" void* fn_801F856C();
+extern "C" s32 fn_801F82CC(void* mgr, u8* this_, u8 kind, f32 radius);
+extern "C" void* fn_801F666C(void* mgr, s32 id);
+extern "C" u8 fn_801CC8E4(void* actor);
+extern "C" const f32 lbl_8053F9D4;
+extern "C" const f32 lbl_8053F9D8;
 struct FobrVec { f32 x, y, z; };
 
 // ---- Fobr_ctor_8020BE40.cpp ----
@@ -84,6 +90,7 @@ extern "C" const f32 lbl_8053F9C4;
 extern "C" void fn_8020B434(u8* this_) {
     if (*(s32*)(this_ + 0x248) == 1) {
         fn_801F0E34(this_, 0x400d8, 0);
+        const JMathSinCos* tbl = sincosTable___5JMath;
         f32 a = lbl_8053F9B8;
         f32 b = lbl_8053F9BC;
         *(f32*)(this_ + 0x60) = a;
@@ -94,10 +101,10 @@ extern "C" void fn_8020B434(u8* this_) {
         *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
         *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
         *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
-        u32 idx = (((*(u16*)(this_ + 0x94) & 3) << 14) - 0x6000) >> 2 & 0x3ff8;
+        u32 idx = (((*(u16*)(this_ + 0x94) & 3) << 14) - 0x6000) >> 5 & 0x7ff;
         f32 s = lbl_8053F9C0;
-        *(f32*)(this_ + 0x3c) = *(f32*)((u8*)sincosTable___5JMath + idx) * s;
-        *(f32*)(this_ + 0x40) = *(f32*)((u8*)sincosTable___5JMath + idx + 4) * s;
+        *(f32*)(this_ + 0x3c) = tbl[idx].first * s;
+        *(f32*)(this_ + 0x40) = tbl[idx].second * s;
         *(f32*)(this_ + 0x44) = lbl_8053F9C4;
         *(u32*)(this_ + 0x24c) = 0;
         *(u32*)(this_ + 0x248) = 2;
@@ -331,8 +338,9 @@ extern "C" void fn_8020BD00(void* this_) {
     s32 kind;
     char* record;
     f32* r;
-    f32 sumX;
     f32 sumY;
+    f32 k;
+    f32 sumX;
 
     fn_801D0ED0(this_);
     *(f32*)(p + 0x60) = lbl_8053F9B8;
@@ -362,10 +370,11 @@ extern "C" void fn_8020BD00(void* this_) {
     kind = *(s32*)(p + 0x4);
     record = (char*)fn_802D6A9C();
     r = (f32*)((kind < 8) ? (record + 0xcc) : (record + 0xdc));
-    sumX = r[0] + r[2];
+    k = lbl_8053F9DC;
     sumY = r[1] + r[3];
-    *(f32*)(p + 0xc) = lbl_8053F9DC * sumX;
-    *(f32*)(p + 0x10) = lbl_8053F9DC * sumY;
+    sumX = r[0] + r[2];
+    *(f32*)(p + 0xc) = k * sumX;
+    *(f32*)(p + 0x10) = k * sumY;
     *(f32*)(p + 0x14) = lbl_8053F9C4;
 }
 
