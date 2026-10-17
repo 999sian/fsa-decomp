@@ -11,6 +11,7 @@ extern "C" void* __OSSetInterruptHandler(s32 interrupt, void (*handler)(void*, v
 extern "C" void OSInitThreadQueue(void* queue);
 extern "C" void __OSUnmaskInterrupts(u32 mask);
 extern "C" u8 lbl_802F7D60[];
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
 extern void* lbl_802FFA4C;
 extern "C" s32 fn_801D61F8(void* self);
 extern "C" s32 fn_801D4C78(void* self);
