@@ -869,6 +869,33 @@ extern "C" u32 fn_8005B2C8(void* a, u32 b, void* c, u32 d, void* e) {
     return 0x4d0;
 }
 
+extern char lbl_8027D56C[];
+extern "C" double fn_801E9FC0(double a, double b);
+extern const double lbl_803002B8;
+extern const double lbl_803002C0;
+extern "C" u32 fn_8005B32C(u8* p) {
+    BOOL bad;
+    u8* q = *(u8**)(p + 0x18);
+    u32 v;
+    if (((u32)q & 0xF0000000) != 0x80000000) {
+        fn_8005C330((const char*)1, lbl_8027D36C, lbl_8027D56C, q);
+        bad = TRUE;
+    } else {
+        bad = FALSE;
+    }
+    if (bad) {
+        return 24000;
+    }
+    v = (u32)(fn_801E9FC0(lbl_803002B8, *(f32*)(p + 0x20) / lbl_803002C0) * (double)*(u32*)(q + 8));
+    if (v > 48000) {
+        v = 48000;
+    }
+    if (v < 12000) {
+        v = 12000;
+    }
+    return v;
+}
+
 extern u8 lbl_802C0A30[];
 extern "C" void fn_8005BB28(u8* p);
 extern "C" void fn_8005B400(void) {
