@@ -130,10 +130,9 @@ extern "C" void* fn_80165D04(void* param_1) {
 extern "C" void* fn_80165D44(void* param_1, s16 param_2) {
     if (param_1 != nullptr) {
         if (*((u8*)param_1 + 0x4c) == 1) {
-            void* obj = *(void**)((u8*)param_1 + 0x28);
+            VObj_80165D44* obj = *(VObj_80165D44**)((u8*)param_1 + 0x28);
             if (obj != nullptr) {
-                void (**vt)(void*, s32) = *(void (***)(void*, s32))obj;
-                vt[2](obj, 1);
+                obj->v0(1);
             }
         }
         if (param_1 != nullptr) {
