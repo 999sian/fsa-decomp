@@ -77,6 +77,12 @@ struct J3DColorChanInfo {
 };
 extern J3DColorChanInfo j3dDefaultColorChanInfo;
 
+struct J3DMaterialInitData {
+    u8 _00[0x0C];
+    u16 mColorChanControlIndex[4]; // _0C
+    u8 _14[0x14C - 0x14];
+};
+
 struct J3DColorChan {
     u16 mChanCtrl;
 
