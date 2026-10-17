@@ -15,6 +15,8 @@ class JKRHeap;
 class WaveController {
 public:
 	WaveController(s32 a, s32 b, s32 c);
+private:
+	unsigned char pad[0x5c];
 };
 extern void* lbl_804A5800[];
 extern u8 lbl_80529DEC[];
@@ -898,6 +900,65 @@ extern "C" ActorPoolFull* fn_801F8F6C(ActorPoolFull* self, s16 freeFlag) {
         }
     }
     return self;
+}
+
+extern "C" u8* fn_801F9078(u8* self, JKRHeap* heap) {
+	*(void***)self = lbl_804A5800;
+	bool flag = false;
+	s32 st = *(s32*)(lbl_80529DEC + 0x118);
+	if ((st == 9 && *(s32*)(lbl_80529DEC + 0x11c) == 3) || (st == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 2)) {
+		flag = true;
+	}
+	u32 n = flag ? 0x200 : 0x400;
+	*(char**)(self + 4) = fn_80085A10(n, (n << 10) + 0x1a8, 0x20, heap, 0);
+	u32* p = (u32*)self;
+	s32 zero = 0;
+	for (s32 i = 0x20; i > 0; i--) {
+		p[2] = zero;
+		p[3] = zero;
+		p[4] = zero;
+		p[5] = zero;
+		p[6] = zero;
+		p[7] = zero;
+		p[8] = zero;
+		p[9] = zero;
+		p[10] = zero;
+		p[11] = zero;
+		p[12] = zero;
+		p[13] = zero;
+		p[14] = zero;
+		p[15] = zero;
+		p[16] = zero;
+		p[17] = zero;
+		p[18] = zero;
+		p[19] = zero;
+		p[20] = zero;
+		p[21] = zero;
+		p[22] = zero;
+		p[23] = zero;
+		p[24] = zero;
+		p[25] = zero;
+		p[26] = zero;
+		p[27] = zero;
+		p[28] = zero;
+		p[29] = zero;
+		p[30] = zero;
+		p[31] = zero;
+		p[32] = zero;
+		p[33] = zero;
+		p += 32;
+	}
+	lbl_804CABD8[0] = 0.0f;
+	lbl_804CABD8[1] = 0.0f;
+	lbl_804CABD8[2] = 0.0f;
+	for (u32 i = 0; i < 0x400; i++) {
+		void** slot = (void**)(self + 0x100c + i * 4);
+		*slot = new (heap, 0) WaveController((s32)lbl_804CABD8, 0, 8);
+		fn_80456120(*slot);
+	}
+	*(void**)(self + 0x200c) = new (heap, 0) WaveController(0, 0, 0x18);
+	fn_801F62AC(self, heap);
+	return self;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
