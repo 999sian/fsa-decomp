@@ -721,11 +721,13 @@ extern "C" void fn_8008E488(void *param_1, u32 param_2, u32 param_3, u32 param_4
 
 extern "C" void fn_8008E530(int param_1, int param_2, u32 param_3)
 {
-    if (!(param_2 < 0)) {
+    if (param_2 >= 0) {
         u32 val1c = *(u32 *)((u32)param_1 + 0x1c);
-        if (!(param_3 < val1c)) {
-            *(u8 *)((u32)param_1 + 0x11) = 1;
-            *(u8 *)((u32)(param_1 + param_2) + 0x48) = 1;
+        if (param_3 >= val1c) {
+            u8* addr = (u8*)param_1;
+            addr[0x11] = 1;
+            addr += param_2;
+            addr[0x48] = 1;
             u32 func_ptr = *(u32 *)((u32)param_1 + 0x4c);
             if (func_ptr != 0) {
                 u32 arg = *(u32 *)((u32)param_1 + 0x50);
