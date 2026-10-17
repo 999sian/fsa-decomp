@@ -2017,8 +2017,7 @@ extern "C" u8* fn_801A38CC(u8* p, s32 i) {
 
 extern "C" void fn_801A38E0(u8* p, s32 i, s16* src) {
     s32 off = i << 3;
-    s16 v0 = src[0];
-    *(s16*)(p + off + 0xda) = v0;
+    *(s16*)(p + off + 0xda) = src[0];
     *(s16*)(p + off + 0xdc) = src[1];
     *(s16*)(p + off + 0xde) = src[2];
     *(s16*)(p + off + 0xe0) = src[3];
@@ -2209,11 +2208,12 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    u8* d = p + (i << 3);
-    *(s16*)(d + 0x42) = src[0];
-    *(s16*)(d + 0x44) = src[1];
-    *(s16*)(d + 0x46) = src[2];
-    *(s16*)(d + 0x48) = src[3];
+    s16* d = (s16*)(p + (i << 3));
+    s16 v0 = src[0];
+    d[0x21] = v0;
+    d[0x22] = src[1];
+    d[0x23] = src[2];
+    d[0x24] = src[3];
 }
 
 extern "C" s32 fn_801A3D80(s32 p, s32 i) {
@@ -2396,7 +2396,16 @@ extern "C" int fn_801A4154(int param_1, int param_2) {
 }
 
 extern "C" void fn_801A4168(u8* p, s32 i, NaviRect16* src) {
-    ((NaviRect16*)(p + 0x14))[i] = *src;
+    s16 a = src->x;
+    s32 off = i << 3;
+    u8* d = p + off;
+    s16 b = src->y;
+    *(s16*)(d + 0x14) = a;
+    s16 c = src->w;
+    *(s16*)(d + 0x16) = b;
+    s16 e = src->h;
+    *(s16*)(d + 0x18) = c;
+    *(s16*)(d + 0x1a) = e;
 }
 
 extern "C" s32 fn_801A41C0(s32 p, s32 i) {
@@ -2404,14 +2413,18 @@ extern "C" s32 fn_801A41C0(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A41D4(u8* p, s32 i, u8* src) {
-    u8* d = p + (i << 2);
-    u8 a = src[0];
-    d[0x45] = a;
-    u8 b = src[1];
-    d[0x46] = b;
-    u8 c = src[2];
-    d[0x47] = c;
-    d[0x48] = src[3];
+    struct Rec {
+        u8 pad[0x45];
+        u8 a;
+        u8 b;
+        u8 c;
+        u8 e;
+    };
+    Rec* s = (Rec*)(p + i * 4);
+    s->a = src[0];
+    s->b = src[1];
+    s->c = src[2];
+    s->e = src[3];
 }
 
 extern "C" int fn_801A422C(int param_1, int param_2) {
@@ -2712,15 +2725,16 @@ extern "C" u8* fn_801A482C(u8* p, s32 i) {
 
 struct S801A4840 { u8 b0, b1, b2, b3, b4, b5, b6, b7; };
 struct T801A4840 { u8 pad[0x38]; S801A4840 e[1]; };
-extern "C" void fn_801A4840(u8* p1, int p2, const u8* p3) {
-    u8 a = p3[1];
-    u8* p = p1 + p2 * 8;
-    p[0x39] = a;
-    p[0x3a] = p3[2];
-    p[0x3b] = p3[3];
-    p[0x3d] = p3[5];
-    p[0x3e] = p3[6];
-    p[0x3f] = p3[7];
+struct C801A4840 { u8 r, g, b; };
+struct Q801A4840 { u8 b0; C801A4840 c1; u8 b4; C801A4840 c5; };
+struct R801A4840 { u8 pad[0x38]; Q801A4840 e[1]; };
+extern "C" void fn_801A4840(T801A4840* p1, int p2, const S801A4840* p3) {
+    p1->e[p2].b1 = p3->b1;
+    p1->e[p2].b2 = p3->b2;
+    p1->e[p2].b3 = p3->b3;
+    p1->e[p2].b5 = p3->b5;
+    p1->e[p2].b6 = p3->b6;
+    p1->e[p2].b7 = p3->b7;
 }
 
 extern "C" s32 fn_801A48B8(s32 p, s32 i) {
@@ -2746,10 +2760,10 @@ extern "C" int fn_801A4960(int param_1, int param_2) {
 extern "C" void fn_80193D9C(u32* p);
 extern "C" void fn_80193DFC(u32* p);
 extern "C" void fn_80198620(u8* p);
-extern "C" void fn_801A4974(u8* p1, int p2, const u8* p3) {
-    u8 a = p3[0];
-    u8* d = p1 + p2 * 4;
-    d[0xb8] = a;
+extern "C" void fn_801A4974(u8* p1, u32 p2, const u8* p3) {
+    u32 off = p2 << 2;
+    u8* d = p1 + off;
+    d[0xb8] = p3[0];
     d[0xb9] = p3[1];
     d[0xba] = p3[2];
     d[0xbb] = p3[3];
@@ -2911,12 +2925,8 @@ extern "C" u32 fn_801A4C90(void) {
     return 0x434c4f4e;
 }
 
-extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, u8* param_3) {
-    u8* dst = param_1 + param_2 * 4;
-    dst[4] = param_3[0];
-    dst[5] = param_3[1];
-    dst[6] = param_3[2];
-    dst[7] = param_3[3];
+extern "C" void fn_801A4C9C(u8* param_1, s32 param_2, NaviColor8* param_3) {
+    ((NaviColor8*)(param_1 + 4))[param_2] = *param_3;
 }
 
 extern "C" int fn_801A4CF4(int param_1, int param_2) {
