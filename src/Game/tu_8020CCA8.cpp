@@ -11,6 +11,17 @@ extern "C" void fn_801F0E34(void* a, u32 code, u32 z);
 
 extern "C" u8* fn_8013CC50(f32 scale, u32 owner, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
 extern "C" bool fn_801E1D9C();
+extern "C" u8 fn_801E1D7C(u8* o);
+extern "C" void fn_801EF830(s32 idx, f32* pos, u8* p3, u32 mask, u8* p5, u32 p6, u8* p7);
+extern "C" void fn_801EF574(void* a, void* b, f32* v, void* rec);
+extern "C" void fn_801CD0D0(f32* a, f32* b);
+extern "C" void fn_802F86CC(void* a, void* b, void* c, u32 d, void* e, f32 f, f32 g);
+extern "C" void fn_803075AC(u32 x, u32 y, void* v, void* p, int sign, int two, int minus1, u8 p7, u32 u, int zero);
+extern "C" u8 lbl_8046A3C0[];
+extern "C" void* lbl_8053AAF8;
+extern "C" void* lbl_8053AB10;
+extern "C" const f32 lbl_8053FA00;
+extern "C" const f32 lbl_8053FA04;
 extern "C" const f32 lbl_8053FA08;
 extern "C" const f32 lbl_8053FA10;
 extern "C" const f32 lbl_8053FA14;
