@@ -20,6 +20,7 @@ extern "C" void fn_80058654(int, void*, int, float);
 extern "C" int fn_800218C4(void*);
 extern "C" int lbl_802FEE28;
 extern "C" char lbl_802BB0FC[];
+extern float lbl_802FFD10;
 extern "C" unsigned int lbl_802FEDDC;
 extern "C" unsigned int lbl_802FEDE0;
 extern "C" void fn_800278EC(char* p) {
