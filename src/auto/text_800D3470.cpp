@@ -1105,11 +1105,10 @@ extern "C" void fn_800D6C40(u8* this_) {
 
 extern "C" void fn_800D6CEC(void* r3, u32 r4) {
     if ((r4 >> 8) & 0xf) {
-        (*(void(**)(void*))(*(void***)r3 + 0xa))(r3);
+        ((void(**)(void*))(*(void***)r3))[0xa](r3);
         
         if (r4 & (1 << 12)) {
-            void* p = r3;
-            (*(void(**)(void*))(*(void***)p + 0xb))(p);
+            ((void(**)(void*))(*(void***)r3))[0xb](r3);
         }
     }
 }
@@ -3912,13 +3911,13 @@ extern "C" u8* fn_800DEE54(u8* self) {
 extern "C" void* fn_800DEE5C(void* param_1, short param_2) {
     if (param_1 != nullptr) {
         *(void**)param_1 = (void*)&__vt__19J3DTexGenBlockBasic;
-        if (param_2 != 0) {
+        if (param_1 != nullptr) {
             *(void**)param_1 = (void*)&__vt__21J3DTexGenBlockPatched;
+            if (param_1 != nullptr) {
+                *(void**)param_1 = (void*)&__vt__14J3DTexGenBlock;
+            }
         }
-        if (param_2 != 0) {
-            *(void**)param_1 = (void*)&__vt__14J3DTexGenBlock;
-        }
-        if ((short)param_2 > 0) {
+        if (param_2 > 0) {
             __dl__FPv(param_1);
         }
     }
