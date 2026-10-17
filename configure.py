@@ -1961,7 +1961,7 @@ if config.version == "G4SJ01_NT":
             Object(NonMatching, "Navi/auto/text_80147720.c"),
             Object(NonMatching, "Navi/auto/text_80147740.c"),
             Object(NonMatching, "Navi/auto/text_8014780C.c"),
-            Object(NonMatching, "Navi/auto/text_80148084.c"),
+            Object(Matching, "Navi/auto/text_80148084.c"),
             Object(NonMatching, "Navi/auto/text_80148088.c"),
             Object(NonMatching, "Navi/auto/text_8014810C.c"),
             Object(NonMatching, "Navi/auto/text_8014826C.c"),
