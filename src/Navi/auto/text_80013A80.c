@@ -22,6 +22,7 @@ extern "C" void OSCreateAlarm(void* alarm);
 extern "C" s32 fn_801C1594(void);
 extern "C" void fn_80013B90(void);
 extern "C" void fn_80013BEC(void);
+extern "C" void fn_801C0EEC(void* p);
 extern "C" void fn_801C0884(void* base, void* fn, s32 a, void* p, u32 size, s32 n, s32 c);
 extern "C" void fn_801BB764(void* alarm, u32 a, u32 hi, u32 lo, u32 b, u32 c, void* handler);
 extern u8 lbl_802A3460[];
