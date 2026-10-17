@@ -95,6 +95,12 @@ extern "C" void fn_800C8B30(void* param_1)
 
 extern "C" void fn_800C8C94(void) {}
 
+extern "C" void fn_800C8C98(u8* p) {
+    if (fn_8002F6BC() == 0) {
+        fn_800C8D48(p, p[0x8e]);
+    }
+}
+
 extern "C" void fn_800C8CD8(u8* param_1) {
     if (param_1[0x8b] != 0) {
         param_1[0x8b]--;
