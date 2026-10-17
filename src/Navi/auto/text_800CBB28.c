@@ -48,6 +48,14 @@ extern "C" void fn_800CBF78(NaviState_800CBF78* p) {
     (p->*lbl_8028893C[((u8*)p)[0x2e]])();
 }
 
+extern "C" void fn_800CC0BC(u8* p) {
+    if (*(s16*)(p + 0x2c) != 0) {
+        (*(s16*)(p + 0x2c))--;
+        return;
+    }
+    p[0x2e] = 2;
+}
+
 extern "C" void fn_800CC1C0(void) {}
 
 extern "C" s32 fn_800CC1C4(u8* self, s16 i, u8 n, void* unused, s32 mode, f32 from, f32 to) {
