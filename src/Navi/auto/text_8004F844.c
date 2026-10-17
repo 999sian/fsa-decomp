@@ -37,6 +37,13 @@ extern "C" void fn_800505D4(void* param_1)
     *(u32*)((u8*)param_1 + 0xf6c) = 0;
 }
 
+extern "C" void fn_800508D8(void* param_1)
+{
+    fn_800279A8((u8*)param_1 + 0x1cc, lbl_8023133C[*(u32*)(lbl_802BB0FC + 0x420)], 0, 0, 1);
+    fn_8002F358(0x7a, 0);
+    lbl_802FF1D0 = 0;
+}
+
 extern "C" void fn_80052AFC(void) {
     char* b = lbl_802BB0FC;
     char* p = lbl_802C050C;
