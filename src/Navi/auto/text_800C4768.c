@@ -27,6 +27,10 @@ extern "C" s32 fn_800C56A0(u8* p, u8 a, u8 b, s32 c, f32 d, f32 e);
 extern "C" void fn_800C5648(u8* p);
 extern "C" void fn_800C4B50(void) {}
 
+extern "C" void fn_800C5434(u8* param_1) {
+    *(u8*)(*(u8**)(param_1 + 0x1c) + 0xb0) = 1;
+}
+
 extern "C" void fn_800C5548(u8* param_1) {
     void* obj;
     void** vt;
