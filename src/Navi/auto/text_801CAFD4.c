@@ -46,6 +46,7 @@ extern void* __peReg;
 extern u8 lbl_802FFA70;
 extern u8 lbl_802FFA74;
 extern void* __piReg;
+extern u8 lbl_802FFA54;
 extern u8* __GXData;
 extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
