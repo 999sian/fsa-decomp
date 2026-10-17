@@ -2189,11 +2189,39 @@ extern "C" void fn_800DA35C(void) {
     __GDWrite(0x40);
 }
 
-void fn_800DA624(void)
+extern "C" void fn_800DA624(void)
 {
     GDOverflowCheck(0x1e);
     __GDWrite(0x61);
     __GDWrite(0xf3);
+    __GDWrite(0x1e);
+    __GDWrite(0xff);
+    __GDWrite(0x80);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0);
+    __GDWrite(0xff);
+    __GDWrite(0xe3);
+    __GDWrite(0x61);
+    __GDWrite(0x41);
+    __GDWrite(0);
+    __GDWrite(0x31);
+    __GDWrite(0);
+    __GDWrite(0x61);
+    __GDWrite(0x40);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0x17);
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0x40);
+    __GDWrite(0x61);
+    __GDWrite(0x43);
+    __GDWrite(0);
+    __GDWrite(0);
+    __GDWrite(0);
 }
 
 extern "C" void fn_800DA8F8(void) {
@@ -2338,6 +2366,22 @@ extern "C" void fn_800DB8F4(void* param_1) {
     GDOverflowCheck(0x37);
     J3DGDSetFog((GXFogType)p[4], *(f32*)(p + 8), *(f32*)(p + 0xc), *(f32*)(p + 0x10), *(f32*)(p + 0x14), *(GXColor*)(p + 0x18));
     J3DGDSetFogRangeAdj(p[5], *(u16*)(p + 6), (GXFogAdjTable*)(p + 0x1c));
+}
+
+extern "C" void fn_800DB96C(u8* p) {
+    GDOverflowCheck(0xf);
+    u8 p8 = p[0x34];
+    __GDWrite(0x61);
+    __GDWrite(0xfe);
+    __GDWrite(0);
+    __GDWrite(0xff);
+    __GDWrite(0xe7);
+    __GDWrite(0x61);
+    __GDWriteU32(0x41000000 | p[0x37] << 12 | p[0x36] << 5 | p[0x35] << 8 | p[0x3b] << 2 | (p8 == 2) << 1 | (p8 == 1 || p8 == 3) | (p8 == 3) << 11);
+    u16 zID = *(u16*)(p + 0x38);
+    u32 zMode = j3dZModeTable[zID * 3] | j3dZModeTable[zID * 3 + 1] << 1 | j3dZModeTable[zID * 3 + 2] << 4;
+    __GDWrite(0x61);
+    __GDWriteU32(0x40000000 | zMode);
 }
 
 extern "C" void fn_800DBC64(void* obj, u32 flags) {
