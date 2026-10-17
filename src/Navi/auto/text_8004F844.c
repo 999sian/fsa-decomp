@@ -37,12 +37,6 @@ extern "C" void fn_80052C2C(void) {
     lbl_802FF0E4 = (int)(lbl_803001FC * *(f32*)(p + 0x18)) + *(int*)(lbl_802BB0FC + 0x58);
 }
 
-extern "C" u8 lbl_802B7CA0[];
-extern "C" u32 lbl_802313F8[];
-extern "C" u8 lbl_802FEE34;
-extern "C" u32 lbl_802FF1D0;
-extern "C" u32 fn_80030390(u32);
-
 extern "C" void fn_80052DEC(void)
 {
 	int base = *(int*)(lbl_802BB0FC + 0x58);
