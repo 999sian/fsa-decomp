@@ -191,9 +191,8 @@ extern "C" void fn_8002A410(unsigned char* p) {
 
 extern "C" int fn_8002B620(unsigned char* self, unsigned char idx, unsigned char val) {
     int i;
-    unsigned char* p = self + idx * 8;
     for (i = 0; i < 8; i++) {
-        if (p[0x840 + i] == val) return 1;
+        if ((self + idx * 8)[i + 0x840] == val) return 1;
     }
     return 0;
 }
@@ -241,7 +240,7 @@ extern "C" void fn_8002D250(int a, int b, int slot, unsigned char v, int e) {
 
 extern "C" void fn_8002D2A8(char* p) {
     lbl_802FEDE0 |= 0x800;
-    if (lbl_802BB0FC[0xee] != 0) {
+    if (*(unsigned char*)(lbl_802BB0FC + 0xee) != 0) {
         lbl_802FEDDC |= 0x2000;
     }
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
