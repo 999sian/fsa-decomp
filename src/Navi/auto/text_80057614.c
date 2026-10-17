@@ -266,7 +266,7 @@ extern "C" void fn_80057B6C(void) {
 
 #pragma use_lmw_stmw off
 extern "C" void fn_80057B9C(s32 param_1) {
-    s32 max = 0x10000;
+    u32 max = 0x10000;
     s32 i;
     u8* p;
     void fn_80058D50(void* p);
@@ -282,7 +282,7 @@ extern "C" void fn_80057B9C(s32 param_1) {
                 if (param_1 > 0) {
                     *(s16*)(p + 0x10) = *(u16*)(p + 0xa) / param_1;
                 } else {
-                    *(s16*)(p + 0x10) = max - 0x218;
+                    *(s16*)(p + 0x10) = (u16)max - 0x218;
                 }
             }
         }
@@ -982,6 +982,10 @@ extern "C" void fn_8005C4A8(u8 flag, s32** bufs)
     }
 }
 
+extern "C" void fn_8005C710(void) {
+    fn_801473F8(0, (void*)fn_8005C4A8, lbl_802C2D60, 0xff, 0, (void*)fn_8005C5DC, lbl_802C2D60, 0xff);
+}
+
 extern int lbl_802FF128;
 extern int lbl_802FF12C;
 extern int lbl_802FF130;
@@ -1217,9 +1221,10 @@ extern "C" s32 fn_800613EC(void* self, s32 val) {
         fn_8011FD18(fn_8011FD10(), lbl_8027EA6C, 0x111b, "%s", "mModelNum < MODE");
         fn_80007AB8(lbl_8027EA6C, 0x111b, "Halt");
     }
-    s32 idx = base[3];
+    u8 idx = base[3];
     base[3] = idx + 1;
-    *(s32*)(base + idx * 4 + 0xa8) = val;
+    s32* slot = (s32*)(base + (idx << 2));
+    slot[0x2a] = val;
     return 1;
 }
 
