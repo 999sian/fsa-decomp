@@ -14,7 +14,10 @@ struct DtorVObj_800A0008 { virtual void Destroy(int); };
 extern "C" void fn_800D3274(u8* p);
 extern "C" u8 fn_800BC784(void* p);
 extern "C" void fn_800C55B8(void* p, u8 v);
-class NaviState_8008DC60;
+class NaviState_8008DC60 {
+public:
+    virtual void v0();
+};
 extern void (NaviState_8008DC60::*lbl_8028635C[])();
 extern "C" void fn_800CAB58(void* p);
 extern "C" void fn_800C6CA4(void* p);
@@ -964,6 +967,13 @@ extern "C" void* fn_80096AFC(void* ptr, s16 param_2) {
 }
 
 extern "C" void fn_80096BB0(void) {}
+
+extern "C" void fn_80096BB4(u8* p) {
+    (((NaviState_8008DC60*)p)->*lbl_8028635C[p[0x2a5]])();
+    if (*(void**)(p + 0x280) != 0) {
+        fn_800CAB58(p);
+    }
+}
 
 extern void* lbl_802886F8[];
 extern "C" void* fn_80096D8C(void* ptr, s16 param_2) {
