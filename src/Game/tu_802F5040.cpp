@@ -15,6 +15,7 @@ extern "C" f32 lbl_805414F8;
 extern "C" f32 lbl_80541500;
 extern "C" f32 lbl_805414FC;
 extern "C" f64 lbl_80541508;
+extern "C" f64 lbl_80541558;
 extern "C" f32 lbl_80541510;
 extern "C" f32 lbl_80541514;
 extern "C" f32 lbl_80541518;
@@ -490,9 +491,12 @@ extern "C" u8 fn_802F654C(u8* self, f32* pos, s32 a, s32 b, s32 c, s32 d, u8* sr
     s32 n = *(s32*)(self + 0xd320);
     if (n < 0x20) {
         u8* e = self + n * 0x88 + 0xc220;
-        *(f32*)(e + 0x0) = pos[0];
-        *(f32*)(e + 0x4) = pos[1];
-        *(f32*)(e + 0x8) = pos[2];
+        f32 x = pos[0];
+        f32 y = pos[1];
+        f32 z = pos[2];
+        *(f32*)(e + 0x0) = x;
+        *(f32*)(e + 0x4) = y;
+        *(f32*)(e + 0x8) = z;
         *(s32*)(e + 0xc) = a;
         *(s32*)(e + 0x10) = b;
         *(s32*)(e + 0x14) = c;
@@ -734,8 +738,6 @@ extern "C" void fn_802F6BBC(Tu802F5040Tbl* base, s32 src, s32 dst) {
 extern GXColor lbl_805414F4;
 extern GXColor lbl_80543F60;
 extern "C" void fn_802F8F0C(void*, u8* p) {
-    GXColor c1;
-    GXColor c2;
     GXClearVtxDesc();
     GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
     GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
@@ -746,14 +748,12 @@ extern "C" void fn_802F8F0C(void*, u8* p) {
     GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
     GXSetNumTexGens(1);
     if (p != NULL) {
-        c1 = *(GXColor*)(p + 0x10);
-        c2 = *(GXColor*)(p + 0x14);
+        GXSetTevColor(GX_TEVREG0, *(GXColor*)(p + 0x10));
+        GXSetTevColor(GX_TEVREG1, *(GXColor*)(p + 0x14));
     } else {
-        c1 = lbl_805414F4;
-        c2 = lbl_80543F60;
+        GXSetTevColor(GX_TEVREG0, lbl_805414F4);
+        GXSetTevColor(GX_TEVREG1, lbl_80543F60);
     }
-    GXSetTevColor(GX_TEVREG1, c1);
-    GXSetTevColor(GX_TEVREG2, c2);
     GXSetTevColorIn(GX_TEVSTAGE0, (GXTevColorArg)0xf, (GXTevColorArg)8, (GXTevColorArg)2, (GXTevColorArg)4);
     GXSetTevAlphaIn(GX_TEVSTAGE0, (GXTevAlphaArg)7, (GXTevAlphaArg)4, (GXTevAlphaArg)1, (GXTevAlphaArg)2);
     GXSetTevColorOp(GX_TEVSTAGE0, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
@@ -762,11 +762,11 @@ extern "C" void fn_802F8F0C(void*, u8* p) {
     GXSetNumTevStages(1);
     GXSetNumIndStages(0);
     if (p != NULL && *(s32*)(p + 0x34) == 1) {
-        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_NOOP);
     } else if (p != NULL && *(s32*)(p + 0x34) == 2) {
-        GXSetBlendMode(GX_BM_BLEND, GX_BL_DSTALPHA, GX_BL_INVDSTALPHA, GX_LO_SET);
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_DSTALPHA, GX_BL_INVDSTALPHA, GX_LO_NOOP);
     } else {
-        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_SET);
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_INVSRCALPHA, GX_LO_NOOP);
     }
     if (p != NULL) {
         GXSetZMode(*(u8*)(p + 0x26), (GXCompare)*(s32*)(p + 0x28), *(u8*)(p + 0x2c));
@@ -796,7 +796,7 @@ extern "C" void fn_802F91AC(f32 f, f32* p, u8* o, u8* out) {
         return;
     }
     if (*(u32*)(o + 0x18) != 0) {
-        *(Tu802F5040Mtx*)m = *(Tu802F5040Mtx*)(*(u8**)(o + 0x18));
+        PSMTXCopy(*(MtxPtr*)(o + 0x18), *(MtxPtr*)m);
         if (lbl_805414F8 == m[0] && lbl_805414F8 == m[5] && lbl_805414F8 == m[10]) {
             m[0] = lbl_80541518;
             m[5] = lbl_80541518;
