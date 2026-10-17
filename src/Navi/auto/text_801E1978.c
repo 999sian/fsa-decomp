@@ -68,6 +68,26 @@ extern "C" void __exit(int) {
     _ExitProcess();
 }
 
+#pragma dont_inline on
+extern "C" void exit(int volatile status) {
+    if (__aborting == 0) {
+        void (**p)(void) = _dtors;
+        __begin_critical_region(0);
+        __end_critical_region(0);
+        __destroy_global_chain();
+        p = _dtors;
+        while (*p != 0) {
+            (*p)();
+            p++;
+        }
+        if (__stdio_exit != 0) {
+            __stdio_exit();
+            __stdio_exit = 0;
+        }
+    }
+    __exit(status);
+}
+#pragma dont_inline reset
 extern "C" void fn_801E1B54(u8* volatile param_1) {
     __begin_critical_region(1);
     void* p = fn_801E1DB0();
@@ -277,4 +297,4 @@ extern "C" void fn_801E3068(u8* p) {
     *(u32*)(p + 0x34) = *(u32*)(p + 0x18);
 }
 
-extern "C" void fn_801E309C(void) {}
+extern "C" void fn_801E309C(void* p, u32* n) {}
