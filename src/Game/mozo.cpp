@@ -24,8 +24,8 @@ static inline void mozoRotScale(f32 m[3][4], f32 rx, const f32* pry, f32 rz, con
     m[0][3] = lbl_8053D7F8;
     m[1][3] = lbl_8053D7F8;
     m[2][3] = lbl_8053D7F8;
-    f32 sz, sy, sx;
     f32 ry = *pry;
+    f32 sz, sy, sx;
     f32 s = *ps;
     f32 cz, cy, cx;
     sx = sin(rx);
