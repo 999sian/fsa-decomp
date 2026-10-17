@@ -9,6 +9,8 @@ extern "C" char lbl_80202BC8[];
 extern "C" int TRKWriteUARTN(const void* bytes, unsigned int length);
 extern "C" void MWTRACE(unsigned char, char*, ...);
 extern "C" void* TRK_memcpy(void* dst, const void* src, unsigned int n);
+extern "C" int usr_puts_serial(const char* msg);
+extern "C" const char lbl_80202BF0[];
 extern "C" int fn_801EA854(void* param_1) {
     int err = TRKWriteUARTN((unsigned char*)param_1 + 0x10, *(unsigned int*)((unsigned char*)param_1 + 8));
     MWTRACE(1, lbl_80202BC8, err);
@@ -17,17 +19,20 @@ extern "C" int fn_801EA854(void* param_1) {
 
 extern "C" void fn_801EA988(void* param_1, unsigned char* param_2, int param_3) {
     int ret;
-    unsigned int n = 1;
+    unsigned int n;
+    unsigned int pos;
     int i;
     int err;
     for (i = 0, err = 0; err == 0 && i < param_3; i++) {
+        pos = *(unsigned int*)((unsigned char*)param_1 + 0xc);
+        n = 1;
         ret = 0;
-        unsigned int remaining = *(unsigned int*)((unsigned char*)param_1 + 8) - *(unsigned int*)((unsigned char*)param_1 + 0xc);
+        unsigned int remaining = *(unsigned int*)((unsigned char*)param_1 + 8) - pos;
         if (n > remaining) {
             ret = 0x302;
             n = remaining;
         }
-        TRK_memcpy(param_2 + i, (unsigned char*)param_1 + *(unsigned int*)((unsigned char*)param_1 + 0xc) + 0x10, n);
+        TRK_memcpy(param_2 + i, (unsigned char*)param_1 + pos + 0x10, n);
         *(unsigned int*)((unsigned char*)param_1 + 0xc) += n;
         err = ret;
     }
@@ -38,8 +43,8 @@ extern "C" int TRKAppendBuffer_ui8(void* buffer, const unsigned char* data, int 
     int i;
 
     for (i = 0, err = 0; err == 0 && i < count; i++) {
-        unsigned char ch = data[i];
         unsigned int pos = *(unsigned int*)((unsigned char*)buffer + 0xc);
+        unsigned char ch = data[i];
         int ret;
         if (pos >= 0x880) {
             ret = 0x301;
