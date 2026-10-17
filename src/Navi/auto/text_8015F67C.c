@@ -22,6 +22,17 @@ extern u32 lbl_802FF5E4;
 extern u32 lbl_802FF5E8;
 extern u32 lbl_802FF5EC;
 extern char lbl_80297C10[];
+struct VObj_8015FBCC {
+    virtual void vf0(void);
+    virtual void vf1(void);
+    virtual void vf2(void);
+    virtual void vf3(void);
+    virtual void vf4(void);
+    virtual void vf5(void);
+    virtual s32 vf6(void);
+    virtual s32 vf7(void);
+};
+
 extern "C" void fn_8015D050(void*);
 extern "C" void fn_80166B58(void*, void*);
 extern "C" void* fn_8015F67C(void* param_1)
@@ -82,6 +93,24 @@ extern "C" BOOL fn_8015F80C()
 	return TRUE;
 }
 
+extern "C" void fn_8015FB6C(int param_1, int param_2, int param_3)
+{
+    lbl_802FF5E4 = 0;
+    lbl_802FF5E8 = 0x10000 - 0x8000;
+    lbl_802FF5EC = 0;
+    if (param_1 != 0) {
+        lbl_802FF5E4 = (param_1 + 0x1f) & ~0x1f;
+    }
+    if (param_2 != 0) {
+        lbl_802FF5E8 = param_2 & ~0x1f;
+    }
+    if (param_3 != 0) {
+        if (param_1 == 0) {
+            lbl_802FF5EC = param_3;
+        }
+    }
+}
+
 extern "C" void fn_8015FBC0(u8* param_1)
 {
     param_1[0x28] = 0;
@@ -92,8 +121,8 @@ extern "C" s32 fn_8015FBCC(u8* param_1)
     s32 iVar1;
     s32 iVar2;
 
-    iVar1 = ((s32 (*)(void*))(*(u32**)param_1)[6])(param_1);
-    iVar2 = ((s32 (*)(void*))(*(u32**)param_1)[7])(param_1);
+    iVar1 = ((s32 (*)(void*))((*(u32**)param_1)[6]))(param_1);
+    iVar2 = ((s32 (*)(void*))((*(u32**)param_1)[7]))(param_1);
     return iVar1 - iVar2;
 }
 
