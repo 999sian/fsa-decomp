@@ -1,5 +1,5 @@
 #include "Game/ItemBase.h"
-#include "Game/Actor.h"
+#include "JSystem/JMath/JMath.h"
 
 extern "C" void fn_801EE434(void* handle);
 extern "C" void __dt__5ActorFv(void* this_, int how);
