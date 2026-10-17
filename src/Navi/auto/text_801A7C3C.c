@@ -1,8 +1,8 @@
 #include "types.h"
 
 struct VObj_801AE5C8 {
-    virtual void vf0(void);
-    virtual void vf1(void);
+    virtual void vf0(void* a, s32 b);
+    virtual void vf1(void* a, s32 b);
     virtual void vf2(void* a, s32 b);
 };
 
@@ -921,8 +921,7 @@ extern "C" void fn_801AE5C8(u8* p, u8* src) {
     } else {
         *(u32*)(p + 0x14) &= ~1;
     }
-    void (*fn)(u8*, u8*, s32) = *(void (**)(u8*, u8*, s32))(*(u32*)p + 8);
-    fn(p, src + 0x88, *(s32*)(src + 0x84));
+    ((VObj_801AE5C8*)p)->vf2(src + 0x88, *(s32*)(src + 0x84));
 }
 
 extern void* lbl_8029B61C[];
