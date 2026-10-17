@@ -25,6 +25,7 @@ extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
 extern "C" void fn_801DD410(void* a, void* b, u32 c);
 extern "C" void __GXFlushTextureState(void);
+extern u8 lbl_8029E5C0[];
 
 
 extern "C" int OSDisableInterrupts(void);
@@ -1530,7 +1531,9 @@ extern "C" void fn_801DD8C8(s32 param_1, s32 param_2) {
 }
 
 extern "C" void fn_801DDE38(int param_1, u32 param_2, u32 param_3, u32 param_4, u32 param_5, u32 param_6, u32 param_7, u32 param_8, u8 param_9, u32 param_10) {
-    u32 r11 = __rlwimi(0, param_2, 0, 30, 31);
+    u32 r0 = 0;
+    r0 = __rlwimi(r0, param_2, 0, 30, 31);
+    u32 r11 = r0;
     r11 = __rlwimi(r11, param_3, 2, 28, 29);
     r11 = __rlwimi(r11, param_4, 4, 25, 27);
     r11 = __rlwimi(r11, param_10, 7, 23, 24);
@@ -1549,5 +1552,9 @@ extern "C" void fn_801DE24C(u8 param_1) {
     u32* gx = (u32*)__GXData;
     gx[0x204 / 4] = __rlwimi(gx[0x204 / 4], param_1, 16, 13, 15);
     gx[0x5ac / 4] |= 6;
+}
+
+extern "C" void fn_801DE270(int param_1) {
+    fn_801DDE38(param_1, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 }
 
