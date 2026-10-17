@@ -21,9 +21,7 @@ extern "C" void* fn_802D9C4C(void* mgr);
 extern "C" u8 fn_802D7544(void* mgr, void* arg);
 extern "C" void fn_8029D8F0(void* mgr, f32* pos, s32 room, s32 n, s32 flag);
 extern "C" void* lbl_8053AC98;
-extern "C" void* lbl_8053AAF8;
-extern "C" u8 lbl_8046CAD0[];
-extern "C" void fn_801EFD34(Actor* p, void* obj, f32 x, f32 y, f32 z, void* buf, s32 n);
+
 extern "C" void fn_802B7568(u8* p) {
     f32 vec[3];
     void* mgr;
