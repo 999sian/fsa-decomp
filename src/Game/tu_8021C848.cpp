@@ -1,7 +1,6 @@
 
 
 #include "types.h"
-#include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8046A688[];
 extern "C" int lbl_8053FD20;
