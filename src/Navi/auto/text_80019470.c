@@ -258,7 +258,7 @@ extern "C" s32 fn_800199A8(void) {
     return 0;
 }
 
-extern "C" s32 fn_800199DC(s32 param_1, s32 param_2) {
+extern "C" s32 fn_800199DC(s16 param_1, u16 param_2) {
     s32 r;
     if (lbl_802FB9B8 == NULL) {
         r = (s32)fn_80019D4C(lbl_802B4C10, param_1, param_2);
@@ -297,6 +297,14 @@ extern "C" s32 fn_80019A6C(void) {
 #pragma dont_inline reset
 
 extern "C" void fn_80019AE0(void) {
+}
+
+extern "C" s32 fn_80019B40(void* param_1) {
+    s16 sVar1;
+    fn_80115590(param_1);
+    sVar1 = *(s16*)((u8*)param_1 + 0x2);
+    *(s16*)((u8*)param_1 + 0x2) = sVar1 - 1;
+    return ((sVar1 | ~-sVar1) >> 31) & 2;
 }
 
 extern "C" s32 fn_80019B8C(void* param_1) {
