@@ -1,5 +1,9 @@
 #include "types.h"
 
+struct Mtx34_8011395C {
+    float m[3][4];
+};
+
 // Keep regional definitions that were present before source-tree consolidation.
 #if defined(VERSION_G4SP01) || defined(VERSION_G4SE01)
 extern "C" int fn_80113788(char* self) {
