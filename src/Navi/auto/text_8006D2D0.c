@@ -70,6 +70,41 @@ extern "C" void fn_8006D9C8(void) {
     fn_8006DAD4();
 }
 
+extern "C" void fn_800175B8(void*);
+extern "C" int fn_800183AC(void*, void*, s32);
+extern "C" int fn_8006DD20(void*);
+extern void* lbl_8027F6DC[];
+extern void* lbl_8027FCD0[];
+extern void* lbl_8027FB48[];
+#pragma push
+#pragma dont_inline on
+extern "C" int fn_8006D9E8(u8* p) {
+    if ((*(u32*)(p + 0xf8) & 8) == 0) {
+        if (p != nullptr) {
+            fn_800175B8(p);
+            *(void**)(p + 0x254) = lbl_8027F6DC;
+            *(u32*)(p + 0x258) = 0;
+            *(void**)(p + 0x254) = lbl_8027FCD0;
+            *(u32*)(p + 0x25c) = 0;
+            *(void**)(p + 0x260) = lbl_8027F6DC;
+            *(u32*)(p + 0x264) = 0;
+            *(void**)(p + 0x260) = lbl_8027FB48;
+            *(u32*)(p + 0x268) = 0;
+            *(u8*)(p + 0x295) = *(u32*)(p + 0xb0) >> 24;
+            *(u8*)(p + 0x296) = *(u32*)(p + 0xb0) >> 16;
+            *(u8*)(p + 0x298) = (*(u32*)(p + 0xb0) >> 12) & 0xf;
+            *(u8*)(p + 0x294) = (*(u32*)(p + 0xb0) >> 8) & 0xf;
+            *(u8*)(p + 0x297) = *(u32*)(p + 0xb0);
+        }
+        *(u32*)(p + 0xf8) |= 8;
+    }
+    if ((u8)fn_800183AC(p, (void*)fn_8006D9C8, 0x15a0)) {
+        return fn_8006DD20(p);
+    }
+    return 5;
+}
+#pragma pop
+
 extern "C" void fn_8006E190(u8* p) {
     f32 v[3];
     fn_80115914(v, p + 0x278);
