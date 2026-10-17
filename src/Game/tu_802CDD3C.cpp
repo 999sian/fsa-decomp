@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 
 
 extern "C" char lbl_804A927C[];
@@ -10,6 +11,27 @@ struct ActorSlot5 {
 };
 extern "C" const f32 lbl_80540E40;
 extern "C" const f32 lbl_80540E44;
+extern "C" const f32 lbl_80540E34;
+extern "C" const f32 lbl_80540E38;
+extern "C" const f32 lbl_80540E3C;
+extern "C" void* fn_801F856C(void);
+extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
+extern "C" void fn_8013CC50(u32 room, void* pos, f32 scale, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_801F0E34(void* this_, s32 p1, s32 p2);
+
+static inline void fn_802CE508_spawn(char* this_) {
+    if (*(s32*)(this_ + 0x4) < 8) {
+        fn_8013CC50(*(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), this_ + 0xc, lbl_80540E3C, 0x564, 0, 0, 0, 0, 1);
+        fn_8013CC50(*(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), this_ + 0xc, lbl_80540E40, 0x503, 1, 0, 0, 0, 1);
+    } else {
+        Vec v;
+        v.x = *(f32*)(this_ + 0xc) + lbl_80540E38;
+        v.y = *(f32*)(this_ + 0x10) + lbl_80540E38;
+        v.z = lbl_80540E34;
+        Actor_CreateByID(fn_801F856C(), 0x4b4d5249, *(u32*)(this_ + 0x4) + *(u8*)(this_ + 0x259), &v, 0, -1, -1);
+    }
+    fn_801F0E34(this_, 0x30003, 0);
+}
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" Actor* fn_802CDD3C(Actor* p, s16 n)
 {
@@ -78,4 +100,6 @@ extern "C" void fn_802CE7A8(char* p) {
     ((ActorSlot5*)p)->slot5();
     *(u8*)(p + 0x11f) = 1;
 }
+
+void fn_802CE93C(void) {}
 
