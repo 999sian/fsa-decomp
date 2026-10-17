@@ -28,6 +28,10 @@ struct VObj_801A219C {
     virtual void v45(); virtual void v46();
     virtual u32* v47(int);
 };
+struct VObj_801988C0 {
+    virtual void v0(u32);
+    virtual void v1(u32);
+};
 struct Bytes4_801A3D94 { u8 b[4]; };
 struct Rect16 {
     s16 x, y, w, h;
@@ -897,23 +901,29 @@ extern "C" void fn_80199078(void* param_1) {
 
 extern "C" void fn_8019912C(u8* self) {
     extern u32 lbl_80301CFC;
-    u32 a = lbl_80301CF8;
-    u32 b = lbl_80301CFC;
-    u8* pa = (u8*)&a;
-    u8* pb = (u8*)&b;
+    u32 b;
+    u32 a;
+    u8* pa;
+    u8* pb;
+    a = lbl_80301CF8;
+    pa = (u8*)&a;
     self[0x14] = 0;
     self[4] = pa[0];
     self[5] = pa[1];
     self[6] = pa[2];
     self[7] = pa[3];
+    a = lbl_80301CF8;
     self[8] = pa[0];
     self[9] = pa[1];
     self[10] = pa[2];
     self[11] = pa[3];
+    b = lbl_80301CFC;
+    pb = (u8*)&b;
     self[12] = pb[0];
     self[13] = pb[1];
     self[14] = pb[2];
     self[15] = pb[3];
+    b = lbl_80301CFC;
     self[16] = pb[0];
     self[17] = pb[1];
     self[18] = pb[2];
