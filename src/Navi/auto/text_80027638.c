@@ -284,6 +284,11 @@ extern "C" void fn_8002D3C0(char* p) {
     *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58) + 1000;
 }
 
+extern "C" void fn_8002D3E4(char* p) {
+    lbl_802FEDE0 |= 0x2000;
+    *(int*)(p + 0x770) = *(int*)(lbl_802BB0FC + 0x58);
+}
+
 extern "C" int fn_8002E0AC(void* obj, int a, int b, int c, int d, int e, int f, float g);
 extern "C" void fn_800589CC(int);
 extern "C" void* fn_80024BC8(void);
