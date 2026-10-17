@@ -1274,6 +1274,10 @@ extern "C" int fn_801727AC(int param_1, int param_2) {
     return param_1 + param_2 + 0x128;
 }
 
+extern "C" s32 fn_801727D0(s32 p, s32 i) {
+    return p + i * 4 + 0x12c;
+}
+
 extern "C" void fn_801727E4(void* self, int a, int b) {
     struct Obj {
         virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3();
