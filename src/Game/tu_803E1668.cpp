@@ -378,6 +378,112 @@ extern "C" void fn_803E9034(u8* p) {
 	}
 }
 
+extern "C" void fn_80403680(void* p);
+extern "C" void fn_803EC804(u8* p) {
+    s32 j;
+    s32 i;
+    if (*(s16*)(p + 0x254) != 0) {
+        *(s16*)(p + 0x254) += 1;
+        if (*(s16*)(p + 0x254) > 10) {
+            *(s16*)(p + 0x254) = 0;
+        }
+    }
+    *(s32*)(p + 0x220) += 1;
+    if (*(s32*)(p + 0x220) >= 0x1e) {
+        *(s32*)(p + 0x220) = 0;
+    }
+    if (fn_80309C4C(lbl_8053AD30, 0x1100, 1) != 0) {
+        if (*(s32*)(p + 0x1bc) == 0) {
+            *(s32*)(p + 0x1b8) = 1;
+            lbl_8053AAF8[0x7e] = 0;
+            lbl_8053AAF8[0x82] |= 0x10;
+            lbl_8053AAF8[0x82] &= ~0x20;
+            lbl_8053AAF8[0x82] &= ~0x40;
+            lbl_8053AAF8[0x82] &= 0x7f;
+            lbl_8053AAF8[0x82] |= 0x1;
+            lbl_8053AAF8[0x82] &= ~0x2;
+            lbl_8053AAF8[0x82] &= ~0x4;
+            lbl_8053AAF8[0x82] &= ~0x8;
+            if (fn_8030A308(lbl_8053AD30, fn_8030AAF4(0)) != 0) {
+                u8* q = lbl_8053AAF8;
+                q[0x83] &= ~0x3;
+                q[0x83] |= 0x1;
+            } else {
+                u8* q = lbl_8053AAF8;
+                q[0x83] &= ~0x3;
+                q[0x83] |= 0x2;
+            }
+            lbl_8053AAF8[0x83] &= ~0xc;
+            lbl_8053AAF8[0x83] &= ~0x30;
+            lbl_8053AAF8[0x83] &= 0x3f;
+            *(s32*)(p + 0x1dc) = 0xf;
+            *(s32*)(p + 0x220) = 0;
+            *(s16*)(p + 0x254) = 0;
+            *(s32*)(p + 0x1e0) = 5;
+            *(s32*)(p + 0x1d8) = *(s32*)(p + 0x1d4);
+            *(s32*)(p + 0x1d4) = 4;
+        } else {
+            *(s32*)(p + 0x1b8) = j = 0;
+            lbl_8053AAF8[0x7e] = 1;
+            if (*(s32*)(p + 0x1d0) == *(s32*)(p + 0x1bc) + 1) {
+                for (i = 0; i < 4; i++) {
+                    if (i < *(s32*)(p + 0x1bc) + 1) {
+                        lbl_8053AAF8[0x82] |= (u8)(1 << i);
+                        u8* q = lbl_8053AAF8;
+                        q[0x83] &= ~(u8)(3 << j);
+                        q[0x83] |= (u8)(1 << j);
+                    } else {
+                        lbl_8053AAF8[0x82] &= ~(u8)(1 << i);
+                        lbl_8053AAF8[0x83] &= ~(u8)(3 << j);
+                    }
+                    j += 2;
+                }
+                *(s32*)(p + 0x1dc) = 0xf;
+            }
+            *(s32*)(p + 0x220) = 0;
+            *(s16*)(p + 0x254) = 0;
+            *(s32*)(p + 0x1e0) = 5;
+            *(s32*)(p + 0x1d8) = *(s32*)(p + 0x1d4);
+            *(s32*)(p + 0x1d4) = 4;
+            if (*(s32*)(p + 0x1bc) != lbl_80529DEC[0x23c]) {
+                *(s32*)(lbl_80529DEC + 0x130) = 0;
+                *(s32*)(lbl_80529DEC + 0x134) = 0;
+                *(s32*)(lbl_80529DEC + 0x138) = 0;
+                *(s32*)(lbl_80529DEC + 0x13c) = 0;
+                *(s32*)(lbl_80529DEC + 0x64) = -1;
+            }
+        }
+        if (*(s32*)(p + 0x1bc) != lbl_80529DEC[0x23c]) {
+            fn_80403680(lbl_80529DEC);
+        }
+        lbl_80529DEC[0x23c] = *(s32*)(p + 0x1bc);
+        fn_80458880(lbl_8053AF80, 0xb, -1);
+    } else if (fn_80309C4C(lbl_8053AD30, 0x200, 1) != 0) {
+        *(s32*)(p + 0x360) = 2;
+        fn_80458880(lbl_8053AF80, 0xc, -1);
+    } else if (fn_80309A9C(lbl_8053AD30, 4, 1) != 0) {
+        *(s32*)(p + 0x1bc) += 1;
+        if (*(s32*)(p + 0x1bc) >= 4) {
+            *(s32*)(p + 0x1bc) = 0;
+        }
+        *(s16*)(p + 0x254) = 1;
+        *(s32*)(p + 0x1e0) = 0x1e;
+        fn_80458880(lbl_8053AF80, 0x26, -1);
+    } else if (fn_80309A9C(lbl_8053AD30, 8, 1) != 0) {
+        *(s32*)(p + 0x1bc) -= 1;
+        if (*(s32*)(p + 0x1bc) < 0) {
+            *(s32*)(p + 0x1bc) = 3;
+        }
+        *(s16*)(p + 0x254) = 1;
+        *(s32*)(p + 0x1e0) = 0x1e;
+        fn_80458880(lbl_8053AF80, 0x26, -1);
+    }
+    *(s32*)(p + 0x1e0) += 1;
+    if (*(s32*)(p + 0x1e0) >= 0x3c) {
+        *(s32*)(p + 0x1e0) = 0;
+    }
+}
+
 extern "C" void fn_803ED5B4(u8* param_1) {
     if (param_1[0x26e] == 0) {
         *(s32*)(param_1 + 0x1dc) = 9;
@@ -563,7 +669,7 @@ extern "C" u8 fn_8030A388(void* a, s32 b);
 extern "C" void fn_803E3564(u8* p);
 extern "C" void fn_803EDBF0(u8* param_1, u8 param_2) {
     void* obj;
-    void* p;
+    Pane803E4650* pane;
     s32 i;
 
     fn_804310CC(lbl_8053AEC0);
@@ -595,37 +701,37 @@ extern "C" void fn_803EDBF0(u8* param_1, u8 param_2) {
         *(s32*)(param_1 + 0x1d4) = 2;
         *(f32*)(param_1 + 0xf8) = -150.0f;
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x62620000, 0x506d6164, 0x62623037);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0xf0), *(f32*)(param_1 + 0xf4) + *(f32*)(param_1 + 0xf8));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x62620000, 0x506d6164, 0x62623037);
+        pane->v10(*(f32*)(param_1 + 0xf0), *(f32*)(param_1 + 0xf4) + *(f32*)(param_1 + 0xf8));
         *(f32*)(param_1 + 0xfc) = -200.0f;
         fn_80402E08(*(void**)(param_1 + 0x78), 0.0f, *(f32*)(param_1 + 0xfc));
         *(f32*)(param_1 + 0x120) = -350.0f;
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x70620000, 0x506e6f, 0x70623034);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0x100) + *(f32*)(param_1 + 0x120), *(f32*)(param_1 + 0x110));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623034);
+        pane->v10(*(f32*)(param_1 + 0x100) + *(f32*)(param_1 + 0x120), *(f32*)(param_1 + 0x110));
         *(f32*)(param_1 + 0x124) = -350.0f;
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x70620000, 0x506e6f, 0x70623038);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0x104) + *(f32*)(param_1 + 0x124), *(f32*)(param_1 + 0x114));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623038);
+        pane->v10(*(f32*)(param_1 + 0x104) + *(f32*)(param_1 + 0x124), *(f32*)(param_1 + 0x114));
         *(f32*)(param_1 + 0x128) = -350.0f;
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x70620000, 0x506e6f, 0x70623132);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0x108) + *(f32*)(param_1 + 0x128), *(f32*)(param_1 + 0x118));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623132);
+        pane->v10(*(f32*)(param_1 + 0x108) + *(f32*)(param_1 + 0x128), *(f32*)(param_1 + 0x118));
         *(f32*)(param_1 + 0x12c) = -350.0f;
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x70620000, 0x506e6f, 0x70623136);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0x10c) + *(f32*)(param_1 + 0x12c), *(f32*)(param_1 + 0x11c));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x70620000, 0x506e6f, 0x70623136);
+        pane->v10(*(f32*)(param_1 + 0x10c) + *(f32*)(param_1 + 0x12c), *(f32*)(param_1 + 0x11c));
         *(f32*)(param_1 + 0x138) = 400.0f;
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x74610000, 0x4e6461, 0x74613032);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0x130) + *(f32*)(param_1 + 0x138), *(f32*)(param_1 + 0x134));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x74610000, 0x4e6461, 0x74613032);
+        pane->v10(*(f32*)(param_1 + 0x130) + *(f32*)(param_1 + 0x138), *(f32*)(param_1 + 0x134));
         *(f32*)(param_1 + 0x14c) = 400.0f;
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x74610000, 0x4e6461, 0x74613035);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0x13c) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x140));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x74610000, 0x4e6461, 0x74613035);
+        pane->v10(*(f32*)(param_1 + 0x13c) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x140));
         obj = *(void**)(param_1 + 4);
-        p = ((void* (**)(void*, s32, s32, s32))*(void**)obj)[15](obj, 0x4e0000, 0x4e6461, 0x74613037);
-        ((void (**)(void*, f32, f32))*(void**)p)[4](p, *(f32*)(param_1 + 0x144) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x148));
+        pane = ((Screen803EDBF0*)obj)->v3C(0x4e0000, 0x4e6461, 0x74613037);
+        pane->v10(*(f32*)(param_1 + 0x144) + *(f32*)(param_1 + 0x14c), *(f32*)(param_1 + 0x148));
         *(s32*)(param_1 + 0x220) = 0;
         *(s32*)(param_1 + 0x1e0) = 0;
         *(s16*)(param_1 + 0x254) = 0;
