@@ -191,6 +191,7 @@ extern "C" void fn_80193550(f32* p, f32* q, f32* out) {
     out[11] = 0.0f;
 }
 
+#pragma fp_contract reset
 extern "C" void fn_80193604(f32* p, f32* out) {
     extern u8 lbl_802F0BC0[];
     u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
