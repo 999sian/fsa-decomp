@@ -5,6 +5,7 @@
 extern "C" char lbl_804AB464[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
 extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c);
+extern "C" void* fn_802D6A9C(void);
 extern "C" Actor* fn_8032500C(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = lbl_804AB464;
