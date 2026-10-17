@@ -535,17 +535,18 @@ extern "C" char* fn_80161710(u16* p, char* s, s8 term) {
         v = fn_801E30E8(c);
         p[0] = v + p[0] * 3;
         if (i < 0x100) {
-            ((u8*)p)[i++ + 4] = v;
+            ((u8*)p)[i + 4] = v;
+            i++;
         }
         s++;
         c = *s;
     }
     p[1] = i;
     ((u8*)p + i)[4] = 0;
-    if (*s != 0) {
-        return s + 1;
+    if (c == 0) {
+        return 0;
     }
-    return 0;
+    return s + 1;
 }
 #pragma use_lmw_stmw reset
 #pragma dont_inline reset
