@@ -232,8 +232,7 @@ struct Tu6CECUtil {
         if (x <= lbl_8053F150)
             return x;
         f32 y = __frsqrte(x);
-        y = lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
-        return y;
+        return lbl_8053F160 * y * (lbl_8053F164 - (x * (y * y)));
     }
 };
 static inline f32 tu6cec_invSqrt(f32 x) { return Tu6CECUtil::inv_sqrt(x); }
@@ -315,10 +314,10 @@ extern "C" void fn_801D70BC(Tu6CECGroup* g, Tu6CECVec p, s32 player) {
             dy *= inv;
         }
         s16 ang = -(s16)(fn_801CD664(0xe39) - 0x71c);
-        f32 sn = JMASSin(ang);
         f32 cs = JMASCos(ang);
-        vy = dx * sn + dy * cs;
+        f32 sn = JMASSin(ang);
         vx = dx * cs - dy * sn;
+        vy = dx * sn + dy * cs;
     } else {
         s16 ang = fn_801CD664(0x10000);
         vx = JMASSin(ang);
@@ -326,6 +325,49 @@ extern "C" void fn_801D70BC(Tu6CECGroup* g, Tu6CECVec p, s32 player) {
     }
     *(JGeometry::TVec3<f32>*)(a + 0x3c) = JGeometry::TVec3<f32>(vx * lbl_8053F188, vy * lbl_8053F188, lbl_8053F150);
     g->m44 = 4;
+}
+
+extern const f32 lbl_8053F18C;
+extern "C" u8 sincosTable___5JMath[];
+extern "C" void fn_801D72C0(char* this_, JGeometry::TVec3<f32>* src) {
+    JGeometry::TVec3<f32>* pos = (JGeometry::TVec3<f32>*)(this_ + 0x48);
+    f32 y = lbl_8053F16C + src->y;
+    f32 x = src->x;
+    pos->x = x;
+    pos->y = y;
+    pos->z = src->z;
+    if (fn_801CD2F8(*(s32*)(this_ + 0x40))) {
+        pos->y = lbl_8053F170 + src->y;
+    }
+    s32 off = 0;
+    s32* ids = (s32*)this_;
+    for (int i = 0; i < 16; i++, off += 0xfff) {
+        s32 id = ids[i];
+        if (id < 0) {
+            continue;
+        }
+        char* a = (char*)fn_801F666C(fn_801F856C(), id);
+        if (a == 0) {
+            continue;
+        }
+        s16 ang = -(s16)(*(s16*)(this_ + 0x54) + off);
+        f32* sc = (f32*)(sincosTable___5JMath + ((u32)(s32)ang >> 2 & 0x3ff8));
+        f32 r = *(f32*)(this_ + 0x5c);
+        f32 rc = r * sc[0];
+        f32 rs = r * sc[1];
+        JGeometry::TVec3<f32> pt;
+        pt.z = pos->z;
+        pt.x = pos->x + (lbl_8053F150 * sc[1] - rc);
+        pt.y = pos->y + (lbl_8053F150 * sc[0] + rs);
+        JGeometry::TVec3<f32> d;
+        d.sub(pt, *pos);
+        d.normalize();
+        d.scale(lbl_8053F18C);
+        *(f32*)(a + 0x3c) = d.x;
+        *(f32*)(a + 0x40) = d.y;
+        *(f32*)(a + 0x44) = lbl_8053F150;
+    }
+    *(s32*)(this_ + 0x44) = 4;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
