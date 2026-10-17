@@ -188,3 +188,27 @@ extern "C" void fn_8013D42C(void* param_1, s32 param_2, u32* param_3) {
     }
 }
 
+extern "C" void fn_8013D488(void* param_1, s32 param_2, u32* param_3) {
+    switch (param_2) {
+    case 2: {
+        u8 b = (u8)((0 - *param_3 | *param_3) >> 31);
+        *(u8*)((u8*)param_1 + 0x110) = b;
+        switch (*(s32*)((u8*)param_1 + 0x104)) {
+        case 1: {
+            u32 a = 0;
+            s32 c = -1;
+            if (*(u8*)((u8*)param_1 + 0x110) != 0) {
+                a = *(u32*)((u8*)param_1 + 0x108);
+                c = *(s32*)((u8*)param_1 + 0x10c);
+            }
+            (*(VObj_8013D488**)((u8*)param_1 + 0x100))->vf9(a, c);
+            break;
+        }
+        case 0:
+            break;
+        }
+        break;
+    }
+    }
+}
+
