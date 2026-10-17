@@ -389,3 +389,28 @@ extern "C" void* fn_80309014(void* p, s16 how) {
 #define unknown jsys_unknown
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
+struct Ent_803066F0 {
+    s32 prio;
+    u8 pad4[4];
+    s32 f8;
+    u8 padc[4];
+    u8 f10[0xc];
+    u32 f1c;
+    u8 f20;
+    u8 f21;
+    u8 f22;
+    u8 f23;
+    u8 f24;
+    u8 f25;
+    u8 pad26[2];
+};
+struct Out_803066F0 {
+    u8 b0;
+    u8 b1;
+    u8 b2;
+    u8 f20 : 3;
+    u8 f21 : 1;
+    u8 f22 : 1;
+    u8 f1c : 2;
+    u8 hi : 1;
+};
