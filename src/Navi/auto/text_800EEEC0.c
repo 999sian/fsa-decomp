@@ -24,6 +24,17 @@ extern "C" void fn_800EF378(u8* param_1, u32 param_2, u32 param_3) {
 
 extern "C" void fn_800EF3D0(void) {}
 
+extern "C" void fn_801E10DC(void* p, void* q);
+extern "C" void fn_800EF4E0(void* p);
+extern "C" s32 fn_800EF768(void* p, u8 idx, u8 b, s32 c);
+extern u8 lbl_802C587C[];
+extern u8 lbl_8028B874[];
+extern "C" void fn_800EF4D0(u8* param_1, u8 param_2) {
+    if (param_2 != 0) {
+        param_1[0x52] = param_2;
+    }
+}
+
 extern "C" void fn_800EF694(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 8);
