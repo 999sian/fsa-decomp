@@ -69,12 +69,10 @@ extern "C" void fn_80159C6C(void*, int);
 extern "C" void fn_80166B70(void*, int);
 extern "C" void fn_801BDE1C(void*, void*, int);
 extern "C" void fn_80166650(void*);
-static inline void fn_8015F520_initLink(u8* owner, u8* base, int ofs) {
-    fn_80166B58(base + ofs, owner);
-}
 extern "C" u8* fn_8015F520(u8* p) {
-    u8* q = p;
-    fn_80166B58(q + 0x20, q = p);
+    u8* owner;
+    owner = p;
+    fn_80166B58(&owner[0x20], owner);
     fn_80166B58(p + 0x30, p);
     fn_801BDDBC(p + 0x68, p + 0x88, 1);
     *(u32*)(p + 0x58) = 0;
