@@ -13,6 +13,9 @@ extern const f32 lbl_8053C64C;
 extern const f32 lbl_8053C650;
 extern const f32 lbl_8053C654;
 extern "C" void fn_8010F668(f32 m[3][4], f32 axis[3], f32 angle);
+typedef struct MtxBox {
+    Mtx m;
+} MtxBox;
 extern "C" void* fn_801902C0(void);
 
 extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
@@ -75,6 +78,54 @@ extern "C" s32 fn_801123C8(s32 param_1, s32 param_2)
     }
 }
 
+extern "C" void fn_80112AE8(u8* this_) {
+    Mtx m1;
+    Mtx m2;
+    Vec v1;
+    Vec v2;
+    u8* e;
+    s32 idx;
+    s32 n;
+    f32 z;
+
+    *(f32*)(this_ + 0x248) = *(f32*)(this_ + 0x248) + lbl_8053C64C;
+    PSMTXTrans(m1, *(f32*)(this_ + 0xc), *(f32*)(this_ + 0x10), *(f32*)(this_ + 0x14));
+    v1.x = lbl_8053C644;
+    v1.y = lbl_8053C628;
+    v1.z = lbl_8053C628;
+    fn_8010F668(m1, (f32*)&v1, lbl_8053C650);
+    v2.x = lbl_8053C628;
+    v2.y = lbl_8053C628;
+    v2.z = lbl_8053C644;
+    m2[2][3] = m2[1][3] = m2[0][3] = lbl_8053C628;
+    m2[2][2] = m2[1][2] = m2[0][2] = lbl_8053C628;
+    m2[2][1] = m2[1][1] = m2[0][1] = lbl_8053C628;
+    m2[2][0] = m2[1][0] = m2[0][0] = lbl_8053C628;
+    fn_8010F668(m2, (f32*)&v2, *(f32*)(this_ + 0x248));
+    PSMTXConcat(m1, m2, m1);
+
+    n = *(s32*)(this_ + 0x244) + 1;
+    *(s32*)(this_ + 0x244) = n;
+    if (*(s32*)(this_ + 0x244) >= 0xc8) {
+        *(s32*)(this_ + 0x244) = 0;
+    }
+    n = *(s32*)(this_ + 0x244);
+    idx = *(s32*)(this_ + 0x234);
+    z = *(f32*)(this_ + 0x250);
+    e = (u8*)fn_801902C0() + idx * 0x60 + 8;
+    if (*(u32*)(e + 0x3c) != 0 && e[0x5c] == 0) {
+        e[0x5c] = 1;
+        *(f32*)(e + 0x0) = z;
+        *(f32*)(e + 0x4) = z;
+        *(f32*)(e + 0x8) = z;
+        PSMTXCopy(m1, (f32(*)[4])(e + 0xc));
+        *(f32*)(e + 0x48) = lbl_8053C654;
+        *(s32*)(e + 0x4c) = n;
+        *(s32*)(e + 0x54) = 0;
+        *(s32*)(e + 0x58) = 1;
+    }
+}
+
 extern "C" s32 fn_80112C8C(void) {
     return 1;
 }
@@ -88,34 +139,37 @@ extern "C" void fn_80112C9C(u8* this_) {
     extern void* fn_8011921C(void);
     extern void fn_80112654(u8* this_, s32 n);
 
-    s32* tbl = &lbl_80464678[0x29];
+    s32* tbl = lbl_80464678;
     s32 v = *(s32*)((char*)fn_8011921C() + 8);
     if (*(s32*)(this_ + 0x23c) == 0) {
-        if (v == tbl[2]) {
+        s32* p = &tbl[0x29];
+        s32* idx_tbl = &tbl[0x39];
+        if (v == p[2]) {
             fn_80112654(this_, 2);
-        } else if (v == tbl[3] + lbl_80464678[0x39 + *(s32*)(this_ + 0x234)]) {
+        } else if (v == p[3] + idx_tbl[*(s32*)(this_ + 0x234)]) {
             fn_80112654(this_, 3);
-        } else if (v == tbl[4]) {
+        } else if (v == p[4]) {
             fn_80112654(this_, 4);
-        } else if (v == tbl[5]) {
+        } else if (v == p[5]) {
             fn_80112654(this_, 5);
-        } else if (v == tbl[6]) {
+        } else if (v == p[6]) {
             fn_80112654(this_, 6);
-        } else if (v == tbl[7]) {
+        } else if (v == p[7]) {
             fn_80112654(this_, 7);
-        } else if (v == tbl[8]) {
+        } else if (v == p[8]) {
             fn_80112654(this_, 8);
-        } else if (v == tbl[9] + lbl_80464678[0x45 + *(s32*)(this_ + 0x234)]) {
+        } else if (v == p[9] + tbl[0x45 + *(s32*)(this_ + 0x234)]) {
             fn_80112654(this_, 9);
-        } else if (v == tbl[10]) {
+        } else if (v == p[10]) {
             fn_80112654(this_, 10);
-        } else if (v == tbl[11]) {
+        } else if (v == p[11]) {
             fn_80112654(this_, 11);
-        } else if (v == tbl[12] + lbl_80464678[0x3f + *(s32*)(this_ + 0x234)]) {
+        } else if (v == p[12] + tbl[0x3f + *(s32*)(this_ + 0x234)]) {
             fn_80112654(this_, 12);
-        } else if (v == tbl[14]) {
+        } else if (v == p[14]) {
             fn_80112654(this_, 15);
         }
+    } else {
     }
 }
 
