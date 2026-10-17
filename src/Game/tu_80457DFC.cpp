@@ -388,12 +388,13 @@ extern "C" void fn_80458408(u8* this_, s32 param_2, u8 param_3) {
 }
 
 extern "C" void fn_80458508(u8* this_, u8 mode) {
-    Unk80457E54Obj* obj = *(Unk80457E54Obj**)(this_ + 0x80);
+    void* obj = *(void**)(this_ + 0x80);
     if (obj != NULL) {
-        f32* p = obj->v10();
+        f32* p = ((Unk80457E54Vt*)obj)->v8();
         if (p != NULL) {
             switch (mode) {
             case 1: {
+                f32 d;
                 u32 n = lbl_8053A264;
                 f32 v = lbl_8053A260;
                 if (n == 0) {
@@ -402,20 +403,16 @@ extern "C" void fn_80458508(u8* this_, u8 mode) {
                     *(u32*)(p + 3) = 0;
                     p[2] = lbl_80543EB0;
                 } else {
-                    f32 d = v - p[0];
-                    union {
-                        f64 f;
-                        u32 w[2];
-                    } conv;
-                    conv.w[0] = 0x43300000;
+                    d = v - p[0];
                     *(u32*)(p + 3) = n;
-                    conv.w[1] = *(u32*)(p + 3);
-                    p[1] = d / (f32)(conv.f - lbl_80543EB8);
+                    f32 e = (f32)*(u32*)(p + 3);
+                    p[1] = d / e;
                     p[2] = v;
                 }
                 break;
             }
             case 2: {
+                f32 d;
                 u32 n = lbl_8053A26C;
                 f32 v = lbl_8053A268;
                 if (n == 0) {
@@ -424,15 +421,10 @@ extern "C" void fn_80458508(u8* this_, u8 mode) {
                     *(u32*)(p + 3) = 0;
                     p[2] = lbl_80543EB0;
                 } else {
-                    f32 d = v - p[0];
-                    union {
-                        f64 f;
-                        u32 w[2];
-                    } conv;
-                    conv.w[0] = 0x43300000;
+                    d = v - p[0];
                     *(u32*)(p + 3) = n;
-                    conv.w[1] = *(u32*)(p + 3);
-                    p[1] = d / (f32)(conv.f - lbl_80543EB8);
+                    f32 e = (f32)*(u32*)(p + 3);
+                    p[1] = d / e;
                     p[2] = v;
                 }
                 break;
