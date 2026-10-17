@@ -13,7 +13,7 @@ struct FsaVObjX {
     virtual void v8(void);
     virtual void v9(void);
     virtual void v10(void);
-    virtual u8 v11(...);
+    virtual u8 v11(void);
 };
 
 
@@ -110,7 +110,7 @@ extern "C" void fn_80209014(char* this_) {
     switch (*(s32*)(this_ + 0x248)) {
     case 0: {
         if ((*(s32*)(this_ + 0x348) == 0 && *(s32*)(this_ + 0x24c) >= *(s32*)(this_ + 0x250)) ||
-            ((FsaVObjX*)this_)->v11(this_)) {
+            ((FsaVObjX*)this_)->v11()) {
             s32 i = 0;
             char* p = this_;
             while (i < 4) {
