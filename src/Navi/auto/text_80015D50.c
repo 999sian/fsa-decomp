@@ -167,55 +167,55 @@ extern "C" s32 fn_80016320(void* param_1) {
 extern "C" s32 fn_800163A0(void* param_1) {
     u8* p = (u8*)param_1;
     s32 result;
-    if (!fn_801BE5B4(p + 0x1fb0)) {
-        return 0xe;
+    if (fn_801BE5B4(p + 0x1fb0)) {
+        switch (*(s32*)(p + 0x1fac)) {
+        case 0:
+            result = 2;
+            break;
+        case 1:
+            result = 1;
+            break;
+        case 2:
+            result = 3;
+            break;
+        case 3:
+            result = 4;
+            break;
+        case 4:
+            result = 5;
+            break;
+        case 5:
+            result = 0;
+            break;
+        case 6:
+            result = 7;
+            break;
+        case 7:
+            result = 6;
+            break;
+        case 8:
+            result = 0xb;
+            break;
+        case 9:
+            result = 0xc;
+            break;
+        case 10:
+            result = 9;
+            break;
+        case 11:
+            result = 0xa;
+            break;
+        case 12:
+            result = 8;
+            break;
+        case 13:
+            result = 0xe;
+            break;
+        }
+        fn_801BE47C(p + 0x1fb0);
+        return result;
     }
-    switch (*(s32*)(p + 0x1fac)) {
-    case 0:
-        result = 2;
-        break;
-    case 1:
-        result = 1;
-        break;
-    case 2:
-        result = 3;
-        break;
-    case 3:
-        result = 4;
-        break;
-    case 4:
-        result = 5;
-        break;
-    case 5:
-        result = 0;
-        break;
-    case 6:
-        result = 7;
-        break;
-    case 7:
-        result = 6;
-        break;
-    case 8:
-        result = 0xb;
-        break;
-    case 9:
-        result = 0xc;
-        break;
-    case 10:
-        result = 9;
-        break;
-    case 11:
-        result = 0xa;
-        break;
-    case 12:
-        result = 8;
-        break;
-    case 13:
-        result = 0xe;
-        break;
-    }
-    fn_801BE47C(p + 0x1fb0);
-    return result;
+    return 0xe;
 }
 
 extern "C" void fn_80016484(void* param_1) {
