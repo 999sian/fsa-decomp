@@ -321,7 +321,7 @@ extern "C" void* fn_801360EC(void* ptr, s16 param_2) {
     return ptr;
 }
 
-extern "C" void fn_801E10DC(void* p, int a, void* b, int c);
+extern "C" f32 fn_801E10DC(void* p, ...);
 extern "C" f64 fn_801E9FA0(f64 a, f64 b);
 extern "C" u32 lbl_80201F60[];
 extern f32 lbl_80301828;
@@ -477,7 +477,6 @@ extern f64 lbl_80301830;
 extern "C" f64 fn_801367EC(Vec_801367EC* p, f64* q, f64 x) {
     u32 n;
     f64 r;
-    Range_801367EC it;
     if (p->begin == 0) {
         n = 0;
     } else {
@@ -486,13 +485,35 @@ extern "C" f64 fn_801367EC(Vec_801367EC* p, f64* q, f64 x) {
     if (n == 0) {
         return lbl_80301830;
     }
-    it.cur = p->begin;
-    it.end = p->end;
-    r = (*it.cur++)->v5(x);
-    while (it.cur != it.end) {
-        r -= (*it.cur++)->v5(x);
+    Range_801367EC it = {p->begin, p->end};
+    r = it.next()->v5(x);
+    while (!it.done()) {
+        r -= it.next()->v5(x);
     }
     r -= *q;
+    return r;
+}
+
+extern "C" f64 fn_80136958(Vec_801367EC* p, f64* q, f64 x) {
+    u32 n;
+    f64 r;
+    if (p->begin == 0) {
+        n = 0;
+    } else {
+        n = p->end - p->begin;
+    }
+    if (n == 0) {
+        return lbl_80301830;
+    }
+    Range_801367EC it;
+    Range_801367EC* pi = &it;
+    pi->cur = p->begin;
+    pi->end = p->end;
+    r = pi->next()->v5(x);
+    while (!pi->done()) {
+        r /= pi->next()->v5(x);
+    }
+    r /= *q;
     return r;
 }
 
