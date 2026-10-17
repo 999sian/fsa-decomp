@@ -2,8 +2,6 @@
 
 class ActorV {
 public:
-    virtual void s00();
-    virtual void s04();
     virtual void s08();
     virtual void s0C();
     virtual void s10();
@@ -147,6 +145,98 @@ extern "C" u8* fn_802C8E60(u8* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" u8 fn_80138A30(void* p);
+extern "C" u8 fn_802D4ADC(void* mgr, s32 room, u16 id);
+extern "C" void fn_802D4874(void* mgr, s32 room, u16 id, void* a, void* b);
+extern "C" u8 fn_802D49A8(void* mgr, s32 room, u16 id);
+extern "C" u16 fn_802F9908(void* mgr, s32 room, s32 id);
+extern "C" void fn_802F9974(void* mgr, s32 room, s32 id, u16 frame);
+extern u8* lbl_8053AAF8;
+extern u8* lbl_8053AB10;
+extern "C" void fn_802C8F28(char* this_) {
+    u8 buf1[8];
+    u8 buf2[8];
+    f32 pos[2];
+    f32 y;
+    u8 n = fn_80138A30(lbl_8053AAF8);
+    s32 go = 0;
+    s32 mode = *(s32*)(this_ + 0x248);
+    if (mode == 0) {
+        go = 1;
+    } else if (mode == 1) {
+        if (n >= 3) {
+            go = 1;
+        }
+    } else if (mode == 2) {
+        if (n >= 4) {
+            go = 1;
+        }
+    } else if (mode == 3) {
+        if (n >= 2) {
+            go = 1;
+        }
+    }
+    y = *(f32*)(this_ + 0x10);
+    pos[0] = *(f32*)(this_ + 0xc);
+    pos[1] = y;
+    *(s32*)(this_ + 0x250) = fn_80226BC4(pos, *(s32*)(this_ + 0x4));
+    if (fn_802D4ADC(fn_802D6A9C(), *(s32*)(this_ + 0x4), (u16)*(s32*)(this_ + 0x250)) == 1) {
+        if (*(s32*)(this_ + 0x234) != 0x30) {
+            go = 0;
+        }
+    }
+    if (go == 1 || *(s32*)(this_ + 0x23c) == 2) {
+        if (*(s32*)(this_ + 0x238) != 0) {
+            if (*(s32*)(this_ + 0x4) < 8) {
+                *(u8*)(this_ + 0x256) = 1;
+            } else {
+                *(u8*)(this_ + 0x256) = 8;
+            }
+        } else {
+            *(u8*)(this_ + 0x256) = 0;
+        }
+        if ((*(u32*)(this_ + 0x90) & 0x04000000) != 0) {
+            *(u8*)(this_ + 0x24c) = 1;
+        } else {
+            *(u8*)(this_ + 0x24c) = 0;
+        }
+        *(u16*)(this_ + 0x254) = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 0x4), *(s32*)(this_ + 0x250));
+        *(s32*)(this_ + 0x230) = 0;
+        if (*(s32*)(this_ + 0x234) == 0x30) {
+            *(s32*)(this_ + 0x240) = 2;
+            fn_802D4874(fn_802D6A9C(), *(s32*)(this_ + 0x4), (u16)*(s32*)(this_ + 0x250), buf1, buf2);
+            if (fn_802D4ADC(fn_802D6A9C(), *(s32*)(this_ + 0x4), (u16)*(s32*)(this_ + 0x250)) == 1) {
+                *(s32*)(this_ + 0x234) = 0x10;
+                fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 0x4) + *(u8*)(this_ + 0x256), *(s32*)(this_ + 0x250), (u16)*(s32*)(this_ + 0x234));
+                *(u8*)(this_ + 0x11c) = 0;
+            }
+        } else if (*(s32*)(this_ + 0x234) >= 0x8b && *(s32*)(this_ + 0x234) <= 0x8e) {
+            if (fn_802D49A8(fn_802D6A9C(), *(s32*)(this_ + 0x4), (u16)*(s32*)(this_ + 0x250)) == 1) {
+                fn_802F9974(*(void**)(lbl_8053AB10 + 0x20), *(s32*)(this_ + 0x4) + *(u8*)(this_ + 0x256), *(s32*)(this_ + 0x250), (u16)*(s32*)(this_ + 0x234));
+                *(s32*)(this_ + 0x230) = 1;
+            }
+        } else if (*(s32*)(this_ + 0x234) == 0x17 || *(s32*)(this_ + 0x234) == 0x16) {
+            *(s32*)(this_ + 0x240) = 2;
+        } else if (*(s32*)(this_ + 0x234) == 0x3ee || *(s32*)(this_ + 0x234) == 0x3ef) {
+            *(s32*)(this_ + 0x240) = 3;
+        }
+        if ((*(u32*)(this_ + 0x90) >> 27) != 0 && ((ActorV*)this_)->v13() == 1) {
+            *(u8*)(this_ + 0x24c) = 0;
+        }
+        if (*(s32*)(this_ + 0x23c) == 2 && ((ActorV*)this_)->v13() == 0) {
+            *(s32*)(this_ + 0x230) = 3;
+            if (*(s32*)(this_ + 0x234) == *(u16*)(this_ + 0x254) && *(s32*)(this_ + 0x234) == 0x9e) {
+                *(u16*)(this_ + 0x254) = 0xdc;
+            }
+            ((ActorV*)this_)->v05();
+        } else if (*(u8*)(this_ + 0x11c) != 0) {
+            ((ActorV*)this_)->v05();
+        }
+    } else {
+        *(u8*)(this_ + 0x11c) = 0;
+    }
 }
 
 extern "C" void fn_802C9284(u8* p) {
