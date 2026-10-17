@@ -232,6 +232,7 @@ extern "C" void fn_80256410(Actor* param_1)
 extern "C" void fn_8022E088(s32 idx, s32 i, Vec* out);
 extern "C" void fn_8022DF48(s32 idx);
 extern "C" s32 fn_8023DE58(s32 idx);
+#pragma dont_inline on
 extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     u8* p = (u8*)a;
     s32 room = *(s32*)(p + 0x4);
@@ -259,6 +260,7 @@ extern "C" s32 fn_802565BC(Actor* a, s32 arg) {
     }
     return 0;
 }
+#pragma dont_inline reset
 
 extern char* lbl_8053AAF8;
 extern u32 lbl_804A6F48[];
