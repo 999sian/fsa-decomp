@@ -8,6 +8,9 @@
 // Code of main that had no source file yet: decomp.wtf gave it this one.
 // split_file divides it into the game's real files (file_status shows its range).
 
+extern "C" JUTConsole* lbl_8053A914;
+extern "C" char lbl_8045E934[];
+extern "C" u8 lbl_804BA1D0[];
 extern "C" void fn_8008A220(u16 param_1, OSContext* param_2, u32 param_3, u32 param_4);
 extern "C" void fn_8008A4C4(unsigned int param_1);
 extern "C" unsigned int lbl_8053A904;
