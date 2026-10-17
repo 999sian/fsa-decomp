@@ -157,6 +157,10 @@ extern "C" void fn_800329CC(void* p) {
     *(unsigned int*)((char*)p + 0x20) = 0;
 }
 
+extern "C" void fn_800332BC(void* p) {
+    *(unsigned int*)((char*)p + 0xe8) |= 0x80;
+}
+
 extern "C" void fn_80033ADC(void*, void*);
 extern float lbl_802FFD48;
 extern int lbl_80244A88[];
