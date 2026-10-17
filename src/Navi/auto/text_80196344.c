@@ -11,6 +11,23 @@ extern "C" void* lbl_8029AF34[];
 extern void* lbl_8029A150[];
 extern "C" void fn_801A605C(int, void*);
 extern "C" void fn_801BC250(int, int);
+struct VObj_801A219C {
+    virtual void v0(); virtual void v1(); virtual void v2(); virtual void v3(); virtual void v4();
+    virtual void v5(); virtual void v6(); virtual void v7(); virtual void v8(); virtual void v9();
+    virtual void v10(); virtual void v11(); virtual void v12(); virtual void v13(); virtual void v14();
+    virtual void v15(); virtual void v16(); virtual void v17();
+    virtual s16 v18(int);
+    virtual void v19(); virtual void v20();
+    virtual u32* v21(int);
+    virtual void v22(); virtual void v23(); virtual void v24(); virtual void v25(); virtual void v26();
+    virtual void v27(); virtual void v28(); virtual void v29(); virtual void v30(); virtual void v31();
+    virtual void v32(); virtual void v33(); virtual void v34(); virtual void v35(); virtual void v36();
+    virtual void v37(); virtual void v38();
+    virtual u8* v39(int);
+    virtual void v40(); virtual void v41(); virtual void v42(); virtual void v43(); virtual void v44();
+    virtual void v45(); virtual void v46();
+    virtual u32* v47(int);
+};
 struct Bytes4_801A3D94 { u8 b[4]; };
 struct Rect16 {
     s16 x, y, w, h;
@@ -878,6 +895,30 @@ extern "C" void fn_80199078(void* param_1) {
     *(s32*)(p + 0x1c) = 0;
 }
 
+extern "C" void fn_8019912C(u8* self) {
+    extern u32 lbl_80301CFC;
+    NaviBytes4 a;
+    NaviBytes4 b;
+    *(u32*)&a = lbl_80301CF8;
+    self[0x14] = 0;
+    *(NaviBytes4*)(self + 4) = a;
+    *(u32*)&a = lbl_80301CF8;
+    *(NaviBytes4*)(self + 8) = a;
+    *(u32*)&b = lbl_80301CFC;
+    *(NaviBytes4*)(self + 12) = b;
+    *(NaviBytes4*)(self + 16) = b;
+    *(u32*)(self + 0x20) = 0;
+    *(u32*)(self + 0x24) = 0;
+    *(u32*)(self + 0x28) = 0;
+    *(u32*)(self + 0x2c) = 0;
+    *(u32*)(self + 0x30) = 0;
+    *(u32*)(self + 0x34) = 0;
+    *(u32*)(self + 0x38) = 0;
+    *(u32*)(self + 0x3c) = 0;
+    *(u32*)(self + 0x44) = 0;
+    *(u32*)(self + 0x48) = 0;
+}
+
 extern "C" void fn_80199200(void* param_1) {
     s32* p = (s32*)param_1;
     p[1] = 0;
@@ -1280,6 +1321,32 @@ extern "C" void fn_8019DB60(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019DBF4(int param_1) {
+    extern int* lbl_802FFA80;
+    int pair[2];
+    int single;
+    int* p;
+    int* base;
+    u32 i;
+
+    lbl_802FFA80[2] = lbl_802FFA80[0] + *(int*)(param_1 + 0xd4);
+    base = (int*)lbl_802FFA80[2];
+    p = (int*)param_1;
+    for (i = 0; i < 3; i++) {
+        pair[0] = *(int*)((char*)p + 0x98);
+        pair[1] = *(int*)((char*)p + 0x9c);
+        fn_80191388(i + 1, pair);
+        p = (int*)((char*)p + 8);
+    }
+    p = (int*)param_1;
+    for (i = 0; i < 4; i++) {
+        single = *(int*)((char*)p + 0xb8);
+        fn_80191220(i, &single);
+        p = (int*)((char*)p + 4);
+    }
+    fn_801BC250((int)base, lbl_802FFA80[2] - (int)base);
+}
+
 extern "C" void fn_8019DE38(NaviVObj* p) {
     p->vf9();
     p->vf10();
@@ -1341,6 +1408,34 @@ extern "C" void fn_8019E004(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019E098(int param_1) {
+    extern int* lbl_802FFA80;
+    int* base;
+    int* p;
+    int pair[2];
+    int single;
+    u32 i;
+
+    lbl_802FFA80[2] = lbl_802FFA80[0] + *(int*)(param_1 + 0x68);
+    base = (int*)lbl_802FFA80[2];
+    p = (int*)param_1;
+    for (i = 0; i < 3; i++) {
+        int a = *(int*)((char*)p + 0x14);
+        int b = *(int*)((char*)p + 0x18);
+        pair[0] = a;
+        pair[1] = b;
+        fn_80191388(i + 1, pair);
+        p = (int*)((char*)p + 8);
+    }
+    p = (int*)param_1;
+    for (i = 0; i < 4; i++) {
+        single = *(int*)((char*)p + 0x45);
+        fn_80191220(i, &single);
+        p = (int*)((char*)p + 4);
+    }
+    fn_801BC250((int)base, lbl_802FFA80[2] - (int)base);
+}
+
 extern "C" void fn_8019E2C4(NaviVObj* p) {
     p->vf9();
     p->vf10();
@@ -1369,6 +1464,32 @@ extern "C" void fn_8019E310(int param_1)
 	fn_801BC250(saved, final - saved);
 }
 
+extern "C" void fn_8019E3A4(int param_1) {
+    extern int* lbl_802FFA80;
+    struct Pair { int a, b; };
+    int* base;
+    int* p;
+    u32 i;
+    Pair pair;
+    int single;
+
+    lbl_802FFA80[2] = lbl_802FFA80[0] + *(int*)(param_1 + 0x90);
+    base = (int*)lbl_802FFA80[2];
+    p = (int*)param_1;
+    for (i = 0; i < 3; i++) {
+        pair = *(Pair*)((char*)p + 0x42);
+        fn_80191388(i + 1, &pair);
+        p = (int*)((char*)p + 8);
+    }
+    p = (int*)param_1;
+    for (i = 0; i < 4; i++) {
+        single = *(int*)((char*)p + 0x62);
+        fn_80191220(i, &single);
+        p = (int*)((char*)p + 4);
+    }
+    fn_801BC250((int)base, lbl_802FFA80[2] - (int)base);
+}
+
 extern "C" void fn_8019E5E8(NaviVObj* p) {
     p->vf9();
     p->vf10();
@@ -1395,6 +1516,32 @@ extern "C" void fn_8019E634(int param_1)
 	
 	int final = lbl_802FFA80[2];
 	fn_801BC250(saved, final - saved);
+}
+
+extern "C" void fn_8019E6C8(int param_1) {
+    extern int* lbl_802FFA80;
+    struct Pair { int a, b; };
+    int* base;
+    int* p;
+    u32 i;
+    Pair pair;
+    int single;
+
+    lbl_802FFA80[2] = lbl_802FFA80[0] + *(int*)(param_1 + 0x170);
+    base = (int*)lbl_802FFA80[2];
+    p = (int*)param_1;
+    for (i = 0; i < 3; i++) {
+        pair = *(Pair*)((char*)p + 0xda);
+        fn_80191388(i + 1, &pair);
+        p = (int*)((char*)p + 8);
+    }
+    p = (int*)param_1;
+    for (i = 0; i < 4; i++) {
+        single = *(int*)((char*)p + 0xfa);
+        fn_80191220(i, &single);
+        p = (int*)((char*)p + 4);
+    }
+    fn_801BC250((int)base, lbl_802FFA80[2] - (int)base);
 }
 
 extern "C" void fn_8019E90C(NaviVObj* p) {
