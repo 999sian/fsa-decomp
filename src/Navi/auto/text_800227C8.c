@@ -108,6 +108,27 @@ extern "C" void fn_800229C0(void) {
     }
 }
 
+extern "C" void fn_80022A74(s32 param_1, u16 param_2) {
+    u16 tmp = param_2;
+    u8* b = (u8*)&tmp;
+    u8* p = lbl_802BB778 + param_1 * 0x50;
+    u32 lo = b[1];
+    u32 hi = b[0];
+
+    p[0x30] = (p[0x30] & ~0x10) | ((lo >> 2) & 0x10);
+    p[0x30] = (p[0x30] & ~0x20) | ((lo >> 2) & 0x20);
+    p[0x30] = (p[0x30] & ~0x80) | ((lo << 2) & 0x80);
+    p[0x30] = (p[0x30] & ~0x40) | ((lo << 2) & 0x40);
+    p[0x30] = (p[0x30] & ~0x08) | ((lo << 1) & 0x08);
+    p[0x30] = (p[0x30] & ~0x04) | ((hi << 2) & 0x04);
+    p[0x30] = (p[0x30] & ~0x02) | ((hi << 1) & 0x02);
+    p[0x30] = (p[0x30] & ~0x01) | (lo & 0x01);
+    p[0x31] = (p[0x31] & ~0x80) | ((lo << 6) & 0x80);
+    p[0x31] = p[0x31] & ~0x40;
+    p[0x31] = p[0x31] & ~0x20;
+    p[0x31] = (p[0x31] & ~0x10) | ((lo << 1) & 0x10);
+}
+
 extern "C" void* fn_80022CA8(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80222428;
@@ -243,4 +264,13 @@ extern "C" void* fn_80025020(void* ptr, s16 param_2) {
     }
     return ptr;
 }
-
+typedef struct {
+    u8 b7 : 1;
+    u8 b6 : 1;
+    u8 b5 : 1;
+    u8 b4 : 1;
+    u8 b3 : 1;
+    u8 b2 : 1;
+    u8 b1 : 1;
+    u8 b0 : 1;
+} Bits8;
