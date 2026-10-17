@@ -20,7 +20,7 @@ struct NaviTracker {
     virtual void fn_17();
     virtual void fn_18();
     virtual void fn_19();
-    virtual void fn_20();
+    virtual void fn_20(void*);
     virtual void fn_21();
     virtual void fn_22(void*);
 };
@@ -75,6 +75,26 @@ extern "C" void fn_8013DEBC(void* param_1) {
         void* p = e ? (void*)e : (void*)&lbl_802FF378;
         s->ptr = p;
     }
+}
+
+extern "C" void fn_801E0DB8(void*, void*, s32, s32, s32);
+extern "C" void fn_8013CD54();
+extern "C" void fn_801337AC(void*, void*, void*);
+extern char lbl_8029260C[];
+extern char lbl_80292398[];
+extern char lbl_80201EB4[];
+extern "C" void fn_8013DFF8(void* param_1) {
+    NaviTracker* o = *(NaviTracker**)((u8*)param_1 + 0x88);
+    o->fn_7(o->fn_6() & 0xfffffffe);
+}
+
+extern "C" void fn_8013E04C(void* param_1) {
+    void* local;
+    void* local2;
+    fn_801337AC(param_1, &local, (void*)lbl_80201EB4);
+    local2 = local;
+    ((NaviTracker*)*(void**)((u8*)param_1 + 0x88))->fn_22(&local2);
+    ((NaviTracker*)*(void**)((u8*)param_1 + 0x88))->fn_5();
 }
 
 extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
