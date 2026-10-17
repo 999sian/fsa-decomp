@@ -24,6 +24,8 @@ extern u8 lbl_802FFA74;
 extern u8* __GXData;
 extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
+extern f32 lbl_80301F68;
+extern f32 lbl_80301F6C;
 extern "C" void fn_801DD410(void* a, void* b, u32 c);
 extern "C" void __GXFlushTextureState(void);
 extern u8 lbl_8029E5C0[];
@@ -1934,6 +1936,142 @@ extern "C" void fn_801DF0BC(u32 param_1, u32 param_2) {
     *(volatile u8*)0xCC008000 = 0x40;
     *(volatile u32*)0xCC008000 = buf[0];
     *(volatile u32*)0xCC008000 = buf[1];
+}
+
+extern f32 lbl_80301F68;
+extern f32 lbl_80301F6C;
+extern "C" void fn_801DF25C(f32* p) {
+    u8* gx = __GXData;
+    p[0] = *(s32*)(gx + 0x4d8) != 0 ? lbl_80301F6C : lbl_80301F68;
+    for (s32 i = 0; i < 6; i++) {
+        p[1 + i] = *(f32*)(gx + 0x4dc + i * 4);
+    }
+}
+
+extern "C" void fn_801DF344(u32 a) {
+    u32* gx = (u32*)__GXData;
+    u32 r = gx[0x80 / 4];
+    r = (r & ~0x3f) | (a & 0x3f);
+    gx[0x80 / 4] = r;
+    fn_801DF650(0);
+}
+
+extern f32 lbl_80301F70;
+extern f32 lbl_80301F74;
+extern "C" void fn_801DF42C(void) {
+    u8* gx = (u8*)__GXData;
+    f32 a = *(f32*)(gx + 0x500);
+    f32 b = *(f32*)(gx + 0x4fc);
+    f32 d = *(f32*)(gx + 0x4f4);
+    f32 e = *(f32*)(gx + 0x4f8);
+    f32 f = *(f32*)(gx + 0x508);
+    f32 g = *(f32*)(gx + 0x510);
+    f32 h = *(f32*)(gx + 0x504);
+    f32 i = *(f32*)(gx + 0x50c);
+    f32 k = lbl_80301F70;
+    f32 bk = b * k;
+    f32 ak = a * k;
+    f32 fg = f * g;
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u32*)0xCC008000 = 0x5101a;
+    *(volatile f32*)0xCC008000 = bk;
+    *(volatile f32*)0xCC008000 = -a * k;
+    *(volatile f32*)0xCC008000 = fg - h * g;
+    *(volatile f32*)0xCC008000 = lbl_80301F74 + (d + bk);
+    *(volatile f32*)0xCC008000 = lbl_80301F74 + (e + ak);
+    *(volatile f32*)0xCC008000 = fg + i;
+}
+
+extern "C" void fn_801DF42C(void);
+#pragma dont_inline on
+extern "C" void fn_801DF4BC(f32 a, f32 b, f32 c, f32 d, f32 e, f32 f) {
+    u8* gx = (u8*)__GXData;
+    *(f32*)(gx + 0x4f4) = a;
+    *(f32*)(gx + 0x4f8) = b;
+    *(f32*)(gx + 0x4fc) = c;
+    *(f32*)(gx + 0x500) = d;
+    *(f32*)(gx + 0x504) = e;
+    *(f32*)(gx + 0x508) = f;
+    fn_801DF42C();
+    *(u16*)((u8*)__GXData + 0x2) = 1;
+}
+#pragma dont_inline reset
+extern "C" void fn_801DF504(f32* dst) {
+    f32* src = (f32*)(__GXData + 0x4f4);
+    dst[0] = src[0]; dst[1] = src[1]; dst[2] = src[2];
+    dst[3] = src[3]; dst[4] = src[4]; dst[5] = src[5];
+}
+
+extern "C" void fn_801DF528(u32 left, u32 top, u32 wd, u32 ht) {
+    u8* gx = __GXData;
+    u32 tp, lf, bm, rt;
+    tp = top + 0x156;
+    *(u32*)(gx + 0xf8) = (tp & 0x7ff) | (*(u32*)(gx + 0xf8) & ~0x7ff);
+    lf = left + 0x156;
+    *(u32*)(gx + 0xf8) = ((lf << 12) & 0x7ff000) | (*(u32*)(gx + 0xf8) & ~0x7ff000);
+    bm = tp + ht - 1;
+    *(u32*)(gx + 0xfc) = (bm & 0x7ff) | (*(u32*)(gx + 0xfc) & ~0x7ff);
+    rt = lf + wd - 1;
+    *(u32*)(gx + 0xfc) = ((rt << 12) & 0x7ff000) | (*(u32*)(gx + 0xfc) & ~0x7ff000);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(gx + 0xf8);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(gx + 0xfc);
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DF5A0(s32* left, s32* top, s32* wd, s32* ht) {
+    u32 tl = *(u32*)(__GXData + 0xf8);
+    u32 br = *(u32*)(__GXData + 0xfc);
+    u32 lf;
+    u32 tp;
+    lf = (tl >> 12) & 0x7ff;
+    *left = lf - 0x156;
+    tp = tl & 0x7ff;
+    *top = tp - 0x156;
+    *wd = ((br >> 12) & 0x7ff) - lf + 1;
+    *ht = (br & 0x7ff) - tp + 1;
+}
+
+extern "C" void fn_801DF5E8(s32 x, s32 y) {
+    u32 hx = x + 0x156;
+    u32 hy = y + 0x156;
+    u32 r = __rlwimi(0, hx, 31, 22, 31);
+    u32 reg = __rlwimi(r, hy, 9, 12, 21);
+    *(volatile u8*)0xCC008000 = 0x61;
+    reg = __rlwimi(reg, 0x59, 24, 0, 7);
+    *(volatile u32*)0xCC008000 = reg;
+    *(u16*)(__GXData + 2) = 0;
+}
+
+extern "C" void fn_801DF628(u32 v) {
+    *(volatile u8*)0xCC008000 = 0x10;
+    *(volatile u32*)0xCC008000 = 0x1005;
+    *(volatile u32*)0xCC008000 = v;
+    *(u16*)(__GXData + 2) = 1;
+}
+
+extern "C" void fn_801DF650(s32 n) {
+    if (n < 5) {
+        u8* gx = __GXData;
+        *(volatile u8*)0xCC008000 = 8;
+        *(volatile u8*)0xCC008000 = 0x30;
+        u32 v = *(u32*)(gx + 0x80);
+        *(volatile u32*)0xCC008000 = v;
+        *(volatile u8*)0xCC008000 = 0x10;
+        *(volatile u32*)0xCC008000 = 0x1018;
+        *(volatile u32*)0xCC008000 = v;
+    } else {
+        u8* gx = __GXData;
+        *(volatile u8*)0xCC008000 = 8;
+        *(volatile u8*)0xCC008000 = 0x40;
+        u32 v = *(u32*)(gx + 0x84);
+        *(volatile u32*)0xCC008000 = v;
+        *(volatile u8*)0xCC008000 = 0x10;
+        *(volatile u32*)0xCC008000 = 0x1019;
+        *(volatile u32*)0xCC008000 = v;
+    }
+    *(u16*)(__GXData + 2) = 1;
 }
 
 typedef struct {
