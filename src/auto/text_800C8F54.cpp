@@ -2,6 +2,7 @@
 // split_file divides it into the game's real files (file_status shows its range).
 
 #include "types.h"
+#include <dolphin/gx.h>
 
 struct J3DMaterialDLBlock {
     u32 _00;
@@ -331,8 +332,8 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
     if (*(void**)(p + 0x78) != NULL) {
         fn_800CAEC8(p, mat, idx, flags);
     } else {
-        u8 tevNum = 0;
-        u32 texGenNum = 0;
+        u8 tevNum;
+        u32 texGenNum;
         u32 tevStageNum;
         u8 indNum = 0;
         u32 texGenFlags;
@@ -340,6 +341,7 @@ extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
         u32 indFlag;
         u8* entry = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
 
+        tevNum = texGenNum = 0;
         if (entry[4] != 0xff) {
             tevNum = (*(u8**)(p + 0x4c))[entry[4]];
         }
