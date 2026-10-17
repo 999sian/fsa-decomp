@@ -39,6 +39,7 @@ extern "C" void* fn_802373EC(void*);
 extern "C" void* fn_8023725C(void*);
 extern "C" void fn_802372F8(void*, s32, s32);
 extern char* lbl_8053AAF8;
+extern "C" void* fn_801F856C(void);
 extern "C" void fn_801597C0(FSAVirtBase* p) {
     p->m7();
 }
