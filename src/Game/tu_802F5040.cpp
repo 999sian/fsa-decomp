@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JKernel/JKRDecomp.h"
+#include <dolphin/mtx.h>
 
 extern "C" s32 checkCompressed__9JKRDecompFPUc(u8*);
 extern "C" void decode__9JKRDecompFPUcPUcUlUl(u8*, u8*, u32, u32);
@@ -470,6 +471,7 @@ extern "C" void fn_802FF568(u8* this_) {
     s32 i;
     u8* p;
     u8 f;
+    bool b;
 
     fn_802FDDD4(this_);
     g = (u8*)lbl_8053AAF8;
@@ -485,7 +487,8 @@ extern "C" void fn_802FF568(u8* this_) {
             f = 1;
         }
     }
-    if (f == 1) {
+    b = f;
+    if (b == 1) {
         fn_802FCE74(this_);
     }
     p = this_;
