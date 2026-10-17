@@ -26,6 +26,7 @@ extern "C" void fn_80097180(void* p);
 extern "C" s32 fn_8009D0D8(s16* param_1);
 extern "C" void fn_800F4C70(void* p);
 extern void* lbl_80286A98[];
+extern void* lbl_8028E870[];
 extern "C" void fn_8010B64C(void* p);
 extern "C" void fn_800A5338(void* p);
 
@@ -1642,8 +1643,8 @@ extern "C" s32 fn_8009B220(void* p);
 extern "C" s32 fn_8009B8B4(void* p);
 extern "C" void fn_8009B154(u8* p) {
     s32 a = fn_8009B574();
-    a = fn_8009B220(p) | a;
-    if ((a | fn_8009B8B4(p)) != 0) {
+    a |= fn_8009B220(p);
+    if ((fn_8009B8B4(p) | a) != 0) {
         if (p[0x718] == 0) {
             void* obj = *(void**)(p + 0x700);
             ((void (*)(void*, void*))(*(void***)obj)[25])(obj, *(void**)(p + 0x710));
