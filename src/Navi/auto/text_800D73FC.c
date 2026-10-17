@@ -115,7 +115,7 @@ extern "C" void fn_800E3F4C(void* param_1) {
 
 extern "C" void fn_800E3F80(void* param_1) {
     u8* p = (u8*)param_1;
-    u16 v = *(u16*)(p + 0xa9c);
+    u32 v = *(u16*)(p + 0xa9c);
     if (v != 0) {
         *(u16*)(p + 0xa9c) = v - 1;
         return;
@@ -179,12 +179,12 @@ extern "C" void fn_800E47B4(u8* p) {
 extern "C" u8* fn_800306DC(int);
 extern "C" void fn_800E4828(u8* p) {
     if (fn_800306DC(*(s32*)(p + 0xb50)) == 0) {
-        if (*(u16*)(p + 0xa9c) == 0) {
+        if (*(u16*)(p + 0xa9c) != 0) {
+            *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
+        } else {
             p[0xb11] = 2;
             *(u16*)(p + 0xa9c) = 10;
             p[0xa76] = 0x1f;
-        } else {
-            *(u16*)(p + 0xa9c) = *(u16*)(p + 0xa9c) - 1;
         }
     }
 }
@@ -253,11 +253,11 @@ extern "C" void fn_800E7A5C(u8* p) {
 
 extern "C" void fn_800E7AC8(u8* p)
 {
-    s16 n;
+    s32 n;
     (*(u16*)(p + 0xa9c))--;
     p[0x574]++;
     n = *(s16*)(*(u8**)(p + 0x570) + 6);
-    if (p[0x574] >= n) {
+    if (p[0x574] >= (s16)n) {
         p[0x574] -= n;
     }
     *(f32*)(*(u8**)(p + 0x570) + 8) = p[0x574];
