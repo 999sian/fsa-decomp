@@ -1012,21 +1012,22 @@ extern "C" void fn_8005BD38(s32 p1, u8* p2) {
     if (fn_801C7D34(p2) == 0) {
         fn_8005C330((const char*)1, lbl_8027D65C, p2);
     }
-    if (p1 > 0) {
+    if (p1 <= 0) {
+        fn_8005C330((const char*)1, lbl_8027D69C, p1);
+    } else {
+        u8* q = p;
         for (s32 i = 0; i < 0x40; i++) {
-            if (p + 0x20 == p2) {
-                if (p[0] == 2) {
+            if (q + 0x20 == p2) {
+                if (q[0] == 2) {
                     fn_8005BE20();
                 } else {
-                    p[0] = 3;
+                    q[0] = 3;
                 }
                 return;
             }
-            p += 0x5c;
+            q += 0x5c;
         }
         fn_8005C330((const char*)0, lbl_8027D6C4);
-    } else {
-        fn_8005C330((const char*)1, lbl_8027D69C, p1);
     }
 }
 
