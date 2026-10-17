@@ -127,6 +127,19 @@ extern "C" void fn_80013DA0(Unk80013DA0* self, u8 a, u8 b) {
 extern "C" void fn_80015C24(void) {
 }
 
+extern "C" u32 fn_80015C28(u32 param) {
+    union {
+        u32 w;
+        u8 b[4];
+    } src, dst;
+    src.w = param;
+    dst.b[0] = src.b[3];
+    dst.b[1] = src.b[2];
+    dst.b[2] = src.b[1];
+    dst.b[3] = src.b[0];
+    return dst.w;
+}
+
 extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80204F9C;
@@ -136,3 +149,11 @@ extern "C" void* fn_80015C5C(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+
+extern "C" s32 fn_80015CA4(s16* p) {
+    if (*p != 0) {
+        *p = *p - 1;
+    }
+    return *p;
+}
+
