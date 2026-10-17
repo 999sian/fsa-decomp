@@ -685,7 +685,8 @@ extern "C" void fn_802D7844(void* rec, s32 a, s32 b);
 static inline u8 twtgHasItem(s32 k) {
     u8* g = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
     s32 r = (u8)(1 << k) & g[0x7a];
-    return r != 0;
+    bool has = r != 0;
+    return has;
 }
 
 extern "C" void fn_803167F4(char* p) {
@@ -726,8 +727,7 @@ extern "C" void fn_803167F4(char* p) {
         *(f32*)(p + 0x264) = lbl_805418A8;
     }
     s32 k = *(s32*)(p + 0x23c);
-    // NONMATCHING (99.1%): retail tests the bool with srwi. (no cmplwi).
-    if (twtgHasItem(k) == 1) {
+    if (twtgHasItem(k)) {
         *(s32*)(p + 0x268) = lbl_804714D8[k];
     } else {
         *(s32*)(p + 0x268) = 0x473;
