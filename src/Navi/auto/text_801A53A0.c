@@ -104,6 +104,22 @@ extern "C" void fn_801A670C(u8* param_1, s32 param_2) {
     fn_801A6CEC(param_1 + 0x64, param_2 * 3 + 0x40);
 }
 
+extern f32 lbl_80301D38;
+extern f32 lbl_80301D3C;
+extern f64 lbl_80301D40;
+extern "C" int fn_8015AA60(int a, int b);
+extern "C" void fn_801A73A4(u8* p);
+extern "C" void fn_801A7258(u8* param_1) {
+    *(u32*)(param_1 + 0x8) = 0;
+    *(u32*)(param_1 + 0xc) = 0;
+    *(f32*)(param_1 + 0x10) = lbl_80301D38;
+    *(f32*)(param_1 + 0x14) = lbl_80301D3C;
+    *(u32*)(param_1 + 0x1c) = 0;
+    *(u32*)(param_1 + 0x20) = 0;
+    *(u32*)(param_1 + 0x4) = 0x20;
+    *(f32*)(param_1 + 0x18) = (*(f32*)(param_1 + 0x14) - *(f32*)(param_1 + 0x10)) / (f32)*(u32*)(param_1 + 0x4);
+}
+
 extern "C" void fn_8015AB40(void* p);
 extern "C" void fn_8015AB1C(void* p);
 extern "C" void fn_801A73A4(u8* p);
