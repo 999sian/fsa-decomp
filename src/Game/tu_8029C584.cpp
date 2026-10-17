@@ -1,5 +1,15 @@
 
 
+extern "C" void fn_803703C8(void);
+extern "C" void fn_8030AAF4(int a);
+extern "C" char* fn_8008E328(void);
+extern "C" unsigned int fn_8022C5EC(int a, int b);
+extern "C" unsigned int fn_8022C52C(int a, int b);
+extern "C" unsigned char fn_8022C9AC(int a);
+extern "C" void fn_80230EB8(int a, int b);
+extern "C" const int lbl_8046C400[][6];
+extern float lbl_80540760;
+
 struct Vec {
     float x, y, z;
 };
@@ -102,65 +112,61 @@ extern float lbl_80540754;
 extern float lbl_80540758;
 extern "C" const char lbl_8046C490[];
 extern "C" void fn_8029C584(void* this_) {
-    float box[4];
     Vec pos;
+    Box2 box;
     char* p = (char*)this_;
 
     *(Vec2*)&pos = *(Vec2*)(p + 0xc);
     pos.z = *(float*)(p + 0x14);
     if (*(int*)(p + 0x4) == 0) {
-        char* m = *(char**)((char*)lbl_8053AB10 + 0x24);
-        ((unsigned int*)box)[0] = *(unsigned int*)(m + 0x164);
-        ((unsigned int*)box)[1] = *(unsigned int*)(m + 0x168);
-        ((unsigned int*)box)[2] = *(unsigned int*)(m + 0x16c);
-        ((unsigned int*)box)[3] = *(unsigned int*)(m + 0x170);
-        if (pos.y - pos.z < lbl_80540738 + box[1]) {
+        box = *(Box2*)(*(char**)((char*)lbl_8053AB10 + 0x24) + 0x164);
+        if (pos.y - pos.z < lbl_80540738 + box.min.y) {
             pos.y += lbl_8054073C;
         }
         if (*(unsigned char*)(p + 0x24c) != 0) {
-            if (pos.x < lbl_80540740 + box[0]) {
-                pos.x = lbl_80540740 + box[0];
-            } else if (pos.x >= box[2] - lbl_80540744) {
-                pos.x = box[2] - lbl_80540744;
+            if (pos.x < lbl_80540740 + box.min.x) {
+                pos.x = lbl_80540740 + box.min.x;
+            } else if (pos.x >= box.max.x - lbl_80540744) {
+                pos.x = box.max.x - lbl_80540744;
             }
         } else {
-            if (pos.x < lbl_8054073C + box[0]) {
-                pos.x = lbl_8054073C + box[0];
-            } else if (pos.x >= box[2] - lbl_80540748) {
-                pos.x = box[2] - lbl_80540748;
+            if (pos.x < lbl_8054073C + box.min.x) {
+                pos.x = lbl_8054073C + box.min.x;
+            } else if (pos.x >= box.max.x - lbl_80540748) {
+                pos.x = box.max.x - lbl_80540748;
             }
         }
     } else {
-        fn_8022B8EC(*(int*)(p + 0x248), box);
-        if (pos.y - pos.z < lbl_8054073C + box[1]) {
+        fn_8022B8EC(*(int*)(p + 0x248), (float*)&box);
+        if (pos.y - pos.z < lbl_8054073C + box.min.y) {
             pos.y += lbl_8054073C;
         }
         if (*(unsigned char*)(p + 0x24c) != 0) {
             if (fn_8022C8EC(*(int*)(p + 0x90) & 3)) {
-                if (pos.x < lbl_8054073C + box[0]) {
-                    pos.x = lbl_8054073C + box[0];
-                } else if (pos.x >= box[2] - lbl_8054073C) {
-                    pos.x = box[2] - lbl_8054073C;
+                if (pos.x < lbl_8054073C + box.min.x) {
+                    pos.x = lbl_8054073C + box.min.x;
+                } else if (pos.x >= box.max.x - lbl_8054073C) {
+                    pos.x = box.max.x - lbl_8054073C;
                 }
             } else {
-                if (pos.x < lbl_8054074C + box[0]) {
-                    pos.x = lbl_8054074C + box[0];
-                } else if (pos.x >= box[2] - lbl_8054074C) {
-                    pos.x = box[2] - lbl_8054074C;
+                if (pos.x < lbl_8054074C + box.min.x) {
+                    pos.x = lbl_8054074C + box.min.x;
+                } else if (pos.x >= box.max.x - lbl_8054074C) {
+                    pos.x = box.max.x - lbl_8054074C;
                 }
             }
         } else {
             if (fn_8022C8EC(*(int*)(p + 0x90) & 3)) {
-                if (pos.x < lbl_80540750 + box[0]) {
-                    pos.x = lbl_80540750 + box[0];
-                } else if (pos.x >= box[2] - lbl_80540750) {
-                    pos.x = box[2] - lbl_80540750;
+                if (pos.x < lbl_80540750 + box.min.x) {
+                    pos.x = lbl_80540750 + box.min.x;
+                } else if (pos.x >= box.max.x - lbl_80540750) {
+                    pos.x = box.max.x - lbl_80540750;
                 }
             } else {
-                if (pos.x < lbl_80540754 + box[0]) {
-                    pos.x = lbl_80540754 + box[0];
-                } else if (pos.x >= box[2] - lbl_80540754) {
-                    pos.x = box[2] - lbl_80540754;
+                if (pos.x < lbl_80540754 + box.min.x) {
+                    pos.x = lbl_80540754 + box.min.x;
+                } else if (pos.x >= box.max.x - lbl_80540754) {
+                    pos.x = box.max.x - lbl_80540754;
                 }
             }
         }
