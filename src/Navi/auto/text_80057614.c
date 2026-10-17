@@ -1301,6 +1301,37 @@ extern "C" void fn_8005FCEC(void* self) {
     fn_801DEE3C(0);
 }
 
+extern "C" void fn_801E0DB8(void* self, void* a, void* b, u32 size, u32 count);
+extern "C" void fn_8005FEB4(u8* self);
+extern "C" void fn_8005FE84(void** p);
+extern "C" void fn_80011E54(void);
+extern "C" u8* fn_8005FDAC(u8* p) {
+    fn_801E0DB8(p + 0x2c0, (void*)fn_8005FEB4, 0, 0x110, 8);
+    *(u8*)(p + 0x2b8) = 0;
+    fn_801E0DB8(p + 0xb88, (void*)fn_8005FE84, (void*)fn_80011E54, 0x14, 2);
+    *(u8*)(p + 0xbb0) = 0;
+    *(u8**)(p + 0x70) = p + 0x6c;
+    *(u8**)(p + 0xb8) = p + 0xb4;
+    *(u8**)(p + 0x100) = p + 0xfc;
+    *(u8**)(p + 0x208) = p + 0x204;
+    *(u8**)(p + 0x290) = p + 0x28c;
+    *(u32*)(p + 0x0) = 0;
+    *(u32*)(p + 0x4) = 0;
+    *(u32*)(p + 0x8) = 0;
+    *(u32*)(p + 0xc) = 0;
+    *(u32*)(p + 0x10) = 0;
+    *(u32*)(p + 0x14) = 0;
+    *(u32*)(p + 0x18) = 0;
+    *(u32*)(p + 0x1c) = 0;
+    *(u32*)(p + 0x20) = 0;
+    *(u32*)(p + 0x24) = 0;
+    *(u32*)(p + 0x28) = 0;
+    *(u32*)(p + 0x2ac) = 0;
+    *(u32*)(p + 0x2b0) = 0;
+    *(u32*)(p + 0xdb4) = 0;
+    return p;
+}
+
 extern "C" void fn_8005FE84(void** p) {
     p[0] = lbl_80299A8C;
     p[1] = nullptr;
