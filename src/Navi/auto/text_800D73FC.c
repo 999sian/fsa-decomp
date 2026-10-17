@@ -1,4 +1,6 @@
 #include "types.h"
+extern "C" char lbl_802B7CA0[];
+extern "C" void fn_80060794(void*, void*, void*, void*);
 struct VObj_800A1A64 {
     virtual void v0();
     virtual void v1();
