@@ -263,16 +263,14 @@ extern "C" s32 fn_80390C38(Tu80390818* t) {
 }
 
 static inline u16 Tu80390818_read16(u8* p) {
-    u16 v = p[0] << 8;
-    v |= p[1];
-    return v;
+    return (p[0] << 8) | p[1];
 }
 
 extern "C" u16 fn_80390C6C(Tu80390818* t) {
     if (t->m24 == 3) {
         switch (t->m41) {
         case 0:
-            t->m26 = (t->m0C[1] | (t->m0C[0] << 8));
+            t->m26 = Tu80390818_read16(t->m0C);
             t->m41 = 1;
             t->m10 = 2;
             t->m14 = 0;
@@ -289,7 +287,7 @@ extern "C" u16 fn_80390C6C(Tu80390818* t) {
             }
             t->m41 = 2;
         case 2:
-            t->m26 = (t->m0C[1] | (t->m0C[0] << 8));
+            t->m26 = Tu80390818_read16(t->m0C);
             if (t->m26 == 0xFFF0) {
                 t->m10 += 2;
                 t->m14++;
