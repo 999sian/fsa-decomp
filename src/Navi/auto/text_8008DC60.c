@@ -1016,6 +1016,15 @@ extern "C" void* fn_80096AFC(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80111170(u8* p);
+extern "C" void fn_80096B58(u8* p) {
+    fn_80111170(*(u8**)(p + 0x2a0));
+    if (*(u8*)(*(u8**)(p + 0x2a0) + 0x11e)) {
+        *(s32*)(lbl_802BB0FC + 0x44) = 0x13;
+        *(u8*)(p + 0x2a6) = 2;
+    }
+}
+
 extern "C" void fn_80096BB0(void) {}
 
 extern "C" void fn_80096BB4(u8* p) {
