@@ -813,6 +813,11 @@ extern "C" void fn_8005CAE8(int param_1, int param_2) {
     lbl_802FF128 += param_2;
 }
 
+extern "C" void fn_8005CB00(void) {
+    lbl_802FF12C = 0;
+    lbl_802FF130 = 0x20;
+}
+
 extern "C" void fn_8005CB14(void) {
     if (lbl_802FF130 >= 0x20) {
         return;
