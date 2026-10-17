@@ -144,7 +144,7 @@ extern "C" void fn_80057B6C(void);
 extern "C" void fn_80024BC8(s32* p);
 extern "C" void fn_80022D74(s32* p) {
     fn_80057B6C();
-    if (p != nullptr && p[1] != 0) {
+    if (p != nullptr && *(u32*)(p + 1) != 0) {
         fn_80024BC8(p);
     }
 }
