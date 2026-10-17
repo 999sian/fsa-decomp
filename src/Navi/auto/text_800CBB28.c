@@ -59,9 +59,7 @@ extern "C" void fn_800CC0BC(u8* p) {
 }
 
 extern "C" void fn_800CC0E0(u8* p) {
-    f32 from = lbl_80300EA0;
-    f32 to = -*(f32*)(lbl_802C56EC + 0xc);
-    s32 r = fn_800CC1C4(p, *(s16*)(p + 0x2a), lbl_802C56EC[0x10], (void*)4, 1, from, to);
+    s32 r = fn_800CC1C4(p, *(s16*)(p + 0x2a), lbl_802C56EC[0x10], (void*)4, 1, 0.0f, -*(f32*)(lbl_802C56EC + 0xc));
     (*(s16*)(p + 0x2a))++;
     if (r == 1) {
         *(s16*)(p + 0x2a) = 0;
