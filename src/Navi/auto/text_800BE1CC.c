@@ -37,6 +37,12 @@ extern "C" void fn_800C2364(u8* p) {
     p[0x212] = 7;
 }
 
+extern "C" void fn_800C23F8(u8* p) {
+    *(*(u8**)(p + 0x19c) + 0xb0) = 1;
+    *(*(u8**)(p + 0x1a0) + 0xb0) = 1;
+    p[0x212] = 7;
+}
+
 extern "C" void fn_800C256C(u8* p) {
     s32 a = fn_800C3900(p, *(s16*)(p + 0x21e), lbl_802C562C[0x15], 0);
     s32 b = fn_800C3A1C(p, *(s16*)(p + 0x21e), lbl_802C562C[0x15], 0, 0);
@@ -58,7 +64,9 @@ extern "C" void fn_800C2610(u8* p) {
 }
 
 extern "C" void fn_800C2640(u8* p) {
-    u32 n = *(u16*)(p + 0x220);
+    u16 n;
+    p[0x220] = p[0x220];
+    n = *(u16*)(p + 0x220);
     if (n != 0) {
         *(u16*)(p + 0x220) = n - 1;
     } else {
