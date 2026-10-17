@@ -118,23 +118,22 @@ extern "C" void fn_80021A98(void* param_1, u8* param_2, char* param_3, s32 param
 
 extern "C" void fn_80021B4C(void* param_1, char* param_2, u16* param_3, s32 param_4) {
     char** table = param_4 == 0 ? lbl_80206200 : lbl_8020631C;
-    s32 i = 0;
-    do {
+    s32 i;
+    for (i = 0; i < 2; i++) {
         char** p = table;
         char cVar3 = 0;
-        s32 n = 0x47;
-        do {
+        s32 j;
+        for (j = 0; j < 0x47; j++) {
             if (*(u16*)*p == *param_3) {
                 break;
             }
             p++;
             cVar3++;
-        } while (--n != 0);
-        i++;
+        }
         *param_2 = cVar3;
         param_3++;
         param_2++;
-    } while (i < 2);
+    }
 }
 
 extern u8 lbl_802BB0FC[];
@@ -170,5 +169,25 @@ found:
     return count;
 }
 
+extern "C" s32 fn_80021D04(void) {
+    s32 i;
+    u32 mask = *(u32*)(lbl_802B7CA0 + 0x3444);
+    for (i = 3; i >= 0; i--) {
+        if (mask & (1 << i)) {
+            return i;
+        }
+    }
+    return -1;
+}
+
 extern "C" void fn_80022434(void) {}
+
+extern "C" BOOL fn_80022438(void* p, void* a, void* b, void* c, f32 f1, f32 f2, f32 f3, f32 f4) {
+    BOOL ret = FALSE;
+    if (p != 0) {
+        fn_80010A58(p, fn_800638A4(a, b, lbl_802B7CA0 + 0x2200, 0x40), c, f1, f2, f3, f4);
+        ret = TRUE;
+    }
+    return ret;
+}
 
