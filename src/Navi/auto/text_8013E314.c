@@ -99,6 +99,27 @@ extern "C" void fn_8013E9E4(void* param_1, void* param_2, void* param_3, void* p
     fn_8013BC94(*(void**)((u8*)param_1 + 0x114), param_3, param_4, param_5, param_6);
 }
 
+extern "C" void fn_8013EA18(void* param_1, s32 param_2, s32* param_3) {
+    s32 v;
+    switch (param_2) {
+    case 2:
+        switch (*param_3) {
+        case 0x301:
+            v = 1;
+            goto call;
+        case 0x302:
+            v = 2;
+            goto call;
+        case 0x303:
+            v = 3;
+        call:
+            (*(VObj_8013E314**)((u8*)param_1 + 0x114))->fn_14(v);
+            break;
+        }
+        break;
+    }
+}
+
 struct PmfObj_8013E374;
 typedef void (PmfObj_8013E374::*PmfFunc_8013E374)();
 extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
