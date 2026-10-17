@@ -733,9 +733,7 @@ extern "C" void fn_801D59DC(void* param_1) {
 }
 
 extern "C" void fn_801D6398(void* param_1) {
-    if (fn_801D61F8(param_1) < 0) {
-        ;
-    } else {
+    if (fn_801D61F8(param_1) >= 0) {
         fn_801D2F34((s32)param_1);
     }
 }
@@ -1559,5 +1557,230 @@ extern "C" void fn_801DE270(int param_1) {
 }
 
 extern "C" void fn_801DE2B8(void) {
+}
+
+extern "C" void __GXSetIndirectMask(u32 param_1) {
+    u8* gx = __GXData;
+    u32 v = __rlwimi(*(u32*)(gx + 0x124), param_1, 0, 24, 31);
+    u16 zero = 0;
+    *(u32*)(gx + 0x124) = v;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(gx + 0x124);
+    *(u16*)(gx + 2) = zero;
+}
+
+extern "C" void __GXFlushTextureState(void) {
+    *(volatile u8*)0xCC008000 = 0x61;
+    u8* gx = __GXData;
+    *(volatile u32*)0xCC008000 = *(u32*)(gx + 0x124);
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE310(int param_1, int param_2) {
+    u8* base = lbl_8029E5C0;
+    u8* p2;
+    u8* p4;
+    param_2 <<= 2;
+    if (param_1 == 0) {
+        p2 = base + param_2;
+        p4 = base + param_2 + 0x28;
+    } else {
+        p2 = base + param_2 + 0x14;
+        p4 = base + param_2 + 0x3c;
+    }
+    u8* gx = __GXData;
+    u8* b = gx + param_1 * 4;
+    u32 lo = *(u32*)p2;
+    u32 hi = *(u32*)(b + 0x130);
+    u32 v = __rlwimi(hi & 0xff000000, lo, 0, 8, 31);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = v;
+    *(u32*)(b + 0x130) = v;
+    u32 w = *(u32*)(b + 0x170) & 0xff00000f;
+    w = __rlwimi(w, *(u32*)p4, 0, 8, 27);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = w;
+    *(u32*)(b + 0x170) = w;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE39C(s32 param_1, u32 param_2, u32 param_3, u32 param_4, u32 param_5) {
+    u8* gx = __GXData;
+    u8* b = gx + param_1 * 4;
+    u32 v = __rlwimi(*(u32*)(b + 0x130), param_2, 12, 16, 19);
+    *(volatile u8*)0xCC008000 = 0x61;
+    v = __rlwimi(v, param_3, 8, 20, 23);
+    v = __rlwimi(v, param_4, 4, 24, 27);
+    v = __rlwimi(v, param_5, 0, 28, 31);
+    *(volatile u32*)0xCC008000 = v;
+    *(u32*)(b + 0x130) = v;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE3E0(s32 param_1, u32 param_2, u32 param_3, u32 param_4, u32 param_5) {
+    u8* gx = __GXData;
+    u8* b = gx + param_1 * 4;
+    param_2 = __rlwimi(*(u32*)(b + 0x170), param_2, 13, 16, 18);
+    *(volatile u8*)0xCC008000 = 0x61;
+    param_2 = __rlwimi(param_2, param_3, 10, 19, 21);
+    param_2 = __rlwimi(param_2, param_4, 7, 22, 24);
+    param_2 = __rlwimi(param_2, param_5, 4, 25, 27);
+    *(volatile u32*)0xCC008000 = param_2;
+    *(u32*)(b + 0x170) = param_2;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE424(s32 param_1, s32 param_2, u32 param_3, u32 param_4, u32 param_5, u32 param_6) {
+    u8* gx = __GXData;
+    u8* b = gx + param_1 * 4;
+    u32 v = __rlwimi(*(u32*)(b + 0x130), param_2, 18, 13, 13);
+    u32 w;
+    w = v;
+    if (param_2 <= 1) {
+        w = __rlwimi(w, param_4, 20, 10, 11);
+        w = __rlwimi(w, param_3, 16, 14, 15);
+    } else {
+        w = __rlwimi(w, param_2, 19, 10, 11);
+        w = __rlwimi(w, 3, 16, 14, 15);
+    }
+    *(volatile u8*)0xCC008000 = 0x61;
+    w = __rlwimi(w, param_5, 19, 12, 12);
+    w = __rlwimi(w, param_6, 22, 8, 9);
+    *(volatile u32*)0xCC008000 = w;
+    *(u32*)(b + 0x130) = w;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE48C(s32 param_1, s32 param_2, u32 param_3, u32 param_4, u32 param_5, u32 param_6) {
+    u8* gx = __GXData;
+    u32 v = *(u32*)(gx + param_1 * 4 + 0x170);
+    v = __rlwimi(v, param_2, 18, 13, 13);
+    if (param_2 > 1) {
+        v = __rlwimi(v, param_2, 19, 10, 11);
+        v = __rlwimi(v, 3, 16, 14, 15);
+    } else {
+        v = __rlwimi(v, param_4, 20, 10, 11);
+        v = __rlwimi(v, param_3, 16, 14, 15);
+    }
+    v = __rlwimi(v, param_5, 19, 12, 12);
+    v = __rlwimi(v, param_6, 22, 8, 9);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = v;
+    *(u32*)(gx + param_1 * 4 + 0x170) = v;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE4F4(s32 param_1, u8* param_2) {
+    u8* gx = __GXData;
+    u32 a = __rlwimi(0, param_2[0], 0, 21, 31);
+    a = __rlwimi(a, param_2[3], 12, 9, 19);
+    a = __rlwimi(a, param_1 * 2 + 0xe0, 24, 0, 7);
+    u32 b = __rlwimi(0, param_2[2], 0, 21, 31);
+    b = __rlwimi(b, param_2[1], 12, 9, 19);
+    b = __rlwimi(b, param_1 * 2 + 0xe1, 24, 0, 7);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = a;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = b;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = b;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = b;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE570(s32 param_1, s16* param_2) {
+    u8* gx = __GXData;
+    u32 a = __rlwimi(0, param_2[0], 0, 21, 31);
+    a = __rlwimi(a, param_2[3], 12, 9, 19);
+    a = __rlwimi(a, param_1 * 2 + 0xe0, 24, 0, 7);
+    u32 b = __rlwimi(0, param_2[2], 0, 21, 31);
+    b = __rlwimi(b, param_2[1], 12, 9, 19);
+    b = __rlwimi(b, param_1 * 2 + 0xe1, 24, 0, 7);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = a;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = b;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = b;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = b;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE5EC(s32 param_1, u8* param_2) {
+    u8* gx = __GXData;
+    u32 a = __rlwimi(0, param_2[0], 0, 24, 31);
+    a = __rlwimi(a, param_2[3], 12, 12, 19);
+    a = __rlwimi(a, 8, 20, 8, 11);
+    a = __rlwimi(a, param_1 * 2 + 0xe0, 24, 0, 7);
+    u32 b = __rlwimi(0, param_2[2], 0, 24, 31);
+    b = __rlwimi(b, param_2[1], 12, 12, 19);
+    b = __rlwimi(b, 8, 20, 8, 11);
+    b = __rlwimi(b, param_1 * 2 + 0xe1, 24, 0, 7);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = a;
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = b;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE660(s32 param_1, u32 param_2) {
+    u8* gx = __GXData;
+    u8* b = gx + (param_1 >> 1) * 4;
+    if (param_1 & 1) {
+        *(u32*)(b + 0x1b0) = __rlwimi(*(u32*)(b + 0x1b0), param_2, 14, 13, 17);
+    } else {
+        *(u32*)(b + 0x1b0) = __rlwimi(*(u32*)(b + 0x1b0), param_2, 4, 23, 27);
+    }
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *(u32*)(b + 0x1b0);
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE6BC(s32 param_1, u32 param_2) {
+    u8* gx = __GXData;
+    u32* b = (u32*)(gx + ((param_1 >> 1) * 4 + 0x1b0));
+    if (param_1 & 1) {
+        *b = __rlwimi(*b, param_2, 19, 8, 12);
+    } else {
+        *b = __rlwimi(*b, param_2, 9, 18, 22);
+    }
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *b;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE718(s32 param_1, u32 param_2, u32 param_3) {
+    u8* gx = __GXData;
+    u32 off = param_1 * 4 + 0x170;
+    u32* r = (u32*)(gx + off);
+    *r = __rlwimi(*r, param_2, 0, 30, 31);
+    *r = __rlwimi(*r, param_3, 2, 28, 29);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *r;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DE760(s32 table, u32 red, u32 green, u32 blue, u32 alpha) {
+    u8* gx = __GXData;
+    u32* p0 = (u32*)(gx + table * 8 + 0x1b0);
+    u32* p1;
+    *p0 = (*p0 & ~3) | (red & 3);
+    *p0 = (*p0 & ~0xC) | ((green & 3) << 2);
+    p1 = (u32*)(gx + (table * 2 + 1) * 4 + 0x1b0);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *p0;
+    *p1 = (*p1 & ~3) | (blue & 3);
+    *p1 = (*p1 & ~0xC) | ((alpha & 3) << 2);
+    *(volatile u8*)0xCC008000 = 0x61;
+    *(volatile u32*)0xCC008000 = *p1;
+    *(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DEA4C(u8 param_1) {
+    u32* gx = (u32*)__GXData;
+    gx[0x204 / 4] = __rlwimi(gx[0x204 / 4], param_1 - 1, 10, 18, 21);
+    gx[0x5ac / 4] |= 4;
 }
 
