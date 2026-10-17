@@ -93,6 +93,10 @@ extern "C" const f32 lbl_80540E7C;
 extern "C" const f32 lbl_80540E84;
 extern "C" void fn_802F86CC(u32 sobRenderer, Vec* pos, u32 sobResource, s32 spriteId,
                             f32 scaleX, f32 scaleY, SobDrawParams* drawParams);
+struct GXColor {
+    u8 r, g, b, a;
+};
+
 extern "C" void fn_80158B5C(u32 mgr, s32 room, Vec* pos, void* color, f32 size);
 
 
@@ -107,6 +111,48 @@ extern "C" Actor* fn_802CFDCC(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void fn_802CFE2C(Actor* p) {
+    if (*(u8*)((u8*)p + 0x26c) == 1) {
+        u8 color[4];
+        Vec pos2;
+        Vec pos1;
+        Vec pos0;
+        SobDrawParams drawParams;
+        s32 spriteId;
+        u32 sobRes;
+
+        drawParams.renderFlags[1] = -1;
+        drawParams.primaryColor.rgba.a = (u8)(s32)(lbl_80540E70 - *(f32*)((u8*)p + 0x270));
+        pos0.x = p->field_0C.x + lbl_80540E7C;
+        pos0.y = p->field_0C.y + lbl_80540E78;
+        pos0.z = p->field_0C.z;
+        spriteId = *(s32*)((u8*)p + 0x264) + 0x175;
+        if (p->field_04 < 8) {
+            sobRes = lbl_8053AAF8->mResMgr->getResource(FOURCC_SOB, lbl_8046E040);
+            fn_802F86CC(lbl_8053AB10->mSobRenderer, &pos0, sobRes, spriteId, lbl_80540E80, lbl_80540E80, &drawParams);
+        }
+
+        drawParams.primaryColor.rgba.a = (u8)(s32)*(f32*)((u8*)p + 0x270);
+        pos1.x = p->field_0C.x + lbl_80540E7C;
+        pos1.y = p->field_0C.y + lbl_80540E78;
+        pos1.z = p->field_0C.z;
+        spriteId = lbl_8046DFD0[*(s32*)((u8*)p + 0x264)] + 0x175;
+        if (p->field_04 < 8) {
+            sobRes = lbl_8053AAF8->mResMgr->getResource(FOURCC_SOB, lbl_8046E040);
+            fn_802F86CC(lbl_8053AB10->mSobRenderer, &pos1, sobRes, spriteId, lbl_80540E80, lbl_80540E80, &drawParams);
+        }
+
+        pos2.x = p->field_0C.x + lbl_80540E7C;
+        pos2.y = p->field_0C.y + lbl_80540E78;
+        pos2.z = p->field_0C.z;
+        color[0] = 0;
+        color[1] = 0;
+        color[2] = 0;
+        color[3] = 0x80;
+        fn_80158B5C(lbl_8053AB10->mFxMgr, p->field_04, &pos2, color, lbl_80540E84);
+    }
 }
 
 extern "C" const f32 lbl_80540E7C;
