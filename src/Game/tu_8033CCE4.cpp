@@ -41,6 +41,20 @@ struct UnkObj8033D264 {
     int unk198;
 };
 
+struct UnkObj8033CD44 {
+    u8 pad0[4];
+    s32 unk4;
+    u8 pad8[4];
+    JGeometry::TVec3f mPos;
+    u8 pad18[0x198 - 0x18];
+    void* unk198;
+    u8 pad19c[0x250 - 0x19c];
+    s32 unk250;
+    s32 unk254;
+    u8 pad258[0x25c - 0x258];
+    s32 state;
+};
+
 extern "C" void* fn_8033CCE4(void* p, s16 n) {
     if (p != NULL) {
         *(void**)p = lbl_804AC2D8;
