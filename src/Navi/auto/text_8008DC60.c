@@ -796,6 +796,19 @@ extern "C" void fn_80093F70(u8* p) {
     }
 }
 
+extern "C" void fn_80094024(u8* p) {
+    u8* q = *(u8**)(p + 0x280);
+    if (q[0x159] == 2) {
+        if ((u8)(q[0x158] ^ 1)) {
+            *(u8*)(p + 0x282c) = 0x10;
+        } else {
+            fn_800C6CA4(*(void**)(p + 0x27c));
+            *(u8*)(p + 0x2a5) = 2;
+            *(u8*)(p + 0x85c) = 5;
+        }
+    }
+}
+
 extern "C" void OSResetSystem(int, u32, int);
 extern "C" void fn_80094090(void) {
     OSResetSystem(1, 1, 1);
