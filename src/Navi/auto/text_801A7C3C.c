@@ -1,5 +1,8 @@
 #include "types.h"
 
+extern "C" void* fn_801B3580(void* p, void* q);
+extern "C" void* fn_8000F018(void* self);
+
 struct VObj_801AE5C8 {
     virtual void vf0(void* a, s32 b);
     virtual void vf1(void* a, s32 b);
