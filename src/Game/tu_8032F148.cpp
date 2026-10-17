@@ -1,5 +1,6 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
+#include "std/math.h"
 #include "JSystem/JGeometry/Vec.h"
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
 
