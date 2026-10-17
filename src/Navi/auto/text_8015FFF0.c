@@ -375,10 +375,11 @@ extern "C" void fn_801617D8(u8* p, s32 a, void* v) {
     void** arr = *(void***)(p + 0x50);
     if (arr == 0) {
         return;
-    } else if ((u32)idx >= *(u32*)(*(u8**)(p + 0x44) + 8)) {
-        return;
-    } else {
+    }
+    if ((u32)idx < *(u32*)(*(u8**)(p + 0x44) + 8)) {
         arr[idx] = v;
+    } else {
+        return;
     }
 }
 
@@ -477,10 +478,12 @@ extern "C" BOOL fn_80161CE0(void) {
 }
 
 extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
+    u8 ok;
     fn_80160C34(p, a, 2);
     *(void**)p = lbl_80297EF0;
     *(void**)(p + 0x60) = b;
-    if (!fn_801621C0(p, a)) {
+    ok = fn_801621C0(p, a);
+    if (!ok) {
         return p;
     }
     *(u32*)(p + 0x2c) = 0x52415243;
