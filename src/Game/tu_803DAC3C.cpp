@@ -67,8 +67,6 @@ struct FsaVirtObj {
 };
 
 struct FsaDisposable {
-virtual void v0(void);
-    virtual void v1(void);
     virtual void del(s32);
     virtual void v3(void);
 };
@@ -324,7 +322,7 @@ extern "C" void fn_803DD764(void* self_) {
             if (v <= 0 && DVDOpen(lbl_80477898, &fileInfo) == 1) {
                 u8* base = lbl_80529DEC;
                 u32 off;
-                for (off = 0; off < 32; off += 16) {
+                for (off = 0; off < 16; off += 8) {
                     u8* src = base + off;
                     u8* dst = (u8*)(off - 0x7f900000);
                     dst[0] = src[0x216];
@@ -966,6 +964,8 @@ extern "C" void fn_803DF810(u8* self) {
 
 extern "C" void fn_803DF9E8(void* self_) {
     u8* self = (u8*)self_;
+    u8* p;
+    s32 i;
     *(s32*)(self + 0x88) = 0;
     *(s32*)(self + 0x8c) = 0;
     *(s32*)(self + 0x90) = 0;
@@ -975,15 +975,15 @@ extern "C" void fn_803DF9E8(void* self_) {
     *(s16*)(self + 0x9a) = 0;
     *(s16*)(self + 0x98) = 0x3c;
     self[0xa1] = 0;
-    for (s32 i = 0; i < 2; i++) {
-        void* a = *(void**)(self + 0x34 + i * 4);
+    for (i = 0, p = self; i < 2; i++, p += 4) {
+        void* a = *(void**)(p + 0x34);
         *(u8*)(*(u8**)((u8*)a + 4) + 0xb0) = 1;
         fn_80402E08(a, lbl_80543614, lbl_80543604);
-        *(s16*)((u8*)*(void**)(self + 0x34 + i * 4) + 0x20) = 0;
-        void* b = *(void**)(self + 0x44 + i * 4);
+        *(s16*)((u8*)*(void**)(p + 0x34) + 0x20) = 0;
+        void* b = *(void**)(p + 0x44);
         *(u8*)(*(u8**)((u8*)b + 4) + 0xb0) = 1;
         fn_80402E08(b, lbl_80543614, lbl_80543604);
-        *(s16*)((u8*)*(void**)(self + 0x44 + i * 4) + 0x20) = 0;
+        *(s16*)((u8*)*(void**)(p + 0x44) + 0x20) = 0;
     }
     *(u8*)(*(u8**)(*(u8**)(self + 0x30) + 4) + 0xb0) = 1;
     fn_80402E08(*(void**)(self + 0x30), lbl_80543614, lbl_8054361C);
@@ -1033,74 +1033,74 @@ extern "C" void* fn_803DFC6C(u8* self, s16 param_2) {
         }
         obj = *(void**)(self + 0x60);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x60) = 0;
         obj = *(void**)(self + 0x64);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x64) = 0;
         obj = *(void**)(self + 0x4);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x4) = 0;
         obj = *(void**)(self + 0x8);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x8) = 0;
         for (i = 0; i < 7; i++) {
             obj = *(void**)(self + 0x14 + i * 4);
             if (obj != 0) {
-                ((FsaDisposable*)obj)->del(1);
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
             }
             *(void**)(self + 0x14 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x30);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x30) = 0;
         for (i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x34 + i * 4);
             if (obj != 0) {
-                ((FsaDisposable*)obj)->del(1);
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
             }
             *(void**)(self + 0x34 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x40);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x40) = 0;
         for (i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x44 + i * 4);
             if (obj != 0) {
-                ((FsaDisposable*)obj)->del(1);
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
             }
             *(void**)(self + 0x44 + i * 4) = 0;
         }
         for (i = 0; i < 2; i++) {
             obj = *(void**)(self + 0x50 + i * 4);
             if (obj != 0) {
-                ((FsaDisposable*)obj)->del(1);
+                ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
             }
             *(void**)(self + 0x50 + i * 4) = 0;
         }
         obj = *(void**)(self + 0x58);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x58) = 0;
         obj = *(void**)(self + 0x10);
         if (obj != 0) {
-            ((FsaDisposable*)obj)->del(1);
+            ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
         }
         *(void**)(self + 0x10) = 0;
         obj = *(void**)(lbl_80529DEC + 0x2c);
-        ((FsaDisposable*)obj)->v3();
+        ((void (*)(void*))(*(void***)obj)[3])(obj);
         lbl_8053ADD0 = 0;
         if (param_2 > 0) {
             __dl__FPv(self);
