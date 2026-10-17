@@ -15,6 +15,42 @@ struct J3DMaterialDLBlock {
     void* mStringTableOffset;       // _20
 };
 
+struct J3DMaterialBlock {
+    u32 _00;
+    u32 _04;
+    u16 mEntries; // _08
+    void* _0C;
+    void* _10;
+    u32 _14;
+    u32 _18;
+    void* _1C;
+    void* _20;
+    void* _24;
+    void* _28;
+    void* _2C;
+    void* _30;
+    void* _34;
+    void* _38;
+    void* _3C;
+    void* _40;
+    void* _44;
+    void* _48;
+    void* _4C;
+    void* _50;
+    void* _54;
+    void* _58;
+    void* _5C;
+    void* _60;
+    void* _64;
+    void* _68;
+    void* _6C;
+    void* _70;
+    void* _74;
+    void* _78;
+    void* _7C;
+    void* _80;
+};
+
 class J3DIndTexMtxInfo {
 public:
     J3DIndTexMtxInfo& operator=(const J3DIndTexMtxInfo&);
@@ -269,6 +305,97 @@ size_t J3DMaterialFactory::calcSize(J3DMaterial* mat, MaterialType type, int idx
     case PATCHED:
         size = calcSizePatchedMaterial(mat, idx, flags);
         break;
+    }
+    return size;
+}
+
+extern "C" u32 fn_800CAB34(u8* p, void* mat, s32 idx, u32 flags) {
+    u32 size = 0;
+    if (*(void**)(p + 0x78) != NULL) {
+        return fn_800CAEC8(p, mat, idx, flags);
+    }
+    u8* entry = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
+    u32 tevNum = 0;
+    u32 texGenNum = 0;
+    u16 tevStageNum;
+    u8 indNum = 0;
+    u32 texGenFlags;
+
+    if (entry[4] != 0xff) {
+        tevNum = (*(u8**)(p + 0x4c))[entry[4]];
+    }
+    if (*(u16*)(entry + 0x84) != 0xffff) {
+        texGenNum = 1;
+    }
+    if (*(u16*)(entry + 0x86) != 0xffff) {
+        texGenNum++;
+    }
+    if (*(u16*)(entry + 0x88) != 0xffff) {
+        texGenNum++;
+    }
+    if (*(u16*)(entry + 0x8a) != 0xffff) {
+        texGenNum++;
+    }
+    if (*(u16*)(entry + 0x8c) != 0xffff) {
+        texGenNum++;
+    }
+    if (*(u16*)(entry + 0x8e) != 0xffff) {
+        texGenNum++;
+    }
+    if (*(u16*)(entry + 0x90) != 0xffff) {
+        texGenNum++;
+    }
+    if (*(u16*)(entry + 0x92) != 0xffff) {
+        texGenNum++;
+    }
+    if (texGenNum != tevNum && texGenNum != 0 && texGenNum > tevNum) {
+        tevNum = texGenNum;
+    }
+    tevStageNum = (flags >> 0x10) & 0x1f;
+    if (tevNum > tevStageNum) {
+        tevStageNum = tevNum;
+    }
+    if (entry[3] != 0xff) {
+        indNum = (*(u8**)(p + 0x24))[entry[3]];
+    }
+    texGenFlags = flags & 0x0C000000;
+    if (indNum > 4) {
+        texGenFlags = 0;
+    }
+
+    if (mat == NULL) {
+        size = 0x4c;
+    }
+    size += calcSizeColorBlock__11J3DMaterialFUl(flags & 0xC0000000);
+    size += calcSizeTexGenBlock__11J3DMaterialFUl(texGenFlags);
+    size += calcSizeTevBlock__11J3DMaterialFi(tevStageNum);
+    size += calcSizeIndBlock__11J3DMaterialFi((flags >> 24) & 1);
+    size += calcSizePEBlock__11J3DMaterialFUlUl(flags & 0x30000000, entry[0]);
+
+    entry = *(u8**)(p + 4) + ((u16*)*(u8**)(p + 8))[idx] * 0x14c;
+    if (*(u16*)(entry + 0x48) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(entry + 0x4a) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(entry + 0x4c) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(entry + 0x4e) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(entry + 0x50) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(entry + 0x52) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(entry + 0x54) != 0xffff) {
+        size += 0x94;
+    }
+    if (*(u16*)(entry + 0x56) != 0xffff) {
+        size += 0x94;
     }
     return size;
 }
