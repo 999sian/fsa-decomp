@@ -166,6 +166,13 @@ struct VObj_8013C374 {
     virtual void v9(u32, u32);
 };
 
+struct Parser_8013B018 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual BOOL parse(u8** p, u32 a);
+};
+
 struct Ptr_8013B368 { u32* p; };
 
 struct Chunk_8013B368 {
