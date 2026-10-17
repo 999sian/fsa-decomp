@@ -28,6 +28,19 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_8030127C;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+struct NaviState_8010ABB0;
+typedef void (NaviState_8010ABB0::*NaviStateFn_8010ABB0)();
+extern NaviStateFn_8010ABB0 lbl_8028EA24[];
+extern "C" s32 fn_8002F6BC(void* p);
+extern void* lbl_802FF278;
+extern f32 lbl_80301280;
+extern f32 lbl_80301284;
+extern "C" void fn_801E10DC(void);
+struct VObj_8010BD04 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(u8);
+};
 extern "C" void fn_8010B634(u8* p) {
     *(u8*)(*(u8**)(p + 0x70) + 0xb0) = 0;
     p[0x9d] = 0;
