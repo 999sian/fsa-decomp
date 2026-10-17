@@ -31,6 +31,14 @@ extern void* lbl_8053AED0;
 extern "C" void fn_8013B490(void* p);
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void* screen, f32 x, f32 y, void* ctx);
 
+struct Fn8043EED8_Obj {
+    virtual void v00();
+    virtual void v01();
+    virtual void v02(s32 how);
+};
+
+extern "C" u8 lbl_804B1920[];
+
 struct Fn8043ABCC_Obj {
     virtual void v02();
     virtual void v03();
@@ -285,6 +293,85 @@ extern "C" void fn_8043A450(void* param_1, s32 param_2, s32 param_3) {
 
 extern "C" void fn_8043A608(void* param_1) {
     fn_8043A450(param_1, *(s32*)(lbl_80529DEC + 0x118), *(s32*)(lbl_80529DEC + 0x11c));
+}
+
+extern "C" void fn_8043A638(u8* param_1) {
+    struct PaneAlpha {
+        virtual void v02();
+        virtual void v03();
+        virtual void v04();
+        virtual void v05();
+        virtual void v06();
+        virtual void v07();
+        virtual void v08();
+        virtual void setAlpha(s32 alpha);
+    };
+    f32 f31 = lbl_80543C88;
+    f32 f30 = f31;
+    s16 r31;
+    s16 r30 = *(s16*)(lbl_8050DB0C + 0x22a);
+    s16 r29 = *(s16*)(lbl_8050DB0C + 0x22c);
+    s16 r28 = *(s16*)(lbl_8050DB0C + 0x22e);
+    if (*(s16*)(param_1 + 0x106) != 0) {
+        ((u8*)lbl_8053AED0)[0xdc] |= 0x1;
+        ((u8*)lbl_8053AED0)[0xdc] |= 0x2;
+        ((u8*)lbl_8053AED0)[0xdc] |= 0x4;
+        ((u8*)lbl_8053AED0)[0xdc] |= 0x8;
+        if (param_1[0x10d] == 0) {
+            r31 = *(s16*)(lbl_8050DB0C + 0x2e6) + 0x50;
+            s16 cur = *(s16*)(param_1 + 0x106);
+            if (cur < r31) {
+                ((PaneAlpha*)(*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL))->setAlpha(0);
+            } else if (cur <= r31 + r30) {
+                ((PaneAlpha*)(*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL))->setAlpha((s32)(lbl_80543C8C * ((f32)(cur - r31) / (f32)r30)));
+            } else {
+                s32 r25 = r29 + r31 + r30;
+                if (cur > r25) {
+                    ((PaneAlpha*)(*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL))->setAlpha((s32)(lbl_80543C8C * ((f32)(r28 + r25 - cur) / (f32)r28)));
+                }
+            }
+            J2DPane* pdf = (*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL);
+            (*(J2DScreen**)(param_1 + 8))->search(0x507730313031ULL)->setAlpha(pdf->getAlpha());
+            s16 cur2 = *(s16*)(param_1 + 0x106);
+            if (cur2 < r31 + r30 + r29 + r28) {
+                *(s16*)(param_1 + 0x106) = cur2 + 1;
+            } else {
+                *(s16*)(param_1 + 0x106) = 0;
+            }
+            if (*(s32*)(lbl_80529DEC + 0x118) == 8 && *(s32*)(lbl_80529DEC + 0x11c) == 3) {
+                f30 = lbl_80543C90;
+            }
+            f31 += (f32)*(s16*)(lbl_8050DB0C + 0x2e2);
+            f30 += (f32)*(s16*)(lbl_8050DB0C + 0x2e4);
+            (*(J2DScreen**)(param_1 + 8))->search(0x507730313031ULL)->move(*(f32*)(param_1 + 0xec) + f31, *(f32*)(param_1 + 0xf0) + f30);
+        } else {
+            s16 r25 = *(s16*)(param_1 + 0x106);
+            r31 = *(s16*)(param_1 + 0x108);
+            if (r25 < 0x14) {
+                ((PaneAlpha*)(*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL))->setAlpha(0);
+            } else if (r25 <= r30 + 0x14) {
+                ((PaneAlpha*)(*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL))->setAlpha((s32)(lbl_80543C8C * ((f32)(r25 - 0x14) / (f32)r30)));
+            } else {
+                s32 r26 = r31 + (r30 + 0x14);
+                if (r25 > r26) {
+                    ((PaneAlpha*)(*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL))->setAlpha((s32)(lbl_80543C8C * ((f32)(r28 + r26 - r25) / (f32)r28)));
+                }
+            }
+            J2DPane* pdf = (*(J2DScreen**)(param_1 + 8))->search(0x5064663031ULL);
+            (*(J2DScreen**)(param_1 + 8))->search(0x507730313031ULL)->setAlpha(pdf->getAlpha());
+            s16 cur2 = *(s16*)(param_1 + 0x106);
+            s32 lim = r30 + r31;
+            lim += r28;
+            if (cur2 < lim + 0x14) {
+                *(s16*)(param_1 + 0x106) = cur2 + 1;
+            } else {
+                *(s16*)(param_1 + 0x106) = 0;
+            }
+            (*(J2DScreen**)(param_1 + 8))->search(0x507730313031ULL)->move(*(f32*)(param_1 + 0xf4), *(f32*)(param_1 + 0xf8));
+        }
+        fn_8013B490(lbl_8053AB10);
+        draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(param_1 + 8), lbl_80543C88, lbl_80543C88, *(void**)((u8*)lbl_8053AB10 + 0x10));
+    }
 }
 
 extern "C" void fn_8043ABCC(u8* param_1, s32 param_2) {
