@@ -40,7 +40,7 @@ extern "C" void* fn_80012970(void* ptr, s16 param_2);
 extern "C" void* fn_8001287C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80204AEC;
-        if ((char*)ptr + 4 != nullptr) {
+        if ((u32)ptr + 4 != 0) {
             *((void**)ptr + 1) = lbl_80204AC4;
             fn_801E0D40((char*)ptr + 8, (void*)fn_80012970, 0x20, 0x40);
         }
