@@ -102,26 +102,16 @@ extern "C" void fn_802D1DB4(char* p) {
         param.color = fn_8023CB24(*(s32*)(p + 0xc8)) + 1;
         param.palette = fn_8023CA88(*(s32*)(p + 0xc8));
     }
-    s32 n = *(s32*)(p + 4);
-    if (*(u8*)((char*)fn_802D6A9C() + 0x10000 + n + 0x31df) != 0) {
-        s32 id = *(s32*)(p + 0x234);
-        id += *(s32*)(p + 0x238);
-        id += 0x1bb;
-        fn_801F02BC(p, lbl_8046E100, id, &param, flag, 0, 1, lbl_80540ECC, lbl_80540ECC);
+    u32 n = *(u32*)(p + 4);
+    if (((YasiMgr*)fn_802D6A9C())->flag(n) != 0) {
+        fn_801F02BC(p, lbl_8046E100, 0x1bb + *(s32*)(p + 0x234) + *(s32*)(p + 0x238), &param, flag, 0, 1, lbl_80540ECC, lbl_80540ECC);
     } else {
-        s32 id = *(s32*)(p + 0x234);
-        id += *(s32*)(p + 0x238);
-        id += 0x21;
-        fn_801F02BC(p, lbl_8046E100, id, &param, flag, 0, 1, lbl_80540ECC, lbl_80540ECC);
+        fn_801F02BC(p, lbl_8046E100, 0x21 + *(s32*)(p + 0x234) + *(s32*)(p + 0x238), &param, flag, 0, 1, lbl_80540ECC, lbl_80540ECC);
     }
     if (*(s32*)(p + 0x234) == 1) {
-        u8 col[4];
-        col[0] = 0;
-        col[1] = 0;
-        col[2] = 0;
-        col[3] = 0x80;
-        Rgba802D dst = *(Rgba802D*)col;
-        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), *(s32*)(p + 4), p + 0xc, &dst, lbl_80540EE0);
+        u32 id = *(u32*)(p + 4);
+        Rgba802D c(0, 0, 0, 0x80);
+        fn_80158B5C(*(void**)(lbl_8053AB10 + 0x2c), id, p + 0xc, c, lbl_80540EE0);
     }
 }
 
