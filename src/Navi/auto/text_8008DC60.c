@@ -1066,12 +1066,12 @@ extern "C" int fn_80095E00(u8* p, u8* c) {
 }
 
 extern "C" u8 fn_800D4FCC(void* p);
-extern "C" void fn_800D6C70(void);
-extern "C" void fn_800C57A8(void);
+extern "C" void fn_800D6C70(void* p);
+extern "C" void fn_800C57A8(void* p);
 extern "C" void fn_80095F38(u8* p) {
     if (fn_800D4FCC(*(void**)(p + 0x28c)) == 1) {
         if (*(void**)(p + 0x28c) != 0) {
-            fn_800D6C70();
+            fn_800D6C70(*(void**)(p + 0x28c));
             DtorVObj_800A0008* o = *(DtorVObj_800A0008**)(p + 0x28c);
             if (o != 0) {
                 o->Destroy(1);
@@ -1079,7 +1079,7 @@ extern "C" void fn_80095F38(u8* p) {
             *(void**)(p + 0x28c) = 0;
         }
         if (*(void**)(p + 0x284) != 0) {
-            fn_800C57A8();
+            fn_800C57A8(*(void**)(p + 0x284));
             DtorVObj_800A0008* o = *(DtorVObj_800A0008**)(p + 0x284);
             if (o != 0) {
                 o->Destroy(1);
