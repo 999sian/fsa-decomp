@@ -780,6 +780,24 @@ extern "C" void fn_80128984(void) {
     fn_801DACA4(0, 0, 0, 0x1e, 0, 0x7d);
 }
 
+extern "C" void fn_80128E78(char* p, char* q) {
+    s16 m = *(s16*)(q + 0x80);
+    char* r6 = *(char**)(*(char**)(p + 4) + 0x1c);
+    u8 i = *(u8*)(*(char**)r6 + 0x1f) - 1;
+    if (i < m) {
+        m = i;
+    }
+    q[0x94] = (*(char**)(r6 + 8))[(u8)m];
+}
+
+extern "C" void fn_80128EB0(void** param_1) {
+    u8* obj = (u8*)*param_1;
+    u8* info = *(u8**)((u8*)param_1[1] + 0x1c);
+    u32 v = *(u32*)(obj + 0x100);
+    u8 idx = v % (*(u8**)info)[0x1f];
+    obj[0x111] = (*(u8**)(info + 8))[idx];
+}
+
 extern "C" void fn_80128EE8(u8* a, u8* b) {
     u8** info = *(u8***)(*(u8**)(a + 4) + 0x1c);
     b[0x94] = info[2][(u8)((*(s16*)(b + 0x80) + (b[0x95] & info[0][0x30])) % info[0][0x1f])];
