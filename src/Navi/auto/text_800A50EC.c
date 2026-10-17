@@ -36,6 +36,59 @@ extern "C" void fn_800AC8CC(u8* p);
 extern "C" void fn_800A923C(u8* p, s32 x);
 extern "C" void fn_800AD488(u8* p, u8 a, s32 b);
 extern "C" s32 fn_800A91C8(u8* p, s32 mode, f32 a, f32 b);
+extern "C" void fn_800A9040(u8* p)
+{
+    f32 c = lbl_80300BFC;
+    u8* tbl = lbl_802C5524;
+    f32 a = *(f32*)(tbl + 0x64);
+    if (fn_800A91C8(p, 0, -a, c) == 1) {
+        *(u8*)(*(u8**)(p + 0x3c4) + 0xb0) = 1;
+        fn_800ACEE0(p);
+        *(u8*)(*(u8**)(p + 0x384) + 0xb0) = 1;
+        fn_800AC8CC(p);
+        p[0x3da] = 2;
+        p[0x3ac] = 4;
+    }
+}
+
+extern "C" void fn_800A90C4(u8* p)
+{
+    f32 z = lbl_80300BFC;
+    f32 a = *(f32*)(lbl_802C5524 + 0x64);
+    if (fn_800A91C8(p, 1, z, -a) == 1) {
+        *(u32*)(lbl_802BB0FC + 0x40) |= 2;
+        fn_800A923C(p, 1);
+        fn_800AD488(p, p[0x3b0], 1);
+        p[0x3ac] = 8;
+    }
+}
+
+extern "C" void fn_800A9148(u8* p)
+{
+    f32 z = lbl_80300BFC;
+    f32 a = *(f32*)(lbl_802C5524 + 0x64);
+    if (fn_800A91C8(p, 0, a, z) == 1) {
+        *(u8*)(*(u8**)(p + 0x3b8) + 0xb0) = 1;
+        fn_800ACEE0(p);
+        *(u8*)(*(u8**)(p + 0x384) + 0xb0) = 1;
+        fn_800AC8CC(p);
+        p[0x3da] = 2;
+        p[0x3ac] = 4;
+    }
+}
+
+extern "C" s32 fn_800A91C8(u8* p, s32 mode, f32 a, f32 b)
+{
+    u8* tbl = lbl_802C5524;
+    s32 r = fn_800AE8A4(p, *(s16*)(p + 0x3d8), tbl[0x4c], 0, mode, a, b, lbl_80300BFC, lbl_80300BFC);
+    *(s16*)(p + 0x3d8) = *(s16*)(p + 0x3d8) + 1;
+    if (r == 1) {
+        *(s16*)(p + 0x3d8) = 0;
+        return 1;
+    }
+    return 0;
+}
+
 extern "C" s32 fn_800A9340(u8* p, u8* a, u8* b)
 {
     u8 t0 = a[0];
@@ -122,6 +175,15 @@ extern "C" void fn_800AB948(u8* p)
     fn_80017248(*(u8**)(p + 0x3ec), p[0x3b0]);
     fn_800161C0(lbl_802AE880, *(void**)(p + 0x3ec), 0x1fa4, 0);
     p[0x3ac] = 0x1f;
+}
+
+extern "C" void fn_800AC1B4(u8* p)
+{
+    *(u8*)(*(u8**)(p + 0xa4) + 0xb0) = 1;
+    p[0x3da] = 2;
+    *(s32*)(p + 0x3e0) = *(s16*)(lbl_802C5524 + 0x6a);
+    p[0x3dd] = 0;
+    p[0x3ac] = 0;
 }
 
 extern "C" void fn_800AC654(void) {}
