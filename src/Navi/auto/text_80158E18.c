@@ -18,6 +18,8 @@ extern "C" void fn_80166C84(void* p, void* p2);
 extern u8 lbl_802EE20C[];
 extern char lbl_80297690[];
 extern char lbl_802979B8[];
+extern char lbl_8029783C[];
+extern void* lbl_802977D0[];
 extern "C" void fn_8015D050(void* p);
 extern "C" void fn_80166B58(void* a, void* b);
 extern "C" void fn_8015D3E4(void* p, u32 a, u32 b, u32 c);
