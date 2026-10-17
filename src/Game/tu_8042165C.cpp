@@ -24,8 +24,8 @@ static inline void ReleaseSlot(void** slot) {
     void* obj = *slot;
     if (obj != 0) {
         ((void (*)(void*, s32))(*(void***)obj)[2])(obj, 1);
-        *slot = 0;
     }
+    *slot = 0;
 }
 extern "C" void fn_80425128(u8* this_) {
     s32 i;
@@ -107,6 +107,44 @@ extern "C" void fn_80425234(u8* this_, s32 i, s32 val, u8 flag) {
 extern "C" void fn_80425F24(u8* this_) {
     fn_8013B490(lbl_8053AB10);
     (*(J2DScreen**)(this_ + 0x18))->draw(lbl_80543A40, lbl_80543A40, *(J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
+extern "C" void* fn_80426AD4(void* this_, s16 how) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804B146C;
+        ReleaseSlot((void**)((u8*)this_ + 0x4c));
+        ReleaseSlot((void**)((u8*)this_ + 0xf0));
+        ReleaseSlot((void**)((u8*)this_ + 0x4));
+
+        void** slot = (void**)this_;
+        for (s32 i = 0; i < 4; i++) {
+            ReleaseSlot(slot + 2);
+            ReleaseSlot(slot + 11);
+            slot++;
+        }
+
+        ReleaseSlot((void**)((u8*)this_ + 0x18));
+
+        slot = (void**)this_;
+        for (s32 i = 0; i < 4; i++) {
+            ReleaseSlot(slot + 20);
+            ReleaseSlot(slot + 24);
+            ReleaseSlot(slot + 28);
+            ReleaseSlot(slot + 32);
+            ReleaseSlot(slot + 36);
+            ReleaseSlot(slot + 40);
+            ReleaseSlot(slot + 44);
+            ReleaseSlot(slot + 48);
+            ReleaseSlot(slot + 52);
+            ReleaseSlot(slot + 56);
+            slot++;
+        }
+
+        if (how > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
 }
 
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
