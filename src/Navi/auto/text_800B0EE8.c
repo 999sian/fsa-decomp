@@ -18,6 +18,12 @@ extern void* lbl_80286A30[];
 extern unsigned char lbl_802313EC[];
 extern u32 lbl_80287510[];
 extern "C" void fn_8002F544(u32 a);
+extern "C" int fn_8002F6BC(void);
+struct VObj_800B95E4 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(f32 x, f32 y);
+};
 extern "C" void fn_800B95E4(u8* p);
 extern "C" void fn_800B6F64(u8* p);
 extern "C" void fn_800B72AC(u8* p);
@@ -104,13 +110,13 @@ extern "C" void fn_800B96D8(char* p) {
 
 extern "C" void fn_800B9754(char* self) {
     if (*(unsigned char*)(*(char**)(self + 0x19c) + 0xb0) != 0) {
-        char* p = *(char**)(self + 0x1a8);
         *(int*)(self + 0x1ac) += 1;
-        s32 c = *(int*)(self + 0x1ac);
-        if (c >= *(short*)(p + 6)) {
-            *(int*)(self + 0x1ac) = c - *(short*)(p + 6);
+        char* p = *(char**)(self + 0x1a8);
+        int v = *(int*)(self + 0x1ac);
+        if (v >= *(short*)(p + 6)) {
+            *(int*)(self + 0x1ac) = v - *(short*)(p + 6);
         }
-        *(float*)(p + 8) = (float)*(int*)(self + 0x1ac);
+        *(float*)(*(char**)(self + 0x1a8) + 8) = (float)*(int*)(self + 0x1ac);
     }
 }
 
