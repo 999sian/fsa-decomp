@@ -68,10 +68,7 @@ extern "C" void fn_800219D8(u8* param_1, s32 param_2, void* param_3, s32 param_4
 }
 
 extern "C" void fn_80021A98(void* param_1, u8* param_2, char* param_3, s32 param_4) {
-    char** table = lbl_8020631C;
-    if (param_4 == 0) {
-        table = lbl_80206200;
-    }
+    char** table = param_4 == 0 ? lbl_80206200 : lbl_8020631C;
     param_3[0] = 0;
     if (param_2[0] >= 0x47) {
         fn_801E6768(param_3, lbl_802FBCB4);
@@ -105,7 +102,7 @@ extern "C" s32 fn_80021C6C(u8* param_1, u8 param_2) {
                     goto found;
                 }
             }
-            uVar2 = -1;
+            uVar2 = 0xff;
 found:
             uVar3 = uVar2;
         }
