@@ -674,6 +674,15 @@ extern "C" void fn_8005A484(void) {
     } while (i < 0x10);
 }
 
+extern "C" void* fn_8005AE08(void*);
+extern "C" void fn_8005AAC0(void*, f32, int, int, int);
+extern "C" void fn_8005A688(void* a, f32 f, int b, int c, int d) {
+    void* p = fn_8005AE08(a);
+    if (p != 0) {
+        fn_8005AAC0(p, f, b, c, d);
+    }
+}
+
 extern "C" void fn_8005B450(void) {}
 
 extern "C" void fn_8005C330(const char*, ...) {
