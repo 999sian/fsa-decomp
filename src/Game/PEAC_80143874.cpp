@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JMath/JMath.h"
+#include "Game/SinitPoolChain.h"
 
 struct PopoGame {
     u8 pad[0xb4];
