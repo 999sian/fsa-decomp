@@ -1102,6 +1102,15 @@ extern "C" void* fn_800A0098(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_800A010C(void* p) {
+    s32 v = *(s32*)(lbl_802BB0FC + 0xf4);
+    if (v != 0x42) {
+        return;
+    }
+    *(u8*)((u8*)p + 0x2ad) = v;
+    *(u8*)((u8*)p + 0x2ac) = 0;
+}
+
 extern void* lbl_802893EC[];
 extern "C" void* fn_800A0238(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
