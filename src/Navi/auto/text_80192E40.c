@@ -295,6 +295,16 @@ extern "C" BOOL fn_80193E38(void)
     return TRUE;
 }
 
+extern "C" void fn_80193E40(u32* p, u32* node) {
+    u32 head = p[2];
+    if (head == 0) {
+        p[2] = (u32)node;
+    } else {
+        node[1] = head;
+        p[2] = (u32)node;
+    }
+}
+
 extern "C" void* fn_80193E60(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80299A78;
