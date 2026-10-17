@@ -2071,15 +2071,15 @@ extern "C" void fn_80190AB8(int, void*, int);
 extern "C" void fn_80190D98(int, u8, u8, u8, u8);
 extern "C" void fn_80190E90(u8, u8, u8, u8, u8, u8, u8, u8, int);
 extern "C" void fn_8019FEAC(int param_1, u32 param_2) {
+    u8* p = (u8*)param_1;
     if (param_2 & 0x8000000) {
-        u8 b30 = *(u8*)(param_1 + 0x30);
-        u8 b4 = *(u8*)(param_1 + 4);
-        fn_80190AB8(1, (void*)(param_1 + 0x18), (s8)b30);
-        fn_80190D98(0, *(u8*)(param_1 + 0x6c), *(u8*)(param_1 + 0x6d), *(u8*)(param_1 + 0x70), *(u8*)(param_1 + 0x71));
-        u32 idx = *(u8*)(param_1 + 6) & 7;
-        u16* e = lbl_802EE5D4[idx];
-        fn_8019019C(*(u8*)(param_1 + 5), e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
-        fn_80190E90(b4, *(u8*)(param_1 + 5), *(u8*)(param_1 + 6), *(u8*)(param_1 + 9), *(u8*)(param_1 + 10), *(u8*)(param_1 + 0xd), *(u8*)(param_1 + 0xe), *(u8*)(param_1 + 0x11), *(u8*)(param_1 + 0x12));
+        u8 b30 = p[0x30];
+        u8 b4 = p[4];
+        fn_80190AB8(1, p + 0x18, (s8)b30);
+        fn_80190D98(0, p[0x6c], p[0x6d], p[0x70], p[0x71]);
+        u16* e = lbl_802EE5D4[p[6] & 7];
+        fn_8019019C(p[5], e[0], e[2] == 1, 0, e[1], e[3] == 1, 0);
+        fn_80190E90(b4, p[5], p[6], p[9], p[10], p[0xd], p[0xe], p[0x11], p[0x12]);
     }
 }
 
@@ -2156,8 +2156,9 @@ extern "C" void fn_801A219C(u8* p, VObj_801A219C* o) {
 
 extern "C" void fn_801A2D78(u8* p, VObj_801A2D78* o) {
     u8* q;
-    s32 x = o->v7();
-    if (x == 0x5045464c || x == 0x50454647) {
+    switch (o->v7()) {
+    case 0x5045464c:
+    case 0x50454647:
         q = o->v13();
         *(u16*)(p + 4) = *(u16*)q;
         p[6] = q[2];
@@ -2165,6 +2166,7 @@ extern "C" void fn_801A2D78(u8* p, VObj_801A2D78* o) {
         *(u32*)(p + 8) = *o->v16();
         *(u16*)(p + 0xc) = *o->v20();
         p[0xe] = o->v26();
+        break;
     }
 }
 
