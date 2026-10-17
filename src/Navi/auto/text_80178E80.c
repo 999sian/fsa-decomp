@@ -1421,6 +1421,8 @@ extern "C" int fn_80182058(char* self, void* v) {
 
 extern "C" int fn_801820C4(void) { return 0x13; }
 
+extern "C" void* fn_801820CC(u8* p) { return *(void**)(p + 0x100); }
+
 extern "C" int fn_801820EC()
 {
 	return 0;
