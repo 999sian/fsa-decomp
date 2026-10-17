@@ -14,6 +14,8 @@ extern const float lbl_805435E8;
 extern const float lbl_805435F8;
 extern const float lbl_805435FC;
 extern const float lbl_80543600;
+extern const double lbl_805435E0;
+extern const double lbl_805435F0;
 void fn_80402E08(void*, f32, f32);
 extern s32 lbl_8053AF80;
 extern char lbl_80477898[];
@@ -40,6 +42,35 @@ extern "C" void fn_803DD19C(void)
 
 extern "C" void fn_803DD1A0(void)
 {
+}
+
+extern "C" void fn_803DD1A4(u8* self) {
+    f32 f31;
+    s32 v = *(s32*)(self + 0x8c);
+    if (v < 30) {
+        f31 = (f32)(v * v) / lbl_805435F8;
+    } else {
+        s32 t = v - 30;
+        f31 = lbl_805435E8 - (f32)(t * t) / lbl_805435F8;
+    }
+    s32 d = *(s32*)(self + 0x88);
+    if (d >= 5) {
+        d = 10 - d;
+    }
+    f32 f30 = lbl_805435FC * (f32)(d * d) / lbl_80543600;
+    if (*(s32*)(self + 0x80) == 0) {
+        fn_80402E08(*(void**)(self + 0x50), lbl_80543604, f30);
+        fn_80402E08(*(void**)(self + 0x54), lbl_80543604, lbl_80543604);
+        fn_80402E08(*(void**)(self + 0x58), lbl_80543604, f30);
+    } else {
+        fn_80402E08(*(void**)(self + 0x50), lbl_80543604, lbl_80543604);
+        fn_80402E08(*(void**)(self + 0x54), lbl_80543604, f30);
+        fn_80402E08(*(void**)(self + 0x58), *(f32*)(*(u8**)(self + 0x54) + 8) - *(f32*)(*(u8**)(self + 0x50) + 8), f30);
+    }
+    J2DPane* pane = ((J2DScreen*)*(void**)(self + 0x4))->search('Paccur01');
+    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, (s32)((f32)self[0xa2] * f31));
+    pane = ((J2DScreen*)*(void**)(self + 0x4))->search('Paccur02');
+    ((void (*)(void*, s32))((*(void***)pane)[0x24 / 4]))(pane, (s32)((f32)self[0xa2] * f31));
 }
 
 extern "C" void fn_803DD3DC(void)
