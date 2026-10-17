@@ -561,6 +561,20 @@ extern "C" void fn_8009336C(char* param_1)
     }
 }
 
+extern void (NaviState_8008DC60::*lbl_80285DF8[])();
+extern "C" s32 lbl_802FEBC0;
+extern "C" void fn_800933C4(u8* p) {
+    u8* q = *(u8**)(p + 0x280);
+    if ((lbl_802AE880[0x1fa6] == 0 || lbl_802AE880[0x1fa6] == 1) && lbl_802FEBC0 == 0 && p[0x282e] == 0 && q[0x159] == 1) {
+        fn_800CA7C4(q);
+        *(u16*)(p + 0x2830) = 0xffff;
+        p[0x282d] = 0;
+        p[0x282c] = 2;
+    }
+    fn_801E10DC(p, lbl_80285DF8 + p[0x282c] * 12);
+    lbl_802AE880[0x1fa6] = 2;
+}
+
 extern "C" void fn_800CA434(void* a, u16 b, s32 c);
 extern "C" void fn_800937C0(u8* p) {
     u8* q = *(u8**)(p + 0x280);
@@ -1182,11 +1196,15 @@ extern "C" void fn_80096E48(char* param_1) {
 }
 
 extern "C" void fn_80096EA0(u8* p) {
-    if (fn_800C6FD4(*(void**)(p + 0x27c)) && *(*(u8**)(p + 0x27c) + 0x8c) == 2) {
-        p[0x282f] = 1;
-        p[0x282c] = 0;
-        p[0x85c] = 0;
-        p[0x2a5] = 1;
+    if (fn_800C6FD4(*(void**)(p + 0x27c))) {
+        switch (*(*(u8**)(p + 0x27c) + 0x8c)) {
+            case 2:
+                p[0x282f] = 1;
+                p[0x282c] = 0;
+                p[0x85c] = 0;
+                p[0x2a5] = 1;
+                break;
+        }
     }
 }
 
