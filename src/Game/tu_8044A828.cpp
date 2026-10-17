@@ -38,8 +38,10 @@ extern u32 lbl_80490DB8[];
 extern u32 lbl_80490E00[];
 extern "C" void* fn_804030C4(u32 tag, u32 name);
 typedef void (*VFn)(void*, u32, u32);
+typedef u32 (*VFnRet)(void*, u32, u32, u32);
 static void* Make(u8* self, u32* table, int i) {
-    return (void*)((J2DScreenVT*)*(void**)(self + 4))->m15((u32)table, table[i], table[i + 1]);
+    void* obj = *(void**)(self + 4);
+    return (void*)(*(VFnRet**)obj)[15](obj, (u32)table, table[i], table[i + 1]);
 }
 static void Attach(void* o, void* handle) {
     (*(VFn**)o)[68](o, (u32)handle, 0);
@@ -50,6 +52,32 @@ extern "C" void fn_8044AF90(void* self_) {
     fn_8013B490(lbl_8053AB10);
     f32 f = lbl_80543DB8;
     draw__9J2DScreenFffPC14J2DGrafContext(*(J2DScreen**)(self + 4), f, f, *(const J2DGrafContext**)(lbl_8053AB10 + 0x10));
+}
+
+extern "C" void fn_8044AFD8(void* self_) {
+    u8* self = (u8*)self_;
+    void* handle;
+
+    self[0x14] &= 0xFE;
+    handle = fn_804030C4(0x54494D47, *(u32*)lbl_804B1CD8);
+    Attach(Make(self, lbl_80490DB8, 4), handle);
+    Attach(Make(self, lbl_80490DB8, 6), handle);
+    Attach(Make(self, lbl_80490DB8, 8), handle);
+    Attach(Make(self, lbl_80490DB8, 10), handle);
+    Attach(Make(self, lbl_80490DB8, 12), handle);
+    Attach(Make(self, lbl_80490DB8, 14), handle);
+    self[0x14] &= 0xFD;
+    handle = fn_804030C4(0x54494D47, *(u32*)lbl_804B1CD8);
+    Attach(Make(self, lbl_80490E00, 8), handle);
+    Attach(Make(self, lbl_80490E00, 10), handle);
+    Attach(Make(self, lbl_80490E00, 12), handle);
+    Attach(Make(self, lbl_80490E00, 14), handle);
+    Attach(Make(self, lbl_80490E00, 16), handle);
+    Attach(Make(self, lbl_80490E00, 18), handle);
+    Attach(Make(self, lbl_80490E00, 20), handle);
+    Attach(Make(self, lbl_80490E00, 22), handle);
+    ((u8*)Make(self, lbl_80490DB8, 16))[0xb0] = 0;
+    ((u8*)Make(self, lbl_80490E00, 24))[0xb0] = 0;
 }
 
 extern "C" void* fn_8044B3FC(VObj** param_1, short param_2) {
