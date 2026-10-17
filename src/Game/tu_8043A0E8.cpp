@@ -6,6 +6,12 @@
 struct FsaBlock48 {
     u32 w[12];
 };
+struct FsaBlock12 {
+    u32 w[3];
+};
+struct FsaBlock36 {
+    u32 w[9];
+};
 extern "C" u8 lbl_804B1810[];
 extern "C" u8 lbl_8052C5D8[];
 extern "C" char memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr[];
@@ -1074,7 +1080,8 @@ extern "C" void fn_8043DC98(u8* param_1) {
     }
     if (*(u8*)(param_1 + 0x257) != 0) {
         fn_8013B490(lbl_8053AB10);
-        void* pane = ((VFn15)(*(void***)*(void**)(param_1 + 0xc))[15])(*(void**)(param_1 + 0xc), 0x4E0000, 0x4E6461, 0x74613035);
+        void* screen = *(void**)(param_1 + 0xc);
+        void* pane = ((VFn15)(*(void***)screen)[15])(screen, 0x4E0000, 0x4E6461, 0x74613035);
         ((VFn4)(*(void***)pane)[4])(pane, *(f32*)(param_1 + 0x110) + (f32)*(s16*)(lbl_8050DB0C + 0x2a2), *(f32*)(param_1 + 0x114) + (f32)*(s16*)(lbl_8050DB0C + 0x2a4));
         draw__9J2DScreenFffPC14J2DGrafContext(*(void**)(param_1 + 0xc), lbl_80543C88, lbl_80543C88, *(void**)((u8*)lbl_8053AB10 + 0x10));
     }
@@ -1414,3 +1421,55 @@ extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
 }
 
 extern "C" void* fn_80440928(f32 a, f32 b) { return fn_8043DF8C(lbl_8053AED0); }
+
+extern "C" void fn_8044094C(void) {
+    u8* p = lbl_804B1810;
+    u8* base = lbl_8052C5D8;
+    *(FsaBlock48*)(p + 0xc0) = *(FsaBlock48*)(p + 0x90);
+    if (__init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr);
+        __register_global_object(memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr, __dt__50JASMemPool_MultiThreaded_Q28JASTrack11TChannelMgrFv, base + 0x28);
+        __init__memPool___58JASPoolAllocObject_MultiThreaded_Q28JASTrack11TChannelMgr = 1;
+    }
+    if (__init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack);
+        __register_global_object(memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack, __dt__35JASMemPool_MultiThreaded_8JASTrackFv, base + 0x34);
+        __init__memPool___43JASPoolAllocObject_MultiThreaded_8JASTrack = 1;
+    }
+    if (__init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel);
+        __register_global_object(memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel, __dt__38JASMemPool_MultiThreaded_10JASChannelFv, base + 0x40);
+        __init__memPool___46JASPoolAllocObject_MultiThreaded_10JASChannel = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj3_FSA, __dt__29JASMemPool_15JASPoolObj3_FSAFv, base + 0x4c);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj3_FSA = 1;
+    }
+    if (__init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA);
+        __register_global_object(memPool___37JASPoolAllocObject_15JASPoolObj4_FSA, __dt__29JASMemPool_15JASPoolObj4_FSAFv, base + 0x58);
+        __init__memPool___37JASPoolAllocObject_15JASPoolObj4_FSA = 1;
+    }
+    if (__init__memPool___30JASPoolAllocObject_9JAIStream == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___30JASPoolAllocObject_9JAIStream);
+        __register_global_object(memPool___30JASPoolAllocObject_9JAIStream, __dt__22JASMemPool_9JAIStreamFv, base + 0x64);
+        __init__memPool___30JASPoolAllocObject_9JAIStream = 1;
+    }
+    if (__init__memPool___35JASPoolAllocObject_13JAISoundChild == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___35JASPoolAllocObject_13JAISoundChild);
+        __register_global_object(memPool___35JASPoolAllocObject_13JAISoundChild, __dt__27JASMemPool_13JAISoundChildFv, base + 0x70);
+        __init__memPool___35JASPoolAllocObject_13JAISoundChild = 1;
+    }
+    if (__init__memPool___27JASPoolAllocObject_6JAISeq == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___27JASPoolAllocObject_6JAISeq);
+        __register_global_object(memPool___27JASPoolAllocObject_6JAISeq, __dt__19JASMemPool_6JAISeqFv, base + 0x7c);
+        __init__memPool___27JASPoolAllocObject_6JAISeq = 1;
+    }
+    if (__init__memPool___26JASPoolAllocObject_5JAISe == 0) {
+        __ct__17JASGenericMemPoolFv(memPool___26JASPoolAllocObject_5JAISe);
+        __register_global_object(memPool___26JASPoolAllocObject_5JAISe, __dt__18JASMemPool_5JAISeFv, base + 0x88);
+        __init__memPool___26JASPoolAllocObject_5JAISe = 1;
+    }
+}
+
