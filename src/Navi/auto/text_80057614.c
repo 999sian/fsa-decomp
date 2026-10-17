@@ -903,6 +903,21 @@ extern "C" void fn_8005C074(void) {
     } while (i < 0x100);
 }
 
+extern "C" void fn_8005C0BC(void* param_1, s32 param_2, s32 param_3, s32 param_4) {
+    s32 idx = fn_8005C248(0);
+    if (idx >= 0) {
+        u8* p = lbl_802C2130 + idx * 12;
+        *(void**)p = param_1;
+        *(s32*)(p + 4) = param_2;
+        p[0xa] = param_3;
+        *(s16*)(p + 8) = param_4;
+        lbl_802FF104 = lbl_802FF104 + 1;
+        lbl_802FF108 = lbl_802FF108 + param_2;
+    } else {
+        fn_8005C330(0, lbl_8027D730, param_3, param_4);
+    }
+}
+
 extern "C" void fn_8005C330(const char*, ...) {
 }
 
