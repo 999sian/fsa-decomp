@@ -1284,21 +1284,22 @@ extern "C" u16 fn_801DBE58(u16 p, f32 f) {
 
 extern "C" void fn_801DC1EC(u8* p, u32 val)
 {
-	u8* gx = __GXData;
+	u8* gx;
 	u32 r6 = 0;
 	u32 r10 = 0;
 	u32 r11 = 0;
 
 	r6 = __rlwimi(r6, p[0], 0, 24, 31);
 	r6 = __rlwimi(r6, p[3], 8, 16, 23);
-	*(volatile u8*)0xCC008000 = 0x61;
 	r6 = __rlwimi(r6, 0x4f, 24, 0, 7);
+	gx = __GXData;
+	*(volatile u8*)0xCC008000 = 0x61;
 	*(volatile u32*)0xCC008000 = r6;
 
 	r11 = __rlwimi(r11, p[2], 0, 24, 31);
 	r11 = __rlwimi(r11, p[1], 8, 16, 23);
-	*(volatile u8*)0xCC008000 = 0x61;
 	r11 = __rlwimi(r11, 0x50, 24, 0, 7);
+	*(volatile u8*)0xCC008000 = 0x61;
 	*(volatile u32*)0xCC008000 = r11;
 
 	r10 = __rlwimi(r10, val, 0, 8, 31);
@@ -1313,6 +1314,22 @@ extern "C" void fn_801DC46C(u32 param_1)
 {
 	u8* gx = __GXData;
 	*(u32*)(gx + 0x1ec) = __rlwimi(*(u32*)(gx + 0x1ec), param_1, 7, 23, 24);
+}
+
+extern "C" void fn_801DC774(void)
+{
+	u8* gx = __GXData;
+	*(volatile u8*)0xCC008000 = 0x61;
+	*(volatile u32*)0xCC008000 = 0x550003ff;
+	*(volatile u8*)0xCC008000 = 0x61;
+	*(volatile u32*)0xCC008000 = 0x560003ff;
+	*(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DCA0C(void* self, f32 a, f32 b, f32 c) {
+    *(f32*)((u8*)self + 0x28) = a;
+    *(f32*)((u8*)self + 0x2c) = b;
+    *(f32*)((u8*)self + 0x30) = c;
 }
 
 #pragma dont_inline reset
