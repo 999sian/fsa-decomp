@@ -570,7 +570,8 @@ extern "C" f32 fn_8043D514(u8* param_1) {
     f32 ret = lbl_80543C88;
     if (param_1[0x10b] != 0 && param_1[0x10c] == 1) {
         J2DPane* pane = *(J2DPane**)(*(u8**)(param_1 + 0x64) + 4);
-        ret = (lbl_80543CE8 * (lbl_80543CEC - (pane->getBounds()->i.y - lbl_80543CC8))) / lbl_80543CC4;
+        f32 dy = pane->getBounds()->i.y - lbl_80543CC8;
+        ret = (lbl_80543CE8 * (lbl_80543CEC - dy)) / lbl_80543CC4;
     }
     return ret;
 }
@@ -591,6 +592,14 @@ extern "C" void fn_8043D5F0(u8* param_1) {
     fn_8013B490(lbl_8053AB10);
     *(u8*)(*(u8**)(param_1 + 4) + 0x100) = 1;
     (*(J2DScreen**)(param_1 + 4))->draw(lbl_80543C88, lbl_80543C88, *(J2DGrafContext**)((u8*)lbl_8053AB10 + 0x10));
+}
+
+struct Fn8043D644_Obj;
+typedef void (Fn8043D644_Obj::*Fn8043D644_Fn)();
+extern "C" Fn8043D644_Fn lbl_804B18D0[];
+extern "C" void fn_8043D644(Fn8043D644_Obj* self) {
+    u8 idx = *(u8*)((u8*)self + 0x10b);
+    (self->*lbl_804B18D0[idx])();
 }
 
 extern "C" void* fn_802D6A9C(void);
@@ -1166,6 +1175,127 @@ extern "C" void fn_8043EDF8(u8* param_1) {
     if (*(u32*)(param_1 + 0x298) != 0) {
         fn_80443688(lbl_8053AEF0);
     }
+}
+
+extern "C" void* fn_8043EED8(u8* this_, s16 how) {
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804B1920;
+        Fn8043EED8_Obj* o;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x290);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x290) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x294);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x294) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x298);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x298) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2b8);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2b8) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2b0);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2b0) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x29c);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x29c) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2a8);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2a8) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2b4);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2b4) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2ac);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2ac) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2a4);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2a4) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2a0);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2a0) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x2bc);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x2bc) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x4);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x4) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x8);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x8) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0xc);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0xc) = 0;
+        for (s32 i = 0; i < 12; i++) {
+            o = *(Fn8043EED8_Obj**)(this_ + 0x40 + i * 4);
+            if (o) o->v02(1);
+            *(void**)(this_ + 0x40 + i * 4) = 0;
+        }
+        o = *(Fn8043EED8_Obj**)(this_ + 0x70);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x70) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x74);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x74) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x258);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x258) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x25c);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x25c) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x260);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x260) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x264);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x264) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x268);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x268) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x26c);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x26c) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x270);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x270) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x274);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x274) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x278);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x278) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x27c);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x27c) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x280);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x280) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x284);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x284) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x288);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x288) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x28c);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x28c) = 0;
+        for (s32 i = 0; i < 4; i++) {
+            o = *(Fn8043EED8_Obj**)(this_ + 0x14 + i * 4);
+            if (o) o->v02(1);
+            *(void**)(this_ + 0x14 + i * 4) = 0;
+        }
+        o = *(Fn8043EED8_Obj**)(this_ + 0x24);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x24) = 0;
+        o = *(Fn8043EED8_Obj**)(this_ + 0x10);
+        if (o) o->v02(1);
+        *(void**)(this_ + 0x10) = 0;
+        lbl_8053AED0 = 0;
+        if (how > 0) {
+            delete this_;
+        }
+    }
+    return this_;
 }
 
 extern "C" void fn_804408F0(JGeometry::TVec3<f32>* self) {
