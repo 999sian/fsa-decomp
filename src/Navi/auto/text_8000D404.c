@@ -742,7 +742,7 @@ extern "C" void fn_80011588(void)
 	fn_80159528(0, 0, 0, 0, 1, 0, 1);
 }
 
-void fn_80011688(void) {}
+extern "C" void fn_80011688(void) {}
 
 extern "C" void fn_80011B24(void* param_1)
 {
