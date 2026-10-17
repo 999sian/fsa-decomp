@@ -895,6 +895,44 @@ extern "C" u8 fn_8005BAB4(s32 idx) {
     return lbl_802FC71C[t];
 }
 
+extern "C" void fn_8005BB28(u8* p) {
+    u8 n = lbl_802FF0F8;
+    lbl_802FF0F8 = n + 1;
+    if (n == 0) {
+        lbl_802FF0FC = OSDisableInterrupts();
+    }
+    p[0] = 0;
+    p[1] = 0;
+    p[2] = 0;
+    p[3] = 0;
+    p[4] = 0;
+    p[5] = 0;
+    p[6] = 0;
+    p[7] = 0;
+    p[8] = 0;
+    p[9] = 0;
+    p[10] = 0;
+    p[11] = 0;
+    p[12] = 0;
+    p[13] = 0;
+    p[14] = 0;
+    p[15] = 0;
+    p[16] = 0;
+    p[17] = 0;
+    p[18] = 0;
+    *(u32*)(p + 0x14) = 0;
+    *(u32*)(p + 0x18) = 0;
+    *(u32*)(p + 0x1c) = 0;
+    n = lbl_802FF0F8;
+    if (n != 0) {
+        n--;
+        lbl_802FF0F8 = n;
+        if (n == 0) {
+            OSRestoreInterrupts(lbl_802FF0FC);
+        }
+    }
+}
+
 extern "C" void* fn_8005BF40(s32 param_1, s32 param_2, s32 param_3) {
     void* p = fn_801BBCC8(lbl_802FE960, param_1);
     if (p == 0) {
