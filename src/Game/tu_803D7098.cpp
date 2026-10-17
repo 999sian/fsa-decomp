@@ -29,7 +29,7 @@ struct FsaSlots {
     virtual void v6(void);
     virtual void v7(s32);
     virtual void v8(void);
-    virtual void v9(void);
+    virtual void v9(s32);
     virtual void v10(void);
     virtual void v11(void);
     virtual void v12(void);
