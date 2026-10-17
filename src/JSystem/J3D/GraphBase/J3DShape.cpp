@@ -242,8 +242,8 @@ void J3DShape::drawFast() const
 	J3DShapeMtx::sCurrentScaleFlag = mScaleFlagArray;
 	J3DShapeMtx::sNBTFlag          = mHasNBT;
 	sEnvelopeFlag                  = mHasPNMTXIdx;
-	J3DShapeMtx::sTexMtxLoadType   = getTexMtxLoadType();
 	// end of setArrayAndBindPipeline();
+	J3DShapeMtx::sTexMtxLoadType   = getTexMtxLoadType();
 
 	if (!checkFlag(J3DShape_NoMtx)) {
 		// LOD flag shenanigans
@@ -260,199 +260,12 @@ void J3DShape::drawFast() const
 	} else {
 		J3DFifoLoadPosMtxImm(*j3dSys.getShapePacket()->getBaseMtxPtr(), GX_PNMTX0);
 		J3DFifoLoadNrmMtxImm(*j3dSys.getShapePacket()->getBaseMtxPtr(), GX_PNMTX0);
-		u16 i = 0;
-		u32 n = getMtxGroupNum();
+		unsigned int n = getMtxGroupNum();
+		register u16 i = 0;
 		for (; i < n; i++)
 			if (getShapeDraw(i) != nullptr)
 				getShapeDraw(i)->draw();
 	}
-
-	/*
-	stwu     r1, -0x20(r1)
-	mflr     r0
-	stw      r0, 0x24(r1)
-	stmw     r27, 0xc(r1)
-	mr       r31, r3
-	lwz      r3, 0x2c(r3)
-	lwz      r0, sOldVcdVatCmd__8J3DShape@sda21(r13)
-	cmplw    r0, r3
-	beq      lbl_80060F14
-	li       r4, 0xc0
-	bl       GXCallDisplayList
-	lwz      r0, 0x2c(r31)
-	stw      r0, sOldVcdVatCmd__8J3DShape@sda21(r13)
-
-	lbl_80060F14:
-	lbz      r0, sEnvelopeFlag__8J3DShape@sda21(r13)
-	cmplwi   r0, 0
-	beq      lbl_80060F84
-	lbz      r0, 0x48(r31)
-	cmplwi   r0, 0
-	bne      lbl_80060F84
-	li       r9, 8
-	lis      r8, 0xCC008000@ha
-	stb      r9, 0xCC008000@l(r8)
-	li       r0, 0x30
-	lwz      r3, 0x40(r31)
-	li       r7, 0x40
-	stb      r0, -0x8000(r8)
-	li       r6, 0x10
-	lwz      r10, 0x44(r31)
-	li       r5, 1
-	stw      r3, -0x8000(r8)
-	li       r4, 0x1018
-	lwz      r3, 0x40(r31)
-	stb      r9, -0x8000(r8)
-	lwz      r0, 0x44(r31)
-	stb      r7, -0x8000(r8)
-	stw      r10, -0x8000(r8)
-	stb      r6, -0x8000(r8)
-	sth      r5, -0x8000(r8)
-	sth      r4, -0x8000(r8)
-	stw      r3, -0x8000(r8)
-	stw      r0, -0x8000(r8)
-
-	lbl_80060F84:
-	lwz      r4, 0xc(r31)
-	lis      r3, j3dSys@ha
-	lbz      r0, 0x34(r31)
-	li       r6, 8
-	rlwinm   r4, r4, 0x1e, 0x1d, 0x1f
-	lis      r5, 0xCC008000@ha
-	stw      r4, sCurrentPipeline__11J3DShapeMtx@sda21(r13)
-	li       r4, 0xa0
-	addi     r3, r3, j3dSys@l
-	cmplwi   r0, 0
-	stb      r6, 0xCC008000@l(r5)
-	stb      r4, -0x8000(r5)
-	lwz      r0, 0x10c(r3)
-	clrlwi   r0, r0, 1
-	stw      r0, -0x8000(r5)
-	bne      lbl_80060FDC
-	stb      r6, -0x8000(r5)
-	li       r0, 0xa1
-	stb      r0, -0x8000(r5)
-	lwz      r0, 0x110(r3)
-	clrlwi   r0, r0, 1
-	stw      r0, -0x8000(r5)
-
-	lbl_80060FDC:
-	li       r0, 8
-	lis      r8, 0xCC008000@ha
-	stb      r0, 0xCC008000@l(r8)
-	li       r0, 0xa2
-	lis      r3, j3dSys@ha
-	lwz      r4, 0x60(r31)
-	stb      r0, -0x8000(r8)
-	addi     r7, r3, j3dSys@l
-	lwz      r6, 0x58(r31)
-	li       r3, 0x15
-	lwz      r0, 0x114(r7)
-	li       r5, 0x30
-	clrlwi   r0, r0, 1
-	stw      r0, -0x8000(r8)
-	lwz      r0, 0(r4)
-	slwi     r0, r0, 2
-	lwzx     r4, r6, r0
-	stw      r4, 0x104(r7)
-	bl       GXSetArray
-	lwz      r4, 0x60(r31)
-	lis      r3, j3dSys@ha
-	addi     r6, r3, j3dSys@l
-	lwz      r7, 0x5c(r31)
-	lwz      r0, 0(r4)
-	li       r3, 0x16
-	li       r5, 0x24
-	slwi     r0, r0, 2
-	lwzx     r4, r7, r0
-	stw      r4, 0x108(r6)
-	bl       GXSetArray
-	lwz      r3, 0xc(r31)
-	lwz      r6, 0x54(r31)
-	lbz      r5, 0x34(r31)
-	rlwinm.  r0, r3, 0, 0x16, 0x16
-	lbz      r4, 0x48(r31)
-	rlwinm   r3, r3, 0, 0x10, 0x13
-	stw      r6, sCurrentScaleFlag__11J3DShapeMtx@sda21(r13)
-	stb      r5, sNBTFlag__11J3DShapeMtx@sda21(r13)
-	stb      r4, sEnvelopeFlag__8J3DShape@sda21(r13)
-	stw      r3, sTexMtxLoadType__11J3DShapeMtx@sda21(r13)
-	bne      lbl_800610E8
-	lbz      r0, sLODFlag__11J3DShapeMtx@sda21(r13)
-	cmplwi   r0, 0
-	beq      lbl_80061090
-	bl       resetMtxLoadCache__11J3DShapeMtxFv
-
-	lbl_80061090:
-	lhz      r28, 0xa(r31)
-	li       r27, 0
-	lwz      r29, 0x38(r31)
-	lwz      r30, 0x3c(r31)
-	b        lbl_800610D8
-
-	lbl_800610A4:
-	rlwinm   r31, r27, 2, 0xe, 0x1d
-	lwzx     r3, r29, r31
-	cmplwi   r3, 0
-	beq      lbl_800610C4
-	lwz      r12, 0(r3)
-	lwz      r12, 0x18(r12)
-	mtctr    r12
-	bctrl
-
-	lbl_800610C4:
-	lwzx     r3, r30, r31
-	cmplwi   r3, 0
-	beq      lbl_800610D4
-	bl       draw__12J3DShapeDrawCFv
-
-	lbl_800610D4:
-	addi     r27, r27, 1
-
-	lbl_800610D8:
-	clrlwi   r0, r27, 0x10
-	cmplw    r0, r28
-	blt      lbl_800610A4
-	b        lbl_80061144
-
-	lbl_800610E8:
-	lis      r3, j3dSys@ha
-	li       r4, 0
-	addi     r30, r3, j3dSys@l
-	lwz      r3, 0x40(r30)
-	lwz      r3, 0x30(r3)
-	bl       J3DFifoLoadPosMtxImm__FPA4_fUl
-	lwz      r3, 0x40(r30)
-	li       r4, 0
-	lwz      r3, 0x30(r3)
-	bl       J3DFifoLoadNrmMtxImm__FPA4_fUl
-	lhz      r27, 0xa(r31)
-	li       r28, 0
-	lwz      r31, 0x3c(r31)
-	b        lbl_80061138
-
-	lbl_80061120:
-	rlwinm   r0, r28, 2, 0xe, 0x1d
-	lwzx     r3, r31, r0
-	cmplwi   r3, 0
-	beq      lbl_80061134
-	bl       draw__12J3DShapeDrawCFv
-
-	lbl_80061134:
-	addi     r28, r28, 1
-
-	lbl_80061138:
-	clrlwi   r0, r28, 0x10
-	cmplw    r0, r27
-	blt      lbl_80061120
-
-	lbl_80061144:
-	lmw      r27, 0xc(r1)
-	lwz      r0, 0x24(r1)
-	mtlr     r0
-	addi     r1, r1, 0x20
-	blr
-	*/
 }
 
 /**
