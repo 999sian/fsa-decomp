@@ -25,34 +25,33 @@ return fn_802252F4(pos, room);
 }
 
 extern const u16 lbl_8046AADC[];
-extern "C" BOOL fn_80225614(f32* pos, s32 room) {
+extern "C" BOOL fn_80225614(f32* pos, u32 room) {
     struct Rect {
         f32 x0, y0, x1, y1;
     };
-    u8* g = fn_802D6A9C();
-    const Rect r = *(Rect*)((room < 8) ? g + 0xcc : g + 0xdc);
-    f32 px = pos[0];
-    f32 x0 = r.x0;
-    u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
-    u16 tile;
-    if (!in) {
-        tile = 0xf;
-    } else {
-        s32 x = px - x0;
-        s32 y = pos[1] - r.y0;
-        if (x < 0) {
-            x = 0;
-        } else if (x >= 0x200) {
-            x = 0x1ff;
+    struct Lookup {
+        static inline u16 get(const f32* pos, u32 room) {
+            u8* g = fn_802D6A9C();
+            const Rect r = *(Rect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+            f32 x0;
+            f32 px = pos[0];
+            x0 = r.x0;
+            u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
+            if (!in) {
+                return 0xf;
+            } else {
+                s32 x = px - x0;
+                s32 y = pos[1] - r.y0;
+                if (x < 0) x = 0;
+                else if (x >= 0x200) x = 0x1ff;
+                if (y < 0) y = 0;
+                else if (y >= 0x200) y = 0x1ff;
+                return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+                    ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
+            }
         }
-        if (y < 0) {
-            y = 0;
-        } else if (y >= 0x200) {
-            y = 0x1ff;
-        }
-        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
-                           ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
-    }
+    };
+    u16 tile = Lookup::get(pos, room);
     u16 kind = lbl_8046CB88[tile];
     u16 k = kind;
     if (fn_802D6A9C()[room + 0x131df] != 0) {
@@ -291,8 +290,9 @@ extern "C" BOOL fn_80224E88(f32* pos, s32 room) {
         static inline u16 get(const f32* pos, u32 room) {
             u8* g = fn_802D6A9C();
             const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
-            f32 x0 = r.x0;
+            f32 x0;
             f32 px = pos[0];
+            x0 = r.x0;
             u32 tile;
             u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
             if (!in) {
@@ -363,6 +363,70 @@ extern "C" BOOL fn_8022517C(f32* pos, s32 room) {
         }
     }
     return r;
+}
+
+extern "C" BOOL fn_802252F4(f32* pos, s32 room) {
+    struct Lookup {
+        static inline u16 get(const f32* pos, s32 room) {
+            u8* g = fn_802D6A9C();
+            const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+            f32 x0;
+            f32 px = pos[0];
+            x0 = r.x0;
+            u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
+            if (!in) {
+                return 0xf;
+            } else {
+                s32 x = px - x0;
+                s32 y = pos[1] - r.y0;
+                if (x < 0) x = 0;
+                else if (x >= 0x200) x = 0x1ff;
+                if (y < 0) y = 0;
+                else if (y >= 0x200) y = 0x1ff;
+                return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+                    ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
+            }
+        }
+    };
+    const u16* table = lbl_8046AAB0;
+    u16 tile = Lookup::get(pos, room);
+    s32 i;
+
+    if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 0) {
+            const u16* p = table + 28;
+            for (i = 0; i < 13; i++, p++) {
+                if (tile == *p) return TRUE;
+            }
+            return FALSE;
+        }
+        if (*(s32*)(fn_802D6A9C() + 4) == 7 && *(s32*)(fn_802D6A9C() + 8) == 2) {
+            u8* b = fn_802D6A9C() + 0x10000;
+            if (b[room + 0x31df] != 0) {
+                const u16* p = table + 56;
+                if (tile == p[0]) return TRUE;
+                if (tile == *++p) return TRUE;
+                if (tile == *++p) return TRUE;
+                if (tile == *++p) return TRUE;
+                if (tile == p[1]) return TRUE;
+            } else {
+                const u16* p = table + 42;
+                for (i = 0; i < 13; i++, p++) {
+                    if (tile == *p) return TRUE;
+                }
+            }
+        }
+        return FALSE;
+    }
+    s32 n = *(s32*)(lbl_80529DEC + 0x12c) + *(s32*)(lbl_80529DEC + 0x128) * 4;
+    if (n == 4 || n == 9) {
+        const u16* p = table + 28;
+        for (i = 0; i < 13; i++, p++) {
+            if (tile == *p) return TRUE;
+        }
+        return FALSE;
+    }
+    return FALSE;
 }
 
 extern const u16 lbl_8046AB2C[0x5e];
