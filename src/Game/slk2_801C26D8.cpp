@@ -22,7 +22,7 @@ extern "C" void fn_801C1440(void* rec, u32 v);
 extern "C" void dtor_80214F9C(void* p, s32 flag);
 extern void* lbl_804A43E8[];
 extern const f32 lbl_8053EE08;
-extern u16 lbl_8046A748;
+extern u16 lbl_8046A748[4];
 extern f32 lbl_8053EE14;
 extern f32 lbl_8053EE20;
 extern f32 lbl_8053EE28;
@@ -89,6 +89,11 @@ extern void* lbl_8053AED0;
 extern "C" void fn_8030C210(void* cam, void* pos);
 extern "C" void fn_8043E7CC(void* a, void* b);
 extern "C" void fn_801C283C(u8* this_) {
+    struct Vec3f {
+        f32 x;
+        f32 y;
+        f32 z;
+    } tmp, pos;
     switch (*(s32*)(this_ + 0x248)) {
     case 0:
     case 1:
@@ -135,12 +140,8 @@ extern "C" void fn_801C283C(u8* this_) {
         }
         break;
     }
-    struct Vec3f {
-        f32 x;
-        f32 y;
-        f32 z;
-    } pos;
-    pos = *(struct Vec3f*)(this_ + 0xc);
+    tmp = *(struct Vec3f*)(this_ + 0xc);
+    pos = tmp;
     fn_8043E7CC(lbl_8053AED0, &pos);
 }
 
@@ -204,7 +205,8 @@ extern "C" void fn_801C2A84(u8* this_) {
         return;
     }
     u32 flags = *(u32*)(this_ + 0x230);
-    if (!(flags & 7)) {
+    BOOL moving = (flags & 7) != 0;
+    if (!moving) {
         fn_801CE32C(this_);
     } else if (!(flags & 2)) {
         fn_801CE5D4(this_);
@@ -253,10 +255,11 @@ extern "C" void fn_801C2BF4(void* this_) {
     f32 mul = scale;
     switch (state) {
     case 0x20:
-        if (!(*(f32*)(p + 0x14) <= lbl_8053EE08)) {
-            *(f32*)(p + 0x3c) *= lbl_8053EE0C;
-            *(f32*)(p + 0x40) *= lbl_8053EE0C;
+        if (*(f32*)(p + 0x14) <= lbl_8053EE08) {
+            break;
         }
+        *(f32*)(p + 0x3c) *= lbl_8053EE0C;
+        *(f32*)(p + 0x40) *= lbl_8053EE0C;
         break;
     case 0x11: {
         s16 angle = *(s16*)(p + 0x33c);
@@ -591,7 +594,7 @@ extern "C" void* fn_801C573C(void* this_) {
     *(u8*)(p + 0x55e) = 0;
     *(s32*)(p + 0x560) = 4;
     *(s32*)(p + 0x564) = 0;
-    *(s32*)(p + 0x568) = lbl_8046A748;
+    *(s32*)(p + 0x568) = *(u16*)&lbl_8046A748;
     *(s32*)(p + 0x56c) = 0;
     *(f32*)(p + 0x570) = lbl_8053EE08;
     *(f32*)(p + 0x574) = lbl_8053EE08;
