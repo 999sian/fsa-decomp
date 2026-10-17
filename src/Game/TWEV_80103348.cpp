@@ -42,15 +42,12 @@ static void fn_80103348_rotMtx(TWEVMtx m, f32 ax, f32 ay, f32 az) {
     m[0][0] = s * (cb * cc);
     m[0][1] = s * (sa * sb * cc - ca * sc);
     m[0][2] = s * (ca * cc * sb + sa * sc);
-    m[0][3] = 0.0f;
     m[1][0] = s * (cb * sc);
     m[1][1] = s * (sa * sb * sc + ca * cc);
     m[1][2] = s * (ca * sc * sb - sa * cc);
-    m[1][3] = 0.0f;
     m[2][0] = s * -sb;
     m[2][1] = s * (sa * cb);
     m[2][2] = s * (ca * cb);
-    m[2][3] = 0.0f;
 }
 
 // ---- from Game/fn_80103F28_dtor.cpp
@@ -70,7 +67,7 @@ extern "C" void fn_80103348(void* this_) {
     char* names = lbl_80463BD0;
     TWEVParam param;
     TWEVMtx mtx;
-    TWEVVec savedPos;
+    f32 savedPos[3];
     s32 i;
     f32 ang;
 
@@ -108,7 +105,7 @@ extern "C" void fn_80103348(void* this_) {
     param.h = 0;
     param.i = 2;
 
-    savedPos = *(TWEVVec*)(p + 0xc);
+    *(TWEVVec*)savedPos = *(TWEVVec*)(p + 0xc);
     param.d[1] = -3;
     u32 id = fn_804032E8(0x54494d47, names + 0xc);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
@@ -141,9 +138,9 @@ extern "C" void fn_80103348(void* this_) {
     id = fn_804032E8(0x54494d47, names + 0x48);
     fn_801EFD34(this_, id, &param, -1, lbl_8053C1D0, lbl_8053C1D0, lbl_8053C1D0);
 
-    *(f32*)(p + 0xc) = savedPos.x;
-    *(f32*)(p + 0x10) = savedPos.y;
-    *(f32*)(p + 0x14) = savedPos.z;
+    *(f32*)(p + 0xc) = savedPos[0];
+    *(f32*)(p + 0x10) = savedPos[1];
+    *(f32*)(p + 0x14) = savedPos[2];
 }
 
 extern "C" void fn_80103914(void* this_) {
