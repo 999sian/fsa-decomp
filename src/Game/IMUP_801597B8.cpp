@@ -17,6 +17,8 @@ public:
 };
 
 struct FSAObjMgr {
+    virtual void m0();
+    virtual void m1();
     virtual void m2();
     virtual void m3();
     virtual void m4();
