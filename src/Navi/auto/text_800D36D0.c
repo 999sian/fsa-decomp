@@ -1,4 +1,8 @@
 #include "types.h"
+extern "C" void fn_8003ABDC(void*, u32, u32, s32, s32);
+extern "C" void fn_8003ABF0(void*, u32, s32, u32, s32, s32, s32, s32);
+extern "C" void fn_801E6768(void*, char*);
+extern "C" int fn_800D6904(void*, s16, u8, s32, s32);
 extern f32 lbl_80300FD8;
 extern f32 lbl_80300FE8;
 struct VObj_800BD938 {
@@ -86,6 +90,14 @@ extern "C" void* fn_800D3844(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" int fn_800D65E8(void* param_1, s16 param_2, f32 param_3, f32 param_4, u8 param_5, u32 unused, s32 param_7);
+extern "C" void fn_800D4E58(void* param_1) {
+    u8* p = (u8*)param_1;
+    *(s16*)(p + 0x134) = 0;
+    fn_800D6700(param_1, *(s16*)(p + 0x134), lbl_802C579C[0xc], 0, 0, lbl_80300FD8, lbl_80300FD8, *(f32*)(lbl_802C579C + 0x10), lbl_80300FD8);
+    fn_800D65E8(param_1, *(s16*)(p + 0x134), *(f32*)(lbl_802C579C + 0x10), lbl_80300FD8, lbl_802C579C[0x14], 0, 0);
+}
+
 extern "C" unsigned short fn_800D5324(void) {
     u32 idx = (*(u32*)(lbl_802BB0FC + 0x40) >> 1) & 1;
     if (fn_80021994(lbl_802BB0FC) != -1) {
@@ -123,6 +135,31 @@ extern "C" void fn_800D54EC(char* p)
             *(u8*)(p + 0x131) = 0;
             *(u8*)(p + 0x130) = 6;
         }
+    }
+}
+
+extern "C" void fn_801E6768(void*, char*);
+extern "C" int fn_800D6904(void*, s16, u8, s32, s32);
+extern "C" void fn_800D55F0(void* param_1) {
+    u8* p = (u8*)param_1;
+    char* q = lbl_802C579C;
+    s32 r = fn_800D65E8(param_1, *(s16*)(p + 0x134), *(f32*)(q + 0x18), lbl_80300FD8, q[0x14], 0, 0);
+    s32 r2 = fn_800D6904(param_1, *(s16*)(p + 0x134), q[0x14], 0, 0);
+    (*(s16*)(p + 0x134))++;
+    if (r == 1 && r2 == 1) {
+        *(s16*)(p + 0x134) = 0;
+        p[0x130] = 0;
+    }
+}
+
+extern "C" void fn_800D5690(void* param_1) {
+    u8* p = (u8*)param_1;
+    char* q = lbl_802C579C;
+    s32 r = fn_800D6700(param_1, *(s16*)(p + 0x134), q[0xc], 0, 1, lbl_80300FD8, lbl_80300FD8, lbl_80300FD8, *(f32*)(q + 0x10));
+    (*(s16*)(p + 0x134))++;
+    if (r == 1) {
+        *(s16*)(p + 0x134) = 0;
+        p[0x130] = 0;
     }
 }
 
