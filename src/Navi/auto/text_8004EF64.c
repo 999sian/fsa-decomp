@@ -198,6 +198,53 @@ extern "C" void* fn_8004F67C(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_8004F6C4(void* ptr) {
+    f32 zero = lbl_803001E8;
+    f32* f = (f32*)ptr;
+    s16* s = (s16*)ptr;
+    *(void**)ptr = lbl_8024763C;
+    f[1] = zero;
+    f[2] = zero;
+    f[3] = zero;
+    f[4] = zero;
+    f[5] = zero;
+    f[6] = zero;
+    f[7] = zero;
+    f[8] = zero;
+    f[9] = zero;
+    f[10] = zero;
+    f[11] = zero;
+    f[12] = zero;
+    f[13] = zero;
+    f[14] = zero;
+    f[15] = zero;
+    f[16] = zero;
+    f[17] = zero;
+    f[18] = zero;
+    f[19] = zero;
+    f[20] = zero;
+    f[21] = zero;
+    f[22] = zero;
+    f[23] = zero;
+    f[24] = zero;
+    f[25] = zero;
+    f[26] = zero;
+    f[27] = zero;
+    f[28] = zero;
+    f[29] = zero;
+    f[30] = zero;
+    s[0x3e] = 0;
+    s[0x3f] = 0;
+    s[0x40] = 0;
+    s[0x41] = 0;
+    s[0x42] = 0;
+    s[0x43] = 0;
+    s[0x44] = 0;
+    s[0x45] = 0;
+    s[0x46] = 0;
+    s[0x47] = 0;
+}
+
 extern void* lbl_8024763C[];
 extern "C" void* fn_8004F77C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
