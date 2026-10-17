@@ -94,9 +94,10 @@ extern "C" void fn_80026630(void) {
 }
 
 extern "C" u32 fn_8002663C(void) {
-    for (u8 i = 0; i < 4; i++) {
+    u8 i;
+    for (i = 0; i < 4; i++) {
         u8 mask = 1 << i;
-        if ((lbl_802FED9D & mask) != 0 && (lbl_802FED9E & mask) == 0) {
+        if ((u8)(*(volatile u8*)&lbl_802FED9D & mask) != 0 && (u8)(*(volatile u8*)&lbl_802FED9E & mask) == 0) {
             return 0;
         }
     }
