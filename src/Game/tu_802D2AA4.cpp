@@ -1,5 +1,6 @@
 #include "Game/esd/types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
 typedef JGeometry::TVec3<f32> YasiVec;
 struct YasiVT {
     virtual void v0();
