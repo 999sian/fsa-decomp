@@ -30,6 +30,7 @@ extern "C" void fn_80194830(u32* a);
 extern "C" void* fn_8015AA60(u32 size, u32 align);
 extern "C" void* fn_8015A90C(u32 size);
 extern u32 lbl_802FF6E0;
+extern "C" f32 sqrtf(f32 x);
 struct VObj_801941F8 {
     virtual void vf0(void);
     virtual void vf1(void);
@@ -158,6 +159,33 @@ extern "C" s32 fn_8019323C(f32 (*m)[4], f32* out) {
     out[8] = c22 * invDet;
     return 1;
 }
+
+#pragma fp_contract off
+extern "C" void fn_80193304(u8* p, f32* out) {
+    extern u8 lbl_802F0BC0[];
+    u32 ia = ((s32)*(s16*)(p + 0xe) >> 2) & 0x3FF8;
+    u32 ib = ((s32)*(s16*)(p + 0x10) >> 2) & 0x3FF8;
+    u32 ic = ((s32)*(s16*)(p + 0xc) >> 2) & 0x3FF8;
+    f32 sa = *(f32*)(lbl_802F0BC0 + ia);
+    f32 ca = *(f32*)(lbl_802F0BC0 + ia + 4);
+    f32 sb = *(f32*)(lbl_802F0BC0 + ib);
+    f32 cb = *(f32*)(lbl_802F0BC0 + ib + 4);
+    f32 sc = *(f32*)(lbl_802F0BC0 + ic);
+    f32 cc = *(f32*)(lbl_802F0BC0 + ic + 4);
+    out[8] = -sa;
+    out[0] = cb * ca;
+    out[4] = sb * ca;
+    out[9] = ca * sc;
+    out[10] = ca * cc;
+    out[1] = sc * cb * sa - cc * sb;
+    out[6] = cc * sb * sa - sc * cb;
+    out[2] = sb * sc + cc * cb * sa;
+    out[5] = cc * cb + sc * sb * sa;
+    out[3] = *(f32*)(p + 0x14);
+    out[7] = *(f32*)(p + 0x18);
+    out[11] = *(f32*)(p + 0x1c);
+}
+#pragma fp_contract reset
 
 #pragma fp_contract off
 extern "C" void fn_801933DC(u32 a, u32 b, u32 c, f32* out, f32 x, f32 y, f32 z) {
@@ -786,6 +814,22 @@ extern "C" void fn_80195588(u8* p, s32 x, NaviEntry36* src, NaviEntry36* dst) {
     u16 idx = *(u16*)(p + 4);
     dst[idx] = src[idx];
     fn_801937C8(&dst[idx], x);
+}
+
+extern "C" void fn_801DAC08(s32 attr, void* base, s32 stride);
+extern NaviEntry12 lbl_80299B30[];
+extern u32 lbl_802FF6C8[];
+extern "C" void fn_801955EC(u8* p) {
+    u8* sub = *(u8**)(lbl_802EE470 + 0x38);
+    u8* mdl = *(u8**)(sub + 0x84);
+    lbl_802FF6C8[0] = *(u32*)(mdl + 0x34);
+    lbl_802FF6C8[1] = *(u32*)(mdl + 0x10);
+    NaviEntry12 tmp = lbl_80299B30[lbl_802FF6B8];
+    u8* tbl = *(u8**)(*(u8**)(sub + 4) + 0x48);
+    u32 b = lbl_802FF6C8[tbl[*(u16*)(p + 4)]];
+    *(u32*)(lbl_802EE470 + 0x104) = b;
+    fn_801DAC08(0x15, (void*)b, 0x30);
+    fn_801E10DC(p, 0, tmp);
 }
 
 extern "C" void fn_801957E4(u8* p) {
