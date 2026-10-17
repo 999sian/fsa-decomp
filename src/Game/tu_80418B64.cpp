@@ -27,6 +27,10 @@ extern u64 lbl_8048DDD0[];
 extern u32 lbl_804B139C[];
 extern "C" s32 fn_802366CC(void);
 extern "C" u32 fn_804030C4(u32 tag, u32 id);
+extern "C" void fn_80230EB8(s32 i, s32 id);
+extern "C" void fn_80230FD0(s32 i, s32 id);
+extern "C" u32 fn_80237810(s32 i);
+extern u8 lbl_8050DB0C[];
 
 // Sub-object virtual slots 13 called by fn_8041918C.
 struct SubObj {
@@ -94,9 +98,7 @@ extern "C" s32 fn_80418B64(u8* self) {
 }
 
 extern "C" void fn_8041918C(u8* this_, s32 idx) {
-    u8* p;
     u8* q;
-    u32 s;
     s32 n;
 
     fn_8022EA0C(idx);
@@ -104,8 +106,8 @@ extern "C" void fn_8041918C(u8* this_, s32 idx) {
         fn_8022EA0C(idx);
         if (fn_802366CC() < 300) {
             fn_8022EA0C(idx);
-            q = this_ + idx;
             n = fn_802366CC() / 60 + 1;
+            q = this_ + idx;
             if (n != q[0x294]) {
                 if (n > 99) {
                     n = 99;
@@ -114,8 +116,8 @@ extern "C" void fn_8041918C(u8* this_, s32 idx) {
                     n = 0;
                 }
                 if (n < 10) {
-                    s = fn_804030C4(0x54494d47, lbl_804B139C[n]);
-                    p = this_ + idx * 4;
+                    u32 s = fn_804030C4(0x54494d47, lbl_804B139C[n]);
+                    u8* p = this_ + idx * 4;
                     CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[0]), s);
                     CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[1]), s);
                     if (((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[2]))[0xb0] == 1) {
@@ -123,8 +125,8 @@ extern "C" void fn_8041918C(u8* this_, s32 idx) {
                         ((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[3]))[0xb0] = 0;
                     }
                 } else {
-                    s = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
-                    p = this_ + idx * 4;
+                    u32 s = fn_804030C4(0x54494d47, lbl_804B139C[n / 10]);
+                    u8* p = this_ + idx * 4;
                     CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[0]), s);
                     CallSlot68((u8*)((SubObj*)*(u8**)(p + 0x2c))->w13(lbl_8048DDD0[1]), s);
                     s = fn_804030C4(0x54494d47, lbl_804B139C[n % 10]);
