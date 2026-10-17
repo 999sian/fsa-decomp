@@ -20,6 +20,7 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern char lbl_802B7CA0[];
 extern f32 lbl_80300BFC;
 extern f32 lbl_80300C1C;
+extern f32 lbl_80300C20;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
 extern u8 lbl_802C5524[];
