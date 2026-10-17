@@ -511,6 +511,13 @@ extern "C" void* fn_80092F88(void* ptr, s16 param_2) {
     return ptr;
 }
 
+extern "C" void fn_80092FE4(char* param_1) {
+    if (fn_800A79FC(*(void**)(param_1 + 0x268)) == 1) {
+        param_1[0x7e8] = 3;
+        fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x268) + 0x3da));
+    }
+}
+
 extern "C" void fn_8009388C(char* param_1) {
     if (*(u8*)(*(char**)(param_1 + 0x280) + 0x159) == 2) {
         fn_800C6CA4(*(void**)(param_1 + 0x27c));
