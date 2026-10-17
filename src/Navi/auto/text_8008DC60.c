@@ -13,6 +13,9 @@ extern "C" void fn_800D1EE8(void* p);
 struct DtorVObj_800A0008 { virtual void Destroy(int); };
 extern "C" void fn_800D3274(u8* p);
 extern "C" void fn_800C6CA4(void* p);
+extern "C" char lbl_802AE880[];
+extern "C" void* fn_80016320(void* p);
+extern "C" void fn_800CA7C4(void* p);
 struct VObj_80098354 {
     virtual void v0();
     virtual void v1();
@@ -548,6 +551,26 @@ extern "C" void fn_8009388C(char* param_1) {
         fn_800C6CA4(*(void**)(param_1 + 0x27c));
         param_1[0x2a5] = 2;
         param_1[0x85c] = 5;
+    }
+}
+
+extern "C" void fn_800939C8(u8* p) {
+    u8* q = *(u8**)(p + 0x280);
+    if (q[0x159] == 2) {
+        if (q[0x158] == 1) {
+            if (*(u8*)(p + 0x282f) == 0) {
+                fn_800CA434(q, 0x241, 0);
+                *(u8*)(p + 0x282d) = 5;
+                *(u16*)(p + 0x2830) = 0x24b;
+                *(u8*)(p + 0x282c) = 2;
+            } else {
+                fn_800CA434(q, 0x252, 0);
+                *(u8*)(p + 0x282c) = 4;
+            }
+        } else {
+            fn_800CA434(q, 0x242, 0);
+            *(u8*)(p + 0x282c) = 7;
+        }
     }
 }
 
