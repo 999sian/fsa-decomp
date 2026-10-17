@@ -1,5 +1,13 @@
 #include "types.h"
 
+extern "C" const f32 lbl_80541B3C;
+extern "C" const f32 lbl_80541B40;
+extern "C" const f32 lbl_80541B44;
+extern "C" u8 fn_801F2740(char* p);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" s32 fn_80230CFC(s32 i);
+extern "C" u8 fn_801F2618(char* p, s32 a, s32 b);
+
 extern "C" const f32 lbl_80541AE0;
 extern "C" void* lbl_804AB308[];
 extern "C" const f32 lbl_80541ADC;
