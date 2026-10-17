@@ -25,6 +25,7 @@ extern "C" void fn_800EF4D0(void* p, s32 v);
 extern "C" void fn_80097180(void* p);
 extern "C" s32 fn_8009D0D8(s16* param_1);
 struct NaviObjTbl_80097EB0 { u8 pad[0x64c]; u8* objs[1]; };
+extern f32 lbl_80300B40;
 extern "C" void fn_800F4C70(void* p);
 extern void* lbl_80286A98[];
 extern void* lbl_8028E870[];
@@ -714,8 +715,12 @@ extern "C" void fn_800936E0(u8* p) {
                 *(u8*)(lbl_802B7CA0 + 0x1372) = 0;
             }
             if (p[0x282f] == 0) {
-                *(s32*)(lbl_802B7CA0 + 0x1378) = *(s32*)(lbl_802AE880 + 0x1fd0);
-                *(s32*)(lbl_802B7CA0 + 0x137c) = *(s32*)(lbl_802AE880 + 0x1fd4);
+                s32* src = (s32*)(lbl_802AE880 + 0x1fd0);
+                s32* dst = (s32*)(lbl_802B7CA0 + 0x1378);
+                s32 a = src[0];
+                s32 b = src[1];
+                dst[0] = a;
+                dst[1] = b;
                 fn_800A5338(*(void**)(p + 0x268));
                 p[0x7e8] = 2;
                 p[0x85c] = 1;
@@ -760,6 +765,29 @@ extern "C" void fn_8009388C(char* param_1) {
         fn_800C6CA4(*(void**)(param_1 + 0x27c));
         param_1[0x2a5] = 2;
         param_1[0x85c] = 5;
+    }
+}
+
+extern "C" void* memset(void* p, s32 c, u32 n);
+extern "C" void fn_800F0D04(void* a, void* b, s32 c);
+extern "C" void fn_80017248(void* p, s32 v);
+extern "C" void fn_800938DC(void* p) {
+    if (*(unsigned char*)(*(char**)((char*)p + 0x280) + 0x159) == 2) {
+        if ((unsigned char)(*(unsigned char*)(*(char**)((char*)p + 0x280) + 0x158) ^ 1)) {
+            memset((char*)p + 0x883, 0, 0x258);
+            fn_800F0D04(lbl_802B7CA0, (char*)p + 0x883, 0);
+            fn_80017248((char*)p + 0x883, 0);
+            fn_800F0D04(lbl_802B7CA0, (char*)p + 0x883, 1);
+            fn_80017248((char*)p + 0x883, 1);
+            fn_800F0D04(lbl_802B7CA0, (char*)p + 0x883, 2);
+            fn_80017248((char*)p + 0x883, 2);
+            *(unsigned char*)((char*)lbl_802B7CA0 + 0x1372) = 1;
+            fn_800A5338(*(void**)((char*)p + 0x268));
+            *(unsigned char*)((char*)p + 0x7e8) = 2;
+            *(unsigned char*)((char*)p + 0x85c) = 1;
+        } else {
+            *(unsigned char*)((char*)p + 0x282c) = 0;
+        }
     }
 }
 
@@ -1710,12 +1738,14 @@ extern "C" s32 fn_8009B220(void* p);
 extern "C" s32 fn_8009B8B4(void* p);
 extern "C" void fn_8009B154(u8* p) {
     s32 a = fn_8009B574();
-    a = fn_8009B220(p) | a;
+    s32 b = fn_8009B220(p);
+    a = b | a;
     s32 c = fn_8009B8B4(p);
     if ((c | a) != 0) {
         if (p[0x718] == 0) {
             void* obj = *(void**)(p + 0x700);
-            (*(void (***)(void*, void*))obj)[25](obj, *(void**)(p + 0x710));
+            void (*f)(void*, void*) = (*(void (***)(void*, void*))obj)[25];
+            f(obj, *(void**)(p + 0x710));
             *(s32*)(p + 0x714) = 0;
             p[0x718] = 1;
         }
