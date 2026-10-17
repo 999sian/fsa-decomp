@@ -150,6 +150,12 @@ extern "C" void fn_8003267C(void* p) {
     *(unsigned int*)((char*)p + 0x20) = 0;
 }
 
+extern "C" void fn_800329A0(void* p) {
+    *(int*)((char*)p + 0xb4) = *(int*)(lbl_802BB0FC + 0x58);
+    *(unsigned int*)((char*)p + 0xbc) |= 0x80000000;
+    lbl_802FEDDC &= ~0x800000;
+}
+
 extern "C" void fn_800329CC(void* p) {
     *(unsigned int*)((char*)p + 0x8) = 0;
     *(unsigned char*)((char*)p + 0xc) = 0;
@@ -431,9 +437,10 @@ extern "C" void fn_80036FB8(void* p) {
 }
 
 extern "C" void fn_80036FE4(void* p) {
-    float f = *(float*)((char*)lbl_802BEF44 + 0x88) * lbl_802FFD44;
-    *(int*)((char*)p + 0x244) = (int)f + *(int*)((char*)lbl_802BB0FC + 0x58);
-    *(int*)((char*)p + 0x2e0) = *(int*)((char*)lbl_802BB0FC + 0x58);
+    float f = lbl_802FFD44 * *(float*)((char*)lbl_802BEF44 + 0x88);
+    int v = *(int*)((char*)lbl_802BB0FC + 0x58);
+    *(int*)((char*)p + 0x244) = (int)f + v;
+    *(int*)((char*)p + 0x2e0) = v;
     *(unsigned int*)((char*)p + 0x24c) |= 0x10000;
 }
 
