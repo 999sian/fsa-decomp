@@ -1,4 +1,5 @@
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
 
 struct Tu80343Random {
     u32 seed;
@@ -50,7 +51,9 @@ extern "C" void fn_80343AD0(char* this_) {
 }
 
 extern "C" void fn_803450AC(char* this_) {
-    s32 i;
+    s32 n;
+    char* p;
+    char* q;
     Tu80343Game* g;
 
     *(s32*)(this_ + 0x270) = *(s32*)(this_ + 0x90) & 1;
@@ -64,14 +67,20 @@ extern "C" void fn_803450AC(char* this_) {
     *(f32*)(this_ + 0x354) = 0.0f;
     *(f32*)(this_ + 0x350) = 0.0f;
     *(f32*)(this_ + 0x34c) = 0.0f;
-    g = lbl_8053AAF8;
-    for (i = 0; i < 7; i++) {
-        *(f32*)(this_ + 0x278 + i * 4) = 2.0f + g->rnd.get_ufloat_1();
-        *(s32*)(this_ + 0x254 + i * 4) = 0;
-        *(s16*)(this_ + 0x294 + i * 2) = 0;
-    }
+    p = this_;
+    q = this_;
+    n = 7;
+    do {
+        *(f32*)(p + 0x278) = 2.0f + lbl_8053AAF8->rnd.get_ufloat_1();
+        *(s32*)(p + 0x254) = 0;
+        *(s16*)(q + 0x294) = 0;
+        p += 4;
+        q += 2;
+    } while (--n != 0);
     *(f32*)(this_ + 0x278) = 1.5f + 0.5f * lbl_8053AAF8->rnd.get_ufloat_1();
-    *(Tu80343Vec3*)(this_ + 0x2a4) = *(Tu80343Vec3*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2a4) = *(f32*)(this_ + 0xc);
+    *(f32*)(this_ + 0x2a8) = *(f32*)(this_ + 0x10);
+    *(f32*)(this_ + 0x2ac) = *(f32*)(this_ + 0x14);
     *(s32*)(this_ + 0x238) = 0;
     *(s32*)(this_ + 0x23c) = 0;
     *(s32*)(this_ + 0x240) = 0;
