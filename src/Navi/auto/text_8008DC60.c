@@ -561,7 +561,7 @@ extern "C" void fn_8009336C(char* param_1)
     }
 }
 
-extern void (NaviState_8008DC60::*lbl_80285DF8[])();
+extern "C" u8 lbl_80285DF8[];
 extern "C" s32 lbl_802FEBC0;
 extern "C" void fn_800933C4(u8* p) {
     u8* q = *(u8**)(p + 0x280);
