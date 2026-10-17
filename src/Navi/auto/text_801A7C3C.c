@@ -44,6 +44,7 @@ extern "C" void* fn_8015A90C(u32 size);
 extern "C" void fn_801A7C90(void* a, void* b);
 extern u8 lbl_802EE470[];
 extern "C" void fn_80192F60(void* p, s32 param_2);
+extern "C" void* fn_80192FD4(void* ptr, s16 param_2);
 
 struct Pair_801A7D54 { f32 x, y; };
 struct Blk_801A7D54 { Pair_801A7D54 p[3]; u8 b; };
@@ -1951,6 +1952,21 @@ extern "C" void* fn_801B37C0(void* base, u32 offset) {
 extern "C" void* fn_801B37D8(void* base, u32 offset) {
     if (offset == 0) return nullptr;
     return (u8*)base + offset;
+}
+
+extern "C" u16 fn_801B39D0(u16* p) {
+    u16 n = *p;
+    u16 i = 0;
+    if (n == 0) {
+        return 0;
+    }
+    if (n > 8) {
+        for (; i < (u16)(n - 8); i += 8) {
+        }
+    }
+    for (; i < n; i++) {
+    }
+    return i;
 }
 
 extern "C" u8 fn_801B474C(u8* s, u32 a) {
