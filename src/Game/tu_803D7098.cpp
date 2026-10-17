@@ -77,7 +77,7 @@ struct FsaSlots {
     virtual void v54(void);
     virtual void v55(void);
     virtual void v56(void);
-    virtual void v57(void);
+    virtual void v57(s32, s32, s32, f32, f32, f32, f32);
     virtual void v58(void);
     virtual void v59(s32, s32, s32, f32, f32, f32, f32);
 };
@@ -114,13 +114,13 @@ extern "C" f32 lbl_80543538;
 extern "C" f32 lbl_8054353C;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void*, f32, f32, void*);
 extern "C" void fn_803D82EC(u8* param_1) {
-    FsaNode* obj;
+    FsaSlots* obj;
 
     fn_8013B490(lbl_8053AB10);
-    obj = *(FsaNode**)(param_1 + 0x1c);
-    obj->v9(param_1[0x77]);
-    obj = *(FsaNode**)(param_1 + 0x1c);
-    ((void (*)(FsaNode*, s32, s32, s32, f32, f32, f32, f32))(*(void***)obj)[0xec / 4])(obj, 0, 0, 0, lbl_80543534, lbl_80543534, lbl_80543568, lbl_8054356C);
+    obj = *(FsaSlots**)(param_1 + 0x1c);
+    obj->v7(param_1[0x77]);
+    obj = *(FsaSlots**)(param_1 + 0x1c);
+    obj->v59(0, 0, 0, lbl_80543534, lbl_80543534, lbl_80543568, lbl_8054356C);
 }
 
 extern "C" void fn_803D8670(u8* param_1) {
