@@ -1361,6 +1361,10 @@ extern "C" void fn_803AEF08(Menu_Join* p) {
 }
 
 // NONMATCHING (99.8%): r6/r7 swap in the ranking loop.
+static const s32 lbl_804763A4[4] = {300, 150, 50, 0};
+static const s32 lbl_804763B4[3] = {300, 150, 0};
+static const s32 lbl_80543380[2] = {150, 0};
+
 extern "C" void fn_803AF1B0(Menu_Rank* p) {
     static const s32 tbl0[4] = {300, 150, 50, 0};
     static const s32 tbl1[3] = {300, 150, 0};
