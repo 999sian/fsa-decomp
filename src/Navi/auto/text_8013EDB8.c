@@ -27,6 +27,8 @@ extern "C" void fn_8013F400(s32 idx, s32 r);
 extern "C" void fn_8013F4D0(s32 idx, s32 r);
 extern "C" void fn_801408CC(void* p);
 extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
+extern "C" void fn_80140060(s32 idx, s32 param_2);
+extern "C" s32 fn_801402B8(s32 idx, void* param_2, s32 param_3, s32 param_4);
 struct NaviNode {
     NaviNode* next;
     NaviNode* prev;
@@ -406,5 +408,47 @@ extern "C" void fn_801409B0(u8* p) {
         lbl_802FF394 = *(NaviNode**)(p + 0xe6c);
         *(NaviNode**)(p + 0xe6c) = 0;
     }
+}
+
+extern "C" NaviNode* fn_80140A8C(s32 key, u8 type) {
+    NaviNode* node;
+    NaviNode* cur;
+    NaviNode* prev;
+    node = lbl_802FF394;
+    if (node == 0) {
+        return 0;
+    }
+    lbl_802FF394 = node->next;
+    if (lbl_802FF394 != 0) {
+        lbl_802FF394->prev = 0;
+    }
+    node->key = key;
+    node->type = type;
+    node->slot = *(u8*)(lbl_802FF390 + 0x1518 + type * 0x38);
+    cur = *(NaviNode**)(lbl_802FF390 + 0xe64 + node->slot * 4);
+    prev = 0;
+    while (cur != 0) {
+        if (cur->key > key) {
+            node->next = cur;
+            node->prev = prev;
+            if (prev != 0) {
+                prev->next = node;
+            } else {
+                *(NaviNode**)(lbl_802FF390 + 0xe64 + node->slot * 4) = node;
+            }
+            cur->prev = node;
+            return node;
+        }
+        prev = cur;
+        cur = cur->next;
+    }
+    node->prev = prev;
+    if (prev != 0) {
+        prev->next = node;
+    } else {
+        *(NaviNode**)(lbl_802FF390 + 0xe64 + node->slot * 4) = node;
+    }
+    node->next = 0;
+    return node;
 }
 
