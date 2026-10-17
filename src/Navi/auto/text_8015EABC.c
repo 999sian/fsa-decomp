@@ -6,6 +6,12 @@ typedef void (*DispatchFn)(void*, void*, int, void*, void*);
 // .text 0x8015eabc-0x8015eef4 (8 functions). split_file divides it into the game's real files.
 
 extern "C" void fn_8015AB1C(void* ptr);
+extern "C" void fn_8015D050(void*);
+extern "C" void fn_801BE368(void*);
+extern "C" void* fn_80159E8C(void*);
+extern "C" void* fn_8015A9A8(u32, void*, int);
+extern "C" void* fn_8015EF8C(void*, u32, int, u32, int, int);
+extern "C" void fn_80166C84(void*, void*);
 extern "C" void fn_80166C08(void*, int);
 typedef void (*VirtualMethod0)(void*, s16);
 extern "C" void* fn_8015EABC(void* param_1, s16 param_2) {
@@ -109,13 +115,14 @@ extern "C" int fn_8015ED98(char* p, u32 size) {
 }
 
 extern "C" u32 fn_8015EE10(char* p) {
+    char* o;
     char* n;
     u32 max = 0;
     fn_801BE3A0(p + 0x18);
-    for (n = (char*)lbl_802EE28C[0]; n != 0; n = *(char**)(n + 0xc)) {
-        u32 v = *(u32*)(*(char**)n + 0x1c);
-        if (v > max) {
-            max = v;
+    for (n = *(char**)&lbl_802EE28C; n != 0; n = *(char**)(n + 0xc)) {
+        o = *(char**)n;
+        if (*(u32*)(o + 0x1c) > max) {
+            max = *(u32*)(o + 0x1c);
         }
     }
     fn_801BE47C(p + 0x18);
