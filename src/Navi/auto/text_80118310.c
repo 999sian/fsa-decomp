@@ -317,6 +317,24 @@ extern "C" u16 fn_801194E4(void* param_1, char* param_2) {
     return hash;
 }
 
+extern "C" void* fn_80119514(u8* p, s32 size) {
+	*(void**)p = lbl_80290080;
+	*(s32*)(p + 0xc) = (size + 0x1f) & ~0x1f;
+	if (lbl_802FF2A0 != 0) {
+		*(void**)(p + 4) = fn_80159C40(lbl_802FF540, *(s32*)(p + 0xc) + 0x80, 0x20);
+		*(u8**)(p + 8) = *(u8**)(p + 4) + 0x80;
+		GXInitFifoBase(*(void**)(p + 4), *(void**)(p + 8), *(void**)(p + 0xc));
+		fn_801D97E0(*(void**)(p + 4), *(void**)(p + 8), *(void**)(p + 8));
+	} else {
+		*(void**)(p + 8) = fn_80159C40(lbl_802FF540, *(s32*)(p + 0xc) + 0xa0, 0x20);
+		*(s32*)(p + 8) = (*(s32*)(p + 8) + 0x1f) & ~0x1f;
+		*(void**)(p + 4) = GXInit(*(void**)(p + 8), *(s32*)(p + 0xc));
+		lbl_802FF2A0 = 1;
+		lbl_802FF2A4 = p;
+	}
+	return p;
+}
+
 extern void* lbl_80290080[];
 extern u8* lbl_802FF2A4;
 extern u8 lbl_802FF2A8[5];
