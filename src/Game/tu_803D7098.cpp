@@ -26,6 +26,7 @@ extern "C" void* lbl_8053AAF8;
 extern "C" void* lbl_8053AED8;
 extern "C" void* lbl_8053AF80;
 extern "C" char lbl_80476F80[];
+extern "C" char lbl_80529DEC[];
 extern "C" f32 lbl_80543530;
 extern "C" f32 lbl_80543538;
 extern "C" f32 lbl_8054353C;
