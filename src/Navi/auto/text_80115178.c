@@ -54,5 +54,5 @@ extern "C" int fn_80115564(unsigned char* param_1) {
 }
 
 extern "C" void fn_801155C0(unsigned char* param_1, int param_2) {
-    (fn_801155E0)(param_1, param_2);
+    fn_801155E0(param_1, param_2);
 }
