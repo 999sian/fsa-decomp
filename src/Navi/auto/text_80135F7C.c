@@ -442,6 +442,11 @@ extern "C" void fn_80136A84(void* p) {
 
 extern "C" void fn_80136A94(void) {}
 
+extern "C" f64 fn_80136A98(void* p)
+{
+    return *(f64*)((u8*)p + 0x8);
+}
+
 extern "C" u32 fn_80136B14(void) {
     return 3;
 }
