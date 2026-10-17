@@ -1740,6 +1740,7 @@ extern "C" void fn_8002F358(void* p, s32 v);
 extern "C" void fn_80130974(void* p);
 extern "C" void* fn_8015A90C(u32 n);
 extern "C" void fn_800CC7B4(void* p);
+extern "C" void fn_800CDE98(void* p);
 extern "C" void* lbl_80285698[];
 extern "C" void* lbl_80285708[];
 extern "C" void* lbl_80286980[];
