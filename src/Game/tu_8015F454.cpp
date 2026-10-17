@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" const float lbl_8053D628;
 extern "C" const float lbl_8053D63C;
@@ -49,6 +50,60 @@ extern "C" u8 fn_8015F8FC(char* p, s32 room, f32* pos, s32 flag) {
         }
     }
     return ret;
+}
+
+extern "C" void fn_8016005C(u8* p) {
+    u8* q = p;
+    s32 j = 0;
+    for (int i = 0; i < 4; i++) {
+        if (*(s32*)(q + 0x204) > 0) {
+            *(s32*)(q + 0x204) = *(s32*)(q + 0x204) - 1;
+        }
+        if (*(s32*)(q + 0x208) > 0) {
+            *(s32*)(q + 0x208) = *(s32*)(q + 0x208) - 1;
+        }
+        if (*(s32*)(q + 0x20c) > 0) {
+            *(s32*)(q + 0x20c) = *(s32*)(q + 0x20c) - 1;
+        }
+        if (*(s32*)(q + 0x210) > 0) {
+            *(s32*)(q + 0x210) = *(s32*)(q + 0x210) - 1;
+        }
+        if (*(s32*)(q + 0x214) > 0) {
+            *(s32*)(q + 0x214) = *(s32*)(q + 0x214) - 1;
+        }
+        if (*(s32*)(q + 0x218) > 0) {
+            *(s32*)(q + 0x218) = *(s32*)(q + 0x218) - 1;
+        }
+        if (*(s32*)(q + 0x21c) > 0) {
+            *(s32*)(q + 0x21c) = *(s32*)(q + 0x21c) - 1;
+        }
+        if (*(s32*)(q + 0x220) > 0) {
+            *(s32*)(q + 0x220) = *(s32*)(q + 0x220) - 1;
+        }
+        q += 0x20;
+        j += 7;
+    }
+    f32 old = *(f32*)(p + 0x288);
+    if (*(u8*)(p + 0x284) != 0) {
+        f32 v = old + *(f32*)(p + 0x28c);
+        if (v >= lbl_8053D63C) {
+            v = lbl_8053D63C;
+        }
+        *(f32*)(p + 0x288) = v;
+    } else {
+        f32 v = old - *(f32*)(p + 0x28c);
+        f32 min = lbl_8053D628;
+        if (v >= lbl_8053D628) {
+            min = v;
+        }
+        *(f32*)(p + 0x288) = min;
+    }
+    *(u8*)(p + 0x284) = 0;
+    if (*(f32*)(p + 0x288) > lbl_8053D628 && lbl_8053D628 == old) {
+        fn_80457E04((u8*)lbl_8053AF80, 1);
+    } else if (lbl_8053D628 == *(f32*)(p + 0x288) && old > lbl_8053D628) {
+        fn_80457E04((u8*)lbl_8053AF80, 0);
+    }
 }
 
 extern "C" void fn_801601E0(char* p) {
