@@ -57,6 +57,23 @@ extern "C" void fn_80025878(u8* p) {
     }
 }
 
+extern "C" void fn_8002628C(u8 i, s32 j, u32 v) {
+    u8* p = lbl_802BBD38 + i * 0x204;
+    *(u32*)(p + *(s16*)(p + 0x202) * 0x20 + j * 4) = v;
+}
+
+extern "C" void fn_800263B4(u32* dst, u8 i) {
+    u8* p = lbl_802BBD38 + i * 0x204;
+    u32* src = (u32*)(p + *(s16*)(p + 0x200) * 0x20);
+    dst[0] = src[0];
+    dst[1] = src[1];
+    dst[2] = src[2];
+    dst[3] = src[3];
+    dst[4] = src[4];
+    dst[5] = src[5];
+    dst[6] = src[6];
+}
+
 extern "C" void fn_80026410(u8 i) {
     u8* p = lbl_802BBD38 + i * 0x204;
     (*(s16*)(p + 0x202))++;
