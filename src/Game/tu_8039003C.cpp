@@ -28,8 +28,6 @@ struct TResMgr {
     virtual void v01();
     virtual void v02();
     virtual void v03();
-    virtual void v04();
-    virtual void v05();
     virtual void* get(u32 type, const char* name);
 };
 extern "C" void fn_80158B3C(void* obj);
@@ -122,6 +120,61 @@ extern "C" void* fn_8039017C(void* this_, short flag) {
         if (flag > 0) {
             __dl__FPv(this_);
         }
+    }
+    return this_;
+}
+
+extern "C" void* fn_8039027C(void* this_) {
+    *(void**)this_ = lbl_804AF480;
+    getTotalFreeSize__7JKRHeapFv(*(void**)(lbl_80529DEC + 0x8));
+    lbl_8053AD80 = (u8*)this_;
+    *(void**)((u8*)this_ + 0x4) = 0;
+    *(void**)((u8*)this_ + 0x8) = 0;
+    fn_80158B3C(*(void**)(lbl_8053AB10 + 0x2c));
+    if (lbl_80529DEC[0x242] == 0) {
+        lbl_80529DEC[0x242] = 1;
+        fn_802FF798(*(void**)(lbl_8053AB10 + 0x20));
+        void* res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670);
+        fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670 + 0x18);
+        fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0x7000, 0);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, lbl_80475670 + 0x30);
+        fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 0, 0, 0, 0);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670 + 0x48);
+        fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, lbl_80475670 + 0x30);
+        fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 2, 0, 0, 0);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434820, lbl_80475670 + 0x58);
+        fn_802F9714(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0);
+        res = ((TResMgr*)*(void**)(lbl_8053AAF8 + 0xa4))->get(0x53434c20, lbl_80475670 + 0x30);
+        fn_802F93F4(*(void**)(lbl_8053AB10 + 0x20), res, 0, 3, 0, 0, 0);
+        *((u8*)*(void**)(lbl_8053AB10 + 0x20) + 0x2364) = 1;
+    }
+    if (lbl_8053AAF8[0x7f] == 0) {
+        void* p = __nw__FUl(0x154);
+        if (p != 0) {
+            fn_8041787C(p);
+        }
+        *(void**)((u8*)this_ + 0x8) = p;
+    } else {
+        void* p = __nw__FUl(0x66c);
+        if (p != 0) {
+            fn_804122F4(p);
+        }
+        *(void**)((u8*)this_ + 0x4) = p;
+    }
+    if (*(u32*)(lbl_8053AF80 + 0x58) == 0x100001a) {
+        if (lbl_80529DEC[0x248] != 1) {
+            fn_80458408(lbl_8053AF80, 0x100001a, 1);
+            lbl_80529DEC[0x248] = 1;
+        }
+    } else {
+        fn_80458FF0(lbl_8053AF80, 0x100001a, 1, 0);
+        fn_80458408(lbl_8053AF80, 0x100001a, 1);
+        lbl_80529DEC[0x248] = 1;
+    }
+    if (!fn_804580DC(*(void**)(lbl_80529DEC + 0xc), 3)) {
+        fn_80458090(lbl_8053AF80);
     }
     return this_;
 }
