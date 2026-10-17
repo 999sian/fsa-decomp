@@ -1,6 +1,19 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
 
+struct Box4 {
+    f32 a, b, c, d;
+};
+
+struct Vec3f {
+    f32 x, y, z;
+};
+
+extern "C" u8 fn_801F2B7C(void* this_, s32 a, s32 b, s32 c);
+extern "C" void* fn_802D6A9C(void);
+extern Box4 lbl_804A0A58[];
+extern const f32 lbl_8053DB48;
+
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, s32 a, s32 b, s32 c);
 extern "C" void* fn_801F666C(void* base, s32 id);
@@ -15,6 +28,17 @@ extern "C" void fn_80172894(void* this_) {
         Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), p + 0xc, 0, -1, -1);
     }
     v07__5ActorFv(this_);
+}
+
+extern "C" void fn_80174220(void* this_) {
+    char* p = (char*)this_;
+    s32 idx = *(s32*)(p + 0x98);
+    s32 i;
+    if ((u8)(*(u32*)(p + 0x90)) == 8 && *(s32*)(p + 0x23c) != 0) {
+        idx += 4;
+        if (idx < 4) {
+        }
+    }
 }
 
 extern "C" void* fn_801F666C(void* a, s32 b);
