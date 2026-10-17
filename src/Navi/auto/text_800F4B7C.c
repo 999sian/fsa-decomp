@@ -5,6 +5,7 @@ extern "C" void fn_80106CBC(void* self);
 extern "C" s32 fn_8002F87C(void);
 extern "C" void fn_8002F458(void* p, s32 off);
 extern "C" void fn_8002F7C0(void* p, s32 b);
+extern "C" s32 fn_80108810(void* self, s16 a, u8 b, s32 c, s32 d, f32 e, f32 f);
 
 struct VObj_800A1A64 {
     virtual void v0();
@@ -407,6 +408,18 @@ extern "C" void fn_80104858(void* param_1) {
         fn_80106CBC(param_1);
         fn_80108928(param_1, *(s16*)((u8*)param_1 + 0xec), base[0x3c], lbl_80301204, 0, 0, lbl_80301204, *(f32*)(base + 0x38), lbl_80301204);
         *(u8*)((u8*)param_1 + 0xee) = 14;
+    }
+}
+
+extern "C" void fn_80104914(void* param_1) {
+    s32 iVar1 = fn_80108928(param_1, *(s16*)((u8*)param_1 + 0xec), *(u8*)(lbl_802C5A84 + 0x3c), lbl_80301204, 0, 0, lbl_80301204, *(f32*)(lbl_802C5A84 + 0x38), lbl_80301204);
+    *(s16*)((u8*)param_1 + 0xec) = *(s16*)((u8*)param_1 + 0xec) + 1;
+    if (iVar1 == 1) {
+        *(s16*)((u8*)param_1 + 0xec) = 0;
+        fn_8002F7C0(*(void**)(lbl_8028D704 + *(s8*)((u8*)param_1 + 0x45a) * 8 + *(u8*)((u8*)param_1 + 0x45b) * 4), 0);
+        fn_80107F20(param_1);
+        *(u8*)((u8*)param_1 + 0xf2) = 2;
+        *(u8*)((u8*)param_1 + 0xee) = 8;
     }
 }
 
