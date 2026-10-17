@@ -140,9 +140,10 @@ extern "C" void fn_80057868(void) {
 
 extern "C" void fn_8005786C(void* param_1) {
     s32 i;
+    s32 v;
     s32 flag = 1;
-    for (i = 0; lbl_80249DA0[i] != 0; i++) {
-        if (fn_80058A88(lbl_80249DA0[i]) == 0) {
+    for (i = 0; (v = lbl_80249DA0[i]) != 0; i++) {
+        if (fn_80058A88(v) == 0) {
             flag = 0;
         }
     }
