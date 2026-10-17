@@ -37,6 +37,11 @@ s32 Actor_CreateByID(void*, u32, u32, void*, u32, s32, s32);
 void* fn_8023E724(s32);
 void fn_8028414C(char*);
 u16 fn_802265FC(JGeometry::TVec3<f32>*, s32);
+s32 fn_8023DE58(s32);
+char* fn_802D6A9C();
+u16 fn_8022461C(JGeometry::TVec3<f32>*, s32);
+u8 fn_802265DC(JGeometry::TVec3<f32>*, s32, s32);
+u8 fn_802684A4(char*, JGeometry::TVec3<f32>*, s32);
 }
 extern const f32 lbl_80540150;
 extern const f32 lbl_80540154;
