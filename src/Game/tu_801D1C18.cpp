@@ -44,9 +44,10 @@ static inline s32 clampSeq(AnmSeqCtrl* this_, s32 f) {
 
 static inline void calcSeq(AnmSeqCtrl* this_) {
     f32 frame = this_->mCtrl.mFrame;
-    s32 idx = 0;
     s32 start = 0;
-    for (SeqEntry* e = this_->mSeqs[this_->mCurSeq]; e->mFrame >= 0; e++, idx++) {
+    s32 idx = start;
+    SeqEntry* seq = this_->mSeqs[this_->mCurSeq];
+    for (SeqEntry* e = seq; e->mFrame >= 0; e++, idx++) {
         s32 prev = start;
         start += e->_2;
         if ((f32)prev <= frame && frame < (f32)start) {
@@ -86,17 +87,19 @@ extern "C" void fn_801D1C18(AnmSeqCtrl* this_) {
             this_->mCtrl.update();
             f32 frame = this_->mCtrl.mFrame;
             s32 start = 0;
-            s32 idx = 0;
-            for (SeqEntry* e = this_->mSeqs[this_->mCurSeq]; e->mFrame >= 0; e++, idx++) {
-                s32 prev = start;
+            s32 idx = start;
+            SeqEntry* seq = this_->mSeqs[this_->mCurSeq];
+            SeqEntry* e = seq;
+            for (; e->mFrame >= 0; e++, idx++) {
+                f32 lo = start;
                 start += e->_2;
-                if ((f32)prev <= frame && frame < (f32)start) {
+                if (lo <= frame && frame < (f32)start) {
                     this_->_10 = clampSeq(this_, e->mFrame);
                     this_->_1C = idx;
                     return;
                 }
             }
-            this_->_10 = clampSeq(this_, this_->mSeqs[this_->mCurSeq]->mFrame);
+            this_->_10 = clampSeq(this_, seq->mFrame);
             this_->_1C = 0;
         }
     }
@@ -155,9 +158,8 @@ extern "C" BOOL fn_801D217C(AnmSeqCtrl* this_) {
 }
 
 extern "C" BOOL fn_801D21F0(AnmSeqCtrl* this_) {
-    u8 state = this_->mCtrl.mState;
     BOOL result = FALSE;
-    if ((state & 1)
+    if ((this_->mCtrl.mState & 1)
         || (this_->mCtrl.mAttr == 0 && this_->mCtrl.mRate == 0.0f
             && this_->mCtrl.mFrame > (f32)this_->mCurFrame - 0.002f))
     {
@@ -180,7 +182,21 @@ extern "C" void fn_801D22DC(AnmSeqCtrl* this_, s32 seqIndex, s32 mode, bool keep
     this_->mCtrl.init((s16)this_->mCurFrame);
     this_->mCtrl.mAttr = mode;
     if (keepFrame) {
-        setSeqFrame(this_, frame);
+        f32 end = (f32)this_->mCurFrame;
+        if (frame > end) {
+            frame = end;
+        } else if (frame < 0.0f) {
+            frame = 0.0f;
+        }
+        if (frame == (f32)this_->mCurFrame) {
+            if (this_->mCtrl.mAttr == 2) {
+                frame = 0.0f;
+            } else {
+                frame -= 0.001f;
+            }
+        }
+        this_->mCtrl.mFrame = frame;
+        calcSeq(this_);
         this_->_20 = 0;
     } else {
         calcSeq(this_);
