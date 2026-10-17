@@ -3,6 +3,8 @@
 // .text 0x8004f844-0x800575d8 (67 functions). split_file divides it into the game's real files.
 
 extern void* lbl_80222428[];
+struct Unk802C04D0 { int id; int unk4; int value; };
+extern "C" Unk802C04D0 lbl_802C04D0[];
 extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_80249D24[];
 extern "C" void fn_80021DDC(void* p);
@@ -273,17 +275,19 @@ extern "C" int fn_80057488(u32 mask) {
     u32* flags = (u32*)(lbl_80247690 + 0x25d4);
     s16* ids = (s16*)(lbl_80247690 + 0x25bc);
     int n = 0;
-    for (int i = 0; i < 11; i++) {
+    int i = 0;
+    do {
         if (mask & (1 << *bits)) {
             fn_800300C0(*ids, *flags, *vals, 0, *fs);
             vals++;
             n++;
         }
+        i++;
         fs++;
         flags++;
         ids++;
         bits++;
-    }
+    } while (i < 11);
     return n;
 }
 
