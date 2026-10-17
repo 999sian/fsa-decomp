@@ -525,6 +525,16 @@ extern "C" u32 fn_80161DF4(void* param_1, u8* param_2) {
     return (u32)param_2[4] << 24 | (u32)param_2[5] << 16 | (u32)param_2[6] << 8 | (u32)param_2[7];
 }
 
+extern "C" void fn_8015E1F4(void* p, u32 a, u32 b, s32 flag, u32 c, s32 zero, s32 neg, u32* out);
+extern "C" char lbl_80297E28[];
+extern "C" char lbl_80297E3C[];
+#pragma dont_inline on
+extern "C" void* fn_80161E84(void* self) {
+    fn_80160BE8(self);
+    *(void**)self = lbl_80297EF0;
+    return self;
+}
+#pragma dont_inline reset
 extern "C" u8* fn_80161EC0(u8* p, void* a, void* b) {
     u8 ok;
     fn_80160C34(p, a, 2);
