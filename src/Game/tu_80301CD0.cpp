@@ -260,8 +260,9 @@ struct Out_803066F0 {
     u8 f1c : 2;
     u8 hi : 1;
 };
-static inline bool isMode11_803066F0(u8* g) {
-    return *(s32*)(g + 0x4c) == 11;
+static inline u8 isMode11_803066F0(u8* g) {
+    u8 r = *(s32*)(g + 0x4c) == 11;
+    return r;
 }
 
 extern "C" u8 fn_80304C10(s32 i, char* str, u32 color, u8 b, s32 id) {
@@ -306,50 +307,46 @@ extern "C" s32 fn_803066F0(void* p, s32 idx, s32 max) {
     s32 pl = fn_8022EA0C(idx);
     for (s32 prio = 5; prio >= 0; prio--) {
         Ent_803066F0* e = (Ent_803066F0*)((u8*)lbl_80504A38 + idx * 0x280);
-        for (s32 i = 0; i < 16; i++) {
-            if (e->f24 == 1 && e->prio == prio) {
-                if (e->f8 == fn_8023DE58(pl)) {
-                    u8* g = (u8*)lbl_8053AAF8;
-                    if ((u8)(*(s32*)(g + 0x4c) == 11) == 0 && g[0x88] == 0 || e->f23 != 0) {
-                        s32 v = fn_8023D9B0(e->f10, pl) & 0x1ff;
-                        u8 w = fn_8023D4F8(e->f10, pl);
-                        if (v == 0x180 || w == 0xe0) {
-                            e->f25 = 1;
-                            e++;
-                            continue;
-                        }
-                        if (e->f20 >= 4) {
-                            if (big >= 4) {
-                                e->f25 = 1;
-                                e++;
-                                continue;
-                            }
-                            big++;
-                        }
-                        count++;
-                        out->hi = (u8)(v >> 8);
-                        out->b2 = v;
-                        out->b1 = w;
-                        out->f1c = e->f1c >> 8;
-                        e->f25 = 1;
-                        out->b0 = e->f1c;
-                        out->f20 = e->f20;
-                        out->f21 = e->f21;
-                        out->f22 = e->f22;
-                        if (count >= max) {
-                            return count;
-                        }
-                        out++;
-                    } else {
-                        e->f25 = 1;
-                        e++;
-                        continue;
-                    }
-                } else {
-                    e->f25 = 1;
-                }
+        for (s32 i = 0; i < 16; i++, e++) {
+            if (e->f24 != 1 || e->prio != prio) {
+                continue;
             }
-            e++;
+            if (e->f8 != fn_8023DE58(pl)) {
+                e->f25 = 1;
+                continue;
+            }
+            u8* g = (u8*)lbl_8053AAF8;
+            if ((isMode11_803066F0(g) || g[0x88] != 0) && e->f23 == 0) {
+                e->f25 = 1;
+                continue;
+            }
+            s32 v = fn_8023D9B0(e->f10, pl) & 0x1ff;
+            u8 w = fn_8023D4F8(e->f10, pl);
+            if (v == 0x180 || w == 0xe0) {
+                e->f25 = 1;
+                continue;
+            }
+            if (e->f20 >= 4) {
+                if (big >= 4) {
+                    e->f25 = 1;
+                    continue;
+                }
+                big++;
+            }
+            count++;
+            out->hi = (u8)(v >> 8);
+            out->b2 = v;
+            out->b1 = w;
+            out->f1c = e->f1c >> 8;
+            e->f25 = 1;
+            out->b0 = e->f1c;
+            out->f20 = e->f20;
+            out->f21 = e->f21;
+            out->f22 = e->f22;
+            if (count >= max) {
+                return count;
+            }
+            out++;
         }
     }
     return count;
