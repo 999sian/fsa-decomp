@@ -698,6 +698,21 @@ extern "C" void fn_80030250(int param_1) {
     }
 }
 
+extern "C" void fn_800302F0(int param_1) {
+    switch (*(int*)(lbl_802BB0FC + 0x420)) {
+    case 1:
+        *(unsigned int*)(lbl_802BB0FC + 0x450) &= ~lbl_8022797C[param_1 * 4 + 1];
+        return;
+    case 3:
+        *(unsigned int*)(lbl_802BB0FC + 0x468) &= ~lbl_8022797C[param_1 * 4 + 3];
+        return;
+    case 2:
+    default:
+        *(unsigned int*)(lbl_802BB0FC + 0x444) &= ~lbl_8022797C[param_1 * 4];
+        return;
+    }
+}
+
 extern unsigned char lbl_802313EC[];
 extern "C" int fn_80030390(unsigned char c) {
     int i;
@@ -707,6 +722,28 @@ extern "C" int fn_80030390(unsigned char c) {
         }
     }
     return 0;
+}
+
+extern "C" void fn_80030534(void* node_, int a, int b) {
+    unsigned char* self = *(unsigned char**)(lbl_802BB0FC + 0xf0);
+    unsigned char* next;
+    unsigned int* node = (unsigned int*)node_;
+    if (self == 0) {
+        return;
+    }
+    node[0] = a;
+    node[1] = b;
+    node[2] = 0;
+    next = *(unsigned char**)(self + 0x6e0);
+    if (next != 0) {
+        self = next;
+        while ((next = *(unsigned char**)(self + 0x8)) != 0) {
+            self = next;
+        }
+        *(unsigned int**)(self + 0x8) = node;
+        return;
+    }
+    *(unsigned int**)(self + 0x6e0) = node;
 }
 
 extern "C" unsigned char* fn_800298BC(unsigned char* self, int id);
@@ -756,7 +793,7 @@ extern "C" void fn_80030664(void) {}
 extern "C" int fn_80030668(int param_1) {
     void* obj = *(void**)(lbl_802BB0FC + 0xf0);
     if (obj != 0) {
-        return fn_800294AC((int)obj, (int)(lbl_8022F534 + *(int*)(lbl_802BB0FC + 0x420) * 0x1c), lbl_802FFD10, 0xf, 0, 0, param_1, 0, 0, 1);
+        return fn_800294AC((int)obj, (int)(lbl_8022F534 + *(int*)(lbl_802BB0FC + 0x420) * 0x1c), 0xf, 0, 0, param_1, 0, 0, lbl_802FFD10, 1);
     }
     return 0;
 }
@@ -768,8 +805,9 @@ extern "C" unsigned char* fn_800306DC(int param_1) {
     if (obj != 0) {
         p = obj;
         for (i = 0; i < 8; i++) {
-            if (*(int*)(p + 0x384) != 0 && *(int*)(p + 0x384) == param_1) {
-                return p + 0x384;
+            int v = *(int*)(p + 0x384);
+            if (v != 0 && v == param_1) {
+                return obj + i * 0x3c + 0x384;
             }
             p += 0x3c;
         }
