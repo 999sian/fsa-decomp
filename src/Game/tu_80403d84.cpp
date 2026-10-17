@@ -133,6 +133,103 @@ u8 fn_804045F8(void*, s32 bit) {
 	return 0;
 }
 
+typedef u8* (*SpawnFn)(void*, u32, u32, u32);
+extern "C" u8 fn_803B8EBC(s32);
+extern "C" void fn_80404D70(u8* self) {
+	*(s32*)(self + 0x370) = 0;
+	if (fn_803B8EBC(7)) {
+		for (s32 i = 1; i < 7; i++) {
+			switch (i) {
+			case 1:
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503231); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503232); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503233); it[0xb0] = 0; }
+				break;
+			case 2:
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503331); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503332); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503333); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503334); it[0xb0] = 0; }
+				break;
+			case 3:
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503431); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503432); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503433); it[0xb0] = 0; }
+				break;
+			case 4:
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503531); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503532); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503533); it[0xb0] = 0; }
+				break;
+			case 5:
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503631); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503632); it[0xb0] = 0; }
+				break;
+			case 6:
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503731); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503732); it[0xb0] = 0; }
+				{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503733); it[0xb0] = 0; }
+				break;
+			}
+		}
+		u8* node = *(u8**)(self + 0xcc);
+		u8* sub = *(u8**)(node + 4);
+		sub[0xb0] = 1;
+		*(s32*)(self + 0x370) = 7;
+	} else {
+		for (s32 i = 0; i < 8; i++) {
+			if (!fn_803B8EBC(i)) {
+				return;
+			}
+			s32 n = i + 1;
+			if ((1 << n) & ((u8*)lbl_8050EC80)[*(s32*)((u8*)lbl_8050EC80 + 0x10) * 200 + 0x82]) {
+				switch (n) {
+				case 1:
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503231); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503232); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503233); it[0xb0] = 0; }
+					break;
+				case 2:
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503331); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503332); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503333); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503334); it[0xb0] = 0; }
+					break;
+				case 3:
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503431); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503432); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503433); it[0xb0] = 0; }
+					break;
+				case 4:
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503531); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503532); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503533); it[0xb0] = 0; }
+					break;
+				case 5:
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503631); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503632); it[0xb0] = 0; }
+					break;
+				case 6:
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503731); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503732); it[0xb0] = 0; }
+					{ void* o = *(void**)(self + 0xc); u8* it = ((SpawnFn)(*(void***)o)[15])(o, 0x500000, 0, 0x503733); it[0xb0] = 0; }
+					break;
+				}
+				*(s32*)(self + 0x378) += 200;
+				*(s32*)(self + 0x37c) += 200;
+			} else {
+				*(s32*)(self + 0x364) = n;
+			}
+			*(s32*)(self + 0x370) += 1;
+			if (i == 5) {
+				u8* node = *(u8**)(self + 0xcc);
+				u8* sub = *(u8**)(node + 4);
+				sub[0xb0] = 1;
+			}
+		}
+	}
+}
+
 void fn_8040E278(T80403D84* self) {
 	if (++self->f384 > 100) {
 		self->state = 0x15;
@@ -529,8 +626,14 @@ extern void* lbl_8053AD30;
 extern void* lbl_8053AEC4;
 extern "C" s16 lbl_8048C95C[];
 extern "C" void fn_8040B388(u8* self) {
-	s16 st = *(s16*)(self + 0x428);
-	if (st == 1) {
+	switch (*(s16*)(self + 0x428)) {
+	case 0:
+		if (fn_8042EC7C(lbl_8053AEC4)) {
+			*(s16*)(self + 0x428) = 1;
+			fn_80458880(lbl_8053AF80, 0x57, -1);
+		}
+		break;
+	case 1:
 		if (fn_80309C4C(lbl_8053AD30, 0x1300, -1)) {
 			s32 idx = *(s32*)(self + 0x340);
 			if (idx == 0 || (u32)(idx - 1) <= 4 || idx == 6) {
@@ -545,38 +648,36 @@ extern "C" void fn_8040B388(u8* self) {
 				(*(Obj240**)(self + 0x124))->f26 = 0;
 				self[0x65e] = 0;
 			}
-			s32 i = *(s32*)(self + 0x340) * 4 + *(s32*)(self + 0x348);
-			*(f32*)(self + 0x394) = (f32)lbl_8048C95C[i * 2];
-			*(f32*)(self + 0x398) = (f32)lbl_8048C95C[i * 2 + 1];
+			*(f32*)(self + 0x394) = (f32)lbl_8048C95C[(*(s32*)(self + 0x340) * 4 + *(s32*)(self + 0x348)) * 2];
+			*(f32*)(self + 0x398) = (f32)lbl_8048C95C[(*(s32*)(self + 0x340) * 4 + *(s32*)(self + 0x348)) * 2 + 1];
 			*(s16*)(self + 0x428) = 2;
 		}
-	} else if (st < 1) {
-		if (st == 0 && fn_8042EC7C(lbl_8053AEC4)) {
-			*(s16*)(self + 0x428) = 1;
-			fn_80458880(lbl_8053AF80, 0x57, -1);
-		}
-	} else if (st < 3 && fn_8042EBEC(lbl_8053AEC4)) {
-		*(s16*)(self + 0x428) = 0;
-		if (self[0x658] == 0) {
-			if (self[0x65d] == 0) {
-				for (int j = 0; j < 3; j++) {
-					(*(Obj240**)(self + 0x278 + j * 0x14))->f26 = 0;
-					self[0x65d] = 1;
-					(*(Obj240**)(self + 0x27c + j * 0x14))->f26 = 0;
-					self[0x65d] = 1;
-					(*(Obj240**)(self + 0x280 + j * 0x14))->f26 = 0;
-					self[0x65d] = 1;
-					(*(Obj240**)(self + 0x284 + j * 0x14))->f26 = 0;
-					self[0x65d] = 1;
-					(*(Obj240**)(self + 0x288 + j * 0x14))->f26 = 0;
-					self[0x65d] = 1;
+		break;
+	case 2:
+		if (fn_8042EBEC(lbl_8053AEC4)) {
+			*(s16*)(self + 0x428) = 0;
+			if (self[0x658] != 0) {
+				self[0x658] = 0;
+				*(s32*)(self + 0x350) = 0x15;
+			} else {
+				if (self[0x65d] == 0) {
+					for (int j = 0; j < 3; j++) {
+						(*(Obj240**)(self + 0x278 + j * 0x14))->f26 = 0;
+						self[0x65d] = 1;
+						(*(Obj240**)(self + 0x27c + j * 0x14))->f26 = 0;
+						self[0x65d] = 1;
+						(*(Obj240**)(self + 0x280 + j * 0x14))->f26 = 0;
+						self[0x65d] = 1;
+						(*(Obj240**)(self + 0x284 + j * 0x14))->f26 = 0;
+						self[0x65d] = 1;
+						(*(Obj240**)(self + 0x288 + j * 0x14))->f26 = 0;
+						self[0x65d] = 1;
+					}
 				}
+				*(s32*)(self + 0x350) = 0xf;
 			}
-			*(s32*)(self + 0x350) = 0xf;
-		} else {
-			self[0x658] = 0;
-			*(s32*)(self + 0x350) = 0x15;
 		}
+		break;
 	}
 }
 
@@ -845,9 +946,9 @@ struct E720 {
 };
 
 extern "C" void fn_8040E720(E720* self) {
-	int n = 0;
 	self->timer++;
 	if (self->timer > 10) {
+		int n = 0;
 		if (self->timer == 0x16) {
 			u32 id = 0x30039;
 			self->sound->play(&id);
@@ -855,7 +956,9 @@ extern "C" void fn_8040E720(E720* self) {
 		for (int i = 0; i < 3; i++) {
 			if (self->emitters[i]) {
 				if (self->emitters[i]->isEnd()) {
-					killEmitter(&self->emitters[i]);
+					JPAEmitterManager* mgr = *(JPAEmitterManager**)((u8*)fn_8013C824() + 0xc);
+					mgr->forceDeleteEmitter(self->emitters[i]);
+					self->emitters[i] = 0;
 					n++;
 				}
 			} else {
@@ -1029,10 +1132,9 @@ extern "C" void fn_804054B8(T5B10* self) {
 			self->scr->search(e[1])->f0b0 = 0;
 		}
 		s32 n = 0;
-		if (self->f38c & (1 << (self->f340 * 4))) n = 1;
-		if (self->f38c & (1 << (self->f340 * 4 + 1))) n++;
-		if (self->f38c & (1 << (self->f340 * 4 + 2))) n++;
-		if (self->f38c & (1 << (self->f340 * 4 + 3))) n++;
+		for (int j = 0; j < 4; j++) {
+			if (self->f38c & (1 << (self->f340 * 4 + j))) n++;
+		}
 		if (n > 1) {
 			if (fn_804045F8(self, self->f340)) {
 				if ((self->f340 <= 5 || self->f340 == 6) && !(self->f38c & (1 << (self->f340 * 4 + 1)))) {
