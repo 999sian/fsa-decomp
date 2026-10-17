@@ -662,6 +662,31 @@ extern "C" BOOL fn_80026F14(s8* p) {
     return TRUE;
 }
 
+extern "C" int fn_801E1070(void* p);
+extern "C" int fn_801E10A0(void* p, void* f);
+extern "C" void fn_801E10DC(void* self, s32 arg);
+extern u8 lbl_802263C4[];
+extern "C" void fn_800274C8(void* p) {
+    StateObj_800274C8* self = (StateObj_800274C8*)p;
+    if (fn_801E1070(&self->m_func) == 0) {
+        StateFunc_800274C8 func = *(StateFunc_800274C8*)lbl_802263C4;
+        if (fn_801E10A0(&self->m_func, &func) != 0) {
+            if (fn_801E1070(&self->m_func) != 0) {
+                self->m_state = -1;
+                (self->*self->m_func)(0);
+            }
+            self->m_func = func;
+            self->m_state = 0;
+            self->m_unk[0] = 0;
+            self->m_unk[1] = 0;
+            self->m_unk[2] = 0;
+            self->m_unk[3] = 0;
+            (self->*self->m_func)(0);
+        }
+    }
+    (self->*self->m_func)(0);
+}
+
 extern "C" u8 fn_800275B8(u8* param_1) {
     if (*(volatile u8*)param_1 != 0) {
         *param_1 = *param_1 - 1;
