@@ -93,6 +93,7 @@ extern "C" char lbl_80472390[];
 extern "C" float lbl_805427E4;
 extern "C" void fn_801F06F0(void* this_, void* p2, int p3, int p4, int p5, float f6, float f7);
 extern "C" void fn_80307AC8(void* obj, unsigned int id, void* pos, int kind, unsigned int a, unsigned int b, int c);
+extern "C" void fn_80307AC8(void* obj, unsigned int id, void* pos, int kind, unsigned int a, unsigned int b, int c);
 extern "C" void fn_80356A24(char* this_) {
     char* base = lbl_80472390;
     int mode = *(int*)(this_ + 0x230);
