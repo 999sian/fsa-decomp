@@ -109,12 +109,6 @@ inline void NaviRect16_Set(NaviRect16* d, s16 x, s16 y, s16 w, s16 h) {
     d->w = w;
     d->h = h;
 }
-inline void NaviRect16_Copy(NaviRect16* d, NaviRect16 r) {
-    d->x = r.x;
-    d->y = r.y;
-    d->w = r.w;
-    d->h = r.h;
-}
 struct NaviRectHolder98 {
     u8 unk_0x0[0x98];
     NaviRect16 rects[4];
@@ -2708,8 +2702,15 @@ extern "C" s32 fn_801A3D14(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A3D28(u8* p, s32 i, s16* src) {
-    NaviRect16* d = (NaviRect16*)(p + 0x42) + i;
-    NaviRect16_Copy(d, *(NaviRect16*)src);
+    s16* d = (s16*)(p + 0x42) + i * 4;
+    s16 a = src[0];
+    s16 b = src[1];
+    d[0] = a;
+    a = src[2];
+    d[1] = b;
+    b = src[3];
+    d[2] = a;
+    d[3] = b;
 }
 
 extern "C" s32 fn_801A3D80(s32 p, s32 i) {
@@ -2785,8 +2786,8 @@ extern "C" int fn_801A3EE4(int param_1, int param_2) {
 
 extern "C" void fn_801A3EF8(u8* param_1, s32 param_2, u8* param_3) {
     u8 b1 = param_3[1];
-    u8 b0 = param_3[0];
     param_1[param_2 * 8 + 0x28] = (param_1[param_2 * 8 + 0x28] & ~0x0c) | ((b1 & 0xff) << 2);
+    u8 b0 = param_3[0];
     param_1[param_2 * 8 + 0x28] = (param_1[param_2 * 8 + 0x28] & ~0x03) | b0;
 }
 
@@ -3227,7 +3228,7 @@ extern "C" s32 fn_801A48F4(s32 p, s32 i) {
 }
 
 extern "C" void fn_801A4908(u8* p, int i, NaviRect16* src) {
-    NaviRect16_Copy(&((NaviRectHolder98*)p)->rects[i], *src);
+    ((NaviRect16*)(p + 0x98))[i] = *src;
 }
 
 extern "C" int fn_801A4960(int param_1, int param_2) {
