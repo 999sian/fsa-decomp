@@ -45,7 +45,7 @@ s32 fn_802486A0(char*);
 s32 fn_8022F3DC(s32);
 void fn_802384BC(s32);
 u32 fn_8022461C(char*, s32);
-bool fn_8022B244(char*);
+bool fn_8022B244();
 f32 fn_8022C82C(s32);
 f32 fn_8022C76C(s32);
 void fn_8024B298(char*, s32, void*);
