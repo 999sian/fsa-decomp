@@ -390,6 +390,12 @@ extern "C" void fn_802ACB58(void*);
 extern "C" void fn_80119DD0(void);
 extern "C" void fn_80119D48(void);
 extern "C" void fn_8011921C(void);
+extern "C" void fn_80139BE8(void* p);
+struct TuVtable7 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2(s32 flags);
+};
 extern "C" void fn_801190E4(void);
 extern "C" f32 fn_803832BC(char*, s32, s32, s32, s32);
 
