@@ -570,6 +570,35 @@ extern "C" double fn_801E9880(double x, double y) {
     return x;
 }
 
+extern double lbl_80302308;
+extern "C" double fn_801E8328(double x, double y);
+#pragma dont_inline on
+extern "C" double fn_801E98A8(double x) {
+    double y[2];
+    int n;
+    int ix;
+
+    ix = (*(int*)&x) & 0x7fffffff;
+    if (ix <= 0x3fe921fb) {
+        return fn_801E8328(x, lbl_80302308);
+    } else if (ix >= 0x7ff00000) {
+        return x - x;
+    } else {
+        n = fn_801E7F88(y);
+        switch (n & 3) {
+        case 0:
+            return fn_801E8328(y[0], y[1]);
+        case 1:
+            return -fn_801E9270(y[0], y[1], 1);
+        case 2:
+            return -fn_801E8328(y[0], y[1]);
+        default:
+            return fn_801E9270(y[0], y[1], 1);
+        }
+    }
+}
+#pragma dont_inline reset
+
 extern const double lbl_80302358;
 extern "C" double fn_801E9EE8(double x) {
     double y[2], z = lbl_80302358;
