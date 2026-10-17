@@ -5,6 +5,8 @@ extern "C" void fn_8011FD18(void* a, void* b, s32 c, void* d, void* e);
 extern "C" void fn_80007AB8(void* a, s32 b, void* c);
 extern "C" void* fn_80016320(void* a);
 extern "C" void fn_8002F544(s32 a);
+extern "C" void fn_80017248(u8* base, u8 idx);
+extern "C" void fn_800161C0(void* a, void* b, u32 c, s32 d);
 extern char lbl_802B7CA0[];
 extern char lbl_8028846C[];
 extern char lbl_802886DC[];
@@ -75,6 +77,24 @@ struct VObj_800C91A4 {
 extern f32 lbl_80300DE8;
 extern f64 lbl_80300DE0;
 extern "C" f32 fn_800C95E4(u8* p, s32 max, s32 t, s32 b, f32 from, f32 to);
+extern "C" void fn_800C75A4(u8* p) {
+    if (fn_8002F6BC() == 0) {
+        s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), lbl_802C567C[0x1e], 0);
+        (*(s16*)(p + 0x86))++;
+        if (r == 1) {
+            *(s16*)(p + 0x86) = 0;
+            p[0x8d] = 2;
+            p[0x40] ^= 1;
+            (*(u8**)(p + 0x70))[0xb0] = 1;
+            p[0x7c] = 0;
+            fn_800C8DF4(p);
+            fn_800C8D90(p);
+            fn_8002F544(0x57);
+            p[0x88] = 0xe;
+        }
+    }
+}
+
 extern "C" void fn_800C7CAC(u8* p) {
     s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), lbl_802C567C[0x1e], 0);
     (*(s16*)(p + 0x86))++;
