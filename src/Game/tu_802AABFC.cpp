@@ -3,6 +3,14 @@
 
 extern "C" char lbl_804A8170[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
+extern int* lbl_8053AAF8;
+extern int* lbl_8053AB10;
+extern char lbl_8046C878[];
+u8* fn_801F856C(void);
+void fn_802FA160(int, int, int, int, int, int);
+int fn_802D6A9C(void);
+void fn_802D7920(int, int);
+
 extern "C" Actor* fn_802AABFC(Actor* param_1, s16 param_2)
 {
     if (param_1 != 0) {
