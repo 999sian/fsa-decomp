@@ -241,10 +241,10 @@ extern u8* lbl_8053AAF8;
 static inline void stampSave() {
 lbl_8050EC80.entries[lbl_8050EC80.idx].time = OSGetTime();
 if (!(lbl_8050EC80.entries[lbl_8050EC80.idx].flags & 1)) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 1;
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 1;
 }
 if (lbl_8050EC80.entries[lbl_8050EC80.idx].f8 & 1) {
-lbl_8050EC80.entries[lbl_8050EC80.idx].flags |= 2;
+lbl_8050EC80.entries[lbl_8050EC80.idx].flags = lbl_8050EC80.entries[lbl_8050EC80.idx].flags | 2;
 }
 }
 
@@ -673,7 +673,7 @@ void fn_803D521C(MemCardMenu* self) {
             self->f80 = 0;
         }
         if (self->f80 < 0x1e) {
-            alpha = self->f28->f28 * ((f32)(self->f80 * self->f80) / 900.0f);
+            alpha = (f32)(self->f80 * self->f80) / 900.0f * (f32)self->f28->f28;
         } else {
             s32 t = self->f80 - 0x1e;
             alpha = (1.0f - (f32)(t * t) / 900.0f) * (f32)self->f28->f28;
@@ -804,12 +804,12 @@ void MemCardMenu::fn_803D4770() {
 }
 
 void MemCardMenu::fn_803D4484() {
-    MemCardMenu* self = this;
     s32 t0 = *(s16*)(lbl_8050DB0C + 0xe4);
     s32 t1 = *(s16*)(lbl_8050DB0C + 0xe6);
     s32 t2 = *(s16*)(lbl_8050DB0C + 0xe8);
     s32 t3 = *(s16*)(lbl_8050DB0C + 0xea);
     s32 t4 = *(s16*)(lbl_8050DB0C + 0xec);
+    MemCardMenu* self = this;
     u8 done[3];
     done[2] = 0;
     self->f86++;
