@@ -2,6 +2,15 @@
 // TU 801A908C-801AAC8C (TTAT). Remaining functions are not yet decompiled.
 #include "types.h"
 
+extern const f32 lbl_8053E6E0;
+extern const f32 lbl_8053E6E8;
+extern const f32 lbl_8053E6EC;
+extern const f32 lbl_8053E6F0;
+extern const f32 lbl_8053E6F4;
+extern const f32 lbl_8053E6F8;
+extern const f32 lbl_8053E6FC;
+extern const f32 lbl_8053E700;
+
 // from src/Game/fn_801A908C.cpp
 extern "C" void fn_801A90D4(void* this_);
 extern "C" void fn_801A9374(void* this_);
