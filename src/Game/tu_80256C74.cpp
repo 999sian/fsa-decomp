@@ -57,8 +57,19 @@ f32 fn_80246F28(void*);
 f32 fn_80247330(void*);
 f32 fn_8024712C(void*);
 void fn_802808E8(void*, f32);
+u8 fn_80247594(void*, s32);
+void fn_8030EA00(void);
+void fn_8043D67C(void*, s32, s32, s32);
+void fn_802BAA0C(void*, void*);
+void fn_8013CB44(void*, void*, s32, s32, s32);
 }
+void JPAGetXYZRotateMtx(s16, s16, s16, f32 (*)[4]);
 extern const f32 lbl_805400DC;
+extern const f32 lbl_80540110;
+extern const f32 lbl_80540114;
+extern const f32 lbl_80540118;
+extern const f32 lbl_8054011C;
+extern const f32 lbl_80540120;
 extern u16 lbl_8046B200[][4];
 extern u8* lbl_8053AC98;
 
