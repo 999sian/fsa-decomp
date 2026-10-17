@@ -2782,8 +2782,8 @@ extern "C" void fn_800DE650(u8* this_, s32 idx, GXColor* src) {
     u8 a, b, c;
     a = src[0].g;
     p = this_ + idx * 8;
-    p[0x36] = a;
     b = src[0].b;
+    p[0x36] = a;
     c = src[0].a;
     p[0x37] = b;
     a = src[1].g;
