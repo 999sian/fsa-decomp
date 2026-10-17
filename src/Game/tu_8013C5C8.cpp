@@ -7,6 +7,17 @@ extern "C" void* fn_8023E724(u32 id);
 extern "C" void* fn_8023DE58(u32 id);
 extern "C" void* fn_801F856C(void);
 extern "C" void Actor_CreateByID(void*, u32, void*, void*, u32, s32, s32);
+extern "C" u8 fn_80134CC8(void*);
+extern "C" void fn_8013B438(void*);
+extern "C" void fn_8013B490(void*);
+extern "C" void PSMTXIdentity(f32 (*m)[4]);
+extern "C" void PSMTXCopy(const void*, void*);
+extern "C" void C_MTXLightOrtho(f32 (*m)[4], f32 t, f32 b, f32 l, f32 r, f32 sS, f32 sT, f32 tS, f32 tT);
+extern "C" void draw__17JPAEmitterManagerFPC11JPADrawInfoUc(void*, const void*, u8);
+extern "C" void capture__10JUTTextureFii9_GXTexFmtbUc(void*, s32, s32, u8, u8, u8);
+extern "C" void GXSetAlphaUpdate(u8);
+extern "C" u8* sManager__8JUTVideo;
+extern u8* lbl_8053AB10;
 
 // ---- from Game/dtor_8013C5C8.cpp
 
