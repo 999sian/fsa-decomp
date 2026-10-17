@@ -6,6 +6,12 @@
 extern "C" void __dt__5ActorFv(void* this_, int flag);
 extern "C" void dtor_80084580(void* this_);
 extern void* lbl_804A9BC8[];
+extern "C" void* fn_802D6A9C(void);
+extern "C" char* fn_802D9C7C(void* a, u32 b, u32 c);
+extern "C" u32 fn_804032E8(u32 tag, char* buf);
+extern "C" int sprintf(char* buf, const char* fmt, ...);
+extern const char lbl_8046E9F8[];
+extern u32 lbl_8053ACB0;
 
 extern "C" void* fn_802E2074(void* this_, s16 freeFlag) {
     if (this_ != 0) {
