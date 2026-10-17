@@ -185,15 +185,11 @@ extern "C" f32 __psq_l(void* p, int off, int w, int gqr);
 extern "C" void __psq_st(f32 v, void* p, int off, int w, int gqr);
 extern "C" f32 __ps_mul(f32 a, f32 b);
 extern "C" void fn_801937C8(void* e, s32 idx) {
-    f32* a = (f32*)e;
-    f32* b = (f32*)idx;
-    f32 bxy = __psq_l(b, 0, 0, 0);
-    __psq_st(__ps_mul(__psq_l(a, 0, 0, 0), bxy), a, 0, 0, 0);
-    a[2] *= b[2];
-    __psq_st(__ps_mul(__psq_l(a + 3, 0, 0, 0), bxy), a + 3, 0, 0, 0);
-    a[5] *= b[2];
-    __psq_st(__ps_mul(__psq_l(a + 6, 0, 0, 0), bxy), a + 6, 0, 0, 0);
-    a[8] *= b[2];
+    JGeometry::TVec3f* a = (JGeometry::TVec3f*)e;
+    const JGeometry::TVec3f* b = (const JGeometry::TVec3f*)idx;
+    a[0].mul(*b);
+    a[1].mul(*b);
+    a[2].mul(*b);
 }
 
 extern "C" u32 fn_80193B74(u32* p, u32 n) {
@@ -358,7 +354,11 @@ extern "C" int fn_80193F60(u8* p, u32 n) {
     if (a == 0) {
         r = 4;
     } else {
-        r = fn_80193BD4(a, n);
+        a[3] = (n + 0x1f) & ~0x1f;
+        a[0] = (u32)fn_8015AA60(a[3], 0x20);
+        a[1] = a[0];
+        a[2] = 0;
+        r = 0;
     }
     return r;
 }
@@ -521,6 +521,16 @@ extern "C" void fn_80191A60(u8* a, u32 b);
 extern "C" void fn_80194BB0(u8* a);
 extern "C" void fn_801C5DA8(u32 a, u8* b, u8* c);
 extern u32 lbl_802FF6D0;
+struct Navi801951A0 {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void v6();
+    virtual void v7(u32 a, u32 b, u8* buf);
+};
 extern "C" int fn_801945C4(u8* p, u32 param_2) {
     u32* a;
     s32 iVar1;
