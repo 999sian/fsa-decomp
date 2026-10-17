@@ -116,9 +116,9 @@ extern "C" BOOL fn_8008C4D4(void)
     return TRUE;
 }
 
-extern "C" void fn_8008C5F4(void);
-extern "C" void fn_8008C4DC(void) {
-    fn_8008C5F4();
+extern "C" s32 fn_8008C5F4(u8* self);
+extern "C" void fn_8008C4DC(u8* self) {
+    fn_8008C5F4(self);
 }
 
 extern "C" s32 fn_8008CB14(u8* self) {
