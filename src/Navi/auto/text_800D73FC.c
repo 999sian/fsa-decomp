@@ -66,3 +66,4 @@ extern "C" void* fn_800EE3A8(void* ptr, s16 param_2) {
     }
     return ptr;
 }
+extern "C" u8 lbl_802BB0FC[];
