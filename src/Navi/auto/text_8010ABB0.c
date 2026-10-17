@@ -28,6 +28,12 @@ extern char lbl_802B7CA0[];
 extern f32 lbl_8030127C;
 extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_80060794(void*, void*, void*, void*);
+extern "C" void fn_8010B634(u8* p) {
+    *(u8*)(*(u8**)(p + 0x70) + 0xb0) = 0;
+    p[0x9d] = 0;
+    p[0x9c] = 0;
+}
+
 extern "C" void fn_8010C188(void) {}
 
 extern "C" void fn_8010C18C(u8* param_1) {
