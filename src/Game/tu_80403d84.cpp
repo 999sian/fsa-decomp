@@ -1014,6 +1014,8 @@ struct T5B10 {
 	u8 f65e;
 };
 
+extern "C" void fn_804054B8(T5B10* self) {}
+
 extern "C" void fn_80405B10(T5B10* self, s32 key) {
 	Tbl8048C1F8* t = &lbl_8048C1F8;
 	int n = 0;
