@@ -953,13 +953,14 @@ extern "C" void fn_8017A96C(void) {}
 
 extern "C" void fn_8017C0A8(u8* self, u32* a, u32* b, u32* c, u32* d);
 extern "C" void* fn_8017A970(u8* self) {
-    NaviPair_80178E80 pr;
     u32 sp24;
-    u32 sp8;
+    u32 sp20;
+    u32 sp1C;
     u32 sp18;
     u32 sp14;
     u32 sp10;
     u32 spC;
+    u32 sp8;
 
     fn_80176550(self);
     *(void**)self = lbl_80298DF0;
@@ -983,9 +984,16 @@ extern "C" void* fn_8017A970(u8* self) {
     sp10 = -1;
     spC = -1;
     fn_8017C0A8(self, &spC, &sp10, &sp14, &sp18);
-    pr.b = 0;
-    pr.a = -1;
-    *(NaviPair_80178E80*)(self + 0x138) = pr;
+    sp20 = 0;
+    sp1C = -1;
+    self[0x13C] = (u8)sp20;
+    self[0x13D] = (u8)(sp20 >> 8);
+    self[0x13E] = (u8)(sp20 >> 16);
+    self[0x13F] = (u8)(sp20 >> 24);
+    self[0x138] = (u8)sp1C;
+    self[0x139] = (u8)(sp1C >> 8);
+    self[0x13A] = (u8)(sp1C >> 16);
+    self[0x13B] = (u8)(sp1C >> 24);
     return self;
 }
 
@@ -1719,18 +1727,48 @@ extern "C" void fn_801820F4(void) {
 
 extern "C" void fn_80182114(void) {}
 
+extern "C" void* fn_8017B7E4(u32* param_1, s16 param_2);
+extern u8 lbl_80299138[];
+extern "C" void* fn_801825CC(u8* param_1, s16 param_2) {
+    struct Obj {
+        virtual void Release(int);
+    };
+    if (param_1) {
+        *(void**)param_1 = lbl_80299138;
+        for (u8 i = 0; i < 4; i++) {
+            if (param_1[0x170] & (1 << i)) {
+                Obj* o = *(Obj**)(param_1 + 0x148 + (i << 2));
+                if (o) {
+                    o->Release(1);
+                }
+            }
+        }
+        if (param_1[0x170] & 0x10) {
+            Obj* o = *(Obj**)(param_1 + 0x160);
+            if (o) {
+                o->Release(1);
+            }
+        }
+        fn_8017B7E4((u32*)param_1, 0);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_801826C4(u8* self, u32 param_2, f32 f1, f32 f2) {
     f32 pos[4];
-    u8 buf[56];
     pos[0] = *(f32*)(self + 0x20);
-    pos[1] = *(f32*)(self + 0x24);
+    u8 buf[56];
+    pos[1] = *(f32*)((s32)self + 0x24);
     pos[2] = *(f32*)(self + 0x28);
     pos[3] = *(f32*)(self + 0x2c);
     pos[0] += f1;
     pos[1] += f2;
     pos[2] += f1;
-    fn_801C5DA8(param_2, self + 0x80, buf);
     pos[3] += f2;
+    fn_801C5DA8(param_2, self + 0x80, buf);
     fn_801DF2A4(buf, 0);
     fn_80182764(self, pos, self + 0x114);
     fn_80177CA8(self, self + 0x114);
