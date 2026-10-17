@@ -223,6 +223,13 @@ extern "C" void fn_800AC5C8(u8* p) {
     }
 }
 
+extern "C" void fn_800AC610(u8* p) {
+    if (fn_8002F6BC(p) == 0) {
+        p[0x3d2] = 1;
+        p[0x3ac] = 0x2a;
+    }
+}
+
 extern "C" void fn_800AC654(void) {}
 
 extern "C" u32 fn_800AD744(void* param_1, u8* param_2, u8* param_3) {
