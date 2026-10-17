@@ -1073,6 +1073,13 @@ extern "C" void fn_8009F440(NaviState_8009E6F0* p) {
 
 extern "C" void fn_8009FBB0(void) {}
 
+struct NaviState_8008DC60;
+typedef void (NaviState_8008DC60::*NaviStateFn_8008DC60)();
+extern NaviStateFn_8008DC60 lbl_802867B4[];
+extern "C" void fn_8009FBB4(NaviState_8008DC60* p) {
+    (p->*lbl_802867B4[((u8*)p)[0x2b4]])();
+}
+
 extern void* lbl_80288AB4[];
 extern "C" void* fn_8009FC88(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
