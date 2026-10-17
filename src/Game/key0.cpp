@@ -263,59 +263,107 @@ extern "C" s32 fn_802C2300(char* p, u32 flags) {
     return 0;
 }
 
-extern "C" BOOL fn_802C2684(void* unused, u8* p, f32* rect) {
-    if (p == 0) {
-        return 0;
-    }
-    u32 tag = *(u32*)(p + 0x1a0);
-    if (tag != 'LIFT' && tag != 'LIF2' && tag != 'CLOD') {
-        if (tag == 'OBLF') {
-            if (*(s32*)(p + 0x230) != 0) {
-                return 0;
-            }
-        } else if (tag == 'SSLF') {
-            if ((*(s16*)(p + 0x230) & 0x7fff) != 0) {
-                return 0;
-            }
-        } else {
-            return 0;
-        }
-    }
+extern const f32 lbl_80540C94;
+extern "C" void fn_802C24A8(u8* p) {
+    f32 x0 = *(f32*)(p + 0x60);
+    f32 y0 = *(f32*)(p + 0x64);
+    f32 x1 = *(f32*)(p + 0x68);
+    f32 y1 = *(f32*)(p + 0x6c);
     f32 px = *(f32*)(p + 0xc);
     f32 py = *(f32*)(p + 0x10);
-    f32 x0 = *(f32*)(p + 0x60) + px;
-    f32 y0 = *(f32*)(p + 0x64) + py;
-    f32 x1 = *(f32*)(p + 0x68) + px;
-    f32 y1 = *(f32*)(p + 0x6c) + py;
-    s32 type = *(s32*)(p + 4);
-    u8* base = (u8*)fn_802D6A9C();
-    f32* off;
-    if (type < 8) {
-        off = (f32*)(base + 0xcc);
-    } else {
-        off = (f32*)(base + 0xdc);
+    x0 += px;
+    y0 += py;
+    x1 += px;
+    y1 += py;
+    s32 idx = -1;
+    for (;;) {
+        idx = fn_801F78F4(fn_801F856C(), 0x5354424c, idx);
+        if (idx < 0) {
+            return;
+        }
+        u8* o = fn_801F666C(fn_801F856C(), idx);
+        if (o == 0 || *(s32*)(p + 4) != *(s32*)(o + 4)) {
+            continue;
+        }
+        s32 st = *(s32*)(o + 0x25c);
+        if (st != 0 && st != 2) {
+            continue;
+        }
+        f32 ox0 = *(f32*)(o + 0x60);
+        f32 oy0 = *(f32*)(o + 0x64);
+        f32 ox1 = *(f32*)(o + 0x68);
+        f32 oy1 = *(f32*)(o + 0x6c);
+        f32 opx = *(f32*)(o + 0xc);
+        f32 opy = *(f32*)(o + 0x10);
+        ox0 += opx;
+        oy0 += opy;
+        ox1 += opx;
+        oy1 += opy;
+        if (ox0 <= x0) ox0 = x0;
+        if (oy0 <= y0) oy0 = y0;
+        if (ox1 >= x1) ox1 = x1;
+        if (oy1 >= y1) oy1 = y1;
+        bool hit = false;
+        if (ox1 >= ox0 && oy1 >= oy0) {
+            hit = true;
+        }
+        if (hit) {
+            break;
+        }
     }
-    f32 ox = -off[0];
-    f32 oy = -off[1];
-    x0 += ox;
-    y0 += oy;
-    x1 += ox;
-    y1 += oy;
-    if (x0 <= rect[0]) {
-        x0 = rect[0];
-    }
-    if (y0 <= rect[1]) {
-        y0 = rect[1];
-    }
-    if (x1 >= rect[2]) {
-        x1 = rect[2];
-    }
-    if (y1 >= rect[3]) {
-        y1 = rect[3];
-    }
+    JGeometry::TVec3<f32>& pos = *(JGeometry::TVec3<f32>*)(p + 0xc);
+    JGeometry::TVec3<f32>& vel = *(JGeometry::TVec3<f32>*)(p + 0x3c);
+    vel.x = -vel.x;
+    vel.y = -vel.y;
+    pos.add(vel);
+    vel.x /= lbl_80540C94;
+    vel.y /= lbl_80540C94;
+}
+
+extern "C" BOOL fn_802C2684(void* unused, u8* p, f32* rect) {
     bool hit = false;
-    if (x1 >= x0 && y1 >= y0) {
-        hit = true;
+    if (p != 0) {
+        u32 tag = *(u32*)(p + 0x1a0);
+        if (tag == 'LIFT' || tag == 'LIF2' || tag == 'CLOD' || (tag == 'OBLF' && *(s32*)(p + 0x230) == 0) ||
+            (tag == 'SSLF' && (*(s16*)(p + 0x230) & 0x7fff) == 0)) {
+            f32 x0 = *(f32*)(p + 0x60);
+            f32 y0 = *(f32*)(p + 0x64);
+            f32 x1 = *(f32*)(p + 0x68);
+            f32 y1 = *(f32*)(p + 0x6c);
+            f32 px = *(f32*)(p + 0xc);
+            f32 py = *(f32*)(p + 0x10);
+            x0 += px;
+            y0 += py;
+            x1 += px;
+            y1 += py;
+            s32 type = *(s32*)(p + 4);
+            u8* base = (u8*)fn_802D6A9C();
+            f32* off;
+            if (type < 8) {
+                off = (f32*)(base + 0xcc);
+            } else {
+                off = (f32*)(base + 0xdc);
+            }
+            x0 += -off[0];
+            y0 += -off[1];
+            x1 += -off[0];
+            y1 += -off[1];
+            if (x0 <= rect[0]) {
+                x0 = rect[0];
+            }
+            if (y0 <= rect[1]) {
+                y0 = rect[1];
+            }
+            if (x1 >= rect[2]) {
+                x1 = rect[2];
+            }
+            if (y1 >= rect[3]) {
+                y1 = rect[3];
+            }
+            if (x1 >= x0 && y1 >= y0) {
+                hit = true;
+            }
+        }
     }
     return hit;
 }
