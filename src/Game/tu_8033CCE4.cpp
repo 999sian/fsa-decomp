@@ -53,19 +53,25 @@ struct UnkObj8033D4CC {
     JGeometry::TVec3f mVel;
     u8 pad48[0x60 - 0x48];
     f32 mRect[4];
-    u8 pad70[0x90 - 0x70];
+    u8 pad70[0x80 - 0x70];
+    f32 mRect2[4];
     u32 mSpawnParam;
-    u8 pad94[0x16c - 0x94];
+    u8 pad94[0xb8 - 0x94];
+    s32 m0b8;
+    u8 padbc[0x16c - 0xbc];
     s32 m16c;
     u8 pad170[0x198 - 0x170];
     s32 mHandle;
-    u8 pad19c[0x230 - 0x19c];
+    u8 pad19c[0x1a4 - 0x19c];
+    s32 m1a4;
+    u8 pad1a8[0x230 - 0x1a8];
     s32 m230;
     s32 m234;
     JGeometry::TVec3f mPrev;
-    u8 pad244[0x248 - 0x244];
+    s32 m244;
     s32 m248;
-    u8 pad24c[0x254 - 0x24c];
+    s32 m24c;
+    s32 m250;
     s32 m254;
     s32 m258;
     s32 m25c;
@@ -293,11 +299,19 @@ s32 fn_80230CFC(s32);
 extern f32 lbl_805421A0;
 bool fn_8033D264(void*, u8);
 extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
+    JGeometry::TVec3f off;
+    JGeometry::TVec3f saved;
+    JGeometry::TVec3f tmp;
+    f32 rect[4];
+    f32 f31;
     if (fn_80239108(self->mHandle) >= self->m260) {
         if (PSVECDistance(&self->mPos, &self->mAnchor) < (f32)(self->m260 << 4) - lbl_805421C8) {
             s32 idx = fn_80238BC4(self->mHandle);
-            JGeometry::TVec3f saved = self->mPos;
-            self->mPos.add(lbl_804A79E0[idx]);
+            saved = self->mPos;
+            off.x = lbl_804A79E0[idx].x;
+            off.y = lbl_804A79E0[idx].y;
+            off.z = lbl_804A79E0[idx].z;
+            self->mPos.add(off);
             bool hit = fn_801F2618(self, NULL, 0);
             if (hit) {
                 self->mPos = saved;
@@ -312,7 +326,7 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
                 }
             }
             if (self->m260 == 2) {
-                if (!fn_8033D264(self, (u8)idx)) {
+                if (!fn_8033D264((UnkObj8033D264*)self, (u8)idx)) {
                     return;
                 }
             }
@@ -325,22 +339,30 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
                 case 0:
                 case 1:
                 case 5:
-                    self->mVel = lbl_804AC2A8[idx];
-                    self->mVel.scale(lbl_805421CC);
+                    f31 = lbl_805421CC;
+                    self->mVel.x = lbl_804AC2A8[idx].x;
+                    self->mVel.y = lbl_804AC2A8[idx].y;
+                    self->mVel.z = lbl_804AC2A8[idx].z;
+                    self->mVel.scale(f31);
                     break;
                 case 2:
                 case 3:
                 case 4:
                 case 6:
-                    self->mVel = lbl_804AC2A8[idx];
-                    self->mVel.scale(lbl_805421D0);
+                    f31 = lbl_805421D0;
+                    self->mVel.x = lbl_804AC2A8[idx].x;
+                    self->mVel.y = lbl_804AC2A8[idx].y;
+                    self->mVel.z = lbl_804AC2A8[idx].z;
+                    self->mVel.scale(f31);
                     break;
                 }
             }
             if (self->m271 == 1) {
                 self->m271 = 0;
             } else {
-                self->mPrev = self->mPos;
+                self->mPrev.x = self->mPos.x;
+                self->mPrev.y = self->mPos.y;
+                self->mPrev.z = self->mPos.z;
             }
             fn_801F0E34(self, 0x30004, 0);
             self->m272 = 1;
@@ -357,13 +379,13 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
             }
         }
     } else {
-        if (self->mSpawnParam & 0x10000) {
+        if ((self->mSpawnParam >> 16) & 1) {
             if (PSVECDistance(&self->mPos, &self->mAnchor) > lbl_805421A0) {
                 if (self->m248 == 0) {
-                    f32 f31 = lbl_805421D4;
-                    self->mVel.x = lbl_805421B0;
-                    self->mVel.y = lbl_805421B0;
-                    self->mVel.z = lbl_805421B0;
+                    f32 zero = lbl_805421B0;
+                    self->mVel.x = zero;
+                    self->mVel.y = zero;
+                    self->mVel.z = zero;
                     switch (self->m25c) {
                     case 0:
                     case 1:
@@ -387,7 +409,9 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
                     } else if (self->mPos.y < self->mAnchor.y) {
                         self->mVel.y = f31;
                     }
-                    self->mPrev = self->mPos;
+                    self->mPrev.x = self->mPos.x;
+                    self->mPrev.y = self->mPos.y;
+                    self->mPrev.z = self->mPos.z;
                     fn_801F0E34(self, 0x30004, 0);
                 } else {
                     self->m248--;
@@ -396,16 +420,15 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
             }
         }
 
-        f32 rect[4];
         rect[0] = self->mRect[0] + self->mPos.x;
         rect[1] = self->mRect[1] + self->mPos.y;
         rect[2] = self->mRect[2] + self->mPos.x;
         rect[3] = self->mRect[3] + self->mPos.y;
-        if (self->m25c == 0) {
-        } else if (self->m25c == 2) {
+        if (self->m25c != 0) {
+            if (self->m25c != 2) {
+                return;
+            }
             fn_8022FEB8(rect, self->room, self->mHandle, 1, 0);
-        } else {
-            return;
         }
         self->m258 = fn_8022FD8C(self->mHandle);
         if (self->m258 < 0) {
@@ -418,7 +441,7 @@ extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
         if (!fn_802300EC(self->m258)) {
             return;
         }
-        JGeometry::TVec3f tmp = self->mPos;
+        tmp = self->mPos;
         if (!fn_8038C678(self->m258, self->m268, self->mHandle, self->room, &tmp, 0)) {
             return;
         }
