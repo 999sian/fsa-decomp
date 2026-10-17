@@ -49,8 +49,6 @@ static inline void setBits2_3(u8* p, u8 v) { *p = (*p & ~0xC) | (v << 2); }
 static inline void setBits0_1(u8* p, u8 v) { *p = (*p & ~0x3) | v; }
 
 struct Unk800DC3BCSrc {
-    virtual void m0() = 0;
-    virtual void m1() = 0;
     virtual void m2() = 0;
     virtual void m3() = 0;
     virtual void m4() = 0;
