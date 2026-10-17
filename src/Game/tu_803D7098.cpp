@@ -14,6 +14,21 @@ extern "C" f32 lbl_80543568;
 extern "C" f32 lbl_8054356C;
 extern "C" void fn_8013B490(void*);
 extern "C" void fn_803D75B0(void);
+extern "C" s32 fn_80138A30(void*);
+extern "C" void fn_804310CC(void*);
+extern "C" void fn_80402E08(void*, f32, f32);
+extern "C" void* fn_804030C4(u32, u8*);
+extern "C" void fn_80440D78(void*, void*);
+extern "C" void fn_80440BF4(void*, s32);
+extern "C" void fn_80458FF0(void*, u32, s32, s32);
+extern "C" void* lbl_8053AEC0;
+extern "C" void* lbl_8053AAF8;
+extern "C" void* lbl_8053AED8;
+extern "C" void* lbl_8053AF80;
+extern "C" char lbl_80476F80[];
+extern "C" f32 lbl_80543530;
+extern "C" f32 lbl_80543538;
+extern "C" f32 lbl_8054353C;
 extern "C" void draw__9J2DScreenFffPC14J2DGrafContext(void*, f32, f32, void*);
 extern "C" void fn_803D82EC(u8* param_1) {
     u8* obj;
@@ -71,8 +86,8 @@ extern "C" void* fn_8013C824(void);
 extern "C" void forceDeleteEmitter__17JPAEmitterManagerFP14JPABaseEmitter(void*, void*);
 extern "C" void __dl__FPv(void*);
 extern "C" u8* fn_803D8D74(u8* param_1, s16 param_2) {
-    void** slot;
     s32 i;
+    void** slot;
     u8* obj;
 
     if (param_1 != 0) {
