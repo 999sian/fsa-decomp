@@ -1070,22 +1070,88 @@ extern "C" void fn_801DB530(s32 a) {
     *(u16*)((u8*)__peReg + 8) = val;
 }
 
-extern "C" void fn_801DB550(u8 a) {
-    *(u16*)((u8*)__peReg + 2) = (*(u16*)((u8*)__peReg + 2) & 0xffef) | ((a & 1) << 4);
+extern "C" void fn_801DB550(s32 a) {
+    u8 b = a;
+    u16 val = *(u16*)((u8*)__peReg + 2);
+    val = (val & ~0x10) | ((b & 1) << 4);
+    *(u16*)((u8*)__peReg + 2) = val;
 }
 
 extern "C" void fn_801DB568(s32 a, u16 b, u16 c, s16 d) {
+    u16 val = *(u16*)((u8*)__peReg + 2);
     u16 ch = 1;
     if (a != 1 && a != 3) {
         ch = 0;
     }
-    u16 val = *(u16*)((u8*)__peReg + 2);
-    val = (ch) | ((a == 3) << 11) | ((a == 2) << 1) | ((d & 0xf) << 12) | ((b & 7) << 8) | ((c & 7) << 5) | (val & 0x1c);
+    val = (val & 0x1c) | ch | ((a == 3) << 11) | ((a == 2) << 1) | ((d & 0xf) << 12) | ((b & 7) << 8) | ((c & 7) << 5);
     *(u16*)((u8*)__peReg + 2) = val;
 }
 
-extern "C" void fn_801DB5CC(u8 a) {
-    *(u16*)((u8*)__peReg + 2) = (*(u16*)((u8*)__peReg + 2) & 0xfff7) | ((a & 1) << 3);
+extern "C" void fn_801DB5CC(s32 a) {
+    u8 b = a;
+    u16 val = *(u16*)((u8*)__peReg + 2);
+    val = (val & ~0x8) | ((b & 1) << 3);
+    *(u16*)((u8*)__peReg + 2) = val;
+}
+
+extern "C" void fn_801DB5E4(u8 a, u8 b) {
+    u32 reg = 0;
+    u32 reg2;
+    reg = __rlwimi(reg, b, 0, 24, 31);
+    reg2 = reg;
+    reg2 = __rlwimi(reg2, a, 8, 23, 23);
+    u16* pe = (u16*)__peReg;
+    pe[2] = reg2;
+}
+
+extern "C" void fn_801DB608(u8 a) {
+    u16* pe = (u16*)__peReg;
+    pe[1] = (u16)((pe[1] & ~0x4) | ((u32)(u8)a << 2 & 0x4));
+}
+
+extern "C" void fn_801DB620(u8 a, u32 b, u32 c) {
+    u32 reg = 0;
+    u32 x = a;
+    reg = __rlwimi(reg, x, 0, 31, 31);
+    reg = __rlwimi(reg, b, 1, 28, 30);
+    reg = __rlwimi(reg, c, 4, 27, 27);
+    *(u16*)((u8*)__peReg + 0) = reg;
+}
+
+extern void* lbl_802FFA68;
+extern "C" void fn_801DB684(void* param_1, void* param_2) {
+    char context[720];
+    u16 token = *(u16*)((u8*)__peReg + 0xe);
+
+    if (lbl_802FFA68 != NULL) {
+        OSClearContext(context);
+        OSSetCurrentContext(context);
+        ((void(*)(u16))lbl_802FFA68)(token);
+        OSClearContext(context);
+        OSSetCurrentContext(param_2);
+    }
+    u16 val = *(u16*)((u8*)__peReg + 0xa);
+    val = __rlwimi(val, 1, 2, 29, 29);
+    *(u16*)((u8*)__peReg + 0xa) = val;
+}
+
+extern void* lbl_802FFA6C;
+extern "C" void fn_801DB750(int param_1, void* param_2) {
+    char context[720];
+    u16 val;
+
+    val = *(u16*)((u8*)__peReg + 0xa);
+    val = (val & ~0x8) | 0x8;
+    *(u16*)((u8*)__peReg + 0xa) = val;
+    lbl_802FFA70 = 1;
+    if (lbl_802FFA6C != 0) {
+        OSClearContext(context);
+        OSSetCurrentContext(context);
+        ((void (*)(void))lbl_802FFA6C)();
+        OSClearContext(context);
+        OSSetCurrentContext(param_2);
+    }
+    fn_801C13D0((int)&lbl_802FFA74);
 }
 
 extern "C" uint fn_801DD3D8(uint *param_1)
@@ -1110,4 +1176,6 @@ extern "C" u32 fn_801DD408(int param_1)
 {
     return *(u32*)(param_1 + 0x18);
 }
-
+extern "C" void* __OSSetInterruptHandler(u32 interrupt, void (*handler)(void));
+extern "C" void OSInitThreadQueue(void* queue);
+extern "C" void __OSUnmaskInterrupts(u32 mask);
