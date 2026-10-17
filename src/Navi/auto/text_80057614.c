@@ -69,6 +69,12 @@ extern s32 lbl_802FF114;
 extern u8 lbl_802C2D30[];
 extern u8 lbl_8027D790[];
 extern u8 lbl_8027D780[];
+extern u8 lbl_802C2D60[];
+extern "C" void fn_801473F8(s32, void*, void*, s32, s32, void*, void*, s32);
+extern "C" void fn_8005C5DC(void);
+extern "C" void fn_8017E1A4(void*, s32);
+extern "C" void fn_8015AB1C(void*);
+extern void* lbl_8027EC68[];
 extern "C" void fn_801BFEBC(void* param_1, void* param_2);
 extern "C" void fn_801BFEE8(void* param_1);
 extern "C" void fn_801BFF24(void* param_1);
@@ -260,12 +266,11 @@ extern "C" void fn_80057B6C(void) {
 
 #pragma use_lmw_stmw off
 extern "C" void fn_80057B9C(s32 param_1) {
+    s32 max = 0x10000;
     s32 i;
     u8* p;
-    s32 max;
     void fn_80058D50(void* p);
     fn_8005C424();
-    max = 0x10000;
     i = 0;
     p = lbl_802C05F0;
     do {
@@ -288,10 +293,12 @@ extern "C" void fn_80057B9C(s32 param_1) {
 }
 #pragma use_lmw_stmw reset
 extern "C" void fn_80057C38(s32 param_1) {
-    s32 i = 0;
-    u8* p = lbl_802C05F0;
+    s32 i;
+    u8* p;
     void fn_80058D50(void* p);
     fn_8005C424();
+    i = 0;
+    p = lbl_802C05F0;
     do {
         if (p[0x12] != 0 && (s32)lbl_8026D4BC[*(s32*)p * 0xc] == 1) {
             if (p[0x12] == 1) {
@@ -1177,14 +1184,15 @@ extern "C" void fn_800609E8(void) {
         lbl_802FF144 = lbl_803002F4;
         lbl_802FF140 = 0;
     }
-    u8* base = lbl_802B7CA0;
     f32 a = lbl_80300338 * lbl_802FF144;
-    *(f32*)(lbl_802C2D7C + 0x34) = a;
-    *(f32*)(lbl_802C2D7C + 0x38) = lbl_80300340 * a;
+    u8* obj = lbl_802C2D7C;
+    *(f32*)(obj + 0x34) = a;
+    *(f32*)(obj + 0x38) = lbl_80300340 * a;
+    u8* base = lbl_802B7CA0;
     if (*(u8**)(base + 0x1628) >= *(u8**)(base + 0x162c)) {
         return;
     }
-    **(u8***)(base + 0x1628) = lbl_802C2D7C;
+    **(u8***)(base + 0x1628) = obj;
     *(u8**)(base + 0x1628) = *(u8**)(base + 0x1628) + 4;
 }
 
