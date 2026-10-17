@@ -1,5 +1,11 @@
 #include "JSystem/J3D/J3DMaterialFactory.h"
 #include "JSystem/JSupport.h"
+#include "JSystem/J3D/J3DMaterial.h"
+#include "JSystem/J3D/J3DColorBlock.h"
+#include "JSystem/J3D/J3DTexGenBlock.h"
+#include "JSystem/J3D/J3DTevBlock.h"
+#include "JSystem/J3D/J3DInd.h"
+#include "JSystem/J3D/J3DPE.h"
 
 extern "C" void* fn_800E1300(const void* base, const void* offset);
 extern "C" void* fn_800CC040(const void* base, const void* offset);
