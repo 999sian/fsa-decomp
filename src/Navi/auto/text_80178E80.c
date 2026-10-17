@@ -2033,6 +2033,13 @@ extern "C" void fn_80188814(u8* param_1, u8 param_2) {
     *(u8*)((u8*)p + 0x3) = param_2;
 }
 
+extern "C" void fn_80188868(void* self) {
+    void* child = *(void**)((u8*)self + 0x168);
+    if (child != 0) {
+        *((u8*)self + 0xb2) = *((u8*)child + 0x13);
+    }
+}
+
 extern "C" void fn_80188928(u8* self, void* obj) {
     void* p = *(void**)(self + 0x168);
     if (p != nullptr) {
