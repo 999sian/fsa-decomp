@@ -1,3 +1,4 @@
+#include "Game/SinitPoolChain.h"
 #include "Game/ItemBase.h"
 
 
@@ -37,22 +38,10 @@ extern "C" void fn_803075AC(void*, s32, void*, s32, s32, s32, s32, s32, s32, s32
 extern "C" void fn_802F86CC(void*, void*, void*, f32, f32, s32, void*);
 extern "C" void fn_803239A0(char* this_) {
     u8 tbl[16];
-    s32 w0 = -1;
-    s32 w1 = -1;
-    s32 w2 = 0;
-    u8 b0 = 0;
-    u8 b1 = 0;
-    u8 b2 = 0;
-    u8 b3 = 1;
-    u8 b4 = 1;
-    u8 b5 = 0;
-    u8 b6 = 1;
-    s32 w3 = 3;
-    u8 b7 = 1;
-    s32 w4 = -1;
-    s32 w5 = 0;
-    s32 w6 = 2;
+    FsaParam p;
     u8 i;
+    p.w0 = -1;
+    p.w1 = -1;
     for (i = 0; i < 0x10; i += 8) {
         tbl[i] = i;
         tbl[(u8)(i + 1)] = i + 1;
@@ -63,6 +52,19 @@ extern "C" void fn_803239A0(char* this_) {
         tbl[(u8)(i + 6)] = i + 6;
         tbl[(u8)(i + 7)] = i + 7;
     }
+    p.w2 = 0;
+    p.b0 = 0;
+    p.b1 = 0;
+    p.b2 = 0;
+    p.b3 = 1;
+    p.b4 = 1;
+    p.b5 = 0;
+    p.b6 = 1;
+    p.w3 = 3;
+    p.b7 = 1;
+    p.w4 = -1;
+    p.w5 = 0;
+    p.w6 = 2;
     if (*(s16*)(this_ + 0x94) == 1 && *(s32*)(this_ + 4) < 8) {
         void* obj = *(void**)((char*)lbl_8053AAF8 + 0xa4);
         void* res = (void*)(*(void*(**)(void*, u32, char*))(*(void***)obj)[6])(obj, 0x534F4220, lbl_8047184C);
