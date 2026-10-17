@@ -1728,5 +1728,3 @@ extern "C" void* fn_8013C91C(void* param_1, s16 param_2) {
     }
     return param_1;
 }
-struct Pair_8013A388 { void* first; void* second; };
-inline bool pairNe_8013A388(Pair_8013A388 p) { return p.first != p.second; }
