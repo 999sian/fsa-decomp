@@ -1639,7 +1639,7 @@ extern "C" void fn_801809E0(void* self, int a) {
 
 extern "C" void fn_80180A10(VObj_80180980* self) {
     u8 n = ((u8*)self)[0x110];
-    self->vfD8((u8)(n - 1));
+    self->vfD0((u8)(n - 1));
 }
 
 extern "C" void fn_80180A48(VObj_80180980* self, f32 x0, f32 y0, f32 dx0, f32 dy0, f32 x1, f32 y1, f32 dx1, f32 dy1) {
