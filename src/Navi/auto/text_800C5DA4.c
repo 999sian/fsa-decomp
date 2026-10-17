@@ -79,8 +79,7 @@ extern f64 lbl_80300DE0;
 extern "C" f32 fn_800C95E4(u8* p, s32 max, s32 t, s32 b, f32 from, f32 to);
 extern "C" void fn_800C75A4(u8* p) {
     if (fn_8002F6BC() == 0) {
-        u8 k = lbl_802C567C[0x1e];
-        s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), k, 0);
+        s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), (u8)lbl_802C567C[0x1e], 0);
         (*(s16*)(p + 0x86))++;
         if (r == 1) {
             *(s16*)(p + 0x86) = 0;
@@ -250,6 +249,7 @@ extern "C" void fn_800C8DF4(u8* param_1) {
     (*(VObj_800C8D90**)(param_1 + 0x70))->v7(lbl_802C567C[0x27]);
 }
 
+#pragma use_lmw_stmw off
 extern "C" int fn_800C91A4(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 from, f32 to) {
     if (t < 0) {
         return 0;
@@ -274,25 +274,44 @@ extern "C" int fn_800C91A4(u8* p, s32 idx, s16 t, u8 max, s32 b, s32 mode, f32 f
     }
     return 0;
 }
-
+#pragma use_lmw_stmw reset
 extern "C" void fn_800C9510(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
 }
 
 extern "C" void* fn_8011FD10(void);
+extern "C" void fn_8003ABDC(void* a, u32 b, u32 c, u32 d, u32 e);
+extern "C" void fn_8003ABF0(void* a, u32 b, u32 c, u32 d, u32 e, u32 f, u32 g, u32 h);
+extern "C" void fn_800C8D90(u8* p);
+extern "C" void fn_801E10DC(void);
+extern "C" void fn_800C7018(void);
+extern "C" void fn_800127A0(void* a);
+struct RefGuard_800C954C { u8 pad[4]; s8 flag; u8 pad2[3]; s32 cnt; };
+static inline void release_800C954C(RefGuard_800C954C* g) {
+    if (g->flag >= 0) {
+        if (--g->cnt == 0) {
+            fn_800127A0(lbl_8029FDB4 + 4);
+            g->flag = -1;
+        }
+    }
+}
+
 extern "C" void fn_800C954C(u8* p) {
     VObj_800C954C* o = *(VObj_800C954C**)(p + 8);
     if (o != 0) {
         o->v0(1);
     }
     (*(VObj_800C954C**)(p + 0x10))->v7();
-    char* base = lbl_802C567C;
-    if (*(s8*)(base + 4) >= 0) {
-        if (--*(s32*)(base + 8) == 0) {
-            fn_800127A0(lbl_8029FDB4 + 4);
-            *(s8*)(base + 4) = -1;
-        }
+    u8* base = (u8*)lbl_802C567C;
+    s8 flag = *(s8*)(base + 4);
+    if (flag < 0) {
+        return;
+    }
+    s32* cnt = (s32*)(base + 8);
+    if (--*cnt == 0) {
+        fn_800127A0(lbl_8029FDB4 + 4);
+        *(s8*)(base + 4) = -1;
     }
 }
 
