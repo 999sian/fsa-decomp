@@ -191,7 +191,6 @@ extern "C" void fn_80033330(void* p) {
 extern "C" unsigned char lbl_802FEE50;
 extern "C" char lbl_80244C10[];
 extern "C" char lbl_80244C30[];
-extern "C" unsigned int lbl_802FEDDC;
 extern "C" void fn_80029208(const char*, ...);
 extern "C" void fn_80033350(void* p) {
     lbl_802FEE50 = 1;
@@ -431,10 +430,9 @@ extern "C" void fn_80036FB8(void* p) {
 }
 
 extern "C" void fn_80036FE4(void* p) {
-    int v = *(int*)((char*)lbl_802BB0FC + 0x58);
-    float f = lbl_802FFD44 * *(float*)((char*)lbl_802BEF44 + 0x88);
-    *(int*)((char*)p + 0x244) = (int)f + v;
-    *(int*)((char*)p + 0x2e0) = v;
+    float f = *(float*)((char*)lbl_802BEF44 + 0x88) * lbl_802FFD44;
+    *(int*)((char*)p + 0x244) = (int)f + *(int*)((char*)lbl_802BB0FC + 0x58);
+    *(int*)((char*)p + 0x2e0) = *(int*)((char*)lbl_802BB0FC + 0x58);
     *(unsigned int*)((char*)p + 0x24c) |= 0x10000;
 }
 
