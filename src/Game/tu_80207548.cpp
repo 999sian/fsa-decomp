@@ -2,6 +2,12 @@
 // Function bodies from EverydaySimpleDev/FSA-Decomp (CC0), commit 09725c3.
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "Game/Actor.h"
+
+class ActorV19 : public Actor {
+public:
+    virtual u8 v19(s32 a, Vec* b);
+};
 
 // ---- fn_80207548_dtor.cpp ----
 extern "C" void __dt__5ActorFv(void* this_, int flag);
@@ -117,8 +123,8 @@ extern "C" void fn_80207830(char* p, u16 idx, s32 a, s32 b, f32* pos, s32 c) {
         return;
     }
     o->entries[idx].set(a, b, pos, c);
-    bool allSet = true;
     bool noneSet = true;
+    bool allSet = true;
     for (int i = 0; i < 4; i++) {
         if (i != idx) {
             if (o->entries[i].m04 != 0) {
