@@ -16,6 +16,7 @@ extern "C" u8 lbl_804B0B00[];
 class T803EDF94Obj {
 public:
     virtual void v00();
+    virtual void v04();
     virtual void v08(s32 a);
 };
 extern "C" u32 fn_80309C4C(void* a, s32 b, s32 c);
