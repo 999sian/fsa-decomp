@@ -29,7 +29,7 @@ extern "C" void fn_802BD920(void)
 
 extern f64 lbl_80540BF8;
 extern f32 lbl_80540BE8;
-extern "C" void fn_802BDCC0(void);
+extern "C" void fn_802BDCC0(u8* param_1);
 extern "C" void fn_802BE008(u8* param_1)
 {
     s32 t;
@@ -76,7 +76,7 @@ extern "C" void fn_802BE008(u8* param_1)
     return;
 
 call:
-    fn_802BDCC0();
+    fn_802BDCC0(param_1);
 }
 
 
