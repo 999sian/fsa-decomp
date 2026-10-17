@@ -317,6 +317,18 @@ extern "C" s32 fn_80019B8C(void* param_1) {
     return 0;
 }
 
+extern "C" s32 fn_80019BDC(u8* param_1) {
+    if (*(u16*)(param_1 + 6) != 0) {
+        *(u16*)(param_1 + 6) = *(u16*)(param_1 + 6) - 1;
+    }
+    if (((u32)param_1[0] & 0x3f) == 2 && *(u16*)(param_1 + 6) == 0) {
+        fn_801155C0(*(u8**)(param_1 + 0x20) + 0xc4, 2);
+        return 2;
+    }
+    *(u32*)(param_1 + 8) = 1;
+    return 0;
+}
+
 extern "C" s32 fn_80019C4C(void* param_1) {
     if (fn_80115564(*(u8**)((u8*)param_1 + 0x20) + 0xc4) != 0) {
         fn_80115590(param_1);
