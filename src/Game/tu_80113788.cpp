@@ -346,4 +346,6 @@ extern "C" void* fn_80115590(char* self) {
     return self;
 }
 
+void __sinit_tu_80113788_cpp(void) {}
+
 #endif
