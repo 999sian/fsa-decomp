@@ -1,3 +1,4 @@
+extern "C" unsigned long lbl_80539E10;
 struct Vtable800D8248 {
     virtual void m0() = 0;
     virtual void m1() = 0;
@@ -1410,6 +1411,28 @@ extern "C" void fn_800D9FE4(int param_1, int param_2) {
     DCStoreRange(start, GDGetCurrPointer() - start);
 }
 
+void J3DGDSetIndTexMtx(GXIndTexMtxID, f32 (*)[3], s8);
+void J3DGDSetIndTexCoordScale(GXIndTexStageID, GXIndTexScale, GXIndTexScale, GXIndTexScale, GXIndTexScale);
+void J3DGDSetIndTexOrder(u32, GXTexCoordID, GXTexMapID, GXTexCoordID, GXTexMapID, GXTexCoordID, GXTexMapID, GXTexCoordID, GXTexMapID);
+extern "C" void fn_800DA080(u8* p) {
+    u8 num = p[4];
+    u8* q = p;
+    for (u32 i = 0; i < num; i++) {
+        J3DGDSetIndTexMtx((GXIndTexMtxID)(i + 1), (f32(*)[3])(q + 0x18), (s8)q[0x30]);
+        q += 0x1c;
+    }
+    q = p;
+    for (u32 i = 0; i < num; i += 2) {
+        J3DGDSetIndTexCoordScale((GXIndTexStageID)i, (GXIndTexScale)q[0x6c], (GXIndTexScale)q[0x6d], (GXIndTexScale)q[0x70], (GXIndTexScale)q[0x71]);
+        q += 8;
+    }
+    loadTexCoordScale((GXTexCoordID)p[5], J3DSys::sTexCoordScaleTable[p[6] & 7]);
+    loadTexCoordScale((GXTexCoordID)p[9], J3DSys::sTexCoordScaleTable[p[10] & 7]);
+    loadTexCoordScale((GXTexCoordID)p[13], J3DSys::sTexCoordScaleTable[p[14] & 7]);
+    loadTexCoordScale((GXTexCoordID)p[17], J3DSys::sTexCoordScaleTable[p[18] & 7]);
+    J3DGDSetIndTexOrder(num, (GXTexCoordID)p[5], (GXTexMapID)p[6], (GXTexCoordID)p[9], (GXTexMapID)p[10], (GXTexCoordID)p[13], (GXTexMapID)p[14], (GXTexCoordID)p[17], (GXTexMapID)p[18]);
+}
+
 extern "C" void fn_800DA280(u8* this_, u32 flags) {
     if (flags & 0x08000000) {
         u8 stageNum = this_[4];
@@ -1943,12 +1966,9 @@ extern "C" u32 fn_800DDA50(void) {
 
 #if defined(VERSION_G4SJ01)
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
-    struct S { u16 a; u8 b; u8 c; };
-    S* d = (S*)(this_ + 0x4);
-    S* s = (S*)src;
-    d->a = s->a;
-    d->b = s->b;
-    d->c = s->c;
+    this_[7] = src[3];
+    this_[6] = src[2];
+    *(u16*)(this_ + 4) = *(u16*)src;
 }
 #else
 extern "C" void fn_800DDA5C(u8* this_, u8* src) {
@@ -2174,9 +2194,8 @@ extern "C" int fn_800DDE48(int param_1, int param_2) {
 }
 
 extern "C" void fn_800DDE5C(u8* param_1, int param_2, u8* param_3) {
-    u8 b1 = param_3[1];
     u8 b0 = param_3[0];
-    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (b1 << 2);
+    param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0xC) | (param_3[1] << 2);
     param_1[param_2 * 8 + 0x60] = (param_1[param_2 * 8 + 0x60] & ~0x3) | b0;
 }
 
@@ -2353,13 +2372,15 @@ extern "C" u8 fn_800DE208(int param_1)
 
 extern "C" void fn_800DE210(u8* param_1, int param_2, u8* param_3)
 {
-  param_1 += param_2 * 8;
-  param_1[0x22] = param_3[1];
-  param_1[0x23] = param_3[2];
-  param_1[0x24] = param_3[3];
-  param_1[0x26] = param_3[5];
-  param_1[0x27] = param_3[6];
-  param_1[0x28] = param_3[7];
+  int offset = param_2 * 8;
+  u8 b1 = param_3[1];
+  u8* dst = param_1 + offset;
+  dst[0x22] = b1;
+  dst[0x23] = param_3[2];
+  dst[0x24] = param_3[3];
+  dst[0x26] = param_3[5];
+  dst[0x27] = param_3[6];
+  dst[0x28] = param_3[7];
 }
 
 extern "C" int fn_800DE288(int param_1, int param_2)
