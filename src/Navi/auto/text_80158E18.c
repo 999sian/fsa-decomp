@@ -469,6 +469,8 @@ extern "C" u32 fn_80159E0C(void* p, u32 align) {
 
 extern "C" void* fn_80159EEC(char* heap, void* ptr);
 extern "C" void* fn_8015A168(char* heap, void* ptr);
+#pragma push
+#pragma dont_inline on
 extern "C" void* fn_80159E8C(void* ptr) {
     void* ret;
     if (lbl_802FF548 == 0) {
