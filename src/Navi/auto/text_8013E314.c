@@ -13,6 +13,7 @@ extern void* lbl_8029260C[];
 extern void* lbl_802922F4[];
 extern void* lbl_8029383C[];
 
+inline void* operator new(unsigned long, void* p) { return p; }
 struct Elem_8013E3A4 {
     u8 data[0x14];
 };
