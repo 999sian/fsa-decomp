@@ -60,6 +60,8 @@ struct VObj_8013D304 {
     virtual u32 vf4();
     virtual void vf5(u32);
 };
+struct Entry_8013D21C { s32 unk0; s32 id; u8 pad[0xc]; f32 (VObj_8013D304::*fn)(); };
+struct Slot_8013D21C { u8 pad[4]; s32 unk4; void* func; f32 value; };
 struct VObj_8013D488 {
     virtual void vf0();
     virtual void vf1();
