@@ -2,6 +2,16 @@
 
 #include "types.h"
 
+struct Link_80167A94 {
+    Link_80167A94* next;
+    Link_80167A94* prev;
+};
+
+struct List_80167A94 {
+    u32 count;
+    Link_80167A94 head;
+};
+
 struct Vec4_80177B10 {
     f32 x;
     f32 y;
@@ -351,12 +361,12 @@ extern "C" void fn_80166970(void* a, u32 b, u32 c, u32 d) {
             }
             src++;
         } else {
-            s32 hi;
+            u32 hi;
             u8 b0 = src[0];
             u8 b1 = src[1];
             src += 2;
             back = dst - (((b0 << 8) & 0xf00) | b1);
-            hi = b0 >> 4;
+            hi = (u32)b0 >> 4;
             if (hi == 0) {
                 len = *src++ + 0x12;
             } else {
@@ -2772,6 +2782,18 @@ extern "C" void fn_801745B8(u8* out, u8* p, u32 index, u32 subindex) {
     } else {
         *(u16*)out = *(u16*)fallback;
     }
+}
+
+extern "C" Rec_80174620 fn_80174620(Owner_80174620* owner, int slot, int idx) {
+    Rec_80174620 def = lbl_8020225C;
+    Slot_80174620* slots = owner->slots;
+    if (slots != nullptr) {
+        Slot_80174620* s = &slots[slot];
+        if (s->active == 1) {
+            return s->recs[idx];
+        }
+    }
+    return def;
 }
 
 extern "C" void fn_80174858(Unk80174858Pair* out, void* ptr, u32 index, u32 subindex) {
