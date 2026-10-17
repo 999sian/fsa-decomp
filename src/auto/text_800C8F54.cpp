@@ -136,8 +136,7 @@ extern "C" void fn_800C9CF4(void)
 extern "C" void fn_800C9CF8() {
 }
 
-void fn_800C9CFC(void)
-{
+extern "C" void fn_800C9CFC(void) {
 }
 
 extern "C" void fn_800C9D00(void) {}
