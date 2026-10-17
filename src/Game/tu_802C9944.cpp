@@ -26,8 +26,6 @@ extern "C" void fn_8013CC50(void* obj, void* pos, f32 f, s32 a, s32 b, s32 c, s3
 extern "C" void fn_801F0E34(void* obj, s32 a, s32 b);
 extern const f32 lbl_80540D80;
 extern "C" void fn_802C99A4(u8* this_) {
-    f32 mtx[4][3];
-    u8 buf[16];
     volatile struct {
         s32 a;
         s32 b;
@@ -39,6 +37,8 @@ extern "C" void fn_802C99A4(u8* this_) {
         s32 i6c;
         s32 i70;
     } pal;
+    u8 buf[16];
+    f32 mtx[4][3];
     u8 i;
     u32 ret;
     u8* obj;
@@ -46,14 +46,14 @@ extern "C" void fn_802C99A4(u8* this_) {
     pal.a = -1;
     pal.b = -1;
     for (i = 0; i < 16; i += 8) {
-        buf[i] = i;
-        buf[i + 1] = i + 1;
-        buf[i + 2] = i + 2;
-        buf[i + 3] = i + 3;
-        buf[i + 4] = i + 4;
-        buf[i + 5] = i + 5;
-        buf[i + 6] = i + 6;
-        buf[i + 7] = i + 7;
+        buf[(u8)i] = i;
+        buf[(u8)(i + 1)] = i + 1;
+        buf[(u8)(i + 2)] = i + 2;
+        buf[(u8)(i + 3)] = i + 3;
+        buf[(u8)(i + 4)] = i + 4;
+        buf[(u8)(i + 5)] = i + 5;
+        buf[(u8)(i + 6)] = i + 6;
+        buf[(u8)(i + 7)] = i + 7;
     }
     pal.a = -1;
     pal.b = 0;
@@ -105,6 +105,84 @@ extern "C" void fn_802C99A4(u8* this_) {
     ret = ((u32 (*)(void*, u32, void*))(*(u32**)obj)[6])(obj, 0x54494D47, lbl_8046D818);
     if (*(s32*)(this_ + 4) < 8) {
         fn_802F745C(*(void**)((u8*)lbl_8053AB10 + 0x20), this_ + 0xc, ret, buf);
+    }
+}
+
+struct PointF {
+    f32 x;
+    f32 y;
+    f32 z;
+};
+
+extern "C" void fn_802C9BCC(u8* this_) {
+    u8 hit = 0;
+    u8* g = (u8*)lbl_8053AAF8;
+    f32 x0 = *(f32*)(this_ + 0x60) + *(f32*)(this_ + 0xc);
+    f32 y0 = *(f32*)(this_ + 0x64) + *(f32*)(this_ + 0x10);
+    f32 x1 = *(f32*)(this_ + 0x68) + *(f32*)(this_ + 0xc);
+    f32 y1 = *(f32*)(this_ + 0x6c) + *(f32*)(this_ + 0x10);
+    s32 i;
+
+    if (g[0x7e] == 1) {
+        for (i = 0; i < 4; i++) {
+            u8 on = (g[0x82] & (u8)(1 << i)) != 0;
+            if (on == 1) {
+                Vec pt = *(Vec*)fn_8023E724(fn_8022EA0C(i));
+                if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+                    hit = 1;
+                    break;
+                }
+            }
+        }
+    } else {
+        Vec pt = *(Vec*)fn_8023E724(fn_8022EA0C(0));
+        if (pt.x >= x0 && pt.y >= y0 && pt.x < x1 && pt.y < y1) {
+            hit = 1;
+        }
+    }
+
+    switch (*(s32*)(this_ + 0x230)) {
+    case 0:
+        if (hit) {
+            *(s32*)(this_ + 0x230) = 1;
+        }
+        break;
+    case 1:
+        if (*(u8*)(this_ + 0x240)) {
+            fn_8013CC50(*(void**)(this_ + 0x4), this_ + 0xc, lbl_80540D80, 0x564, 0, 0, 0, 0, 1);
+            fn_8013CC50(*(void**)(this_ + 0x4), this_ + 0xc, lbl_80540D74, 0x503, 1, 0, 0, 0, 1);
+            fn_801F0E34(this_, 0x30003, 0);
+            *(u8*)(this_ + 0x240) = 0;
+        }
+        *(u8*)(this_ + 0x11c) = 0;
+        if (*(u8*)(this_ + 0x241)) {
+            *(s32*)(this_ + 0x244) -= 12;
+            if (*(s32*)(this_ + 0x244) < 0) {
+                *(s32*)(this_ + 0x244) = 0;
+                *(s32*)(this_ + 0x230) = 2;
+            }
+        }
+        if (!hit) {
+            *(s32*)(this_ + 0x230) = 3;
+        }
+        break;
+    case 2:
+        if (!hit) {
+            *(s32*)(this_ + 0x230) = 3;
+        }
+        break;
+    case 3:
+        if (*(u8*)(this_ + 0x241) <= 0xff) {
+            *(s32*)(this_ + 0x244) += 12;
+            if (*(s32*)(this_ + 0x244) >= 0xff) {
+                *(s32*)(this_ + 0x244) = 0xff;
+                *(s32*)(this_ + 0x230) = 0;
+            }
+        }
+        if (hit) {
+            *(s32*)(this_ + 0x230) = 1;
+        }
+        break;
     }
 }
 
