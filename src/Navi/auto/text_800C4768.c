@@ -40,6 +40,11 @@ extern "C" void fn_800C4AC0(u8* p) {
     fn_800C56A0(p, p[0x38], d[0xc], 0, *(f32*)(d + 0x10), f);
 }
 
+extern "C" void fn_800C4B04(u8* p) {
+    (((NaviState_800C4768*)p)->*lbl_80288294[p[0x37]])();
+    fn_800C55C8(p);
+}
+
 extern "C" void fn_800C4B50(void) {}
 
 extern "C" void fn_800C4C88(u8* param_1) {
