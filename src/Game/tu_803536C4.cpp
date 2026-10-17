@@ -17,6 +17,7 @@ extern f32 lbl_80542710;
 extern f32 lbl_80542714;
 extern f32 lbl_80542718;
 extern f32 lbl_8054271C;
+extern u8* lbl_8053AB10;
 
 
 extern "C" char lbl_804ACC68[];
