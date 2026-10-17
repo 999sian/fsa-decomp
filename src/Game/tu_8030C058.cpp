@@ -274,9 +274,9 @@ extern "C" void fn_8030CB10(u8* p, f32* v, f32 s) {
     m[9] = 1.0f;
     m[10] = 0.0f;
     m[11] = -s;
-    C_MTXOrtho((MtxPtr)(p + 0x34), -hh, hh, -hw, hw, 0.0f, 5120.0f);
-    PSMTXCopy((MtxPtr)(p + 0x4), (MtxPtr)(p + 0xe4));
-    C_MTXLightOrtho((MtxPtr)(p + 0x114), hh, -hh, -hw, hw, 0.5f, 0.5f, 0.5f, 0.5f);
+    C_MTXOrtho((f32(*)[4])(p + 0x34), -hh, hh, -hw, hw, 0.0f, 5120.0f);
+    PSMTXCopy((f32(*)[4])(p + 0x4), (f32(*)[4])(p + 0xe4));
+    C_MTXLightOrtho((f32(*)[4])(p + 0x114), hh, -hh, -hw, hw, 0.5f, 0.5f, 0.5f, 0.5f);
     for (int i = 0; i < 12; i++) {
         ((f32*)(p + 0x74))[i] = m[i];
     }
@@ -532,4 +532,4 @@ extern "C" void* fn_8030E718(u8* p) {
     __construct_array(p + 0x1f0, __ct__Q29JGeometry8TVec3_f_Fv, 0, 0xc, 0x80);
     return p;
 }
-
+#include "JSystem/JAudio/JASFakeMatchFSA.h"
