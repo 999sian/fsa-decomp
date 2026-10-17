@@ -213,7 +213,7 @@ extern "C" s32 fn_8015FDA8(u32 param_1, void* param_2) {
 
 extern "C" int fn_801E6578(void* a, void* b);
 extern "C" void* fn_8015FECC(void* a, int b);
-extern void** lbl_802EE2D4;
+extern char lbl_802EE2D4[];
 extern "C" void* fn_8015FE40(void* param_1) {
     char buf[0x110];
     void** node;
