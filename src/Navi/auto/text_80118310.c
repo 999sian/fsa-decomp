@@ -132,22 +132,21 @@ extern "C" void fn_80119A28(void* param_1) {
 }
 
 extern "C" BOOL fn_80119A54(void* param_1) {
-    u8* p = (u8*)param_1;
-    u8 busy = fn_80119AD4(param_1);
-    if (busy == 0) {
-        fn_8015AB40(*(void**)(p + 0x50));
-        *(u32*)(p + 0x48) = 0;
-        *(u32*)(p + 0x50) = 0;
-        *(u32*)(p + 0x54) = 0;
-        *(u32*)(p + 0x58) = 0;
-        *(u32*)(p + 0x5c) = 0;
-        *(u32*)(p + 0x1c) = 0;
-        *(u32*)(p + 0x20) = 0;
-        *(s32*)(p + 0x44) = -1;
-        fn_801196E0(param_1);
-        p[4] = 0;
+    if (fn_80119AD4(param_1) != 0) {
+        return TRUE;
     }
-    return busy != 0;
+    fn_8015AB40(*(void**)((u8*)param_1 + 0x50));
+    *(u32*)((u8*)param_1 + 0x48) = 0;
+    *(u32*)((u8*)param_1 + 0x50) = 0;
+    *(u32*)((u8*)param_1 + 0x54) = 0;
+    *(u32*)((u8*)param_1 + 0x58) = 0;
+    *(u32*)((u8*)param_1 + 0x5c) = 0;
+    *(u32*)((u8*)param_1 + 0x1c) = 0;
+    *(u32*)((u8*)param_1 + 0x20) = 0;
+    *(s32*)((u8*)param_1 + 0x44) = -1;
+    fn_801196E0(param_1);
+    *((u8*)param_1 + 4) = 0;
+    return FALSE;
 }
 
 extern "C" int fn_8011AB38()
@@ -165,7 +164,7 @@ extern "C" void* fn_8011B0D8(u8* p, s16 del) {
         *(u32*)p = (u32)lbl_8029016C;
         s16 idx = *(s16*)(p + 0x7c);
         if (idx >= 0) {
-            ((u8*)&lbl_802FF2BC)[idx]--;
+            lbl_802FF2BC[idx]--;
             *(s16*)(p + 0x7c) = -1;
         }
         fn_80166FC4(lbl_802C5FBC, p + 0x80);
