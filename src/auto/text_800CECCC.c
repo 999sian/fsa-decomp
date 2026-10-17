@@ -2,6 +2,7 @@
 #include "JSystem/J3D/J3DAnmColor.h"
 #include "JSystem/JUtility/JUTNameTab.h"
 #include "JSystem/J3D/J3DAnmTevRegKey.h"
+#include "JSystem/JGeometry/Vec.h"
 
 template <typename T> T* JSUConvertOffsetToPtr(const void* ptr, const void* offset);
 extern f32 lbl_8053BC80;
