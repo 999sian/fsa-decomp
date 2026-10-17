@@ -1268,8 +1268,4 @@ extern "C" BOOL fn_8006CFD0(void)
 {
     return TRUE;
 }
-struct VObj_80064D18 {
-    void* a;
-    void* b;
-    void* c;
-};
+
