@@ -12,6 +12,7 @@ extern "C" void fn_801E0DB8(void* param_1, void* param_2, void* param_3, s32 par
 extern "C" void fn_80064D9C(void);
 extern "C" void fn_80064D40(void);
 extern "C" s32 fn_800183AC(void* param_1, void* param_2, s32 param_3);
+extern "C" s32 fn_8008B4E4(void* param_1);
 extern "C" void fn_8015AB1C(void* ptr);
 extern "C" void fn_8008AF98(void);
 extern "C" void fn_8008AE90(void) {
