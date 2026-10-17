@@ -362,6 +362,12 @@ extern "C" u32 fn_80122FC0(u32 param_1, u32 param_2)
 	return (param_1 - 0x6c) / (param_2 + 2);
 }
 
+extern "C" void fn_80123928(void* p, const void* fmt, va_list args) {
+    char buf[0x400];
+    fn_801E4334(buf, 0x400, fmt, args);
+    fn_80123628(p, buf);
+}
+
 extern "C" s32 fn_80123A70(u8* p) {
     s32 n = *(s32*)(p + 0x30) - *(s32*)(p + 0x34);
     if (n >= 0) {
