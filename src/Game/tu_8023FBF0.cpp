@@ -404,8 +404,8 @@ BOOL fn_8023FFAC(char* p) { return F32(p, 0xc8c) < 1.0f; }
 inline s32 countSharing2(char* p) {
     s32 c = 0;
     s32 i = c;
-    s32 linked;
     s32 me;
+    s32 linked;
     for (i = 0; i < 4; i++) {
         if (i == S32(p, 0x4)) {
             c++;
@@ -1576,7 +1576,7 @@ BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
     if (S32(p, 0x1240) != 0) {
         return 0;
     }
-    if (anim == 0xe8 && getMode2(p) == 4) {
+    if (anim == 0xe8 && getMode3(p) == 4) {
         s32 v = linkIdx(p);
         if (v != linkRank2(p)) {
             S16(p, 0x450) = 0x1c5;
