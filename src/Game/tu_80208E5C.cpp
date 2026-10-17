@@ -73,7 +73,8 @@ extern "C" void fn_80208EFC(char* this_) {
         do {
             char* actor = (char*)fn_801F666C(fn_801F856C(), *(s32*)(e + 0x2b0));
             if (actor != 0) {
-                *(JGeometry::TVec3<f32>*)(actor + 0x3c) = *(JGeometry::TVec3<f32>*)(this_ + 0x3c);
+                *(JGeometry::TVec2<f32>*)(actor + 0x3c) = *(JGeometry::TVec2<f32>*)(this_ + 0x3c);
+                *(f32*)(actor + 0x44) = *(f32*)(this_ + 0x44);
             }
             i++;
             e += 0x24;
@@ -436,17 +437,3 @@ extern "C" void fn_80209640(void* this_, f32* out) {
         out[1] -= oldY;
     }
 }
-struct FsaVObjX {
-    virtual void v0(void);
-    virtual void v1(void);
-    virtual void v2(void);
-    virtual void v3(void);
-    virtual void v4(void);
-    virtual void v5(void);
-    virtual void v6(void);
-    virtual void v7(void);
-    virtual void v8(void);
-    virtual void v9(void);
-    virtual void v10(void);
-    virtual u8 v11(void* p);
-};
