@@ -1,4 +1,12 @@
 #include "Game/Actor.h"
+#include "Game/ItemBase.h"
+
+extern "C" void* lbl_8053AAF8;
+extern "C" void* lbl_8053AB10;
+extern "C" char lbl_8046CA50[];
+extern "C" char lbl_804668A8[];
+extern "C" void fn_803075AC(void* handle, s32 room, Vec* pos, s32 frame, BOOL flag, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_802F86CC(void* handle, Vec* pos, void* res, s32 frame, f32 sx, f32 sy, DrawRec* rec);
 
 
 extern "C" char lbl_804A8418[];
