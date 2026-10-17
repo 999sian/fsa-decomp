@@ -1,4 +1,5 @@
 #include "types.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void* fn_801F856C(void);
 extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, s32 a, s32 b, s32 c);
@@ -47,6 +48,51 @@ extern "C" void fn_801744E4(void* this_) {
             }
         }
         *(s32*)(p + 0x238) = -1;
+    }
+}
+
+extern "C" void fn_801752D8(void* this_) {
+    char* p = (char*)this_;
+    if (*(s32*)(p + 0x4) >= 8 && *(s32*)(p + 0x23c) == 1 && *(s32*)(lbl_80529DEC + 0x118) == 6) {
+        s32 cnt = 0;
+        s32 i;
+        for (i = 0; i < 4; i++) {
+            s32 id = *(s32*)(p + 0x2c0 + i * 4);
+            if (id >= 0) {
+                void* a = fn_801F666C(fn_801F856C(), id);
+                if (a == 0) {
+                    *(s32*)(p + 0x2c0 + i * 4) = -1;
+                    cnt++;
+                } else {
+                    *(f32*)((char*)a + 0x280) = *(f32*)(p + 0xc);
+                    *(f32*)((char*)a + 0x284) = *(f32*)(p + 0x10);
+                    *(f32*)((char*)a + 0x288) = *(f32*)(p + 0x14);
+                    *(s32*)(p + 0x260) = 0x384;
+                }
+            } else {
+                cnt++;
+            }
+        }
+        if (*(s32*)(p + 0x260) == 0 && cnt == 4 && *(s32*)(p + 0x4) == fn_8023DE58(0)) {
+            s32 n = 0;
+            s16 rot = 0;
+            for (i = 0; i < 4; i++) {
+                s32 id = Actor_CreateByID(fn_801F856C(), 0x4b455448, *(u32*)(p + 0x4), p + 0xc, 4, -1, -1);
+                *(s32*)(p + 0x2c0 + i * 4) = id;
+                if (id >= 0) {
+                    void* a = fn_801F666C(fn_801F856C(), id);
+                    if (a != 0) {
+                        n++;
+                        *(s16*)((char*)a + 0x268) = rot;
+                        *(f32*)((char*)a + 0x270) = lbl_8053DB4C;
+                        if (n >= 4) {
+                            *(s32*)(p + 0x260) = 0x384;
+                        }
+                    }
+                }
+                rot += 0x4000;
+            }
+        }
     }
 }
 
