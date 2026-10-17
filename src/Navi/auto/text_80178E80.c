@@ -26,6 +26,7 @@ struct NaviAnm_8018DE28 {
     }
 };
 struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
+struct NaviPair_80178E80 { u32 a; u32 b; };
 struct NaviNode_8018ED48 {
     void* unk0;
     void* unk4;
@@ -931,6 +932,52 @@ extern "C" void fn_8017A968(void) {}
 
 extern "C" void fn_8017A96C(void) {}
 
+extern "C" void fn_8017C0A8(u8* self, u32* a, u32* b, u32* c, u32* d);
+extern "C" void* fn_8017A970(u8* self) {
+    u32 sp24;
+    u32 sp20;
+    u32 sp1C;
+    u32 sp18;
+    u32 sp14;
+    u32 sp10;
+    u32 spC;
+    u32 sp8;
+
+    fn_80176550(self);
+    *(void**)self = lbl_80298DF0;
+    *(u32*)(self + 0x100) = 0;
+    *(u32*)(self + 0x104) = 0;
+    *(u32*)(self + 0x108) = 0;
+    *(u32*)(self + 0x10C) = 0;
+    *(u32*)(self + 0x110) = 0;
+    *(u32*)(self + 0x124) = 0;
+    *(u32*)(self + 0x128) = -1;
+    *(u32*)(self + 0x12C) = -1;
+    *(u32*)(self + 0x130) = -1;
+    *(u32*)(self + 0x134) = -1;
+    *(u32*)(self + 0x138) = -1;
+    *(u32*)(self + 0x13C) = -1;
+    self[0x144] = 0;
+    sp24 = -1;
+    sp8 = -1;
+    sp18 = -1;
+    sp14 = -1;
+    sp10 = -1;
+    spC = -1;
+    fn_8017C0A8(self, &spC, &sp10, &sp14, &sp18);
+    sp20 = 0;
+    sp1C = -1;
+    self[0x13C] = (u8)sp20;
+    self[0x13D] = (u8)(sp20 >> 8);
+    self[0x13E] = (u8)(sp20 >> 16);
+    self[0x13F] = (u8)(sp20 >> 24);
+    self[0x138] = (u8)sp1C;
+    self[0x139] = (u8)(sp1C >> 8);
+    self[0x13A] = (u8)(sp1C >> 16);
+    self[0x13B] = (u8)(sp1C >> 24);
+    return self;
+}
+
 extern "C" void* fn_8017AA68(u32* self, int a, int b, int c) {
     fn_80176550(self);
     *(void**)self = lbl_80298DF0;
@@ -998,6 +1045,29 @@ extern "C" void fn_8017C154(VObj_8017C154* self, f32 x, f32 y) {
     u8 buf[48];
     fn_801C5D48(buf);
     self->vf38(buf, x, y);
+}
+
+extern "C" void fn_8017C1BC(u8* obj, s32 arg1, f32 farg0, f32 farg1) {
+    f32 pos[4];
+    f32 temp_f5;
+    f32 temp_f4;
+    f32 temp_f2;
+    f32 temp_f1;
+    f32 x0;
+    f32 y0;
+    f32 x1;
+    f32 y1;
+    temp_f5 = *(f32*)(obj + 0x20) + farg0;
+    temp_f4 = *(f32*)(obj + 0x24) + farg1;
+    temp_f1 = *(f32*)(obj + 0x28) + farg0;
+    temp_f2 = *(f32*)(obj + 0x2c) + farg1;
+    pos[0] = *(f32*)(obj + 0x20);
+    pos[1] = *(f32*)(obj + 0x24);
+    pos[2] = *(f32*)(obj + 0x28);
+    pos[3] = *(f32*)(obj + 0x2c);
+    if (temp_f1 - temp_f5 == (f32)*(s16*)(obj + 0x140)) {
+    }
+    fn_80177CA8(obj, obj + 0x114);
 }
 
 extern "C" u32 fn_8017D014(char* self, u8 idx, u8 flag) {
@@ -1174,6 +1244,28 @@ extern "C" void fn_8017E9DC(u32* self, u32 a) {
     }
     void (*vfn)(void*, u8) = (void (*)(void*, u8))((*(void***)self)[54]);
     vfn(self, i);
+}
+
+extern "C" void fn_80118C44(void* a, u8* b, s32 c);
+extern f32 lbl_80301B90;
+extern "C" s32 fn_8017EA3C(u8* self, u8* arg1, u32 idx) {
+    if ((u8)idx > self[0x110] || (u8)idx >= 4 || arg1 == NULL) {
+        return 0;
+    }
+    if ((u8)idx < self[0x110]) {
+        void* obj = ((void* (*)(void*, u32))(*(void***)self)[72])(self, idx);
+        s32 ret = *(s32*)((u8*)obj + 0x20);
+        s32 r30 = 0;
+        if (arg1[8] != 0) {
+            r30 = ((s32 (*)(void*, u32))(*(void***)self)[82])(self, idx);
+            obj = ((void* (*)(void*, u32))(*(void***)self)[72])(self, idx);
+        }
+        fn_80118C44(obj, arg1, r30);
+        return ret;
+    } else {
+        ((void (*)(void*, f32))(*(void***)self)[39])(self, lbl_80301B90);
+        return 0;
+    }
 }
 
 extern "C" void fn_8017EB2C(u32* self, void* a, int b) {
@@ -1868,6 +1960,40 @@ extern "C" void fn_8018485C(u8* self, u32 v) {
     *(u32*)(self + 0x174) = v;
 }
 
+extern "C" void fn_80184864(u8* self, u8* p) {
+    u8 i;
+    u16 j;
+    u16 k;
+    u16 count;
+
+    *(u8**)(self + 0x178) = p;
+    self[0x17c] = 0;
+    if (p != NULL) {
+        count = *(u16*)(p + 0x10);
+        for (i = 0; i < 4; i++) {
+            if (*(u16*)(self + 0x168 + i * 2) == 0xFFFF) {
+                continue;
+            }
+            for (j = 0; j < count; j++) {
+                u8* rec = *(u8**)(p + 0x14) + j * 8;
+                u16 n = *(u16*)rec;
+                u16* vals = (u16*)*(u8**)(p + 0x1c) + *(u32*)(rec + 4);
+                for (k = 0; k < n; k++) {
+                    if (*(u16*)(self + 0x168 + i * 2) == vals[k]) {
+                        *(u8**)(self + 0x178) = p;
+                        self[0x17c] = self[0x17c] | (1 << i);
+                        goto next;
+                    }
+                }
+            }
+next:;
+        }
+    }
+    if (self[0x17c] == 0) {
+        *(u8**)(self + 0x178) = NULL;
+    }
+}
+
 extern "C" u32 fn_80184B08(u8* self, u8 idx) {
     u32* p;
     if (idx >= 4) {
@@ -2299,6 +2425,44 @@ extern "C" void fn_801889AC(u8* self, void* obj) {
 
 extern "C" void fn_801889D8(u8* param_1, void* param_2) {
     *(void**)((u8*)param_1 + 0x19c) = param_2;
+}
+
+extern "C" void fn_801889E0(u8* self, u8* arg) {
+    u8 k;
+    u16 i;
+    u16 j;
+    u16 n;
+    u16 cnt;
+    u8* ent;
+    u16* idx;
+    u32 off;
+
+    *(u8**)(self + 0x1A0) = arg;
+    self[0x1A4] = 0;
+    if (arg != NULL) {
+        n = *(u16*)(arg + 0x10);
+        for (k = 0; k < 4; k++) {
+            off = k * 2 + 0x170;
+            if (*(u16*)(self + off) != 0xFFFF) {
+                for (i = 0; i < n; i++) {
+                    ent = *(u8**)(arg + 0x14) + i * 8;
+                    cnt = *(u16*)ent;
+                    idx = (u16*)(*(u8**)(arg + 0x1C) + *(u32*)(ent + 4) * 2);
+                    for (j = 0; j < cnt; j++) {
+                        if (*(u16*)(self + off) == idx[j]) {
+                            *(u8**)(self + 0x1A0) = arg;
+                            self[0x1A4] |= 1 << k;
+                            goto next;
+                        }
+                    }
+                }
+            }
+next:;
+        }
+    }
+    if (self[0x1A4] == 0) {
+        *(u8**)(self + 0x1A0) = NULL;
+    }
 }
 
 extern "C" void* fn_80188DA8(u8* p) { return *(void**)(p + 0x168); }
