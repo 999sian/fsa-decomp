@@ -2,7 +2,7 @@
 
 struct VObj_8013B620 {
     virtual void v0();
-    virtual void v1();
+    virtual void v1(void* a);
     virtual void v2();
     virtual void v3(void* a);
 };
@@ -1593,8 +1593,8 @@ extern "C" void* fn_8013B6EC(void* param_1, void* param_2, void* param_3) {
 extern "C" void* fn_8013CDFC(void* p, void* a, void* b);
 extern "C" void* fn_801341A8(void* p, void* a, void* b);
 extern "C" void* fn_8013B7B8(void* param_1, void* param_2, void* param_3) {
-    void* obj;
     void* result;
+    void* obj;
     obj = fn_8015A90C(0x64);
     if (obj != 0) {
         obj = fn_8013CDFC(obj, param_3, param_2);
@@ -1609,9 +1609,9 @@ extern "C" void* fn_8013B7B8(void* param_1, void* param_2, void* param_3) {
     if (result == 0) {
         result = 0;
     } else {
-        VObj_8013B620* v = *(VObj_8013B620**)((u8*)result + 0x34);
+        VObj_8013B7B8* v = *(VObj_8013B7B8**)((u8*)result + 0x34);
         if (v != 0) {
-            v->v3(result);
+            v->v1(result);
         }
     }
     return result;
@@ -1732,13 +1732,13 @@ extern "C" void fn_8013CD54(void);
 extern "C" void fn_801E0DB8(void* p, void* f, u32 a, u32 b, u32 c);
 extern "C" void* fn_8013BDE8(void* param_1, void* param_2, void* param_3) {
     u32* self = (u32*)param_1;
-    void* p = param_1;
-    *(void**)p = lbl_8029260C;
-    self[1] = (u32)((u8*)p + 0xc);
+    u8* sub = (u8*)param_1 + 0xc;
+    *(void**)param_1 = lbl_8029260C;
+    self[1] = (u32)sub;
     self[2] = 0xe;
-    fn_801E0DB8((u8*)p + 0xc, fn_8013CD54, 0, 0x14, 0xe);
-    *(void**)p = lbl_8029259C;
-    *(void**)p = lbl_8029320C;
+    *(void**)param_1 = lbl_8029259C;
+    fn_801E0DB8(sub, fn_8013CD54, 0, 0x14, 0xe);
+    *(void**)param_1 = lbl_8029320C;
     self[0x49] = (u32)param_2;
     self[0x4a] = (u32)param_3;
     self[0x4b] = 0;
