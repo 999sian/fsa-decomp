@@ -90,6 +90,12 @@ public:
     virtual void vf4(void* owner);
     virtual void vf5(void* owner);
 };
+class Unk8012B8B4Listener {
+public:
+    virtual void vf2();
+    virtual void vf3();
+    virtual void vf4(void* owner, void* arg);
+};
 extern const f32 lbl_803016E0;
 extern const f32 lbl_803016E4;
 extern const f32 lbl_803017B0;
@@ -960,12 +966,13 @@ extern "C" void fn_801297A0(u8* obj, s32 param_2, f32* out) {
 
 extern "C" void fn_80129854(f32* param_1, f32 param_2, f32 param_3) {
     param_1[0] = param_3;
-    param_1[2] = -param_2;
+    f32 one = lbl_80301694;
     f32 zero = lbl_80301698;
+    f32 neg = -param_2;
     param_1[1] = zero;
+    param_1[2] = neg;
     param_1[3] = zero;
     param_1[4] = zero;
-    f32 one = lbl_80301694;
     param_1[5] = one;
     param_1[6] = zero;
     param_1[7] = zero;
@@ -1216,7 +1223,7 @@ extern "C" void fn_8012F588(u32* p, u32 v)
 
 extern "C" void fn_8012F738(void* p);
 extern "C" void* fn_8012F6F8(void* a, s32 b, void* c) {
-    if (*(s32*)(b + 4) == 0x322d3130) {
+    if (b == 0x322d3130) {
         fn_8012F738(a);
     }
     return a;
