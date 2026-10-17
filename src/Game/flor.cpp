@@ -80,7 +80,7 @@ extern "C" void fn_8020E268(char* this_) {
 
 extern "C" u8 fn_801F2DB4(void* this_, u32 a, u32 b, u32 c);
 extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
-extern "C" void fn_8020ED5C(void* this_, s32 st);
+extern "C" void fn_8020ED5C(char* this_, s32 st);
 
 extern "C" u8 fn_8020DF4C(char* this_) {
     u8 r = 0;
@@ -118,9 +118,10 @@ extern "C" void fn_8020F318(char* this_) {
     fn_801D0ED0(this_);
     if (*(u32*)(this_ + 0x90) & 1) {
         *(u32*)(this_ + 0x230) |= 0x2000;
-        u32 p = *(u32*)(this_ + 0x90);
-        *(f32*)(this_ + 0x2a8) = lbl_8053FA40 + (f32)((p >> 13) & 0x1f8);
-        *(f32*)(this_ + 0x2ac) = lbl_8053FA40 + (f32)((p >> 5) & 0x1f8);
+        f32 a = (f32)((*(u32*)(this_ + 0x90) >> 13) & 0x1f8);
+        f32 b = (f32)((*(u32*)(this_ + 0x90) >> 5) & 0x1f8);
+        *(f32*)(this_ + 0x2a8) = lbl_8053FA40 + a;
+        *(f32*)(this_ + 0x2ac) = lbl_8053FA40 + b;
     }
     *(f32*)(this_ + 0x60) = lbl_8053FA28;
     *(f32*)(this_ + 0x64) = lbl_8053FA28;
@@ -201,6 +202,61 @@ extern "C" void fn_8020E2D8(char* this_) {
         *(f32*)(this_ + 0x74) = *(f32*)(this_ + 0x64);
         *(f32*)(this_ + 0x78) = *(f32*)(this_ + 0x68);
         *(f32*)(this_ + 0x7c) = *(f32*)(this_ + 0x6c);
+    }
+}
+
+extern "C" void fn_8013CB44(void* a, char* b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_801D05F8(char* this_, char* pos, f32 f);
+extern "C" void fn_801CD8E4(f32* out, f32 v, f32 lo, f32 hi);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" void fn_8023DFF4(s32 i, void* pos);
+extern "C" void fn_80230498(s32 i, void* pos, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" s32 fn_8023CBC0(s32 i);
+extern "C" u8 fn_8022DD74(s32 player);
+extern "C" const f32 lbl_8053FA3C;
+extern "C" const f32 lbl_8053FA80;
+extern "C" void fn_8020EB08(char* this_) {
+    fn_8013CB44(*(void**)(this_ + 0x2b0), this_ + 0xc, 0, 0, 1);
+    if (*(s32*)(this_ + 0x248) >= 1 && *(s32*)(this_ + 0x248) < 4) {
+        s32 old = *(s32*)(this_ + 0x2b8);
+        if (old >= 0) {
+            *(s32*)(this_ + 0x2bc) += 1;
+        }
+        s32 r = fn_801D05F8(this_, this_ + 0xc, lbl_8053FA2C);
+        if (r != old) {
+            if (old >= 0) {
+                if (r < 0) {
+                    *(s32*)(this_ + 0x2b8) = -1;
+                    *(s32*)(this_ + 0x2bc) = 0;
+                } else if (*(s32*)(this_ + 0x2bc) >= 0x2d) {
+                    *(s32*)(this_ + 0x2b8) = r;
+                    *(s32*)(this_ + 0x2bc) = 0;
+                }
+            } else {
+                *(s32*)(this_ + 0x2b8) = r;
+                *(s32*)(this_ + 0x2bc) = 0;
+            }
+        }
+    }
+    if (*(s32*)(this_ + 0x248) >= 5 && *(s32*)(this_ + 0x248) < 8) {
+        s32 idx = *(s32*)(this_ + 0x2b8);
+        char* p = (char*)fn_8023E724(idx);
+        f32 z = (*(s32*)(this_ + 0x248) == 6) ? lbl_8053FA3C : lbl_8053FA2C;
+        f32 b[3];
+        fn_801CD8E4(&b[0], *(f32*)(this_ + 0xc), lbl_8053FA80, lbl_8053FA2C);
+        fn_801CD8E4(&b[1], *(f32*)(this_ + 0x10), lbl_8053FA80, lbl_8053FA2C);
+        fn_801CD8E4(&b[2], z, lbl_8053FA80, lbl_8053FA2C);
+        if (*(s32*)(this_ + 0x248) == 5) {
+            fn_80230498(idx, b, fn_8023CBC0(idx), 0xff, -0x80, -0x80, 1);
+        } else {
+            fn_8023DFF4(idx, b);
+        }
+    }
+    if (*(u32*)(this_ + 0x230) & 0x4000) {
+        if (fn_8022DD74(*(s32*)(this_ + 0x2c0))) {
+            *(u32*)(this_ + 0x230) &= ~0x4000;
+            *(s32*)(this_ + 0x2c0) = -1;
+        }
     }
 }
 
@@ -397,17 +453,18 @@ extern "C" void fn_8020DB74(char* this_) {
     buf[0x1d] = 0;
 
     if (*(u32*)(this_ + 0x230) & 0x8000) {
-        mtx[0][3] = lbl_8053FA2C;
-        mtx[1][3] = lbl_8053FA2C;
-        mtx[2][3] = lbl_8053FA2C;
+        f32 zero = lbl_8053FA2C;
+        mtx[0][3] = zero;
+        mtx[1][3] = zero;
+        mtx[2][3] = zero;
         mtx[0][0] = lbl_8053FA30;
-        mtx[0][1] = lbl_8053FA2C;
-        mtx[0][2] = lbl_8053FA2C;
-        mtx[1][0] = lbl_8053FA2C;
+        mtx[0][1] = zero;
+        mtx[0][2] = zero;
+        mtx[1][0] = zero;
         mtx[1][1] = lbl_8053FA28;
-        mtx[1][2] = lbl_8053FA2C;
-        mtx[2][0] = lbl_8053FA2C;
-        mtx[2][1] = lbl_8053FA2C;
+        mtx[1][2] = zero;
+        mtx[2][0] = zero;
+        mtx[2][1] = zero;
         mtx[2][2] = lbl_8053FA28;
         *(void**)(buf + 0x18) = mtx;
     }
