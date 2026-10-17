@@ -9,6 +9,9 @@ public:
 extern "C" void fn_8013B490(void*);
 extern u8* lbl_8053AB10;
 extern const f32 lbl_80543A40;
+extern const f32 lbl_80543A44;
+extern const f32 lbl_80543A48;
+extern const f32 lbl_80543A4C;
 
 extern u8* lbl_8053AAF8;
 extern u8 lbl_80529DEC[];
