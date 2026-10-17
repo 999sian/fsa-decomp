@@ -758,6 +758,21 @@ extern "C" void fn_80093D90(u8* p) {
     }
 }
 
+extern "C" void fn_800A5338(void* p);
+extern "C" void fn_80093F00(u8* p) {
+    if (*(u8*)(p + 0x282f) == 0) {
+        fn_800A5338(*(void**)(p + 0x268));
+        *(u8*)(p + 0x7e8) = 1;
+        *(u8*)(p + 0x282c) = 0;
+        *(u8*)(p + 0x85c) = 0;
+    } else {
+        fn_800C6CA4(*(void**)(p + 0x27c));
+        *(u8*)(p + 0x2a5) = 1;
+        *(u8*)(p + 0x282c) = 0;
+        *(u8*)(p + 0x85c) = 0;
+    }
+}
+
 extern "C" void OSResetSystem(int, u32, int);
 extern "C" void fn_80094090(void) {
     OSResetSystem(1, 1, 1);
