@@ -9,6 +9,28 @@ extern "C" void fn_801F0E34(void* self, u32 id, s32 flag);
 extern "C" void* fn_8013CC50(u32 id, void* pos, u16 kind, s32 a, f32 scale, s32 b, s32 c, s32 d, s32 e);
 extern "C" void fn_801CB7A0(void* obj);
 extern "C" void fn_801CB71C(void* a, void* b, s32 c, s32 d);
+extern "C" u8 fn_8023BCD4(s32 holder);
+extern "C" s32 fn_8023CA88(s32 holder);
+extern "C" s32 fn_8023CB24(s32 holder);
+extern "C" void fn_801EF830(s32 idx, void* pos, DrawRec* rec, u32 mask, void* name, u32 p6, void* p7);
+extern "C" void fn_802F86CC(void* layer, void* pos, void* res, s32 id, f32 sx, f32 sy, DrawRec* rec);
+extern "C" void fn_801CD0D0(f32* a, f32* b);
+extern "C" void fn_801EF574(void* a, void* b, f32* v, DrawRec* rec);
+extern "C" void fn_80307AC8(void* obj, s32 id, void* pos, s32 kind, s32 a, s32 b, s32 c);
+extern char lbl_8046A448[];
+extern char lbl_8046A458[];
+extern u8* lbl_8053AAF8;
+extern char* lbl_8053AB10;
+
+struct Tu8020F80CResMgr {
+    virtual void v0();
+    virtual void v1();
+    virtual void v2();
+    virtual void v3();
+    virtual void v4();
+    virtual void v5();
+    virtual void* get(u32 type, const char* name);
+};
 
 extern "C" void fn_8020F798(char* self)
 {
