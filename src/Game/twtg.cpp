@@ -159,6 +159,16 @@ extern char* lbl_8053AAF8;
 extern "C" s32 fn_8023DE58(s32);
 extern "C" void fn_801EE558(void* p, JGeometry::TVec3f* out, f32* dist, s32 idx);
 extern "C" void fn_8013665C(void* game, s32 a, s32 b);
+extern u8 lbl_8053ABF8;
+extern "C" void fn_8022FE80(s32 slot, s32 player, void* room, s32 a, s32 b);
+extern "C" void fn_8013670C(char* game, s32 msg);
+extern "C" s32 fn_8037EFB4(s32 slot);
+extern "C" void fn_80384C58(s32 slot, void* room);
+extern "C" u8 fn_8023EA28(s32 slot);
+extern "C" u8 fn_8022F478(s32 slot);
+extern "C" JGeometry::TVec3f* fn_8023E724(s32 slot);
+extern "C" void fn_80230BF4(s32 slot, s32 v);
+extern "C" void fn_80230498(s32 slot, JGeometry::TVec3f* v, s32 a, s32 b, s32 c, s32 d, s32 e);
 
 static inline void twtgUpdateDir(char* p, JGeometry::TVec3f& v, f32& dist) {
     if (*(s32*)(p + 0x274) <= 0) {
