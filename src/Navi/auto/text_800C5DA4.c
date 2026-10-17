@@ -85,6 +85,22 @@ extern "C" void fn_800C8234(u8* p) {
     }
 }
 
+extern "C" void fn_800C8790(u8* p) {
+    char* base = lbl_802C567C;
+    s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), base[0x1e], 0);
+    (*(s16*)(p + 0x86))++;
+    if (r == 1) {
+        *(s16*)(p + 0x86) = 0;
+        p[0x8d] = 2;
+        p[0x40] ^= 1;
+        (*(u8**)(p + 0x70))[0xb0] = 1;
+        p[0x7c] = 1;
+        fn_800C8DF4(p);
+        fn_800C8D90(p);
+        p[0x88] = 0x10;
+    }
+}
+
 extern "C" void fn_800C8A98(u8* p) {
     char* base = lbl_802C567C;
     s32 r = fn_800C93F4(p, *(s16*)(p + 0x86), base[0x1e], 0);
