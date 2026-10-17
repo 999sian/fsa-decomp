@@ -2,6 +2,7 @@
 #include "Game/SinitPoolChain.h"
 #include "Game/Actor.h"
 
+extern "C" {
 void* fn_8023E724(s32 idx);
 u8 fn_8023EA28(s32 idx);
 u8 fn_8022E438(s32 idx, s32 other);
@@ -12,6 +13,7 @@ s32 fn_8022E23C(s32 idx, void* p);
 void fn_8022CC20(s32 idx);
 u8 fn_8022F514(s32 idx);
 void fn_8023DFF4(s32 idx);
+}
 
 struct SwbmDrawParam {
     SwbmDrawParam() : m40(-1), m44(-1) {
@@ -77,6 +79,60 @@ extern "C" Actor* fn_801688AC(Actor* p, s16 n) {
         if (n > 0) operator delete(p);
     }
     return p;
+}
+
+extern "C" s32 fn_80168C38(char* this_) {
+    f32 box[4];
+    Vec pos;
+    Vec d;
+    Vec* ptr;
+    s32 found = -1;
+    s32 i;
+
+    ptr = (Vec*)fn_8023E724(*(s32*)(this_ + 0x90));
+    pos = *(Vec*)(this_ + 0xc);
+    box[0] = pos.x + *(f32*)(this_ + 0x60) - 4.0f;
+    box[1] = pos.y + *(f32*)(this_ + 0x64) - 4.0f;
+    box[2] = pos.x + *(f32*)(this_ + 0x68) + 4.0f;
+    box[3] = pos.y + *(f32*)(this_ + 0x6c) + 4.0f;
+    for (i = 0; i < 4; i++) {
+        if (fn_8023EA28(i) != 1) {
+            if (fn_8022E438(i, *(s32*)(this_ + 0x90)) == 0) {
+                goto hit;
+            }
+            if (fn_8022E438(i, *(s32*)(this_ + 0x90)) == 1 && i != *(s32*)(this_ + 0x90) &&
+                fn_80235580(i) == 1) {
+                goto hit;
+            }
+        }
+        continue;
+    hit:
+        if (fn_8023B0F4(i, box, *(s32*)(this_ + 4), 0, 0.0f)) {
+            found = i;
+        }
+    }
+    if (found < 0) {
+        return 0;
+    }
+    if (fn_8022CAF8(found) == 4) {
+        *(u8*)(this_ + 0x261) = 1;
+        return fn_8022E23C(found, *(void**)(this_ + 0x198));
+    }
+    for (i = 0; i < 4; i++) {
+        if (fn_8022E438(i, found) == 1) {
+            *(u8*)(this_ + 0x261) = 1;
+            fn_8022E23C(i, *(void**)(this_ + 0x198));
+            fn_8022CC20(i);
+            if (fn_8022F514(i) == 1) {
+                ptr = (Vec*)fn_8023E724(i);
+                d.x = pos.x - ptr->x;
+                d.y = pos.y - ptr->y;
+                d.z = pos.z - ptr->z;
+                fn_8023DFF4(i);
+            }
+        }
+    }
+    return 1;
 }
 
 extern "C" void fn_80168E78(char* this_) {
