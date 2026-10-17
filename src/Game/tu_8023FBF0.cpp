@@ -501,6 +501,17 @@ inline BOOL isLinkOwner(char* p) {
     }
     return ((u32)S32(p, 0xd60) >> 31) ^ 1;
 }
+inline BOOL isLinkOwner3(char* p) {
+    u8 bit = 1 << S32(p, 0x4);
+    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
+        return 1;
+    }
+    if (getMode3(p) == 4) {
+        s32 v = linkIdx(p);
+        return v != linkRank2(p);
+    }
+    return ((u32)S32(p, 0xd60) >> 31) ^ 1;
+}
 s32 fn_80236630(s32);
 s32 fn_802366CC(s32);
 s32 fn_80236768(s32);
@@ -523,7 +534,17 @@ s32 fn_8024018C(char* p) {
     return 0;
 }
 s32 fn_80240354(char* p) {
-    if ((u8)isLinkOwner(p)) {
+    u8 bit = 1 << S32(p, 0x4);
+    BOOL owner;
+    if (!(U8(lbl_8053AAF8, 0x82) & bit) && S32(p, 0xd60) < 0) {
+        owner = 1;
+    } else if (getMode3(p) == 4) {
+        s32 v = linkIdx(p);
+        owner = v != linkRank2(p);
+    } else {
+        owner = ((u32)S32(p, 0xd60) >> 31) ^ 1;
+    }
+    if ((u8)owner) {
         return fn_80236768(fn_8022EA0C(S32(p, 0x4)));
     }
     if (U8(p, 0xbdc)) {
@@ -1576,48 +1597,11 @@ BOOL fn_8024DA64(char* p, s32 anim, u8 flag) {
     if (S32(p, 0x1240) != 0) {
         return 0;
     }
-    if (anim == 0xe8) {
-        s32 me;
-        s32 linked;
-        s32 i;
-        s32 c;
-        c = 0;
-        i = c;
-        for (; i < 4; i++) {
-            if (i == S32(p, 0x4)) {
-                c++;
-            } else if (fn_8022F514(i)) {
-                if ((linked = S32(p, 0xd60)) >= 0) {
-                    if (linked == fn_8022F3DC(i)) {
-                        c++;
-                    }
-                } else {
-                    me = S32(p, 0x4);
-                    if (me == fn_8022F3DC(i)) {
-                        c++;
-                    }
-                }
-            } else if (i == S32(p, 0xd60)) {
-                c++;
-            }
-        }
-        s32 mode;
-        if (c <= 1) {
-            mode = 5;
-        } else {
-            linked = S32(p, 0xd60);
-            if (linked >= 0) {
-                mode = fn_8022CAF8(linked);
-            } else {
-                mode = S32(p, 0x120c);
-            }
-        }
-        if (mode == 4) {
-            s32 v = linkIdx(p);
-            if (v != linkRank2(p)) {
-                S16(p, 0x450) = 0x1c5;
-                goto done;
-            }
+    if (anim == 0xe8 && getMode2(p) == 4) {
+        s32 v = linkIdx(p);
+        if (v != linkRank2(p)) {
+            S16(p, 0x450) = 0x1c5;
+            goto done;
         }
     }
     if (anim >= 0) {
