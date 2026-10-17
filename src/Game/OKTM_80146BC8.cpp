@@ -10,6 +10,25 @@ extern "C" void* fn_802D6A9C(void);
 
 extern "C" char lbl_8049F5D8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
+
+struct Tmp16 {
+    f32 x;
+    f32 y;
+    s32 a;
+    s32 b;
+};
+
+class ResMgr {
+public:
+    virtual void vf00();
+    virtual void vf04();
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void* vf18(u32 type, const char* name);
+};
+
 extern "C" Actor* fn_80146BC8(Actor* p, s16 n) {
     if (p) {
         *(void**)p = lbl_8049F5D8;
