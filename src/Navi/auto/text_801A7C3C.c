@@ -1,5 +1,7 @@
 #include "types.h"
 extern void* lbl_8029BBB0[];
+extern void* lbl_8027F1FC[];
+struct Ctx_801B0240 { void* vt; u16 a; u16 b; void* obj; };
 
 typedef struct { u32 v[8]; } Blk32_801AF8F8;
 typedef struct { f32 x, y, z; } Vec3f_801AF8F8;
@@ -673,6 +675,7 @@ extern void fn_801AF9F4(void);
 extern "C" u8 lbl_802EE470[];
 extern "C" void fn_801A8538(void* p);
 extern "C" void fn_801AF9F4(void);
+extern "C" void fn_801A8538(u8* p);
 extern "C" void fn_801AA10C(void* arg0) {
     u8* p = (u8*)arg0;
     u16 i;
@@ -689,7 +692,7 @@ extern "C" void fn_801AA10C(void* arg0) {
     } else {
         *(u32*)(lbl_802EE470 + 0x34) &= ~8;
     }
-    fn_801A8538(*(void**)(p + 4));
+    fn_801A8538(*(u8**)(p + 4));
     q = *(u8**)(p + 4);
     *(u32*)(lbl_802EE470 + 0x58) = *(u32*)(q + 0x6c);
     for (i = 0; i < *(u16*)(q + 0x2c); i++) {
@@ -1581,6 +1584,23 @@ extern "C" void fn_801AF8C4(u8* self, void* node) {
         self = *(u8**)(self + 0x10);
     }
     *(void**)(self + 0x10) = node;
+}
+
+void fn_801AF8F8(struct Obj_801AF8F8* p) {
+    p->w0 = 0;
+    p->w4 = 0;
+    p->w8 = 0;
+    p->wC = 0;
+    p->w10 = 0;
+    p->h14 = 0;
+    p->b16 = 1;
+    p->b17 = 0;
+    p->blk18 = lbl_802024D8;
+    p->f38 = lbl_80301DD4;
+    p->w54 = 0;
+    p->w58 = 0;
+    p->v3C = lbl_80202698;
+    p->v48 = lbl_802026A4;
 }
 
 extern "C" void fn_801AFD48(void* param_1) {
