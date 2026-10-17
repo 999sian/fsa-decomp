@@ -1236,7 +1236,7 @@ extern "C" void fn_801DBBFC(u16 left, u16 top, u16 width, u16 height)
 	*(u32*)(gx + 0x1f4) = __rlwimi(*(u32*)(gx + 0x1f4), 0x4a, 24, 0, 7);
 }
 
-extern "C" void fn_801DBC78(u16 param_1)
+extern "C" void fn_801DBC78(u32 param_1)
 {
 	u8* gx = __GXData;
 	*(u32*)(gx + 0x1e8) = 0;
@@ -1246,24 +1246,73 @@ extern "C" void fn_801DBC78(u16 param_1)
 
 extern "C" void fn_801DBDDC(u32 param_1) {
     u8* gx = __GXData;
+    u32 z = 0;
     u32 v = *(u32*)(gx + 0x1ec);
     *(u32*)(gx + 0x1ec) = (v & 0xffffcfff) | ((param_1 & 3) << 12);
     v = *(u32*)(gx + 0x1fc);
-    *(u32*)(gx + 0x1fc) = (v & 0xffffcfff) | ((0 & 3) << 12);
+    *(u32*)(gx + 0x1fc) = (v & 0xffffcfff) | ((z & 3) << 12);
 }
 
 extern "C" void fn_801DBE00(u32 param_1) {
-    u8* gx = __GXData;
     u32 a = (param_1 & 1) == 1;
+    u8* gx = __GXData;
+    *(u32*)(gx + 0x1ec) = (*(u32*)(gx + 0x1ec) & 0xfffffffe) | a;
     u32 b = (param_1 & 2) == 2;
-    u32 r = *(u32*)(gx + 0x1ec);
-    r = (r & 0xfffffffe) | a;
-    r = (r & 0xfffffffd) | (b << 1);
-    *(u32*)(gx + 0x1ec) = r;
-    r = *(u32*)(gx + 0x1fc);
-    r = (r & 0xfffffffe) | a;
-    r = (r & 0xfffffffd) | (b << 1);
-    *(u32*)(gx + 0x1fc) = r;
+    *(u32*)(gx + 0x1ec) = (*(u32*)(gx + 0x1ec) & 0xfffffffd) | (b << 1);
+    *(u32*)(gx + 0x1fc) = (*(u32*)(gx + 0x1fc) & 0xfffffffe) | a;
+    *(u32*)(gx + 0x1fc) = (*(u32*)(gx + 0x1fc) & 0xfffffffd) | (b << 1);
+}
+
+extern "C" u16 fn_801DBE58(u16 p, f32 f) {
+    u32 n = p;
+    u32 v = (u32)(lbl_80301EC0 / f);
+    u32 d = v & 0x1ff;
+    u32 r = ((n - 1) << 8) / d + 1;
+    if (d > 0x80 && d < 0x100) {
+        do {
+            d >>= 1;
+        } while ((d & 1) == 0);
+        if (n % d == 0) {
+            r += 1;
+        }
+    }
+    if (r > 0x400) {
+        r = 0x400;
+    }
+    return (u16)r;
+}
+
+extern "C" void fn_801DC1EC(u8* p, u32 val)
+{
+	u8* gx = __GXData;
+	u32 r6 = 0;
+	u32 r10 = 0;
+	u32 r11 = 0;
+
+	r6 = __rlwimi(r6, p[0], 0, 24, 31);
+	r6 = __rlwimi(r6, p[3], 8, 16, 23);
+	*(volatile u8*)0xCC008000 = 0x61;
+	r6 = __rlwimi(r6, 0x4f, 24, 0, 7);
+	*(volatile u32*)0xCC008000 = r6;
+
+	r11 = __rlwimi(r11, p[2], 0, 24, 31);
+	r11 = __rlwimi(r11, p[1], 8, 16, 23);
+	*(volatile u8*)0xCC008000 = 0x61;
+	r11 = __rlwimi(r11, 0x50, 24, 0, 7);
+	*(volatile u32*)0xCC008000 = r11;
+
+	r10 = __rlwimi(r10, val, 0, 8, 31);
+	r10 = __rlwimi(r10, 0x51, 24, 0, 7);
+	*(volatile u8*)0xCC008000 = 0x61;
+	*(volatile u32*)0xCC008000 = r10;
+
+	*(u16*)(gx + 2) = 0;
+}
+
+extern "C" void fn_801DC46C(u32 param_1)
+{
+	u8* gx = __GXData;
+	*(u32*)(gx + 0x1ec) = __rlwimi(*(u32*)(gx + 0x1ec), param_1, 7, 23, 24);
 }
 
 #pragma dont_inline reset
