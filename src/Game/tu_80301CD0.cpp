@@ -48,6 +48,8 @@ extern void* lbl_8053AAF0;
 extern void* lbl_8053AEC8;
 extern void* lbl_8053AD68;
 extern u8 lbl_80529DEC[];
+extern u8 lbl_80506DE8[];
+extern u8 lbl_8053ACF8[4];
 struct Elem28_80301CD0 {
     Elem28_80301CD0();
     s32 f0;
