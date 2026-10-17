@@ -84,7 +84,7 @@ extern "C" void fn_80061948(void* param_1) {
     *(u32*)((u8*)param_1 + 0x20) = 0;
 }
 
-extern "C" void fn_8000FA24(void);
+extern "C" void fn_8000FA24(void* p);
 extern "C" u8* fn_80061968(u8* p, s16 n) {
     u8* obj;
 
