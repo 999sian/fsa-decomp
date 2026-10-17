@@ -309,6 +309,7 @@ void fn_80248004(char*, s32, s32);
 bool fn_80236890(void);
 bool fn_802D7804(char*, s32, s32);
 bool fn_8028FBA0(char*);
+void fn_8028FC2C(char*);
 f32* fn_80238430(s32);
 bool fn_8026E5F8(char*, JGeometry::TVec2<f32>*);
 void fn_80458880(void*, u32, s32);
@@ -783,6 +784,17 @@ bool fn_80240DCC(char* p) {
 BOOL fn_80240ED4(char* p) { STATE_OR2(p, 0x1240, 0x1e, 0x32); }
 BOOL fn_80240EF4(char* p) { STATE_OR2(p, 0x1240, 0x42, 0x43); }
 BOOL fn_80240F14(char* p) { return S32(p, 0x1240) == 0x41 ? 1 : 0; }
+
+s32 fn_8023513C(s32);
+s32 fn_80240F28(char* p) {
+    if (getMode3(p) == 5) {
+        if ((u8)isLinkOwner(p)) {
+            return fn_8023513C(fn_8022EA0C(S32(p, 0x4)));
+        }
+    }
+    return S32(p, 0x1240) == 0x39;
+}
+
 BOOL fn_8024119C(char* p) {
     BOOL r = 0;
     if (S32(p, 0x1240) == 0xc && S32(p, 0x11e4) != 0xc) {
@@ -2169,10 +2181,61 @@ void fn_8024CA20(char* p) {
 
 void fn_8024CAC8(char* p, s32 a2, s32 a3, u8 a4, u8 a5) {
     if (S32(p, 0xd50) <= 0 && (S32(p, 0xd44) < 0 || S32(p, 0xd44) == a3) && S32(p, 0xd3c) < 0) {
+        s32 linked;
+        s32 me;
+        s32 c;
+        s32 i;
+        s32 iVar4;
+        s32 cnt;
+        u32 uVar5;
         u8 uVar8 = 1;
-        if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 4))) != 0 || S32(p, 0xd60) >= 0) {
-            if (getMode2(p) == 4) {
-                uVar8 = linkIdx(p) != linkRank2(p);
+        if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) != 0 || S32(p, 0xd60) >= 0) {
+            c = 0;
+            for (i = 0; i < 4; i++) {
+                if (i == S32(p, 0x4)) {
+                    c++;
+                } else if (fn_8022F514(i)) {
+                    linked = S32(p, 0xd60);
+                    if (linked >= 0) {
+                        if (linked == fn_8022F3DC(i)) {
+                            c++;
+                        }
+                    } else {
+                        me = S32(p, 0x4);
+                        if (me == fn_8022F3DC(i)) {
+                            c++;
+                        }
+                    }
+                } else if (i == S32(p, 0xd60)) {
+                    c++;
+                }
+            }
+            if (c < 2) {
+                iVar4 = 5;
+            } else if (S32(p, 0xd60) < 0) {
+                iVar4 = S32(p, 0x120c);
+            } else {
+                iVar4 = fn_8022CAF8(S32(p, 0xd60));
+            }
+            if (iVar4 == 4) {
+                if (S32(p, 0xd60) < 0) {
+                    uVar5 = S32(p, 0x1224);
+                } else {
+                    uVar5 = fn_80234004(S32(p, 0xd60));
+                }
+                if (S32(p, 0xd60) < 0) {
+                    cnt = 0;
+                } else {
+                    linked = S32(p, 0xd60);
+                    cnt = 0;
+                    for (i = 0; i < S32(p, 0x4); i++) {
+                        if (linked == fn_8022F3DC(i)) {
+                            cnt++;
+                        }
+                    }
+                    cnt++;
+                }
+                uVar8 = ((u32)(cnt - uVar5) | (u32)(uVar5 - cnt)) >> 31;
             } else {
                 uVar8 = ((u32)S32(p, 0xd60) >> 31) ^ 1;
             }
