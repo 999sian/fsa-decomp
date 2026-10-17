@@ -240,6 +240,38 @@ extern "C" void fn_801744E4(void* this_) {
     }
 }
 
+extern void* lbl_804A0B90[];
+extern "C" void __dt__5ActorFv(void* this_, s32 flag);
+void __dl__FPv(void*);
+extern "C" void fn_80138B7C(void* mgr);
+extern "C" void* fn_80174600(void* this_, s16 flag) {
+    char* p = (char*)this_;
+    if (this_ != 0) {
+        *(void**)this_ = lbl_804A0B90;
+        s32 mode = *(u32*)(p + 0x90) & 0xff;
+        if (mode != 7 && mode != 8) {
+            if (mode != 6) {
+                s32 st = *(s32*)((char*)lbl_8053AAF8 + 0x4c);
+                if (st != 9 && st != 0xb && *(s32*)(p + 0x108) != 0) {
+                    fn_80138B7C(lbl_8053AAF8);
+                }
+            }
+            s32 id = *(s32*)(p + 0x238);
+            if (id >= 0) {
+                void* obj = fn_801F666C(fn_801F856C(), id);
+                if (obj != 0) {
+                    *(u8*)((char*)obj + 0x11c) = 0;
+                }
+            }
+        }
+        __dt__5ActorFv(this_, 0);
+        if (flag > 0) {
+            __dl__FPv(this_);
+        }
+    }
+    return this_;
+}
+
 extern u8 lbl_804A08C0[];
 extern const f32 lbl_8053DB10;
 extern "C" void fn_801746DC(void* this_) {
