@@ -2,6 +2,12 @@
 
 #include "types.h"
 
+struct Vec4_80177B10 {
+    f32 x;
+    f32 y;
+    f32 z;
+    f32 w;
+};
 extern void* lbl_802988A8[];
 extern "C" void fn_80118BD0(void* p, int b);
 
@@ -1596,14 +1602,14 @@ extern "C" void* fn_801706E4(u8* self, s16 param_2)
 extern "C" s32 fn_80170D0C(u8* self, u8 count) {
     s32 i;
 
-    for (i = 0; (u8)i < count; i++) {
+    for (i = 0; i < count; i++) {
         s32 off;
         u8* obj;
 
-        if ((u8)i >= 8) {
+        if (i >= 8) {
             return 0;
         }
-        off = ((u8)i * 4) + 0x16c;
+        off = (i * 4) + 0x16c;
         if (*(void**)(self + off) == nullptr) {
             obj = (u8*)fn_8015A90C(0x40);
             if (obj != nullptr) {
@@ -1615,7 +1621,7 @@ extern "C" s32 fn_80170D0C(u8* self, u8 count) {
             if (*(void**)(self + off) == nullptr) {
                 return 0;
             }
-            self[0x1b0] = self[0x1b0] | (1 << (u8)i);
+            self[0x1b0] = self[0x1b0] | (1 << i);
         }
     }
     return 1;
