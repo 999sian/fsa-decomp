@@ -85,7 +85,7 @@ extern "C" bool fn_8006FD9C(u8* param_1, void* param_2) {
         fn_8011FD18(uVar2, lbl_80280920, 0x141, (s32)&lbl_802FC9E0, lbl_80280ACC);
         fn_80007AB8(lbl_80280920, 0x141, (s32)&lbl_802FC9E4);
     }
-    if (fn_8000D798(param_1 + 0x284, p + 0x58, r, 1, 2, 0, -1, lbl_803004D8) != 0) {
+    if (fn_8000D798(param_1 + 0x284, p + 0x58, r, 1, 2, 0, -1, lbl_803004D8) == 0) {
         return false;
     }
     return true;
