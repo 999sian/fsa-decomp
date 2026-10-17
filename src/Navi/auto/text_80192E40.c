@@ -148,6 +148,7 @@ extern "C" void fn_801933DC(u32 a, u32 b, u32 c, f32* out, f32 x, f32 y, f32 z) 
     out[11] = z;
 }
 
+#pragma fp_contract off
 extern "C" void fn_8019349C(f32* p, f32* q, f32* out) {
     extern u8 lbl_802F0BC0[];
     u32 idx = ((s32)*(s16*)(p + 2) >> 2) & 0x3FF8;
