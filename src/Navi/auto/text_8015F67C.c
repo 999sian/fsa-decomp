@@ -127,7 +127,7 @@ extern "C" void fn_8015FBC0(u8* param_1)
     param_1[0x28] = 0;
 }
 
-extern "C" s32 fn_8015FBCC(VObjT_8015FBCC* param_1)
+extern "C" s32 fn_8015FBCC(VObj_8015FBCC* param_1)
 {
     s32 iVar1;
     s32 iVar2;
