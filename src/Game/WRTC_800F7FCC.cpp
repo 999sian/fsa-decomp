@@ -88,6 +88,50 @@ extern "C" void* fn_800F7FCC(void* this_, s16 freeFlag) {
     return this_;
 }
 
+extern "C" void fn_800F802C(void* this_) {
+    u8* self = (u8*)this_;
+    if (self[0xc] != 0) {
+        f32 scale;
+        s32 limit;
+        switch (self[0xd]) {
+        case 0:
+            scale = lbl_8053BFA0;
+            limit = 0x28;
+            break;
+        case 1:
+            scale = lbl_8053BFA4;
+            limit = 0x28;
+            break;
+        case 2:
+            scale = lbl_8053BFA8;
+            limit = 0x14;
+            break;
+        default:
+            scale = lbl_8053BFA0;
+            limit = 0x28;
+            break;
+        }
+        *(f32*)(self + 0x10) = (f32)*(u16*)(self + 0x14) * scale;
+        *(u16*)(self + 0x14) += 1;
+        if (*(u16*)(self + 0x14) > limit) {
+            self[0xc] = 0;
+        }
+        for (s32 i = 0; i < 4; i++) {
+            if (fn_8023F264(i) && (s32)fn_8022EA0C(i) == i && !(self[0x16] & (1 << i)) && fn_8023DE58(i) == 0) {
+                JGeometry::TVec2<f32> d;
+                d.x = fn_8023E724(i)[0] - *(f32*)self;
+                d.y = fn_8023E724(i)[1] - *(f32*)(self + 4);
+                if (d.length() < *(f32*)(self + 0x10)) {
+                    d.x = *(f32*)self;
+                    d.y = *(f32*)(self + 4);
+                    fn_80238548(i, 0, (f32*)&d, 0xb);
+                    self[0x16] |= (1 << i);
+                }
+            }
+        }
+    }
+}
+
 // ---- from Game/fn_800F89FC.cpp
 
 extern "C" void fn_801F0E34(void* target, u32 effectId, s32 flag);
