@@ -1,4 +1,7 @@
-#include "Game/Actor.h"
+#include "Game/ItemBase.h"
+#include "JSystem/JMath/Inline.h"
+#include "JSystem/JMath/JMath.h"
+struct Actor;
 
 
 extern "C" char __vt__4MRTA[];
@@ -10,6 +13,68 @@ extern "C" void detach__5ActorFv(void*);
 extern "C" u16 fn_8022461C(f32* pos);
 extern "C" s32 v17__5ActorFiPf(void* this_, s32 room, f32* pos);
 extern "C" s32 fn_801F132C(void* this_, s32 a, s32 b, void* state);
+extern "C" u8 fn_801F2618(Actor* a, f32* out, u32 c);
+extern "C" u8 fn_8023B0F4(s32 idx, void* box, s32 a2, s32 a3, f32 f);
+extern "C" void* fn_8023E724(s32 i);
+extern "C" const Vec lbl_804722F0[];
+extern "C" s32 fn_80354D64(Actor* this_, u8 arg2) {
+    u8* p = (u8*)this_;
+    Vec saved;
+    Vec* pos = (Vec*)(p + 0xc);
+    Vec* vel = (Vec*)(p + 0x3c);
+    f32 out[3] = {0.0f, 0.0f, 0.0f};
+    f32 box[4];
+    s32 hit = 0;
+    s32 i;
+
+    saved = *pos;
+    *vel = lbl_804722F0[arg2];
+    pos->x += vel->x;
+    pos->y += vel->y;
+    pos->z += vel->z;
+
+    if (fn_801F2618(this_, out, 0)) {
+        switch (arg2) {
+        case 0:
+            if (out[0] >= 0.0f) hit = 1;
+            break;
+        case 1:
+            if (out[0] <= 0.0f) hit = 1;
+            break;
+        case 2:
+            if (out[1] >= 0.0f) hit = 1;
+            break;
+        case 3:
+            if (out[1] <= 0.0f) hit = 1;
+            break;
+        }
+    } else {
+        hit = 1;
+    }
+
+    if (!hit) {
+        f32* b = (f32*)(p + 0x60);
+        for (i = 0; i < 4; i++) {
+            box[0] = b[0] + pos->x;
+            box[1] = b[1] + pos->y;
+            box[2] = b[2] + pos->x;
+            box[3] = b[3] + pos->y;
+            if (fn_8023B0F4(i, box, *(s32*)(p + 4), 0, 0.0f)) {
+                void* q = fn_8023E724(i);
+                if (((u8 (*)(void*, s32, void*))(*(u32*)(*(u32*)this_ + 0x4c)))(this_, *(s32*)(p + 4), q) == 1) {
+                    hit = 0;
+                }
+            }
+        }
+    }
+
+    *pos = saved;
+    vel->x = 0.0f;
+    vel->y = 0.0f;
+    vel->z = 0.0f;
+    return hit;
+}
+
 extern "C" s32 fn_8035533C(void* this_, s32 param2, f32* param3) {
     u8* p = (u8*)this_;
     if (*(s32*)(p + 0x230) == 0) {
@@ -208,12 +273,12 @@ extern "C" void fn_80356268(void* this_) {
 extern "C" Actor* fn_80356514(Actor* p, s16 n) {
     if (p != 0) {
         *(void**)p = __vt__4MRTA;
-        void* v0 = *(void**)((char*)p + 0x2e0);
-        if (v0 != 0) {
-            fn_801EE434(v0);
+        if (*(void**)((char*)p + 0x2e0) != 0) {
+            fn_801EE434();
         }
         __dt__5ActorFv(p, 0);
-        if (n > 0) {
+        s32 v = n;
+        if (v > 0) {
             operator delete(p);
         }
     }
