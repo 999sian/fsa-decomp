@@ -23,10 +23,7 @@ static inline void writeChanCtrl(u16 x) {
     u8 attn = attnTbl[(x >> 9) & 3];
     u32 diffuse = (x >> 7) & 3;
     u32 lightMask = ((x >> 2) & 0x0F) | ((x >> 11) & 0x0F) << 4;
-    if (attn == GX_AF_SPEC) {
-        diffuse = GX_DF_NONE;
-    }
-    __GDWriteU32((x & 3) | (x >> 6 & 1) << 6 | (lightMask & 0x0F) << 2 | diffuse << 7 | (attn != GX_AF_NONE) << 9 |
+    __GDWriteU32((x & 3) | (x >> 6 & 1) << 6 | (lightMask & 0x0F) << 2 | ((attn == GX_AF_SPEC) ? GX_DF_NONE : diffuse) << 7 | (attn != GX_AF_NONE) << 9 |
                  (attn != GX_AF_SPEC) << 10 | (lightMask >> 4) << 11);
 }
 struct Hdr_800DDA5C { u16 w; u8 b2; u8 b3; };
