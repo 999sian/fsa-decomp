@@ -7,6 +7,37 @@ extern "C" void fn_8015AB1C(void* ptr);
 extern void* lbl_8028C4BC[];
 extern u8 lbl_802BB0FC[];
 extern "C" s32 fn_8002185C(void);
+extern "C" void* memcpy(void* dst, const void* src, unsigned long n);
+extern "C" s64 OSGetTime(void);
+extern "C" void fn_801E445C(const char* fmt, ...);
+extern "C" void fn_800EFC44(void* buf);
+extern u8 lbl_802B7CA0[];
+extern char lbl_8028BFCC[];
+extern char lbl_8028BFDC[];
+extern char lbl_8028BFEC[];
+extern "C" s32 fn_800F0C44(void* param_1, u8* p, s32 idx) {
+    u8* dst = (idx * 0x9c4 + p) + 0x258;
+    memcpy(dst, lbl_802B7CA0, 0x9b8);
+    *(s64*)dst = OSGetTime();
+    fn_801E445C(lbl_8028BFCC, 0x9b8);
+    return 0;
+}
+
+extern "C" s32 fn_800F0CB4(void* param_1, u8* p, s32 idx) {
+    memcpy(lbl_802B7CA0, (idx * 0x9c4 + p) + 0x258, 0x9b8);
+    fn_801E445C(lbl_8028BFDC, 0x9b8);
+    return 0;
+}
+
+extern "C" s32 fn_800F0D04(void* param_1, u8* p, s32 idx) {
+    u8 buf[0x9b8];
+    u8* dst = (idx * 0x9c4 + p) + 0x258;
+    fn_800EFC44(buf);
+    memcpy(dst, buf, 0x9b8);
+    fn_801E445C(lbl_8028BFEC, 0x9b8);
+    return 0;
+}
+
 extern "C" s32 fn_800F0D64(u8* p) {
     s32 n = 0;
     u32 s = 0;
@@ -65,6 +96,37 @@ extern "C" void fn_800F0EC0(u8* p) {
     }
 }
 
+extern u8 lbl_802C5890[];
+extern s32 lbl_802FF1F8;
+extern s32 lbl_802FF1FC;
+extern u8 lbl_802C5A18[];
+extern "C" void fn_800F0F34(u8* p) {
+    *(s32*)(p + 0xd0) = 0;
+    *(s32*)(p + 0xd8) = 0;
+    lbl_802C5890[0x0] = 0;
+    lbl_802C5890[0x1] = 0;
+    lbl_802C5890[0x2] = 0;
+    lbl_802C5890[0x3] = 0;
+    lbl_802C5890[0x4] = 0;
+    lbl_802C5890[0x5] = 0;
+    lbl_802C5890[0x6] = 0;
+    lbl_802C5890[0x7] = 0;
+    lbl_802C5890[0x8] = 0;
+    lbl_802C5890[0x9] = 0;
+    lbl_802C5890[0xa] = 0;
+    lbl_802C5890[0xb] = 0;
+    lbl_802C5890[0xc] = 0;
+    lbl_802C5890[0xd] = 0;
+    lbl_802C5890[0xe] = 0;
+    lbl_802C5890[0xf] = 0;
+    lbl_802C5890[0x10] = 0;
+    lbl_802C5890[0x11] = 0;
+    lbl_802C5890[0x12] = 0;
+    lbl_802C5890[0x13] = 0;
+    lbl_802FF1F8 = 0;
+    lbl_802FF1FC = 0;
+}
+
 extern "C" u8 fn_800F26B0(u8* param_1, s32 param_2) {
     s32 v = *(s32*)(param_1 + 0xd8);
     s32 r = v % 5;
@@ -72,10 +134,12 @@ extern "C" u8 fn_800F26B0(u8* param_1, s32 param_2) {
     for (i = 0; i < 5; i++, param_1 += 8) {
         if (*(s32*)(param_1 + 0x8c) == param_2) {
             s32 t = v + (i - r);
+            s32 q;
             if (i < r) {
                 t += 5;
             }
-            return (u8)(((t / 10) << 4) + (t - (t / 10) * 10));
+            q = t / 10;
+            return (u8)((q << 4) + (t - q * 10));
         }
     }
     return 0;
