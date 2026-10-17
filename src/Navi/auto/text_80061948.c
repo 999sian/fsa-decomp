@@ -267,11 +267,13 @@ extern "C" int fn_800636F4(s32 a, void* p, s32 n) {
         fn_800074C0(lbl_8027F0BC, a);
         return 0;
     }
-    if (--*(u16*)(r + 0xe) == 0 && r != 0) {
-        u8* obj = *(u8**)(r + 0x10);
+    u16 c = *(u16*)(r + 0xe) - 1;
+    *(u16*)(r + 0xe) = c;
+    if (c == 0 && r != 0) {
+        VObj800636F4_10* obj = *(VObj800636F4_10**)(r + 0x10);
         if (obj != 0) {
             if (obj != 0) {
-                (*(void (**)(u8*, s32))(*(u8**)(obj + 0x10) + 8))(obj, 1);
+                obj->Destroy(1);
             }
             *(u32*)(r + 0x10) = 0;
         } else if (*(u32*)(r + 0x14) != 0) {
@@ -282,7 +284,7 @@ extern "C" int fn_800636F4(s32 a, void* p, s32 n) {
             if (*(u32*)(r + 0x20) != 0) {
                 *(u32*)(r + 0x20) = 0;
             }
-            (*(void (**)(u8*))(**(u8***)(r + 0x14) + 0xc))(*(u8**)(r + 0x14));
+            (*(VObj800636F4_14**)(r + 0x14))->Release();
             *(u32*)(r + 0x14) = 0;
         }
     }
