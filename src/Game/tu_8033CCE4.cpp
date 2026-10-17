@@ -27,6 +27,19 @@ bool fn_8023B0F4(int, f32*, int, f32, int);
 int fn_8022CAF8(int);
 bool fn_8022F478(int);
 int fn_80238CB4(int);
+s32 fn_80239108(s32);
+s32 fn_80238BC4(s32);
+void fn_80238E08(s32);
+void* fn_802D6A9C(void);
+void fn_802D7584(void*, s32, u8);
+void fn_801F0E34(void*, s32, s32);
+s32 fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+void fn_8022FEB8(f32*, s32, s32, s32, s32);
+s32 fn_8022FD8C(s32);
+f32* fn_8023E724(s32);
+bool fn_802300EC(s32);
+bool fn_8038C678(s32, s32, s32, s32, void*, s32);
+s32 fn_80230CFC(s32);
 }
 
 struct UnkObj8033D4CC {
@@ -256,5 +269,162 @@ extern "C" f32 fn_8033D4AC(f32 a, f32 b, f32 c) {
         return b - t;
     }
     return b + t;
+}
+
+extern f32 lbl_805421CC;
+extern f32 lbl_805421D0;
+extern f32 lbl_805421D4;
+extern f32 lbl_805421D8;
+extern JGeometry::TVec3f lbl_804A79E0[];
+extern JGeometry::TVec3f lbl_804AC2A8[];
+s32 fn_80239108(s32);
+s32 fn_80238BC4(s32);
+void fn_80238E08(s32);
+void* fn_802D6A9C(void);
+void fn_802D7584(void*, s32, u8);
+void fn_801F0E34(void*, s32, s32);
+s32 fn_8013CC50(s32, void*, f32, s32, s32, s32, s32, s32, s32);
+void fn_8022FEB8(f32*, s32, s32, s32, s32);
+s32 fn_8022FD8C(s32);
+f32* fn_8023E724(s32);
+bool fn_802300EC(s32);
+bool fn_8038C678(s32, s32, s32, s32, void*, s32);
+s32 fn_80230CFC(s32);
+extern f32 lbl_805421A0;
+bool fn_8033D264(void*, u8);
+extern "C" void fn_8033D4CC(UnkObj8033D4CC* self) {
+    if (fn_80239108(self->mHandle) >= self->m260) {
+        if (PSVECDistance(&self->mPos, &self->mAnchor) < (f32)(self->m260 << 4) - lbl_805421C8) {
+            s32 idx = fn_80238BC4(self->mHandle);
+            JGeometry::TVec3f saved = self->mPos;
+            self->mPos.add(lbl_804A79E0[idx]);
+            bool hit = fn_801F2618(self, NULL, 0);
+            if (hit) {
+                self->mPos = saved;
+                return;
+            }
+            self->mPos = saved;
+            if (self->m270 == 1) {
+                if (self->m26c == 0) {
+                    self->m26c = idx + 1;
+                } else if (idx + 1 != self->m26c) {
+                    return;
+                }
+            }
+            if (self->m260 == 2) {
+                if (!fn_8033D264(self, (u8)idx)) {
+                    return;
+                }
+            }
+            if (self->m264 == 0) {
+                fn_802D7584(fn_802D6A9C(), self->m16c, (u8)(idx + 1));
+            }
+            if (idx >= 0 && idx < 4) {
+                fn_80238E08(self->mHandle);
+                switch (self->m25c) {
+                case 0:
+                case 1:
+                case 5:
+                    self->mVel = lbl_804AC2A8[idx];
+                    self->mVel.scale(lbl_805421CC);
+                    break;
+                case 2:
+                case 3:
+                case 4:
+                case 6:
+                    self->mVel = lbl_804AC2A8[idx];
+                    self->mVel.scale(lbl_805421D0);
+                    break;
+                }
+            }
+            if (self->m271 == 1) {
+                self->m271 = 0;
+            } else {
+                self->mPrev = self->mPos;
+            }
+            fn_801F0E34(self, 0x30004, 0);
+            self->m272 = 1;
+            if (self->m25c == 4) {
+                if (idx == 0) {
+                    self->m230 = fn_8013CC50(self->room, &self->mPos, lbl_805421A0, 0x31a, 1, 1, 0, 0, 1);
+                } else if (idx == 1) {
+                    self->m230 = fn_8013CC50(self->room, &self->mPos, lbl_805421A0, 0x31b, 1, 1, 0, 0, 1);
+                } else if (idx == 2) {
+                    self->m230 = fn_8013CC50(self->room, &self->mPos, lbl_805421A0, 0x31c, 1, 1, 0, 0, 1);
+                } else {
+                    self->m230 = fn_8013CC50(self->room, &self->mPos, lbl_805421A0, 0x319, 1, 1, 0, 0, 1);
+                }
+            }
+        }
+    } else {
+        if (self->mSpawnParam & 0x10000) {
+            if (PSVECDistance(&self->mPos, &self->mAnchor) > lbl_805421A0) {
+                if (self->m248 == 0) {
+                    f32 f31 = lbl_805421D4;
+                    self->mVel.x = lbl_805421B0;
+                    self->mVel.y = lbl_805421B0;
+                    self->mVel.z = lbl_805421B0;
+                    switch (self->m25c) {
+                    case 0:
+                    case 1:
+                    case 5:
+                        f31 = lbl_805421D4;
+                        break;
+                    case 2:
+                    case 3:
+                    case 4:
+                    case 6:
+                        f31 = lbl_805421D8;
+                        break;
+                    }
+                    if (self->mPos.x > self->mAnchor.x) {
+                        self->mVel.x = -f31;
+                    } else if (self->mPos.x < self->mAnchor.x) {
+                        self->mVel.x = f31;
+                    }
+                    if (self->mPos.y > self->mAnchor.y) {
+                        self->mVel.y = -f31;
+                    } else if (self->mPos.y < self->mAnchor.y) {
+                        self->mVel.y = f31;
+                    }
+                    self->mPrev = self->mPos;
+                    fn_801F0E34(self, 0x30004, 0);
+                } else {
+                    self->m248--;
+                }
+                return;
+            }
+        }
+
+        f32 rect[4];
+        rect[0] = self->mRect[0] + self->mPos.x;
+        rect[1] = self->mRect[1] + self->mPos.y;
+        rect[2] = self->mRect[2] + self->mPos.x;
+        rect[3] = self->mRect[3] + self->mPos.y;
+        if (self->m25c == 0) {
+        } else if (self->m25c == 2) {
+            fn_8022FEB8(rect, self->room, self->mHandle, 1, 0);
+        } else {
+            return;
+        }
+        self->m258 = fn_8022FD8C(self->mHandle);
+        if (self->m258 < 0) {
+            return;
+        }
+        f32* p = fn_8023E724(self->m258);
+        if (p[2] != lbl_805421B0) {
+            return;
+        }
+        if (!fn_802300EC(self->m258)) {
+            return;
+        }
+        JGeometry::TVec3f tmp = self->mPos;
+        if (!fn_8038C678(self->m258, self->m268, self->mHandle, self->room, &tmp, 0)) {
+            return;
+        }
+        self->m234 = 1;
+        self->m254 = fn_80230CFC(self->m258);
+        self->m254 ^= 1;
+    }
 }
 
