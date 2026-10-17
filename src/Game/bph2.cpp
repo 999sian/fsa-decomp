@@ -1,6 +1,7 @@
 // Functions imported from EverydaySimpleDev/FSA-Decomp (CC0).
 // TU 8018A8D8-8018EB94 (BPH2). Remaining functions are not yet decompiled.
 #include "types.h"
+#include "JSystem/JMath/JMath.h"
 
 // from src/Game/Bph2_SetVec2.cpp
 // BPH2 cluster, part 5 (final piece). fn_8018E964 - trivial 2-float
@@ -153,6 +154,135 @@ extern "C" s32 fn_8018DA6C(char* this_) {
         *(f32*)(this_ + 0x284) = lbl_8053E140;
     }
     return 0;
+}
+
+extern "C" void fn_8018DFCC(char* this_) {
+    f32 x = *(f32*)(this_ + 0xc);
+    f32 y = *(f32*)(this_ + 0x10);
+    f32 z = *(f32*)(this_ + 0x14);
+    void* obj;
+
+    x -= lbl_8053E190;
+    if (*(s32*)(this_ + 0x26c) == 1) {
+        return;
+    }
+    if (*(s32*)(this_ + 0x268) == 4 || *(s32*)(this_ + 0x268) == 6 || *(s32*)(this_ + 0x268) == 0xb) {
+        fn_801F0E34(this_, 0x40049, 0);
+    }
+    if (*(s32*)(this_ + 0x268) == 2) {
+        fn_801F0E34(this_, 0x4004b, 0);
+    }
+    if (*(s32*)(this_ + 0x234) == 0) {
+        switch (*(s32*)(this_ + 0x268)) {
+        case 0:
+            *(s32*)(this_ + 0x264) += 1;
+            if (*(s32*)(this_ + 0x264) > 5) {
+                *(s32*)(this_ + 0x264) = 0;
+            }
+            break;
+        case 3:
+        case 5:
+        case 11:
+            *(s32*)(this_ + 0x264) += 1;
+            if (*(s32*)(this_ + 0x264) > 7) {
+                if (*(s32*)(this_ + 0x268) == 3) {
+                    fn_8018E30C(this_, 4);
+                } else if (*(s32*)(this_ + 0x268) == 5) {
+                    fn_8018E30C(this_, 6);
+                } else {
+                    *(s32*)(this_ + 0x264) = 7;
+                    *(u8*)(this_ + 0x27a) = 1;
+                    break;
+                }
+            } else {
+                break;
+            }
+            /* fallthrough */
+        case 4:
+        case 6:
+            y = y + lbl_8053E128;
+            obj = *(void**)(this_ + 0x328);
+            if (obj != 0) {
+                *(f32*)((char*)obj + 0xa4) = x;
+                *(f32*)((char*)obj + 0xa8) = y;
+                *(f32*)((char*)obj + 0xac) = z;
+            }
+            obj = *(void**)(this_ + 0x32c);
+            if (obj != 0) {
+                *(f32*)((char*)obj + 0xa4) = x;
+                *(f32*)((char*)obj + 0xa8) = y;
+                *(f32*)((char*)obj + 0xac) = z;
+            }
+            *(s32*)(this_ + 0x264) += 1;
+            *(s32*)(this_ + 0x264) &= 3;
+            break;
+        case 1:
+        case 10:
+            *(s32*)(this_ + 0x264) += 1;
+            if (*(s32*)(this_ + 0x264) > 7) {
+                if (*(s32*)(this_ + 0x268) == 1) {
+                    fn_8018E30C(this_, 2);
+                } else {
+                    *(s32*)(this_ + 0x264) = 7;
+                    *(u8*)(this_ + 0x27a) = 1;
+                    break;
+                }
+            } else {
+                break;
+            }
+            /* fallthrough */
+        case 2:
+            y = y + lbl_8053E1C4;
+            obj = *(void**)(this_ + 0x328);
+            if (obj != 0) {
+                *(f32*)((char*)obj + 0xa4) = x;
+                *(f32*)((char*)obj + 0xa8) = y;
+                *(f32*)((char*)obj + 0xac) = z;
+            }
+            obj = *(void**)(this_ + 0x32c);
+            if (obj != 0) {
+                *(f32*)((char*)obj + 0xa4) = x;
+                *(f32*)((char*)obj + 0xa8) = y;
+                *(f32*)((char*)obj + 0xac) = z;
+            }
+            *(s32*)(this_ + 0x264) += 1;
+            *(s32*)(this_ + 0x264) &= 3;
+            break;
+        case 7:
+        case 9:
+            *(s32*)(this_ + 0x264) += 1;
+            if (*(s32*)(this_ + 0x264) > 0x15) {
+                if (*(s32*)(this_ + 0x268) == 7) {
+                    fn_8018E30C(this_, 8);
+                } else {
+                    *(s32*)(this_ + 0x264) = 0x15;
+                    *(u8*)(this_ + 0x27a) = 1;
+                    break;
+                }
+            } else {
+                break;
+            }
+            /* fallthrough */
+        case 8:
+            *(s32*)(this_ + 0x264) += 1;
+            if (*(s32*)(this_ + 0x264) > 5) {
+                *(s32*)(this_ + 0x264) = 0;
+            }
+            break;
+        case 12:
+            *(s32*)(this_ + 0x264) += 1;
+            if (*(s32*)(this_ + 0x264) > 0xb) {
+                fn_8018E30C(this_, 0xd);
+                *(u8*)(this_ + 0x27a) = 1;
+            }
+            break;
+        case 13:
+            *(s32*)(this_ + 0x264) += 1;
+            *(s32*)(this_ + 0x264) &= 3;
+            break;
+        }
+        *(s32*)(this_ + 0x234) = lbl_804A1B70[*(s32*)(this_ + 0x270) + *(s32*)(this_ + 0x264)];
+    }
 }
 
 extern "C" void fn_8018E30C(char* this_, s32 state) {
