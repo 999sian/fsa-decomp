@@ -45,6 +45,9 @@ extern char lbl_8045E10C[];
 extern char lbl_8053B6D0[3];
 
 extern void* lbl_80498BB0[];
+extern "C" bool fn_8007A398(u8* this_, s32 entryNum);
+extern "C" void* __ct__10JKRArchiveFlQ210JKRArchive10EMountMode(void* this_, s32 entryNum, s32 mountMode);
+extern "C" void prepend__10JSUPtrListFP10JSUPtrLink(char* list, u8* link);
 extern "C" void* fn_8007BC30(void* this_);
 extern "C" void* fn_80079EFC(void* this_) {
     fn_8007BC30(this_);
