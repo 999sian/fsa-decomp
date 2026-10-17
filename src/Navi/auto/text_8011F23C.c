@@ -51,6 +51,7 @@ extern void* lbl_802FF348;
 extern char lbl_80290AF4[];
 extern "C" void* fn_80122E40(void* a, void* b, void* c, s32 d);
 extern "C" void fn_80123B6C(void* a, void* b);
+extern "C" void fn_80167A68(void* a, void* b);
 extern "C" void* fn_80123EB8(void);
 extern "C" void fn_80123EB0(void* p);
 extern "C" void* fn_80123EA8(void);
