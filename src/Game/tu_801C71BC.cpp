@@ -2,7 +2,7 @@
 #include "JSystem/JGeometry/Vec.h"
 extern "C" void fn_801C8B50(char* this_);
 extern "C" void fn_801C3B7C(void* this_, s32 state);
-extern "C" BOOL fn_800FD4C0(void* ring, u8 a, u8 b);
+extern "C" u8 fn_800FD4C0(void* ring, u8 a, u8 b);
 extern "C" JGeometry::TVec3<f32> fn_800FE294(void* ring, u8 i);
 extern "C" void fn_800FD818(void* p, s32 n);
 extern "C" void* GetCurrentSlotPtr(void* thisPtr);
@@ -19,6 +19,62 @@ extern "C" void fn_801C8C84(char* this_, s32 a, s32 b);
 extern "C" s16 fn_801D02E0(char* this_, void* p);
 extern "C" u8 fn_800FD894(void* ring, s32 id, u8* buf, s32 n);
 extern "C" s32 fn_801CD664(s32 n);
+
+extern "C" void fn_801C71BC(char* this_) {
+    u8 ids[4];
+    u8 b;
+    u8 c;
+    u32 a;
+    u8* s;
+    u8 done;
+    JGeometry::TVec3<f32> pos;
+
+    *(u32*)(this_ + 0x230) &= 0xffefffff;
+    if (!(*(u32*)(this_ + 0x230) & 0x2000000)) {
+        done = 0;
+        a = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
+        fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), 1);
+        b = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
+        s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+        if (a < s[2]) {
+            s[3] = a;
+        }
+        fn_800FD818(GetCurrentSlotPtr(this_ + 0x358), -1);
+        c = ((u8*)GetCurrentSlotPtr(this_ + 0x358))[3];
+        s = (u8*)GetCurrentSlotPtr(this_ + 0x358);
+        if ((u8)a < s[2]) {
+            s[3] = a;
+        }
+        if (&ids[0] != 0) {
+            ids[0] = c;
+        }
+        if (&ids[1] != 0) {
+            ids[1] = a;
+        }
+        if (&ids[2] != 0) {
+            ids[2] = b;
+        }
+        if (fn_800FD4C0(GetCurrentSlotPtr(this_ + 0x358), ids[1], ids[0]) ||
+            fn_800FD4C0(GetCurrentSlotPtr(this_ + 0x358), ids[1], ids[2])) {
+            *(s32*)(this_ + 0x2a8) = 0;
+            *(u32*)(this_ + 0x230) &= 0xfffdefff;
+            *(u32*)(this_ + 0x230) |= 0x400000;
+            pos = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+            *(f32*)(this_ + 0x32c) = pos.x;
+            *(f32*)(this_ + 0x330) = pos.y;
+            *(f32*)(this_ + 0x334) = pos.z;
+            done = 1;
+        }
+        if (done) {
+            return;
+        }
+    }
+    fn_801C8B50(this_);
+    *(s16*)(this_ + 0x33c) += fn_801CD664(0x4001) - 0x2000;
+    if (!(*(u32*)(this_ + 0x524) & 0x40)) {
+        fn_801C3B7C(this_, 0x1c);
+    }
+}
 
 extern "C" void fn_801C7EE4(char* this_) {
     TndrG* g;
