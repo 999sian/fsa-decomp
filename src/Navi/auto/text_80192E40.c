@@ -1,4 +1,19 @@
 #include "types.h"
+
+typedef struct {
+    u32 a;
+    u32 b;
+    u32 c;
+} NaviEntry12;
+
+typedef struct {
+    f32 v[9];
+} NaviEntry36;
+
+extern u32 lbl_802FF6B8;
+extern NaviEntry12 lbl_80299AD0[];
+extern void fn_801937C8(void* e, s32 idx);
+extern void fn_801E10DC(void* p, s32 idx, NaviEntry12* tmp);
 extern void* lbl_80299E10[];
 
 // Navi Trackers (framework.dol) code that had no source file yet: decomp.wtf gave it this one.
