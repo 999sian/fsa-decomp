@@ -661,10 +661,11 @@ extern "C" void fn_8011C3AC(void* param_1, s32 a, s32 b, s32 c) {
     p[11] = c;
 }
 
+extern "C" void fn_8011BF78(s32 chan, u8 stop);
 extern "C" void fn_8011C454(u8* p, s32 idx, u32 n) {
     if (idx >= 0 && n >= *(u32*)(p + 0x1c)) {
-        *(u8*)(p + 0x11) = 1;
-        *(u8*)(p + idx + 0x48) = 1;
+        p[0x11] = 1;
+        (p + idx)[0x48] = 1;
         void (*cb)(s32, u8*, u32) = *(void (**)(s32, u8*, u32))(p + 0x4c);
         if (cb != 0) {
             cb(idx, p, *(u32*)(p + 0x50));
