@@ -2626,12 +2626,12 @@ extern "C" BOOL fn_80132EE4(void* p, u8** q) {
     return n <= 4;
 }
 
-extern "C" void fn_80132FA0(void);
+extern "C" void fn_80132FA0(u8* p, u8** q, u32 flags);
 extern "C" void fn_8013B140(void);
-extern "C" void fn_80132F5C(u32 param_1, s32* param_2) {
+extern "C" void fn_80132F5C(u8* param_1, u8** param_2, u32 param_3) {
     s32* obj = (s32*)param_2[0];
     if (obj[1] == 0x4a465642) {
-        fn_80132FA0();
+        fn_80132FA0(param_1, param_2, param_3);
     } else {
         fn_8013B140();
     }
