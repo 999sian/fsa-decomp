@@ -8,6 +8,8 @@ namespace JMath {
     class TAtanTable {
     public:
         f32 atan2_(f32, f32) const;
+        f32 mTable[1024];
+        f32 mTable2[8];
     };
     extern const TAtanTable<1024, f32> atanTable_;
 }
