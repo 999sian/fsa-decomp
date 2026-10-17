@@ -22,9 +22,9 @@ extern "C" void fn_80179CB4(void*, void*, f32, f32);
 extern "C" void fn_8015FDA8(void*, void*);
 extern "C" int fn_8002F0A8(int);
 struct NaviSlot_802C04D0 {
-    u32 bit;
-    u32 unk4;
-    u32 id;
+    s32 bit;
+    s32 unk4;
+    s32 id;
 };
 extern NaviSlot_802C04D0 lbl_802C04D0[];
 extern "C" u32 lbl_8028A8D8[];
