@@ -95,7 +95,7 @@ void fn_8023F1D4(int, void*, int, int, u8);
 void* fn_8023E724(s32);
 void fn_801F7B18();
 void* fn_8023E724(s32);
-s32 fn_8023CBC0(...);
+s32 fn_8023CBC0(s32);
 s32 fn_8023BCD4(s32);
 void* fn_8023E604(s32);
 s32 fn_80230498(s32, const void*, s32, s32, s32, s32, s32);
@@ -318,11 +318,11 @@ extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
     char* p = *(char**)(*(char**)(lbl_8053AAF8 + 4) + 0x0C);
     s32 n = 0;
     s32 off = 0;
-    s32 k;
+    s32 k = 16;
     s32 row;
     index = index < 8 ? 0 : index - 7;
     row = index << 7;
-    for (k = 16; k != 0; k--) {
+    do {
         if (value == *(u16*)(row + (p + off + 0x2948))) return n;
         off += 2;
         n++;
@@ -335,7 +335,7 @@ extern "C" s32 fn_802D4C10(char*, s32 index, u16 value) {
         if (value == *(u16*)(row + (p + off + 0x2948))) return n;
         off += 2;
         n++;
-    }
+    } while (--k != 0);
     return -1;
 }
 
@@ -1227,7 +1227,7 @@ extern "C" u8 fn_802DA630(char* p) {
         for (i = 0; i < 4; i++) {
             v = *(JGeometry::TVec3<f32>*)fn_8023E724(i);
             v.x += offset;
-            fn_80230498(i, &v, (u16)fn_8023CBC0(), 0xff, -0x80, -0x80, 1);
+            fn_80230498(i, &v, (u16)fn_8023CBC0(i), 0xff, -0x80, -0x80, 1);
         }
         count = *(s32*)((char*)fn_801F856C() + 0x1008);
         for (i = 0; i < count; i++) {
