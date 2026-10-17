@@ -15,6 +15,7 @@ struct S_Slot3C {
 extern "C" void fn_80057C38(void);
 extern "C" int fn_80058740(int, void*);
 extern "C" int fn_8005887C(void*);
+extern "C" void fn_800589CC(int);
 extern "C" int fn_80058C08(void);
 extern "C" void fn_80058628(int, void*, int);
 extern "C" void fn_80058654(int, void*, int, float);
