@@ -1,7 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "Game/ItemBase.h"
-#include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_804A0FF8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
