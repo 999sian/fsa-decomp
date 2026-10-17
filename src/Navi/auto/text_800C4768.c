@@ -14,7 +14,7 @@ struct VObj_800A1A64 {
 extern "C" void fn_800C55C8(u8* p);
 class NaviState_800C4768;
 extern void (NaviState_800C4768::*lbl_80288294[])();
-void fn_8002F358(s32 a, s32 b);
+extern "C" void fn_8002F358(s32 a, s32 b);
 
 extern void* lbl_80288450[];
 extern "C" void fn_8015AB1C(void* ptr);
