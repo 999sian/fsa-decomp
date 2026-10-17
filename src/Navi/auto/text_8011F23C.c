@@ -83,7 +83,7 @@ extern "C" void fn_801C7D34(void* p);
 #include "dolphin/os/OSAlarm.h"
 extern "C" void fn_8013A57C(void);
 extern "C" void* fn_80139950(void*, void*, void*);
-extern "C" void fn_801334AC();
+extern "C" void fn_801334AC(Unk801334AC* p, f32 scale);
 extern "C" void fn_8013345C(f32*);
 extern void* lbl_802925EC[];
 extern void* lbl_80292558[];
