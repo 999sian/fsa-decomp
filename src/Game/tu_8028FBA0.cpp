@@ -45,6 +45,9 @@ extern const f32 lbl_80540618;
 extern const f32 lbl_8054061C;
 extern const f32 lbl_80540620;
 extern const f32 lbl_80540644;
+extern const f32 lbl_8054064C;
+extern const f32 lbl_80540650;
+extern const f32 lbl_80540654;
 extern const f64 lbl_80540630;
 extern const f64 lbl_80540638;
 
@@ -88,6 +91,60 @@ bool fn_8028FBA0(char* p) {
     if (fn_80290070(p, 0, &VEC(p, 0x8), &position, 5)) {
         U8(p, 0xbdc) = 0;
         return true;
+    }
+    return false;
+}
+
+bool fn_8028FC2C(char* p) {
+    if (S32(p, 0xd28) < 8) {
+        return fn_80290070(p, 0, &VEC(p, 0x8), &VEC(p, 0xcb0), 0x27);
+    }
+    s32 iVar4 = S32(fn_802D6A9C(), 0x4);
+    s32 iVar5 = S32(fn_802D6A9C(), 0x8);
+    s32 iVar6 = S32(fn_802D6A9C(), 0x14);
+    void* iVar7 = fn_802D6A9C();
+    s32 iVar8 = (s32)fn_802D6A9C();
+    u8* base = (u8*)(iVar6 + iVar8);
+    s32 cVar1 = base[S32(iVar7, 0x18) * 10 + 0x60];
+    s32 iVar2 = S32(p, 0x3b4) - 7;
+    if (iVar4 == 0 && iVar5 == 0) {
+        JGeometry::TVec3<f32> v(lbl_805405AC, lbl_805405B0, lbl_805405B4);
+        return fn_80290070(p, 0, &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 1 && iVar5 == 0 && cVar1 == 3) {
+        JGeometry::TVec3<f32> v(lbl_805405B8, lbl_805405BC, lbl_805405B4);
+        return fn_80290070(p, 0, &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 1 && iVar5 == 0 && cVar1 == 5 && iVar2 == 5) {
+        JGeometry::TVec3<f32> v(lbl_805405C0, lbl_805405C4, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 1 && iVar5 == 0 && cVar1 == 5 && iVar2 == 6) {
+        JGeometry::TVec3<f32> v(lbl_805405C8, lbl_805405CC, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 1 && iVar5 == 0 && cVar1 == 5 && iVar2 == 7) {
+        JGeometry::TVec3<f32> v(lbl_805405D0, lbl_805405D4, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 1 && iVar5 == 0 && cVar1 == 6) {
+        JGeometry::TVec3<f32> v(lbl_805405D8, lbl_805405DC, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 1 && iVar5 == 3) {
+        JGeometry::TVec3<f32> v(lbl_805405E0, lbl_805405E4, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 2 && iVar5 == 0) {
+        JGeometry::TVec3<f32> v(lbl_805405E8, lbl_805405E4, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 3 && iVar5 == 0) {
+        JGeometry::TVec3<f32> v(lbl_805405EC, lbl_805405CC, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 5 && iVar5 == 0) {
+        return fn_80290070(p, 0, &VEC(p, 0x8), &VEC(p, 0xcb0), 0x27);
+    } else if (iVar4 == 6 && iVar5 == 0 && cVar1 == 3) {
+        JGeometry::TVec3<f32> v(lbl_805405F0, lbl_805405F4, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 6 && iVar5 == 0 && cVar1 == 4) {
+        JGeometry::TVec3<f32> v(lbl_805405F0, lbl_805405F4, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
+    } else if (iVar4 == 6 && iVar5 == 0 && cVar1 == 5) {
+        JGeometry::TVec3<f32> v(lbl_805405F8, lbl_805405FC, lbl_805405B4);
+        return fn_80290070(p, S32(p, 0xd28), &VEC(p, 0x8), &v, 0x27);
     }
     return false;
 }
