@@ -32,6 +32,26 @@ extern "C" void* fn_8015FFF0(void* param_1, s16 param_2) {
     return param_1;
 }
 
+extern "C" void* fn_80160044(void* self, void* obj, void* start, u16 count) {
+    extern char lbl_80297C8C[];
+    extern char lbl_80297C7C[];
+    struct Obj {
+        virtual void v0(); virtual void v1();
+    };
+    u8* p = (u8*)self;
+    *(void**)(p + 0xc) = lbl_80297C8C;
+    *(u8*)(p + 0x10) = 0;
+    *(u8*)(p + 0x11) = 0;
+    *(void**)(p + 0xc) = lbl_80297C7C;
+    *(void**)(p + 0x14) = obj;
+    *(u8*)(p + 0x10) = (s32)count > 0;
+    *(s32*)(p + 0x18) = (s32)start;
+    *(s32*)(p + 0x1c) = (s32)start + count - 1;
+    *(s32*)(p + 0x20) = *(s32*)(p + 0x18);
+    ((Obj*)(p + 0xc))->v1();
+    return self;
+}
+
 extern "C" u8 fn_801604EC(void*, void*, s32);
 extern "C" u8 fn_801600D0(u8* p) {
     struct Entry {
@@ -352,21 +372,23 @@ extern "C" char lbl_80297EF0[];
 extern "C" char fn_801621C0(void* p, void* a);
 extern "C" void fn_801617D8(u8* p, s32 a, void* v) {
     s32 idx = (a - *(s32*)(p + 0x4c)) / 20;
-    if (*(void**)(p + 0x50) == 0) {
+    void** arr = *(void***)(p + 0x50);
+    if (arr == 0) {
         return;
-    }
-    if ((u32)idx < *(u32*)(*(u8**)(p + 0x44) + 8)) {
-        ((void**)*(u8**)(p + 0x50))[idx] = v;
+    } else if ((u32)idx >= *(u32*)(*(u8**)(p + 0x44) + 8)) {
+        return;
+    } else {
+        arr[idx] = v;
     }
 }
 
 extern "C" void* fn_80161824(u8* p, s32 a) {
     s32 idx = (a - *(s32*)(p + 0x4c)) / 20;
     void** arr = *(void***)(p + 0x50);
-    if (arr != 0 && (u32)idx < *(u32*)(*(u8**)(p + 0x44) + 8)) {
-        return arr[idx];
+    if (arr == 0 || (u32)idx >= *(u32*)(*(u8**)(p + 0x44) + 8)) {
+        return 0;
     }
-    return 0;
+    return arr[idx];
 }
 
 #pragma use_lmw_stmw reset
@@ -426,6 +448,23 @@ extern "C" u32 fn_80161B94(u8* a, u8* b, u32* out) {
         *out = *(u32*)(b + 0xc);
     }
     return *(u32*)(b + 0x10);
+}
+
+extern "C" void fn_80161C90(u8* p) {
+    u32 i;
+    u8* x;
+    if (*(u32*)(p + 0x44) == 0) {
+        return;
+    }
+    if (p[0x3c] == 1) {
+        return;
+    }
+    x = *(u8**)(p + 0x4c);
+    for (i = 0; i < *(u32*)(*(u8**)(p + 0x44) + 0x8); i++) {
+        if (*(u32*)(x + 0x10) != 0) {
+            *(u32*)(x + 0x10) = 0;
+        }
+    }
 }
 
 extern "C" BOOL fn_80161CE0(void) {
