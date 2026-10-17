@@ -3393,10 +3393,13 @@ extern "C" void fn_80133ABC(void* param_1, u32 param_2)
 {
     Unk80133ABCMgr* arr = *(Unk80133ABCMgr**)((u8*)param_1 + 0x34);
     if (arr != 0) {
-        Unk80133ABCItem* end = (Unk80133ABCItem*)((u8*)arr->m4 + arr->m8 * 0x14);
+        Unk80133ABCItem* end;
         Unk80133ABCItem* cur;
-        Unk80133ABCItem* e = arr->m4;
-        f64 f = *(f64*)(*(u8**)((u8*)param_1 + 0x14) + 0x58);
+        Unk80133ABCItem* e;
+        f64 f;
+        e = arr->m4;
+        end = (Unk80133ABCItem*)((u8*)e + arr->m8 * 0x14);
+        f = *(f64*)(*(u8**)((u8*)param_1 + 0x14) + 0x58);
         while (e != end) {
             s32 v = e->m4;
             cur = e;
