@@ -1,5 +1,10 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "JSystem/JMath/JMath.h"
+
+namespace JMath {
+extern const TAtanTable<1024, f32> atanTable_;
+}
 #include "JSystem/JUtility/JUTVideo.h"
 
 
