@@ -7,6 +7,11 @@ typedef struct MtxBox {
 } MtxBox;
 extern "C" void PSMTXTrans(Mtx m, f32 xT, f32 yT, f32 zT);
 extern "C" void PSMTXConcat(const Mtx a, const Mtx b, Mtx ab);
+extern const f32 lbl_8053C550;
+extern const f32 lbl_8053C55C;
+extern const f32 lbl_8053C5C8;
+extern const f32 lbl_8053C5CC;
+extern const f32 lbl_8053C5D0;
 
 extern "C" void fn_8010DF58(void* this_);
 extern "C" void fn_8010DF78(void* this_);
