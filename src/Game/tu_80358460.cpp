@@ -43,16 +43,23 @@ extern "C" Actor* fn_80358460(Actor* p, s16 n) {
 
 extern "C" void fn_801F0D20(u8* self, s32 i);
 extern "C" u8 fn_80235448(s32 i);
+extern "C" void fn_802A381C(u8* a, Vec8035A860* v, s32 room, u16 idx);
 extern "C" void fn_803597EC(u8* self) {
     s32 i;
-    s32 flags = 0;
+    s32 flags;
+    u8* q;
     s16 ang;
     f32 cs;
     f32 box[4];
     Vec8035A860 v8;
+    Vec8035A860 vec;
     f32 d;
     f32 py;
+    u16 idx;
+    s32 k;
+    s32 j;
 
+    flags = 0;
     *(f32*)(self + 0x240) = lbl_8054286C;
     *(u8*)(self + 0x24e) = 0;
     if (*(s32*)(self + 0x254) != 0) {
@@ -62,16 +69,17 @@ extern "C" void fn_803597EC(u8* self) {
         }
     }
     for (i = 0; i < 4; i++) {
-        *(u8*)(self + 0x246 + i) = 0;
-        *(u8*)(self + 0x24a + i) = 0;
+        q = self + i;
+        q[0x246] = 0;
+        q[0x24a] = 0;
         if (fn_8023F264(i)) {
-            *(u8*)(self + 0x246 + i) = fn_8035AE9C(self, (void*)i);
-            if (fn_80235448(i) && *(s8*)(self + 0x246 + i) != 0) {
+            q[0x246] = fn_8035AE9C(self, (void*)i);
+            if (fn_80235448(i) && q[0x246] != 0) {
                 *(u8*)(self + 0x24e) |= 1 << i;
                 fn_801F317C(self, box);
                 ang = *(s16*)(self + 0x230);
                 py = *(f32*)(self + 0x10);
-                cs = __fabs(((f32*)(sincosTable___5JMath + ((ang >> 5) << 3)))[1]);
+                cs = __fabs(((f32*)(sincosTable___5JMath + ((u16)ang >> 5) * 8))[1]);
                 box[1] = (box[1] - py) * cs + py;
                 box[3] = (box[3] - py) * cs + py;
                 if (fn_8023AAF8(i, box, *(s32*)(self + 0x4), &v8)) {
@@ -80,18 +88,41 @@ extern "C" void fn_803597EC(u8* self) {
                         d = lbl_8054287C;
                         if (*(u8*)(self + 0x24e) == 0 && __fabsf(d) <= lbl_80542880) {
                             *(f32*)(self + 0x240) += lbl_80542884 * lbl_8054286C;
-                            *(s8*)(self + 0x24a + i) = d >= lbl_8054286C ? 1 : -1;
+                            q[0x24a] = d >= lbl_8054286C ? 1 : -1;
                         } else {
-                            *(s8*)(self + 0x24a + i) = 0;
+                            q[0x24a] = 0;
                         }
                     } else {
-                        *(s8*)(self + 0x24a + i) = 0;
+                        q[0x24a] = 0;
                     }
                 }
             }
         }
         flags |= *(u8*)(self + 0x24e);
-        flags |= *(s8*)(self + 0x24a + i) << i;
+        flags |= (s8)q[0x24a] << i;
+    }
+    if (flags != 0) {
+        if (*(s16*)(self + 0x238) == 0 && *(f32*)(self + 0x240) != 0.0f) {
+            *(s32*)(self + 0x254) = 30;
+            idx = lbl_80542868[1];
+            vec.x = *(f32*)(self + 0xc) + *(f32*)(self + 0x60);
+            vec.y = *(f32*)(self + 0x10) + *(f32*)(self + 0x64);
+            *(s32*)(self + 0x258) = 1;
+            flags = 0;
+            for (k = 0; k < 6; k++) {
+                for (j = 0; j < 6; j++) {
+                    fn_802A381C(lbl_8053AC98, &vec, *(s32*)(self + 0x4), idx);
+                    vec.y += lbl_80542870;
+                }
+                vec.x += lbl_80542870;
+                vec.y = *(f32*)(self + 0x10);
+            }
+        }
+        if (*(f32*)(self + 0x240) > lbl_8054286C) {
+            *(s16*)(self + 0x238) = 0x200;
+        } else if (*(f32*)(self + 0x240) < lbl_8054286C) {
+            *(s16*)(self + 0x238) = -0x200;
+        }
     }
 }
 
@@ -143,10 +174,8 @@ extern "C" void fn_8022BE24(void*, Vec8035A860*);
 extern "C" unsigned char sincosTable___5JMath[];
 extern "C" void fn_8035A860(u8* self, void* obj, f32 speed) {
     Vec8035A860 pos = *fn_8023E724(obj);
-    Vec8035A860 d;
-    d.x = pos.x - *(f32*)(self + 0xc);
-    d.y = pos.y - *(f32*)(self + 0x10);
-    d.z = pos.z - *(f32*)(self + 0x14);
+    Vec8035A860 d = pos;
+    d -= *(Vec8035A860*)(self + 0xc);
     d.z = 0.0f;
     bool inside = false;
     if (d.x >= *(f32*)(self + 0x60) + 10.0f && d.y >= *(f32*)(self + 0x64)
@@ -155,7 +184,7 @@ extern "C" void fn_8035A860(u8* self, void* obj, f32 speed) {
     }
     if (inside) {
         s16 ang = *(s16*)(self + 0x230);
-        f32* tbl = (f32*)((char*)sincosTable___5JMath + ((ang >> 5) << 3));
+        f32* tbl = (f32*)((char*)sincosTable___5JMath + ((u16)ang >> 5) * 8);
         f32 s = 0.5f * __fabs(tbl[0]) * (__fabs(speed) / (*(f32*)(self + 0x6c) * __fabs(tbl[1])));
         if (s > 0.5f) s = 0.5f;
         f32 r;
