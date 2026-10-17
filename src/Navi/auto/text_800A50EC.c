@@ -254,8 +254,18 @@ extern "C" void fn_800AC738(u8* p)
 }
 
 extern "C" void fn_800AC868(u8* p) {
+    f32 k = lbl_80300C1C;
     VObj_800A1A64* o = *(VObj_800A1A64**)(p + 0x384);
-    o->v4(*(f32*)(p + 0x388) + lbl_80300C1C * (f32)p[0x3ad], *(f32*)(p + 0x38c));
+    f32 d = k * (f32)p[0x3ad];
+    f32 y = *(f32*)(p + 0x38c);
+    f32 x = *(f32*)(p + 0x388);
+    o->v2(x + d, y);
+}
+
+extern "C" void fn_800AC8CC(u8* p) {
+    p[0x3ae] = 0;
+    p[0x3af] = 1;
+    (*(VObj_800A1A64**)(p + 0x384))->v7(lbl_802C5524[0x5d]);
 }
 
 extern "C" u32 fn_800AD744(void* param_1, u8* param_2, u8* param_3) {
