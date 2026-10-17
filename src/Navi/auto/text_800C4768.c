@@ -28,6 +28,7 @@ extern "C" void fn_800C5444(u8* param_1, s32 param_2);
 extern u8 lbl_802C565C[];
 extern "C" s32 fn_800C56A0(u8* p, u8 a, u8 b, s32 c, f32 d, f32 e);
 extern "C" void fn_800C5648(u8* p);
+extern "C" void fn_800C5444(u8* p, s32 n);
 extern "C" void fn_800C4B50(void) {}
 
 extern "C" void fn_800C539C(u8* param_1) {
