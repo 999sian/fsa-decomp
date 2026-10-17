@@ -15,6 +15,35 @@ extern "C" void __dl__FPv(void* this_);
 extern void* lbl_804B1378[];
 extern void* lbl_8053AEC4;
 extern s32 lbl_8053AE00;
+extern u64 lbl_8048CD50[];
+extern f32 lbl_805439C8;
+extern f32 lbl_805439CC;
+extern f32 lbl_805439D4;
+extern f32 lbl_805439DC;
+
+// Child object at this+0x24. slot 9 takes an s32; slot 15 takes a u64 (EABI puts it in r5:r6)
+// and returns the child it creates.
+struct T80416BD0_Child {
+    virtual void slot0();
+    virtual void slot1();
+    virtual void slot2();
+    virtual void slot3();
+    virtual void slot4();
+    virtual void slot5();
+    virtual void slot6();
+    virtual void slot7();
+    virtual void slot8();
+    virtual void slot9(s32 v);
+    virtual void slot10();
+    virtual void slot11();
+    virtual void slot12();
+    virtual void slot13();
+    virtual void slot14();
+    virtual T80416BD0_Child* slot15(u64 name);
+};
+
+extern "C" void fn_8042EB24(void* a);
+extern "C" void fn_80402E08(void* p, f32 x, f32 y);
 
 struct T80414F6C_Obj {
     u8 pad0[0xe0];
