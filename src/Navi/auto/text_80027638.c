@@ -140,6 +140,11 @@ extern "C" void fn_8002C050(void) {
     lbl_802FEDDC |= 0x2000000;
 }
 
+extern "C" void fn_8002C060(void) {
+    extern unsigned int lbl_802FEDDC;
+    lbl_802FEDDC &= 0xfdffffff;
+}
+
 extern "C" void fn_8002D2EC(char* p) {
     lbl_802FEDE0 |= 0x800;
     lbl_802FEDDC |= 0x2000;
