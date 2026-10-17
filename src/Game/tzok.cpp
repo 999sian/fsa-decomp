@@ -506,8 +506,6 @@ extern "C" s32 fn_802068A0(TzokActor** a, TzokActor** b) {
 
 extern "C" void fn_801D1974(void* self);
 extern "C" void fn_80217484(void* p);
-extern "C" void fn_8021BA30(void* p, u16 tag);
-
 extern "C" void* fn_80206810(u8* self) {
     fn_801D1974(self);
     *(void***)self = lbl_804A5A30;
@@ -572,20 +570,18 @@ extern "C" void fn_80206168(char* p) {
         }
         *(u32*)(p + 0x344) -= n;
         while (n != 0) {
-            if (n < 0x32) {
-                if (n >= 0x14 && (b || tzokRand01() < lbl_8053F890)) {
-                    kind = 2;
-                    n -= 0x14;
-                } else if (n >= 5 && (b || tzokRand01() < lbl_8053F890)) {
-                    kind = 1;
-                    n -= 5;
-                } else {
-                    kind = 0;
-                    n -= 1;
-                }
-            } else {
+            if (n >= 0x32) {
                 kind = 3;
                 n -= 0x32;
+            } else if (n >= 0x14 && (b || tzokRand01() < lbl_8053F890)) {
+                kind = 2;
+                n -= 0x14;
+            } else if (n >= 5 && (b || tzokRand01() < lbl_8053F890)) {
+                kind = 1;
+                n -= 5;
+            } else {
+                kind = 0;
+                n -= 1;
             }
             s32 r = fn_801F8544(fn_801F856C(), 0x52555059, *(s32*)(p + 4), p + 0xc, kind);
             if (r < 0) {
@@ -600,7 +596,6 @@ extern "C" void fn_80206168(char* p) {
             v.y = lbl_8053F894 * (lbl_8053F878 * tzokRand01() - lbl_8053F870);
             v.x = lbl_8053F894 * (lbl_8053F878 * tzokRand01() - lbl_8053F870);
             *(TzokVec3*)(obj + 0x3c) = v;
-            *(f32*)(obj + 0x44) = v.z;
         }
     }
 }
