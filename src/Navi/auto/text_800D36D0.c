@@ -25,6 +25,16 @@ extern void* lbl_80289A64[];
 extern void* lbl_8027EC78[];
 extern void* lbl_8028EFB0[];
 struct DtorVObj_800D64E4 { virtual void Destroy(int); };
+struct VObj_800D65E8 {
+    virtual void d0();
+    virtual void d1();
+    virtual void v4(f32, f32);
+    virtual void v5();
+    virtual void v6();
+    virtual void v7();
+    virtual void v8();
+    virtual void v9(s32);
+};
 struct VObj_800D69D4 {
     virtual void v0();
     virtual void v1();
@@ -101,6 +111,16 @@ extern "C" void fn_800D54EC(char* p)
             *(u8*)(p + 0x131) = 0;
             *(u8*)(p + 0x130) = 6;
         }
+    }
+}
+
+extern "C" void fn_800D5954(char* p) {
+    s32 a = fn_800D6700(p, *(s16*)(p + 0x134), lbl_802C579C[0x20], 0, 2, lbl_80300FE8, lbl_80300FD8, lbl_80300FD8, lbl_80300FD8);
+    s32 b = fn_800D6A94(p, *(s16*)(p + 0x134), lbl_802C579C[0x20], 0, 2, lbl_80300FE8, lbl_80300FD8);
+    *(s16*)(p + 0x134) = *(s16*)(p + 0x134) + 1;
+    if (a == 1 && b == 1) {
+        *(s16*)(p + 0x134) = 0;
+        p[0x130] = 0;
     }
 }
 
