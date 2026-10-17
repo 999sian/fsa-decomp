@@ -5,6 +5,26 @@
 extern "C" void fn_801F0E34(void* this_, u32 code, u32 z);
 extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
 
+static inline void* PrtcSpawn(char* p, s32 id, s32 a) {
+    f32 pos[3];
+    pos[0] = *(f32*)(p + 0xc) + *(f32*)(p + 0x244);
+    pos[1] = *(f32*)(p + 0x10) + *(f32*)(p + 0x248);
+    pos[2] = 0.0f;
+    return fn_8013CC50(*(s32*)(p + 4), pos, id, a, 0, 0, 0, 1, 1.0f);
+}
+
+static inline void PrtcNotify(char* p) {
+    s32 phase = *(s32*)(p + 0x250);
+    if (phase == 6 || phase == 8) {
+        s32 code = 0x30074;
+        void* obj = *(void**)(p + 0x230);
+        ((void (*)(void*, s32*))(*(void***)((char*)obj + 8))[5])(obj, &code);
+    }
+}
+
+extern "C" void fn_801F0E34(void* this_, u32 code, u32 z);
+extern "C" void* fn_8013CC50(s32 room, void* pos, s32 id, s32 a, s32 b, s32 c, s32 d, s32 e, f32 scale);
+
 // ---- Prtc_EmptyHook.cpp ----
 // PRTC (vtable lbl_804A9AC8, ctor fn_80201E80) cluster, part 1/4. No
 // separate leading static-init this time - PRTC's cluster begins
