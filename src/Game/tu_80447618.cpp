@@ -177,9 +177,10 @@ extern "C" void fn_80447958(void* self_) {
 
 extern "C" void fn_804479A0(Obj80447C30* self)
 {
+    void* res;
     for (int i = 0; i < 4; i++) {
         self->f2c &= ~(u8)(1 << i);
-        void* res = fn_804030C4('TIMG', lbl_804B1BF8[0]);
+        res = fn_804030C4('TIMG', lbl_804B1BF8[0]);
         self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x10))->changeTexture(res, 0);
         self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x18))->changeTexture(res, 0);
         self->screen->search(*(u64*)(lbl_80490410[i].pad2 + 0x20))->changeTexture(res, 0);
