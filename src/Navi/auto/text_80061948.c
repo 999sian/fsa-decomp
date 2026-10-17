@@ -87,6 +87,18 @@ struct StateObj80066A80 {
     StateFunc80066A80 m_func;
 };
 extern StateFunc80066A80 lbl_8027FAC0;
+struct StateObj8006792C;
+typedef void (StateObj8006792C::*StateFunc8006792C)(s32);
+struct StateObj8006792C {
+    u8 pad[0x280];
+    u16 m_280;
+    s8 m_282;
+    u8 pad2[0x284 - 0x283];
+    StateFunc8006792C m_284;
+    u8 pad3[0x296 - 0x290];
+    u16 m_296;
+};
+extern StateFunc8006792C lbl_8027FC20;
 struct StateObj8006A924;
 typedef void (StateObj8006A924::*StateFunc8006A924)(s32);
 struct StateObj8006A924 {
