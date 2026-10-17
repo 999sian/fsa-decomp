@@ -81,6 +81,11 @@ extern "C" void fn_8010F818(void)
 {
 }
 
+extern "C" void fn_8010F81C(u8* param_1) {
+    f32 off = 53.0f * param_1[0x7c];
+    (*(VObj_8010F81C_b**)(param_1 + 0x60))->v2(*(f32*)(param_1 + 0x74), *(f32*)(param_1 + 0x78) + off);
+}
+
 extern "C" void fn_801103A0(u8* p) {
     char* base = lbl_802B7CA0 + 0x1424;
     fn_80060794(base, base + 0x204, base + 0x208, p + 4);
