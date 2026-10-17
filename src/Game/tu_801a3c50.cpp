@@ -18,6 +18,7 @@ extern s8 lbl_8053ABC8;
 extern f32 lbl_8053E5D0;
 extern f32 lbl_8053E5D4;
 extern f32 lbl_8053E5D8;
+extern u8 lbl_804C6640[0x30];
 
 struct SayaCfg {
     u8 tbl[16];
