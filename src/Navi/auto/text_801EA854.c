@@ -38,7 +38,7 @@ extern "C" void TRKReleaseBuffer(int param_1) {
 extern "C" unsigned char* TRKGetBuffer(int param_1) {
     unsigned char* ret = 0;
     if (param_1 >= 0 && param_1 < 3) {
-        ret = (unsigned char*)&lbl_802F8A48 + param_1 * 0x890;
+        ret = lbl_802F8A48 + param_1 * 0x890;
     }
     return ret;
 }
