@@ -157,6 +157,17 @@ extern "C" void fn_800329CC(void* p) {
     *(unsigned int*)((char*)p + 0x20) = 0;
 }
 
+extern "C" int fn_80032EC4(unsigned char* self, int id, int n) {
+    int i;
+    for (i = 0; i < n; i++) {
+        int v = self[i + 0x26];
+        if (v == id) {
+            return 0;
+        }
+    }
+    return 1;
+}
+
 extern "C" void fn_800332BC(void* p) {
     *(unsigned int*)((char*)p + 0xe8) |= 0x80;
 }
