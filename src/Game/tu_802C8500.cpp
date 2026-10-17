@@ -1,4 +1,5 @@
 #include "Game/esd/types.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void* fn_802D6A9C(void);
 extern "C" void* fn_801F856C(void);
@@ -22,7 +23,7 @@ extern "C" s32 fn_802C8530(u8* p) {
     if (*((u8*)fn_802D6A9C() + id + 0x131df) != 0) {
         return 0;
     }
-    for (;;) {
+    do {
         do {
             idx = fn_801F78F4(fn_801F856C(), 0x4b455930, idx);
             if (idx < 0) {
@@ -30,30 +31,19 @@ extern "C" s32 fn_802C8530(u8* p) {
             }
         } while (idx == *(s32*)(p + 0x198));
         u8* e = fn_801F666C(fn_801F856C(), idx);
-        if (e == NULL) {
-            continue;
+        if (e != NULL && *(s32*)(e + 4) == id) {
+            f32 vx = *(f32*)(e + 0xc);
+            f32 vy = *(f32*)(e + 0x10);
+            f32 vz = *(f32*)(e + 0x14);
+            if (((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, lbl_80540D58 + *(f32*)(p + 0xc), vx, lbl_80540D58) &&
+                ((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, lbl_80540D58 + *(f32*)(p + 0x10), vy, lbl_80540D58) &&
+                ((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, *(f32*)(p + 0x14), vz, lbl_80540D58) &&
+                fn_802C1970(e, id, p + 0xc)) {
+                fn_802C2B64(e);
+                return 1;
+            }
         }
-        if (*(s32*)(e + 4) != id) {
-            continue;
-        }
-        f32 vx = *(f32*)(e + 0xc);
-        f32 vy = *(f32*)(e + 0x10);
-        f32 vz = *(f32*)(e + 0x14);
-        if (!((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, lbl_80540D58 + *(f32*)(p + 0xc), vx, lbl_80540D58)) {
-            continue;
-        }
-        if (!((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, lbl_80540D58 + *(f32*)(p + 0x10), vy, lbl_80540D58)) {
-            continue;
-        }
-        if (!((u8 (*)(u8*, f32, f32, f32))((*(void***)p)[0x5c / 4]))(p, *(f32*)(p + 0x14), vz, lbl_80540D58)) {
-            continue;
-        }
-        if (!fn_802C1970(e, id, p + 0xc)) {
-            continue;
-        }
-        fn_802C2B64(e);
-        return 1;
-    }
+    } while (1);
 }
 
 extern "C" void fn_802C89F8(void) {}
