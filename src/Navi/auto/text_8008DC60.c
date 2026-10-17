@@ -882,6 +882,20 @@ extern "C" void fn_80094F98(char* param_1) {
     }
 }
 
+extern "C" void fn_80094FF8(char* param_1) {
+    if (fn_800FFBC4(*(void**)(param_1 + 0x274)) == 1) {
+        fn_80109960(*(void**)(param_1 + 0x274));
+        DtorVObj_800A0008* o = *(DtorVObj_800A0008**)(param_1 + 0x274);
+        if (o != 0) {
+            o->Destroy(1);
+        }
+        *(void**)(param_1 + 0x274) = 0;
+        param_1[0x7e8] = 0;
+        param_1[0x85c] = 2;
+        *(s32*)(lbl_802BB0FC + 0x44) = 4;
+    }
+}
+
 extern "C" void fn_80095080(void) {}
 
 extern StateFn_8009287C lbl_80286144[];
