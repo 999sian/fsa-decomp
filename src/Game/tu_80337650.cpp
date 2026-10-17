@@ -8,6 +8,8 @@ namespace JMath {
     class TAtanTable {
     public:
         f32 atan2_(f32, f32) const;
+        f32 mTable[1024];
+        f32 mTable2[8];
     };
     extern const TAtanTable<1024, f32> atanTable_;
 }
@@ -23,6 +25,95 @@ extern "C" Actor* fn_80337650(Actor* p, s16 n) {
         }
     }
     return p;
+}
+
+extern "C" void fn_80337A08(u8* this_) {
+    s32 state = *(s32*)(this_ + 0x250);
+    s32 prev = *(s32*)(this_ + 0x248);
+
+    switch (state) {
+    case 5:
+    case 6:
+    case 14:
+        *(s32*)(this_ + 0x248) = 0;
+        return;
+    }
+
+    switch (*(s32*)(this_ + 0x230)) {
+    case 3:
+    case 5: {
+        s32 a = *(s32*)(this_ + 0x258);
+        s32 b = *(s32*)(this_ + 0x25c);
+        s32 a2 = a * a;
+        s32 b2 = b * b;
+
+        if (state == 14 || state < 7 || state >= 16) {
+            if (a2 == 0 && b2 == 0) {
+                *(s32*)(this_ + 0x248) = 2;
+            } else if (a2 > b2) {
+                if (a > 0) {
+                    *(s32*)(this_ + 0x248) = 0;
+                } else {
+                    *(s32*)(this_ + 0x248) = 1;
+                }
+            } else {
+                if (b > 0) {
+                    *(s32*)(this_ + 0x248) = 2;
+                } else {
+                    *(s32*)(this_ + 0x248) = 3;
+                }
+            }
+        } else {
+            if (a > 0) {
+                *(s32*)(this_ + 0x248) = 0;
+            } else {
+                *(s32*)(this_ + 0x248) = 1;
+            }
+        }
+        if (*(s32*)(this_ + 0x230) == 5) {
+            *(s32*)(this_ + 0x248) ^= 1;
+        }
+        break;
+    }
+    case 0:
+    case 1:
+    case 4: {
+        s32 timer = *(s32*)(this_ + 0x244);
+        f32 v[3];
+        f32 len;
+
+        if (timer != 0) {
+            *(s32*)(this_ + 0x244) = timer - 1;
+            return;
+        }
+        *(s32*)(this_ + 0x244) = 0x14;
+        fn_801EE558(this_, v, &len, 0);
+        if (len < lbl_80542060) {
+            f32 a = JMath::atanTable_.atan2_(-v[0], -v[1]);
+            u16 ang = (s32)(a * lbl_80542064);
+            if (ang < 0x2000 || ang >= 0xe000) {
+                *(s32*)(this_ + 0x248) = 3;
+            } else if (ang >= 0x2000 && ang < 0x6000) {
+                *(s32*)(this_ + 0x248) = 1;
+            } else if (ang >= 0x6000 && ang <= 0xa000) {
+                *(s32*)(this_ + 0x248) = 2;
+            } else {
+                *(s32*)(this_ + 0x248) = 0;
+            }
+        } else {
+            *(s32*)(this_ + 0x248) = 3;
+        }
+        break;
+    }
+    }
+
+    if (*(s32*)(this_ + 0x250) == 4) {
+        s32 cur = *(s32*)(this_ + 0x248);
+        if ((cur > 1 && prev < 2) || (cur < 2 && prev > 1)) {
+            *(s32*)(this_ + 0x238) = 0;
+            *(s32*)(this_ + 0x234) = 0x14;
+        }
+    }
 }
 
 extern char lbl_80471BB8[];
