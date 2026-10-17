@@ -142,8 +142,8 @@ extern "C" void fn_8013E04C(void* param_1) {
     void* local2;
     fn_801337AC(param_1, &local, (void*)lbl_80201EB4);
     local2 = local;
-    ((NaviTracker*)*(void**)((u8*)param_1 + 0x88))->fn_22(&local2);
-    ((NaviTracker*)*(void**)((u8*)param_1 + 0x88))->fn_5();
+    ((NaviTracker*)*(void**)((u8*)param_1 + 0x88))->fn_20(&local2);
+    ((NaviTracker_8013DF04*)*(void**)((u8*)param_1 + 0x88))->fn_3();
 }
 
 extern "C" void fn_8013BC94(void*, void*, void*, void*, void*);
