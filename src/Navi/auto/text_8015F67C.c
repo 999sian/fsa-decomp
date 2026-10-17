@@ -18,6 +18,12 @@ extern u32 lbl_802FF5E0;
 extern void* lbl_802FF540;
 extern int lbl_80297B40[];
 extern int lbl_80297B30[];
+extern u32 lbl_802FF5E4;
+extern u32 lbl_802FF5E8;
+extern u32 lbl_802FF5EC;
+extern char lbl_80297C10[];
+extern "C" void fn_8015D050(void*);
+extern "C" void fn_80166B58(void*, void*);
 extern "C" void* fn_8015F67C(void* param_1)
 {
 	if (lbl_802FF5E0 == 0) {
@@ -58,10 +64,15 @@ extern "C" void fn_8015F79C(void)
 		void* local_18;
 		fn_801BDEE4(lbl_80297B40, &local_18, 1);
 		int iVar1 = *(int*)local_18;
-		if (iVar1 == 2) {
+		switch (iVar1) {
+		case 2:
 			fn_8015F814();
-		} else if (iVar1 == 1) {
+			break;
+		case 1:
 			fn_8015F80C();
+			break;
+		default:
+			break;
 		}
 	}
 }
