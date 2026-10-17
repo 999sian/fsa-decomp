@@ -148,22 +148,29 @@ extern const u16 lbl_8053FF48[2];
 extern const u16 lbl_8053FF4C[2];
 
 extern "C" BOOL fn_80224D0C(f32* pos, s32 room) {
+    struct Lookup {
+        static inline u16 get(const f32* pos, u32 room) {
     u8* g = fn_802D6A9C();
-    const TileRect r = *(TileRect*)((room < 8) ? g + 0xcc : g + 0xdc);
-    u8 in = (pos[0] >= r.x0 && pos[1] >= r.y0 && pos[0] < r.x1 && pos[1] < r.y1);
-    u16 tile;
+    const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+    f32 x0;
+    f32 px = pos[0];
+    x0 = r.x0;
+    u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
     if (!in) {
-        tile = 0xf;
+        return 0xf;
     } else {
+        s32 x = px - x0;
         s32 y = pos[1] - r.y0;
-        s32 x = pos[0] - r.x0;
         if (x < 0) x = 0;
         else if (x >= 0x200) x = 0x1ff;
         if (y < 0) y = 0;
         else if (y >= 0x200) y = 0x1ff;
-        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+        return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
             ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
     }
+        }
+    };
+    u16 tile = Lookup::get(pos, room);
     for (s32 i = 0; i < 2; i++) {
         if (tile == lbl_8053FF4C[i]) return TRUE;
     }
@@ -171,29 +178,35 @@ extern "C" BOOL fn_80224D0C(f32* pos, s32 room) {
 }
 
 extern "C" BOOL fn_80224E88(f32* pos, s32 room) {
-    u8* g = fn_802D6A9C();
-    const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
-    f32 px = pos[0];
-    f32 x0 = r.x0;
-    u16 tile;
-    u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
-    if (!in) {
-        tile = 0xf;
-    } else {
-        s32 y;
-        s32 x;
-        x = px - x0;
-        y = pos[1] - r.y0;
-        if (x < 0) x = 0;
-        else if (x >= 0x200) x = 0x1ff;
-        if (y < 0) y = 0;
-        else if (y >= 0x200) y = 0x1ff;
-        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
-            ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
-    }
+    struct Lookup {
+        static inline u16 get(const f32* pos, u32 room) {
+            u8* g = fn_802D6A9C();
+            const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+            f32 x0 = r.x0;
+            f32 px = pos[0];
+            u32 tile;
+            u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
+            if (!in) {
+                tile = 0xf;
+            } else {
+                s32 x;
+                s32 y;
+                x = px - x0;
+                y = pos[1] - r.y0;
+                if (x < 0) x = 0;
+                else if (x >= 0x200) x = 0x1ff;
+                if (y < 0) y = 0;
+                else if (y >= 0x200) y = 0x1ff;
+                tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+                    ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
+            }
+            return tile;
+        }
+    };
+    u16 tt = Lookup::get(pos, room);
     BOOL r2 = FALSE;
     for (s32 i = 0; i < 2; i++) {
-        if (tile == lbl_8053FF4C[i]) {
+        if (tt == lbl_8053FF4C[i]) {
             r2 = TRUE;
             break;
         }
@@ -341,7 +354,7 @@ extern "C" u16 fn_80226998(f32* pos, u32 room) {
         y = 0x1ff;
     }
     u32 idx = ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf);
-    return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room, idx) & 0x3ff;
+    return fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), (s32)room, idx) & 0x3ff;
 }
 
 extern const f32 lbl_8053FF54;
@@ -407,7 +420,25 @@ extern const f32 lbl_8053FF50;
 
 #define TG() ((Tu8022G*)fn_802D6A9C())
 extern "C" u16 fn_8022461C(f32* pos, u32 room) {
-    u16 kind = lbl_8046CB88[tileAt(pos, room)];
+    u8* g = fn_802D6A9C();
+    const TileRect r = *(TileRect*)(((s32)room < 8) ? g + 0xcc : g + 0xdc);
+    f32 px = pos[0];
+    f32 x0 = r.x0;
+    u8 in = (px >= x0 && pos[1] >= r.y0 && px < r.x1 && pos[1] < r.y1);
+    u16 tile;
+    if (!in) {
+        tile = 0xf;
+    } else {
+        s32 x = px - x0;
+        s32 y = pos[1] - r.y0;
+        if (x < 0) x = 0;
+        else if (x >= 0x200) x = 0x1ff;
+        if (y < 0) y = 0;
+        else if (y >= 0x200) y = 0x1ff;
+        tile = fn_802F9908(*(void**)(lbl_8053AB10 + 0x20), room,
+            ((y & 0x100) << 1) | (x & 0x100) | (y & 0xf0) | ((x >> 4) & 0xf)) & 0x3ff;
+    }
+    u16 kind = lbl_8046CB88[tile];
     if (fn_802D6A9C()[room + 0x131df] != 0) {
         if (kind == 0) {
             return 2;
