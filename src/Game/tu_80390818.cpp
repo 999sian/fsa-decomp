@@ -84,8 +84,8 @@ struct Tu80390818 {
     s32 m30;
     s32 m34;
     s32 m38;
-    u16 m3C;
-    u16 m3E;
+    s16 m3C;
+    s16 m3E;
     u8 m40;
     u8 m41;
     u8 m42;
@@ -367,6 +367,145 @@ extern "C" void fn_80390E68(Tu80390818* t) {
                 b = 1;
             }
             fn_8039499C(t->m48, b);
+        }
+    }
+}
+
+extern "C" void fn_80390EBC(Tu80390818* t) {
+    switch (t->m24) {
+    case 1:
+        t->m28 &= ~0x2;
+        break;
+    case 2: {
+        Tu80390818_Sub* s;
+        JMessage::TControl* c;
+        t->m43 = 0;
+        t->m2C = -1;
+        t->m4C->m1AA = 1;
+        t->m4C->m190 = t->m3C;
+        t->m4C->m192 = t->m3E;
+        t->m4C->m178 = t->m34;
+        t->m4C->m17C = t->m38;
+        t->m4C->m08->reset();
+        c = t->m4C->m08;
+        if (c->mBaseProcSeq != 0) {
+            ((Tu80390818_Proc*)c->mBaseProcSeq)->m08 = 0;
+        }
+        if (c->mBaseProcRender != 0) {
+            ((Tu80390818_Proc*)c->mBaseProcRender)->m08 = 0;
+        }
+        c->mResourceCache = 0;
+        t->m4C->m1A2 = 0;
+        t->m44 = 2;
+        s = t->m4C;
+        s->m14C = t->m20;
+        s->m08->setMessageCode(t->m20 >> 16, t->m20 & 0xFFFF);
+        *(Tu80390818_Vec*)s->m98 = *(Tu80390818_Vec*)&t->m50;
+        *(Tu80390818_Vec*)s->mA4 = *(Tu80390818_Vec*)&t->m50;
+        t->m24 = 2;
+        break;
+    }
+    case 3:
+        if (t->m25 == 5) {
+            fn_803A2F74(t->m4C->m10);
+            fn_80396F94(t->m4C);
+            fn_8039499C(t->m4C, 0);
+            t->m24 = t->m4C->m3AE;
+            t->m0C = &t->m4C->m1AB;
+        } else {
+            t->m2C = t->m4C->m168;
+        }
+        break;
+    case 4:
+        t->m2C = t->m4C->m168;
+        if (lbl_8053AD04[t->m18] != 0) {
+            t->m43 = 0;
+            t->m24 = 5;
+        }
+        break;
+    case 5:
+        fn_80396884(t->m4C);
+        t->m2C = t->m4C->m168;
+        break;
+    case 6: {
+        Tu80390818_Sub* s;
+        JMessage::TControl* c;
+        Tu80390818_Vec v;
+        u8 r31 = 0;
+        if (t->m28 & 0x40) {
+            fn_803944EC(t->m48, *(f32*)(lbl_8050DB0C + 0x38));
+        } else {
+            fn_803944EC(t->m48, lbl_80543168);
+        }
+        t->m2C = -1;
+        t->m48->m1AA = 0;
+        t->m48->m190 = t->m3C;
+        t->m48->m192 = t->m3E;
+        t->m48->m178 = t->m34;
+        t->m48->m17C = t->m38;
+        t->m44 = 1;
+        if (t->m28 & 0x200) {
+            r31 = 1;
+        } else if (t->m28 & 0x400) {
+            r31 = 2;
+        }
+        s = t->m48;
+        c = s->m08;
+        c->reset();
+        c = t->m48->m08;
+        if (c->mBaseProcSeq != 0) {
+            ((Tu80390818_Proc*)c->mBaseProcSeq)->m08 = 0;
+        }
+        if (c->mBaseProcRender != 0) {
+            ((Tu80390818_Proc*)c->mBaseProcRender)->m08 = 0;
+        }
+        c->mResourceCache = 0;
+        t->m48->m1A2 = r31;
+        {
+            s32 id = t->m30;
+            v = *(Tu80390818_Vec*)&t->m50;
+            if (id != -1) {
+                u8* a = fn_801F666C(fn_801F856C(), id);
+                if (a != 0) {
+                    v = *(Tu80390818_Vec*)(a + 0xC);
+                }
+            }
+        }
+        s = t->m48;
+        s->m14C = t->m20;
+        s->m08->setMessageCode(t->m20 >> 16, t->m20 & 0xFFFF);
+        *(Tu80390818_Vec*)s->m98 = *(Tu80390818_Vec*)&t->m50;
+        *(Tu80390818_Vec*)s->mA4 = v;
+        t->m24 = 7;
+        break;
+    }
+    case 7:
+        t->m48->m3AE = 7;
+        fn_80396F94(t->m48);
+        t->m28 |= 2;
+        t->m24 = t->m48->m3AE;
+        if (t->m24 == 8) {
+            t->m40 = t->m48->m3AF;
+        }
+        break;
+    case 8:
+        fn_80396F94(t->m48);
+        t->m28 |= 2;
+        t->m40 = t->m48->m3AF;
+        t->m2C = t->m48->m168;
+        break;
+    }
+    if (lbl_8053AD78->m44 == 0) {
+        if (t->m48->m3B1 != 0 || (t->m4C->m3B1 != 0 && t->m24 == 0)) {
+            t->m48->m3B1 = 0;
+            t->m4C->m3B1 = 0;
+            lbl_8053AD78->mE9 = 1;
+            t->m25 = t->m24;
+        }
+    }
+    if (t->m24 == 6 || t->m24 == 7 || t->m24 == 8) {
+        if (lbl_8053AB10->m24->m179 == 0) {
+            lbl_8053AB10->m24->m17B = 1;
         }
     }
 }
