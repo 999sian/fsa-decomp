@@ -12,6 +12,12 @@ extern "C" void fn_801E0DB8(void*, void*, void*, u32, u32);
 extern void* lbl_8029260C[];
 extern void* lbl_802922F4[];
 extern void* lbl_8029383C[];
+
+static inline void fn_8013E3A4_base(u32* p) {
+    *(void**)p = lbl_8029260C;
+    p[1] = (u32)(p + 3);
+    p[2] = 0xd;
+}
 extern "C" void fn_8015AB1C(void*);
 extern "C" void fn_80133414(void*, int);
 extern char lbl_80293738[];
@@ -29,6 +35,19 @@ extern "C" void* fn_8013E314(void* param_1, s16 param_2) {
 extern "C" void fn_8013E374(void* param_1, void* param_2) {
     PmfFunc_8013E374* pmf = (PmfFunc_8013E374*)((u8*)param_1 + 8);
     (((PmfObj_8013E374*)*(void**)((u8*)param_2 + 0x88))->*(*pmf))();
+}
+
+extern "C" void* fn_8013E3A4(u32* self, u32 param_2, u32 param_3) {
+    *(void**)self = lbl_8029260C;
+    self[1] = (u32)(self + 3);
+    self[2] = 0xd;
+    *(void**)self = lbl_802922F4;
+    fn_801E0DB8(self + 3, (void*)fn_8013CD54, 0, 0x14, 0xd);
+    *(void**)self = lbl_8029383C;
+    self[0x44] = param_2;
+    self[0x45] = param_3;
+    self[0x46] = 0;
+    return self;
 }
 
 extern "C" void fn_8013E9E4(void* param_1, void* param_2, void* param_3, void* param_4, void* param_5, void* param_6) {
