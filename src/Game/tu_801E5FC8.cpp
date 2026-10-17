@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include "JSystem/JGeometry/Vec.h"
 
 struct ActorE62 { u8 pad0[4]; u32 f4; u8 fC[4]; };
 extern "C" void fn_801EE434(void* handle);
@@ -89,7 +90,7 @@ extern "C" void fn_801E5FC8(u8* this_) {
 
 extern "C" void fn_801E61C4(char* this_) {
     f32 v[3];
-    f32 y = lbl_8053F5AC + *(f32*)(this_ + 0x10);
+    f32 y = *(f32*)(this_ + 0x10) + lbl_8053F5AC;
     f32 z = *(f32*)(this_ + 0x14);
     f32 x = *(f32*)(this_ + 0xc);
     v[0] = x;
@@ -111,17 +112,16 @@ extern "C" void fn_801E6234(char* this_) {
     *(void**)(this_ + 0x2cc) = fn_8013CC50(*(u32*)(this_ + 4), v, 0x25d, 0, 0, 0, 0, 1, 1.0f);
 }
 
-extern "C" void fn_801E62D4(char* this_) {
-    u32 id = *(u32*)(this_ + 4);
-    char* pos = this_ + 0xc;
+extern "C" void fn_801E62D4(void* this_) {
+    s32 id = *(s32*)((u8*)this_ + 4);
+    u8* pos = (u8*)this_ + 0xc;
     fn_8013CC50(id, pos, 0x259, 0, 0, 0, 0, 1, 1.0f);
 }
 
-extern "C" void fn_801E631C(char* this_) {
+extern "C" void fn_801E631C(u8* this_) {
     u32 id = *(u32*)(this_ + 4);
     fn_8013CC50(id, this_ + 0xc, 0x25a, 0, 0, 0, 0, 1, 1.0f);
-    id = *(u32*)(this_ + 4);
-    fn_8013CC50(id, this_ + 0xc, 0x25b, 0, 0, 0, 0, 1, 1.0f);
+    fn_8013CC50(*(u32*)(this_ + 4), this_ + 0xc, 0x25b, 0, 0, 0, 0, 1, 1.0f);
 }
 
 extern "C" void fn_801E6394(char* this_) {
