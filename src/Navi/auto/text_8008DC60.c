@@ -118,6 +118,9 @@ extern void* lbl_802869B4[];
 extern void* lbl_8028C578[];
 extern void* lbl_8027EC78[];
 extern void* lbl_80286948[];
+struct Pair_800936E0 {
+    s32 a, b;
+};
 extern void* lbl_802893EC[];
 extern "C" void fn_800D0910(void*);
 extern "C" void fn_801E0DB8(void* arr, void* ctor, s32 dtor, s32 size, s32 n);
@@ -705,28 +708,25 @@ extern "C" void fn_800A5338(void*);
 extern "C" void fn_800C6CA4(void*);
 extern "C" void fn_800936E0(u8* p) {
     s32 r = fn_80016294(lbl_802AE880, p + 0x883, 0x1fa4, 0);
-    switch (r) {
-    case 0:
-        break;
-    case 1:
-        if (lbl_802B7CA0[0x1372] != 0) {
-            lbl_802B7CA0[0x1372] = 0;
+    if (r != 0) {
+        if (r == 1) {
+            if (*(u8*)(lbl_802B7CA0 + 0x1372) != 0) {
+                *(u8*)(lbl_802B7CA0 + 0x1372) = 0;
+            }
+            if (p[0x282f] == 0) {
+                *(s32*)(lbl_802B7CA0 + 0x1378) = *(s32*)(lbl_802AE880 + 0x1fd0);
+                *(s32*)(lbl_802B7CA0 + 0x137c) = *(s32*)(lbl_802AE880 + 0x1fd4);
+                fn_800A5338(*(void**)(p + 0x268));
+                p[0x7e8] = 2;
+                p[0x85c] = 1;
+            } else {
+                fn_800C6CA4(*(void**)(p + 0x27c));
+                p[0x2a5] = 2;
+                p[0x85c] = 5;
+            }
+        } else if (r == 2) {
+            p[0x282c] = 0;
         }
-        if (p[0x282f] == 0) {
-            *(s32*)(lbl_802B7CA0 + 0x1378) = *(s32*)(lbl_802AE880 + 0x1fd0);
-            *(s32*)(lbl_802B7CA0 + 0x137c) = *(s32*)(lbl_802AE880 + 0x1fd4);
-            fn_800A5338(*(void**)(p + 0x268));
-            p[0x7e8] = 2;
-            p[0x85c] = 1;
-        } else {
-            fn_800C6CA4(*(void**)(p + 0x27c));
-            p[0x2a5] = 2;
-            p[0x85c] = 5;
-        }
-        break;
-    case 2:
-        p[0x282c] = 0;
-        break;
     }
 }
 
@@ -1589,18 +1589,15 @@ extern "C" void fn_80097DE8(u8* p) {
 extern "C" void fn_80097EB0(u8* p, s32 idx, s16 x, s16 y) {
     s16 pos[2];
     u8* obj;
-    u8* base;
     pos[0] = x;
     pos[1] = y;
     if (fn_8009D0D8(pos) != 0) {
-        base = p + idx * 4;
-        obj = *(u8**)(base + 0x64c);
+        obj = ((NaviObjTbl_80097EB0*)p)->objs[idx];
         if (obj[0xb2] != 0x78) {
             (*(void (***)(u8*, s32))obj)[9](obj, 0x78);
         }
     } else {
-        base = p + idx * 4;
-        obj = *(u8**)(base + 0x64c);
+        obj = ((NaviObjTbl_80097EB0*)p)->objs[idx];
         if (obj[0xb2] != 0xff) {
             (*(void (***)(u8*, s32))obj)[9](obj, 0xff);
         }
