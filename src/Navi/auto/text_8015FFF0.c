@@ -290,13 +290,13 @@ extern "C" void fn_80164644(u8* p) {
     *(u32*)(p + 0x58) = 0;
 }
 
+extern "C" u32 fn_801C7C6C(u32 r4, void* p);
 extern "C" u8 fn_801646B0(u8* p, u32 r4) {
     if (p[0x18] == 0) {
         u32 result = fn_801C7C6C(r4, p + 0x5c);
-        u8 flag = (u8)((-(s32)result >> 0x18) | (result >> 0x18)) >> 7;
-        p[0x18] = flag;
+        p[0x18] = (result != 0);
         
-        if (flag != 0) {
+        if (p[0x18] != 0) {
             fn_80166C84((u32)lbl_802EE2EC, p + 0xe4);
             fn_801CA1E4(p + 0x5c);
         }
