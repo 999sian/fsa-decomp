@@ -1042,6 +1042,16 @@ extern "C" void fn_801279D0(u8* p, void* a, void* b) {
         }
     }
 }
+
+extern "C" void fn_80127A4C(u8* p, void* a, void* b) {
+    s32 i;
+    for (i = p[0x3e] - 1; i >= 0; i--) {
+        void* e = ((void**)*(void**)(p + 0x30))[i];
+        void* obj = ((void**)e)[1];
+        (**(void (***)(void*, void*, void*, void*))obj)(obj, a, e, b);
+    }
+}
+
 #pragma use_lmw_stmw reset
 extern "C" void fn_80127DD4(void* param_1, u8* self) {
     f32 mtx[3][4];
@@ -1832,6 +1842,18 @@ extern "C" void fn_8012F598(void** p, f32 t) {
         t = t - (f32)q;
     }
     fn_801326B0(obj[9], p[1]);
+}
+
+extern "C" void fn_80118C44(void* a, u8* b, s32 c);
+extern void* lbl_8029116C[];
+extern "C" void* fn_8012F62C(u8* self, s32 param_2) {
+    *(void**)self = lbl_8029116C;
+    self[0x3f] &= 2;
+    *(s32*)(self + 0x2c) = 0;
+    *(s32*)(self + 0x24) = 0;
+    *(s32*)(self + 0x44) = param_2;
+    fn_80118C44(self + 4, (u8*)*(s32*)(self + 0x44) + 0x20, 0);
+    return self;
 }
 
 extern "C" void fn_8012F738(void* p);
