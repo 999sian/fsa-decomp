@@ -65,9 +65,6 @@ extern "C" void fn_8044C7F0(u8* self) {
     }
 }
 
-extern f32 lbl_80543DF8;
-extern f32 lbl_80543DFC;
-extern "C" void fn_80402E08(void*, f32, f32);
 struct UlPane {
     virtual void v08();
     virtual void v0c();
