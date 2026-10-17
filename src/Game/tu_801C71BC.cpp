@@ -1,5 +1,6 @@
 #include "types.h"
 #include "JSystem/JGeometry/Vec.h"
+#include "Game/SinitPoolChain.h"
 extern "C" void fn_801C8B50(char* this_);
 extern "C" void fn_801C3B7C(void* this_, s32 state);
 extern "C" u8 fn_800FD4C0(void* ring, u8 a, u8 b);
@@ -21,13 +22,15 @@ extern "C" u8 fn_800FD894(void* ring, s32 id, u8* buf, s32 n);
 extern "C" s32 fn_801CD664(s32 n);
 
 extern "C" void fn_801C71BC(char* this_) {
-    u8 ids[4];
+    u8 done;
+    u8 ca;
+    u8 c9;
+    u8 c8;
+    u32 a;
     u8 b;
     u8 c;
-    u32 a;
     u8* s;
-    u8 done;
-    JGeometry::TVec3<f32> pos;
+    s32 t;
 
     *(u32*)(this_ + 0x230) &= 0xffefffff;
     if (!(*(u32*)(this_ + 0x230) & 0x2000000)) {
@@ -45,32 +48,33 @@ extern "C" void fn_801C71BC(char* this_) {
         if ((u8)a < s[2]) {
             s[3] = a;
         }
-        if (&ids[0] != 0) {
-            ids[0] = c;
+        if (&c8 != 0) {
+            c8 = c;
         }
-        if (&ids[1] != 0) {
-            ids[1] = a;
+        if (&c9 != 0) {
+            c9 = a;
         }
-        if (&ids[2] != 0) {
-            ids[2] = b;
+        if (&ca != 0) {
+            ca = b;
         }
-        if (fn_800FD4C0(GetCurrentSlotPtr(this_ + 0x358), ids[1], ids[0]) ||
-            fn_800FD4C0(GetCurrentSlotPtr(this_ + 0x358), ids[1], ids[2])) {
+        if (fn_800FD4C0(GetCurrentSlotPtr(this_ + 0x358), c9, c8) ||
+            fn_800FD4C0(GetCurrentSlotPtr(this_ + 0x358), c9, ca)) {
             *(s32*)(this_ + 0x2a8) = 0;
             *(u32*)(this_ + 0x230) &= 0xfffdefff;
             *(u32*)(this_ + 0x230) |= 0x400000;
-            pos = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+            const JGeometry::TVec3<f32>& pos = fn_800FE294(GetCurrentSlotPtr(this_ + 0x358), 0xff);
+            done = 1;
             *(f32*)(this_ + 0x32c) = pos.x;
             *(f32*)(this_ + 0x330) = pos.y;
             *(f32*)(this_ + 0x334) = pos.z;
-            done = 1;
         }
         if (done) {
             return;
         }
     }
     fn_801C8B50(this_);
-    *(s16*)(this_ + 0x33c) += fn_801CD664(0x4001) - 0x2000;
+    t = fn_801CD664(0x4001) - 0x2000;
+    *(s16*)(this_ + 0x33c) += t;
     if (!(*(u32*)(this_ + 0x524) & 0x40)) {
         fn_801C3B7C(this_, 0x1c);
     }
@@ -128,6 +132,31 @@ extern "C" void fn_801C8BC4(char* this_, u8 param_2) {
     }
 }
 
+extern "C" void fn_801C9420(char* this_, f32* v);
+extern "C" void fn_801C9234(char* this_, f32* out)
+{
+    f32 v[2];
+    f32 x = *(f32*)(this_ + 0x264);
+    f32 y = *(f32*)(this_ + 0x268);
+    s32 ang = JMAAtan2Radian(*(f32*)(this_ + 0x3c), *(f32*)(this_ + 0x40)) * 10430.378f;
+    f32 a90x = x * JMACosShort(0x4000) - y * JMASinShort(0x4000);
+    f32 a90y = x * JMASinShort(0x4000) + y * JMACosShort(0x4000);
+    f32 a270x = x * JMACosShort(0xC000) - y * JMASinShort(0xC000);
+    f32 a270y = x * JMASinShort(0xC000) + y * JMACosShort(0xC000);
+    f32 d1 = fabs((f32)(s16)(ang - (s32)(JMAAtan2Radian(a90x, a90y) * 10430.378f)));
+    f32 d2 = fabs((f32)(s16)(ang - (s32)(JMAAtan2Radian(a270x, a270y) * 10430.378f)));
+    if (0.000030517578f * d2 >= 0.000030517578f * d1) {
+        v[0] = a90x;
+        v[1] = a90y;
+    } else {
+        v[0] = a270x;
+        v[1] = a270y;
+    }
+    fn_801C9420(this_, v);
+    out[0] = *(f32*)(this_ + 0xc) + v[0];
+    out[1] = *(f32*)(this_ + 0x10) + v[1];
+}
+
 extern "C" void* lbl_8053AAF8;
 extern "C" f32 lbl_8053EED8;
 extern "C" void fn_800FD818(void* p, s32 n);
@@ -179,4 +208,6 @@ extern "C" u8 fn_801C976C(char* this_) {
     }
     return x;
 }
+
+void __sinit_tu_801C71BC_cpp(void) {}
 
