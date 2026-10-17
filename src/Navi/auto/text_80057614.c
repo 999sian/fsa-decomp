@@ -879,10 +879,8 @@ extern "C" void fn_8005C380(void) {
 }
 
 extern "C" void fn_8005C3CC(void) {
-    s32 a = *(s32*)(lbl_802C2D30 + 0x8);
-    lbl_802FF110 = a;
-    s32 b = *(s32*)(lbl_802C2D30 + 0xc);
-    lbl_802FF114 = b;
+    lbl_802FF110 = *(s32*)(lbl_802C2D30 + 0x8);
+    lbl_802FF114 = *(s32*)(lbl_802C2D30 + 0xc);
     fn_801BFFF0(lbl_802C2D30);
     if (lbl_802FF10C != 0) {
         fn_8005C330(0, lbl_8027D790);
