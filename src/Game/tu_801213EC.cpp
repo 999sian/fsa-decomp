@@ -222,9 +222,6 @@ extern "C" void fn_80121ABC(u8* self) {
     }
 }
 
-s32 fn_800FDEA0(void*, f32*, GameLowVec*, s32*, s16*, s32);
-u8 fn_800FD894(void*, s32, s32, s32);
-s32 ClassifyBamAngleToQuadrant(u16);
 extern "C" s32 fn_80121BB8(u8* self, f32* pt) {
     if (*(s32*)(self + 0x35c) <= 0) {
         return 1;
