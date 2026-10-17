@@ -151,7 +151,6 @@ extern "C" bool fn_8007A398(u8* this_, s32 entryNum) {
     u8 compressedFiles;
     u8 flag;
     u32 alignedSize;
-    u32 i;
     void* dvdFile;
 
     *(void**)(this_ + 0x44) = nullptr;
@@ -178,7 +177,10 @@ extern "C" bool fn_8007A398(u8* this_, s32 entryNum) {
     loadToMainRAM__12JKRDvdRipperFlPUc15JKRExpandSwitchUlP7JKRHeapQ212JKRDvdRipper15EAllocDirectionUlPiPUl(entryNum, mem, 1, 0x20, nullptr, 1, 0, (s32*)(this_ + 0x5c), nullptr);
     DCInvalidateRange(mem, 0x20);
 
-    alignment = *(s32*)(this_ + 0x60) == 1 ? 0x20 : -0x20;
+    alignment = -0x20;
+    if (*(s32*)(this_ + 0x60) == 1) {
+        alignment = 0x20;
+    }
     alignedSize = (*(u32*)(mem + 0xc) + 0x1f) & ~0x1f;
     *(void**)(this_ + 0x44) = JKRHeap::alloc(alignedSize, alignment, *(JKRHeap**)(this_ + 0x38));
     if (*(void**)(this_ + 0x44) == nullptr) {
@@ -195,7 +197,7 @@ extern "C" bool fn_8007A398(u8* this_, s32 entryNum) {
 
     compressedFiles = 0;
     fileEntry = *(u8**)(this_ + 0x4c);
-    for (i = 0; i < *(u32*)(*(u8**)(this_ + 0x44) + 8); i++) {
+    for (u32 i = 0, n = *(u32*)(*(u8**)(this_ + 0x44) + 8); i < n; i++) {
         flag = *(u32*)(fileEntry + 4) >> 24;
         if (flag & 1) {
             compressedFiles |= flag & 4;
@@ -203,7 +205,8 @@ extern "C" bool fn_8007A398(u8* this_, s32 entryNum) {
         fileEntry += 0x14;
     }
     if (compressedFiles != 0) {
-        *(void**)(this_ + 0x50) = JKRHeap::alloc(*(u32*)(*(u8**)(this_ + 0x44) + 8) << 2, abs(alignment), *(JKRHeap**)(this_ + 0x38));
+        s32 expandAlign = abs(alignment);
+        *(void**)(this_ + 0x50) = JKRHeap::alloc(*(u32*)(*(u8**)(this_ + 0x44) + 8) << 2, expandAlign, *(JKRHeap**)(this_ + 0x38));
         if (*(void**)(this_ + 0x50) == nullptr) {
             free__7JKRHeapFPvP7JKRHeap(*(void**)(this_ + 0x44), nullptr);
             *(u8*)(this_ + 0x3c) = 0;
@@ -212,7 +215,10 @@ extern "C" bool fn_8007A398(u8* this_, s32 entryNum) {
         memset(*(void**)(this_ + 0x50), 0, *(u32*)(*(u8**)(this_ + 0x44) + 8) << 2);
     }
 
-    *(void**)(this_ + 0x64) = alloc__11JKRAramHeapFUlQ211JKRAramHeap10EAllocMode(*(void**)((u8*)sAramObject__7JKRAram + 0x94), (*(u32*)(mem + 0x10) + 0x1f) & ~0x1f, *(s32*)(this_ + 0x60) == 1 ? 0 : 1);
+    {
+        u32 aramSize = (*(u32*)(mem + 0x10) + 0x1f) & ~0x1f;
+        *(void**)(this_ + 0x64) = alloc__11JKRAramHeapFUlQ211JKRAramHeap10EAllocMode(*(void**)((u8*)sAramObject__7JKRAram + 0x94), aramSize, *(s32*)(this_ + 0x60) == 1 ? 0 : 1);
+    }
     if (*(void**)(this_ + 0x64) == nullptr) {
         if (*(void**)(this_ + 0x44) != nullptr) {
             free__7JKRHeapFPvP7JKRHeap(*(void**)(this_ + 0x44), nullptr);
