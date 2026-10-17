@@ -610,14 +610,14 @@ extern "C" void fn_80194B58(u32 param_1, s32 param_2) {
     fn_80191AE0(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), param_2 * 3);
 }
 
-extern "C" void fn_801951A0(u32* p, u32 param_2, u32 param_3) {
+extern "C" void fn_801951A0(Navi801951A0* p, u32 param_2, u32 param_3) {
     u8 buf[48];
     fn_801C5DA8(*(u32*)(*(u32*)(lbl_802EE470 + 0x40) + 0x30), (u8*)*(u32*)(lbl_802EE470 + 0x104) + (u16)param_3 * 0x30, buf);
     if (lbl_802FF6D0 != 0) {
         fn_80194BB0(buf);
     }
     fn_80191A60(buf, param_2 * 3);
-    ((void (*)(u32*, u32, u32, u8*))((u32*)*p)[9])(p, param_2, param_3, buf);
+    p->v7(param_2, param_3, buf);
 }
 
 extern "C" void fn_8019552C(u8* p) {
