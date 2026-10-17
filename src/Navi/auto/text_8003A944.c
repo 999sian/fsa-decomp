@@ -54,6 +54,7 @@ extern u8 lbl_802BF188[];
 extern s16 lbl_802FF04C;
 extern "C" s32 fn_80041190(s32 arg);
 extern "C" s32 fn_80040E90(s32 arg);
+extern "C" s32 fn_80040F64(s32 arg);
 extern f32 lbl_802FFED0;
 extern s32 (*lbl_802FF05C)(s32);
 extern s8 lbl_802FF060;
@@ -346,6 +347,30 @@ extern "C" void* fn_8003C4F4(void) {
 
 extern "C" f32 fn_8003C500(void) {
     return *(f32*)(lbl_802BF188 + 0x1c);
+}
+
+extern "C" void fn_8003C6E0(u8* p, f32* out, f32 a, f32 b) {
+    f64 v[3];
+    f32 n[3];
+    f32 t;
+
+    v[0] = *(f32*)(p + 0xe4) - *(f32*)(p + 0xd8);
+    if (b != lbl_802FFDD4) {
+        v[1] = *(f32*)(p + 0xe8) - *(f32*)(p + 0xdc);
+    } else {
+        v[1] = lbl_802FFDE8;
+    }
+    v[2] = *(f32*)(p + 0xec) - *(f32*)(p + 0xe0);
+    fn_80041C88(v, n);
+    t = n[0] * a;
+    out[0] = *(f32*)(p + 0xd8) + t;
+    t = n[1] * b;
+    out[1] = *(f32*)(p + 0xdc) + t;
+    t = n[2] * a;
+    out[2] = *(f32*)(p + 0xe0) + t;
+    if (lbl_802FFDD4 == b) {
+        out[1] = lbl_802FFDD4;
+    }
 }
 
 extern "C" void fn_8003C7DC(void) {
