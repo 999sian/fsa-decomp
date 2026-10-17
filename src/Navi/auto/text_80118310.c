@@ -286,8 +286,8 @@ extern "C" void* fn_8011AB78(void* param_1, void* param_2) {
             o[0xa] = 0xff;
             o[0xb] = 0xff;
             o[0xc] = 1;
-            lbl_802FF2B0 = obj;
         }
+        lbl_802FF2B0 = obj;
     }
     return lbl_802FF2B0;
 }
@@ -301,8 +301,7 @@ extern "C" void* fn_8011AC24(void* p, void* v) {
 }
 
 extern "C" void fn_8011AC3C(void* param_1) {
-    u8* p = *(u8**)((u8*)lbl_802FF328 + 4);
-    fn_8011AC74(param_1, 0, 0, *(u16*)(p + 4), *(u16*)(p + 6));
+    fn_8011AC74(param_1, 0, 0, *(u16*)(*(u8**)((u8*)lbl_802FF328 + 4) + 4), *(u16*)(*(u8**)((u8*)lbl_802FF328 + 4) + 6));
 }
 
 extern "C" void* fn_8011B0D8(u8* p, s16 del) {
