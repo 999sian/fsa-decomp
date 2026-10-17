@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" void* fn_801F856C(void);
 extern "C" u8* fn_801F666C(void* mgr, s32 idx);
@@ -42,6 +43,48 @@ extern "C" void* fn_80130310(void* this_, short how) {
         }
     }
     return this_;
+}
+
+extern "C" Vec* fn_8023E724(s32 idx);
+extern "C" s32 fn_801CD950(f32* p, f32 a, f32 b);
+extern "C" void fn_80230BF4(s32 idx, s32 quad);
+extern "C" void fn_80230498(s32 idx, Vec* v, s32 a, s32 b, s32 c, s32 d, s32 e);
+extern "C" void fn_802303FC(s32 idx, Vec* v, s32 a);
+extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
+extern "C" s32 fn_80130370(u8* p) {
+    s32 ret = 1;
+    s32 i;
+    u8* actor = fn_801F666C(fn_801F856C(), *(s32*)(p + 0x238));
+    if (actor == NULL) {
+        return 0;
+    }
+    Vec pos = *(Vec*)(actor + 0xc);
+    pos.x = pos.x + lbl_8053CC78;
+    pos.y = pos.y + lbl_8053CC7C;
+    pos.x = pos.x + lbl_8053CC80;
+    for (i = 0; i < 4; i++) {
+        Vec v = *fn_8023E724(i);
+        u16 angle = (u16)(JMath::atanTable_.atan2_(pos.x - v.x, pos.y - v.y) * lbl_8053CC84);
+        s32 quad = ClassifyBamAngleToQuadrant(angle);
+        bool a = true;
+        bool b = true;
+        if (fn_801CD950(&v.x, pos.x, JMath::sincosTable_[angle >> 5].first)) {
+            ret = 0;
+            a = false;
+        }
+        if (fn_801CD950(&v.y, pos.y, JMath::sincosTable_[angle >> 5].second)) {
+            ret = 0;
+            b = false;
+        }
+        fn_80230BF4(i, quad);
+        if (a && b) {
+            fn_80230BF4(i, 3);
+            fn_80230498(i, fn_8023E724(i), 0x3f, 0xff, -0x80, -0x80, 1);
+        } else {
+            fn_802303FC(i, &v, 0xff);
+        }
+    }
+    return ret;
 }
 
 extern "C" s32 fn_8013056C(char* p, u16 id, s32 mode, s32 val) {
