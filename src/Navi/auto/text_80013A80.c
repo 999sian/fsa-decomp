@@ -17,6 +17,8 @@ extern "C" void fn_801BB7E0(void* p);
 extern "C" f32 fn_80116064(f32 x);
 extern "C" void fn_80013E18(void* p);
 extern u8 lbl_802A2140[];
+extern "C" s64 OSGetTime(void);
+extern "C" void OSCreateAlarm(void* alarm);
 extern u8 lbl_802A3460[];
 extern u8 lbl_802FEBE0;
 extern f32 lbl_802FFBB8;
