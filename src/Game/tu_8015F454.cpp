@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/SinitPoolChain.h"
+#include <dolphin/gx.h>
 
 extern "C" const float lbl_8053D628;
 extern "C" const float lbl_8053D63C;
