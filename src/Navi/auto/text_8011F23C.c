@@ -466,6 +466,20 @@ extern "C" void fn_80123AFC(void* p, void* q) {
     }
 }
 
+extern "C" void fn_80123D00(u8* p, u8 flag) {
+    if (*(void**)(p + 0x10) != 0) {
+        if (flag != 0) {
+            BOOL state = OSEnableInterrupts();
+            u32 a = fn_801CC930();
+            u32 b = fn_801CC930();
+            if (a != b) {
+                OSRestoreInterrupts(state);
+            }
+        }
+        fn_8012302C(*(void**)(p + 0x10), 2);
+    }
+}
+
 extern "C" void fn_80123EA0(void* p)
 {
 	lbl_802FF364 = p;
@@ -500,6 +514,16 @@ extern "C" void fn_80123EC0(void* a, ...) {
 
 extern "C" void fn_80123F9C(void* p) {
     fn_80123EC0((void*)&lbl_802FDDB0, p);
+}
+
+extern "C" void fn_80123FC8(const void* fmt, va_list args) {
+    char buf[256];
+    if (lbl_802FF368 == 0) {
+        fn_801E4334(buf, 0x100, fmt, args);
+    } else if (*(u32*)((u8*)lbl_802FF368 + 0x58) & 3) {
+        fn_801E4334(buf, 0x100, fmt, args);
+        fn_80123628(lbl_802FF368, buf);
+    }
 }
 
 extern "C" void fn_80124034(void* a, ...);
