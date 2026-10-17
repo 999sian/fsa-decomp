@@ -4,6 +4,11 @@
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
 extern "C" void fn_801D1C18(void* obj);
+extern "C" s32 fn_801CD950(f32* value, f32 target, f32 step);
+extern "C" u8* fn_802D6A9C();
+extern const f32 lbl_8053EFC4;
+extern const f32 lbl_8053EFCC;
+extern const f32 lbl_8053EFD0;
 extern "C" s32 ClassifyBamAngleToQuadrant(u16 angle);
 extern "C" u8 fn_801F2FAC(void* this_);
 extern const f32 lbl_8053EFD4;
