@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/Actor.h"
+#include "Game/SinitPoolChain.h"
 
 extern "C" char lbl_8049E5B8[];
 extern "C" void __dt__5ActorFv(Actor*, s32);
@@ -102,4 +103,49 @@ extern "C" void fn_80129598(Actor* p) {
         break;
     }
 }
+
+extern "C" void fn_801296FC(CRGNState* p) {
+    s32 i;
+    s32* a;
+    s32* b;
+    s32* c;
+
+    p->field234 = p->flags90 & 0xf;
+    p->flags280 |= 2;
+    p->list248[0] = 10;
+    p->list248[1] = 10;
+    p->list248[2] = 10;
+    p->list248[3] = 10;
+    p->list248[4] = 10;
+    p->list248[5] = 10;
+    p->list248[6] = 10;
+    p->list248[7] = 10;
+    p->list248[8] = 10;
+    p->list248[9] = 10;
+    for (i = 10; i < 11; i++) {
+        p->list248[i] = 10;
+    }
+    a = lbl_80465000;
+    b = lbl_80465000 + 11;
+    c = lbl_80465000 + 22;
+    for (i = 0; i < 11; i++) {
+        if ((p->flags90 >> a[i]) & 1) {
+            p->flags280 |= 1 << b[i];
+            p->list248[p->count240] = c[i];
+            p->count240++;
+        }
+    }
+    p->list270[0] = 1;
+    p->list270[1] = 1;
+    p->list270[2] = 1;
+    p->list270[3] = 1;
+    for (i = 0; i < 4; i++) {
+        if ((p->flags90 >> lbl_80465000[33 + i]) & 1) {
+            p->list270[p->count244] = i;
+            p->count244++;
+        }
+    }
+    p->list248[0] = 150;
+}
+
 #pragma dont_inline reset
