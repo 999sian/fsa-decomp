@@ -4307,10 +4307,6 @@ extern "C" void fn_800DF358(void* param_1, u8* param_2) {
     *(u8*)((u32)param_1 + 0xc) = *param_2;
 }
 
-void J3DIndBlockFull::initialize() {
-    mIndTexStageNum = 0;
-}
-
 extern "C" void fn_800DDA78(u8* this_, u8* src) {
     u16 w = *(u16*)src;
     u8 b2 = src[2];
