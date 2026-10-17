@@ -1377,6 +1377,91 @@ extern "C" void fn_8039A540(void* thisObj) {
     p[0x1e8] = 0;
 }
 
+extern "C" void fn_8039A638(MsgProc* p, s16 n) {
+    char buf[8];
+    u8 bVar1;
+    u8 bVar2;
+    u8* e;
+
+    buf[2] = 0;
+    buf[1] = 0;
+    buf[0] = 0;
+    e = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
+    bVar1 = e[0x79];
+    bVar2 = e[0x78];
+
+    if (n == 0) {
+        if (p->m2d6 != 0) {
+            if (!p->testBit(p->cur)) {
+                MsgLayout* l = p->layout;
+                if (l->m16c == 0 || !p->testBit(p->cur)) {
+                    MsgFontInfo* font = l->font;
+                    f32 fVar3;
+                    f32 fVar4;
+                    s32 i;
+                    if ((font->flags & 0x40) == 0) {
+                        fVar3 = l->baseE8;
+                        fVar4 = p->posA[p->cur];
+                    } else {
+                        fVar3 = l->baseF0;
+                        fVar4 = p->posA[p->cur] + (p->posB[p->cur] - 3.0f);
+                    }
+                    i = (s32)((fVar3 - fVar4) * 0.5f + 0.5f);
+                    if (i > 0) {
+                        snprintf(lbl_8050E548, 0xf, "\x1b" "CR[%d]", i);
+                        strcat(p->str2c0, lbl_8050E548);
+                        strcat(p->str2c4, lbl_8050E548);
+                        p->m2d0 += strlen(lbl_8050E548);
+                    }
+                }
+            }
+            p->m2d6 = 0;
+        }
+
+        if (bVar1 > 99) {
+            bVar1 = 99;
+        }
+        if (bVar1 / 10 != 0) {
+            buf[0] = bVar1 / 10 + '0';
+            msgAppendChar(p, buf);
+        }
+        buf[0] = bVar1 % 10 + '0';
+        msgAppendChar(p, buf);
+        strcat(p->str2c0, "'");
+        strcat(p->str2c4, "'");
+        p->m2d0 += 1;
+
+        if (bVar2 > 99) {
+            bVar2 = 99;
+        }
+        buf[0] = bVar2 / 10 + '0';
+        msgAppendChar(p, buf);
+        buf[0] = bVar2 % 10 + '0';
+        msgAppendChar(p, buf);
+        strcat(p->str2c0, "''");
+        strcat(p->str2c4, "''");
+        p->m2d0 += 2;
+    } else {
+        if (bVar1 > 99) {
+            bVar1 = 99;
+        }
+        if (bVar1 / 10 != 0) {
+            msgPutWide(p, bVar1 / 10 + '0');
+        }
+        msgPutWide(p, bVar1 % 10 + '0');
+        p->str2c0[p->m2d0++] = 0x39;
+        p->str2c0[p->m2d0++] = 0xe0;
+        if (bVar2 > 99) {
+            bVar2 = 99;
+        }
+        msgPutWide(p, bVar2 / 10 + '0');
+        msgPutWide(p, bVar2 % 10 + '0');
+        p->str2c0[p->m2d0++] = 0x3c;
+        p->str2c0[p->m2d0++] = 0xa0;
+    }
+}
+
+
 // ---- small helpers near the end of the TU (0x803A2BC4-0x803A3258) ----
 extern "C" void* fn_802D6A9C(void);
 extern "C" void fn_802D7E5C(void* mgr, s32 a, s32 b);
