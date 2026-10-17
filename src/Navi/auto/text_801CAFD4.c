@@ -26,7 +26,7 @@ extern u8* __GXData;
 extern volatile u16* __cpReg;
 extern f32 lbl_80301EC0;
 typedef struct {
-    f32 v[6];
+    Mtx23 v;
 } GXProjVals;
 extern f32 lbl_80301F68;
 extern f32 lbl_80301F6C;
