@@ -92,8 +92,6 @@ struct YasiVT {
     virtual void v4();
     virtual void v5();
     virtual void v6();
-    virtual void v7();
-    virtual void v8();
     virtual void breakUp();
 };
 extern "C" YasiVec* fn_8023E7B0(s32 holder);
