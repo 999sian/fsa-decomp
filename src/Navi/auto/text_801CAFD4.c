@@ -436,6 +436,13 @@ extern "C" void fn_801CEC14(u32 start, u32 length) {
     OSRestoreInterrupts(enabled);
 }
 
+extern "C" BOOL fn_801CEE7C(void);
+extern "C" BOOL fn_801CEF64(void);
+extern "C" void fn_801CEF74(u8 param_1);
+extern "C" u32 fn_801CEF90(void);
+extern "C" void fn_801CEFA0(u32 param_1);
+extern "C" u32 fn_801CEFBC(void);
+extern "C" void fn_801CF2B8(void);
 extern "C" void fn_801CEC9C(void) {
     unsigned long base = 0xCC005000;
     volatile unsigned short* ptr = (volatile unsigned short*)base;
@@ -779,6 +786,34 @@ extern "C" void fn_801D2038(s32 chan) {
             ((void (*)(s32, s32))cb)(chan, -3);
         }
     }
+}
+
+extern "C" s32 fn_801D26F8(s32 chan, s32 a, s32 b);
+extern "C" BOOL EXIImmEx(s32 chan, void* buf, s32 len, u32 type);
+extern "C" s32 fn_801D2AFC(s32 chan, s32 arg, void* cb) {
+    u8* card = lbl_802F7D60 + chan * 0x110;
+    s32 result;
+
+    card[0x94] = 0xF1;
+    card[0x95] = ((u32)arg >> 17) & 0x7F;
+    card[0x96] = ((u32)arg >> 9) & 0xFF;
+    *(s32*)(card + 0xa0) = 3;
+    *(s32*)(card + 0xa4) = -1;
+    *(s32*)(card + 0xa8) = 3;
+    result = fn_801D26F8(chan, 0, 3);
+    if (result == -1) {
+        result = 0;
+    } else if (result >= 0) {
+        if (EXIImmEx(chan, card + 0x94, *(s32*)(card + 0xa0), 1) == 0) {
+            *(s32*)(card + 0xcc) = 0;
+            result = -3;
+        } else {
+            result = 0;
+        }
+        EXIDeselect(chan);
+        EXIUnlock(chan);
+    }
+    return result;
 }
 
 extern "C" u16 fn_801BD4E0(void);
