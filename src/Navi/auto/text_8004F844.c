@@ -61,6 +61,11 @@ extern "C" void fn_80055C68(void) {
     *(u32*)(lbl_802BB0FC + 0x108) |= 0x4000;
 }
 
+extern "C" void fn_80055C80(void* param_1) {
+    *(u32*)((u8*)param_1 + 0xf6c) = 0;
+    *(s32*)(lbl_802BB0FC + 0x44) = 0xf;
+}
+
 extern "C" void* fn_8005757C(void* ptr, s16 param_2) {
     if (ptr != nullptr) {
         *(void**)ptr = lbl_80249D24;
