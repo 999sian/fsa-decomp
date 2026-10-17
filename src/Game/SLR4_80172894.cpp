@@ -64,8 +64,6 @@ struct PukuResMgr {
     virtual void v1();
     virtual void v2();
     virtual void v3();
-    virtual void v4();
-    virtual void v5();
     virtual void* get(u32 type, const char* name);
 };
 struct PukuGameRes {
@@ -136,6 +134,44 @@ extern "C" void fn_80172900(void* this_) {
                 fn_801F02BC(this_, lbl_80466808, *(s32*)(p + 0x280) + 0x226, &rec, 7, 0, 0, lbl_8053DAC0, lbl_8053DAC0);
             }
         }
+    }
+}
+
+extern "C" void fn_80172BC8(void* this_) {
+    char* p = (char*)this_;
+    DrawRec rec;
+    f32 mtx[3][4];
+    f32 zero = lbl_8053DAB8;
+    mtx[0][3] = zero;
+    mtx[1][3] = zero;
+    mtx[2][3] = zero;
+    if (*(u32*)(p + 0x90) != 7) {
+        mtx[0][0] = lbl_8053DABC;
+        mtx[0][1] = zero;
+        mtx[0][2] = zero;
+        mtx[1][0] = zero;
+        mtx[1][1] = lbl_8053DABC;
+        mtx[1][2] = zero;
+        mtx[2][0] = zero;
+        mtx[2][1] = zero;
+        mtx[2][2] = lbl_8053DABC;
+        if (*(s32*)(p + 0x23c) == 0) {
+            mtx[0][0] = lbl_8053DAC0;
+            mtx[0][1] = zero;
+            mtx[0][2] = zero;
+            mtx[1][0] = zero;
+            mtx[1][1] = lbl_8053DAC0;
+            mtx[1][2] = zero;
+            mtx[2][0] = zero;
+            mtx[2][1] = zero;
+            mtx[2][2] = lbl_8053DAC0;
+            rec.w18 = mtx;
+        }
+    }
+    s32 id = *(s32*)(p + 0x280) + 0x3fd;
+    if (*(s32*)(p + 4) < 8) {
+        void* res = ((PukuGameRes*)lbl_8053AAF8)->res->get('SOB ', lbl_80466808);
+        fn_802F86CC(*(void**)((char*)lbl_8053AB10 + 0x20), p + 0xc, res, id, lbl_8053DAC0, lbl_8053DAC0, &rec);
     }
 }
 
@@ -659,18 +695,20 @@ extern "C" void fn_801752D8(void* this_) {
         s32 i;
         for (i = 0; i < 4; i++) {
             s32 id = *(s32*)(p + 0x2c0 + i * 4);
-            if (id >= 0) {
+            if (id < 0) {
+                cnt++;
+            } else {
                 void* a = fn_801F666C(fn_801F856C(), id);
                 if (a == 0) {
                     *(s32*)(p + 0x2c0 + i * 4) = -1;
                     cnt++;
                 } else {
                     JGeometry::TVec3f pos = *(JGeometry::TVec3f*)(p + 0xc);
-                    *(JGeometry::TVec3f*)((char*)a + 0x280) = pos;
+                    ((JGeometry::TVec3f*)((char*)a + 0x280))->x = pos.x;
+                    ((JGeometry::TVec3f*)((char*)a + 0x280))->y = pos.y;
+                    ((JGeometry::TVec3f*)((char*)a + 0x280))->z = pos.z;
                     *(s32*)(p + 0x260) = 0x384;
                 }
-            } else {
-                cnt++;
             }
         }
         if (*(s32*)(p + 0x260) == 0 && cnt == 4 && *(s32*)(p + 0x4) == fn_8023DE58(0)) {
