@@ -45,13 +45,9 @@ static inline f32 navi_sqrtf(f32 x)
 {
     if (x > lbl_80300F88) {
         f64 guess = __frsqrte((f64)x);
-        f64 h;
-        h = guess * guess;
-        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - h * x);
-        h = guess * guess;
-        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - h * x);
-        h = guess * guess;
-        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - h * x);
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
+        guess = lbl_80300FA8 * guess * (lbl_80300FB0 - guess * guess * x);
         return (f32)(x * guess);
     } else if (x < lbl_80300FB8) {
         return lbl_802FEAB0;
