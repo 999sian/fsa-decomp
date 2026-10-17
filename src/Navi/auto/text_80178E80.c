@@ -2,6 +2,7 @@
 
 #include "types.h"
 struct NaviSrc_8018B770 { u8 pad0[8]; u8 flag; u8 pad1; s16 sa; u16 ua; u16 ub; u8 pad2[8]; u32 w[10]; };
+struct NaviDst_8018B770 { u8 pad0[4]; u8 f4; u8 pad1; s16 s6; f32 f8; u16 h10; u16 h12; void* p[10]; };
 struct VObj_8005E8B8 {
     virtual void v0();
     virtual void v1();
