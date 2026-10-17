@@ -6,7 +6,7 @@
 
 extern "C" u8* fn_802D6A9C(void);
 extern "C" void fn_802D39B8(void* mgr, s32 idx, s32 value);
-extern "C" s32 fn_8023EBB8(s32 idx);
+extern "C" u8 fn_8023EBB8(s32 idx);
 extern "C" s32 fn_8023EF50(s32 idx);
 extern "C" void fn_80204638(void);
 extern "C" void fn_802048F4(void);
@@ -207,6 +207,42 @@ extern "C" s32 fn_801F7AB8(ActorPool* pool, u32 type, s32 exceptId) {
         }
     }
     return n;
+}
+
+extern "C" void fn_801F7B18(ActorPool* pool) {
+    fn_802D6A9C();
+    for (s32 i = 0; i < 4; i++) {
+        fn_802D39B8(fn_802D6A9C(), i, -1);
+        if (fn_8023EBB8(i)) {
+            s32 v = fn_8023EF50(i);
+            fn_802D39B8(fn_802D6A9C(), i, v);
+        }
+    }
+
+    s32 count = pool->mCount;
+    for (s32 i = 0; i < count; i++) {
+        PoolActor* a = pool->mActors[i];
+        if (a != NULL && a->mActive && a->mType != 0x545a4f4b) {
+            s32 id = a->mId;
+            if (id != *(s32*)(fn_802D6A9C() + 0x131a8) && id != *(s32*)(fn_802D6A9C() + 0x131ac) &&
+                id != *(s32*)(fn_802D6A9C() + 0x131b0) && id != *(s32*)(fn_802D6A9C() + 0x131b4))
+            {
+                u32 type = a->mType;
+                if (type != 0x52414e4b && type != 0x4742414f && type != 0x454e444d && type != 0x444d4741) {
+                    if (type == 0x5241534e) {
+                        if (*(s32*)((u8*)a + 0x230) == 0) {
+                            a->mActive = 0;
+                        }
+                    } else {
+                        a->mActive = 0;
+                    }
+                }
+            }
+        }
+    }
+
+    fn_80204638();
+    fn_802048F4();
 }
 
 extern "C" s32 fn_801F7818(ActorPool* pool, u32 type, s32 param, PoolActor** out, s32 exceptId) {
