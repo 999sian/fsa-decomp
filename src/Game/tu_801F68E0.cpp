@@ -11,6 +11,17 @@ extern "C" s32 fn_8023EF50(s32 idx);
 extern "C" void fn_80204638(void);
 extern "C" void fn_802048F4(void);
 
+class JKRHeap;
+class WaveController {
+public:
+	WaveController(s32 a, s32 b, s32 c);
+};
+extern void* lbl_804A5800[];
+extern u8 lbl_80529DEC[];
+extern f32 lbl_804CABD8[3];
+extern "C" char* fn_80085A10(u32 minSize, u32 size, u32 align, void* heap, u8 a5);
+extern "C" void fn_801F62AC(u8* this_, JKRHeap* heap);
+
 // ---- stub_801f714c.cpp ----
 // fn_801F714C(shortPtr, target, divisor, maxStep) - integer/angle "ease
 // toward" helper: delta = (target - *shortPtr) / divisor (word divide,
@@ -240,6 +251,65 @@ extern "C" void fn_801F7B18(ActorPool* pool) {
         }
     }
 
+    fn_80204638();
+    fn_802048F4();
+}
+
+extern "C" void fn_802D39B8(void*, s32, s32);
+extern "C" u8 fn_8023EBB8(s32);
+extern "C" s32 fn_8023EF50(s32);
+extern "C" void fn_801F7CAC(u8* mgr) {
+    u8* cfg = fn_802D6A9C();
+    u8* it;
+    s32 i;
+    s32 n;
+    s32 c;
+    for (c = 0; c < 4; c++) {
+        fn_802D39B8(fn_802D6A9C(), c, -1);
+        if (fn_8023EBB8(c)) {
+            s32 v = fn_8023EF50(c);
+            fn_802D39B8(fn_802D6A9C(), c, v);
+        }
+    }
+    n = *(s32*)(mgr + 0x1008);
+    it = mgr;
+    for (i = 0; i < n; i++, it += 4) {
+        u8* a = *(u8**)(it + 8);
+        if (a == NULL || a[0x11c] == 0 || *(s32*)(a + 4) != 0) {
+            continue;
+        }
+        u32 id = *(u32*)(a + 0x1a0);
+        if (id == 'TZOK' || id == 'FAZR' || id == 'DMGA') {
+            continue;
+        }
+        bool in = false;
+        f32 y;
+        f32 x = *(f32*)(a + 0xc);
+        if (x >= *(f32*)(cfg + 0xcc) && (y = *(f32*)(a + 0x10)) >= *(f32*)(cfg + 0xd0) &&
+            x < *(f32*)(cfg + 0xd4) && y < *(f32*)(cfg + 0xd8)) {
+            in = true;
+        }
+        if (in) {
+            continue;
+        }
+        s32 room = *(s32*)(a + 0x198);
+        if (room == *(s32*)(fn_802D6A9C() + 0x131a8) || room == *(s32*)(fn_802D6A9C() + 0x131ac) ||
+            room == *(s32*)(fn_802D6A9C() + 0x131b0) || room == *(s32*)(fn_802D6A9C() + 0x131b4)) {
+            continue;
+        }
+        a = *(u8**)(it + 8);
+        id = *(u32*)(a + 0x1a0);
+        if (id == 'RANK' || id == 'GBAO') {
+            continue;
+        }
+        if (id == 'RASN') {
+            if (*(s32*)(a + 0x230) == 0) {
+                a[0x11c] = 0;
+            }
+        } else {
+            a[0x11c] = 0;
+        }
+    }
     fn_80204638();
     fn_802048F4();
 }
@@ -517,6 +587,49 @@ extern "C" void fn_801F7E88(ActorPool* pool) {
             }
         }
     }
+}
+
+extern "C" s32 fn_801F7F58(ActorPool* pool, PoolActor* a, u32* types, s32 excludeId, f32 f) {
+    s32 param = a->mParam;
+    s32 result = -1;
+    u8 kind = ((u8*)fn_802D6A9C())[param + 0x131df];
+    s32 count = pool->mCount;
+    for (s32 i = 0; i < count; i++) {
+        PoolActor* p = pool->mActors[i];
+        if (p != NULL && p->mActive && p->mParam == a->mParam && excludeId != p->mId) {
+            if (kind == 0 && __fabs(a->mZ - p->mZ) > f) {
+                continue;
+            }
+            for (u32* t = types; *t != 'NULL'; t++) {
+                if (*t == p->mType) {
+                    f32 pos[4];
+                    f32 other[4];
+                    fn_801F31C4((Actor*)a, pos);
+                    fn_801F31C4((Actor*)p, other);
+                    f32 v0 = pos[0];
+                    f32 v1 = pos[1];
+                    f32 v2 = pos[2];
+                    f32 v3 = pos[3];
+                    if (v0 <= other[0]) v0 = other[0];
+                    if (v1 <= other[1]) v1 = other[1];
+                    if (v2 >= other[2]) v2 = other[2];
+                    if (v3 >= other[3]) v3 = other[3];
+                    bool hit = false;
+                    if (v2 >= v0 && v3 >= v1) {
+                        hit = true;
+                    }
+                    if (hit) {
+                        result = p->mId;
+                        break;
+                    }
+                }
+            }
+            if (result >= 0) {
+                break;
+            }
+        }
+    }
+    return result;
 }
 
 extern "C" void fn_801F31C4(const Actor* a, f32* out);
