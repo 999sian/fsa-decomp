@@ -3,6 +3,7 @@
 #include "types.h"
 #include "Game/ItemBase.h"
 #include "JSystem/JMath/JMath.h"
+#include "JSystem/JGeometry/Vec.h"
 extern "C" void* fn_8013CC50(u32 id, void* pos, u32 kind, u32 a, s32 b, u32 c, u32 d, u32 e, f32 scale);
 extern "C" void fn_801F0E34(void* this_, u32 id, u32 c);
 extern "C" u32 fn_8022461C(void* p);
@@ -36,13 +37,14 @@ extern "C" void fn_801BEDBC(u8* this_) {
 inline void* lnbmMgr() { u8* m = fn_8020D58C(); return m + m[1] * 0x784 + 4; }
 
 extern "C" BOOL fn_801BEE6C(ItemBase* this_, void* a, void* b) {
+    BOOL result;
     switch ((u16)fn_8022461C(b)) {
     case 3:
     case 13:
     case 14:
         return FALSE;
     }
-    BOOL result = TRUE;
+    result = TRUE;
     if (!fn_802265DC(b, a, 0)) {
         u32 v = *(u32*)((u8*)this_ + 0x90);
         if (!fn_8020D6AC(lnbmMgr(), a, b, v, 0)) {
