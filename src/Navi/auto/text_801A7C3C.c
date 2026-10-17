@@ -247,6 +247,17 @@ extern "C" void fn_801A833C(void* p) {
     lbl_802FF700 = p;
 }
 
+extern "C" void* fn_801A8344(void* param_1, s16 param_2) {
+    if (param_1 != nullptr) {
+        *(void**)param_1 = (void*)lbl_8029B1FC;
+        fn_80192FD4((u8*)param_1 + 0x34, -1);
+        if (param_2 > 0) {
+            fn_8015AB1C(param_1);
+        }
+    }
+    return param_1;
+}
+
 extern "C" void fn_801A83A8(u8* p) {
     *(u32*)(p + 4) = 0;
     *(u32*)(p + 8) = 0;
