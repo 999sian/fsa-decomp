@@ -92,6 +92,7 @@ struct YasiVT {
     virtual void v4();
     virtual void v5();
     virtual void v6();
+    virtual void v7();
     virtual void breakUp();
 };
 extern "C" YasiVec* fn_8023E7B0(s32 holder);
@@ -161,6 +162,60 @@ extern "C" void fn_802D0E28(char* p) {
         param.palette = fn_8023CA88(*(s32*)(p + 0xc8));
     }
     fn_801F02BC(p, lbl_8046E058, 0x29, &param, flag, 0, 1, lbl_80540EAC, lbl_80540EAC);
+}
+
+extern "C" void fn_802D0FAC(char* p) {
+    *(u8*)(p + 0x234) = 0xff;
+    if (*(u8*)(p + 0xc4) != 0) {
+        YasiVec* h = fn_8023E7B0(*(s32*)(p + 0xc8));
+        YasiVec* pos = (YasiVec*)(p + 0xc);
+        pos->x = h->x;
+        pos->y = h->y;
+        pos->z = h->z;
+        *(s32*)(p + 0x4) = fn_8023DE58(*(s32*)(p + 0xc8));
+        *(u8*)(p + 0x234) = fn_8023BCD4(*(s32*)(p + 0xc8));
+        return;
+    }
+    s32 room = *(s32*)(p + 0x4);
+    char* base = fn_802D6A9C() + 0x10000 + room;
+    if (*(u8*)(base + 0x31df) == 0) {
+        *(f32*)(p + 0x44) += lbl_80540EB0;
+        *(YasiVec*)(p + 0xc) += *(YasiVec*)(p + 0x3c);
+        s32 hit = *(s32*)(p + 0x114);
+        if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+            hit = 0;
+        }
+        if (((YasiVec*)(p + 0xc))->z < lbl_80540EA8 || fn_801F2618(p, 0, 0)) {
+            if (((YasiVec*)(p + 0xc))->z < lbl_80540EA8) {
+                if (fn_80226850((YasiVec*)(p + 0xc), *(s32*)(p + 0x4)) == 0x90) {
+                    fn_802A381C(lbl_8053AC98, (YasiVec*)(p + 0xc), *(s32*)(p + 0x4), 0x91);
+                } else if (fn_80226850((YasiVec*)(p + 0xc), *(s32*)(p + 0x4)) == 0x91) {
+                    fn_802A381C(lbl_8053AC98, (YasiVec*)(p + 0xc), *(s32*)(p + 0x4), 0x92);
+                }
+            }
+            ((YasiVT*)p)->breakUp();
+        } else if (fn_801F2B7C(p, hit, *(s32*)(p + 0xc8), 4) || fn_801F2B20(p, 0)) {
+            ((YasiVT*)p)->breakUp();
+        }
+    } else {
+        if (*(u8*)(p + 0x235) == 0) {
+            ((YasiVec*)(p + 0xc))->y = ((YasiVec*)(p + 0xc))->y - ((YasiVec*)(p + 0xc))->z;
+            ((YasiVec*)(p + 0xc))->z = lbl_80540EA8;
+            ((YasiVec*)(p + 0x3c))->z = lbl_80540EA8;
+            *(u8*)(p + 0x235) = 1;
+        }
+        *(f32*)(p + 0x40) += lbl_80540EB4;
+        *(YasiVec*)(p + 0xc) += *(YasiVec*)(p + 0x3c);
+        s32 hit = *(s32*)(p + 0x114);
+        if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+            hit = 0;
+        }
+        if (fn_801F2618(p, 0, 0)) {
+            ((YasiVT*)p)->breakUp();
+        } else if (fn_801F2B7C(p, hit, *(s32*)(p + 0xc8), 4) || fn_801F2B20(p, 0)) {
+            ((YasiVT*)p)->breakUp();
+        }
+    }
 }
 
 extern "C" void fn_802D1270(char* p) {
