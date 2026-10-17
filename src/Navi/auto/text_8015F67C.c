@@ -98,6 +98,24 @@ extern "C" BOOL fn_8015F80C()
 	return TRUE;
 }
 
+extern "C" void* fn_8015FAD8(u8* p, s32 mode) {
+    void* out;
+    if (mode == 0) {
+        fn_801BDEE4(p + 0x30, &out, 1);
+        if (out == 0) {
+            return 0;
+        }
+        return p;
+    }
+    if (fn_801BDEE4(p + 0x30, &out, 0) == 0) {
+        return 0;
+    }
+    if (out == 0) {
+        return 0;
+    }
+    return p;
+}
+
 extern "C" void fn_8015FB6C(int param_1, int param_2, int param_3)
 {
     lbl_802FF5E4 = 0;
