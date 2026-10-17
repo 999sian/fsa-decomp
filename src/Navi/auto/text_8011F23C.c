@@ -1900,7 +1900,7 @@ extern "C" void fn_8012C9B0(void);
 extern "C" void fn_8012CAB8(void);
 extern "C" void fn_8012CD40(void);
 extern "C" void fn_8012CEBC(void);
-extern "C" void fn_8012C60C(void);
+extern "C" void fn_8012C60C(u8* p);
 extern "C" void fn_8012C804(void);
 extern "C" void fn_8012C6E8(void);
 extern "C" void fn_8012D010(void* ptr) {
