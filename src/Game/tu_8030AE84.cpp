@@ -75,7 +75,7 @@ extern "C" s32 fn_8030AF10(u8* p, s32 id, f32* rect, u8 flag) {
 
 extern "C" int fn_8030B084(u8* p, int idx, f32* pos)
 {
-    if (idx >= 8 && idx != *(int*)(p + 0x28c)) {
+    if (idx < 8 || idx != *(int*)(p + 0x28c)) {
         return 0;
     }
     int x = (int)pos[0];
@@ -138,13 +138,11 @@ extern "C" int fn_8030B570(u8* p, int* outX, int* outY) {
         u8* a = fn_802D6A9C();
         u8* b = fn_802D6A9C();
         f32* pos = fn_8023E724(id);
-        f32 fx = pos[0] - *(f32*)(a + 0xcc);
-        x = (int)(*(f32*)(b + 0xdc) + fx);
+        x = (int)(pos[0] - *(f32*)(a + 0xcc) + *(f32*)(b + 0xdc));
         a = fn_802D6A9C();
         b = fn_802D6A9C();
         pos = fn_8023E724(id);
-        f32 fy = pos[1] - *(f32*)(a + 0xd0);
-        y = (int)(*(f32*)(b + 0xe0) + fy);
+        y = (int)(pos[1] - *(f32*)(a + 0xd0) + *(f32*)(b + 0xe0));
     }
 
     y -= 0x50;
@@ -197,9 +195,11 @@ extern "C" void fn_8030B774(u8* p) {
             d2 = dx * dx + dy * dy;
             if (sqrt_guard(d2) > 16.0f) {
                 if (!(d2 <= 32.0f * FLT_EPSILON)) {
-                    f32 inv = rsqrt_guard(d2);
-                    dx *= inv;
-                    dy *= inv;
+                    if (!(d2 <= 0.0f)) {
+                        d2 = rsqrt_step(d2);
+                    }
+                    dx *= d2;
+                    dy *= d2;
                 }
                 *(int*)(p + 0x290) = (int)(16.0f * dx + (f32)*(int*)(p + 0x290));
                 *(int*)(p + 0x294) = (int)(16.0f * dy + (f32)*(int*)(p + 0x294));
