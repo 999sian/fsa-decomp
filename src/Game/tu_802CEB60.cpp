@@ -4,6 +4,7 @@
 
 typedef JGeometry::TVec3<f32> YasiVec;
 extern "C" f32 lbl_80540E48;
+extern "C" f32 lbl_80540E58;
 extern "C" f32 lbl_80540E5C;
 extern "C" s32 Actor_CreateByID(void* base, u32 fourCC, u32 owner, void* posPtr, u32 param, s32 p6, s32 p7);
 extern "C" u16 fn_8022461C(YasiVec* pos, u32 room);
