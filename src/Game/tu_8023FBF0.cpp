@@ -915,10 +915,8 @@ bool fn_80240DCC(char* p) {
     if (!isShrinking(p)) {
         bool a = false;
         bool b = false;
-        if (inOtherRoom(p)) {
-            if (!fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 1)) {
-                b = true;
-            }
+        if (inOtherRoom(p) && !fn_802D7804(fn_802D6A9C(), S32(p, 0x3b4), 1)) {
+            b = true;
         }
         if (b) {
             bool c = true;
@@ -1402,6 +1400,7 @@ f32 fn_80309F20(void*, s32);
 f32 fn_80309FCC(void*, s32);
 inline bool padActive(char* p) {
     bool ok;
+    s32 v;
     if (U8(p, 0xc80) == 0) {
         ok = false;
     } else if (U8(p, 0xcee) != 0) {
@@ -1418,7 +1417,7 @@ inline bool padActive(char* p) {
     if (!ok) {
         return false;
     }
-    if ((getMode2(p) == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+    if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
         return false;
     }
     return true;
@@ -1481,6 +1480,7 @@ BOOL fn_80245238(char* p) {
 BOOL fn_802454C0(char* p) {
     bool ok;
     bool ok2;
+    s32 v;
     if (U8(p, 0xc80) == 0) {
         ok = false;
     } else if (U8(p, 0xcee) != 0) {
@@ -1496,45 +1496,10 @@ BOOL fn_802454C0(char* p) {
     }
     if (!ok) {
         ok2 = false;
+    } else if ((getModeLO(p, v) == 4 && (v = linkIdx(p)) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
+        ok2 = false;
     } else {
-        s32 mode;
-        s32 d;
-        s32 e;
-        s32 i;
-        s32 c;
-        c = 0;
-        i = c;
-        for (; i < 4; i++) {
-            if (i == S32(p, 0x4)) {
-                c++;
-            } else if (fn_8022F514(i)) {
-                d = S32(p, 0xd60);
-                if (d >= 0) {
-                    if (d == fn_8022F3DC(i)) {
-                        c++;
-                    }
-                } else {
-                    e = S32(p, 0x4);
-                    if (e == fn_8022F3DC(i)) {
-                        c++;
-                    }
-                }
-            } else if (i == S32(p, 0xd60)) {
-                c++;
-            }
-        }
-        if (c <= 1) {
-            mode = 5;
-        } else if (S32(p, 0xd60) >= 0) {
-            mode = fn_8022CAF8(S32(p, 0xd60));
-        } else {
-            mode = S32(p, 0x120c);
-        }
-        if ((mode == 4 && linkIdx(p) != linkRank2(p)) || U8(p, 0x11ea) == 0) {
-            ok2 = false;
-        } else {
-            ok2 = true;
-        }
+        ok2 = true;
     }
     if (!ok2) {
         return 0;
@@ -3268,9 +3233,9 @@ void fn_8024E46C(char* p) {
 }
 void fn_8024E500(char* p) {
     if ((U8(lbl_8053AAF8, 0x82) & (u8)(1 << S32(p, 0x4))) && getItem(p) != 0) {
+        s32 lvl = getItemLevel(p);
         s32 idx = S32(p, 0x4);
         s32 item = getItem(p);
-        s32 lvl = getItemLevel(p);
         Actor_CreateByID(fn_801F856C(), 'LSTI', PTR(p, 0x3b4), p + 0x8, item | ((lvl << 22) | (idx << 17)), -1, -1);
         setItem(p, 0, 1);
     }
