@@ -313,6 +313,38 @@ extern "C" void fn_800D0270(void** self, void* data)
     fn_800D0298(self, self[1], data);
 }
 
+extern "C" void fn_800D0298(void* param_1, void* param_2, void* param_3) {
+    unsigned char* anm = (unsigned char*)param_2;
+    const unsigned char* data = (const unsigned char*)param_3;
+    *(short*)(anm + 6) = *(const short*)(data + 10);
+    anm[4] = data[8];
+    *(float*)(anm + 8) = 0.0f;
+    *(unsigned short*)(anm + 0xc) = *(const unsigned short*)(data + 12);
+    *(void**)(anm + 0x48) = JSUConvertOffsetToPtr<J3DAnmCRegKeyTable>(data, (void*)*(const unsigned int*)(data + 0x20));
+    *(void**)(anm + 0x20) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x28));
+    ((JUTNameTab*)(anm + 0x24))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x30)));
+    *(unsigned short*)(anm + 0xe) = *(const unsigned short*)(data + 14);
+    *(void**)(anm + 0x4c) = JSUConvertOffsetToPtr<J3DAnmKRegKeyTable>(data, (void*)*(const unsigned int*)(data + 0x24));
+    *(void**)(anm + 0x34) = JSUConvertOffsetToPtr<unsigned short>(data, (void*)*(const unsigned int*)(data + 0x2c));
+    ((JUTNameTab*)(anm + 0x38))->setResource(JSUConvertOffsetToPtr<ResNTAB>(data, (void*)*(const unsigned int*)(data + 0x34)));
+    *(unsigned short*)(anm + 0x10) = *(const unsigned short*)(data + 0x10);
+    *(unsigned short*)(anm + 0x12) = *(const unsigned short*)(data + 0x12);
+    *(unsigned short*)(anm + 0x14) = *(const unsigned short*)(data + 0x14);
+    *(unsigned short*)(anm + 0x16) = *(const unsigned short*)(data + 0x16);
+    *(void**)(anm + 0x50) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x38));
+    *(void**)(anm + 0x54) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x3c));
+    *(void**)(anm + 0x58) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x40));
+    *(void**)(anm + 0x5c) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x44));
+    *(unsigned short*)(anm + 0x18) = *(const unsigned short*)(data + 0x18);
+    *(unsigned short*)(anm + 0x1a) = *(const unsigned short*)(data + 0x1a);
+    *(unsigned short*)(anm + 0x1c) = *(const unsigned short*)(data + 0x1c);
+    *(unsigned short*)(anm + 0x1e) = *(const unsigned short*)(data + 0x1e);
+    *(void**)(anm + 0x60) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x48));
+    *(void**)(anm + 0x64) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x4c));
+    *(void**)(anm + 0x68) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x50));
+    *(void**)(anm + 0x6c) = JSUConvertOffsetToPtr<short>(data, (void*)*(const unsigned int*)(data + 0x54));
+}
+
 extern "C" void fn_800D044C(void** self, void* res, const void* data);
 extern "C" void fn_800D0424(void** self, const void* data) {
     fn_800D044C(self, self[1], data);
