@@ -124,6 +124,7 @@ extern "C" s32 fn_801E2D9C(u8* param_1, s32 param_2);
 extern "C" void fn_801E2D28(u8* param_1, s32 param_2);
 extern "C" void fn_801E367C(u8* param_1);
 extern "C" void fn_801E1B54(u8* param_1);
+extern "C" void* fn_801E1DB0(void);
 extern "C" void fn_801E1B90(void* param_1, u8* param_2);
 extern "C" void fn_801E1C2C(void* param_1, u8* param_2, s32 param_3);
 extern u8 lbl_8029E7B0[];
