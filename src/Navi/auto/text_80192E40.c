@@ -428,7 +428,7 @@ extern "C" void fn_801949C8(void) {
 extern "C" void fn_8019552C(u8* p) {
     u16 idx = *(u16*)(p + 4);
     NaviEntry12 tmp = lbl_80299AD0[lbl_802FF6B8];
-    fn_801E10DC(p, 0, &tmp);
+    fn_801E10DC(p, 0, tmp);
 }
 
 extern "C" void fn_80195588(u8* p, s32 x, NaviEntry36* src, NaviEntry36* dst) {
