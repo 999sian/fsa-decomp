@@ -804,7 +804,7 @@ extern "C" void fn_80168E00(void)
 {
 }
 
-extern "C" void fn_801682D8(void);
+extern "C" void fn_801682D8(void* p, f32 a, f32 b, f32 c, f32 d);
 extern "C" void* lbl_80298574[];
 extern "C" f32 lbl_80301A90;
 extern "C" void* fn_80168E64(void* self, f32 unused0, f32 unused1, f32 a, f32 b, f32 c, f32 d) {
@@ -814,7 +814,7 @@ extern "C" void* fn_80168E64(void* self, f32 unused0, f32 unused1, f32 a, f32 b,
     f32 sp8;
     f32 temp;
 
-    fn_801682D8();
+    fn_801682D8(self, unused0, unused1, a, b);
     sp10 = a;
     temp = -d;
     sp8 = lbl_80301A90;
@@ -1115,10 +1115,10 @@ extern "C" void fn_8016AED8(void* arg0) {
     u8* self = (u8*)arg0;
     s32 sp8;
     s32 spC[4];
+    u16* q;
+    u32* r31;
     s32 i;
     s32 j;
-    u32* r31;
-    u16* q;
     s32* r30;
 
     i = 0;
@@ -1149,38 +1149,12 @@ extern "C" void fn_8016AED8(void* arg0) {
 extern "C" void fn_8016AFCC(void* p) {
     Blk_8016AFCC* b = (Blk_8016AFCC*)p;
     b->w0 = 0;
-    b->s[0].c.r = lbl_80202218[0];
-    b->s[0].c.g = lbl_80202218[1];
-    b->s[0].c.b = lbl_80202218[2];
-    b->s[1].c.r = lbl_80202218[0];
-    b->s[1].c.g = lbl_80202218[1];
-    b->s[1].c.b = lbl_80202218[2];
-    b->s[2].c.r = lbl_80202218[0];
-    b->s[2].c.g = lbl_80202218[1];
-    b->s[2].c.b = lbl_80202218[2];
-    b->s[3].c.r = lbl_80202218[0];
-    b->s[3].c.g = lbl_80202218[1];
-    b->s[3].c.b = lbl_80202218[2];
-    b->s[4].c.r = lbl_80202218[0];
-    b->s[4].c.g = lbl_80202218[1];
-    b->s[4].c.b = lbl_80202218[2];
-    b->s[5].c.r = lbl_80202218[0];
-    b->s[5].c.g = lbl_80202218[1];
-    b->s[5].c.b = lbl_80202218[2];
-    b->s[6].c.r = lbl_80202218[0];
-    b->s[6].c.g = lbl_80202218[1];
-    b->s[6].c.b = lbl_80202218[2];
-    b->s[7].c.r = lbl_80202218[0];
-    b->s[7].c.g = lbl_80202218[1];
-    b->s[7].c.b = lbl_80202218[2];
-    b->tail[0] = 0;
-    b->tail[1] = 0;
-    b->tail[2] = 0;
-    b->tail[3] = 0;
-    b->tail[4] = 0;
-    b->tail[5] = 0;
-    b->tail[6] = 0;
-    b->tail[7] = 0;
+    for (int i = 0; i < 8; i++) {
+        b->s[i].c = *(RGB8_8017261C*)lbl_80202218;
+    }
+    for (int i = 0; i < 8; i++) {
+        b->tail[i] = 0;
+    }
 }
 
 extern "C" int fn_8016B410()
