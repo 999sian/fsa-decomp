@@ -1,5 +1,6 @@
 #include "types.h"
 #include "Game/ItemBase.h"
+#include "dolphin/mtx.h"
 
 extern "C" void fn_8010E074(u8* this_);
 extern "C" void fn_801D267C(u8* p);
@@ -87,31 +88,32 @@ extern "C" void fn_80112C9C(u8* this_) {
     extern void* fn_8011921C(void);
     extern void fn_80112654(u8* this_, s32 n);
 
+    s32* tbl = &lbl_80464678[0x29];
+    s32 v = *(s32*)((char*)fn_8011921C() + 8);
     if (*(s32*)(this_ + 0x23c) == 0) {
-        s32 v = *(s32*)((char*)fn_8011921C() + 8);
-        if (v == lbl_80464678[0x2b]) {
+        if (v == tbl[2]) {
             fn_80112654(this_, 2);
-        } else if (v == lbl_80464678[0x2c] + lbl_80464678[0x39 + *(s32*)(this_ + 0x234)]) {
+        } else if (v == tbl[3] + lbl_80464678[0x39 + *(s32*)(this_ + 0x234)]) {
             fn_80112654(this_, 3);
-        } else if (v == lbl_80464678[0x2d]) {
+        } else if (v == tbl[4]) {
             fn_80112654(this_, 4);
-        } else if (v == lbl_80464678[0x2e]) {
+        } else if (v == tbl[5]) {
             fn_80112654(this_, 5);
-        } else if (v == lbl_80464678[0x2f]) {
+        } else if (v == tbl[6]) {
             fn_80112654(this_, 6);
-        } else if (v == lbl_80464678[0x30]) {
+        } else if (v == tbl[7]) {
             fn_80112654(this_, 7);
-        } else if (v == lbl_80464678[0x31]) {
+        } else if (v == tbl[8]) {
             fn_80112654(this_, 8);
-        } else if (v == lbl_80464678[0x32] + lbl_80464678[0x45 + *(s32*)(this_ + 0x234)]) {
+        } else if (v == tbl[9] + lbl_80464678[0x45 + *(s32*)(this_ + 0x234)]) {
             fn_80112654(this_, 9);
-        } else if (v == lbl_80464678[0x33]) {
+        } else if (v == tbl[10]) {
             fn_80112654(this_, 10);
-        } else if (v == lbl_80464678[0x34]) {
+        } else if (v == tbl[11]) {
             fn_80112654(this_, 11);
-        } else if (v == lbl_80464678[0x35] + lbl_80464678[0x3f + *(s32*)(this_ + 0x234)]) {
+        } else if (v == tbl[12] + lbl_80464678[0x3f + *(s32*)(this_ + 0x234)]) {
             fn_80112654(this_, 12);
-        } else if (v == lbl_80464678[0x37]) {
+        } else if (v == tbl[14]) {
             fn_80112654(this_, 15);
         }
     }
