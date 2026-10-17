@@ -14,6 +14,7 @@ extern "C" void* lbl_8053AB10;
 extern "C" void fn_8013B490(void* this_);
 extern "C" void fn_8013B1E8(void* this_);
 extern "C" void load__10JUTTextureF11_GXTexMapID(u8* self, s32 id);
+extern "C" const float lbl_8053D638;
 struct FsaResMgr {
     virtual ~FsaResMgr() {}
     virtual void* slot2() { return 0; }
@@ -28,6 +29,91 @@ extern "C" void* __nw__FUlP7JKRHeapi(u32 size, void* heap, s32 align);
 extern "C" void storeTIMG__10JUTTextureFPC7ResTIMGUc(char* self, const void* timg, u8 palette);
 extern "C" void __dt__10JUTTextureFv(void*, int);
 void operator delete(void*);
+extern "C" void fn_8015F454(u8* this_, f32* pos, f32* uv, GXColor* color, GXColorS10* color10, u8* tex, u8 useTex1, u8 useBlend) {
+    f32 s0 = uv[0];
+    f32 t0 = uv[1];
+    f32 s1 = uv[2];
+    f32 t1 = uv[3];
+    fn_8013B490(lbl_8053AB10);
+    fn_8013B1E8(lbl_8053AB10);
+    load__10JUTTextureF11_GXTexMapID(this_, 0);
+    if (tex != 0) {
+        GXClearVtxDesc();
+        GXSetVtxDesc(GX_VA_POS, GX_DIRECT);
+        GXSetVtxDesc(GX_VA_TEX0, GX_DIRECT);
+        GXSetVtxDesc(GX_VA_TEX1, GX_DIRECT);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_POS, GX_POS_XYZ, GX_F32, 0);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX0, GX_TEX_ST, GX_F32, 0);
+        GXSetVtxAttrFmt(GX_VTXFMT0, GX_VA_TEX1, GX_TEX_ST, GX_F32, 0);
+        GXSetTexCoordGen2(GX_TEXCOORD0, GX_TG_MTX2x4, GX_TG_TEX0, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
+        GXSetTexCoordGen2(GX_TEXCOORD1, GX_TG_MTX2x4, GX_TG_TEX1, GX_IDENTITY, GX_FALSE, GX_PTIDENTITY);
+        GXSetNumTexGens(2);
+        load__10JUTTextureF11_GXTexMapID(tex, 1);
+        GXSetTevOrder(GX_TEVSTAGE1, GX_TEXCOORD1, GX_TEXMAP1, GX_COLOR_NULL);
+        GXSetTevColorIn(GX_TEVSTAGE1, (GXTevColorArg)0xf, (GXTevColorArg)0xf, (GXTevColorArg)0xf, (GXTevColorArg)0);
+        GXSetTevColorOp(GX_TEVSTAGE1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        GXSetTevAlphaIn(GX_TEVSTAGE1, (GXTevAlphaArg)7, (GXTevAlphaArg)0, (GXTevAlphaArg)4, (GXTevAlphaArg)7);
+        GXSetTevAlphaOp(GX_TEVSTAGE1, GX_TEV_ADD, GX_TB_ZERO, GX_CS_SCALE_1, GX_TRUE, GX_TEVPREV);
+        if ((s32)*(u8*)*(u8**)(tex + 0x20) == 0xe) {
+            GXSetTevSwapMode(GX_TEVSTAGE1, GX_TEV_SWAP0, GX_TEV_SWAP1);
+            GXSetTevSwapModeTable(GX_TEV_SWAP1, GX_CH_ALPHA, GX_CH_ALPHA, GX_CH_ALPHA, GX_CH_RED);
+        }
+        GXSetNumTevStages(2);
+    }
+    GXSetTevColor(GX_TEVREG0, *color);
+    if (color10 != 0) {
+        GXSetTevColorS10(GX_TEVREG1, *color10);
+    }
+    GXSetZMode(GX_FALSE, GX_LEQUAL, GX_FALSE);
+    if (useBlend != 0) {
+        GXSetBlendMode(GX_BM_BLEND, GX_BL_SRCALPHA, GX_BL_ONE, GX_LO_SET);
+    }
+    u8* img = *(u8**)(this_ + 0x20);
+    s0 = s0 / (f32)*(u16*)(img + 2);
+    t0 = t0 / (f32)*(u16*)(img + 4);
+    s1 = s1 / (f32)*(u16*)(img + 2);
+    t1 = t1 / (f32)*(u16*)(img + 4);
+    GXBegin(GX_QUADS, GX_VTXFMT0, 4);
+    if (tex != 0) {
+        if (useTex1 != 0) {
+            GXPosition3f32(pos[0], pos[1], 0.0f);
+            GXTexCoord2f32(s0, t0);
+            GXTexCoord2f32(-1.0f, -1.0f);
+            GXPosition3f32(pos[2], pos[1], 0.0f);
+            GXTexCoord2f32(s1, t0);
+            GXTexCoord2f32(1.0f, -1.0f);
+            GXPosition3f32(pos[2], pos[3], 0.0f);
+            GXTexCoord2f32(s1, t1);
+            GXTexCoord2f32(1.0f, 1.0f);
+            GXPosition3f32(pos[0], pos[3], 0.0f);
+            GXTexCoord2f32(s0, t1);
+            GXTexCoord2f32(-1.0f, 1.0f);
+        } else {
+            GXPosition3f32(pos[0], pos[1], 0.0f);
+            GXTexCoord2f32(s0, t0);
+            GXTexCoord2f32(0.0f, 0.0f);
+            GXPosition3f32(pos[2], pos[1], 0.0f);
+            GXTexCoord2f32(s1, t0);
+            GXTexCoord2f32(1.0f, 0.0f);
+            GXPosition3f32(pos[2], pos[3], 0.0f);
+            GXTexCoord2f32(s1, t1);
+            GXTexCoord2f32(1.0f, 1.0f);
+            GXPosition3f32(pos[0], pos[3], 0.0f);
+            GXTexCoord2f32(s0, t1);
+            GXTexCoord2f32(0.0f, 1.0f);
+        }
+    } else {
+        GXPosition3f32(pos[0], pos[1], 0.0f);
+        GXTexCoord2f32(s0, t0);
+        GXPosition3f32(pos[2], pos[1], 0.0f);
+        GXTexCoord2f32(s1, t0);
+        GXPosition3f32(pos[2], pos[3], 0.0f);
+        GXTexCoord2f32(s1, t1);
+        GXPosition3f32(pos[0], pos[3], 0.0f);
+        GXTexCoord2f32(s0, t1);
+    }
+}
+
 extern "C" u8 fn_8015F8FC(char* p, s32 room, f32* pos, s32 flag) {
     u8 ret = 0;
     if (room < 8) {
