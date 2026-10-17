@@ -80,6 +80,8 @@ extern void* lbl_802886F8[];
 
 extern void* lbl_80283F48[];
 extern void* lbl_80289A14[];
+extern void* lbl_80289110[];
+extern void* lbl_80286964[];
 
 extern void* lbl_80283F48[];
 
@@ -1643,8 +1645,9 @@ extern "C" s32 fn_8009B220(void* p);
 extern "C" s32 fn_8009B8B4(void* p);
 extern "C" void fn_8009B154(u8* p) {
     s32 a = fn_8009B574();
-    a |= fn_8009B220(p);
-    if ((fn_8009B8B4(p) | a) != 0) {
+    a = fn_8009B220(p) | a;
+    s32 c = fn_8009B8B4(p);
+    if ((c | a) != 0) {
         if (p[0x718] == 0) {
             void* obj = *(void**)(p + 0x700);
             ((void (*)(void*, void*))(*(void***)obj)[25])(obj, *(void**)(p + 0x710));
