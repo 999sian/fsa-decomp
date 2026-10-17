@@ -337,6 +337,8 @@ extern "C" void fn_8013D5BC(void* param_1, s32 param_2, u32* param_3) {
 
 extern "C" void fn_80133694(void*, void*, void*);
 extern "C" u8 fn_8013BAB4(void*, void*, u32, u32);
+extern "C" u8 fn_8013BBF0(void*, void*, void*, void*);
+extern "C" void fn_80133624(void*, void*, void*);
 extern "C" void fn_801C6630(void*, void*, void*);
 extern u8 lbl_80201E9C[];
 extern "C" void fn_8013D7E0(void* param_1, void* param_2) {
