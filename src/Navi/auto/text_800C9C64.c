@@ -105,7 +105,7 @@ extern "C" void fn_800CAB90(void) {}
 
 extern Unk802C56B4 lbl_802C56B4;
 extern u8 lbl_8029FDB4[];
-extern "C" void fn_800127A0(void*);
+extern "C" void fn_800127A0(void*, s8 = 0);
 extern "C" s32 fn_800CB450(void*, s16, u8, s32, s32, f32, f32);
 extern "C" void fn_8002F198(void);
 extern "C" void fn_800CACA4(u8* p) {
@@ -135,10 +135,12 @@ extern "C" void fn_800CB688(u8* p) {
         a->v0(1);
     }
     (*(VObj_800CB688B**)(p + 4))->v7();
-    Unk802C56B4* g = &lbl_802C56B4;
-    if (g->unk4 >= 0 && --g->unk8 == 0) {
-        fn_800127A0(lbl_8029FDB4 + 4);
-        g->unk4 = -1;
+    s8 idx = lbl_802C56B4.unk4;
+    if (idx >= 0) {
+        if (--lbl_802C56B4.unk8 == 0) {
+            ((void (*)(void*, s8))fn_800127A0)(lbl_8029FDB4 + 4, idx);
+            lbl_802C56B4.unk4 = -1;
+        }
     }
 }
 
