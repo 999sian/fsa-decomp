@@ -685,8 +685,7 @@ extern "C" void fn_802D7844(void* rec, s32 a, s32 b);
 static inline u8 twtgHasItem(s32 k) {
     u8* g = lbl_8050EC80 + *(s32*)(lbl_8050EC80 + 0x10) * 0xc8;
     s32 r = (u8)(1 << k) & g[0x7a];
-    bool has = r != 0;
-    return has;
+    return r != 0;
 }
 
 extern "C" void fn_803167F4(char* p) {
@@ -727,7 +726,10 @@ extern "C" void fn_803167F4(char* p) {
         *(f32*)(p + 0x264) = lbl_805418A8;
     }
     s32 k = *(s32*)(p + 0x23c);
-    if (twtgHasItem(k)) {
+    u8* tbl = (u8*)lbl_8050EC80 + *(s32*)((u8*)lbl_8050EC80 + 0x10) * 0xc8;
+    u32 flag = (u8)(1 << k) & tbl[0x7a];
+    bool has = flag != 0;
+    if (has) {
         *(s32*)(p + 0x268) = lbl_804714D8[k];
     } else {
         *(s32*)(p + 0x268) = 0x473;
