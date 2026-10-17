@@ -14,7 +14,7 @@ extern "C" u8 fn_802DEBF8();
 extern "C" s32 fn_801CD664(s32 range);
 extern "C" void fn_802CEC10(char* p);
 BOOL fn_802CF598(char* p);
-void* fn_801F856C();
+extern "C" void* fn_801F856C();
 void fn_801F0E34(void* a, u32 code, u32 z);
 s32 fn_8013CC50(u32 id, void* p, f32 f, u32 a, u32 b, u32 c, u32 d, u32 e, u32 g);
 
@@ -60,11 +60,9 @@ extern "C" void fn_802CEC10(char* p) {
                 Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), p + 0xc, 0, -1, -1);
             }
         } else if (*(s32*)(p + 0x238) == 3) {
-            f32 y = *(f32*)(p + 0x10);
-            YasiVec a(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), y, lbl_80540E48);
+            YasiVec a(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), *(f32*)(p + 0x10), lbl_80540E48);
             Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &a, 0, -1, -1);
-            y = *(f32*)(p + 0x10);
-            YasiVec b(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), y, lbl_80540E48);
+            YasiVec b(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), *(f32*)(p + 0x10), lbl_80540E48);
             Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &b, 0, -1, -1);
         } else if (*(s32*)(p + 0x238) == 2) {
             f32 y = *(f32*)(p + 0x10) + (f32)(fn_801CD664(13) - 6);
@@ -82,11 +80,9 @@ extern "C" void fn_802CEC10(char* p) {
             } else if (*(s32*)(p + 0x230) == 2) {
                 Actor_CreateByID(fn_801F856C(), 0x4d54424f, *(u32*)(p + 0x4), p + 0xc, 0, -1, -1);
             } else if (*(s32*)(p + 0x230) == 3) {
-                f32 y = *(f32*)(p + 0x10);
-                YasiVec a(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), y, lbl_80540E48);
+                YasiVec a(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), *(f32*)(p + 0x10), lbl_80540E48);
                 Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &a, 0, -1, -1);
-                y = *(f32*)(p + 0x10);
-                YasiVec b(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), y, lbl_80540E48);
+                YasiVec b(*(f32*)(p + 0xc) + (f32)(fn_801CD664(13) - 6), *(f32*)(p + 0x10), lbl_80540E48);
                 Actor_CreateByID(fn_801F856C(), 0x48415254, *(u32*)(p + 0x4), &b, 0, -1, -1);
             }
         } else {
