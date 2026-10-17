@@ -164,6 +164,104 @@ extern "C" void fn_80134FE0(u8* this_, u8 v) {
     }
 }
 
+extern "C" void fn_80135020(char* this_, s32 which) {
+    switch (which) {
+    case 7:
+        if (*(void**)(this_ + 4) == 0) {
+            void* p = operator new(0x38, *(JKRHeap**)(this_ + 0x98), 0);
+            if (p != 0) {
+                p = fn_8013A538(p, *(void**)(this_ + 0x98));
+            }
+            *(void**)(this_ + 4) = p;
+            fn_8013BE04(lbl_8053AB10);
+            if (*(u8*)(lbl_8053AAF8 + 0x7f) != 0) {
+                s32 b = *(s32*)(lbl_80529DEC + 0x11c);
+                s32 a = *(s32*)(lbl_80529DEC + 0x118);
+                char* drive = (char*)fn_802D6A9C();
+                *(s32*)(drive + 4) = a;
+                *(s32*)(drive + 8) = b;
+            } else {
+                s32 b = *(s32*)(lbl_80529DEC + 0x12c);
+                s32 a = *(s32*)(lbl_80529DEC + 0x128);
+                char* drive = (char*)fn_802D6A9C();
+                *(s32*)(drive + 4) = a;
+                *(s32*)(drive + 8) = b;
+            }
+            fn_8013A1A4(*(void**)(this_ + 4));
+        }
+        break;
+    case 12:
+        if (*(void**)(this_ + 0x1c) == 0) {
+            u8 group = (*(JKRHeap**)(this_ + 0x98))->changeGroupID(1);
+            void* p = operator new(0x20, *(JKRHeap**)(this_ + 0x98), 0);
+            if (p != 0) {
+                p = fn_8037A8D4(p);
+            }
+            *(void**)(this_ + 0x1c) = p;
+            (*(JKRHeap**)(this_ + 0x98))->changeGroupID(group);
+            fn_80139958();
+        }
+        break;
+    case 1:
+        if (*(void**)(this_ + 0x20) == 0) {
+            u8 group = (*(JKRHeap**)(this_ + 0x98))->changeGroupID(1);
+            void* p = operator new(0x158, *(JKRHeap**)(this_ + 0x98), 0);
+            if (p != 0) {
+                p = fn_803A59E0(p);
+            }
+            *(void**)(this_ + 0x20) = p;
+            (*(JKRHeap**)(this_ + 0x98))->changeGroupID(group);
+            this_[0x87] = 0;
+        }
+        break;
+    case 2:
+    case 5:
+        if (*(void**)(this_ + 0x28) == 0) {
+            u8 group = (*(JKRHeap**)(this_ + 0x98))->changeGroupID(1);
+            void* p = operator new(0x120, *(JKRHeap**)(this_ + 0x98), 0);
+            if (p != 0) {
+                p = fn_803DFF40(p);
+            }
+            *(void**)(this_ + 0x28) = p;
+            (*(JKRHeap**)(this_ + 0x98))->changeGroupID(group);
+        }
+        break;
+    case 3:
+        if (*(void**)(this_ + 0x24) == 0) {
+            u8 group = (*(JKRHeap**)(this_ + 0x98))->changeGroupID(1);
+            void* p = operator new(0x1ac, *(JKRHeap**)(this_ + 0x98), 0);
+            if (p != 0) {
+                p = fn_803D0264(p);
+            }
+            *(void**)(this_ + 0x24) = p;
+            (*(JKRHeap**)(this_ + 0x98))->changeGroupID(group);
+        }
+        break;
+    case 4:
+        if (*(void**)(this_ + 0x2c) == 0) {
+            u8 group = (*(JKRHeap**)(this_ + 0x98))->changeGroupID(1);
+            void* p = operator new(0x10, *(JKRHeap**)(this_ + 0x98), 0);
+            if (p != 0) {
+                p = fn_803A8884(p);
+            }
+            *(void**)(this_ + 0x2c) = p;
+            (*(JKRHeap**)(this_ + 0x98))->changeGroupID(group);
+        }
+        break;
+    case 6:
+        if (*(void**)(this_ + 0x30) == 0) {
+            u8 group = (*(JKRHeap**)(this_ + 0x98))->changeGroupID(1);
+            void* p = operator new(0x10, *(JKRHeap**)(this_ + 0x98), 0);
+            if (p != 0) {
+                p = fn_8039027C(p);
+            }
+            *(void**)(this_ + 0x30) = p;
+            (*(JKRHeap**)(this_ + 0x98))->changeGroupID(group);
+        }
+        break;
+    }
+}
+
 extern "C" void fn_801352F4(char* this_, s32 which) {
     switch (which) {
     case 7:
