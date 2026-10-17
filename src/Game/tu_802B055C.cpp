@@ -88,4 +88,5 @@ extern "C" void fn_802B0A4C(char* p) {
     *(u32*)(p + 0x254) = 0;
     *(f32*)(p + 0x258) = lbl_80540990;
 }
+
 #include "JSystem/JAudio/JASFakeMatchFSA.h"
