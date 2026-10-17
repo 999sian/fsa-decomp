@@ -22,6 +22,11 @@ extern "C" void fn_801F02BC(void* this_, const char* name, s32 id, DrawRec* rec,
 extern "C" char lbl_80466868[];
 extern void* lbl_8053AB10;
 extern "C" void fn_801791B0(Actor* this_) {
+    struct ShltColor {
+        u32 rgba;
+        ShltColor(u32 c) { rgba = c; }
+    };
+    typedef void (*DrawFn)(void*, void*, void*, ShltColor, f32);
     u8* p = (u8*)this_;
     if (this_->field_90 == 0xd) {
         DrawRec rec;
@@ -29,13 +34,12 @@ extern "C" void fn_801791B0(Actor* this_) {
         fn_801F06F0(this_, lbl_80466868, 0x431, &rec, -1, 1.0f, 1.0f);
         fn_801F02BC(this_, lbl_80466868, 0x431, &rec, -1, 0, 0, 1.0f, 1.0f);
     } else {
-        u32 col[4];
-        col[1] = 0x3f3f1f7f;
-        col[3] = 0x3f3f1f7f;
-        fn_80158624(*(void**)((u8*)lbl_8053AB10 + 0x2c), p + 0x34c, p + 0xc, &col[1], *(f32*)(p + 0x344) * 0.7f);
-        col[0] = 0x3f3f1f3f;
-        col[2] = 0x3f3f1f3f;
-        fn_80158624(*(void**)((u8*)lbl_8053AB10 + 0x2c), p + 0x34c, p + 0xc, &col[0], *(f32*)(p + 0x344));
+        f32 s1 = *(f32*)(p + 0x344) * 0.7f;
+        ShltColor c1(0x3f3f1f7f);
+        ((DrawFn)fn_80158624)(*(void**)((u8*)lbl_8053AB10 + 0x2c), p + 0x34c, p + 0xc, c1, s1);
+        f32 s2 = *(f32*)(p + 0x344);
+        ShltColor c2(0x3f3f1f3f);
+        ((DrawFn)fn_80158624)(*(void**)((u8*)lbl_8053AB10 + 0x2c), p + 0x34c, p + 0xc, c2, s2);
     }
 }
 
