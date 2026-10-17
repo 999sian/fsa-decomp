@@ -580,14 +580,14 @@ extern "C" void fn_8009336C(char* param_1)
 extern "C" u8 lbl_80285DF8[];
 extern "C" s32 lbl_802FEBC0;
 extern "C" void fn_800933C4(u8* p) {
-    u8* q = *(u8**)(p + 0x280);
-    if ((lbl_802AE880[0x1fa6] == 0 || lbl_802AE880[0x1fa6] == 1) && lbl_802FEBC0 == 0 && p[0x282e] == 0 && q[0x159] == 1) {
-        fn_800CA7C4(q);
+    u32 flag = (u8)lbl_802AE880[0x1fa6];
+    if ((flag == 0 || flag == 1) && lbl_802FEBC0 == 0 && p[0x282e] == 0 && (*(u8**)(p + 0x280))[0x159] == 1) {
+        fn_800CA7C4(*(u8**)(p + 0x280));
         *(u16*)(p + 0x2830) = 0xffff;
         p[0x282d] = 0;
         p[0x282c] = 2;
     }
-    fn_801E10DC(p, lbl_80285DF8 + p[0x282c] * 12);
+    (((NaviState_8008DC60*)p)->*lbl_8028635C[p[0x282c]])();
     lbl_802AE880[0x1fa6] = 2;
 }
 
@@ -1065,6 +1065,31 @@ extern "C" int fn_80095E00(u8* p, u8* c) {
     return 1;
 }
 
+extern "C" u8 fn_800D4FCC(void* p);
+extern "C" void fn_800D6C70(void);
+extern "C" void fn_800C57A8(void);
+extern "C" void fn_80095F38(u8* p) {
+    if (fn_800D4FCC(*(void**)(p + 0x28c)) == 1) {
+        if (*(void**)(p + 0x28c) != 0) {
+            fn_800D6C70();
+            DtorVObj_800A0008* o = *(DtorVObj_800A0008**)(p + 0x28c);
+            if (o != 0) {
+                o->Destroy(1);
+            }
+            *(void**)(p + 0x28c) = 0;
+        }
+        if (*(void**)(p + 0x284) != 0) {
+            fn_800C57A8();
+            DtorVObj_800A0008* o = *(DtorVObj_800A0008**)(p + 0x284);
+            if (o != 0) {
+                o->Destroy(1);
+            }
+            *(void**)(p + 0x284) = 0;
+        }
+        p[0x7e8] = 4;
+    }
+}
+
 extern "C" void fn_80095FEC(void) {}
 
 extern void* lbl_8028B750[];
@@ -1213,13 +1238,15 @@ extern "C" void fn_80096E48(char* param_1) {
 
 extern "C" void fn_80096EA0(u8* p) {
     if (fn_800C6FD4(*(void**)(p + 0x27c))) {
-        u8 s = *(*(u8**)(p + 0x27c) + 0x8c);
-        if (s == 2) {
-            p[0x282f] = 1;
-            p[0x282c] = 0;
-            p[0x85c] = 0;
-            p[0x2a5] = 1;
-        } else if (s > 2) {
+        switch (*(*(u8**)(p + 0x27c) + 0x8c)) {
+            case 2:
+                p[0x282f] = 1;
+                p[0x282c] = 0;
+                p[0x85c] = 0;
+                p[0x2a5] = 1;
+                break;
+            default:
+                break;
         }
     }
 }
