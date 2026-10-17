@@ -139,6 +139,17 @@ static inline u8 Rusa_Contains(char* p, const JGeometry::TVec3f* v) {
     return r;
 }
 
+static inline u8 Rusa_AnyPlayerContains(char* p) {
+    u8 found = 0;
+    for (s32 i = 0; i < 4; i++) {
+        if (fn_801D0B44(p, i) && Rusa_Contains(p, fn_8023E724(i))) {
+            found = 1;
+            break;
+        }
+    }
+    return found;
+}
+
 
 extern "C" s32 fn_802373EC(s32 i);
 extern "C" s32 fn_8023725C(s32 i);
@@ -379,6 +390,7 @@ extern "C" void fn_8021148C(char* p) {
     fn_80211C94(p);
     switch (*(s32*)(p + 0x248)) {
     case 0: {
+        s32 id;
         go = 0;
         switch (*(s32*)(p + 0x2ac)) {
         case 1:
@@ -405,7 +417,7 @@ extern "C" void fn_8021148C(char* p) {
             } else {
                 Rusa_SetScale(p, *(f32*)(p + 0x390));
             }
-            s32 id = *(s32*)(p + 0x388);
+            id = *(s32*)(p + 0x388);
             if (id >= 0) {
                 char* a = fn_801F666C(fn_801F856C(), id);
                 if (a != 0) {
@@ -680,10 +692,9 @@ extern "C" void fn_80212288(char* p) {
         } else {
             *(f32*)(p + 0x39c) = lbl_8053FB00 * *(f32*)(p + 0x390);
         }
-        *(f32*)(p + 0x39c) -= lbl_8053FB00;
-        f32 mn = lbl_8053FB44;
-        if (*(f32*)(p + 0x39c) < mn) {
-            *(f32*)(p + 0x39c) = mn;
+        *(f32*)(p + 0x39c) = *(f32*)(p + 0x39c) - lbl_8053FB00;
+        if (*(f32*)(p + 0x39c) < lbl_8053FB44) {
+            *(f32*)(p + 0x39c) = lbl_8053FB44;
         }
         *(f32*)(p + 0x3a0) = lbl_8053FB00 * *(f32*)(p + 0x394) + lbl_8053FB00;
     } else {
