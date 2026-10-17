@@ -542,6 +542,22 @@ extern "C" void fn_80092FE4(char* param_1) {
     }
 }
 
+extern "C" void fn_800A7EBC(u8* p);
+extern "C" void fn_80093038(u8* param_1) {
+    if (*(u8**)(param_1 + 0x268) != 0) {
+        fn_800A7EBC(*(u8**)(param_1 + 0x268));
+        fn_800C55B8(*(void**)(param_1 + 0x284), *(*(u8**)(param_1 + 0x268) + 0x3da));
+        u8 v = *(*(u8**)(param_1 + 0x268) + 0x3d2);
+        if (v != 0) {
+            if (v == 3) {
+                param_1[0x7e8] = 5;
+            } else {
+                param_1[0x7e8] = 4;
+            }
+        }
+    }
+}
+
 extern "C" void fn_80093234(u8* p) {
     if (fn_8010B734(*(u8**)(p + 0x29c)) == 1) {
         fn_800C55B8(*(u8**)(p + 0x284), *(*(u8**)(p + 0x29c) + 0x9d));
