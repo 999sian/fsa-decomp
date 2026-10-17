@@ -1,6 +1,16 @@
 #include "types.h"
 #include "Game/Actor.h"
 #include "Game/SinitPoolChain.h"
+#include "Game/ItemBase.h"
+
+class ActorResMgr {
+public:
+    virtual void vf08();
+    virtual void vf0C();
+    virtual void vf10();
+    virtual void vf14();
+    virtual void* vf18(u32 type, const char* name);
+};
 
 extern "C" void* fn_801F856C(void);
 extern "C" void* fn_801F666C(void*, s32);
@@ -115,6 +125,111 @@ extern "C" void* fn_80157ED0(void* this_, s16 freeFlag) {
         }
     }
     return this_;
+}
+
+extern "C" void fn_80157FB0(char* self) {
+    char* rng;
+    u32 seed;
+    u32 bits;
+    s32 i;
+    f32 frand;
+    *(f32*)(self + 0x60) = lbl_8053D390;
+    *(f32*)(self + 0x64) = lbl_8053D388;
+    *(f32*)(self + 0x68) = lbl_8053D394;
+    *(f32*)(self + 0x6c) = lbl_8053D38C;
+    *(f32*)(self + 0x84) = *(f32*)(self + 0x80) = lbl_8053D410;
+    *(f32*)(self + 0x8c) = *(f32*)(self + 0x88) = lbl_8053D380;
+    *(f32*)(self + 0x74) = *(f32*)(self + 0x70) = lbl_8053D414;
+    *(f32*)(self + 0x7c) = *(f32*)(self + 0x78) = lbl_8053D3C0;
+    *(u16*)(self + 0x94) = (u16)((*(u32*)(self + 0x90) >> 16) & 0xff);
+    *(s32*)(self + 0x280) = *(u32*)(self + 0x90) >> 24;
+    *(s32*)(self + 0x28c) = 0;
+    if (*(s32*)(self + 0x280) == 0) {
+        *(s32*)(self + 0x280) = -1;
+    }
+    *(s32*)(self + 0x25c) = 0;
+    *(s32*)(self + 0x260) = 0;
+    *(s32*)(self + 0x264) = 0;
+    *(s32*)(self + 0x268) = 0;
+    *(s32*)(self + 0x26c) = 0;
+    *(s32*)(self + 0x270) = 0;
+    *(s32*)(self + 0x238) = 0;
+    *(s32*)(self + 0x23c) = 0;
+    *(s32*)(self + 0x240) = 0;
+    *(s32*)(self + 0x244) = 0;
+    *(s32*)(self + 0x248) = 0;
+    *(s32*)(self + 0x24c) = 0;
+    *(s32*)(self + 0x250) = 0;
+    *(s32*)(self + 0x254) = 0;
+    *(s32*)(self + 0x258) = 0;
+    *(u32*)(self + 0x90) &= 0xff;
+    *(u32*)(self + 0x108) = lbl_8049FDC8[*(u32*)(self + 0x90) * 2];
+    *(s32*)(self + 0x274) = 0;
+    *(s32*)(self + 0x278) = 0;
+    *(f32*)(self + 0x298) = lbl_8053D37C;
+    *(f32*)(self + 0x2b4) = lbl_8053D378;
+    *(f32*)(self + 0x2b0) = lbl_8053D378;
+    *(f32*)(self + 0x2ac) = lbl_8053D378;
+    *(f32*)(self + 0x44) = lbl_8053D378;
+    *(f32*)(self + 0x40) = lbl_8053D378;
+    *(f32*)(self + 0x3c) = lbl_8053D378;
+    rng = (char*)lbl_8053AAF8;
+    *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+    frand = *(f32*)&(bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000);
+    *(u32*)(self + 0x98) = (s32)(lbl_8053D418 * (frand - lbl_8053D37C)) & 3;
+    *(u8*)(self + 0x2a8) = 0;
+    *(s32*)(self + 0x238) = 8;
+    *(s32*)(self + 0x284) = -1;
+    *(s32*)(self + 0x27c) = lbl_8053AB50;
+    lbl_8053AB50++;
+    *(u16*)(self + 0x2aa) = 0xffff;
+    *(u32*)(self + 0xb0) = 0x12205;
+    if (*(u16*)(self + 0x94) == 2 || *(s32*)(self + 0x90) == 3) {
+        *(u32*)(self + 0xb0) = 0x4000000;
+    }
+    *(s32*)(self + 0x290) = 0;
+    if (*(s32*)(self + 0x90) == 2 && *(s32*)(lbl_80529DEC + 0x118) == 0 && *(s32*)(lbl_80529DEC + 0x11c) == 3) {
+        *(s32*)(self + 0x108) = 1;
+        for (i = 0; i < 6; i++) {
+            if ((s32)(lbl_8053D3F4 * *(f32*)(self + 0xc)) == lbl_8049FFD8[i * 2] &&
+                (s32)(lbl_8053D3F4 * *(f32*)(self + 0x10)) == lbl_8049FFD8[i * 2 + 1]) {
+                *(s32*)(self + 0x290) = i;
+                break;
+            }
+        }
+    }
+    *(f32*)(self + 0x2a4) = lbl_8053D41C;
+    if (*(u16*)(self + 0x94) == 1) {
+        *(f32*)(self + 0x2a4) = lbl_8053D3FC;
+    }
+    rng = (char*)lbl_8053AAF8;
+    *(u32*)(rng + 0xb4) = *(u32*)(rng + 0xb4) * 0x19660d + 0x3c6ef35f;
+    frand = *(f32*)&(bits = (*(u32*)(rng + 0xb4) >> 9) | 0x3f800000);
+    *(f32*)(self + 0x294) = lbl_8053D3C4 * *(f32*)(self + 0x2a4) + lbl_8053D3A4 * (frand - lbl_8053D37C);
+    *(u16*)(self + 0x234) = 0;
+    switch (*(s32*)(self + 0x90)) {
+    case 2:
+        *(s32*)(self + 0xbc) = 4;
+        *(s32*)(self + 0xb8) = 1;
+        *(s32*)(self + 0x230) = 0xf;
+        break;
+    case 3:
+        *(f32*)(self + 0x298) = lbl_8053D378;
+        *(s32*)(self + 0x278) = 1;
+        *(s32*)(self + 0x230) = 8;
+        break;
+    default:
+        *(s32*)(self + 0xbc) = 2;
+        *(s32*)(self + 0xb8) = 1;
+        *(s32*)(self + 0x230) = 0;
+        break;
+    }
+    *(f32*)(self + 0x29c) = lbl_8053D378;
+    *(f32*)(self + 0x2a0) = lbl_8053D37C;
+    *(s32*)(self + 0x288) = 0;
+    if (*(s32*)(self + 0x280) >= 0) {
+        *(s32*)(self + 0x230) = 0xe;
+    }
 }
 
 extern "C" void fn_801583D4(void* thisObj, f32 x, f32 y, f32 z) {
